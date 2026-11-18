@@ -4633,10 +4633,10 @@
     "b": [
      [
       [
-       "Betelguese",
+       "Benjixo",
        "VR"
       ],
-      "Betelguese",
+      "Benjixo",
       ""
      ],
      [
@@ -4655,7 +4655,7 @@
      [
       [
        "Liberia",
-       "Betelguese"
+       "Benjixo"
       ],
       "Liberia",
       ""
@@ -4672,7 +4672,7 @@
     5000
    ],
    [
-    "Betelguese",
+    "Benjixo",
     "Subcampeón",
     3750
    ],
@@ -49414,38 +49414,6 @@
     "b": [
      [
       [
-       "Mathhias",
-       "black live"
-      ],
-      "Mathhias",
-      ""
-     ],
-     [
-      [
-       "LAST",
-       "OKAM"
-      ],
-      "LAST",
-      ""
-     ],
-     [
-      [
-       "Erian",
-       "Adriagner"
-      ],
-      "Erian",
-      ""
-     ],
-     [
-      [
-       "MaYeuTyK",
-       "Fin"
-      ],
-      "MaYeuTyK",
-      ""
-     ],
-     [
-      [
        "Adriagner",
        "LAST"
       ],
@@ -49483,22 +49451,6 @@
     "b": [
      [
       [
-       "Mathhias",
-       "LAST"
-      ],
-      "Mathhias",
-      ""
-     ],
-     [
-      [
-       "Erian",
-       "MaYeuTyK"
-      ],
-      "Erian",
-      ""
-     ],
-     [
-      [
        "Adriagner",
        "MaYeuTyK"
       ],
@@ -49520,14 +49472,6 @@
     "b": [
      [
       [
-       "Erian",
-       "Mathhias"
-      ],
-      "Erian",
-      ""
-     ],
-     [
-      [
        "Adriagner",
        "Calíz"
       ],
@@ -49541,22 +49485,17 @@
   "sv": "LKR",
   "tabla": [
    [
-    "Erian",
+    "Adriagner",
     "Campeón",
     7500
    ],
    [
-    "MaYeuTyK",
-    "Semifinal",
-    7000
-   ],
-   [
-    "Mathhias",
+    "Calíz",
     "Subcampeón",
     5000
    ],
    [
-    "LAST",
+    "MaYeuTyK",
     "Semifinal",
     3500
    ],
@@ -49566,12 +49505,7 @@
     3500
    ],
    [
-    "Adriagner",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Fin",
+    "LAST",
     "Cuartos",
     2000
    ],
@@ -49587,16 +49521,6 @@
    ],
    [
     "Monet",
-    "Cuartos",
-    2000
-   ],
-   [
-    "OKAM",
-    "Cuartos",
-    2000
-   ],
-   [
-    "black live",
     "Cuartos",
     2000
    ]

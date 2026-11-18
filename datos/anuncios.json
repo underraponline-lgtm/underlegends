@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T01:32:43+00:00",
+ "cuando": "2026-11-18T01:55:45+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7172,6 +7172,24 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
+   "tit": "🇦🇷 MITOSIS 🇦🇷",
+   "tx": "LA CABRA EL CHICO BENDECIDO PARA UNO MALDITO PARA OTROS EL ESTA AQUI",
+   "cuando": "2026-11-18T01:48:52",
+   "msg_id": "1572428348045394010",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572428348045394010"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
+   "tit": "🇨🇱 MINIBOY 🇨🇱",
+   "tx": "ESTA AQUI UNO DE LOS MEJORES METRIQUEROS DEL SERVER PLAPLA",
+   "cuando": "2026-11-18T01:44:33",
+   "msg_id": "1572427259799674920",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572427259799674920"
+  },
+  {
    "servidor": "DDS",
    "canal": "🚨〕ANUNCIOS",
    "tit": "YA SE PUEDEN ANOTAR AL TORNEO CLASIFICATORIO",
@@ -7208,15 +7226,6 @@
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572396397028839574"
   },
   {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "🇪🇨 CARLOS 🇪🇨",
-   "tx": "LLEGA A LA D'F I GENESIS EL PILAR DE DDF Like!!",
-   "cuando": "2026-11-17T23:38:11",
-   "msg_id": "1572395461837455471",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572395461837455471"
-  },
-  {
    "servidor": "FFA",
    "canal": "✦📢—anuncios",
    "tit": "SE PARTE DEL EQUIPO DE STAFF FFA",
@@ -7224,15 +7233,6 @@
    "cuando": "2026-11-17T17:50:43",
    "msg_id": "1572308019134599297",
    "link": "https://discord.com/channels/1468472442925092958/1468478722884501709/1572308019134599297"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "D'F I • GENESIS",
-   "tx": "ESTA NUEVA MODALIDAD SERÁ BATALLAS A ESTILO LIBRE SIN VEREDICTOS TODAS LAS BATALLAS SERÁN GRABADAS Y SUBIDAS A YOUTUBE JUNTO CON LOS CYPHERS LOS QUE QUIERAN BATALLAR ESCRIBAN AL PRIVADO Y TOMARE EN CUENTA A ALGUNOS PARA ",
-   "cuando": "2026-11-17T02:51:45",
-   "msg_id": "1572081786412990504",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572081786412990504"
   },
   {
    "servidor": "LKR",
@@ -7425,6 +7425,114 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Ojos llenos de melancolía 🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1572428353695121590",
+   "cuando": "2026-11-18T01:48:53"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "player🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1572428007501602857",
+   "cuando": "2026-11-18T01:47:31"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Soul b🇨🇱",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1572427973980852245",
+   "cuando": "2026-11-18T01:47:23"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1572427964535148675",
+   "cuando": "2026-11-18T01:47:21"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "romeo🇲🇽",
+   "quien": "jadiel_official",
+   "discord_id": "1283642314517909517",
+   "msg_id": "1572427892866949218",
+   "cuando": "2026-11-18T01:47:03"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Bootrax🇵🇪",
+   "quien": "gianfraxruizescor11",
+   "discord_id": "1122273746099638354",
+   "msg_id": "1572427858029187114",
+   "cuando": "2026-11-18T01:46:55"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1572427760541110336",
+   "cuando": "2026-11-18T01:46:32"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "makmah 🇻🇪 (ultima vs adriagner)",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1572427710033297469",
+   "cuando": "2026-11-18T01:46:20"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Last🇺🇾",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1572427624905445478",
+   "cuando": "2026-11-18T01:46:00"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Nxuz 🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1572427616281952277",
+   "cuando": "2026-11-18T01:45:58"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Adriagner(no me vuelvan a tongear)🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1572427584367493242",
+   "cuando": "2026-11-18T01:45:50"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Miniboy🇨🇱",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1572427568030683187",
+   "cuando": "2026-11-18T01:45:46"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43316,114 +43424,6 @@
    "discord_id": "790016013680771102",
    "msg_id": "1560013858314125374",
    "cuando": "2026-10-14T19:38:07"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "onzas.s 🇻🇪",
-   "quien": "onzas.ss",
-   "discord_id": "345317656288559125",
-   "msg_id": "1560013728513007780",
-   "cuando": "2026-10-14T19:37:36"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "ikonoxx  🇦🇷",
-   "quien": "_.the.goat",
-   "discord_id": "1470870791351570630",
-   "msg_id": "1560013666114605180",
-   "cuando": "2026-10-14T19:37:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Trot🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1560012822216441907",
-   "cuando": "2026-10-14T19:34:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Verc 🇨🇱",
-   "quien": "jovenvesta",
-   "discord_id": "913652602208649226",
-   "msg_id": "1560012819015929989",
-   "cuando": "2026-10-14T19:33:59"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Panchok 🇨🇱",
-   "quien": "panchok0103",
-   "discord_id": "1400508144920170577",
-   "msg_id": "1560012792428494869",
-   "cuando": "2026-10-14T19:33:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Fin 🇦🇷",
-   "quien": "finallnme",
-   "discord_id": "1247102577573625856",
-   "msg_id": "1560012760602116250",
-   "cuando": "2026-10-14T19:33:45"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Zaik 🇪🇸",
-   "quien": "zaik0009",
-   "discord_id": "1555067257376346122",
-   "msg_id": "1560012755388342426",
-   "cuando": "2026-10-14T19:33:44"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "ElViolaginas🇧🇦",
-   "quien": "sj.2008_",
-   "discord_id": "645308964141137952",
-   "msg_id": "1560012745934508197",
-   "cuando": "2026-10-14T19:33:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "1200 🇰🇷",
-   "quien": "dreamero",
-   "discord_id": "1395903355909570633",
-   "msg_id": "1560012699771998211",
-   "cuando": "2026-10-14T19:33:31"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Vandu 🇨🇦",
-   "quien": "dfelipetor",
-   "discord_id": "613552853302378527",
-   "msg_id": "1560012680734179490",
-   "cuando": "2026-10-14T19:33:26"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Tuca 🇦🇷",
-   "quien": "tuquitta",
-   "discord_id": "458702447913861130",
-   "msg_id": "1560012670826979419",
-   "cuando": "2026-10-14T19:33:24"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1560012673243160627",
-   "cuando": "2026-10-14T19:33:24"
   }
  ]
 }

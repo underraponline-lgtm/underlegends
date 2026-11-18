@@ -682,7 +682,7 @@
     1793898258653
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
    ],
@@ -705,6 +705,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793329652300
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1794967650217
    ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
@@ -1693,7 +1698,24 @@
   }
  },
  "benjixo": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1794967650217
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794967650217
+   ]
+  },
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1794967650217
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
@@ -1706,6 +1728,16 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794967650217
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1794967650217
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -1762,27 +1794,6 @@
     "🥉 AL PODIO",
     "t1",
     1793928952060
-   ]
-  }
- },
- "betelguese": {
-  "servidor": {
-   "🏆 CAMPEÓN": [
-    "🏆 CAMPEÓN",
-    "t1",
-    1793423073293
-   ]
-  },
-  "temporada": {
-   "🥉 AL PODIO": [
-    "🥉 AL PODIO",
-    "t1",
-    1792953978519
-   ],
-   "🧳 VIAJERO": [
-    "🧳 VIAJERO",
-    "t1",
-    1793423073293
    ]
   }
  },
@@ -5145,7 +5156,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x12",
+    "👑 CAMPEÓN x11",
     "t1",
     1793029252929
    ],
@@ -7622,6 +7633,11 @@
    ]
   },
   "pais": {
+   "AMO DEL DERBI": [
+    "AMO DEL DERBI",
+    "t1",
+    1794967650217
+   ],
    "CONQUISTA AFUERA": [
     "CONQUISTA AFUERA",
     "t1",
@@ -12057,6 +12073,13 @@
   }
  },
  "oriuz": {
+  "pais": {
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1794967650217
+   ]
+  },
   "servidor": {
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",

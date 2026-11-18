@@ -63,6 +63,15 @@
    "sv-dra": "2026-11-14",
    "sv-ffa": "2026-11-14"
   },
+  "kenny": {
+   "bloq-competitivo": "2026-11-17",
+   "bloq-pais": "2026-11-17",
+   "competitivo": "2026-11-17",
+   "pais": "2026-11-17",
+   "servidor": "2026-11-17",
+   "sv-ch": "2026-11-17",
+   "sv-dra": "2026-11-17"
+  },
   "mrstillballin": {
    "bloq-competitivo": "2026-11-17",
    "bloq-pais": "2026-11-17",
@@ -87,6 +96,15 @@
    "sv-dra": "2026-11-12",
    "sv-urbf": "2026-11-12",
    "temporada": "2026-11-12"
+  },
+  "teo": {
+   "bloq-competitivo": "2026-11-17",
+   "bloq-pais": "2026-11-17",
+   "competitivo": "2026-11-17",
+   "pais": "2026-11-17",
+   "servidor": "2026-11-17",
+   "sv-dra": "2026-11-17",
+   "temporada": "2026-11-17"
   },
   "vallest": {
    "bloq-competitivo": "2026-11-16",
@@ -117,6 +135,18 @@
    "sv-urbf": "2026-11-12",
    "temporada": "2026-11-12"
   },
+  "volg": {
+   "bloq-competitivo": "2026-11-17",
+   "bloq-pais": "2026-11-17",
+   "competitivo": "2026-11-17",
+   "pais": "2026-11-17",
+   "servidor": "2026-11-17",
+   "sv-ddf": "2026-11-17",
+   "sv-dra": "2026-11-17",
+   "sv-ffa": "2026-11-17",
+   "sv-sr": "2026-11-17",
+   "sv-urbf": "2026-11-17"
+  },
   "vr": {
    "bloq-competitivo": "2026-11-12",
    "bloq-pais": "2026-11-12",
@@ -128,8 +158,8 @@
    "temporada": "2026-11-12"
   }
  },
- "pasaban": 434,
- "cuando": "2026-11-18T01:40:01Z",
+ "pasaban": 431,
+ "cuando": "2026-11-18T02:07:26Z",
  "borradas": [
   [
    "agre",

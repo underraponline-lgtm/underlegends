@@ -1395,28 +1395,6 @@
 "prueba"
 ]
 },
-"Betelguese": {
-"debut": [
-"2026-09-29T18:54:55Z",
-"prueba"
-],
-"podio": [
-"2026-09-29T18:54:55Z",
-"prueba"
-],
-"trotamundos": [
-"2026-10-13T02:58:11Z",
-"prueba"
-],
-"campeon": [
-"2026-10-31T04:56:48Z",
-"prueba"
-],
-"ascenso": [
-"2026-11-17T01:27:25Z",
-"prueba"
-]
-},
 "Bishop": {
 "debut": [
 "2026-10-25T23:55:58Z",
@@ -10186,12 +10164,6 @@
 "Vlade": {
 "debut": [
 "2026-09-27T17:50:55Z",
-"prueba"
-]
-},
-"Volg": {
-"debut": [
-"2026-11-02T20:26:23Z",
 "prueba"
 ]
 },
