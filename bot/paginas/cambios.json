@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.22",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T20:08:00-05:00",
+        "titulo": "Más llaves y anuncios que el bot ya entiende",
+        "items": [
+            "**Las llaves sin títulos de ronda** —sólo las batallas, una abajo de la otra— ya se leen cuando la forma no deja dudas: cada ronda a la mitad, y de cada batalla pasa uno.",
+            "**En #veredictos, votar con la bandera del ganador** ya cuenta, si esa bandera está en un solo lado de la batalla.",
+            "**Los anuncios con la fecha escrita** («Domingo 29 de noviembre») salen ese día en el calendario, y la hora se toma de la línea que la dice, no de un título como «Horarios internacionales».",
+            "Una imagen que no es un afiche de evento (un horario de clases, una tabla) ya no aparece como evento, y la llave que se arma un rato antes de la hora de arranque se junta con su anuncio."
+        ]
+    },
+    {
         "version": "6.21",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T20:05:00-05:00",
