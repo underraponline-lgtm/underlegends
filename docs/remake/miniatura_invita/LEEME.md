@@ -64,3 +64,6 @@ y su carta con el nivel 1: por eso «una recompensa» y no un número.
 
 **6.47**: Dlx, «lo que dice Makmah te invita podría ser más pequeño… y quizás recta»: la etiqueta a 40 px (34–32 para los
 largos) y la carta sin girar, hasta 420 px de alto. `final_dlx.png` y `final_nombres.png` ya son ésta.
+
+**6.49**: Dlx, «una cabecera parecida a la de abajo que diga X te invitó, centrado» y «entra ahora y gana un premio, y
+abajo a los costados la temporada y el logo de UL en negrito». `final_dlx.png` y `final_nombres.png` ya son ésta.

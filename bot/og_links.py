@@ -81,6 +81,9 @@ def _get(url, ciclo=False, timeout=25):
         return None
 
 
+#: el diseño de la miniatura del link de invitación: el mismo `DISENO_REF` de web/src/og_link.jsx (`data-d`). Cambiarlo rearma
+#: sólo ésas, no las crews ni los perfiles; y si la página publicada todavía dice otro, la foto se saltea
+DISENO_REF = 'ref-4b-cab'
 #: países que no se toman en cuenta (Dlx, 22/09/2026: «Emiratos y Brasil no deberían existir»)
 SIN_PAIS = ('ae', 'br', 'no')
 
@@ -152,7 +155,7 @@ def trabajos():
             f = filas.get(k) or {}
             # la «4b» (17/11/2026): los números y las banderas entran en la huella, ya redondeados; `d` es el diseño de
             # ésta sola, así cambiarlo no rearma las crews ni los perfiles
-            r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas), 'd': 'ref-4b', **V}
+            r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas), 'd': DISENO_REF, **V}
             ruta = 'ref/%s?n=%s&c=%s&t=%d&m=%d&b=%s' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''),
                                                      V['t'], V['m'], ','.join(V['b']))
             out.append(('ref', slug_og(k), _huella(r), ruta))
@@ -207,7 +210,7 @@ def dibujar(lista):
                 # ⚠️ la «4b» va en la huella: si la página publicada todavía es la de antes (el ciclo corrió antes de que se
                 # desplegara la web), la foto saldría vieja con la huella nueva y no se volvería a sacar nunca. Se saltea
                 # y se reintenta en la corrida siguiente
-                if tipo == 'ref' and not pag.evaluate("() => !!document.querySelector('#inicio-nuevo').shadowRoot.querySelector('.og.og-r4')"):
+                if tipo == 'ref' and pag.evaluate("() => document.querySelector('#inicio-nuevo').shadowRoot.querySelector('.og').dataset.d || ''") != DISENO_REF:
                     print('   · %s/%s: la página publicada todavía es la de antes' % (tipo, slug))
                     continue
                 # las fuentes: el nombre se vuelve a medir cuando llegan (og_link.jsx), y medido antes se salía
@@ -301,6 +304,10 @@ def _self_check():
     ok(V == {'t': 40, 'm': 21000, 'b': ['ar', 'cl', 'co']},
        'la miniatura del link: 42 torneos en 7 días → 40, 21.386 → 21.000, banderas por raperos y sin Emiratos ni Brasil (%s)' % V)
     ok(_vitrina({}, hoy) == {'t': 0, 'm': 0, 'b': []}, 'sin lobby, ceros y sin banderas (la página esconde lo que no llega)')
+    with io.open(os.path.join(BASE, 'web', 'src', 'og_link.jsx'), encoding='utf-8') as f:
+        mj = re.search(r"export const DISENO_REF = '([^']+)'", f.read())
+    ok(mj is not None and mj.group(1) == DISENO_REF,
+       'DISENO_REF es el mismo acá y en og_link.jsx (si no, la página nunca «es la de ahora» y no sale ninguna foto)')
     with io.open(os.path.join(BASE, 'bot', 'ci', 'guardar.sh'), encoding='utf-8') as f:
         ok('datos/og_links.json' in f.read(), 'datos/og_links.json va en ARCHIVOS de guardar.sh (si no, cada corrida sube todas)')
     print('\n%s' % ('✅ las miniaturas de los links' if not malos else '❌ %d falla(s)' % malos))

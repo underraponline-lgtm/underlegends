@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.49",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:56:00-05:00",
+        "titulo": "La miniatura de tu link: «¡te invitó!» arriba",
+        "items": [
+            "La miniatura de tu link de invitación ahora dice **«¡TU NOMBRE TE INVITÓ!»** en una franja arriba, y tu carta va sola y más grande.",
+            "Abajo: **«Entra ahora y gana un premio»**, con la temporada a un costado y el logo de Under Legends al otro."
+        ]
+    },
+    {
         "version": "6.48",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T23:58:00-05:00",

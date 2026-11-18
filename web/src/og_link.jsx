@@ -86,6 +86,9 @@ function Crew({ id }) {
 // banderas y «más de 21.000 miembros». Los números y las banderas los manda bot/og_links.py en la ruta (`t`, `m`, `b`),
 // así la huella sabe cuándo rearmar; sin ellos se calculan acá con la misma regla.
 // ⚠️ «Miembros» son las personas de los servidores donde está el bot (`comunidad.personas`), no gente anotada en la Liga.
+//: el diseño de esta miniatura: el mismo `d` que pone bot/og_links.py en la huella. Si la página publicada dice otro, el ciclo
+//: no saca la foto (sería la vieja con la huella nueva) y la reintenta en la corrida siguiente
+export const DISENO_REF = 'ref-4b-cab';
 const SIN_PAIS = new Set(['ae', 'br', 'no']);              // Dlx, 22/09: Emiratos y Brasil «no se les toma en cuenta»
 const nro = (x) => Number(x) || 0;
 const miles = (x) => String(Math.trunc(x)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -103,26 +106,21 @@ export function vitrinaRef(d, q) {
   return { t, m, b };
 }
 
-// 🔠 EL NOMBRE DE QUIEN INVITA: la 4b guardada sólo entraba con nombres de hasta 3 letras («MAKMAH TE INVITA» ya invadía
-// el magenta). Medido sobre los nombres de la Liga (mediana 6, el 90 % ≤ 10, el más largo 48): si «NOMBRE TE INVITA» entra
-// en una etiqueta a 54 px, va así; si no, el nombre en la suya (de 54 a 44 px), en dos líneas por palabras si hace falta, y
-// con «…» si una palabra sola no entra.
-const ANCHO_Q = 342;
+// 🔠 «¡MAKMAH TE INVITÓ!» EN UNA CABECERA, COMO LA BARRA DE ABAJO (Dlx, 17/11/2026: «o podríamos hacer una cabecera parecida
+// a la de abajo que diga X te invitó, centrado»). Antes era una etiqueta en la columna de la carta: la 4b guardada sólo
+// entraba con nombres de hasta 3 letras, y achicarla para que entrara le comía lugar a la carta. A lo ancho entra casi
+// cualquier nombre: de 52 a 30 px hasta entrar en 1.120, y si ni así (el más largo de la Liga tiene 48 letras), «…».
+// Se mide con las fuentes ya cargadas: con la de reemplazo, las medidas salían de otro ancho.
+const ANCHO_CAB = 1120;
 function anchoTxt(txt, px) {
   const c = anchoTxt.c || (anchoTxt.c = document.createElement('canvas').getContext('2d'));
-  c.font = '700 ' + px + 'px "Barlow Condensed", sans-serif';
-  const T = String(txt).toUpperCase();
-  let w = c.measureText(T).width;
-  if ('letterSpacing' in c) { c.letterSpacing = '2px'; w = c.measureText(T).width; c.letterSpacing = '0px'; } else w += 2 * T.length;
-  return w + 24;                                           // el relleno de la etiqueta
+  c.font = '900 ' + px + 'px Archivo, sans-serif';
+  return c.measureText(String(txt).toUpperCase()).width;
 }
-// 📏 MÁS CHICA Y LA CARTA RECTA (Dlx, 17/11/2026, con la miniatura en vivo: «lo que dice Makmah te invita podría ser más
-// pequeño para que la tarjeta se vea mejor, y quizás recta»). De 54 a 40 px: «MAKMAH TE INVITA» vuelve a una sola etiqueta
-// y la carta gana lo que deja. Una línea de 40 a 34 px; si no, el nombre en la suya de 40 a 32 (a 300 px de ancho, 8)
-export function encajeNombre(nombre, medir = anchoTxt) {
-  for (let px = 40; px >= 34; px -= 1) if (medir(nombre + ' te invita', px) <= ANCHO_Q) return { una: true, px };
-  for (let px = 40; px >= 32; px -= 1) if (medir(nombre, px) <= ANCHO_Q) return { una: false, px, dos: false };
-  return { una: false, px: 32, dos: /\s/.test(nombre.trim()) };
+export function encajeCabecera(nombre, medir = anchoTxt) {
+  const t = '¡' + nombre + ' te invitó!';
+  for (let px = 52; px >= 30; px -= 1) if (medir(t, px) <= ANCHO_CAB) return px;
+  return 30;
 }
 
 function Ref({ liga, k }) {
@@ -130,6 +128,7 @@ function Ref({ liga, k }) {
   const [mala, setMala] = useState(false);
   const [enc, setEnc] = useState(null);
   const [banderas, setBanderas] = useState(0);
+  const [ul, setUl] = useState(false);
   const q = deLaRuta();
   const f = liga && ((liga.T && liga.T[k]) || (liga.X && liga.X[k]));
   const nombre = limpio(q.get('n') || (f && f.n) || k);
@@ -140,21 +139,16 @@ function Ref({ liga, k }) {
   // el nombre se mide con las fuentes ya cargadas: con la de reemplazo «DLX TE INVITA» parecía no entrar
   useLayoutEffect(() => {
     let vivo = true;
-    const medir = () => { if (vivo) setEnc(encajeNombre(nombre)); };
+    const medir = () => { if (vivo) setEnc(encajeCabecera(nombre)); };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir); else medir();
     return () => { vivo = false; };
   }, [nombre]);
-  const listo = liga && liga.d && enc && (!src || ok) && banderas >= V.b.length;
+  const listo = liga && liga.d && enc && ul && (!src || ok) && banderas >= V.b.length;
   const una = (n) => () => setBanderas((x) => x + n);
   return (
-    <div className="og og-r4" data-listo={listo ? '1' : ''}>
+    <div className="og og-r4" data-d={DISENO_REF} data-listo={listo ? '1' : ''}>
+      <div className="og-r4-cab"><span style={enc ? { fontSize: enc + 'px' } : null}>¡<b>{nombre}</b> te invitó!</span></div>
       <div className="og-r4-izq">
-        {!enc || enc.una ? <span className="og-r4-tag" style={enc ? { fontSize: enc.px + 'px' } : null}>{nombre} te invita</span> : (
-          <>
-            <span className={'og-r4-tag og-r4-nom' + (enc.dos ? ' dos' : '')} style={{ fontSize: enc.px + 'px' }}>{nombre}</span>
-            <span className="og-r4-tag" style={{ fontSize: enc.px + 'px' }}>te invita</span>
-          </>
-        )}
         {src && !mala ? <span className="og-r4-carta"><img src={src} alt="" onLoad={() => setOk(true)} onError={() => { setMala(true); setOk(true); }} /></span> : null}
       </div>
       <div className="og-r4-med">
@@ -168,7 +162,12 @@ function Ref({ liga, k }) {
           <span className="og-r4-miem"><span className="og-r4-bc">Más de</span><b>{miles(V.m)}</b><span className="og-r4-bc og-r4-m">miembros</span></span>
         ) : null}
       </div>
-      <div className="og-r4-barra">Entra ahora y gana una recompensa</div>
+      {/* Dlx, 17/11/2026: «entra ahora y gana un premio, y abajo a los costados la temporada y el logo de UL en negrito» */}
+      <div className="og-r4-barra">
+        <span className="og-r4-temp">{liga && liga.tempLarga}</span>
+        <span className="og-r4-cta">Entra ahora y gana un premio</span>
+        <img className="og-r4-ul" src="/ul-blanco.png" alt="Under Legends" onLoad={() => setUl(true)} onError={() => setUl(true)} />
+      </div>
     </div>
   );
 }
