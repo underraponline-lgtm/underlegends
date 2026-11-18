@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.60",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T04:18:00-05:00",
+        "titulo": "«La noche de…»: la nota de cada uno al terminar cada evento",
+        "items": [
+            "Cuando termina un evento, el aviso de ganadores en el chat del servidor trae **una imagen con la noche entera**: el podio con sus tarjetas, la **nota del 1 al 10** de cada uno, su ELO y el **nivel del evento** en estrellas.",
+            "**Dos premios por noche**: el **⭐ MVP**, la nota más alta, y el **🔥 Batacazo**, para quien le ganó a alguien teniendo poca chance.",
+            "Debajo, **🎯 Tu nota** te muestra la tuya y por qué la sacaste (sólo a ti), **👤 Perfiles** los del podio, y hay links a la llave, el ranking y los próximos eventos.",
+            "En **la llave** de la página, el 🔥 marca el batacazo de la noche. Empieza con los próximos eventos."
+        ]
+    },
+    {
         "version": "6.59",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T02:59:00-05:00",
