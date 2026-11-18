@@ -8638,11 +8638,11 @@
   "Magic": {
    "FFA": {
     "duelos": "",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
     "ovr": 45,
     "pod": 0,
-    "pts": 9218,
+    "pts": 10468,
     "racha": "0/0"
    },
    "SR": {
@@ -13261,20 +13261,6 @@
     "tg": {
      "fund": true,
      "llave": true
-    }
-   }
-  },
-  "Soul🇲🇽": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
     }
    }
   },
