@@ -11914,7 +11914,9 @@
     "pts": 15750,
     "racha": "2/2",
     "tg": {
-     "fin": 1
+     "fin": 2,
+     "fund": true,
+     "llave": true
     }
    }
   },
