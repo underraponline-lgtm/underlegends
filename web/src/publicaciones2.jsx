@@ -15,7 +15,7 @@
 // ⚠️ Lo que Dlx decidió de esta página sigue igual: las encuestas no son lo primero (después del primer día, y al final
 // si ya votaste en todas); Felicitar sólo en los logros; las cartas del día juntas; Promos y «A quien sigo».
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, hora, ksDe, limpio, num, siglaDe, utc } from './liga.js';
+import { MESES, hora, horaET, ksDe, limpio, mult, num, siglaDe, utc } from './liga.js';
 import { CrewCirculo, escenaDe } from './arriba.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Alguien, Algunos, Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
@@ -103,7 +103,7 @@ function nombresDe(liga, it, pub) {
 // persona; lo de un servidor, el servidor («Arrancamos la semana…»); lo de todos, la Liga. Los datos no cambian: el
 // muro sigue contando hechos (bot/muro.py) y la voz la pone esta página. ⚠️ Lleva la marca «automática» con lo que es:
 // nadie la escribió, y cada uno puede apagar las suyas en Tu cuenta (bot/muro_solos.py `apagados()`) ──
-const DEL_SV = { svlunes: 1, svsemana: 1, svmeta: 1, svtop: 1, svrecord: 1, svnuevo: 1, svtier: 1, anuncio: 1, flyer: 1 };
+const DEL_SV = { svlunes: 1, svsemana: 1, svmeta: 1, svtop: 1, svrecord: 1, svnuevo: 1, svtier: 1, anuncio: 1, flyer: 1, svchat: 1 };
 const DE_LA_LIGA = { premios: 1, resnoche: 1, liga: 1, crewtier: 1 };
 function autorDe(it, liga) {
   const cat = String(it.cat || '');
@@ -358,6 +358,15 @@ function contenido(liga, it, pub) {
     c.txt = <>Récord de la temporada: <b>{it.part} raperos</b> en <b>{limpio(it.ev)}</b></>;
     c.det = it.antes ? 'El anterior era de ' + it.antes : '';
     c.acc = it.ll ? <button type="button" className="pb-a" onClick={() => accion.llave(it.ll)}>Ver la llave</button> : null;
+  } else if (it.tipo === 'svchat') {
+    // 💬 el día fuerte del chat general (bot/chats.py, 17/11/2026), en la voz del servidor. ⚠️ Una polémica, sin nombres
+    const ct = liga.chatTexto(it, true);
+    if (!ct) return null;
+    c.cat = (it.que === 'polemica' ? 'Polémica' : 'El chat') + ' · ' + siglaDe(it.sv);
+    c.vis = logoSv;
+    c.txt = <>{ct.tit}: <b>{num(it.msgs)} mensajes</b> en un día</>;
+    c.det = [it.x >= 2 ? mult(it.x) + ' un día normal' : '', num(it.gente) + ' personas', 'el pico, a las ' + horaET(it.h), ct.ev ? 'la noche de ' + ct.ev : ''].filter(Boolean).join(' · ');
+    c.acc = <a className="pb-a" href={'#/sv/' + encodeURIComponent(siglaDe(it.sv))}>Ver {siglaDe(it.sv)}</a>;
   } else if (it.tipo === 'svnuevo') {
     c.cat = 'Socio nuevo';
     c.vis = logoSv;
@@ -526,7 +535,7 @@ const TIPOS = {
   campeones: ['campeon', 'resnoche', 'ligahito', 'podio'], rangos: ['rango'], cartas: ['tarjeta'], pase: ['pase', 'sorteo'],
   mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier', 'crewunion', 'crewnueva'], anuncios: ['flyer', 'liga'], promos: ['promo'],
   // 🔄 bot/muro_solos.py (15/11/2026)
-  logros: ['podio', 'top10', 'subio', 'racha'], servidores: ['svlunes', 'svsemana', 'svmeta', 'svtop', 'svrecord', 'svnuevo', 'svtier'],
+  logros: ['podio', 'top10', 'subio', 'racha'], servidores: ['svlunes', 'svsemana', 'svmeta', 'svtop', 'svrecord', 'svnuevo', 'svtier', 'svchat'],
 };
 const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos'], ['logros', 'Logros'], ['cartas', 'Cartas'], ['pase', 'Pase'],
   ['mw', 'Most Wanted'], ['servidores', 'Servidores'], ['mes', 'MES AWARDS'], ['crews', 'Crews'], ['anuncios', 'Anuncios'], ['promos', 'Promos']];
@@ -545,6 +554,7 @@ function plano(liga, it) {
   if (it.tipo === 'svtop') return 'Tenemos nuevo #1: ' + quien;
   if (it.tipo === 'svrecord') return 'Récord: ' + it.part + ' raperos en ' + limpio(it.ev);
   if (it.tipo === 'svmeta') return '¡Cumplimos la meta de la semana!';
+  if (it.tipo === 'svchat') { const ct = liga.chatTexto(it, true); return ct ? ct.tit : ''; }
   if (it.tipo === 'resnoche') return it.eventos + (it.eventos === 1 ? ' evento y ' : ' eventos y ') + num(it.part) + ' participaciones';
   if (it.tipo === 'ligahito') return it.que === 'campeon' ? 'Soy el campeón de ' + limpio(it.ln) : limpio(it.ln);
   if (it.tipo === 'mesaward') return it.n ? limpio(it.n) + ' · MES AWARDS' : (quien || 'Los ganadores') + ' · MES AWARDS';
@@ -835,7 +845,7 @@ const NOMBRE_T = { campeon: ['campeón', 'campeones'], rango: ['rango', 'rangos'
   podio: ['primer podio', 'primeros podios'], top10: ['top 10', 'top 10'], subio: ['subida', 'subidas'], racha: ['racha', 'rachas'],
   crewunion: ['de crews', 'de crews'], crewnueva: ['crew nueva', 'crews nuevas'], svlunes: ['de servidores', 'de servidores'],
   svsemana: ['cierre', 'cierres'], svmeta: ['meta', 'metas'], svtop: ['#1 nuevo', '#1 nuevos'], svrecord: ['récord', 'récords'],
-  svnuevo: ['socio nuevo', 'socios nuevos'], svtier: ['tier', 'tiers'] };
+  svnuevo: ['socio nuevo', 'socios nuevos'], svtier: ['tier', 'tiers'], svchat: ['del chat', 'del chat'] };
 function ResumenDia({ liga, xs, abrir }) {
   const top = xs.filter((it) => it.tipo === 'campeon' || it.tipo === 'caza' || it.tipo === 'precio' || (it.tipo === 'ligahito' && it.que === 'campeon')).slice(0, 10);
   const c = {};

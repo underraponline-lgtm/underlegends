@@ -37,6 +37,17 @@ muro no cambia solo y no gasta escrituras de KV. Los que tienen la hora en el fu
 que llega. Todo lo que cuenta repeticiones va **por día**: si contara el muro entero, que la publicación más vieja
 salga del muro cambiaría los comentarios de todas las demás.
 
+🗣️ LA VERSIÓN 3 (17/11/2026, de los chats generales: bot/chats.py). Dlx: *«hacemos los comentarios más realistas y
+vemos el comportamiento de cada uno»*, y a qué se aprende, *«Ambos»*:
+
+- **la jerga de cada servidor**: quien comenta usa a veces las palabras que más usa la gente de SU servidor
+  (`chats.JERGA`, una lista cerrada: nunca un insulto ni algo que alguien escribió), se ríe como se ríe ahí y pone sus
+  emoji (`chats.SANOS`, sólo de reacción).
+- **la voz de cada uno, SÓLO de quien dijo que sí**: sus palabras, su risa, sus emoji y si escribe en minúscula o
+  gritando, medidos en su chat. Los demás siguen con el estilo que sale de su clave (`_estilo()`).
+- ⚠️ DETERMINISTA IGUAL: una publicación del día D usa los días de chat D-15 a D-2 (`VENTANA`), que ya no cambian. Sin
+  datos de los chats, la versión 2 tal cual (la huella `HUELLA_V2` del self-check). Lo de antes de `V3_DESDE`, también.
+
     python bot/comentarios_sim.py     el self-check
 """
 import datetime as dt
@@ -60,6 +71,22 @@ PERSONAJES = [('eh', 'El Hype'), ('ul', 'ULAYA'), ('ej', 'El Jurado')]
 POR_DIA = 2
 #: quién cuenta como activo: jugó en los últimos días
 ACTIVO_DIAS = 14
+
+#: 🗣️ desde cuándo vale la versión 3 (la jerga y la voz de los chats generales): las 3 AM ET del 18/11/2026, cuando el
+#: ciclo para. Lo de antes, con la 2
+V3_DESDE = '2026-11-18T08:00:00Z'
+#: qué días de chat usa una publicación del día D: de D-15 a D-2, ya cerrados (`chats.DIAS` los guarda 40 días)
+VENTANA = (15, 2)
+#: la chance de una palabra de la jerga: del servidor, o de la suya si dijo que sí y la tiene medida
+P_JERGA, P_JERGA_VOZ = 0.28, 0.5
+#: de la jerga de un servidor, sólo la que dijo al menos tanta gente (personas por día, sumadas) en al menos 2 días
+JERGA_GENTE = 4
+#: con cuántos mensajes en la ventana se mide la voz de alguien
+VOZ_MSGS = 8
+#: cómo se escribe cada risa (`chats.RISAS_RX`): cada uno elige una, siempre la misma
+RISA_TXT = {'jaja': ['jaja', 'jajaja', 'jajajaja'], 'JAJA': ['JAJAJA', 'JAJAJAJA'], 'jsjs': ['jsjs', 'jsjsjs'],
+            'jajsj': ['jajsj', 'jajsjsj'], 'xd': ['xd', 'xD', 'XD'], 'jeje': ['jeje', 'jejeje'], 'jiji': ['jiji'],
+            'lol': ['lol'], 'kkk': ['kkkk']}
 
 #: 🗓️ desde cuándo vale la versión 2: las 3 AM ET del 15/11/2026, cuando el ciclo para hasta las 11 (lo de antes, con
 #: la 1). En el futuro al publicarla, así ninguna publicación cambia de versión después de haberse visto
@@ -118,7 +145,9 @@ LIGA_V1 = {
 #: es pagada, y un anuncio de la Liga puede ser una sanción
 CUANTOS = {'campeon': (2, 4), 'ligahito': (2, 4), 'mesaward': (2, 5), 'premios': (2, 4), 'resnoche': (2, 4),
            'caza': (1, 3), 'rango': (1, 3), 'elegido': (1, 3), 'sobrevivio': (1, 3), 'anuncio': (1, 3),
-           'crewtier': (1, 3), 'pase': (1, 2), 'precio': (1, 2), 'flyer': (1, 2), 'sorteo': (1, 2)}
+           'crewtier': (1, 3), 'pase': (1, 2), 'precio': (1, 2), 'flyer': (1, 2), 'sorteo': (1, 2),
+           # 💬 el día fuerte de un chat (bot/chats.py): la polémica, con frases que no acusan a nadie
+           'svchat': (1, 3), 'svchat_pol': (1, 2)}
 #: nunca más que esto en una publicación
 TOPE = 6
 #: en cuáles comenta también un personaje de la Liga, y con qué chance
@@ -193,6 +222,13 @@ GENTE = {
                  '~voté por {q} y gané', 'merecidísimo'],
 }
 #: los cortos de festejo, para cualquier logro de alguien
+# 💬 el día fuerte de un chat. ⚠️ La polémica no acusa ni toma partido: nadie dice quién tiene razón
+GENTE['svchat'] = ['el chat de {sv} no paraba', '{m} mensajes, qué locura', 'yo estuve ahí, estuvo movidísimo',
+                   '~me fui un rato y volví a 300 mensajes', 'así da gusto el chat de {sv}', '¿qué pasó que se prendió así?',
+                   '~el chat más vivo que el evento', 'esto es la Liga', 'mañana otra vez', '~necesito un resumen urgente']
+GENTE['svchat_pol'] = ['¿qué pasó anoche en {sv}?', '~me perdí todo, alguien que me explique', 'tranquilos todos',
+                       'que lo vea el staff y listo', '~yo sólo vine por las batallas', 'ojalá se arregle']
+
 GENERICO = ['tremendo', 'grande', 'qué nivel', 'GG', 'merecido', 'eso', 'imparable', 'bestial', 'crack', 'brutal',
             'enorme', 'se viene se viene', 'qué bien', 'felicidades', 'bien ahí', 'nivelazo']
 #: dónde entran los de festejo, y en qué proporción
@@ -212,6 +248,8 @@ RESPUESTA = {
     '*': {'?': ['buena pregunta', '~yo tampoco sé', 'creo que sí', 'mira la página, ahí sale'],
           '': ['~tal cual', 'x2', 'literal', 'pienso igual', 'la verdad sí', 'confirmo', 'eso', '~jamás pensé decir esto, pero sí']},
 }
+# 💬 y en una polémica, contestar tampoco toma partido
+RESPUESTA['svchat_pol'] = {'?': ['ni idea, recién llego', 'yo tampoco entendí nada'], '': ['x2', 'eso', 'tal cual']}
 #: lo que dice un personaje de la Liga: suelto, o contestando una pregunta (`?`)
 LIGA = {
     'campeon': ['{q} suma otro título. ¿Quién la frena?', 'Felicita al campeón: le llega al teléfono.',
@@ -237,7 +275,7 @@ EMOJI = {'campeon': ['🔥', '👑', '🏆', '👏', '💪'], 'ligahito': ['👑
          'rango': ['📈', '🔥', '💪'], 'pase': ['📈', '💪', '🔥'], 'elegido': ['👀', '🎯'], 'sobrevivio': ['👀', '🔥'],
          'precio': ['💰', '🎯'], 'premios': ['🏅', '👏', '🔥'], 'resnoche': ['🌙', '🔥', '🎤'],
          'anuncio': ['🎤', '🔥', '💪', '🙌'], 'flyer': ['👀', '🔥', '🎤'], 'sorteo': ['🍀', '🎉'],
-         'crewtier': ['💪', '🔥', '🛡️'], 'mesaward': ['🏆', '👑', '👏']}
+         'crewtier': ['💪', '🔥', '🛡️'], 'mesaward': ['🏆', '👑', '👏'], 'svchat': ['🔥', '👀', '💬'], 'svchat_pol': ['👀']}
 #: cómo se ríe cada uno
 RISAS = ['jaja', 'jajaja', 'jsjs', 'jajsj', 'xd', 'JAJAJA', 'jajajaja']
 #: con qué puede arrancar cualquiera
@@ -393,6 +431,8 @@ def _relleno2(x):
     r['cr'] = str(x.get('nombre') or '').strip() if x.get('tipo') == 'crewtier' else ''
     r['tn'] = str(x.get('tn') or '').strip()
     r['sv'] = _sigla(str(x.get('sv') or '').strip())
+    if x.get('tipo') == 'svchat':
+        r['m'] = str(x.get('msgs') or '')
     return r
 
 
@@ -429,13 +469,105 @@ def _estilo(k):
             'signos': ('', '', '!!', '...')[(h >> 11) % 4]}
 
 
-def _armar(base, r, est, tipo, cc, rng, contesta=False):
+def _pesada(pares, rng):
+    """Una de `[(cosa, peso)]`, por su peso."""
+    return rng.choices([a for a, _ in pares], weights=[max(1, b) for _, b in pares], k=1)[0]
+
+
+def _dia_menos(dia, n):
+    return (dt.date.fromisoformat(dia) - dt.timedelta(days=n)).isoformat()
+
+
+def _voces(chats, dia, cache):
+    """🗣️ `{'sv': {sv: {jerga, risa, emoji}}, 'voz': {clave: {...}}}` de los días de chat de la `VENTANA` de una
+    publicación del día `dia`: la jerga que usa la gente de cada servidor y la voz de quien dijo que sí."""
+    if dia in cache:
+        return cache[dia]
+    import chats as CH
+    desde, hasta = _dia_menos(dia, VENTANA[0]), _dia_menos(dia, VENTANA[1])
+    svs, voz = {}, {}
+    for d, por in sorted(((chats or {}).get('dias') or {}).items()):
+        if not (desde <= d <= hasta):
+            continue
+        for sv, x in sorted((por or {}).items()):
+            s = svs.setdefault(sv, {'j': {}, 'jd': {}, 'r': {}, 'e': {}})
+            for j, n in (x.get('jerga') or {}).items():
+                if j in CH.JERGA:
+                    s['j'][j] = s['j'].get(j, 0) + n
+                    s['jd'][j] = s['jd'].get(j, 0) + 1
+            for c, de in (('r', 'risa'), ('e', 'emoji')):
+                for k, n in (x.get(de) or {}).items():
+                    if c == 'r' and k not in RISA_TXT or c == 'e' and k not in CH.SANOS:
+                        continue
+                    s[c][k] = s[c].get(k, 0) + n
+            for k, v in (x.get('voz') or {}).items():
+                w = voz.setdefault(k, {'m': 0, 'mi': 0, 'ma': 0, 'j': {}, 'r': {}, 'e': {}})
+                for c in ('m', 'mi', 'ma'):
+                    w[c] += int(v.get(c) or 0)
+                for c in ('j', 'r', 'e'):
+                    for kk, n in (v.get(c) or {}).items():
+                        w[c][kk] = w[c].get(kk, 0) + n
+    top = lambda d, n: sorted(d.items(), key=lambda kv: (-kv[1], kv[0]))[:n]  # noqa: E731
+    out = {'sv': {}, 'voz': {}}
+    for sv, s in svs.items():
+        out['sv'][sv] = {'jerga': [(j, n) for j, n in top(s['j'], 30) if n >= JERGA_GENTE and s['jd'][j] >= 2][:12],
+                         'risa': top(s['r'], 4), 'emoji': top(s['e'], 5)}
+    for k, w in voz.items():
+        if w['m'] < VOZ_MSGS:
+            continue
+        out['voz'][k] = {'minus': w['mi'] / w['m'] >= 0.6, 'grita': w['ma'] / w['m'] >= 0.3,
+                         'risa': [(r, n) for r, n in top(w['r'], 2) if r in RISA_TXT],
+                         'emoji': [(e, n) for e, n in top(w['e'], 3) if e in CH.SANOS],
+                         'jerga': [(j, n) for j, n in top(w['j'], 5) if j in CH.JERGA and n >= 2]}
+    cache[dia] = out
+    return out
+
+
+def _hash_de(k, que):
+    return random.Random(int(hashlib.sha256((que + ':' + str(k)).encode()).hexdigest()[:12], 16))
+
+
+def _estilo3(k, sv, v3, si):
+    """✍️ El estilo de la versión 3: el de su clave, con la risa y la jerga de su servidor; y si dijo que sí y su voz
+    está medida, la suya. Siempre igual para la misma persona y la misma ventana."""
+    est = dict(_estilo(k))
+    s = v3['sv'].get(sv) or {}
+    v = v3['voz'].get(k) if k in si else None
+    if v:
+        est['minus'] = v['minus']
+        est['grita'] = v['grita']
+    risas = (v and v['risa']) or s.get('risa')
+    if risas:
+        fam = _pesada(risas, _hash_de(k, 'risa3'))
+        est['risa'] = _hash_de(k, 'risa3t').choice(RISA_TXT[fam])
+    est['jerga'] = (v and v['jerga']) or []
+    est['svj'] = s.get('jerga') or []
+    est['emojis'] = (v and v['emoji']) or s.get('emoji') or []
+    return est
+
+
+def _armar(base, r, est, tipo, cc, rng, contesta=False, v3=False):
     """La frase como la escribiría esa persona. Una respuesta no arranca con muletilla: «oye, x2» no se dice."""
     joda = base.startswith('~')
     f = base.lstrip('~')
     corta = len(f) <= 14 and '{' not in f
+    # 🗣️ versión 3: a veces una palabra de la jerga (la suya, o la de su servidor), adelante, atrás o sola
+    cola = ''
+    jerga = v3 and not f.startswith('¿') and (est.get('jerga') or est.get('svj'))
+    if jerga and rng.random() < (P_JERGA_VOZ if est.get('jerga') else P_JERGA):
+        import chats as CH
+        j = _pesada(est.get('jerga') or est['svj'], rng)
+        txt, donde = CH.MOSTRAR.get(j, j), CH.JERGA[j]
+        if 's' in donde and (corta or 'a' not in donde and 'd' not in donde):
+            f = txt if corta and rng.random() < 0.5 else txt + ', ' + f
+        elif 'a' in donde and not contesta and ('d' not in donde or rng.random() < 0.5):
+            f = txt + ', ' + f
+        elif 'd' in donde:
+            cola = ' ' + txt
+        else:
+            f = txt + ', ' + f
     # la muletilla o la palabra de su país, sólo delante de lo que no es una pregunta
-    if not f.startswith('¿'):
+    elif not f.startswith('¿'):
         u = rng.random()
         if u < P_PAIS and DE_PAIS.get(cc):
             f = rng.choice(DE_PAIS[cc]) + ', ' + f
@@ -447,13 +579,17 @@ def _armar(base, r, est, tipo, cc, rng, contesta=False):
         f = f[:1].upper() + f[1:]
     if est['grita'] and corta:
         f = f.upper()
-    tx = f.format(**r)
+    tx = f.format(**r) + cola
     if joda and rng.random() < 0.6:
         tx += ' ' + est['risa']
     elif est['signos'] and not tx.endswith('?') and rng.random() < 0.5:
         tx += est['signos']
     if rng.random() < est['emoji'] and EMOJI.get(tipo):
-        tx += ' ' + rng.choice(EMOJI[tipo])
+        # 🗣️ versión 3: la mitad de las veces, un emoji de los que se usan en su servidor (o de los suyos)
+        if v3 and est.get('emojis') and rng.random() < 0.5:
+            tx += ' ' + _pesada(est['emojis'], rng)
+        else:
+            tx += ' ' + rng.choice(EMOJI[tipo])
     return tx
 
 
@@ -469,7 +605,7 @@ def _elegir(lista, r, rng, usadas, del_dia):
     return f
 
 
-def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises):
+def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises, v3=None, svs=None):
     cuantos = _cuantos(x, tipo, rng)
     r = _relleno2(x)
     usadas = set()
@@ -518,7 +654,8 @@ def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, pais
             t = t + dt.timedelta(minutes=rng.randint(8, 120) if not cms else rng.randint(15, 240))
         if not base:
             continue
-        tx = _armar(base, r, _estilo(f['k']), tipo, paises.get(f['k'], ''), rng, resp is not None)
+        est = _estilo3(f['k'], (svs or {}).get(f['k'], ''), v3, perm['si']) if v3 else _estilo(f['k'])
+        tx = _armar(base, r, est, tipo, paises.get(f['k'], ''), rng, resp is not None, bool(v3))
         por_dia[(dia, f['k'])] = por_dia.get((dia, f['k']), 0) + 1
         cms.append([len(cms), f['k'], f['n'], tx, _iso(t), '' if f['k'] in perm['si'] else 's',
                     resp[0] if resp is not None else None])
@@ -526,7 +663,7 @@ def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, pais
     return [c if c[6] is not None else c[:6] for c in cms]
 
 
-def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None):
+def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None, chats=None):
     """Le pone a cada publicación sus comentarios simulados (`cm`): `[[i, clave, nombre, texto, hora, etiqueta, a
     quién le contesta]]`, con la etiqueta `''` (dijo que sí), `'s'` (simulado: sin preguntar) o `'l'` (personaje de la
     Liga), y el último valor sólo si le contesta a otro (su `i`). Devuelve la lista nueva; no toca la de entrada."""
@@ -537,7 +674,11 @@ def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None):
     gente = [f for f in tabla or [] if f.get('k') and f.get('av') and f.get('ult') and f['k'] not in perm['no']
              and _norm(f.get('n')) not in ocultas]
     paises = {f['k']: str(f.get('cc') or '') for f in gente}
+    svs = {f['k']: str(f.get('sv') or '') for f in gente}
     v2 = _de_iso(V2_DESDE)
+    v3_desde = _de_iso(V3_DESDE)
+    hay_chats = bool(isinstance(chats, dict) and isinstance(chats.get('dias'), dict) and chats['dias'])
+    voces = {}
     por_dia, frases_dia = {}, {}
     out = []
     # de la más vieja a la más nueva, así el tope por día no cambia cuando entra una publicación nueva
@@ -573,7 +714,10 @@ def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None):
         if vieja:
             cms = _cms_v1(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia)
         else:
-            cms = _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises)
+            # 🗣️ la versión 3 sólo con los chats, y sólo desde su arranque: si no, la 2 tal cual
+            v3 = _voces(chats, dia, voces) if hay_chats and t0 >= v3_desde else None
+            tg = ('svchat_pol' if x.get('que') == 'polemica' else 'svchat') if tipo == 'svchat' else tipo
+            cms = _cms_v2(x, tg, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises, v3, svs)
         if cms:
             nuevos[i] = cms
     for i, x in enumerate(items):
@@ -613,6 +757,37 @@ def _self_check():
     a = poner(items, tabla, perm, ahora, llaves, ocultas=['Agus'])
     huella = hashlib.sha256(json.dumps([x.get('cm') for x in a], ensure_ascii=False).encode()).hexdigest()[:16]
     ok(huella == HUELLA_V1, 'lo de antes del %s sale igual que siempre (%s)' % (V2_DESDE[:10], huella))
+    # 🔒 y la versión 2, sin los chats, también (medida con el código del 17/11/2026, antes de la versión 3)
+    its30 = [dict(x, t=_iso(_de_iso(x['t']) + dt.timedelta(days=30))) for x in items]
+    tb30 = [dict(f, ult=[_iso(_de_iso(f['ult'][0] + 'T00:00:00Z') + dt.timedelta(days=30))[:10]] + f['ult'][1:]) for f in tabla]
+    a30 = poner(its30, tb30, perm, ahora + dt.timedelta(days=30), llaves, ocultas=['Agus'])
+    h2 = hashlib.sha256(json.dumps([x.get('cm') for x in a30], ensure_ascii=False).encode()).hexdigest()[:16]
+    ok(h2 == HUELLA_V2, 'sin los chats, la versión 2 sale igual que siempre (%s)' % h2)
+
+    # 🗣️ la versión 3: la jerga de FFA es «papu» y «nashe», Oasis (dijo que sí) escribe «bro» y ríe «jsjs»; Snow no dijo
+    # que sí y también tiene voz medida: no se usa
+    ch = {'dias': {}}
+    for d in range(1, 30):
+        dd = '2026-12-%02d' % d
+        ch['dias'][dd] = {'FFA': {'jerga': {'papu': 3, 'nashe': 2, 'bro': 1}, 'risa': {'xd': 9}, 'emoji': {'💀': 5, '🖕': 50},
+                                  'voz': {'oasis': {'m': 3, 'mi': 3, 'ma': 0, 'j': {'bro': 2}, 'r': {'jsjs': 2}, 'e': {'😎': 1}},
+                                          'snow': {'m': 3, 'mi': 0, 'ma': 3, 'j': {'wey': 3}, 'r': {'JAJA': 3}, 'e': {}}}}}
+    a3 = poner(its30, tb30, perm, ahora + dt.timedelta(days=30), llaves, ocultas=['Agus'], chats=ch)
+    b3 = poner(its30, tb30, perm, ahora + dt.timedelta(days=30), llaves, ocultas=['Agus'], chats=ch)
+    c3 = [c for x in a3 for c in x.get('cm') or [] if c[5] != 'l']
+    ffa = {f['k'] for f in tb30 if f['sv'] == 'FFA'}
+    ok(a3 == b3 and a3 != a30, 'la versión 3: la misma entrada da lo mismo, y no es la 2')
+    ok(any(('papu' in c[3] or 'nashe' in c[3]) for c in c3 if c[1] in ffa) and not any(('papu' in c[3] or 'nashe' in c[3]) for c in c3 if c[1] not in ffa),
+       'la jerga de FFA la usa la gente de FFA, y nadie más')
+    ok(any('bro' in c[3] for c in c3 if c[1] == 'oasis') and not any('wey' in c[3] for c in c3),
+       'la voz de quien dijo que sí (Oasis: «bro»); la de quien no, nunca (Snow: «wey»)')
+    ok(not any('🖕' in c[3] for c in c3), 'un emoji grosero no sale nunca, aunque sea el que más se usa')
+    ok(all('{' not in c[3] and '~' not in c[3] and len(c[3]) <= 120 for c in c3), 'sin huecos, sin marcas y cortos')
+    sc = {'tipo': 'svchat', 'id': 'c00000000001', 't': '2026-12-20T03:30:00Z', 'sv': 'FFA', 'dia': '2026-12-19', 'que': 'polemica', 'msgs': 640}
+    pol = poner([sc], tb30, perm, ahora + dt.timedelta(days=40), {}, chats=ch)[0].get('cm') or []
+    frases = [g.lstrip('~').format(sv=_sigla('FFA')).lower() for g in GENTE['svchat_pol'] + RESPUESTA['svchat_pol']['?'] + RESPUESTA['svchat_pol']['']]
+    ok(pol and all(any(p in c[3].lower() for p in frases) for c in pol),
+       'en una polémica, sólo las frases que no acusan a nadie (%d)' % len(pol))
 
     # y lo mismo, con la versión 2: las mismas publicaciones, un mes después
     def correr(dias):
@@ -682,6 +857,8 @@ def _self_check():
 
 #: la huella de lo que la versión 1 armaba sobre la entrada del self-check (medida con el código del 14/11/2026)
 HUELLA_V1 = '38b6f92a2f52ed2e'
+#: y la de la versión 2, con las mismas publicaciones 30 días después y sin los chats (medida el 17/11/2026)
+HUELLA_V2 = 'c634ebd1900285b8'
 
 
 if __name__ == '__main__':

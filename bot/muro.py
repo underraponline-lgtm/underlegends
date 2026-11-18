@@ -570,6 +570,9 @@ def id_de(x):
         partes = [tipo, x.get('sv') or '', x.get('sem') or '']
     elif tipo == 'svrecord':
         partes = [tipo, x.get('sv') or '', str(x.get('ll') or '')]
+    elif tipo == 'svchat':
+        # 💬 uno por servidor y día: lo que cuenta puede crecer (la segunda lectura del día), y sigue siendo el mismo
+        partes = [tipo, x.get('sv') or '', x.get('dia') or '']
     elif tipo in ('svtop', 'svnuevo', 'svtier'):
         partes = [tipo, x.get('sv') or '', x.get('t') or '', '|'.join(x.get('quien') or [])]
     elif tipo == 'podio':
@@ -708,7 +711,9 @@ def _fuentes():
             'ligas': _j('datos', 'ligas.json'), 'promos': _j('datos', 'promos.json'),
             'crews_tiers': _j('datos', 'crews_tiers.json'), 'crews_vivas': _j('datos', 'crews_vivas.json'),
             # 🌙 el puesto de cada uno, para «quién subió» en el resumen de la noche (`noches()`)
-            'pool': _j('datos', 'temporada_pool.json')}
+            'pool': _j('datos', 'temporada_pool.json'),
+            # 💬 los chats generales (bot/chats.py): sus días fuertes (`chats_muro()`) y la jerga de los comentarios
+            'chats': _j('datos', 'chats_dia.json')}
 
 
 def _arranque(ahora):
@@ -795,8 +800,23 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
             + novedades(p.get('novedades'))
             + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
             + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro()
-            + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas')))
+            + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas'))
+            + chats_muro(fuentes.get('chats'), camps))
     return todo, estado, anotados, extra
+
+
+def chats_muro(ch, camps):
+    """💬 Los días fuertes del chat general de cada servidor (`bot/chats.py` `momentos()`, 17/11/2026: Dlx, «si pasan
+    cosas dramáticas ponerlas en las historias», y a si se aprueban, «Todo sale solo»). Van a las historias de su
+    servidor y a Publicaciones, firmadas por el servidor. Si algo falla, nada: nunca frena el muro."""
+    if not ch:
+        return []
+    try:
+        import chats as CH
+        return CH.momentos(ch, camps)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el muro sin los días fuertes del chat (%s)' % str(e)[:80])
+        return []
 
 
 def mes_muro():
@@ -895,8 +915,9 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
             oc = _FT.ocultas(None).get('nombres') or []
         except Exception:                                # noqa: BLE001
             oc = []
+        # 🗣️ y con los chats generales (bot/chats.py): la jerga de cada servidor y la voz de quien dijo que sí (versión 3)
         muro['items'] = CS.poner(muro['items'], p.get('tabla'), permisos or CS.permisos(None), ahora,
-                                 (fuentes or {}).get('llaves'), oc)
+                                 (fuentes or {}).get('llaves'), oc, (fuentes or {}).get('chats'))
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ los comentarios simulados: %s' % str(e)[:80])
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
@@ -1096,6 +1117,12 @@ def _self_check():
     lun = [{'tipo': 'svlunes', 't': '2026-11-09T16:20:00Z', 'sv': s, 'sem': '2026-11-09', 'x': 2} for s in ('FFA', 'SR', 'DDF')]
     ok(len(con_ids(lun)) == 3, 'el lunes de tres servidores, en el mismo instante: tres publicaciones y no una')
     ok(id_de(dict(lun[0], x=3)) == id_de(lun[0]), 'un ×N corregido sigue siendo la misma publicación del lunes')
+    # 💬 los días fuertes del chat (17/11/2026)
+    ch = {'leido': '2026-11-10', 'dias': {'2026-11-09': {'DRA': {'msgs': 450, 'gente': 40, 'hora': [0] * 22 + [450, 0]}}}}
+    sc = chats_muro(ch, [])
+    ok(len(sc) == 1 and sc[0]['tipo'] == 'svchat' and id_de(dict(sc[0], msgs=999)) == id_de(sc[0]) and 'svchat' not in DE_ALGUIEN
+       and chats_muro(None, []) == [] and chats_muro({'dias': 'roto'}, []) == [],
+       'el día fuerte de un chat: una publicación del servidor por día (de nadie), y con el archivo roto, nada')
     ok(all(x in DE_ALGUIEN for x in ('podio', 'top10', 'subio', 'racha', 'crewunion', 'crewnueva', 'svtop'))
        and not any(x in DE_ALGUIEN for x in ('svlunes', 'svsemana', 'svmeta', 'svrecord', 'svnuevo', 'svtier')),
        'lo de la gente lleva `ks` (seguidores, Felicitar, apagar); lo del servidor solo, no')

@@ -1191,7 +1191,7 @@ function FondoVs({ sv, rol, permisos }) {
 }
 
 // 🙈 TUS PUBLICACIONES: las del muro que son de tu servidor, con «Ocultar» (sale del muro en la próxima media hora)
-const MURO_TIPO = { anuncio: 'Anuncio', svlunes: 'Lunes', svsemana: 'La semana', svmeta: 'Meta', svtop: 'Top', svrecord: 'Récord', svnuevo: 'Nuevo', svtier: 'Tier' };
+const MURO_TIPO = { anuncio: 'Anuncio', svlunes: 'Lunes', svsemana: 'La semana', svmeta: 'Meta', svtop: 'Top', svrecord: 'Récord', svnuevo: 'Nuevo', svtier: 'Tier', svchat: 'El chat' };
 function MuroStaff({ sv, rol, permisos }) {
   const [items, setItems] = useState(null);
   const [j, setJ] = useState(null);

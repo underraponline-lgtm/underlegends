@@ -2515,7 +2515,8 @@ bot/              el lector de Discord y el ciclo
                                   que vuelve, y lo cobrado a la Temporada
                   muro.py         Publicaciones: lo que pasa en la Liga y los
                                   anuncios; lo corre subir_web.py
-                  chats.py        el chat general de cada socio, una vez por día
+                  chats.py        el chat general de cada socio, una vez por día: los
+                                  días fuertes a las historias y la jerga de los comentarios
                                   (paso 2b8b, desde las 12 PM ET): números al repo
                                   (datos/chats_dia.json) y lo que importa (eventos
                                   falsos, fraude, raids) sólo al Dashboard. Cada

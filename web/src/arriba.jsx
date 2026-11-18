@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, capital, diaISO, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, srcLogo, utc } from './liga.js';
+import { MESES, capital, diaISO, horaET, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Alguien, Algunos, Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
@@ -922,6 +922,24 @@ function slidesDe(liga, items) {
       out.push(Slide('ANUNCIÓ · ' + siglaDe(it.sv), <><img className="st-logo" alt="" src={liga.logo(it.sv)} /><h3 className="st-h">{limpio(it.ev)}</h3>
         {liga.esDorado(it.ev, it.sv) ? <span className="st-dor">EVENTO DORADO ×3</span> : null}<small className="st-s">{cu || c}</small></>,
         c, 'Quiero aviso', { ruta: '#/avisos' }, undefined, undefined, { esc: it.sv, tono: 'verde' }));
+    } else if (it.tipo === 'svchat') {
+      // 💬 EL DÍA FUERTE DEL CHAT GENERAL (17/11/2026, bot/chats.py): cuántos mensajes, cuántas veces un día normal, la
+      // forma del día (una barra por hora, la del pico encendida) y de quién se habló. Sólo números: lo que alguien
+      // escribió no viaja. ⚠️ En una polémica, ni caras ni evento
+      const ct = liga.chatTexto(it);
+      if (ct) {
+        const fs = it.que === 'polemica' ? [] : (it.hablan || []).filter((k) => liga.T[k]).slice(0, 3);
+        const hs = Array.isArray(it.hs) && it.hs.length === 24 ? it.hs : null;
+        const mx = hs ? Math.max(1, ...hs) : 1;
+        out.push(Slide((it.que === 'polemica' ? 'POLÉMICA · ' : 'EL CHAT · ') + siglaDe(it.sv), <><h3 className="st-h">{ct.tit}</h3>
+          <div className="hx-chat-n"><span className="hx-total"><Numero v={Number(it.msgs) || 0} f={num} /><small>MENSAJES EN UN DÍA</small></span>
+            {it.x >= 2 ? <span className="hx-mv sube">{mult(it.x)} UN DÍA NORMAL</span> : null}</div>
+          {hs ? <div className="hx-horas" aria-hidden="true">{hs.map((n, i) => <i key={i} className={i === it.h ? 'on' : ''} style={{ height: Math.max(4, Math.round((n / mx) * 100)) + '%' }} />)}</div> : null}
+          {fs.length ? <ul className="st-gente">{fs.map((k) => <li key={k}><Cara liga={liga} k={k} nombre={liga.T[k].n} cls="st-mini" /><span>{limpio(liga.T[k].n)}</span></li>)}</ul> : null}
+          <small className="st-s">{num(it.gente)} personas · el pico, a las {horaET(it.h)}{ct.ev ? ' · la noche de ' + ct.ev : ''}</small></>,
+        c, 'Ver ' + siglaDe(it.sv), { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }, undefined, undefined,
+        { esc: it.sv, tono: it.que === 'polemica' ? 'vivo' : 'verde' }));
+      }
     } else if (it.tipo === 'flyer') {
       // 🖼️ el flyer de una liga de ese servidor (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»): el afiche
       // entero, y a su liga
@@ -1123,7 +1141,8 @@ const firma = (items, resto = '') => items.reduce((m, it) => (String(it.t) > m ?
 
 export function gruposHistorias(liga) {
   // 🖼️ y los flyers de las ligas (14/10/2026): van al círculo de su servidor (`svDe()`: el flyer trae su `sv`)
-  const muro = liga.muroLimpio().filter((it) => ['campeon', 'anuncio', 'caza', 'tarjeta', 'rango', 'flyer'].includes(it.tipo));
+  // 💬 y el día fuerte del chat general de cada servidor (17/11/2026, `svchat`): a su círculo
+  const muro = liga.muroLimpio().filter((it) => ['campeon', 'anuncio', 'caza', 'tarjeta', 'rango', 'flyer', 'svchat'].includes(it.tipo));
   const grupos = [];
   // ⏳ mientras el muro no llega, «no tiene nada nuevo» no se sabe todavía: nadie se apaga por eso (`apagadoH`)
   const espera = !liga.muroListo;

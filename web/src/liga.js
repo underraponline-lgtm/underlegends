@@ -57,6 +57,8 @@ export function resultado(r, corto = false) {
 }
 export const num = (n) => String(Math.trunc(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 export const mult = (x) => '×' + String(x || 1).replace('.', ',');
+// 🕐 una hora del este (0–23) en 12 h: «11 PM»
+export const horaET = (h) => { const n = Number(h) || 0; return (n % 12 || 12) + (n < 12 ? ' AM' : ' PM'); };
 // 🔤 y las letras que NFKD no desarma (ø, đ, ł, ß, æ, œ…): las mismas que `nombres.plegar()` del Python (18/10/2026,
 // Dlx: «¿por qué no en general?»). Buscar «tokio» encuentra a «TøKīØ»
 const PLEGAR = { ø: 'o', Ø: 'O', đ: 'd', Đ: 'D', ł: 'l', Ł: 'L', ß: 'ss', ẞ: 'SS', æ: 'ae', Æ: 'AE', œ: 'oe', Œ: 'OE', ı: 'i',
@@ -874,8 +876,28 @@ export class Liga {
     }
     if (it.tipo === 'svtop') return ['NUEVO #1 · ' + siglaDe(it.sv), q[0] + ' es el nuevo #1 de ' + siglaDe(it.sv), ['cara', ks[0] || '', q[0]], c, perfil];
     if (it.tipo === 'svrecord') return ['RÉCORD · ' + siglaDe(it.sv), siglaDe(it.sv) + ': ' + it.part + ' raperos en ' + limpio(it.ev) + ', su récord', ['sv', it.sv], c, it.ll ? { llave: it.ll } : { ruta: '#/eventos' }];
+    if (it.tipo === 'svchat') {
+      const ct = this.chatTexto(it);
+      return ct ? [(it.que === 'polemica' ? 'POLÉMICA · ' : 'EL CHAT · ') + siglaDe(it.sv), ct.tit, ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }] : null;
+    }
     if (it.tipo === 'svmeta') return ['META CUMPLIDA · ' + siglaDe(it.sv), siglaDe(it.sv) + ' cumplió su meta de la semana', ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }];
     return null;
+  }
+  // 💬 EL DÍA FUERTE DE UN CHAT GENERAL (`svchat`, bot/chats.py `momentos()`, 17/11/2026: Dlx, «si pasan cosas
+  // dramáticas ponerlas en las historias»): `{tit, nombres, ev}`, contado por la Liga o, con `nos`, por el servidor
+  // (Publicaciones). `null` si no hay qué decir: el nombre del día de alguien que no está en la temporada.
+  // ⚠️ Una polémica no trae nombres ni evento (el muro no los manda): nunca se dice de quién ni de qué
+  chatTexto(it, nos) {
+    const sv = siglaDe(it.sv);
+    const q = (it.hablan || []).map((k) => this.T[k]).filter(Boolean).map((f) => limpio(f.n));
+    const nombres = q.length > 1 ? q.slice(0, -1).join(', ') + ' y ' + q[q.length - 1] : q[0] || '';
+    let tit;
+    if (it.que === 'polemica') tit = nos ? 'Se armó la polémica en nuestro chat' : 'Polémica en el chat de ' + sv;
+    else if (it.que === 'tema') {
+      if (!nombres) return null;
+      tit = (nos ? 'En nuestro chat todos hablan de ' : 'En ' + sv + ' todos hablan de ') + nombres;
+    } else tit = nos ? 'Nuestro chat explotó' : 'Explotó el chat de ' + sv;
+    return { tit, nombres, ev: it.que !== 'polemica' && it.ev ? limpio(it.ev) : '' };
   }
   // 🏟️ LAS LIGAS DE LOS SERVIDORES (`ligas` del payload, bot/ligas.py `para_web()`)
   ligas() { return ((this.d.ligas || {}).ligas) || []; }
