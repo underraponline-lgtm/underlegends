@@ -62,6 +62,27 @@ export function useDesliza(i, orden, como = 'lado') {
   return ref;
 }
 
+// 🚪 LO QUE SE ABRE TAMBIÉN SE VA (Dlx, 18/11/2026: «quiero que veas bien las animaciones y mejores las de la página»).
+// Medido cuadro por cuadro con el reloj a 1/10: el menú de tu cara, los de arriba (Ranking, Eventos, Comunidad), la campana
+// y el ☰ del celular aparecían Y desaparecían de golpe, en un cuadro. `const [ver, sale] = usePresencia(abierto)`: `ver`
+// sigue en true `ms` después de cerrar, con `sale` en true para que el CSS lo despida (la clase `.sale`). Si se vuelve a
+// abrir mientras se va, se queda. Con «Menos animaciones» o el movimiento reducido, se va al instante, como antes
+export function usePresencia(abierto, ms = 140) {
+  const [queda, setQueda] = useState(false);
+  const antes = useRef(abierto);
+  useEffect(() => {
+    const era = antes.current;
+    antes.current = abierto;
+    if (abierto || !era || quieto()) { setQueda(false); return undefined; }
+    setQueda(true);
+    const t = setTimeout(() => setQueda(false), ms);
+    return () => clearTimeout(t);
+  }, [abierto]); // eslint-disable-line react-hooks/exhaustive-deps
+  // en el dibujo en que se cierra todavía no corrió el efecto: sigue a la vista, ya despidiéndose
+  const cerrando = !abierto && (queda || (antes.current && !quieto()));
+  return [abierto || cerrando, cerrando];
+}
+
 // el mismo número, como pieza: `<Numero v={1234} f={num} />`
 export function Numero({ v, f }) {
   const x = useNumero(v);

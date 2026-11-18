@@ -332,7 +332,8 @@ a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-estante::-webkit-scrollbar{display:none}
 .lq3-estante a{display:grid;justify-items:center;gap:8px;min-width:0;text-align:center;color:inherit}
 .lq3-estante .lq3-carta,.lq3-estante .lq3-sinc{max-width:150px}
-.lq3-estante a:hover .lq3-carta{transform:translateY(-4px)}
+/* 👆 sólo con mouse (18/11/2026): en el celular un toque deja el «pasar por encima» pegado hasta tocar otra cosa */
+@media (hover: hover) and (pointer: fine){.lq3-estante a:hover .lq3-carta{transform:translateY(-4px)}}
 .lq3-placa{display:block;max-width:100%;padding:5px 8px;background:#F6F6F6;color:#030304;font:800 12px/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:break-word}
 .lq3-placa small{display:block;font:700 11px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#3A3A3E}
 @media (prefers-reduced-motion: no-preference){.lq3-estante .lq3-carta{transition:transform .2s ease}}

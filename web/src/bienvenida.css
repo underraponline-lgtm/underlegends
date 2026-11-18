@@ -358,7 +358,7 @@
   animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .4s both}
 .bv-p2 .bv-si{flex-direction:row}
 
-.bv.sale{animation:bv-fuera .38s ease-in forwards}
+.bv.sale{animation:bv-fuera .38s cubic-bezier(.23,1,.32,1) forwards}
 /* 🎬 LAS ENTRADAS (12/11/2026): cada pieza de una página entra la primera vez que llegas a ella, de a una (55 ms entre
    piezas), desde abajo y con la curva fuerte. Las cartas además giran un poco: caen sobre la mesa. Mientras la página no se
    vio, sus piezas esperan escondidas; ya vista, quedan quietas (volver no las repite) */

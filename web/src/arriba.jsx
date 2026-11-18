@@ -12,7 +12,7 @@ import { useAplausos } from './aplausos.js';
 import { delHilo, useComentarios } from './comentarios.jsx';
 import { usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
-import { Numero } from './anima.js';
+import { Numero, usePresencia } from './anima.js';
 import { VotoVivo } from './quiengana.jsx';
 import { LuNube, LuSocial } from './medio.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
@@ -87,6 +87,7 @@ function Grupo({ n, items, on, pagina }) {
   // dedo y el teclado siguen alternando (Enter no trae pointerdown). Se recuerda en pointerdown: Safari viejo no trae
   // `pointerType` en el click
   const tipo = useRef('');
+  const [ver, despide] = usePresencia(abierto, 120);
   const id = 'grp-' + norm(n).replace(/[^a-z]/g, '');
   return (
     <div className={'grp' + (abierto ? ' abierto' : '')} data-tuto={'menu-' + norm(n).replace(/[^a-z]/g, '')} ref={caja} onPointerEnter={entra} onPointerLeave={sale}>
@@ -94,10 +95,10 @@ function Grupo({ n, items, on, pagina }) {
         onPointerDown={(e) => { tipo.current = e.pointerType; }}
         onClick={() => { const m = tipo.current === 'mouse'; tipo.current = ''; setAbierto((v) => (m ? true : !v)); }}>
         {n}<Chevron /></button>
-      {abierto ? (
+      {ver ? (
         // 🔔 CON EL ESTILO DE LA CAMPANA (Dlx, 13/11/2026: «me gusta bastante el estilo de notificaciones… al abrir cada
         // categoría como rankings»): el título en Anton arriba y cada sección en una fila con su ícono en un círculo
-        <div className={'grp-lista' + (items.length > 6 ? ' dos' : '')} id={id}>
+        <div className={'grp-lista' + (items.length > 6 ? ' dos' : '') + (despide ? ' sale' : '')} id={id}>
           <p className="grp-h"><b>{n}</b><small>{items.length} {n === 'Ranking' ? 'tablas' : 'secciones'}</small></p>
           <div className="grp-items">
             {items.map(([nn, h, d, k]) => (
@@ -494,6 +495,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
   const [busca, setBusca] = useState(false);
   // 👤 tu cara abre el menú de lo tuyo, con el Inventario primero (yomenu.jsx)
   const [yoM, setYoM] = useState(false);
+  const [verYo, saleYo] = usePresencia(yoM, 120);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} /> : (dc ? <CaraDc dc={dc} /> : null);
   const nombre = yo ? limpio(yo.n) : (dc ? limpio(dc.n) : '');
   // 🔥 tu racha diaria: ya NO va acá (Dlx, 17/11/2026: «esa de racha diaria está abajo ya te dije»), pero pedirla es lo que
@@ -590,7 +592,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
               {/* ⚠️ el rombo solo, sin la palabra: con «PREMIUM» el chip crecía 73 px y desde ~1300 px la cabecera tiene ancho fijo
                   (el contenido de 1200 + los costados): el menú quedaba a 7 px de la marca a 1550 y a 0 a 1920 */}
               {prem ? <span className="yo-prem" title="Pase de rapero premium" aria-hidden="true"><SelloPremium t={17} /></span> : null}</button>
-            {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={nombre} cara={cara} onCerrar={() => setYoM(false)} /> : null}
+            {verYo ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={nombre} cara={cara} sale={saleYo} onCerrar={() => setYoM(false)} /> : null}
           </span>
         ) : (
           <button type="button" className="btn verde chico entrar" data-tuto="cuenta" onClick={accion.entrar}>Entrar</button>
@@ -651,6 +653,7 @@ function Campanita({ liga }) {
     document.addEventListener('keydown', esc);
     return () => { document.removeEventListener('pointerdown', fuera); document.removeEventListener('keydown', esc); };
   }, [abierta]);
+  const [ver, despide] = usePresencia(abierta, 140);
   const abrir = () => {
     const v = !abierta;
     setAbierta(v);
@@ -663,7 +666,7 @@ function Campanita({ liga }) {
         aria-label={'Notificaciones' + (B.nuevas ? ', ' + B.nuevas + (B.nuevas === 1 ? ' nueva' : ' nuevas') : '')} onClick={abrir}>
         <Ico n="campana" t={20} />{B.nuevas ? <span className="nt-n">{B.nuevas > 9 ? '9+' : B.nuevas}</span> : null}
       </button>
-      {abierta ? <PanelAvisos liga={liga} B={B} onCerrar={() => setAbierta(false)} /> : null}
+      {ver ? <PanelAvisos liga={liga} B={B} sale={despide} onCerrar={() => setAbierta(false)} /> : null}
     </div>
   );
 }
@@ -687,7 +690,7 @@ const sinEmoji = (t) => String(t || '').replace(/^\p{Extended_Pictographic}️?\
 // el color de la esquina de la cara, por lo que dice el emoji (en la maqueta: rojo si bajaste, magenta lo de la gente)
 const TINTE_AVISO = { '📉': '#E5484D', '📈': '#29B298', '⭐': '#E41373', '★': '#E41373', '👏': '#E41373', '💬': '#E41373', '⚔️': '#F2B705', '🏁': '#F2B705' };
 
-function PanelAvisos({ liga, B, onCerrar }) {
+function PanelAvisos({ liga, B, sale, onCerrar }) {
   const e = useCampana();
   const C = window.Campana;
   const [fil, setFil] = useState('todo');
@@ -781,7 +784,7 @@ function PanelAvisos({ liga, B, onCerrar }) {
   const filtros = FILTROS_AVISO.filter(([k]) => k === 'todo' || cuenta[k]);
   const hayNuevas = !leidas && (B.items || []).some((x) => !x.visto);
   return (
-    <div className="nt-p" role="dialog" aria-label="Notificaciones">
+    <div className={'nt-p' + (sale ? ' sale' : '')} role="dialog" aria-label="Notificaciones">
       <div className="nt-arr">
         <div className="nt-h">
           <h2>Notificaciones</h2>

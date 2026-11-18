@@ -19,7 +19,7 @@ import { useRoles } from './roles.js';
 import { useSocio } from './panelsocio.js';
 import { INTERRUPTORES, abrirLugaresMods, lugaresMods, useModsEstado } from './mods.js';
 
-export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
+export function YoMenu({ k, dc, nombre, cara, abajo = false, sale = false, onCerrar }) {
   const [nuevos, setNuevos] = useState(0);
   // 🛠️ TUS PANELES, A UN TOQUE (Dlx, 13/11/2026: «quizás ahí que me aparezca opciones como Dashboard, mi servidor
   // directamente»): los mismos dos botones de arriba de Tu cuenta, con las mismas reglas. El Dashboard, para Dlx y para
@@ -108,7 +108,7 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
     </li>
   );
   return (
-    <div className={'yo-menu' + (abajo ? ' abajo' : '')} ref={caja} role="menu" aria-label="Lo tuyo">
+    <div className={'yo-menu' + (abajo ? ' abajo' : '') + (sale ? ' sale' : '')} ref={caja} role="menu" aria-label="Lo tuyo">
       <div className="nt-h">
         {cara ? <span className="yo-menu-cara" aria-hidden="true">{cara}</span> : null}
         <h2>{nombre || 'Lo tuyo'}</h2>

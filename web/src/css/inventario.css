@@ -87,7 +87,7 @@
 }
 @media (prefers-reduced-motion: no-preference){
   .ves-q{transition:border-color .15s ease,background-color .15s ease,transform .15s cubic-bezier(.23,1,.32,1)}
-  .ves-a .ves-q:hover{transform:translateY(-2px)}
+  @media (hover: hover) and (pointer: fine){.ves-a .ves-q:hover{transform:translateY(-2px)}}
 }
 /* 👗 tus looks guardados (17/11/2026): una fila entre el escenario y las piezas, como los presets de Rocket League */
 .ves-looks{display:grid;gap:10px;padding:14px 18px;border-bottom:1.5px solid var(--v-borde);background:#08080A}

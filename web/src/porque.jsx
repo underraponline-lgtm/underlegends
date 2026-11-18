@@ -307,7 +307,7 @@ export function Porque({ sub, c, n, titulo, linea }) {
         <Ico n="guia" t={15} />{n ? 'Por qué estás #' + n + ' y cómo subir' : 'Cómo entrar y subir'}
       </button>
       {abierto ? (
-        <dialog className="pn-pop rk-pq-pop" ref={dlg} aria-label={titulo} onClose={() => setAbierto(false)}
+        <dialog className="pn-pop rk-pq-pop" ref={dlg} aria-label={titulo} onClose={() => setTimeout(() => { if (!dlg.current || !dlg.current.open) setAbierto(false); }, 220)}
           onClick={(e) => { if (e.target === dlg.current) cerrar(); }}>
           <PopCab ico="ranking" t={titulo} sub={linea} cerrar={cerrar} />
           <div className="rk-pq-in">

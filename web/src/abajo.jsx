@@ -10,6 +10,7 @@ import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
 import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES, escenaDe, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
+import { usePresencia } from './anima.js';
 import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
 import { comentar, delHilo, useComentarios } from './comentarios.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
@@ -392,6 +393,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   // vez de la cuenta»), como el «Tú» de Discord
   const yo = liga && liga.yo;
   const [yoM, setYoM] = useState(false);
+  const [verYo, saleYo] = usePresencia(yoM, 120);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
   // 👉 QUE SE NOTE QUE SE DESLIZA (Dlx, 17/10/2026: «mejorar un poco el tutorial, específicamente para lo del celular:
   // enseñar que hay una barra abajo que se puede deslizar»): la primera vez, un globito «Deslizá» con la tira
@@ -508,7 +510,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
       ) : (
         <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Tu cuenta</span></a>
       )}
-      {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo onCerrar={() => setYoM(false)} /> : null}
+      {verYo ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo sale={saleYo} onCerrar={() => setYoM(false)} /> : null}
     </nav>
   );
 }
@@ -517,6 +519,8 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
   // ⚠️ el foco entra al abrirlo y vuelve al ☰ al cerrarlo: con el teclado se quedaba atrás, en la página tapada
   // (revisión del 03/10/2026). Aparte del efecto del Escape: `onCerrar` cambia en cada vuelta de App
   const cerrarB = useRef(null);
+  // 🚪 al cerrarlo, la caja vuelve a su costado en vez de desaparecer (ver `usePresencia` de anima.js)
+  const [ver, despide] = usePresencia(abierto, 200);
   useEffect(() => {
     if (!abierto) return undefined;
     const t = setTimeout(() => { if (cerrarB.current) cerrarB.current.focus(); }, 0);
@@ -533,7 +537,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
     window.addEventListener('keydown', k);
     return () => window.removeEventListener('keydown', k);
   }, [abierto, onCerrar]);
-  if (!abierto) return null;
+  if (!ver) return null;
   // el changelog, con su «NUEVO» si hay una versión que no viste (lo que app.js ya cargó para el punto del menú)
   const C = window.CAMBIOS;
   const ult = Array.isArray(C) && C[0] ? C[0].version : '';
@@ -543,7 +547,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
       <a className="btn negro chico" href="#/cambios" onClick={onCerrar}>{nuevo ? <em className="x-nuevo">NUEVO</em> : null}Ver</a></div>
   );
   return (
-    <div className="x-menu" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
+    <div className={'x-menu' + (despide ? ' sale' : '')} onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
       <div className="x-caja" role="dialog" aria-modal="true" aria-label="Menú">
         <div className="x-caja-cab"><b>MENÚ</b><button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el menú" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         {/* en el celular el buscador no entra arriba: vive acá */}

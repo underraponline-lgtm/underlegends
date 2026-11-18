@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "6.68",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T17:30:00-05:00",
+        "titulo": "Animaciones más suaves en toda la página",
+        "items": [
+            "**Los menús se abren y se cierran con animación**: los de arriba, el de tu cara, la campana y el ☰ del celular salen de su botón y se van, en vez de aparecer y desaparecer de golpe.",
+            "**Las ventanas, más suaves**: el fondo oscuro aparece junto con la ventana, se van al cerrarlas, y en el celular suben desde abajo como una hoja.",
+            "**Cambiar de página ya no destella en gris** con el tema Clara, y la primera vez que abres una página el pie ya no salta mientras carga.",
+            "**En el celular**, tocar una tarjeta o un botón ya no lo deja levantado como si tuviera el mouse encima.",
+            "Con **Menos animaciones** (en Ajustes) todo sigue quieto."
+        ]
+    },
+    {
         "version": "6.67",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T16:30:00-05:00",

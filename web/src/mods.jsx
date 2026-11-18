@@ -38,7 +38,7 @@ export function LugaresMods() {
   const prendidos = Object.keys(INTERRUPTORES).filter((x) => M[x]).length;
   const cerrar = () => { if (dref.current && dref.current.open) dref.current.close(); };
   return (
-    <dialog className="pn-pop mods-lug" ref={dref} aria-label="MODS: dónde puedes usarlo" onClose={() => setQ(null)}
+    <dialog className="pn-pop mods-lug" ref={dref} aria-label="MODS: dónde puedes usarlo" onClose={() => setTimeout(() => { if (!dref.current || !dref.current.open) setQ(null); }, 220)}
       onClick={(e) => { if (e.target === dref.current) cerrar(); }}>
       <PopCab ico="escudo" t="MODS" sub={rolMods(Q) + ' · ' + (lugares.length === 1 ? 'un lugar' : lugares.length + ' lugares') + ' donde puedes usarlo'} cerrar={cerrar} />
       <div className="mods-lug-in">

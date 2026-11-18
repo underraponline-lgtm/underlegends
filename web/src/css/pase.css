@@ -571,8 +571,9 @@ svg.po{display:block;flex:none;overflow:visible}
 .pc-haz.c{left:62%;background:rgba(245,197,66,.08);animation-delay:-5s}
 .pc-xpw{display:flex;flex-direction:column;gap:7px;width:100%;max-width:620px}
 .pc-xpb u{position:relative;overflow:hidden}
-@keyframes pc-llena{from{width:0}}
-.pc-xpb u,.pc-bar u{animation:pc-llena 1s cubic-bezier(.22,1,.36,1) both}
+/* 📈 se llenan con `scaleX` y no con `width` (18/11/2026): eran 13 barras rearmando la página en cada cuadro durante 1 s */
+@keyframes pc-llena{from{transform:scaleX(0)}}
+.pc-xpb u,.pc-bar u{transform-origin:0 50%;animation:pc-llena 1s cubic-bezier(.22,1,.36,1) both}
 @keyframes pc-raya{0%{transform:translateX(-40px) skewX(-20deg)}100%{transform:translateX(640px) skewX(-20deg)}}
 .pc-raya{position:absolute;top:0;bottom:0;left:0;width:26px;background:rgba(255,255,255,.45);animation:pc-raya 2.8s cubic-bezier(.4,0,.2,1) 1s infinite}
 .pc-sig{color:#C9C9C4;font-size:13.5px;line-height:1.4}
