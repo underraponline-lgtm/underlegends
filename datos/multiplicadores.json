@@ -1496,6 +1496,11 @@
    },
    "organizadores": [
     [
+     "Erian",
+     31,
+     1
+    ],
+    [
      "Tayo",
      8,
      1
@@ -1504,11 +1509,13 @@
    "semillero": {
     "nuevos": {
      "LKR": 8,
-     "DDS": 2
+     "DDS": 2,
+     "FFA": 1
     },
     "gente": {
      "DDS": 8,
-     "LKR": 11
+     "LKR": 11,
+     "FFA": 31
     },
     "gana": "LKR"
    },
@@ -1520,7 +1527,7 @@
     "DDS": 8,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 0,
+    "FFA": 31,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

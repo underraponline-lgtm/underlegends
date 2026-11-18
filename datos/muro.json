@@ -657,6 +657,10 @@
 "temporada"
 ]
 },
+"valen": {
+"rg": "",
+"c": []
+},
 "crk": {
 "rg": "E",
 "c": [
@@ -785,10 +789,6 @@
 "servidor",
 "temporada"
 ]
-},
-"valen": {
-"rg": "",
-"c": []
 },
 "1200": {
 "rg": "E",
@@ -1132,6 +1132,14 @@
 "ezias": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"rodrilp": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1743,13 +1751,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"rodrilp": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "abysuss": {
@@ -2880,15 +2881,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-12T16:27:10Z",
-"quien": [
-"MCO"
-],
-"rg": "C",
-"primero": false
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-12T16:32:40Z",
@@ -6270,6 +6262,14 @@
 "Raizer"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-18T05:45:12Z",
+"quien": [
+"rodrilp"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -7944,7 +7944,7 @@
 "n": "Deko",
 "k": "deko",
 "de": 349,
-"a": 118
+"a": 119
 },
 {
 "n": "Julda",
@@ -8235,7 +8235,8 @@
 "senticide": 1,
 "over": 5,
 "deko": 2,
-"sintext": 0
+"sintext": 0,
+"rodrilp": 3
 },
 "sem": {
 "id": "2026-11-16",

@@ -41,11 +41,11 @@
   "tg_c": {
    "bestia": 5,
    "clasico": 5,
-   "dg": 46,
+   "dg": 49,
    "fg": 13,
    "fp": 4,
-   "riv": 34,
-   "venc": 33,
+   "riv": 37,
+   "venc": 35,
    "vengo": 3
   },
   "tg_p": {
@@ -54,7 +54,7 @@
   },
   "nac": {
    "evn": 11,
-   "evi": 34,
+   "evi": 35,
    "com": 3,
    "top": [
     1,
@@ -106,7 +106,7 @@
    "dg": 26,
    "fg": 5,
    "fp": 4,
-   "riv": 21,
+   "riv": 22,
    "venc": 19,
    "vengo": 1
   },
@@ -912,11 +912,11 @@
    "dg": 12,
    "fg": 1,
    "fp": 2,
-   "riv": 17,
+   "riv": 18,
    "venc": 10
   },
   "tg_p": {
-   "paises": 9,
+   "paises": 10,
    "paisesg": 7,
    "pionero": true
   },
@@ -3701,11 +3701,11 @@
   "arc_sv": 78,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
-   "dg": 4,
+   "clasico": 2,
+   "dg": 5,
    "fg": 1,
-   "riv": 6,
-   "venc": 4
+   "riv": 7,
+   "venc": 5
   },
   "tg_p": {
    "paises": 3,
@@ -3714,7 +3714,7 @@
   "nac": {
    "evn": 4,
    "evi": 3,
-   "com": 4,
+   "com": 5,
    "top": [
     1,
     "ve"
@@ -3775,7 +3775,7 @@
   },
   "nac": {
    "evn": 4,
-   "evi": 25,
+   "evi": 26,
    "com": 2,
    "top": [
     5,
@@ -4190,23 +4190,24 @@
   "arc_sv": 0,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
-   "dg": 2,
+   "clasico": 2,
+   "dg": 5,
    "fg": 1,
    "fp": 1,
-   "riv": 3,
-   "venc": 2
+   "riv": 5,
+   "venc": 5,
+   "vengo": 1
   },
   "tg_p": {
    "paises": 3,
-   "paisesg": 2
+   "paisesg": 3
   },
   "nac": {
    "evn": 4,
    "evi": 4,
-   "com": 3,
+   "com": 4,
    "top": [
-    3,
+    1,
     "cl"
    ]
   }
@@ -4562,7 +4563,7 @@
    "fg": 2,
    "fp": 1,
    "mata": 1,
-   "riv": 24,
+   "riv": 25,
    "venc": 14,
    "vengo": 1
   },
@@ -5569,7 +5570,7 @@
    "clasico": 3,
    "dg": 14,
    "mata": 1,
-   "riv": 31,
+   "riv": 32,
    "venc": 14,
    "vengo": 2
   },
@@ -5578,7 +5579,7 @@
    "paisesg": 6
   },
   "nac": {
-   "evn": 33,
+   "evn": 34,
    "evi": 44,
    "com": 6,
    "top": [
@@ -7996,13 +7997,24 @@
   "arc_pais": 62,
   "pos_sv": "64/171",
   "arc_sv": 63,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 2,
+   "paisesg": 1
+  },
   "nac": {
    "evn": 1,
    "evi": 1,
    "com": 3,
    "top": [
-    7,
-    "co"
+    1,
+    "ve"
    ]
   }
  },

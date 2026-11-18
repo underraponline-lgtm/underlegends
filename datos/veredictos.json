@@ -2093,6 +2093,28 @@
    "b": "Flash",
    "ganador": "Flash",
    "votos": "2–0"
+  },
+  "1572482484900339723": {
+   "id": "1572482484900339723",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794979439712,
+   "a": "KYSS🇲🇽",
+   "b": "BLACKMEME🇨🇱",
+   "ganador": "KYSS🇲🇽",
+   "votos": "2–0"
+  },
+  "1572483442531237901": {
+   "id": "1572483442531237901",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794979668029,
+   "a": "BLACKMEME🇨🇱",
+   "b": "KEPLATOO",
+   "ganador": "BLACKMEME🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6938,6 +6960,27 @@
      ],
      "KIBAK",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1572484273251029023": {
+   "id": "1572484273251029023",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794979866088,
+   "ed": 1794979866088,
+   "texto": "`[ FINAL ]`\n⌞FLASH⌝ 🆚 ⌞KYSS⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "FLASH",
+      "KYSS"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
