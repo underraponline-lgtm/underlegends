@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T22:25:46+00:00",
+ "cuando": "2026-11-18T22:55:21+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7143,6 +7143,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "FFA",
+   "canal": "✦⚡—novedades",
+   "tit": "ya pueden personalizar su tarjeta en la tienda de la liga",
+   "tx": "Poco a poco se añadiran cosas, y cosas que se imaginan 👀",
+   "cuando": "2026-11-18T22:30:59",
+   "msg_id": "1572740937610952724",
+   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1572740937610952724"
+  },
+  {
    "servidor": "DDS",
    "canal": "🚨〕ANUNCIOS",
    "tit": "apoyemos gente algunos de los beats estaran en la discord style 20 y edicion campeones",
@@ -7368,15 +7377,6 @@
    "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1563105908890800199"
   },
   {
-   "servidor": "FFA",
-   "canal": "✦⚡—novedades",
-   "tit": "felicidades a por alcanzar el rango S del competitivo! Y tambien un recordatorio que ya se",
-   "tx": "",
-   "cuando": "2026-10-22T02:14:07",
-   "msg_id": "1562650230275448933",
-   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1562650230275448933"
-  },
-  {
    "servidor": "CEU",
    "canal": "anuncios",
    "tit": "YA TENEMOS CANAL DE YOUTUBE SOLO ES UNA BATALLA DEL OTRO SV PERO SE PUBLICARAN TAMBIEN DE ",
@@ -7396,6 +7396,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1572742540149395548",
+   "cuando": "2026-11-18T22:37:21"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43386,15 +43395,6 @@
    "discord_id": "1324178951119175711",
    "msg_id": "1560468394363322469",
    "cuando": "2026-10-16T01:44:17"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Sosa",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1560458196089438299",
-   "cuando": "2026-10-16T01:03:45"
   }
  ]
 }
