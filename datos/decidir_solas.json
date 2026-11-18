@@ -4675,6 +4675,151 @@
      374
     ]
    }
+  },
+  {
+   "id": "da750cdba1",
+   "tipo": "Nombre desconocido",
+   "sec": "VERSO ELITE VOL.1 · CH · 15/11 · #657",
+   "que": "¿Quién es «RESPIRACIÓN»?",
+   "r": "Es Efimero",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Efimero: estaba en la llamada del evento con un nombre parecido",
+   "t": 1794962381454,
+   "filas": [
+    1471
+   ],
+   "variantes": [
+    "RESPIRACIÓN"
+   ],
+   "escribio": {
+    "alias": [
+     "RESPIRACIÓN",
+     "Efimero"
+    ],
+    "filas": [
+     375
+    ]
+   }
+  },
+  {
+   "id": "b917d1393a",
+   "tipo": "Nombre desconocido",
+   "sec": "VERSO ELITE VOL.1 · CH · 15/11 · #657",
+   "que": "¿Quién es «RESPIRACIÓN 🇨🇱»?",
+   "r": "Es Efimero",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Efimero: estaba en la llamada del evento con un nombre parecido",
+   "t": 1794962381454,
+   "filas": [
+    1472
+   ],
+   "variantes": [
+    "RESPIRACIÓN 🇨🇱"
+   ],
+   "escribio": {
+    "alias": [
+     "RESPIRACIÓN",
+     "Efimero"
+    ],
+    "filas": [
+     375
+    ]
+   }
+  },
+  {
+   "id": "c85da6c660",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE CHOP NUEVO CEO · CH · 13/11 · #656",
+   "que": "¿Quién es «Lover»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1510224298416017420",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que la llave menciona con ese nombre (1510224298416017420)",
+   "t": 1794962381454,
+   "filas": [
+    1467
+   ],
+   "variantes": [
+    "Lover"
+   ],
+   "escribio": {
+    "alta": [
+     "Lover",
+     "1510224298416017420"
+    ]
+   }
+  },
+  {
+   "id": "208362db8b",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE CHOP NUEVO CEO · CH · 13/11 · #656",
+   "que": "¿Quién es «astrid 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 312312241909399552",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (312312241909399552)",
+   "t": 1794962381454,
+   "filas": [
+    1469
+   ],
+   "variantes": [
+    "astrid 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "astrid",
+     "312312241909399552"
+    ]
+   }
+  },
+  {
+   "id": "f72f14e4ac",
+   "tipo": "Nombre desconocido",
+   "sec": "VERSO ELITE VOL.1 · CH · 15/11 · #657",
+   "que": "¿Quién es «beneroo🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 899160988480319508",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (899160988480319508)",
+   "t": 1794962381454,
+   "filas": [
+    1473
+   ],
+   "variantes": [
+    "beneroo🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "beneroo",
+     "899160988480319508"
+    ]
+   }
+  },
+  {
+   "id": "fb8814ad57",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE CHOP NUEVO CEO · CH · 13/11 · #656",
+   "que": "¿Quién es «Rizaz»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1794962381454,
+   "filas": [
+    1468
+   ],
+   "variantes": [
+    "Rizaz"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

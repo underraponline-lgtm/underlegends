@@ -6174,6 +6174,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794962387538
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -7018,6 +7023,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1794764146474
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794962387538
    ],
    "👥 FUNDADOR DE CREW": [
     "👥 FUNDADOR DE CREW",
@@ -9038,6 +9048,11 @@
  },
  "mats": {
   "competitivo": {
+   "🎯 COMPLETO": [
+    "🎯 COMPLETO",
+    "t1",
+    1794962387538
+   ],
    "🧊 SANGRE FRÍA": [
     "🧊 SANGRE FRÍA",
     "t1",
@@ -9089,6 +9104,11 @@
     "t1",
     1793604826687
    ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1794962387538
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -9103,6 +9123,16 @@
     "🌱 PROMESA",
     "t1",
     1793599452998
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x5",
+    "t1",
+    1794962387538
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1794962387538
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -9307,6 +9337,13 @@
   }
  },
  "mcnadie": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794962387538
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -9334,6 +9371,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793930915855
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794962387538
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -10138,6 +10180,11 @@
     "🛫 NÓMADA",
     "t1",
     1794764146474
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794962387538
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -11496,6 +11543,11 @@
     "t1",
     1793029252929
    ],
+   "🎯 COMPLETO": [
+    "🎯 COMPLETO",
+    "t1",
+    1794962387538
+   ],
    "🎯 FRANCOTIRADOR": [
     "🎯 FRANCOTIRADOR",
     "t1",
@@ -11532,6 +11584,11 @@
     "INTERNACIONAL",
     "t1",
     1793029252929
+   ],
+   "MEDALLERO": [
+    "MEDALLERO",
+    "t1",
+    1794962387538
    ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
@@ -11597,13 +11654,18 @@
     "t1",
     1793317391221
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1794962387538
+   ],
    "🎯 CAZADOR CAZADO": [
     "🎯 CAZADOR CAZADO",
     "t1",
     1793152937274
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
@@ -11646,6 +11708,11 @@
     "🔺 REY DE LOS TRÍOS",
     "t1",
     1793317391221
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1794962387538
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -11821,6 +11888,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1794962387538
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -13679,6 +13751,20 @@
    ]
   }
  },
+ "respiracion": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794962387538
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794962387538
+   ]
+  }
+ },
  "reyexxmc": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -13721,6 +13807,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794962387538
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -14898,6 +14989,11 @@
  },
  "soneto": {
   "competitivo": {
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1794962387538
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -16237,10 +16333,25 @@
    ]
   },
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1794962387538
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
     1794848577430
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794962387538
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794962387538
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",

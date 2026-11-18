@@ -851,6 +851,17 @@
    "vence": "2026-11-14T21:37:35+00:00",
    "vencido": true
   },
+  "El felpudo": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T19:01:05+00:00",
+   "did": "",
+   "evento": "VERSO ELITE VOL.1",
+   "n": 657,
+   "sv": "CH",
+   "vence": "2026-11-22T19:01:05+00:00",
+   "vencido": false
+  },
   "El felpudo 974": {
    "avisado": "2026-11-17",
    "chat": "2026-11-16",
@@ -1775,6 +1786,17 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
+  "Lover": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T04:32:52+00:00",
+   "did": "",
+   "evento": "COMPE CHOP NUEVO CEO",
+   "n": 656,
+   "sv": "CH",
+   "vence": "2026-11-21T04:32:52+00:00",
+   "vencido": false
+  },
   "Luciano": {
    "avisado": "2026-11-16",
    "chat": "2026-11-16",
@@ -2393,6 +2415,17 @@
    "vence": "2026-11-05T15:39:00+00:00",
    "vencido": true
   },
+  "RESPIRACIÓN": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T19:01:05+00:00",
+   "did": "",
+   "evento": "VERSO ELITE VOL.1",
+   "n": 657,
+   "sv": "CH",
+   "vence": "2026-11-22T19:01:05+00:00",
+   "vencido": false
+  },
   "Rafael JR": {
    "con": null,
    "cumplido": "",
@@ -2611,19 +2644,6 @@
    "sv": "FDS",
    "vence": "2026-11-03T02:05:05+00:00",
    "vencido": true
-  },
-  "Showsero": {
-   "avisado": "2026-11-12",
-   "chat": "2026-11-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-12T22:55:33+00:00",
-   "did": "",
-   "evento": "RAP SIN GROSERIAS 5",
-   "n": 626,
-   "sv": "FDS",
-   "vence": "2026-11-19T22:55:33+00:00",
-   "vencido": false
   },
   "SikoV": {
    "avisado": "2026-10-30",
@@ -3084,6 +3104,17 @@
    "vence": "2026-11-13T03:10:32+00:00",
    "vencido": true
   },
+  "astrid": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-14T04:32:52+00:00",
+   "did": "",
+   "evento": "COMPE CHOP NUEVO CEO",
+   "n": 656,
+   "sv": "CH",
+   "vence": "2026-11-21T04:32:52+00:00",
+   "vencido": false
+  },
   "atari": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -3107,6 +3138,17 @@
    "sv": "DDS",
    "vence": "2026-11-05T00:50:11+00:00",
    "vencido": true
+  },
+  "beneroo": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T19:01:05+00:00",
+   "did": "",
+   "evento": "VERSO ELITE VOL.1",
+   "n": 657,
+   "sv": "CH",
+   "vence": "2026-11-22T19:01:05+00:00",
+   "vencido": false
   },
   "black live": {
    "avisado": "2026-11-09",
@@ -3150,14 +3192,14 @@
    "avisado": "2026-11-14",
    "avisado_cumplido": "2026-11-15",
    "chat": "2026-11-14",
-   "con": 646,
-   "cumplido": "2026-11-15T20:42:27+00:00",
-   "debut": "2026-11-14T20:22:29+00:00",
+   "con": 636,
+   "cumplido": "2026-11-14T20:22:29+00:00",
+   "debut": "2026-11-14T04:32:52+00:00",
    "did": "816486976949714955",
-   "evento": "CHOP COMPE CEO V.2",
-   "n": 636,
+   "evento": "COMPE CHOP NUEVO CEO",
+   "n": 656,
    "sv": "CH",
-   "vence": "2026-11-21T20:22:29+00:00",
+   "vence": "2026-11-21T04:32:52+00:00",
    "vencido": false
   },
   "criz": {
@@ -3209,6 +3251,17 @@
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
    "vencido": true
+  },
+  "finnpapá": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-15T19:01:05+00:00",
+   "did": "",
+   "evento": "VERSO ELITE VOL.1",
+   "n": 657,
+   "sv": "CH",
+   "vence": "2026-11-22T19:01:05+00:00",
+   "vencido": false
   },
   "gary": {
    "avisado": "2026-10-26",

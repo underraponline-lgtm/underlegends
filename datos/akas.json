@@ -367,6 +367,7 @@
   "chocoperro": "Choco",
   "danu": "Vilca",
   "soul": "Magic",
+  "respiracion": "Efimero",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1914,6 +1915,10 @@
   [
    "Soul",
    "Magic"
+  ],
+  [
+   "RESPIRACIÓN",
+   "Efimero"
   ],
   [
    "Zetryco",
