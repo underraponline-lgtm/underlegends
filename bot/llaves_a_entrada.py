@@ -1254,6 +1254,26 @@ TITULO_GENERICO = re.compile(r'(?:llaves?|brackets?|llaves? oficial(?:es)?|cruce
                              re.I)
 
 
+def _renglon_limpio(l):
+    """Un renglón de la llave como lo lee `titulo()`: sin emojis, menciones ni adornos, con los espacios juntos."""
+    limpio = re.sub(r'<a?:\w+:\d+>|<@[&!]?\d+>', ' ', l)
+    # 🔴 EL `__` DEL SUBRAYADO DE DISCORD SE QUEDA, Y NO ES DESCUIDO: es
+    # parte de la IDENTIDAD de 11 eventos ya cargados. `Eventos
+    # Procesados` guarda «__ DESGRACIAS EN TOKYO VOL.10 __», y la clave es
+    # (nombre, servidor, fecha): sacarlo acá los renombra, no los
+    # encuentra y los carga OTRA VEZ con número nuevo. Pasó cerca el
+    # 27/09/2026 —el chequeo miró `datos/llaves_t1.json`, que ya viene
+    # limpio para la web, en vez del Sheet—. El nombre se limpia para
+    # MOSTRARLO (`sheet/llaves_web.py`); para cambiarlo acá hay que migrar
+    # antes las tres hojas del Operativo.
+    # 🐍 la «I» de adorno pegada a una barra y los guiones sueltos: Snake Rap (07/10/2026) titula
+    # `# 🔑 LLAVES 🔑` y abajo `> ]|I{•------» (Gallos del Under Amateur I «------•}I|[`
+    limpio = re.sub(r'(?<=\|)[Il](?=[\[\]{}|])|(?<=[\[\]{}|])[Il](?=\|)', ' ', limpio)
+    limpio = re.sub(r'[^\w\sÁÉÍÓÚÑáéíóúñ.\-]', ' ', limpio)
+    limpio = re.sub(r'(^|\s)[-.]{2,}(?=\s|$)', '\\1 ', limpio)
+    return re.sub(r'\s+', ' ', limpio).strip()
+
+
 def titulo(texto):
     """Como se llama el evento. Solo para NOMBRARLO, nunca como clave."""
     # ⚽ con fase de grupos, el título está ANTES del primer grupo: lo de adentro son nombres («* TROT 🇪🇸»), no títulos
@@ -1263,22 +1283,7 @@ def titulo(texto):
                       if E.GRUPO_CAB.match(re.sub(r'<a?:\w+:\d+>', ' ', E.plano(l)).strip())), len(ls))
         texto = '\n'.join(ls[:corte])
     for l in (texto or '').splitlines()[:6]:
-        limpio = re.sub(r'<a?:\w+:\d+>|<@[&!]?\d+>', ' ', l)
-        # 🔴 EL `__` DEL SUBRAYADO DE DISCORD SE QUEDA, Y NO ES DESCUIDO: es
-        # parte de la IDENTIDAD de 11 eventos ya cargados. `Eventos
-        # Procesados` guarda «__ DESGRACIAS EN TOKYO VOL.10 __», y la clave es
-        # (nombre, servidor, fecha): sacarlo acá los renombra, no los
-        # encuentra y los carga OTRA VEZ con número nuevo. Pasó cerca el
-        # 27/09/2026 —el chequeo miró `datos/llaves_t1.json`, que ya viene
-        # limpio para la web, en vez del Sheet—. El nombre se limpia para
-        # MOSTRARLO (`sheet/llaves_web.py`); para cambiarlo acá hay que migrar
-        # antes las tres hojas del Operativo.
-        # 🐍 la «I» de adorno pegada a una barra y los guiones sueltos: Snake Rap (07/10/2026) titula
-        # `# 🔑 LLAVES 🔑` y abajo `> ]|I{•------» (Gallos del Under Amateur I «------•}I|[`
-        limpio = re.sub(r'(?<=\|)[Il](?=[\[\]{}|])|(?<=[\[\]{}|])[Il](?=\|)', ' ', limpio)
-        limpio = re.sub(r'[^\w\sÁÉÍÓÚÑáéíóúñ.\-]', ' ', limpio)
-        limpio = re.sub(r'(^|\s)[-.]{2,}(?=\s|$)', '\\1 ', limpio)
-        limpio = re.sub(r'\s+', ' ', limpio).strip()
+        limpio = _renglon_limpio(l)
         if len(limpio) < 3:
             continue
         # y «LLAVES» no es el nombre de nada: el nombre viene abajo, o del anuncio
@@ -3123,6 +3128,20 @@ def nombre_propio(g, nom, anuncio=None):
     ⚠️ EL RENGLÓN TIENE QUE NOMBRAR AL ANUNCIO, y puede decir «CLASIFICATORIA»: `titulo()` saltea los renglones con
     el nombre de una ronda (un `[ OCTAVOS ]` no es un título), y por eso esta llave no tenía título. Acá la ronda
     no estorba, porque lo que se busca es lo que el título agrega al nombre que ya se sabe."""
+    x = _lo_que_agrega(g, nom)
+    if x:
+        return x
+    ms = _ms_de((anuncio or {}).get('cuando')) if anuncio else None
+    return ('%s %s' % (nom.strip(), _hora_et(ms)))[:60] if ms is not None else '%s (2)' % nom.strip()
+
+
+def _lo_que_agrega(g, nom):
+    """`nom` más lo que dice además el primer renglón que lo nombra («PRITTY FREE CLASIFICATORIA 3»), o `None`. Ver
+    `nombre_propio()`.
+
+    ⚠️ UN GUION NO ES LO QUE EL RENGLÓN AGREGA (18/11/2026). FRZ titula «- | IRLANDA FREESTYLE | -»: limpio queda
+    «- IRLANDA FREESTYLE -», y los dos `-` —que `E.norm()` deja vacíos— no estaban en el nombre, así que contaban como
+    palabras nuevas y el evento salía «- IRLANDA FREESTYLE - - -». Sólo cuenta lo que tiene letra o número."""
     pals = [E.norm(w) for w in nom.split() if E.norm(w)]
     for h in sorted(g.get('llaves') or [], key=lambda x: str(x.get('cuando') or '')):
         for l in (h.get('texto') or '').splitlines()[:6]:
@@ -3135,11 +3154,248 @@ def nombre_propio(g, nom, anuncio=None):
             claves = [E.norm(w) for w in palabras]
             if not pals or not all(p in claves for p in pals):
                 continue
-            resto = [w for w, k in zip(palabras, claves) if k not in pals]
+            resto = [w for w, k in zip(palabras, claves) if k and k not in pals]
             if resto:
                 return ('%s %s' % (nom.strip(), ' '.join(resto)))[:60]
+    return None
+
+
+#: lo que acompaña a una ronda sin decir nada del evento: «OCTAVOS DE FINAL», «FASE DE FILTROS» (`renglon_de_ronda()`)
+_RELLENO_RONDA = {'de', 'del', 'la', 'el', 'los', 'las', 'y', 'fase', 'ronda', 'etapa', 'a'}
+
+
+def renglon_de_ronda(texto):
+    """El renglón de arriba del título que `titulo()` saltea por nombrar una ronda pero que dice además de qué evento
+    es —«CLASIFICATORIA DE RED BULL 2»—, limpio como el título; o `None`. «OCTAVOS DE FINAL» o `[ CUARTOS ]` no dicen
+    nada más, y se mira sólo hasta el título: lo de abajo ya son las rondas.
+
+    🔴 DDF, 14/11/2026: tres llaves «CLASIFICATORIA DE RED BULL #1», «#2» y «#3», y debajo de cada una el mismo
+    lema, «EL CAMINO HACIA LA GLORIA COMIENZA AQUÍ». `titulo()` saltea el primer renglón —«CLASIFICATORIA» es una ronda,
+    `E.RONDA`— y las tres se llamaban como el lema.
+
+    ⚠️ NO PASA A SER EL TÍTULO, Y A PROPÓSITO. El nombre es un tercio de la identidad del evento —(nombre, servidor,
+    fecha)— y cambiar `titulo()` renombra cada evento ya cargado que tenga un renglón así arriba: medido el 18/11 sobre
+    el caché del lector (242 llaves), cambiaban sólo esas tres de DDF —y dos de la pre-temporada—, pero el caché cubre
+    123 de los 294 eventos cargados y los otros no se pueden volver a mirar. Se usa sólo cuando hace falta un nombre
+    nuevo: el de un evento que se llama igual que otro del mismo día (`nombre_de_choque()`)."""
+    for l in (texto or '').splitlines()[:6]:
+        limpio = _renglon_limpio(l)
+        if len(limpio) < 3 or not re.search(r'[^\W\d_]', limpio) or TITULO_GENERICO.fullmatch(limpio):
+            continue
+        if E.nombres_de_linea(l):
+            continue
+        if not E.RONDA.search(limpio):
+            return None
+        resto = [w for w in E.RONDA.sub(' ', limpio).split()
+                 if re.search(r'[^\W\d_]', w) and E.norm(w) and E.norm(w) not in _RELLENO_RONDA]
+        if resto:
+            return limpio[:60]
+    return None
+
+
+def anuncio_por_titulo(g, nom, anuncios=None):
+    """El anuncio de una llave CON título: de los de su servidor que se llaman como ella (el criterio de
+    `llaves_web.anuncio_de()`) y arrancan en la ventana de `anuncio_de_llave()`, el más cercano a su primera llave; o
+    `None`.
+
+    ⚠️ POR EL NOMBRE Y DESPUÉS POR LA HORA, NO AL REVÉS. `anuncio_de_llave()` es para la llave sin título y por eso mira
+    sólo la hora, y con dos candidatos de la misma cuenta no elige: FRZ anunció tres «IRLANDA FREESTYLE» el 27/10/2026
+    (2:32, 3:23 y 7:33 PM, los tres de cekohh) y cada llave tenía dos a esa hora. Acá el título ya dice cuál es el evento;
+    la hora sólo separa las ediciones —cada llave salió de 2 a 4 minutos después de su anuncio—. Y sin el nombre, la
+    llave de un evento podía llevarse el anuncio de otro publicado al lado."""
+    import cuando as CU
+    import llaves_web as LW
+    hs = g.get('llaves') or []
+    ts = [x for x in (_ms_de(h.get('cuando')) for h in hs if h.get('cuando')) if x is not None]
+    if not ts or not (nom or '').strip():
+        return None
+    t0 = min(ts)
+    sv = codigo_servidor(hs[0].get('guild'))[0]
+    try:
+        dia = datetime.date.fromisoformat(LW.fecha_iso(fecha_de(g)))
+    except ValueError:
+        return None
+    mejor = None
+    for a in (anuncios if anuncios is not None else _anuncios()):
+        if a.get('servidor') != sv or not (a.get('nombre') or '').strip():
+            continue
+        ti = _ms_de(CU.momento(a) or a.get('cuando'))
+        if ti is None or not ti - ANTES_MS <= t0 <= ti + DESPUES_MS:
+            continue
+        if LW.anuncio_de(nom, sv, dia, [a]) is None:
+            continue
+        if mejor is None or abs(t0 - ti) < mejor[0]:
+            mejor = (abs(t0 - ti), a)
+    return mejor[1] if mejor else None
+
+
+def _final_de(h):
+    """Los finalistas de la última final CON ganador de la llave, normalizados y ordenados (una tupla), o `None`. Se
+    guarda en el hallazgo.
+
+    ⚠️ CON `ids`: el campeón que la llave escribe con una mención («🏆 | Campeón: <@…>», IRLANDA FREESTYLE) sólo se
+    resuelve así. Sin ellas `E.resolver()` deja la final sin ganador —es lo que hace `_final_jugada()`, que por eso no
+    sirve acá: las tres de FRZ del 27/10 le daban «sin final»—."""
+    if '_final_de' not in h:
+        try:
+            rs = E.resolver(h.get('texto') or '', ids=ids_de(h))
+        except Exception:                                # noqa: BLE001
+            rs = []
+        fin = [r for r in rs or () if isinstance(r, (list, tuple)) and len(r) >= 3
+               and E.ALIAS.get(str(r[0]).upper(), str(r[0]).upper()) == 'FINAL']
+        h['_final_de'] = (tuple(sorted({E.norm(str(x)) for x in fin[-1][1]} - {''}))
+                          if fin and fin[-1][2] else None)
+    return h['_final_de']
+
+
+def _final_grupo(g):
+    """La final de un grupo: la de su llave más nueva que la tenga (`_final_de()`), o `None`."""
+    for h in sorted(g.get('llaves') or [], key=lambda x: str(x.get('cuando') or ''), reverse=True):
+        f = _final_de(h)
+        if f:
+            return f
+    return None
+
+
+def _hora_de(a):
+    p = _ms_de((a or {}).get('cuando'))
+    return _hora_et(p) if p is not None else '?'
+
+
+def dos_eventos(a, b, nom, anuncios=None):
+    """`(sí/no, por qué)`: ¿dos grupos que se llaman `nom`, del mismo servidor y día, son DOS eventos?
+
+    1. CON ANUNCIO LAS DOS (`anuncio_por_titulo()`): son dos si son de dos anuncios, salvo que la gente de una esté toda
+       en la otra —eso es una llave en dos mensajes: las rondas que siguen repiten a la gente de las primeras—.
+    2. SIN ANUNCIO: son dos si cada una trae su propia final jugada, con otros finalistas. Una llave partida en dos
+       mensajes trae la final en uno solo; una reposteada, la misma final; un sorteo rehecho, ninguna.
+
+    ⚠️ Con un mismo anuncio, una: aunque traigan dos finales. Ante la duda se juntan, que es lo que pasaba siempre."""
+    aa, ab = anuncio_por_titulo(a, nom, anuncios), anuncio_por_titulo(b, nom, anuncios)
+    if aa and ab:
+        if str(aa.get('msg_id') or '') == str(ab.get('msg_id') or ''):
+            return False, 'el mismo anuncio'
+        pa, pb = a.get('plantel') or set(), b.get('plantel') or set()
+        if pa and pb and (pa <= pb or pb <= pa):
+            return False, 'toda la gente de una está en la otra: una llave en dos mensajes'
+        return True, 'de otro anuncio (el suyo, de las %s; el del otro, de las %s)' % (_hora_de(aa), _hora_de(ab))
+    fa, fb = _final_grupo(a), _final_grupo(b)
+    if fa and fb and set(fa) != set(fb):
+        return True, 'con su propia final (%s, contra %s del otro)' % (' vs '.join(fa), ' vs '.join(fb))
+    return False, 'ni dos anuncios ni dos finales distintas'
+
+
+def _t0(g):
+    ts = [x for x in (_ms_de(h.get('cuando')) for h in g.get('llaves') or [] if h.get('cuando')) if x is not None]
+    return min(ts) if ts else 0
+
+
+def nombre_de_choque(g, nom, anuncio=None, usados=()):
+    """El nombre de un evento CON título que se llama igual que otro del mismo servidor y día (`choques_de_titulo()`):
+    lo que su primer renglón agrega al título (`_lo_que_agrega()`, como `nombre_propio()`); si no, el renglón de arriba
+    que nombra la ronda y el evento («CLASIFICATORIA DE RED BULL 2», `renglon_de_ronda()`); si no, el título con la hora
+    de su anuncio o, sin anuncio, la de su primera llave («- IRLANDA FREESTYLE - 3:23 PM»). Nunca uno de `usados` (los
+    nombres que ya tiene otro evento de ese día): ahí sigue al próximo, y al final un «(2)»."""
+    hs = sorted(g.get('llaves') or [], key=lambda x: str(x.get('cuando') or ''))
+    cands = []
+    x = _lo_que_agrega(g, nom)
+    if x:
+        cands.append(x)
+    r = next((r for r in (renglon_de_ronda(h.get('texto')) for h in hs) if r), None)
+    if r and E.norm(r) != E.norm(nom):
+        cands.append(r)
     ms = _ms_de((anuncio or {}).get('cuando')) if anuncio else None
-    return ('%s %s' % (nom.strip(), _hora_et(ms)))[:60] if ms is not None else '%s (2)' % nom.strip()
+    if ms is None and hs:
+        ms = _ms_de(hs[0].get('cuando'))
+    if ms is not None:
+        cands.append(('%s %s' % (nom.strip(), _hora_et(ms)))[:60])
+    ya = {E.norm(u) for u in usados}
+    for c in cands:
+        if E.norm(c) not in ya:
+            return c
+    base, k = (cands[-1] if cands else nom.strip()), 2
+    while E.norm('%s (%d)' % (base, k)) in ya:
+        k += 1
+    return '%s (%d)' % (base, k)
+
+
+def choques_de_titulo(grupos, guardados=None, anuncios=None):
+    """Los grupos CON título que se llaman igual que OTRO evento del mismo servidor y día, cada uno con el nombre que lo
+    separa. Deja `g['_choque']` en el que cambia y `g['_choque_queda']` en el que se queda con el título
+    (`{'nombre', 'de', 'anuncio', 'autor_h', 'sv', 'por'}`), y devuelve `[(antes, después, sv, fecha, por qué)]`.
+
+    🔴 DOS EVENTOS CON EL MISMO TÍTULO EL MISMO DÍA SON DOS EVENTOS, TAMBIÉN CON TÍTULO (18/11/2026). La identidad de un
+    evento es (nombre, servidor, fecha) —`sheet/procesar_entrada.agrupar()`—. FRZ jugó tres «- IRLANDA FREESTYLE -» el
+    27/10, cada una con su anuncio y su final; `agrupar()` las separó bien —tres grupos, Jaccard 0,5, 0,13 y 0,07—, pero
+    las tres salieron con el mismo nombre y cayeron en UN evento, el #533: Dynoco ganó dos y no cobró nada. La regla del
+    06/10 («dos anuncios con el mismo nombre el mismo día son dos eventos», `nombre_propio()`) corría sólo para las
+    llaves «(sin titulo)».
+
+    ⚠️ CUÁL SE QUEDA CON EL TÍTULO: el que ya lo tiene guardado (`NOMBRES`); si ninguno, el que se publicó primero, que es
+    el que una corrida anterior pudo cargar con ese nombre. Los demás cambian sólo si son otro evento que todos los que
+    se quedan con él (`dos_eventos()`); si son el mismo que alguno, se le juntan, como siempre. Si el nombre nuevo ya es
+    de otro grupo del día, se le junta si es el mismo evento y, si no, sigue al próximo (`nombre_de_choque()`).
+
+    ⚠️ Y SE GUARDAN TODOS, el que se queda también: si una corrida lee la segunda sin la primera —un barrido dirigido—
+    y la primera aparece después, la que ya tenía el título lo sigue teniendo.
+
+    ⚠️ NO: las sin título (las nombra su anuncio, con la regla del 06/10), un pedazo `_chico` (una final sola no dice
+    de qué evento es), los 5 vidas, ni un nombre ya guardado."""
+    guardados = _nombres_guardados() if guardados is None else guardados
+    anuncios = _anuncios() if anuncios is None else anuncios
+    por_clave, por_dia = collections.OrderedDict(), {}
+    for g in grupos:
+        hs = g.get('llaves') or []
+        if not hs:
+            continue
+        sv, fec = codigo_servidor(hs[0].get('guild'))[0], fecha_de(g)
+        _ya = next((guardados[str(h.get('msg_id'))] for h in hs if str(h.get('msg_id') or '') in guardados), None)
+        if _ya:
+            nom = _ya.get('nombre') or ''
+        elif hs[0].get('_chico') or any(h.get('vidas') for h in hs):
+            continue
+        else:
+            nom = nombre_de(g)
+            if nom == '(sin titulo)':
+                continue
+        por_clave.setdefault((nom, sv, fec), []).append((g, bool(_ya)))
+        por_dia.setdefault((sv, fec), {}).setdefault(nom, []).append(g)
+    out = []
+    for (nom, sv, fec), gs in por_clave.items():
+        nuevos = sorted([g for g, ya in gs if not ya], key=_t0)
+        if len(gs) < 2 or not nuevos:
+            continue
+        quedan = [g for g, ya in gs if ya]
+        quedan_nuevos, cambian = [], []
+        for g in nuevos:
+            if not quedan:
+                quedan.append(g)
+                quedan_nuevos.append((g, 'es el primero de ese día'))
+                continue
+            motivos = [dos_eventos(g, q, nom, anuncios) for q in quedan]
+            if not all(m[0] for m in motivos):
+                quedan.append(g)
+                quedan_nuevos.append((g, 'es el mismo evento que el que ya se llama así (%s)'
+                                      % next(m[1] for m in motivos if not m[0])))
+                continue
+            a = anuncio_por_titulo(g, nom, anuncios)
+            nuevo = nombre_de_choque(g, nom, a)
+            del_dia = por_dia[(sv, fec)]
+            if del_dia.get(nuevo) and all(dos_eventos(g, x, nom, anuncios)[0] for x in del_dia[nuevo]):
+                nuevo = nombre_de_choque(g, nom, a, usados=list(del_dia))
+            del_dia.setdefault(nuevo, []).append(g)
+            por = '«%s» ya es de otro evento ese día, y éste es %s: queda «%s»' % (nom, motivos[0][1], nuevo)
+            g['_choque'] = {'nombre': nuevo, 'de': nom, 'anuncio': str((a or {}).get('msg_id') or ''),
+                            'autor_h': (a or {}).get('autor_h') or '', 'sv': sv, 'por': por}
+            cambian.append(g)
+            out.append((nom, nuevo, sv, fec, por))
+        if cambian:
+            for g, por in quedan_nuevos:
+                a = anuncio_por_titulo(g, nom, anuncios)
+                g['_choque_queda'] = {'nombre': nom, 'de': nom, 'anuncio': str((a or {}).get('msg_id') or ''),
+                                      'autor_h': (a or {}).get('autor_h') or '', 'sv': sv,
+                                      'por': 'se queda con «%s»: %s' % (nom, por)}
+    return out
 
 
 def _nombres_guardados(ruta=None):
@@ -4673,6 +4929,85 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    # 🔴 DOS EVENTOS CON EL MISMO TÍTULO EL MISMO DÍA (FRZ, 27/10/2026: las tres IRLANDA FREESTYLE del #533, recortadas;
+    # y las clasificatorias de DDF del 14/11). Ver `choques_de_titulo()`
+    print('\n  dos eventos con el mismo título el mismo día')
+    _frz = '838593179187544064'
+
+    def _irl(c, s, f, camp, tit='<:IrlandaFreestyle:1> **- | IRLANDA FREESTYLE | -** <:IrlandaFreestyle:1>'):
+        return (tit + '\n## <:IrlandaFreestyle:1>  - | CUARTOS | -\n' + c + '\n <:IrlandaFreestyle:1> - | SEMIFINAL | -\n'
+                + s + ('\n## 🏆 - | FINAL | - 🏆\n' + f + '\n\n🏆 | Campeón: ' + camp if f else ''))
+    _i1 = _irl('⌞**Ana**⌝vs⌞Bea⌝\n⌞**Cid**⌝vs⌞Dan⌝\n⌞**Eva**⌝vs⌞Fer⌝\n⌞**Gus**⌝vs⌞Hal⌝',
+               '⌞**Ana**⌝vs⌞Cid⌝\n⌞**Eva**⌝vs⌞Gus⌝', '⌞**Ana**⌝vs⌞Eva⌝', 'Ana')
+    _i2 = _irl('⌞**Ana**⌝vs⌞Ivo⌝\n⌞**Jon**⌝vs⌞Kai⌝\n⌞**Leo**⌝vs⌞Max⌝\n⌞**Ned**⌝vs⌞Oto⌝',
+               '⌞**Ana**⌝vs⌞Jon⌝\n⌞**Leo**⌝vs⌞Ned⌝', '⌞**Ana**⌝vs⌞Leo⌝', 'Ana')
+    _i3 = _irl('⌞**Pia**⌝vs⌞Qui⌝\n⌞**Rui**⌝vs⌞Sol⌝\n⌞**Teo**⌝vs⌞Uma⌝\n⌞**Val**⌝vs⌞Wil⌝',
+               '⌞**Pia**⌝vs⌞Teo⌝\n⌞**Rui**⌝vs⌞Val⌝', '⌞**Pia**⌝vs⌞Rui⌝', 'Pia')
+    # una llave en dos mensajes: las rondas en uno, la final en otro (la gente del segundo está toda en el primero)
+    _p1 = _irl('⌞**Ana**⌝vs⌞Bea⌝\n⌞**Cid**⌝vs⌞Dan⌝\n⌞**Eva**⌝vs⌞Fer⌝\n⌞**Gus**⌝vs⌞Hal⌝', '⌞Ana⌝vs⌞Cid⌝\n⌞Eva⌝vs⌞Gus⌝', '', '')
+    _p2 = ('<:IrlandaFreestyle:1> **- | IRLANDA FREESTYLE | -** <:IrlandaFreestyle:1>\n - | SEMIFINAL | -\n'
+           '⌞**Ana**⌝vs⌞Cid⌝\n⌞**Eva**⌝vs⌞Gus⌝\n## 🏆 - | FINAL | - 🏆\n⌞**Ana**⌝vs⌞Eva⌝\n\n🏆 | Campeón: Ana')
+    _fin = ('<:IrlandaFreestyle:1> **- | IRLANDA FREESTYLE | -** <:IrlandaFreestyle:1>\n## 🏆 - | FINAL | - 🏆\n'
+            '⌞**Pia**⌝vs⌞Rui⌝\n\n🏆 | Campeón: Pia')
+    _ia = [{'servidor': 'FRZ', 'nombre': 'IRLANDA FREESTYLE', 'cuando': c, 'msg_id': m, 'autor_h': 'ceko'}
+           for c, m in (('2026-10-27T18:32:43', 'A1'), ('2026-10-27T19:23:11', 'A2'), ('2026-10-27T23:33:37', 'A3'))]
+    _c1, _c2, _c3 = '2026-10-27T18:35:17+00:00', '2026-10-27T19:27:41+00:00', '2026-10-27T23:35:00+00:00'
+    _ll = lambda tx, c, m, gd=_frz: {'texto': tx, 'guild': gd, 'cuando': c, 'msg_id': m}   # noqa: E731
+
+    def _ch(llaves, guardados=None, anuncios=None):
+        gs = agrupar([dict(h) for h in llaves])
+        out = choques_de_titulo(gs, guardados or {}, _ia if anuncios is None else anuncios)
+        return gs, {n for _a, n, _s, _f, _p in out}
+
+    _tres = [_ll(_i1, _c1, 'L1'), _ll(_i2, _c2, 'L2'), _ll(_i3, _c3, 'L3')]
+    _gs3, _n3 = _ch(_tres)
+    _g_l1 = next((g for g in _gs3 if g['llaves'][0]['msg_id'] == 'L1'), {})
+    _irl_n = '- IRLANDA FREESTYLE -'
+    _gs_p, _n_p = _ch([_ll(_p1, _c1, 'P1'), _ll(_p2, '2026-10-27T19:30:00+00:00', 'P2')])
+    _gs_r, _n_r = _ch([_ll(_i1, _c1, 'R1'), _ll(_i1, '2026-10-27T18:50:00+00:00', 'R2')])
+    _gs_c, _n_c = _ch(_tres[:2] + [_ll(_fin, _c3, 'F1')])
+    _ddf = '1469009547971526659'
+
+    def _clasif(n, c, f, camp):
+        return ('# 🔴👑 | CLASIFICATORIA DE RED BULL #%d | 👑🔴\n━━━━━━━━━━\n⚔️ **EL CAMINO HACIA LA GLORIA COMIENZA AQUÍ** ⚔️\n'
+                '━━━━━━━━━━\n🌃 ⌞**CUARTOS DE FINAL**⌝🌃\n%s\n🏯 ⌞**FINAL**⌝🏯\n%s\n\n🏆 CAMPEÓN: %s' % (n, c, f, camp))
+    _d1 = _clasif(1, '⚡ ⌞Ana⌝  🆚  ⌞Bea⌝\n⚡ ⌞Cid⌝  🆚  ⌞Dan⌝', '🔥 ⌞Ana⌝  🆚  ⌞Cid⌝', 'Ana')
+    _d2 = _clasif(2, '⚡ ⌞Eva⌝  🆚  ⌞Fer⌝\n⚡ ⌞Gus⌝  🆚  ⌞Hal⌝', '🔥 ⌞Eva⌝  🆚  ⌞Gus⌝', 'Eva')
+    _gs_d, _n_d = _ch([_ll(_d1, '2026-11-14T21:22:59+00:00', 'D1', _ddf), _ll(_d2, '2026-11-14T22:02:34+00:00', 'D2', _ddf)],
+                      anuncios=[])
+    casos = [
+        ('las tres son tres grupos (si no, el caso no prueba nada)', len(_gs3) == 3),
+        ('tres anuncios, tres eventos: el primero se queda con el título y los otros llevan la hora de su anuncio',
+         _n3 == {_irl_n + ' 3:23 PM', _irl_n + ' 7:33 PM'}
+         and (_g_l1.get('_choque_queda') or {}).get('anuncio') == 'A1' and not _g_l1.get('_choque')),
+        ('sin anuncios, cada una con su final y otros finalistas: también tres, con la hora de su llave',
+         _ch(_tres, anuncios=[])[1] == {_irl_n + ' 3:27 PM', _irl_n + ' 7:35 PM'}),
+        ('un nombre ya guardado no se toca: si la de las 3:23 ya tiene el título, cambia la otra',
+         _ch(_tres, {'L2': {'nombre': _irl_n}})[1] == {_irl_n + ' 2:32 PM', _irl_n + ' 7:33 PM'}
+         and _ch(_tres, {'L1': {'nombre': _irl_n}, 'L2': {'nombre': _irl_n + ' 3:23 PM'},
+                         'L3': {'nombre': _irl_n + ' 7:33 PM'}})[1] == set()),
+        ('una llave en dos mensajes —las rondas en uno, la final en otro— no se parte: ni con su anuncio, ni sin '
+         'ninguno, ni con otro anuncio igual más cerca de la segunda',
+         len(_gs_p) == 2 and _n_p == set()
+         and _ch([_ll(_p1, _c1, 'P1'), _ll(_p2, '2026-10-27T19:30:00+00:00', 'P2')], anuncios=[])[1] == set()
+         and _ch([_ll(_p1, _c1, 'P1'), _ll(_p2, '2026-10-27T19:30:00+00:00', 'P2')], anuncios=_ia[:2])[1] == set()),
+        ('una reposteada tampoco, ni la misma final en dos grupos', len(_gs_r) == 1 and _n_r == set()
+         and not dos_eventos({'llaves': [{'texto': _i1}]}, {'llaves': [{'texto': _i1}]}, _irl_n, [])[0]),
+        ('un pedazo suelto (`_chico`, una final sola) no se renombra',
+         _n_c == {_irl_n + ' 3:23 PM'} and not any(g.get('_choque') for g in _gs_c if g['llaves'][0].get('_chico'))),
+        ('sin anuncio, el renglón de arriba que nombra la ronda y el evento: «CLASIFICATORIA DE RED BULL 2» (DDF)',
+         len(_gs_d) == 2 and _n_d == {'CLASIFICATORIA DE RED BULL 2'}),
+        ('ese renglón no es «OCTAVOS DE FINAL» ni `[ OCTAVOS ]`, y el título no cambia',
+         renglon_de_ronda('# OCTAVOS DE FINAL\n⌞Ana⌝ 🆚 ⌞Bea⌝') is None
+         and renglon_de_ronda('`[ OCTAVOS ]`\n⌞Ana⌝ 🆚 ⌞Bea⌝') is None
+         and titulo(_d2) == 'EL CAMINO HACIA LA GLORIA COMIENZA AQUÍ'),
+        ('un guion no es lo que el renglón agrega: «- IRLANDA FREESTYLE - 3:23 PM» y no «… - - -»',
+         nombre_propio({'llaves': [{'texto': _i1}]}, _irl_n, {'cuando': '2026-10-27T19:23:11'}) == _irl_n + ' 3:23 PM'),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     # ❤️ LOS 5 VIDAS DE #VEREDICTOS, con la SNAKE ARENA VOL. 2 de verdad —la
     # del contrato con la página (`bot/llaves_casos.json`)—
     print('\n  los 5 vidas de #veredictos')
@@ -4899,6 +5234,20 @@ def main():
         if _a:
             tomados.add(str(_a.get('msg_id') or ''))
     _por_id = {str(a.get('msg_id') or ''): a for a in anuncios_l}
+    # 🔴 DOS EVENTOS CON EL MISMO TÍTULO EL MISMO DÍA (18/11/2026, las tres IRLANDA FREESTYLE del #533): cada uno con su
+    # nombre, antes del bucle porque se decide mirando a todos los del día. Ver `choques_de_titulo()`. Sus anuncios ya
+    # tienen dueño: ni una llave sin título se los lleva, ni otra con el mismo nombre de otro anuncio se les junta
+    choques = choques_de_titulo(grupos, guardados, anuncios_l)
+    for g in grupos:
+        _c = g.get('_choque') or g.get('_choque_queda')
+        if _c and _c.get('anuncio'):
+            tomados.add(_c['anuncio'])
+            de_anuncio.setdefault((_c['nombre'], _c['sv'], fecha_de(g)), _c['anuncio'])
+    if choques:
+        print('   -- dos eventos con el mismo título el mismo día: cada uno con su nombre --')
+        for _antes, _nuevo, _sv_c, _fec_c, _por_c in choques:
+            print('     %s · %s  %s' % (_sv_c, _fec_c, _por_c))
+        print('')
 
     todas, dudas, sabidas = [], [], collections.Counter()
     ya_cargadas = []   # la que ya está en el ranking con otro nombre: ver `ya_cargada()`
@@ -4996,6 +5345,20 @@ def main():
                 for h in g['llaves']:
                     if h.get('msg_id'):
                         nombres_nuevos[str(h['msg_id'])] = _r
+        # 🔴 Y CON TÍTULO, DOS EVENTOS QUE SE LLAMAN IGUAL EL MISMO DÍA TAMBIÉN SON DOS (18/11/2026): el nombre que les dio
+        # `choques_de_titulo()`, guardado para que quede fijo —el que se queda con el título también—. Después de los
+        # caminos de arriba: el de una cuenta nueva con un título vacío («BRACKET DEL TORNEO») ya lleva el de su anuncio
+        # y se llama distinto. ⚠️ Y queda como `inferido`, igual que en las corridas que siguen —ahí entra por `_ya`—:
+        # si la primera la viera por el título y las demás por lo guardado, `llave_de_broma()` podría decir otra cosa
+        _ch = None if _ya else (g.get('_choque') or g.get('_choque_queda'))
+        if _ch and nom == _ch['de']:
+            nom = _ch['nombre']
+            por_hora = (por_hora + ' · ' if por_hora else '') + _ch['por']
+            inferido = {'nombre': nom, 'anuncio': (inferido or {}).get('anuncio') or _ch['anuncio'], 'sv': _ch['sv'],
+                        'autor_h': (inferido or {}).get('autor_h') or _ch['autor_h']}
+            for h in g['llaves']:
+                if h.get('msg_id'):
+                    nombres_nuevos[str(h['msg_id'])] = inferido
         # 🔴 EL NOMBRE DE UN 5 VIDAS TAMBIÉN SE GUARDA (07/10/2026). `nombre_vidas()` lo saca del anuncio a esa hora y,
         # sin anuncio, de la hora: la corrida de las 11:33 AM leyó la tanda de FFA de las 7:57 sin su anuncio y la cargó
         # como «5 VIDAS 07:57» (#420); la de las 11:57 ya lo tenía y la cargó OTRA VEZ como «MAÑANA DE LLUVIA VOL 1»
