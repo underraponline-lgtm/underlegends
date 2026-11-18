@@ -109,6 +109,9 @@ def ganadores(res, duelos, Q, desde):
 COLOR_UL = 0xE41373
 #: un botón por ganador y por premio: hasta tantos (Discord deja 5 por fila y 40 piezas por mensaje)
 BOTONES = 10
+#: 📊 los puestos que muestra «Los puntos» (campeón, subcampeón, semis, cuartos); del resto, cuántos
+PUESTOS = 4
+MEDALLA = {'Campeón': '🥇', 'Subcampeón': '🥈', 'Semifinal': '🥉', 'Tercero': '🥉', 'Cuartos': '🎖️'}
 
 
 def _titulo(evento):
@@ -143,7 +146,7 @@ def _oficiales():
     return out
 
 
-def mensaje(evento, sv, g, Q, miembros, oficiales=None):
+def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
     """`(componentes, ids, texto)` del aviso de un evento: un mensaje de Componentes V2 (`flags` 32768) con su texto
     plano para la consola. `g`: lo de `ganadores()`; `Q`: nombre → Discord ID; `miembros`: los IDs de DRA (los drops
     por ganar se abren siendo miembro). Sin campeón, `None`.
@@ -157,28 +160,37 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None):
       el Worker contesta «eso es de otra persona» a los demás). El Nido no se abre en Discord: su botón le manda el
       link de la página, sólo a él (`dd:nido`);
     - el título sin el adorno del organizador (`_titulo()`).
+
+    🔁 SEGUNDA VUELTA, EL MISMO DÍA (Dlx, a la muestra por DM: «recuerda que gente dentro del embed no se menciona.
+    ¿Dónde están las puntuaciones al finalizar el evento? Eso de si todavía no eres miembro de DRA, quita eso»):
+    - LAS MENCIONES VAN AFUERA del recuadro, en una línea de texto arriba (un Text Display suelto): adentro, los nombres
+      van en negrita;
+    - LOS PUNTOS DEL EVENTO, por puesto (`puntos`, de `puntos_de()`): campeón, subcampeón, semis y cuartos;
+    - sin la línea de «si todavía no eres Miembro de DRA» (`miembros` queda en la firma, sin uso).
     """
     if not g.get('camp'):
         return None
     ids, sin, botones = [], [], []
+    banderas = {n: cc for _pos, gente in (puntos or []) for n, cc, _p in gente}
 
-    def quien(n):
+    def nombre(n):
+        """Adentro del recuadro: el nombre en negrita, con su bandera. Y anota a quién mencionar afuera"""
         i = Q.get(n)
         if i:
             if i not in ids:
                 ids.append(i)
-            return '<@%s>' % i
-        if n not in sin:
+        elif n not in sin:
             sin.append(n)
-        return '**%s**' % _md(n)
+        fl = _bandera(banderas.get(n))
+        return '**%s**%s' % (_md(n), ' ' + fl if fl else '')
 
     def boton(tipo, n):
         i = Q.get(n)
         cid = 'dd:%s:x:%s' % (tipo, i) if i else ''
         if not i or len(botones) >= BOTONES or any(b['custom_id'] == cid for b in botones):
             return
-        emoji, nombre = {'nido': ('🥚', 'Nido'), 'drop': ('🎁', 'Drop'), 'star': ('⚡', 'Star')}[tipo]
-        botones.append({'type': 2, 'style': 1 if tipo != 'nido' else 2, 'label': ('%s · %s' % (nombre, (oficiales or {}).get(i) or n))[:80],
+        emoji, premio = {'nido': ('🥚', 'Nido'), 'drop': ('🎁', 'Drop'), 'star': ('⚡', 'Star')}[tipo]
+        botones.append({'type': 2, 'style': 1 if tipo != 'nido' else 2, 'label': ('%s · %s' % (premio, (oficiales or {}).get(i) or n))[:80],
                         'emoji': {'name': emoji}, 'custom_id': cid})
 
     def y(xs):
@@ -190,33 +202,88 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None):
     camp, tipo = g['camp']
     cabeza = '## 🏆 %s\n-# %s' % (_md(titulo) if titulo else 'Terminó el evento',
                                   ('Terminó en **%s**' % _md(nombre_sv)) if nombre_sv else 'Terminó')
-    corona = '👑 **Campeón:** %s\n%s Se lleva un **%s** por el título.' % (
-        quien(camp), '🥚' if tipo == 'nido' else '🎁', 'Nido' if tipo == 'nido' else 'Drop')
+    corona = '👑 Campeón: %s\n%s Se lleva un **%s** por el título.' % (
+        nombre(camp), '🥚' if tipo == 'nido' else '🎁', 'Nido' if tipo == 'nido' else 'Drop')
     boton('nido' if tipo == 'nido' else 'drop', camp)
     premios = []
     if g.get('pod'):
-        premios.append('🎁 **Drop** por el podio: %s' % y(quien(n) for n in g['pod']))
+        premios.append('🎁 **Drop** por el podio: %s' % y(nombre(n) for n in g['pod']))
         for n in g['pod']:
             boton('drop', n)
     for gan, perd in g.get('bat') or []:
-        premios.append('⚡ **Star** por el batacazo: %s, que le ganó a **%s**' % (quien(gan), _md(perd)))
+        premios.append('⚡ **Star** por el batacazo: %s, que le ganó a **%s**' % (nombre(gan), _md(perd)))
         boton('star', gan)
-    chica = ['-# Cada botón lo abre sólo quien ganó, y también se abre en la página.']
+    # 📊 los puntos del evento, por puesto
+    tabla = []
+    for pos, gente in (puntos or [])[:PUESTOS]:
+        pts = sorted({p for _n, _c, p in gente}, reverse=True)
+        cuanto = _miles(pts[0]) + (' c/u' if len(gente) > 1 and len(pts) == 1 else '') if pts else ''
+        quienes = ', '.join('%s%s' % (_md(n), ' ' + _bandera(c) if _bandera(c) else '') for n, c, _p in gente)
+        tabla.append('%s **%s** · %s · **%s**' % (MEDALLA.get(pos, '▫️'), _md(pos), quienes, cuanto))
+    resto = sum(len(gente) for _pos, gente in (puntos or [])[PUESTOS:])
+    if resto:
+        tabla.append('-# y %d más sumaron puntos: la tabla entera, en la página' % resto)
+    # 🧹 sin «Cada botón lo abre sólo quien ganó…» ni «Ver mis drops» suelto al final (Dlx, a la muestra 2: «elimina ese
+    # texto… queda raro que esté solo, la parte del final»): el link va en la fila de los botones
+    chica = []
     if sin:
         chica.append('-# 🔗 %s: vincula tu cuenta con `/vincular` en los próximos 14 días y lo que ganaste es tuyo.'
                      % y('**%s**' % _md(n) for n in sin))
-    if any(i not in miembros for i in ids):
-        chica.append('-# 🔒 Si todavía no eres Miembro de DRA, tu drop te espera guardado hasta que te vincules: `/vincular`.')
     adentro = [{'type': 10, 'content': cabeza}, {'type': 10, 'content': corona}]
+    if tabla:
+        adentro += [{'type': 14, 'divider': True, 'spacing': 1}, {'type': 10, 'content': '### 📊 Los puntos\n' + '\n'.join(tabla)}]
     if premios:
-        adentro += [{'type': 14, 'divider': True, 'spacing': 1}, {'type': 10, 'content': '\n'.join(premios)}]
-    filas = [botones[i:i + 5] for i in range(0, len(botones), 5)]
-    adentro += [{'type': 1, 'components': f} for f in filas]
-    adentro += [{'type': 14, 'divider': False, 'spacing': 1}, {'type': 10, 'content': '\n'.join(chica)},
-                {'type': 1, 'components': [{'type': 2, 'style': 5, 'label': 'Ver mis drops', 'emoji': {'name': '🐉'}, 'url': WEB_DROPS}]}]
+        adentro += [{'type': 14, 'divider': True, 'spacing': 1}, {'type': 10, 'content': '### 🎁 Los premios\n' + '\n'.join(premios)}]
+    if chica:
+        adentro.append({'type': 10, 'content': '\n'.join(chica)})
+    todos = botones + [{'type': 2, 'style': 5, 'label': 'Ver mis drops', 'emoji': {'name': '🐉'}, 'url': WEB_DROPS}]
+    adentro += [{'type': 1, 'components': todos[i:i + 5]} for i in range(0, len(todos), 5)]
     comps = [{'type': 17, 'accent_color': color, 'components': adentro}]
-    texto = '\n'.join([cabeza, corona] + premios + ['[%s]' % ' '.join(b['label'] for b in botones)] + chica)
+    # 🔔 las menciones, AFUERA del recuadro y arriba: la única línea que suena
+    if ids:
+        afuera = '🏆 Terminó **%s**: %s, sus premios están abajo 👇' % (_md(titulo) if titulo else 'el evento', y('<@%s>' % i for i in ids[:MENCIONES]))
+        comps.insert(0, {'type': 10, 'content': afuera})
+    texto = '\n'.join(([comps[0]['content']] if ids else []) + [cabeza, corona] + tabla + premios
+                      + ['[%s]' % ' '.join(b['label'] for b in botones)] + chica)
     return comps, ids[:MENCIONES], texto
+
+
+def _bandera(cc):
+    """`ar` → 🇦🇷; `''` si no es un código"""
+    cc = str(cc or '').strip().lower()
+    return ''.join(chr(0x1F1E6 + ord(c) - 97) for c in cc) if re.fullmatch(r'[a-z]{2}', cc) else ''
+
+
+def _miles(n):
+    """10000 → «10.000»"""
+    try:
+        return '{:,}'.format(int(round(float(n)))).replace(',', '.')
+    except (TypeError, ValueError):
+        return str(n or '')
+
+
+def puntos_de(res, ev):
+    """`[(puesto, [(nombre, país, puntos)])]` del evento `ev`, en el orden de la hoja (del campeón para abajo), de
+    `Resultados` con su cabecera. Los puntos son los de la columna `Puntos` (con el Most Wanted, si sumó)."""
+    if not res:
+        return []
+    cab = [str(c) for c in res[0]]
+    if not all(k in cab for k in ('Evento #', 'Rapero', 'Posición', 'Puntos')):
+        return []
+    c = {k: cab.index(k) for k in ('Evento #', 'Rapero', 'País', 'Posición', 'Puntos') if k in cab}
+    out = []
+    for f in res[1:]:
+        if len(f) <= max(c.values()) or str(f[c['Evento #']]) != str(ev):
+            continue
+        pos = str(f[c['Posición']] or '').strip() or '—'
+        x = (str(f[c['Rapero']] or '').strip(), str(f[c['País']] or '') if 'País' in c else '', f[c['Puntos']] or 0)
+        if not x[0]:
+            continue
+        if out and out[-1][0] == pos:
+            out[-1][1].append(x)
+        else:
+            out.append((pos, [x]))
+    return out
 
 
 def _cfg(gid):
@@ -268,7 +335,8 @@ def correr(aplicar=False):
         return 0
     avisados = estado.get('avisados') or {}
     Q = DM.quienes()
-    G = ganadores(hoja('Resultados'), hoja('1v1'), Q, hoy - dt.timedelta(days=DIAS + 1))
+    res = hoja('Resultados')
+    G = ganadores(res, hoja('1v1'), Q, hoy - dt.timedelta(days=DIAS + 1))
     nuevos = []
     for ev, f in eventos.items():
         if ev in avisados or ev not in G:
@@ -287,7 +355,7 @@ def correr(aplicar=False):
     s = None
     canales = {}
     for ev, nombre, sv in sorted(nuevos, key=lambda x: int(x[0]) if x[0].isdigit() else 0):
-        m = mensaje(nombre, sv, G[ev], Q, miembros, oficiales)
+        m = mensaje(nombre, sv, G[ev], Q, miembros, oficiales, puntos_de(res, ev))
         if not m:
             avisados[ev] = 'sin_campeon'
             continue
@@ -355,22 +423,39 @@ def _self_check():
     G = ganadores(res, duelos, Q, desde)
     ok(G['700']['camp'] == ('Ana', 'nido') and G['701']['camp'] == ('Ana', 'drop'), 'el primer título de la semana es un Nido y el segundo un Drop, como en drops_merito')
     ok(set(G['700']['pod']) == {'Beto', 'Caro*'} and ('Beto', 'Fuerte') in G['700']['bat'], 'el podio y el batacazo, con el nombre del perdedor')
-    comps, ids, t = mensaje('__ TOKYO VOL 27 __', 'FFA', G['700'], Q, {'111111'})
-    todo = json.dumps(comps, ensure_ascii=False)
-    bots = [b for c in comps[0]['components'] if c['type'] == 1 for b in c['components']]
-    ok(comps[0]['type'] == 17 and comps[0]['accent_color'] == 0x26045B and '<@111111>' in todo and '<@222222>' in todo
-       and ids == ['111111', '222222'], 'un recuadro con el color del servidor; menciona sólo a quien tiene su cuenta, una vez cada uno')
-    ok('## 🏆 TOKYO VOL 27' in todo and '__' not in t.split('\n')[0], 'el título sin los «__» del organizador')
-    ok('**Caro\\\\*' in todo and '/vincular' in todo, 'quien no tiene cuenta va en negrita (escapado) y con cómo vincularse')
-    ok('Miembro de DRA' in todo, 'y si alguno no es de DRA, que su drop lo espera')
+    res2 = [['Evento #', 'Fecha', 'Servidor', 'Escala', 'Rapero', 'País', 'Posición', 'Puntos'],
+            ['700', '17/11', 'FFA', '16+', 'Ana', 'ar', 'Campeón', 10000], ['700', '17/11', 'FFA', '16+', 'Beto', 'cl', 'Subcampeón', 7500],
+            ['700', '17/11', 'FFA', '16+', 'Caro*', 've', 'Semifinal', 5250], ['700', '17/11', 'FFA', '16+', 'Dani', 'co', 'Semifinal', 5250],
+            ['700', '17/11', 'FFA', '16+', 'Eli', 'mx', 'Cuartos', 2500], ['700', '17/11', 'FFA', '16+', 'Fer', 'ar', 'Octavos', 1250],
+            ['701', '17/11', 'FFA', '16+', 'Ana', 'ar', 'Campeón', 10000]]
+    P = puntos_de(res2, '700')
+    ok([x[0] for x in P] == ['Campeón', 'Subcampeón', 'Semifinal', 'Cuartos', 'Octavos'] and P[2][1][1] == ('Dani', 'co', 5250),
+       'los puntos del evento, por puesto y en el orden de la hoja')
+    comps, ids, t = mensaje('__ TOKYO VOL 27 __', 'FFA', G['700'], Q, {'111111'}, None, P)
+    afuera = comps[0]
+    caja = json.dumps(comps[1], ensure_ascii=False)
+    bots = [b for c in comps[1]['components'] if c['type'] == 1 for b in c['components']]
+    ok(afuera['type'] == 10 and '<@111111>' in afuera['content'] and '<@222222>' in afuera['content'] and ids == ['111111', '222222'],
+       'las menciones van AFUERA del recuadro, arriba, una vez cada uno')
+    ok(comps[1]['type'] == 17 and comps[1]['accent_color'] == 0x26045B and '<@' not in caja,
+       'adentro del recuadro (con el color del servidor) no hay ninguna mención: los nombres van en negrita')
+    ok('Los puntos' in caja and '10.000' in caja and '5.250 c/u' in caja and 'Dani 🇨🇴' in caja and 'y 1 más' in caja and 'Fer' not in caja,
+       'los puntos: campeón, sub, semis (c/u) y cuartos, con bandera; del resto, cuántos')
+    ok('## 🏆 TOKYO VOL 27' in caja and '__' not in caja.split('TOKYO')[0][-5:], 'el título sin los «__» del organizador')
+    ok('**Caro\\\\*' in caja and '/vincular' in caja, 'quien no tiene cuenta va en negrita (escapado) y con cómo vincularse')
+    ok('Miembro de DRA' not in json.dumps(comps, ensure_ascii=False) and 'Cada botón' not in caja,
+       'sin la línea de «si todavía no eres Miembro de DRA» ni la de «cada botón lo abre…»')
+    filas = [c for c in comps[1]['components'] if c['type'] == 1]
+    ok(comps[1]['components'][-1]['type'] == 1 and filas[-1]['components'][-1].get('url') == WEB_DROPS and len(filas) == 1,
+       '«Ver mis drops» va en la misma fila que los botones de los ganadores, al final: nada suelto abajo')
     cids = [b.get('custom_id') for b in bots]
     ok(cids[:3] == ['dd:nido:x:111111', 'dd:drop:x:222222', 'dd:star:x:222222'] and 'dd:drop:x:' not in cids
        and any(b.get('url') == WEB_DROPS for b in bots) and [b.get('label') for b in bots][:3] == ['Nido · Ana', 'Drop · Beto', 'Star · Beto'],
        'un botón por ganador y premio, con su nombre y su dueño (Caro no tiene cuenta: sin botón); ninguno sin dueño')
     c2, _i2, t2 = mensaje('(sin titulo)', 'LKR', {'camp': ('Ana', 'drop'), 'pod': [], 'bat': []}, Q, {'111111'})
     t2j = json.dumps(c2, ensure_ascii=False)
-    ok('Terminó el evento' in t2j and 'dd:star' not in t2j and 'Miembro de DRA' not in t2j and 'dd:drop:x:111111' in t2j,
-       'sin título, «Terminó el evento»; sin batacazos, sin Star; todos de DRA, sin el candado; el campeón con su Drop')
+    ok('Terminó el evento' in t2j and 'dd:star' not in t2j and 'Los puntos' not in t2j and 'dd:drop:x:111111' in t2j,
+       'sin título, «Terminó el evento»; sin batacazos, sin Star; sin puntos, sin esa parte; el campeón con su Drop')
     ok(_titulo('**__ NEW GENESIS __**') == 'NEW GENESIS' and _titulo('(sin titulo)') == '', 'el adorno del título se va')
     c3, _i3, _t3 = mensaje('X', 'FFA', {'camp': ('rodrilp', 'drop'), 'pod': [], 'bat': []}, {'rodrilp': '333333'}, set(), {'333333': 'Rodri LP'})
     ok('Drop · Rodri LP' in json.dumps(c3, ensure_ascii=False), 'el botón con el nombre de la Lista, no con la clave de la hoja')

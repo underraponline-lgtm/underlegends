@@ -66,7 +66,7 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
   // - LO TUYO, cinco filas: el Inventario primero (la puerta 1 del 26/10), tu perfil, la Tienda —ya no es «el precio
   //   por cabeza»: son marcos, efectos y fondos—, el Pase con el Premium ADENTRO (era una fila aparte que iba al mismo
   //   lugar) e Invita y gana;
-  // - Tu cuenta y Soporte, arriba, uno al lado del otro («tu cuenta y soporte que estén de lado y arriba»).
+  // - Tu cuenta, la primera fila, y Soporte, la última («tu cuenta arriba y soporte abajo de todo»).
   const paneles = [
     // en la ficha entra el nombre y nada más (medido: a 340 px de menú, «lo que espera» se cortaba); MODS dice cuántos prendidos
     dashboard ? ['#/dashboard', 'tablero', 'Dashboard', ''] : null,
@@ -74,6 +74,9 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
     lugares.length ? ['', 'escudo', 'MODS', prendidos ? (prendidos === 1 ? '1 prendido' : prendidos + ' prendidos') : '', () => abrirLugaresMods(quien)] : null,
   ].filter(Boolean);
   const tuyo = [
+    // ⚙️ Tu cuenta, la primera de la lista, y Soporte, la última (Dlx, 18/11/2026: «te dije que tu cuenta y soporte
+    // estén en esa lista de opciones, tu cuenta arriba y soporte abajo de todo»)
+    ['#/cuenta', 'engranaje', 'Tu cuenta', 'foto, redes, avisos y la app'],
     ['#/inventario', 'mochila', 'Inventario', nuevos ? nuevos + (nuevos === 1 ? ' cosa nueva' : ' cosas nuevas') : 'tus TAGs, marcos y cartas', nuevos > 0],
     [k ? '#/r/' + encodeURIComponent(k) : '#/cuenta/perfil', 'perfil', 'Mi perfil', 'lo que ven los demás'],
     // 🛍️ la Tienda vive acá desde que salió del menú de arriba (Dlx, 12/11/2026: «Tienda me gusta en tu cuenta… ahí nos
@@ -83,6 +86,7 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
     ['#/pase', prem ? 'sello' : 'pase', 'Pase rapero', prem ? 'Premium' + (marco ? ' · marco ' + marco : '') + ' · +' + boostPremium(pub) + ' % de XP' : 'tu nivel y tus premios'],
     // 🎁 Invita y gana (17/11/2026): también acá, porque en pantallas angostas el regalo de arriba no entra
     ['#/invitar', 'regalo', 'Invita y gana', 'tu link y tus invitados'],
+    ['#/cuenta/algo-mal', 'soporte', 'Soporte', 'perdí mi cuenta, mi país, algo está mal'],
   ];
   const fila = ([h, ic, n, d, nuevo]) => (
     <li key={h + n}>
@@ -99,13 +103,6 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, onCerrar }) {
         {cara ? <span className="yo-menu-cara" aria-hidden="true">{cara}</span> : null}
         <h2>{nombre || 'Lo tuyo'}</h2>
         <button type="button" className="nt-ib" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={16} /></button>
-      </div>
-      {/* Tu cuenta y Soporte, arriba y uno al lado del otro (Dlx, 18/11/2026: «tu cuenta y soporte que estén de lado y arriba») */}
-      <div className="ym-arriba">
-        {/* con la forma de las demás filas —el ícono en su círculo, al costado— (Dlx: «que esté de lado así como está la
-            gran mayoría»), pero de a dos */}
-        <a href="#/cuenta" role="menuitem" onClick={onCerrar}><span className="nt-c nt-ico" aria-hidden="true"><Ico n="engranaje" t={18} /></span><b>Tu cuenta</b></a>
-        <a href="#/cuenta/algo-mal" role="menuitem" onClick={onCerrar}><span className="nt-c nt-ico" aria-hidden="true"><Ico n="soporte" t={18} /></span><b>Soporte</b></a>
       </div>
       <div className="nt-cuerpo">
         {paneles.length ? (

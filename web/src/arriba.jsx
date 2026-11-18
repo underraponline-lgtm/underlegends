@@ -53,13 +53,17 @@ export const GRUPOS = [
   ['Pase rapero', '#/pase'],
   ['Publicaciones', '#/publicaciones'],
   ['Comunidad', '', [['Crews', '#/crews', 'Arma la tuya o súmate a una', 'crews'], ['Tarjetas', '#/tarjetas', 'Las de cada rapero', 'tarjetas'],
-    ['Salón de la fama', '#/salon', 'Los que ya ganaron', 'salon'], ['Socios', '#/socios', 'Los servidores de la Liga', 'socios']]],
-  // 📖 la Guía, suelta al lado de Comunidad (Dlx, 12/11/2026: «agreguemos la opción llamada Guía al costado de
-  // Comunidad»): adentro de la lista no se encontraba
-  ['Guía', '#/guia'],
+    ['Salón de la fama', '#/salon', 'Los que ya ganaron', 'salon'], ['Socios', '#/socios', 'Los servidores de la Liga', 'socios'],
+    // 📖 la Guía volvió a la lista (18/11/2026): su lugar de arriba es de la Tienda (ver abajo)
+    ['Guía', '#/guia', 'Cómo funciona todo', 'guia']]],
+  // 🛍️ LA TIENDA, EN EL LUGAR DE LA GUÍA (18/11/2026, Dlx: «en la cabecera pensaba en añadir tienda pero no sé si alcance
+  // a verse bien en todas las pantallas», y a las opciones medidas, «en lugar de Guía»). Sola no entraba: medido, a
+  // 1440 px quedaban 46 px libres y «Tienda» pide ~64. En el lugar de la Guía (que estaba suelta desde el 12/11: «al
+  // costado de Comunidad») pide ~12 px más que ella, y entra en todos los anchos
+  ['Tienda', '#/tienda'],
 ];
 // las páginas de cada grupo, para marcarlo cuando estás adentro
-const PAGINAS_DE = { Ranking: ['ranking', 'duelos'], Eventos: ['eventos', 'competencias', 'ligas', 'avisos'], Comunidad: ['crews', 'crew', 'tarjetas', 'salon', 'socios', 'mundo'] };
+const PAGINAS_DE = { Ranking: ['ranking', 'duelos'], Eventos: ['eventos', 'competencias', 'ligas', 'avisos'], Comunidad: ['crews', 'crew', 'tarjetas', 'salon', 'socios', 'mundo', 'guia'] };
 
 function Grupo({ n, items, on, pagina }) {
   const [abierto, setAbierto] = useState(false);
