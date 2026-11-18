@@ -164,3 +164,46 @@
 .k2-esc{display:grid;place-items:center;width:100%;font:900 18px/1 Archivo,sans-serif;background:var(--suave);color:var(--tinta);padding:8px 0}
 .k2-pp.l1 .k2-esc{padding:16px 0;background:#F2B705;color:#030304}
 .k2-pp.l2 .k2-esc{padding:11px 0}
+
+/* ═══ 🎨 LA CREW EN BANDAS (17/11/2026, crew_bandas.jsx): las bandas y los paneles son los del perfil (`pf9-`, css/perfil.css).
+   Acá, que las piezas de la crew de antes (`k2-caja`, la pirámide) se lean como un panel más adentro de una banda: siempre
+   oscuras, en Clara y en Noche, con el borde fino de los paneles y el título como el de `pf9-h` ═══ */
+.k2-pag .k2-caja,.k2-pag .k2-bloque{--magenta-tx:#FF5FA2;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;
+  --inv:#F6F6F6;--inv-tinta:#030304}
+.k2-pag .k2-caja,.k2-pag .k2-bloque{margin:0;padding:16px;border:0;border-radius:4px;background:#0B0B0D;color:#F6F6F6;box-shadow:inset 0 0 0 1px #24242A;min-width:0;align-content:start;gap:12px}
+.k2-pag .k2-sem{box-shadow:inset 0 0 0 1px var(--tier,#24242A)}
+.k2-pag .k2-tit{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px 10px;border-top:0;padding-top:0}
+.k2-pag .k2-tit h2{font:900 19px/1.05 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
+.k2-pag .k2-tit small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#A5A5A0}
+.k2-pag .k2-pir{padding:4px 0 0;border:0;background:none}
+.k2-pag .k2-corona{color:#E8B923}
+.k2-pag .k2-zona{font-size:14px}
+/* la tabla de su gente adentro de medio ancho: siempre una columna */
+.k2-gente .ent-gente{border-top-width:1px}
+.k2-gente .ent-sin{border-width:1px;border-radius:3px}
+/* sus noches */
+.k2-noches ul{list-style:none;margin:0;padding:0;display:grid}
+.k2-noches li + li{border-top:1px solid #1E1E22}
+.k2-noches li button{display:grid;grid-template-columns:34px auto minmax(0,1fr);gap:10px;align-items:center;width:100%;min-height:52px;padding:8px 0;border:0;background:none;color:#F6F6F6;text-align:left;cursor:pointer}
+.k2-noches li button:focus-visible{outline:2px solid #29B298;outline-offset:2px}
+.k2-med{display:grid;place-items:center;height:30px;border-radius:3px;font:900 13px/1 Archivo,sans-serif;color:#030304}
+.k2-nt{display:grid;gap:3px;min-width:0}
+.k2-nt b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase}
+.k2-nt small{font:500 12px/1.3 Archivo,sans-serif;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* sin dato no hay pieza: una columna vacía no ocupa lugar, y una banda sin ningún panel no se dibuja */
+.k2-pag .pf9-g > .pf9-pila:empty{display:none}
+.k2-pag .pf9-banda:not(:has(.pf9-pz,.k2-caja,.k2-bloque,.pf9-hist)){display:none}
+@media (min-width: 900px){
+  .app .k2-pag .ent-gente.dos{grid-auto-flow:row;grid-template-columns:minmax(0,1fr)}
+  .app .k2-pag .ent-gh.dos{grid-template-columns:minmax(0,1fr)}
+  .app .k2-pag .ent-gh.dos>div+div{display:none}
+  .app .k2-pag .ent-gente.corta li.extra{display:block}
+  .app .k2-pag .pf9-g:has(> .pf9-pila:empty){grid-template-columns:minmax(0,1fr)}
+  /* la semana estirada al alto de la columna de al lado: las dos terminan juntas */
+  .app .k2-b1 > .k2-sem{align-content:start}
+  /* su gente: el último panel de cada columna se estira hasta terminar junto al de al lado (en una crew de una o dos
+     personas, la tabla es mucho más corta que la jerarquía y no hay filas que sumar) */
+  .app .k2-b2{align-items:stretch}
+  .app .k2-b2 > .pf9-pila{display:flex;flex-direction:column;gap:14px}
+  .app .k2-b2 > .pf9-pila > :last-child{flex:1 0 auto}
+}

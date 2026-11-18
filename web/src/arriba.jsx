@@ -1357,6 +1357,28 @@ export function historiasDePersona(liga, k, items) {
   return { id: 'perfil-' + k, tipo: 'gente', nombre: nom, k, cc: f ? f.cc : '', nom, firma: firma(xs, 'perfil'), slides };
 }
 
+// 📸 LAS HISTORIAS DE LA GENTE DE UNA CREW, PARA SU PÁGINA (17/11/2026, la crew en bandas): las mismas de la persona
+// —campeón, caza, carta nueva, rango— de cualquiera de sus miembros (`ks`), como un grupo de crew para el mismo visor.
+// Sin ninguna, no hay grupo
+export function historiasDeGente(liga, ks, items, id, nombre, crew) {
+  const S = new Set(ks || []);
+  const repetidas = new Set();
+  const previo = {};
+  [...(items || [])].reverse().forEach((it) => {
+    if (it.tipo !== 'rango') return;
+    const k = ksDe(it)[0] || '';
+    if (previo[k] === it.rg) repetidas.add(it.id);
+    previo[k] = it.rg;
+  });
+  const xs = (items || []).filter((it) => DE_PERSONA[it.tipo] && it.tipo !== 'promo' && ksDe(it).some((k) => S.has(k)) && !repetidas.has(it.id));
+  if (!xs.length) return null;
+  const slides = slidesDe(liga, xs).slice(0, 12);
+  if (!slides.length) return null;
+  slides.sort(masViejo);
+  const nom = limpio(nombre || id);
+  return { id: 'crewp-' + id, tipo: 'crew', nombre: nom, crew: crew || { crew: nom }, nom, firma: firma(xs, 'crew'), slides };
+}
+
 // la cara de alguien en un círculo: su foto o, si no tiene, la inicial sobre su bandera (una inicial sobre negro,
 // fila tras fila, era lo que se veía «sin avatar»)
 export function CaraH({ liga, k, nombre, cc, cls = 'h-c' }) {

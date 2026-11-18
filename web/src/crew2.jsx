@@ -14,7 +14,7 @@
 import { limpio, num } from './liga.js';
 import { Cara, Compartir, enlace, usePerfiles } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ROL_NOMBRE, cierreCrews, crewViva, faltaCierre, ponerModCrew, useCrews } from './crews.js';
 import { useModsEstado, useQuienMod } from './mods.js';
 import { Anillo, EntrarCrew, PanelCrew, TierChip, consejosCrew } from './crewpanel.jsx';
@@ -22,6 +22,7 @@ import { Gente, Otros, Portada } from './entidad2.jsx';
 import CSS_ENT from './css/entidad2.css?inline';
 import CSS_PAGINA from './css/crew2.css?inline';
 import { usarCss } from './css.js';
+import { Banda, CrewHistorias, CrewMuro, CrewNoches, CrewRecords, CrewVistazo, useBalanceCrew, useCrewDatos, useMuroCrew } from './crew_bandas.jsx';
 
 usarCss('entidad2', CSS_ENT);
 usarCss('crew2', CSS_PAGINA);
@@ -65,9 +66,13 @@ export function PaginaCrew({ liga, id }) {
   const comoMod = useComoMod(liga);
   // 🙋 la fila de quien quedó más allá de los 200 del lobby viene en su perfil (`/api/perfiles`, `p[k].f`)
   const perf = usePerfiles();
+  const compu = useCompu();
+  const raiz = useRef(null);
+  const [todaLaGente, setTodaLaGente] = useState(false);
   const { cs, viva, c0 } = laCrew(liga, id);
-  if (!c0 && !viva) return <NoEsta />;
-  const c = Object.assign({}, c0 || { crew: viva.nombre, clave: viva.id, n: 0, pts: 0, gente: [] }, viva && viva.logo ? { logo: viva.logo } : {});
+  const existe = !!(c0 || viva);
+  const c = Object.assign({}, c0 || (viva ? { crew: viva.nombre, clave: viva.id, n: 0, pts: 0, gente: [] } : { crew: id, clave: id, n: 0, pts: 0, gente: [] }),
+    viva && viva.logo ? { logo: viva.logo } : {});
   const nombre = limpio((viva && viva.nombre) || c.crew);
   const conPuesto = cs.filter((x) => x.rk !== 0);
   const pos = c0 ? conPuesto.indexOf(c0) + 1 : 0;
@@ -92,6 +97,18 @@ export function PaginaCrew({ liga, id }) {
   const aporte = (f) => (total && f.pts ? <small className="k2-aporte"><i style={{ width: Math.round((100 * f.pts) / total) + '%', background: color }} />{Math.round((100 * f.pts) / total)} % de la crew</small> : null);
   const dias = viva && viva.creada && !viva.oficial ? Math.floor((liga.ahora - viva.creada) / DIA) : null;
   const req = (viva && viva.req) || {};
+  // 🎨 EN BANDAS, COMO EL PERFIL DEL RAPERO Y EL DEL SERVIDOR (17/11/2026, crew_bandas.jsx). Antes del `return` de «no
+  // existe»: son hooks
+  const ks = gente.map((f) => f.k);
+  const D = useCrewDatos(liga, ks, perf);
+  const muro = useMuroCrew(liga, ks, cid, nombre);
+  const B = useBalanceCrew(raiz, cid, !!perf);
+  if (!existe) return <NoEsta />;
+  // en la compu la tabla muestra las filas que equilibran la banda (el resto, detrás de «Ver los N»); en el celular, todas
+  // (la lista ya se corta sola a las 15)
+  const corta = compu && !todaLaGente && jugaron.length > B.ge;
+  const verGente = corta ? jugaron.slice(0, B.ge) : jugaron;
+  const temporada = !!(D || muro.length || viva || T);
   return (
     <>
       <Portada forma="redondo" color={color} nombre={nombre}
@@ -114,33 +131,64 @@ export function PaginaCrew({ liga, id }) {
         numeros={[['PUNTOS', num(c.pts || 0), 'dest'], ['POR RAPERO', nGente ? num(Math.round((c.pts || 0) / nGente)) : '—'],
           ['EL MEJOR', mejor ? <a className="te-link ent-toque" href={'#/r/' + encodeURIComponent(mejor.k)}>{limpio(mejor.n)}</a> : limpio(c.mejor || '—')],
           ['JUGARON ESTA SEMANA', T ? fila[2] + '/' + nGente : '—']]} />
-      <section className="sec k2-s">
-        <div className="ent-dos k2-dos">
-          <div className="ent-col">
-            {viva ? <Piramide liga={liga} viva={viva} /> : null}
-            <div className="k2-bloque">
-              <div className="k2-tit"><h2>Su gente · {gente.length}</h2><small>por puntos de la temporada · el aporte es su parte de la crew</small></div>
-              {jugaron.length ? <Gente liga={liga} gente={jugaron} roles={roles} pend={pend} conFlag extra={aporte} /> : null}
-              {sinJugar.length ? (
-                <div className="ent-sin">
-                  <span className="ent-sin-t">Todavía no jugaron la temporada · {sinJugar.length}</span>
-                  <ul>{sinJugar.map((f) => (
-                    <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)} title={limpio(f.n)}>
-                      <Cara liga={liga} k={f.k} nombre={f.n} cls="ent-sin-c" lazy /><small>{limpio(f.n)}</small></a></li>
-                  ))}</ul>
-                </div>
-              ) : null}
-              {!gente.length ? <p className="pronto-p">Todavía nadie de la crew jugó la temporada.</p> : null}
+      <div className="pf9-pag k2-pag" ref={raiz}>
+        <Banda color="negra">
+          <CrewHistorias liga={liga} ks={ks} id={cid} nombre={nombre} crew={c} />
+          <div className="pf9-g pf9-g-forma k2-b1">
+            {T && viva ? <SemanaCaja liga={liga} T={T} viva={viva} fila={fila} /> : null}
+            <div className="pf9-pila">
+              {T && viva ? <PorDia liga={liga} xs={(T.dia || {})[viva.id]} caja /> : null}
+              <CrewVistazo D={D} c={c} pos={pos} N={nGente} T={T && viva ? T : null} fila={fila} cid={cid} />
             </div>
           </div>
-          <div className="ent-col k2-lado">
-            {T && viva ? <SemanaCaja liga={liga} T={T} viva={viva} fila={fila} /> : null}
-            {T && viva ? <Estrellas liga={liga} T={T} viva={viva} /> : null}
-            {viva ? <Representantes liga={liga} viva={viva} gente={jugaron} /> : null}
-            {viva ? <LoQuePaso liga={liga} T={T} viva={viva} /> : null}
+        </Banda>
+        <Banda color="blanca" titulo="Su gente" link="Ranking de crews" ir="#/ranking/crews">
+          <div className="pf9-g pf9-g-2 k2-b2">
+            <div className="pf9-pila">
+              <section className="pf9-pz k2-gente">
+                <header className="pf9-h"><h3>Sus raperos · {gente.length}</h3><span>por puntos de la temporada</span></header>
+                {jugaron.length ? <Gente liga={liga} gente={verGente} roles={roles} pend={pend} conFlag extra={aporte} /> : null}
+                {corta || (compu && todaLaGente && jugaron.length > B.ge) ? (
+                  <button type="button" className="pf9-btn" aria-expanded={todaLaGente} onClick={() => setTodaLaGente(!todaLaGente)}>{todaLaGente ? 'Ver menos' : 'Ver los ' + jugaron.length}</button>
+                ) : null}
+                {sinJugar.length ? (
+                  <div className="ent-sin">
+                    <span className="ent-sin-t">Todavía no jugaron la temporada · {sinJugar.length}</span>
+                    <ul>{sinJugar.map((f) => (
+                      <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)} title={limpio(f.n)}>
+                        <Cara liga={liga} k={f.k} nombre={f.n} cls="ent-sin-c" lazy /><small>{limpio(f.n)}</small></a></li>
+                    ))}</ul>
+                  </div>
+                ) : null}
+                {!gente.length ? <p className="pf9-pie">Todavía nadie de la crew jugó la temporada.</p>
+                  : total ? <p className="pf9-pie">el aporte es su parte de los puntos de la crew</p> : null}
+              </section>
+            </div>
+            <div className="pf9-pila">
+              {viva ? <Piramide liga={liga} viva={viva} /> : null}
+              {T && viva ? <Estrellas liga={liga} T={T} viva={viva} /> : null}
+              {viva ? <Representantes liga={liga} viva={viva} gente={jugaron} /> : null}
+            </div>
           </div>
-        </div>
-      </section>
+        </Banda>
+        {temporada ? (
+          <Banda color="negra" titulo="Su temporada" link="Ranking" ir="#/ranking">
+            <div className="pf9-g pf9-g-rail k2-b3">
+              {/* el muro arriba de todo en el celular; con menos de tres publicaciones, sus noches van abajo del muro (si no, la
+                  columna de al lado le sacaba cientos de píxeles) */}
+              <div className="pf9-pila pf9-t-main">
+                {muro.length ? <CrewMuro liga={liga} xs={muro} id={cid} nombre={nombre} n={B.mu} /> : null}
+                {muro.length < 3 ? <CrewNoches liga={liga} D={D} n={B.no} /> : null}
+              </div>
+              <div className="pf9-pila pf9-t-lat">
+                {muro.length >= 3 ? <CrewNoches liga={liga} D={D} n={B.no} /> : null}
+                {viva ? <LoQuePaso liga={liga} T={T} viva={viva} /> : null}
+                <CrewRecords D={D} T={T} cid={cid} />
+              </div>
+            </div>
+          </Banda>
+        ) : null}
+      </div>
       <section className="sec" id="ent-otros">
         <div className="sec-t"><h2>Las otras crews</h2></div>
         <Otros href="#/crews" et="Todas las crews"
@@ -150,6 +198,20 @@ export function PaginaCrew({ liga, id }) {
       </section>
     </>
   );
+}
+
+/** 🖥️ ¿Es la compu (900 px o más)? Para cortar la tabla de la gente sólo donde las columnas van lado a lado. */
+function useCompu() {
+  const q = '(min-width: 900px)';
+  const [si, setSi] = useState(() => typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia(q).matches);
+  useEffect(() => {
+    if (!window.matchMedia) return undefined;
+    const m = window.matchMedia(q);
+    const f = () => setSi(m.matches);
+    m.addEventListener('change', f);
+    return () => m.removeEventListener('change', f);
+  }, []);
+  return si;
 }
 
 const nombreDe = (liga, k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
@@ -223,7 +285,6 @@ function SemanaCaja({ liga, T, viva, fila }) {
         : jug >= juegan ? <>Si cierra así, <b>sube a {T.nombres[sig]}</b>.</> : <>Ya tiene los puntos: faltan {juegan - jug} que jueguen para subir.</>)
         : <>Es el tier más alto.</>}
         {baja ? (cae ? ' Hoy está debajo de la raya.' : ' A ' + T.nombres[n] + ' ya no la baja nada esta semana.') : ''}</p>
-      <PorDia liga={liga} xs={(T.dia || {})[viva.id]} />
       {cae && tarde ? <p className="k2-aviso">Si cierra así, el lunes baja a {T.nombres[n - 1]}: faltan {num(baja - pts)} para quedarse.</p> : null}
       {kj.length ? (
         <div className="k2-jug"><span>Jugaron</span><span className="k2-caras">{kj.slice(0, 12).map((k) => <a key={k} href={'#/r/' + encodeURIComponent(k)} title={nombreDe(liga, k)}>
@@ -239,14 +300,14 @@ const DIAS_L = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
 const DIAS_N = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
 
 /** 📅 Por día: cuánto sumó la crew en cada día de la semana, con el de hoy marcado y los que vienen apagados. */
-function PorDia({ liga, xs }) {
+function PorDia({ liga, xs, caja }) {
   if (!Array.isArray(xs) || xs.length !== 7 || !xs.some((x) => x > 0)) return null;
   const max = Math.max(...xs);
   const cierre = cierreCrews(liga);
   const hoy = cierre ? Math.floor((liga.ahora - (cierre - 7 * DIA)) / DIA) : -1;
-  return (
+  const dibujo = (
     <div className="k2-dias-w">
-      <span className="k2-et">Por día</span>
+      {caja ? null : <span className="k2-et">Por día</span>}
       <div className="k2-dias" role="img" aria-label={'Puntos por día: ' + xs.map((x, i) => DIAS_N[i] + ' ' + num(x)).join(', ')}>
         {xs.map((x, i) => (
           <span key={i} className={i === hoy ? 'hoy' : i > hoy && hoy >= 0 ? 'viene' : ''} title={DIAS_N[i] + ' 11 AM a ' + DIAS_N[(i + 1) % 7] + ' 11 AM · ' + num(x) + ' pts'}>
@@ -254,6 +315,13 @@ function PorDia({ liga, xs }) {
           </span>
         ))}
       </div>
+    </div>
+  );
+  if (!caja) return dibujo;
+  return (
+    <div className="k2-caja k2-pordia">
+      <div className="k2-tit"><h2>Por día</h2><small>lo que sumó cada día de esta semana</small></div>
+      {dibujo}
     </div>
   );
 }
