@@ -251,7 +251,12 @@
 .cpc-2c>div>.cpc-parte{border:2px solid var(--suave);padding:16px 18px 18px}
 .cpc-2c>div>.cpc-parte .cu-caja{border:0;padding:0;background:none}
 .cpc-2c>div>.cpc-parte .cu-caja+.cu-caja{padding-top:14px;border-top:2px solid var(--suave)}
-@media (max-width:1100px){.cpc-2c{grid-template-columns:minmax(0,1fr)}}
+/* · Tu gente con tres cajas de alto parecido (quien sigue a tres o menos): de a tres (`columnasGente` de cuenta_pc.jsx).
+     Una parte que no dibuja nada (Tu servidor sin entrar con Discord) no deja su borde vacío, y las que quedan se reparten
+     el ancho (`auto-fit` junta las pistas que sobran) */
+.cpc-2c.tres{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.cpc-2c .cpc-parte:empty,.cpc-2c>div:not(:has(>.cpc-parte:not(:empty))){display:none}
+@media (max-width:1100px){.cpc-2c,.cpc-2c.tres{grid-template-columns:minmax(0,1fr)}}
 /* · Hora y zona: las diez zonas de a dos (de 672 a 505 px de alto), así La app termina pareja con Instalar */
 .cpc [data-parte="hora"] .cu-lista.radio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
 .cpc [data-parte="hora"] .cu-lista.radio li:nth-child(2){border-top:0}
