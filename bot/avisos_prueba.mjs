@@ -1587,6 +1587,18 @@ const ok = (cond, que, det) => {
     for (const m of webF.matchAll(/\['(\w+)', '[^']*', '[^']*', \[([^\]]*)\]/g)) enWeb[m[1]] = m[2].split(',').map((x) => x.trim().replace(/'/g, ''));
     ok(JSON.stringify(enWeb) === JSON.stringify(A.LUGARES_FONDO), 'tus fondos: los lugares y sus opciones son los mismos en el objeto y en la página',
       JSON.stringify([enWeb, A.LUGARES_FONDO]));
+    // 💬 LOS CHATS GENERALES (17/11/2026, bot/chats.py): lo que importa se suma sin repetir, queda lo de 30 días, lo inventado
+    // no entra, y el interruptor del socio es un sí o no
+    const ahoraC = Date.now();
+    const m1 = { sv: 'FFA', g: '123456', c: '234567', id: '345678', autor: '456789', n: 'Ana', k: 'ana', t: ahoraC, texto: 'evento falso', motivo: 'evento falso' };
+    const c1 = o.chatsCiclo({ dia: '2026-11-17', por_sv: { FFA: { msgs: 40, marcados: 1 } }, marcados: [m1, { sv: 'ffa', id: 'x' }] });
+    const c2 = o.chatsCiclo({ dia: '2026-11-18', por_sv: {}, marcados: [m1, Object.assign({}, m1, { id: '345679', t: ahoraC - 40 * 86400000 })] });
+    const enChats = o.leer('chats');
+    ok(c1.ok && c1.marcados === 1 && c2.ok && c2.marcados === 1 && enChats.marcados[0].texto === 'evento falso' && enChats.dia === '2026-11-18'
+      && o.chatsCiclo({ marcados: 'no' }).error && A.socioAjusteValido('leer_chat', false) === false && A.socioAjusteValido('leer_chat', 'no') === undefined
+      && A.CFG_BASE.leer_chat === true,
+    'los chats: lo que importa se suma sin repetir, se van los de más de 30 días, lo inventado no entra, y el interruptor es sí o no',
+      JSON.stringify([c1, c2, enChats]));
     await o.fondo({ quien: A.DUENO, de: 'dlx', lugares: {} });
     o.sql.exec("DELETE FROM fondos WHERE quien IN (?, ?)", '100000052', A.DUENO);
     o._fondos = null;
@@ -3438,7 +3450,7 @@ const ok = (cond, que, det) => {
     && A.socioAjusteValido('canales', ['11', '99'], cs) === undefined && A.socioAjusteValido('eventos_discord', true, cs) === true
     && A.socioAjusteValido('aviso_evento', 'chat', cs) === 'chat' && A.socioAjusteValido('aviso_evento', null, cs) === ''
     && A.socioAjusteValido('aviso_evento', 'si', cs) === undefined
-    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":"","ligas":"","ligas_por":{},"resumen":""}',
+    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":"","ligas":"","ligas_por":{},"resumen":"","leer_chat":true}',
   'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord, el aviso de cada evento, el canal de las ligas y el del resumen (11/11/2026); nada más');
   // 🛡️ el staff de cada servidor (16/11/2026): qué puede cada rol, y qué cambio de liga vale
   ok(A.socioPuede('dueno', 'equipo') && A.socioPuede('dlx', 'ajustes') && !A.socioPuede('admin', 'equipo') && A.socioPuede('admin', 'ajustes')

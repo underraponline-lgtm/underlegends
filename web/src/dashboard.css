@@ -995,3 +995,14 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .db-ee-d{font-variant-numeric:tabular-nums;opacity:.8}
 .db-ee-n{display:grid;min-width:0}.db-ee-n b{overflow-wrap:anywhere}.db-ee-n small{opacity:.7}
 @media (max-width:620px){.db-ee li{grid-template-columns:1fr}}
+/* 💬 los chats generales (`ChatsDueno`, 17/11/2026): lo que importó, con el link al mensaje */
+.dch{display:grid;gap:12px}
+.dch-sv{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;font-size:13px;color:var(--gris)}
+.dch-sv b{color:var(--tinta)}
+.dch-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dch-l li{display:grid;gap:6px;padding:10px 12px;border:1.5px solid var(--suave)}
+.dch-c{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
+.dch-c b{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.dch-c small{font-size:12px;color:var(--gris)}
+.dch-l p{margin:0;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.dch-l a{justify-self:start;font-size:13px}

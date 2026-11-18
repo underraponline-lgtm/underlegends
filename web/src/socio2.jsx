@@ -512,6 +512,11 @@ function Ajustes({ sv }) {
           <Fila t="Eventos de Discord" sello={sello === 'eventos_discord'} ayuda="El bot necesita «Crear eventos» en tu servidor.">
             <Interruptor t="Eventos de Discord" on={evDiscord} ocup={ocup} cambiar={(v) => cambiar('eventos_discord', v)}
               si="Cada anuncio, un evento de tu Discord" no="Apagados" /></Fila>
+          {/* 💬 LEER EL CHAT GENERAL (17/11/2026, `bot/chats.py`): prendido de entrada, y lo apaga el staff de cada servidor */}
+          <Fila t="Leer el chat general" sello={sello === 'leer_chat'}
+            ayuda="Una vez por día el bot lee tu chat general: cuenta cuánto se habla y quiénes, y si alguien denuncia un evento falso, una trampa, un raid o una estafa, se lo pasa a la Liga. Lo demás no se guarda.">
+            <Interruptor t="Leer el chat general" on={c.leer_chat !== false} ocup={ocup} cambiar={(v) => cambiar('leer_chat', v)}
+              si="Prendido: lo lee una vez por día" no="Apagado: no lee nada de tu chat" /></Fila>
           <Fila t="#N del ranking en el apodo" sello={sello === 'nick'} ayuda="Quien lo eligió con /numeral se queda con lo suyo.">
             <Interruptor t="#N del ranking en el apodo" on={c.nick} ocup={ocup} cambiar={(v) => cambiar('nick', v)}
               si="Activado: se le pone el número a todos" no="Apagado: no se le pone a nadie" /></Fila>

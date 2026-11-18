@@ -1400,6 +1400,12 @@ def _lo_barato(correr):
         # 🎬 y los que sumó cada uno, con sus restricciones (`bot/videos_propios.py`, 12/10/2026)
         if not corre(['bot/videos_propios.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
             print('      ⚠️ los videos de cada uno fallaron: queda lo de la corrida anterior')
+    # ── 2b8b · 💬 los chats generales de cada socio (`bot/chats.py`, Dlx 17/11/2026): una vez por día, desde las 12 PM ET.
+    # Sólo números al repo; lo que importa, al Dashboard. Cada servidor lo apaga en su panel. Nunca frena el ciclo
+    if correr:
+        paso('2b8b', 'los chats generales')
+        if not corre(['bot/chats.py', '--aplicar'], callado=True, mostrar=('💬', '⚠️')):
+            print('      ⚠️ los chats fallaron: se leen en la próxima corrida')
     # ── 2b8c · 📣 las promociones de los canales de promoción de cada socio (`bot/promos.py`, Dlx 16/10/2026): antes de
     # la web, que las lleva al muro. Sólo lo nuevo de cada canal (`after`). Nunca frena el ciclo
     if correr:

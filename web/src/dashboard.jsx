@@ -4870,6 +4870,36 @@ const NUM_TAB = 'lg:db-num';
 // «El tutorial» llevaba a Números y no aparecía si estabas en otra pestaña (11/11/2026)
 const TAB_DE = { 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente', 'nu-uso': 'semana',
   'nu-semanas': 'semana', 'nu-clics': 'pagina', 'nu-tuto': 'pagina', 'nu-pase': 'pase', 'nu-puntos': 'puntos', 'nu-crews': 'crews' };
+// 💬 LOS CHATS GENERALES (17/11/2026, `bot/chats.py`): lo que importó en el chat general de cada socio —eventos falsos,
+// fraude, raids y estafas, quejas de la Liga— con el link al mensaje, y cuánto se habló en la última lectura. Lo demás
+// del chat no se guarda. Cada servidor lo apaga en su panel
+const MOTIVO_CHAT = { 'evento falso': '🚩', fraude: '⚠️', seguridad: '🛡️', 'queja de la liga': '💬' };
+function ChatsDueno({ c }) {
+  const [filtro, setFiltro] = useState('');
+  const ms = [...((c && c.marcados) || [])].reverse();
+  const motivos = [...new Set(ms.map((m) => m.motivo))];
+  const ver = filtro ? ms.filter((m) => m.motivo === filtro) : ms;
+  const sv = Object.entries((c && c.por_sv) || {}).sort((a, b) => b[1].msgs - a[1].msgs);
+  return (
+    <div className="dch">
+      {sv.length ? <p className="dch-sv">{c.dia ? 'Lectura del ' + corto(c.dia) + ': ' : ''}{sv.map(([s, x]) => <span key={s}><b>{s}</b> {num(x.msgs)}</span>)}</p> : null}
+      {motivos.length > 1 ? (
+        <div className="dz-subs" role="tablist" aria-label="Qué mostrar">
+          {['', ...motivos].map((m) => <button key={m || 'todo'} type="button" role="tab" aria-selected={filtro === m} className={'dz-sub' + (filtro === m ? ' on' : '')}
+            onClick={() => setFiltro(m)}>{m ? (MOTIVO_CHAT[m] || '') + ' ' + m : 'Todo'}</button>)}
+        </div>) : null}
+      {ver.length ? (
+        <ul className="dch-l">{ver.slice(0, 80).map((m) => (
+          <li key={m.id}>
+            <span className="dch-c"><b>{MOTIVO_CHAT[m.motivo] || '•'} {m.motivo}</b><small>{m.sv} · {corto(diaISO(new Date(m.t)))} {hora(new Date(m.t).toISOString())}</small></span>
+            <p><b>{m.k ? <BotonFicha k={m.k} n={m.n} /> : null}{limpio(m.n) || 'alguien'}:</b> {m.texto}</p>
+            <a href={'https://discord.com/channels/' + m.g + '/' + m.c + '/' + m.id} target="_blank" rel="noreferrer">Ver en Discord ↗</a>
+          </li>))}</ul>
+      ) : <p className="pronto-p">Nada que importe todavía: se lee una vez por día, desde las 12 PM.</p>}
+    </div>
+  );
+}
+
 function NumerosTabs({ tabs, abrir }) {
   const [t, setT0] = useState(() => { try { return localStorage.getItem(NUM_TAB) || ''; } catch (e) { return ''; } });
   const setT = (k) => { setT0(k); try { localStorage.setItem(NUM_TAB, k); } catch (e) { /* sin guardar */ } };
@@ -5236,6 +5266,7 @@ export function Dashboard({ dc, liga }) {
         d.pase ? ['pase', 'El Pase', sec('nu-pase', 'EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />)] : null,
         d.economia !== undefined ? ['puntos', 'Los Puntos', sec('nu-puntos', 'LOS PUNTOS DE TIENDA', 'qué entra, qué sale y quién tiene cuánto', <Economia e={d.economia} liga={liga} />)] : null,
         d.crews_num ? ['crews', 'Las crews', sec('nu-crews', 'LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />)] : null,
+        d.chats ? ['chats', 'Los chats', sec('nu-chats', 'LOS CHATS GENERALES', 'lo que importó · 30 días · sólo lo ve el staff', <ChatsDueno c={d.chats} />)] : null,
       ]} />
     );
   } else if (areaV === 'salud') {

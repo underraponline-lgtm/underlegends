@@ -396,7 +396,7 @@ export const CHAT_FRESCA = 30 * MIN;
 // donde habla el bot en vivo, un canal, o 'no'; `ligas_por` cambia el de una liga (`{<liga>: canal | 'no'}`).
 // 📅 `resumen`: el canal del resumen de la semana de ese servidor, los lunes ('' = no se manda)
 export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '',
-  ligas: '', ligas_por: {}, resumen: '' };
+  ligas: '', ligas_por: {}, resumen: '', leer_chat: true };
 
 export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
@@ -3503,6 +3503,8 @@ const RUTAS = {
   '/avisos/tiers-ciclo': 'POST',
   // 🔁 quién jugó una sola vez y quién se enfrió, con nombre (`bot/primerizos.py`, con su clave): sólo al Dashboard
   '/avisos/primerizos-ciclo': 'POST',
+  // 💬 lo que importó en los chats generales de cada socio (`bot/chats.py`): con texto de gente, sólo al Dashboard
+  '/avisos/chats-ciclo': 'POST',
   // 🧪 y a quién se avisó y quién quedó sin aviso, para medir si sirve (con su clave)
   '/avisos/vuelve-ciclo': 'GET',
   // 🗳️ los veredictos en tiempo real (`bot/en_llamada.py --seguir`, con su clave): qué canales escuchar y lo que llegó
@@ -5162,7 +5164,8 @@ export function socioAjusteValido(cual, valor, canales, ligas) {
     return valor && typeof valor === 'object' && hh(valor.desde) && hh(valor.hasta) && valor.desde !== valor.hasta
       ? { desde: valor.desde, hasta: valor.hasta } : undefined;
   }
-  if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord') return typeof valor === 'boolean' ? valor : undefined;
+  // 💬 `leer_chat` (17/11/2026, `bot/chats.py`): si el bot lee una vez por día el chat general de ese servidor
+  if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord' || cual === 'leer_chat') return typeof valor === 'boolean' ? valor : undefined;
   if (cual === 'vivo_nivel') return Object.prototype.hasOwnProperty.call(NIVELES_CHAT, valor) ? valor : undefined;
   if (cual === 'aviso_evento') return (valor === '' || valor === null) ? '' : (valor === 'chat' || valor === 'no') ? valor : undefined;
   if (cual === 'avisos' || cual === 'vivo' || cual === 'ascenso') {
@@ -7254,6 +7257,14 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/veredictos-vivo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
+  // 💬 lo que importó en los chats generales (17/11/2026, `bot/chats.py`): con la clave del ciclo y sólo al objeto
+  if (ruta === '/avisos/chats-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 120000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/chats-ciclo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
   // 🔁 la lista de primerizos y enfriados, del ciclo: con nombres, así que sólo con su clave y sólo al objeto
   if (ruta === '/avisos/primerizos-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -9079,6 +9090,8 @@ export class Avisos {
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
       if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
       if (ruta === '/redibujo-listo') return json(this.redibujoListo(d));
+      // 💬 lo que importó en los chats generales (`chatsCiclo()`): sólo para el Dashboard
+      if (ruta === '/chats-ciclo') return json(this.chatsCiclo(d));
       // 🔁 la lista de primerizos y enfriados: sólo la guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
@@ -13264,6 +13277,29 @@ export class Avisos {
     return { ok: true, n, evidencia: e };
   }
 
+  // ── 💬 LOS CHATS GENERALES (17/11/2026, `bot/chats.py`) ──────────────────────────────────────────
+  /** Lo que importó en los chats generales de cada socio: se suma a lo de antes (sin repetir un mensaje), quedan los de
+   *  30 días y como mucho 300, y los números de la última lectura. Con texto de gente: sólo lo ve el Dashboard. */
+  chatsCiclo(d) {
+    if (!d || typeof d !== 'object' || !Array.isArray(d.marcados) || d.marcados.length > 200) return { error: 'datos' };
+    const id = (x) => /^\d{5,25}$/.test(String(x || ''));
+    const nuevos = d.marcados.filter((m) => m && id(m.id) && id(m.c) && id(m.g) && /^[A-Z]{2,6}$/.test(String(m.sv || '')))
+      .map((m) => ({ sv: String(m.sv), g: String(m.g), c: String(m.c), id: String(m.id), autor: id(m.autor) ? String(m.autor) : '',
+        n: String(m.n || '').slice(0, 40), k: claveValida(String(m.k || '')) ? String(m.k) : '', t: Number(m.t) || 0,
+        texto: String(m.texto || '').slice(0, 400), motivo: String(m.motivo || '').slice(0, 30) }));
+    const antes = (this.leer('chats') || {}).marcados || [];
+    const vistos = new Set(nuevos.map((m) => m.id));
+    const desde = Date.now() - 30 * DIA_MS;
+    const marcados = [...antes.filter((m) => !vistos.has(m.id)), ...nuevos].filter((m) => m.t >= desde)
+      .sort((a, b) => a.t - b.t).slice(-300);
+    const por_sv = {};
+    for (const [sv, x] of Object.entries((d.por_sv && typeof d.por_sv === 'object') ? d.por_sv : {})) {
+      if (/^[A-Z]{2,6}$/.test(sv) && x && typeof x === 'object') por_sv[sv] = { msgs: Number(x.msgs) || 0, marcados: Number(x.marcados) || 0 };
+    }
+    this.guardar('chats', { t: Date.now(), dia: String(d.dia || '').slice(0, 10), por_sv, marcados });
+    return { ok: true, marcados: marcados.length };
+  }
+
   // ── 🖼️ tu fondo (13/10/2026) ──────────────────────────────────────────
   /** ¿Puede subir un fondo? Con el Pase premium (desde su nivel de fondo); Dlx siempre (para probarlo). */
   puedeFondo(quien) {
@@ -16590,7 +16626,8 @@ export class Avisos {
         apuestas: cfg.apuestas === true, ascenso: String(cfg.ascenso || ''),
         aviso_evento: (cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no') ? cfg.aviso_evento : '',
         ligas: String(cfg.ligas || ''), ligas_por: (cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {},
-        resumen: String(cfg.resumen || ''), silencio: cfg.silencio && typeof cfg.silencio === 'object' ? cfg.silencio : '' },
+        resumen: String(cfg.resumen || ''), silencio: cfg.silencio && typeof cfg.silencio === 'object' ? cfg.silencio : '',
+        leer_chat: cfg.leer_chat !== false },
       ligas, rol: x.rol,
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',
@@ -19509,6 +19546,8 @@ export class Avisos {
       reportes_causas: veT('reportes') || veT('reportes_cerrar') ? this.causasDueno(ahora) : [],
       // 🔁 quién jugó una sola vez y quién se enfrió (`bot/primerizos.py`), y a quién ya se le avisó
       primerizos: this.leer('primerizos'),
+      // 💬 lo que importó en los chats generales (`bot/chats.py`): con texto de gente, para quien ve los reportes
+      chats: veT('reportes') ? this.leer('chats') : null,
       // 🗂️ las sanciones activas (`{k: hasta}`, 0 sin fecha): la página las marca al lado del nombre
       sanciones: this.sancionesActivas(ahora),
       // 📊 los números del propio Dashboard

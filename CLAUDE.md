@@ -2515,6 +2515,11 @@ bot/              el lector de Discord y el ciclo
                                   que vuelve, y lo cobrado a la Temporada
                   muro.py         Publicaciones: lo que pasa en la Liga y los
                                   anuncios; lo corre subir_web.py
+                  chats.py        el chat general de cada socio, una vez por día
+                                  (paso 2b8b, desde las 12 PM ET): números al repo
+                                  (datos/chats_dia.json) y lo que importa (eventos
+                                  falsos, fraude, raids) sólo al Dashboard. Cada
+                                  servidor lo apaga en su panel (`leer_chat`)
                   autoverificar.py el país (del rol) y el Miembro de DRA,
                                   solos en cada corrida (paso 1a2)
                   alertar.py      DM a Dlx si algo se traba; lo normal, al
