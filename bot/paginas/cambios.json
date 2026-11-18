@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.63",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T14:10:00-05:00",
+        "titulo": "La página, en inglés",
+        "items": [
+            "**La página en inglés**: con el link `underlegends.pages.dev/en` se ve toda la página en inglés, directo, sin la pantalla de carga ni la bienvenida. Para volver al castellano, agrega `?lang=es` a cualquier dirección."
+        ]
+    },
+    {
         "version": "6.62",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T13:58:00-05:00",

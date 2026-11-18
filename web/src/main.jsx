@@ -16,4 +16,6 @@ if (host && !host.shadowRoot) {
   const raiz = document.createElement('div');
   sombra.appendChild(raiz);
   createRoot(raiz).render(<Respaldo><App /></Respaldo>);
+  // 🇬🇧 la vista en inglés (`/en`, ver ingles.js): sólo si el script del principio la prendió. Nadie más baja el diccionario
+  if (document.documentElement.classList.contains('lg-en')) import('./ingles.js').then((m) => m.ingles(sombra)).catch(() => {});
 }

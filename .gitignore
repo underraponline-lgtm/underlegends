@@ -230,6 +230,7 @@ docs/apodos_*.json
 # 🖼️ las fotos con marco antes de subir (bot/con_marco.py)
 salida_marcos/
 salida_og/
+salida_ingles/
 # 📬 lo de cada corrida, no estado: el buzón de batallas y su copia del día (sheet/procesar_entrada.py)
 datos/entrada_*.json
 # 🗄️ una grilla escrita en el Sheet y sin copiar todavía (sheet/espejo_t1.py, `marcar_sucias()`): es de la corrida

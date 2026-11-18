@@ -43,6 +43,7 @@ html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:0}
 body{background:#030304;color:#EDEDF2;overflow-x:hidden;font:17px/1.55 Archivo,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
 #inicio-nuevo{display:block;position:relative;z-index:4}
 html.sin-pagina #inicio-nuevo,html.sin-pagina #lg-carga{display:none!important}
+html.lg-en #lg-carga{display:none!important}
 #sin-pagina{display:none}
 html.sin-pagina #sin-pagina{display:grid;min-height:100vh;min-height:100dvh;place-content:center;justify-items:center;gap:14px;padding:24px;text-align:center}
 #sin-pagina img{width:72px;height:72px}
@@ -306,7 +307,8 @@ def html_carga():
     window.__lgEntro = true;
     if (window.__lgApp) window.__lgApp();
   };
-  if (!el || !h.classList.contains('ini-nuevo')) { entro(); return; }
+  // 🇬🇧 en la vista en inglés no hay pantalla de carga: sus consejos están en castellano y es la «intro» que no se quiere
+  if (!el || !h.classList.contains('ini-nuevo') || h.classList.contains('lg-en')) { entro(); return; }
   try {
     h.classList.add('lg-carga-js');
     var C = window.__lgC || { p: [] }, src = window.__lgFondo || '';
@@ -510,6 +512,30 @@ def script():
   }
   window.rutaLG = rutaLG;
   window.urlLG = urlLG;
+  // 🇬🇧 LA VISTA EN INGLÉS (18/11/2026, Dlx: un empleador quiere ver la página «sin la intro, sin permisos de admin, y en
+  // inglés»): `/en` o `?lang=en` la prende y `?lang=es` la apaga. Este navegador queda como el de alguien que ya vino —sin
+  // la pantalla de carga larga, sin la bienvenida y sin el tutorial— y main.jsx baja el traductor (web/src/ingles.js). Sin
+  // cuenta no hay nada de admin: es la página de cualquiera
+  try {
+    var pEn = (location.pathname || '').toLowerCase().replace(/\\/+$/, ''), qEn = /[?&]lang=(en|es)\\b/.exec(location.search);
+    if (pEn === '/en' || (qEn && qEn[1] === 'en')) {
+      var ahEn = Date.now(), tEn = {};
+      localStorage.setItem('lg:lang', 'en');
+      localStorage.setItem('lg:carga', String(ahEn));
+      if (!localStorage.getItem('lg:visita')) localStorage.setItem('lg:visita', String(ahEn));
+      try { tEn = JSON.parse(localStorage.getItem('lg:tuto') || '{}') || {}; } catch (e) { tEn = {}; }
+      tEn.t = tEn.t || ahEn - 90 * 864e5; tEn.nuevo = false; tEn.tour = tEn.tour || 'fin'; tEn.pasos = 'fin'; tEn.bienv = true;
+      tEn.c = tEn.c || {}; tEn.notas = tEn.notas || {};
+      localStorage.setItem('lg:tuto', JSON.stringify(tEn));
+      // y sin el aviso de «Nueva actualización»: es del changelog, en castellano y de adentro
+      localStorage.setItem('lg:cambios', JSON.stringify('999.99'));
+    } else if (qEn) localStorage.removeItem('lg:lang');
+    if (pEn === '/en' || qEn) {
+      var sEn = location.search.replace(/[?&]lang=(en|es)\\b/, '').replace(/^&/, '?');
+      history.replaceState(history.state, '', (pEn === '/en' ? PRE : location.pathname) + sEn + location.hash);
+    }
+    if (localStorage.getItem('lg:lang') === 'en') { document.documentElement.lang = 'en'; document.documentElement.classList.add('lg-en'); }
+  } catch (e) { /* sin almacenamiento, en castellano */ }
   // cada dirección pasa a la suya, en el mismo lugar del historial: un `#/…` —un link que ya circula, o un
   // `location.hash = …` del código—, la raíz sola (a la Liga), `/ranking` sin la Liga o `/freestyle-rap/cuenta`.
   // ⚠️ Lo que vuelve de Discord (`#access_token=…`) no se toca: lo lee cuenta.js antes de enrutar (`volverDeDiscord()`)
