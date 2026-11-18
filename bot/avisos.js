@@ -7671,12 +7671,15 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🏷️ EL INVENTARIO DE TAGS, DEL CICLO (`bot/tags_inventario.py`): con su clave. Lo que hoy muestra la carta de cada uno,
   // sumado; de vuelta, lo que eligió cada uno
-  // 🎭 LOS ESTILOS DE JUEGO ELEGIDOS, DEL CICLO (`bot/juegos.py`): con su clave. De vuelta, `{clave: {juego, viejos}}`
+  // 🎭 LOS ESTILOS DE JUEGO ELEGIDOS, DEL CICLO (`bot/juegos.py`): con su clave. De vuelta, `{clave: {juego, viejos}}`.
+  // 🎭 Y DE IDA (17/11/2026), los tres lugares de cada uno con su nivel (`lugares`, `niveles`): el Inventario los muestra
   if (ruta === '/avisos/juegos-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 200000) return json({ error: 'muy grande' }, 413);
     return elObjeto(env).fetch('https://avisos/juegos-ciclo', {
-      method: 'POST', body: '{}', headers: { 'content-type': 'application/json' },
+      method: 'POST', body: crudo || '{}', headers: { 'content-type': 'application/json' },
     });
   }
   if (ruta === '/avisos/tags-ciclo') {
@@ -9320,7 +9323,7 @@ export class Avisos {
       if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/juego-mio') return json(this.juegoMio(String(d.quien || ''), String(d.temp || '')));
       if (ruta === '/juego-elige') { const v = this.juegoElige(d); return json(v, v.error === 'ya' ? 409 : v.error ? 400 : 200); }
-      if (ruta === '/juegos-ciclo') return json(this.juegosCiclo());
+      if (ruta === '/juegos-ciclo') return json(this.juegosCiclo(d));
       if (ruta === '/looks') return json(this.looksDe(String(d.quien || '')));
       if (ruta === '/look-guardar') { const v = this.lookGuardar(d); return json(v, v.error === 'lleno' ? 409 : v.error ? 400 : 200); }
       if (ruta === '/look-borrar') { const v = this.lookBorrar(d); return json(v, v.error ? 400 : 200); }
@@ -18941,8 +18944,11 @@ export class Avisos {
     for (const x of this.sql.exec('SELECT juego, COUNT(*) AS n FROM juego_elige GROUP BY juego').toArray()) cuantos[x.juego] = Number(x.n);
     let viejos = [];
     try { viejos = r ? JSON.parse(r.viejos || '[]') : []; } catch (e) { viejos = []; }
+    // 🎭 tus tres lugares con su nivel y el nivel de cada estilo que jugaste, como los dejó el ciclo (17/11/2026)
+    const L = /^[0-9]{5,25}$/.test(quien) ? (this.leer('juegos_lugares') || {}) : {};
+    const k = /^[0-9]{5,25}$/.test(quien) ? (this.claveDe(quien) || (quien === DUENO ? DUENO_K : '')) : '';
     return { ok: true, juego: r ? r.juego : '', viejos, puede: !r || quien === DUENO || r.cambio !== temp, temp, cuantos,
-      dueno: quien === DUENO };
+      dueno: quien === DUENO, lugares: (k && (L.col || {})[k]) || [], niveles: (k && (L.niv || {})[k]) || {} };
   }
 
   /**
@@ -19009,8 +19015,26 @@ export class Avisos {
     return this.looksDe(quien);
   }
 
-  /** 🎭 Para el ciclo (`bot/juegos.py`, con su clave): `{clave: {juego, viejos}}` de todos. La clave como la de los TAGs */
-  juegosCiclo() {
+  /** 🎭 Para el ciclo (`bot/juegos.py`, con su clave): `{clave: {juego, viejos}}` de todos. La clave como la de los TAGs.
+   * Y si el ciclo manda `lugares` (`{clave: [[estilo, nivel], …]}`, hasta tres) y `niveles` (`{clave: {estilo: nivel}}`),
+   * los guarda para `juegoMio()`: lo que no es del catálogo o un nivel fuera de 0–3 no entra */
+  juegosCiclo(d = {}) {
+    if (d && typeof d.lugares === 'object' && d.lugares && !Array.isArray(d.lugares)) {
+      const nv = (n) => Number.isInteger(n) && n >= 0 && n <= 3;
+      const col = {}, niv = {};
+      for (const [k, xs] of Object.entries(d.lugares).slice(0, 5000)) {
+        if (typeof k !== 'string' || !k || k.length > 60 || !Array.isArray(xs)) continue;
+        const f = xs.filter((x) => Array.isArray(x) && JUEGOS.includes(x[0]) && nv(x[1])).slice(0, 3).map((x) => [x[0], x[1]]);
+        if (f.length) col[k] = f;
+      }
+      const N = d.niveles && typeof d.niveles === 'object' && !Array.isArray(d.niveles) ? d.niveles : {};
+      for (const [k, xs] of Object.entries(N).slice(0, 5000)) {
+        if (typeof k !== 'string' || !k || k.length > 60 || !xs || typeof xs !== 'object' || Array.isArray(xs)) continue;
+        const f = Object.fromEntries(Object.entries(xs).filter(([e, n]) => JUEGOS.includes(e) && nv(n)));
+        if (Object.keys(f).length) niv[k] = f;
+      }
+      this.guardar('juegos_lugares', { t: Date.now(), col, niv });
+    }
     const elegidos = {};
     for (const r of this.sql.exec('SELECT quien, juego, viejos FROM juego_elige').toArray()) {
       const k = this.claveDe(r.quien) || (r.quien === DUENO ? DUENO_K : '');

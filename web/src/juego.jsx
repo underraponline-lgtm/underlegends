@@ -10,21 +10,34 @@
 //   · El 2.º y el 3.º se ganan en los eventos de estilo de DRA (Dlx, 17/11/2026: «que el segundo y tercero se ganen por
 //     un evento específico en DRA y ya está»): jugar uno de un estilo que no es el tuyo te lo desbloquea.
 //   · Va en tu carta Competitiva (la columna izquierda) con la próxima corrida del ciclo; sin Competitiva, en tu perfil.
-import { useEffect, useState } from 'react';
+//
+// 🎮 EL REMAKE, OPCIÓN B «SELECCIÓN DE PERSONAJE» (Dlx, 17/11/2026: «esta página remakeala porque es la más rara de todas
+// en gris encima y con espacios blancos», y a la maqueta https://claude.ai/artifact/AN9LH6DVdYantMXLm39rFZ, «B pero fíjate
+// bien el estilo del diseño de la página web en general»):
+//   · arriba, el estilo en grande sobre el negro de la página, con su nombre gigante y tenue detrás (como «TAG» en
+//     Cartas) y un halo del color de tu rango; tocas uno abajo y lo ves ahí, con el botón
+//   · al costado, TUS TRES LUGARES con su nivel (los deja el ciclo en el objeto: `juegosCiclo()`, `lugares` y `niveles`)
+//   · la grilla entera: tres filas de seis, una por familia, a todo el ancho (antes, seis cuadros de 124 px y un tercio vacío)
+//   · al pie, cómo se sube y el próximo evento de estilo de DRA (`je` del calendario)
+//   · sin el panel gris que la envolvía: va directo sobre el negro, como el escenario de Cartas
+import { useEffect, useRef, useState } from 'react';
 import CAT from './estilos_juego.json';
 import { pasePost } from './pase.js';
+import { limpio, siglaDe, utc } from './liga.js';
 
 const FAMILIA = {
   ATAQUE: ['Ataque', 'lo que le hace al rival y al público'],
   FOCO: ['Foco', 'el medio campo: cómo suena cada barra'],
   CABEZA: ['Cabeza', 'lo que lee, piensa y contesta'],
 };
+const FORMA_NOMBRE = { rombo: 'Rombo', circulo: 'Círculo', escudo: 'Escudo' };
 const FORMA_DE = Object.fromEntries(CAT.familias);
 const ESTILO = Object.fromEntries(CAT.estilos.map(([k, n, f, d, ic]) => [k, { k, n, f, d, ic }]));
 const OSC = 'rgba(10,10,18,.94)';
+const BLANCO = '#F4F4F6';
 
 /** Un estilo dibujado como en la carta: la forma de su familia y el nivel por luz y aros. `c` es el color */
-export function Insignia({ k, nivel = 1, tam = 52, c = '#F4F4F6' }) {
+export function Insignia({ k, nivel = 1, tam = 52, c = BLANCO }) {
   const e = ESTILO[k];
   if (!e) return null;
   const forma = FORMA_DE[e.f];
@@ -62,17 +75,39 @@ export function Insignia({ k, nivel = 1, tam = 52, c = '#F4F4F6' }) {
   );
 }
 
+/** Un lugar vacío: la forma punteada y el signo de pregunta */
+function Vacio({ tam = 46 }) {
+  const m = CAT.margen;
+  return (
+    <span className="jg-ins jg-vac" style={{ width: tam, height: tam }} aria-hidden="true">
+      <svg viewBox={`-${m} -${m} ${100 + 2 * m} ${100 + 2 * m}`}><path d={CAT.formas.circulo} fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="7 6" /></svg>
+      <b>?</b>
+    </span>
+  );
+}
+
 const ERROR = {
   ya: 'Ya usaste tu cambio de esta temporada: el próximo, cuando arranque la que viene.',
   sin_verificar: 'Para elegir tu estilo tienes que estar verificado (Miembro de DRA).',
 };
+const cuantosTxt = (n) => (n ? n + (n === 1 ? ' lo eligió' : ' lo eligieron') : 'Nadie lo eligió todavía');
+// en el cuadro, corto: «Nadie lo eligió todavía» ocupaba dos renglones apretados en el celular
+const cuantosCorto = (n) => (n ? n + (n === 1 ? ' lo eligió' : ' lo eligieron') : 'Sin elegir');
+// la escalera: qué es cada nivel
+const ESCALERA = [
+  ['Desbloqueado', 'Lo dejaste, o recién lo eliges'],
+  ['Jugaste uno', 'Un evento de ese estilo'],
+  ['Cuarto de arriba', 'En un evento de ese estilo'],
+  ['Otra vez arriba', 'El tope. Vuelve a 0 cada temporada'],
+];
 
-export default function EstiloJuego({ dc, Cuadro, Titulo }) {
+export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
   const [d, setD] = useState(undefined);
   const [sel, setSel] = useState('');
   const [conf, setConf] = useState(false);
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
+  const heroR = useRef(null);
   useEffect(() => {
     pasePost('juego-mio', {}).then((r) => setD(r && r._ok ? r : null));
   }, []);
@@ -82,8 +117,33 @@ export default function EstiloJuego({ dc, Cuadro, Titulo }) {
   const mio = (d && d.juego) || '';
   const viejos = new Set((d && d.viejos) || []);
   const cuantos = (d && d.cuantos) || {};
-  const e = ESTILO[sel] || ESTILO[mio] || null;
+  const niveles = (d && d.niveles) || {};
+  // 🎭 tus tres lugares (el ciclo los deja en el objeto). El 1.º es SIEMPRE el elegido de hoy: si recién lo cambiaste, el
+  // ciclo todavía no lo vio y va en el nivel que tenga (0 si es nuevo)
+  const ganados = ((d && d.lugares) || []).filter((x) => x[0] !== mio && ESTILO[x[0]]).slice(0, 2);
+  const nivelDe = (x) => (x === mio ? (niveles[x] || 0) : ganados.find((g) => g[0] === x) ? ganados.find((g) => g[0] === x)[1] : (niveles[x] || 0));
+  const tiene = (x) => x === mio || ganados.some((g) => g[0] === x) || viejos.has(x) || x in niveles;
+  const f = liga && k ? liga.T[k] : null;
+  const rg = f && f.rg && liga ? liga.colorRg(f.rg) : BLANCO;
+  const e = ESTILO[sel] || ESTILO[mio] || ESTILO.punchline;
+  const nv = tiene(e.k) ? nivelDe(e.k) : 1;
 
+  // 📅 el próximo evento de estilo: primero uno del estilo que estás mirando, si no cualquiera
+  const ahora = liga ? liga.ahora : Date.now();
+  const prox = ((liga && liga.d && liga.d.calendario) || []).filter((c) => c.je && utc(c.t) > ahora).sort((a, b) => utc(a.t) - utc(b.t));
+  const px = prox.find((c) => limpio(c.je).toLowerCase() === e.n.toLowerCase()) || prox[0] || null;
+
+  const tocar = (x) => {
+    setSel(x);
+    setConf(false);
+    setMsg('');
+    // 📱 en el celular la grilla queda lejos del estilo grande: se sube a verlo
+    const h = heroR.current;
+    if (h && h.getBoundingClientRect().top < 0) {
+      const quieto = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      h.scrollIntoView({ block: 'start', behavior: quieto ? 'auto' : 'smooth' });
+    }
+  };
   const elegir = () => {
     if (!sel || ocup) return;
     setOcup(true);
@@ -99,68 +159,111 @@ export default function EstiloJuego({ dc, Cuadro, Titulo }) {
     });
   };
 
+  let accion = null;
+  if (d && verificado && e.k !== mio) {
+    if (conf) {
+      accion = (
+        <div className="jg-conf">
+          <p>{mio ? <>Cambias <b>{ESTILO[mio].n}</b> por <b>{e.n}</b>. Es tu único cambio de la temporada; <b>{ESTILO[mio].n}</b> queda desbloqueado, en nivel 0.</>
+            : <>Tu estilo va a ser <b>{e.n}</b>. Después lo puedes cambiar una vez por temporada.</>}</p>
+          <button type="button" className="ves-btn" disabled={ocup} onClick={() => setConf(false)}>Cancelar</button>
+          <button type="button" className="ves-btn blanco" disabled={ocup} onClick={elegir}>{ocup ? 'Guardando…' : 'Confirmar'}</button>
+        </div>
+      );
+    } else if (d.puede) {
+      accion = <button type="button" className="ves-btn blanco" onClick={() => { setSel(e.k); setConf(true); }}>{mio ? 'Cambiar a ' + e.n : 'Elegir ' + e.n}</button>;
+    } else {
+      accion = <p className="ves-nota">{ERROR.ya}</p>;
+    }
+  } else if (e.k === mio) {
+    accion = <span className="jg-es">Es tu estilo</span>;
+  }
+
+  const lugar = (n, de, x, nivel, pie) => (
+    <li key={n} className={x ? '' : 'vac'}>
+      <span className="jg-lg-n">{n}</span>
+      {x ? <Insignia k={x} nivel={nivel} tam={46} c={rg} /> : <Vacio />}
+      <span><em>{de}{x ? ' · nivel ' + nivel : ' · libre'}</em><b style={{ '--n': Math.max(8, (x ? ESTILO[x].n : 'Sin estilo').length) }}>{x ? ESTILO[x].n : 'Sin estilo'}</b><small>{pie}</small></span>
+    </li>
+  );
+
   return (
     <div className="jg">
-      <p className="ves-p">
-        Tu <b>estilo de juego</b> va en la columna izquierda de tu carta <b>Competitiva</b>: hasta tres, uno de cada lugar.
-        La familia se ve en la forma —<b>rombo</b> Ataque, <b>círculo</b> Foco, <b>escudo</b> Cabeza— y el color es el de tu rango.
-      </p>
-      <ol className="jg-lug">
-        <li><b>1.º · Lo eliges acá.</b> La primera vez es libre; después, un cambio por temporada. El que dejas queda desbloqueado.</li>
-        <li><b>2.º y 3.º · Eventos de estilo de DRA.</b> Juegas uno de un estilo que no es el tuyo y se te desbloquea acá. Van los dos de nivel más alto.</li>
-      </ol>
-      <div className="jg-niv" aria-label="Los niveles">
-        {[0, 1, 2, 3].map((n) => (
-          <span key={n}><Insignia k={mio || 'punchline'} nivel={n} tam={40} /><small>Nivel {n}</small></span>
-        ))}
-        <p className="ves-nota">Juegas un evento de tu estilo: nivel 1. Quedas en el cuarto de arriba de la llave: subes uno, hasta el 3. Vuelven a 0 cada temporada.</p>
-      </div>
-
       {d === null ? <p className="ves-nota">Todavía no se puede elegir: se habilita en unas horas.</p> : null}
       {d && !verificado ? <p className="ves-nota">{ERROR.sin_verificar}</p> : null}
       {msg ? <p className="ves-msg" role="status">{msg}</p> : null}
 
-      {e ? (
-        <div className="ves-ficha jg-ficha">
-          <Insignia k={e.k} nivel={1} tam={64} />
-          <div>
-            <em>{FAMILIA[e.f][0]} · {cuantos[e.k] ? cuantos[e.k] + (cuantos[e.k] === 1 ? ' lo eligió' : ' lo eligieron') : 'nadie lo eligió todavía'}</em>
-            <b>{e.n}</b>
+      {/* 🎮 el estilo en grande, y al costado tus tres lugares */}
+      <section className="jg-hero" ref={heroR} data-fondo={e.n} style={{ '--rg': rg }} aria-live="polite">
+        <div className="jg-sel">
+          <Insignia k={e.k} nivel={nv} tam={typeof window !== 'undefined' && window.innerWidth < 760 ? 92 : 132} c={rg} />
+          <div className="jg-sel-t">
+            <em>{FAMILIA[e.f][0]} · {cuantosTxt(cuantos[e.k] || 0)}</em>
+            {/* 📏 el tamaño sale del largo del nombre: «Showman» se partía en «SHOWMA / N» en el celular */}
+            <b style={{ '--n': Math.max(7, e.n.length) }}>{e.n}</b>
             <p>{e.d}</p>
-            {d && verificado && sel && sel !== mio ? (
-              conf ? (
-                <div className="jg-conf">
-                  <p>{mio ? <>Cambias <b>{ESTILO[mio].n}</b> por <b>{e.n}</b>. Es tu único cambio de la temporada; <b>{ESTILO[mio].n}</b> queda desbloqueado, en nivel 0.</>
-                    : <>Tu estilo va a ser <b>{e.n}</b>. Después lo puedes cambiar una vez por temporada.</>}</p>
-                  <button type="button" className="ves-btn" disabled={ocup} onClick={() => setConf(false)}>Cancelar</button>
-                  <button type="button" className="ves-btn blanco" disabled={ocup} onClick={elegir}>{ocup ? 'Guardando…' : 'Confirmar'}</button>
-                </div>
-              ) : d.puede ? (
-                <button type="button" className="ves-btn blanco" onClick={() => setConf(true)}>{mio ? 'Cambiar a ' + e.n : 'Elegir ' + e.n}</button>
-              ) : <p className="ves-nota">{ERROR.ya}</p>
-            ) : sel && sel === mio ? <p className="ves-nota">Es tu estilo.</p> : null}
+            {accion}
           </div>
         </div>
-      ) : <p className="ves-nota">Toca un estilo para ver qué es{verificado ? ' y elegirlo' : ''}.</p>}
+        <aside className="jg-lug" aria-label="Tus tres lugares">
+          <span className="jg-rk">Tus tres lugares</span>
+          <ol>
+            {lugar(1, 'Elegido', mio, mio ? nivelDe(mio) : 0, mio ? 'Lo cambias una vez por temporada' : 'Elige uno abajo: la primera vez es libre')}
+            {lugar(2, 'DRA', ganados[0] ? ganados[0][0] : '', ganados[0] ? ganados[0][1] : 0, ganados[0] ? 'Ganado en un evento de estilo' : 'Juega un evento de estilo de DRA de otro estilo')}
+            {lugar(3, 'DRA', ganados[1] ? ganados[1][0] : '', ganados[1] ? ganados[1][1] : 0, ganados[1] ? 'Ganado en un evento de estilo' : 'Van los dos de nivel más alto')}
+          </ol>
+          {mio && d ? <span className={'jg-pill' + (d.puede ? '' : ' gris')}>{d.puede ? '✓ Tienes tu cambio de esta temporada' : 'Ya usaste tu cambio de esta temporada'}</span> : null}
+          <p className="ves-nota">Van en la columna izquierda de tu carta Competitiva. La forma es la familia; el color, el de tu rango.</p>
+        </aside>
+      </section>
 
-      {CAT.familias.map(([f]) => {
-        const xs = CAT.estilos.filter((x) => x[2] === f);
-        return (
-          <div key={f} className="ves-grp">
-            <Titulo extra={<small className="ves-de">{FAMILIA[f][1]}</small>}>{FAMILIA[f][0]}</Titulo>
-            <div className="ves-grid" role="radiogroup" aria-label={'Estilos de ' + FAMILIA[f][0]}>
-              {xs.map(([k, n]) => (
-                <Cuadro key={k} on={sel === k} puesto={mio === k} nombre={n}
-                  rar={mio === k ? 'Tu estilo' : viejos.has(k) ? 'Desbloqueado' : (cuantos[k] || 0) + (cuantos[k] === 1 ? ' lo tiene' : ' lo tienen')}
-                  onClick={() => { setSel(k); setConf(false); setMsg(''); }}>
-                  {/* todos como nivel 1: el nivel es de lo que jugaste, no de esta grilla. Lo tuyo lo dice «Puesto» */}
-                  <Insignia k={k} nivel={1} />
-                </Cuadro>
-              ))}
+      {/* 🗂️ la grilla entera: una fila por familia, seis estilos a todo el ancho */}
+      <div className="jg-grilla">
+        {CAT.familias.map(([fam, forma]) => (
+          <div key={fam} className="jg-fila">
+            <h4><b>{FAMILIA[fam][0]}</b><small>{FORMA_NOMBRE[forma]} · {FAMILIA[fam][1]}</small></h4>
+            <div className="ves-grid jg-6" role="radiogroup" aria-label={'Estilos de ' + FAMILIA[fam][0]}>
+              {CAT.estilos.filter((x) => x[2] === fam).map(([x, n]) => {
+                const g = ganados.findIndex((y) => y[0] === x);
+                return (
+                  <Cuadro key={x} on={e.k === x && (sel === x || (!sel && x === mio))} puesto={mio === x} nombre={n}
+                    rar={mio === x ? 'Tu estilo' : g >= 0 ? 'Lugar ' + (g + 2) : viejos.has(x) ? 'Desbloqueado' : cuantosCorto(cuantos[x] || 0)}
+                    onClick={() => tocar(x)}>
+                    {/* todos como nivel 1: el nivel es de lo que jugaste, no de esta grilla. Lo tuyo lo dice «Puesto» */}
+                    <Insignia k={x} nivel={1} tam={58} />
+                  </Cuadro>
+                );
+              })}
             </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
+
+      {/* 🪜 cómo se sube, con el estilo que estás mirando, y el próximo evento de estilo */}
+      <div className="jg-pie">
+        <section>
+          <Titulo extra={<small className="ves-de">vuelven a 0 cada temporada</small>}>Cómo se sube</Titulo>
+          <ol className="jg-esc">
+            {ESCALERA.map(([t, s], n) => (
+              <li key={n} className={tiene(e.k) ? (n === nv ? 'on' : n < nv ? 'ya' : '') : ''}>
+                <Insignia k={e.k} nivel={n} tam={44} c={rg} />
+                <b>Nivel {n}</b><span>{t}</span><small>{s}</small>
+              </li>
+            ))}
+          </ol>
+        </section>
+        <section className="jg-px">
+          <span className="jg-rk">Próximo evento de estilo</span>
+          {px ? (<>
+            <b>{limpio(px.n)}</b>
+            <span>{limpio(px.je)} · {siglaDe(px.sv)} · {liga.dia(px.t)}</span>
+            <a className="ves-btn" href="#/eventos">Ver en Eventos</a>
+          </>) : (<>
+            <b>Todavía no hay uno anunciado</b>
+            <span>Cuando DRA anuncie un evento de estilo, aparece acá. Jugarlo es como subes de nivel o ganas tu 2.º y 3.º lugar.</span>
+          </>)}
+        </section>
+      </div>
     </div>
   );
 }

@@ -58,8 +58,9 @@ def _j(ruta, defecto):
         return defecto
 
 
-def traer():
-    """`{clave: {juego, viejos}}` del objeto, o `None` si no contestó."""
+def traer(mandar=None):
+    """`{clave: {juego, viejos}}` del objeto, o `None` si no contestó. Con `mandar` (`{lugares, niveles}`), además le deja
+    a cada uno sus tres lugares con su nivel, que el Inventario muestra (17/11/2026)"""
     import requests
     import fotos as F
     import clave_ciclo as CC
@@ -68,7 +69,7 @@ def traer():
     if not tok:
         return None
     try:
-        r = requests.post(PA.WORKER + '/avisos/juegos-ciclo', data=b'{}',
+        r = requests.post(PA.WORKER + '/avisos/juegos-ciclo', data=json.dumps(mandar or {}, ensure_ascii=False).encode('utf-8'),
                           headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}, timeout=30)
         d = r.json() if r.ok else None
     except (OSError, ValueError):
@@ -191,6 +192,9 @@ def correr(aplicar):
         if cambian else ' · nada cambió'))
     if not aplicar:
         return 0
+    # 🎭 de vuelta al objeto: los tres lugares de cada uno y el nivel de cada estilo, para el Inventario (17/11/2026)
+    if traer({'lugares': gente, 'niveles': niveles}) is None:
+        print('      🎭 los lugares no llegaron al objeto: el Inventario muestra los de la vuelta anterior')
     nuevo_n = {'_leeme': LEEME_N, 'temporada': ACTUAL, 'desde': dict(sorted(desde.items())), 'niveles': niveles,
                'ganados': ganados}
     if {k: v for k, v in viejo.items() if k != '_leeme'} != {k: v for k, v in nuevo_n.items() if k != '_leeme'}:

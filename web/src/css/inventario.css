@@ -365,26 +365,107 @@
 @keyframes iv10-destello{from{filter:brightness(1.8);transform:translate(-50%,-50%) scale(1.25)}to{filter:none;transform:translate(-50%,-50%) scale(1)}}
 @keyframes iv10-entra{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
 
-/* 🎭 tu estilo de juego (16/11/2026, juego.jsx): el dibujo es el de la carta (forma de la familia, luz y aros) */
-.jg{display:grid;gap:14px}
+/* 🎭 tu estilo de juego (16/11/2026, juego.jsx): el dibujo es el de la carta (forma de la familia, luz y aros).
+   🎮 EL REMAKE, OPCIÓN B (17/11/2026): el estilo en grande sobre el negro de la página, con su nombre gigante y tenue
+   detrás —como «TAG» en el escenario de Cartas— y un halo del color de tu rango; tus tres lugares al costado; la grilla
+   de seis a todo el ancho; y al pie cómo se sube y el próximo evento. Sin panel gris alrededor */
+.jg{display:grid;gap:18px}
 .jg-ins{position:relative;display:inline-block;flex:none}
 .jg-ins svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .jg-ins i{position:absolute;-webkit-mask:center/contain no-repeat;mask:center/contain no-repeat}
-.jg-lug{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.jg-lug li{padding:10px 12px;border:1.5px solid var(--v-tinta);font:500 13px/1.4 Archivo,sans-serif;color:#C9C9CC}
-.jg-lug li b{display:block;margin-bottom:3px;font:800 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--v-tinta)}
-.jg-lug li.pr{border-style:dashed;border-color:var(--v-borde2)}
-.jg-lug li.pr b{color:var(--v-gris)}
-@media (max-width:620px){.jg-lug{grid-template-columns:1fr}}
-.jg-niv{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
-.jg-niv > span{display:grid;justify-items:center;gap:4px}
-.jg-niv small{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--v-gris)}
-.jg-niv .ves-nota{flex:1 1 260px}
-.jg-ficha{grid-template-columns:auto minmax(0,1fr);align-items:center}
-.jg-ficha .ves-btn{margin-top:10px}
-.jg-conf{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
-.jg-conf p{flex:1 1 100%;margin:0 0 4px}
+.jg-vac{color:#5A5C63}
+.jg-vac b{position:absolute;inset:0;display:grid;place-items:center;font:900 18px/1 Archivo,sans-serif}
+.jg-rk{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--v-gris)}
+/* el estilo en grande */
+.jg-hero{--rg:var(--v-tinta);position:relative;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:center;overflow:hidden;
+  padding:26px 22px;border:1.5px solid var(--v-borde);
+  background:radial-gradient(55% 110% at 10% 50%,color-mix(in srgb,var(--rg) 20%,transparent),transparent 62%),var(--v-fondo)}
+.jg-hero:before{content:attr(data-fondo);position:absolute;left:38%;top:50%;transform:translate(-50%,-50%);font:900 150px/1 Archivo,sans-serif;
+  font-stretch:125%;text-transform:uppercase;color:rgba(246,246,246,.04);white-space:nowrap;pointer-events:none}
+.jg-hero > *{position:relative;z-index:1;min-width:0}
+.jg-sel{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center}
+.jg-sel-t{display:grid;gap:8px;justify-items:start;min-width:0;container-type:inline-size}
+.jg-sel-t em{font:800 12.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--rg)}
+.jg-sel-t > b{max-width:100%;font:900 54px/.95 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;letter-spacing:-.01em;text-wrap:balance;
+  font-size:min(54px,calc(100cqi / (var(--n,7) * .95)))}
+.jg-sel-t p{margin:0;font:500 15px/1.45 Archivo,sans-serif;color:#C9C9CC;max-width:48ch}
+.jg-sel-t .ves-btn{margin-top:6px}
+.jg-es{margin-top:4px;padding:5px 8px;background:var(--v-verde);color:#030304;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.jg-conf{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}
+.jg-conf p{flex:1 1 100%;margin:0 0 4px;font:500 14px/1.45 Archivo,sans-serif;color:#C9C9CC}
+.jg-conf p b{color:var(--v-tinta)}
+/* tus tres lugares */
+.jg-lug{display:grid;gap:8px;align-content:start}
+.jg-lug ol{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.jg-lug li{display:grid;grid-template-columns:18px auto minmax(0,1fr);gap:10px;align-items:center;padding:8px 10px;border:1.5px solid var(--v-borde2);background:rgba(11,12,14,.8)}
+.jg-lug li.vac{border-style:dashed}
+.jg-lg-n{font:900 18px/1 Archivo,sans-serif;color:var(--v-gris)}
+.jg-lug li > span:last-child{display:grid;gap:2px;min-width:0}
+.jg-lug em{font:800 11.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--rg)}
+.jg-lug li.vac em{color:var(--v-gris)}
+.jg-lug li b{font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.jg-lug li.vac b{color:#85858A}
+.jg-lug small{font:500 12px/1.3 Archivo,sans-serif;color:var(--v-gris)}
+.jg-pill{justify-self:start;padding:5px 8px;border:1.5px solid var(--v-verde);color:var(--v-verde);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.jg-pill.gris{border-color:var(--v-borde2);color:var(--v-gris)}
+/* la grilla: una fila por familia, seis a todo el ancho */
+.jg-grilla{display:grid;gap:10px}
+.jg-fila{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:stretch}
+.jg-fila h4{display:grid;align-content:center;gap:5px;margin:0;padding:4px 0 4px 10px;border-left:3px solid var(--v-tinta)}
+.jg-fila h4 b{font:900 22px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.jg-fila h4 small{font:700 12px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--v-gris)}
+.ves-grid.jg-6{grid-template-columns:repeat(6,minmax(0,1fr))}
+.jg-6 .ves-q{padding:16px 6px 12px;gap:7px}
+.jg-6 .ves-q b{font-size:clamp(10px,9.4cqi,13px)}
 .ves-q .jg-ins{margin:2px 0 1px}
-/* el gris de la página y no el del borde: en el cuadro y en la ficha, «6 lo tienen» y la familia tienen que leerse */
-.jg .ves-q,.jg .ves-ficha{--r:var(--v-gris)}
+/* el gris de la página y no el del borde: en el cuadro, «6 lo tienen» tiene que leerse */
+.jg .ves-q{--r:var(--v-gris)}
 .jg .ves-q.on{--r:var(--v-tinta)}
+/* cómo se sube y el próximo evento */
+.jg-pie{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:end}
+.jg-pie > section{display:grid;gap:10px;min-width:0}
+.jg-esc{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.jg-esc li{display:grid;justify-items:center;align-content:start;gap:4px;padding:12px 6px;border:1.5px solid var(--v-borde);text-align:center;opacity:.6}
+.jg-esc li.ya{opacity:.85}
+.jg-esc li.on{opacity:1;border-color:var(--v-tinta);background:#121216}
+.jg-esc b{font:800 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.09em;text-transform:uppercase}
+.jg-esc span{font:800 13px/1.2 Archivo,sans-serif}
+.jg-esc small{font:500 11.5px/1.3 Archivo,sans-serif;color:var(--v-gris)}
+.jg-px{align-self:stretch;padding:14px;border:1.5px solid var(--v-borde2);
+  background:radial-gradient(80% 120% at 0% 0%,rgba(41,178,152,.16),transparent 60%),var(--v-panel)}
+.jg-px > b{font:900 17px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.jg-px > span:not(.jg-rk){font:500 13.5px/1.4 Archivo,sans-serif;color:#C9C9CC}
+/* 🖥️ compu chica: los lugares abajo del estilo */
+@media (max-width:1060px){
+  .jg-hero{grid-template-columns:minmax(0,1fr)}
+  .jg-lug ol{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .jg-pie{grid-template-columns:minmax(0,1fr)}
+}
+/* 📱 el celular: el estilo arriba, los lugares en una fila, la grilla de a tres */
+@media (max-width:760px){
+  .jg{gap:14px}
+  .jg-hero{padding:18px 14px;gap:16px}
+  .jg-hero:before{font-size:92px;top:28%;left:50%}
+  .jg-sel{gap:14px}
+  .jg-sel-t > b{font-size:min(36px,calc(100cqi / (var(--n,7) * .95)))}
+  .jg-sel-t p{font-size:14px}
+  .jg-lug ol{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  .jg-lug li{grid-template-columns:1fr;justify-items:center;text-align:center;padding:10px 4px;gap:5px}
+  .jg-lg-n,.jg-lug small{display:none}
+  /* 📏 el nombre entero en una línea, achicado por su largo: «SHOWMA / N» a 320 px */
+  .jg-lug li{container-type:inline-size}
+  .jg-lug li > span:last-child{justify-self:stretch}
+  .jg-lug li b{font-size:min(12.5px,calc(100cqi / (var(--n,8) * .78)));white-space:nowrap}
+  .jg-lug em{font-size:10.5px}
+  .jg-fila{grid-template-columns:minmax(0,1fr);gap:8px}
+  .jg-fila h4{grid-auto-flow:column;justify-content:space-between;align-items:baseline;padding:6px 0 0;border-left:0;border-top:3px solid var(--v-tinta)}
+  .ves-grid.jg-6{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .jg-esc{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* 📱 los más angostos (320 px): el estilo arriba y el texto abajo; el botón largo («Cambiar a Referencias») se parte */
+@media (max-width:400px){
+  .jg-sel{grid-template-columns:minmax(0,1fr);justify-items:start}
+  /* ⚠️ el texto lleva `container-type`, que no tiene ancho propio: sin estirarlo, se encogía a nada */
+  .jg-sel-t{justify-self:stretch}
+  .jg-sel-t .ves-btn{white-space:normal;text-align:left;max-width:100%}
+}

@@ -650,11 +650,9 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         </div>
       ) : null}
 
+      {/* 🎮 el estilo de juego va directo sobre el negro, sin el panel gris (el remake del 17/11/2026, `juego.jsx`) */}
       {sec === 'juego' ? (
-        <section className="ves-panel ancha">
-          <Titulo>Tu estilo de juego</Titulo>
-          <Suspense fallback={<p className="ves-nota">Cargando…</p>}><EstiloJuego dc={dc} Cuadro={Cuadro} Titulo={Titulo} /></Suspense>
-        </section>
+        <Suspense fallback={<p className="ves-nota">Cargando…</p>}><EstiloJuego liga={liga} dc={dc} k={k} Cuadro={Cuadro} Titulo={Titulo} /></Suspense>
       ) : null}
 
       {sec === 'col' ? (

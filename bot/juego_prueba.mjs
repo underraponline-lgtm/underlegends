@@ -75,6 +75,18 @@ try {
     'el ciclo recibe {clave: {juego, viejos}}; quien no tiene clave todavía no va', c);
   ok(!('bea' in c.elegidos) && Object.keys(c.elegidos).length === 2, 'sin clave no hay a quién dibujarle la carta: queda afuera', c);
 
+  // 🎭 de ida (17/11/2026): los tres lugares con su nivel, para el Inventario
+  ok(o.juegoMio(ANA, 't1').lugares.length === 0, 'sin lo del ciclo, sin lugares');
+  o.juegosCiclo({ lugares: { ana: [['punchline', 1], ['respuesta', 2], ['inventado', 1], ['flow', 9]], dlx: [['cazafla', 0]], ['x'.repeat(80)]: [['flow', 1]] },
+    niveles: { ana: { punchline: 1, respuesta: 2, inventado: 3 }, bea: 'roto' } });
+  r = o.juegoMio(ANA, 't1');
+  ok(JSON.stringify(r.lugares) === '[["punchline",1],["respuesta",2]]' && JSON.stringify(r.niveles) === '{"punchline":1,"respuesta":2}',
+    'tus lugares y tus niveles: sólo lo del catálogo y niveles de 0 a 3', r);
+  ok(JSON.stringify(o.juegoMio(A.DUENO, 't1').lugares) === '[["cazafla",0]]' && o.juegoMio(BEA, 't1').lugares.length === 0,
+    'el dueño por su clave; quien no tiene clave, nada');
+  o.juegosCiclo({});
+  ok(o.juegoMio(ANA, 't1').lugares.length === 2, 'un ciclo que sólo pregunta no borra lo guardado');
+
   // 🎭 los eventos de estilo que marca Dlx en el Dashboard (17/11/2026): el número del evento o el id del anuncio
   const V = (x) => A.ajusteValido('eventos_estilo', x);
   ok(JSON.stringify(V({ 653: 'punchline', 'a:1440000000000000000': 'flow' })) === JSON.stringify({ 653: 'punchline', 'a:1440000000000000000': 'flow' }),
