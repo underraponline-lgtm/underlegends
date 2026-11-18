@@ -180,6 +180,21 @@ def dia_del_nombre(nombre):
     return _DIAS[d] if d is not None else ''
 
 
+_MESES = ('ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE',
+          'DICIEMBRE')
+_FECHA_MES = re.compile(r'\b(\d{1,2})\s*(?:DE\s+)?(%s|SETIEMBRE)\b' % '|'.join(_MESES))
+
+
+def _fecha_escrita(texto):
+    """`(mes, día)` de «29 de noviembre» / «29 NOVIEMBRE», o `None`. Sólo con el mes escrito: «04/10» solo sigue sin
+    alcanzar (ver `hora_bandera()`). Igual que `fechaEscrita()` de bot/avisos.js."""
+    m = _FECHA_MES.search(_sin_tildes(texto))
+    if not m:
+        return None
+    mes = 9 if m.group(2) == 'SETIEMBRE' else _MESES.index(m.group(2)) + 1
+    return (mes, int(m.group(1))) if 1 <= int(m.group(1)) <= 31 else None
+
+
 def _hora_de(texto):
     """`(hora, minutos)` de «22:30», «23 HS» o «8 pm»; `None` si no hay."""
     t = str(texto or '')
@@ -226,6 +241,21 @@ def hora_bandera(horario, publicado, fecha=''):
         from zoneinfo import ZoneInfo
         z = ZoneInfo(zona)
     except Exception:                                    # noqa: BLE001
+        return None
+    utc = _dt.timezone.utc
+    # 📅 LA FECHA CON EL MES ESCRITO MANDA SOBRE EL DÍA DE LA SEMANA (DISCORD STYLE 20, DDS, 08/11/2026: «FECHA: Domingo
+    # 29 de noviembre», anunciado tres semanas antes). Con el «domingo» solo caía en el domingo siguiente al anuncio
+    fe = _fecha_escrita(fecha) or _fecha_escrita(t)
+    if fe:
+        loc0 = pub.replace(tzinfo=utc).astimezone(z)
+        for y in (loc0.year, loc0.year + 1):
+            try:
+                d = _dt.date(y, fe[0], fe[1])
+            except ValueError:
+                return None
+            if d >= loc0.date() - _dt.timedelta(days=1):
+                cand = _dt.datetime(d.year, d.month, d.day, hm[0], hm[1], tzinfo=z)
+                return cand.astimezone(utc).replace(tzinfo=None).strftime('%Y-%m-%dT%H:%M:%S')
         return None
     dia = _dia_de(t)
     f = str(fecha or '').strip()
@@ -399,6 +429,9 @@ def _self_check():
         ('🇨🇷 20:30', '2026-09-27T01:29:00', '', '2026-09-27T02:30:00'),
         ('21:30 🇨🇱', '2026-08-29T16:41:00', '', '2026-08-30T01:30:00'),   # 9 h después
         ('22:30 🇨🇱', '2026-09-26T01:40:00', '', '2026-09-26T01:30:00'),   # se anunció ya empezado
+        # DISCORD STYLE 20 (DDS): la fecha con el mes escrito, tres semanas después del anuncio
+        ('7:00 PM 🇵🇪 Perú.', '2026-11-08T05:10:49', 'Domingo 29 de noviembre.', '2026-11-30T00:00:00'),
+        ('21:00 🇦🇷', '2026-12-20T15:00:00', '2 de enero', '2027-01-03T00:00:00'),   # el año que viene
     ]
     for h, pub, f, esp in casos:
         got = hora_bandera(h, pub, f)

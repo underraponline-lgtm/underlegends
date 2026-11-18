@@ -557,6 +557,37 @@
     if (i + bloques.length > ESCALERA.length) return [];
     return bloques.map(function (b, j) { return [ESCALERA[i + j], b]; });
   }
+  /* 🌲 la tira de batallas sin títulos ni renglones que la partan, en tramos que van a la mitad (MULTIVERS VIDA O
+     MUERTE, LKR): `escuchar._rondas_por_mitades()` */
+  function rondasPorMitades(bats) {
+    var n = bats.length;
+    if (n < 3) return [];
+    var gente = bats.map(function (b) { return genteDe([b]); });
+    for (var s0 = n - 1; s0 > 1; s0--) {
+      var tam = [s0];
+      while (tam[tam.length - 1] > 1) tam.push(Math.floor((tam[tam.length - 1] + 1) / 2));
+      if (tam.reduce(function (a, b) { return a + b; }, 0) !== n) continue;
+      var tramos = [], k = 0;
+      tam.forEach(function (t) { var r = []; for (var x = k; x < k + t; x++) r.push(x); tramos.push(r); k += t; });
+      var ok = true;
+      for (var j = 0; j + 1 < tramos.length && ok; j++) {
+        var sig = new Set(), antes = new Set();
+        tramos[j + 1].forEach(function (x) { gente[x].forEach(function (q) { sig.add(q); }); });
+        tramos[j].forEach(function (x) { gente[x].forEach(function (q) { antes.add(q); }); });
+        sig.forEach(function (q) { if (!antes.has(q)) ok = false; });
+        tramos[j].forEach(function (x) {
+          var c = 0;
+          gente[x].forEach(function (q) { if (sig.has(q)) c++; });
+          if (c !== 1) ok = false;
+        });
+      }
+      if (!ok) continue;
+      var i = ESCALERA.indexOf(s0 === 2 ? 'SEMIFINALES' : s0 <= 4 ? 'CUARTOS' : s0 <= 8 ? 'OCTAVOS' : 'DIECISEISAVOS');
+      if (i + tramos.length !== ESCALERA.length) continue;
+      return tramos.map(function (t, j2) { return [ESCALERA[i + j2], t.map(function (x) { return bats[x]; })]; });
+    }
+    return [];
+  }
   function rondasDe(texto) {
     var out = [], actual = null, bats = [], previas = [], bloques = [[]];
     texto = plano(texto);
@@ -576,7 +607,10 @@
       else if (!actual && l.trim() && bloques[bloques.length - 1].length) bloques.push([]);
     });
     if (actual && bats.length) out.push([actual, bats]);
-    if (!out.length) return sinNumeracion(equiposConEspacios(rondasPorForma(bloques.filter(function (b) { return b.length; }))));
+    if (!out.length) {
+      var pf = rondasPorForma(bloques.filter(function (b) { return b.length; }));
+      return sinNumeracion(equiposConEspacios(pf.length ? pf : rondasPorMitades(previas)));
+    }
     // la primera ronda sin título (FVS UNDER, 26/09/2026): `escuchar._rondas_crudas()`
     if (previas.length >= 2 && out.length && RONDA_ANTERIOR[out[0][0]]) {
       var gente = function (bs) {
@@ -1249,6 +1283,9 @@
     var mano = ls[0].replace(/^#+\s*/, '').replace(/[\u{1F3FB}-\u{1F3FF}\uFE0F]/gu, '').trim();
     if (mano === '\u{1FAF2}' || mano === '\u{1F448}') return '<izq>';
     if (mano === '\u{1FAF1}' || mano === '\u{1F449}') return '<der>';
+    // 🏳️ el voto que es sólo la bandera del ganador (URBF, IDS V.3): `escuchar._voto_de()`
+    var b = /^[\s*_~|>]*([\u{1F1E6}-\u{1F1FF}]{2})[\s*_~|]*$/u.exec(mano);
+    if (b) return '<bandera>' + b[1];
     return norm(ls[0].replace(/^#+\s*/, '').replace(MARCAS, ''));
   }
   function veredictos(rows) {
@@ -1277,6 +1314,11 @@
         var cur = tanda.bs[tanda.bs.length - 1], v = votoDe(t);
         if (!cur || !v || !m.autor) return;
         if (v === '<izq>' || v === '<der>') { cur.votos[m.autor] = v === '<izq>' ? 'a' : 'b'; return; }
+        if (v.indexOf('<bandera>') === 0) {
+          var fl = v.slice(9), fa = String(cur.a).indexOf(fl) >= 0, fb = String(cur.b).indexOf(fl) >= 0;
+          if (fa !== fb) cur.votos[m.autor] = fa ? 'a' : 'b';
+          return;
+        }
         var na = norm(cur.a), nb = norm(cur.b);
         var ea = v === na || (na.length > 2 && v.indexOf(na) >= 0);
         var eb = v === nb || (nb.length > 2 && v.indexOf(nb) >= 0);

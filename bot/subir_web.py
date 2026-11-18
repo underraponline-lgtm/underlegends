@@ -2186,6 +2186,10 @@ REANUNCIO_MISMO_H = 6
 #: (1vs1 contra equipos), y con dos candidatas empatadas, ninguna: un cuadro equivocado es peor que ninguno.
 SUELTA_H = 6
 SUELTA_ANTES_MIN = 30
+#: …y hasta estas horas antes cuando el anuncio trae la hora de ARRANQUE (`sh: 0`) y no la de publicación: la llave se
+#: arma antes de empezar. FINAL NACIONAL PLAZAS (URBF, 14/11/2026): la #645 «RED BULL NACIONAL PLAZAS T.5» salió 2 h
+#: antes de las 7 PM del anuncio, y con 30 minutos quedaba suelta
+SUELTA_ANTES_INI_H = 3
 SUELTA_MISMO_DIAS = 4
 #: ⏱️ y por la hora sola, sin nada del nombre en común: la llave entre estos minutos antes y después del anuncio
 SUELTA_HORA_ANTES_MIN = 15
@@ -2291,7 +2295,8 @@ def _sueltas(items, regs, LW, ahora):
                 fuerza = 2
             else:
                 pr, nr = _propias(r.get('nombre'))
-                if not (pi & pr or ni & nr) or not -SUELTA_ANTES_MIN * 60000 <= d <= SUELTA_H * 3600000:
+                antes = SUELTA_ANTES_INI_H * 3600000 if i.get('sh') == 0 else SUELTA_ANTES_MIN * 60000
+                if not (pi & pr or ni & nr) or not -antes <= d <= SUELTA_H * 3600000:
                     continue
                 fuerza = 1
             cands.append((fuerza, -abs(d), n))
@@ -4506,6 +4511,12 @@ def _self_check():
          {'522': _ll('RAP SIN GROSERIAS 2', 'FDS', '2026-10-21T02:04:00')}, ['522']),
         ('…pero 9 horas después, no', [_a('RAP SIN GROSERIAS (Venezuela version)', 'FDS', '2026-10-21T01:56:00')],
          {'522': _ll('RAP SIN GROSERIAS 2', 'FDS', '2026-10-21T10:56:00')}, [None]),
+        ('con la hora de arranque, la llave armada 2 h antes (FINAL NACIONAL PLAZAS, URBF)',
+         [dict(_a('FINAL NACIONAL PLAZAS RED BULL CABRANA', 'URBF', '2026-11-15T00:00:00'), sh=0)],
+         {'645': _ll('RED BULL NACIONAL PLAZAS T.5', 'URBF', '2026-11-14T22:00:00')}, ['645']),
+        ('…pero con la hora de publicación, 2 h antes no es de ese anuncio',
+         [dict(_a('FINAL NACIONAL PLAZAS RED BULL CABRANA', 'URBF', '2026-11-15T00:00:00'), sh=1)],
+         {'645': _ll('RED BULL NACIONAL PLAZAS T.5', 'URBF', '2026-11-14T22:00:00')}, [None]),
         ('el mismo nombre, tres días después (se corrió)', [_a('PRADERAP VOL.2', 'ACAD', '2026-10-24T20:52:00')],
          {'535': _ll('PRADERAP VOL.2', 'ACAD', '2026-10-27T20:02:00')}, ['535']),
         ('…pero no si en el medio se anunció otro de la serie',

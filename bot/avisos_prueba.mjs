@@ -555,6 +555,12 @@ const ok = (cond, que, det) => {
   ok(casos.length >= 30, 'hay casos de verdad para comparar');
   // URBF, 14/11/2026: `<t:…:s>` no es de los siete estilos de siempre; es el `_MARCA` de cuando.py
   ok(A.momentoMs('<t:1790109000:s>', '2026-09-22T00:00:00', null) === 1790109000000, 'la marca <t:…:s> también es la hora');
+  // DISCORD STYLE 20 (DDS, 08/11/2026): la hora de verdad contra el título sin hora, y la fecha con el mes escrito
+  const dds = A.camposLineas('📅 **FECHA:** Domingo 29 de noviembre.\n🕖 **HORA:** 7:00 PM 🇵🇪 Perú.\n\n🌎 **HORARIOS INTERNACIONALES**');
+  ok(/7:00/.test(dds.horario || '') && A.horaBandera(dds.horario, '2026-11-08T05:10:49', dds.fecha) === Date.parse('2026-11-30T00:00:00Z')
+    && A.horaBandera('21:00 🇦🇷', '2026-12-20T15:00:00', '2 de enero') === Date.parse('2027-01-03T00:00:00Z'),
+  '«HORA: 7:00 PM 🇵🇪» le gana a «HORARIOS INTERNACIONALES», y «Domingo 29 de noviembre» es ese día (y «2 de enero», el año que viene)',
+  JSON.stringify(dds));
   // 🔑 la tarjeta del Centro de Competencias de DRA: sin texto, en un embed
   // (el contrato guarda sólo texto; ver el self-check de bot/anuncios.py)
   const inscr = '¡Inscríbete presionando el botón de abajo!';

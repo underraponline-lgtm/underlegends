@@ -339,9 +339,17 @@ def campos_lineas(texto):
         if not c:
             continue
         tipo, p, k = c
-        if tipo in out and (tipo != 'horario' or pri[tipo] <= p):
+        if tipo in out and tipo != 'horario':
             continue
-        out[tipo], pri[tipo] = _valor_linea(raw, k, lineas[i + 1:]), p
+        v = _valor_linea(raw, k, lineas[i + 1:])
+        # 🔴 UN HORARIO CON HORA LE GANA A UNO SIN NÚMEROS, aunque su etiqueta valga menos (DISCORD STYLE 20, DDS,
+        # 08/11/2026): «🌎 HORARIOS INTERNACIONALES» es un título —la tabla de países va abajo— y le ganaba a
+        # «🕖 HORA: 7:00 PM 🇵🇪», así que el evento quedaba sin hora. Igual que `camposLineas()` de bot/avisos.js
+        if tipo == 'horario':
+            p = (0 if re.search(r'\d|<t:', v or '') else 1, p)
+        if tipo in out and pri[tipo] <= p:
+            continue
+        out[tipo], pri[tipo] = v, p
     return out
 
 
@@ -941,8 +949,17 @@ def rotular_afiche(texto):
     («VALHALLA» y «VOL1»: un nombre; «MUERTE SUBITA» y «TORNEO DE
     FREESTYLE»: el nombre y su bajada).
 
-    ⚠️ Lo que ya es un campo («CUPOS: 16») queda como está."""
+    ⚠️ Lo que ya es un campo («CUPOS: 16») queda como está.
+
+    🔴 UN HORARIO DE CLASES NO ES UN AFICHE (LKR, 15/11/2026: «Nº HORA LUNES MARTES…» y «2D0 AÑO SECCIÓN "B"», subido
+    a fms-anuncios, entró al calendario como evento). Tres o más franjas «7:00 - 8:20», o un renglón con cuatro días de
+    la semana: es una tabla, no un evento. Se devuelve vacío y `parsear()` no ve nada."""
     ls = [l.strip() for l in str(texto or '').splitlines() if l.strip()]
+    franjas = sum(bool(re.search(r'\b\d{1,2}[:.]\d{2}\s*[-–a]\s*\d{1,2}[:.]\d{2}\b', l)) for l in ls)
+    if franjas >= 3 or any(len(re.findall(r'\b(?:%s)\b' % '|'.join(('LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES',
+                                                                    'SABADO', 'DOMINGO')), norm_linea(l))) >= 4
+                           for l in ls):
+        return ''
     titulo, resto, visto = [], [], False
     for l in ls:
         if campo_de(l):
@@ -1685,6 +1702,12 @@ def _self_check():
                      '✅ - ESTE EMOJI CONFIRMA TU ASISTENCIA A LAS HORAS Y AL EVENTO\n@everyone'}, 'X', 'x') is None
     mal += not ok
     print('   %s «HORARIOS PARA LA FINAL…» sin hora es un título, no un horario' % ('✅' if ok else '🔴'))
+    # DISCORD STYLE 20 (DDS, 08/11/2026): la hora de verdad, antes o después del título «HORARIOS INTERNACIONALES»
+    _dds = '📅 **FECHA:** Domingo 29 de noviembre.\n🕖 **HORA:** 7:00 PM 🇵🇪 Perú.\n\n🌎 **HORARIOS INTERNACIONALES**\n'
+    ok = '7:00' in (campos_lineas(_dds).get('horario') or '') \
+        and '7:00' in (campos_lineas('🌎 **HORARIOS INTERNACIONALES**\n🕖 **HORA:** 7:00 PM 🇵🇪').get('horario') or '')
+    mal += not ok
+    print('   %s «HORA: 7:00 PM 🇵🇪» le gana a «HORARIOS INTERNACIONALES», que no trae hora (DDS)' % ('✅' if ok else '🔴'))
 
     # ⚠️ Y LO QUE NO ES «12 de 16» NO SE FUERZA.
     casos = [('12/16/24/32/36', (None, None)), ('♾️', (None, None)),
@@ -1780,6 +1803,14 @@ def _self_check():
           and not pide_ocr(afiche, dom + _dt.timedelta(days=4)))
     mal += not ok
     print('   %s se lee sólo lo que parece un afiche: con imagen, poco texto y de estos días'
+          % ('✅' if ok else '🔴'))
+    # 🔴 el horario de clases de LKR (15/11/2026) no es un evento; el VALHALLA de arriba sigue siéndolo
+    _clase = ('Nº    HORA    LUNES    MARTES    MIÉRCOLES    JUEVES    VIERNES\n2    7:00 - 8:20\n'
+              '3    8:20 - 9:40    VALORES Y CIUDADANIA\n4    9:40 - 11:00    FCTP\n2D0 AÑO SECCIÓN "B" - GUIA: X')
+    ok = rotular_afiche(_clase) == '' and parsear(dict(afiche, content='@everyone\n' + rotular_afiche(_clase)),
+                                                  'LKR', 'fms-anuncios') is None and a is not None
+    mal += not ok
+    print('   %s un horario de clases no es un afiche: franjas «7:00 - 8:20» y los días de la semana en fila'
           % ('✅' if ok else '🔴'))
     ok = parsear(dict(afiche, content='@everyone\n' + rotular_afiche('GANADOR DE LA COMPE\nfelicidades')),
                  'ACAD', 'torneos') is None

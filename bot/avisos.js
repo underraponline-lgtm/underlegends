@@ -2486,9 +2486,14 @@ export function camposLineas(texto) {
   for (let i = 0; i < lineas.length; i++) {
     const c = campoDe(lineas[i]);
     if (!c) continue;
-    const [tipo, p, k] = c;
-    if (tipo in out && (tipo !== 'horario' || pri[tipo] <= p)) continue;
-    out[tipo] = valorLinea(lineas[i], k, lineas.slice(i + 1));
+    const [tipo, p0, k] = c;
+    if (tipo in out && tipo !== 'horario') continue;
+    const v = valorLinea(lineas[i], k, lineas.slice(i + 1));
+    // 🔴 un horario con hora le gana a uno sin números (DISCORD STYLE 20: «HORARIOS INTERNACIONALES» contra «HORA:
+    // 7:00 PM 🇵🇪»): `anuncios.campos_lineas()`. La prioridad es [con hora, etiqueta], comparada en ese orden
+    const p = tipo === 'horario' ? (/\d|<t:/.test(v || '') ? 0 : 100) + p0 : p0;
+    if (tipo in out && pri[tipo] <= p) continue;
+    out[tipo] = v;
     pri[tipo] = p;
   }
   return out;
@@ -2913,6 +2918,16 @@ export function diaDelNombre(nombre) {
   const d = diaDe(nombre);
   return d == null ? '' : DIAS_JS[d];
 }
+const MESES_JS = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE',
+  'NOVIEMBRE', 'DICIEMBRE'];
+const FECHA_MES = new RegExp('\\b(\\d{1,2})\\s*(?:DE\\s+)?(' + MESES_JS.join('|') + '|SETIEMBRE)\\b');
+/** `cuando._fecha_escrita()`: `[mes, día]` de «29 de noviembre», o `null`. Sólo con el mes escrito */
+function fechaEscrita(texto) {
+  const m = FECHA_MES.exec(sinTildes(texto));
+  if (!m) return null;
+  const d = parseInt(m[1], 10);
+  return d >= 1 && d <= 31 ? [m[2] === 'SETIEMBRE' ? 9 : MESES_JS.indexOf(m[2]) + 1, d] : null;
+}
 function horaDe(texto) {
   const t = String(texto || '');
   let h, mi, ap;
@@ -2952,6 +2967,19 @@ export function horaBandera(horario, publicado, fecha) {
   const zona = ZONA_BANDERA[cc];
   const pub = Date.parse(String(publicado || '').slice(0, 19) + 'Z');
   if (!zona || Number.isNaN(pub)) return null;
+  // 📅 la fecha con el mes escrito manda sobre el día de la semana (DISCORD STYLE 20, DDS): `cuando._fecha_escrita()`
+  const fe = fechaEscrita(fecha) || fechaEscrita(t);
+  if (fe) {
+    const loc0 = pared(zona, pub);
+    const hoy0 = loc0.ms - (loc0.ms % DIA_MS);
+    const y0 = new Date(loc0.ms).getUTCFullYear();
+    for (const y of [y0, y0 + 1]) {
+      const base = Date.UTC(y, fe[0] - 1, fe[1]);
+      if (new Date(base).getUTCDate() !== fe[1]) return null;
+      if (base >= hoy0 - DIA_MS) return deLaPared(zona, base + (hm[0] * 60 + hm[1]) * MIN);
+    }
+    return null;
+  }
   let dia = diaDe(t);
   const f = String(fecha || '').trim();
   if (dia == null && f) {

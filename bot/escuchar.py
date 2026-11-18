@@ -1162,7 +1162,7 @@ def _rondas_crudas(texto):
     if actual and bats:
         out.append((actual, bats))
     if not out:
-        return _rondas_por_forma([b for b in bloques if b])
+        return _rondas_por_forma([b for b in bloques if b]) or _rondas_por_mitades(previas)
     # 🔑 LA PRIMERA RONDA SIN ENCABEZADO (FVS UNDER, FVS, 26/09/2026): cuatro tríos `「Rfran」 vs 「Force」 vs 「Draax」`
     # arriba de `-# CUARTOS`, sin título. Se tiraban: Force, Sosa, Agustín 51 y Molusco quedaban afuera de la llave.
     # Son la ronda de ANTES de la primera que tiene título, si son dos batallas o más y su gente sigue en esa ronda
@@ -1217,6 +1217,46 @@ def _rondas_por_forma(bloques):
     if i + len(bloques) > len(ESCALERA):
         return []
     return [(ESCALERA[i + k], b) for k, b in enumerate(bloques)]
+
+
+def _rondas_por_mitades(bats):
+    """🌲 LA TERCERA RED: UNA SOLA TIRA DE BATALLAS, SIN TÍTULOS NI RENGLONES QUE LAS SEPAREN. `[(ronda, bats)]` o `[]`.
+
+    MULTIVERS VIDA O MUERTE (LKR, 12/11/2026): siete `## A 🆚 B` seguidos, separados sólo por renglones en blanco —4, 2
+    y 1, con un triple en el primero—. `_rondas_por_forma()` pide bloques separados por un renglón escrito, así que era
+    uno solo y la llave no existía: el evento quedó sin puntos y su nombre se le pegó a otra llave.
+
+    Se parte la tira en tramos que van a la mitad (4·2·1, 8·4·2·1, 3·2·1…) y vale SÓLO si cada tramo sale entero del
+    anterior: cada batalla de un tramo deja pasar exactamente a UNO de los suyos, y todo el que está en el siguiente
+    estaba en ése. Una cartelera de batallas sueltas o dos fixtures no cumplen eso."""
+    n = len(bats)
+    if n < 3:
+        return []
+    gente = [_gente_de([b]) for b in bats]
+    for s0 in range(n - 1, 1, -1):
+        tam = [s0]
+        while tam[-1] > 1:
+            tam.append((tam[-1] + 1) // 2)
+        if sum(tam) != n:
+            continue
+        tramos, k = [], 0
+        for t in tam:
+            tramos.append(list(range(k, k + t)))
+            k += t
+        ok = True
+        for a, b in zip(tramos, tramos[1:]):
+            sig = set().union(*(gente[j] for j in b))
+            antes = set().union(*(gente[j] for j in a))
+            if not sig <= antes or any(len(gente[j] & sig) != 1 for j in a):
+                ok = False
+                break
+        if not ok:
+            continue
+        i = ESCALERA.index('SEMIFINALES' if s0 == 2 else 'CUARTOS' if s0 <= 4 else 'OCTAVOS' if s0 <= 8 else 'DIECISEISAVOS')
+        if i + len(tramos) != len(ESCALERA):
+            continue
+        return [(ESCALERA[i + j], [bats[x] for x in t]) for j, t in enumerate(tramos)]
+    return []
 
 
 def _es_negrita(pedazo):
@@ -3655,6 +3695,12 @@ def _voto_de(t):
     mano = _TONO.sub('', re.sub(r'^#+\s*', '', ls[0])).strip()
     if len(mano) == 1 and mano in MANO_IZQ + MANO_DER:
         return '<izq>' if mano in MANO_IZQ else '<der>'
+    # 🏳️ EL VOTO QUE ES SÓLO LA BANDERA DEL GANADOR (URBF, IDS V.3, 09/11/2026: `# NAIN 🇦🇷 🆚 🇻🇪 NUMBER` y abajo
+    # `🇦🇷`, la noche entera; LKR igual). `norm()` borra las banderas, así que no votaba nadie: de esa noche entró una
+    # batalla. Cuenta en `_tandas()` sólo si la bandera está en UN lado del título
+    b = re.fullmatch(r'[\s*_~|>]*([\U0001F1E6-\U0001F1FF]{2})[\s*_~|]*', mano)
+    if b:
+        return '<bandera>' + b.group(1)
     return norm(MARCAS.sub('', re.sub(r'^#+\s*', '', ls[0])))
 
 
@@ -3812,6 +3858,11 @@ def _tandas(rows):
                 continue
             if v in ('<izq>', '<der>'):
                 cur['votos'][str(m['autor'])] = 'a' if v == '<izq>' else 'b'
+                continue
+            if v.startswith('<bandera>'):
+                fa, fb = v[9:] in cur['a'], v[9:] in cur['b']
+                if fa != fb:
+                    cur['votos'][str(m['autor'])] = 'a' if fa else 'b'
                 continue
             na, nb = norm(cur['a']), norm(cur['b'])
             ea = v == na or (len(na) > 2 and na in v)
@@ -5489,6 +5540,13 @@ def _check_veredicto_ganador():
          [b['ganador'] for b in batallas_veredicto([fila(300, '# YOR 🇪🇦 🆚 KOCHI 🇨🇱'), fila(305, '❌', '3d'),
                                                     fila(310, '🫱', '3d')])] == ['KOCHI 🇨🇱']),
         ('una mano con un nombre al lado no es un voto con la mano', _voto_de('🫱 SEKKA') == 'sekka'),
+        # 🏳️ URBF, IDS V.3 (09/11/2026): el voto es la bandera del ganador; la que está en los dos lados no vota
+        ('`🇦🇷` debajo de `# NAIN 🇦🇷 🆚 🇻🇪 NUMBER` es un voto por NAIN (2–1)',
+         [(b['ganador'], b['votos']) for b in batallas_veredicto([
+             fila(400, '# NAIN 🇦🇷 🆚 🇻🇪 NUMBER'), fila(405, '🇦🇷', '1a'), fila(406, '# 🇦🇷', '1b'),
+             fila(407, '**🇻🇪**', '1c')])] == [('NAIN 🇦🇷', '2–1')]),
+        ('…y la bandera de los dos lados no vota por nadie',
+         not batallas_veredicto([fila(500, '# ANA 🇦🇷 🆚 🇦🇷 BEA'), fila(505, '🇦🇷', '2a'), fila(506, '🇦🇷', '2b')])),
     ]:
         print('   %s %s' % ('✅' if ok else '❌', que))
         mal += 0 if ok else 1
