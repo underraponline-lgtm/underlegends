@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T17:25:31+00:00",
+ "cuando": "2026-11-18T17:55:45+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7196,6 +7196,15 @@
   {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
+   "tit": "🇨🇱 SAKRO 🇨🇱",
+   "tx": "LLEGO EL PURISTA DEL PARQUE PROMESA DEL UNDER CHILENO",
+   "cuando": "2026-11-18T17:28:11",
+   "msg_id": "1572664733578825791",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572664733578825791"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
    "tit": "🇵🇪 NEXUZ 🇵🇪",
    "tx": "LAS METRICAS PERUANAS LLEGARON AL LOBBY, EL STARBOY DE DDF !!",
    "cuando": "2026-11-18T17:16:02",
@@ -7210,15 +7219,6 @@
    "cuando": "2026-11-18T17:11:13",
    "msg_id": "1572660463064588378",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572660463064588378"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "🇳🇮 ADRIAGNER 🇳🇮",
-   "tx": "LLEGO EL DUEÑO DE GDF EL GALACTICO DE LA ZONA",
-   "cuando": "2026-11-18T15:50:54",
-   "msg_id": "1572640252701704343",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572640252701704343"
   },
   {
    "servidor": "LKR",
@@ -7447,6 +7447,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc🇲🇿",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1572667333464297485",
+   "cuando": "2026-11-18T17:38:31"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43437,15 +43446,6 @@
    "discord_id": "1076566237364109412",
    "msg_id": "1560115764504174613",
    "cuando": "2026-10-15T02:23:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Mail O🇵🇪",
-   "quien": "mailo_04.",
-   "discord_id": "1416183706133069895",
-   "msg_id": "1560114913907580939",
-   "cuando": "2026-10-15T02:19:41"
   }
  ]
 }

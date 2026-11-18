@@ -1912,6 +1912,13 @@
   "autor": "950011515434573824",
   "canal": "1571614058874933278",
   "canal_pregunta": "1571614058874933278",
+  "cerrada": {
+   "como": "nadie siguió",
+   "n": 0,
+   "sin": 0,
+   "t": "2026-11-18 12:53 PM ET",
+   "tot": 15
+  },
   "cuando": "2026-11-15T21:48:50.890000+00:00",
   "donde": "llave",
   "evento": "(sin titulo)",
