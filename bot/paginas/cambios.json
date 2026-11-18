@@ -11,6 +11,22 @@
   ],
   "cambios": [
     {
+        "version": "6.67",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T16:30:00-05:00",
+        "titulo": "Una pasada de arreglos por toda la página",
+        "items": [
+            "**Los que están más abajo del ranking**: quien no entra en las 200 filas de la tabla ya sale con su nombre, su cara y sus tarjetas en el Inicio, las llaves, las crews, la Tienda, el Pase y tu cuenta, y seguirlo cuenta igual que seguir a cualquiera.",
+            "**Las horas, en tu zona**: lo que todavía salía en la hora del dispositivo o en UTC respeta la zona que elegiste en Ajustes, y los días de la Liga cuentan en hora del este.",
+            "**Los anuncios sin hora**: un evento anunciado sin una hora que se pueda leer dice «anunciado hace…» en vez de una hora equivocada, y uno atrasado muestra la hora nueva.",
+            "**Cuando algo no carga**: Competencias, las crews y las llaves ofrecen «Probar de nuevo» en vez de quedarse en «Cargando…», y los perfiles se vuelven a pedir solos.",
+            "**La campana**: si tocaste «Desvincular» ya no te vuelve a pedir que vincules, y si activar los avisos falla te dice por qué.",
+            "**La Tienda**: el drop del día sabe si ya lo abriste, y un regalo dice quién te lo mandó.",
+            "**Invitaciones**: los links de quien tiene letras como ø o ñ en su nombre ya anotan a quien llega.",
+            "**Y muchos detalles**: singulares («1 servidor», «falta 1 que juegue»), todo con «tú», las llaves sin título con su número, cajas que quedaban vacías y las caras del Staff de una liga, que salían gigantes."
+        ]
+    },
+    {
         "version": "6.66",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T15:20:00-05:00",

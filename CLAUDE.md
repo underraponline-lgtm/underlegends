@@ -288,7 +288,7 @@ con su self-check.
 | **el color** | siempre `--acc`, el del rango: la familia es la **forma**, nunca el color (el rojo ya es el rango A) |
 | **de dónde sale** | `datos/estilos.json`, `{clave: [[estilo, nivel], …]}` en orden de lugar. Entra al sello de la Competitiva sólo para quien tiene |
 | **cómo se elige** | Inventario → «Estilo de juego» (`web/src/juego.jsx`) → el objeto (`juegoElige()`, tabla `juego_elige`: la primera vez libre, un cambio por temporada, los viejos desbloqueados) → el ciclo, paso 2f3 (`bot/juegos.py`) → `datos/estilos.json`. ⚠️ Internamente se llama **«juego»**: «estilo» ya era la camiseta/cadena de la Servidor |
-| **los niveles y el 2.º y 3.º lugar** | Dlx marca eventos en el Dashboard («Eventos de estilo», ajuste `eventos_estilo`: por número o por `a:<id del anuncio>`, antes de jugarse) → `bot/eventos_estilo.py` (adentro de `subir_web.py`: `je` en el calendario y `datos/eventos_estilo.json` resuelto a número) → `bot/juegos.py` con los resultados: jugar = nivel 1, el cuarto de arriba de la llave (la regla de la Racha) +1 hasta 3; el tuyo sube, otro va al 2.º o 3.º lugar (los dos de nivel más alto); el elegido arranca de 0 desde que lo elegiste (`desde` en `datos/estilos_niveles.json`). ⚠️ Un `ll` de más de 6 cifras es el registro de una llave en vivo, no un evento: va por su anuncio |
+| **los niveles y el 2.º y 3.º lugar** | Dlx marca eventos en el Dashboard («Eventos de estilo», ajuste `eventos_estilo`: por número o por `a:<id del anuncio>`, antes de jugarse) → `bot/eventos_estilo.py` (adentro de `subir_web.py`: `je` en el calendario y `datos/eventos_estilo.json` resuelto a número) → `bot/juegos.py` con los resultados: jugar = nivel 1, el cuarto de arriba de la llave (la regla de la Racha) +1 hasta 3; el tuyo sube, otro va al 2.º o 3.º lugar (los dos de nivel más alto); el elegido arranca de 0 desde que lo elegiste (`desde` en `datos/estilos_niveles.json`). ⚠️ Un `ll` de más de 6 cifras es el registro de una llave de un servidor que no suma (`datos/llaves_sin_sumar.json`), no un evento: va por su anuncio |
 | **las dos copias** | la lista de 18 vive en `CATALOGO` y está copiada en `JUEGOS` (bot/avisos.js) y en `web/src/estilos_juego.json` (`estilos_juego.py --web`): el self-check revienta si se separan |
 
 ⚠️ **POSICIÓN MEDIDA, NO A OJO** (Dlx: *«bien posicionado, acuérdate»*): banda
@@ -571,9 +571,9 @@ diarias, cinco semanales y ocho de temporada— y **el nivel sale de la XP**
 (`bot/pase.py`, `umbrales()`): **el 1 pide 300**, o sea dos diarias o una
 semanal, y con él llega la Temporada. **Las Tareas no son las Misiones**
 (Dlx: *«hay TAREAS y misiones que son diferentes»*): no repiten jugar, ganar
-duelos ni llegar lejos, y de DRA queda una sola, jugar ahí. Llegar al 10 y al
-30 sale en Publicaciones (`hitos` en `datos/pase_niveles.json` →
-`bot/muro.py`) y el 30 entra al **Salón del Pase**. ⚠️ Lo que el Pase cuenta
+duelos ni llegar lejos, y de DRA queda una sola, jugar ahí. Llegar al 10, al
+30 y al 50 sale en Publicaciones (`hitos` en `datos/pase_niveles.json` →
+`bot/muro.py`) y el último, el 50 (`NIVELES`), entra al **Salón del Pase**. ⚠️ Lo que el Pase cuenta
 de la página (felicitar, mirar una llave en vivo) va a **`pase_log`** y dura
 toda la temporada: los aplausos se borran a los 30 días y las Tareas de
 temporada piden la cuenta entera.
