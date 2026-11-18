@@ -11,49 +11,60 @@
   ],
   "cambios": [
     {
-        "version": "6.41",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T23:18:30-05:00",
-        "titulo": "Tus drops y la Tienda, también desde Discord",
-        "items": [
-            "Comandos nuevos del bot: **/drops**, **/billetera**, **/inventario**, **/equipar** y **/vincular**. Lo que contestan lo ves sólo tú.",
-            "Con **/drops**, el **Drop** y el **Star** se abren ahí mismo, en Discord; los Nidos y los cofres, en la página.",
-            "Con **/equipar** eliges el lugar y la pieza, y te la pones sin abrir la página.",
-            "Los **Dragón Drops por ganar** ahora van a **todos los ganadores**, no sólo a los de DRA. Se abren siendo Miembro de DRA: si todavía no lo eres, quedan guardados hasta que vincules tu cuenta (**/vincular**)."
-        ]
+      "version": "6.42",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T23:25:00-05:00",
+      "titulo": "Las crews en bandas y el ranking de Servidores",
+      "items": [
+        "La página de cada **crew**, en bandas como tu perfil: **sus historias**, su semana, **su gente**, **su muro**, **sus noches** y **sus récords**.",
+        "Nuevo en el Ranking: **Servidores**. Los que mandan en cada servidor, por el OVR de su carta de Servidor, con su puesto adentro y el podio con sus cartas.",
+        "En el perfil de los servidores más chicos, las columnas ahora terminan parejas."
+      ]
     },
     {
-        "version": "6.40",
-        "dia": "2026-11-18",
-        "cuando": "2026-11-18T00:05:00-05:00",
-        "titulo": "Tu primera semana, más clara y con premios que se abren",
-        "items": [
-            "**Si eres nuevo, tus misiones van primero en el Inicio** durante tu primera semana, con el premio de entrar cada día adentro.",
-            "**Entrar con Discord te da tu primer cofre** (un Flight case), y la bienvenida lo dice. Verificarte pasa al día 1, y las misiones que lo piden muestran un candado hasta que lo hagas.",
-            "**Cada premio se nota**: un aviso al cobrar, una pantalla por cada día completo y una entrada en la campana. La Caja del Nuevo y el cofre del tutorial completo se abren como cofres.",
-            "En el teléfono, el «¿Cómo funciona?» de cada página es el «?» de arriba, y el aviso de deslizar la barra se va solo."
-        ]
+      "version": "6.41",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T23:18:30-05:00",
+      "titulo": "Tus drops y la Tienda, también desde Discord",
+      "items": [
+        "Comandos nuevos del bot: **/drops**, **/billetera**, **/inventario**, **/equipar** y **/vincular**. Lo que contestan lo ves sólo tú.",
+        "Con **/drops**, el **Drop** y el **Star** se abren ahí mismo, en Discord; los Nidos y los cofres, en la página.",
+        "Con **/equipar** eliges el lugar y la pieza, y te la pones sin abrir la página.",
+        "Los **Dragón Drops por ganar** ahora van a **todos los ganadores**, no sólo a los de DRA. Se abren siendo Miembro de DRA: si todavía no lo eres, quedan guardados hasta que vincules tu cuenta (**/vincular**)."
+      ]
     },
     {
-        "version": "6.39",
-        "dia": "2026-11-18",
-        "cuando": "2026-11-18T00:40:00-05:00",
-        "titulo": "Tu perfil, como te ven",
-        "items": [
-            "La pestaña Perfil del Inventario te muestra tu perfil de verdad mientras eliges tu carta, tus fondos y tu frase.",
-            "Cada lugar donde apareces (el VS del Inicio, el escenario de tu carta, Discord, tu ficha) se ve en chico para comparar.",
-            "El cuadro de la Tienda del Inicio muestra en grande lo más buscado."
-        ]
+      "version": "6.40",
+      "dia": "2026-11-18",
+      "cuando": "2026-11-18T00:05:00-05:00",
+      "titulo": "Tu primera semana, más clara y con premios que se abren",
+      "items": [
+        "**Si eres nuevo, tus misiones van primero en el Inicio** durante tu primera semana, con el premio de entrar cada día adentro.",
+        "**Entrar con Discord te da tu primer cofre** (un Flight case), y la bienvenida lo dice. Verificarte pasa al día 1, y las misiones que lo piden muestran un candado hasta que lo hagas.",
+        "**Cada premio se nota**: un aviso al cobrar, una pantalla por cada día completo y una entrada en la campana. La Caja del Nuevo y el cofre del tutorial completo se abren como cofres.",
+        "En el teléfono, el «¿Cómo funciona?» de cada página es el «?» de arriba, y el aviso de deslizar la barra se va solo."
+      ]
     },
     {
-        "version": "6.38",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T22:46:57-05:00",
-        "titulo": "Lo de la Tienda, también en Discord",
-        "items": [
-            "Tu **efecto de carta** sale en **/card**: la imagen se rehace sola unos minutos después de ponértelo.",
-            "En el **VS en vivo** de Discord, tu mitad lleva tu **fondo de Discord** de la Tienda y tu carta, su **efecto**."
-        ]
+      "version": "6.39",
+      "dia": "2026-11-18",
+      "cuando": "2026-11-18T00:40:00-05:00",
+      "titulo": "Tu perfil, como te ven",
+      "items": [
+        "La pestaña Perfil del Inventario te muestra tu perfil de verdad mientras eliges tu carta, tus fondos y tu frase.",
+        "Cada lugar donde apareces (el VS del Inicio, el escenario de tu carta, Discord, tu ficha) se ve en chico para comparar.",
+        "El cuadro de la Tienda del Inicio muestra en grande lo más buscado."
+      ]
+    },
+    {
+      "version": "6.38",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:46:57-05:00",
+      "titulo": "Lo de la Tienda, también en Discord",
+      "items": [
+        "Tu **efecto de carta** sale en **/card**: la imagen se rehace sola unos minutos después de ponértelo.",
+        "En el **VS en vivo** de Discord, tu mitad lleva tu **fondo de Discord** de la Tienda y tu carta, su **efecto**."
+      ]
     },
     {
       "version": "6.37",
