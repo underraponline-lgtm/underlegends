@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T19:29:13+00:00",
+ "cuando": "2026-11-18T19:55:20+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7170,6 +7170,15 @@
   {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
+   "tit": "🇻🇪 MAKMA 🇻🇪",
+   "tx": "DESDE VENEZUELA SU NOMBRE ES MUY SONADO EN DIFERENTES SERVERS DE DISCORD",
+   "cuando": "2026-11-18T19:47:13",
+   "msg_id": "1572699723205316648",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572699723205316648"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
    "tit": "🇨🇱 SAKRO 🇨🇱",
    "tx": "LLEGO EL PURISTA DEL PARQUE PROMESA DEL UNDER CHILENO",
    "cuando": "2026-11-18T17:28:11",
@@ -7184,15 +7193,6 @@
    "cuando": "2026-11-18T17:16:02",
    "msg_id": "1572661678179356744",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572661678179356744"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "🇻🇪 NUMBER 🇻🇪",
-   "tx": "LLEGO EL TERROR DE LOS FORMATOS A D'F I • GENESIS",
-   "cuando": "2026-11-18T17:11:13",
-   "msg_id": "1572660463064588378",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572660463064588378"
   },
   {
    "servidor": "LKR",
@@ -11061,7 +11061,7 @@
    "servidor": "URBF",
    "canal": "‣《🗞️》Inscripciones",
    "texto": "McK 🇨🇴",
-   "quien": "mchades227",
+   "quien": "mckurai_",
    "discord_id": "740307349809397841",
    "msg_id": "1571262160867172485",
    "cuando": "2026-11-14T20:34:51"
