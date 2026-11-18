@@ -4428,6 +4428,16 @@ const ok = (cond, que, det) => {
     r = acc(A.DUENO, 'dlx', { accion: 'drop' });
     ok(r.ok && acc(A.DUENO, 'dlx', { accion: 'drop' }).error === 'ya', 'uno por día', JSON.stringify(r));
 
+    // el arte: cerrada, sólo el dueño; con la misma versión no se manda de nuevo
+    TI.catalogoGuardar(o, { catalogo: Object.assign({}, baja, { abierta: false }) });
+    ok(TI.arteGuardar(o, { arte: { v: 'abc123', css: '.ta-raiz{}', p: { X1: { v: '<span class="ta-x"></span>' } } } }).ok
+      && TI.arteGuardar(o, { arte: { v: 'zz', css: '', p: {} } }).error === 'arte', 'el arte se guarda con su versión');
+    ok(TI.arteMio(o, { quien: ANA }, H).error === 'cerrada' && TI.arteMio(o, { quien: A.DUENO }, H).p.X1
+      && TI.arteMio(o, { quien: A.DUENO, v: 'abc123' }, H).igual && mia(A.DUENO, 'dlx').arte_v === 'abc123',
+      'cerrada, el arte sólo lo recibe el dueño; con la misma versión, no se manda de nuevo');
+    TI.catalogoGuardar(o, { catalogo: Object.assign({}, baja, { abierta: true }) });
+    ok(!!TI.arteMio(o, { quien: ANA }, H).p, 'abierta, lo recibe cualquiera');
+
     // olvidarme
     TI.tiendaOlvidar(o, CAR);
     ok(!mia(CAR, 'car').yo.inv.length && !sql.exec('SELECT 1 AS x FROM tienda_num WHERE quien = ?', CAR).toArray().length,

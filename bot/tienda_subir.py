@@ -6,6 +6,7 @@ lanzamiento. Vive afuera (el archivo privado de Dlx) y se sube desde ahí:
     python bot/tienda_subir.py <ruta/al/catalogo.json>             # lo revisa y dice qué cambiaría, sin subir nada
     python bot/tienda_subir.py <ruta/al/catalogo.json> --aplicar   # lo sube
     python bot/tienda_subir.py <ruta> --aplicar --forzar           # aunque suba un precio (no se hace: los precios no suben)
+    python bot/tienda_subir.py <ruta> --aplicar --arte <arte.json> # y el arte: los moldes de cada pieza (también privado)
 
 El objeto vuelve a validar todo (`catalogoValido()` de bot/tienda.js) y es quien cobra: este script sólo lo lleva. Al
 guardarlo, si una pieza bajó de precio devuelve la diferencia a quien la compró en los últimos 14 días, y la lista de
@@ -54,7 +55,7 @@ def resumen(c):
 
 
 def main(argv):
-    rutas = [a for a in argv if not a.startswith('--')]
+    rutas = [a for i, a in enumerate(argv) if not a.startswith('--') and not (i and argv[i - 1] == '--arte')]
     if not rutas:
         print(__doc__)
         return 2
@@ -81,7 +82,17 @@ def main(argv):
                       headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}, timeout=30)
     out = r.json() if r.headers.get('content-type', '').startswith('application/json') else {'texto': r.content.decode('utf-8', 'replace')[:200]}
     print(r.status_code, out)
-    return 0 if r.ok else 1
+    if not r.ok:
+        return 1
+    if '--arte' in argv:
+        i = argv.index('--arte')
+        with io.open(argv[i + 1], encoding='utf-8') as f:
+            arte = json.load(f)
+        r = requests.post(WORKER + '/avisos/tienda-arte-subir', data=json.dumps({'arte': arte}, ensure_ascii=False).encode('utf-8'),
+                          headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}, timeout=60)
+        print('arte:', r.status_code, r.json() if r.headers.get('content-type', '').startswith('application/json') else r.status_code)
+        return 0 if r.ok else 1
+    return 0
 
 
 if __name__ == '__main__':

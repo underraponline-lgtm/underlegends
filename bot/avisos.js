@@ -3480,6 +3480,7 @@ const RUTAS = {
   '/avisos/crews-sembrar': 'POST', '/avisos/crews-siglas': 'POST',
   // 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): lo tuyo, una acción, y el catálogo con la clave del ciclo
   '/avisos/tienda': 'POST', '/avisos/tienda-accion': 'POST', '/avisos/tienda-catalogo': 'POST',
+  '/avisos/tienda-arte': 'POST', '/avisos/tienda-arte-subir': 'POST',
   // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
   // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
   '/avisos/crews-cerrar': 'POST',
@@ -6409,7 +6410,7 @@ export async function rutaAvisos(req, env, ruta) {
   // 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): lo tuyo, o una acción. Quién sos lo dice Discord o tu sesión, y de qué
   // perfil, `d:` (comprar, regalar y ponerse son de verificados). Acá se valida la forma; las reglas y la plata las mira el
   // objeto, que es uno solo. Cerrada hasta el lanzamiento: el objeto sólo le contesta al dueño
-  if (ruta === '/avisos/tienda' || ruta === '/avisos/tienda-accion') {
+  if (ruta === '/avisos/tienda' || ruta === '/avisos/tienda-accion' || ruta === '/avisos/tienda-arte') {
     const crudo = await req.text();
     if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -6425,13 +6426,21 @@ export async function rutaAvisos(req, env, ruta) {
     let cfg = null;
     try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
     const c = { accion: d.accion, pieza: d.pieza, col: d.col, piezas: d.piezas, ranura: d.ranura, para: d.para, msg: d.msg,
-      id: d.id, si: d.si, poner: d.poner };
+      id: d.id, si: d.si, poner: d.poner, v: d.v };
     for (const x of Object.keys(c)) if (c[x] === undefined) delete c[x];
     const cuerpo = Object.assign(c, { quien: q.id, de: claveValida(de) ? de : '' });
     if (cfg && Number.isInteger(cfg.inicial)) { cuerpo.inicial = cfg.inicial; cuerpo.desde = Date.parse(cfg.desde || '') || 0; }
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
     });
+  }
+  // 🛍️ el arte de la Tienda, con la clave del ciclo: son ~300 KB, más que el tope de las otras rutas del ciclo
+  if (ruta === '/avisos/tienda-arte-subir') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 1500000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/tienda-arte-subir', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
   // 👥 lo del dueño (y Admin) con las crews: el líder de las de antes, el nombre, cerrarla. La puerta del Dashboard
   if (ruta === '/avisos/dueno/crew') {
@@ -9246,6 +9255,8 @@ export class Avisos {
       if (ruta === '/tienda') return json(TI.tiendaMia(this, d, TI_H));
       if (ruta === '/tienda-accion') { const r = TI.tiendaAccion(this, d, TI_H); return json(r, r.estado || 200); }
       if (ruta === '/tienda-catalogo') { const r = TI.catalogoGuardar(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/tienda-arte') { const r = TI.arteMio(this, d, TI_H); return json(r, r.estado || 200); }
+      if (ruta === '/tienda-arte-subir') { const r = TI.arteGuardar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/crew-dueno') {
         const r = CW.crewDueno(this, d);
         if (r.viejos) await this.borrarLogosCrew(r.viejos);

@@ -10,7 +10,7 @@
 //   los que ya estaban escritos en la página).
 // ⚠️ LA PLATA LA SIGUE MANEJANDO bot/paginas/tienda.js, como en tienda.jsx: `BILL`, `pedirBilletera()`, `valorCabezas()`,
 // `ponerPrecio()`, `errorPrecio()` y `PR_EST`. Se redibuja con `lg:precios`. Afuera se ve cuánto vale cada cabeza, nunca quién puso.
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { limpio, norm, num, utc } from './liga.js';
 import { Alguien, Algunos, Bandera, Cara, DosToques, Ico } from './piezas.jsx';
 import { Prenda, Stickers } from './abajo.jsx';
@@ -376,7 +376,28 @@ function Merch({ liga }) {
   );
 }
 
+// 🛍️ LA TIENDA NUEVA (etapa 4, 17/11/2026, tienda3.jsx): apagada hasta el lanzamiento. Se monta sólo si el objeto dice
+// que está abierta, o que quien mira es el dueño (el ensayo); si no —sin sesión, cerrada, o el objeto no contesta—, sigue
+// la de hoy, tal cual. Lo que ya se pagaba (el precio por cabeza, la promo, la ropa) entra en su «Más con tus Puntos».
+const TiendaNueva = lazy(() => import('./tienda3.jsx'));
+function useTiendaNueva(dc) {
+  const [S, setS] = useState(null);
+  const pedir = useCallback(() => {
+    if (!dc || typeof window.conCuenta !== 'function') { setS({ ok: false }); return Promise.resolve(); }
+    return window.conCuenta('/api/avisos/tienda', {}).then((j) => setS(j && j.ok ? j : { ok: false })).catch(() => setS({ ok: false }));
+  }, [dc && dc.id]);
+  useEffect(() => { pedir(); }, [pedir]);
+  return [S, pedir];
+}
 export function Tienda({ liga, dc }) {
+  const [S, pedir] = useTiendaNueva(dc);
+  if (S && S.ok && (S.abierta || S.ensayo) && S.yo) {
+    const partes = { cabezas: <Cabezas liga={liga} dc={dc} />, promo: <TuPromo liga={liga} dc={dc} />, ropa: <Merch liga={liga} /> };
+    return <Suspense fallback={<TiendaVieja liga={liga} dc={dc} />}><TiendaNueva liga={liga} dc={dc} S={S} recargar={pedir} partes={partes} /></Suspense>;
+  }
+  return <TiendaVieja liga={liga} dc={dc} />;
+}
+function TiendaVieja({ liga, dc }) {
   usePrecios();
   const T = liga.d.tienda;
   const { todas, mia } = useCrews();

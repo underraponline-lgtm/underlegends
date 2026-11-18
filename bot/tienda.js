@@ -81,7 +81,7 @@ export function catalogoValido(c) {
   for (const [id, p] of Object.entries(c.piezas)) {
     if (!ID.test(id) || !p || !CATEGORIAS.includes(p.c) || !Number.isInteger(p.r) || p.r < 0 || p.r > 5) return mal('pieza', 400, { id });
     const t = Array.isArray(p.t) ? p.t.filter((x) => MARCAS.includes(x)) : [];
-    piezas[id] = { c: p.c, r: p.r, t, n: String(p.n || id).slice(0, 40) };
+    piezas[id] = { c: p.c, r: p.r, t, n: String(p.n || id).slice(0, 40), d: String(p.d || '').slice(0, 200) };
   }
   const ids = (a) => Array.isArray(a) && a.every((x) => piezas[x]);
   const v = c.vitrina || {};
@@ -90,7 +90,7 @@ export function catalogoValido(c) {
   for (const [id, j] of Object.entries(c.colecciones || {})) {
     if (!ID.test(id) || !j || !ids(j.piezas) || j.piezas.length < 2 || j.piezas.length > 12) return mal('coleccion', 400, { id });
     if (j.premio && (!piezas[j.premio] || !piezas[j.premio].t.includes('col'))) return mal('premio', 400, { id });
-    colecciones[id] = { n: String(j.n || id).slice(0, 40), piezas: j.piezas.slice(), premio: j.premio || '' };
+    colecciones[id] = { n: String(j.n || id).slice(0, 40), d: String(j.d || '').slice(0, 200), piezas: j.piezas.slice(), premio: j.premio || '' };
   }
   const ediciones = {};
   for (const [id, e] of Object.entries(c.ediciones || {})) {
@@ -216,7 +216,7 @@ export function tiendaMia(o, d, H) {
   const dueno = quien === H.DUENO;
   if (!cat || (!cat.abierta && !dueno)) return { ok: true, abierta: false };
   vencerRegalos(o, ahora);
-  const out = { ok: true, abierta: cat.abierta, ensayo: !cat.abierta && dueno, cat: publico(o, cat), ahora };
+  const out = { ok: true, abierta: cat.abierta, ensayo: !cat.abierta && dueno, cat: publico(o, cat), ahora, arte_v: o.leer('tienda_arte_v') || '' };
   if (!QUIEN.test(quien)) return out;
   const prem = esPremium(o, quien, cat, ahora);
   const inv = filas(o, 'SELECT pieza, origen, pagado, t, usada, grupo FROM tienda_inv WHERE quien = ? ORDER BY t', quien);
@@ -583,6 +583,29 @@ export function catalogoGuardar(o, d) {
     }
   }
   return { ok: true, piezas: Object.keys(nuevo.piezas).length, abierta: nuevo.abierta, devueltos, avisos };
+}
+
+// ── EL ARTE (lo que se ve de cada pieza) ────────────────────────────────────────────────────────────────────────────
+// Tampoco vive en el repo: son MOLDES de HTML ya dibujados (los arma el archivo privado), con tres huecos que la página
+// llena —__FOTO__, __CARTA__ y __N__— porque la página no puede ejecutar código que llegue del servidor (CSP
+// `script-src 'self'`). Sus clases llevan `ta-` y su CSS va debajo de `.ta-raiz`: no choca con las de la página.
+/** Guarda el arte (`bot/tienda_subir.py --arte`, con la clave del ciclo). La versión va aparte: se mira en cada pedido. */
+export function arteGuardar(o, d) {
+  const a = d && d.arte;
+  if (!a || typeof a !== 'object' || typeof a.css !== 'string' || !a.p || typeof a.p !== 'object' || !/^[0-9a-f]{6,40}$/.test(String(a.v || ''))) return mal('arte');
+  for (const [id, x] of Object.entries(a.p)) if (!ID.test(id) || !x || typeof x.v !== 'string') return mal('arte', 400, { id });
+  o.guardar('tienda_arte', { v: a.v, css: a.css, p: a.p });
+  o.guardar('tienda_arte_v', a.v);
+  return { ok: true, v: a.v, piezas: Object.keys(a.p).length };
+}
+/** El arte para la página: abierta, a cualquiera; cerrada, sólo al dueño. Si ya tiene esa versión, no se manda de nuevo. */
+export function arteMio(o, d, H) {
+  const cat = catalogo(o);
+  if (!cat || (!cat.abierta && String(d.quien || '') !== H.DUENO)) return mal('cerrada', 404);
+  const v = o.leer('tienda_arte_v');
+  if (!v) return mal('sin_arte', 404);
+  if (d.v && d.v === v) return { ok: true, v, igual: true };
+  return Object.assign({ ok: true }, o.leer('tienda_arte'));
 }
 
 // ── MUDARSE Y OLVIDARSE ─────────────────────────────────────────────────────────────────────────────────────────────

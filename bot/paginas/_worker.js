@@ -90,6 +90,7 @@ const AVISOS = {
   // 🛍️ la Tienda (17/11/2026, bot/tienda.js): lo tuyo y una acción. El catálogo no pasa por acá (clave del ciclo)
   '/api/avisos/tienda': 'POST',
   '/api/avisos/tienda-accion': 'POST',
+  '/api/avisos/tienda-arte': 'POST',
   '/api/avisos/dueno/crew': 'POST',
   // 🙈 «ocultar mi foto» (02/10/2026): en Mi cuenta → Privacidad. Ver `miFoto()` en bot/avisos.js
   '/api/avisos/mi-foto': 'POST',
