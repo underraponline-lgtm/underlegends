@@ -11,27 +11,40 @@
   ],
   "cambios": [
     {
-        "version": "6.36",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T22:35:57-05:00",
-        "titulo": "La pared de tarjetas",
-        "items": [
-            "Uno de los fondos de la pantalla de carga, rehecho: **las tarjetas del top pegadas en una pared con grafitis**, con el #1 en grande. Se actualiza solo todos los días."
-        ]
+      "version": "6.37",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:45:05-05:00",
+      "titulo": "El perfil de cada servidor, rehecho",
+      "items": [
+        "En bandas negras y blancas como tu perfil: **sus noches**, **su temporada** y **su gente**.",
+        "**Sus historias** arriba de todo, **su forma** (cuánta gente fue a cada evento y quién ganó) y **su próximo evento**.",
+        "**Su noche más grande** con su podio, **cara a cara** con otro servidor y **quién organiza**.",
+        "**Su muro** con el dibujo de Publicaciones: lo que publica el servidor y lo de su gente.",
+        "**Sus campeones** en podio, la **tabla de servidores**, **cuándo juega**, **sus récords**, **¿vuelven?** y **los de la casa**."
+      ]
     },
     {
-        "version": "6.35",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T22:32:44-05:00",
-        "titulo": "Lo que te pones en la Tienda, en toda la página",
-        "items": [
-            "Tu **aro** y tu **decoración** van alrededor de tu cara en el ranking, los comentarios, Publicaciones, tu perfil, tu ficha y donde salga tu foto.",
-            "Tu **efecto de nombre** se ve en tu perfil, tu fila del ranking, tu ficha y en todos los lugares donde sale tu nombre.",
-            "Tu **efecto de carta** va en tus cartas de la página y en el visor.",
-            "Lo de tu **perfil** (stickers y entradas) va arriba, en tu portada, y la entrada pasa una vez cada vez que alguien lo abre.",
-            "Los **fondos de la Tienda** van en su lugar: la portada de tu perfil, tu mitad del VS del Inicio, el escenario de tu carta, tu ficha y **tu fila del ranking**.",
-            "Lo que te pones se ve al toque para ti y en unos minutos para los demás. En **/card** y en el **VS de Discord** llega muy pronto."
-        ]
+      "version": "6.36",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:35:57-05:00",
+      "titulo": "La pared de tarjetas",
+      "items": [
+        "Uno de los fondos de la pantalla de carga, rehecho: **las tarjetas del top pegadas en una pared con grafitis**, con el #1 en grande. Se actualiza solo todos los días."
+      ]
+    },
+    {
+      "version": "6.35",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:32:44-05:00",
+      "titulo": "Lo que te pones en la Tienda, en toda la página",
+      "items": [
+        "Tu **aro** y tu **decoración** van alrededor de tu cara en el ranking, los comentarios, Publicaciones, tu perfil, tu ficha y donde salga tu foto.",
+        "Tu **efecto de nombre** se ve en tu perfil, tu fila del ranking, tu ficha y en todos los lugares donde sale tu nombre.",
+        "Tu **efecto de carta** va en tus cartas de la página y en el visor.",
+        "Lo de tu **perfil** (stickers y entradas) va arriba, en tu portada, y la entrada pasa una vez cada vez que alguien lo abre.",
+        "Los **fondos de la Tienda** van en su lugar: la portada de tu perfil, tu mitad del VS del Inicio, el escenario de tu carta, tu ficha y **tu fila del ranking**.",
+        "Lo que te pones se ve al toque para ti y en unos minutos para los demás. En **/card** y en el **VS de Discord** llega muy pronto."
+      ]
     },
     {
       "version": "6.34",
