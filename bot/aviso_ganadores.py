@@ -325,7 +325,8 @@ def noche(ev, Q):
         R = NO.resumen(ev)
         alt = NO.descripcion(R)
         ficha = NO.ficha(R, Q)
-    except Exception as e:                               # noqa: BLE001
+    except (Exception, SystemExit) as e:                 # noqa: BLE001
+        # ⚠️ también SystemExit: es lo que tira `navegador.hace_falta()` si Chromium no baja en sus tres intentos
         print('      ⚠️ la imagen «La noche de…» no salió (%r): el aviso va sin ella' % e)
         return [], None
     if mal:

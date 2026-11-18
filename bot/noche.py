@@ -46,6 +46,8 @@ ETQ = {'Campeón': ('🏆 Campeón', '🏆 Campeones'), 'Subcampeón': ('🥈 Su
        'Tercero': ('🥉 Tercero', '🥉 Terceros'), 'Cuarto': ('🎖️ Cuarto', '🎖️ Cuartos'),
        'Semifinal': ('🥉 Semifinal', '🥉 Semifinal'), 'mvp': ('⭐ MVP de la noche', '⭐ MVP de la noche')}
 ESTRELLAS = ['', 'Inicial', 'Medio', 'Bueno', 'Alto', 'Élite']
+#: cuánto sube el abanico de tarjetas de un equipo, para que su esquina girada no caiga debajo del sello
+FAN_ARRIBA = 18
 
 limpio = lambda n: re.sub('[\U0001F1E6-\U0001F1FF]', '', str(n or '')).strip()  # noqa: E731
 _D = {}
@@ -439,7 +441,8 @@ def html(ev):
                 out.append('<div class="ct sinc" style="%s;width:%dpx">%s</div>'
                            % (st, int(alto * 300 / 440), K._carta_sin({'n': n, 'fl': band}, d, 'sin', alto / 440)))
         mas = len(u['gente']) - m
-        return '<div class="cartas">%s%s</div>' % (''.join(out), '<span class="mas-n">+%d</span>' % mas if mas > 0 else '')
+        return '<div class="cartas%s">%s%s</div>' % (' fan' if m > 1 else '', ''.join(out),
+                                                    '<span class="mas-n">+%d</span>' % mas if mas > 0 else '')
 
     titulo = re.sub(r'^[\s_*~|`\-]+|[\s_*~|`\-]+$', '', r['nombre'])
     if not titulo or titulo.startswith('('):
@@ -471,7 +474,7 @@ def html(ev):
     colw = 470 if por_eq and largo_t > 24 else 300 if por_eq else 200
     # 📐 LO QUE LA TIRA NO USA, PARA LAS TARJETAS: cada fila que falta son 46 px más de podio
     filas_tira = 0 if k_t == 0 else 1 if k_t <= max(1, cols) else 2
-    libre = (2 - filas_tira) * 46
+    libre = min(60, (2 - filas_tira) * 46)
     ANCHO = {'c': 262 if cinco else 390, 'i': 216 if cinco else 330, 'o': 186}
     tope_c = (272 if not dos_lineas else 252) + libre
     ALTO = {'c': tope_c, 'i': int(tope_c * 0.87), 'o': int(tope_c * 0.70)}
@@ -482,7 +485,9 @@ def html(ev):
     def lugar(t, u, rol):
         m = min(3, len(u['gente']))
         factor = 0.72 * (1 + (m - 1) * (1 - (0.30 if m == 2 else 0.36 if m == 3 else 0)))
-        alto = int(min(ALTO[rol], (ANCHO[rol] - 10) / factor))
+        # 🪭 un abanico va 18 px más arriba (`.cartas.fan`): girada, la tarjeta de la punta bajaba una esquina justo donde
+        # va el sello (medido: 21 de 280 eventos, todos de equipos de tres)
+        alto = int(min(ALTO[rol] - (FAN_ARRIBA if m > 1 else 0), (ANCHO[rol] - 10) / factor))
         estilo = ' style="width:%dpx;flex:none"' % ANCHO[rol]
         varios = len(u['gente']) > 1
         etq = ETQ.get(t, (t, t))[1 if varios else 0]
@@ -496,17 +501,19 @@ def html(ev):
         crudo = ' + '.join(x for x, _c in u['gente'])
         clase = {'Campeón': 'camp', 'mvp': 'mvp'}.get(t, 'otro')
         sello = '<span class="sello">⭐ MVP</span>' if u is mvp_u and t != 'mvp' else ''
-        if es_bat(u):
-            # a la derecha de SU caja, como el de MVP; a la izquierda sólo si la misma caja ya lleva el de MVP (en cajas
-            # vecinas, a la izquierda chocaba con el MVP de al lado: medido sobre los 280)
-            sello += '<span class="sello bat-s%s">🔥 Batacazo</span>' % (' izq' if sello else '')
+        # 🔥 el sello del batacazo, a la derecha de SU caja como el de MVP (a la izquierda chocaba con el MVP de la caja de
+        # al lado). Si la misma caja ya lleva el de MVP, no entra un segundo sello sin tocar la tarjeta (a la izquierda
+        # tapaba «Campeón · …»; al lado del MVP, la punta de la tarjeta): lo dice su línea, «🔥 Batacazo · le ganó…»
+        bat_en_linea = es_bat(u) and bool(sello)
+        if es_bat(u) and not bat_en_linea:
+            sello += '<span class="sello bat-s">🔥 Batacazo</span>'
         ancho_caja = ANCHO[rol] - 22
         if varios:
             tam_nom = max(12, min(20, K._px_nombre(crudo.upper(), ancho_caja * 1.9, 20, 12)))
             est_nom = 'font-size:%dpx;white-space:normal;line-height:1.12;max-height:2.3em;overflow:hidden' % tam_nom
         else:
             base = 25 if t in ('Campeón', 'mvp') else 21 if rol != 'o' else 17
-            est_nom = 'font-size:%dpx' % max(12, K._px_nombre(crudo.upper(), ancho_caja - 26, base, 12))
+            est_nom = 'font-size:%dpx;white-space:nowrap' % max(12, K._px_nombre(crudo.upper(), ancho_caja - 26, base, 12))
         # 📖 SU NOCHE: a quién le ganó la final o quién lo eliminó (el del batacazo, su batacazo)
         nn = su_noche.get(u['claves'][0]) or {}
         if u['pos'] == 'Campeón':
@@ -516,11 +523,13 @@ def html(ev):
         elif u['pos'] == 'Subcampeón' and nn.get('cae'):
             linea = '%s la final con %s' % ('perdieron' if varios else 'perdió', nombre_lado(nn['cae'][0]))
         elif nn.get('cae'):
-            linea = '%s %s en %s' % ('los eliminó' if varios else 'lo eliminó', nombre_lado(nn['cae'][0]), nn['cae'][1].lower())
+            linea = '%s %s' % ('los eliminó' if varios else 'lo eliminó', nombre_lado(nn['cae'][0])) + (
+                '' if rol == 'o' else ' en %s' % nn['cae'][1].lower())
         else:
             linea = ''
         if es_bat(u):
-            extra = '<span class="porque bat">🔥 %s</span>' % K._e(re.sub(r'^🔥\s*', '', sin_nivel(bat[1])))
+            extra = '<span class="porque bat">🔥 %s%s</span>' % ('<b>Batacazo</b> · ' if bat_en_linea else '',
+                                                               K._e(re.sub(r'^🔥\s*', '', sin_nivel(bat[1]))))
         elif linea:
             extra = '<span class="noche">%s</span>' % K._e(linea)
         else:
@@ -534,7 +543,7 @@ def html(ev):
         chip = '<span class="chip" style="background:%s">%s</span>' % (color(u['nota']), nota_txt(u['nota'])) if u['nota'] else ''
         return ''.join([
             '<div class="col %s rol-%s"%s>' % (clase, rol, estilo),
-            cartas(u, alto).replace('<div class="cartas">', '<div class="cartas">' + debut_c, 1),
+            cartas(u, alto).replace('">', '">' + debut_c, 1),
             '<div class="plato"><span class="et pos">%s</span>' % etq,
             '<b class="nom%s" style="%s">%s</b>' % (' largo' if len(nombres) > 60 or len(u['gente']) > 2 else '', est_nom, nombres),
             '<div class="dat">%s%s%s</div>%s%s</div></div>' % (chip, eloh(u), mini, extra, sello)])
@@ -575,7 +584,7 @@ def html(ev):
         izq, der = [der[0].replace('dato der', 'dato')], der[1:]
     lados = '<div class="lado-i">%s</div><div class="lado-d">%s</div>' % (''.join(izq), ''.join(der))
     css = (K._fuentes() + K._css_suelo(ca) + CSS.replace('MAG', MAG).replace('ORO', ORO).replace('COLS', str(max(1, cols)))
-           .replace('COLW', str(colw)) + '#c .podio{height:%dpx}' % (418 + libre))
+           .replace('COLW', str(colw)).replace('FAN', str(FAN_ARRIBA)) + '#c .podio{height:%dpx}' % (418 + libre))
     return ''.join([
         '<!doctype html><meta charset="utf-8"><style>%s</style><div id="c" class="f">%s<div class="velo"></div>' % (css, fondo),
         '<div class="tit"><span class="et">La noche de</span><h1 style="font-size:%s">%s</h1><p>%s</p></div>' % (tam_tit, K._e(titulo), K._e(sub)),
@@ -624,6 +633,7 @@ body{margin:0;width:1200px;height:675px;overflow:hidden;background:#030304}
 #c .plato .dat{display:flex;align-items:center;gap:7px;flex-wrap:nowrap}
 #c .plato .cada{font-size:12px;color:#C9C9CC}
 #c .plato .porque{font:700 12.5px/1.25 Archivo,sans-serif;color:#F2D58A}
+#c .plato .porque,#c .plato .noche{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #c .plato .porque.bat{color:#FF8A5B}
 #c .plato .noche{font:600 12.5px/1.25 Archivo,sans-serif;color:#C9C9CC}
 #c .plato .mini{margin-left:auto;font:800 13px/1 'Barlow Condensed',Archivo,sans-serif;letter-spacing:.05em;color:#F6F6F6;background:rgba(255,255,255,.07);padding:5px 7px;border-radius:2px;white-space:nowrap}
@@ -636,7 +646,7 @@ body{margin:0;width:1200px;height:675px;overflow:hidden;background:#030304}
 #c .mvp .plato .pos{color:ORO}
 #c .sello{position:absolute;right:-10px;top:-15px;background:ORO;color:#030304;font:900 14px/1 Archivo,sans-serif;padding:5px 8px;transform:rotate(4deg);box-shadow:3px 3px 0 #030304}
 #c .sello.bat-s{background:#FF8A5B;transform:rotate(-3deg)}
-#c .sello.bat-s.izq{right:auto;left:-10px}
+#c .cartas.fan{margin-bottom:FANpx}
 #c .elo{font:700 13px/1 'Barlow Condensed',Archivo,sans-serif;letter-spacing:.04em;color:#C9C9CC;white-space:nowrap}
 #c .elo b{color:#F6F6F6;font-weight:800}
 #c .elo i{font-style:normal;margin-left:2px}
@@ -654,6 +664,26 @@ body{margin:0;width:1200px;height:675px;overflow:hidden;background:#030304}
 #c .ul{position:absolute;right:28px;bottom:14px;width:46px;height:46px;object-fit:contain;z-index:30}
 """
 
+#: 🔤 LOS NOMBRES LOS AJUSTA EL NAVEGADOR, MIDIENDO: el tamaño que calcula `kit._px_nombre()` es una estimación por
+#: letras que no ve las banderas, y en 6 de 280 eventos un nombre se cortaba («MAXIMILIANO CAL…») o el tercer integrante
+#: de un equipo caía a un renglón escondido («HASSAN + ABYSSUS +», sin Geoka). Se achica de a medio punto hasta que entra
+AJUSTAR = """() => {
+  const sobra = (e) => e.scrollWidth > e.clientWidth + 1 || e.scrollHeight > e.clientHeight + 1;
+  for (const e of document.querySelectorAll('.plato .nom, .t b, .tit h1, .dato b, .plato .noche, .plato .porque')) {
+    let fs = parseFloat(getComputedStyle(e).fontSize), n = 0;
+    const piso = e.matches('.t b') ? 9 : e.matches('.noche, .porque') ? 10 : 11;
+    while (sobra(e) && fs > piso && n++ < 40) { fs -= 0.5; e.style.fontSize = fs + 'px'; }
+  }
+  // 🧾 la fila «nota · ELO · puntos» de una caja angosta (los podios de cinco): si no entra, los puntos se acortan al
+  // récord («3–1») y, si tampoco, se van. La nota y el ELO quedan siempre
+  for (const d of document.querySelectorAll('.plato .dat')) {
+    const mi = d.querySelector('.mini');
+    if (mi && sobra(d)) mi.textContent = mi.textContent.split(' · ').pop();
+    if (mi && sobra(d)) mi.remove();
+  }
+  return true;
+}"""
+
 #: 📏 lo que se mide en cada imagen antes de mandarla: nada se sale, nada se corta, las cajas no se pisan, la tira no
 #: toca el podio y ningún sello (MVP, Batacazo, Debut) toca a otro ni un texto. Las tarjetas se miran aparte, por píxel
 MEDIR = """() => {
@@ -661,8 +691,10 @@ MEDIR = """() => {
   const pisan = (a, b, m) => a.right > b.left + m && b.right > a.left + m && a.bottom > b.top + m && b.bottom > a.top + m;
   const pl = [...document.querySelectorAll('.plato')].map(R), t = R(q('.tira'));
   const sale = [...document.querySelectorAll('.plato, .t, .ct')].filter((x) => { const b = R(x); return b.left < c.left - 1 || b.right > c.right + 1; }).length;
-  const cortados = [...document.querySelectorAll('.nom, .t b, h1')].filter((e) => e.scrollWidth > e.clientWidth + 1).map((e) => e.textContent);
+  const cortados = [...document.querySelectorAll('.nom, .t b, h1, .plato .noche, .plato .porque, .plato .dat')].filter((e) => e.scrollWidth > e.clientWidth + 1
+    || e.scrollHeight > e.clientHeight + 1).map((e) => e.textContent);
   const pisa = pl.some((a, i) => pl.some((b, j) => i < j && pisan(a, b, 1)));
+  const desborda = [...document.querySelectorAll('.plato')].filter((e) => e.scrollHeight > e.clientHeight + 1).length;
   const sel = [...document.querySelectorAll('.sello, .debut-c')];
   const otros = [...document.querySelectorAll('.sello, .debut-c, .plato .pos, .plato .nom, .plato .chip, .plato .mini, .plato .noche, .plato .porque, .tira .t, .tit h1, .tit p, .lado-i .dato, .lado-d .dato')];
   const sellos = [], contra_tarjeta = [];
@@ -675,8 +707,9 @@ MEDIR = """() => {
     if (rs.left < c.left || rs.right > c.right || rs.top < c.top || rs.bottom > c.bottom) sellos.push((s.textContent || '').trim() + ' sale');
     if (s.matches('.sello')) contra_tarjeta.push([rs.left - c.left, rs.top - c.top, rs.right - c.left, rs.bottom - c.top, (s.textContent || '').trim()]);
   });
-  return { platos_hasta: Math.round(Math.max(0, ...pl.map((x) => x.bottom)) - c.top), tira_desde: Math.round(t.top - c.top),
-           tira_hasta: Math.round(t.bottom - c.top), sale, cortados, pisa, sellos, contra_tarjeta };
+  return { tira_n: document.querySelectorAll('.tira .t').length,
+           platos_hasta: Math.round(Math.max(0, ...pl.map((x) => x.bottom)) - c.top), tira_desde: Math.round(t.top - c.top),
+           tira_hasta: Math.round(t.bottom - c.top), sale, cortados, pisa, desborda, sellos, contra_tarjeta };
 }"""
 
 
@@ -707,8 +740,12 @@ def problemas(m):
         out.append('cortados: ' + ', '.join(m['cortados'])[:120])
     if m.get('pisa'):
         out.append('las cajas se pisan')
-    if m.get('platos_hasta', 0) > m.get('tira_desde', 999) - 8:
+    if m.get('desborda'):
+        out.append('%d caja(s) se desbordan' % m['desborda'])
+    if m.get('tira_n') and m.get('platos_hasta', 0) > m.get('tira_desde', 999) - 8:
         out.append('la tira toca el podio')
+    if not m.get('tira_n') and m.get('platos_hasta', 0) > 612:
+        out.append('el podio baja hasta el «T1»')
     if m.get('tira_hasta', 0) > 640:
         out.append('la tira baja demasiado')
     out += m.get('sellos') or []
@@ -732,6 +769,7 @@ def imagen(ev, pg=None):
     pg.set_content(h, wait_until='load')
     pg.evaluate('document.fonts.ready.then(() => true)')
     pg.wait_for_timeout(300)
+    pg.evaluate(AJUSTAR)
     png = pg.locator('#c').screenshot()
     m = pg.evaluate(MEDIR)
     try:
