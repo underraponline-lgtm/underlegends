@@ -735,6 +735,13 @@ export default function App() {
     if (i >= 0) { setDesde(hLink); setHistoria(i); }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hLink, grupos, muro, hTarde]);
+  // 📸 LAS HISTORIAS DE ALGUIEN DESDE SU PERFIL (17/11/2026, `historiasDePersona()` de arriba.jsx): el perfil arma su grupo
+  // y lo abre en este mismo visor, así lo visto se guarda igual que en el Inicio
+  const [propias, setPropias] = useState(null);
+  useEffect(() => {
+    window.lgVerHistorias = (g, desdeId) => { if (g && g.slides && g.slides.length) { setDesde(desdeId || ''); setPropias(g); } };
+    return () => { delete window.lgVerHistorias; };
+  }, []);
   // lo que ya habías visto con la marca vieja (una por círculo) pasa una vez a la nueva, así nadie vuelve a ver todo
   useEffect(() => {
     if (vistos !== null || !grupos.length) return;
@@ -867,6 +874,7 @@ export default function App() {
       {pagina && !sv ? <Aislada n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={() => { setDesde(''); cerrarHistoria(); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
+      {propias && historia === null ? <Aislada n="VisorPerfil"><Visor liga={liga} grupos={[propias]} abierto={0} onCerrar={() => { setDesde(''); setPropias(null); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>
       <Aislada n="AvisoPromo"><AvisoPromo /></Aislada>
       <Aislada n="FichaHover"><FichaHover liga={liga} /></Aislada>

@@ -1326,6 +1326,34 @@ export function gruposHistorias(liga) {
   return grupos.filter((g) => g.slides.length);
 }
 
+// 📸 LAS HISTORIAS DE UNA PERSONA, PARA SU PERFIL (Dlx, 17/11/2026: «que en perfil se pueda ver las historias que la página
+// sube por los usuarios mismos»): las mismas que arma el Inicio con lo suyo —campeón, caza, carta nueva, rango y sus
+// promos—, pero de TODAS sus publicaciones (`p.mu` del perfil) y no sólo de las del muro de hoy. Un grupo como el de la
+// gente que sigues, para el mismo visor (`window.lgVerHistorias`, App.jsx). Sin ninguna, no hay grupo
+const DE_PERSONA = { campeon: 1, caza: 1, tarjeta: 1, rango: 1, promo: 1 };
+export function historiasDePersona(liga, k, items) {
+  const f = liga.T[k];
+  // las subidas de rango seguidas con la misma letra son una sola historia: la del día que llegó (como «Su muro»)
+  const repetidas = new Set();
+  let previo = null;
+  [...(items || [])].reverse().forEach((it) => { if (it.tipo !== 'rango') return; if (previo === it.rg) repetidas.add(it.id); previo = it.rg; });
+  const xs = (items || []).filter((it) => DE_PERSONA[it.tipo] && ksDe(it).includes(k) && !repetidas.has(it.id));
+  if (!xs.length) return null;
+  // las promos van por su lado (slidesDe no las arma): la miniatura del video, como el círculo de Promos
+  const otras = xs.filter((it) => it.tipo !== 'promo');
+  const slides = slidesDe(liga, otras).slice(0, 12);
+  xs.filter((it) => it.tipo === 'promo' && it.vid).slice(0, 4).forEach((it) => {
+    const tit = it.tit ? limpio(it.tit).replace(/([/|·_])/g, '$1​') : '';
+    slides.push(Slide('PROMO · ' + siglaDe(it.sv), <><Miniatura vid={it.vid} cls="st-promo" /><h3 className={'st-h' + (tit.length > 48 ? ' largo' : '')}>{tit}</h3></>,
+      liga.cuando(it.t), 'Mirar el video', { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url }, promo: it.id },
+      'promo:' + (it.pid || it.url), String(it.t || ''), { esc: it.sv || 'DRA' }));
+  });
+  if (!slides.length) return null;
+  slides.sort(masViejo);
+  const nom = limpio((f && f.n) || (xs[0].quien || [])[0] || k);
+  return { id: 'perfil-' + k, tipo: 'gente', nombre: nom, k, cc: f ? f.cc : '', nom, firma: firma(xs, 'perfil'), slides };
+}
+
 // la cara de alguien en un círculo: su foto o, si no tiene, la inicial sobre su bandera (una inicial sobre negro,
 // fila tras fila, era lo que se veía «sin avatar»)
 export function CaraH({ liga, k, nombre, cc, cls = 'h-c' }) {

@@ -28,6 +28,7 @@ import { crewDe, useCrews } from './crews.js';
 import { errorPerfilTx, guardarPerfilMio, usePerfilExtra } from './perfil_extra.js';
 import { FraseEditor } from './frase.jsx';
 import { CrewsParaVos, InvitarACrew, RolCrew } from './crewpanel.jsx';
+import { Banda, Rivalidades, SuCamino, SuForma, SuMejorNoche, SuMuro, SusHistorias, SusRecords, usePerfilDatos } from './perfil_bandas.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
 
@@ -528,37 +529,30 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
 // 👀 DE UN VISTAZO (Dlx, a la v2: «De un vistazo está incompleto, le falta detalle»): seis números, cada uno con una línea
 // que dice qué significa. Los duelos, en negro, con la tira de los últimos. `ev` y `du` vienen del más nuevo al más viejo
 const SEMIS_O_MAS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal'];
-function DeUnVistazo({ liga, f, p }) {
-  const ev = (p && p.ev) || [];
+// 👀 DE UN VISTAZO, SEIS NÚMEROS (el remake en bandas, 17/11/2026: la v3 de la maqueta). Las rachas que iban acá pasaron
+// a «Sus récords» (perfil_bandas.jsx), con su mejor marca
+function DeUnVistazo({ f, p, D, esYo }) {
+  const ev = D.evs;
   const du = (p && p.du) || [];
   const g = du.filter((d) => d[2]).length;
-  const rd = (p && p.rd) || null;
-  const rch = Array.isArray(f.rch) ? f.rch : null;
-  const pod = (f.oro || 0) + (f.seg || 0) + (f.ter || 0);
-  const semisMas = ev.filter((x) => SEMIS_O_MAS.includes(x[1])).length;
-  const ult = du[0];
-  // quién le cortó la racha de duelos: la última que perdió
-  const corto = rd && !rd[0] ? du.find((d) => !d[2]) : null;
-  const tira = du.slice(0, 16).reverse();
+  const rk = (p && p.rk) || {};
+  const fin = ev.filter((x) => x.pu === 'Campeón' || x.pu === 'Subcampeón').length;
+  const tit = ev.filter((x) => x.pu === 'Campeón').length;
+  const semisMas = ev.filter((x) => SEMIS_O_MAS.includes(x.pu)).length;
+  const tot = ev.reduce((s, x) => s + x.pts, 0);
+  const mas = ev.reduce((a, b) => (!a || b.pts > a.pts ? b : a), null);
+  const xs = [
+    ['Podios', <span key="m" className="pf-med"><span title="Campeón"><Medalla p={1} />{f.oro || 0}</span><span title="Subcampeón"><Medalla p={2} />{f.seg || 0}</span><span title="Tercero"><Medalla p={3} />{f.ter || 0}</span></span>, 'oro, plata y bronce'],
+    fin ? ['Finales', tit + ' de ' + fin, (esYo ? 'ganaste ' : 'ganó ') + tit + ' de las ' + fin + (esYo ? ' que jugaste' : ' que jugó')] : null,
+    du.length ? ['Duelos', <span key="d">{g}<small>/{du.length}</small></span>, Math.round((100 * g) / du.length) + ' % ganados' + (rk.du ? ' · #' + rk.du[0] + ' de ' + rk.du[1] : '')] : null,
+    ['Semis o más', String(semisMas), 'en ' + ev.length + (ev.length === 1 ? ' evento' : ' eventos')],
+    ev.length ? ['Por evento', '+' + num(Math.round(tot / ev.length)), mas ? (esYo ? 'el que más te dio: +' : 'el que más le dio: +') + num(mas.pts) : ''] : null,
+    ['Misiones', '+' + num(f.mis || 0), 'puntos esta temporada'],
+  ].filter(Boolean);
   return (
-    <section className="sec pf-sec pf8-vz">
-      <div className="sec-t"><h2>De un vistazo</h2></div>
-      <div className="pf8-bento">
-        <div><small>PODIOS</small>
-          <b className="pf-med"><span title="Campeón"><Medalla p={1} />{f.oro || 0}</span><span title="Subcampeón"><Medalla p={2} />{f.seg || 0}</span><span title="Tercero"><Medalla p={3} />{f.ter || 0}</span></b>
-          <em>{pod ? 'en ' + pod + ' de sus ' + ev.length + ' eventos' + (f.oro ? ' · campeón ' + (f.oro === 1 ? 'una vez' : f.oro + ' veces') : '') : 'todavía sin podio'}</em></div>
-        <div><small>QUEDÓ EN SEMIS</small><b>{f.sem || 0}</b>
-          <em>{ev.length ? semisMas + ' de ' + ev.length + ' terminó en semis o más' : 'sin eventos todavía'}</em></div>
-        <div className="negro"><small>DUELOS GANADOS</small><b>{g}<span>/{du.length}</span></b>
-          {tira.length ? <span className="pf8-wl" aria-label={'Sus últimos duelos: ' + tira.map((d) => (d[2] ? 'ganó' : 'perdió')).join(', ')}>
-            {tira.map((d, i) => <i key={i} className={d[2] ? 'g' : 'p'} />)}</span> : null}
-          <em>{du.length ? Math.round((100 * g) / du.length) + ' % ganados · el último lo ' + (ult && ult[2] ? 'ganó' : 'perdió') : 'cuentan los 1vs1 de las llaves'}</em></div>
-        <div className="negro"><small>RACHA DE DUELOS</small><b>{rd ? rd[0] : 0}{rd ? <span> · máx {rd[1]}</span> : null}</b>
-          <em>{corto ? <>ganados seguidos: la cortó <Alguien liga={liga} nombre={corto[1]} /></> : rd && rd[0] ? 'ganados seguidos, y sigue' : 'ganados seguidos'}</em></div>
-        <div><small>RACHA DE EVENTOS</small><b>{rch ? rch[0] : 0}{rch ? <span>{rch[0] && rch[0] >= rch[1] ? ' · y sigue' : ' · máx ' + rch[1]}</span> : null}</b>
-          <em>eventos seguidos en semifinal o más{rch && rch[0] && rch[0] >= rch[1] ? ': es su mejor racha' : ''}</em></div>
-        <div><small>MISIONES</small><b>+{num(f.mis || 0)}</b><em>lo que le sumaron sus misiones esta temporada</em></div>
-      </div>
+    <section className="pf9-pz pf9-kpis tinte-g">
+      <header className="pf9-h"><h3>De un vistazo</h3></header>
+      <dl>{xs.map((x) => <div key={x[0]}><dt>{x[0]}</dt><dd>{x[1]}</dd><small>{x[2]}</small></div>)}</dl>
     </section>
   );
 }
@@ -1330,42 +1324,6 @@ export function SusLigas({ liga, k, esYo, p, dentro }) {
 // 📰 SUS PUBLICACIONES (Dlx, 13/10/2026: «pon ahí las publicaciones de cada uno que el bot publica también en alguna
 // parte, no todas claramente pero con la opción de ver todas»): las de toda la temporada (`mu`, `muro.de_cada_uno()`),
 // las tres más nuevas y «Ver todas». Las mismas piezas que Publicaciones, con 👏 Felicitar
-function SusPublicaciones({ liga, p, esYo }) {
-  const [todas, setTodas] = useState(false);
-  const A = useAplausos();
-  // 📣 las promos van en su propia sección (`SusPromos`)
-  // ⚠️ sólo lo que `Pub` sabe dibujar (`PUB_TIPOS`): un tipo nuevo del muro sin texto acá se contaba en el número y no
-  // se veía, y con los tres más nuevos de ésos el bloque salía vacío (15/11/2026)
-  const xs = ((p && p.mu) || []).filter((it) => it.tipo !== 'promo' && PUB_TIPOS[it.tipo]);
-  if (!xs.length) return null;
-  const ver = todas ? xs : xs.slice(0, 3);
-  return (
-    <section className="sec pf-sec pf-pubs">
-      <div className="sec-t"><h2>{esYo ? 'Tus publicaciones' : 'Sus publicaciones'}</h2><span className="tj-n">{xs.length}</span></div>
-      <div className="pub-dia">{ver.map((it) => (it.tipo === 'tarjeta'
-        ? <Cartas key={it.id} liga={liga} xs={[it]} /> : <Pub key={it.id} liga={liga} it={it} A={A} />))}</div>
-      {xs.length > 3 ? (
-        <button type="button" className="btn borde2 chico pf-pubs-mas" aria-expanded={todas} onClick={() => setTodas(!todas)}>
-          {todas ? 'Ver menos' : 'Ver todas (' + xs.length + ')'}</button>
-      ) : null}
-    </section>
-  );
-}
-
-// 📣 SUS PROMOS (Dlx, 16/10/2026: «en el perfil de cada uno»): lo que compartió en el canal de promoción de los
-// servidores (bot/promos.py), música y video, las más nuevas primero. Sin ninguna, no se dibuja
-function SusPromos({ liga, p, esYo }) {
-  const A = useAplausos();
-  const xs = ((p && p.mu) || []).filter((it) => it.tipo === 'promo' && it.o !== 'liga');
-  if (!xs.length) return null;
-  return (
-    <section className="sec pf-sec pf-pubs">
-      <div className="sec-t"><h2>{esYo ? 'Tus promos' : 'Sus promos'}</h2><a href="#/publicaciones">Promos <Ico n="flecha" t={16} /></a></div>
-      <div className="pub-dia">{xs.map((it) => <Pub key={it.id} liga={liga} it={it} A={A} />)}</div>
-    </section>
-  );
-}
-
 // 🏅 LOGROS (las insignias de la Liga), EN NEGRO, y al lado 🎒 INVENTARIO (Dlx, a la v11: «pon al costado de Logros
 // Inventario: esto será para otra cosa»): una pestaña más del mismo bloque, vacía hasta que tenga qué guardar
 function Logros({ liga, p, esYo, dc }) {
@@ -1454,7 +1412,7 @@ function filaDeCuenta(dc, k) {
 }
 
 // 🧭 EL ÍNDICE DE ARRIBA (la maqueta B): baja hasta cada parte. Una parte que no se dibujó no tiene botón
-const INDICE = [['videos', 'Videos'], ['ultimo', 'Lo último'], ['datos', 'Datos'], ['duelos', 'Duelos'], ['insignias', 'Logros'], ['eventos', 'Eventos']];
+const INDICE = [['publicaciones', 'Muro'], ['videos', 'Videos'], ['eventos', 'Eventos'], ['duelos', 'Duelos'], ['insignias', 'Logros'], ['ultimo', 'Lo último'], ['datos', 'Datos']];
 function Indice({ raiz }) {
   const [hay, setHay] = useState('');
   useEffect(() => {
@@ -1559,31 +1517,73 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   const [nEv, setNEv] = useState({ k: '', n: 5 });
   const [medida, setMedida] = useState(0);
   const n = nEv.k === k ? nEv.n : 5;
-  // y si con todos sus eventos el costado sigue más largo, «Sus fortalezas» pasa a la ancha (una vez por perfil: así no
-  // salta de un lado al otro)
-  const [fzM, setFzM] = useState('');
-  const fzAncha = fzM === k;
+  // 📏 (el remake en bandas, 17/11/2026) ahora entre las dos columnas de «Su temporada»: sus eventos crecen o se achican
+  // hasta que la columna ancha llegue a donde termina la de al lado
   useEffect(() => {
     const el = raiz.current;
     if (!el || typeof ResizeObserver !== 'function') return undefined;
     const ro = new ResizeObserver(() => setMedida((x) => x + 1));
-    el.querySelectorAll('.pf8-main, .pf8-lat').forEach((x) => ro.observe(x));
+    el.querySelectorAll('.pf9-g > .pf9-pila').forEach((x) => ro.observe(x));
     return () => ro.disconnect();
   }, [k, !!P]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     const el = raiz.current;
     if (!el || !window.matchMedia || !window.matchMedia('(min-width: 900px)').matches) return;
-    const main = el.querySelector('.pf8-main');
-    const lat = el.querySelector('.pf8-lat');
+    const main = el.querySelector('.pf9-t-main');
+    const lat = el.querySelector('.pf9-t-lat');
     const fila = el.querySelector('.pf8-evl > li');
     const total = ((p && p.ev) || []).length;
     if (!main || !lat || !fila || !total) return;
     const alto = Math.max(40, fila.getBoundingClientRect().height + 8);
     const dif = lat.getBoundingClientRect().bottom - main.getBoundingClientRect().bottom;
     if (dif > alto && n < total) setNEv({ k, n: Math.min(total, n + Math.floor(dif / alto)) });
-    else if (dif > alto * 3 && !fzAncha) setFzM(k);
     else if (dif < -alto && n > 3) setNEv({ k, n: Math.max(3, n - Math.floor(-dif / alto)) });
-  }, [medida, n, k, p, fzAncha]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [medida, n, k, p]); // eslint-disable-line react-hooks/exhaustive-deps
+  // ⚖️ LAS OTRAS DOS BANDAS TAMBIÉN TERMINAN JUNTAS (el remake en bandas, 17/11/2026): cada perfil arma otros largos
+  // —Makmah tiene el muro el doble de alto que MCO, Puppy no tiene récords ni rivalidades—, así que una pieza por banda
+  // va a la columna más corta (Rivalidades en «Sus noches», Fortalezas en «Lo suyo») y el muro muestra más o menos
+  // publicaciones. Pasa sólo si mejora de verdad (60 px) y con tope de vueltas, para que nada salte de un lado al otro
+  // «Lo suyo» tiene cinco piezas de largos muy distintos (Sus datos puede ser la mitad de la banda): ahí se elige el
+  // reparto entero —cuál va a cada lado, en su orden— que deja las dos columnas más parejas (`b4`, una máscara: 1 = derecha)
+  const B4 = ['logros', 'ultimo', 'fz', 'datos', 'jurado'];
+  const B4_0 = 0b11000;
+  const [lay, setLay] = useState({ k: '', riv: 'izq', b4: B4_0, nm: 4, v: 0 });
+  const L = lay.k === k ? lay : { k, riv: 'izq', b4: B4_0, nm: 4, v: 0 };
+  useEffect(() => {
+    const el = raiz.current;
+    if (!el || L.v > 14 || !window.matchMedia || !window.matchMedia('(min-width: 900px)').matches) return;
+    const fondo = (x) => (x ? x.getBoundingClientRect().bottom : 0);
+    const alto = (x) => (x ? x.getBoundingClientRect().height + 14 : 0);
+    const cols = (c) => [...el.querySelectorAll('.' + c + ' > .pf9-pila')];
+    const mover = (c, sel, lado) => {
+      const [a, b] = cols(c);
+      const pz = el.querySelector(sel);
+      if (!a || !b || !pz) return null;
+      const dif = fondo(b) - fondo(a);
+      const h = alto(pz);
+      const otro = lado === 'izq' ? dif + 2 * h : dif - 2 * h;
+      return Math.abs(otro) < Math.abs(dif) - 60 ? (lado === 'izq' ? 'der' : 'izq') : null;
+    };
+    const riv = mover('pf9-b2', '.pf9-riv', L.riv);
+    // el mejor reparto de «Lo suyo»: el alto de cada pieza (14 px de hueco entre una y otra) y las 32 combinaciones
+    const hs = B4.map((id) => { const x = el.querySelector('[data-pz="' + id + '"]'); const hh = x ? x.getBoundingClientRect().height : 0; return hh ? hh + 14 : 0; });
+    const lados = (m) => hs.reduce((acc, hh, i) => { acc[(m >> (B4.length - 1 - i)) & 1] += hh; return acc; }, [0, 0]);
+    const desv = (m) => { const [x, y] = lados(m); return Math.abs(x - y); };
+    let mejor = L.b4;
+    for (let m = 0; m < 1 << B4.length; m++) if (desv(m) < desv(mejor) - 60) mejor = m;
+    if (riv || mejor !== L.b4) { setLay(Object.assign({}, L, { riv: riv || L.riv, b4: mejor, v: L.v + 1 })); return; }
+    // el muro: una publicación más o menos mientras la diferencia sea más grande que una de ellas
+    const [a, b] = cols('pf9-b2');
+    const fila = el.querySelector('.pf9-filas > *');
+    const total = el.querySelector('.pf9-muro') ? Number(el.querySelector('.pf9-muro').dataset.n || 0) : 0;
+    if (!a || !b || !fila || !total) return;
+    const h = fila.getBoundingClientRect().height + 8;
+    const dif = fondo(b) - fondo(a);
+    if (dif > h && L.nm > 2) setLay(Object.assign({}, L, { nm: L.nm - 1, v: L.v + 1 }));
+    else if (dif < -h * 1.5 && L.nm < Math.min(total, 10)) setLay(Object.assign({}, L, { nm: L.nm + 1, v: L.v + 1 }));
+  }, [medida, k, p, L.riv, L.b4, L.nm]); // eslint-disable-line react-hooks/exhaustive-deps
+  // los datos que usan las piezas nuevas (antes del `return` de «no está»: es un hook)
+  const D = usePerfilDatos(liga, f || {}, p, P && P.e);
   if (!f) {
     // sin la tabla no se sabe todavía: puede venir en los perfiles, que bajan después
     if (!P) return <div className="cargando">Cargando…</div>;
@@ -1612,12 +1612,22 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       </>
     );
   }
-  // 🎨 BLANCO Y NEGRO, INTERCALADOS (Dlx, 07/10/2026, y la maqueta B del 21/10): en el teléfono una columna, en este
-  // orden —videos, la meta, de un vistazo, lo último, publicaciones, fortalezas, cara a cara, sus datos, logros, cacería,
-  // precio y eventos—; en la compu, la columna ancha y la del costado, que terminan juntas. El orden del teléfono lo da
-  // `order` (las dos columnas son `display: contents` ahí)
+  // 🎨 EN BANDAS, COMO EL INICIO (el remake del 17/11/2026, la v3 de la maqueta: «Sí, pásala»). Cuatro a todo el ancho que
+  // se alternan, negra y blanca, cada una con su título grande; adentro, paneles oscuros con un borde fino del color de su
+  // tema. En el teléfono, una columna en el mismo orden. «Su muro» sube a la segunda (Dlx: «QUIZAS q muro este mas
+  // arriba») y sus historias van primero, como los destacados de Instagram
+  const su = (yo, el) => (esYo ? yo : el);
+  const riv = <Rivalidades liga={liga} D={D} esYo={esYo} />;
+  // las piezas de «Lo suyo», cada una con su marca para medirla (el reparto lo elige `b4`, arriba)
+  const b4 = P ? {
+    logros: <div key="logros" data-pz="logros" id="pf-insignias"><Logros liga={liga} p={p} esYo={esYo} dc={dc} /></div>,
+    ultimo: <div key="ultimo" data-pz="ultimo" id="pf-ultimo"><LoUltimo liga={liga} p={p} e={P.e} act={ex && ex.act} esYo={esYo} /></div>,
+    fz: <div key="fz" data-pz="fz"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div>,
+    datos: <div key="datos" data-pz="datos" id="pf-datos"><SusDatos liga={liga} f={f} k={k} p={p} e={P.e} esYo={esYo} /></div>,
+    jurado: <div key="jurado" data-pz="jurado"><FichaJurado k={k} /></div>,
+  } : {};
   return (
-    <div className="pf8-pag" ref={raiz}>
+    <div className="pf8-pag pf9-pag" ref={raiz}>
       <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} ex={ex} onEmblemas={(x) => setEmb(x || '')} numeros />
       <div ref={abajo} />
       {P ? <Indice raiz={raiz} /> : null}
@@ -1626,25 +1636,41 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       {esYo && !crewDe(k) ? <CrewsParaVos liga={liga} seccion="sec pf-sec" /> : null}
       {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entras entre los 200 de la tabla.</p></section> : null}
       {!P ? <div className="cargando">Cargando…</div> : (
-        <div className="pf8-cuerpo">
-          <div className="pf8-main">
-            <div id="pf-videos" className="o1"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
-            <div id="pf-ultimo" className="o4"><LoUltimo liga={liga} p={p} e={P.e} act={ex && ex.act} esYo={esYo} /></div>
-            <div id="pf-publicaciones" className="o5"><SusPublicaciones liga={liga} p={p} esYo={esYo} /><SusPromos liga={liga} p={p} esYo={esYo} /></div>
-            <div id="pf-duelos" className="o7"><Duelos liga={liga} p={p} e={P.e} /></div>
-            <div className="o7"><FichaJurado k={k} /></div>
-            {fzAncha ? <div className="o6"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div> : null}
-            <div id="pf-insignias" className="o9"><Logros liga={liga} p={p} esYo={esYo} dc={dc} /></div>
-            <div id="pf-eventos" className="o12"><Eventos liga={liga} p={p} e={P.e} n={n} /></div>
-          </div>
-          <aside className="pf8-lat">
-            <div className="o2"><ProximaMeta liga={liga} f={f} esYo={esYo} /></div>
-            <div className="o3"><DeUnVistazo liga={liga} f={f} p={p} /></div>
-            {fzAncha ? null : <div className="o6"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div>}
-            <div id="pf-datos" className="o8"><SusDatos liga={liga} f={f} k={k} p={p} e={P.e} esYo={esYo} /></div>
-            <div className="o10"><Caceria liga={liga} p={p} /></div>
-            <div className="o11"><Precio liga={liga} f={f} esYo={esYo} dc={dc} /></div>
-          </aside>
+        <div className="pf9-cuerpo">
+          <Banda color="negra">
+            <SusHistorias liga={liga} f={f} p={p} esYo={esYo} />
+            <div className="pf9-g pf9-g-forma">
+              <SuForma liga={liga} D={D} esYo={esYo} />
+              <div className="pf9-pila"><ProximaMeta liga={liga} f={f} esYo={esYo} /><DeUnVistazo f={f} p={p} D={D} esYo={esYo} /></div>
+            </div>
+          </Banda>
+          <Banda color="blanca" titulo={su('Tus noches', 'Sus noches')} link={su('Tus eventos', 'Sus eventos')} ir={'#/r/' + encodeURIComponent(k) + '/eventos'}>
+            <div className="pf9-g pf9-g-2 pf9-b2">
+              <div className="pf9-pila"><SuMejorNoche liga={liga} f={f} D={D} esYo={esYo} />{L.riv === 'izq' ? riv : null}</div>
+              <div className="pf9-pila"><SuMuro liga={liga} p={p} esYo={esYo} n={L.nm} />{L.riv === 'der' ? riv : null}</div>
+            </div>
+            <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
+          </Banda>
+          <Banda color="negra" titulo={su('Tu temporada', 'Su temporada')} link="Ranking" ir="#/ranking/temporada">
+            <div className="pf9-g pf9-g-rail">
+              <div className="pf9-pila pf9-t-main">
+                <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} n={n} /></div>
+                <div id="pf-duelos"><Duelos liga={liga} p={p} e={P.e} /></div>
+              </div>
+              <div className="pf9-pila pf9-t-lat">
+                <SuCamino liga={liga} f={f} p={p} esYo={esYo} />
+                <SusRecords f={f} p={p} D={D} esYo={esYo} />
+                <Caceria liga={liga} p={p} />
+                <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
+              </div>
+            </div>
+          </Banda>
+          <Banda color="blanca" titulo={su('Lo tuyo', 'Lo suyo')}>
+            <div className="pf9-g pf9-g-2 pf9-b4">
+              <div className="pf9-pila">{B4.filter((id, i) => !((L.b4 >> (B4.length - 1 - i)) & 1)).map((id) => b4[id])}</div>
+              <div className="pf9-pila">{B4.filter((id, i) => (L.b4 >> (B4.length - 1 - i)) & 1).map((id) => b4[id])}</div>
+            </div>
+          </Banda>
         </div>
       )}
       {panel}

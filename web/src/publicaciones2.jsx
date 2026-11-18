@@ -531,13 +531,13 @@ function useVisto(muro) {
 // - AL COSTADO, los minis del panel (tocar uno filtra), lo más felicitado, las encuestas en corto y la campana. En el
 //   celular los minis se deslizan arriba y lo demás va después del primer día.
 const GRUPOS = { tarjeta: 1, rango: 1, crewtier: 1, svlunes: 1, svsemana: 1, podio: 1, top10: 1, subio: 1, racha: 1 };
-const TIPOS = {
+export const TIPOS = {
   campeones: ['campeon', 'resnoche', 'ligahito', 'podio'], rangos: ['rango'], cartas: ['tarjeta'], pase: ['pase', 'sorteo'],
   mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier', 'crewunion', 'crewnueva'], anuncios: ['flyer', 'liga'], promos: ['promo'],
   // 🔄 bot/muro_solos.py (15/11/2026)
   logros: ['podio', 'top10', 'subio', 'racha'], servidores: ['svlunes', 'svsemana', 'svmeta', 'svtop', 'svrecord', 'svnuevo', 'svtier', 'svchat'],
 };
-const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos'], ['logros', 'Logros'], ['cartas', 'Cartas'], ['pase', 'Pase'],
+export const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos'], ['logros', 'Logros'], ['cartas', 'Cartas'], ['pase', 'Pase'],
   ['mw', 'Most Wanted'], ['servidores', 'Servidores'], ['mes', 'MES AWARDS'], ['crews', 'Crews'], ['anuncios', 'Anuncios'], ['promos', 'Promos']];
 const hace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
 // el título en texto llano, para el escenario y los resúmenes
@@ -788,7 +788,7 @@ function ServidoresG({ liga, xs, nuevo }) {
 }
 
 // ── una publicación: la fuerte grande (como la destacada de Lo último), lo demás en renglón ──
-function Fila({ liga, it, A, P, nuevo }) {
+export function Fila({ liga, it, A, P, nuevo }) {
   const pub = usePases();
   const c = contenido(liga, it, pub);
   if (!c) return null;
