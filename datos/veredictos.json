@@ -1950,6 +1950,94 @@
    "b": "PARK JI SUNG",
    "ganador": "OKAM",
    "votos": "1–0"
+  },
+  "1572466880214605955": {
+   "id": "1572466880214605955",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794975719265,
+   "a": "NC",
+   "b": "KIBAK",
+   "ganador": "KIBAK",
+   "votos": "1–0"
+  },
+  "1572468187063390329": {
+   "id": "1572468187063390329",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794976030842,
+   "a": "TAM",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1572469381743509675": {
+   "id": "1572469381743509675",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794976315676,
+   "a": "GEOKA",
+   "b": "DEKO",
+   "ganador": "DEKO",
+   "votos": "1–0"
+  },
+  "1572469438400167997": {
+   "id": "1572469438400167997",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794976329184,
+   "a": "RIZAS",
+   "b": "RODRI LP",
+   "ganador": "RODRI LP",
+   "votos": "1–0"
+  },
+  "1572471066448764949": {
+   "id": "1572471066448764949",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794976717341,
+   "a": "Mf doom🇺🇸",
+   "b": "Zanz 🇲🇽",
+   "ganador": "Mf doom🇺🇸",
+   "votos": "2–0"
+  },
+  "1572472317655785562": {
+   "id": "1572472317655785562",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794977015652,
+   "a": "KIBAK",
+   "b": "DEKO",
+   "ganador": "KIBAK",
+   "votos": "1–0"
+  },
+  "1572472644295598181": {
+   "id": "1572472644295598181",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1794977093529,
+   "a": "KYSS🇲🇽",
+   "b": "LRS🇦🇷",
+   "ganador": "KYSS🇲🇽",
+   "votos": "2–0"
+  },
+  "1572473694033420390": {
+   "id": "1572473694033420390",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794977343806,
+   "a": "PARK JI SUNG",
+   "b": "RODRI LP",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6724,8 +6812,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1794975711120,
-   "ed": 1794975719265,
-   "texto": "`[ CUARTOS ]`\n⌞NC⌝ 🆚 ⌞KIBAK⌝",
+   "ed": 1794977539036,
+   "texto": "`[ CUARTOS ]`\n⌞NC⌝ 🆚 ⌞KIBAK⌝\n⌞TAM⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞GEOKA⌝ 🆚 ⌞DEKO⌝\n⌞RIZAS⌝ 🆚 ⌞RODRI LP⌝\n`[ SEMIFINALES ]`\n⌞KIBAK⌝ 🆚 ⌞DEKO⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞RODRI LP⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -6733,8 +6821,58 @@
       "NC",
       "KIBAK"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "KIBAK",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "TAM",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "GEOKA",
+      "DEKO"
+     ],
+     "DEKO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "RIZAS",
+      "RODRI LP"
+     ],
+     "RODRI LP",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "KIBAK",
+      "DEKO"
+     ],
+     "KIBAK",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PARK JI SUNG",
+      "RODRI LP"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]
