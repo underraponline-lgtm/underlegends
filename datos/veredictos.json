@@ -1948,7 +1948,7 @@
    "pub": 1794971006073,
    "a": "OKAM",
    "b": "PARK JI SUNG",
-   "ganador": "PARK JI SUNG",
+   "ganador": "OKAM",
    "votos": "1–0"
   }
  },
@@ -6714,6 +6714,27 @@
      ],
      "COLESITO",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1572466846051999848": {
+   "id": "1572466846051999848",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794975711120,
+   "ed": 1794975719265,
+   "texto": "`[ CUARTOS ]`\n⌞NC⌝ 🆚 ⌞KIBAK⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "NC",
+      "KIBAK"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

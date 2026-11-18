@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T03:55:31+00:00",
+ "cuando": "2026-11-18T04:25:39+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7463,6 +7463,15 @@
  ],
  "inscripciones": [
   {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "karma 🇦🇷",
+   "quien": "chispz.",
+   "discord_id": "1340425162587246685",
+   "msg_id": "1572465266556674171",
+   "cuando": "2026-11-18T04:15:34"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
    "texto": "Les gano y los cojo 🇨🇱",
@@ -12353,7 +12362,7 @@
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
    "texto": "Izaya 🇨🇱",
-   "quien": "dragun0994",
+   "quien": "izaya_shiroi",
    "discord_id": "1150044918216130636",
    "msg_id": "1570947019185590375",
    "cuando": "2026-11-13T23:42:36"
@@ -12506,7 +12515,7 @@
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
    "texto": "Izaya 🇨🇱",
-   "quien": "dragun0994",
+   "quien": "izaya_shiroi",
    "discord_id": "1150044918216130636",
    "msg_id": "1570927777505611798",
    "cuando": "2026-11-13T22:26:08"
@@ -33404,7 +33413,7 @@
    "servidor": "DDS",
    "canal": "╰➤-inscripciones-🏆",
    "texto": "Izaya 🇨🇱",
-   "quien": "dragun0994",
+   "quien": "izaya_shiroi",
    "discord_id": "1150044918216130636",
    "msg_id": "1563616025415516322",
    "cuando": "2026-10-24T18:11:51"
@@ -43452,15 +43461,6 @@
    "discord_id": "1508623564285149357",
    "msg_id": "1560112795297779775",
    "cuando": "2026-10-15T02:11:15"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "g8🇹🇼",
-   "quien": "gocho444.",
-   "discord_id": "1324178951119175711",
-   "msg_id": "1560112789211713608",
-   "cuando": "2026-10-15T02:11:14"
   }
  ]
 }

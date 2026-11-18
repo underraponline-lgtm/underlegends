@@ -1503,12 +1503,12 @@
    ],
    "semillero": {
     "nuevos": {
-     "LKR": 5,
+     "LKR": 8,
      "DDS": 2
     },
     "gente": {
      "DDS": 8,
-     "LKR": 8
+     "LKR": 11
     },
     "gana": "LKR"
    },
@@ -1524,7 +1524,7 @@
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
-    "LKR": 8,
+    "LKR": 11,
     "SR": 0,
     "URBF": 0
    }
