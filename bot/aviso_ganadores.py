@@ -86,10 +86,14 @@ def ganadores(res, duelos, Q, desde):
     for x in todos:
         o = x['o'].split(':')
         ev = o[1]
-        e = out.setdefault(ev, {'camp': None, 'pod': [], 'bat': [], 'd': x.get('d', '')})
+        e = out.setdefault(ev, {'camp': None, 'camps': [], 'pod': [], 'bat': [], 'd': x.get('d', '')})
         if o[0] == 'camp':
+            # 👥 TODOS LOS CAMPEONES (18/11/2026): en un evento por equipos cada integrante tiene su premio —el Nido o el
+            # Drop según su semana— y acá se guardaba sólo el último: PANDILLAS (3v3) avisaba a Miniboy y no a Zanti ni a
+            # MaYeuTyK. `camp` queda como el primero, para lo que lo leía así
             q = Q.get(x['q'])
-            e['camp'] = (x['q'], reales.get((q, x['o']), x['k']) if q else x['k'])
+            e['camps'].append((x['q'], reales.get((q, x['o']), x['k']) if q else x['k']))
+            e['camp'] = e['camps'][0]
         elif o[0] == 'pod':
             e['pod'].append(x['q'])
     # los batacazos: el nombre del perdedor, de la hoja (el origen lo trae recortado)
@@ -102,7 +106,7 @@ def ganadores(res, duelos, Q, desde):
                 nombres[(str(f[c['Evento #']]), DM._llave(f[c['Perdedor']]))] = str(f[c['Perdedor']])
     for x in DM.de_duelos(duelos, _Todos(), desde=desde):
         _b, ev, perd = x['o'].split(':', 2)
-        e = out.setdefault(ev, {'camp': None, 'pod': [], 'bat': [], 'd': x.get('d', '')})
+        e = out.setdefault(ev, {'camp': None, 'camps': [], 'pod': [], 'bat': [], 'd': x.get('d', '')})
         e['bat'].append((x['q'], nombres.get((ev, perd), perd)))
     return out
 
@@ -201,12 +205,20 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
 
     titulo = _titulo(evento)
     nombre_sv, color = _sv_info(sv) if sv else ('', COLOR_UL)
-    camp, tipo = g['camp']
+    camps = g.get('camps') or [g['camp']]
     cabeza = '## 🏆 %s\n-# %s' % (_md(titulo) if titulo else 'Terminó el evento',
                                   ('Terminó en **%s**' % _md(nombre_sv)) if nombre_sv else 'Terminó')
-    corona = '👑 Campeón: %s\n%s Se lleva un **%s** por el título.' % (
-        nombre(camp), '🥚' if tipo == 'nido' else '🎁', 'Nido' if tipo == 'nido' else 'Drop')
-    boton('nido' if tipo == 'nido' else 'drop', camp)
+    if len(camps) == 1:
+        camp, tipo = camps[0]
+        corona = '👑 Campeón: %s\n%s Se lleva un **%s** por el título.' % (
+            nombre(camp), '🥚' if tipo == 'nido' else '🎁', 'Nido' if tipo == 'nido' else 'Drop')
+    else:
+        # 👥 por equipos: los campeones juntos, y cada uno con lo suyo (el Nido es el primer título de SU semana)
+        corona = '👑 Campeones: %s\n%s' % (' + '.join(nombre(c) for c, _t in camps), '\n'.join(
+            '%s %s se lleva un **%s** por el título.' % ('🥚' if t == 'nido' else '🎁', nombre(c), 'Nido' if t == 'nido' else 'Drop')
+            for c, t in camps))
+    for c, t in camps:
+        boton('nido' if t == 'nido' else 'drop', c)
     premios = []
     if g.get('pod'):
         premios.append('🎁 **Drop** por el podio: %s' % y(nombre(n) for n in g['pod']))
@@ -246,7 +258,9 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
                     {'type': 9, 'components': [{'type': 10, 'content': '### 🎁 Los premios\n' + '\n'.join(premios)}], 'accessory': ver}]
     if chica:
         adentro.append({'type': 10, 'content': '\n'.join(chica)})
-    adentro += [{'type': 1, 'components': botones[i:i + 5]} for i in range(0, len(botones), 5)]
+    # 🧱 en filas PAREJAS (con seis: 3 y 3, no 5 y 1): uno solo abajo quedaba suelto, como «Ver mis drops»
+    por_fila = -(-len(botones) // -(-len(botones) // 5)) if botones else 5
+    adentro += [{'type': 1, 'components': botones[i:i + por_fila]} for i in range(0, len(botones), por_fila)]
     comps = [{'type': 17, 'accent_color': color, 'components': adentro}]
     # 🔔 las menciones, AFUERA del recuadro y arriba: la única línea que suena
     if ids:
@@ -469,6 +483,18 @@ def _self_check():
        and c2[-1]['components'][1]['type'] == 9 and c2[-1]['components'][1]['accessory'].get('url') == WEB_DROPS,
        'sin título, «Terminó el evento»; sin batacazos ni puntos, sin esas partes; el campeón con su Drop y «Ver mis drops» a su lado')
     ok(_titulo('**__ NEW GENESIS __**') == 'NEW GENESIS' and _titulo('(sin titulo)') == '', 'el adorno del título se va')
+    res3 = [['Evento #', 'Fecha', 'Servidor', 'Rapero', 'Posición'],
+            ['800', '13/11/2026', 'ACAD', 'Zanti', 'Campeón'], ['800', '13/11/2026', 'ACAD', 'Mayeu', 'Campeón'],
+            ['800', '13/11/2026', 'ACAD', 'Mini', 'Campeón'], ['800', '13/11/2026', 'ACAD', 'Chuwin', 'Subcampeón'],
+            ['800', '13/11/2026', 'ACAD', 'Leyenda', 'Subcampeón'], ['800', '13/11/2026', 'ACAD', 'Oasis', 'Subcampeón']]
+    Q3 = {n: str(900000 + i) for i, n in enumerate(['Zanti', 'Mayeu', 'Mini', 'Chuwin', 'Leyenda', 'Oasis'])}
+    G3 = ganadores(res3, [['Evento #', 'Fecha', 'Ganador', 'Perdedor']], Q3, dt.date(2026, 11, 1))
+    ok(len(G3['800']['camps']) == 3 and G3['800']['camp'] == G3['800']['camps'][0],
+       'por equipos: los TRES campeones, cada uno con su premio (antes quedaba sólo el último)')
+    c3b, ids3, _t3b = mensaje('PANDILLAS', 'ACAD', G3['800'], Q3, set())
+    filas3 = [c['components'] for c in c3b[-1]['components'] if c['type'] == 1]
+    ok(len(ids3) == 6 and [len(f) for f in filas3] == [3, 3] and 'Campeones:' in json.dumps(c3b, ensure_ascii=False),
+       'los seis con su botón, en dos filas de tres (no cinco y uno), y «Campeones» con los tres')
     c3, _i3, _t3 = mensaje('X', 'FFA', {'camp': ('rodrilp', 'drop'), 'pod': [], 'bat': []}, {'rodrilp': '333333'}, set(), {'333333': 'Rodri LP'})
     ok('Drop · Rodri LP' in json.dumps(c3, ensure_ascii=False), 'el botón con el nombre de la Lista, no con la clave de la hoja')
     ok(mensaje('X', 'FFA', {'camp': None, 'pod': ['Ana'], 'bat': []}, Q, set()) is None, 'sin campeón, no hay aviso')
