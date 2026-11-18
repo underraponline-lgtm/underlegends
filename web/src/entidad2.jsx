@@ -21,7 +21,8 @@ import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
 import { CasaCrew, EntrarCrew, PanelCrew, RolCrew, SinVerificar, TierChip } from './crewpanel.jsx';
-import { MesSv, Nota, PromosSv, REDES } from './servidor.jsx';
+import { MesSv, PromosSv, REDES } from './servidor.jsx';
+import { Banda, SvCampeones, SvCuando, SvDuelo, SvEventos, SvFieles, SvForma, SvHistorias, SvMuro, SvNoche, SvOrganiza, SvProximo, SvRecords, SvTabla, SvVistazo, SvVuelven, useBalanceSv, useSvDatos } from './servidor_bandas.jsx';
 import { useSalon } from './mesawards.jsx';
 import { useIndice } from './indice.js';
 import CSS_PAGINA from './css/entidad2.css?inline';
@@ -151,6 +152,12 @@ export function PerfilSv({ liga, sv, enc }) {
   // los MES AWARDS del servidor llegan por su cuenta: pedirlos acá también (va a la misma memoria) hace que la página se
   // vuelva a dibujar cuando llegan, y el índice se entera de que la sección apareció
   useSalon();
+  // 🏟️ las bandas (17/11/2026, servidor_bandas.jsx) salen de los eventos de la temporada y del puesto de cada uno
+  // (`/api/perfiles`, el mismo que baja el perfil de cada rapero). Antes del `return` de «no está»: son hooks
+  const P = usePerfiles();
+  const D = useSvDatos(liga, sv, P);
+  const raiz = useRef(null);
+  const B = useBalanceSv(raiz, sv, !!D);
   const s = liga.svs[sv];
   if (!s) {
     return (
@@ -165,10 +172,6 @@ export function PerfilSv({ liga, sv, enc }) {
   // número de su carta de Servidor (`osv`, bot/subir_web.py), no el de la Temporada; a igual OVR, el puesto en la Liga
   const gente = liga.oficiales().filter((f) => f.sv === sv)
     .sort((a, b) => (b.osv || 0) - (a.osv || 0) || (a.pos || 999) - (b.pos || 999)).slice(0, 10);
-  const vivo = liga.vivo().filter((e) => e.sv === sv);
-  const prox = liga.luego().filter((e) => e.sv === sv).slice(0, 6);
-  const llaves = liga.llaves().filter((ll) => ll.sv === sv).slice(0, 6);
-  const notas = liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && liga.svDe(it) === sv).map((it) => liga.itemMuro(it)).filter(Boolean).slice(0, 8);
   const buscados = ((liga.d.mw || {}).b || []).filter((b) => b.sv === sv);
   const g = liga.doradoVigente();
   const par = ((mm.guerra || {}).pares || []).find((p) => p.includes(sv));
@@ -178,20 +181,16 @@ export function PerfilSv({ liga, sv, enc }) {
   if (g && g.sv === sv) semana.push(['DORADO ×3', limpio(g.n) + ' · ' + (utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t))]);
   if (par) semana.push(['GUERRA', 'contra ' + siglaDe(par[0] === sv ? par[1] : par[0]) + ': gana el que más puntos hace por persona']);
   if (meta) semana.push(['META', va + ' de ' + meta + ' personas' + (va >= meta ? ' · cumplida' : ''), Math.min(100, Math.round((100 * va) / meta))]);
-  const fechas = [];
-  vivo.forEach((e) => fechas.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO', ev: limpio(e.nombre), det: e.modalidad || '', link: (aDiscord(liga, e, true) || {}).url }));
-  prox.forEach((e) => fechas.push({ c: liga.esDorado(e.nombre, e.sv) ? 'dorado' : '', dia: liga.dia(liga.cuandoDe(e)).split(' ')[0].toUpperCase(),
-    hora: liga.dia(liga.cuandoDe(e)), ev: limpio(e.nombre), det: e.modalidad || '', link: (aDiscord(liga, e, false) || {}).url }));
-  llaves.forEach((ll) => {
-    const c = liga.campeon(ll);
-    fechas.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos',
-      // 🪪 el campeón con su cara y su nombre oficial (17/11/2026); sin link: la tarjeta entera ya lleva a la llave
-      ev: limpio(ll.nombre), det: c.length ? <>{c.length > 1 ? 'Campeones: ' : 'Campeón: '}<Algunos liga={liga} nombres={c} link={false} /></> : 'Sin campeón cargado', llave: ll.n });
-  });
-  fechas.splice(5);
   const otros = Object.values(liga.svs).filter((o) => o.sv !== sv).sort((a, b) => (b.pts || 0) - (a.pts || 0));
-  const items = [['ent-cartas', 'Los que mandan', gente.length], ['ent-eventos', 'Eventos', fechas.length], ['ent-ultimo', 'Lo último', notas.length],
+  // 🎨 EN BANDAS, COMO EL PERFIL DEL RAPERO (17/11/2026, la maqueta privada Y7sWhTvSjVNCRCshPGMXYs: «Sí, pásala»): «Sus
+  // eventos» y «Lo último» de antes viven ahora en Su próximo evento, Sus eventos y Su muro
+  const items = [['ent-cartas', 'Los que mandan', gente.length], ['sv-muro', 'Muro', null], ['sv-eventos', 'Eventos', D ? D.evs.length : null],
     ['sv-mes', 'MES AWARDS', null], ['sv-promos', 'Promos', null], ['ent-buscados', 'Se busca', buscados.length], ['ent-otros', 'Los otros', otros.length]];
+  const cartas = gente.length ? (
+    <Sec id="ent-cartas" titulo={'Los que mandan en ' + siglaDe(sv)} enlace="Todos los raperos" href="#/ranking" extra="negra">
+      <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { sv }) || 'temporada'} />)}</div>
+    </Sec>
+  ) : null;
   return (
     <>
       <Portada forma="cuadrado" color={s.color} nombre={s.nombre || siglaDe(sv)}
@@ -215,29 +214,47 @@ export function PerfilSv({ liga, sv, enc }) {
           </ul>
         ) : null} />
       <Indice items={items} />
-      {gente.length ? (
-        <Sec id="ent-cartas" titulo={'Los que mandan en ' + siglaDe(sv)} enlace="Todos los raperos" href="#/ranking" extra="negra">
-          <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { sv }) || 'temporada'} />)}</div>
-        </Sec>
-      ) : null}
-      {fechas.length ? (
-        <Sec id="ent-eventos" titulo="Sus eventos" enlace="Calendario" href="#/eventos">
-          <div className="rail fechas2">
-            {fechas.map((f, i) => {
-              const cuerpo = <><div className="f-dia"><b>{f.dia}</b></div><img alt="" src={liga.logo(sv)} /><b className="f-ev">{f.ev}</b>
-                <span className="f-hora">{f.hora}</span><small>{f.det}</small></>;
-              if (f.llave) return <button type="button" key={i} className={'fecha ' + f.c} onClick={() => accion.llave(f.llave)}>{cuerpo}</button>;
-              if (f.link) return <a key={i} className={'fecha ' + f.c} href={f.link} target="_blank" rel="noopener noreferrer">{cuerpo}</a>;
-              return <article key={i} className={'fecha ' + f.c}>{cuerpo}</article>;
-            })}
-          </div>
-        </Sec>
-      ) : null}
-      {notas.length ? (
-        <Sec id="ent-ultimo" titulo={'Lo último de ' + siglaDe(sv)} enlace="Publicaciones" href="#/publicaciones">
-          <ul className="notas ent-notas">{notas.map((n, i) => <Nota key={i} liga={liga} x={n} />)}</ul>
-        </Sec>
-      ) : null}
+      <div className="pf9-pag sv9-pag" ref={raiz}>
+        {!P ? <div className="cargando">Cargando…</div> : D ? (
+          <>
+            <Banda color="negra">
+              <SvHistorias liga={liga} sv={sv} />
+              <div className="pf9-g pf9-g-forma">
+                <SvForma liga={liga} D={D} />
+                <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvVistazo D={D} sv={sv} /></div>
+              </div>
+            </Banda>
+            {cartas}
+            <Banda color="blanca" titulo="Sus noches" link="Calendario" ir="#/eventos">
+              <div className="pf9-g pf9-g-2 sv9-b2">
+                <div className="pf9-pila"><SvNoche liga={liga} D={D} sv={sv} /><SvDuelo liga={liga} D={D} sv={sv} /><SvOrganiza liga={liga} sv={sv} /></div>
+                <div className="pf9-pila"><SvMuro liga={liga} sv={sv} n={B.mu} /></div>
+              </div>
+            </Banda>
+            <Banda color="negra" titulo="Su temporada" link="Ranking" ir="#/ranking">
+              <div className="pf9-g pf9-g-rail sv9-b3">
+                <div className="pf9-pila pf9-t-main"><SvEventos liga={liga} D={D} n={B.ev} /><SvCampeones liga={liga} D={D} /></div>
+                <div className="pf9-pila pf9-t-lat"><SvTabla liga={liga} sv={sv} /><SvCuando D={D} /><SvRecords D={D} /></div>
+              </div>
+            </Banda>
+            <Banda color="blanca" titulo="Su gente" link="Ranking" ir="#/ranking">
+              <div className="pf9-g pf9-g-2 sv9-b4">
+                <div className="pf9-pila"><SvVuelven D={D} sv={sv} /></div>
+                <div className="pf9-pila"><SvFieles liga={liga} D={D} n={B.fi} /></div>
+              </div>
+            </Banda>
+          </>
+        ) : (
+          // sin eventos en la temporada: lo que sí tiene (su próximo evento, sus historias, su muro) y sus cartas
+          <>
+            <Banda color="negra">
+              <SvHistorias liga={liga} sv={sv} />
+              <div className="pf9-g pf9-g-2"><div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvTabla liga={liga} sv={sv} /></div><div className="pf9-pila"><SvMuro liga={liga} sv={sv} /></div></div>
+            </Banda>
+            {cartas}
+          </>
+        )}
+      </div>
       {/* sin envoltorio: entre dos secciones negras, uno de más cortaba `.sec.negra+.sec.negra` y dejaba una franja clara */}
       <MesSv liga={liga} sv={sv} enc={enc} />
       <PromosSv liga={liga} sv={sv} />

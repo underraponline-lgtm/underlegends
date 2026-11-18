@@ -1,0 +1,118 @@
+/* ═══ 🏟️ EL PERFIL DEL SERVIDOR EN BANDAS (17/11/2026). Las bandas y los paneles son los del perfil (`pf9-`, css/perfil.css);
+   acá, lo que es sólo del servidor. Clases `sv9-` ═══ */
+.sv9-k{font:800 11.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0;margin:0}
+.sv9-lk{font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:inherit;text-decoration:underline;text-underline-offset:4px}
+.sv9-n{font:900 14px/1 Archivo,sans-serif;color:#A5A5A0}
+/* el próximo evento: la pieza blanca, como «Su próxima meta» */
+.pf9-pz.sv9-prox{background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 #29B298}
+.sv9-prox .sv9-k{color:#D0106A}
+.sv9-prox-t{margin:0;font:900 22px/1.15 Archivo,sans-serif;text-wrap:balance}
+.sv9-prox-d{margin:0;font:500 13px/1.4 Archivo,sans-serif;color:#3A3A3E}
+.sv9-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.sv9-acc .sv9-lk{color:#030304}
+.pf9-btn.sv9-negro{background:#030304;border-color:#030304;color:#F6F6F6;text-decoration:none}
+/* su noche más grande: el podio */
+.sv9-pod li.cop{background:#F5C542;color:#030304}
+.sv9-pod li.cop small,.sv9-pod li.cop .pf9-rd{color:#030304}
+/* cara a cara con otro servidor */
+.sv9-du-cab{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.sv9-du-cab > span,.sv9-du-cab > a{display:flex;align-items:center;gap:8px;font:900 18px/1 Archivo,sans-serif;color:inherit;text-decoration:none}
+.sv9-du-cab > a{justify-content:flex-end}
+.sv9-du-cab img{width:34px;height:34px;border-radius:4px;object-fit:cover}
+.sv9-du-cab em{font:900 13px/1 Archivo,sans-serif;font-style:normal;color:#FF5FA2}
+.sv9-du-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sv9-du-l li{display:grid;grid-template-columns:1fr auto 1fr;gap:4px 10px;align-items:baseline}
+.sv9-du-l span{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0;text-align:center}
+.sv9-du-l b{font:800 15px/1 Archivo,sans-serif;color:#A5A5A0;font-variant-numeric:tabular-nums}
+.sv9-du-l b:last-of-type{text-align:right}
+.sv9-du-l b.gana{color:#F6F6F6}
+.sv9-du-l i{grid-column:1 / -1;display:flex;gap:3px;height:6px}
+.sv9-du-l u{background:#29B298;border-radius:3px 0 0 3px}
+.sv9-du-l s{background:#E41373;border-radius:0 3px 3px 0}
+/* quién organiza y de dónde es su gente: barras */
+.sv9-org ul,.sv9-pa{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sv9-org li{display:grid;grid-template-columns:minmax(0,130px) 1fr 28px;gap:10px;align-items:center}
+.sv9-org b,.sv9-pa b{font:800 13px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sv9-org i,.sv9-pa i,.sv9-vu-bar i{position:relative;display:block;height:8px;background:#2A2A2E;border-radius:4px;overflow:hidden}
+.sv9-org u,.sv9-pa u,.sv9-vu-bar u{display:block;height:100%;background:#29B298}
+.sv9-pa u{background:#F6F6F6}
+.sv9-org span,.sv9-pa em{font:900 14px/1 Archivo,sans-serif;font-style:normal;text-align:right}
+.sv9-pa li{display:grid;grid-template-columns:auto minmax(0,120px) 1fr 34px;gap:8px;align-items:center}
+/* sus eventos: la tira de la temporada y la lista */
+.sv9-tira{display:block;width:100%;height:90px;background:#141416;border-radius:3px}
+.sv9-ley{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:500 11.5px/1.3 Archivo,sans-serif;color:#A5A5A0}
+.sv9-ley i{display:inline-block;width:10px;height:10px;border-radius:2px}
+.sv9-evl{list-style:none;margin:0;padding:0;display:grid}
+.sv9-evl li + li{border-top:1px solid #1E1E22}
+.sv9-evl button{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;min-height:52px;padding:8px 0;border:0;background:none;color:#F6F6F6;text-align:left;cursor:pointer}
+.sv9-med{display:grid;place-items:center;height:36px;border-radius:3px;background:#232327;font:900 15px/1 Archivo,sans-serif}
+.sv9-ev-tx{display:grid;gap:3px;min-width:0}
+.sv9-ev-tx b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase}
+.sv9-ev-tx small{font:500 12px/1.3 Archivo,sans-serif;color:#A5A5A0}
+/* sus campeones: el podio y los que siguen */
+.sv9-podio{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:end}
+.sv9-podio.n1{grid-template-columns:minmax(0,1fr)}.sv9-podio.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.sv9-podio li{display:grid;justify-items:center;gap:4px;padding:12px 6px 0;background:#17171A;border-radius:4px 4px 0 0;text-align:center;min-width:0}
+.sv9-podio b{font:800 14px/1.1 Archivo,sans-serif;overflow-wrap:anywhere}
+.sv9-podio b a{color:inherit}
+.sv9-podio span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
+.sv9-podio i{width:100%;margin-top:6px;padding:10px 0;background:#232327;font:900 22px/1 Archivo,sans-serif;font-style:normal}
+.sv9-podio li.p1{padding-top:22px}
+.sv9-podio li.p1 i{background:#F5C542;color:#030304;padding-block:26px}
+.sv9-podio li.p2 i{background:#C9CDD4;color:#030304;padding-block:16px}
+.sv9-podio li.p3 i{background:#D9782F;color:#030304}
+.sv9-camp-l,.sv9-tsv-l,.sv9-fie ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.sv9-camp-l{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.sv9-camp-l li{display:grid;grid-template-columns:20px auto minmax(0,1fr);gap:0 8px;align-items:center;padding:7px 8px;background:#17171A;border-radius:3px}
+.sv9-camp-l .sv9-n,.sv9-camp-l .pf9-av{grid-row:span 2}
+.sv9-camp-l b{font:800 13px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sv9-camp-l b a{color:inherit}
+.sv9-camp-l small{grid-column:3;font:500 11px/1.2 Archivo,sans-serif;color:#A5A5A0}
+/* la tabla de servidores */
+.sv9-tsv-t{margin:0;font:800 17px/1.25 Archivo,sans-serif;text-wrap:balance}
+.sv9-tsv-t b{color:#29B298}
+.sv9-tsv-l a{display:grid;grid-template-columns:22px 28px minmax(0,1fr) auto;gap:10px;align-items:center;min-height:44px;padding:6px 8px;border-radius:3px;background:#17171A;color:#F6F6F6;text-decoration:none}
+.sv9-tsv-l li.yo a{background:#F6F6F6;color:#030304}
+.sv9-tsv-l li.yo small,.sv9-tsv-l li.yo .sv9-n{color:#3A3A3E}
+.sv9-tsv-l img{width:28px;height:28px;border-radius:4px;object-fit:cover}
+.sv9-tsv-l b{font:800 14px/1 Archivo,sans-serif}
+.sv9-tsv-l small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#A5A5A0}
+/* cuándo juega: el mapa de calor, en cinco escalones */
+.sv9-hm-g{display:grid;grid-template-columns:72px repeat(7,minmax(0,1fr));gap:3px;align-items:center}
+.sv9-hm-d{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0;text-align:center}
+.sv9-hm-f{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#A5A5A0}
+.sv9-hm-g i{height:28px;border-radius:2px;display:grid;place-items:center;font:800 11px/1 Archivo,sans-serif;font-style:normal;color:#030304}
+.sv9-hm-g i.c0{background:#19191C;color:transparent}
+.sv9-hm-g i.c1{background:#1F4A42;color:#CFE9E3}
+.sv9-hm-g i.c2{background:#1F6E5F;color:#E9F6F3}
+.sv9-hm-g i.c3{background:#26957F}
+.sv9-hm-g i.c4{background:#5CE6C9}
+/* ¿vuelven? */
+.sv9-vu-big{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.sv9-vu-big > b{font:900 46px/1 Archivo,sans-serif;color:#29B298;font-variant-numeric:tabular-nums}
+.sv9-vu-big > b.baja{color:#FF5FA2}
+.sv9-vu-big p{margin:0;font:500 14px/1.35 Archivo,sans-serif}
+.sv9-vu-big small{display:block;color:#A5A5A0;font-size:12px}
+.sv9-vu-bar{display:grid;gap:4px}
+.sv9-vu-bar i{height:10px;overflow:visible}
+.sv9-vu-bar u{border-radius:5px}
+.sv9-vu-bar s{position:absolute;top:-3px;width:2px;height:16px;background:#F6F6F6}
+.sv9-vu-bar small{font:500 11px/1 Archivo,sans-serif;color:#A5A5A0}
+/* los de la casa */
+.sv9-fie li{display:grid;grid-template-columns:22px auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 8px;background:#17171A;border-radius:3px}
+.sv9-fie p{margin:0;min-width:0}
+.sv9-fie p b{display:block;font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sv9-fie p b a{color:inherit}
+.sv9-fie p small{font:500 11px/1.2 Archivo,sans-serif;color:#A5A5A0}
+.sv9-fie em{font:900 18px/1 Archivo,sans-serif;font-style:normal;color:#29B298}
+@media (max-width: 899px){
+  /* en el teléfono, el muro justo después de su noche más grande */
+  .sv9-b2 > .pf9-pila{display:contents}
+  .sv9-b2 .pf9-noche{order:1}.sv9-b2 .pf9-muro{order:2}.sv9-b2 .sv9-duelo{order:3}.sv9-b2 .sv9-org{order:4}
+  .sv9-hm-g{grid-template-columns:58px repeat(7,minmax(0,1fr))}
+  .sv9-hm-g i{height:24px;font-size:10px}
+  .sv9-podio b{font-size:12px}
+  /* su forma: en el teléfono, los últimos ocho (doce columnas no entran en 390 px) */
+  .sv9-pag .pf9-fm{grid-template-columns:repeat(8,minmax(0,1fr)) !important}
+  .sv9-pag .pf9-fm li:nth-last-child(n+9){display:none}
+}

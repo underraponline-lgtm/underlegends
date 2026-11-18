@@ -151,7 +151,7 @@ export function SuMejorNoche({ liga, f, D, esYo }) {
             <li key={i} className={d[2] ? '' : 'pierde'}>
               <span className="pf9-rd">{r}</span>
               <Cara liga={liga} k={x ? x.k : ''} nombre={d[1]} cls="cara pf9-av" lazy />
-              <b><Alguien liga={liga} nombre={d[1]} /></b>
+              <b><Alguien liga={liga} nombre={d[1]} cara={false} /></b>
               <Meta r={x} />
               <em>{d[2] ? 'ganó' : 'perdió'}</em>
             </li>
@@ -194,7 +194,7 @@ export function Rivalidades({ liga, D, esYo }) {
     <div className="pf9-rc">
       <span className="pf9-k">{k}</span>
       <Cara liga={liga} k={r.k} nombre={r.n || r.nom} cls="cara pf9-av lg" lazy />
-      <b><Alguien liga={liga} nombre={r.n || r.nom} /></b>
+      <b><Alguien liga={liga} nombre={r.n || r.nom} cara={false} /></b>
       <span className={'pf9-sc ' + cls}>{sc}</span>
       <small>{pie}</small>
     </div>
@@ -211,7 +211,7 @@ export function Rivalidades({ liga, D, esYo }) {
       {gig.length ? (
         <div className="pf9-gig"><span className="pf9-k">Matagigantes · {gig.length === 1 ? 'un duelo ganado' : gig.length + ' duelos ganados'} contra alguien de más OVR</span>
           <ul>{gig.slice(0, 6).map((x, i) => (
-            <li key={i}><Cara liga={liga} k={x.k} nombre={x.nom} cls="cara pf9-av xs" lazy /><b><Alguien liga={liga} nombre={x.nom} /></b><small>OVR {x.ovr}</small><em>+{x.dif}</em></li>
+            <li key={i}><Cara liga={liga} k={x.k} nombre={x.nom} cls="cara pf9-av xs" lazy /><b><Alguien liga={liga} nombre={x.nom} cara={false} /></b><small>OVR {x.ovr}</small><em>+{x.dif}</em></li>
           ))}</ul></div>
       ) : null}
     </section>
