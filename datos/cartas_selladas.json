@@ -74,7 +74,7 @@
    "temporada": "478e0c28f0a0:a8d8b7335469"
   },
   "Aktybo": {
-   "competitivo": "97a676da3e45:c41ff817042a",
+   "competitivo": "d456399cd395:c41ff817042a",
    "pais": "368e794517aa:f1f52e1c6d42",
    "servidor": "6ecdcb7f9815:0bd0fbf67396:aa8232"
   },
@@ -233,7 +233,7 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "d7ac101b4a88:c41ff817042a",
+   "competitivo": "a1726f3d9c00:c41ff817042a",
    "pais": "6061954bae89:f1f52e1c6d42",
    "servidor": "9ed42d99e2c3:0bd0fbf67396:e4fbfa"
   },
@@ -373,7 +373,7 @@
    "servidor": "5326ca7e9e57:0bd0fbf67396:ce9c52"
   },
   "David": {
-   "competitivo": "e0c7c32b80d0:c41ff817042a",
+   "competitivo": "6cdc20c1f619:c41ff817042a",
    "pais": "f70fe99a0c99:f1f52e1c6d42",
    "servidor": "b331a4508e38:0bd0fbf67396:1f00d0"
   },
@@ -1189,7 +1189,7 @@
    "servidor": "02128fc165e7:0bd0fbf67396:67201a"
   },
   "Medster": {
-   "competitivo": "9578d45d49b3:c41ff817042a",
+   "competitivo": "737de774467a:c41ff817042a",
    "pais": "f1b330806098:f1f52e1c6d42",
    "servidor": "c0ba7d4912bc:0bd0fbf67396:0e0e03"
   },
@@ -1590,13 +1590,13 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "ae7395ebb296:c41ff817042a",
+   "competitivo": "2288126d2b52:c41ff817042a",
    "pais": "88508a57d501:f1f52e1c6d42",
    "servidor": "6c1d4957a6e6:0bd0fbf67396:afbca9"
   },
   "SMAFF": {},
   "SNE": {
-   "competitivo": "2584026b5649:c41ff817042a",
+   "competitivo": "ada1fef83174:c41ff817042a",
    "pais": "e8fa6f07fd6f:f1f52e1c6d42",
    "servidor": "0011d75c7fab:0bd0fbf67396:3eef23"
   },
@@ -2128,5 +2128,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-18T20:03:48+00:00"
+ "cuando": "2026-11-18T21:09:31+00:00"
 }
