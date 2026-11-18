@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.33",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T22:26:00-05:00",
+        "titulo": "Invita y gana, rehecha",
+        "items": [
+            "**Tu link ahora es una entrada** con talón: dice cuántos lugares te quedan y, al compartirla, se rasga. En el celular se abre para mandarla por donde quieras; en la compu se copia con el mensaje.",
+            "**El talonario**: una casilla por invitado que se sella con «ADENTRO» cuando cuenta, con cada premio debajo de su meta y lo ya cobrado marcado.",
+            "**Tus invitados**: quién ya cuenta, quién llegó y qué le falta, y un recordatorio listo para que se lo pases.",
+            "**Si llegas por un link, la página es tuya**: la carta de quien te invitó, los cuatro pasos con el que te toca, y lo que te espera adentro (tu carta, tu división y los próximos torneos)."
+        ]
+    },
+    {
         "version": "6.32",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T21:36:57-05:00",
