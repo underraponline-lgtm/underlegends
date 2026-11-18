@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.39",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T00:40:00-05:00",
+        "titulo": "Tu perfil, como te ven",
+        "items": [
+            "La pestaña Perfil del Inventario te muestra tu perfil de verdad mientras eliges tu carta, tus fondos y tu frase.",
+            "Cada lugar donde apareces (el VS del Inicio, el escenario de tu carta, Discord, tu ficha) se ve en chico para comparar.",
+            "El cuadro de la Tienda del Inicio muestra en grande lo más buscado."
+        ]
+    },
+    {
         "version": "6.38",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T22:46:57-05:00",
