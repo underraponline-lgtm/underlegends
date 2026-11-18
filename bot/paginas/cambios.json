@@ -11,296 +11,310 @@
   ],
   "cambios": [
     {
-        "version": "6.25",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T21:50:00-05:00",
-        "titulo": "Tus estilos de juego, con color",
-        "items": [
-            "Los estilos del Inventario salen con el color de tu rango; si todavía no tienes letra, con el verde de la Liga."
-        ]
+      "version": "6.26",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T21:05:28-05:00",
+      "titulo": "El perfil, rehecho de la cabecera para abajo",
+      "items": [
+        "Cuatro bandas, negras y blancas, como el **Inicio**: tus noches, tu temporada y lo tuyo.",
+        "**Tus historias** arriba de todo: las que la página subió de ti, y se abren como en el Inicio.",
+        "**Tu forma**: tus últimos diez eventos, cuánto sumó cada uno y quién te sacó.",
+        "**Tu mejor noche**, ronda por ronda con cada rival, tus otros títulos y las finales que se te escaparon.",
+        "**Tu muro** más arriba y con el dibujo de Publicaciones: felicitar, reaccionar y los filtros.",
+        "Nuevos: **Rivalidades** (tu némesis, tu clásico, tu mejor victoria), **Tu camino** hasta la próxima letra y **Tus récords**."
+      ]
     },
     {
-        "version": "6.24",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T20:50:00-05:00",
-        "titulo": "El tutorial y la bienvenida, enteros en el teléfono",
-        "items": [
-            "Al terminar el tutorial corto, la tarjeta que te da tus 3 Dragón Drops ya entra entera en el teléfono, con su botón y la ✕ para cerrarla.",
-            "En la bienvenida, los nombres de las cuatro cartas ya no se parten a la mitad en las pantallas angostas."
-        ]
+      "version": "6.25",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T21:50:00-05:00",
+      "titulo": "Tus estilos de juego, con color",
+      "items": [
+        "Los estilos del Inventario salen con el color de tu rango; si todavía no tienes letra, con el verde de la Liga."
+      ]
     },
     {
-        "version": "6.23",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T21:20:00-05:00",
-        "titulo": "Tu estilo de juego, rehecho",
-        "items": [
-            "La pestaña Estilo de juego del Inventario es nueva: el estilo que tocas se ve en grande arriba, con el botón para elegirlo.",
-            "Los 18 estilos en tres filas a todo el ancho, una por familia.",
-            "Tus tres lugares con su nivel, cómo se sube y el próximo evento de estilo, en la misma pantalla."
-        ]
+      "version": "6.24",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T20:50:00-05:00",
+      "titulo": "El tutorial y la bienvenida, enteros en el teléfono",
+      "items": [
+        "Al terminar el tutorial corto, la tarjeta que te da tus 3 Dragón Drops ya entra entera en el teléfono, con su botón y la ✕ para cerrarla.",
+        "En la bienvenida, los nombres de las cuatro cartas ya no se parten a la mitad en las pantallas angostas."
+      ]
     },
     {
-        "version": "6.22",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T20:08:00-05:00",
-        "titulo": "Más llaves y anuncios que el bot ya entiende",
-        "items": [
-            "**Las llaves sin títulos de ronda** —sólo las batallas, una abajo de la otra— ya se leen cuando la forma no deja dudas: cada ronda a la mitad, y de cada batalla pasa uno.",
-            "**En #veredictos, votar con la bandera del ganador** ya cuenta, si esa bandera está en un solo lado de la batalla.",
-            "**Los anuncios con la fecha escrita** («Domingo 29 de noviembre») salen ese día en el calendario, y la hora se toma de la línea que la dice, no de un título como «Horarios internacionales».",
-            "Una imagen que no es un afiche de evento (un horario de clases, una tabla) ya no aparece como evento, y la llave que se arma un rato antes de la hora de arranque se junta con su anuncio."
-        ]
+      "version": "6.23",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T21:20:00-05:00",
+      "titulo": "Tu estilo de juego, rehecho",
+      "items": [
+        "La pestaña Estilo de juego del Inventario es nueva: el estilo que tocas se ve en grande arriba, con el botón para elegirlo.",
+        "Los 18 estilos en tres filas a todo el ancho, una por familia.",
+        "Tus tres lugares con su nivel, cómo se sube y el próximo evento de estilo, en la misma pantalla."
+      ]
     },
     {
-        "version": "6.21",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T20:05:00-05:00",
-        "titulo": "Lo que pasa en los chats, en las historias",
-        "items": [
-            "Cuando el chat general de un servidor explota, o todos hablan de alguien, sale solo en las historias de ese servidor y en Publicaciones.",
-            "Sólo cuenta números: cuántos mensajes, a qué hora y de quién se habló. Lo que escribe cada uno no se guarda.",
-            "Los comentarios de Publicaciones hablan más como la gente de cada servidor."
-        ]
+      "version": "6.22",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T20:08:00-05:00",
+      "titulo": "Más llaves y anuncios que el bot ya entiende",
+      "items": [
+        "**Las llaves sin títulos de ronda** —sólo las batallas, una abajo de la otra— ya se leen cuando la forma no deja dudas: cada ronda a la mitad, y de cada batalla pasa uno.",
+        "**En #veredictos, votar con la bandera del ganador** ya cuenta, si esa bandera está en un solo lado de la batalla.",
+        "**Los anuncios con la fecha escrita** («Domingo 29 de noviembre») salen ese día en el calendario, y la hora se toma de la línea que la dice, no de un título como «Horarios internacionales».",
+        "Una imagen que no es un afiche de evento (un horario de clases, una tabla) ya no aparece como evento, y la llave que se arma un rato antes de la hora de arranque se junta con su anuncio."
+      ]
     },
     {
-        "version": "6.20",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T19:35:00-05:00",
-        "titulo": "El bot lee el chat general de cada servidor",
-        "items": [
-            "Una vez por día el bot lee el chat general de cada servidor de la Liga: cuenta cuánto se habla y quiénes de la Liga hablan.",
-            "Si alguien denuncia un evento falso, una trampa, un raid o una estafa, le llega al staff de la Liga. El resto de la conversación no se guarda.",
-            "El staff de cada servidor lo puede apagar en el panel de su servidor."
-        ]
+      "version": "6.21",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T20:05:00-05:00",
+      "titulo": "Lo que pasa en los chats, en las historias",
+      "items": [
+        "Cuando el chat general de un servidor explota, o todos hablan de alguien, sale solo en las historias de ese servidor y en Publicaciones.",
+        "Sólo cuenta números: cuántos mensajes, a qué hora y de quién se habló. Lo que escribe cada uno no se guarda.",
+        "Los comentarios de Publicaciones hablan más como la gente de cada servidor."
+      ]
     },
     {
-        "version": "6.19",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T19:05:00-05:00",
-        "titulo": "Llaves, cancelaciones y ligas que el bot leía a medias",
-        "items": [
-            "**Las llaves que dicen «PRIMER LUGAR»** o que marcan al campeón con 🎖️ ya cuentan a su campeón, y las que separan las batallas con un VS animado se leen enteras (antes podían quedar sin octavos o sin final).",
-            "**Si el organizador avisa que el evento se canceló**, el calendario dice «CANCELADO» aunque el aviso llegue después de la hora de arranque.",
-            "**La hora de Discord en cualquier estilo** ya se entiende en los anuncios, así que esos eventos salen en el calendario a su hora y no a la de publicación.",
-            "**Ligas**: se leen también las batallas con el 🆚 en el título sin «#» o con número romano, y dos ligas más que tienen su propio formato."
-        ]
+      "version": "6.20",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T19:35:00-05:00",
+      "titulo": "El bot lee el chat general de cada servidor",
+      "items": [
+        "Una vez por día el bot lee el chat general de cada servidor de la Liga: cuenta cuánto se habla y quiénes de la Liga hablan.",
+        "Si alguien denuncia un evento falso, una trampa, un raid o una estafa, le llega al staff de la Liga. El resto de la conversación no se guarda.",
+        "El staff de cada servidor lo puede apagar en el panel de su servidor."
+      ]
     },
     {
-        "version": "6.18",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T18:24:00-05:00",
-        "titulo": "Un solo ELO por persona",
-        "items": [
-            "**Quien jugó con dos nombres ahora tiene un solo ELO**: si una llave te escribió de otra forma, esas batallas cuentan para ti. Tu división, las Competencias y la nota de cada llave lo toman entero.",
-            "Por eso esta semana algunos cambian de división, y quien entra a una nueva por primera vez cobra su subida como siempre.",
-            "En una copa ya armada, si alguien estaba dos veces (con su nombre y con uno viejo), queda una vez y su rival pasa a la ronda siguiente."
-        ]
+      "version": "6.19",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T19:05:00-05:00",
+      "titulo": "Llaves, cancelaciones y ligas que el bot leía a medias",
+      "items": [
+        "**Las llaves que dicen «PRIMER LUGAR»** o que marcan al campeón con 🎖️ ya cuentan a su campeón, y las que separan las batallas con un VS animado se leen enteras (antes podían quedar sin octavos o sin final).",
+        "**Si el organizador avisa que el evento se canceló**, el calendario dice «CANCELADO» aunque el aviso llegue después de la hora de arranque.",
+        "**La hora de Discord en cualquier estilo** ya se entiende en los anuncios, así que esos eventos salen en el calendario a su hora y no a la de publicación.",
+        "**Ligas**: se leen también las batallas con el 🆚 en el título sin «#» o con número romano, y dos ligas más que tienen su propio formato."
+      ]
     },
     {
-        "version": "6.17",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T18:25:00-05:00",
-        "titulo": "El kit de cada servidor",
-        "items": [
-            "Cada servidor de la Liga tiene su **página privada**, que sólo se abre con su link: su tier, lo que tiene, el paso a paso para dejar el bot bien configurado y el link para agregarlo como administrador, con su propio rol.",
-            "La página dice cómo está el bot en ese servidor: si le falta algún permiso y cuántos roles tiene por encima (el #N del apodo no se puede poner a quien tiene un rol más alto que el del bot).",
-            "Una llave que escribía el mismo nombre de dos formas ya no le paga dos veces a la misma persona."
-        ]
+      "version": "6.18",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T18:24:00-05:00",
+      "titulo": "Un solo ELO por persona",
+      "items": [
+        "**Quien jugó con dos nombres ahora tiene un solo ELO**: si una llave te escribió de otra forma, esas batallas cuentan para ti. Tu división, las Competencias y la nota de cada llave lo toman entero.",
+        "Por eso esta semana algunos cambian de división, y quien entra a una nueva por primera vez cobra su subida como siempre.",
+        "En una copa ya armada, si alguien estaba dos veces (con su nombre y con uno viejo), queda una vez y su rival pasa a la ronda siguiente."
+      ]
     },
     {
-        "version": "6.16",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T18:07:00-05:00",
-        "titulo": "Cada uno con su nombre de la Liga, su cara y su perfil",
-        "items": [
-            "**Los nombres, como los conoce la Liga.** Si alguien se anotó o lo escribieron de otra forma («velatzzzz»), la página lo muestra con su nombre oficial, **su cara y el link a su perfil**: en las llaves, Eventos, Publicaciones, el Inicio, los perfiles, Ligas, Divisiones, la Tienda y los MES AWARDS.",
-            "En la campana, el aviso de **«¡Te toca!»** y los favoritos del bot en vivo también nombran a cada uno como lo conoce la Liga.",
-            "**Over** es el nombre oficial de quien era Mr Still Ballin: conserva sus puntos, sus cazas del Most Wanted, su rango, sus insignias y sus TAGs.",
-            "Arreglado: quien tenía resultados con dos nombres veía en el ranking de Temporada otra letra que en el Competitivo y en su carta; ahora es la misma. Y las insignias y los TAGs ganados con un nombre viejo aparecen en el perfil de su dueño."
-        ]
+      "version": "6.17",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T18:25:00-05:00",
+      "titulo": "El kit de cada servidor",
+      "items": [
+        "Cada servidor de la Liga tiene su **página privada**, que sólo se abre con su link: su tier, lo que tiene, el paso a paso para dejar el bot bien configurado y el link para agregarlo como administrador, con su propio rol.",
+        "La página dice cómo está el bot en ese servidor: si le falta algún permiso y cuántos roles tiene por encima (el #N del apodo no se puede poner a quien tiene un rol más alto que el del bot).",
+        "Una llave que escribía el mismo nombre de dos formas ya no le paga dos veces a la misma persona."
+      ]
     },
     {
-        "version": "6.15",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T16:40:00-05:00",
-        "titulo": "La nota, más justa, y la gente de cada evento",
-        "items": [
-            "**La nota de cada uno** ahora mira contra quién jugaste: ganarle a alguien que tenía todo para ganarte suma más, y perder siendo el favorito resta. Y vale más en un evento fuerte que en uno flojo.",
-            "Es la misma nota en la llave, en el mensaje del bot y en Competencias, y ya no cambia sola después del evento.",
-            "En cada llave, **los inscritos**: en color los que jugaron, y si alguien se anotó con otro nombre, cuál usó.",
-            "**El jurado**, batalla por batalla: quién votó a quién y en qué ronda cambió. Y quién organizó y hosteó, también en las llaves viejas.",
-            "En las llaves por equipos, el campeón y el subcampeón muestran al equipo entero."
-        ]
+      "version": "6.16",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T18:07:00-05:00",
+      "titulo": "Cada uno con su nombre de la Liga, su cara y su perfil",
+      "items": [
+        "**Los nombres, como los conoce la Liga.** Si alguien se anotó o lo escribieron de otra forma («velatzzzz»), la página lo muestra con su nombre oficial, **su cara y el link a su perfil**: en las llaves, Eventos, Publicaciones, el Inicio, los perfiles, Ligas, Divisiones, la Tienda y los MES AWARDS.",
+        "En la campana, el aviso de **«¡Te toca!»** y los favoritos del bot en vivo también nombran a cada uno como lo conoce la Liga.",
+        "**Over** es el nombre oficial de quien era Mr Still Ballin: conserva sus puntos, sus cazas del Most Wanted, su rango, sus insignias y sus TAGs.",
+        "Arreglado: quien tenía resultados con dos nombres veía en el ranking de Temporada otra letra que en el Competitivo y en su carta; ahora es la misma. Y las insignias y los TAGs ganados con un nombre viejo aparecen en el perfil de su dueño."
+      ]
     },
     {
-        "version": "6.14",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T16:14:00-05:00",
-        "titulo": "La gala de la temporada",
-        "items": [
-            "**La gala de la T1**: al cierre de la temporada, lo mejor de toda la Liga Global, con los números de la temporada entera: el Rapero, la Revelación, la Batalla y el Servidor de la temporada, y las demás categorías. Los nominados salen el **1 de enero** y se vota hasta el 4. Vota cualquiera con Discord.",
-            "**Los premios de la gala**: el Rapero de la temporada se lleva **el Tesoro del Dragón**, la Revelación y la Batalla **la Funda del Campeón**, y las categorías de personas **el Baúl de los objetos**, cada uno con su insignia «de la temporada».",
-            "**Votar las 4 principales de la gala da un Flight case.** Te avisamos en el Inicio y en la campana cuando abre y el último día.",
-            "El Salón muestra la gala como la última columna de la temporada; mientras se vota, es lo primero de la página."
-        ]
+      "version": "6.15",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T16:40:00-05:00",
+      "titulo": "La nota, más justa, y la gente de cada evento",
+      "items": [
+        "**La nota de cada uno** ahora mira contra quién jugaste: ganarle a alguien que tenía todo para ganarte suma más, y perder siendo el favorito resta. Y vale más en un evento fuerte que en uno flojo.",
+        "Es la misma nota en la llave, en el mensaje del bot y en Competencias, y ya no cambia sola después del evento.",
+        "En cada llave, **los inscritos**: en color los que jugaron, y si alguien se anotó con otro nombre, cuál usó.",
+        "**El jurado**, batalla por batalla: quién votó a quién y en qué ronda cambió. Y quién organizó y hosteó, también en las llaves viejas.",
+        "En las llaves por equipos, el campeón y el subcampeón muestran al equipo entero."
+      ]
     },
     {
-        "version": "6.13",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T15:00:00-05:00",
-        "titulo": "La nota de cada uno en las llaves",
-        "items": [
-            "En cada llave terminada, cada tarjeta lleva su **nota**, como los futbolistas al final del partido: de 3 a 10, según cuánto ganaste y en qué ronda. La más alta lleva ★: la figura de la llave.",
-            "El mensaje del bot al terminar cada evento también trae las notas de la llave."
-        ]
+      "version": "6.14",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T16:14:00-05:00",
+      "titulo": "La gala de la temporada",
+      "items": [
+        "**La gala de la T1**: al cierre de la temporada, lo mejor de toda la Liga Global, con los números de la temporada entera: el Rapero, la Revelación, la Batalla y el Servidor de la temporada, y las demás categorías. Los nominados salen el **1 de enero** y se vota hasta el 4. Vota cualquiera con Discord.",
+        "**Los premios de la gala**: el Rapero de la temporada se lleva **el Tesoro del Dragón**, la Revelación y la Batalla **la Funda del Campeón**, y las categorías de personas **el Baúl de los objetos**, cada uno con su insignia «de la temporada».",
+        "**Votar las 4 principales de la gala da un Flight case.** Te avisamos en el Inicio y en la campana cuando abre y el último día.",
+        "El Salón muestra la gala como la última columna de la temporada; mientras se vota, es lo primero de la página."
+      ]
     },
     {
-        "version": "6.12",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T14:52:00-05:00",
-        "titulo": "MES AWARDS: vota tu servidor, premios en Dragón Drops y avisos",
-        "items": [
-            "**Los MES AWARDS de un servidor los votan los que jugaron ahí y también los que lo eligieron como su servidor** en Mi cuenta: los hinchas y el staff ya pueden votar los de su servidor.",
-            "**Los premios de cada servidor son Dragón Drops**: el Rapero del mes se lleva un **Nido de dragón**, y la Revelación, la Batalla (a cada lado) y el Staff un **Star Dragon**. Desde los de noviembre.",
-            "**Te avisamos para votar**: los días de votación, una franja arriba del Inicio con tu servidor, y un aviso en la campana al abrir y el último día, si puedes votar y todavía no lo hiciste."
-        ]
+      "version": "6.13",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T15:00:00-05:00",
+      "titulo": "La nota de cada uno en las llaves",
+      "items": [
+        "En cada llave terminada, cada tarjeta lleva su **nota**, como los futbolistas al final del partido: de 3 a 10, según cuánto ganaste y en qué ronda. La más alta lleva ★: la figura de la llave.",
+        "El mensaje del bot al terminar cada evento también trae las notas de la llave."
+      ]
     },
     {
-        "version": "6.11",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T14:45:00-05:00",
-        "titulo": "Tu marco y tu brillo, también en las llaves",
-        "items": [
-            "En la página de cada llave, las tarjetas llevan su marco del Pase (Premium, Plata, Oro) y su brillo, como en el resto de la página: sólo quien lo tiene.",
-            "El brillo de las tarjetas chicas de arriba (el campeón, los que llegaron lejos, el camino) ahora late igual que en el cuadro."
-        ]
+      "version": "6.12",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T14:52:00-05:00",
+      "titulo": "MES AWARDS: vota tu servidor, premios en Dragón Drops y avisos",
+      "items": [
+        "**Los MES AWARDS de un servidor los votan los que jugaron ahí y también los que lo eligieron como su servidor** en Mi cuenta: los hinchas y el staff ya pueden votar los de su servidor.",
+        "**Los premios de cada servidor son Dragón Drops**: el Rapero del mes se lleva un **Nido de dragón**, y la Revelación, la Batalla (a cada lado) y el Staff un **Star Dragon**. Desde los de noviembre.",
+        "**Te avisamos para votar**: los días de votación, una franja arriba del Inicio con tu servidor, y un aviso en la campana al abrir y el último día, si puedes votar y todavía no lo hiciste."
+      ]
     },
     {
-        "version": "6.10",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T03:50:00-05:00",
-        "titulo": "La llave de cada evento, rehecha",
-        "items": [
-            "Cuando una llave termina, arriba va el campeón contra el subcampeón con sus tarjetas, y debajo los que llegaron más lejos.",
-            "**El camino**: las batallas del campeón, una por una, con la tarjeta de cada rival. Toca a cualquiera de la llave para ver su camino.",
-            "La llave entera queda plegada debajo: «Ver toda la llave» la abre.",
-            "Las llaves viejas abren más rápido: ahora se baja sólo la que abres, no todas."
-        ]
+      "version": "6.11",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T14:45:00-05:00",
+      "titulo": "Tu marco y tu brillo, también en las llaves",
+      "items": [
+        "En la página de cada llave, las tarjetas llevan su marco del Pase (Premium, Plata, Oro) y su brillo, como en el resto de la página: sólo quien lo tiene.",
+        "El brillo de las tarjetas chicas de arriba (el campeón, los que llegaron lejos, el camino) ahora late igual que en el cuadro."
+      ]
     },
     {
-        "version": "6.09",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T03:35:00-05:00",
-        "titulo": "Lo tuyo, arriba; y el Inventario, mejor en el celular",
-        "items": [
-            "En la computadora, el menú de Tu cuenta empieza por «Lo tuyo»: Tu cuenta, Inventario, Pase rapero, Tienda, tu perfil, la app, privacidad y ayuda.",
-            "Inventario en el celular: los nombres largos de los TAGs ya no se salen de su cuadro, y el marco de tu carta no tapa la fila de cartas.",
-            "Tus fondos, adentro del Inventario: se ven bien en el tema Clara y ya puedes elegir tu bandera o tu servidor desde ahí.",
-            "Tu estilo muestra el ícono de tu estilo de juego."
-        ]
+      "version": "6.10",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T03:50:00-05:00",
+      "titulo": "La llave de cada evento, rehecha",
+      "items": [
+        "Cuando una llave termina, arriba va el campeón contra el subcampeón con sus tarjetas, y debajo los que llegaron más lejos.",
+        "**El camino**: las batallas del campeón, una por una, con la tarjeta de cada rival. Toca a cualquiera de la llave para ver su camino.",
+        "La llave entera queda plegada debajo: «Ver toda la llave» la abre.",
+        "Las llaves viejas abren más rápido: ahora se baja sólo la que abres, no todas."
+      ]
     },
     {
-        "version": "6.08",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T02:59:00-05:00",
-        "titulo": "El Salón de la fama, rehecho, y los MES AWARDS de cada servidor",
-        "items": [
-            "**Los MES AWARDS son de cada servidor, cada mes**: el día 1 salen los nominados de cada servidor Tier 1. Lo de toda la Liga (Rapero, Revelación, Batalla, Servidor y las demás) pasa a **la gala de la temporada**, al cierre.",
-            "**Votar da un cofre**: vota todas las categorías de tu servidor en el mes y te llevas un **Cajón de discos**, uno por mes.",
-            "**El Salón de la fama, rehecho**: mientras se vota, abre con los nominados de tu servidor; el resto del mes, con el campeón de la temporada. Una grilla muestra al ganador de cada mes en cada servidor, con la gala al final, y los récords, las insignias, las ligas y las figuras van en pestañas.",
-            "La página de cada servidor vota con la misma tarjeta que el Salón y ya dice cuándo salen sus nominados.",
-            "Las insignias de los MES AWARDS ya no llenan «Las insignias más difíciles»: sus ganadores están en la grilla."
-        ]
+      "version": "6.09",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T03:35:00-05:00",
+      "titulo": "Lo tuyo, arriba; y el Inventario, mejor en el celular",
+      "items": [
+        "En la computadora, el menú de Tu cuenta empieza por «Lo tuyo»: Tu cuenta, Inventario, Pase rapero, Tienda, tu perfil, la app, privacidad y ayuda.",
+        "Inventario en el celular: los nombres largos de los TAGs ya no se salen de su cuadro, y el marco de tu carta no tapa la fila de cartas.",
+        "Tus fondos, adentro del Inventario: se ven bien en el tema Clara y ya puedes elegir tu bandera o tu servidor desde ahí.",
+        "Tu estilo muestra el ícono de tu estilo de juego."
+      ]
     },
     {
-        "version": "6.07",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T02:36",
-        "titulo": "La flecha para subir, rehecha, y MODS en tu menú",
-        "items": [
-            "**La flecha para subir** tiene otra cara: su borde se llena a medida que bajas, así sabes cuánto llevas de la página, y la flecha apunta a una raya: hasta arriba de todo.",
-            "**Para el staff**: MODS también está en **Tus paneles**, en el menú de tu cara, con todos los lugares donde puedes usarlo. En el celular el botón de arriba ya no parte la cabecera en dos."
-        ]
+      "version": "6.08",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T02:59:00-05:00",
+      "titulo": "El Salón de la fama, rehecho, y los MES AWARDS de cada servidor",
+      "items": [
+        "**Los MES AWARDS son de cada servidor, cada mes**: el día 1 salen los nominados de cada servidor Tier 1. Lo de toda la Liga (Rapero, Revelación, Batalla, Servidor y las demás) pasa a **la gala de la temporada**, al cierre.",
+        "**Votar da un cofre**: vota todas las categorías de tu servidor en el mes y te llevas un **Cajón de discos**, uno por mes.",
+        "**El Salón de la fama, rehecho**: mientras se vota, abre con los nominados de tu servidor; el resto del mes, con el campeón de la temporada. Una grilla muestra al ganador de cada mes en cada servidor, con la gala al final, y los récords, las insignias, las ligas y las figuras van en pestañas.",
+        "La página de cada servidor vota con la misma tarjeta que el Salón y ya dice cuándo salen sus nominados.",
+        "Las insignias de los MES AWARDS ya no llenan «Las insignias más difíciles»: sus ganadores están en la grilla."
+      ]
     },
     {
-        "version": "6.06",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T02:55:00-05:00",
-        "titulo": "Tus fondos, por lugar",
-        "items": [
-            "En Tu cuenta → Tus fondos eliges qué va detrás de ti en cinco lugares: tu perfil, el VS del Inicio, el escenario de tu carta, el VS en vivo de Discord y tu ficha.",
-            "En cada uno: automático, tu imagen, tu bandera o la escena de tu servidor. Elegir es para todos.",
-            "Subir tu propia imagen es del Pase premium, y pasa por el filtro. Si ya tenías una, la conservas.",
-            "Nuevo en la computadora: al dejar el mouse sobre la cara de alguien sale su ficha, con su fondo, su puesto y su servidor.",
-            "El link de tu perfil, pegado en Discord o WhatsApp, muestra un cartel con tu fondo, tu carta y tu nombre."
-        ]
+      "version": "6.07",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T02:36",
+      "titulo": "La flecha para subir, rehecha, y MODS en tu menú",
+      "items": [
+        "**La flecha para subir** tiene otra cara: su borde se llena a medida que bajas, así sabes cuánto llevas de la página, y la flecha apunta a una raya: hasta arriba de todo.",
+        "**Para el staff**: MODS también está en **Tus paneles**, en el menú de tu cara, con todos los lugares donde puedes usarlo. En el celular el botón de arriba ya no parte la cabecera en dos."
+      ]
     },
     {
-        "version": "6.05",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T02:20:52-05:00",
-        "titulo": "Los comentarios, flotando",
-        "items": [
-            "En las publicaciones con comentarios —la grande de **Lo último**, el escenario del Inicio y las **historias**— los comentarios van **apareciendo flotando**, como en un vivo. Las **respuestas** se ven corridas y dicen a quién le contestan.",
-            "El botón de comentar de la grande de Lo último ahora está **junto a los otros botones**, con cuántos comentarios hay.",
-            "En las historias, los comentarios **no tapan** la carta ni el afiche: se ven los que entran.",
-            "Tocar un comentario abre la publicación. Con «Menos animaciones» se quedan quietos."
-        ]
+      "version": "6.06",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T02:55:00-05:00",
+      "titulo": "Tus fondos, por lugar",
+      "items": [
+        "En Tu cuenta → Tus fondos eliges qué va detrás de ti en cinco lugares: tu perfil, el VS del Inicio, el escenario de tu carta, el VS en vivo de Discord y tu ficha.",
+        "En cada uno: automático, tu imagen, tu bandera o la escena de tu servidor. Elegir es para todos.",
+        "Subir tu propia imagen es del Pase premium, y pasa por el filtro. Si ya tenías una, la conservas.",
+        "Nuevo en la computadora: al dejar el mouse sobre la cara de alguien sale su ficha, con su fondo, su puesto y su servidor.",
+        "El link de tu perfil, pegado en Discord o WhatsApp, muestra un cartel con tu fondo, tu carta y tu nombre."
+      ]
     },
     {
-        "version": "6.04",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T02:06:50-05:00",
-        "titulo": "Las imágenes de los links",
-        "items": [
-            "La imagen de un link de crew o de invitación, pegada en Discord o WhatsApp: el nombre sale **entero** (no cortado en medio de la palabra) y quien invita sale **con su tarjeta**."
-        ]
+      "version": "6.05",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T02:20:52-05:00",
+      "titulo": "Los comentarios, flotando",
+      "items": [
+        "En las publicaciones con comentarios —la grande de **Lo último**, el escenario del Inicio y las **historias**— los comentarios van **apareciendo flotando**, como en un vivo. Las **respuestas** se ven corridas y dicen a quién le contestan.",
+        "El botón de comentar de la grande de Lo último ahora está **junto a los otros botones**, con cuántos comentarios hay.",
+        "En las historias, los comentarios **no tapan** la carta ni el afiche: se ven los que entran.",
+        "Tocar un comentario abre la publicación. Con «Menos animaciones» se quedan quietos."
+      ]
     },
     {
-        "version": "6.03",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T02:01:00-05:00",
-        "titulo": "MES AWARDS: los porcentajes y los nombres",
-        "items": [
-            "Los **porcentajes de los MES AWARDS** se ven otra vez como texto («60 % · 20 % · 5 votos»), en el Salón de la fama y en la página de cada servidor: salían como cajas sueltas.",
-            "Quien juega con un alias sale **con un solo nombre** en los ganadores: en algunas categorías aparecía con el alias y en otras con su nombre de la Lista."
-        ]
+      "version": "6.04",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T02:06:50-05:00",
+      "titulo": "Las imágenes de los links",
+      "items": [
+        "La imagen de un link de crew o de invitación, pegada en Discord o WhatsApp: el nombre sale **entero** (no cortado en medio de la palabra) y quien invita sale **con su tarjeta**."
+      ]
     },
     {
-        "version": "6.02",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T01:56:49-05:00",
-        "titulo": "Tus títulos, en tus cartas",
-        "items": [
-            "Los títulos de tu **semana de nuevo** (Recién llegado, Buena Gente, Novato de Oro) y el de **Invita y gana** (Reclutador) ya se pueden poner: van en tu carta de **Temporada**.",
-            "Los de los **Dragón Drops** (Lengua de Fuego, Garra Dorada, Aliento de Dragón, Corona de Escamas, Dragón de Diamante), en tu **Competitiva**.",
-            "En el Inventario, cada título dice de dónde sale."
-        ]
+      "version": "6.03",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T02:01:00-05:00",
+      "titulo": "MES AWARDS: los porcentajes y los nombres",
+      "items": [
+        "Los **porcentajes de los MES AWARDS** se ven otra vez como texto («60 % · 20 % · 5 votos»), en el Salón de la fama y en la página de cada servidor: salían como cajas sueltas.",
+        "Quien juega con un alias sale **con un solo nombre** en los ganadores: en algunas categorías aparecía con el alias y en otras con su nombre de la Lista."
+      ]
     },
     {
-        "version": "6.01",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T01:58:00-05:00",
-        "titulo": "Tu cuenta, rehecha en la computadora",
-        "items": [
-            "En la computadora, Tu cuenta tiene un menú a la izquierda por grupos y una página para cada cosa: tu perfil, tus temas, tus fondos, tu estilo, tu crew, tu servidor y más.",
-            "Nuevo: «Buscar en tu cuenta», para llegar directo a un ajuste (el tema, la hora, los avisos, borrar tus datos…).",
-            "Nuevo: el Resumen, con tu puesto, tu racha, tu nivel y lo que te falta para completar tu cuenta.",
-            "En el celular, Tu cuenta sigue como estaba."
-        ]
+      "version": "6.02",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T01:56:49-05:00",
+      "titulo": "Tus títulos, en tus cartas",
+      "items": [
+        "Los títulos de tu **semana de nuevo** (Recién llegado, Buena Gente, Novato de Oro) y el de **Invita y gana** (Reclutador) ya se pueden poner: van en tu carta de **Temporada**.",
+        "Los de los **Dragón Drops** (Lengua de Fuego, Garra Dorada, Aliento de Dragón, Corona de Escamas, Dragón de Diamante), en tu **Competitiva**.",
+        "En el Inventario, cada título dice de dónde sale."
+      ]
     },
     {
-        "version": "6.00",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T01:43:32-05:00",
-        "titulo": "Invita y gana",
-        "items": [
-            "**Invita y gana** 🎁: al lado de la campana (y en tu menú). Tu link corto de la temporada, para pasárselo a alguien que todavía no esté en la Liga.",
-            "Cuenta cuando esa persona entra con Discord desde tu link, se verifica y llega al **nivel 1 del Pase**. A ti te da **250 Puntos de Tienda y 150 XP del Pase**; a quien llega, **500 de bienvenida**.",
-            "El track, hasta **10**: un Dragón Drop con el primero, el título **Reclutador** con 3, dos Dragón Drops y 1.500 Puntos con 5, y con 10 el **marco Embajador** para todas tus cartas.",
-            "Los links de invitación de las crews ahora son **cortos** (`underlegends.pages.dev/c/…`), y pegados en Discord o WhatsApp salen con **su propia imagen**: el escudo de la crew, su nombre y cuántos son. Los de referido, con tu tarjeta."
-        ]
+      "version": "6.01",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T01:58:00-05:00",
+      "titulo": "Tu cuenta, rehecha en la computadora",
+      "items": [
+        "En la computadora, Tu cuenta tiene un menú a la izquierda por grupos y una página para cada cosa: tu perfil, tus temas, tus fondos, tu estilo, tu crew, tu servidor y más.",
+        "Nuevo: «Buscar en tu cuenta», para llegar directo a un ajuste (el tema, la hora, los avisos, borrar tus datos…).",
+        "Nuevo: el Resumen, con tu puesto, tu racha, tu nivel y lo que te falta para completar tu cuenta.",
+        "En el celular, Tu cuenta sigue como estaba."
+      ]
+    },
+    {
+      "version": "6.00",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T01:43:32-05:00",
+      "titulo": "Invita y gana",
+      "items": [
+        "**Invita y gana** 🎁: al lado de la campana (y en tu menú). Tu link corto de la temporada, para pasárselo a alguien que todavía no esté en la Liga.",
+        "Cuenta cuando esa persona entra con Discord desde tu link, se verifica y llega al **nivel 1 del Pase**. A ti te da **250 Puntos de Tienda y 150 XP del Pase**; a quien llega, **500 de bienvenida**.",
+        "El track, hasta **10**: un Dragón Drop con el primero, el título **Reclutador** con 3, dos Dragón Drops y 1.500 Puntos con 5, y con 10 el **marco Embajador** para todas tus cartas.",
+        "Los links de invitación de las crews ahora son **cortos** (`underlegends.pages.dev/c/…`), y pegados en Discord o WhatsApp salen con **su propia imagen**: el escudo de la crew, su nombre y cuántos son. Los de referido, con tu tarjeta."
+      ]
     },
     {
       "version": "5.99",
@@ -312,23 +326,23 @@
       ]
     },
     {
-        "version": "5.98",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T01:29:00-05:00",
-        "titulo": "El 2.º y el 3.º estilo, de los eventos de estilo",
-        "items": [
-            "Tu carta Competitiva lleva hasta tres estilos: **el 1.º lo eliges tú** en el Inventario, y **el 2.º y el 3.º se ganan en los eventos de estilo de DRA**.",
-            "Si juegas eventos de varios estilos que no son el tuyo, van los dos de **nivel más alto**; los demás quedan desbloqueados."
-        ]
+      "version": "5.98",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T01:29:00-05:00",
+      "titulo": "El 2.º y el 3.º estilo, de los eventos de estilo",
+      "items": [
+        "Tu carta Competitiva lleva hasta tres estilos: **el 1.º lo eliges tú** en el Inventario, y **el 2.º y el 3.º se ganan en los eventos de estilo de DRA**.",
+        "Si juegas eventos de varios estilos que no son el tuyo, van los dos de **nivel más alto**; los demás quedan desbloqueados."
+      ]
     },
     {
-        "version": "5.97",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T01:26:00-05:00",
-        "titulo": "Tu fondo, sólo en tu perfil",
-        "items": [
-            "Tu fondo de portada ya no aparece detrás del Ranking, Eventos o Tu cuenta: sólo en tu perfil."
-        ]
+      "version": "5.97",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T01:26:00-05:00",
+      "titulo": "Tu fondo, sólo en tu perfil",
+      "items": [
+        "Tu fondo de portada ya no aparece detrás del Ranking, Eventos o Tu cuenta: sólo en tu perfil."
+      ]
     },
     {
       "version": "5.96",
@@ -353,145 +367,145 @@
       ]
     },
     {
-        "version": "5.94",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:58:00-05:00",
-        "titulo": "Estrellas de la semana y Por día",
-        "items": [
-            "La página de cada crew muestra las estrellas de la semana: los tres que más sumaron.",
-            "En «Esta semana», cuánto sumó la crew cada día."
-        ]
+      "version": "5.94",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:58:00-05:00",
+      "titulo": "Estrellas de la semana y Por día",
+      "items": [
+        "La página de cada crew muestra las estrellas de la semana: los tres que más sumaron.",
+        "En «Esta semana», cuánto sumó la crew cada día."
+      ]
     },
     {
-        "version": "5.93",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:51:49-05:00",
-        "titulo": "La insignia premium, arriba",
-        "items": [
-            "En tu botón de arriba, la **insignia premium** si tienes el Pase de rapero premium. La racha diaria ya no va ahí: está abajo, en el Inicio."
-        ]
+      "version": "5.93",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:51:49-05:00",
+      "titulo": "La insignia premium, arriba",
+      "items": [
+        "En tu botón de arriba, la **insignia premium** si tienes el Pase de rapero premium. La racha diaria ya no va ahí: está abajo, en el Inicio."
+      ]
     },
     {
-        "version": "5.92",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:35:00-05:00",
-        "titulo": "Eventos de estilo: tu estilo sube de nivel",
-        "items": [
-            "Algunos eventos van a ser **eventos de estilo**: en Eventos dicen «🎭 evento de Punchline» (o del estilo que sea).",
-            "Jugar uno te da **nivel 1** en ese estilo, y quedar en el **cuarto de arriba** de la llave te sube uno, hasta el 3. Si es tu estilo, sube el tuyo; si no, se te desbloquea en el 2.º lugar de tu carta Competitiva.",
-            "Los niveles vuelven a 0 cada temporada."
-        ]
+      "version": "5.92",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:35:00-05:00",
+      "titulo": "Eventos de estilo: tu estilo sube de nivel",
+      "items": [
+        "Algunos eventos van a ser **eventos de estilo**: en Eventos dicen «🎭 evento de Punchline» (o del estilo que sea).",
+        "Jugar uno te da **nivel 1** en ese estilo, y quedar en el **cuarto de arriba** de la llave te sube uno, hasta el 3. Si es tu estilo, sube el tuyo; si no, se te desbloquea en el 2.º lugar de tu carta Competitiva.",
+        "Los niveles vuelven a 0 cada temporada."
+      ]
     },
     {
-        "version": "5.91",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:28:00-05:00",
-        "titulo": "El equipo de la Liga, con el Pase premium",
-        "items": [
-            "El equipo de la Liga y los representantes de los servidores socios tienen el Pase premium en todas las temporadas."
-        ]
+      "version": "5.91",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:28:00-05:00",
+      "titulo": "El equipo de la Liga, con el Pase premium",
+      "items": [
+        "El equipo de la Liga y los representantes de los servidores socios tienen el Pase premium en todas las temporadas."
+      ]
     },
     {
-        "version": "5.90",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:27:16-05:00",
-        "titulo": "La barra de arriba, pareja",
-        "items": [
-            "La barra de arriba queda **igual en todas las páginas**: el menú ya no se corre al pasar del Inicio al Ranking.",
-            "El logo y tus botones, **un poco más hacia los costados**.",
-            "Las palabras del menú, **a la misma altura** (también Publicaciones con su número)."
-        ]
+      "version": "5.90",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:27:16-05:00",
+      "titulo": "La barra de arriba, pareja",
+      "items": [
+        "La barra de arriba queda **igual en todas las páginas**: el menú ya no se corre al pasar del Inicio al Ranking.",
+        "El logo y tus botones, **un poco más hacia los costados**.",
+        "Las palabras del menú, **a la misma altura** (también Publicaciones con su número)."
+      ]
     },
     {
-        "version": "5.89",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:20:00-05:00",
-        "titulo": "Dragón Drops: un tope suave por semana",
-        "items": [
-            "Los Puntos de Tienda que dan los Dragón Drops se pagan completos hasta 10.000 por semana; lo que pase de ahí, a la mitad.",
-            "Los títulos salen igual, y lo que ganas compitiendo no tiene tope.",
-            "En tus Dragón Drops ves cuánto llevas esta semana. Se renueva el lunes."
-        ]
+      "version": "5.89",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:20:00-05:00",
+      "titulo": "Dragón Drops: un tope suave por semana",
+      "items": [
+        "Los Puntos de Tienda que dan los Dragón Drops se pagan completos hasta 10.000 por semana; lo que pase de ahí, a la mitad.",
+        "Los títulos salen igual, y lo que ganas compitiendo no tiene tope.",
+        "En tus Dragón Drops ves cuánto llevas esta semana. Se renueva el lunes."
+      ]
     },
     {
-        "version": "5.88",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:19:00-05:00",
-        "titulo": "Los tiers de las crews, con puntos de verdad",
-        "items": [
-            "Los tiers de las crews vuelven a sumar los puntos de Temporada de la semana de su gente.",
-            "En la página de cada crew se ve otra vez quién sumó esta semana y quién falta."
-        ]
+      "version": "5.88",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:19:00-05:00",
+      "titulo": "Los tiers de las crews, con puntos de verdad",
+      "items": [
+        "Los tiers de las crews vuelven a sumar los puntos de Temporada de la semana de su gente.",
+        "En la página de cada crew se ve otra vez quién sumó esta semana y quién falta."
+      ]
     },
     {
-        "version": "5.87",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:11:00-05:00",
-        "titulo": "Tus looks guardados",
-        "items": [
-            "En tu Inventario, **«Tus looks»**: guarda lo que llevas (el TAG de cada carta, tu marco y tu estilo) con un nombre.",
-            "Un toque y te lo pones en todas tus cartas; después, Guardar.",
-            "Hasta 5 looks. Se borran con la ✕."
-        ]
+      "version": "5.87",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:11:00-05:00",
+      "titulo": "Tus looks guardados",
+      "items": [
+        "En tu Inventario, **«Tus looks»**: guarda lo que llevas (el TAG de cada carta, tu marco y tu estilo) con un nombre.",
+        "Un toque y te lo pones en todas tus cartas; después, Guardar.",
+        "Hasta 5 looks. Se borran con la ✕."
+      ]
     },
     {
-        "version": "5.86",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T00:08:00-05:00",
-        "titulo": "El menú MODS",
-        "items": [
-            "Quien modera la Liga tiene un botón MODS arriba, sólo en las páginas donde tiene algo para hacer.",
-            "Owner y Admin pueden manejar cualquier crew como su Líder; todo lo que hacen queda anotado con su nombre.",
-            "En Competencias, ver todas las llaves o mirar como quien no juega se prende desde ese menú."
-        ]
+      "version": "5.86",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T00:08:00-05:00",
+      "titulo": "El menú MODS",
+      "items": [
+        "Quien modera la Liga tiene un botón MODS arriba, sólo en las páginas donde tiene algo para hacer.",
+        "Owner y Admin pueden manejar cualquier crew como su Líder; todo lo que hacen queda anotado con su nombre.",
+        "En Competencias, ver todas las llaves o mirar como quien no juega se prende desde ese menú."
+      ]
     },
     {
-        "version": "5.85",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T23:50:00-05:00",
-        "titulo": "Las crews, rehechas",
-        "items": [
-            "La página de crews: fundar una crew está arriba, tu crew en una franja, un buscador con la vista previa al costado y la tabla de la semana de cada tier con cuánto falta para subir o bajar.",
-            "La página de cada crew: la jerarquía en pirámide, cuánto aporta cada uno, cómo va la semana y lo que pasó.",
-            "Los ajustes de tu crew tienen su propia página, con un menú."
-        ]
+      "version": "5.85",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T23:50:00-05:00",
+      "titulo": "Las crews, rehechas",
+      "items": [
+        "La página de crews: fundar una crew está arriba, tu crew en una franja, un buscador con la vista previa al costado y la tabla de la semana de cada tier con cuánto falta para subir o bajar.",
+        "La página de cada crew: la jerarquía en pirámide, cuánto aporta cada uno, cómo va la semana y lo que pasó.",
+        "Los ajustes de tu crew tienen su propia página, con un menú."
+      ]
     },
     {
-        "version": "5.84",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T23:39:00-05:00",
-        "titulo": "Tu Inventario, como escenario",
-        "items": [
-            "**Tu carta, la estrella**: grande y al centro, como en los juegos. A la izquierda lo que tienes puesto (TAG, marco, foto, estilo) y a la derecha tus cartas.",
-            "Debajo de la carta, el nombre de la pieza en grande y cómo se gana.",
-            "En la compu, **pasa el mouse** por una pieza y tu carta se la prueba; tocarla la elige. Y con «Lo puesto / Probando» comparas antes de guardar.",
-            "Los TAGs nuevos llevan un punto y tienen su filtro.",
-            "En Colección, cuánto tienes de cada cosa y **qué % de la Liga** tiene cada insignia."
-        ]
+      "version": "5.84",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T23:39:00-05:00",
+      "titulo": "Tu Inventario, como escenario",
+      "items": [
+        "**Tu carta, la estrella**: grande y al centro, como en los juegos. A la izquierda lo que tienes puesto (TAG, marco, foto, estilo) y a la derecha tus cartas.",
+        "Debajo de la carta, el nombre de la pieza en grande y cómo se gana.",
+        "En la compu, **pasa el mouse** por una pieza y tu carta se la prueba; tocarla la elige. Y con «Lo puesto / Probando» comparas antes de guardar.",
+        "Los TAGs nuevos llevan un punto y tienen su filtro.",
+        "En Colección, cuánto tienes de cada cosa y **qué % de la Liga** tiene cada insignia."
+      ]
     },
     {
-        "version": "5.83",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T23:23:17-05:00",
-        "titulo": "Más para el staff de cada servidor",
-        "items": [
-            "En el panel de tu servidor, **Quién es quién**: contesta los «¿Quién es?» de tus eventos y di quién es cada nombre de tus inscripciones.",
-            "**Tus eventos**: anuncia un evento desde el panel y sale en Eventos y en la campana, aunque el bot no lea tu anuncio.",
-            "**Tus publicaciones**: oculta una publicación de tu servidor en el muro.",
-            "**El fondo del VS**: elige uno de las escenas de la Liga para los VS de tu servidor.",
-            "En los ajustes: **Horas sin bot** (de qué hora a qué hora no habla en tu chat) y **Probar** al lado de cada canal."
-        ]
+      "version": "5.83",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T23:23:17-05:00",
+      "titulo": "Más para el staff de cada servidor",
+      "items": [
+        "En el panel de tu servidor, **Quién es quién**: contesta los «¿Quién es?» de tus eventos y di quién es cada nombre de tus inscripciones.",
+        "**Tus eventos**: anuncia un evento desde el panel y sale en Eventos y en la campana, aunque el bot no lea tu anuncio.",
+        "**Tus publicaciones**: oculta una publicación de tu servidor en el muro.",
+        "**El fondo del VS**: elige uno de las escenas de la Liga para los VS de tu servidor.",
+        "En los ajustes: **Horas sin bot** (de qué hora a qué hora no habla en tu chat) y **Probar** al lado de cada canal."
+      ]
     },
     {
-        "version": "5.82",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T23:19:00-05:00",
-        "titulo": "Tu estilo de juego, en el Inventario",
-        "items": [
-            "En tu **Inventario** hay una pestaña nueva, **Estilo de juego**: 18 estilos en tres familias (Ataque, Foco y Cabeza), cada una con su forma, y cuántos eligieron cada uno.",
-            "El que elijas va en la columna izquierda de tu carta **Competitiva**, con el color de tu rango. La primera vez es libre; después lo puedes cambiar una vez por temporada, y el que dejas queda desbloqueado.",
-            "Elegirlo se activa muy pronto; mientras, ya puedes mirar los 18 y pensar el tuyo."
-        ]
+      "version": "5.82",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T23:19:00-05:00",
+      "titulo": "Tu estilo de juego, en el Inventario",
+      "items": [
+        "En tu **Inventario** hay una pestaña nueva, **Estilo de juego**: 18 estilos en tres familias (Ataque, Foco y Cabeza), cada una con su forma, y cuántos eligieron cada uno.",
+        "El que elijas va en la columna izquierda de tu carta **Competitiva**, con el color de tu rango. La primera vez es libre; después lo puedes cambiar una vez por temporada, y el que dejas queda desbloqueado.",
+        "Elegirlo se activa muy pronto; mientras, ya puedes mirar los 18 y pensar el tuyo."
+      ]
     },
     {
       "version": "5.81",
@@ -505,47 +519,47 @@
       ]
     },
     {
-        "version": "5.80",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T22:59:51-05:00",
-        "titulo": "El staff de cada servidor",
-        "items": [
-            "El dueño de cada servidor socio le da un **rol** a cada uno de su equipo: **admin**, **moderador** o **asistente**.",
-            "Los moderadores **corrigen las llaves de su servidor** desde la llave misma (quién ganó, un nombre, si cuenta), y los asistentes lo **sugieren**. Lo ves todo en **Tus llaves**, en el panel de tu servidor.",
-            "En **Tus ligas**, el staff de cada servidor corrige lo que el bot leyó de su liga, carga una batalla que no leyó y cierra la temporada con su campeón.",
-            "En `/settings` hay un botón nuevo, **Más canales**: el aviso de cada evento, las batallas de liga y el resumen de los lunes, como en la página."
-        ]
+      "version": "5.80",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T22:59:51-05:00",
+      "titulo": "El staff de cada servidor",
+      "items": [
+        "El dueño de cada servidor socio le da un **rol** a cada uno de su equipo: **admin**, **moderador** o **asistente**.",
+        "Los moderadores **corrigen las llaves de su servidor** desde la llave misma (quién ganó, un nombre, si cuenta), y los asistentes lo **sugieren**. Lo ves todo en **Tus llaves**, en el panel de tu servidor.",
+        "En **Tus ligas**, el staff de cada servidor corrige lo que el bot leyó de su liga, carga una batalla que no leyó y cierra la temporada con su campeón.",
+        "En `/settings` hay un botón nuevo, **Más canales**: el aviso de cada evento, las batallas de liga y el resumen de los lunes, como en la página."
+      ]
     },
     {
-        "version": "5.79",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T22:51:00-05:00",
-        "titulo": "El Inicio, quieto, y campeones de verdad",
-        "items": [
-            "En algunas compus el escenario del Inicio pasaba solo y a toda velocidad. **Ya no**: cada momento dura lo que tiene que durar.",
-            "Si tu sistema tiene «reducir movimiento», el escenario se queda quieto y pasas de un momento a otro tocándolos en la tira.",
-            "Una llave sin final no corona a nadie: el último campeón y los titulares salen sólo de llaves terminadas."
-        ]
+      "version": "5.79",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T22:51:00-05:00",
+      "titulo": "El Inicio, quieto, y campeones de verdad",
+      "items": [
+        "En algunas compus el escenario del Inicio pasaba solo y a toda velocidad. **Ya no**: cada momento dura lo que tiene que durar.",
+        "Si tu sistema tiene «reducir movimiento», el escenario se queda quieto y pasas de un momento a otro tocándolos en la tira.",
+        "Una llave sin final no corona a nadie: el último campeón y los titulares salen sólo de llaves terminadas."
+      ]
     },
     {
-        "version": "5.78",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T22:47:00-05:00",
-        "titulo": "La Competitiva hace lugar para los estilos de juego",
-        "items": [
-            "La carta **Competitiva** ya no muestra los rombos de los eventos de la pre-temporada en su columna izquierda. Ese lugar es para tus **estilos de juego**: hasta tres, que llegan pronto.",
-            "Los eventos que jugaste siguen en tu perfil de la página."
-        ]
+      "version": "5.78",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T22:47:00-05:00",
+      "titulo": "La Competitiva hace lugar para los estilos de juego",
+      "items": [
+        "La carta **Competitiva** ya no muestra los rombos de los eventos de la pre-temporada en su columna izquierda. Ese lugar es para tus **estilos de juego**: hasta tres, que llegan pronto.",
+        "Los eventos que jugaste siguen en tu perfil de la página."
+      ]
     },
     {
-        "version": "5.77",
-        "dia": "2026-11-16",
-        "cuando": "2026-11-16T22:20:00-05:00",
-        "titulo": "Escudos de crew con muchas más piezas",
-        "items": [
-            "El escudo de tu crew suma formas, símbolos y colores nuevos, divisiones del campo con un tercer color y tres bordes. Y puede llevar la sigla de tu crew.",
-            "Subir tu propio logo ahora está a la vista: «Armar escudo» o «Subir mi logo», en dos pestañas."
-        ]
+      "version": "5.77",
+      "dia": "2026-11-16",
+      "cuando": "2026-11-16T22:20:00-05:00",
+      "titulo": "Escudos de crew con muchas más piezas",
+      "items": [
+        "El escudo de tu crew suma formas, símbolos y colores nuevos, divisiones del campo con un tercer color y tres bordes. Y puede llevar la sigla de tu crew.",
+        "Subir tu propio logo ahora está a la vista: «Armar escudo» o «Subir mi logo», en dos pestañas."
+      ]
     },
     {
       "version": "5.76",
