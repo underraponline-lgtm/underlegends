@@ -41,11 +41,21 @@
 <script>
 (function () {
   // 🎲 EL FONDO, ELEGIDO YA: cada uno con la misma chance; en «La batalla», cada video con la suya (Dlx, 12/11/2026)
-  var C = window.__lgC = {"r2":"https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev","t":"t1","v":3,"f":[1,2,3,4],"b":["kainheat","sombra","sol","liberia","kourier","zaylax","makma","eucalipto"]};
+  var C = window.__lgC = {"r2":"https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev","t":"t1","v":4,"f":[1,2,3,4],"bv":[["kainheat","kainheat2","kainheat3"],["sombra","sombra2","sombra3"],["sol","sol2","sol3"],["liberia","liberia2"],["kourier","kourier2"],["zaylax","zaylax2","zaylax3"],["makma","makma2"],["eucalipto","eucalipto2","eucalipto3"]],"fo":{"kainheat":{"pc":[0.27,0.32,0.37,0.58],"cel":[0.307,0.32,0.693,0.58],"tab":[0.381,0.32,0.619,0.58],"hd":[0.27,0.32,0.37,0.58]},"kainheat2":{"pc":[0.52,0.31,0.62,0.53],"cel":[0.307,0.3,0.693,0.52],"tab":[0.381,0.3,0.619,0.52],"hd":[0.52,0.31,0.62,0.53]},"kainheat3":{"pc":[0.53,0.31,0.72,0.77],"cel":[0.134,0.23,0.866,0.69],"tab":[0.275,0.22,0.725,0.68],"hd":[0.53,0.31,0.72,0.77]},"sombra":{"pc":[0.31,0.31,0.37,0.46],"cel":[0.384,0.3,0.616,0.45],"tab":[0.429,0.3,0.571,0.45],"hd":[0.31,0.31,0.37,0.46]},"sombra2":{"pc":[0.4,0.31,0.5,0.51],"cel":[0.307,0.27,0.693,0.47],"tab":[0.381,0.27,0.619,0.47],"hd":[0.4,0.31,0.5,0.51]},"sombra3":{"pc":[0.6,0.31,0.69,0.47],"cel":[0.327,0.28,0.673,0.44],"tab":[0.393,0.28,0.607,0.44],"hd":[0.6,0.31,0.69,0.47]},"sol":{"pc":[0.4,0.35,0.52,0.65],"cel":[0.269,0.35,0.731,0.65],"tab":[0.358,0.35,0.642,0.65],"hd":[0.4,0.35,0.52,0.65]},"sol2":{"pc":[0.22,0.31,0.36,0.56],"cel":[0.23,0.23,0.77,0.48],"tab":[0.334,0.21,0.666,0.46],"hd":[0.22,0.31,0.36,0.56]},"sol3":{"pc":[0.62,0.31,0.8,0.58],"cel":[0.153,0.28,0.847,0.55],"tab":[0.287,0.28,0.713,0.55],"hd":[0.62,0.31,0.8,0.58]},"liberia":{"pc":[0.5,0.31,0.68,0.64],"cel":[0.153,0.23,0.847,0.56],"tab":[0.287,0.22,0.713,0.55],"hd":[0.5,0.31,0.68,0.64]},"liberia2":{"pc":[0.58,0.31,0.75,0.67],"cel":[0.173,0.23,0.827,0.59],"tab":[0.299,0.22,0.701,0.58],"hd":[0.58,0.31,0.75,0.67]},"kourier":{"pc":[0.5,0.31,0.7,0.67],"cel":[0.115,0.23,0.885,0.59],"tab":[0.263,0.22,0.737,0.58],"hd":[0.5,0.31,0.7,0.67]},"kourier2":{"pc":[0.56,0.31,0.72,0.59],"cel":[0.192,0.23,0.808,0.51],"tab":[0.31,0.21,0.69,0.49],"hd":[0.56,0.31,0.72,0.59]},"zaylax":{"pc":[0.18,0.47,0.31,0.8],"cel":[0.076,0.47,0.577,0.8],"tab":[0.239,0.47,0.547,0.8],"hd":[0.18,0.47,0.31,0.8]},"zaylax2":{"pc":[0.4,0.31,0.56,0.69],"cel":[0.192,0.23,0.808,0.61],"tab":[0.31,0.22,0.69,0.6],"hd":[0.4,0.31,0.56,0.69]},"zaylax3":{"pc":[0.4,0.31,0.6,0.73],"cel":[0.115,0.3,0.885,0.72],"tab":[0.263,0.3,0.737,0.72],"hd":[0.4,0.31,0.6,0.73]},"makma":{"pc":[0.6,0.31,0.72,0.61],"cel":[0.269,0.23,0.731,0.53],"tab":[0.358,0.21,0.642,0.51],"hd":[0.6,0.31,0.72,0.61]},"makma2":{"pc":[0.47,0.31,0.58,0.56],"cel":[0.288,0.23,0.712,0.48],"tab":[0.37,0.22,0.63,0.47],"hd":[0.47,0.31,0.58,0.56]},"eucalipto":{"pc":[0.42,0.43,0.5,0.56],"cel":[0.346,0.43,0.654,0.56],"tab":[0.405,0.43,0.595,0.56],"hd":[0.42,0.43,0.5,0.56]},"eucalipto2":{"pc":[0.32,0.33,0.39,0.46],"cel":[0.365,0.33,0.635,0.46],"tab":[0.417,0.33,0.583,0.46],"hd":[0.32,0.33,0.39,0.46]},"eucalipto3":{"pc":[0.51,0.49,0.58,0.62],"cel":[0.365,0.49,0.635,0.62],"tab":[0.417,0.49,0.583,0.62],"hd":[0.51,0.49,0.58,0.62]}}};
   try {
     var n = C.f[Math.floor(Math.random() * C.f.length)];
-    var nom = n === 2 ? '2-' + C.b[Math.floor(Math.random() * C.b.length)] : String(n);
-    var fmt = innerWidth / Math.max(1, innerHeight) < 0.8 ? 'cel' : 'pc';
+    var vid = n === 2 && C.bv ? C.bv[Math.floor(Math.random() * C.bv.length)] : null;
+    var bat = vid ? vid[Math.floor(Math.random() * vid.length)] : '';
+    var nom = n === 2 ? '2-' + bat : String(n);
+    var asp = innerWidth / Math.max(1, innerHeight), fmt = asp < 0.8 ? 'cel' : 'pc';
+    // 📐 la batalla trae además la de la tablet parada (de 0,6 a 0,8: antes se estiraba la del teléfono) y la de las
+    // pantallas de más de 2900 px reales, como una Mac de 1440×900 (comun/foco_carga.py). Los otros fondos, dos
+    if (bat) {
+      if (asp >= 0.6 && asp < 0.8) fmt = 'tab';
+      else if (fmt === 'pc' && Math.max(innerWidth, innerHeight * 16 / 9) * (window.devicePixelRatio || 1) > 2900) fmt = 'hd';
+    }
+    // 🎯 la cara del MC en esta imagen, para encuadrarla (ver `encuadre()` en la pantalla de carga)
+    window.__lgCara = (bat && C.fo && C.fo[bat] && C.fo[bat][fmt]) || null;
     var d = new Date(), dia = d.getUTCFullYear() * 1e4 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
     var src = window.__lgFondo = C.r2 + '/carga/' + C.t + '/' + nom + '-' + fmt + '.webp?d=' + dia + '-' + (C.v || 1);
     var l = document.createElement('link');
@@ -157,6 +167,34 @@ html.lg-sale #lg-carga .lg-c{animation:lg-fuera .35s ease-in forwards}
 html.lg-sale #lg-carga .lg-capa{will-change:transform;animation:lg-corte 1s .25s cubic-bezier(.65,0,.35,1) forwards}
 html.lg-sale #lg-carga .lg-capa.m{animation-delay:.4s}
 html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
+/* 🎬 CINCO SALIDAS, UNA AL AZAR (17/11/2026, Dlx: «crea diferentes efectos de transición, ahora tenemos una sola, ¿no?»).
+   Como los fondos: cada una con la misma chance (`tr-…` en #lg-carga, la elige el script de abajo). El corte de arriba
+   es una; las otras cuatro van con las capas DERECHAS y del tamaño de la pantalla (`tr-plano`), y todas se mueven sólo
+   con transform y opacity, como el corte, así no se traban aunque la app se esté armando atrás:
+   · barrido  las tres capas se van a la izquierda, una detrás de otra (negra, magenta, verde)
+   · caída    se caen para abajo, igual de escalonadas
+   · telón    la foto se abre al medio como un telón, y detrás se abren la magenta (izquierda) y la verde (derecha).
+              La mitad derecha es una copia de la capa con la foto (`.n.d`), recortada con un clip-path QUIETO
+   · flash    el flash de una foto: un destello blanco y la foto que se acerca al MC (`--fo`, donde está su cara) y se
+              va. Un solo destello, corto y no al blanco entero (.7): no es un parpadeo
+   Con «Menos animaciones» o «reducir movimiento», todas son el fundido de siempre (abajo) */
+html.lg-carga-js #lg-carga.tr-plano .lg-capa{left:0;top:0;width:100%;height:100%;margin:0;transform:none}
+html.lg-carga-js #lg-carga.tr-plano .lg-foto{transform:none}
+html.lg-sale #lg-carga.tr-barrido .lg-capa{animation:lg-barre .85s .2s cubic-bezier(.65,0,.35,1) forwards}
+html.lg-sale #lg-carga.tr-caida .lg-capa{animation:lg-cae .85s .2s cubic-bezier(.6,0,.4,1) forwards}
+html.lg-sale #lg-carga.tr-barrido .lg-capa.m,html.lg-sale #lg-carga.tr-caida .lg-capa.m{animation-delay:.32s}
+html.lg-sale #lg-carga.tr-barrido .lg-capa.v,html.lg-sale #lg-carga.tr-caida .lg-capa.v{animation-delay:.44s}
+#lg-carga.tr-telon .lg-capa.n.i,#lg-carga.tr-telon .lg-capa.m{clip-path:inset(0 50% 0 0)}
+#lg-carga.tr-telon .lg-capa.n.d,#lg-carga.tr-telon .lg-capa.v{clip-path:inset(0 0 0 calc(50% - 1px))}
+html.lg-sale #lg-carga.tr-telon .lg-capa.n.i,html.lg-sale #lg-carga.tr-telon .lg-capa.m{animation:lg-abre-i .9s .2s cubic-bezier(.7,0,.3,1) forwards}
+html.lg-sale #lg-carga.tr-telon .lg-capa.n.d,html.lg-sale #lg-carga.tr-telon .lg-capa.v{animation:lg-abre-d .9s .2s cubic-bezier(.7,0,.3,1) forwards}
+html.lg-sale #lg-carga.tr-telon .lg-capa.m,html.lg-sale #lg-carga.tr-telon .lg-capa.v{animation-delay:.34s}
+#lg-carga .lg-flash{display:none}
+#lg-carga.tr-flash .lg-flash{display:block;position:absolute;inset:0;z-index:4;background:#F6F6F6;opacity:0;pointer-events:none}
+#lg-carga.tr-flash .lg-capa.m,#lg-carga.tr-flash .lg-capa.v{display:none}
+html.lg-carga-js #lg-carga.tr-flash .lg-capa.n{transform-origin:var(--fo,50% 45%)}
+html.lg-sale #lg-carga.tr-flash .lg-flash{animation:lg-flash .75s .12s ease-out forwards}
+html.lg-sale #lg-carga.tr-flash .lg-capa.n{animation:lg-acerca .8s .12s cubic-bezier(.5,0,.75,0) forwards}
 /* 🌅 QUE EMPIECE DE A POCO (Dlx, 12/11/2026: «se lagea un poquito cuando la página de carga empieza… que empiece poco a
    poco»). Tironeaba por tres cosas a la vez: el título salía con la letra del sistema y saltaba a la nuestra al llegar,
    todo entraba en el mismo instante en que la página baja su código, y el relleno del título se movía (repintarlo en
@@ -177,6 +215,12 @@ html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
 @keyframes lg-tip{0%{opacity:0;transform:translateY(.4em)}5%,22%{opacity:1;transform:none}27%,100%{opacity:0;transform:translateY(-.4em)}}
 @keyframes lg-fuera{to{transform:scale(1.14);opacity:0}}
 @keyframes lg-corte{to{transform:rotate(30deg) translateY(-125vmax)}}
+@keyframes lg-barre{to{transform:translateX(-101%)}}
+@keyframes lg-cae{to{transform:translateY(101%)}}
+@keyframes lg-abre-i{to{transform:translateX(-51%)}}
+@keyframes lg-abre-d{to{transform:translateX(51%)}}
+@keyframes lg-flash{0%{opacity:0}14%{opacity:.7}100%{opacity:0}}
+@keyframes lg-acerca{to{transform:scale(1.3);opacity:0}}
 @keyframes lg-grano{0%,100%{transform:none}20%{transform:translate3d(-3%,2%,0)}40%{transform:translate3d(2%,-3%,0)}60%{transform:translate3d(-2%,-1%,0)}80%{transform:translate3d(3%,3%,0)}}
 @media (prefers-reduced-motion: reduce){
   #lg-carga *{animation:none!important}
@@ -188,8 +232,29 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
 html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top:50%;width:100vw;height:100vh;margin:-50vh 0 0 -50vw;
   transform:translateY(5vmax) rotate(-30deg);overflow:hidden;background:#030304}
 #lg-carga .lg-img{position:absolute;inset:0;background:#030304 center/cover no-repeat;opacity:0;scale:1.04;will-change:opacity,scale;
+  transform-origin:var(--fo,50% 50%);
   transition:opacity 1.4s cubic-bezier(.3,0,.2,1),scale 6s cubic-bezier(.2,.6,.2,1)}
 #lg-carga.con-foto .lg-img{opacity:1;scale:1}
+/* 🎬 CUATRO ENTRADAS, AL AZAR (17/11/2026, Dlx: «sí, todas»), como las salidas: el ACERCAMIENTO de siempre (`en-acerca`,
+   de arriba: llega desde un 4 % más grande, centrado en la cara), el PANEO (se desliza de costado y se queda; `--pan` lo
+   calcula `encuadre()` para que el borde nunca se vea), la SUBIDA (sube un poco mientras aparece) y el GOLPE (aparece de
+   una, con el parpadeo de un proyector: dos cambios en medio segundo, no un destello). Sólo opacity, scale y translate.
+   ⚠️ El paneo y la subida van con @keyframes y no con transition: el desplazamiento sale de `--pan`, que se sabe recién
+   cuando llega la foto, y con una transition el cambio de `--pan` también se animaba — arrancaba corrida para el otro
+   lado y se veía el borde (medido: 5 px a la izquierda con la cara a la izquierda). La animación arranca con `con-foto`,
+   que entra después de `encuadre()` */
+#lg-carga.en-paneo .lg-img{scale:1.08;will-change:opacity,translate;transition:opacity 1.2s cubic-bezier(.3,0,.2,1)}
+#lg-carga.en-paneo.con-foto .lg-img{scale:1.08;animation:lg-paneo 6s cubic-bezier(.2,.6,.2,1) both}
+#lg-carga.en-sube .lg-img{scale:1.06;will-change:opacity,scale,translate;transition:opacity 1s cubic-bezier(.3,0,.2,1),scale 5s cubic-bezier(.2,.6,.2,1)}
+#lg-carga.en-sube.con-foto .lg-img{scale:1;animation:lg-sube-f 2.4s cubic-bezier(.2,.7,.2,1) both}
+@keyframes lg-paneo{from{translate:var(--pan,3%) 0}to{translate:0 0}}
+@keyframes lg-sube-f{from{translate:0 1.5%}to{translate:0 0}}
+#lg-carga.en-golpe .lg-img{scale:1;transition:none}
+#lg-carga.en-golpe.con-foto .lg-img{opacity:1;animation:lg-golpe .45s steps(1,end) both}
+@keyframes lg-golpe{0%{opacity:0}18%{opacity:1}34%{opacity:.35}52%{opacity:1}}
+/* 🧘 con «Menos animaciones» o «reducir movimiento», la foto sólo aparece: ni se acerca ni se mueve */
+html.calma #lg-carga .lg-img{scale:1!important;translate:none!important;transition:opacity .4s ease!important}
+@media (prefers-reduced-motion: reduce){#lg-carga .lg-img{scale:1!important;translate:none!important;transition:opacity .4s ease!important}}
 /* 📐 EN LA TABLET, EL 3D Y EL COMPETITIVO VAN ENTEROS (13/11/2026). Se arman para el celular (1080×2340) y una tablet
    parada (3:4) se come un 20 % de arriba y otro de abajo: las franjas y las tarjetas quedaban debajo del título y de la
    barra. Ahí la imagen va entera, del 2 al 90 % del alto (entera hasta abajo, la última franja del Competitivo caía en la
@@ -335,8 +400,9 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
      precarga todo; si vuelve en los siguientes 30 minutos (`lg:carga`), lo que tarde en cargar.
      🎞️ SUAVE (Dlx, 13/11/2026: «asegúrate que esto sea smooth»): la app espera a que la pantalla entre, y lo que se
      mueve después lo anima el compositor, que no se traba cuando la app se arma atrás.
-     ✂️ Y SE VA CON EL CORTE (18/10/2026): tres capas —negra, magenta, verde— en diagonal; el fondo vive en la negra. -->
-<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"><b class="lg-img"></b><b class="lg-velo"></b><svg class="lg-grano"><filter id="lg-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#lg-gr)"/></svg></b></i><div class="lg-c"><span class="lg-marca"><img src="/ul-blanco.png" alt="" width="160" height="130"><i></i><b>T1</b></span><div class="lg-logo"><span class="lg-sello">Temporada 1 · en juego</span><span class="lg-t"><span class="lg-t1">LIGA GLOBAL</span><span class="lg-t2">DE FREESTYLE</span></span></div><div class="lg-pie"><div class="lg-fila"><span class="lg-tip"><span>Cargando el ranking</span><span>Preparando las llaves</span><span>Contando los puntos</span><span>Buscando tus tarjetas</span><span class="lg-ya">Listo</span></span><b class="lg-pct"><span class="lg-cifras">0%</span></b></div><span class="lg-barra"><i></i></span></div></div></div>
+     ✂️ Y SE VA CON UNA DE CINCO SALIDAS (17/11/2026; hasta ahí, sólo el corte del 18/10): el corte en diagonal, el
+     barrido, la caída, el telón y el flash, al azar. Tres capas —negra, magenta, verde—; el fondo vive en la negra. -->
+<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"><b class="lg-img"></b><b class="lg-velo"></b><svg class="lg-grano"><filter id="lg-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#lg-gr)"/></svg></b></i><i class="lg-flash"></i><div class="lg-c"><span class="lg-marca"><img src="/ul-blanco.png" alt="" width="160" height="130"><i></i><b>T1</b></span><div class="lg-logo"><span class="lg-sello">Temporada 1 · en juego</span><span class="lg-t"><span class="lg-t1">LIGA GLOBAL</span><span class="lg-t2">DE FREESTYLE</span></span></div><div class="lg-pie"><div class="lg-fila"><span class="lg-tip"><span>Cargando el ranking</span><span>Preparando las llaves</span><span>Contando los puntos</span><span>Buscando tus tarjetas</span><span class="lg-ya">Listo</span></span><b class="lg-pct"><span class="lg-cifras">0%</span></b></div><span class="lg-barra"><i></i></span></div></div></div>
 <script>
 (function () {
   var h = document.documentElement, el = document.getElementById('lg-carga');
@@ -358,6 +424,24 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
     // ⏳ la primera vez, 4 s; si volvió en los últimos 30 minutos, lo que tarde
     try { primera = t0 - (+localStorage.getItem('lg:carga') || 0) > 18e5; localStorage.setItem('lg:carga', String(t0)); } catch (e) {}
     var MIN = primera ? 4000 : 0;
+    // 🎬 la salida, al azar (ver «CINCO SALIDAS» en el CSS). `__lgTrForzar` es para las pruebas
+    var SALIDAS = ['corte', 'barrido', 'caida', 'telon', 'flash'];
+    var tr = window.__lgTrForzar || SALIDAS[Math.floor(Math.random() * SALIDAS.length)];
+    window.__lgTr = tr;
+    el.classList.add('tr-' + tr);
+    if (tr !== 'corte') el.classList.add('tr-plano');
+    // 🎬 y la entrada de la foto, también al azar (ver «CUATRO ENTRADAS» en CSS_FOTO). `__lgEnForzar`, para las pruebas
+    var ENTRADAS = ['acerca', 'paneo', 'sube', 'golpe'];
+    var en = window.__lgEnForzar || ENTRADAS[Math.floor(Math.random() * ENTRADAS.length)];
+    window.__lgEn = en;
+    el.classList.add('en-' + en);
+    if (tr === 'telon') {
+      // la mitad derecha del telón: una copia de la capa con la foto, desde ya (copiarla al salir haría dibujarla en el
+      // mismo cuadro en que arranca el movimiento)
+      var cn = el.querySelector('.lg-capa.n'), cd = cn.cloneNode(true);
+      cn.classList.add('i'); cd.classList.add('d');
+      cn.parentNode.insertBefore(cd, cn.nextSibling);
+    }
     // la app no espera más que esto, aunque las letras o la foto no lleguen
     setTimeout(entro, primera ? 1400 : 700);
     var vaYa = false, fotoYa = !src;
@@ -370,7 +454,37 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
     // `document.fonts.ready` contesta «listo» antes de que nadie las haya pedido
     if (quieto) el.classList.add('quieto');
     if ((src.indexOf('/3-cel.webp') > 0 || src.indexOf('/4-cel.webp') > 0) && innerWidth / Math.max(1, innerHeight) > 0.6) el.classList.add('entero');
-    var va = function () { if (vaYa) return; vaYa = true; el.classList.add('va'); entrada(); };
+    // 🎯 EL MC A LA VISTA EN CUALQUIER PANTALLA (17/11/2026, Dlx: «no se ve al MC, en todas las resoluciones y
+    // dispositivos»). La imagen va con `cover`: una pantalla de otra forma que la imagen se come los costados o arriba y
+    // abajo, y centrada se comía al MC que no estaba en el medio. Ahora la posición sale de la caja de su cara
+    // (`__lgCara`, comun/foco_carga.py): la cara queda donde estaba en la imagen y, si sobra imagen arriba y abajo
+    // (una tablet parada, una pantalla 21:9), se corre lo justo para quedar ENTRE EL TÍTULO Y LA BARRA, medidos acá.
+    // También da `--fo`, de dónde sale el acercamiento de la foto y el del flash. Sin cara (los otros fondos), centrada
+    var prop = 0;
+    function encuadre() {
+      var F = window.__lgCara, im0 = el.querySelector('.lg-img');
+      if (!F || !prop || !im0) return;
+      var W = im0.clientWidth, H = im0.clientHeight;
+      if (!W || !H) return;
+      var iw = W / H > prop ? W : H * prop, ih = W / H > prop ? W / prop : H;
+      var ox = iw - W, oy = ih - H, px = (F[0] + F[2]) / 2, py = (F[1] + F[3]) / 2;
+      if (oy > 1) {
+        var t = el.querySelector('.lg-logo').getBoundingClientRect().bottom + 0.02 * H;
+        var p = el.querySelector('.lg-pie').getBoundingClientRect().top - 0.02 * H;
+        // `py` tiene que dejar el pie de la cara arriba de la barra (lo) y su frente debajo del título (hi); si no
+        // entra entre los dos, gana el título: la cara se ve entera de los ojos para abajo
+        py = Math.max(0, Math.min(1, Math.min(Math.max(py, (F[3] * ih - p) / oy), (F[1] * ih - t) / oy)));
+      }
+      var pos = (px * 100).toFixed(2) + '% ' + (py * 100).toFixed(2) + '%';
+      [].forEach.call(el.querySelectorAll('.lg-img'), function (x) { x.style.backgroundPosition = pos; });
+      var fxs = (-ox * px + (F[0] + F[2]) / 2 * iw) / W;
+      el.style.setProperty('--fo', (fxs * 100).toFixed(1) + '% ' + ((-oy * py + (F[1] + F[3]) / 2 * ih) / H * 100).toFixed(1) + '%');
+      // el paneo: agrandada 8 % desde la cara, sobra 8 × (1 − x) % a la derecha y 8 × x % a la izquierda; se corre para
+      // el lado que tiene lugar, y nunca más de lo que sobra (si no, se ve el borde)
+      el.style.setProperty('--pan', ((fxs < 0.5 ? -1 : 1) * Math.max(0, Math.min(3, 8 * (fxs < 0.5 ? 1 - fxs : fxs) - 0.5))).toFixed(2) + '%');
+    }
+    addEventListener('resize', encuadre);
+    var va = function () { if (vaYa) return; vaYa = true; el.classList.add('va'); encuadre(); entrada(); };
     try {
       Promise.all([document.fonts.load('900 1em Archivo'), document.fonts.load('700 1em "Barlow Condensed"')]).then(va, va);
     } catch (e) { va(); }
@@ -380,7 +494,9 @@ html.lg-carga-js #lg-carga .lg-foto{display:block;position:absolute;left:50%;top
       var im = new Image();
       var mostrar = function () {
         if (fotoYa) return; fotoYa = true;
-        el.querySelector('.lg-img').style.backgroundImage = 'url("' + src + '")';
+        prop = im.naturalWidth && im.naturalHeight ? im.naturalWidth / im.naturalHeight : 0;
+        [].forEach.call(el.querySelectorAll('.lg-img'), function (x) { x.style.backgroundImage = 'url("' + src + '")'; });
+        encuadre();
         requestAnimationFrame(function () { el.classList.add('con-foto'); entrada(); });
       };
       var sinFoto = function () { if (fotoYa) return; fotoYa = true; entrada(); };

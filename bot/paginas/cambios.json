@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.27",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T21:13:10-05:00",
+        "titulo": "La pantalla de carga, nítida y distinta cada vez",
+        "items": [
+            "La pantalla de carga entra y sale **distinto cada vez**: cuatro maneras de entrar y cinco de salir (el corte de siempre, el **barrido**, la **caída**, el **telón** y el **flash**).",
+            "Las fotos de las batallas de la pantalla de carga, **nítidas**, con el MC **siempre a la vista** en la compu, el celular y la tablet, y **más momentos**: 21 en vez de 8."
+        ]
+    },
+    {
       "version": "6.26",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T21:05:28-05:00",

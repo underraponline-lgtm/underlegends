@@ -12,7 +12,8 @@ Qué fondos hay y cómo se arma cada uno vive en `web/carga.json`.
 
     python herramientas/fondos_carga.py              arma 1, 3 y 4 en .cache/carga/out/ (Playwright; el 3, Blender)
     python herramientas/fondos_carga.py 1 4          sólo esos
-    python herramientas/fondos_carga.py --batallas   los momentos de «La batalla» (yt-dlp + ffmpeg; una vez por temporada)
+    python herramientas/fondos_carga.py --batallas   los momentos de «La batalla» (yt-dlp + ffmpeg + Real-ESRGAN, con
+                                                    tarjeta de video; cuando cambia un momento en web/carga.json)
     python herramientas/fondos_carga.py --subir      sube .cache/carga/out/ a R2, carga/<temporada>/
 
 🎨 EL ESTILO ES EL DE LA BIENVENIDA (Dlx: «con la intro y bienvenida hay un contraste gigantísimo»): fotos en blanco y
@@ -40,6 +41,7 @@ sys.path.insert(0, BASE)
 sys.path.insert(0, os.path.join(BASE, 'herramientas'))
 from comun import rangos, respaldo, sin_foto  # noqa: E402
 from comun.temporada import ACTUAL  # noqa: E402
+from comun import foco_carga  # noqa: E402
 
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -57,6 +59,11 @@ FOTOS = os.path.join(BASE, 'comun', 'fotos', ACTUAL)
 #: La regla de la Liga es guardar al doble de lo que se dibuja; 2880 es 1,5× y es lo que entra en los 4–5 s de la
 #: primera carga (~450 KB cada uno)
 FORMATOS = {'pc': (1600, 900, 1.8), 'cel': (432, 936, 3.0)}
+# la forma de cada uno la usa también la página para encuadrar la cara (comun/foco_carga.py): tienen que ser la misma
+#: 📐 «La batalla» trae además la tablet parada (1800×2400) y las pantallas grandes (3840×2160): ver comun/foco_carga.py.
+#: Los otros fondos, no (lo del Competitivo no se toca, Dlx, 17/11/2026)
+FORMATOS_BATALLA = dict(FORMATOS, tab=(600, 800, 3.0), hd=(1600, 900, 2.4))
+assert all(abs(w / h - foco_carga.ASPECTO[f]) < 1e-6 for f, (w, h, _) in FORMATOS_BATALLA.items()), 'FORMATOS y foco_carga.ASPECTO no coinciden'
 CALIDAD = 88
 #: las caras del Competitivo en HD (ver `caras_hd()`), en R2 junto a los fondos
 R2 = __import__('re').search(r"^R2 = '([^']+)'", io.open(os.path.join(BASE, 'bot', 'subir_web.py'), encoding='utf-8').read(), __import__('re').M).group(1)
@@ -377,49 +384,84 @@ def competitivo(fmt):
 
 
 # ───────────────────────── 2 · la batalla ─────────────────────────
-def bajar_batallas():
-    """El cuadro de cada momento, del video (yt-dlp + ffmpeg). Una vez por temporada: los momentos no cambian."""
+def ffmpeg():
     ff = os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Microsoft', 'WinGet', 'Links', 'ffmpeg.exe')
-    ff = ff if os.path.exists(ff) else 'ffmpeg'
+    return ff if os.path.exists(ff) else 'ffmpeg'
+
+
+def cuadro(b, x4=False):
+    """El archivo del cuadro de ese momento (en el nombre va el segundo: si el momento cambia, se baja otro)."""
+    return os.path.join(BAT, '%s-%s%s.png' % (b['id'], b['seg'], '-x4' if x4 else ''))
+
+
+def bajar_batallas():
+    """El cuadro de cada momento, SIN PÉRDIDA y agrandado ×4 (17/11/2026). Dlx: *«a veces sale borrosa, no se ve al MC»*.
+
+    🔴 ANTES SE PERDÍA NITIDEZ EN DOS PASOS. yt-dlp cortaba un tramo de 2 s con `--force-keyframes-at-cuts`, que VUELVE
+    A COMPRIMIR el video, y del tramo salía un JPG. Ahora ffmpeg lee el video directo de YouTube (la dirección que da
+    `yt-dlp -g`), va al cuadro exacto y lo guarda en PNG. Y del mejor video que haya: el de Makma está en 1440p.
+    🔍 Y ×4 CON REAL-ESRGAN, como las caras del Competitivo (aprobado por Dlx el 13/11/2026): el fondo del teléfono es
+    una franja de 498 px de ancho del cuadro de 1080p estirada a 1296 —2,6 veces—, y eso era lo borroso en el celular.
+    Sin la tarjeta de video (o sin Real-ESRGAN) sale sin agrandar, y lo avisa.
+
+    ⚠️ Los momentos se eligieron midiendo la nitidez cuadro por cuadro en la caja del MC, ±4 s alrededor del de antes,
+    y mirando que la cara quede a la vista (el registro está en NOVEDADES.md: «La pantalla de carga: «La batalla» nítida…»). Ver `cara` y `baja` en carga.json."""
+    ff = ffmpeg()
+    exe = os.path.join(ESRGAN, 'realesrgan-ncnn-vulkan.exe')
     for b in CONF['batallas']:
-        dest = os.path.join(BAT, b['id'] + '.jpg')
-        if os.path.exists(dest):
-            continue
-        tramo = os.path.join(TMP, b['id'] + '.mp4')
-        t = float(b['seg'])
-        subprocess.run([sys.executable, '-m', 'yt_dlp', '-q', '--no-warnings', '-f', 'bv*[height<=1080][ext=mp4]/bv*[height<=1080]',
-                        '--download-sections', f'*{t:.1f}-{t + 2:.1f}', '--force-keyframes-at-cuts',
-                        '--ffmpeg-location', os.path.dirname(ff) if os.sep in ff else '', '-o', tramo,
-                        f"https://www.youtube.com/watch?v={b['video']}"], check=True)
-        subprocess.run([ff, '-loglevel', 'error', '-y', '-i', tramo, '-frames:v', '1', '-q:v', '2', dest], check=True)
-        print('✓', b['id'])
+        dest = cuadro(b)
+        if not os.path.exists(dest):
+            r = subprocess.run([sys.executable, '-m', 'yt_dlp', '-g', '--no-warnings', '-f',
+                                'bv*[height<=1440][ext=mp4]/bv*[height<=1440]', f"https://www.youtube.com/watch?v={b['video']}"],
+                               capture_output=True, text=True, check=True)
+            subprocess.run([ff, '-loglevel', 'error', '-y', '-ss', '%.3f' % float(b['seg']), '-i', r.stdout.strip().splitlines()[0],
+                            '-frames:v', '1', dest], check=True)
+            print('✓', b['id'], Image.open(dest).size)
+        x4 = cuadro(b, True)
+        if not os.path.exists(x4):
+            if not os.path.exists(exe):
+                print('⚠️  sin Real-ESRGAN (%s): %s sale sin agrandar' % (ESRGAN, b['id']))
+                continue
+            subprocess.run([exe, '-i', dest, '-o', x4, '-n', 'realesrgan-x4plus', '-s', '4'], cwd=ESRGAN, check=True, capture_output=True)
+            print('✓ ×4', b['id'])
 
 
 def batalla(b, fmt):
-    """Un momento real, entero y sin recortes, en blanco y negro de cine: contraste, un poco más oscuro y viñeta."""
-    im = Image.open(os.path.join(BAT, b['id'] + '.jpg')).convert('L')
+    """Un momento real en blanco y negro de cine: contraste, un poco más oscuro y viñeta. La franja del teléfono va
+    centrada en la cara, y el cuadro se baja (`baja`) si la cara quedaría debajo del título: ver comun/foco_carga.py."""
+    im = Image.open(cuadro(b, True) if os.path.exists(cuadro(b, True)) else cuadro(b)).convert('L')
     w, h = im.size
     for x0, y0, x1, y1 in MARCAS.get(b.get('marca'), []):
         r = (int(x0 * w), int(y0 * h), int(x1 * w), int(y1 * h))
-        im.paste(im.crop(r).filter(ImageFilter.GaussianBlur(18)), r[:2])
-    fw, fh, dpr = FORMATOS[fmt]
+        im.paste(im.crop(r).filter(ImageFilter.GaussianBlur(18 * w / 1920)), r[:2])
+    fw, fh, dpr = FORMATOS_BATALLA[fmt]
     tam = (round(fw * dpr), round(fh * dpr))
-    if fmt != 'pc':
+    x0, ancho = foco_carga.recorte(b, fmt)
+    if ancho < 1:
         cw = round(h * tam[0] / tam[1])
-        x0 = int(min(max(b['cx'] * w - cw / 2, 0), w - cw))
-        im = im.crop((x0, 0, x0 + cw, h))
+        c0 = int(round(x0 * w))
+        im = im.crop((c0, 0, c0 + cw, h))
     im = im.resize(tam, Image.LANCZOS)
     im = ImageEnhance.Brightness(ImageEnhance.Contrast(ImageOps.autocontrast(im, cutoff=1)).enhance(1.2)).enhance(b.get('luz', .8))
     a = np.asarray(im, dtype=np.float32)
     # 🌗 `gamma` (13/11/2026, Dlx: «fíjate que las luces… estén bien»): un cuadro de noche con luces fuertes no se arregla con
     # `luz`, que quema las luces antes de aclarar lo oscuro. La gamma levanta las sombras y deja las luces donde están.
-    # Medido sobre los ocho: Eucalipto tenía media 19 (los demás, 36–75); con 1,5 queda en 37. Con 1,7 ya se ven los
-    # bloques de la compresión en lo oscuro
+    # Con 1,7 ya se ven los bloques de la compresión en lo oscuro
     if b.get('gamma'):
         a = 255 * (a / 255) ** (1 / float(b['gamma']))
     H, W = a.shape
+    # ⬇️ el cuadro BAJADO: la cara estaba tan arriba que caía debajo del título. Se corre para abajo (se pierde el pie
+    # del cuadro, que es pecho o público) y arriba queda negro, con un fundido para que no se vea el borde
+    dy = int(round(foco_carga.baja(b, fmt) * H))
+    if dy:
+        a = np.concatenate([np.zeros((dy, W), np.float32), a[:H - dy]])
+        f = int(foco_carga.FUNDIDO * H)
+        a[dy:dy + f] *= np.linspace(0, 1, f, dtype=np.float32)[:, None] ** 1.5
+    # la viñeta, con el centro en la cara (a mitad de camino del centro, para que no quede de un solo lado)
+    cx0, cy0, cx1, cy1 = foco_carga.caja(b, fmt)
+    vx, vy = .5 + ((cx0 + cx1) / 2 - .5) / 2, (cy0 + cy1) / 2
     yy, xx = np.mgrid[0:H, 0:W]
-    v = 1 - .5 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H * b['foco']) / (H / 2)) ** 2) ** 1.2
+    v = 1 - .5 * (((xx - W * vx) / (W / 2)) ** 2 + ((yy - H * vy) / (H / 2)) ** 2) ** 1.2
     a = np.clip(a * np.clip(v, .18, 1), 0, 255)
     dest = os.path.join(OUT, f"2-{b['id']}-{fmt}.webp")
     Image.fromarray(a.astype(np.uint8)).convert('RGB').save(dest, 'WEBP', quality=CALIDAD, method=6)
@@ -525,7 +567,7 @@ if __name__ == '__main__':
     if '--batallas' in sys.argv:
         bajar_batallas()
         for b in CONF['batallas']:
-            for fmt in FORMATOS:
+            for fmt in FORMATOS_BATALLA:
                 print(batalla(b, fmt))
     elif '--caras' in sys.argv:
         armar_caras(forzar='--forzar' in sys.argv)
