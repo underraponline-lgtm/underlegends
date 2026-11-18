@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.20",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T19:35:00-05:00",
+        "titulo": "El bot lee el chat general de cada servidor",
+        "items": [
+            "Una vez por día el bot lee el chat general de cada servidor de la Liga: cuenta cuánto se habla y quiénes de la Liga hablan.",
+            "Si alguien denuncia un evento falso, una trampa, un raid o una estafa, le llega al staff de la Liga. El resto de la conversación no se guarda.",
+            "El staff de cada servidor lo puede apagar en el panel de su servidor."
+        ]
+    },
+    {
         "version": "6.19",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T19:05:00-05:00",
