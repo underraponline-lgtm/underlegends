@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T20:25:57+00:00",
+ "cuando": "2026-11-18T20:56:01+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6205,7 +6205,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "Valki",
+     "n": "VILKA",
      "id": "846870712950194196"
     }
    ],
@@ -7147,6 +7147,15 @@
    "canal": "『📢』Anuncios",
    "tit": "🇻🇪 MAKMA 🇻🇪",
    "tx": "DESDE VENEZUELA SU NOMBRE ES MUY SONADO EN DIFERENTES SERVERS DE DISCORD",
+   "cuando": "2026-11-18T20:37:02",
+   "msg_id": "1572712261137727640",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572712261137727640"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
+   "tit": "🇻🇪 MAKMA 🇻🇪",
+   "tx": "DESDE VENEZUELA SU NOMBRE ES MUY SONADO EN DIFERENTES SERVERS DE DISCORD",
    "cuando": "2026-11-18T19:47:13",
    "msg_id": "1572699723205316648",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572699723205316648"
@@ -7159,15 +7168,6 @@
    "cuando": "2026-11-18T17:28:11",
    "msg_id": "1572664733578825791",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572664733578825791"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "🇵🇪 NEXUZ 🇵🇪",
-   "tx": "LAS METRICAS PERUANAS LLEGARON AL LOBBY, EL STARBOY DE DDF !!",
-   "cuando": "2026-11-18T17:16:02",
-   "msg_id": "1572661678179356744",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572661678179356744"
   },
   {
    "servidor": "LKR",
