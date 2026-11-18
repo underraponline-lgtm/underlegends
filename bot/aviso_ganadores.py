@@ -131,7 +131,19 @@ def _sv_info(sv):
     return (svs.get(sv) or {}).get('nombre') or sv, c
 
 
-def mensaje(evento, sv, g, Q, miembros):
+def _oficiales():
+    """`{discord_id: nombre de la Lista, sin bandera}`: el nombre que va en cada botón. La hoja de resultados trae a veces la
+    clave («rodrilp») y el botón tiene que decir «Rodri LP», como el ranking."""
+    out = {}
+    for r in _j(os.path.join(BASE, 'datos', 'padron.json'), []) or []:
+        did = str(r.get('discord_id') or '').strip()
+        n = re.sub('[\U0001F1E6-\U0001F1FF]', '', str(r.get('raw') or '')).strip()
+        if did and n and did not in out:
+            out[did] = n
+    return out
+
+
+def mensaje(evento, sv, g, Q, miembros, oficiales=None):
     """`(componentes, ids, texto)` del aviso de un evento: un mensaje de Componentes V2 (`flags` 32768) con su texto
     plano para la consola. `g`: lo de `ganadores()`; `Q`: nombre → Discord ID; `miembros`: los IDs de DRA (los drops
     por ganar se abren siendo miembro). Sin campeón, `None`.
@@ -166,7 +178,7 @@ def mensaje(evento, sv, g, Q, miembros):
         if not i or len(botones) >= BOTONES or any(b['custom_id'] == cid for b in botones):
             return
         emoji, nombre = {'nido': ('🥚', 'Nido'), 'drop': ('🎁', 'Drop'), 'star': ('⚡', 'Star')}[tipo]
-        botones.append({'type': 2, 'style': 1 if tipo != 'nido' else 2, 'label': ('%s · %s' % (nombre, n))[:80],
+        botones.append({'type': 2, 'style': 1 if tipo != 'nido' else 2, 'label': ('%s · %s' % (nombre, (oficiales or {}).get(i) or n))[:80],
                         'emoji': {'name': emoji}, 'custom_id': cid})
 
     def y(xs):
@@ -269,12 +281,13 @@ def correr(aplicar=False):
         print('   🏆 el aviso de los ganadores: nada nuevo')
         return 0
     miembros = set(str(x) for x in ((_j(os.path.join(BASE, 'datos', 'verificados.json'), {}) or {}).get('ids') or []))
+    oficiales = _oficiales()
     import chats as CH
     svs = dict(CH.servidores())
     s = None
     canales = {}
     for ev, nombre, sv in sorted(nuevos, key=lambda x: int(x[0]) if x[0].isdigit() else 0):
-        m = mensaje(nombre, sv, G[ev], Q, miembros)
+        m = mensaje(nombre, sv, G[ev], Q, miembros, oficiales)
         if not m:
             avisados[ev] = 'sin_campeon'
             continue
@@ -359,6 +372,8 @@ def _self_check():
     ok('Terminó el evento' in t2j and 'dd:star' not in t2j and 'Miembro de DRA' not in t2j and 'dd:drop:x:111111' in t2j,
        'sin título, «Terminó el evento»; sin batacazos, sin Star; todos de DRA, sin el candado; el campeón con su Drop')
     ok(_titulo('**__ NEW GENESIS __**') == 'NEW GENESIS' and _titulo('(sin titulo)') == '', 'el adorno del título se va')
+    c3, _i3, _t3 = mensaje('X', 'FFA', {'camp': ('rodrilp', 'drop'), 'pod': [], 'bat': []}, {'rodrilp': '333333'}, set(), {'333333': 'Rodri LP'})
+    ok('Drop · Rodri LP' in json.dumps(c3, ensure_ascii=False), 'el botón con el nombre de la Lista, no con la clave de la hoja')
     ok(mensaje('X', 'FFA', {'camp': None, 'pod': ['Ana'], 'bat': []}, Q, set()) is None, 'sin campeón, no hay aviso')
     ok(_md('@everyone') == '@​everyone', 'un nombre con @ no puede mencionar a nadie')
     ok(_fecha('17/11', dt.date(2026, 11, 18)) == dt.date(2026, 11, 17) and _fecha('31/12', dt.date(2027, 1, 1)) == dt.date(2026, 12, 31),
