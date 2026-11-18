@@ -525,7 +525,8 @@ export function FotoCartaCaja({ dc }) {
     pedirFotoCarta('mi-foto-carta').then((j) => { if (vivo) setSt(j); }).catch((e) => { if (vivo) setMsg(e.message); });
     return () => { vivo = false; };
   }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
-  const T = 'Tu foto de tarjeta';
+  // se llamaba «Tu foto de tarjeta», pegada a «Tu foto de la tarjeta» (la de Discord): parecían la misma sección dos veces
+  const T = 'Tu propia imagen en las tarjetas';
   if (!dc) return <Caja t={T} d="Entra con Discord para poner tu propia foto en tus tarjetas." />;
   if (!dc.clave) return <Caja t={T} d="Primero necesitas tu tarjeta: verifícate en la página." />;
   if (!st) return <Caja t={T}><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;

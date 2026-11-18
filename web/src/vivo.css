@@ -5494,6 +5494,8 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .pn-fuego{min-width:46px;height:46px;justify-content:center;padding:0 6px;border:2px solid #030304;background:#F28C28;color:#030304;font:400 24px/1 Anton,Archivo,sans-serif;
   box-shadow:3px 3px 0 #5a3410;rotate:-3deg}
 .pn-fuego svg{width:18px;height:18px}
+/* el «/7» de la racha: era naranja sobre el mismo naranja (1:1) y la insignia decía «1» en vez de «1/7» (17/11/2026) */
+.pn-fuego small{color:#030304;opacity:.72}
 .pn-camp-ic{width:42px;height:42px;border:2px solid #030304;box-shadow:3px 3px 0 #1d5a4e;rotate:-3deg}
 .dd-huevo-m{filter:drop-shadow(3px 3px 0 #3b2470);box-shadow:none}
 .pn-anc-logo{width:44px;height:44px;border-radius:8px;box-shadow:0 0 0 2px #030304,3px 3px 0 2px var(--azul);rotate:-3deg}

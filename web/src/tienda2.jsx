@@ -64,7 +64,8 @@ function Billetera({ liga, dc }) {
         <b className="tn-saldo">{num(B.saldo)}</b>
         <dl className="tn-bill-d">
           <div><dt>En juego</dt><dd>{num(enJuego)}</dd></div>
-          <div><dt>Cobrado cazando</dt><dd>{num(B.cobrado || 0)}</dd></div>
+          {/* «Cobrado cazando» mostraba TODO lo ganado (drops, misiones, cazas): `billetera()` suma la tabla `tienda` entera */}
+          <div><dt>Ganado en la Liga</dt><dd>{num(B.cobrado || 0)}</dd></div>
         </dl>
         {act.length ? (
           <div className="tn-mios"><small>Tus precios de esta semana · si nadie los caza, vuelven</small>

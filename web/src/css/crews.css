@@ -99,6 +99,8 @@
 .crw-vivo i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 3px color-mix(in srgb,var(--verde) 25%,transparent)}
 .crw-cta{display:flex;flex-wrap:wrap;gap:8px 10px;width:100%;max-width:520px}
 .crw-cta>.btn{flex:1 1 200px}
+/* 📱 a 390 px «Fundar una crew · 2.500 Puntos» no se partía y los botones se pasaban 10 px de la escena (17/11/2026) */
+.crw-cta>.btn{min-width:0;white-space:normal;text-align:center;line-height:1.15;padding-block:8px}
 .crw-cta .btn.osc{border-color:var(--esc-tinta);color:var(--esc-tinta);background:transparent}
 .crw-sec{display:grid;gap:8px;margin:22px 0 4px}
 .crw-todas-h{margin-top:26px}

@@ -230,9 +230,36 @@ function verificarme(pais) {
       if (j.error === 'discord' || j.error === 'token' || j.error === 'permiso') DC_TOKEN = null;
       VERIF = j;
       avisarVerif();
+      // 🔁 VERIFICADO, LA PÁGINA SE ENTERA (17/11/2026, simulando a alguien nuevo): «lo de la cuenta» (`lg:dc`) sólo se
+      // escribía al volver de Discord, así que después de verificarse Mi cuenta seguía con «Verificarme · Todavía sin
+      // tarjeta» —y Crews ya ofrecía fundar— hasta salir y volver a entrar. Con el permiso que acaba de usar, se pide de nuevo
+      if (j.listo && DC && !DC.clave && DC_TOKEN) {
+        fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ token: DC_TOKEN }) })
+          .then(function (r) { return r.json(); })
+          .then(function (c) { if (c && c.id === DC.id) quienSoy(c); })
+          .catch(function () { /* queda como estaba: la próxima entrada lo trae */ });
+      }
       return j;
     })
     .catch(function () { VERIF = { error: 'red' }; avisarVerif(); return VERIF; });
+}
+/** Lo que el Worker dijo de la cuenta (`/api/cuenta`), guardado y pintado: al volver de Discord y al verificarse. */
+function quienSoy(c) {
+  DC = { id: c.id, n: c.n || '', av: c.av || '', rapero: c.rapero || '',
+    clave: c.clave || '', cs: c.cs || [], bl: c.bl || [], ev: c.ev || 0,
+    sv: c.sv || '', cc: c.cc || '', svs: c.svs || [] };
+  guardarLS('lg:dc', DC);
+  // 👀 quien no está verificado: a quién mira como propio, aparte y sólo para el Ranking (13/11/2026, `cuentaMira()`
+  // del Worker). NUNCA en `lg:yo`: eso abriría lo de la cuenta, que es de los verificados
+  guardarLS('lg:mira', c.mira ? { id: c.id, k: c.mira } : null);
+  YO = c.clave && porK(c.clave) ? c.clave : c.rapero ? kDe(c.rapero) : '';
+  guardarLS('lg:yo', YO || null);
+  // ★ a quién seguís, del servidor (y lo de este dispositivo sube)
+  try { pedirSigo(); } catch (e) { console.error('[pedirSigo]', e); }
+  pintaCuenta();
+  pintaPaneles();
+  pintaPopCuenta();
 }
 function cerrarSesion() {
   DC_TOKEN = null;
@@ -395,20 +422,7 @@ function volverDeDiscord() {
     .then(function (r) { return r.json(); })
     .then(function (c) {
       if (!c || !c.id) return;
-      DC = { id: c.id, n: c.n || '', av: c.av || '', rapero: c.rapero || '',
-        clave: c.clave || '', cs: c.cs || [], bl: c.bl || [], ev: c.ev || 0,
-        sv: c.sv || '', cc: c.cc || '', svs: c.svs || [] };
-      guardarLS('lg:dc', DC);
-      // 👀 quien no está verificado: a quién mira como propio, aparte y sólo para el Ranking (13/11/2026, `cuentaMira()`
-      // del Worker). NUNCA en `lg:yo`: eso abriría lo de la cuenta, que es de los verificados
-      guardarLS('lg:mira', c.mira ? { id: c.id, k: c.mira } : null);
-      YO = c.clave && porK(c.clave) ? c.clave : c.rapero ? kDe(c.rapero) : '';
-      guardarLS('lg:yo', YO || null);
-      // ★ a quién seguís, del servidor (y lo de este dispositivo sube)
-      try { pedirSigo(); } catch (e) { console.error('[pedirSigo]', e); }
-      pintaCuenta();
-      pintaPaneles();
-      pintaPopCuenta();
+      quienSoy(c);
       // con Mi cuenta nueva no hay ventana: ya se volvió a `#/cuenta` (ver `aCuenta`)
       if (porAvisos) {
         vincularAvisos(q.access_token);
