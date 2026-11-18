@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.21",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T20:05:00-05:00",
+        "titulo": "Lo que pasa en los chats, en las historias",
+        "items": [
+            "Cuando el chat general de un servidor explota, o todos hablan de alguien, sale solo en las historias de ese servidor y en Publicaciones.",
+            "Sólo cuenta números: cuántos mensajes, a qué hora y de quién se habló. Lo que escribe cada uno no se guarda.",
+            "Los comentarios de Publicaciones hablan más como la gente de cada servidor."
+        ]
+    },
+    {
         "version": "6.20",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T19:35:00-05:00",
