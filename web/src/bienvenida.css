@@ -166,6 +166,9 @@
 .bv-v-cartas b{max-width:100%;font:900 13px/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
 /* en el teléfono cada columna mide ~80 px y «TEMPORADA» a 13 px pisaba a «COMPETITIVA» (medido en 375) */
 @media (max-width:520px){.bv-v-cartas b{font-size:10.5px;font-stretch:100%;letter-spacing:0}.bv-v-cartas small{font-size:12px}}
+/* 📱 «TEMPORAD-A», «COMPETITI-VA» a 360 px (17/11/2026): la columna mide ~74 px y la Archivo no entra. La condensada de
+   la página, en un renglón, sin partir la palabra */
+@media (max-width:420px){.bv-v-cartas b{font:800 12.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.03em;overflow-wrap:normal;white-space:nowrap}}
 .bv-v-cartas small{color:#9A9AA6;font:600 13px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.03em}
 .bv-pie{margin:0;text-align:center;color:#9A9AA6;font:600 13px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 

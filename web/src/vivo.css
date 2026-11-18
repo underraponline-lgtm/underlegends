@@ -3378,8 +3378,11 @@ li.nt-f{cursor:default}
 /* ⚠️ sin nada señalado, un velo entero: la sombra de un recuadro de 0×0 Chromium no la pinta */
 .rc-luz.rc-todo{inset:0;box-shadow:none;background:rgba(3,3,4,.72);outline:0}
 @media (prefers-reduced-motion: reduce){.rc-luz{transition:none}}
-.rc-caja{position:fixed;display:grid;gap:10px;padding:16px;background:var(--fondo);color:var(--tinta);border:2px solid var(--linea);
+.rc-caja{position:fixed;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:16px;background:var(--fondo);color:var(--tinta);border:2px solid var(--linea);
   box-shadow:6px 6px 0 var(--verde);max-height:calc(100vh - 32px);overflow:auto}
+/* 📱 el botón largo se parte en dos renglones: «VINCULAR CON DISCORD Y RECIBIRLOS» ensanchaba la columna y la tarjeta del
+   final del tutorial se cortaba a la derecha en el teléfono (390 y 360 px, 17/11/2026) */
+.rc-caja .btn{white-space:normal;text-align:center;line-height:1.15;padding-block:8px}
 .rc-cab{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .rc-cab small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:var(--gris)}
 .rc-caja h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;text-wrap:balance}
