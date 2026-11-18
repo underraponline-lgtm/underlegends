@@ -25,6 +25,8 @@
 .ent-acc .cw-entrar{margin:0}
 .ent-cab>.ent-tx{grid-column:2}
 .ent-num{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:4px 0 0;border:2px solid #F6F6F6}
+/* 📸 los números con lo de abajo (`lado` de Portada: sus historias, 18/11/2026). En la compu, la columna derecha de la portada */
+.ent-lado{grid-column:1/-1;display:grid;gap:16px;align-content:end;min-width:0}
 .ent-num div{display:grid;align-content:start;gap:5px;padding:10px 12px;border-left:1.5px solid #3A3A3E;border-top:1.5px solid #3A3A3E;min-width:0}
 .ent-num div:nth-child(-n+2){border-top:0}
 .ent-num div:nth-child(odd){border-left:0}
@@ -161,6 +163,7 @@
   .app .ent-tx{container-type:inline-size}
   .app .ent-tx .hero-ev.muy-largo{font-size:min(58px,10.8cqi)}
   .app .ent-num{grid-column:auto;align-self:end}
+  .app .ent-lado{grid-column:auto;align-self:end}
   .app .ent-emb.cuadrado,.app .ent-emb.redondo{width:132px;height:132px}
   .app .ent-emb.bandera{width:168px}
   .app .ent-semana{padding:0 var(--gut) 24px}

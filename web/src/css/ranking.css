@@ -37,6 +37,8 @@
 .mi-c{font:600 12px/1.2 Archivo,sans-serif;color:var(--gris)}
 /* la cacería y la Semana perfecta: lado a lado en la compu */
 .mi-dos{display:grid;gap:22px;align-items:start}
+/* 🧱 la Semana perfecta vacía con «Esta semana» corta debajo, en la misma columna (ver `alLado` en misiones.jsx) */
+.mi-col{display:grid;gap:22px;align-content:start;min-width:0}
 .mi-presa{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
 .mi-presa-tx{display:grid;gap:8px;min-width:0}
 .mi-presa-tx p{margin:0;font:600 14px/1.45 Archivo,sans-serif}

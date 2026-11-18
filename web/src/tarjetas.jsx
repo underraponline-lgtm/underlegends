@@ -700,6 +700,7 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
     <div className="ta-g">
       <aside className="ta-izq" data-tuto="tj-album">
         <Album liga={liga} dc={dc} perf={perf} onAbrir={abrirMia} />
+        {/* 📌 en la compu Comparar baja con la página (`.ta-cmp-w`, sticky en tarjetas.css) */}
         <div className="sec ta-cmp-w"><Comparar liga={liga} porTipo={porTipo} perf={perf} cmp={cmp} setCmp={setCmp} yoK={yoK} /></div>
       </aside>
       <div className="sec ta-der" data-tuto="tj-gal">

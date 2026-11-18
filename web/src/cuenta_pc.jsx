@@ -37,6 +37,14 @@ const PAGINAS = [
 // los nombres de cada parte cuando van juntas en una página (cada una con su título)
 const NOMBRE_PARTE = { hora: 'Hora y zona', avisos: 'Avisos de eventos', accesibilidad: 'Accesibilidad',
   instalar: 'Instalar la app', 'algo-mal': 'Algo está mal', introduccion: 'La introducción', guia: 'Guía', novedades: 'Novedades', legal: 'Términos y privacidad' };
+// 🧱 LAS PÁGINAS DE VARIAS PARTES, EN DOS COLUMNAS PAREJAS (18/11/2026): en la grilla de a dos de antes cada fila medía
+// lo que su parte más alta (medido con sesión a 1333 px: 552×736 sin nada abajo de Accesibilidad, 520×336 al lado de
+// la Introducción). Repartidas por alto: en La app, Hora y zona (con las zonas de a dos, 505), Avisos y Accesibilidad
+// contra Instalar (850): 931 contra 850; en Ayuda, Algo está mal (498) y la Guía contra las otras tres: 707 contra 587
+const COLUMNAS = { app: [['hora', 'avisos', 'accesibilidad'], ['instalar']], ayuda: [['algo-mal', 'guia'], ['introduccion', 'novedades', 'legal']] };
+// las de una parte con varias cajas que van en dos columnas (`cols` de `Parte`); Tu estilo, con tres cajas de alto
+// parecido, va de a tres (`cpc-tres`)
+const EN_DOS = ['perfil', 'privacidad', 'siguiendo'];
 // 🔗 los links de antes: a qué página van (y bajan hasta su caja)
 const DE_ANTES = { cuenta: 'resumen', fondo: 'fondos', apariencia: 'temas', hora: 'app', accesibilidad: 'app', avisos: 'app', instalar: 'app',
   'algo-mal': 'ayuda', introduccion: 'ayuda', guia: 'ayuda', novedades: 'ayuda', legal: 'ayuda' };
@@ -195,13 +203,16 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
         <div data-tuto="cu-parte" className="cpc-cuerpo" ref={caja}>
           {pag === 'resumen' ? <Resumen liga={liga} dc={dc} />
             : P[4].length > 1 ? (
-              <div className="cpc-dos">{P[4].map((id) => (
-                <section key={id} className="cpc-parte" data-parte={id}><h2 className="cpc-pt">{NOMBRE_PARTE[id] || id}</h2>
-                  <Parte id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} /></section>
+              // 🧱 dos columnas que bajan cada una a su ritmo (ver `DosCol` en cuenta.jsx), con las partes repartidas
+              <div className="cpc-2c">{(COLUMNAS[pag] || [P[4]]).map((ids) => (
+                <div key={ids[0]}>{ids.map((id) => (
+                  <section key={id} className="cpc-parte" data-parte={id}><h2 className="cpc-pt">{NOMBRE_PARTE[id] || id}</h2>
+                    <Parte id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} /></section>
+                ))}</div>
               ))}</div>
             ) : (
-              <div className={'cpc-una' + (pag === 'perfil' || pag === 'privacidad' || pag === 'estilo' ? ' cpc-dos' : '')} data-parte={P[4][0]}>
-                <Parte id={P[4][0]} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} sinServidor />
+              <div className={'cpc-una' + (pag === 'estilo' ? ' cpc-tres' : '')} data-parte={P[4][0]}>
+                <Parte id={P[4][0]} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} sinServidor cols={EN_DOS.includes(pag)} />
               </div>
             )}
         </div>

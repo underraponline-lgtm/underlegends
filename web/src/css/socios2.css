@@ -151,6 +151,10 @@
   .app .sk-muro ol{grid-template-columns:repeat(6,64px);gap:14px 12px}
   .app .sk-muro img{max-width:none}
   .app .sk-num{grid-template-columns:repeat(4,minmax(0,1fr))}
+  /* 🧱 «Su mejor» y «El último/El próximo» lado a lado (18/11/2026, «asegúrate que todas las páginas no tengan espacios
+     innecesarios»): apilados ocupaban la mitad izquierda de cada tarjeta y la otra mitad quedaba vacía, ~300×250 en las
+     doce (medido a 1333) */
+  .app .sk-datos{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));column-gap:18px;align-items:start}
   .app .sk-num div{border-top:0}
   .app .sk-num div:nth-child(odd){border-left:1.5px solid var(--suave)}
   .app .sk-num div:first-child{border-left:0}

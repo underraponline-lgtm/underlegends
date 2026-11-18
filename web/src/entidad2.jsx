@@ -41,7 +41,11 @@ const claveNombre = (s) => String(s || '').normalize('NFD').toLowerCase().replac
 // ── la portada: el emblema, el nombre, sus acciones y la tira de números (exportada: la usa también el panel del socio,
 // socio2.jsx, que es su servidor visto por su dueño) ──
 // 🏠 `fondo`: el banner que subió el equipo de un socio (11/11/2026), detrás de todo y con el velo de los fondos de la gente
-export function Portada({ emblema, forma, color, tag, nombre, sub, acciones, numeros, extra, estilo, fondo }) {
+// 📸 `lado`: lo que va debajo de los números, en la misma columna (sus historias, 18/11/2026). Iban en una fila propia al
+// principio de la primera banda y ocupaban 170 px de 1.260: al lado quedaba vacío (1.064×208 en una crew, 456×216 en un
+// servidor, medido a 1333). Debajo de los números ya sobraba lugar, porque la columna del nombre es más alta
+export function Portada({ emblema, forma, color, tag, nombre, sub, acciones, numeros, extra, estilo, fondo, lado }) {
+  const nums = <dl className="ent-num">{numeros.map(([t, d, cls]) => <div key={t} className={cls || ''}><dt>{t}</dt><dd>{d}</dd></div>)}</dl>;
   return (
     <div className={'escena ent-esc' + (fondo ? ' con-fondo' : '')}
       style={{ '--mo-c': color || '#E41373', '--mo-o': 0.9, ...(estilo || {}), ...(fondo ? { '--pf-fondo': 'url("' + fondo + '")' } : {}) }}>
@@ -53,7 +57,7 @@ export function Portada({ emblema, forma, color, tag, nombre, sub, acciones, num
           {sub ? <div className="ent-sub">{sub}</div> : null}
           {acciones ? <div className="ent-acc">{acciones}</div> : null}
         </div>
-        <dl className="ent-num">{numeros.map(([t, d, cls]) => <div key={t} className={cls || ''}><dt>{t}</dt><dd>{d}</dd></div>)}</dl>
+        {lado ? <div className="ent-lado">{nums}{lado}</div> : nums}
       </section>
       {extra}
     </div>
@@ -196,7 +200,7 @@ export function PerfilSv({ liga, sv, enc }) {
   ) : null;
   return (
     <>
-      <Portada forma="cuadrado" color={s.color} nombre={s.nombre || siglaDe(sv)}
+      <Portada forma="cuadrado" color={s.color} nombre={s.nombre || siglaDe(sv)} lado={<SvHistorias liga={liga} sv={sv} />}
         estilo={{ '--mo-logo': 'url("' + liga.logo(sv, true) + '")', ...silueta(sv, s.color) }}
         emblema={<img alt="" src={liga.logo(sv, true)} />}
         tag={s.tag ? String(s.tag).toUpperCase() : ''}
@@ -221,7 +225,6 @@ export function PerfilSv({ liga, sv, enc }) {
         {!P ? <div className="cargando">Cargando…</div> : D ? (
           <>
             <Banda color="negra">
-              <SvHistorias liga={liga} sv={sv} />
               <div className="pf9-g pf9-g-forma">
                 <SvForma liga={liga} D={D} />
                 <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvVistazo D={D} sv={sv} /></div>
@@ -251,7 +254,6 @@ export function PerfilSv({ liga, sv, enc }) {
           // sin eventos en la temporada: lo que sí tiene (su próximo evento, sus historias, su muro) y sus cartas
           <>
             <Banda color="negra">
-              <SvHistorias liga={liga} sv={sv} />
               <div className="pf9-g sv9-dos"><SvProximo liga={liga} sv={sv} /><SvTabla liga={liga} sv={sv} /></div>
               <SvMuro liga={liga} sv={sv} />
             </Banda>

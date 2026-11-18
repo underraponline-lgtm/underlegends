@@ -241,3 +241,35 @@
 .tf-on{font:800 13px/1.15 Archivo,sans-serif}
 .tf-op.on .tf-on::before{content:"✓ ";color:var(--verde)}
 .tf-op small{font:500 11.5px/1.25 Archivo,sans-serif;color:var(--gris)}
+/* 🧱 SIN HUECOS EN TU CUENTA (18/11/2026, Dlx: «asegúrate que todas las páginas no tengan espacios innecesarios»).
+   Medido con sesión a 1333 px antes de tocar nada; cada arreglo dice qué hueco cerró.
+   · Dos columnas que bajan cada una a su ritmo (`DosCol` de cuenta.jsx, `COLUMNAS` de cuenta_pc.jsx), con borde por
+     parte como en `.cpc-dos`: en la grilla de a dos cada fila medía lo que su caja más alta (520×592 en Tu perfil,
+     552×736 en La app). Una sola columna por debajo de 1100 px, como la grilla de antes */
+.cpc-2c{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.cpc-2c>div{display:grid;gap:18px;align-content:start;min-width:0}
+.cpc-2c>div>.cpc-parte{border:2px solid var(--suave);padding:16px 18px 18px}
+.cpc-2c>div>.cpc-parte .cu-caja{border:0;padding:0;background:none}
+.cpc-2c>div>.cpc-parte .cu-caja+.cu-caja{padding-top:14px;border-top:2px solid var(--suave)}
+@media (max-width:1100px){.cpc-2c{grid-template-columns:minmax(0,1fr)}}
+/* · Hora y zona: las diez zonas de a dos (de 672 a 505 px de alto), así La app termina pareja con Instalar */
+.cpc [data-parte="hora"] .cu-lista.radio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.cpc [data-parte="hora"] .cu-lista.radio li:nth-child(2){border-top:0}
+.cpc [data-parte="hora"] .cu-lista.radio li:nth-child(even){border-left:1.5px solid var(--suave)}
+/* · Tus fondos: «Tu imagen» con el texto a la izquierda y la imagen a la derecha (la imagen ocupaba media caja), y cada
+     lugar con su nombre a la izquierda y las opciones a lo ancho: `auto-fill` dejaba pistas vacías a la derecha de las
+     cuatro opciones, 440×1552 sin nada. La imagen nueva, mientras se elige, va abajo del texto */
+.cpc .cu-caja.cu-img:has(>.cu-fondo-ver){grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(7,auto) 1fr;column-gap:28px;align-items:start}
+.cpc .cu-img:has(>.cu-fondo-ver)>*{grid-column:1}
+.cpc .cu-img:has(>.cu-fondo-ver)>.cu-fondo-ver{grid-column:2;grid-row:1/-1;max-width:none}
+.cpc .cu-img:has(>.cu-fondo-ver)>.cu-fondo-ver~.cu-fondo-ver{grid-column:1;grid-row:auto;max-width:520px}
+.cpc .tf-lugar{grid-template-columns:minmax(0,220px) minmax(0,1fr);column-gap:24px;align-items:start}
+.cpc .tf-ops{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+/* · Tus temas: Clara y Noche en grande a la izquierda y los colores de los servidores a la derecha. Clara y Noche
+     ocupaban 440 px y el resto de la caja quedaba vacío (464×440). `dense` sube el título de la derecha a la fila 1 */
+.cpc-una[data-parte="apariencia"]>.cu-caja{grid-template-columns:minmax(0,300px) minmax(0,1fr);grid-template-rows:auto auto auto auto 1fr;
+  grid-auto-flow:dense;column-gap:32px;align-items:start}
+.cpc-una[data-parte="apariencia"]>.cu-caja>*{grid-column:2}
+.cpc-una[data-parte="apariencia"]>.cu-caja>h3,.cpc-una[data-parte="apariencia"]>.cu-caja>h3+.cu-d{grid-column:1}
+.cpc-una[data-parte="apariencia"]>.cu-caja>.cu-temas:not(.sv){grid-column:1;grid-row:3/-1;grid-template-columns:minmax(0,1fr);max-width:none}
+.cpc-una[data-parte="apariencia"] .cu-temas-t{margin:0}

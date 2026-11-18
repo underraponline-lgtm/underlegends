@@ -151,6 +151,10 @@
 }
 .crw-mazo,.crw-solas{scroll-padding-inline:16px}
 @media (min-width: 900px){.app .crw-mazo,.app .crw-solas{scroll-padding-inline:0}}
+/* 🧱 en la compu, las de «Para ti» se reparten el ancho cuando entran (18/11/2026, «asegúrate que todas las páginas no
+   tengan espacios innecesarios»): con tres de 320 px quedaba el lugar de una cuarta vacío, 528×288 (medido a 1333). Con
+   más de las que entran siguen de 300 y se deslizan, como antes */
+@media (min-width: 900px){.app .crw-mazo{grid-auto-columns:minmax(300px,1fr)}}
 
 /* ═══ EL REMAKE DE LAS CREWS (16/11/2026, la mezcla D): la piel del Inicio — negro, con piezas blancas (la franja de tu
    crew, la fila elegida, tu crew en la tabla) y la sombra corrida verde de «El próximo evento» ═══ */

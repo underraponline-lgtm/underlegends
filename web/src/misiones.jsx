@@ -173,12 +173,17 @@ function Caceria({ liga, M, i, esYo, mio }) {
 }
 
 // 🏆 la Semana perfecta: los que cumplieron la fácil, la media y la difícil, con su bono
-function Perfecta({ liga, M, esYo }) {
+// quiénes cumplieron las tres; `null` si esta semana no hay las tres del bono
+function quienesPerfecta(M) {
   const prog = M.prog || {};
   const idx = M.lista.map((x, j) => (DEL_BONO.includes(x.n) ? j : -1)).filter((j) => j >= 0);
   if (idx.length !== DEL_BONO.length) return null;
-  const quienes = Object.keys(prog).filter((q) => idx.every((j) => (prog[q] || [])[j] >= M.lista[j].m))
+  return Object.keys(prog).filter((q) => idx.every((j) => (prog[q] || [])[j] >= M.lista[j].m))
     .sort((a, b) => (M.pts[b] || 0) - (M.pts[a] || 0) || (a < b ? -1 : 1));
+}
+function Perfecta({ liga, M, esYo }) {
+  const quienes = quienesPerfecta(M);
+  if (!quienes) return null;
   return (
     <section className="dv-g mi-perf" aria-label="Semana perfecta">
       <h3 className="dv-gt">Semana perfecta<small>las tres: +{num(M.bono)} de bono</small></h3>
@@ -219,6 +224,31 @@ export function Misiones({ liga }) {
   const hechas = tres.filter(([x, i]) => valor(i) != null && valor(i) >= x.m).length;
   const iCaza = lista.findIndex((x) => x.n === 'caza');
   const mios = mio ? (M.pts || {})[mio] || 0 : 0;
+  const perf = quienesPerfecta(M);
+  const alLado = iCaza >= 0 && !!perf && !perf.length && semana.length <= 6;
+  const estaSemana = (
+    <section className="dv-g" aria-label="Los que sumaron esta semana">
+      <h3 className="dv-gt">Esta semana<small>{semana.length ? semana.length + ' sumaron' : 'todavía nadie'}</small></h3>
+      {semana.length ? (
+        <ol className="dv-tabla mi-tabla mi-cols">
+          {semana.map(([raw, pts]) => {
+            const f = liga.fila(raw);
+            const h = lista.map((x, j) => (prog[raw] || [])[j] >= x.m);
+            return (
+              <li key={raw} className={esYo(raw) ? 'yo' : ''}>
+                <Quien liga={liga} raw={raw} />
+                {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
+                <span className="mi-marcas" role="img" aria-label={h.filter(Boolean).length + ' de ' + lista.length + ' cumplidas'}>
+                  {h.map((si, j) => <i key={j} className={si ? 'si' : ''} />)}
+                </span>
+                <b className="dv-p">+{num(pts)}</b>
+              </li>
+            );
+          })}
+        </ol>
+      ) : <p className="dv-cab">Cuando alguien cumpla la primera, aparece acá.</p>}
+    </section>
+  );
   return (
     <div className="mi">
       <section className="mi-tus" aria-label={yo ? 'Tus misiones' : 'Las misiones de la semana'}>
@@ -250,32 +280,14 @@ export function Misiones({ liga }) {
           {lista.some((x) => x.n === 'dorado') ? ' El evento dorado también: es el de un servidor más chico y vale ×3.' : ''}
           {lista.some((x) => x.n === 'writing') ? ' Y la del Writing Challenge de FFA, las semanas con fecha.' : ''}</p>
       </section>
-      {/* la cacería y la Semana perfecta, lado a lado en la compu */}
+      {/* la cacería y la Semana perfecta, lado a lado en la compu. 🧱 Con la Semana perfecta vacía (una línea) y pocos en
+          «Esta semana», ésa sube debajo de la perfecta: al lado de la cacería quedaban 464×360 en blanco (medido a 1333,
+          18/11/2026). Con más de seis va abajo, a lo ancho, como antes: en la columna dejaría el hueco debajo de la cacería */}
       <div className="mi-dos">
         {iCaza >= 0 ? <Caceria liga={liga} M={M} i={iCaza} esYo={esYo} mio={yo ? mio || '' : null} /> : null}
-        <Perfecta liga={liga} M={M} esYo={esYo} />
+        {alLado ? <div className="mi-col"><Perfecta liga={liga} M={M} esYo={esYo} />{estaSemana}</div> : <Perfecta liga={liga} M={M} esYo={esYo} />}
       </div>
-      <section className="dv-g" aria-label="Los que sumaron esta semana">
-        <h3 className="dv-gt">Esta semana<small>{semana.length ? semana.length + ' sumaron' : 'todavía nadie'}</small></h3>
-        {semana.length ? (
-          <ol className="dv-tabla mi-tabla mi-cols">
-            {semana.map(([raw, pts]) => {
-              const f = liga.fila(raw);
-              const h = lista.map((x, j) => (prog[raw] || [])[j] >= x.m);
-              return (
-                <li key={raw} className={esYo(raw) ? 'yo' : ''}>
-                  <Quien liga={liga} raw={raw} />
-                  {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
-                  <span className="mi-marcas" role="img" aria-label={h.filter(Boolean).length + ' de ' + lista.length + ' cumplidas'}>
-                    {h.map((si, j) => <i key={j} className={si ? 'si' : ''} />)}
-                  </span>
-                  <b className="dv-p">+{num(pts)}</b>
-                </li>
-              );
-            })}
-          </ol>
-        ) : <p className="dv-cab">Cuando alguien cumpla la primera, aparece acá.</p>}
-      </section>
+      {alLado ? null : estaSemana}
       {total.length ? (
         <section className="dv-g" aria-label="Lo sumado en la temporada">
           <h3 className="dv-gt">En la temporada<small>lo sumado con misiones</small></h3>

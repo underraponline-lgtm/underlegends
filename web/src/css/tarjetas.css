@@ -144,6 +144,11 @@
     --inv:#F6F6F6;--inv-tinta:#030304;--tj-gana:#29B298;background:var(--fondo);color:var(--tinta)}
   .noche .ta-izq{--fondo:#121214}
   .app .ta-izq .sec{padding:26px 28px 30px;margin-top:0}
+  /* 📌 COMPARAR BAJA CON LA PÁGINA (18/11/2026, «asegúrate que todas las páginas no tengan espacios innecesarios»): la
+     columna negra mide lo que los estantes (2.100 px) y su contenido terminaba a los 900, con 408×1.208 de negro vacío
+     debajo (medido a 1333 px, sin cuenta). Tu álbum sube con la página y Comparar (576 px) se queda arriba hasta el
+     final de los estantes: es lo que se usa mientras se miran. Entra entero desde 652 px de alto de pantalla */
+  .app .ta-cmp-w{position:sticky;top:76px}
   .app .ta-cmp-w{padding-top:6px}
   .app .ta-mano{--w:88px}
   .app .ta-der{padding:26px var(--gut) 40px 40px}

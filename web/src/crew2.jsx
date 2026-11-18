@@ -111,7 +111,7 @@ export function PaginaCrew({ liga, id }) {
   const temporada = !!(D || muro.length || viva || T);
   return (
     <>
-      <Portada forma="redondo" color={color} nombre={nombre}
+      <Portada forma="redondo" color={color} nombre={nombre} lado={<CrewHistorias liga={liga} ks={ks} id={cid} nombre={nombre} crew={c} />}
         emblema={<span className="k2-emb"><CrewCirculo c={c} cls="ent-crew" />{T ? <TierChip n={tier} T={T} /> : null}</span>}
         tag={pos ? '#' + pos + ' DE LAS CREWS' : 'SIN PUESTO · HACEN FALTA TRES RAPEROS'}
         sub={<>
@@ -133,11 +133,12 @@ export function PaginaCrew({ liga, id }) {
           ['JUGARON ESTA SEMANA', T ? fila[2] + '/' + nGente : '—']]} />
       <div className="pf9-pag k2-pag" ref={raiz}>
         <Banda color="negra">
-          <CrewHistorias liga={liga} ks={ks} id={cid} nombre={nombre} crew={c} />
+          {/* 🧱 «Por día» adentro de «Esta semana», al pie (18/11/2026, «asegúrate que todas las páginas no tengan espacios
+              innecesarios»): en la columna de la derecha la hacía más alta que la semana, que se estira hasta terminar junto
+              a ella y quedaba vacía abajo (568×344, medido a 1333). Es lo que sumó cada día de esa misma semana */}
           <div className="pf9-g pf9-g-forma k2-b1">
-            {T && viva ? <SemanaCaja liga={liga} T={T} viva={viva} fila={fila} /> : null}
+            {T && viva ? <SemanaCaja liga={liga} T={T} viva={viva} fila={fila} abajo={<PorDia liga={liga} xs={(T.dia || {})[viva.id]} />} /> : null}
             <div className="pf9-pila">
-              {T && viva ? <PorDia liga={liga} xs={(T.dia || {})[viva.id]} caja /> : null}
               <CrewVistazo D={D} c={c} pos={pos} N={nGente} T={T && viva ? T : null} fila={fila} cid={cid} />
             </div>
           </div>
@@ -249,7 +250,7 @@ function Piramide({ liga, viva }) {
  * ⏳ ESTA SEMANA (la Liga de la mezcla D): la cuenta atrás al lunes 11 AM, cuántos jugaron, la barra entre el tier de abajo
  * y el de arriba con la raya magenta de bajar, cuánto le falta y, desde el viernes, el aviso si va a bajar.
  */
-function SemanaCaja({ liga, T, viva, fila }) {
+function SemanaCaja({ liga, T, viva, fila, abajo }) {
   const [n, pts, jug] = fila;
   const N = viva.gente.length;
   const sig = n + 1 < T.nombres.length ? n + 1 : null;
@@ -291,6 +292,7 @@ function SemanaCaja({ liga, T, viva, fila }) {
           <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara k2-c" lazy /></a>)}</span></div>
       ) : null}
       <p className="k2-nota">{n >= T.tarjeta ? 'La crew tiene desbloqueada su tarjeta.' : 'En ' + T.nombres[T.tarjeta] + ' se desbloquea la tarjeta de la crew.'}</p>
+      {abajo}
     </div>
   );
 }

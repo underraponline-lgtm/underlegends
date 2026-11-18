@@ -349,9 +349,15 @@ function EstiloCaja({ dc }) {
   );
 }
 
-export function Caja({ t, children, d }) {
-  return <section className="cu-caja"><h3>{t}</h3>{d ? <p className="cu-d">{d}</p> : null}{children}</section>;
+export function Caja({ t, children, d, cls }) {
+  return <section className={'cu-caja' + (cls ? ' ' + cls : '')}><h3>{t}</h3>{d ? <p className="cu-d">{d}</p> : null}{children}</section>;
 }
+
+// 🖥️ EN LA COMPU, DOS COLUMNAS QUE BAJAN CADA UNA A SU RITMO (18/11/2026, Dlx: «asegúrate que todas las páginas no
+// tengan espacios innecesarios»). En la grilla de a dos de antes cada fila medía lo que su caja más alta, así que la de
+// al lado quedaba con un hueco abajo: medido con sesión a 1333 px, 520×592 en Tu perfil y 520×384 en Privacidad. Las
+// cajas van repartidas a mano para que las dos columnas terminen parejas (`cols`, sólo desde cuenta_pc.jsx)
+export const DosCol = ({ a, b }) => <div className="cpc-2c"><div>{a}</div><div>{b}</div></div>;
 
 // ── 🖼️ TU FONDO (13/10/2026). Dlx, a «una imagen propia para tu cuenta para el fondo»: «Sí, y mientras tanto con el Pase
 // gratis», y dónde, «que él decida, pero por default en ambos». Con el nivel 10 del Pase subís una imagen; la ven los
@@ -440,7 +446,7 @@ export function FondoCaja({ dc, liga }) {
   const hayMia = !!(f && urlFondo(f.url));
   return (
     <>
-      <Caja t="Tu imagen" d={pu.si ? 'Tu propia imagen de fondo, para los lugares de abajo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.'
+      <Caja t="Tu imagen" cls="cu-img" d={pu.si ?'Tu propia imagen de fondo, para los lugares de abajo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.'
         : 'Subir tu propia imagen es del Pase premium, y pasa por un filtro automático. La bandera y tu servidor son de todos: elígelos abajo.'}>
         {!pu.si && !(f && f.url) ? <p className="cu-d">💎 <a href="#/pase">Ver el Pase premium</a>{pu.prem && pu.pFalta ? ' · se abre en el nivel ' + pu.pFalta + ' del Pase' + (pu.pNivel != null ? ' (vas en el ' + pu.pNivel + ')' : '') : ''}.</p> : null}
         {f && urlFondo(f.pend || f.url) ? <div className="cu-fondo-ver" style={{ backgroundImage: urlFondo(f.pend || f.url) }} aria-label="Tu imagen" role="img" /> : null}
@@ -1081,7 +1087,7 @@ function Pedidos({ liga, dc }) {
   );
 }
 
-export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServidor = false }) {
+export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServidor = false, cols = false }) {
   // 🔓 tu nivel, para los colores de los servidores (ver `NIVEL_TEMA` en temas.js)
   const Rn = useRacha(!!dc && id === 'apariencia');
   const [temaMsg, setTemaMsg] = useState('');
@@ -1122,50 +1128,52 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
   if (id === 'estilo') return <EstiloCaja dc={dc} />;
   if (id === 'algo-mal') return <Pedidos liga={liga} dc={dc} />;
   if (id === 'perfil') {
-    return (
-      <>
-        <FotoCaja liga={liga} dc={dc} />
-        {/* 💬 tu frase entre comillas, debajo de tu nombre en tu perfil (la tanda 2 del perfil, 27/10/2026) */}
-        <Caja t="Tu frase" d={!dc ? 'Entra con Discord para escribirla.' : !dc.clave ? 'Primero necesitas estar verificado.' : 'Sale entre comillas debajo de tu nombre, en tu perfil.'}>
-          {dc && dc.clave ? <FraseEditor k={dc.clave} /> : !dc ? null : <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>}
-        </Caja>
-        <FotoCartaCaja dc={dc} />
-        <RedesCaja dc={dc} />
-        <VideosCaja dc={dc} />
-        {/* 🖥️ en la compu, tu servidor tiene su propia página (cuenta_pc.jsx): ahí no se repite */}
-        {sinServidor ? null : <ServidorCaja liga={liga} dc={dc} />}
-      </>
+    const foto = <FotoCaja key="foto" liga={liga} dc={dc} />;
+    /* 💬 tu frase entre comillas, debajo de tu nombre en tu perfil (la tanda 2 del perfil, 27/10/2026) */
+    const frase = (
+      <Caja key="frase" t="Tu frase" d={!dc ? 'Entra con Discord para escribirla.' : !dc.clave ? 'Primero necesitas estar verificado.' : 'Sale entre comillas debajo de tu nombre, en tu perfil.'}>
+        {dc && dc.clave ? <FraseEditor k={dc.clave} /> : !dc ? null : <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>}
+      </Caja>
     );
+    const carta = <FotoCartaCaja key="carta" dc={dc} />;
+    const redes = <RedesCaja key="redes" dc={dc} />;
+    const videos = <VideosCaja key="videos" dc={dc} />;
+    /* 🖥️ en la compu, tu servidor tiene su propia página (cuenta_pc.jsx): ahí no se repite */
+    const serv = sinServidor ? null : <ServidorCaja key="serv" liga={liga} dc={dc} />;
+    // las dos fotos a la izquierda y lo que se lee en tu perfil a la derecha: 693 contra 623 px de alto
+    if (cols) return <DosCol a={[foto, carta]} b={[frase, redes, videos, serv]} />;
+    return <>{foto}{frase}{carta}{redes}{videos}{serv}</>;
   }
   if (id === 'crew') return <Caja t="Mi crew"><MiCrew liga={liga} dc={dc} /></Caja>;
   if (id === 'siguiendo') {
     const fs = liga.sigue.map((k) => liga.T[k]).filter(Boolean);
-    return (
-      <>
-        <Caja t={'Sigues a ' + fs.length} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
-          : 'Entra con Discord y te avisamos cuando ganen o suban de rango.'}>
-          {fs.length ? <ul className="cu-gente">{fs.map((f) => (
-            <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
-              <small>{f.pos ? '#' + f.pos : ''}</small></a></li>
-          ))}</ul> : <a className="btn borde2 chico" href="#/ranking">Buscar a quién seguir</a>}
-        </Caja>
-        <TeSiguen liga={liga} />
-        <OrgsCaja dc={dc} />
-      </>
+    const sigues = (
+      <Caja key="sigues" t={'Sigues a ' + fs.length} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
+        : 'Entra con Discord y te avisamos cuando ganen o suban de rango.'}>
+        {fs.length ? <ul className="cu-gente">{fs.map((f) => (
+          <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
+            <small>{f.pos ? '#' + f.pos : ''}</small></a></li>
+        ))}</ul> : <a className="btn borde2 chico" href="#/ranking">Buscar a quién seguir</a>}
+      </Caja>
     );
+    const teSiguen = <TeSiguen key="te" liga={liga} />;
+    const orgs = <OrgsCaja key="orgs" dc={dc} />;
+    if (cols) return <DosCol a={[sigues]} b={[teSiguen, orgs]} />;
+    return <>{sigues}{teSiguen}{orgs}</>;
   }
   if (id === 'privacidad') {
-    return (
-      <>
-        <OcultarFoto dc={dc} />
-        <CaraComentarios dc={dc} />
-        <PublicarSolo dc={dc} />
-        <Caja t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de ti." />
-        <Caja t="Este dispositivo" d="Olvida quién eres, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
-          <DosToques className="btn borde2 chico" confirmar="¿Seguro? Toca de nuevo" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</DosToques>
-        </Caja>
-      </>
-    );
+    const xs = [
+      <OcultarFoto key="foto" dc={dc} />,
+      <CaraComentarios key="cara" dc={dc} />,
+      <PublicarSolo key="publ" dc={dc} />,
+      <Caja key="datos" t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de ti." />,
+      <Caja key="disp" t="Este dispositivo" d="Olvida quién eres, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
+        <DosToques className="btn borde2 chico" confirmar="¿Seguro? Toca de nuevo" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</DosToques>
+      </Caja>,
+    ];
+    // en el mismo orden, partidas después de la segunda: 410 contra 527 px de alto
+    if (cols) return <DosCol a={xs.slice(0, 2)} b={xs.slice(2)} />;
+    return <>{xs}</>;
   }
   if (id === 'avisos') {
     const svs = leer('campana:svs', []) || [];

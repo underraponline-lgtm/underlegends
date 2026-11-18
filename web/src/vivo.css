@@ -2295,11 +2295,21 @@ a.rk-z:hover{border-color:var(--linea)}
      quedaban 262 px vacíos a 1333 de ancho (Dlx, 02/10/2026, con la captura: «a big BLANK space»); partido —título
      arriba, números abajo— el hueco se mudaba al medio («acomoda bien todo»). Centrado, lo que sobra se reparte */
   .app .evp-cab{grid-template-columns:minmax(0,1fr) minmax(0,560px);align-items:center;gap:40px;padding:40px var(--gut) 34px}
+  /* 🏆 LA LLAVE EN VIVO, CON TOPE (18/11/2026, «asegúrate que todas las páginas no tengan espacios innecesarios»): una
+     llave grande que no se juega en orden no tiene llave corta (`momentosLlave()` da `null`) y va el cuadro entero. Con
+     octavos de a tres medía 1.300 px y al lado del título quedaban dos huecos de 656×544 (medido con COMPE CHOP CEO V4).
+     Se queda adentro de lo negro (Dlx, 03/10/2026) y se mira bajando adentro; «Ver la llave» la abre entera. Con 250
+     la portada mide ~540 y lo que sobra al lado del título queda debajo de 160 arriba y abajo (con 320, 192 y 176) */
+  .app .evp-mo.vivo .evp-cm{max-height:250px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#E41373 transparent}
   /* y en la compu la carta del campeón va a la izquierda de todo: la tarjeta sale ancha y baja, en vez de alta */
   .app .evp-mo.ult{grid-template-columns:120px minmax(0,1fr);grid-template-areas:"carta tag" "carta txt" "carta acc";column-gap:18px;align-content:start}
   .app .evp-mo.ult .evp-mo-carta{align-self:start}
   .app .evp-mo.ult.sin-carta{grid-template-columns:minmax(0,1fr);grid-template-areas:"tag" "txt" "acc"}
   .app .evp-dias-in{padding:10px calc(var(--gut) - 4px)}
+  /* 🧱 los nueve días a lo ancho (18/11/2026): de 62 px cada uno ocupaban la mitad izquierda, y con el boleto de «Lo
+     próximo» a la derecha quedaban 648×184 negros debajo de él (medido a 1333). Con más días de los que entran, se
+     achican hasta 62 y la tira se desliza, como antes */
+  .app .evp-dias button{flex:1 1 0}
   .app .evp-dias .evp-mes-b{display:none}
   /* 368 y no 360: con 360, «CUÁNDO SUELE JUGAR» (344 px) se partía por 8 en una columna de 336 (16/11) */
   .app .evp-t3{grid-template-columns:minmax(0,1fr) 368px;padding:0 var(--gut)}

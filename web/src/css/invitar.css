@@ -178,6 +178,13 @@ a.rf-iv:hover{outline:2px solid var(--linea);outline-offset:-2px}
   .rf-tal{grid-template-columns:repeat(10,minmax(0,1fr));gap:10px}
   .rf-dos{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px}
   .rf-dos.solo{grid-template-columns:minmax(0,1fr)}
+  /* 🧱 SIN INVITADOS TODAVÍA, A LO ANCHO (18/11/2026, «asegúrate que todas las páginas no tengan espacios innecesarios»):
+     la columna sola dejaba la mitad derecha vacía, 568×200 debajo de «Cómo cuenta» sin cuenta y 696×328 al lado de la
+     vista de Discord con cuenta (medido a 1333). Con la vista, ella y las reglas lado a lado; sin ella, las reglas de a dos */
+  .rf-dos.solo .rf-col:has(>.rf-dc){grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto;grid-auto-flow:column;column-gap:32px}
+  .rf-dos.solo .rf-col:has(>.rf-dc) .rf-h2~.rf-h2{margin-top:0}
+  .rf-dos.solo .rf-col:not(:has(>.rf-dc)) .rf-reglas{display:block;columns:2;column-gap:40px;max-width:none}
+  .rf-dos.solo .rf-col:not(:has(>.rf-dc)) .rf-reglas li{break-inside:avoid;margin-bottom:6px}
   .rl-tres{grid-template-columns:repeat(3,minmax(0,1fr))}
   .rl-tres.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
