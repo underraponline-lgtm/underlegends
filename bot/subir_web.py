@@ -391,6 +391,19 @@ def armar():
         _evc = (_comp.get(p.get('raw')) or {}).get('ev', 0)
         if isinstance(_evc, int) and _evc != (f.get('ev') or 0):
             f['evc'] = _evc
+    # 🏟️ EL OVR DE SU SERVIDOR, `osv` (17/11/2026, Dlx: «los q mandan en ffa deberia ser de OVR de sv mayor a menor»): el
+    # número de su carta de Servidor (`datos/por_servidor.json`, `rankings.por_servidor`), para ordenar «Los que mandan»
+    # del perfil de cada servidor. El `ovr` de la fila es el de la Temporada: ordenando por ése, Makmah (92) iba primero en
+    # FFA y su OVR de FFA es 74, debajo de Oasis (83). Sólo el de su servidor y sólo si lo tiene: el lobby tiene tope de peso
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'por_servidor.json'), encoding='utf-8') as h:
+            _psv = json.load(h).get('gente') or {}
+    except (OSError, ValueError):
+        _psv = {}
+    for f, p in zip(tabla, todos):
+        _o = ((_psv.get(p.get('raw')) or {}).get(f['sv']) or {}).get('ovr')
+        if isinstance(_o, (int, float)) and _o:
+            f['osv'] = int(_o)
     # 👤 las filas de más allá de la tabla, para su perfil (`_perfiles_extra()`); la tabla, los primeros `TOPE`
     filas_todas, tabla = tabla, tabla[:TOPE]
     # ▲▼ cuánto subió cada uno esta semana y quién debutó: contra la foto del lunes (ver `foto_semana()`)

@@ -161,7 +161,10 @@ export function PerfilSv({ liga, sv, enc }) {
   }
   const mm = liga.d.mult || {};
   const x = (mm.sv || {})[sv];
-  const gente = liga.oficiales().filter((f) => f.sv === sv).slice(0, 10);
+  // 🏟️ «Los que mandan», POR SU OVR DE ESTE SERVIDOR (17/11/2026, Dlx: «deberia ser de OVR de sv mayor a menor»): el
+  // número de su carta de Servidor (`osv`, bot/subir_web.py), no el de la Temporada; a igual OVR, el puesto en la Liga
+  const gente = liga.oficiales().filter((f) => f.sv === sv)
+    .sort((a, b) => (b.osv || 0) - (a.osv || 0) || (a.pos || 999) - (b.pos || 999)).slice(0, 10);
   const vivo = liga.vivo().filter((e) => e.sv === sv);
   const prox = liga.luego().filter((e) => e.sv === sv).slice(0, 6);
   const llaves = liga.llaves().filter((ll) => ll.sv === sv).slice(0, 6);
