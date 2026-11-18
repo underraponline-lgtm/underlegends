@@ -11,6 +11,20 @@
   ],
   "cambios": [
     {
+        "version": "6.56",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T01:13:00-05:00",
+        "titulo": "Sin huecos: Tu cuenta, Tarjetas, Eventos, Socios, Crews e Invita y gana",
+        "items": [
+            "**Tu cuenta** en la compu: las cajas van en dos columnas parejas; **Tus temas**, con Clara y Noche al lado de los colores de los servidores, y **Tus fondos**, con cada lugar a lo ancho.",
+            "**Tarjetas**: **Comparar** baja con la página mientras miras los estantes.",
+            "**Eventos**: la llave en vivo de arriba se mira bajando adentro de su recuadro, y la portada ya no deja dos huecos al lado del título; los días de la tira van a lo ancho.",
+            "En las páginas de **crews y servidores**, **sus historias** van en la portada, debajo de los números. En una crew, **Por día** va adentro de **Esta semana**.",
+            "**Socios**: en cada servidor, su mejor y su último evento van lado a lado.",
+            "**Crews**: las de **Para ti** ocupan todo el ancho. **Invita y gana**: **Cómo cuenta** en dos columnas. **Misiones**: si nadie hizo la Semana perfecta, **Esta semana** sube a su lado."
+        ]
+    },
+    {
         "version": "6.55",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T01:06:00-05:00",
