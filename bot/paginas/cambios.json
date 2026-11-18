@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.57",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T01:31:00-05:00",
+        "titulo": "Tu gente, en una sola página",
+        "items": [
+            "**Tu cuenta** en la compu: **Tu crew**, **Tu servidor** y **Siguiendo** van juntas en **Tu gente**. En el menú siguen las tres: cada una abre la página y se marca la que tocaste."
+        ]
+    },
+    {
         "version": "6.56",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T01:13:00-05:00",
