@@ -22,6 +22,18 @@
 // pieza en grande y cómo se gana (Valorant); pasar el mouse por una pieza te la prueba sin tocar nada (Discord, Steam);
 // «Lo puesto / Probando» compara. De la C (Marvel Snap, Steam): la Colección con barras y el % de la Liga que tiene
 // cada insignia.
+//
+// 🃏 LA PESTAÑA CARTAS, REHECHA (18/11/2026). Dlx: «ahora remakea la pestaña de cartas del inventario»; a la maqueta
+// privada https://claude.ai/artifact/BZpFWfUdrZ6Eq3Kf67caJV, «A compu, B celular». Medido en la de antes: la grilla
+// arrancaba a 1.290 px en la compu y a 1.530 en el celular (elegías sin ver la carta), el costado repetía Perfil, Estilo
+// de juego y Colección, y «Efecto» decía «Pronto» con los efectos de la Tienda ya andando (6.35).
+//   · A, EL VESTUARIO (compu): la carta fija a la izquierda —tus cuatro cartas arriba, «Lo puesto / Probando», la ficha
+//     de lo que tocaste y Guardar— y a la derecha las ranuras, tus looks y la grilla entera.
+//   · B, LA PASARELA (celular): tu carta grande con las de al lado asomando (se cambia con ‹ ›, sin deslizar: el dedo ya
+//     desliza las piezas), las ranuras debajo y una fila de piezas. «Ver los N» abre una hoja que deja la carta arriba.
+//   · EFECTO: los efectos de carta de la Tienda (`/avisos/tienda`), «Sin efecto» primero. Uno que no es tuyo se prueba
+//     igual y Guardar pasa a ser «Comprarlo en la Tienda». Ponerse uno es `tienda-accion` `poner`, como en la Tienda.
+//   · UNA SOLA FORMA DE DECIR EL ESTADO: «Puesto» (lo guardado), «Sin guardar» (tuyo, probándolo), «Probando» (no es tuyo).
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import CAT from './tags_catalogo.json';
 import { pasePost, refrescarPases } from './pase.js';
@@ -34,6 +46,9 @@ import { nombreMarco } from './marcos.jsx';
 import { ValesPremium } from './vales.jsx';
 import { CartaViva } from './cartaviva.jsx';
 import { FraseEditor } from './frase.jsx';
+import { ConEfecto, pedirArte } from './puesto.js';
+import { RZ } from './tienda_rz.js';
+import { num } from './liga.js';
 
 usarCss('inventario', CSS_PAGINA);
 // 🎭 tu estilo de juego (16/11/2026): su pestaña, en su propio pedazo (trae el catálogo con los íconos). Ver `juego.jsx`
@@ -95,11 +110,11 @@ const CAND = <svg className="ves-cand" viewBox="0 0 24 24" fill="none" stroke="c
 // 🔠 la palabra más larga de un nombre (`--n`), para que la letra del cuadro baje lo justo y entre entera: «CAZARRECOMPENSAS»
 // se salía de su cuadro en el celular (17/11/2026). Sin guion: la regla de la 5.69 (no se cortan a la mitad) sigue
 const largoDe = (n) => { const w = typeof n === 'string' ? Math.max(0, ...n.split(/\s+/).map((x) => x.length)) : 0; return w >= 10 ? { '--n': w } : undefined; };
-function Cuadro({ on, puesto, prueba, nuevo, mio = true, ic, nombre, rar, pie, nivel = '', onClick, onVer, children }) {
+function Cuadro({ on, puesto, prueba, nuevo, mio = true, ic, nombre, rar, pie, nivel = '', color = '', onClick, onVer, children }) {
   // 🖱️ pasar el mouse = probártelo en la carta, sin tocar el borrador (Discord y Steam: la vista previa antes de elegir)
   const ver = onVer && FINO ? { onMouseEnter: () => onVer(true), onMouseLeave: () => onVer(false), onFocus: () => onVer(true), onBlur: () => onVer(false) } : {};
   return (
-    <button type="button" role="radio" aria-checked={!!on} onClick={onClick} {...ver}
+    <button type="button" role="radio" aria-checked={!!on} onClick={onClick} {...ver} style={color ? { '--r': color } : undefined}
       className={'ves-q' + (nivel ? ' r-' + nivel : '') + (mio ? '' : ' bloq') + (on ? ' on' : '') + (prueba ? ' prueba' : '')}>
       {puesto ? <i className="ves-pu">Puesto</i> : nuevo ? <i className="ves-nv" aria-label="Nuevo" /> : null}
       {mio ? null : CAND}
@@ -177,11 +192,14 @@ function SinCartas({ yo, k }) {
 }
 
 // 🧩 las ranuras de tus cartas: `[id, etiqueta]`. «Efecto» todavía no existe: va con candado y lo dice
-const RANURAS = [['tag', 'TAG'], ['marco', 'Marco'], ['foto', 'Foto'], ['estilo', 'Estilo'], ['efecto', 'Efecto']];
-// la carta, la estrella: 330 en la compu (la del escenario de la maqueta), 250 en el celular
-const anchoDe = () => (typeof window !== 'undefined' && window.innerWidth < 760 ? Math.min(250, window.innerWidth - 110) : 330);
-const PERFIL_R = [['fondo', 'Fondo', 'El fondo de tu perfil'], ['frase', 'Frase', 'Debajo de tu nombre'], ['emblemas', 'Emblemas', 'Al lado de tu nombre'],
-  ['juego', 'Estilo de juego', 'Cómo rapeas']];
+const RANURAS = [['tag', 'TAG'], ['marco', 'Marco'], ['efecto', 'Efecto'], ['foto', 'Foto'], ['estilo', 'Estilo']];
+// 📱 el celular (B, la pasarela) contra la compu (A, el vestuario): el mismo corte que el resto del Inventario
+const esTelAhora = () => typeof window !== 'undefined' && window.innerWidth < 760;
+// la carta, la estrella: 300 en la compu, a la izquierda; 210 en el celular, con las de al lado asomando
+// ⚠️ en la compu la columna de la carta va fija: con la carta, la ficha y Guardar tiene que entrar en el alto de la pantalla
+// (~495 px son lo demás de la columna y la barra de arriba), o Guardar queda abajo, fuera de alcance
+const anchoDe = () => (esTelAhora() ? Math.min(210, window.innerWidth - 150)
+  : Math.max(200, Math.min(300, Math.round((window.innerHeight - 495) * 300 / 438))));
 
 export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const [yo, setYo] = useState(undefined);
@@ -215,8 +233,33 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const [bor, setBor] = useState({ tags: {} });
   const [visto] = useState(leerVisto);
   const [ancho, setAncho] = useState(anchoDe);
+  const [esTel, setEsTel] = useState(esTelAhora);
+  // 📱 «Ver los N» en el celular: la hoja con la grilla entera y la carta arriba
+  const [hoja, setHoja] = useState(false);
   useEffect(() => {
-    const f = () => setAncho(anchoDe());
+    if (!hoja) return undefined;
+    const f = (e) => { if (e.key === 'Escape') setHoja(false); };
+    window.addEventListener('keydown', f);
+    return () => window.removeEventListener('keydown', f);
+  }, [hoja]);
+  // 🛍️ los efectos de carta de la Tienda: los que hay, los tuyos y el puesto (`null`: la Tienda cerrada o sin cuenta)
+  const [ti, setTi] = useState(undefined);
+  const [arte, setArte] = useState(null);
+  useEffect(() => {
+    if (!dc || typeof window.conCuenta !== 'function') { setTi(null); return undefined; }
+    let vivo = true;
+    Promise.resolve(window.conCuenta('/api/avisos/tienda', {})).then((j) => {
+      if (!vivo) return;
+      if (!j || !j.ok || !j.cat || !j.yo || !(j.abierta || j.ensayo)) { setTi(null); return; }
+      const piezas = Object.entries(j.cat.piezas || {}).filter(([, p]) => p && p.c === 'carta' && !(p.t || []).includes('pronto'));
+      setTi({ piezas, precios: j.cat.precios || {}, prem: !!j.yo.prem, desc: ((j.cat.desc || {}).prem) || 1,
+        mias: new Set((j.yo.inv || []).map((x) => x.p)), puesto: (j.yo.puesto || {}).carta || '' });
+      if (j.arte_v) pedirArte(j.arte_v).then((a) => { if (vivo && a) setArte(a); });
+    }).catch(() => { if (vivo) setTi(null); });
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const f = () => { setAncho(anchoDe()); setEsTel(esTelAhora()); };
     window.addEventListener('resize', f);
     return () => window.removeEventListener('resize', f);
   }, []);
@@ -251,7 +294,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     return CARTAS.filter(([x]) => c.has(x));
   }, [liga, k, dc, perf]);
   useEffect(() => { if (tienes.length && !tienes.some(([x]) => x === carta)) setCarta(tienes[0][0]); }, [tienes]); // eslint-disable-line react-hooks/exhaustive-deps
-  const nCambios = Object.keys(bor.tags).length + ('marco' in bor || 'estilo' in bor ? 1 : 0) + ('principal' in bor ? 1 : 0);
+  const nCambios = Object.keys(bor.tags).length + ('marco' in bor || 'estilo' in bor ? 1 : 0) + ('principal' in bor ? 1 : 0) + ('efecto' in bor ? 1 : 0);
   useEffect(() => {
     if (!nCambios) return undefined;
     const f = (e) => { e.preventDefault(); e.returnValue = ''; };
@@ -288,20 +331,30 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const estiloAhora = 'estilo' in bor ? bor.estilo : estiloG;
   const principalAhora = 'principal' in bor ? bor.principal : principalG;
   const temp = yo.temp || 't1';
+  // 🛍️ el efecto: el puesto en la Tienda, el del borrador, y el que muestra la carta (`undefined` = el puesto)
+  const efectoG = (ti && ti.puesto) || '';
+  const efectoAhora = 'efecto' in bor ? bor.efecto : efectoG;
+  const efMio = (id) => !id || !!(ti && ti.mias.has(id));
+  const efDe = (id) => ((ti && ti.piezas.find(([x]) => x === id)) || [])[1] || null;
+  const precioEf = (p) => Math.round((ti.precios[p.r] || 0) * (ti.prem && !(p.t || []).includes('num') ? ti.desc : 1));
+  const efBloq = 'efecto' in bor && !efMio(bor.efecto);
+  // las piezas «prem» de la Tienda son sólo para el Pase premium
+  const sinPrem = (p) => !!p && (p.t || []).includes('prem') && !(ti && ti.prem);
   // el marco que se prueba sobre la carta (con la forma de `marcosPublicos()`): `null` sin marco
   const marcoDe = (m) => (m === 'ninguno' || (!m && !idsMarcos.length) ? null : [m || mejor(idsMarcos), estiloAhora, (mk && mk.serie) || 0]);
   const marcoVer = !('marco' in bor || 'estilo' in bor) ? undefined : marcoDe(marcoAhora);
   // 🎭 lo que muestra la carta: lo guardado («Lo puesto»), o el borrador con lo que el mouse está tocando encima
   const tagCarta = ver === 'puesto' ? elG : hov && hov.campo === 'tag' ? hov.v : el;
   const marcoCarta = ver === 'puesto' ? undefined : hov && hov.campo === 'marco' ? marcoDe(hov.v) : marcoVer;
+  const efectoCarta = ver === 'puesto' ? undefined : hov && hov.campo === 'efecto' ? hov.v : 'efecto' in bor ? bor.efecto : undefined;
   // pasar por una pieza: un respiro antes de mostrarla, así barrer la grilla con el mouse no hace parpadear la carta
   const verPieza = (campo, v) => (on) => {
     clearTimeout(tHov.current);
-    tHov.current = setTimeout(() => setHov(on ? { campo, v } : null), on ? 90 : 140);
+    tHov.current = setTimeout(() => setHov(on ? { campo, v } : null), on ? 120 : 140);
   };
   const esNuevo = (clave) => !!visto && !visto.has(clave);
   const bloqueado = Object.entries(bor.tags).some(([c, t]) => t !== 'auto' && !(opciones(c, yo).find((o) => o.tag === t) || {}).mio)
-    || ('marco' in bor && !!bor.marco && bor.marco !== 'ninguno' && !idsMarcos.includes(bor.marco));
+    || ('marco' in bor && !!bor.marco && bor.marco !== 'ninguno' && !idsMarcos.includes(bor.marco)) || efBloq;
 
   // tocar = probar, también lo que no tienes: lo igual a lo guardado sale del borrador
   const probar = (campo, v, guardado, enCarta = carta) => {
@@ -368,6 +421,11 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     if ('principal' in bor) {
       const d = await pasePost('carta-principal', { carta: principalAhora });
       if (d && d._ok) setYo(d); else { ok = false; avisos.push('La carta principal no se pudo guardar.'); }
+    }
+    if ('efecto' in bor) {
+      const d = await window.conCuenta('/api/avisos/tienda-accion', { accion: 'poner', ranura: 'carta', pieza: bor.efecto || null });
+      if (d && d.ok) setTi((x) => (x ? Object.assign({}, x, { puesto: bor.efecto || '' }) : x));
+      else { ok = false; avisos.push('El efecto no se pudo poner.'); }
     }
     refrescarPases();
     setOcup('');
@@ -450,16 +508,48 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         </>
       );
     }
-    return <div className="ves-ficha bloq"><span className="ves-qi" aria-hidden="true">✨</span><div><em>Pronto</em><b>Efectos</b>
-      <p className="ves-falta">{CAND}<span>Brillos y animaciones para tu carta, en la página y en Discord. Llegan con la Tienda.</span></p></div></div>;
+    if (!ti) {
+      return <div className="ves-ficha bloq"><span className="ves-qi" aria-hidden="true">✨</span><div><em>Pronto</em><b>Efectos</b>
+        <p className="ves-falta">{CAND}<span>Brillos y animaciones para tu carta, en la página y en Discord. Se compran en la Tienda.</span></p></div></div>;
+    }
+    // «Sin efecto» primero (como «Automático» en los TAG), después los tuyos y los que te faltan, del más barato al más caro
+    const src = liga.cartaUrl(k, carta) || '';
+    const orden = ti.piezas.slice().sort(([a, pa], [b, pb]) => (efMio(b) - efMio(a)) || (precioEf(pa) - precioEf(pb)));
+    return (
+      <>
+        <p className="ves-p">El efecto va en <b>tus cuatro cartas</b>, en la página y en /card. Se compran en la Tienda.</p>
+        <div className="ves-grid" role="radiogroup" aria-label="El efecto de tus cartas">
+          <Cuadro on={!efectoAhora} puesto={!efectoG} prueba={'efecto' in bor && !bor.efecto} ic="▢" nombre="Sin efecto" rar="Como siempre"
+            onVer={verPieza('efecto', '')} onClick={() => probar('efecto', '', efectoG)} />
+          {orden.map(([id, p]) => {
+            const mio = efMio(id);
+            const rz = RZ[p.r] || RZ[0];
+            return (
+              <Cuadro key={id} mio={mio} color={rz[1]} on={efectoAhora === id} puesto={efectoG === id} prueba={bor.efecto === id} nombre={p.n}
+                rar={mio ? rz[0] : sinPrem(p) ? 'Premium' : num(precioEf(p)) + ' PdT'} onVer={verPieza('efecto', id)} onClick={() => probar('efecto', id, efectoG)}>
+                <span className="ves-qi vc-efi" aria-hidden="true">
+                  {arte && src ? <ConEfecto P={{ t: { carta: id }, A: arte }} src={src}><img src={src} alt="" /></ConEfecto> : '✨'}
+                </span>
+              </Cuadro>
+            );
+          })}
+        </div>
+        {ti.mias.size ? <a className="ves-lnk" href="#/tienda">Más efectos en la Tienda →</a> : (
+          <div className="vc-vacio"><div><b>Todavía no tienes ningún efecto</b><span>Pruébate uno de arriba: se ve en tu carta antes de comprarlo.</span></div>
+            <a className="ves-btn blanco" href="#/tienda">Ver los efectos en la Tienda</a></div>
+        )}
+      </>
+    );
   };
 
   const valor = {
     tag: el === 'auto' ? 'Automático' : partir((ops.find((o) => o.tag === el) || {}).texto || '')[1] || 'Automático',
     marco: marcoAhora === 'ninguno' ? 'Sin marco' : marcoAhora ? nombreMarco(marcoAhora) : idsMarcos.length ? 'El mejor' : 'Ninguno todavía',
-    foto: 'Tu foto', estilo: estiloAhora === 'cadena' ? 'La cadena' : 'La camiseta', efecto: 'Pronto',
+    foto: 'Tu foto', estilo: estiloAhora === 'cadena' ? 'La cadena' : 'La camiseta',
+    efecto: !ti ? 'Pronto' : efectoAhora ? ((efDe(efectoAhora) || {}).n || 'Un efecto') : 'Sin efecto',
   };
-  const cuantos = { tag: mias.length + '/' + ops.length, marco: idsMarcos.length + '/' + MARCOS_PASE.length };
+  const cuantos = { tag: mias.length + '/' + ops.length, marco: idsMarcos.length + '/' + MARCOS_PASE.length,
+    efecto: ti ? String(ti.piezas.filter(([id]) => efMio(id)).length) : '' };
   const ranuras = RANURAS.filter(([r]) => r !== 'estilo' || cartas.some(([c]) => c === 'servidor'));
 
   // 🏅 la colección: insignias (de tu perfil), títulos y marcos
@@ -496,10 +586,32 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     foco = { texto: '📸 Tu foto', desc: 'La de tu carta. Se cambia abajo, una vez por temporada.', mio: true };
   } else if (ran === 'estilo') {
     foco = { texto: estiloAhora === 'cadena' ? '⛓️ La cadena' : '👕 La camiseta', desc: 'Cómo se viste tu carta de Servidor cuando lleva marco.', mio: true, cambia: 'estilo' in bor };
+  } else if (ti) {
+    const id = ver === 'puesto' ? efectoG : hov && hov.campo === 'efecto' ? hov.v : efectoAhora;
+    const p = id ? efDe(id) : null;
+    const mio = efMio(id);
+    foco = { texto: '✨ ' + (p ? p.n : 'Sin efecto'), mio, cambia: id !== efectoG, color: p ? (RZ[p.r] || RZ[0])[1] : '', rz: p ? (RZ[p.r] || RZ[0])[0] : '',
+      etq: 'En la Tienda:', desc: !id ? 'Tus cartas, sin efecto: como siempre.' : mio ? (p && p.d) || 'Va en tus cuatro cartas, en la página y en /card.'
+        : (p && p.d ? p.d + ' ' : '') + (sinPrem(p) ? 'Es sólo para el Pase premium.' : 'Cuesta ' + num(precioEf(p)) + ' Puntos de Tienda.') };
   } else {
-    foco = { texto: '✨ Efectos', desc: 'Brillos y animaciones para tu carta, en la página y en Discord. Ya están en la Tienda; ponértelos desde acá llega pronto.', mio: false, pronto: true };
+    foco = { texto: '✨ Efectos', desc: 'Brillos y animaciones para tu carta, en la página y en Discord. Se compran en la Tienda.', mio: false, pronto: true };
   }
-  const fichaEm = [RAREZA[foco.nivel], GRUPO[foco.grupo], foco.mio && foco.nivel ? 'lo tienes' : ''].filter(Boolean).join(' · ') || 'Tu ' + etRan.toLowerCase();
+  const fichaEm = [foco.rz || RAREZA[foco.nivel], GRUPO[foco.grupo], foco.mio && (foco.nivel || foco.rz) ? 'lo tienes' : ''].filter(Boolean).join(' · ') || 'Tu ' + etRan.toLowerCase();
+
+  // 💾 la barra de guardar. Con un efecto que no es tuyo, «Comprarlo en la Tienda» en vez de Guardar
+  const efPr = efBloq ? efDe(bor.efecto) : null;
+  const barraGuardar = (cls) => (
+    <div className={'ves-guardar' + (cls ? ' ' + cls : '')} role="region" aria-label="Cambios sin guardar">
+      <span className="ves-gtx">
+        {efPr ? <><b>Lo estás probando</b> · {efPr.n} {sinPrem(efPr) ? 'es sólo para el Pase premium' : 'cuesta ' + num(precioEf(efPr)) + ' Puntos de Tienda'}</>
+          : bloqueado ? <><b>Lo estás probando</b> · todavía no es tuyo: en su ficha dice cómo se gana</>
+            : <><b>{nCambios === 1 ? '1 cambio' : nCambios + ' cambios'}</b> sin guardar</>}
+      </span>
+      <button type="button" className="ves-btn" disabled={!!ocup} onClick={cancelar}>{bloqueado ? 'Volver' : 'Cancelar'}</button>
+      {efPr ? <a className="ves-btn blanco" href="#/tienda">Comprarlo en la Tienda</a>
+        : !bloqueado ? <button type="button" className="ves-btn blanco" disabled={!!ocup} onClick={guardar}>{ocup === 'guardar' ? 'Guardando…' : 'Guardar'}</button> : null}
+    </div>
+  );
 
   return (
     <div className="ves">
@@ -529,106 +641,160 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       {msg ? <p className="ves-msg" role="status">{msg}</p> : null}
 
       {sec === 'cartas' && sinCartas ? <SinCartas yo={yo} k={k} /> : null}
-      {sec === 'cartas' && !sinCartas ? (
-        <div className="ves-a">
-          {/* 🎭 el escenario: las ranuras a la izquierda, tu carta al centro y tus cartas a la derecha (en el celular,
-              tus cartas arriba, la carta y las ranuras en una fila que se desliza) */}
-          <section className="ves-esc" data-fondo={etRan}>
-            <nav className="ves-rail" aria-label="Qué le cambias">
-              <span className="ves-rk">Tu carta</span>
-              {ranuras.map(([id, et]) => {
-                const sg = (id === 'tag' && carta in bor.tags) || (id === 'marco' && 'marco' in bor) || (id === 'estilo' && 'estilo' in bor);
-                return (
-                  <button key={id} type="button" aria-pressed={ran === id} className={'ves-rn' + (ran === id ? ' on' : '') + (id === 'efecto' ? ' lk' : '') + (sg ? ' sg' : '')}
-                    onClick={() => { setRan(id); setSel(null); setHov(null); }}>
-                    <b>{et}{id === 'tag' && nuevos.length ? <i className="ves-pt" aria-label="hay nuevos" /> : null}{cuantos[id] ? <em>{cuantos[id]}</em> : null}</b>
-                    <small>{valor[id]}</small>
-                  </button>
+      {sec === 'cartas' && !sinCartas ? (() => {
+        // 🃏 las piezas comunes a las dos formas: tus cartas, las ranuras, la ficha, «lo puesto / probando» y tus looks
+        const iC = Math.max(0, cartas.findIndex(([c]) => c === carta));
+        const irA = (c) => { setCarta(c); setSel(null); setBusca(''); setHov(null); };
+        const irPaso = (d) => irA(cartas[(iC + d + cartas.length) % cartas.length][0]);
+        const vp = nCambios && ver === 'prob' ? <span className="ves-vp">Probando</span> : null;
+        const viva = (w) => (
+          <CartaViva liga={liga} k={k} cual={carta} ancho={w} piezas={{ tag: tagCarta }} marco={marcoCarta} efecto={efectoCarta} arte={arte}
+            onEstado={setEstado} cls="ves-ci" />
+        );
+        const ranurasEl = (
+          <div className="vc-ran" role="tablist" aria-label="Qué le cambias">
+            {ranuras.map(([id, et]) => {
+              const sg = (id === 'tag' && carta in bor.tags) || (id === 'marco' && 'marco' in bor) || (id === 'estilo' && 'estilo' in bor) || (id === 'efecto' && 'efecto' in bor);
+              return (
+                <button key={id} type="button" role="tab" aria-selected={ran === id}
+                  className={'vc-rn' + (ran === id ? ' on' : '') + (id === 'efecto' && !ti ? ' lk' : '') + (sg ? ' sg' : '')}
+                  onClick={() => { setRan(id); setSel(null); setHov(null); }}>
+                  <b>{et}{id === 'tag' && nuevos.length ? <i className="ves-pt" aria-label="hay nuevos" /> : null}{cuantos[id] ? <em>{cuantos[id]}</em> : null}</b>
+                  <small>{valor[id]}</small>
+                </button>
+              );
+            })}
+          </div>
+        );
+        const fichaEl = (cls) => (
+          <div className={'vc-fx' + (cls ? ' ' + cls : '') + (foco.nivel ? ' r-' + foco.nivel : '')} style={foco.color ? { '--r': foco.color } : undefined} aria-live="polite">
+            <div>
+              <em>{fichaEm}</em>
+              <b>{partir(foco.texto)[1]}</b>
+              {foco.desc && cls !== 'chica' ? <p>{foco.mio ? foco.desc : <>{CAND}<span><span className="ves-cg">{foco.pronto ? 'Pronto:' : foco.etq || 'Cómo se gana:'}</span> {foco.desc}</span></>}</p> : null}
+            </div>
+            {foco.cambia !== undefined ? <span className={'ves-est ' + (foco.cambia ? 'prob' : 'ok')}>{foco.cambia ? (foco.mio ? 'Sin guardar' : 'Probando') : 'Puesto'}</span> : null}
+          </div>
+        );
+        const cmpEl = nCambios ? (
+          <div className="ves-cmp vc-cmp" role="radiogroup" aria-label="Qué ver en tu carta">
+            {[['puesto', 'Lo puesto'], ['prob', 'Probando']].map(([id, n]) => (
+              <button key={id} type="button" role="radio" aria-checked={ver === id} className={ver === id ? 'on' : ''} onClick={() => { setVer(id); setHov(null); }}>{n}</button>
+            ))}
+          </div>
+        ) : null;
+        const looksEl = looks ? (
+          <section className="ves-looks vc-looks" aria-label="Tus looks">
+            <div className="ves-looks-h"><b>Tus looks</b><small>{looks.looks.length ? 'un toque y te lo pones en todas tus cartas' : 'guarda lo que llevas y vuelve a ponértelo de un toque'}</small></div>
+            <div className="ves-looks-l">
+              {looks.looks.map((L) => {
+                const tg = (L.look.tags || {})[carta] || 'auto';
+                const txt = tg === 'auto' ? 'Automático' : partir((ops.find((o) => o.tag === tg) || {}).texto || tg)[1];
+                const puesto = mismoLook(L.look, { tags: Object.fromEntries(cartas.map(([c]) => [c, (yo.elegidos || {})[c] || 'auto'])), marco: marcoG, estilo: estiloG });
+                return borrarN === L.n ? (
+                  <div key={L.n} className="ves-look borrar"><b>¿Borrar «{L.nombre}»?</b>
+                    <span><button type="button" className="ves-btn" disabled={!!ocup} onClick={() => borrarLook(L.n)}>Sí, borrar</button>
+                      <button type="button" className="ves-btn" onClick={() => setBorrarN(-1)}>No</button></span></div>
+                ) : (
+                  <div key={L.n} className={'ves-look' + (lookOn === L.n && nCambios ? ' on' : '') + (puesto ? ' puesto' : '')}>
+                    <button type="button" className="ves-look-b" onClick={() => ponerLook(L)} aria-label={'Ponerme el look ' + L.nombre}>
+                      {puesto ? <i className="ves-pu">Puesto</i> : null}
+                      <b>{L.nombre}</b><small>{txt}{L.look.marco !== undefined ? ' · ' + nomMarco(L.look.marco) : ''}</small>
+                    </button>
+                    <button type="button" className="ves-look-x" onClick={() => setBorrarN(L.n)} aria-label={'Borrar el look ' + L.nombre}>✕</button>
+                  </div>
                 );
               })}
-              <span className="ves-rk">Tu perfil</span>
-              {PERFIL_R.map(([id, et, s]) => (
-                <button key={id} type="button" className="ves-rn va" onClick={() => { setSec(id === 'juego' ? 'juego' : 'perfil'); setSel(null); }}><b>{et}</b><small>{s}</small></button>
-              ))}
-              <span className="ves-rk">Colección</span>
-              <button type="button" className="ves-rn va" onClick={() => { setSec('col'); setSel(null); }}><b>Insignias</b><small>{insMias.size} de {insCat.length}</small></button>
-            </nav>
-            <div className="ves-mid">
-              <div className="ves-carta">
-                {nCambios && ver === 'prob' ? <span className="ves-vp">Probando</span> : null}
-                <CartaViva liga={liga} k={k} cual={carta} ancho={ancho} piezas={{ tag: tagCarta }} marco={marcoCarta} onEstado={setEstado} cls="ves-ci" />
-              </div>
-              {estado === 'imagen' ? <p className="ves-nota ves-aun">Tu carta se arma en vivo desde su próximo dibujo: hasta entonces, lo que pruebas se ve acá abajo.</p> : null}
-              <div className={'ves-info' + (foco.nivel ? ' r-' + foco.nivel : '')} aria-live="polite">
-                <em>{fichaEm}</em>
-                <b>{partir(foco.texto)[1]}</b>
-                {foco.desc ? <p>{foco.mio ? foco.desc : <>{CAND}<span><span className="ves-cg">{foco.pronto ? 'Pronto:' : 'Cómo se gana:'}</span> {foco.desc}</span></>}</p> : null}
-                {foco.cambia !== undefined ? <span className={'ves-est ' + (foco.cambia ? 'prob' : 'ok')}>{foco.cambia ? (foco.mio ? 'Sin guardar' : 'Probando') : 'Puesto'}</span> : null}
-              </div>
-              {nCambios ? (
-                <div className="ves-cmp" role="radiogroup" aria-label="Qué ver en tu carta">
-                  {[['puesto', 'Lo puesto'], ['prob', 'Probando']].map(([id, n]) => (
-                    <button key={id} type="button" role="radio" aria-checked={ver === id} className={ver === id ? 'on' : ''} onClick={() => { setVer(id); setHov(null); }}>{n}</button>
-                  ))}
-                </div>
+              {nombreNuevo !== null ? (
+                <form className="ves-look nuevo" onSubmit={(e) => { e.preventDefault(); guardarLook(); }}>
+                  <input value={nombreNuevo} maxLength={24} placeholder={'Look ' + (looks.looks.length + 1)} aria-label="Nombre del look"
+                    onChange={(e) => setNombreNuevo(e.target.value)} autoFocus />
+                  <span><button type="submit" className="ves-btn blanco" disabled={!!ocup}>{ocup === 'look' ? 'Guardando…' : 'Guardar'}</button>
+                    <button type="button" className="ves-btn" onClick={() => setNombreNuevo(null)}>Cancelar</button></span>
+                </form>
+              ) : looks.looks.length < (looks.max || 5) ? (
+                <button type="button" className="ves-look mas" disabled={bloqueado} onClick={() => { setNombreNuevo(''); setLookMsg(''); }}
+                  title={bloqueado ? 'Lo que estás probando todavía no es tuyo' : undefined}>
+                  + Guardar look{bloqueado ? <small>con piezas tuyas</small> : null}</button>
               ) : null}
             </div>
-            <aside className="ves-mazo" role="tablist" aria-label="Qué carta vistes">
-              <span className="ves-rk">Cartas</span>
-              {cartas.map(([c, n]) => (
-                <button key={c} type="button" role="tab" aria-selected={carta === c} className={carta === c ? 'on' : ''}
-                  onClick={() => { setCarta(c); setSel(null); setBusca(''); setHov(null); }}>
-                  <span className="ves-mi"><Carta liga={liga} k={k} cual={c} cls="ves-mci" abre={false} /></span>
-                  <small>{n}{principalAhora === c ? ' ★' : ''}{c in bor.tags ? <i className="ves-pt" aria-label="sin guardar" /> : null}</small>
-                </button>
-              ))}
-            </aside>
+            {lookMsg ? <p className="ves-nota" role="status">{lookMsg}</p> : null}
           </section>
-          {looks ? (
-            <section className="ves-looks" aria-label="Tus looks">
-              <div className="ves-looks-h"><b>Tus looks</b><small>{looks.looks.length ? 'un toque y te lo pones en todas tus cartas' : 'guarda lo que llevas y vuelve a ponértelo de un toque'}</small></div>
-              <div className="ves-looks-l">
-                {looks.looks.map((L) => {
-                  const tg = (L.look.tags || {})[carta] || 'auto';
-                  const txt = tg === 'auto' ? 'Automático' : partir((ops.find((o) => o.tag === tg) || {}).texto || tg)[1];
-                  const puesto = mismoLook(L.look, { tags: Object.fromEntries(cartas.map(([c]) => [c, (yo.elegidos || {})[c] || 'auto'])), marco: marcoG, estilo: estiloG });
-                  return borrarN === L.n ? (
-                    <div key={L.n} className="ves-look borrar"><b>¿Borrar «{L.nombre}»?</b>
-                      <span><button type="button" className="ves-btn" disabled={!!ocup} onClick={() => borrarLook(L.n)}>Sí, borrar</button>
-                        <button type="button" className="ves-btn" onClick={() => setBorrarN(-1)}>No</button></span></div>
-                  ) : (
-                    <div key={L.n} className={'ves-look' + (lookOn === L.n && nCambios ? ' on' : '') + (puesto ? ' puesto' : '')}>
-                      <button type="button" className="ves-look-b" onClick={() => ponerLook(L)} aria-label={'Ponerme el look ' + L.nombre}>
-                        {puesto ? <i className="ves-pu">Puesto</i> : null}
-                        <b>{L.nombre}</b><small>{txt}{L.look.marco !== undefined ? ' · ' + nomMarco(L.look.marco) : ''}</small>
-                      </button>
-                      <button type="button" className="ves-look-x" onClick={() => setBorrarN(L.n)} aria-label={'Borrar el look ' + L.nombre}>✕</button>
-                    </div>
-                  );
-                })}
-                {nombreNuevo !== null ? (
-                  <form className="ves-look nuevo" onSubmit={(e) => { e.preventDefault(); guardarLook(); }}>
-                    <input value={nombreNuevo} maxLength={24} placeholder={'Look ' + (looks.looks.length + 1)} aria-label="Nombre del look"
-                      onChange={(e) => setNombreNuevo(e.target.value)} autoFocus />
-                    <span><button type="submit" className="ves-btn blanco" disabled={!!ocup}>{ocup === 'look' ? 'Guardando…' : 'Guardar'}</button>
-                      <button type="button" className="ves-btn" onClick={() => setNombreNuevo(null)}>Cancelar</button></span>
-                  </form>
-                ) : looks.looks.length < (looks.max || 5) ? (
-                  <button type="button" className="ves-look mas" disabled={bloqueado} onClick={() => { setNombreNuevo(''); setLookMsg(''); }}
-                    title={bloqueado ? 'Lo que estás probando todavía no es tuyo' : undefined}>
-                    + Guardar look{bloqueado ? <small>con piezas tuyas</small> : null}</button>
-                ) : null}
+        ) : null;
+        const aun = estado === 'imagen' ? <p className="ves-nota ves-aun">Tu carta se arma en vivo desde su próximo dibujo: hasta entonces, lo que pruebas se ve en su ficha.</p> : null;
+        const titulo = (
+          <Titulo extra={<small className="ves-de">{ran === 'tag' || ran === 'marco' || ran === 'efecto' ? (FINO ? 'pasa el mouse o toca para probártelo' : 'toca para probártelo') : 'tu ' + nombre}</small>}>
+            {ran === 'efecto' ? 'Efecto de tus cartas' : etRan + (ran === 'tag' ? ' de tu ' + nombre : '')}</Titulo>
+        );
+
+        if (!esTel) {
+          // 🖥️ A · EL VESTUARIO: la carta fija a la izquierda, lo que le pones a la derecha
+          return (
+            <div className="vc vc-a">
+              <aside className="vc-izq">
+                <div className="vc-mazo" role="tablist" aria-label="Qué carta vistes">
+                  {cartas.map(([c, n]) => (
+                    <button key={c} type="button" role="tab" aria-selected={carta === c} className={'vc-mz' + (carta === c ? ' on' : '')} onClick={() => irA(c)}>
+                      <span className="ves-mi"><Carta liga={liga} k={k} cual={c} cls="ves-mci" abre={false} /></span>
+                      <small>{n}{principalAhora === c ? ' ★' : ''}</small>
+                      {c in bor.tags ? <i className="vc-pt" aria-label="sin guardar" /> : null}
+                    </button>
+                  ))}
+                </div>
+                <div className="vc-esc">{vp}{viva(ancho)}</div>
+                {aun}
+                {cmpEl}
+                {fichaEl('')}
+                {nCambios ? barraGuardar('vc-sv') : null}
+              </aside>
+              <section className="vc-der">
+                {ranurasEl}
+                {looksEl}
+                <section className="vc-caj" aria-label="Lo que le pones a tu carta">{titulo}{cajon()}</section>
+              </section>
+            </div>
+          );
+        }
+        // 📱 B · LA PASARELA: la carta grande con sus vecinas, las ranuras y una fila de piezas; «Ver los N» abre la hoja
+        const vecina = (d, lado) => {
+          if (cartas.length < (d < 0 ? 3 : 2)) return <span className={'vc-lado ' + lado} />;
+          const [c, n] = cartas[(iC + d + cartas.length) % cartas.length];
+          return (
+            <button type="button" className={'vc-lado ' + lado} onClick={() => irA(c)} aria-label={'Tu carta ' + n}>
+              <Carta liga={liga} k={k} cual={c} cls="vc-li" abre={false} />
+            </button>
+          );
+        };
+        const tira = ran === 'tag' || ran === 'marco' || ran === 'efecto';
+        return (
+          <div className="vc vc-b">
+            <section className="vc-pasa">
+              <div className="vc-trio">{vecina(-1, 'iz')}<div className="vc-carta">{vp}{viva(ancho)}</div>{vecina(1, 'de')}</div>
+              <div className="vc-nom">
+                <button type="button" className="vc-fl" onClick={() => irPaso(-1)} disabled={cartas.length < 2} aria-label="La carta anterior">‹</button>
+                <span><b>{nombre}</b><small>{iC + 1} de {cartas.length}{principalAhora === carta ? ' · ★ tu principal' : ''}</small></span>
+                <button type="button" className="vc-fl" onClick={() => irPaso(1)} disabled={cartas.length < 2} aria-label="La carta siguiente">›</button>
               </div>
-              {lookMsg ? <p className="ves-nota" role="status">{lookMsg}</p> : null}
+              {ranurasEl}
             </section>
-          ) : null}
-          <section className="ves-abajo" aria-label="Lo que le pones a tu carta">
-            <Titulo extra={<small className="ves-de">{ran === 'tag' || ran === 'marco' ? (FINO ? 'pasa el mouse o toca para probártelo' : 'toca para probártelo') : 'tu ' + nombre}</small>}>
-              {etRan}{ran === 'tag' ? ' de tu ' + nombre : ''}</Titulo>
-            {cajon()}
-          </section>
-        </div>
-      ) : null}
+            {aun}
+            <div className={tira ? 'vc-tira' : 'vc-caj'}>{tira ? null : titulo}{cajon()}</div>
+            {fichaEl('chica')}
+            {ran === 'tag' ? <button type="button" className="ves-btn vc-ver" onClick={() => setHoja(true)}>Ver los {ops.length + 1} TAGs</button> : null}
+            {looksEl}
+            {hoja ? (
+              <div className="vc-hoja" role="dialog" aria-modal="true" aria-label={'Los TAGs de tu ' + nombre}>
+                <div className="vc-hoja-arr">{viva(110)}{fichaEl('chica')}</div>
+                <div className="vc-hoja-c">
+                  <div className="vc-hoja-h"><b>TAGs de tu {nombre}</b><small>{mias.length} de {ops.length} tuyos</small>
+                    <button type="button" className="ves-btn blanco" onClick={() => setHoja(false)}>Listo</button></div>
+                  {cajonTag()}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        );
+      })() : null}
 
       {/* 👤 LA PESTAÑA PERFIL, «EL PROBADOR» (remake del 17/11/2026, `perfil_inv.jsx`): qué cambias a la izquierda y cómo te
           ven al medio. La carta principal sigue yendo al borrador (la barra de guardar de abajo) */}
@@ -685,18 +851,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         </Suspense>
       ) : null}
 
-      {/* 💾 la barra de guardar: con cambios, pegada abajo, con tu carta chica para ver lo que pruebas */}
-      {nCambios ? (
-        <div className="ves-guardar" role="region" aria-label="Cambios sin guardar">
-          {sec === 'cartas' && !sinCartas ? <span className="ves-gmini" aria-hidden="true"><CartaViva liga={liga} k={k} cual={carta} ancho={46} piezas={{ tag: el }} marco={marcoVer} /></span> : null}
-          <span className="ves-gtx">
-            {bloqueado ? <><b>Lo estás probando</b> · todavía no es tuyo: en su ficha dice cómo se gana</>
-              : <><b>{nCambios === 1 ? '1 cambio' : nCambios + ' cambios'}</b> sin guardar</>}
-          </span>
-          <button type="button" className="ves-btn" disabled={!!ocup} onClick={cancelar}>{bloqueado ? 'Volver' : 'Cancelar'}</button>
-          {!bloqueado ? <button type="button" className="ves-btn blanco" disabled={!!ocup} onClick={guardar}>{ocup === 'guardar' ? 'Guardando…' : 'Guardar'}</button> : null}
-        </div>
-      ) : null}
+      {/* 💾 la barra de guardar: con cambios, pegada abajo. En la compu, en Cartas, va debajo de la carta (A) */}
+      {nCambios && !(sec === 'cartas' && !sinCartas && !esTel) ? barraGuardar('') : null}
     </div>
   );
 }

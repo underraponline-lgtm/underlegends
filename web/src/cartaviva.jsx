@@ -65,13 +65,17 @@ const quieto = () => typeof window !== 'undefined' && window.matchMedia && windo
  * catálogo, `pase:<título>` o `auto`); lo que no viene queda como se dibujó. `marco` como en `Carta`. `onEstado`
  * recibe `'viva'` cuando la carta ya se puede vestir y `'imagen'` cuando no hay armable.
  */
-export function CartaViva({ liga, k, cual, ancho, piezas = {}, marco, onEstado, cls = '' }) {
+// 🛍️ `efecto` (18/11/2026, el remake de la pestaña Cartas): el efecto de carta de la Tienda que se está probando, con
+// `arte` (el de `pedirArte()`): un id, `''` para ninguno, o `undefined` para el que tiene puesto. Lo demás que tenga
+// puesto (aro, nombre…) no cambia
+export function CartaViva({ liga, k, cual, ancho, piezas = {}, marco, onEstado, cls = '', efecto, arte }) {
   const a = useArmable(liga, k, cual);
   const ifr = useRef(null);
   const [lista, setLista] = useState(false);
   const pub = usePases();
   // 🛍️ el efecto de carta de la Tienda (tanda 3), encima de la armable: sólo el efecto, la carta ya está abajo
-  const PT = usePuesto(k);
+  const PT0 = usePuesto(k);
+  const PT = efecto === undefined ? PT0 : efecto && arte ? { t: Object.assign({}, PT0 ? PT0.t : {}, { carta: efecto }), A: arte } : null;
   useEffect(() => { setLista(false); }, [a]);
   useEffect(() => {
     if (onEstado) onEstado(a === undefined ? 'buscando' : a ? (lista ? 'viva' : 'buscando') : 'imagen');
