@@ -1589,7 +1589,7 @@ def _lo_barato(correr):
     paso('2d', 'lo contestado en ✅ Decidir, y los alias de la hoja AKAs')
     if not correr:
         print('      correría sheet/pendientes.py --barrer --aplicar, bot/reportes.py --aplicar, '
-              'sheet/decidir.py --aplicar y sheet/construir_akas.py')
+              'sheet/decidir.py --aplicar, sheet/construir_akas.py --a-la-grilla --aplicar y sheet/construir_akas.py')
     else:
         # 🔴 PRIMERO SE CIERRA LO QUE SE ARREGLÓ SOLO, y ACÁ, antes de pintar
         # ✅ Decidir. El barrido vivía sólo al final del trabajo `dibujar`,
@@ -1611,6 +1611,10 @@ def _lo_barato(correr):
             m = _re.search(r'(\d+) pregunta\(s\)', _ULTIMA_SALIDA[0])
             if m:
                 _ESTADO['decidir'] = int(m.group(1))
+        # 🪪 y lo que Dlx dijo por chat que son DOS personas (`datos/akas_a_mano.json`, `no_confundir`), a la tabla
+        # «NO CONFUNDIR» de la grilla, que es la que se lee: hasta el 18/11/2026 no llegaba nunca (Ragna y Ragnar,
+        # decidido el 15/10, se volvió a preguntar un mes después). Ver `construir_akas.a_la_grilla()`
+        corre(['sheet/construir_akas.py', '--a-la-grilla', '--aplicar'], callado=False)
         # 🪪 AKAs recién tocada por ✅ Decidir, a datos/ antes de armar los alias (etapa 4b de sacar el Sheet)
         corre(['sheet/espejo_t1.py', '--grillas', '--aplicar'], callado=False)
         corre(['sheet/construir_akas.py'], callado=False)

@@ -2,6 +2,9 @@
 """LA HOJA AKAs DEL OPERATIVO -> datos/akas.json
 
     python sheet/construir_akas.py        lee el Sheet y guarda el JSON
+    python sheet/construir_akas.py --a-la-grilla [--aplicar]
+                                          los «no confundir» de akas_a_mano.json que la grilla no
+                                          tiene, a su tabla E-G (lo corre el ciclo, paso 2d)
 
 ⚠️ ESTA HOJA EXISTIA DESDE SIEMPRE Y NADIE LA LEIA. `comun/crews.py` la
 nombra hace meses —*«la hoja AKAs del Operativo resuelve kibak -> valen, y este
@@ -124,6 +127,57 @@ def a_mano():
         return [], []
     return ([p for p in (d.get('pares') or ()) if len(p) == 2],
             [c for c in (d.get('no_confundir') or ()) if len(c) >= 2])
+
+
+#: el motivo que se copia a la columna G («Diferencia»): las notas de `akas_a_mano.json` son la frase entera de Dlx,
+#: y la grilla es para leer de un vistazo. La frase completa sigue en el archivo
+MOTIVO_MAX = 160
+
+
+def faltan_en_grilla(cuidado_hoja, cuidado_a_mano, norm):
+    """Los `no_confundir` de `akas_a_mano.json` que la tabla «⚠️ NO CONFUNDIR» de la grilla (E-G) no tiene, como
+    `[[persona 1, persona 2, motivo]]`, sin repetir y en el orden del archivo. Pura.
+
+    🔴 RAGNA Y RAGNAR, 18/11/2026. Dlx lo decidió el 15/10 por chat, entró a `akas_a_mano.json` y el código lo
+    respetó desde ese día; la grilla, que es lo que lee una persona, nunca se enteró —y en su tabla de alias seguía
+    `ragna -> Ragnar`—, así que un mes después la duda volvió a preguntarse como si fuera nueva. Medido ese día:
+    los 21 pares de `akas_a_mano.json` faltaban en E-G. Es «un default que no es la decisión» (CLAUDE.md): la
+    decisión vivía en un lugar y quien mira, en otro."""
+    k = lambda a, b: frozenset((norm(a), norm(b)))
+    hay = {k(c[0], c[1]) for c in cuidado_hoja if len(c) >= 2}
+    out = []
+    for c in cuidado_a_mano:
+        kk = k(c[0], c[1])
+        if kk in hay:
+            continue
+        hay.add(kk)
+        motivo = ((c[2] if len(c) > 2 else '') or 'Dlx (chat)').strip()
+        if len(motivo) > MOTIVO_MAX:
+            motivo = motivo[:MOTIVO_MAX - 1].rstrip() + '…'
+        out.append([c[0], c[1], motivo])
+    return out
+
+
+def a_la_grilla(aplicar=False):
+    """🪪 Los `no_confundir` de Dlx que faltan, a la tabla E-G de AKAs: `python sheet/construir_akas.py --a-la-grilla
+    [--aplicar]`. Lo corre el ciclo en el paso 2d, después de ✅ Decidir (que escribe ahí lo que Dlx contesta en la
+    hoja). Escribe con `decidir._agregar_akas()`, o sea por `espejo_t1`: en GitHub; desde una PC se niega sin
+    `--desde-aca`. Sin `--aplicar` sólo dice qué faltaría. Devuelve lo que falta."""
+    import construir_padron as PAD
+    _pares, cuidado = leer()
+    _mp, mc = a_mano()
+    falta = faltan_en_grilla(cuidado, mc, PAD.norm)
+    if not falta:
+        print('   🪪 NO CONFUNDIR: la grilla ya tiene los %d de akas_a_mano.json' % len(mc))
+        return falta
+    print('   🪪 NO CONFUNDIR: %d par(es) de akas_a_mano.json que la grilla no tenía%s'
+          % (len(falta), '' if aplicar else ' (se escribirían)'))
+    for a, b, _m in falta:
+        print('      %s  ≠  %s' % (a, b))
+    if aplicar:
+        import decidir as DEC
+        DEC._agregar_akas([], falta)
+    return falta
 
 
 def _avisos(pares, norm):
@@ -258,6 +312,10 @@ def main():
 
     # ⚠️ AL FINAL, PARA QUE GANE. Ver `a_mano()`.
     pares = pares + [p for p in mp if p not in pares]
+    # ⚠️ POR PAR, NO POR LISTA (18/11/2026): desde `a_la_grilla()` la hoja tiene los mismos pares que el archivo, con
+    # el motivo recortado a `MOTIVO_MAX`, y comparando la lista entera cada uno de esos entraba dos veces. Lo del
+    # archivo reemplaza al de la hoja: la frase entera es la suya
+    cuidado = [c for c in cuidado if _k(c[0], c[1]) not in man_c]
     cuidado = cuidado + [c for c in mc if c not in cuidado]
 
     # 🔴 UN PAR NO PUEDE SER «LA MISMA PERSONA» Y «NO CONFUNDIR» A LA VEZ,
@@ -358,4 +416,7 @@ if __name__ == '__main__':
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except Exception:
         pass
-    main()
+    if '--a-la-grilla' in sys.argv:
+        a_la_grilla(aplicar='--aplicar' in sys.argv)
+    else:
+        main()

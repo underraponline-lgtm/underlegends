@@ -174,6 +174,16 @@ def _hijo(salida):
 
         E.sesion, E.escuchar = _sesion_solo, _escuchar_solo
     import llaves_a_entrada as L
+    # 🪓 LO QUE SE RELEE NO ESTÁ «YA CARGADO» CONTRA SÍ MISMO (18/11/2026, el #533). FRZ hizo tres IRLANDA FREESTYLE el
+    # 27/10 —tres anuncios, tres llaves, tres campeones— y, con el mismo título el mismo día, cayeron en UN número:
+    # Dynoco ganó dos y no cobró nada. Para partirlas se les da nombre propio (`datos/nombres_llaves.json`) y se
+    # releen con el #533; pero `ya_cargada()` compara cada llave con `datos/llaves_t1.json`, donde el #533 todavía
+    # tiene las batallas de las tres, y las dos nuevas se salteaban como «la misma, con otro nombre». Los eventos que
+    # se piden por número se sacan de esa comparación: se están volviendo a leer, no están cargados. Lo que entra
+    # sigue sin escribirse si no se nombra con `--entran`
+    if leer:
+        _nums = {n.strip() for n in leer.split(',') if n.strip().isdigit()}
+        L._CARGADAS[0] = [x for x in L._cargadas() if str(x.get('n')) not in _nums]
     sys.argv = ['llaves_a_entrada.py']
     L.main()
     U = L.ULTIMA

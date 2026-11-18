@@ -12,6 +12,7 @@ name: recalcular
 #
 #   gh workflow run recalcular.yml -f leer=471                  el informe, sin escribir
 #   gh workflow run recalcular.yml -f leer=471 -f aplicar=true  y lo aplica (sólo esos)
+#   … -f leer=533,<link de otra llave> -f entran="NOMBRE"      y carga el que entra con número nuevo
 #
 # ⚠️ EL GRUPO ES `escuchar`, EL DEL CICLO: nunca corren a la vez. Si ya
 # hay una corrida esperando en ese grupo, la nueva la reemplaza (así
@@ -37,6 +38,10 @@ on:
         default: ''
       sin:
         description: 'No aplicar estos (separados por coma)'
+        type: string
+        default: ''
+      entran:
+        description: 'Eventos que todavía no tienen número y SÍ se cargan, por nombre exacto (separados por coma)'
         type: string
         default: ''
       forzar:
@@ -87,10 +92,15 @@ jobs:
           LEER: ${{ inputs.leer }}
           SOLO: ${{ inputs.solo }}
           SIN: ${{ inputs.sin }}
+          ENTRAN: ${{ inputs.entran }}
+        # 🆕 `entran` (18/11/2026, el #533 partido en tres): lo que el informe da como «entra» no se carga nunca solo
+        # —ahí cae también lo que el ciclo no carga a propósito—; se nombra. Un arreglo y no una cadena: los nombres
+        # llevan espacios («- IRLANDA FREESTYLE - 3:23 PM») y `$args` sin comillas los partía
         run: |
-          args="--informe /tmp/recalcular.json --aplicar --solo ${SOLO:-$LEER}"
-          if [ -n "$SIN" ]; then args="$args --sin $SIN"; fi
-          python herramientas/recalcular_t1.py $args
+          args=(--informe /tmp/recalcular.json --aplicar --solo "${SOLO:-$LEER}")
+          if [ -n "$SIN" ]; then args+=(--sin "$SIN"); fi
+          if [ -n "$ENTRAN" ]; then args+=(--entran "$ENTRAN"); fi
+          python herramientas/recalcular_t1.py "${args[@]}"
 
       - name: guardar
         if: always() && inputs.aplicar == true
