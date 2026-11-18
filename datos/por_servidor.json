@@ -4005,6 +4005,18 @@
     "pts": 4688,
     "racha": "0/1"
    },
+   "CH": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 4950,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/2",
     "ev": 6,
@@ -11685,20 +11697,6 @@
     "racha": "0/0"
    }
   },
-  "RESPIRACIÓN 🇨🇱": {
-   "CH": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 1,
-    "pts": 4950,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "RICKYFORT": {
    "FFA": {
     "duelos": "",
@@ -15322,7 +15320,7 @@
     "racha": "0/0"
    }
   },
-  "astrid 🇲🇽": {
+  "astrid": {
    "CH": {
     "duelos": "0/1",
     "ev": 1,
@@ -15361,7 +15359,7 @@
     }
    }
   },
-  "beneroo🇨🇱": {
+  "beneroo": {
    "CH": {
     "duelos": "0/1",
     "ev": 1,

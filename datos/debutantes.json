@@ -852,6 +852,7 @@
    "vencido": true
   },
   "El felpudo": {
+   "avisado": "2026-11-17",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-15T19:01:05+00:00",
@@ -1787,10 +1788,11 @@
    "vencido": false
   },
   "Lover": {
+   "avisado": "2026-11-17",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-14T04:32:52+00:00",
-   "did": "",
+   "did": "1510224298416017420",
    "evento": "COMPE CHOP NUEVO CEO",
    "n": 656,
    "sv": "CH",
@@ -2414,17 +2416,6 @@
    "sv": "CEU",
    "vence": "2026-11-05T15:39:00+00:00",
    "vencido": true
-  },
-  "RESPIRACIÓN": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-15T19:01:05+00:00",
-   "did": "",
-   "evento": "VERSO ELITE VOL.1",
-   "n": 657,
-   "sv": "CH",
-   "vence": "2026-11-22T19:01:05+00:00",
-   "vencido": false
   },
   "Rafael JR": {
    "con": null,
@@ -3105,10 +3096,11 @@
    "vencido": true
   },
   "astrid": {
+   "avisado": "2026-11-17",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-14T04:32:52+00:00",
-   "did": "",
+   "did": "312312241909399552",
    "evento": "COMPE CHOP NUEVO CEO",
    "n": 656,
    "sv": "CH",
@@ -3140,10 +3132,11 @@
    "vencido": true
   },
   "beneroo": {
+   "avisado": "2026-11-17",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-15T19:01:05+00:00",
-   "did": "",
+   "did": "899160988480319508",
    "evento": "VERSO ELITE VOL.1",
    "n": 657,
    "sv": "CH",
@@ -3253,6 +3246,7 @@
    "vencido": true
   },
   "finnpapá": {
+   "avisado": "2026-11-17",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-15T19:01:05+00:00",

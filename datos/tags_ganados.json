@@ -3272,6 +3272,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1794640002557
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794963926610
    ]
   },
   "pais": {
@@ -4042,6 +4047,11 @@
     "t1",
     1794855789166
    ],
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1794963926610
+   ],
    "🔁 VENGADOR": [
     "🔁 VENGADOR",
     "t1",
@@ -4692,6 +4702,13 @@
   }
  },
  "efimero": {
+  "pais": {
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1794963926610
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -4700,6 +4717,26 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1794963926610
+   ],
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1794962387538
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1794963926610
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1794962387538
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -9048,10 +9085,20 @@
  },
  "mats": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1794963926610
+   ],
    "🎯 COMPLETO": [
     "🎯 COMPLETO",
     "t1",
     1794962387538
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1794963926610
    ],
    "🧊 SANGRE FRÍA": [
     "🧊 SANGRE FRÍA",
@@ -13748,20 +13795,6 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
-   ]
-  }
- },
- "respiracion": {
-  "temporada": {
-   "🌱 PROMESA": [
-    "🌱 PROMESA",
-    "t1",
-    1794962387538
-   ],
-   "🥉 AL PODIO": [
-    "🥉 AL PODIO",
-    "t1",
-    1794962387538
    ]
   }
  },

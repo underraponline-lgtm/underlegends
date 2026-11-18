@@ -856,6 +856,10 @@
 "temporada"
 ]
 },
+"efimero": {
+"rg": "E",
+"c": []
+},
 "sultan": {
 "rg": "E",
 "c": []
@@ -1148,10 +1152,6 @@
 ]
 },
 "ikonoxx": {
-"rg": "",
-"c": []
-},
-"efimero": {
 "rg": "",
 "c": []
 },
@@ -2876,14 +2876,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-12T15:30:05Z",
-"quien": [
-"Majiztral"
-],
-"carta": "pais"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-12T15:36:59Z",
@@ -6265,6 +6257,15 @@
 ],
 "rk": "temporada",
 "pos": 10
+},
+{
+"tipo": "rango",
+"t": "2026-11-18T01:05:01Z",
+"quien": [
+"Efimero"
+],
+"rg": "E",
+"primero": true
 }
 ],
 "noche_antes": {
@@ -8101,7 +8102,7 @@
 "monet": 0,
 "deluxe": 0,
 "ikonoxx": 0,
-"efimero": 0,
+"efimero": 1,
 "zaik": 1,
 "pomberito": 0,
 "andy": 0,
