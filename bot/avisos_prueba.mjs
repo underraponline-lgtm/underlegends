@@ -871,7 +871,7 @@ const ok = (cond, que, det) => {
     A.motivoAplauso({ tipo: 'tarjeta' }) === '', 'el motivo de cada logro; lo que no es un logro, nada');
   // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026)
   ok(A.tituloSeguido({ tipo: 'top10', rk: 'competitivo' }, 'Ana') === '🔝 Ana entró al top 10 del Ranking Competitivo' &&
-    A.tituloSeguido({ tipo: 'subio', de: 30, a: 12 }, 'Ana') === '📈 Ana subió 18 puestos esta semana' &&
+    A.tituloSeguido({ tipo: 'subio', de: 30, a: 12 }, 'Ana') === '📈 Ana subió 18 puestos en la semana' &&
     A.tituloSeguido({ tipo: 'svlunes', sv: 'FFA' }, 'Ana') === '' &&
     A.motivoAplauso({ tipo: 'racha', racha: 5 }) === 'llegar a 5 eventos seguidos' && !A.APLAUDIBLES.crewunion && !A.APLAUDIBLES.svlunes,
   'lo nuevo de la gente avisa a sus seguidores y se felicita; lo de un servidor solo y entrar a una crew, no');
@@ -4019,6 +4019,14 @@ const ok = (cond, que, det) => {
     const r3 = o.libreResultado({ quien: Q, id: c5.id, gane: true });
     ok(r3.estado === 'sin_acuerdo' && o.libreResultado({ quien: '300000000000000099', id: c5.id, gane: true }).error === 'no_existe',
       'si cada uno dice que ganó, queda sin acuerdo; y alguien de afuera no puede decir nada', JSON.stringify(r3));
+    // ⏳ y una 'pend' pasados 7 días de su hora vence (`LIBRE_VENCE_MS`, 18/11/2026): sale como 'vencida' y ya no
+    // traba a esa pareja con «ya»
+    const c6 = o.libreCrear({ quien: Q, rival: 'beto', t: new Date(ya + 3600000).toISOString() });
+    o.sql.exec('UPDATE libres SET t = ? WHERE id = ?', ya - 8 * 86400000, c6.id);
+    const v6 = o.libresDe(Q).libres.find((x) => x.id === c6.id);
+    const c7 = o.libreCrear({ quien: Q, rival: 'beto', t: new Date(ya + 3600000).toISOString() });
+    ok(c6.ok && v6 && v6.estado === 'vencida' && c7.ok, 'una libre sin contestar vence a los 7 días: sale «vencida» y se puede retar de nuevo',
+      JSON.stringify([c6, v6, c7]));
   }
 }
 

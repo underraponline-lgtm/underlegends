@@ -314,6 +314,9 @@ function visitaRepetida(req, que) {
   return false;
 }
 
+// 👥 lo que cambia la lista pública de las crews: una acción de la gente y lo del dueño (ver el final de `avisos()`)
+const CREW_ACCION = { '/api/avisos/crew': 1, '/api/avisos/dueno/crew': 1 };
+
 async function avisos(req, url, ctx) {
   const metodo = AVISOS[url.pathname];
   if (req.method !== metodo) return new Response('no', { status: 405 });
@@ -349,7 +352,11 @@ async function avisos(req, url, ctx) {
     // 🌆 el fondo del VS del Dashboard (11/11/2026): una foto de 1.600 px, más grande que las otras. Sin esto la página la
     // cortaba en 4 KB y «Subir» daba 413 siempre (la revisión del 11/11). El Worker la vuelve a medir (1,6 MB)
     const vsf = url.pathname === '/api/avisos/dueno/vs-fondo';
-    if (cuerpo.length > (vsf ? 1700000 : grande ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
+    // ⚙️ un ajuste del Dashboard (18/11/2026): 16 KB, el mismo tope que `/avisos/dueno/ajuste` en bot/avisos.js desde el
+    // 25/10 —las promos a mano, los links quitados, los beneficios de todos los servidores—. Acá seguía en 4 KB, así que
+    // ese arreglo nunca llegó a la página: pasado eso, «⚠️ No se pudo: 413.». ⚠️ Si se mueve uno, se mueve el otro
+    const aj = url.pathname === '/api/avisos/dueno/ajuste';
+    if (cuerpo.length > (vsf ? 1700000 : grande ? 900000 : aj ? 16384 : 4096)) return new Response('demasiado grande', { status: 413 });
     init.body = cuerpo;
     init.headers['content-type'] = 'application/json';
     if (sesion(req)) init.headers['x-lg-ses'] = sesion(req);
@@ -358,9 +365,12 @@ async function avisos(req, url, ctx) {
     ttl = 3600;
   } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') || url.pathname.endsWith('/ligas-votos') ||
              url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') || url.pathname.endsWith('/comentarios') || url.pathname.endsWith('/qg-finales') ||
-             url.pathname.endsWith('/estado')) {
+             url.pathname.endsWith('/estado') || url.pathname.endsWith('/avisos/crews')) {
     // ⚡ `/estado` también (revisión del 04/10/2026): la campana lo pide en cada visita, es público —cuántos,
     // cuándo, nunca quién— y cada pedido eran once lecturas de tablas enteras en el objeto que vigila
+    // 👥 y las crews (18/11/2026): era el único GET público sin borde, así que cada visita al Inicio, al Perfil, a la Tienda
+    // o al Ranking despertaba al objeto (`crewsPublico()` y la basura de las crews), aunque web/src/crews.js decía que «el
+    // borde la guarda 20 s». Quien acaba de actuar no espera: ver `CREW_ACCION` abajo
     // ⚠️ 30 s EN EL BORDE: la página pregunta cada minuto y el vigía escribe
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto
@@ -388,6 +398,12 @@ async function avisos(req, url, ctx) {
     return delBorde(ctx, url, ttl, () => fetch(ORIGEN + url.pathname.slice('/api'.length), init), cab, url.searchParams.has('r'));
   }
   const r = await fetch(ORIGEN + url.pathname.slice('/api'.length), init);
+  // 👥 una crew que cambió (18/11/2026): se tira la copia de `/api/avisos/crews` del borde de esta ciudad antes de
+  // contestar, así quien actuó ve la lista nueva al instante —la página la vuelve a pedir enseguida (`accionCrew()` de
+  // web/src/crews.js)— y no hasta 30 s después. Los demás la ven con el borde, como el resto de lo público
+  if (CREW_ACCION[url.pathname] && r.ok) {
+    try { await caches.default.delete(new Request(url.origin + '/__borde/api/avisos/crews', { method: 'GET' })); } catch (e) { /* sin caché */ }
+  }
   return new Response(r.body, { status: r.status, headers: cab });
 }
 
@@ -443,11 +459,19 @@ const R2_CARTAS = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
 const ORDEN_CARTA = ['temporada', 'servidor', 'competitivo', 'pais'];
 const banderaDe = (cc) => (/^[a-z]{2}$/i.test(String(cc || ''))
   ? String.fromCodePoint(...[...String(cc).toUpperCase()].map((c) => 0x1F1E6 + c.charCodeAt(0) - 65)) : '');
+// 🔴 EL INDEX.HTML DE LAS VISTAS PREVIAS SE PIDE SIN LAS CABECERAS DEL BOT (18/11/2026). Se le pasaban todas, con
+// `If-None-Match` adentro: el ETag es el del index.html, el mismo en todas las rutas, así que un bot que revalidaba recibía
+// de los estáticos un 304 sin cuerpo y esto lo devolvía como 200 VACÍO (medido ese día con curl: Discordbot y Googlebot,
+// 0 bytes). Como ya hacía `vistaPais()` con los nombres. Y la respuesta sale sin ese ETag (`h.delete('etag')`): no cambia
+// cuando cambian el OVR, el puesto o la imagen, y con él una revalidación daría por vigente una vista previa vieja
+const plantilla = (env, url) => env.ASSETS.fetch(new Request(url.origin + '/'));
 
 /** La fila de alguien para su vista previa: `{f, temp, cartas}` (la tabla del lobby, o su perfil si no entra), o `null` */
-async function fichaVista(k) {
+// 🛡️ con la IP de quien pidió la vista previa (`x-lg-ip`, 18/11/2026), en ésta y en todos los subpedidos de las vistas
+// previas: el freno de Pages es por isolate, y así también los cuenta el del Worker (ver `fetch()` de abajo)
+async function fichaVista(k, req) {
   const pedir = async (ruta) => {
-    const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } });
+    const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) }, cf: { cacheTtl: 300, cacheEverything: true } });
     return r.ok ? r.json() : null;
   };
   const L = await pedir('/lobby?json=1').catch(() => null);
@@ -479,14 +503,14 @@ function textoVista(f, k, temp, cartas) {
 
 /** El index.html con la vista previa de esa persona; `null` si no se sabe quién es (queda la de la Liga) */
 async function vistaPerfil(req, env, k, url) {
-  const [x, og] = await Promise.all([fichaVista(k).catch(() => null), hayOg('perfil', slugOg(k)).catch(() => '')]);
+  const [x, og] = await Promise.all([fichaVista(k, req).catch(() => null), hayOg('perfil', slugOg(k)).catch(() => '')]);
   if (!x) return null;
   const tv = textoVista(x.f, k, x.temp, x.cartas);
   // 🖼️ el cartel armado por el ciclo (17/11/2026, `bot/og_links.py`: su fondo, su carta y su nombre), si ya está. Es de
   // 1200 × 630, así que se quedan las medidas del cartel; sin él, la carta sola, como antes
   const { titulo, desc } = tv;
   const img = og || tv.img, alt = og ? 'El perfil de ' + String(x.f.n || k).trim() + ' en la Liga Global de Freestyle' : tv.alt;
-  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
   const sacar = { element(el) { el.remove(); } };
   let rw = new HTMLRewriter()
@@ -511,6 +535,7 @@ async function vistaPerfil(req, env, k, url) {
   const r = rw.transform(pag);
   const h = new Headers(r.headers);
   h.set('cache-control', 'public, max-age=300');
+  h.delete('etag');
   return new Response(r.body, { status: 200, headers: h });
 }
 
@@ -520,8 +545,8 @@ async function vistaPerfil(req, env, k, url) {
 // `herramientas/banner_link.py`)—, sólo faltaba que su página la dijera. Igual que el perfil: sólo para los bots, con el
 // lobby cacheado. Sin ese servidor en el lobby queda la de la Liga
 async function vistaServidor(req, env, x, url) {
-  const r = await fetch(ORIGEN + '/lobby?json=1', { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } })
-    .catch(() => null);
+  const r = await fetch(ORIGEN + '/lobby?json=1', { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
+    cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
   const L = r && r.ok ? await r.json().catch(() => null) : null;
   const X = String(x || '').toUpperCase();
   const s = L && (L.svs || []).find((y) => y && (y.sv === X || String(y.sigla || '').toUpperCase() === X));
@@ -532,7 +557,7 @@ async function vistaServidor(req, env, x, url) {
     + 'Sus eventos, su gente y sus tarjetas, en el ranking mundial del freestyle online.';
   // 🎬 la de cine (bot/og_links.py, 18/11/2026), si ya está; si no, la de banner_link.py
   const img = (await hayOg('sv', slugOg(s.sv))) || url.origin + '/og/' + s.sv.toLowerCase() + '.png';
-  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
   const rw = new HTMLRewriter()
     .on('title', { element(el) { el.setInnerContent(nombre + ' · Liga Global de Freestyle'); } })
@@ -548,6 +573,7 @@ async function vistaServidor(req, env, x, url) {
   const out = rw.transform(pag);
   const h = new Headers(out.headers);
   h.set('cache-control', 'public, max-age=300');
+  h.delete('etag');
   return new Response(out.body, { status: 200, headers: h });
 }
 
@@ -558,10 +584,11 @@ async function vistaServidor(req, env, x, url) {
 // siempre. ⚠️ El título y la bajada van acá y en banner_paginas.py: si se cambia uno, se cambia el otro
 const PAGINAS = {
   ranking: ['Ranking', 'Los mejores del freestyle online, de todos los servidores, en una sola tabla.'],
-  crews: ['Crews', 'Arma la tuya, invita a tu gente y subí de tier cada semana.'],
+  // 🗣️ «sube» y no «subí» (18/11/2026): la pasada de tú del 20/10 se lo había saltado acá y en el Pase
+  crews: ['Crews', 'Arma la tuya, invita a tu gente y sube de tier cada semana.'],
   eventos: ['Eventos', 'Qué se juega hoy en cada servidor, con la llave en vivo y la campana.'],
   tarjetas: ['Tarjetas', 'Temporada, Competitiva, Servidor y País: tus números, en una carta.'],
-  pase: ['Pase rapero', 'Tareas diarias y semanales, XP y niveles: subí y desbloquea.'],
+  pase: ['Pase rapero', 'Tareas diarias y semanales, XP y niveles: sube y desbloquea.'],
   ligas: ['Ligas', 'Fechas, tablas y campeones de las ligas de los servidores socios.'],
   tienda: ['Tienda', 'Caza cabezas, apuesta en vivo y gasta tus Puntos de Tienda.'],
   publicaciones: ['Publicaciones', 'Campeones, rachas y crews que suben: el muro de todos los servidores.'],
@@ -579,9 +606,11 @@ const ALIAS = { avisos: 'eventos', mundo: 'socios', duelos: 'ranking' };
 const RUTA_PAGINA = new RegExp('^/(?:freestyle-rap/)?(' + Object.keys(PAGINAS).concat(Object.keys(ALIAS), ['llave', 'pais']).join('|') + ')(?:/|$)');
 const R2_CREWS = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/crews\/[\w.-]+$/;
 
-/** Un json del Worker del bot, cacheado 5 min (el lobby, las llaves viejas); `null` si no contestó */
-async function pedirJson(ruta) {
-  const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
+/** Un json del Worker del bot, cacheado 5 min (el lobby, las llaves viejas); `null` si no contestó. `req`, para la IP
+ *  de quien pidió la vista previa (ver `fichaVista()`) */
+async function pedirJson(ruta, req) {
+  const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
+    cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
   return r && r.ok ? r.json().catch(() => null) : null;
 }
 
@@ -600,10 +629,10 @@ async function vistaLiga(req, env, id, url) {
     return conVista(req, env, url, { tab: fijas[id][0] + ' · Liga Global de Freestyle', titulo: fijas[id][0] + ' · Liga Global de Freestyle',
       desc: fijas[id][1], img: (await hayOg('pag', 'ligas')) || url.origin + '/og/p/ligas.png', alt: fijas[id][0] });
   }
-  const L = await pedirJson('/lobby?json=1');
+  const L = await pedirJson('/lobby?json=1', req);
   // 🏟️ las ligas ya no viajan en el lobby (25/10/2026): van en `/ligas`, con lo del Inicio en `lobby`. El lobby viejo,
   // mientras el ciclo no haya subido uno nuevo, todavía las trae
-  const LG = L && L.ligas ? null : await pedirJson('/ligas');
+  const LG = L && L.ligas ? null : await pedirJson('/ligas', req);
   const x = L && (((L.ligas || (LG && LG.lobby)) || {}).ligas || []).find((l) => l && l.id === id);
   if (!x || !x.n) return null;
   const s = (L.svs || []).find((y) => y && y.sv === x.sv);
@@ -618,9 +647,9 @@ async function vistaLiga(req, env, id, url) {
 // campeón, con la imagen del servidor. Las del lobby primero; las viejas, de `/llaves`. Las en vivo (`v:…`) no: cambian
 async function vistaLlave(req, env, n, url) {
   if (!/^\d{1,6}$/.test(n)) return null;
-  const L = await pedirJson('/lobby?json=1');
+  const L = await pedirJson('/lobby?json=1', req);
   let x = L && (L.llaves || {})[n];
-  if (!x) { const T = await pedirJson('/llaves'); x = T && T[n]; }
+  if (!x) { const T = await pedirJson('/llaves', req); x = T && T[n]; }
   if (!x || !x.nombre) return null;
   const s = L && (L.svs || []).find((y) => y && y.sv === x.sv);
   const camp = (x.tabla || []).filter((f) => Array.isArray(f) && f[1] === 'Campeón').map((f) => String(f[0]).trim()).slice(0, 2);
@@ -642,7 +671,7 @@ async function vistaPais(req, env, cc, url) {
   const r = await env.ASSETS.fetch(new Request(url.origin + '/og/pais/nombres.json')).catch(() => null);
   const nombres = r && r.ok ? await r.json().catch(() => null) : null;
   if (!nombres || !nombres[cc]) return null;
-  const L = await pedirJson('/lobby?json=1');
+  const L = await pedirJson('/lobby?json=1', req);
   const p = L && (L.paises || []).find((y) => y && String(y.cc).toLowerCase() === cc);
   const nombre = String(nombres[cc]);
   const desc = (p && p.n ? p.n + (p.n === 1 ? ' rapero' : ' raperos') + ' en la Liga Global. ' : '')
@@ -653,7 +682,7 @@ async function vistaPais(req, env, cc, url) {
 
 /** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?}` sobre la página de siempre */
 async function conVista(req, env, url, v) {
-  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
   const rw = new HTMLRewriter()
     .on('title', { element(el) { el.setInnerContent(v.tab); } })
@@ -673,6 +702,7 @@ async function conVista(req, env, url, v) {
   const out = rw.transform(pag);
   const h = new Headers(out.headers);
   h.set('cache-control', 'public, max-age=300');
+  h.delete('etag');
   return new Response(out.body, { status: 200, headers: h });
 }
 
@@ -689,20 +719,21 @@ async function vistaPagina(req, env, pagina, url) {
 async function vistaInicio(req, env, url) {
   const img = await hayOg('pag', 'inicio');
   if (!img) return null;
-  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
   const out = new HTMLRewriter().on('meta[property="og:image"]', poner('content', img)).on('meta[name="twitter:image"]', poner('content', img))
     .transform(pag);
   const h = new Headers(out.headers);
   h.set('cache-control', 'public, max-age=300');
+  h.delete('etag');
   return new Response(out.body, { status: 200, headers: h });
 }
 
 // 👥 Y LA DE CADA CREW: su nombre, su descripción, cuántos son y su logo (`/avisos/crews` es público y se cachea 5 min).
 // Sin logo, o si la crew no existe, la imagen de la página de crews
 async function vistaCrew(req, env, id, url) {
-  const r = await fetch(ORIGEN + '/avisos/crews', { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } })
-    .catch(() => null);
+  const r = await fetch(ORIGEN + '/avisos/crews', { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
+    cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
   const j = r && r.ok ? await r.json().catch(() => null) : null;
   const c = j && (j.crews || []).find((x) => x && x.id === id);
   if (!c) return null;
@@ -734,9 +765,9 @@ async function hayOg(tipo, slug) {
 // 🎁 Y LA DE CADA LINK DE REFERIDO (`/i/<clave>`): «X te invita», con su miniatura o, si todavía no está, su tarjeta.
 // Sólo si el link está abierto esta temporada (`/avisos/ref-link`); si no, la vista de siempre
 async function vistaRef(req, env, k, url) {
-  const [x, rl] = await Promise.all([fichaVista(k).catch(() => null),
-    fetch(ORIGEN + '/avisos/ref-link?k=' + encodeURIComponent(k), { headers: { accept: 'application/json' }, cf: { cacheTtl: 60, cacheEverything: true } })
-      .then((r) => (r.ok ? r.json() : null)).catch(() => null)]);
+  const [x, rl] = await Promise.all([fichaVista(k, req).catch(() => null),
+    fetch(ORIGEN + '/avisos/ref-link?k=' + encodeURIComponent(k), { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
+      cf: { cacheTtl: 60, cacheEverything: true } }).then((r) => (r.ok ? r.json() : null)).catch(() => null)]);
   if (!x || !rl || !rl.activo) return null;
   const nombre = String(x.f.n || k).trim();
   const og = await hayOg('ref', slugOg(k));
@@ -751,12 +782,31 @@ export default {
     const url = new URL(req.url);
     const ua = req.headers.get('user-agent') || '';
 
+    // 🛡️ EL FRENO POR IP, ANTES QUE NADA (18/11/2026; ver `demasiados()`). Estaba abajo, después de las vistas previas, y
+    // todas devuelven antes de llegar: contaba a la gente —que en esas rutas recibe el index.html y no cuesta nada— y
+    // nunca a un bot, que es el único que dispara pedidos al Worker (y de ahí a KV y al objeto). Y el UA se falsea
+    // gratis. Ahora cuenta también todo lo que pide un bot de vista previa y los links cortos (`/c/` le pregunta al
+    // objeto en cada visita, también de la gente)
+    if ((url.pathname.indexOf('/api/') === 0 || /^\/(?:i|c)\//.test(url.pathname) || BOTS_VISTA.test(ua)
+      || url.pathname.indexOf('/freestyle-rap/r/') === 0
+      || url.pathname.indexOf('/freestyle-rap/sv/') === 0 || url.pathname.indexOf('/freestyle-rap/crew/') === 0
+      || url.pathname.indexOf('/freestyle-rap/llave/') === 0 || url.pathname.indexOf('/freestyle-rap/pais/') === 0
+      || url.pathname.indexOf('/freestyle-rap/ligas/') === 0)
+      && demasiados(bloqueIP(ipDe(req)))) return muchos();
+
     // 🎁 LOS LINKS CORTOS (17/11/2026, Dlx: «que el link sea corto para no asustar»): `/i/<clave>` es el de referido y
     // `/c/<código>` el de una crew. A la persona la llevan a la página (`/freestyle-rap/invitar?ref=` o la crew con `?u=`); a los bots de vista previa
     // les dan la miniatura (`vistaRef()`, `vistaCrew()`)
-    const mRef = req.method === 'GET' && /^\/i\/([a-z0-9][a-z0-9._-]{0,59})\/?$/i.exec(url.pathname);
+    // 🔤 CON LETRAS DE CUALQUIER ALFABETO (18/11/2026): la clave sale de `comun/claves.clave()`, que deja la ø, el cirílico y
+    // el resto, y esto sólo aceptaba [a-z0-9] sobre la dirección sin decodificar: `/i/t%C3%B8ki%C3%B8` (TøKiØ, #49) no
+    // redirigía y caía en una ruta que la página no conoce, sin `?ref=`. ⚠️ La misma expresión tiene que estar en
+    // `REF_COD` (bot/avisos.js) y en `COD` (web/src/referidos.js): si no, el link llega y se pierde en el paso siguiente
+    const crudoRef = req.method === 'GET' && /^\/i\/([^/?#]{1,720})\/?$/.exec(url.pathname);
+    let kRef = '';
+    if (crudoRef) { try { kRef = decodeURIComponent(crudoRef[1]); } catch (e) { kRef = ''; } }
+    const mRef = kRef && /^[\p{L}\p{N}][\p{L}\p{N}._-]{0,59}$/u.test(kRef);
     if (mRef) {
-      const k = mRef[1].toLowerCase();
+      const k = kRef.toLowerCase();
       if (BOTS_VISTA.test(ua)) { const v = await vistaRef(req, env, k, url).catch(() => null); if (v) return v; }
       // a la página que le dice quién lo invitó y qué hacer (invitar.jsx); `?ref=` lo anota referidos.js
       return Response.redirect(url.origin + '/freestyle-rap/invitar?ref=' + encodeURIComponent(k), 302);
@@ -764,7 +814,8 @@ export default {
     const mCod = req.method === 'GET' && /^\/c\/([a-hjkmnp-z2-9]{10})\/?$/i.exec(url.pathname);
     if (mCod) {
       const cod = mCod[1].toLowerCase();
-      const r = await fetch(ORIGEN + '/avisos/crew-link?cod=' + cod, { headers: { accept: 'application/json' } }).catch(() => null);
+      const r = await fetch(ORIGEN + '/avisos/crew-link?cod=' + cod, { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) } })
+        .catch(() => null);
       const j = r && r.ok ? await r.json().catch(() => null) : null;
       const id = j && j.crew ? String(j.crew) : '';
       if (id && BOTS_VISTA.test(ua)) { const v = await vistaCrew(req, env, id, url).catch(() => null); if (v) return v; }
@@ -819,13 +870,7 @@ export default {
     // sesión es SameSite=Strict, pero un formulario de otra página podía mandar a `/api/cuenta` el permiso de OTRA
     // persona —la de quien arma la trampa— y dejarle a la víctima esa sesión: votaba, seguía y gastaba Puntos como el
     // otro sin saberlo. Los navegadores mandan `Origin` en todo POST; si viene y no es éste, no pasa. Sin `Origin`
-    // (el ciclo, un navegador viejo) pasa como antes
-    // 🛡️ el freno por IP: todo lo de la API y la vista previa de los perfiles (ver `demasiados()`)
-    if ((url.pathname.indexOf('/api/') === 0 || url.pathname.indexOf('/freestyle-rap/r/') === 0
-      || url.pathname.indexOf('/freestyle-rap/sv/') === 0 || url.pathname.indexOf('/freestyle-rap/crew/') === 0
-      || url.pathname.indexOf('/freestyle-rap/llave/') === 0 || url.pathname.indexOf('/freestyle-rap/pais/') === 0
-      || url.pathname.indexOf('/freestyle-rap/ligas/') === 0)
-      && demasiados(bloqueIP(req.headers.get('cf-connecting-ip')))) return muchos();
+    // (el ciclo, un navegador viejo) pasa como antes. ⚠️ El freno por IP ya no va acá: está al principio de `fetch()`
     if (req.method === 'POST' && url.pathname.indexOf('/api/') === 0) {
       const o = req.headers.get('origin');
       if (o !== null && o !== url.origin) return new Response('no', { status: 403, headers: SEGURO });

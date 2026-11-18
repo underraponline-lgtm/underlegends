@@ -2735,6 +2735,9 @@ const HH_RE = /(?<![\d/:])(\d{1,2})\s*(?:(hs|hrs|h)\b|([ap])\.?\s*m\b\.?)/i;
 // el día de la semana, con domingo en 0 como `getDay()`
 const DIAS_JS = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
 const DIA_MS = 24 * HORA;
+// ⚔️ una batalla libre 'pend' vence a los 7 días de su hora (18/11/2026): deja de contar para «ya» y «muchas» y sale
+// como 'vencida'. Ver `libreCrear()` y `libresDe()`
+const LIBRE_VENCE_MS = 7 * DIA_MS;
 
 // ── 📊 CUÁNTA GENTE USA EL BOT Y LA PÁGINA (Dlx, 04/10/2026: «en stats mostrá cuántas personas usaron o
 // interactuaron con el bot… para ver cuántos están enganchados con el bot y la página web») ──────────────────────
@@ -3880,7 +3883,7 @@ export function tituloSeguido(x, n, rol) {
                 // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026)
                 : x.tipo === 'podio' ? `🥈 ${n} subió a su primer podio${ev ? ' en ' + ev : ''}`
                 : x.tipo === 'top10' ? `🔝 ${n} entró al top 10 del Ranking ${x.rk === 'competitivo' ? 'Competitivo' : 'Temporada'}`
-                : x.tipo === 'subio' ? `📈 ${n} subió ${(x.de || 0) - (x.a || 0)} puestos esta semana`
+                : x.tipo === 'subio' ? `📈 ${n} subió ${(x.de || 0) - (x.a || 0)} puestos en la semana`
                 : x.tipo === 'racha' ? `🔥 ${n} lleva ${x.racha} eventos seguidos`
                 : x.tipo === 'crewunion' ? `👥 ${n} entró a la crew ${String(x.nombre || '').slice(0, 40)}`
                 : x.tipo === 'crewnueva' ? `👥 ${n} creó la crew ${String(x.nombre || '').slice(0, 40)}`
@@ -4285,7 +4288,10 @@ export const REF_TRACK = [
   [5, [['drop', 2], ['pdt', 1500]]],
   [10, [['marco', 'embajador']]],
 ];
-const REF_COD = /^[a-z0-9][a-z0-9._-]{0,59}$/;
+// 🔤 CON LETRAS DE CUALQUIER ALFABETO (18/11/2026): era [a-z0-9], y `comun/claves.clave()` deja la ø, el cirílico y el
+// resto: a «tøkiø» (TøKiØ, #49) `refMio()` le daba `puede: false` y la página le decía «Se abre al verificarte». Es la
+// misma expresión que `/i/` en bot/paginas/_worker.js y `COD` en web/src/referidos.js. Va siempre a SQL por parámetros
+const REF_COD = /^[\p{L}\p{N}][\p{L}\p{N}._-]{0,59}$/u;
 
 // ✨ EN QUÉ CARTA VA CADA TÍTULO QUE NO SALE DEL PASE (17/11/2026, Dlx: «arregla lo de los títulos de novato también»).
 // `tagElige()` pide que cada título diga su carta (`titulo_carta`, Dlx 26/10/2026: «cada tarjeta tiene sus tags»), y ese
@@ -4728,7 +4734,9 @@ export const NOTA_ETIQUETAS = ['nota', 'ayuda', 'aviso', 'sancion'];
 export function validarNota(d) {
   if (d && Number.isInteger(Number(d.borrar)) && Number(d.borrar) > 0 && !d.texto) return { borrar: Number(d.borrar) };
   const k = String((d && d.k) || '');
-  if (!/^[a-z0-9]{1,40}$/.test(k)) return { error: 'falta quién' };
+  // 18/11/2026: claveValida() y no /^[a-z0-9]{1,40}$/, que dejaba sin notas a las claves con guion o con letras no
+  // ASCII (julix-x, tøkiø: 16 de 856 perfiles) y le daba «falta quién» al staff
+  if (!claveValida(k)) return { error: 'falta quién' };
   const et = String((d && d.et) || 'nota');
   if (!NOTA_ETIQUETAS.includes(et)) return { error: 'etiqueta' };
   const texto = String((d && d.texto) || '').replace(/\s+/g, ' ').trim();
@@ -7488,7 +7496,8 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
     let d = null;
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
-    if (!d || typeof d !== 'object' || !/^[a-z0-9]{1,40}$/.test(String(d.k || '')) || !PLANTILLAS_VUELVE[d.que]) return json({ error: 'faltan datos' }, 400);
+    // 18/11/2026: claveValida(), como el resto del archivo: el regex ASCII rechazaba las claves con guion o tilde
+    if (!d || typeof d !== 'object' || !claveValida(String(d.k || '')) || !PLANTILLAS_VUELVE[d.que]) return json({ error: 'faltan datos' }, 400);
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
     if (!(await puede(q.id, 'reportes_cerrar'))) return json({ error: 'no' }, 403);
@@ -7527,7 +7536,8 @@ export async function rutaAvisos(req, env, ruta) {
       if (v.error) return json(v, 400);
       cuerpo = Object.assign({}, v, { por: q.id, jefe: puedeRol(roles, 'ajustes', tablaVig) });
     } else {
-      if (!/^[a-z0-9]{1,40}$/.test(String(d.k || ''))) return json({ error: 'falta quién' }, 400);
+      // 18/11/2026: claveValida(); con /^[a-z0-9]{1,40}$/ la ficha de tøkiø o julix-x (claves reales) daba «falta quién»
+      if (!claveValida(String(d.k || ''))) return json({ error: 'falta quién' }, 400);
       let pcfg = null;
       try { pcfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { pcfg = null; }
       cuerpo = { k: String(d.k), quien: q.id,
@@ -12361,7 +12371,9 @@ export class Avisos {
     } catch (e) { return json({ error: 'p256dh inválida' }, 400); }
     const svs = Array.isArray(d.svs)
       ? d.svs.map((x) => String(x).toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6))
-        .filter(Boolean).slice(0, 12)
+        // 🧪 40 y no 12 (18/11/2026): «todos» con Pruebas llega como la lista entera más 'ZZZ' (campana.js), y con 14
+        // servidores el corte en 12 botaba ZZZ y dos más sin avisar
+        .filter(Boolean).slice(0, 40)
       : null;
     const ahora = Date.now();
     const texto = svs && svs.length ? '|' + svs.join('|') + '|' : '';
@@ -13310,7 +13322,8 @@ export class Avisos {
   avisoVuelve(d) {
     const ahora = Date.now();
     const k = String(d.k || ''), P = PLANTILLAS_VUELVE[d.que];
-    if (!P || !/^[a-z0-9]{1,40}$/.test(k)) return { error: 'faltan datos' };
+    // 18/11/2026: claveValida() en vez del regex ASCII, que dejaba sin «Avisarle que vuelva» a las claves con guion o tilde
+    if (!P || !claveValida(k)) return { error: 'faltan datos' };
     const ids = this.sql.exec('SELECT id FROM idk WHERE k = ?', k).toArray().map((x) => x.id);
     if (!ids.length) return { error: 'sin_cuenta' };
     if (enControlVuelve(k)) return { error: 'control' };
@@ -15035,9 +15048,11 @@ export class Avisos {
     if (l.error) return json({ error: l.error }, 400);
     const resp = /^(c[0-9]{1,12}|s[0-9])$/.test(String(d.resp || '')) ? String(d.resp) : '';
     const ahora = Date.now();
-    const igual = this.sql.exec('SELECT id FROM comentario WHERE pub = ? AND quien = ? AND tx = ? AND borrado = 0 LIMIT 1',
+    // 💬 el repetido vuelve entero (18/11/2026): con sólo el id la página no lo podía dibujar al toque (comentarios.jsx sigue
+    // por el camino normal cuando trae `t`)
+    const igual = this.sql.exec('SELECT id, k, n, tx, resp, t FROM comentario WHERE pub = ? AND quien = ? AND tx = ? AND borrado = 0 LIMIT 1',
       p.id, quien, l.tx).toArray()[0];
-    if (igual) return json({ ok: true, ya: true, c: igual.id });
+    if (igual) return json({ ok: true, ya: true, c: igual.id, k: igual.k, n: igual.n, tx: igual.tx, resp: igual.resp, t: igual.t });
     if (!this.cuentaCambio(quien, 'comentario', COMENT_DIA)) return json({ error: 'espera' }, 429);
     let n = '';
     try { n = String((JSON.parse(this.persona('p:' + k) || (await this.env.KV.get('p:' + k)) || '{}') || {}).n || ''); } catch (e) { n = ''; }
@@ -15274,10 +15289,13 @@ export class Avisos {
     if (!a) return { error: 'sin_perfil' };
     if (!claveValida(b) || b === a) return { error: 'rival' };
     if (!(t > ahora - 5 * 60000 && t < ahora + 8 * DIA_MS)) return { error: 'hora' };
-    if (this.sql.exec("SELECT 1 AS x FROM libres WHERE estado = 'pend' AND ((a = ? AND b = ?) OR (a = ? AND b = ?))", a, b, b, a).toArray()[0]) {
+    // ⏳ sólo las vigentes (18/11/2026): una 'pend' en la que uno dijo quién ganó y el otro nunca contestó quedaba así para
+    // siempre, contaba para «ya» y «muchas» y no se podía cancelar (ga o gb puestos). Pasados 7 días de su hora, vence
+    const vence = ahora - LIBRE_VENCE_MS;
+    if (this.sql.exec("SELECT 1 AS x FROM libres WHERE estado = 'pend' AND t > ? AND ((a = ? AND b = ?) OR (a = ? AND b = ?))", vence, a, b, b, a).toArray()[0]) {
       return { error: 'ya' };
     }
-    if (this.sql.exec("SELECT COUNT(*) AS n FROM libres WHERE a = ? AND estado = 'pend'", a).toArray()[0].n >= 3) return { error: 'muchas' };
+    if (this.sql.exec("SELECT COUNT(*) AS n FROM libres WHERE a = ? AND estado = 'pend' AND t > ?", a, vence).toArray()[0].n >= 3) return { error: 'muchas' };
     this.sql.exec('INSERT INTO libres (a, b, t, creada) VALUES (?, ?, ?, ?)', a, b, t, ahora);
     const id = this.sql.exec('SELECT last_insert_rowid() AS id').toArray()[0].id;
     // 🔔 a quien retaron le llega a su bandeja (la campana de la página; nunca por DM)
@@ -15290,9 +15308,14 @@ export class Avisos {
     const k = this.claveDe(String(quien || ''));
     if (!k) return { ok: true, libres: [] };
     const desde = Date.now() - 14 * DIA_MS;
-    const filas = this.sql.exec("SELECT * FROM libres WHERE (a = ? OR b = ?) AND (estado = 'pend' OR t > ?) AND estado != 'cancelada' " +
+    // ⏳ una 'pend' vencida (18/11/2026, ver `libreCrear()`) ya no es pendiente: sale como 'vencida' mientras entra en los
+    // 14 días, y más vieja no sale. Antes toda 'pend' volvía siempre, de cualquier fecha, y ocupaba lugar en las 20 (las
+    // vigentes tienen la hora a menos de 7 días, así que `t > desde` ya las trae)
+    const vence = Date.now() - LIBRE_VENCE_MS;
+    const filas = this.sql.exec("SELECT * FROM libres WHERE (a = ? OR b = ?) AND t > ? AND estado != 'cancelada' " +
       'ORDER BY t DESC LIMIT 20', k, k, desde).toArray();
-    return { ok: true, yo: k, libres: filas.map((f) => ({ id: f.id, a: f.a, b: f.b, t: new Date(f.t).toISOString(), estado: f.estado,
+    return { ok: true, yo: k, libres: filas.map((f) => ({ id: f.id, a: f.a, b: f.b, t: new Date(f.t).toISOString(),
+      estado: f.estado === 'pend' && f.t <= vence ? 'vencida' : f.estado,
       mio: f.a === k ? f.ga : f.gb, suyo: f.a === k ? (f.gb ? 1 : 0) : (f.ga ? 1 : 0), ganador: f.estado === 'hecha' ? f.ga : '' })) };
   }
 

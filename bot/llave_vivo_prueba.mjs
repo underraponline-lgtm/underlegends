@@ -393,5 +393,29 @@ console.log('\n8 · la llave huérfana: el título copiado de la edición anteri
     js([LV.serie('DESGRACIAS EN TOKYO VOL 23 1v1'), LV.serie('COMPE DEL VACILE T2 #1')]));
 }
 
+// 🧷 LO QUE ARREGLÓ LA PASADA DEL 18/11/2026, para que no vuelva: los participantes y el tercer puesto como en Python,
+// y nada que tumbe el archivo entero en un navegador viejo (un lookbehind en Safari < 16.4, un `var` repetido)
+console.log('\n9 · lo de la pasada del 18/11: participantes, el tercero y el archivo entero\n');
+{
+  for (const [re, n] of [[/^FFA · 1552159144008613962/, 15], [/^19 CUP HALLOWEEN/, 11]]) {
+    const c = casos.find((x) => re.test(x.que));
+    const L = c ? LV.aLlave({ id: '1', texto: c.texto }) : null;
+    ok('participantes como llaves_a_entrada.plantel(): ' + (c ? c.que.slice(0, 40) : String(re)), !!L && L.participantes === n,
+      String(L && L.participantes));
+  }
+  const c = casos.find((x) => /19 CUP VOL\. 2/.test(x.que));
+  const T = c ? LV.aLlave({ id: '1', texto: c.texto }).rondas.find((R) => R.r === 'Tercer puesto') : null;
+  ok('el tercero lo dice el podio (DDF 19 CUP VOL. 2: CRISZJ, como escuchar._tercero_del_podio)', !!T && T.b[0][1] === 'CRISZJ',
+    js(T && T.b[0]));
+  const c2 = casos.find((x) => /la 🥉 sola/.test(x.que));
+  const T2 = c2 ? LV.aLlave({ id: '1', texto: c2.texto }).rondas.find((R) => R.r === 'Tercer puesto') : null;
+  ok('un tercero compartido («Bea + Dora») sigue sin ganador', !!T2 && T2.b[0][1] === '', js(T2 && T2.b[0]));
+  const fuenteLV = readFileSync(join(aqui, 'paginas', 'llave_vivo.js'), 'utf8');
+  ok('llave_vivo.js sin lookbehind (Safari < 16.4 no lo entiende y tumba el archivo entero)', !/\(\?<[=!]/.test(fuenteLV),
+    (fuenteLV.match(/.*\(\?<[=!].*/g) || []).join('\n'));
+  const vs = [...fuenteLV.matchAll(/^  var (\w+)\s*=/gm)].map((m) => m[1]);
+  ok('ningún var del IIFE se declara dos veces', vs.length === new Set(vs).size, vs.filter((x, i) => vs.indexOf(x) !== i).join());
+}
+
 console.log(mal ? `\n🔴 ${mal} mal\n` : '\n   todo ok\n');
 process.exit(mal ? 1 : 0);

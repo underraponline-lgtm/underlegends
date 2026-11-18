@@ -245,9 +245,17 @@ export function tiendaMia(o, d, H) {
     numeros: Object.fromEntries(filas(o, 'SELECT pieza, numero FROM tienda_num WHERE quien = ?', quien).map((r) => [r.pieza, r.numero])),
     regalos_quedan: Math.max(0, cat.regalos_semana - enviados),
     regalos: filas(o, "SELECT id, de, que, piezas, msg, t, fin FROM tienda_regalo WHERE para = ? AND estado = 'pendiente' ORDER BY t", quien)
-      .map((r) => ({ id: r.id, que: r.que, piezas: JSON.parse(r.piezas), msg: MENSAJES[r.msg] || '', t: r.t, fin: r.fin, de: o.claveDe(r.de) || '' })),
+      .map((r) => { const de = o.claveDe(r.de) || ''; return { id: r.id, que: r.que, piezas: JSON.parse(r.piezas), msg: MENSAJES[r.msg] || '', t: r.t, fin: r.fin, de, dn: nombreDe(o, de) }; }),
+    // 🐉 si el drop del día ya se abrió (18/11/2026): la página ofrecía «Abrir» al volver y se enteraba recién con el 409
+    // 'ya'. Una fila por el índice único (quien, origen): se pide cada 15 s
+    drop_hoy: (() => { const dh = fila(o, 'SELECT abierto FROM drops WHERE quien = ? AND origen = ?', quien, 'tdia:' + H.diaET(ahora)); return dh && dh.abierto ? { ya: true } : null; })(),
   };
   return out;
+}
+/** 🧑 El nombre de una clave de perfil (18/11/2026): los regalos y su aviso mostraban la clave cruda. '' si no hay ficha */
+function nombreDe(o, k) {
+  if (!k) return '';
+  try { return String((JSON.parse(o.persona('p:' + k) || '{}') || {}).n || '').slice(0, 40); } catch (e) { return ''; }
 }
 /** Lo del catálogo que ve la página: las piezas, los precios, la vitrina, las colecciones y las ediciones con sus dueños */
 function publico(o, cat) {
@@ -514,7 +522,9 @@ function regalar(o, d, cat, prem, ahora, H) {
       id, quien, para, para_k, que, JSON.stringify(piezas), precio, msg, ahora, ahora + cat.regalo_dias * DIA_MS);
     mover(o, 'tregalo:' + quien + ':' + id, quien, -precio, ahora);
   });
-  const de = o.claveDe(quien) || 'Alguien';
+  // 🧑 con su nombre (18/11/2026): decía la clave del perfil
+  const kq = o.claveDe(quien);
+  const de = nombreDe(o, kq) || kq || 'Alguien';
   o.aBandeja(para, 'tregalo:' + id, 'tienda', '🎁 ' + de + ' te mandó un regalo', (MENSAJES[msg] ? '«' + MENSAJES[msg] + '» · ' : '') +
     'Acéptalo o recházalo en la Tienda: tienes ' + cat.regalo_dias + ' días.', '#/tienda', '', ahora);
   return { ok: true, id, total: precio, saldo: saldo - precio, quedan: cat.regalos_semana - enviados - 1 };

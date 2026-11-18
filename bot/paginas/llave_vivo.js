@@ -99,8 +99,12 @@
      `｢｣`, ❌ ni 🔥, a propósito */
   var MARCOS_MAS = ['【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘',
     '❰❱', '❮❯', '❬❭', '❨❩', '❪❫', '❲❳', '❴❵', '⟪⟫', '⟬⟭', '⟮⟯', '⦅⦆', '〘〙', '〚〛', '⸨⸩', '⁅⁆'];
-  var VS_ENTRE = '(?:(?:[\\u{2694}\\u{1F5E1}\\u{2716}\\u{2715}\\u{2717}\\u{D7}\\u{26A1}\\u{1F4A5}\\u{1F94A}\\u{1F91C}' +
-    '\\u{1F91B}\\u{1F52A}]\\u{FE0F}?)+|(?<![\\p{L}\\p{N}_])(?:versus|vrs|v\\/s|v\\.s\\.?|contra|x)(?![\\p{L}\\p{N}_]))';
+  // 🍎 EN DOS PEDAZOS Y SIN LOOKBEHIND (18/11/2026): la palabra llevaba uno delante (ni letra, ni cifra, ni `_`), y en un Safari
+  // anterior a la 16.4 eso tumbaba el archivo entero (ver el encabezado). En su único uso (`traducir()`) lo que viene antes
+  // es el marco, un espacio o el negrito, así que el borde de atrás se pide ahí: después de `__` hace falta un espacio
+  var VS_ENTRE_EMOJI = '(?:[\\u{2694}\\u{1F5E1}\\u{2716}\\u{2715}\\u{2717}\\u{D7}\\u{26A1}\\u{1F4A5}\\u{1F94A}\\u{1F91C}' +
+    '\\u{1F91B}\\u{1F52A}]\\u{FE0F}?)+';
+  var VS_ENTRE_PALABRA = '(?:versus|vrs|v\\/s|v\\.s\\.?|contra|x)(?![\\p{L}\\p{N}_])';
   // y `versus` entero: el `<:versus_:…>` de DIMENSIÓN DEL FREESTYLE. Ver `escuchar.VS_PROPIO`
   // ⚠️ después del «VS», a lo sumo una letra, cifras o `_`: `<:VSCUP:…>` de FVS es una copa (`escuchar.VS_PROPIO`)
   // 🔴 …pero «versus» es una palabra: después va cualquier cosa (`<:VERSUSbatalla:…>` de DDF, 16/11/2026)
@@ -110,8 +114,13 @@
   var CON_MARCO = new RegExp('[' + ('[]⌞⌝「」『』' + MARCOS_MAS.join('')).replace(/[\]\[\\^-]/g, '\\$&') + ']');
   var PODIO_PROPIO = /<a?:([123])[a-zº°]*_?puesto\w*:\d+>/gi;
   /* 🏛️ el VS y el podio escritos como texto (`:VSr:`, `:1erPuesto:`): `escuchar.VS_TEXTO` y `PODIO_TEXTO` */
-  var VS_TEXTO = /(?<![<\w]):(?!vsf?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):(?!\d)/gi;
-  var PODIO_TEXTO = /(?<![<\w]):([123])[a-zº°]*_?puesto\w*:(?!\d)/gi;
+  // 🍎 sin el lookbehind de Python (ni `<` ni letra atrás; 18/11/2026, ver el encabezado): lo mira `pegado()` al reemplazar
+  var VS_TEXTO = /:(?!vsf?:)(?:\w*?versus\w*|\w*?vs[a-z]?[\d_]*):(?!\d)/gi;
+  var PODIO_TEXTO = /:([123])[a-zº°]*_?puesto\w*:(?!\d)/gi;
+  /** ¿Lo que encontró `VS_TEXTO` o `PODIO_TEXTO` en `s`, desde `off`, va pegado a una palabra o a un `<`? Entonces no es
+   *  el VS ni el podio, como el lookbehind de Python. Rechazar acá y no en la expresión no cambia lo que se encuentra
+   *  después: adentro de esas dos no hay otro `:` que pueda empezar una (el último va pegado a una letra) */
+  function pegado(s, off) { return off > 0 && /[<\w]/.test(s.charAt(off - 1)); }
   var TERCER_ENC = /\b(?:3\s*(?:er|ro|º|°)?|tercer[oa]?)\s*(?:y\s*(?:4\s*(?:to|º|°|o)?|cuarto)\s*)?(?:puesto|lugar)\b/i;
   var PAIS_DE_EMOJI = { ar: ['ARG', 'ARGENTINA'], bo: ['BOL', 'BOLIVIA'], br: ['BRA', 'BRASIL', 'BRAZIL'],
     cl: ['CHI', 'CHL', 'CHILE'], co: ['COL', 'COLOMBIA'], cr: ['CRC', 'CRI', 'COSTARICA'], cu: ['CUB', 'CUBA'],
@@ -249,7 +258,8 @@
   var MEDALLA_PODIO = { '\u{1F3C6}': 'CAMPEÓN', '\u{1F947}': 'CAMPEÓN', '\u{1F396}': 'CAMPEÓN', '\u{1F948}': 'SUBCAMPEÓN', '\u{1F949}': '3ER PUESTO' };
   var PUNTAS_PODIO = Array.from(' .·▪️*_`:-–—️|┋');
   // con la aclaración entre paréntesis: `3ER LUGAR (3ER PUESTO):` (`escuchar.TERCERO`, 19 CUP de DDF)
-  var TERCERO = /(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*([^\n]{1,80})/i;
+  // y con guion, `TERCER-PUESTO: Ortiz🇪🇸` (18/11/2026): Python lo lee desde el 14/10 y esta copia no lo había traído
+  var TERCERO = /(?:\b3\s*(?:ER|RO)|TERC?ER)[\s-]*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*([^\n]{1,80})/i;
   function hayCampeon(texto) {
     var re = /(SUB[\s\-]?)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+(?:PUESTO|LUGAR))\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
     while ((m = re.exec(texto))) { if (!m[1]) return true; }
@@ -301,15 +311,16 @@
     t = t.split('\n').map(function (l) { return CON_MARCO.test(l) ? l : l.replace(VS_ANIMADO, ' 🆚 '); }).join('\n');
     t = t.replace(VS_PROPIO, ' 🆚 ');
     // 🏛️ la RED BULL CREW de la ACADEMIA: el VS como texto, sin los marcos 〘〙 mal anidados ni la viñeta ➢
-    t = t.replace(VS_TEXTO, ' 🆚 ').replace(/[〘〙]/g, ' ').replace(/^[ \t]*[➢➤]+[ \t]*/gm, '');
+    t = t.replace(VS_TEXTO, function (m, off, s) { return pegado(s, off) ? m : ' 🆚 '; })
+      .replace(/[〘〙]/g, ' ').replace(/^[ \t]*[➢➤]+[ \t]*/gm, '');
     t = t.replace(/<a?:(\w+):\d+>/g, paisDelEmoji);
     t = t.replace(/:flag_([a-z]{2}):/g, function (_m, cc) { return bandera(cc); });
     t = t.split('\n').map(sinEspaciar).join('\n');
     t = t.replace(PODIO_PROPIO, function (_m, n) {
       return ' ' + { '1': '1ER', '2': '2DO', '3': '3ER' }[n] + ' PUESTO: ';
     });
-    t = t.replace(PODIO_TEXTO, function (_m, n) {
-      return ' ' + { '1': '1ER', '2': '2DO', '3': '3ER' }[n] + ' PUESTO: ';
+    t = t.replace(PODIO_TEXTO, function (m, n, off, s) {
+      return pegado(s, off) ? m : ' ' + { '1': '1ER', '2': '2DO', '3': '3ER' }[n] + ' PUESTO: ';
     });
     t = t.replace(/[『「〈][ \t]*(\d(?:ER|DO) PUESTO:)[ \t]*[』」〉]/g, '$1');
     t = t.replace(new RegExp(MD + '[「〈][ \\t]*', 'g'), '⌞');
@@ -322,14 +333,15 @@
     t = t.replace(/\{[ \t]*([^{}\n]*?)[ \t]*\}/g, '⌞$1⌝');
     // 🐍 y `(< x >)` con ⚔️ en el medio (Snake Rap, 07/10/2026), nunca una mención; la espada sólo entre dos marcos
     t = t.replace(/\([ \t]*<(?![@#:])[ \t]*([^<>()\n]*?)[ \t]*>[ \t]*\)/g, '⌞$1⌝');
-    // y los parecidos que todavía no aparecieron: ver `MARCOS_MAS` y `VS_ENTRE`
+    // y los parecidos que todavía no aparecieron: ver `MARCOS_MAS` y `VS_ENTRE_EMOJI`/`VS_ENTRE_PALABRA`
     MARCOS_MAS.forEach(function (p) {
       var a = p[0], c = p[1];
       t = t.replace(new RegExp(a + '[ \\t]*([^' + a + c + '\\n]*?[\\p{L}\\p{N}][^' + a + c + '\\n]*?)[ \\t]*' + c,
         'gu'), '⌞$1⌝');
     });
-    t = t.replace(new RegExp('([⌝\\]])[ \\t]*' + MD + '[ \\t]*' + VS_ENTRE + '[ \\t]*(?=' + MD + '[ \\t]*[⌞\\[])',
-      'giu'), '$1 🆚 ');
+    // 🍎 la palabra, con el borde de atrás pedido acá (18/11/2026): pegada a `__` no vale, como en Python
+    t = t.replace(new RegExp('([⌝\\]])[ \\t]*(?:' + MD + '[ \\t]*' + VS_ENTRE_EMOJI + '|(?:\\*\\*|__(?=[ \\t]))?[ \\t]*' +
+      VS_ENTRE_PALABRA + ')[ \\t]*(?=' + MD + '[ \\t]*[⌞\\[])', 'giu'), '$1 🆚 ');
     t = t.replace(/([⌝\]])[ \t]*<a?:\w+:\d+>[ \t]*\([ \t]*([^()\n]{2,30}?)[ \t]*\)/gu, '$1 🆚 ⌞$2⌝');
     t = t.replace(new RegExp('([⌝\\]])[ \\t]*' + MD + '[ \\t]*(?!<a?:[vV][sS][fF]?:)<a?:\\w+:\\d+>[ \\t]*(?=' +
       MD + '[⌞\\[])', 'gu'), '$1 🆚 ');
@@ -698,6 +710,29 @@
     });
   }
 
+  /* 🥉 `escuchar._tercero_del_podio()`, lo que hace falta para mirar (18/11/2026): el tercero que dice el PODIO, si
+     nombra a uno solo. Sin esto la batalla por el tercer puesto no tenía ganador nunca, y con la llave terminada la
+     página le ponía «SIN GANADOR» aunque el podio dijera quién quedó tercero (DDF · 19 CUP VOL. 2: «3ER LUGAR (3ER
+     PUESTO):» y abajo «CRISZJ 🇵🇪»). Devuelve ese nombre tal cual, o ''; de qué lado es lo dice `campeonDe()` en
+     `resolver()`. ⚠️ Dos juntos —«Bea + Dora», «DYNOCO / ERIAN», o el segundo en el renglón de abajo— son un tercero
+     compartido: nada, como Python. Y sin el padrón: una mención sola no nombra a nadie acá */
+  function continuacionPodio(l) {
+    if (!String(l || '').trim() || PODIO.test(l) || CONTRA.test(l)) return false;
+    if (rondasDe(l).length || /@(?:everyone|here)\b/i.test(l)) return false;
+    return /<@!?\d+>/.test(l) || norm(l).length >= 2;
+  }
+  function terceroDelPodio(texto) {
+    var re = new RegExp(TERCERO.source, 'gi'), m;
+    // la primera que nombra a alguien y no es una batalla: el encabezado `TERCER LUGAR` de su cruce también matchea
+    while ((m = re.exec(texto || ''))) {
+      if ((norm(m[1]) || /<@!?\d+>/.test(m[1])) && !SEP.test(m[1])) break;
+    }
+    if (!m) return '';
+    if (continuacionPodio(String(texto).slice(m.index + m[0].length).split('\n').concat(['', ''])[1])) return '';
+    var partes = m[1].replace(/<@!?\d+>/g, '').split(/\s[-–—/]\s|,|\s+y\s+|\+|&/).filter(function (x) { return norm(x); });
+    return partes.length === 1 ? partes[0] : '';
+  }
+
   /* quién pasó en cada batalla: el que aparece en la ronda siguiente */
   /* 🔑 LA MISMA PERSONA CON OTRO NOMBRE (02/10/2026), como `escuchar.resolver()` con `quien`. `quien(nombre)` —opcional,
      lo da la página con lo que sabe: la tabla, los alias y lo que el vigía reconoció en vivo— devuelve las claves de
@@ -778,7 +813,7 @@
   function resolver(rs, texto, quien) {
     if (rs.some(function (R) { return R[0] === DOBLE_P; })) return resolverDoble(rs, texto);
     var arbol = rs.filter(function (R) { return R[0] !== 'TERCER LUGAR'; });
-    var camp = lineaCampeon(texto), camp2 = renglonDeAbajo(texto);
+    var camp = lineaCampeon(texto), camp2 = renglonDeAbajo(texto), ter = null;
     return rs.map(function (R) {
       var k = arbol.indexOf(R), sig = k >= 0 && k + 1 < arbol.length ? arbol[k + 1] : null;
       var lados = [], miembros = [], eqs = [];
@@ -806,7 +841,12 @@
           if (npasan === 1) return [bp, ren[gp[0]], ''];
           if (npasan > 1) return [bp, '', 'pasan ' + npasan];
         }
-        if (R[0] === 'TERCER LUGAR') return [b, '', ''];
+        // 🥉 el tercero, si el podio nombra a uno de los dos (18/11/2026, ver `terceroDelPodio()`); nunca entre equipos
+        if (R[0] === 'TERCER LUGAR') {
+          if (ter === null) ter = terceroDelPodio(texto);
+          var g3 = ter && !b.some(function (s) { return equipo(s).length; }) ? campeonDe(ter, b) : [];
+          return [b, g3.length === 1 ? g3[0] : '', ''];
+        }
         if (!sig) {
           // la última ronda: el campeón, si ya lo escribieron
           var g = campeonDe(camp, b);
@@ -935,7 +975,8 @@
       var l = ls[i];
       // 🐍 sin la «I» de adorno pegada a una barra, sin los guiones sueltos y sin «LLAVES» (Snake Rap, 07/10/2026)
       var s = l.replace(/<a?:\w+:\d+>|<@[&!]?\d+>/g, ' ')
-        .replace(/(?<=\|)[Il](?=[\[\]{}|])|(?<=[\[\]{}|])[Il](?=\|)/g, ' ')
+        // 🍎 sin lookbehind (18/11/2026, ver el encabezado): la barra o el corchete de atrás se captura y vuelve
+        .replace(/(\|)[Il](?=[\[\]{}|])|([\[\]{}|])[Il](?=\|)/g, '$1$2 ')
         .replace(/[^\p{L}\p{N}_\s.\-]/gu, ' ').replace(/(^|\s)[-.]{2,}(?=\s|$)/g, '$1 ')
         .replace(/\s+/g, ' ').trim();
       if (s.length < 3 || !/\p{L}/u.test(s)) continue;
@@ -1109,7 +1150,9 @@
   // el adorno que sigue en el mismo renglón (`escuchar.COLA`)
   var COLA = /\s*(?:[─━═]{3,}|●❯|❮●).*$/u;
   // «Shisui (VELATZ)» (`escuchar._PAREN`)
-  var PAREN = /^(.+?)\s*\(\s*([^()]+?)\s*\)(.*)$/u;
+  // 🔴 CON OTRO NOMBRE (18/11/2026): se llamaba `PAREN`, como la de `plantel()` de arriba, y en el mismo IIFE el segundo
+  // `var` pisaba al primero: `plantel()` partía con ésta y contaba mal a la gente (19 CUP HALLOWEEN daba 13, Python 11)
+  var PAREN_SIGUE = /^(.+?)\s*\(\s*([^()]+?)\s*\)(.*)$/u;
   var UNO = /[『「⌞\[]\s*([^』」⌝\]]+?)\s*[』」⌝\]]/u;
   var MEDALLA = { '\u{1F947}': 1, '\u{1F948}': 2, '\u{1F949}': 3 };
   var PUNTAS = ' .·▪️*_`:-–—️';
@@ -1180,7 +1223,7 @@
     return null;
   }
   function quienSigue(n, despues) {
-    var m = PAREN.exec(n);
+    var m = PAREN_SIGUE.exec(n);
     if (!m) return n;
     var afuera = m[1].trim(), adentro = m[2].trim();
     return norm(adentro) && despues[norm(adentro)] && !despues[norm(afuera)] ? adentro : n;

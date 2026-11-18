@@ -4937,7 +4937,8 @@ export default {
     const pagina = dePagina(cw, ipQ);
     const ipPag = pagina ? (req.headers.get('x-lg-ip') || '') : '';
     const claveIP = ipPag ? 'pag:' + bloqueIP(ipPag)
-      // la página sin la IP de quien mira (el lobby, lo de KV, las vistas previas): ya pasó por el freno de Pages
+      // la página sin la IP de quien mira (el lobby y lo de KV que Pages guarda en su borde): ya pasó por el freno de
+      // Pages. Las vistas previas y los links cortos traen x-lg-ip desde el 18/11/2026 y se cuentan arriba
       : pagina ? ''
         // otro Worker: todos sus pedidos juntos, por la zona que le pone Cloudflare (no la puede cambiar)
         : esIPWorker(ipQ) ? 'w:' + (cw || '?')
