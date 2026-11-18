@@ -192,7 +192,8 @@
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/akuseru/servidor.webp",
   "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/akuseru/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/akuseru/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/akuseru/sv-ffa.webp"
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/akuseru/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/akuseru/temporada.webp"
  },
  "aldre": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/aldre/bloq-competitivo.webp",
@@ -912,7 +913,8 @@
   "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deko/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deko/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deko/sv-ffa.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deko/sv-sr.webp"
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deko/sv-sr.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deko/temporada.webp"
  },
  "delux": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/delux/bloq-competitivo.webp",

@@ -72,8 +72,8 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "C",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -81,8 +81,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
+"vandu": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -377,8 +377,8 @@
 "temporada"
 ]
 },
-"lrs": {
-"rg": "E",
+"cronox": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -386,8 +386,8 @@
 "temporada"
 ]
 },
-"cronox": {
-"rg": "D",
+"lrs": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -590,10 +590,6 @@
 "temporada"
 ]
 },
-"onzass": {
-"rg": "E",
-"c": []
-},
 "jupiter": {
 "rg": "D",
 "c": [
@@ -606,14 +602,6 @@
 "eidp": {
 "rg": "D",
 "c": []
-},
-"kyss": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "gocho": {
 "rg": "C",
@@ -638,6 +626,10 @@
 },
 "benjixo": {
 "rg": "C",
+"c": []
+},
+"onzass": {
+"rg": "E",
 "c": []
 },
 "eclipsito": {
@@ -758,6 +750,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"kyss": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1023,7 +1023,8 @@
 "rg": "",
 "c": [
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "blitz": {
@@ -1176,7 +1177,8 @@
 "rg": "",
 "c": [
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "pomberito": {
@@ -1246,10 +1248,6 @@
 "c": []
 },
 "0223": {
-"rg": "",
-"c": []
-},
-"flash": {
 "rg": "",
 "c": []
 },
@@ -2885,14 +2883,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-12T16:32:40Z",
-"quien": [
-"Provenza"
-],
-"carta": "pais"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-12T16:32:40Z",
@@ -6268,13 +6258,20 @@
 "carta": "pais"
 },
 {
-"tipo": "rango",
-"t": "2026-11-18T06:03:38Z",
+"tipo": "tarjeta",
+"t": "2026-11-18T06:14:35Z",
 "quien": [
-"Kyss"
+"Akuseru"
 ],
-"rg": "D",
-"primero": false
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-18T06:14:35Z",
+"quien": [
+"Deko"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
@@ -7892,8 +7889,8 @@
 "tipo": "resnoche",
 "t": "2026-11-18T08:00:00Z",
 "dia": "2026-11-17",
-"eventos": 3,
-"part": 69,
+"eventos": 2,
+"part": 44,
 "campeones": [
 {
 "ev": "(sin titulo)",
@@ -7903,17 +7900,6 @@
 [
 "Puppy",
 ""
-]
-]
-},
-{
-"ev": "CHOP ES CEO V.4",
-"sv": "CH",
-"ll": 661,
-"quien": [
-[
-"Flash",
-"flash"
 ]
 ]
 },
@@ -7931,21 +7917,21 @@
 ],
 "suman": [
 {
-"n": "Flash",
-"k": "flash",
-"pts": 10000,
-"ev": 1
-},
-{
 "n": "Valen",
 "k": "valen",
 "pts": 10000,
 "ev": 1
 },
 {
-"n": "Kyss",
-"k": "kyss",
+"n": "Oasis",
+"k": "oasis",
 "pts": 7500,
+"ev": 1
+},
+{
+"n": "Deko",
+"k": "deko",
+"pts": 5250,
 "ev": 1
 }
 ],
@@ -7954,28 +7940,22 @@
 "n": "Thaniel",
 "k": "",
 "de": 724,
-"a": 479
-},
-{
-"n": "Zanz",
-"k": "",
-"de": 735,
-"a": 504
+"a": 476
 },
 {
 "n": "Deko",
 "k": "deko",
 "de": 349,
 "a": 119
+},
+{
+"n": "Julda",
+"k": "",
+"de": 603,
+"a": 422
 }
 ],
 "sorpresas": [
-{
-"n": "Flash",
-"k": "flash",
-"que": "debut",
-"ev": "CHOP ES CEO V.4"
-},
 {
 "n": "Valen",
 "k": "valen",
@@ -8026,8 +8006,8 @@
 "snow",
 "six",
 "verc",
-"vandu",
-"panchok"
+"panchok",
+"vandu"
 ],
 "competitivo": [
 "oasis",
@@ -8149,7 +8129,7 @@
 "richard": 0,
 "1200": 0,
 "nemmiias": 0,
-"kyss": 1,
+"kyss": 0,
 "19fleivawack": 0,
 "artezzy": 0,
 "vallest": 0,
@@ -8258,8 +8238,7 @@
 "over": 5,
 "deko": 2,
 "sintext": 0,
-"rodrilp": 3,
-"flash": 1
+"rodrilp": 3
 },
 "sem": {
 "id": "2026-11-16",
