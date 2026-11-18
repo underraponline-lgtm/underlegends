@@ -15,9 +15,10 @@ post-evento en el chat general: prendido en todos los socios, el dueño lo apaga
 - MENCIONA SÓLO A LOS GANADORES con su cuenta en la Lista (`allowed_mentions.users`, nunca @everyone ni roles). Los
   demás, en negrita y con `/vincular`: si se vinculan en `VENTANA_DIAS`, el drop les llega igual (`drops_merito`).
 - BOTONES (desde el 18/11/2026): UNO POR GANADOR Y POR PREMIO, con su nombre, que sólo abre esa persona
-  (`dd:<drop|star|nido>:x:<id>`, worker.js); el del Nido le pasa el link de la página, donde se abre. Y «Ver mis drops»
-  (`?drops=1`). Antes eran «Abrir mi Drop / Star» sin dueño, y cualquiera abría los suyos desde el aviso de otro.
-- EL FORMATO, el de los anuncios de la Liga (Componentes V2): un recuadro con el color del servidor.
+  (`dd:<drop|star|nido>:x:<id>`, worker.js); el del Nido le pasa el link de la página, donde se abre. Antes eran
+  «Abrir mi Drop / Star» sin dueño, y cualquiera abría los suyos desde el aviso de otro.
+- EL FORMATO, el de los anuncios de la Liga (Componentes V2): un recuadro con el color del servidor, con los puntos del
+  evento por puesto, y LAS MENCIONES AFUERA, en una línea arriba (Dlx: «gente dentro del embed no se menciona»).
 - LO APAGA EL STAFF de cada servidor en su panel (`ganadores` en `cfg:<guild>`, prendido de entrada).
 - UNA SOLA VEZ: `datos/avisos_ganadores.json` (en `ARCHIVOS` de bot/ci/guardar.sh). La primera vez se siembra con lo que
   ya hay y no se avisa nada para atrás. Sólo eventos de los últimos `DIAS`.
