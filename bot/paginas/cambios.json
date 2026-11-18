@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+      "version": "6.29",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T21:21:00-05:00",
+      "titulo": "Cada cuenta con su dueño",
+      "items": [
+        "**Revisamos cuenta por cuenta a toda la Liga.** Quien jugaba con dos nombres ahora es una sola persona: sus puntos, sus eventos y su ELO van juntos a su nombre de hoy.",
+        "Si tu perfil decía «Sin verificar» siendo Miembro de DRA, puede que tuviéramos pegada otra cuenta tuya: en los casos que encontramos, ya está arreglado.",
+        "En el ranking de FFA, quien jugaba desde dos cuentas queda en una sola fila, con todo sumado."
+      ]
+    },
+    {
       "version": "6.28",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T21:16:21-05:00",
@@ -46,7 +57,7 @@
     {
       "version": "6.25",
       "dia": "2026-11-17",
-      "cuando": "2026-11-17T21:50:00-05:00",
+      "cuando": "2026-11-17T20:43:00-05:00",
       "titulo": "Tus estilos de juego, con color",
       "items": [
         "Los estilos del Inventario salen con el color de tu rango; si todavía no tienes letra, con el verde de la Liga."
@@ -55,7 +66,7 @@
     {
       "version": "6.24",
       "dia": "2026-11-17",
-      "cuando": "2026-11-17T20:50:00-05:00",
+      "cuando": "2026-11-17T20:40:00-05:00",
       "titulo": "El tutorial y la bienvenida, enteros en el teléfono",
       "items": [
         "Al terminar el tutorial corto, la tarjeta que te da tus 3 Dragón Drops ya entra entera en el teléfono, con su botón y la ✕ para cerrarla.",
@@ -65,7 +76,7 @@
     {
       "version": "6.23",
       "dia": "2026-11-17",
-      "cuando": "2026-11-17T21:20:00-05:00",
+      "cuando": "2026-11-17T20:29:00-05:00",
       "titulo": "Tu estilo de juego, rehecho",
       "items": [
         "La pestaña Estilo de juego del Inventario es nueva: el estilo que tocas se ve en grande arriba, con el botón para elegirlo.",
