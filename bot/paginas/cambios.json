@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.23",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T21:20:00-05:00",
+        "titulo": "Tu estilo de juego, rehecho",
+        "items": [
+            "La pestaña Estilo de juego del Inventario es nueva: el estilo que tocas se ve en grande arriba, con el botón para elegirlo.",
+            "Los 18 estilos en tres filas a todo el ancho, una por familia.",
+            "Tus tres lugares con su nivel, cómo se sube y el próximo evento de estilo, en la misma pantalla."
+        ]
+    },
+    {
         "version": "6.22",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T20:08:00-05:00",
