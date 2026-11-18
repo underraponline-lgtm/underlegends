@@ -11,8 +11,9 @@
 // ⚠️ Lo que se ve se arma como texto (como la maqueta) y los toques se atajan en el contenedor: así la página es la maqueta
 // tal cual, y cada pieza del arte, un molde. La plata la decide el objeto: acá sólo se muestra lo que él dijo.
 import { RZ } from './tienda_rz.js';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { num } from './liga.js';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { DUENO, num } from './liga.js';
+import { useModsEstado } from './mods.js';
 import CSS_PAGINA from './css/tienda3.css?inline';
 import { usarCss } from './css.js';
 import { refrescarPases } from './pase.js';
@@ -39,7 +40,7 @@ const DONDE = {
 // la rehace `bot/con_marco.py`, con el freno del marco) y el fondo de Discord y el efecto en el VS en vivo (`bot/kit.py`)
 const EN_DISCORD = { carta: 'En /card se ve unos minutos después de ponértela.' };
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
-const ERRORES = { pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
+const ERRORES = { modo: 'En esta vista de MODS no se compra ni se guarda nada: apágala en el menú de MODS.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',
   no_jugaste: 'Es para quien jugó en la temporada.', usada: 'Ya te la pusiste: no se puede deshacer.', tarde: 'Pasaron las 24 horas.',
   ya_deshecha: 'Ya la deshiciste una vez.', no_se_puede: 'No se puede deshacer.', tope: 'Ya mandaste tus regalos de esta semana.',
@@ -397,6 +398,8 @@ const REGLAS = [
   ['Premium.', 'Un descuento en las piezas y otro en las colecciones (no se suman). Lo sólo-Premium que compraste sigue siendo tuyo si se te vence.'],
 ];
 const reglasPop = () => `<div class="tz-ficha" role="dialog" aria-label="Cómo funciona la Tienda">${popCab('Cómo funciona la Tienda', 'Ocho reglas, cortas')}<div class="tz-f-inf tz-reglas"><ol>${REGLAS.map(([t, d]) => `<li><details><summary>${t}</summary><p>${d}</p></details></li>`).join('')}</ol></div></div>`;
+// 🧪 lo que se tocó en una vista de MODS (no hay ficha abierta donde decirlo)
+const modoPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Vista de MODS">${popCab(S.modo === 'prueba' ? 'Modo prueba' : 'Como un usuario', 'Menú de MODS', '#E8B923')}<div class="tz-f-inf"><p>${ERRORES.modo}</p><button class="tz-b" data-acc="cerrar">Entendido</button></div></div>`;
 const billPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Tu billetera">${popCab('Tu billetera', 'Puntos de Tienda', '#29B298')}<div class="tz-f-inf"><p class="tz-bill-g"><b>${num(S.yo.saldo || 0)}</b> Puntos de Tienda${S.yo.prem ? ' · con Premium' : ''}</p><p class="tz-nota">Se ganan jugando, entrando cada día, con tus Tareas del Pase, cazando y con los Dragón Drops.</p></div></div>`;
 const dropPop = (st) => { const r = st.drop || {}; const c = RZ[r.rareza || 0] || RZ[0]; return `<div class="tz-ficha" role="dialog" aria-label="Tu Dragón Drop">${popCab('Tu Dragón Drop del día', 'Salió ' + (r.nombre || c[0]), c[1])}<div class="tz-f-inf"><div class="tz-drop-sale" style="--r:${c[1]}"><span class="tz-drop-v" aria-hidden="true"></span><b>${r.titulo ? 'Título «' + esc(r.titulo) + '»' : ''}${r.titulo && r.puntos ? ' + ' : ''}${r.puntos ? num(r.puntos) + ' Puntos' : ''}</b></div><p class="tz-nota">El próximo, mañana desde la medianoche (hora del este).</p><button class="tz-b prim" data-acc="cerrar">Listo</button></div></div>`; };
 
@@ -429,7 +432,25 @@ function desdeServidor(S) {
   return { puesto, fondo };
 }
 
-export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
+// 🧪 LAS DOS VISTAS DEL MENÚ DE MODS, SÓLO PARA EL DUEÑO (17/11/2026): «Tener todo (prueba)» —todas las piezas como tuyas,
+// con Premium y las ediciones— y «Ver como un usuario» —sin tu Premium ni el ensayo—. No tocan nada del objeto: sólo cambian
+// lo que la página cree que tienes, y `accion()` no manda nada mientras estén prendidas (ponerte algo en la prueba, sí, acá)
+function verComo(S, prueba, usuario) {
+  if (!prueba && !usuario) return S;
+  const yo = Object.assign({}, S.yo);
+  if (prueba) {
+    yo.inv = Object.keys(S.cat.piezas).map((p) => ({ p, o: 'prueba', pagado: 0, t: 0, usada: false, deshacer: false }));
+    yo.prem = true;
+    yo.numeros = Object.fromEntries(Object.keys(S.cat.ediciones || {}).map((id) => [id, 1]));
+  }
+  if (usuario) yo.prem = false;
+  return Object.assign({}, S, { yo, ensayo: false, modo: prueba ? 'prueba' : 'usuario' });
+}
+
+export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
+  const M = useModsEstado();
+  const yoDueno = !!dc && String(dc.id) === DUENO;
+  const S = useMemo(() => verComo(S0, yoDueno && !!M.prueba, yoDueno && !!M.usuario && !M.prueba), [S0, yoDueno, M.prueba, M.usuario]);
   const k = (dc && dc.clave) || '';
   const A = useArte(S.arte_v, !!S.anon);
   const [, repintar] = useState(0);
@@ -447,6 +468,18 @@ export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
   const pedir = useCallback((d) => window.conCuenta('/api/avisos/tienda-accion', d), []);
 
   async function accion(d, despues) {
+    // 🧪 en una vista de MODS no sale nada al objeto: en la prueba, ponerse algo es local (para verlo puesto)
+    if (S.modo) {
+      const p = d.accion === 'poner' && S.modo === 'prueba' ? S.cat.piezas[d.pieza] : null;
+      if (p) {
+        if (esFondo(p.c)) E.mio.fondo[p.c] = d.pieza; else if (p.c in E.mio.puesto) E.mio.puesto[p.c] = d.pieza;
+        if (despues) despues({ ok: true });
+        pinta();
+        return { ok: true };
+      }
+      Object.assign(E, { error: 'modo', abierta: E.abierta || '__modo', paso: E.abierta ? E.paso : null }); pinta();
+      return null;
+    }
     E.va = true; E.error = ''; pinta();
     let j = null;
     try { j = await pedir(d); } catch (e) { j = { error: 'red' }; }
@@ -562,11 +595,11 @@ export default function TiendaNueva({ liga, dc, S, recargar, partes }) {
   let hoja = '';
   if (E.abierta) {
     const id = E.abierta;
-    hoja = id === '__puesto' ? fichaPuesto(X, S, E, tengo) : id === '__reglas' ? reglasPop() : id === '__bill' ? billPop(S) : id === '__drop' ? dropPop(E)
+    hoja = id === '__modo' ? modoPop(S) : id === '__puesto' ? fichaPuesto(X, S, E, tengo) : id === '__reglas' ? reglasPop() : id === '__bill' ? billPop(S) : id === '__drop' ? dropPop(E)
       : id === '__prob' ? `<div class="tz-ficha" role="dialog" aria-label="El probador">${popCab('El probador', 'Lo que te estás probando', '#E41373')}<div class="tz-f-inf">${escenario(X, S, E)}${probando(S, E, tengo)}</div></div>`
       : S.cat.colecciones[id] ? fichaCol(X, S, E, tengo, liga, id) : S.cat.piezas[id] ? fichaPieza(X, S, E, tengo, liga, id) : '';
   }
-  const arriba = `${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S)}${hero(X, S, E, tengo)}
+  const arriba = `${S.modo ? '<p class="tz-ensayo">' + (S.modo === 'prueba' ? 'Modo prueba (MODS): tienes todo de mentira. Te lo puedes poner para verlo; no se compra ni se guarda nada.' : 'Viendo la Tienda como un usuario (MODS): sin tu Premium y sin el ensayo. En esta vista no se compra nada.') + '</p>' : ''}${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S)}${hero(X, S, E, tengo)}
     <section class="tz-sec" id="tz-prob" data-tuto="tz-probador"><div class="tz-sec-t"><h2>El probador</h2>${pildora(S, E)}</div>
       <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>
     <section class="tz-sec tz-sec-mas" data-tuto="tz-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>

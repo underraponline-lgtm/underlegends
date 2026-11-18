@@ -20,6 +20,11 @@ export const INTERRUPTORES = {
   crews: 'Manejar cualquier crew como su Líder',
   todo: 'Ver todas las llaves',
   fuera: 'Mirar como quien no juega',
+  // 🛍️ la Tienda, sólo para el dueño (17/11/2026, Dlx: «que en el menú de mods haya la opción de tener todo y en tienda todo
+  // también, no es algo verdadero pero es como what if… también la opción para ver cómo lo ve un usuario»). Son VISTAS: no
+  // se compra ni se guarda nada. Las mismas dos claves sirven para el resto de la página
+  prueba: 'Tener todo (prueba)',
+  usuario: 'Ver como un usuario',
 };
 
 function leer() {
@@ -76,6 +81,10 @@ export function opcionesMods(Q, pagina, sv) {
     sw.push({ k: 'todo', t: INTERRUPTORES.todo, d: 'La Copa, la Rapid y los mini eventos completos, también donde no juegas.' });
     sw.push({ k: 'fuera', t: INTERRUPTORES.fuera, d: 'La página como la ve la mayoría: sin tu cruce ni tu lugar.' });
   }
+  if (Q.owner && pagina === 'tienda') {
+    sw.push({ k: 'prueba', t: INTERRUPTORES.prueba, d: 'La Tienda como si tuvieras todas las piezas: te las pones y las ves. Nada es de verdad: no se compra ni se guarda nada.' });
+    sw.push({ k: 'usuario', t: INTERRUPTORES.usuario, d: 'La Tienda como la ve alguien sin tus permisos: sin tu Premium y sin el ensayo. Es una vista: no se compra nada.' });
+  }
   if (sv && (Q.socio || Q.owner)) atajos.push({ t: 'El panel de tu servidor', d: 'estadísticas, ajustes del bot y tu equipo', ruta: '#/socio' });
   if (Q.mod && (pagina === 'publicaciones' || pagina === 'r')) atajos.push({ t: 'El Dashboard', d: 'lo que espera que decidas', ruta: '#/dashboard' });
   return { sw, atajos };
@@ -99,6 +108,7 @@ export const LUGARES = [
   { pagina: 'competencias', t: 'Competencias', d: 'la Copa, la Rapid y las ligas simuladas', ruta: '#/competencias', ico: 'competencias' },
   { pagina: 'servidor', sv: true, t: 'Tu servidor', d: 'desde la página de tu servidor', ruta: '', ico: 'servidor' },
   { pagina: 'publicaciones', t: 'Publicaciones y perfiles', d: 'para lo que reporta la gente', ruta: '#/publicaciones', ico: 'publicaciones' },
+  { pagina: 'tienda', t: 'La Tienda', d: 'con todo de prueba, o como un usuario', ruta: '#/tienda', ico: 'tienda' },
 ];
 
 /** Los lugares de `LUGARES` donde esta persona tiene algo, cada uno con sus `sw` y `atajos`. */
