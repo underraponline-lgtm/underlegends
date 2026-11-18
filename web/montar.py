@@ -514,7 +514,7 @@ def script():
   window.urlLG = urlLG;
   // 🇬🇧 LA VISTA EN INGLÉS (18/11/2026, Dlx: un empleador quiere ver la página «sin la intro, sin permisos de admin, y en
   // inglés»): `/en` o `?lang=en` la prende y `?lang=es` la apaga. Este navegador queda como el de alguien que ya vino —sin
-  // la pantalla de carga larga, sin la bienvenida y sin el tutorial— y main.jsx baja el traductor (web/src/ingles.js). Sin
+  // la pantalla de carga larga, sin la bienvenida, sin el tutorial ni la franja de «la página cambió mucho»— y main.jsx baja el traductor (web/src/ingles.js). Sin
   // cuenta no hay nada de admin: es la página de cualquiera
   try {
     var pEn = (location.pathname || '').toLowerCase().replace(/\\/+$/, ''), qEn = /[?&]lang=(en|es)\\b/.exec(location.search);
@@ -524,7 +524,7 @@ def script():
       localStorage.setItem('lg:carga', String(ahEn));
       if (!localStorage.getItem('lg:visita')) localStorage.setItem('lg:visita', String(ahEn));
       try { tEn = JSON.parse(localStorage.getItem('lg:tuto') || '{}') || {}; } catch (e) { tEn = {}; }
-      tEn.t = tEn.t || ahEn - 90 * 864e5; tEn.nuevo = false; tEn.tour = tEn.tour || 'fin'; tEn.pasos = 'fin'; tEn.bienv = true;
+      tEn.t = tEn.t || ahEn - 90 * 864e5; tEn.nuevo = false; tEn.tour = tEn.tour || 'fin'; tEn.pasos = 'fin'; tEn.bienv = true; tEn.aviso_tuto = 1;
       tEn.c = tEn.c || {}; tEn.notas = tEn.notas || {};
       localStorage.setItem('lg:tuto', JSON.stringify(tEn));
       // y sin el aviso de «Nueva actualización»: es del changelog, en castellano y de adentro
