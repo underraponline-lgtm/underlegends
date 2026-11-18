@@ -200,7 +200,7 @@
   "prove": "Provenza",
   "trrrr": "Hassan",
   "yshows": "Provenza",
-  "betelgeuse": "Betelguese",
+  "betelgeuse": "Benjixo",
   "ceegee": "IFX",
   "sironex": "Badterne",
   "jawa": "Selek",
@@ -441,7 +441,9 @@
   "trueno": "KairoX",
   "teorema": "Rafael JR",
   "wos": "wosito",
-  "bootraxx": "BTRX"
+  "bootraxx": "BTRX",
+  "volg": "Rodas",
+  "betelguese": "Benjixo"
  },
  "pares": [
   [
@@ -2223,6 +2225,18 @@
   [
    "bootraxx",
    "BTRX"
+  ],
+  [
+   "Volg",
+   "Rodas"
+  ],
+  [
+   "Betelguese",
+   "Benjixo"
+  ],
+  [
+   "Betelgeuse",
+   "Benjixo"
   ]
  ],
  "no_confundir": [
