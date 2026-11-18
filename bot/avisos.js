@@ -398,7 +398,7 @@ export const CHAT_FRESCA = 30 * MIN;
 // donde habla el bot en vivo, un canal, o 'no'; `ligas_por` cambia el de una liga (`{<liga>: canal | 'no'}`).
 // 📅 `resumen`: el canal del resumen de la semana de ese servidor, los lunes ('' = no se manda)
 export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '',
-  ligas: '', ligas_por: {}, resumen: '', leer_chat: true };
+  ligas: '', ligas_por: {}, resumen: '', leer_chat: true, ganadores: true };
 
 export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
@@ -5252,7 +5252,8 @@ export function socioAjusteValido(cual, valor, canales, ligas) {
       ? { desde: valor.desde, hasta: valor.hasta } : undefined;
   }
   // 💬 `leer_chat` (17/11/2026, `bot/chats.py`): si el bot lee una vez por día el chat general de ese servidor
-  if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord' || cual === 'leer_chat') return typeof valor === 'boolean' ? valor : undefined;
+  // 🏆 `ganadores` (Discord, tanda 2, 17/11/2026, `bot/aviso_ganadores.py`): el aviso de los ganadores de cada evento en su chat general
+  if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord' || cual === 'leer_chat' || cual === 'ganadores') return typeof valor === 'boolean' ? valor : undefined;
   if (cual === 'vivo_nivel') return Object.prototype.hasOwnProperty.call(NIVELES_CHAT, valor) ? valor : undefined;
   if (cual === 'aviso_evento') return (valor === '' || valor === null) ? '' : (valor === 'chat' || valor === 'no') ? valor : undefined;
   if (cual === 'avisos' || cual === 'vivo' || cual === 'ascenso') {
@@ -16836,7 +16837,7 @@ export class Avisos {
         aviso_evento: (cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no') ? cfg.aviso_evento : '',
         ligas: String(cfg.ligas || ''), ligas_por: (cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {},
         resumen: String(cfg.resumen || ''), silencio: cfg.silencio && typeof cfg.silencio === 'object' ? cfg.silencio : '',
-        leer_chat: cfg.leer_chat !== false },
+        leer_chat: cfg.leer_chat !== false, ganadores: cfg.ganadores !== false },
       ligas, rol: x.rol,
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',

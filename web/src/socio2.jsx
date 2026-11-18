@@ -517,6 +517,12 @@ function Ajustes({ sv }) {
             ayuda="Una vez por día el bot lee tu chat general: cuenta cuánto se habla y quiénes, y si alguien denuncia un evento falso, una trampa, un raid o una estafa, se lo pasa a la Liga. Lo demás no se guarda.">
             <Interruptor t="Leer el chat general" on={c.leer_chat !== false} ocup={ocup} cambiar={(v) => cambiar('leer_chat', v)}
               si="Prendido: lo lee una vez por día" no="Apagado: no lee nada de tu chat" /></Fila>
+          {/* 🏆 LOS GANADORES DE CADA EVENTO (Discord, tanda 2, 17/11/2026, `bot/aviso_ganadores.py`): prendido de entrada, y lo
+              apaga el staff de cada servidor (Dlx: «prendido en todos los socios, el dueño lo apaga») */}
+          <Fila t="Los ganadores de cada evento" sello={sello === 'ganadores'}
+            ayuda="Al terminar cada evento de la Liga en tu servidor, el bot avisa en tu chat general quién ganó y qué drop se lleva, con botones para abrirlo. Menciona sólo a quien ganó un drop.">
+            <Interruptor t="Los ganadores de cada evento" on={c.ganadores !== false} ocup={ocup} cambiar={(v) => cambiar('ganadores', v)}
+              si="Prendido: un aviso por evento" no="Apagado: no se avisa" /></Fila>
           <Fila t="#N del ranking en el apodo" sello={sello === 'nick'} ayuda="Quien lo eligió con /numeral se queda con lo suyo.">
             <Interruptor t="#N del ranking en el apodo" on={c.nick} ocup={ocup} cambiar={(v) => cambiar('nick', v)}
               si="Activado: se le pone el número a todos" no="Apagado: no se le pone a nadie" /></Fila>

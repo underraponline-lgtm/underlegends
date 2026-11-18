@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.43",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T23:29:54-05:00",
+        "titulo": "Los ganadores de cada evento, en el chat",
+        "items": [
+            "Al terminar cada evento, el bot avisa en el **chat general** de ese servidor quién fue el **campeón** y qué **drop** se lleva cada ganador: el título, el podio y los batacazos.",
+            "Te **menciona** si ganaste un drop, y con los botones **Abrir mi Drop** y **Abrir mi Star** lo abres ahí mismo. El Nido, en la página.",
+            "Si ganaste y tu cuenta no está vinculada, el aviso te dice cómo: con **/vincular** en los próximos 14 días, lo que ganaste es tuyo.",
+            "Cada servidor lo puede apagar desde su panel (**Los ganadores de cada evento**)."
+        ]
+    },
+    {
       "version": "6.42",
       "dia": "2026-11-17",
       "cuando": "2026-11-17T23:25:00-05:00",

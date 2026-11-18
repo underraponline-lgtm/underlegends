@@ -3456,7 +3456,8 @@ const ok = (cond, que, det) => {
     && A.socioAjusteValido('canales', ['11', '99'], cs) === undefined && A.socioAjusteValido('eventos_discord', true, cs) === true
     && A.socioAjusteValido('aviso_evento', 'chat', cs) === 'chat' && A.socioAjusteValido('aviso_evento', null, cs) === ''
     && A.socioAjusteValido('aviso_evento', 'si', cs) === undefined
-    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":"","ligas":"","ligas_por":{},"resumen":"","leer_chat":true}',
+    && A.socioAjusteValido('ganadores', false, cs) === false && A.socioAjusteValido('ganadores', 'no', cs) === undefined
+    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":"","ligas":"","ligas_por":{},"resumen":"","leer_chat":true,"ganadores":true}',
   'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord, el aviso de cada evento, el canal de las ligas y el del resumen (11/11/2026); nada más');
   // 🛡️ el staff de cada servidor (16/11/2026): qué puede cada rol, y qué cambio de liga vale
   ok(A.socioPuede('dueno', 'equipo') && A.socioPuede('dlx', 'ajustes') && !A.socioPuede('admin', 'equipo') && A.socioPuede('admin', 'ajustes')

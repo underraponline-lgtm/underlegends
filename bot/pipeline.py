@@ -1340,6 +1340,11 @@ def _lo_barato(correr):
         paso('2b4b', 'el Pase de rapero')
         if not corre(['bot/pase.py', '--aplicar'], callado=False):
             print('      ⚠️ el Pase no llegó al objeto: queda lo de la corrida anterior')
+        # ── 2b4c · los ganadores de cada evento, en el chat general de su servidor (Discord, tanda 2, 17/11/2026) ──
+        # DESPUÉS del 2b4b, que es el que reparte los drops que el aviso nombra. Una vez por evento; nunca frena el ciclo
+        paso('2b4c', 'el aviso de los ganadores')
+        if not corre(['bot/aviso_ganadores.py', '--aplicar'], callado=False):
+            print('      ⚠️ el aviso de los ganadores falló: queda para la próxima corrida')
         # ── 2b5 · cuántos entraron a cada servidor por la Liga ────────────
         # 🔑 Dlx, 29/09/2026: «crea una invitación permanente para cada
         # servidor, y de esta manera podemos reconocer cuántas personas se
