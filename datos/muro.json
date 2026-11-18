@@ -1249,16 +1249,16 @@
 "rg": "",
 "c": []
 },
+"flash": {
+"rg": "",
+"c": []
+},
 "yor": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"flash": {
-"rg": "",
-"c": []
 },
 "riolu": {
 "rg": "",
@@ -7912,7 +7912,7 @@
 "ll": 661,
 "quien": [
 [
-"Flash 🇺🇸",
+"Flash",
 "flash"
 ]
 ]
@@ -7931,7 +7931,7 @@
 ],
 "suman": [
 {
-"n": "Flash 🇺🇸",
+"n": "Flash",
 "k": "flash",
 "pts": 10000,
 "ev": 1
@@ -7954,24 +7954,24 @@
 "n": "Thaniel",
 "k": "",
 "de": 724,
-"a": 480
+"a": 479
+},
+{
+"n": "Zanz",
+"k": "",
+"de": 735,
+"a": 504
 },
 {
 "n": "Deko",
 "k": "deko",
 "de": 349,
 "a": 119
-},
-{
-"n": "Zanz",
-"k": "",
-"de": 735,
-"a": 505
 }
 ],
 "sorpresas": [
 {
-"n": "Flash 🇺🇸",
+"n": "Flash",
 "k": "flash",
 "que": "debut",
 "ev": "CHOP ES CEO V.4"

@@ -753,6 +753,18 @@
    }
   },
   "Agente sombra": {
+   "CH": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 7500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 4,
@@ -1347,6 +1359,20 @@
     "pod": 0,
     "pts": 1875,
     "racha": "0/0"
+   }
+  },
+  "BLACKMEME": {
+   "CH": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 15750,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "BLANKO 🇺🇸": {
@@ -4907,7 +4933,7 @@
     "racha": "0/1"
    }
   },
-  "Flash 🇺🇸": {
+  "Flash": {
    "CH": {
     "duelos": "3/3",
     "ev": 1,
@@ -6590,7 +6616,7 @@
     "racha": "1/1"
    }
   },
-  "K1NGT0🇨🇱": {
+  "K1NGT0": {
    "CH": {
     "duelos": "",
     "ev": 1,
@@ -9457,20 +9483,6 @@
     "pod": 0,
     "pts": 3293,
     "racha": "0/0"
-   }
-  },
-  "Mf doom🇺🇸": {
-   "CH": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Millonari-O": {
@@ -15519,20 +15531,6 @@
     "racha": "0/0"
    }
   },
-  "blackmeme🇨🇱": {
-   "CH": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 15750,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "blackstar27": {
    "CH": {
     "duelos": "",
@@ -16509,7 +16507,7 @@
     "racha": "0/0"
    }
   },
-  "tato🇦🇷": {
+  "tato": {
    "CH": {
     "duelos": "",
     "ev": 1,

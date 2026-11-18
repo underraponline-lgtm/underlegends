@@ -412,6 +412,18 @@
    "vence": "2026-10-27T23:49:06+00:00",
    "vencido": false
   },
+  "BLACKMEME": {
+   "avisado": "2026-11-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "814959258725777419",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
   "BLUE BURKA": {
    "avisado": "2026-10-23",
    "chat": "2026-10-23",
@@ -1032,10 +1044,11 @@
    "vencido": false
   },
   "Flash": {
+   "avisado": "2026-11-18",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-18T03:02:41+00:00",
-   "did": "",
+   "did": "1339483432207781928",
    "evento": "CHOP ES CEO V.4",
    "n": 661,
    "sv": "CH",
@@ -1476,10 +1489,11 @@
    "vencido": false
   },
   "K1NGT0": {
+   "avisado": "2026-11-18",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-18T03:02:41+00:00",
-   "did": "",
+   "did": "630925224426340372",
    "evento": "CHOP ES CEO V.4",
    "n": 661,
    "sv": "CH",
@@ -1576,6 +1590,7 @@
    "vencido": false
   },
   "Keplatoo": {
+   "avisado": "2026-11-18",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-18T03:02:41+00:00",
@@ -2087,17 +2102,6 @@
    "sv": "LKR",
    "vence": "2026-11-01T03:55:52+00:00",
    "vencido": true
-  },
-  "Mf doom": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-18T03:02:41+00:00",
-   "did": "",
-   "evento": "CHOP ES CEO V.4",
-   "n": 661,
-   "sv": "CH",
-   "vence": "2026-11-25T03:02:41+00:00",
-   "vencido": false
   },
   "Millonari-O": {
    "avisado": "2026-10-18",
@@ -3269,17 +3273,6 @@
    "vence": "2026-11-16T14:38:17+00:00",
    "vencido": true
   },
-  "blackmeme": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-18T03:02:41+00:00",
-   "did": "",
-   "evento": "CHOP ES CEO V.4",
-   "n": 661,
-   "sv": "CH",
-   "vence": "2026-11-25T03:02:41+00:00",
-   "vencido": false
-  },
   "blackstar27": {
    "avisado": "2026-11-14",
    "chat": "2026-11-14",
@@ -3473,6 +3466,7 @@
    "vencido": true
   },
   "masterx": {
+   "avisado": "2026-11-18",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-18T03:02:41+00:00",
@@ -3586,10 +3580,11 @@
    "vencido": true
   },
   "tato": {
+   "avisado": "2026-11-18",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-18T03:02:41+00:00",
-   "did": "",
+   "did": "1451439942256562256",
    "evento": "CHOP ES CEO V.4",
    "n": 661,
    "sv": "CH",
@@ -3597,6 +3592,7 @@
    "vencido": false
   },
   "tixer": {
+   "avisado": "2026-11-18",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-18T03:02:41+00:00",
