@@ -11,56 +11,65 @@
   ],
   "cambios": [
     {
-        "version": "6.33",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T22:26:00-05:00",
-        "titulo": "Invita y gana, rehecha",
-        "items": [
-            "**Tu link ahora es una entrada** con talón: dice cuántos lugares te quedan y, al compartirla, se rasga. En el celular se abre para mandarla por donde quieras; en la compu se copia con el mensaje.",
-            "**El talonario**: una casilla por invitado que se sella con «ADENTRO» cuando cuenta, con cada premio debajo de su meta y lo ya cobrado marcado.",
-            "**Tus invitados**: quién ya cuenta, quién llegó y qué le falta, y un recordatorio listo para que se lo pases.",
-            "**Si llegas por un link, la página es tuya**: la carta de quien te invitó, los cuatro pasos con el que te toca, y lo que te espera adentro (tu carta, tu división y los próximos torneos)."
-        ]
+      "version": "6.34",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:30:24-05:00",
+      "titulo": "Los que mandan, por su OVR del servidor",
+      "items": [
+        "En el perfil de cada servidor, **Los que mandan** van ordenados por el OVR de ese servidor —el número de su carta de Servidor—, de mayor a menor."
+      ]
     },
     {
-        "version": "6.32",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T21:36:57-05:00",
-        "titulo": "La Tienda abre",
-        "items": [
-            "**La Tienda nueva**, con tus **Puntos de Tienda**: aros y decoraciones para tu foto, efectos para tu nombre y tu carta, cosas para tu perfil y fondos para cada lugar.",
-            "**La vitrina**: piezas que sólo están ahí y vuelven cada tanto, con la pieza **puesta en ti** para que veas cómo te queda.",
-            "**El probador**: pruébate todo lo que quieras y compra junto lo que te guste. Si no te la pusiste, la puedes **deshacer** en 24 horas.",
-            "**Colecciones** con descuento y un premio al completarlas, **ediciones de 10** numeradas (la #1 es del campeón) y **regalos**: hasta 3 por semana, y quien los recibe los acepta o los rechaza.",
-            "**Tu lista ♥**: la campana te avisa cuando algo de ahí entra en la vitrina o baja de precio. Y si un precio baja, quien lo compró en los 14 días anteriores recibe la diferencia.",
-            "**El Dragón Drop del día**, gratis: uno por día para los Miembros de DRA.",
-            "Con el **Pase premium**, −20 % en cada pieza y −30 % en las colecciones.",
-            "Sin cuenta también se mira y se prueba; para comprar, **entras con Discord**.",
-            "Lo que te pones **por ahora se ve en la Tienda**: en tu perfil, el ranking, los comentarios y /card llega muy pronto."
-        ]
+      "version": "6.33",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:26:00-05:00",
+      "titulo": "Invita y gana, rehecha",
+      "items": [
+        "**Tu link ahora es una entrada** con talón: dice cuántos lugares te quedan y, al compartirla, se rasga. En el celular se abre para mandarla por donde quieras; en la compu se copia con el mensaje.",
+        "**El talonario**: una casilla por invitado que se sella con «ADENTRO» cuando cuenta, con cada premio debajo de su meta y lo ya cobrado marcado.",
+        "**Tus invitados**: quién ya cuenta, quién llegó y qué le falta, y un recordatorio listo para que se lo pases.",
+        "**Si llegas por un link, la página es tuya**: la carta de quien te invitó, los cuatro pasos con el que te toca, y lo que te espera adentro (tu carta, tu división y los próximos torneos)."
+      ]
     },
     {
-        "version": "6.31",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T22:30:00-05:00",
-        "titulo": "Tu primera semana, sin tropiezos",
-        "items": [
-            "**Cuando te verificas, la página se entera al momento**: Mi cuenta, Crews y el Inicio ya te muestran como verificado, sin tener que salir y volver a entrar.",
-            "La racha de la semana vuelve a mostrar su «/7».",
-            "En la Tienda, lo que antes decía «Cobrado cazando» ahora dice «Ganado en la Liga», que es lo que suma de verdad: drops, misiones y cazas.",
-            "En el teléfono, los botones de arriba de Crews ya no se salen de la pantalla, y en Mi cuenta la sección para subir tu propia imagen se llama distinto de la foto de Discord."
-        ]
+      "version": "6.32",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T21:36:57-05:00",
+      "titulo": "La Tienda abre",
+      "items": [
+        "**La Tienda nueva**, con tus **Puntos de Tienda**: aros y decoraciones para tu foto, efectos para tu nombre y tu carta, cosas para tu perfil y fondos para cada lugar.",
+        "**La vitrina**: piezas que sólo están ahí y vuelven cada tanto, con la pieza **puesta en ti** para que veas cómo te queda.",
+        "**El probador**: pruébate todo lo que quieras y compra junto lo que te guste. Si no te la pusiste, la puedes **deshacer** en 24 horas.",
+        "**Colecciones** con descuento y un premio al completarlas, **ediciones de 10** numeradas (la #1 es del campeón) y **regalos**: hasta 3 por semana, y quien los recibe los acepta o los rechaza.",
+        "**Tu lista ♥**: la campana te avisa cuando algo de ahí entra en la vitrina o baja de precio. Y si un precio baja, quien lo compró en los 14 días anteriores recibe la diferencia.",
+        "**El Dragón Drop del día**, gratis: uno por día para los Miembros de DRA.",
+        "Con el **Pase premium**, −20 % en cada pieza y −30 % en las colecciones.",
+        "Sin cuenta también se mira y se prueba; para comprar, **entras con Discord**.",
+        "Lo que te pones **por ahora se ve en la Tienda**: en tu perfil, el ranking, los comentarios y /card llega muy pronto."
+      ]
     },
     {
-        "version": "6.30",
-        "dia": "2026-11-17",
-        "cuando": "2026-11-17T22:50:00-05:00",
-        "titulo": "Tu Colección, nueva",
-        "items": [
-            "La Colección del Inventario muestra cuánto tienes de todo, tu última insignia y las más fáciles que te faltan.",
-            "Cada insignia dice qué tan rara es: Común, Rara, Épica o Legendaria, según cuánta gente de la Liga la tiene.",
-            "Estilo de juego tiene más vida: rayos detrás de tu estilo, quiénes lo usan y cómo va en tu carta."
-        ]
+      "version": "6.31",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:30:00-05:00",
+      "titulo": "Tu primera semana, sin tropiezos",
+      "items": [
+        "**Cuando te verificas, la página se entera al momento**: Mi cuenta, Crews y el Inicio ya te muestran como verificado, sin tener que salir y volver a entrar.",
+        "La racha de la semana vuelve a mostrar su «/7».",
+        "En la Tienda, lo que antes decía «Cobrado cazando» ahora dice «Ganado en la Liga», que es lo que suma de verdad: drops, misiones y cazas.",
+        "En el teléfono, los botones de arriba de Crews ya no se salen de la pantalla, y en Mi cuenta la sección para subir tu propia imagen se llama distinto de la foto de Discord."
+      ]
+    },
+    {
+      "version": "6.30",
+      "dia": "2026-11-17",
+      "cuando": "2026-11-17T22:50:00-05:00",
+      "titulo": "Tu Colección, nueva",
+      "items": [
+        "La Colección del Inventario muestra cuánto tienes de todo, tu última insignia y las más fáciles que te faltan.",
+        "Cada insignia dice qué tan rara es: Común, Rara, Épica o Legendaria, según cuánta gente de la Liga la tiene.",
+        "Estilo de juego tiene más vida: rayos detrás de tu estilo, quiénes lo usan y cómo va en tu carta."
+      ]
     },
     {
       "version": "6.29",
