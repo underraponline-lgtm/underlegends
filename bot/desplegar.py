@@ -47,7 +47,9 @@ COMPAT = '2026-09-16'
 
 #: los módulos del Worker. `worker.js` es el principal: Cloudflare busca ahí
 #: las clases de los Durable Objects, y por eso re-exporta `Avisos`.
-MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js', 'ligas_vivo.js')
+#: 🛒 `tienda.js` desde el 17/11/2026 (la Tienda, etapa 4): avisos.js lo importa y, sin él en esta lista, Cloudflare
+#: rechazaba el script entero («No such module tienda.js»). `_faltan_modulos()` revisa los imports antes de subir
+MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js', 'ligas_vivo.js', 'tienda.js')
 #: de dónde sale cada módulo, si no está en `bot/` con su nombre. 🔑 `llave_vivo.js` es EL lector de la página
 #: (`bot/paginas/llave_vivo.js`): el vigía lo usa para «te toca» (`turnos()` en avisos.js). Un solo archivo para
 #: los dos —si fueran dos copias, la página y el aviso leerían distinto la misma llave—
@@ -105,6 +107,17 @@ def pedir(sesion, metodo, ruta, **kw):
                       'Workers Scripts · Edit')
         sys.exit(1)
     return j['result']
+
+
+def _faltan_modulos():
+    """Los `./x.js` que algún módulo importa y no están en `MODULOS`: subirlos así es un 400 de Cloudflare."""
+    falta = set()
+    for mod in MODULOS:
+        with io.open(os.path.join(SCR, RUTA_MODULO.get(mod, mod)), encoding='utf-8') as f:
+            for m in re.findall(r"""(?:from|import)\s*['"]\./([\w.-]+\.js)['"]""", f.read()):
+                if m not in MODULOS:
+                    falta.add(m)
+    return sorted(falta)
 
 
 def main():
@@ -302,6 +315,10 @@ def main():
     # ⚠️ SON DOS MODULOS DESDE EL 24/09/2026: `worker.js` importa
     # `avisos.js`. Si se sube uno solo, el import no resuelve y Cloudflare
     # rechaza el script entero — falla fuerte, que es lo bueno de este caso.
+    falta = _faltan_modulos()
+    if falta:
+        print('\n  🔴 un módulo importa algo que no se sube: %s. Súmalo a MODULOS' % ', '.join(falta))
+        return 1
     partes = {'metadata': (None, json.dumps(meta), 'application/json')}
     total = 0
     for mod in MODULOS:
