@@ -30,7 +30,10 @@ sys.path.insert(0, os.path.join(BASE, 'bot'))
 
 RUTA = os.path.join(BASE, 'datos', 'crews.json')
 VIVAS = os.path.join(BASE, 'datos', 'crews_vivas.json')
-URL = 'https://underlegends.pages.dev/api/avisos/crews'
+#: ⚡ con `?r=1` (revisión del 18/11/2026): desde esta tanda `/api/avisos/crews` se guarda 30 s en el borde de Pages
+#: (`delBorde()` de bot/paginas/_worker.js), y la relectura de después de poner las siglas traía la copia de antes.
+#: `?r` es lo que `delBorde()` lee como «fresco»; el Worker sólo mira el camino
+URL = 'https://underlegends.pages.dev/api/avisos/crews?r=1'
 WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 ORDEN_ROL = {'lider': 0, 'colider': 1, 'veterano': 2, 'miembro': 3}
 

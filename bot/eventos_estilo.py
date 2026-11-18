@@ -34,8 +34,8 @@ _ANUNCIO = re.compile(r'/([0-9]{15,22})/?$')
 def claves(item):
     """Con qué claves puede estar marcado un evento del calendario: su número y el id de su anuncio (como la página)."""
     out = []
-    # ⚠️ sólo un NÚMERO DE EVENTO (hasta 6 cifras): una llave en vivo trae en `ll` su registro (`126047346`), que no es
-    # un evento (lo encontró la prueba del Dashboard, 17/11/2026). Ése va por su anuncio
+    # ⚠️ sólo un NÚMERO DE EVENTO (hasta 6 cifras): la llave de un servidor que no suma (Tier 2 y 3,
+    # `datos/llaves_sin_sumar.json`) trae en `ll` su registro (`126047346`), que no es un evento (lo encontró la prueba del Dashboard, 17/11/2026). Ése va por su anuncio
     if item.get('ll') and re.match(r'^[0-9]{1,6}$', str(item['ll'])):
         out.append(str(item['ll']))
     m = _ANUNCIO.search(str(item.get('link') or ''))

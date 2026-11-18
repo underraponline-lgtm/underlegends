@@ -301,7 +301,12 @@ def jugaron(llaves, desde, hasta):
             continue
         for nombre, _p, _x in ev.get('tabla') or []:
             for p in personas(nombre):
-                out.setdefault(norm(p), de_hoy(p))
+                # 👻 un nombre que normalizado queda vacío no es una persona (18/11/2026): entraba como '' a las ligas de
+                # la temporada siguiente y alguien «jugaba» contra él cada jornada (ascenso-9 de la T2, que se queda
+                # como está: sacarlo de un grupo ya armado rearma el calendario y cambia cuántos bajan)
+                k = norm(p)
+                if k:
+                    out.setdefault(k, de_hoy(p))
     return out
 
 

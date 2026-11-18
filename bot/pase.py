@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""EL PASE DE RAPERO: 30 niveles por temporada, sólo para los miembros de DRA, que se suben con XP de Tareas.
+"""EL PASE DE RAPERO: 50 niveles por temporada, sólo para los miembros de DRA, que se suben con XP de Tareas.
 
     python bot/pase.py            lo que se le mandaría al objeto, sin mandar nada
     python bot/pase.py --auto     el self-check, sin red ni archivos
@@ -144,7 +144,7 @@ TEMPORADA = (
     ('dra3', 'Juega 3 eventos en DRA', 'En toda la temporada.', 'dra', 3, 2000),
     ('fel20', 'Felicita a 20 personas', 'En toda la temporada.', 'fel', 20, 2000),
     ('vivo10', 'Mira 10 llaves en vivo', 'En toda la temporada.', 'vivo', 10, 2000),
-    ('caza', 'Caza a un buscado', 'Ganale a un buscado del Most Wanted, en cualquier servidor de la Liga.', 'caza', 1,
+    ('caza', 'Caza a un buscado', 'Gánale a un buscado del Most Wanted, en cualquier servidor de la Liga.', 'caza', 1,
      3000),
     ('dra5', 'Juega 5 eventos en DRA', 'En toda la temporada.', 'dra', 5, 3000),
     ('dias30', 'Entra 30 días', 'En toda la temporada: la página con tu cuenta, el bot o un evento.', 'activo', 30,

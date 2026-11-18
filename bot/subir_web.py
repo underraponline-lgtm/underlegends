@@ -716,7 +716,11 @@ def armar():
     # 📈 y el ascenso de cada servidor, al día, en la liga a la que se asciende (`bot/ascenso.py`, 17/10/2026)
     _lg_det = _con_ascenso(_lg_det, _cl_lg)
     # 🏟️ y quién tiene carta de liga (`05_Liga/ciclo.py`, 27/10/2026), para «Tus cartas de liga» y el álbum de cada liga
-    _lg_det = _con_cartas_liga(_lg_det)
+    # 🏷️ con la marca de quién no compite (18/11/2026): 1 fuera de concurso, 2 staff que no compite (`_con_cartas_liga()`).
+    # El staff, sólo si su clave no es de alguien del pool: la misma regla que el perfil mínimo (`_perfiles_extra()`)
+    _k_pool = {_clave(p) for p in pool if p.get('raw')}
+    _lg_det = _con_cartas_liga(_lg_det, {**{x['k']: 2 for x in _staff_rol if x.get('k') and x['k'] not in _k_pool},
+                                         **{_clave(p): 1 for p in pool if p.get('raw') and p.get('fc')}}, _k_pool)
     # 🏟️ las divisiones: lo del lobby y, aparte, las últimas batallas del ELO (`_div()`, 09/11/2026)
     _dv = _div()
     # 📈 y en el lobby, sólo QUÉ servidores tienen ascenso y a qué liga (`{sv: [liga, id]}`): con eso el Ranking sabe si
@@ -2030,8 +2034,11 @@ def _perfiles(gente, comp, regs):
         ms = inst.get(int(n))
         t = (dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
              if ms else '')
+        # 🚫 el 6.º, 1 si la llave NO SUMA (18/11/2026): `regs` trae también las de `datos/llaves_sin_sumar.json` (`ns`,
+        # sumadas en `armar()`), que «no cuentan para nada», y la página del servidor las contaba en «De un vistazo», en
+        # el índice y en «Sus eventos» (CEU: 26 contra los 10 de la tira). Quien lee por posición lee de [0] a [4]
         e[n] = [r.get('nombre') or '', r.get('sv') or '', t, int(r.get('participantes') or 0),
-                r.get('fecha') or '']
+                r.get('fecha') or '', 1 if r.get('ns') else 0]
         for fila in r.get('tabla') or []:
             q = de(fila[0])
             if q in por:
@@ -2056,6 +2063,22 @@ def _perfiles(gente, comp, regs):
     med = [p for p in med if not p.get('fc')]
     pos_pod = {_clave(p): i + 1 for i, p in enumerate(med)}
     por_cc = Counter((x.get('cc') or '').lower() for x in comp if x.get('cc'))
+    # 🌎 SU PUESTO POR TEMPORADA EN SU PAÍS Y EN SU SERVIDOR, para quien no viaja en las 200 filas del lobby (18/11/2026):
+    # el panel del Inicio (`rankingsDe()`, web/src/panel.jsx) lo saca de la tabla para los de adentro, y a los de afuera
+    # les mostraba el de su carta de País (`pa`, por Score) contra un total de la Temporada, y en Servidor «sin puesto».
+    # Entre los que tienen número (no fc), en orden de `pos`; el total, la misma cuenta que `paises[].no` y `svs[].no`
+    # (`_paises()`, `_servidores()`). La tabla, los primeros `TOPE` en el orden de `armar()`
+    en_tabla = {_clave(p) for p in sorted((p for p in gente if p.get('raw')),
+                                          key=lambda p: p.get('o') or p.get('pos') or 9999)[:TOPE]}
+    n_cc, n_sv, pue_t = Counter(), Counter(), {}
+    for p in sorted((p for p in gente if p.get('raw') and not p.get('fc')), key=lambda p: p.get('pos') or 9999):
+        cc_, sv_ = (p.get('cc') or '').lower(), (p.get('sv') or '').upper()
+        if cc_:
+            n_cc[cc_] += 1
+        if sv_:
+            n_sv[sv_] += 1
+        if p.get('pos'):
+            pue_t[_clave(p)] = (n_cc[cc_] if cc_ else 0, n_sv[sv_] if sv_ else 0)
     # 🤝 con quién hace mejor equipo, sus réplicas y sus cartas de Servidor de los otros servidores (07/10/2026)
     comp_eq = _companeros(regs, de, por)
     reps = _replicas(de)
@@ -2095,6 +2118,14 @@ def _perfiles(gente, comp, regs):
         if cc and re.match(r'^\d+(/\d+)?$', pp) and not pp.startswith('0'):
             pos, _, tot = pp.partition('/')
             rk['pa'] = [int(pos), int(tot) if tot else por_cc.get(cc, 0)]
+        # 🌎 y fuera de la tabla, `tp` y `ts`: [puesto por Temporada, cuántos con número] en su país y su servidor (ver
+        # `pue_t` arriba, 18/11/2026)
+        if q not in en_tabla and q in pue_t:
+            _pc, _ps = pue_t[q]
+            if _pc:
+                rk['tp'] = [_pc, n_cc[cc]]
+            if _ps:
+                rk['ts'] = [_ps, n_sv[(p.get('sv') or '').upper()]]
         # ⚠️ CON LA NORMA DE `comun/crews.py`, no con la de las fotos
         cr = crews.get(_crew_norm(p.get('raw') or ''))
         if cr:
@@ -3194,15 +3225,19 @@ def _servidores(gente):
         sv = (p.get('sv') or '').upper()
         if not sv:
             continue
-        a = acc.setdefault(sv, {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0})
+        a = acc.setdefault(sv, {'sv': sv, 'n': 0, 'no': 0, 'pts': 0, 'ev': 0})
         a['n'] += 1
+        # 🔢 `no`, LOS QUE TIENEN NÚMERO (18/11/2026): el «de N» y el «top %» del servidor dividían por `n`, que cuenta
+        # también a los fuera de concurso (FFA: 403 contra 172 con número), o por las filas que viajan en la tabla. La
+        # misma regla que `n_oficiales`: no fc. `n` no se toca: es «cuánta gente tiene»
+        a['no'] += 0 if p.get('fc') else 1
         a['pts'] += p.get('pts') or 0
     # 🔢 LOS EVENTOS DE SU LLAVE, NO LOS DE SU GENTE: sumar el `ev` de cada persona le daba 2.178 a FFA, con 204 en toda la
     # Liga. Es la misma trampa que `n_eventos` más arriba (auditoría del 25/09/2026)
     for x in (_json('datos', 'llaves_t1.json') or {}).values():
         sv = (x.get('sv') or '').upper() if isinstance(x, dict) else ''
         if sv:
-            acc.setdefault(sv, {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0})['ev'] += 1
+            acc.setdefault(sv, {'sv': sv, 'n': 0, 'no': 0, 'pts': 0, 'ev': 0})['ev'] += 1
     miembros = _miembros(svs)
     _guardar_iconos(miembros)
     pags = _paginas_socios()
@@ -3218,7 +3253,7 @@ def _servidores(gente):
         pass
     out = []
     for sv in list(svs) + [s for s in acc if s not in svs]:
-        a = acc.get(sv) or {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0}
+        a = acc.get(sv) or {'sv': sv, 'n': 0, 'no': 0, 'pts': 0, 'ev': 0}
         x = svs.get(sv) or {}
         a['color'] = col.get(sv, '#7E8B89')
         a['nombre'] = x.get('nombre') or sv
@@ -3281,8 +3316,10 @@ def _paises(gente):
         cc = (p.get('cc') or '').lower()
         if not cc:
             continue
-        a = acc.setdefault(cc, {'cc': cc, 'n': 0, 'pts': 0})
+        a = acc.setdefault(cc, {'cc': cc, 'n': 0, 'no': 0, 'pts': 0})
         a['n'] += 1
+        # 🔢 `no`, los que tienen número (18/11/2026), como en `_servidores()`: Argentina tiene 174 y 60 con número
+        a['no'] += 0 if p.get('fc') else 1
         a['pts'] += p.get('pts') or 0
     return sorted(acc.values(), key=lambda a: (-a['pts'], -a['n']))
 
@@ -3657,12 +3694,18 @@ def _asc_json():
     return _ASC['_']
 
 
-def _con_cartas_liga(det):
+def _con_cartas_liga(det, marca=None, pool=None):
     """🏟️ Las cartas de liga subidas (`datos/cartas_liga.json`, de `05_Liga/ciclo.py`) en el detalle de las ligas, como
-    `cartas: {clave: [[liga, sello, ovr, puesto], …]}` con LA MEJOR PRIMERO (el OVR de liga más alto; a igual OVR, el
+    `cartas: {clave: [[liga, sello, ovr, puesto, marca], …]}` con LA MEJOR PRIMERO (el OVR de liga más alto; a igual OVR, el
     mejor puesto). Dlx, 26/10/2026: la carta de liga la ve sólo su dueño, y «aquellas personas que tengan más de 1 tarjeta
     de liga… un dropdown… pero por defecto verían la mejor». La imagen: `<r2>/<clave>/liga-<liga>.webp?v=<sello>`.
-    Viaja con `/api/ligas`, no en el lobby. Nunca frena el lobby."""
+    Viaja con `/api/ligas`, no en el lobby. Nunca frena el lobby.
+
+    🏷️ `marca` (18/11/2026): 1 si es fuera de concurso (`fc`), 2 si es staff que no compite (`solo`), 0 si nada. El Inicio
+    no baja `/api/perfiles`, así que de quien está fuera de las 200 filas no sabía si era `fc`, y «Los que mandan · Ligas»
+    (web/src/medio.jsx) dejaba afuera a todos los que sólo conocía por su nombre (Krtman, el #133). Quien lee por posición
+    lee de [0] a [3]. Y 3 (revisión del 18/11/2026) si no está en el pool de la temporada (`pool`, las claves): tiene carta
+    de liga pero no jugó, y con 0 se contaba como «compite» —el 0 quiere decir «del pool, con número»—."""
     try:
         if not det or det.get('ligas') is None:
             return det
@@ -3674,7 +3717,10 @@ def _con_cartas_liga(det):
             if lid not in hay:
                 continue
             for k, (sello, ovr, puesto) in v.items():
-                por.setdefault(k, []).append([lid, sello, ovr, puesto])
+                m = (marca or {}).get(k)
+                if m is None:
+                    m = 0 if pool is None or k in pool else 3
+                por.setdefault(k, []).append([lid, sello, ovr, puesto, m])
         for k in por:
             por[k].sort(key=lambda c: (-c[2], c[3], c[0]))
         if por:
@@ -4699,6 +4745,17 @@ def _self_check():
     ok(not _sin_logo, 'y con su logo  %s' % (_sin_logo or '—'))
     ok(all('miembros' not in s for s in p['svs']),
        'sin red no hay cantidad de miembros (sin dato no hay pieza)')
+    # 🔢 `no` (18/11/2026): los que tienen número, por servidor y por país. Nunca más que `n`, y entre todos los países
+    # (y entre todos los servidores) no pasan de `n_oficiales`, que es la misma cuenta para toda la Liga
+    _no_mal = [x.get('sv') or x.get('cc') for x in (p.get('svs') or []) + (p.get('paises') or [])
+               if not (isinstance(x.get('no'), int) and 0 <= x['no'] <= (x.get('n') or 0))]
+    _no_of = p.get('n_oficiales') or 0
+    ok(not _no_mal and sum(x['no'] for x in p.get('paises') or []) <= _no_of
+       and sum(x['no'] for x in p.get('svs') or []) <= _no_of,
+       'cada servidor y cada país dice cuántos tienen número (`no` <= `n`), y no suman más que `n_oficiales`  '
+       '(%d en países, %d en servidores, de %d)  %s'
+       % (sum(x.get('no') or 0 for x in p.get('paises') or []), sum(x.get('no') or 0 for x in p.get('svs') or []),
+          _no_of, _no_mal or '—'))
     # 🏅 el tier de cada socio y qué le cuenta, igual que `datos/niveles.json` (Dlx, 13/11/2026)
     import tiers as _TT
     _nv = _json('datos', 'niveles.json') or {}

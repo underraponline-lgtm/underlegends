@@ -71,12 +71,14 @@ NUEVAS_DESDE = '2026-10-19'
 #: cuántos eventos llegaste a cuartos o al podio), `paises` (de cuántos países distintos al tuyo son los rivales a los
 #: que les ganaste), `formato` (cuántos eventos jugaste que no fueron 1 vs 1) y `chico` (un evento del servidor chico
 #: de la semana: el `%s` del texto)
+#: (18/11/2026: «Ganale» era voseo —la pasada a tú del 20/10 cambió «Jugá» y «Ganá» y se le escapó la forma con
+#: enclítico, que sólo se diferencia por la tilde—; en tú es «Gánale», también en la cacería de `calcular()`)
 CATALOGO = {
     'facil': {
         'eventos2': ('Juega 2 eventos', 'eventos', 2),
         'duelo1': ('Gana un duelo', 'duelos', 1),
         'multi': ('Juega un evento del servidor con el multiplicador más alto', 'multi', 1),
-        'mundo1': ('Ganale un duelo a alguien de otro país', 'paises', 1, NUEVAS_DESDE),
+        'mundo1': ('Gánale un duelo a alguien de otro país', 'paises', 1, NUEVAS_DESDE),
         'formato': ('Juega un evento que no sea 1 vs 1: 2 vs 2, pandillas, multiverse, 5 vidas…', 'formato', 1,
                     NUEVAS_DESDE),
     },
@@ -84,17 +86,17 @@ CATALOGO = {
         'duelos3': ('Gana 3 duelos', 'duelos', 3),
         'semis': ('Llega a una semifinal', 'llego', 4),
         'nuevo': ('Juega en un servidor donde todavía no jugaste esta temporada', 'nuevo', 1),
-        'arriba1': ('Ganale un duelo a alguien de rango más alto que el tuyo', 'arriba1', 1, NUEVAS_DESDE),
+        'arriba1': ('Gánale un duelo a alguien de rango más alto que el tuyo', 'arriba1', 1, NUEVAS_DESDE),
         'eventos4': ('Juega 4 eventos', 'eventos', 4, NUEVAS_DESDE),
         'cuartos2': ('Llega a cuartos de final en 2 eventos', 'cuartos', 2, NUEVAS_DESDE),
-        'mundo3': ('Ganale a raperos de 3 países distintos al tuyo', 'paises', 3, NUEVAS_DESDE),
+        'mundo3': ('Gánale a raperos de 3 países distintos al tuyo', 'paises', 3, NUEVAS_DESDE),
         'chico': ('Juega un evento de %s', 'chico', 1, NUEVAS_DESDE),
     },
     'dificil': {
         'final': ('Llega a una final', 'llego', 2),
         'duelos5': ('Gana 5 duelos', 'duelos', 5),
         'campeon': ('Gana un evento', 'llego', 1),
-        'arriba2': ('Ganale un duelo a alguien dos rangos más arriba que tú', 'arriba2', 1, NUEVAS_DESDE),
+        'arriba2': ('Gánale un duelo a alguien dos rangos más arriba que tú', 'arriba2', 1, NUEVAS_DESDE),
         'podios2': ('Haz podio en 2 eventos', 'podios', 2, NUEVAS_DESDE),
     },
 }
@@ -457,7 +459,7 @@ def calcular(evs, dus, ahora, desde=None, mult=None, writing=None, ctx=None):
                 x.append(sv_chico)
         x_caza = presa(sid, ini, evs, desde)
         if x_caza:
-            lista.append(['caza', 'Ganale un duelo a %s' % x_caza, 'caza', 1, PUNTOS_CAZA, x_caza])
+            lista.append(['caza', 'Gánale un duelo a %s' % x_caza, 'caza', 1, PUNTOS_CAZA, x_caza])
         if sid >= DORADO_DESDE and sid in dorados:
             sv_d, n_d = dorados[sid]
             # 🆕 con su servidor al final (`x[6]`): la página pone su escudo
@@ -834,7 +836,7 @@ def _self_check_nuevas(ok):
     ok(fo == {60: '2 vs 2', 61: UNO_VS_UNO}, 'el formato de cada evento sale de subir_web.formato_evento()  %s' % fo)
     w = para_web({'sem': '2026-10-19', 'suma': {}, 'semanas': {'2026-10-19': {
         'fin': '2026-10-26T15:00:00Z', 'pts': {},
-        'lista': [fila('mundo1'), fila('chico', 'SR'), fila('mundo3'), ['caza', 'Ganale un duelo a Dan', 'caza', 1,
+        'lista': [fila('mundo1'), fila('chico', 'SR'), fila('mundo3'), ['caza', 'Gánale un duelo a Dan', 'caza', 1,
                                                                         PUNTOS_CAZA, 'Dan'],
                   ['dorado', 'Juega el evento dorado de Urban', 'dorado', 1, PUNTOS_DORADO, None, 'URBF']],
         'prog': {'Ana': [1, 0, 2, 1, 0]}}}})
