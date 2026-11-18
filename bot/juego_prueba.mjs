@@ -86,6 +86,10 @@ try {
     'el dueño por su clave; quien no tiene clave, nada');
   o.juegosCiclo({});
   ok(o.juegoMio(ANA, 't1').lugares.length === 2, 'un ciclo que sólo pregunta no borra lo guardado');
+  // 👥 «Lo usan»: las claves de quienes eligieron cada estilo; quien no tiene clave no sale
+  const q = o.juegoMio(BEA, 't1').quienes;
+  ok(q.punchline && q.punchline.join() === 'ana' && q.cazafla && q.cazafla.join() === A.DUENO_K && !Object.values(q).flat().includes(''),
+    'lo usan: por estilo, las claves (Bea no tiene clave y no sale)', q);
 
   // 🎭 los eventos de estilo que marca Dlx en el Dashboard (17/11/2026): el número del evento o el id del anuncio
   const V = (x) => A.ajusteValido('eventos_estilo', x);

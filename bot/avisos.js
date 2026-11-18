@@ -18958,8 +18958,17 @@ export class Avisos {
     // 🎭 tus tres lugares con su nivel y el nivel de cada estilo que jugaste, como los dejó el ciclo (17/11/2026)
     const L = /^[0-9]{5,25}$/.test(quien) ? (this.leer('juegos_lugares') || {}) : {};
     const k = /^[0-9]{5,25}$/.test(quien) ? (this.claveDe(quien) || (quien === DUENO ? DUENO_K : '')) : '';
+    // 👥 «Lo usan» (17/11/2026): de cada estilo, las claves de los últimos que lo eligieron (hasta 8), para las caras. Va en
+    // la carta Competitiva de cada uno, o sea que ya es público; quien no tiene clave todavía no sale
+    const quienes = {};
+    for (const x of this.sql.exec('SELECT quien, juego FROM juego_elige ORDER BY t DESC').toArray()) {
+      const kk = this.claveDe(x.quien) || (x.quien === DUENO ? DUENO_K : '');
+      if (!kk) continue;
+      const a = quienes[x.juego] || (quienes[x.juego] = []);
+      if (a.length < 8) a.push(kk);
+    }
     return { ok: true, juego: r ? r.juego : '', viejos, puede: !r || quien === DUENO || r.cambio !== temp, temp, cuantos,
-      dueno: quien === DUENO, lugares: (k && (L.col || {})[k]) || [], niveles: (k && (L.niv || {})[k]) || {} };
+      dueno: quien === DUENO, lugares: (k && (L.col || {})[k]) || [], niveles: (k && (L.niv || {})[k]) || {}, quienes };
   }
 
   /**

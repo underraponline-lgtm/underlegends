@@ -396,18 +396,41 @@
 .jg-conf p b{color:var(--v-tinta)}
 /* tus tres lugares */
 .jg-lug{display:grid;gap:8px;align-content:start}
-.jg-lug ol{margin:0;padding:0;list-style:none;display:grid;gap:6px}
-.jg-lug li{display:grid;grid-template-columns:18px auto minmax(0,1fr);gap:10px;align-items:center;padding:8px 10px;border:1.5px solid var(--v-borde2);background:rgba(11,12,14,.8)}
-.jg-lug li.vac{border-style:dashed}
-.jg-lg-n{font:900 18px/1 Archivo,sans-serif;color:var(--v-gris)}
-.jg-lug li > span:last-child{display:grid;gap:2px;min-width:0}
+/* 🃏 como la columna izquierda de tu carta: las tres insignias sobre el borde de la carta, una debajo de la otra */
+.jg-lug ol{margin:0;padding:0;list-style:none;display:grid;border:1.5px solid var(--v-borde2);background:rgba(11,12,14,.85)}
+.jg-lug li{display:grid;grid-template-columns:70px minmax(0,1fr);gap:12px;align-items:center;padding-right:10px}
+.jg-lug li + li{border-top:1px solid var(--v-borde)}
+.jg-cel{display:grid;place-items:center;align-self:stretch;padding:9px 0;border-left:3px solid var(--rg);
+  background:linear-gradient(90deg,color-mix(in srgb,var(--rg) 20%,#101116),#101116)}
+.jg-lg-t{display:grid;gap:2px;min-width:0;padding:6px 0}
 .jg-lug em{font:800 11.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--rg)}
 .jg-lug li.vac em{color:var(--v-gris)}
+.jg-lug li.vac .jg-cel{border-left-style:dashed;background:#0D0E12}
 .jg-lug li b{font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase}
 .jg-lug li.vac b{color:#85858A}
 .jg-lug small{font:500 12px/1.3 Archivo,sans-serif;color:var(--v-gris)}
 .jg-pill{justify-self:start;padding:5px 8px;border:1.5px solid var(--v-verde);color:var(--v-verde);font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
 .jg-pill.gris{border-color:var(--v-borde2);color:var(--v-gris)}
+/* ✨ los rayos detrás del estilo grande, del color de tu rango, y el golpe de entrada al tocar otro (Dlx: «muy triste se ve») */
+.jg-big{position:relative;display:grid;place-items:center;padding:14px}
+.jg-rayos{position:absolute;inset:-30px;border-radius:50%;pointer-events:none;
+  background:repeating-conic-gradient(color-mix(in srgb,var(--rg) 34%,transparent) 0 7deg,transparent 7deg 20deg);
+  -webkit-mask:radial-gradient(circle,#000 28%,transparent 70%);mask:radial-gradient(circle,#000 28%,transparent 70%)}
+.jg-big > .jg-ins{position:relative}
+@media (prefers-reduced-motion: no-preference){
+  .jg-rayos{animation:jg-gira 26s linear infinite}
+  .jg-big > .jg-ins{animation:jg-entra .5s cubic-bezier(.2,1.4,.4,1) both}
+}
+@keyframes jg-gira{to{transform:rotate(360deg)}}
+@keyframes jg-entra{from{transform:scale(.7) rotate(-8deg);opacity:0}}
+/* 👥 lo usan */
+.jg-usan{display:grid;gap:5px;justify-items:start}
+.jg-usan small{font:500 12.5px/1.3 Archivo,sans-serif;color:var(--v-gris)}
+.jg-caras{display:flex;align-items:center}
+.jg-cara{display:block;width:30px;height:30px;margin-left:-8px;border-radius:50%;overflow:hidden;border:2px solid var(--v-fondo);background:#1C1C22}
+.jg-cara:first-child{margin-left:0}
+.jg-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.jg-caras em{margin-left:6px;font:800 12px/1 "Barlow Condensed",sans-serif;font-style:normal;color:var(--v-gris)}
 /* la grilla: una fila por familia, seis a todo el ancho */
 .jg-grilla{display:grid;gap:10px}
 .jg-fila{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:stretch}
@@ -418,6 +441,22 @@
 .jg-6 .ves-q{padding:16px 6px 12px;gap:7px}
 .jg-6 .ves-q b{font-size:clamp(10px,9.4cqi,13px)}
 .ves-q .jg-ins{margin:2px 0 1px}
+/* ✨ cada cuadro con la forma de su familia de fondo, su barra de cuántos lo eligieron, y se levanta al pasar */
+.jg-6 .ves-q{overflow:hidden}
+.jg-6 .ves-q::before{content:"";position:absolute;right:-18px;bottom:-18px;width:66px;height:66px;border:2px solid color-mix(in srgb,var(--rg) 30%,transparent);
+  opacity:.55;pointer-events:none}
+.jg-fila.f-rombo .ves-q::before{rotate:45deg}
+.jg-fila.f-circulo .ves-q::before{border-radius:50%}
+.jg-fila.f-escudo .ves-q::before{border-radius:0 0 50% 50%}
+.jg-pop{display:block;width:70%;height:3px;margin-top:2px;background:#1E1E22}
+.jg-pop u{display:block;height:100%;background:var(--rg)}
+.jg-6 .ves-pie{display:contents}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference){
+  .jg-6 .ves-q{transition:transform .15s ease,border-color .15s ease}
+  .jg-6 .ves-q:hover{transform:translateY(-3px);border-color:var(--rg)}
+}
+/* ✨ los que tienes brillan con el color de tu rango */
+.jg-6 .ves-q.r-jg-tengo{border-color:var(--rg);box-shadow:inset 0 0 0 1px var(--rg),0 0 22px color-mix(in srgb,var(--rg) 22%,transparent)}
 /* el gris de la página y no el del borde: en el cuadro, «6 lo tienen» tiene que leerse */
 .jg .ves-q{--r:var(--v-gris)}
 .jg .ves-q.on{--r:var(--v-tinta)}
@@ -438,7 +477,6 @@
 /* 🖥️ compu chica: los lugares abajo del estilo */
 @media (max-width:1060px){
   .jg-hero{grid-template-columns:minmax(0,1fr)}
-  .jg-lug ol{grid-template-columns:repeat(3,minmax(0,1fr))}
   .jg-pie{grid-template-columns:minmax(0,1fr)}
 }
 /* 📱 el celular: el estilo arriba, los lugares en una fila, la grilla de a tres */
@@ -449,14 +487,9 @@
   .jg-sel{gap:14px}
   .jg-sel-t > b{font-size:min(36px,calc(100cqi / (var(--n,7) * .95)))}
   .jg-sel-t p{font-size:14px}
-  .jg-lug ol{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
-  .jg-lug li{grid-template-columns:1fr;justify-items:center;text-align:center;padding:10px 4px;gap:5px}
-  .jg-lg-n,.jg-lug small{display:none}
-  /* 📏 el nombre entero en una línea, achicado por su largo: «SHOWMA / N» a 320 px */
-  .jg-lug li{container-type:inline-size}
-  .jg-lug li > span:last-child{justify-self:stretch}
-  .jg-lug li b{font-size:min(12.5px,calc(100cqi / (var(--n,8) * .78)));white-space:nowrap}
-  .jg-lug em{font-size:10.5px}
+  .jg-lug li{grid-template-columns:60px minmax(0,1fr);gap:10px}
+  .jg-big{padding:10px}
+  .jg-rayos{inset:-20px}
   .jg-fila{grid-template-columns:minmax(0,1fr);gap:8px}
   .jg-fila h4{grid-auto-flow:column;justify-content:space-between;align-items:baseline;padding:6px 0 0;border-left:0;border-top:3px solid var(--v-tinta)}
   .ves-grid.jg-6{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -468,4 +501,104 @@
   /* ⚠️ el texto lleva `container-type`, que no tiene ancho propio: sin estirarlo, se encogía a nada */
   .jg-sel-t{justify-self:stretch}
   .jg-sel-t .ves-btn{white-space:normal;text-align:left;max-width:100%}
+}
+/* 🏅 LA COLECCIÓN, «LA VITRINA» (17/11/2026, coleccion.jsx). La rareza (cuánta gente de la Liga la tiene) con los tonos de los TAG:
+   `--t4` Común, `--t3` Rara, `--t2` Épica, `--t1` Legendaria. Lo tuyo con su color pleno; lo que falta, apagado pero con su tono */
+.cl{display:grid;gap:16px}
+.cl-rk{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--v-gris)}
+.cl .r-t1{--r:var(--t1)}.cl .r-t2{--r:var(--t2)}.cl .r-t3{--r:var(--t3)}.cl .r-t4{--r:var(--t4)}
+.cl-bar{display:block;height:4px;background:#1E1E22;overflow:hidden}
+.cl-bar u{display:block;height:100%;background:var(--v-verde)}
+/* arriba: tu total, cada cosa, tu última y las más fáciles */
+.cl-cab{display:grid;grid-template-columns:auto minmax(0,1fr) 330px;gap:22px;align-items:center;padding:20px;border:1.5px solid var(--v-borde);
+  background:radial-gradient(60% 140% at 0% 0%,rgba(41,178,152,.16),transparent 60%),radial-gradient(50% 120% at 100% 100%,rgba(245,197,66,.10),transparent 60%),var(--v-panel)}
+.cl-anillo{position:relative;display:grid;place-items:center}
+.cl-anillo > span{position:absolute;display:grid;justify-items:center;gap:2px}
+.cl-anillo b{font:900 32px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.cl-anillo small{font:700 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--v-gris)}
+.cl-st{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:12px}
+.cl-st li{display:grid;gap:6px}
+.cl-st span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--v-gris)}
+.cl-st b{font:900 24px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.cl-st b small{font-size:13px;color:var(--v-gris)}
+.cl-ult{display:grid;gap:8px;min-width:0}
+.cl-ult-i{--r:var(--v-borde2);display:flex;align-items:center;gap:10px;padding:8px 10px;border:1.5px solid var(--r);background:#08080A;color:var(--v-tinta);cursor:pointer;text-align:left}
+.cl-ult-i span{font-size:26px;line-height:1}
+.cl-ult-i b{font:900 16px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.cl-cerca{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.cl-cerca button{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:center;width:100%;padding:3px 0;border:0;background:none;color:var(--v-tinta);text-align:left;cursor:pointer}
+.cl-cerca button > span:first-child{font-size:21px;line-height:1;filter:grayscale(1);opacity:.6;text-align:center}
+.cl-cerca b{display:block;font:800 13px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.cl-cerca small{font:500 12px/1.3 Archivo,sans-serif;color:var(--v-gris)}
+/* las categorías y la grilla */
+.cl-cuerpo{display:grid;grid-template-columns:230px minmax(0,1fr);gap:16px;align-items:start}
+.cl-nav{display:grid;gap:2px;padding:8px 0;border:1.5px solid var(--v-borde)}
+.cl-nav .cl-rk{padding:12px 14px 4px}
+.cl-nav button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 8px;padding:8px 14px;border:0;border-left:4px solid transparent;background:none;color:var(--v-tinta);text-align:left;cursor:pointer}
+.cl-nav button b{font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.cl-nav button small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--v-gris)}
+.cl-nav button .cl-bar{grid-column:1/-1;height:3px}
+.cl-nav button.on{border-left-color:var(--v-verde);background:#121216}
+.cl-ley{margin:0;padding:2px 14px 6px;display:flex;flex-wrap:wrap;gap:4px 12px}
+.cl-ley span{display:inline-flex;align-items:center;gap:5px;font:700 12px/1.6 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--r)}
+.cl-ley i{width:8px;height:8px;border-radius:50%;background:var(--r)}
+.cl-der{display:grid;gap:12px;min-width:0}
+.cl-fx{--r:var(--v-borde2);display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:16px;border:1.5px solid var(--r);scroll-margin-top:80px;
+  background:radial-gradient(60% 140% at 0% 50%,color-mix(in srgb,var(--r) 22%,transparent),transparent 65%),var(--v-panel)}
+.cl-fx-ic{display:grid;place-items:center;width:84px;height:84px;font-size:48px;line-height:1;border:2px solid var(--r);background:#08080A}
+.cl-fx em{font:800 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--r)}
+.cl-fx b{display:block;margin:5px 0 4px;font:900 30px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
+.cl-fx p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:#C9C9CC}
+.cl-fx-st{display:inline-block;margin-top:8px;padding:4px 7px;border:1.5px solid var(--v-borde2);font:800 11.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--v-gris)}
+.cl-fx-st.si{background:var(--v-verde);border-color:var(--v-verde);color:#030304}
+.cl-fil{display:flex;flex-wrap:wrap;gap:6px}
+.cl-fil button{padding:8px 12px;border:1.5px solid var(--v-borde2);background:transparent;color:#C9C9CC;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;cursor:pointer}
+.cl-fil button.on{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304}
+.cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:7px}
+.cl-it{--r:var(--v-borde2);position:relative;display:grid;justify-items:center;align-content:start;gap:6px;min-width:0;padding:16px 6px 11px;overflow:hidden;
+  border:1.5px dashed color-mix(in srgb,var(--r) 45%,transparent);background:var(--v-panel);color:var(--v-tinta);text-align:center;cursor:pointer}
+.cl-it-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;font-size:29px;line-height:1;
+  background:radial-gradient(circle,color-mix(in srgb,var(--r) 16%,transparent),transparent 70%)}
+.cl-it:not(.mia) .cl-it-ic{filter:grayscale(1);opacity:.32}
+.cl-it b{max-width:100%;font:900 12px/1.15 Archivo,sans-serif;text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
+.cl-it:not(.mia) b{color:#8A8A90}
+.cl-it small{display:inline-flex;align-items:center;gap:5px;font:800 10.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--r)}
+.cl-it small i{flex:none;width:7px;height:7px;border-radius:50%;background:var(--r)}
+.cl-lk{position:absolute;top:7px;right:7px;width:12px;height:12px;color:#6E6E72}
+.cl-it.mia{border:1.5px solid var(--r);background:linear-gradient(180deg,color-mix(in srgb,var(--r) 16%,var(--v-panel)),var(--v-panel) 70%)}
+.cl-it.mia .cl-it-ic{background:radial-gradient(circle,color-mix(in srgb,var(--r) 40%,transparent),transparent 70%)}
+.cl-it.mia::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.14) 48%,transparent 60%);transform:translateX(-120%)}
+.cl-it.sel{outline:2px solid var(--v-tinta);outline-offset:-2px}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference){
+  .cl-it.mia:hover::after{transform:translateX(120%);transition:transform .7s ease}
+  .cl-it:not(.sel):hover{border-color:var(--r)}
+}
+.cl-der > .ves-panel{border-color:var(--v-borde)}
+/* 🖥️ compu chica: lo de arriba en dos filas */
+@media (max-width:1060px){
+  .cl-cab{grid-template-columns:auto minmax(0,1fr)}
+  .cl-ult{grid-column:1/-1}
+}
+/* 📱 el celular: las categorías en chips que se deslizan, la grilla de a tres */
+@media (max-width:760px){
+  .cl-cab{gap:14px;padding:14px}
+  .cl-st{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+  .cl-anillo b{font-size:25px}
+  .cl-cuerpo{grid-template-columns:minmax(0,1fr)}
+  .cl-nav{display:flex;gap:6px;padding:0;border:0;overflow-x:auto;scrollbar-width:none}
+  .cl-nav::-webkit-scrollbar{display:none}
+  .cl-nav .cl-rk,.cl-nav .cl-ley{display:none}
+  .cl-nav button{flex:none;display:flex;gap:6px;align-items:baseline;padding:8px 11px;border:1.5px solid var(--v-borde2)}
+  .cl-nav button .cl-bar{display:none}
+  .cl-nav button b{font-size:12.5px;white-space:nowrap}
+  .cl-nav button.on{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304}
+  .cl-nav button.on small{color:#3A3A40}
+  .cl-fx{padding:12px;gap:12px}
+  .cl-fx-ic{width:62px;height:62px;font-size:34px}
+  .cl-fx b{font-size:22px}
+  .cl-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cl-it{padding:14px 4px 9px}
+  .cl-it-ic{width:44px;height:44px;font-size:25px}
+  .cl-it b{font-size:11px}
+  .cl-it small{font-size:9.5px;flex-wrap:wrap;justify-content:center}
 }

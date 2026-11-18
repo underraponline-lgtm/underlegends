@@ -38,6 +38,8 @@ import { FraseEditor } from './frase.jsx';
 usarCss('inventario', CSS_PAGINA);
 // 🎭 tu estilo de juego (16/11/2026): su pestaña, en su propio pedazo (trae el catálogo con los íconos). Ver `juego.jsx`
 const EstiloJuego = lazy(() => import('./juego.jsx'));
+// 🏅 la Colección, «la vitrina» (17/11/2026): su pestaña, en su propio pedazo. Ver `coleccion.jsx`
+const Coleccion = lazy(() => import('./coleccion.jsx'));
 
 const CARTAS = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
 const GRUPO = { siempre: 'para siempre', temporada: 'de temporada', pase: 'edición limitada' };
@@ -461,6 +463,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   // 🏅 la colección: insignias (de tu perfil), títulos y marcos
   const insCat = (liga.d && liga.d.insignias) || [];
   const insMias = new Set(((perf && perf.ins) || []).map((x) => x[0]));
+  // y cuándo ganaste cada una, para «Tu última» de la Colección
+  const insFecha = new Map(((perf && perf.ins) || []).map((x) => [x[0], x[1] || '']));
   const titulos = Object.keys(yo.titulo_carta || {});
   const titMios = new Set(yo.titulos || []);
   const tagsTot = CARTAS.reduce((a, [c]) => a + opciones(c, yo).filter((o) => o.mio).length, 0);
@@ -515,7 +519,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
 
       <div className="ves-sec" role="tablist" aria-label="Qué miras">
         {[['cartas', 'Cartas', sinCartas ? 'Ninguna todavía' : cartas.length + ' de 4'], ['perfil', 'Perfil', 'Fondo, frase y más'],
-          ['juego', 'Estilo de juego', 'Cómo rapeas'], ['col', 'Colección', insMias.size + ' insignias']].map(([id, n, s]) => (
+          ['juego', 'Estilo de juego', 'Cómo rapeas'], ['col', 'Colección', insMias.size + (insMias.size === 1 ? ' insignia' : ' insignias')]].map(([id, n, s]) => (
           <button key={id} type="button" role="tab" aria-selected={sec === id} className={sec === id ? 'on' : ''} onClick={() => { setSec(id); setSel(null); }}>
             <b>{n}</b><small>{s}</small></button>
         ))}
@@ -655,30 +659,13 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         <Suspense fallback={<p className="ves-nota">Cargando…</p>}><EstiloJuego liga={liga} dc={dc} k={k} Cuadro={Cuadro} Titulo={Titulo} /></Suspense>
       ) : null}
 
+      {/* 🏅 LA COLECCIÓN, «LA VITRINA» (remake del 17/11/2026, `coleccion.jsx`): tu total, las categorías, la rareza y la ficha.
+          Los títulos y los marcos son los de siempre, puestos en su categoría */}
       {sec === 'col' ? (
-        <div className="ves-col">
-          {/* 📊 lo que tienes de todo lo que hay (de la C de la maqueta: Marvel Snap y Steam) */}
-          <div className="ves-prog ancha">
-            {[[tagsTot, tagsCat, 'TAGs', 'en tus cuatro cartas'], [idsMarcos.length, MARCOS_PASE.length, 'Marcos', 'del Pase premium y de Invita y gana'],
-              [insMias.size, insCat.length, 'Insignias', 'de la temporada'], [titulos.filter((x) => titMios.has(x) || yo.dueno).length, titulos.length, 'Títulos', 'del Pase, los drops y más']]
-              .filter(([, de]) => de).map(([n, de, et, s]) => (
-                <div key={et} className="ves-pr"><b>{n}<small> / {de}</small></b><span>{et}</span><Barra n={n} de={de} /><small>{s}</small></div>
-              ))}
-          </div>
-          <section className="ves-panel ancha">
-            <Titulo extra={<span className="ves-de">{pct ? 'el % es cuánta gente de la Liga la tiene' : insMias.size + ' de ' + insCat.length}</span>}>Insignias</Titulo>
-            {sel && sel.startsWith('in:') ? (() => {
-              const x = insCat.find((i) => i[0] === sel.slice(3));
-              return x ? <Ficha o={{ texto: x[1] + ' ' + x[2], desc: x[3], mio: insMias.has(x[0]) }} /> : null;
-            })() : null}
-            <div className="ves-grid">
-              {[...insCat].sort((a, b) => insMias.has(b[0]) - insMias.has(a[0])).map(([id, ic, n]) => (
-                <Cuadro key={id} mio={insMias.has(id)} on={sel === 'in:' + id} ic={ic} nombre={n} rar={insMias.has(id) ? 'La tienes' : 'Por ganar'}
-                  pie={pct && pct.n ? enPct((pct.de[id] || 0) / pct.n) : ''} onClick={() => setSel('in:' + id)} />
-              ))}
-            </div>
-          </section>
-          {titulos.length ? (
+        <Suspense fallback={<p className="ves-nota">Cargando…</p>}>
+          <Coleccion ins={insCat} mias={insFecha} pct={pct} onEstilos={() => { setSec('juego'); setSel(null); }}
+            extra={{ titulos: [titulos.filter((x) => titMios.has(x) || yo.dueno).length, titulos.length], marcos: [idsMarcos.length, MARCOS_PASE.length], tags: [tagsTot, tagsCat] }}
+            Titulos={titulos.length ? (
             <section className="ves-panel">
               <Titulo extra={<span className="ves-de">{titulos.filter((t) => titMios.has(t) || yo.dueno).length} de {titulos.length}</span>}>Títulos</Titulo>
               <p className="ves-p">Cada uno va en una carta y se pone como su TAG: tócalo para probártelo.</p>
@@ -696,7 +683,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
                 })}
               </div>
             </section>
-          ) : null}
+            ) : null}
+            Marcos={(
           <section className="ves-panel">
             <Titulo extra={<span className="ves-de">{idsMarcos.length} de {MARCOS_PASE.length}</span>}>Marcos</Titulo>
             <p className="ves-p">Del Pase premium y de Invita y gana: tócalo para probártelo en tus cartas.</p>
@@ -709,7 +697,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
               })}
             </div>
           </section>
-        </div>
+            )} />
+        </Suspense>
       ) : null}
 
       {/* 💾 la barra de guardar: con cambios, pegada abajo, con tu carta chica para ver lo que pruebas */}

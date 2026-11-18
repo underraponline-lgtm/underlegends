@@ -20,10 +20,17 @@
 //   · la grilla entera: tres filas de seis, una por familia, a todo el ancho (antes, seis cuadros de 124 px y un tercio vacío)
 //   · al pie, cómo se sube y el próximo evento de estilo de DRA (`je` del calendario)
 //   · sin el panel gris que la envolvía: va directo sobre el negro, como el escenario de Cartas
+//
+// ✨ CON MÁS VIDA (Dlx, 17/11/2026: «mejora más esa página de estilos… muy triste se ve», y a la maqueta
+// https://claude.ai/artifact/S2uXewXQsMrJg7HQvXsizH, «me gusta todo»): los rayos del color de tu rango detrás del estilo
+// grande, que entra con un golpe cada vez que tocas otro; «Lo usan» con las caras de quienes lo eligieron (`quienes` de
+// `juegoMio()`); tus lugares como la columna de tu carta; cada cuadro con la forma de su familia de fondo y su barra de
+// cuántos lo eligieron; y los que tienes brillan con el color de tu rango
 import { useEffect, useRef, useState } from 'react';
 import CAT from './estilos_juego.json';
 import { pasePost } from './pase.js';
 import { limpio, siglaDe, utc } from './liga.js';
+import { Cara } from './piezas.jsx';
 
 const FAMILIA = {
   ATAQUE: ['Ataque', 'lo que le hace al rival y al público'],
@@ -181,16 +188,23 @@ export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
     accion = <span className="jg-es">Es tu estilo</span>;
   }
 
+  // 🃏 cada lugar, como va en la columna izquierda de tu carta: la insignia sobre el borde de la carta, y al lado qué es
   const lugar = (n, de, x, nivel, pie) => (
     <li key={n} className={x ? '' : 'vac'}>
-      <span className="jg-lg-n">{n}</span>
-      {x ? <Insignia k={x} nivel={nivel} tam={46} c={rg} /> : <Vacio />}
-      <span><em>{de}{x ? ' · nivel ' + nivel : ' · libre'}</em><b style={{ '--n': Math.max(8, (x ? ESTILO[x].n : 'Sin estilo').length) }}>{x ? ESTILO[x].n : 'Sin estilo'}</b><small>{pie}</small></span>
+      <span className="jg-cel">{x ? <Insignia k={x} nivel={nivel} tam={42} c={rg} /> : <Vacio tam={42} />}</span>
+      <span className="jg-lg-t"><em>{n}.º · {de}{x ? ' · nivel ' + nivel : ' · libre'}</em><b>{x ? ESTILO[x].n : 'Sin estilo'}</b><small>{pie}</small></span>
     </li>
   );
+  // 👥 lo usan: las caras de los últimos que lo eligieron, cuántos y en qué puesto está
+  const quienes = ((d && d.quienes) || {})[e.k] || [];
+  const nUsan = cuantos[e.k] || 0;
+  const orden = Object.keys(ESTILO).sort((a, b) => (cuantos[b] || 0) - (cuantos[a] || 0));
+  const puesto = nUsan ? orden.indexOf(e.k) + 1 : 0;
+  const maxUsan = Math.max(1, ...Object.values(cuantos).map((n) => Number(n) || 0));
+  const nombreDe = (x) => ((liga && ((liga.T && liga.T[x]) || (liga.X && liga.X[x]))) || {}).n || x;
 
   return (
-    <div className="jg">
+    <div className="jg" style={{ '--rg': rg }}>
       {d === null ? <p className="ves-nota">Todavía no se puede elegir: se habilita en unas horas.</p> : null}
       {d && !verificado ? <p className="ves-nota">{ERROR.sin_verificar}</p> : null}
       {msg ? <p className="ves-msg" role="status">{msg}</p> : null}
@@ -198,17 +212,31 @@ export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
       {/* 🎮 el estilo en grande, y al costado tus tres lugares */}
       <section className="jg-hero" ref={heroR} data-fondo={e.n} style={{ '--rg': rg }} aria-live="polite">
         <div className="jg-sel">
-          <Insignia k={e.k} nivel={nv} tam={typeof window !== 'undefined' && window.innerWidth < 760 ? 92 : 132} c={rg} />
+          {/* ✨ los rayos y el golpe de entrada: la `key` lo vuelve a montar con cada estilo que tocas */}
+          <span className="jg-big" key={e.k}>
+            <i className="jg-rayos" aria-hidden="true" />
+            <Insignia k={e.k} nivel={nv} tam={typeof window !== 'undefined' && window.innerWidth < 760 ? 92 : 132} c={rg} />
+          </span>
           <div className="jg-sel-t">
-            <em>{FAMILIA[e.f][0]} · {cuantosTxt(cuantos[e.k] || 0)}</em>
+            <em>{FAMILIA[e.f][0]}{tiene(e.k) ? ' · nivel ' + nv : ''}</em>
             {/* 📏 el tamaño sale del largo del nombre: «Showman» se partía en «SHOWMA / N» en el celular */}
             <b style={{ '--n': Math.max(7, e.n.length) }}>{e.n}</b>
             <p>{e.d}</p>
+            <div className="jg-usan">
+              <span className="jg-rk">Lo usan</span>
+              {quienes.length ? (
+                <span className="jg-caras">
+                  {quienes.slice(0, 5).map((x) => <Cara key={x} liga={liga} k={x} nombre={nombreDe(x)} cls="jg-cara" />)}
+                  {nUsan > 5 ? <em>+{nUsan - 5}</em> : null}
+                </span>
+              ) : null}
+              <small>{nUsan ? cuantosTxt(nUsan) + ' · el ' + puesto + '.º más elegido' : 'Nadie todavía: puedes ser el primero'}</small>
+            </div>
             {accion}
           </div>
         </div>
         <aside className="jg-lug" aria-label="Tus tres lugares">
-          <span className="jg-rk">Tus tres lugares</span>
+          <span className="jg-rk">Así va en tu carta</span>
           <ol>
             {lugar(1, 'Elegido', mio, mio ? nivelDe(mio) : 0, mio ? 'Lo cambias una vez por temporada' : 'Elige uno abajo: la primera vez es libre')}
             {lugar(2, 'DRA', ganados[0] ? ganados[0][0] : '', ganados[0] ? ganados[0][1] : 0, ganados[0] ? 'Ganado en un evento de estilo' : 'Juega un evento de estilo de DRA de otro estilo')}
@@ -222,14 +250,16 @@ export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
       {/* 🗂️ la grilla entera: una fila por familia, seis estilos a todo el ancho */}
       <div className="jg-grilla">
         {CAT.familias.map(([fam, forma]) => (
-          <div key={fam} className="jg-fila">
+          <div key={fam} className={'jg-fila f-' + forma}>
             <h4><b>{FAMILIA[fam][0]}</b><small>{FORMA_NOMBRE[forma]} · {FAMILIA[fam][1]}</small></h4>
             <div className="ves-grid jg-6" role="radiogroup" aria-label={'Estilos de ' + FAMILIA[fam][0]}>
               {CAT.estilos.filter((x) => x[2] === fam).map(([x, n]) => {
                 const g = ganados.findIndex((y) => y[0] === x);
                 return (
                   <Cuadro key={x} on={e.k === x && (sel === x || (!sel && x === mio))} puesto={mio === x} nombre={n}
+                    nivel={tiene(x) ? 'jg-tengo' : ''}
                     rar={mio === x ? 'Tu estilo' : g >= 0 ? 'Lugar ' + (g + 2) : viejos.has(x) ? 'Desbloqueado' : cuantosCorto(cuantos[x] || 0)}
+                    pie={<i className="jg-pop" aria-hidden="true"><u style={{ width: (100 * (cuantos[x] || 0)) / maxUsan + '%' }} /></i>}
                     onClick={() => tocar(x)}>
                     {/* todos como nivel 1: el nivel es de lo que jugaste, no de esta grilla. Lo tuyo lo dice «Puesto» */}
                     <Insignia k={x} nivel={1} tam={58} c={rg} />
