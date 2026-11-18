@@ -1340,11 +1340,7 @@ def _lo_barato(correr):
         paso('2b4b', 'el Pase de rapero')
         if not corre(['bot/pase.py', '--aplicar'], callado=False):
             print('      ⚠️ el Pase no llegó al objeto: queda lo de la corrida anterior')
-        # ── 2b4c · los ganadores de cada evento, en el chat general de su servidor (Discord, tanda 2, 17/11/2026) ──
-        # DESPUÉS del 2b4b, que es el que reparte los drops que el aviso nombra. Una vez por evento; nunca frena el ciclo
-        paso('2b4c', 'el aviso de los ganadores')
-        if not corre(['bot/aviso_ganadores.py', '--aplicar'], callado=False):
-            print('      ⚠️ el aviso de los ganadores falló: queda para la próxima corrida')
+        # ── 2b4c · el aviso de los ganadores: se mudó DESPUÉS del 2b8h2 (ver ahí) ──
         # ── 2b5 · cuántos entraron a cada servidor por la Liga ────────────
         # 🔑 Dlx, 29/09/2026: «crea una invitación permanente para cada
         # servidor, y de esta manera podemos reconocer cuántas personas se
@@ -1457,6 +1453,14 @@ def _lo_barato(correr):
         paso('2b8h2', 'la gente de cada evento')
         if not corre(['bot/gente_evento.py', '--aplicar'], callado=True, mostrar=('👥', '⚠️')):
             print('      ⚠️ la gente de los eventos falló: queda la de antes')
+    # ── 2b4c · 🏆 los ganadores de cada evento, en el chat general de su servidor (Discord, tanda 2, 17/11/2026) ──
+    # DESPUÉS del 2b4b, que reparte los drops que el aviso nombra, y —desde el 18/11/2026— también del 2b8h2: al pie va
+    # la imagen «La noche de…» (`bot/noche.py`), con quién organizó y juzgó, que ese paso guarda. Antes iba entre el
+    # 2b4b y el 2b5. Una vez por evento; nunca frena el ciclo
+    if correr:
+        paso('2b4c', 'el aviso de los ganadores')
+        if not corre(['bot/aviso_ganadores.py', '--aplicar'], callado=False):
+            print('      ⚠️ el aviso de los ganadores falló: queda para la próxima corrida')
     # ── 2b8i · 🏆 las competencias de la semana (`bot/competencias.py`, Dlx 26/10/2026): la Copa por grupos, la Liga de
     # 10 y la Rapid del día, después de las notas (la simulación usa la forma). Nunca frena el ciclo
     if correr:

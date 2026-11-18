@@ -20,6 +20,11 @@ post-evento en el chat general: prendido en todos los socios, el dueño lo apaga
   «Abrir mi Drop / Star» sin dueño, y cualquiera abría los suyos desde el aviso de otro.
 - EL FORMATO, el de los anuncios de la Liga (Componentes V2): un recuadro con el color del servidor, con los puntos del
   evento por puesto, y LAS MENCIONES AFUERA, en una línea arriba (Dlx: «gente dentro del embed no se menciona»).
+- 🌙 AL PIE, LA IMAGEN «LA NOCHE DE…» (`bot/noche.py`, Dlx 18/11/2026: la nota de cada uno, el MVP, el batacazo y el
+  ELO, como al final de un partido) y una fila de cinco botones: 🎯 Tu nota y 👤 Perfiles (los contesta el Worker,
+  sólo a quien toca, con lo que se guarda en KV `noche:<n>`), y los links a La llave, el Ranking y los Próximos eventos.
+  SÓLO DESDE EL EVENTO `NOCHE_DESDE` (Dlx: «sólo los próximos eventos… NO los actuales y pasados»). Si la imagen
+  falla, el aviso sale igual, sin ella.
 - LO APAGA EL STAFF de cada servidor en su panel (`ganadores` en `cfg:<guild>`, prendido de entrada).
 - UNA SOLA VEZ: `datos/avisos_ganadores.json` (en `ARCHIVOS` de bot/ci/guardar.sh). La primera vez se siembra con lo que
   ya hay y no se avisa nada para atrás. Sólo eventos de los últimos `DIAS`.
@@ -118,6 +123,11 @@ BOTONES = 10
 #: 📊 los puestos que muestra «Los puntos» (campeón, subcampeón, semis, cuartos); del resto, cuántos
 PUESTOS = 4
 MEDALLA = {'Campeón': '🥇', 'Subcampeón': '🥈', 'Semifinal': '🥉', 'Tercero': '🥉', 'Cuartos': '🎖️'}
+#: 🌙 la imagen «La noche de…» y su fila de botones, SÓLO DESDE ESTE EVENTO (Dlx, 18/11/2026: «sólo necesitamos hacer que
+#: los próximos eventos tengan eso. NO los actuales y pasados»). Vive en `bot/notas.py`, con el 🔥 de la llave
+from notas import NOCHE_DESDE                            # noqa: E402
+#: cuánto dura en KV lo que leen «Tu nota» y «Perfiles» (`noche:<n>`): una escritura por evento
+NOCHE_DIAS = 30
 
 
 def _titulo(evento):
@@ -284,6 +294,74 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
     return comps, ids[:MENCIONES], texto
 
 
+def fila_noche(ev, con_ficha=True):
+    """🌙 Los cinco botones debajo de la imagen (Dlx, 18/11/2026, elegidos con las visitas de 7 días de la página):
+    🎯 Tu nota y 👤 Perfiles los contesta el Worker (`nn:<nota|perf>:<n>`, sólo a quien toca); los otros tres son links.
+    Sin la ficha en KV (`con_ficha=False`), sólo los links: un botón que contesta «no está» es peor que ninguno."""
+    b = []
+    if con_ficha:
+        b += [{'type': 2, 'style': 1, 'label': 'Tu nota', 'emoji': {'name': '🎯'}, 'custom_id': 'nn:nota:%s' % ev},
+              {'type': 2, 'style': 2, 'label': 'Perfiles', 'emoji': {'name': '👤'}, 'custom_id': 'nn:perf:%s' % ev}]
+    b += [{'type': 2, 'style': 5, 'label': 'La llave', 'emoji': {'name': '📋'}, 'url': '%s/freestyle-rap/llave/%s' % (WEB, ev)},
+          {'type': 2, 'style': 5, 'label': 'Ranking', 'emoji': {'name': '🏆'}, 'url': WEB + '/freestyle-rap/ranking'},
+          {'type': 2, 'style': 5, 'label': 'Próximos eventos', 'emoji': {'name': '📅'}, 'url': WEB + '/freestyle-rap/eventos'}]
+    return {'type': 1, 'components': b}
+
+
+def pie_noche(alt, con_ficha, ev):
+    """🌙 Lo que va DEBAJO del recuadro: la imagen (una Galería de Medios con su descripción) y la fila de botones."""
+    return [{'type': 12, 'items': [{'media': {'url': 'attachment://noche.png'}, 'description': alt[:1000]}]},
+            fila_noche(ev, con_ficha)]
+
+
+def noche(ev, Q):
+    """🌙 `(componentes, (archivo, png))` del pie del aviso, o `([], None)` si el evento es de antes de `NOCHE_DESDE` o la
+    imagen no sale (el aviso va igual, sin ella: nunca lo frena)."""
+    if not str(ev).isdigit() or int(ev) < NOCHE_DESDE:
+        return [], None
+    try:
+        import noche as NO
+        png, mal = NO.imagen(ev)
+        R = NO.resumen(ev)
+        alt = NO.descripcion(R)
+        ficha = NO.ficha(R, Q)
+    except Exception as e:                               # noqa: BLE001
+        print('      ⚠️ la imagen «La noche de…» no salió (%r): el aviso va sin ella' % e)
+        return [], None
+    if mal:
+        print('      ⚠️ la imagen salió con: %s' % '; '.join(mal))
+    return pie_noche(alt, _guardar_ficha(ev, ficha), ev), ('noche.png', png)
+
+
+def _guardar_ficha(ev, ficha):
+    """🎯 Lo que leen «Tu nota» y «Perfiles», a KV (`noche:<n>`, vence a los `NOCHE_DIAS`). `True` si quedó."""
+    try:
+        import requests
+        import subir_datos as SD
+        s = requests.Session()
+        s.headers['Authorization'] = 'Bearer ' + SD.env('CLOUDFLARE_API_TOKEN')
+        r = s.put('%s/values/noche:%s?expiration_ttl=%d' % (SD.API, ev, NOCHE_DIAS * 86400),
+                  files={'value': (None, json.dumps(ficha, ensure_ascii=False)), 'metadata': (None, '{}')}, timeout=30)
+        if r.status_code == 200:
+            return True
+        print('      ⚠️ «Tu nota» no quedó en KV (%s): el aviso va sin ese botón' % r.status_code)
+    except Exception as e:                               # noqa: BLE001
+        print('      ⚠️ «Tu nota» no quedó en KV (%r): el aviso va sin ese botón' % e)
+    return False
+
+
+def cuerpo(comps, ids, archivo=None):
+    """Los argumentos de `requests.post` para el mensaje: JSON solo, o multipart con la imagen (`payload_json` y
+    `files[0]`; el `Content-Type: None` saca el JSON que la sesión trae por defecto)."""
+    payload = {'flags': 32768, 'components': comps, 'allowed_mentions': {'parse': [], 'users': ids}}
+    if not archivo:
+        return {'json': payload}
+    nombre, png = archivo
+    payload['attachments'] = [{'id': 0, 'filename': nombre}]
+    return {'data': {'payload_json': json.dumps(payload, ensure_ascii=False)}, 'files': {'files[0]': (nombre, png, 'image/png')},
+            'headers': {'Content-Type': None}}
+
+
 def _bandera(cc):
     """`ar` → 🇦🇷; `''` si no es un código"""
     cc = str(cc or '').strip().lower()
@@ -397,6 +475,8 @@ def correr(aplicar=False):
             continue
         comps, ids, texto = m
         print('\n   🏆 #%s %s (%s) · %d mención(es)\n      %s' % (ev, nombre, sv, len(ids), texto.replace('\n', '\n      ')))
+        if ev.isdigit() and int(ev) >= NOCHE_DESDE:
+            print('      🌙 + la imagen «La noche de…» y sus cinco botones')
         if not aplicar:
             continue
         gid = svs.get(sv)
@@ -428,8 +508,12 @@ def correr(aplicar=False):
             continue
         # 🎨 Componentes V2 (`flags` 32768): sin `content`, todo va en el recuadro. Las menciones del texto suenan igual
         # (`allowed_mentions.users`: sólo los ganadores)
-        r = s.post('%s/channels/%s/messages' % (API, canal), json={
-            'flags': 32768, 'components': comps, 'allowed_mentions': {'parse': [], 'users': ids}})
+        # 🌙 la imagen y su fila, recién acá: no se dibuja para un servidor que no la va a recibir
+        pie, archivo = noche(ev, Q)
+        r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + pie, ids, archivo))
+        if archivo and r.status_code not in (200, 201):
+            print('      ⚠️ con la imagen no salió (%s): va sin ella' % r.status_code)
+            r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + [fila_noche(ev, False)], ids))
         if r.status_code in (200, 201):
             avisados[ev] = {'sv': sv, 'canal': str(canal), 'msg': str((r.json() or {}).get('id') or ''), 'dia': hoy.isoformat()}
             print('      ✅ mandado')
@@ -519,6 +603,25 @@ def _self_check():
     ok(_md('@everyone') == '@​everyone', 'un nombre con @ no puede mencionar a nadie')
     ok(_fecha('17/11', dt.date(2026, 11, 18)) == dt.date(2026, 11, 17) and _fecha('31/12', dt.date(2027, 1, 1)) == dt.date(2026, 12, 31),
        'la fecha de la hoja (dd/mm), también la del año anterior')
+    # 🌙 la imagen «La noche de…»: sólo desde NOCHE_DESDE, y al pie del recuadro
+    ok(noche(str(NOCHE_DESDE - 1), Q) == ([], None) and noche('abc', Q) == ([], None),
+       '🌙 los eventos de antes de NOCHE_DESDE no llevan imagen (Dlx: «NO los actuales y pasados»)')
+    pie = pie_noche('La noche de TOKYO: campeón Ana (9,1)', True, '700')
+    fila = [b.get('custom_id') or b.get('url') for b in pie[1]['components']]
+    ok(pie[0]['type'] == 12 and pie[0]['items'][0]['media']['url'] == 'attachment://noche.png'
+       and pie[0]['items'][0]['description'].startswith('La noche de TOKYO'), 'la imagen va en una Galería, con su descripción')
+    ok(len(fila) == 5 and fila[:2] == ['nn:nota:700', 'nn:perf:700'] and fila[2].endswith('/freestyle-rap/llave/700')
+       and fila[3].endswith('/freestyle-rap/ranking') and fila[4].endswith('/freestyle-rap/eventos'),
+       'cinco botones: Tu nota, Perfiles (del Worker) y La llave, Ranking, Próximos eventos (links)')
+    ok([b.get('url', '')[-6:] for b in fila_noche('700', False)['components']] == ['ve/700', 'anking', 'ventos'],
+       'sin la ficha en KV, sólo los tres links (ningún botón que conteste «no está»)')
+    cj = cuerpo(comps, ids)
+    cm = cuerpo(comps + pie, ids, ('noche.png', b'png'))
+    pj = json.loads(cm['data']['payload_json'])
+    ok('json' in cj and cj['json']['flags'] == 32768 and cm['files']['files[0]'][0] == 'noche.png'
+       and pj['attachments'] == [{'id': 0, 'filename': 'noche.png'}] and cm['headers'] == {'Content-Type': None}
+       and pj['components'][-2]['type'] == 12 and pj['allowed_mentions']['users'] == ids,
+       'con imagen va en multipart (payload_json + files[0]); sin imagen, JSON como siempre')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 

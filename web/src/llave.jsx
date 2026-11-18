@@ -194,8 +194,12 @@ function Nota({ ctx, s }) {
   const v = N.v[ks[0]];
   if (v == null) return null;
   const mvp = !!N.mvp && ks.includes(N.mvp);
-  return <span className={'lk-nota ' + tonoNota(v) + (mvp ? ' mvp' : '')} title={(mvp ? 'La figura de la llave · ' : '') + 'Nota en esta llave: ' + v.toFixed(1)}>
-    {mvp ? <i aria-hidden="true">★</i> : null}{v.toFixed(1)}</span>;
+  // 🔥 EL BATACAZO DE LA NOCHE (Dlx, 18/11/2026, «Dos premios»: el MVP es la nota más alta y el que ganó con 35 % de chance
+  // o menos lleva su propio sello; «Batacazo en la página»). Viaja en `L.notas.bat`, sólo en los eventos desde el #661
+  const bat = !!N.bat && ks.includes(N.bat);
+  return <span className={'lk-nota ' + tonoNota(v) + (mvp ? ' mvp' : '') + (bat ? ' bat' : '')}
+    title={(mvp ? 'La figura de la llave · ' : '') + (bat ? 'El batacazo de la noche · ' : '') + 'Nota en esta llave: ' + v.toFixed(1)}>
+    {mvp ? <i aria-hidden="true">★</i> : null}{bat ? <i aria-hidden="true">🔥</i> : null}{v.toFixed(1)}</span>;
 }
 function Mini({ ctx, f, nombre }) {
   const liga = ctx.liga;

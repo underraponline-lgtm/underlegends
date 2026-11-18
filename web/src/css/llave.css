@@ -126,7 +126,7 @@
   color:#030304;box-shadow:0 0 0 1.5px #030304;pointer-events:auto}
 .lk-nota i{font-style:normal;font-size:11px}
 .lk-nota.n9{background:#3D8BFD}.lk-nota.n8{background:#19B377}.lk-nota.n7{background:#8FD14F}.lk-nota.n6{background:#F2C230}.lk-nota.n5{background:#F0644B}
-.lk-nota.mvp{padding-inline:6px}
+.lk-nota.mvp,.lk-nota.bat{padding-inline:6px}
 /* en las chicas (los que llegaron lejos, los rivales del camino) la nota no puede tapar media carta */
 .lk-vsf-resto .lk-nota,.lk-cam .lk-nota{min-width:24px;padding:1px 3px;font-size:10px;right:-4px;bottom:-4px}
 

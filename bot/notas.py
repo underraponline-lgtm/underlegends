@@ -70,6 +70,14 @@ VOTOS_MIN = 2
 UNANIME, SIN_VOTOS, POR_LA_MINIMA = 0.2, -0.1, 0.2
 #: la ventana para cruzar un voto con un evento, en días desde el día del evento (ET)
 VOTO_ANTES, VOTO_DESPUES = 1, 2
+#: 🔥 EL BATACAZO DE LA NOCHE (Dlx, 18/11/2026, «Dos premios»): el 🔥 más grande de un evento lleva su propio sello si
+#: llega a esto —ganar con 35 % de chance o menos—. En la T1, 49 de 280 eventos tienen uno. El MVP sigue siendo la nota
+#: más alta: con un MVP «por calidad» Marcos salía MVP con 6,6 y Mats con 8,9 (#649), y Dlx preguntó por qué
+PISO_BATACAZO = 0.15
+#: 🌙 lo nuevo del 18/11/2026 —la imagen «La noche de…» del aviso de ganadores, sus botones y el 🔥 en la llave—, SÓLO
+#: DESDE ESTE EVENTO (Dlx: «sólo necesitamos hacer que los próximos eventos tengan eso. NO los actuales y pasados»): el
+#: #660 era el último procesado cuando se subió
+NOCHE_DESDE = 661
 
 
 def _norm(s):
@@ -259,8 +267,24 @@ def nota_evento(ev, fuerza=None, votos=None):
     return out, mvp
 
 
+def batacazo(notas):
+    """🔥 `(nombre, razón, delta)` del batacazo de la noche —el 🔥 más grande que llega a `PISO_BATACAZO`—, o `None`."""
+    mejor = None
+    for n, e in (notas or {}).items():
+        for r, d in e.get('por') or []:
+            if str(r).startswith('🔥') and d >= PISO_BATACAZO and (mejor is None or d > mejor[2]):
+                mejor = (n, r, d)
+    return mejor
+
+
+def lleva_noche(n):
+    """🌙 ¿El evento `n` es de los que llevan lo del 18/11 (la imagen, sus botones, el 🔥 en la llave)?"""
+    return str(n).isdigit() and int(n) >= NOCHE_DESDE
+
+
 def calcular(llaves=None, votos=None):
-    """`{n: {'mvp': nombre, 'notas': {nombre: nota}}}` de todos los eventos."""
+    """`{n: {'mvp': nombre, 'notas': {nombre: nota}, 'bat': nombre}}` de todos los eventos (`bat`, el del batacazo de la
+    noche, sólo desde `NOCHE_DESDE` y si lo hubo)."""
     if llaves is None:
         with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
             llaves = json.load(f)
@@ -271,6 +295,9 @@ def calcular(llaves=None, votos=None):
         notas, mvp = nota_evento(ev, fz.get(str(n)), votos)
         if notas:
             res[str(n)] = {'mvp': mvp, 'notas': {k: v['nota'] for k, v in notas.items()}}
+            b = batacazo(notas) if lleva_noche(n) else None
+            if b:
+                res[str(n)]['bat'] = b[0]
     return res
 
 
@@ -292,6 +319,13 @@ def _self_check():
     notas, mvp = nota_evento(ev, fz)
     ok(notas['A']['nota'] > notas['B']['nota'] > notas['D']['nota'] and mvp == 'A',
        'el campeón saca más que el subcampeón, el que perdió en semis menos, y el MVP es el campeón')
+    b = batacazo(notas)
+    ok(b and b[0] == 'A' and 'B' in b[1] and b[2] >= PISO_BATACAZO,
+       '🔥 el batacazo de la noche: el más grande (A le ganó a B, de 1200, en la final), no el chico contra C')
+    ok(batacazo({'X': {'por': [('🔥 le ganó a Y con 40 % de chance', 0.10)]}}) is None,
+       '🔥 ganar con 40 % de chance no es batacazo: hace falta 35 % o menos')
+    ok(not lleva_noche('660') and lleva_noche(str(NOCHE_DESDE)) and not lleva_noche('abc'),
+       '🌙 lo del 18/11 sólo desde NOCHE_DESDE (Dlx: «NO los actuales y pasados»)')
     ok(any('chance' in r for r, _d in notas['A']['por']) and not any('chance' in r for r, _d in notas['B']['por'])
        and any('favorito' in r for r, d in notas['B']['por'] if d < 0) and not any('D' in r for r, _d in notas['B']['por'] if 'favorito' in r),
        'A (900) le ganó a B (1200): suma contra lo esperado y B, que era favorito, resta; que B le gane a D (800) no mueve nada')

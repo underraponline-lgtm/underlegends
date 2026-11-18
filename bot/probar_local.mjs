@@ -1930,6 +1930,38 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
                             data: { custom_id: 'dd:nido:x:700953', component_type: 2 } });
   ok('el botón del Nido le pasa a su dueño el link de la página, y a otro no', /Nido.*drops=1/s.test(rn.json?.data?.content || '')
      && rn.json?.data?.flags === 64 && /otra persona/.test(rn2.json?.data?.content || ''), JSON.stringify([rn.json?.data, rn2.json?.data]));
+  // 🌙 «Tu nota» y «Perfiles» al pie del aviso de ganadores (18/11/2026): leen `noche:<n>` de KV, sólo a quien toca
+  PUESTO['noche:700'] = JSON.stringify({ ev: '700', t: 'RED BULL BATALLA', sv: 'CEU', perf: [['Mats', 'mats'], ['Marcos', 'marcos']], p: [
+    { n: 'Mats', k: 'mats', d: '700960', nota: 8.9, pos: 'Campeón', mvp: true, bat: false, eq: false, elo: [1046, 1090], pts: '7500',
+      por: [['campeón', 0.89], ['ganó en Final', 0.78]], carta: false },
+    { n: 'Marcos', k: 'marcos', d: '700961', nota: 6.6, pos: 'Semifinal', mvp: false, bat: true, eq: false, elo: [1008, 1018], pts: '4000',
+      por: [['🔥 le ganó a Motera con 24 % de chance', 0.26]], carta: true }] });
+  const boton = (id, cid) => pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id } }, message: { id: '1' },
+                                     data: { custom_id: cid, component_type: 2 } });
+  const t1 = await boton('700960', 'nn:nota:700');
+  const b1 = (t1.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('«Tu nota»: la suya, efímera, con su ELO, el MVP y por qué; sin tarjeta, «Consigue tu tarjeta»',
+     t1.json?.data?.flags === 64 && /Tu nota en RED BULL BATALLA: 8,9/.test(t1.json?.data?.content || '') && /MVP/.test(t1.json?.data?.content || '')
+     && /1\.046 → \*\*1\.090/.test(t1.json?.data?.content || '') && /ganó en Final \*\*\+0,8/.test(t1.json?.data?.content || '')
+     && b1.some((b) => /\/freestyle-rap\/tarjetas$/.test(b.url || '')), JSON.stringify(t1.json?.data));
+  const t2 = await boton('700961', 'nn:nota:700');
+  const b2 = (t2.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('«Tu nota» de otro: la suya (6,6, con su batacazo) y, con tarjeta, el link a su perfil',
+     /6,6/.test(t2.json?.data?.content || '') && /Batacazo de la noche/.test(t2.json?.data?.content || '') && !/8,9/.test(t2.json?.data?.content || '')
+     && b2.some((b) => /\/freestyle-rap\/r\/marcos$/.test(b.url || '')), JSON.stringify(t2.json?.data));
+  const t3 = await boton('700962', 'nn:nota:700');
+  ok('«Tu nota» de quien no jugó (o no vinculó): se lo dice, con /vincular y La llave',
+     /No te encuentro/.test(t3.json?.data?.content || '') && /vincular/.test(t3.json?.data?.content || ''), JSON.stringify(t3.json?.data));
+  const t4 = await boton('700962', 'nn:perf:700');
+  const b4 = (t4.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('«Perfiles»: los del podio, con un botón a cada perfil', t4.json?.data?.flags === 64 && /Mats/.test(t4.json?.data?.content || '')
+     && b4.map((b) => b.url).join() === 'https://underlegends.pages.dev/freestyle-rap/r/mats,https://underlegends.pages.dev/freestyle-rap/r/marcos',
+     JSON.stringify(t4.json?.data));
+  const t5 = await boton('700963', 'nn:nota:701');
+  const t6 = await boton('700963', 'nn:nota:abc');
+  ok('una noche que no está guardada lo dice; un botón roto, también', /ya no está guardada/.test(t5.json?.data?.content || '')
+     && /ya no anda/.test(t6.json?.data?.content || ''), JSON.stringify([t5.json?.data, t6.json?.data]));
+  delete PUESTO['noche:700'];
 }
 
 console.log('\n/WEBSITE Y /NOTIFY\n');

@@ -272,6 +272,13 @@ jobs:
           creds_json: ${{ secrets.CREDS_JSON }}
           env_file: ${{ secrets.ENV_FILE }}
 
+      # 🌙 el Chromium guardado, la MISMA clave que `dibujar`, kit.yml y carta.yml (18/11/2026): el aviso de ganadores
+      # (paso 2b4c) dibuja la imagen «La noche de…». Sólo se usa con un evento nuevo; `bot/navegador.py` lo baja si falta
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
+
       - name: escuchar
         id: p
         env:

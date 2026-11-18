@@ -710,8 +710,9 @@ def clave_nota(m):
 
 
 def notas(L, datos=None):
-    """`{'v': {integrante: nota}, 'mvp': integrante}` de la llave `L` (por su número), o `None`. `datos`: lo de
-    `datos/notas_eventos.json` (el self-check); si no, ese archivo, leído una vez por proceso."""
+    """`{'v': {integrante: nota}, 'mvp': integrante}` de la llave `L` (por su número), o `None`; con `'bat'`, el del 🔥
+    batacazo de la noche, si lo hubo (sólo desde `notas.NOCHE_DESDE`). `datos`: lo de `datos/notas_eventos.json` (el
+    self-check); si no, ese archivo, leído una vez por proceso."""
     if datos is None:
         if 'd' not in _NOTAS:
             try:
@@ -722,7 +723,12 @@ def notas(L, datos=None):
         datos = _NOTAS['d']
     e = datos.get(str((L or {}).get('n'))) or {}
     v = {clave_nota(k): x for k, x in (e.get('notas') or {}).items() if clave_nota(k)}
-    return {'v': v, 'mvp': clave_nota(e.get('mvp'))} if v else None
+    if not v:
+        return None
+    out = {'v': v, 'mvp': clave_nota(e.get('mvp'))}
+    if e.get('bat'):
+        out['bat'] = clave_nota(e['bat'])
+    return out
 
 
 def _miembros(lado):

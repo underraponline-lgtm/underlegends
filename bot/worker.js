@@ -1009,6 +1009,65 @@ async function saldoChat(env, did, ap, c) {
   } catch (e) { return 'No apostaste.'; }
 }
 
+// ── 🌙 «Tu nota» y «Perfiles», al pie del aviso de ganadores (18/11/2026) ──────────────────────────────────────────────
+// Dlx eligió los botones con las visitas de 7 días: «Tu nota» le muestra a quien toca SU nota, por qué la sacó, su ELO y
+// su puesto (y «Consigue tu tarjeta» si no la tiene: Tarjetas tuvo 28 visitas, así que va ahí y no como botón para
+// todos); «Perfiles», los del podio. Los dos leen UNA clave de KV, `noche:<n>`, que el aviso escribe al mandarse
+// (`bot/aviso_ganadores.py` → `bot/noche.py ficha()`): ni un cálculo acá, ni una escritura.
+const mdNoche = (s) => String(s == null ? '' : s).replace(/([\\*_~`|>])/g, '\\$1').replace(/@/g, '@\u200b');
+const notaNoche = (v) => (Math.round(Number(v || 0) * 10) / 10).toFixed(1).replace('.', ',');
+const deltaNoche = (d) => {
+  const x = Number(d || 0);
+  const t = Math.abs(x) < 0.1 && x !== 0 ? Math.abs(x).toFixed(2) : Math.abs(x).toFixed(1);
+  return (x < 0 ? '−' : '+') + t.replace('.', ',');
+};
+const PUESTO_NOCHE = { 'Campeón': '🏆', 'Subcampeón': '🥈', 'Tercero': '🥉', 'Semifinal': '🥉', 'Cuarto': '🎖️' };
+
+/** 🎯 El texto de «Tu nota» para `yo` (su Discord ID), y sus botones; `null` si no jugó esa noche (o no está vinculado). */
+export function tuNotaNoche(f, yo) {
+  const p = ((f && f.p) || []).find((x) => x.d && String(x.d) === String(yo));
+  if (!p) return null;
+  const t = [`🎯 **Tu nota en ${mdNoche(f.t)}: ${notaNoche(p.nota)}**${p.mvp ? ' · ⭐ MVP de la noche' : ''}`];
+  const linea = [];
+  if (p.pos) linea.push(`${PUESTO_NOCHE[p.pos] || '▫️'} ${mdNoche(p.pos)}`);
+  if (p.elo && p.elo.length === 2) {
+    const dl = p.elo[1] - p.elo[0];
+    linea.push(`ELO ${milesChat(p.elo[0])} → **${milesChat(p.elo[1])}** (${dl > 0 ? '▲ +' + dl : dl < 0 ? '▼ ' + dl : '='})`);
+  }
+  if (p.pts && Number(p.pts)) linea.push(`+${milesChat(Number(p.pts))} pts`);
+  if (linea.length) t.push(linea.join(' · '));
+  if (p.bat) t.push('🔥 **Batacazo de la noche**');
+  if (p.eq) t.push('-# Es la nota de tu equipo: la comparten todos.');
+  const por = (p.por || []).filter((r) => r && r[0]);
+  if (por.length) {
+    t.push('-# Todos arrancan en 6,0 por jugar. Lo que sumó y restó:');
+    for (const [r, d] of por.slice(0, 12)) t.push(`• ${mdNoche(r)} **${deltaNoche(d)}**`);
+  }
+  const botones = [];
+  if (!p.carta) {
+    t.push('🃏 Todavía no tienes tarjeta: consíguela en la página.');
+    botones.push({ type: 2, style: 5, label: 'Consigue tu tarjeta', emoji: { name: '🃏' }, url: HUB_URL + '/freestyle-rap/tarjetas' });
+  } else if (p.k) {
+    botones.push({ type: 2, style: 5, label: 'Tu perfil', emoji: { name: '👤' }, url: HUB_URL + '/freestyle-rap/r/' + encodeURIComponent(p.k) });
+  }
+  botones.push({ type: 2, style: 5, label: 'La llave', emoji: { name: '📋' }, url: HUB_URL + '/freestyle-rap/llave/' + encodeURIComponent(f.ev) });
+  return { texto: t.join('\n').slice(0, 1990), botones };
+}
+
+/** 👤 «Perfiles»: los del podio de esa noche (y el MVP y el del batacazo), un botón a cada perfil. */
+export function perfilesNoche(f) {
+  const perf = ((f && f.perf) || []).filter((x) => x && x[1]).slice(0, 5);
+  const por = Object.fromEntries(((f && f.p) || []).map((x) => [x.k, x]));
+  const t = [`👤 **Los perfiles de la noche de ${mdNoche(f.t)}**`];
+  for (const [n, k] of perf) {
+    const x = por[k] || {};
+    t.push(`${PUESTO_NOCHE[x.pos] || '▫️'} **${mdNoche(n)}** · ${notaNoche(x.nota)}${x.mvp ? ' · ⭐ MVP' : ''}${x.bat ? ' · 🔥 Batacazo' : ''}`);
+  }
+  const botones = perf.map(([n, k]) => ({ type: 2, style: 5, label: String(n).slice(0, 80),
+    url: HUB_URL + '/freestyle-rap/r/' + encodeURIComponent(k) }));
+  return { texto: t.join('\n').slice(0, 1990), botones };
+}
+
 const aviso = (txt, botones) => new Response(JSON.stringify({
   type: RESPONDE.MENSAJE,
   data: { flags: EFIMERO, content: txt, components: filaDe(botones) },
@@ -5076,6 +5135,27 @@ export default {
       // mensaje se actualiza con cómo va en la vuelta siguiente del vigía (`qgRevisar()`)
       // ── 👥 las crews (19/10/2026): `cw:si|no:<crew>:<invitado>` y `cw:salir:x:<quien>` (ver `crewBoton`) ──────────
       if (que === 'cw') return crewBoton(i, env, quien, extra, dueno);
+
+      // ── 🌙 «Tu nota» y «Perfiles» del aviso de ganadores (`nn:<nota|perf>:<n>`, 18/11/2026): sólo a quien toca ─────
+      if (que === 'nn') {
+        const yo = idDe(i);
+        const esperarN = frenado(yo, 'click');
+        if (esperarN) return espera(esperarN);
+        let f = null;
+        if (!/^\d{1,7}$/.test(extra || '')) return aviso('Ese botón ya no anda.');
+        try { f = JSON.parse((await env.KV.get('noche:' + extra)) || 'null'); } catch (e) { f = null; }
+        const llave = [{ type: 2, style: 5, label: 'La llave', emoji: { name: '📋' }, url: HUB_URL + '/freestyle-rap/llave/' + encodeURIComponent(extra || '') }];
+        if (!f) return aviso('🌙 Esa noche ya no está guardada (duran 30 días): las notas de todos siguen en **La llave**.', llave);
+        if (quien === 'perf') {
+          const pf = perfilesNoche(f);
+          return aviso(pf.texto, pf.botones);
+        }
+        const tn = tuNotaNoche(f, yo);
+        if (!tn) {
+          return aviso(`🎯 No te encuentro en **${mdNoche(f.t)}**. Si jugaste, puede que tu cuenta no esté vinculada: usa **\`/vincular\`**. Las notas de todos están en **La llave**.`, llave);
+        }
+        return aviso(tn.texto, tn.botones);
+      }
 
       // ── 🐉 «Abrir un Drop / Star» (`dd:<drop|star>:x:<dueño>`) y 🎽 el menú de `/equipar` (`eq:<lugar>:x:<dueño>`) ─
       // Discord, tanda 1. Con dueño, sólo él; sin dueño (el aviso del evento, tanda 2), cada uno abre los suyos
