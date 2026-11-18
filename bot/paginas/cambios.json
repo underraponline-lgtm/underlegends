@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.24",
+        "dia": "2026-11-17",
+        "cuando": "2026-11-17T20:50:00-05:00",
+        "titulo": "El tutorial y la bienvenida, enteros en el teléfono",
+        "items": [
+            "Al terminar el tutorial corto, la tarjeta que te da tus 3 Dragón Drops ya entra entera en el teléfono, con su botón y la ✕ para cerrarla.",
+            "En la bienvenida, los nombres de las cuatro cartas ya no se parten a la mitad en las pantallas angostas."
+        ]
+    },
+    {
         "version": "6.23",
         "dia": "2026-11-17",
         "cuando": "2026-11-17T21:20:00-05:00",
