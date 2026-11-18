@@ -10,7 +10,7 @@ import { useCrews } from './crews.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import CSS_PAGINA from './css/og_link.css?inline';
 import { usarCss } from './css.js';
-import { Bandera, Ico, nombrePais } from './piezas.jsx';
+import { Bandera, nombrePais } from './piezas.jsx';
 import { fondoEn, fondoOpcion, useFondos } from './fondos.js';
 
 usarCss('og_link', CSS_PAGINA);
@@ -78,62 +78,75 @@ function Crew({ id }) {
   );
 }
 
-// 🎁 LA MINIATURA DEL LINK DE INVITACIÓN, LA «4b» (17/11/2026). Dlx eligió, de ocho ganchos y cinco versiones hechas con su
-// brain, 21st, Taste y la crítica de Impeccable (el lienzo: https://claude.ai/artifact/9EZdEof3J7tLiisKuzXspF, guardada en
-// docs/remake/miniatura_invita/): «me gusta como se ve ahora… guarda este preset», «más de 21000 miembros», la barra de
-// abajo con «entra ahora y gana una recompensa» y «quita liga global de freestyle, eso estará en el link».
-// Tres columnas y una barra: quien invita y su carta · «+40 torneos por semana» y «todos los niveles» en magenta · las
-// banderas y «más de 21.000 miembros». Los números y las banderas los manda bot/og_links.py en la ruta (`t`, `m`, `b`),
-// así la huella sabe cuándo rearmar; sin ellos se calculan acá con la misma regla.
+// 🎬 LA MINIATURA DEL LINK DE INVITACIÓN, TIPO CINE (18/11/2026). Dlx, de las miniaturas de las páginas: «en general me
+// gusta más eso de estilo cine», y de las dos de la invitación (https://claude.ai/artifact/AB6H3Gn4nU7GK8iy12wwPL): «depende
+// de si el usuario tiene una carta o no». Con carta va la A (`og-c-a`): su nombre, «te invitó» y la carta a la derecha. Sin
+// carta, la B (`og-c-b`): el nombre gigante a lo ancho. Las dos con un momento real de batalla en blanco y negro con grano
+// —el lenguaje de la intro y de la pantalla de carga: la marca UL | T1, el sello magenta con su sombra verde, el título
+// blanco y magenta—, «Entra ahora y gana un premio» y los números: «más de 40 eventos por semana» (Dlx: «que aparezca que
+// hay más de 40 eventos por semana»), los miembros y, en la B, los socios («14 servidores se vuelven 14 socios»).
+// Los fondos están en R2 (`og/fondos/<temporada>/invita_a.webp` y `_b`), ya encuadrados con la cara arriba y fuera del texto;
+// salen de batallas que ya pasan en la intro. La «4b» de antes (columnas y franjas) quedó en docs/remake/miniatura_invita/.
 // ⚠️ «Miembros» son las personas de los servidores donde está el bot (`comunidad.personas`), no gente anotada en la Liga.
 //: el diseño de esta miniatura: el mismo `d` que pone bot/og_links.py en la huella. Si la página publicada dice otro, el ciclo
 //: no saca la foto (sería la vieja con la huella nueva) y la reintenta en la corrida siguiente
-export const DISENO_REF = 'ref-4b-ico';
-const SIN_PAIS = new Set(['ae', 'br', 'no']);
-const BANDERAS = 11;                                      // y la 12.ª casilla es la del «+N»              // Dlx, 22/09: Emiratos y Brasil «no se les toma en cuenta»
+export const DISENO_REF = 'ref-cine-1';
 const nro = (x) => Number(x) || 0;
 const miles = (x) => String(Math.trunc(x)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+/** El número de «más de N» que es VERDAD: 42 → 40, pero 40 justos → 30. El mismo `_mas_de()` de bot/og_links.py */
+const masDe = (n, paso) => (n > 0 ? Math.max(0, Math.floor((n - 1) / paso) * paso) : 0);
 
-/** `{t, m, b, p}`: torneos de los últimos 7 días (para abajo a la decena), personas en los servidores (al millar), los 11
- *  países con más raperos y cuántos hay en total (el «+N» de la banderita del final: Dlx, 18/11/2026, «una banderita con un
- *  más, o sea que hay más países, no sólo esos»). La misma regla que `_vitrina()` de bot/og_links.py */
+/** `{t, m, s}`: los eventos de los últimos 7 días (para «más de», a la decena), las personas de los servidores (al millar)
+ *  y los socios. Los manda bot/og_links.py en la ruta (así entran en la huella); sin ellos se calculan acá con la misma
+ *  regla que `_vitrina()` */
 export function vitrinaRef(d, q) {
   const D = d || {};
   const ahora = Date.now(), desde = ahora - 7 * 864e5;
   const t = q && q.get('t') != null ? nro(q.get('t'))
-    : Math.floor((D.calendario || []).filter((c) => { const x = Date.parse((c && (c.t || c.cuando)) || ''); return x >= desde && x <= ahora; }).length / 10) * 10;
-  const m = q && q.get('m') != null ? nro(q.get('m')) : Math.floor(nro(D.comunidad && D.comunidad.personas) / 1000) * 1000;
-  const todos = (D.paises || []).filter((p) => p && p.cc && !SIN_PAIS.has(p.cc)).sort((a, c) => nro(c.n) - nro(a.n));
-  const b = q && q.get('b') != null ? String(q.get('b')).split(',').filter((x) => /^[a-z]{2}$/.test(x)).slice(0, BANDERAS)
-    : todos.slice(0, BANDERAS).map((p) => p.cc);
-  const p = q && q.get('p') != null ? nro(q.get('p')) : todos.length;
-  return { t, m, b, p: Math.max(p, b.length) };
+    : masDe((D.calendario || []).filter((c) => { const x = Date.parse((c && (c.t || c.cuando)) || ''); return x >= desde && x <= ahora; }).length, 10);
+  const m = q && q.get('m') != null ? nro(q.get('m')) : masDe(nro(D.comunidad && D.comunidad.personas), 1000);
+  const s = q && q.get('s') != null ? nro(q.get('s')) : nro(D.comunidad && D.comunidad.servidores);
+  return { t, m, s };
 }
 
-// 🔠 «¡MAKMAH TE INVITÓ!» EN UNA CABECERA, COMO LA BARRA DE ABAJO (Dlx, 17/11/2026: «o podríamos hacer una cabecera parecida
-// a la de abajo que diga X te invitó, centrado»). Antes era una etiqueta en la columna de la carta: la 4b guardada sólo
-// entraba con nombres de hasta 3 letras, y achicarla para que entrara le comía lugar a la carta. A lo ancho entra casi
-// cualquier nombre: de 42 a 28 px hasta entrar en 1.120 (franja de 64 px desde el 18/11: «sus líneas menos altas»), y si ni
-// así (el más largo de la Liga tiene 48 letras), «…».
-// Se mide con las fuentes ya cargadas: con la de reemplazo, las medidas salían de otro ancho.
-const ANCHO_CAB = 1120;
-function anchoTxt(txt, px) {
-  const c = anchoTxt.c || (anchoTxt.c = document.createElement('canvas').getContext('2d'));
-  c.font = '900 ' + px + 'px Archivo, sans-serif';
-  return c.measureText(String(txt).toUpperCase()).width;
-}
-export function encajeCabecera(nombre, medir = anchoTxt) {
-  const t = '¡' + nombre + ' te invitó!';
-  for (let px = 42; px >= 28; px -= 1) if (medir(t, px) <= ANCHO_CAB) return px;
-  return 28;
+/** 🔠 EL NOMBRE Y LOS DATOS, DEL TAMAÑO QUE ENTRE EN SU COLUMNA (600 px en la A, que tiene la carta; 1.088 en la B). Se
+ *  achican de a 2 px hasta su mínimo (`data-min`); un NOMBRE con espacios pasa a dos renglones antes de bajar de 84 px, y si
+ *  ni así entra a 60, «…» (el más largo de la Liga tiene 48 letras). Se mide el TEXTO (un Range), no la caja: la caja de un
+ *  hijo de grilla se estira con el más ancho. Con las fuentes ya cargadas: con la de reemplazo las medidas son de otro ancho */
+function encajarCine(caja) {
+  if (!caja) return;
+  const w = caja.getBoundingClientRect().width;
+  const rango = (el) => { const r = document.createRange(); r.selectNodeContents(el); return r; };
+  const ancho = (el) => rango(el).getBoundingClientRect().width;
+  const lineas = (el) => new Set([...rango(el).getClientRects()].map((x) => Math.round(x.top))).size;
+  caja.querySelectorAll('[data-px]').forEach((el) => {
+    const max = Number(el.dataset.px), min = Number(el.dataset.min || 40);
+    const barra = el.classList.contains('og-c-dato') ? 28 : 0;      // la barrita de color y su hueco
+    let f = max;
+    el.classList.remove('og-c-dos', 'og-c-corto');
+    el.style.fontSize = f + 'px';
+    while (ancho(el) + barra > w + 1 && f > min) { f -= 2; el.style.fontSize = f + 'px'; }
+    if (el.dataset.nombre == null || ancho(el) <= w + 1) return;
+    if (/\s/.test(el.textContent.trim())) {
+      el.classList.add('og-c-dos');
+      f = Math.min(max, Math.round(f * 1.5));
+      el.style.fontSize = f + 'px';
+      while ((ancho(el) > w + 1 || lineas(el) > 2) && f > 60) { f -= 2; el.style.fontSize = f + 'px'; }
+      if (ancho(el) <= w + 1 && lineas(el) <= 2) return;
+      el.classList.remove('og-c-dos');
+    }
+    el.classList.add('og-c-corto');
+    el.style.fontSize = '60px';
+  });
 }
 
 function Ref({ liga, k }) {
   const [ok, setOk] = useState(false);
   const [mala, setMala] = useState(false);
-  const [enc, setEnc] = useState(null);
-  const [banderas, setBanderas] = useState(0);
+  const [fondo, setFondo] = useState('');
   const [ul, setUl] = useState(false);
+  const [medido, setMedido] = useState('');
+  const txt = useRef(null);
   const q = deLaRuta();
   const f = liga && ((liga.T && liga.T[k]) || (liga.X && liga.X[k]));
   const nombre = limpio(q.get('n') || (f && f.n) || k);
@@ -141,45 +154,44 @@ function Ref({ liga, k }) {
   const deRuta = R2.test(q.get('c') || '') ? q.get('c') : '';
   const src = deRuta || (carta && liga.d && liga.d.r2 ? liga.d.r2 + '/' + encodeURIComponent(k) + '/' + carta + '.webp' : '');
   const V = vitrinaRef(liga && liga.d, q);
-  // el nombre se mide con las fuentes ya cargadas: con la de reemplazo «DLX TE INVITA» parecía no entrar
+  // 🃏 Dlx: «depende de si tiene carta». Si la carta no carga, también va la B: mejor el nombre gigante que un hueco
+  const conCarta = !!src && !mala;
+  const D = (liga && liga.d) || {};
+  const bg = D.r2 ? D.r2 + '/og/fondos/' + String(D.temporada || 't1').toLowerCase() + '/invita_' + (conCarta ? 'a' : 'b') + '.webp' : '';
+  const clave = [nombre, conCarta ? 'a' : 'b', V.t, V.m, V.s].join('|');
   useLayoutEffect(() => {
     let vivo = true;
-    const medir = () => { if (vivo) setEnc(encajeCabecera(nombre)); };
+    const medir = () => { if (vivo) { encajarCine(txt.current); setMedido(clave); } };
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir); else medir();
     return () => { vivo = false; };
-  }, [nombre]);
-  const listo = liga && liga.d && enc && ul && (!src || ok) && banderas >= V.b.length;
-  const una = (n) => () => setBanderas((x) => x + n);
+  }, [clave]);
+  const listo = !!(liga && liga.d && bg && fondo === bg && ul && medido === clave && (!src || ok));
   return (
-    <div className="og og-r4" data-d={DISENO_REF} data-listo={listo ? '1' : ''}>
-      <div className="og-r4-cab"><span style={enc ? { fontSize: enc + 'px' } : null}>¡<b>{nombre}</b> te invitó!</span></div>
-      <div className="og-r4-izq">
-        {src && !mala ? <span className="og-r4-carta"><img src={src} alt="" onLoad={() => setOk(true)} onError={() => { setMala(true); setOk(true); }} /></span> : null}
-      </div>
-      <div className="og-r4-med">
-        {V.t >= 10 ? <><b className="og-r4-num">+{V.t}</b><span className="og-r4-bc og-r4-tor">torneos<br />por semana</span></>
-          : <span className="og-r4-bc og-r4-tor">torneos<br />todas las<br />semanas</span>}
-        {/* con la escalera de la página (Ico «subir»), en SVG: un emoji depende de la fuente del que saca la foto (Dlx, 18/11/2026:
-            «agrega un ícono o emoji al costado de todos los niveles») */}
-        <span className="og-r4-bc og-r4-caja"><Ico n="subir" t={66} /><span>Todos los<br />niveles</span></span>
-      </div>
-      <div className="og-r4-der">
-        {V.b.length ? (
-          <span className="og-r4-flags">
-            {V.b.map((cc) => <img key={cc} src={'/banderas/g/' + cc + '.webp'} alt="" onLoad={una(1)} onError={una(1)} />)}
-            {V.p > V.b.length ? <span className="og-r4-mas">+{V.p - V.b.length}</span> : null}
-          </span>
-        ) : null}
+    <div className={'og og-c ' + (conCarta ? 'og-c-a' : 'og-c-b')} data-d={DISENO_REF} data-listo={listo ? '1' : ''}>
+      {bg ? <img key={bg} className="og-c-bg" src={bg} alt="" onLoad={() => setFondo(bg)} onError={() => setFondo(bg)} /> : null}
+      <i className="og-c-velo" />
+      <i className="og-c-vineta" />
+      {conCarta ? <img className="og-c-carta" src={src} alt="" onLoad={() => setOk(true)} onError={() => { setMala(true); setOk(true); }} /> : null}
+      <span className="og-c-marca">
+        <img src="/ul-blanco.png" alt="Under Legends" onLoad={() => setUl(true)} onError={() => setUl(true)} /><i /><b>{liga && liga.temp}</b>
+      </span>
+      <div className="og-c-txt" ref={txt}>
+        <span className="og-c-sello">Invitación</span>
+        <span className="og-c-t">
+          <span className="og-c-t1" data-px={conCarta ? 130 : 150} data-min="84" data-nombre="">{conCarta ? nombre : '¡' + nombre}</span>
+          <span className="og-c-t2" data-px={conCarta ? 70 : 72} data-min="40">{conCarta ? 'te invitó' : 'te invitó a la Liga!'}</span>
+        </span>
+        <span className="og-c-dato" data-px="46" data-min="40">Entra ahora y gana un premio</span>
+        <span className="og-c-dato og-c-d2" data-px="46" data-min="40">{V.t >= 10 ? 'Más de ' + V.t + ' eventos por semana' : 'Eventos todas las semanas'}</span>
         {V.m >= 1000 ? (
-          <span className="og-r4-miem"><span className="og-r4-bc">Más de</span><b>{miles(V.m)}</b><span className="og-r4-bc og-r4-m">miembros</span></span>
+          <span className="og-c-dato og-c-d2" data-px="46" data-min="40">{'Más de ' + miles(V.m) + ' miembros' + (!conCarta && V.s ? ' · ' + V.s + ' socios' : '')}</span>
         ) : null}
       </div>
-      {/* Dlx, 17/11/2026: «entra ahora y gana un premio, y abajo a los costados la temporada y el logo de UL en negrito»; «el T1, no temporada 1» */}
-      <div className="og-r4-barra">
-        <span className="og-r4-temp">{liga && liga.temp}</span>
-        <span className="og-r4-cta">Entra ahora y gana un premio</span>
-        <img className="og-r4-ul" src="/ul-blanco.png" alt="Under Legends" onLoad={() => setUl(true)} onError={() => setUl(true)} />
-      </div>
+      {/* el grano de la intro (bienvenida.css, `.bv-grano`) */}
+      <svg className="og-c-grano" aria-hidden="true">
+        <filter id="og-c-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" /></filter>
+        <rect width="100%" height="100%" filter="url(#og-c-gr)" />
+      </svg>
     </div>
   );
 }

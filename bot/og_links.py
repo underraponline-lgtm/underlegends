@@ -83,15 +83,20 @@ def _get(url, ciclo=False, timeout=25):
 
 #: el diseño de la miniatura del link de invitación: el mismo `DISENO_REF` de web/src/og_link.jsx (`data-d`). Cambiarlo rearma
 #: sólo ésas, no las crews ni los perfiles; y si la página publicada todavía dice otro, la foto se saltea
-DISENO_REF = 'ref-4b-ico'
-#: países que no se toman en cuenta (Dlx, 22/09/2026: «Emiratos y Brasil no deberían existir»)
-SIN_PAIS = ('ae', 'br', 'no')
+DISENO_REF = 'ref-cine-1'
+
+
+def _mas_de(n, paso):
+    """El número de «más de N» que es VERDAD: el múltiplo de `paso` que queda por debajo. 42 → 40, pero 40 justos → 30
+    («más de 40» con 40 sería mentira). Redondeado, además, para que la miniatura no se rearme por una unidad."""
+    return max(0, (int(n) - 1) // paso * paso) if n else 0
 
 
 def _vitrina(L, ahora=None):
-    """Lo que muestra la miniatura del link de invitación, redondeado para abajo para que no se rearme por una unidad: los
-    torneos de los últimos 7 días del calendario (a la decena), las personas de los servidores (`comunidad.personas`, al
-    millar) y los 12 países con más raperos. La misma regla que `vitrinaRef()` de web/src/og_link.jsx."""
+    """Los números de la miniatura del link de invitación, la de cine (18/11/2026, Dlx: «que aparezca que hay más de 40
+    eventos por semana» y «14 servidores se vuelven 14 socios»): los eventos de los últimos 7 días del calendario (`t`, a
+    la decena), las personas de los servidores (`m`, `comunidad.personas`, al millar) y los socios (`s`,
+    `comunidad.servidores`). La misma regla que `vitrinaRef()` de web/src/og_link.jsx."""
     import datetime
     ahora = ahora or datetime.datetime.now(datetime.timezone.utc)
     desde = ahora - datetime.timedelta(days=7)
@@ -103,14 +108,16 @@ def _vitrina(L, ahora=None):
             continue
         if x.tzinfo and desde <= x <= ahora:
             t += 1
+    com = (L or {}).get('comunidad') or {}
     try:
-        m = int(((L or {}).get('comunidad') or {}).get('personas') or 0)
+        m = int(com.get('personas') or 0)
     except (TypeError, ValueError):
         m = 0
-    ps = [p for p in (L or {}).get('paises') or [] if isinstance(p, dict) and p.get('cc') and p['cc'] not in SIN_PAIS]
-    ps.sort(key=lambda p: -(p.get('n') or 0))
-    # 11 banderas y la 12.ª casilla dice cuántos países más hay (Dlx, 18/11/2026: «una banderita con un más»)
-    return {'t': t // 10 * 10, 'm': m // 1000 * 1000, 'b': [p['cc'] for p in ps[:11]], 'p': len(ps)}
+    try:
+        s = int(com.get('servidores') or 0)
+    except (TypeError, ValueError):
+        s = 0
+    return {'t': _mas_de(t, 10), 'm': _mas_de(m, 1000), 's': s}
 
 
 def _carta(k, f, cartas):
@@ -154,11 +161,11 @@ def trabajos():
         V = _vitrina(L)
         for k in ks:
             f = filas.get(k) or {}
-            # la «4b» (17/11/2026): los números y las banderas entran en la huella, ya redondeados; `d` es el diseño de
-            # ésta sola, así cambiarlo no rearma las crews ni los perfiles
+            # la de cine (18/11/2026): los números entran en la huella, ya redondeados, y la carta decide el armado (con
+            # carta, la A; sin carta, la B); `d` es el diseño de ésta sola, así cambiarlo no rearma las crews ni los perfiles
             r = {'k': k, 'n': f.get('n') or k, 'carta': _carta(k, f, cartas), 'd': DISENO_REF, **V}
-            ruta = 'ref/%s?n=%s&c=%s&t=%d&m=%d&b=%s&p=%d' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''),
-                                                          V['t'], V['m'], ','.join(V['b']), V['p'])
+            ruta = 'ref/%s?n=%s&c=%s&t=%d&m=%d&s=%d' % (quote(k, safe=''), quote(str(r['n']), safe=''), quote(r['carta'], safe=''),
+                                                     V['t'], V['m'], V['s'])
             out.append(('ref', slug_og(k), _huella(r), ruta))
     # 🖼️ el cartel del link de cada perfil: los de la tabla con carta. La huella es todo lo que el cartel muestra
     fondos = (_get(avisar.WORKER + '/avisos/fondos') or {}).get('f') or {}
@@ -299,12 +306,13 @@ def _self_check():
     hoy = datetime.datetime(2026, 11, 18, 3, 0, tzinfo=datetime.timezone.utc)
     cal = [{'t': (hoy - datetime.timedelta(hours=h)).strftime('%Y-%m-%dT%H:%M:%SZ')} for h in range(0, 42 * 4, 4)]
     cal.append({'t': (hoy - datetime.timedelta(days=9)).strftime('%Y-%m-%dT%H:%M:%SZ')})     # fuera de la semana
-    L0 = {'calendario': cal, 'comunidad': {'personas': 21386},
-          'paises': [{'cc': 'ar', 'n': 171}, {'cc': 'br', 'n': 900}, {'cc': 'co', 'n': 76}, {'cc': 'cl', 'n': 93}, {'cc': 'ae', 'n': 5}]}
+    L0 = {'calendario': cal, 'comunidad': {'personas': 21386, 'servidores': 14}}
     V = _vitrina(L0, hoy)
-    ok(V == {'t': 40, 'm': 21000, 'b': ['ar', 'cl', 'co'], 'p': 3},
-       'la miniatura del link: 42 torneos en 7 días → 40, 21.386 → 21.000, banderas por raperos y sin Emiratos ni Brasil (%s)' % V)
-    ok(_vitrina({}, hoy) == {'t': 0, 'm': 0, 'b': [], 'p': 0}, 'sin lobby, ceros y sin banderas (la página esconde lo que no llega)')
+    ok(V == {'t': 40, 'm': 21000, 's': 14},
+       'la miniatura del link: 42 eventos en 7 días → «más de 40», 21.386 → «más de 21.000», 14 socios (%s)' % V)
+    ok(_mas_de(40, 10) == 30 and _mas_de(21000, 1000) == 20000 and _mas_de(1, 10) == 0 and _mas_de(0, 10) == 0,
+       '«más de» siempre es verdad: 40 justos dicen «más de 30», no «más de 40»')
+    ok(_vitrina({}, hoy) == {'t': 0, 'm': 0, 's': 0}, 'sin lobby, ceros (la página esconde lo que no llega)')
     with io.open(os.path.join(BASE, 'web', 'src', 'og_link.jsx'), encoding='utf-8') as f:
         mj = re.search(r"export const DISENO_REF = '([^']+)'", f.read())
     ok(mj is not None and mj.group(1) == DISENO_REF,

@@ -72,3 +72,20 @@ abajo a los costados la temporada y el logo de UL en negrito». `final_dlx.png` 
 banderas y «+N». `final_dlx.png` y `final_nombres.png` ya son ésta.
 
 **6.52**: «agrega un ícono o emoji al costado de todos los niveles»: la escalera de la página (`Ico n="subir"`), en SVG.
+
+## Reemplazada por la de cine (18/11/2026)
+
+Dlx, de las miniaturas nuevas de las páginas: *«en general me gusta más eso de estilo cine»*, y de las dos versiones de
+la invitación en ese estilo: *«depende de si el usuario tiene una carta o no»*. Desde entonces el link de invitación sale
+con un momento real de batalla en blanco y negro (el lenguaje de la intro y de la pantalla de carga) y en dos armados:
+
+- **A, con carta**: el nombre, «te invitó», la carta a la derecha, «Entra ahora y gana un premio», «más de 40 eventos por
+  semana» y «más de 21.000 miembros».
+- **B, sin carta**: «¡NOMBRE te invitó a la Liga!» a lo ancho, los mismos datos y «14 socios».
+
+Vive en `web/src/og_link.jsx` (`Ref`, clases `og-c-`, `DISENO_REF = 'ref-cine-1'`); los números los manda
+`bot/og_links.py` (`_vitrina()`: `t`, `m`, `s`, con «más de» siempre verdadero: 40 justos dicen «más de 30»). Los dos
+fondos están en R2 (`og/fondos/t1/invita_a.webp` y `_b`), ya encuadrados con la cara arriba y fuera del texto: son caras
+de gente real, por eso no están en el repo. Las maquetas, en el artifact privado
+https://claude.ai/artifact/AB6H3Gn4nU7GK8iy12wwPL. **La 4b de arriba queda como preset**: volver a ella es volver a
+este código en git (`git log -- web/src/og_link.jsx`).

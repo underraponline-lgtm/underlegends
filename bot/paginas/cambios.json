@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.58",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T02:31:00-05:00",
+        "titulo": "La miniatura de tu link de invitación, tipo cine",
+        "items": [
+            "La imagen que sale cuando pegas **tu link de invitación** en Discord ahora es **tipo cine**, como la intro: un momento de batalla en blanco y negro.",
+            "**Si tienes carta**, sale tu nombre con tu carta al lado; **si no**, tu nombre gigante.",
+            "Y dice **«más de 40 eventos por semana»**, los miembros y los 14 socios."
+        ]
+    },
+    {
         "version": "6.57",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T01:31:00-05:00",

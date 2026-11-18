@@ -31,36 +31,35 @@
 .og-pf-pais{display:inline-flex;align-items:center;gap:12px}
 .og-pf-flag{width:48px;height:32px;object-fit:cover;display:block}
 .og-pf-pos{background:#F6F6F6;color:#030304}
-/* 🎁 la miniatura del link de invitación, la «4b» (`Ref`, 17/11/2026): tres columnas y la barra de abajo. Prefijo `og-r4-`
-   (buscado: no lo usa nadie). Los tamaños se midieron achicados a 400 y 300 px, que es lo que muestra Discord */
-.og-r4 *{box-sizing:border-box}
-.og-r4-bc{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;line-height:1}
-.og-r4-izq{position:absolute;left:24px;top:82px;width:342px;bottom:90px;display:flex;flex-direction:column;align-items:center}
-/* la cabecera (Dlx: «una cabecera parecida a la de abajo que diga X te invitó, centrado»): blanca como la barra, el nombre en magenta */
-.og-r4-cab{position:absolute;left:0;right:0;top:0;height:64px;background:#F6F6F6;color:#030304;display:flex;align-items:center;justify-content:center;padding:0 40px}
-.og-r4-cab span{font:900 42px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:-.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.og-r4-cab b{color:#E41373;font-weight:900}
-.og-r4-carta{flex:1 1 auto;min-height:0;width:100%;display:flex;justify-content:center;align-items:center}
-.og-r4-carta img{height:100%;max-height:450px;width:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.6))}
-.og-r4-med{position:absolute;left:390px;top:64px;bottom:72px;width:410px;background:#E41373;color:#FFFFFF;display:flex;flex-direction:column;
-  justify-content:center;align-items:flex-start;padding:0 32px;gap:18px}
-.og-r4-num{font:900 150px/.88 Archivo,sans-serif;letter-spacing:-5px}
-.og-r4-tor{font-size:60px;margin-top:-8px}
-.og-r4-caja{font-size:52px;color:#030304;background:#F6F6F6;padding:8px 16px 10px 12px;display:flex;align-items:center;gap:12px}
-.og-r4-caja .ico{flex:none;color:#E41373;stroke-width:3}
-.og-r4-der{position:absolute;left:800px;top:64px;bottom:72px;width:400px;display:flex;flex-direction:column;justify-content:center;padding:0 32px;gap:22px}
-.og-r4-flags{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.og-r4-flags img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;border-radius:2px}
-/* la 12.ª casilla: «+N», los países que no entran (Dlx: «una banderita con un más, o sea que hay más países») */
-.og-r4-mas{display:grid;place-items:center;width:100%;aspect-ratio:3/2;border-radius:2px;background:#F6F6F6;color:#030304;font:900 30px/1 Archivo,sans-serif}
-.og-r4-miem{display:flex;flex-direction:column;gap:6px}
-.og-r4-miem .og-r4-bc{font-size:48px;color:#C9C9C4}
-.og-r4-miem b{font:900 84px/.88 Archivo,sans-serif;letter-spacing:-3px;color:#29B298}
-.og-r4-miem .og-r4-m{font-size:56px;color:#F6F6F6}
-.og-r4-barra{position:absolute;left:0;right:0;bottom:0;height:72px;background:#F6F6F6;color:#030304;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;padding:0 28px}
-/* a los costados, la temporada y el logo de UL en negro (Dlx: «la temporada y el logo de UL en negrito»); el llamado al medio */
-.og-r4-temp,.og-r4-ul{flex:0 0 180px}
-.og-r4-temp{font:900 36px/1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap}
-.og-r4-cta{font:900 36px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:-.5px;white-space:nowrap;text-align:center}
-.og-r4-ul{height:46px;width:180px;object-fit:contain;object-position:right center;filter:brightness(0)}
+/* 🎬 la miniatura del link de invitación, TIPO CINE (`Ref`, 18/11/2026): A con la carta de quien invita (`og-c-a`), B sin
+   carta, con el nombre a lo ancho (`og-c-b`). Prefijo `og-c-` (buscado: no lo usa nadie). Lo de cine es lo de la intro y la
+   pantalla de carga (web/montar.py, `#lg-carga`): la marca, el sello con su sombra verde, el título blanco y magenta, el grano.
+   Los tamaños se midieron achicados a 400 y 300 px, que es lo que muestra Discord: nada por debajo de 40 px */
+.og-c *{box-sizing:border-box}
+.og-c-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* casi sin velo arriba, donde está la cara; el negro se junta abajo, detrás del texto */
+.og-c-velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,4,.4) 0%,rgba(3,3,4,0) 16%,rgba(3,3,4,.1) 40%,rgba(3,3,4,.82) 62%,#030304 100%),
+  linear-gradient(90deg,rgba(3,3,4,.55) 0%,transparent 42%)}
+.og-c-vineta{position:absolute;inset:0;box-shadow:inset 0 0 140px 40px #030304}
+.og-c-grano{position:absolute;inset:0;width:100%;height:100%;opacity:.16;mix-blend-mode:overlay;z-index:30;pointer-events:none}
+.og-c-marca{position:absolute;top:34px;left:56px;display:flex;align-items:center;gap:14px;z-index:20;filter:drop-shadow(0 1px 6px rgba(3,3,4,.8))}
+.og-c-marca img{height:56px;width:auto;display:block}
+.og-c-marca i{width:3px;height:38px;background:rgba(246,246,246,.5)}
+.og-c-marca b{font:900 40px/1 Archivo,sans-serif;font-stretch:125%}
+.og-c-carta{position:absolute;left:840px;top:76px;height:480px;width:auto;rotate:3deg;z-index:15;filter:drop-shadow(0 18px 28px rgba(0,0,0,.7))}
+.og-c-txt{position:absolute;left:56px;bottom:46px;width:600px;display:grid;justify-items:start;gap:12px;z-index:20}
+.og-c-b .og-c-txt{width:1088px}
+.og-c-sello{display:inline-block;padding:9px 16px 8px;background:#E41373;color:#FFFFFF;border-radius:3px;font:700 40px/1 'Barlow Condensed',sans-serif;
+  letter-spacing:.12em;text-transform:uppercase;transform:rotate(-3deg);box-shadow:6px 6px 0 #29B298;margin:0 0 12px 4px;white-space:nowrap}
+.og-c-t{display:grid;justify-items:start;gap:6px;font:900 130px/.86 Archivo,sans-serif;font-stretch:125%;letter-spacing:.01em;text-transform:uppercase;
+  white-space:nowrap;filter:drop-shadow(0 4px 16px rgba(0,0,0,.65))}
+.og-c-t1{color:#F6F6F6;max-width:100%}
+/* un nombre largo con espacios va en dos renglones; uno que ni así entra, con «…» */
+.og-c-t1.og-c-dos{white-space:normal;text-wrap:balance}
+.og-c-t1.og-c-corto{display:block;overflow:hidden;text-overflow:ellipsis}
+.og-c-t2{color:#E41373;text-shadow:0 0 3px rgba(3,3,4,.85),0 0 14px rgba(3,3,4,.75)}
+.og-c-dato{display:flex;align-items:center;gap:16px;font:700 46px/1.05 'Barlow Condensed',sans-serif;letter-spacing:.05em;text-transform:uppercase;
+  color:#F6F6F6;text-shadow:0 1px 10px rgba(3,3,4,.9);white-space:nowrap;margin-top:6px}
+.og-c-dato::before{content:'';flex:none;width:12px;height:46px;background:#29B298}
+.og-c-d2{margin-top:-2px;color:#C9C9C4}
+.og-c-d2::before{background:#E41373}
