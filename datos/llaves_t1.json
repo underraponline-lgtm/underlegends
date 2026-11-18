@@ -58697,7 +58697,7 @@
      ],
      [
       [
-       "astrid 🇲🇽",
+       "astrid",
        "Masino"
       ],
       "",
@@ -59071,6 +59071,143 @@
   ],
   "ver": {
    "min": 110,
+   "v": 1
+  }
+ },
+ "658": {
+  "dia": "2026-11-12",
+  "escala": "8-15",
+  "fecha": "12/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1570589652480426126"
+  ],
+  "n": 658,
+  "nombre": "MULTIVERS VIDA O MUERTE",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Drexx"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "LVS",
+       "crakero"
+      ],
+      "LVS",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "Miniboy"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "1469704413013737585 Lizzenin 🇦🇷",
+       "Under",
+       "Majiztral"
+      ],
+      "1469704413013737585 Lizzenin 🇦🇷",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "LVS"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "1469704413013737585 Lizzenin 🇦🇷"
+      ],
+      "MaYeuTyK",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "MaYeuTyK"
+      ],
+      "Erian",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "1469704413013737585 Lizzenin 🇦🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LVS",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Under",
+    "Cuartos",
+    2000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 7,
    "v": 1
   }
  }

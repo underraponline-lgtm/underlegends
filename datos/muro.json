@@ -254,6 +254,15 @@
 "temporada"
 ]
 },
+"majiztral": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "guess": {
 "rg": "C",
 "c": [
@@ -303,15 +312,6 @@
 "temporada"
 ]
 },
-"majiztral": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "criszj": {
 "rg": "C",
 "c": []
@@ -329,6 +329,15 @@
 "rg": "B",
 "c": []
 },
+"drexx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "chop": {
 "rg": "D",
 "c": []
@@ -344,15 +353,6 @@
 },
 "mats": {
 "rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"drexx": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -417,6 +417,14 @@
 "temporada"
 ]
 },
+"mayeutyk": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "dominick": {
 "rg": "D",
 "c": []
@@ -462,14 +470,6 @@
 },
 "tøkiø": {
 "rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "C",
 "c": [
 "competitivo",
 "servidor",
@@ -644,6 +644,15 @@
 "rg": "",
 "c": []
 },
+"crakero": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "crk": {
 "rg": "E",
 "c": [
@@ -698,15 +707,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"crakero": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -924,6 +924,10 @@
 "temporada"
 ]
 },
+"under": {
+"rg": "",
+"c": []
+},
 "monet": {
 "rg": "",
 "c": []
@@ -1000,10 +1004,6 @@
 "c": [
 "servidor"
 ]
-},
-"under": {
-"rg": "",
-"c": []
 },
 "zekha": {
 "rg": "",

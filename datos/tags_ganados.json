@@ -3276,7 +3276,7 @@
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
-    1794964231009
+    1794965337863
    ]
   },
   "pais": {
@@ -3323,6 +3323,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1794621826916
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1794965337863
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -4050,7 +4055,7 @@
    "🐉 MATADRAGONES": [
     "🐉 MATADRAGONES",
     "t1",
-    1794964231009
+    1794965337863
    ],
    "🔁 VENGADOR": [
     "🔁 VENGADOR",
@@ -4296,6 +4301,11 @@
     "📅 INFALTABLE",
     "t1",
     1793029252929
+   ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1794965337863
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -4702,11 +4712,18 @@
   }
  },
  "efimero": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1794965337863
+   ]
+  },
   "pais": {
    "EMBAJADOR": [
     "EMBAJADOR",
     "t1",
-    1794964231009
+    1794965337863
    ]
   },
   "servidor": {
@@ -4720,7 +4737,7 @@
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
-    1794964231009
+    1794965337863
    ],
    "🌱 PROMESA": [
     "🌱 PROMESA",
@@ -4730,7 +4747,7 @@
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
-    1794964231009
+    1794965337863
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -5123,7 +5140,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x11",
+    "👑 CAMPEÓN x12",
     "t1",
     1793029252929
    ],
@@ -8338,6 +8355,11 @@
     "t1",
     1794456441384
    ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1794965337863
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -9088,7 +9110,7 @@
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
     "t1",
-    1794964231009
+    1794965337863
    ],
    "🎯 COMPLETO": [
     "🎯 COMPLETO",
@@ -9098,7 +9120,7 @@
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
-    1794964231009
+    1794965337863
    ],
    "🧊 SANGRE FRÍA": [
     "🧊 SANGRE FRÍA",
@@ -9261,6 +9283,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1794261790120
+   ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1794965337863
    ]
   },
   "servidor": {
@@ -9273,9 +9300,24 @@
     "📆 HABITUÉ",
     "t1",
     1793390603259
+   ],
+   "🔑 LLAVE DE LA CASA": [
+    "🔑 LLAVE DE LA CASA",
+    "t1",
+    1794965337863
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1794965337863
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1794965337863
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -9315,6 +9357,11 @@
     "🛫 NÓMADA",
     "t1",
     1794528421510
+   ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1794965337863
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",

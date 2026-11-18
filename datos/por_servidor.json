@@ -121,6 +121,20 @@
     "racha": "0/1"
    }
   },
+  "1469704413013737585 Lizzenin 🇦🇷": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 8662,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "19": {
    "ACAD": {
     "duelos": "2/3",
@@ -3702,6 +3716,18 @@
      "fund": true
     }
    },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4950,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "0/1",
     "ev": 1,
@@ -4406,14 +4432,14 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 2,
-    "oro": 2,
-    "ovr": 48,
-    "pod": 2,
-    "pts": 37124,
-    "racha": "2/2",
+    "ev": 3,
+    "oro": 3,
+    "ovr": 50,
+    "pod": 3,
+    "pts": 55686,
+    "racha": "3/3",
     "tg": {
-     "fin": 2,
+     "fin": 3,
      "nuevo": true
     }
    },
@@ -7624,6 +7650,20 @@
     }
    }
   },
+  "LVS": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 8662,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Lalox": {
    "DDS": {
     "duelos": "",
@@ -8713,14 +8753,16 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
-    "ovr": 48,
-    "pod": 0,
-    "pts": 40975,
+    "ovr": 50,
+    "pod": 1,
+    "pts": 53350,
     "racha": "0/1",
     "tg": {
-     "fund": true
+     "fin": 1,
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -8813,11 +8855,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 8700,
+    "pts": 13650,
     "racha": "0/0"
    },
    "URBF": {
@@ -9481,14 +9523,15 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 24409,
+    "pts": 29359,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    },
    "URBF": {
@@ -14145,12 +14188,12 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 1,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 1,
-    "pts": 20109,
-    "racha": "1/1",
+    "pts": 25059,
+    "racha": "0/1",
     "tg": {
      "fin": 1
     }
@@ -15540,6 +15583,18 @@
     "ovr": 42,
     "pod": 0,
     "pts": 3000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4950,
     "racha": "0/0",
     "tg": {
      "nuevo": true

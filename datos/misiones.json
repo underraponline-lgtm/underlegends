@@ -8180,6 +8180,13 @@
      0,
      0
     ],
+    "1469704413013737585 Lizzenin 🇦🇷": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "19 FLEIVA WACK": [
      1,
      0,
@@ -8610,7 +8617,7 @@
     "Erian": [
      0,
      0,
-     2,
+     3,
      0,
      1
     ],
@@ -8901,6 +8908,13 @@
      0,
      0
     ],
+    "LVS": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Leonart": [
      0,
      0,
@@ -8981,7 +8995,7 @@
     "MaYeuTyK": [
      1,
      2,
-     1,
+     2,
      1,
      0
     ],
@@ -9106,7 +9120,7 @@
     ],
     "NC": [
      0,
-     0,
+     1,
      1,
      0,
      0
@@ -9807,7 +9821,7 @@
     "Keider": 300,
     "Lord Viruzz": 600,
     "MTZ": 600,
-    "MaYeuTyK": 1100,
+    "MaYeuTyK": 2100,
     "Makmah": 900,
     "Marcos": 1000,
     "Masino": 300,
@@ -9854,11 +9868,11 @@
     ],
     [
      "caza",
-     "Ganale un duelo a crakero",
+     "Ganale un duelo a MaYeuTyK",
      "caza",
      1,
      800,
-     "crakero"
+     "MaYeuTyK"
     ],
     [
      "dorado",
@@ -10176,7 +10190,7 @@
   "MCO": 9000,
   "MHS": 300,
   "MTZ": 2500,
-  "MaYeuTyK": 3600,
+  "MaYeuTyK": 4600,
   "Magic": 600,
   "Majiztral": 4700,
   "Makmah": 11400,

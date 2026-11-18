@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-18T01:04:04Z",
+ "t": "2026-11-18T01:26:50Z",
  "sv": {
   "SR": {
    "filas": [
@@ -1078,6 +1078,13 @@
      "nemmii_as"
     ],
     [
+     "deko",
+     "ar",
+     800,
+     0,
+     "Deko"
+    ],
+    [
      "MCNADIE",
      "ar",
      750,
@@ -1237,13 +1244,6 @@
      500,
      0,
      "Kochi"
-    ],
-    [
-     "deko",
-     "ar",
-     500,
-     0,
-     ""
     ],
     [
      "Majiztral",
@@ -1475,13 +1475,6 @@
      300,
      0,
      "Deuxs"
-    ],
-    [
-     "Deko",
-     "ar",
-     300,
-     0,
-     "Deko"
     ],
     [
      "Lizeninn",
