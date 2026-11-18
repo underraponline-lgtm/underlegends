@@ -399,13 +399,16 @@ function useTiendaNueva(dc) {
   useEffect(() => { pedir(); }, [pedir]);
   // 💰 EL SALDO NO SE QUEDA VIEJO (17/11/2026, Dlx: «acabo de apostar y perdí todo mi dinero pero la página no se
   // actualizó… y me dejó comprar»). La apuesta se cobra en Discord, en el mismo objeto, y la página seguía mostrando lo de
-  // antes: se pedía una sola vez, al abrir. Ahora se vuelve a pedir al volver a la pestaña y cada 90 s mientras se ve.
+  // antes: se pedía una sola vez, al abrir. Ahora se vuelve a pedir AL INSTANTE al volver a la pestaña o a la ventana
+  // (Dlx: «points must be instant»), y cada 15 s mientras se ve: con Discord al lado no cambia el foco.
   // ⚠️ El que manda es el objeto: cada compra mira el saldo de verdad (`saldoDe()` en bot/tienda.js) y se niega si no
   // alcanza; esto es para que la página no muestre un número que ya no tienes
   useEffect(() => {
     if (!dc) return undefined;
-    const ver = () => { if (!document.hidden) pedir(); };
-    const t = setInterval(ver, 90000);
+    // ⚠️ volver dispara `focus` y `visibilitychange` juntos: un pedido, no dos
+    let ult = 0;
+    const ver = () => { if (document.hidden || Date.now() - ult < 2000) return; ult = Date.now(); pedir(); };
+    const t = setInterval(ver, 15000);
     document.addEventListener('visibilitychange', ver);
     window.addEventListener('focus', ver);
     return () => { clearInterval(t); document.removeEventListener('visibilitychange', ver); window.removeEventListener('focus', ver); };

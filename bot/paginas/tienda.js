@@ -65,15 +65,19 @@ function pedirBilletera(entrar) {
     })
     .catch(function () { BILL = { error: 'red' }; pintaPrecios(); });
 }
-/* 💰 al volver a la pestaña, la billetera de nuevo (17/11/2026): una apuesta en Discord la cambia y la página seguía
-   mostrando la de antes. Sólo si ya se había leído (quien nunca abrió nada con su cuenta no pregunta) y como mucho
-   una vez por minuto */
+/* 💰 LA BILLETERA AL INSTANTE (17/11/2026; Dlx: «points must be instant»): una apuesta en Discord la cambia y la
+   página seguía mostrando la de antes. Se vuelve a leer apenas vuelves a la pestaña o a la ventana. Sin repetirse
+   sola: cada lectura son dos pedidos al objeto, y en todas las páginas de todos los conectados se comería el cupo; la
+   Tienda, que es donde se gasta, se lee además cada 15 s (`useTiendaNueva`). Sólo si ya se había leído: quien nunca
+   abrió nada con su cuenta no pregunta. Volver dispara `focus` y `visibilitychange` juntos: un pedido, no dos */
 var BILL_T = 0;
-document.addEventListener('visibilitychange', function () {
-  if (document.hidden || !BILL || !BILL.ok || Date.now() - BILL_T < 60000) return;
+function billeteraAlDia() {
+  if (document.hidden || !BILL || !BILL.ok || Date.now() - BILL_T < 2000) return;
   BILL_T = Date.now();
   pedirBilletera(false);
-});
+}
+document.addEventListener('visibilitychange', billeteraAlDia);
+window.addEventListener('focus', billeteraAlDia);
 function ponerPrecio(cabeza, monto) {
   PR_EST[cabeza] = { va: monto };
   pintaPrecios();
