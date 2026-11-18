@@ -1,52 +1,16 @@
-// 🛠️ El botón MODS de la cabecera, su menú, la ventana de «Tus paneles» y la franja de «MODO MODS». Qué ofrece y a quién:
-// `mods.js`.
+// 🛠️ La ventana de MODS de «Tus paneles» (el menú de tu cara) y la franja de «MODO MODS». Qué ofrece y a quién: `mods.js`.
+// ⚠️ SIN EL BOTÓN DE LA CABECERA desde el 18/11/2026 (Dlx: «put the mods menu within the account… remove the mods menu
+// from the top»): con él, el menú no entraba y la marca quedaba pegada a Inicio («LIGA GLOBAL · T1INICIO» en la Tienda)
 import { useEffect, useRef, useState } from 'react';
-import { INTERRUPTORES, lugaresMods, opcionesMods, ponerMod, rolMods, useModsEstado, useQuienMod } from './mods.js';
+import { INTERRUPTORES, lugaresMods, ponerMod, rolMods, useModsEstado } from './mods.js';
 import { PopCab } from './pop.jsx';
 import { Ico } from './piezas.jsx';
 
-/** Un interruptor: el mismo en el menú de la cabecera y en la ventana. */
+/** Un interruptor de la ventana. */
 function Interruptor({ x, M }) {
   return (
     <button type="button" role="switch" aria-checked={!!M[x.k]} className="mods-sw" onClick={() => ponerMod(x.k, !M[x.k])}>
       <span><b>{x.t}</b><small>{x.d}</small></span><i aria-hidden="true" /></button>
-  );
-}
-
-/** El botón: sólo si en esta página hay algo para esta persona. */
-export function BotonMods({ liga, dc, pagina, sv }) {
-  const k = (liga && liga.yo && liga.yo.k) || (dc && dc.clave) || '';
-  const Q = useQuienMod(dc, k, sv);
-  const M = useModsEstado();
-  const [ab, setAb] = useState(false);
-  const caja = useRef(null);
-  const { sw, atajos } = opcionesMods(Q, pagina, sv);
-  const prendidos = sw.filter((x) => M[x.k]).length;
-  useEffect(() => {
-    if (!ab) return undefined;
-    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (caja.current && !p.includes(caja.current)) setAb(false); };
-    const esc = (e) => { if (e.key === 'Escape') setAb(false); };
-    document.addEventListener('pointerdown', fuera);
-    window.addEventListener('keydown', esc);
-    return () => { document.removeEventListener('pointerdown', fuera); window.removeEventListener('keydown', esc); };
-  }, [ab]);
-  if (!dc || (!sw.length && !atajos.length)) return null;
-  return (
-    <span className="mods-envol" ref={caja}>
-      <button type="button" className={'mods-b' + (prendidos ? ' on' : '')} aria-haspopup="dialog" aria-expanded={ab}
-        aria-label={'Herramientas de moderación' + (prendidos ? ' · ' + prendidos + ' prendidas' : '')} onClick={() => setAb((v) => !v)}>
-        MODS{prendidos ? <i aria-hidden="true">{prendidos}</i> : null}</button>
-      {ab ? (
-        <div className="mods-pop" role="dialog" aria-label="Herramientas de moderación">
-          <p className="mods-t"><b>MODS</b><span>{rolMods(Q)} · sólo en esta pestaña</span></p>
-          {sw.map((x) => <Interruptor key={x.k} x={x} M={M} />)}
-          {atajos.map((x) => (
-            <a key={x.ruta} className="mods-ir" href={x.ruta} onClick={() => setAb(false)}><span><b>{x.t}</b><small>{x.d}</small></span><i aria-hidden="true">›</i></a>
-          ))}
-          {sw.length ? <p className="mods-pie">Arranca apagado y se apaga al cerrar la pestaña. Lo que hagas queda anotado con tu nombre.</p> : null}
-        </div>
-      ) : null}
-    </span>
   );
 }
 

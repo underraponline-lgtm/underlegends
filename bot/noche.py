@@ -422,7 +422,7 @@ def html(ev):
         return '<span class="elo">ELO <b>%s</b> <i class="%s">%s</i></span>' % (
             miles(b), 'sube' if dl > 0 else 'baja' if dl < 0 else '', sig)
 
-    def cartas(u, alto):
+    def cartas(u, alto, sube=False):
         gs = u['gente'][:3]
         m = len(gs)
         giro = {1: [0], 2: [-4, 4], 3: [-6, 0, 6]}[m]
@@ -441,7 +441,7 @@ def html(ev):
                 out.append('<div class="ct sinc" style="%s;width:%dpx">%s</div>'
                            % (st, int(alto * 300 / 440), K._carta_sin({'n': n, 'fl': band}, d, 'sin', alto / 440)))
         mas = len(u['gente']) - m
-        return '<div class="cartas%s">%s%s</div>' % (' fan' if m > 1 else '', ''.join(out),
+        return '<div class="cartas%s">%s%s</div>' % (' sube' if sube else '', ''.join(out),
                                                     '<span class="mas-n">+%d</span>' % mas if mas > 0 else '')
 
     titulo = re.sub(r'^[\s_*~|`\-]+|[\s_*~|`\-]+$', '', r['nombre'])
@@ -480,14 +480,20 @@ def html(ev):
     ALTO = {'c': tope_c, 'i': int(tope_c * 0.87), 'o': int(tope_c * 0.70)}
 
     def nombre_lado(lado):
-        return ' + '.join(limpio(CO.de_hoy(limpio(x))) for x in EQ.integrantes(lado)[0])
+        # 📏 la frase va en un renglón: un equipo de más de dos es «Corvo y 4 más» y un nombre larguísimo se corta (en la
+        # T1: «perdieron la final con Corvo + Panchok + Masino + Lord Viruzz + Liberia», y un nombre de 46 letras)
+        corto = lambda n: n if len(n) <= 24 else n[:23].rstrip() + '…'  # noqa: E731
+        xs = [corto(limpio(CO.de_hoy(limpio(x)))) for x in EQ.integrantes(lado)[0]]
+        return ' + '.join(xs) if len(xs) <= 2 else '%s y %d más' % (xs[0], len(xs) - 1)
 
     def lugar(t, u, rol):
         m = min(3, len(u['gente']))
         factor = 0.72 * (1 + (m - 1) * (1 - (0.30 if m == 2 else 0.36 if m == 3 else 0)))
-        # 🪭 un abanico va 18 px más arriba (`.cartas.fan`): girada, la tarjeta de la punta bajaba una esquina justo donde
-        # va el sello (medido: 21 de 280 eventos, todos de equipos de tres)
-        alto = int(min(ALTO[rol] - (FAN_ARRIBA if m > 1 else 0), (ANCHO[rol] - 10) / factor))
+        # 🪭 un abanico va 18 px más arriba (`.cartas.sube`): girada, la tarjeta de la punta bajaba una esquina justo donde
+        # va el sello (medido: 21 de 280 eventos, todos de equipos de tres). Y en un podio de cinco, la caja que lleva un
+        # sello: es angosta y la tarjeta casi la llena (el Batacazo de .SosaATR en la #581)
+        sube = m > 1 or (cinco and (u is mvp_u or es_bat(u)))
+        alto = int(min(ALTO[rol] - (FAN_ARRIBA if sube else 0), (ANCHO[rol] - 10) / factor))
         estilo = ' style="width:%dpx;flex:none"' % ANCHO[rol]
         varios = len(u['gente']) > 1
         etq = ETQ.get(t, (t, t))[1 if varios else 0]
@@ -543,7 +549,7 @@ def html(ev):
         chip = '<span class="chip" style="background:%s">%s</span>' % (color(u['nota']), nota_txt(u['nota'])) if u['nota'] else ''
         return ''.join([
             '<div class="col %s rol-%s"%s>' % (clase, rol, estilo),
-            cartas(u, alto).replace('">', '">' + debut_c, 1),
+            cartas(u, alto, sube).replace('">', '">' + debut_c, 1),
             '<div class="plato"><span class="et pos">%s</span>' % etq,
             '<b class="nom%s" style="%s">%s</b>' % (' largo' if len(nombres) > 60 or len(u['gente']) > 2 else '', est_nom, nombres),
             '<div class="dat">%s%s%s</div>%s%s</div></div>' % (chip, eloh(u), mini, extra, sello)])
@@ -646,7 +652,7 @@ body{margin:0;width:1200px;height:675px;overflow:hidden;background:#030304}
 #c .mvp .plato .pos{color:ORO}
 #c .sello{position:absolute;right:-10px;top:-15px;background:ORO;color:#030304;font:900 14px/1 Archivo,sans-serif;padding:5px 8px;transform:rotate(4deg);box-shadow:3px 3px 0 #030304}
 #c .sello.bat-s{background:#FF8A5B;transform:rotate(-3deg)}
-#c .cartas.fan{margin-bottom:FANpx}
+#c .cartas.sube{margin-bottom:FANpx}
 #c .elo{font:700 13px/1 'Barlow Condensed',Archivo,sans-serif;letter-spacing:.04em;color:#C9C9CC;white-space:nowrap}
 #c .elo b{color:#F6F6F6;font-weight:800}
 #c .elo i{font-style:normal;margin-left:2px}

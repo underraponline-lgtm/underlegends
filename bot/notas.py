@@ -75,9 +75,10 @@ VOTO_ANTES, VOTO_DESPUES = 1, 2
 #: más alta: con un MVP «por calidad» Marcos salía MVP con 6,6 y Mats con 8,9 (#649), y Dlx preguntó por qué
 PISO_BATACAZO = 0.15
 #: 🌙 lo nuevo del 18/11/2026 —la imagen «La noche de…» del aviso de ganadores, sus botones y el 🔥 en la llave—, SÓLO
-#: DESDE ESTE EVENTO (Dlx: «sólo necesitamos hacer que los próximos eventos tengan eso. NO los actuales y pasados»): el
-#: #660 era el último procesado cuando se subió
-NOCHE_DESDE = 661
+#: DESDE ESTE EVENTO (Dlx: «sólo necesitamos hacer que los próximos eventos tengan eso. NO los actuales y pasados»). Era
+#: 661 creyendo que el #660 era el último procesado, y el #661 (CH) ya se había avisado a las 00:56 AM del 18/11, sin
+#: imagen: es de los «pasados». Sin efecto visible (no tuvo batacazo), pero una corrección de su llave le habría puesto el 🔥
+NOCHE_DESDE = 662
 
 
 def _norm(s):

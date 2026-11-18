@@ -5677,6 +5677,23 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   .app .cab.una .marca small.lg{display:block}
   .app .cab.una .marca{gap:10px}
 }
+/* 📏 LA GUARDA DE LA CABECERA (arriba.jsx, 18/11/2026; Dlx: «make sure the cabecera is always like the second image»): la
+   cabecera mide si las palabras del menú entran en su columna y, si no, prueba en orden (`PASOS_CAB`): `sin-regalo` (el 🎁,
+   que está en tu menú y en el ☰), `junto` (apenas menos aire y la letra medio punto más chica), `sin-titulo` (queda el logo)
+   y, último, `sin-menu` (el ☰, con el título de vuelta, como de 900 a 1023). Con el chip de Dlx (nivel + Premium) le faltaban
+   37–74 px de 1200 a 1440. Es para lo que cambia el ancho sin cambiar la ventana: tu chip, un número nuevo en Publicaciones */
+@media (min-width: 1024px){
+  .app .cab.una.sin-regalo .rf-b{display:none}
+  .app .cab.una.junto nav.menu{gap:8px;font-size:calc(clamp(11px,calc(.45vw + 6.5px),13px) - .5px)}
+}
+@media (min-width: 900px){
+  .app .cab.una.sin-titulo .marca small.lg{display:none}
+  .app .cab.una.sin-titulo .marca{gap:0}
+  .app .cab.una.sin-menu .menu{display:none}
+  .app .cab.una.sin-menu .hamb{display:inline-flex}
+  .app .cab.una.sin-menu .marca small.lg{display:block}
+  .app .cab.una.sin-menu .marca{gap:10px}
+}
 /* ⚠️ `nav.menu`: la regla vieja (`.app .cab nav.menu`) gana a `.menu` y subía la letra a 14 px en pantallas grandes, donde
    el ancho del contenido no crece: sin cuenta, a 1600 px quedaban 3 px entre el menú y la marca. Tope 13 px */
 @media (min-width: 1024px){
@@ -6769,17 +6786,10 @@ button.nvp-caja small{color:#F5C542}
 .sp-prem-chip-w{display:inline-flex;align-items:center}
 .app .sp-prem-chip{display:inline-flex;align-items:center;gap:5px;padding:1px 6px;border:1px solid #F5C542;border-radius:3px;color:#F5C542;text-decoration:none;white-space:nowrap}
 
-/* 🛠️ MODS (16/11/2026, mods.jsx): el botón de la cabecera, su menú y la franja. Magenta: es lo que no es de todos */
-.mods-envol{position:relative;display:inline-flex}
-.app .mods-b{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 10px;border:1.6px solid #E41373;border-radius:3px;background:transparent;color:#F6F6F6;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;cursor:pointer}
-.app .mods-b:hover{background:rgba(228,19,115,.16)}
-.app .mods-b.on{background:#E41373;color:#fff}
-.app .mods-b i{font-style:normal;min-width:18px;height:18px;padding:0 4px;display:inline-grid;place-items:center;background:#030304;color:#fff;border-radius:2px;font-size:13px}
-.app .mods-b:focus-visible,.app .mods-sw:focus-visible,.app .mods-ir:focus-visible,.app .mods-franja button:focus-visible{outline:2px solid #29B298;outline-offset:2px}
-.mods-pop{position:absolute;right:0;top:calc(100% + 10px);z-index:60;width:min(360px,calc(100vw - 32px));padding:14px;background:#0B0B0D;color:#F6F6F6;border:1.6px solid #F6F6F6;border-radius:3px;box-shadow:6px 6px 0 #E41373;text-align:left}
-.mods-t{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 10px;padding-top:8px;border-top:4px solid #E41373}
-.mods-t b{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;letter-spacing:0.02em}
-.mods-t span{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.06em;color:#A5A5A0;text-transform:uppercase}
+/* 🛠️ MODS (16/11/2026, mods.jsx): los interruptores de la ventana «Tus paneles» y la franja. Magenta: es lo que no es de
+   todos. ⚠️ SIN EL BOTÓN DE LA CABECERA desde el 18/11/2026 (Dlx: «remove the mods menu from the top»): ocupaba los ~70 px
+   que le faltaban al menú y la marca quedaba pegada («LIGA GLOBAL · T1INICIO»). Vive en el menú de tu cara */
+.app .mods-sw:focus-visible,.app .mods-ir:focus-visible,.app .mods-franja button:focus-visible{outline:2px solid #29B298;outline-offset:2px}
 .app .mods-sw,.app .mods-ir{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:56px;margin:0 0 8px;padding:10px 12px;border:1.6px solid #2A2A2E;border-radius:3px;background:#141417;color:#F6F6F6;font:inherit;text-align:left;text-decoration:none;cursor:pointer}
 @media (hover: hover) and (pointer: fine){.app .mods-sw:hover,.app .mods-ir:hover{border-color:#F6F6F6}}
 .mods-sw b,.mods-ir b{display:block;font:800 15px/1.25 Archivo,sans-serif}
@@ -6795,8 +6805,7 @@ button.nvp-caja small{color:#F5C542}
 .mods-franja b{margin-right:10px;letter-spacing:0.1em}
 .app .mods-franja button{min-height:36px;padding:0 14px;border:1.6px solid #fff;border-radius:3px;background:#030304;color:#fff;font:inherit;cursor:pointer}
 @media (prefers-reduced-motion: reduce){.mods-sw i::after{transition:none}}
-@media (max-width: 899.98px){.app .mods-b{height:36px;padding:0 7px;font-size:13px}.mods-franja{padding-left:16px;padding-right:16px}}
-@media (max-width: 559.98px){.mods-pop{position:fixed;left:16px;right:16px;top:64px;width:auto}}
+@media (max-width: 899.98px){.mods-franja{padding-left:16px;padding-right:16px}}
 
 /* ── 💬 LOS COMENTARIOS FLOTANDO (flotantes.jsx, 17/11/2026; prefijo `cfl-`: `.cf` y `.cf-q` son del «¿Cómo funciona?»): entran desde abajo y empujan a los de arriba, como en un vivo.
    Cada uno es una burbuja de alto fijo (nombre + una línea de texto) puesta con `--pos` (0 = la más nueva, abajo) y
@@ -6853,9 +6862,6 @@ button.nvp-caja small{color:#F5C542}
 .fh-chips i{font-style:normal;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;background:#1f1f24;color:#E8E8E3}
 .fh-chips .fh-rg{background:#29B298;color:#030304;font-weight:800}
 .fh-chips .fh-rg.sin{background:#1f1f24;color:#B9B9B4}
-/* 📱 en el celular el botón no entra: partía la cabecera en dos renglones (de 60 a 102 px de alto, medido a 390, 360 y
-   320). Ahí MODS vive en «Tus paneles» del menú de tu cara, que abre la ventana con todos los lugares (17/11/2026) */
-@media (max-width: 539.98px){.app .cab.una .mods-envol{display:none}}
 /* 🗺️ la ventana de «Tus paneles»: un bloque por lugar, con su ícono, su «Ir», y los mismos interruptores y atajos del
    menú de la cabecera. Es un `pn-pop` como los del panel: al centro en la compu, hoja desde abajo en el celular */
 dialog.pn-pop.mods-lug{--pc:#E41373}

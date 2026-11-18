@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.61",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T13:50:00-05:00",
+        "titulo": "La cabecera, siempre en su lugar",
+        "items": [
+            "**La cabecera siempre con su aire**: el menú ya no se pisa con el logo ni con los botones, en ningún ancho de pantalla. Si no entra todo, se acomoda sola: primero se va el 🎁 (está en tu menú), después el menú se junta apenas, después el título y, en pantallas chicas, el ☰."
+        ]
+    },
+    {
         "version": "6.60",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T04:18:00-05:00",

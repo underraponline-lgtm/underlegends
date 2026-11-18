@@ -7,7 +7,6 @@ import { Alguien, Algunos, Anotados, Cara, Carta, Chevron, Compartir, Ico, Poste
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 import { YoMenu } from './yomenu.jsx';
-import { BotonMods } from './mods.jsx';
 import { ERR_LIBRE, libreAccion, pedirLibres, useLibres } from './libres.js';
 import { useAplausos } from './aplausos.js';
 import { delHilo, useComentarios } from './comentarios.jsx';
@@ -477,6 +476,9 @@ function BarraBuscar({ liga, onCerrar }) {
   );
 }
 
+/** 📏 Lo que la cabecera prueba, en orden, hasta que el menú entre sin pisar nada (ver `Cabecera`). El último siempre entra. */
+const PASOS_CAB = [[], ['sin-regalo'], ['sin-regalo', 'junto'], ['sin-titulo'], ['sin-titulo', 'sin-regalo'], ['sin-titulo', 'sin-regalo', 'junto'], ['sin-menu']];
+
 export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
   const yo = liga.yo;
   const [busca, setBusca] = useState(false);
@@ -504,11 +506,54 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
     window.addEventListener('keydown', tecla);
     return () => window.removeEventListener('keydown', tecla);
   }, []);
+  // 📏 EL MENÚ NUNCA PISA LA MARCA NI LOS BOTONES (Dlx, 18/11/2026: «make sure the cabecera is always like the second
+  // image»). Va centrado en una columna que puede quedar más angosta que él, y entonces se desbordaba para los dos lados:
+  // «LIGA GLOBAL · T1INICIO» y Tienda pegada a la lupa, a 1607 px en la Tienda (con MODS y tu chip con nivel y Premium). Se
+  // MIDE, no se calcula (cambian el chip, los números del menú, las fuentes): si sus palabras no entran en su columna, se
+  // prueba, en orden, hasta que entren (`PASOS`): sin el 🎁 (está en tu menú y en el ☰, y debajo de 1280 ya no iba), además
+  // el menú apenas más junto, sin el título (queda el logo, como de 900 a 1199) y, último, el ☰. Con el chip de Dlx le
+  // faltaban 37–74 px de 1200 a 1440; juntar solo lo dejaba apretado («INICIO RANKING» pegados, medido a 1280)
+  const cabRef = useRef(null);
+  useEffect(() => {
+    const h = cabRef.current;
+    if (!h || typeof ResizeObserver === 'undefined') return undefined;
+    const pisa = () => {
+      const nav = h.querySelector('nav.menu');
+      if (!nav || !nav.getClientRects().length || getComputedStyle(nav).display === 'none') return false;
+      const items = [...nav.children].filter((e) => e.getClientRects().length);
+      if (!items.length) return false;
+      const n = nav.getBoundingClientRect();
+      const izq = Math.min(...items.map((e) => e.getBoundingClientRect().left));
+      const der = Math.max(...items.map((e) => e.getBoundingClientRect().right));
+      return izq < n.left - 1 || der > n.right + 1;
+    };
+    let cuadro = 0;
+    const medir = () => {
+      cancelAnimationFrame(cuadro);
+      cuadro = requestAnimationFrame(() => {
+        const todas = ['sin-regalo', 'junto', 'sin-titulo', 'sin-menu'];
+        for (const paso of PASOS_CAB) {
+          h.classList.remove(...todas);
+          h.classList.add(...paso);
+          if (!pisa()) break;
+        }
+      });
+    };
+    const ro = new ResizeObserver(medir);
+    ro.observe(h);
+    for (const s of ['nav.menu', '.cab-der']) { const e = h.querySelector(s); if (e) ro.observe(e); }
+    // un número nuevo en Publicaciones, tu nivel o el Premium que llegan después: cambian el ancho sin cambiar la ventana
+    const mo = new MutationObserver(medir);
+    mo.observe(h, { childList: true, subtree: true, characterData: true });
+    medir();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir);
+    return () => { ro.disconnect(); mo.disconnect(); cancelAnimationFrame(cuadro); };
+  }, []);
   return (
     // 🅰 UNA FILA (13/11/2026, la A de la maqueta; Dlx: «la A, pero asegúrate de que se vea bien en todas las pantallas»):
     // marca, menú y lo tuyo en una sola línea en la compu (de 131 a ~62 px), y en el celular una línea con botones
     // livianos. El título es LIGA GLOBAL · T1; el buscador, una lupa que abre el mismo buscador. Ver `.cab.una` en vivo.css
-    <header className="cab negra una">
+    <header className="cab negra una" ref={cabRef}>
       <Marca liga={liga} />
       <MenuArriba pagina={pagina} nuevas={pubNuevas(liga, pagina)} />
       <div className="cab-der">
@@ -517,8 +562,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
         <PreguntaCab pagina={pagina} />
         <button className={'btn-ico lupa-b' + (busca ? ' on' : '')} type="button" aria-label={busca ? 'Cerrar el buscador' : 'Buscar (Ctrl K)'} aria-expanded={busca}
           title="Buscar · Ctrl K" onClick={() => setBusca((v) => !v)}><Ico n="buscar" t={20} /></button>
-        {/* 🛠️ MODS: sólo para quien puede, y sólo donde le sirve (mods.js) */}
-        <BotonMods liga={liga} dc={dc} pagina={pagina} sv={sv} />
+        {/* 🛠️ MODS ya no va acá (18/11/2026): vive en «Tus paneles» del menú de tu cara (yomenu.jsx) */}
         {/* 🎁 INVITA Y GANA (17/11/2026, Dlx: «una nueva opción con el ícono de regalo… al costado de notificaciones»). Desde
             1280 px: más angosta no entra sin pisar el menú (medido); ahí está en tu menú y en el ☰ */}
         <a className={'btn-ico rf-b' + (pagina === 'invitar' ? ' on' : '')} href="#/invitar" aria-label="Invita y gana" title="Invita y gana"><Ico n="regalo" t={20} /></a>
