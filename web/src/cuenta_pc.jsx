@@ -43,8 +43,9 @@ const NOMBRE_PARTE = { hora: 'Hora y zona', avisos: 'Avisos de eventos', accesib
 // contra Instalar (850): 931 contra 850; en Ayuda, Algo está mal (498) y la Guía contra las otras tres: 707 contra 587
 const COLUMNAS = { app: [['hora', 'avisos', 'accesibilidad'], ['instalar']], ayuda: [['algo-mal', 'guia'], ['introduccion', 'novedades', 'legal']] };
 // las de una parte con varias cajas que van en dos columnas (`cols` de `Parte`); Tu estilo, con tres cajas de alto
-// parecido, va de a tres (`cpc-tres`)
-const EN_DOS = ['perfil', 'privacidad', 'siguiendo'];
+// parecido, va de a tres (`cpc-tres`). Siguiendo NO: su lista de caras en media columna medía el doble y al lado
+// quedaba 520×568 vacío debajo de los organizadores (medido con la 6.56); apiladas, la lista va de a cinco
+const EN_DOS = ['perfil', 'privacidad'];
 // 🔗 los links de antes: a qué página van (y bajan hasta su caja)
 const DE_ANTES = { cuenta: 'resumen', fondo: 'fondos', apariencia: 'temas', hora: 'app', accesibilidad: 'app', avisos: 'app', instalar: 'app',
   'algo-mal': 'ayuda', introduccion: 'ayuda', guia: 'ayuda', novedades: 'ayuda', legal: 'ayuda' };
