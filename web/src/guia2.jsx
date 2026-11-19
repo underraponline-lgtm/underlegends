@@ -173,12 +173,67 @@ function Regla({ rangos }) {
   );
 }
 
+// ✂️ EN EL CELULAR, LA PRIMERA FRASE Y «MÁS» (19/11/2026, el pulido de la Guía: Dlx, «Pulir la de hoy»). «La semana»
+// medía 2.751 px a 390, cada tarjeta con su texto entero. En la compu se lee todo (el CSS esconde «Más»); el buscador la
+// abre sola: `llevar()` le manda `gx-abrir` al elemento que encontró
+function Abrible({ id, cls, texto, children, pie }) {
+  const [ab, setAb] = useState(false);
+  const yo = useRef(null);
+  useEffect(() => {
+    const el = yo.current;
+    if (!el) return undefined;
+    const f = () => setAb(true);
+    el.addEventListener('gx-abrir', f);
+    return () => el.removeEventListener('gx-abrir', f);
+  }, []);
+  // la primera frase («. » y no un punto de miles); si lo que sigue es corto, va entero
+  const j = texto.search(/\.\s/);
+  const a = j > 0 && texto.length - j > 40 ? texto.slice(0, j + 1) : texto;
+  const resto = texto.slice(a.length);
+  return (
+    <div ref={yo} id={id} className={cls + ' gx-abr' + (ab ? ' abierto' : '')}>
+      {children}
+      <p className="gx-cor">{a}{resto ? <><span className="gx-resto">{resto}</span>{' '}
+        <button type="button" className="gx-mas" onClick={() => setAb(true)} aria-expanded={ab}>Más</button></> : null}</p>
+      {pie}
+    </div>
+  );
+}
+
+// 🎯 MOST WANTED, ENCUESTAS Y TIENDA, EN TARJETAS (19/11/2026, el pulido): eran cinco párrafos sin nada que mirar. Cada
+// una con su cifra y adónde ir. ⚠️ Las cifras son las que dice su texto en MW_TIENDA (guia.jsx): si cambia una, la otra;
+// la de Most Wanted sale del payload (`guia.mw`, los buscados de esta semana)
+const MW_CIFRA = {
+  'Most Wanted': [null, 'buscados esta semana', '#/ranking/mw', 'Ver los buscados'],
+  'El Elegido': ['3', 'votos y entra al próximo', '#/publicaciones', 'Votar'],
+  'El ×2 votado': ['×2', 'como mínimo, el más votado', '#/publicaciones', 'Votar'],
+  'Puntos de Tienda': ['5.000', 'para arrancar', '#/tienda', 'Ir a la Tienda'],
+  'Precio por cabeza': ['1.º', 'que le gane, se los lleva', '#/tienda', 'Poner un precio'],
+};
+function MwTienda({ mw }) {
+  return (
+    <div className="gx-mwc">
+      {MW_TIENDA.map(([t, d], i) => {
+        const c = MW_CIFRA[t] || [];
+        const fig = t === 'Most Wanted' ? (mw ? num(mw) : null) : c[0];
+        return (
+          <Abrible key={t} id={'gx-mw-' + i} cls="gx-mw" texto={d.replace('{MW}', mw ? ' (' + mw + ')' : '')}
+            pie={c[2] ? <a className="gx-mw-a" href={c[2]}>{c[3]} <Ico n="flecha" t={14} /></a> : null}>
+            {fig ? <span className="gx-mw-f">{fig}<small>{c[1]}</small></span> : null}
+            <b className="gx-mw-t">{t}</b>
+          </Abrible>
+        );
+      })}
+    </div>
+  );
+}
+
 // 📅 LA SEMANA EN CARRILES: lo que arranca el lunes, lo que dura toda la semana, lo que pasa al jugar y lo que se cobra al
 // cerrar; abajo, lo de toda la temporada
 function Semana() {
   const item = ([t, d], i) => {
     const c = CIFRA[t];
-    return <div key={t} id={'gx-sem-' + i} className="gx-it">{c ? <span className="x">{c[0]}</span> : null}<b>{t}</b><p>{d}</p></div>;
+    return <Abrible key={t} id={'gx-sem-' + i} cls="gx-it" texto={d}>{c ? <span className="x">{c[0]}</span> : null}<b>{t}</b></Abrible>;
   };
   const de = (k) => SEMANA.map((x, i) => [x, i]).filter(([x]) => (CARRIL[x[0]] || 'tem') === k);
   return (
@@ -341,6 +396,8 @@ export function Guia({ liga, dc }) {
       const r = raiz();
       const el = r && dst && dst.id ? r.getElementById(dst.id) : null;
       if (el && el.tagName === 'DETAILS') el.open = true;
+      // lo que en el celular va recortado a su primera frase, abierto (ver `Abrible`)
+      if (el) el.dispatchEvent(new Event('gx-abrir'));
       bajarA(el || (r && r.getElementById('gx-papel')));
       if (el) {
         el.classList.remove('gx-flash');
@@ -415,7 +472,7 @@ export function Guia({ liga, dc }) {
           <div className="gx-p">
             <div className="gx-pista" id="gx-aprende"><Suspense fallback={null}><Capitulos /></Suspense></div>
             <h3 className="gx-sub" id="gx-mw">Most Wanted, encuestas y Tienda</h3>
-            <dl className="gx-dl2">{MW_TIENDA.map(([t, d], i) => <div key={t} id={'gx-mw-' + i}><dt>{t}</dt><dd>{d.replace('{MW}', G.mw ? ' (' + G.mw + ')' : '')}</dd></div>)}</dl>
+            <MwTienda mw={G.mw} />
           </div>
         ) : null}
 
