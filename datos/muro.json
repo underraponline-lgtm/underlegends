@@ -2897,14 +2897,6 @@
 "tipo": "tarjeta",
 "t": "2026-10-13T00:26:49Z",
 "quien": [
-"Dynoco"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T00:26:49Z",
-"quien": [
 "Prosu"
 ],
 "carta": "temporada"
@@ -6277,6 +6269,16 @@
 "MTZ"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "svmeta",
+"t": "2026-11-19T23:17:52Z",
+"sv": "CH",
+"sem": "2026-11-16",
+"meta": [
+35,
+26
+]
 }
 ],
 "noche_antes": {
@@ -8088,7 +8090,9 @@
 },
 "meta": [
 "2026-11-16",
-[]
+[
+"CH"
+]
 ],
 "top10": {
 "temporada": [

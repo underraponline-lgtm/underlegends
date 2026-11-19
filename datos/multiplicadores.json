@@ -1510,21 +1510,21 @@
     "nuevos": {
      "FFA": 1,
      "LKR": 8,
-     "CH": 7,
+     "CH": 12,
      "DDS": 2
     },
     "gente": {
      "DDS": 8,
      "LKR": 11,
      "FFA": 31,
-     "CH": 22
+     "CH": 35
     },
     "gana": "LKR"
    },
    "meta_va": {
     "ACAD": 0,
     "CEU": 0,
-    "CH": 22,
+    "CH": 35,
     "DDF": 0,
     "DDS": 8,
     "DRA": 0,
