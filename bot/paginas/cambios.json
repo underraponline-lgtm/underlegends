@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.77",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T03:02:00-05:00",
+        "titulo": "Socios, con la guerra arriba y un cartel por servidor",
+        "items": [
+            "**Socios, rehecha**: arriba, **la guerra de esta semana** con el multiplicador de cada servidor contra el de la semana pasada, y la tabla de servidores.",
+            "**Un cartel por servidor**, con la carta de Servidor de su mejor rapero, sus números y su invitación, por tier.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.76",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T01:34:00-05:00",

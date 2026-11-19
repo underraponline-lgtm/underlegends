@@ -12,6 +12,16 @@
 // que hace el bot es lo medido (lee anuncios y llaves, crea la invitación, y desde el 07/10/2026 publica el aviso de cada
 // evento en el chat de los servidores que tienen prendido el bot en vivo). Lo que pide para sumarse: 300 miembros, se
 // recomiendan 500 (Dlx, 18/10/2026), y escribirle a @itsdlx; lo demás se habla con él. Si algo cambia, se cambia acá.
+//
+// 🏁 6.77, CON LA ESTRUCTURA DE LA LLAVE (Dlx, 19/11/2026, «Haz todos» y, a la maqueta
+// https://claude.ai/artifact/UZ1dJSxJT5vmZynCXfHm6Y, «A + la cartelera de B»): arriba, en la escena, la franja de
+// cuatro números, LA GUERRA DE ESTA SEMANA (los pares, cada uno con su multiplicador contra el de la semana pasada, y
+// quién ganó la anterior) y una columna con la tabla de servidores en barras —cada barra lleva a su cartel, como el muro
+// de logos de antes— y «Unirme a los Tier 1». Abajo, en el papel, LA CARTELERA: un cartel por servidor con la carta de
+// Servidor de su mejor (sin carta, su logo en su color), en pestañas por tier. Las piezas de la escena son las `rka-`
+// del Ranking (ranking_a.jsx); lo de Socios, con `sk-`. Lo de más abajo (lo que publican, sumar tu servidor, la Liga en
+// números) no cambió.
+import { useState } from 'react';
 import { limpio, mult, num, siglaDe } from './liga.js';
 import { Algunos, Carta, Compartir, Ico, Sec, enlace } from './piezas.jsx';
 import { LaLiga } from './medio.jsx';
@@ -22,7 +32,8 @@ import CSS_VIEJO from './css/socios.css?inline';
 import CSS_PAGINA from './css/socios2.css?inline';
 import { usarCss } from './css.js';
 import FondoVideo from './fondovideo.jsx';
-import { UnirseTier1 } from './unirse.jsx';
+import { UnirseTier1, tier1De } from './unirse.jsx';
+import { Franja } from './ranking_a.jsx';
 
 // las cajas de «lo que gana tu servidor», su ejemplo y las redes de Under Legends son las de siempre, con su CSS
 usarCss('socios', CSS_VIEJO);
@@ -43,89 +54,176 @@ const irA = (id) => {
 // va en su tarjeta ──
 const TierChip = ({ s }) => (s.tier ? <em className={'sk-tier t' + s.tier}>TIER {s.tier}</em> : null);
 const sumaTx = (min) => 'Suma a la Temporada' + (min ? ' (eventos de ' + min + ' o más)' : '');
-function Cuenta({ s, chico }) {
-  if (!s.cu) return null;
-  return (
-    <ul className={'sk-cu' + (chico ? ' chico' : '')} aria-label={'Qué cuenta de los eventos de ' + (s.nombre || s.sv)}>
-      <li className={s.cu.t ? 'si' : 'no'}><Ico n={s.cu.t ? 'ok' : 'cerrar'} t={14} />{s.cu.t ? sumaTx(s.cu.min) : 'No suma a la Temporada'}</li>
-      <li className={s.cu.c ? 'si' : 'no'}><Ico n={s.cu.c ? 'ok' : 'cerrar'} t={14} />{s.cu.c ? 'Cuenta para el Competitivo' : 'No cuenta para el Competitivo'}</li>
-    </ul>
-  );
+const lista = (xs) => (xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : xs[0] || '');
+// los números del cartel, cortos: en 170 px de ancho «19.194.812» no entra, y «932,8 mil» tampoco (medido: se cortaba
+// en «932,8 m»). Con «k» y «M» pegados entran los catorce
+const corto = (n) => {
+  const x = Number(n) || 0;
+  if (x >= 1e6) return (x / 1e6).toFixed(1).replace('.', ',').replace(/,0$/, '') + 'M';
+  if (x >= 1e5) return Math.round(x / 1e3) + 'k';
+  if (x >= 1e4) return (x / 1e3).toFixed(1).replace('.', ',').replace(/,0$/, '') + 'k';
+  return num(x);
+};
+// el multiplicador de la semana pasada: la entrada del historial que terminó cuando empezó ésta (`mult.hist`, de
+// bot/multiplicadores.py: [inicio, fin, {sv: ×}]). Sin historial no hay contra qué comparar
+function antDe(mm) {
+  const h = (mm.hist || []).filter((x) => x && x[1] === mm.ini);
+  return h.length ? h[h.length - 1][2] || {} : null;
 }
-function Tiers({ liga, svs }) {
-  const min = (svs.find((s) => s.cu && s.cu.min) || { cu: {} }).cu.min;
-  const QUE = {
-    1: ['Suma a la Temporada y al Competitivo', 'Sus ligas cuentan como duelos', 'Su carta de Servidor'],
-    2: [sumaTx(min), 'Su carta de Servidor', 'No cuenta para el Competitivo'],
-    3: [sumaTx(min), 'No cuenta para el Competitivo'],
+// ×2 y, al lado, contra la semana pasada
+function Mx({ x, ant, sv }) {
+  const v = x || 1;
+  if (!ant) return <span className="sk-mx">{mult(v)}</span>;
+  const a = ant[sv];
+  const cl = a == null ? 'eq' : v > a ? 'up' : v < a ? 'dn' : 'eq';
+  return <span className={'sk-mx ' + cl}>{mult(v)}<small>{a == null ? 'nuevo' : v > a ? '▲ desde ' + mult(a) : v < a ? '▼ desde ' + mult(a) : 'igual'}</small></span>;
+}
+const QUE_TIER = (min) => ({
+  1: ['Suma a la Temporada y al Competitivo', 'Sus ligas cuentan como duelos', 'Su carta de Servidor'],
+  2: [sumaTx(min), 'Su carta de Servidor', 'No cuenta para el Competitivo'],
+  3: [sumaTx(min), 'No cuenta para el Competitivo'],
+});
+
+// ── ⚔️ LA GUERRA DE ESTA SEMANA: los pares (`mult.guerra.pares`), cada lado con su multiplicador, y quién ganó la pasada
+// con sus puntos por rapero (`mult.ant.guerra`: `gana` y `ppp`). Cada lado lleva a su cartel ──
+function Guerra({ liga, mm, ant, ir }) {
+  const pares = ((mm.guerra || {}).pares || []).filter((p) => p && liga.svs[p[0]] && liga.svs[p[1]]);
+  if (!pares.length) return null;
+  const G = (mm.ant || {}).guerra || {};
+  const gana = (G.gana || []).filter((sv) => liga.svs[sv]);
+  const d = mm.fin ? liga.dia(mm.fin) : '';
+  const lado = (sv, der) => {
+    const s = liga.svs[sv];
+    const img = <img alt="" src={liga.logo(sv)} />;
+    return (
+      <button type="button" className={'sk-gl' + (der ? ' d' : '')} onClick={() => ir(sv)} aria-label={'Ir a ' + (s.nombre || sv)}>
+        {der ? null : img}<span><b>{siglaDe(sv)}</b><Mx x={(mm.sv || {})[sv]} ant={ant} sv={sv} /></span>{der ? img : null}
+      </button>
+    );
   };
-  const por = [1, 2, 3].map((t) => [t, svs.filter((s) => s.tier === t)]).filter(([, l]) => l.length);
-  if (!por.length) return null;
   return (
-    <div className="sk-tiers">
-      <ul>
-        {por.map(([t, l]) => (
-          <li key={t}>
-            <TierChip s={{ tier: t }} />
-            <ul className="sk-tier-q">{QUE[t].map((q) => <li key={q}>{q}</li>)}</ul>
-            <p className="sk-tier-sv">{l.map((s) => (
-              <button type="button" key={s.sv} style={{ '--c': s.color || '#29B298' }} onClick={() => irA(idDe(s.sv))} aria-label={'Ir a ' + (s.nombre || s.sv)}>
-                <img alt="" src={liga.logo(s.sv)} />{siglaDe(s.sv)}</button>
-            ))}</p>
-            {/* 🤝 unirte a los Tier 1 con un toque, eligiendo a cuáles (13/11/2026, ver unirse.jsx) */}
-            {t === 1 ? <UnirseTier1 liga={liga} /> : null}
-          </li>
-        ))}
-      </ul>
-      <p className="sk-tiers-p">Y todos, sea cual sea su tier: sus eventos en el calendario, la campana y Publicaciones, su página y sus ligas.</p>
+    <div className="rka-caja sk-guerra">
+      <h2 className="rka-h">La guerra de esta semana<small>{pares.length} {pares.length === 1 ? 'par' : 'pares'}{d ? ' · cierra ' + (/^(hoy|mañana)/.test(d) ? d : 'el ' + d) : ''}</small></h2>
+      <p className="sk-g-baj">Gana el que más puntos hace por rapero en sus eventos, y la semana siguiente lleva ×1,5.</p>
+      <div className="sk-g">
+        {pares.map(([a, b]) => <div className="sk-gp" key={a + b}>{lado(a)}<span className="sk-vs" aria-hidden="true">VS</span>{lado(b, true)}</div>)}
+      </div>
+      {gana.length ? (
+        <>
+          <p className="rka-pie sk-g-pie">La semana pasada {gana.length === 1 ? 'ganó' : 'ganaron'} <b>{gana.length}</b>, con sus puntos por rapero:</p>
+          <div className="sk-g-gan">
+            {gana.map((sv) => <span key={sv}><img alt="" src={liga.logo(sv)} />{siglaDe(sv)}<small>{num((G.ppp || {})[sv])}</small></span>)}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
 
-// ── un servidor que ya jugó la temporada: su número, su gente, su mejor con la carta de Servidor y lo que sigue ──
-function Socio({ liga, s, n }) {
-  const mm = liga.d.mult || {};
-  const x = (mm.sv || {})[s.sv];
+// ── 📊 la tabla de servidores, en barras por puntos de la temporada: cada barra lleva a su cartel (hacía eso el muro) ──
+function TablaSv({ liga, activos, ir }) {
+  if (!activos.length) return null;
+  const max = Math.max(1, ...activos.map((s) => s.pts || 0));
+  return (
+    <div className="rka-caja">
+      <h2 className="rka-h">La tabla de servidores<small>por puntos de la {liga.temp}</small></h2>
+      <ol className="sk-barras">
+        {activos.map((s, i) => (
+          <li key={s.sv}>
+            <button type="button" className="sk-bar" style={{ '--c': s.color || '#29B298' }} onClick={() => ir(s.sv)} aria-label={(i + 1) + '.º, ' + (s.nombre || s.sv) + ': ' + num(s.pts) + ' puntos'}>
+              <span className="p">{i + 1}</span><img alt="" src={liga.logo(s.sv)} />
+              <span className="tr"><i style={{ width: Math.max(3, Math.round(100 * (s.pts || 0) / max)) + '%' }} /><b>{siglaDe(s.sv)}</b></span>
+              <span className="n">{num(s.pts)}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+// ── 🎟️ UN CARTEL POR SERVIDOR (la cartelera de la B): la carta de Servidor de su mejor —lo que gana un servidor al
+// sumarse, CLAUDE.md— y, sin carta todavía, su logo en su color. Debajo, sus números cortos, qué cuenta de sus eventos,
+// el próximo o el último y su invitación ──
+function Cartel({ liga, s, x }) {
+  const mejor = liga.oficiales().find((f) => f.sv === s.sv);
+  const conCarta = mejor && (mejor.c || []).includes('servidor');
   const prox = liga.luego().filter((e) => e.sv === s.sv)[0];
   // 🔑 la última por FECHA, no por número (18/11/2026): las de los registros en vivo llevan 9 cifras y quedaban siempre
-  // primeras —LKR mostraba la del 16/11, sin campeón, y no la #659 del 17/11, que ganó Puppy—. Y con `nombreLlave()`,
-  // que no deja a la vista el «(sin titulo)» con que se guardan algunas
-  const ll = liga.llavesPorFecha().find((l) => l.sv === s.sv);
+  // primeras. Y con `nombreLlave()`, que no deja a la vista el «(sin titulo)» con que se guardan algunas
+  const ll = prox ? null : liga.llavesPorFecha().find((l) => l.sv === s.sv);
   const camp = ll ? liga.campeon(ll) : [];
-  // su mejor de la temporada, con la carta de Servidor: es lo que gana un servidor al sumarse (CLAUDE.md)
-  const mejor = liga.oficiales().find((f) => f.sv === s.sv);
+  const href = '#/sv/' + siglaDe(s.sv);
+  const nombre = s.nombre || s.sv;
+  const activo = !!(s.n || s.pts);
   return (
-    <article className="sk-soc" id={idDe(s.sv)} style={{ '--c': s.color || '#29B298' }}>
-      <span className="sk-n" aria-hidden="true">{String(n).padStart(2, '0')}</span>
-      <header className="sk-soc-cab">
-        <img className="sk-logo" alt="" src={liga.logo(s.sv, true)} />
-        <div><h3><span className="sk-oculto">{n}.º por puntos: </span>{s.nombre || s.sv}</h3><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}<TierChip s={s} /></small></div>
-      </header>
-      <dl className="sk-num">
-        <div><dt>RAPEROS</dt><dd>{num(s.n || 0)}</dd></div>
-        <div><dt>PUNTOS</dt><dd>{num(s.pts || 0)}</dd></div>
-        <div><dt>EN SU DISCORD</dt><dd>{s.miembros ? num(s.miembros) : '—'}</dd></div>
-        <div><dt>ESTA SEMANA</dt><dd className={x > 1 ? 'sube' : ''}>{x ? mult(x) : '×1'}</dd></div>
+    <li className="sk-ct" id={idDe(s.sv)} style={{ '--c': s.color || '#29B298' }}>
+      <a className="sk-af" href={href} aria-label={'La página de ' + nombre}>
+        {conCarta ? <span className="sk-ct-cw"><Carta liga={liga} k={mejor.k} cual="servidor" cls="sk-ct-carta" abre={false} /></span>
+          : <img className="sk-ct-lg" alt="" src={liga.logo(s.sv, true)} />}
+        <span className="sk-ct-t"><TierChip s={s} /></span>
+        <span className="sk-ct-x">{mult(x || 1)}</span>
+      </a>
+      <a className="sk-ct-n" href={href}>{nombre}</a>
+      <small className="sk-ct-s">{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}{mejor ? ' · su mejor, ' + limpio(mejor.n) : activo ? '' : ' · esperando su primer evento'}</small>
+      <dl className="sk-ct-num">
+        <div><dt>Raperos</dt><dd>{corto(s.n)}</dd></div>
+        <div><dt>Puntos</dt><dd>{corto(s.pts)}</dd></div>
+        <div><dt>Discord</dt><dd>{s.miembros ? corto(s.miembros) : '—'}</dd></div>
       </dl>
-      <Cuenta s={s} />
-      <div className="sk-medio">
-        {mejor && (mejor.c || []).includes('servidor') ? (
-          <a className="sk-carta" href={'#/r/' + encodeURIComponent(mejor.k)} aria-label={'El mejor de ' + siglaDe(s.sv) + ': ' + limpio(mejor.n)}>
-            <Carta liga={liga} k={mejor.k} cual="servidor" cls="sk-carta-c" abre={false} />
-          </a>
-        ) : null}
-        <ul className="sk-datos">
-          {mejor ? <li><b>SU MEJOR</b>{limpio(mejor.n)} · #{mejor.pos} de la Liga</li> : null}
-          {/* ⏰ un sin_hora dice cuándo se anunció, no una hora de arranque que no tiene (revisión del 18/11/2026) */}
-          {prox ? <li><b>EL PRÓXIMO</b>{limpio(prox.nombre)} · {prox.sin_hora ? 'anunciado ' + liga.cuando(prox.cuando) : liga.dia(liga.cuandoDe(prox))}</li>
-            : ll ? <li><b>EL ÚLTIMO</b>{liga.nombreLlave(ll)}{camp.length ? <> · ganó <Algunos liga={liga} nombres={camp} /></> : ''}</li> : null}
-        </ul>
-      </div>
-      <div className="sk-acc">
-        <a className="btn negro chico" href={'#/sv/' + siglaDe(s.sv)}>Ver su página</a>
-        {s.invita ? <a className="btn borde2 chico" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar ↗</a> : null}
-      </div>
-    </article>
+      {s.cu ? (
+        <p className="sk-ct-cu" aria-label={'Qué cuenta de sus eventos: ' + (s.cu.t ? sumaTx(s.cu.min) : 'No suma a la Temporada') + '; ' + (s.cu.c ? 'cuenta para el Competitivo' : 'no cuenta para el Competitivo')}>
+          <span className={s.cu.t ? 'si' : 'no'}>Temporada{s.cu.t && s.cu.min ? ' · ' + s.cu.min + '+' : ''}</span>
+          <span className={s.cu.c ? 'si' : 'no'}>Competitivo</span>
+        </p>
+      ) : null}
+      {/* ⏰ un sin_hora dice cuándo se anunció, no una hora de arranque que no tiene (revisión del 18/11/2026) */}
+      {prox ? <p className="sk-ct-ev"><b>El próximo</b>{limpio(prox.nombre)} · {prox.sin_hora ? 'anunciado ' + liga.cuando(prox.cuando) : liga.dia(liga.cuandoDe(prox))}</p>
+        : ll ? <p className="sk-ct-ev"><b>El último</b>{liga.nombreLlave(ll)}{camp.length ? <> · ganó <Algunos liga={liga} nombres={camp} /></> : ''}</p> : null}
+      {s.invita ? <a className="sk-ct-ent" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar a su Discord ↗</a> : null}
+    </li>
+  );
+}
+
+// cuántas columnas en la compu: de 5 a 7, la que deja menos lugares vacíos en la última fila (con 14, dos de 7)
+function colsDe(n) {
+  let mejor = 7; let hueco = 99;
+  for (let c = 7; c >= 5; c -= 1) { const h = Math.ceil(n / c) * c - n; if (h < hueco) { hueco = h; mejor = c; } }
+  return mejor;
+}
+
+// ── la cartelera, en pestañas: Todos, uno por tier y los que esperan su primer evento. Arriba, qué cuenta cada tier ──
+function Cartelera({ liga, svs, esperan, tab, setTab }) {
+  const mm = (liga.d.mult || {}).sv || {};
+  const tiers = [1, 2, 3].filter((t) => svs.some((s) => s.tier === t));
+  const tabs = [['todos', 'Todos', svs.length], ...tiers.map((t) => ['t' + t, 'Tier ' + t, svs.filter((s) => s.tier === t).length])];
+  if (esperan.length) tabs.push(['esp', 'Esperando', esperan.length]);
+  const t = tabs.some((x) => x[0] === tab) ? tab : 'todos';
+  const xs = t === 'todos' ? svs : t === 'esp' ? esperan : svs.filter((s) => 't' + s.tier === t);
+  const min = (svs.find((s) => s.cu && s.cu.min) || { cu: {} }).cu.min;
+  const QUE = QUE_TIER(min);
+  const leg = t === 'todos' || t === 'esp' ? tiers : tiers.filter((n) => 't' + n === t);
+  return (
+    <>
+      {tabs.length > 1 ? (
+        <div className="rka-pes" role="tablist" aria-label="Qué servidores ver">
+          {tabs.map(([id, tx, n]) => (
+            <button key={id} type="button" role="tab" aria-selected={t === id} className={t === id ? 'on' : ''} onClick={() => setTab(id)}>{tx}<small>{n}</small></button>
+          ))}
+        </div>
+      ) : null}
+      {/* 🏅 qué cuenta cada tier (Dlx, 13/11/2026: «especificar qué TIER son cada socio y ver qué significa eso»). Lo de
+          cada servidor —que Dlx puede cambiar en el Dashboard— va en su cartel */}
+      {leg.length ? (
+        <dl className="sk-tleg">
+          {leg.map((n) => <div key={n}><dt><TierChip s={{ tier: n }} /></dt><dd>{QUE[n].join(' · ')}</dd></div>)}
+        </dl>
+      ) : null}
+      <ul className="sk-cart" style={{ '--cols': colsDe(xs.length) }}>
+        {xs.map((s) => <Cartel key={s.sv} liga={liga} s={s} x={mm[s.sv]} />)}
+      </ul>
+      <p className="sk-tleg-p">Y todos, sea cual sea su tier: sus eventos en el calendario, la campana y Publicaciones, su página y sus ligas.</p>
+    </>
   );
 }
 
@@ -186,75 +284,68 @@ export function Socios({ liga }) {
   // «0 de 0» no es un número: quien todavía no jugó la temporada no muestra ceros, lo dice en palabras
   const activos = svs.filter((s) => s.n || s.pts);
   const esperan = svs.filter((s) => !(s.n || s.pts));
-  const mm = (liga.d.mult || {}).sv || {};
+  const M = liga.d.mult || {};
+  const mm = M.sv || {};
+  const ant = antDe(M);
+  const [tab, setTab] = useState('todos');
+  // a un cartel: con «Todos» puesto, que el que se busca esté en la lista; y recién después de dibujarla, bajar
+  const ir = (sv) => {
+    setTab('todos');
+    requestAnimationFrame(() => requestAnimationFrame(() => irA(idDe(sv))));
+  };
+  // la franja: cuatro números con su porqué (las piezas de la llave, como el Ranking)
+  const porTier = [1, 2, 3].map((t) => [t, svs.filter((s) => s.tier === t).length]).filter(([, n]) => n);
+  const maxM = Math.max(1, ...svs.map((s) => mm[s.sv] || 1));
+  const conMax = svs.filter((s) => (mm[s.sv] || 1) === maxM).map((s) => siglaDe(s.sv));
+  const franja = [
+    { l: 'Servidores', v: svs.length, c: porTier.length ? lista(porTier.map(([t, n]) => n + ' en Tier ' + t)) : 'cada uno con sus eventos' },
+    // «sumados»: la misma persona en dos servidores cuenta dos veces (la Liga en números, abajo, cuenta personas)
+    { l: 'En sus Discord', v: num(enDiscord), em: 'miembros', c: 'sumados: la misma persona cuenta en cada uno' },
+    { l: 'Jugaron la ' + liga.temp, v: num(raperos), em: 'raperos', c: 'de todos los servidores' },
+    maxM > 1 ? { l: 'El multiplicador más alto', v: mult(maxM), em: conMax.length > 2 ? conMax.length + ' servidores' : lista(conMax), c: 'esta semana, sobre los puntos de sus eventos' } : null,
+  ].filter(Boolean);
+  const guerra = <Guerra liga={liga} mm={M} ant={ant} ir={ir} />;
+  const hayGuerra = ((M.guerra || {}).pares || []).some((p) => p && liga.svs[p[0]] && liga.svs[p[1]]);
+  const tabla = <TablaSv liga={liga} activos={activos} ir={ir} />;
+  // 🤝 unirte a los Tier 1 con un toque, eligiendo a cuáles (13/11/2026, ver unirse.jsx): sin la cañería, ni la caja
+  const t1 = tier1De(liga);
+  const unirme = t1.length && typeof window !== 'undefined' && typeof window.unirmeTier1 === 'function' ? (
+    <div className="rka-caja sk-unir">
+      <h2 className="rka-h">Unirme a los Tier 1<small>{t1.length} {t1.length === 1 ? 'servidor' : 'servidores'}</small></h2>
+      <p className="sk-unir-l">{t1.map((s) => <img key={s.sv} alt={siglaDe(s.sv)} title={s.nombre || s.sv} src={liga.logo(s.sv)} />)}</p>
+      <p className="sk-unir-p">Entras a los que elijas con un toque, con tu cuenta de Discord.</p>
+      <UnirseTier1 liga={liga} />
+    </div>
+  ) : null;
   return (
     <>
       {/* 🎬 «así se ve la Liga» (Dlx, 12/11/2026: «sí, las dos»): el montaje de los nuestros batallando detrás de la franja.
           Es lo que contesta el miedo de los dueños al «bot de raid»: gente real, todas las semanas */}
       <div className="escena sk-esc con-video" style={{ '--mo-c': '#29B298', '--mo-o': 0.85, '--mo-c2': '#E41373' }}>
         <FondoVideo liga={liga} />
-        <section className="sk-cab">
-          <div className="sk-cab-tx">
-            <span className="tag">SOCIOS · {liga.temp}</span>
-            <h1 className="hero-ev largo">Socios</h1>
-            <p className="hero-p">Los servidores que hacen la Liga: cada uno organiza sus eventos, y todos suman para la misma tabla. Esto pasa todas las semanas en sus servidores.</p>
-            <dl className="sk-tot">
-              <div><dt>SERVIDORES</dt><dd>{svs.length}</dd></div>
-              {/* «sumados»: la misma persona en dos servidores cuenta dos veces (la Liga en números, abajo, cuenta personas) */}
-              <div><dt>MIEMBROS SUMADOS</dt><dd>{num(enDiscord)}</dd></div>
-              <div><dt>JUGARON LA {liga.temp}</dt><dd>{num(raperos)}</dd></div>
-            </dl>
+        <section className="sk-cab rka">
+          <div className="sk-cabeza">
+            <div className="sk-cab-tx">
+              <span className="tag">SOCIOS · {liga.temp}</span>
+              <h1 className="hero-ev largo">Socios</h1>
+              <p className="hero-p">Los servidores que hacen la Liga: cada uno organiza sus eventos, y todos suman para la misma tabla. Esto pasa todas las semanas en sus servidores.</p>
+            </div>
             <div className="sk-acc-h">
               <button type="button" className="btn verde" onClick={() => irA('sk-sumar')}>Suma tu servidor</button>
               <Compartir cls="btn borde" url={enlace('#/socios')} texto="Los servidores de la Liga Global" />
             </div>
           </div>
-          {/* 🧱 el muro: cada logo lleva a su tarjeta, en el orden de la lista */}
-          <nav className="sk-muro" aria-label="Ir a un servidor">
-            <ol>{svs.map((s) => (
-              <li key={s.sv}><button type="button" style={{ '--c': s.color || '#29B298' }} onClick={() => irA(idDe(s.sv))} aria-label={'Ir a ' + (s.nombre || s.sv)}>
-                <img alt="" src={liga.logo(s.sv)} /><b>{siglaDe(s.sv)}</b></button></li>
-            ))}</ol>
-          </nav>
+          <Franja items={franja} />
+          {/* sin guerra esta semana, la tabla pasa a la izquierda y la columna queda para unirse */}
+          <div className={'rka-dos' + (hayGuerra || unirme ? '' : ' sk-solo')}>
+            <div className="rka-izq">{hayGuerra ? guerra : tabla}</div>
+            {hayGuerra || unirme ? <div className="rka-rail">{hayGuerra ? tabla : null}{unirme}</div> : null}
+          </div>
         </section>
       </div>
-      <Sec id="sk-servidores" titulo="Los servidores" bajada={'En orden por los puntos que hizo su gente en la ' + liga.temp + '.' + (svs.some((s) => s.tier) ? ' Cada uno tiene su tier, que dice qué cuenta de sus eventos.' : '')}>
-        <Tiers liga={liga} svs={svs} />
-        <div className="sk-lista">
-          {activos.map((s, i) => <Socio key={s.sv} liga={liga} s={s} n={i + 1} />)}
-          {/* con un número impar, el lugar que sobra en la compu invita al que falta (sin huecos grandes) */}
-          {activos.length % 2 ? (
-            <article className="sk-soc sk-mas">
-              <span className="sk-mas-c" aria-hidden="true">+</span>
-              <h3>Tu servidor, acá</h3>
-              <p>Sus eventos suman a la misma tabla que estos {svs.length}, y su gente tiene su carta.</p>
-              <button type="button" className="btn verde chico" onClick={() => irA('sk-sumar')}>Cómo se suma</button>
-            </article>
-          ) : null}
-        </div>
-        {esperan.length ? (
-          <div className="sk-espera">
-            <h3 className="sk-st">Esperando su primer evento de la {liga.temp}</h3>
-            <p className="sk-espera-p">Cuando organicen el primero, salen arriba con su mejor rapero y su último campeón.</p>
-            <ul>{esperan.map((s) => {
-              const x = mm[s.sv];
-              return (
-                <li key={s.sv} id={idDe(s.sv)} style={{ '--c': s.color || '#29B298' }}>
-                  <img className="sk-logo chico" alt="" src={liga.logo(s.sv, true)} />
-                  <span className="sk-esp-t"><b>{s.nombre || s.sv}</b><small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}<TierChip s={s} /></small></span>
-                  {/* qué cuenta, en su fila: adentro del nombre quedaba entre los dos números, en 48 a 166 px (16/11) */}
-                  <Cuenta s={s} chico />
-                  <span className="sk-esp-d"><b>{s.miembros ? num(s.miembros) : '—'}</b><small>en su Discord</small></span>
-                  <span className="sk-esp-d"><b className={x > 1 ? 'sube' : ''}>{x ? mult(x) : '×1'}</b><small>esta semana</small></span>
-                  <span className="sk-esp-acc">
-                    <a className="btn negro chico" href={'#/sv/' + siglaDe(s.sv)}>Ver su página</a>
-                    {s.invita ? <a className="btn borde2 chico" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar ↗</a> : null}
-                  </span>
-                </li>
-              );
-            })}</ul>
-          </div>
-        ) : null}
+      <Sec id="sk-servidores" titulo="Los servidores" extra="rka-papel sk-papel"
+        bajada={'Un cartel por servidor, con la carta de Servidor de su mejor rapero; sin carta todavía, su logo. En orden por los puntos que hizo su gente en la ' + liga.temp + '.'}>
+        <Cartelera liga={liga} svs={svs} esperan={esperan} tab={tab} setTab={setTab} />
       </Sec>
       <Publican liga={liga} svs={svs} />
       {pat.length ? (
