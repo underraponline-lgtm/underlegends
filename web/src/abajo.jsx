@@ -412,8 +412,8 @@ function meToca(liga, L) {
   });
   let m = null;
   try { m = momentosLlave(L); } catch (e) { m = null; }
-  if (m && m.ahora && m.ahora.lados.some(mio)) return { l1: 'TE TOCA', l2: String(m.ahora.r || 'tu batalla') };
-  if (m && m.sigue && m.sigue.lados.some(mio)) return { l1: 'PRÓXIMO', l2: 'te toca después' };
+  if (m && m.ahora && m.ahora.lados.some(mio)) return { l1: 'TE TOCA', l2: String(m.ahora.r || 'tu batalla'), r: String(m.ahora.r || '') };
+  if (m && m.sigue && m.sigue.lados.some(mio)) return { l1: 'PRÓXIMO', l2: 'te toca después', r: String(m.sigue.r || '') };
   return null;
 }
 
@@ -426,7 +426,7 @@ export function enJuego(liga) {
       if (!liga.anotados(e).some((x) => x.f && x.f.k === yo.k)) continue;
       const L = llaveEnVivo(e, VL);
       const t = meToca(liga, L);
-      if (t) return { tipo: 'toca', l1: t.l1, l2: t.l2, cara: true, llave: L ? L.id : '', aria: t.l1 + ' en ' + limpio(e.nombre) };
+      if (t) return { tipo: 'toca', l1: t.l1, l2: t.l2, ronda: t.r, nombre: limpio(e.nombre), cara: true, llave: L ? L.id : '', aria: t.l1 + ' en ' + limpio(e.nombre) };
     }
   }
   if (vivos.length) {
@@ -594,7 +594,9 @@ function HojaRanking({ liga, cara, sube, sale, x, boton, onCerrar }) {
 
 function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x, boton }) {
   const VL = typeof window !== 'undefined' ? window.VIVO_L : null;
-  const vivos = liga.vivo().slice(0, 2);
+  // 🎤 con «te toca», ese evento ya está arriba: no se repite como «en vivo» (eran dos filas con la misma llave)
+  const vivos = liga.vivo().map((e) => ({ e, L: llaveEnVivo(e, VL) }))
+    .filter((x) => !(j.tipo === 'toca' && ((x.L && x.L.id === j.llave) || limpio(x.e.nombre) === j.nombre))).slice(0, 2);
   const hoyLiga = (liga.fechasHoy ? liga.fechasHoy() : []).length;
   const llave = (id) => (e) => { onCerrar(); if (id) { e.preventDefault(); accion.llave('v:' + id); } };
   // lo de ahora: te toca, lo que se juega (hasta dos) o lo próximo de hoy
@@ -602,10 +604,9 @@ function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x, boton }) {
   if (j.tipo === 'toca') {
     ahora.push(
       <a key="toca" className="tb-ev-ya toca" href="#/eventos" onClick={llave(j.llave)}>
-        <span className="tb-ev-ya-c">{cara}</span><span className="tb-ev-ya-t"><i className="vivo-late">{j.l1}</i><b>{j.l2}</b></span><em>{j.llave ? 'Tu llave' : 'Ver'}</em></a>);
+        <span className="tb-ev-ya-c">{cara}</span><span className="tb-ev-ya-t"><i className="vivo-late">{j.l1 + (j.ronda ? ' · ' + j.ronda : '')}</i><b>{j.nombre || j.l2}</b></span><em>{j.llave ? 'Tu llave' : 'Ver'}</em></a>);
   }
-  vivos.forEach((e, i) => {
-    const L = llaveEnVivo(e, VL);
+  vivos.forEach(({ e, L }, i) => {
     ahora.push(
       <a key={'v' + i} className="tb-ev-ya vivo" href="#/eventos" onClick={llave(L ? L.id : '')}>
         <img alt="" src={liga.logo(e.sv)} /><span className="tb-ev-ya-t"><i className="vivo-late">{'En vivo · ' + siglaDe(e.sv)}</i><b>{limpio(e.nombre)}</b></span>
@@ -887,7 +888,9 @@ export function Tabbar({ liga, dc, pagina = '' }) {
           {/* en reposo, como las demás casillas (ícono y nombre) sobre su bloque: «📅 EVENTOS» con la pista abajo no entraba y
               se metía encima de Pase (medido a 360 y 390) */}
           {j.tipo === 'nada' ? <><Ico n="eventos" t={22} /><span>Eventos</span></> : <>
-            <span className={'l1' + (j.tipo === 'vivo' || j.tipo === 'toca' ? ' vivo-late' : '')}>{j.cara && cara ? cara : j.logo && j.tipo === 'hoy' ? <img alt="" src={j.logo} /> : null}{j.l1}</span>
+            {/* el punto que late, sólo sin tu cara: con las dos, «TE TOCA» se salía del bloque a 360 (medido con una llave
+                en vivo que te nombra, 19/11/2026); la cara y el magenta ya dicen que es tuyo y ahora */}
+            <span className={'l1' + (j.tipo === 'vivo' || (j.tipo === 'toca' && !(j.cara && cara)) ? ' vivo-late' : '')}>{j.cara && cara ? cara : j.logo && j.tipo === 'hoy' ? <img alt="" src={j.logo} /> : null}{j.l1}</span>
             <span className="l2">{j.l2}</span></>}
         </a>
       );

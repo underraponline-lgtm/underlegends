@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.93",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T17:34:00-05:00",
+        "titulo": "«Te toca» en la barra del celular, probado con una llave en vivo",
+        "items": [
+            "**Cuando te toca**, el botón del medio de la barra dice «TE TOCA» con tu cara y la ronda; si eres el que sigue, «PRÓXIMO». Ahora entra entero en cualquier celular.",
+            "**En el panel de Eventos**, arriba, tu batalla con el nombre del evento y la ronda, y «Tu llave» a un toque. Ese evento ya no sale repetido abajo como «en vivo».",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.92",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T17:25:00-05:00",

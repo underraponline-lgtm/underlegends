@@ -7273,3 +7273,7 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 /* y la barra va encima de «Tu lugar» del Ranking y de la barra de la llave (los dos sticky en 31) mientras tiene algo
    abierto: si no, tapaban la última fila del panel */
 .tabbar.e:has(.tb-ev,.yo-menu){z-index:32}
+/* 🎤 «TE TOCA» y «PRÓXIMO» con tu cara al lado: medidos con una llave en vivo que te nombra (19/11/2026), «PRÓXIMO» se
+   comía 7 de los 5 px de aire a 360. Un píxel menos entre la cara y el texto, y sin espaciado de letras. En inglés va
+   «UP NOW» (ingles.json): «YOUR TURN» se pasaba 23 px del bloque */
+.tabbar.e .tb-jg.toca .l1{gap:4px;letter-spacing:0}
