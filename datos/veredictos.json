@@ -2466,6 +2466,50 @@
    "b": "MAU KC",
    "ganador": "Soul B",
    "votos": "1–0"
+  },
+  "1573095146906583211": {
+   "id": "1573095146906583211",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795125509717,
+   "a": "Makma",
+   "b": "Soul OG",
+   "ganador": "Makma",
+   "votos": "1–0"
+  },
+  "1573096821222277295": {
+   "id": "1573096821222277295",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795125908905,
+   "a": "STATUS",
+   "b": "Mats",
+   "ganador": "Mats",
+   "votos": "1–0"
+  },
+  "1573098408137330879": {
+   "id": "1573098408137330879",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795126287255,
+   "a": "Mats",
+   "b": "Soul B",
+   "ganador": "Mats",
+   "votos": "1–0"
+  },
+  "1573100920294871111": {
+   "id": "1573100920294871111",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795126886200,
+   "a": "Colesito",
+   "b": "Makma",
+   "ganador": "Makma",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7046,8 +7090,8 @@
    "g": "1074328197400887388",
    "canal": "1222380923048296459",
    "pub": 1795124849763,
-   "ed": 1795125179000,
-   "texto": "`[ CUARTOS ]`\n⌞Walker⌝ 🆚 ⌞Colesito⌝\n⌞SOUL B⌝ 🆚 ⌞MAU KC⌝",
+   "ed": 1795126899371,
+   "texto": "`[ CUARTOS ]`\n⌞Walker⌝ 🆚 ⌞Colesito⌝\n⌞SOUL B⌝ 🆚 ⌞MAU KC⌝\n⌞Soul OG⌝ 🆚 ⌞Makma⌝\n⌞MAKMA⌝ 🆚 ⌞SOUL OG⌝\n⌞Status⌝ 🆚 ⌞Mats⌝\n`[ SEMIFINALES ]`\n⌞Mats⌝ 🆚 ⌞Soul B⌝\n⌞COLESITO⌝ 🆚 ⌞MAKMA⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7067,6 +7111,107 @@
      ],
      "SOUL B",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Soul OG",
+      "Makma"
+     ],
+     "Makma",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMA",
+      "SOUL OG"
+     ],
+     "MAKMA",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Status",
+      "Mats"
+     ],
+     "Mats",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Mats",
+      "Soul B"
+     ],
+     "Mats",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "COLESITO",
+      "MAKMA"
+     ],
+     "MAKMA",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1573097418038181919": {
+   "id": "1573097418038181919",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1795126051197,
+   "ed": 1795126096038,
+   "texto": "`[ CUARTOS ]`\n⌞raizer⌝ 🆚 ⌞choza⌝\n⌞miniboy⌝ 🆚 ⌞crizj⌝\n⌞limitzs⌝ 🆚 ⌞OKAM⌝\n⌞mcarepa⌝ 🆚 ⌞Teo⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "raizer",
+      "choza"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "miniboy",
+      "crizj"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "limitzs",
+      "OKAM"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "mcarepa",
+      "Teo"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
