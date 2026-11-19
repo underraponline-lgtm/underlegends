@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.95",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T18:07:00-05:00",
+        "titulo": "La noche de cada evento, en el mensaje del campeón",
+        "items": [
+            "Al terminar un evento, el mensaje del bot con el campeón cambia su tarjeta por **La noche de…**: el podio en espejo con la nota de cada uno, el MVP y el 🔥 Batacazo. Llega unos minutos después de la final.",
+            "El aviso de ganadores sigue saliendo con sus menciones y sus botones (**🎯 Tu nota**, **👤 Perfiles**), sin repetir la imagen."
+        ]
+    },
+    {
         "version": "6.94",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T18:01:00-05:00",
