@@ -501,8 +501,8 @@
    "temporada": "3badd7447122:a8d8b7335469"
   },
   "Erian": {
-   "competitivo": "0a3798ba4384:c41ff817042a",
-   "pais": "342a1ae8a230:f1f52e1c6d42",
+   "competitivo": "6704ac48c1f7:c41ff817042a",
+   "pais": "9725b9c046cf:f1f52e1c6d42",
    "servidor": "55f547206584:0bd0fbf67396:c82496",
    "temporada": "df4816212d3e:a8d8b7335469"
   },
@@ -1129,10 +1129,10 @@
   },
   "Mail O": {},
   "Majiztral": {
-   "competitivo": "62a8a4464330:c41ff817042a",
-   "pais": "f4e61c0c2f7e:f1f52e1c6d42",
-   "servidor": "1666ee5b6af3:0bd0fbf67396:132451",
-   "temporada": "e2b0c767edac:a8d8b7335469"
+   "competitivo": "545ee077f17c:c41ff817042a",
+   "pais": "b844f669aedd:f1f52e1c6d42",
+   "servidor": "f2eddd599e8a:0bd0fbf67396:132451",
+   "temporada": "a5f22f0ff23a:a8d8b7335469"
   },
   "Maki": {
    "servidor": "70fbb8574a0b:0bd0fbf67396:74d3ce"
@@ -1805,8 +1805,8 @@
    "temporada": "9ef6d6315137:a8d8b7335469"
   },
   "TøKīØ🦠🧠": {
-   "competitivo": "25a0dc4b2840:c41ff817042a",
-   "pais": "791f5326a678:f1f52e1c6d42",
+   "competitivo": "7e6e5e4affcd:c41ff817042a",
+   "pais": "67e5436dad4b:f1f52e1c6d42",
    "servidor": "a77182ceab5e:0bd0fbf67396:18ae17",
    "temporada": "89deedd43e38:a8d8b7335469"
   },
@@ -2128,5 +2128,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-19T07:05:26+00:00"
+ "cuando": "2026-11-19T16:41:34+00:00"
 }
