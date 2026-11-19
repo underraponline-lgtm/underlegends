@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
-"""EL «#PUESTO» DEL RANKING COMPETITIVO EN EL APODO, EN TODA LA LIGA.
+"""EL APODO DE CADA UNO EN DISCORD, EN TODA LA LIGA: EL ESTILO QUE ELIGIÓ CON `/apodo` (o el de por defecto).
+
+🏷️ DESDE EL 18/11/2026 SON SEIS ESTILOS Y NO SÓLO EL «#N» (Dlx: *«que hayan opciones… gente que está en una crew…
+las siglas y luego el nombre»*): «#23 | FLB | Bloody», «40º | FLB | Bloody», «💎 | FLB | Bloody», «🇨🇴 | FLB | Bloody»,
+«B- | FLB | Bloody» y «Bloody». Cómo se arma cada uno vive en `bot/apodo.py` (con su gemelo en JS para `/apodo`); acá se
+juntan las piezas de cada uno (`piezas()`), se decide el estilo (`estilo_de()`) y se pone. Quien nunca eligió lleva el 1,
+**el #N y la crew** (Dlx: *«#N y la crew»*), salvo donde el servidor lo apagó con `/settings`. Y las piezas de todos van a
+KV (`apodos`), para que `/apodo` cambie el apodo al toque sin esperar esta vuelta.
+
+Lo que sigue es la historia del «#N», que sigue valiendo para el estilo 1.
+
+EL «#PUESTO» DEL RANKING COMPETITIVO EN EL APODO, EN TODA LA LIGA.
 
     python herramientas/sincronizar_puesto.py             muestra el plan
     python herramientas/sincronizar_puesto.py --aplicar   cambia los apodos
@@ -96,6 +107,9 @@ import requests
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
 sys.path.insert(0, os.path.join(BASE, 'sheet'))
+sys.path.insert(0, os.path.join(BASE, 'bot'))
+sys.path.insert(0, BASE)
+import apodo as AP  # noqa: E402
 
 API = 'https://discord.com/api/v10'
 CACHE = os.path.join(BASE, '.cache')
@@ -129,7 +143,6 @@ from planillas import OFICIAL  # noqa: E402
 PRESUPUESTO_CICLO = 180
 HOJA = 'Ranking Competitivo'
 TOPE = 32
-MARCA = re.compile(r'^\s*#\s*\d+\s*(\||$)')
 
 
 def env(clave):
@@ -162,6 +175,90 @@ def numerados(pool=None):
         if did and n and t and int(n) <= int(t):
             out[did] = (int(n), sin_bandera(p.get('raw') or p.get('full') or ''))
     return out
+
+
+def _json(nombre, defecto):
+    try:
+        return json.load(io.open(os.path.join(BASE, 'datos', nombre), encoding='utf-8'))
+    except (OSError, ValueError):
+        return defecto
+
+
+def piezas(comp=None, temp=None, divs=None, crews=None, vivas=None):
+    """{discord_id: {c, t, e, b, r, k}} — lo que cada uno PUEDE llevar en el apodo (`bot/apodo.armar()`), y las siglas
+    de las crews. Sale de los mismos archivos que las cartas y la página:
+
+        c  el #N del Competitivo y r su rango (pasa la puerta de 10 y es miembro: `pos` hasta `total`)
+        t  el puesto de la Temporada («40º», `pos` hasta `total` del pool de Temporada)
+        e  la división del ELO (0 Mítico … 5 Hierro: el grupo de `datos/divisiones.json`, sólo en modo ELO)
+        b  el país · k la sigla de su crew (`datos/crews.json` + `crews_vivas.json`)
+
+    Lo que alguien no tiene no está, y entonces esa parte del apodo no va."""
+    from comun.claves import clave as norm
+    comp = _json('competitivo_pool.json', []) if comp is None else comp
+    temp = _json('temporada_pool.json', []) if temp is None else temp
+    divs = _json('divisiones.json', {}) if divs is None else divs
+    crews = (_json('crews.json', {}).get('crews') or {}) if crews is None else crews
+    vivas = (_json('crews_vivas.json', {}).get('crews') or {}) if vivas is None else vivas
+    out, did_de = {}, {}
+
+    def num(p):
+        try:
+            return int(p['pos']) if p.get('pos') and p.get('total') and int(p['pos']) <= int(p['total']) else 0
+        except (TypeError, ValueError):
+            return 0
+    for pool, cual in ((comp, 'c'), (temp, 't')):
+        for p in pool or []:
+            did = str(p.get('discord_id') or '')
+            if not did:
+                continue
+            x = out.setdefault(did, {})
+            did_de.setdefault(norm(p.get('raw') or p.get('full') or ''), did)
+            n = num(p)
+            if n:
+                x[cual] = n
+                if cual == 'c' and (p.get('subrango') or p.get('rango')):
+                    x['r'] = str(p.get('subrango') or p.get('rango'))
+            if p.get('cc') and not x.get('b'):
+                x['b'] = str(p['cc']).lower()
+    if (divs or {}).get('modo') == 'elo':
+        for i, grupo in enumerate(divs.get('divs') or []):
+            for tabla in grupo or []:
+                for fila in tabla or []:
+                    did = did_de.get(norm(fila[0] if fila else ''))
+                    if did and i < len(AP.ELO):
+                        out[did]['e'] = i
+    vv = vivas.values() if isinstance(vivas, dict) else vivas
+    sigla_de = {}
+    for c in vv or []:
+        if c.get('sigla'):
+            sigla_de[c.get('id')] = sigla_de[c.get('nombre')] = str(c['sigla']).upper()
+    for crew, gente in (crews or {}).items():
+        sg = sigla_de.get(crew)
+        for m in gente or []:
+            did = did_de.get(norm(m))
+            if sg and did:
+                out[did]['k'] = sg
+    return {d: x for d, x in out.items() if x}, sorted(set(sigla_de.values()))
+
+
+def estilo_de(did, gid, globales, personas, servidores):
+    """El estilo que rige para alguien en un servidor. 🔴 LO DE LA PERSONA GANA (Dlx, 19/09/2026: *«gana el usuario…
+    porque eso es algo suyo»*): lo que eligió con `/apodo` o en su perfil (`apodo:<id>`, para todos los servidores);
+    si no, lo que eligió con el `/numeral` de antes en ESE servidor (`pnick:`: prendido = 1, apagado = 6); si no, lo del
+    servidor (`/settings` apagado = 6) y si tampoco, el de por defecto (1, el #N y la crew)."""
+    g = AP.estilo_valido(globales.get(did))
+    if g:
+        return g
+    v = personas.get((gid, did))
+    if v is not None:
+        return AP.POR_DEFECTO if v else AP.SOLO_NOMBRE
+    return AP.POR_DEFECTO if servidores.get(gid, True) else AP.SOLO_NOMBRE
+
+
+def decidir(actual, p, estilo, base, siglas):
+    """Lo que se pone en cada apodo: vive en `bot/apodo.decidir()`, que es el gemelo del que usa `/apodo`."""
+    return AP.decidir(actual, p, estilo, base, siglas)
 
 
 def ranking():
@@ -227,7 +324,7 @@ def poner_apodo(s, gid, did, apodo):
     for _ in range(5):
         r = s.patch('%s/guilds/%s/members/%s' % (API, gid, did),
                     headers={'Content-Type': 'application/json',
-                             'X-Audit-Log-Reason': 'Liga Global: puesto del Competitivo'},
+                             'X-Audit-Log-Reason': 'Liga Global: tu apodo (/apodo)'},
                     data=json.dumps({'nick': apodo}), timeout=20)
         if r.status_code == 429:
             time.sleep(float(r.json().get('retry_after', 1)) + .3)
@@ -268,6 +365,55 @@ def _leer_kv(prefijo, tok):
     return out
 
 
+def _token_cf():
+    """El token de Cloudflare de `.env`, o ''. ⚠️ NO SE USA env() ACÁ: hace sys.exit si falta la clave, y SystemExit no
+    lo atrapa `except Exception`. Faltar el token de Cloudflare no puede tumbar una sincronización de apodos que no lo
+    necesita."""
+    try:
+        for l in io.open(os.path.join(BASE, '.env'), encoding='utf-8'):
+            if l.strip().startswith('CLOUDFLARE_API_TOKEN='):
+                return l.split('=', 1)[1].strip().strip('"\'')
+    except Exception:
+        pass
+    return ''
+
+
+def cuerpo_piezas(pz, siglas, nombres=None):
+    """Lo que va a KV (`apodos`): `{v, s: siglas, p: {id: [c, t, e, b, r, k, nombre]}}`, con 0, -1 o '' donde no tiene
+    la pieza. El nombre es el BASE —el de DRA, el mismo que usa esta vuelta—: si `/apodo` usara el de cada servidor, la
+    vuelta siguiente le «corregiría» el nombre a quien lo acaba de pedir. Ordenado, así dos corridas con lo mismo dan el
+    mismo texto y no se vuelve a escribir."""
+    nombres = nombres or {}
+    return json.dumps({'v': 1, 's': list(siglas), 'p': {d: [x.get('c') or 0, x.get('t') or 0, x['e'] if 'e' in x else -1,
+                                                            x.get('b') or '', x.get('r') or '', x.get('k') or '',
+                                                            nombres.get(d) or '']
+                                                        for d, x in sorted(pz.items())}},
+                      ensure_ascii=False, separators=(',', ':'), sort_keys=True)
+
+
+def publicar_piezas(pz, siglas, nombres=None):
+    """🏷️ LAS PIEZAS DE CADA UNO, A KV (`apodos`), para que `/apodo` (bot/worker.js) cambie el apodo AL TOQUE en el
+    servidor donde se pidió —con `bot/apodo.js`, que arma lo mismo que `bot/apodo.py`— en vez de esperar esta vuelta.
+    Sólo se escribe si cambió: cada escritura gasta del cupo de 1.000 por día de KV, y las piezas cambian cuando se
+    procesa un evento, no en cada corrida. Si no se puede, se avisa y se sigue: `/apodo` dice entonces que se aplica en
+    la próxima vuelta."""
+    tok = _token_cf()
+    if not tok:
+        print('   ⚠️ sin CLOUDFLARE_API_TOKEN: las piezas no van a KV (/apodo aplicará en la próxima vuelta)')
+        return
+    cuerpo = cuerpo_piezas(pz, siglas, nombres)
+    try:
+        if _leer_kv('apodos', tok).get('apodos') == cuerpo:
+            print('   las piezas de los apodos en KV: al día (%d personas)' % len(pz))
+            return
+        r = requests.put(KV_API + '/values/apodos', headers={'Authorization': 'Bearer ' + tok},
+                         data=cuerpo.encode('utf-8'), timeout=30)
+        print('   %s las piezas de los apodos a KV: %d personas, %.1f KB' % (
+            '✅' if r.ok else '⚠️ (%s) no pude subir' % r.status_code, len(pz), len(cuerpo.encode('utf-8')) / 1024))
+    except Exception as e:                                # noqa: BLE001
+        print('   ⚠️ no pude subir las piezas de los apodos a KV (%s)' % str(e)[:60])
+
+
 def quien_lleva_numero():
     """{(guild, discord_id) -> True/False}, cruzando persona y servidor.
 
@@ -288,19 +434,10 @@ def quien_lleva_numero():
     unico que se pierde es que un puñado de apodos vuelva a llevar el numero,
     y la proxima corrida lo corrige. Lo que NO se hace es callarlo.
     """
-    # ⚠️ NO SE USA env() ACA: hace sys.exit si falta la clave, y SystemExit no
-    # lo atrapa `except Exception`. Faltar el token de Cloudflare no puede
-    # tumbar una sincronizacion de apodos que no lo necesita.
-    tok = ''
-    try:
-        for l in io.open(os.path.join(BASE, '.env'), encoding='utf-8'):
-            if l.strip().startswith('CLOUDFLARE_API_TOKEN='):
-                tok = l.split('=', 1)[1].strip().strip('"\'')
-    except Exception:
-        pass
+    tok = _token_cf()
     if not tok:
         print('   ⚠️ sin CLOUDFLARE_API_TOKEN en .env — sigo sin las preferencias')
-        return {}, {}
+        return {}, {}, {}
     try:
         personas = {}
         for k, v in _leer_kv('pnick:', tok).items():
@@ -311,6 +448,14 @@ def quien_lleva_numero():
                 personas[(partes[1], partes[2])] = bool(json.loads(v).get('on'))
             except Exception:
                 pass
+        globales = {}
+        for k, v in _leer_kv('apodo:', tok).items():
+            try:
+                e = AP.estilo_valido(json.loads(v).get('e'))
+            except Exception:
+                e = None
+            if e:
+                globales[k.split(':', 1)[1]] = e
         servidores = {}
         for k, v in _leer_kv('cfg:', tok).items():
             gid = k.split(':', 1)[1]
@@ -318,30 +463,14 @@ def quien_lleva_numero():
                 servidores[gid] = json.loads(v).get('nick', True) is not False
             except Exception:
                 pass
-        return personas, servidores
+        return personas, servidores, globales
     except Exception as e:
         print('   ⚠️ no pude leer las preferencias de KV (%s) — sigo sin ellas' % str(e)[:60])
-        return {}, {}
-
-
-def solo_el_nombre(apodo):
-    """«🐉 | Vandu» -> «Vandu» · «#7 | Konan» -> «Konan» · «» -> «»."""
-    if not apodo:
-        return ''
-    return (apodo.split('|', 1)[1] if '|' in apodo else apodo).strip()
-
-
-def sin_numero(apodo):
-    """«#148 | OG» -> «OG» · «#5» -> «» · «🐉 | Vandu» queda igual: sólo se va el número."""
-    return MARCA.sub('', apodo or '', count=1).strip()
-
-
-def destino(puesto, nombre):
-    return ('#%d | %s' % (puesto, nombre))[:TOPE]
+        return {}, {}, {}
 
 
 def _self_check():
-    print('\n══ EL «#N» DEL APODO ══\n')
+    print('\n══ 🏷️ LOS APODOS (el estilo de cada uno, o el #N y la crew) ══\n')
     mal = 0
 
     def ok(que, cond, det=''):
@@ -357,11 +486,51 @@ def _self_check():
     ok('número sólo para quien pasa la puerta y es miembro (pos hasta total)',
        n == {'1': (1, 'Hassan'), '2': (2, 'Makmah')}, n)
     ok('sin nadie en el Competitivo, nadie tiene número', numerados([]) == {})
-    ok('al sacarle el número queda el nombre: «#148 | OG» -> «OG», y la marca de otro no se toca',
-       sin_numero('#148 | OG') == 'OG' and sin_numero('🐉 | Vandu') == '🐉 | Vandu')
-    ok('y un apodo que era sólo «#5» queda sin apodo', (sin_numero('#5') or None) is None)
-    ok('la marca reconoce «#12 | Zeta» y no «Zeta #12»',
-       bool(MARCA.match('#12 | Zeta')) and not MARCA.match('Zeta #12'))
+
+    # las piezas de cada uno, de los mismos archivos que las cartas
+    comp = [{'raw': 'Bloody', 'pos': 23, 'total': 85, 'subrango': 'B-', 'cc': 'co', 'discord_id': '10'},
+            {'raw': 'Vandu', 'pos': 90, 'total': 85, 'subrango': 'C', 'cc': 'co', 'discord_id': '11'}]
+    temp = [{'raw': 'Bloody', 'pos': 40, 'total': 258, 'cc': 'co', 'discord_id': '10'},
+            {'raw': 'Vandu', 'pos': 300, 'total': 258, 'cc': 'co', 'discord_id': '11'},
+            {'raw': 'Liberia', 'pos': 3, 'total': 258, 'cc': 'ar', 'discord_id': '12'}]
+    divs = {'modo': 'elo', 'divs': [[[]], [[['Bloody', 1200]]], [[]], [[]], [[]], [[['Vandu', 990]]]]}
+    crews = {'Follombia': ['Bloody', 'Vandu']}
+    vivas = {'Follombia': {'id': 'Follombia', 'nombre': 'Follombia', 'sigla': 'FLB'}}
+    pz, sg = piezas(comp, temp, divs, crews, vivas)
+    ok('Bloody: #23, 40º, Diamante, Colombia, B- y FLB',
+       pz.get('10') == {'c': 23, 't': 40, 'e': 1, 'b': 'co', 'r': 'B-', 'k': 'FLB'}, pz.get('10'))
+    ok('Vandu, fuera de los numerados: sin #N, sin 40º y sin rango; Hierro y su crew',
+       pz.get('11') == {'b': 'co', 'e': 5, 'k': 'FLB'}, pz.get('11'))
+    ok('Liberia: sólo el puesto de la Temporada y el país', pz.get('12') == {'t': 3, 'b': 'ar'}, pz.get('12'))
+    ok('las siglas de las crews salen de crews_vivas', sg == ['FLB'], sg)
+    ok('fuera del modo ELO no hay piedra', 'e' not in piezas(comp, temp, {'divs': divs['divs']}, crews, vivas)[0]['10'])
+
+    # quién manda: lo de la persona, después el /numeral de antes, después el servidor, después el 1
+    G = {'10': 3}
+    P = {('g1', '10'): False, ('g1', '11'): False, ('g2', '11'): True}
+    S = {'g3': False}
+    ok('/apodo le gana a todo', estilo_de('10', 'g1', G, P, S) == 3)
+    ok('el /numeral apagado de antes, en ese servidor, es «solo el nombre»', estilo_de('11', 'g1', {}, P, S) == AP.SOLO_NOMBRE)
+    ok('el /numeral prendido de antes es el 1', estilo_de('11', 'g2', {}, P, S) == 1)
+    ok('un servidor que lo apagó con /settings: solo el nombre para quien no eligió', estilo_de('12', 'g3', {}, P, S) == 6)
+    ok('y si nadie dijo nada, el 1: el #N y la crew', estilo_de('12', 'g9', {}, P, S) == 1)
+
+    # qué se pone
+    b = pz['10']
+    ok('con el 1: «#23 | FLB | Bloody», aunque hoy tenga el 🐉 de DRA',
+       decidir('🐉 | Bloody', b, 1, 'Bloody', sg) == '#23 | FLB | Bloody')
+    ok('con «solo el nombre» se le sacan las marcas de la Liga', decidir('#23 | FLB | Bloody', b, 6, 'Bloody', sg) == 'Bloody')
+    ok('… y la marca de otro no se toca', decidir('🐉 | Bloody', b, 6, 'Bloody', sg) == '🐉 | Bloody')
+    ok('… ni la bandera que alguien se puso solo (sin piezas: ni bandera ni letra son nuestras)',
+       decidir('🇫🇷 | Valᴺᴷ', None, 1, 'Valᴺᴷ', sg) == '🇫🇷 | Valᴺᴷ')
+    ok('… y la suya, del estilo 4, sí se va con «solo el nombre»', decidir('🇨🇴 | FLB | Bloody', b, 6, 'Bloody', sg) == 'Bloody')
+    ok('… y a quien no tiene apodo no se le pone uno', decidir('', b, 6, 'Bloody', sg) == '')
+    ok('quien ya no tiene ninguna pieza pierde la marca vieja', decidir('#12 | OG', None, 1, 'OG', sg) == 'OG')
+    ok('y un apodo que era sólo «#5» queda sin apodo', decidir('#5', None, 1, '', sg) is None)
+    ok('el estilo 2 sin puesto de Temporada lleva la crew sola (el # no se cuela)',
+       decidir('', {'c': 23, 'k': 'FLB'}, 2, 'Bloody', sg) == 'FLB | Bloody')
+    ok('las piezas a KV: una lista por persona, -1 sin ELO', json.loads(cuerpo_piezas({'12': {'t': 3, 'b': 'ar'}}, sg))
+       == {'v': 1, 's': ['FLB'], 'p': {'12': [0, 3, -1, 'ar', '', '', '']}})
     ok('va a todos los servidores de la Liga donde está el bot, DRA primero',
        GUILDS and GUILDS[0][0] == 'DRA' and len(GUILDS) >= 2, [g for g, _ in GUILDS])
     print('\n   %s\n' % ('todo ok' if not mal else '🔴 %d mal' % mal))
@@ -394,82 +563,80 @@ def main():
         print('  revertidos: %d de %d\n' % (n, len(datos['cambios'])))
         return
 
-    print('\nquién tiene número en el Competitivo (datos/competitivo_pool.json)...')
+    print('\nlo que cada uno puede llevar en el apodo (pools, divisiones y crews)...')
     puesto_de = numerados()          # discord_id -> (puesto, nombre)
+    PZ, siglas = piezas()
+    nombre_pool = {}
+    for p in _json('temporada_pool.json', []) + _json('competitivo_pool.json', []):
+        if p.get('discord_id'):
+            nombre_pool[str(p['discord_id'])] = sin_bandera(p.get('raw') or p.get('full') or '')
     sin_id = []
-    print('   %d con número: %s' % (len(puesto_de), ', '.join(
-        '#%d %s' % v for v in sorted(puesto_de.values())) or '—'))
+    print('   %d con #N · %d con puesto en la Temporada · %d con división del ELO · %d con crew (%s)' % (
+        len(puesto_de), sum(1 for x in PZ.values() if x.get('t')), sum(1 for x in PZ.values() if 'e' in x),
+        sum(1 for x in PZ.values() if x.get('k')), ', '.join(siglas) or '—'))
 
-    miembros = {}
+    miembros, duenos = {}, {}
     for sv, gid in GUILDS:
         print('\nbajando miembros de %s...' % sv)
         miembros[sv] = bajar(s, gid)
         print('   %d miembros' % len(miembros[sv]))
+        try:
+            duenos[gid] = str(s.get('%s/guilds/%s' % (API, gid), timeout=20).json().get('owner_id') or '')
+        except Exception:                                 # noqa: BLE001
+            duenos[gid] = ''
 
-    # ⚠️ EL NOMBRE ES EL DE DRA, PARA LOS DOS SERVIDORES. Sin esto la misma
+    # ⚠️ EL NOMBRE ES EL DE DRA, PARA TODOS LOS SERVIDORES. Sin esto la misma
     # persona queda con dos nombres distintos: «#22 | Bloody» en DRA y
-    # «#22 | Slenderman» en FFA.
-    def nombre_de(did, del_ranking):
-        return solo_el_nombre((miembros.get('DRA', {}).get(did) or {}).get('nick')
-                              or '') or del_ranking
+    # «#22 | Slenderman» en FFA. Desde el 18/11 es lo que va después de la
+    # ÚLTIMA barra («#23 | FLB | Bloody» -> «Bloody»), no de la primera.
+    def nombre_de(did):
+        return AP.nombre_de((miembros.get('DRA', {}).get(did) or {}).get('nick') or '') or nombre_pool.get(did, '')
 
-    print('\nleyendo las preferencias de /puesto y /settings...')
-    eleccion, por_servidor = quien_lleva_numero()
-    print('   %d personas eligieron a mano   ·   %d servidor(es) configurado(s)'
-          % (len(eleccion), len(por_servidor)))
+    print('\nleyendo lo que eligió cada uno (/apodo, el /numeral de antes) y cada servidor (/settings)...')
+    eleccion, por_servidor, globales = quien_lleva_numero()
+    print('   %d eligieron con /apodo · %d con el /numeral de antes · %d servidor(es) configurado(s)'
+          % (len(globales), len(eleccion), len(por_servidor)))
     for gid, on in sorted(por_servidor.items()):
         nom = next((s for s, g in GUILDS if g == gid), gid)
-        print('      %-5s el #N está %s por decisión del servidor'
-              % (nom, 'ACTIVADO' if on else 'APAGADO'))
+        print('      %-5s las marcas del apodo, por defecto %s'
+              % (nom, 'PRENDIDAS' if on else 'APAGADAS (sólo el nombre)'))
 
     plan, viejos, ocultos = [], [], 0
     poder = {}                       # los servidores donde el bot no puede tocar apodos
     for sv, gid in GUILDS:
         for did, m in miembros[sv].items():
             actual = m.get('nick') or ''
-            if did in puesto_de:
-                n, del_ranking = puesto_de[did]
-                # 🔴 LA PRECEDENCIA, EN UN SOLO LUGAR: lo que eligió la persona
-                # gana; si no eligió, manda el servidor; si el servidor tampoco
-                # dijo nada, prendido.
-                lleva = eleccion.get((gid, did))
-                if lleva is None:
-                    lleva = por_servidor.get(gid, True)
-                # ⚠️ AL QUE NO LO LLEVA HAY QUE SACÁRSELO, no saltearlo. Si
-                # sólo se lo dejara afuera del plan, el número viejo le queda
-                # puesto para siempre — lo contrario de lo que pidió.
-                if not lleva:
-                    ocultos += 1
-                    # ⚠️ SÓLO SE SACA EL NÚMERO: a quien no tiene apodo ahí no se
-                    # le pone uno. Antes quedaba el de DRA, y con SR en la lista
-                    # (29/09/2026) eso le cambiaba el nombre a gente que no lo
-                    # había tocado nunca.
-                    nuevo = sin_numero(actual) or None if MARCA.match(actual) else actual
-                else:
-                    nuevo = destino(n, nombre_de(did, del_ranking))
-                if nuevo != actual:
-                    plan.append({'guild': gid, 'sv': sv, 'id': did, 'antes': actual,
-                                 'nuevo': nuevo, 'oculto': not lleva,
-                                 'user': (m.get('user') or {}).get('username')})
-            elif MARCA.match(actual):
-                # 🔴 UN «#N» DE QUIEN NO ESTÁ EN EL COMPETITIVO SE SACA (Dlx,
-                # 29/09/2026: «ÚNICAMENTE a las personas que están en el
-                # competitivo»). Queda su nombre, sin marca nueva; sin nombre,
-                # sin apodo.
+            p = PZ.get(did)
+            if not p and not (actual and AP.solo_nuestras(actual, siglas)):
+                continue
+            # 👑 al dueño de un servidor Discord no le deja cambiar el apodo a nadie, y su 403 en el PRIMER intento de un
+            # servidor lo daba por «el bot no puede cambiar apodos acá» y salteaba a todos los demás (ver `poder`)
+            if did == duenos.get(gid):
+                continue
+            # 🔴 LA PRECEDENCIA, EN UN SOLO LUGAR (`estilo_de()`): lo de la persona gana; si no eligió, el servidor; si
+            # tampoco, el 1 (el #N y la crew). Y QUÉ SE PONE, en otro (`decidir()`): a quien no lleva marca se le SACAN
+            # las nuestras —si sólo se lo salteara, la marca vieja le quedaría para siempre— y a quien no tiene apodo no
+            # se le pone uno
+            est = estilo_de(did, gid, globales, eleccion, por_servidor)
+            nuevo = decidir(actual, p, est, nombre_de(did), siglas)
+            if (nuevo or '') == actual:
+                continue
+            if est == AP.SOLO_NOMBRE:
+                ocultos += 1
+            if not p:
                 viejos.append((sv, actual, (m.get('user') or {}).get('username')))
-                plan.append({'guild': gid, 'sv': sv, 'id': did, 'antes': actual,
-                             'nuevo': sin_numero(actual) or None, 'sin_numero': True,
-                             'user': (m.get('user') or {}).get('username')})
+            plan.append({'guild': gid, 'sv': sv, 'id': did, 'antes': actual, 'nuevo': nuevo, 'estilo': est,
+                         'oculto': est == AP.SOLO_NOMBRE, 'sin_numero': not p,
+                         'user': (m.get('user') or {}).get('username')})
 
-    print('\n  ✅ apodos a cambiar: %d   ·   con el puesto oculto por pedido: %d'
+    print('\n  ✅ apodos a cambiar: %d   ·   con «solo el nombre» (elegido o del servidor): %d'
           % (len(plan), ocultos))
     for c in [x for x in plan if not x.get('sin_numero')][:45]:
-        print('     [%s] %-24s -> %-24s%s'
-              % (c['sv'], (c['antes'] or '(sin apodo)')[:24], (c['nuevo'] or '(sin apodo)')[:24],
-                 '  🙈 /puesto off' if c.get('oculto') else ''))
+        print('     [%s] %-24s -> %-26s estilo %d'
+              % (c['sv'], (c['antes'] or '(sin apodo)')[:24], (c['nuevo'] or '(sin apodo)')[:26], c['estilo']))
     if len(plan) > 45:
         print('     … y %d mas' % (len(plan) - 45))
-    print('  ✂️  tienen #N y NO estan en el Competitivo: se les saca: %d' % len(viejos))
+    print('  ✂️  llevan una marca de la Liga y ya no tienen con qué: se les saca: %d' % len(viejos))
     for sv, ap, u in viejos[:30]:
         print('     [%s] %-24s @%s' % (sv, ap[:24], u))
     if len(viejos) > 30:
@@ -481,6 +648,7 @@ def main():
     if '--aplicar' not in sys.argv and '--ciclo' not in sys.argv:
         print('\n  (nada cambiado — corré con --aplicar)\n')
         return
+    publicar_piezas(PZ, siglas, {d: nombre_de(d) for d in PZ})
     if not plan:
         print('\n  ✅ nada que cambiar\n')
         return

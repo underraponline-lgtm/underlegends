@@ -33,6 +33,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SERVIDORES } from './worker.js';
+import * as AP from './apodo.js';
 
 const RAIZ = dirname(dirname(fileURLToPath(import.meta.url)));
 
@@ -67,7 +68,7 @@ function entorno() {
 // bien y el botón «Add to My Apps» no aparece: se registra algo que nadie
 // puede instalar. Lo hace `--global` solo.
 const EN_TODOS_LADOS = { integration_types: [0, 1], contexts: [0, 1, 2] };
-// ⚠️ `/numeral` NO va en DM y no es un olvido: cambia tu apodo EN UN SERVIDOR,
+// ⚠️ `/apodo` NO va en DM y no es un olvido: cambia tu apodo EN UN SERVIDOR,
 // y en un DM no hay servidor del que hablar. Declarándolo sólo en `contexts:
 // [0]`, Discord ni lo ofrece ahí, que es mejor que ofrecerlo y contestar que
 // no se puede.
@@ -170,7 +171,7 @@ const COMANDOS = [
           { name: '/vincular', value: 'vincular' },
           { name: '/versus', value: 'versus' },
           { name: '/foto', value: 'foto' },
-          { name: '/numeral', value: 'numeral' },
+          { name: '/apodo', value: 'apodo' },
           { name: '/settings', value: 'settings' },
           { name: '/antiraid', value: 'antiraid' },
           { name: '/afiche', value: 'afiche' },
@@ -343,19 +344,20 @@ const COMANDOS = [
     ],
   },
   {
-    name: 'numeral',
+    // 🏷️ /apodo reemplaza a /numeral (Dlx, 18/11/2026): seis estilos listos, uno para todos los servidores de la Liga.
+    // Las opciones salen de `bot/apodo.js` (ESTILOS), el mismo lugar que usan el Worker y el ciclo
+    name: 'apodo',
     type: 1,
-    description: 'mostrá u ocultá tu #N del ranking en tu apodo, en ESTE servidor',
+    description: 'cómo va tu apodo: con tu #N, tu crew, tu Temporada, tu ELO, tu bandera o solo tu nombre',
     ...SOLO_EN_SERVIDOR,
-    // ⚠️ SIN `mostrar` CONTESTA CÓMO ESTÁ. Un toggle a ciegas obliga a
-    // acordarse de en qué quedó, y la preferencia es por servidor: la misma
-    // persona puede tenerlo prendido en DRA y apagado en FFA.
+    // ⚠️ SIN `estilo` CONTESTA CÓMO ESTÁ y te muestra los seis armados con lo tuyo
     options: [
       {
-        name: 'mostrar',
-        type: 5,                       // BOOLEAN
-        description: 'True lo muestra · False lo oculta · sin nada, te digo cómo está',
+        name: 'estilo',
+        type: 4,                       // INTEGER
+        description: 'el estilo de tu apodo · sin nada, te muestro los seis con lo tuyo',
         required: false,
+        choices: AP.ESTILOS.map(([n, t, ej]) => ({ name: `${n} · ${t} · ${ej}`.slice(0, 100), value: n })),
       },
     ],
   },

@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.70",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T20:30:00-05:00",
+        "titulo": "/apodo: elige cómo va tu apodo",
+        "items": [
+            "**/apodo** reemplaza a /numeral: eliges entre seis estilos para tu apodo en los servidores de la Liga, con tu #N del Competitivo, tu puesto de la Temporada (40º), tu división del ELO (🔮 💎 ♦️ 🔷 🟢 ⚙️), tu bandera, tu rango o solo tu nombre.",
+            "**La sigla de tu crew** va en el apodo si tienes crew: «#23 | FLB | Tu nombre».",
+            "También desde los **ajustes de tu perfil** (el «⋯»), viendo cómo te queda cada uno.",
+            "Lo que elijas vale para **todos los servidores**: en el que usas /apodo cambia al toque, y en los demás en la próxima vuelta del bot."
+        ]
+    },
+    {
         "version": "6.69",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T20:30:00-05:00",

@@ -249,6 +249,25 @@
 .pf8-sw.on{background:#29B298}
 .pf8-sw.on i{transform:translateX(20px)}
 .pf8-sw:disabled{cursor:wait;opacity:.7}
+/* 🏷️ tu apodo: los seis estilos como lista para elegir (18/11/2026). Cada fila dice cómo va a quedar tu apodo —en la letra
+   del sitio, grande—, y la elegida va en negro como la pestaña activa (`.pf8-seg button.on`) */
+.pf8-ap{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.pf8-ap-b{width:100%;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:center;padding:9px 12px;
+  border:2px solid #030304;border-radius:4px;background:#F6F6F6;color:#030304;text-align:left;font:inherit;cursor:pointer;
+  transition:background-color .15s ease,color .15s ease,transform .12s var(--ease-out)}
+.pf8-ap-b:active:not(:disabled){transform:translateY(1px)}
+.pf8-ap-b:disabled{cursor:wait}
+.pf8-ap-n{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#030304;color:#F6F6F6;font:900 13px/1 Archivo,sans-serif}
+.pf8-ap-t{display:grid;gap:2px;min-width:0}
+.pf8-ap-t b{font:800 15.5px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.pf8-ap-t small{font-size:12px;color:#6E6E74}
+.pf8-ap-fl{display:inline-block;width:21px;height:14px;margin-right:2px;vertical-align:-1px;object-fit:cover;border-radius:2px}
+.pf8-ap-b.on{background:#030304;color:#F6F6F6}
+.pf8-ap-b.on .pf8-ap-n{background:#F6F6F6;color:#030304}
+.pf8-ap-b.on small{color:#B9B9B4}
+.pf8-ap-b.falta b{color:#8A8A90}
+.pf8-ap-b.on.falta b{color:#B9B9B4}
+@media (hover: hover) and (pointer: fine){.pf8-ap-b:not(.on):hover{background:#EAEAE5}}
 @media (prefers-reduced-motion: reduce){.pf8-sw i{transition:none}}
 .pf8-aj-b{display:flex;flex-wrap:wrap;gap:8px}
 /* el panel es claro siempre: los botones de borde toman su tinta de la página (blanca en la escena) y no se veían */

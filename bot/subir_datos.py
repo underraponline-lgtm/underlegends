@@ -174,7 +174,7 @@ def versus_de(k, c, t, nac):
                     'dm': _n(c.get('Dm')), 'te': _n(c.get('T')),
                     'di': _n(c.get('V'))}
         # 🔑 EL NÚMERO DEL RANKING COMPETITIVO, sólo de quien lo tiene (pasa la
-        # puerta de 10 y es miembro: `pos` hasta `total`). Lo mira `/numeral`:
+        # puerta de 10 y es miembro: `pos` hasta `total`). Lo miraba `/numeral` (hoy `/apodo` lee `apodos`):
         # Dlx, 29/09/2026, el «#» del apodo es «ÚNICAMENTE» de ellos.
         try:
             if c.get('pos') and c.get('total') and int(c['pos']) <= int(c['total']):

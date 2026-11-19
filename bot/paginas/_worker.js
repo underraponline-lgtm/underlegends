@@ -69,6 +69,8 @@ const AVISOS = {
   '/api/avisos/reportar': 'POST',
   // 🏷️ tu «#N» en el apodo, servidor por servidor, desde tu perfil (21/10/2026): ver `numeralPagina()` en bot/worker.js
   '/api/avisos/numeral': 'POST',
+  // 🏷️ tu apodo (los seis estilos), desde tu perfil (18/11/2026): ver `apodoPagina()` en bot/worker.js
+  '/api/avisos/apodo': 'POST',
   // 🔑 el precio por cabeza (28/09/2026): cuánto vale cada cabeza, poner un
   // precio y ver tu billetera. Ver `validarPrecio()` en bot/avisos.js
   '/api/avisos/precios': 'GET',

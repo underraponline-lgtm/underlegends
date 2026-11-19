@@ -217,18 +217,19 @@ function ReportarUsuario({ k, nombre, dc, onCerrar }) {
   );
 }
 
-// ⚙️ AJUSTES DE TU PERFIL (Dlx, 21/10/2026: «haz que en mi perfil estén configuraciones también extras, por ejemplo
-// activar el numeral en X servidores, o activarlo generalmente, o desactivarlo»). El «#N» de tu apodo en Discord, en
-// todos los servidores, en ninguno o de a uno —lo mismo que `/numeral`, que es de a un servidor—, y los atajos a lo
-// demás tuyo. Lo guarda el Worker (`numeralPagina()`) y lo aplica el ciclo en su próxima vuelta
+// ⚙️ AJUSTES DE TU PERFIL (Dlx, 21/10/2026: «haz que en mi perfil estén configuraciones también extras…»): tu frase, tu
+// apodo en Discord y los atajos a lo demás tuyo.
+// 🏷️ TU APODO, LOS SEIS ESTILOS (Dlx, 18/11/2026: «que tengas opciones e incluso para combinar… las siglas [de la crew] y
+// luego el nombre»; a las preguntas, seis estilos listos). Reemplaza al «#N en todos / en ninguno / elegir»: lo mismo que
+// `/apodo` —la misma clave, `apodo:<id>`—, armado con TUS piezas por el Worker (`apodoPagina()`, con bot/apodo.js) para
+// que veas cómo va a quedar. Lo aplica el ciclo en su próxima vuelta, en todos los servidores de la Liga
 function AjustesPerfil({ k, onCerrar, onEmblemas }) {
   const [est, setEst] = useState(null);
   const [va, setVa] = useState(false);
-  const [elegir, setElegir] = useState(false);
-  const pedir = (cambiar) => {
+  const pedir = (estilo) => {
     if (typeof window.conCuenta !== 'function') { setEst({ error: 'sin_sesion' }); return; }
     setVa(true);
-    window.conCuenta('/api/avisos/numeral', cambiar ? { cambiar } : {}).then((j) => {
+    window.conCuenta('/api/avisos/apodo', estilo ? { estilo } : {}).then((j) => {
       setVa(false);
       if (j) setEst(j.status === 200 ? j : { error: j.error || 'mal' });
     }).catch(() => { setVa(false); setEst({ error: 'red' }); });
@@ -239,12 +240,8 @@ function AjustesPerfil({ k, onCerrar, onEmblemas }) {
     window.addEventListener('keydown', f);
     return () => window.removeEventListener('keydown', f);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  const svs = (est && est.svs) || [];
-  // lo que rige en cada uno: lo tuyo si elegiste; si no, lo del servidor
-  const vale = (s) => (s.mio == null ? s.sv_on : s.mio);
-  const modo = !svs.length ? '' : svs.every(vale) ? 'todos' : svs.every((s) => !vale(s)) ? 'ninguno' : 'algunos';
-  const todos = (on) => { setElegir(false); pedir(Object.fromEntries(svs.map((s) => [s.gid, on]))); };
   const err = est && est.error;
+  const rige = est && !err ? est.estilo || est.defecto : 0;
   return (
     <div className="emb-velo" role="presentation" onClick={onCerrar}>
       <div className="pf8-aviso pf8-aj" role="dialog" aria-modal="true" aria-label="Ajustes de tu perfil" onClick={(e) => e.stopPropagation()}>
@@ -257,30 +254,29 @@ function AjustesPerfil({ k, onCerrar, onEmblemas }) {
           <FraseEditor k={k} />
         </section>
         <section className="pf8-aj-s">
-          <h4>Tu #N en el apodo</h4>
-          <p>Tu puesto del Ranking Competitivo delante de tu apodo en Discord, por ejemplo «#21 | Tu nombre». Lo que elijas le gana a lo que diga cada servidor, y se aplica en la próxima vuelta del bot.</p>
+          <h4>Tu apodo en Discord</h4>
+          <p>Cómo va tu nombre en los servidores de la Liga. Lo que elijas le gana a lo que diga cada servidor y se aplica en la próxima vuelta del bot; con <b>/apodo</b> en un servidor, al toque.</p>
           {!est ? <p className="pf8-aj-nota">Cargando…</p>
             : err === 'sin_verificar' ? <p className="pf8-mal">Para esto tienes que estar verificado. <a href="#/cuenta/verificar" onClick={onCerrar}>Verificarme</a></p>
               : err === 'sin_sesion' || err === 'discord' ? <p className="pf8-aj-nota">Entra con Discord para cambiarlo. <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></p>
                 : err ? <p className="pf8-mal">{errorCuentaTx(err)}</p> : <>
-                  {!est.numero ? <p className="pf8-aj-nota">Todavía no tienes número: aparece cuando entras al Competitivo (10 eventos). Lo que elijas acá queda guardado para ese día.</p> : <p className="pf8-aj-nota">Hoy eres el <b>#{est.numero}</b> del Competitivo.</p>}
-                  <div className="pf8-seg" role="radiogroup" aria-label="Dónde se ve tu número">
-                    <button type="button" role="radio" aria-checked={modo === 'todos' && !elegir} className={modo === 'todos' && !elegir ? 'on' : ''} disabled={va} onClick={() => todos(true)}>En todos</button>
-                    <button type="button" role="radio" aria-checked={modo === 'ninguno' && !elegir} className={modo === 'ninguno' && !elegir ? 'on' : ''} disabled={va} onClick={() => todos(false)}>En ninguno</button>
-                    <button type="button" role="radio" aria-checked={modo === 'algunos' || elegir} className={modo === 'algunos' || elegir ? 'on' : ''} disabled={va} onClick={() => setElegir(true)}>Elegir</button>
-                  </div>
-                  {modo === 'algunos' || elegir ? (
-                    <ul className="pf8-aj-l">
-                      {svs.map((s) => (
-                        <li key={s.gid}>
-                          <span><b>{s.n}</b><small>{s.mio == null ? 'lo decide el servidor' : 'lo elegiste tú'}</small></span>
-                          <button type="button" role="switch" aria-checked={vale(s)} aria-label={s.n} className={'pf8-sw' + (vale(s) ? ' on' : '')} disabled={va}
-                            onClick={() => pedir({ [s.gid]: !vale(s) })}><i /></button>
+                  {!est.piezas ? <p className="pf8-aj-nota">Todavía no tienes piezas para el apodo: aparecen cuando entras a una crew, a la tabla de la Temporada o al Competitivo (10 eventos). Lo que elijas queda guardado.</p> : null}
+                  <ul className="pf8-ap" role="radiogroup" aria-label="El estilo de tu apodo">
+                    {(est.estilos || []).map((x) => {
+                      const on = rige === x.n;
+                      return (
+                        <li key={x.n}>
+                          <button type="button" role="radio" aria-checked={on} className={'pf8-ap-b' + (on ? ' on' : '') + (x.falta ? ' falta' : '')}
+                            disabled={va} onClick={() => { if (!on) pedir(x.n); }}>
+                            <span className="pf8-ap-n" aria-hidden="true">{x.n}</span>
+                            <span className="pf8-ap-t"><b>{conBanderas(x.sale || x.ej)}</b>
+                              <small>{x.t}{x.n === est.defecto ? ' · el de siempre' : ''}{x.falta ? ' · te falta esa pieza' : ''}</small></span>
+                          </button>
                         </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  <p className="pf8-aj-nota">{va ? 'Guardando…' : 'Sólo cambia en los servidores donde estás.'}</p>
+                      );
+                    })}
+                  </ul>
+                  <p className="pf8-aj-nota">{va ? 'Guardando…' : est.estilo ? 'Lo elegiste tú: vale para todos los servidores de la Liga.' : 'Llevas el de siempre: nadie lo cambió.'}</p>
                 </>}
         </section>
         <section className="pf8-aj-s">
@@ -294,6 +290,13 @@ function AjustesPerfil({ k, onCerrar, onEmblemas }) {
       </div>
     </div>
   );
+}
+// 🏳️ la bandera del estilo 4, con la imagen del sitio: Windows no dibuja banderas emoji (salía «co») y Discord sí
+const RE_BANDERA = /([\u{1F1E6}-\u{1F1FF}]{2})/u;
+function conBanderas(t) {
+  return String(t || '').split(RE_BANDERA).map((x, i) => (i % 2
+    ? <Bandera key={i} cc={[...x].map((c) => String.fromCharCode(c.codePointAt(0) - 0x1F1E6 + 97)).join('')} cls="pf8-ap-fl" />
+    : x));
 }
 const errorCuentaTx = (e) => (e === 'discord_ocupado' ? 'Discord no contesta ahora: prueba de nuevo en un minuto.'
   : e === 'kv' ? 'No pude guardarlo ahora. Prueba de nuevo en un rato.' : 'No pude cargarlo. Prueba de nuevo en un rato.');

@@ -531,9 +531,10 @@ function Ajustes({ sv }) {
             ayuda="Al terminar cada evento de la Liga en tu servidor, el bot avisa en tu chat general quién ganó y qué drop se lleva, con botones para abrirlo. Menciona sólo a quien ganó un drop.">
             <Interruptor t="Los ganadores de cada evento" on={c.ganadores !== false} ocup={ocup} cambiar={(v) => cambiar('ganadores', v)}
               si="Prendido: un aviso por evento" no="Apagado: no se avisa" /></Fila>
-          <Fila t="#N del ranking en el apodo" sello={sello === 'nick'} ayuda="Quien lo eligió con /numeral se queda con lo suyo.">
-            <Interruptor t="#N del ranking en el apodo" on={c.nick} ocup={ocup} cambiar={(v) => cambiar('nick', v)}
-              si="Activado: se le pone el número a todos" no="Apagado: no se le pone a nadie" /></Fila>
+          {/* 🏷️ desde el 18/11/2026 son las marcas del apodo (el #N y la crew), y cada uno elige su estilo con /apodo */}
+          <Fila t="Las marcas de la Liga en el apodo" sello={sello === 'nick'} ayuda="El #N y la crew de cada uno, como «#23 | FLB | Nombre». Quien eligió su estilo con /apodo se queda con lo suyo.">
+            <Interruptor t="Las marcas de la Liga en el apodo" on={c.nick} ocup={ocup} cambiar={(v) => cambiar('nick', v)}
+              si="Activadas: el #N y la crew a quien no eligió" no="Apagadas: sólo el nombre a quien no eligió" /></Fila>
         </fieldset>
         <fieldset className="sp-aj-card">
           <legend>Dónde se puede usar /card</legend>

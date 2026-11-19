@@ -123,7 +123,7 @@ const env = {
                                     : (k in PUESTO ? PUESTO[k]
                                     : (k in KV_FALSO ? KV_FALSO[k] : null))),
     put: async (k, v) => { PUESTO[k] = v; },
-    // ⚠️ `delete` FALTABA, y no era cosmético: `/numeral mostrar:True` lo llama
+    // ⚠️ `delete` FALTABA, y no era cosmético: el `/numeral mostrar:True` de antes lo llamaba
     // para borrar la preferencia. Sin él en el mock, el comando reventaba acá
     // y hubiera reventado igual en producción sin que nadie se enterara hasta
     // que alguien quisiera volver a mostrar su puesto.
@@ -1324,7 +1324,7 @@ const txt = (r) => r.json?.data?.content || '';
   const r = await pedir(ayuda());
   const t = txt(r);
   ok('sin argumento lista los comandos',
-     ['/card', '/numeral', '/settings', '/ping'].every(c => t.includes(c)));
+     ['/card', '/apodo', '/settings', '/ping'].every(c => t.includes(c)));
   ok('y dice cómo pedir el detalle', /\/help comando:/.test(t));
   ok('es efímero', (r.json?.data?.flags & 64) === 64,
      'un manual en el canal es ruido para los demás');
@@ -1350,85 +1350,66 @@ const txt = (r) => r.json?.data?.content || '';
   META.req = guardado;
 }
 {
-  const r = await pedir(ayuda('numeral'));
-  ok('la de /numeral explica la precedencia', /le gana/i.test(txt(r)),
-     'es la parte que nadie adivina');
+  const r = await pedir(ayuda('apodo'));
+  ok('la de /apodo explica la precedencia y muestra los seis estilos', /le gana/i.test(txt(r)) && /#23 \| FLB \| Bloody/.test(txt(r))
+     && /40º \| FLB \| Bloody/.test(txt(r)), 'es la parte que nadie adivina');
 }
 {
   const r = await pedir(ayuda('settings'));
   ok('la de /settings dice que es para admins', /admins/i.test(txt(r)));
 }
 
-console.log('\nEL «#N» DEL APODO: EL SERVIDOR DECIDE, LA PERSONA MANDA\n');
+console.log('\n🏷️ /apodo: SEIS ESTILOS, LO TUYO GANA\n');
 
-// Un `/numeral` de alguien que hoy lleva «#22 | Bloody» en el servidor que se
-// le pase. El apodo viaja en `member.nick`, igual que en Discord de verdad.
-const cmdPuesto = (guild, uid, valor, nick = '#22 | Bloody') => ({
+// Un `/apodo` de alguien que hoy lleva «#22 | Bloody» en el servidor que se le pase. El apodo viaja en `member.nick`,
+// igual que en Discord de verdad; las piezas, en `apodos` (las sube herramientas/sincronizar_puesto.py)
+const cmdApodo = (guild, uid, estilo, nick = '#22 | Bloody') => ({
   type: 2, guild_id: guild,
   member: { nick, user: { id: uid }, permissions: '0' },
-  data: valor === undefined
-    ? { name: 'numeral' }
-    : { name: 'numeral', options: [{ name: 'mostrar', type: 5, value: valor }] },
+  data: estilo === undefined ? { name: 'apodo' } : { name: 'apodo', options: [{ name: 'estilo', type: 4, value: estilo }] },
 });
 const texto = (r) => r.json?.data?.content || '';
-const leerNick = (g, u) => { try { return JSON.parse(PUESTO[`pnick:${g}:${u}`]); }
-                             catch { return null; } };
-// 🔑 LOS DE ESTAS PRUEBAS TIENEN NÚMERO EN EL COMPETITIVO (`c.n` en `p:`): desde
-// el 29/09/2026 el «#» es sólo de ellos (`vs.c.n`) (Dlx: «ÚNICAMENTE a las personas que
-// están en el competitivo»). El que no tiene, más abajo.
-PUESTO['p:bloody'] = JSON.stringify({ n: 'Bloody', vs: { c: { sc: 60.1, n: 22 } } });
-for (const u of ['777002', '777003', '777004', '777005', '777006']) PUESTO['d:' + u] = 'bloody';
+const leerApodo = (u) => { try { return JSON.parse(PUESTO['apodo:' + u]); } catch { return null; } };
+const fila = [22, 40, 1, 'co', 'B-', 'FLB', 'Bloody'];
+PUESTO.apodos = JSON.stringify({ v: 1, s: ['FLB'], p: Object.fromEntries(['777002', '777003', '777004', '777005', '777006'].map((u) => [u, fila])) });
 
 {
-  const r = await pedir(cmdPuesto(G.FFA, '777009'));
-  ok('sin número en el Competitivo, /numeral explica cómo se consigue y no guarda nada',
-     /10 eventos/.test(texto(r)) && /Todavía no tienes número/.test(texto(r)) && leerNick(G.FFA, '777009') === null,
-     texto(r).slice(0, 90));
+  const r = await pedir({ type: 2, user: { id: '777001' }, data: { name: 'apodo' } });
+  ok('por mensaje directo avisa que va adentro de un servidor', /adentro de un servidor/i.test(texto(r)));
 }
 {
-  const r = await pedir({ type: 2, user: { id: '777001' }, data: { name: 'numeral' } });
-  ok('por mensaje directo avisa que va adentro de un servidor',
-     /adentro de un servidor/i.test(texto(r)));
+  const r = await pedir(cmdApodo(G.FFA, '777002'));
+  ok('sin estilo muestra el que rige y de dónde sale', /estilo \*\*1\*\*/.test(texto(r)) && /el de siempre/.test(texto(r)), texto(r).slice(0, 120));
+  ok('… y los seis armados con sus piezas', /#22 \| FLB \| Bloody/.test(texto(r)) && /40º \| FLB \| Bloody/.test(texto(r))
+     && /💎 \| FLB \| Bloody/.test(texto(r)) && /🇨🇴 \| FLB \| Bloody/.test(texto(r)) && /B- \| FLB \| Bloody/.test(texto(r)), texto(r));
+  ok('… y cómo cambiarlo, con un comando que existe', /\/apodo estilo:/.test(texto(r)) && !/\/numeral/.test(texto(r)));
 }
 {
-  const r = await pedir(cmdPuesto(G.FFA, '777002'));
-  ok('sin argumento dice cómo está', /a la vista/i.test(texto(r)));
-  ok('y de dónde sale esa decisión', /servidor/i.test(texto(r)),
-     'sin tocar nada, rige lo del servidor');
+  const r = await pedir(cmdApodo(G.FFA, '777003', 6));
+  const v = leerApodo('777003');
+  ok('elegir guarda el estilo en `apodo:<id>`, para todos los servidores', v && v.e === 6, JSON.stringify(v));
+  ok('… y dice cómo va a quedar: el nombre solo', /`Bloody`/.test(texto(r)), texto(r));
+  const r2 = await pedir(cmdApodo(G.DRA, '777003'));
+  ok('en otro servidor rige lo que eligió', /estilo \*\*6\*\*/.test(texto(r2)) && /lo elegiste tú/.test(texto(r2)), texto(r2).slice(0, 120));
 }
 {
-  const r = await pedir(cmdPuesto(G.FFA, '777003', false));
-  const v = leerNick(G.FFA, '777003');
-  ok('apagarlo guarda la elección con el guild adentro', !!v, 'pnick:<guild>:<id>');
-  ok('y guarda `on:false`, no la sola presencia de la clave', v && v.on === false,
-     'la presencia no distingue «lo apagó» de «nunca eligió»');
-  ok('y se acuerda del apodo con el número', v && v.antes === '#22 | Bloody',
-     'prender de nuevo necesita el número, y el Worker no tiene el ranking');
-}
-{
-  // ⚠️ EL CASO QUE JUSTIFICA LA CLAVE POR SERVIDOR.
-  const r = await pedir(cmdPuesto(G.DRA, '777003'));
-  ok('apagado en FFA, en DRA sigue a la vista', /a la vista/i.test(texto(r)));
-}
-{
-  // 🔴 EL TEXTO NOMBRABA `/puesto`, QUE NO EXISTE: el comando se llama
-  // `/numeral` desde que se registró. Quien copiaba el ejemplo recibía
-  // «comando desconocido» de Discord.
-  const r = await pedir(cmdPuesto(G.FFA, '777004'));
-  ok('el ejemplo para cambiarlo nombra un comando que existe',
-     /\/numeral mostrar:/.test(texto(r)) && !/\/puesto/.test(texto(r)), texto(r).slice(-80));
-}
-{
-  // 🔴 SIN CUPO DE KV SE DICE, Y EL APODO NO SE TOCA. El 24/09/2026 a las
-  // 7 PM ET la cuota diaria se agotó y el Worker tiró 5 excepciones: una
-  // escritura sin `try` es «la aplicación no respondió».
+  // 🔴 SIN CUPO DE KV SE DICE, Y EL APODO NO SE TOCA (el 24/09/2026 la cuota diaria se agotó y una escritura sin `try`
+  // fue «la aplicación no respondió»)
   const put = env.KV.put;
   env.KV.put = async () => { throw new Error('KV put() limit exceeded for the day.'); };
-  const r = await pedir(cmdPuesto(G.FFA, '777005', false));
+  const r = await pedir(cmdApodo(G.FFA, '777005', 3));
   env.KV.put = put;
-  ok('sin cupo de KV, /numeral contesta y dice que no guardó',
-     /no pude guardar tu elecci/i.test(texto(r)) && /limit exceeded/.test(texto(r)), texto(r));
-  ok('y no anota nada a medias', leerNick(G.FFA, '777005') === null);
+  ok('sin cupo de KV, /apodo contesta y dice que no guardó', /no pude guardar tu elecci/i.test(texto(r)) && /limit exceeded/.test(texto(r)), texto(r));
+  ok('y no anota nada a medias', leerApodo('777005') === null);
+}
+{
+  const r = await pedir(cmdApodo(G.FFA, '777009', 1, ''));
+  ok('quien no tiene piezas: se guarda y se le dice que aparecen solas', leerApodo('777009')?.e === 1
+     && /Todavía no tienes piezas/.test(texto(r)), texto(r));
+}
+{
+  const r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '777002' } }, data: { name: 'numeral' } });
+  ok('el /numeral de antes manda a /apodo (mientras Discord lo saca de la lista)', /\/apodo/.test(texto(r)));
 }
 
 console.log('\nLOS TRES ESTADOS: SIN ELEGIR / PRENDIDO / APAGADO\n');
@@ -1448,7 +1429,7 @@ const ADMIN = '8', NADIE = '0', SOLO_ROLES = '268435456';
 {
   const r = await pedir(cmdSettings(G.DRA, NADIE));
   ok('un usuario común no puede abrir /settings', /admins/i.test(texto(r)));
-  ok('y se le dice qué SÍ puede hacer', /\/numeral/.test(texto(r)),
+  ok('y se le dice qué SÍ puede hacer', /\/apodo/.test(texto(r)),
      'una negativa sin salida deja a la persona sin saber adónde ir');
 }
 {
@@ -1458,14 +1439,14 @@ const ADMIN = '8', NADIE = '0', SOLO_ROLES = '268435456';
 {
   const r = await pedir(cmdSettings(G.DRA, ADMIN));
   ok('un admin ve el panel', /Ajustes de la Liga/.test(texto(r)));
-  ok('y arranca con el #N activado', /activado/.test(texto(r)),
+  ok('y arranca con las marcas del apodo activadas', /activadas/.test(texto(r)),
      'un servidor que nunca lo abrió se comporta como antes de que existiera');
   ok('los canales arrancan en «todos»', /todos/.test(texto(r)));
   ok('es efímero', (r.json?.data?.flags & 64) === 64);
 }
 {
   const r = await pedir(clickCfg(G.DRA, ADMIN, 'cfg:nick'));
-  ok('el botón apaga el #N del servidor', /apagado/.test(texto(r)));
+  ok('el botón apaga las marcas del servidor', /apagadas/.test(texto(r)));
   ok('y PISA el mismo mensaje en vez de mandar otro', r.json?.type === 7,
      'tres ajustes dejarían tres paneles contradictorios');
 }
@@ -1476,25 +1457,23 @@ const ADMIN = '8', NADIE = '0', SOLO_ROLES = '268435456';
 }
 {
   // 🔴 LA REGLA DE DLX: el servidor está apagado, pero 777004 nunca eligió.
-  const r = await pedir(cmdPuesto(G.DRA, '777004'));
-  ok('quien NUNCA eligió sigue al servidor', /oculto/i.test(texto(r)),
+  const r = await pedir(cmdApodo(G.DRA, '777004'));
+  ok('quien NUNCA eligió sigue al servidor', /estilo \*\*6\*\*/.test(texto(r)) && /apagó las marcas/.test(texto(r)),
      'DRA quedó apagado en el click de arriba');
 }
 {
-  // ...y 777005 lo prende a propósito: a partir de ahí, gana él.
-  await pedir(cmdPuesto(G.DRA, '777005', true));
-  const r = await pedir(cmdPuesto(G.DRA, '777005'));
-  ok('quien lo prendió a mano lo conserva aunque el servidor esté apagado',
-     /a la vista/i.test(texto(r)), 'es lo suyo, le gana al servidor');
-  ok('y el mensaje dice que es por elección suya', /\*\*tú\*\* lo elegiste/i.test(texto(r)));
+  // ...el /numeral de antes, prendido en ESE servidor, se respeta: es una elección suya
+  PUESTO[`pnick:${G.DRA}:777006`] = JSON.stringify({ on: true, antes: '', ts: 1 });
+  const r = await pedir(cmdApodo(G.DRA, '777006'));
+  ok('quien lo prendió con el /numeral de antes lo conserva aunque el servidor esté apagado',
+     /estilo \*\*1\*\*/.test(texto(r)) && /numeral` de antes/.test(texto(r)), texto(r).slice(0, 140));
 }
 {
-  // ⚠️ Y PRENDERLO CUANDO YA SE VE **IGUAL SE GUARDA**: hoy se ve igual, pero
-  // blinda el apodo contra un futuro apagón del servidor.
-  const r = await pedir(cmdPuesto(G.FFA, '777006', true));
-  const v = leerNick(G.FFA, '777006');
-  ok('pedirlo cuando ya se veía igual deja constancia', v && v.on === true,
-     'sin esto no habría forma de blindar el apodo antes de que lo apaguen');
+  // ...y 777005 elige un estilo a propósito: a partir de ahí, gana él, también donde el servidor apagó
+  await pedir(cmdApodo(G.DRA, '777005', 2));
+  const r = await pedir(cmdApodo(G.DRA, '777005'));
+  ok('quien elige con /apodo lo conserva aunque el servidor esté apagado', /estilo \*\*2\*\*/.test(texto(r)) && /lo elegiste tú/.test(texto(r)),
+     'es lo suyo, le gana al servidor');
 }
 
 console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
@@ -2886,8 +2865,26 @@ console.log('\nLAS ENCUESTAS\n');
   ok('verificado: lo apaga en DRA con la clave de /numeral, ignora un guild que no es de la Liga y dice cómo está cada uno',
      r.status === 200 && JSON.parse(PUESTO['pnick:841017460341604382:' + VIEJO] || '{}').on === false && !('pnick:123:' + VIEJO in PUESTO) &&
      dra.mio === false && (r.json.svs || []).length >= 10, JSON.stringify(r.json).slice(0, 200));
+  // 🏷️ tu apodo desde el perfil (18/11/2026): la misma clave que `/apodo`, sólo verificados, y los seis armados con lo tuyo
+  const apR = async (cuerpo) => {
+    const x = await worker.fetch(new Request('https://x/avisos/apodo', { method: 'POST', body: JSON.stringify(cuerpo) }), env, ctx);
+    return { status: x.status, json: JSON.parse(await x.text()) };
+  };
+  PUESTO.apodos = JSON.stringify({ v: 1, s: ['FLB'], p: { [VIEJO]: [3, 12, 0, 'ar', 'SS', 'FLB', 'Konan'] } });
+  r = await apR({ token: 'permisoBueno1234567890' });
+  ok('tu apodo desde el perfil: los seis armados con lo tuyo, y el 1 por defecto',
+     r.status === 200 && r.json.estilo === null && r.json.defecto === 1 && (r.json.estilos || []).length === 6
+     && r.json.estilos[0].sale === '#3 | FLB | Konan' && r.json.estilos[2].sale === '🔮 | FLB | Konan', JSON.stringify(r.json).slice(0, 220));
+  r = await apR({ token: 'permisoBueno1234567890', estilo: 4 });
+  ok('elegir desde el perfil guarda la misma clave que /apodo', r.status === 200 && r.json.estilo === 4
+     && JSON.parse(PUESTO['apodo:' + VIEJO] || '{}').e === 4, JSON.stringify(r.json).slice(0, 120));
+  r = await apR({ token: 'permisoBueno1234567890', estilo: 9 });
+  ok('un estilo que no existe: 400, y no se toca lo guardado', r.status === 400 && JSON.parse(PUESTO['apodo:' + VIEJO]).e === 4);
+  delete PUESTO['apodo:' + VIEJO];
   delete PUESTO['pnick:841017460341604382:' + VIEJO];
   delete PUESTO['d:' + VIEJO];
+  r = await apR({ token: 'permisoBueno1234567890' });
+  ok('tu apodo desde el perfil: sin verificar, no', r.status === 403 && r.json.error === 'sin_verificar', JSON.stringify(r.json));
   globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
   r = await votarR({ token: 'permisoFalso1234567890', enc: 'x2:2026-10-05', op: 'SR' });
   ok('un permiso que Discord no reconoce: 401', r.status === 401 && r.json.error === 'discord');

@@ -127,6 +127,8 @@ jobs:
           # 👤 la tanda 2 del perfil: la frase, los emblemas elegidos, el rol de DRA, Aplausos y Voz del pueblo, y «Lo último»
           # con lo que hizo en la página sin decir nunca a quién ni qué
           node bot/perfil_prueba.mjs
+          # 🏷️ /apodo: bot/apodo.js arma los seis estilos igual que bot/apodo.py (los mismos casos, bot/apodo_casos.json)
+          node bot/apodo_prueba.mjs
 
       # 🗺️ `herramientas/que_pide_cada_carta.py --auto` (04/11/2026) dibuja las cuatro cartas y da rojo si una pide un dato que
       # `datos/campos_por_carta.json` no tiene, porque ese dato no redibuja nada. No escribe: volver a medir redibuja todas las
@@ -149,7 +151,7 @@ jobs:
                    comun/temporada.py comun/rangos.py comun/foco_carga.py comun/servidor_elegido.py 02_Competitivo/v2/estilos_juego.py bot/juegos.py bot/eventos_estilo.py \
                    herramientas/quien_puede_card.py herramientas/roles_de_rango.py herramientas/dra_hub.py herramientas/sombras.py \
                    herramientas/simular_score.py herramientas/unir_sellos.py herramientas/sin_dm.py \
-                   herramientas/sincronizar_puesto.py herramientas/uso.py herramientas/espacio.py herramientas/emojis_vs.py herramientas/que_pide_cada_carta.py \
+                   herramientas/sincronizar_puesto.py bot/apodo.py herramientas/uso.py herramientas/espacio.py herramientas/emojis_vs.py herramientas/que_pide_cada_carta.py \
                    herramientas/banners_eventos.py herramientas/dra_remake.py herramientas/tuto_marcas.py herramientas/fondos_og.py bot/og_links.py herramientas/textos_ingles.py; do
             echo "::group::$f"
             if ! python "$f" --auto; then

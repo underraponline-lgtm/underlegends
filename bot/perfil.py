@@ -40,7 +40,7 @@ DESCRIPCION = (
     'Las tarjetas de la Liga Global.\n\n'
     '**/card** — la tuya, o la de quien elijas. Cuatro caras: Temporada, '
     'Competitiva, Servidor y País. La de Servidor cambia según dónde estés.\n'
-    '**/numeral** — mostrá u ocultá tu #N en tu apodo.\n'
+    '**/apodo** — elige cómo va tu apodo: con tu #N, tu crew, tu Temporada, tu ELO, tu bandera o solo tu nombre.\n'
     '**/settings** — ajustes del servidor (admins).\n\n'
     'Hace falta estar en DRA y verificarte ahí. Si todavía no competiste, '
     'tu tarjeta te dice cuánto te falta.'

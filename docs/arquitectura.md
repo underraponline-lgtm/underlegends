@@ -115,7 +115,7 @@ para que el 99 % de las cartas salga idéntica.
 ### El Worker (Cloudflare)
 
 Contesta interacciones HTTP de Discord — sin gateway, sin proceso prendido.
-Comandos: `/card`, `/versus`, `/numeral`, `/settings`, `/help`, `/ping`.
+Comandos: `/card`, `/versus`, `/apodo` (era `/numeral` hasta el 18/11/2026), `/settings`, `/help`, `/ping`.
 
 **No lee el Sheet nunca.** Lee KV, que es un valor chico por persona. Es la
 consecuencia directa de los 10 ms: parsear un JSON con las 138 se pasa del
@@ -127,7 +127,9 @@ presupuesto, así que hay una clave por persona.
 | `d:<discord_id>` | el índice que hace que `/card` sepa quién sos sin escribir nada |
 | `meta` | el sello de la corrida, los requisitos y en qué servidores está el bot |
 | `cfg:<guild>` | los ajustes de `/settings` de ese servidor |
-| `pnick:<guild>:<uid>` | lo que esa persona eligió en `/numeral` |
+| `pnick:<guild>:<uid>` | lo que esa persona eligió en el `/numeral` de antes (se sigue respetando) |
+| `apodo:<uid>` | el estilo de apodo que eligió con `/apodo` o en su perfil (1 a 6, para todos los servidores) |
+| `apodos` | las piezas de cada uno para armar su apodo (`herramientas/sincronizar_puesto.py`) |
 
 ### Las dos planillas
 

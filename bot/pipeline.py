@@ -1362,9 +1362,10 @@ def _lo_barato(correr):
         # ÚNICAMENTE a las personas que están en el competitivo… en toda la
         # liga». Después de los pools, que traen el número. Casi siempre no
         # hay nada que cambiar; nunca frena el ciclo.
-        paso('2b6', 'el #N del apodo')
+        # 🏷️ desde el 18/11/2026 es el estilo que cada uno eligió con /apodo (seis), o el #N y la crew por defecto
+        paso('2b6', 'los apodos (/apodo)')
         if not corre(['herramientas/sincronizar_puesto.py', '--ciclo'], callado=False):
-            print('      ⚠️ no pude sincronizar el #N de los apodos: se reintenta en la próxima')
+            print('      ⚠️ no pude sincronizar los apodos: se reintenta en la próxima')
         # ── 2b7 · el rol de rango en DRA, como el #N del apodo ──────────
         # 🔑 Dlx, 07/10/2026: «si no consume nada hazlo… como lo haces con los apodos». La letra del Competitivo (con su
         # puerta de 10 eventos); sólo toca a quien tiene el rol equivocado, y con tope. Nunca frena el ciclo. Ver

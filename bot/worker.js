@@ -42,6 +42,7 @@ import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, 
   sesionFin, sesionDe, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
 import * as AR from './antiraid.js';
+import * as AP from './apodo.js';
 // 👥 las crews (19/10/2026): la forma de comparar nombres, la misma que el objeto
 import { normCrew } from './crews.js';
 export { Avisos };
@@ -1624,7 +1625,7 @@ async function cambiarApodo(env, gid, uid, nick) {
       headers: {
         'Authorization': 'Bot ' + env.DISCORD_TOKEN,
         'Content-Type': 'application/json',
-        'X-Audit-Log-Reason': 'Liga Global: /numeral',
+        'X-Audit-Log-Reason': 'Liga Global: /apodo',
       },
       // `null` borra el apodo y deja el nombre de la cuenta. Cadena vacía no
       // sirve: Discord la rechaza.
@@ -2363,10 +2364,10 @@ function panelAjustes(sv, cfg) {
   const texto = [
     `## ⚙️ Ajustes de la Liga en **${sv}**`,
     '',
-    `**#N del ranking en el apodo** · ${cfg.nick ? '🟢 activado' : '🔴 apagado'}`,
+    `**Las marcas de la Liga en el apodo** · ${cfg.nick ? '🟢 activadas' : '🔴 apagadas'}`,
     cfg.nick
-      ? '> Se le pone el número a todos, salvo a quien lo haya apagado con `/numeral`.'
-      : '> No se le pone a nadie, salvo a quien lo haya pedido con `/numeral`.',
+      ? '> Quien no eligió nada lleva su #N y su crew (`#23 | FLB | Nombre`). Cada uno lo cambia con `/apodo`.'
+      : '> Quien no eligió nada queda con su nombre solo. Cada uno puede elegir su estilo con `/apodo`.',
     '',
     `**Canales donde se puede usar \`/card\`** · ${canales}`,
     '> Vacío = en cualquiera.',
@@ -2621,6 +2622,53 @@ async function numeralPagina(req, env) {
   return json({ ok: true, numero, svs: out });
 }
 
+// 🏷️ TU APODO, DESDE TU PERFIL (18/11/2026): lo mismo que `/apodo` —la misma clave, `apodo:<id>`— pero sin servidor, así
+// que no cambia el apodo acá: lo aplica el ciclo en su próxima vuelta, en todos. Devuelve los seis estilos armados con
+// tus piezas (las de `apodos`, las que deja `herramientas/sincronizar_puesto.py`) para que la página los muestre como van
+// a quedar. Sólo verificados (`d:`), como el /numeral de antes
+async function apodoPagina(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  const json = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: h });
+  if (req.method !== 'POST') return json({ error: 'metodo' }, 405);
+  const crudo = await req.text();
+  if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+  let d = null;
+  try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+  if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+  const q = await quienPide(req, env, d);
+  if (!q.id) return json({ error: q.error }, q.estado);
+  let de = '';
+  try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+  if (!claveValida(de)) return json({ error: 'sin_verificar' }, 403);
+  let mio = null;
+  let todo = null;
+  try {
+    const [m, a] = await Promise.all([env.KV.get('apodo:' + q.id), env.KV.get('apodos')]);
+    mio = m ? JSON.parse(m) : null;
+    todo = a ? JSON.parse(a) : null;
+  } catch (e) { mio = mio || null; }
+  const quiere = d.estilo == null ? null : AP.estiloValido(d.estilo);
+  if (d.estilo != null && !quiere) return json({ error: 'estilo' }, 400);
+  if (quiere && (!mio || AP.estiloValido(mio.e) !== quiere)) {
+    try {
+      await env.KV.put('apodo:' + q.id, JSON.stringify({ e: quiere, ts: Date.now() }));
+      mio = { e: quiere };
+    } catch (e) {
+      return json({ error: 'kv', detalle: String(e).slice(0, 60) }, 503);
+    }
+  }
+  const fila = todo && todo.p ? todo.p[q.id] : null;
+  const p = AP.piezasDe(fila);
+  const base = (fila && fila[6]) || '';
+  const estilos = AP.ESTILOS.map(([n, t, ej]) => {
+    const sale = p && base ? AP.armar(n, base, p) : '';
+    // «te falta esa pieza»: la marca de ESE estilo (sin rango, el 5 sale igual que el 1 con la crew sola)
+    const falta = !!p && n !== AP.SOLO_NOMBRE && !AP.adelante(n, p);
+    return { n, t, ej, sale, falta };
+  });
+  return json({ ok: true, estilo: AP.estiloValido(mio && mio.e), defecto: AP.POR_DEFECTO, piezas: !!p, estilos });
+}
+
 // ── /help ─────────────────────────────────────────────────────────────────
 // ⚠️ LOS REQUISITOS NO ESTÁN ESCRITOS ACÁ: SALEN DE `meta.req`, que el
 // pipeline escribe desde `comun/requisitos.py`. Un texto de ayuda a mano se
@@ -2722,21 +2770,16 @@ const AYUDA = {
     'Sólo aparecen las categorías que tienen **los dos**, y desbloqueadas.',
   ].join('\n'),
 
-  numeral: () => [
-    '## `/numeral` — tu `#N` en el apodo',
-    '`/numeral` solo te dice cómo está hoy.',
-    '`/numeral mostrar:True` lo muestra · `/numeral mostrar:False` lo oculta.',
+  apodo: () => [
+    '## `/apodo` — cómo va tu apodo en Discord',
+    '`/apodo` solo te muestra los seis estilos con lo tuyo. `/apodo estilo:` elige uno:',
+    ...AP.ESTILOS.map(([n, t, ej]) => `**${n}** · ${t} — \`${ej}\`` + (n === AP.POR_DEFECTO ? ' *(el de siempre)*' : '')),
     '',
-    '**Es por servidor**: puedes llevarlo en DRA y no en FFA.',
+    'La sigla de tu crew va sola si tienes; lo que no tienes no aparece (sin 10 eventos no hay #N ni rango).',
+    'Vale para **todos los servidores de la Liga**: acá cambia al toque y en los demás, en la próxima vuelta del bot.',
     '',
-    '⚠️ **Tu decisión le gana a la del servidor.** Si un admin apaga el `#N` ' +
-    'para todos con `/settings`, a ti no te lo tocan si alguna vez lo ' +
-    'elegiste a mano. Y al revés: si nunca usaste este comando, sigues lo ' +
-    'que diga el servidor.',
-    '',
-    'Por eso pedir `/numeral mostrar:True` cuando el número **ya se ve** no es ' +
-    'al pedo: deja constancia de que lo quieres, y eso te protege de un ' +
-    'apagón posterior.',
+    '⚠️ **Tu elección le gana a la del servidor.** Si un admin apaga las marcas con `/settings`, a ti no te tocan ' +
+    'si elegiste un estilo.',
   ].join('\n'),
 
   // ⚠️ SIN ARGUMENTOS A PROPOSITO. El handler de `/help` mira la aridad
@@ -2775,8 +2818,8 @@ const AYUDA = {
     '## `/settings` — los ajustes del servidor',
     'Sólo para **admins** o quien tenga *Gestionar roles*. Va con botones.',
     '',
-    '· **`#N` del ranking en el apodo** — prendido o apagado para todo el ' +
-    'servidor. Es el valor por defecto: quien haya elegido con `/numeral` ' +
+    '· **Las marcas de la Liga en el apodo** (el `#N` y la crew) — prendidas o apagadas para todo el ' +
+    'servidor. Es el valor por defecto: quien haya elegido su estilo con `/apodo` ' +
     'conserva lo suyo.',
     '· **Canales donde se puede usar `/card`** — vacío es en cualquiera.',
     '· **Avisos de cambio de rango** — a qué canal anunciarlos.',
@@ -2874,7 +2917,7 @@ const AYUDA_INDICE = [
   '· **`/versus`** — quién gana entre dos, en la categoría que elijas',
   '· **`/foto`** — usa tu foto de Discord en tus tarjetas ' +
   '*(una por temporada, libre hasta que arranque)*',
-  '· **`/numeral`** — muestra u oculta tu `#N` en tu apodo *(en un servidor)*',
+  '· **`/apodo`** — cómo va tu apodo: con tu #N, tu crew, tu puesto de la Temporada, tu ELO, tu bandera o solo el nombre',
   '· **`/settings`** — los ajustes del servidor *(admins)*',
   '· **`/antiraid`** — el anti-raid del servidor *(el dueño)*',
   '· **`/afiche`** y **`/llave`** — la imagen del último anuncio y de la última llave *(staff y organizadores)*',
@@ -3766,8 +3809,8 @@ const COMANDOS = {
       // siempre es un admin buscando los ajustes de SU servidor, y mandarlo
       // al comando correcto resuelve el caso sin que tenga que preguntar.
       return aviso('`/owner` es de la **Liga Global**, no de este servidor.\n' +
-                   'Los ajustes de acá son `/settings`; tu puesto en el apodo, ' +
-                   '`/numeral`.');
+                   'Los ajustes de acá son `/settings`; tu apodo, ' +
+                   '`/apodo`.');
     }
     const sub = (((i.data && i.data.options) || [])[0]) || {};
     const arg = (n) => {
@@ -4270,7 +4313,7 @@ const COMANDOS = {
     if (!puedeAjustar(i)) {
       return aviso('Esto lo manejan los **admins** del servidor (o quien tenga ' +
                    '*Gestionar roles*).\n' +
-                   'Lo tuyo se cambia con `/numeral` — y tu elección le gana a la ' +
+                   'Tu apodo se cambia con `/apodo` — y tu elección le gana a la ' +
                    'del servidor.');
     }
     const cfg = await ajustes(env, gid);
@@ -4283,114 +4326,85 @@ const COMANDOS = {
     return AR.comando(i, env, ctx, ayudaAR(i));
   },
 
-  async numeral(i, env, ctx) {
+  // 🏷️ /apodo (Dlx, 18/11/2026: «en vez del comando de numeración sea otro… que tengas opciones e incluso para
+  // combinar»). Seis estilos listos (`bot/apodo.js`), uno para todos los servidores de la Liga: se guarda en
+  // `apodo:<id>` y se aplica AL TOQUE en este servidor —con las piezas que deja el ciclo en `apodos`, el mismo nombre
+  // base y el mismo `decidir()` que `herramientas/sincronizar_puesto.py`, así la vuelta siguiente no lo «corrige»— y en
+  // los demás, en esa vuelta. Sin `estilo:` muestra los seis con lo tuyo.
+  async apodo(i, env, ctx) {
     const gid = i.guild_id;
     const uid = idDe(i);
-    if (!gid) {
-      return aviso('Este comando va **adentro de un servidor**: la preferencia es ' +
-                   'de cada uno por separado, así que puedes llevar el puesto en ' +
-                   'DRA y no en FFA.');
-    }
+    if (!gid) return aviso('`/apodo` va **adentro de un servidor de la Liga**: ahí te cambio el apodo al toque.');
     const sv = aquiEs(gid) || 'este servidor';
-    // 🔴 EL «#» ES SÓLO DE QUIEN ESTÁ EN EL COMPETITIVO. Dlx, 29/09/2026: «los
-    // que tienen el #, ese comando solo debería… ÚNICAMENTE a las personas que
-    // están en el competitivo». Sin número (menos de 10 eventos, o fuera de
-    // concurso) no hay nada que mostrar: se le saca el «#» viejo si lo tiene
-    // y se le dice cómo se consigue. El número lo manda el ciclo en `p:`
-    // (`vs.c.n`, `versus_de()` de `bot/subir_datos.py`).
-    let numero = 0;
+    let todo = null;
+    let mio = null;
     try {
-      const clave = await env.KV.get('d:' + uid);
-      const p = clave ? JSON.parse((await leerP(env, clave)) || '{}') : {};
-      numero = (p.vs && p.vs.c && p.vs.c.n) || 0;
-    } catch (e) { numero = 0; }
-    if (!numero) {
-      const actualSin = (i.member && i.member.nick) || '';
-      let quite = '';
-      if (MARCA_PUESTO.test(actualSin)) {
-        const r = await cambiarApodo(env, gid, uid, sinPuesto(actualSin));
-        quite = r === 'ok' ? '\nTe saqué el número viejo del apodo.' : '';
-      }
-      return aviso('El **#** del apodo es tu puesto en el **Ranking Competitivo**, y ahí se entra ' +
-                   'con **10 eventos** en la temporada. Todavía no tienes número: cuando entres, ' +
-                   'aparece solo (y con `/numeral` lo puedes esconder).' + quite);
-    }
-    const [mio, cfg] = await Promise.all([eleccionNick(env, gid, uid), ajustes(env, gid)]);
-    // lo que rige hoy: lo tuyo si elegiste, si no lo del servidor
-    const ahoraOn = mio ? !!mio.on : cfg.nick !== false;
-
-    const op = ((i.data && i.data.options) || []).find(o => o.name === 'mostrar');
-    if (!op) {
-      const porque = mio
-        ? 'porque **tú** lo elegiste — le gana a lo que diga el servidor.'
-        : `porque es lo que tiene puesto el servidor (nadie lo cambió a mano).`;
-      return aviso(`En **${sv}** tu puesto está **${ahoraOn ? 'a la vista' : 'oculto'}**, ` +
-                   porque + '\nPara cambiarlo: `/numeral mostrar:True` o ' +
-                   '`/numeral mostrar:False`.');
-    }
-    const quiere = !!op.value;
-    // ⚠️ AUNQUE COINCIDA CON LO QUE YA SE VE, SE GUARDA. «Está a la vista
-    // porque el servidor lo quiere» y «está a la vista porque vos lo pediste»
-    // se ven igual hoy y se comportan distinto mañana: lo segundo sobrevive a
-    // que un admin lo apague. Cortar acá con «no cambié nada» le negaría a
-    // alguien la única forma de blindar su apodo.
-    const yaEraMio = mio && !!mio.on === quiere;
-
+      const [a, m] = await Promise.all([env.KV.get('apodos'), env.KV.get('apodo:' + uid)]);
+      todo = a ? JSON.parse(a) : null;
+      mio = m ? JSON.parse(m) : null;
+    } catch (e) { todo = todo || null; }
+    const [viejo, cfg] = await Promise.all([eleccionNick(env, gid, uid), ajustes(env, gid)]);
+    const fila = todo && todo.p ? todo.p[uid] : null;
+    const p = AP.piezasDe(fila);
+    const siglas = (todo && todo.s) || [];
     const actual = (i.member && i.member.nick) || '';
-    // ⚠️ CON EL NÚMERO DE HOY, no con el apodo guardado: ese podía traer el
-    // de la pre-temporada. El nombre es el que tiene, sin el «#».
     const u0 = (i.member && i.member.user) || {};
-    const destino = quiere
-      ? ('#' + numero + ' | ' + (sinPuesto(actual) || u0.global_name || u0.username || '')).slice(0, 32)
-      : sinPuesto(actual);
-
-    // 🔴 SI KV NO ESCRIBE, SE DICE Y NO SE TOCA EL APODO. El 24/09/2026 a
-    // las 7 PM ET la cuota diaria de escrituras se agotó y el Worker tiró 5
-    // excepciones: una escritura sin `try` convierte «hoy no hay cupo» en
-    // «la aplicación no respondió», que no dice nada. Y el apodo NO se
-    // cambia: sin la elección guardada, la próxima sincronización lo
-    // devolvería a lo que diga el servidor.
-    try {
-      await env.KV.put(claveNick(gid, uid), JSON.stringify({
-        on: quiere,
-        // se conserva el apodo con «#N» para poder devolverlo al prenderlo
-        antes: quiere ? ((mio && mio.antes) || actual) : actual,
-        ts: Date.now(),
-      }));
-    } catch (e) {
-      return aviso('No pude guardar tu elección (`' + String(e).slice(0, 60) +
-                   '`), así que no te toqué el apodo. Prueba de nuevo en un rato.');
+    const base = (fila && fila[6]) || AP.nombreDe(actual) || u0.global_name || u0.username || '';
+    // lo que rige hoy: lo tuyo (/apodo), si no tu /numeral de antes acá, si no el servidor, si no el 1
+    const rige = AP.estiloValido(mio && mio.e) || (viejo ? (viejo.on ? AP.POR_DEFECTO : AP.SOLO_NOMBRE)
+      : cfg.nick !== false ? AP.POR_DEFECTO : AP.SOLO_NOMBRE);
+    const porque = mio && AP.estiloValido(mio.e) ? 'lo elegiste tú' : viejo ? 'lo elegiste con el `/numeral` de antes'
+      : cfg.nick !== false ? 'es el de siempre' : `${sv} apagó las marcas`;
+    const op = ((i.data && i.data.options) || []).find((o) => o.name === 'estilo');
+    if (!op) {
+      const lineas = AP.ESTILOS.map(([n, t]) => {
+        const sale = p ? AP.armar(n, base, p) : base;
+        const falta = p && n !== AP.SOLO_NOMBRE && !AP.adelante(n, p) ? ' *(te falta esa pieza)*' : '';
+        return `${n === rige ? '▶' : '·'} **${n}** · ${t} — \`${sale || '(sin apodo)'}\`${falta}`;
+      });
+      return aviso(`Tu apodo en **${sv}**: \`${actual || '(sin apodo)'}\` · estilo **${rige}** (${porque}).\n\n` +
+                   lineas.join('\n') + '\n\nPara cambiarlo: `/apodo estilo:` y eliges uno. Vale para todos los servidores de la Liga.');
     }
-
-    if (yaEraMio && destino === actual) {
-      return aviso(`En **${sv}** tu puesto ya estaba **${quiere ? 'a la vista' : 'oculto'}** ` +
-                   'por elección tuya — lo dejé como estaba.');
+    const n = AP.estiloValido(op.value) || AP.POR_DEFECTO;
+    // 🔴 SI KV NO ESCRIBE, SE DICE Y NO SE TOCA EL APODO (como el /numeral de antes): sin la elección guardada, la
+    // próxima vuelta lo devolvería a lo que diga el servidor
+    if (!mio || AP.estiloValido(mio.e) !== n) {
+      try {
+        await env.KV.put('apodo:' + uid, JSON.stringify({ e: n, ts: Date.now() }));
+      } catch (e) {
+        return aviso('No pude guardar tu elección (`' + String(e).slice(0, 60) + '`), así que no te toqué el apodo. ' +
+                     'Prueba de nuevo en un rato.');
+      }
     }
-
+    const nombreEstilo = (AP.ESTILOS.find((e) => e[0] === n) || [])[1] || '';
+    if (!todo) {
+      return aviso(`Anotado: estilo **${n}** (${nombreEstilo}). ⏳ Te lo pongo en la próxima vuelta del bot, en todos los servidores.`);
+    }
+    const destino = AP.decidir(actual, p, n, base, siglas);
+    if ((destino || '') === actual) {
+      return aviso(`Listo: estilo **${n}** (${nombreEstilo}). En **${sv}** tu apodo ya era \`${actual || '(sin apodo)'}\`.` +
+                   (p ? '' : '\nTodavía no tienes piezas para el apodo (crew, #N, puesto…): cuando las tengas, aparecen solas.'));
+    }
     const res = await cambiarApodo(env, gid, uid, destino);
-    const que = quiere ? 'se va a ver' : 'queda oculto';
     if (res === 'ok') {
-      return aviso(`Listo: en **${sv}** tu puesto **${que}**.\n` +
-                   `Tu apodo ahora es \`${destino || '(sin apodo)'}\`.`);
+      return aviso(`Listo: estilo **${n}** (${nombreEstilo}).\nTu apodo en **${sv}** ahora es \`${destino || '(sin apodo)'}\`; ` +
+                   'en los demás servidores de la Liga, en la próxima vuelta del bot.');
     }
     if (res === 'sin-token') {
-      // ⚠️ DECIR A QUÉ VA A QUEDAR, no sólo que va a cambiar. Sin el apodo
-      // destino la persona no puede ponérselo a mano si no quiere esperar, y
-      // «se actualiza más tarde» sin decir a qué es media respuesta.
-      return aviso(`Anotado: en **${sv}** tu puesto **${que}**.\n` +
-                   `Tu apodo va a quedar \`${destino || '(sin apodo)'}\`.\n` +
-                   '⏳ Se aplica en la próxima sincronización — el bot no cambia ' +
-                   'apodos por sí mismo, a propósito. Si no quieres esperar, ' +
-                   'póntelo tú.');
+      return aviso(`Anotado: estilo **${n}** (${nombreEstilo}). Tu apodo va a quedar \`${destino || '(sin apodo)'}\`.\n` +
+                   '⏳ Se aplica en la próxima vuelta del bot. Si no quieres esperar, póntelo tú.');
     }
-    // ⚠️ LA PREFERENCIA QUEDA GUARDADA AUNQUE EL APODO FALLE, y eso es lo que
-    // se quiere: al dueño del servidor y a quien tenga un rol más alto que el
-    // del bot, Discord no les deja tocar el apodo nunca. Si además se
-    // descartara la preferencia, esa persona no podría elegir jamás.
-    return aviso(`Anotado: en **${sv}** tu puesto **${que}**.\n` +
-                 `⚠️ Pero no pude cambiarte el apodo (\`${res}\`). Suele ser porque ` +
-                 'eres el dueño del servidor o tienes un rol más alto que el del bot: ' +
-                 `ponlo a mano como \`${destino || '(sin el #)'}\`.`);
+    // ⚠️ LA ELECCIÓN QUEDA GUARDADA AUNQUE EL APODO FALLE: al dueño del servidor y a quien tenga un rol más alto que el
+    // del bot, Discord no les deja tocar el apodo nunca
+    return aviso(`Anotado: estilo **${n}** (${nombreEstilo}).\n⚠️ Pero no pude cambiarte el apodo acá (\`${res}\`). Suele ser ` +
+                 'porque eres el dueño del servidor o tienes un rol más alto que el del bot: ' +
+                 `ponlo a mano como \`${destino || '(sin apodo)'}\`.`);
+  },
+
+  // ⏳ el comando de antes: Discord tarda un rato en sacarlo de la lista de cada servidor
+  numeral() {
+    return aviso('`/numeral` ahora es **`/apodo`**: eliges cómo va tu apodo —con tu #N, tu crew, tu puesto de la ' +
+                 'Temporada, tu ELO, tu bandera o solo tu nombre—.');
   },
 };
 
@@ -4951,6 +4965,7 @@ export default {
     // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
     const env = kvMedido(env0, ctx, req.method === 'POST' && camino === '/' ? 'interaccion' : camino);
     if (camino === '/avisos/numeral') return numeralPagina(req, env);
+    if (camino === '/avisos/apodo') return apodoPagina(req, env);
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
     // 🔑 «MI CUENTA» CON DISCORD: ver `cuentaDiscord()`
     if (camino === '/cuenta' && req.method === 'POST') return cuentaDiscord(req, env);

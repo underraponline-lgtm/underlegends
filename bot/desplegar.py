@@ -244,11 +244,11 @@ def main():
     # hasta que terminemos todo esto y ahi si lo reiniciamos el token». O sea
     # que el «cero secretos en el borde» que dice CLAUDE.bot.md describia el
     # estado de ese dia, no una regla: lo que SI es regla es que el token se
-    # rota al final. Con el token adentro, `/numeral` cambia el apodo al
+    # rota al final. Con el token adentro, `/apodo` cambia el apodo al
     # instante en vez de esperar a la proxima corrida del sincronizador.
     #
     # ⚠️ ES OPCIONAL A PROPOSITO. Si no esta en .env el Worker igual anda:
-    # `/numeral` guarda la preferencia y avisa que se aplica despues. Asi el
+    # `/apodo` guarda la preferencia y avisa que se aplica despues. Asi el
     # dia que el token se rote y todavia no este cargado, nada se rompe.
     # 🔴 EL DISPARADOR DEL CICLO, PORQUE EL CRON DE GITHUB NO DISPARA.
     # Medido el 24/09/2026: de las ranuras horarias que estaban LIBRES,
@@ -308,9 +308,9 @@ def main():
     if tok:
         meta['bindings'].append(
             {'type': 'secret_text', 'name': 'DISCORD_TOKEN', 'text': tok})
-        print('  · DISCORD_TOKEN va como secret_text (/numeral cambia el apodo al toque)')
+        print('  · DISCORD_TOKEN va como secret_text (/apodo cambia el apodo al toque)')
     else:
-        print('  ⚠️ sin DISCORD_TOKEN en .env: /numeral anota la preferencia pero')
+        print('  ⚠️ sin DISCORD_TOKEN en .env: /apodo anota la preferencia pero')
         print('     el apodo lo cambia recien sincronizar_puesto.py')
     # ⚠️ SON DOS MODULOS DESDE EL 24/09/2026: `worker.js` importa
     # `avisos.js`. Si se sube uno solo, el import no resuelve y Cloudflare
