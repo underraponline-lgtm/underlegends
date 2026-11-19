@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-19T03:25:12+00:00",
+ "cuando": "2026-11-19T03:55:17+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7199,6 +7199,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "CHICOS ACERQUESEN A ESTE SERVER VAMOS MUCHACHOS A COLABORAR",
+   "tx": "",
+   "cuando": "2026-11-19T03:38:14",
+   "msg_id": "1572818259407802439",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1572818259407802439"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦⚡—novedades",
    "tit": "ya pueden personalizar su tarjeta en la tienda de la liga",
@@ -7287,15 +7296,6 @@
    "cuando": "2026-11-17T17:50:43",
    "msg_id": "1572308019134599297",
    "link": "https://discord.com/channels/1468472442925092958/1468478722884501709/1572308019134599297"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "『🔔』Anuncios",
-   "tit": "FORMATO DE LA MULTIVERS 💜🖤",
-   "tx": "RONDA 1️⃣ : 8X8 ( Temática o personajes Contra Puestos ) RONDA 2️⃣ : MINUTO DE IDA RONDA 3️⃣ : MINUTO DE VUELTA RONDA 4️⃣ : DELUXE ( 3 en Akapela y 5 con Beat ) EN LA REPLICA ❌ : 4X4 5 ENTRADAS",
-   "cuando": "2026-11-16T22:05:04",
-   "msg_id": "1572009637203410985",
-   "link": "https://discord.com/channels/1558611504046153750/1567688556460244992/1572009637203410985"
   },
   {
    "servidor": "URBF",
