@@ -50574,6 +50574,155 @@
   ],
   "v": 2
  },
+ "649": {
+  "antes": {
+   "ALFINPAPA": [
+    599,
+    568,
+    true
+   ],
+   "Majiztral": [
+    29,
+    31,
+    false
+   ],
+   "Marcos": [
+    60,
+    71,
+    false
+   ],
+   "Motera": [
+    74,
+    91,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    131,
+    192,
+    false
+   ],
+   "Under": [
+    285,
+    124,
+    true
+   ],
+   "ZiarKI": [
+    433,
+    360,
+    true
+   ],
+   "mats": [
+    39,
+    45,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "ALFINPAPA",
+    "Tmax Turbo [PN]",
+    "ALFINPAPA"
+   ],
+   [
+    "Majiztral",
+    "Under",
+    "Majiztral"
+   ],
+   [
+    "mats",
+    "ZiarKI",
+    "mats"
+   ],
+   [
+    "Marcos",
+    "Motera",
+    "Marcos"
+   ],
+   [
+    "Majiztral",
+    "ALFINPAPA",
+    "Majiztral"
+   ],
+   [
+    "mats",
+    "Marcos",
+    "mats"
+   ],
+   [
+    "mats",
+    "Majiztral",
+    "mats"
+   ],
+   [
+    "Marcos",
+    "ALFINPAPA",
+    "Marcos"
+   ]
+  ],
+  "ev_antes": {
+   "ALFINPAPA": 1,
+   "Majiztral": 35,
+   "Marcos": 21,
+   "Motera": 9,
+   "Tmax Turbo [PN]": 8,
+   "Under": 11,
+   "ZiarKI": 4,
+   "mats": 14
+  },
+  "fecha": "15/11",
+  "nombre": "RED BULL BATALLA",
+  "num": 649,
+  "participantes": 8,
+  "sello": {
+   "mats": "04cc31aeca83:a8d8b7335469"
+  },
+  "sv": "CEU",
+  "t": "2026-11-19T05:24:29Z",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    7500
+   ],
+   [
+    "Majiztral",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Marcos",
+    "Tercero",
+    4000
+   ],
+   [
+    "ALFINPAPA",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Under",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ZiarKI",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Motera",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
  "650": {
   "antes": {
    "Adriagner": [
@@ -51675,6 +51824,255 @@
    ],
    [
     "compare",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "657": {
+  "antes": {
+   "Deko": [
+    120,
+    164,
+    false
+   ],
+   "Dominick": [
+    266,
+    53,
+    true
+   ],
+   "Efimero": [
+    282,
+    113,
+    true
+   ],
+   "Geoka": [
+    31,
+    33,
+    false
+   ],
+   "Majiztral": [
+    29,
+    31,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "OG": [
+    21,
+    21,
+    false
+   ],
+   "SULTAN": [
+    283,
+    114,
+    true
+   ],
+   "THO": [
+    146,
+    235,
+    false
+   ],
+   "Xclusivo": [
+    265,
+    49,
+    true
+   ],
+   "Zignos": [
+    27,
+    29,
+    false
+   ],
+   "beneroo": [
+    636,
+    608,
+    true
+   ],
+   "mats": [
+    39,
+    45,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "mats",
+    "THO",
+    "mats"
+   ],
+   [
+    "Dominick",
+    "Zignos",
+    "Dominick"
+   ],
+   [
+    "Geoka",
+    "finnpapá🇭🇳",
+    "Geoka"
+   ],
+   [
+    "Majiztral",
+    "beneroo",
+    "Majiztral"
+   ],
+   [
+    "Makmah",
+    "SULTAN",
+    "Makmah"
+   ],
+   [
+    "Deko",
+    "Xclusivo",
+    "Deko"
+   ],
+   [
+    "OG",
+    "El felpudo 🇨🇳",
+    "OG"
+   ],
+   [
+    "mats",
+    "Dominick",
+    "mats"
+   ],
+   [
+    "Geoka",
+    "Majiztral",
+    "Geoka"
+   ],
+   [
+    "Efimero",
+    "Makmah",
+    "Efimero"
+   ],
+   [
+    "Deko",
+    "OG",
+    "Deko"
+   ],
+   [
+    "mats",
+    "Deko",
+    "mats"
+   ],
+   [
+    "Geoka",
+    "Efimero",
+    "Geoka"
+   ],
+   [
+    "mats",
+    "Geoka",
+    "mats"
+   ],
+   [
+    "Efimero",
+    "Deko",
+    "Efimero"
+   ]
+  ],
+  "ev_antes": {
+   "Deko": 5,
+   "Dominick": 47,
+   "Efimero": 10,
+   "Geoka": 33,
+   "Majiztral": 35,
+   "Makmah": 121,
+   "OG": 22,
+   "SULTAN": 13,
+   "THO": 3,
+   "Xclusivo": 27,
+   "Zignos": 32,
+   "beneroo": 1,
+   "mats": 14
+  },
+  "fecha": "15/11",
+  "nombre": "VERSO ELITE VOL.1",
+  "num": 657,
+  "participantes": 20,
+  "sello": {
+   "mats": "04cc31aeca83:a8d8b7335469"
+  },
+  "sv": "CH",
+  "t": "2026-11-19T05:24:30Z",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    10000
+   ],
+   [
+    "Geoka",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Deko",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Efimero",
+    "Tercero",
+    3000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OG",
+    "Cuartos",
+    2500
+   ],
+   [
+    "THO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
+   ],
+   [
+    "finnpapá🇭🇳",
+    "Octavos",
+    1250
+   ],
+   [
+    "beneroo",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ],
+   [
+    "El felpudo 🇨🇳",
     "Octavos",
     1250
    ]
