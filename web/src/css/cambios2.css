@@ -2,40 +2,66 @@
    son globales adentro del shadow root. Lo nuevo va en magenta, como en el de hoy */
 
 /* ── la portada y el buscador ── */
+/* 🏁 6.82: la escena de la llave (las piezas `rka-` del Ranking, css/rka.css): la franja, la última en la pieza blanca,
+   «desde tu última visita» y el calendario de calor; abajo, los meses en pestañas */
 .cx-cab{position:relative;z-index:1;display:grid;gap:18px;padding:24px 16px 24px;color:var(--esc-tinta)}
+.cx-cabeza{display:grid;gap:16px 30px;align-items:end;min-width:0}
 .cx-cab-tx{display:grid;justify-items:start;gap:10px}
 .cx-cab-tx .hero-ev{margin:0;text-wrap:balance}
 .cx-cab-tx .hero-p{max-width:62ch}
 /* el buscador debajo del texto y no al costado: al costado dejaba un hueco de 688 × 192 arriba de él */
-.cx-busca{display:flex;align-items:center;gap:10px;width:100%;max-width:640px;min-height:52px;padding:0 6px 0 14px;border:2px solid #F6F6F6;background:#030304;
-  color:#F6F6F6;box-shadow:5px 5px 0 var(--verde)}
-.cx-x{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;background:none;color:#F6F6F6;cursor:pointer}
+.cx-busca{display:flex;align-items:center;gap:10px;width:100%;max-width:640px;min-height:52px;padding:0 6px 0 14px;border:0;background:#F6F6F6;
+  color:#030304;box-shadow:6px 6px 0 var(--verde)}
+.cx-x{display:grid;place-items:center;flex:none;width:44px;height:44px;padding:0;border:0;background:none;color:#030304;cursor:pointer}
 .cx-x:focus-visible{outline:2px solid var(--magenta);outline-offset:-2px}
-.cx-busca input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:#F6F6F6;font:500 16px/1 Archivo,sans-serif;outline:none}
-.cx-busca input::placeholder{color:#8E8E93}
+.cx-busca input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:#030304;font:600 16px/1 Archivo,sans-serif;outline:none}
+.cx-busca input::placeholder{color:#5A5A5E}
 .cx-busca input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
-.cx-busca:focus-within{box-shadow:5px 5px 0 var(--magenta)}
+.cx-busca:focus-within{outline:2px solid #FF4FA3;outline-offset:3px}
+.cx-dos{display:grid;gap:18px;align-items:start}
+.cx-izq{display:grid;gap:18px;min-width:0}
+/* la última: la pieza blanca con la sombra verde de la llave */
+.cx-ult{padding:16px 18px;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 #29B298}
+.cx-ult-c{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.cx-ult-c .cx-n{background:#030304;border-color:#030304;color:#F6F6F6;text-decoration:none}
+.cx-ult-c small{flex:1;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#4A4A4E}
+.cx-ult-c .cx-sh{margin:0;color:#030304}
+.cx-ult h2{margin:10px 0 8px;font:900 clamp(20px,2.4vw,28px)/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;text-wrap:balance}
+.cx-ult ul{display:grid;gap:7px;margin:0;padding-left:18px;font:500 14.5px/1.5 Archivo,sans-serif;max-width:78ch}
+.cx-ult code{padding:1px 4px;border:1px solid currentColor;font:600 15px/1 "Barlow Condensed",sans-serif}
+/* 🟩 el calendario de calor */
+.cx-calor{display:grid;grid-auto-flow:column;grid-template-rows:auto repeat(7,auto);grid-auto-columns:minmax(0,1fr);gap:4px}
+.cx-calor b{height:14px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris);white-space:nowrap}
+.cx-calor i,.cx-ley i{display:block;aspect-ratio:1;background:var(--rka-suave)}
+.cx-calor i.no{background:none}
+.cx-calor i.n1,.cx-ley i.n1{background:color-mix(in srgb,#29B298 35%,var(--rka-caja))}
+.cx-calor i.n2,.cx-ley i.n2{background:color-mix(in srgb,#29B298 65%,var(--rka-caja))}
+.cx-calor i.n3,.cx-ley i.n3{background:#29B298}
+.cx-calor i.n4,.cx-ley i.n4{background:var(--esc-tinta)}
+.cx-calor i.hoy{outline:2px solid #FF4FA3;outline-offset:1px}
+.cx-ley{display:flex;align-items:center;gap:4px;margin-top:10px;font:600 12px/1 "Barlow Condensed",sans-serif;color:var(--esc-gris)}
+.cx-ley i{width:12px;height:12px}
+.cx-rec{display:grid;gap:8px;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--esc-linea)}
+.cx-rec div{display:flex;justify-content:space-between;gap:10px;font:500 13px/1.3 Archivo,sans-serif;color:var(--esc-gris)}
+.cx-rec dd{margin:0;font:800 14px/1.2 Archivo,sans-serif;color:var(--esc-tinta);text-align:right}
 
 /* el número de versión, en todas partes igual */
 .cx-n{flex:none;padding:5px 7px;border:1.5px solid currentColor;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;white-space:nowrap;
   font-variant-numeric:tabular-nums}
 
 /* ── desde tu última visita ── */
-.cx-desde{padding-bottom:0}
 /* ⚠️ las columnas, con `minmax(0,1fr)`: con la `auto` de siempre, los títulos de un renglón la ensanchaban y en el
    celular la lista se salía de la caja (llegaba a x=456 en 390) */
-.cx-desde-c{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:14px 16px;border:2px solid var(--linea);background:var(--caja);box-shadow:4px 4px 0 var(--magenta)}
-.cx-desde-t{font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.cx-desde ul{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;margin:0;padding:0;list-style:none}
-.cx-desde a{display:flex;align-items:center;gap:10px;min-width:0;min-height:44px;color:var(--tinta)}
+.cx-desde ul{display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin:0;padding:0;list-style:none}
+.cx-desde li+li a{border-top:1px solid var(--esc-linea)}
+.cx-desde a{display:flex;align-items:center;gap:10px;min-width:0;min-height:44px;color:var(--esc-tinta);text-decoration:none}
 .cx-desde a b{min-width:0;font:700 15px/1.25 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cx-desde a:hover b{text-decoration:underline;text-underline-offset:3px}
 .cx-desde a .cx-n{background:var(--magenta);border-color:var(--magenta);color:#fff}
-.cx-desde small{font:600 13px/1.3 Archivo,sans-serif;color:var(--gris)}
+.cx-desde>small{display:block;margin-top:8px;font:600 13px/1.3 Archivo,sans-serif;color:var(--esc-gris)}
 
 /* ── por mes ── */
-.cx-mes{border-top:2px solid var(--linea)}
-.cx-mes:last-child{border-bottom:2px solid var(--linea)}
+.cx-mes{border-top:0}
 .cx-mh{margin:0}
 .cx-mh button{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;padding:12px 2px;border:0;background:none;color:var(--tinta);text-align:left;cursor:pointer}
 .cx-mh span{font:900 20px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
@@ -59,10 +85,14 @@
 .cx-prev:hover{color:var(--tinta)}
 /* «Abrir todas» y «Borrar», de 44 px para el dedo */
 #cx .sec-t a,#cx-res .sec-t a{min-height:44px}
-.cx-vs{display:grid;gap:8px;min-width:0}
+.cx-vs{display:grid;gap:3px;min-width:0}
 
 /* ── cada versión: el título siempre, los cambios plegados, el link adentro de la fila ── */
-.cx-v{min-width:0;border:2px solid var(--linea);background:var(--caja)}
+.cx-v{min-width:0;background:var(--caja)}
+.cx-v.abierta{background:var(--inv);color:var(--inv-tinta)}
+.cx-v.abierta .cx-s,.cx-v.abierta .cx-sh{color:var(--inv-tinta)}
+.cx-v.abierta .cx-t small{color:inherit;opacity:.75}
+.cx-v.abierta .cx-i li{border-left-color:color-mix(in srgb,var(--inv-tinta) 30%,var(--inv))}
 .cx-v.nueva{box-shadow:inset 0 -4px 0 var(--magenta)}
 .cx-vf{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
 .cx-s{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;min-height:56px;padding:10px 6px 10px 12px;border:0;
@@ -75,10 +105,11 @@
 .cx-sh{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:44px;min-height:44px;margin-right:6px;padding:0 8px;border:0;background:none;
   color:var(--tinta);cursor:pointer;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
 .cx-sh span:empty{display:none}
-.cx-sh:hover{background:var(--fondo)}
+@media (hover: hover) and (pointer: fine){.cx-sh:hover{background:color-mix(in srgb,currentColor 10%,transparent)}}
+.cx-s{transition:transform 120ms cubic-bezier(.23,1,.32,1)} .cx-s:active,.cx-prev:active{transform:scale(.99)}
 .cx-i{display:grid;gap:10px;margin:0;padding:2px 16px 16px 16px;list-style:none;font:500 15px/1.5 Archivo,sans-serif;max-width:78ch}
 .cx-i li{padding-left:12px;border-left:3px solid var(--suave)}
-.cx-i code{padding:2px 4px;background:var(--fondo);font:600 16px/1 "Barlow Condensed",sans-serif}
+.cx-i code{padding:2px 4px;border:1px solid currentColor;font:600 16px/1 "Barlow Condensed",sans-serif}
 
 /* ── el buscador: una versión por renglón, con el cambio que lo dice ── */
 .cx-res{display:grid;margin:0;padding:0;list-style:none;border-top:2px solid var(--linea)}
@@ -99,7 +130,9 @@
 }
 @media (min-width: 900px){
   .app .cx-cab{padding:40px var(--gut) 34px}
-  .app .cx-desde ul{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+  .app .cx-cabeza{grid-template-columns:minmax(0,1fr) minmax(320px,460px)}
+  .app .cx-dos{grid-template-columns:minmax(0,1fr) 400px}
+  .app .cx-papel{padding-left:var(--gut);padding-right:var(--gut)}
   /* la misma grilla para todos los días: la fecha pegada al costado de sus versiones */
   .app .cx-dia{grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:start;padding:10px 0 16px}
   .app .cx-dc{top:16px;background:transparent}
@@ -108,4 +141,4 @@
   .app .cx-prev{padding-top:13px}
   .app .cx-t b{font-size:18px}
 }
-@media (prefers-reduced-motion: reduce){.cx-mh svg,.cx-d svg,.cx-s svg{transition:none}}
+@media (prefers-reduced-motion: reduce){.cx-mh svg,.cx-d svg,.cx-s svg,.cx-s{transition:none}}

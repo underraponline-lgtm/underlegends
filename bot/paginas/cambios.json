@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.82",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T04:27:00-05:00",
+        "titulo": "Lo nuevo de la página, con un calendario de cada día",
+        "items": [
+            "**Lo nuevo de la página, rehecha**: arriba, **la última versión entera** y lo que salió desde tu última visita.",
+            "**Un calendario** con cuántas versiones salieron cada día, y los meses en pestañas."
+        ]
+    },
+    {
         "version": "6.81",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T04:19:00-05:00",
