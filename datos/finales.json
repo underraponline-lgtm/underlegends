@@ -2054,5 +2054,31 @@
   "sv": "CH",
   "t_pregunta": "2026-11-18T06:54:03+00:00"
  },
+ "1572765832969453710": {
+  "autor": "1548906948307451906",
+  "canal": "1558611505040064607",
+  "canal_pregunta": "",
+  "cuando": "2026-11-19T00:09:55.156000+00:00",
+  "donde": "",
+  "evento": "(sin titulo)",
+  "fecha": "18/11",
+  "llave": "1572765832969453710",
+  "pregunta": "",
+  "preguntada": "2026-11-18 10:24 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "MCO 🇦🇷",
+     "Miniboy🇨🇱"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "LKR",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
