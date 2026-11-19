@@ -1859,8 +1859,10 @@ export async function cuentaUnirse(req, env) {
   // 4.98). El permiso se pidió para ésos: un pedido armado a mano con un Tier 3 no lo usa para otro. Una lectura y un
   // parseo por pedido (233 KB: ~2 ms medido, 3 el peor) —se piden 3 cada 10 min, y sólo después de la pantalla de
   // Discord—, y sin lobby no se suma a nadie
+  // 🥈 POR SU TIER Y NO POR `cu.c` (19/11/2026): desde ese día el Tier 2 también cuenta para el Competitivo, y lo único que
+  // no tiene es justamente esto (Dlx: «No tendrían ese de que el bot les agregue a todos los servidores… tier 1 únicamente»)
   const lobby = await env.KV.get('web:lobby', 'json').catch(() => null);
-  const t1 = new Set(((lobby && Array.isArray(lobby.svs)) ? lobby.svs : []).filter((s) => s && s.cu && s.cu.c).map((s) => String(s.sv)));
+  const t1 = new Set(((lobby && Array.isArray(lobby.svs)) ? lobby.svs : []).filter((s) => s && s.tier === 1).map((s) => String(s.sv)));
   const bot = { 'Authorization': 'Bot ' + env.DISCORD_TOKEN, 'X-Audit-Log-Reason': RAZON_UNIRSE, 'content-type': 'application/json' };
   const res = {};
   for (const sv of pide) {

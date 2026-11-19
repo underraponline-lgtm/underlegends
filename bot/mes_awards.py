@@ -45,7 +45,8 @@ salen en UNA publicación por mes, no dieciséis (`muro()`).
 sus jugadores). `CATS_SV`, de los mismos números pero sólo con lo de ese servidor (`numeros_sv()`): sus eventos, sus
 videos, quién debutó en la Liga ahí y su staff. Se nominan, se sacan, se votan y se cierran junto con los de la Liga; la
 encuesta lleva `sv` y **sólo vota quien jugó ahí ese mes** (`votantes()` → KV `encuestas.solo`, y `validarVoto()` en
-bot/avisos.js). Sólo los Tier 1 (`datos/niveles.json`; sin elegir, Tier 1) y sólo los que tienen algo que votar. El
+bot/avisos.js). Sólo los Tier 1 y, desde el 19/11/2026, los Tier 2 (Dlx: «1. A»; `datos/niveles.json`; sin elegir,
+Tier 1) y sólo los que tienen algo que votar. El
 ganador se lleva la insignia de su categoría «de su servidor», `PREMIO_SV` Puntos de Tienda (1.000: *«yes sure»*), su
 lugar en la página de su servidor y una publicación por servidor.
 
@@ -295,13 +296,14 @@ def niveles():
 
 
 def nominar_sv(mes, datos, sacar=(), niv=None):
-    """🏟️ `{sigla: {cats: {cat: {nom}}, juegan}}` de los servidores Tier 1 que jugaron en el mes y tienen algo que votar
-    (alguna categoría con dos nominados o más)."""
+    """🏟️ `{sigla: {cats: {cat: {nom}}, juegan}}` de los servidores Tier 1 y 2 que jugaron en el mes y tienen algo que
+    votar (alguna categoría con dos nominados o más)."""
     niv = niveles() if niv is None else niv
     ini, fin = periodo(mes)
     out = {}
     for sv in sorted({e[1] for e in datos[0] or [] if e[2] and ini <= e[2] < fin and e[1]}):
-        if int(niv.get(sv, 1) or 1) != 1:
+        # 🥈 Tier 1 y 2 (Dlx, 19/11/2026, a «¿los MES AWARDS van también para el Tier 2?»: «A»); el 3 no
+        if int(niv.get(sv, 1) or 1) > 2:
             continue
         ns = numeros_sv(mes, sv, *datos)
         noms = nominados_sv(ns, sv, sacar)
@@ -997,7 +999,7 @@ def _self_check():
     global SALIDA
     viejo, SALIDA = SALIDA, os.path.join(tempfile.mkdtemp(), 'mes.json')
     try:
-        niv = {'FFA': 1, 'SR': 2}                           # SR es Tier 2: no tiene los suyos
+        niv = {'FFA': 1, 'SR': 3}                           # SR como Tier 3: no tiene los suyos (el 2 sí, desde el 19/11)
         r = correr(aplicar=True, ahora=t1, datos=datos, votos={}, ajustes={}, niv=niv)
         ok('2026-10' not in r['meses'] and r['vivo']['mes'] == '2026-11', 'antes de las 11 AM ET del día 1 no hay nominados')
         t2 = dt.datetime(2026, 11, 1, 16, tzinfo=utc)      # 11 AM ET
@@ -1016,7 +1018,7 @@ def _self_check():
         msv = r['meses']['2026-10'].get('sv') or {}
         ok(list(msv) == ['FFA'] and [x['op'] for x in msv['FFA']['cats']['rapero']['nom']] == ['Ana', 'Bea']
            and msv['FFA']['juegan'] == ['Ana', 'Bea', 'Fuera'] and 'revelacion' not in msv['FFA']['cats'],
-           'cada servidor Tier 1 con los suyos: FFA con su rapero (sin el de fuera de concurso, que sí vota); SR es Tier 2',
+           'cada servidor Tier 1 o 2 con los suyos: FFA con su rapero (sin el de fuera de concurso, que sí vota); SR, de Tier 3, no',
            str(msv))
         esv = [e for e in ee if e.get('sv')]
         ok([e['id'] for e in esv] == ['mes:2026-10:FFA:rapero'] and esv[0]['op'] == ['Ana', 'Bea'],

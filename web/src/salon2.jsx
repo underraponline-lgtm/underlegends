@@ -117,7 +117,7 @@ const xDe = (md, sv, c) => (sv === LIGA ? (md.cats || {})[c] : (((md.sv || {})[s
 function svsAwards(liga, S) {
   const con = new Set();
   (S.hist || []).concat(S.abierto ? [S.abierto] : []).forEach((m) => Object.keys(m.sv || {}).forEach((x) => con.add(x)));
-  return Object.values(liga.svs || {}).filter((s) => s.tier === 1 || con.has(s.sv)).map((s) => s.sv);
+  return Object.values(liga.svs || {}).filter((s) => s.tier === 1 || s.tier === 2 || con.has(s.sv)).map((s) => s.sv);
 }
 // 🏠 «tu servidor»: el que elegiste en Mi cuenta; si no, donde más jugaste (el de tu carta de Servidor, `liga.yo.sv`),
 // como `PnServidor` del panel. Sin cuenta (o si el tuyo no tiene MES AWARDS), el Tier 1 que más se mueve
@@ -125,7 +125,7 @@ function tuSv(liga, el, svs) {
   const yo = liga.yo;
   const p = yo ? svElegido(liga, el, yo.k) || yo.sv : '';
   if (p && svs.includes(p)) return p;
-  return svs.map((x) => liga.svs[x]).filter((s) => s && s.tier === 1)
+  return svs.map((x) => liga.svs[x]).filter((s) => s && (s.tier === 1 || s.tier === 2))
     .sort((a, b) => (b.ev || 0) - (a.ev || 0) || (b.n || 0) - (a.n || 0)).map((s) => s.sv)[0] || svs[0] || '';
 }
 
@@ -378,7 +378,7 @@ function MesAMes({ liga, enc, S, svs, ver, mesVer, onMes, onGana, onVota, onGala
     <section className="sec negra sd-meses" id="sl-meses">
       {franja}
       <div className="sec-t"><h2>MES AWARDS</h2></div>
-      <p className="sec-baj">Cada mes en cada servidor Tier 1, y al cierre de la temporada, la gala de toda la Liga.</p>
+      <p className="sec-baj">Cada mes en cada servidor Tier 1 y 2, y al cierre de la temporada, la gala de toda la Liga.</p>
       <Regla liga={liga} S={S} meses={meses} actual={actual} mesVer={mv} onMes={onMes} onGala={onGala} />
       <Grilla liga={liga} S={S} meses={meses} filas={filas} ver={ver} mesVer={mv} onGana={onGana} onVota={onVota} onGala={onGala} />
       <div className="sd-meses-c">

@@ -750,15 +750,16 @@ function CompararSemanas({ S, uso, liga }) {
 // ── 🤝 LOS TIERS (Dlx, 18/10/2026: «3 tier levels of association… el sistema recomienda y muestra qué tan bien los
 // servidores han hecho su trabajo»). Cada servidor con su nivel —que se elige acá: ajuste `tiers`, el ciclo lo copia a
 // datos/niveles.json—, su puntaje de las últimas 4 semanas y lo que recomienda `bot/tiers.py`. El puntaje no sale de acá
-const TIER_QUE = { 1: 'Temporada y Competitivo, todo', 2: 'el calendario y la Temporada', 3: 'su página, sus ligas y la Temporada' };
+const TIER_QUE = { 1: 'Temporada y Competitivo, todo', 2: 'todo menos «Unirme a los Tier 1»', 3: 'su página, sus ligas y la Temporada' };
 // 🎛️ los beneficios de cada servidor (Dlx, 20/10/2026: «qué beneficio dar que no, qué tier, a cada servidor nuevo»). El
 // tier los prende en grupo (`PRESET` de bot/tiers.py); cada interruptor manda sobre el preset
 const BENEF = [['pagina', 'Su página en Socios'], ['calendario', 'Sus eventos (calendario, campana, Publicaciones)'],
   ['ligas', 'Sus ligas en Ligas'], ['panel', 'El panel de su dueño'], ['suma', 'Sus llaves suman a la Temporada (con 8 o más)'],
   ['competitivo', 'Cuentan para el Competitivo y los duelos'], ['duelos', 'Sus ligas cuentan como duelos']];
-// 🏆 todos los socios suman a la Temporada desde el 26/10/2026; el Competitivo, sólo el Tier 1 (bot/tiers.py `PRESET`)
+// 🏆 todos los socios suman a la Temporada desde el 26/10/2026; el Competitivo, el Tier 1 y desde el 19/11/2026 también el 2
+// (bot/tiers.py `PRESET`: si se cambia uno, se cambia el otro)
 const PRESET = { 1: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'],
-  2: ['pagina', 'calendario', 'ligas', 'panel', 'suma'], 3: ['pagina', 'calendario', 'ligas', 'panel', 'suma'] };
+  2: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'], 3: ['pagina', 'calendario', 'ligas', 'panel', 'suma'] };
 
 function Beneficios({ x, tier, aj, hacer, ocup }) {
   const mios = (aj.beneficios || {})[x.sv] || {};
@@ -969,12 +970,12 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
   const elegidos = aj.tiers || {};
   const tierDe = (x) => elegidos[x.sv] || x.tier || 1;
   const cambiar = (sv, t) => hacer('tiers', Object.assign({}, elegidos, { [sv]: t }),
-    siglaDe(sv) + ' pasa a Tier ' + t + '. El ciclo lo aplica en su próxima vuelta' + (t === 1 ? ': vuelve a sumar al ranking.' : ': sus llaves dejan de sumar.'));
+    siglaDe(sv) + ' pasa a Tier ' + t + '. El ciclo lo aplica en su próxima vuelta' + (t === 3 ? ': deja de contar para el Competitivo.' : ': cuenta para la Temporada y el Competitivo.'));
   return (
     <div className="ti">
       <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo eliges tú</b>. Tier 1 suma a la Temporada y
-        al Competitivo y lleva todo; Tier 2 sale en el calendario y la campana; Tier 3 tiene su página y sus ligas en Ligas. Los
-        tres suman a la Temporada, con 8 participantes o más; el Competitivo y los duelos son del Tier 1. Los eventos y las redes se promocionan en los tres. Para ser socio: 300 miembros como mínimo, se recomiendan 500.</p>
+        al Competitivo y lleva todo; Tier 2 lo mismo, menos «Unirme a los Tier 1»; Tier 3 suma a la Temporada (con 8 participantes
+        o más) y tiene su página y sus ligas, sin Competitivo ni duelos. Los eventos y las redes se promocionan en los tres. Para ser socio: 300 miembros como mínimo, se recomiendan 500.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
       <SumarServidor T={T} aj={aj} hacer={hacer} ocup={ocup} />
       <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} aj={aj} hacer={hacer} />)}</div>
@@ -4512,7 +4513,9 @@ function Organizadores({ o }) {
 // debajo lo que mide el puntaje, lo que recibe y quién es su dueño. Guardan lo mismo que guardaban las tarjetas
 function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
   const [ficha, setFicha] = useState('');
-  // 🛑 bajar de Tier 1 deja de sumar sus llaves al ranking: se confirma (el resto vuelve con «Deshacer»)
+  // 🛑 pasar a Tier 3 deja de contar sus llaves para el Competitivo y los duelos: se confirma (el resto vuelve con «Deshacer»).
+  // Hasta el 19/11/2026 se confirmaba al bajar de Tier 1, cuando el Tier 2 no contaba
+  // (y el texto decía «dejan de sumar», que no era cierto desde el 26/10: todos suman a la Temporada)
   const [bajar, setBajar] = useState(null);
   // la ficha, al costado: se cierra con Esc
   useEffect(() => {
@@ -4570,7 +4573,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
                 <tr className={ficha === sv ? 'on' : ''}>
                   <th scope="row"><span className="dz-svt-n"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><i className={prendido(sv) ? 'ok' : ''} title={prendido(sv) ? 'el bot habla ahí' : 'el bot no habla ahí'} /></span></th>
                   <td><select aria-label={'El tier de ' + siglaDe(sv)} value={bajar && bajar[0] === sv ? String(bajar[1]) : t ? String(t) : ''} disabled={ocup}
-                    onChange={(e) => { const n = Number(e.target.value); if (t === 1 && n !== 1) setBajar([sv, n]); else { setBajar(null); cambiarTier(sv, n); } }}>
+                    onChange={(e) => { const n = Number(e.target.value); if (t !== 3 && n === 3) setBajar([sv, n]); else { setBajar(null); cambiarTier(sv, n); } }}>
                     {!t ? <option value="">—</option> : null}{[1, 2, 3].map((n) => <option key={n} value={String(n)}>Tier {n}</option>)}</select></td>
                   {m.id ? <td><select aria-label={'El multiplicador de ' + siglaDe(sv)} value={String(vm)} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
                     {ops.map((x) => <option key={x} value={String(x)}>{mult(x)}</option>)}</select></td> : null}
@@ -4603,7 +4606,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
       {/* la ficha va abajo de la tabla y no adentro: adentro heredaba el ancho de las nueve columnas y quedaba corrida de costado */}
       {bajar ? (
         <div className="dz-freno" role="alert">
-          <p><b>{siglaDe(bajar[0])} pasa a Tier {bajar[1]}</b>: sus llaves dejan de sumar al ranking desde la próxima vuelta del ciclo{(origen || {})[bajar[0]] ? ' (ahí debutaron ' + num(origen[bajar[0]][0]) + ' personas esta temporada)' : ''}.</p>
+          <p><b>{siglaDe(bajar[0])} pasa a Tier {bajar[1]}</b>: sus llaves dejan de contar para el Competitivo y los duelos desde la próxima vuelta del ciclo (siguen sumando a la Temporada, con 8 participantes o más){(origen || {})[bajar[0]] ? ' (ahí debutaron ' + num(origen[bajar[0]][0]) + ' personas esta temporada)' : ''}.</p>
           <div className="dz-freno-f">
             <button type="button" className="btn verde chico" disabled={ocup} onClick={() => { cambiarTier(bajar[0], bajar[1]); setBajar(null); }}>Sí, pasarlo a Tier {bajar[1]}</button>
             <button type="button" className="dz-lnk" onClick={() => setBajar(null)}>Cancelar</button>
@@ -4623,7 +4626,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
           </aside>
         </div>
       ) : null}
-      <p className="db-tx">El punto al lado de la sigla es verde si el bot habla en su chat. Tier 1 suma al ranking; Tier 2 sale en el calendario y la campana, sin sumar; Tier 3 tiene su página y sus ligas.</p>
+      <p className="db-tx">El punto al lado de la sigla es verde si el bot habla en su chat. Tier 1 y 2 suman a la Temporada y al Competitivo (sólo el 1 sale en «Unirme a los Tier 1»); Tier 3 suma a la Temporada y tiene su página y sus ligas.</p>
     </div>
   );
 }

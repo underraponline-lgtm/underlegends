@@ -274,7 +274,8 @@
     ],
     "_por_que": "Las ligas de Snake Rap (Generations y New Chapter) no son eventos: Dlx, 12/10/2026, «1. A». Su 〔🙅〕veredicto y su 〔🔢〕resultados se leían como #veredictos de eventos.",
     "_ids": "la categoría LEAGUES: Snake League Generations y Snake New Chapter"
-   }
+   },
+   "tier": 2
   },
   "FTN": {
    "nombre": "Fontana",
@@ -322,7 +323,8 @@
      "categoria_id": "867553625508282369",
      "creada": "2026-11-15"
     }
-   ]
+   ],
+   "tier": 2
   },
   "URBF": {
    "nombre": "Urban Freestyle",
@@ -540,7 +542,8 @@
      "https://www.youtube.com/@lacrewoficial-g4i"
     ]
    ],
-   "youtube_id": "UCHl-Olxawp-GwiKW3P2kWMQ"
+   "youtube_id": "UCHl-Olxawp-GwiKW3P2kWMQ",
+   "tier": 2
   },
   "FVS": {
    "nombre": "Freestyle Versus",
@@ -586,7 +589,8 @@
      "https://www.youtube.com/channel/UCvBsCGWVsw0lq0jf_d8O98g"
     ]
    ],
-   "youtube_id": "UCvBsCGWVsw0lq0jf_d8O98g"
+   "youtube_id": "UCvBsCGWVsw0lq0jf_d8O98g",
+   "tier": 2
   },
   "FDS": {
    "nombre": "Freestyle Discord Series",

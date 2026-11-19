@@ -45,7 +45,7 @@ const PARTES = [['actividad', 'Actividad', 35, 'Eventos por semana: con 2 llega 
   ['comunidad', 'Comunidad', 15, 'Los nuevos que vuelven, las promos y las ligas.']];
 // a qué parte del panel lleva cada sugerencia (`sug_ir`, lo manda el ciclo: `sugerencias_ir()` de bot/tiers.py)
 const IR = { 'sp-vuelven': 'Ver quién vuelve', 'sp-cuando': 'Ver cuándo', 'sp-semanas': 'Ver las semanas', 'sp-gente': 'Ver tu gente', 'sp-puntaje': 'Ver el puntaje', 'sp-ajustes': 'Ver los ajustes' };
-const TIER = { 1: 'TIER 1 · TEMPORADA Y COMPETITIVO', 2: 'TIER 2 · EL CALENDARIO Y LA CAMPANA', 3: 'TIER 3 · SU PÁGINA Y SUS LIGAS' };
+const TIER = { 1: 'TIER 1 · TEMPORADA Y COMPETITIVO', 2: 'TIER 2 · TEMPORADA Y COMPETITIVO', 3: 'TIER 3 · SU PÁGINA Y SUS LIGAS' };
 // lo que trae el panel, para quien todavía no entró
 const TRAE = [['copa', 'Su puntaje', 'De 0 a 100 con las últimas 4 semanas: lo que mira la Liga para el nivel de cada socio.'],
   ['brote', 'Lo que conviene', 'Qué días juntan más gente, qué días la Liga está llena y cómo vienes.'],

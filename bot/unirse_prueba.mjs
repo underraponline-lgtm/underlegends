@@ -92,6 +92,15 @@ puts = []; lobby = null;
 [st, j] = await pedir({ token: 'PERMISOFALSO_8234567890', svs: ['FFA'] });
 ok(j.res.FFA === 'error' && puts.length === 0, 'sin lobby en KV: «No se pudo» y ningún pedido a Discord');
 lobby = LOBBY;
+// 9 · 🥈 un Tier 2 CUENTA para el Competitivo (`cu.c`) y aun así no está en el botón (Dlx, 19/11/2026: «No tendrían ese de
+// que el bot les agregue a todos los servidores… tier 1 únicamente»): se pregunta por el tier. Otra persona: la de 6 a 8
+// ya usó sus tres intentos
+usuario = '333444555666777888'; puts = [];
+lobby = { svs: LOBBY.svs.map((s) => (s.sv === 'SR' ? { sv: 'SR', tier: 2, cu: { t: 1, c: 1 } } : s)) };
+[st, j] = await pedir({ token: 'PERMISOFALSO_9234567890', svs: ['SR', 'FFA'] });
+ok(j.res.SR === 'no' && j.res.FFA === 'ok' && puts.length === 1 && puts[0].guild === gid('FFA'),
+  'un Tier 2 que cuenta para el Competitivo (SR) no entra por el botón; el Tier 1 sí: ' + JSON.stringify(j.res));
+lobby = LOBBY;
 
 console.log('\n' + (malos ? '🔴 ' + malos + ' con problemas' : '   unirse: todo bien'));
 if (malos) process.exit(1);

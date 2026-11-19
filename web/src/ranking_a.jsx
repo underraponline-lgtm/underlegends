@@ -79,7 +79,7 @@ export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide, nombre
       out.push({ l: 'El rango más alto', cara: <span className="rg rk-rg" style={{ background: liga.colorRg(alto.r) }}>{alto.r}</span>,
         v: cuenta[alto.r] + (cuenta[alto.r] === 1 ? ' rapero' : ' raperos'), c: 'desde ' + alto.min + ' de Score' + (R[0] && alto.r !== R[0].r ? '; nadie llegó a la ' + R[0].r : ', la letra más alta') });
     }
-    if (base.length) out.push({ l: 'Con rango', v: num(base.length), em: base.length === 1 ? 'rapero' : 'raperos', c: 'el rango aparece con ' + (pide || 10) + ' eventos en servidores Tier 1' });
+    if (base.length) out.push({ l: 'Con rango', v: num(base.length), em: base.length === 1 ? 'rapero' : 'raperos', c: 'el rango aparece con ' + (pide || 10) + ' eventos en servidores Tier 1 o 2' });
   } else if (sub === 'servidores') {
     // 🏟️ tanda 3 (19/11/2026): el servidor elegido contra la Liga, por el OVR de la carta de Servidor
     const del = base.filter((f) => f.sv === sv);

@@ -250,7 +250,7 @@ const COL = {
   lgj: { t: 'Liga', tit: 'Batallas de liga jugadas en la temporada', s: (f) => f.lg || 0, v: (f) => f.lg || 0 },
   duj: { t: 'Duelos', tit: 'Duelos uno contra uno jugados en las llaves', s: (f) => duDe(f)[1] || 0, v: (f) => duDe(f)[1] || 0 },
   // 🎯 los del Competitivo: sólo los de servidores Tier 1 (`evc`, 13/11/2026; sin él son los mismos que `ev`)
-  evc: { t: 'Eventos', tc: 'Ev', tit: 'Eventos en servidores Tier 1: los que cuentan para el Competitivo', s: (f) => evcDe(f), v: (f) => evcDe(f) },
+  evc: { t: 'Eventos', tc: 'Ev', tit: 'Eventos en servidores Tier 1 y 2: los que cuentan para el Competitivo', s: (f) => evcDe(f), v: (f) => evcDe(f) },
   wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: (f) => (f.wr ? pct(f.wr) : ''), v: (f) => (f.wr ? Math.round(pct(f.wr)) + '%' : NADA) },
   racha: { t: 'Racha', tit: 'La que lleva ahora / la más larga de la temporada',
     s: (f) => { const r = f.rch || [0, 0]; return r[0] * 1000 + r[1]; },
@@ -470,7 +470,7 @@ const SUBS = {
       const pide = req(L, 'competitivo') || 10;
       // el más cerca, por sus eventos de Tier 1 (`evc`), no por todos: es lo que pide el Competitivo (13/11/2026)
       const c = (L.d.tabla || []).slice().sort((a, b) => evcDe(b) - evcDe(a))[0];
-      return <>El Competitivo pide participar en <b>{pide} eventos</b> de servidores Tier 1 de la Liga, en la temporada, y todavía no llegó nadie.{c && evcDe(c) ? <> El más cerca: <b>{limpio(c.n)}</b>, con {evcDe(c)}.</> : null}</>;
+      return <>El Competitivo pide participar en <b>{pide} eventos</b> de servidores Tier 1 o 2 de la Liga, en la temporada, y todavía no llegó nadie.{c && evcDe(c) ? <> El más cerca: <b>{limpio(c.n)}</b>, con {evcDe(c)}.</> : null}</>;
     },
   },
   duelos: {
@@ -959,7 +959,7 @@ function Dims({ D, val, color, tuyas, conf, mias }) {
               })}
             </ul>
             <div className="fz-notas">
-              <p><b>Tier 1</b>Sólo cuentan los eventos de servidores Tier 1.</p>
+              <p><b>Tier 1 y 2</b>Sólo cuentan los eventos de servidores Tier 1 y 2.</p>
               {conf ? <p><b>Confianza</b>Hasta los {conf} eventos el Score se multiplica por menos de 1: jugar más también lo sube.</p> : null}
             </div>
           </div>
@@ -1361,7 +1361,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
     } else if (sub === 'competitivo' && !yo.rg) {
       // 🎯 los eventos del Competitivo son los de Tier 1 (`evc`, 13/11/2026): con `ev` contaba también los de Tier 3
       const falta = Math.max(0, (req(liga, 'competitivo') || 10) - (typeof yo.evc === 'number' ? yo.evc : yo.ev || 0));
-      lugar = { cara, quien, n: 0, txt: falta ? 'Te ' + (falta === 1 ? 'falta 1 evento' : 'faltan ' + falta + ' eventos') + ' en servidores Tier 1 para tu letra' : 'Tu letra llega con la próxima corrida' };
+      lugar = { cara, quien, n: 0, txt: falta ? 'Te ' + (falta === 1 ? 'falta 1 evento' : 'faltan ' + falta + ' eventos') + ' en servidores Tier 1 o 2 para tu letra' : 'Tu letra llega con la próxima corrida' };
     } else if (sub === 'duelos') {
       // ⚔️ (18/11/2026) /api/duelos trae los primeros 300, y quien jugó y quedó más abajo leía «Todavía no jugaste un
       // duelo»: con duelos en su fila (`du`), está más abajo. Y mientras la lista no llegó, nada: no se sabe todavía

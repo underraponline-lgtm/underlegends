@@ -78,9 +78,10 @@ function Mx({ x, ant, sv }) {
   const cl = a == null ? 'eq' : v > a ? 'up' : v < a ? 'dn' : 'eq';
   return <span className={'sk-mx ' + cl}>{mult(v)}<small>{a == null ? 'nuevo' : v > a ? '▲ desde ' + mult(a) : v < a ? '▼ desde ' + mult(a) : 'igual'}</small></span>;
 }
+// 🥈 el Tier 2, todo lo del 1 menos «Unirme a los Tier 1» (Dlx, 19/11/2026; `PRESET` de bot/tiers.py)
 const QUE_TIER = (min) => ({
-  1: ['Suma a la Temporada y al Competitivo', 'Sus ligas cuentan como duelos', 'Su carta de Servidor'],
-  2: [sumaTx(min), 'Su carta de Servidor', 'No cuenta para el Competitivo'],
+  1: ['Suma a la Temporada y al Competitivo', 'Sus ligas cuentan como duelos', 'Su carta de Servidor', 'Sale en «Unirme a los Tier 1»'],
+  2: ['Suma a la Temporada y al Competitivo', 'Sus ligas cuentan como duelos', 'Su carta de Servidor'],
   3: [sumaTx(min), 'No cuenta para el Competitivo'],
 });
 

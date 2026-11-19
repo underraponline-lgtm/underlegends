@@ -16,7 +16,7 @@ comando, se cambia acá. De dónde sale cada cosa: `PRESET`, `MIN_SOLO_TEMPORADA
 15 que sólo jugaron en FDS y los 6 de LKR están adentro); los comandos, de la ayuda de `bot/worker.js`; lo que el bot nunca
 hace, de `web/src/socios2.jsx`.
 
-⚠️ **Tier 2 y Tier 3 dan hoy lo mismo** (`PRESET`): por eso Tier 2 se explica como el paso hacia Tier 1.
+⚠️ **Desde el 19/11/2026 el Tier 2 da lo mismo que el Tier 1** (`PRESET`), menos «Unirme a los Tier 1» (Dlx: «Tier 2 que cuenten sus eventos para competitivo y tener su tarjeta de servidor aun así»). Hasta ese día daba lo mismo que el Tier 3.
 
 ## Mensaje 1
 
@@ -57,8 +57,8 @@ Ahí ves tu puntaje, qué días juntan más gente, cuántos vuelven a jugar, a q
 ```text
 **Cómo funcionan los tiers**
 · **Tier 3:** lo que ya tienes.
-· **Tier 2:** lo mismo, y es el paso hacia Tier 1.
-· **Tier 1:** además, tus eventos cuentan para el Competitivo y los Duelos, tu gente tiene la carta de tu servidor y tienes tus propios MES AWARDS.
+· **Tier 2:** además, tus eventos cuentan para el Competitivo y los Duelos, tu gente tiene la carta de tu servidor y tienes tus propios MES AWARDS.
+· **Tier 1:** lo mismo, y tu servidor sale en «Unirme a los Tier 1», el botón que suma gente a tu Discord con un toque.
 
 **Cómo subir**
 El dashboard te da un puntaje de 0 a 100 con tus últimas 4 semanas:

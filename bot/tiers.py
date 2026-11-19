@@ -13,9 +13,14 @@ para subir, las tres cosas juntas: *«por números pero no sólo eso: el sistema
 servidores han hecho su trabajo»*, y decide él.
 
 QUÉ ES CADA UNO
-  · TIER 1: sus eventos suman al ranking oficial y lleva todo (el bot completo, su carta, los multiplicadores…).
-  · TIER 2: sus anuncios se leen (el calendario y la campana), pero sus llaves NO: no suma al ranking. Tampoco sus
-    ligas cuentan como duelos.
+  · TIER 1: sus eventos suman al ranking oficial y lleva todo (el bot completo, su carta, los multiplicadores…), y es
+    el único que sale en «Unirme a los Tier 1» (el botón que te suma a sus servidores: `cuentaUnirse()` del Worker).
+  · TIER 2: TODO LO DEL TIER 1 MENOS ESE BOTÓN, desde el 19/11/2026. Dlx: *«Tier 2 que cuenten sus eventos para
+    competitivo y tener su tarjeta de servidor aun así. No tendrían ese de que el bot les agregue a todos los servidores»*,
+    *«1. A»* (sus MES AWARDS también) y *«2. se queda para tier 2»* (sus ligas cuentan como duelos). Pasaron SR, FRZ,
+    ACAD y FVS (*«SNK, FRZ, LCW a tier 2»*, *«FVS pásalo a tier 2»*); los Tier 3 se quedan donde están por ahora.
+    ⚠️ Hasta ese día el Tier 2 era «sólo calendario y campana, sin sumar» y después lo mismo que el Tier 3 (`PRESET`):
+    no lo tenía nadie.
   · TIER 3: su página de servidor y sus ligas en Ligas (sin contar como duelos); sin carta de Servidor ni puntos.
     ⚠️ DECÍA «el directorio, sin el bot» hasta el 20/10/2026, y FDS entró a Tier 3 CON el bot (Dlx: «para cualquier
     TIER meter el bot, así nos beneficiamos de información y de IDs… pero que no necesariamente convierta a tener esos
@@ -117,8 +122,11 @@ BENEFICIOS = (
 #: eventos cuenten para el ranking de temporada únicamente… así motivamos a los demás a CRECER SUS COMUNIDADES»). El
 #: Competitivo y los duelos, sólo el 1: es lo que mide calidad. Los que suman sólo a la Temporada piden 8 participantes
 #: (`MIN_SOLO_TEMPORADA`); sin tope semanal (Dlx: «quita eso de tope semanal… no me agrada esa idea»)
+#: 🥈 Y EL TIER 2, TODO LO DEL 1 (Dlx, 19/11/2026: «Tier 2 que cuenten sus eventos para competitivo»): lo que los separa
+#: no es un beneficio de esta lista sino el botón «Unirme a los Tier 1», que pregunta por el tier y no por `competitivo`
+#: (Worker y web/src/unirse.jsx)
 PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
-          2: {'pagina', 'calendario', 'ligas', 'panel', 'suma'},
+          2: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
           3: {'pagina', 'calendario', 'ligas', 'panel', 'suma'}}
 #: cuántos participantes pide un evento de un servidor que suma sólo a la Temporada (sin `competitivo`)
 MIN_SOLO_TEMPORADA = 8
@@ -162,11 +170,11 @@ def beneficios(nivel, elegidos=None, codigo=None):
 
 def sin(beneficio, guardado=None):
     """Las siglas con ese beneficio APAGADO, de `datos/niveles.json`. Sin `beneficios` guardados (antes de la primera
-    corrida con esto), lo de antes: los bajados no suman ni cuentan duelos, y lo demás lo tienen todos."""
+    corrida con esto), lo de antes: los bajados (Tier 3) no cuentan Competitivo ni duelos, y lo demás lo tienen todos."""
     g = guardado if guardado is not None else (_j('datos', 'niveles.json') or {})
     ben = g.get('beneficios')
     if not isinstance(ben, dict):
-        return {sv for sv, t in (g.get('niveles') or {}).items() if t != 1} if beneficio in ('competitivo', 'duelos') else set()
+        return {sv for sv, t in (g.get('niveles') or {}).items() if t == 3} if beneficio in ('competitivo', 'duelos') else set()
     return {sv for sv, b in ben.items() if isinstance(b, dict) and b.get(beneficio) is False}
 
 
@@ -229,12 +237,13 @@ def _alta_completar(nuevas, svs, tok):
 
 
 def bajados(servidores=None, guardados=None):
-    """Las siglas en Tier 2 o 3: sus llaves no se leen y sus ligas no cuentan como duelos."""
-    return {sv for sv, t in niveles(servidores, guardados).items() if t != 1}
+    """Las siglas en Tier 3: no cuentan para el Competitivo ni sus ligas como duelos. Desde el 19/11/2026 el Tier 2 cuenta
+    todo (ver `PRESET`); hasta ese día esto eran «Tier 2 o 3»."""
+    return {sv for sv, t in niveles(servidores, guardados).items() if t == 3}
 
 
 def guilds_bajados(servidores=None, guardados=None):
-    """Los guild ID de los servidores en Tier 2 o 3 (para el lector de llaves)."""
+    """Los guild ID de los servidores en Tier 3."""
     svs = servidores if servidores is not None else ((_j('datos', 'servidores.json') or {}).get('servidores') or {})
     return {str(svs[sv].get('guild_id')) for sv in bajados(svs, guardados) if svs.get(sv, {}).get('guild_id')}
 
@@ -876,9 +885,12 @@ def _self_check():
     ok(niveles(con3, {})['NUE'] == 3 and niveles(con3, {})['MAL'] == 1 and niveles(con3, {'NUE': 1})['NUE'] == 1
        and guilds_bajados(con3, {}) == {'5'},
        'el `tier` de servidores.json es el default de un servidor nuevo (uno que no es tier no vale); lo elegido manda sobre él')
-    ok(niveles(svs, {'BBB': 2, 'CCC': 9}) == {'AAA': 1, 'BBB': 2, 'CCC': 1} and bajados(svs, {'BBB': 2}) == {'BBB'}
-       and guilds_bajados(svs, {'BBB': 2, 'CCC': 3}) == {'2', '3'},
-       'lo elegido manda; un número que no es tier no vale; los de Tier 2 y 3 son los «bajados»')
+    ok(niveles(svs, {'BBB': 2, 'CCC': 9}) == {'AAA': 1, 'BBB': 2, 'CCC': 1} and bajados(svs, {'BBB': 3}) == {'BBB'}
+       and bajados(svs, {'BBB': 2}) == set() and guilds_bajados(svs, {'BBB': 2, 'CCC': 3}) == {'3'},
+       'lo elegido manda; un número que no es tier no vale; sólo el Tier 3 es «bajado» (el 2 cuenta todo desde el 19/11)')
+    # 🥈 el Tier 2 prende lo mismo que el 1 (Dlx, 19/11/2026): lo que los separa es el botón de unirse, no un beneficio
+    ok(PRESET[2] == PRESET[1] and PRESET[3] < PRESET[1] and not ({'competitivo', 'duelos'} & PRESET[3]),
+       'el Tier 2 prende lo mismo que el 1, y el 3 todo menos el Competitivo y los duelos')
     # 🎛️ los beneficios y el alta
     bn, bq = beneficios({'AAA': 1, 'BBB': 3, 'CCC': 1}, {'BBB': {'ligas': False}, 'CCC': {'suma': True}}, codigo={'AAA', 'BBB'})
     ok(bn['AAA']['suma'] and bn['AAA']['competitivo'] and bn['BBB']['suma'] and not bn['BBB']['competitivo']
@@ -889,7 +901,8 @@ def _self_check():
     sb = globals()['sin']   # (el self-check tiene su propio `sin`, más abajo)
     ok(sb('suma', {'beneficios': {k: v for k, v in bn.items()}}) == {'CCC'}
        and sb('competitivo', {'beneficios': {k: v for k, v in bn.items()}}) == {'BBB', 'CCC'}
-       and sb('competitivo', {'niveles': {'AAA': 1, 'BBB': 2}}) == {'BBB'} and sb('suma', {'niveles': {'AAA': 1, 'BBB': 2}}) == set()
+       and sb('competitivo', {'niveles': {'AAA': 1, 'BBB': 2}}) == set() and sb('competitivo', {'niveles': {'AAA': 1, 'BBB': 3}}) == {'BBB'}
+       and sb('suma', {'niveles': {'AAA': 1, 'BBB': 2}}) == set()
        and sb('pagina', {'niveles': {'AAA': 1}}) == set(),
        'los lectores preguntan con sin(); sin beneficios guardados, lo de antes')
     sv2 = {'AAA': {'guild_id': '111111111111111111'}}

@@ -1522,7 +1522,7 @@ function TuLugar({ liga, top, cual }) {
     const q = (liga.d.requisitos || []).find((x) => x.id === 'competitivo');
     const m = q && /(\d+)/.exec((q.pide || [])[0] || '');
     const pide = m ? Number(m[1]) : 10;
-    txt = <>Para entrar al Competitivo hacen falta <b>{pide} eventos</b> de servidores Tier 1 en la temporada: llevas {(typeof yo.evc === 'number' ? yo.evc : yo.ev) || 0}.</>;
+    txt = <>Para entrar al Competitivo hacen falta <b>{pide} eventos</b> de servidores Tier 1 o 2 en la temporada: llevas {(typeof yo.evc === 'number' ? yo.evc : yo.ev) || 0}.</>;
   } else if (top.length === CIERRE) {
     const c = top[CIERRE - 1];
     const d = cual === 'competitivo' ? Math.round(((c.sc || 0) - (yo.sc || 0)) * 10) / 10 : (c.ovr || 0) - (yo.ovr || 0);

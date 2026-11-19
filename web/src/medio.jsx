@@ -723,7 +723,7 @@ export function LosQueMandan({ liga, dc }) {
     const evc = evcDe(yo);
     const falta = Math.max(0, pide - evc);
     yoComp = <Puesto cara={cara} quien={quien} pos="—" pct={Math.round((100 * Math.min(pide, evc)) / pide)}
-      txt={falta ? 'Te ' + (falta === 1 ? 'falta 1 evento' : 'faltan ' + falta + ' eventos') + ' en servidores Tier 1 para tu letra' : 'Tu letra llega con la próxima corrida'} href="#/ranking/competitivo" />;
+      txt={falta ? 'Te ' + (falta === 1 ? 'falta 1 evento' : 'faltan ' + falta + ' eventos') + ' en servidores Tier 1 o 2 para tu letra' : 'Tu letra llega con la próxima corrida'} href="#/ranking/competitivo" />;
   } else if (yo) {
     yoComp = fila(puestoDe(liga, compT, (f) => f.k === yo.k, (f) => f.sc || 0, 'de Score', 1), '#/ranking/competitivo');
   }
@@ -1043,7 +1043,7 @@ export function TuTemporada({ liga, dc }) {
       </div>
       <div className="tu-prog">
         <div className="barra10">{Array.from({ length: 10 }, (_, i) => <i key={i} className={i < llenas ? 'si' : ''} />)}</div>
-        <small>{falta ? 'Todavía sin letra: ' + evc + ' de ' + pide + ' eventos en servidores Tier 1. Te ' + (falta === 1 ? 'falta 1' : 'faltan ' + falta) + ' para tu rango.'
+        <small>{falta ? 'Todavía sin letra: ' + evc + ' de ' + pide + ' eventos en servidores Tier 1 o 2. Te ' + (falta === 1 ? 'falta 1' : 'faltan ' + falta) + ' para tu rango.'
           : f.rg ? 'Ya tienes letra.' : 'Tu letra llega con la próxima corrida.'}</small>
       </div>
       {bus ? <div className="te-buscan"><b>HOY TE BUSCAN</b><span>{num(bus.v)} pts por tu cabeza · {bus.cn} · hasta {liga.dia(mw.fin)}</span></div> : null}

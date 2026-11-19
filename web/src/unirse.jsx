@@ -38,9 +38,11 @@ const ERROR = {
   bot: 'El bot no está disponible ahora mismo. Prueba en un rato.',
 };
 
-/** Los socios Tier 1: los que cuentan para el Competitivo (`svs[].cu.c`, Socios 4.98) */
+/** Los socios Tier 1, por su tier (`svs[].tier`). Hasta el 19/11/2026 eran «los que cuentan para el Competitivo»
+ * (`cu.c`), y desde ese día el Tier 2 también cuenta: lo único que no tiene es este botón (Dlx: «tier 1 únicamente»).
+ * El Worker filtra igual (`cuentaUnirse()`). */
 export function tier1De(liga) {
-  return Object.values((liga && liga.svs) || {}).filter((s) => s.cu && s.cu.c);
+  return Object.values((liga && liga.svs) || {}).filter((s) => s.tier === 1);
 }
 
 /** Desde otra página (el pop-up del Competitivo): a Socios, con la lista abierta */

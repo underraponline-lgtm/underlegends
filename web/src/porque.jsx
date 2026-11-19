@@ -37,7 +37,7 @@ const DIM_TIP = {
   Consistencia: 'llega a semifinal o más, más seguido.',
   Dominancia: 'gana eventos: es lo que mide.',
   Racha: 'encadena eventos llegando a semifinal o más.',
-  Diversidad: 'suma en otros servidores Tier 1, no siempre en el mismo.',
+  Diversidad: 'suma en otros servidores Tier 1 y 2, no siempre en el mismo.',
 };
 
 // ── 👀 QUIÉN ERES EN EL RANKING SI NO ESTÁS VERIFICADO (Dlx, 13/11/2026: «que en el ranking uno muestre la posición
@@ -197,10 +197,10 @@ export function explicar(sub, c) {
       if (t.rg && sig) out.pasos.push(<>Para el rango <b>{sig.r}</b> te faltan <b>{coma(sig.min - (t.sc || 0))}</b> de Score.</>);
     } else if (t) {
       // 🔒 todavía sin letra: la barra, y no la misma frase de la tira
-      out.prog = { va: Math.min(evc(t), pide), de: pide, et: 'eventos en servidores Tier 1' };
+      out.prog = { va: Math.min(evc(t), pide), de: pide, et: 'eventos en servidores Tier 1 o 2' };
       const resto = Math.max(0, pide - evc(t));
-      if (resto) out.pasos.push(<>Juega <b>{pl(resto, 'evento', 'eventos')}</b> más en un servidor Tier 1: tu letra sale sola con el {pide}.º.</>);
-      if (typeof t.evc === 'number' && t.evc !== t.ev) out.notas.push(<>De tus {t.ev} eventos, {t.evc} son de servidores Tier 1: los otros suman a tu Temporada, no al Competitivo.</>);
+      if (resto) out.pasos.push(<>Juega <b>{pl(resto, 'evento', 'eventos')}</b> más en un servidor Tier 1 o 2: tu letra sale sola con el {pide}.º.</>);
+      if (typeof t.evc === 'number' && t.evc !== t.ev) out.notas.push(<>De tus {t.ev} eventos, {t.evc} son de servidores Tier 1 o 2: los otros suman a tu Temporada, no al Competitivo.</>);
     }
   } else if (sub === 'duelos') {
     const g = f ? f.g || 0 : 0;
@@ -339,7 +339,7 @@ export function Porque({ sub, c, n, titulo, linea }) {
               <section><span className="rk-pq-t">CÓMO SUBIR</span><ol className="rk-pq-pasos">{x.pasos.slice(0, 4).map((t, i) => <li key={i}>{t}</li>)}</ol></section>
             ) : null}
             {x.tier1 && x.tier1.length ? (
-              <section><span className="rk-pq-t">CUENTAN PARA EL COMPETITIVO · TIER 1</span>
+              <section><span className="rk-pq-t">CUENTAN PARA EL COMPETITIVO · TIER 1 Y 2</span>
                 <ul className="rk-pq-sv">{x.tier1.map((s) => (
                   <li key={s.sv} style={{ '--c': s.color || '#29B298' }}>
                     {s.invita ? <a href={s.invita} target="_blank" rel="noopener noreferrer" aria-label={'Entrar a ' + (s.nombre || s.sv) + ' en Discord'}>

@@ -48,7 +48,7 @@ export function MesSv({ liga, sv, enc }) {
   const ab = S.abierto && S.abierto.sv && S.abierto.sv[sv] ? S.abierto : null;
   const hist = (S.hist || []).filter((m) => m.sv && m.sv[sv] && S.cats_sv.some(([c]) => ((((m.sv[sv].cats || {})[c] || {}).nom) || []).length));
   // el mes que corre, sólo en los que tienen MES AWARDS: los Tier 1 (o uno que ya tuvo)
-  const espera = !ab && S.vivo && ((liga.svs[sv] || {}).tier === 1 || hist.length) ? S.vivo : null;
+  const espera = !ab && S.vivo && ([1, 2].includes((liga.svs[sv] || {}).tier) || hist.length) ? S.vivo : null;
   if (!ab && !hist.length && !espera) return null;
   const sigla = siglaDe(sv);
   const premio = PREMIO_SV(S) ? ', ' + PREMIO_SV(S) : '';
