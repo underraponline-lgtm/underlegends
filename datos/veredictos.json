@@ -222,12 +222,12 @@
    ],
    "terminada": false
   },
-  "1572788908046155930": {
-   "id": "1572788908046155930",
+  "1572796666162057348": {
+   "id": "1572796666162057348",
    "canal": "1564463626855645234",
    "sv": "🔥LKR (Champios Legue)🐉",
    "g": "1558611504046153750",
-   "pub": 1795052496683,
+   "pub": 1795054346362,
    "ed": 1795057492517,
    "n": 6,
    "vidas": 5,
@@ -6900,6 +6900,47 @@
      "veredicto",
      []
     ],
+    [
+     "SEMIFINALES",
+     [
+      "KIBAK",
+      "DEKO"
+     ],
+     "KIBAK",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PARK JI SUNG",
+      "RODRI LP"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "KIBAK",
+      "PARK JI SUNG"
+     ],
+     "KIBAK",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1572472285292404798": {
+   "id": "1572472285292404798",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794977007936,
+   "ed": 1794978097108,
+   "texto": "`[ SEMIFINALES ]`\n⌞KIBAK⌝ 🆚 ⌞DEKO⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞RODRI LP⌝\n`[ FINAL ]`\n⌞KIBAK⌝ 🆚 ⌞PARK JI SUNG⌝",
+   "batallas": [
     [
      "SEMIFINALES",
      [
