@@ -757,11 +757,18 @@ function slugOg(x) {
   return String(x || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '').slice(0, 60);
 }
+// 🔄 Y CON SU VERSIÓN (19/11/2026, Dlx, con la invitación de su link: «esta ya estaba remakeada, porque sigue apareciendo
+// este viejo»). Discord —y WhatsApp, y los demás— guarda la imagen por su DIRECCIÓN, y la de cada link era siempre la
+// misma (`og/ref/dlx.jpg`): el ciclo la rehízo en R2 con el diseño de cine el 18/11 y Discord seguía mostrando la de
+// antes. La huella del archivo (el ETag del mismo HEAD) cambia con cada subida, así que va en la dirección como el `?v=`
+// de las tarjetas: imagen nueva, dirección nueva. R2 no mira la consulta
 async function hayOg(tipo, slug) {
   if (!slug) return '';
   const u = R2_CARTAS + '/og/' + tipo + '/' + slug + '.jpg';
   const r = await fetch(u, { method: 'HEAD', cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
-  return r && r.ok ? u : '';
+  if (!r || !r.ok) return '';
+  const v = String(r.headers.get('etag') || '').replace(/[^0-9a-f]/gi, '').slice(0, 12);
+  return v ? u + '?v=' + v : u;
 }
 
 // 🎁 Y LA DE CADA LINK DE REFERIDO (`/i/<clave>`): «X te invita», con su miniatura o, si todavía no está, su tarjeta.

@@ -2379,10 +2379,14 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     tabla: [{ n: 'Oasis', k: 'oasis', cc: 'cl', pos: 1, ovr: 95, rg: 'SS', ev: 23, sv: 'FFA', c: ['servidor', 'temporada'], cv: 'aa.bb.cc.dd' }] };
   const perfiles = { p: { lejos: { f: { n: 'Lejos 🇦🇷', k: 'lejos', pos: 250, ovr: 50, ev: 1, c: ['servidor'], cv: 'x.y.z.w' } } } };
   const pedidos = [];
+  // 🔄 las miniaturas armadas en R2 (`og/<tipo>/<slug>.jpg`): las que estén acá contestan el HEAD con su ETag
+  const ogEtag = {};
   globalThis.fetch = async (u) => {
     pedidos.push(String(u));
     if (/\/lobby\?json=1$/.test(String(u))) return new Response(JSON.stringify(lobby), { status: 200 });
     if (/\/perfiles$/.test(String(u))) return new Response(JSON.stringify(perfiles), { status: 200 });
+    const og = /\/og\/([a-z]+\/[a-z0-9-]+)\.jpg$/.exec(String(u));
+    if (og && ogEtag[og[1]]) return new Response(null, { status: 200, headers: { etag: ogEtag[og[1]] } });
     return new Response('{}', { status: 404 });
   };
   const ASSETS = { fetch: async () => new Response('<html>la de siempre</html>', { status: 200 }) };
@@ -2408,6 +2412,16 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     ok('quien no está entre los 200: de los perfiles, con la carta que tiene (Servidor) y sin repetir la bandera',
       r.j && r.j.title === 'Lejos 🇦🇷 · Liga Global de Freestyle' && /\/lejos\/servidor\.webp\?v=z$/.test(r.j['meta[property="og:image"]'])
       && r.pedidos.some((u) => /\/perfiles$/.test(u)), JSON.stringify(r.j));
+    // 🔄 y con su cartel armado, la dirección lleva la versión del archivo (19/11/2026, Dlx: «esta ya estaba remakeada,
+    // porque sigue apareciendo este viejo»: Discord guarda la imagen por su dirección, y ésta no cambiaba al rehacerla)
+    ogEtag['perfil/lejos'] = '"4df2746b5da02cbf31fd70e2b44eb607"';
+    r = await ver('/freestyle-rap/r/lejos', DISCORD);
+    ok('con su cartel en R2: la imagen lleva la versión del archivo (?v= del ETag), así una rehecha es otra dirección',
+      r.j && r.j['meta[property="og:image"]'] === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/perfil/lejos.jpg?v=4df2746b5da0', JSON.stringify(r.j));
+    ogEtag['perfil/lejos'] = '"0a0a0a0a0a0a0a0a0a0a"';
+    r = await ver('/freestyle-rap/r/lejos', DISCORD);
+    ok('rehecha (otro ETag): otra dirección', r.j && /og\/perfil\/lejos\.jpg\?v=0a0a0a0a0a0a$/.test(r.j['meta[property="og:image"]']), JSON.stringify(r.j));
+    delete ogEtag['perfil/lejos'];
     r = await ver('/freestyle-rap/r/oasis', 'Mozilla/5.0 (Linux; Android 14) Chrome/130');
     ok('a la gente, la página de siempre y sin pedir nada', r.t === '<html>la de siempre</html>' && !r.pedidos.length, r.t.slice(0, 80));
     r = await ver('/freestyle-rap/r/nadie', DISCORD);

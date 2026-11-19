@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.94",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T18:01:00-05:00",
+        "titulo": "La vista previa de tus links ya no queda vieja en Discord",
+        "items": [
+            "**Cuando pegas tu link de invitación**, el de tu perfil, tu crew, un servidor, un país, una llave o una liga en Discord o WhatsApp, la imagen de la vista previa es la de ahora: cada vez que se rehace, cambia su dirección y Discord la vuelve a buscar.",
+            "Los mensajes que ya mandaste quedan con la imagen que tenían: para ver la nueva, pega el link otra vez."
+        ]
+    },
+    {
         "version": "6.93",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T17:34:00-05:00",
