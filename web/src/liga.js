@@ -720,7 +720,17 @@ export class Liga {
     if (!L || typeof window === 'undefined' || !window.llaveDeEvento) return null;
     const evs = this.proximos().concat((this.d.calendario || []).filter((c) => !c.ll)
       .map((c) => ({ nombre: c.n, sv: c.sv, cuando: c.t, link: c.link, org: c.org, st: c.st, aut: c.aut })));
-    return evs.find((x) => { try { return !!window.llaveDeEvento(x, [L]); } catch (err) { return false; } }) || null;
+    // 🧩 TODOS LOS QUE LE TOCAN, JUNTOS (19/11/2026, Dlx: «el staff del evento» no salía en la CHOP COMPE CHILL en vivo):
+    // el mismo evento está en `proximos()` —sin staff— y en el calendario —con su jurado y quién lo publicó—, y ganaba el
+    // primero. Lo que uno no trae lo pone el otro
+    const xs = evs.filter((x) => { try { return !!window.llaveDeEvento(x, [L]); } catch (err) { return false; } });
+    if (!xs.length) return null;
+    const out = {};
+    xs.forEach((x) => Object.entries(x).forEach(([k, v]) => {
+      const vacio = v == null || v === '' || (Array.isArray(v) && !v.length) || (typeof v === 'object' && !Array.isArray(v) && !Object.keys(v).length);
+      if (!vacio && (out[k] == null || out[k] === '')) out[k] = v;
+    }));
+    return out;
   }
   recienTerminadas() {
     const ls = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}).filter((L) => L && L.terminada && !L.veredictos) : [];

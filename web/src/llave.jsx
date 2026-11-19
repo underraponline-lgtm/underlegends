@@ -146,8 +146,12 @@ function Persona({ ctx, x, conCara = true, perdio = false }) {
 // están verificados, simplemente su cuadrado», y a la pregunta: «carta chica + Pase»). Quien tiene carta lleva la suya
 // en miniatura —la de Servidor si es de ESE servidor, si no la de Temporada (`liga.cartaDe()`)—; quien no, su cara. Y
 // desde el nivel 8 del Pase, brilla
+// 🃏 CUÁL CARTA, EN LA LLAVE (Dlx, 19/11/2026: «uses las tarjetas del servidor que están, y si no la de temporada… si es
+// que no tienen la del competitivo»): la de Servidor si es de ESE servidor; si no, la Competitiva; si no, la de Temporada
+// (`comp` en `liga.cartaDe()`, que entre las dos mira también la principal que eligió en su Inventario)
+const cartaLlave = (ctx, f) => (f ? ctx.liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv, comp: true }) : null);
 const urlCarta = (ctx, f, chica = false) => {
-  const cual = f ? ctx.liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv }) : null;
+  const cual = cartaLlave(ctx, f);
   return cual ? ctx.liga.cartaUrl(f.k, cual, chica) : null;
 };
 // 🃏 LA CARTA CHICA (Dlx, 19/10/2026: «si»): en la llave se dibuja a ~80–150 px y bajaba la de Discord, ~150 KB cada una
@@ -176,7 +180,7 @@ function ImgCarta({ ctx, f, cls, grande = false, ancho = 0 }) {
   const W = ancho || w;
   if (!mk || !W) return img;
   const liga = ctx.liga;
-  const cual = liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv });
+  const cual = cartaLlave(ctx, f);
   const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
   return <span className="lk-mk"><ConMarco m={mk} cual={cual} ancho={W} svColor={svc} cc={f.cc} src={full}>{img}</ConMarco></span>;
 }
@@ -206,8 +210,9 @@ function Nota({ ctx, s }) {
 }
 function Mini({ ctx, f, nombre }) {
   const liga = ctx.liga;
-  // 🅰️ en el remake A (18/11/2026) las filas de la llave van con la cara: la carta grande queda para la final
-  const url = ctx.caras ? null : urlCarta(ctx, f);
+  // 🃏 la carta chica en cada fila, como se decidió en la 3.54 (Dlx, 19/11/2026: el remake A las había cambiado por caras
+  // y «te había dicho que uses las tarjetas»); quien no tiene carta, su cara
+  const url = urlCarta(ctx, f);
   if (!url) return <Cara liga={liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />;
   return <span className={'lk-carta' + (liga.brilla(f.k) ? ' brilla' : '')}><ImgCarta ctx={ctx} f={f} /></span>;
 }
@@ -218,7 +223,9 @@ function Mini({ ctx, f, nombre }) {
 // —que ya trae nombre y bandera—; quien no tiene, una ficha del mismo tamaño con su cara, su nombre y su bandera. Los
 // equipos y las batallas sin ninguna carta siguen en filas, que ocupan menos. ⚠️ SIN ✓: en la esquina de arriba la
 // carta de Temporada lleva su puesto (#4) y la tapaba; quien pasó se ve en color y quien quedó afuera, en gris
-const enCartas = (ctx, ls) => !ctx.caras && ls.length > 0 && ls.every((s) => partes(s).length === 1 && (ctx.fila(s) || !ctx.esSin(s)))
+// 🅰️ en el remake A, el versus de cartas sólo en el mano a mano (19/11/2026: las había apagado del todo); las de 3 a 5
+// siguen en filas, con la carta chica de cada uno, para que se lean compactas
+const enCartas = (ctx, ls) => (!ctx.caras || ls.length <= 2) && ls.length > 0 && ls.every((s) => partes(s).length === 1 && (ctx.fila(s) || !ctx.esSin(s)))
   && ls.some((s) => !!urlCarta(ctx, ctx.fila(s)));
 //: la proporción de las cartas (300 × 438): la Servidor es un poco más baja y entra entera, centrada
 const CARTA_AR = 438 / 300;
@@ -229,7 +236,7 @@ const colsVs = (n) => (n === 3 || n >= 5 ? 3 : 2);
 const VS_GAP = 6;
 const ET_H = 26;
 
-function Ficha({ ctx, b, s, copa, pasa, llega, grande = false }) {
+function Ficha({ ctx, b, s, copa, pasa, llega, grande = false, j = null, li = -1 }) {
   const f = ctx.fila(s);
   const url = urlCarta(ctx, f);
   const g = gana(b, s) || pasa;
@@ -251,6 +258,8 @@ function Ficha({ ctx, b, s, copa, pasa, llega, grande = false }) {
         </span>}
       {ctx.marca(s, f, perdio)}
       <Nota ctx={ctx} s={s} />
+      {/* ⚖️ el voto de cada juez también sobre la carta (el remake A lo ponía al lado del nombre en la fila) */}
+      {j && li >= 0 ? <Votos j={j} li={li} b={b} /> : null}
     </button>
   );
 }
@@ -481,11 +490,12 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
   const an = ctx.anim && pos != null ? ctx.anim : null;
   const recien = !!an && an.b.has(pos);
   if (enCartas(ctx, ls)) {
+    const jv = ronda != null && ctx.votoDe ? ctx.votoDe(ronda, b) : null;
     return (
       <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '') + (recien ? ' recien' : '')} style={style} title={b[2] || undefined}>
         {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
         <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' lk-vs3' : '')}>
-          {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} llega={!!an && an.s.has(pos + ':' + clave(s))} />)}
+          {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} llega={!!an && an.s.has(pos + ':' + clave(s))} j={jv} li={i} />)}
           {ls.length === 1 ? <div className="lk-fc vac"><em>{b[1] ? 'pasa directo' : 'por definir'}</em></div> : null}
         </div>
       </div>
@@ -1072,11 +1082,12 @@ function CaraCtx({ ctx, m }) {
 
 // 🔢 LA LLAVE EN NÚMEROS: la figura, los raperos, las batallas y el jurado. Sin dato no hay pieza, y con menos de dos no
 // hay tira
-function Numeros({ ctx, L, G }) {
+function Numeros({ ctx, L, G, jur = null, vs = [] }) {
   const N = L.notas || {};
   const bats = ctx.prin.reduce((a, R) => a + R.b.filter((b) => b[0].length >= 2).length, 0) + (ctx.ter ? ctx.ter.b.length : 0);
   const multi = ctx.prin.reduce((a, R) => a + R.b.filter((b) => b[0].length > 2).length, 0);
-  const js = juecesDe(G);
+  // 🗳️ en vivo, el jurado del anuncio (`st.j`) y lo que va del canal de veredictos (19/11/2026)
+  const js = juecesDe(G).length ? juecesDe(G) : (jur || []);
   const nIns = insDe(G).length;
   const nVot = ((G && G.jur) || []).length;
   const t = [];
@@ -1088,7 +1099,12 @@ function Numeros({ ctx, L, G }) {
   if (bats) t.push(['Batallas', bats, multi && bats > multi ? multi + ' de 3 a 5 MCs, ' + (bats - multi) + ' mano a mano' : multi ? 'todas de 3 a 5 MCs' : '']);
   if (js.length) {
     t.push(['El jurado', <>{js.length === 1 ? <CaraCtx ctx={ctx} m={js[0]} /> : null}{js.length === 1 ? nombreDe(ctx, js[0]) : js.length + ' jueces'}</>,
-      nVot + ' de ' + bats + ' batallas votadas']);
+      nVot ? nVot + ' de ' + bats + ' batallas votadas' : L.vivo ? 'el del anuncio' : '']);
+  }
+  const votadas = vs.filter((x) => x.g >= 0 || x.rep || x.otro);
+  if (votadas.length) {
+    const u = votadas[votadas.length - 1];
+    t.push(['Veredictos', votadas.length, 'el último ' + hace(u.tv || u.t)]);
   }
   if (t.length < 2) return null;
   return (
@@ -1168,11 +1184,146 @@ function PodioA({ ctx, L }) {
   );
 }
 
+// 🗳️ LOS VEREDICTOS DE UNA LLAVE EN VIVO (Dlx, 19/11/2026: «también los veredictos, staff del evento»). El vigía lee el
+// canal de veredictos de cada servidor (`veredictos` de /api/avisos/vivo) y la llave en vivo no los usaba: la procesada
+// los trae masticados en «El jurado» (`L.gente.jur`), la en vivo no tenía nada. Van los de su servidor desde que se
+// publicó la llave, en el orden en que se escribieron: «[A vs B]» abre una batalla, el renglón que sigue es el veredicto
+// (el nombre del que ganó, o «X» si hubo réplica), y «[CUARTOS]», «[SEMIS]»… la ronda. Un mensaje con varias batallas
+// juntas es un cuadro pegado, no un veredicto: no se lee
+const RONDA_V = /^\[?\s*((?:octavos|cuartos|semis|semifinal(?:es)?|final|tercer\w*|16avos|dieciseisavos|32avos|primera ronda|segunda ronda)[^\]]*)\]?$/i;
+const sinCorchetes = (x) => limpio(String(x || '').replace(/[[\]()]/g, ' ')).trim();
+function veredictosVivo(L) {
+  const V = typeof window !== 'undefined' ? window.VIVO : null;
+  if (!L || !L.vivo || !V || !Array.isArray(V.veredictos)) return [];
+  const desde = (L.pub || 0) - 30 * 60000;
+  const ms = V.veredictos.filter((m) => m && m.sv === L.sv && (m.pub || 0) >= desde).sort((a, b) => (a.pub || 0) - (b.pub || 0));
+  const out = [];
+  let ronda = '';
+  let cur = null;
+  ms.forEach((m) => {
+    const ls = sinMenciones(m.texto).split(/\n+/).map((x) => x.trim()).filter(Boolean);
+    if (ls.filter((x) => /\bvs\.?\b/i.test(x)).length > 1) return;
+    ls.forEach((x) => {
+      const r = RONDA_V.exec(x);
+      if (r && !/\bvs\b/i.test(x)) { ronda = capital(sinCorchetes(r[1]).toLowerCase()); return; }
+      if (/\bvs\.?\b/i.test(x)) {
+        const l = sinCorchetes(x).split(/\s+vs\.?\s+/i).map((y) => y.trim()).filter(Boolean);
+        if (l.length >= 2) { cur = { r: ronda, l, g: -1, rep: 0, t: m.pub || 0 }; out.push(cur); }
+        return;
+      }
+      if (!cur || cur.g >= 0 || cur.rep) return;
+      const v = sinCorchetes(x);
+      if (/^(x\s*)+$/i.test(v)) { cur.rep = v.split(/\s+/).length; cur.tv = m.pub || 0; return; }
+      const nv = normNombre(v);
+      const i = cur.l.findIndex((y) => { const ny = normNombre(y); return ny && (ny === nv || ny.startsWith(nv) || nv.startsWith(ny)); });
+      if (i >= 0) { cur.g = i; cur.tv = m.pub || 0; } else { cur.otro = v; cur.tv = m.pub || 0; }
+    });
+  });
+  return out;
+}
+// la pestaña: ronda por ronda, cada batalla con quien ganó marcado, las réplicas y la que se está votando
+function VeredictosA({ ctx, vs }) {
+  if (!vs.length) return null;
+  const rondas = [];
+  vs.forEach((x) => { let R = rondas.find((y) => y.r === x.r); if (!R) { R = { r: x.r, b: [] }; rondas.push(R); } R.b.push(x); });
+  const ult = vs[vs.length - 1];
+  return (
+    <div className="lk-ja lk-vr">
+      <p className="lk-ia-t">Lo que el jurado va escribiendo en el canal de veredictos, en el orden en que se votó. Se actualiza solo cada minuto.</p>
+      {rondas.map((R, i) => (
+        <div key={i} className="lk-ja-r">
+          {R.r ? <h4 className="lk-ja-h">{R.r}</h4> : null}
+          <ul>
+            {R.b.map((x, k) => (
+              <li key={k}>{x.l.map((s, li) => [li ? <span key={'v' + li} className="lk-ja-vs" aria-hidden="true">vs</span> : null,
+                <span key={li} className={'lk-ja-m' + (x.g === li ? ' v' : '')}><CaraCtx ctx={ctx} m={s} />{nombreDe(ctx, s)}{x.g === li ? <i className="lk-vt" title="Ganó">✓</i> : null}</span>])}
+                {x.rep ? <em className="lk-vr-e">réplica</em> : x.otro ? <em className="lk-vr-e">«{x.otro}»</em> : x === ult && x.g < 0 ? <em className="lk-vr-e ya">se está votando</em> : null}
+                <small className="lk-vr-t">{hace(x.tv || x.t)}</small></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+// ⚔️ Y ARRIBA, LA QUE SE ESTÁ VOTANDO (o la última que se votó), con las dos cartas: en una llave que no se juega en
+// orden no se sabe cuál va (`AhoraVs` no sale), pero el canal de veredictos lo dice
+function AhoraVer({ ctx, vs }) {
+  const x = vs[vs.length - 1];
+  if (!x || x.l.length < 2) return null;
+  const vota = x.g < 0 && !x.rep;
+  const b = [x.l, x.g >= 0 ? x.l[x.g] : '', '', []];
+  return (
+    <section className="lk-ahora" aria-label={(vota ? 'Se vota ahora: ' : 'El último veredicto: ') + x.l.map((s) => nombreDe(ctx, s)).join(' contra ')}>
+      <span className="lk-ahora-t"><b>{vota ? '● SE VOTA AHORA' : 'EL ÚLTIMO VEREDICTO'}</b>{x.r ? ' · ' + x.r : ''}{vota ? '' : ' · ' + hace(x.tv || x.t)}</span>
+      <div className="lk-ahora-vs">
+        {x.l.map((s, i) => [i ? <span key={'v' + i} className="lk-ahora-x" aria-hidden="true">VS</span> : null, <Grande key={i} ctx={ctx} b={b} s={s} />])}
+      </div>
+      {x.rep ? <p className="lk-ahora-sig">Réplica: se vuelve a rapear.</p> : null}
+    </section>
+  );
+}
+
+// 🟢 EN VIVO, QUIÉNES SIGUEN EN PIE (Dlx, 19/11/2026, con una en vivo de Cypherhood: «no parece el mismo»): el escenario de
+// una llave a medio jugar quedaba con la cabecera y dos números, sin una sola carta. Siguen en pie los que no perdieron
+// ninguna batalla decidida (en un grupo donde pasan varios, los que pasaron), del que llegó más lejos al que menos
+function vivosDe(ctx) {
+  if (ctx.cerrada) return [];
+  const prin = ctx.prin || [];
+  const fuera = new Set();
+  const lados = {};
+  // quién aparece en cada ronda: una llave en vivo muchas veces no marca al ganador (la CHOP COMPE CHILL no marcaba
+  // ninguno) y lo que lo dice es que pasó a la ronda siguiente
+  const en = prin.map((R) => new Set(R.b.flatMap((b) => b[0].flatMap((s) => partes(s).map((m) => ctx.idDe(m))))));
+  prin.forEach((R, i) => R.b.forEach((b) => {
+    const pasa = ctx.pasanDe ? ctx.pasanDe[i] : null;
+    const sig = en[i + 1];
+    const alguienPaso = !!sig && b[0].some((s) => partes(s).some((m) => sig.has(ctx.idDe(m))));
+    // y si la ronda siguiente ya está entera (todas sus batallas con sus dos lados), quien no está ahí quedó afuera
+    const llena = !!sig && prin[i + 1].b.length > 0 && prin[i + 1].b.every((x) => x[0].length >= 2);
+    b[0].forEach((s) => {
+      const k = partes(s).map((m) => ctx.idDe(m)).sort().join('|');
+      if (!k) return;
+      if (!lados[k] || lados[k].hondo < i) lados[k] = { s, hondo: i };
+      const paso = !!sig && partes(s).some((m) => sig.has(ctx.idDe(m)));
+      if ((b[1] && !gana(b, s) && !(pasa && pasa(s))) || ((alguienPaso || llena) && !paso)) fuera.add(k);
+    });
+  }));
+  return Object.keys(lados).filter((k) => !fuera.has(k)).map((k) => lados[k]).sort((a, b) => b.hondo - a.hondo);
+}
+const VIVOS_MAX = 8;
+function VivosA({ ctx }) {
+  const vs = vivosDe(ctx);
+  const total = Object.keys(ctx.nombres || {}).length;
+  // con todos todavía en pie no dice nada: recién cuando se decidió algo
+  if (vs.length < 2 || (total && vs.length >= total)) return null;
+  const ver = vs.slice(0, VIVOS_MAX);
+  const ronda = (ctx.prin[vs[0].hondo] || {}).r || '';
+  return (
+    <section className="lk-box lk-vv" aria-label="Siguen en pie">
+      <div className="lk-bh"><h3>Siguen en pie</h3><small>{vs.length}{total ? ' de ' + total : ''}{ronda ? ' · ' + ronda : ''}</small></div>
+      <ul className="lk-vv-l">
+        {ver.map((x) => {
+          const id = ctx.idDe(partes(x.s)[0]);
+          return (
+            <li key={x.s}><button type="button" className={ctx.sigo === id ? 'on' : ''} onClick={() => ctx.seguir(id)} aria-label={'Ver el camino de ' + nombreDe(ctx, x.s)}>
+              <MiniP ctx={ctx} s={x.s} ancho={ctx.compu ? 96 : 76} sinNota />
+              <b>{nombreDe(ctx, x.s)}</b>
+            </button></li>
+          );
+        })}
+      </ul>
+      {vs.length > ver.length ? <p className="lk-vv-mas">y {vs.length - ver.length} más en la llave</p> : null}
+    </section>
+  );
+}
+
 // 🧭 EL CAMINO, AL COSTADO: ronda por ronda, a quién le ganó y con quién cayó. Arranca con el campeón —o con quien tocaste,
-// o contigo si jugaste—, y el selector lleva al de cualquiera de la llave
+// o contigo si jugaste—, y el selector lleva al de cualquiera de la llave. En vivo, con el que llegó más lejos
 function CaminoA({ ctx, L }) {
   const camp = (L.tabla || []).find((r) => r[1] === 'Campeón');
-  const idCamp = camp ? ctx.idDe(partes(camp[0])[0]) : '';
+  const v0 = !camp ? vivosDe(ctx)[0] : null;
+  const idCamp = camp ? ctx.idDe(partes(camp[0])[0]) : v0 ? ctx.idDe(partes(v0.s)[0]) : '';
   const rondas = ctx.prin.concat(ctx.ter ? [ctx.ter] : []);
   const pasosDe = (id) => {
     const xs = [];
@@ -1706,7 +1857,11 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const org = inf.org || (pas && pas.org) || (evV && evV.org) || inf.aut || (evV && evV.aut) || '';
   // 👥 de a uno, con su cara y su perfil (Dlx, 14/10/2026): de lo mismo que dio `org`, con sus `os` si los trae
   // 👥 Y SI EL ANUNCIO YA NO VIAJA (las llaves viejas), LO QUE SE GUARDÓ DE ÉL (`L.gente`, de bot/gente_evento.py)
-  const G = L.gente || {};
+  // 🙋 en vivo todavía no hay `L.gente` (lo guarda el ciclo al procesarla): los inscritos son los que juntó el vigía en el
+  // canal de inscripciones de su anuncio (`liga.anotados()`), y jugó quien ya está en la llave (19/11/2026)
+  const G0 = L.gente || {};
+  const anot = L.vivo && !(G0.ins || []).length && evV ? liga.anotados(evV) : [];
+  const G = anot.length ? Object.assign({}, G0, { ins: anot.map((x) => [x.aka, x.f && base.nombres['k:' + x.f.k] ? x.f.n : '', 'nombre']) }) : G0;
   const GS = G.staff || {};
   const deOrg = [inf, pas, evV].find((x) => x && ((x.os && x.os.length) || x.org)) || (!org && GS.org ? { os: GS.org } : { org });
   const orgsL = org || GS.org ? liga.orgsDe(deOrg) : [];
@@ -1751,16 +1906,24 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   // 🅰️ LAS PESTAÑAS (el remake A, 18/11/2026): la llave siempre; el jurado, los inscritos y los puntos si hay
   const jsJ = juecesDe(G);
   const juradoL = st.j && st.j.length ? st.j : jsJ;
+  // 🗳️ los veredictos de la en vivo (`veredictosVivo()`): la pestaña, el número y la batalla de arriba
+  // (una de vidas de #veredictos ya ES ese canal: no se repite)
+  const vsV = !base.cerrada && !L.veredictos ? veredictosVivo(L) : [];
   // «organizó y juzgó» cuando el jurado es quien organizó (en NEW GENESIS, Erian): un renglón y no dos con la misma cara
   const orgYJ = orgsL.length > 0 && juradoL.length === orgsL.length
     && juradoL.every((x) => { const f = liga.quien(x); return orgsL.some((o) => (o.f && f ? o.f.k === f.k : clave(o.n) === clave(x))); });
   const tabs = [['llave', N ? N + ' vidas' : base.dob ? 'Doble eliminación' : 'La llave',
     base.prin.reduce((a, R) => a + R.b.length, 0) + (base.ter ? base.ter.b.length : 0)]];
   if ((G.jur || []).length) tabs.push(['jurado', 'El jurado', G.jur.length]);
+  else if (vsV.length) tabs.push(['ver', 'Veredictos', vsV.length]);
   if (insDe(G).length) tabs.push(['ins', 'Inscritos', insDe(G).length]);
   if (orden.length) tabs.push(['pts', 'Puntos', (L.tabla || []).length]);
   const tabV = tabs.some((x) => x[0] === tab) ? tab : 'llave';
   const rail = conVs ? <><PodioA ctx={ctx} L={L} />{!N ? <CaminoA ctx={ctx} L={L} /> : null}</> : null;
+  // 🟢 en vivo, si ya se decidió algo: los que siguen en pie (la misma cuenta que `VivosA`)
+  const vivosL = conVs ? [] : vivosDe(ctx);
+  const nTodos = Object.keys(ctx.nombres || {}).length;
+  const vivosVer = !conVs && !base.cerrada && vivosL.length >= 2 && !(nTodos && vivosL.length >= nTodos);
   return (
     <>
       <div className="escena lk-esc lk-a" style={{ '--mo-c': sv.color || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(L.sv, sv.color) }}>
@@ -1820,14 +1983,22 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
           </div>
         </section>
         {/* ⚔️ lo que se juega ahora, en grande */}
-        {!base.cerrada ? <AhoraVs ctx={ctx} /> : null}
-        <Numeros ctx={ctx} L={L} G={G} />
+        {/* ⚔️ lo que se juega ahora, en grande: lo que dice el canal de veredictos si dice algo (es lo más fresco: el
+            mensaje de la llave se edita después); si no, el orden de la llave */}
+        {!base.cerrada ? (vsV.length ? <AhoraVer ctx={ctx} vs={vsV} /> : <AhoraVs ctx={ctx} />) : null}
+        <Numeros ctx={ctx} L={L} G={G} jur={L.vivo ? juradoL : null} vs={vsV} />
         {/* 🥊 terminada y con campeón: la final y las cazas; al costado, el podio y el camino (en el celular, después de las
             pestañas). Sin campeón —una a medias, una en vivo—, el campeón en grande y el podio de antes */}
         {conVs ? (
           <div className="lk-dos">
             <div className="lk-dos-m"><FinalA ctx={ctx} L={L} />{compu ? <CazasA ctx={ctx} /> : null}</div>
             {compu ? <aside className="lk-rail">{rail}</aside> : null}
+          </div>
+        ) : vivosVer ? (
+          // 🟢 en vivo: los que siguen en pie con su carta, y al costado el camino del que llegó más lejos
+          <div className="lk-dos">
+            <div className="lk-dos-m"><VivosA ctx={ctx} /></div>
+            {compu && !N ? <aside className="lk-rail"><CaminoA ctx={ctx} L={L} /></aside> : null}
           </div>
         ) : <CampeonG ctx={ctx} />}
         {!conVs && podioSin.length ? (
@@ -1864,6 +2035,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             </>
           ) : null}
           {tabV === 'jurado' ? <JuradoA ctx={ctx} G={G} /> : null}
+          {tabV === 'ver' ? <VeredictosA ctx={ctx} vs={vsV} /> : null}
           {tabV === 'ins' ? <InscritosA ctx={ctx} G={G} /> : null}
           {tabV === 'pts' ? <PuntosA ctx={ctx} L={L} orden={orden} grupos={grupos} /> : null}
         </div>
