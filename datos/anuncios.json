@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-19T01:55:18+00:00",
+ "cuando": "2026-11-19T02:25:15+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -1218,41 +1218,6 @@
    "autor": "IroníaZka | Los Culeanizadores",
    "staff_cuentas": {},
    "categoria_id": "863207988251852820",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-19T01:09:08"
-  },
-  {
-   "nombre": "NEW GENESIS",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1572780498571501693",
-   "cuando": "2026-11-19T01:08:11",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "POR",
-     "id": ""
-    },
-    {
-     "n": "Erian 恵理久",
-     "id": "1055474244089286706"
-    }
-   ],
-   "autor_h": "78a9632c77e88d80",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "MULTIVERSE",
-   "horario": "",
-   "fecha": "7",
-   "premios": "PTS TABLA",
-   "staff": {},
-   "autor": "Erian 恵理久",
-   "staff_cuentas": {},
-   "categoria_id": "863207988739309600",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-11-19T01:09:08"
   },
@@ -7487,6 +7452,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Last",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1572796624332263466",
+   "cuando": "2026-11-19T02:12:16"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Vilka",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1572795144472756295",
+   "cuando": "2026-11-19T02:06:23"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Mathias 🇻🇪",
+   "quien": "elthiasmathias",
+   "discord_id": "1177916322122833933",
+   "msg_id": "1572794647837802558",
+   "cuando": "2026-11-19T02:04:25"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "pene cort🇮🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1572794253544005633",
+   "cuando": "2026-11-19T02:02:51"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1572792946489827571",
+   "cuando": "2026-11-19T01:57:39"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -43441,51 +43451,6 @@
    "discord_id": "1241407042195816459",
    "msg_id": "1560692459883724871",
    "cuando": "2026-10-16T16:34:38"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "vandu 🇨🇦",
-   "quien": "dfelipetor",
-   "discord_id": "613552853302378527",
-   "msg_id": "1560692447137374249",
-   "cuando": "2026-10-16T16:34:35"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Nemi🇦🇷",
-   "quien": "nemmii_as_26264",
-   "discord_id": "1458311513667276830",
-   "msg_id": "1560691802254872629",
-   "cuando": "2026-10-16T16:32:01"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Assuan 🇨🇱",
-   "quien": ".assuan._08335",
-   "discord_id": "1266557884058046507",
-   "msg_id": "1560691492765438025",
-   "cuando": "2026-10-16T16:30:48"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "1200 🇰🇷",
-   "quien": "dreamero",
-   "discord_id": "1395903355909570633",
-   "msg_id": "1560690540713091243",
-   "cuando": "2026-10-16T16:27:01"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Shisui 🇯🇵",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1560690466587148330",
-   "cuando": "2026-10-16T16:26:43"
   }
  ]
 }
