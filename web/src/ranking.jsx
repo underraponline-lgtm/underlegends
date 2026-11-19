@@ -1283,9 +1283,11 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   // 🏁 EL REMAKE A (Dlx, 18/11/2026, «A + piezas de B»): la Temporada y el Competitivo llevan la franja de cuatro números,
   // el podio en su caja con una pieza abajo (la pelea más cerrada / la escalera de letras) y la columna de al lado (tu
   // lugar y «Se movieron» / «A un paso de la letra»). Los demás rankings siguen como estaban hasta la tanda 2
-  // ⚠️ tanda 2 (19/11/2026): también Duelos, Podios, Rachas, Actividad, Most Wanted, Países y Crews. Servidores no: su
-  // podio depende del servidor elegido y tiene su diseño del 17/11. Ascensos y Misiones son vistas propias
-  const dosCols = !pronto && !cfg.propia && base.length > 0 && ['temporada', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'mw', 'paises', 'crews'].includes(sub);
+  // ⚠️ tanda 2 (19/11/2026): también Duelos, Podios, Rachas, Actividad, Most Wanted, Países y Crews. Y tanda 3 (Dlx,
+  // «Haz todos»): Servidores, con un servidor elegido —su podio son las cartas de ESE servidor; con «Todos» no hay
+  // podio y queda como estaba—. Ascensos y Misiones son vistas propias
+  const dosCols = !pronto && !cfg.propia && base.length > 0 && (['temporada', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'mw', 'paises', 'crews'].includes(sub)
+    || (sub === 'servidores' && !!sv && top.length > 0));
   const eloA = sub === 'divisiones' && !pronto && !!liga.d.div && liga.d.div.m === 'elo';
   // cómo se dibuja y adónde lleva cada uno en la pelea: gente, país o crew
   const nombreDe = (g) => (cfg.grupo === 'pais' ? nombrePais(g.cc) : cfg.grupo === 'crew' ? limpio(g.crew) : limpio(g.n));
@@ -1293,8 +1295,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
     : <Cara liga={liga} k={g.k} nombre={g.n} cls={'cara ' + cls} />);
   const hrefDe = (g) => (cfg.grupo === 'pais' ? '#/pais/' + g.cc : cfg.grupo === 'crew' ? '#/crew/' + encodeURIComponent(g.clave || g.crew) : '#/r/' + encodeURIComponent(g.k));
   const valTxt = (v) => { if (!cfg.valor) return ''; const [, u, d] = cfg.valor; return (d ? coma(v, d) : num(v)) + ' ' + (Array.isArray(u) ? u[v === 1 ? 0 : 1] : u); };
-  const franja = dosCols ? franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide: req(liga, 'competitivo'), nombreDe, valTxt }) : null;
-  const pel = dosCols ? peleaDe({ cfg, base, numero }) : null;
+  const franja = dosCols ? franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide: req(liga, 'competitivo'), nombreDe, valTxt, sv }) : null;
+  // en Servidores, la pelea es adentro del servidor elegido (el número es el de adentro de cada uno)
+  const pel = dosCols ? peleaDe({ cfg, base: sub === 'servidores' ? base.filter((f) => f.sv === sv) : base, numero }) : null;
   // las flechas de arriba: el ranking de al lado en la tira, salteando los que todavía no existen (Misiones, Ligas) o
   // no tienen con qué (Most Wanted sin buscados); al final vuelve al principio
   const vivos = RANKINGS.filter((id) => !SUBS[id].pronto && !(SUBS[id].hay && !SUBS[id].hay(liga)));

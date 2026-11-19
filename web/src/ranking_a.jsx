@@ -7,6 +7,11 @@
 // el tema de Cypherhood de la llave que se miró (`.lk-tsv.t-ch`), no un color de la llave.
 import { Cara } from './piezas.jsx';
 import { limpio, num, siglaDe } from './liga.js';
+import CSS_RKA from './css/rka.css?inline';
+import { usarCss } from './css.js';
+
+// los estilos de estas piezas, una vez, en cualquier página que las use (el Ranking, el ELO, cada país)
+usarCss('rka', CSS_RKA);
 
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
 export const semDe = (sem, k) => { const g = sem && sem.g && sem.g[k]; return g && g.length ? g[g.length - 1] || 0 : 0; };
@@ -30,7 +35,7 @@ export function Franja({ items }) {
 
 // qué cuatro números lleva cada ranking. ⚠️ Nada que repita el podio («El #1» se sacó por eso: Impeccable, 18/11/2026)
 // y nada que dependa de cuántas filas viajan (son 200, y la tabla de verdad es más larga)
-export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide, nombreDe, valTxt }) {
+export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide, nombreDe, valTxt, sv }) {
   const out = [];
   const conNum = base.filter((f) => numero(cfg, f));
   if (sub === 'temporada') {
@@ -75,6 +80,22 @@ export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide, nombre
         v: cuenta[alto.r] + (cuenta[alto.r] === 1 ? ' rapero' : ' raperos'), c: 'desde ' + alto.min + ' de Score' + (R[0] && alto.r !== R[0].r ? '; nadie llegó a la ' + R[0].r : ', la letra más alta') });
     }
     if (base.length) out.push({ l: 'Con rango', v: num(base.length), em: base.length === 1 ? 'rapero' : 'raperos', c: 'el rango aparece con ' + (pide || 10) + ' eventos en servidores Tier 1' });
+  } else if (sub === 'servidores') {
+    // 🏟️ tanda 3 (19/11/2026): el servidor elegido contra la Liga, por el OVR de la carta de Servidor
+    const del = base.filter((f) => f.sv === sv);
+    const cuenta = {};
+    base.forEach((f) => { cuenta[f.sv] = (cuenta[f.sv] || 0) + 1; });
+    out.push({ l: 'En ' + siglaDe(sv), v: num(del.length), em: del.length === 1 ? 'carta' : 'cartas', c: 'de Servidor, de ' + num(base.length) + ' en todos los servidores' });
+    if (del.length > 1) {
+      const d = (del[0].osv || 0) - (del[1].osv || 0);
+      out.push({ l: 'Del #1 al #2 de ' + siglaDe(sv), v: d ? d + ' de OVR' : 'empatados', c: <><b>{limpio(del[0].n)}</b> sobre {limpio(del[1].n)}</> });
+    }
+    const alto = base.reduce((m, f) => ((f.osv || 0) > ((m && m.osv) || 0) ? f : m), null);
+    if (alto) out.push({ l: 'El OVR SV más alto de la Liga', cara: <Cara liga={liga} k={alto.k} nombre={alto.n} cls="cara rka-kc" />, v: limpio(alto.n), em: alto.osv, c: 'en ' + siglaDe(alto.sv) });
+    // si el elegido ya es el que más tiene, el número es el que le sigue (si no, se repetía el primero de la franja)
+    const orden = Object.keys(cuenta).sort((a, b) => cuenta[b] - cuenta[a]);
+    const otro = orden[0] === sv ? orden[1] : orden[0];
+    if (otro) out.push({ l: orden[0] === sv ? 'El que le sigue' : 'El servidor con más cartas', v: siglaDe(otro), em: cuenta[otro], c: 'raperos con su carta de Servidor ahí' });
   } else {
     // 🏁 las demás (tanda 2, 19/11/2026): la distancia del #1 al #2 y dos números de cada una, nunca el #1 (ya está en el podio)
     const nom = nombreDe || ((f) => limpio(f.n));

@@ -3506,5 +3506,15 @@
 "tiene {n} de ELO; Mítico arranca en {n}": "has {n} ELO; Mythic starts at {n}",
 "subieron y bajaron de división al cerrar la semana del {n} nov": "moved up and down a division when the week of Nov {n} closed",
 "Las divisiones del Ranking ELO": "The ELO Ranking divisions",
-"TUYA": "YOURS"
+"TUYA": "YOURS",
+"En {p}": "In {p}",
+"carta": "card",
+"de Servidor, de {n} en todos los servidores": "Server cards, out of {n} across all servers",
+"Del #{n} al #{n} de {p}": "From #{n} to #{n} in {p}",
+"El OVR SV más alto de la Liga": "The highest SV OVR in the League",
+"El servidor con más cartas": "The server with the most cards",
+"El que le sigue": "Next in line",
+"raperos con su carta de Servidor ahí": "rappers with their Server card there",
+"Qué ver de {p}": "What to see of {p}",
+"empatados": "tied"
 }

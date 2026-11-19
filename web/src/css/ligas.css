@@ -488,3 +488,17 @@ a.lq3-t:hover{border-color:#F6F6F6}
 /* 🖼️ las otras ligas, también con su miniatura */
 .lgp-otras a:has(> img.th){grid-template-columns:36px minmax(0,1fr)}
 .lgp-otras img.th{width:36px;height:48px;border-radius:2px;object-fit:cover;background:#030304}
+/* ── 🏁 (19/11/2026, «Haz todos»): la liga con el papel del Ranking ── */
+/* «La tabla»: renglones con su fondo, sin la caja de afuera */
+#lgp-tabla .dv-tabla{border:0;display:grid;gap:3px}
+#lgp-tabla .dv-tabla li{border-top:0;background:var(--caja)}
+#lgp-tabla .dv-tabla li.yo{background:var(--rk-yo)}
+/* «Las otras ligas» como cartelera: el flyer grande, el nombre y su servidor abajo; sin flyer, el logo sobre su color */
+.lgp-otras{gap:18px 14px}
+.lgp-otras a,.lgp-otras a:has(> img.th){grid-template-columns:minmax(0,1fr);row-gap:6px;align-content:start;min-height:0;padding:0;border:0;box-shadow:none}
+.lgp-otras img,.lgp-otras img.th{grid-row:auto;width:calc(100% - 4px);height:auto;aspect-ratio:4 / 5;border-radius:2px;object-fit:cover;background:#030304;box-shadow:4px 4px 0 var(--c)}
+.lgp-otras img:not(.th){object-fit:contain;padding:24%;background:var(--c)}
+.lgp-otras small{grid-column:auto}
+.lgp-otras img{transition:transform 160ms cubic-bezier(.23,1,.32,1)}
+@media (hover: hover) and (pointer: fine){.lgp-otras a:hover img{transform:translateY(-2px)}}
+@media (prefers-reduced-motion: reduce){.lgp-otras img{transition:none}}

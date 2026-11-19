@@ -27,6 +27,7 @@ import { useSalon } from './mesawards.jsx';
 import { useIndice } from './indice.js';
 import CSS_PAGINA from './css/entidad2.css?inline';
 import { usarCss } from './css.js';
+import { Movidos, Pelea, PorServidor, peleaDe } from './ranking_a.jsx';
 
 usarCss('entidad2', CSS_PAGINA);
 
@@ -416,6 +417,8 @@ export function PaginaCrew({ liga, id }) {
 // ═══ EL PAÍS ═══════════════════════════════════════════════════════════════════════════════════════════════════════
 export function PaginaPais({ liga, cc: cc0 }) {
   const cc = String(cc0 || '').toLowerCase();
+  // 🏁 «Todo …» en pestañas, como el papel del Ranking (19/11/2026, «Haz todos»): la tabla o por servidor
+  const [pt, setPt] = useState('tabla');
   const ps = (liga.d.paises || []).filter((p) => p.n);
   const i = ps.findIndex((p) => String(p.cc).toLowerCase() === cc);
   const P = i >= 0 ? ps[i] : null;
@@ -424,6 +427,11 @@ export function PaginaPais({ liga, cc: cc0 }) {
   const nom = nombrePais(cc);
   const pts = P ? P.pts : gente.reduce((a, f) => a + (f.pts || 0), 0);
   const n = P ? P.n : gente.length;
+  // el número adentro del país (el de «Todo …»: salta a quien está fuera de concurso) y la pelea más cerrada de acá
+  const nroP = {};
+  gente.filter((f) => f.pos && !f.fc).forEach((f, j) => { nroP[f.k] = j + 1; });
+  const numP = (_c, f) => nroP[f.k] || 0;
+  const pelP = gente.length > 2 ? peleaDe({ cfg: { valor: [(f) => f.ovr || 0] }, base: gente, numero: numP }) : null;
   const tope = (liga.d.tabla || []).length;
   const crews = (liga.d.crews || []).filter((c) => (c.gente || []).some((x) => { const f = liga.fila(x); return f && String(f.cc).toLowerCase() === cc; }));
   const otros = ps.filter((p) => String(p.cc).toLowerCase() !== cc);
@@ -442,13 +450,28 @@ export function PaginaPais({ liga, cc: cc0 }) {
       {gente.length ? (
         <Sec id="ent-cartas" titulo={'Los que mandan en ' + nom} extra="negra">
           <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { pais: cc }) || 'temporada'} />)}</div>
+          {pelP ? (
+            <div className="rka ent-pelea">
+              <Pelea liga={liga} p={pelP} va={'#' + numP(0, pelP.a) + ' · ' + num(pelP.a.pts) + ' pts'} vb={'#' + numP(0, pelP.b) + ' · ' + num(pelP.b.pts) + ' pts'}
+                pie={pelP.d ? <>Separados por <b>{pelP.d} de OVR</b>.</> : <>Los dos con <b>{pelP.a.ovr} de OVR</b>; los separan <b>{num(pelP.d2)} pts</b>.</>} />
+              <Movidos liga={liga} base={gente} yoK={liga.yo ? liga.yo.k : ''} />
+            </div>
+          ) : null}
         </Sec>
       ) : null}
       {/* la tabla trae a los primeros de la Liga: el número de gente del país puede ser más grande que su lista */}
-      <Sec id="ent-gente" titulo={'Todo ' + nom} bajada={!gente.length ? null
+      <Sec id="ent-gente" extra="ent-papel" titulo={'Todo ' + nom} bajada={!gente.length ? null
         : gente.length >= n ? (n === 1 ? 'El único rapero de ' + nom + ' que jugó la temporada.' : 'El puesto dentro de ' + nom + ', de los ' + raperos(n) + ' que jugaron la temporada.')
           : (gente.length === 1 ? 'Quien' : 'Los ' + num(gente.length) + ' que') + ' entra' + (gente.length === 1 ? '' : 'n') + ' entre los ' + num(tope) + ' primeros de la Liga, de ' + raperos(n) + ' de ' + nom + ' que jugaron la temporada.'}>
-        {gente.length ? <Gente liga={liga} gente={gente} />
+        {gente.length > 3 ? (
+          <div className="rka-pes" role="tablist" aria-label={'Qué ver de ' + nom}>
+            {[['tabla', 'La tabla', gente.length], ['sv', 'Por servidor', 0]].map(([id, t, c]) => (
+              <button key={id} type="button" role="tab" aria-selected={pt === id} className={pt === id ? 'on' : ''} onClick={() => setPt(id)}>{t}{c ? <small>{c}</small> : null}</button>
+            ))}
+          </div>
+        ) : null}
+        {gente.length && pt === 'sv' ? <PorServidor liga={liga} base={gente} numero={numP} cfg={{}} yoK={liga.yo ? liga.yo.k : ''} />
+          : gente.length ? <Gente liga={liga} gente={gente} />
           : <p className="pronto-p">{n === 1 ? 'De ' + nom + ' jugó 1 rapero' : 'De ' + nom + ' jugaron ' + raperos(n)} esta temporada, y todavía nadie entra entre los {num(tope)} primeros de la Liga.</p>}
       </Sec>
       {crews.length ? (

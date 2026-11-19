@@ -1352,8 +1352,9 @@ function LigaPerfil({ liga, id }) {
       {otras.length ? (
         <Sec id="lgp-otras" titulo="Las otras ligas" enlace="Todas" href="#/ligas">
           {/* filas parejas en la compu (18/10/2026): diez en dos de cinco, no siete y tres con un hueco al lado */}
-          <nav className="lgp-otras" aria-label="Las otras ligas" style={{ '--cols': Math.ceil(otras.length / Math.ceil(otras.length / 6)) }}>
-            {otras.map((x) => (
+          {/* 🏁 como cartelera, con el flyer grande (19/11/2026): las primeras 10 en dos filas; «Todas» lleva a la cartelera */}
+          <nav className="lgp-otras" aria-label="Las otras ligas" style={{ '--cols': Math.ceil(Math.min(10, otras.length) / Math.ceil(Math.min(10, otras.length) / 6)) }}>
+            {otras.slice(0, 10).map((x) => (
               <a key={x.id} href={aLiga(x)} style={{ '--c': (liga.svs[x.sv] || {}).color || '#E41373' }}>
                 {x.fl ? <img className="th" alt="" src={x.fl} loading="lazy" decoding="async" /> : <img alt="" src={liga.logo(x.sv)} />}<b>{x.n}</b><small>{siglaDe(x.sv)}</small>
               </a>
