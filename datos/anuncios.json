@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-18T23:25:42+00:00",
+ "cuando": "2026-11-18T23:55:25+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5683,8 +5683,8 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
    "categoria_id": "1558611505040064605",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-18T02:40:02"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-18T23:54:55"
   },
   {
    "nombre": "COMPE CHOP CEO V4",
@@ -7396,6 +7396,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Chop🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1572762123291861155",
+   "cuando": "2026-11-18T23:55:10"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1572762111283699873",
+   "cuando": "2026-11-18T23:55:07"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Nxuz 🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1572762083106365481",
+   "cuando": "2026-11-18T23:55:01"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43368,33 +43395,6 @@
    "discord_id": "729809358627536938",
    "msg_id": "1560470437526376549",
    "cuando": "2026-10-16T01:52:24"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Dyzz🇨🇱",
-   "quien": "dyzzmc",
-   "discord_id": "1525996330042921081",
-   "msg_id": "1560470434032390145",
-   "cuando": "2026-10-16T01:52:23"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "╰➤-inscripciones-🏆",
-   "texto": "sosa",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1560469803729166349",
-   "cuando": "2026-10-16T01:49:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "gocho🇹🇼",
-   "quien": "gocho444.",
-   "discord_id": "1324178951119175711",
-   "msg_id": "1560468394363322469",
-   "cuando": "2026-10-16T01:44:17"
   }
  ]
 }
