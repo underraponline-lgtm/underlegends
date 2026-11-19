@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.97",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T18:46:00-05:00",
+        "titulo": "La noche de cada evento, también donde el bot no puede subir archivos",
+        "items": [
+            "Cuando «La noche de…» va en el aviso de ganadores y no en el cierre del bot en vivo, ahora va como link y no como archivo adjunto: así sale también en los chats donde el bot no puede subir archivos."
+        ]
+    },
+    {
         "version": "6.96",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T18:15:00-05:00",

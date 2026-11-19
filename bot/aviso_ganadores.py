@@ -314,6 +314,17 @@ def pie_noche(alt, con_ficha, ev):
             fila_noche(ev, con_ficha)]
 
 
+def pie_con_url(pie, url):
+    """🌙 El pie con la imagen como LINK (`url`, en R2) en lugar del archivo adjunto. Adjuntar pide el permiso «Adjuntar
+    archivos» en ese chat y un link no: así va también la tarjeta del campeón del cierre. El 19/11/2026 el aviso del
+    #664 (CH) recibió un 403 con la imagen adjunta y salió sin ella; sin la imagen, pasó. Sin `url`, el pie como estaba."""
+    if not url or not pie or pie[0].get('type') != 12:
+        return pie
+    item = dict(((pie[0].get('items') or [{}])[0]) or {})
+    item['media'] = {'url': url}
+    return [{'type': 12, 'items': [item]}] + list(pie[1:])
+
+
 def noche(ev, Q):
     """🌙 `(componentes, (archivo, png))` del pie del aviso, o `([], None)` si el evento es de antes de `NOCHE_DESDE` o la
     imagen no sale (el aviso va igual, sin ella: nunca lo frena)."""
@@ -340,7 +351,7 @@ def noche(ev, Q):
 # imagen se dibuja en un navegador, acá, así que con el campeón el Worker pide una vuelta del ciclo (`ciclo_pedir`,
 # `minutosAlCiclo()`) y esta vuelta le CAMBIA la tarjeta a ese mensaje por la imagen. El aviso de ganadores sale igual,
 # con sus menciones y sus botones, y sin repetirla. Sin cierre (el servidor no tiene el bot en vivo), si el cierre ya
-# lleva el aviso de otro evento o si Discord no la toma, la imagen va en el aviso, como antes.
+# lleva el aviso de otro evento o si Discord no la toma, la imagen va en el aviso, también como link (`pie_con_url()`).
 def con_noche(msg, url, alt):
     """El cuerpo del PATCH que cambia la imagen de `msg` (el mensaje como lo devuelve Discord) por `url`: en Componentes
     V2, la galería de afuera del recuadro (o una nueva al final); en el formato de antes, la imagen del primer embed.
@@ -369,6 +380,15 @@ def _subir_noche(ev, png):
     clave = 'noche/%s-%s.png' % (ev, hashlib.sha1(png).hexdigest()[:10])
     r = SC.sesion().put('%s/objects/%s' % (SC.API, clave), data=png, headers={'Content-Type': 'image/png'}, timeout=60)
     return '%s/%s' % (SC.PUBLICA, clave) if SC._ok(r, clave) is not None else None
+
+
+def _url_noche(ev, png):
+    """`_subir_noche()` que nunca levanta: la URL, o `None` (y entonces la imagen va adjunta, como antes)."""
+    try:
+        return _subir_noche(ev, png)
+    except Exception as e:                               # noqa: BLE001
+        print('      ⚠️ la imagen no subió a R2 (%r): va adjunta' % e)
+        return None
 
 
 def al_cierre(ev, nombre, sv, fecha, png, alt, s):
@@ -587,9 +607,17 @@ def correr(aplicar=False):
             if en_cierre:
                 print('      🌙 la imagen, en el cierre del bot en vivo (en lugar de la tarjeta): el aviso va sin ella')
                 pie, archivo = pie[1:], None
+            else:
+                # 🌙 va en el aviso, como LINK y no adjunta (`pie_con_url()`): adjuntar pide un permiso que no todos
+                # los chats le dan al bot. Si R2 no la toma, adjunta, como antes
+                url = _url_noche(ev, archivo[1])
+                if url:
+                    pie, archivo = pie_con_url(pie, url), None
+        con_imagen = bool(pie) and pie[0].get('type') == 12
         r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + pie, ids, archivo))
-        if archivo and r.status_code not in (200, 201):
-            print('      ⚠️ con la imagen no salió (%s): va sin ella' % r.status_code)
+        if con_imagen and r.status_code not in (200, 201):
+            # ⚠️ con lo que contestó Discord: el 403 del #664 no decía qué permiso faltaba
+            print('      ⚠️ con la imagen no salió (%s %s): va sin ella' % (r.status_code, r.text[:160]))
             r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + [fila_noche(ev, False)], ids))
         if r.status_code in (200, 201):
             avisados[ev] = {'sv': sv, 'canal': str(canal), 'msg': str((r.json() or {}).get('id') or ''), 'dia': hoy.isoformat()}
@@ -701,6 +729,16 @@ def _self_check():
        and pj['attachments'] == [{'id': 0, 'filename': 'noche.png'}] and cm['headers'] == {'Content-Type': None}
        and pj['components'][-2]['type'] == 12 and pj['allowed_mentions']['users'] == ids,
        'con imagen va en multipart (payload_json + files[0]); sin imagen, JSON como siempre')
+    pu = pie_con_url(pie, 'https://r2/noche/700-abc.png')
+    ok(pu[0]['items'][0]['media']['url'] == 'https://r2/noche/700-abc.png'
+       and pu[0]['items'][0]['description'].startswith('La noche de TOKYO') and pu[1] == pie[1]
+       and pie[0]['items'][0]['media']['url'] == 'attachment://noche.png',
+       'sin cierre, la imagen va en el aviso como link a R2 (no pide «Adjuntar archivos»), con su descripción y sus botones')
+    ok(pie_con_url(pie, None) is pie and pie_con_url(pie[1:], 'https://x') == pie[1:],
+       'sin link, el pie queda como estaba; sin imagen, no inventa una')
+    cu = cuerpo(comps + pu, ids)
+    ok('json' in cu and 'files' not in cu and cu['json']['components'][-2]['items'][0]['media']['url'].startswith('https://'),
+       'con link, el aviso va en JSON, sin archivo adjunto')
     # 🌙 «La noche de…» en el cierre del bot en vivo, en lugar de la tarjeta (`con_noche()`)
     U = 'https://r2/noche/700-abc.png'
     v2 = {'flags': 32768, 'components': [{'type': 10, 'content': '🏆 <@1>'},
