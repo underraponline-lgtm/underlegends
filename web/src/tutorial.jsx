@@ -123,7 +123,10 @@ function luzDe(el, vw, vh, maxH, fondo, z) {
   const r = cajaDe(el, z);
   const x1 = Math.max(6, r.left - AIRE), x2 = Math.min(vw - 6, r.right + AIRE);
   const y1 = Math.max(6, r.top - AIRE);
-  const tope = Math.min(vh - 6, fondo || vh, y1 + Math.max(64, maxH));
+  // y a lo sumo el 40 % de la pantalla en superficie, no sólo en alto: en la tablet (768 px) lo señalado ocupa casi todo
+  // el ancho y con la mitad del alto encendía el 49 %
+  const porArea = (0.4 * vw * vh) / Math.max(1, x2 - x1);
+  const tope = Math.min(vh - 6, fondo || vh, y1 + Math.max(64, Math.min(maxH, porArea)));
   const y2 = r.bottom + AIRE <= tope ? r.bottom + AIRE : corte(el, y1, tope, z);
   if (x2 - x1 < 8 || y2 - y1 < 8) return null;
   return { x: Math.round(x1), y: Math.round(y1), w: Math.round(x2 - x1), h: Math.round(y2 - y1) };
@@ -183,7 +186,14 @@ function Foco({ paso, n, de, onSig, onAtras, onSaltar, ultimo, txtUltimo }) {
   barR.current = bar;
   // lo que la carta le quita a la pantalla: lo señalado tiene que entrar en lo que queda. En la compu la carta va al
   // costado si entra; si lo señalado es ancho, va abajo o arriba y se le guarda su lugar
-  const ancha = (r) => { const g = geo(); return !!r && r.width > g.vw - (g.vw < 700 ? g.vw : Math.min(380, g.vw - 24)) - 64; };
+  // «ancha» = la carta no entra a ningún costado (ni a la derecha ni a la izquierda): va abajo o arriba y se le guarda
+  // su lugar. Antes era sólo «más ancha que la pantalla menos la carta», y a 2560 px —la página agrandada 1,35, 667 px de
+  // alto— el título del Ranking no entraba a ningún costado y la carta lo tapaba un 5 %
+  const ancha = (r) => {
+    if (!r) return false;
+    const g = geo(), w = g.vw < 700 ? g.vw : Math.min(380, g.vw - 24);
+    return g.vw - r.right - AIRE - 16 < w + 12 && r.left - AIRE - 16 < w + 12;
+  };
   const reservaDe = (r) => {
     const h = tamR.current.h;
     if (geo().vw < 700) return h + barR.current + 28;
