@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.90",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T06:40:34-05:00",
+        "titulo": "La Guía, pulida",
+        "items": [
+            "**La Guía, más corta en el celular**: las preguntas de arriba en una fila que se desliza, «Cómo empezar» con la explicación sólo del paso que sigue, y tus tarjetas en una fila.",
+            "**Most Wanted, encuestas y Tienda, en tarjetas**: cada una con su cifra —los buscados de esta semana, los votos, el ×2, los 5.000 Puntos para arrancar— y un link para ir a verlo.",
+            "**La semana, en el celular**: cada tarjeta con su primera frase y «Más» para el resto."
+        ]
+    },
+    {
         "version": "6.89",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T06:15:00-05:00",
