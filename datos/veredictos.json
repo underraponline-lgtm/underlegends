@@ -2510,6 +2510,17 @@
    "b": "Makma",
    "ganador": "Makma",
    "votos": "1–0"
+  },
+  "1573105312162910371": {
+   "id": "1573105312162910371",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795127933303,
+   "a": "MAT",
+   "b": "Makma",
+   "ganador": "MAT",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7090,8 +7101,8 @@
    "g": "1074328197400887388",
    "canal": "1222380923048296459",
    "pub": 1795124849763,
-   "ed": 1795126899371,
-   "texto": "`[ CUARTOS ]`\n⌞Walker⌝ 🆚 ⌞Colesito⌝\n⌞SOUL B⌝ 🆚 ⌞MAU KC⌝\n⌞Soul OG⌝ 🆚 ⌞Makma⌝\n⌞MAKMA⌝ 🆚 ⌞SOUL OG⌝\n⌞Status⌝ 🆚 ⌞Mats⌝\n`[ SEMIFINALES ]`\n⌞Mats⌝ 🆚 ⌞Soul B⌝\n⌞COLESITO⌝ 🆚 ⌞MAKMA⌝",
+   "ed": 1795127958952,
+   "texto": "`[ CUARTOS ]`\n⌞Walker⌝ 🆚 ⌞Colesito⌝\n⌞SOUL B⌝ 🆚 ⌞MAU KC⌝\n⌞Soul OG⌝ 🆚 ⌞Makma⌝\n⌞MAKMA⌝ 🆚 ⌞SOUL OG⌝\n⌞Status⌝ 🆚 ⌞Mats⌝\n`[ SEMIFINALES ]`\n⌞Mats⌝ 🆚 ⌞Soul B⌝\n⌞COLESITO⌝ 🆚 ⌞MAKMA⌝\n`[ FINAL ]`\n⌞Makma⌝ 🆚 ⌞Mats⌝\n⌞MAT⌝ 🆚 ⌞MAKMA⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7162,6 +7173,26 @@
      "MAKMA",
      "veredicto",
      []
+    ],
+    [
+     "FINAL",
+     [
+      "Makma",
+      "Mats"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAT",
+      "MAKMA"
+     ],
+     "MAT",
+     "veredicto",
+     []
     ]
    ]
   },
@@ -7171,7 +7202,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1795126051197,
-   "ed": 1795126096038,
+   "ed": 1795127921425,
    "texto": "`[ CUARTOS ]`\n⌞raizer⌝ 🆚 ⌞choza⌝\n⌞miniboy⌝ 🆚 ⌞crizj⌝\n⌞limitzs⌝ 🆚 ⌞OKAM⌝\n⌞mcarepa⌝ 🆚 ⌞Teo⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
    "batallas": [
     [

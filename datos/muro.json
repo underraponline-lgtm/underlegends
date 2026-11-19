@@ -72,8 +72,8 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "C",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -81,8 +81,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
+"vandu": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -133,8 +133,8 @@
 "temporada"
 ]
 },
-"mco": {
-"rg": "B",
+"provenza": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -142,8 +142,8 @@
 "temporada"
 ]
 },
-"provenza": {
-"rg": "C",
+"mco": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -229,6 +229,7 @@
 "rg": "A",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -274,6 +275,15 @@
 },
 "geoka": {
 "rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"mats": {
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -359,15 +369,6 @@
 "temporada"
 ]
 },
-"mats": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "caliz": {
 "rg": "D",
 "c": [
@@ -395,11 +396,7 @@
 "temporada"
 ]
 },
-"xclusivo": {
-"rg": "C",
-"c": []
-},
-"trot": {
+"soulb": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -407,6 +404,10 @@
 "servidor",
 "temporada"
 ]
+},
+"xclusivo": {
+"rg": "C",
+"c": []
 },
 "polosport": {
 "rg": "C",
@@ -447,7 +448,7 @@
 "temporada"
 ]
 },
-"soulb": {
+"trot": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -464,15 +465,6 @@
 "rg": "B",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"dyzz": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -498,9 +490,23 @@
 "temporada"
 ]
 },
-"paria": {
-"rg": "D",
-"c": []
+"dyzz": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"dynoco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "mcnadie": {
 "rg": "C",
@@ -546,6 +552,10 @@
 "temporada"
 ]
 },
+"paria": {
+"rg": "D",
+"c": []
+},
 "leonart": {
 "rg": "D",
 "c": [
@@ -577,15 +587,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"dynoco": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -636,13 +637,17 @@
 "temporada"
 ]
 },
-"benjixo": {
-"rg": "C",
-"c": []
-},
 "eclipsito": {
 "rg": "C",
 "c": []
+},
+"mtz": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "sosaatr": {
 "rg": "E",
@@ -654,6 +659,10 @@
 },
 "badterne": {
 "rg": "",
+"c": []
+},
+"benjixo": {
+"rg": "C",
 "c": []
 },
 "crakero": {
@@ -697,6 +706,10 @@
 "servidor",
 "temporada"
 ]
+},
+"lucky": {
+"rg": "",
+"c": []
 },
 "kravitz": {
 "rg": "E",
@@ -748,15 +761,6 @@
 "temporada"
 ]
 },
-"jult": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "jeixder": {
 "rg": "D",
 "c": [
@@ -798,6 +802,15 @@
 "rg": "E",
 "c": []
 },
+"jult": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "nemmiias": {
 "rg": "E",
 "c": [
@@ -835,10 +848,6 @@
 "servidor",
 "temporada"
 ]
-},
-"emizor": {
-"rg": "D",
-"c": []
 },
 "artezzy": {
 "rg": "",
@@ -889,6 +898,22 @@
 "temporada"
 ]
 },
+"aldre": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"emizor": {
+"rg": "D",
+"c": []
+},
+"leyenda": {
+"rg": "",
+"c": []
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -911,57 +936,6 @@
 "pais",
 "servidor"
 ]
-},
-"aldre": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"lucky": {
-"rg": "",
-"c": []
-},
-"gus": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"zetryko": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"under": {
-"rg": "",
-"c": []
-},
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"julix-x": {
-"rg": "",
-"c": []
-},
-"leyenda": {
-"rg": "",
-"c": []
-},
-"alexi": {
-"rg": "",
-"c": []
 },
 "eliot": {
 "rg": "",
@@ -987,11 +961,27 @@
 "temporada"
 ]
 },
-"monet": {
+"gus": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"zetryko": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"under": {
 "rg": "",
 "c": []
 },
-"ezze": {
+"monet": {
 "rg": "",
 "c": []
 },
@@ -1009,6 +999,10 @@
 "servidor"
 ]
 },
+"julix-x": {
+"rg": "",
+"c": []
+},
 "zekha": {
 "rg": "",
 "c": [
@@ -1023,19 +1017,15 @@
 "temporada"
 ]
 },
-"akuseru": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "blitz": {
 "rg": "E",
 "c": []
 },
 "assuan": {
+"rg": "",
+"c": []
+},
+"alexi": {
 "rg": "",
 "c": []
 },
@@ -1071,6 +1061,18 @@
 "rg": "",
 "c": []
 },
+"ezze": {
+"rg": "",
+"c": []
+},
+"akuseru": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "rt": {
 "rg": "",
 "c": [
@@ -1102,10 +1104,6 @@
 ]
 },
 "giansito": {
-"rg": "",
-"c": []
-},
-"leopoldsedar": {
 "rg": "",
 "c": []
 },
@@ -1185,6 +1183,10 @@
 "temporada"
 ]
 },
+"leopoldsedar": {
+"rg": "",
+"c": []
+},
 "pomberito": {
 "rg": "",
 "c": []
@@ -1243,6 +1245,10 @@
 "temporada"
 ]
 },
+"flash": {
+"rg": "",
+"c": []
+},
 "19": {
 "rg": "",
 "c": []
@@ -1252,10 +1258,6 @@
 "c": []
 },
 "0223": {
-"rg": "",
-"c": []
-},
-"flash": {
 "rg": "",
 "c": []
 },
@@ -1323,14 +1325,6 @@
 "rg": "",
 "c": []
 },
-"tmaxturbopn": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "sadik": {
 "rg": "",
 "c": []
@@ -1367,16 +1361,24 @@
 "rg": "",
 "c": []
 },
-"fleivaman": {
-"rg": "",
-"c": []
-},
 "krtman": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"tmaxturbopn": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"fleivaman": {
+"rg": "",
+"c": []
 },
 "rbk": {
 "rg": "",
@@ -2891,49 +2893,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-12T22:29:02Z",
-"quien": [
-"LRS"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-12T22:29:02Z",
-"quien": [
-"LRS"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-12T23:58:19Z",
-"quien": [
-"Zignos"
-],
-"rg": "B",
-"primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-12T23:58:19Z",
-"quien": [
-"Abyssus"
-],
-"rg": "A",
-"primero": false
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T00:26:49Z",
-"quien": [
-"Abyssus"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-13T00:26:49Z",
@@ -6275,6 +6234,49 @@
 "sv": "FVS",
 "de": 1,
 "a": 2
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-19T23:07:15Z",
+"quien": [
+"Walker"
+],
+"carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-19T23:07:15Z",
+"quien": [
+"mats"
+],
+"rg": "A",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-19T23:07:15Z",
+"quien": [
+"Dynoco"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-19T23:07:15Z",
+"quien": [
+"MTZ"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-19T23:07:15Z",
+"quien": [
+"MTZ"
+],
+"carta": "competitivo"
 }
 ],
 "noche_antes": {
@@ -7995,6 +7997,67 @@
 "desde": 281
 }
 ]
+},
+"2026-11-19": {
+"tipo": "resnoche",
+"t": "2026-11-20T08:00:00Z",
+"dia": "2026-11-19",
+"eventos": 1,
+"part": 18,
+"campeones": [
+{
+"ev": "CHOP COMPE CHILL V.1",
+"sv": "CH",
+"ll": 664,
+"quien": [
+[
+"mats",
+"mats"
+]
+]
+}
+],
+"suman": [
+{
+"n": "mats",
+"k": "mats",
+"pts": 10000,
+"ev": 1
+},
+{
+"n": "Makmah",
+"k": "makmah",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Colesito",
+"k": "colesito",
+"pts": 3000,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Magic",
+"k": "",
+"de": 159,
+"a": 145
+},
+{
+"n": "mats",
+"k": "mats",
+"de": 39,
+"a": 32
+},
+{
+"n": "Soulb",
+"k": "soulb",
+"de": 48,
+"a": 43
+}
+],
+"sorpresas": []
 }
 },
 "extra": {
@@ -8037,8 +8100,8 @@
 "snow",
 "six",
 "verc",
-"vandu",
-"panchok"
+"panchok",
+"vandu"
 ],
 "competitivo": [
 "oasis",
@@ -8061,7 +8124,7 @@
 "temporada:vandu": "2026-11-18T00:39:14Z"
 },
 "racha": {
-"makmah": 0,
+"makmah": 1,
 "oasis": 4,
 "pichulamc": 1,
 "erian": 1,
@@ -8073,7 +8136,7 @@
 "panchok": 3,
 "carlosss": 2,
 "liberia": 1,
-"colesito": 0,
+"colesito": 1,
 "agus": 0,
 "mrstillballin": 5,
 "mco": 1,
@@ -8091,7 +8154,7 @@
 "zignos": 0,
 "molusco": 0,
 "guess": 1,
-"walker": 1,
+"walker": 0,
 "delux": 0,
 "hassan": 0,
 "sinlimites": 0,
@@ -8118,9 +8181,9 @@
 "tøkiø": 0,
 "mayeutyk": 1,
 "dyzz": 0,
-"mats": 2,
+"mats": 3,
 "numberve": 0,
-"soulb": 0,
+"soulb": 1,
 "bna": 0,
 "paria": 0,
 "last": 0,
@@ -8183,7 +8246,7 @@
 "lucky": 0,
 "gus": 0,
 "zetryko": 2,
-"mtz": 1,
+"mtz": 2,
 "julix-x": 1,
 "alexi": 0,
 "erik": 2,

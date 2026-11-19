@@ -58,15 +58,6 @@
    "sv-dra": "2026-11-13",
    "sv-sr": "2026-11-13"
   },
-  "julda": {
-   "bloq-competitivo": "2026-11-14",
-   "bloq-pais": "2026-11-14",
-   "competitivo": "2026-11-14",
-   "pais": "2026-11-14",
-   "servidor": "2026-11-14",
-   "sv-dra": "2026-11-14",
-   "sv-ffa": "2026-11-14"
-  },
   "kenny": {
    "bloq-competitivo": "2026-11-17",
    "bloq-pais": "2026-11-17",
@@ -129,8 +120,8 @@
    "sv-urbf": "2026-11-17"
   }
  },
- "pasaban": 433,
- "cuando": "2026-11-19T22:31:32Z",
+ "pasaban": 434,
+ "cuando": "2026-11-19T23:07:48Z",
  "borradas": [
   [
    "alonso",

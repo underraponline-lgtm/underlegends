@@ -2,200 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "f54878993d",
-   "tipo": "Nombre desconocido",
-   "sec": "COMPE XCLUSIVISTICA VOL. 1 · DDF · 04/11 · #566",
-   "que": "¿Quién es «yo mc»?",
-   "r": "Es Cronox",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Cronox: estaba en la llamada del evento con ese nombre",
-   "t": 1793847919161,
-   "filas": [
-    1050
-   ],
-   "variantes": [
-    "yo mc"
-   ],
-   "escribio": {
-    "alias": [
-     "yo mc",
-     "Cronox"
-    ],
-    "filas": [
-     338
-    ]
-   }
-  },
-  {
-   "id": "9d361169eb",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«yo mc» es Cronox? La cuenta de Cronox en la Lista se anotó como «yo mc», y en el ranking suman aparte. Si es la misma persona, los puntos de «yo mc» pasan a Cronox.\nLa cuenta: https://discord.com/users/1487658663148785734",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «yo mc» ya es alias de Cronox",
-   "t": 1793849589289,
-   "filas": [
-    1051
-   ],
-   "variantes": [
-    "DOS NOMBRES: «yo mc» → «Cronox» · cuenta 1487658663148785734"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "bb9ce32972",
-   "tipo": "Nombre desconocido",
-   "sec": "GALACTICOS DEL FREESTYLE VOL.16 · DDF · 05/11 · #567",
-   "que": "¿Quién es «Inko 🇨🇴»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1032753509776490566",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1032753509776490566)",
-   "t": 1793898246449,
-   "filas": [
-    1052
-   ],
-   "variantes": [
-    "Inko 🇨🇴"
-   ],
-   "escribio": {
-    "alta": [
-     "Inko",
-     "1032753509776490566"
-    ]
-   }
-  },
-  {
-   "id": "62f2a19e84",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
-   "que": "¿Quién es «GHV🇨🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 848995686098927677",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (848995686098927677)",
-   "t": 1793917991062,
-   "filas": [
-    1054
-   ],
-   "variantes": [
-    "GHV🇨🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "GHV",
-     "848995686098927677"
-    ]
-   }
-  },
-  {
-   "id": "89f4e92fe9",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
-   "que": "¿Quién es «Isac 🇬🇪»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1409587624364081272",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1409587624364081272)",
-   "t": 1793917991062,
-   "filas": [
-    1055
-   ],
-   "variantes": [
-    "Isac 🇬🇪"
-   ],
-   "escribio": {
-    "alta": [
-     "Isac",
-     "1409587624364081272"
-    ]
-   }
-  },
-  {
-   "id": "e1376f4f24",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
-   "que": "¿Quién es «🟢 Batalla 2: Mco»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793917991062,
-   "filas": [
-    776
-   ],
-   "variantes": [
-    "🟢 Batalla 2: Mco"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "720f9201c2",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
-   "que": "¿Quién es «🟢 Batalla 4: GHV»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793917991062,
-   "filas": [
-    777
-   ],
-   "variantes": [
-    "🟢 Batalla 4: GHV"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "699eb41b7c",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
-   "que": "¿Quién es «💥 SF2: ISAC»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793917991062,
-   "filas": [
-    819
-   ],
-   "variantes": [
-    "💥 SF2: ISAC"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "51c5fba230",
-   "tipo": "Nombre desconocido",
-   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
-   "que": "¿Quién es «🔹 C3: ISAC»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793917991062,
-   "filas": [
-    823
-   ],
-   "variantes": [
-    "🔹 C3: ISAC"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "5d023dccd1",
    "tipo": "Nombre desconocido",
    "sec": "qcyo rapeen 2 · FFA · 21/10 · #497",
@@ -4989,6 +4795,153 @@
     "alta": [
      "tato",
      "1451439942256562256"
+    ]
+   }
+  },
+  {
+   "id": "fbfe97407a",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CHILL V.1 · CH · 19/11 · #664",
+   "que": "¿Quién es «SOUL OG»?",
+   "r": "Es Magic",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Magic: estaba en la llamada del evento con ese nombre",
+   "t": 1795129666667,
+   "filas": [
+    1509
+   ],
+   "variantes": [
+    "SOUL OG"
+   ],
+   "escribio": {
+    "alias": [
+     "SOUL OG",
+     "Magic"
+    ],
+    "filas": [
+     379
+    ]
+   }
+  },
+  {
+   "id": "7a10b0f830",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CHILL V.1 · CH · 19/11 · #664",
+   "que": "¿Quién es «HatshepsuT 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1562255292358725828",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1562255292358725828)",
+   "t": 1795129666667,
+   "filas": [
+    1504
+   ],
+   "variantes": [
+    "HatshepsuT 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "HatshepsuT",
+     "1562255292358725828"
+    ]
+   }
+  },
+  {
+   "id": "b1f1435e37",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CHILL V.1 · CH · 19/11 · #664",
+   "que": "¿Quién es «KRS 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 307023083250647041",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (307023083250647041)",
+   "t": 1795129666667,
+   "filas": [
+    1505
+   ],
+   "variantes": [
+    "KRS 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "KRS",
+     "307023083250647041"
+    ]
+   }
+  },
+  {
+   "id": "a938a23578",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CHILL V.1 · CH · 19/11 · #664",
+   "que": "¿Quién es «Mak Dok 🇪🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 711338075372126338",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (711338075372126338)",
+   "t": 1795129666667,
+   "filas": [
+    1506
+   ],
+   "variantes": [
+    "Mak Dok 🇪🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "Mak Dok",
+     "711338075372126338"
+    ]
+   }
+  },
+  {
+   "id": "2ec6abb8af",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CHILL V.1 · CH · 19/11 · #664",
+   "que": "¿Quién es «Status🇻🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1028421976315920535",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1028421976315920535)",
+   "t": 1795129666667,
+   "filas": [
+    1510
+   ],
+   "variantes": [
+    "Status🇻🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Status",
+     "1028421976315920535"
+    ]
+   }
+  },
+  {
+   "id": "856fcb9c1b",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CHILL V.1 · CH · 19/11 · #664",
+   "que": "¿Quién es «pibe🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1274089567988744274",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1274089567988744274)",
+   "t": 1795129666667,
+   "filas": [
+    1511
+   ],
+   "variantes": [
+    "pibe🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "pibe",
+     "1274089567988744274"
     ]
    }
   }

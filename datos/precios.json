@@ -251,7 +251,19 @@
    "monto": 500,
    "t": "2026-11-17T04:37:30Z",
    "fin": "2026-11-23T16:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "mats",
+     500
+    ]
+   ],
+   "ev": {
+    "n": 664,
+    "nombre": "CHOP COMPE CHILL V.1",
+    "sv": "CH",
+    "t": "2026-11-19T19:39:40Z"
+   }
   },
   {
    "id": 47,
@@ -380,6 +392,7 @@
   "Artezzy": 2500,
   "Fazer": 1000,
   "rodrilp": 500,
+  "mats": 500,
   "Deko": 500,
   "Karma": 250,
   "LRS": 250

@@ -306,19 +306,6 @@
    "vence": "2026-11-09T18:51:13+00:00",
    "vencido": true
   },
-  "Andresito": {
-   "avisado": "2026-10-27",
-   "chat": "2026-10-27",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-27T18:35:17+00:00",
-   "did": "1102713474947227818",
-   "evento": "- IRLANDA FREESTYLE -",
-   "n": 533,
-   "sv": "FRZ",
-   "vence": "2026-11-03T18:35:17+00:00",
-   "vencido": true
-  },
   "Antis antis": {
    "avisado": "2026-11-13",
    "chat": "2026-11-14",
@@ -1242,6 +1229,17 @@
    "vence": "2026-11-13T03:25:32+00:00",
    "vencido": true
   },
+  "HatshepsuT": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-19T19:39:40+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CHILL V.1",
+   "n": 664,
+   "sv": "CH",
+   "vence": "2026-11-26T19:39:40+00:00",
+   "vencido": false
+  },
   "Hedorah": {
    "avisado_cumplido": "2026-11-12",
    "con": 614,
@@ -1528,6 +1526,17 @@
    "vence": "2026-11-16T19:49:54+00:00",
    "vencido": true
   },
+  "KRS": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-19T19:39:40+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CHILL V.1",
+   "n": 664,
+   "sv": "CH",
+   "vence": "2026-11-26T19:39:40+00:00",
+   "vencido": false
+  },
   "Kain": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -1751,7 +1760,7 @@
    "n": 624,
    "sv": "ACAD",
    "vence": "2026-11-19T22:38:21+00:00",
-   "vencido": false
+   "vencido": true
   },
   "LOBO ES": {
    "avisado": "2026-11-12",
@@ -2030,6 +2039,17 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
   },
+  "Mak Dok": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-19T19:39:40+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CHILL V.1",
+   "n": 664,
+   "sv": "CH",
+   "vence": "2026-11-26T19:39:40+00:00",
+   "vencido": false
+  },
   "Maniak": {
    "avisado": "2026-11-15",
    "chat": "2026-11-16",
@@ -2209,7 +2229,7 @@
    "n": 624,
    "sv": "ACAD",
    "vence": "2026-11-19T22:38:21+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Nain sdp": {
    "avisado": "2026-10-30",
@@ -2532,19 +2552,6 @@
    "vence": "2026-11-13T03:25:32+00:00",
    "vencido": true
   },
-  "Ragna": {
-   "avisado": "2026-10-27",
-   "chat": "2026-10-27",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-27T18:35:17+00:00",
-   "did": "877285342158397500",
-   "evento": "- IRLANDA FREESTYLE -",
-   "n": 533,
-   "sv": "FRZ",
-   "vence": "2026-11-03T18:35:17+00:00",
-   "vencido": true
-  },
   "Revo": {
    "avisado": "2026-10-19",
    "avisado_cumplido": "2026-10-21",
@@ -2690,8 +2697,8 @@
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-15",
    "chat": "2026-10-12",
-   "con": 490,
-   "cumplido": "2026-10-19T20:40:51+00:00",
+   "con": 475,
+   "cumplido": "2026-10-15T01:41:57+00:00",
    "debut": "2026-10-12T22:01:43+00:00",
    "did": "1559007314126704653",
    "evento": "GODZ",
@@ -2793,6 +2800,17 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": false
+  },
+  "Status": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-19T19:39:40+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CHILL V.1",
+   "n": 664,
+   "sv": "CH",
+   "vence": "2026-11-26T19:39:40+00:00",
    "vencido": false
   },
   "Stt": {
@@ -2903,19 +2921,6 @@
    "n": 571,
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
-   "vencido": true
-  },
-  "Tiago Context": {
-   "avisado": "2026-10-27",
-   "chat": "2026-10-27",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-27T18:35:17+00:00",
-   "did": "",
-   "evento": "- IRLANDA FREESTYLE -",
-   "n": 533,
-   "sv": "FRZ",
-   "vence": "2026-11-03T18:35:17+00:00",
    "vencido": true
   },
   "Tizi": {
@@ -3494,6 +3499,17 @@
    "sv": "SR",
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": true
+  },
+  "pibe": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-19T19:39:40+00:00",
+   "did": "",
+   "evento": "CHOP COMPE CHILL V.1",
+   "n": 664,
+   "sv": "CH",
+   "vence": "2026-11-26T19:39:40+00:00",
+   "vencido": false
   },
   "publicenemy": {
    "avisado": "2026-10-29",

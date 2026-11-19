@@ -3081,6 +3081,11 @@
     "t1",
     1793133210111
    ],
+   "REY DEL DERBI": [
+    "REY DEL DERBI",
+    "t1",
+    1795129672620
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -4424,10 +4429,25 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1795129672620
+   ],
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1795129672620
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
     1792953978519
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1795129672620
    ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
@@ -8207,6 +8227,11 @@
     "t1",
     1794544300764
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795129672620
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -8321,6 +8346,13 @@
     "📆 HABITUÉ",
     "t1",
     1794267614222
+   ]
+  },
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795129672620
    ]
   }
  },
@@ -9184,6 +9216,11 @@
     "t1",
     1794962387538
    ],
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1795129672620
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -9261,7 +9298,7 @@
     1793599452998
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1794962387538
    ],
@@ -10522,6 +10559,23 @@
   }
  },
  "mtz": {
+  "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1795129672620
+   ],
+   "🎯 COMPLETO": [
+    "🎯 COMPLETO",
+    "t1",
+    1795129672620
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1795129672620
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -10549,6 +10603,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795129672620
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -17402,6 +17461,33 @@
     1793477231914
    ]
   },
+  "pais": {
+   "CONQUISTA AFUERA": [
+    "CONQUISTA AFUERA",
+    "t1",
+    1795129672620
+   ],
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795129672620
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795129672620
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1795129672620
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1795129672620
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -17449,6 +17535,11 @@
     "⭐ PENTACAMPEÓN",
     "t1",
     1793477231914
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795129672620
    ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",

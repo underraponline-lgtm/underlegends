@@ -24471,6 +24471,14 @@
       ],
       "Juasmio",
       ""
+     ],
+     [
+      [
+       "Erian",
+       "Scritura"
+      ],
+      "Erian",
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -24500,6 +24508,11 @@
     "Erian",
     "Subcampeón",
     5000
+   ],
+   [
+    "Scritura",
+    "Semifinal",
+    3500
    ],
    [
     "Soulb",
@@ -59963,5 +59976,240 @@
     2000
    ]
   ]
+ },
+ "664": {
+  "dia": "2026-11-19",
+  "escala": "16+",
+  "fecha": "19/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1573060212636524665"
+  ],
+  "n": 664,
+  "nombre": "CHOP COMPE CHILL V.1",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "HatshepsuT 🇦🇷"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Mak Dok 🇪🇸"
+      ],
+      "mats",
+      ""
+     ],
+     [
+      [
+       "Mau Kc",
+       "CrisZJ"
+      ],
+      "Mau Kc",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "pibe🇦🇷"
+      ],
+      "Mathhias",
+      ""
+     ],
+     [
+      [
+       "Status🇻🇪",
+       "KRS 🇦🇷"
+      ],
+      "Status🇻🇪",
+      ""
+     ],
+     [
+      [
+       "ojos melancólicos 🇨🇱",
+       "Lso🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "player🇻🇪",
+       "Lucho🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "Walker"
+      ],
+      "Colesito",
+      "Walk-in 1: colesito🇨🇴; Walk-in 1: Walker"
+     ],
+     [
+      [
+       "Soulb",
+       "Mau Kc"
+      ],
+      "Soulb",
+      "Walk-in 1: Soul B"
+     ],
+     [
+      [
+       "Makmah",
+       "Magic, OG"
+      ],
+      "Makmah",
+      "Walk-in 1: SOUL OG"
+     ],
+     [
+      [
+       "mats",
+       "Status🇻🇪"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Colesito"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Soulb"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "Soulb"
+      ],
+      "Colesito",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "Makmah"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    10000
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Colesito",
+    "Tercero",
+    3000
+   ],
+   [
+    "Mau Kc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Status🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Cuarto",
+    2250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "HatshepsuT 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "KRS 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mak Dok 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    1250
+   ],
+   [
+    "pibe🇦🇷",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 180,
+   "v": 1
+  }
  }
 }

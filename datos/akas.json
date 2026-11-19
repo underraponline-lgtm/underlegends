@@ -371,6 +371,7 @@
   "nachosrk": "Mito",
   "mfdoom": "Agente sombra",
   "lambo": "Lambroggini",
+  "soulog": "Magic",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1936,6 +1937,10 @@
   [
    "LAMBO",
    "Lambroggini"
+  ],
+  [
+   "SOUL OG",
+   "Magic"
   ],
   [
    "Zetryco",
