@@ -2411,6 +2411,61 @@
    "b": "Madd Dogg",
    "ganador": "Mats",
    "votos": "1–0"
+  },
+  "1573086991447490754": {
+   "id": "1573086991447490754",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795123565304,
+   "a": "MAU KC",
+   "b": "CrizZJ",
+   "ganador": "MAU KC",
+   "votos": "1–0"
+  },
+  "1573087520458149959": {
+   "id": "1573087520458149959",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795123691430,
+   "a": "Colesito",
+   "b": "Denik",
+   "ganador": "Colesito",
+   "votos": "1–0"
+  },
+  "1573089507052486659": {
+   "id": "1573089507052486659",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795124165071,
+   "a": "STATUS",
+   "b": "KRS",
+   "ganador": "STATUS",
+   "votos": "1–0"
+  },
+  "1573092420092952678": {
+   "id": "1573092420092952678",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795124859594,
+   "a": "Walker",
+   "b": "Colesito",
+   "ganador": "Colesito",
+   "votos": "1–0"
+  },
+  "1573093546238414990": {
+   "id": "1573093546238414990",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795125128088,
+   "a": "Soul B",
+   "b": "MAU KC",
+   "ganador": "Soul B",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -6980,6 +7035,37 @@
       "KYSS"
      ],
      "FLASH",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1573092378858889277": {
+   "id": "1573092378858889277",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795124849763,
+   "ed": 1795125179000,
+   "texto": "`[ CUARTOS ]`\n⌞Walker⌝ 🆚 ⌞Colesito⌝\n⌞SOUL B⌝ 🆚 ⌞MAU KC⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Walker",
+      "Colesito"
+     ],
+     "Colesito",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SOUL B",
+      "MAU KC"
+     ],
+     "SOUL B",
      "veredicto",
      []
     ]
