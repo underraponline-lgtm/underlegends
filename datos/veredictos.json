@@ -2367,83 +2367,53 @@
    "b": "HEDORAH 🇨🇱",
    "ganador": "HEDORAH 🇨🇱",
    "votos": "1–0"
+  },
+  "1573082856283181239": {
+   "id": "1573082856283181239",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795122579404,
+   "a": "Walker",
+   "b": "Efimero",
+   "ganador": "Walker",
+   "votos": "1–0"
+  },
+  "1573083988443144232": {
+   "id": "1573083988443144232",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795122849332,
+   "a": "Lso",
+   "b": "Soul B",
+   "ganador": "Soul B",
+   "votos": "1–0"
+  },
+  "1573085318314467360": {
+   "id": "1573085318314467360",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795123166398,
+   "a": "Makma",
+   "b": "Hat",
+   "ganador": "Makma",
+   "votos": "1–0"
+  },
+  "1573086031757049944": {
+   "id": "1573086031757049944",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795123336496,
+   "a": "Mats",
+   "b": "Madd Dogg",
+   "ganador": "Mats",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1565476126376067145": {
-   "id": "1565476126376067145",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793308993000,
-   "ed": 1793311447000,
-   "texto": "`[ OCTAVOS ]`\n⌞nc🇰🇷⌝ 🆚 ⌞noone🇵🇪⌝ 🆚 ⌞Musicdum 🇵🇪⌝\n⌞Joba 🇨🇱⌝ 🆚 ⌞Teo 🇨🇴⌝\n⌞Kirito 🇨🇴⌝ 🆚 ⌞erian 🇨🇺⌝\n⌞Ezze 🇦🇷⌝ 🆚 ⌞Geoka 🇦🇷⌝\n⌞Krish 🇪🇸⌝ 🆚 ⌞colesito🇨🇴⌝ 🆚 ⌞1514⌝\n`[ OCTAVOS ]`\n⌞Miniboy🇨🇱⌝ 🆚 ⌞Lizeninn 🇦🇷⌝ 🆚 ⌞Fear🇨🇴⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "nc🇰🇷",
-      "noone🇵🇪",
-      "Musicdum 🇵🇪"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Joba 🇨🇱",
-      "Teo 🇨🇴"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Kirito 🇨🇴",
-      "erian 🇨🇺"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Ezze 🇦🇷",
-      "Geoka 🇦🇷"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Krish 🇪🇸",
-      "colesito🇨🇴",
-      "1514"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Miniboy🇨🇱",
-      "Lizeninn 🇦🇷",
-      "Fear🇨🇴"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1565531921096642712": {
    "id": "1565531921096642712",
    "sv": "[FFA] Freestyle For All 👾",
