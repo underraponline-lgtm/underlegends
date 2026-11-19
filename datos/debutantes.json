@@ -964,7 +964,7 @@
    "n": 608,
    "sv": "ACAD",
    "vence": "2026-11-19T01:52:53+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Ezze": {
    "avisado": "2026-10-29",
@@ -2231,7 +2231,7 @@
    "n": 608,
    "sv": "ACAD",
    "vence": "2026-11-19T01:52:53+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Nerick": {
    "avisado": "2026-10-26",

@@ -2,38 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 28,
-   "cabeza": "Majiztral",
-   "monto": 1000,
-   "t": "2026-10-20T01:52:21Z",
-   "fin": "2026-10-26T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "BLUE BURKA",
-     250
-    ],
-    [
-     "BNA",
-     250
-    ],
-    [
-     "PichulaMc",
-     250
-    ],
-    [
-     "Polosport",
-     250
-    ]
-   ],
-   "ev": {
-    "n": 497,
-    "nombre": "qcyo rapeen 2",
-    "sv": "FFA",
-    "t": "2026-10-22T00:30:05Z"
-   }
-  },
-  {
    "id": 29,
    "cabeza": "Majiztral",
    "monto": 500,
@@ -403,10 +371,10 @@
   }
  ],
  "suma": {
-  "BLUE BURKA": 375,
-  "BNA": 375,
-  "PichulaMc": 1375,
-  "Polosport": 375,
+  "BLUE BURKA": 125,
+  "BNA": 125,
+  "PichulaMc": 1125,
+  "Polosport": 125,
   "Carlosss": 3500,
   "PRAISERIZA": 500,
   "Artezzy": 2500,
