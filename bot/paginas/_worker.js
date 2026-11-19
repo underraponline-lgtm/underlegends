@@ -737,8 +737,12 @@ async function vistaCrew(req, env, id, url) {
   const r = await fetch(ORIGEN + '/avisos/crews', { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
     cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
   const j = r && r.ok ? await r.json().catch(() => null) : null;
-  const c = j && (j.crews || []).find((x) => x && x.id === id);
+  // 🔤 con otras mayúsculas también (19/11/2026): la página abre `/crew/ks` como KS (entidad2.jsx busca sin mirar mayúsculas),
+  // y la vista previa le daba la genérica. Primero la exacta; después, la misma por su slug
+  const cs = (j && j.crews) || [];
+  const c = cs.find((x) => x && x.id === id) || cs.find((x) => x && slugOg(x.id) && slugOg(x.id) === slugOg(id));
   if (!c) return null;
+  id = c.id;
   const nombre = String(c.nombre || id).trim();
   const n = (c.gente || []).length;
   const desc = (c.desc ? String(c.desc).trim().slice(0, 160) + ' · ' : '') + n + (n === 1 ? ' integrante' : ' integrantes')

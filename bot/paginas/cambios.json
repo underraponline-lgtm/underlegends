@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.96",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T18:15:00-05:00",
+        "titulo": "El link de una crew muestra su miniatura aunque lo escribas con otras mayúsculas",
+        "items": [
+            "**El link de una crew** (por ejemplo `/crew/ks` en vez de `/crew/KS`) ahora muestra su miniatura en Discord y WhatsApp, igual que la página, que ya lo abría."
+        ]
+    },
+    {
         "version": "6.95",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T18:07:00-05:00",

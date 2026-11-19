@@ -2385,6 +2385,7 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     pedidos.push(String(u));
     if (/\/lobby\?json=1$/.test(String(u))) return new Response(JSON.stringify(lobby), { status: 200 });
     if (/\/perfiles$/.test(String(u))) return new Response(JSON.stringify(perfiles), { status: 200 });
+    if (/\/avisos\/crews$/.test(String(u))) return new Response(JSON.stringify({ crews: [{ id: 'KS', nombre: 'Knowledge Sombrío', sigla: 'KS', gente: ['a', 'b', 'c'], logo: '' }] }), { status: 200 });
     const og = /\/og\/([a-z]+\/[a-z0-9-]+)\.jpg$/.exec(String(u));
     if (og && ogEtag[og[1]]) return new Response(null, { status: 200, headers: { etag: ogEtag[og[1]] } });
     return new Response('{}', { status: 404 });
@@ -2422,6 +2423,17 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     r = await ver('/freestyle-rap/r/lejos', DISCORD);
     ok('rehecha (otro ETag): otra dirección', r.j && /og\/perfil\/lejos\.jpg\?v=0a0a0a0a0a0a$/.test(r.j['meta[property="og:image"]']), JSON.stringify(r.j));
     delete ogEtag['perfil/lejos'];
+    // 🔤 la de una crew, también escrita con otras mayúsculas (19/11/2026): la página abre `/crew/ks` como KS
+    ogEtag['crew/ks'] = '"fd55c2ad78db0000"';
+    for (const ruta of ['/freestyle-rap/crew/KS', '/freestyle-rap/crew/ks']) {
+      r = await ver(ruta, DISCORD);
+      ok('la crew por ' + ruta + ': su nombre y su miniatura, con su versión',
+        r.j && r.j['meta[property="og:title"]'] === 'Knowledge Sombrío · crew de la Liga Global'
+        && r.j['meta[property="og:image"]'] === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/crew/ks.jpg?v=fd55c2ad78db', JSON.stringify(r.j));
+    }
+    r = await ver('/freestyle-rap/crew/nadie', DISCORD);
+    ok('una crew que no existe: la vista previa de siempre', r.t === '<html>la de siempre</html>', r.t.slice(0, 80));
+    delete ogEtag['crew/ks'];
     r = await ver('/freestyle-rap/r/oasis', 'Mozilla/5.0 (Linux; Android 14) Chrome/130');
     ok('a la gente, la página de siempre y sin pedir nada', r.t === '<html>la de siempre</html>' && !r.pedidos.length, r.t.slice(0, 80));
     r = await ver('/freestyle-rap/r/nadie', DISCORD);
