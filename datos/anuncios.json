@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-19T00:55:22+00:00",
+ "cuando": "2026-11-19T01:24:55+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -1113,7 +1113,9 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "863207988251852820"
+   "categoria_id": "863207988251852820",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "POLO RALPH LAUREN FREE",
@@ -1137,7 +1139,9 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "863207988251852820"
+   "categoria_id": "863207988251852820",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "¡VOLVIERON!",
@@ -1161,7 +1165,9 @@
    "staff": {},
    "autor": "IroníaZka | Los Culeanizadores",
    "staff_cuentas": {},
-   "categoria_id": "863207988251852820"
+   "categoria_id": "863207988251852820",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "BATALLA DE EXHIBICIÓN EN LA LIGA",
@@ -1185,7 +1191,9 @@
    "staff": {},
    "autor": "EseÉfe",
    "staff_cuentas": {},
-   "categoria_id": "863207988251852820"
+   "categoria_id": "863207988251852820",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE CHAMPIONS LEAGUE (SCL)",
@@ -1209,7 +1217,44 @@
    "staff": {},
    "autor": "IroníaZka | Los Culeanizadores",
    "staff_cuentas": {},
-   "categoria_id": "863207988251852820"
+   "categoria_id": "863207988251852820",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
+  },
+  {
+   "nombre": "NEW GENESIS",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1572780498571501693",
+   "cuando": "2026-11-19T01:08:11",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "POR",
+     "id": ""
+    },
+    {
+     "n": "Erian 恵理久",
+     "id": "1055474244089286706"
+    }
+   ],
+   "autor_h": "78a9632c77e88d80",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "4",
+   "modalidad": "MULTIVERSE",
+   "horario": "",
+   "fecha": "7",
+   "premios": "PTS TABLA",
+   "staff": {},
+   "autor": "Erian 恵理久",
+   "staff_cuentas": {},
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1233,7 +1278,9 @@
    "staff": {},
    "autor": "ＳＮＡＫＥ 🐍 ＲＡＰ",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1257,7 +1304,9 @@
    "staff": {},
    "autor": "LunaticoYG",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1298,7 +1347,9 @@
    "staff": {},
    "autor": "d l o z c o r i a",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1331,7 +1382,9 @@
    "staff": {},
    "autor": "gxbrrlaljndrr",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "El bosque de Artemisa",
@@ -1360,7 +1413,9 @@
    "staff": {},
    "autor": "gxbrrlaljndrr",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1393,7 +1448,9 @@
    "staff": {},
    "autor": "CANTU",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "RAP EXHIBITION 2/8",
@@ -1422,7 +1479,9 @@
    "staff": {},
    "autor": "Rubik",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1446,7 +1505,9 @@
    "staff": {},
    "autor": "Yeye Fazer",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE ARENA VOL. 2",
@@ -1491,7 +1552,9 @@
     "LunaticoYG": "1459764124979433654",
     "El Pibe  | Los Culeanizadores": "535579351710957568"
    },
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "GENESIS BATTLES",
@@ -1524,7 +1587,9 @@
    "staff": {},
    "autor": "Velatz",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "RAP EXHIBITION 1/8",
@@ -1553,7 +1618,9 @@
    "staff": {},
    "autor": "Rubik",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1577,7 +1644,9 @@
    "staff": {},
    "autor": "EseÉfe",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL.5",
@@ -1606,7 +1675,9 @@
    "staff": {},
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "GENESIS BATTLES",
@@ -1639,7 +1710,9 @@
    "staff": {},
    "autor": "Velatz",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "Las mareas de Poseidón",
@@ -1668,7 +1741,9 @@
    "staff": {},
    "autor": "gxbrrlaljndrr",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -1701,7 +1776,9 @@
    "staff": {},
    "autor": "Rubik",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1725,7 +1802,9 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1749,7 +1828,9 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1773,7 +1854,9 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "FIRE RAP",
@@ -1802,7 +1885,9 @@
    "staff": {},
    "autor": "Velatz",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1826,7 +1911,9 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "MITSUBISHI",
@@ -1859,7 +1946,9 @@
    "staff": {},
    "autor": "Velatz",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1883,7 +1972,9 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "GENESIS BATTLES",
@@ -1916,7 +2007,9 @@
    "staff": {},
    "autor": "Velatz",
    "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
+   "categoria_id": "863207988739309600",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-19T01:09:08"
   },
   {
    "nombre": "FMS PERU",
@@ -7394,6 +7487,105 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Taktill 🇨🇱",
+   "quien": "taktill.yg",
+   "discord_id": "656003138632810507",
+   "msg_id": "1572784040082415729",
+   "cuando": "2026-11-19T01:22:16"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Zeta 🇨🇴",
+   "quien": "zetaenmsi",
+   "discord_id": "535579351710957568",
+   "msg_id": "1572783937561042965",
+   "cuando": "2026-11-19T01:21:51"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "colo 🇰🇭",
+   "quien": "colo_zcr",
+   "discord_id": "972537790921338960",
+   "msg_id": "1572782733812432959",
+   "cuando": "2026-11-19T01:17:04"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "nc🇲🇿+familiafortunayexito🇫🇷+lewito🇦🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1572781980041609287",
+   "cuando": "2026-11-19T01:14:04"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1572781230158782576",
+   "cuando": "2026-11-19T01:11:06"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Gizmo🇨🇱",
+   "quien": "giiizmo2687",
+   "discord_id": "525062150281232384",
+   "msg_id": "1572781174143586305",
+   "cuando": "2026-11-19T01:10:52"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Mathias 🇻🇪",
+   "quien": "elthiasmathias",
+   "discord_id": "1177916322122833933",
+   "msg_id": "1572781154749259827",
+   "cuando": "2026-11-19T01:10:48"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1572780853862469707",
+   "cuando": "2026-11-19T01:09:36"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "RealRecognizeReal🇱🇷 (última)",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1572780825970479238",
+   "cuando": "2026-11-19T01:09:29"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Player 🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1572780808933212172",
+   "cuando": "2026-11-19T01:09:25"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Comosalgodelcloset🇦🇿",
+   "quien": "benjaclink31",
+   "discord_id": "849765868819972166",
+   "msg_id": "1572780798938189857",
+   "cuando": "2026-11-19T01:09:23"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -43294,105 +43486,6 @@
    "discord_id": "979878316846768139",
    "msg_id": "1560480179707707454",
    "cuando": "2026-10-16T02:31:07"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "gocho🇹🇼",
-   "quien": "gocho444.",
-   "discord_id": "1324178951119175711",
-   "msg_id": "1560478820061159557",
-   "cuando": "2026-10-16T02:25:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nc🇦🇴",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1560478677442101330",
-   "cuando": "2026-10-16T02:25:08"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "kochi🇨🇱",
-   "quien": "ricardocortes0758",
-   "discord_id": "1357885526404894870",
-   "msg_id": "1560476519430754355",
-   "cuando": "2026-10-16T02:16:34"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Rizas 🇻🇪\nMiniboy 🇨🇱",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1560476321736560722",
-   "cuando": "2026-10-16T02:15:47"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Number 🇻🇪",
-   "quien": "numbyng",
-   "discord_id": "1310075576991875144",
-   "msg_id": "1560474719285936189",
-   "cuando": "2026-10-16T02:09:25"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nc🇲🇾+gocho🇦🇴 <@1523082259870257315> <@1324178951119175711>",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1560474059211542629",
-   "cuando": "2026-10-16T02:06:47"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Zaik 🇪🇸",
-   "quien": "zaik0009",
-   "discord_id": "1555067257376346122",
-   "msg_id": "1560473118147879064",
-   "cuando": "2026-10-16T02:03:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "praiseriza",
-   "quien": "lein7426",
-   "discord_id": "1078792444080046271",
-   "msg_id": "1560472642652475495",
-   "cuando": "2026-10-16T02:01:10"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "verc 🇨🇱",
-   "quien": "jovenvesta",
-   "discord_id": "913652602208649226",
-   "msg_id": "1560472511496323114",
-   "cuando": "2026-10-16T02:00:38"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Pichulamc 🇦🇷",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1560472241546854453",
-   "cuando": "2026-10-16T01:59:34"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Tuca 🇦🇷 _arg:",
-   "quien": "tuquitta",
-   "discord_id": "458702447913861130",
-   "msg_id": "1560472237897810093",
-   "cuando": "2026-10-16T01:59:33"
   }
  ]
 }
