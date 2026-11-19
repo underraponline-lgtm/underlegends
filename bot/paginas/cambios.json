@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.83",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T04:37:00-05:00",
+        "titulo": "En el celular, Eventos se abre como en la compu",
+        "items": [
+            "**Toca el botón del medio** de la barra de abajo (Eventos, o lo que se esté jugando): se abre Eventos con sus tres secciones —el Calendario, las Competencias y las Ligas—, igual que el menú de arriba en la compu.",
+            "**Arriba de las tres, lo que pasa ahora**: lo que se juega en vivo, con el punto que late y la llave a un toque; si te toca, tu llave primero; y si no hay nada en vivo, lo próximo de hoy.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.82",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T04:27:00-05:00",

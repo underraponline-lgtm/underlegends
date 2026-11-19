@@ -2,11 +2,11 @@
 // historias. Nació de docs/remake/reales.py y del prototipo (prototipo.js). El 30/09/2026 se fueron de acá la Tienda
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
-import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ksDe, limpio, nuevaQue, num, quienMira, siglaDe, utc } from './liga.js';
 import { Alguien, Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
-import { Buscar, CaraDc, CaraH, CrewCirculo, Orbe, QUE_ES, escenaDe, llaveEnVivo, momentosLlave, pubNuevas } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, CrewCirculo, GRUPOS, Orbe, QUE_ES, escenaDe, llaveEnVivo, momentosLlave, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
 import { usePresencia } from './anima.js';
@@ -443,16 +443,16 @@ export function enJuego(liga) {
     if (ms > 0 && ms < 3 * 3600000) {
       const min = Math.max(1, Math.round(ms / 60000));
       return { tipo: 'pronto', l1: min < 60 ? 'EN ' + min + ' MIN' : 'EN ' + Math.round(min / 60) + ' H', l2: siglaDe(p.sv) + ' · ' + limpio(p.nombre),
-        logo: liga.logo(p.sv), aria: 'Empieza en ' + liga.falta(cu).toLowerCase() + ': ' + limpio(p.nombre) };
+        nombre: limpio(p.nombre), logo: liga.logo(p.sv), aria: 'Empieza en ' + liga.falta(cu).toLowerCase() + ': ' + limpio(p.nombre) };
     }
     if (/^hoy /.test(d)) {
-      return { tipo: 'hoy', l1: 'HOY', l2: d.replace(/^hoy /, '') + ' · ' + siglaDe(p.sv), logo: liga.logo(p.sv), aria: 'Hoy ' + d.replace(/^hoy /, '') + ': ' + limpio(p.nombre) };
+      return { tipo: 'hoy', l1: 'HOY', l2: d.replace(/^hoy /, '') + ' · ' + siglaDe(p.sv), nombre: limpio(p.nombre), logo: liga.logo(p.sv), aria: 'Hoy ' + d.replace(/^hoy /, '') + ': ' + limpio(p.nombre) };
     }
   }
   const fh = liga.fechasHoy ? liga.fechasHoy() : [];
   if (fh.length && fh[0].L) {
     const L = fh[0].L;
-    return { tipo: 'hoy', l1: 'HOY', l2: 'Liga · ' + siglaDe(L.sv), logo: liga.logo(L.sv), href: '#/ligas/' + encodeURIComponent(L.id), aria: 'Hoy juega ' + limpio(L.n) };
+    return { tipo: 'hoy', l1: 'HOY', l2: 'Liga · ' + siglaDe(L.sv), nombre: limpio(L.n), logo: liga.logo(L.sv), href: '#/ligas/' + encodeURIComponent(L.id), aria: 'Hoy juega ' + limpio(L.n) };
   }
   return { tipo: 'nada', l1: 'EVENTOS', l2: '', aria: 'Eventos' };
 }
@@ -498,36 +498,63 @@ function useMantener(alMantener, ms = 450, { onIni, onFin, activo = true } = {})
   };
 }
 
-// 🗂️ LO DE ADENTRO DE «EN JUEGO»: Calendario, Competencias y Ligas, encima de la barra, cada uno con su miniatura. Va
-// centrada sobre el botón (`x`, el centro del botón en la pantalla), sin salirse de los costados
-function HojaJuego({ liga, sale, onCerrar, x }) {
+// 📅 «EVENTOS», COMO EN LA COMPU (6.82, Dlx: «quizás podamos hacer la réplica de lo que está en PC pero acá… si presiono
+// eventos me salen 3 opciones», y «efectos, como en vivo, opciones para ver más»). Tocar EN JUEGO abre el mismo panel que
+// «Eventos ▾» de la cabecera —el título, cuántas secciones y cada una con su ícono en un círculo y lo que es (`GRUPOS` de
+// arriba.jsx: un solo lugar para las dos)— y, arriba, lo que pasa ahora: te toca, lo que se juega en vivo con el punto que
+// late (el de «EN VIVO AHORA» del Inicio, `.vivo-late`) y la llave a un toque, o lo próximo de hoy. Encima del botón (`x`,
+// su centro en la pantalla), sin salirse de los costados
+const EV_GRUPO = (GRUPOS.find((g) => g[0] === 'Eventos') || [])[2] || [];
+function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x }) {
   const yo = useRef(null);
   useEffect(() => {
-    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (yo.current && !p.includes(yo.current)) onCerrar(); };
+    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (yo.current && !p.includes(yo.current) && !p.some((n) => n && n.classList && n.classList.contains('tb-jg'))) onCerrar(); };
     const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
     // al próximo cuadro: el mismo toque que la abrió no la cierra
     const t = setTimeout(() => { window.addEventListener('pointerdown', fuera, true); }, 0);
     window.addEventListener('keydown', esc);
-    return () => { clearTimeout(t); window.removeEventListener('pointerdown', fuera, true); window.removeEventListener('keydown', esc); };
+    window.addEventListener('lg:dir', onCerrar);
+    return () => { clearTimeout(t); window.removeEventListener('pointerdown', fuera, true); window.removeEventListener('keydown', esc); window.removeEventListener('lg:dir', onCerrar); };
   }, [onCerrar]);
-  const vivos = liga.vivo().length;
+  const VL = typeof window !== 'undefined' ? window.VIVO_L : null;
+  const vivos = liga.vivo().slice(0, 2);
   const hoyLiga = (liga.fechasHoy ? liga.fechasHoy() : []).length;
-  const filas = [
-    ['eventos', 'Calendario', 'Lo que se juega hoy y los próximos días', vivos ? <em className="vivo">EN VIVO</em> : null],
-    ['competencias', 'Competencias', QUE_ES['#/competencias'], null],
-    ['ligas', 'Ligas', QUE_ES['#/ligas'], hoyLiga ? <em>HOY SE JUEGA</em> : null],
-  ];
+  const llave = (id) => (e) => { onCerrar(); if (id) { e.preventDefault(); accion.llave('v:' + id); } };
+  // lo de ahora: te toca, lo que se juega (hasta dos) o lo próximo de hoy
+  const ahora = [];
+  if (j.tipo === 'toca') {
+    ahora.push(
+      <a key="toca" className="tb-ev-ya toca" href="#/eventos" onClick={llave(j.llave)}>
+        <span className="tb-ev-ya-c">{cara}</span><span className="tb-ev-ya-t"><i className="vivo-late">{j.l1}</i><b>{j.l2}</b></span><em>{j.llave ? 'Tu llave' : 'Ver'}</em></a>);
+  }
+  vivos.forEach((e, i) => {
+    const L = llaveEnVivo(e, VL);
+    ahora.push(
+      <a key={'v' + i} className="tb-ev-ya vivo" href="#/eventos" onClick={llave(L ? L.id : '')}>
+        <img alt="" src={liga.logo(e.sv)} /><span className="tb-ev-ya-t"><i className="vivo-late">{'En vivo · ' + siglaDe(e.sv)}</i><b>{limpio(e.nombre)}</b></span>
+        <em>{L ? 'La llave' : 'Ver'}</em></a>);
+  });
+  if (!vivos.length && j.tipo !== 'toca' && (j.tipo === 'pronto' || j.tipo === 'hoy') && j.nombre) {
+    ahora.push(
+      <a key="prox" className="tb-ev-ya" href={j.href || '#/eventos'} onClick={onCerrar}>
+        {j.logo ? <img alt="" src={j.logo} /> : <span className="tb-ev-ico"><Ico n="eventos" t={18} /></span>}
+        <span className="tb-ev-ya-t"><i>{j.tipo === 'pronto' ? j.l1 : 'Hoy · ' + (j.l2 || '')}</i><b>{j.nombre}</b></span><em>Ver</em></a>);
+  }
   const W = window.innerWidth || 390;
   const ancho = Math.min(360, W - 16);
   const left = Math.round(Math.min(Math.max(8, (x || W / 2) - ancho / 2), W - ancho - 8));
   return (
-    <div className={'tb-hoja' + (sale ? ' sale' : '')} ref={yo} role="menu" aria-label="Eventos, Competencias y Ligas" style={{ left, width: ancho }}>
-      {filas.map(([k, n, s, tag]) => (
-        <a key={k} role="menuitem" href={'#/' + k} onClick={onCerrar}>
-          <span className="tb-hoja-img"><img alt="" src={'/og/mini/' + k + '.webp'} width="480" height="270" /></span>
-          <span className="tb-hoja-tx"><b>{n}</b><small>{s}</small></span>{tag}
-        </a>
-      ))}
+    <div className={'tb-ev' + (sale ? ' sale' : '')} ref={yo} role="menu" aria-label="Eventos" style={{ left, width: ancho }}>
+      <p className="tb-ev-h"><b>Eventos</b><small>{EV_GRUPO.length} secciones</small></p>
+      {ahora.length ? <div className="tb-ev-ahora">{ahora}</div> : null}
+      <div className="tb-ev-items">
+        {EV_GRUPO.map(([n, h, d, k]) => (
+          <a key={h} role="menuitem" href={h} className={pagina && h === '#/' + pagina ? 'on' : ''} onClick={(e) => { subirSiEsta(h)(e); onCerrar(); }}>
+            <span className="tb-ev-ico"><Ico n={k} t={18} /></span><span className="tb-ev-ya-t"><b>{n}</b><small>{d}</small></span>
+            {k === 'ligas' && hoyLiga ? <em>Hoy se juega</em> : null}
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
@@ -586,18 +613,16 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const j = enJuego(liga);
   const enEv = EV_PAGS.includes(pagina);
   const btnJ = useRef(null);
+  const cerrarJ = useCallback(() => setJm(false), []);
   const btnYo = useRef(null);
   const nav = useRef(null);
-  const mantener = useMantener(() => {
+  // tocarlo abre (y cierra) el panel de Eventos, como «Eventos ▾» en la compu: lo de ahora arriba y las tres secciones
+  const tocar = (e) => {
+    e.preventDefault();
     setYoM(false);
     const r = btnJ.current ? btnJ.current.getBoundingClientRect() : null;
     setJx(r ? r.left + r.width / 2 : 0);
-    setJm(true);
-  });
-  // tocarlo: abre lo que dice. La llave en vivo se abre encima de la página; lo demás es un link
-  const tocar = (e) => {
-    setJm(false);
-    if (j.llave) { e.preventDefault(); accion.llave('v:' + j.llave); }
+    setJm((v) => !v);
   };
   const nv = liga ? pubNuevas(liga, pagina) : 0;
 
@@ -759,14 +784,14 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const casilla = (x) => {
     if (!x) {
       const href = j.href || '#/eventos';
-      const cls = 'tb-jg ' + j.tipo + (enEv && (j.tipo === 'nada' || j.tipo === 'hoy' || j.tipo === 'pronto') ? ' on' : '');
+      const cls = 'tb-jg ' + j.tipo + (enEv && (j.tipo === 'nada' || j.tipo === 'hoy' || j.tipo === 'pronto') ? ' on' : '') + (jm ? ' abierto' : '');
       return (
-        <a key="jg" ref={btnJ} href={href} className={cls} data-tuto="menu-eventos" aria-label={j.aria + '. Mantén apretado para ver Calendario, Competencias y Ligas'}
-          aria-haspopup="menu" aria-expanded={jm} onClick={tocar} {...mantener}>
+        <a key="jg" ref={btnJ} href={href} className={cls} data-tuto="menu-eventos" aria-label={j.aria + '. Abre Calendario, Competencias y Ligas'}
+          aria-haspopup="menu" aria-expanded={jm} onClick={tocar}>
           {/* en reposo, como las demás casillas (ícono y nombre) sobre su bloque: «📅 EVENTOS» con la pista abajo no entraba y
               se metía encima de Pase (medido a 360 y 390) */}
           {j.tipo === 'nada' ? <><Ico n="eventos" t={22} /><span>Eventos</span></> : <>
-            <span className="l1">{j.cara && cara ? cara : j.logo && j.tipo !== 'pronto' ? <img alt="" src={j.logo} /> : null}{j.l1}</span>
+            <span className={'l1' + (j.tipo === 'vivo' || j.tipo === 'toca' ? ' vivo-late' : '')}>{j.cara && cara ? cara : j.logo && j.tipo === 'hoy' ? <img alt="" src={j.logo} /> : null}{j.l1}</span>
             <span className="l2">{j.l2}</span></>}
         </a>
       );
@@ -802,7 +827,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
       ) : (
         <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Entrar con Discord"><Ico n="yo" t={22} /><span>Entrar</span></a>
       )}
-      {verJ ? <HojaJuego liga={liga} sale={saleJ} x={jx} onCerrar={() => setJm(false)} /> : null}
+      {verJ ? <HojaEventos liga={liga} j={j} cara={cara} pagina={pagina} sale={saleJ} x={jx} onCerrar={cerrarJ} /> : null}
       {verYo ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo sale={saleYo} onCerrar={() => setYoM(false)} /> : null}
     </nav>
   );

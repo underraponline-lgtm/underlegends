@@ -7099,7 +7099,7 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .tb-jg .l1{display:flex;align-items:center;gap:5px;max-width:100%;font:900 clamp(12px,calc(var(--u,68px) * .2),14.5px)/1 Archivo,sans-serif;letter-spacing:.01em;white-space:nowrap}
 .tb-jg .l1 img{width:20px;height:20px;border-radius:3px;object-fit:cover;flex:none}
 .tabbar.e .tb-jg .l1 .tb-cara{width:18px;height:18px;flex:none}
-.tabbar.e .tb-jg .l2{max-width:100%;max-width:110px;overflow:hidden;text-overflow:ellipsis;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
+.tabbar.e .tb-jg .l2{max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
 .tabbar.e .tb-jg .l2.pista{color:#A5A5A0}
 .tabbar.e .tb-jg.on .l2.pista{color:#55555C}
 /* 💬 el globo de la tira, con lo que se sumó */
@@ -7169,3 +7169,43 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 @media (prefers-reduced-motion: no-preference){ .tabbar.e .tb-yo.late .tb-yo-c{animation:tb-late .4s ease-in-out 3} }
 @keyframes tb-late{50%{transform:scale(1.14)}}
 @media (prefers-reduced-motion: reduce){ .tabbar.e .tb-yo-c::after{transition:none} }
+/* 📅 «EVENTOS», COMO EN LA COMPU (6.82): el panel de «Eventos ▾» de la cabecera (`.grp-lista`, con el estilo de la campana)
+   abierto desde EN JUEGO, encima de la barra. Arriba lo de ahora —te toca, en vivo con el punto que late, lo próximo de
+   hoy— y abajo las tres secciones con su ícono en un círculo. Los mismos colores y medidas que el de la compu */
+.tb-ev{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:70;padding:0;background:#0B0B0D;color:#F6F6F6;
+  border:1px solid #232326;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.55);text-transform:none;letter-spacing:0;font:400 14px/1.4 Archivo,sans-serif}
+.tb-ev-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0;padding:14px 16px 12px;border-bottom:1px solid #232326}
+.tb-ev-h b{font:400 22px/1 Anton,Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase;color:#F6F6F6}
+.tb-ev-h small{color:#A5A5A0;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase}
+.tb-ev-ahora{display:grid;gap:4px;padding:8px 6px 0}
+.tb-ev-items{display:grid;gap:2px;padding:6px}
+.tabbar .tb-ev a{display:grid;grid-template-columns:38px minmax(0,1fr) auto;justify-items:stretch;align-items:center;gap:11px;padding:9px 10px;
+  border-radius:4px;color:#F6F6F6;background:none;box-shadow:none;text-decoration:none;text-transform:none;letter-spacing:0;font:inherit;min-height:56px}
+.tabbar .tb-ev a:active{background:#141417}
+@media (hover: hover) and (pointer: fine){.tabbar .tb-ev a:hover{background:#141417}}
+.tabbar .tb-ev .tb-ev-items a.on{background:#121015;box-shadow:inset 3px 0 0 #E41373}
+.tb-ev-ico{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#141417;border:1px solid #232326;color:#29B298}
+.tb-ev-items a.on .tb-ev-ico{color:#E41373;border-color:#3A1022}
+.tb-ev-ya-t{display:grid;gap:2px;min-width:0}
+.tb-ev-ya-t b{display:block;font:700 14px/1.25 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-ev-ya-t small{display:block;font:400 12.5px/1.35 Archivo,sans-serif;color:#A5A5A0}
+.tb-ev-ya-t i{display:block;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-style:normal;color:#A5A5A0;margin-bottom:2px}
+.tabbar .tb-ev a.tb-ev-ya{background:#141417}
+.tabbar .tb-ev a.tb-ev-ya.vivo{background:#1C0B13}
+.tb-ev-ya.vivo .tb-ev-ya-t i{color:#FF4F93}
+.tabbar .tb-ev a.tb-ev-ya.toca{background:#E41373;color:#FFFFFF}
+.tb-ev-ya.toca .tb-ev-ya-t i{color:#FFFFFF}
+.tb-ev-ya img{width:38px;height:38px;border-radius:4px;object-fit:cover}
+.tb-ev-ya-c{display:grid;place-items:center;width:38px;height:38px}
+.tabbar .tb-ev-ya-c .tb-cara{width:34px;height:34px}
+.tb-ev a em{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal;padding:6px 8px;border-radius:3px;
+  background:#F6F6F6;color:#030304;white-space:nowrap}
+.tb-ev-items a em{padding:4px 5px;background:#26262C;color:#F6F6F6;font-size:11.5px}
+.tb-ev.sale{pointer-events:none}
+@media (prefers-reduced-motion: no-preference){
+  .tb-ev{transform-origin:50% 100%;animation:tbh-entra .2s cubic-bezier(.23,1,.32,1)}
+  .tb-ev.sale{animation:tbh-va .16s ease-in forwards}
+}
+/* EN JUEGO abierto: la pieza blanca, como el grupo abierto de la compu; y en vivo, el punto que late antes de «VIVO» */
+.tabbar.e .tb-tira > a.tb-jg.abierto{background:#F6F6F6;color:#030304}
+.tabbar.e .tb-jg .l1.vivo-late::before{margin:0 5px 0 0;vertical-align:baseline}

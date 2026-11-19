@@ -3655,5 +3655,15 @@
 "sep": "Sep",
 "oct": "Oct",
 "nov": "Nov",
-"dic": "Dec"
+"dic": "Dec",
+"Tu llave": "Your bracket",
+"En vivo · {p}": "Live · {p}",
+"Hoy · {n} PM · {p}": "Today · {n} PM · {p}",
+"Hoy · {n} AM · {p}": "Today · {n} AM · {p}",
+"Hoy · {n} · {p}": "Today · {n} · {p}",
+"Hoy · Liga · {p}": "Today · League · {p}",
+"Todos los torneos y la campana": "Every tournament and the bell",
+"La Copa, la Liga de 10 y la Rapid": "The Cup, the League of 10 and the Rapid",
+"Las ligas de cada servidor": "Each server's leagues",
+"Hoy se juega": "Playing today"
 }
