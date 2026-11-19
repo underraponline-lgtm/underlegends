@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "6.79",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T04:03:00-05:00",
+        "titulo": "La barra de abajo vuelve a deslizarse, y simétrica",
+        "items": [
+            "**Desliza la barra de abajo** y aparecen las demás secciones: Publicaciones, Competencias, Ligas, Crews, Tarjetas, Salón, Socios y Guía.",
+            "**Simétrica**: Inicio, Ranking, **EN JUEGO** en el centro exacto, Pase y Tú, todos del mismo ancho, sin nada cortado.",
+            "**Si todavía no entraste**, cinco a la vista: Inicio, Ranking, EN JUEGO, la Guía y Entrar. Al entrar con Discord se suman las demás, con «NUEVO» hasta que las abres.",
+            "**Mantener apretado EN JUEGO** abre Calendario, Competencias y Ligas justo encima del botón.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.78",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T03:25:00-05:00",

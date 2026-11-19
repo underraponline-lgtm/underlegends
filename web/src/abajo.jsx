@@ -10,6 +10,8 @@ import { Buscar, CaraDc, CaraH, CrewCirculo, Orbe, QUE_ES, escenaDe, llaveEnVivo
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
 import { usePresencia } from './anima.js';
+import { createPortal } from 'react-dom';
+import { algoTapa, capaFija, seVe } from './tapa.js';
 import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
 import { comentar, delHilo, useComentarios } from './comentarios.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
@@ -388,6 +390,7 @@ export function Subir() {
 // E»). Cinco lugares fijos como el lobby de un juego —Inicio, Ranking, EN JUEGO, Pase y Tú— en vez de la tira de doce que
 // se deslizaba (28/09 y 02/10): de doce se veían cuatro y media y las otras siete había que buscarlas. Lo que no está en la
 // barra vive en el ☰, en cuadrados con su imagen (`Menu`, abajo). Sin líneas ni flechas, como siempre (03/10 y 17/10)
+// ↔️ Y DESDE LA 6.79 LA TIRA VUELVE con estos cinco al principio: ver «LA TIRA VUELVE» más abajo
 //
 // 🔴 EL DEL CENTRO NO ES UNA SECCIÓN: DICE LO QUE TE TOCA. Como el botón Batalla de Clash of Clans, que cambia de dibujo
 // según lo que pasa: TE TOCA (tu batalla en tu llave en vivo) › VIVO (algo se juega ahora) › EN 40 MIN › HOY (lo próximo
@@ -487,8 +490,9 @@ function useMantener(alMantener, ms = 450) {
   };
 }
 
-// 🗂️ LO DE ADENTRO DE «EN JUEGO»: Calendario, Competencias y Ligas, encima de la barra, cada uno con su miniatura
-function HojaJuego({ liga, sale, onCerrar }) {
+// 🗂️ LO DE ADENTRO DE «EN JUEGO»: Calendario, Competencias y Ligas, encima de la barra, cada uno con su miniatura. Va
+// centrada sobre el botón (`x`, el centro del botón en la pantalla), sin salirse de los costados
+function HojaJuego({ liga, sale, onCerrar, x }) {
   const yo = useRef(null);
   useEffect(() => {
     const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (yo.current && !p.includes(yo.current)) onCerrar(); };
@@ -505,8 +509,11 @@ function HojaJuego({ liga, sale, onCerrar }) {
     ['competencias', 'Competencias', QUE_ES['#/competencias'], null],
     ['ligas', 'Ligas', QUE_ES['#/ligas'], hoyLiga ? <em>HOY SE JUEGA</em> : null],
   ];
+  const W = window.innerWidth || 390;
+  const ancho = Math.min(360, W - 16);
+  const left = Math.round(Math.min(Math.max(8, (x || W / 2) - ancho / 2), W - ancho - 8));
   return (
-    <div className={'tb-hoja' + (sale ? ' sale' : '')} ref={yo} role="menu" aria-label="Eventos, Competencias y Ligas">
+    <div className={'tb-hoja' + (sale ? ' sale' : '')} ref={yo} role="menu" aria-label="Eventos, Competencias y Ligas" style={{ left, width: ancho }}>
       {filas.map(([k, n, s, tag]) => (
         <a key={k} role="menuitem" href={'#/' + k} onClick={onCerrar}>
           <span className="tb-hoja-img"><img alt="" src={'/og/mini/' + k + '.webp'} width="480" height="270" /></span>
@@ -517,44 +524,192 @@ function HojaJuego({ liga, sale, onCerrar }) {
   );
 }
 
+// 🧭 LA TIRA VUELVE, CON EL LOBBY ADENTRO (19/11/2026, Dlx a la 6.78: «so it can scroll to the right still but keeping the
+// 3 lines above… combining some features of F»), Y SIMÉTRICA (el mismo día: «quisiera simetría la verdad lo máximo
+// posible… no pasa nada si lo otro no se oculta… que si deslizas haya más opciones»). La primera pantalla es la de la
+// 6.78 tal cual —Inicio, Ranking, EN JUEGO al centro, Pase y Tú, del mismo ancho, sin nada cortado— y deslizando aparecen
+// las demás. De la F: quien todavía no entró ve cinco quietas (Inicio, Ranking, EN JUEGO, la Guía y «Entrar»: la queja de
+// «es mucho» es de los nuevos, y el Pase pide cuenta); al entrar con Discord se le suma la tira, una vez, con un globo que lo
+// dice, y lo que se sumó lleva «NUEVO» hasta que lo abre. Quien ya usaba la página no ve «NUEVO»: para él nada es nuevo.
+// El ☰ de cuadrados queda igual (`Menu`, abajo)
+const TIRA = [['inicio', 'Inicio', '#/'], ['ranking', 'Ranking', '#/ranking'], null, ['pase', 'Pase', '#/pase'],
+  ['publicaciones', 'Publicaciones', '#/publicaciones'], ['competencias', 'Competencias', '#/competencias'], ['ligas', 'Ligas', '#/ligas'],
+  ['crews', 'Crews', '#/crews'], ['tarjetas', 'Tarjetas', '#/tarjetas'], ['salon', 'Salón', '#/salon'], ['socios', 'Socios', '#/socios'],
+  ['guia', 'Guía', '#/guia']];
+const NOVATO = [TIRA[0], TIRA[1], null, TIRA[11]];
+const QUIETAS = ['inicio', 'ranking', 'pase', 'guia'];
+const ls = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* sin guardar: vale para esta visita */ } },
+};
+
 export function Tabbar({ liga, dc, pagina = '' }) {
   const yo = liga && liga.yo;
   const [yoM, setYoM] = useState(false);
   const [verYo, saleYo] = usePresencia(yoM, 120);
   const [jm, setJm] = useState(false);
   const [verJ, saleJ] = usePresencia(jm, 160);
+  const [jx, setJx] = useState(0);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
+  const novato = !cara;
   const sube = useSubiste(liga, pagina);
   const j = enJuego(liga);
   const enEv = EV_PAGS.includes(pagina);
-  const mantener = useMantener(() => { setYoM(false); setJm(true); });
+  const btnJ = useRef(null);
+  const nav = useRef(null);
+  const mantener = useMantener(() => {
+    setYoM(false);
+    const r = btnJ.current ? btnJ.current.getBoundingClientRect() : null;
+    setJx(r ? r.left + r.width / 2 : 0);
+    setJm(true);
+  });
   // tocarlo: abre lo que dice. La llave en vivo se abre encima de la página; lo demás es un link
   const tocar = (e) => {
     setJm(false);
     if (j.llave) { e.preventDefault(); accion.llave('v:' + j.llave); }
   };
-  const href = j.href || '#/eventos';
-  const cls = 'tb-jg ' + j.tipo + (enEv && (j.tipo === 'nada' || j.tipo === 'hoy' || j.tipo === 'pronto') ? ' on' : '');
-  return (
-    <nav className="tabbar e" aria-label="Secciones">
-      <a href="#/" data-tuto="menu-inicio" onClick={subirSiEsta('#/')} className={!pagina ? 'on' : ''}><Ico n="inicio" t={22} /><span>Inicio</span></a>
-      <a href="#/ranking" data-tuto="menu-ranking" onClick={subirSiEsta('#/ranking')} className={pagina === 'ranking' ? 'on' : ''}>
-        <Ico n="ranking" t={22} /><span>Ranking</span>
-        {sube ? <i className="tb-sube" aria-label={'Subiste ' + sube + (sube === 1 ? ' puesto' : ' puestos')}>+{sube}</i> : null}</a>
-      <a href={href} className={cls} data-tuto="menu-eventos" aria-label={j.aria + '. Mantén apretado para ver Calendario, Competencias y Ligas'}
-        aria-haspopup="menu" aria-expanded={jm} onClick={tocar} {...mantener}>
-        <span className="l1">{j.cara && cara ? cara : j.logo ? <img alt="" src={j.logo} /> : j.tipo === 'nada' ? <Ico n="eventos" t={20} /> : null}{j.l1}</span>
-        {j.l2 ? <span className="l2">{j.l2}</span> : <span className="l2">Mantén para más</span>}
+  const nv = liga ? pubNuevas(liga, pagina) : 0;
+
+  // 🆕 LA F: EL DESBLOQUEO. Quien vio la barra de cinco (`lg:novato`) y ahora tiene la tira, la estrena: se anota cuándo
+  // (`lg:desbloqueo`) y lo que se sumó lleva «NUEVO» dos semanas o hasta que lo abre (`lg:secc`, las secciones que abriste)
+  const [vistas, setVistas] = useState(() => { try { return JSON.parse(ls.get('lg:secc') || '[]'); } catch (e) { return []; } });
+  useEffect(() => {
+    if (!pagina || vistas.includes(pagina)) return;
+    const v = vistas.concat(pagina);
+    setVistas(v);
+    ls.set('lg:secc', JSON.stringify(v));
+  }, [pagina]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [desbloqueo] = useState(() => {
+    if (novato) { ls.set('lg:novato', '1'); return 0; }
+    const d = +ls.get('lg:desbloqueo') || 0;
+    if (d) return d;
+    if (ls.get('lg:novato') === '1') { const t = Date.now(); ls.set('lg:desbloqueo', String(t)); return t; }
+    return 0;
+  });
+  const estrena = !novato && desbloqueo && Date.now() - desbloqueo < 14 * 86400000;
+  const nuevo = (k) => estrena && !QUIETAS.includes(k) && !vistas.includes(k);
+  const sumadas = TIRA.filter((x) => x && !NOVATO.includes(x)).length;
+
+  // 📏 SIMÉTRICA: una unidad (`--u`) = el ancho de la barra entre 5,6 —cuatro casillas, Tú y EN JUEGO de 1,6 (un poco más que el 1,45 de la 6.78, para que «EN 40 MIN» y «TE TOCA» entren a 360)—, así la
+  // primera pantalla llena justo hasta Tú y EN JUEGO cae en el centro exacto. Las de después miden lo mismo o lo que pida su
+  // nombre. Se mide la barra y no `100vw`, que en una ventana con barra de desplazamiento la corre unos píxeles
+  const tira = useRef(null);
+  useLayoutEffect(() => {
+    const b = nav.current;
+    if (!b) return undefined;
+    const medir = () => { const w = b.getBoundingClientRect().width; if (w) b.style.setProperty('--u', (w / 5.6).toFixed(3) + 'px'); };
+    medir();
+    let ro = null;
+    try { ro = new ResizeObserver(medir); ro.observe(b); } catch (e) { window.addEventListener('resize', medir); }
+    return () => { if (ro) ro.disconnect(); else window.removeEventListener('resize', medir); };
+  }, []);
+  // 👉 la que se ve, siempre entera: al cambiar de página la tira se corre hasta ella (sin animar si apagaste las animaciones)
+  useEffect(() => {
+    const t = tira.current;
+    const a = t && t.querySelector('a.on');
+    if (!a || novato) return;
+    const r = a.getBoundingClientRect(), q = t.getBoundingClientRect();
+    if (r.left >= q.left && r.right <= q.right) return;
+    let quieto = false;
+    try { quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { quieto = false; }
+    t.scrollTo({ left: Math.max(0, a.offsetLeft - (t.clientWidth - a.offsetWidth) / 2), behavior: quieto ? 'auto' : 'smooth' });
+  }, [pagina, novato]);
+
+  // 💬 EL GLOBO, UNA VEZ: «Se sumaron N secciones» al estrenar la tira, o «Desliza la barra» a quien nunca la deslizó.
+  // Sale cuando nada lo tapa y la barra se ve (`algoTapa()` de tapa.js), con la tira asomándose sola, y se va a los 6 s
+  // vistos o al deslizarla (`lg:tira-ok`). Sin flecha ni línea (Dlx, 17/10)
+  const [aprende, setAprende] = useState(() => !ls.get('lg:tira-ok'));
+  const asomando = useRef(false);
+  const aprendio = () => { setAprende(false); ls.set('lg:tira-ok', '1'); };
+  const mirar = () => {
+    const t = tira.current;
+    if (t && !asomando.current && t.scrollLeft > 24 && aprende) aprendio();
+  };
+  const asomar = () => {
+    let quieto = false;
+    try { quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { quieto = false; }
+    const t = tira.current;
+    if (quieto || !t || t.scrollLeft > 0) return;
+    asomando.current = true;
+    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: Math.min(140, tira.current.scrollWidth - tira.current.clientWidth), behavior: 'smooth' }); }, 400);
+    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: 0, behavior: 'smooth' }); }, 1500);
+    setTimeout(() => { asomando.current = false; }, 2400);
+  };
+  const [globo, setGlobo] = useState(null);
+  useEffect(() => {
+    if (novato || !aprende || (window.innerWidth || 0) >= 900) return undefined;
+    const V = { libre: 0, visto: 0, ult: 0, on: false, asomo: false };
+    const iv = setInterval(() => {
+      const tb = nav.current;
+      if (!tb) return;
+      const t = Date.now();
+      const H = window.innerHeight || 0;
+      const b = tb.getBoundingClientRect();
+      const g = V.on ? capaFija(tb).querySelector('.tb-globo') : null;
+      const libre = document.visibilityState !== 'hidden' && b.height > 0 && b.top < H && b.bottom > H * 0.5
+        && !algoTapa(tb, ['.nvt']) && !(g && !seVe(g));
+      if (!libre) {
+        V.libre = 0; V.ult = 0;
+        if (V.on) { V.on = false; setGlobo(null); }
+        return;
+      }
+      if (!V.on) {
+        if (!V.libre) V.libre = t;
+        if (t - V.libre < 2000) return;
+        V.on = true; V.ult = t;
+        setGlobo({ abajo: Math.round(H - b.top + 10), capa: capaFija(tb) });
+        if (!V.asomo) { V.asomo = true; asomar(); }
+        return;
+      }
+      V.visto += t - (V.ult || t); V.ult = t;
+      setGlobo((x) => (x && x.abajo === Math.round(H - b.top + 10) ? x : { abajo: Math.round(H - b.top + 10), capa: capaFija(tb) }));
+      if (V.visto >= 6000) aprendio();
+    }, 250);
+    return () => clearInterval(iv);
+  }, [aprende, novato]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const casilla = (x, i) => {
+    if (!x) {
+      const href = j.href || '#/eventos';
+      const cls = 'tb-jg ' + j.tipo + (enEv && (j.tipo === 'nada' || j.tipo === 'hoy' || j.tipo === 'pronto') ? ' on' : '');
+      return (
+        <a key="jg" ref={btnJ} href={href} className={cls} data-tuto="menu-eventos" aria-label={j.aria + '. Mantén apretado para ver Calendario, Competencias y Ligas'}
+          aria-haspopup="menu" aria-expanded={jm} onClick={tocar} {...mantener}>
+          {/* en reposo, como las demás casillas (ícono y nombre) sobre su bloque: «📅 EVENTOS» con la pista abajo no entraba y
+              se metía encima de Pase (medido a 360 y 390) */}
+          {j.tipo === 'nada' ? <><Ico n="eventos" t={22} /><span>Eventos</span></> : <>
+            <span className="l1">{j.cara && cara ? cara : j.logo && j.tipo !== 'pronto' ? <img alt="" src={j.logo} /> : null}{j.l1}</span>
+            <span className="l2">{j.l2}</span></>}
+        </a>
+      );
+    }
+    const [k, n, r] = x;
+    const on = k === 'inicio' ? !pagina : pagina === k;
+    return (
+      <a key={k} href={r} data-tuto={'menu-' + k} onClick={subirSiEsta(r)} className={on ? 'on' : ''}>
+        <Ico n={k} t={22} /><span>{n}</span>
+        {k === 'ranking' && sube ? <i className="tb-sube" aria-label={'Subiste ' + sube + (sube === 1 ? ' puesto' : ' puestos')}>+{sube}</i> : null}
+        {k === 'publicaciones' && nv ? <i className="tb-nuevas" aria-label={nv + ' nuevas'}>{nv}</i>
+          : nuevo(k) && i > 3 ? <i className="tb-nuevo" aria-label="Nueva para ti">NUEVO</i> : null}
       </a>
-      <a href="#/pase" data-tuto="menu-pase" onClick={subirSiEsta('#/pase')} className={pagina === 'pase' ? 'on' : ''}><Ico n="pase" t={22} /><span>Pase</span></a>
-      {/* 👤 con tu cuenta, abre el menú de lo tuyo (yomenu.jsx: el Inventario primero); sin cuenta, Tu cuenta como siempre */}
+    );
+  };
+  return (
+    <nav className={'tabbar e' + (novato ? ' novato' : '')} aria-label="Secciones" ref={nav}>
+      {!novato && aprende && globo ? createPortal(
+        <div className="tb-globo e" role="note" style={{ bottom: globo.abajo }}>
+          <span>{estrena ? <>Se sumaron <b>{sumadas} secciones</b>: desliza la barra para verlas</> : 'Desliza la barra de costado: hay más secciones'}</span>
+          <button type="button" aria-label="Entendido" onClick={aprendio}>✕</button>
+        </div>, globo.capa) : null}
+      <div className="tb-tira" ref={tira} onScroll={mirar}>{(novato ? NOVATO : TIRA).map(casilla)}</div>
+      {/* 👤 con tu cuenta, abre el menú de lo tuyo (yomenu.jsx: el Inventario primero); sin cuenta, Entrar */}
       {cara ? (
         <button type="button" className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '')} data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM}
           aria-label="Lo tuyo: inventario, perfil y cuenta" onClick={() => { setJm(false); setYoM((v) => !v); }}>{cara}<span>Tú</span></button>
       ) : (
-        <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Entrar</span></a>
+        <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Entrar con Discord"><Ico n="yo" t={22} /><span>Entrar</span></a>
       )}
-      {verJ ? <HojaJuego liga={liga} sale={saleJ} onCerrar={() => setJm(false)} /> : null}
+      {verJ ? <HojaJuego liga={liga} sale={saleJ} x={jx} onCerrar={() => setJm(false)} /> : null}
       {verYo ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo sale={saleYo} onCerrar={() => setYoM(false)} /> : null}
     </nav>
   );

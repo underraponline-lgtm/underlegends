@@ -3571,5 +3571,11 @@
 "1 NUEVA": "1 NEW",
 "{n} NUEVAS": "{n} NEW",
 "MENÚ": "MENU",
-"AJUSTES": "SETTINGS"
+"AJUSTES": "SETTINGS",
+"Se sumaron": "Added",
+"{n} secciones": "{n} sections",
+": desliza la barra para verlas": ": swipe the bar to see them",
+"Salón": "Hall",
+"Nueva para ti": "New for you",
+"Lo tuyo: inventario, perfil y cuenta": "Yours: inventory, profile and account"
 }

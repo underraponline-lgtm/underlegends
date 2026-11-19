@@ -7053,40 +7053,59 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
   .pn-ti3-t b{font-size:14px}
 }
 
-/* ═══ 🎮 LA BARRA E, «EL LOBBY» (19/11/2026, Dlx a la maqueta: «Haz el E») ═══
-   Cinco lugares fijos —Inicio, Ranking, EN JUEGO, Pase y Tú— en vez de la tira de doce. Negra en los dos temas, como la
-   cabecera (`.cab.negra`, #030304), y un paso más clara en Noche para separarse de la página sin una línea. Lo activo es
-   la pieza blanca; el magenta, sólo para lo que se juega ahora (VIVO, TE TOCA). Ver `Tabbar` en abajo.jsx */
+/* ═══ 🎮 LA BARRA E, «EL LOBBY» (19/11/2026, Dlx: «Haz el E»), Y LA TIRA QUE VUELVE (6.79: «so it can scroll to the right
+   still… combining some features of F») ═══
+   La tira se desliza con todas las secciones —la quinta asoma a la mitad— y EN JUEGO va tercero; Tú, fijo a la derecha en
+   su celda. Quien no entró ve cinco quietas (`.novato`). Negra en los dos temas, como la cabecera (`.cab.negra`, #030304),
+   y un paso más clara en Noche para separarse de la página sin una línea. Lo activo es la pieza blanca; el magenta, sólo
+   para lo que se juega ahora (VIVO, TE TOCA) y lo nuevo. Ver `Tabbar` en abajo.jsx */
 .tabbar.e{--fondo:#030304;--tinta:#F6F6F6;--gris:#A5A5A0;--inv:#F6F6F6;--inv-tinta:#030304;
-  display:flex;align-items:stretch;gap:2px;padding:0 4px env(safe-area-inset-bottom,0px);background:#030304;color:#A5A5A0;border-top:0;
+  display:flex;align-items:stretch;gap:0;padding:0 0 env(safe-area-inset-bottom,0px);background:#030304;color:#A5A5A0;border-top:0;
   -webkit-tap-highlight-color:transparent}
 .noche .tabbar.e{background:#111114}
 @media (min-width: 900px){.tabbar.e{display:none}}
-.tabbar.e > a,.tabbar.e > .tb-yo{flex:1 1 0;min-width:0;display:grid;justify-items:center;align-content:center;gap:5px;margin:6px 0;min-height:52px;
-  padding:0 2px;border:0;border-radius:3px;background:none;color:inherit;box-shadow:none;text-decoration:none;position:relative;cursor:pointer;
-  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;-webkit-touch-callout:none;user-select:none;touch-action:manipulation}
-.tabbar.e > a span,.tabbar.e > .tb-yo span{white-space:nowrap}
-.tabbar.e > a.on,.tabbar.e > .tb-yo.on{background:#F6F6F6;color:#030304;box-shadow:none}
-.tabbar.e > .tb-yo{margin-left:0}
+.tabbar.e .tb-tira{display:flex;flex:1;min-width:0;align-items:stretch;padding-left:0;overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;scrollbar-width:none}
+.tabbar.e .tb-tira::-webkit-scrollbar{display:none}
+.tabbar.e .tb-tira > a,.tabbar.e > .tb-yo{flex:0 0 auto;min-width:calc(var(--u,68px) - 4px);display:grid;justify-items:center;align-content:center;gap:5px;margin:6px 2px;min-height:52px;
+  padding:0 10px;border:0;border-radius:3px;background:none;color:inherit;box-shadow:none;text-decoration:none;position:relative;cursor:pointer;
+  scroll-snap-align:start;scroll-margin-inline:2px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;
+  -webkit-touch-callout:none;user-select:none}
+.tabbar.e .tb-tira > a span,.tabbar.e > .tb-yo span{white-space:nowrap}
+.tabbar.e .tb-tira > a.on{background:#F6F6F6;color:#030304;box-shadow:none}
+/* 📏 SIMÉTRICA: las cuatro de la primera pantalla y Tú, de una unidad (`--u`, la mide abajo.jsx); EN JUEGO, de 1,6. Las de
+   después, lo mismo o lo que pida su nombre */
+.tabbar.e .tb-tira > a:nth-child(-n+4),.tabbar.e > .tb-yo{width:calc(var(--u,68px) - 4px);padding:0 2px}
+/* 🆕 las cinco del que llega (la F): quietas, sin nada que deslizar */
+.tabbar.e.novato .tb-tira{overflow:visible;scroll-snap-type:none}
+/* 👤 Tú (o Entrar), fijo a la derecha y del mismo ancho que las demás: como en la 6.78 */
+.tabbar.e > .tb-yo.on{background:#F6F6F6;color:#030304;box-shadow:none}
 @media (prefers-reduced-motion: no-preference){
-  .tabbar.e > a,.tabbar.e > .tb-yo{transition:transform .12s cubic-bezier(.23,1,.32,1)}
-  .tabbar.e > a:active,.tabbar.e > .tb-yo:active{transform:scale(.97)}
+  .tabbar.e .tb-tira > a,.tabbar.e > .tb-yo{transition:transform .12s cubic-bezier(.23,1,.32,1)}
+  .tabbar.e .tb-tira > a:active,.tabbar.e > .tb-yo:active{transform:scale(.97)}
 }
 /* 📈 «+2» en Ranking: subiste desde la última vez que lo miraste */
 .tabbar.e .tb-sube{position:absolute;top:3px;right:calc(50% - 30px);padding:2px 3px;border-radius:2px;background:#29B298;color:#04140F;
   font:800 10.5px/1 Archivo,sans-serif;font-style:normal;letter-spacing:0}
-/* 🔴 EN JUEGO: más ancho, un tono arriba de la barra; magenta cuando algo se juega o te toca, blanco si estás en Eventos */
-.tabbar.e > a.tb-jg{flex:1.45 1 0;margin:6px 3px;gap:4px;border-radius:4px;background:#26262C;color:#F6F6F6}
-.tabbar.e > a.tb-jg.vivo,.tabbar.e > a.tb-jg.toca{background:#E41373;color:#FFFFFF}
-.tabbar.e > a.tb-jg.on{background:#F6F6F6;color:#030304}
-.tb-jg .l1{display:flex;align-items:center;gap:5px;max-width:100%;font:900 14.5px/1 Archivo,sans-serif;letter-spacing:.01em;white-space:nowrap}
+/* 🆕 NUEVO: lo que se sumó al entrar, hasta que lo abres (la F) */
+.tabbar.e .tb-nuevo{position:absolute;top:2px;left:calc(50% + 8px);padding:2px 3px;border-radius:2px;background:#E41373;color:#FFFFFF;
+  font:800 8.5px/1 Archivo,sans-serif;font-style:normal;letter-spacing:.05em}
+.tabbar.e .tb-tira > a:has(.tb-nuevo) svg{margin-top:6px}
+/* 🔴 EN JUEGO: más ancho que las demás (lo que mide sale de lo que dice, y la quinta se recalcula), un tono arriba de la
+   barra; magenta cuando algo se juega o te toca, blanco si estás en Eventos. En reposo es una casilla más, sobre su bloque */
+.tabbar.e .tb-tira > a.tb-jg{flex:0 0 auto;width:calc(var(--u,68px) * 1.6 - 6px);min-width:0;padding:0 5px;margin:6px 3px;scroll-margin-inline:3px;gap:4px;border-radius:4px;background:#26262C;color:#F6F6F6}
+.tabbar.e .tb-tira > a.tb-jg.vivo,.tabbar.e .tb-tira > a.tb-jg.toca{background:#E41373;color:#FFFFFF}
+.tabbar.e .tb-tira > a.tb-jg.on{background:#F6F6F6;color:#030304}
+.tb-jg .l1{display:flex;align-items:center;gap:5px;max-width:100%;font:900 clamp(12px,calc(var(--u,68px) * .2),14.5px)/1 Archivo,sans-serif;letter-spacing:.01em;white-space:nowrap}
 .tb-jg .l1 img{width:20px;height:20px;border-radius:3px;object-fit:cover;flex:none}
-.tabbar.e .tb-jg .l1 .tb-cara{width:20px;height:20px;flex:none}
-.tabbar.e .tb-jg .l2{max-width:100%;padding:0 6px;overflow:hidden;text-overflow:ellipsis;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
-.tabbar.e .tb-jg.nada .l2{color:#A5A5A0}
-.tabbar.e .tb-jg.nada.on .l2{color:#4A4A50}
+.tabbar.e .tb-jg .l1 .tb-cara{width:18px;height:18px;flex:none}
+.tabbar.e .tb-jg .l2{max-width:100%;max-width:110px;overflow:hidden;text-overflow:ellipsis;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
+.tabbar.e .tb-jg .l2.pista{color:#A5A5A0}
+.tabbar.e .tb-jg.on .l2.pista{color:#55555C}
+/* 💬 el globo de la tira, con lo que se sumó */
+.tb-globo.e b{font-weight:900;color:#F5C542}
 /* ✋ mantener EN JUEGO: Calendario, Competencias y Ligas encima de la barra, con su miniatura */
-.tb-hoja{position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:70;width:min(360px,calc(100vw - 16px));transform:translateX(-50%);
+.tb-hoja{position:fixed;left:8px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:70;width:min(360px,calc(100vw - 16px));
   display:grid;gap:2px;padding:6px;background:#17171B;color:#F6F6F6;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.55);
   text-transform:none;letter-spacing:0;font:400 14px/1.4 Archivo,sans-serif}
 .tabbar .tb-hoja a{display:grid;grid-template-columns:72px minmax(0,1fr) auto;justify-items:stretch;align-items:center;gap:12px;min-height:56px;padding:6px;
@@ -7105,8 +7124,8 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
   .tb-hoja{animation:tbh-entra .2s cubic-bezier(.23,1,.32,1)}
   .tb-hoja.sale{animation:tbh-va .16s ease-in forwards}
 }
-@keyframes tbh-entra{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
-@keyframes tbh-va{to{opacity:0;transform:translate(-50%,6px)}}
+@keyframes tbh-entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes tbh-va{to{opacity:0;transform:translateY(6px)}}
 /* 📰 el punto del ☰: hay publicaciones nuevas (Publicaciones vive en el ☰ desde la barra E) */
 .app .cab .hamb{position:relative}
 .hamb-pto{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#E41373;border-radius:1px}
