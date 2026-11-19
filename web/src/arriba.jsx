@@ -784,7 +784,7 @@ function PanelAvisos({ liga, B, sale, onCerrar }) {
   const filtros = FILTROS_AVISO.filter(([k]) => k === 'todo' || cuenta[k]);
   const hayNuevas = !leidas && (B.items || []).some((x) => !x.visto);
   return (
-    <div className={'nt-p' + (sale ? ' sale' : '')} role="dialog" aria-label="Notificaciones">
+    <div className={'nt-p nt-campana' + (sale ? ' sale' : '')} role="dialog" aria-label="Notificaciones">
       <div className="nt-arr">
         <div className="nt-h">
           <h2>Notificaciones</h2>

@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.72",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T22:14:00-05:00",
+        "titulo": "El aviso de actualización ya no tapa los menús",
+        "items": [
+            "**El aviso de «Nueva actualización» ya no tapa los menús**: mientras tienes abierto el menú de tu cara, la campana o el ☰, se corre, y vuelve cuando los cierras."
+        ]
+    },
+    {
         "version": "6.71",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T21:30:00-05:00",

@@ -91,15 +91,16 @@
 @keyframes pv-va-abajo{to{opacity:0;transform:translateY(6px) scale(.98)}}
 .app .cab .menu .grp-lista{transform-origin:28px 0;animation:pv-baja .18s var(--ease-out)}
 .yo-menu{transform-origin:calc(100% - 22px) 0;animation:pv-baja .18s var(--ease-out)}
-.nt-p:not(.bs-panel){transform-origin:calc(100% - 20px) 0;animation:pv-baja .18s var(--ease-out)}
+/* ⚠️ `.nt-campana` y no `.nt-p`: «Lo último» del Inicio (medio.jsx) usa las mismas piezas y está siempre a la vista */
+.nt-campana{transform-origin:calc(100% - 20px) 0;animation:pv-baja .18s var(--ease-out)}
 /* en el celular el de tu cara sale de «Tu cuenta», abajo a la derecha */
 .yo-menu.abajo{transform-origin:calc(100% - 34px) 100%;animation-name:pv-sube}
-.app .cab .menu .grp-lista.sale,.yo-menu.sale,.nt-p.sale{animation:pv-va-arriba .12s var(--ease-out) forwards;pointer-events:none}
+.app .cab .menu .grp-lista.sale,.yo-menu.sale,.nt-campana.sale{animation:pv-va-arriba .12s var(--ease-out) forwards;pointer-events:none}
 .yo-menu.abajo.sale{animation-name:pv-va-abajo}
 @media (max-width: 899.98px){
   /* la campana del celular ocupa la pantalla: sube un poco, como una página */
-  .nt-p:not(.bs-panel){transform-origin:50% 0;animation:pv-sube .24s var(--ease-out)}
-  .nt-p.sale{animation:pv-va-abajo .16s var(--ease-out) forwards}
+  .nt-campana{transform-origin:50% 0;animation:pv-sube .24s var(--ease-out)}
+  .nt-campana.sale{animation:pv-va-abajo .16s var(--ease-out) forwards}
 }
 /* ☰ el menú del celular sale del borde derecho, con la curva de las hojas de iOS, y vuelve a ese borde al cerrarlo */
 .x-menu{animation:xm-fondo .24s ease-out}
@@ -3922,6 +3923,14 @@ li.nt-f{cursor:default}
 .aviso-version .av-x{margin-left:auto;padding:6px 8px;border:0;background:none;color:var(--gris);font-size:16px;cursor:pointer}
 @media (min-width: 900px){.aviso-version{bottom:20px;left:auto;right:20px}}
 @media (prefers-reduced-motion: no-preference){.aviso-version{animation:av-entra .25s ease-out}@keyframes av-entra{from{transform:translateY(12px);opacity:0}}}
+/* 🆕 MIENTRAS HAY UN MENÚ ABIERTO, LA TARJETA SE CORRE (18/11/2026, Dlx: «arregla lo de la tarjeta de actualización encima
+   del menú»). En el celular tapaba la mitad de abajo del menú de tu cara: ese menú vive adentro de la barra de abajo
+   (`.tabbar`, sticky con z-index 30), así que su 70 sólo vale ahí adentro y la tarjeta (40) le ganaba igual; en la compu le
+   pasaba lo mismo a lo largo de ese menú y de la campana, que bajan desde la cabecera. Subir números no lo arregla —cada
+   menú vive en otra caja—: lo que abriste manda, y la tarjeta vuelve al cerrarlo, en el mismo lugar */
+.aviso-version{transition:opacity .18s var(--ease-out),visibility 0s}
+.app:has(.yo-menu,.nt-campana,.x-menu,.grp-lista,.cab .bs-panel) .aviso-version{opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .12s var(--ease-out),visibility 0s linear .12s}
 
 /* 🎞️ MÁS MOVIMIENTO (Dlx, 18/10/2026: «asegúrate que haya más animaciones para que el ajuste de accesibilidad "menos
    animaciones" tenga sentido»). Todo corto (≤ .6 s) y sólo con transform y opacity, que el celular mueve sin repintar la
