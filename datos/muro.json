@@ -63,8 +63,8 @@
 "temporada"
 ]
 },
-"verc": {
-"rg": "A",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -72,8 +72,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
+"verc": {
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -116,19 +116,19 @@
 "temporada"
 ]
 },
+"over": {
+"rg": "S",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "agus": {
 "rg": "S",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"over": {
-"rg": "S",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -225,6 +225,10 @@
 "temporada"
 ]
 },
+"velatz": {
+"rg": "C",
+"c": []
+},
 "walker": {
 "rg": "A",
 "c": [
@@ -234,14 +238,37 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
-"c": []
-},
 "zignos": {
 "rg": "B",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"guess": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"geoka": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"sinlimites": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -264,23 +291,9 @@
 "temporada"
 ]
 },
-"guess": {
+"criszj": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"geoka": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "mats": {
 "rg": "A",
@@ -309,21 +322,12 @@
 "temporada"
 ]
 },
-"hassan": {
-"rg": "A",
+"tuca": {
+"rg": "B",
 "c": []
 },
-"sinlimites": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"criszj": {
-"rg": "C",
+"hassan": {
+"rg": "A",
 "c": []
 },
 "bloody": {
@@ -334,23 +338,6 @@
 "servidor",
 "temporada"
 ]
-},
-"tuca": {
-"rg": "B",
-"c": []
-},
-"drexx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"chop": {
-"rg": "D",
-"c": []
 },
 "tenor": {
 "rg": "C",
@@ -369,8 +356,8 @@
 "temporada"
 ]
 },
-"caliz": {
-"rg": "D",
+"drexx": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -396,30 +383,21 @@
 "temporada"
 ]
 },
-"soulb": {
+"chop": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"xclusivo": {
-"rg": "C",
 "c": []
-},
-"polosport": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "xubaru": {
 "rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"caliz": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -448,8 +426,38 @@
 "temporada"
 ]
 },
+"soulb": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"xclusivo": {
+"rg": "C",
+"c": []
+},
 "trot": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"tøkiø": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"polosport": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -460,14 +468,6 @@
 "bna": {
 "rg": "C",
 "c": []
-},
-"tøkiø": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "mathhias": {
 "rg": "C",
@@ -492,24 +492,6 @@
 },
 "dyzz": {
 "rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"dynoco": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"mcnadie": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -556,6 +538,15 @@
 "rg": "D",
 "c": []
 },
+"dynoco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "leonart": {
 "rg": "D",
 "c": [
@@ -574,8 +565,8 @@
 "temporada"
 ]
 },
-"marcos": {
-"rg": "D",
+"mcnadie": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -591,9 +582,14 @@
 "temporada"
 ]
 },
-"onzass": {
-"rg": "E",
-"c": []
+"marcos": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "jupiter": {
 "rg": "D",
@@ -607,14 +603,6 @@
 "eidp": {
 "rg": "D",
 "c": []
-},
-"kyss": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "gocho": {
 "rg": "C",
@@ -637,9 +625,21 @@
 "temporada"
 ]
 },
+"onzass": {
+"rg": "E",
+"c": []
+},
 "eclipsito": {
 "rg": "C",
 "c": []
+},
+"kyss": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "mtz": {
 "rg": "C",
@@ -8050,13 +8050,7 @@
 "n": "mats",
 "k": "mats",
 "de": 39,
-"a": 32
-},
-{
-"n": "Soulb",
-"k": "soulb",
-"de": 48,
-"a": 43
+"a": 33
 }
 ],
 "sorpresas": []
@@ -8103,8 +8097,8 @@
 "praiseriza",
 "snow",
 "six",
-"verc",
 "panchok",
+"verc",
 "vandu"
 ],
 "competitivo": [
