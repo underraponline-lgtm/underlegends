@@ -161,7 +161,7 @@
   "BTRX": {
    "competitivo": "e0854031a916:c41ff817042a",
    "pais": "b72f4ad24e12:f1f52e1c6d42",
-   "servidor": "8022e8389d2d:0bd0fbf67396:88f477",
+   "servidor": "221635ca2ce5:0bd0fbf67396:88f477",
    "temporada": "b0f5a8037ce7:a8d8b7335469"
   },
   "Badterne": {},
@@ -240,7 +240,7 @@
   "Calíz": {
    "competitivo": "005ac98360b9:c41ff817042a",
    "pais": "8c1137a8651d:f1f52e1c6d42",
-   "servidor": "85a11723f3a3:0bd0fbf67396:bcd566",
+   "servidor": "85a11723f3a3:0bd0fbf67396:c82496",
    "temporada": "aec90778a022:a8d8b7335469"
   },
   "Camila": {},
@@ -254,7 +254,7 @@
   "Carlosss": {
    "competitivo": "5adc72077f93:c41ff817042a",
    "pais": "3bdb80d385ef:f1f52e1c6d42",
-   "servidor": "ef57aff5385f:0bd0fbf67396:35630e",
+   "servidor": "ef57aff5385f:0bd0fbf67396:132451",
    "temporada": "db3b325be202:a8d8b7335469"
   },
   "Catarsis": {
@@ -335,7 +335,7 @@
   "DLX": {
    "competitivo": "94a819d3bd46:c41ff817042a",
    "pais": "548d1b7cfece:f1f52e1c6d42",
-   "servidor": "2e83f176139b:0bd0fbf67396:132451",
+   "servidor": "2e83f176139b:0bd0fbf67396:552866",
    "temporada": "cda2db8191a8:a8d8b7335469"
   },
   "DNK": {
@@ -425,7 +425,7 @@
   "Dios": {
    "competitivo": "ee348675a6fb:c41ff817042a",
    "pais": "52fd54d5ce7d:f1f52e1c6d42",
-   "servidor": "4261f035fc65:0bd0fbf67396:6203c7",
+   "servidor": "4261f035fc65:0bd0fbf67396:c82496",
    "temporada": "450446b0f5bd:a8d8b7335469"
   },
   "Dobell": {},
@@ -670,7 +670,7 @@
   "Gus": {
    "competitivo": "4f4350c2ae05:c41ff817042a",
    "pais": "f7c2873556cf:f1f52e1c6d42",
-   "servidor": "96d291188264:0bd0fbf67396:ed8290",
+   "servidor": "4a379f538341:0bd0fbf67396:ed8290",
    "temporada": "28b10aca6784:a8d8b7335469"
   },
   "Guty": {
@@ -1191,7 +1191,7 @@
   "Medster": {
    "competitivo": "737de774467a:c41ff817042a",
    "pais": "f1b330806098:f1f52e1c6d42",
-   "servidor": "c0ba7d4912bc:0bd0fbf67396:0e0e03"
+   "servidor": "e8f3e96d55b3:0bd0fbf67396:0e0e03"
   },
   "Megara": {
    "servidor": "bd7795317a0e:0bd0fbf67396:afbca9"
@@ -1353,7 +1353,7 @@
   "Number VE": {
    "competitivo": "88b97bd9b2e4:c41ff817042a",
    "pais": "a5335a1d3b9b:f1f52e1c6d42",
-   "servidor": "e894bf34f39b:0bd0fbf67396:43ab01",
+   "servidor": "e894bf34f39b:0bd0fbf67396:62e67f",
    "temporada": "946003d37594:a8d8b7335469"
   },
   "OEP": {
@@ -1999,7 +1999,7 @@
   "crakero": {
    "competitivo": "4c59e4734656:c41ff817042a",
    "pais": "42d3d1b54a9b:f1f52e1c6d42",
-   "servidor": "b4eda55065df:0bd0fbf67396:d6a988",
+   "servidor": "201540a94063:0bd0fbf67396:d6a988",
    "temporada": "da978db11490:a8d8b7335469"
   },
   "doble h": {
@@ -2128,5 +2128,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-19T04:31:21+00:00"
+ "cuando": "2026-11-19T05:36:22+00:00"
 }
