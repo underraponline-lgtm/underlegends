@@ -2080,5 +2080,38 @@
   "sv": "LKR",
   "t_pregunta": ""
  },
+ "1573060212636524665": {
+  "autor": "1364747464170668042",
+  "canal": "1222379620494741604",
+  "canal_pregunta": "1538678065306140684",
+  "cuando": "2026-11-19T19:39:40.738000+00:00",
+  "donde": "staff",
+  "evento": "CHOP COMPE CHILL V.1",
+  "fecha": "19/11",
+  "llave": "1573060212636524665",
+  "pregunta": "1573122260569694270",
+  "preguntada": "2026-11-19 6:46 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "ojos melancólicos 🇨🇱",
+     "Lso🇦🇷"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "player🇻🇪",
+     "Lucho🇦🇷"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": true,
+  "sv": "CH",
+  "t_pregunta": "2026-11-19T23:46:14+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
