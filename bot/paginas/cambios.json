@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.92",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T17:25:00-05:00",
+        "titulo": "La llave, con sus cartas y en vivo",
+        "items": [
+            "**Las cartas, de vuelta en la llave**: cada batalla mano a mano con las dos cartas, y en las filas tu carta chica. Va la de Servidor si es de ese servidor; si no, la Competitiva; si no, la de Temporada.",
+            "**La llave en vivo, como la terminada**: quién organiza y quién es el jurado, la batalla que se está votando con las dos cartas, quiénes siguen en pie y su camino.",
+            "**Los veredictos, en vivo**: una pestaña con lo que el jurado va escribiendo en el canal de veredictos, ronda por ronda."
+        ]
+    },
+    {
         "version": "6.91",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T06:52:00-05:00",
