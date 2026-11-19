@@ -221,31 +221,122 @@
     ]
    ],
    "terminada": false
+  },
+  "1572788908046155930": {
+   "id": "1572788908046155930",
+   "canal": "1564463626855645234",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "pub": 1795052496683,
+   "ed": 1795056787710,
+   "n": 6,
+   "vidas": 5,
+   "ronda": "5 vidas",
+   "batallas": [
+    [
+     [
+      "LIAM 🇳🇮",
+      "CALIZ🇲🇽"
+     ],
+     "CALIZ🇲🇽",
+     "votos 1–0",
+     "1572796666162057348"
+    ],
+    [
+     [
+      "PLAYER 🇻🇪",
+      "CALIZ🇲🇽"
+     ],
+     "PLAYER 🇻🇪",
+     "votos 1–0",
+     "1572797998394777693"
+    ],
+    [
+     [
+      "PLAYER 🇻🇪",
+      "MATTHIAS🇻🇪"
+     ],
+     "MATTHIAS🇻🇪",
+     "siguió peleando",
+     "1572798415627100253"
+    ],
+    [
+     [
+      "HEDORAH 🇨🇱",
+      "MATTHIAS🇻🇪"
+     ],
+     "HEDORAH 🇨🇱",
+     "votos 1–0",
+     "1572799324583370866"
+    ],
+    [
+     [
+      "LIAM 🇳🇮",
+      "HEDORAH 🇨🇱"
+     ],
+     "HEDORAH 🇨🇱",
+     "votos 1–0",
+     "1572800368323330211"
+    ],
+    [
+     [
+      "CALIZ🇲🇽",
+      "HEDORAH 🇨🇱"
+     ],
+     "HEDORAH 🇨🇱",
+     "votos 1–0",
+     "1572801358778863647"
+    ],
+    [
+     [
+      "PLAYER 🇻🇪",
+      "HEDORAH 🇨🇱"
+     ],
+     "HEDORAH 🇨🇱",
+     "votos 1–0",
+     "1572802326681485323"
+    ],
+    [
+     [
+      "MATTHIAS🇻🇪",
+      "HEDORAH 🇨🇱"
+     ],
+     "HEDORAH 🇨🇱",
+     "votos 1–0",
+     "1572803059866669117"
+    ],
+    [
+     [
+      "HEDORAH 🇨🇱",
+      "LAST🇺🇾"
+     ],
+     "HEDORAH 🇨🇱",
+     "votos 1–0",
+     "1572804817091428474"
+    ],
+    [
+     [
+      "HEDORAH 🇨🇱",
+      "CALIZ🇲🇽"
+     ],
+     "CALIZ🇲🇽",
+     "votos 1–0",
+     "1572805863926661142"
+    ],
+    [
+     [
+      "CALIZ🇲🇽",
+      "PLAYER 🇻🇪"
+     ],
+     "",
+     "",
+     "1572806905917866106"
+    ]
+   ],
+   "terminada": false
   }
  },
  "batallas": {
-  "1570263563845636124": {
-   "id": "1570263563845636124",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1794450407707,
-   "a": "Ryuk 🇦🇷",
-   "b": "BOOTRAX",
-   "ganador": "BOOTRAX",
-   "votos": "1–0"
-  },
-  "1570265635089293365": {
-   "id": "1570265635089293365",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1794450901530,
-   "a": "0223 🇧🇧",
-   "b": "Assuan 🇨🇱",
-   "ganador": "Assuan 🇨🇱",
-   "votos": "1–0"
-  },
   "1570575651965116528": {
    "id": "1570575651965116528",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -2148,91 +2239,86 @@
    "b": "CALIZ🇲🇽",
    "ganador": "PLAYER 🇻🇪",
    "votos": "1–0"
+  },
+  "1572799324583370866": {
+   "id": "1572799324583370866",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1795054980179,
+   "a": "HEDORAH 🇨🇱",
+   "b": "MATTHIAS🇻🇪",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1572800368323330211": {
+   "id": "1572800368323330211",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1795055229026,
+   "a": "LIAM 🇳🇮",
+   "b": "HEDORAH 🇨🇱",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1572801358778863647": {
+   "id": "1572801358778863647",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1795055465169,
+   "a": "CALIZ🇲🇽",
+   "b": "HEDORAH 🇨🇱",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1572802326681485323": {
+   "id": "1572802326681485323",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1795055695935,
+   "a": "PLAYER 🇻🇪",
+   "b": "HEDORAH 🇨🇱",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1572803059866669117": {
+   "id": "1572803059866669117",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1795055870740,
+   "a": "MATTHIAS🇻🇪",
+   "b": "HEDORAH 🇨🇱",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1572804817091428474": {
+   "id": "1572804817091428474",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1795056289695,
+   "a": "HEDORAH 🇨🇱",
+   "b": "LAST🇺🇾",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1572805863926661142": {
+   "id": "1572805863926661142",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1564463626855645234",
+   "pub": 1795056539280,
+   "a": "HEDORAH 🇨🇱",
+   "b": "CALIZ🇲🇽",
+   "ganador": "CALIZ🇲🇽",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1565189541172748311": {
-   "id": "1565189541172748311",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1793240666000,
-   "ed": 1793242843408,
-   "texto": "`[ CUARTOS ]`\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞JOBA⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞SOULB🇨🇱⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞EVANGELINE🇧🇴⌝ 🆚 ⌞PICHULAMC🇲🇳⌝\n⌞SOUL B🇨🇱⌝ 🆚 ⌞TUCA🇦🇷⌝\n`[ FINAL ]`\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞TUCA🇦🇷⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "ADRIAGNER🇳🇮",
-      "EVANGELINE🇧🇴"
-     ],
-     "EVANGELINE🇧🇴",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "PICHULAMC🇲🇳",
-      "JOBA",
-      "DOMINIK🇵🇪"
-     ],
-     "PICHULAMC🇲🇳",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MAKMA🇻🇪",
-      "SOULB🇨🇱"
-     ],
-     "SOULB🇨🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "TUCA🇦🇷",
-      "NEXUZ🇵🇪"
-     ],
-     "TUCA🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "EVANGELINE🇧🇴",
-      "PICHULAMC🇲🇳"
-     ],
-     "PICHULAMC🇲🇳",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "SOUL B🇨🇱",
-      "TUCA🇦🇷"
-     ],
-     "TUCA🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PICHULAMC🇲🇳",
-      "TUCA🇦🇷"
-     ],
-     "PICHULAMC🇲🇳",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1565212437387677697": {
    "id": "1565212437387677697",
    "sv": "[FFA] Freestyle For All 👾",
