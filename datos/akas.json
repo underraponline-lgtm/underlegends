@@ -370,6 +370,7 @@
   "respiracion": "Efimero",
   "nachosrk": "Mito",
   "mfdoom": "Agente sombra",
+  "lambo": "Lambroggini",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1931,6 +1932,10 @@
   [
    "Mf doom",
    "Agente sombra"
+  ],
+  [
+   "LAMBO",
+   "Lambroggini"
   ],
   [
    "Zetryco",
