@@ -3849,8 +3849,16 @@ def _tandas(rows):
                 un = lambda x: tanda['nom'].setdefault(norm(x), x)   # noqa: E731
                 tanda['bs'].append({'a': un(tit[0]), 'b': un(tit[1]), 'votos': {},
                                     'id': str(m['id'])})
+                tanda['multi'] = False
                 continue
-            cur = tanda['bs'][-1] if tanda['bs'] else None
+            # 🆚 UNA BATALLA DE 3 A 5 MCs CIERRA LA DE DOS QUE VENÍA (FFA, NEW GENESIS, 17/11/2026). Erian votó «PARK JI
+            # SUNG» en `OKAM 🆚 PARK JI SUNG`, y una hora después escribió `ZA 🆚 OKAM 🆚 MELOMANIACO 🆚 JULT`: no es un
+            # título de dos, así que se leía como un voto, nombraba a OKAM y le daba vuelta el suyo de las 10 PM. Esas no
+            # son de dos (`llaves_de_veredictos()` las lee enteras): lo que la sigue no le vota a la anterior
+            if any(len(nombres_de_linea(re.sub(r'^\s*#+\s*', '', l))) > 2 for l in _lineas(t)):
+                tanda['multi'] = True
+                continue
+            cur = tanda['bs'][-1] if tanda['bs'] and not tanda.get('multi') else None
             v = _voto_de(t)
             if cur and not v and m.get('img') and m.get('autor') and not t.strip():
                 v = _voto_de_imagen(m, cur['a'], cur['b'])
@@ -4596,6 +4604,15 @@ def _self_check():
     if _v != {'j1': 'a', 'j2': 'b', 'j3': 'a'}:
         print('   ❌ el voto en imagen: %s' % _v)
         mal += 1
+    # 🆚 una batalla de 3 a 5 MCs cierra la de dos que venía (FFA, NEW GENESIS, 17/11/2026: ver `_tandas()`)
+    _f = [{'id': str(i), 'canal': 'c', 'sv': 'FFA', 'g': 'g', 'autor': 'e', 'pub': i, 'ed': i, 'texto': t}
+          for i, t in enumerate(['OKAM 🆚 PARK JI SUNG', 'PARK JI SUNG', 'ZA 🆚 OKAM 🆚 MELOMANIACO 🆚 JULT',
+                                 'ZA X MELOMANIACO', 'OKAM', 'TAM 🆚 OKAM', 'OKAM'], 1)]
+    _bs = _tandas(_f)[0]['bs']
+    _ok = [(b['a'], b['votos']) for b in _bs] == [('OKAM', {'e': 'b'}), ('TAM', {'e': 'b'})]
+    print('   %s una de 4 MCs que nombra a OKAM no le da vuelta el voto de OKAM 🆚 PARK JI SUNG%s'
+          % ('✅' if _ok else '❌', '' if _ok else ': %s' % [(b['a'], b['b'], b['votos']) for b in _bs]))
+    mal += not _ok
     # 🔑 «CAMPEÓN: TEAM ANDRES» (DDF, CIUDAD GÓTICA, 27/09/2026; Cronox, 08/10/2026): ver `equipo_de_uno()`
     print('\n  el equipo campeón nombrado por uno de los suyos')
     gotica = ('# CIUDAD GOTICA\n  SEMIFINAL\n⌞ANDRES🇨🇱⌝+ ⌞NEXUZ🇵🇪⌝ 🆚  ⌞CRONOX🇨🇱⌝+ ⌞LEONAR-T🇲🇽⌝\n'

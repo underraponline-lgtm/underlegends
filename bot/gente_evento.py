@@ -62,6 +62,20 @@ def _norm(s):
     return DEC.norm(re.sub('[\U0001F1E6-\U0001F1FF]', '', re.sub(r'<a?:\w+:\d+>', '', str(s or ''))))
 
 
+def _clave_hoy(s):
+    """🪪 Con qué se cruza un voto de #veredictos con un lado de la llave: el nombre de HOY de esa persona, normalizado
+    (`competencias.norm()`, los alias de `datos/akas.json`).
+
+    FFA, NEW GENESIS (#660, 17/11/2026): Erian votó toda la noche y la llave mostraba UNA batalla con votos. En
+    #veredictos se escribe como se juega —«KIBAK», «PARK JI SUNG», «RIZAS»— y la llave guarda a la persona —Valen, Oasis,
+    PRAISERIZA—: con el nombre tal cual sólo cruzaba Geoka contra Deko. Es lo mismo que hacen el ELO y las Competencias."""
+    try:
+        import competencias as CO
+        return CO.norm(s)
+    except Exception:                                    # noqa: BLE001
+        return _norm(s)
+
+
 def _nombres(texto):
     import decidir as DEC
     return DEC._nombres_insc(texto)
@@ -86,7 +100,9 @@ def _iso_ms(s):
 class Fuentes:
     """Todo lo que se lee, una vez."""
 
-    def __init__(self, llaves=None, anuncios=None, jurados=None, lista=None, cuentas=None, nombres_llaves=None):
+    def __init__(self, llaves=None, anuncios=None, jurados=None, lista=None, cuentas=None, nombres_llaves=None, clave=None):
+        #: 🪪 cómo se cruza un voto con la llave (`_clave_hoy()`); el self-check pasa uno propio, sin los alias de verdad
+        self.clave = clave or _clave_hoy
         a = _json('datos', 'anuncios.json', defecto={}) if anuncios is None else anuncios
         self.llaves = _json('datos', 'llaves_t1.json', defecto={}) if llaves is None else llaves
         self.anuncios = a.get('anuncios') or []
@@ -158,6 +174,15 @@ def staff(p, F):
     return out
 
 
+def _cercania(dias, v):
+    """📅 Qué voto de la ventana es de ESTE evento, si la misma pareja peleó dos veces: el del mismo día, después el del día
+    siguiente (un evento que pasa la medianoche), después el de antes; y a igual día, el último.
+
+    URBF, 08 y 09/11/2026: Mathias y Majiztral pelearon en RED BULL CARACAS a las 4 PM y en COMPE MAÑANERA a las 10 AM del
+    día siguiente, y la llave del 8 mostraba el voto del 9 (se tomaba el último de la ventana)."""
+    return (abs(dias), dias < 0, -int(v.get('pub') or 0))
+
+
 def jurado(L, F):
     """`[{'r': ronda, 'l': [lados], 'v': [[juez, índice del lado votado]]}]`: quién votó a quién, batalla por batalla."""
     try:
@@ -167,8 +192,8 @@ def jurado(L, F):
     idx = {}
     for v in F.votos:
         lados = v.get('lados') or [v.get('a') or '', v.get('b') or '']
-        ns = [_norm(x) for x in lados]
-        if len(ns) < 2 or not all(ns):
+        ns = [F.clave(x) for x in lados]
+        if len(ns) < 2 or not all(ns) or len(set(ns)) != len(ns):
             continue
         try:
             dia = (dt.datetime.fromtimestamp(int(v['pub']) / 1000, dt.timezone.utc) - dt.timedelta(hours=4)).date()
@@ -176,19 +201,19 @@ def jurado(L, F):
             continue
         if not -VOTO_ANTES <= (dia - d0).days <= VOTO_DESPUES:
             continue
-        idx.setdefault(frozenset(ns), []).append((ns, v))
+        idx.setdefault(frozenset(ns), []).append((_cercania((dia - d0).days, v), ns, v))
     out = []
     for R in L.get('rondas') or []:
         for b in R.get('b') or []:
             lados = b[0] or []
-            ns = [_norm(x) for x in lados]
+            ns = [F.clave(x) for x in lados]
             cand = idx.get(frozenset(ns)) or []
             if not cand:
                 continue
-            vns, v = cand[-1]
+            _c, vns, v = min(cand, key=lambda c: c[0])
             votos = []
             for jid, x in sorted((v.get('v') or {}).items()):
-                k = vns[0] if x == 'a' else vns[1] if x == 'b' and len(vns) > 1 else _norm(x)
+                k = vns[0] if x == 'a' else vns[1] if x == 'b' and len(vns) > 1 else F.clave(x)
                 if k in ns:
                     votos.append([F.por_id.get(str(jid)) or F.jnombre.get(str(jid)) or 'jurado', ns.index(k)])
             if votos:
@@ -338,7 +363,7 @@ def _self_check():
              ['Hirex', '', '', '', '77', '', '', 'Hirex'], ['Bea', '', '', '', '55', '', '', 'Bea'], ['Juez Dos', '', '', '', '88', '', '', 'Juez Dos'],
              ['Nadie', '', '', '', '', '', '', 'Nadie']]
     F = Fuentes(llaves={'9': L}, anuncios={'anuncios': [an], 'inscripciones': ins}, jurados=J, lista=lista, cuentas={},
-                nombres_llaves={'500': {'anuncio': '400'}})
+                nombres_llaves={'500': {'anuncio': '400'}}, clave=_norm)
     g = armar(F)['9']
     es = {x['t']: (x.get('es'), x.get('por')) for x in g['ins']}
     ok(g['an'] == '400' and g['staff']['host'] == [{'n': 'Hirex'}] and g['staff']['org'] == [{'n': 'DRAKO'}],
@@ -353,7 +378,7 @@ def _self_check():
             {'servidor': 'FFA', 'texto': 'Otra', 'discord_id': '55', 'msg_id': 'z2', 'cuando': '2026-11-01T16:00:00'},
             {'servidor': 'FFA', 'texto': 'Otra2', 'discord_id': '55', 'msg_id': 'z3', 'cuando': '2026-11-01T16:01:00'}]
     F3 = Fuentes(llaves={'9': L3}, anuncios={'anuncios': [an], 'inscripciones': ins3}, jurados={}, lista=lista, cuentas={},
-                 nombres_llaves={'500': {'anuncio': '400'}})
+                 nombres_llaves={'500': {'anuncio': '400'}}, clave=_norm)
     es3 = {x['t']: (x.get('es'), x.get('por')) for x in armar(F3)['9']['ins']}
     ok(es3.get('Beatriz La Grande') == ('Bea', 'cuenta'),
        'segunda vuelta: la cuenta de Bea anota a varios, pero Bea jugó y no tiene otra inscripción acá: «Beatriz La Grande» es ella')
@@ -362,10 +387,18 @@ def _self_check():
     ok(g.get('jur') == [{'r': 'Final', 'l': ['Oasis', 'Tam'], 'v': [['Juez Dos', 1], ['Juez Uno', 0]]}],
        'el jurado: quién votó a quién en la final (el de la Lista por su cuenta, si no el nombre de #veredictos)  %s' % g.get('jur'))
     F2 = Fuentes(llaves={'9': L}, anuncios={'anuncios': [], 'inscripciones': []}, jurados={}, lista=lista, cuentas={},
-                 nombres_llaves={})
+                 nombres_llaves={}, clave=_norm)
     g2 = armar(F2, {'9': g})['9']
     ok(g2.get('ins') == g['ins'] and g2.get('staff') == g['staff'] and g2.get('jur') == g['jur'],
        'con el canal vaciado y el anuncio olvidado, lo guardado queda')
+    # 🪪 el voto se escribe como se juega y la llave guarda a la persona (FFA, NEW GENESIS, 17/11/2026: ver `_clave_hoy()`)
+    alias = {'kibak': 'valen', 'parkjisung': 'oasis'}
+    L4 = dict(L, rondas=[{'r': 'Final', 'b': [[['Valen', 'Oasis'], 'Valen', '']]}])
+    J4 = {'nombres': {'j1': 'Juez Uno'}, 'votos': {'v': {'a': 'KIBAK', 'b': 'PARK JI SUNG', 'pub': 1794330000000, 'v': {'j1': 'a'}}}}
+    F4 = Fuentes(llaves={'9': L4}, anuncios={'anuncios': [], 'inscripciones': []}, jurados=J4, lista=lista, cuentas={},
+                 nombres_llaves={}, clave=lambda s: alias.get(_norm(s), _norm(s)))
+    ok(armar(F4)['9'].get('jur') == [{'r': 'Final', 'l': ['Valen', 'Oasis'], 'v': [['Juez Uno', 0]]}],
+       'el voto «KIBAK 🆚 PARK JI SUNG» es de la final Valen contra Oasis: se cruza por la persona, no por cómo se escribió')
     w = para_web(g)
     _s = json.dumps(w)
     ok(not any(x in _s for x in ('"11"', '"22"', 'm1', '"77"', '400')) and w['ins'][0] == ['Park-Ji Sung 🇰🇷', 'Oasis', 'cuenta'],

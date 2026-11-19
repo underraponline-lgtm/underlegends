@@ -136,8 +136,16 @@ def _mult_nivel(nivel):
     return 1.0 + max(-NIVEL_TOPE, min(NIVEL_TOPE, (nivel - EL.INI) / NIVEL_ESCALA))
 
 
+def _clave(s):
+    """🪪 Con qué se cruza un voto con un lado de la llave: el nombre de HOY (`competencias.norm()`). En #veredictos se
+    escribe como se juega —«KIBAK», «PARK JI SUNG»— y la llave guarda a la persona —Valen, Oasis—: con el nombre tal cual
+    no cruzaba (FFA, NEW GENESIS, 17/11/2026; ver `gente_evento._clave_hoy()`, que es lo mismo)."""
+    import competencias as CO
+    return CO.norm(s)
+
+
 def indice_votos(J=None):
-    """🗳️ `{frozenset(lados normalizados): [(día ET, {lado normalizado: votos})]}` de `datos/jurados.json`."""
+    """🗳️ `{frozenset(claves de los lados): [(día ET, {clave: votos})]}` de `datos/jurados.json` (`_clave()`)."""
     import datetime as dt
     if J is None:
         try:
@@ -148,12 +156,12 @@ def indice_votos(J=None):
     out = {}
     for b in (J.get('votos') or {}).values():
         lados = b.get('lados') or [b.get('a') or '', b.get('b') or '']
-        ns = [_norm(x) for x in lados]
+        ns = [_clave(x) for x in lados]
         if len(ns) < 2 or not all(ns) or len(set(ns)) != len(ns):
             continue
         cuenta = {}
         for x in (b.get('v') or {}).values():
-            n = ns[0] if x == 'a' else ns[1] if x == 'b' else _norm(x)
+            n = ns[0] if x == 'a' else ns[1] if x == 'b' else _clave(x)
             if n in ns:
                 cuenta[n] = cuenta.get(n, 0) + 1
         try:
@@ -167,7 +175,10 @@ def indice_votos(J=None):
 
 
 def veredicto(votos, lados, dia):
-    """`{lado normalizado: votos}` de esa batalla, o `None` si no hay votos de jurado que se le puedan atribuir."""
+    """`{lado normalizado: votos}` de esa batalla, o `None` si no hay votos de jurado que se le puedan atribuir.
+
+    📅 Si la misma pareja peleó dos veces en la ventana, el voto del mismo día, después el del siguiente, después el de
+    antes; y a igual día, el último (URBF, 08 y 09/11/2026: ver `gente_evento._cercania()`)."""
     import datetime as dt
     if not votos or not dia:
         return None
@@ -175,9 +186,14 @@ def veredicto(votos, lados, dia):
         d0 = dt.date.fromisoformat(dia)
     except ValueError:
         return None
-    cand = [c for d, c in votos.get(frozenset(_norm(x) for x in lados)) or ()
+    ks = [_clave(x) for x in lados]
+    cand = [((d - d0).days, -i, c) for i, (d, c) in enumerate(votos.get(frozenset(ks)) or ())
             if -VOTO_ANTES <= (d - d0).days <= VOTO_DESPUES]
-    return cand[-1] if cand else None
+    if not cand:
+        return None
+    c = min(cand, key=lambda t: (abs(t[0]), t[0] < 0, t[1]))[2]
+    # con el nombre de la llave, que es el que preguntan `nota_evento()` y los demás
+    return {_norm(x): c.get(k, 0) for x, k in zip(lados, ks)}
 
 
 def nota_evento(ev, fuerza=None, votos=None):
@@ -370,6 +386,17 @@ def _self_check():
        'la de tres MCs cuenta como batalla, y G (con un voto) queda arriba de F (sin votos)')
     lejos = dict(ev, dia='2026-01-01')
     ok(nota_evento(lejos, None, vi)[0]['A']['nota'] == sin['A']['nota'], 'un voto de otra fecha no se cruza con el evento')
+    # 🪪 el voto escrito como se juega («ZORRO PRUEBA») y la llave con la persona («Lobo Prueba»): `_clave()`. El alias se
+    # siembra en el caché de `competencias.de_hoy()`, así la prueba no depende de `datos/akas.json`
+    import competencias as CO
+    CO._REAL.update({'ZORRO PRUEBA': 'Lobo Prueba', 'Lobo Prueba': 'Lobo Prueba'})
+    otro = (dt.datetime.fromtimestamp(1792900000, dt.timezone.utc) + dt.timedelta(days=1)).timestamp() * 1000
+    J2 = {'votos': {'1': {'a': 'ZORRO PRUEBA', 'b': 'H', 'pub': 1792900000000, 'v': {'j1': 'a', 'j2': 'a', 'j3': 'a'}},
+                    '2': {'a': 'H', 'b': 'Lobo Prueba', 'pub': int(otro), 'v': {'j1': 'a', 'j2': 'a', 'j3': 'a'}}}}
+    ev2 = {'dia': dia, 'tabla': [], 'rondas': [{'r': 'Final', 'b': [[['Lobo Prueba', 'H'], 'Lobo Prueba', '']]}]}
+    n2 = nota_evento(ev2, None, indice_votos(J2))[0]
+    ok(any('unánime' in r for r, _d in n2['Lobo Prueba']['por']),
+       'el voto a «ZORRO PRUEBA» es de Lobo Prueba, y de los dos votos de la pareja vale el del día del evento, no el del siguiente')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
