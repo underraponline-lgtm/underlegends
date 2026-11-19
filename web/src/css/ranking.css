@@ -367,3 +367,149 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
 /* 🏟️ «Servidores» (17/11/2026): el servidor de cada uno, con su logo */
 .rk-svc{display:inline-flex;align-items:center;gap:6px;color:inherit;text-decoration:none;font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;white-space:nowrap}
 .rk-svc img{width:20px;height:20px;border-radius:3px;object-fit:cover;flex:none}
+
+/* ── 🏁 EL REMAKE A (Dlx, 18/11/2026, «A + piezas de B»): LA ESTRUCTURA DE LA LLAVE 6.73 ─────────────────────────────
+   La escena lleva la franja de cuatro números, el podio en su caja con una pieza abajo y la columna de al lado; el papel
+   (la sección de abajo) es la tabla con pestañas. Las piezas, en ranking_a.jsx (clases `rka-`). ⚠️ Los colores salen
+   de los tokens del tema (`--escenario`, `--esc-tinta`… arriba; `--fondo`, `--caja`, `--tinta`… abajo): con los colores
+   de un servidor puestos, el ranking los toma. El crema de la maqueta era el tema de Cypherhood, no un color propio */
+.rka{--rka-caja:color-mix(in srgb,var(--esc-tinta) 6%,var(--escenario));--rka-suave:color-mix(in srgb,var(--esc-tinta) 13%,var(--escenario))}
+.rk-cab.rka,.app .rk-cab.rka{grid-template-areas:none;grid-template-columns:minmax(0,1fr);gap:18px;align-items:start}
+.rk-cab.rka > *{grid-area:auto}
+/* la franja: cuatro números separados por una raya, cada uno con su porqué */
+.rka-franja{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));margin:0;background:var(--rka-caja)}
+.rka-kpi{display:grid;gap:4px;align-content:start;padding:14px 16px;min-width:0}
+.rka-kpi + .rka-kpi{border-left:1px solid var(--esc-linea)}
+.rka-kpi dt{font:600 12.5px/1.2 Archivo,sans-serif;color:var(--esc-gris)}
+.rka-kpi dd{margin:0}
+.rka-v{display:flex;align-items:center;gap:8px;min-width:0;font:800 21px/1.05 Archivo,sans-serif;color:var(--esc-tinta)}
+.rka-v > span:not(.cara):not(.rg){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rka-v em{font-style:normal;font-weight:700;font-size:15px;color:var(--esc-gris);white-space:nowrap}
+.rka-c{font:500 12px/1.35 Archivo,sans-serif;color:var(--esc-gris)}
+.rka-c b{color:var(--esc-tinta);font-weight:600}
+.rka-kc{width:26px;height:26px;font-size:12px}
+/* las dos columnas: el podio (y su pieza) y la de al lado */
+.rka-dos{display:grid;gap:18px;align-items:start}
+.rka-izq,.rka-rail{display:grid;gap:18px;min-width:0;align-content:start}
+.rka-caja{background:var(--rka-caja);padding:16px;min-width:0}
+.rka-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 12px;font:800 13px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--esc-tinta)}
+.rka-h small{font:600 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--esc-gris);text-transform:uppercase;text-align:right}
+/* el podio como la final de la llave: el 1 en la pieza blanca con la sombra corrida verde; el 2 y el 3, apagados */
+.rka .rk-podio{gap:14px}
+.rka .rk-p.p1 .rk-ped{background:var(--esc-tinta);color:var(--escenario);box-shadow:6px 6px 0 #29B298}
+.rka .rk-p.p2 .rk-ped,.rka .rk-p.p3 .rk-ped{background:var(--rka-suave);color:var(--esc-tinta)}
+.rka-pod{padding-bottom:22px}
+/* tu lugar, en su caja (la tira de antes, sin su fondo propio) */
+.rka-tu .rk-tu,.app .rka-tu .rk-tu{max-width:none;padding:0;background:none;border-radius:0;grid-template-columns:minmax(0,1fr)}
+.app .rka-tu .rk-tu .rk-tu-l,.app .rka-tu .rk-tu .rk-tu-chips,.app .rka-tu .rk-tu .rk-tu-btn{grid-column:auto;grid-row:auto}
+.app .rka-tu .rk-tu .rk-tu-btn{justify-self:start}
+.rka-tu .rk-tu.invita{grid-template-columns:minmax(0,1fr)}
+/* la pelea más cerrada */
+.rka-pelea{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center;text-align:center}
+.rka-lado{display:grid;justify-items:center;gap:6px;min-width:0;color:inherit;text-decoration:none}
+.rka-lado b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.rka-lado small{color:var(--esc-gris);font:500 12.5px/1.2 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.rka-pc{width:56px;height:56px;font-size:22px}
+.rka-vs{font:900 16px/1 Archivo,sans-serif;color:var(--esc-gris)}
+.rka-pie{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--esc-linea);color:var(--esc-gris);font:500 13px/1.4 Archivo,sans-serif;text-align:center}
+.rka-pie b{color:var(--esc-tinta)}
+/* el camino: los que se movieron y los que están a un paso de la letra */
+.rka-camino{list-style:none;margin:0;padding:0;display:grid}
+.rka-paso{position:relative;display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:10px;align-items:center;padding-bottom:11px}
+.rka-paso:last-child{padding-bottom:0}
+.rka-paso:before{content:"";position:absolute;left:6px;top:50%;bottom:-50%;width:2px;background:var(--esc-linea)}
+.rka-paso:last-child:before{display:none}
+.rka-paso > i{position:relative;width:14px;height:14px;border-radius:50%;background:var(--esc-linea)}
+.rka-paso.up > i{background:#29B298}
+.rka-paso.dn > i{background:#E41373}
+.rka-x{display:flex;align-items:center;gap:8px;min-width:0;color:inherit;text-decoration:none}
+.rka-x b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.2 Archivo,sans-serif}
+.rka-x small{display:inline-flex;align-items:center;gap:3px;white-space:nowrap;color:var(--esc-gris);font:500 12px/1 Archivo,sans-serif}
+.rka-mc{width:26px;height:26px;font-size:12px}
+.rka-mv,.rka-falta{font:800 12.5px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rka-mv.up{color:#3CCB9A}
+.rka-mv.dn{color:#FF6B95}
+.rka-mv.up:before{content:"▲ ";font-size:9px}
+.rka-mv.dn:before{content:"▼ ";font-size:9px}
+.rka-paso.tuyo .rka-x b{color:#FF4FA3}
+.rka-rgs .rk-rg{min-width:24px;height:18px;font-size:11px}
+/* la escalera de letras (de la B): la gente parada en su letra, la primera con gente en la pieza blanca */
+.rka-escl{list-style:none;margin:0;padding:0;display:grid}
+.rka-esl{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:12px;align-items:center;min-height:44px;padding:7px 10px;border-top:1px solid var(--esc-linea)}
+.rka-esl:first-child{border-top:0}
+.rka-val{display:grid;gap:4px;justify-items:start}
+.rka-val small{font:600 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
+.rka-gente{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;min-width:0}
+.rka-gente a{display:inline-flex;align-items:center;gap:6px;color:inherit;text-decoration:none;white-space:nowrap;font:700 13px/1.1 Archivo,sans-serif}
+.rka-gente em{font-style:normal;color:var(--esc-gris);font:600 12.5px/1 Archivo,sans-serif}
+.rka-ec{width:24px;height:24px;font-size:11px}
+.rka-cnt{white-space:nowrap;color:var(--esc-gris);font:600 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.rka-esl.top{margin-bottom:8px;border-top:0;background:var(--esc-tinta);color:var(--escenario);box-shadow:6px 6px 0 #29B298}
+.rka-esl.top + .rka-esl{border-top:0}
+.rka-esl.top .rka-val small,.rka-esl.top .rka-cnt,.rka-esl.top .rka-gente em{color:color-mix(in srgb,var(--escenario) 72%,var(--esc-tinta))}
+.rka-esl.tuyo{outline:2px solid #FF4FA3;outline-offset:-2px}
+.rka-esl.tuyo .rka-cnt,.rka-gente a.tuyo{color:#FF4FA3}
+.rka-esl.top.tuyo .rka-cnt,.rka-esl.top .rka-gente a.tuyo{color:#B40F5A}
+@media (min-width: 900px){
+  .rka-dos{grid-template-columns:minmax(0,1fr) 360px}
+}
+@media (max-width: 899px){
+  .rka-franja{grid-template-columns:1fr 1fr}
+  .rka-kpi{padding:12px}
+  .rka-kpi:nth-child(odd){border-left:0}
+  .rka-kpi:nth-child(n+3){border-top:1px solid var(--esc-linea)}
+  .rka-v{flex-wrap:wrap;gap:2px 8px;font-size:17px}
+  .rka-v > span:not(.cara):not(.rg){white-space:normal}
+  .rka-esl{grid-template-columns:58px minmax(0,1fr) auto;gap:10px;padding:7px 8px}
+  .rka-gente{gap:4px 10px}
+  .rka-gente a{font-size:12.5px}
+}
+
+/* ── el papel: pestañas, filas como renglones de registro y la Clausura como etiqueta ── */
+.rka-pes{display:flex;gap:24px;margin:0 0 16px;border-bottom:1px solid var(--suave);overflow-x:auto;scrollbar-width:none}
+.rka-pes::-webkit-scrollbar{display:none}
+.rka-pes button{position:relative;flex:none;padding:6px 0 12px;border:0;background:none;color:var(--gris);font:800 15px/1 Archivo,sans-serif;cursor:pointer}
+.rka-pes button small{margin-left:5px;font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.rka-pes button.on{color:var(--tinta)}
+.rka-pes button.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--tinta)}
+@media (hover: hover) and (pointer: fine){.rka-pes button:hover{color:var(--tinta)}}
+.rka-papel .rk-tw{border-top:0}
+.rka-papel .rk-t{border-collapse:separate;border-spacing:0 3px}
+.rka-papel .rk-t td{border-bottom:0;background:var(--caja)}
+.rka-papel .rk-t tbody tr:not(.yo):not(.rk-corte):not(.rk-det):hover td,.rka-papel .rk-t tr.abierta:not(.yo) td{background:var(--suave)}
+.rka-papel .rk-t tr.rk-corte td{background:none}
+/* la línea de corte: una etiqueta sobre una raya cortada que cruza todo el ancho */
+.rka-papel .rk-corte td,.rka-papel .rk-fila-corte{position:relative}
+.rka-papel .rk-corte td:after,.rka-papel .rk-fila-corte:after{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px dashed var(--tinta);opacity:.45}
+.rka-papel .rk-corte a,.rka-papel .rk-fila-corte a{position:relative;z-index:1;display:inline-flex;align-items:center;gap:6px;margin:8px 0;padding:6px 9px;border:0;
+  background:var(--inv);color:var(--inv-tinta);font:900 11.5px/1.2 Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+.rka-papel .rk-corte.directo a{background:var(--magenta);color:#FFFFFF}
+/* el celular: los renglones con su fondo, separados */
+.rka-papel .rk-fila{border-top:0;margin-bottom:3px;padding-left:8px;padding-right:8px;background:var(--caja)}
+.rka-papel .rk-fila.yo{margin:0 0 3px;background:var(--rk-yo)}
+.rka-papel .rk-fila.abierta:not(.yo){background:var(--suave)}
+/* «Esta semana»: la fila es la barra */
+.rka-nota{margin:0 0 10px;color:var(--gris);font:500 13px/1.4 Archivo,sans-serif}
+.rka-bl{list-style:none;margin:0;padding:0;display:grid;gap:3px}
+.rka-blf{position:relative;display:grid;grid-template-columns:34px 28px minmax(0,1fr) auto;gap:10px;align-items:center;min-height:44px;padding:0 10px;background:var(--caja)}
+.rka-blf > *{position:relative}
+.rka-blf > .rka-fill{position:absolute;inset:0 auto 0 0;background:var(--suave)}
+.rka-blf a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta);text-decoration:none;font:800 14px/1.1 Archivo,sans-serif}
+.rka-blf b{font:800 14px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.rka-bp{font:900 15px/1 Archivo,sans-serif}
+.rka-bc{width:28px;height:28px;font-size:12px}
+.rka-blf.tuyo{outline:2px solid var(--magenta);outline-offset:-2px}
+.rka-salto{text-align:center;color:var(--gris)}
+/* «Por servidor»: una hojita por servidor con sus tres primeros */
+.rka-hojas{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.rka-hj{display:grid;gap:8px;align-content:start;padding:12px;background:var(--caja)}
+.rka-hj-c{display:flex;align-items:center;gap:8px;color:var(--tinta);text-decoration:none;font:800 13px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.rka-hj-c img{width:22px;height:22px;border-radius:50%;object-fit:cover;flex:none}
+.rka-hj-c small{margin-left:auto;color:var(--gris);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:none}
+.rka-hj ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.rka-hj li{display:grid;grid-template-columns:34px 24px minmax(0,1fr) auto;gap:8px;align-items:center;font:500 13px/1.2 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.rka-hj li span{color:var(--gris);font:900 13px/1 Archivo,sans-serif}
+.rka-hj li a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta);text-decoration:none;font-weight:700}
+.rka-hj li b{font-weight:800}
+.rka-hc{width:24px;height:24px;font-size:11px}
+.rka-hj li.tuyo a{color:var(--magenta-tx)}

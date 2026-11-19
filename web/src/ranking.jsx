@@ -33,6 +33,7 @@ import { SelloPremium, esPremium } from './sello.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Porque, useMira } from './porque.jsx';
 import { conCrewsVivas, useCrews } from './crews.js';
+import { AUnPaso, EscaleraLetras, EstaSemana, Franja, Movidos, Pelea, PorServidor, franjaDe, peleaDe } from './ranking_a.jsx';
 import CSS_PAGINA from './css/ranking.css?inline';
 import { usarCss } from './css.js';
 
@@ -387,7 +388,10 @@ const mwDe = (c, k) => ((c.liga.d.mw && c.liga.d.mw.caz) || []).find((m) => m.k 
 const SEMANA = ['Esta semana', 0, 0, (v) => (v ? '+' + num(v) : '0')];
 const NUMEROS = {
   temporada: {
-    det: (t) => [['OVR', t.ovr || '—'], ['Puntos', num(t.pts)], ['Eventos', t.ev || 0], ['Podios', t.pod || 0], t.wr ? ['Win%', wrDe(t) + '%'] : null],
+    // 🏁 y acá abajo lo que salió de la tabla (18/11/2026): Most Wanted, Misiones y Writing, sólo si hay algo
+    det: (t) => [['OVR', t.ovr || '—'], ['Puntos', num(t.pts)], ['Eventos', t.ev || 0], ['Podios', t.pod || 0], t.wr ? ['Win%', wrDe(t) + '%'] : null,
+      t.caz ? ['Cazó', t.caz] : null, t.czd ? ['Cazado', t.czd] : null, t.sob ? ['Sobrevivió', t.sob] : null,
+      t.mis ? ['Misiones', num(t.mis)] : null, t.wch ? ['Writing', num(t.wch)] : null],
     vs: (a, b, c) => [['OVR', a.ovr || 0, b.ovr || 0, String], ['Puntos', a.pts || 0, b.pts || 0, num], [SEMANA[0], c.sem(a), c.sem(b), SEMANA[3]],
       ['Eventos', a.ev || 0, b.ev || 0, String], ['Win%', wrDe(a), wrDe(b), (v) => v + '%'], ['Racha', (a.rch || [0])[0], (b.rch || [0])[0], String]],
   },
@@ -448,7 +452,9 @@ const SUBS = {
   temporada: {
     et: 'Temporada', filas: (L) => L.d.tabla || [], orden: 'pos',
     // 🔑 LAS COLUMNAS DEL RANKING OFICIAL (Dlx, 25/09/2026: racha, último evento, cazó, cazado, sobrevivió y misiones)
-    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ten', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis', 'wch'], movil: ['pos', 'n', 'ovr', 'pts'],
+    // 🏁 DE 12 COLUMNAS A 9 (Dlx, 18/11/2026, el remake A): Cazó, Cazado, Sobrevivió, Misiones y Writing se mudaron a
+    // la fila abierta (`NUMEROS.temporada.det`): se mueven, no se sacan
+    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ten', 'ev', 'racha', 'ult'], movil: ['pos', 'n', 'ovr', 'pts'],
     baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes. <b>Esta semana</b>: lo que sumó desde el lunes, y en barritas cada semana de la temporada.</>,
     // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
     // lo dice»). El escalón lleva sólo el número
@@ -1177,6 +1183,8 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [perf, setPerf] = useState(() => (typeof window !== 'undefined' && window.PERF) || null);
   const [ver, setVer] = useState(VER);
   const [todas, setTodas] = useState(false);
+  // 🏁 la pestaña del papel de la Temporada: «La tabla», «Esta semana» o «Por servidor» (el remake A, 18/11/2026)
+  const [pap, setPap] = useState('tabla');
   const [irA, setIrA] = useState(null);
   const [yoVisible, setYoVisible] = useState(false);
   const [tiraVisible, setTiraVisible] = useState(false);
@@ -1229,7 +1237,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // al cambiar de ranking: orden, búsqueda y «ver más» vuelven a cero (los filtros de servidor y país se quedan:
   // quien mira «sólo FFA» quiere seguir viendo FFA en Duelos)
-  useEffect(() => { setOrden(null); setVer(VER); setTodas(false); setAbierta(null); setModo(0); }, [sub]);
+  useEffect(() => { setOrden(null); setVer(VER); setTodas(false); setAbierta(null); setModo(0); setPap('tabla'); }, [sub]);
   // al cambiar de vista, el orden vuelve al de esa vista
   useEffect(() => { setOrden(null); setVer(VER); setAbierta(null); }, [modo]);
   // el historial de cada uno (`/api/perfiles`), la primera vez que se abre una fila: lo pide app.js y lo guarda
@@ -1270,6 +1278,12 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // el podio: los tres primeros con número (la Temporada, por su puesto oficial)
   const top = cfg.porSv ? (sv ? base.filter((f) => f.sv === sv).slice(0, 3) : []) : base.filter((f) => numero(cfg, f)).slice(0, 3);
+  // 🏁 EL REMAKE A (Dlx, 18/11/2026, «A + piezas de B»): la Temporada y el Competitivo llevan la franja de cuatro números,
+  // el podio en su caja con una pieza abajo (la pelea más cerrada / la escalera de letras) y la columna de al lado (tu
+  // lugar y «Se movieron» / «A un paso de la letra»). Los demás rankings siguen como estaban hasta la tanda 2
+  const dosCols = !pronto && !cfg.propia && base.length > 0 && (sub === 'temporada' || sub === 'competitivo');
+  const franja = dosCols ? franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide: req(liga, 'competitivo') }) : null;
+  const pel = dosCols ? peleaDe({ cfg, base, numero }) : null;
   // las flechas de arriba: el ranking de al lado en la tira, salteando los que todavía no existen (Misiones, Ligas) o
   // no tienen con qué (Most Wanted sin buscados); al final vuelve al principio
   const vivos = RANKINGS.filter((id) => !SUBS[id].pronto && !(SUBS[id].hay && !SUBS[id].hay(liga)));
@@ -1438,6 +1452,16 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const hace = liga.d.sello ? liga.cuando(liga.d.sello) : '';
   const que = cfg.que || ['rapero', 'raperos'];
   const fcs = base.filter((f) => f.fc).length;
+  // 🏁 las pestañas del papel de la Temporada (el remake A, 18/11/2026)
+  const pesPap = (
+    <div className="rka-pes" role="tablist" aria-label="Qué ver de la Temporada">
+      {[['tabla', 'La tabla', base.length], ['semana', 'Esta semana', 0], ['sv', 'Por servidor', 0]].map(([id, t, n]) => (
+        <button key={id} type="button" role="tab" aria-selected={pap === id} className={pap === id ? 'on' : ''} onClick={() => setPap(id)}>
+          {t}{n ? <small>{n}</small> : null}
+        </button>
+      ))}
+    </div>
+  );
   const vacioTxt = cfg.vacio ? cfg.vacio(liga)
     : !(liga.d.tabla || []).length ? <>La temporada recién arranca: el ranking se llena con el primer evento. Los próximos están en el <a className="te-link" href="#/eventos">calendario</a>.</>
       : 'Todavía no hay nadie en este ranking.';
@@ -1468,7 +1492,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           <a className="mo-fl izq rk-flecha" href={'#/ranking/' + antes} aria-label={'Ranking anterior: ' + subDe(liga, antes).et} title={subDe(liga, antes).et}><Chevron /></a>
           <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + subDe(liga, despues).et} title={subDe(liga, despues).et}><Chevron /></a>
         </> : null}
-        <section className="rk-cab" id="rk-cab" ref={deslizaRk}>
+        <section className={'rk-cab' + (dosCols ? ' rka' : '')} id="rk-cab" ref={deslizaRk}>
           <div className="rk-tx">
             <span className="tag">RANKING · {liga.temp}</span>
             <h1 className="hero-ev largo">{cfg.et}</h1>
@@ -1476,20 +1500,61 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             {!pronto && (estado || hace) ? <p className="rk-meta">{estado}{estado && hace ? <br /> : null}{hace ? 'Actualizado ' + hace : ''}</p> : null}
             {!pronto && base.length ? <div className="hero-acc"><Compartir cls="btn borde chico" url={enlace('#/ranking/' + sub)} texto={'El ranking de ' + cfg.et + ' de la Liga Global'} etiqueta="Compartir el ranking" /></div> : null}
           </div>
-          {top.length ? <Podio liga={liga} cfg={cfg} top={top} sem={sub === 'temporada' ? sem : null} /> : null}
-          {!pronto && base.length ? <TuTira x={x} cfg={cfg} sub={sub} base={base} iYo={iYo} lugar={lugar} yo={yo} dc={dc} encontrarme={encontrarme} tira={tira} miraEst={miraEst} /> : null}
+          {dosCols ? (
+            <>
+              <Franja items={franja} />
+              <div className="rka-dos">
+                <div className="rka-izq">
+                  {top.length ? (
+                    <div className="rka-caja rka-pod">
+                      <h2 className="rka-h">El podio<small>{sub === 'competitivo' ? 'por Score' : 'por OVR'}</small></h2>
+                      <Podio liga={liga} cfg={cfg} top={top} sem={sub === 'temporada' ? sem : null} />
+                    </div>
+                  ) : null}
+                  {sub === 'temporada' && pel ? (
+                    <Pelea liga={liga} p={pel} va={'#' + numero(cfg, pel.a) + ' · ' + num(pel.a.pts) + ' pts'} vb={'#' + numero(cfg, pel.b) + ' · ' + num(pel.b.pts) + ' pts'}
+                      pie={pel.d ? <>Separados por <b>{pel.d} de OVR</b>.</> : <>Los dos con <b>{pel.a.ovr} de OVR</b>; los separan <b>{num(pel.d2)} pts</b>.</>} />
+                  ) : null}
+                </div>
+                <div className="rka-rail">
+                  <div className="rka-caja rka-tu">
+                    <TuTira x={x} cfg={cfg} sub={sub} base={base} iYo={iYo} lugar={lugar} yo={yo} dc={dc} encontrarme={encontrarme} tira={tira} miraEst={miraEst} />
+                  </div>
+                  {sub === 'temporada' ? <Movidos liga={liga} base={base} yoK={x.yoK} /> : null}
+                  {sub === 'competitivo' ? <AUnPaso liga={liga} base={base} yoK={x.yoK} /> : null}
+                  {sub === 'competitivo' && pel ? (
+                    <Pelea liga={liga} p={pel} va={'#' + numero(cfg, pel.a) + ' · ' + coma(pel.a.sc, pel.d < 0.1 ? 2 : 1)} vb={'#' + numero(cfg, pel.b) + ' · ' + coma(pel.b.sc, pel.d < 0.1 ? 2 : 1)}
+                      pie={pel.d >= 0.005 ? <>Separados por <b>{coma(pel.d, pel.d < 0.1 ? 2 : 1)} de Score</b>: el próximo evento decide quién queda arriba.</> : <><b>Empatados</b> en el Score: el próximo evento los separa.</>} />
+                  ) : null}
+                </div>
+              </div>
+              {/* la escalera de letras, a lo ancho: adentro de la columna del podio dejaba la de al lado vacía */}
+              {sub === 'competitivo' ? <EscaleraLetras liga={liga} base={base} yoK={x.yoK} movil={movil} /> : null}
+            </>
+          ) : (
+            <>
+              {top.length ? <Podio liga={liga} cfg={cfg} top={top} sem={sub === 'temporada' ? sem : null} /> : null}
+              {!pronto && base.length ? <TuTira x={x} cfg={cfg} sub={sub} base={base} iYo={iYo} lugar={lugar} yo={yo} dc={dc} encontrarme={encontrarme} tira={tira} miraEst={miraEst} /> : null}
+            </>
+          )}
         </section>
       </div>
       {/* 🎯 los buscados de esta semana, arriba de quién cazó a quién (vivían en el Inicio hasta el 13/10/2026) */}
       {sub === 'mw' ? <SeBusca liga={liga} aca /> : null}
       {sub === 'competitivo' ? <Subieron liga={liga} /> : null}
-      <section data-tuto="rk-tabla" className="sec rk-sec" id="rk-tabla">
+      <section data-tuto="rk-tabla" className={'sec rk-sec' + (dosCols ? ' rka-papel' : '')} id="rk-tabla">
         {pronto ? (
           <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>
             {cfg.ejemplos ? <ul className="rk-ej" aria-label="Por ejemplo">{cfg.ejemplos.map(([ic, t]) => <li key={t}><Ico n={ic} t={22} /><b>{t}</b><small>suma a tu Temporada</small></li>)}</ul> : null}
           </div>
-        ) : cfg.propia ? <cfg.propia liga={liga} ver={abre} /> : (
+        ) : cfg.propia ? <cfg.propia liga={liga} ver={abre} /> : sub === 'temporada' && base.length && pap !== 'tabla' ? (
           <>
+            {pesPap}
+            {pap === 'semana' ? <EstaSemana liga={liga} base={base} sem={sem} yoK={x.yoK} /> : <PorServidor liga={liga} base={base} numero={numero} cfg={cfg} yoK={x.yoK} />}
+          </>
+        ) : (
+          <>
+            {sub === 'temporada' && base.length ? pesPap : null}
             {/* con el ranking vacío (el día que arranca la temporada) no hay qué buscar ni qué filtrar */}
             {base.length ? <div className="rk-fil">
               {/* ⚡ las dos vistas de Actividad, en su propia fila: adentro de la del buscador se pisaban */}
@@ -1612,13 +1677,16 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             ) : null}
             {fcs ? (
               <p className="rk-nota">En el <b>#</b>, <b>—</b> es <b>fuera de concurso</b>: todavía no es miembro de la Liga (tiene que estar en Discord Rap Español y verificarse). Sus puntos cuentan igual; el número es de los miembros.
-                {sub === 'temporada' ? (mwOn && liga.d.mis ? '' : mwOn ? ' Misiones arranca el lunes: hasta entonces su columna va en —.' : liga.d.mis ? ' Most Wanted arranca pronto: hasta entonces su columna va en —.' : ' Most Wanted y Misiones arrancan pronto: hasta entonces sus columnas van en —.') : ''}</p>
+                {/* 🏁 Most Wanted y Misiones ya no son columnas (18/11/2026): están en la fila abierta, y sólo si hay algo */}
+                {sub === 'temporada' ? ' Most Wanted, Misiones y Writing, al abrir cada fila.' : ''}</p>
             ) : null}
           </>
         )}
       </section>
+      {/* 🏁 la tira a la vista la esconde SIEMPRE (18/11/2026): con la caja «Tu lugar» del remake A, quien está fuera de
+          las 200 filas (`ir` en falso) veía las dos a la vez, con lo mismo */}
       {lugar ? (
-        <aside className={'rk-lugar' + (lugar.ir && (yoVisible || tiraVisible) ? ' oculto' : '')} style={{ '--rk-tb': tb + 'px' }} aria-label="Tu lugar">
+        <aside className={'rk-lugar' + (tiraVisible || (lugar.ir && yoVisible) ? ' oculto' : '')} style={{ '--rk-tb': tb + 'px' }} aria-label="Tu lugar">
           {lugar.cara}
           <span className="rk-ln"><Num n={lugar.n} /></span>
           <span className="rk-lt"><small>{lugar.quien}{lugar.mov ? <> · <Mov mv={lugar.mov} largo /></> : null}</small><b>{lugar.txt}</b></span>

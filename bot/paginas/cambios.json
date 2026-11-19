@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "6.74",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T00:03:00-05:00",
+        "titulo": "El Ranking, rehecho como la página de cada llave",
+        "items": [
+            "**El Ranking, rehecho como la página de cada llave**: arriba, cuatro números con su porqué. En la Temporada, el corte de la Clausura, lo más sumado esta semana, la distancia del #1 al #2 y la racha viva más larga; en el Competitivo, el corte de la Superliga, quién va directo, el rango más alto y cuántos tienen rango.",
+            "**El podio en su caja y tu lugar al costado**, con quién se movió desde el lunes (Temporada) o quién está a un paso de la letra siguiente (Competitivo).",
+            "**La pelea más cerrada**: los dos más pegados de arriba de la tabla. Y en el Competitivo, **la escalera de letras**: cada uno parado en su letra, de la SSS a la E.",
+            "**La Temporada, en pestañas**: la tabla, **Esta semana** (lo que sumó cada uno desde el lunes) y **Por servidor**. Cazó, Cazado, Sobrevivió, Misiones y Writing ahora están al abrir cada fila.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.73",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T22:40:00-05:00",
