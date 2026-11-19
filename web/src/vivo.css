@@ -7157,3 +7157,15 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 /* Ranking y Pase están en la barra: en el ☰ sólo donde la barra no se ve */
 @media (max-width: 899.98px){.x-teja.en-barra{display:none}}
 @media (min-width: 600px){.x-menu.tejas .x-caja{width:min(560px,100%)} .x-tejas{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* 🎟️ el punto del Pase (subiste de nivel desde que lo abriste) y 🐉 el de tu cara (un Dragón Drop para abrir): verde, lo que
+   te espera. La cara late tres veces cuando llega uno y, mantenida apretada, se llena de abajo hacia arriba (abajo.jsx) */
+.tabbar.e .tb-pv{position:absolute;top:6px;right:calc(50% - 17px);width:8px;height:8px;background:#29B298;border-radius:1px}
+.tabbar.e .tb-yo-c{position:relative;display:grid;place-items:center}
+.tabbar.e .tb-yo-c .tb-pv{top:-3px;right:-5px;box-shadow:0 0 0 2px #030304}
+.noche .tabbar.e .tb-yo-c .tb-pv{box-shadow:0 0 0 2px #111114}
+.tabbar.e .tb-yo-c::after{content:"";position:absolute;inset:0;border-radius:50%;background:#29B298;transform:scaleY(0);transform-origin:50% 100%;
+  pointer-events:none;transition:transform .15s ease-out}
+.tabbar.e .tb-yo.llena .tb-yo-c::after{transform:scaleY(1);transition:transform .45s linear}
+@media (prefers-reduced-motion: no-preference){ .tabbar.e .tb-yo.late .tb-yo-c{animation:tb-late .4s ease-in-out 3} }
+@keyframes tb-late{50%{transform:scale(1.14)}}
+@media (prefers-reduced-motion: reduce){ .tabbar.e .tb-yo-c::after{transition:none} }

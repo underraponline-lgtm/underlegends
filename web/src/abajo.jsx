@@ -10,6 +10,8 @@ import { Buscar, CaraDc, CaraH, CrewCirculo, Orbe, QUE_ES, escenaDe, llaveEnVivo
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
 import { usePresencia } from './anima.js';
+import { useRacha } from './racha.js';
+import { abrirPrimero, useDrops } from './drops.jsx';
 import { createPortal } from 'react-dom';
 import { algoTapa, capaFija, seVe } from './tapa.js';
 import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
@@ -476,14 +478,20 @@ function useSubiste(liga, pagina) {
   return pos && visto > pos && pagina !== 'ranking' ? visto - pos : 0;
 }
 
-// ✋ mantener apretado (medio segundo): abre lo de adentro sin que el toque cuente como toque
-function useMantener(alMantener, ms = 450) {
+// ✋ mantener apretado (medio segundo): abre lo de adentro sin que el toque cuente como toque. `onIni`/`onFin` avisan
+// cuándo empieza y termina el apretón (la cara de Tú se va llenando mientras)
+function useMantener(alMantener, ms = 450, { onIni, onFin, activo = true } = {}) {
   const t = useRef(0);
   const hecho = useRef(false);
   useEffect(() => () => clearTimeout(t.current), []);
-  const fin = () => clearTimeout(t.current);
+  const fin = () => { clearTimeout(t.current); if (onFin) onFin(); };
+  if (!activo) return {};
   return {
-    onPointerDown: () => { hecho.current = false; clearTimeout(t.current); t.current = setTimeout(() => { hecho.current = true; alMantener(); }, ms); },
+    onPointerDown: () => {
+      hecho.current = false; clearTimeout(t.current);
+      if (onIni) onIni();
+      t.current = setTimeout(() => { hecho.current = true; if (onFin) onFin(); alMantener(); }, ms);
+    },
     onPointerUp: fin, onPointerLeave: fin, onPointerCancel: fin,
     onContextMenu: (e) => e.preventDefault(),
     onClickCapture: (e) => { if (hecho.current) { e.preventDefault(); e.stopPropagation(); hecho.current = false; } },
@@ -528,20 +536,42 @@ function HojaJuego({ liga, sale, onCerrar, x }) {
 // 3 lines above… combining some features of F»), Y SIMÉTRICA (el mismo día: «quisiera simetría la verdad lo máximo
 // posible… no pasa nada si lo otro no se oculta… que si deslizas haya más opciones»). La primera pantalla es la de la
 // 6.78 tal cual —Inicio, Ranking, EN JUEGO al centro, Pase y Tú, del mismo ancho, sin nada cortado— y deslizando aparecen
-// las demás. De la F: quien todavía no entró ve cinco quietas (Inicio, Ranking, EN JUEGO, la Guía y «Entrar»: la queja de
-// «es mucho» es de los nuevos, y el Pase pide cuenta); al entrar con Discord se le suma la tira, una vez, con un globo que lo
-// dice, y lo que se sumó lleva «NUEVO» hasta que lo abre. Quien ya usaba la página no ve «NUEVO»: para él nada es nuevo.
-// El ☰ de cuadrados queda igual (`Menu`, abajo)
+// las demás. El ☰ de cuadrados queda igual (`Menu`, abajo).
+//
+// 🌱 Y CRECE CONTIGO, COMO EN LA F (6.80, Dlx: «que vaya creciendo mediante q tu tmb parecido a la opción F»). Quien no
+// entró ve cinco quietas (Inicio, Ranking, EN JUEGO, la Guía y «Entrar»: la queja de «es mucho» es de los nuevos, y el Pase
+// pide cuenta). Con cuenta, lo de después de la primera pantalla llega con tu NIVEL (el general, el de entrar y jugar: el
+// mismo que desbloquea los colores de los servidores en 2, 3 y 5, ver temas.js), como los modos de un juego que se abren con
+// tu rango: `NIVEL_SECC`. Cada vez que se suma algo, un globo lo dice y lleva «NUEVO» hasta que lo abres (dos semanas como
+// mucho). En tu navegador la barra nunca se achica (`lg:barra-max`), aunque una temporada nueva te baje el nivel. Todo
+// sigue en el ☰: crecer es lo que está a mano, no lo que existe
 const TIRA = [['inicio', 'Inicio', '#/'], ['ranking', 'Ranking', '#/ranking'], null, ['pase', 'Pase', '#/pase'],
   ['publicaciones', 'Publicaciones', '#/publicaciones'], ['competencias', 'Competencias', '#/competencias'], ['ligas', 'Ligas', '#/ligas'],
   ['crews', 'Crews', '#/crews'], ['tarjetas', 'Tarjetas', '#/tarjetas'], ['salon', 'Salón', '#/salon'], ['socios', 'Socios', '#/socios'],
   ['guia', 'Guía', '#/guia']];
 const NOVATO = [TIRA[0], TIRA[1], null, TIRA[11]];
-const QUIETAS = ['inicio', 'ranking', 'pase', 'guia'];
+export const NIVEL_SECC = { publicaciones: 1, guia: 1, competencias: 2, ligas: 2, crews: 3, tarjetas: 3, salon: 5, socios: 5 };
+const NOMBRE_SECC = Object.fromEntries(TIRA.filter(Boolean).map(([k, n]) => [k, n]));
 const ls = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* sin guardar: vale para esta visita */ } },
+  json(k, d) { try { const v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? d : v; } catch (e) { return d; } },
 };
+const unir = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1]);
+
+// 🎟️ tu Pase, sólo si ya llegó (lo pide el Inicio o la página del Pase): pedirlo acá sería un pedido más en cada página, y
+// pedirlo ya revisa tus Tareas en el servidor (pase.js)
+function usePaseSiHay(activo) {
+  const [P, setP] = useState(() => (typeof window !== 'undefined' ? window.PASE : null));
+  useEffect(() => {
+    if (!activo) return undefined;
+    const f = () => setP(window.PASE);
+    window.addEventListener('lg:pase', f);
+    f();
+    return () => window.removeEventListener('lg:pase', f);
+  }, [activo]);
+  return activo ? P : null;
+}
 
 export function Tabbar({ liga, dc, pagina = '' }) {
   const yo = liga && liga.yo;
@@ -556,6 +586,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const j = enJuego(liga);
   const enEv = EV_PAGS.includes(pagina);
   const btnJ = useRef(null);
+  const btnYo = useRef(null);
   const nav = useRef(null);
   const mantener = useMantener(() => {
     setYoM(false);
@@ -570,29 +601,77 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   };
   const nv = liga ? pubNuevas(liga, pagina) : 0;
 
-  // 🆕 LA F: EL DESBLOQUEO. Quien vio la barra de cinco (`lg:novato`) y ahora tiene la tira, la estrena: se anota cuándo
-  // (`lg:desbloqueo`) y lo que se sumó lleva «NUEVO» dos semanas o hasta que lo abre (`lg:secc`, las secciones que abriste)
-  const [vistas, setVistas] = useState(() => { try { return JSON.parse(ls.get('lg:secc') || '[]'); } catch (e) { return []; } });
+  // ⭐ TU NIVEL Y LO QUE TRAE: el general (`useRacha`, que la cabecera ya pide: no suma un pedido), el máximo que viste en
+  // este navegador, y las secciones que te tocan con él. Mientras tu nivel no llegó, lo de la última vez (o el 1)
+  const R = useRacha(!novato);
+  const nivelYa = R && R.nivel && R.nivel.n ? R.nivel.n : 0;
+  const maxVisto = +ls.get('lg:barra-max') || 0;
+  const nivel = Math.max(nivelYa, maxVisto, 1);
+  const lista = novato ? NOVATO : TIRA.filter((x) => !x || !NIVEL_SECC[x[0]] || nivel >= NIVEL_SECC[x[0]]);
+  const claves = lista.filter(Boolean).map((x) => x[0]);
+
+  // 🆕 LO QUE SE SUMA: lo que hoy está en la barra y la vez anterior no (`lg:barra`), con su fecha (`lg:barra-nuevas`).
+  // La primera vez en este navegador no se festeja nada: para quien ya usaba la página, nada es nuevo. Se anota recién
+  // cuando tu nivel llegó (si no, la barra de nivel 1 «sumaría» lo tuyo de siempre al llegar el nivel)
+  const [nuevas, setNuevas] = useState(() => ls.json('lg:barra-nuevas', {}));
+  const [aviso, setAviso] = useState(() => (ls.get('lg:tira-ok') ? null : { desliza: true }));
+  const firma = claves.join(',');
+  useEffect(() => {
+    if (!novato && !nivelYa) return;
+    if (!novato && nivel > maxVisto) ls.set('lg:barra-max', String(nivel));
+    const antes = ls.json('lg:barra', null);
+    ls.set('lg:barra', JSON.stringify(claves));
+    if (!Array.isArray(antes)) return;
+    const suma = claves.filter((k) => !antes.includes(k));
+    if (!suma.length) return;
+    const n = Object.assign({}, nuevas);
+    suma.forEach((k) => { n[k] = Date.now(); });
+    setNuevas(n);
+    ls.set('lg:barra-nuevas', JSON.stringify(n));
+    const deLaTira = suma.filter((k) => NIVEL_SECC[k]);
+    if (deLaTira.length) setAviso({ suma: deLaTira.map((k) => NOMBRE_SECC[k]), nivel: novato ? 0 : nivel, cuenta: antes.length <= NOVATO.length - 1 });
+  }, [firma, nivelYa, novato]); // eslint-disable-line react-hooks/exhaustive-deps
+  // las secciones que abriste (`lg:secc`): ésas ya no son nuevas
+  const [vistas, setVistas] = useState(() => ls.json('lg:secc', []));
   useEffect(() => {
     if (!pagina || vistas.includes(pagina)) return;
     const v = vistas.concat(pagina);
     setVistas(v);
     ls.set('lg:secc', JSON.stringify(v));
   }, [pagina]); // eslint-disable-line react-hooks/exhaustive-deps
-  const [desbloqueo] = useState(() => {
-    if (novato) { ls.set('lg:novato', '1'); return 0; }
-    const d = +ls.get('lg:desbloqueo') || 0;
-    if (d) return d;
-    if (ls.get('lg:novato') === '1') { const t = Date.now(); ls.set('lg:desbloqueo', String(t)); return t; }
-    return 0;
-  });
-  const estrena = !novato && desbloqueo && Date.now() - desbloqueo < 14 * 86400000;
-  const nuevo = (k) => estrena && !QUIETAS.includes(k) && !vistas.includes(k);
-  const sumadas = TIRA.filter((x) => x && !NOVATO.includes(x)).length;
+  const nuevo = (k) => !novato && nuevas[k] && Date.now() - nuevas[k] < 14 * 86400000 && !vistas.includes(k);
 
-  // 📏 SIMÉTRICA: una unidad (`--u`) = el ancho de la barra entre 5,6 —cuatro casillas, Tú y EN JUEGO de 1,6 (un poco más que el 1,45 de la 6.78, para que «EN 40 MIN» y «TE TOCA» entren a 360)—, así la
-  // primera pantalla llena justo hasta Tú y EN JUEGO cae en el centro exacto. Las de después miden lo mismo o lo que pida su
-  // nombre. Se mide la barra y no `100vw`, que en una ventana con barra de desplazamiento la corre unos píxeles
+  // 🎟️ EL PUNTO DEL PASE: subiste de nivel en el Pase desde la última vez que lo abriste (los premios llegan solos; esto
+  // dice que hay algo nuevo que ver). La primera vez se anota sin punto
+  const P = usePaseSiHay(!novato);
+  const nivelPase = P && P.miembro !== false && P.nivel ? P.nivel : 0;
+  const paseVisto = +ls.get('lg:pase-visto') || 0;
+  useEffect(() => {
+    if (!nivelPase) return;
+    if (pagina === 'pase' || !paseVisto) ls.set('lg:pase-visto', String(nivelPase));
+  }, [nivelPase, pagina]); // eslint-disable-line react-hooks/exhaustive-deps
+  const puntoPase = !!nivelPase && !!paseVisto && nivelPase > paseVisto && pagina !== 'pase';
+
+  // 🐉 EL DRAGÓN DROP EN TU CARA (la E): con uno para abrir, la cara lleva un punto y late tres veces; mantenerla apretada la
+  // va llenando de abajo hacia arriba y, al medio segundo, lo abre ahí mismo (`abrirPrimero()` de drops.jsx). Tocarla sigue
+  // abriendo lo tuyo. Los que se ganan compitiendo, sin ser Miembro de DRA, no cuentan: no se pueden abrir
+  const D = useDrops(novato ? null : dc);
+  const drops = D ? (D.cerrados || []).filter((x) => !(D.miembro === false && /merito/.test(String((x && x.origen) || '')))).length : 0;
+  const [llena, setLlena] = useState(false);
+  const mantenerYo = useMantener(() => { setYoM(false); setJm(false); abrirPrimero(btnYo.current); }, 450,
+    { activo: drops > 0, onIni: () => setLlena(true), onFin: () => setLlena(false) });
+  const [late, setLate] = useState(false);
+  const dropsAntes = useRef(0);
+  useEffect(() => {
+    if (drops > 0 && dropsAntes.current === 0) { setLate(true); const t = setTimeout(() => setLate(false), 1400); dropsAntes.current = drops; return () => clearTimeout(t); }
+    dropsAntes.current = drops;
+    return undefined;
+  }, [drops]);
+
+  // 📏 SIMÉTRICA: una unidad (`--u`) = el ancho de la barra entre 5,6 —cuatro casillas, Tú y EN JUEGO de 1,6 (un poco más
+  // que el 1,45 de la 6.78, para que «EN 40 MIN» y «TE TOCA» entren a 360)—, así la primera pantalla llena justo hasta Tú y
+  // EN JUEGO cae en el centro exacto. Las de después miden lo mismo o lo que pida su nombre. Se mide la barra y no `100vw`,
+  // que en una ventana con barra de desplazamiento la corre unos píxeles
   const tira = useRef(null);
   useLayoutEffect(() => {
     const b = nav.current;
@@ -615,15 +694,15 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     t.scrollTo({ left: Math.max(0, a.offsetLeft - (t.clientWidth - a.offsetWidth) / 2), behavior: quieto ? 'auto' : 'smooth' });
   }, [pagina, novato]);
 
-  // 💬 EL GLOBO, UNA VEZ: «Se sumaron N secciones» al estrenar la tira, o «Desliza la barra» a quien nunca la deslizó.
-  // Sale cuando nada lo tapa y la barra se ve (`algoTapa()` de tapa.js), con la tira asomándose sola, y se va a los 6 s
-  // vistos o al deslizarla (`lg:tira-ok`). Sin flecha ni línea (Dlx, 17/10)
-  const [aprende, setAprende] = useState(() => !ls.get('lg:tira-ok'));
+  // 💬 EL GLOBO: lo que se sumó a tu barra («Nivel 3: se sumaron Crews y Tarjetas»), o «Desliza la barra» a quien nunca la
+  // deslizó. Sale cuando nada lo tapa y la barra se ve (`algoTapa()` de tapa.js), con la tira asomándose sola, y se va a los
+  // 6 s vistos o al deslizarla (`lg:tira-ok`). Sin flecha ni línea (Dlx, 17/10). Si no hay nada que deslizar, no sale
   const asomando = useRef(false);
-  const aprendio = () => { setAprende(false); ls.set('lg:tira-ok', '1'); };
+  const aprendio = () => { setAviso(null); ls.set('lg:tira-ok', '1'); };
+  const hayMas = lista.length > 4;
   const mirar = () => {
     const t = tira.current;
-    if (t && !asomando.current && t.scrollLeft > 24 && aprende) aprendio();
+    if (t && !asomando.current && t.scrollLeft > 24 && aviso) aprendio();
   };
   const asomar = () => {
     let quieto = false;
@@ -631,13 +710,16 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     const t = tira.current;
     if (quieto || !t || t.scrollLeft > 0) return;
     asomando.current = true;
-    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: Math.min(140, tira.current.scrollWidth - tira.current.clientWidth), behavior: 'smooth' }); }, 400);
-    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: 0, behavior: 'smooth' }); }, 1500);
-    setTimeout(() => { asomando.current = false; }, 2400);
+    // hasta la primera que se sumó, si hay una; si no, un poco
+    const nueva = t.querySelector('.tb-nuevo');
+    const hasta = nueva ? nueva.parentElement.offsetLeft + nueva.parentElement.offsetWidth - t.clientWidth : 140;
+    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: Math.max(60, Math.min(hasta, tira.current.scrollWidth - tira.current.clientWidth)), behavior: 'smooth' }); }, 400);
+    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: 0, behavior: 'smooth' }); }, 1700);
+    setTimeout(() => { asomando.current = false; }, 2600);
   };
   const [globo, setGlobo] = useState(null);
   useEffect(() => {
-    if (novato || !aprende || (window.innerWidth || 0) >= 900) return undefined;
+    if (novato || !aviso || !hayMas || (window.innerWidth || 0) >= 900) return undefined;
     const V = { libre: 0, visto: 0, ult: 0, on: false, asomo: false };
     const iv = setInterval(() => {
       const tb = nav.current;
@@ -666,9 +748,15 @@ export function Tabbar({ liga, dc, pagina = '' }) {
       if (V.visto >= 6000) aprendio();
     }, 250);
     return () => clearInterval(iv);
-  }, [aprende, novato]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [aviso, novato, hayMas]); // eslint-disable-line react-hooks/exhaustive-deps
+  const textoGlobo = !aviso ? '' : aviso.suma
+    // cada pedazo, una frase entera: la página en inglés (`/en`) traduce por texto, y «verl» + «as» no lo encuentra
+    ? <>{aviso.nivel && !aviso.cuenta ? <b>{'Nivel ' + aviso.nivel + ':'}</b> : null}
+      {(aviso.nivel && !aviso.cuenta ? ' ' : '') + (aviso.suma.length === 1 ? (aviso.nivel && !aviso.cuenta ? 'se sumó' : 'Se sumó') : (aviso.nivel && !aviso.cuenta ? 'se sumaron' : 'Se sumaron')) + ' '}
+      <b>{unir(aviso.suma)}</b>{aviso.suma.length === 1 ? ' a tu barra. Deslízala para verla' : ' a tu barra. Deslízala para verlas'}</>
+    : 'Desliza la barra de costado: hay más secciones';
 
-  const casilla = (x, i) => {
+  const casilla = (x) => {
     if (!x) {
       const href = j.href || '#/eventos';
       const cls = 'tb-jg ' + j.tipo + (enEv && (j.tipo === 'nada' || j.tipo === 'hoy' || j.tipo === 'pronto') ? ' on' : '');
@@ -686,26 +774,31 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     const [k, n, r] = x;
     const on = k === 'inicio' ? !pagina : pagina === k;
     return (
-      <a key={k} href={r} data-tuto={'menu-' + k} onClick={subirSiEsta(r)} className={on ? 'on' : ''}>
+      <a key={k} href={r} data-tuto={'menu-' + k} onClick={subirSiEsta(r)} className={on ? 'on' : ''}
+        aria-label={k === 'pase' && puntoPase ? 'Pase: subiste al nivel ' + nivelPase : undefined}>
         <Ico n={k} t={22} /><span>{n}</span>
         {k === 'ranking' && sube ? <i className="tb-sube" aria-label={'Subiste ' + sube + (sube === 1 ? ' puesto' : ' puestos')}>+{sube}</i> : null}
+        {k === 'pase' && puntoPase ? <i className="tb-pv" aria-hidden="true" /> : null}
         {k === 'publicaciones' && nv ? <i className="tb-nuevas" aria-label={nv + ' nuevas'}>{nv}</i>
-          : nuevo(k) && i > 3 ? <i className="tb-nuevo" aria-label="Nueva para ti">NUEVO</i> : null}
+          : nuevo(k) ? <i className="tb-nuevo" aria-label="Nueva en tu barra">NUEVO</i> : null}
       </a>
     );
   };
   return (
     <nav className={'tabbar e' + (novato ? ' novato' : '')} aria-label="Secciones" ref={nav}>
-      {!novato && aprende && globo ? createPortal(
+      {!novato && aviso && hayMas && globo ? createPortal(
         <div className="tb-globo e" role="note" style={{ bottom: globo.abajo }}>
-          <span>{estrena ? <>Se sumaron <b>{sumadas} secciones</b>: desliza la barra para verlas</> : 'Desliza la barra de costado: hay más secciones'}</span>
+          <span>{textoGlobo}</span>
           <button type="button" aria-label="Entendido" onClick={aprendio}>✕</button>
         </div>, globo.capa) : null}
-      <div className="tb-tira" ref={tira} onScroll={mirar}>{(novato ? NOVATO : TIRA).map(casilla)}</div>
+      <div className="tb-tira" ref={tira} onScroll={mirar}>{lista.map(casilla)}</div>
       {/* 👤 con tu cuenta, abre el menú de lo tuyo (yomenu.jsx: el Inventario primero); sin cuenta, Entrar */}
       {cara ? (
-        <button type="button" className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '')} data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM}
-          aria-label="Lo tuyo: inventario, perfil y cuenta" onClick={() => { setJm(false); setYoM((v) => !v); }}>{cara}<span>Tú</span></button>
+        <button type="button" ref={btnYo} className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '') + (drops ? ' con-drop' : '') + (llena ? ' llena' : '') + (late ? ' late' : '')}
+          data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM}
+          aria-label={'Lo tuyo: inventario, perfil y cuenta' + (drops ? '. Tienes ' + (drops === 1 ? 'un Dragón Drop' : drops + ' Dragón Drops') + ' para abrir: mantén apretado para abrirlo' : '')}
+          onClick={() => { setJm(false); setYoM((v) => !v); }} {...mantenerYo}>
+          <span className="tb-yo-c">{cara}{drops ? <i className="tb-pv" aria-hidden="true" /> : null}</span><span>Tú</span></button>
       ) : (
         <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Entrar con Discord"><Ico n="yo" t={22} /><span>Entrar</span></a>
       )}

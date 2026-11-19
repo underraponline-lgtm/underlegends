@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.81",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T04:19:00-05:00",
+        "titulo": "La barra de abajo crece contigo, y tu Dragón Drop a un toque",
+        "items": [
+            "**La barra crece con tu nivel**: con el 1 tienes Publicaciones y la Guía; con el 2 se suman Competencias y Ligas; con el 3, Crews y Tarjetas; con el 5, el Salón y Socios. Cada vez que se suma algo te avisa y lo marca «NUEVO» hasta que lo abres. Todo sigue en el ☰ de arriba.",
+            "**Tu Dragón Drop desde tu cara**: si tienes uno para abrir, tu cara lleva un punto verde y late. Mantenla apretada: se llena y el drop se abre ahí mismo.",
+            "**El Pase avisa**: un punto verde cuando subiste de nivel desde la última vez que lo abriste.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.80",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T04:05:00-05:00",

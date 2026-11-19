@@ -3627,5 +3627,12 @@
 "Los rangos, de {n} a {n} de Score": "The ranks, from {n} to {n} of Score",
 "Ir a una letra": "Go to a letter",
 "Los tuyos hoy": "Yours today",
-"Lo que cambia los puntos semana a semana, y cuándo pasa. La semana arranca el lunes a las {n} AM (hora del este).": "What changes the points week by week, and when it happens. The week starts on Monday at {n} AM (Eastern time)."
+"Lo que cambia los puntos semana a semana, y cuándo pasa. La semana arranca el lunes a las {n} AM (hora del este).": "What changes the points week by week, and when it happens. The week starts on Monday at {n} AM (Eastern time).",
+"Nivel {n}:": "Level {n}:",
+"se sumó": "added",
+"se sumaron": "added",
+"Se sumó": "Added",
+"a tu barra. Deslízala para verla": "to your bar. Swipe it to see it",
+"a tu barra. Deslízala para verlas": "to your bar. Swipe it to see them",
+"Nueva en tu barra": "New in your bar"
 }

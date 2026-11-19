@@ -75,6 +75,19 @@ export function abrirOrigen(el, prefijo) {
   });
 }
 /**
+ * 🐉 EL PRIMERO QUE TENGAS PARA ABRIR, AHÍ MISMO (19/11/2026, la barra de abajo: mantener apretada tu cara). Salta los que
+ * se ganan compitiendo si no eres Miembro de DRA (no se pueden abrir: `traba` de `AbrirDrops`). Sin ninguno, la ventana
+ * de los drops (`lg:abrir-drops`)
+ */
+export function abrirPrimero(el) {
+  E.va = false;
+  return pedirDrops().then((D) => {
+    const x = ((D && D.cerrados) || []).map(queEs).find((c) => !(D.miembro === false && /merito/.test(String(c.origen || ''))));
+    if (!x) { W.dispatchEvent(new Event('lg:abrir-drops')); return null; }
+    return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [x], { cofres: D.cofres, abrir: abrirReal, alCerrar: refrescar }));
+  });
+}
+/**
  * 🎁 LA CAJA DEL NUEVO, COMO UN COFRE (17/11/2026). Lo que trae ya está pagado al completar los siete días (`nuevoPagar()`
  * de bot/avisos.js: los Puntos, dos Star Dragons y el título): esto lo DESTAPA con la animación de un cofre (el de oro,
  * `COFRES[2]`, con su nombre) y abre ahí mismo los dos Star Dragons si todavía están cerrados. La Caja no pasa por el
