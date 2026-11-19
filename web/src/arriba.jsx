@@ -2784,7 +2784,7 @@ export function Hero({ liga, vivoL, children, solo }) {
           <button type="button" className="mo-fl der" aria-label="Momento siguiente" onClick={() => ver(j + 1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 L17 12 L9 20" /></svg></button>
         </> : null}
         {/* 🎞️ la tira de momentos (de «Hero Carousel»): la escena chiquita, el logo, qué es y cuándo; el que miras, más ancho */}
-        <nav className="mo-tabs es-tira" aria-label="Momentos">
+        <nav className="mo-tabs es-tira" data-tuto="hoy-tira" aria-label="Momentos">
           {mo.map((m, k) => {
             const e0 = escenaDe(m.esc || m.sv);
             return (

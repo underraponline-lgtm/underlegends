@@ -613,11 +613,11 @@ function Escenario({ liga, xs, A }) {
   // 18/11/2026: sin clase para el magenta (ya es el fondo de .pw-chip): `.m` es la batalla de la llave chica (estilo.css), global en el shadow root, y le ponía su borde de 2 px
   const tono = COLOR[it.tipo] === 'm' ? '' : 'v';
   return (
-    <section data-tuto="pb-cab" className={'pw-esc' + (fondo ? ' con-fondo' : '')} style={fondo ? { backgroundImage: 'url("' + fondo + '")' } : undefined}
+    <section className={'pw-esc' + (fondo ? ' con-fondo' : '')} style={fondo ? { backgroundImage: 'url("' + fondo + '")' } : undefined}
       onMouseEnter={() => setQuieto(true)} onMouseLeave={() => setQuieto(false)} onFocus={() => setQuieto(true)}
       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setQuieto(false); }} aria-label="Lo más fuerte de estos días">
       <div className="pw-esc-in">
-        <div className="pw-esc-tx">
+        <div className="pw-esc-tx" data-tuto="pb-cab">
           <div className="pw-esc-k">
             <span className={'pw-chip ' + tono}>{sv ? <img alt="" src={liga.logo(sv)} /> : null}{c.cat}</span>
             <span className="pw-chip n">{hace(liga, it.t)}</span>

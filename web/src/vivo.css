@@ -3461,30 +3461,71 @@ li.nt-f{cursor:default}
 .aviso-web button:focus-visible{outline:2px solid var(--magenta);outline-offset:0}
 @media (max-width:560px){.aviso-web{padding:10px 16px}}
 
-/* 🧭 EL TUTORIAL (12/10/2026, tutorial.jsx): el recorrido sobre el menú (rc-), la franja de quien llegó por un link, la
-   nota de la primera vez en cada página y los primeros pasos (pp-). Sin desenfoque ni degradé: el hueco del recorrido
-   es la sombra de un recuadro, y lo de atrás no se toca mientras dura */
+/* 🧭 EL TUTORIAL (12/10/2026, tutorial.jsx): el recorrido (rc-), la franja de quien llegó por un link, la nota de la
+   primera vez en cada página y los primeros pasos (pp-). Sin desenfoque ni degradé, y lo de atrás no se toca mientras dura.
+   🎯 LA MIRA (19/11/2026): el velo es un recorte con un hueco (`clip-path` con evenodd, los mismos puntos siempre: así de
+   un paso al otro el hueco se desliza) y cuatro esquinas verdes se cierran sobre lo señalado. La carta es CLARA en los dos
+   temas —sobre el velo oscuro es lo que más se ve— y lo principal va invertido, en negro */
 .rc{position:fixed;inset:0;z-index:90}
 .rc-tapa{position:absolute;inset:0}
-.rc-luz{position:fixed;box-shadow:0 0 0 9999px rgba(3,3,4,.72);outline:2px solid var(--verde);pointer-events:none;
-  transition:left .2s,top .2s,width .2s,height .2s}
-/* ⚠️ sin nada señalado, un velo entero: la sombra de un recuadro de 0×0 Chromium no la pinta */
-.rc-luz.rc-todo{inset:0;box-shadow:none;background:rgba(3,3,4,.72);outline:0}
-@media (prefers-reduced-motion: reduce){.rc-luz{transition:none}}
-.rc-caja{position:fixed;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:16px;background:var(--fondo);color:var(--tinta);border:2px solid var(--linea);
-  box-shadow:6px 6px 0 var(--verde);max-height:calc(100vh - 32px);overflow:auto}
+.rc-velo{position:fixed;inset:0;background:rgba(3,3,4,.8);pointer-events:none}
+/* en Noche la página ya es negra: el velo más cerrado y el marco fino dicen qué está señalado (crítica del 19/11) */
+.noche .rc-velo{background:rgba(3,3,4,.88)}
+.rc-marco{position:fixed;inset:0;background:rgba(41,178,152,.7);pointer-events:none}
+.rc.anda .rc-velo,.rc.anda .rc-marco{transition:clip-path .28s var(--ease-in-out)}
+.rc-esq{position:fixed;left:0;top:0;width:0;height:0;pointer-events:none}
+.rc.anda .rc-esq{transition:transform .28s var(--ease-in-out)}
+.rc-esq i{position:absolute;width:22px;height:22px;border:0 solid var(--verde);animation:rc-cierra .2s var(--ease-out) both}
+.rc-esq.a i{left:0;top:0;border-left-width:4px;border-top-width:4px;--dx:-1;--dy:-1}
+.rc-esq.b i{right:0;top:0;border-right-width:4px;border-top-width:4px;--dx:1;--dy:-1}
+.rc-esq.c i{left:0;bottom:0;border-left-width:4px;border-bottom-width:4px;--dx:-1;--dy:1}
+.rc-esq.d i{right:0;bottom:0;border-right-width:4px;border-bottom-width:4px;--dx:1;--dy:1}
+/* la mira se cierra una vez: entra 8 px más afuera y se clava en su lugar */
+@keyframes rc-cierra{from{opacity:0;transform:translate(calc(var(--dx) * 8px),calc(var(--dy) * 8px))}to{opacity:1;transform:none}}
+.rc-caja{position:fixed;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;padding:18px;border-radius:4px;
+  --fondo:#F6F6F6;--tinta:#030304;--linea:#030304;--caja:#E9E9E5;--suave:#D3D3CE;--gris:#55554F;--magenta-tx:#B80F5D;
+  background:var(--fondo);color:var(--tinta);box-shadow:0 10px 0 rgba(3,3,4,.35);max-height:calc(100vh - 24px);overflow:auto}
+.rc-in{display:grid;gap:10px;animation:rc-entra .2s var(--ease-out) both}
+@keyframes rc-entra{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* en la compu, el pico que apunta a lo señalado (un cuadrado girado, del color de la carta) */
+.rc-pico{position:absolute;width:14px;height:14px;margin:-7px;background:var(--fondo);border-radius:2px;transform:rotate(45deg)}
+.l-abajo > .rc-pico{top:0}
+.l-arriba > .rc-pico{top:100%}
+.l-der > .rc-pico{left:0}
+.l-izq > .rc-pico{left:100%}
+.rc-caja.l-abajo,.rc-caja.l-arriba,.rc-caja.l-der,.rc-caja.l-izq{overflow:visible}
+/* 📱 en el celular la carta va abajo, de borde a borde y encima de la barra: «Siguiente» no se mueve entre pasos */
+@media (max-width: 699.98px){
+  .rc-caja.l-dock{grid-template-columns:minmax(0,1fr);border-radius:4px 4px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 -1px 0 rgba(3,3,4,.2)}
+  .rc-caja.l-dock .rc-acc{flex-direction:row;align-items:center;min-width:0}
+  .rc-caja.l-dock .rc-saltar{margin-left:auto;min-height:44px}
+}
 /* 📱 el botón largo se parte en dos renglones: «VINCULAR CON DISCORD Y RECIBIRLOS» ensanchaba la columna y la tarjeta del
    final del tutorial se cortaba a la derecha en el teléfono (390 y 360 px, 17/11/2026) */
-.rc-caja .btn{white-space:normal;text-align:center;line-height:1.15;padding-block:8px}
+.rc-caja .btn{white-space:normal;text-align:center;line-height:1.15;padding-block:8px;border-radius:4px}
+.rc-caja .rc-sig{background:#030304;border-color:#030304;color:#F6F6F6}
+/* «Atrás» pesa menos que lo principal */
+.rc-caja .rc-atras{background:transparent;border:1.5px solid #B5B5B0;color:#030304}
+@media (hover: hover) and (pointer: fine){.rc-caja .rc-sig:hover{background:#2A2A2E;border-color:#2A2A2E}.rc-caja .rc-atras:hover{background:#E2E2DE}}
+.rc-caja .btn:active{transform:scale(.97)}
+/* el foco en magenta: el verde ya es «esto está señalado» */
+.rc-caja .btn:focus-visible,.rc-saltar:focus-visible,.rc-caja .rc-x:focus-visible,.rc-op:focus-visible{outline:3px solid #E41373;outline-offset:2px}
 .rc-cab{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.rc-cab small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:var(--gris)}
+.rc-k{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--magenta-tx)}
+.rc-cab small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:var(--gris);font-variant-numeric:tabular-nums}
 .rc-caja h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;text-wrap:balance}
 .rc-caja p{margin:0;line-height:1.45}
 .rc-caja .rc-nota{font-size:13px;color:var(--gris)}
-.rc-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+.rc-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:2px}
 .rc-saltar{margin-left:auto;min-height:44px;padding:0 4px;background:none;border:0;color:var(--gris);cursor:pointer;
   font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-decoration:underline}
 .rc-x{flex:none;cursor:pointer;background:none;color:inherit}
+@media (prefers-reduced-motion: reduce){
+  .rc.anda .rc-velo,.rc.anda .rc-marco,.rc.anda .rc-esq{transition:none}
+  .rc-esq i,.rc-in{animation:none}
+}
+.app.calma .rc-velo,.app.calma .rc-marco,.app.calma .rc-esq{transition:none}
+.app.calma .rc-esq i,.app.calma .rc-in{animation:none}
 .rc-franja{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding:10px 16px;background:var(--inv);color:var(--inv-tinta);
   border-bottom:4px solid var(--verde)}
 .rc-franja p{margin:0;flex:1 1 220px;font:800 15px/1.3 Archivo,sans-serif}

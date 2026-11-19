@@ -275,7 +275,7 @@ function Quien({ liga, dc }) {
   const yo = liga.yo;
   if (!yo && !dc) {
     return (
-      <div className="cu-quien anon">
+      <div className="cu-quien anon" data-tuto="cu-quien">
         <span className="cu-av anon"><Ico n="yo" t={30} /></span>
         {/* 🚪 por qué no entraste (18/11/2026): si al volver de Discord /api/cuenta falló, el celular volvía a «Entrar con
             Discord» sin decir nada. EntrarError escucha `lg:cuentaest` solo: Quien no se redibuja con ese aviso */}
@@ -286,7 +286,7 @@ function Quien({ liga, dc }) {
   }
   const s = yo && liga.svs[yo.sv];
   return (
-    <div className="cu-quien" style={{ '--cu-c': (s && s.color) || '#29B298' }}>
+    <div className="cu-quien" data-tuto="cu-quien" style={{ '--cu-c': (s && s.color) || '#29B298' }}>
       <span className="cu-av-con">
         {yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cu-av" /> : <CaraDc dc={dc} cls="cu-av" />}
         <AnilloNivel dc={dc} />

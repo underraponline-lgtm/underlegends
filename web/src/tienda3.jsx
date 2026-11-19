@@ -202,9 +202,9 @@ function hero(X, S, st, tengo) {
   }).join('');
   // (18/11/2026) «a la venta el …» sólo antes de la venta; una edición de 10 no lleva descuento Premium
   const precio = s.t === 'nav' || mio ? '' : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' ? (ed && Date.now() < ed.venta ? ' · a la venta el ' + diaCorto(ed.venta) : '') : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;
-  return `<section data-tuto="tz-vitrina" class="tz-hero" aria-label="La vitrina de esta semana">
+  return `<section class="tz-hero" aria-label="La vitrina de esta semana">
     <div class="tz-hero-in">
-      <div class="tz-hero-tx">
+      <div class="tz-hero-tx" data-tuto="tz-vitrina">
         <div class="tz-hero-et"><span class="tz-etq">La vitrina · ${esc(String(S.cat.temp || '').toUpperCase())}</span><span class="tz-cambia">${cambiaTxt(S)}</span></div>
         <h2>${esc(it.n)}</h2>
         <p class="tz-rz" style="--r:${RZ[it.r][1]}"><i></i>${subDe(S, s.id)} · <span>${eti}</span></p>
@@ -724,7 +724,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   }
   const arriba = `${S.modo ? '<p class="tz-ensayo">' + (S.modo === 'prueba' ? 'Modo prueba (MODS): tienes todo de mentira. Te lo puedes poner para verlo; no se compra ni se guarda nada.' : 'Viendo la Tienda como un usuario (MODS): sin tu Premium y sin el ensayo. En esta vista no se compra nada.') + '</p>' : ''}${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S, liga)}${hero(X, S, E, tengo)}
     <section class="tz-sec" id="tz-prob" data-tuto="tz-probador"><div class="tz-sec-t"><h2>El probador</h2>${pildora(S, E)}</div>
-      <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>
+      <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat" data-tuto="tz-piezas">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>
     <section class="tz-sec tz-sec-mas" data-tuto="tz-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>
       <button data-mas="cabezas" aria-pressed="${E.mas === 'cabezas'}">Precio por cabeza ›</button><button data-mas="promo" aria-pressed="${E.mas === 'promo'}">Tu promo ›</button><a href="#/crews">Tu crew ›</a><button data-mas="ropa" aria-pressed="${E.mas === 'ropa'}">Ropa de UL · pronto</button>
       <button class="tz-tira-r" data-abre="__reglas">¿Cómo funciona la Tienda?</button></div></section>`;

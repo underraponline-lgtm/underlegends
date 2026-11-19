@@ -22,11 +22,52 @@ const W = typeof window !== 'undefined' ? window : {};
 const leerLS = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
 
 // ── B · el recorrido ─────────────────────────────────────────────────────────────────────────────────────────────
-/** Lo señalado: el `data-tuto` que se ve (el del menú de arriba en la compu, el de la tira en el celular) */
-function blanco(raiz, sel) {
+// 🎯 LA MIRA (19/11/2026, Dlx: «se mueven las pantallas y todo eso pero selecciona más las cosas»). Medido paso por paso
+// en los 32 del corto y los nueve capítulos: unos 30 señalaban una sección o una página entera —«Búscate» encendía
+// 1345×3756 px, la tabla completa—, así que el velo no tenía nada que tapar y no se notaba qué se señalaba; tres no
+// encontraban su marca en esa pantalla y la caja tapaba hasta un 31 % de lo señalado. Ahora:
+//   · cada paso apunta a algo chico (capitulos.js) y puede traer una marca de repuesto (`sel: ['a', 'b']`)
+//   · lo que es más alto que lo que queda libre se enciende sólo arriba, y nada de borde a borde
+//   · el velo es un recorte (`clip-path` con un hueco) y cuatro esquinas se cierran sobre lo señalado; de un paso al
+//     siguiente la luz se desliza (21st: «Product Tour» de laziekiki y «Focus Frame» de shadcnspace)
+//   · la carta se mide y se pone donde no tapa lo señalado: en la compu, pegada a lo señalado con un pico que lo apunta
+//     (la «A» de la maqueta; Dlx, 19/11/2026: «A»); en el celular, siempre abajo, encima de la barra
+//   · 🧩 Y SE ACOPLA A UNA PÁGINA REHECHA (Dlx: «que se acople si actualizamos o remakeamos»): si la marca de un paso ya
+//     no está, se enciende el título de esa página en vez de nada; `herramientas/tuto_medir.py` corre los dos tutoriales
+//     después de cada despliegue (web.yml) y se pone rojo si un paso se queda sin marca, se corta o queda tapado
+
+const seVe = (a) => { const r = a.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
+const avisado = {};
+/** Lo señalado: el primer `data-tuto` que se ve (el del menú de arriba en la compu, el de la barra en el celular). `sel`
+ *  puede ser una lista: la primera marca que esté en la pantalla. Con `repuesto`, si no hay ninguna, el título de la
+ *  página (una página rehecha que perdió la marca no deja el paso a ciegas; avisa en la consola) */
+function blanco(raiz, sel, repuesto) {
   if (!raiz || !sel) return null;
-  const xs = Array.from(raiz.querySelectorAll('[data-tuto="' + sel + '"]'));
-  return xs.find((a) => { const r = a.getBoundingClientRect(); return r.width > 0 && r.height > 0; }) || null;
+  for (const s of [].concat(sel)) {
+    const el = Array.from(raiz.querySelectorAll('[data-tuto="' + s + '"]')).find(seVe);
+    if (el) return el;
+  }
+  if (!repuesto) return null;
+  const h = Array.from(raiz.querySelectorAll('.app h1')).find(seVe) || null;
+  if (h && !avisado[String(sel)]) {
+    avisado[String(sel)] = 1;
+    try { console.warn('[tutorial] no está la marca ' + [].concat(sel).join(' / ') + ': se señala el título de la página'); } catch (e) { /* nada */ }
+  }
+  return h;
+}
+/** ¿Va pegado a la pantalla (la cabecera, la barra de abajo)? Entonces correr la página no lo mueve. La barra de abajo
+ *  del celular es `sticky` con `bottom`, no `fixed`: cuenta si ya está en la pantalla. Lo `sticky` de ARRIBA (la tira
+ *  de días de Eventos, los filtros de Publicaciones) no: correr la página lo sube hasta que se pega, y sin correrla la
+ *  carta de abajo lo tapaba entero */
+function fijo(el) {
+  const vh = W.innerHeight || 640;
+  for (let x = el, i = 0; x && x.nodeType === 1 && i < 14; i++) {
+    const cs = getComputedStyle(x);
+    if (cs.position === 'fixed') return true;
+    if (cs.position === 'sticky' && cs.bottom !== 'auto') { const r = el.getBoundingClientRect(); if (r.bottom > 0 && r.top < vh) return true; }
+    x = x.parentElement || (x.getRootNode && x.getRootNode().host) || null;
+  }
+  return false;
 }
 /** La página que se ve, como la llama App.jsx ('' es el Inicio) */
 const paginaVista = () => {
@@ -45,64 +86,236 @@ function irYEsperar(ruta, sel, raiz, listo) {
   setTimeout(mirar, 60);
 }
 
+const AIRE = 8;      // entre lo señalado y el borde de la luz
+const ARRIBA = 72;   // lo que tapa la cabecera
+// 🔍 LA PÁGINA AGRANDADA (19/11/2026). Desde 1440 px `.app` lleva `zoom` (1,1 · 1,2 · 1,35, ver vivo.css), y el tutorial
+// vive adentro: lo que se mide (`getBoundingClientRect`, la ventana) viene en px de la pantalla y lo que se pone (`left`,
+// `translate`, el recorte) se multiplica por el zoom. Sin pasar una cosa a la otra, a 1920 px la luz caía afuera de la
+// pantalla en 19 de los 31 pasos (`tuto_medir.py`). Todo lo medido se divide por el zoom; lo que se corre, se multiplica
+const zoomApp = () => {
+  try {
+    const a = document.getElementById('inicio-nuevo').shadowRoot.querySelector('.app');
+    return parseFloat(getComputedStyle(a).zoom) || 1;
+  } catch (e) { return 1; }
+};
+/** La pantalla en px de la página: { z, vw, vh } */
+const geo = () => { const z = zoomApp(); return { z, vw: (W.innerWidth || 360) / z, vh: (W.innerHeight || 640) / z }; };
+/** La caja de `el` en px de la página */
+const cajaDe = (el, z) => {
+  const r = el.getBoundingClientRect();
+  return { left: r.left / z, top: r.top / z, right: r.right / z, bottom: r.bottom / z, width: r.width / z, height: r.height / z };
+};
+/** Si la luz se corta (lo señalado es más alto que lo que entra), se corta en el borde de una pieza de adentro —una
+ *  fila, una tarjeta— y no por la mitad de una (la crítica del 19/11: «METRICOS» partido a la mitad) */
+function corte(el, y1, yMax, z) {
+  let mejor = 0, n = 0;
+  const xs = el.querySelectorAll(':scope > *, :scope > * > *, :scope > * > * > *');
+  for (const c of xs) {
+    if (++n > 400) break;
+    const b = c.getBoundingClientRect().bottom / z + AIRE;
+    if (b <= yMax && b > mejor) mejor = b;
+  }
+  return mejor > y1 + 0.55 * (yMax - y1) ? mejor : yMax;
+}
+/** La luz sobre `el`: con su aire, adentro de la pantalla y, si es más alto que `maxH` o pasa de `fondo` (donde empieza
+ *  la carta), sólo su parte de arriba */
+function luzDe(el, vw, vh, maxH, fondo, z) {
+  const r = cajaDe(el, z);
+  const x1 = Math.max(6, r.left - AIRE), x2 = Math.min(vw - 6, r.right + AIRE);
+  const y1 = Math.max(6, r.top - AIRE);
+  const tope = Math.min(vh - 6, fondo || vh, y1 + Math.max(64, maxH));
+  const y2 = r.bottom + AIRE <= tope ? r.bottom + AIRE : corte(el, y1, tope, z);
+  if (x2 - x1 < 8 || y2 - y1 < 8) return null;
+  return { x: Math.round(x1), y: Math.round(y1), w: Math.round(x2 - x1), h: Math.round(y2 - y1) };
+}
+const entre = (v, a, b) => Math.min(Math.max(v, a), Math.max(a, b));
+/** A · dónde va la carta: abajo, arriba o al costado de la luz, sin taparla; si no entra en ningún lado, del otro lado */
+function lugarA(luz, cw, ch, vw, vh) {
+  const g = 16;
+  const cx = luz.x + luz.w / 2, cy = luz.y + luz.h / 2;
+  const left = Math.round(entre(cx - cw / 2, 12, vw - cw - 12));
+  const pX = Math.round(entre(cx - left, 22, cw - 22));
+  if (luz.y + luz.h + g + ch <= vh - 12) return { left, top: luz.y + luz.h + g, lado: 'abajo', pico: pX };
+  if (luz.y - g - ch >= 12) return { left, top: luz.y - g - ch, lado: 'arriba', pico: pX };
+  const top = Math.round(entre(cy - ch / 2, 12, vh - ch - 12));
+  const pY = Math.round(entre(cy - top, 22, ch - 22));
+  if (luz.x + luz.w + g + cw <= vw - 12) return { left: luz.x + luz.w + g, top, lado: 'der', pico: pY };
+  if (luz.x - g - cw >= 12) return { left: luz.x - g - cw, top, lado: 'izq', pico: pY };
+  return { left: Math.round((vw - cw) / 2), top: cy > vh / 2 ? 12 : vh - ch - 12, lado: 'hoja', pico: 0 };
+}
+const px = (x, y) => x + 'px ' + y + 'px';
+/** El velo con un hueco: los mismos puntos siempre (sin luz, un hueco de 0 al medio), así de un paso al otro se desliza */
+const recorte = (h) => 'polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ' + px(h.x, h.y) + ', ' + px(h.x + h.w, h.y) + ', '
+  + px(h.x + h.w, h.y + h.h) + ', ' + px(h.x, h.y + h.h) + ', ' + px(h.x, h.y) + ')';
+/** El marco fino alrededor del hueco: sobre una página negra el velo oscurece negro sobre negro y, sin él, sólo las
+ *  esquinas decían qué estaba señalado (medido: brillo 12 adentro y 6 afuera). Un anillo de 1,5 px con el mismo truco */
+const anillo = (h) => {
+  const a = h.x - 1.5, b = h.y - 1.5, c = h.x + h.w + 1.5, d = h.y + h.h + 1.5;
+  return 'polygon(evenodd, ' + px(a, b) + ', ' + px(c, b) + ', ' + px(c, d) + ', ' + px(a, d) + ', ' + px(a, b) + ', '
+    + px(h.x, h.y) + ', ' + px(h.x + h.w, h.y) + ', ' + px(h.x + h.w, h.y + h.h) + ', ' + px(h.x, h.y + h.h) + ', ' + px(h.x, h.y) + ')';
+};
+/** La barra de abajo del celular, si se ve: la carta va encima de ella y nunca salta arriba */
+function altoBarra(raiz, z) {
+  const b = raiz && raiz.querySelector('.tabbar');
+  if (!b) return 0;
+  const r = b.getBoundingClientRect();
+  return r.height > 0 && r.bottom >= (W.innerHeight || 640) - 2 ? Math.round(r.height / z) : 0;
+}
+
 function Foco({ paso, n, de, onSig, onAtras, onSaltar, ultimo, txtUltimo }) {
-  const [caja, setCaja] = useState(null);
+  const [luz, setLuz] = useState(null);
+  const [bar, setBar] = useState(0);
+  const [tam, setTam] = useState({ w: 360, h: 230 });
+  const [anda, setAnda] = useState(false);   // sin transición hasta la primera luz: las esquinas no vuelan desde 0,0
   const yo = useRef(null);
+  const carta = useRef(null);
   const sig = useRef(null);
+  const cb = useRef({});
+  cb.current = { onSig, onAtras, onSaltar, n };
+  const { vw, vh } = geo();
+  const cel = vw < 700;
+  // 📱 en el celular la carta va SIEMPRE abajo (la crítica del 19/11: con la carta al lado, «Siguiente» saltaba de 489 a
+  // 721 y a 264 px entre un paso y otro): el pulgar no la persigue
+  const ancho = cel ? vw : Math.min(380, vw - 24);
+  const tamR = useRef(tam);
+  tamR.current = tam;
+  const barR = useRef(bar);
+  barR.current = bar;
+  // lo que la carta le quita a la pantalla: lo señalado tiene que entrar en lo que queda. En la compu la carta va al
+  // costado si entra; si lo señalado es ancho, va abajo o arriba y se le guarda su lugar
+  const ancha = (r) => { const g = geo(); return !!r && r.width > g.vw - (g.vw < 700 ? g.vw : Math.min(380, g.vw - 24)) - 64; };
+  const reservaDe = (r) => {
+    const h = tamR.current.h;
+    if (geo().vw < 700) return h + barR.current + 28;
+    return ancha(r) ? h + 30 : 16;
+  };
+  // y la luz nunca es enorme: a lo sumo un 42 % de la pantalla en el celular y la mitad en la compu
+  const topeDe = (r) => {
+    const g = geo(), c = g.vw < 700;
+    return Math.max(80, Math.min(Math.round(g.vh * (c ? 0.42 : 0.5)), c || ancha(r) ? g.vh - ARRIBA - reservaDe(r) : g.vh));
+  };
+  const raizDe = () => (yo.current ? yo.current.getRootNode() : null);
+  const quieto = () => !!((W.matchMedia && W.matchMedia('(prefers-reduced-motion: reduce)').matches) || (yo.current && yo.current.closest('.calma')));
   const medir = useCallback(() => {
-    const el = blanco(yo.current && yo.current.getRootNode(), paso.sel);
-    if (!el) { setCaja(null); return; }
-    const r = el.getBoundingClientRect();
-    setCaja({ x: r.left, y: r.top, w: r.width, h: r.height });
+    const raiz = raizDe();
+    const { z, vw: V, vh: H } = geo();
+    const b = V < 700 ? altoBarra(raiz, z) : 0;
+    if (b !== barR.current) { barR.current = b; setBar(b); }
+    const el = blanco(raiz, paso.sel, true);
+    if (!el) { setLuz(null); return; }
+    // en el celular, con la carta abajo, lo que se corre con la página se enciende hasta su borde (al final de una
+    // página no hay cómo subirlo más); lo pegado a la pantalla (la barra) no: la carta va encima de ella
+    const fondo = V < 700 && !fijo(el) ? H - tamR.current.h - b - 28 : 0;
+    setLuz(luzDe(el, V, H, topeDe(cajaDe(el, z)), fondo, z));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paso]);
-  useLayoutEffect(() => {
-    const el = blanco(yo.current && yo.current.getRootNode(), paso.sel);
-    if (el) {
-      // en el celular la tira de abajo se desliza: se corre ella, nunca la página
-      const tira = el.closest('.tb-tira');
-      if (tira) tira.scrollLeft = Math.max(0, el.offsetLeft - (tira.clientWidth - el.offsetWidth) / 2);
-      else {
-        const r = el.getBoundingClientRect(), vh = W.innerHeight || 640;
-        if (r.top < 70 || r.bottom > vh - 20) el.scrollIntoView({ block: r.height > vh * 0.6 ? 'start' : 'center' });
-      }
+  /** Lo señalado a la vista, en lo que la carta deja libre: la tira de abajo se corre ella, y lo que va pegado a la
+   *  pantalla no se toca. Se llama dos veces: la página a veces crece después de llegar (lo que baja de a poco) */
+  const aLaVista = () => {
+    const el = blanco(raizDe(), paso.sel, true);
+    if (!el) return;
+    const tira = el.closest('.tb-tira');
+    if (tira) { tira.scrollLeft = Math.max(0, el.offsetLeft - (tira.clientWidth - el.offsetWidth) / 2); return; }
+    if (fijo(el)) return;
+    const { z, vh: H } = geo();
+    const r = cajaDe(el, z);
+    const abajo = H - reservaDe(r);
+    const libre = abajo - ARRIBA;
+    const alto = Math.min(r.height + 2 * AIRE, topeDe(r));
+    if (r.top - AIRE < ARRIBA - 2 || r.top - AIRE + alto > abajo + 2) {
+      const y = alto <= libre ? ARRIBA + (libre - alto) / 2 : ARRIBA;
+      // (lo que se corre, en px de la pantalla)
+      W.scrollBy({ top: Math.round((r.top - AIRE - y) * z), behavior: quieto() ? 'auto' : 'smooth' });
     }
+  };
+  // la carta mide lo que mide su texto
+  useLayoutEffect(() => {
+    const c = carta.current;
+    if (!c) return undefined;
+    const f = () => {
+      const r = cajaDe(c, zoomApp());
+      setTam((t) => (Math.abs(t.h - r.height) > 1 || Math.abs(t.w - r.width) > 1 ? { w: r.width, h: r.height } : t));
+    };
+    f();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(f);
+    ro.observe(c);
+    return () => ro.disconnect();
+  }, []);
+  // al cambiar de paso: a la vista, y otra vez a los 0,7 s por si la página creció
+  useLayoutEffect(() => {
     medir();
-    const t = setTimeout(medir, 350);
-    return () => clearTimeout(t);
-  }, [medir, paso]);
+    aLaVista();
+    medir();
+    const t1 = setTimeout(medir, 380), t2 = setTimeout(() => { aLaVista(); medir(); }, 720), t3 = setTimeout(medir, 1150);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paso, medir]);
+  // 🐢 una página que llega tarde (la Tienda, con una conexión lenta): mientras no hay luz se sigue buscando lo señalado,
+  // cada 0,4 s y hasta 6 s; antes el paso quedaba con la carta al medio aunque la pieza apareciera un segundo después
+  useEffect(() => {
+    if (luz) return undefined;
+    let k = 0;
+    const t = setInterval(() => {
+      if (++k > 15) { clearInterval(t); return; }
+      if (blanco(raizDe(), paso.sel, true)) { clearInterval(t); aLaVista(); medir(); setTimeout(medir, 450); }
+    }, 400);
+    return () => clearInterval(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [luz, paso, medir]);
+  useEffect(() => {
+    if (!luz || anda) return undefined;
+    const r = requestAnimationFrame(() => setAnda(true));
+    return () => cancelAnimationFrame(r);
+  }, [luz, anda]);
   useEffect(() => {
     W.addEventListener('resize', medir);
     W.addEventListener('scroll', medir, { passive: true });
     return () => { W.removeEventListener('resize', medir); W.removeEventListener('scroll', medir); };
   }, [medir]);
   useEffect(() => { if (sig.current) sig.current.focus({ preventScroll: true }); }, [paso]);
+  // ⌨️ Escape sale; las flechas pasan de paso (lo que se usa con el teclado no se anima de más: la luz tarda 0,28 s)
   useEffect(() => {
-    const k = (e) => { if (e.key === 'Escape') onSaltar(); };
+    const k = (e) => {
+      const c = cb.current;
+      if (e.key === 'Escape') c.onSaltar();
+      else if (e.key === 'ArrowRight') { e.preventDefault(); c.onSig(); }
+      else if (e.key === 'ArrowLeft' && c.n > 1) { e.preventDefault(); c.onAtras(); }
+    };
     W.addEventListener('keydown', k);
     return () => W.removeEventListener('keydown', k);
-  }, [onSaltar]);
-  const vw = W.innerWidth || 360, vh = W.innerHeight || 640;
-  const ancho = Math.min(380, vw - 32);
-  let pos = { left: Math.round((vw - ancho) / 2), top: Math.round(vh * 0.2) };
-  if (caja) {
-    const left = Math.round(Math.min(Math.max(16, caja.x + caja.w / 2 - ancho / 2), vw - ancho - 16));
-    if (vh - (caja.y + caja.h) > 230) pos = { left, top: Math.round(caja.y + caja.h + 14) };
-    else if (caja.y > 230) pos = { left, bottom: Math.round(vh - caja.y + 14) };
-    else pos = { left, bottom: 16 };
-  }
+  }, []);
+
+  let est, lado = 'centro', pico = 0;
+  if (cel) {
+    // encima de la barra y con aire: si lo señalado es la barra, su luz sale 8 px por arriba
+    est = { left: 0, width: vw, bottom: bar ? bar + AIRE + 4 : 0 };
+    lado = 'dock';
+  } else if (luz) {
+    const L = lugarA(luz, ancho, tam.h, vw, vh);
+    est = { left: L.left, top: L.top, width: ancho };
+    lado = L.lado; pico = L.pico;
+  } else est = { left: Math.round((vw - ancho) / 2), top: Math.round(Math.max(16, (vh - tam.h) / 2)), width: ancho };
+  const hueco = luz || { x: Math.round(vw / 2), y: Math.round(vh / 2), w: 0, h: 0 };
+  const esq = luz ? [['a', luz.x, luz.y], ['b', luz.x + luz.w, luz.y], ['c', luz.x, luz.y + luz.h], ['d', luz.x + luz.w, luz.y + luz.h]] : [];
   return (
-    <div className="rc" ref={yo}>
+    <div className={'rc' + (anda ? ' anda' : '')} ref={yo}>
       <div className="rc-tapa" />
-      {caja ? <div className="rc-luz" style={{ left: caja.x - 6, top: caja.y - 6, width: caja.w + 12, height: caja.h + 12 }} />
-        : <div className="rc-luz rc-todo" />}
-      <div className="rc-caja" role="dialog" aria-modal="true" aria-labelledby="rc-h" style={Object.assign({ width: ancho }, pos)}>
-        <div className="rc-cab"><span className="tag">{paso.k}</span><small>{n} de {de}</small></div>
-        <span className="rc-seg" aria-hidden="true">{Array.from({ length: de }, (_, j) => <i key={j} className={j < n ? 'si' : ''} />)}</span>
-        <h2 id="rc-h">{paso.h}</h2>
-        <p>{paso.p}</p>
+      <div className="rc-velo" style={{ clipPath: recorte(hueco) }} />
+      {luz ? <div className="rc-marco" style={{ clipPath: anillo(luz) }} /> : null}
+      {esq.map(([k, x, y]) => <span key={k} className={'rc-esq ' + k} style={{ transform: 'translate(' + x + 'px,' + y + 'px)' }} aria-hidden="true"><i key={n} /></span>)}
+      <div ref={carta} className={'rc-caja rc-paso l-' + lado} role="dialog" aria-modal="true" aria-labelledby="rc-h" style={est}>
+        {lado === 'abajo' || lado === 'arriba' || lado === 'der' || lado === 'izq'
+          ? <i className="rc-pico" style={lado === 'der' || lado === 'izq' ? { top: pico } : { left: pico }} aria-hidden="true" /> : null}
+        <div className="rc-in" key={n}>
+          <div className="rc-cab"><span className="rc-k">{paso.k}</span><small>{n} de {de}</small></div>
+          <span className="rc-seg" aria-hidden="true">{Array.from({ length: de }, (_, j) => <i key={j} className={j < n ? 'si' : ''} />)}</span>
+          <h2 id="rc-h">{paso.h}</h2>
+          <p>{paso.p}</p>
+        </div>
         <div className="rc-acc">
-          <button type="button" className="btn verde chico" ref={sig} onClick={onSig}>{ultimo ? txtUltimo : 'Siguiente'}</button>
-          {n > 1 ? <button type="button" className="btn borde2 chico" onClick={onAtras}>Atrás</button> : null}
+          <button type="button" className="btn chico rc-sig" ref={sig} onClick={onSig}>{ultimo ? txtUltimo : 'Siguiente'}</button>
+          {n > 1 ? <button type="button" className="btn chico rc-atras" onClick={onAtras}>Atrás</button> : null}
           <button type="button" className="rc-saltar" onClick={onSaltar}>Saltar</button>
         </div>
       </div>
@@ -127,10 +340,10 @@ function Centro({ children, onCerrar, et }) {
     return () => W.removeEventListener('keydown', k);
   }, []);
   return (
-    <div className="rc">
-      <div className="rc-luz rc-todo" />
+    <div className="rc anda">
+      <div className="rc-velo" />
       <div className="rc-caja rc-centro" role="dialog" aria-modal="true" aria-labelledby="rc-h" ref={yo}>
-        <div className="rc-cab"><span className="tag">{et}</span>
+        <div className="rc-cab"><span className="rc-k">{et}</span>
           <button type="button" className="btn-ico rc-x" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={18} /></button></div>
         {children}
       </div>
@@ -247,7 +460,7 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
     dentro = <Foco paso={pasoCorto} n={i + 1} de={CORTO.length} ultimo={i === CORTO.length - 1} txtUltimo="Terminar"
       onSig={() => (i === CORTO.length - 1 ? terminarCorto() : setI(i + 1))} onAtras={() => setI(Math.max(0, i - 1))} onSaltar={() => cerrar('salto')} />;
   } else if (modo === 'cap' && cap) {
-    dentro = <Foco paso={cap.pasos[i]} n={i + 1} de={cap.pasos.length} ultimo={i === cap.pasos.length - 1} txtUltimo="Terminar el capítulo"
+    dentro = <Foco paso={cap.pasos[i]} n={i + 1} de={cap.pasos.length} ultimo={i === cap.pasos.length - 1} txtUltimo="Terminar"
       onSig={() => (i === cap.pasos.length - 1 ? terminarCap() : setI(i + 1))} onAtras={() => setI(Math.max(0, i - 1))} onSaltar={() => cerrar('salto')} />;
   } else if (modo === 'fin' && fin) {
     const sinCuenta = fin.premio === 'espera';
@@ -265,8 +478,8 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
           <p>Llevas {hechos} de {CAPITULOS.length}.{enSemanaNueva() && !T.completo ? ' Al terminar los nueve te llevas ' + txtPremio(['cofre', 0]) + '.' : ''}</p>
           <span className="rc-barra" aria-hidden="true"><i style={{ width: (100 * hechos) / CAPITULOS.length + '%' }} /></span>
           <div className="rc-acc">
-            {sigue ? <button type="button" className="btn verde chico" onClick={() => { setFin(null); empezarCap(sigue.id); }}>Siguiente: {sigue.t}</button> : null}
-            <a className="btn borde2 chico" href="#/guia" onClick={() => { cerrar('fin'); setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>Los capítulos</a>
+            {sigue ? <button type="button" className="btn chico rc-sig" onClick={() => { setFin(null); empezarCap(sigue.id); }}>Siguiente: {sigue.t}</button> : null}
+            <a className="btn chico rc-atras" href="#/guia" onClick={() => { cerrar('fin'); setTimeout(() => W.dispatchEvent(new Event('lg:aprende')), 300); }}>Los capítulos</a>
           </div>
         </Centro>
       );
@@ -282,9 +495,9 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
                 : elDia ? <p>Quedó anotado: {corto ? <><b>3 Dragón Drops</b> se cobran</> : <><b>{txtPremio(['cofre', 0])}</b> se cobra</>} el día {elDia} de tu semana, cuando entres a la página.</p>
                 : <p>{corto ? 'Ya sabes dónde está cada cosa.' : 'Ya pasaste por todas las páginas de la Liga.'} Lo que sigue: entra a un evento o sube el Pase con Tareas.</p>}
           <div className="rc-acc">
-            {gano ? <button type="button" className="btn verde chico" onClick={() => { cerrar('fin'); W.dispatchEvent(new Event('lg:abrir-drops')); }}>{corto ? 'Abrirlos' : 'Abrir el cofre'}</button>
+            {gano ? <button type="button" className="btn chico rc-sig" onClick={() => { cerrar('fin'); W.dispatchEvent(new Event('lg:abrir-drops')); }}>{corto ? 'Abrirlos' : 'Abrir el cofre'}</button>
               : sinCuenta ? <button type="button" className="btn chico rc-dc" onClick={() => { cerrar('fin'); accion.entrar(); }}>Vincular con Discord y recibirlos</button>
-                : <button type="button" className="btn verde chico" onClick={() => cerrar('fin')}>Listo</button>}
+                : <button type="button" className="btn chico rc-sig" onClick={() => cerrar('fin')}>Listo</button>}
           </div>
           {corto ? (
             <p className="rc-mas">¿Quieres más? El <b>tutorial completo</b> son nueve capítulos de un minuto{enSemanaNueva() && !(tuto() || {}).completo ? <> y da <b>{txtPremio(['cofre', 0])}</b> al terminarlo</> : null}.{' '}

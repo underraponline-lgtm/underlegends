@@ -2,6 +2,9 @@
 // solo en el inicio sino en general… un tutorial corto y la opción de tener un tutorial más completo», y a la maqueta,
 // «el completo en la guía tmb». Acá viven los textos y a qué apunta cada paso; lo que se dibuja, en tutorial.jsx.
 //
+// 🎯 Y A ALGO CHICO (19/11/2026): una marca sobre una sección entera deja el velo sin nada que tapar y no se nota qué se
+// señala. `sel` puede ser una lista: la primera marca que esté en esa pantalla (el celular y la compu no dibujan lo mismo).
+//
 // 🔑 CADA PASO APUNTA A UN `data-tuto`, NO A UN LINK NI A UNA CLASE. El recorrido de antes buscaba el link del menú por
 // su `href`, y cuando el menú pasó a tener listas (Ranking, Eventos, Comunidad) tres de sus cuatro pasos dejaron de
 // encontrar nada sin que nada fallara: la caja salía flotando. Una clase tampoco sirve: se renombra por estilo. El
@@ -14,8 +17,9 @@
 export const CORTO = [
   { sel: 'historias', k: 'LAS HISTORIAS', h: 'Lo nuevo de cada lado',
     p: 'Lo que pasó en cada servidor, en tu país, en tu crew y con la gente que sigues. El aro magenta: tienes algo sin ver.' },
-  { sel: 'hoy', k: 'LO DE HOY', h: 'El evento de hoy, en vivo',
-    p: 'El que se está jugando o el último que se jugó, con su llave. Toca «Ver la llave entera» y mira quién va pasando.' },
+  // (19/11/2026: el escenario del Inicio ya no es «el evento de hoy» sino una tira de momentos; se señala la tira)
+  { sel: ['hoy-tira', 'hoy'], k: 'LO DE AHORA', h: 'Lo que pasa ahora',
+    p: 'Lo que se juega en vivo, lo próximo, el Most Wanted y lo nuevo de la Liga, uno por uno. Toca uno de la tira para verlo.' },
   { sel: 'menu-ranking', k: 'EL RANKING', h: 'Un solo ranking',
     p: 'Juega un evento en cualquier servidor de la Liga y ya entras. Acá están todas las tablas: Temporada, Competitivo, Duelos y más.' },
   { sel: 'campana', k: 'LA CAMPANA', h: 'Que no se te pase',
@@ -32,7 +36,7 @@ export const CAPITULOS = [
     pasos: [
       { sel: 'rk-cab', k: 'EL RANKING', h: 'Las tablas de la temporada', p: 'Juega un evento en cualquier servidor de la Liga y ya entras. Cada puesto suma puntos a tu Temporada.' },
       { sel: 'rk-tablas', k: 'LAS TABLAS', h: 'Cada una mide algo', p: 'Temporada es lo que sumaste; Competitivo, qué tan bien juegas (desde 10 eventos); y también Duelos, Podios, Rachas, Países y Crews.' },
-      { sel: 'rk-tabla', k: 'TU PUESTO', h: 'Búscate', p: 'Toca una columna para ordenar y un nombre para abrir su perfil y sus tarjetas.' },
+      { sel: ['rk-buscar', 'rk-tabla'], k: 'TU PUESTO', h: 'Búscate', p: 'Escribe tu nombre y te encuentra. En la tabla, toca una columna para ordenar y un nombre para abrir su perfil y sus tarjetas.' },
     ] },
   { id: 'eventos', ruta: '#/eventos', pag: ['eventos'], t: 'Eventos y la campana', d: 'El calendario de todos los servidores y el aviso al minuto.',
     linea: 'Cada servidor anuncia sus eventos unos 15 minutos antes: con la campana te llega al minuto.',
@@ -59,7 +63,7 @@ export const CAPITULOS = [
     linea: 'Arrancas con 5.000 Puntos de Tienda: pruébate lo que quieras y compra lo que te guste.',
     pasos: [
       { sel: 'tz-vitrina', k: 'LA VITRINA', h: 'Lo de la semana', p: 'Piezas que sólo están acá y vuelven cada tanto, ya puestas en ti para que veas cómo te quedan.' },
-      { sel: 'tz-probador', k: 'EL PROBADOR', h: 'Pruébate todo', p: 'Toca una pieza y te la pones. Compras sólo lo que te guste, y si no te la pusiste la puedes deshacer en 24 horas.' },
+      { sel: ['tz-piezas', 'tz-probador'], k: 'EL PROBADOR', h: 'Pruébate todo', p: 'Toca una pieza y te la pones. Compras sólo lo que te guste, y si no te la pusiste la puedes deshacer en 24 horas.' },
       { sel: 'tz-mas', k: 'MÁS CON TUS PUNTOS', h: 'Precio por cabeza y más', p: 'Ponle precio a alguien: el primero que le gane en un evento se lleva los Puntos. También tu promo y tu crew.' },
     ] },
   { id: 'crews', ruta: '#/crews', pag: ['crews', 'crew'], t: 'Crews', d: 'Armar la tuya o sumarte, los roles y los tiers.',
@@ -67,7 +71,8 @@ export const CAPITULOS = [
     pasos: [
       { sel: 'crw-cab', k: 'CREWS', h: 'Tu gente', p: 'Un grupo de raperos que suma sus puntos. Tiene Líder, Colíder, Veteranos y Miembros.' },
       { sel: 'crw-todas', k: 'SÚMATE', h: 'O arma la tuya', p: 'Busca una y pide entrar. Para armar una hace falta estar verificado y 2.500 Puntos de Tienda.' },
-      { sel: 'crw-tiers', k: 'LOS TIERS', h: 'De Bronce a Leyenda', p: 'Cada lunes la crew sube o baja según lo que jugó su gente esa semana.' },
+      // (los tiers en escalera sólo se ven con «Cómo funciona» abierto: si no, la tabla de la semana, que los muestra por crew)
+      { sel: ['crw-tiers', 'crw-semana'], k: 'LOS TIERS', h: 'De Bronce a Leyenda', p: 'La tabla de la semana, por tier. Cada lunes la crew sube o baja según lo que jugó su gente esa semana.' },
     ] },
   { id: 'competencias', ruta: '#/competencias', pag: ['competencias', 'ligas'], t: 'Competencias y ligas', d: 'La Copa, la Liga de 10, la Rapid y las ligas de cada servidor.',
     linea: 'Cada semana hay Copa, Rapid y mini eventos, y las ligas de 10 corren toda la temporada.',
@@ -88,7 +93,7 @@ export const CAPITULOS = [
     linea: 'Verifícate en Discord Rap Español con tu país: se abre tu tarjeta de Servidor y puedes comentar.',
     pasos: [
       { sel: 'cu-nav', k: 'TU CUENTA', h: 'Todo lo tuyo', p: 'Tu perfil, tu foto, tus redes, los avisos y los ajustes, en un solo lugar.' },
-      { sel: 'cu-parte', k: 'VERIFÍCATE', h: 'El rol de Miembro', p: 'En Discord Rap Español, con tu país. Se abre tu tarjeta de Servidor, el Pase rapero y los comentarios.' },
+      { sel: ['cu-pasos', 'cu-entrar', 'cu-quien', 'cu-parte'], k: 'VERIFÍCATE', h: 'El rol de Miembro', p: 'En Discord Rap Español, con tu país. Se abre tu tarjeta de Servidor, el Pase rapero y los comentarios.' },
     ] },
 ];
 
