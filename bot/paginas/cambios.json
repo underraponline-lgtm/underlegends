@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.84",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T05:09:00-05:00",
+        "titulo": "Tarjetas rehecha, con la carta de liga",
+        "items": [
+            "**Tarjetas, rehecha**: arriba tu mano —con **tu carta de liga** al lado—, Comparar y las que salieron esta semana.",
+            "**Los cinco tipos en pestañas**, cada una con la carta de su #1: Temporada, Competitiva, Servidor, País **y Liga**.",
+            "En la compu, **los chips ya no se esconden de costado**: bajan de línea y se ven todos."
+        ]
+    },
+    {
         "version": "6.83",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T04:37:00-05:00",

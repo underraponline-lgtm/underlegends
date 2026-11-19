@@ -21,105 +21,171 @@
 .tj-pie small.tj-dib{display:flex;align-items:center;gap:4px;color:var(--magenta-tx)}
 .tj-mas{margin:22px 0 4px}
 
-/* 🗂️ EL REMAKE «A · EL ÁLBUM» (Dlx, 24/10/2026: «Me gusta más A la verdad»). `ta-` porque `tj-` ya lo usan vivo.css y la
-   galería de «Ver todas». En el celular va tu álbum, los cuatro estantes y Comparar, en ese orden; en la compu, tu álbum
-   y Comparar en la columna negra de la izquierda y los estantes a la derecha. */
-.ta-g{display:flex;flex-direction:column}
-.ta-izq{display:contents}
-.ta-alb{order:1}
-.ta-der{order:2}
-.ta-cmp-w{order:3}
-/* tu álbum */
-.ta-alb{display:grid;gap:12px;margin-top:0;padding-top:20px}
-.ta-alb .tag{justify-self:start}
-.ta-h{margin:0;font:900 28px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;overflow-wrap:anywhere}
-.ta-p{margin:0;color:var(--gris);font-size:15px;line-height:1.5;max-width:62ch}
+/* 🏁 6.84, EL REMAKE CON LA ESTRUCTURA DE LA LLAVE (Dlx, 19/11/2026: «A con algo de B pero asegúrate que estén todos los
+   tipos de tarjetas»). Arriba la escena: la franja (css/rka.css), tu mano con Comparar y al lado las nuevas de la semana;
+   abajo el papel con los cinco tipos en pestañas, cada una con la carta de su #1 (lo de la B). `ta-` porque `tj-` ya lo
+   usan vivo.css y la galería de «Ver todas»; ⚠️ tienda3.css usa `.ta-av`, `.ta-carta`, `.ta-fondo`, `.ta-nom` y `.ta-mk`:
+   esos nombres no van acá */
+.tj-liga{--ar:776/1036}
+/* la escena: las piezas de adentro (FaltaLista, SinCarta, los botones, Comparar) leen los tokens del papel; acá valen
+   los de la escena */
+.ta-cab{position:relative;z-index:1;display:grid;gap:18px;padding:24px 16px 28px;color:var(--esc-tinta);
+  --tinta:var(--esc-tinta);--gris:var(--esc-gris);--linea:var(--esc-tinta);--suave:var(--rka-suave);--caja:var(--rka-caja);--fondo:var(--escenario);
+  --inv:var(--esc-tinta);--inv-tinta:var(--escenario);--tj-gana:#29B298;--magenta-tx:#FF4FA3}
+.ta-cab-tx{display:grid;justify-items:start;gap:10px}
+.ta-cab-tx .hero-ev{margin:0}
+.ta-cab-tx .hero-p{max-width:62ch}
+.ta-dos .rka-izq,.ta-dos .rka-rail{gap:18px}
+/* tu mano */
+.ta-alb{display:grid;gap:12px;align-content:start}
+.ta-alb .rka-h{margin:0}
+.ta-h{margin:0;font:900 24px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;overflow-wrap:anywhere}
+.ta-p{margin:0;color:var(--esc-gris);font-size:15px;line-height:1.5;max-width:62ch}
 .ta-p code{font:700 .9em/1 "Space Mono",monospace;padding:2px 5px;background:rgba(127,127,127,.18)}
-.ta-q{display:flex;gap:12px;align-items:center;min-width:0}
-.ta-q > div{min-width:0}
-.ta-mini{width:46px;flex:none}
-/* 📐 «SIN CARTA» en chico (25/10/2026): el texto y la bandera son de una carta de 150 px; en la de 46 px y en el abanico
-   se salían de la caja y pisaban «2 de 4 tarjetas». En la mini, sólo la cara; en el abanico, la cara y el nombre */
-.ta-mini.sincarta{padding:3px;gap:0;border-width:1.5px;border-radius:5px}
-.ta-mini.sincarta b,.ta-mini.sincarta small,.ta-mini.sincarta .sc-flag{display:none}
-.ta-mini.sincarta .sc-cara{width:100%;font-size:16px}
+.ta-n{display:flex;flex-wrap:wrap;align-items:center;gap:0 6px;margin:0;font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--esc-gris)}
+.ta-n b{font:900 17px/1.1 Archivo,sans-serif;letter-spacing:0;color:var(--esc-tinta)}
+.ta-fl{width:20px;height:14px;object-fit:cover;vertical-align:-2px;border-radius:0}
+.ta-mano{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:16px 14px}
+.ta-m{flex:1 1 0;min-width:0;max-width:190px;display:grid;grid-template-rows:1fr auto auto;gap:4px;position:relative}
+.ta-m > .sin-boton,.ta-m > .ta-m-c,.ta-m > .ta-lcarta{align-self:end;display:block;position:relative;width:100%}
+.ta-m .tj-c{filter:drop-shadow(0 6px 12px rgba(0,0,0,.5))}
+.ta-m.bloq .tj-c{opacity:.55;filter:grayscale(1)}
+.ta-m > b{margin-top:6px;font:800 13px/1.1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.ta-m > small{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--esc-gris)}
+.ta-cand{position:absolute;inset:0;display:grid;place-items:center;color:#F6F6F6;pointer-events:none}
+.ta-hueco{display:grid;place-items:center;align-content:center;gap:6px;padding:10px;border:2px dashed var(--esc-gris);background:none;color:var(--esc-gris);text-align:center}
+.ta-hueco b{font:900 40px/1 Archivo,sans-serif;opacity:.5}
+.ta-hueco span{margin-top:56px;font:600 12.5px/1.3 Archivo,sans-serif;text-wrap:balance}
+.ta-m.tj-liga.bloq .tj-c{opacity:1;filter:none}
+.ta-m.tj-liga .ta-cand{place-items:start center;padding-top:30%}
+@media (hover: hover) and (pointer: fine){
+  .ta-m > .sin-boton .tj-c,.ta-m > .ta-lcarta .tj-c{transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+  .ta-m > .sin-boton:hover .tj-c,.ta-m > .ta-lcarta:hover .tj-c{transform:translateY(-6px)}
+}
+/* 📐 «SIN CARTA» en chico: el texto y la bandera son de una carta de 150 px */
 .ta-mano .sincarta{padding:6px;gap:6px;overflow:hidden}
 .ta-mano .sincarta small,.ta-mano .sincarta .sc-flag{display:none}
 .ta-mano .sincarta b{font-size:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ta-n{margin:5px 0 0;font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--gris)}
-.ta-n b{color:var(--tinta)}
-.ta-fl{width:20px;height:14px;object-fit:cover;vertical-align:-2px;margin-right:4px;border-radius:0}
-.ta-seg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.ta-seg i{height:6px;background:var(--suave)}
-.ta-seg i.ok{background:#29B298}
-/* la mano: las cuatro abiertas en abanico, las que faltan en gris con el candado */
-.ta-mano{--w:92px;list-style:none;margin:6px 0 0;padding:0;position:relative;height:calc(var(--w) * 1.62 + 26px)}
-.ta-mn{position:absolute;left:50%;bottom:0;width:var(--w);transform-origin:50% 100%;--c:calc(var(--i) - (var(--n) - 1) / 2);
-  transform:translateX(calc(-50% + var(--c) * var(--w) * .8)) rotate(calc(var(--c) * 6deg)) translateY(calc(var(--d, 0) * 1px));
-  transition:transform .25s cubic-bezier(.2,.8,.2,1)}
-.ta-mn:first-child,.ta-mn:last-child{--d:10}
-.ta-mn .sin-boton{display:block;width:100%}
-.ta-mn .tj-c{filter:drop-shadow(0 6px 12px rgba(0,0,0,.55))}
-.ta-mn.bloq .tj-c{opacity:.5;filter:grayscale(1)}
-.ta-cand{position:absolute;inset:0;display:grid;place-items:center;color:#F6F6F6;pointer-events:none}
-.ta-hueco{display:grid;place-items:center;border:2px dashed #5A5A60;color:#A5A5A0;background:#101012}
-@media (hover: hover) and (pointer: fine){.ta-mn:not(.bloq):hover{--d:-10;z-index:2}}
-.ta-falta{display:grid;gap:8px;padding:12px;border:1.5px dashed #5A5A60}
-.ta-falta small{display:flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
-.ta-falta p{margin:0;font-size:14px;line-height:1.45;color:var(--gris)}
-.ta-falta .tj-falta li{color:var(--tinta)}
-.ta-acc{display:flex;flex-wrap:wrap;gap:8px}
-/* 🏟️ tus cartas de liga (27/10/2026): sólo si tienes alguna; con más de una, el menú (la mejor primero) */
-.ta-ligas{display:grid;gap:8px;padding:12px;border:1.5px solid #3A3A40}
-.ta-ligas small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
-.ta-lsel{display:grid;gap:5px}
-.ta-lsel span{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
-.ta-lsel select{min-height:44px;padding:0 10px;border:2px solid #F6F6F6;border-radius:4px;background:#030304;color:#F6F6F6;font:700 15px/1.2 Archivo,sans-serif;max-width:100%}
-.ta-lcarta{justify-self:center;display:block;width:min(240px,100%)}
-.ta-lcarta img{display:block;width:100%;height:auto}
+.ta-lsel{width:100%;min-height:36px;padding:0 6px;border:1.5px solid var(--esc-gris);border-radius:0;background:var(--escenario);color:var(--esc-tinta);
+  font:700 13px/1.2 Archivo,sans-serif}
+.ta-falta{display:grid;gap:8px;padding:12px;border:1.5px dashed var(--esc-gris)}
+.ta-falta small{display:flex;align-items:center;gap:6px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
+.ta-falta p{margin:0;font-size:14px;line-height:1.45;color:var(--esc-gris)}
+.ta-falta .tj-falta li{color:var(--esc-tinta)}
+.ta-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ta-acc .ta-todas{flex-basis:100%}
 .ta-bh{display:inline-flex;align-items:center;gap:6px}
-.ta-t2{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.ta-t2 span{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--gris)}
-.ta-t2 i{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal;padding:7px 10px;border:1.5px dashed #5A5A60;color:var(--gris)}
-/* los estantes */
-.ta-der{display:grid;gap:30px;min-width:0;padding-bottom:10px}
-.ta-est{display:grid;gap:10px;min-width:0}
-.ta-est-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;border-top:2px solid var(--linea);padding-top:12px}
-.ta-est-t h2{margin:0;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
-.ta-est-t h2 small{margin-left:4px;font:700 14px/1 "Barlow Condensed",sans-serif;font-stretch:100%;letter-spacing:.06em;color:var(--gris)}
-.ta-est-t a{display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
-.ta-est-p{margin:0;color:var(--gris);font-size:14px}
-.ta-chips{flex-wrap:nowrap}
-.ta-chips .ta-fl{width:22px;height:15px;margin:0}
-.ta-riel{list-style:none;margin:0 -16px;padding:2px 16px 8px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;scrollbar-width:none;overscroll-behavior-x:contain}
-.ta-riel::-webkit-scrollbar{display:none}
-.ta-fc{flex:none;width:128px;display:grid;gap:4px;align-content:start;position:relative;scroll-snap-align:start;min-width:0}
-.ta-fc .sin-boton{display:block;width:100%}
-.ta-fc b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ta-fc small{font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--gris)}
-.ta-mas a{display:grid;place-items:center;align-content:center;gap:6px;min-height:186px;border:1.5px solid var(--suave);background:var(--caja);text-align:center}
-.ta-mas b{font:900 26px/1 Archivo,sans-serif}
-.ta-nueva{position:absolute;top:6px;left:6px;padding:4px 6px;background:#E41373;color:#fff;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;font-style:normal;pointer-events:none}
-.tj-grilla li{position:relative}
+.ta-lnk{display:inline-flex;align-items:center;gap:6px;justify-self:start;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;
+  text-decoration:underline;text-underline-offset:3px;white-space:nowrap;color:inherit}
+/* 🃏 las nuevas de la semana: de a dos, con NUEVA arriba de la carta (no encima del número) */
+.ta-nue{display:grid;gap:12px;align-content:start}
+.ta-nue .rka-h{margin:0}
+.ta-nue-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px}
+.ta-nue-l li{display:grid;grid-template-rows:auto 1fr auto auto;gap:5px;min-width:0}
+.ta-nue-l .sin-boton{align-self:end;display:block;width:100%}
+.ta-nue-l b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ta-nue-l small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris)}
+.ta-nueva{justify-self:start;padding:4px 6px;background:#E41373;color:#fff;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;font-style:normal;pointer-events:none}
 /* Comparar: las dos cartas, VS, y una barra por lado que mide su propio valor */
 .ta-cmp{display:grid;gap:12px;min-width:0}
+.ta-cmp .rka-h{margin:0}
+.ta-cmp-t{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.ta-cmp-t .rk-chips{flex:1 1 auto;min-width:0}
 .ta-cmp-el{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .ta-vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px}
 .ta-vs figure{margin:0;display:grid;gap:6px;justify-items:center;min-width:0}
-.ta-vs .sin-boton,.ta-vs .tj-c{max-width:150px;width:100%}
+.ta-vs .sin-boton,.ta-vs .tj-c{max-width:140px;width:100%}
 .ta-vs figcaption{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
-.ta-vs-x{font:900 26px/1 Archivo,sans-serif;font-stretch:125%;color:var(--magenta-tx)}
+.ta-vs-x{font:900 26px/1 Archivo,sans-serif;font-stretch:125%;color:#FF4FA3}
 .ta-barras{list-style:none;margin:0;padding:0;display:grid;gap:9px}
 .ta-barras li{display:grid;grid-template-columns:62px minmax(0,1fr) 70px minmax(0,1fr) 62px;align-items:center;gap:6px}
-.ta-barras li.ta-cara{grid-template-columns:62px minmax(0,1fr) 62px;padding:8px 0;border-top:1px solid var(--suave);border-bottom:1px solid var(--suave)}
-.ta-barras em{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:center;font-style:normal;color:var(--gris)}
-.ta-barras i{display:flex;height:9px;background:var(--caja)}
+.ta-barras li.ta-cara{grid-template-columns:62px minmax(0,1fr) 62px;padding:8px 0;border-top:1px solid var(--esc-linea);border-bottom:1px solid var(--esc-linea)}
+.ta-barras em{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:center;font-style:normal;color:var(--esc-gris)}
+.ta-barras i{display:flex;height:9px;background:var(--rka-suave)}
 .ta-barras i.ba{justify-content:flex-end}
 .ta-barras u{display:block;height:100%;background:#8A8A86;text-decoration:none}
 .ta-barras u.g{background:#29B298}
 .ta-barras span{font:900 15px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
 .ta-barras li > span:last-child{text-align:right}
-.ta-barras span.gana{color:var(--tj-gana)}
+.ta-barras span.gana{color:#3CCB9A}
+.ta-chips{flex-wrap:nowrap}
+/* 🖱️ en la compu bajan de línea (vivo.css, `.rk-chips`): con el mouse una fila de costado no se mueve */
+@media (hover: hover) and (pointer: fine){.ta-chips{flex-wrap:wrap;overflow-x:visible}}
+.ta-chips .ta-fl{width:22px;height:15px;margin:0}
+
+/* ── el papel: los cinco tipos en pestañas, cada una con la carta de su #1 ── */
+.ta-pes{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:10px;margin:0 0 16px}
+.ta-pes button{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;gap:10px;min-width:0;min-height:72px;padding:8px 10px;
+  border:1.5px solid var(--suave);background:var(--caja);color:var(--tinta);text-align:left;cursor:pointer}
+.ta-pes-c{width:40px;display:block}
+.ta-pes .ta-pes-c.tj-c,.ta-pes img.ta-pes-c{height:auto;aspect-ratio:auto}
+.ta-pes button span{display:grid;gap:4px;min-width:0}
+.ta-pes b{font:800 15px/1.1 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ta-pes small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:var(--gris)}
+.ta-pes button.on{border-color:var(--inv);background:var(--inv);color:var(--inv-tinta);box-shadow:5px 5px 0 #29B298}
+.ta-pes button.on small{color:inherit;opacity:.75}
+.ta-pes button:focus-visible{outline:2px solid #FF4FA3;outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.ta-pes button:not(.on):hover{border-color:var(--tinta)}}
+.ta-mide{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;margin:0 0 14px}
+.ta-mide p{margin:0;max-width:72ch;color:var(--gris);font:500 14.5px/1.45 Archivo,sans-serif}
+.ta-mide p span{color:var(--tinta);font-weight:600}
+.ta-papel .ta-chips{margin:0 0 18px}
+/* el podio (el #1 en la pieza de tinta con la sombra verde, como la final de la llave) y los seis siguientes */
+.ta-tipo{display:grid;gap:26px}
+.ta-podio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);gap:14px;align-items:end}
+.ta-pd{display:grid;gap:10px;min-width:0;position:relative}
+.ta-pd-c{display:block;width:100%}
+.ta-pd .ta-nueva{position:absolute;top:6px;left:6px}
+.ta-ped{display:grid;justify-items:center;gap:3px;min-width:0;padding:10px 8px;background:var(--caja);text-align:center}
+.ta-ped b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:900 22px/1 Archivo,sans-serif;font-stretch:112%}
+.ta-ped span:not(.ta-yo){max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 13px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.ta-ped small{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+/* el nombre del grupo (un servidor, un país, una liga) es más largo que «#1» */
+.ta-ped b.gr{font-size:17px;line-height:1.1}
+.ta-pd.p1 .ta-ped{background:var(--inv);color:var(--inv-tinta);box-shadow:6px 6px 0 #29B298}
+.ta-pd.p1 .ta-ped small{color:inherit;opacity:.75}
+.ta-pd.tu .ta-ped{outline:3px solid #FF4FA3;outline-offset:-3px}
+.ta-yo{padding:2px 6px;background:#E41373;color:#fff;font:900 11px/1.1 Archivo,sans-serif}
+.ta-resto{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px;align-content:start}
+.ta-resto li{display:grid;grid-template-rows:1fr auto auto auto;gap:4px;min-width:0;position:relative}
+.ta-resto .ta-rc{align-self:end;display:block;width:100%}
+.ta-resto .ta-nueva{position:absolute;top:6px;left:6px}
+.ta-rn{justify-self:start;margin-top:4px;padding:3px 6px;background:var(--inv);color:var(--inv-tinta);font:900 12px/1 Archivo,sans-serif;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ta-resto b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ta-resto small{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ta-resto li.tu .ta-rn{background:#E41373;color:#fff}
+.ta-todas-b{display:flex;justify-content:center;width:max-content;max-width:100%;margin:26px auto 0}
+@media (hover: hover) and (pointer: fine){
+  .ta-pd-c .tj-c,.ta-rc .tj-c{transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+  .ta-pd-c:hover .tj-c,.ta-rc:hover .tj-c{transform:translateY(-4px)}
+}
+@media (min-width: 900px){
+  .ta-cab{padding:30px var(--gut) 34px}
+  .ta-tipo{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:30px;align-items:start}
+}
+@media (max-width: 899px){
+  .ta-mano{gap:16px 12px}
+  .ta-m{flex:0 0 calc(50% - 6px);max-width:none}
+  /* la quinta (la de liga), sola en su fila: al medio y del ancho de las otras */
+  .ta-m:nth-child(5):last-child{margin:0 auto}
+  .ta-pes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ta-pes button:last-child:nth-child(odd){grid-column:1/-1}
+  .ta-podio{gap:8px}
+  .ta-ped{padding:8px 4px}
+  .ta-ped b{font-size:17px}
+  .ta-ped b.gr{font-size:14px}
+  .ta-ped span:not(.ta-yo){font-size:12px}
+  .ta-ped small{font-size:12px}
+  .ta-resto{gap:16px 10px}
+  .ta-vs .sin-boton,.ta-vs .tj-c{max-width:120px}
+  .ta-barras li{grid-template-columns:auto minmax(0,1fr) 56px minmax(0,1fr) auto;gap:5px}
+  .ta-barras span{font-size:13.5px}
+  .ta-alb .rka-h,.ta-nue .rka-h,.ta-cmp .rka-h{flex-wrap:wrap;gap:6px 8px}
+  .ta-alb .rka-h small,.ta-nue .rka-h small,.ta-cmp .rka-h small{text-align:left}
+  .ta-nue-l li:nth-child(n+5){display:none}
+}
+@media (prefers-reduced-motion: reduce){.ta-m .tj-c,.ta-pd-c .tj-c,.ta-rc .tj-c{transition:none}}
+
 /* la hoja: abajo en el celular, al centro en la compu */
 .ta-velo{position:fixed;inset:0;z-index:120;display:flex;align-items:flex-end;justify-content:center;background:rgba(3,3,4,.78);overscroll-behavior:contain}
 .ta-hoja{width:100%;max-width:480px;max-height:94vh;max-height:94dvh;overflow:auto;display:grid;gap:10px;justify-items:center;
@@ -138,41 +204,10 @@
 .ta-h-acc .btn.borde2{color:#F6F6F6;border-color:#F6F6F6}
 @media (hover: hover) and (pointer: fine){.ta-h-t{display:none}}
 .ta-h-t{margin:0;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+.tj-grilla li{position:relative}
+.tj-grilla .ta-nueva{position:absolute;top:6px;left:6px}
 @media (min-width: 900px){
-  .app .ta-g{display:grid;grid-template-columns:400px minmax(0,1fr);align-items:stretch}
-  .app .ta-izq{display:block;--magenta-tx:#E41373;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;
-    --inv:#F6F6F6;--inv-tinta:#030304;--tj-gana:#29B298;background:var(--fondo);color:var(--tinta)}
-  .noche .ta-izq{--fondo:#121214}
-  .app .ta-izq .sec{padding:26px 28px 30px;margin-top:0}
-  /* 📌 COMPARAR BAJA CON LA PÁGINA (18/11/2026, «asegúrate que todas las páginas no tengan espacios innecesarios»): la
-     columna negra mide lo que los estantes (2.100 px) y su contenido terminaba a los 900, con 408×1.208 de negro vacío
-     debajo (medido a 1333 px, sin cuenta). Tu álbum sube con la página y Comparar (576 px) se queda arriba hasta el
-     final de los estantes: es lo que se usa mientras se miran. Entra entero desde 652 px de alto de pantalla */
-  .app .ta-cmp-w{position:sticky;top:76px}
-  .app .ta-cmp-w{padding-top:6px}
-  .app .ta-mano{--w:88px}
-  .app .ta-der{padding:26px var(--gut) 40px 40px}
-  .app .ta-riel{margin:0;padding:2px 0 8px;scroll-padding:0}
-  .app .ta-fc{width:152px}
-  .app .ta-mas a{min-height:220px}
   .app .ta-velo{align-items:center}
   .app .ta-hoja{border-radius:4px;max-width:440px;padding-bottom:22px}
   .app .ta-asa{display:none}
 }
-
-/* 🃏 «Salieron esta semana»: las cartas nuevas en abanico, arriba de los estantes (de la maqueta B de Publicaciones) */
-.ta-aba{display:grid;gap:10px;min-width:0}
-.ta-aba .ta-est-p b{font-weight:800;color:var(--tinta)}
-.ta-aba-f{display:flex;align-items:flex-end;overflow-x:auto;scrollbar-width:none;padding:12px 4px 6px 8px}
-.ta-aba-f::-webkit-scrollbar{display:none}
-.ta-aba-f button{flex:none;position:relative;display:grid;justify-items:center;gap:6px;margin-left:-22px;padding:0;border:0;background:none;cursor:pointer;
-  transition:transform .18s cubic-bezier(.23,1,.32,1)}
-.ta-aba-f button:first-child{margin-left:0}
-.ta-aba-f button:nth-child(odd){transform:rotate(-4deg)}
-.ta-aba-f button:nth-child(even){transform:rotate(3deg) translateY(6px)}
-.ta-aba-c{width:104px;height:auto;display:block;filter:drop-shadow(0 8px 12px rgba(0,0,0,.35))}
-.ta-aba-f small{max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
-@media (hover: hover) and (pointer: fine){.ta-aba-f button:hover{transform:translateY(-10px) rotate(0);z-index:2}}
-.ta-aba-mas{flex:none;align-self:center;margin-left:14px;font:900 22px/1 Archivo,sans-serif;color:var(--gris)}
-@media (max-width:599.98px){.ta-aba-c{width:84px}.ta-aba-f button{margin-left:-18px}}
-@media (prefers-reduced-motion: reduce){.ta-aba-f button{transition:none}}

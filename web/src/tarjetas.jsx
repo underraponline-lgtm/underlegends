@@ -14,7 +14,8 @@
 // /api/perfiles), las filas de «Comparar» (`CMP_FILAS` de app.js) y «Comparar conmigo» del perfil (`?a=<tú>&b=<él>`).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, norm, num, siglaDe, utc } from './liga.js';
-import { Bandera, Carta, Compartir, FaltaLista, Ico, SinCarta, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Carta, Compartir, FaltaLista, Ico, Sec, SinCarta, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
+import { Franja } from './ranking_a.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { usePaseDe } from './pase.js';
 import { svElegido, useElegidos } from './elegidos.js';
@@ -29,7 +30,9 @@ import { usePases } from './pase.js';
 usarCss('tarjetas', CSS_PAGINA);
 
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
-const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
+// 🏟️ y la de liga (05_Liga/), que no cuenta en tu álbum de la temporada: es de cada liga que juegas
+const TIPOS = [...ORDEN, 'liga'];
+const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País', liga: 'Liga' };
 // las filas de «Comparar»: [campo de la tabla, cómo se llama, 1 = gana el más alto · -1 = el más bajo]
 const FILAS = {
   temporada: [['ovr', 'OVR', 1], ['pts', 'Puntos', 1], ['ev', 'Eventos', 1], ['pod', 'Podios', 1], ['pos', 'Puesto', -1]],
@@ -168,75 +171,109 @@ function TuCarta({ liga, k, cual, cls, nombre }) {
   return <img className={cls} alt={'Tu carta ' + cual} src={liga.d.r2 + '/' + encodeURIComponent(k) + '/' + cual + '.webp'} loading="lazy" onError={() => setMal(true)} />;
 }
 
-function Mano({ liga, k, tiene, bl, onAbrir, nombre }) {
-  const n = ORDEN.length;
-  // las que tienes primero; las que te faltan, al final de la mano
-  const orden = ORDEN.filter((c) => tiene.includes(c)).concat(ORDEN.filter((c) => !tiene.includes(c)));
+// 🏟️ LAS CARTAS DE LIGA (/api/ligas, `cartas` de 05_Liga/ciclo.py: `{clave: [[liga, versión, OVR de liga, puesto], …]}`,
+// la mejor primero). Un pedido por lobby (`pedirLigas()` lo comparte con la página de Ligas). `null` mientras baja
+function useLigas(liga) {
+  const [x, setX] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    pedirLigas(liga.d.sello).then((d) => { if (vivo) setX(d || {}); });
+    return () => { vivo = false; };
+  }, [liga.d.sello]);
+  return x;
+}
+// el nombre y el servidor de cada liga; las de una temporada que terminó (`comp`, 11/11/2026), con cuál fue
+function nombresLiga(x) {
+  const nom = {}, svDe = {};
+  ((x && x.lobby && x.lobby.ligas) || []).forEach((L) => { nom[L.id] = L.n; svDe[L.id] = L.sv; });
+  Object.values((x && x.comp) || {}).forEach((C) => { nom[C.id] = C.n + ' · ' + (C.lt ? 'T' + C.lt : 'terminada'); svDe[C.id] = C.sv; });
+  return { nom, svDe };
+}
+const urlLiga = (liga, k, m, chica) => liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + m[0] + (chica ? '.chica' : '') + '.webp?v=' + m[1];
+// 🏁 las de cada liga EN CURSO (las de una temporada terminada ya no cambian: viven en el Álbum de esa liga), el #1
+// primero (el puesto; el dueño, sin puesto, al final) y las ligas de la más grande a la más chica: como `grupos()`
+function gruposLiga(x) {
+  const act = new Set(((x && x.lobby && x.lobby.ligas) || []).map((L) => L.id));
+  const m = new Map();
+  Object.entries((x && x.cartas) || {}).forEach(([k, ms]) => (ms || []).forEach((c) => {
+    if (!act.has(c[0])) return;
+    if (!m.has(c[0])) m.set(c[0], []);
+    m.get(c[0]).push({ k, c });
+  }));
+  m.forEach((xs) => xs.sort((a, b) => (a.c[3] || 999) - (b.c[3] || 999) || (b.c[2] || 0) - (a.c[2] || 0)));
+  return [...m.entries()].sort((a, b) => b[1].length - a[1].length);
+}
+const cortoLiga = (n) => String(n || '').replace('FMH ', '').replace('FMS ', '').replace('Snake League ', '').replace('Champions League ', 'Champions ').replace('Snake ', '');
+
+// ── TU MANO: las cuatro en su lugar (la que falta, gris y con candado) y la de liga al lado ──
+function Mano({ liga, k, f, tiene, bl, onAbrir, nombre, x }) {
   return (
-    <ol className="ta-mano" style={{ '--n': n }} aria-label="Tu álbum">
-      {orden.map((c, i) => {
+    <ol className="ta-mano" aria-label="Tu mano">
+      {ORDEN.map((c) => {
         const la = tiene.includes(c);
         let img;
         if (la) img = <TuCarta liga={liga} k={k} cual={c} cls="tj-c" nombre={nombre} />;
         else if (bl.includes(c)) img = <img className="tj-c" alt="" src={liga.d.r2 + '/' + encodeURIComponent(k) + '/bloq-' + c + '.webp'} loading="lazy" />;
-        else img = <span className="tj-c ta-hueco"><Ico n="candado" t={26} /></span>;
+        else img = <span className="tj-c ta-hueco"><b>?</b></span>;
         return (
-          <li key={c} className={'ta-mn tj-' + c + (la ? '' : ' bloq')} style={{ '--i': i }}>
+          <li key={c} className={'ta-m tj-' + c + (la ? '' : ' bloq')}>
             {la ? (
               <button type="button" className="sin-boton" onClick={() => onAbrir(c)} aria-label={'Tu carta de ' + NOMBRE[c]}>{img}</button>
-            ) : <>{img}<span className="ta-cand" aria-label={'Tu ' + NOMBRE[c] + ', bloqueada'}><Ico n="candado" t={22} /></span></>}
+            ) : <span className="ta-m-c">{img}<span className="ta-cand" aria-label={'Tu ' + NOMBRE[c] + ', bloqueada'}><Ico n="candado" t={22} /></span></span>}
+            <b>{NOMBRE[c]}</b>
+            <small>{la ? (f ? pieDe(liga, f, c, 0, false) : 'la tienes') : 'todavía no'}</small>
           </li>
         );
       })}
+      <LigaCelda liga={liga} k={k} x={x} />
     </ol>
   );
 }
 
-// 🏟️ TUS CARTAS DE LIGA (27/10/2026). Dlx: «que todas las personas de las ligas tengan su tarjeta de ligas y que
-// únicamente ellos tengan acceso… que les aparezca el botón», y «aquellas personas que tengan más de 1 tarjeta de liga…
-// un dropdown menu para elegir… pero por default verían la mejor». Sale SÓLO si tienes alguna (`cartas` de /api/ligas,
-// que deja `05_Liga/ciclo.py`), la mejor primero (el OVR de liga más alto). Sin ninguna, no se dibuja nada
-function TusLigas({ liga, k }) {
-  const [x, setX] = useState(null);
+// 🏟️ TU CARTA DE LIGA (27/10/2026). Dlx: «que todas las personas de las ligas tengan su tarjeta de ligas… que les
+// aparezca el botón», y con más de una «un dropdown menu para elegir… pero por default verían la mejor». Sin ninguna, la
+// celda dice cómo se consigue (6.84: «asegúrate que estén todos los tipos de tarjetas»)
+function LigaCelda({ liga, k, x }) {
   const [sel, setSel] = useState(0);
   const pub = usePases();
-  useEffect(() => {
-    let vivo = true;
-    pedirLigas(liga.d.sello).then((d) => { if (vivo) setX(d); });
-    return () => { vivo = false; };
-  }, [liga.d.sello]);
-  const mias = (x && x.cartas && x.cartas[k]) || [];
-  if (!mias.length) return null;
-  const nom = {}, svDe = {};
-  ((x.lobby && x.lobby.ligas) || []).forEach((L) => { nom[L.id] = L.n; svDe[L.id] = L.sv; });
-  // 🏆 y las de una temporada que terminó (`comp`, 11/11/2026): su liga y cuál fue
-  Object.values(x.comp || {}).forEach((C) => { nom[C.id] = C.n + ' · ' + (C.lt ? 'T' + C.lt : 'terminada'); svDe[C.id] = C.sv; });
+  if (!x) return null;
+  const mias = (x.cartas && x.cartas[k]) || [];
+  if (!mias.length) {
+    return (
+      <li className="ta-m tj-liga bloq">
+        <a className="ta-m-c" href="#/ligas" aria-label="Las ligas: tu carta de liga sale al jugar una">
+          <span className="tj-c ta-hueco"><span>Sale al jugar una liga de un servidor</span></span>
+          <span className="ta-cand"><Ico n="candado" t={22} /></span>
+        </a>
+        <b>{NOMBRE.liga}</b><small>todavía no</small>
+      </li>
+    );
+  }
+  const { nom, svDe } = nombresLiga(x);
   const c = mias[Math.min(sel, mias.length - 1)];
   const de = nom[c[0]] || c[0];
   // 👑 la del dueño no tiene puesto ni OVR (no juega): va «—»
-  const txt = (m) => (nom[m[0]] || m[0]) + (m[3] ? ' · ' + m[3] + '.º · OVR ' + m[2] : ' · —');
+  const txt = (m) => cortoLiga(nom[m[0]] || m[0]) + (m[3] ? ' · ' + m[3] + '.º' : ' · —');
   // 🖼️ con su marco del Pase, si lo tiene («el afiche pegado», web/src/marcos.jsx)
   const mk = pub && pub.m && pub.m[k];
-  const src = liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + c[0] + '.webp?v=' + c[1];
-  const img = <img src={src} alt={'Tu carta de liga de ' + de} loading="lazy" />;
+  const src = urlLiga(liga, k, c, false);
+  const img = <img className="tj-c" src={src} alt={'Tu carta de liga de ' + de} loading="lazy" />;
   return (
-    <div className="ta-ligas">
-      <small>TUS CARTAS DE LIGA · {mias.length}</small>
-      {mias.length > 1 ? (
-        <label className="ta-lsel"><span>Elige la liga</span>
-          <select value={sel} onChange={(e) => setSel(+e.target.value)}>
-            {mias.map((m, i) => <option key={m[0]} value={i}>{txt(m) + (i === 0 ? ' · la mejor' : '')}</option>)}
-          </select>
-        </label>
-      ) : <p className="ta-p">{txt(c)}</p>}
+    <li className="ta-m tj-liga">
       <a className="ta-lcarta" href={'#/ligas/' + encodeURIComponent(c[0])} aria-label={'Tu carta de ' + de + ': ver la liga'}>
-        {mk ? <ConMarco m={mk} cual="liga" ancho={240} src={src} sigla={siglaDe(svDe[c[0]] || '')}>{img}</ConMarco> : img}
+        {mk ? <ConMarco m={mk} cual="liga" ancho={160} src={src} sigla={siglaDe(svDe[c[0]] || '')}>{img}</ConMarco> : img}
       </a>
-    </div>
+      <b>{NOMBRE.liga}{mias.length > 1 ? ' · ' + mias.length : ''}</b>
+      {mias.length > 1 ? (
+        <select className="ta-lsel" value={sel} onChange={(e) => setSel(+e.target.value)} aria-label="Elige la liga">
+          {mias.map((m, i) => <option key={m[0]} value={i}>{txt(m) + (i === 0 ? ' · la mejor' : '')}</option>)}
+        </select>
+      ) : <small>{txt(c)}{c[3] ? ' · OVR ' + c[2] : ''}</small>}
+    </li>
   );
 }
 
-function Album({ liga, dc, perf, onAbrir }) {
+function Album({ liga, dc, perf, onAbrir, x }) {
   const k = (liga.yo && liga.yo.k) || (dc && dc.clave) || '';
   // 🔢 la fila de la tabla manda sobre lo que dijo la sesión al entrar: `dc.cs` es de ESE momento, y con la fila ya sin
   // tarjetas el álbum decía «2 de 4» con dos «SIN CARTA» y el perfil «todavía ninguna» (Dlx, 25/10/2026)
@@ -252,20 +289,20 @@ function Album({ liga, dc, perf, onAbrir }) {
   const mira = !!(f || (dc && (dc.clave || dc.id)));
   if (!mira) {
     return (
-      <section className="sec negra ta-alb">
-        <span className="tag">TU ÁLBUM · {liga.temp}</span>
-        <h1 className="ta-h">¿Y las tuyas?</h1>
+      <div className="rka-caja ta-alb">
+        <h2 className="rka-h">Tu mano<small>{liga.temp}</small></h2>
+        <h3 className="ta-h">¿Y las tuyas?</h3>
         <p className="ta-p">Entra con Discord y te mostramos tus tarjetas, y lo que te falta para las que no tienes.</p>
         <div className="ta-acc"><button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></div>
-      </section>
+      </div>
     );
   }
   if (!k) {
     // entró con Discord, pero su cuenta no es (todavía) de nadie de la Lista
     return (
-      <section className="sec negra ta-alb">
-        <span className="tag">TU ÁLBUM · {liga.temp}</span>
-        <h1 className="ta-h">Todavía no tienes tarjetas</h1>
+      <div className="rka-caja ta-alb">
+        <h2 className="rka-h">Tu mano<small>{liga.temp}</small></h2>
+        <h3 className="ta-h">Todavía no tienes tarjetas</h3>
         <p className="ta-p">Son dos pasos: verifícate —estar en Discord Rap Español con el rol Miembro y tu país— y se desbloquea
           tu Servidor; cumple tu primera Tarea del Pase de rapero y se desbloquea tu Temporada. Escribe <code>/verificar</code> en
           Discord y el bot te dice qué te falta.</p>
@@ -273,7 +310,7 @@ function Album({ liga, dc, perf, onAbrir }) {
           {dra ? <a className="btn verde chico" href={dra} target="_blank" rel="noopener noreferrer">Entrar a Discord Rap Español ↗</a> : null}
           <a className="btn borde2 chico" href="#/guia">Cómo funciona</a>
         </div>
-      </section>
+      </div>
     );
   }
   const faltan = ORDEN.filter((c) => !tiene.includes(c));
@@ -294,134 +331,192 @@ function Album({ liga, dc, perf, onAbrir }) {
   if (!f && !liga.T[k] && tiene.length && (!liga.X[k] || liga.X[k].album)) {
     liga.fuera(Object.assign({ k, n: nombre, cc, sv }, p && p.f, { c: [...new Set([...((p && p.f && p.f.c) || []), ...tiene])], album: 1 }));
   }
-  const primera = ORDEN.find((c) => tiene.includes(c));
+  const nl = ((x && x.cartas && x.cartas[k]) || []).length;
   return (
-    <section className="sec negra ta-alb">
-      <span className="tag">TU ÁLBUM · {liga.temp}</span>
-      <div className="ta-q">
-        {primera ? <TuCarta liga={liga} k={k} cual={primera} cls="tj-c ta-mini" nombre={nombre} /> : null}
-        <div>
-          <h1 className="ta-h">{nombre}</h1>
-          <p className="ta-n"><b>{tiene.length} de {ORDEN.length}</b> tarjetas
-            {cc ? <> · <Bandera cc={cc} cls="ta-fl" />{nombrePais(cc)}</> : null}{sv ? ' · ' + siglaDe(sv) : ''}</p>
-        </div>
-      </div>
-      <div className="ta-seg" role="img" aria-label={tiene.length + ' de ' + ORDEN.length + ' tarjetas'}>
-        {ORDEN.map((c) => <i key={c} className={tiene.includes(c) ? 'ok' : ''} />)}
-      </div>
-      <Mano liga={liga} k={k} tiene={tiene} bl={bl} onAbrir={onAbrir} nombre={nombre} />
+    <div className="rka-caja ta-alb">
+      <h2 className="rka-h">Tu mano<small>{tiene.length + ' de ' + ORDEN.length + (nl ? ' + ' + nl + ' de liga' : '') + ' · ' + T2.join(' e ') + ' llegan en la T2'}</small></h2>
+      <p className="ta-n">{cc ? <Bandera cc={cc} cls="ta-fl" /> : null}<b>{nombre}</b>{cc ? ' · ' + nombrePais(cc) : ''}{sv ? ' · ' + siglaDe(sv) : ''}</p>
+      <Mano liga={liga} k={k} f={f} tiene={tiene} bl={bl} onAbrir={onAbrir} nombre={nombre} x={x} />
       {fc ? (
         <div className="ta-falta">
           <small><Ico n="candado" t={13} />TU {NOMBRE[fc].toUpperCase()}{faltan.length > 1 ? ' · Y ' + (faltan.length - 1) + ' MÁS' : ''}</small>
           {fx.cs && fx.cs.length ? <FaltaLista q={fx.cs} tu /> : <p>{fx.txt}</p>}
           {fx.ir ? <a className="tj-lnk" href={fx.ir[0]}>{fx.ir[1]}</a> : null}
         </div>
-      ) : <p className="ta-p ta-todas">Tienes las cuatro de la {liga.temp}.</p>}
-      <TusLigas liga={liga} k={k} />
+      ) : null}
       <div className="ta-acc">
+        {fc ? null : <p className="ta-p ta-todas">Tienes las cuatro de la {liga.temp}.</p>}
         {tiene.length ? <BotonHistoria liga={liga} k={k} album={ORDEN.filter((c) => tiene.includes(c))} cls="btn verde chico ta-bh" texto="Mi álbum para historias" /> : null}
         {/* 🪪 `liga.existe(k)` y no `liga.T[k]` (18/11/2026): quien está fuera de las 200 filas también tiene perfil, y el botón no le salía */}
         {liga.existe(k) ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(k)}>Ver mi perfil</a> : null}
       </div>
-      <div className="ta-t2"><span>LLEGAN EN LA T2</span>{T2.map((x) => <i key={x}>{x}</i>)}</div>
-    </section>
+    </div>
   );
 }
 
-// ── un estante: los de un tipo, de costado. La Servidor y la de País traen sus grupos: tocar uno muestra los de ese
-// servidor o ese país; sin tocar, el #1 de cada uno ──
-function Estante({ liga, t, lista, nuevas, onAbrir }) {
-  const req = (liga.d.requisitos || []).find((r) => r.id === t) || {};
-  const [g, setG] = useState('');
-  const gs = useMemo(() => (t === 'servidor' || t === 'pais' ? grupos(t, lista) : null), [t, lista]);
-  const tope = 10;
-  let fs;
-  let orden;
-  let grupo = false;
-  if (gs && g) {
-    fs = (gs.find((x) => x[0] === g) || [0, []])[1];
-    grupo = true;
-    orden = 'de ' + (t === 'servidor' ? siglaDe(g) : nombrePais(g)) + ', por Score';
-  } else if (gs) {
-    fs = gs.map((x) => x[1][0]);
-    orden = 'el #1 de cada uno';
-  } else {
-    fs = ordenar(t, lista);
-    orden = t === 'competitivo' ? 'por Score' : 'por OVR';
-  }
-  const vis = fs.slice(0, tope);
-  if (!lista.length) return null;
-  return (
-    <section className="ta-est" aria-label={NOMBRE[t]}>
-      <div className="ta-est-t">
-        <h2>{NOMBRE[t]} <small>{num(lista.length)} · {orden}</small></h2>
-        <a href={'#/tarjetas/' + t}>Ver todas <Ico n="flecha" t={14} /></a>
-      </div>
-      {req.mide ? <p className="ta-est-p">{req.mide}</p> : null}
-      {gs && gs.length > 1 ? (
-        <div className="rk-chips ta-chips" role="group" aria-label={t === 'servidor' ? 'Por servidor' : 'Por país'}>
-          {gs.map(([x, v]) => (
-            <button type="button" key={x} className={g === x ? 'on' : ''} aria-pressed={g === x} onClick={() => setG(g === x ? '' : x)}>
-              {t === 'servidor' ? <img alt="" src={liga.logo(x)} /> : <Bandera cc={x} cls="ta-fl" />}
-              {t === 'servidor' ? siglaDe(x) + ' · ' : ''}{v.length}
-            </button>
-          ))}
-        </div>
-      ) : null}
-      <ul className={'ta-riel tj-' + t}>
-        {vis.map((f, i) => (
-          <li key={f.k} className="ta-fc">
-            <button type="button" className="sin-boton" onClick={() => onAbrir(t, fs, i, grupo)} aria-label={'La ' + NOMBRE[t] + ' de ' + limpio(f.n)}>
-              <Carta liga={liga} k={f.k} cual={t} cls="tj-c" abre={false} />
-            </button>
-            {nuevas.has(f.k) ? <em className="ta-nueva">NUEVA</em> : null}
-            <b>{limpio(f.n)}</b>
-            <small>{pieDe(liga, f, t, i, grupo)}</small>
-          </li>
-        ))}
-        {fs.length > vis.length ? (
-          <li className="ta-fc ta-mas"><a href={'#/tarjetas/' + t}><b>+{num(fs.length - vis.length)}</b><small>Ver las {num(lista.length)}</small></a></li>
-        ) : null}
-      </ul>
-    </section>
-  );
+// ── 🃏 LAS QUE SALIERON ESTA SEMANA (del muro, como las «NUEVA» de abajo): la más nueva de cada tipo primero, una por
+// persona y tipo. Sin ninguna esta semana no se dibuja ──
+function nuevasDeLaSemana(liga) {
+  const d = liga.desdeLunes();
+  const vistos = new Set();
+  return liga.muro.filter((it) => it.tipo === 'tarjeta' && ORDEN.includes(it.carta) && utc(it.t) >= d)
+    .sort((a, b) => utc(b.t) - utc(a.t))
+    .filter((it) => { const k = (it.ks || [])[0]; if (!k || !liga.T[k] || vistos.has(k + it.carta)) return false; vistos.add(k + it.carta); return true; });
 }
-
-// ── 🃏 LAS QUE SALIERON ESTA SEMANA, EN ABANICO (Dlx, 15/11/2026, de la maqueta B de Publicaciones: «Cartas en abanico →
-// Tarjetas»). Del muro, como las «NUEVA» de los estantes: la más nueva primero, una por persona y tipo. Sin ninguna esta
-// semana no se dibuja ──
-function Abanico({ liga, onAbrir }) {
-  const us = useMemo(() => {
-    const d = liga.desdeLunes();
-    const vistos = new Set();
-    return liga.muro.filter((it) => it.tipo === 'tarjeta' && ORDEN.includes(it.carta) && utc(it.t) >= d)
-      .sort((a, b) => utc(b.t) - utc(a.t))
-      .filter((it) => { const k = (it.ks || [])[0]; if (!k || !liga.T[k] || vistos.has(k + it.carta)) return false; vistos.add(k + it.carta); return true; });
-  }, [liga]);
-  if (!us.length) return null;
-  const nombres = [...new Set(us.map((it) => limpio(liga.T[it.ks[0]].n)))];
-  const vis = us.slice(0, 14);
+function Nuevas({ liga, us, onAbrir }) {
+  // seis (cuatro en el celular, tarjetas.css): la más nueva de cada tipo y, si sobra lugar, las siguientes. Seis llenan
+  // la columna al lado de tu mano y Comparar
+  const vis = useMemo(() => {
+    const una = ORDEN.map((c) => us.find((it) => it.carta === c)).filter(Boolean);
+    return una.concat(us.filter((it) => !una.includes(it))).slice(0, 6);
+  }, [us]);
   return (
-    <section className="ta-aba" aria-label="Las que salieron esta semana">
-      <div className="ta-est-t">
-        <h2>Salieron esta semana <small>{num(us.length)}</small></h2>
-        <a href="#/publicaciones">En Publicaciones <Ico n="flecha" t={14} /></a>
-      </div>
-      <p className="ta-est-p"><b>{nombres.slice(0, 3).join(', ')}</b>{nombres.length > 3 ? ' y ' + (nombres.length - 3) + ' más' : ''}{nombres.length > 1 ? ' ya tienen su carta nueva.' : ' ya tiene su carta nueva.'}</p>
-      <div className="ta-aba-f">
-        {vis.map((it, i) => {
+    <div className="rka-caja ta-nue" aria-label="Las que salieron esta semana">
+      <h2 className="rka-h">Salieron esta semana<small>{num(us.length) + ' · desde el lunes'}</small></h2>
+      <ul className="ta-nue-l">
+        {vis.map((it) => {
           const k = it.ks[0];
-          const igual = i > 0 && vis[i - 1].ks[0] === k;              // varias de la misma persona: el nombre, una vez
           return (
-            <button type="button" key={k + it.carta} onClick={() => onAbrir(it.carta, [liga.T[k]], 0, false)} aria-label={'La ' + NOMBRE[it.carta] + ' de ' + limpio(liga.T[k].n)}>
-              <Carta liga={liga} k={k} cual={it.carta} cls="ta-aba-c" abre={false} />
-              <small aria-hidden={igual || undefined}>{igual ? ' ' : limpio(liga.T[k].n)}</small>
-            </button>
+            <li key={k + it.carta}>
+              <em className="ta-nueva">NUEVA</em>
+              <button type="button" className="sin-boton" onClick={() => onAbrir(it.carta, [liga.T[k]], 0, false)} aria-label={'La ' + NOMBRE[it.carta] + ' de ' + limpio(liga.T[k].n)}>
+                <Carta liga={liga} k={k} cual={it.carta} cls="tj-c" abre={false} />
+              </button>
+              <b>{limpio(liga.T[k].n)}</b><small>{NOMBRE[it.carta]}</small>
+            </li>
           );
         })}
-        {us.length > vis.length ? <span className="ta-aba-mas">+{num(us.length - vis.length)}</span> : null}
+      </ul>
+      <a className="ta-lnk" href="#/publicaciones">{us.length > vis.length ? 'Las ' + num(us.length) + ' en Publicaciones' : 'En Publicaciones'} <Ico n="flecha" t={14} /></a>
+    </div>
+  );
+}
+
+// ── 🗂️ LAS DE TODA LA LIGA, EN PESTAÑAS (6.84; Dlx: «A con algo de B pero asegúrate que estén todos los tipos de
+// tarjetas»). De la B, que cada tipo se ve con su #1: cada pestaña lleva la carta del #1 de ese tipo, así los cinco
+// tipos se ven de una sin tocar nada. Adentro, el podio (el #1 en la pieza blanca, como la final de la llave) y los seis
+// siguientes. La Servidor, la de País y la de Liga muestran el #1 de cada grupo; tocar un grupo muestra los de ese ──
+const MIDE_LIGA = 'Tu carta en cada liga de servidor que juegas: el OVR de liga y tu puesto en la tabla.';
+function Vitrina({ liga, x, porTipo, nuevas, onAbrir, yoK }) {
+  const [t, setT] = useState('temporada');
+  const [g, setG] = useState('');
+  const gl = useMemo(() => gruposLiga(x), [x]);
+  const { nom } = useMemo(() => nombresLiga(x), [x]);
+  const gsDe = useMemo(() => ({ servidor: grupos('servidor', porTipo.servidor || []), pais: grupos('pais', porTipo.pais || []) }), [porTipo]);
+  const nLiga = gl.reduce((s, y) => s + y[1].length, 0);
+  const tipos = TIPOS.filter((c) => (c === 'liga' ? gl.length : (porTipo[c] || []).length));
+  if (!tipos.length) return null;
+  const tt = tipos.includes(t) ? t : tipos[0];
+  const cambiar = (c) => { setT(c); setG(''); };
+  // el #1 de cada tipo, para su pestaña
+  const primero = (c) => (c === 'liga' ? gl[0] && gl[0][1][0] : c === 'servidor' || c === 'pais' ? gsDe[c][0] && gsDe[c][0][1][0] : ordenar(c, porTipo[c])[0]);
+  const miniDe = (c) => {
+    const p = primero(c);
+    if (!p) return <span className="ta-pes-c" />;
+    return c === 'liga' ? <img className="ta-pes-c" alt="" src={urlLiga(liga, p.k, p.c, true)} loading="lazy" />
+      : <Carta liga={liga} k={p.k} cual={c} cls="ta-pes-c" abre={false} />;
+  };
+  const cuantas = (c) => (c === 'liga' ? nLiga : (porTipo[c] || []).length);
+  // lo que se muestra: `it` = {k, n, el, pie, gr (el grupo, sin grupo elegido), abrir | href}
+  let its = [];
+  let orden = '';
+  let chips = null;
+  const lbl = (c, id) => (c === 'servidor' ? siglaDe(id) : c === 'pais' ? nombrePais(id) : cortoLiga(nom[id] || id));
+  if (tt === 'liga') {
+    const de = g ? ((gl.find((y) => y[0] === g) || [0, []])[1]).map((y) => [y, g]) : gl.map((y) => [y[1][0], y[0], y[1].length]);
+    its = de.map(([y, lid, ng]) => ({
+      k: y.k, n: liga.nombreDe(y.k), href: '#/ligas/' + encodeURIComponent(lid),
+      el: <img className="tj-c" alt={'La carta de liga de ' + liga.nombreDe(y.k)} src={urlLiga(liga, y.k, y.c, true)} loading="lazy" />,
+      gr: g ? '' : lbl('liga', lid), pie: g ? (y.c[3] ? 'OVR de liga ' + y.c[2] : 'dueño de la liga') : ng + (ng === 1 ? ' carta' : ' cartas'),
+    }));
+    orden = g ? 'por puesto' : 'el #1 de cada liga, de la más grande a la más chica';
+    if (gl.length > 1) chips = gl.map(([id, v]) => [id, <>{cortoLiga(nom[id] || id)} · {v.length}</>]);
+  } else {
+    const gs = gsDe[tt];
+    let fs;
+    let grupo = false;
+    if (gs && g) {
+      fs = (gs.find((y) => y[0] === g) || [0, []])[1];
+      grupo = true;
+      orden = 'por Score';
+    } else if (gs) {
+      fs = gs.map((y) => y[1][0]);
+      orden = 'el #1 de cada ' + (tt === 'servidor' ? 'servidor' : 'país') + ', del más grande al más chico';
+    } else {
+      fs = ordenar(tt, porTipo[tt] || []);
+      orden = tt === 'competitivo' ? 'por Score' : 'por OVR';
+    }
+    its = fs.map((f, i) => {
+      const ng = gs && !g ? (gs.find((y) => y[0] === (tt === 'servidor' ? f.sv : f.cc)) || [0, []])[1].length : 0;
+      return {
+        k: f.k, n: limpio(f.n), abrir: () => onAbrir(tt, fs, i, grupo), nueva: nuevas[tt] && nuevas[tt].has(f.k),
+        el: <Carta liga={liga} k={f.k} cual={tt} cls="tj-c" abre={false} />,
+        gr: gs && !g ? lbl(tt, tt === 'servidor' ? f.sv : f.cc) : '',
+        // el puesto ya va en la etiqueta (#1, #2…): abajo, sólo lo que mide
+        pie: gs && !g ? ng + (ng === 1 ? ' carta' : ' cartas')
+          : tt === 'temporada' ? (f.ovr ? 'OVR ' + f.ovr : 'fuera de concurso') : g ? 'Score ' + String(f.sc || '—').replace('.', ',') : pieDe(liga, f, tt, i, grupo),
+      };
+    });
+    if (gs && gs.length > 1) {
+      chips = gs.map(([id, v]) => [id, <>{tt === 'servidor' ? <img alt="" src={liga.logo(id)} /> : <Bandera cc={id} cls="ta-fl" />}{tt === 'servidor' ? siglaDe(id) + ' · ' : ''}{v.length}</>]);
+    }
+  }
+  const req = (liga.d.requisitos || []).find((r) => r.id === tt) || {};
+  const mide = tt === 'liga' ? MIDE_LIGA : req.mide || '';
+  const todas = tt === 'liga' ? ['#/ligas', 'Ver las ligas'] : ['#/tarjetas/' + tt, 'Ver las ' + num(cuantas(tt)) + ' cartas de ' + NOMBRE[tt]];
+  // 🏆 el podio: el 2, el 1 y el 3 (con menos de tres, los que haya)
+  const pod = [[its[1], 'p2', 2], [its[0], 'p1', 1], [its[2], 'p3', 3]].filter((y) => y[0]);
+  const etq = (it, n) => it.gr || '#' + n;
+  const toque = (it, cl, cuerpo) => (it.href
+    ? <a className={cl} href={it.href} aria-label={'La carta de ' + it.n}>{cuerpo}</a>
+    : <button type="button" className={'sin-boton ' + cl} onClick={it.abrir} aria-label={'La ' + NOMBRE[tt] + ' de ' + it.n}>{cuerpo}</button>);
+  return (
+    <>
+      <div className="ta-pes" role="tablist" aria-label="Qué tarjeta" style={{ '--n': tipos.length }}>
+        {tipos.map((c) => (
+          <button key={c} type="button" role="tab" aria-selected={tt === c} className={tt === c ? 'on' : ''} onClick={() => cambiar(c)}>
+            {miniDe(c)}<span><b>{NOMBRE[c]}</b><small>{num(cuantas(c))}</small></span>
+          </button>
+        ))}
       </div>
-    </section>
+      <div className="ta-mide">
+        <p>{mide}{mide ? ' ' : ''}<span>{orden.charAt(0).toUpperCase() + orden.slice(1)}.</span></p>
+        <a className="ta-lnk" href={todas[0]}>{todas[1]} <Ico n="flecha" t={14} /></a>
+      </div>
+      {chips ? (
+        <div className="rk-chips ta-chips" role="group" aria-label={tt === 'servidor' ? 'Por servidor' : tt === 'pais' ? 'Por país' : 'Por liga'}>
+          <button type="button" className={!g ? 'on' : ''} aria-pressed={!g} onClick={() => setG('')}>El #1 de cada uno</button>
+          {chips.map(([id, cuerpo]) => <button type="button" key={id} className={g === id ? 'on' : ''} aria-pressed={g === id} onClick={() => setG(g === id ? '' : id)}>{cuerpo}</button>)}
+        </div>
+      ) : null}
+      <div className={'ta-tipo tj-' + tt}>
+        <div className="ta-podio">
+          {pod.map(([it, cl, n]) => (
+            <div key={it.k + n} className={'ta-pd ' + cl + (it.k === yoK ? ' tu' : '')}>
+              {toque(it, 'ta-pd-c', it.el)}
+              {it.nueva ? <em className="ta-nueva">NUEVA</em> : null}
+              <div className="ta-ped">
+                {it.k === yoK ? <span className="ta-yo">TÚ</span> : null}
+                <b className={it.gr ? 'gr' : ''}>{etq(it, n)}</b><span>{it.gr ? '#1 · ' : ''}{it.n}</span><small>{it.pie}</small>
+              </div>
+            </div>
+          ))}
+        </div>
+        {its.length > 3 ? (
+          <ul className="ta-resto">
+            {its.slice(3, 9).map((it, i) => (
+              <li key={it.k + i} className={it.k === yoK ? 'tu' : ''}>
+                {toque(it, 'ta-rc', it.el)}
+                {it.nueva ? <em className="ta-nueva">NUEVA</em> : null}
+                <span className="ta-rn">{etq(it, i + 4)}</span>
+                <b>{it.gr ? '#1 · ' : ''}{it.n}</b><small>{it.pie}</small>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+      <a className="btn borde2 chico ta-todas-b" href={todas[0]}>{todas[1]}</a>
+    </>
   );
 }
 
@@ -629,17 +724,19 @@ function Comparar({ liga, porTipo, perf, cmp, setCmp, yoK }) {
   const g = cc.filter((d) => d[2]).length;
   const tipos = ORDEN.filter((c) => (porTipo[c] || []).length >= 2);
   const quien = (f) => (f.k === yoK ? 'Tú' : limpio(f.n));
+  // de quién contra quién, en palabras (sin par elegido: tú y el que tienes justo arriba)
+  const de = cmp.a || cmp.b ? quien(A) + ' contra ' + quien(B) : iyo > 0 ? 'tú contra el que está justo arriba' : iyo === 0 ? 'tú contra el que te sigue' : 'los dos primeros';
   return (
-    <section data-tuto="tj-cmp" className="ta-cmp" id="tj-cmp">
-      <div className="ta-est-t">
-        <h2>Comparar <small>{NOMBRE[t]}</small></h2>
-        <button type="button" className="rk-lnk" onClick={() => setElige(!elige)} aria-expanded={elige}>{elige ? 'Listo' : 'Elegir otros'}</button>
+    <section data-tuto="tj-cmp" className="rka-caja ta-cmp" id="tj-cmp">
+      <h2 className="rka-h">Comparar<small>{de + ' · ' + NOMBRE[t]}</small></h2>
+      <div className="ta-cmp-t">
+        {tipos.length > 1 ? (
+          <div className="rk-chips ta-chips" role="group" aria-label="Qué tarjeta">
+            {tipos.map((c) => <button type="button" key={c} className={c === t ? 'on' : ''} aria-pressed={c === t} onClick={() => setCmp({ t: c, a: cmp.a, b: cmp.b })}>{NOMBRE[c]}</button>)}
+          </div>
+        ) : <span />}
+        <button type="button" className="btn borde2 chico" onClick={() => setElige(!elige)} aria-expanded={elige}>{elige ? 'Listo' : 'Comparar con otro'}</button>
       </div>
-      {tipos.length > 1 ? (
-        <div className="rk-chips ta-chips" role="group" aria-label="Qué tarjeta">
-          {tipos.map((c) => <button type="button" key={c} className={c === t ? 'on' : ''} aria-pressed={c === t} onClick={() => setCmp({ t: c, a: cmp.a, b: cmp.b })}>{NOMBRE[c]}</button>)}
-        </div>
-      ) : null}
       {elige ? (
         <div className="ta-cmp-el">
           <datalist id="tj-nombres">{lista.map((f) => <option key={f.k} value={limpio(f.n)} />)}</datalist>
@@ -693,6 +790,10 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
     const d = liga.desdeLunes();
     return Object.fromEntries(ORDEN.map((c) => [c, new Set(liga.muro.filter((it) => it.tipo === 'tarjeta' && it.carta === c && utc(it.t) >= d).flatMap((it) => it.ks || []))]));
   }, [liga]);
+  // 🏟️ las cartas de liga y 🃏 las que salieron esta semana (antes del `if (t)`: son hooks)
+  const x = useLigas(liga);
+  const us = useMemo(() => nuevasDeLaSemana(liga), [liga]);
+  const nLiga = useMemo(() => gruposLiga(x).reduce((s, y) => s + y[1].length, 0), [x]);
   const abrir = (tt, lista, i, grupo) => setH({ t: tt, lista, i, grupo });
   // 🔁 EN «VER TODAS» NO HAY «COMPARAR» (18/11/2026): la rama de la galería no lo dibuja, así que `accion.ir('tj-cmp')` no
   // encontraba nada y el botón sólo cerraba la hoja. Se vuelve al álbum —la misma `Tarjetas`, así `cmp` se queda— y se
@@ -729,18 +830,49 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
       </>
     );
   }
+  // 🏁 6.84, LA ESTRUCTURA DE LA LLAVE (Dlx: «A con algo de B pero asegúrate que estén todos los tipos de tarjetas», a la
+  // maqueta https://claude.ai/artifact/N6sCTwawfAHEZowetjKWs3). Arriba, en la escena: la franja, tu mano (las cuatro y
+  // la de liga) con Comparar abajo, y al lado las que salieron esta semana. Abajo, en el papel, los cinco tipos en
+  // pestañas con su #1 a la vista
+  const fila = yoK ? liga.T[yoK] : null;
+  const franja = [];
+  if (fila && fila.pos && (porTipo.temporada || []).some((f) => f.k === yoK)) {
+    franja.push({ l: 'Tu puesto', v: '#' + fila.pos, em: 'de ' + num(porTipo.temporada.length), c: 'en la Temporada' + (fila.ovr ? ', con ' + fila.ovr + ' de OVR' : '') });
+  } else if (us.length) {
+    franja.push({ l: 'Salieron esta semana', v: num(us.length), em: us.length === 1 ? 'carta' : 'cartas', c: 'desde el lunes, de los cuatro tipos' });
+  }
+  franja.push({ l: 'En la Liga', v: num(TIPOS.reduce((s, c) => s + (c === 'liga' ? nLiga : (porTipo[c] || []).length), 0)), em: 'cartas',
+    c: TIPOS.filter((c) => (c === 'liga' ? nLiga : (porTipo[c] || []).length)).map((c) => num(c === 'liga' ? nLiga : porTipo[c].length) + ' ' + NOMBRE[c]).join(' · ') });
+  franja.push({ l: 'Raperos con carta', v: num(con.length), c: 'con alguna de las cuatro y su foto' });
+  const nSv = new Set((porTipo.servidor || []).map((f) => f.sv).filter(Boolean)).size;
+  const nPa = new Set((porTipo.pais || []).map((f) => f.cc).filter(Boolean)).size;
+  const nLg = gruposLiga(x).length;
+  franja.push(nLg ? { l: 'Servidores, países y ligas', v: nSv + ' · ' + nPa + ' · ' + nLg, c: 'cada uno con su #1, abajo' }
+    : { l: 'Servidores y países', v: nSv + ' y ' + nPa, c: 'cada uno con su #1, abajo' });
+  const cmpEl = <Comparar liga={liga} porTipo={porTipo} perf={perf} cmp={cmp} setCmp={setCmp} yoK={yoK} />;
   return (
-    <div className="ta-g">
-      <aside className="ta-izq" data-tuto="tj-album">
-        <Album liga={liga} dc={dc} perf={perf} onAbrir={abrirMia} />
-        {/* 📌 en la compu Comparar baja con la página (`.ta-cmp-w`, sticky en tarjetas.css) */}
-        <div className="sec ta-cmp-w"><Comparar liga={liga} porTipo={porTipo} perf={perf} cmp={cmp} setCmp={setCmp} yoK={yoK} /></div>
-      </aside>
-      <div className="sec ta-der" data-tuto="tj-gal">
-        <Abanico liga={liga} onAbrir={abrir} />
-        {ORDEN.map((c) => <Estante key={c} liga={liga} t={c} lista={porTipo[c]} nuevas={nuevas[c]} onAbrir={abrir} />)}
+    <>
+      <div className="escena ta-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.9, '--mo-c2': '#E41373' }}>
+        <section className="ta-cab rka" id="tj-cab">
+          <div className="ta-cab-tx">
+            <span className="tag">TARJETAS · {liga.temp}</span>
+            <h1 className="hero-ev">Tarjetas</h1>
+            <p className="hero-p">Las cartas de la Liga: cada una mide algo distinto y se consigue distinto. Toca una para verla grande.</p>
+          </div>
+          <Franja items={franja} />
+          <div className={'rka-dos ta-dos' + (us.length ? '' : ' sin-rail')}>
+            <div className="rka-izq" data-tuto="tj-album">
+              <Album liga={liga} dc={dc} perf={perf} onAbrir={abrirMia} x={x} />
+              {us.length ? cmpEl : null}
+            </div>
+            <div className="rka-rail">{us.length ? <Nuevas liga={liga} us={us} onAbrir={abrir} /> : cmpEl}</div>
+          </div>
+        </section>
       </div>
+      <Sec id="tj-tipos" titulo="Las de toda la Liga" extra="rka-papel ta-papel" data-tuto="tj-gal">
+        <Vitrina liga={liga} x={x} porTipo={porTipo} nuevas={nuevas} onAbrir={abrir} yoK={yoK} />
+      </Sec>
       {hoja}
-    </div>
+    </>
   );
 }

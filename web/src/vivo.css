@@ -2031,6 +2031,9 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-buscar input::placeholder{color:var(--gris);opacity:1}
 .rk-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:3px 3px 4px;margin:-3px -3px 0}
 .rk-chips::-webkit-scrollbar{display:none}
+/* 🖱️ EN LA COMPU NADA SE DESLIZA DE COSTADO (Dlx, 19/11/2026: «en pc no se puede scrollear… hay cosas que no se pueden
+   ver»): con el mouse una fila sin barra no se mueve, y lo que queda afuera no existe. Los chips bajan de línea */
+@media (hover: hover) and (pointer: fine){.rk-chips{flex-wrap:wrap;overflow-x:visible}}
 .rk-chips button,.rk-sel{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:1.5px solid var(--linea);
   background:var(--fondo);color:var(--tinta);font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .rk-chips button.on,.rk-sel.on{background:var(--inv);color:var(--inv-tinta)}
