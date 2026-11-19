@@ -281,6 +281,8 @@ a.lq3-t:hover{border-color:#F6F6F6}
 
 /* ── 📋 TODAS LAS LIGAS: una tabla que se abre ahí mismo. Con los colores del tema ── */
 .lq3-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:2px}
+/* 🖱️ en la compu bajan de línea (6.85, «en pc no se puede scrollear… hay cosas q no se pueden ver»): con el mouse una fila de costado sin barra esconde lo de la punta */
+@media (hover: hover) and (pointer: fine){.lq3-chips{flex-wrap:wrap;overflow-x:visible}}
 .lq3-chips::-webkit-scrollbar{display:none}
 .lq3-chips button{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 12px;border:2px solid var(--linea);background:none;color:var(--tinta);cursor:pointer;
   font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
@@ -422,6 +424,8 @@ a.lq3-t:hover{border-color:#F6F6F6}
 .lp3-mas{margin-top:10px}
 /* 🗓️ las jornadas: una ficha por fecha y sus batallas */
 .lp3-jor-ch{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:2px}
+/* 🖱️ en la compu bajan de línea (6.85, «en pc no se puede scrollear… hay cosas q no se pueden ver»): con el mouse una fila de costado sin barra esconde lo de la punta */
+@media (hover: hover) and (pointer: fine){.lp3-jor-ch{flex-wrap:wrap;overflow-x:visible}}
 .lp3-jor-ch::-webkit-scrollbar{display:none}
 .lp3-jor-ch button{flex:none;min-height:40px;padding:0 11px;border:2px solid var(--linea);background:none;color:var(--tinta);cursor:pointer;
   font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}

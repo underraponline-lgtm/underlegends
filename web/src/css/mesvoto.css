@@ -25,6 +25,8 @@
 
 /* ── los botones de servidor (el color de cada uno, abajo, sale del payload) ── */
 .sd-svs{display:flex;gap:6px;margin:0 0 18px;padding:0 0 6px;overflow-x:auto;scrollbar-width:none}
+/* 🖱️ en la compu bajan de línea (6.85, «en pc no se puede scrollear… hay cosas q no se pueden ver»): con el mouse una fila de costado sin barra esconde lo de la punta */
+@media (hover: hover) and (pointer: fine){.sd-svs{flex-wrap:wrap;overflow-x:visible}}
 .sd-svs::-webkit-scrollbar{display:none}
 .sd-sv{position:relative;flex:none;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 12px 0 7px;border:1.5px solid var(--suave);
   background:var(--caja);color:var(--tinta);font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;cursor:pointer;white-space:nowrap}

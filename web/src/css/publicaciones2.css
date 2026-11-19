@@ -381,6 +381,8 @@
 .pw-busca:focus-within{border-color:var(--tinta)}
 .pw-busca-x{border:0;background:none;color:var(--gris);font-size:20px;cursor:pointer;padding:0 2px}
 .pw-chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+/* 🖱️ en la compu bajan de línea (6.85, «en pc no se puede scrollear… hay cosas q no se pueden ver»): con el mouse una fila de costado sin barra esconde lo de la punta */
+@media (hover: hover) and (pointer: fine){.pw-chips{flex-wrap:wrap;overflow-x:visible}}
 .pw-chips::-webkit-scrollbar{display:none}
 .pw-chips button{flex:none;display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1.5px solid var(--pw-borde2);background:none;color:#D6D8DC;cursor:pointer;
   font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}

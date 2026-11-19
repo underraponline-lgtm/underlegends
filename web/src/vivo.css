@@ -2282,6 +2282,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-filtro{padding:12px 16px 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
 .evp-filtro::-webkit-scrollbar{display:none}
 .evp-filtro button{flex:none}
+/* 🖱️ en la compu bajan de línea (6.85, «en pc no se puede scrollear… hay cosas q no se pueden ver»): con el mouse una fila de costado sin barra esconde lo de la punta */
+@media (hover: hover) and (pointer: fine){.evp-filtro{flex-wrap:wrap;overflow-x:visible}}
 .evp-ev{border-left-width:2px}
 .evp-ev header{grid-template-columns:40px minmax(0,1fr) auto}
 .evp-ev header img{object-fit:cover}
@@ -2541,6 +2543,8 @@ a.rk-z:hover{border-color:var(--linea)}
   color:var(--nt-gris);cursor:pointer;font-size:15px;line-height:1;text-decoration:none}
 .nt-ib:hover{color:var(--nt-tinta)}
 .nt-chips{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;border-bottom:1px solid var(--nt-linea);scrollbar-width:none}
+/* 🖱️ en la compu bajan de línea (6.85, «en pc no se puede scrollear… hay cosas q no se pueden ver»): con el mouse una fila de costado sin barra esconde lo de la punta */
+@media (hover: hover) and (pointer: fine){.nt-chips{flex-wrap:wrap;overflow-x:visible}}
 .nt-chip{flex:none;border:1px solid var(--nt-linea);background:none;color:var(--nt-gris);border-radius:4px;padding:6px 9px;cursor:pointer;
   font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .nt-chip em{font-style:normal;color:var(--nt-tinta);margin-left:4px}

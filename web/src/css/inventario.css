@@ -137,6 +137,8 @@
 /* las ranuras: lo que tiene puesto cada una, en una fila que se desliza en el celular */
 .ves-der{display:grid;gap:12px;align-content:start;min-width:0}
 .ves-ran{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+/* 🖱️ en la compu bajan de línea (6.85, «en pc no se puede scrollear… hay cosas q no se pueden ver»): con el mouse una fila de costado sin barra esconde lo de la punta */
+@media (hover: hover) and (pointer: fine){.ves-ran{flex-wrap:wrap;overflow-x:visible}}
 .ves-ran::-webkit-scrollbar{display:none}
 .ves-ran button{flex:0 0 auto;display:grid;gap:3px;justify-items:start;min-width:104px;max-width:180px;padding:9px 11px;border:1.5px solid var(--v-borde2);
   background:var(--v-panel);color:var(--v-tinta);cursor:pointer;text-align:left}

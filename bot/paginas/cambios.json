@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "6.86",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T05:29:00-05:00",
+        "titulo": "En la compu, nada escondido al costado",
+        "items": [
+            "En la compu, **los chips de todas las páginas bajan de línea**: ya no queda ninguno escondido al costado.",
+            "**La rueda del mouse mueve las filas de costado** (el camino del Pase, las historias) hasta la punta, y después sigue bajando la página."
+        ]
+    },
+    {
         "version": "6.85",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T05:25:00-05:00",

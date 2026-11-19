@@ -7,6 +7,7 @@ import './fuentes.css';
 import estilo from './estilo.css?inline';
 import vivo from './vivo.css?inline';
 import { cssBase } from './css.js';
+import { ruedaDeCostado } from './costado.js';
 
 const host = document.getElementById('inicio-nuevo');
 if (host && !host.shadowRoot) {
@@ -16,6 +17,8 @@ if (host && !host.shadowRoot) {
   const raiz = document.createElement('div');
   sombra.appendChild(raiz);
   createRoot(raiz).render(<Respaldo><App /></Respaldo>);
+  // 🖱️ la rueda mueve las filas de costado en la compu (costado.js, 6.85)
+  ruedaDeCostado();
   // 🇬🇧 la vista en inglés (`/en`, ver ingles.js): sólo si el script del principio la prendió. Nadie más baja el diccionario
   if (document.documentElement.classList.contains('lg-en')) import('./ingles.js').then((m) => m.ingles(sombra)).catch(() => {});
 }
