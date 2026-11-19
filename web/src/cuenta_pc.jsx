@@ -140,7 +140,7 @@ function Resumen({ liga, dc }) {
           {n ? <i className="cpc-barra"><u style={{ width: Math.min(100, Math.round((100 * (n.xp - n.base)) / tramo)) + '%' }} /></i> : null}</div>
       </div>
       {C && faltan.length ? (
-        <div className="cpc-completa" data-tuto="cu-pasos">
+        <div className="cpc-completa">
           <div><small>Completa tu cuenta · {C.length - faltan.length} de {C.length}</small>
             <h3>{faltan.length === 1 ? 'Te falta ' + faltan[0][1].toLowerCase() : 'Te faltan ' + faltan.length + ': ' + faltan.map((x) => x[1].toLowerCase()).join(', ')}</h3>
             <span className="cpc-chips">{C.map(([id, t, ok, h]) => <a key={id} href={h} className={'cpc-chip' + (ok ? ' ok' : '')}>{ok ? '✓ ' : ''}{t}</a>)}</span></div>
@@ -227,7 +227,7 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
   return (
     <div className="cpc">
       <aside data-tuto="cu-nav" className="cpc-menu" aria-label="Tu cuenta">
-        <div className="cpc-yo" data-tuto="cu-quien">
+        <div className="cpc-yo">
           {yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cpc-cara" /> : dc ? <CaraDc dc={dc} cls="cpc-cara" /> : <span className="cpc-cara"><Ico n="yo" t={22} /></span>}
           <span><b>{limpio(yo ? yo.n : dc ? dc.n : 'Sin entrar')}</b>
             {/* (18/11/2026) «1 día», no «1 días»: el singular, como en el Resumen */}
@@ -242,7 +242,7 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
             ))}</ul></div>
         ))}
         {dc ? <button type="button" className="cpc-salir" onClick={accion.salir}><Ico n="salir" t={16} />Salir de tu cuenta</button>
-          : <><EntrarError /><button type="button" className="btn verde chico" data-tuto="cu-entrar" onClick={accion.entrar}>Entrar con Discord</button></>}
+          : <><EntrarError /><button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></>}
       </aside>
       <div className="cpc-pag">
         {/* 🧱 LA MISMA CABECERA EN TODAS LAS PÁGINAS (Dlx, v7 de la maqueta): el grupo, el nombre, una línea y tu perfil */}

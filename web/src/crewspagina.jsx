@@ -99,9 +99,9 @@ export function CrewsPagina({ liga, dc, qs }) {
   const puedeFundar = dc && mia && mia.de && !mia.crew;
   return (
     <>
-      <div className="escena pub-esc crw-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
+      <div data-tuto="crw-cab" className="escena pub-esc crw-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
         <section className="pub-cab crw-cab crw-cab2">
-          <div className="crw-cab-tx" data-tuto="crw-cab">
+          <div className="crw-cab-tx">
             <span className="tag">CREWS · {liga.temp}</span>
             <h1 className="hero-ev largo">Crews</h1>
             <p className="hero-p">{num(xs.length)} crews · {num(enCrews)} raperos · los tiers suben y bajan cada lunes{jugaronSem ? ' · ' + (jugaronSem === 1 ? '1 ya jugó' : jugaronSem + ' ya jugaron') + ' esta semana' : ''}</p>
@@ -128,8 +128,8 @@ export function CrewsPagina({ liga, dc, qs }) {
           </section>
         ) : null}
         <section className="crw-sec" aria-labelledby="crw-todas">
-          <div className="crw-tit"><h2 id="crw-todas">Buscar una crew</h2><small>{num(lista.length)} {lista.length === 1 ? 'crew' : 'crews'} · tocas una y la ves al costado</small></div>
-          <div className="crw-busca" data-tuto="crw-todas">
+          <div className="crw-tit"><h2 data-tuto="crw-todas" id="crw-todas">Buscar una crew</h2><small>{num(lista.length)} {lista.length === 1 ? 'crew' : 'crews'} · tocas una y la ves al costado</small></div>
+          <div className="crw-busca">
             <input type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca una crew por nombre o sigla"
               aria-label="Buscar una crew" enterKeyHint="search" />
             <label className="crw-orden">Ordenar
@@ -262,13 +262,12 @@ function TablaSemana({ liga, xs, T, onComo, como }) {
   return (
     <section className="crw-sec" aria-labelledby="crw-sem-h">
       <div className="crw-tit"><h2 id="crw-sem-h">La tabla de la semana</h2><small>{xs.some((x) => x.mia) ? 'tu crew pintada · ' : ''}la raya magenta es la de bajar</small></div>
-      {tiers.map((i, nt) => {
+      {tiers.map((i) => {
         const ys = porTier.get(i).sort((a, b) => b.semPts - a.semPts);
         const tope = T.sube[i] || Math.max(1, ...ys.map((x) => x.semPts));
         const baja = T.baja[i];
         return (
-          // (el tutorial señala el primer tier, no la tabla entera: 19/11/2026)
-          <div key={i} className="crw-tz" data-tuto={nt === 0 ? 'crw-semana' : undefined}>
+          <div key={i} className="crw-tz">
             <div className="crw-tz-h"><TierChip n={i} T={T} chico /><small>{T.sube[i] ? 'suben con ' + num(T.sube[i]) + (T.juegan[i + 1] > 1 ? ' y ' + T.juegan[i + 1] + ' que jueguen' : '') : 'el tier más alto'}{baja ? ' · bajan con menos de ' + num(baja) : ''}</small></div>
             <ol>{ys.map((x, k) => {
               const sube = T.sube[i] && x.semPts >= T.sube[i] && x.jugaron >= (T.juegan[i + 1] || 0);

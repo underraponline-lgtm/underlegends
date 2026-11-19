@@ -1499,7 +1499,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           })}
         </div>
       </nav>
-      <div className="escena rk-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9 }}>
+      <div data-tuto="rk-cab" className="escena rk-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9 }}>
         {/* las flechas, como las del escenario del Inicio (Dlx, 02/10/2026: «arrows… in the black space like we have in
             INICIO»): al ranking de al lado, salteando los que todavía no existen. Sólo en la compu */}
         {antes && despues && antes !== sub ? <>
@@ -1507,7 +1507,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + subDe(liga, despues).et} title={subDe(liga, despues).et}><Chevron /></a>
         </> : null}
         <section className={'rk-cab' + (dosCols || eloA ? ' rka' : '')} id="rk-cab" ref={deslizaRk}>
-          <div className="rk-tx" data-tuto="rk-cab">
+          <div className="rk-tx">
             <span className="tag">RANKING · {liga.temp}</span>
             <h1 className="hero-ev largo">{cfg.et}</h1>
             <p className="hero-p">{pronto ? cfg.corto || 'Arranca pronto.' : cfg.baj}</p>
@@ -1585,7 +1585,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                 </div>
               ) : null}
               <div className="rk-fil-top">
-              <label className="rk-buscar" data-tuto="rk-buscar"><Ico n="buscar" t={18} />
+              <label className="rk-buscar"><Ico n="buscar" t={18} />
                 <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={'Buscar ' + que[0]} aria-label={'Buscar ' + que[0]} enterKeyHint="search" />
               </label>
               {/* 📱 Resumen · Todos los datos (Dlx, 20/10/2026: «en el celular agregar una opción ahí arriba para ver todos

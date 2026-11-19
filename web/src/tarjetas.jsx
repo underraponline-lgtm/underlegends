@@ -289,7 +289,7 @@ function Album({ liga, dc, perf, onAbrir, x }) {
   const mira = !!(f || (dc && (dc.clave || dc.id)));
   if (!mira) {
     return (
-      <div className="rka-caja ta-alb" data-tuto="tj-album">
+      <div className="rka-caja ta-alb">
         <h2 className="rka-h">Tu mano<small>{liga.temp}</small></h2>
         <h3 className="ta-h">¿Y las tuyas?</h3>
         <p className="ta-p">Entra con Discord y te mostramos tus tarjetas, y lo que te falta para las que no tienes.</p>
@@ -300,7 +300,7 @@ function Album({ liga, dc, perf, onAbrir, x }) {
   if (!k) {
     // entró con Discord, pero su cuenta no es (todavía) de nadie de la Lista
     return (
-      <div className="rka-caja ta-alb" data-tuto="tj-album">
+      <div className="rka-caja ta-alb">
         <h2 className="rka-h">Tu mano<small>{liga.temp}</small></h2>
         <h3 className="ta-h">Todavía no tienes tarjetas</h3>
         <p className="ta-p">Son dos pasos: verifícate —estar en Discord Rap Español con el rol Miembro y tu país— y se desbloquea
@@ -333,7 +333,7 @@ function Album({ liga, dc, perf, onAbrir, x }) {
   }
   const nl = ((x && x.cartas && x.cartas[k]) || []).length;
   return (
-    <div className="rka-caja ta-alb" data-tuto="tj-album">
+    <div className="rka-caja ta-alb">
       <h2 className="rka-h">Tu mano<small>{tiene.length + ' de ' + ORDEN.length + (nl ? ' + ' + nl + ' de liga' : '') + ' · ' + T2.join(' e ') + ' llegan en la T2'}</small></h2>
       <p className="ta-n">{cc ? <Bandera cc={cc} cls="ta-fl" /> : null}<b>{nombre}</b>{cc ? ' · ' + nombrePais(cc) : ''}{sv ? ' · ' + siglaDe(sv) : ''}</p>
       <Mano liga={liga} k={k} f={f} tiene={tiene} bl={bl} onAbrir={onAbrir} nombre={nombre} x={x} />
@@ -472,7 +472,7 @@ function Vitrina({ liga, x, porTipo, nuevas, onAbrir, yoK }) {
     : <button type="button" className={'sin-boton ' + cl} onClick={it.abrir} aria-label={'La ' + NOMBRE[tt] + ' de ' + it.n}>{cuerpo}</button>);
   return (
     <>
-      <div className="ta-pes" role="tablist" aria-label="Qué tarjeta" data-tuto="tj-gal" style={{ '--n': tipos.length }}>
+      <div className="ta-pes" role="tablist" aria-label="Qué tarjeta" style={{ '--n': tipos.length }}>
         {tipos.map((c) => (
           <button key={c} type="button" role="tab" aria-selected={tt === c} className={tt === c ? 'on' : ''} onClick={() => cambiar(c)}>
             {miniDe(c)}<span><b>{NOMBRE[c]}</b><small>{num(cuantas(c))}</small></span>
@@ -861,7 +861,7 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
           </div>
           <Franja items={franja} />
           <div className={'rka-dos ta-dos' + (us.length ? '' : ' sin-rail')}>
-            <div className="rka-izq">
+            <div className="rka-izq" data-tuto="tj-album">
               <Album liga={liga} dc={dc} perf={perf} onAbrir={abrirMia} x={x} />
               {us.length ? cmpEl : null}
             </div>
@@ -869,7 +869,7 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
           </div>
         </section>
       </div>
-      <Sec id="tj-tipos" titulo="Las de toda la Liga" extra="rka-papel ta-papel">
+      <Sec id="tj-tipos" titulo="Las de toda la Liga" extra="rka-papel ta-papel" data-tuto="tj-gal">
         <Vitrina liga={liga} x={x} porTipo={porTipo} nuevas={nuevas} onAbrir={abrir} yoK={yoK} />
       </Sec>
       {hoja}

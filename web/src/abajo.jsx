@@ -504,18 +504,95 @@ function useMantener(alMantener, ms = 450, { onIni, onFin, activo = true } = {})
 // arriba.jsx: un solo lugar para las dos)— y, arriba, lo que pasa ahora: te toca, lo que se juega en vivo con el punto que
 // late (el de «EN VIVO AHORA» del Inicio, `.vivo-late`) y la llave a un toque, o lo próximo de hoy. Encima del botón (`x`,
 // su centro en la pantalla), sin salirse de los costados
-const EV_GRUPO = (GRUPOS.find((g) => g[0] === 'Eventos') || [])[2] || [];
-function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x }) {
+const grupoDe = (n) => (GRUPOS.find((g) => g[0] === n) || [])[2] || [];
+const EV_GRUPO = grupoDe('Eventos');
+const RK_GRUPO = grupoDe('Ranking');
+
+// 🧩 EL PANEL DE UN GRUPO, encima de su botón (`x`, su centro en la pantalla) y sin salirse de los costados: el de Eventos
+// y el de Ranking son el mismo, con el estilo de «Eventos ▾» y «Ranking ▾» de la compu. Se cierra tocando afuera (no en
+// su botón, que lo alterna), con Escape y al cambiar de página. `dos`: las secciones en dos columnas, sólo el nombre
+// ♿ Es un panel que se abre y se cierra (su botón lleva `aria-expanded` y `aria-controls`), no un `role="menu"`: un menú
+// promete flechas y foco adentro. Con el teclado el foco entra a la primera fila y, al cerrarse, vuelve a su botón.
+// 🔄 Y sigue a su botón: al girar el teléfono se vuelve a ubicar (con el ancho de antes quedaba medio afuera)
+function Hoja({ id, titulo, cuantas, ahora, items, dos, sale, x, boton, onCerrar }) {
   const yo = useRef(null);
+  const [, setGiro] = useState(0);
   useEffect(() => {
-    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (yo.current && !p.includes(yo.current) && !p.some((n) => n && n.classList && n.classList.contains('tb-jg'))) onCerrar(); };
-    const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
+    const volver = () => { const b = boton && boton.current; if (b) b.focus(); };
+    const fuera = (e) => {
+      const p = e.composedPath ? e.composedPath() : [];
+      if (yo.current && !p.includes(yo.current) && !(boton && boton.current && p.includes(boton.current))) onCerrar();
+    };
+    const esc = (e) => { if (e.key === 'Escape') { onCerrar(); volver(); } };
+    const giro = () => setGiro((n) => n + 1);
     // al próximo cuadro: el mismo toque que la abrió no la cierra
     const t = setTimeout(() => { window.addEventListener('pointerdown', fuera, true); }, 0);
     window.addEventListener('keydown', esc);
     window.addEventListener('lg:dir', onCerrar);
-    return () => { clearTimeout(t); window.removeEventListener('pointerdown', fuera, true); window.removeEventListener('keydown', esc); window.removeEventListener('lg:dir', onCerrar); };
-  }, [onCerrar]);
+    window.addEventListener('resize', giro);
+    return () => {
+      clearTimeout(t); window.removeEventListener('pointerdown', fuera, true); window.removeEventListener('keydown', esc);
+      window.removeEventListener('lg:dir', onCerrar); window.removeEventListener('resize', giro);
+    };
+  }, [onCerrar, boton]);
+  // con el teclado, el foco entra a la primera fila (con el dedo no: una fila con foco parece elegida)
+  useEffect(() => {
+    const b = boton && boton.current;
+    let tecla = false;
+    try { tecla = !!(b && b.matches(':focus-visible')); } catch (e) { tecla = false; }
+    const a = tecla && yo.current ? yo.current.querySelector('a') : null;
+    if (a) a.focus();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // al irse, si el foco estaba adentro, vuelve al botón (si no, cae al <body>)
+  useEffect(() => {
+    if (!sale || !yo.current) return;
+    const r = yo.current.getRootNode();
+    const act = r && r.activeElement;
+    if (act && yo.current.contains(act) && boton && boton.current) boton.current.focus();
+  }, [sale, boton]);
+  const W = window.innerWidth || 390;
+  const ancho = Math.min(360, W - 16);
+  const b = boton && boton.current ? boton.current.getBoundingClientRect() : null;
+  const cx = b && b.width ? b.left + b.width / 2 : x || W / 2;
+  const left = Math.round(Math.min(Math.max(8, cx - ancho / 2), W - ancho - 8));
+  return (
+    <div className={'tb-ev' + (dos ? ' dos' : '') + (sale ? ' sale' : '')} ref={yo} id={id} role="group" aria-label={titulo} style={{ left, width: ancho }}>
+      <p className="tb-ev-h"><b>{titulo}</b><small>{cuantas}</small></p>
+      {ahora && ahora.length ? <div className="tb-ev-ahora">{ahora}</div> : null}
+      <div className="tb-ev-items">{items}</div>
+    </div>
+  );
+}
+
+// 📊 «RANKING», COMO EN LA COMPU (6.87, Dlx: «debería aparecer todas las opciones de ranking ahí igual como lo hace la
+// PC»): tocar Ranking abre las doce tablas de «Ranking ▾» (`GRUPOS` de arriba.jsx), en dos columnas con su ícono, y
+// marca la que estás mirando. Arriba, con cuenta y en la tabla, tu lugar en la Temporada y lo que subiste desde la última
+// vez que la miraste
+function rutaRanking() {
+  const r = String((typeof window !== 'undefined' && window.rutaLG ? window.rutaLG() : '') || '').replace(/^#?\/?/, '');
+  const p = r.split(/[/?]/);
+  if (p[0] === 'duelos') return '#/ranking/duelos';
+  return p[0] === 'ranking' ? '#/ranking/' + (p[1] || 'temporada') : '';
+}
+function HojaRanking({ liga, cara, sube, sale, x, boton, onCerrar }) {
+  const yo = liga && liga.yo;
+  const fila = yo ? ((liga.d && liga.d.tabla) || []).find((t) => t.k === yo.k) : null;
+  const actual = rutaRanking();
+  const ahora = fila && fila.pos ? [
+    <a key="yo" className="tb-ev-ya" href="#/ranking/temporada" onClick={(e) => { subirSiEsta('#/ranking/temporada')(e); onCerrar(); }}>
+      <span className="tb-ev-ya-c">{cara}</span>
+      <span className="tb-ev-ya-t"><i>Tu lugar · Temporada</i><b>{'#' + fila.pos + (fila.ovr ? ' · ' + fila.ovr + ' de OVR' : '')}</b></span>
+      <em className={sube ? 'sube' : ''}>{sube ? '+' + sube : 'Ver'}</em></a>] : null;
+  const items = RK_GRUPO.map(([n, h, , k]) => (
+    <a key={h} href={h} className={h === actual ? 'on' : ''} aria-current={h === actual ? 'page' : undefined}
+      onClick={(e) => { subirSiEsta(h)(e); onCerrar(); }}>
+      <span className="tb-ev-ico"><Ico n={k} t={16} /></span><span className="tb-ev-ya-t"><b>{n}</b></span>
+    </a>
+  ));
+  return <Hoja id="tb-hoja-rk" titulo="Ranking" cuantas={RK_GRUPO.length + ' tablas'} ahora={ahora} items={items} dos sale={sale} x={x} boton={boton} onCerrar={onCerrar} />;
+}
+
+function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x, boton }) {
   const VL = typeof window !== 'undefined' ? window.VIVO_L : null;
   const vivos = liga.vivo().slice(0, 2);
   const hoyLiga = (liga.fechasHoy ? liga.fechasHoy() : []).length;
@@ -540,23 +617,13 @@ function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x }) {
         {j.logo ? <img alt="" src={j.logo} /> : <span className="tb-ev-ico"><Ico n="eventos" t={18} /></span>}
         <span className="tb-ev-ya-t"><i>{j.tipo === 'pronto' ? j.l1 : 'Hoy · ' + (j.l2 || '')}</i><b>{j.nombre}</b></span><em>Ver</em></a>);
   }
-  const W = window.innerWidth || 390;
-  const ancho = Math.min(360, W - 16);
-  const left = Math.round(Math.min(Math.max(8, (x || W / 2) - ancho / 2), W - ancho - 8));
-  return (
-    <div className={'tb-ev' + (sale ? ' sale' : '')} ref={yo} role="menu" aria-label="Eventos" style={{ left, width: ancho }}>
-      <p className="tb-ev-h"><b>Eventos</b><small>{EV_GRUPO.length} secciones</small></p>
-      {ahora.length ? <div className="tb-ev-ahora">{ahora}</div> : null}
-      <div className="tb-ev-items">
-        {EV_GRUPO.map(([n, h, d, k]) => (
-          <a key={h} role="menuitem" href={h} className={pagina && h === '#/' + pagina ? 'on' : ''} onClick={(e) => { subirSiEsta(h)(e); onCerrar(); }}>
-            <span className="tb-ev-ico"><Ico n={k} t={18} /></span><span className="tb-ev-ya-t"><b>{n}</b><small>{d}</small></span>
-            {k === 'ligas' && hoyLiga ? <em>Hoy se juega</em> : null}
-          </a>
-        ))}
-      </div>
-    </div>
-  );
+  const items = EV_GRUPO.map(([n, h, d, k]) => (
+    <a key={h} href={h} className={pagina && h === '#/' + pagina ? 'on' : ''} aria-current={pagina && h === '#/' + pagina ? 'page' : undefined} onClick={(e) => { subirSiEsta(h)(e); onCerrar(); }}>
+      <span className="tb-ev-ico"><Ico n={k} t={18} /></span><span className="tb-ev-ya-t"><b>{n}</b><small>{d}</small></span>
+      {k === 'ligas' && hoyLiga ? <em>Hoy se juega</em> : null}
+    </a>
+  ));
+  return <Hoja id="tb-hoja-ev" titulo="Eventos" cuantas={EV_GRUPO.length + ' secciones'} ahora={ahora} items={items} sale={sale} x={x} boton={boton} onCerrar={onCerrar} />;
 }
 
 // 🧭 LA TIRA VUELVE, CON EL LOBBY ADENTRO (19/11/2026, Dlx a la 6.78: «so it can scroll to the right still but keeping the
@@ -614,15 +681,27 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const enEv = EV_PAGS.includes(pagina);
   const btnJ = useRef(null);
   const cerrarJ = useCallback(() => setJm(false), []);
+  // 📊 y Ranking abre el suyo, con las doce tablas (6.87): uno abierto cierra el otro
+  const [rm, setRm] = useState(false);
+  const [verR, saleR] = usePresencia(rm, 160);
+  const [rx, setRx] = useState(0);
+  const btnR = useRef(null);
+  const cerrarR = useCallback(() => setRm(false), []);
   const btnYo = useRef(null);
   const nav = useRef(null);
+  const centro = (b) => { const r = b.current ? b.current.getBoundingClientRect() : null; return r ? r.left + r.width / 2 : 0; };
   // tocarlo abre (y cierra) el panel de Eventos, como «Eventos ▾» en la compu: lo de ahora arriba y las tres secciones
   const tocar = (e) => {
     e.preventDefault();
-    setYoM(false);
-    const r = btnJ.current ? btnJ.current.getBoundingClientRect() : null;
-    setJx(r ? r.left + r.width / 2 : 0);
+    setYoM(false); setRm(false);
+    setJx(centro(btnJ));
     setJm((v) => !v);
+  };
+  const tocarR = (e) => {
+    e.preventDefault();
+    setYoM(false); setJm(false);
+    setRx(centro(btnR));
+    setRm((v) => !v);
   };
   const nv = liga ? pubNuevas(liga, pagina) : 0;
 
@@ -638,7 +717,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   // 🆕 LO QUE SE SUMA: lo que hoy está en la barra y la vez anterior no (`lg:barra`), con su fecha (`lg:barra-nuevas`).
   // La primera vez en este navegador no se festeja nada: para quien ya usaba la página, nada es nuevo. Se anota recién
   // cuando tu nivel llegó (si no, la barra de nivel 1 «sumaría» lo tuyo de siempre al llegar el nivel)
-  const [nuevas, setNuevas] = useState(() => ls.json('lg:barra-nuevas', {}));
+  const [nuevas, setNuevas] = useState(() => { const n = ls.json('lg:barra-nuevas', {}); return n && typeof n === 'object' && !Array.isArray(n) ? n : {}; });
   const [aviso, setAviso] = useState(() => (ls.get('lg:tira-ok') ? null : { desliza: true }));
   const firma = claves.join(',');
   useEffect(() => {
@@ -656,26 +735,39 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     const deLaTira = suma.filter((k) => NIVEL_SECC[k]);
     if (deLaTira.length) setAviso({ suma: deLaTira.map((k) => NOMBRE_SECC[k]), nivel: novato ? 0 : nivel, cuenta: antes.length <= NOVATO.length - 1 });
   }, [firma, nivelYa, novato]); // eslint-disable-line react-hooks/exhaustive-deps
-  // las secciones que abriste (`lg:secc`): ésas ya no son nuevas
-  const [vistas, setVistas] = useState(() => ls.json('lg:secc', []));
+  // las secciones que abriste (`lg:barra-vistas`): ésas ya no son nuevas.
+  // 🔴 HASTA LA 6.87 ERA `lg:secc`, Y ESA CLAVE YA ERA DE OTRO (Dlx: «después de presionar ranking, desaparece la línea de
+  // abajo»): App.jsx cuenta ahí, desde la 2.83, las secciones que abre cada navegador por día, como `{dia, s: […]}`. Al abrir
+  // Ranking escribía su objeto, `vistas.includes` reventaba y la barra entera se apagaba (`Aislada`) hasta recargar; y cada
+  // una pisaba lo de la otra, así que una sección se contaba más de una vez por día. Antes de sumar una clave `lg:`, buscarla
+  // en web/src. Y lo que se lee del navegador se revisa: puede ser de otra versión o de otro
+  const [vistas, setVistas] = useState(() => { const v = ls.json('lg:barra-vistas', []); return Array.isArray(v) ? v : []; });
   useEffect(() => {
     if (!pagina || vistas.includes(pagina)) return;
     const v = vistas.concat(pagina);
     setVistas(v);
-    ls.set('lg:secc', JSON.stringify(v));
+    ls.set('lg:barra-vistas', JSON.stringify(v));
   }, [pagina]); // eslint-disable-line react-hooks/exhaustive-deps
   const nuevo = (k) => !novato && nuevas[k] && Date.now() - nuevas[k] < 14 * 86400000 && !vistas.includes(k);
 
   // 🎟️ EL PUNTO DEL PASE: subiste de nivel en el Pase desde la última vez que lo abriste (los premios llegan solos; esto
-  // dice que hay algo nuevo que ver). La primera vez se anota sin punto
+  // dice que hay algo nuevo que ver). La primera vez se anota sin punto.
+  // 🔴 En `lg:barra-pase` y no en `lg:pase-visto` (6.87): ésa es del «¡Subiste!» del Pase (pase_pop.jsx, `{temp, n}`), y las
+  // dos se pisaban: el número de acá le borraba lo visto y el pop-up no salía nunca
+  // Y CON SU TEMPORADA, como el «¡Subiste!» (`{temp, n}`): el Pase vuelve a cero con cada una, y con un número suelto el 40
+  // de la T1 dejaba sin punto toda la T2 hasta pasar el 40. Se anota también el 0 y cuando bajaste (otra cuenta, otra
+  // temporada); lo de antes de la 6.87 (un número) se toma como «sin ver» y se vuelve a anotar
   const P = usePaseSiHay(!novato);
-  const nivelPase = P && P.miembro !== false && P.nivel ? P.nivel : 0;
-  const paseVisto = +ls.get('lg:pase-visto') || 0;
+  const paseOk = !!(P && P.listo && P.miembro !== false && P.temp);
+  const nivelPase = paseOk && P.nivel ? P.nivel : 0;
+  const tempPase = paseOk ? String(P.temp) : '';
+  const vp = ls.json('lg:barra-pase', null);
+  const paseVisto = vp && typeof vp === 'object' && vp.temp === tempPase && typeof vp.n === 'number' ? vp.n : null;
   useEffect(() => {
-    if (!nivelPase) return;
-    if (pagina === 'pase' || !paseVisto) ls.set('lg:pase-visto', String(nivelPase));
-  }, [nivelPase, pagina]); // eslint-disable-line react-hooks/exhaustive-deps
-  const puntoPase = !!nivelPase && !!paseVisto && nivelPase > paseVisto && pagina !== 'pase';
+    if (!paseOk) return;
+    if (pagina === 'pase' || paseVisto == null || nivelPase < paseVisto) ls.set('lg:barra-pase', JSON.stringify({ temp: tempPase, n: nivelPase }));
+  }, [nivelPase, tempPase, pagina]); // eslint-disable-line react-hooks/exhaustive-deps
+  const puntoPase = !!nivelPase && paseVisto != null && nivelPase > paseVisto && pagina !== 'pase';
 
   // 🐉 EL DRAGÓN DROP EN TU CARA (la E): con uno para abrir, la cara lleva un punto y late tres veces; mantenerla apretada la
   // va llenando de abajo hacia arriba y, al medio segundo, lo abre ahí mismo (`abrirPrimero()` de drops.jsx). Tocarla sigue
@@ -683,7 +775,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const D = useDrops(novato ? null : dc);
   const drops = D ? (D.cerrados || []).filter((x) => !(D.miembro === false && /merito/.test(String((x && x.origen) || '')))).length : 0;
   const [llena, setLlena] = useState(false);
-  const mantenerYo = useMantener(() => { setYoM(false); setJm(false); abrirPrimero(btnYo.current); }, 450,
+  const mantenerYo = useMantener(() => { setYoM(false); setJm(false); setRm(false); abrirPrimero(btnYo.current); }, 450,
     { activo: drops > 0, onIni: () => setLlena(true), onFin: () => setLlena(false) });
   const [late, setLate] = useState(false);
   const dropsAntes = useRef(0);
@@ -698,6 +790,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   // EN JUEGO cae en el centro exacto. Las de después miden lo mismo o lo que pida su nombre. Se mide la barra y no `100vw`,
   // que en una ventana con barra de desplazamiento la corre unos píxeles
   const tira = useRef(null);
+  const porCodigo = useRef(0);
   useLayoutEffect(() => {
     const b = nav.current;
     if (!b) return undefined;
@@ -716,6 +809,8 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     if (r.left >= q.left && r.right <= q.right) return;
     let quieto = false;
     try { quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { quieto = false; }
+    // lo corre la página, no tu dedo: no cuenta como «ya aprendiste a deslizarla» (se comía el globo de lo que se sumó)
+    porCodigo.current = Date.now() + (quieto ? 150 : 900);
     t.scrollTo({ left: Math.max(0, a.offsetLeft - (t.clientWidth - a.offsetWidth) / 2), behavior: quieto ? 'auto' : 'smooth' });
   }, [pagina, novato]);
 
@@ -727,7 +822,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const hayMas = lista.length > 4;
   const mirar = () => {
     const t = tira.current;
-    if (t && !asomando.current && t.scrollLeft > 24 && aviso) aprendio();
+    if (t && !asomando.current && Date.now() > porCodigo.current && t.scrollLeft > 24 && aviso) aprendio();
   };
   const asomar = () => {
     let quieto = false;
@@ -754,7 +849,8 @@ export function Tabbar({ liga, dc, pagina = '' }) {
       const b = tb.getBoundingClientRect();
       const g = V.on ? capaFija(tb).querySelector('.tb-globo') : null;
       const libre = document.visibilityState !== 'hidden' && b.height > 0 && b.top < H && b.bottom > H * 0.5
-        && !algoTapa(tb, ['.nvt']) && !(g && !seVe(g));
+        // y no mientras hay un panel de la barra abierto (Eventos, Ranking o lo tuyo): se pondría encima de sus filas de abajo
+        && !algoTapa(tb, ['.nvt', '.tb-ev', '.yo-menu']) && !(g && !seVe(g));
       if (!libre) {
         V.libre = 0; V.ult = 0;
         if (V.on) { V.on = false; setGlobo(null); }
@@ -787,7 +883,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
       const cls = 'tb-jg ' + j.tipo + (enEv && (j.tipo === 'nada' || j.tipo === 'hoy' || j.tipo === 'pronto') ? ' on' : '') + (jm ? ' abierto' : '');
       return (
         <a key="jg" ref={btnJ} href={href} className={cls} data-tuto="menu-eventos" aria-label={j.aria + '. Abre Calendario, Competencias y Ligas'}
-          aria-haspopup="menu" aria-expanded={jm} onClick={tocar}>
+          aria-controls="tb-hoja-ev" aria-expanded={jm} onClick={tocar}>
           {/* en reposo, como las demás casillas (ícono y nombre) sobre su bloque: «📅 EVENTOS» con la pista abajo no entraba y
               se metía encima de Pase (medido a 360 y 390) */}
           {j.tipo === 'nada' ? <><Ico n="eventos" t={22} /><span>Eventos</span></> : <>
@@ -798,8 +894,11 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     }
     const [k, n, r] = x;
     const on = k === 'inicio' ? !pagina : pagina === k;
+    // Ranking no lleva directo: abre sus doce tablas, como «Ranking ▾» en la compu
+    const rk = k === 'ranking';
     return (
-      <a key={k} href={r} data-tuto={'menu-' + k} onClick={subirSiEsta(r)} className={on ? 'on' : ''}
+      <a key={k} href={r} data-tuto={'menu-' + k} onClick={rk ? tocarR : subirSiEsta(r)} ref={rk ? btnR : undefined}
+        className={(on ? 'on' : '') + (rk && rm ? ' abierto' : '')} aria-controls={rk ? 'tb-hoja-rk' : undefined} aria-expanded={rk ? rm : undefined}
         aria-label={k === 'pase' && puntoPase ? 'Pase: subiste al nivel ' + nivelPase : undefined}>
         <Ico n={k} t={22} /><span>{n}</span>
         {k === 'ranking' && sube ? <i className="tb-sube" aria-label={'Subiste ' + sube + (sube === 1 ? ' puesto' : ' puestos')}>+{sube}</i> : null}
@@ -822,12 +921,13 @@ export function Tabbar({ liga, dc, pagina = '' }) {
         <button type="button" ref={btnYo} className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '') + (drops ? ' con-drop' : '') + (llena ? ' llena' : '') + (late ? ' late' : '')}
           data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM}
           aria-label={'Lo tuyo: inventario, perfil y cuenta' + (drops ? '. Tienes ' + (drops === 1 ? 'un Dragón Drop' : drops + ' Dragón Drops') + ' para abrir: mantén apretado para abrirlo' : '')}
-          onClick={() => { setJm(false); setYoM((v) => !v); }} {...mantenerYo}>
+          onClick={() => { setJm(false); setRm(false); setYoM((v) => !v); }} {...mantenerYo}>
           <span className="tb-yo-c">{cara}{drops ? <i className="tb-pv" aria-hidden="true" /> : null}</span><span>Tú</span></button>
       ) : (
         <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Entrar con Discord"><Ico n="yo" t={22} /><span>Entrar</span></a>
       )}
-      {verJ ? <HojaEventos liga={liga} j={j} cara={cara} pagina={pagina} sale={saleJ} x={jx} onCerrar={cerrarJ} /> : null}
+      {verJ ? <HojaEventos liga={liga} j={j} cara={cara} pagina={pagina} sale={saleJ} x={jx} boton={btnJ} onCerrar={cerrarJ} /> : null}
+      {verR ? <HojaRanking liga={liga} cara={cara} sube={sube} sale={saleR} x={rx} boton={btnR} onCerrar={cerrarR} /> : null}
       {verYo ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo sale={saleYo} onCerrar={() => setYoM(false)} /> : null}
     </nav>
   );
@@ -868,12 +968,13 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv, pagina = '
     return () => window.removeEventListener('keydown', k);
   }, [abierto, onCerrar]);
   if (!ver) return null;
-  // el changelog, con su «NUEVO» si hay una versión que no viste (lo que app.js ya cargó para el punto del menú)
+  // el changelog, con su «NUEVO» si hay una versión que no viste (lo que app.js ya cargó para el punto del menú). Cada
+  // línea, una frase entera en un solo texto: `/en` traduce por texto, y partida en tres no la encontraba
   const C = window.CAMBIOS;
   const ult = Array.isArray(C) && C[0] ? C[0].version : '';
   const nuevo = !!ult && nuevaQue(ult, window.CAMBIOS_VISTO);
   const cambios = (
-    <div className="x-fila"><span>Changelog<small>Lo nuevo de la página{ult ? ', hasta la v' + ult : ''}.</small></span>
+    <div className="x-fila"><span>Changelog<small>{'Lo nuevo de la página' + (ult ? ', hasta la v' + ult : '') + '.'}</small></span>
       <a className="btn negro chico" href="#/cambios" onClick={onCerrar}>{nuevo ? <em className="x-nuevo">NUEVO</em> : null}Ver</a></div>
   );
   // lo del momento de cada cuadrado: sin dato no hay etiqueta
@@ -917,7 +1018,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv, pagina = '
             </div></div>
           {/* 🎨 y los de los servidores (13/10/2026): están en Apariencia, con la vista previa de cada uno. Por su nombre
               (`nombreSv()`, como Apariencia), no por el código: decía «Ahora: SR.» y «Ahora: ACAD.» (18/11/2026) */}
-          <div className="x-fila"><span>Colores de un servidor<small>{temaSv ? 'Ahora: ' + nombreSv(temaSv) + '. ' : ''}Encima de Clara o de Noche, los colores de un servidor de la Liga.</small></span>
+          <div className="x-fila"><span>Colores de un servidor<small>{(temaSv ? 'Ahora: ' + nombreSv(temaSv) + '. ' : '') + 'Encima de Clara o de Noche, los colores de un servidor de la Liga.'}</small></span>
             <a className="btn negro chico" href="#/cuenta/apariencia" onClick={onCerrar}>Elegir</a></div>
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
             <a className="btn negro chico" href="#/cuenta/hora" onClick={onCerrar}>Abrir</a></div>

@@ -873,19 +873,6 @@ viajan en el payload y se aplican en línea. Escribirlos ahí sería el
 ⚠️ **Y NINGUNA SECCION SE DIBUJA VACIA.** Cada `pinta*()` se apaga sola
 si no tiene con qué — es *«sin dato no hay pieza»* aplicado a una página.
 
-🧭 **SI SE REHACE UNA PÁGINA, SE LE VUELVE A PONER SU MARCA DEL TUTORIAL, Y
-SOBRE ALGO CHICO** (19/11/2026, Dlx: *«que se acople si actualizamos o
-remakeamos»*). Cada paso del tutorial apunta a un `data-tuto`
-(`web/src/capitulos.js`): el buscador, el título, el primer tier — **nunca una
-sección entera**, que deja el velo sin nada que tapar y fue por qué «se movía
-la pantalla pero no se notaba qué». Lo cuidan dos: `herramientas/tuto_marcas.py`
-(CI, mira el código: que la marca exista) y `herramientas/tuto_medir.py`
-(web.yml, después de cada despliegue: corre los dos tutoriales en un navegador
-y da rojo si un paso perdió su marca, se corta, queda tapado o enciende más del
-45 % de la pantalla). Antes de pushear una página rehecha:
-`python herramientas/tuto_medir.py --local`. Si igual se pierde una marca, el
-paso enciende el título de esa página en vez de nada.
-
 🔔 **LA CAMPANA: AVISOS DE EVENTOS, DESDE EL 24/09/2026.** `#/avisos`
 anota el dispositivo y le llega una notificación **al minuto** de que un
 servidor anuncia un evento. No sale del ciclo —18 de 26 eventos se

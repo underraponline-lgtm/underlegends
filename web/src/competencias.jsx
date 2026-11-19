@@ -886,8 +886,8 @@ function TablaCaja({ liga, C, yo, g, dl, setSel, conCuenta, tref }) {
   const pr = premioLiga(C, nivelSel);
   const cierre = (L.cierres || [])[(L.jornada || 1) - 1];
   return (
-    <article className="cmx-t cmx-violeta cmx-tb" ref={tref} id="cm9-ligas" aria-label="Las ligas">
-      <header data-tuto="cm-ligas">
+    <article className="cmx-t cmx-violeta cmx-tb" ref={tref} id="cm9-ligas" data-tuto="cm-ligas" aria-label="Las ligas">
+      <header>
         <h4>Liga {nombreLiga(C, g)}{g.id === mia ? <small> · la tuya</small> : null}</h4>
         <span className="cmx-tabs" role="tablist" aria-label="Los niveles">
           {niveles.map(([nv, n]) => <button key={nv} type="button" role="tab" aria-selected={nivelSel === nv} className={nivelSel === nv ? 'on' : ''} onClick={() => ir(nv)}>{n}</button>)}
