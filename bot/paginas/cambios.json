@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.71",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T21:30:00-05:00",
+        "titulo": "El jurado, también en las batallas de 3 a 5",
+        "items": [
+            "**«El jurado» de cada llave muestra también las batallas de 3 a 5 MCs**, con el voto de cada jurado, igual que las de dos.",
+            "**Al lado de cada MC, cómo lo escribió el jurado** si no es su nombre de la Liga: si dice Valen y al lado «KIBAK», en los veredictos se votó a KIBAK, que es Valen.",
+            "**Una réplica ya no se cuenta como voto** («ZA X MELOMANIACO» es la réplica entre los dos, no un voto a uno), y una ronda entera escrita en un solo mensaje ya no se toma como si fuera una sola batalla."
+        ]
+    },
+    {
         "version": "6.70",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T20:30:00-05:00",

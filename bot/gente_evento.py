@@ -183,14 +183,22 @@ def _cercania(dias, v):
     return (abs(dias), dias < 0, -int(v.get('pub') or 0))
 
 
-def jurado(L, F):
-    """`[{'r': ronda, 'l': [lados], 'v': [[juez, índice del lado votado]]}]`: quién votó a quién, batalla por batalla."""
+def jurado(L, F, con_voto=False):
+    """`[{'r': ronda, 'l': [lados], 'v': [[juez, índice del lado votado]], 'e': [cómo se escribió cada lado]}]`: quién
+    votó a quién, batalla por batalla. `e` va sólo si algún lado se escribió distinto que en la llave («KIBAK» es Valen),
+    y `''` en el lado que se escribió igual o que no estaba en el voto.
+
+    🔥 LAS DE 3 A 5 MCs TAMBIÉN (Dlx, 18/11/2026: «show the heats in the jury too»). Una de dos cruza sólo si son las
+    mismas dos personas; una de 3 a 5, si es la misma o, si no hay, la que comparte MÁS DE LA MITAD de la gente con esa
+    batalla (`SIN LIMITES 🆚 KIBAK 🆚 POMBERITO 🆚 XNOAH 🆚 SIX` es la de Valen, 123, Elbesaabuelas, Pomberito y Sin
+    Limites: en #veredictos y en la llave hay apodos distintos), y el votado tiene que estar en la batalla. Un voto de 3 a 5
+    va a una sola batalla de la llave."""
     try:
         d0 = dt.date.fromisoformat(L.get('dia'))
     except (TypeError, ValueError):
         return []
-    idx = {}
-    for v in F.votos:
+    idx, multi = {}, []
+    for i, v in enumerate(F.votos):
         lados = v.get('lados') or [v.get('a') or '', v.get('b') or '']
         ns = [F.clave(x) for x in lados]
         if len(ns) < 2 or not all(ns) or len(set(ns)) != len(ns):
@@ -201,23 +209,44 @@ def jurado(L, F):
             continue
         if not -VOTO_ANTES <= (dia - d0).days <= VOTO_DESPUES:
             continue
-        idx.setdefault(frozenset(ns), []).append((_cercania((dia - d0).days, v), ns, v))
-    out = []
+        c = (_cercania((dia - d0).days, v), i, ns, lados, v)
+        idx.setdefault(frozenset(ns), []).append(c)
+        if len(ns) > 2:
+            multi.append(c)
+    out, usados = [], set()
     for R in L.get('rondas') or []:
         for b in R.get('b') or []:
             lados = b[0] or []
             ns = [F.clave(x) for x in lados]
-            cand = idx.get(frozenset(ns)) or []
+            cand = [((0,) + c[0], c) for c in idx.get(frozenset(ns)) or []] if len(set(ns)) == len(ns) else []
+            if len(ns) > 2:
+                cand = [x for x in cand if x[1][1] not in usados]
+                if not cand:
+                    S = set(ns)
+                    cand = [((-len(S & set(c[2])),) + c[0], c) for c in multi
+                            if c[1] not in usados and len(S & set(c[2])) * 2 > len(S) and len(S & set(c[2])) >= 2]
             if not cand:
                 continue
-            _c, vns, v = min(cand, key=lambda c: c[0])
+            _r, (_c, i, vns, vlados, v) = min(cand, key=lambda x: x[0])
             votos = []
             for jid, x in sorted((v.get('v') or {}).items()):
                 k = vns[0] if x == 'a' else vns[1] if x == 'b' and len(vns) > 1 else F.clave(x)
                 if k in ns:
                     votos.append([F.por_id.get(str(jid)) or F.jnombre.get(str(jid)) or 'jurado', ns.index(k)])
-            if votos:
-                out.append({'r': R.get('r') or '', 'l': list(lados), 'v': votos})
+            if not votos:
+                continue
+            if len(vns) > 2:
+                usados.add(i)
+            item = {'r': R.get('r') or '', 'l': list(lados), 'v': votos}
+            # ✍️ cómo se escribió cada lado en #veredictos, si no es como en la llave: así se ve que «KIBAK» se unió a Valen
+            escrito = dict(zip(vns, vlados))
+            e = [escrito[k] if k in escrito and _norm(escrito[k]) != _norm(x) else '' for k, x in zip(ns, lados)]
+            if any(e):
+                item['e'] = e
+            if con_voto:
+                # 🔍 sólo para `herramientas/auditar_votos.py`: el voto entero, como se guardó. No se guarda ni viaja
+                item['_voto'] = {'lados': list(vlados), 'pub': v.get('pub'), 'i': i}
+            out.append(item)
     return out
 
 
@@ -397,8 +426,19 @@ def _self_check():
     J4 = {'nombres': {'j1': 'Juez Uno'}, 'votos': {'v': {'a': 'KIBAK', 'b': 'PARK JI SUNG', 'pub': 1794330000000, 'v': {'j1': 'a'}}}}
     F4 = Fuentes(llaves={'9': L4}, anuncios={'anuncios': [], 'inscripciones': []}, jurados=J4, lista=lista, cuentas={},
                  nombres_llaves={}, clave=lambda s: alias.get(_norm(s), _norm(s)))
-    ok(armar(F4)['9'].get('jur') == [{'r': 'Final', 'l': ['Valen', 'Oasis'], 'v': [['Juez Uno', 0]]}],
-       'el voto «KIBAK 🆚 PARK JI SUNG» es de la final Valen contra Oasis: se cruza por la persona, no por cómo se escribió')
+    ok(armar(F4)['9'].get('jur') == [{'r': 'Final', 'l': ['Valen', 'Oasis'], 'v': [['Juez Uno', 0]], 'e': ['KIBAK', 'PARK JI SUNG']}],
+       'el voto «KIBAK 🆚 PARK JI SUNG» es de la final Valen contra Oasis: se cruza por la persona, y queda cómo se escribió')
+    # 🔥 las de 3 a 5: la que comparte más de la mitad de la gente, aunque haya apodos que no se conocen; la que comparte
+    # dos de cinco, no; y el voto va a una sola batalla
+    alias.update({'xnoah': 'elbesaabuelas'})
+    L5 = dict(L, rondas=[{'r': 'Octavos', 'b': [[['Valen', '123', 'Elbesaabuelas', 'Pomberito', 'Sin Limites'], 'Valen', ''],
+                                                [['Pomberito', 'Sin Limites', 'Uno', 'Dos', 'Tres'], 'Uno', '']]}])
+    J5 = {'nombres': {'j1': 'Juez Uno'}, 'votos': {'h': {'lados': ['SIN LIMITES', 'KIBAK', 'POMBERITO', 'XNOAH', 'SIX'], 'pub': 1794330000000, 'v': {'j1': 'KIBAK'}}}}
+    F5 = Fuentes(llaves={'9': L5}, anuncios={'anuncios': [], 'inscripciones': []}, jurados=J5, lista=lista, cuentas={},
+                 nombres_llaves={}, clave=lambda s: alias.get(_norm(s), _norm(s)))
+    ok(jurado(dict(L5, n='9'), F5) == [{'r': 'Octavos', 'l': L5['rondas'][0]['b'][0][0], 'v': [['Juez Uno', 0]],
+                                        'e': ['KIBAK', '', 'XNOAH', '', '']}],
+       'una de cinco con apodos distintos (SIX no está en la llave) se une por los cuatro que sí; la que comparte dos de cinco, no')
     w = para_web(g)
     _s = json.dumps(w)
     ok(not any(x in _s for x in ('"11"', '"22"', 'm1', '"77"', '400')) and w['ins'][0] == ['Park-Ji Sung 🇰🇷', 'Oasis', 'cuenta'],

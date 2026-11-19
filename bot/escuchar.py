@@ -3823,6 +3823,20 @@ def veredictos(rows):
     return [x for x in (_vidas_de_tanda(T) for T in _tandas(rows)) if x]
 
 
+def _es_replica(t, lados):
+    """⚔️ ¿El renglón nombra a DOS O MÁS lados enteros, separados por `X`, `vs` o `🆚`? Es la réplica, no un voto.
+
+    FFA, NEW GENESIS (17/11/2026): `ZA X MELOMANIACO` se contaba como voto a MELOMANIACO, porque un nombre de dos letras
+    sólo cuenta si es el renglón entero y el otro estaba adentro. `MATS X LA MÍNIMA` sigue siendo un voto: «LA MÍNIMA»
+    no es un lado."""
+    ls = [x.strip() for x in _lineas(t) if x.strip()]
+    if len(ls) != 1:
+        return False
+    ns = {norm(x) for x in lados if norm(x)}
+    partes = re.split(r'\s+[xX×]\s+|\s+vs\.?\s+|\s*🆚\s*', re.sub(r'^#+\s*', '', ls[0]), flags=re.I)
+    return len({norm(MARCAS.sub('', p)) for p in partes} & ns) >= 2
+
+
 def _tandas(rows):
     """Las tandas de #veredictos: los mensajes de cada canal sin un hueco de
     `TANDA_MIN`, con cada batalla (su título) y los votos que la siguen —uno
@@ -3844,6 +3858,16 @@ def _tandas(rows):
             tanda['ult'] = pub
             tanda['ed'] = max(tanda['ed'], int(m.get('ed') or pub))
             t = traducir(plano(m.get('texto') or ''))
+            filas_b = [ns for ns in (nombres_de_linea(re.sub(r'^\s*#+\s*', '', l)) for l in _lineas(t)) if len(ns) >= 2]
+            # 📋 UN MENSAJE CON DOS BATALLAS O MÁS ES LA RONDA ENTERA, NO UN TÍTULO (18/11/2026). FFA y URBF ponen la ronda
+            # en UN mensaje —una batalla por renglón— y cada jurado vota editando SU mensaje toda la noche. Acá se tomaba
+            # el primer renglón como la batalla y la última versión de cada jurado como su voto a ésa: 16 batallas así en
+            # `datos/jurados.json`, y en «erian 🆚 Isabella» (31/10) dos de los tres votos salían para Isabella cuando el
+            # lector de esas rondas (`votos_en_vivo()`, en el momento) los tiene a los cuatro para erian, que pasó
+            if len(filas_b) >= 2:
+                tanda['multi'] = True
+                tanda.setdefault('ms', []).append(None)
+                continue
             tit = _titulo_batalla(t)
             if tit:
                 un = lambda x: tanda['nom'].setdefault(norm(x), x)   # noqa: E731
@@ -3855,10 +3879,29 @@ def _tandas(rows):
             # SUNG» en `OKAM 🆚 PARK JI SUNG`, y una hora después escribió `ZA 🆚 OKAM 🆚 MELOMANIACO 🆚 JULT`: no es un
             # título de dos, así que se leía como un voto, nombraba a OKAM y le daba vuelta el suyo de las 10 PM. Esas no
             # son de dos (`llaves_de_veredictos()` las lee enteras): lo que la sigue no le vota a la anterior
-            if any(len(nombres_de_linea(re.sub(r'^\s*#+\s*', '', l))) > 2 for l in _lineas(t)):
+            if filas_b and len(filas_b[0]) > 2:
                 tanda['multi'] = True
+                # 🔥 Y SE GUARDA CON SUS VOTOS (Dlx, 18/11/2026: «show the heats in the jury too»): `ms`, aparte de
+                # `bs` para que los 5 vidas y el ganador de una batalla (`batallas_veredicto()`) no cambien. Sólo la que
+                # no es de una ronda de FFA con marcos (`⌞A⌝ 🆚 ⌞B⌝ 🆚 ⌞C⌝`): ésas las lee `votos_en_vivo()`, y contarlas
+                # acá también sería el mismo voto dos veces
+                if not _LADO_FFA.search(t):
+                    lados = [re.sub(r'\s*\(\s*R\s*\)\s*$', '', _sin_marcas(x), flags=re.I).strip() for x in filas_b[0]]
+                    tanda.setdefault('ms', []).append({'lados': lados, 'votos': {}, 'id': str(m['id'])})
+                else:
+                    tanda.setdefault('ms', []).append(None)
                 continue
-            cur = tanda['bs'][-1] if tanda['bs'] and not tanda.get('multi') else None
+            if tanda.get('multi'):
+                # el voto de una de 3 a 5: el renglón que nombra a UNO SOLO de sus lados (`KIBAK`); la réplica
+                # (`KIBAK X POMBERITO X SIX`) nombra a varios y no es de nadie
+                hm = (tanda.get('ms') or [None])[-1]
+                v = _voto_de(t)
+                if hm and v and not v.startswith('<') and m.get('autor') and not _es_replica(t, hm['lados']):
+                    hay = [x for x in hm['lados'] if norm(x) and (norm(x) == v or (len(norm(x)) > 2 and norm(x) in v))]
+                    if len(hay) == 1:
+                        hm['votos'][str(m['autor'])] = hay[0]
+                continue
+            cur = tanda['bs'][-1] if tanda['bs'] else None
             v = _voto_de(t)
             if cur and not v and m.get('img') and m.get('autor') and not t.strip():
                 v = _voto_de_imagen(m, cur['a'], cur['b'])
@@ -3871,6 +3914,8 @@ def _tandas(rows):
                 fa, fb = v[9:] in cur['a'], v[9:] in cur['b']
                 if fa != fb:
                     cur['votos'][str(m['autor'])] = 'a' if fa else 'b'
+                continue
+            if _es_replica(t, (cur['a'], cur['b'])):
                 continue
             na, nb = norm(cur['a']), norm(cur['b'])
             ea = v == na or (len(na) > 2 and na in v)
@@ -3920,6 +3965,11 @@ def votos_jurados(rows):
             if b['votos']:
                 out[b['id']] = {'sv': T['sv'], 'canal': str(T.get('canal') or ''), 'pub': _ms(b['id']),
                                 'a': b['a'], 'b': b['b'], 'v': dict(b['votos'])}
+        # 🔥 las de 3 a 5 MCs, con la forma de `votos_en_vivo()`: `lados` y el voto es el nombre del lado
+        for b in T.get('ms') or []:
+            if b and b['votos']:
+                out[b['id']] = {'sv': T['sv'], 'canal': str(T.get('canal') or ''), 'pub': _ms(b['id']),
+                                'lados': list(b['lados']), 'v': dict(b['votos'])}
     return out, nombres
 
 
@@ -4513,6 +4563,11 @@ def vidas(s, mem, guilds, completo):
         if vs or ns:
             J.setdefault('votos', {}).update(vs)
             J.setdefault('nombres', {}).update(ns)
+            # 📋 una ronda entera leída como UNA batalla (ver `_tandas()`, 18/11/2026): si el lector de rondas tiene ese
+            # mismo mensaje (`<id>:<renglón>`), la de `_tandas()` sobra y está mal. Las viejas se van solas acá
+            en_vivo = {k.split(':')[0] for k in J['votos'] if ':' in k}
+            for k in [k for k in J['votos'] if ':' not in k and k in en_vivo]:
+                del J['votos'][k]
             J['_leeme'] = ('Quién votó a quién en cada batalla de #veredictos (`votos`: {batalla: {a, b, v: {jurado: '
                            "'a'|'b'}}}) y cómo se llama cada jurado. Público por decisión de Dlx (26/10/2026). Lo escribe "
                            'bot/escuchar.py (votos_jurados()); la ficha la arma bot/competencias.py.')
@@ -4607,11 +4662,37 @@ def _self_check():
     # 🆚 una batalla de 3 a 5 MCs cierra la de dos que venía (FFA, NEW GENESIS, 17/11/2026: ver `_tandas()`)
     _f = [{'id': str(i), 'canal': 'c', 'sv': 'FFA', 'g': 'g', 'autor': 'e', 'pub': i, 'ed': i, 'texto': t}
           for i, t in enumerate(['OKAM 🆚 PARK JI SUNG', 'PARK JI SUNG', 'ZA 🆚 OKAM 🆚 MELOMANIACO 🆚 JULT',
-                                 'ZA X MELOMANIACO', 'OKAM', 'TAM 🆚 OKAM', 'OKAM'], 1)]
-    _bs = _tandas(_f)[0]['bs']
-    _ok = [(b['a'], b['votos']) for b in _bs] == [('OKAM', {'e': 'b'}), ('TAM', {'e': 'b'})]
+                                 'ZA X MELOMANIACO', 'OKAM', 'TAM 🆚 OKAM', 'OKAM',
+                                 'SNOW (R) 🆚 MELOMANIACO 🆚 RAIZER', 'SNOW', '⌞A⌝ 🆚 ⌞B⌝ 🆚 ⌞C⌝', 'A'], 1)]
+    _T = _tandas(_f)[0]
+    _ok = [(b['a'], b['votos']) for b in _T['bs']] == [('OKAM', {'e': 'b'}), ('TAM', {'e': 'b'})]
     print('   %s una de 4 MCs que nombra a OKAM no le da vuelta el voto de OKAM 🆚 PARK JI SUNG%s'
-          % ('✅' if _ok else '❌', '' if _ok else ': %s' % [(b['a'], b['b'], b['votos']) for b in _bs]))
+          % ('✅' if _ok else '❌', '' if _ok else ': %s' % [(b['a'], b['b'], b['votos']) for b in _T['bs']]))
+    mal += not _ok
+    # 🔥 y las de 3 a 5 se guardan con su voto (18/11/2026): la réplica no vota, «(R)» no es del nombre, y una ronda de
+    # FFA con `⌞⌝` no se guarda acá (es de `votos_en_vivo()`)
+    _hs = [(b['lados'], b['votos']) if b else None for b in _T.get('ms') or []]
+    _ok = _hs == [(['ZA', 'OKAM', 'MELOMANIACO', 'JULT'], {'e': 'OKAM'}), (['SNOW', 'MELOMANIACO', 'RAIZER'], {'e': 'SNOW'}), None]
+    _vj = votos_jurados(_f)[0]
+    _ok = _ok and _vj.get('3', {}).get('lados') == ['ZA', 'OKAM', 'MELOMANIACO', 'JULT'] and _vj['3']['v'] == {'e': 'OKAM'}
+    print('   %s las de 3 a 5 MCs se guardan con su voto, sin la réplica ni el «(R)»%s' % ('✅' if _ok else '❌', '' if _ok else ': %s' % _hs))
+    mal += not _ok
+    # 📋 la ronda entera en un mensaje no es una batalla: los votos que la siguen no son de su primer renglón
+    _f = [{'id': str(i), 'canal': 'c', 'sv': 'FFA', 'g': 'g', 'autor': a, 'pub': i, 'ed': i, 'texto': t}
+          for i, (a, t) in enumerate([('o', '⌞ERIAN⌝ 🆚 ⌞ISABELLA⌝\n⌞TNOR⌝ 🆚 ⌞YINN⌝'), ('j', 'ISABELLA'), ('o', 'OKAM 🆚 TAM'), ('j', 'TAM')], 1)]
+    _T = _tandas(_f)[0]
+    _ok = [(b['a'], b['votos']) for b in _T['bs']] == [('OKAM', {'j': 'b'})] and votos_jurados(_f)[0].keys() == {'3'}
+    print('   %s la ronda entera en un mensaje (`⌞ERIAN⌝ 🆚 ⌞ISABELLA⌝` y otra abajo) no es una batalla: nadie le vota%s'
+          % ('✅' if _ok else '❌', '' if _ok else ': %s' % [(b['a'], b['b'], b['votos']) for b in _T['bs']]))
+    mal += not _ok
+    # ⚔️ la réplica con un nombre de dos letras no es un voto (`_es_replica()`); «X LA MÍNIMA» sí lo es
+    _f = [{'id': str(i), 'canal': 'c', 'sv': 'FFA', 'g': 'g', 'autor': a, 'pub': i, 'ed': i, 'texto': t}
+          for i, (a, t) in enumerate([('o', 'NC 🆚 ZA 🆚 MELOMANIACO'), ('e', 'ZA X MELOMANIACO'), ('o', 'ZA 🆚 MELOMANIACO'),
+                                      ('e', 'ZA X MELOMANIACO'), ('j', 'MELOMANIACO X LA MÍNIMA')], 1)]
+    _T = _tandas(_f)[0]
+    _ok = _T['ms'][0]['votos'] == {} and _T['bs'][0]['votos'] == {'j': 'b'}
+    print('   %s «ZA X MELOMANIACO» es la réplica, no un voto (en una de tres y en una de dos); «MELOMANIACO X LA MÍNIMA» sí vota%s'
+          % ('✅' if _ok else '❌', '' if _ok else ': %s %s' % (_T['ms'][0]['votos'], _T['bs'][0]['votos'])))
     mal += not _ok
     # 🔑 «CAMPEÓN: TEAM ANDRES» (DDF, CIUDAD GÓTICA, 27/09/2026; Cronox, 08/10/2026): ver `equipo_de_uno()`
     print('\n  el equipo campeón nombrado por uno de los suyos')

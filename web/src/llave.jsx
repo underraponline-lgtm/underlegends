@@ -399,7 +399,9 @@ function GenteEvento({ liga, G }) {
                     const cuenta = b.l.map((_x, li) => b.v.filter((v) => v[1] === li).length);
                     return (
                       <li key={k}>
-                        {b.l.map((x, li) => <span key={li} className={cuenta[li] === Math.max(...cuenta) ? 'g' : ''}>{li ? <i>vs</i> : null}{limpio(x)} <b>{cuenta[li]}</b></span>)}
+                        {b.l.map((x, li) => <span key={li} className={cuenta[li] === Math.max(...cuenta) ? 'g' : ''}>{li ? <i>vs</i> : null}{limpio(x)}
+                          {/* ✍️ cómo se escribió en los veredictos, si no es como en la llave (18/11/2026): «KIBAK» es Valen */}
+                          {b.e && b.e[li] ? <em className="lk-jr-e" title="Así se escribió en los veredictos">«{limpio(b.e[li])}»</em> : null} <b>{cuenta[li]}</b></span>)}
                         <small>{b.v.map(([j, li]) => limpio(j) + ' → ' + limpio(b.l[li] || '')).join(' · ')}</small>
                       </li>
                     );
