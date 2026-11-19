@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.69",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T20:30:00-05:00",
+        "titulo": "El jurado de cada llave, completo",
+        "items": [
+            "**«El jurado» muestra todas las batallas que se votaron**: en los veredictos el voto se escribe con el nombre con el que se juega, y la llave guarda a la persona con su nombre de la Liga. Ahora se unen: en la temporada pasan de 165 a 273 batallas con votos, y de 53 a 63 llaves con su jurado.",
+            "**Un voto ya no cambia solo**: una batalla de 3 a 5 MCs anotada después de un voto podía dárselo vuelta al MC equivocado. Ya no pasa.",
+            "**Si dos MCs pelearon en dos eventos seguidos**, cada llave muestra el voto de su día y no el del otro evento.",
+            "Los votos del jurado cuentan igual en la nota de cada batalla."
+        ]
+    },
+    {
         "version": "6.68",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T17:30:00-05:00",
