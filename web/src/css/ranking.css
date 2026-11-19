@@ -513,3 +513,25 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
 .rka-hj li b{font-weight:800}
 .rka-hc{width:24px;height:24px;font-size:11px}
 .rka-hj li.tuyo a{color:var(--magenta-tx)}
+/* ── 🏁 tanda 2 (19/11/2026): el Ranking ELO en la escena y en el papel, y las caras de la pelea de países y crews ── */
+.rka-h2{margin-top:22px}
+.rka-vacio{margin:0 0 6px;color:var(--esc-gris);font:500 13.5px/1.4 Archivo,sans-serif}
+.rka-pcara{width:min(120px,100%);height:auto;aspect-ratio:1;font-size:40px}
+.rk-p.p1 .rka-pcara{width:min(140px,100%)}
+.rka-pv-a{display:block}
+.rka-pflag{width:56px;height:38px;object-fit:cover;border-radius:3px}
+.rka-lado .rk-plogo,.rka-lado .rka-pc.rk-plogo{width:56px;height:56px}
+/* la escalera de divisiones y tu ELO, sobre la escena: sus tokens pasan a los del escenario */
+.rka .dv-esc,.rka .dv-tu{--fondo:var(--rka-caja);--tinta:var(--esc-tinta);--gris:var(--esc-gris);--linea:var(--esc-linea);--suave:var(--esc-linea);
+  --caja:var(--rka-suave);--inv:var(--esc-tinta);--inv-tinta:var(--escenario);color:var(--esc-tinta)}
+.rka .dv-esc{max-width:none}
+.rka .dv-tu{padding:0;border:0;background:none}
+.rka .dv-tu p b.sube,.rka .dv-ultb li.sube b{color:#3CCB9A}
+.rka .dv-tu p b.baja,.rka .dv-ultb li.baja b{color:#FF6B95}
+.rka-caras{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.rka-sc{width:30px;height:30px;font-size:13px}
+.rka-caras small{color:var(--esc-gris);font:700 13px/1 Archivo,sans-serif}
+/* el papel del ELO: las pestañas con su piedra y la tuya marcada */
+.rka-pes .dv-gema{display:inline-block;width:10px;height:10px;margin-right:6px;transform:rotate(45deg);vertical-align:1px}
+.rka-tuya{margin-left:6px;padding:2px 4px;background:var(--magenta);color:#FFFFFF;font:900 10px/1 Archivo,sans-serif;vertical-align:2px}
+.rka-dv .rka-como{margin-top:18px}

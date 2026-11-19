@@ -7,8 +7,74 @@
 import { useEffect, useState } from 'react';
 import { MESES, hora, limpio, num } from './liga.js';
 import { Alguien, Cara } from './piezas.jsx';
+import { Franja } from './ranking_a.jsx';
 
 const zonaDe = (n, z) => Math.min(z, Math.floor(n / 3));
+// 🏁 EL RANKING ELO CON LA ESTRUCTURA DE LA LLAVE (el remake A del Ranking, tanda 2, 19/11/2026: Dlx, «SIGUE CON TODO»).
+// La escena —la franja, la cima de Mítico en su podio, la escalera y tu ELO al costado— la dibuja `Divisiones` con
+// `parte="escena"` adentro de la cabecera del Ranking; el papel —las divisiones en pestañas, la tabla y cómo funciona—,
+// con `parte="papel"`. Las dos partes comparten la división elegida: la tiene el Ranking con `useDivSel()`
+function eligeDe(liga) {
+  const D = liga.d.div;
+  const yo = liga.yo;
+  const divs = (D && D.d) || [];
+  const esYo = (raw) => !!yo && liga.esDe(raw, yo.k);
+  const mia = divs.findIndex((gs) => (gs || []).some((g) => g.some((f) => esYo(f[0]))));
+  const conGente = divs.findIndex((gs) => (gs || []).length);
+  return { mia, ini: mia >= 0 ? mia : Math.max(0, conGente) };
+}
+export function useDivSel(liga) {
+  const { mia, ini } = eligeDe(liga);
+  const [sel, setSel] = useState(ini);
+  useEffect(() => { if (mia >= 0) setSel(mia); }, [mia]);
+  return [sel, setSel];
+}
+// los cuatro números del ELO: la cima, el más cerca de llegar, cuándo cierra la semana y cómo cerró la anterior
+function franjaElo(liga, D, divs, nombres) {
+  const out = [];
+  const g0 = (divs[0] || [])[0] || [];
+  const todos = divs.reduce((t, gs) => t + ((gs || [])[0] || []).length, 0);
+  out.push({ l: nombres[0], v: g0.length + (g0.length === 1 ? ' rapero' : ' raperos'), c: 'desde ' + num(D.t[0]) + ' de ELO; ' + num(todos) + ' en todas las divisiones' });
+  const g1 = (divs[1] || [])[0] || [];
+  if (g1.length) {
+    const f = g1[0];
+    const p = liga.quien(f[0]);
+    out.push({ l: 'El más cerca de ' + nombres[0], cara: p ? <Cara liga={liga} k={p.k} nombre={p.n} cls="cara rka-kc" /> : null, v: limpio(p ? p.n : f[0]),
+      em: 'a ' + num(Math.max(1, D.t[0] - f[1])), c: 'tiene ' + num(f[1]) + ' de ELO; ' + nombres[0] + ' arranca en ' + num(D.t[0]) });
+  }
+  const ms = new Date(D.fin).getTime() - (+liga.ahora);
+  if (ms > 0) {
+    const hs = Math.floor(ms / 3600000);
+    const d = Math.floor(hs / 24);
+    out.push({ l: 'La semana cierra en', v: d ? d + (d === 1 ? ' día' : ' días') : Math.max(1, hs) + ' h', em: d ? 'y ' + (hs - d * 24) + ' h' : null,
+      c: 'el ' + liga.dia(D.fin) + ': se mira el ELO de cada uno' });
+  }
+  if (D.u) {
+    out.push({ l: 'La semana pasada', v: <><span className="rka-mv up">{D.u.sube.length}</span> <span className="rka-mv dn">{D.u.baja.length}</span></>,
+      c: 'subieron y bajaron de división al cerrar la semana del ' + fechaCorta(D.u.sem) });
+  }
+  return out;
+}
+// la cima de Mítico: los tres de arriba, con su cara (el ELO no tiene carta), en el mismo podio que las cartas
+function PodioElo({ liga, g }) {
+  return (
+    <ol className="rk-podio" aria-label="La cima del Ranking ELO">
+      {g.slice(0, 3).map((f, i) => {
+        const p = liga.quien(f[0]);
+        return (
+          <li key={f[0]} className={'rk-p p' + (i + 1)}>
+            <div className="rk-pv">
+              {p ? <a href={'#/r/' + encodeURIComponent(p.k)}><Cara liga={liga} k={p.k} nombre={p.n} cls="cara rka-pcara" grande /></a>
+                : <span className="cara rka-pcara ini">{limpio(f[0]).slice(0, 1).toUpperCase()}</span>}
+            </div>
+            <div className="rk-ped"><span className="rk-ped-n">{i + 1}</span><b>{limpio(p ? p.n : f[0])}</b><small>{num(f[1])} de ELO</small></div>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
 
 function fechaCorta(iso) {
   const d = new Date(String(iso || '') + 'T12:00:00');
@@ -427,7 +493,7 @@ function Grupo({ liga, g, gi, gs, sel, nombres, D, esYo }) {
   );
 }
 
-export function Divisiones({ liga }) {
+export function Divisiones({ liga, parte, sel: selP, setSel: setSelP }) {
   const D = liga.d.div;
   const yo = liga.yo;
   const nombres = (D && D.n) || [];
@@ -436,14 +502,80 @@ export function Divisiones({ liga }) {
   const mia = divs.findIndex((gs) => (gs || []).some((g) => g.some((f) => esYo(f[0]))));
   const elo = esElo(D);
   const conGente = divs.findIndex((gs) => (gs || []).length);
-  const [sel, setSel] = useState(mia >= 0 ? mia : Math.max(0, conGente));
-  useEffect(() => { if (mia >= 0) setSel(mia); }, [mia]);
+  const [selL, setSelL] = useState(mia >= 0 ? mia : Math.max(0, conGente));
+  useEffect(() => { if (mia >= 0) setSelL(mia); }, [mia]);
+  // 🏁 la división elegida la puede tener el Ranking (escena y papel del remake A comparten una)
+  const sel = selP != null ? selP : selL;
+  const setSel = setSelP || setSelL;
   if (!D) return null;
   const ult = D.u;
   const ultYo = ult && yo ? (ult.sube.some(esYo) ? 'sube' : ult.baja.some(esYo) ? 'baja' : '') : '';
   const gs = divs[sel] || [];
   const ultima = nombres.length - 1;
   const nadie = !divs.some((x) => (x || []).length);
+  const como = elo ? (
+    <p>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él. Se mira cada lunes a las {(D.fin && hora(D.fin).replace(/\.$/, '')) || '11 AM (hora del este)'}.
+      {' '}{nombres.slice(0, D.t.length).map((x, i) => x + ' desde ' + num(D.t[i])).join(', ')}, y {nombres[nombres.length - 1]} abajo; cada uno con tres subniveles, I, II y III.
+      {' '}La primera vez que llegas a una piedra cobras <b>{num(D.p)} Puntos de Tienda</b>, y a un subnivel {num(D.ps || 150)}. Al final de la temporada hay premio según el rango más alto que alcanzaste. Con menos de {D.pv || 5} batallas tu ELO es provisional y no te mueve.</p>
+  ) : null;
+  const caras = (xs) => xs.slice(0, 14).map((raw) => {
+    const f = liga.quien(raw);
+    return f ? <a key={raw} href={'#/r/' + encodeURIComponent(f.k)} title={limpio(f.n)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara rka-sc" /></a>
+      : <span key={raw} className="cara rka-sc ini" title={limpio(raw)}>{limpio(raw).slice(0, 1).toUpperCase()}</span>;
+  });
+  // 🏁 la escena del remake A: franja, la cima de Mítico con la escalera abajo y, al costado, tu ELO y la semana pasada
+  if (elo && parte === 'escena') {
+    const g0 = (divs[0] || [])[0] || [];
+    return (
+      <>
+        <Franja items={franjaElo(liga, D, divs, nombres)} />
+        <div className="rka-dos">
+          <div className="rka-izq">
+            <div className="rka-caja rka-pod">
+              <h2 className="rka-h">La cima de {nombres[0]}<small>{g0.length ? g0.length + ' en ' + nombres[0] : 'nadie todavía'}</small></h2>
+              {g0.length ? <PodioElo liga={liga} g={g0} /> : <p className="rka-vacio">Nadie llegó todavía a {nombres[0]}: es la cima, desde {num(D.t[0])} de ELO.</p>}
+              <h2 className="rka-h rka-h2">Las divisiones<small>de {nombres[ultima]} a {nombres[0]} · toca una</small></h2>
+              <Escalera liga={liga} nombres={nombres} divs={divs} sel={sel} setSel={setSel} mia={mia} elo={elo} colores={D.c} />
+            </div>
+          </div>
+          <div className="rka-rail">
+            <div className="rka-caja rka-dvtu"><TuSemanaElo liga={liga} D={D} nombres={nombres} divs={divs} esYo={esYo} /></div>
+            {ult ? (
+              <div className="rka-caja">
+                <h2 className="rka-h">Subieron el lunes<small>{ult.sube.length} de división</small></h2>
+                <div className="rka-caras">{caras(ult.sube)}{ult.sube.length > 14 ? <small>+{ult.sube.length - 14}</small> : null}</div>
+                {ult.baja.length ? (
+                  <>
+                    <h2 className="rka-h rka-h2">Bajaron<small>{ult.baja.length} de división</small></h2>
+                    <div className="rka-caras">{caras(ult.baja)}{ult.baja.length > 14 ? <small>+{ult.baja.length - 14}</small> : null}</div>
+                  </>
+                ) : null}
+                {ultYo ? <p className="rka-pie">{ultYo === 'sube' ? 'Tú subiste de división.' : 'Tú bajaste de división.'}</p> : null}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </>
+    );
+  }
+  // 🏁 el papel del remake A: una pestaña por división (la tuya marcada), su tabla y cómo funciona
+  if (elo && parte === 'papel') {
+    return (
+      <div className="dv rka-dv">
+        <div className="rka-pes" role="tablist" aria-label="Las divisiones">
+          {nombres.map((n, i) => (
+            <button key={n} type="button" role="tab" aria-selected={sel === i} className={sel === i ? 'on' : ''} onClick={() => setSel(i)}>
+              <i className="dv-gema" style={{ background: (D.c || [])[i] }} aria-hidden="true" />{n}<small>{((divs[i] || [])[0] || []).length}</small>
+              {i === mia ? <span className="rka-tuya">TUYA</span> : null}
+            </button>
+          ))}
+        </div>
+        {!gs.length ? <p className="dv-vacia">{sel === 0 ? 'Nadie llegó todavía a ' + nombres[0] + ': es la cima, desde ' + num(D.t[0]) + ' de ELO.' : 'Nadie está hoy en ' + nombres[sel] + '.'}</p>
+          : <GrupoElo liga={liga} g={gs[0]} sel={sel} nombres={nombres} D={D} esYo={esYo} />}
+        <section className="dv-caja rka-como"><h4>Cómo funciona</h4>{como}</section>
+      </div>
+    );
+  }
   // 🖥️ EN LA COMPU, A DOS COLUMNAS (Dlx, 14/10/2026: «Compu a dos columnas»): a la izquierda tu semana y la tabla; a la
   // derecha la escalera, cómo funciona y la semana pasada. A ~1333 px la escalera ocupaba media pantalla y dejaba un
   // hueco grande a la derecha. En el celular, una columna: tu semana, la escalera, la tabla y lo demás

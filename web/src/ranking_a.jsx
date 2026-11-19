@@ -30,7 +30,7 @@ export function Franja({ items }) {
 
 // qué cuatro números lleva cada ranking. ⚠️ Nada que repita el podio («El #1» se sacó por eso: Impeccable, 18/11/2026)
 // y nada que dependa de cuántas filas viajan (son 200, y la tabla de verdad es más larga)
-export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide }) {
+export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide, nombreDe, valTxt }) {
   const out = [];
   const conNum = base.filter((f) => numero(cfg, f));
   if (sub === 'temporada') {
@@ -75,6 +75,67 @@ export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide }) {
         v: cuenta[alto.r] + (cuenta[alto.r] === 1 ? ' rapero' : ' raperos'), c: 'desde ' + alto.min + ' de Score' + (R[0] && alto.r !== R[0].r ? '; nadie llegó a la ' + R[0].r : ', la letra más alta') });
     }
     if (base.length) out.push({ l: 'Con rango', v: num(base.length), em: base.length === 1 ? 'rapero' : 'raperos', c: 'el rango aparece con ' + (pide || 10) + ' eventos en servidores Tier 1' });
+  } else {
+    // 🏁 las demás (tanda 2, 19/11/2026): la distancia del #1 al #2 y dos números de cada una, nunca el #1 (ya está en el podio)
+    const nom = nombreDe || ((f) => limpio(f.n));
+    const cara = (f) => (f.k ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara rka-kc" /> : null);
+    const max = (xs, val) => xs.reduce((m, f) => (val(f) > (m ? val(m) : -1) ? f : m), null);
+    if (cfg.valor && conNum.length > 1) {
+      const [a, b] = conNum;
+      const d = cfg.valor[0](a) - cfg.valor[0](b);
+      out.push({ l: 'Del #1 al #2', v: d ? valTxt(d) : 'empatados', c: <><b>{nom(a)}</b> sobre {nom(b)}</> });
+    }
+    const du = (f) => (f.t != null ? [f.g || 0, f.t || 0] : (f.du || [0, 0]));
+    const extra = {
+      duelos: () => {
+        const con10 = base.filter((f) => du(f)[1] >= 10);
+        const pct = (f) => du(f)[0] / du(f)[1];
+        const mejor = max(con10, pct);
+        const mas = max(base, (f) => du(f)[1]);
+        return [mejor ? { l: 'El mejor %, con 10 o más', cara: cara(mejor), v: nom(mejor), em: Math.round(100 * pct(mejor)) + '%', c: 'ganó ' + du(mejor)[0] + ' de ' + du(mejor)[1] } : null,
+          mas ? { l: 'El que más duelos jugó', cara: cara(mas), v: nom(mas), em: du(mas)[1], c: 'uno contra uno, en las llaves de la temporada' } : null];
+      },
+      podios: () => {
+        const oros = max(base, (f) => f.oro || 0);
+        const platas = max(base, (f) => f.seg || 0);
+        const campeones = base.filter((f) => f.oro).length;
+        return [oros ? { l: 'Más oros', cara: cara(oros), v: nom(oros), em: oros.oro, c: 'eventos ganados en la temporada' } : null,
+          platas ? { l: 'Más subcampeonatos', cara: cara(platas), v: nom(platas), em: platas.seg, c: 'segundos puestos en la temporada' } : null,
+          { l: 'Campeones distintos', v: num(campeones), c: 'ganaron al menos un evento' }];
+      },
+      rachas: () => {
+        const viva = max(base, (f) => (f.rch || [0])[0] || 0);
+        const n = base.filter((f) => ((f.rch || [0])[0] || 0) >= 3).length;
+        return [viva && (viva.rch || [0])[0] ? { l: 'La viva más larga', cara: cara(viva), v: nom(viva), em: viva.rch[0], c: 'la lleva ahora: si no llega arriba en su próximo evento, vuelve a 0' } : null,
+          { l: 'Con racha viva de 3 o más', v: num(n), c: 'eventos seguidos llegando arriba de la llave' }];
+      },
+      eventos: () => {
+        const lg = max(base, (f) => f.lg || 0);
+        const ev = max(base, (f) => f.ev || 0);
+        return [ev ? { l: 'Más eventos', cara: cara(ev), v: nom(ev), em: ev.ev, c: 'jugados en la temporada, en todos los servidores' } : null,
+          lg && lg.lg ? { l: 'Más batallas de liga', cara: cara(lg), v: nom(lg), em: lg.lg, c: 'en las ligas de los servidores' } : null];
+      },
+      mw: () => {
+        const caz = max(base, (f) => f.caz || 0);
+        const sob = max(base, (f) => f.sob || 0);
+        return [caz && caz.caz ? { l: 'Más cazas', cara: cara(caz), v: nom(caz), em: caz.caz, c: 'buscados cazados' } : null,
+          sob && sob.sob ? { l: 'Más veces sobrevivió', cara: cara(sob), v: nom(sob), em: sob.sob, c: 'siendo buscado' } : null];
+      },
+      paises: () => {
+        const mas = max(base, (f) => f.n || 0);
+        const con5 = base.filter((f) => (f.n || 0) >= 5);
+        const prom = max(con5, (f) => (f.pts || 0) / f.n);
+        return [mas ? { l: 'Más raperos', v: nom(mas), em: mas.n, c: 'jugaron en la temporada' } : null,
+          prom ? { l: 'Mejor promedio, con 5 o más', v: nom(prom), em: num(Math.round(prom.pts / prom.n)), c: 'puntos por rapero' } : null];
+      },
+      crews: () => {
+        const grande = max(base, (f) => f.n || 0);
+        const con = base.filter((f) => f.rk !== 0).length;
+        return [grande ? { l: 'La más grande', v: nom(grande), em: grande.n, c: 'raperos en la temporada' } : null,
+          { l: 'Con puesto', v: num(con), em: con === 1 ? 'crew' : 'crews', c: 'las que tienen tres raperos o más' }];
+      },
+    }[sub];
+    if (extra) extra().filter(Boolean).forEach((x) => out.push(x));
   }
   return out;
 }
@@ -95,12 +156,13 @@ export function peleaDe({ cfg, base, numero }) {
   }
   return p;
 }
-export function Pelea({ liga, p, va, vb, pie }) {
+export function Pelea({ liga, p, va, vb, pie, vis, href, nombre }) {
   if (!p) return null;
+  // gente, país o crew: quien llama dice cómo se dibuja cada uno (sin `vis`, una cara y su perfil)
   const lado = (f, v) => (
-    <a className="rka-lado" href={'#/r/' + encodeURIComponent(f.k)}>
-      <Cara liga={liga} k={f.k} nombre={f.n} cls="cara rka-pc" />
-      <b>{limpio(f.n)}</b><small>{v}</small>
+    <a className="rka-lado" href={href ? href(f) : '#/r/' + encodeURIComponent(f.k)}>
+      {vis ? vis(f, 'rka-pc') : <Cara liga={liga} k={f.k} nombre={f.n} cls="cara rka-pc" />}
+      <b>{nombre ? nombre(f) : limpio(f.n)}</b><small>{v}</small>
     </a>
   );
   return (
@@ -129,6 +191,27 @@ export function Movidos({ liga, base, yoK }) {
     <div className="rka-caja">
       <h2 className="rka-h">Se movieron<small>desde el lunes</small></h2>
       <ol className="rka-camino">{up.map(fila)}{dn.map(fila)}</ol>
+    </div>
+  );
+}
+
+// ── Podios: «Más podios en total» (el medallero ordena por oros; ésta, por todos) ────────────────────────────────
+export function MasPodios({ liga, base, yoK }) {
+  const tot = (f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0);
+  const xs = base.filter((f) => tot(f) > 0).sort((a, b) => tot(b) - tot(a) || (b.oro || 0) - (a.oro || 0)).slice(0, 8);
+  if (!xs.length) return null;
+  return (
+    <div className="rka-caja">
+      <h2 className="rka-h">Más podios en total<small>oros, platas y bronces</small></h2>
+      <ol className="rka-camino">
+        {xs.map((f) => (
+          <li key={f.k} className={'rka-paso up' + (f.k === yoK ? ' tuyo' : '')}>
+            <i aria-hidden="true" />
+            <a className="rka-x" href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara rka-mc" /><b>{limpio(f.n)}</b><small>{f.oro || 0} · {f.seg || 0} · {f.ter || 0}</small></a>
+            <span className="rka-falta">{tot(f)}</span>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

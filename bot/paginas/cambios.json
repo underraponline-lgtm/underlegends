@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.75",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T00:26:00-05:00",
+        "titulo": "El Ranking ELO y las demás pestañas, rehechos",
+        "items": [
+            "**El Ranking ELO, rehecho**: arriba, cuántos hay en Mítico, el más cerca de llegar, cuándo cierra la semana y cuántos subieron y bajaron; la cima de Mítico con sus caras, la escalera de divisiones y tu ELO al costado. Abajo, una pestaña por división, con la tuya marcada.",
+            "**Duelos, Podios, Rachas, Actividad, Most Wanted, Países y Crews**, también con sus números arriba, el podio en su caja y, al costado, tu lugar y la pelea más cerrada.",
+            "**En Podios, «Más podios en total»**: el medallero ordena por oros; ésta cuenta todos.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.74",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T00:03:00-05:00",

@@ -24,7 +24,7 @@ import { FondoT, NombreT } from './puesto.js';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
-import { Divisiones } from './divisiones.jsx';
+import { Divisiones, useDivSel } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { Ascenso, ascensoSinLiga, useDetalle } from './ligas.jsx';
@@ -33,7 +33,7 @@ import { SelloPremium, esPremium } from './sello.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Porque, useMira } from './porque.jsx';
 import { conCrewsVivas, useCrews } from './crews.js';
-import { AUnPaso, EscaleraLetras, EstaSemana, Franja, Movidos, Pelea, PorServidor, franjaDe, peleaDe } from './ranking_a.jsx';
+import { AUnPaso, EscaleraLetras, EstaSemana, Franja, MasPodios, Movidos, Pelea, PorServidor, franjaDe, peleaDe } from './ranking_a.jsx';
 import CSS_PAGINA from './css/ranking.css?inline';
 import { usarCss } from './css.js';
 
@@ -1185,6 +1185,8 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [todas, setTodas] = useState(false);
   // 🏁 la pestaña del papel de la Temporada: «La tabla», «Esta semana» o «Por servidor» (el remake A, 18/11/2026)
   const [pap, setPap] = useState('tabla');
+  // 🏁 la división elegida del Ranking ELO: la comparten la escalera de arriba y las pestañas de abajo (tanda 2)
+  const [divSel, setDivSel] = useDivSel(liga);
   const [irA, setIrA] = useState(null);
   const [yoVisible, setYoVisible] = useState(false);
   const [tiraVisible, setTiraVisible] = useState(false);
@@ -1281,8 +1283,17 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   // 🏁 EL REMAKE A (Dlx, 18/11/2026, «A + piezas de B»): la Temporada y el Competitivo llevan la franja de cuatro números,
   // el podio en su caja con una pieza abajo (la pelea más cerrada / la escalera de letras) y la columna de al lado (tu
   // lugar y «Se movieron» / «A un paso de la letra»). Los demás rankings siguen como estaban hasta la tanda 2
-  const dosCols = !pronto && !cfg.propia && base.length > 0 && (sub === 'temporada' || sub === 'competitivo');
-  const franja = dosCols ? franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide: req(liga, 'competitivo') }) : null;
+  // ⚠️ tanda 2 (19/11/2026): también Duelos, Podios, Rachas, Actividad, Most Wanted, Países y Crews. Servidores no: su
+  // podio depende del servidor elegido y tiene su diseño del 17/11. Ascensos y Misiones son vistas propias
+  const dosCols = !pronto && !cfg.propia && base.length > 0 && ['temporada', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'mw', 'paises', 'crews'].includes(sub);
+  const eloA = sub === 'divisiones' && !pronto && !!liga.d.div && liga.d.div.m === 'elo';
+  // cómo se dibuja y adónde lleva cada uno en la pelea: gente, país o crew
+  const nombreDe = (g) => (cfg.grupo === 'pais' ? nombrePais(g.cc) : cfg.grupo === 'crew' ? limpio(g.crew) : limpio(g.n));
+  const visDe = (g, cls) => (cfg.grupo === 'pais' ? <Bandera cc={g.cc} cls={cls + ' rka-pflag'} /> : cfg.grupo === 'crew' ? <LogoCrew c={g} cls={cls} />
+    : <Cara liga={liga} k={g.k} nombre={g.n} cls={'cara ' + cls} />);
+  const hrefDe = (g) => (cfg.grupo === 'pais' ? '#/pais/' + g.cc : cfg.grupo === 'crew' ? '#/crew/' + encodeURIComponent(g.clave || g.crew) : '#/r/' + encodeURIComponent(g.k));
+  const valTxt = (v) => { if (!cfg.valor) return ''; const [, u, d] = cfg.valor; return (d ? coma(v, d) : num(v)) + ' ' + (Array.isArray(u) ? u[v === 1 ? 0 : 1] : u); };
+  const franja = dosCols ? franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide: req(liga, 'competitivo'), nombreDe, valTxt }) : null;
   const pel = dosCols ? peleaDe({ cfg, base, numero }) : null;
   // las flechas de arriba: el ranking de al lado en la tira, salteando los que todavía no existen (Misiones, Ligas) o
   // no tienen con qué (Most Wanted sin buscados); al final vuelve al principio
@@ -1492,7 +1503,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           <a className="mo-fl izq rk-flecha" href={'#/ranking/' + antes} aria-label={'Ranking anterior: ' + subDe(liga, antes).et} title={subDe(liga, antes).et}><Chevron /></a>
           <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + subDe(liga, despues).et} title={subDe(liga, despues).et}><Chevron /></a>
         </> : null}
-        <section className={'rk-cab' + (dosCols ? ' rka' : '')} id="rk-cab" ref={deslizaRk}>
+        <section className={'rk-cab' + (dosCols || eloA ? ' rka' : '')} id="rk-cab" ref={deslizaRk}>
           <div className="rk-tx">
             <span className="tag">RANKING · {liga.temp}</span>
             <h1 className="hero-ev largo">{cfg.et}</h1>
@@ -1500,7 +1511,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             {!pronto && (estado || hace) ? <p className="rk-meta">{estado}{estado && hace ? <br /> : null}{hace ? 'Actualizado ' + hace : ''}</p> : null}
             {!pronto && base.length ? <div className="hero-acc"><Compartir cls="btn borde chico" url={enlace('#/ranking/' + sub)} texto={'El ranking de ' + cfg.et + ' de la Liga Global'} etiqueta="Compartir el ranking" /></div> : null}
           </div>
-          {dosCols ? (
+          {eloA ? <Divisiones liga={liga} parte="escena" sel={divSel} setSel={setDivSel} /> : dosCols ? (
             <>
               <Franja items={franja} />
               <div className="rka-dos">
@@ -1522,6 +1533,11 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                   </div>
                   {sub === 'temporada' ? <Movidos liga={liga} base={base} yoK={x.yoK} /> : null}
                   {sub === 'competitivo' ? <AUnPaso liga={liga} base={base} yoK={x.yoK} /> : null}
+                  {sub === 'podios' ? <MasPodios liga={liga} base={base} yoK={x.yoK} /> : null}
+                  {!['temporada', 'competitivo', 'podios'].includes(sub) && pel ? (
+                    <Pelea liga={liga} p={pel} vis={visDe} href={hrefDe} nombre={nombreDe} va={'#' + numero(cfg, pel.a) + ' · ' + valTxt(cfg.valor[0](pel.a))} vb={'#' + numero(cfg, pel.b) + ' · ' + valTxt(cfg.valor[0](pel.b))}
+                      pie={pel.d ? <>Separados por <b>{valTxt(pel.d)}</b>.</> : <><b>Empatados</b>: los ordena el desempate de este ranking.</>} />
+                  ) : null}
                   {sub === 'competitivo' && pel ? (
                     <Pelea liga={liga} p={pel} va={'#' + numero(cfg, pel.a) + ' · ' + coma(pel.a.sc, pel.d < 0.1 ? 2 : 1)} vb={'#' + numero(cfg, pel.b) + ' · ' + coma(pel.b.sc, pel.d < 0.1 ? 2 : 1)}
                       pie={pel.d >= 0.005 ? <>Separados por <b>{coma(pel.d, pel.d < 0.1 ? 2 : 1)} de Score</b>: el próximo evento decide quién queda arriba.</> : <><b>Empatados</b> en el Score: el próximo evento los separa.</>} />
@@ -1542,12 +1558,12 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
       {/* 🎯 los buscados de esta semana, arriba de quién cazó a quién (vivían en el Inicio hasta el 13/10/2026) */}
       {sub === 'mw' ? <SeBusca liga={liga} aca /> : null}
       {sub === 'competitivo' ? <Subieron liga={liga} /> : null}
-      <section data-tuto="rk-tabla" className={'sec rk-sec' + (dosCols ? ' rka-papel' : '')} id="rk-tabla">
+      <section data-tuto="rk-tabla" className={'sec rk-sec' + (dosCols || eloA ? ' rka-papel' : '')} id="rk-tabla">
         {pronto ? (
           <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>
             {cfg.ejemplos ? <ul className="rk-ej" aria-label="Por ejemplo">{cfg.ejemplos.map(([ic, t]) => <li key={t}><Ico n={ic} t={22} /><b>{t}</b><small>suma a tu Temporada</small></li>)}</ul> : null}
           </div>
-        ) : cfg.propia ? <cfg.propia liga={liga} ver={abre} /> : sub === 'temporada' && base.length && pap !== 'tabla' ? (
+        ) : cfg.propia ? <cfg.propia liga={liga} ver={abre} parte={eloA ? 'papel' : undefined} sel={divSel} setSel={setDivSel} /> : sub === 'temporada' && base.length && pap !== 'tabla' ? (
           <>
             {pesPap}
             {pap === 'semana' ? <EstaSemana liga={liga} base={base} sem={sem} yoK={x.yoK} /> : <PorServidor liga={liga} base={base} numero={numero} cfg={cfg} yoK={x.yoK} />}
