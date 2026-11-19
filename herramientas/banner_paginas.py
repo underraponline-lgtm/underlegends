@@ -320,9 +320,9 @@ def _socios():
 
 def _guia():
     html = '''<div class="pasos">
-  <div class="paso"><b>1</b><div><strong>VERIFICATE</strong><span>con tu cuenta de Discord</span></div></div>
-  <div class="paso"><b>2</b><div><strong>JUGÁ</strong><span>en cualquier servidor socio</span></div></div>
-  <div class="paso"><b>3</b><div><strong>SUBÍ DE RANGO</strong><span>de E a SSS, con el Score</span></div></div>
+  <div class="paso"><b>1</b><div><strong>VERIFÍCATE</strong><span>con tu cuenta de Discord</span></div></div>
+  <div class="paso"><b>2</b><div><strong>JUEGA</strong><span>en cualquier servidor socio</span></div></div>
+  <div class="paso"><b>3</b><div><strong>SUBE DE RANGO</strong><span>de E a SSS, con el Score</span></div></div>
 </div>'''
     css = '''
 .pasos{display:grid;gap:16px;width:420px}
@@ -432,6 +432,71 @@ def _socio():
     return html, css
 
 
+def _competencias():
+    # 🏆 la Copa de la semana, de semis a la final: el cruce de arriba ya tiene ganador y la final se juega hoy
+    html = '''<div class="copa">
+  <div class="cab"><small>COMPETENCIAS · SEMANA</small><b>COPA DE 32</b></div>
+  <div class="cuadro">
+    <div class="semis"><div class="cr g"><b>KAI</b><i>2</i></div><div class="cr"><b>NOX</b><i>1</i></div>
+      <div class="cr"><b>ZETA</b><i>0</i></div><div class="cr g"><b>RUNE</b><i>2</i></div></div>
+    <div class="fin"><small>FINAL · HOY</small><div class="cr"><b>KAI</b></div><div class="cr"><b>RUNE</b></div></div>
+    <div class="trofeo"><i></i><span>+1.000</span></div>
+  </div>
+</div>'''
+    css = '''
+.copa{display:grid;gap:18px;width:450px;padding:24px 26px;background:rgba(3,3,4,.84);border:2px solid rgba(237,237,242,.16);border-radius:10px;transform:rotate(-2deg)}
+.copa .cab{display:flex;justify-content:space-between;align-items:baseline}
+.copa .cab small{font:700 16px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;color:#29B298}
+.copa .cab b{font:900 26px/1 Archivo,sans-serif;letter-spacing:-.02em;color:#EDEDF2}
+.cuadro{display:grid;grid-template-columns:1fr 1fr 74px;align-items:center;gap:16px}
+.semis{display:grid;gap:8px}
+.semis .cr:nth-child(2){margin-bottom:12px}
+.cr{display:flex;justify-content:space-between;align-items:center;height:40px;padding:0 12px;border:2px solid rgba(237,237,242,.14);background:#0B0B0F}
+.cr b{font:900 18px/1 Archivo,sans-serif;color:#9CAAA7}
+.cr i{font:800 18px/1 'Barlow Condensed',sans-serif;font-style:normal;color:#9CAAA7}
+.cr.g{border-color:#29B298}
+.cr.g b,.cr.g i{color:#EDEDF2}
+.fin{display:grid;gap:8px}
+.fin small{font:700 15px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;color:#E41373}
+.fin .cr{border-color:#E41373}
+.fin .cr b{color:#EDEDF2}
+.trofeo{display:grid;justify-items:center;gap:8px}
+.trofeo i{width:62px;height:70px;background:#F5C542;clip-path:polygon(0 0,100% 0,100% 30%,78% 62%,60% 66%,60% 82%,80% 82%,80% 100%,20% 100%,20% 82%,40% 82%,40% 66%,22% 62%,0 30%)}
+.trofeo span{font:800 18px/1 'Barlow Condensed',sans-serif;letter-spacing:.08em;color:#F5C542}
+'''
+    return html, css
+
+
+def _invitar():
+    # 🎟️ tu link y los que entraron por él: tres de diez, y el marco de Embajador al final
+    caras = ''.join('<i style="--c:%s"></i>' % c for c in ('#29B298', '#E41373', '#EDEDF2'))
+    vacias = ''.join('<i class="v"></i>' for _ in range(2))
+    html = '''<div class="inv">
+  <div class="link"><small>TU LINK</small><b>underlegends.pages.dev/i/tu-nombre</b></div>
+  <div class="gente"><div class="caras">%s%s</div><span><b>3</b> de 10 entraron</span></div>
+  <div class="barra"><u style="width:30%%"></u></div>
+  <div class="premio"><small>A LOS 10</small><b>MARCO EMBAJADOR</b></div>
+</div>''' % (caras, vacias)
+    css = '''
+.inv{display:grid;gap:18px;width:450px;padding:26px;background:#0B0B0F;border:2px solid rgba(237,237,242,.16);border-radius:12px;transform:rotate(2deg);box-shadow:0 24px 50px rgba(0,0,0,.6)}
+.link{display:grid;gap:6px;padding:14px 16px;background:#EDEDF2;color:#030304;border-radius:6px}
+.link small{font:700 15px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;color:#E41373}
+.link b{font:800 19px/1.1 Archivo,sans-serif;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gente{display:flex;align-items:center;gap:16px}
+.caras{display:flex}
+.caras i{width:52px;height:52px;border-radius:50%;background:var(--c);box-shadow:0 0 0 4px #0B0B0F;margin-right:-10px}
+.caras i.v{background:none;border:3px dashed rgba(237,237,242,.3);box-shadow:none;margin-right:6px}
+.gente span{margin-left:12px;font:700 20px/1 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#9CAAA7}
+.gente span b{font:900 30px/1 Archivo,sans-serif;color:#EDEDF2}
+.barra{height:14px;background:rgba(237,237,242,.12);border-radius:3px;overflow:hidden}
+.barra u{display:block;height:100%;background:#29B298}
+.premio{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:2px solid #F5C542;border-radius:6px}
+.premio small{font:700 15px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;color:#9CAAA7}
+.premio b{font:900 22px/1 Archivo,sans-serif;letter-spacing:-.01em;color:#F5C542}
+'''
+    return html, css
+
+
 def _pais(cc):
     from comun import banderas
     # la del repo (1280 px) si está; si no, la grande del CDN: `banderas.src()` cae en w80, que a 420 px se ve borrosa
@@ -468,6 +533,28 @@ PAGINAS = {
 
 def html(pagina):
     return html_de(PAGINAS[pagina])
+
+
+# 🖼️ LAS MINIATURAS DEL ☰ (19/11/2026, Dlx a la barra E: «cuando se presiona las 3 líneas… que tengan como una imagen
+# ahí, como lo es Roblox»). Cada cuadrado del menú del celular lleva la ilustración de su página, sin el texto (el
+# cuadrado ya dice el nombre): la misma piel, 480×270, en webp. Dos páginas que no tienen vista previa propia —no se
+# comparten solas— tienen sólo miniatura: Competencias e Invita y gana
+SOLO_MINI = {
+    'competencias': ('', '', '', '', _competencias),
+    'invitar': ('', '', '', '', _invitar),
+}
+SALIDA_MINI = os.path.join(BASE, 'bot', 'paginas', 'og', 'mini')
+MINI_W, MINI_H, MINI_ESCALA = 480, 270, .6
+
+
+def html_mini(spec):
+    """La ilustración sola, centrada y achicada, sobre la piel de siempre (sin título, bajada ni dirección)."""
+    h = html_de(spec)
+    css = ('body{width:%dpx!important;height:%dpx!important}.txt,.raya{display:none!important}'
+           '.caja{justify-content:center!important;padding:0!important}'
+           '.ilus{transform:scale(%s);transform-origin:50%% 50%%}'
+           '.trama{font-size:44px!important}' % (MINI_W, MINI_H, MINI_ESCALA))
+    return h.replace('</style>', css + '</style>', 1)
 
 
 def html_pais(cc, nombre):
@@ -525,12 +612,40 @@ p{font:500 26px/1.3 Archivo,sans-serif;color:#9CAAA7;max-width:600px}
             '</body></html>')
 
 
+def mini(pedidas=()):
+    """`--mini`: bot/paginas/og/mini/<pagina>.webp, la de cada página del menú y las de `SOLO_MINI`."""
+    todas = dict(PAGINAS, **SOLO_MINI)
+    malas = [p for p in pedidas if p not in todas]
+    if malas:
+        print('   ⚠️ no existe: %s · las que hay: %s' % (', '.join(malas), ', '.join(todas)))
+        sys.exit(1)
+    os.makedirs(SALIDA_MINI, exist_ok=True)
+    from PIL import Image
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        # a 2×: el cuadrado del menú mide unos 175 px de ancho en un celular de 390, y la pantalla es de 2× o 3×
+        pg = b.new_page(viewport={'width': MINI_W, 'height': MINI_H}, device_scale_factor=2)
+        for nombre in (pedidas or list(todas)):
+            pg.set_content(html_mini(todas[nombre]))
+            pg.wait_for_load_state('networkidle')
+            pg.wait_for_timeout(200)
+            im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB')
+            ruta = os.path.join(SALIDA_MINI, nombre + '.webp')
+            im.save(ruta, 'WEBP', quality=78, method=6)
+            print('   ✅ %s (%d KB)' % (os.path.relpath(ruta, BASE), os.path.getsize(ruta) // 1024))
+        b.close()
+
+
 def main():
     try:
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except AttributeError:
         pass
     pedidas = [a for a in sys.argv[1:] if not a.startswith('--')]
+    if '--mini' in sys.argv:
+        mini(pedidas)
+        return
     malas = [p for p in pedidas if p not in PAGINAS]
     if malas:
         print('   ⚠️ no existe: %s · las que hay: %s' % (', '.join(malas), ', '.join(PAGINAS)))

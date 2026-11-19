@@ -238,7 +238,8 @@ function Recorrido({ liga, dc, inicio, onCerrar }) {
             <b>Completo</b><span>Nueve capítulos de un minuto, cada uno en su página.</span>
             <small>{enSemanaNueva() && !(tuto() || {}).completo ? 'Te llevas ' + txtPremio(['cofre', 0]) : '9 capítulos'}</small></button>
         </div>
-        {(W.innerWidth || 0) < 900 ? <p className="rc-nota">Todo está en la barra de abajo, que se desliza de costado.</p> : null}
+        {/* 🎮 con la barra E (19/11/2026) ya no se desliza: cinco lugares abajo y el resto en el ☰ de arriba */}
+        {(W.innerWidth || 0) < 900 ? <p className="rc-nota">Lo principal está en la barra de abajo; todo lo demás, en el ☰ de arriba.</p> : null}
         <div className="rc-acc"><button type="button" className="rc-saltar" onClick={() => cerrar('salto')}>Ahora no</button></div>
       </Centro>
     );

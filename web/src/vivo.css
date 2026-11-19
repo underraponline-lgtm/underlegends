@@ -7052,3 +7052,89 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
   .pn .pn-ti3-luz .pn-ti2-c{width:36px;height:36px}
   .pn-ti3-t b{font-size:14px}
 }
+
+/* ═══ 🎮 LA BARRA E, «EL LOBBY» (19/11/2026, Dlx a la maqueta: «Haz el E») ═══
+   Cinco lugares fijos —Inicio, Ranking, EN JUEGO, Pase y Tú— en vez de la tira de doce. Negra en los dos temas, como la
+   cabecera (`.cab.negra`, #030304), y un paso más clara en Noche para separarse de la página sin una línea. Lo activo es
+   la pieza blanca; el magenta, sólo para lo que se juega ahora (VIVO, TE TOCA). Ver `Tabbar` en abajo.jsx */
+.tabbar.e{--fondo:#030304;--tinta:#F6F6F6;--gris:#A5A5A0;--inv:#F6F6F6;--inv-tinta:#030304;
+  display:flex;align-items:stretch;gap:2px;padding:0 4px env(safe-area-inset-bottom,0px);background:#030304;color:#A5A5A0;border-top:0;
+  -webkit-tap-highlight-color:transparent}
+.noche .tabbar.e{background:#111114}
+@media (min-width: 900px){.tabbar.e{display:none}}
+.tabbar.e > a,.tabbar.e > .tb-yo{flex:1 1 0;min-width:0;display:grid;justify-items:center;align-content:center;gap:5px;margin:6px 0;min-height:52px;
+  padding:0 2px;border:0;border-radius:3px;background:none;color:inherit;box-shadow:none;text-decoration:none;position:relative;cursor:pointer;
+  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;-webkit-touch-callout:none;user-select:none;touch-action:manipulation}
+.tabbar.e > a span,.tabbar.e > .tb-yo span{white-space:nowrap}
+.tabbar.e > a.on,.tabbar.e > .tb-yo.on{background:#F6F6F6;color:#030304;box-shadow:none}
+.tabbar.e > .tb-yo{margin-left:0}
+@media (prefers-reduced-motion: no-preference){
+  .tabbar.e > a,.tabbar.e > .tb-yo{transition:transform .12s cubic-bezier(.23,1,.32,1)}
+  .tabbar.e > a:active,.tabbar.e > .tb-yo:active{transform:scale(.97)}
+}
+/* 📈 «+2» en Ranking: subiste desde la última vez que lo miraste */
+.tabbar.e .tb-sube{position:absolute;top:3px;right:calc(50% - 30px);padding:2px 3px;border-radius:2px;background:#29B298;color:#04140F;
+  font:800 10.5px/1 Archivo,sans-serif;font-style:normal;letter-spacing:0}
+/* 🔴 EN JUEGO: más ancho, un tono arriba de la barra; magenta cuando algo se juega o te toca, blanco si estás en Eventos */
+.tabbar.e > a.tb-jg{flex:1.45 1 0;margin:6px 3px;gap:4px;border-radius:4px;background:#26262C;color:#F6F6F6}
+.tabbar.e > a.tb-jg.vivo,.tabbar.e > a.tb-jg.toca{background:#E41373;color:#FFFFFF}
+.tabbar.e > a.tb-jg.on{background:#F6F6F6;color:#030304}
+.tb-jg .l1{display:flex;align-items:center;gap:5px;max-width:100%;font:900 14.5px/1 Archivo,sans-serif;letter-spacing:.01em;white-space:nowrap}
+.tb-jg .l1 img{width:20px;height:20px;border-radius:3px;object-fit:cover;flex:none}
+.tabbar.e .tb-jg .l1 .tb-cara{width:20px;height:20px;flex:none}
+.tabbar.e .tb-jg .l2{max-width:100%;padding:0 6px;overflow:hidden;text-overflow:ellipsis;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
+.tabbar.e .tb-jg.nada .l2{color:#A5A5A0}
+.tabbar.e .tb-jg.nada.on .l2{color:#4A4A50}
+/* ✋ mantener EN JUEGO: Calendario, Competencias y Ligas encima de la barra, con su miniatura */
+.tb-hoja{position:fixed;left:50%;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:70;width:min(360px,calc(100vw - 16px));transform:translateX(-50%);
+  display:grid;gap:2px;padding:6px;background:#17171B;color:#F6F6F6;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.55);
+  text-transform:none;letter-spacing:0;font:400 14px/1.4 Archivo,sans-serif}
+.tabbar .tb-hoja a{display:grid;grid-template-columns:72px minmax(0,1fr) auto;justify-items:stretch;align-items:center;gap:12px;min-height:56px;padding:6px;
+  border-radius:3px;color:inherit;text-decoration:none;text-transform:none;letter-spacing:0;font:inherit;background:none;box-shadow:none}
+.tabbar .tb-hoja a:active{background:#26262C}
+@media (hover: hover) and (pointer: fine){.tabbar .tb-hoja a:hover{background:#26262C}}
+.tb-hoja-img{display:block;width:72px;height:40.5px;border-radius:3px;overflow:hidden;background:#030304}
+.tb-hoja-img img{display:block;width:100%;height:100%;object-fit:cover}
+.tb-hoja-tx{display:grid;gap:3px;min-width:0}
+.tb-hoja-tx b{font:900 15px/1.05 Archivo,sans-serif;text-transform:uppercase}
+.tb-hoja-tx small{font:500 12.5px/1.25 Archivo,sans-serif;color:#A5A5A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-hoja em{padding:4px 5px;border-radius:2px;background:#26262C;color:#F6F6F6;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;font-style:normal;white-space:nowrap}
+.tb-hoja em.vivo{background:#E41373;color:#FFFFFF}
+.tb-hoja.sale{pointer-events:none}
+@media (prefers-reduced-motion: no-preference){
+  .tb-hoja{animation:tbh-entra .2s cubic-bezier(.23,1,.32,1)}
+  .tb-hoja.sale{animation:tbh-va .16s ease-in forwards}
+}
+@keyframes tbh-entra{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes tbh-va{to{opacity:0;transform:translate(-50%,6px)}}
+/* 📰 el punto del ☰: hay publicaciones nuevas (Publicaciones vive en el ☰ desde la barra E) */
+.app .cab .hamb{position:relative}
+.hamb-pto{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#E41373;border-radius:1px}
+
+/* ═══ 🧱 EL ☰ EN CUADRADOS CON SU IMAGEN (19/11/2026, Dlx: «como lo es Roblox») ═══
+   Cada sección con la ilustración de su vista previa (`/og/mini/`), su nombre y para qué sirve. El panel es oscuro en los
+   dos temas, como la campana y tu menú: los colores se redefinen adentro para que el buscador, los ajustes y los botones
+   negros (que usan `--inv`) se lean sobre el negro sin tocar sus reglas */
+.x-menu.tejas .x-caja{--fondo:#0B0B0D;--caja:#141417;--suave:#1B1B1F;--tinta:#F6F6F6;--linea:#2A2A30;--gris:#A5A5A0;--inv:#F6F6F6;--inv-tinta:#030304;
+  width:min(440px,100%);background:#0B0B0D;color:#F6F6F6;border-left:0;gap:20px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 28px)}
+.x-menu.tejas .x-caja-cab b{color:#A5A5A0}
+.x-grupo{display:grid;gap:10px}
+.x-tejas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
+.x-teja{display:grid;align-content:start;gap:4px;min-width:0;color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.x-teja-img{position:relative;display:block;aspect-ratio:16/9;border-radius:4px;overflow:hidden;background:#141417;margin-bottom:4px}
+.x-teja-img img{display:block;width:100%;height:100%;object-fit:cover}
+.x-teja b{font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.x-teja small{font:500 12.5px/1.3 Archivo,sans-serif;color:#A5A5A0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* dónde estás: el nombre en la pieza blanca, como en la barra */
+.x-teja.on b{justify-self:start;padding:3px 5px;margin-left:-5px;background:#F6F6F6;color:#030304;border-radius:2px}
+.x-teja-tag{position:absolute;left:6px;top:6px;padding:4px 5px;border-radius:2px;background:#030304;color:#F6F6F6;
+  font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;font-style:normal}
+.x-teja-tag.mg{background:#E41373;color:#FFFFFF}
+@media (prefers-reduced-motion: no-preference){
+  .x-teja .x-teja-img img{transition:transform .2s cubic-bezier(.23,1,.32,1)}
+  .x-teja:active .x-teja-img img{transform:scale(.97)}
+}
+@media (hover: hover) and (pointer: fine){.x-teja:hover .x-teja-img img{transform:scale(1.03)}}
+/* Ranking y Pase están en la barra: en el ☰ sólo donde la barra no se ve */
+@media (max-width: 899.98px){.x-teja.en-barra{display:none}}
+@media (min-width: 600px){.x-menu.tejas .x-caja{width:min(560px,100%)} .x-tejas{grid-template-columns:repeat(3,minmax(0,1fr))}}

@@ -20,8 +20,8 @@ import { escenaDe } from './fondos.js';
 import { PreguntaCab } from './comofunciona.jsx';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
-// de cada grupo. Es el de la tira de abajo del celular, así que las cuatro y media que se ven sin deslizar son Inicio,
-// Ranking, Eventos, Pase rapero y Publicaciones —las que se quiere que la gente mire—. La Tienda ya no está: vive en «Tu
+// de cada grupo. Era el de la tira de abajo del celular hasta la barra E (19/11/2026: cinco fijos y el resto en el ☰ en
+// cuadrados, ver `Tabbar` y `TEJAS` en abajo.jsx); sigue siendo el del buscador y el de la compu. La Tienda ya no está: vive en «Tu
 // cuenta» (Dlx: «Tienda me gusta en tu cuenta… ahí nos ahorramos un espacio»), en el panel del Inicio y en el ☰
 export const MENU = [
   ['Inicio', '#/'], ['Ranking', '#/ranking'], ['Eventos', '#/eventos'], ['Pase rapero', '#/pase'], ['Publicaciones', '#/publicaciones'],
@@ -597,7 +597,9 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
         ) : (
           <button type="button" className="btn verde chico entrar" data-tuto="cuenta" onClick={accion.entrar}>Entrar</button>
         )}
-        <button className="btn-ico hamb" type="button" aria-label="Menú" onClick={onMenu}><Ico n="menu" t={22} /></button>
+        {/* 📰 con la barra E (19/11/2026) Publicaciones vive en el ☰: su «N nuevas» se ve como un punto magenta en el ☰ */}
+        <button className="btn-ico hamb" type="button" aria-label={'Menú' + (pubNuevas(liga, pagina) ? ': hay publicaciones nuevas' : '')} onClick={onMenu}>
+          <Ico n="menu" t={22} />{pubNuevas(liga, pagina) ? <i className="hamb-pto" aria-hidden="true" /> : null}</button>
       </div>
       {/* 🔎 EL BUSCADOR, UNA BARRA DEBAJO DE LA CABECERA (Dlx, 13/11/2026: «que no aparezca un pop up sino que aparezca una
           barra abajo de eso y te deje buscar cualquier cosa»): la lupa (o Ctrl K) la abre con el teclado listo; se cierra con

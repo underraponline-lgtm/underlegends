@@ -947,7 +947,7 @@ export default function App() {
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
       {pagina && !sv ? <Aislada n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
-      <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} /></Aislada>
+      <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} pagina={paginaMenu} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={() => { setDesde(''); cerrarHistoria(); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
       {propias && historia === null ? <Aislada n="VisorPerfil"><Visor liga={liga} grupos={[propias]} abierto={0} onCerrar={() => { setDesde(''); setPropias(null); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>

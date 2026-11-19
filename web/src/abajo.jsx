@@ -3,11 +3,10 @@
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { ksDe, limpio, nuevaQue, num, quienMira } from './liga.js';
+import { ksDe, limpio, nuevaQue, num, quienMira, siglaDe, utc } from './liga.js';
 import { Alguien, Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
-import { Buscar, CaraDc, CaraH, CrewCirculo, MENU, MENU_TODO, Orbe, QUE_ES, escenaDe, pubNuevas } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, CrewCirculo, Orbe, QUE_ES, escenaDe, llaveEnVivo, momentosLlave, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 import { YoMenu } from './yomenu.jsx';
 import { usePresencia } from './anima.js';
@@ -16,7 +15,6 @@ import { comentar, delHilo, useComentarios } from './comentarios.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
 import { Carita, LU_REAC } from './medio.jsx';
 import { usePase } from './pase.js';
-import { algoTapa, capaFija, seVe } from './tapa.js';
 import { nombreSv } from './temas.js';
 
 
@@ -385,137 +383,196 @@ export function Subir() {
 }
 
 // ── la barra de abajo del celular y el menú ☰ ─────────────────────────────────────────────────────
+//
+// 🎮 «EL LOBBY» (19/11/2026, Dlx a la maqueta de la barra, con seis opciones y 22 patrones de juegos, apps y webs: «Haz el
+// E»). Cinco lugares fijos como el lobby de un juego —Inicio, Ranking, EN JUEGO, Pase y Tú— en vez de la tira de doce que
+// se deslizaba (28/09 y 02/10): de doce se veían cuatro y media y las otras siete había que buscarlas. Lo que no está en la
+// barra vive en el ☰, en cuadrados con su imagen (`Menu`, abajo). Sin líneas ni flechas, como siempre (03/10 y 17/10)
+//
+// 🔴 EL DEL CENTRO NO ES UNA SECCIÓN: DICE LO QUE TE TOCA. Como el botón Batalla de Clash of Clans, que cambia de dibujo
+// según lo que pasa: TE TOCA (tu batalla en tu llave en vivo) › VIVO (algo se juega ahora) › EN 40 MIN › HOY (lo próximo
+// de hoy) › EVENTOS. Cambia de texto, nunca de lugar ni de tamaño. Tocarlo abre lo que dice; mantenerlo apretado abre
+// Calendario · Competencias · Ligas encima de la barra
+const EV_PAGS = ['eventos', 'competencias', 'ligas', 'avisos'];
+const sinBand = (s) => String(s || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim();
+
+// tu batalla en una llave en vivo, con la misma lectura que el botón grande del lobby (`tuMomento()` de lobby.jsx): «ahora»
+// y «sigue» sólo si la llave se juega en orden (`momentosLlave()`)
+function meToca(liga, L) {
+  const yo = liga.yo;
+  if (!yo || !L) return null;
+  const mio = (lado) => String(lado || '').split(/\s*[,+&]\s*/).some((n) => {
+    const f = liga.quien(sinBand(n));
+    return !!(f && f.k === yo.k);
+  });
+  let m = null;
+  try { m = momentosLlave(L); } catch (e) { m = null; }
+  if (m && m.ahora && m.ahora.lados.some(mio)) return { l1: 'TE TOCA', l2: String(m.ahora.r || 'tu batalla') };
+  if (m && m.sigue && m.sigue.lados.some(mio)) return { l1: 'PRÓXIMO', l2: 'te toca después' };
+  return null;
+}
+
+export function enJuego(liga) {
+  const vivos = liga.vivo();
+  const VL = typeof window !== 'undefined' ? window.VIVO_L : null;
+  const yo = liga.yo;
+  if (yo) {
+    for (const e of vivos) {
+      if (!liga.anotados(e).some((x) => x.f && x.f.k === yo.k)) continue;
+      const L = llaveEnVivo(e, VL);
+      const t = meToca(liga, L);
+      if (t) return { tipo: 'toca', l1: t.l1, l2: t.l2, cara: true, llave: L ? L.id : '', aria: t.l1 + ' en ' + limpio(e.nombre) };
+    }
+  }
+  if (vivos.length) {
+    const e = vivos[0];
+    const L = vivos.length === 1 ? llaveEnVivo(e, VL) : null;
+    return { tipo: 'vivo', l1: vivos.length > 1 ? 'VIVO ×' + vivos.length : 'VIVO', l2: vivos.length > 1 ? 'en ' + vivos.length + ' servidores' : limpio(e.nombre),
+      logo: liga.logo(e.sv), llave: L ? L.id : '', aria: 'En vivo: ' + vivos.map((x) => limpio(x.nombre)).join(', ') };
+  }
+  const p = liga.luego().find((x) => !x.sin_hora);
+  if (p) {
+    const cu = liga.cuandoDe(p);
+    const ms = utc(cu) - liga.ahora;
+    const d = liga.dia(cu);
+    if (ms > 0 && ms < 3 * 3600000) {
+      const min = Math.max(1, Math.round(ms / 60000));
+      return { tipo: 'pronto', l1: min < 60 ? 'EN ' + min + ' MIN' : 'EN ' + Math.round(min / 60) + ' H', l2: siglaDe(p.sv) + ' · ' + limpio(p.nombre),
+        logo: liga.logo(p.sv), aria: 'Empieza en ' + liga.falta(cu).toLowerCase() + ': ' + limpio(p.nombre) };
+    }
+    if (/^hoy /.test(d)) {
+      return { tipo: 'hoy', l1: 'HOY', l2: d.replace(/^hoy /, '') + ' · ' + siglaDe(p.sv), logo: liga.logo(p.sv), aria: 'Hoy ' + d.replace(/^hoy /, '') + ': ' + limpio(p.nombre) };
+    }
+  }
+  const fh = liga.fechasHoy ? liga.fechasHoy() : [];
+  if (fh.length && fh[0].L) {
+    const L = fh[0].L;
+    return { tipo: 'hoy', l1: 'HOY', l2: 'Liga · ' + siglaDe(L.sv), logo: liga.logo(L.sv), href: '#/ligas/' + encodeURIComponent(L.id), aria: 'Hoy juega ' + limpio(L.n) };
+  }
+  return { tipo: 'nada', l1: 'EVENTOS', l2: '', aria: 'Eventos' };
+}
+
+// 📈 «+2» EN RANKING SI SUBISTE DESDE LA ÚLTIMA VEZ QUE LO MIRASTE (Duolingo, «te pasaron», en la E). Tu puesto de la
+// Temporada contra el que tenías cuando abriste el Ranking; se guarda en tu navegador (`lg:rk-pos`) al entrar. Si bajaste,
+// nada: la barra no te reta
+function useSubiste(liga, pagina) {
+  const yo = liga && liga.yo;
+  const fila = yo ? (liga.d.tabla || []).find((t) => t.k === yo.k) : null;
+  const pos = fila && fila.pos ? fila.pos : 0;
+  const k = yo ? yo.k : '';
+  let antes = null;
+  try { antes = JSON.parse(localStorage.getItem('lg:rk-pos') || 'null'); } catch (e) { antes = null; }
+  const visto = antes && antes.k === k ? antes.pos : 0;
+  useEffect(() => {
+    if (!pos || !k) return;
+    // la primera vez, o al mirar el Ranking: ése pasa a ser tu puesto de referencia
+    if (pagina === 'ranking' || !visto) {
+      try { localStorage.setItem('lg:rk-pos', JSON.stringify({ k, pos })); } catch (e) { /* sin guardar: no hay «+» */ }
+    }
+  }, [pos, k, pagina, visto]);
+  return pos && visto > pos && pagina !== 'ranking' ? visto - pos : 0;
+}
+
+// ✋ mantener apretado (medio segundo): abre lo de adentro sin que el toque cuente como toque
+function useMantener(alMantener, ms = 450) {
+  const t = useRef(0);
+  const hecho = useRef(false);
+  useEffect(() => () => clearTimeout(t.current), []);
+  const fin = () => clearTimeout(t.current);
+  return {
+    onPointerDown: () => { hecho.current = false; clearTimeout(t.current); t.current = setTimeout(() => { hecho.current = true; alMantener(); }, ms); },
+    onPointerUp: fin, onPointerLeave: fin, onPointerCancel: fin,
+    onContextMenu: (e) => e.preventDefault(),
+    onClickCapture: (e) => { if (hecho.current) { e.preventDefault(); e.stopPropagation(); hecho.current = false; } },
+  };
+}
+
+// 🗂️ LO DE ADENTRO DE «EN JUEGO»: Calendario, Competencias y Ligas, encima de la barra, cada uno con su miniatura
+function HojaJuego({ liga, sale, onCerrar }) {
+  const yo = useRef(null);
+  useEffect(() => {
+    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (yo.current && !p.includes(yo.current)) onCerrar(); };
+    const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
+    // al próximo cuadro: el mismo toque que la abrió no la cierra
+    const t = setTimeout(() => { window.addEventListener('pointerdown', fuera, true); }, 0);
+    window.addEventListener('keydown', esc);
+    return () => { clearTimeout(t); window.removeEventListener('pointerdown', fuera, true); window.removeEventListener('keydown', esc); };
+  }, [onCerrar]);
+  const vivos = liga.vivo().length;
+  const hoyLiga = (liga.fechasHoy ? liga.fechasHoy() : []).length;
+  const filas = [
+    ['eventos', 'Calendario', 'Lo que se juega hoy y los próximos días', vivos ? <em className="vivo">EN VIVO</em> : null],
+    ['competencias', 'Competencias', QUE_ES['#/competencias'], null],
+    ['ligas', 'Ligas', QUE_ES['#/ligas'], hoyLiga ? <em>HOY SE JUEGA</em> : null],
+  ];
+  return (
+    <div className={'tb-hoja' + (sale ? ' sale' : '')} ref={yo} role="menu" aria-label="Eventos, Competencias y Ligas">
+      {filas.map(([k, n, s, tag]) => (
+        <a key={k} role="menuitem" href={'#/' + k} onClick={onCerrar}>
+          <span className="tb-hoja-img"><img alt="" src={'/og/mini/' + k + '.webp'} width="480" height="270" /></span>
+          <span className="tb-hoja-tx"><b>{n}</b><small>{s}</small></span>{tag}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 export function Tabbar({ liga, dc, pagina = '' }) {
-  // 🔑 UNA TIRA QUE SE DESLIZA, con todas las secciones como en la compu. Dlx, 28/09/2026: «en el PC será normal pero
-  // en celular haz que se deslice para ver más opciones», y el 02/10, al ver cinco fijas: «pensé que habíamos acordado
-  // que lo de abajo sería en una tira como está en el ordenador». Las mismas de `MENU` (la cabecera de la compu): una
-  // sección nueva entra en las dos. Y tu cuenta, «Yo», fija a la derecha y fuera de la tira (02/10: «el engranaje en
-  // vez de la cuenta»), como el «Tú» de Discord
   const yo = liga && liga.yo;
   const [yoM, setYoM] = useState(false);
   const [verYo, saleYo] = usePresencia(yoM, 120);
+  const [jm, setJm] = useState(false);
+  const [verJ, saleJ] = usePresencia(jm, 160);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
-  // 👉 QUE SE NOTE QUE SE DESLIZA (Dlx, 17/10/2026: «mejorar un poco el tutorial, específicamente para lo del celular:
-  // enseñar que hay una barra abajo que se puede deslizar»): la primera vez, un globito «Deslizá» con la tira
-  // asomándose sola un poco y volviendo; se va en cuanto la persona la desliza una vez (`lg:tira-ok`), y el asomarse,
-  // nunca para quien apagó las animaciones. ⚠️ SIN FLECHA NI LÍNEA: la 3.28 le puso una «›» con un borde negro a la
-  // izquierda, y Dlx, el mismo 17/10: «no me gustaría que tenga esa línea ni la flecha, se ve feo estéticamente». Ya
-  // lo había dicho el 03/10 de la raya entre la tira y «Yo» (ver `.tb-yo` en vivo.css)
-  const tira = useRef(null);
-  // 📏 CUATRO Y MEDIA EN CUALQUIER CELULAR (18/10/2026, Dlx: «asegúrate que todo esté posicionado bien»). La regla era
-  // que se vean cuatro secciones y media —la media dice que hay más—, pero con un relleno fijo eso pasaba sólo a 414 px:
-  // medido, a 360 no asomaba nada, a 390 sólo la «L» de Ligas (23 de 68 px) y a 430 la quinta casi entera. Ahora el
-  // relleno se calcula con lo que mide cada etiqueta para que de la quinta se vea la mitad, con su ícono
-  useLayoutEffect(() => {
-    const t = tira.current;
-    if (!t) return undefined;
-    const ajustar = () => {
-      const as = [...t.children];
-      const W = t.clientWidth;
-      if (as.length < 6 || !W) return;
-      const base = as.map((a) => Math.max(((a.querySelector('span') || {}).scrollWidth) || 0, 24));
-      const s4 = base[0] + base[1] + base[2] + base[3];
-      // 4·(etiqueta + 2p) + (etiqueta5 + 2p)/2 = W
-      const p = Math.max(6, Math.min(22, (W - s4 - base[4] / 2) / 9));
-      t.style.setProperty('--tb-p', p.toFixed(1) + 'px');
-    };
-    ajustar();
-    window.addEventListener('resize', ajustar);
-    // la fuente llega después y cambia lo que mide cada etiqueta
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar).catch(() => {});
-    return () => window.removeEventListener('resize', ajustar);
-  }, []);
-  const [aprende, setAprende] = useState(() => { try { return !localStorage.getItem('lg:tira-ok'); } catch (e) { return false; } });
-  const asomando = useRef(false);
-  const aprendio = () => {
-    setAprende(false);
-    try { localStorage.setItem('lg:tira-ok', '1'); } catch (e) { /* sin guardar: vuelve a aparecer */ }
+  const sube = useSubiste(liga, pagina);
+  const j = enJuego(liga);
+  const enEv = EV_PAGS.includes(pagina);
+  const mantener = useMantener(() => { setYoM(false); setJm(true); });
+  // tocarlo: abre lo que dice. La llave en vivo se abre encima de la página; lo demás es un link
+  const tocar = (e) => {
+    setJm(false);
+    if (j.llave) { e.preventDefault(); accion.llave('v:' + j.llave); }
   };
-  const mirar = () => {
-    const t = tira.current;
-    if (!t) return;
-    if (!asomando.current && t.scrollLeft > 24 && aprende) aprendio();
-  };
-  // 👉 la tira se asoma sola y vuelve, una vez: cuando el globo ya se ve (ver abajo), no a los 1,6 s debajo de la carga
-  const asomar = () => {
-    let quieto = false;
-    try { quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { quieto = false; }
-    const t = tira.current;
-    if (quieto || !t || t.scrollLeft > 0) return;
-    asomando.current = true;
-    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: Math.min(140, tira.current.scrollWidth - tira.current.clientWidth), behavior: 'smooth' }); }, 400);
-    setTimeout(() => { if (tira.current) tira.current.scrollTo({ left: 0, behavior: 'smooth' }); }, 1500);
-    setTimeout(() => { asomando.current = false; }, 2400);
-  };
-  // 💬 EL GLOBO SE VA SOLO A LOS 6 SEGUNDOS (17/11/2026, Dlx a la maqueta, «Tus elecciones»): se quedaba hasta tocar la ✕,
-  // tapando la página justo encima de la barra. Ya se vio y la barra ya se asomó sola: cuenta como aprendido, así no
-  // vuelve en cada visita. Sólo donde la barra se ve (el teléfono), y también con «menos animaciones».
-  // 🫣 Y LOS 6 SEGUNDOS SON VISTOS (17/11/2026, la simulación de la 6.40): salía a los 1,8 s debajo de la pantalla de carga,
-  // después detrás de la bienvenida (y≈6339), se iba a los 6,8 s y quedaba aprendido sin que nadie lo viera. Ahora sale
-  // cuando no hay nada delante (`algoTapa()` de tapa.js, y un aviso de misión: ése va primero) y la barra está en la
-  // pantalla; se cuelga en la capa de arriba (`capaFija()`) pegado encima de la barra; y cuenta sólo el tiempo que se ve
-  const [globo, setGlobo] = useState(null);   // `{abajo, capa}`: dónde va y dónde se cuelga, mientras se ve
-  const nav = useRef(null);
-  useEffect(() => {
-    if (!aprende || (window.innerWidth || 0) >= 900) return undefined;
-    const V = { libre: 0, visto: 0, ult: 0, on: false, asomo: false };
-    const iv = setInterval(() => {
-      const tb = nav.current;
-      if (!tb) return;
-      const t = Date.now();
-      const H = window.innerHeight || 0;
-      const b = tb.getBoundingClientRect();
-      const g = V.on ? capaFija(tb).querySelector('.tb-globo') : null;
-      const libre = document.visibilityState !== 'hidden' && b.height > 0 && b.top < H && b.bottom > H * 0.5
-        && !algoTapa(tb, ['.nvt']) && !(g && !seVe(g));
-      if (!libre) {
-        V.libre = 0; V.ult = 0;
-        if (V.on) { V.on = false; setGlobo(null); }
-        return;
-      }
-      if (!V.on) {
-        if (!V.libre) V.libre = t;
-        // 2 s libre (el aviso de una misión espera 1,2): si hay uno esperando, sale él primero y el globo no aparece y se va
-        if (t - V.libre < 2000) return;
-        V.on = true; V.ult = t;
-        setGlobo({ abajo: Math.round(H - b.top + 10), capa: capaFija(tb) });
-        if (!V.asomo) { V.asomo = true; asomar(); }
-        return;
-      }
-      V.visto += t - (V.ult || t); V.ult = t;
-      setGlobo((x) => (x && x.abajo === Math.round(H - b.top + 10) ? x : { abajo: Math.round(H - b.top + 10), capa: capaFija(tb) }));
-      if (V.visto >= 6000) aprendio();
-    }, 250);
-    return () => clearInterval(iv);
-  }, [aprende]); // eslint-disable-line react-hooks/exhaustive-deps
+  const href = j.href || '#/eventos';
+  const cls = 'tb-jg ' + j.tipo + (enEv && (j.tipo === 'nada' || j.tipo === 'hoy' || j.tipo === 'pronto') ? ' on' : '');
   return (
-    <nav className="tabbar" aria-label="Secciones" ref={nav}>
-      {aprende && globo ? createPortal(
-        <div className="tb-globo" role="note" style={{ bottom: globo.abajo }}>
-          <span className="tb-mano" aria-hidden="true">👆</span> Desliza la barra de costado: hay más secciones
-          <button type="button" aria-label="Entendido" onClick={aprendio}>✕</button>
-        </div>, globo.capa) : null}
-      <div className="tb-tira" ref={tira} onScroll={mirar}>
-        {MENU.map(([n, r]) => {
-          const k = r.replace(/^#\/?/, '') || 'inicio';
-          // la de la página que se ve: el Inicio sin ruta, y las que dibuja el Inicio nuevo por su nombre (el Ranking)
-          const nv = k === 'publicaciones' ? pubNuevas(liga, pagina) : 0;
-          return <a key={k} href={r} data-tuto={'menu-' + k} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span>{nv ? <i className="tb-nuevas" aria-label={nv + ' nuevas'}>{nv}</i> : null}</a>;
-        })}
-      </div>
+    <nav className="tabbar e" aria-label="Secciones">
+      <a href="#/" data-tuto="menu-inicio" onClick={subirSiEsta('#/')} className={!pagina ? 'on' : ''}><Ico n="inicio" t={22} /><span>Inicio</span></a>
+      <a href="#/ranking" data-tuto="menu-ranking" onClick={subirSiEsta('#/ranking')} className={pagina === 'ranking' ? 'on' : ''}>
+        <Ico n="ranking" t={22} /><span>Ranking</span>
+        {sube ? <i className="tb-sube" aria-label={'Subiste ' + sube + (sube === 1 ? ' puesto' : ' puestos')}>+{sube}</i> : null}</a>
+      <a href={href} className={cls} data-tuto="menu-eventos" aria-label={j.aria + '. Mantén apretado para ver Calendario, Competencias y Ligas'}
+        aria-haspopup="menu" aria-expanded={jm} onClick={tocar} {...mantener}>
+        <span className="l1">{j.cara && cara ? cara : j.logo ? <img alt="" src={j.logo} /> : j.tipo === 'nada' ? <Ico n="eventos" t={20} /> : null}{j.l1}</span>
+        {j.l2 ? <span className="l2">{j.l2}</span> : <span className="l2">Mantén para más</span>}
+      </a>
+      <a href="#/pase" data-tuto="menu-pase" onClick={subirSiEsta('#/pase')} className={pagina === 'pase' ? 'on' : ''}><Ico n="pase" t={22} /><span>Pase</span></a>
       {/* 👤 con tu cuenta, abre el menú de lo tuyo (yomenu.jsx: el Inventario primero); sin cuenta, Tu cuenta como siempre */}
       {cara ? (
         <button type="button" className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '')} data-tuto="cuenta" aria-haspopup="menu" aria-expanded={yoM}
-          aria-label="Lo tuyo: inventario, perfil y cuenta" onClick={() => setYoM((v) => !v)}>{cara}<span>Tu cuenta</span></button>
+          aria-label="Lo tuyo: inventario, perfil y cuenta" onClick={() => { setJm(false); setYoM((v) => !v); }}>{cara}<span>Tú</span></button>
       ) : (
-        <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Tu cuenta</span></a>
+        <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} data-tuto="cuenta" aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Entrar</span></a>
       )}
+      {verJ ? <HojaJuego liga={liga} sale={saleJ} onCerrar={() => setJm(false)} /> : null}
       {verYo ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} dc={dc} nombre={limpio(yo ? yo.n : (dc ? dc.n : ''))} cara={cara} abajo sale={saleYo} onCerrar={() => setYoM(false)} /> : null}
     </nav>
   );
 }
 
-export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
+// 🧱 EL ☰ EN CUADRADOS CON SU IMAGEN (19/11/2026, Dlx: «cuando se presiona las 3 líneas… que muestre los cuadrados de la
+// barra B… pero en vez q sea así plano que tengan como una imagen ahí, como lo es Roblox»). Cada sección que no está en la
+// barra, con la ilustración de su vista previa (`herramientas/banner_paginas.py --mini` → `/og/mini/<página>.webp`), su
+// nombre y para qué sirve. Arriba de la imagen, lo del momento: lo nuevo y lo que se juega, en magenta. Ranking y Pase sólo
+// donde no hay barra (de 900 px para arriba, `.en-barra`). El panel es oscuro en los dos temas, como la campana y tu menú
+const TEJAS = [
+  ['La temporada', [['#/publicaciones', 'Publicaciones'], ['#/eventos', 'Eventos'], ['#/competencias', 'Competencias'], ['#/ligas', 'Ligas'],
+    ['#/ranking', 'Ranking', 1], ['#/pase', 'Pase rapero', 1]]],
+  ['Comunidad', [['#/crews', 'Crews'], ['#/tarjetas', 'Tarjetas'], ['#/salon', 'Salón de la fama'], ['#/socios', 'Socios']]],
+  ['Lo tuyo', [['#/tienda', 'Tienda'], ['#/invitar', 'Invita y gana'], ['#/guia', 'Guía']]],
+];
+
+export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv, pagina = '' }) {
   // ⚠️ el foco entra al abrirlo y vuelve al ☰ al cerrarlo: con el teclado se quedaba atrás, en la página tapada
   // (revisión del 03/10/2026). Aparte del efecto del Escape: `onCerrar` cambia en cada vuelta de App
   const cerrarB = useRef(null);
@@ -546,14 +603,38 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
     <div className="x-fila"><span>Changelog<small>Lo nuevo de la página{ult ? ', hasta la v' + ult : ''}.</small></span>
       <a className="btn negro chico" href="#/cambios" onClick={onCerrar}>{nuevo ? <em className="x-nuevo">NUEVO</em> : null}Ver</a></div>
   );
+  // lo del momento de cada cuadrado: sin dato no hay etiqueta
+  const nv = liga ? pubNuevas(liga, pagina) : 0;
+  const vivos = liga ? liga.vivo().length : 0;
+  const hoyLiga = liga && liga.fechasHoy ? liga.fechasHoy().length : 0;
+  const tag = (r) => {
+    if (r === '#/publicaciones' && nv) return <em className="x-teja-tag mg">{nv === 1 ? '1 NUEVA' : nv + ' NUEVAS'}</em>;
+    if (r === '#/eventos' && vivos) return <em className="x-teja-tag mg">EN VIVO</em>;
+    if (r === '#/ligas' && hoyLiga) return <em className="x-teja-tag">HOY SE JUEGA</em>;
+    return null;
+  };
   return (
-    <div className={'x-menu' + (despide ? ' sale' : '')} onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
+    <div className={'x-menu tejas' + (despide ? ' sale' : '')} onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
       <div className="x-caja" role="dialog" aria-modal="true" aria-label="Menú">
         <div className="x-caja-cab"><b>MENÚ</b><button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el menú" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         {/* en el celular el buscador no entra arriba: vive acá */}
         {liga ? <div className="x-busca"><Buscar liga={liga} onIr={onCerrar} /></div> : null}
-        <nav className="x-lista" aria-label="Secciones">{MENU_TODO.slice(1).map(([n, r]) => (
-          <a key={n} href={r} onClick={onCerrar}><span>{n}{QUE_ES[r] ? <small>{QUE_ES[r]}</small> : null}</span><Ico n="flecha" t={20} /></a>))}</nav>
+        {TEJAS.map(([g, xs]) => (
+          <section key={g} className="x-grupo" aria-label={g}>
+            <span className="x-aj-t">{g.toUpperCase()}</span>
+            <div className="x-tejas">
+              {xs.map(([r, n, enBarra]) => {
+                const k = r.slice(2);
+                return (
+                  <a key={r} href={r} className={'x-teja' + (enBarra ? ' en-barra' : '') + (pagina === k ? ' on' : '')} aria-current={pagina === k ? 'page' : undefined} onClick={onCerrar}>
+                    <span className="x-teja-img"><img alt="" src={'/og/mini/' + k + '.webp'} width="480" height="270" loading="lazy" />{tag(r)}</span>
+                    <b>{n}</b>{QUE_ES[r] ? <small>{QUE_ES[r]}</small> : null}
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        ))}
         <div className="x-aj">
           <span className="x-aj-t">AJUSTES</span>
           <div className="x-fila"><span>Tema</span>

@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "6.78",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T03:25:00-05:00",
+        "titulo": "La barra de abajo del celular, rehecha",
+        "items": [
+            "**Cinco lugares fijos** en la barra de abajo del celular: Inicio, Ranking, **EN JUEGO**, Pase y Tú. Ya no hay que deslizarla para encontrar nada.",
+            "**EN JUEGO te dice qué pasa ahora**: «VIVO» cuando se está jugando algo, «TE TOCA» cuando es tu batalla, cuánto falta para lo próximo o «HOY». Tócalo para ir; mantenlo apretado para ver Calendario, Competencias y Ligas.",
+            "**Ranking te avisa si subiste** desde la última vez que lo miraste.",
+            "**El ☰ de arriba, en cuadrados con su imagen**: todas las demás secciones, con lo nuevo y lo que se juega marcado en cada una. Si hay publicaciones nuevas, el ☰ lleva un punto.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.77",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T03:02:00-05:00",
