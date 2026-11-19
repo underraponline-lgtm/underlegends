@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.73",
+        "dia": "2026-11-18",
+        "cuando": "2026-11-18T22:40:00-05:00",
+        "titulo": "La página de cada llave, rehecha",
+        "items": [
+            "**La página de cada llave, rehecha**: arriba, la llave en números (la figura, los raperos, las batallas y el jurado), la final con las dos cartas y cómo votó el jurado, y al costado el podio y el camino de cada uno.",
+            "**Abajo, en pestañas**: la llave, el jurado, los inscritos y los puntos. En cada casilla, la nota de cada uno, la inicial del juez al lado de a quién votó y el nombre como lo escribió el jurado.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.72",
         "dia": "2026-11-18",
         "cuando": "2026-11-18T22:14:00-05:00",

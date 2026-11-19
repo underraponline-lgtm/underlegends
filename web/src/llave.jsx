@@ -206,7 +206,8 @@ function Nota({ ctx, s }) {
 }
 function Mini({ ctx, f, nombre }) {
   const liga = ctx.liga;
-  const url = urlCarta(ctx, f);
+  // 🅰️ en el remake A (18/11/2026) las filas de la llave van con la cara: la carta grande queda para la final
+  const url = ctx.caras ? null : urlCarta(ctx, f);
   if (!url) return <Cara liga={liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />;
   return <span className={'lk-carta' + (liga.brilla(f.k) ? ' brilla' : '')}><ImgCarta ctx={ctx} f={f} /></span>;
 }
@@ -217,7 +218,7 @@ function Mini({ ctx, f, nombre }) {
 // —que ya trae nombre y bandera—; quien no tiene, una ficha del mismo tamaño con su cara, su nombre y su bandera. Los
 // equipos y las batallas sin ninguna carta siguen en filas, que ocupan menos. ⚠️ SIN ✓: en la esquina de arriba la
 // carta de Temporada lleva su puesto (#4) y la tapaba; quien pasó se ve en color y quien quedó afuera, en gris
-const enCartas = (ctx, ls) => ls.length > 0 && ls.every((s) => partes(s).length === 1 && (ctx.fila(s) || !ctx.esSin(s)))
+const enCartas = (ctx, ls) => !ctx.caras && ls.length > 0 && ls.every((s) => partes(s).length === 1 && (ctx.fila(s) || !ctx.esSin(s)))
   && ls.some((s) => !!urlCarta(ctx, ctx.fila(s)));
 //: la proporción de las cartas (300 × 438): la Servidor es un poco más baja y entra entera, centrada
 const CARTA_AR = 438 / 300;
@@ -309,7 +310,7 @@ function CampeonG({ ctx }) {
 // las tarjetas en vez de nombres… pero minis, tampoco tan grandes»). Su carta en miniatura —ya trae nombre y bandera—;
 // sin carta, una ficha del MISMO tamaño con su cara, su nombre y su bandera (nunca una caja vacía: eso era el campeón sin
 // carta de antes, un rectángulo negro gigante). Un equipo: las caras juntas y los nombres
-function MiniP({ ctx, s, ancho = 64, apagado = false, sinNombre = false }) {
+function MiniP({ ctx, s, ancho = 64, apagado = false, sinNombre = false, sinNota = false }) {
   const ms = partes(s);
   const alto = Math.round(ancho * CARTA_AR);
   const st = { width: ancho, height: alto };
@@ -318,7 +319,7 @@ function MiniP({ ctx, s, ancho = 64, apagado = false, sinNombre = false }) {
       <span className={'lk-mp eq' + (apagado ? ' x' : '')} style={st}>
         <span className="lk-caras">{ms.map((m, i) => { const f = ctx.fila(m); return <Cara key={i} liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(m).txt} cls="lk-cara" />; })}</span>
         <span className="lk-n">{ms.map((m) => { const f = ctx.fila(m); return f ? capital(limpio(f.n)) : capital(sinBanderas(m).txt); }).join(' · ')}</span>
-        <Nota ctx={ctx} s={s} />
+        {sinNota ? null : <Nota ctx={ctx} s={s} />}
       </span>
     );
   }
@@ -326,13 +327,13 @@ function MiniP({ ctx, s, ancho = 64, apagado = false, sinNombre = false }) {
   const url = urlCarta(ctx, f);
   const sb = sinBanderas(s);
   const nombre = f ? capital(limpio(f.n)) : capital(sb.txt || s);
-  if (url) return <span className={'lk-mp c' + (apagado ? ' x' : '') + (ctx.liga.brilla(f.k) ? ' brilla' : '')} style={st} title={nombre}><ImgCarta ctx={ctx} f={f} cls="lk-mp-img" grande={ancho > 110} ancho={ancho} /><Nota ctx={ctx} s={s} /></span>;
+  if (url) return <span className={'lk-mp c' + (apagado ? ' x' : '') + (ctx.liga.brilla(f.k) ? ' brilla' : '')} style={st} title={nombre}><ImgCarta ctx={ctx} f={f} cls="lk-mp-img" grande={ancho > 110} ancho={ancho} />{sinNota ? null : <Nota ctx={ctx} s={s} />}</span>;
   return (
     <span className={'lk-mp s' + (apagado ? ' x' : '')} style={st} title={nombre}>
       <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />
       {sinNombre ? null : <span className="lk-n">{nombre}</span>}
       {f ? <Bandera cc={f.cc} cls="lk-flag" /> : sb.ccs.map((cc) => <Bandera key={cc} cc={cc} cls="lk-flag" />)}
-      <Nota ctx={ctx} s={s} />
+      {sinNota ? null : <Nota ctx={ctx} s={s} />}
     </span>
   );
 }
@@ -344,93 +345,7 @@ const nombreDe = (ctx, s) => partes(s).map((m) => { const f = ctx.fila(m); retur
 // 🔒 el mensaje de inscripción viaja crudo (18/11/2026): «<@1358539185778327612> 🇦🇷» de la #521 dejaba un Discord ID a la
 // vista. Sin menciones, canales ni emojis propios de Discord; lo que queda vacío y sin `es` no se dibuja
 const sinMenciones = (t) => limpio(String(t || '').replace(/<a?:\w+:\d+>|<@[!&]?\d+>|<#\d+>/g, ''));
-function GenteEvento({ liga, G }) {
-  const ins = (G.ins || []).filter(([t, es]) => es || sinMenciones(t));
-  const jur = G.jur || [];
-  if (!ins.length && !jur.length) return null;
-  const persona = (x) => {
-    const f = liga.fila(x);
-    return f ? <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <b>{limpio(x)}</b>;
-  };
-  // 🔢 PERSONAS, NO INSCRIPCIONES (18/11/2026): quien se anotó dos veces, o solo y en el trío, contaba doble («24 anotados ·
-  // 11 jugaron» en la #652, que tiene 8 raperos)
-  const jugaron = new Set(ins.filter((x) => x[1]).flatMap((x) => partes(x[1]).map((m) => {
-    const f = liga.quien(m);
-    return f ? f.k : norm(limpio(m));
-  }))).size;
-  // y «1 juez», no «1 jueces» (18/11/2026: 4 de las 5 llaves del lobby con jurado tenían uno solo)
-  const nJueces = new Set(jur.flatMap((b) => b.v.map((x) => x[0]))).size;
-  // el jurado de cada ronda, en orden, y si cambió respecto de la anterior
-  const rondas = [];
-  jur.forEach((b) => {
-    let R = rondas.find((x) => x.r === b.r);
-    if (!R) { R = { r: b.r, j: new Set(), b: [] }; rondas.push(R); }
-    b.v.forEach(([j]) => R.j.add(j));
-    R.b.push(b);
-  });
-  const clave = (s) => [...s].sort().join('|');
-  return (
-    <section className="lk-gev" aria-label="Inscritos y jurado">
-      {ins.length ? (
-        <div className="lk-gev-b">
-          <div className="lk-cam-h"><h3>Los inscritos</h3><small>{ins.length} anotado{ins.length === 1 ? '' : 's'}{jugaron ? ' · ' + jugaron + ' jugaron' : ''}</small></div>
-          <ul className="lk-ins">
-            {ins.map(([t, es, por], i) => (
-              <li key={i} className={es ? 'si' : 'no'} title={es ? 'Jugó' : 'Se anotó y no aparece en la llave'}>
-                {es ? partes(es).map((m, j) => <span key={j}>{j ? ' + ' : ''}{persona(m)}</span>) : <span>{sinMenciones(t)}</span>}
-                {es && por === 'cuenta' && sinMenciones(t) && soloLetras(sinMenciones(t)) !== soloLetras(es) ? <small>se anotó «{sinMenciones(t)}»</small> : null}
-              </li>
-            ))}
-          </ul>
-          <p className="lk-gev-nota">En color, los que jugaron. «Se anotó» es el nombre que escribió: su cuenta de Discord dice quién es.</p>
-        </div>
-      ) : null}
-      {rondas.length ? (
-        <div className="lk-gev-b">
-          <div className="lk-cam-h"><h3>El jurado</h3><small>{nJueces} {nJueces === 1 ? 'juez' : 'jueces'} · {jur.length} batalla{jur.length === 1 ? '' : 's'} con votos</small></div>
-          {rondas.map((R, i) => {
-            const cambio = i > 0 && clave(R.j) !== clave(rondas[i - 1].j);
-            return (
-              <div key={R.r} className="lk-jr">
-                <p className="lk-jr-h"><b>{R.r}</b> · {[...R.j].map((j, k) => <span key={j}>{k ? ', ' : ''}{persona(j)}</span>)}
-                  {cambio ? <em> · cambió el jurado</em> : null}</p>
-                <ul>
-                  {R.b.map((b, k) => {
-                    const cuenta = b.l.map((_x, li) => b.v.filter((v) => v[1] === li).length);
-                    return (
-                      <li key={k}>
-                        {b.l.map((x, li) => <span key={li} className={cuenta[li] === Math.max(...cuenta) ? 'g' : ''}>{li ? <i>vs</i> : null}{limpio(x)}
-                          {/* ✍️ cómo se escribió en los veredictos, si no es como en la llave (18/11/2026): «KIBAK» es Valen */}
-                          {b.e && b.e[li] ? <em className="lk-jr-e" title="Así se escribió en los veredictos">«{limpio(b.e[li])}»</em> : null} <b>{cuenta[li]}</b></span>)}
-                        <small>{b.v.map(([j, li]) => limpio(j) + ' → ' + limpio(b.l[li] || '')).join(' · ')}</small>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-      ) : null}
-    </section>
-  );
-}
 
-// 📁 LA LLAVE ENTERA, PLEGADA CUANDO YA HAY HISTORIA ARRIBA (la C de la maqueta: el versus y el camino cuentan quién ganó;
-// el cuadro es para mirar todo). Abierta en vivo, y se abre sola si tocás a alguien en el cuadro desde el camino
-function Plegada({ si, n, total, children }) {
-  const [ab, setAb] = useState(!si);
-  useEffect(() => { setAb(!si); }, [si, n]);
-  if (!si) return children;
-  return (
-    <div className={'lk-pleg' + (ab ? ' ab' : '')}>
-      <button type="button" className="lk-pleg-b" aria-expanded={ab} onClick={() => setAb((x) => !x)}>
-        <span>{ab ? 'Plegar la llave' : 'Ver toda la llave'}</span><small>{total} batalla{total === 1 ? '' : 's'}</small><i aria-hidden="true">{ab ? '−' : '+'}</i>
-      </button>
-      {ab ? children : null}
-    </div>
-  );
-}
 
 // 🥊 EL VERSUS DE LA FINAL, ARRIBA (la A de la maqueta: la página de evento de UFC). El campeón en blanco, el subcampeón al
 // lado y el resto del podio debajo, en chico. Sale de la tabla de la llave —campeón y subcampeón—, así sirve también para
@@ -473,124 +388,62 @@ const ptsLado = (ctx, L, r, cu) => {
   if (!hi) return '';
   return lo === hi ? num(hi) + ' pts' + (r[3] ? cu : '') : num(lo) + ' a ' + num(hi) + ' pts';
 };
-function VersusFinal({ ctx, L }) {
-  const fin = ctx.final;
-  const c0 = (L.tabla || []).find((r) => r[1] === 'Campeón');
-  if (!c0) return null;
-  const sub0 = (L.tabla || []).find((r) => r[1] === 'Subcampeón');
-  const deFinal = (s, r) => (s ? [texto(s), r ? r[1] : '', r ? r[2] : 0, partes(texto(s)).length > 1] : null);
-  const ganador = fin && fin[1] ? fin[0].find((x) => gana(fin, x)) : null;
-  const c = (ganador && deFinal(ganador, c0)) || ladosDe(ctx, L, /^Campeón$/, 1)[0];
-  const s = (ganador && sub0 && deFinal(fin[0].find((x) => x !== ganador), sub0)) || ladosDe(ctx, L, /^Subcampeón$/, 1)[0] || null;
-  const resto = ladosDe(ctx, L, /^(Tercero|Cuarto|Semifinal)/, 4);
-  const lado = (r, w) => {
-    const id = ctx.idDe(partes(r[0])[0]);
-    const pl = ptsLado(ctx, L, r, ' cada uno');
-    return (
-      <button type="button" className={'lk-vsf-l' + (w ? ' w' : '') + (ctx.sigo === id ? ' on' : '')} onClick={() => ctx.seguir(id)}
-        aria-label={nombreDe(ctx, r[0]) + ', ' + r[1].toLowerCase()}>
-        <span className="lk-vsf-et">{w ? <><Ico n="copa" t={14} />Campeón</> : r[1]}</span>
-        <MiniP ctx={ctx} s={r[0]} ancho={ctx.compu ? 132 : 96} />
-        <b className="lk-vsf-n">{nombreDe(ctx, r[0])}</b>
-        {pl ? <small>+{pl}</small> : null}
-      </button>
-    );
-  };
-  return (
-    <section className="lk-vsf" aria-label="La final">
-      {/* sin subcampeón en la tabla (una de vidas que no lo dice), el campeón solo: un «VS» contra nadie no se dibuja */}
-      <div className={'lk-vsf-in' + (s ? '' : ' solo')}>
-        {lado(c, true)}
-        {s ? <span className="lk-vsf-x" aria-hidden="true">VS</span> : null}
-        {s ? lado(s, false) : null}
-      </div>
-      {resto.length ? (
-        <ul className="lk-vsf-resto">
-          {resto.map((r, i) => {
-            const id = ctx.idDe(partes(r[0])[0]);
-            const pl = ptsLado(ctx, L, r, ' c/u');
-            return (
-              <li key={i}><button type="button" className={ctx.sigo === id ? 'on' : ''} onClick={() => ctx.seguir(id)}>
-                <MiniP ctx={ctx} s={r[0]} ancho={40} sinNombre /><span><b>{nombreDe(ctx, r[0])}</b><small><Medalla p={MEDALLA[r[1]] || 4} />{r[1]}{pl ? ' · +' + pl : ''}</small></span>
-              </button></li>
-            );
-          })}
-        </ul>
-      ) : null}
-    </section>
-  );
+
+
+// ⚖️ EL VOTO DE CADA JUEZ, AL LADO DE A QUIÉN VOTÓ (el remake A, 18/11/2026: la maqueta que eligió Dlx, «Pestañas»). Una
+// marca por juez con su inicial; el nombre entero en la ayuda. Sale de `L.gente.jur` (bot/gente_evento.py)
+const inicial = (q) => (limpio(q)[0] || '?').toUpperCase();
+function Votos({ j, li, b }) {
+  const qs = j ? j.v.filter((v) => v[1] === li).map((v) => v[0]) : [];
+  if (!qs.length) return null;
+  const a = sinBanderas(b[0][li] || '').txt;
+  return <span className="lk-vts">{qs.map((q, i) => <i key={i} className="lk-vt" title={limpio(q) + ' votó a ' + a} aria-label={limpio(q) + ' votó a ' + a}>{inicial(q)}</i>)}</span>;
 }
 
-// 🧭 EL CAMINO DE CADA UNO (la C de la maqueta: el «Path to the Final» de Wimbledon y cómo cuenta Red Bull Batalla a sus
-// campeones). Arranca con el campeón —o con vos, si jugaste, o con quien tocaste—: cada ronda, a quién le ganó y con quién
-// cayó, con su carta en chico. Abajo, todos los de la llave para ver el de cualquiera
-function Camino({ ctx, L }) {
-  const camp = (L.tabla || []).find((r) => r[1] === 'Campeón');
-  const idCamp = camp ? ctx.idDe(partes(camp[0])[0]) : '';
-  const rondas = ctx.prin.concat(ctx.ter ? [ctx.ter] : []);
-  const pasosDe = (id) => {
-    const xs = [];
-    rondas.forEach((R) => R.b.forEach((b) => {
-      const mio = b[0].find((s) => partes(s).some((m) => ctx.idDe(m) === id));
-      if (!mio) return;
-      const rivales = b[0].filter((s) => s !== mio);
-      xs.push({ r: R.r, rivales, gano: gana(b, mio), cayo: !!b[1] && !gana(b, mio), b });
-    }));
-    return xs;
-  };
-  // ⚠️ quien sólo jugó la fase de una funa no tiene batallas en el cuadro: antes la sección entera desaparecía, con el
-  // selector adentro, y no había cómo volver (revisión del 17/11/2026). Vuelve al camino del campeón
-  let id = ctx.sigo || idCamp;
-  let pasos = id ? pasosDe(id) : [];
-  if (!pasos.length && id !== idCamp && idCamp) { id = idCamp; pasos = pasosDe(id); }
-  if (!pasos.length) return null;
-  const nombre = ctx.nombres[id] || '';
-  const ganadas = pasos.filter((p) => p.gano).length;
-  const perdidas = pasos.filter((p) => p.cayo).length;
-  // todos los de la llave, en el orden de la tabla (los que no están en la tabla, al final)
-  const ids = [];
-  (L.tabla || []).forEach((r) => partes(r[0]).forEach((m) => { const x = ctx.idDe(m); if (!ids.includes(x)) ids.push(x); }));
-  Object.keys(ctx.nombres).forEach((x) => { if (!ids.includes(x)) ids.push(x); });
+// 🔥 UNA DE 3 A 5 MCs, EN CHICO (el remake A): quién pasó, en su fila, y los demás en un renglón con sus caras. Sólo ya
+// decidida: en vivo se ven todos
+const RESTO_H = 30;
+const compacta = (b, pasan) => {
+  if ((b[0] || []).length <= 2 || !b[1]) return null;
+  const g = b[0].filter((s) => gana(b, s) || (!!pasan && pasan(s)));
+  const x = b[0].filter((s) => !g.includes(s));
+  return g.length && x.length ? { g, x } : null;
+};
+function Resto({ ctx, b, xs, ronda, alto }) {
+  const j = ctx.votoDe ? ctx.votoDe(ronda, b) : null;
   return (
-    <section className="lk-cam" aria-label={'El camino de ' + nombre}>
-      <div className="lk-cam-h"><h3>El camino de {capital(limpio(nombre))}</h3>
-        <small>{ganadas} ganada{ganadas === 1 ? '' : 's'}{perdidas ? ' · ' + perdidas + ' perdida' + (perdidas === 1 ? '' : 's') : ''}</small></div>
-      <ol className="lk-cam-tira">
-        {pasos.map((p, i) => (
-          <li key={i} className={p.gano ? 'g' : p.cayo ? 'x' : ''}>
-            <span className="lk-cam-r">{p.r}</span>
-            <span className="lk-cam-rv">{p.rivales.length ? p.rivales.slice(0, 3).map((s, j) => (
-              <button key={j} type="button" onClick={() => ctx.seguir(ctx.idDe(partes(s)[0]))} title={'Ver el camino de ' + nombreDe(ctx, s)}>
-                <MiniP ctx={ctx} s={s} ancho={56} apagado={p.gano} /></button>
-            )) : <em>pasó directo</em>}</span>
-            <b className="lk-cam-res">{p.gano ? (p.rivales.length ? 'le ganó' : 'pasó') : p.cayo ? 'cayó' : (ctx.cerrada ? 'sin ganador' : 'por jugarse')}</b>
-          </li>
-        ))}
-      </ol>
-      <div className="lk-cam-todos" role="group" aria-label="Ver el camino de">
-        {ids.map((x) => (
-          <button key={x} type="button" className={x === id ? 'on' : ''} aria-pressed={x === id} onClick={() => ctx.seguir(x === id ? '' : x)}>
-            {/* 🪪 con su cara (17/11/2026). Sin link: el botón ya marca su camino */}
-            <Alguien liga={ctx.liga} nombre={ctx.nombres[x] || ''} k={/^k:/.test(x) ? x.slice(2) : ''} link={false} cap /></button>
-        ))}
-      </div>
-    </section>
+    <div className="lk-l x lk-resto" style={alto ? { height: alto } : undefined}>
+      <span className="lk-caras">{xs.flatMap((s) => partes(s)).map((m, i) => {
+        const f = ctx.fila(m);
+        const nom = f ? capital(limpio(f.n)) : capital(sinBanderas(m).txt);
+        return <button key={i} type="button" className="lk-rf" onClick={() => ctx.seguir(ctx.idDe(m))} title={'Ver el camino de ' + nom}>
+          <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={nom} cls="lk-cara" /></button>;
+      })}</span>
+      <span className="lk-resto-n">{xs.map((s) => nombreDe(ctx, s)).join(', ')}</span>
+      {xs.map((s) => <Votos key={s} j={j} li={b[0].indexOf(s)} b={b} />)}
+    </div>
   );
 }
 
 // ── un lado de una batalla: una persona o un equipo (las caras juntas, adelante) ──
-function Lado({ ctx, b, s, copa, alto, pasa }) {
+// 🅰️ en el remake A, con su nota, el voto de cada juez y cómo lo escribió el jurado (sólo la primera vez que aparece)
+function Lado({ ctx, b, s, copa, alto, pasa, li, ronda }) {
   const ms = partes(s);
   const eq = ms.length > 1;
   const g = gana(b, s) || pasa;
   const perdio = !!b[1] && !g;
   const sigue = !!ctx.sigo && ms.some((m) => ctx.idDe(m) === ctx.sigo);
   const cls = 'lk-l' + (g ? (copa ? ' copa' : ' g') : (b[1] ? ' x' : '')) + (eq ? ' eq' : '') + (sigue ? ' sigue' : '');
+  const j = ronda != null && ctx.votoDe ? ctx.votoDe(ronda, b) : null;
+  const w = ronda != null && ctx.escritoDe ? ctx.escritoDe(ronda, b, li) : '';
   return (
     <div className={cls} style={alto ? { height: alto } : undefined}>
       {eq ? <span className="lk-caras">{ms.map((m, i) => { const f = ctx.fila(m); return <Cara key={i} liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(m).txt} cls="lk-cara" />; })}</span> : null}
-      <span className="lk-ns">{ms.map((m, i) => <Persona key={i} ctx={ctx} x={m} conCara={!eq} perdio={perdio} />)}</span>
-      {g ? <span className="lk-ok" aria-label={copa ? 'Campeón' : 'Pasó'}>{copa ? <Ico n="copa" t={14} /> : '✓'}</span> : null}
+      <span className="lk-ns">{ms.map((m, i) => <Persona key={i} ctx={ctx} x={m} conCara={!eq} perdio={perdio} />)}
+        {w ? <em className="lk-wn" title="Así lo escribió el jurado">«{limpio(w)}»</em> : null}</span>
+      {ctx.caras ? <Nota ctx={ctx} s={s} /> : null}
+      <Votos j={j} li={li} b={b} />
+      {g && (copa || !ctx.caras) ? <span className="lk-ok" aria-label={copa ? 'Campeón' : 'Pasó'}>{copa ? <Ico n="copa" t={14} /> : '✓'}</span> : null}
     </div>
   );
 }
@@ -620,8 +473,9 @@ function etiquetas(ctx, b, est, copa) {
 // 🎬 EN VIVO, LO QUE SE ACABA DE DECIDIR SE VE PASAR (Dlx, 18/10/2026, a «la carta del que pierde se apaga en vivo y la
 // del que pasa salta a la ronda siguiente»: «all of them»). `pos` es el lugar de la batalla (`ronda:batalla`) y `ctx.anim`
 // lo que cambió en la última vuelta: la batalla que se decidió (`recien`) y quien acaba de llegar a otra (`llega`)
-function Batalla({ ctx, b, est, copa, style, altos, pasan, pos }) {
+function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
   const ls = b[0];
+  const cp = ctx.caras ? compacta(b, pasan) : null;
   const et = etiquetas(ctx, b, est, copa);
   const sigue = !!ctx.sigo && ls.some((s) => partes(s).some((m) => ctx.idDe(m) === ctx.sigo));
   const an = ctx.anim && pos != null ? ctx.anim : null;
@@ -641,7 +495,9 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos }) {
     <div className={'lk-b' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (ls.length ? '' : ' vacio') + (copa ? ' fin' : '') + (recien ? ' recien' : '')}
       style={style} title={b[2] || undefined}>
       {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
-      {ls.map((s, i) => <Lado key={i} ctx={ctx} b={b} s={s} copa={copa} alto={altos ? altos[i] : 0} pasa={!!pasan && pasan(s)} />)}
+      {cp ? <>{cp.g.map((s, i) => <Lado key={i} ctx={ctx} b={b} s={s} copa={copa} alto={altos ? altos[i] : 0} pasa li={ls.indexOf(s)} ronda={ronda} />)}
+        <Resto ctx={ctx} b={b} xs={cp.x} ronda={ronda} alto={altos ? altos[altos.length - 1] : 0} /></>
+        : ls.map((s, i) => <Lado key={i} ctx={ctx} b={b} s={s} copa={copa} alto={altos ? altos[i] : 0} pasa={!!pasan && pasan(s)} li={i} ronda={ronda} />)}
       {ls.length === 1 ? <div className="lk-l vac" style={altos ? { height: altos[1] } : undefined}><em>{b[1] ? 'pasa directo' : 'por definir'}</em></div> : null}
       {!ls.length ? <><div className="lk-l vac" style={altos ? { height: altos[0] } : undefined}><em>{ctx.cerrada ? '—' : 'por jugarse'}</em></div>
         <div className="lk-l vac" style={altos ? { height: altos[1] } : undefined}><em /></div></> : null}
@@ -721,11 +577,11 @@ function Pista({ ctx, rondas, ter, inicial, vale, copaUlt = true }) {
       <div className={'lk-pista' + (ctx.sigo ? ' siguiendo' : '')} ref={pista} style={alto ? { height: alto } : undefined}>
         {rondas.map((R, i) => (
           <div key={i} className="lk-col" ref={(el) => { cols.current[i] = el; }} role="tabpanel" aria-label={R.r}>
-            {R.b.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.est(i, j)} copa={copaUlt && i === ult && R.b.length === 1} pasan={ctx.pasan(i)} pos={i + ':' + j} />)}
+            {R.b.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.est(i, j)} copa={copaUlt && i === ult && R.b.length === 1} pasan={ctx.pasan(i)} pos={i + ':' + j} ronda={R.r} />)}
             {i === ult && ter ? (
               <>
                 <h4 className="lk-ter">Tercer puesto</h4>
-                {ter.b.map((b, j) => <Batalla key={'t' + j} ctx={ctx} b={b} est={!b[1] && b[0].length >= 2 && ctx.cerrada ? 'singan' : ''} />)}
+                {ter.b.map((b, j) => <Batalla key={'t' + j} ctx={ctx} b={b} est={!b[1] && b[0].length >= 2 && ctx.cerrada ? 'singan' : ''} ronda={ter.r} />)}
               </>
             ) : null}
           </div>
@@ -771,7 +627,12 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
   const SEP = 22;
   const nm = (s) => partes(s).length || 1;
   const altoLado = (s) => Math.max(FILA, 8 + LINEA * nm(s));
-  const altos = (b) => (b[0].length ? b[0].map(altoLado).concat(b[0].length < 2 ? [FILA] : []) : [FILA, FILA]);
+  // 🔥 en el remake A, una de 3 a 5 ya decidida: sus filas de quien pasó y un renglón con los demás (`compacta()`)
+  const altos = (b, r) => {
+    const cp = ctx.caras ? compacta(b, r == null ? null : ctx.pasan(r)) : null;
+    if (cp) return cp.g.map(altoLado).concat([RESTO_H]);
+    return b[0].length ? b[0].map(altoLado).concat(b[0].length < 2 ? [FILA] : []) : [FILA, FILA];
+  };
   // 🃏 un versus: las cartas sueltas, sin caja (Dlx, 18/10/2026: «no necesitamos el cuadro blanco que limita la tarjeta»),
   // del ancho de la columna, y arriba sus etiquetas (PASAN 2, REVIVIDO…) si tiene: van en su renglón y no encima de la carta
   const copaDe = (r) => copaUlt && r === n - 1 && rs[n - 1].b.length === 1;
@@ -782,7 +643,7 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
     const f = Math.ceil(k / c);
     return f * ((W - VS_GAP * (c - 1)) / c) * CARTA_AR + (f - 1) * VS_GAP + (conEt(b, r, i) ? ET_H : 0);
   };
-  const alto = (b, r, i) => (enCartas(ctx, b[0]) ? altoVs(b, r, i) : PAD * 2 + altos(b).reduce((a, x) => a + x, 0));
+  const alto = (b, r, i) => (enCartas(ctx, b[0]) ? altoVs(b, r, i) : PAD * 2 + altos(b, r).reduce((a, x) => a + x, 0));
   const hijos = (r, i) => (r ? ((rs[r].b[i] || [])[3] || []).filter((j) => rs[r - 1].b[j]) : []);
   const conPadre = {};
   rs.forEach((R, r) => R.b.forEach((b, i) => hijos(r, i).forEach((j) => { conPadre[(r - 1) + ':' + j] = 1; })));
@@ -838,7 +699,7 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
     const b = rs[p.r].b[p.i];
     const copa = copaUlt && p.r === n - 1 && rs[n - 1].b.length === 1;
     const h = alto(b, p.r, p.i);
-    cajas.push(<Batalla key={k} ctx={ctx} b={b} est={ctx.est(p.r, p.i)} copa={copa} altos={altos(b)} pasan={ctx.pasan(p.r)} pos={p.r + ':' + p.i}
+    cajas.push(<Batalla key={k} ctx={ctx} b={b} est={ctx.est(p.r, p.i)} copa={copa} altos={altos(b, p.r)} pasan={ctx.pasan(p.r)} pos={p.r + ':' + p.i} ronda={rs[p.r].r}
       style={{ position: 'absolute', left: X(p), top: Math.round(TOPE + p.y - h / 2), width: W, height: h }} />);
     hijos(p.r, p.i).forEach((j) => {
       const c = pos[(p.r - 1) + ':' + j];
@@ -860,7 +721,7 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
     const ht = alto(bt);
     const yt = TOPE + pf.y + alto(rs[n - 1].b[0], n - 1, 0) / 2 + 64 + ht / 2;
     cajas.push(<span key="tl" className="lk-rl sub" style={{ left: X(pf), width: W, top: Math.round(yt - ht / 2 - 30) }}>Tercer puesto</span>);
-    cajas.push(<Batalla key="t" ctx={ctx} b={bt} est={!bt[1] && bt[0].length >= 2 && ctx.cerrada ? 'singan' : ''} altos={altos(bt)}
+    cajas.push(<Batalla key="t" ctx={ctx} b={bt} est={!bt[1] && bt[0].length >= 2 && ctx.cerrada ? 'singan' : ''} altos={altos(bt)} ronda={ter.r}
       style={{ position: 'absolute', left: X(pf), top: Math.round(yt - ht / 2), width: W, height: ht }} />);
     fondo = Math.max(fondo, yt + ht / 2);
   }
@@ -1189,6 +1050,354 @@ function StaffLlave({ n, L }) {
 }
 
 // ── la página ──
+// ── 🅰️ EL REMAKE A DE LA PÁGINA DE UNA LLAVE (Dlx, 18/11/2026: «Pestañas», de la maqueta privada «La llave, remake»).
+//    Arriba, en el escenario: el evento, sus números, la final con las cazas y, al costado, el podio y el camino. Abajo,
+//    sobre la piel (Dlx, 03/10/2026: ni toda blanca ni toda negra): cuatro pestañas, la llave abierta, el jurado, los
+//    inscritos y los puntos. En el celular, el podio, el camino y las cazas van después de las pestañas ──
+const juecesDe = (G) => [...new Set(((G && G.jur) || []).flatMap((x) => x.v.map((v) => v[0])))];
+const insDe = (G) => ((G && G.ins) || []).filter(([t, es]) => es || sinMenciones(t));
+// la batalla de la llave de un voto del jurado: la misma ronda y los mismos lados (como `votoDe`)
+const batallaDe = (ctx, x) => {
+  for (const R of ctx.prin.concat(ctx.ter ? [ctx.ter] : [])) {
+    if (R.r !== x.r) continue;
+    const b = R.b.find((y) => y[0].join('|') === (x.l || []).join('|'));
+    if (b) return b;
+  }
+  return null;
+};
+function CaraCtx({ ctx, m }) {
+  const f = ctx.fila(m);
+  return <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(m).txt} cls="lk-cara" />;
+}
+
+// 🔢 LA LLAVE EN NÚMEROS: la figura, los raperos, las batallas y el jurado. Sin dato no hay pieza, y con menos de dos no
+// hay tira
+function Numeros({ ctx, L, G }) {
+  const N = L.notas || {};
+  const bats = ctx.prin.reduce((a, R) => a + R.b.filter((b) => b[0].length >= 2).length, 0) + (ctx.ter ? ctx.ter.b.length : 0);
+  const multi = ctx.prin.reduce((a, R) => a + R.b.filter((b) => b[0].length > 2).length, 0);
+  const js = juecesDe(G);
+  const nIns = insDe(G).length;
+  const nVot = ((G && G.jur) || []).length;
+  const t = [];
+  if (N.mvp && N.v && N.v[N.mvp] != null) {
+    t.push(['La figura', <><i className="lk-nu-star" aria-hidden="true">★</i>{N.v[N.mvp].toFixed(1)}</>, <>{nombreDe(ctx, N.mvp)}{', la nota más alta'}</>]);
+  }
+  if (N.bat) t.push(['El batacazo', <><i aria-hidden="true">🔥</i>{nombreDe(ctx, N.bat)}</>, 'ganó con 35 % de chance o menos']);
+  if (L.participantes) t.push(['Raperos', L.participantes, nIns ? nIns + ' se anotaron en el canal' : '']);
+  if (bats) t.push(['Batallas', bats, multi && bats > multi ? multi + ' de 3 a 5 MCs, ' + (bats - multi) + ' mano a mano' : multi ? 'todas de 3 a 5 MCs' : '']);
+  if (js.length) {
+    t.push(['El jurado', <>{js.length === 1 ? <CaraCtx ctx={ctx} m={js[0]} /> : null}{js.length === 1 ? nombreDe(ctx, js[0]) : js.length + ' jueces'}</>,
+      nVot + ' de ' + bats + ' batallas votadas']);
+  }
+  if (t.length < 2) return null;
+  return (
+    <ul className={'lk-nu n' + t.length} aria-label="La llave en números">
+      {t.map(([k, v, c]) => <li key={k}><small>{k}</small><b>{v}</b>{c ? <span>{c}</span> : null}</li>)}
+    </ul>
+  );
+}
+
+// 🥊 LA FINAL: el campeón y el subcampeón con su carta, sus puntos y su nota, y abajo cómo votó el jurado
+function FinalA({ ctx, L }) {
+  const fin = ctx.final;
+  const c0 = (L.tabla || []).find((r) => r[1] === 'Campeón');
+  if (!c0) return null;
+  const sub0 = (L.tabla || []).find((r) => r[1] === 'Subcampeón');
+  const deFinal = (s, r) => (s ? [texto(s), r ? r[1] : '', r ? r[2] : 0, partes(texto(s)).length > 1] : null);
+  const ganador = fin && fin[1] ? fin[0].find((x) => gana(fin, x)) : null;
+  const c = (ganador && deFinal(ganador, c0)) || ladosDe(ctx, L, /^Campeón$/, 1)[0];
+  const s = (ganador && sub0 && deFinal(fin[0].find((x) => x !== ganador), sub0)) || ladosDe(ctx, L, /^Subcampeón$/, 1)[0] || null;
+  const fr = ctx.prin.length ? ctx.prin[ctx.prin.length - 1].r : '';
+  const j = fin && ctx.votoDe ? ctx.votoDe(fr, fin) : null;
+  const nj = j ? new Set(j.v.map((v) => v[0])).size : 0;
+  const lado = (r, w) => {
+    const id = ctx.idDe(partes(r[0])[0]);
+    const pl = ptsLado(ctx, L, r, ' cada uno');
+    return (
+      <button type="button" className={'lk-fa-l' + (w ? ' w' : '') + (ctx.sigo === id ? ' on' : '')} onClick={() => ctx.seguir(id)}
+        aria-label={nombreDe(ctx, r[0]) + ', ' + (w ? 'campeón' : r[1].toLowerCase())}>
+        <span className="lk-fa-et">{w ? 'Campeón' : r[1]}</span>
+        <MiniP ctx={ctx} s={r[0]} ancho={ctx.compu ? 228 : 132} apagado={!w} sinNota />
+        <b className="lk-fa-n">{nombreDe(ctx, r[0])}</b>
+        <span className="lk-fa-p">{pl ? '+' + pl : null}<Nota ctx={ctx} s={r[0]} /></span>
+      </button>
+    );
+  };
+  return (
+    // 🫀 en las vidas no hay final (`ctx.final` es null): el primero y el segundo, sin «VS» entre los dos
+    <section className="lk-box lk-fa" aria-label={fin ? 'La final' : 'Campeón y subcampeón'}>
+      <div className="lk-bh"><h3>{fin ? 'La final' : 'Campeón y subcampeón'}</h3>{nj ? <small>{nj === 1 ? 'un juez' : nj + ' jueces'}</small> : null}</div>
+      <div className={'lk-fa-in' + (s ? '' : ' solo')}>
+        {lado(c, true)}
+        {s ? <span className="lk-fa-x" aria-hidden="true">{fin ? 'VS' : ''}</span> : null}
+        {s ? lado(s, false) : null}
+      </div>
+      {j ? (
+        <p className="lk-fa-pie">{j.v.map(([q, li], i) => (
+          <span key={i}>{limpio(q)} votó a <b>{nombreDe(ctx, fin[0][li] || '')}</b>{(j.e || [])[li] ? ' («' + limpio(j.e[li]) + '»)' : ''}</span>
+        ))}</p>
+      ) : null}
+    </section>
+  );
+}
+
+// 🏅 EL PODIO, AL COSTADO: campeón, subcampeón y los que llegaron a semis, con sus puntos
+function PodioA({ ctx, L }) {
+  const filas = [...ladosDe(ctx, L, /^Campeón$/, 1), ...ladosDe(ctx, L, /^Subcampeón$/, 1), ...ladosDe(ctx, L, /^(Tercero|Cuarto|Semifinal)$/, 4)];
+  if (filas.length < 2) return null;
+  const pos = (p) => (p === 'Campeón' ? 1 : p === 'Subcampeón' ? 2 : p === 'Cuarto' ? 4 : 3);
+  return (
+    <section className="lk-box lk-po" aria-label="El podio">
+      <div className="lk-bh"><h3>El podio</h3><small>{(L.tabla || []).length} con puntos</small></div>
+      <ol>
+        {filas.map((r, i) => {
+          const id = ctx.idDe(partes(r[0])[0]);
+          const pl = ptsLado(ctx, L, r, ' c/u');
+          return (
+            <li key={i}><button type="button" className={ctx.sigo === id ? 'on' : ''} onClick={() => ctx.seguir(id)}>
+              <span className="lk-po-p">{pos(r[1])}</span>
+              <span className="lk-caras">{partes(r[0]).map((m, k) => <CaraCtx key={k} ctx={ctx} m={m} />)}</span>
+              <span className="lk-po-n"><b>{nombreDe(ctx, r[0])}</b><small>{r[1]}</small></span>
+              {pl ? <span className="lk-po-pts">+{pl}</span> : null}
+            </button></li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
+
+// 🧭 EL CAMINO, AL COSTADO: ronda por ronda, a quién le ganó y con quién cayó. Arranca con el campeón —o con quien tocaste,
+// o contigo si jugaste—, y el selector lleva al de cualquiera de la llave
+function CaminoA({ ctx, L }) {
+  const camp = (L.tabla || []).find((r) => r[1] === 'Campeón');
+  const idCamp = camp ? ctx.idDe(partes(camp[0])[0]) : '';
+  const rondas = ctx.prin.concat(ctx.ter ? [ctx.ter] : []);
+  const pasosDe = (id) => {
+    const xs = [];
+    rondas.forEach((R) => R.b.forEach((b) => {
+      const mio = b[0].find((s) => partes(s).some((m) => ctx.idDe(m) === id));
+      if (!mio) return;
+      xs.push({ r: R.r, rivales: b[0].filter((s) => s !== mio), gano: gana(b, mio), cayo: !!b[1] && !gana(b, mio) });
+    }));
+    return xs;
+  };
+  let id = ctx.sigo || idCamp;
+  let pasos = id ? pasosDe(id) : [];
+  if (!pasos.length && id !== idCamp && idCamp) { id = idCamp; pasos = pasosDe(id); }
+  if (!pasos.length) return null;
+  const ids = [];
+  (L.tabla || []).forEach((r) => partes(r[0]).forEach((m) => { const x = ctx.idDe(m); if (!ids.includes(x)) ids.push(x); }));
+  Object.keys(ctx.nombres).forEach((x) => { if (!ids.includes(x)) ids.push(x); });
+  const esCamp = id === idCamp && pasos.length && pasos[pasos.length - 1].gano;
+  return (
+    <section className="lk-box lk-ca" aria-label={'El camino de ' + (ctx.nombres[id] || '')}>
+      <div className="lk-bh"><h3>El camino</h3>
+        <select className="lk-ca-sel" aria-label="Ver el camino de" value={id} onChange={(e) => ctx.elegir(e.target.value)}>
+          {ids.map((x) => <option key={x} value={x}>{capital(limpio(ctx.nombres[x] || ''))}</option>)}
+        </select>
+      </div>
+      <ol className="lk-ca-ps">
+        {pasos.map((p, i) => (
+          <li key={i} className={p.gano ? 'g' : p.cayo ? 'x' : ''}>
+            <span className="lk-ca-r">{p.r} · {p.gano ? (p.rivales.length ? 'le ganó' : 'pasó') : p.cayo ? 'cayó' : (ctx.cerrada ? 'sin ganador' : 'por jugarse')}</span>
+            <span className="lk-ca-x">
+              {p.rivales.length > 2 ? (
+                <><span className="lk-caras">{p.rivales.slice(0, 5).map((s, j) => <CaraCtx key={j} ctx={ctx} m={partes(s)[0]} />)}</span><span>{'a ' + p.rivales.length}</span></>
+              ) : p.rivales.length ? p.rivales.map((s, j) => (
+                <button key={j} type="button" onClick={() => ctx.elegir(ctx.idDe(partes(s)[0]))} title={'Ver el camino de ' + nombreDe(ctx, s)}>
+                  <CaraCtx ctx={ctx} m={partes(s)[0]} /><b>{nombreDe(ctx, s)}</b></button>
+              )) : <em>pasó directo</em>}
+            </span>
+          </li>
+        ))}
+        {esCamp ? <li className="fin"><span className="lk-ca-r">Campeón</span></li> : null}
+      </ol>
+    </section>
+  );
+}
+
+// 🎯 LAS CAZAS DEL MOST WANTED, EN SU CAJA
+function CazasA({ ctx }) {
+  const liga = ctx.liga;
+  if (!ctx.cazas.length && !ctx.aca.length) return null;
+  return (
+    <section className="lk-box lk-cz" aria-label="Cazas">
+      <div className="lk-bh"><h3>Cazas</h3><small>Most Wanted</small></div>
+      {ctx.cazas.map((c, i) => (
+        <p key={i}><CaraCtx ctx={ctx} m={c[0]} /><span>Acá cazaron a <b><Alguien liga={liga} nombre={c[0]} /></b> ({c[1]}): {c[2].length ? <>cobró <b><Algunos liga={liga} nombres={c[2]} /></b></> : 'no cobró nadie'}.</span></p>
+      ))}
+      {ctx.aca.length ? <p><Ico n="mira" t={15} /><span>{ctx.aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + ctx.aca.length + ' buscados'}: {ctx.aca.map((y, i) => <span key={i}>{i ? ', ' : ''}<b><Alguien liga={liga} nombre={y.n} k={y.k} /></b> ({y.cn}, {num(y.v)} pts)</span>)}. Quien le gane, cobra.</span></p> : null}
+    </section>
+  );
+}
+
+// 🗂️ LAS PESTAÑAS: subrayadas, con cuántos tiene cada una
+function Pestanas({ tabs, tab, setTab }) {
+  return (
+    <div className="lk-pes" role="tablist" aria-label="La llave">
+      {tabs.map(([k, t, n]) => (
+        <button key={k} type="button" role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>
+          {t}{n ? <small>{n}</small> : null}</button>
+      ))}
+    </div>
+  );
+}
+
+// 🔑 QUÉ ES CADA COSA DE LA LLAVE, ANTES DE LA LLAVE: la marca del juez, la nota, la figura y cómo se escribió
+function Ley({ ctx, L, G }) {
+  const jur = (G && G.jur) || [];
+  const js = juecesDe(G);
+  const N = L.notas || {};
+  const todos = js.length === 1 && jur.length > 0 && jur.every((x) => { const b = batallaDe(ctx, x); return b && b[1] && x.v.every(([, li]) => gana(b, x.l[li])); });
+  const hayE = jur.some((x) => (x.e || []).some(Boolean));
+  const xs = [];
+  if (js.length === 1) {
+    xs.push(<span key="v"><i className="lk-vt">{inicial(js[0])}</i>{'el voto de '}{nombreDe(ctx, js[0])}{todos ? ': en las ' + jur.length + ' votó al que pasó' : null}</span>);
+  } else if (js.length) xs.push(<span key="v"><i className="lk-vt">{inicial(js[0])}</i>la inicial de cada juez, al lado de a quién votó</span>);
+  if (N.v) xs.push(<span key="n"><span className="lk-nota">6.0</span>la nota de cada uno en esta llave</span>);
+  if (N.mvp && N.v && N.v[N.mvp] != null) xs.push(<span key="m"><span className="lk-nota mvp"><i>★</i>{N.v[N.mvp].toFixed(1)}</span>la figura</span>);
+  if (hayE) xs.push(<span key="e">«…» como lo escribió el jurado</span>);
+  xs.push(<span key="t">Toca un nombre y se marca su camino.</span>);
+  return <p className="lk-ley">{xs}</p>;
+}
+
+// ⚖️ EL JURADO: cada juez con cuántas votó y en cuántas votó al que pasó; cómo se escribió cada nombre en los veredictos;
+// y ronda por ronda, cada batalla con la marca de cada juez al lado de a quién votó (y si el jurado cambió de una ronda a
+// otra, como pidió Dlx el 17/11: «quiénes votaban y si cambiaron en qué ronda»)
+function JuradoA({ ctx, G }) {
+  const jur = (G && G.jur) || [];
+  if (!jur.length) return null;
+  const porJ = {};
+  jur.forEach((x) => {
+    const b = batallaDe(ctx, x);
+    x.v.forEach(([q, li]) => {
+      const p = porJ[q] || (porJ[q] = { n: 0, bien: 0, cuenta: 0 });
+      p.n += 1;
+      if (b && b[1]) { p.cuenta += 1; if (gana(b, x.l[li])) p.bien += 1; }
+    });
+  });
+  const escr = [];
+  const vistos = new Set();
+  jur.forEach((x) => (x.e || []).forEach((w, li) => { if (w && !vistos.has(w)) { vistos.add(w); escr.push([w, x.l[li]]); } }));
+  const orden = ctx.prin.concat(ctx.ter ? [ctx.ter] : []).map((R) => R.r);
+  const rondas = [];
+  jur.forEach((x) => {
+    let R = rondas.find((y) => y.r === x.r);
+    if (!R) { R = { r: x.r, j: new Set(), b: [] }; rondas.push(R); }
+    x.v.forEach(([q]) => R.j.add(q));
+    R.b.push(x);
+  });
+  rondas.sort((a, b) => orden.indexOf(a.r) - orden.indexOf(b.r));
+  const claveJ = (st) => [...st].sort().join('|');
+  const varios = Object.keys(porJ).length > 1;
+  return (
+    <div className="lk-ja">
+      <ul className="lk-ja-js">
+        {Object.entries(porJ).map(([q, p]) => (
+          <li key={q}><CaraCtx ctx={ctx} m={q} /><span className="lk-ja-q"><b>{nombreDe(ctx, q)}</b><small>{p.n + (p.n === 1 ? ' batalla votada' : ' batallas votadas')}</small></span>
+            {p.cuenta ? <span className="lk-ja-ac"><b>{p.bien + '/' + p.cuenta}</b><small>votó al que pasó</small></span> : null}</li>
+        ))}
+      </ul>
+      {escr.length ? (
+        <>
+          <h4 className="lk-ja-h">Así se escribieron en los veredictos</h4>
+          <ul className="lk-ja-es">{escr.map(([w, x]) => <li key={w}><span className="w">«{limpio(w)}»</span><span aria-hidden="true">→</span><span className="p"><CaraCtx ctx={ctx} m={partes(x)[0]} />{nombreDe(ctx, x)}</span></li>)}</ul>
+        </>
+      ) : null}
+      {rondas.map((R, i) => {
+        const cambio = i > 0 && claveJ(R.j) !== claveJ(rondas[i - 1].j);
+        return (
+          <div key={R.r} className="lk-ja-r">
+            <h4 className="lk-ja-h">{R.r}{varios ? <span>{' · ' + [...R.j].map((q) => nombreDe(ctx, q)).join(', ')}</span> : null}{cambio ? <em> · cambió el jurado</em> : null}</h4>
+            <ul>
+              {R.b.map((x, k) => (
+                <li key={k}>{x.l.map((s, li) => {
+                  const vs = x.v.filter((v) => v[1] === li);
+                  return [li ? <span key={'v' + li} className="lk-ja-vs" aria-hidden="true">vs</span> : null,
+                    <span key={li} className={'lk-ja-m' + (vs.length ? ' v' : '')}><CaraCtx ctx={ctx} m={partes(s)[0]} />{nombreDe(ctx, s)}
+                      {(x.e || [])[li] ? <em>«{limpio(x.e[li])}»</em> : null}
+                      {vs.length ? <i className="lk-vt" title={vs.map((v) => limpio(v[0])).join(', ') + ' votó a ' + nombreDe(ctx, s)}>{vs.map((v) => inicial(v[0])).join('')}</i> : null}</span>];
+                })}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// 👥 LOS INSCRITOS: quienes jugaron, con su cara y cómo se anotaron; y los que se anotaron y no jugaron
+function InscritosA({ ctx, G }) {
+  const liga = ctx.liga;
+  const ins = insDe(G);
+  if (!ins.length) return null;
+  const si = ins.filter((x) => x[1]);
+  const no = ins.filter((x) => !x[1]);
+  const jugaron = new Set(si.flatMap((x) => partes(x[1]).map((m) => { const f = liga.quien(m); return f ? f.k : norm(limpio(m)); }))).size;
+  return (
+    <div className="lk-ia">
+      <p className="lk-ia-t"><b>{jugaron + ' jugaron'}</b>{' de los ' + ins.length + ' que se anotaron. «Se anotó» es el nombre que escribió: su cuenta de Discord dice quién es.'}</p>
+      {si.length ? (
+        <ul className="lk-ia-g">
+          {si.map(([t, es, por], i) => {
+            const ms = partes(es);
+            const f = ctx.fila(ms[0]);
+            const dif = por === 'cuenta' && sinMenciones(t) && soloLetras(sinMenciones(t)) !== soloLetras(es);
+            const cont = (
+              <>
+                <CaraCtx ctx={ctx} m={ms[0]} />
+                <span><b>{ms.map((m) => nombreDe(ctx, m)).join(' + ')}</b>
+                  <small>{dif ? <>se anotó «{sinMenciones(t)}»</> : por === 'cuenta' ? 'por su cuenta' : 'por el nombre'}</small></span>
+              </>
+            );
+            return <li key={i}>{f && ms.length === 1 ? <a href={'#/r/' + encodeURIComponent(f.k)}>{cont}</a> : <div>{cont}</div>}</li>;
+          })}
+        </ul>
+      ) : null}
+      {no.length ? (
+        <>
+          <h4 className="lk-ja-h">{no.length + (no.length === 1 ? ' se anotó y no jugó' : ' se anotaron y no jugaron')}</h4>
+          <ul className="lk-ia-no">{no.map(([t], i) => <li key={i}>{sinMenciones(t)}</li>)}</ul>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+// 💰 LOS PUNTOS, POR PUESTO: una barra por puesto (el campeón marcado) y debajo quiénes, si son varios
+function PuntosA({ ctx, L, orden, grupos }) {
+  if (!orden.length) return null;
+  const max = Math.max(1, ...(L.tabla || []).map((r) => +r[2] || 0));
+  return (
+    <ol className="lk-pu">
+      {orden.map((g, i) => {
+        const rs = grupos[g];
+        const vals = rs.map((r) => +r[2] || 0);
+        const hi = Math.max(...vals);
+        const lo = Math.min(...vals);
+        const fil = (r) => (r[3] ? ctx.liga.T[r[3]] : ctx.fila(r[0]));
+        return (
+          <li key={g} className={i === 0 ? 'p1' : ''}>
+            <span className="lk-pu-q"><Medalla p={MEDALLA[g]} />{g}</span>
+            <span className="lk-pu-bar"><i style={{ width: (100 * hi / max).toFixed(1) + '%' }} />
+              <span><span className="lk-caras">{rs.slice(0, 6).map((r, k) => <CaraCtx key={k} ctx={ctx} m={r[0]} />)}</span>
+                {rs.length === 1 ? nombreDe(ctx, rs[0][0]) : rs.length + ' raperos'}</span></span>
+            <span className="lk-pu-v">{lo === hi ? num(hi) : num(lo) + '–' + num(hi)}<small>{rs.length > 1 ? 'cada uno' : 'pts'}</small></span>
+            {rs.length > 1 ? (
+              <ul className="lk-pu-ns">
+                {rs.map((r, k) => { const f = fil(r); return <li key={k}>{f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Nombre x={r[0]} f={f} /></a> : <span><Nombre x={r[0]} /></span>}{lo !== hi ? <b>{num(r[2])}</b> : null}</li>; })}
+              </ul>
+            ) : null}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
 export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   let n = n0;
   try { n = decodeURIComponent(n0); } catch (e) { /* tal cual */ }
@@ -1225,6 +1434,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const tareaVivo = dc && !seJuega ? vivoPendiente() : null;
   const [sigo, setSigo] = useState('');
   useEffect(() => { window.scrollTo(0, 0); setSigo(''); }, [n]);
+  // 🗂️ la pestaña de abajo (el remake A): arranca en la llave, también al pasar a otra
+  const [tab, setTab] = useState('llave');
+  useEffect(() => { setTab('llave'); }, [n]);
   useEffect(() => {
     if (!L) return undefined;
     const poner = () => { document.title = (nomL || 'La llave') + ' · Liga Global de Freestyle'; };
@@ -1401,8 +1613,24 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       if (!nombres[id]) nombres[id] = nomDe(id, m);
     }))));
     (L.funa || []).forEach((x) => { const id = idDe(x[0]); if (!nombres[id]) nombres[id] = nomDe(id, x[0]); });
+    // ⚖️ EL JURADO DE CADA BATALLA (el remake A, 18/11/2026): `L.gente.jur` trae la ronda y los lados tal como los escribe
+    // la llave, así que se cruza por eso mismo. Y cómo escribió el jurado a cada uno («KIBAK» es Valen), sólo la primera
+    // vez que aparece en el orden de las rondas: repetido en cada fila no dejaba leer los nombres
+    const jurM = {};
+    ((L.gente || {}).jur || []).forEach((j) => { jurM[j.r + '|' + (j.l || []).join('|')] = j; });
+    const votoDe = (r, b) => jurM[r + '|' + b[0].join('|')] || null;
+    const escrito = {};
+    const vistoE = new Set();
+    prin.concat(ter ? [ter] : []).forEach((R) => R.b.forEach((b) => {
+      const j = votoDe(R.r, b);
+      ((j && j.e) || []).forEach((w, li) => {
+        const kk = clave(b[0][li] || '');
+        if (w && kk && !vistoE.has(kk)) { vistoE.add(kk); escrito[R.r + '|' + b[0].join('|') + '|' + li] = w; }
+      });
+    }));
+    const escritoDe = (r, b, li) => escrito[r + '|' + b[0].join('|') + '|' + li] || '';
     return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final, dob,
-      pend, ptsCamp };
+      pend, ptsCamp, votoDe, escritoDe };
   }, [L, liga, n]);
 
   // 🧭 TU CAMINO, ENCENDIDO DESDE QUE ABRÍS (Dlx, 18/10/2026: «all of them»): si jugás en esta llave, arranca marcado
@@ -1458,6 +1686,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   }
   const ctx = Object.assign({}, base, {
     liga, L, n, sigo, seguir, anim, compu,
+    // 🅰️ el remake A (18/11/2026): las filas de la llave con caras, nota y votos (`Lado`, `compacta()`)
+    caras: true, elegir: (id) => setSigo(id || ''),
     pasan: (i) => base.pasanDe[i] || null,
     // una rama es del camino de quien se sigue si esa persona pasó de la batalla de abajo
     sigoPasa: (b) => !!b[1] && partes(b[1]).some((m) => base.idDe(m) === sigo),
@@ -1518,74 +1748,88 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   // decía «prueba de nuevo en un rato». ⚠️ Es la regla de `validarReporte()` de bot/avisos.js: se cambian juntas
   const reportable = enVivo ? /^v:\d{15,22}$/.test(String(n)) : /^\d{1,6}$/.test(String(n)) && !L.ns;
   const fechaEv = cal ? '#/eventos/' + liga.diaClave(cal.t) : dia ? '#/eventos/' + dia : '#/eventos';
+  // 🅰️ LAS PESTAÑAS (el remake A, 18/11/2026): la llave siempre; el jurado, los inscritos y los puntos si hay
+  const jsJ = juecesDe(G);
+  const juradoL = st.j && st.j.length ? st.j : jsJ;
+  // «organizó y juzgó» cuando el jurado es quien organizó (en NEW GENESIS, Erian): un renglón y no dos con la misma cara
+  const orgYJ = orgsL.length > 0 && juradoL.length === orgsL.length
+    && juradoL.every((x) => { const f = liga.quien(x); return orgsL.some((o) => (o.f && f ? o.f.k === f.k : clave(o.n) === clave(x))); });
+  const tabs = [['llave', N ? N + ' vidas' : base.dob ? 'Doble eliminación' : 'La llave',
+    base.prin.reduce((a, R) => a + R.b.length, 0) + (base.ter ? base.ter.b.length : 0)]];
+  if ((G.jur || []).length) tabs.push(['jurado', 'El jurado', G.jur.length]);
+  if (insDe(G).length) tabs.push(['ins', 'Inscritos', insDe(G).length]);
+  if (orden.length) tabs.push(['pts', 'Puntos', (L.tabla || []).length]);
+  const tabV = tabs.some((x) => x[0] === tab) ? tab : 'llave';
+  const rail = conVs ? <><PodioA ctx={ctx} L={L} />{!N ? <CaminoA ctx={ctx} L={L} /> : null}</> : null;
   return (
     <>
-      <div className="escena lk-esc" style={{ '--mo-c': sv.color || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(L.sv, sv.color) }}>
+      <div className="escena lk-esc lk-a" style={{ '--mo-c': sv.color || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(L.sv, sv.color) }}>
         <section className="lk-cab">
           <a className="lk-volver" href={fechaEv}>‹ Eventos</a>
-          <div className="lk-cab-in">
-            {L.sv && liga.logo(L.sv) ? <img className="lk-logo" src={liga.logo(L.sv)} alt="" width="56" height="56" /> : null}
+          <div className="lk-cab-g">
+            {L.sv && liga.logo(L.sv) ? <img className="lk-logo" src={liga.logo(L.sv)} alt="" width="64" height="64" /> : null}
             <div className="lk-cab-tx">
-              <span className="tag">{L.vivo ? (L.terminada ? 'TERMINÓ · ' : '● EN VIVO · ') : (cuando ? cuando.toUpperCase() + ' · ' : '')}{(sv.nombre || L.sv || '').toUpperCase()}</span>
+              <span className="lk-meta">{L.vivo ? <b>{L.terminada ? 'Terminó · ' : '● En vivo · '}</b> : null}{cuando ? <>{cuando}{' · '}</> : null}{sv.nombre || L.sv || ''}</span>
               {/* una palabra muy larga («EXTERMINACION») se partía en el celular («EXTERMINAC / ION»): más chica */}
               <h1 className={'hero-ev largo lk-tit' + (Math.max(0, ...String(nomL).split(/\s+/).map((w) => w.length)) >= 11 ? ' pal-larga' : '')}>{nomL || 'La llave'}</h1>
+              <ul className="lk-datos">
+                {mod ? <li><b>{mod}</b></li> : null}
+                {rgo ? <li title={asc ? 'Puntos de ascenso en ' + (sv.nombre || L.sv) + ' (no en la Liga): ' + asc : undefined}>{rgo}{asc ? <small> · {asc}</small> : null}</li> : null}
+                {L.participantes ? <li><b>{L.participantes}</b> raperos</li> : null}
+                {/* 👀 la llave de un servidor que no suma (Tier 2 y 3): se ve, pero no cuenta (`llaves_a_entrada.para_ver()`) */}
+                {L.ns ? <li>No suma al ranking</li> : null}
+                {orgsL.length ? <li className="lk-orgs">{L.vivo && !L.terminada ? 'organiza' : 'organizó'}{orgYJ ? ' y juzgó' : ''}{' '}
+                  {orgsL.map(({ n: on, f }, i) => [i ? ', ' : '', f
+                    ? <a key={on} href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara lk-oc" />{limpio(f.n)}</a>
+                    : <b key={on}>{limpio(on)}</b>])}</li> : null}
+                {juradoL.length && !orgYJ ? <li><Ico n="jurado" t={16} />jurado {gente(juradoL)}</li> : null}
+                {st.h ? <li><Ico n="micro" t={16} />host {gente(st.h)}</li> : null}
+                {st.d ? <li><Ico n="auris" t={16} />DJ {gente(st.d)}</li> : null}
+                {inf.pre ? <li><Ico n="premio" t={16} />{inf.pre}</li> : null}
+                {mult && mult !== 1 ? <li className="lk-mult">×{String(mult).replace('.', ',')} esta semana</li> : null}
+              </ul>
+              {/* 🔎 LO QUE SE PUDO COMPROBAR DE LA LLAVE (Dlx, 11/11/2026: «construye la verificación de llaves»): lo arma el
+                  ciclo (`bot/verificar_llaves.py`) y viaja como `ver`. Sólo informa —lo que retiene, lo retiene antes de sumar—
+                  y no dice nunca si un organizador está observado: eso es de la Liga. Las llaves de antes no la traen */}
+              {L.ver && !L.vivo ? (
+                <ul className="lk-ver" aria-label="Lo que se comprobó de esta llave">
+                  <li className={inf.anuncio ? 'si' : ''}>{inf.anuncio ? '✓ Anunciada antes' : '· Sin anuncio leído'}</li>
+                  {L.ver.min != null ? <li>· Completa en {L.ver.min < 60 ? L.ver.min + ' min' : Math.floor(L.ver.min / 60) + ' h ' + (L.ver.min % 60) + ' min'}</li> : null}
+                  <li className={L.ver.org ? (L.ver.org === 'gana' ? 'ojo' : '') : 'si'}>{L.ver.org === 'gana' ? '⚠ La ganó quien la organizó' : L.ver.org === 'juega' ? '· Quien la organizó también jugó' : '✓ Quien la organizó no jugó'}</li>
+                  <li className={L.ver.copia ? 'ojo' : 'si'}>{L.ver.copia ? '⚠ Se parece a la llave #' + L.ver.copia : '✓ No es copia de otra llave'}</li>
+                  {L.ver.rev ? <li className="si">✓ Revisada por la Liga</li> : null}
+                </ul>
+              ) : null}
+              {L.vivo ? (
+                <p className="lk-vivo">{L.terminada ? 'Terminó: los puntos llegan cuando el ciclo la procese' : (L.enJuego || 'En juego') + ' en juego'}
+                  {' · se actualiza sola cada minuto · último cambio ' + hace(L.ed || L.pub || Date.now())}</p>
+              ) : null}
+              {contoPase ? <p className="lk-pase si" role="status">✓ Contó para tu Pase: miraste esta llave en vivo</p> : null}
+              {tareaVivo ? <p className="lk-pase">Tu Tarea «{tareaVivo.t}» cuenta con una llave que se esté jugando, y ésta ya terminó. Las que se juegan están en <a href="#/">En vivo, en el Inicio</a>.</p> : null}
             </div>
+            {/* 🔝 ARRIBA DE TODO (Dlx, 03/10/2026: «estas cosas dentro de la llave deberían estar arriba de todo, no
+                debajo»): compartir —la acción principal, en blanco—, ir a Discord y avisar si algo está mal */}
+            {(L.links || []).length || !L.vivo || reportable ? (
+              <div className="lk-acc-b">
+                {L.vivo ? null : <Compartir cls="btn chico lk-pri" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + (nomL || 'este evento')} etiqueta="Compartir" />}
+                {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
+                {reportable ? <Reporte n={n} nombres={nombresDe(L)} /> : null}
+                {!enVivo && reportable ? <StaffLlave n={n} L={L} /> : null}
+              </div>
+            ) : null}
           </div>
-          <ul className="lk-datos">
-            {mod ? <li><Ico n="micro" t={16} />{mod}</li> : null}
-            {rgo ? <li title={asc ? 'Puntos de ascenso en ' + (sv.nombre || L.sv) + ' (no en la Liga): ' + asc : undefined}>{rgo}{asc ? <small> · {asc}</small> : null}</li> : null}
-            {L.participantes ? <li>{L.participantes} raperos</li> : null}
-            {/* 👀 la llave de un servidor que no suma (Tier 2 y 3): se ve, pero no cuenta (`llaves_a_entrada.para_ver()`) */}
-            {L.ns ? <li>No suma al ranking</li> : null}
-            {orgsL.length ? <li className="lk-orgs">{L.vivo && !L.terminada ? 'organiza' : 'organizó'}{' '}
-              {orgsL.map(({ n: on, f }, i) => [i ? ', ' : '', f
-                ? <a key={on} href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara lk-oc" />{limpio(f.n)}</a>
-                : <b key={on}>{limpio(on)}</b>])}</li> : null}
-            {st.j ? <li><Ico n="jurado" t={16} />jurado {gente(st.j)}</li> : null}
-            {st.h ? <li><Ico n="micro" t={16} />host {gente(st.h)}</li> : null}
-            {st.d ? <li><Ico n="auris" t={16} />DJ {gente(st.d)}</li> : null}
-            {inf.pre ? <li><Ico n="premio" t={16} />{inf.pre}</li> : null}
-            {mult && mult !== 1 ? <li className="lk-mult">×{String(mult).replace('.', ',')} esta semana</li> : null}
-          </ul>
-          {/* 🔎 LO QUE SE PUDO COMPROBAR DE LA LLAVE (Dlx, 11/11/2026: «construye la verificación de llaves»): lo arma el
-              ciclo (`bot/verificar_llaves.py`) y viaja como `ver`. Sólo informa —lo que retiene, lo retiene antes de sumar—
-              y no dice nunca si un organizador está observado: eso es de la Liga. Las llaves de antes no la traen */}
-          {L.ver && !L.vivo ? (
-            <ul className="lk-ver" aria-label="Lo que se comprobó de esta llave">
-              <li className={inf.anuncio ? 'si' : ''}>{inf.anuncio ? '✓ Anunciada antes' : '· Sin anuncio leído'}</li>
-              {L.ver.min != null ? <li>· Completa en {L.ver.min < 60 ? L.ver.min + ' min' : Math.floor(L.ver.min / 60) + ' h ' + (L.ver.min % 60) + ' min'}</li> : null}
-              <li className={L.ver.org ? (L.ver.org === 'gana' ? 'ojo' : '') : 'si'}>{L.ver.org === 'gana' ? '⚠ La ganó quien la organizó' : L.ver.org === 'juega' ? '· Quien la organizó también jugó' : '✓ Quien la organizó no jugó'}</li>
-              <li className={L.ver.copia ? 'ojo' : 'si'}>{L.ver.copia ? '⚠ Se parece a la llave #' + L.ver.copia : '✓ No es copia de otra llave'}</li>
-              {L.ver.rev ? <li className="si">✓ Revisada por la Liga</li> : null}
-            </ul>
-          ) : null}
-          {L.vivo ? (
-            <p className="lk-vivo">{L.terminada ? 'Terminó: los puntos llegan cuando el ciclo la procese' : (L.enJuego || 'En juego') + ' en juego'}
-              {' · se actualiza sola cada minuto · último cambio ' + hace(L.ed || L.pub || Date.now())}</p>
-          ) : null}
-          {contoPase ? <p className="lk-pase si" role="status">✓ Contó para tu Pase: miraste esta llave en vivo</p> : null}
-          {tareaVivo ? <p className="lk-pase">Tu Tarea «{tareaVivo.t}» cuenta con una llave que se esté jugando, y ésta ya terminó. Las que se juegan están en <a href="#/">En vivo, en el Inicio</a>.</p> : null}
-          {/* 🔝 ARRIBA DE TODO (Dlx, 03/10/2026: «estas cosas dentro de la llave deberían estar arriba de todo, no
-              debajo»): ir a Discord, compartir y avisar si algo está mal. Estaban al pie, después del cuadro entero */}
-          {/* sin «¿Algo está mal?» puede no quedar nada (18/11/2026): una de #veredictos sin link, en vivo y sin
-              Compartir, dejaba la caja vacía y su hueco de 14px en la cabecera */}
-          {(L.links || []).length || !L.vivo || reportable ? (
-            <div className="lk-acc-b">
-              {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
-              {L.vivo ? null : <Compartir cls="btn borde2 chico" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + (nomL || 'este evento')} etiqueta="Compartir" />}
-              {reportable ? <Reporte n={n} nombres={nombresDe(L)} /> : null}
-              {!enVivo && reportable ? <StaffLlave n={n} L={L} /> : null}
-            </div>
-          ) : null}
         </section>
-        {/* ⚔️ lo que se juega ahora, en grande; y al final, el campeón */}
+        {/* ⚔️ lo que se juega ahora, en grande */}
         {!base.cerrada ? <AhoraVs ctx={ctx} /> : null}
-        {/* 🥊 terminada y con campeón: el versus de la final y el camino de cada uno (remake del 17/11/2026). Sin campeón
-            —una llave a medias, una en vivo—, el campeón en grande y el podio de antes */}
-        {conVs ? <VersusFinal ctx={ctx} L={L} /> : <CampeonG ctx={ctx} />}
-        {/* en vidas el tablero de abajo ya es el camino de cada uno: uno de «0 ganadas · 1 perdida» al campeón confunde */}
-        {conVs && !N ? <Camino ctx={ctx} L={L} /> : null}
-        <GenteEvento liga={liga} G={G} />
+        <Numeros ctx={ctx} L={L} G={G} />
+        {/* 🥊 terminada y con campeón: la final y las cazas; al costado, el podio y el camino (en el celular, después de las
+            pestañas). Sin campeón —una a medias, una en vivo—, el campeón en grande y el podio de antes */}
+        {conVs ? (
+          <div className="lk-dos">
+            <div className="lk-dos-m"><FinalA ctx={ctx} L={L} />{compu ? <CazasA ctx={ctx} /> : null}</div>
+            {compu ? <aside className="lk-rail">{rail}</aside> : null}
+          </div>
+        ) : <CampeonG ctx={ctx} />}
         {!conVs && podioSin.length ? (
           <ol className={'lk-podio n' + podioSin.length + (podioSin !== podio ? ' sin1' : '')} aria-label="El podio">
             {podioSin.map((x) => (
@@ -1597,55 +1841,36 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             ))}
           </ol>
         ) : null}
-        {base.cazas.length || base.aca.length ? (
-          <div className="lk-mwtx">
-            {/* 🪪 con su cara, su nombre oficial y su perfil (17/11/2026) */}
-            {base.cazas.map((c, i) => <p key={i}><Ico n="mira" t={15} /> Acá cazaron a <b><Alguien liga={liga} nombre={c[0]} /></b> ({c[1]}): {c[2].length ? <>cobró <b><Algunos liga={liga} nombres={c[2]} /></b></> : 'no cobró nadie'}.</p>)}
-            {base.aca.length ? <p><Ico n="mira" t={15} /> {base.aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + base.aca.length + ' buscados'}: {base.aca.map((y, i) => <span key={i}>{i ? ', ' : ''}<b><Alguien liga={liga} nombre={y.n} k={y.k} /></b> ({y.cn}, {num(y.v)} pts)</span>)}. Quien le gane, cobra.</p> : null}
-          </div>
-        ) : null}
-        {/* 🔝 los puntos, también arriba: cerrados, son un renglón; lo que se vino a ver es la llave */}
-        {orden.length ? (
-          <details className="lk-pts lk-pts-top">
-            <summary><span>Los puntos de esta llave</span><small>{(L.tabla || []).length}</small></summary>
-            <div className="lk-pgs">
-              {orden.map((g) => (
-                <div key={g} className="lk-pg">
-                  <h4><Medalla p={MEDALLA[g]} />{g}<small>{grupos[g].length}</small></h4>
-                  <ul>
-                    {grupos[g].map((r, i) => {
-                      const f = r[3] ? liga.T[r[3]] : base.fila(r[0]);
-                      return <li key={i}>{f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Nombre x={r[0]} f={f} /></a> : <span><Nombre x={r[0]} /></span>}<b>{num(r[2])}</b></li>;
-                    })}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </details>
-        ) : null}
+        {!conVs ? <div className="lk-dos-m"><CazasA ctx={ctx} /></div> : null}
       </div>
 
-      {/* 🎨 LA LLAVE, SOBRE LA PIEL (Dlx, 03/10/2026). En blanco: «es muy blanco eso de las llaves página»; en negro:
-          «ahora está muy negro… todo». El escenario negro arriba y el cuadro sobre la piel (`--caja`, el color de lo ya
-          jugado, que a Dlx le gusta), con las casillas en blanco encima */}
-      {/* 🏟️ SU FONDO, EL DE SU SERVIDOR (Dlx, 18/10/2026: «el fondo debería ser según el tema elegido, pero por default según
-          el tema del servidor»): quien eligió un tema de servidor lo ve con el suyo; quien no, con los colores del servidor
-          de esta llave, sobre su Clara o su Noche (`.lk-tsv.t-xxx`, en vivo.css junto a los temas) */}
-      <section className={'sec lk-sec piel' + temaLlave(L.sv)}>
-        <div className="sec-t"><h2>{N ? N + ' vidas' : base.dob ? 'Doble eliminación' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
-        {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedas afuera.' : base.dob ? 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores. '
-            + 'Toca un nombre y se marca su camino.' : 'Toca un nombre y se marca su camino.'}</p> : null}
-        <Plegada si={conVs && !N} n={n} total={base.prin.reduce((a, R) => a + R.b.length, 0) + (base.ter ? base.ter.b.length : 0)}>
-          <Funa ctx={ctx} L={L} />
-          {N ? <Vidas ctx={ctx} L={L} N={N} />
-            : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)
-              : base.dob ? <Doble ctx={ctx} d={base.dob} compu={compu} />
-              : compu ? <Arbol ctx={ctx} rondas={base.prin} ter={base.ter} vale={base.vale} />
-                : <Pista ctx={ctx} rondas={base.prin} ter={base.ter} inicial={base.inicial} vale={base.vale} />}
-        </Plegada>
+      {/* 🎨 LAS PESTAÑAS, SOBRE LA PIEL (Dlx, 03/10/2026: el escenario negro arriba y el cuadro sobre la piel, con las
+          casillas encima; «ni toda blanca ni toda negra»). Su fondo, el de su servidor si quien mira no eligió un tema
+          (`.lk-tsv.t-xxx`, en vivo.css junto a los temas) */}
+      <section className={'sec lk-sec piel lk-a-sec' + temaLlave(L.sv)}>
+        <Pestanas tabs={tabs} tab={tabV} setTab={setTab} />
+        <div className="lk-pes-p" role="tabpanel" aria-label={(tabs.find((x) => x[0] === tabV) || [])[1]}>
+          {tabV === 'llave' ? (
+            <>
+              {N || base.dob ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedas afuera.'
+                : 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores.'}</p> : null}
+              {hayR ? <Ley ctx={ctx} L={L} G={G} /> : null}
+              <Funa ctx={ctx} L={L} />
+              {N ? <Vidas ctx={ctx} L={L} N={N} />
+                : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)
+                  : base.dob ? <Doble ctx={ctx} d={base.dob} compu={compu} />
+                  : compu ? <Arbol ctx={ctx} rondas={base.prin} ter={base.ter} vale={base.vale} />
+                    : <Pista ctx={ctx} rondas={base.prin} ter={base.ter} inicial={base.inicial} vale={base.vale} />}
+            </>
+          ) : null}
+          {tabV === 'jurado' ? <JuradoA ctx={ctx} G={G} /> : null}
+          {tabV === 'ins' ? <InscritosA ctx={ctx} G={G} /> : null}
+          {tabV === 'pts' ? <PuntosA ctx={ctx} L={L} orden={orden} grupos={grupos} /> : null}
+        </div>
         <Barra ctx={ctx} tb={tb} />
       </section>
+      {/* 📱 en el celular, el podio, el camino y las cazas después de las pestañas: así la llave queda más arriba */}
+      {conVs && !compu ? <div className="escena lk-esc lk-a lk-a-cola">{rail}<CazasA ctx={ctx} /></div> : null}
     </>
   );
 }
-
