@@ -2177,7 +2177,7 @@
    "canal": "1222380923048296459",
    "pub": 1794978257876,
    "a": "BLACKMEME🇨🇱",
-   "b": "Mf doom🇺🇸",
+   "b": "MF DOOM🇺🇸",
    "ganador": "BLACKMEME🇨🇱",
    "votos": "1–0"
   },
@@ -2198,9 +2198,9 @@
    "g": "1074328197400887388",
    "canal": "1222380923048296459",
    "pub": 1794979439712,
-   "a": "KYSS🇲🇽",
+   "a": "Kyss",
    "b": "BLACKMEME🇨🇱",
-   "ganador": "KYSS🇲🇽",
+   "ganador": "Kyss",
    "votos": "2–0"
   },
   "1572483442531237901": {
@@ -2221,7 +2221,7 @@
    "canal": "1222380923048296459",
    "pub": 1794979866088,
    "a": "Flash",
-   "b": "KYSS🇲🇽",
+   "b": "Kyss",
    "ganador": "Flash",
    "votos": "1–0"
   },
@@ -6961,6 +6961,27 @@
      "veredicto",
      []
     ],
+    [
+     "FINAL",
+     [
+      "KIBAK",
+      "PARK JI SUNG"
+     ],
+     "KIBAK",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1572475716615016592": {
+   "id": "1572475716615016592",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1794977826027,
+   "ed": 1794978097108,
+   "texto": "`[ FINAL ]`\n⌞KIBAK⌝ 🆚 ⌞PARK JI SUNG⌝",
+   "batallas": [
     [
      "FINAL",
      [
