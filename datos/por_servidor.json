@@ -7357,21 +7357,6 @@
     "racha": "0/0"
    }
   },
-  "LAMBO": {
-   "CH": {
-    "duelos": "3/4",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 12375,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
   "LANCER L🇻🇪": {
    "LKR": {
     "duelos": "",
@@ -7765,6 +7750,19 @@
    }
   },
   "Lambroggini": {
+   "CH": {
+    "duelos": "3/4",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 12375,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 2,

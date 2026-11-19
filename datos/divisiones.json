@@ -359,8 +359,8 @@
      1,
      [
       [
-       13,
-       "LAMBO"
+       12,
+       "Lambroggini"
       ],
       [
        13,
@@ -1448,6 +1448,27 @@
       [
        16,
        "melomaniaco"
+      ]
+     ]
+    ],
+    [
+     "Lambroggini",
+     1020,
+     5,
+     3,
+     1,
+     [
+      [
+       -12,
+       "Colesito"
+      ],
+      [
+       16,
+       "Yukan"
+      ],
+      [
+       14,
+       "Elinge_TIMP"
       ]
      ]
     ],
@@ -4037,27 +4058,6 @@
      ]
     ],
     [
-     "LAMBO",
-     1032,
-     4,
-     5,
-     2,
-     [
-      [
-       -13,
-       "Colesito"
-      ],
-      [
-       16,
-       "Yukan"
-      ],
-      [
-       14,
-       "Elinge_TIMP"
-      ]
-     ]
-    ],
-    [
      "Terry",
      1031,
      2,
@@ -4650,7 +4650,7 @@
      [
       [
        -16,
-       "LAMBO"
+       "Lambroggini"
       ],
       [
        20,
@@ -6132,19 +6132,6 @@
      ]
     ],
     [
-     "Lambroggini",
-     985,
-     1,
-     5,
-     2,
-     [
-      [
-       -15,
-       "Zignos"
-      ]
-     ]
-    ],
-    [
      "Mail O",
      985,
      1,
@@ -6889,19 +6876,6 @@
      ]
     ],
     [
-     "Simon",
-     984,
-     1,
-     5,
-     2,
-     [
-      [
-       -16,
-       "LAMBO"
-      ]
-     ]
-    ],
-    [
      "Skratch",
      984,
      1,
@@ -7179,6 +7153,19 @@
       [
        -17,
        "Noone"
+      ]
+     ]
+    ],
+    [
+     "Simon",
+     983,
+     1,
+     5,
+     2,
+     [
+      [
+       -17,
+       "Lambroggini"
       ]
      ]
     ],
@@ -8296,14 +8283,14 @@
     ],
     [
      "Elinge_TIMP",
-     954,
+     953,
      3,
      5,
      2,
      [
       [
        -14,
-       "LAMBO"
+       "Lambroggini"
       ],
       [
        -15,
@@ -9469,7 +9456,7 @@
   "LV": 3,
   "Lalox": 0,
   "Lamborguini 🇦🇷": 0,
-  "Lambroggini": 0,
+  "Lambroggini": 7,
   "Launok": 0,
   "Lautaro la sinceridad 🇨🇨": 3,
   "Left🇺🇾": 0,
@@ -10163,7 +10150,7 @@
   "LV": 5,
   "Lalox": 5,
   "Lamborguini 🇦🇷": 5,
-  "Lambroggini": 5,
+  "Lambroggini": 3,
   "Launok": 5,
   "Lautaro la sinceridad 🇨🇨": 4,
   "Left🇺🇾": 5,
@@ -12594,6 +12581,16 @@
   ],
   [
    "2026-11-09",
+   "Lambroggini",
+   4
+  ],
+  [
+   "2026-11-09",
+   "Lambroggini",
+   3
+  ],
+  [
+   "2026-11-09",
    "Majiztral",
    2
   ],
@@ -12990,6 +12987,36 @@
   ],
   [
    "2026-11-09",
+   "Lambroggini",
+   5,
+   1
+  ],
+  [
+   "2026-11-09",
+   "Lambroggini",
+   5,
+   2
+  ],
+  [
+   "2026-11-09",
+   "Lambroggini",
+   4,
+   1
+  ],
+  [
+   "2026-11-09",
+   "Lambroggini",
+   4,
+   2
+  ],
+  [
+   "2026-11-09",
+   "Lambroggini",
+   3,
+   1
+  ],
+  [
+   "2026-11-09",
    "Majiztral",
    3,
    1
@@ -13220,6 +13247,7 @@
    "Geoka",
    "Gocho",
    "Juanpa",
+   "Lambroggini",
    "MTZ",
    "Majiztral",
    "Marcos",

@@ -1687,19 +1687,6 @@
    "vence": "2026-10-26T16:52:32+00:00",
    "vencido": true
   },
-  "LAMBO": {
-   "avisado": "2026-11-16",
-   "chat": "2026-11-16",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-16T02:04:55+00:00",
-   "did": "",
-   "evento": "CHOP COMPE CEO V.3",
-   "n": 648,
-   "sv": "CH",
-   "vence": "2026-11-23T02:04:55+00:00",
-   "vencido": false
-  },
   "LANCER L": {
    "avisado": "2026-11-18",
    "con": null,
