@@ -2893,40 +2893,6 @@
 "cambios": [
 {
 "tipo": "rango",
-"t": "2026-10-12T20:27:47Z",
-"quien": [
-"Eclipsito"
-],
-"rg": "D",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-12T21:22:01Z",
-"quien": [
-"doble h"
-],
-"carta": "temporada"
-},
-{
-"tipo": "rango",
-"t": "2026-10-12T22:29:02Z",
-"quien": [
-"OG"
-],
-"rg": "D",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-12T22:29:02Z",
-"quien": [
-"OG"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
 "t": "2026-10-12T22:29:02Z",
 "quien": [
 "LRS"
@@ -6281,6 +6247,34 @@
 "Valen"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "svtier",
+"t": "2026-11-19T12:16:45Z",
+"sv": "ACAD",
+"de": 1,
+"a": 2
+},
+{
+"tipo": "svtier",
+"t": "2026-11-19T12:16:45Z",
+"sv": "SR",
+"de": 1,
+"a": 2
+},
+{
+"tipo": "svtier",
+"t": "2026-11-19T12:16:45Z",
+"sv": "FRZ",
+"de": 1,
+"a": 2
+},
+{
+"tipo": "svtier",
+"t": "2026-11-19T12:16:45Z",
+"sv": "FVS",
+"de": 1,
+"a": 2
 }
 ],
 "noche_antes": {
@@ -8017,16 +8011,16 @@
 "tier": {
 "FFA": 1,
 "DDF": 1,
-"ACAD": 1,
+"ACAD": 2,
 "FDS": 3,
-"SR": 1,
+"SR": 2,
 "URBF": 1,
 "DDS": 3,
 "CH": 1,
 "CEU": 3,
 "LKR": 3,
-"FRZ": 1,
-"FVS": 1,
+"FRZ": 2,
+"FVS": 2,
 "DRA": 1,
 "FFS": 3
 },

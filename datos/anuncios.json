@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-19T09:31:08+00:00",
+ "cuando": "2026-11-19T12:10:06+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -2078,30 +2078,6 @@
    "canal": "➣「📩」anuncios",
    "msg_id": "1519846164625756341",
    "cuando": "2026-06-25T23:26:03",
-   "canal_id": "850777668386291712",
-   "guild_id": "838593179187544064",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "62134e35e5b6d209",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "🇦🇷🇧🇷 — 9:00 p.m.",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "B.M",
-   "staff_cuentas": {},
-   "categoria_id": "1076324234588082206"
-  },
-  {
-   "nombre": "POR ULTIMO SE DEFINEN LOS ULTIMOS 2 CUPOS PARA LA COPA FEDERACION",
-   "servidor": "FRZ",
-   "canal": "➣「📩」anuncios",
-   "msg_id": "1519209095607881739",
-   "cuando": "2026-06-24T05:14:33",
    "canal_id": "850777668386291712",
    "guild_id": "838593179187544064",
    "organizador": "",
@@ -7198,6 +7174,15 @@
   }
  ],
  "oficiales": [
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "tit": "LAS MEJORES BATALLA DE LA 🇨🇱 RED BULL CHILE 2026 YA EN YOUTUBE!",
+   "tx": "En nuestro canal de YouTube podran ver las mejores batallas en Red Bull de esta temporada, ya esta disponible la final de chile donde se enfrentaron CEIM y BERRUN en una batalla para la historia del servidor.",
+   "cuando": "2026-11-19T10:57:01",
+   "msg_id": "1572928684015362048",
+   "link": "https://discord.com/channels/838593179187544064/850777668386291712/1572928684015362048"
+  },
   {
    "servidor": "LKR",
    "canal": "anuncios",
