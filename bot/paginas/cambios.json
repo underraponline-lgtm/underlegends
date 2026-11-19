@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.80",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T04:05:00-05:00",
+        "titulo": "La Guía, con cómo empezar arriba y todo en pestañas",
+        "items": [
+            "**La Guía, rehecha**: arriba, el buscador, cómo empezar paso a paso y **tus tarjetas** con lo que pide cada una.",
+            "Abajo, en pestañas: **los puntos de cada puesto en una escalera**, la semana día por día, **los TAG por rareza**, las palabras de la A a la Z y las preguntas.",
+            "**También en inglés**, en `/en`."
+        ]
+    },
+    {
         "version": "6.79",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T04:03:00-05:00",

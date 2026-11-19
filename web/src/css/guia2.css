@@ -1,218 +1,264 @@
-/* 📖 LA GUÍA, EL REMAKE (02/11/2026, guia2.jsx). Todo con `gx-`: las clases del prototipo son
-   globales adentro del shadow root. Los colores de los rangos vienen del payload, en línea */
+/* 📖 LA GUÍA (guia2.jsx). Todo con `gx-`: las clases del prototipo son globales adentro del shadow root. Los colores de los
+   rangos vienen del payload, en línea.
+   🏁 6.80 (Dlx, 19/11/2026, «A + lo mejor de B»): la escena con las piezas `rka-` del Ranking (css/rka.css, la inyecta
+   ranking_a.jsx) y el papel en pestañas. «Cómo empezar» y los capítulos son PrimerosPasos y Capitulos de tutorial.jsx
+   con su estado de siempre: acá sólo cambia su forma (`.gx-emp .pp-…`, `.gx-pista .ap-…`), sin tocar las suyas */
 
-/* ── la cabecera y el buscador ── */
-.gx-hero{display:grid;gap:18px;padding:22px 16px 24px}
-.gx-hero-tx{display:grid;justify-items:start}
-.gx-busca{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 14px;border:2px solid #F6F6F6;background:#030304;color:#F6F6F6;
-  box-shadow:5px 5px 0 var(--magenta)}
-.gx-busca input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:#F6F6F6;font:500 16px/1 Archivo,sans-serif;outline:none}
-.gx-busca input::placeholder{color:#8E8E93}
+/* ── la escena: la cabecera con el buscador, la franja, «Cómo empezar» y los lomos ── */
+.gx-cab{position:relative;z-index:1;display:grid;gap:18px;padding:22px 16px 26px;color:var(--esc-tinta)}
+.gx-cabeza{display:grid;gap:16px 32px;align-items:end;min-width:0}
+.gx-cab-tx{display:grid;justify-items:start;gap:4px;min-width:0}
+.gx-cab-tx .hero-ev{margin:8px 0 6px}
+.gx-cab-tx .hero-p{max-width:58ch;margin:0}
+.gx-bus{display:grid;gap:12px;min-width:0}
+.gx-busca{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 16px;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 #29B298;
+  transition:box-shadow 120ms cubic-bezier(.23,1,.32,1)}
+.gx-busca input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:#030304;font:600 16px/1 Archivo,sans-serif;outline:none}
+.gx-busca input::placeholder{color:#5A5A5E}
 /* la × azul del navegador repetía el «Borrar» de los resultados */
 .gx-busca input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
-.gx-busca:focus-within{box-shadow:5px 5px 0 var(--verde)}
+.gx-busca:focus-within{outline:2px solid #FF4FA3;outline-offset:3px}
+.gx-atajos{display:flex;flex-wrap:wrap;gap:6px}
+.gx-atajos button{min-height:36px;padding:0 10px;border:1.5px solid var(--esc-linea);background:none;color:var(--esc-tinta);font:700 13px/1.2 Archivo,sans-serif;text-align:left;cursor:pointer}
+@media (hover: hover) and (pointer: fine){.gx-atajos button:hover{border-color:var(--esc-tinta)}}
+.gx-dos{display:grid;gap:18px;align-items:start}
+/* «Cómo empezar» como el camino de la llave: lo hecho tachado, lo que sigue en la pieza blanca con la sombra verde */
+.gx-emp .pp{gap:12px}
+.gx-emp .pp-cab small{color:var(--esc-gris)}
+.gx-emp .pp-barra i{border-color:var(--esc-linea)}
+.gx-emp .pp-lista,.app .gx-emp .pp-lista{display:grid;grid-template-columns:minmax(0,1fr);border:0}
+.gx-emp .pp-lista li,.app .gx-emp .pp-lista li+li{position:relative;padding:0 0 16px;border:0;background:none}
+.gx-emp .pp-lista li:last-child{padding-bottom:0}
+.gx-emp .pp-lista li:before{content:"";position:absolute;left:12px;top:28px;bottom:2px;width:2px;background:var(--esc-linea)}
+.gx-emp .pp-lista li:last-child:before{display:none}
+.gx-emp .pp-i{position:relative;border-radius:50%;border-color:var(--esc-linea);background:var(--escenario);color:#030304}
+.gx-emp .pp-lista li.ok .pp-i{background:#29B298;border-color:#29B298}
+.gx-emp .pp-lista li.ok .pp-t b{color:var(--esc-gris);text-decoration:line-through}
+.gx-emp .pp-t b{color:var(--esc-tinta)}
+.gx-emp .pp-t small{color:var(--esc-gris)}
+.gx-emp .pp-lista li.ahora{background:none}
+.gx-emp .pp-lista li.ahora .pp-i{border-color:#FF4FA3}
+.gx-emp .pp-lista li.ahora .pp-t{padding:10px 12px;background:var(--esc-tinta);box-shadow:6px 6px 0 #29B298}
+.gx-emp .pp-lista li.ahora .pp-t b{color:var(--escenario)}
+.gx-emp .pp-lista li.ahora .pp-t small{color:color-mix(in srgb,var(--escenario) 72%,var(--esc-tinta))}
+.gx-emp .pp-lista li.ahora>.btn{margin-top:10px}
+.gx-emp .pp-pie{color:var(--esc-gris)}
+.gx-emp .pp-pie a,.gx-emp .pp-rec{color:var(--esc-tinta)}
+/* 🃏 los lomos: la abierta con su carta grande, las otras de canto */
+.gx-lomos{display:flex;gap:6px;min-height:330px}
+.gx-lomo{flex:0 0 52px;display:grid;place-items:center;min-width:0;padding:0;border:0;background:var(--rka-suave);color:var(--esc-tinta);cursor:pointer;overflow:hidden}
+/* ⚠️ sólo los de canto: sin el :not, el giro le pegaba también a la carta del abierto y salía dada vuelta */
+.gx-lomo:not(.ab)>span{writing-mode:vertical-rl;transform:rotate(180deg);font:900 17px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.gx-lomo.t2{background:none;border:1.5px dashed var(--esc-linea);color:var(--esc-gris);cursor:default}
+.gx-lomo.t2>span{font-size:13px}
+/* los lomos llenan su caja hasta abajo: si no, «Cómo empezar» es más alta y queda un hueco debajo */
+.gx-tj{display:flex;flex-direction:column}
+.gx-tj .gx-lomos{flex:1 1 auto}
+.gx-lomo.ab{flex:1 1 auto;display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:center;padding:16px;background:var(--esc-tinta);color:var(--escenario);
+  box-shadow:6px 6px 0 #29B298;cursor:default}
+.gx-lomo-cw{display:block;width:150px}
+.gx-lomo-cw img,.gx-lomo-cw .sincarta{display:block;width:100%;height:auto}
+.gx-sin{display:grid;place-items:center;aspect-ratio:900/1314;border:2px dashed currentColor;font:900 20px/1 Archivo,sans-serif}
+.gx-lomo.ab h3{margin:0 0 6px;font:900 22px/1.05 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.gx-lomo.ab p{margin:0 0 10px;font:600 14px/1.4 Archivo,sans-serif}
+.gx-lomo.ab ul{display:grid;gap:6px;margin:0;padding-left:18px;font:500 13.5px/1.4 Archivo,sans-serif}
+@media (hover: hover) and (pointer: fine){.gx-lomo:not(.ab):not(.t2):hover{background:color-mix(in srgb,var(--esc-tinta) 20%,var(--escenario))}}
 
-/* ── el índice: chips pegados arriba en el celular, una columna pegada a la izquierda en la compu ── */
-.gx-chips{position:sticky;top:0;z-index:20;background:#030304;border-bottom:2px solid #2A2A2C}
-.gx-chips-l{display:flex;gap:6px;margin:0;padding:8px 16px;list-style:none;overflow-x:auto;scrollbar-width:none}
-.gx-chips-l::-webkit-scrollbar{display:none}
-.gx-chips-l button{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;
-  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
-.gx-chips-l button b{font-weight:700}
-.gx-chips-l button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
-.gx-chips-l button:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
-/* la lupa: vuelve al buscador. En el celular, sólo el dibujo */
-.gx-chips-l .gx-lupa{justify-content:center;width:44px;padding:0;border-color:var(--magenta);color:var(--magenta)}
-.gx-chips-l .gx-lupa b{display:none}
-.gx-rail{display:none}
-.gx-t2{display:grid}
-.gx-cuerpo{min-width:0;padding:0 16px 30px}
-
-/* ── cada sección ── */
-.gx-sec{display:grid;gap:14px;padding-top:28px;scroll-margin-top:70px}
-.gx-h{margin:0}
-.gx-baj{margin:0;font:500 15px/1.45 Archivo,sans-serif;color:var(--gris);max-width:760px}
-.gx-nota{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
-.gx-link{padding:0;border:0;background:none;color:var(--tinta);font:inherit;text-decoration:underline;cursor:pointer}
-/* lo que encontró el buscador, marcado un rato */
-.gx-flash{outline:3px solid var(--magenta);outline-offset:4px}
-
-/* ── los resultados del buscador ── */
-.gx-res{margin-top:22px;padding:16px;border:2px solid var(--linea);background:var(--caja);box-shadow:5px 5px 0 var(--magenta)}
-.gx-res-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 10px;font:900 18px/1.2 Archivo,sans-serif;text-transform:uppercase}
-.gx-res-x{min-height:44px;padding:0 12px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px/1 "Barlow Condensed",sans-serif;
+/* ── los resultados del buscador, debajo de la caja ── */
+.gx-res{max-height:440px;overflow:auto;padding:14px;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 #E41373}
+.gx-res-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 8px;font:900 16px/1.2 Archivo,sans-serif;text-transform:uppercase}
+.gx-res-x{min-height:44px;padding:0 12px;border:1.5px solid #030304;background:none;color:#030304;font:700 14px/1 "Barlow Condensed",sans-serif;
   letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
-.gx-res ul{display:grid;gap:0;margin:0;padding:0;list-style:none}
-.gx-res li button{display:grid;gap:3px;width:100%;padding:10px 0;border:0;border-top:1.5px solid var(--suave);background:none;color:var(--tinta);text-align:left;cursor:pointer}
+.gx-res ul{display:grid;margin:0;padding:0;list-style:none}
+.gx-res li button{display:grid;gap:3px;width:100%;padding:10px 0;border:0;border-top:1.5px solid #D8D8D4;background:none;color:#030304;text-align:left;cursor:pointer}
 .gx-res li:first-child button{border-top:0}
 .gx-res li button:hover b{text-decoration:underline}
-.gx-res small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--magenta-tx)}
-.gx-res b{font:800 16px/1.25 Archivo,sans-serif}
-.gx-res span{font:500 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+.gx-res small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#B40F5A}
+.gx-res b{font:800 15px/1.25 Archivo,sans-serif}
+.gx-res span{font:500 13.5px/1.4 Archivo,sans-serif;color:#4A4A4E}
 .gx-res mark{background:#F2B705;color:#030304}
+.gx-res .gx-nota{color:#4A4A4E}
+.gx-res .gx-link{color:#030304}
 
-/* ── las tarjetas ── */
-.gx-cartas{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
-.gx-carta{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:2px solid var(--linea);background:var(--caja)}
-.gx-carta-c{display:block;width:84px;height:auto}
-.gx-carta .sincarta{width:84px}
-.gx-sin{display:grid;place-items:center;aspect-ratio:900/1314;border:2px dashed var(--gris);color:var(--gris);font:900 20px/1 Archivo,sans-serif}
-.gx-carta h3{margin:0 0 4px;font:900 17px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.gx-carta p{margin:0 0 6px;font:500 14px/1.4 Archivo,sans-serif;color:var(--gris)}
-.gx-carta ul{margin:0;padding-left:18px;font:500 14px/1.45 Archivo,sans-serif}
-.gx-carta.prox{border-style:dashed;background:var(--fondo)}
+/* ── el papel: pestañas y lo de cada una ── */
+.gx-papel{scroll-margin-top:80px}
+.gx-p{display:grid;gap:16px}
+.gx-sub{margin:14px 0 0;padding-top:12px;border-top:3px solid var(--tinta);font:900 17px/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.gx-nota{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris);max-width:78ch}
+.gx-link{padding:0;border:0;background:none;color:var(--tinta);font:inherit;text-decoration:underline;cursor:pointer}
+.gx-oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* lo que encontró el buscador, marcado un rato */
+.gx-flash{outline:3px solid var(--magenta);outline-offset:4px}
+/* los capítulos como la pista del Pase: un cuadrado por capítulo sobre una raya */
+.gx-pista .ap-cab{margin-bottom:6px}
+.gx-pista .ap-l{position:relative;grid-template-columns:minmax(0,1fr);gap:12px}
+.gx-pista .ap-l:before{content:"";position:absolute;left:21px;top:0;bottom:0;width:2px;background:var(--suave)}
+.gx-pista .ap-cap{position:relative;grid-template-columns:44px minmax(0,1fr);padding:0;background:none;border:0;border-radius:0}
+.gx-pista .ap-n{display:grid;place-items:center;width:44px;height:44px;border:2px solid var(--tinta);background:var(--fondo);color:var(--tinta);font:900 17px/1 Archivo,sans-serif}
+.gx-pista .ap-cap.hecho .ap-n{background:var(--tinta);color:var(--fondo)}
+.gx-pista .ap-cap.sigue .ap-n{background:var(--magenta);border-color:var(--magenta);color:#FFFFFF;box-shadow:4px 4px 0 var(--tinta)}
+.gx-pista .ap-cap:hover .ap-tx b{text-decoration:underline}
+.gx-dl2{display:grid;grid-template-columns:minmax(0,1fr);gap:0 28px;margin:0}
+.gx-dl2>div{padding:12px 0;border-top:1px solid var(--suave)}
+.gx-dl2 dt{margin-bottom:4px;font:800 15px/1.2 Archivo,sans-serif}
+.gx-dl2 dd{margin:0;font:500 14.5px/1.5 Archivo,sans-serif}
 
-/* ── los TAG: una banda por nivel (los colores son los de las cartas: dorado, púrpura, azul y gris) ── */
-.gx-tuyos{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 12px;border:2px solid var(--verde);background:var(--caja);font:600 14px/1.3 Archivo,sans-serif}
-.gx-tuyos span{display:inline-flex;align-items:center;gap:6px}
-.gx-tuyos small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
-.gx-tabs{display:flex;flex-wrap:wrap;gap:6px}
-.gx-tabs button{display:inline-flex;align-items:baseline;justify-content:center;gap:6px;min-height:44px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
-  font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
-.gx-tabs button{align-items:center}
-.gx-tabs button small{font-weight:700;color:var(--gris)}
-.gx-tabs button.on{background:var(--tinta);color:var(--fondo)}
-.gx-tabs button.on small{color:var(--fondo);opacity:.7}
-.gx-banda{display:grid;gap:8px}
-.gx-banda-t{display:flex;align-items:center;gap:10px}
-.gx-banda-t b{padding:5px 10px;font:900 13px/1 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#0A0A0D}
-.gx-banda-t small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
-.gx-nv1 .gx-banda-t b,.gx-tag.gx-nv1{background:#E8B923}
-.gx-nv2 .gx-banda-t b,.gx-tag.gx-nv2{background:#B48CFF}
-.gx-nv3 .gx-banda-t b,.gx-tag.gx-nv3{background:#7FB8FF}
-.gx-nv4 .gx-banda-t b,.gx-tag.gx-nv4{background:#C9C9CE}
-.gx-fichas{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;margin:0;padding:0;list-style:none}
-.gx-fichas li{display:grid;align-content:start;gap:5px;padding:10px;border:1.5px solid var(--suave);background:var(--caja)}
-.gx-fichas li.tuyo{border:2px solid var(--verde);box-shadow:3px 3px 0 var(--verde)}
-.gx-fichas p{margin:0;font:500 14px/1.35 Archivo,sans-serif}
-.gx-fichas small{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
-/* «Ver los N»: en el celular corta en cuatro y en la compu en nueve, y sólo donde quedan tres o más escondidos */
-.gx-mas{display:none;justify-self:start;align-items:center;min-height:44px;padding:0 14px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
-  font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;box-shadow:3px 3px 0 var(--linea)}
-.gx-mas:active{transform:translate(3px,3px);box-shadow:none}
-.gx-tag{justify-self:start;padding:4px 8px;font:800 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#0A0A0D}
-
-/* ── los puntos por puesto ── */
-.gx-pts{display:grid;gap:18px}
-.gx-escala{display:grid;gap:6px;margin-bottom:10px}
-.gx-escala>small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
-.gx-esc-b{display:flex;gap:6px}
-.gx-esc-b button{flex:1;min-height:44px;padding:0 8px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
-  font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
-.gx-esc-b button.on{background:var(--tinta);color:var(--fondo)}
-.gx-tabla{width:100%;border-collapse:collapse;font:500 15px/1.3 Archivo,sans-serif}
-.gx-tabla th{padding:8px 10px;border-bottom:2px solid var(--linea);text-align:right;font:800 14px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
-.gx-tabla th:first-child,.gx-tabla td:first-child{text-align:left}
-.gx-tabla th small{display:block;font-weight:700;color:var(--gris)}
-.gx-tabla td{padding:9px 10px;border-bottom:1.5px solid var(--suave);text-align:right;font-variant-numeric:tabular-nums;font-weight:800}
-.gx-tabla td:first-child{font-weight:700}
-.gx-tabla td:first-child>small{display:block;font:500 12px/1.3 Archivo,sans-serif;color:var(--gris)}
-.gx-tabla td .med,.gx-tabla td svg{vertical-align:-3px;margin-right:6px}
-/* en el celular, una columna por vez: la que elegiste, y sin las filas que en esa no existen */
-.gx-tabla th:not(:first-child):not(.on),.gx-tabla td:not(:first-child):not(.on){display:none}
-.gx-notas{display:grid;gap:8px;margin:0;padding:0;list-style:none;font:500 14px/1.45 Archivo,sans-serif}
-.gx-notas li{padding-left:12px;border-left:3px solid var(--suave)}
-
-/* ── rangos, OVR y Score ── */
-.gx-regla{display:grid;gap:8px}
-.gx-regla-b{display:flex;height:58px;border:2px solid var(--linea)}
-.gx-regla-s{position:relative;display:grid;align-content:center;justify-items:center;gap:2px;min-width:0;background:var(--c);color:#0A0A0D;
-  border-left:2px solid var(--linea)}
-.gx-regla-s:first-child{border-left:0}
-.gx-regla-s b{font:900 16px/1 Archivo,sans-serif;font-stretch:115%}
-/* sin opacidad: sobre el zafiro, a 12 px, quedaba en 4,49:1 */
+/* 🏅 los puntos: la frase y la escalera sobre verde (de la B) */
+.gx-verde{display:grid;gap:18px;padding:18px 16px;background:#29B298;color:#030304}
+.gx-verde-tx{display:grid;gap:14px;align-content:start}
+.gx-esc-b{display:flex;flex-wrap:wrap;gap:6px}
+.gx-esc-b button{min-height:40px;padding:0 10px;border:2px solid #030304;background:none;color:#030304;font:800 13px/1 Archivo,sans-serif;cursor:pointer}
+.gx-esc-b button small{margin-left:5px;font:700 13px/1 "Barlow Condensed",sans-serif}
+.gx-esc-b button.on{background:#030304;color:#F6F6F6}
+.gx-frase{margin:0;font:800 clamp(21px,2.6vw,32px)/1.25 Archivo,sans-serif;max-width:24ch}
+.gx-frase b{padding:0 6px;background:#030304;color:#29B298;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+.gx-escalera{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:4px;align-items:end;height:250px}
+.gx-esc-c{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:6px;height:100%;min-width:0}
+.gx-esc-c .ar{display:flex;flex-direction:column;justify-content:flex-end;gap:5px;min-height:0}
+.gx-esc-c b{font:900 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;text-align:center}
+.gx-esc-c i{display:block;flex:none;height:calc(var(--h) * .84);background:rgba(3,3,4,.14);border-top:4px solid #030304}
+.gx-esc-c.top i{background:#030304}
+.gx-esc-c small{font:700 11.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;text-align:center;overflow-wrap:anywhere}
+.gx-notas{display:grid;gap:6px;margin:0;padding:0;list-style:none;font:500 13.5px/1.45 Archivo,sans-serif}
+.gx-notas li{padding-left:10px;border-left:3px solid #030304}
+/* 🔠 rangos, OVR y Score */
+.gx-regla{display:grid;gap:4px}
+.gx-regla-b{display:flex;height:60px}
+.gx-regla-s{display:grid;align-content:space-between;min-width:0;padding:6px 7px;background:var(--c);color:#0A0A0D}
+.gx-regla-s b{font:900 17px/1 Archivo,sans-serif;font-stretch:112%}
 .gx-regla-s small{font:700 12px/1 "Barlow Condensed",sans-serif}
-.gx-dos{display:grid;gap:22px;margin-top:6px}
+.gx-regla-m{display:flex;font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+.gx-regla-m span{padding:0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gx-dos-p{display:grid;gap:22px;margin-top:8px}
 .gx-pesos{display:grid;gap:10px;align-content:start}
-.gx-pesos h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin:0;font:900 18px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.gx-pesos h3 small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
-.gx-barra{display:flex;height:22px;border:2px solid var(--linea)}
-.gx-barra i{display:block;height:100%;border-left:2px solid var(--fondo)}
-.gx-barra i:first-child{border-left:0}
+.gx-pesos h4{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;margin:0;font:900 16px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.gx-pesos h4 small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.gx-barra{display:flex;height:18px}
+.gx-barra i{display:block;height:100%}
 .gx-ley{display:grid;gap:6px;margin:0;padding:0;list-style:none}
 .gx-ley li{display:grid;grid-template-columns:14px minmax(0,1fr) auto;align-items:start;gap:8px;font:500 14px/1.3 Archivo,sans-serif}
-.gx-ley li>i{width:14px;height:14px;margin-top:2px;border:1.5px solid var(--linea)}
+.gx-ley li>i{width:14px;height:14px;margin-top:2px}
 .gx-ley span{display:grid;gap:1px}
 .gx-ley b{font-weight:800}
 .gx-ley small{font:500 12.5px/1.3 Archivo,sans-serif;color:var(--gris)}
 .gx-ley em{font:800 15px/1 Archivo,sans-serif;font-style:normal;font-variant-numeric:tabular-nums}
 
-/* ── las palabras y lo de cada semana ── */
-.gx-glos{display:grid;gap:0;margin:0}
-.gx-glos div{display:grid;gap:3px;padding:11px 0;border-bottom:1.5px solid var(--suave)}
-.gx-glos dt{font:900 16px/1.2 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase}
-.gx-glos dd{margin:0;font:500 15px/1.5 Archivo,sans-serif}
-.gx-semana{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:0;padding:0;list-style:none}
-.gx-semana li{display:grid;align-content:start;gap:6px;padding:12px;border:2px solid var(--linea);background:var(--caja)}
-/* la cifra arriba, a lo ancho: en una columna al costado no entraban «30 niveles» ni «Al cerrar la semana» */
-.gx-cifra{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px}
-.gx-cifra b{font:900 24px/1 Archivo,sans-serif;font-stretch:115%;font-variant-numeric:tabular-nums}
-.gx-cifra small{padding:4px 6px;background:var(--tinta);color:var(--fondo);font:800 12px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
-.gx-semana h3{margin:0;font:900 16px/1.15 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.gx-semana p{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+/* 📅 la semana en carriles */
+.gx-carriles{display:grid;grid-template-columns:minmax(0,1fr);border-top:3px solid var(--tinta)}
+.gx-carril{min-width:0;padding:12px 0 4px}
+.gx-carril h3{display:flex;justify-content:space-between;gap:8px;margin:0 0 12px;font:900 13px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.gx-carril h3 small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.gx-carril>div+div{margin-top:18px}
+.gx-it{margin:0 0 10px;padding:10px 12px;background:var(--caja)}
+.gx-it .x{font:900 20px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.gx-it b{display:block;margin:4px 0 3px;font:800 14px/1.2 Archivo,sans-serif}
+.gx-it p{margin:0;font:500 13.5px/1.45 Archivo,sans-serif}
+.gx-temporada{display:grid;gap:10px;align-items:start;padding:12px 0;border-top:2px solid var(--tinta);border-bottom:2px solid var(--tinta)}
+.gx-temporada>h3{margin:0;font:900 13px/1.2 Archivo,sans-serif;text-transform:uppercase}
+.gx-temporada .gx-it{margin:0}
 
-/* ── las preguntas ── */
-.gx-faq{display:grid;gap:8px;align-items:start}
-.gx-faq details{border:2px solid var(--linea);background:var(--caja)}
-.gx-faq details[open]{box-shadow:4px 4px 0 var(--linea)}
-.gx-faq summary{display:flex;justify-content:space-between;gap:10px;min-height:48px;padding:13px 14px;cursor:pointer;font:800 15px/1.3 Archivo,sans-serif;list-style:none}
+/* 🏷️ los TAG: una fila por rareza (los colores de las cartas: dorado, púrpura, azul y gris) y la ficha al costado */
+.gx-tuyos{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:10px 12px;border:2px solid var(--verde);background:var(--caja);font:600 14px/1.3 Archivo,sans-serif}
+.gx-tuyos span{display:inline-flex;align-items:center;gap:6px}
+.gx-tuyos small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.gx-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.gx-tabs button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 12px;border:1.5px solid var(--suave);background:none;color:var(--gris);
+  font:800 13px/1 Archivo,sans-serif;cursor:pointer}
+.gx-tabs button small{font:700 13px/1 "Barlow Condensed",sans-serif}
+.gx-tabs button.on{background:var(--inv);border-color:var(--inv);color:var(--inv-tinta)}
+.gx-tl{display:grid;gap:18px;align-items:start}
+.gx-tl-f{display:grid;grid-template-columns:minmax(0,1fr);gap:3px;margin-bottom:3px}
+.gx-tl-r{display:flex;align-items:baseline;gap:8px;padding:8px 12px;color:#0A0A0D}
+.gx-tl-r b{font:900 14px/1 Archivo,sans-serif;text-transform:uppercase}
+.gx-tl-r small{font:700 12.5px/1 "Barlow Condensed",sans-serif}
+.gx-nv1 .gx-tl-r{background:#E8B923} .gx-nv2 .gx-tl-r{background:#B48CFF} .gx-nv3 .gx-tl-r{background:#7FB8FF} .gx-nv4 .gx-tl-r{background:#C9C9CE}
+.gx-tl-x{display:flex;flex-wrap:wrap;gap:6px;padding:8px;background:var(--caja)}
+.gx-st{min-height:32px;padding:0 9px;border:0;background:var(--fondo);color:var(--tinta);font:800 12.5px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer;
+  box-shadow:2px 2px 0 var(--tinta);transition:transform 100ms cubic-bezier(.23,1,.32,1),box-shadow 100ms cubic-bezier(.23,1,.32,1)}
+.gx-st.tuyo{box-shadow:2px 2px 0 var(--verde);outline:1.5px solid var(--verde)}
+.gx-st.on{background:var(--inv);color:var(--inv-tinta);box-shadow:3px 3px 0 var(--magenta)}
+.gx-st:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--tinta)}
+@media (hover: hover) and (pointer: fine){.gx-st:not(.on):hover{box-shadow:3px 3px 0 var(--tinta)}}
+.gx-tl-d{display:grid;gap:8px;justify-items:start;padding:16px;background:var(--inv);color:var(--inv-tinta);box-shadow:6px 6px 0 var(--magenta)}
+.gx-tl-k{padding:5px 7px;background:var(--inv-tinta);color:var(--inv);font:900 11px/1 Archivo,sans-serif;text-transform:uppercase}
+.gx-tl-n{font:900 22px/1.05 Archivo,sans-serif;text-transform:uppercase}
+.gx-tl-c{display:grid;gap:6px;justify-items:start;width:100%;padding:12px;background:color-mix(in srgb,var(--inv-tinta) 9%,var(--inv))}
+.gx-tl-c small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.gx-pill{padding:7px 12px;background:#030304;color:#F6F6F6;font:900 14px/1 Archivo,sans-serif;text-transform:uppercase;box-shadow:0 0 0 2px #030304}
+.gx-pill.gx-nv1{border:2px solid #E8B923} .gx-pill.gx-nv2{border:2px solid #B48CFF} .gx-pill.gx-nv3{border:2px solid #7FB8FF} .gx-pill.gx-nv4{border:2px solid #C9C9CE}
+.gx-tl-d p{margin:0;font:600 15px/1.45 Archivo,sans-serif}
+.gx-tl-d>small{font:500 13px/1.3 Archivo,sans-serif;opacity:.85}
+
+/* 🔤 las palabras de la A a la Z */
+.gx-az{display:flex;flex-wrap:wrap;gap:4px}
+.gx-az button{width:44px;height:44px;border:1.5px solid var(--suave);background:none;color:var(--tinta);font:900 14px/1 Archivo,sans-serif;cursor:pointer}
+.gx-az button:disabled{border-style:dashed;color:var(--gris);cursor:default}
+@media (hover: hover) and (pointer: fine){.gx-az button:not(:disabled):hover{background:var(--inv);color:var(--inv-tinta)}}
+.gx-letra{display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;margin-bottom:14px;break-inside:avoid;scroll-margin-top:90px}
+.gx-letra>b{font:900 32px/1 Archivo,sans-serif;color:var(--magenta-tx)}
+.gx-letra dl{margin:0}
+.gx-letra dt{margin-top:2px;font:800 15px/1.2 Archivo,sans-serif}
+.gx-letra dd{margin:3px 0 10px;font:500 14.5px/1.5 Archivo,sans-serif}
+
+/* ❓ las preguntas: la que se abre se llena de tinta */
+.gx-faq{gap:3px}
+.gx-faq details{background:var(--caja)}
+.gx-faq summary{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:52px;padding:14px 16px;cursor:pointer;font:800 15px/1.3 Archivo,sans-serif;list-style:none}
 .gx-faq summary::-webkit-details-marker{display:none}
-.gx-faq summary:after{content:"+";font:900 18px/1 Archivo,sans-serif}
+.gx-faq summary:after{content:"+";font:900 20px/1 Archivo,sans-serif}
+.gx-faq details[open]{background:var(--inv);color:var(--inv-tinta)}
 .gx-faq details[open] summary:after{content:"−"}
-.gx-faq p{margin:0;padding:0 14px 14px;font:500 14.5px/1.5 Archivo,sans-serif}
-.gx-faq code{padding:1px 5px;background:var(--fondo);border:1px solid var(--suave);font-size:13.5px}
-.gx-faq a{text-decoration:underline}
+.gx-faq p{margin:0;padding:0 16px 16px;font:500 14.5px/1.55 Archivo,sans-serif;max-width:80ch}
+.gx-faq code{padding:1px 5px;border:1px solid currentColor;font-size:13.5px}
+.gx-faq a{color:inherit;text-decoration:underline}
+@media (hover: hover) and (pointer: fine){.gx-faq summary:hover{text-decoration:underline}}
 
-@media (max-width: 599px){
-  /* las cuatro pestañas de TAG en dos filas parejas (sueltas quedaban tres y una) */
+@media (prefers-reduced-motion: reduce){.gx-st,.gx-busca{transition:none}}
+@media (max-width: 639px){
+  /* las seis pestañas, en dos filas de tres: deslizándose, tres quedaban escondidas sin ninguna pista */
+  .gx-pes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 12px;overflow:visible}
+  .gx-pes button{min-height:44px;padding:12px 0 10px;text-align:left}
   .gx-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width: 899px){
-  .gx-banda:not(.abierta) .m-extra{display:none}
-  .gx-mas.m{display:inline-flex}
-  .gx-tabla[data-esc="16+"] tr.sin-16,.gx-tabla[data-esc="8-15"] tr.sin-8,.gx-tabla[data-esc="4-7"] tr.sin-4{display:none}
-}
-@media (min-width: 360px) and (max-width: 899px){
-  .gx-fichas{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .gx-fichas p{font-size:13.5px}
-  /* la última sola en su fila, a lo ancho: si no, queda media fila vacía */
-  .gx-fichas li:last-child:nth-child(odd){grid-column:1/-1}
+  .gx-atajos button,.gx-st{min-height:44px}
+  /* los lomos, uno abajo del otro: de canto no entran en 360 px */
+  .gx-lomos{flex-direction:column;min-height:0}
+  .gx-lomo{flex-basis:48px}
+  .gx-lomo:not(.ab)>span{writing-mode:horizontal-tb;transform:none;font-size:15px}
+  .gx-lomo.ab{grid-template-columns:96px minmax(0,1fr);gap:12px;padding:12px}
+  .gx-lomo-cw{width:96px}
+  .gx-lomo.ab h3{font-size:18px}
+  .gx-escalera{height:200px;gap:2px}
+  .gx-esc-c b{font-size:10.5px}
+  .gx-esc-c small{font-size:10px}
+  .gx-regla-s{padding:5px 3px}
+  .gx-regla-s b{font-size:13px}
+  .gx-regla-s small{font-size:10.5px}
+  .gx-regla-m{display:none}
 }
 @media (min-width: 640px){
-  .gx-cartas{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .gx-carta.prox{grid-column:1/-1}
-  .gx-semana{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gx-dl2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gx-dl2>div:last-child:nth-child(odd){grid-column:1/-1}
+  .gx-dos-p{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px}
+  .gx-letras{columns:2;column-gap:34px}
+  .gx-temporada{grid-template-columns:auto repeat(3,minmax(0,1fr))}
 }
 @media (min-width: 900px){
-  .app .gx-hero{grid-template-columns:minmax(0,1fr) minmax(320px,440px);align-items:end;gap:36px;padding:36px var(--gut) 32px}
-  .app .gx-chips{display:none}
-  .app .gx-t2{grid-template-columns:230px minmax(0,1fr);gap:36px;padding:0 var(--gut)}
-  .app .gx-rail{display:block;position:sticky;top:14px;align-self:start;padding-top:30px}
-  .app .gx-rail-l{display:grid;gap:2px;margin:0;padding:0;list-style:none;border-left:2px solid var(--suave)}
-  .app .gx-rail-l button{display:block;width:100%;min-height:40px;padding:9px 8px 9px 12px;margin-left:-2px;border:0;border-left:3px solid transparent;
-    background:none;color:var(--tinta);text-align:left;cursor:pointer;font:700 15px/1.2 Archivo,sans-serif}
-  .app .gx-rail-l button:hover{background:var(--caja)}
-  .app .gx-rail-l button.on{border-left-color:var(--magenta);background:var(--caja)}
-  .app .gx-rail-l button.on b{font-weight:900}
-  .app .gx-rail-l button:focus-visible{outline:2px solid var(--magenta);outline-offset:-2px}
-  /* la lupa, arriba del índice: «Buscar» con su dibujo, para volver al buscador desde cualquier parte */
-  .app .gx-rail-l .gx-lupa{display:flex;align-items:center;gap:8px;margin:0 0 8px 10px;width:calc(100% - 10px);padding:0 12px;min-height:42px;
-    border:2px solid var(--linea);background:var(--fondo);font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;box-shadow:3px 3px 0 var(--magenta)}
-  .app .gx-rail-l .gx-lupa:hover{background:var(--caja)}
-  .app .gx-cuerpo{padding:0 0 40px}
-  .app .gx-sec{scroll-margin-top:20px}
-  .app .gx-fichas{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .app .gx-fichas li:last-child:nth-child(3n+1){grid-column:1/-1}
-  .app .gx-fichas li:last-child:nth-child(3n+2){grid-column:span 2}
-  .app .gx-banda:not(.abierta) .d-extra{display:none}
-  .app .gx-mas.d{display:inline-flex}
-  .app .gx-pts{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px;align-items:start}
-  .app .gx-escala{display:none}
-  .app .gx-tabla th:not(:first-child),.app .gx-tabla td:not(:first-child){display:table-cell}
-  .app .gx-dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px}
-  /* en columnas que fluyen: en una grilla, una definición larga dejaba un hueco al lado de una corta */
-  .app .gx-glos{display:block;columns:2;column-gap:34px}
-  .app .gx-glos div{break-inside:avoid}
-  .app .gx-semana{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .app .gx-faq{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app .gx-cab{padding:36px var(--gut) 34px}
+  .app .gx-cabeza{grid-template-columns:minmax(0,1fr) minmax(340px,460px)}
+  .app .gx-dos{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:stretch}
+  .app .gx-papel{padding-left:var(--gut);padding-right:var(--gut)}
+  .app .gx-pista .ap-l{grid-template-columns:repeat(9,minmax(0,1fr));gap:0}
+  .app .gx-pista .ap-l:before{left:5%;right:5%;top:21px;bottom:auto;width:auto;height:2px}
+  .app .gx-pista .ap-cap{grid-template-columns:minmax(0,1fr);grid-template-rows:44px auto;justify-items:center;text-align:center;gap:10px;padding:0 6px}
+  .app .gx-pista .ap-tx em{justify-content:center}
+  .app .gx-verde{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:22px 30px;padding:24px 26px}
+  .app .gx-notas{grid-column:1/-1;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 22px}
+  .app .gx-carriles{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .app .gx-carril{padding:12px 14px 4px}
+  .app .gx-carril+.gx-carril{border-left:1px dashed var(--suave)}
+  .app .gx-tl{grid-template-columns:minmax(0,1fr) 320px;gap:22px}
+  .app .gx-tl-f{grid-template-columns:128px minmax(0,1fr)}
+  .app .gx-tl-r{flex-direction:column;justify-content:center;align-items:flex-start;gap:4px}
+  .app .gx-tl-d{position:sticky;top:90px}
+  .app .gx-faq{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
 }
