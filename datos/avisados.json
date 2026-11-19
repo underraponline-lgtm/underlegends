@@ -26328,81 +26328,6 @@
   "canal": "838593179744731229",
   "duelos": [
    [
-    "Andresito",
-    "NC",
-    "Andresito"
-   ],
-   [
-    "Mito",
-    "Tiago Context 🇦🇷",
-    "Mito"
-   ],
-   [
-    "Lucky",
-    "Molt",
-    "Lucky"
-   ],
-   [
-    "Ragna",
-    "Erian",
-    "Ragna"
-   ],
-   [
-    "Andresito",
-    "Mito",
-    "Andresito"
-   ],
-   [
-    "Ragna",
-    "Lucky",
-    "Ragna"
-   ],
-   [
-    "Ragna",
-    "Andresito",
-    "Ragna"
-   ],
-   [
-    "Dynoco",
-    "Scritura",
-    "Dynoco"
-   ],
-   [
-    "MTZ",
-    "Vilca",
-    "MTZ"
-   ],
-   [
-    "Scritura",
-    "Vilca",
-    "Scritura"
-   ],
-   [
-    "Erian",
-    "Mr.Kude",
-    "Erian"
-   ],
-   [
-    "Erian",
-    "J.r",
-    "Erian"
-   ],
-   [
-    "Dynoco",
-    "MTZ",
-    "Dynoco"
-   ],
-   [
-    "Erian",
-    "Scritura",
-    "Erian"
-   ],
-   [
-    "Dynoco",
-    "Erian",
-    "Dynoco"
-   ],
-   [
     "Erian",
     "EmiZor",
     "Erian"
@@ -26449,11 +26374,11 @@
    "Mr.Kude": 2
   },
   "fecha": "27/10",
-  "firma": "03a0c3288dacf26b",
+  "firma": "522a4d7551160a4e",
   "msg": "1564725192360464586",
   "nombre": "- IRLANDA FREESTYLE -",
   "num": 533,
-  "participantes": 9,
+  "participantes": 8,
   "sello": {
    "Dynoco": "c83f6b048b4b:6ec1a5248de8"
   },
@@ -26461,34 +26386,14 @@
   "t": "2026-10-27T19:54:05Z",
   "tabla": [
    [
-    "Ragna",
+    "Dynoco",
     "Campeón",
     7500
    ],
    [
-    "Lucky",
-    "Semifinal",
-    7000
-   ],
-   [
-    "Andresito",
+    "MTZ",
     "Subcampeón",
     5000
-   ],
-   [
-    "Scritura",
-    "Semifinal",
-    3750
-   ],
-   [
-    "Mito",
-    "Semifinal",
-    3500
-   ],
-   [
-    "MTZ",
-    "Semifinal",
-    3500
    ],
    [
     "Erian",
@@ -26496,22 +26401,12 @@
     3500
    ],
    [
-    "Vilca",
-    "Cuartos",
-    3000
+    "Lucky",
+    "Semifinal",
+    3500
    ],
    [
-    "NC",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Tiago Context 🇦🇷",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Molt",
+    "EmiZor",
     "Cuartos",
     2000
    ],
@@ -26522,11 +26417,6 @@
    ],
    [
     "J.r",
-    "Cuartos",
-    2000
-   ],
-   [
-    "EmiZor",
     "Cuartos",
     2000
    ],
@@ -52852,6 +52742,282 @@
     "Mito",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "662": {
+  "antes": {
+   "Dynoco": [
+    62,
+    73,
+    false
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "J.r": [
+    217,
+    516,
+    false
+   ],
+   "MTZ": [
+    98,
+    125,
+    false
+   ],
+   "Mr.Kude": [
+    365,
+    261,
+    true
+   ],
+   "Scritura": [
+    144,
+    226,
+    false
+   ],
+   "Vilca": [
+    66,
+    80,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Dynoco",
+    "Scritura",
+    "Dynoco"
+   ],
+   [
+    "MTZ",
+    "Vilca",
+    "MTZ"
+   ],
+   [
+    "Scritura",
+    "Vilca",
+    "Scritura"
+   ],
+   [
+    "Erian",
+    "Mr.Kude",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "J.r",
+    "Erian"
+   ],
+   [
+    "Dynoco",
+    "MTZ",
+    "Dynoco"
+   ],
+   [
+    "Erian",
+    "Scritura",
+    "Erian"
+   ],
+   [
+    "Dynoco",
+    "Erian",
+    "Dynoco"
+   ]
+  ],
+  "ev_antes": {
+   "Dynoco": 18,
+   "Erian": 83,
+   "J.r": 2,
+   "MTZ": 9,
+   "Mr.Kude": 5,
+   "Scritura": 5,
+   "Vilca": 26
+  },
+  "fecha": "27/10",
+  "nombre": "- IRLANDA FREESTYLE - 3:23 PM",
+  "num": 662,
+  "participantes": 9,
+  "sello": {
+   "Dynoco": "2a7619ee5830:a8d8b7335469"
+  },
+  "sv": "FRZ",
+  "t": "2026-11-19T22:38:32Z",
+  "tabla": [
+   [
+    "Dynoco",
+    "Campeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Scritura",
+    "Semifinal",
+    3750
+   ],
+   [
+    "MTZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    3000
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2000
+   ],
+   [
+    "J.r",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "663": {
+  "antes": {
+   "Andresito": [
+    441,
+    371,
+    true
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Lucky": [
+    284,
+    121,
+    true
+   ],
+   "Mito": [
+    20,
+    20,
+    false
+   ],
+   "Molt": [
+    163,
+    281,
+    false
+   ],
+   "NC": [
+    23,
+    24,
+    false
+   ],
+   "Ragna": [
+    328,
+    204,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Andresito",
+    "NC",
+    "Andresito"
+   ],
+   [
+    "Mito",
+    "Tiago Context 🇦🇷",
+    "Mito"
+   ],
+   [
+    "Lucky",
+    "Molt",
+    "Lucky"
+   ],
+   [
+    "Ragna",
+    "Erian",
+    "Ragna"
+   ],
+   [
+    "Andresito",
+    "Mito",
+    "Andresito"
+   ],
+   [
+    "Ragna",
+    "Lucky",
+    "Ragna"
+   ],
+   [
+    "Ragna",
+    "Andresito",
+    "Ragna"
+   ]
+  ],
+  "ev_antes": {
+   "Andresito": 1,
+   "Erian": 83,
+   "Lucky": 9,
+   "Mito": 44,
+   "Molt": 6,
+   "NC": 61,
+   "Ragna": 2
+  },
+  "fecha": "27/10",
+  "nombre": "- IRLANDA FREESTYLE - 7:33 PM",
+  "num": 663,
+  "participantes": 9,
+  "sello": {
+   "Ragna": ""
+  },
+  "sv": "FRZ",
+  "t": "2026-11-19T22:38:33Z",
+  "tabla": [
+   [
+    "Ragna",
+    "Campeón",
+    7500
+   ],
+   [
+    "Andresito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lucky",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tiago Context 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Molt",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

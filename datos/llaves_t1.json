@@ -36026,75 +36026,10 @@
   ],
   "n": 533,
   "nombre": "- IRLANDA FREESTYLE -",
-  "participantes": 9,
+  "participantes": 8,
   "rondas": [
    {
     "b": [
-     [
-      [
-       "Andresito",
-       "NC"
-      ],
-      "Andresito",
-      ""
-     ],
-     [
-      [
-       "Mito",
-       "Tiago Context 🇦🇷"
-      ],
-      "Mito",
-      ""
-     ],
-     [
-      [
-       "Lucky",
-       "Molt"
-      ],
-      "Lucky",
-      ""
-     ],
-     [
-      [
-       "Ragna",
-       "Erian"
-      ],
-      "Ragna",
-      ""
-     ],
-     [
-      [
-       "Dynoco",
-       "Scritura"
-      ],
-      "Dynoco",
-      "Revivido: Scritura 🇻🇪"
-     ],
-     [
-      [
-       "MTZ",
-       "Vilca"
-      ],
-      "MTZ",
-      "Revivido: Vilca🇺🇸"
-     ],
-     [
-      [
-       "Scritura",
-       "Vilca"
-      ],
-      "Scritura",
-      ""
-     ],
-     [
-      [
-       "Erian",
-       "Mr.Kude",
-       "J.r"
-      ],
-      "Erian",
-      "triple (3 bandas)"
-     ],
      [
       [
        "Erian",
@@ -36134,38 +36069,6 @@
     "b": [
      [
       [
-       "Andresito",
-       "Mito"
-      ],
-      "Andresito",
-      ""
-     ],
-     [
-      [
-       "Ragna",
-       "Lucky"
-      ],
-      "Ragna",
-      ""
-     ],
-     [
-      [
-       "Dynoco",
-       "MTZ"
-      ],
-      "Dynoco",
-      ""
-     ],
-     [
-      [
-       "Erian",
-       "Scritura"
-      ],
-      "Erian",
-      ""
-     ],
-     [
-      [
        "MTZ",
        "Erian"
       ],
@@ -36187,22 +36090,6 @@
     "b": [
      [
       [
-       "Ragna",
-       "Andresito"
-      ],
-      "Ragna",
-      ""
-     ],
-     [
-      [
-       "Dynoco",
-       "Erian"
-      ],
-      "Dynoco",
-      ""
-     ],
-     [
-      [
        "Dynoco",
        "MTZ"
       ],
@@ -36216,24 +36103,14 @@
   "sv": "FRZ",
   "tabla": [
    [
-    "Ragna",
+    "Dynoco",
     "Campeón",
     7500
    ],
    [
-    "Lucky",
-    "Semifinal",
-    7000
-   ],
-   [
-    "Andresito",
+    "MTZ",
     "Subcampeón",
     5000
-   ],
-   [
-    "Scritura",
-    "Semifinal",
-    3750
    ],
    [
     "Erian",
@@ -36241,19 +36118,9 @@
     3500
    ],
    [
-    "MTZ",
+    "Lucky",
     "Semifinal",
     3500
-   ],
-   [
-    "Mito",
-    "Semifinal",
-    3500
-   ],
-   [
-    "Vilca",
-    "Cuartos",
-    3000
    ],
    [
     "Cinexfilo",
@@ -36271,22 +36138,7 @@
     2000
    ],
    [
-    "Molt",
-    "Cuartos",
-    2000
-   ],
-   [
     "Mr.Kude",
-    "Cuartos",
-    2000
-   ],
-   [
-    "NC",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Tiago Context 🇦🇷",
     "Cuartos",
     2000
    ]
@@ -59865,5 +59717,251 @@
    "min": 159,
    "v": 1
   }
+ },
+ "662": {
+  "dia": "2026-10-27",
+  "escala": "8-15",
+  "fecha": "27/10",
+  "links": [],
+  "n": 662,
+  "nombre": "- IRLANDA FREESTYLE - 3:23 PM",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Dynoco",
+       "Scritura"
+      ],
+      "Dynoco",
+      "Revivido: Scritura 🇻🇪"
+     ],
+     [
+      [
+       "MTZ",
+       "Vilca"
+      ],
+      "MTZ",
+      "Revivido: Vilca🇺🇸"
+     ],
+     [
+      [
+       "Scritura",
+       "Vilca"
+      ],
+      "Scritura",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Mr.Kude",
+       "J.r"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dynoco",
+       "MTZ"
+      ],
+      "Dynoco",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Scritura"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dynoco",
+       "Erian"
+      ],
+      "Dynoco",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Dynoco",
+    "Campeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Scritura",
+    "Semifinal",
+    3750
+   ],
+   [
+    "MTZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    3000
+   ],
+   [
+    "J.r",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "663": {
+  "dia": "2026-10-27",
+  "escala": "8-15",
+  "fecha": "27/10",
+  "links": [],
+  "n": 663,
+  "nombre": "- IRLANDA FREESTYLE - 7:33 PM",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Andresito",
+       "NC"
+      ],
+      "Andresito",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Tiago Context 🇦🇷"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Lucky",
+       "Molt"
+      ],
+      "Lucky",
+      ""
+     ],
+     [
+      [
+       "Ragna",
+       "Erian"
+      ],
+      "Ragna",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Andresito",
+       "Mito"
+      ],
+      "Andresito",
+      ""
+     ],
+     [
+      [
+       "Ragna",
+       "Lucky"
+      ],
+      "Ragna",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ragna",
+       "Andresito"
+      ],
+      "Ragna",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Ragna",
+    "Campeón",
+    7500
+   ],
+   [
+    "Andresito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Lucky",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Molt",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tiago Context 🇦🇷",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
