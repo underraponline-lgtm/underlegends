@@ -108,6 +108,18 @@ export function abrirCajaNuevo(el, caja, alAbrir) {
     return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [item], { cofres: D && D.cofres, abrir, alCerrar: refrescar }));
   });
 }
+/** 🐉 El dibujo del drop antes de abrirlo (`dropQuieto()` de drops_show.js), como texto SVG: el Pase lo muestra quieto */
+export function dropQuietoSvg(tipo, min) {
+  return preparar().then((m) => m.dropQuieto(tipo, min));
+}
+/**
+ * 🐉 Abre UN drop con el escenario de siempre (pantalla completa, a toques, con sonido). `abrir()` es lo que contesta el
+ * servidor con el contrato de `drop-abrir`: así el drop del día del Pase (que se cobra y se abre en `/pase-dia`) se ve
+ * como todos los demás (6.87; Dlx: «no incluye la animacion ni nada q deberia tener»)
+ */
+export function abrirConEscenario(el, item, abrir, alCerrar) {
+  return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [item], { abrir, alCerrar }));
+}
 /** 🐣 El momento de un día completo (`mostrarMomento()` de drops_show.js). Devuelve una Promise que se cumple al cerrarse */
 export function abrirMomento(el, datos) {
   return preparar().then(({ mostrarMomento }) => mostrarMomento(hostDe(el), datos));

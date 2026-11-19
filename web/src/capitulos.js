@@ -56,8 +56,8 @@ export const CAPITULOS = [
     linea: 'Subes de nivel con Tareas, sin necesidad de jugar. Cada nivel trae un premio, y el 1 abre tu carta de Temporada.',
     pasos: [
       { sel: 'ps-cab', k: 'EL PASE', h: 'Tu nivel', p: 'Con tu cuenta ves tu nivel y tu XP. Es de los Miembros de Discord Rap Español: verifícate y empieza a subir.' },
-      { sel: 'ps-tabs', k: 'TRES PESTAÑAS', h: 'Premios, Tareas y Premium', p: 'Premios son los niveles. Tareas, lo que te da XP: diarias, semanales y de temporada. Premium, la otra fila de premios.' },
-      { sel: 'ps-pista', k: 'LA PISTA', h: 'Un premio por nivel', p: 'Puntos de Tienda, títulos, insignias y Dragón Drops. Los de Premium llevan candado hasta que lo tengas.' },
+      { sel: 'ps-pista', k: 'LA GIRA', h: 'Un premio por nivel', p: 'Cinco fechas de diez niveles: la plaza, el bar, el club, el teatro y el estadio. Gratis arriba; los de Premium llevan candado hasta que lo tengas.' },
+      { sel: 'ps-tabs', k: 'DETRÁS DEL SHOW', h: 'El setlist, el backstage y el Salón', p: 'El setlist son tus Tareas, lo que te da XP: diarias, semanales y de temporada. El backstage, el Premium: la otra fila de premios. El Salón, los que más lejos llegaron.' },
     ] },
   { id: 'tienda', ruta: '#/tienda', pag: ['tienda'], t: 'La Tienda', d: 'Los Puntos de Tienda: probarte y comprar lo tuyo, y el precio por cabeza.',
     linea: 'Arrancas con 5.000 Puntos de Tienda: pruébate lo que quieras y compra lo que te guste.',

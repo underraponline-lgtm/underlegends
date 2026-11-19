@@ -220,6 +220,8 @@
 .ps-pasos span{display:block;margin-top:3px;font-size:13.5px;line-height:1.35;color:var(--gris)}
 .ps-pv-ya{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px 0 2px}
 .ps-pv-ya .ps-ti{flex:none;width:108px;height:128px}
+/* 🖱️ en la compu, en grilla (6.87): de costado escondía las fichas de la punta y con el mouse no se movía */
+@media (hover: hover) and (pointer: fine){.ps-pv-ya{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));overflow:visible}.ps-pv-ya .ps-ti{width:auto}}
 .ps-boost{display:flex;align-items:center;gap:10px;margin:10px 0 0;padding:8px 10px;border:1.5px solid #E41373;font-size:13.5px;line-height:1.35}
 .ps-boost b{display:grid;place-items:center;flex:none;min-width:56px;height:26px;background:#E41373;color:#fff;font:900 14px/1 Archivo,sans-serif}
 /* el sorteo */
@@ -528,6 +530,18 @@ svg.po{display:block;flex:none;overflow:visible}
 .dd2-esq{position:absolute;width:16px;height:16px;border:0 solid #7FD3FF}
 .dd2-esq.a{left:5px;top:5px;border-width:3px 0 0 3px}.dd2-esq.b{right:5px;top:5px;border-width:3px 3px 0 0}
 .dd2-cab{display:flex;align-items:center;gap:8px;padding:0 6px}
+/* 🐉 el Dragón Drop de verdad (6.87): el dibujo del escenario de los drops, que flota hasta que lo tocas */
+.dd2-real{display:block;max-width:100%;line-height:0}
+.dd2-real svg{display:block;width:100%;height:auto}
+.dd2-real.gris{filter:grayscale(1);opacity:.45}
+@keyframes dd2-flota{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+.dd2-real.an{animation:dd2-flota 2.6s ease-in-out infinite}
+.dd2-toca{display:block;padding:0;border:0;background:none;cursor:pointer}
+.dd2-toca:focus-visible{outline:2px solid #7FD3FF;outline-offset:6px}
+@media (hover: hover) and (pointer: fine){.dd2-toca:hover .dd2-real{animation-duration:.9s}}
+@media (prefers-reduced-motion: reduce){.dd2-real.an{animation:none}}
+.app.calma .dd2-real.an{animation:none}
+.dd2-sem li .dd2-real{margin:0 auto 3px}
 .dd2 .k{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#7FD3FF}
 .dd2 .dd2-top{margin-left:auto;color:#8FB5CC;letter-spacing:.06em;font-size:12px;text-align:right}
 .dd2-ped{position:relative;display:grid;place-items:center;height:150px}
@@ -669,3 +683,185 @@ svg.po{display:block;flex:none;overflow:visible}
   .pc-dos{grid-template-columns:1fr}
   .pc-salon li{grid-template-columns:28px minmax(0,1fr) 70px 36px;gap:8px}
 }
+
+/* ═══ 🏁 6.87, EL PASE CON LA ESTRUCTURA DE LA LLAVE (Dlx, 19/11/2026: «sigue remakeando todo» y «en pc no se puede
+   scrollear… x eso te dije q hagas remake»). La escena (`pa-`), las piezas `rka-` (css/rka.css) y la pista en la compu
+   sin deslizar es La gira (más abajo, `pg-`). ⚠️ `pa-` y `pg-` no los usa nadie más ═══ */
+.escena.pa-esc{background:#030304}
+.escena > .pa-foto{position:absolute;inset:0;z-index:0;background:var(--esc) center/cover no-repeat;opacity:.18;pointer-events:none}
+.pa-cab{display:grid;gap:18px;padding:24px 16px 28px;color:#F6F6F6}
+.pa-tx{display:grid;justify-items:start;gap:12px;min-width:0}
+.pa-tx .hero-ev{margin:0;text-wrap:balance}
+.pa-tx .hero-ev span{display:block;color:#F5C542}
+.pa-tx .hero-p{max-width:62ch}
+.pa-tx .pc-xpw{max-width:640px}
+.pa-dos .rka-izq,.pa-dos .rka-rail{gap:18px}
+/* lo próximo: la pieza blanca de la llave */
+.pa-prox{display:grid;gap:12px;padding:16px 18px 18px;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 #29B298}
+.pa-k{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#4A4A4E}
+.pa-prox h2{margin:0;font:900 26px/1.05 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.pa-prox p{margin:0;font:500 14.5px/1.45 Archivo,sans-serif}
+.pa-objs{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 28px}
+.pa-objs figure{margin:0;display:grid;justify-items:start;gap:8px;min-width:0;max-width:240px}
+.pa-objs figcaption{display:grid;gap:3px}
+.pa-objs figcaption b{font:900 16px/1.15 Archivo,sans-serif;text-transform:uppercase;text-wrap:balance}
+.pa-objs figcaption small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#4A4A4E}
+.pa-objs figure.lock figcaption small{color:#B40F5A}
+.pa-lnk{padding:0;border:0;background:none;color:inherit;font:800 14px/1.2 Archivo,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.pa-sem .pc-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pa-objs figure.luego{opacity:.85}
+@media (max-width: 899px){
+  .pa-sem .pc-4{grid-template-columns:minmax(0,1fr)}
+  .pa-pes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;overflow:visible}
+  .pa-pes button{text-align:left}
+  .pa-objs{gap:14px 18px}
+  .pa-objs figure{max-width:calc(50% - 9px)}
+}
+.pa-dos .dd2{height:auto}
+/* el papel: las cuatro pestañas y su contenido, sin el margen propio de .pc-cuerpo (ya lo pone la sección) */
+.pa-cuerpo{padding:0;max-width:none;margin:0}
+.pa-busca{margin:0;width:100%;max-width:420px;box-sizing:border-box;background:#0B0B0D}
+/* 🎟️ la gira, arriba en la escena (Dlx: «el track del pase más arriba») */
+.pa-gira{display:grid;gap:10px;min-width:0}
+.pa-tx .pa-busca{border-color:#3A3A40}
+@media (min-width: 900px){.pa-tx .hero-ev{font-size:clamp(36px,4.4vw,58px)}}
+/* 📱 en el celular el afiche se va: las entradas de la pista ya dicen las cinco fechas, y la pista queda pegada al título */
+@media (max-width: 899px){.pa-cabeza .pa-afiche{display:none}}
+
+@media (min-width: 900px){
+  .pa-cab{padding:30px var(--gut) 34px}
+}
+
+/* ═══ 🎤 LA GIRA (6.87; Dlx eligió la idea el 19/11/2026): el afiche con las cinco fechas, las entradas, cada escenario
+   dibujado plano y sus diez niveles enteros; el setlist (las Tareas), el backstage (el Premium) y el muro de la fama
+   (el Salón). Clases `pg-` y `pa-`; nada de degradés ni desenfoque, como pide el remake ═══ */
+.pa-cabeza{display:grid;gap:22px 34px;align-items:start;min-width:0}
+/* 🗓️ el afiche: las fechas como en un póster de gira */
+.pa-afiche{display:grid;gap:10px;margin-top:34px;padding:16px 18px 14px;background:#0B0B0D;border:2px solid #F6F6F6;box-shadow:6px 6px 0 #E41373}
+.pa-afiche-k{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#F5C542}
+.pg-fechas{list-style:none;margin:0;padding:0;display:grid}
+.pg-fechas li + li{border-top:1px dashed #3A3A40}
+.pg-fechas button{width:100%;display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:baseline;gap:10px;padding:9px 0;border:0;background:none;color:#F6F6F6;text-align:left;cursor:pointer}
+.pg-f-n{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0;font-variant-numeric:tabular-nums}
+.pg-fechas b{font:400 26px/1 Anton,Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+.pg-fechas em{font:800 11.5px/1 Archivo,sans-serif;font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
+.pg-fechas li.hecha b{color:#6A6A70;text-decoration:line-through;text-decoration-color:var(--c);text-decoration-thickness:3px}
+.pg-fechas li.hecha em{color:var(--c)}
+.pg-fechas li.aca b{color:var(--c)}
+.pg-fechas li.aca em{padding:4px 6px;background:var(--c);color:#030304}
+.pg-fechas button:focus-visible{outline:2px solid #F6F6F6;outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.pg-fechas button:hover b{color:var(--c)}}
+
+/* 🎟️ la fecha elegida: el bloque entero lleva el color y el fondo de su escenario */
+.pg{--c:#29B298;--f:#0B1A16;--th:150px;--cw:116px;display:grid;gap:12px;padding:14px 16px 16px;background:var(--f);border:1px solid #2A2A2E;color:#F6F6F6;scroll-margin-top:70px}
+.pg-entradas{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.pg-ent{position:relative;display:grid;grid-template-columns:54px minmax(0,1fr);min-height:62px;padding:0;border:0;background:none;color:#F6F6F6;text-align:left;cursor:pointer}
+.pg-ent-tal,.pg-ent-cu{display:grid;align-content:center;min-width:0;background:#141417;border:1.5px solid #2A2A2E}
+.pg-ent-tal{justify-items:center;gap:2px;border-right:2px dashed #3A3A40;padding:6px 2px}
+.pg-ent-tal small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8A8A85}
+.pg-ent-tal b{font:400 15px/1 Anton,Archivo,sans-serif}
+.pg-ent-cu{position:relative;gap:4px;padding:8px 10px 12px;border-left:0}
+.pg-ent-cu b{font:400 18px/1 Anton,Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-ent-cu small{font:700 11.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-ent-bar{position:absolute;left:0;right:0;bottom:0;height:4px;background:#1F1F23}
+.pg-ent-bar u{display:block;height:100%;background:var(--c);text-decoration:none}
+.pg-ent.on .pg-ent-tal,.pg-ent.on .pg-ent-cu{background:var(--c);border-color:var(--c);color:#030304}
+.pg-ent.on .pg-ent-tal{border-right-color:#030304}
+.pg-ent.on small{color:#030304;opacity:.8}
+.pg-ent.on .pg-ent-bar{background:rgba(3,3,4,.25)}
+.pg-ent.on .pg-ent-bar u{background:#030304}
+.pg-ent.aca:not(.on) .pg-ent-cu small{color:var(--c)}
+.pg-ent:focus-visible{outline:2px solid #F6F6F6;outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.pg-ent:not(.on):hover .pg-ent-cu,.pg-ent:not(.on):hover .pg-ent-tal{border-color:var(--c)}}
+/* el escenario: el dibujo de fondo, el cartel con el nombre y el gran premio de la fecha */
+.pg-escena{position:relative;min-height:150px;display:flex;align-items:flex-end;overflow:hidden;background:#050507;border-bottom:3px solid var(--c)}
+.pg-dib{position:absolute;inset:0;width:100%;height:100%}
+.pg-cartel{position:relative;z-index:1;display:grid;gap:4px;max-width:min(560px,70%);margin:0 0 12px 14px;padding:10px 12px;background:#030304;border-left:4px solid var(--c)}
+.pg-k{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.pg-cartel h3{margin:0;font:400 clamp(30px,4vw,46px)/.95 Anton,Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+.pg-cartel p{margin:0;font:500 13.5px/1.4 Archivo,sans-serif;color:#C9C9C4}
+.pg-cartel p b{color:#F6F6F6}
+.pg-grande{position:absolute;z-index:1;right:18px;top:14px;padding:8px;background:#030304;border:2px solid var(--c)}
+.pg-cuenta{position:absolute;z-index:1;right:18px;bottom:12px;padding:5px 8px;background:var(--c);color:#030304;font:800 12px/1 Archivo,sans-serif;text-transform:uppercase}
+.pg-cuenta:empty{display:none}
+.pg .p2-cuerpo{margin-top:4px}
+.pg .p2-nodo.ya,.pg .p2-lleno{background:var(--c);border-color:var(--c)}
+@media (min-width: 900px){
+  /* 🖱️ diez columnas entran enteras: nada de costado */
+  .pg .pg-caja{overflow:visible}
+  .pg .pg-fila{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));width:auto}
+  .pg .p2-col{width:auto;min-width:0}
+  .pa-cabeza{grid-template-columns:minmax(0,1fr) 380px}
+}
+@media (max-width: 899px){
+  .pg{padding:12px 10px 14px;--th:136px;--cw:98px}
+  .pg-entradas{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pg-ent{grid-template-columns:minmax(0,1fr)}
+  .pg-ent-tal{display:none}
+  .pg-ent-cu{border-left:1.5px solid #2A2A2E}
+  .pg-ent.on .pg-ent-cu{border-left-color:var(--c)}
+  .pg-ent-cu b{font-size:15px}
+  .pg-cartel{max-width:calc(100% - 28px)}
+  .pg-escena{min-height:210px}
+  .pg-cuenta{display:none}
+  .pg-grande{transform:scale(.6);transform-origin:top right;right:8px;top:8px}
+  .pg-cartel{margin:0 0 10px 10px}
+  .pg-fechas b{font-size:22px}
+}
+
+/* 📝 el setlist: las Tareas como la hoja pegada en el piso del escenario. Cada columna es una hoja; lo hecho, tachado */
+.pa-setlist .pc-cols{gap:18px;align-items:start}
+.pa-setlist .pc-col{position:relative;background:#F4F4F0;color:#0B0B0D;border:0;border-top:0;padding:6px 4px 10px;box-shadow:4px 4px 0 rgba(0,0,0,.35)}
+.pa-setlist .pc-col:nth-child(1){transform:rotate(-.8deg)}.pa-setlist .pc-col:nth-child(2){transform:rotate(.6deg)}.pa-setlist .pc-col:nth-child(3){transform:rotate(-.4deg)}
+.pa-setlist .pc-col::before,.pa-setlist .pc-col::after{content:"";position:absolute;top:-9px;width:62px;height:18px;background:rgba(220,220,212,.85)}
+.pa-setlist .pc-col::before{left:14px;transform:rotate(-6deg)}.pa-setlist .pc-col::after{right:14px;transform:rotate(5deg)}
+.pa-setlist .pc-col h3{padding:12px 12px 8px;border-bottom:3px solid var(--c);font:400 26px/1 Anton,Archivo,sans-serif;letter-spacing:.03em}
+.pa-setlist .pc-col h3 small{color:#4A4A4E;font-size:12.5px}
+.pa-setlist .pc-col ol{counter-reset:can}
+.pa-setlist .pc-t{counter-increment:can;grid-template-columns:28px minmax(0,1fr) auto auto;border-top:1px solid #D8D8D0;padding:9px 12px}
+.pa-setlist .pc-ti{width:28px;height:28px;background:none;color:#0B0B0D;font:400 18px/1 Anton,sans-serif}
+.pa-setlist .pc-ti > *{display:none}
+.pa-setlist .pc-ti::before{content:counter(can)}
+.pa-setlist .pc-tx b{font:900 15px/1.2 Archivo,sans-serif;text-transform:uppercase;color:#0B0B0D}
+.pa-setlist .pc-bar{background:#E2E2DA}
+.pa-setlist .pc-bar u{background:var(--c)}
+.pa-setlist .pc-t.ok b{color:#6A6A70;text-decoration:line-through;text-decoration-color:var(--c);text-decoration-thickness:3px}
+.pa-setlist .pc-t.ok .pc-ti{color:var(--c)}
+.pa-setlist .pc-txp{background:none;color:#0B0B0D;padding:0;font:400 16px/1 Anton,sans-serif}
+.pa-setlist .pc-ir{background:#0B0B0D;color:#F4F4F0}
+.pa-setlist .pc-ir.no{background:none;color:#4A4A4E;border-color:#C8C8C0}
+.pa-setlist .pc-mas{color:#4A4A4E;border-top-color:#D8D8D0}
+.pa-setlist .pc-mas:hover{color:#0B0B0D}
+.pa-setlist .pc-extra{background:#F5C542;border:0;color:#0B0B0D}
+.pa-setlist .pc-extra .pc-t{border-top-color:rgba(0,0,0,.12)}
+.pa-setlist .pc-extra .pc-tx b{color:#0B0B0D}
+.pa-setlist .pc-extra .pc-tx em{color:#7A3A00}
+
+/* 🎫 el backstage: el Premium como la credencial colgada de su cinta */
+.pa-backstage{display:grid;justify-items:start;padding-top:44px}
+.pa-backstage .pc-prem{position:relative;width:min(560px,100%);box-sizing:border-box;padding:46px 22px 22px;background:#160710;border:3px solid #F5C542;box-shadow:6px 6px 0 #E41373}
+.pa-backstage .pc-prem::before{content:"";position:absolute;left:50%;top:-46px;width:44px;height:58px;margin-left:-22px;background:repeating-linear-gradient(90deg,#E41373 0 8px,#B40F5A 8px 16px)}
+.pa-backstage .pc-prem::after{content:"ALL ACCESS";position:absolute;top:16px;right:-3px;padding:6px 12px;background:#F5C542;color:#030304;font:400 16px/1 Anton,sans-serif;letter-spacing:.08em}
+.pa-backstage .pc-prem h2{font:400 clamp(30px,4vw,42px)/.95 Anton,Archivo,sans-serif;letter-spacing:.02em}
+.pa-backstage .pc-prem .pe-esq{display:none}
+.pa-backstage .pc-prem.tiene{border-color:#29B298}
+@media (min-width: 900px){
+  /* la credencial a lo ancho: el título y lo que trae a la izquierda, lo que da a la derecha (sin un hueco al costado) */
+  .pa-backstage{justify-items:stretch}
+  .pa-backstage .pc-prem{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:40px;align-items:center}
+  .pa-backstage .pc-prem > *{grid-column:1}
+  .pa-backstage .pc-prem > .pc-tag{justify-self:start}
+  .pa-backstage .pc-prem > p{grid-column:2;grid-row:1 / span 3;max-width:52ch;font-size:16px}
+  .pa-backstage .pc-prem > .btn{grid-column:2}
+}
+.pa-backstage .pc-prem.tiene::after{content:"TUYO · ALL ACCESS";background:#29B298}
+
+/* 🏛️ el muro de la fama: cada uno en su placa */
+.pa-muro .pc-salon{background:#0B0B0D;border:2px solid #F5C542}
+.pa-muro .pc-salon li{border:1px solid #2a2105;margin-top:6px;padding:8px 12px;background:#141006}
+.pa-muro .pc-salon li:first-child{background:#F5C542;color:#030304}
+.pa-muro .pc-salon li:first-child .pc-sn{color:#030304}
+.pa-muro .pc-salon li:first-child .pc-sp{color:#7A5A00}
+.pa-muro .pc-salon li:first-child .pc-sb{background:rgba(3,3,4,.2)}
+.pa-muro .pc-salon li:first-child .pc-sb u{background:#030304}
+@media (prefers-reduced-motion: reduce){.pa-setlist .pc-col{transform:none}}

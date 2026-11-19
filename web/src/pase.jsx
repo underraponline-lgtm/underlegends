@@ -10,12 +10,13 @@
 // ve qué es. ⚠️ EL PREMIUM NO TIENE PRECIO EN NINGÚN LADO: en la T1 lo desbloquea el rol de DRA, que se sortea acá.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { aQuienSigo, limpio, num } from './liga.js';
-import { Cara, Carta, accion } from './piezas.jsx';
-import { avance, multAhora, pasePost, pedirPase, refrescarPases, usePase, usePases } from './pase.js';
+import { Cara, Carta, Sec, accion } from './piezas.jsx';
+import { Franja } from './ranking_a.jsx';
+import { avance, multAhora, pasePost, pedirPase, proximoEspecial, refrescarPases, usePase, usePases } from './pase.js';
 import { nombreMarco } from './marcos.jsx';
 import { PREMIUM_VIVO, PaseIcono, TareaIcono, premioCorto, premioLargo } from './pase_iconos.jsx';
 import { PopPase } from './pase_pop.jsx';
-import { PistaDoble } from './pase_doble.jsx';
+import { Fechas, PistaGira } from './pase_gira.jsx';
 import { DropDia } from './pase_dia.jsx';
 import { Objeto } from './pase_objetos.jsx';
 import CSS_PAGINA from './css/pase.css?inline';
@@ -395,7 +396,6 @@ function Avisitos({ P, ahora }) {
 //     de a dos, el Salón como «Los que mandan»
 const RUTA_MIDE = { fel: '#/publicaciones', cm: '#/publicaciones', promo: '#/publicaciones', voto: '#/publicaciones', vivo: '#/eventos',
   apuesta: '#/eventos', precio: '#/tienda', caza: '#/tienda', sigue: '#/ranking', crew: '#/crews' };
-const IR_A = [['ps-premios', 'Premios'], ['ps-tareas', 'Tareas'], ['ps-premium', 'Premium'], ['ps-salon', 'El Salón']];
 const ESCENA_PASE = '/escenas/dra.webp';
 
 /** 🔢 Un número que sube de a poco hasta `n` (la XP de la portada). Con «menos movimiento», de una */
@@ -510,7 +510,7 @@ function TareasC({ P, cfg, miembro, ahora }) {
 }
 
 /** La fila de cuatro, como en el Inicio: Hoy, La semana, tu crew y el sorteo */
-function Cuatro({ P, ahora, tiene }) {
+function Cuatro({ P, ahora, tiene, onIr }) {
   const sig = (xs) => (xs || []).filter((x) => !x.hecha).sort((a, b) => (b.lleva || 0) / (b.meta || 1) - (a.lleva || 0) / (a.meta || 1))[0];
   const h = sig(P.hoy && P.hoy.tareas), s = sig(P.semana && P.semana.tareas);
   const cr = P.crew;
@@ -527,7 +527,7 @@ function Cuatro({ P, ahora, tiene }) {
     <div className="pc-4">
       {xs.map(([c, ob, et, b, sm, id, href]) => (
         // por su destino y no por la etiqueta: «Hoy · cierra en 3 h» cambia cada 30 s y rearmaba el cuadro (revisión del 16/11)
-        <a key={(id || href || '') + c} className="pc-pn" style={{ '--c': c }} href={href || '#/pase'} onClick={(e) => { if (id) { e.preventDefault(); irA(id); } }}>
+        <a key={(id || href || '') + c} className="pc-pn" style={{ '--c': c }} href={href || '#/pase'} onClick={(e) => { if (id) { e.preventDefault(); if (onIr) onIr(id); else irA(id); } }}>
           <Objeto tipo={ob} t={40} /><span><i>{et}</i><b>{b}</b><small>{sm}</small></span>
         </a>
       ))}
@@ -580,8 +580,51 @@ function PremiumC({ P, prem, tiene, onTodo }) {
       <div className="pc-pobj">{muestra.map((p) => <Objeto key={p[0]} p={p} t={56} gris={!tiene} />)}</div>
       <p>{tiene ? <>Tus Tareas dan <b>+{boost} % de XP</b> y cobras la fila de arriba nivel por nivel. Tus marcos se ponen en <a href="#/inventario">tu Inventario</a>.</>
         : <>Marcos de carta, color de nombre, reacciones, fondo y <b>+{boost} % de XP</b>. Al desbloquearlo cobras lo de los niveles que ya pasaste. En la T1 no se compra: se gana.</>}</p>
-      <button type="button" className="btn verde" onClick={onTodo}>{tiene ? 'Ver todo el Premium' : 'Cómo se consigue y el sorteo'}</button>
+      {onTodo ? <button type="button" className="btn verde" onClick={onTodo}>{tiene ? 'Ver todo el Premium' : 'Cómo se consigue y el sorteo'}</button> : null}
     </section>
+  );
+}
+
+// ── 🏁 6.87, EL PASE CON LA ESTRUCTURA DE LA LLAVE (Dlx, 19/11/2026: «sigue remakeando todo», y sobre la pista: «En pc no
+// se puede scrollear… hay cosas q no se pueden ver… o hazlo en otra forma… x eso te dije q hagas remake»). Arriba, la
+// escena: tu XP, la franja de cuatro números con su porqué, LO PRÓXIMO en la pieza blanca (lo gratis y lo premium del
+// nivel que sigue) con la semana del Pase debajo, y al costado el drop del día. Abajo, el papel con cuatro pestañas:
+// Premios (la pista, que en la compu ya no se desliza), Tareas, Premium y El Salón. El «Ir a» se fue: eran las pestañas
+// 🎤 La gira (Dlx eligió la idea el 19/11): la pista es la gira, las Tareas el setlist del show y el Premium el backstage
+// 🎤 la pista sube a la escena, debajo del afiche (Dlx, 19/11/2026: «Necesito que el track del pase este mas arriba»): las
+// pestañas son lo de detrás del show
+const PESTANAS = [['tareas', 'El setlist'], ['premium', 'Backstage'], ['salon', 'El Salón']];
+const PESTANA_DE = { 'ps-premios': 'premios', 'ps-tareas': 'tareas', 'ps-premium': 'premium', 'ps-salon': 'salon' };
+const tabDeHash = () => { const h = String(location.hash); return /premium/.test(h) ? 'premium' : /salon/.test(h) ? 'salon' : 'tareas'; };
+
+/** 🏁 La pieza blanca: lo gratis y lo premium del nivel que sigue (o lo primero, o el Pase completo) */
+function Proximo({ miembro, nivel, N, libres, prem, tiene, a, onPista }) {
+  if (miembro && nivel >= N) {
+    return (
+      <article className="pa-prox">
+        <span className="pa-k">Completaste el Pase</span>
+        <h2>Los {N} niveles</h2>
+        <p>Estás en el Salón del Pase para siempre. Lo que sigue sumando XP cobra Puntos de Tienda.</p>
+      </article>
+    );
+  }
+  const sigN = miembro ? Math.min(N, nivel + 1) : 1;
+  const g = libres[sigN - 1];
+  const pr = prem.find((x) => x[0] === sigN);
+  // sin ser de DRA: lo primero y los dos especiales que vienen después; siendo de DRA, el próximo gran premio si no es éste
+  const gran = miembro ? proximoEspecial(libres, sigN) : null;
+  const extra = miembro ? (gran ? [gran] : []) : libres.filter((p) => p && p[2] && p[0] > 1).slice(0, 2);
+  return (
+    <article className="pa-prox">
+      <span className="pa-k">{miembro ? 'Lo próximo · nivel ' + sigN : 'Lo que ganarías'}</span>
+      <div className="pa-objs">
+        {g ? <figure><Objeto p={g} t={96} an /><figcaption><b>{premioLargo(g)}</b><small>{miembro ? 'Gratis' : 'Nivel 1 · gratis'}</small></figcaption></figure> : null}
+        {miembro && pr ? <figure className={tiene ? '' : 'lock'}><Objeto p={pr} t={78} gris={!tiene} /><figcaption><b>{premioLargo(pr, true)}</b><small>{tiene ? 'Premium' : 'Premium · con candado'}</small></figcaption></figure> : null}
+        {extra.map((p) => <figure key={p[0]} className={miembro ? 'luego' : ''}><Objeto p={p} t={78} /><figcaption><b>{premioLargo(p)}</b><small>{miembro ? 'Después · nivel ' + p[0] : 'Nivel ' + p[0]}</small></figcaption></figure>)}
+      </div>
+      <p>{miembro && a ? <>Te faltan <b>{num(a.falta)} XP</b>. </> : null}
+        <button type="button" className="pa-lnk" onClick={onPista}>Ver los {N} niveles</button></p>
+    </article>
   );
 }
 
@@ -591,7 +634,8 @@ export function Pase({ liga, dc }) {
   const compu = useCompu();
   const ahora = useAhora(30000);
   const [q, setQ] = useState('');
-  const [todoPrem, setTodoPrem] = useState(() => /premium/.test(String(location.hash)));
+  const [tab, setTab] = useState(tabDeHash);
+  const [fecha, setFecha] = useState(0);
   const cuerpo = useRef(null);
   useEntran(cuerpo);
   const P = dc && P0 && P0.listo ? P0 : null;
@@ -601,9 +645,8 @@ export function Pase({ liga, dc }) {
   const libres = cfg.premios || [];
   const prem = (P && P.fila_premium && P.fila_premium.length ? P.fila_premium : cfg.premium) || [];
   const nivel = miembro ? P.nivel : 0;
+  const N = libres.length || 50;
   const tiene = !!(P && P.premium && P.premium.hasta == null);
-  const yo = liga.yo;
-  const carta = yo ? liga.cartaUrl(yo.k, 'temporada') : '';
   const fin = (liga.d.fase || {}).termina;
   // 📅 días de calendario en hora del este, como cierreDe() de ligas.jsx y cuentaT1() de lobby.jsx (18/11/2026): restaba
   // la hora a la medianoche UTC de `termina` (el 30/12 a las 7 PM ET), así que decía un día menos que el resto y «0 días»
@@ -615,101 +658,134 @@ export function Pase({ liga, dc }) {
   const a = miembro ? avance(P) : null;
   const { doble } = miembro ? multAhora(P, ahora) : {};
   const prox = miembro ? doble || (P.doble || []).find((w) => w[0] > ahora && w[0] - ahora < 21 * DIA) : null;
-  // los enlaces viejos (#/pase/tareas, #/pase/premium) bajan a su parte
+  // 🔀 la pista está arriba; lo demás, a su pestaña y abajo, al papel (los enlaces viejos #/pase/tareas y #/pase/premium
+  // abren la suya)
+  const ir = (t) => {
+    const k = PESTANA_DE[t] || t;
+    if (k === 'premios') { irA('ps-premios'); return; }
+    setTab(k); setTimeout(() => irA('ps-papel'), 40);
+  };
   useEffect(() => {
-    const h = String(location.hash);
-    const id = /tareas/.test(h) ? 'ps-tareas' : /premium/.test(h) ? 'ps-premium' : '';
-    if (id) { const t = setTimeout(() => irA(id), 400); return () => clearTimeout(t); }
-    return undefined;
+    if (!/tareas|premium|salon/.test(String(location.hash))) return undefined;
+    const t = setTimeout(() => irA('ps-papel'), 400);
+    return () => clearTimeout(t);
   }, []);
-  // lo de arriba a la izquierda: tu nivel o qué hacer para tenerlo
+  // lo de arriba: tu nivel o qué hacer para tenerlo
   let tuyo;
   if (!dc) {
-    tuyo = (<><p className="pc-p">Sube de nivel con Tareas cortas, sin necesidad de jugar. El nivel 1 abre tu carta de Temporada.</p>
+    tuyo = (<><p className="hero-p">Sube de nivel con Tareas cortas, sin necesidad de jugar. El nivel 1 abre tu carta de Temporada.</p>
       <span className="pc-acc"><button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></span></>);
-  } else if (P0 === undefined) tuyo = <p className="pc-p">Buscando tu Pase…</p>;
+  } else if (P0 === undefined) tuyo = <p className="hero-p">Buscando tu Pase…</p>;
   else if (P0 && P0.sinSesion) {
-    tuyo = (<><p className="pc-p">Tu sesión venció: entra de nuevo con Discord y aparece tu nivel.</p>
+    tuyo = (<><p className="hero-p">Tu sesión venció: entra de nuevo con Discord y aparece tu nivel.</p>
       <span className="pc-acc"><button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></span></>);
-  } else if (!P0) tuyo = <p className="pc-p ps-mal">No pude leer tu Pase. Prueba de nuevo en un rato.</p>;
-  else if (!P0.listo) tuyo = <p className="pc-p">El Pase arranca en un rato: en la próxima vuelta del ciclo.</p>;
+  } else if (!P0) tuyo = <p className="hero-p ps-mal">No pude leer tu Pase. Prueba de nuevo en un rato.</p>;
+  else if (!P0.listo) tuyo = <p className="hero-p">El Pase arranca en un rato: en la próxima vuelta del ciclo.</p>;
   else if (!miembro) {
-    tuyo = (<><p className="pc-p">Es de los miembros de Discord Rap Español: verifícate y tu Pase arranca en el nivel 1, con tu carta de Temporada.</p>
+    tuyo = (<><p className="hero-p">Es de los miembros de Discord Rap Español: verifícate y tu Pase arranca en el nivel 1, con tu carta de Temporada.</p>
       <span className="pc-acc">{dra.invita ? <a className="btn verde" href={dra.invita} target="_blank" rel="noopener noreferrer">Unirme a DRA ↗</a> : null}
         <a className="btn borde" href="#/cuenta/verificar">Cómo verificarme</a></span></>);
   }
   const hoyH = miembro ? ((P.hoy && P.hoy.tareas) || []) : [];
   const semH = miembro ? ((P.semana && P.semana.tareas) || []) : [];
-  const temH = miembro ? (P.temporada || []) : [];
-  const cuenta = (xs) => xs.filter((x) => x.hecha).length + ' de ' + xs.length;
-  const sigN = Math.min(libres.length || 50, nivel + 1);
-  const sigP = libres[sigN - 1];
+  const hechas = (xs) => xs.filter((x) => x.hecha).length;
   const xpVe = useSube(a ? a.lleva : 0);
-  // 🐉 a la derecha, el drop del día: sin cuenta o sin ser de DRA, con candado; si tu Pase llegó sin `dia` (el Worker de
+  // 🐉 al costado, el drop del día: sin cuenta o sin ser de DRA, con candado; si tu Pase llegó sin `dia` (el Worker de
   // antes), lo próximo como hasta ahora
   const conDia = !dc || !!(P && (!miembro || P.dia));
-  const sigPr = prem.find((x) => x[0] === sigN);
+  const sigN = Math.min(N, nivel + 1);
+  const sigP = libres[sigN - 1];
+  // 🏛️ ¿hay alguien en el Salón? sin nadie, la pestaña no se dibuja
+  const enSalon = pub && pub.n ? Object.entries(pub.n).filter(([k, v]) => v && v[0] > 0 && liga.existe(k)).length : 0;
+  const pestanas = PESTANAS.filter(([k]) => k !== 'salon' || enSalon);
+  const tt = pestanas.some(([k]) => k === tab) ? tab : 'tareas';
+  // la franja: cuatro números con su porqué
+  const franja = [];
+  if (miembro) {
+    franja.push({ l: 'Tu nivel', v: String(nivel), em: 'de ' + N, c: tiene ? 'con el Premium: +' + (P.boost || 20) + ' % de XP' : 'la fila premium, con candado' });
+    franja.push({ l: 'Hoy', v: hechas(hoyH) + ' de ' + hoyH.length, em: 'Tareas', c: P.hoy && P.hoy.fin ? 'cierra en ' + corto(P.hoy.fin - ahora) : 'cada día, dos nuevas' });
+    franja.push({ l: 'La semana', v: hechas(semH) + ' de ' + semH.length, em: 'Tareas', c: P.semana && P.semana.fin ? 'cierra en ' + corto(P.semana.fin - ahora) : 'cada lunes, cinco nuevas' });
+  } else {
+    franja.push({ l: 'Niveles', v: String(N), c: 'cada uno con premio, gratis para los de DRA' });
+    franja.push({ l: 'Ya tienen nivel', v: num(cuantos), c: 'en la ' + liga.temp });
+    franja.push({ l: 'Premios especiales', v: String(libres.filter((p) => p && p[2]).length), c: 'títulos, insignias, drops y más' });
+  }
+  if (prox) franja.push({ l: 'XP ×' + prox[2], v: doble ? 'Ahora' : fechaET(prox[0], { day: 'numeric', month: 'short' }), c: doble ? 'hasta el ' + fechaET(prox[1], { day: 'numeric', month: 'long' }) : 'la semana de XP doble' });
+  else if (dias != null && dias >= 0) franja.push({ l: 'Termina la ' + liga.temp, v: dias === 0 ? 'Hoy' : String(dias), em: dias === 0 ? '' : dias === 1 ? 'día' : 'días', c: 'lo de la pista se cobra hasta el último día' });
+  const contar = (k) => (k === 'tareas' ? (miembro ? hechas(hoyH) + ' de ' + hoyH.length + ' hoy' : 'cómo se sube') : k === 'premium' ? (tiene ? 'lo tienes' : 'con candado') : String(enSalon));
   return (
     <>
-      <section className="pc-por" aria-label="Tu Pase" style={{ '--esc': 'url("' + ESCENA_PASE + '")' }}>
-        <span className="pc-haz a" aria-hidden="true" /><span className="pc-haz b" aria-hidden="true" /><span className="pc-haz c" aria-hidden="true" />
-        <div className="pc-por-in">
-          <div className="pc-izq" data-tuto="ps-cab">
-            <span className="tag">PASE DE RAPERO · {liga.temp}{miembro ? ' · NIVEL ' + nivel + ' DE ' + (libres.length || 50) : ''}</span>
-            {a ? (
-              <h1>Te faltan {num(a.falta)} XP<br /><span>para el nivel {nivel + 1}</span></h1>
-            ) : <h1>{miembro && nivel >= (libres.length || 50) ? <>Completaste<br /><span>el Pase</span></> : 'Pase de rapero'}</h1>}
+      <div className="escena pa-esc" style={{ '--esc': 'url("' + ESCENA_PASE + '")', '--mo-c': '#F5C542', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
+        <span className="pa-foto" aria-hidden="true" />
+        <section className="pa-cab rka" aria-label="Tu Pase">
+          <div className="pa-cabeza">
+          <div className="pa-tx" data-tuto="ps-cab">
+            <span className="tag">PASE DE RAPERO · {liga.temp}{miembro ? ' · NIVEL ' + nivel + ' DE ' + N : ''}</span>
+            {a ? <h1 className="hero-ev">Te faltan {num(a.falta)} XP <span>para el nivel {nivel + 1}</span></h1>
+              : <h1 className="hero-ev">{miembro && nivel >= N ? <>Completaste <span>el Pase</span></> : 'Pase de rapero'}</h1>}
             {a ? (
               <div className="pc-xpw">
                 <div className="pc-xp"><span className="pc-xpb" role="img" aria-label={num(a.lleva) + ' de ' + num(a.de) + ' XP'}><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }}><i className="pc-raya" /></u></span>
                   <b>{num(xpVe)} / {num(a.de)} XP</b></div>
-                {sigP && conDia ? <small className="pc-sig">Nivel {sigN}: <b>{premioLargo(sigP)}</b>{sigPr && sigPr[2] ? <> · Premium: {premioLargo(sigPr, true)}</> : null}</small> : null}
               </div>
             ) : null}
-            {miembro ? <span className="pc-acc"><a className="btn verde" href="#/pase" onClick={(e) => { e.preventDefault(); irA('ps-tareas'); }}>Ver mis Tareas</a>
-              {!tiene ? <a className="btn borde" href="#/pase" onClick={(e) => { e.preventDefault(); irA('ps-premium'); }}>El Premium</a> : null}</span> : tuyo}
-            {miembro ? (
-              <div className="pc-chips">
-                <span><b>{cuenta(hoyH)}</b><small>Hoy</small></span>
-                <span><b>{cuenta(semH)}</b><small>La semana</small></span>
-                <span><b>{cuenta(temH)}</b><small>De temporada</small></span>
-                {prox ? <span className="x2"><b>XP ×{prox[2]}</b><small>{doble ? 'Hasta el ' + fechaET(prox[1], { day: 'numeric', month: 'numeric' }) : 'Desde el ' + fechaET(prox[0], { day: 'numeric', month: 'numeric' })}</small></span>
-                  : dias != null && dias >= 0 ? <span><b>{dias === 0 ? 'Termina hoy' : dias + ' ' + (dias === 1 ? 'día' : 'días')}</b><small>{dias === 0 ? 'La ' + liga.temp : 'Para que termine la ' + liga.temp}</small></span> : null}
-              </div>
-            ) : cuantos ? <p className="pc-p">{num(cuantos)} ya tienen nivel en el Pase.</p> : null}
+            {miembro ? <span className="pc-acc"><button type="button" className="btn verde" onClick={() => ir('tareas')}>Ver mis Tareas</button>
+              {!tiene ? <button type="button" className="btn borde" onClick={() => ir('premium')}>El Premium</button> : null}</span> : tuyo}
+            {/* 🔎 el buscador con los botones, no en su propia fila: la pista queda más arriba */}
+            <label className="pc-busca pa-busca">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="M16 16l5 5" /></svg>
+              <input type="search" value={q} onChange={(e) => setQ(e.target.value)}
+                placeholder="Busca un premio: drop, título, nivel 25…" aria-label="Buscar un premio o un nivel del Pase" enterKeyHint="search" />
+            </label>
           </div>
-          {conDia ? <DropDia P={P} miembro={miembro} dc={dc} invita={dra.invita} /> : <div className="pc-prox">
-            <span className="k">{miembro ? (nivel >= (libres.length || 50) ? 'Lo completaste' : 'Lo próximo · nivel ' + sigN) : 'Lo primero · nivel 1'}</span>
-            {sigP ? <Objeto p={miembro ? sigP : libres[0]} t={compu ? 120 : 92} an /> : null}
-            <b>{sigP ? premioLargo(miembro ? sigP : libres[0]) : ''}</b>
-            {miembro && carta && compu ? <small>Tu carta de Temporada: la abriste en el nivel 1</small> : <small>Y {num((sigP && sigP[1]) || 150)} Puntos de Tienda</small>}
-          </div>}
-        </div>
-      </section>
-      <nav className="pc-ira" data-tuto="ps-tabs" aria-label="Ir a">
-        <span className="k">Ir a</span>
-        {IR_A.map(([id, t]) => <button key={id} type="button" onClick={() => irA(id)}>{t}</button>)}
-        <label className="pc-busca">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="M16 16l5 5" /></svg>
-          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') irA('ps-premios'); }}
-            placeholder="Busca un premio: drop, título, nivel 25…" aria-label="Buscar un premio o un nivel del Pase" enterKeyHint="search" />
-        </label>
-      </nav>
-      <div className="pc-cuerpo" ref={cuerpo}>
-        {miembro ? <Cuatro P={P} ahora={ahora} tiene={tiene} /> : null}
-        {miembro ? <Avisitos P={P} ahora={ahora} /> : null}
-        <PistaDoble libres={libres} prem={prem} nivel={nivel} tiene={tiene} falta={a ? a.falta : 0} frac={a ? a.lleva / a.de : 0} q={q} miembro={miembro} />
-        <TareasC P={P} cfg={cfg} miembro={miembro} ahora={ahora} />
-        <div className="pc-dos">
-          <PremiumC P={P} prem={prem} tiene={tiene} onTodo={() => setTodoPrem(true)} />
-          <SalonC liga={liga} pub={pub} nivel={nivel} temp={temp} niveles={cfg.niveles || libres.length || 50} />
-        </div>
-        {todoPrem ? <div className="pc-todo"><Premium liga={liga} dc={dc} P={P} prem={prem} nivel={nivel} miembro={miembro} /></div> : null}
-        {!miembro && P ? <LoQueGanarias libres={libres} cuantos={cuantos} /> : null}
-        <Exclusivos libres={libres} prem={prem} max={compu ? 8 : 6} />
-        {miembro ? <Avisos P={P} /> : null}
+          {/* 🗓️ el afiche de la gira: las cinco fechas, de la plaza al estadio */}
+          <div className="pa-afiche"><span className="pa-afiche-k">Gira {liga.temp} · {N} niveles</span>
+            <Fechas nivel={nivel} N={N} miembro={miembro} onIr={(i) => { setFecha(i); ir('premios'); }} /></div>
+          </div>
+          {/* 🎟️ la gira, enseguida: la fecha con sus diez niveles */}
+          <div className="pa-gira">
+            <PistaGira libres={libres} prem={prem} nivel={nivel} tiene={tiene} falta={a ? a.falta : 0} frac={a ? a.lleva / a.de : 0} q={q} miembro={miembro} fecha={fecha} setFecha={setFecha} />
+          </div>
+          <Franja items={franja} />
+          <div className="rka-dos pa-dos">
+            <div className="rka-izq">
+              <Proximo miembro={miembro} nivel={nivel} N={N} libres={libres} prem={prem} tiene={tiene} a={a} onPista={() => ir('premios')} />
+              {miembro ? <div className="rka-caja pa-sem"><h2 className="rka-h">Tu semana en el Pase<small>lo que más te acerca</small></h2><Cuatro P={P} ahora={ahora} tiene={tiene} onIr={ir} /></div> : null}
+            </div>
+            <div className="rka-rail">
+              {conDia ? <DropDia P={P} miembro={miembro} dc={dc} invita={dra.invita} /> : (
+                <div className="rka-caja pc-prox">
+                  <span className="k">{miembro ? 'Lo próximo · nivel ' + sigN : 'Lo primero · nivel 1'}</span>
+                  {sigP ? <Objeto p={miembro ? sigP : libres[0]} t={compu ? 120 : 92} an /> : null}
+                  <b>{sigP ? premioLargo(miembro ? sigP : libres[0]) : ''}</b>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
       </div>
-      <PopPase P={P} onVer={() => irA('ps-premios')} />
+      <Sec id="ps-papel" titulo="Detrás del show" extra="rka-papel pa-papel">
+        <div className="rka-pes pa-pes" role="tablist" aria-label="Qué ver del Pase" data-tuto="ps-tabs">
+          {pestanas.map(([k, t]) => (
+            <button key={k} type="button" role="tab" aria-selected={tt === k} className={tt === k ? 'on' : ''} onClick={() => setTab(k)}>{t}<small>{contar(k)}</small></button>
+          ))}
+        </div>
+        <div className="pc-cuerpo pa-cuerpo" ref={cuerpo}>
+          {tt === 'tareas' ? <>
+            {!miembro && P ? <LoQueGanarias libres={libres} cuantos={cuantos} /> : null}
+            {miembro ? <Avisitos P={P} ahora={ahora} /> : null}
+            <div className="pa-setlist"><TareasC P={P} cfg={cfg} miembro={miembro} ahora={ahora} /></div>
+            {miembro ? <Avisos P={P} /> : null}
+          </> : null}
+          {tt === 'premium' ? <>
+            <div className="pa-backstage"><PremiumC P={P} prem={prem} tiene={tiene} /></div>
+            <div className="pc-todo"><Premium liga={liga} dc={dc} P={P} prem={prem} nivel={nivel} miembro={miembro} /></div>
+          </> : null}
+          {tt === 'salon' ? <div className="pa-muro"><SalonC liga={liga} pub={pub} nivel={nivel} temp={temp} niveles={cfg.niveles || N} /></div> : null}
+          <Exclusivos libres={libres} prem={prem} max={compu ? 8 : 6} />
+        </div>
+      </Sec>
+      <PopPase P={P} onVer={() => ir('premios')} />
     </>
   );
 }

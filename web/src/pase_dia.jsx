@@ -7,12 +7,10 @@ import { useEffect, useRef, useState } from 'react';
 import { num } from './liga.js';
 import { accion } from './piezas.jsx';
 import { pedirPase } from './pase.js';
-import { Objeto } from './pase_objetos.jsx';
-import { COLOR_RZ, pedirDrops } from './drops.jsx';
+import { abrirConEscenario, dropQuietoSvg, pedirDrops } from './drops.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const DIAS = ['LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB', 'DOM'];
-const SHARDS = [[-90, -50], [80, -60], [-70, 40], [95, 30], [-20, -80], [30, 70], [-110, 0], [110, -10], [0, 80], [60, -90]];
 
 function reloj(ms) {
   const s = Math.max(0, Math.floor(ms / 1000));
@@ -30,6 +28,18 @@ function useSegundo(activo) {
   return t;
 }
 
+/** 🐉 El Dragón Drop de verdad, quieto (el casete o la escama del escenario de los drops, `dropQuieto()`): no un dibujo
+ *  del Pase. 6.87, Dlx: «eso del huevo no es un drop ni nada porq no incluye la animacion ni nada q deberia tener» */
+function DropReal({ tipo, t = 112, gris, an }) {
+  const [svg, setSvg] = useState('');
+  useEffect(() => {
+    let vivo = true;
+    dropQuietoSvg(tipo, tipo === 'star' ? 2 : 0).then((x) => { if (vivo) setSvg(x || ''); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [tipo]);
+  return <span className={'dd2-real' + (gris ? ' gris' : '') + (an ? ' an' : '')} style={{ width: t }} aria-hidden="true" dangerouslySetInnerHTML={{ __html: svg }} />;
+}
+
 /** La semana de lunes a domingo: qué días abriste, hoy, y el domingo en dorado (ahí toca el Star) */
 function Semana({ d, hoyAbierto }) {
   return (
@@ -42,7 +52,7 @@ function Semana({ d, hoyAbierto }) {
         return (
           <li key={t} className={(ya ? 'ya' : '') + (hoy && !ya ? ' hoy' : '') + (perdido ? ' fue' : '') + (i === 6 ? ' siete' : '')}
             aria-label={t + (ya ? ': abierto' : perdido ? ': no entraste' : hoy ? ': hoy' : '') + (i === 6 ? ', Star Dragon' : '')}>
-            <Objeto tipo={tipo} t={22} gris={!ya && !hoy && !(i === 6 && d && d.star_semana)} />{t}
+            <DropReal tipo={tipo} t={22} gris={!ya && !hoy && !(i === 6 && d && d.star_semana)} />{t}
           </li>
         );
       })}
@@ -81,57 +91,37 @@ export function DropDia({ P, miembro, dc, invita }) {
     }, Math.max(0, fin - Date.now()) + 5000);
     return () => { clearTimeout(t); if (doc) doc.removeEventListener('visibilitychange', verse); };
   }, [fin]);
-  const abrir = async () => {
+  // 🐉 se abre con el escenario de siempre (pantalla completa, a toques): `/pase-dia` lo cobra y lo abre en el mismo
+  // pedido y contesta como `drop-abrir`, así que el escenario anima hasta lo que salió
+  const abrir = (e) => {
     if (pidiendo.current || !d || d.ya) return;
     pidiendo.current = true;
     setEst('abre');
-    const t0 = Date.now();
-    // 18/11/2026: sin red `conCuenta` rechaza (pedirConCuenta no tiene catch) y esto tiraba antes de soltar `pidiendo`:
-    // el botón quedaba en «Abriendo…» para siempre. Con el catch sale «No se pudo abrir: prueba de nuevo»
-    const j = W.conCuenta ? await W.conCuenta('/api/avisos/pase-dia', {}).catch(() => null) : null;
-    // que tiemble lo suyo aunque el servidor conteste rápido
-    const resta = 1250 - (Date.now() - t0);
-    if (resta > 0) await new Promise((r) => setTimeout(r, resta));
-    pidiendo.current = false;
-    if (!j || !j.ok) { setEst('mal'); return; }
-    setRes(j);
-    setEst('sale');
-    pedirPase();
-    try { pedirDrops(); } catch (e) { /* la lista de drops se pone al día sola */ }
+    let j0 = null;
+    const item = { id: 'pdia:' + d.dia, tipo: star ? 'star' : 'drop', min: star ? 2 : 0, origen: (star ? 'star:' : '') + 'pdia:' + d.dia };
+    const pedir = () => (W.conCuenta ? W.conCuenta('/api/avisos/pase-dia', {}).catch(() => null) : Promise.resolve(null)).then((j) => { j0 = j; return j; });
+    const listo = () => {
+      pidiendo.current = false;
+      if (j0 && j0.ok) { setRes(j0); setEst(''); } else setEst('mal');
+      pedirPase();
+      try { pedirDrops(); } catch (er) { /* la lista de drops se pone al día sola */ }
+    };
+    abrirConEscenario(e.currentTarget, item, pedir, listo).catch(() => { pidiendo.current = false; setEst('mal'); });
   };
   let cuerpo;
   let titulo;
   let boton = null;
   if (!dc || !miembro) {
     titulo = 'Un drop cada día, y el domingo un Star Dragon';
-    cuerpo = <span className="dd2-ped"><Objeto tipo="star" t={104} gris /><span className="dd2-cand" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><rect x="5" y="10.5" width="14" height="10" rx="1" /><path d="M8 10.5V7a4 4 0 018 0v3.5" /></svg></span></span>;
+    cuerpo = <span className="dd2-ped"><DropReal tipo="star" t={104} gris /><span className="dd2-cand" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6"><rect x="5" y="10.5" width="14" height="10" rx="1" /><path d="M8 10.5V7a4 4 0 018 0v3.5" /></svg></span></span>;
     boton = !dc ? <button type="button" className="btn dd2-b" onClick={accion.entrar}>Entrar con Discord</button>
       : invita ? <a className="btn dd2-b" href={invita} target="_blank" rel="noopener noreferrer">Unirme a DRA ↗</a> : null;
-  } else if (est === 'sale' && res) {
-    const c = COLOR_RZ[res.rareza] || '#9AA4B2';
-    titulo = res.star ? '¡Tu Star Dragon!' : '¡Te salió!';
-    cuerpo = (
-      <span className="dd2-ped">
-        <i className="dd2-flash" />
-        {SHARDS.map(([x, y], i) => <i key={i} className="dd2-shard" style={{ '--dx': x + 'px', '--dy': y + 'px', background: i % 2 ? c : '#7FD3FF', animationDelay: i * 0.02 + 's' }} />)}
-        <span className="dd2-res" style={{ '--c': c }}>
-          <i>{res.nombre}</i>
-          <b>{res.puntos ? num(res.puntos) : '«' + res.titulo + '»'}</b>
-          <small>{res.puntos ? 'Puntos de Tienda' + (res.titulo ? ' y «' + res.titulo + '»' : '') : 'Título nuevo'}</small>
-        </span>
-        <em className="dd2-mas" style={{ color: c }}>{res.puntos ? '+' + num(res.puntos) : '¡Nuevo!'}</em>
-      </span>
-    );
-    boton = <><button type="button" className="btn dd2-b blanco" onClick={() => setEst('')}>Listo · vuelve mañana</button>
-      {/* 🧢 el tope suave de la semana (17/11/2026, `conTope()` en bot/avisos.js) */}
-      <small className="dd2-nota">{res.sin_tope && res.semana ? 'Ya pasaste los ' + num(res.semana.de) + ' de la semana en drops: va a la mitad (eran ' + num(res.sin_tope) + ').'
-        : 'Queda también en tus Dragón Drops, en el Inicio.'}</small></>;
   } else if (d && (d.ya || res)) {
     const a = d.abierto || res;
     titulo = 'Ya abriste el de hoy. Vuelve mañana';
     cuerpo = (
       <span className="dd2-ped">
-        <Objeto tipo={star ? 'star' : 'drop'} t={84} gris />
+        <DropReal tipo={star ? 'star' : 'drop'} t={84} gris />
         <span className="dd2-reloj">{reloj((d.fin || 0) - ahora)}</span>
       </span>
     );
@@ -140,13 +130,13 @@ export function DropDia({ P, miembro, dc, invita }) {
     titulo = est === 'mal' ? 'No se pudo abrir: prueba de nuevo' : star ? 'Tu Star Dragon de hoy te espera' : 'Tu drop de hoy te espera';
     cuerpo = (
       <span className="dd2-ped">
-        {est !== 'abre' ? <><i className="pe-ch az" /><i className="pe-ch az b" /><i className="pe-ch az c" /></> : null}
-        <span className={est === 'abre' ? 'dd2-sacude' : ''}><Objeto tipo={star ? 'star' : 'drop'} t={112} an={est !== 'abre'} /></span>
+        <button type="button" className={'dd2-toca' + (est === 'abre' ? ' dd2-sacude' : '')} onClick={abrir} disabled={est === 'abre'} aria-label={star ? 'Abrir tu Star Dragon' : 'Abrir tu drop'}>
+          <DropReal tipo={star ? 'star' : 'drop'} t={124} an={est !== 'abre'} /></button>
       </span>
     );
     boton = <button type="button" className="btn dd2-b" onClick={abrir} disabled={est === 'abre'}>{est === 'abre' ? 'Abriendo…' : star ? 'Abrir mi Star Dragon' : 'Abrir mi drop'}</button>;
   } else return null;
-  const seis = d ? d.semana.slice(0, 6).filter(Boolean).length + (d.i < 6 && (d.ya || est === 'sale') && !d.semana[d.i] ? 1 : 0) : 0;
+  const seis = d ? d.semana.slice(0, 6).filter(Boolean).length + (d.i < 6 && (d.ya || !!res) && !d.semana[d.i] ? 1 : 0) : 0;
   const top = !d ? 'Lunes a domingo' : d.i === 6 ? (star ? '¡Domingo de Star!' : 'Domingo') : d.star_semana ? 'Día ' + (d.i + 1) + ' de 7 · el domingo, Star' : 'Esta semana ya no hay Star';
   return (
     <section className="dd2" aria-label="El drop del día">
@@ -154,7 +144,7 @@ export function DropDia({ P, miembro, dc, invita }) {
       <div className="dd2-cab"><span className="k">{star ? 'Star Dragon del día' : 'Drop del día'}</span><span className="k dd2-top">{top}</span></div>
       {cuerpo}
       <b className="dd2-t">{titulo}</b>
-      <Semana d={d} hoyAbierto={est === 'sale'} />
+      <Semana d={d} hoyAbierto={!!res} />
       {d && d.i < 6 && d.star_semana ? <small className="dd2-nota">Llevas {seis} de 6: abre uno cada día y el domingo sale un Star Dragon (de Vinilo para arriba).</small> : null}
       {boton}
     </section>

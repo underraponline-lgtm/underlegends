@@ -1193,6 +1193,17 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
  *     pal      {c, c1, c2} los colores del fondo (los de un cofre)
  *   devuelve una Promise que se cumple al cerrarse
  */
+/**
+ * 🐉 EL DROP QUIETO (6.87; Dlx, 19/11/2026: «eso del huevo no es un drop ni nada porq no incluye la animacion»): el
+ * dibujo con el que arranca el escenario —el casete DEMO de un Dragón Drop, la escama azul de un Star Dragon—, para
+ * mostrarlo antes de abrirlo. `min`: la rareza mínima (un Star arranca en Vinilo)
+ */
+export function dropQuieto(tipo, min = 0) {
+  if (tipo === 'star') return svgEscama(tRz(Math.max(2, min)), false, true);
+  const r = tRz(min);
+  return r <= 1 ? svgCasete(r, ['DEMO', 'MIXTAPE'][r], false) : r === 4 ? svgMicro(r, false) : svgDisco(r, r === 2 ? 'vinilo' : r === 3 ? 'oro' : 'diamante', false);
+}
+
 export function mostrarMomento(host, { sub = '', titulo = '', lista = [], nota = '', botones = [], pal = null, dur = 6500 } = {}) {
   const casa = host || document.body;
   const raiz = casa.getRootNode ? casa.getRootNode() : document;

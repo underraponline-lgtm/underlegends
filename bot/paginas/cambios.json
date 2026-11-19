@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.91",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T06:52:00-05:00",
+        "titulo": "El Pase es tu gira",
+        "items": [
+            "**El Pase es tu gira**: cinco fechas de diez niveles, de la plaza al estadio, cada una con su escenario. La pista va arriba y en la compu se ve entera.",
+            "**El drop del día es un Dragón Drop de verdad**: se abre a pantalla completa, a toques y con sonido.",
+            "Tus Tareas son **el setlist** del show, el Premium **el backstage** y el Salón, placas en la pared."
+        ]
+    },
+    {
         "version": "6.90",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T06:40:34-05:00",
