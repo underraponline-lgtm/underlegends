@@ -651,10 +651,10 @@ export function Pase({ liga, dc }) {
   const sigPr = prem.find((x) => x[0] === sigN);
   return (
     <>
-      <section data-tuto="ps-cab" className="pc-por" aria-label="Tu Pase" style={{ '--esc': 'url("' + ESCENA_PASE + '")' }}>
+      <section className="pc-por" aria-label="Tu Pase" style={{ '--esc': 'url("' + ESCENA_PASE + '")' }}>
         <span className="pc-haz a" aria-hidden="true" /><span className="pc-haz b" aria-hidden="true" /><span className="pc-haz c" aria-hidden="true" />
         <div className="pc-por-in">
-          <div className="pc-izq">
+          <div className="pc-izq" data-tuto="ps-cab">
             <span className="tag">PASE DE RAPERO · {liga.temp}{miembro ? ' · NIVEL ' + nivel + ' DE ' + (libres.length || 50) : ''}</span>
             {a ? (
               <h1>Te faltan {num(a.falta)} XP<br /><span>para el nivel {nivel + 1}</span></h1>

@@ -564,7 +564,7 @@ function Hoja({ id, titulo, cuantas, ahora, items, dos, sale, x, boton, onCerrar
   );
 }
 
-// 📊 «RANKING», COMO EN LA COMPU (6.87, Dlx: «debería aparecer todas las opciones de ranking ahí igual como lo hace la
+// 📊 «RANKING», COMO EN LA COMPU (6.88, Dlx: «debería aparecer todas las opciones de ranking ahí igual como lo hace la
 // PC»): tocar Ranking abre las doce tablas de «Ranking ▾» (`GRUPOS` de arriba.jsx), en dos columnas con su ícono, y
 // marca la que estás mirando. Arriba, con cuenta y en la tabla, tu lugar en la Temporada y lo que subiste desde la última
 // vez que la miraste
@@ -681,7 +681,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const enEv = EV_PAGS.includes(pagina);
   const btnJ = useRef(null);
   const cerrarJ = useCallback(() => setJm(false), []);
-  // 📊 y Ranking abre el suyo, con las doce tablas (6.87): uno abierto cierra el otro
+  // 📊 y Ranking abre el suyo, con las doce tablas (6.88): uno abierto cierra el otro
   const [rm, setRm] = useState(false);
   const [verR, saleR] = usePresencia(rm, 160);
   const [rx, setRx] = useState(0);
@@ -736,7 +736,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     if (deLaTira.length) setAviso({ suma: deLaTira.map((k) => NOMBRE_SECC[k]), nivel: novato ? 0 : nivel, cuenta: antes.length <= NOVATO.length - 1 });
   }, [firma, nivelYa, novato]); // eslint-disable-line react-hooks/exhaustive-deps
   // las secciones que abriste (`lg:barra-vistas`): ésas ya no son nuevas.
-  // 🔴 HASTA LA 6.87 ERA `lg:secc`, Y ESA CLAVE YA ERA DE OTRO (Dlx: «después de presionar ranking, desaparece la línea de
+  // 🔴 HASTA LA 6.88 ERA `lg:secc`, Y ESA CLAVE YA ERA DE OTRO (Dlx: «después de presionar ranking, desaparece la línea de
   // abajo»): App.jsx cuenta ahí, desde la 2.83, las secciones que abre cada navegador por día, como `{dia, s: […]}`. Al abrir
   // Ranking escribía su objeto, `vistas.includes` reventaba y la barra entera se apagaba (`Aislada`) hasta recargar; y cada
   // una pisaba lo de la otra, así que una sección se contaba más de una vez por día. Antes de sumar una clave `lg:`, buscarla
@@ -752,11 +752,11 @@ export function Tabbar({ liga, dc, pagina = '' }) {
 
   // 🎟️ EL PUNTO DEL PASE: subiste de nivel en el Pase desde la última vez que lo abriste (los premios llegan solos; esto
   // dice que hay algo nuevo que ver). La primera vez se anota sin punto.
-  // 🔴 En `lg:barra-pase` y no en `lg:pase-visto` (6.87): ésa es del «¡Subiste!» del Pase (pase_pop.jsx, `{temp, n}`), y las
+  // 🔴 En `lg:barra-pase` y no en `lg:pase-visto` (6.88): ésa es del «¡Subiste!» del Pase (pase_pop.jsx, `{temp, n}`), y las
   // dos se pisaban: el número de acá le borraba lo visto y el pop-up no salía nunca
   // Y CON SU TEMPORADA, como el «¡Subiste!» (`{temp, n}`): el Pase vuelve a cero con cada una, y con un número suelto el 40
   // de la T1 dejaba sin punto toda la T2 hasta pasar el 40. Se anota también el 0 y cuando bajaste (otra cuenta, otra
-  // temporada); lo de antes de la 6.87 (un número) se toma como «sin ver» y se vuelve a anotar
+  // temporada); lo de antes de la 6.88 (un número) se toma como «sin ver» y se vuelve a anotar
   const P = usePaseSiHay(!novato);
   const paseOk = !!(P && P.listo && P.miembro !== false && P.temp);
   const nivelPase = paseOk && P.nivel ? P.nivel : 0;

@@ -11,7 +11,7 @@
   ],
   "cambios": [
     {
-        "version": "6.87",
+        "version": "6.88",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T05:40:00-05:00",
         "titulo": "En el celular, Ranking abre todas sus tablas, y la barra ya no se va",
@@ -21,6 +21,17 @@
             "**Arreglado**: el «¡Subiste!» del Pase vuelve a salir cuando subes de nivel, y el punto del Pase en la barra empieza de nuevo con cada temporada.",
             "Los paneles de la barra ya no se salen de la pantalla en celulares chicos o con el teléfono acostado, y nada les tapa las filas de abajo.",
             "**También en inglés**, en `/en`, con el ☰ entero."
+        ]
+    },
+    {
+        "version": "6.87",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T05:36:24-05:00",
+        "titulo": "El tutorial, rehecho",
+        "items": [
+            "**El tutorial, rehecho**: cada paso señala una cosa chica —el buscador, un título, la tira de momentos—, con un marco y cuatro esquinas que se cierran sobre ella. Antes se encendía una sección entera y no se notaba qué te estaba mostrando.",
+            "**En la compu el texto va pegado a lo que explica**, con un pico que lo apunta; **en el celular, abajo**, y «Siguiente» no se mueve de un paso al otro. Las flechas del teclado también sirven.",
+            "**Arreglado**: en pantallas grandes (desde 1440 px) la luz caía afuera de la pantalla; los tiers de las crews, tu álbum y «Verifícate» en el celular no aparecían. Y el tutorial ahora también está en inglés, en `/en`."
         ]
     },
     {

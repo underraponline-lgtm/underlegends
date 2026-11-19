@@ -11,6 +11,9 @@ se lleva puesta la marca, CI se pone rojo en vez de que el tutorial se rompa cal
 Mira el código, no la página: una pieza que se dibuja sólo para algunos (la de Premium, la de quien tiene crew) también
 cuenta, porque para los demás el paso sale al centro, que es lo previsto. Las marcas del menú se arman con el nombre de
 cada sección (`'menu-' + …` en arriba.jsx y abajo.jsx): `menu-<x>` vale si `#/<x>` está en el menú.
+
+⚠️ Que la marca exista no dice que esté bien puesta: el 19/11/2026 existían todas y casi todas estaban sobre una sección
+entera. Eso lo mira `tuto_medir.py`, en la página (web.yml, después de cada despliegue).
 """
 import pathlib
 import re
@@ -21,9 +24,14 @@ SRC = RAIZ / 'web' / 'src'
 
 
 def pasos():
-    """Los `sel` de capitulos.js (sin los vacíos: ésos van al centro a propósito)"""
+    """Los `sel` de capitulos.js (sin los vacíos: ésos van al centro a propósito). Desde el 19/11/2026 un paso puede
+    traer una lista de repuesto (`sel: ['rk-buscar', 'rk-tabla']`, la primera que esté en esa pantalla): cada una de la
+    lista tiene que existir, o el repuesto que se creía tener no está"""
     t = (SRC / 'capitulos.js').read_text(encoding='utf-8')
-    return sorted({m for m in re.findall(r"sel: '([a-z0-9-]*)'", t) if m})
+    xs = set(re.findall(r"sel: '([a-z0-9-]*)'", t))
+    for grupo in re.findall(r"sel: \[([^\]]*)\]", t):
+        xs |= set(re.findall(r"'([a-z0-9-]+)'", grupo))
+    return sorted(m for m in xs if m)
 
 
 def marcas():
@@ -32,10 +40,14 @@ def marcas():
     for p in SRC.rglob('*.jsx'):
         t = p.read_text(encoding='utf-8')
         fijas |= set(re.findall(r'data-tuto="([a-z0-9-]+)"', t))
+        # armada en el lugar (`data-tuto={nt === 0 ? 'crw-semana' : undefined}`: el primer tier de las crews, 19/11/2026)
+        fijas |= set(re.findall(r"data-tuto=\{[^}]*?'([a-z0-9-]+)'", t))
         # 16/11/2026: un componente que pasa la marca por una propiedad (`<Cuadro tuto="cm-dias" />` y adentro
         # `data-tuto={tuto}`, el remake de Competencias 5.51) también la pone: sin esto el chequeo daba rojo con la marca en la página
         if 'data-tuto={tuto}' in t:
             fijas |= set(re.findall(r'\btuto="([a-z0-9-]+)"', t))
+            # y armada (`tuto={i === 0 ? 'tj-gal' : undefined}`, el primer estante de Tarjetas, 19/11/2026)
+            fijas |= set(re.findall(r"\btuto=\{[^}]*?'([a-z0-9-]+)'", t))
         if "data-tuto={'menu-' +" in t:
             menu = True
     return fijas, menu
@@ -64,6 +76,8 @@ def _self_check():
     # el lector de pasos tiene que ver los del corto y los de los capítulos
     ps = pasos()
     assert 'historias' in ps and 'menu-ranking' in ps and 'ps-pista' in ps, ps
+    # y los de las listas de repuesto (las dos de cada una)
+    assert 'rk-buscar' in ps and 'rk-tabla' in ps and 'hoy-tira' in ps, ps
     assert len(ps) >= 20, len(ps)
 
 

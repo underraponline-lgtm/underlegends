@@ -54,3 +54,37 @@ jobs:
 
       - name: publicar
         run: python bot/paginas_subir.py --aplicar
+
+  # 🎯 EL TUTORIAL, CONTRA LA PÁGINA RECIÉN PUBLICADA (19/11/2026, Dlx: «que se acople si actualizamos o remakeamos»).
+  # Corre el corto y los nueve capítulos paso por paso en la compu y en el celular (`herramientas/tuto_medir.py`): rojo si
+  # un paso perdió su marca, se corta, queda tapado o enciende media pantalla. Va DESPUÉS de publicar y no la frena:
+  # un tutorial que señala mal no es motivo para no subir un arreglo, pero tiene que verse. Sin credenciales: sólo lee
+  # la página pública. ~5 min (el repo es público: los minutos no cuestan)
+  tutorial:
+    needs: publicar
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # el Chromium de Playwright, con la MISMA clave que kit.yml, carta.yml y el ciclo
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
+
+      - name: instalar
+        run: |
+          pip install -q playwright
+          python -m playwright install --with-deps chromium
+
+      # Pages tarda unos segundos en servir lo recién subido en todos lados
+      - name: esperar a la página
+        run: sleep 20
+
+      - name: medir el tutorial
+        run: python herramientas/tuto_medir.py --auto

@@ -1445,9 +1445,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
 
   return (
     <>
-      <div data-tuto="ev-cab" className="escena evp-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
+      <div className="escena evp-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
         <section className="evp-cab">
-          <div className="evp-cabtx">
+          <div className="evp-cabtx" data-tuto="ev-cab">
             <span className="tag">EVENTOS · {liga.temp}</span>
             <h1 className="hero-ev largo">Eventos</h1>
             {/* lo de los 15 minutos vivía en la tarjeta del último campeón, y la hacía más alta que el título: en la compu
