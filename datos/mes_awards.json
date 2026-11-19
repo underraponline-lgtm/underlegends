@@ -10275,6 +10275,21 @@
      ],
      "organizador": "",
      "cuentas": {}
+    },
+    "1573061873710928053": {
+     "sv": "CH",
+     "nombre": "CHOP COMPE CHILL V1",
+     "mo": "2026-11-19T19:46:16Z",
+     "staff": {
+      "jurado": [
+       "chop"
+      ]
+     },
+     "orgs": [],
+     "organizador": "",
+     "cuentas": {
+      "chop": "1364747464170668042"
+     }
     }
    },
    "ver": {

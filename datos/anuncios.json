@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-19T19:25:30+00:00",
+ "cuando": "2026-11-19T19:55:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5719,6 +5719,36 @@
    "categoria_id": "1558611505040064605"
   },
   {
+   "nombre": "CHOP COMPE CHILL V1",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1573061873710928053",
+   "cuando": "2026-11-19T19:46:16",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "17ba9bb10e33206e",
+   "cupos_texto": "(16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "4x4/8x8/60-40/acapella",
+   "horario": "HORARIOS DE INSCRIPCION:",
+   "fecha": "17/11/2026",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "chop"
+    ]
+   },
+   "autor": "chop",
+   "staff_cuentas": {
+    "chop": "1364747464170668042"
+   },
+   "categoria_id": "1080379388320817233"
+  },
+  {
    "nombre": "COMPE CHOP CEO V4",
    "servidor": "CH",
    "canal": "📢—anuncios",
@@ -6022,30 +6052,6 @@
    "premios": "CUPO ALA JEIX CUP INTER 2026+FLYER PERSONALIZADO",
    "staff": {},
    "autor": "†JEIXDER",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
-   "nombre": "PUNTO MUERTO FECHA 8 (ULTIMO CUPO)",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1536840593529905232",
-   "cuando": "2026-08-11T20:55:50",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "@dante",
-   "orgs": [],
-   "autor_h": "a789461ef75a77f3",
-   "cupos_texto": "(24)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1 vs 1",
-   "horario": "",
-   "fecha": "11/08/26",
-   "premios": "+ CLASIFICACION A LA FINAL DE LA COMPETENCIA",
-   "staff": {},
-   "autor": "dante",
    "staff_cuentas": {},
    "categoria_id": "1080379388320817233"
   },
@@ -7437,6 +7443,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "DarnBless 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1573063037202735208",
+   "cuando": "2026-11-19T19:50:54"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Mathias 🇻🇪",
+   "quien": "elthiasmathias",
+   "discord_id": "1177916322122833933",
+   "msg_id": "1573062763494776924",
+   "cuando": "2026-11-19T19:49:48"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -43418,24 +43442,6 @@
    "discord_id": "1241407042195816459",
    "msg_id": "1560692731875950754",
    "cuando": "2026-10-16T16:35:43"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Trot🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1560692481639587991",
-   "cuando": "2026-10-16T16:34:43"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1560692459883724871",
-   "cuando": "2026-10-16T16:34:38"
   }
  ]
 }
