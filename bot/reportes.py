@@ -612,6 +612,41 @@ def corregir_liga(r, fix, mano, resolver, padron, ligas=None):
     return 'aplicado', '«%s» en %s ahora es %s' % (viejo, meta['n'], nuevo)
 
 
+#: 🏟️ lo que dice cada motivo de «no cuenta» (`POR_NO_CUENTA` de bot/avisos.js)
+POR_NO_CUENTA = {'exhibicion': 'era una exhibición', 'repetida': 'estaba repetida', 'otra_liga': 'era de otra liga',
+                 'anulada': 'la anuló su liga', 'no_se_jugo': 'no se jugó'}
+#: 🧮 lo que dice cada motivo de puntos sueltos (`POR_PUNTOS` de bot/avisos.js)
+POR_PUNTOS = {'bono': 'un bono de su liga', 'penalizacion': 'una penalización', 'df': 'un DF',
+              'falta': 'lo que su tabla tiene y ninguna batalla explica', 'otro': 'un ajuste de su liga'}
+
+
+def cambio_de_liga(fix):
+    """🏟️ Un reporte de liga corregido con un cambio de liga (18/11/2026, `validarDecisionReporte()` de bot/avisos.js):
+    el objeto ya lo guardó en `liga_cambios` y `ligas.aplicar_cambios()` lo aplica en esta misma corrida o en la
+    siguiente, así que acá sólo se da por corregido y se dice qué cambió, en palabras, para la campana de quien lo mandó.
+    `(estado, qué)`; `ValueError` si la liga no existe. Pura salvo `LIGAS`."""
+    import ligas as LG
+    meta = LG.LIGAS.get(str(fix.get('liga') or ''))
+    if not meta:
+        raise ValueError('no conozco la liga «%s»' % fix.get('liga'))
+    c = fix.get('cambio') or {}
+    t, d = c.get('tipo'), c.get('dato') or {}
+    par = ('%s vs %s' % (d['a'], d['b'])) if d.get('a') and d.get('b') else 'esa batalla'
+    que = (
+        '%s jugó de invitado: no entra a la tabla' % d.get('quien') + ('' if not d.get('bat') else ' (%s)' % par)
+        if t == 'invitado' else
+        '%s no cuenta: %s' % (par, POR_NO_CUENTA.get(d.get('por'), 'no era de la liga')) if t == 'no_cuenta' else
+        '%s la ganó %s, %s' % (par, d.get('gana'), 'en réplica' if d.get('como') == 'replica' else 'directo') if t == 'ganador' else
+        'se cargó %s vs %s (ganó %s)' % (d.get('a'), d.get('b'), d.get('gana')) if t == 'cargar' else
+        '%s: %s' % (d.get('nombre'), 'ganó por DF' if d.get('pts') == 3 else 'no vino nadie') if t == 'df' else
+        '«%s» es %s en esta liga' % (d.get('nombre'), d.get('es')) if t == 'nombre' else
+        'en %s, «%s» era %s' % (par, d.get('de'), d.get('es')) if t == 'lado' else
+        '%s: %+d %s (%s)' % (d.get('nombre'), d.get('pts') or 0, 'punto' if abs(d.get('pts') or 0) == 1 else 'puntos',
+                             POR_PUNTOS.get(d.get('por'), 'ajuste')) if t == 'puntos' else
+        'la temporada la ganó %s' % d.get('c') if t == 'campeon' else 'cambio de liga')
+    return 'aplicado', '%s, en %s' % (que, meta['n'])
+
+
 def corregir(cola, aplicar=False):
     """Lo que Dlx eligió corregir desde el Dashboard (`estado` = `corregir`), y la evidencia de cada reporte que todavía
     no se cerró (ver `evidencia()`). Cuántos se aplicaron."""
@@ -649,9 +684,12 @@ def corregir(cola, aplicar=False):
     for r, fix in pend:
         if fix.get('liga'):
             try:
-                if mano_w is None:
+                if fix.get('tipo') == 'liga_cambio':
+                    est, que = cambio_de_liga(fix)
+                elif mano_w is None:
                     raise ValueError('no pude leer akas_a_mano.json')
-                est, que = corregir_liga(r, fix, mano_w, resolver, padron)
+                else:
+                    est, que = corregir_liga(r, fix, mano_w, resolver, padron)
             except ValueError as e:
                 est, que = 'no_pude', str(e)
             print('   #%s  %s: %s' % (r.get('id'), est or 'esperando', que))
@@ -823,6 +861,18 @@ def _self_check():
        and filas([{'id': 5, 'quien': '9', 'llave': 'liga:fmh-carimex', 'que': 'nombre', 't': 1}], {})[0][1] == 'liga fmh-carimex',
        'un nombre de una liga: el AKA de URBF, también si la página lo mostraba resuelto («Agus» por «Agustín»); repetirlo '
        'no cambia nada; un nombre que no está, una liga que no existe o alguien nuevo, no  %s' % (no,))
+    # 🏟️ y un reporte corregido con un cambio de liga (18/11/2026): ya lo guardó el objeto, acá se da por corregido
+    c1 = cambio_de_liga({'liga': 'fmh-espana', 'cambio': {'tipo': 'invitado', 'dato': {'quien': 'OG'}}})
+    c2 = cambio_de_liga({'liga': 'fmh-espana', 'cambio': {'tipo': 'no_cuenta', 'dato': {'bat': '1', 'a': 'ORTIZ', 'b': 'ERIAN',
+                                                                                         'por': 'exhibicion'}}})
+    try:
+        cambio_de_liga({'liga': 'otra', 'cambio': {'tipo': 'invitado', 'dato': {'quien': 'OG'}}})
+        c3 = None
+    except ValueError as e:
+        c3 = str(e)
+    ok(c1 == ('aplicado', 'OG jugó de invitado: no entra a la tabla, en FMH España') and c2[0] == 'aplicado'
+       and 'exhibición' in c2[1] and c3, 'un reporte de liga corregido con un cambio de liga: queda corregido y dice qué '
+       'cambió  %s' % ([c1, c2, c3],))
     try:
         import pendientes as P
         ok('Reporte' in P.TIPOS, '«Reporte» es un tipo de `Pendientes`')

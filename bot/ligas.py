@@ -98,7 +98,11 @@ LIGAS = {
     'fmh-under': {'n': 'FMH Under', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*UNDER|UNDER.*(?:FMH|MASTER\s+HONGO)', 'ver': '1527565480003637268',
                   'tabla': '1527565426622726236', 'an': '1527564677641404487', 'cc': 'VE'},
     'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*ESPA[NÑ]A|ESPA[NÑ]A.*(?:FMH|MASTER\s+HONGO)', 'ver': '1511973539438399590',
-                   'tabla': '1511973442033946644', 'an': '1512167830919839844', 'cc': 'ES'},
+                   'tabla': '1511973442033946644', 'an': '1512167830919839844', 'cc': 'ES',
+                   # 🎤 las dos EXHIBICIONES del 10/11/2026 contra FMH Under: el renglón «# EXHIBICIÓN» va arriba del
+                   # título y el lector no lo leía (`_u()` ya sí). Guardadas antes del arreglo, la relectura no las saca
+                   'anular': {'1569825320960528424': 'exhibición: ORTIZ VS ERIAN (FMH Under), 10/11/2026',
+                              '1569835629045485740': 'exhibición: MOTERA VS TOKIO (FMH Under), 10/11/2026'}},
     'fms-titans': {'n': 'FMS Titans', 'sv': 'DDF', 'fam': 'D1', 'vre': r'TITANS', 'ver': '1551345471086272542',
                    'tabla': '1550947722385694871', 'an': '1566583195304992808', 'cc': 'PE'},
     'fms-peru': {'n': 'FMS Perú', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+PER[UÚ]', 'ver': '1556501721004376105',
@@ -192,6 +196,8 @@ BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]')
 SEP = re.compile(r'(?:\s|(?<=[\U0001F1E6-\U0001F1FF]))(?:vs\.?|v/s|versus)(?:\s|(?=[\U0001F1E6-\U0001F1FF]))|🆚|'
                  r'<a?:\w*(?:vs|versus)\w*:\d+>', re.I)
 JORNADA = re.compile(r'\bJORNADA\s*-?\s*(\d{1,2})\b|\bBATALLA\s+J\s*(\d{1,2})\b', re.I)
+#: 🎤 un renglón que dice EXHIBICIÓN (sobre `_plano()`, sin tildes): la batalla que viene abajo no es de la liga (`_u()`)
+EXHIBICION = re.compile(r'\bEXHIBICION\b', re.I)
 REPLICA = re.compile(r'\bR[EÉ]PLICA\b', re.I)
 
 
@@ -296,6 +302,12 @@ def _u(msgs):
     bats, j = [], None
     for m in msgs:
         texto = m.get('content') or ''
+        # 🎤 «# EXHIBICIÓN» EN SU PROPIO RENGLÓN, ARRIBA DEL TÍTULO (FMH España, 10/11/2026: «# EXHIBICIÓN 🎤 FMH UNDER» y
+        # abajo «# ORTIZ vs ERIAN»). `lados()` ya descarta la que lo dice en el título, pero ésta entraba como batalla de
+        # la liga: Ortiz y Motera sumaron 3 cada uno y Erian y Tokio, que no son de la liga, salieron en la tabla. La
+        # batalla se lee igual —sus veredictos tienen a quién pegarse y no cierran la de otro— y `leer_liga()` la deja
+        # afuera, como un DF
+        exh = False
         for l in texto.splitlines():
             p = _plano(l)
             lj = JORNADA.search(p)
@@ -303,9 +315,13 @@ def _u(msgs):
             if lj and not ls:
                 j = int(lj.group(1) or lj.group(2))
                 continue
+            if not ls and EXHIBICION.search(p):
+                exh = True
+                continue
             if ls:
                 bats.append({'id': m['id'], 't': m['t'], 'a': ls[0], 'b': ls[1], 'ea': ls[2], 'eb': ls[3], 'j': j,
-                             'gana': '', 'como': '', 'rep': False, 'df': False, 'por': None, 'ptb': None})
+                             'gana': '', 'como': '', 'rep': False, 'df': False, 'por': None, 'ptb': None, 'exh': exh})
+                exh = False
         if not bats:
             continue
         _u_cierre(texto, bats)
@@ -1201,7 +1217,7 @@ def leer_liga(lid, msgs, ptb=None, dfs=None):
         df_suma = L.get('df_cuenta') and not b.get('nulo') and (b.get('df') or (b.get('dfg') and not b.get('gana')))
         if df_suma and dfs is not None:
             dfs.extend(puntos_df(b))
-        if b.get('df') or b.get('nulo') or df_suma:
+        if b.get('df') or b.get('nulo') or df_suma or b.get('exh'):
             continue
         # el mismo título publicado dos veces (Faso vs MTZ, Albiceleste): cuenta el de después, que es el que se cerró
         par = {clave(b['a']), clave(b['b'])}
@@ -1246,8 +1262,15 @@ def aplicar_cambios(lid, bats, dfs, cs):
     entrada. En el orden en que se hicieron; uno que ya no tiene sobre qué (la batalla no está, el ganador no es de esa
     batalla) no hace nada.
     · `nombre`: en esta liga «nombre» es «es», como `alias` en `LIGAS`. · `ganador`: quién ganó esa batalla y cómo.
-    · `no_cuenta`: esa batalla no va. · `cargar`: una batalla que el bot no leyó. · `df`: puntos de un DF, sólo si la
-    liga los cuenta (`df_cuenta`). · `campeon` se aplica aparte, como un anuncio (`correr()`)."""
+    · `no_cuenta`: esa batalla no va (`por` dice por qué: exhibición, repetida, anulada, de otra liga, no se jugó; no cambia
+    lo que hace). · `cargar`: una batalla que el bot no leyó. · `df`: puntos de un DF, sólo si la liga los cuenta
+    (`df_cuenta`). · `campeon` se aplica aparte, como un anuncio (`correr()`).
+    · `invitado`: `quien` jugó como invitado —el 🎮 del ExtraPlayer que el host no puso—: la batalla sigue valiendo para su
+    rival y él no entra a la tabla. Con `bat`, en esa batalla; sin `bat`, en todas las suyas de esta liga (FMH España,
+    18/11/2026: OG jugó una el 12/09 y salía en la tabla de una liga de nueve).
+    · `lado`: en la batalla `bat`, `de` era en realidad `es` (sólo ahí, también si ganó): el «me equivoqué, es Kusoh» de LKR.
+    · `puntos`: `pts` (de −9 a 9) para `nombre` en la tabla, sin batalla —un bono, una penalización, el punto de Under en
+    Ceuta que no sale de ninguna batalla, un DF en una liga que no los suma solos—, en cualquier liga."""
     L = LIGAS.get(lid) or {}
     cs = sorted([c for c in cs or [] if isinstance(c, dict)], key=lambda c: c.get('id') or 0)
     ren = {clave(c['dato'].get('nombre')): c['dato'].get('es') for c in cs if c.get('tipo') == 'nombre' and c['dato'].get('es')}
@@ -1271,6 +1294,22 @@ def aplicar_cambios(lid, bats, dfs, cs):
             fuera = cual(dt_)
             if len(fuera) == 1:
                 out = [x for x in out if x is not fuera[0]]
+        elif t == 'lado' and dt_.get('de') and dt_.get('es'):
+            de, es = clave(r(dt_['de'])), r(dt_['es'])
+            for x in cual(dt_)[:1]:
+                for i in (3, 4, 5):
+                    if x[i] and clave(x[i]) == de:
+                        x[i] = es
+        elif t == 'puntos' and dt_.get('nombre') and isinstance(dt_.get('pts'), int) and dt_['pts'] and dt_.get('dia'):
+            dout.append(['%s%d' % (STAFF, c['id']), dt_['dia'] + 'T20:00:00Z', None, r(dt_['nombre']), dt_['pts']])
+        elif t == 'invitado' and dt_.get('quien'):
+            q = clave(r(dt_['quien']))
+            for x in (cual(dt_) if dt_.get('bat') else out):
+                lado = 'a' if clave(x[3]) == q else 'b' if clave(x[4]) == q else ''
+                if lado:
+                    while len(x) < 8:
+                        x.append('')
+                    x[7] = ''.join(s for s in 'ab' if s in (str(x[7] or '') + lado))
         elif t == 'cargar' and dt_.get('a') and dt_.get('b') and dt_.get('dia') and dt_.get('como') in PUNTOS:
             out.append(['%s%d' % (STAFF, c['id']), dt_['dia'] + 'T20:00:00Z', None, r(dt_['a']), r(dt_['b']), r(dt_.get('gana')),
                         dt_['como'], ''])
@@ -2387,7 +2426,9 @@ def correr(aplicar=False):
         prox = proxima_de(L, ms_an) if ms_an else v.get('prox')
         out[lid] = {'n': L['n'], 'sv': L['sv'], 'jornada': max(js) if js else None,
                     'batallas': bats, 'tabla': tabla(bats, None, dfs)}
-        if L.get('df_cuenta'):
+        # 🧮 y los puntos sueltos que puso el staff (`puntos`, 18/11/2026) en una liga que no suma DF: van al mismo lugar,
+        # o la tabla de la temporada y la página no los verían (`temporadas()` y `para_web()` leen `df`)
+        if L.get('df_cuenta') or any(str(e[0]).startswith(STAFF) for e in dfs or []):
             out[lid]['df'] = dfs                    # vacía también: sin la clave se vuelve a leer la temporada entera
         if cs:
             out[lid]['cambios'] = cs
@@ -3369,6 +3410,25 @@ def _self_check():
                                                   ['CARLA', 2, 0, 0]],
        'el staff de la liga: un nombre suyo (Ziarki es Ivan), quién ganó, una que no cuenta, una cargada; un ganador que no es '
        'de esa batalla no hace nada; un DF sólo donde los DF cuentan; y lo leído no se toca', str(_ab) + str(_ad))
+    # 🎮 el invitado, un nombre en UNA batalla y los puntos sueltos (18/11/2026: OG de invitado en FMH España, el «me
+    # equivoqué, es Kusoh» de LKR, el punto de Under en Ceuta): en cualquier liga, sin DF
+    _lb2 = [['20', '2026-09-12T16:44:13Z', None, 'CARLOSMO', 'OG', 'CARLOSMO', 'replica', ''],
+            ['21', '2026-09-13T14:13:20Z', None, 'ORTIZ', 'SNX', 'ORTIZ', 'directa', ''],
+            ['22', '2026-09-14T14:13:20Z', None, 'ORTIZ', 'OG', 'OG', 'directa', '']]
+    _cs2 = [{'id': 7, 'tipo': 'invitado', 'dato': {'bat': '20', 'quien': 'OG'}},
+            {'id': 8, 'tipo': 'lado', 'dato': {'bat': '21', 'de': 'SNX', 'es': 'KUSOH'}},
+            {'id': 9, 'tipo': 'puntos', 'dato': {'nombre': 'ORTIZ', 'pts': -1, 'dia': '2026-09-20'}},
+            {'id': 10, 'tipo': 'invitado', 'dato': {'quien': 'NADIE'}}]
+    _ab2, _ad2 = aplicar_cambios('fmh-espana', _lb2, [], _cs2)
+    _ab3 = aplicar_cambios('fmh-espana', _lb2, [], [{'id': 11, 'tipo': 'invitado', 'dato': {'quien': 'OG'}}])[0]
+    ok(_ab2[0][7] == 'b' and _ab2[1][3:6] == ['ORTIZ', 'KUSOH', 'ORTIZ'] and _ab2[2][7] == '' and [x[7] for x in _ab3] == ['b', '', 'b']
+       and [(e[3], e[4]) for e in _ad2] == [('ORTIZ', -1)] and _lb2[0][7] == '' and _lb2[1][4] == 'SNX',
+       'el staff de la liga: el invitado (en una batalla o en todas las suyas) sale de la tabla y su rival cobra; «SNX era '
+       'KUSOH» sólo en esa batalla; un punto de menos sin batalla, en una liga sin DF; lo leído no se toca',
+       str(_ab2) + str(_ad2))
+    _t2 = {f[0]: f[1:4] for f in tabla(_ab2, None, _ad2)}
+    ok(_t2 == {'ORTIZ': [2, 1, 2], 'CARLOSMO': [1, 1, 2], 'OG': [1, 1, 3], 'KUSOH': [1, 0, 0]},
+       'y la tabla queda así: Ortiz 2 jugadas 1 ganada 3−1 puntos, Carlosmo cobra la réplica, OG sólo la que jugó de verdad', _t2)
     _enf = [{'id': '1', 't': '2026-11-14T21:06:00Z', 'content': '@everyone\nANA 🇪🇸 vs BETO 🇦🇷\n🔥 CARLA 🇪🇸 vs 1200 🇰🇷 🔥\n'
              'DANI 🇪🇸 vs CARLA MC 🇻🇪'}]
     _res = [{'id': '2', 't': '2026-11-15T17:56:00Z', 'content': '<@&9>\n# PRIMERA BATALLA DE LIGA'},

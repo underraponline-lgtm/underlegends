@@ -28,32 +28,43 @@ import { usarCss } from './css.js';
 // 🎨 lo del remake (web/src/css/ligas.css): la portada nueva y el Álbum
 usarCss('ligas', CSS_PAGINA);
 
-// 🏟️ ¿UN NOMBRE ESTÁ MAL? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
-// eso?»). Elegís el nombre, contás quién es, y le llega a la Liga en Reportes del Dashboard con tu cuenta; lo decide la
-// Liga y el ciclo lo deja como el nombre de esa persona en ESE servidor (`reportes.corregir_liga()`). Como el de las llaves
+// 🏟️ ¿ALGO ESTÁ MAL EN ESTA LIGA? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
+// eso?»). Le llega a la Liga en Reportes del Dashboard con tu cuenta, y lo decide la Liga. Hasta el 18/11/2026 sólo se podía
+// decir «un nombre está mal», y Forza, con OG en FMH España, escribió «no esta en la liga xd» en la caja de «¿quién es?»:
+// ahora primero se elige qué pasó (`que`: nombre, gente, ganador u otro) y el Dashboard abre la corrección que corresponde
+const QUE_LIGA = [['nombre', 'Un nombre está mal'], ['gente', 'Alguien no es de esta liga'], ['ganador', 'Una batalla está mal'], ['otro', 'Otra cosa']];
 function AvisarLiga({ L }) {
   const [abierto, setAbierto] = useState(false);
+  const [que, setQue] = useState('');
   const [nombre, setNombre] = useState('');
   const [txt, setTxt] = useState('');
   const [est, setEst] = useState('');
   const [va, setVa] = useState(false);
   const [ok, setOk] = useState(false);
   if (ok) return <p className="lk-rep-ok">✓ ¡Gracias! Lo revisa la Liga.</p>;
-  if (!abierto) return <button type="button" className="btn borde2 chico lg-avisar" onClick={() => setAbierto(true)}>¿Un nombre está mal?</button>;
+  if (!abierto) return <button type="button" className="btn borde2 chico lg-avisar" onClick={() => setAbierto(true)}>¿Algo está mal?</button>;
   const nombres = [];
   for (const f of L.tabla || []) if (f[0] && !nombres.includes(f[0])) nombres.push(f[0]);
   for (const u of L.ult || []) for (const x of u.slice(0, 2)) if (x && !nombres.includes(x)) nombres.push(x);
+  // con un nombre (un nombre mal, alguien que no es de la liga) se elige; una batalla o lo demás, se cuenta
+  const conNombre = que === 'nombre' || que === 'gente';
+  const PIDE = {
+    nombre: '¿Quién es «' + limpio(nombre) + '»? Su nombre en la Liga o su Discord (o «soy yo»)',
+    gente: '¿Por qué? Por ejemplo: «jugó de invitado», «es de otra liga»',
+    ganador: '¿Qué batalla y qué pasó? Por ejemplo: «ORTIZ vs ERIAN era una exhibición», «la ganó Trot en réplica»',
+    otro: '¿Qué está mal?',
+  };
+  const listo = !!que && (!conNombre || !!nombre);
   const enviar = () => {
     const t = txt.replace(/\s+/g, ' ').trim();
-    if (!nombre || va) return;
-    if (t.length < 2) { setEst('Cuenta quién es.'); return; }
+    if (!listo || va) return;
+    if (t.length < (que === 'gente' ? 0 : 2)) { setEst(que === 'nombre' ? 'Cuenta quién es.' : 'Cuenta qué pasó.'); return; }
     if (!window.conCuenta) { setEst('No pude mandarlo. Prueba de nuevo en un rato.'); return; }
     setVa(true);
     setEst('');
     // 🏆 la de una temporada que terminó va con su liga (`L.liga`, 18/11/2026): su id es `<liga>~<día>`, el Worker no acepta
-    // la «~» (`validarReporte()`, 400 'llave') y se leía «No pude mandarlo» siempre. La corrección es por servidor, para
-    // todas las batallas de esa liga (`reportes.corregir_liga()`)
-    window.conCuenta('/api/avisos/reportar', { llave: 'liga:' + (L.liga || L.id), que: 'nombre', texto: t, batalla: nombre }).then((j) => {
+    // la «~» (`validarReporte()`, 400 'llave') y se leía «No pude mandarlo» siempre
+    window.conCuenta('/api/avisos/reportar', { llave: 'liga:' + (L.liga || L.id), que, texto: t, batalla: conNombre ? nombre : '' }).then((j) => {
       setVa(false);
       if (j && j.ok) { setOk(true); return; }
       const e = (j && j.error) || '';
@@ -64,14 +75,20 @@ function AvisarLiga({ L }) {
   };
   return (
     <div className="lk-rep">
-      <p className="lk-rep-t">¿Qué nombre de {L.n} está mal?</p>
-      <div className="lk-rep-q" role="group" aria-label="El nombre que está mal">
-        {nombres.map((x) => <button key={x} type="button" aria-pressed={nombre === x} className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{limpio(x)}</button>)}
+      <p className="lk-rep-t">¿Qué está mal en {L.n}?</p>
+      <div className="lk-rep-q" role="group" aria-label="Qué está mal">
+        {QUE_LIGA.map(([k, t]) => <button key={k} type="button" aria-pressed={que === k} className={que === k ? 'on' : ''}
+          onClick={() => { setQue(k); setEst(''); }}>{t}</button>)}
       </div>
-      {nombre ? <textarea aria-label="Quién es" maxLength={300} rows={2} value={txt} onChange={(e) => setTxt(e.target.value)}
-        placeholder={'¿Quién es «' + limpio(nombre) + '»? Su nombre en la Liga o su Discord (o «soy yo»)'} /> : null}
+      {conNombre ? <>
+        <p className="lk-rep-t">{que === 'gente' ? '¿Quién?' : '¿Qué nombre?'}</p>
+        <div className="lk-rep-q" role="group" aria-label="El nombre">
+          {nombres.map((x) => <button key={x} type="button" aria-pressed={nombre === x} className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{limpio(x)}</button>)}
+        </div>
+      </> : null}
+      {listo ? <textarea aria-label="Qué pasó" maxLength={300} rows={2} value={txt} onChange={(e) => setTxt(e.target.value)} placeholder={PIDE[que]} /> : null}
       <div className="lk-rep-pie">
-        <button type="button" className="btn verde chico" disabled={!nombre || va} onClick={enviar}>{va ? 'Enviando…' : 'Enviar'}</button>
+        <button type="button" className="btn verde chico" disabled={!listo || va} onClick={enviar}>{va ? 'Enviando…' : 'Enviar'}</button>
         <span aria-live="polite">{est}</span>
       </div>
       <p className="lk-rep-nota">Se guarda con tu cuenta de Discord 14 días, para revisarlo. Lo decide la Liga.</p>

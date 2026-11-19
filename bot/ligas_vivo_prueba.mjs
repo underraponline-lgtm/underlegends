@@ -29,7 +29,8 @@ for (const c of casos) {
   c.msgs.forEach((content, i) => V.leerMensajes(c.fam, [{ id: String(i + 1), t: '2026-11-04T00:0' + (i % 10) + ':00Z', content }], bats));
   // lo provisorio se decide al final, como en Python (`resolverU()`)
   bats.forEach((b) => V.resolverU(b, Date.parse('2026-11-05T00:00:00Z')));
-  const res = bats.filter((b) => !b.df).map((b) => [b.a, b.b, b.gana, b.como]);
+  // sin los DF ni las exhibiciones, como `leer_liga()`
+  const res = bats.filter((b) => !b.df && !b.exh).map((b) => [b.a, b.b, b.gana, b.como]);
   ok(JSON.stringify(res) === JSON.stringify(c.res), c.n + (JSON.stringify(res) === JSON.stringify(c.res) ? '' : ' → ' + JSON.stringify(res)));
 }
 

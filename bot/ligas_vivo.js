@@ -34,6 +34,8 @@ const EMOJI = /<a?:\w+:\d+>/g;
 const BANDERA = /[\u{1F1E6}-\u{1F1FF}]/gu;
 const SEP = /(?:\s|(?<=[\u{1F1E6}-\u{1F1FF}]))(?:vs\.?|v\/s|versus)(?:\s|(?=[\u{1F1E6}-\u{1F1FF}]))|🆚|<a?:\w*(?:vs|versus)\w*:\d+>/iu;
 const JORNADA = /\bJORNADA\s*-?\s*(\d{1,2})\b|\bBATALLA\s+J\s*(\d{1,2})\b/i;
+//: 🎤 un renglón con EXHIBICIÓN arriba del título: esa batalla no es de la liga (`EXHIBICION` y `_u()` de ligas.py)
+const EXHIBICION = /\bEXHIBICION\b/i;
 const NO_PAL = '[^\\p{L}\\p{N}_]*';
 const GANA = new RegExp('^' + NO_PAL + '(.+?)\\s+GANA\\s+(DIRECTO|DIRECTA|EN\\s+(?:LA\\s+)?R[EÉ]PLICA|DESPU[EÉ]S\\s+DE\\s+[\\p{L}\\p{N}_]+\\s+R[EÉ]PLICAS?)', 'iu');
 const GANA_DESPUES = new RegExp('^' + NO_PAL + 'GANA\\s+(.+)$', 'iu');
@@ -343,12 +345,15 @@ export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
     const renglones = crudos.flatMap((l, i) => (fam === 'K' ? l.split(CORTE_K) : [l]).map((x) => [x, fam === 'K' && i === prim]));
     const st = fam === 'K' ? sinTituloK(texto, bats[bats.length - 1]) : null;
     if (st) { const b = nueva(m, [st[0], st[1], false, false, '', ''], j); bats.push(b); nuevas.push(b); }
+    // 🎤 «# EXHIBICIÓN» en su renglón y el título abajo (FMH España, 10/11/2026): la batalla se sigue, marcada `exh`
+    let exh = false;
     for (const [l, esPrim] of renglones) {
       if (!l.trim()) continue;
       const pp = plano(l);
       const lj = JORNADA.exec(pp);
       const ls = lados(l, esPrim);
       if (fam === 'U' && lj && !ls) { j = Number(lj[1] || lj[2]); continue; }
+      if (fam === 'U' && !ls && EXHIBICION.test(pp)) { exh = true; continue; }
       if (ls) {
         if (fam === 'K') {
           // «# REPLICA LAST VS SANTZ», «# LAST VS MARCOS REPLICA 1»: la réplica de la de arriba (`TIT_REP` en ligas.py)
@@ -362,7 +367,8 @@ export function leerMensajes(fam, msgs, bats, dosHoras = 2 * 3600 * 1000) {
         }
         const pr = par(ls[0], ls[1]);
         const hay = bats.find((b) => par(b.a, b.b) === pr && Math.abs(tm - (Date.parse(b.t) || 0)) <= dosHoras);
-        if (!hay) { const b = nueva(m, ls, j); if (fam === 'K') b.df = DF_K.test(pp); bats.push(b); nuevas.push(b); }
+        if (!hay) { const b = nueva(m, ls, j); if (fam === 'K') b.df = DF_K.test(pp); if (exh) b.exh = true; bats.push(b); nuevas.push(b); }
+        exh = false;
         vistos = new Set();
         continue;
       }

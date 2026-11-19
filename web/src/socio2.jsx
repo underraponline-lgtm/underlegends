@@ -613,7 +613,7 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
       <Sec id="sp-llaves" titulo="Tus llaves" bajada="Lo que reportó la gente de tus llaves y lo que sugirió tu equipo. Los moderadores, los admins y tú lo corrigen; los asistentes lo sugieren.">
         <LlavesStaff sv={x.sv} rol={x.rol} permisos={permisos} />
       </Sec>
-      <Sec id="sp-ligas" titulo="Tus ligas" bajada="Corrige lo que el bot leyó de tus ligas, carga lo que no leyó y cierra la temporada con su campeón.">
+      <Sec id="sp-ligas" titulo="Tus ligas" bajada="Corrige lo que el bot leyó de tus ligas —quién ganó, un invitado, una batalla que no cuenta—, carga lo que no leyó, suma o resta puntos sueltos y cierra la temporada con su campeón.">
         <LigasStaff sv={x.sv} rol={x.rol} permisos={permisos} />
       </Sec>
       <Sec id="sp-quien" titulo="Quién es quién" bajada="Los nombres de tus eventos que el bot no reconoce, y tus inscripciones. Contesta quién es cada uno y el ranking lo cuenta bien.">
@@ -930,10 +930,18 @@ function LlavesStaff({ sv, rol, permisos }) {
 
 // 🏟️ TUS LIGAS: corregir lo que el bot leyó (quién ganó, una que no cuenta), cargar una batalla que no leyó, un DF donde
 // los DF suman, un nombre de tu liga y el campeón. La tabla no se edita: sale de las batallas. Lo aplica el ciclo
+// 🚫 por qué no cuenta una batalla y 🧮 por qué se suman puntos sueltos (`POR_NO_CUENTA` y `POR_PUNTOS` de bot/avisos.js,
+// 18/11/2026): los mismos que el Dashboard, cada uno de un caso que ya pasó
+const POR_NC_STAFF = [['exhibicion', 'una exhibición'], ['repetida', 'repetida'], ['otra_liga', 'de otra liga'], ['anulada', 'anulada'], ['no_se_jugo', 'no se jugó']];
+const POR_PTS_STAFF = [['bono', 'Un bono'], ['penalizacion', 'Una penalización'], ['df', 'Un DF'], ['falta', 'Su tabla lo tiene y no sale de ninguna batalla'], ['otro', 'Otro']];
 const CAMBIO_TXT = (c) => {
   const d = c.dato || {};
-  return c.tipo === 'ganador' ? limpio(d.gana) + ' ganó ' + (d.a && d.b ? limpio(d.a) + ' vs ' + limpio(d.b) : 'esa batalla') + (d.como === 'replica' ? ', en réplica' : ', directo')
-    : c.tipo === 'no_cuenta' ? (d.a && d.b ? limpio(d.a) + ' vs ' + limpio(d.b) : 'Esa batalla') + ' no cuenta'
+  const par = d.a && d.b ? limpio(d.a) + ' vs ' + limpio(d.b) : 'esa batalla';
+  return c.tipo === 'ganador' ? limpio(d.gana) + ' ganó ' + par + (d.como === 'replica' ? ', en réplica' : ', directo')
+    : c.tipo === 'invitado' ? limpio(d.quien) + ' jugó de invitado' + (d.bat ? ' en ' + par : ' en todas las suyas')
+    : c.tipo === 'lado' ? 'En ' + par + ', «' + limpio(d.de) + '» era ' + limpio(d.es)
+    : c.tipo === 'puntos' ? limpio(d.nombre) + ': ' + (d.pts > 0 ? '+' : '') + d.pts + ' · ' + ((POR_PTS_STAFF.find((x) => x[0] === d.por) || [])[1] || 'ajuste') + ' · ' + d.dia
+    : c.tipo === 'no_cuenta' ? (d.a && d.b ? limpio(d.a) + ' vs ' + limpio(d.b) : 'Esa batalla') + ' no cuenta' + (d.por ? ': ' + ((POR_NC_STAFF.find((x) => x[0] === d.por) || [])[1] || '') : '')
       : c.tipo === 'cargar' ? limpio(d.a) + ' vs ' + limpio(d.b) + ': ganó ' + limpio(d.gana) + (d.como === 'replica' ? ' en réplica' : ' directo') + ' · ' + d.dia
         : c.tipo === 'df' ? limpio(d.nombre) + ': ' + (d.pts === 3 ? 'ganó por DF (3)' : 'no vino nadie (1)') + ' · ' + d.dia
           : c.tipo === 'nombre' ? '«' + limpio(d.nombre) + '» es ' + limpio(d.es) : 'Campeón: ' + limpio(d.c);
@@ -947,6 +955,8 @@ function LigasStaff({ sv, rol, permisos }) {
   const [msg, setMsg] = useState('');
   const [form, setForm] = useState(null);
   const [fila, setFila] = useState(null);
+  const [porNc, setPorNc] = useState('exhibicion');
+  const [era, setEra] = useState({ lado: '', es: '' });
   useEffect(() => {
     let vivo = true;
     fetch('/api/ligas').then((r) => (r.ok ? r.json() : null)).then((x) => { if (vivo) setDet(x || {}); }).catch(() => { if (vivo) setDet({}); });
@@ -965,7 +975,7 @@ function LigasStaff({ sv, rol, permisos }) {
   if (!det) return <p className="pronto-p">Buscando tus ligas…</p>;
   if (!L) return <p className="sp-vacio">La Liga todavía no lee ninguna liga de tu servidor.</p>;
   const cambia = puede(rol, 'ligas', permisos);
-  const bats = (((det.ligas || {})[lid] || {}).fechas || []).flatMap((f) => f.b.map((b) => ({ a: b[0], b: b[1], g: b[2], como: b[3], id: b[6], dia: f.d })))
+  const bats = (((det.ligas || {})[lid] || {}).fechas || []).flatMap((f) => f.b.map((b) => ({ a: b[0], b: b[1], g: b[2], como: b[3], id: b[6], inv: b[8] || '', dia: f.d })))
     .filter((b) => b.id).slice(0, 40);
   const mandar = (cambio, listo) => {
     setOcup(true); setMsg('');
@@ -984,7 +994,9 @@ function LigasStaff({ sv, rol, permisos }) {
   const LISTO = 'Guardado: se ve en la página en la próxima media hora.';
   const campo = (k, ph, max = 60) => <input type="text" value={(form && form[k]) || ''} maxLength={max} placeholder={ph}
     onChange={(e) => setForm(Object.assign({}, form, { [k]: e.target.value }))} />;
-  const formas = [['cargar', 'Cargar una batalla'], ...(L.dfc ? [['df', 'Un DF']] : []), ['nombre', 'Un nombre'], ['campeon', 'Cerrar la temporada']];
+  // 🎮 y 🧮 (18/11/2026): un invitado en todas sus batallas y los puntos sueltos, además de lo de antes
+  const formas = [['cargar', 'Cargar una batalla'], ...(L.dfc ? [['df', 'Un DF']] : []), ['nombre', 'Un nombre'], ['invitado', 'Un invitado'],
+    ['puntos', 'Puntos sueltos'], ['campeon', 'Cerrar la temporada']];
   return (
     <div className="sp-lg">
       {ligas.length > 1 ? <div className="sp-lg-sel">{ligas.map((x) => (
@@ -995,7 +1007,7 @@ function LigasStaff({ sv, rol, permisos }) {
         : 'Las ligas las cambian el dueño, los admins y los moderadores. Acá ves lo que cambiaron.'}</p>
       {cambia ? <div className="sp-lg-sel">{formas.map(([k, t]) => (
         <button key={k} type="button" className={'btn chico ' + (form && form.tipo === k ? 'verde' : 'borde2')}
-          onClick={() => setForm(form && form.tipo === k ? null : { tipo: k, dia: hoyIso(), como: 'directa', pts: 3 })}>{t}</button>
+          onClick={() => setForm(form && form.tipo === k ? null : { tipo: k, dia: hoyIso(), como: 'directa', pts: k === 'puntos' ? 1 : 3, por: 'bono' })}>{t}</button>
       ))}</div> : null}
       {cambia && form ? (
         <div className="sp-lg-form">
@@ -1015,9 +1027,21 @@ function LigasStaff({ sv, rol, permisos }) {
           </> : form.tipo === 'nombre' ? <>
             <label><span>Lo escriben así</span>{campo('nombre', 'Por ejemplo: ZIARKI')}</label>
             <label><span>Y es</span>{campo('es', 'Por ejemplo: IVAN')}</label>
+          </> : form.tipo === 'invitado' ? <>
+            <label><span>Quién</span>{campo('quien', 'Como se llama en tu liga')}</label>
+            <p className="sp-ll-t">Jugó de invitado en tu liga (el 🎮 que no se puso): sus batallas siguen valiendo para su rival y él no entra a la tabla.
+              Si fue invitado en una sola, usa «Corregir» en esa batalla.</p>
+          </> : form.tipo === 'puntos' ? <>
+            <label><span>Quién</span>{campo('nombre', 'Como se llama en tu liga')}</label>
+            <label><span>Puntos</span><select value={form.pts} onChange={(e) => setForm(Object.assign({}, form, { pts: Number(e.target.value) }))}>
+              {[9, 6, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, -6, -9].map((n) => <option key={n} value={n}>{n > 0 ? '+' + n : n}</option>)}</select></label>
+            <label><span>Por qué</span><select value={form.por} onChange={(e) => setForm(Object.assign({}, form, { por: e.target.value }))}>
+              {POR_PTS_STAFF.map(([k, t]) => <option key={k} value={k}>{t}</option>)}</select></label>
+            <label><span>Día</span><input type="date" value={form.dia} onChange={(e) => setForm(Object.assign({}, form, { dia: e.target.value }))} /></label>
+            <p className="sp-ll-t">Sólo puntos, sin batalla: no suma jugadas ni ganadas.</p>
           </> : <>
             <label><span>Campeón</span><select value={form.c || ''} onChange={(e) => setForm(Object.assign({}, form, { c: e.target.value }))}>
-              <option value="">Elige</option>{(L.tabla || []).slice(0, 8).map((f) => <option key={f[0]} value={f[0]}>{limpio(f[0])}</option>)}</select></label>
+              <option value="">Elige</option>{(L.tabla || []).map((f) => <option key={f[0]} value={f[0]}>{limpio(f[0])}</option>)}</select></label>
             <p className="sp-ll-t">Cierra la temporada que se juega, como si lo anunciara tu servidor: sale en el Salón y la próxima batalla abre la siguiente.</p>
           </>}
           <button type="button" className="btn verde" disabled={ocup} onClick={() => mandar(form, LISTO)}>Guardar</button>
@@ -1027,17 +1051,34 @@ function LigasStaff({ sv, rol, permisos }) {
         <h3 className="sp-h">Las batallas <small>las últimas {bats.length} de la temporada que se ve</small></h3>
         <ol className="sp-lg-l">{bats.map((b, i) => (
           <li key={b.id + ':' + i}>
-            <span><b>{limpio(b.a)} vs {limpio(b.b)}</b><small>{b.g ? 'Ganó ' + limpio(b.g) + (b.como === 'replica' ? ' en réplica' : ' directo') : 'Sin resultado'} · {b.dia}</small></span>
+            <span><b>{limpio(b.a)}{b.inv.includes('a') ? ' 🎮' : ''} vs {limpio(b.b)}{b.inv.includes('b') ? ' 🎮' : ''}</b><small>{b.g ? 'Ganó ' + limpio(b.g) + (b.como === 'replica' ? ' en réplica' : ' directo') : 'Sin resultado'} · {b.dia}</small></span>
             {cambia ? (fila === i ? (
               <span className="sp-ll-acc">
                 {[b.a, b.b].map((n) => ['directa', 'replica'].map((como) => (
                   <button key={n + como} type="button" className="btn borde2 chico" disabled={ocup}
                     onClick={() => mandar({ tipo: 'ganador', bat: b.id, a: b.a, b: b.b, gana: n, como }, LISTO)}>{limpio(n)} · {como === 'replica' ? 'réplica' : 'directo'}</button>
                 )))}
+                {/* 🎮 uno de los dos fue invitado (18/11/2026): su rival cobra y él no entra a la tabla */}
+                {[['a', b.a], ['b', b.b]].filter(([l]) => !b.inv.includes(l)).map(([l, n]) => (
+                  <button key={'i' + l} type="button" className="btn borde2 chico" disabled={ocup}
+                    onClick={() => mandar({ tipo: 'invitado', bat: b.id, a: b.a, b: b.b, quien: n }, LISTO)}>{limpio(n)} fue invitado</button>))}
+                {/* ✍️ uno de los dos era otro, sólo en esta batalla */}
+                {[['a', b.a], ['b', b.b]].map(([l, n]) => (
+                  <button key={'l' + l} type="button" className={'btn chico ' + (era.lado === l ? 'verde' : 'borde2')} disabled={ocup}
+                    onClick={() => setEra({ lado: era.lado === l ? '' : l, es: '' })}>«{limpio(n)}» era otro</button>))}
+                {era.lado ? <>
+                  <input type="text" className="sp-in" maxLength={58} value={era.es} placeholder="Como se llama en tu liga" aria-label="Quién era"
+                    onChange={(e) => setEra(Object.assign({}, era, { es: e.target.value }))} />
+                  <button type="button" className="btn verde chico" disabled={ocup || !era.es.trim()}
+                    onClick={() => { mandar({ tipo: 'lado', bat: b.id, a: b.a, b: b.b, de: era.lado === 'a' ? b.a : b.b, es: era.es.trim() }, LISTO); setEra({ lado: '', es: '' }); }}>Guardar</button>
+                </> : null}
+                {/* 🚫 no cuenta, y por qué */}
+                <select className="sp-in" value={porNc} onChange={(e) => setPorNc(e.target.value)} aria-label="Por qué no cuenta">
+                  {POR_NC_STAFF.map(([k, t]) => <option key={k} value={k}>{t}</option>)}</select>
                 <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: no cuenta"
-                  onClick={() => mandar({ tipo: 'no_cuenta', bat: b.id, a: b.a, b: b.b }, LISTO)}>No cuenta</DosToques>
+                  onClick={() => mandar({ tipo: 'no_cuenta', bat: b.id, a: b.a, b: b.b, por: porNc }, LISTO)}>No cuenta</DosToques>
               </span>
-            ) : <button type="button" className="btn borde2 chico" onClick={() => setFila(i)}>Corregir</button>) : null}
+            ) : <button type="button" className="btn borde2 chico" onClick={() => { setFila(i); setEra({ lado: '', es: '' }); }}>Corregir</button>) : null}
           </li>
         ))}</ol>
       </> : null}

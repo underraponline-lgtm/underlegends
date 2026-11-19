@@ -3525,6 +3525,41 @@ const ok = (cond, que, det) => {
     && cl({ tipo: 'campeon', c: 'TROT' }).dato.c === 'TROT' && cl({ tipo: 'campeon', c: '<@1>' }).error && cl({ tipo: 'tabla' }).error
     && cl({ tipo: 'nombre', nombre: '@everyone', es: 'ANA' }).error,
   'un cambio de liga del staff: ganador (directa o réplica), no cuenta, cargar (con los dos, quién de ellos ganó y el día), DF (3 o 1), un nombre y el campeón; la tabla no, y nada de menciones');
+  // 🎮 el invitado y el porqué de «no cuenta» (18/11/2026, FMH España: OG de invitado sin el 🎮 y dos exhibiciones)
+  ok(cl({ tipo: 'invitado', quien: 'OG' }).dato.quien === 'OG' && !('bat' in cl({ tipo: 'invitado', quien: 'OG' }).dato)
+    && cl({ tipo: 'invitado', bat: '1548373684987625524', a: 'CARLOSMO', b: 'OG', quien: 'og' }).dato.bat === '1548373684987625524'
+    && cl({ tipo: 'invitado', bat: '155', a: 'CARLOSMO', b: 'OG', quien: 'TROT' }).error && cl({ tipo: 'invitado' }).error
+    && cl({ tipo: 'invitado', quien: '<@1>' }).error
+    && cl({ tipo: 'no_cuenta', bat: '155', por: 'exhibicion' }).dato.por === 'exhibicion'
+    && !('por' in cl({ tipo: 'no_cuenta', bat: '155' }).dato) && cl({ tipo: 'no_cuenta', bat: '155', por: 'porque si' }).error
+    && A.POR_NO_CUENTA.length === 5,
+  'el invitado (en una batalla, que sea uno de los dos, o en todas las suyas) y el motivo de «no cuenta», de una lista');
+  ok(cl({ tipo: 'lado', bat: '155', a: 'KUSOH', b: 'SNX', de: 'SNX', es: 'ISMEL' }).dato.es === 'ISMEL'
+    && cl({ tipo: 'lado', bat: '155', a: 'KUSOH', b: 'SNX', de: 'TROT', es: 'ISMEL' }).error
+    && cl({ tipo: 'lado', bat: '155', de: 'SNX', es: 'snx' }).error && cl({ tipo: 'lado', de: 'SNX', es: 'ISMEL' }).error
+    && cl({ tipo: 'puntos', nombre: 'UNDER', pts: 1, dia: '2026-10-10', por: 'falta' }).dato.pts === 1
+    && cl({ tipo: 'puntos', nombre: 'ANDY MC', pts: -3, dia: '2026-11-10', por: 'penalizacion' }).dato.pts === -3
+    && cl({ tipo: 'puntos', nombre: 'UNDER', pts: 0, dia: '2026-10-10', por: 'bono' }).error
+    && cl({ tipo: 'puntos', nombre: 'UNDER', pts: 12, dia: '2026-10-10', por: 'bono' }).error
+    && cl({ tipo: 'puntos', nombre: 'UNDER', pts: 1, dia: '2026-10-10', por: 'regalo' }).error
+    && cl({ tipo: 'puntos', nombre: 'UNDER', pts: 1, dia: '10/10', por: 'bono' }).error,
+  'un nombre en UNA batalla (uno de los dos) y los puntos sueltos (de −9 a 9, no 0, con motivo y día)');
+  // 🏟️ y un reporte de liga corregido con cualquiera de esos cambios
+  const VR = A.validarDecisionReporte;
+  const rc = VR({ id: 9, accion: 'cambio', liga: 'fmh-espana', sv: 'urbf', cambio: { tipo: 'invitado', quien: 'OG' } });
+  ok(rc.fix && rc.fix.tipo === 'liga_cambio' && rc.fix.sv === 'URBF' && rc.fix.cambio.tipo === 'invitado' && rc.causa === ''
+    && VR({ id: 9, accion: 'cambio', liga: 'fmh-espana', cambio: { tipo: 'invitado', quien: 'OG' } }).error
+    && VR({ id: 9, accion: 'cambio', liga: 'fmh-espana', sv: 'URBF', cambio: { tipo: 'tabla' } }).error
+    && VR({ id: 9, accion: 'cambio', liga: 'FMH ESPAÑA', sv: 'URBF', cambio: { tipo: 'invitado', quien: 'OG' } }).error
+    && VR({ id: 9, accion: 'cambio', liga: 'fmh-espana', sv: 'URBF', causa: 'organizador', cambio: { tipo: 'no_cuenta', bat: '1', por: 'exhibicion' } }).causa === 'organizador'
+    && VR({ id: 9, accion: 'nombre', liga: 'fmh-espana', nombre: 'OG', es: 'TheOg' }).fix.es === 'TheOg',
+  'un reporte de liga se corrige con un cambio de liga (con su servidor), y el «es otro de la Lista» de siempre sigue');
+  // 📣 y desde la página de la liga se puede decir qué pasó: un nombre, alguien que no es de la liga, una batalla u otra cosa
+  const vr = (que, texto, batalla) => A.validarReporte({ llave: 'liga:fmh-espana', que, texto, batalla }, '425356695309516810', Date.now());
+  ok(!vr('gente', 'no esta en la liga', 'OG').error && !vr('ganador', 'ORTIZ vs ERIAN era exhibición', '').error
+    && !vr('nombre', 'es Trot', 'TROT').error && !vr('otro', 'la tabla dice 9', '').error
+    && vr('perfil', 'x', '').error === 'que' && vr('otro', '', '').error === 'texto',
+  'el reporte de una liga: un nombre, alguien que sobra o falta, una batalla u otra cosa (con texto); un perfil, no');
 }
 
 {

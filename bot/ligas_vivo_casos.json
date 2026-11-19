@@ -196,6 +196,7 @@
   {"n": "K: un renglón con 🆚 que NO es el primero no abre batalla", "fam": "K", "msgs": [
     "# ANA VS BETO\n## ANA",
     "## buena batalla\ncomentario: la próxima es CECI 🆚 DANI"],
-   "res": [["ANA", "BETO", "ANA", "directa"]]}
+   "res": [["ANA", "BETO", "ANA", "directa"]]},
+  {"n": "FMH: «# EXHIBICIÓN» en su renglón, arriba del título, no es de la liga (FMH España, 10/11/2026)", "fam": "U", "msgs": ["# <:FMH:1> EXHIBICIÓN <:microfono:3> <:FMH_UNDER:4>\n# <:FMH:1> ANA 🇨🇴 <:vs:2> BETO 🇨🇴 <:FMH:1>", "**ANA 🇨🇴 : 36**\nBETO 🇨🇴: 33\n# ANA 🇨🇴 Por 3 Puntos Brother", "# <:FMH:1> CECI 🇨🇴 <:vs:2> DANI 🇨🇴 <:FMH:1>", "**CECI 🇨🇴 : 35**\nDANI 🇨🇴: 30\n# CECI 🇨🇴 Por 5 Puntos Brother"], "res": [["CECI", "DANI", "CECI", "directa"]]}
  ]
 }

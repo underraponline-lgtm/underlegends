@@ -2673,48 +2673,213 @@ async function decidirReporte(cuerpo) {
   return j.reportes || [];
 }
 
-// 🏟️ CORREGIR UN NOMBRE DE UNA LIGA (14/10/2026, Dlx: «Sí, a Reportes»): era quien lo mandó u otro de la Lista. El ciclo
-// lo deja como el AKA de ese servidor (`por_servidor`, `reportes.corregir_liga()`): vale para la liga y para las llaves
-// de ese servidor. Alguien nuevo no: una liga no crea gente
+// 🏟️ CORREGIR UNA LIGA DESDE UN REPORTE (14/10/2026, Dlx: «Sí, a Reportes»; con todas las opciones desde el 18/11/2026: «que
+// hayan suficientes opciones para cada caso basado en hechos reales»). Hasta ese día sólo se podía decir que un nombre era
+// quien lo mandó u otro de la Lista, y el reporte de OG en FMH España —jugó UNA batalla de invitado y el host no le puso el
+// 🎮— no tenía ninguna respuesta buena. Ahora hay cinco pestañas, con los mismos cambios que el staff de cada servidor hace
+// en su panel (`validarCambioLiga()` de bot/avisos.js): el reporte los guarda en el acto y el ciclo los aplica.
+// · Un nombre: quien lo mandó / otro de la Lista (el AKA de ese servidor: liga Y llaves, `reportes.corregir_liga()`) / el
+//   mismo que otro nombre de ESTA liga (JAHNOH y JAHNO, ZETRYCO y ZETRYKO) / fue invitado (su rival cobra, él no entra a la tabla).
+// · Una batalla: quién la ganó y cómo, uno de los dos fue invitado, o no cuenta y por qué (exhibición, repetida, de otra liga…).
+// · Falta una batalla · Un DF (si la liga los suma) · El campeón.
+// Alguien nuevo no: una liga no crea gente
 export const ligaDe = (liga, llave) => (((liga && liga.d && liga.d.ligas) || {}).ligas || []).find((x) => 'liga:' + x.id === String(llave)) || null;
+// las batallas de cada liga con su id, las de la página de la liga (`/api/ligas`, `fechas[].b`: [a, b, ganador, cómo, PTB a,
+// PTB b, mensaje, video, invitados]), una vez por Dashboard abierto
+let LIGAS_DET = null;
+const pedirLigasDet = () => {
+  if (!LIGAS_DET) {
+    LIGAS_DET = fetch('/api/ligas', { headers: { accept: 'application/json' } })
+      .then((x) => { if (!x.ok) throw new Error(x.status); return x.json(); })
+      .catch(() => { LIGAS_DET = null; return null; });
+  }
+  return LIGAS_DET;
+};
+// por qué no cuenta una batalla (`POR_NO_CUENTA` de bot/avisos.js), cada uno con el caso que lo trajo
+const POR_NC = [['exhibicion', 'Fue una exhibición'], ['repetida', 'Está repetida'], ['otra_liga', 'Es de otra liga'],
+  ['anulada', 'La anuló su liga'], ['no_se_jugo', 'No se jugó']];
+// y por qué se suman o restan puntos sueltos (`POR_PUNTOS`): sin batalla detrás, como el punto de Under en Ceuta
+const POR_PTS = [['bono', 'Un bono'], ['penalizacion', 'Una penalización'], ['df', 'Un DF'], ['falta', 'Su tabla lo tiene'], ['otro', 'Otro']];
+// la causa del cierre (`CAUSAS_REPORTE`), para el contador del Dashboard: lo que el bot leyó mal o lo que hizo el host
+const causaDe = (c) => (c.tipo === 'invitado' || c.tipo === 'campeon' || c.tipo === 'puntos' ? 'organizador'
+  : c.tipo === 'nombre' || c.tipo === 'lado' ? 'nombre_bot'
+    : c.tipo === 'no_cuenta' ? (['repetida', 'anulada', 'no_se_jugo'].includes(c.por) ? 'organizador' : 'llave_bot') : 'llave_bot');
+const hoyEt = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 function CorregirLiga({ r, liga, alListo }) {
-  const L = ligaDe(liga, r.llave);
+  const lid = String(r.llave).slice(5);
+  const [det, setDet] = useState(undefined);
+  useEffect(() => { let vivo = true; pedirLigasDet().then((x) => { if (vivo) setDet(x || null); }); return () => { vivo = false; }; }, []);
+  // la del lobby y, si ya no está ahí (una temporada que terminó), la de `/api/ligas`: el servidor hace falta para el cambio
+  const L = ligaDe(liga, r.llave) || (((det && det.lobby && det.lobby.ligas) || []).find((x) => x.id === lid)) || null;
+  const sv = L ? L.sv : '';
+  const bats = ((((det && det.ligas) || {})[lid] || {}).fechas || []).flatMap((f) => (f.b || []).map((b) => (
+    { a: b[0], b: b[1], g: b[2], como: b[3], id: b[6], inv: b[8] || '', dia: f.d || '' }))).filter((b) => b.id);
   const nombres = [];
-  for (const f of (L && L.tabla) || []) if (f[0] && !nombres.includes(f[0])) nombres.push(f[0]);
-  for (const u of (L && L.ult) || []) for (const x of u.slice(0, 2)) if (x && !nombres.includes(x)) nombres.push(x);
-  if (r.batalla && !nombres.includes(r.batalla)) nombres.unshift(r.batalla);
+  const sumar = (x) => { if (x && !nombres.includes(x)) nombres.push(x); };
+  if (r.batalla) sumar(r.batalla);
+  for (const f of (L && L.tabla) || []) sumar(f[0]);
+  for (const u of (L && L.ult) || []) u.slice(0, 2).forEach(sumar);
+  for (const b of bats) { sumar(b.a); sumar(b.b); }
+  const [modo, setModo] = useState(r.que === 'ganador' ? 'batalla' : 'nombre');
   const [nombre, setNombre] = useState(r.batalla || '');
-  const [quien, setQuien] = useState('');
+  // «alguien no es de esta liga» (`gente`) abre con el invitado elegido: es lo que casi siempre es (OG en FMH España)
+  const [quien, setQuien] = useState(r.que === 'gente' && r.batalla ? 'invitado' : '');
   const [es, setEs] = useState('');
+  const [mismo, setMismo] = useState('');
+  const [bat, setBat] = useState('');
+  const [acc, setAcc] = useState('');
+  const [por, setPor] = useState('exhibicion');
+  const [era, setEra] = useState('');
+  const [f, setF] = useState({ a: '', b: '', gana: '', como: 'directa', dia: hoyEt(), nombre: '', pts: 3, c: '', pn: '', pp: 1, por: 'bono' });
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
   const lista = ((liga && liga.d && liga.d.tabla) || []).map((x) => x.n);
-  const listo = !!nombre && (quien === 'reporta' || (quien === 'es' && !!es.trim()));
+  const b = bats.find((x) => x.id + '|' + x.a + '|' + x.b === bat);
+  const campo = (k, ph) => <input type="text" value={f[k]} maxLength={60} placeholder={ph} onChange={(e) => setF(Object.assign({}, f, { [k]: e.target.value }))} />;
+  // la corrección como la manda el Dashboard: el «es» de siempre, o un cambio de liga (`accion: 'cambio'`)
+  const cambio = () => {
+    if (modo === 'nombre') {
+      if (!nombre) return null;
+      if (quien === 'reporta') return { accion: 'nombre', nombre, reporta: true };
+      if (quien === 'es') return es.trim() ? { accion: 'nombre', nombre, es: es.trim() } : null;
+      if (quien === 'mismo') return mismo && mismo !== nombre ? { tipo: 'nombre', nombre, es: mismo } : null;
+      if (quien === 'invitado') return { tipo: 'invitado', quien: nombre };
+      return null;
+    }
+    if (modo === 'batalla') {
+      if (!b || !acc) return null;
+      const par = { bat: b.id, a: b.a, b: b.b };
+      if (acc === 'nc') return Object.assign({ tipo: 'no_cuenta', por }, par);
+      const [k, lado, como] = acc.split(':');
+      const n = lado === 'a' ? b.a : b.b;
+      if (k === 'l') return era.trim() && era.trim().toLowerCase() !== n.toLowerCase() ? Object.assign({ tipo: 'lado', de: n, es: era.trim() }, par) : null;
+      return k === 'i' ? Object.assign({ tipo: 'invitado', quien: n }, par) : Object.assign({ tipo: 'ganador', gana: n, como }, par);
+    }
+    if (modo === 'falta') return f.a.trim() && f.b.trim() && f.gana ? { tipo: 'cargar', a: f.a.trim(), b: f.b.trim(), gana: f.gana, como: f.como, dia: f.dia } : null;
+    if (modo === 'df') return f.nombre.trim() ? { tipo: 'df', nombre: f.nombre.trim(), pts: Number(f.pts), dia: f.dia } : null;
+    if (modo === 'puntos') return f.pn.trim() && Number(f.pp) ? { tipo: 'puntos', nombre: f.pn.trim(), pts: Number(f.pp), por: f.por, dia: f.dia } : null;
+    return f.c ? { tipo: 'campeon', c: f.c } : null;
+  };
+  const c = cambio();
+  // ⚠️ elegir lo que la liga ya dice no cambia nada: se dice (como en las llaves, «estoy haciendo click a aplicar pero nada»)
+  const yaDice = c && c.tipo === 'ganador' && b && b.g === c.gana && b.como === c.como ? 'La liga ya dice que ' + c.gana + ' la ganó así.'
+    : c && c.tipo === 'invitado' && b && b.inv.includes(acc.split(':')[1]) ? 'Ya figura como invitado en esa batalla.' : '';
   const aplicar = async () => {
     setOcup(true); setMsg('');
     try {
-      alListo(await decidirReporte(Object.assign({ id: r.id, accion: 'nombre', liga: String(r.llave).slice(5), nombre },
-        quien === 'reporta' ? { reporta: true } : { es: es.trim() })));
+      const cuerpo = c.accion ? Object.assign({ id: r.id, liga: lid }, c)
+        : { id: r.id, accion: 'cambio', liga: lid, sv, cambio: c, causa: causaDe(c) };
+      alListo(await decidirReporte(cuerpo));
     } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
   };
   const id = 'repl' + r.id;
+  const radio = (k, txt, extra) => (
+    <label><input type="radio" name={id} checked={quien === k} onChange={() => setQuien(k)} /> {txt}{extra}</label>);
+  const NOTA = {
+    reporta: 'Queda como su nombre en ' + (sv || 'ese servidor') + ': en la liga y en las llaves de ese servidor.',
+    es: 'Queda como su nombre en ' + (sv || 'ese servidor') + ': en la liga y en las llaves de ese servidor.',
+    mismo: 'Sólo en esta liga: los dos nombres pasan a ser una fila de la tabla.',
+    invitado: 'Sus batallas en esta liga siguen valiendo para su rival, y él sale de la tabla (como el 🎮 que el host no puso).',
+  };
+  const formas = [['nombre', 'Un nombre'], ['batalla', 'Una batalla'], ['falta', 'Falta una batalla'], ...(L && L.dfc ? [['df', 'Un DF']] : []),
+    ['puntos', 'Puntos sueltos'], ['campeon', 'El campeón']];
   return (
     <div className="db-rep-form">
-      <span className="db-rep-p">¿Qué nombre de {L ? L.n : 'la liga'} está mal?</span>
-      <div className="db-opc">{nombres.map((x) => <button key={x} type="button" className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{x}</button>)}</div>
-      {nombre ? <>
-        <span className="db-rep-p">«{nombre}» es…</span>
+      <div className="db-opc" role="group" aria-label="Qué corregir">
+        {formas.map(([k, t]) => <button key={k} type="button" className={modo === k ? 'on' : ''} onClick={() => { setModo(k); setMsg(''); }}>{t}</button>)}
+      </div>
+      {modo === 'nombre' ? <>
+        <span className="db-rep-p">¿Qué nombre de {L ? L.n : 'la liga'} está mal?</span>
+        <div className="db-opc">{nombres.map((x) => <button key={x} type="button" className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{x}</button>)}</div>
+        {nombre ? <>
+          <span className="db-rep-p">«{nombre}» es…</span>
+          <div className="db-rep-q">
+            {radio('reporta', 'quien lo mandó', r.evid && r.evid.quien ? ' (' + r.evid.quien + ')' : r.de ? ' (' + r.de + ')' : '')}
+            <label><input type="radio" name={id} checked={quien === 'es'} onChange={() => setQuien('es')} /> otro de la Lista:
+              <input type="text" list={id + 'l'} value={es} placeholder="su nombre" onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /></label>
+            <datalist id={id + 'l'}>{lista.map((x) => <option key={x} value={x} />)}</datalist>
+            <label><input type="radio" name={id} checked={quien === 'mismo'} onChange={() => setQuien('mismo')} /> el mismo que otro de esta liga:
+              <select className="db-sel" value={mismo} onFocus={() => setQuien('mismo')} onChange={(e) => { setMismo(e.target.value); setQuien('mismo'); }}>
+                <option value="">Elige</option>{nombres.filter((x) => x !== nombre).map((x) => <option key={x} value={x}>{x}</option>)}
+              </select></label>
+            {radio('invitado', 'un invitado: no es de esta liga', '')}
+          </div>
+          {quien ? <p className="db-rep-nota">{NOTA[quien]}</p> : null}
+        </> : null}
+      </> : modo === 'batalla' ? <>
+        <span className="db-rep-p">¿Qué batalla de {L ? L.n : 'la liga'}?</span>
+        {det === undefined ? <p className="db-rep-nota">Trayendo las batallas…</p> : !bats.length ? <p className="db-rep-nota">No encuentro las batallas de esta liga en la página.</p>
+          : <select className="db-sel" value={bat} onChange={(e) => { setBat(e.target.value); setAcc(''); }}>
+            <option value="">Elige la batalla</option>
+            {bats.map((x) => <option key={x.id + '|' + x.a + '|' + x.b} value={x.id + '|' + x.a + '|' + x.b}>{x.a} vs {x.b}{x.dia ? ' · ' + x.dia : ''} (dice: {x.g ? x.g + (x.como === 'replica' ? ', réplica' : ', directo') : 'sin resultado'}{x.inv ? ' · 🎮' : ''})</option>)}
+          </select>}
+        {b ? <>
+          <span className="db-rep-p">¿Qué pasó?</span>
+          <div className="db-opc">
+            {[['a', b.a], ['b', b.b]].map(([l, n]) => ['directa', 'replica'].map((como) => (
+              <button key={l + como} type="button" className={acc === 'g:' + l + ':' + como ? 'on' : ''} onClick={() => setAcc('g:' + l + ':' + como)}>Ganó {n} · {como === 'replica' ? 'réplica' : 'directo'}</button>)))}
+          </div>
+          <div className="db-opc">
+            {[['a', b.a], ['b', b.b]].map(([l, n]) => (
+              <button key={'i' + l} type="button" className={acc === 'i:' + l ? 'on' : ''} onClick={() => setAcc('i:' + l)}>{n} fue invitado</button>))}
+            <button type="button" className={acc === 'nc' ? 'on' : ''} onClick={() => setAcc('nc')}>No cuenta</button>
+          </div>
+          <div className="db-opc">
+            {[['a', b.a], ['b', b.b]].map(([l, n]) => (
+              <button key={'l' + l} type="button" className={acc === 'l:' + l ? 'on' : ''} onClick={() => setAcc('l:' + l)}>«{n}» era otro</button>))}
+          </div>
+          {acc === 'nc' ? <div className="db-opc" role="group" aria-label="Por qué no cuenta">
+            {POR_NC.map(([k, t]) => <button key={k} type="button" className={por === k ? 'on' : ''} onClick={() => setPor(k)}>{t}</button>)}
+          </div> : null}
+          {acc.startsWith('l:') ? <div className="db-rep-q"><label>Era: <input type="text" list={id + 'n'} value={era} maxLength={60} placeholder="como se llama en la liga"
+            onChange={(e) => setEra(e.target.value)} /></label><datalist id={id + 'n'}>{nombres.map((x) => <option key={x} value={x} />)}</datalist></div> : null}
+          <p className="db-rep-nota">{acc === 'nc' ? 'Sale de la tabla para los dos.' : acc.startsWith('i:') ? 'La batalla sigue valiendo para su rival, y el invitado no entra a la tabla.'
+            : acc.startsWith('l:') ? 'Sólo en esta batalla, también si la ganó: el resto de la liga no cambia.' : 'Cambia el resultado de esa batalla, y la tabla con él.'}</p>
+        </> : null}
+      </> : modo === 'falta' ? <>
+        <span className="db-rep-p">La batalla que el bot no leyó</span>
         <div className="db-rep-q">
-          <label><input type="radio" name={id} checked={quien === 'reporta'} onChange={() => setQuien('reporta')} /> quien lo mandó{r.evid && r.evid.quien ? ' (' + r.evid.quien + ')' : r.de ? ' (' + r.de + ')' : ''}</label>
-          <label><input type="radio" name={id} checked={quien === 'es'} onChange={() => setQuien('es')} /> otro de la Lista:
-            <input type="text" list={id + 'l'} value={es} placeholder="su nombre" onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /></label>
-          <datalist id={id + 'l'}>{lista.map((x) => <option key={x} value={x} />)}</datalist>
+          <label>Uno: {campo('a', 'como lo escriben en la liga')}</label>
+          <label>El otro: {campo('b', 'como lo escriben en la liga')}</label>
+          <label>Ganó: <select className="db-sel" value={f.gana} onChange={(e) => setF(Object.assign({}, f, { gana: e.target.value }))}>
+            <option value="">Elige</option>{[f.a.trim(), f.b.trim()].filter(Boolean).map((n) => <option key={n} value={n}>{n}</option>)}</select></label>
+          <label>Cómo: <select className="db-sel" value={f.como} onChange={(e) => setF(Object.assign({}, f, { como: e.target.value }))}>
+            <option value="directa">Directo</option><option value="replica">En réplica</option></select></label>
+          <label>Día: <input type="date" value={f.dia} onChange={(e) => setF(Object.assign({}, f, { dia: e.target.value }))} /></label>
         </div>
-      </> : null}
-      <p className="db-rep-nota">Queda como su nombre en {L ? L.sv : 'ese servidor'}: en la liga y en las llaves de ese servidor. Lo aplica el ciclo en su próxima corrida y a quien lo mandó le llega a la campana.</p>
+      </> : modo === 'df' ? <>
+        <span className="db-rep-p">Un DF ({L ? L.n : 'la liga'} los suma)</span>
+        <div className="db-rep-q">
+          <label>Quién: {campo('nombre', 'como lo escriben en la liga')}</label>
+          <label>Qué pasó: <select className="db-sel" value={f.pts} onChange={(e) => setF(Object.assign({}, f, { pts: Number(e.target.value) }))}>
+            <option value={3}>Ganó por DF: 3 puntos</option><option value={1}>No vino nadie: 1 punto</option></select></label>
+          <label>Día: <input type="date" value={f.dia} onChange={(e) => setF(Object.assign({}, f, { dia: e.target.value }))} /></label>
+        </div>
+      </> : modo === 'puntos' ? <>
+        <span className="db-rep-p">Puntos que su tabla suma o resta sin una batalla</span>
+        <div className="db-rep-q">
+          <label>Quién: <input type="text" list={id + 'n'} value={f.pn} maxLength={60} placeholder="como se llama en la liga"
+            onChange={(e) => setF(Object.assign({}, f, { pn: e.target.value }))} /></label>
+          <datalist id={id + 'n'}>{nombres.map((x) => <option key={x} value={x} />)}</datalist>
+          <label>Puntos: <select className="db-sel" value={f.pp} onChange={(e) => setF(Object.assign({}, f, { pp: Number(e.target.value) }))}>
+            {[9, 6, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, -6, -9].map((n) => <option key={n} value={n}>{n > 0 ? '+' + n : n}</option>)}</select></label>
+          <label>Día: <input type="date" value={f.dia} onChange={(e) => setF(Object.assign({}, f, { dia: e.target.value }))} /></label>
+        </div>
+        <div className="db-opc" role="group" aria-label="Por qué">
+          {POR_PTS.map(([k, t]) => <button key={k} type="button" className={f.por === k ? 'on' : ''} onClick={() => setF(Object.assign({}, f, { por: k }))}>{t}</button>)}
+        </div>
+        <p className="db-rep-nota">Sólo puntos: no suma jugadas ni ganadas.</p>
+      </> : <>
+        <span className="db-rep-p">¿Quién ganó la temporada?</span>
+        <select className="db-sel" value={f.c} onChange={(e) => setF(Object.assign({}, f, { c: e.target.value }))}>
+          <option value="">Elige</option>{((L && L.tabla) || []).map((x) => <option key={x[0]} value={x[0]}>{x[0]}</option>)}</select>
+        <p className="db-rep-nota">Cierra la temporada que se juega, como si lo anunciara su servidor.</p>
+      </>}
+      <p className="db-rep-nota">{c && !c.accion ? 'Queda en los cambios de ' + (L ? L.n : 'la liga') + ', que el staff de ' + (sv || 'su servidor') + ' ve en su panel y puede deshacer. ' : ''}Lo aplica el ciclo en su próxima corrida y a quien lo mandó le llega a la campana.</p>
+      {yaDice ? <p className="db-rep-ya">{yaDice}</p> : null}
       <div className="cu-btns">
-        <button type="button" className="btn verde chico" disabled={!listo || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>
-        {!listo ? <small>{!nombre ? 'Elige el nombre.' : 'Elige quién es.'}</small> : null}
+        <button type="button" className="btn verde chico" disabled={!c || !!yaDice || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>
+        {!c ? <small>{modo === 'nombre' ? (!nombre ? 'Elige el nombre.' : 'Elige quién es.') : modo === 'batalla' ? (!b ? 'Elige la batalla.' : 'Elige qué pasó.') : 'Completa lo que falta.'}</small> : null}
         {msg ? <small role="status">{msg}</small> : null}
       </div>
     </div>

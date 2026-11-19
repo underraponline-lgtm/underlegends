@@ -4616,7 +4616,9 @@ export function validarReporte(d, id, ahora) {
   if (perfil ? !claveValida(llave.slice(7)) : !/^(\d{1,6}|v:\d{15,22}|liga:[a-z0-9-]{2,40})$/.test(llave)) return { error: 'llave', estado: 400 };
   const que = String((d && d.que) || '');
   if (!Object.prototype.hasOwnProperty.call(QUE_REPORTE, que)) return { error: 'que', estado: 400 };
-  if (llave.startsWith('liga:') && que !== 'nombre' && que !== 'otro') return { error: 'que', estado: 400 };
+  // 🏟️ y desde el 18/11/2026 también «el ganador está mal» y «falta o sobra alguien» (Forza, con OG en FMH España, escribió
+  // «no esta en la liga xd» en la caja de «¿quién es?» porque no había otra): el Dashboard abre la corrección que corresponde
+  if (llave.startsWith('liga:') && !['nombre', 'otro', 'ganador', 'gente'].includes(que)) return { error: 'que', estado: 400 };
   if (perfil !== (que === 'perfil')) return { error: 'que', estado: 400 };
   const texto = String((d && d.texto) || '').replace(/\s+/g, ' ').trim();
   if (texto.length > 300) return { error: 'largo', estado: 413 };
@@ -4672,15 +4674,27 @@ export function socioPuede(rol, que) {
 //: 🏟️ LO QUE EL STAFF DE UN SERVIDOR PUEDE CAMBIAR DE SU LIGA (Dlx, 16/11/2026, Krish: «quiero poner las cosas por mi propia
 // cuenta»). La tabla no se escribe a mano: sale de las batallas, así nunca hay dos números distintos. Lo aplica el ciclo
 // (`bot/ligas.py`, `aplicar_cambios()`) cada media hora, sobre lo que leyó de los canales
-export const CAMBIOS_LIGA = ['ganador', 'no_cuenta', 'cargar', 'df', 'nombre', 'campeon'];
+export const CAMBIOS_LIGA = ['ganador', 'no_cuenta', 'cargar', 'df', 'nombre', 'campeon', 'invitado', 'lado', 'puntos'];
+//: 🧮 POR QUÉ SE SUMAN O RESTAN PUNTOS SUELTOS (`puntos`, 18/11/2026): un bono de su liga, una penalización, un DF en una
+// liga que no los suma sola (LATAM), o el punto que su tabla tiene y ninguna batalla explica (Under en Ceuta, desde el 10/10)
+export const POR_PUNTOS = ['bono', 'penalizacion', 'df', 'falta', 'otro'];
+//: 🚫 POR QUÉ NO CUENTA UNA BATALLA (18/11/2026, Dlx: «que hayan suficientes opciones para cada caso basado en hechos
+// reales»). No cambia lo que hace —esa batalla no va— pero queda dicho en el registro y en la página del staff:
+// la exhibición de FMH España (10/11), la repetida de LKR («REPETIMIENTO DE JORNADA 2», 16/10), la de otra liga que comparte
+// el canal (FRZ y su FMS World Series), la que el host anuló y la que nunca se jugó
+export const POR_NO_CUENTA = ['exhibicion', 'repetida', 'otra_liga', 'anulada', 'no_se_jugo'];
 /**
  * ¿Vale un cambio de liga? `{tipo, dato}` o `{error}`. Pura (`bot/avisos_prueba.mjs`).
  * · `ganador`: la batalla `bat` (su id) la ganó `gana` (uno de sus lados, lo valida el ciclo), `directa` o `replica`.
- * · `no_cuenta`: la batalla `bat` no cuenta (repetida, anulada).
+ * · `no_cuenta`: la batalla `bat` no cuenta; `por` (opcional, de `POR_NO_CUENTA`) dice por qué.
  * · `cargar`: una batalla que el bot no leyó: `a`, `b`, quién ganó (`gana`, uno de los dos), `como` y el día (`dia`).
  * · `df`: `nombre` ganó por DF (3) o sacó 1 cuando no vino nadie (`pts`), el día `dia`. Sólo suma en una liga que cuenta los DF.
  * · `nombre`: en esta liga, `nombre` es `es` (el apodo de alguien, como `alias` en `LIGAS`).
  * · `campeon`: la temporada terminó con `c` de campeón (como si lo anunciara su servidor).
+ * · `invitado`: `quien` jugó de invitado (el 🎮 que el host no puso): su rival cobra y él no entra a la tabla. Con `bat`,
+ *   en esa batalla; sin `bat`, en todas las suyas de la liga (FMH España, 18/11/2026: OG, el 12/09).
+ * · `lado`: en la batalla `bat`, `de` (uno de los dos) era en realidad `es`; sólo ahí («me equivoqué, es Kusoh», LKR).
+ * · `puntos`: `pts` (de −9 a 9, no 0) para `nombre` en la tabla, sin batalla, el día `dia`, y `por` de `POR_PUNTOS`.
  */
 export function validarCambioLiga(d) {
   const tipo = String((d && d.tipo) || '');
@@ -4693,12 +4707,40 @@ export function validarCambioLiga(d) {
   const como = String((d && d.como) || 'directa');
   const dia = String((d && d.dia) || '');
   const diaOk = /^\d{4}-\d{2}-\d{2}$/.test(dia) && !Number.isNaN(Date.parse(dia + 'T12:00:00Z'));
+  if (tipo === 'lado') {
+    if (!/^[A-Za-z0-9:_-]{1,40}$/.test(bat)) return { error: 'falta la batalla' };
+    const de = txt(d.de, 60), es = txt(d.es, 60), a = txt(d.a, 60), b = txt(d.b, 60);
+    if (!de || !es || de.toLowerCase() === es.toLowerCase()) return { error: 'falta el nombre' };
+    if (a && b && ![a, b].some((x) => x.toLowerCase() === de.toLowerCase())) return { error: 'no jugó esa batalla' };
+    return { tipo, dato: Object.assign({ bat, de, es }, a && b ? { a, b } : {}) };
+  }
+  if (tipo === 'puntos') {
+    const nombre = txt(d.nombre, 60), pts = Number(d.pts), por = String((d && d.por) || '');
+    if (!nombre) return { error: 'falta el nombre' };
+    if (!Number.isInteger(pts) || !pts || Math.abs(pts) > 9) return { error: 'los puntos: de −9 a 9' };
+    if (!POR_PUNTOS.includes(por)) return { error: 'el motivo' };
+    if (!diaOk) return { error: 'falta el día' };
+    return { tipo, dato: { nombre, pts, dia, por } };
+  }
+  if (tipo === 'invitado') {
+    const quien = txt(d.quien, 60);
+    if (!quien) return { error: 'falta quién' };
+    if (!bat) return { tipo, dato: { quien } };
+    if (!/^[A-Za-z0-9:_-]{1,40}$/.test(bat)) return { error: 'falta la batalla' };
+    const a = txt(d.a, 60), b = txt(d.b, 60);
+    if (a && b && ![a, b].some((x) => x.toLowerCase() === quien.toLowerCase())) return { error: 'no jugó esa batalla' };
+    return { tipo, dato: Object.assign({ bat, quien }, a && b ? { a, b } : {}) };
+  }
   if (tipo === 'ganador' || tipo === 'no_cuenta') {
     if (!/^[A-Za-z0-9:_-]{1,40}$/.test(bat)) return { error: 'falta la batalla' };
     // los dos lados (opcionales): un mensaje puede traer varias batallas con el mismo id, y así se sabe cuál
     const a = txt(d.a, 60), b = txt(d.b, 60);
     const par = a && b ? { a, b } : {};
-    if (tipo === 'no_cuenta') return { tipo, dato: { bat, ...par } };
+    if (tipo === 'no_cuenta') {
+      const por = String((d && d.por) || '');
+      if (por && !POR_NO_CUENTA.includes(por)) return { error: 'el motivo' };
+      return { tipo, dato: Object.assign({ bat, ...par }, por ? { por } : {}) };
+    }
     const gana = txt(d.gana, 60);
     if (!gana || !['directa', 'replica'].includes(como)) return { error: 'falta quién ganó' };
     return { tipo, dato: { bat, gana, como, ...par } };
@@ -4775,6 +4817,18 @@ function decisionReporte0(d) {
   // servidor (`por_servidor` de akas_a_mano.json, `reportes.corregir_liga()`): alguien nuevo no, porque una liga no
   // crea gente
   const liga = String((d && d.liga) || '');
+  // 🏟️ Y CUALQUIER CAMBIO DE LIGA (18/11/2026, Dlx, con OG en FMH España: «debería tener más opciones»): el reporte se
+  // corrige con lo mismo que usa el staff de cada servidor —quién ganó, que fue invitado, que no cuenta y por qué, una
+  // batalla que faltó, un DF, que dos nombres son la misma persona en esa liga, el campeón— (`validarCambioLiga()`). El
+  // objeto lo guarda en `liga_cambios` en el acto (`duenoReporte()`) y el ciclo lo aplica y avisa a quien lo mandó
+  if (liga && accion === 'cambio') {
+    if (!/^[a-z0-9-]{2,40}$/.test(liga)) return { error: 'falta la liga' };
+    const sv = String((d && d.sv) || '').toUpperCase();
+    if (!/^[A-Z0-9]{2,8}$/.test(sv)) return { error: 'falta el servidor' };
+    const c = validarCambioLiga((d && d.cambio) || {});
+    if (c.error) return c;
+    return { id, accion, fix: { tipo: 'liga_cambio', liga, sv, cambio: c } };
+  }
   if (liga) {
     if (!/^[a-z0-9-]{2,40}$/.test(liga) || accion !== 'nombre') return { error: 'falta la liga' };
     const nombre = txt(d.nombre, 80);
@@ -13303,8 +13357,21 @@ export class Avisos {
     if (!r) return { error: 'ya no está' };
     if (r.estado === 'aplicado') return { error: 'ya está aplicado' };
     const por = this.nombrePor(d.por);
+    // 🏟️ un cambio de liga (`validarDecisionReporte()`, 18/11/2026): va a `liga_cambios` ahora, como si lo hiciera el staff
+    // de ese servidor —se ve en su panel y se puede deshacer—, y el reporte guarda cuál fue. El ciclo lo aplica sobre lo
+    // leído (`ligas.aplicar_cambios()`) y da el reporte por corregido (`reportes.corregir()`)
+    let fix = d.fix;
+    if (fix && fix.tipo === 'liga_cambio' && fix.cambio) {
+      const rol = String(d.por) === DUENO ? 'dlx' : 'liga';
+      this.sql.exec('INSERT INTO liga_cambios (liga, sv, tipo, dato, quien, rol, t) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        fix.liga, fix.sv, fix.cambio.tipo, JSON.stringify(fix.cambio.dato), String(d.por || ''), rol, ahora);
+      const cid = this.sql.exec('SELECT id FROM liga_cambios WHERE liga = ? AND t = ? ORDER BY id DESC LIMIT 1', fix.liga, ahora).toArray()[0];
+      fix = Object.assign({}, fix, { cambio_id: cid ? cid.id : null });
+      this.socioAnotar(fix.sv, String(d.por || ''), rol, 'liga ' + fix.liga + ': ' + fix.cambio.tipo + ' (reporte #' + Number(d.id) + ')', '',
+        fix.cambio.dato, por);
+    }
     this.sql.exec('UPDATE reportes SET estado = ?, fix = ?, resultado = ?, t_estado = ?, por = ? WHERE id = ?',
-      d.fix ? 'corregir' : String(d.accion), d.fix ? JSON.stringify(Object.assign({}, d.fix, { por })) : '', '', ahora, por, Number(d.id));
+      fix ? 'corregir' : String(d.accion), fix ? JSON.stringify(Object.assign({}, fix, { por })) : '', '', ahora, por, Number(d.id));
     if (d.causa) {
       const t0 = (this.sql.exec('SELECT t FROM reportes WHERE id = ?', Number(d.id)).toArray()[0] || {}).t || 0;
       this.sql.exec('INSERT OR REPLACE INTO reportes_causas (id, causa, t, espera) VALUES (?, ?, ?, ?)', Number(d.id), String(d.causa), ahora, t0 ? ahora - t0 : 0);
@@ -16688,7 +16755,7 @@ export class Avisos {
         let dato = {};
         try { dato = JSON.parse(f.dato) || {}; } catch (e) { dato = {}; }
         return { id: f.id, tipo: f.tipo, dato, rol: f.rol, t: f.t, estado: f.estado,
-          de: this.nombreEquipo(sv, f.quien) || (f.quien === DUENO ? 'Dlx' : f.rol === 'dueno' ? 'El dueño' : '') };
+          de: this.nombreEquipo(sv, f.quien) || (f.quien === DUENO ? 'Dlx' : f.rol === 'dueno' ? 'El dueño' : f.rol === 'liga' ? 'La Liga' : '') };
       });
     if (accion === 'ver') return { ok: true, rol, cambios: lista() };
     if (!socioPuede(rol, 'ligas')) return { error: 'no_rol' };
