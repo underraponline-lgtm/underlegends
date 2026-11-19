@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "6.85",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T05:25:00-05:00",
+        "titulo": "Avisar qué está mal en una liga, y más formas de corregirla",
+        "items": [
+            "En la página de cada liga, **¿Algo está mal?** ahora pregunta qué pasó: **un nombre**, **alguien que no es de esa liga** (por ejemplo, jugó de invitado), **una batalla** u **otra cosa**.",
+            "Las ligas reconocen una **exhibición** aunque esté escrita arriba del título: esa batalla ya no suma en la tabla.",
+            "En el panel de cada servidor, el staff puede marcar a alguien como **invitado** (su rival cobra y él no entra a la tabla), corregir un nombre en **una sola batalla**, decir **por qué no cuenta** una batalla y sumar o restar **puntos sueltos**."
+        ]
+    },
+    {
         "version": "6.84",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T05:09:00-05:00",
