@@ -13,7 +13,8 @@ const LIGA = 'de cualquier servidor asociado a la Liga Global';
 // 🎯 LOS EVENTOS DE LA COMPETITIVA SON SÓLO LOS DE TIER 1 (13/11/2026). Desde el 26/10 los socios Tier 3 suman a la
 // Temporada y no al Competitivo (`bot/tiers.py`): el Score —y con él los 10 que pide la letra— no los cuenta. Decía
 // «de cualquier servidor» y para 94 personas el número no coincidía
-const TIER1 = 'en servidores Tier 1 de la Liga (los ves en Socios)';
+// 🥈 y desde el 19/11/2026 también los de Tier 2 (Dlx: «Tier 2 que cuenten sus eventos para competitivo»)
+const TIER1 = 'en servidores Tier 1 o 2 de la Liga (los ves en Socios)';
 const plural = (n, uno, varios) => (n === 1 ? uno : varios);
 
 // qué condición es, por su etiqueta de `comun/requisitos.py` («EVENTOS», «BANDERA ASIGNADA», «DUELOS NACIONALES»…)

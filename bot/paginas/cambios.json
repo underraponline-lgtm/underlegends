@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.89",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T06:15:00-05:00",
+        "titulo": "El Tier 2 cuenta como el Tier 1",
+        "items": [
+            "Los servidores **Tier 2** ahora cuentan igual que los Tier 1: sus eventos suman a la Temporada **y al Competitivo**, sus ligas cuentan como duelos, su gente tiene la carta de su servidor y tienen sus **MES AWARDS**.",
+            "**SNK, FRZ, LCW y FVS** pasan a Tier 2. A su gente no le cambia nada: sus eventos siguen contando igual.",
+            "**«Unirme a los Tier 1»** sigue siendo sólo de los Tier 1.",
+            "Donde la página decía «eventos en servidores Tier 1» para tu letra, ahora dice **Tier 1 o 2**."
+        ]
+    },
+    {
         "version": "6.88",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T05:40:00-05:00",
