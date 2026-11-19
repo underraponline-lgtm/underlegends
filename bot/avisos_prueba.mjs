@@ -4648,6 +4648,18 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🌙 «LA NOCHE DE…» EN EL CIERRE (19/11/2026): con el campeón se pide una vuelta del ciclo, salvo que la de :22 o :52
+// esté a `CIERRE_CICLO_MIN` minutos o menos (ver `minutosAlCiclo()`)
+{
+  const en = (h, m) => Date.UTC(2026, 10, 19, h, m, 30);
+  ok(A.minutosAlCiclo(en(22, 39)) === 13 && A.minutosAlCiclo(en(22, 39)) > A.CIERRE_CICLO_MIN,
+    'una final a las :39 pide una vuelta ya (la de :52 está a 13 minutos)');
+  ok(A.minutosAlCiclo(en(22, 45)) === 7 && !(A.minutosAlCiclo(en(22, 45)) > A.CIERRE_CICLO_MIN),
+    'una final a las :45 espera la vuelta de :52');
+  ok(A.minutosAlCiclo(en(22, 53)) === 29, 'a las :53 la próxima es la de :22: faltan 29');
+  ok(A.minutosAlCiclo(en(22, 22)) === 0, 'justo a las :22, cero');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

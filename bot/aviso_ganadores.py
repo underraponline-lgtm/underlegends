@@ -334,6 +334,73 @@ def noche(ev, Q):
     return pie_noche(alt, _guardar_ficha(ev, ficha), ev), ('noche.png', png)
 
 
+# ── 🌙 «LA NOCHE DE…» EN EL CIERRE DEL BOT EN VIVO, EN LUGAR DE LA TARJETA SOLA (19/11/2026) ─────────────────────────────
+# Dlx: «eso debería ser al instante así como la tarjeta de campeón, de hecho este es más completo, reemplazaría eso de
+# campeón solitario». El cierre sale al minuto de la final con la tarjeta del campeón (`cierreChat()` de avisos.js); la
+# imagen se dibuja en un navegador, acá, así que con el campeón el Worker pide una vuelta del ciclo (`ciclo_pedir`,
+# `minutosAlCiclo()`) y esta vuelta le CAMBIA la tarjeta a ese mensaje por la imagen. El aviso de ganadores sale igual,
+# con sus menciones y sus botones, y sin repetirla. Sin cierre (el servidor no tiene el bot en vivo), si el cierre ya
+# lleva el aviso de otro evento o si Discord no la toma, la imagen va en el aviso, como antes.
+def con_noche(msg, url, alt):
+    """El cuerpo del PATCH que cambia la imagen de `msg` (el mensaje como lo devuelve Discord) por `url`: en Componentes
+    V2, la galería de afuera del recuadro (o una nueva al final); en el formato de antes, la imagen del primer embed.
+    `None` si no hay dónde ponerla. No menciona a nadie (una edición no suena igual)."""
+    item = {'media': {'url': url}, 'description': str(alt or '')[:1000]}
+    if int(msg.get('flags') or 0) & 32768:
+        comps = [dict(c) for c in msg.get('components') or []]
+        i = next((j for j, c in enumerate(comps) if c.get('type') == 12), None)
+        if i is None:
+            comps.append({'type': 12, 'items': [item]})
+        else:
+            comps[i] = {'type': 12, 'items': [item]}
+        return {'components': comps, 'allowed_mentions': {'parse': []}}
+    es = [dict(e) for e in msg.get('embeds') or []]
+    if not es:
+        return None
+    es[0]['image'] = {'url': url}
+    return {'embeds': es, 'allowed_mentions': {'parse': []}}
+
+
+def _subir_noche(ev, png):
+    """La imagen a R2 (pública, como las tarjetas), con su huella en el nombre: Discord guarda lo que bajó de una URL.
+    La URL, o `None`."""
+    import hashlib
+    import subir_cartas as SC
+    clave = 'noche/%s-%s.png' % (ev, hashlib.sha1(png).hexdigest()[:10])
+    r = SC.sesion().put('%s/objects/%s' % (SC.API, clave), data=png, headers={'Content-Type': 'image/png'}, timeout=60)
+    return '%s/%s' % (SC.PUBLICA, clave) if SC._ok(r, clave) is not None else None
+
+
+def al_cierre(ev, nombre, sv, fecha, png, alt, s):
+    """🌙 Pone «La noche de…» en el cierre del bot en vivo de ese evento, en lugar de la tarjeta. `{canal, msg, url}` si
+    quedó; `None` si no hay cierre, si ya lleva el aviso de OTRO evento (la regla de `avisar.evento()`) o si Discord no
+    la tomó. `s` es la sesión del bot. **Nunca levanta.**"""
+    try:
+        import avisar as AV
+        canal = (AV.canales_chat() or {}).get(str(sv).upper())
+        ids = AV._ids_llave({'nombre': nombre, 'servidor': sv, 'fecha': fecha})
+        cierre = AV._cierre_vivo(canal, ids) if canal and ids else None
+        if not cierre:
+            return None
+        if any(isinstance(v, dict) and str(v.get('msg') or '') == cierre for k, v in AV._avisados().items() if k != str(ev)):
+            print('      · el cierre de %s ya lleva el aviso de otro evento: la imagen va en el aviso' % sv)
+            return None
+        r = s.get('%s/channels/%s/messages/%s' % (API, canal, cierre), timeout=20)
+        if r.status_code != 200:
+            return None
+        url = _subir_noche(ev, png)
+        cuerpo_ = con_noche(r.json() or {}, url, alt) if url else None
+        if not cuerpo_:
+            return None
+        r = s.patch('%s/channels/%s/messages/%s' % (API, canal, cierre), json=cuerpo_, timeout=30)
+        if r.status_code == 200:
+            return {'canal': str(canal), 'msg': str(cierre), 'url': url}
+        print('      ⚠️ el cierre no tomó la imagen (%s %s): va en el aviso' % (r.status_code, r.text[:160]))
+    except Exception as e:                               # noqa: BLE001
+        print('      ⚠️ el cierre no tomó la imagen (%r): va en el aviso' % e)
+    return None
+
+
 def _guardar_ficha(ev, ficha):
     """🎯 Lo que leen «Tu nota» y «Perfiles», a KV (`noche:<n>`, vence a los `NOCHE_DIAS`). `True` si quedó."""
     try:
@@ -459,7 +526,7 @@ def correr(aplicar=False):
         fe = _fecha(f[c['Fecha']], hoy)
         if not fe or (hoy - fe).days > DIAS:
             continue
-        nuevos.append((ev, str(f[c['Evento']] or ''), str(f[c['Servidor']] or '').upper()))
+        nuevos.append((ev, str(f[c['Evento']] or ''), str(f[c['Servidor']] or '').upper(), str(f[c['Fecha']] or '')))
     if not nuevos:
         print('   🏆 el aviso de los ganadores: nada nuevo')
         return 0
@@ -469,7 +536,7 @@ def correr(aplicar=False):
     svs = dict(CH.servidores())
     s = None
     canales = {}
-    for ev, nombre, sv in sorted(nuevos, key=lambda x: int(x[0]) if x[0].isdigit() else 0):
+    for ev, nombre, sv, fecha in sorted(nuevos, key=lambda x: int(x[0]) if x[0].isdigit() else 0):
         m = mensaje(nombre, sv, G[ev], Q, miembros, oficiales, puntos_de(res, ev))
         if not m:
             avisados[ev] = 'sin_campeon'
@@ -511,12 +578,23 @@ def correr(aplicar=False):
         # (`allowed_mentions.users`: sólo los ganadores)
         # 🌙 la imagen y su fila, recién acá: no se dibuja para un servidor que no la va a recibir
         pie, archivo = noche(ev, Q)
+        # 🌙 y va en el CIERRE del bot en vivo, en lugar de la tarjeta del campeón (ver `al_cierre()`): el aviso queda
+        # con sus botones y sin repetirla
+        en_cierre = None
+        if archivo and pie and pie[0].get('type') == 12:
+            alt = ((pie[0].get('items') or [{}])[0] or {}).get('description') or ''
+            en_cierre = al_cierre(ev, nombre, sv, fecha, archivo[1], alt, s)
+            if en_cierre:
+                print('      🌙 la imagen, en el cierre del bot en vivo (en lugar de la tarjeta): el aviso va sin ella')
+                pie, archivo = pie[1:], None
         r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + pie, ids, archivo))
         if archivo and r.status_code not in (200, 201):
             print('      ⚠️ con la imagen no salió (%s): va sin ella' % r.status_code)
             r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + [fila_noche(ev, False)], ids))
         if r.status_code in (200, 201):
             avisados[ev] = {'sv': sv, 'canal': str(canal), 'msg': str((r.json() or {}).get('id') or ''), 'dia': hoy.isoformat()}
+            if en_cierre:
+                avisados[ev]['noche'] = en_cierre
             print('      ✅ mandado')
         else:
             print('      ⚠️ no salió (%s): queda para la próxima' % r.status_code)
@@ -623,6 +701,25 @@ def _self_check():
        and pj['attachments'] == [{'id': 0, 'filename': 'noche.png'}] and cm['headers'] == {'Content-Type': None}
        and pj['components'][-2]['type'] == 12 and pj['allowed_mentions']['users'] == ids,
        'con imagen va en multipart (payload_json + files[0]); sin imagen, JSON como siempre')
+    # 🌙 «La noche de…» en el cierre del bot en vivo, en lugar de la tarjeta (`con_noche()`)
+    U = 'https://r2/noche/700-abc.png'
+    v2 = {'flags': 32768, 'components': [{'type': 10, 'content': '🏆 <@1>'},
+                                         {'type': 17, 'components': [{'type': 10, 'content': '### Campeón'}]},
+                                         {'type': 12, 'items': [{'media': {'url': 'https://r2/ana/servidor.webp'}}]}]}
+    p = con_noche(v2, U, 'La noche de COPA')
+    ok([c['type'] for c in p['components']] == [10, 17, 12] and p['components'][2]['items'] == [
+        {'media': {'url': U}, 'description': 'La noche de COPA'}] and p['components'][1] == v2['components'][1]
+       and p['allowed_mentions'] == {'parse': []},
+       'en V2, la tarjeta de abajo del recuadro se cambia por la imagen y el texto queda igual')
+    sin = {'flags': 32768, 'components': v2['components'][:2]}
+    ok([c['type'] for c in con_noche(sin, U, '')['components']] == [10, 17, 12],
+       'un cierre V2 sin tarjeta (campeones de a varios) la suma abajo')
+    v1 = {'flags': 0, 'embeds': [{'description': 'campeón', 'image': {'url': 'https://r2/ana/servidor.webp'}}]}
+    p1 = con_noche(v1, U, '')
+    ok(p1['embeds'][0]['image'] == {'url': U} and p1['embeds'][0]['description'] == 'campeón'
+       and v1['embeds'][0]['image']['url'].endswith('servidor.webp'),
+       'en el formato de antes, la imagen del embed (sin tocar el mensaje que se leyó)')
+    ok(con_noche({'flags': 0, 'content': 'hola'}, U, '') is None, 'sin embed ni componentes, no hay dónde ponerla')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 

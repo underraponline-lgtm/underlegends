@@ -703,6 +703,21 @@ export function cierreDelCiclo(x, h) {
 export const CIERRE_CERCA_MS = 60 * 60000;
 
 /**
+ * 🌙 «LA NOCHE DE…» EN EL CIERRE, CASI AL INSTANTE (19/11/2026, Dlx: «eso debería ser al instante así como la tarjeta de
+ * campeón, de hecho este es más completo, reemplazaría eso de campeón solitario»). La imagen se dibuja en un navegador, en
+ * el ciclo (`bot/aviso_ganadores.py` → `bot/noche.py`), y no en el Worker: con el campeón, el bot en vivo pide una vuelta
+ * ya (`ciclo_pedir`, la larga el vigía y de madrugada no) en vez de esperar la de :22 o :52, y esa vuelta le cambia la
+ * tarjeta a ESTE mensaje por la imagen (~8 minutos después de la final). Si la próxima vuelta arranca en menos de
+ * `CIERRE_CICLO_MIN`, se espera esa: dos vueltas seguidas se encolan y la segunda no hace nada.
+ */
+export const CIERRE_CICLO_MIN = 8;
+/** Cuántos minutos faltan para la próxima vuelta del ciclo (:22 y :52; en UTC, que en el este es el mismo minuto). */
+export function minutosAlCiclo(ahora) {
+  const m = new Date(ahora).getUTCMinutes();
+  return Math.min(...[22, 52].map((x) => (x - m + 60) % 60));
+}
+
+/**
  * 🏆 EL «CAMPEON» DE LA LLAVE, AUNQUE CADA LADO LA ANOTE CON OTRO MENSAJE (14/10/2026, Dlx, con el campeón dos veces en el
  * chat de Urban: «arreglá esto»). Urban escribe la llave de a una batalla por mensaje, con un título suelto arriba
  * («=== FF Freestyle Clasico VOL. 1 ==="): el bot en vivo la anota con ESE mensaje (`L.id`, el primero de la tanda) y
@@ -10616,6 +10631,11 @@ export class Avisos {
             this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra, gente) ' +
               'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', conAp.id, canal, id, b.sv || '', L.id, conAp.ronda, conAp.a, conAp.b,
             p.texto.slice(0, 1900), ahora, ahora + apc.cierra, JSON.stringify(conAp.gente || []));
+          }
+          // 🌙 con el campeón, una vuelta del ciclo ya: le cambia la tarjeta a este mensaje por «La noche de…» (ver
+          // `minutosAlCiclo()`)
+          if (id && [].concat(p.m).includes('campeon') && minutosAlCiclo(ahora) > CIERRE_CICLO_MIN) {
+            this.guardar('ciclo_pedir', { t: ahora, por: 'final' });
           }
           mandados++;
           break;
