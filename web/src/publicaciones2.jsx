@@ -73,7 +73,8 @@ const y = (xs) => xs.reduce((acc, x, i) => (i ? acc.concat([i === xs.length - 1 
 const NOCHE_CAMPEONES = 4;
 
 // 👏 el mismo Felicitar de siempre (las funciones son de social.js: `felicitar`, `errorAplauso`); `chico` para las listas
-function Felicitar({ liga, it, A, chico }) {
+// (19/11/2026) exportado: las destacadas del perfil v10 felicitan con el mismo botón
+export function Felicitar({ liga, it, A, chico }) {
   const id = it.id;
   if (!id) return null;
   const n = Number(A.cu[id] || 0);

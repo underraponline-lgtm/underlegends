@@ -1,0 +1,348 @@
+/* 🪪 EL PERFIL, DEBAJO DE TU NOMBRE, la v10 (19/11/2026): ver perfil_v10.jsx. Clases con `pv-` (las del prototipo son
+   globales adentro del shadow root). Arriba, una banda negra; abajo, la página en su tema (Clara o Noche).
+   Sin degradés, sin blur, radios de 4 px como mucho (la regla del remake) */
+.pv{--pv-oro:#E5B800;--pv-plata:#C9CDD2;--pv-bronce:#C8702A}
+.pv-esc{--fondo:#030304;--tinta:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;--linea:#F6F6F6;background:#030304;color:#F6F6F6;
+  padding:22px var(--gut) 30px}
+.pv-papel{background:var(--fondo);color:var(--tinta);padding:24px var(--gut) 40px}
+.pv-et{margin:0 0 10px;font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gris)}
+.pv-et b{color:var(--tinta)}
+.pv-sub{margin:6px 0 0;font:500 13.5px/1.35 Archivo,sans-serif;color:var(--gris)}
+.pv-nada{margin:0;padding:18px;border-radius:4px;background:var(--caja);color:var(--gris)}
+.pv-cara{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;display:grid;place-items:center;overflow:hidden;
+  background:#2A2A2E;color:#F6F6F6;font:900 14px/1 Archivo,sans-serif}
+.pv-cara img{width:100%;height:100%;object-fit:cover}
+
+/* ── 🟡 sus momentos ── */
+.pv-mom{display:flex;gap:18px;overflow-x:auto;scrollbar-width:none;margin:-4px 0 22px;padding:4px 2px 20px;border-bottom:1px solid #2A2A2E}
+.pv-mom::-webkit-scrollbar{display:none}
+.pv-mom button{flex:none;display:grid;justify-items:center;gap:7px;width:78px;padding:0;border:0;background:none;color:#F6F6F6;cursor:pointer;font:inherit}
+.pv-ci{position:relative;width:72px;height:72px;border-radius:50%;padding:5px;background:var(--rc,#3A3A40);transition:transform .16s cubic-bezier(.23,1,.32,1)}
+.pv-ci > span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#101012;box-shadow:0 0 0 2.5px #030304}
+.pv-ci img{width:100%;height:100%;object-fit:cover;display:block}
+.pv-ci img.zoom{transform:scale(1.45);object-position:50% 0}
+.pv-ci em{font:900 22px/1 Archivo,sans-serif;font-style:normal;color:var(--rc)}
+.pv-ci svg{width:78%;height:78%}
+.pv-ci i{position:absolute;right:-2px;bottom:-2px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:#F6F6F6;color:#030304;
+  font:900 11px/22px Archivo,sans-serif;font-style:normal;text-align:center;box-shadow:0 0 0 2px #030304}
+.pv-mom b{max-width:78px;font:700 12.5px/1.15 Archivo,sans-serif;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-mom-logo .pv-ci img{object-fit:contain;padding:9px}
+.pv-mom-rango .pv-ci > span{background:var(--rc)}
+.pv-mom-rango .pv-ci em{color:#030304;font-size:26px}
+@media (hover:hover){.pv-mom button:hover .pv-ci{transform:scale(1.04)}}
+.pv-mom button:active .pv-ci{transform:scale(.97)}
+.pv-mom button:focus-visible{outline:2px solid var(--verde);outline-offset:3px;border-radius:4px}
+
+/* ── el récord, su mejor noche, contra la Liga ── */
+.pv-ag{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+@media (min-width:900px){.app .pv-ag{grid-template-columns:minmax(0,340px) minmax(0,1fr) minmax(0,360px);gap:22px;align-items:start}}
+.pv-rec-n{display:flex;align-items:baseline;gap:8px;font:900 76px/.9 Archivo,sans-serif;font-stretch:120%;letter-spacing:-.02em}
+.pv-rec-n i{font-style:normal;color:#55555B}
+.pv-rec-n .p{color:#8C8C92}
+.pv-rec-bar{height:6px;margin:12px 0 14px;border-radius:3px;background:#2A2A2E;overflow:hidden}
+.pv-rec-bar i{display:block;height:100%;background:var(--verde)}
+.pv-vac{display:grid;gap:6px;padding:16px;border:1.5px dashed #3A3A40;border-radius:4px;margin-bottom:12px}
+.pv-vac b{font:900 22px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.pv-vac span{color:#A5A5A0;font-size:14px}
+.pv-cint{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pv-cint > div{display:grid;gap:4px;padding:10px 12px;border-radius:4px;background:#141417}
+.pv-cint b{display:flex;align-items:center;gap:6px;font:900 24px/1 Archivo,sans-serif}
+.pv-cint small{font:700 11px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+.pv-med{width:12px;height:12px;border-radius:50%;flex:none}
+.pv-med.o{background:var(--pv-oro)}.pv-med.p{background:var(--pv-plata)}.pv-med.b{background:var(--pv-bronce)}
+.pv-racha{display:flex;justify-content:space-between;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid #2A2A2E;font-size:14px;color:#D5D5D0}
+.pv-forma-l{display:flex;justify-content:space-between;margin:14px 0 8px;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#A5A5A0}
+.pv-forma{display:flex;gap:6px}
+.pv-forma button{min-width:36px;height:30px;padding:0 6px;border:0;border-radius:3px;background:#1F1F23;color:#F6F6F6;cursor:pointer;font:700 12px/30px "Barlow Condensed",sans-serif;letter-spacing:.06em}
+.pv-forma .c{background:var(--pv-oro);color:#030304}.pv-forma .s{background:var(--pv-plata);color:#030304}.pv-forma .t{background:var(--pv-bronce);color:#030304}
+.pv-res{display:inline-block;padding:4px 7px;border-radius:2px;background:#2A2A2E;color:#F6F6F6;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em}
+.pv-res.c{background:var(--pv-oro);color:#030304}.pv-res.s{background:var(--pv-plata);color:#030304}.pv-res.t{background:var(--pv-bronce);color:#030304}
+/* su mejor noche: la tarjeta blanca */
+.pv-mn{padding:18px 20px 20px;border-radius:4px;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 var(--verde)}
+.pv-mn .pv-et{color:#55555B}.pv-mn .pv-et b{color:#030304}
+.pv-mn h3{margin:10px 0 14px;font:900 30px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
+.pv-mn h3 button{all:unset;cursor:pointer}
+.pv-mn h3 button:focus-visible{outline:2px solid #030304;outline-offset:2px}
+.pv-mn.vac{background:#141417;color:#F6F6F6;box-shadow:none}
+.pv-camino{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:14px}
+.pv-paso-w{display:inline-flex;align-items:center;gap:6px}
+.pv-paso{display:grid;justify-items:center;gap:4px;width:78px;padding:8px 4px;border-radius:3px;background:#E9E9E4;text-align:center}
+.pv-paso b{max-width:70px;font:800 12.5px/1.1 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-paso small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#1F7F6C}
+.pv-paso.x small{color:#B80F5D}
+.pv-fl{color:#8C8C92}
+.pv-mn-num{display:flex;flex-wrap:wrap;gap:14px 26px;padding-top:14px;border-top:1px solid #D9D9D4}
+.pv-mn-num b{display:block;font:900 24px/1 Archivo,sans-serif}
+.pv-mn-num small{font:700 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#55555B}
+/* contra la Liga */
+.pv-caja{padding:16px 18px;border-radius:4px;background:#101012;box-shadow:inset 0 0 0 1px #24242A}
+.pv-tape ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.pv-tape li{display:grid;grid-template-columns:96px minmax(0,1fr) 30px;align-items:center;gap:10px}
+.pv-tape .l{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#C9C9C4}
+.pv-tape .t{position:relative;height:8px;border-radius:2px;background:#2A2A2E}
+.pv-tape .t i{position:absolute;inset:0 auto 0 0;border-radius:2px;background:#F6F6F6}
+.pv-tape .t s{position:absolute;top:-4px;width:2px;height:16px;background:var(--magenta)}
+.pv-tape .v{font:900 15px/1 Archivo,sans-serif;text-align:right}
+.pv-tape-ley{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12.5px;color:#C9C9C4}
+.pv-tape-ley i{display:inline-block;width:12px;height:8px;margin-right:6px;background:#F6F6F6;vertical-align:middle}
+.pv-tape-ley i.m{width:2px;height:12px;background:var(--magenta)}
+/* sus rivales, en una fila */
+.pv-rivs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:22px;padding-top:22px;border-top:1px solid #2A2A2E}
+@media (min-width:900px){.app .pv-rivs{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+.pv-rv{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center;padding:14px;border:0;border-radius:4px;background:#141417;color:#F6F6F6;
+  text-align:left;font:inherit;cursor:pointer}
+.pv-rv:disabled{cursor:default}
+.pv-rv.nem{box-shadow:inset 3px 0 0 var(--magenta)}.pv-rv.vic{box-shadow:inset 3px 0 0 var(--verde)}
+.pv-rv-c{width:52px;height:52px;border-radius:4px;object-fit:cover;display:grid;place-items:center;overflow:hidden;background:#2A2A2E;font:900 18px/1 Archivo,sans-serif}
+.pv-rv-c img{width:100%;height:100%;object-fit:cover}
+.pv-rv > span{display:grid;gap:2px;min-width:0}
+.pv-rv .pv-et{margin:0}
+.pv-rv > span > b{font:900 17px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-rv small{font-size:12.5px;line-height:1.3;color:#C9C9C4}
+.pv-rv em{font-style:normal;font-weight:800;color:#F6F6F6}
+.pv-rv.vac{grid-template-columns:minmax(0,1fr);border:1.5px dashed #3A3A40;background:none;color:#A5A5A0;font-size:13px;cursor:default}
+.pv-rv.vac b{display:block;color:#F6F6F6;font:800 13px/1.2 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+@media (hover:hover){.pv-rv:not(:disabled):not(.vac):hover{background:#1C1C20}}
+.pv-rv:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+
+/* ── abajo: dos columnas ── */
+.pv-g{display:grid;grid-template-columns:minmax(0,1fr);gap:26px}
+@media (min-width:900px){.app .pv-g{grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}}
+.pv-izq{min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-content:start}
+.pv-lado{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-content:start;min-width:0}
+.pv-mas-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+@media (max-width:899.98px){.app .pv-mas-g{grid-template-columns:minmax(0,1fr)}}
+/* su próximo evento */
+.pv-prox{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 18px;border-radius:4px;
+  background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 var(--verde);overflow:hidden}
+.pv-prox img{width:64px;height:64px;border-radius:50%;object-fit:cover}
+.pv-prox .pv-et{color:#55555B;margin:0 0 6px}.pv-prox .pv-et b{color:#B80F5D}
+.pv-prox h4{margin:0;font:400 30px/.98 Anton,Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.pv-prox small{display:block;margin-top:6px;font:600 13px/1.3 Archivo,sans-serif;color:#55555B}
+.pv-prox-b{display:grid;gap:6px}
+.pv-prox.con-esc{background-color:#030304;background-size:cover;background-position:center 62%;color:#F6F6F6}
+.pv-prox.con-esc::before{content:"";position:absolute;inset:0;background:rgba(3,3,4,.58)}
+.pv-prox.con-esc > *{position:relative}
+.pv-prox.con-esc .pv-et,.pv-prox.con-esc small{color:#D5D5D0}
+.pv-prox.con-esc .pv-et b{color:#FF5CA8}
+@media (max-width:599.98px){.app .pv-prox{grid-template-columns:52px minmax(0,1fr)}.app .pv-prox img{width:52px;height:52px}.app .pv-prox-b{grid-column:1/-1;grid-template-columns:1fr 1fr}.app .pv-prox h4{font-size:24px}}
+/* sus ligas */
+.pv-lg-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.pv-lg-h h3{margin:0;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.pv-lg-h a{font:700 13px/1 Archivo,sans-serif;color:var(--tinta);text-decoration:underline;text-underline-offset:3px}
+.pv-lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+@media (max-width:599.98px){.app .pv-lg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pv-lg-c{display:grid;grid-template-rows:150px auto;min-width:0;overflow:hidden;border-radius:4px;background:var(--caja);color:var(--tinta);text-decoration:none}
+.pv-lg-fl{position:relative;display:grid;place-items:center;overflow:hidden;background:var(--svc)}
+.pv-lg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pv-lg-logo{width:72px;height:72px;border-radius:50%;object-fit:cover}
+.pv-lg-sv{position:absolute;left:8px;top:8px;display:inline-flex;align-items:center;gap:5px;padding:3px 6px;border-radius:2px;background:rgba(3,3,4,.82);color:#F6F6F6;
+  font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em}
+.pv-lg-sv img{width:14px;height:14px;border-radius:50%}
+.pv-lg-ps{position:absolute;right:8px;bottom:8px;padding:6px 8px;border-radius:2px;background:#F6F6F6;color:#030304;box-shadow:3px 3px 0 var(--verde);
+  font:900 20px/1 Archivo,sans-serif}
+.pv-lg-ps small{margin-left:3px;font:700 11px/1 Archivo,sans-serif}
+.pv-lg-med{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;color:#030304;font:900 24px/1 Archivo,sans-serif}
+.pv-lg-tx{display:grid;gap:4px;padding:10px 12px 12px;min-width:0}
+.pv-lg-tx b{font:900 14.5px/1.1 Archivo,sans-serif;text-transform:uppercase;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.2em}
+.pv-lg-tx small{font:500 12.5px/1.3 Archivo,sans-serif;color:var(--gris)}
+.pv-lg-c:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+/* las pestañas */
+.pv-tabs{display:flex;gap:4px;border-top:1px solid var(--suave);margin:4px 0 0}
+.pv-tabs button{display:flex;align-items:center;gap:7px;padding:12px 14px 10px;border:0;border-top:2px solid transparent;margin-top:-1px;background:none;color:var(--gris);
+  cursor:pointer;font:800 13px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.pv-tabs button.on{color:var(--tinta);border-top-color:var(--tinta)}
+.pv-tabs svg{width:16px;height:16px}
+.pv-tabs small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;opacity:.7}
+.pv-tabs button:focus-visible{outline:2px solid var(--verde);outline-offset:-2px}
+@media (max-width:599.98px){.app .pv-tabs{overflow-x:auto;scrollbar-width:none;margin-right:calc(-1 * var(--gut));padding-right:var(--gut)}.app .pv-tabs::-webkit-scrollbar{display:none}
+  .app .pv-tabs button{flex:none;padding:12px 10px 10px}.app .pv-tabs button:not(.on) .pv-tab-t{display:none}}
+.pv-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.pv-chips button{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 11px;border:1.5px solid var(--suave);border-radius:3px;background:none;color:var(--tinta);
+  cursor:pointer;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.pv-chips button.on{background:var(--tinta);color:var(--fondo);border-color:var(--tinta)}
+.pv-chips em{font-style:normal;opacity:.7}
+.pv-chips img{width:16px;height:16px;border-radius:50%}
+.pv-filas-f{display:grid;gap:0}
+.pv-pie{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;padding:12px 14px;border-radius:4px;background:var(--caja);color:var(--tinta);
+  text-decoration:none;font-size:13px}
+.pv-pie b{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase}
+/* publicaciones: destacadas y la lista */
+.pv-pubs{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:14px}
+@media (min-width:900px){.app .pv-pubs{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}}
+.pv-pubs-dest,.pv-pubs-l{display:grid;gap:12px;min-width:0;align-content:start}
+.pv-dest{--tc:var(--magenta);display:grid;gap:14px;padding:16px;border-radius:4px;background:#101012;color:#F6F6F6;box-shadow:inset 0 3px 0 var(--tc);
+  --fondo:#101012;--tinta:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#18181B}
+.pv-dest h4{margin:4px 0 8px;font:400 28px/1 Anton,Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.pv-dest .pv-sub{margin:0 0 8px}
+.pv-cat{display:block;font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--tc,#E5B800)}
+.pv-bts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pv-pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.pv-pills span{padding:5px 8px;border:1px solid #3A3A40;border-radius:2px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.pv-dest.ev{--tc:#E5B800;padding:0;overflow:hidden}
+.pv-ev-img{position:relative;display:flex;align-items:center;justify-content:center;height:128px;background:var(--svc);background-size:cover;background-position:center;overflow:hidden}
+.pv-ev-img.con-esc::before{content:"";position:absolute;inset:0;background:rgba(3,3,4,.36)}
+.pv-ev-lg{position:absolute;left:-18px;top:50%;width:150px;height:150px;border-radius:50%;object-fit:cover;transform:translateY(-50%);opacity:.35}
+.pv-ev-img .pv-cara{position:relative;width:58px;height:58px;box-shadow:0 0 0 3px #030304}
+.pv-ev-img .pv-cara + .pv-cara{margin-left:-14px}
+.pv-ev-img .pv-yo{width:76px;height:76px;margin-right:16px;box-shadow:0 0 0 3px var(--pv-oro),0 0 0 6px #030304}
+.pv-copa{position:absolute;right:14px;top:12px;width:30px;height:30px}
+.pv-ev-tx{padding:14px 16px 16px}
+.pv-dest.num,.pv-dest.wanted{grid-template-columns:120px minmax(0,1fr);align-items:center}
+.pv-big{display:grid;place-items:center;width:120px;height:120px;border-radius:50%;box-shadow:inset 0 0 0 6px var(--tc);text-align:center}
+.pv-big b{display:block;font:400 38px/.9 Anton,Archivo,sans-serif}
+.pv-big small{display:block;margin-top:4px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+.pv-big svg{width:52px;height:52px;color:#FF5CA8}
+.pv-big.rect,.pv-big.oro{border-radius:4px;box-shadow:none;background:var(--pv-oro)}
+.pv-big.rect b,.pv-big.rect small,.pv-big.oro b,.pv-big.oro small{color:#030304}
+.pv-vencio{display:flex;align-items:center;gap:10px;margin:2px 0 10px}
+.pv-vencio > span{display:flex}
+.pv-vencio .pv-cara{width:30px;height:30px;font-size:12px;box-shadow:0 0 0 2px #101012}
+.pv-vencio .pv-cara + .pv-cara{margin-left:-8px}
+.pv-vencio small{font:600 12.5px/1.2 Archivo,sans-serif;color:#A5A5A0}
+.pv-wp{display:grid;justify-items:center;gap:6px;padding:10px 8px 12px;border:3px solid var(--magenta);border-radius:3px;background:#1A0710;transform:rotate(-2deg)}
+.pv-wp small{font:400 15px/1 Anton,Archivo,sans-serif;letter-spacing:.08em;color:#FF5CA8}
+.pv-wp-c{width:80px;height:80px;border-radius:3px;object-fit:cover;display:grid;place-items:center;overflow:hidden;filter:grayscale(.35) contrast(1.1);background:#2A2A2E;font:900 26px/1 Archivo,sans-serif}
+.pv-wp-c img{width:100%;height:100%;object-fit:cover}
+.pv-wp b{font:400 20px/1 Anton,Archivo,sans-serif}
+.pv-wp i{font:700 10.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+@media (max-width:599.98px){.app .pv-dest.num,.app .pv-dest.wanted{grid-template-columns:92px minmax(0,1fr)}.app .pv-big{width:92px;height:92px}.app .pv-big b{font-size:30px}.app .pv-wp-c{width:60px;height:60px}}
+/* el muro vacío, el tuyo */
+.pv-ej{display:grid;gap:10px;margin-top:14px}
+.pv-ej > p{margin:0 0 4px;font-size:14px;color:var(--gris)}
+.pv-ej > p b{color:var(--tinta)}
+.pv-ej-i{display:grid;grid-template-columns:52px minmax(0,1fr);gap:14px;align-items:center;padding:14px 16px;border:1.5px dashed var(--suave);border-left:3px solid var(--tc);border-radius:4px}
+.pv-ej-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:4px;background:var(--caja);color:var(--tc)}
+.pv-ej-ic svg{width:28px;height:28px}
+.pv-ej-rg{display:grid;place-items:center;width:34px;height:34px;border-radius:3px;background:var(--tc);color:#030304;font:900 18px/1 Archivo,sans-serif}
+.pv-ej-i b{display:block;font:800 15px/1.2 Archivo,sans-serif}
+.pv-ej-i small{display:block;margin-top:3px;font-size:13px;color:var(--gris)}
+/* eventos: cada noche un afiche */
+.pv-np-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.pv-np-g.solo-c{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+@media (max-width:599.98px){.app .pv-np-g{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
+.pv-np{display:grid;grid-template-rows:118px auto;min-width:0;padding:0;border:0;border-radius:4px;overflow:hidden;background:var(--caja);color:var(--tinta);text-align:left;font:inherit;cursor:pointer}
+.pv-np.vac{display:grid;place-items:center;min-height:180px;border:1.5px dashed var(--suave);background:none;color:var(--gris);cursor:default;padding:12px;text-align:center}
+.pv-np-img{position:relative;display:grid;place-items:center;overflow:hidden;background:var(--svc);background-size:cover;background-position:center}
+.pv-np-img.con-esc::before{content:"";position:absolute;inset:0;background:rgba(3,3,4,.34)}
+.pv-np-img > *{position:relative}
+.pv-np-sv{position:absolute !important;left:6px;top:6px;z-index:1;display:inline-flex;align-items:center;gap:4px;padding:3px 5px;border-radius:2px;background:rgba(3,3,4,.8);color:#F6F6F6;
+  font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em}
+.pv-np-sv img{width:12px;height:12px;border-radius:50%}
+.pv-np-ic{position:absolute !important;right:8px;top:8px;width:26px;height:26px}
+.pv-np-ic svg{width:100%;height:100%}
+.pv-np-card{height:104px;width:auto;border-radius:3px;box-shadow:0 0 0 2px #030304}
+.pv-np-vs,.pv-np-pila{display:flex;align-items:center;gap:6px}
+.pv-np-vs em{font:400 18px/1 Anton,Archivo,sans-serif;font-style:normal;color:#F6F6F6}
+.pv-np-vs .pv-cara,.pv-np-pila .pv-cara{width:52px;height:52px;box-shadow:0 0 0 2px #030304}
+.pv-np-pila .pv-cara + .pv-cara{margin-left:-16px}
+.pv-np-ronda{display:grid;justify-items:center;gap:6px;color:#F6F6F6}
+.pv-np-ronda b{font:400 36px/1 Anton,Archivo,sans-serif}
+.pv-np-ronda > span{display:inline-flex;align-items:center;gap:6px;font-size:12px}
+.pv-np-ronda .pv-cara{width:24px;height:24px}
+.pv-np-lgc{width:64px;height:64px;border-radius:50%;object-fit:cover}
+.pv-np-chip{position:absolute !important;left:6px;bottom:6px;padding:3px 6px;border-radius:2px;background:rgba(3,3,4,.82);color:#F6F6F6;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
+.pv-np-tx{display:grid;gap:6px;padding:10px 12px 12px;min-width:0}
+.pv-np-f1,.pv-np-f2{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--gris)}
+.pv-np-f2 b{color:var(--tinta);font:900 13px/1 Archivo,sans-serif}
+.pv-np-f2 span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-np-h{font:900 14px/1.15 Archivo,sans-serif;text-transform:uppercase;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pv-np-tags{display:flex;flex-wrap:wrap;gap:4px}
+.pv-np-tags span{padding:3px 6px;border-radius:2px;background:var(--fondo);font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.pv-np:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+@media (hover:hover){.pv-np:not(.vac):hover{box-shadow:inset 0 0 0 1.5px var(--tinta)}}
+
+/* ── el costado ── */
+.pv-cajal{padding:16px;border-radius:4px;background:var(--caja);min-width:0}
+.pv-cajal h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.pv-cajal h3 a{font:700 12.5px/1 Archivo,sans-serif;text-transform:none;font-stretch:100%;color:var(--tinta);text-decoration:underline;text-underline-offset:3px}
+.pv-sem7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;align-items:end;height:64px}
+.pv-sem7 i{display:block;min-height:4px;border-radius:2px 2px 0 0;background:var(--suave)}
+.pv-sem7 i.on{background:var(--tinta)}
+.pv-sem7l{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin:6px 0 4px;text-align:center;font:700 11px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.pv-sob,.pv-dl{list-style:none;margin:0;padding:0}
+.pv-sob li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--suave)}
+.pv-sob li > span:first-child{font:700 11.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);padding-top:2px}
+.pv-sob b{display:block;font:800 14px/1.25 Archivo,sans-serif}
+.pv-sob b a{display:inline-flex;align-items:center;gap:6px;color:inherit;text-decoration:none}
+.pv-sob b img{width:18px;height:18px;border-radius:50%}
+.pv-sob small{display:block;margin-top:2px;font-size:12.5px;line-height:1.3;color:var(--gris)}
+.pv-flag{width:20px;height:14px;object-fit:cover;border-radius:2px}
+.pv-dl li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--suave);font-size:14px}
+.pv-dl b{color:var(--verde);font:800 14px/1 Archivo,sans-serif}
+.pv-dl li.dv b{display:inline-flex;align-items:center;gap:8px;color:var(--pc)}
+.clara .pv-dl li.dv b{color:color-mix(in srgb,var(--pc) 60%,#030304)}
+.pv-gema{display:inline-block;flex:none;width:10px;height:10px;border-radius:2px;transform:rotate(45deg);background:var(--pc);box-shadow:inset 2px 2px 0 rgba(255,255,255,.38)}
+.pv-puesto{position:relative;height:130px;border-radius:4px;overflow:visible;background:#18181B}
+.pv-puesto .f{width:100%;height:100%;object-fit:cover;border-radius:4px}
+.pv-puesto .ca{position:absolute;left:12px;bottom:-16px;width:74px}
+.pv-puesto .ca img{width:100%;display:block;border-radius:3px;box-shadow:0 0 0 2px #030304}
+.pv-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:26px}
+.pv-tags span{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:2px;background:var(--fondo);font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.pv-tags i{width:8px;height:8px;border-radius:1px;background:var(--tc)}
+.pv-amig{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 8px}
+.pv-amig a{display:grid;justify-items:center;gap:4px;min-width:0;color:inherit;text-decoration:none;text-align:center}
+.pv-amig-c{width:58px;height:58px;border-radius:4px;object-fit:cover;display:grid;place-items:center;overflow:hidden;background:var(--suave);font:900 18px/1 Archivo,sans-serif}
+.pv-amig-c img{width:100%;height:100%;object-fit:cover}
+.pv-amig b{max-width:100%;font:800 12.5px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-amig small{font:900 13px/1 Archivo,sans-serif}
+.pv-amig small span{color:var(--gris)}
+.pv-extra{list-style:none;margin:12px 0 0;padding:0}
+.pv-extra li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--suave);font-size:13px}
+.pv-extra .pv-cara{width:32px;height:32px}
+.pv-extra b{display:block;font:800 13.5px/1.2 Archivo,sans-serif}
+.pv-extra small{color:var(--gris)}
+
+/* ── en la cabecera: el ELO y la vitrina viva ── */
+.pv-elo{display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:4px;background:#121216;color:#F6F6F6;text-decoration:none;box-shadow:inset 0 0 0 1.5px #24242A}
+.pv-elo .pv-gema{width:16px;height:16px;border-radius:3px;box-shadow:inset 3px 3px 0 rgba(255,255,255,.38),inset -2px -2px 0 rgba(0,0,0,.22)}
+.pv-elo b{display:block;font:900 30px/1 Archivo,sans-serif;color:var(--pc)}
+.pv-elo small{display:block;margin-top:3px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+.pv-elo em{font-style:normal;color:var(--pc)}
+.pv-elo:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.pv-placas{position:relative;display:block;width:56px;height:46px;flex:none}
+.pv-pl{position:absolute;top:1px;display:grid;place-items:end center;width:30px;height:44px;overflow:hidden;border-radius:2px;background-size:cover;background-position:center;box-shadow:0 0 0 1.5px #121216}
+.pv-pl::before{content:"";position:absolute;inset:0;background:rgba(3,3,4,.12);box-shadow:inset 0 0 0 1.5px var(--mc,#E5B800);border-radius:2px}
+.pv-pl svg{position:relative;width:19px;height:25px;margin-bottom:3px;filter:drop-shadow(0 1px 0 rgba(0,0,0,.6))}
+.pv-pl.v{--mc:#3A3A40;background:#1A1A1E}
+.pv-pl:nth-child(1){left:0;transform:rotate(-8deg);z-index:1}.pv-pl:nth-child(2){left:13px;z-index:2}.pv-pl:nth-child(3){left:26px;transform:rotate(8deg);z-index:3}
+.pv-pl{transition:transform .16s cubic-bezier(.23,1,.32,1)}
+@media (hover:hover){button:hover .pv-pl:nth-child(1){transform:rotate(-16deg) translateX(-4px)}button:hover .pv-pl:nth-child(3){transform:rotate(16deg) translateX(4px)}}
+@media (prefers-reduced-motion:reduce){.pv-ci,.pv-pl{transition:none}}
+.app.calma .pv-ci,.app.calma .pv-pl{transition:none}
+
+/* la lista de «Lo último», en su tema (las filas del Inicio viven en negro) */
+.pv-lu{--fondo:#030304;--tinta:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;border-radius:4px;background:#101012;color:#F6F6F6}
+/* las piezas de antes, en el costado: a lo ancho de la columna */
+.pv-lado > *{min-width:0;max-width:100%;margin:0}
+/* ── la cabecera: el OVR y el ELO lado a lado, los números debajo; las tres puertas en una fila ── */
+.pf8-num:has(.pv-elo){grid-template-columns:auto auto minmax(0,1fr);align-items:stretch}
+.pf8-num:has(.pv-elo) .pf8-tres{grid-column:1/-1;margin-left:0}
+.pf8-puertas.tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pf8-puertas.tres .pf8-pu{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:6px;padding:10px 8px}
+.pf8-puertas.tres .pf8-pu > em{display:none}
+.pf8-puertas.tres .pf8-pu-tx small{white-space:normal}
+.pv-inv{position:relative}
+.pv-inv i{position:absolute;left:-4px;bottom:-2px;padding:1px 4px;border-radius:2px;background:#E5B800;color:#030304;font:800 9px/1.2 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em}
+
+/* las piezas de antes que traen su sección grande (Como jurado, Precio por su cabeza): en el costado, como las demás cajas */
+.app .pv-lado > .sec,.app .pv-mas-g > .sec{padding:16px;border-radius:4px;background:var(--caja)}
+.app .pv-lado > .sec .sec-t,.app .pv-mas-g > .sec .sec-t{border-top:0;padding-top:0;margin-bottom:12px}
+.app .pv-lado > .sec .sec-t h2,.app .pv-mas-g > .sec .sec-t h2{font:900 15px/1 Archivo,sans-serif;font-stretch:115%}
+.app .pv-lado > .sec .sec-t a,.app .pv-mas-g > .sec .sec-t a{font:700 12.5px/1 Archivo,sans-serif;text-transform:none}
+.app .pv-lado .pf-pr-m{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.app .pv-lado .pf-pr-m .btn{min-width:0;padding-inline:4px}
+
+/* la primera destacada es la fila fuerte de Publicaciones: en el celular, la carta más chica y la fecha abajo (como el muro de antes) */
+.pv-dest0{min-width:0}
+.pv-dest0 .pw-f{min-width:0}
+@media (max-width:599.98px){
+  .app .pv-dest0 .pw-f{padding:10px;gap:10px}
+  .app .pv-dest0 .pw-f.fuerte{grid-template-columns:68px minmax(0,1fr);padding:12px 10px}
+  .app .pv-dest0 .pw-fu-carta{width:68px}
+  .app .pv-dest0 .pw-top{flex-wrap:wrap;row-gap:4px}
+}
+/* las piezas de antes (paneles negros en las bandas): en el costado siguen el tema, como las demás cajas */
+.clara .pv-lado .pf9-pz,.clara .pv-mas-g .pf9-pz{--fondo:#FFFFFF;--tinta:#030304;--linea:#030304;--suave:#E2E2DE;--gris:#6E6E6A;--caja:#F3F3F0;--inv:#030304;--inv-tinta:#F6F6F6;
+  --magenta-tx:#D0106A;background:#F3F3F0;color:#030304;box-shadow:none}
+.noche .pv-lado .pf9-pz,.noche .pv-mas-g .pf9-pz{background:var(--caja);box-shadow:none}

@@ -30,6 +30,7 @@ import { errorPerfilTx, guardarPerfilMio, usePerfilExtra } from './perfil_extra.
 import { FraseEditor } from './frase.jsx';
 import { CrewsParaVos, InvitarACrew, RolCrew } from './crewpanel.jsx';
 import { Banda, Rivalidades, SuCamino, SuForma, SuMejorNoche, SuMuro, SusHistorias, SusRecords, usePerfilDatos } from './perfil_bandas.jsx';
+import { EloNum, PerfilV10, PlacasVitrina } from './perfil_v10.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
 
@@ -375,19 +376,28 @@ function CopasVitrina() {
 // tarjetas»): sus tarjetas en el visor, y la Vitrina, que llega después
 // 🔢 cuenta sólo las suyas (18/11/2026): sumaba las camisetas de servidor (`svc`), que el visor no muestra, y con cero
 // propias el botón apagado decía «5 · las suyas y 5 de servidor». `svc` queda para el día que el visor las tenga
-function Puertas({ liga, f, k, cs, svc }) {
+function Puertas({ liga, f, k, cs, svc, p, e, esYo }) {
   const [pronto, setPronto] = useState(false);
   const total = cs.length;
   const prev = cs.slice(0, 3);
   return (
-    <div className="pf8-puertas">
+    <div className="pf8-puertas tres">
       <button type="button" className="pf8-pu" onClick={() => accion.carta(k)} disabled={!cs.length} aria-label={'Ver las tarjetas de ' + limpio(f.n)}>
         <span className="pf8-pu-tj" aria-hidden="true">{prev.map((c) => <img key={c} alt="" src={liga.cartaUrl(k, c)} loading="lazy" />)}</span>
         <span className="pf8-pu-tx"><b>Tarjetas</b><small>{!total ? 'todavía ninguna' : total + (total === 1 ? ' tarjeta' : ' tarjetas')}</small></span>
         <em aria-hidden="true">›</em>
       </button>
+      {/* 🎒 EL INVENTARIO, ENTRE TARJETAS Y VITRINA (Dlx: «entre tarjetas y vitrina agrega la opción de inventario»): el tuyo
+          abre tu Inventario; el de otro, lo que lleva puesto */}
+      <button type="button" className="pf8-pu" onClick={() => { if (esYo) { location.hash = '#/inventario'; return; } const r = document.querySelector('#inicio-nuevo'); const el = r && r.shadowRoot && r.shadowRoot.querySelector('#pf-puesto'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }}>
+        <span className="pf8-pu-tj pv-inv" aria-hidden="true">{cs.slice(0, 1).map((c) => <img key={c} alt="" src={liga.cartaUrl(k, c)} loading="lazy" />)}<i>TAG</i></span>
+        <span className="pf8-pu-tx"><b>Inventario</b><small>{esYo ? 'tus TAGs, marcos y fondos' : 'lo que lleva puesto'}</small></span>
+        <em aria-hidden="true">›</em>
+      </button>
+      {/* 🏆 VIVA COMO TARJETAS (Dlx: «hazla más viva como tarjetas es»): un abanico de placas, cada una con la escena de su
+          servidor y el trofeo encima */}
       <button type="button" className="pf8-pu" aria-expanded={pronto} onClick={() => setPronto(!pronto)}>
-        <span className="pf8-pu-vt" aria-hidden="true"><CopasVitrina /></span>
+        <span className="pf8-pu-vt" aria-hidden="true"><PlacasVitrina liga={liga} p={p} e={e} /></span>
         <span className="pf8-pu-tx"><b>Vitrina</b><small>{pronto ? 'los trofeos de sus eventos\u00a0· llega pronto' : (f.oro || 0) + ((f.oro || 0) === 1 ? '\u00a0trofeo' : '\u00a0trofeos') + '\u00a0· pronto'}</small></span>
         <em aria-hidden="true">›</em>
       </button>
@@ -399,12 +409,14 @@ function Puertas({ liga, f, k, cs, svc }) {
 // lo que es —OVR y rango, con el borde del color de su rango— separado de lo que hizo, cada número centrado en su
 // columna. «50,0» pasa a «50 %»
 function NumerosB({ liga, f, q }) {
+  // 💎 su ELO, en el color de su piedra (Dlx, a la v9: «que aparezca el ELO suyo en alguna parte y en color de la piedra»)
   const wr = f.wr ? String(Math.round(parseFloat(String(f.wr).replace(',', '.')) || 0)) + ' %' : '—';
   return (
     <div className="pf8-num">
       <div className="pf8-yo" style={{ '--rc': f.rg ? liga.colorRg(f.rg) : 'var(--esc-linea)' }}>
         <b>{f.ovr || '—'}</b><Rango liga={liga} rg={f.rg} /><small>OVR {q('ovr')}</small>
       </div>
+      <EloNum liga={liga} k={f.k} />
       <div className="pf8-tres">
         <div><b className={num(f.pts || 0).length > 6 ? 'largo' : undefined}>{num(f.pts || 0)}</b><small>PUNTOS {q('puntos')}</small></div>
         <div><b>{f.ev || 0}</b><small>EVENTOS {q('eventos')}</small></div>
@@ -414,7 +426,7 @@ function NumerosB({ liga, f, q }) {
   );
 }
 
-function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
+function Cabeza({ liga, f, k, p, e, dc, esYo, onEmblemas, ems, numeros, ex }) {
   // ⭐ con la lista ENTERA (`liga.sigo`, 18/11/2026): `liga.sigue` va filtrada por las 200 filas de la tabla, así que a los
   // de fuera el botón les decía siempre «Seguir» y tocarlo te sacaba (`alternarSigo()` mira la lista de verdad)
   const si = liga.sigo(k);
@@ -523,7 +535,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
             <div><b>{sigue == null ? '—' : abreviar(sigue)}</b><small>siguiendo</small></div>
             <Redes redes={p && p.redes} cls="tel" />
           </div>
-          <Puertas liga={liga} f={f} k={k} cs={cs} svc={svc} />
+          <Puertas liga={liga} f={f} k={k} cs={cs} svc={svc} p={p} e={e} esYo={esYo} />
         </div>
         <QueEsTexto k={qe} />
       </section>
@@ -1667,54 +1679,27 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   } : {};
   return (
     <div className="pf8-pag pf9-pag" ref={raiz}>
-      <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} ex={ex} onEmblemas={(x) => setEmb(x || '')} numeros />
+      <Cabeza liga={liga} f={f} k={k} p={p} e={P && P.e} dc={dc} esYo={esYo} ems={ems} ex={ex} onEmblemas={(x) => setEmb(x || '')} numeros />
       <div ref={abajo} />
-      {P ? <Indice raiz={raiz} /> : null}
       {/* 🤝 en tu perfil y sin crew: las que te aceptan, debajo de la cabecera (sale sola sólo si estás verificado y sin
           crew: ver `CrewsParaVos` de crewpanel.jsx) */}
       {esYo && !crewDe(k) ? <CrewsParaVos liga={liga} seccion="sec pf-sec" /> : null}
       {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entras entre los 200 de la tabla.</p></section> : null}
-      {/* 🔁 `key={k}` (18/11/2026): el perfil iba con clave fija en App, así que al pasar a otro perfil Eventos, Duelos,
-          Videos y Su muro se quedaban con la búsqueda y el filtro del anterior, y podían dejar una lista vacía sin chips.
-          App ya lo remonta por el link (`'Perfil' + partes[1]`); esto queda por si la clave cambia con el mismo link
-          (las mayúsculas o un alias, que se resuelven contra la tabla y los de fuera) */}
+      {/* 🪪 LA V10 (19/11/2026, Dlx: «pasa la v10 a mi perfil»): sus momentos, el récord, su mejor noche, contra la Liga y sus
+          rivales arriba, en negro; abajo su próximo evento, sus ligas, las pestañas y el costado (perfil_v10.jsx). Las piezas
+          que ya existían van tal cual: su camino, lo que le falta, su ficha de jurado, sus récords, el precio, los videos y
+          los logros (con el inventario, en el tuyo). `key={k}`: al pasar a otro perfil, nada se queda con el filtro del anterior */}
       {!P ? <div className="cargando">Cargando…</div> : (
-        <div className="pf9-cuerpo" key={k}>
-          <Banda color="negra">
-            <SusHistorias liga={liga} f={f} p={p} esYo={esYo} />
-            <div className="pf9-g pf9-g-forma">
-              <SuForma liga={liga} D={D} esYo={esYo} />
-              <div className="pf9-pila"><ProximaMeta liga={liga} f={f} esYo={esYo} /><DeUnVistazo f={f} p={p} D={D} esYo={esYo} /></div>
-            </div>
-          </Banda>
-          <Banda color="blanca" titulo={su('Tus noches', 'Sus noches')} link={su('Tus eventos', 'Sus eventos')} ir={'#/r/' + encodeURIComponent(k) + '/eventos'}>
-            <div className="pf9-g pf9-g-2 pf9-b2">
-              <div className="pf9-pila"><SuMejorNoche liga={liga} f={f} D={D} esYo={esYo} />{L.riv === 'izq' ? riv : null}</div>
-              <div className="pf9-pila"><SuMuro liga={liga} p={p} esYo={esYo} n={L.nm} />{L.riv === 'der' ? riv : null}</div>
-            </div>
-            <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
-          </Banda>
-          <Banda color="negra" titulo={su('Tu temporada', 'Su temporada')} link="Ranking" ir="#/ranking/temporada">
-            <div className="pf9-g pf9-g-rail">
-              <div className="pf9-pila pf9-t-main">
-                <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} n={n} /></div>
-                <div id="pf-duelos"><Duelos liga={liga} p={p} e={P.e} /></div>
-              </div>
-              <div className="pf9-pila pf9-t-lat">
-                <SuCamino liga={liga} f={f} p={p} esYo={esYo} />
-                <SusRecords f={f} p={p} D={D} esYo={esYo} />
-                <Caceria liga={liga} p={p} />
-                <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
-              </div>
-            </div>
-          </Banda>
-          <Banda color="blanca" titulo={su('Lo tuyo', 'Lo suyo')}>
-            <div className="pf9-g pf9-g-2 pf9-b4">
-              <div className="pf9-pila">{B4.filter((id, i) => !((L.b4 >> (B4.length - 1 - i)) & 1)).map((id) => b4[id])}</div>
-              <div className="pf9-pila">{B4.filter((id, i) => (L.b4 >> (B4.length - 1 - i)) & 1).map((id) => b4[id])}</div>
-            </div>
-          </Banda>
-        </div>
+        <PerfilV10 key={k} liga={liga} k={k} f={f} p={p} P={P} esYo={esYo} tab0={t}
+          piezas={{
+            camino: <SuCamino key="camino" liga={liga} f={f} p={p} esYo={esYo} />,
+            falta: <LoQueFalta key="falta" f={f} p={p} esYo={esYo} />,
+            jurado: <FichaJurado key="jurado" liga={liga} k={k} />,
+            records: <SusRecords key="records" f={f} p={p} D={D} esYo={esYo} />,
+            precio: esYo ? null : <Precio key="precio" liga={liga} f={f} esYo={esYo} dc={dc} />,
+          }}
+          videos={<Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} />}
+          logros={<Logros liga={liga} p={p} esYo={esYo} dc={dc} />} />
       )}
       {panel}
     </div>
