@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "7.11",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T23:07:00-05:00",
+        "titulo": "El bot en vivo anuncia la batalla que se juega de verdad",
+        "items": [
+            "El bot en vivo anuncia la batalla que se está jugando de verdad, aunque el organizador no siga el orden de la llave: la reconoce porque sus dos raperos tienen el micrófono abierto en la llamada.",
+            "Ya no anuncia una batalla si alguien de ella no está en la llamada.",
+            "Cuando en un servidor los micrófonos ya mostraron quién pelea, el cruce espera a que se abran los de sus dos raperos, y sale con su imagen ya lista."
+        ]
+    },
+    {
         "version": "7.10",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T22:26:00-05:00",
