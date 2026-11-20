@@ -1292,6 +1292,81 @@ function pensandoYEditar(i, ctx, trabajo) {
   return new Response(JSON.stringify({ type: RESPONDE.PENSANDO, data: { flags: EFIMERO } }), { headers: { 'content-type': 'application/json' } });
 }
 
+/** «Ya va» sin mensaje nuevo (tipo 6), y el MISMO mensaje del botón editado cuando `trabajo()` termina: `{content, embeds,
+ *  components}`. Para lo que pide el objeto desde un botón que tiene que cambiar su propio mensaje (abrir el Drop) */
+function actualizarLuego(i, ctx, trabajo) {
+  luego(ctx, (async () => {
+    let data;
+    try { data = await trabajo(); } catch (e) { data = { content: 'No pude: prueba de nuevo en un minuto.', embeds: [], components: [] }; }
+    await fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
+      method: 'PATCH', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(Object.assign({ allowed_mentions: { parse: [] } }, data)),
+    }).catch(() => {});
+  })());
+  return new Response(JSON.stringify({ type: 6 }), { headers: { 'content-type': 'application/json' } });
+}
+
+// ── 🎞️ EL DROP SE ABRE A TOQUES, CON LA ANIMACIÓN DE LA PÁGINA (20/11/2026) ─────────────────────────────────────────
+// Dlx: «abrir un drop debería generar como un gif de la animación del drop moviéndose poco a poco y si le das click al
+// botón tap, ahí evoluciona, o no, así como el real drop de la página es, y puedes presionar 4 veces… Y al finalizar
+// cambia el gif a abrir uno… y ahí consigues la recompensa». Como en la página (`drops_show.js`): el objeto decide TODO
+// al abrir (y paga en ese momento: si alguien deja de tocar, lo suyo ya es suyo); los cuatro toques sólo muestran cómo
+// sube hasta lo que salió, y «Abrir» lo rompe. Los GIF son la animación de la página grabada
+// (`herramientas/gif_drops.py`) y viven en R2: un Worker no dibuja.
+// ⚠️ TODO EL ESTADO VA EN EL BOTÓN, como el resto del bot: `dt:<d|s>:<id>:<toques>.<base>.<fin>.<plan>`, donde `plan`
+// son cuatro dígitos (si sube o no en cada toque). Un toque contesta al instante (tipo 7) sin preguntarle nada a nadie;
+// «Abrir» le vuelve a pedir el drop al objeto, que lo devuelve tal cual porque ya está abierto (`ya`): el premio nunca
+// sale del botón.
+const DROP_GIF = R2 + '/drops/gif/v1/';
+//: el color de cada rareza, el de la página (`RZ` en drops_show.js)
+const DROP_COLOR = [0x9AA4B2, 0x29B298, 0x9B5CFF, 0xFF4F93, 0xF5C542];
+const DROP_TOQUES = 4;
+const slugGif = (t) => String(t || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+/** La URL del GIF: `<anim>-<estado>-<rareza>` o `<anim>-titulo-<título>` (los nombres los arma `nombres()` del grabador) */
+export function gifDrop(anim, estado, r, titulo) {
+  return DROP_GIF + anim + (estado === 'titulo' ? '-titulo-' + slugGif(titulo) : '-' + estado + '-' + r) + '.gif';
+}
+/** En qué toques sube: `subidas` toques distintos de los cuatro, al azar (nunca dos en uno: como mucho son cuatro) */
+export function planDrop(subidas, azar) {
+  const plan = [0, 0, 0, 0], libres = [0, 1, 2, 3];
+  for (let k = 0; k < Math.min(subidas, DROP_TOQUES); k++) plan[libres.splice(Math.floor(azar() * libres.length) % libres.length, 1)[0]] = 1;
+  return plan;
+}
+/** `{anim, id, k, base, fin, plan}` de un `dt:` (`k`: el toque, del 1 al 4, o 5 = «Abrir»), o `null` si no se entiende */
+export function leerDt(id) {
+  const m = /^dt:([ds]):(\d{1,12}):([1-5])\.([0-4])\.([0-4])\.([01]{4})$/.exec(String(id || ''));
+  if (!m) return null;
+  const e = { anim: m[1] === 's' ? 'star' : 'drop', id: Number(m[2]), k: Number(m[3]), base: Number(m[4]), fin: Number(m[5]), plan: [...m[6]].map(Number) };
+  return e.base > e.fin ? null : e;
+}
+const dtDe = (e, k) => `dt:${e.anim === 'star' ? 's' : 'd'}:${e.id}:${k}.${e.base}.${e.fin}.${e.plan.join('')}`;
+//: la rareza después de `k` toques
+const rzTrasToques = (e, k) => Math.min(e.fin, e.base + e.plan.slice(0, k).reduce((a, b) => a + b, 0));
+/** Una pantalla del Drop: el GIF, la rareza que se ve, los toques y el botón. `{content, embeds, components}` */
+export function pantallaDrop(e, k, gif) {
+  const r = rzTrasToques(e, k), listo = k >= DROP_TOQUES;
+  const pips = Array.from({ length: DROP_TOQUES }, (_, i) => (i < k ? '●' : '○')).join(' ');
+  const que = e.anim === 'star' ? 'Star Dragon' : 'Dragón Drop';
+  const pista = listo ? '¡Listo! Toca **Abrir** y mira lo que te llevas.'
+    : k === 0 ? 'Toca **Tap**: con cada toque puede subir de rareza.' : 'Toca otra vez.';
+  const boton = listo
+    ? { type: COMP.BOTON, style: 3, label: 'Abrir', emoji: { name: '🐉' }, custom_id: dtDe(e, DROP_TOQUES + 1) }
+    : { type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Tap', emoji: { name: '👆' }, custom_id: dtDe(e, k + 1) };
+  return {
+    content: '',
+    embeds: [{ color: DROP_COLOR[r] || DROP_COLOR[0], title: '🐉 ' + que + ' · ' + RAREZA_NOMBRE[r], description: pista + '\n' + pips,
+      image: { url: gif } }],
+    components: filaDe([boton]),
+  };
+}
+/** Un toque (el `k`-ésimo, del 1 al 4): si sube, el GIF de la subida; si no, se sacude. Con el cuarto, brilla */
+export function toqueDrop(e) {
+  const k = e.k, antes = rzTrasToques(e, k - 1), ahora = rzTrasToques(e, k);
+  const gif = k >= DROP_TOQUES && ahora === antes ? gifDrop(e.anim, 'listo', ahora)
+    : ahora > antes ? gifDrop(e.anim, 'sube', ahora) : gifDrop(e.anim, 'nada', ahora);
+  return pantallaDrop(e, k, gif);
+}
+
 const tipoDeDrop = (o) => (/^star:/.test(String(o || '')) ? 'star' : /^nido:/.test(String(o || '')) ? 'nido' : /^cofre5:/.test(String(o || '')) ? 'cofre' : 'drop');
 const plural = (n, uno, varios) => n + ' ' + (n === 1 ? uno : varios);
 
@@ -1337,9 +1412,37 @@ async function abrirDropChat(env, did, tipo) {
   if (!r || !r.ok) {
     return { content: r && r.error === 'vincula' ? '🔒 Ése se abre siendo **Miembro de DRA**: `/vincular`.' : 'No pude abrirlo: prueba de nuevo en un minuto.' };
   }
+  // 🎞️ ya está abierto y pagado; lo que sigue es la animación (ver `pantallaDrop()`). Arranca en la rareza mínima del
+  // drop (un Star, en Vinilo) y sube en los toques que diga el plan, hasta lo que salió
+  const fin = Math.max(0, Math.min(4, Number(r.rareza) || 0));
+  const base = Math.min(fin, Math.max(Number(x.min) || 0, tipo === 'star' ? 2 : 0));
+  const azar = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; };
+  const e = { anim: tipo === 'star' ? 'star' : 'drop', id: Number(x.id), base, fin, plan: planDrop(fin - base, azar) };
+  return pantallaDrop(e, 0, gifDrop(e.anim, 'entra', base));
+}
+
+/** 🐉 «Abrir», después de los cuatro toques: el premio (el objeto lo devuelve tal cual: ya está abierto), el GIF de la
+ *  apertura y lo que queda por abrir */
+async function premioDropChat(env, did, e) {
+  const tipo = e.anim === 'star' ? 'star' : 'drop';
+  const [r, j] = await Promise.all([alObjeto(env, 'drop-abrir', { quien: did, id: e.id }), alObjeto(env, 'drops', { quien: did })]);
+  if (!r || !r.ok) {
+    return { content: 'No pude mostrarlo: prueba de nuevo en un minuto. Lo que te salió ya es tuyo.', embeds: [],
+      components: filaDe([botonLink('Ver mis drops', URL_DROPS)]) };
+  }
+  const cerr = ((j && j.cerrados) || []).filter((y) => (y.tipo || tipoDeDrop(y.origen)) === tipo);
+  const fin = Math.max(0, Math.min(4, Number(r.rareza) || 0));
+  // el texto arriba (lo que te llevas: el número cambia en cada drop, así que no va en el GIF) y la apertura debajo
+  return Object.assign(textoPremioDrop(r, tipo, cerr.length, did), {
+    embeds: [{ color: DROP_COLOR[fin], image: { url: r.titulo ? gifDrop(e.anim, 'titulo', fin, r.titulo) : gifDrop(e.anim, 'abre', fin) } }],
+  });
+}
+
+/** El texto y los botones del premio, sin la imagen: lo que dice el bot con la apertura. `quedan`: los que siguen cerrados */
+export function textoPremioDrop(r, tipo, quedan, did) {
   const nom = r.nombre || RAREZA_NOMBRE[r.rareza] || '';
-  const premio = r.titulo ? 'el título **«' + r.titulo + '»**' : '**+' + milesChat(r.puntos) + '** Puntos de Tienda';
-  const quedan = cerr.length - 1;
+  const premio = r.titulo ? 'el título **«' + r.titulo + '»**' + (r.puntos ? ' y **+' + milesChat(r.puntos) + '** Puntos de Tienda' : '')
+    : '**+' + milesChat(r.puntos) + '** Puntos de Tienda';
   const bots = [];
   if (quedan > 0) bots.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: tipo === 'star' ? 'Abrir otro Star' : 'Abrir otro Drop', custom_id: 'dd:' + tipo + ':x:' + did });
   bots.push(botonLink('Ver en la página', URL_DROPS));
@@ -5216,6 +5319,20 @@ export default {
           return aviso(`🎯 No te encuentro en **${mdNoche(f.t)}**. Si jugaste, puede que tu cuenta no esté vinculada: usa **\`/vincular\`**. Las notas de todos están en **La llave**.`, llave);
         }
         return aviso(tn.texto, tn.botones);
+      }
+
+      // ── 🎞️ los toques del Drop (`dt:`, ver `pantallaDrop()`): el mensaje es efímero, así que sólo lo toca su dueño, y
+      // el premio lo vuelve a leer el objeto con quien toca (`drop-abrir` pide el id Y la persona) ─────────────────────
+      if (que === 'dt') {
+        const yo = idDe(i);
+        const esperarT = frenado(yo, 'click');
+        if (esperarT) return espera(esperarT);
+        const e = leerDt(id);
+        if (!e) return aviso('Ese botón ya no anda: usa **`/drops`**.');
+        // del 1 al 4 son los toques; el 5 es «Abrir», que le pide el premio al objeto (puede estar dormido: tipo 6 y después)
+        if (e.k > DROP_TOQUES) return actualizarLuego(i, ctx, () => premioDropChat(env, yo, e));
+        return new Response(JSON.stringify({ type: RESPONDE.ACTUALIZAR, data: Object.assign({ allowed_mentions: { parse: [] } }, toqueDrop(e)) }),
+          { headers: { 'content-type': 'application/json' } });
       }
 
       // ── 🐉 «Abrir un Drop / Star» (`dd:<drop|star>:x:<dueño>`) y 🎽 el menú de `/equipar` (`eq:<lugar>:x:<dueño>`) ─

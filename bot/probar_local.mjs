@@ -1913,6 +1913,47 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
   const rm = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700956' } }, message: { id: '1' },
                            data: { custom_id: 'dd:mis', component_type: 2 } });
   ok('«Abrir mis premios» contesta «pensando», sólo a quien lo tocó', rm.json?.type === 5 && rm.json?.data?.flags === 64, JSON.stringify(rm.json));
+  // 🎞️ EL DROP A TOQUES, CON LOS GIF DE LA PÁGINA (20/11/2026, Dlx: «si le das click al botón tap, ahí evoluciona, o no…
+  // y puedes presionar 4 veces… Y al finalizar cambia el gif a abrir uno»). Todo el estado va en el botón `dt:`
+  {
+    const D = await import('./worker.js');
+    const sec = (xs) => { let i = 0; return () => xs[i++ % xs.length]; };
+    const pl = D.planDrop(3, sec([0.99, 0, 0.5]));
+    ok('🎞️ el plan reparte las subidas en toques distintos (nunca dos en uno) y cuenta las que salieron',
+       pl.length === 4 && pl.reduce((a, b) => a + b, 0) === 3 && pl.every((x) => x <= 1)
+       && D.planDrop(0, Math.random).join('') === '0000' && D.planDrop(4, Math.random).join('') === '1111', JSON.stringify(pl));
+    ok('🎞️ el nombre de cada GIF es el que graba herramientas/gif_drops.py',
+       /\/drops\/gif\/v1\/drop-sube-3\.gif$/.test(D.gifDrop('drop', 'sube', 3))
+       && /\/drops\/gif\/v1\/star-titulo-aliento-de-dragon\.gif$/.test(D.gifDrop('star', 'titulo', 3, 'Aliento de Dragón')));
+    ok('🎞️ un botón `dt:` que no se entiende no abre nada (ni toques fuera de 1–5, ni una base más alta que lo que salió)',
+       D.leerDt('dt:d:12:0.0.1.1000') === null && D.leerDt('dt:d:12:6.0.1.1000') === null && D.leerDt('dt:d:12:1.3.1.0000') === null
+       && D.leerDt('dt:x:12:1.0.1.1000') === null && D.leerDt('dt:d:12:1.0.1.1000')?.anim === 'drop');
+    // de Maqueta (0) a Disco de Oro (3), subiendo en los toques 1, 3 y 4
+    const e = { anim: 'drop', id: 77, base: 0, fin: 3, plan: [1, 0, 1, 1] };
+    const p0 = D.pantallaDrop(e, 0, D.gifDrop('drop', 'entra', 0));
+    const bt = (p) => (p.components[0] || {}).components?.[0] || {};
+    ok('🎞️ la primera pantalla: Maqueta, el GIF de la llegada y «Tap» que lleva al toque 1',
+       /Maqueta/.test(p0.embeds[0].title) && /drop-entra-0\.gif$/.test(p0.embeds[0].image.url) && bt(p0).label === 'Tap'
+       && bt(p0).custom_id === 'dt:d:77:1.0.3.1011' && /○ ○ ○ ○/.test(p0.embeds[0].description), JSON.stringify(p0));
+    const toque = async (cid) => (await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700957' } }, message: { id: '9' },
+                                                 data: { custom_id: cid, component_type: 2 } })).json;
+    const t1 = await toque('dt:d:77:1.0.3.1011');
+    const t2 = await toque('dt:d:77:2.0.3.1011');
+    const t4 = await toque('dt:d:77:4.0.3.1011');
+    ok('🎞️ cada toque PISA el mismo mensaje al instante (tipo 7): el 1 sube a Mixtape, el 2 se sacude, el 4 sube y queda listo para abrir',
+       t1?.type === 7 && /Mixtape/.test(t1.data.embeds[0].title) && /drop-sube-1\.gif$/.test(t1.data.embeds[0].image.url)
+       && /drop-nada-1\.gif$/.test(t2.data.embeds[0].image.url) && /● ● ○ ○/.test(t2.data.embeds[0].description)
+       && /Disco de Oro/.test(t4.data.embeds[0].title) && /drop-sube-3\.gif$/.test(t4.data.embeds[0].image.url)
+       && bt(t4.data).label === 'Abrir' && bt(t4.data).custom_id === 'dt:d:77:5.0.3.1011', JSON.stringify([t1, t2, t4].map((x) => x && x.data && x.data.embeds)));
+    const t4b = await toque('dt:d:77:4.0.0.0000');
+    ok('🎞️ si el cuarto toque no sube, el GIF es el del brillo (listo para abrir)', /drop-listo-0\.gif$/.test(t4b.data.embeds[0].image.url), JSON.stringify(t4b));
+    const ab = await toque('dt:d:77:5.0.3.1011');
+    ok('🎞️ «Abrir» contesta «ya va» sobre el mismo mensaje (tipo 6) y le pide el premio al objeto', ab?.type === 6, JSON.stringify(ab));
+    const tx = D.textoPremioDrop({ nombre: 'Disco de Oro', rareza: 3, puntos: 1000, titulo: 'Aliento de Dragón' }, 'drop', 2, '700957');
+    ok('🎞️ el premio dice el título y los Puntos, y deja abrir el siguiente (el botón es de quien lo abrió)',
+       /«Aliento de Dragón».*\+1\.000/.test(tx.content) && /Te quedan 2 Drops/.test(tx.content)
+       && tx.components[0].components[0].custom_id === 'dd:drop:x:700957', JSON.stringify(tx));
+  }
   // 🌙 «Tu nota» y «Perfiles» al pie del aviso de ganadores (18/11/2026): leen `noche:<n>` de KV, sólo a quien toca
   PUESTO['noche:700'] = JSON.stringify({ ev: '700', t: 'RED BULL BATALLA', sv: 'CEU', perf: [['Mats', 'mats'], ['Marcos', 'marcos']], p: [
     { n: 'Mats', k: 'mats', d: '700960', nota: 8.9, pos: 'Campeón', mvp: true, bat: false, eq: false, elo: [1046, 1090], pts: '7500',

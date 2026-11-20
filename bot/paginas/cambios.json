@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.20", "dia": "2026-11-20", "cuando": "2026-11-20T01:50:00-05:00", "titulo": "Abrir un Drop en Discord, como en la página", "items": ["En Discord, **Abrir un Drop** (o un Star) ya no te dice el premio de una: aparece el drop con su animación y lo tocas **4 veces** con **Tap**. En cada toque puede subir de rareza, o no.", "Al cuarto toque brilla: tocas **Abrir**, se rompe como en la página y ves lo que te llevaste.", "**Abrir mis premios** lo puede tocar cualquiera: a cada uno le muestra sólo sus propios drops."]},
     {
         "version": "7.19",
         "dia": "2026-11-20",

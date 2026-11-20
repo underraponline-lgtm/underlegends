@@ -237,3 +237,5 @@ datos/entrada_*.json
 datos/*.sucia
 herramientas/salida_botones_crew/
 herramientas/salida_medir_ligas/
+
+salida_gif_drops/
