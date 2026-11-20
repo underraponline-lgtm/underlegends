@@ -2512,7 +2512,7 @@ function momentos(liga, vivoL, ctx = {}) {
           <button type="button" className={'btn ' + (k ? 'borde' : 'verde')} onClick={() => accion.llave(ll.n)}>{varias ? 'Ver la llave' : 'Ver la llave entera'}</button>
           {k ? null : <Compartir cls="btn borde" url={enlace('#/llave/' + ll.n)} texto={'La llave de ' + limpio(ll.nombre) + ' en la Liga Global'} />}</div>
         <Social liga={liga} it={it} ctx={ctx} hilo={hilo} /></>,
-      vis: <div className="es-camp">
+      vis: <div className={'es-camp' + (!f && gana.length > 1 ? ' es-team' : '')}>
         {f ? <CampeonVis liga={liga} k={k} nombre={g0} n={misma.length} sumo={sumo} x={xs.size === 1 ? [...xs][0] : 1} sello={T.sello} />
           : <div className="es-cw"><CoronaCampeon /><span className="es-equipo">{gana.slice(0, 3).map((x) => <Cara key={x} liga={liga} k={(liga.quien(x) || {}).k} nombre={x} cls="cara es-cara-g" />)}</span><span className="es-sello">{gana.length > 1 ? 'Campeones' : 'Campeón'}</span></div>}
         <div className="es-caminos">{misma.slice(0, 2).map((x) => <Camino key={x.n} liga={liga} ll={x} nombre={g0} k={k} />)}</div>

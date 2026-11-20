@@ -742,6 +742,17 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-cara-g{width:120px;height:120px;border-radius:50%;overflow:hidden;border:3px solid #F6F6F6;font-size:40px}
 .app .escena.es2 .es-equipo .es-cara-g + .es-cara-g{margin-left:-24px}
 .app .escena.es2 .es-cw > .es-sello{position:relative;left:auto;bottom:auto}
+/* 👥 UN EQUIPO CAMPEÓN (19/11/2026, Dlx con una captura del celular: las PANDILLAS de FFA, tres campeones). La columna de 172
+   (118 en el celular) es la de UNA carta, y tres caras de 120 miden 312: se montaban sobre su camino, en el celular y también
+   en la compu. Con equipo, las caras arriba y el camino debajo, a lo ancho */
+.app .escena.es2 .es-camp.es-team{grid-template-columns:minmax(0,1fr);gap:14px;align-items:start}
+.app .escena.es2 .es-team .es-cw{padding-top:34px}
+.app .escena.es2 .es-team .es-cara-g{width:104px;height:104px;font-size:34px}
+@media (max-width: 899.98px){
+  .app .escena.es2 .es-team .es-cw{padding-top:28px}
+  .app .escena.es2 .es-team .es-cara-g{width:88px;height:88px;font-size:30px}
+  .app .escena.es2 .es-team .es-equipo .es-cara-g + .es-cara-g{margin-left:-18px}
+}
 /* 🛤️ su camino */
 .app .escena.es2 .es-caminos{display:grid;gap:14px;min-width:0}
 .app .escena.es2 .es-camino{display:grid;gap:6px;min-width:0}
@@ -6845,6 +6856,11 @@ button.nvp-caja small{color:#F5C542}
   .app .pn-fila.tres:not(.cuatro) > .pn-dia{order:-1;grid-column:1/-1;flex-direction:row;align-items:center;min-height:0}
   .app .pn-fila > :not(dialog) > .pn-tx{width:100%}
   .app .pn-fila > :not(dialog) > .btn{align-self:stretch;text-align:center;justify-content:center}
+  /* 📱 y sin envolver (19/11/2026): a 360 y 375 la regla vieja de ≤380 —«flex-wrap:wrap» y el botón a «flex:1 1 100%»,
+     pensada para cuando la racha era una tira a lo ancho— en un cuadro en columna mandaba «Entrar» a una SEGUNDA columna:
+     afuera del cuadro, de 16 px de ancho y encima del Sorteo */
+  .app .pn-fila > :not(dialog){flex-wrap:nowrap}
+  .app .pn-fila > :not(dialog) > .btn{flex:none}
 }
 
 /* 4 · LOS SEIS CUADROS DEL PANEL, EN UNA FILA QUE SE DESLIZA: tu carta a lo ancho y debajo Tienda, Crew, tu liga, el Pase,
