@@ -231,7 +231,7 @@ bajar del piso de Zafiro · Rubí ×0,5 sin bajar del piso de Jade · Zafiro ×0
 piedra más alta de la T1.
 
 **Medido en una T2 de prueba** (`elo_reinicio.py`: las batallas de la T1 otra vez, arrancando del reinicio, con el
-histórico ya armado y todo lo decidido): **propuesta, espera el OK: el borrador se queda.** Que la T2 arranque con el
+histórico ya armado y todo lo decidido): ✅ **el borrador se queda** (Dlx, 20/11/2026, 3:12 AM: *«Sí, el borrador»*). Que la T2 arranque con el
 82 % en Hierro no es un problema: son los que terminaron la T1 en Hierro o en Jade, y arriba cada uno arranca una o dos
 piedras abajo de la más alta.
 
@@ -277,12 +277,12 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **Los números**: K, los factores, los extras y la protección de abajo. El reinicio: la propuesta es que se quede
-   el borrador (§3, «El reinicio»).
+1. **Los números**: K, los factores, los extras y la protección de abajo.
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
 lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante) y, encima, la semana para el que se queda
-sin rivales (*«Sí, las dos»*); las semis no llevan regla propia; las piedras crecen de a 5, de 65 a 85 —Hierro 0 a 64, Jade 65, Zafiro 135, Rubí 210,
+sin rivales (*«Sí, las dos»*); el reinicio es el del borrador, y la primera vez sale de la piedra más alta de las divisiones de la T1
+(*«Sí, el borrador»*); las semis no llevan regla propia; las piedras crecen de a 5, de 65 a 85 —Hierro 0 a 64, Jade 65, Zafiro 135, Rubí 210,
 Diamante 290, Mítico 375— (*«sí, pero que varíe con cada piedra»* y *«Sí, la suave»*); la chance de cada batalla sale del ELO de temporada,
 como Brawl (*«Sí, la A»*). El resto de **cuánto** se gana o se pierde es otro tema (Dlx: *«cuánto, pues ahí es otro
 caso»*).
