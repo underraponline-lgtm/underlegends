@@ -219,12 +219,19 @@ jobs:
   # (desde el lunes 00:00 ET) no hay una corrida de `global.yml` buena
   # o andando, la dispara. Si esta semana ya fallaron dos, espera a la
   # que viene. ⚠️ No baja el repo: es una pregunta a la API, segundos.
+  #
+  # ⚠️ Y TAMBIÉN CUANDO CAMBIAN LAS FUENTES: si después de la última
+  # corrida buena se commiteó un lector (`bot/global_*.py`) o una lista
+  # (`datos/global_*.json`), la tabla publicada es de antes de ese
+  # cambio —«una cache que mira los datos no ve el código»— y se vuelve
+  # a correr. Nunca de 3 a 11 AM ET: la madrugada sin ciclo.
   # ══════════════════════════════════════════════════════════════════
   global:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     permissions:
       actions: write
+      contents: read
     steps:
       - name: el ranking global de esta semana, si falta
         env:
@@ -232,28 +239,58 @@ jobs:
           GH_REPO: ${{ github.repository }}
         shell: python3 {0}
         run: |
-          import datetime, json, subprocess, zoneinfo
+          import datetime, json, os, subprocess, zoneinfo
           ET = zoneinfo.ZoneInfo('America/New_York')
           ahora = datetime.datetime.now(ET)
-          lunes = (ahora - datetime.timedelta(days=ahora.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
-          if ahora.weekday() == 0 and ahora.hour < 17:
-              print('lunes antes de las 5 PM ET: le toca a su propio horario')
+          if 3 <= ahora.hour < 11:
+              print('de 3 a 11 AM ET no: la madrugada sin ciclo')
               raise SystemExit
+          lunes = (ahora - datetime.timedelta(days=ahora.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
           crudo = subprocess.run(['gh', 'run', 'list', '--workflow', 'global.yml', '--limit', '20',
                                   '--json', 'createdAt,status,conclusion'], capture_output=True, text=True)
           if crudo.returncode:
               print('no pude mirar las corridas de global.yml:', crudo.stderr[:200])
               raise SystemExit
-          semana = [r for r in json.loads(crudo.stdout or '[]')
-                    if datetime.datetime.fromisoformat(r['createdAt'].replace('Z', '+00:00')).astimezone(ET) >= lunes]
-          buenas = [r for r in semana if r['status'] != 'completed' or r['conclusion'] == 'success']
-          if buenas:
-              print('esta semana ya hay %d (buena o andando)' % len(buenas))
+          corridas = json.loads(crudo.stdout or '[]')
+          cuando = lambda r: datetime.datetime.fromisoformat(r['createdAt'].replace('Z', '+00:00')).astimezone(ET)
+          andando = [r for r in corridas if r['status'] != 'completed']
+          if andando:
+              print('hay una andando')
+              raise SystemExit
+          buenas = [cuando(r) for r in corridas if r['conclusion'] == 'success']
+          ultima = max(buenas) if buenas else None
+          # ¿Cambió una fuente después de la última buena?
+          cambio = None
+          if ultima:
+              for ruta in ('bot/global_ranking.py', 'bot/global_fuente_fms.py', 'bot/global_fuente_fstats.py',
+                           'bot/global_fuente_youtube.py', 'bot/global_fuente_urbanstreet.py', 'bot/global_fuente_liga.py',
+                           'datos/global_canales.json', 'datos/global_semillas.json', 'datos/global_alias.json'):
+                  r = subprocess.run(['gh', 'api', 'repos/%s/commits?path=%s&per_page=1' % (os.environ['GH_REPO'], ruta)],
+                                     capture_output=True, text=True)
+                  try:
+                      c = json.loads(r.stdout or '[]')[0]['commit']['committer']['date']
+                  except (ValueError, IndexError, KeyError, TypeError):
+                      continue
+                  t = datetime.datetime.fromisoformat(c.replace('Z', '+00:00')).astimezone(ET)
+                  if t > ultima and (cambio is None or t > cambio[1]):
+                      cambio = (ruta, t)
+          semana = [r for r in corridas if cuando(r) >= lunes]
+          fallas_hoy = [r for r in corridas if cuando(r).date() == ahora.date() and r['conclusion'] != 'success']
+          if cambio and len(fallas_hoy) < 2:
+              motivo = 'cambió %s (%s), después de la última corrida buena' % (cambio[0], cambio[1].strftime('%d/%m %I:%M %p'))
+          elif ahora.weekday() == 0 and ahora.hour < 17:
+              print('lunes antes de las 5 PM ET: le toca a su propio horario')
+              raise SystemExit
+          elif ultima and ultima >= lunes:
+              print('esta semana ya hay una buena (%s)' % ultima.strftime('%d/%m %I:%M %p'))
+              raise SystemExit
           elif len(semana) >= 2:
               print('esta semana ya fallaron %d: hasta la que viene' % len(semana))
+              raise SystemExit
           else:
-              subprocess.run(['gh', 'workflow', 'run', 'global.yml', '--ref', 'main'], check=True)
-              print('🌍 disparé el ranking global de esta semana')
+              motivo = 'la de esta semana'
+          subprocess.run(['gh', 'workflow', 'run', 'global.yml', '--ref', 'main'], check=True)
+          print('🌍 disparé el ranking global:', motivo)
 
   # ══════════════════════════════════════════════════════════════════
   # ESCUCHAR — cada media hora, y nunca dibuja.
