@@ -349,9 +349,9 @@ piedras se prenden solas con `ACTUAL = 't2'`.
   noche, con lo de la noche adentro (Dlx, 20/11/2026, 4:02 AM: *«Sí, el de temporada»*). Con el #649 de prueba: Mats de
   106 a 192, que lo ganó. En la T1 sigue mostrando el de siempre.
 
-**Lo que falta antes de la T2:**
+- **La página, construida y publicada** (20/11/2026, 4:33 AM): desde la T2 el perfil dice «ELO de temporada» y suma el
+  histórico, que viaja con las últimas batallas en `/api/divisiones` (`_hist`: en el lobby no entra), y «Invita y gana»
+  y la Guía explican el ELO de temporada (la Guía, con un tercer texto en su fila: `textoSemana()`). Comprobado en la
+  página publicada: el perfil de Oasis y la Guía se ven como antes.
 
-1. Los textos de `web/src/invitar.jsx` y de la Guía que dicen «batallas 1v1».
-2. El histórico en el perfil.
-3. Construir la página antes del cambio: el código está, el bundle no.
-4. El 1v1 ranked (×`FORMATO_1V1`) y lo que votaba el público, cuando existan.
+**Lo único que falta**: el 1v1 ranked (×`FORMATO_1V1`) y lo que votaba el público, cuando existan.
