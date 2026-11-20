@@ -317,7 +317,7 @@
    "n": 633,
    "sv": "FFA",
    "vence": "2026-11-20T22:26:41+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Apolo": {
    "avisado": "2026-10-18",
@@ -1092,7 +1092,7 @@
    "n": 631,
    "sv": "SR",
    "vence": "2026-11-20T22:23:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "GGWAN": {
    "avisado": "2026-10-25",
@@ -2473,7 +2473,7 @@
    "n": 631,
    "sv": "SR",
    "vence": "2026-11-20T22:23:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Paja lenta": {
    "avisado": "2026-10-26",
@@ -2674,7 +2674,7 @@
    "n": 631,
    "sv": "SR",
    "vence": "2026-11-20T22:23:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "SNE": {
    "avisado": "2026-11-09",
