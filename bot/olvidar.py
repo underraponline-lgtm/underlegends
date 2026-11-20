@@ -225,6 +225,11 @@ def inventario(s):
         elif k.startswith('cartas/a/'):
             # 🧩 las imágenes compartidas de las cartas armables (la textura de un servidor): no son de nadie
             continue
+        elif k.startswith(('perfil/', 'vitrina/')):
+            # 🖼️ la imagen de /perfil o /vitrina de alguien (`perfil/<clave>.webp`, 20/11/2026): es SUYA —lleva su cara— y se
+            # borra con lo demás; sin esto `rpartition` la daba por una persona llamada «perfil»
+            nombre = k.split('/', 1)[1].rsplit('.', 1)[0]
+            cual = 'cartas'
         else:
             nombre, _, resto = k.rpartition('/')
             if not resto:

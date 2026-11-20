@@ -1,0 +1,128 @@
+/* 🖼️ LAS IMÁGENES DE /perfil Y /vitrina (og_img.jsx, 20/11/2026): 1200 px de ancho, arriba a la izquierda, para la foto de
+   bot/og_links.py. Es el CSS de la maqueta que aprobó Dlx («A · la portada» y «la combinación»), con el prefijo `oi-`
+   (buscado: no lo usa nadie; las clases de la maqueta —`.cara`, `.tag`, `.panel`, `.num`— ya existen en el shadow root).
+   Colores fijos: es una imagen, no sigue el tema. Los del rango y de la piedra llegan en línea (`--rc`, `--pc`) */
+.app.solo-og .oi{--i-negro:#07070A;--i-panel:#111117;--i-panel2:#191922;--i-linea:#2A2A36;--i-tx:#F3F2F7;--i-tx2:#A9A7B6;
+  --i-oro:#F5C542;--i-mag:#E41373;--i-verde:#29B298;
+  --rar-comun:#9BA3AF;--rar-rara:#4FA3FF;--rar-epica:#B46CFF;--rar-leg:#F5C542;
+  --f-disp:"Anton","Archivo",Impact,sans-serif;--f-body:"Archivo",system-ui,sans-serif;--f-cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  width:1200px;height:auto;background:var(--i-negro);color:var(--i-tx);font:400 18px/1.35 var(--f-body);overflow:hidden}
+.oi *{box-sizing:border-box}
+.oi-ic{font:700 15px/1 var(--f-cond);letter-spacing:.14em;text-transform:uppercase;color:var(--i-tx2)}
+
+/* ── el fondo de arriba (/perfil): su fondo de perfil o la escena de su servidor; sin ninguno, el violeta de la maqueta ── */
+.oi-fondo{position:absolute;inset:0 0 auto 0;height:300px;background:
+  radial-gradient(60% 90% at 78% 30%,rgba(120,90,255,.55),transparent 70%),
+  repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,255,255,.05) 46px 48px),
+  linear-gradient(180deg,#3b2f8f 0%,#1a1440 60%,var(--i-negro) 100%)}
+.oi-fondo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--i-negro))}
+.oi-fondo.real{background-size:cover;background-position:center 35%}
+.oi-fondo.real::after{background:linear-gradient(180deg,rgba(7,7,10,.05) 0%,rgba(7,7,10,.35) 55%,var(--i-negro) 100%)}
+
+.oi-cara{border-radius:50%;background:linear-gradient(150deg,#6a6a80,#25252f);display:grid;place-items:center;font:900 64px/1 var(--f-body);color:#e8e8f0;
+  border:5px solid var(--i-negro);box-shadow:0 0 0 3px var(--i-oro);overflow:hidden;flex:none}
+.oi-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.oi-tag{display:inline-block;justify-self:start;width:max-content;background:var(--i-mag);color:#fff;font:700 17px/1 var(--f-cond);letter-spacing:.12em;text-transform:uppercase;padding:7px 10px}
+.oi-nombre{font:400 112px/.9 var(--f-disp);text-transform:uppercase;color:var(--i-oro);letter-spacing:.01em;white-space:nowrap;overflow:hidden;min-width:0}
+.oi-chips{display:flex;flex-wrap:wrap;gap:6px 18px;font:700 16px/1 var(--f-cond);letter-spacing:.12em;text-transform:uppercase;color:var(--i-tx2)}
+.oi-chips b{color:var(--i-tx);font-weight:700;display:inline-flex;align-items:center}
+.oi-flag{width:28px;height:19px;object-fit:cover;margin-right:6px;border-radius:2px;display:inline-block}
+.oi-emb{display:flex;gap:8px;flex:none}
+.oi-emb span{width:40px;height:40px;border-radius:8px;background:var(--i-panel2);border:1px solid var(--i-linea);display:grid;place-items:center}
+.oi-emb i{font-style:normal;font:700 14px/1 var(--f-cond);color:var(--i-tx2)}
+
+.oi-num{display:grid;gap:2px;align-content:start}
+.oi-num b{font:400 54px/1 var(--f-disp);white-space:nowrap}
+.oi-num span{font:700 14px/1 var(--f-cond);letter-spacing:.14em;text-transform:uppercase;color:var(--i-tx2)}
+.oi-ovr{display:flex;align-items:center;gap:10px;border:2px solid var(--rc,#A5A5A0);padding:8px 12px;background:color-mix(in srgb,var(--rc,#A5A5A0) 9%,transparent)}
+.oi-ovr b{font:400 64px/1 var(--f-disp)}
+.oi-ovr i{font:900 22px/1 var(--f-body);font-style:normal;background:var(--rc,#A5A5A0);color:#08080B;padding:6px 9px}
+.oi-ovr .oi-v{writing-mode:vertical-rl;transform:rotate(180deg)}
+.oi-elo{display:flex;align-items:center;gap:10px;border:2px solid var(--pc,#7FB8FF);padding:8px 12px;background:color-mix(in srgb,var(--pc,#7FB8FF) 9%,transparent)}
+.oi-elo b{font:400 54px/1 var(--f-disp);color:var(--pc,#7FB8FF)}
+.oi-elo span{font:700 14px/1.2 var(--f-cond);letter-spacing:.12em;text-transform:uppercase;color:var(--pc,#7FB8FF)}
+
+.oi-panel{background:var(--i-panel);border:1px solid var(--i-linea);padding:20px 22px;display:grid;gap:12px;align-content:start;min-width:0}
+.oi-rec{font:400 72px/.9 var(--f-disp);white-space:nowrap}
+.oi-rec span{color:var(--i-tx2)}
+.oi-sub{color:var(--i-tx2);font-size:15px}
+.oi-vacio b{display:block;font:400 34px/1 var(--f-disp);text-transform:uppercase;color:var(--i-tx);margin-bottom:6px}
+.oi-forma{display:flex;gap:8px}
+.oi-forma span{width:56px;height:56px;flex:none;display:grid;place-items:center;font:400 26px/1 var(--f-disp);background:var(--i-panel2);border:1px solid var(--i-linea)}
+/* campeón en oro, la final en plata y las semis en oro apagado (la letra es la de la página: C, F, SF, 4°, 8°) */
+.oi-forma span.c{background:var(--i-oro);color:#141000;border-color:var(--i-oro)}
+.oi-forma span.s{background:#C9CDD4;color:#14161A;border-color:#C9CDD4}
+.oi-forma span.t{background:#3a2f12;color:var(--i-oro);border-color:#6b5520}
+.oi-noche{background:#F3F2F7;color:#111;padding:18px 20px;display:grid;gap:10px;align-content:start;min-width:0;overflow:hidden}
+.oi-noche .oi-camp{display:inline-block;background:var(--i-oro);color:#141000;font:700 14px/1 var(--f-cond);letter-spacing:.12em;text-transform:uppercase;padding:5px 8px;justify-self:start}
+.oi-noche h4{margin:0;font:400 44px/1 var(--f-disp);text-transform:uppercase;white-space:nowrap;overflow:hidden}
+.oi-vs{display:flex;flex-wrap:wrap;gap:8px 14px;font:700 14px/1.2 var(--f-cond);letter-spacing:.08em;text-transform:uppercase;color:#555}
+.oi-vs span{display:flex;align-items:center;gap:6px}
+.oi-vs img,.oi-vs i{width:28px;height:28px;border-radius:50%;object-fit:cover;display:inline-grid;place-items:center;background:#bbb;color:#333;
+  font:900 13px/1 var(--f-body);font-style:normal}
+.oi-pts{font:700 15px/1 var(--f-cond);letter-spacing:.1em;text-transform:uppercase;color:#333}
+.oi-pts b{font:400 26px/1 var(--f-disp);color:#111;margin-right:4px}
+
+.oi-pie{position:absolute;left:0;right:0;bottom:0;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-top:1px solid var(--i-linea);background:#0B0B10;z-index:5}
+.oi-pie img{height:30px;width:auto;display:block}
+.oi-pie .oi-ic b{color:var(--i-tx)}
+
+/* ── la vitrina ── */
+.oi-vit{background:#07070a;position:relative}
+.oi-vfondo{position:absolute;inset:0;background-size:cover;background-position:center;filter:blur(3px) brightness(.42) saturate(1.15);transform:scale(1.04);z-index:0}
+.oi-vit::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(120% 90% at 50% 40%,transparent 0%,rgba(7,7,10,.55) 70%,rgba(7,7,10,.9) 100%)}
+.oi-vit > *:not(.oi-vfondo){z-index:1}
+.oi-vit .oi-pie{background:rgba(7,7,10,.82);z-index:5}
+.oi-vit .oi-nombre{font-size:78px}
+.oi-comp i{font-size:30px;padding:8px 12px}
+.oi-comp .oi-ic{line-height:1.3}
+.oi-comp .oi-ic b{color:var(--i-tx);font:400 26px/1 var(--f-disp)}
+
+.oi-medallas{display:grid;gap:18px}
+.oi-med{display:flex;gap:14px;align-items:center}
+.oi-med i{font-style:normal;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;font:400 30px/1 var(--f-disp);color:#111;
+  background:radial-gradient(circle at 35% 30%,#fff8 0 12%,transparent 13%),var(--m);box-shadow:0 0 0 4px rgba(0,0,0,.35),0 6px 14px rgba(0,0,0,.5);flex:none}
+.oi-med b{font:400 48px/1 var(--f-disp);display:block}
+.oi-med span{font:700 14px/1.1 var(--f-cond);letter-spacing:.12em;text-transform:uppercase;color:var(--i-tx2)}
+.oi-tot{border-top:1px solid rgba(255,255,255,.14);padding-top:12px;display:flex;align-items:baseline;gap:10px}
+.oi-tot b{font:400 40px/1 var(--f-disp);color:var(--i-oro)}
+.oi-tot span{font:700 14px/1.1 var(--f-cond);letter-spacing:.12em;text-transform:uppercase;color:var(--i-tx2)}
+
+.oi-abanico{display:flex;justify-content:center;align-items:flex-end;position:relative}
+.oi-placa{width:150px;min-height:220px;margin:0 -6px;flex:none;transform:rotate(var(--g)) translateY(var(--y));box-shadow:0 10px 24px rgba(0,0,0,.6);
+  background:#0c0c12;border:1px solid var(--i-linea);border-top:4px solid var(--i-oro);padding:14px 14px 12px;display:grid;gap:6px;align-content:end;
+  position:relative;overflow:hidden;isolation:isolate}
+.oi-placa .oi-pbg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:-2}
+.oi-placa::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(8,8,12,0) 0%,rgba(8,8,12,.55) 48%,#0c0c12 88%)}
+.oi-placa .oi-copa{position:absolute;top:10px;right:12px;width:30px;height:30px}
+.oi-placa .oi-sv{font:700 13px/1 var(--f-cond);letter-spacing:.14em;text-transform:uppercase;color:#d8d2ee}
+.oi-placa b{font:400 25px/1.02 var(--f-disp);text-transform:uppercase;overflow-wrap:anywhere}
+.oi-placa > span:last-child{font-size:14px;color:var(--i-tx2)}
+.oi-placa.plata{border-top-color:#C9CDD4}
+.oi-placa.plata .oi-pbg{filter:grayscale(.85) brightness(.85)}
+.oi-placa.vacia{background:none;border:2px dashed #3a3a48;border-top:2px dashed #3a3a48;align-content:center;justify-items:center;text-align:center;box-shadow:none}
+.oi-placa.vacia::after{display:none}
+.oi-placa.vacia b{color:#6e6c7c;font-size:20px}
+.oi-placa.vacia span{color:#56545f}
+.oi-placa.hueco{opacity:.5}
+.oi-abanico.atras .oi-placa{width:132px;min-height:196px;filter:brightness(.82)}
+.oi-abanico.atras .oi-placa b{font-size:21px}
+.oi-placa.media b{font-size:21px}
+.oi-placa.larga b{font-size:18px}
+.oi-abanico.atras .oi-placa.media b{font-size:18px}
+.oi-abanico.atras .oi-placa.larga b{font-size:16px}
+.oi-estante{height:14px;background:linear-gradient(180deg,#3a2c18,#1a130a);box-shadow:0 8px 14px rgba(0,0,0,.6)}
+.oi-mas{position:absolute;right:48px;text-align:right;font-size:16px}
+.oi-mas b{font:400 40px/1 var(--f-disp);color:var(--i-tx);display:block}
+
+.oi-cat{display:grid;grid-template-columns:130px 1fr 74px;gap:10px;align-items:center;font:700 15px/1 var(--f-cond);letter-spacing:.1em;text-transform:uppercase;color:var(--i-tx2)}
+.oi-cat u{display:block;height:12px;background:var(--i-panel2);text-decoration:none;position:relative}
+.oi-cat u::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--v);background:var(--col,var(--i-oro))}
+.oi-cat b{font:400 22px/1 var(--f-disp);color:var(--i-tx);text-align:right}
+.oi-ins{display:grid;justify-items:center;gap:6px;text-align:center;min-width:0}
+.oi-ins i{font-style:normal;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font-size:34px;background:var(--i-panel2);border:3px solid var(--rc);box-shadow:0 0 0 4px rgba(0,0,0,.4)}
+.oi-ins i.mas{font:400 26px/1 var(--f-disp);color:var(--i-tx)}
+.oi-ins b{font:700 15px/1.1 var(--f-cond);letter-spacing:.06em;text-transform:uppercase}
+.oi-ins span{font:700 12px/1 var(--f-cond);letter-spacing:.12em;text-transform:uppercase;color:var(--rc)}
+.oi-ins.bloq i{filter:grayscale(1);opacity:.45;border-style:dashed}
+.oi-ins.bloq b{color:#8b8997}

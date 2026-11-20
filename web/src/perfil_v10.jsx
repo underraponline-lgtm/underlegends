@@ -22,26 +22,15 @@ import { LuNube, LuSocial } from './medio.jsx';
 import { delHilo } from './comentarios.jsx';
 import CSS_V10 from './css/perfil_v10.css?inline';
 import { usarCss } from './css.js';
+// 🧮 lo que se calcula de los datos vive en perfil_datos.js desde el 20/11/2026: la imagen de /perfil y /vitrina
+// (og_img.jsx) lo usa tal cual, sin bajar esta página
+import { CORTO, MES, datosV10, eloDe, fecha, ini, nomEv, pu, sinB, sinTit } from './perfil_datos.js';
 
 usarCss('perfil_v10', CSS_V10);
 
 // ── lo de siempre ──
-const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 const MES_L = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-const fecha = (t) => {
-  if (!t) return 'sin fecha';
-  const [, m, d] = diaISO(new Date(t)).split('-');
-  return Number(d) + ' ' + MES[Number(m) - 1];
-};
-const sinB = (s) => limpio(String(s || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '')).trim();
-const ini = (n) => (String(n || '').replace(/[^\p{L}\p{N}]/gu, '').charAt(0) || '?').toUpperCase();
-const PU = { Campeón: ['CAMPEÓN', 'c', 7], Subcampeón: ['FINAL', 's', 6], Tercero: ['PODIO', 't', 5], Cuarto: ['SEMIS', 't', 4],
-  Semifinal: ['SEMIS', 't', 4], Cuartos: ['CUARTOS', '', 3], Octavos: ['OCTAVOS', '', 2] };
-const pu = (p) => PU[p] || [String(p || '').toUpperCase(), '', 1];
-const CORTO = { Campeón: 'C', Subcampeón: 'F', Tercero: 'SF', Cuarto: 'SF', Semifinal: 'SF', Cuartos: '4°', Octavos: '8°' };
 const NIVEL5 = (x) => (x === 'Campeón' ? 'c' : x === 'Subcampeón' ? 's' : ['Tercero', 'Cuarto', 'Semifinal'].includes(x) ? 't' : x === 'Cuartos' ? 'q' : 'o');
-const sinTit = (e) => /^\(?\s*sin t[ií]tulo\s*\)?$/i.test(String(e.nom || '').trim());
-const nomEv = (e) => (sinTit(e) ? e.sv + ' · ' + fecha(e.t) : e.nom);
 const DIMS = ['Eficiencia', 'Consistencia', 'Dominancia', 'Racha', 'Diversidad'];
 const DIAS_N = ['domingos', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados'];
 const DIA1 = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
@@ -76,48 +65,9 @@ function CaraN({ liga, n, cls = 'cara pv-cara' }) {
 }
 
 // ════════ los datos, de una vez ════════
+// (la cuenta vive en perfil_datos.js: la misma para la página y para la imagen de /perfil)
 export function useV10(liga, k, f, p, e) {
-  return useMemo(() => {
-    const E = e || {};
-    const evs = ((p && p.ev) || []).map(([n, puesto, pts]) => {
-      const x = E[n] || E[String(n)] || [];
-      return { n, pu: puesto, pts: pts || 0, nom: limpio(x[0] || 'Evento ' + n), sv: x[1] || '', t: x[2] ? Date.parse(x[2]) : 0, gente: x[3] || 0 };
-    });
-    const enT = evs.filter((x) => x.t).sort((a, b) => a.t - b.t);
-    const du = (p && p.du) || [];
-    const porEv = {};
-    du.forEach(([n, r, w]) => { const x = porEv[n] || (porEv[n] = { gano: [], cayo: '' }); if (w) x.gano.push(r); else x.cayo = r; });
-    const riv = new Map();
-    du.forEach(([n, r, w]) => {
-      const q = liga.quien(r);
-      const id = q ? q.k : 'n:' + sinB(r).toLowerCase();
-      if (!riv.has(id)) riv.set(id, { id, k: q ? q.k : '', n: q ? q.n : r, g: 0, p: 0, ult: 0 });
-      const x = riv.get(id);
-      if (w) x.g += 1; else x.p += 1;
-      const ev = E[n] || E[String(n)];
-      if (ev && ev[2]) x.ult = Math.max(x.ult, Date.parse(ev[2]));
-    });
-    const rivs = [...riv.values()].sort((a, b) => (b.g + b.p) - (a.g + a.p) || b.ult - a.ult);
-    const g = du.filter((d) => d[2]).length;
-    const mejor = enT.slice().sort((a, b) => pu(b.pu)[2] - pu(a.pu)[2] || b.pts - a.pts || b.gente - a.gente)[0] || null;
-    const cuenta = (x) => evs.filter((y) => y.pu === x).length;
-    // el de al lado en la tabla: el de adelante, o —si es el #1— el que lo persigue
-    const filas = Object.values(liga.T || {}).filter((x) => x && x.pos);
-    const pos = Number(f.pos) || 0;
-    const ad = pos > 1 ? filas.find((x) => Number(x.pos) === pos - 1) : null;
-    const at = pos ? filas.find((x) => Number(x.pos) === pos + 1) : null;
-    const cercano = ad ? { f: ad, arriba: true } : at ? { f: at, arriba: false } : null;
-    // su mejor victoria: el de mejor puesto de la Temporada al que le ganó un duelo
-    let mejorVic = null;
-    du.forEach(([n, r, w]) => {
-      if (!w) return;
-      const q = liga.quien(r);
-      if (!q || !q.pos || q.k === k) return;
-      if (!mejorVic || Number(q.pos) < Number(mejorVic.f.pos)) mejorVic = { f: q, n };
-    });
-    if (mejorVic) { const x = E[mejorVic.n] || E[String(mejorVic.n)] || []; mejorVic.ev = limpio(x[0] || ''); mejorVic.sv = x[1] || ''; }
-    return { evs, enT, du, porEv, rivs, g, perd: du.length - g, mejor, oro: cuenta('Campeón'), seg: cuenta('Subcampeón'), ter: cuenta('Tercero'), cercano, mejorVic };
-  }, [liga, k, f, p, e]);
+  return useMemo(() => datosV10(liga, k, f, p, e), [liga, k, f, p, e]);
 }
 
 // 💎 SU ELO Y SU PIEDRA (la tabla de divisiones del lobby, como la lee divisiones.jsx: `[nombre, ELO, batallas, …]`)
@@ -143,28 +93,8 @@ function useHistorico(activo, sello) {
   return h;
 }
 
-export function eloDe(liga, k) {
-  const V = liga.d && liga.d.div;
-  if (!V || V.m !== 'elo' || !Array.isArray(V.d)) return null;
-  const SUBS = ['I', 'II', 'III'];
-  for (let di = 0; di < V.d.length; di++) {
-    for (const g of V.d[di] || []) {
-      for (let i = 0; i < (g || []).length; i++) {
-        const r = g[i];
-        const q = r && liga.quien(r[0]);
-        if (!q || q.k !== k) continue;
-        const t = V.t || [];
-        // 🪨 desde la T2 cada piedra mide distinto (`a`, ver divisiones.jsx); en la T1, todas de 50
-        const an = (x) => (Array.isArray(V.a) && V.a.length ? V.a[Math.min(x, V.a.length - 1)] : 50);
-        const piso = di < t.length ? t[di] : (t[t.length - 1] || 0) - an(t.length);
-        const s = Math.max(0, Math.min(2, Math.floor((r[1] - piso) / (an(di) / 3))));
-        const prox = s < 2 ? [(V.n || [])[di] + ' ' + SUBS[s + 1], piso + Math.ceil(((s + 1) * an(di)) / 3)] : di > 0 ? [(V.n || [])[di - 1] + ' I', t[di - 1]] : null;
-        return { elo: r[1], bat: r[2], piedra: (V.n || [])[di] || '', sub: SUBS[s], c: (V.c || [])[di] || '#8A8F98', pos: i + 1, tot: g.length, prox, prov: r[2] < (V.pv == null ? 5 : V.pv), raw: r[0], et: !!V.et };
-      }
-    }
-  }
-  return null;
-}
+// 💎 SU ELO Y SU PIEDRA: `eloDe()` vive en perfil_datos.js; se sigue exportando desde acá para quien lo pedía de acá
+export { eloDe };
 export function EloNum({ liga, k }) {
   const e = eloDe(liga, k);
   const hist = useHistorico(!!(e && e.et), liga.d && liga.d.sello);

@@ -452,7 +452,9 @@ def main():
     # sirven: borrarlas apaga la llave vieja, la carta viva del Inventario y la carta de liga (auditoría roja desde el 19/10)
     OTRAS = (('ligas/', 'flyer(s) de las ligas'), ('fondos/', 'fondo(s) de perfil'), ('pendientes/', 'foto(s) de tarjeta esperando revisión'),
              ('logos-crews/', 'logo(s) de crews'), ('llaves/', 'llave(s) sueltas de la página'), ('cartas/a/', 'imagen(es) de las cartas armables'),
-             ('kits/', 'kit(s) privados de los servidores'))
+             ('kits/', 'kit(s) privados de los servidores'),
+             # 🖼️ las imágenes de /perfil y /vitrina (20/11/2026, bot/og_links.py): se sirven, no son cartas
+             ('perfil/', 'imagen(es) de /perfil'), ('vitrina/', 'imagen(es) de /vitrina'))
     for pref, que in OTRAS:
         xs = [o for o in todos if o['key'].startswith(pref)]
         if xs:

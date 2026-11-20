@@ -4,7 +4,7 @@
 // da a los bots de vista previa. Es la MISMA pieza de la página —el escudo armado de la crew (escudo.jsx), su logo, la
 // tarjeta de quien invita—: dibujarla otra vez en Python sería el bug de «un default que no es la decisión».
 // Sin cabecera ni nada alrededor; `data-listo` le dice al fotógrafo cuándo.
-import { useLayoutEffect, useRef, useState } from 'react';
+import { lazy, useLayoutEffect, useRef, useState } from 'react';
 import { limpio } from './liga.js';
 import { useCrews } from './crews.js';
 import { Escudo, escudoDe } from './escudo.jsx';
@@ -336,6 +336,9 @@ function Perfil({ liga, k }) {
 }
 
 const CINE = new Set(['pag', 'sv', 'pais', 'llave', 'liga']);
+// 🖼️ LAS IMÁGENES DE /perfil Y /vitrina (20/11/2026, og_img.jsx): en su propio pedazo, que se baja sólo para la foto
+const OgImagen = lazy(() => import('./og_img.jsx').then((m) => ({ default: m.OgImagen })));
+const OgSellos = lazy(() => import('./og_img.jsx').then((m) => ({ default: m.OgSellos })));
 // 🔒 SÓLO PARA EL FOTÓGRAFO (18/11/2026): la ruta es pública y dibujaba con la marca de la Liga lo que viniera en la
 // dirección —`?n=`, `t`, `m` y `s` de Ref; `a`, `b`, `s` y `d` de Cine; la clave del path—: con un link armado,
 // «¡REGALO DE 500 PDT EN OTROSITIO te invitó!» y «más de 9.999.000 miembros» en underlegends.pages.dev. Quien la abre
@@ -345,6 +348,9 @@ const paraLaFoto = () => typeof navigator !== 'undefined' && typeof location !==
 export function OgLink({ liga, tipo, id }) {
   if (!paraLaFoto()) return <div className="og" data-listo="1" data-falta="1" />;
   if (CINE.has(tipo)) return <Cine liga={liga} />;
+  // (`key`: al pasar de una persona a otra sin recargar —el fotógrafo cambia sólo la dirección—, nada queda de la anterior)
+  if (tipo === 'perfil-img' || tipo === 'vitrina-img') return <OgImagen key={tipo + '|' + id} liga={liga} tipo={tipo} k={id} />;
+  if (tipo === 'img-sellos') return <OgSellos liga={liga} />;
   return tipo === 'crew' ? <Crew id={id} /> : tipo === 'ref' ? <Ref liga={liga} k={id} /> : tipo === 'perfil' ? <Perfil liga={liga} k={id} />
     : <div className="og" data-listo="1" data-falta="1" />;
 }

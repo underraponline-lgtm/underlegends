@@ -209,6 +209,28 @@ const COMANDOS = [
       },
     ],
   },
+  // 🖼️ /perfil Y /vitrina (20/11/2026, la tanda 2 de los comandos): la imagen sola, como /card. `nombre` además de `quien`
+  // para quien no tiene su Discord ID cargado (el Worker lo entiende igual que en /card). Ver `imgComando()` en worker.js
+  {
+    name: 'perfil',
+    type: 1,
+    description: 'tu perfil de la Liga en una imagen: récord, forma y tu mejor noche',
+    ...EN_TODOS_LADOS,
+    options: [
+      { name: 'quien', type: 6, description: 'elige a la persona (si no pones nada, eres tú)', required: false },
+      { name: 'nombre', type: 3, description: 'o escribe su nombre en la Liga', required: false, max_length: 40 },
+    ],
+  },
+  {
+    name: 'vitrina',
+    type: 1,
+    description: 'tus trofeos e insignias en una imagen',
+    ...EN_TODOS_LADOS,
+    options: [
+      { name: 'quien', type: 6, description: 'elige a la persona (si no pones nada, eres tú)', required: false },
+      { name: 'nombre', type: 3, description: 'o escribe su nombre en la Liga', required: false, max_length: 40 },
+    ],
+  },
   {
     // 🖱️ LA CARTA CON CLICK DERECHO (Dlx, 08/10/2026: «dale sí», a cambio de «@ULAYA card»): click derecho en una
     // persona → Apps → Carta. No se escribe nada y es instantáneo: es la alternativa al prefijo que CLAUDE.bot.md

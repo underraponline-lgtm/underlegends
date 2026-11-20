@@ -278,6 +278,10 @@ def sincronizar(s):
         # `fotos/t2/` sigue andando. Ver `comun/temporada.clave_foto()`.
         if clave.startswith('fotos/'):
             continue
+        # 🖼️ ni las imágenes de /perfil y /vitrina (`perfil/<clave>.webp`, `vitrina/<clave>.webp`, bot/og_links.py): serían dos
+        # personas llamadas «perfil» y «vitrina» con una «carta» por cada uno, el mismo bug de las fotos
+        if clave.startswith(('perfil/', 'vitrina/')):
+            continue
         # 🃏 y las chicas tampoco son cartas: son la misma, achicada para la página (ver `CHICA_ANCHO`)
         if es_chica(clave):
             continue

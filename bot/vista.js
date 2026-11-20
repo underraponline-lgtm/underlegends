@@ -115,6 +115,35 @@ export function aV2(d, efimero = true, familia = null, color = null) {
   return mensaje({ familia, color, dentro: txt ? [T(txt.slice(0, 3900))] : [T('-# …')], filas, efimero });
 }
 
+// ── 🖼️ /perfil Y /vitrina (20/11/2026, la tanda 2 de los comandos) ──────────────────────────────────────────────────────
+// SÓLO LA IMAGEN, como `/card`: una galería sin recuadro y una fila debajo —Perfil · Vitrina · Cartas · «Abrir en la
+// página»—. El que se está viendo va gris y apagado, y los otros en azul (la regla de la fila de `/card`: el contraste
+// tiene que venir del color). Los botones son de quien lo pidió: `pi:<p|v|c>:<clave>:<su id>`, como los de `/card`.
+// Lo arman el Worker (al contestar y al tocar un botón) y el objeto (cuando llega la imagen que se pidió): por eso acá.
+//: el tipo de cada imagen, con su letra en el botón
+export const IMG = { perfil: 'p', vitrina: 'v' };
+/** La dirección de la imagen de alguien, con su versión (Discord guarda por dirección: sin `?v=` mostraría la vieja) */
+export const urlImg = (r2, tipo, k, sello) => `${r2}/${tipo}/${k}.webp${sello ? '?v=' + sello : ''}`;
+export const urlPerfilWeb = (k) => `${PAGINAS}/freestyle-rap/r/${encodeURIComponent(k)}`;
+/** La fila: `cual` es el que se ve ('perfil', 'vitrina' o 'cartas'); `cartas`, si tiene alguna (sin cartas, no hay botón) */
+export function filaImg(k, dueno, cual, o = {}) {
+  const b = (letra, et, es) => boton(et, `pi:${letra}:${k}:${dueno || ''}`, es ? 2 : 1, { disabled: !!o.apagado || es });
+  return fila(b('p', 'Perfil', cual === 'perfil'), b('v', 'Vitrina', cual === 'vitrina'),
+    o.cartas ? b('c', 'Cartas', cual === 'cartas') : null, enlace('Abrir en la página', urlPerfilWeb(k)));
+}
+/**
+ * El mensaje entero: `{tipo, k, n, url, dueno, cartas, apagado, texto}`. Con `url`, la imagen; sin ella, `texto` (o «Armando
+ * …») en un recuadro chico, con la misma fila: se puede ir a la otra mientras ésta se arma. Público: es lo que se pidió.
+ */
+export function mensajeImg(o) {
+  const x = o || {};
+  const que = x.tipo === 'vitrina' ? 'La vitrina' : 'El perfil';
+  const arriba = x.url
+    ? { type: 12, items: [{ media: { url: x.url }, description: `${que} de ${x.n || x.k}` }] }
+    : caja(null, [T(String(x.texto || `🖼️ Armando ${que.toLowerCase()} de **${x.n || x.k}**… en uno o dos minutos aparece acá.`).slice(0, 3900))]);
+  return { flags: V2, components: [arriba, filaImg(x.k, x.dueno, x.tipo, x)].filter(Boolean), allowed_mentions: { parse: [] } };
+}
+
 export const respuesta = (tipo, data) => new Response(JSON.stringify(data === undefined ? { type: tipo } : { type: tipo, data }),
   { headers: { 'content-type': 'application/json' } });
 

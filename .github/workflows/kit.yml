@@ -2,6 +2,8 @@
 # tipo, el servidor y un id al azar; dibuja con bot/kit.py y le devuelve la imagen al objeto, que edita la respuesta.
 # 🖼️ Y EL VS del bot en vivo («Con datos» y «A full»): la prende el vigía (`vsDespachar()`), uno por servidor cada 75 s, y
 # se lleva todos los cruces de ese servidor que esperan su imagen.
+# 🖼️ Y LAS IMÁGENES DE /perfil Y /vitrina (20/11/2026): la prende el objeto (`imgDespachar()`, con sv «UL») y se lleva TODA
+# la cola: si GitHub cancela una tarea que esperaba (la concurrencia deja una sola pendiente), la siguiente se lleva lo suyo.
 #
 # ⚠️ EL PERMISO PARA CONTESTAR NO VIENE ACÁ: el repo es público y estos datos de entrada se ven desde afuera. Sólo el id,
 # que sin la clave del ciclo no sirve para nada.
@@ -11,10 +13,10 @@ on:
   workflow_dispatch:
     inputs:
       tipo:
-        description: afiche, llave o vs (la imagen del cruce del bot en vivo, `vsDespachar()` en bot/avisos.js)
+        description: afiche, llave, vs (la imagen del cruce del bot en vivo, `vsDespachar()` en bot/avisos.js) o img (/perfil y /vitrina, `imgDespachar()`)
         required: true
         type: choice
-        options: [afiche, llave, vs]
+        options: [afiche, llave, vs, img]
       sv:
         description: el servidor (FFA, DRA…)
         required: true

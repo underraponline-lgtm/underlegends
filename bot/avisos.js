@@ -3843,6 +3843,9 @@ const RUTAS = {
   '/avisos/afiches': 'POST', '/avisos/afiche': 'POST',
   // 🖼️ los vs que esperan su imagen y la imagen ya dibujada (`bot/kit.py --tipo vs`), con `claveCiclo()`. Ver `vsCola()`
   '/avisos/vs-cola': 'GET', '/avisos/vs-listo': 'POST',
+  // 🖼️ /perfil y /vitrina a pedido (20/11/2026): lo que espera su imagen, la imagen ya dibujada (`bot/kit.py --tipo img`) y
+  // lo hecho a pedido para el ciclo (`bot/og_links.py`), con `claveCiclo()`. Ver `imgPedir()`
+  '/avisos/img-cola': 'GET', '/avisos/img-listo': 'POST', '/avisos/img-hechas': 'GET',
   // 🎬 tus batallas en video (12/10/2026): pedir un link o un canal, ver tus pedidos y quitar uno, con tu sesión y
   // verificado; reportar el de otro; lo del ciclo, con su clave; y aprobar lo raro, sólo Dlx. Ver `misVideos()`
   '/avisos/mis-videos': 'POST', '/avisos/video-reportar': 'POST',
@@ -6142,6 +6145,16 @@ const MARCO_CARTAS = ['temporada', 'competitivo', 'pais', 'servidor'];
 /** ⚡ el freno del redibujo a pedido: uno cada 10 minutos por persona, 6 por día (ver `pedirRedibujo()`) */
 export const REDIBUJO_ESPERA = 10 * 60 * 1000;
 export const REDIBUJO_DIA = 6;
+// 🖼️ /perfil y /vitrina a pedido (20/11/2026, ver `imgPedir()`): el mismo freno que el redibujo —una por persona e imagen
+// cada 10 minutos, 6 por día—, la tarea como mucho una vez cada `IMG_ENTRE`, cuántas pueden esperar a la vez (con más,
+// «prueba en un rato»: es el tope de minutos de Actions que se le puede ir a esto) y lo que dura el permiso de Discord para
+// editar la respuesta (15 minutos: un poco menos)
+export const IMG_ESPERA = 10 * 60 * 1000;
+export const IMG_DIA = 6;
+export const IMG_ENTRE = 75 * 1000;
+export const IMG_COLA_MAX = 30;
+export const IMG_TOKEN = 14 * 60 * 1000;
+const IMG_TIPOS = { p: 'perfil', v: 'vitrina' };
 
 /** 🗳️ La marca de un veredicto borrado en `veredictos_hist`. */
 export const BORRADO = '⟨borrado⟩';
@@ -7987,6 +8000,16 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: await req.text(), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🖼️ /perfil Y /vitrina A PEDIDO (20/11/2026): la cola y la imagen, para la tarea `kit.yml` (`bot/kit.py --tipo img`); y lo
+  // hecho, para el ciclo (`bot/og_links.py`). Con la clave del ciclo
+  if (ruta === '/avisos/img-cola' || ruta === '/avisos/img-listo' || ruta === '/avisos/img-hechas') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta !== '/avisos/img-listo') return elObjeto(env).fetch('https://avisos' + ruta.replace('/avisos', ''));
+    const crudo = await req.text();
+    if (crudo.length > 20000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/img-listo', { method: 'POST', body: crudo || '{}', headers: { 'content-type': 'application/json' } });
+  }
   // 📊 LO QUE ESPERA RESPUESTA DE CADA ORGANIZADOR, DEL CICLO (`finales.publicar()`): con su clave. Para el panel del socio
   if (ruta === '/avisos/finales-pend') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -9006,6 +9029,13 @@ export class Avisos {
       // ⚡ el redibujo a pedido (26/10/2026): ver `pedirRedibujo()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS redibujo (k TEXT PRIMARY KEY, n TEXT NOT NULL, pedido INTEGER NOT NULL, ' +
         'enviado INTEGER NOT NULL DEFAULT 0, hecho INTEGER NOT NULL DEFAULT 0, dia TEXT NOT NULL DEFAULT \'\', veces INTEGER NOT NULL DEFAULT 0)');
+      // 🖼️ /perfil y /vitrina a pedido (20/11/2026): una fila por persona e imagen (`tipo` p|v), y los mensajes que esperan
+      // la suya para editarse (el permiso de Discord dura 15 minutos). Ver `imgPedir()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS img_cola (k TEXT NOT NULL, tipo TEXT NOT NULL, estado TEXT NOT NULL DEFAULT 'espera', " +
+        "pedido INTEGER NOT NULL, tom INTEGER NOT NULL DEFAULT 0, hecho TEXT NOT NULL DEFAULT '', hecho_t INTEGER NOT NULL DEFAULT 0, " +
+        "dia TEXT NOT NULL DEFAULT '', veces INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (k, tipo))");
+      this.sql.exec('CREATE TABLE IF NOT EXISTS img_msj (id TEXT PRIMARY KEY, k TEXT NOT NULL, tipo TEXT NOT NULL, token TEXT NOT NULL, ' +
+        'app TEXT NOT NULL, dueno TEXT NOT NULL, n TEXT NOT NULL, cartas INTEGER NOT NULL, armando INTEGER NOT NULL, t INTEGER NOT NULL)');
       // 🏷️ EL TAG QUE CADA UNO ELIGE PARA CADA CARTA (Dlx, 25/10/2026: «que los tags de abajo sean personalizables en cada
       // tarjeta… desde el inventario»). `tag` es la clave del catálogo (`sheet/catalogo_tags.py`) o `pase:<título>`. El
       // inventario lo trae el ciclo (`/avisos/tags-ciclo`, en `estado` como `tags_ganados`)
@@ -9720,6 +9750,9 @@ export class Avisos {
       if (ruta === '/finales') return json(this.leer('finales') || {}, 200, 0);
       if (ruta === '/liga-cambios') return json({ ok: true, cambios: this.ligaCambiosCiclo() }, 200, 0);
       if (ruta === '/vs-cola') return json(this.vsCola(new URL(req.url).searchParams.get('sv') || ''), 200, 0);
+      // 🖼️ /perfil y /vitrina a pedido (20/11/2026): lo que espera, para la tarea, y lo hecho, para el ciclo. Ver `imgPedir()`
+      if (ruta === '/img-cola') return json(this.imgCola(Date.now()), 200, 0);
+      if (ruta === '/img-hechas') return json(this.imgHechas(), 200, 0);
       // 🎬 los pedidos de videos, para el ciclo (`bot/videos_propios.py`), con su clave
       if (ruta === '/videos-ciclo') return json(this.videosCiclo(), 200, 0);
       if (ruta === '/decidir-ciclo') return json(this.decidirCiclo(), 200, 0);
@@ -9750,6 +9783,9 @@ export class Avisos {
       if (ruta === '/afiches') return json(this.afichesPendientes());
       if (ruta === '/afiche') return json(this.afichePoner(d));
       if (ruta === '/vs-listo') return json(await this.vsListo(d));
+      // 🖼️ /perfil y /vitrina: el pedido, sólo del Worker (no está en `RUTAS`); la imagen ya dibujada, de la tarea
+      if (ruta === '/img-pedir') return json(await this.imgPedir(d));
+      if (ruta === '/img-listo') return json(await this.imgListo(d));
       if (ruta === '/mis-videos') return this.misVideos(d);
       if (ruta === '/seguir-org') return json(this.seguirOrg(d));
       if (ruta === '/seguir-sv') return json(this.seguirSv(d));
@@ -10195,6 +10231,9 @@ export class Avisos {
     // Guardar en el Inventario ya lo larga en el momento (`/tag-elige`, `/marco-elige`); esto recoge lo que quedó
     // esperando el freno o un trabajo que estaba corriendo
     try { await this.redibujos(ahora); } catch (e) { this.guardar('redibujos', { t: ahora, error: String(e).slice(0, 160) }); }
+    // 🖼️ y las imágenes de /perfil y /vitrina que alguien pidió, también de madrugada (son suyas, como el redibujo): recoge
+    // lo que quedó esperando el freno de `IMG_ENTRE` o una tarea que se cayó. Ver `imgDespachar()`
+    try { await this.imgDespachar(ahora); } catch (e) { this.guardar('img', { t: ahora, error: String(e).slice(0, 160) }); }
     // 🃏 el ciclo que pidió alguien (su primera tarjeta por el Pase): sólo despierto, con el tope de `cicloAMano()`
     const cp = this.leer('ciclo_pedir');
     if (cp && cp.t && !(d && d.dormido)) {
@@ -20586,6 +20625,131 @@ export class Avisos {
       this.sql.exec('UPDATE redibujo SET enviado = ?, dia = ?, veces = ? WHERE k = ?', ahora, hoy, x.dia === hoy ? x.veces + 1 : 1, x.k);
     }
     this.guardar('redibujos', { t: ahora, estado: 204, n: xs.length });
+  }
+
+  // ── 🖼️ /perfil Y /vitrina A PEDIDO (20/11/2026, la tanda 2 de los comandos) ─────────────────────────────────────────────
+  // El ciclo arma las imágenes de quien cambió (bot/og_links.py), de a unas pocas por corrida. Lo que falta, o lo que es de
+  // antes de los datos de hoy, se pide acá cuando alguien usa el comando: el Worker contesta en el momento (con la imagen
+  // que hay, o «Armando…») y manda el permiso para editar ESA respuesta; la tarea `kit.yml` (`bot/kit.py --tipo img`) se
+  // lleva la cola, dibuja con la página y devuelve cada imagen (`imgListo()`), y la respuesta se edita sola.
+  /**
+   * `d`: `{k, tipo: 'perfil'|'vitrina', a: el sello de hoy (del `p:`, '' si no se sabe), token, app, dueno, n, cartas,
+   * armando}`. Devuelve `{listo: sello}` si la que armó el kit ya es la de hoy (el `p:` todavía no se enteró), `{cola}` si
+   * quedó pedida (la respuesta se edita cuando llega) o el freno: `{espera: ms}`, `{limite}` (6 por día) o `{lleno}`.
+   * ⚠️ EL FRENO ES POR PERSONA E IMAGEN, no por quien pide: cien mirando la vitrina de Makmah piden UNA imagen. Y la cola
+   * tiene tope (`IMG_COLA_MAX`): pedir las de 500 personas distintas no prende 500 tareas.
+   */
+  async imgPedir(d, ahora = Date.now()) {
+    const tipo = d && d.tipo === 'vitrina' ? 'v' : d && d.tipo === 'perfil' ? 'p' : '';
+    const k = String((d && d.k) || '');
+    if (!tipo || !claveValida(k)) return { error: 'datos' };
+    const a = /^[0-9a-f]{10}$/.test(String(d.a || '')) ? String(d.a) : '';
+    this.sql.exec('DELETE FROM img_msj WHERE t < ?', ahora - IMG_TOKEN);
+    const f = this.sql.exec('SELECT * FROM img_cola WHERE k = ? AND tipo = ?', k, tipo).toArray()[0];
+    if (f && f.estado === 'hecho' && f.hecho && (!a || f.hecho === a)) return { listo: f.hecho };
+    // el permiso para editar esta respuesta cuando llegue la imagen (cinco por imagen como mucho: las demás se quedan con
+    // lo que ya mostraron)
+    const anotar = () => {
+      if (!/^[\w.-]{20,500}$/.test(String(d.token || '')) || !/^\d{5,25}$/.test(String(d.app || ''))) return;
+      const ya = Number((this.sql.exec('SELECT COUNT(*) AS n FROM img_msj WHERE k = ? AND tipo = ?', k, tipo).toArray()[0] || {}).n) || 0;
+      if (ya >= 5) return;
+      const id = [...crypto.getRandomValues(new Uint8Array(8))].map((x) => x.toString(16).padStart(2, '0')).join('');
+      this.sql.exec('INSERT INTO img_msj (id, k, tipo, token, app, dueno, n, cartas, armando, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        id, k, tipo, String(d.token), String(d.app), /^\d{5,25}$/.test(String(d.dueno || '')) ? String(d.dueno) : '',
+        String(d.n || k).replace(/[`*_~|<>@]/g, '').slice(0, 60), d.cartas ? 1 : 0, d.armando ? 1 : 0, ahora);
+    };
+    if (f && (f.estado === 'espera' || f.estado === 'dibujando')) { anotar(); return { cola: true }; }
+    const hoy = new Date(ahora).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    if (f && f.dia === hoy && f.veces >= IMG_DIA) return { limite: true };
+    if (f && ahora - f.pedido < IMG_ESPERA) return { espera: f.pedido + IMG_ESPERA - ahora };
+    const n = Number((this.sql.exec("SELECT COUNT(*) AS n FROM img_cola WHERE estado IN ('espera', 'dibujando')").toArray()[0] || {}).n) || 0;
+    if (n >= IMG_COLA_MAX) return { lleno: true };
+    this.sql.exec("INSERT INTO img_cola (k, tipo, estado, pedido, dia, veces) VALUES (?, ?, 'espera', ?, ?, 1) ON CONFLICT(k, tipo) DO UPDATE SET " +
+      "estado = 'espera', pedido = excluded.pedido, tom = 0, veces = CASE WHEN img_cola.dia = excluded.dia THEN img_cola.veces + 1 ELSE 1 END, " +
+      'dia = excluded.dia', k, tipo, ahora, hoy);
+    anotar();
+    try { await this.imgDespachar(ahora); } catch (e) { this.guardar('img', { t: ahora, error: String(e).slice(0, 160) }); }
+    return { cola: true };
+  }
+
+  /** ✏️ Edita una respuesta que esperaba su imagen (`m` es una fila de `img_msj`), con su permiso de Discord */
+  imgEditar(m, cuerpo) {
+    return fetch(`https://discord.com/api/v10/webhooks/${m.app}/${m.token}/messages/@original`, {
+      method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo),
+    }).then((r) => r.ok).catch(() => false);
+  }
+
+  /** La tarea, si hay algo esperando y no se prendió en los últimos `IMG_ENTRE` (se lleva toda la cola: ver `imgCola()`).
+   *  Lo que se cayó vuelve a la cola a los 4 minutos; lo que no salió en 20, error (y su «Armando…» lo dice) */
+  async imgDespachar(ahora) {
+    const vencidas = this.sql.exec("SELECT k, tipo FROM img_cola WHERE estado IN ('espera', 'dibujando') AND pedido < ?", ahora - 20 * MIN).toArray();
+    for (const v of vencidas) await this.imgFallo(v.k, v.tipo, ahora);
+    this.sql.exec("UPDATE img_cola SET estado = 'espera' WHERE estado = 'dibujando' AND tom < ?", ahora - 4 * MIN);
+    this.sql.exec("DELETE FROM img_cola WHERE estado IN ('hecho', 'error') AND pedido < ? AND hecho_t < ?", ahora - 30 * DIA_MS, ahora - 30 * DIA_MS);
+    const n = Number((this.sql.exec("SELECT COUNT(*) AS n FROM img_cola WHERE estado = 'espera'").toArray()[0] || {}).n) || 0;
+    if (!n || !this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
+    if (ahora - (Number(this.leer('img_desp')) || 0) < IMG_ENTRE) return 0;
+    this.guardar('img_desp', ahora);
+    const id = [...crypto.getRandomValues(new Uint8Array(12))].map((x) => x.toString(16).padStart(2, '0')).join('');
+    const r = await this.gh('/actions/workflows/kit.yml/dispatches', { method: 'POST',
+      body: JSON.stringify({ ref: 'main', inputs: { tipo: 'img', sv: 'UL', id } }) });
+    if (r.status !== 204) this.guardar('img', { t: ahora, estado: r.status });
+    return r.status === 204 ? 1 : 0;
+  }
+
+  /** Para la tarea (`/avisos/img-cola`, con la clave del ciclo): lo que espera, que pasa a «dibujando» */
+  imgCola(ahora = Date.now()) {
+    const filas = this.sql.exec("SELECT k, tipo FROM img_cola WHERE estado = 'espera' ORDER BY pedido LIMIT 12").toArray();
+    for (const f of filas) this.sql.exec("UPDATE img_cola SET estado = 'dibujando', tom = ? WHERE k = ? AND tipo = ?", ahora, f.k, f.tipo);
+    return { img: filas.map((f) => ({ k: f.k, tipo: IMG_TIPOS[f.tipo] })) };
+  }
+
+  /** Una que no salió: error, y las respuestas que decían «Armando…» lo dicen (las que mostraban una imagen, la siguen mostrando) */
+  async imgFallo(k, tipo, ahora) {
+    this.sql.exec("UPDATE img_cola SET estado = 'error' WHERE k = ? AND tipo = ?", k, tipo);
+    const ms = this.sql.exec('SELECT * FROM img_msj WHERE k = ? AND tipo = ? AND t > ?', k, tipo, ahora - IMG_TOKEN).toArray();
+    this.sql.exec('DELETE FROM img_msj WHERE k = ? AND tipo = ?', k, tipo);
+    let n = 0;
+    for (const m of ms.filter((x) => x.armando).slice(0, 5)) {
+      if (await this.imgEditar(m, V.mensajeImg({ tipo: IMG_TIPOS[tipo], k, n: m.n, dueno: m.dueno, cartas: !!m.cartas,
+        texto: 'No pude armar ' + (tipo === 'v' ? 'la vitrina' : 'el perfil') + ' de **' + m.n + '** esta vez: prueba de nuevo en un rato.' }))) n++;
+    }
+    return n;
+  }
+
+  /**
+   * La tarea terminó (`/avisos/img-listo`, con la clave del ciclo): `{hechas: [{k, tipo, sello}], fallas: [{k, tipo}]}`. Cada
+   * hecha queda anotada (el Worker la usa antes de que el ciclo le cambie el `p:`, y el ciclo no la vuelve a armar) y las
+   * respuestas que la esperaban se editan con ella. La dirección la arma el objeto: de la tarea llegan sólo la clave y el sello
+   */
+  async imgListo(d, ahora = Date.now()) {
+    let n = 0, editadas = 0;
+    const tipoDe = (x) => (x && x.tipo === 'vitrina' ? 'v' : x && x.tipo === 'perfil' ? 'p' : '');
+    for (const x of (d && Array.isArray(d.hechas) ? d.hechas : []).slice(0, 24)) {
+      const tipo = tipoDe(x), k = String((x && x.k) || ''), s = String((x && x.sello) || '');
+      if (!tipo || !claveValida(k) || !/^[0-9a-f]{10}$/.test(s)) continue;
+      this.sql.exec("INSERT INTO img_cola (k, tipo, estado, pedido, hecho, hecho_t) VALUES (?, ?, 'hecho', ?, ?, ?) ON CONFLICT(k, tipo) DO UPDATE SET " +
+        "estado = 'hecho', hecho = excluded.hecho, hecho_t = excluded.hecho_t", k, tipo, ahora, s, ahora);
+      n++;
+      const ms = this.sql.exec('SELECT * FROM img_msj WHERE k = ? AND tipo = ? AND t > ?', k, tipo, ahora - IMG_TOKEN).toArray();
+      this.sql.exec('DELETE FROM img_msj WHERE k = ? AND tipo = ?', k, tipo);
+      for (const m of ms) {
+        if (editadas >= 30) break;
+        if (await this.imgEditar(m, V.mensajeImg({ tipo: IMG_TIPOS[tipo], k, n: m.n, dueno: m.dueno, cartas: !!m.cartas,
+          url: V.urlImg(R2_PUB, IMG_TIPOS[tipo], k, s) }))) editadas++;
+      }
+    }
+    for (const x of (d && Array.isArray(d.fallas) ? d.fallas : []).slice(0, 24)) {
+      const tipo = tipoDe(x), k = String((x && x.k) || '');
+      if (tipo && claveValida(k)) await this.imgFallo(k, tipo, ahora);
+    }
+    return { ok: true, n, editadas };
+  }
+
+  /** Para el ciclo (`/avisos/img-hechas`): las que armó el kit en los últimos días, `[[p|v, clave, sello, día ET]]` */
+  imgHechas() {
+    const filas = this.sql.exec("SELECT k, tipo, hecho, hecho_t FROM img_cola WHERE hecho != '' AND hecho_t > ?", Date.now() - 8 * DIA_MS).toArray();
+    return { hechas: filas.map((f) => [f.tipo, f.k, f.hecho, new Date(f.hecho_t).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })]) };
   }
 
   /** ⚡ `bot/redibujo.py` subió esas cartas: les cambia la versión (`vr`, que /card y la página ponen en la URL). Y

@@ -140,6 +140,9 @@ jobs:
           node bot/tanda_b_prueba.mjs
           # 🏛️ la tanda C (20/11/2026): los eventos de estilo desde el panel, el consejo de socios y los ajustes del Tier 1
           node bot/tanda_c_prueba.mjs
+          # 🖼️ /perfil y /vitrina (20/11/2026): la imagen pública con su fila, «Armando…» y el pedido, la vieja ya y la nueva
+          # después, Perfil ↔ Vitrina ↔ Cartas en el mismo mensaje, los topes; y en el objeto, la cola, el freno y la edición
+          node bot/perfil_img_prueba.mjs
 
       # 🗺️ `herramientas/que_pide_cada_carta.py --auto` (04/11/2026) dibuja las cuatro cartas y da rojo si una pide un dato que
       # `datos/campos_por_carta.json` no tiene, porque ese dato no redibuja nada. No escribe: volver a medir redibuja todas las

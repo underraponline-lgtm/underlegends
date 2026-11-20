@@ -2981,6 +2981,22 @@ function requisitos(m) {
 }
 
 const AYUDA = {
+  // 🖼️ (20/11/2026, la tanda 2 de los comandos)
+  perfil: () => [
+    '## `/perfil` — tu perfil de la Liga, en una imagen',
+    'Tu fondo de perfil, tu cara, tu puesto, tu OVR y tu letra, tu ELO, y abajo **el récord** de tus duelos, **tu forma** ' +
+    '(las últimas 5) y **tu mejor noche**, con a quién le ganaste.',
+    '',
+    'Con `quien:` ves el de otra persona. Abajo, **Vitrina** y **Cartas** cambian en el mismo mensaje, y «Abrir en la página» ' +
+    'te lleva al perfil entero. Si jugaste hace poco, la imagen se pone al día sola en uno o dos minutos.',
+  ].join('\n'),
+  vitrina: () => [
+    '## `/vitrina` — tus trofeos, en una imagen',
+    'Tus **títulos**, tus **segundos** y **terceros puestos**, los trofeos más importantes en su estante (los títulos ' +
+    'primero, por cuánta gente jugó), tu letra del Competitivo, tu ELO y **tus insignias más raras**.',
+    '',
+    'Con `quien:` ves la de otra persona. Abajo, **Perfil** y **Cartas** cambian en el mismo mensaje.',
+  ].join('\n'),
   agendar: () => [
     '## `/agendar` — un evento en el calendario de la Liga',
     'Agenda un evento de este servidor con **día** (`18/10`), **hora** (`20:00`) y el **país** de esa hora: sale en el ' +
@@ -3209,7 +3225,7 @@ const AYUDA = {
 // 🧭 EL ÍNDICE EN GRUPOS Y UN MENÚ PARA CADA COMANDO (Dlx, 20/11/2026, la maqueta): hoy eran 1.289 letras en una lista.
 // Elegir en el menú cambia ESTE mensaje (`hp:ver`). Suma `/crew` y «Invitar a mi crew», que no estaban.
 const AYUDA_GRUPOS = [
-  ['Tus cartas', ['card', 'versus'], 'y en el perfil de alguien, «Carta»'],
+  ['Tus cartas', ['card', 'versus', 'perfil', 'vitrina'], 'y en el perfil de alguien, «Carta»'],
   ['Tu cuenta', ['verificar', 'vincular', 'foto', 'apodo', 'notify', 'borrar-mis-datos']],
   ['Tienda y drops', ['billetera', 'inventario', 'equipar', 'drops']],
   ['Crews', ['crew'], 'y en el perfil de alguien, «Invitar a mi crew»'],
@@ -3219,6 +3235,7 @@ const AYUDA_GRUPOS = [
 //: lo que hace cada uno, en el menú (hasta 100 letras)
 const AYUDA_CORTA = {
   card: 'tu tarjeta, o la de quien elijas', versus: 'quién gana entre dos, en la categoría que elijas',
+  perfil: 'tu perfil en una imagen: récord, forma y tu mejor noche', vitrina: 'tus trofeos e insignias en una imagen',
   verificar: 'qué te falta para verificarte', vincular: 'tu cuenta con tu perfil de la Liga', foto: 'tu foto de Discord en tus tarjetas',
   apodo: 'cómo va tu apodo en los servidores', notify: 'los avisos de eventos en tu celular o compu',
   'borrar-mis-datos': 'borra tu perfil, tus tarjetas y tu foto', billetera: 'tus Puntos de Tienda', inventario: 'lo tuyo de la Tienda',
@@ -3688,6 +3705,10 @@ export async function borrarMisDatos(env, id) {
       for (const t of ts.delimitedPrefixes || []) {
         if (await env.CARTAS.head(t + clave + '.webp')) borrar.push(t + clave + '.webp');
       }
+      // 🖼️ y sus imágenes de /perfil y /vitrina (20/11/2026): llevan su cara, y no viven bajo `<clave>/`
+      for (const t of ['perfil/', 'vitrina/']) {
+        if (await env.CARTAS.head(t + clave + '.webp')) borrar.push(t + clave + '.webp');
+      }
       for (let j = 0; j < borrar.length; j += 1000) {
         await env.CARTAS.delete(borrar.slice(j, j + 1000));
       }
@@ -4076,6 +4097,131 @@ async function apodoPanel(i, env, nuevo) {
         description: String(sale(n) || '(sin apodo)').slice(0, 100) })) }] }] }) };
 }
 
+// 🃏 QUÉ CARTA ABRE `/card` (y el botón «Cartas» de `/perfil` y `/vitrina`): una sola regla para los dos lugares
+function cartaQueAbre(g, guild) {
+  const sinCs = !Array.isArray(g.cs);
+  // 🏟️ quien sólo tiene carta de liga (la tiene todo el que juega una, 27/10/2026) también tiene /card: abre ésa
+  const soloLiga = !sinCs && !g.cs.length && !(g.bl && g.bl.length) && ligasDe(g).length > 0;
+  // 🎙️ EN UN SERVIDOR SIN CARTA DE SERVIDOR (`sinCarta`: FDS, LKR), LA TEMPORADA (Dlx, 20/10/2026: «los servidores sin
+  // tarjeta de servidor, su tarjeta default debería ser temporada… aunque éstas no cuenten para ello»). Abrir ahí la
+  // Servidor mostraría la de OTRO servidor, y la Competitiva pide 10 eventos que en un Tier 3 no se juegan
+  const aquiSv = SV_DE(aquiEs(guild));
+  const temp = sinCs || (g.cs || []).indexOf('temporada') >= 0;
+  // 🃏 Y SI ELIGIÓ SU CARTA PRINCIPAL (26/10/2026, `cartaPrincipal()` del objeto, viene en `cp`), ésa primero
+  const cp = String(g.cp || '');
+  return soloLiga ? 'liga'
+    : cp && tiene(g, cp) && !bloqueada(g, cp) && !(cp === 'servidor' && aquiSv && aquiSv.sinCarta) ? cp
+    : aquiSv && aquiSv.sinCarta && temp ? 'temporada'
+      : ((g.cs || []).indexOf('competitivo') >= 0) ? 'competitivo' : 'servidor';
+}
+
+// ── 🖼️ /perfil Y /vitrina (20/11/2026, la tanda 2 de los comandos) ─────────────────────────────────────────────────────
+// Dlx aprobó las dos imágenes en la maqueta: «A · la portada» y «la combinación». La respuesta es SÓLO LA IMAGEN, como
+// `/card`, con una fila: Perfil · Vitrina · Cartas · «Abrir en la página» (`V.mensajeImg()`). El Worker no dibuja: la
+// imagen está en R2 (`perfil/<clave>.webp`, `vitrina/<clave>.webp`), la arma el ciclo (bot/og_links.py) y, si falta o es
+// de antes de los datos de hoy, se pide a la tarea del kit (`imgPedir()` del objeto) y la respuesta se edita sola.
+// 🔏 CÓMO SABE SI ES LA DE HOY SIN PREGUNTARLE A R2: el `p:` de cada uno (el mismo que lee `/card`) trae `im`,
+// «hoy.hecha.hoy.hecha» (los sellos de /perfil y de /vitrina, de bot/subir_datos.py). Ni KV ni R2: una lectura del objeto.
+/** `[el sello de hoy, el de la imagen que hay]` de una de las dos, o `['', '']` si no se sabe */
+function sellosImg(g, tipo) {
+  const x = String((g && g.im) || '').split('.');
+  const ok = (s) => (/^[0-9a-f]{10}$/.test(s || '') ? s : '');
+  return tipo === 'vitrina' ? [ok(x[2]), ok(x[3])] : [ok(x[0]), ok(x[1])];
+}
+/** ¿tiene alguna carta para el botón «Cartas»? (`cs` ausente es KV viejo: vale por las cuatro, como en `/card`) */
+const tieneCartas = (g) => !Array.isArray(g.cs) || g.cs.length > 0 || !!(g.bl && g.bl.length) || ligasDe(g).length > 0;
+const IMG_TEXTO = {
+  espera: (que) => `${que} se está armando: prueba en unos minutos.`,
+  limite: (que) => `${que} ya se armó muchas veces hoy: prueba mañana.`,
+  lleno: () => 'Hay muchas imágenes en camino: prueba en unos minutos.',
+  error: () => 'Ahora no puedo armarla: prueba en un rato.',
+};
+/**
+ * Le pide al objeto la imagen de `k` y deja el permiso para editar ESTA respuesta cuando llegue (`imgPedir()`). Va en
+ * `luego()`: la respuesta ya salió. `armando`: la respuesta dice «Armando…» (si no hay imagen y el freno no deja, se dice
+ * por qué; si mostraba una, se queda con ella). Si la que armó el kit ya es la de hoy, se pone ya.
+ */
+async function pedirImg(env, i, base, actual, hecho, armando) {
+  const que = base.tipo === 'vitrina' ? 'La vitrina' : 'El perfil';
+  let r = null;
+  try {
+    const o = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/img-pedir', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ k: base.k, tipo: base.tipo, a: actual, token: i.token, app: i.application_id, dueno: base.dueno,
+        n: base.n, cartas: base.cartas, armando }),
+    });
+    r = await o.json().catch(() => null);
+  } catch (e) { r = null; }
+  if (r && r.listo && r.listo !== hecho) {
+    return editarOriginal(i, V.mensajeImg(Object.assign({ url: V.urlImg(R2, base.tipo, base.k, r.listo) }, base)));
+  }
+  if (!armando || (r && (r.cola || r.listo))) return null;
+  const txt = (IMG_TEXTO[(r && (r.espera ? 'espera' : r.limite ? 'limite' : r.lleno ? 'lleno' : '')) || 'error'] || IMG_TEXTO.error)(que);
+  return editarOriginal(i, V.mensajeImg(Object.assign({ texto: txt }, base)));
+}
+/**
+ * La respuesta de `/perfil` o `/vitrina` de `k` (comando o botón): `{msg, pedir}`. Con imagen, ésa (y si es de antes de los
+ * datos de hoy, `pedir` la nueva: la respuesta se edita cuando llega); sin imagen, «Armando…» y `pedir`.
+ */
+function vistaImg(env, i, ctx, k, g, tipo, dueno) {
+  const [actual, hecho] = sellosImg(g, tipo);
+  const base = { tipo, k, n: String(g.n || k).replace(/[`*_~|<>@]/g, ''), dueno: dueno || '', cartas: tieneCartas(g) };
+  if (hecho) {
+    if (actual && actual !== hecho && env.AVISOS) luego(ctx, pedirImg(env, i, base, actual, hecho, false));
+    return V.mensajeImg(Object.assign({ url: V.urlImg(R2, tipo, k, hecho) }, base));
+  }
+  if (env.AVISOS) luego(ctx, pedirImg(env, i, base, actual, '', true));
+  return V.mensajeImg(env.AVISOS ? base : Object.assign({ texto: IMG_TEXTO.error() }, base));
+}
+/** ¿Este mensaje es de `/perfil` o `/vitrina`? Lo dice su fila (`pi:`); `apagada`: qué se ve (el botón apagado) */
+function imgEnPantalla(i) {
+  for (const fila of (i.message && i.message.components) || []) {
+    for (const c of fila.components || []) {
+      if (c.type === COMP.BOTON && typeof c.custom_id === 'string' && c.custom_id.startsWith('pi:') && c.disabled) {
+        return { p: 'perfil', v: 'vitrina', c: 'cartas' }[c.custom_id.split(':')[1]] || '';
+      }
+    }
+  }
+  return '';
+}
+
+async function imgComando(i, env, ctx, tipo) {
+  // el mismo portero que `/card`: si el servidor limitó dónde, se corta acá
+  if (i.guild_id) {
+    const cfg = await ajustes(env, i.guild_id);
+    if (cfg.canales.length && cfg.canales.indexOf(i.channel_id) < 0) {
+      return aviso('Acá no se pueden pedir cosas de la Liga. Prueba en ' + cfg.canales.map((c) => `<#${c}>`).join(' · ') + '.');
+    }
+  }
+  const ops = (i.data && i.data.options) || [];
+  const porUsuario = ops.find((o) => o.name === 'quien');
+  const porNombre = ops.find((o) => o.name === 'nombre');
+  const que = tipo === 'vitrina' ? 'la vitrina' : 'el perfil';
+  let quien;
+  if (porUsuario && String(porUsuario.value) !== String(idDe(i))) {
+    quien = await claveCarta(env, porUsuario.value);
+    if (!quien) return aviso(`<@${porUsuario.value}> todavía no está en la Liga del bot: se entra verificándose en DRA y jugando un evento.`);
+  } else if (porNombre) {
+    quien = norm(porNombre.value);
+  } else {
+    quien = await quienEsCarta(i, env);
+    if (!quien) {
+      return aviso('Todavía no estás en la Liga del bot: verifícate (`/verificar`) y juega tu primer evento, y tu perfil se arma solo.',
+        [botonLink('La página', HUB_URL + '/freestyle-rap/')]);
+    }
+  }
+  const crudo = await leerP(env, quien);
+  if (!crudo) {
+    return aviso(porNombre ? `No encuentro a **${String(porNombre.value).replace(/[`*_~|<>@]/g, '').slice(0, 40)}** en la Liga del bot. ` +
+      'Prueba eligiéndolo en `quien:`, o búscalo en la página.' : `No tengo ${que} de esa persona todavía.`,
+    [botonLink('Buscar en la página', HUB_URL + '/freestyle-rap/ranking')]);
+  }
+  let g = null;
+  try { g = JSON.parse(crudo); } catch (e) { g = null; }
+  if (!g) return aviso(`No pude leer ${que}: prueba en un rato.`);
+  return responderV2(RESPONDE.MENSAJE, vistaImg(env, i, ctx, quien, g, tipo, idDe(i)));
+}
+
 const COMANDOS = {
   // 👥 /crew ver|invitar|unirme|link|salir (ver arriba `crewComando`)
   async crew(i, env) {
@@ -4128,6 +4274,9 @@ const COMANDOS = {
       cuerpo: ['—', '-# Cada uno lo ve en su hora. Sale en el calendario de la Liga en la próxima media hora.' +
         (conTiempo ? ' Con 12 horas o más de anticipación, quienes lo juegan suman **+10 %**.' : '')] }));
   },
+  // 🖼️ /perfil y /vitrina (20/11/2026): la imagen sola, como /card. Ver `imgComando()`
+  async perfil(i, env, ctx) { return imgComando(i, env, ctx, 'perfil'); },
+  async vitrina(i, env, ctx) { return imgComando(i, env, ctx, 'vitrina'); },
   async afiche(i, env, ctx) { return kit(i, env, ctx, 'afiche'); },
   async llave(i, env, ctx) { return kit(i, env, ctx, 'llave'); },
   // 🖱️ click derecho en una persona → Apps → Carta (Dlx, 08/10/2026): es `/card quien:<esa persona>`. Discord manda
@@ -4618,17 +4767,7 @@ const COMANDOS = {
                    'dibujadas.\nSe generan solas en la próxima vuelta del ' +
                    'ciclo; prueba de nuevo en un rato.');
     }
-    // 🎙️ EN UN SERVIDOR SIN CARTA DE SERVIDOR (`sinCarta`: FDS, LKR), LA TEMPORADA (Dlx, 20/10/2026: «los servidores sin
-    // tarjeta de servidor, su tarjeta default debería ser temporada… aunque éstas no cuenten para ello»). Abrir ahí la
-    // Servidor mostraría la de OTRO servidor, y la Competitiva pide 10 eventos que en un Tier 3 no se juegan
-    const aquiSv = SV_DE(aquiEs(i.guild_id));
-    const temp = sinCs || (g.cs || []).indexOf('temporada') >= 0;
-    // 🃏 Y SI ELIGIÓ SU CARTA PRINCIPAL (26/10/2026, `cartaPrincipal()` del objeto, viene en `cp`), ésa primero
-    const cp = String(g.cp || '');
-    const abre = soloLiga ? 'liga'
-      : cp && tiene(g, cp) && !bloqueada(g, cp) && !(cp === 'servidor' && aquiSv && aquiSv.sinCarta) ? cp
-      : aquiSv && aquiSv.sinCarta && temp ? 'temporada'
-        : ((g.cs || []).indexOf('competitivo') >= 0) ? 'competitivo' : 'servidor';
+    const abre = cartaQueAbre(g, i.guild_id);
     // 📸 tu carta sin tu foto: un aviso que ves sólo vos (ver `avisoFoto()`)
     if (comoDije === 'tú' || (porUsuario && String(porUsuario.value) === String(idDe(i)))) {
       luego(ctx, avisoFoto(env, i, quien, g));
@@ -5959,6 +6098,44 @@ export default {
         return editarAqui(i, ayudaPagina(k, AYUDA[k].length ? await leerMeta(env) : null));
       }
 
+      // ── 🖼️ /perfil y /vitrina (`pi:<p|v|c>:<clave>:<dueño>`, 20/11/2026): Perfil, Vitrina y Cartas cambian EN EL MISMO
+      // mensaje (tipo 7), como los botones de /card, y son de quien lo pidió. «Cartas» abre lo de /card con esta fila
+      // debajo, para volver
+      if (que === 'pi') {
+        const letra = quien, k = extra;
+        if (dueno && idDe(i) !== dueno) {
+          return aviso('Esa imagen la pidió otra persona.\nTira `/perfil` y tienes la tuya, con tus propios botones.');
+        }
+        const esperarI = frenado(idDe(i), 'click');
+        if (esperarI) return espera(esperarI);
+        if (!['p', 'v', 'c'].includes(letra) || !claveValida(k)) return aviso('Ese botón ya no anda: tira `/perfil` de nuevo.');
+        let gI = null;
+        try { gI = JSON.parse((await leerP(env, k)) || 'null'); } catch (e) { gI = null; }
+        if (!gI) return aviso('Ese perfil ya no está disponible.');
+        const aquiI = aquiEs(i.guild_id);
+        // ⚠️ VENCIDA: la misma vista con todo apagado y el porqué aparte (la regla de /card)
+        if (vencida(i, Date.now())) {
+          const ve = imgEnPantalla(i) || 'perfil';
+          luego(ctx, seguir(i, 'Esto ya estaba quieto hace rato, así que le apagué los botones.\nTira `/perfil` y tienes uno nuevo.'));
+          if (ve === 'cartas') {
+            const mI = JSON.parse((await env.KV.get('meta')) || '{}');
+            return responder(RESPONDE.ACTUALIZAR, carta(k, gI, cartaEnPantalla(i) || cartaQueAbre(gI, i.guild_id), svEnPantalla(i), dueno, mI, aquiI, true)
+              .concat([V.filaImg(k, dueno, 'cartas', { cartas: true, apagado: true })]));
+          }
+          const hechoI = sellosImg(gI, ve)[1];
+          const baseI = { tipo: ve, k, n: gI.n || k, dueno, cartas: tieneCartas(gI), apagado: true };
+          return responderV2(RESPONDE.ACTUALIZAR, V.mensajeImg(hechoI ? Object.assign({ url: V.urlImg(R2, ve, k, hechoI) }, baseI)
+            : Object.assign({ texto: 'Tira `/perfil` de nuevo.' }, baseI)));
+        }
+        if (letra === 'c') {
+          if (!tieneCartas(gI)) return aviso(`**${String(gI.n || k).replace(/[`*_~|<>@]/g, '')}** todavía no tiene cartas.`);
+          const mI = JSON.parse((await env.KV.get('meta')) || '{}');
+          return responder(RESPONDE.ACTUALIZAR, carta(k, gI, cartaQueAbre(gI, i.guild_id), null, dueno, mI, aquiI)
+            .concat([V.filaImg(k, dueno, 'cartas', { cartas: true })]));
+        }
+        return responderV2(RESPONDE.ACTUALIZAR, vistaImg(env, i, ctx, k, gI, letra === 'v' ? 'vitrina' : 'perfil', dueno));
+      }
+
       if (que !== 'c' && que !== 's' && que !== 'l') {
         return aviso('No sé qué hacer con ese componente.');
       }
@@ -5983,6 +6160,9 @@ export default {
       const g = JSON.parse(crudo);
       const m = meta ? JSON.parse(meta) : {};
       const aqui = aquiEs(i.guild_id);
+      // 🖼️ si esta carta se abrió desde `/perfil` o `/vitrina` («Cartas»), su fila sigue debajo para volver
+      const conFilaImg = (comps, apagado) => (imgEnPantalla(i) === 'cartas'
+        ? comps.concat([V.filaImg(quien, dueno, 'cartas', { cartas: true, apagado: !!apagado })]) : comps);
 
       // ⚠️ VENCIDA: SE APAGA LA CARTA Y SE EXPLICA APARTE. El tipo 7 redibuja
       // LA MISMA carta con todo deshabilitado —así el mensaje queda en un
@@ -5999,7 +6179,7 @@ export default {
         luego(ctx, seguir(i, 'Esa carta ya estaba quieta hace rato, así que le ' +
           'apagué los botones.\nTira `/card` y tienes una nueva.'));
         return responder(RESPONDE.ACTUALIZAR,
-          carta(quien, g, cual, svEnPantalla(i), dueno, m, aqui, true));
+          conFilaImg(carta(quien, g, cual, svEnPantalla(i), dueno, m, aqui, true), true));
       }
 
       // 🏟️ la carta de liga: el botón abre la mejor; el menú, la elegida. Un botón viejo puede pedir una que ya no está
@@ -6009,7 +6189,7 @@ export default {
           return aviso(`${g.n || quien} no tiene esa carta de liga.\n` +
                        'Tira `/card` de nuevo y te salen las que sí tiene.');
         }
-        return responder(RESPONDE.ACTUALIZAR, carta(quien, g, 'liga', lid || null, dueno, m, aqui));
+        return responder(RESPONDE.ACTUALIZAR, conFilaImg(carta(quien, g, 'liga', lid || null, dueno, m, aqui)));
       }
       if (que === 'c') {
         // 🔑 EL CANDADO DE LAS LIBRES (29/09/2026): la Competitiva y la de
@@ -6039,7 +6219,7 @@ export default {
                        'Tira `/card` de nuevo y te salen las que sí tiene.');
         }
         return responder(RESPONDE.ACTUALIZAR,
-          carta(quien, g, extra, null, dueno, m, aqui));
+          conFilaImg(carta(quien, g, extra, null, dueno, m, aqui)));
       }
       const sv = String((i.data.values || [])[0] || '').toUpperCase();
       // ⚠️ ELEGIR UN SERVIDOR DONDE NO ESTÁS DEVUELVE LA INVITACIÓN, no un
@@ -6078,7 +6258,7 @@ export default {
       const inv = esMia ? invitaSi(g, sv, aqui, m) : null;
       if (inv) luego(ctx, seguir(i, inv.texto, inv.botones));
       return responder(RESPONDE.ACTUALIZAR,
-        carta(quien, g, 'servidor', sv, dueno, m, aqui));
+        conFilaImg(carta(quien, g, 'servidor', sv, dueno, m, aqui)));
     }
 
     return aviso('No sé qué hacer con eso.');

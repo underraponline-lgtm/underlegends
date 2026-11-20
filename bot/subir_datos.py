@@ -414,10 +414,46 @@ def _cartas_liga():
 _LIGA_CARTAS = {}
 
 
+def sellos_img(hoy=None, est=None):
+    """🖼️ `{clave: 'hoy.hecha.hoy.hecha'}`: los sellos de las imágenes de /perfil y /vitrina (20/11/2026). El de HOY, el que
+    calculó la página en esta corrida (`salida_og/sellos_img.json`, de `og_links.correr_img()`), y el de la imagen que HAY en
+    R2 (`datos/og_links.json`). Así el Worker sabe, sin preguntarle a R2, si la imagen existe y si es la de hoy (ver
+    `sellosImg()` en bot/worker.js). Sin los de hoy (la página no pudo), se toma la que hay como la de hoy: pedir de más
+    gasta Actions, y la imagen que hay es la mejor que se tiene. `hoy` y `est` son para el self-check."""
+    def leer(ruta):
+        try:
+            with io.open(ruta, encoding='utf-8') as f:
+                d = json.load(f)
+            return d if isinstance(d, dict) else {}
+        except (OSError, ValueError):
+            return {}
+    if hoy is None:
+        hoy = leer(os.path.join(BASE, 'salida_og', 'sellos_img.json'))
+    if est is None:
+        est = leer(os.path.join(BASE, 'datos', 'og_links.json'))
+    ok = lambda x: x if isinstance(x, str) and re.match(r'^[0-9a-f]{10}$', x) else ''   # noqa: E731
+    hecha = lambda tipo, k: ok(((est.get(tipo) or {}).get(k) or [''])[0])             # noqa: E731
+    out = {}
+    if hoy:
+        for k, x in hoy.items():
+            if isinstance(x, list) and len(x) == 4:
+                out[k] = '.'.join(ok(y) for y in x)
+    else:
+        for k in set((est.get('perfil-img') or {})) | set((est.get('vitrina-img') or {})):
+            hp, hv = hecha('perfil-img', k), hecha('vitrina-img', k)
+            out[k] = '.'.join((hp, hp, hv, hv))
+    return {k: v for k, v in out.items() if v.strip('.')}
+
+
+_SELLOS_IMG = {}
+
+
 def armar():
     import construir_padron as PAD
     _LIGA_CARTAS.clear()
     _LIGA_CARTAS.update(_cartas_liga())
+    _SELLOS_IMG.clear()
+    _SELLOS_IMG.update(sellos_img())
     with open(os.path.join(BASE, 'datos', 'competitivo_pool.json'),
               encoding='utf-8') as f:
         comp = json.load(f)
@@ -722,6 +758,9 @@ def armar():
         # dropdown… por default verían la mejor»). `[[liga, nombre, sello, ovr, puesto]]`
         if _LIGA_CARTAS.get(k):
             valor['lg'] = _LIGA_CARTAS[k]
+        # 🖼️ los sellos de /perfil y /vitrina (20/11/2026): ver `sellos_img()`. Van al objeto, como todo `p:`: no gasta KV
+        if _SELLOS_IMG.get(k):
+            valor['im'] = _SELLOS_IMG[k]
         # 🔴 LOS NÚMEROS QUE COMPARA `/versus`. Dlx, 20/09/2026: *«la idea es
         # que no muestre las tarjetas. La cosa es hacer quién gana»*.
         #
@@ -1719,6 +1758,15 @@ def _self_check():
        and not puede_esperar('dn:123', None, 'ana'),
        'los índices por Discord ID no esperan: el `d:` de quien se acaba de verificar es su /card')
     ok(not puede_esperar('meta', '{}', '{"sello": 1}'), '`meta` nunca espera')
+    # 🖼️ los sellos de /perfil y /vitrina en el `p:` (20/11/2026): el de hoy y el de la imagen que hay
+    a, b, c = 'a' * 10, 'b' * 10, 'c' * 10
+    est = {'perfil-img': {'ana': [a, '2026-11-20']}, 'vitrina-img': {'ana': [c, '2026-11-19'], 'bo': [b, '2026-11-20']}}
+    ok(sellos_img(hoy={'ana': [b, a, c, c], 'cy': [a, '', b, '']}, est=est) == {'ana': '.'.join((b, a, c, c)), 'cy': a + '..' + b + '.'},
+       'con los de hoy: «hoy.hecha.hoy.hecha» (quien nunca tuvo imagen, con la hecha vacía)')
+    ok(sellos_img(hoy={}, est=est) == {'ana': '.'.join((a, a, c, c)), 'bo': '..' + b + '.' + b},
+       'sin los de hoy (la página no pudo): la que hay vale por la de hoy, para no pedir de más')
+    ok(sellos_img(hoy={'x': ['malo', 'x', '', '']}, est={}) == {} and sellos_img(hoy={}, est={}) == {},
+       'un sello raro no pasa; sin nada, nada')
     pares = [{'key': 'meta', 'value': '{}'}] + [{'key': 'p:j%d' % i, 'value': '{}'} for i in range(5)] \
         + [{'key': 'p:e%d' % i, 'value': '{}'} for i in range(700)]
     _ESPERAN.clear()

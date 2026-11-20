@@ -5,6 +5,8 @@
     python bot/kit.py --tipo llave --sv FFA --id <id>     dibuja, sube a R2 y le avisa al objeto (la tarea kit.yml)
     python bot/kit.py --tipo vs --sv FFA --id <id>        los vs que esperan su imagen (el bot en vivo, `vsEncolar()`)
     python bot/kit.py --tipo vs --sv FFA --muestra a b    un vs de muestra con dos de la tabla, en salida/, sin subir
+    python bot/kit.py --tipo img --sv UL --id <id>        las imágenes de /perfil y /vitrina que alguien pidió (la cola del
+                                                          objeto, `imgPedir()`); en local: bot/og_links.py --local
     python bot/kit.py --auto                              el self-check
 
 Dlx, 12/10/2026, a la vista previa del kit en FFA: *«eso de la llave y el evento está genial la verdad, crear un comando
@@ -1484,6 +1486,30 @@ def correr_vs(sv):
     return 1 if mal and mal == len(vs) else 0
 
 
+def correr_img():
+    """🖼️ /perfil Y /vitrina A PEDIDO (20/11/2026): lo que espera en el objeto (`/avisos/img-cola`), dibujado con la página
+    publicada (`og_links.dibujar_img()`: la misma foto que saca el ciclo), subido a su clave fija de R2 y devuelto al objeto
+    (`/avisos/img-listo`), que edita las respuestas que lo esperaban. Al objeto le llegan la clave y el sello, nunca una
+    dirección: la arma él. Una que falla no frena a las demás, y se le avisa a quien la pidió."""
+    import requests
+    import avisar as AV
+    import og_links as OG
+    r = requests.get(AV.WORKER + '/avisos/img-cola', headers={'x-lg-ciclo': _clave()}, timeout=20)
+    xs = ((r.json() or {}).get('img') or []) if r.ok else []
+    de = {v: t for t, v in OG.TIPOS_IMG.items()}                 # 'perfil' → 'perfil-img'
+    lista = [(de[x['tipo']], str(x['k'])) for x in xs if isinstance(x, dict) and x.get('tipo') in de and x.get('k')]
+    print('   🖼️ %d imágenes de /perfil y /vitrina esperando' % len(lista))
+    if not lista:
+        return 0
+    hechas = OG.dibujar_img(lista)
+    subidas = set(OG.subir_img(hechas))
+    cuerpo = {'hechas': [{'k': k, 'tipo': OG.TIPOS_IMG[t], 'sello': hechas[(t, k)][1]} for (t, k) in sorted(subidas)],
+              'fallas': [{'k': k, 'tipo': OG.TIPOS_IMG[t]} for (t, k) in lista if (t, k) not in subidas]}
+    rr = requests.post(AV.WORKER + '/avisos/img-listo', headers={'x-lg-ciclo': _clave()}, timeout=60, json=cuerpo)
+    print('   ✅ %d de %d · el objeto: %d %s' % (len(subidas), len(lista), rr.status_code, rr.text[:120]))
+    return 1 if not subidas else 0
+
+
 def correr(tipo, sv, id_=None):
     d = _sv_datos(sv)
     os.makedirs(SALIDA, exist_ok=True)
@@ -1715,8 +1741,11 @@ if __name__ == '__main__':
         sys.exit(_self_check())
     arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None   # noqa: E731
     tipo, sv = arg('--tipo'), (arg('--sv') or '').upper()
-    if tipo not in ('afiche', 'llave', 'vs') or not re.match(r'^[A-Z]{2,5}$', sv) or (arg('--id') and not re.match(r'^[a-f0-9]{16,40}$', arg('--id'))):
-        sys.exit('uso: python bot/kit.py --tipo afiche|llave|vs --sv FFA [--id <id>]')
+    if tipo not in ('afiche', 'llave', 'vs', 'img') or not re.match(r'^[A-Z]{2,5}$', sv) or (arg('--id') and not re.match(r'^[a-f0-9]{16,40}$', arg('--id'))):
+        sys.exit('uso: python bot/kit.py --tipo afiche|llave|vs|img --sv FFA [--id <id>]')
+    # 🖼️ /perfil y /vitrina a pedido: toda la cola del objeto (el servidor no importa: la tarea va con «UL»)
+    if tipo == 'img':
+        sys.exit(correr_img())
     if tipo == 'vs' and '--muestra' in sys.argv:
         import requests
         i = sys.argv.index('--muestra')

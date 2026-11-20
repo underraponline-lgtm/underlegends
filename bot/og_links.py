@@ -11,9 +11,19 @@ them»): una por página del menú (`og/pag/<pagina>.jpg`), servidor (`og/sv/`),
 herramientas/fondos_og.py. Se arman hasta `MAX_CINE` por corrida, primero las páginas. Mientras una no está, el Worker da
 la de antes (`hayOg()`). Los perfiles NO: su cartel lleva el fondo que cada uno eligió en Tus fondos.
 
+🖼️ Y DESDE EL 20/11/2026 LAS IMÁGENES DE `/perfil` Y `/vitrina` (la tanda 2 de los comandos del bot; Dlx aprobó «A · la
+portada» y «la combinación»): `perfil/<clave>.webp` y `vitrina/<clave>.webp` en R2, de 1200 de ancho. Las dibuja la página
+(`#/og/perfil-img/<clave>`, web/src/og_img.jsx) con las mismas cuentas que el perfil. Quién cambió lo dice el SELLO de cada
+imagen, que la página calcula para todos de una vez (`#/og/img-sellos/t1`, una sola carga): se rearman las que cambiaron,
+de a `MAX_IMG` por corrida, primero las que nunca se armaron, y las de más de `VIEJA_DIAS` días aunque no hayan cambiado
+(su rol de DRA y los emblemas que eligió no entran al sello: son un pedido por persona). Lo que no llega acá lo arma a
+pedido el kit (`bot/kit.py --tipo img`) cuando alguien usa el comando.
+
     python bot/og_links.py --subir     arma las que cambiaron y las sube (el ciclo, al final de dibujar)
     python bot/og_links.py --seco      dice cuáles armaría, sin abrir el navegador ni subir
     python bot/og_links.py --ver X     arma sólo la crew o el link X en salida_og/, sin subir (para mirarla)
+    python bot/og_links.py --local CARPETA clave…   las imágenes de /perfil y /vitrina de esas claves con la página
+                                       construida ACÁ (bot/paginas) y los datos publicados, en CARPETA, sin subir nada
     python bot/og_links.py --auto      self-check
 
 Dlx, 17/11/2026: *«que el link de invitación de la crew sea más corto para no asustar y que tenga un thumbnail
@@ -62,6 +72,18 @@ MAX_PERFIL = 40
 DISENO_CINE = 'cine-1'
 TIPOS_CINE = ('pag', 'sv', 'pais', 'llave', 'liga')
 MAX_CINE = 45
+#: 🖼️ /perfil y /vitrina (20/11/2026): el mismo `DISENO_IMG` de web/src/og_img.jsx (si la página publicada dice otro, la foto
+#: se saltea); cuántas por corrida (cada una ~1 s, sin recargar la página entre una y otra); y cada cuántos días se rearma
+#: una aunque su sello no haya cambiado (lo que no entra al sello: su rol de DRA y los emblemas que eligió)
+DISENO_IMG = 'img-1'
+TIPOS_IMG = {'perfil-img': 'perfil', 'vitrina-img': 'vitrina'}
+MAX_IMG = 30
+VIEJA_DIAS = 7
+#: los sellos de hoy de todos (los calcula la página), para `bot/subir_datos.py`, que los pone en el `p:` de cada uno: así
+#: el Worker sabe si la imagen que hay es la de hoy. No se commitea: se vuelve a calcular en cada corrida
+SELLOS_HOY = os.path.join(SALIDA, 'sellos_img.json')
+#: el bot/paginas de este repo, para `--local`
+PAGINAS = os.path.join(BASE, 'bot', 'paginas')
 
 
 def slug_og(x):
@@ -433,8 +455,297 @@ def subir(hechas):
     return ok
 
 
+# ── 🖼️ LAS IMÁGENES DE /perfil Y /vitrina (20/11/2026) ─────────────────────────────────────────────────────────────────
+def _raiz_web():
+    """La raíz de la página (sin el `/freestyle-rap`): ahí viven `/inicio/`, `/api/` y las imágenes"""
+    m = re.match(r'^(https?://[^/]+)', WEB)
+    return m.group(1) if m else WEB
+
+
+_CO_LOCAL = {}
+
+
+def _co_local():
+    """`{clave: [puesto, de cuántos]}` del Competitivo, de `datos/` (lo mismo que `_perfiles()` de subir_web.py pone en
+    `rk.co`): para que `--local` muestre lo que va a publicar el próximo ciclo aunque /api/perfiles todavía no lo traiga"""
+    if not _CO_LOCAL:
+        try:
+            for p in (os.path.join(BASE, 'sheet'), os.path.join(BASE, 'bot')):
+                if p not in sys.path:
+                    sys.path.append(p)
+            import subir_web as SW
+            import espejo_t1 as ESP
+            with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
+                de = SW._quien(json.load(f))
+            vc = [x for x in (ESP.leer('Ranking Competitivo') or {}).get('filas') or [] if isinstance(x, list) and len(x) > 1 and isinstance(x[0], int)]
+            for x in vc:
+                q = de(x[1])
+                if q and q not in _CO_LOCAL:
+                    _CO_LOCAL[q] = [x[0], len(vc)]
+        except Exception as e:                           # noqa: BLE001
+            print('   · --local sin el puesto del Competitivo de datos/ (%s)' % str(e)[:60])
+            _CO_LOCAL['_'] = None
+    return _CO_LOCAL
+
+
+def _servir_local(route, req):
+    """`--local`: la página construida ACÁ (bot/paginas) con los datos publicados, como `servir()` de herramientas/tuto_medir.py.
+    Lo de `/inicio/` y el documento salen del disco; `/api/` y las imágenes, de la página de verdad (sólo se leen). A
+    /api/perfiles se le suma `rk.co` de `datos/` (ver `_co_local()`)"""
+    u = req.url
+    raiz = _raiz_web()
+    if u.startswith(raiz) and u.split('?')[0].endswith('/api/perfiles'):
+        try:
+            r = route.fetch()
+            d = r.json()
+            co = _co_local()
+            for k, p in (d.get('p') or {}).items():
+                if co.get(k) and isinstance(p, dict) and not (p.get('rk') or {}).get('co'):
+                    p.setdefault('rk', {})['co'] = co[k]
+            return route.fulfill(status=200, body=json.dumps(d, ensure_ascii=False).encode('utf-8'),
+                                 headers={'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store'})
+        except Exception:                                # noqa: BLE001
+            return route.continue_()
+    if u.startswith(raiz) and '/inicio/' in u:
+        f = os.path.join(PAGINAS, 'inicio', *u.split('/inicio/', 1)[1].split('?')[0].split('/'))
+        if os.path.isfile(f):
+            ct = 'text/css' if f.endswith('.css') else 'application/json' if f.endswith('.json') else 'application/javascript'
+            return route.fulfill(path=f, headers={'content-type': ct, 'cache-control': 'no-store'})
+    if req.resource_type == 'document' and u.startswith(raiz) and '/api/' not in u:
+        return route.fulfill(path=os.path.join(PAGINAS, 'index.html'), headers={'content-type': 'text/html; charset=utf-8'})
+    return route.continue_()
+
+
+def _navegador(pw, local):
+    """El navegador del fotógrafo, en hora del este (las fechas de las placas, «8 nov», son las de la Liga)"""
+    nav = pw.chromium.launch()
+    ctx = nav.new_context(viewport={'width': 1200, 'height': 960}, device_scale_factor=1, timezone_id='America/New_York')
+    if local:
+        ctx.route('**/*', _servir_local)
+    return nav, ctx.new_page()
+
+
+_OG = "() => { const h = document.querySelector('#inicio-nuevo'); return h && h.shadowRoot && h.shadowRoot.querySelector('.og'); }"
+#: la imagen de ESA clave y ese tipo, lista (o que la página dijo que no está): el fotógrafo cambia sólo la dirección, y
+#: hasta que React no monta la nueva sigue estando la anterior
+_ESPERA_IMG = """([k, t]) => { const h = document.querySelector('#inicio-nuevo');
+    const o = h && h.shadowRoot && h.shadowRoot.querySelector('.og');
+    if (!o) return false;
+    if (!o.classList.contains('oi')) return o.dataset.listo === '1';
+    return o.dataset.k === k && o.dataset.t === t && o.dataset.listo === '1'; }"""
+
+
+def sellos_img(local=False):
+    """🔏 `{clave: [sello de /perfil, sello de /vitrina]}` de todos los que tienen carta, como los calcula la página
+    (`#/og/img-sellos/<t>`, web/src/og_img.jsx), o `None` si no pudo: un pedido caído, o la página publicada todavía no
+    tiene la ruta (sin sellos no se redibuja nada, y el Worker sigue con las imágenes que hay)."""
+    import navegador
+    navegador.hace_falta()
+    from playwright.sync_api import sync_playwright
+    from comun.temporada import ACTUAL
+    d = None
+    with sync_playwright() as pw:
+        nav, pag = _navegador(pw, local)
+        try:
+            pag.goto('%s/og/img-sellos/%s' % (WEB, ACTUAL), wait_until='domcontentloaded', timeout=60000)
+            pag.wait_for_function('() => { const o = (%s)(); return !!(o && o.dataset.listo === "1"); }' % _OG, timeout=120000)
+            d = pag.evaluate('() => { const o = (%s)(); return {d: o.dataset.d || "", falta: o.dataset.falta === "1", s: o.dataset.sellos || ""}; }' % _OG)
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ los sellos de /perfil y /vitrina no salieron: %s' % str(e)[:100])
+        finally:
+            nav.close()
+    if not d:
+        return None
+    if d.get('d') != DISENO_IMG:
+        print('   · los sellos: la página publicada todavía no tiene las imágenes de /perfil (o es otro diseño)')
+        return None
+    if d.get('falta') or not d.get('s'):
+        print('   · los sellos: a la página le faltó un dato (un pedido caído): esta vuelta no se redibuja ninguna')
+        return None
+    try:
+        s = json.loads(d['s'])
+    except ValueError:
+        return None
+    return {k: v for k, v in s.items() if isinstance(v, list) and len(v) == 2
+            and all(isinstance(x, str) and re.match(r'^[0-9a-f]{10}$', x) for x in v)}
+
+
+def dibujar_img(lista, local=False, salida=None):
+    """`[(tipo, clave)]` → `{(tipo, clave): (ruta del WebP, sello, alto)}` de las que salieron. UNA página para todas: entre
+    una y otra cambia sólo la dirección, así los datos (/api/perfiles, ~1 MB) se bajan una vez. Una que la página no
+    encuentra, o con otro diseño, no sale."""
+    from urllib.parse import quote
+    import navegador
+    navegador.hace_falta()
+    from playwright.sync_api import sync_playwright
+    from PIL import Image
+    salida = salida or SALIDA
+    os.makedirs(salida, exist_ok=True)
+    out = {}
+    with sync_playwright() as pw:
+        nav, pag = _navegador(pw, local)
+        primera = True
+        for tipo, k in lista:
+            ruta = '%s/%s' % (tipo, quote(k, safe=''))
+            try:
+                if primera:
+                    pag.goto('%s/og/%s' % (WEB, ruta), wait_until='domcontentloaded', timeout=60000)
+                else:
+                    pag.evaluate('(h) => { location.hash = h; }', '#/og/' + ruta)
+                pag.wait_for_function(_ESPERA_IMG, arg=[k, tipo], timeout=60000)
+                if primera:
+                    pag.add_style_tag(content='body *{visibility:hidden!important} #inicio-nuevo{visibility:visible!important}')
+                    primera = False
+                d = pag.evaluate('() => { const o = (%s)(); return {oi: o.classList.contains("oi"), d: o.dataset.d || "", falta: o.dataset.falta === "1",'
+                                 ' inc: o.dataset.incompleto === "1", sello: o.dataset.sello || "", alto: Number(o.dataset.alto) || 0}; }' % _OG)
+                if not d['oi'] or d['d'] != DISENO_IMG:
+                    print('   · %s/%s: la página todavía no tiene esta imagen (o es otro diseño)' % (tipo, k))
+                    continue
+                if d['falta']:
+                    print('   · %s/%s: %s' % (tipo, k, 'a la página le faltó un dato' if d['inc'] else 'la página no lo encontró'))
+                    continue
+                pag.wait_for_timeout(250)
+                png = os.path.join(salida, '%s_%s.png' % (TIPOS_IMG[tipo], slug_og(k) or 'x'))
+                pag.screenshot(path=png, clip={'x': 0, 'y': 0, 'width': 1200, 'height': d['alto'] or 760})
+                webp = png[:-4] + '.webp'
+                Image.open(png).convert('RGB').save(webp, 'WEBP', quality=86, method=4)
+                os.remove(png)
+                out[(tipo, k)] = (webp, d['sello'], d['alto'])
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ %s/%s: %s' % (tipo, k, str(e)[:90]))
+                primera = True                           # la próxima, con la página cargada de nuevo
+        nav.close()
+    return out
+
+
+def clave_r2_img(tipo, k):
+    """`perfil/<clave>.webp` o `vitrina/<clave>.webp`: fijas, la versión va en la dirección (`?v=<sello>`)"""
+    return '%s/%s.webp' % (TIPOS_IMG[tipo], k)
+
+
+def subir_img(hechas):
+    """Sube las que salieron a su clave fija de R2. `[(tipo, clave)]` de las que entraron"""
+    import subir_cartas as SC
+    s = SC.sesion()
+    ok = []
+    for (tipo, k), (ruta, _sello, _alto) in hechas.items():
+        clave = clave_r2_img(tipo, k)
+        try:
+            with open(ruta, 'rb') as f:
+                datos = f.read()
+            r = s.put('%s/objects/%s' % (SC.API, clave), data=datos, headers={'Content-Type': 'image/webp'}, timeout=60)
+            if SC._ok(r, clave) is not None:
+                ok.append((tipo, k))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ %s no subió: %s' % (clave, str(e)[:80]))
+    return ok
+
+
+def _hoy():
+    import datetime
+    return (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=5)).strftime('%Y-%m-%d')
+
+
+def _vieja(fecha, hoy):
+    import datetime
+    try:
+        return (datetime.date.fromisoformat(hoy) - datetime.date.fromisoformat(fecha)).days >= VIEJA_DIAS
+    except (TypeError, ValueError):
+        return True
+
+
+def que_img(sellos, est, hoy, tope=MAX_IMG):
+    """`[(tipo, clave, sello)]` de las imágenes para rearmar esta vuelta, como mucho `tope`: primero las que nunca se
+    armaron (en el orden de `sellos`), después las que cambiaron y al final las de más de `VIEJA_DIAS`. `est` es
+    `{tipo: {clave: [sello, fecha]}}` (lo de `datos/og_links.json`)."""
+    nunca, cambio, viejas = [], [], []
+    for k, (sp, sv) in sellos.items():
+        for tipo, s in (('perfil-img', sp), ('vitrina-img', sv)):
+            ya = (est.get(tipo) or {}).get(k)
+            if not isinstance(ya, list) or len(ya) < 2:
+                nunca.append((tipo, k, s))
+            elif ya[0] != s:
+                cambio.append((tipo, k, s))
+            elif _vieja(ya[1], hoy):
+                viejas.append((tipo, k, s))
+    return (nunca + cambio + viejas)[:max(0, tope)]
+
+
+def _hechas_a_pedido():
+    """Las que armó el kit a pedido (`/avisos/img-hechas`, del objeto): `{tipo: {clave: [sello, fecha]}}`. Así el ciclo
+    no vuelve a armar lo que alguien acaba de pedir"""
+    import avisar
+    d = _get(avisar.WORKER + '/avisos/img-hechas', ciclo=True) or {}
+    out = {}
+    for x in d.get('hechas') or []:
+        if isinstance(x, list) and len(x) >= 4 and x[0] in ('p', 'v') and re.match(r'^[0-9a-f]{10}$', str(x[2])):
+            out.setdefault('perfil-img' if x[0] == 'p' else 'vitrina-img', {})[str(x[1])] = [str(x[2]), str(x[3])]
+    return out
+
+
+def correr_img(est):
+    """🖼️ El paso de /perfil y /vitrina, adentro de `correr()`: los sellos de hoy, lo que cambió y la foto de eso. Escribe
+    `SELLOS_HOY` para bot/subir_datos.py y anota en `est` lo que subió. Nunca frena el ciclo"""
+    sellos = sellos_img()
+    if sellos is None:
+        return 0
+    os.makedirs(SALIDA, exist_ok=True)
+    # lo que el kit armó a pedido desde la última corrida cuenta como hecho, si es más nuevo
+    for tipo, xs in _hechas_a_pedido().items():
+        for k, v in xs.items():
+            ya = (est.get(tipo) or {}).get(k)
+            if not isinstance(ya, list) or ya[0] != v[0]:
+                est.setdefault(tipo, {})[k] = v
+    hoy = _hoy()
+    lista = que_img(sellos, est, hoy)
+    print('   🖼️ /perfil y /vitrina: %d con carta, %d para armar ahora' % (len(sellos), len(lista)))
+    if lista:
+        hechas = dibujar_img([(t, k) for t, k, _s in lista])
+        for (tipo, k) in subir_img(hechas):
+            est.setdefault(tipo, {})[k] = [hechas[(tipo, k)][1], hoy]
+    # 🔏 para subir_datos.py: el sello de hoy y el de la imagen que hay, de cada uno (`p:<clave>`, campo `im`)
+    hoy_img = {k: [sp, ((est.get('perfil-img') or {}).get(k) or [''])[0], sv, ((est.get('vitrina-img') or {}).get(k) or [''])[0]]
+               for k, (sp, sv) in sellos.items()}
+    with io.open(SELLOS_HOY, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(hoy_img, f, ensure_ascii=False, sort_keys=True)
+    return len(lista)
+
+
+def local(carpeta, claves):
+    """`--local`: las dos imágenes de cada clave con la página construida acá, en `carpeta`. No sube ni escribe estado"""
+    lista = [(t, k) for k in claves for t in ('perfil-img', 'vitrina-img')]
+    hechas = dibujar_img(lista, local=True, salida=carpeta)
+    for (tipo, k), (ruta, sello, alto) in sorted(hechas.items()):
+        print('   ✅ %s · %s · 1200×%d · sello %s · %d KB' % (ruta, tipo, alto, sello, os.path.getsize(ruta) // 1024))
+    faltan = [x for x in lista if x not in hechas]
+    for t, k in faltan:
+        print('   🔴 %s/%s no salió' % (t, k))
+    return 1 if faltan else 0
+
+
+def _guardar_estado(est):
+    with io.open(ESTADO, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(est, f, ensure_ascii=False, indent=1, sort_keys=True)
+        f.write('\n')
+
+
+def _img_y_guardar(est):
+    """🖼️ /perfil y /vitrina (nunca frena el ciclo: sin las imágenes nuevas, el bot sigue con las que hay) y el estado"""
+    try:
+        correr_img(est)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ /perfil y /vitrina no salieron esta vez: %s' % str(e)[:100])
+    _guardar_estado(est)
+
+
 def correr(seco=False, solo=None):
     est = _leer_estado()
+    # los sellos de hoy son de ESTA corrida: uno viejo le diría a subir_datos.py que una imagen está al día sin saberlo
+    if not seco and not solo:
+        try:
+            os.remove(SELLOS_HOY)
+        except OSError:
+            pass
     todos = trabajos()
     if solo:
         todos = [t for t in todos if t[1] == slug_og(solo)]
@@ -456,6 +767,8 @@ def correr(seco=False, solo=None):
     if seco or not faltan:
         for t in faltan[:20]:
             print('      · %s/%s' % (t[0], t[1]))
+        if not seco and not solo:
+            _img_y_guardar(est)
         return 0
     hechas = dibujar(faltan)
     if solo:
@@ -466,10 +779,8 @@ def correr(seco=False, solo=None):
     huellas = {(t[0], t[1]): t[2] for t in faltan}
     for tipo, slug in subidas:
         est.setdefault(tipo, {})[slug] = huellas[(tipo, slug)]
-    with io.open(ESTADO, 'w', encoding='utf-8', newline='\n') as f:
-        json.dump(est, f, ensure_ascii=False, indent=1, sort_keys=True)
-        f.write('\n')
     print('      ✅ %d subidas de %d' % (len(subidas), len(faltan)))
+    _img_y_guardar(est)
     return 0
 
 
@@ -534,6 +845,27 @@ def _self_check():
     ok('ranking' not in {s for t, s in C} and 'tarjetas' not in {s for t, s in C}, 'sin cartas no hay podio ni abanico: esas páginas quedan con la de antes')
     with io.open(os.path.join(BASE, 'bot', 'ci', 'guardar.sh'), encoding='utf-8') as f:
         ok('datos/og_links.json' in f.read(), 'datos/og_links.json va en ARCHIVOS de guardar.sh (si no, cada corrida sube todas)')
+    # 🖼️ /perfil y /vitrina (20/11/2026)
+    with io.open(os.path.join(BASE, 'web', 'src', 'og_img.jsx'), encoding='utf-8') as f:
+        oi = f.read()
+    mi = re.search(r"export const DISENO_IMG = '([^']+)'", oi)
+    ok(mi is not None and mi.group(1) == DISENO_IMG, 'DISENO_IMG es el mismo acá y en og_img.jsx (si no, ninguna foto de /perfil sale)')
+    with io.open(os.path.join(BASE, 'web', 'src', 'og_link.jsx'), encoding='utf-8') as f:
+        ol = f.read()
+    ok(all("tipo === '%s'" % t in ol for t in TIPOS_IMG) and "tipo === 'img-sellos'" in ol,
+       'og_link.jsx monta las dos imágenes y los sellos (las rutas que pide el fotógrafo)')
+    hoy_ = '2026-11-20'
+    s1, s2, s3 = 'a' * 10, 'b' * 10, 'c' * 10
+    est0 = {'perfil-img': {'ana': [s1, hoy_], 'bo': [s1, '2026-11-01']}, 'vitrina-img': {'ana': [s3, hoy_], 'bo': [s2, hoy_]}}
+    q = que_img({'ana': [s1, s2], 'bo': [s1, s2], 'cy': [s3, s3]}, est0, hoy_)
+    ok(q == [('perfil-img', 'cy', s3), ('vitrina-img', 'cy', s3), ('vitrina-img', 'ana', s2), ('perfil-img', 'bo', s1)],
+       'qué rearmar: primero las que nunca se armaron, después las que cambiaron y al final las de más de %d días (%s)' % (VIEJA_DIAS, q))
+    ok(len(que_img({'k%d' % i: [s1, s2] for i in range(40)}, {}, hoy_)) == MAX_IMG, 'de a MAX_IMG (%d) por corrida' % MAX_IMG)
+    ok(_vieja('2026-11-13', hoy_) and not _vieja('2026-11-14', hoy_) and _vieja('', hoy_), 'vieja a los %d días (sin fecha, vieja)' % VIEJA_DIAS)
+    ok(clave_r2_img('perfil-img', 'makmah') == 'perfil/makmah.webp' and clave_r2_img('vitrina-img', 'nc') == 'vitrina/nc.webp',
+       'las claves fijas de R2: perfil/<clave>.webp y vitrina/<clave>.webp (las mismas que arma el Worker, `V.urlImg()`)')
+    with io.open(os.path.join(BASE, 'bot', 'vista.js'), encoding='utf-8') as f:
+        ok('${r2}/${tipo}/${k}.webp' in f.read(), 'vista.js arma la misma dirección')
     print('\n%s' % ('✅ las miniaturas de los links' if not malos else '❌ %d falla(s)' % malos))
     return 1 if malos else 0
 
@@ -549,6 +881,13 @@ def main():
     if '--ver' in a:
         i = a.index('--ver')
         return correr(solo=a[i + 1] if i + 1 < len(a) else '')
+    if '--local' in a:
+        i = a.index('--local')
+        resto = [x for x in a[i + 1:] if not x.startswith('--')]
+        if len(resto) < 2:
+            print('uso: python bot/og_links.py --local CARPETA clave [clave…]')
+            return 2
+        return local(resto[0], resto[1:])
     if '--subir' in a:
         return correr()
     if '--seco' in a:

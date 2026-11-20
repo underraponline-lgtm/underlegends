@@ -2144,6 +2144,21 @@ def _perfiles(gente, comp, regs):
                                 -(p.get('ter') or 0), -(p.get('pts') or 0)))
     med = [p for p in med if not p.get('fc')]
     pos_pod = {_clave(p): i + 1 for i, p in enumerate(med)}
+    # 🏆 SU PUESTO EN EL COMPETITIVO (20/11/2026, la imagen de /vitrina): el `#` de la vitrina del Competitivo, que es el
+    # oficial —sin los de fuera de concurso y con el desempate del Score sin redondear, que la tabla del lobby no trae (NC
+    # y Trot empatan a 22,4)—. `rk['co'] = [puesto, de cuántos]`; sin archivo, nada (sin dato no hay pieza)
+    pos_co, n_co = {}, 0
+    try:
+        import espejo_t1 as _ESP
+        _vc = [f for f in ((_ESP.leer('Ranking Competitivo') or {}).get('filas') or [])
+               if isinstance(f, list) and len(f) > 1 and isinstance(f[0], int) and f[0] > 0]
+        n_co = len(_vc)
+        for f in _vc:
+            q_ = de(f[1])
+            if q_ and q_ not in pos_co:
+                pos_co[q_] = f[0]
+    except Exception:                                    # noqa: BLE001
+        pos_co = {}
     por_cc = Counter((x.get('cc') or '').lower() for x in comp if x.get('cc'))
     # 🌎 SU PUESTO POR TEMPORADA EN SU PAÍS Y EN SU SERVIDOR, para quien no viaja en las 200 filas del lobby (18/11/2026):
     # el panel del Inicio (`rankingsDe()`, web/src/panel.jsx) lo saca de la tabla para los de adentro, y a los de afuera
@@ -2193,6 +2208,8 @@ def _perfiles(gente, comp, regs):
             rk['du'] = [pos_du[q], len(duel_ord)]
         if pos_pod.get(q):
             rk['pod'] = [pos_pod[q], len(med)]
+        if pos_co.get(q):
+            rk['co'] = [pos_co[q], n_co]
         # ⚠️ `pos_pais` ES TEXTO, «1/23»: el puesto y cuántos son. Es el mismo
         # número del círculo de la carta de País, así que no se recalcula.
         pp = str(cp.get('pos_pais') or '')
