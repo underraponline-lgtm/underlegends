@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "6.99",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T19:31:00-05:00",
+        "titulo": "/setup: tu servidor entra a la Liga en un minuto",
+        "items": [
+            "**`/setup`** es nuevo: si administras un servidor (con «Gestionar servidor»), te lleva paso a paso para sumarlo a la Liga, todo en un mensaje que sólo ves tú.",
+            "Revisa los permisos del bot y te dice para qué sirve cada uno, **encuentra solo** los canales de eventos, resultados y anuncios, y te deja elegir entre tres formas: **Liga completa**, **Lo básico** o **Sólo leer**.",
+            "Antes de aplicar ves cómo va a quedar. Con **Aplicar** el bot guarda todo de una vez, manda un mensaje de prueba y deja la invitación a la Liga. Si lo vuelves a correr, te muestra cómo quedó tu servidor.",
+            "Los **puntos de Temporada** de tus eventos se activan cuando la Liga lo revisa: todo lo demás funciona desde el primer momento. Las demás opciones siguen en `/settings`, y el anti-raid en `/antiraid`."
+        ]
+    },
+    {
         "version": "6.98",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T19:22:00-05:00",
