@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-20T17:54:44+00:00",
+ "cuando": "2026-11-20T18:25:25+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7157,6 +7157,24 @@
  ],
  "oficiales": [
   {
+   "servidor": "ACAD",
+   "canal": "📢┇anuncios・",
+   "tit": "GG , you just advanced to level 1!",
+   "tx": "",
+   "cuando": "2026-11-20T18:14:16",
+   "msg_id": "1573401109102465065",
+   "link": "https://discord.com/channels/765045834647339038/922299202904653844/1573401109102465065"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📢┇anuncios・",
+   "tit": "OPENING ESPECIAL PASHION",
+   "tx": "Mi gente de LA CREW Le damos el inicio de una de las competencias que revolucionara el Servidor en general y esta será la O.E.P Cup QUE ES LA O.E.P CUP ⁉️ La O.E.P Cup es una creación de su servidor en donde quiero junta",
+   "cuando": "2026-11-20T18:14:15",
+   "msg_id": "1573401105684107376",
+   "link": "https://discord.com/channels/765045834647339038/922299202904653844/1573401105684107376"
+  },
+  {
    "servidor": "CHZ",
    "canal": "Anuncios-📢",
    "tit": "ÚNANSE TODOS A LA LIGA GLOBAL DE FREESTYLE UNIRSE ES SENCILLO CON SU DISCORD",
@@ -7364,15 +7382,6 @@
    "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1570843950380482591"
   },
   {
-   "servidor": "ACAD",
-   "canal": "📢┇anuncios・",
-   "tit": "LA CREW BUSCA ORGANIZADORES!!!",
-   "tx": "SI DESEAS FORMAR PARTE DE NUESTRA ORGANIZACIÓN MÁNDAME UN DM AHORA MISMO PARA PODERTE POSTULAR!!! PUEDES AYUDARNOS A HACER HISTORIA!!!",
-   "cuando": "2026-11-10T21:58:34",
-   "msg_id": "1569833676785848371",
-   "link": "https://discord.com/channels/765045834647339038/922299202904653844/1569833676785848371"
-  },
-  {
    "servidor": "FRZ",
    "canal": "➣「📩」anuncios",
    "tit": "RED BULL BATALLA 2026",
@@ -7398,15 +7407,6 @@
    "cuando": "2026-10-29T01:53:43",
    "msg_id": "1565181811825320049",
    "link": "https://discord.com/channels/1489848581203689535/1489852871188152461/1565181811825320049"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📢┇anuncios・",
-   "tit": "TENEMOS CAMPEÓN ARGENTINO! 🇦🇷",
-   "tx": "DELUX SALIÓ CAMPEÓN DE LA RED BULL CREW NACIONAL ARGENTINA 2026, DESPUÉS DE VENCER A EZE, GEOKA, MCO Y SEKKA EN LA FINAL ES NUESTRO 2DO CLASIFICADO A LA INTERNACIONAL DE LACREW Y SEKKA VA A PASAR A LAS VOTACIONES MUCHAS ",
-   "cuando": "2026-10-26T00:42:50",
-   "msg_id": "1564076807676895304",
-   "link": "https://discord.com/channels/765045834647339038/922299202904653844/1564076807676895304"
   },
   {
    "servidor": "CEU",

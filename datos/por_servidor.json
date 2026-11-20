@@ -2585,9 +2585,9 @@
     "duelos": "",
     "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 45,
     "pod": 1,
-    "pts": 16809,
+    "pts": 10313,
     "racha": "1/1",
     "tg": {
      "fin": 1
@@ -9984,11 +9984,11 @@
   "Monet": {
    "ACAD": {
     "duelos": "",
-    "ev": 2,
+    "ev": 1,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 42,
     "pod": 0,
-    "pts": 7723,
+    "pts": 1226,
     "racha": "0/0"
    },
    "CEU": {
@@ -11447,20 +11447,6 @@
     "racha": "0/0",
     "tg": {
      "fund": true
-    }
-   }
-  },
-  "Park ji sunk🇰🇷": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6497,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
     }
    }
   },
