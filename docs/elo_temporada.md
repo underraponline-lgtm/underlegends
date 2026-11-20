@@ -230,6 +230,27 @@ bajar del piso de Zafiro · Rubí ×0,5 sin bajar del piso de Jade · Zafiro ×0
 300 · 200 · 100). **La primera vez, de la T1 a la T2**, sale de la
 piedra más alta de la T1.
 
+**Medido en una T2 de prueba** (`elo_reinicio.py`: las batallas de la T1 otra vez, arrancando del reinicio, con el
+histórico ya armado y todo lo decidido): **propuesta, espera el OK: el borrador se queda.** Que la T2 arranque con el
+82 % en Hierro no es un problema: son los que terminaron la T1 en Hierro o en Jade, y arriba cada uno arranca una o dos
+piedras abajo de la más alta.
+
+| reinicio | arrancan en Hierro | de los 40 de más nivel, en Hierro | ordena por nivel al final | premio de fin (contra la T1) |
+|---|---|---|---|---|
+| **el borrador** | **82 %** | **11** | **61 %** | **+11 %** |
+| más suave (×0,6 a todos, Jade ×0,5) | 73 % | 4 | 56 % | +30 % |
+| más duro (×0,5 · 0,45 · 0,4 · 0,3, pisos más bajos) | 86 % | 16 | 58 % | +8 % |
+| como Brawl hoy: bajas 2 subniveles | 68 % | 1 | 58 % | +37 % |
+| como Brawl antes: bajas 6 subniveles | 89 % | 19 | 59 % | +2 % |
+
+Los más suaves pagan hasta un 37 % más de premio de fin de temporada y ordenan peor, porque la escalera tiene menos
+para reordenar; el más duro manda a Hierro a más gente buena. Lo que cuesta el borrador: 11 de los 40 de más nivel
+arrancan en Hierro —casi todos jugaron poco en la T1— y tardan unos 16 días en salir.
+
+⚠️ **La primera vez no hay ELO de temporada de la T1**, así que vale la piedra más alta que cada uno vio en las
+divisiones de la T1 (`datos/divisiones.json`, `mejor`) y se arranca de su piso: **Mítico → Rubí I, Diamante → Zafiro
+I, Rubí → Jade I, el resto a Hierro I**. Al 20/11: 13 llegaron a Mítico, 13 a Diamante y 32 a Rubí, de 692.
+
 ## 4 · Lo que se probó y no sirve
 
 - **La escalera batalla por batalla, sin reglas de llave**: premia jugar mucho (Makmah 1.º con 52 % en 167 batallas).
@@ -256,8 +277,8 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
-   sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
+1. **Los números**: K, los factores, los extras y la protección de abajo. El reinicio: la propuesta es que se quede
+   el borrador (§3, «El reinicio»).
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
 lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante) y, encima, la semana para el que se queda
