@@ -33,7 +33,7 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": false
+   "duelos": true
   },
   "CH": {
    "pagina": true,
@@ -60,7 +60,7 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": false
+   "duelos": true
   },
   "DRA": {
    "pagina": true,
@@ -78,7 +78,7 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": false
+   "duelos": true
   },
   "FFA": {
    "pagina": true,
@@ -96,7 +96,7 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": false
+   "duelos": true
   },
   "FRZ": {
    "pagina": true,
@@ -123,7 +123,7 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": false
+   "duelos": true
   },
   "SR": {
    "pagina": true,

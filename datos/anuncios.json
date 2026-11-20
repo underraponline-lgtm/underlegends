@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-20T00:25:24+00:00",
+ "cuando": "2026-11-20T00:55:12+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7477,6 +7477,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "serrato mayor 🇦🇨",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1573132130182111403",
+   "cuando": "2026-11-20T00:25:27"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "colesito🇨🇴",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1573132118115229768",
+   "cuando": "2026-11-20T00:25:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "xxxxxx🇻🇪",
+   "quien": "xxxxxx.fl",
+   "discord_id": "1397110475594010700",
+   "msg_id": "1573132047424426104",
+   "cuando": "2026-11-20T00:25:07"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43449,33 +43476,6 @@
    "discord_id": "1055474244089286706",
    "msg_id": "1560755591511543979",
    "cuando": "2026-10-16T20:45:30"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nc🇰🇷",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1560754524485062659",
-   "cuando": "2026-10-16T20:41:16"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Neo🇦🇷",
-   "quien": "neosoulkid",
-   "discord_id": "520210394078248971",
-   "msg_id": "1560753881770631169",
-   "cuando": "2026-10-16T20:38:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Paria🇦🇷",
-   "quien": "elconocimientoeslibertad",
-   "discord_id": "1286348537499488299",
-   "msg_id": "1560753513200353372",
-   "cuando": "2026-10-16T20:37:14"
   }
  ]
 }

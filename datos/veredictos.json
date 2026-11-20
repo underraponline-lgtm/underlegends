@@ -355,17 +355,6 @@
   }
  },
  "batallas": {
-  "1570597486953889854": {
-   "id": "1570597486953889854",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1794530021180,
-   "a": "CRK",
-   "b": "DIOS",
-   "ganador": "DIOS",
-   "votos": "1–0"
-  },
   "1570612953521324107": {
    "id": "1570612953521324107",
    "sv": "🔥LKR (Champios Legue)🐉",
@@ -7121,8 +7110,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795131191311,
-   "ed": 1795134060567,
-   "texto": "`[ CUARTOS ]`\n⌞Vandu 🇨🇴⌝ 🆚 ⌞Mito 🇦🇷⌝ 🆚 ⌞Mauzz 🇻🇪⌝ 🆚 ⌞Nc 🇲🇿⌝ 🆚 ⌞Mexicano 🇲🇽 -⌝\n⌞kyss 🇲🇽⌝ 🆚 ⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝",
+   "ed": 1795135822056,
+   "texto": "`[ CUARTOS ]`\n⌞Vandu 🇨🇴⌝ 🆚 ⌞Mito 🇦🇷⌝ 🆚 ⌞Mauzz 🇻🇪⌝ 🆚 ⌞Nc 🇲🇿⌝ 🆚 ⌞Mexicano 🇲🇽 -⌝\n⌞kyss 🇲🇽⌝ 🆚 ⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞MCO 🇦🇷⌝ 🆚 ⌞Mc uchiha 🇮🇹⌝ 🆚 ⌞Trot🍅 🇪🇸⌝ 🆚 ⌞TEURONIHAGE 🇦🇪⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞XXXX 🇻🇪⌝ 🆚 ⌞Six 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞Mc uchiha 🇨🇱⌝\n⌞Lord 🇨🇴⌝ 🆚 ⌞Tenor 🇻🇪⌝ 🆚 ⌞Drexx 🇵🇪⌝ 🆚 ⌞doble h 🇨🇱⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞XXX 🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞Six 🇦🇷 + Bna 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴 + XXX 🇻🇪⌝\n⌞Vandu 🇨🇴  + Mito 🇦🇷⌝ 🆚 ⌞Kyss 🇲🇽  + Trelok 🇨🇴⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7153,6 +7142,65 @@
      [
       "trelok 🇨🇴 + Nc  🇦🇷",
       "Paria 🇦🇷 -"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCO 🇦🇷",
+      "Mc uchiha 🇮🇹",
+      "Trot🍅 🇪🇸",
+      "TEURONIHAGE 🇦🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BNA 🇦🇷",
+      "XXXX 🇻🇪",
+      "Six 🇦🇷",
+      "Colesito 🇨🇴",
+      "Mc uchiha 🇨🇱"
+     ],
+     "Six 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Lord 🇨🇴",
+      "Tenor 🇻🇪",
+      "Drexx 🇵🇪",
+      "doble h 🇨🇱",
+      "Colesito 🇨🇴",
+      "XXX 🇻🇪"
+     ],
+     "Colesito 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Six 🇦🇷 + Bna 🇦🇷",
+      "Colesito 🇨🇴 + XXX 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Vandu 🇨🇴  + Mito 🇦🇷",
+      "Kyss 🇲🇽  + Trelok 🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",
