@@ -68,7 +68,8 @@ El dashboard te da un puntaje de 0 a 100 con tus últimas 4 semanas:
 · **Comunidad (15):** los nuevos que vuelven, las promos y las ligas.
 
 **De Tier 3 a Tier 2:** anunciar 2 eventos o más en 4 semanas.
-**De Tier 2 a Tier 1:** 60 puntos o más, 4 eventos o más en 4 semanas, que el bot lea tus llaves casi solo y 300 miembros (se recomiendan 500).
+**De Tier 2 a Tier 1:** 60 puntos o más, 4 eventos o más en 4 semanas y que el bot lea tus llaves casi solo.
+**Los miembros de tu Discord no son requisito.** Se recomiendan 100 en Tier 3, 500 en Tier 2 y 1.000 en Tier 1.
 El sistema lo mide y yo confirmo el cambio.
 
 **Los comandos**

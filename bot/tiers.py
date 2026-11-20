@@ -68,10 +68,25 @@ TIERS = (1, 2, 3)
 SEMANAS = 4
 #: 🏠 la casa de la Liga: no es un socio que se evalúa (DRA abre el lunes 19/10/2026 y no tiene eventos todavía)
 CASA = frozenset({'DRA'})
-#: 👥 los miembros de su Discord para ser socio (Tier 1). Dlx, 18/10/2026: «al menos 500 para ser socios (no necesario
-#: pero recomendado), mínimo 300»
-MIN_MIEMBROS = 300
-RECOMENDADO = 500
+#: 👥 LOS MIEMBROS DE SU DISCORD SON SÓLO UNA RECOMENDACIÓN, UNA POR TIER (Dlx, 19/11/2026: «Eso de 300 miembros quita el
+#: requisito de tener miembros. La cantidad no define, pero puedes poner recomendado. Tier 1 que tengan 1000 usuarios.
+#: Tier 2 500 tier 3 100. recomendado»). Hasta ese día el Tier 1 pedía 300 como mínimo (18/10/2026). Ningún servidor sube,
+#: baja ni queda en «revisar» por sus miembros: `recomendar()` y `como_subir()` sólo lo dicen, aparte de lo que se pide
+RECOMENDADO = {1: 1000, 2: 500, 3: 100}
+
+
+def recomendado(tier, gente):
+    """«(con N miembros: se recomiendan M)» si el servidor tiene menos que lo recomendado para ese tier; vacío si no se
+    sabe cuántos tiene o si llega."""
+    rec = RECOMENDADO.get(tier)
+    if gente is None or rec is None or gente >= rec:
+        return ''
+    return ' (con %s miembros: se recomiendan %s)' % (_mil(gente), _mil(rec))
+
+
+def _mil(n):
+    """1000 → «1.000», como se escribe en la página."""
+    return '{:,}'.format(int(n)).replace(',', '.')
 
 
 def _j(*p):
@@ -540,22 +555,16 @@ def recomendar(tier, pts, m, sin_jugar):
     if tier == 1:
         if sin_jugar is None or sin_jugar > 21:
             return 'revisar', 'hace %s que no juega un evento' % ('más de 4 semanas' if sin_jugar is None else '%d días' % sin_jugar)
-        if gente is not None and gente < MIN_MIEMBROS:
-            return 'revisar', 'tiene %d miembros: para ser socio se piden %d como mínimo' % (gente, MIN_MIEMBROS)
         if pts < 35:
             return 'revisar', 'puntaje bajo (%d): poca actividad o mucha ayuda para leer sus llaves' % pts
-        if gente is not None and gente < RECOMENDADO:
-            return 'bien', 'cumple como Tier 1 (con %d miembros: se recomiendan %d)' % (gente, RECOMENDADO)
-        return 'bien', 'cumple como Tier 1'
+        return 'bien', 'cumple como Tier 1' + recomendado(1, gente)
     if tier == 2:
         if pts >= A_TIER1_PUNTOS and m['eventos'] >= A_TIER1_EVENTOS and (m['ayudas'] / m['eventos'] if m['eventos'] else 9) <= 1:
-            if gente is not None and gente < MIN_MIEMBROS:
-                return 'bien', 'trabaja como Tier 1, pero tiene %d miembros: el mínimo es %d' % (gente, MIN_MIEMBROS)
-            return 'subir', 'listo para Tier 1: %d eventos en 4 semanas y el bot los lee casi solo' % m['eventos']
-        return 'bien', 'se mantiene en Tier 2'
+            return 'subir', 'listo para Tier 1: %d eventos en 4 semanas y el bot los lee casi solo' % m['eventos'] + recomendado(1, gente)
+        return 'bien', 'se mantiene en Tier 2' + recomendado(2, gente)
     if m['anuncios'] >= A_TIER2_ANUNCIOS:
-        return 'subir', 'ya anuncia eventos (%d): puede pasar a Tier 2' % m['anuncios']
-    return 'bien', 'se mantiene en Tier 3'
+        return 'subir', 'ya anuncia eventos (%d): puede pasar a Tier 2' % m['anuncios'] + recomendado(2, gente)
+    return 'bien', 'se mantiene en Tier 3' + recomendado(3, gente)
 
 
 # ── 📊 EL PANEL DE CADA SOCIO (los tres tiers desde el 20/10/2026; nació para 1 y 2) ─────────────────────────────────────────────────────────────────────────
@@ -682,23 +691,25 @@ def _pct(a, b):
 
 
 def como_subir(tier, pts, m):
-    """🪜 Lo que le falta para el tier de arriba: `{'a': tier, 'pide': [[qué, cómo va, si cumple]]}`; `None` en Tier 1. Lo mismo
-    que mira `recomendar()`: si se cambia una regla, es ahí. Dlx, 04/11/2026, al kit de los servidores nuevos: *«explica lo de
-    tiers, como subir de tier»*."""
+    """🪜 Lo que le falta para el tier de arriba: `{'a': tier, 'pide': [[qué, cómo va, si cumple]], 'rec': [qué, cómo va, si
+    llega] | None}`; `None` en Tier 1. Lo mismo que mira `recomendar()`: si se cambia una regla, es ahí. Dlx, 04/11/2026, al
+    kit de los servidores nuevos: *«explica lo de tiers, como subir de tier»*. Los miembros van en `rec`, aparte de `pide`:
+    desde el 19/11/2026 son un recomendado, no un requisito, y no cuentan en «N de M»."""
     m = m or {}
+    a = {3: 2, 2: 1}.get(tier)
+    if a is None:
+        return None
+    gente = m.get('miembros')
+    rec = (['Se recomiendan %s miembros en tu Discord' % _mil(RECOMENDADO[a]), 'tienes %s' % _mil(gente), gente >= RECOMENDADO[a]]
+           if gente is not None else None)
     if tier == 3:
         return {'a': 2, 'pide': [['Anunciar %d eventos o más en 4 semanas' % A_TIER2_ANUNCIOS, 'llevas %d' % m.get('anuncios', 0),
-                                  m.get('anuncios', 0) >= A_TIER2_ANUNCIOS]]}
-    if tier == 2:
-        ev, ay = m.get('eventos', 0), m.get('ayudas', 0)
-        pide = [['%d puntos o más' % A_TIER1_PUNTOS, 'llevas %d' % (pts or 0), (pts or 0) >= A_TIER1_PUNTOS],
-                ['%d eventos o más en 4 semanas' % A_TIER1_EVENTOS, 'llevas %d' % ev, ev >= A_TIER1_EVENTOS],
-                ['Llaves que el bot lee casi solo', '%d preguntas en %d eventos' % (ay, ev), bool(ev) and ay / ev <= 1]]
-        if m.get('miembros') is not None:
-            pide.append(['%d miembros en tu Discord (se recomiendan %d)' % (MIN_MIEMBROS, RECOMENDADO), 'tienes %d' % m['miembros'],
-                         m['miembros'] >= MIN_MIEMBROS])
-        return {'a': 1, 'pide': pide}
-    return None
+                                  m.get('anuncios', 0) >= A_TIER2_ANUNCIOS]], 'rec': rec}
+    ev, ay = m.get('eventos', 0), m.get('ayudas', 0)
+    pide = [['%d puntos o más' % A_TIER1_PUNTOS, 'llevas %d' % (pts or 0), (pts or 0) >= A_TIER1_PUNTOS],
+            ['%d eventos o más en 4 semanas' % A_TIER1_EVENTOS, 'llevas %d' % ev, ev >= A_TIER1_EVENTOS],
+            ['Llaves que el bot lee casi solo', '%d preguntas en %d eventos' % (ay, ev), bool(ev) and ay / ev <= 1]]
+    return {'a': 1, 'pide': pide, 'rec': rec}
 
 
 def panel(D, hoy, sv, ps=None, crews=None, otros=None):
@@ -1202,15 +1213,22 @@ def _self_check():
        and recomendar(2, 70, {'eventos': 6, 'ayudas': 12, 'anuncios': 6}, 3)[0] == 'bien',
        'un Tier 2 sube con puntaje, eventos y llaves que el bot lee casi solo; con mucha ayuda, no')
     ok(_sv_de_sec('POESÍA CRUDA · URBF · 01/10 · #380') == ('URBF', dt.date(2026, 10, 1)), 'la sigla y el día de una pregunta')
-    # 👥 los miembros (Dlx: «al menos 500… mínimo 300»)
+    # 👥 los miembros, sólo recomendados (Dlx, 19/11/2026: «la cantidad no define… Tier 1 1000, Tier 2 500, tier 3 100»)
     g = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1}, {'AAA': 250})}
-    g2 = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1}, {'AAA': 420})}
+    g2 = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1}, {'AAA': 1500})}
     sin = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1})}
-    ok(g['AAA']['rec'] == 'revisar' and '300' in g['AAA']['porque'] and g2['AAA']['rec'] == 'bien' and '500' in g2['AAA']['porque']
-       and sin['AAA']['rec'] == 'bien' and sin['AAA']['m']['miembros'] is None,
-       'un Tier 1 con 250 miembros: revisar (mínimo 300); con 420 cumple y dice que se recomiendan 500; sin el dato, no se inventa')
-    ok(recomendar(2, 70, {'eventos': 6, 'ayudas': 2, 'anuncios': 6, 'miembros': 120}, 3)[0] == 'bien',
-       'un Tier 2 que trabaja como Tier 1 no sube con menos de 300 miembros')
+    ok(g['AAA']['rec'] == 'bien' and 'se recomiendan 1.000' in g['AAA']['porque'] and g2['AAA']['rec'] == 'bien'
+       and 'recomiendan' not in g2['AAA']['porque'] and sin['AAA']['rec'] == 'bien' and sin['AAA']['m']['miembros'] is None,
+       'un Tier 1 con 250 miembros cumple igual y dice que se recomiendan 1000; con 1500 no dice nada; sin el dato, no se inventa')
+    r2 = recomendar(2, 70, {'eventos': 6, 'ayudas': 2, 'anuncios': 6, 'miembros': 120}, 3)
+    ok(r2[0] == 'subir' and 'se recomiendan 1.000' in r2[1], 'un Tier 2 que trabaja como Tier 1 sube con 120 miembros', str(r2))
+    ok('se recomiendan 100' in recomendar(3, 50, {'eventos': 1, 'ayudas': 0, 'anuncios': 0, 'miembros': 40}, 3)[1]
+       and 'recomiendan' not in recomendar(3, 50, {'eventos': 1, 'ayudas': 0, 'anuncios': 0, 'miembros': 140}, 3)[1],
+       'un Tier 3 con 40 miembros: se recomiendan 100; con 140, nada')
+    cs = como_subir(2, 70, {'eventos': 6, 'ayudas': 2, 'miembros': 300})
+    ok(len(cs['pide']) == 3 and all(x[2] for x in cs['pide']) and cs['rec'] == ['Se recomiendan 1.000 miembros en tu Discord', 'tienes 300', False]
+       and como_subir(3, 0, {'anuncios': 2})['rec'] is None and como_subir(1, 90, {}) is None,
+       'los miembros van en «rec», aparte de lo que se pide, y no frenan «N de M»', str(cs))
     # 📊 el panel: la hora sale del mensaje de la llave, los días y la Liga, y lo que se sugiere con los números
     snow = lambda d, h: '%d' % ((int((dt.datetime(d.year, d.month, d.day, tzinfo=dt.timezone.utc)  # noqa: E731
                                       + dt.timedelta(hours=h + 4)).timestamp() * 1000) - 1420070400000) << 22)
@@ -1271,7 +1289,8 @@ def _self_check():
     s3, s2 = como_subir(3, 10, {'anuncios': 1}), como_subir(2, 70, {'eventos': 6, 'ayudas': 2, 'miembros': 120})
     ok(como_subir(1, 90, {}) is None and s3['a'] == 2 and s3['pide'][0][2] is False and como_subir(3, 0, {'anuncios': 2})['pide'][0][2] is True,
        'Tier 3 sube con 2 anuncios; Tier 1 no tiene a dónde')
-    ok(s2['a'] == 1 and [x[2] for x in s2['pide']] == [True, True, True, False], 'Tier 2: puntos, eventos y llaves bien; le faltan miembros', str(s2))
+    ok(s2['a'] == 1 and [x[2] for x in s2['pide']] == [True, True, True] and s2['rec'][2] is False,
+       'Tier 2: puntos, eventos y llaves bien, lo pide todo; los miembros, aparte y sólo recomendados', str(s2))
     # 📦 el paquete entra en el tope del Worker, con margen para más socios: dos semanas sin llegar y nadie lo vio
     js = io.open(os.path.join(BASE, 'bot', 'avisos.js'), encoding='utf-8').read()
     t = re.search(r"ruta === '/avisos/tiers-ciclo' \? (\d+) : \d+", js)

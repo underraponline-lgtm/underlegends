@@ -751,6 +751,8 @@ function CompararSemanas({ S, uso, liga }) {
 // servidores han hecho su trabajo»). Cada servidor con su nivel —que se elige acá: ajuste `tiers`, el ciclo lo copia a
 // datos/niveles.json—, su puntaje de las últimas 4 semanas y lo que recomienda `bot/tiers.py`. El puntaje no sale de acá
 const TIER_QUE = { 1: 'Temporada y Competitivo, todo', 2: 'todo menos «Unirme a los Tier 1»', 3: 'su página, sus ligas y la Temporada' };
+// 👥 los miembros que se recomiendan en cada tier: una copia de `RECOMENDADO` de bot/tiers.py (19/11/2026). No es requisito
+const MIEMBROS_REC = { 1: 1000, 2: 500, 3: 100 };
 // 🎛️ los beneficios de cada servidor (Dlx, 20/10/2026: «qué beneficio dar que no, qué tier, a cada servidor nuevo»). El
 // tier los prende en grupo (`PRESET` de bot/tiers.py); cada interruptor manda sobre el preset
 const BENEF = [['pagina', 'Su página en Socios'], ['calendario', 'Sus eventos (calendario, campana, Publicaciones)'],
@@ -985,7 +987,8 @@ function TierCaja({ x, liga, tier, cambiar, ocup, i, aj, hacer }) {
           <span>{t}</span><i><u style={{ width: (100 * ((x.partes || {})[k] || 0) / tope).toFixed(0) + '%' }} /></i>
         </div>
       ))}</div>
-      <p className="ti-m">{m.miembros ? <b className={m.miembros < 300 ? 'ti-bajo' : ''}>{num(m.miembros)} miembros{m.miembros < 300 ? ' (mínimo 300)' : m.miembros < 500 ? ' (se recomiendan 500)' : ''} · </b> : null}{num(m.por_semana || 0)} eventos por semana · {num(m.por_evento || 0)} por evento · {num(m.nuevos || 0)} nuevos
+      {/* 👥 los miembros, sólo recomendados (Dlx, 19/11/2026: «la cantidad no define»): uno por tier, `RECOMENDADO` de bot/tiers.py */}
+      <p className="ti-m">{m.miembros ? <b>{num(m.miembros)} miembros{m.miembros < (MIEMBROS_REC[tier] || 0) ? ' (se recomiendan ' + num(MIEMBROS_REC[tier]) + ')' : ''} · </b> : null}{num(m.por_semana || 0)} eventos por semana · {num(m.por_evento || 0)} por evento · {num(m.nuevos || 0)} nuevos
         {m.nuevos ? ' (volvieron ' + Math.round((100 * (m.volvieron || 0)) / m.nuevos) + ' %)' : ''}
         {m.eventos ? ' · ' + (Math.round((10 * (m.ayudas || 0)) / m.eventos) / 10) + ' ayudas por llave' : ''}
         {m.anuncios ? ' · staff en ' + Math.round((100 * (m.con_staff || 0)) / m.anuncios) + ' % de sus anuncios' : ''}
@@ -1007,7 +1010,7 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
     <div className="ti">
       <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo eliges tú</b>. Tier 1 suma a la Temporada y
         al Competitivo y lleva todo; Tier 2 lo mismo, menos «Unirme a los Tier 1»; Tier 3 suma a la Temporada (con 8 participantes
-        o más) y tiene su página y sus ligas, sin Competitivo ni duelos. Los eventos y las redes se promocionan en los tres. Para ser socio: 300 miembros como mínimo, se recomiendan 500.</p>
+        o más) y tiene su página y sus ligas, sin Competitivo ni duelos. Los eventos y las redes se promocionan en los tres. Los miembros no son requisito: se recomiendan 1.000 en Tier 1, 500 en Tier 2 y 100 en Tier 3.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
       <SumarServidor T={T} aj={aj} hacer={hacer} ocup={ocup} />
       <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} aj={aj} hacer={hacer} />)}</div>

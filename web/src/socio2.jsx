@@ -135,6 +135,8 @@ function ComoSubir({ s }) {
       <ul>{s.pide.map(([t, d, si]) => (
         <li key={t} className={si ? 'si' : ''}><i aria-hidden="true">{si ? <Ico n="ok" t={14} /> : null}</i><b>{t}</b><span>{si ? <span className="sp-oculto">Cumplido: </span> : null}{d}</span></li>
       ))}</ul>
+      {/* 👥 los miembros, aparte: desde el 19/11/2026 se recomiendan, no se piden (`como_subir()` los manda en `rec`) */}
+      {s.rec ? <p className="sp-nota">{s.rec[0]} ({s.rec[1]}). No es un requisito.</p> : null}
       <p className="sp-nota">Se mide solo con tus últimas 4 semanas. Cuando cumplas todo, Dlx confirma el cambio.</p>
     </div>
   );

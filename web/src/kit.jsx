@@ -73,9 +73,9 @@ const PASOS = (k) => [
 ];
 
 const TIERS = [
-  ['Tier 3', 'Tus eventos salen en la página, en el calendario y en los avisos al celular, y suman al ranking de Temporada. Tu página, tus ligas y tu dashboard.'],
-  ['Tier 2', 'Además, tus eventos cuentan para el Competitivo y los Duelos, tu gente tiene la carta de tu servidor y tienes tus propios MES AWARDS. Se llega desde Tier 3 anunciando 2 eventos o más en 4 semanas.'],
-  ['Tier 1', 'Lo mismo, y tu servidor sale en «Unirme a los Tier 1», el botón que suma gente a tu Discord con un toque. Pide 60 puntos o más en tu dashboard, 4 eventos o más en 4 semanas, que el bot lea tus llaves casi solo y 300 miembros (se recomiendan 500).'],
+  ['Tier 3', 'Tus eventos salen en la página, en el calendario y en los avisos al celular, y suman al ranking de Temporada. Tu página, tus ligas y tu dashboard. Se recomiendan 100 miembros en tu Discord; no es requisito.'],
+  ['Tier 2', 'Además, tus eventos cuentan para el Competitivo y los Duelos, tu gente tiene la carta de tu servidor y tienes tus propios MES AWARDS. Se llega desde Tier 3 anunciando 2 eventos o más en 4 semanas. Se recomiendan 500 miembros.'],
+  ['Tier 1', 'Lo mismo, y tu servidor sale en «Unirme a los Tier 1», el botón que suma gente a tu Discord con un toque. Pide 60 puntos o más en tu dashboard, 4 eventos o más en 4 semanas, y que el bot lea tus llaves casi solo. Se recomiendan 1.000 miembros.'],
 ];
 
 export function Kit({ liga, cod }) {

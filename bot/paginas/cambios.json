@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "7.00",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T19:33:00-05:00",
+        "titulo": "Los miembros de un servidor, sólo recomendados",
+        "items": [
+            "**Ningún tier pide una cantidad de miembros.** Para los servidores socios se recomiendan 1.000 miembros en Tier 1, 500 en Tier 2 y 100 en Tier 3, pero no es un requisito para subir ni para quedarse.",
+            "**El panel de cada servidor** lo dice aparte, en una línea, y no cuenta en lo que falta para subir."
+        ]
+    },
+    {
         "version": "6.99",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T19:31:00-05:00",
