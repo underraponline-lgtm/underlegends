@@ -10,6 +10,17 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {
+        "version": "7.32",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T05:50:00-05:00",
+        "titulo": "/perfil y /vitrina: tu perfil y tus trofeos en una imagen",
+        "items": [
+            "**`/perfil`** es nuevo: tu perfil en una imagen, con tu fondo, tus números, tu forma y tu mejor noche. Con `quien:` ves el de otra persona.",
+            "**`/vitrina`** es nueva: tus trofeos en dos estantes (los títulos en oro y las finales en plata, los más importantes primero), tus medallas de primero, segundo y tercero, tu ELO, tu letra del Competitivo y tus insignias más raras.",
+            "Las dos se pasan una a la otra, y a tus cartas, con los botones de abajo. Si tu imagen está por cambiar, ves la de antes al instante y se actualiza sola en un minuto."
+        ]
+    },
     {"version": "7.30", "dia": "2026-11-20", "cuando": "2026-11-20T04:37:00-05:00", "titulo": "El Drop de Discord, revisado", "items": ["Cuando un toque no sube de rareza, el drop ahora sí se sacude: antes, en el segundo y el tercer toque podía quedarse quieto.", "«Te quedan N» ya no cuenta los drops que ganaste compitiendo y todavía no puedes abrir.", "Si algo falla al abrir, el botón **Abrir** queda para volver a intentarlo. Lo que te salió ya es tuyo."]},
     {
         "version": "7.29",
