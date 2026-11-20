@@ -1,6 +1,6 @@
 # El ELO por temporada y el histórico — el diseño (para la T2)
 
-> **Estado (20/11/2026, 4 AM ET): decidido en lo grande, por construir.** Los números son un borrador simulado sobre la
+> **Estado (20/11/2026, 3 AM ET): decidido en lo grande, por construir.** Los números son un borrador simulado sobre la
 > T1 y esperan el OK de Dlx. Todo lo que se decidió está acá; lo que falta decidir, al final. Las simulaciones son
 > scripts de una sesión (no están en el repo): cada número dice de dónde sale.
 
@@ -10,7 +10,7 @@ sólo en la nota»*, *«el ELO va por áreas»*, *«si Oasis se enfrenta al top 
 perdería»*, *«la mayoría va por rondas: es injusto perder ELO por perder la final»*, *«estamos confundiendo cosas al traer
 las notas al ELO»* y *«también planeo un 1v1 como el ranked de Brawl… y eventos en DRA de ciertas piedras… pero esto
 debería cubrir también los eventos, para que la gente suba sin depender del 1v1 ni de los eventos de piedras»*. Y a las
-3 AM, la que manda: *«la idea principal es que el ELO se suba y se baje solamente cuando luchas con personas de tu misma
+2 AM, la que manda: *«la idea principal es que el ELO se suba y se baje solamente cuando luchas con personas de tu misma
 piedra; el problema es que hay pocas de momento»*.
 
 ## 1 · Tres cosas distintas, que no se mezclan
@@ -55,7 +55,7 @@ Junta todas las temporadas.
 - Arranca en **0**, nunca baja de 0. Quien empieza la temporada sin historia, en 0.
 - **Abajo de todo perder resta menos**: en Hierro no resta; en Jade y Zafiro, la mitad (borrador).
 - Las **piedras** salen de él (Hierro, Jade, Zafiro, Rubí, Diamante, Mítico, con sus I · II · III de `bot/divisiones.py`).
-  **75 de promedio y distinto en cada una** (abajo).
+  **De 65 a 85, cada una 5 más larga que la anterior** (abajo).
 
 **El tamaño de las piedras: 75 de promedio** (Dlx, 20/11/2026: *«sí»*) **y distinto en cada una** (*«pero que varíe
 con cada piedra»*). Primero, piedras parejas, medidas sobre la T1 con el diseño decidido (`elo_tamano.py` de la sesión; los 196 activos con 5
@@ -75,7 +75,7 @@ Y esto es al día 58 de los 100 de la T1: del 21/10 al 20/11, con 75, Rubí o m�
 0 a 1, así que a fin de temporada serían unos 2 o 3 en Mítico y unos 10 en Diamante. Con 100, Mítico seguiría vacío;
 con 60 tendría unos 10.
 
-**Propuesta, espera el OK: la suave, cada piedra 5 más larga que la anterior** —Hierro de 0 a 64 · Jade desde 65 ·
+✅ **La suave, cada piedra 5 más larga que la anterior** (Dlx, 20/11/2026: *«Sí, la suave»*) —Hierro de 0 a 64 · Jade desde 65 ·
 Zafiro 135 · Rubí 210 · Diamante 290 · Mítico 375, el mismo Mítico que con 75 parejo—. Salir de Hierro cuesta unas 4
 victorias netas y llegar a Mítico desde Diamante, unas 6; cada subnivel es un tercio de su piedra. Medido igual
 (`elo_variable.py`; todas con Mítico en 375):
@@ -125,11 +125,11 @@ sorpresa de ganarle a alguien mucho mejor se la siguen llevando la nota y el �
 | **el veredicto** | un 3–0 se juega más que un 2–1 | unánime ×1,2 · dividido ×0,8 (con 2 jurados o más) |
 | **lo que votaba el público** | ganar cuando el chat daba al otro se juega más | sólo hacia adelante, en los servidores con el bot en vivo |
 
-### El área: tu piedra y los subniveles de al lado (Dlx, 20/11/2026, 3 y 4 AM)
+### El área: tu piedra y los subniveles de al lado (Dlx, 20/11/2026, 2 y 2:45 AM)
 
 **El ELO de temporada se mueve sólo en las batallas contra alguien de tu área**; afuera no cuenta, ni ganando ni
 perdiendo (Dlx: *«la idea principal es que el ELO se suba y se baje solamente cuando luchas con personas de tu misma
-piedra»*). **El área de cada piedra** (Dlx, 4 AM: *«una piedra debería jugar con la anterior y la siguiente, pero la
+piedra»*). **El área de cada piedra** (Dlx, 2:45 AM: *«una piedra debería jugar con la anterior y la siguiente, pero la
 anterior que esté en rangos altos, digamos Hierro 2 y Hierro 3, y para el siguiente Oro 1 y Oro 2»* y *«sólo Mítico
 juegue con la anterior piedra»*): **toda tu piedra, II y III de la anterior, y I y II de la siguiente**. Mítico, que
 no tiene siguiente, juega con **toda Diamante**. Una batalla entre dos piedras distintas cuenta cuando **cada uno está
@@ -187,8 +187,8 @@ no le cuenta nada, porque en un evento abierto casi nunca le toca alguien cerca 
 lo mejor de todo lo medido: la que más cuenta sin vaciarse con el tiempo, y al final de la T1 a los cinco de arriba les
 había contado una batalla en los últimos 6 días. Mítico con toda Diamante no se ve en la T1: nadie llega.
 
-Historia: hasta las 3 AM el área eran **2 piedras de diferencia hasta Zafiro y 1 de Rubí para arriba** (12 % de las
-batallas afuera). Antes se probó que perder fuera del área SÍ reste (y ganar no sume) y no sirve (Dlx, 2:15 AM: *«¿de
+Historia: hasta las 2 AM el área eran **2 piedras de diferencia hasta Zafiro y 1 de Rubí para arriba** (12 % de las
+batallas afuera). Antes se probó que perder fuera del área SÍ reste (y ganar no sume) y no sirve (Dlx, 1:34 AM: *«¿de
 cuánto ELO va a ganar Oasis que está en Mítico si todos los demás son de Hierro?»*): a alguien de arriba un evento flojo
 sólo le podía restar. Y sin regla de área, que la cuenta del ELO decida: Oasis 790, +13 por noche arriba.
 
@@ -256,14 +256,13 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **Cómo cambia el tamaño de piedra a piedra**: la propuesta es la suave, de 65 a 85 (§3, «La escalera»).
-2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
+1. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
    sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
 lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante) y, encima, la semana para el que se queda
-sin rivales (*«Sí, las dos»*); las semis no llevan regla propia; las piedras miden 75 de promedio y cada una distinto (*«sí, pero que
-varíe con cada piedra»*); la chance de cada batalla sale del ELO de temporada,
+sin rivales (*«Sí, las dos»*); las semis no llevan regla propia; las piedras crecen de a 5, de 65 a 85 —Hierro 0 a 64, Jade 65, Zafiro 135, Rubí 210,
+Diamante 290, Mítico 375— (*«sí, pero que varíe con cada piedra»* y *«Sí, la suave»*); la chance de cada batalla sale del ELO de temporada,
 como Brawl (*«Sí, la A»*). El resto de **cuánto** se gana o se pierde es otro tema (Dlx: *«cuánto, pues ahí es otro
 caso»*).
 
@@ -273,7 +272,8 @@ caso»*).
   noche). El área pide guardar, por persona, **la fecha de su última batalla contra alguien de su piedra** (vuelve a
   arrancar al cambiar de piedra). La chance de cada batalla del de temporada se calcula con el mismo de temporada: el
   histórico no entra ahí.
-- `bot/divisiones.py`: las piedras salen del de temporada, con tramos nuevos (hoy son 950 a 1150 sobre el de 1000).
+- `bot/divisiones.py`: las piedras salen del de temporada, con tramos nuevos: 65 · 135 · 210 · 290 · 375 (hoy son 950 a
+  1150 sobre el de 1000).
 - Las Competencias, la nota (`bot/notas.py`), el pronóstico del VS y el emparejamiento del 1v1: del **histórico**.
 - El cambio de temporada (`sheet/espejo_t1.py --nueva-temporada`): el reinicio por piedra máxima.
 - La página (el Ranked, el perfil, `/apodo`): las piedras y el número de temporada; el histórico, en el perfil.
