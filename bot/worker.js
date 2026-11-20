@@ -1449,6 +1449,11 @@ export function leerDt(id) {
 const dtDe = (e, k) => `dt:${e.anim === 'star' ? 's' : 'd'}:${e.id}:${k}.${e.base}.${e.fin}.${e.plan.join('')}`;
 //: la rareza después de `k` toques
 const rzTrasToques = (e, k) => Math.min(e.fin, e.base + e.plan.slice(0, k).reduce((a, b) => a + b, 0));
+/** 🔁 UNA DIRECCIÓN POR PANTALLA (la revisión del 20/11/2026): los GIF se ven UNA vez (sólo `listo` se repite), y un toque
+ *  que no sube daba la MISMA URL que el anterior —`nada-0`, `nada-0`…—: Discord no vuelve a reproducir una imagen que ya
+ *  terminó, así que en los toques 2 y 3 el drop quedaba quieto (medido en Chromium: misma URL, 1 cuadro; otra, 5). Pasa
+ *  en más de la mitad de los drops (Maqueta es el 53 %). R2 ignora la query y devuelve el mismo archivo */
+export const gifUnico = (gif, e, k) => gif + '?t=' + e.id + '.' + k;
 /** Una pantalla del Drop, en V2 (20/11/2026): el GIF arriba —la animación ES la portada, sin franja—, la rareza que se ve,
  *  los toques y el botón, debajo y afuera. El recuadro lleva el color de la rareza, el de la página (`RZ` en drops_show.js) */
 export function pantallaDrop(e, k, gif) {
@@ -1461,7 +1466,7 @@ export function pantallaDrop(e, k, gif) {
     ? { type: COMP.BOTON, style: 3, label: 'Abrir', emoji: { name: '🐉' }, custom_id: dtDe(e, DROP_TOQUES + 1) }
     : { type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Tap', emoji: { name: '👆' }, custom_id: dtDe(e, k + 1) };
   return V.mensaje({ color: DROP_COLOR[r] || DROP_COLOR[0], efimero: true,
-    dentro: [V.galeria({ media: { url: gif }, description: que + ' · ' + RAREZA_NOMBRE[r] }),
+    dentro: [V.galeria({ media: { url: gifUnico(gif, e, k) }, description: que + ' · ' + RAREZA_NOMBRE[r] }),
       V.T('### ' + que + ' · ' + RAREZA_NOMBRE[r] + '\n' + pista + '\n-# ' + pips)],
     filas: [[boton]] });
 }
@@ -1542,11 +1547,17 @@ async function premioDropChat(env, did, e) {
   const tipo = e.anim === 'star' ? 'star' : 'drop';
   const [r, j] = await Promise.all([alObjeto(env, 'drop-abrir', { quien: did, id: e.id }), alObjeto(env, 'drops', { quien: did })]);
   if (!r || !r.ok) {
-    return V.avisoMsg('No pude mostrarlo: prueba de nuevo en un minuto. Lo que te salió ya es tuyo.', [botonLink('Ver mis drops', URL_DROPS)]);
+    // ya está pagado; si el objeto no contestó, «Abrir» queda para volver a intentar (el mismo botón: vuelve a preguntar)
+    return V.avisoMsg('No pude mostrarlo: prueba de nuevo en un minuto. Lo que te salió ya es tuyo.',
+      [{ type: COMP.BOTON, style: 3, label: 'Abrir', emoji: { name: '🐉' }, custom_id: dtDe(e, DROP_TOQUES + 1) }, botonLink('Ver mis drops', URL_DROPS)]);
   }
-  const cerr = ((j && j.cerrados) || []).filter((y) => (y.tipo || tipoDeDrop(y.origen)) === tipo);
+  // los que se ganan compitiendo no los abre quien no es Miembro de DRA (como `abrirDropChat()` y `panelDrops()`): no se
+  // cuentan en «Te quedan» ni hacen aparecer «Abrir otro» (la revisión del 20/11/2026)
+  const traba = !!(j && j.miembro === false);
+  const cerr = ((j && j.cerrados) || []).filter((y) => (y.tipo || tipoDeDrop(y.origen)) === tipo && !(traba && /merito/.test(String(y.origen || ''))));
   const fin = Math.max(0, Math.min(4, Number(r.rareza) || 0));
-  return textoPremioDrop(r, tipo, cerr.length, did, r.titulo ? gifDrop(e.anim, 'titulo', fin, r.titulo) : gifDrop(e.anim, 'abre', fin));
+  const gif = r.titulo ? gifDrop(e.anim, 'titulo', fin, r.titulo) : gifDrop(e.anim, 'abre', fin);
+  return textoPremioDrop(r, tipo, cerr.length, did, gifUnico(gif, e, DROP_TOQUES + 1));
 }
 
 //: 🌟 desde Vinilo un Drop se puede mostrar en el canal (Dlx, 20/11/2026: «6C»)
@@ -1578,7 +1589,7 @@ export function textoPremioDrop(r, tipo, quedan, did, gif) {
 
 /** 📣 «Mostrarlo en el canal»: lo mismo, público y sin que suene nadie (la mención dice quién, no avisa). Todo sale del
  *  botón: no hay nada que leer, así que contesta al toque. `null` si el botón no se entiende */
-export function mostrarDrop(cid, did) {
+export function mostrarDrop(cid, did, marca = '') {
   const m = /^dm:([ds]):([0-4]):(\d{1,9}):(\d|-)$/.exec(String(cid || ''));
   if (!m || !/^\d{5,25}$/.test(String(did || ''))) return null;
   const star = m[1] === 's', rz = Number(m[2]);
@@ -1588,7 +1599,10 @@ export function mostrarDrop(cid, did) {
   const anim = star ? 'star' : 'drop';
   const que = star ? 'un Star Dragon' : 'un Dragón Drop';
   return V.mensaje({ color: DROP_COLOR[rz], efimero: false, menciones: { parse: [] },
-    dentro: [V.galeria({ media: { url: titulo ? gifDrop(anim, 'titulo', rz, titulo) : gifDrop(anim, 'abre', rz) }, description: RAREZA_NOMBRE[rz] }),
+    // `marca` (el id de la interacción): una dirección por publicación, como `gifUnico()`: el GIF se ve una vez, y el
+    // segundo «Mostrarlo» de la misma rareza en el mismo canal no se movería para quien ya vio el primero
+    dentro: [V.galeria({ media: { url: (titulo ? gifDrop(anim, 'titulo', rz, titulo) : gifDrop(anim, 'abre', rz)) + (/^\d{1,25}$/.test(String(marca)) ? '?t=' + marca : '') },
+      description: RAREZA_NOMBRE[rz] }),
       V.T('### <@' + did + '> abrió ' + que + ': ' + RAREZA_NOMBRE[rz] + '\nSe lleva ' + premioDe(r) + '.')],
     filas: [[botonLink('Abrir los míos', URL_DROPS)]] });
 }
@@ -5558,7 +5572,7 @@ export default {
         const yo = idDe(i);
         const esperarM = frenado(yo, 'click');
         if (esperarM) return espera(esperarM);
-        const msg = mostrarDrop(id, yo);
+        const msg = mostrarDrop(id, yo, i.id);
         if (!msg) return aviso('Ese botón ya no anda: usa **`/drops`**.');
         // 🔁 UNA VEZ Y DONDE EL SERVIDOR DEJA (revisión, 20/11/2026): el botón quedaba vivo y cada clic publicaba otro
         // mensaje, también en canales donde el servidor limitó lo de la Liga. Ahora se apaga en tu mensaje (tipo 7) y lo

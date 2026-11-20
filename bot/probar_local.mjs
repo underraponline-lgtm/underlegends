@@ -1973,7 +1973,7 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
     const bt = (p) => PZ(p, 2)[0] || {};
     const gif = (p) => ((PZ(p, 12)[0] || {}).items || [{}])[0].media?.url || '';
     ok('🎞️ la primera pantalla: Maqueta, el GIF de la llegada y «Tap» que lleva al toque 1',
-       /Maqueta/.test(TX(p0)) && /drop-entra-0\.gif$/.test(gif(p0)) && bt(p0).label === 'Tap'
+       /Maqueta/.test(TX(p0)) && /drop-entra-0\.gif\?t=77\.0$/.test(gif(p0)) && bt(p0).label === 'Tap'
        && bt(p0).custom_id === 'dt:d:77:1.0.3.1011' && /○ ○ ○ ○/.test(TX(p0)) && !p0.embeds && (p0.flags & 32768), JSON.stringify(p0));
     const toque = async (cid) => (await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700957' } }, message: { id: '9' },
                                                  data: { custom_id: cid, component_type: 2 } })).json;
@@ -1981,12 +1981,17 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
     const t2 = await toque('dt:d:77:2.0.3.1011');
     const t4 = await toque('dt:d:77:4.0.3.1011');
     ok('🎞️ cada toque PISA el mismo mensaje al instante (tipo 7): el 1 sube a Mixtape, el 2 se sacude, el 4 sube y queda listo para abrir',
-       t1?.type === 7 && /Mixtape/.test(TX(t1.data)) && /drop-sube-1\.gif$/.test(gif(t1.data))
-       && /drop-nada-1\.gif$/.test(gif(t2.data)) && /● ● ○ ○/.test(TX(t2.data))
-       && /Disco de Oro/.test(TX(t4.data)) && /drop-sube-3\.gif$/.test(gif(t4.data))
+       t1?.type === 7 && /Mixtape/.test(TX(t1.data)) && /drop-sube-1\.gif\?t=77\.1$/.test(gif(t1.data))
+       && /drop-nada-1\.gif\?t=77\.2$/.test(gif(t2.data)) && /● ● ○ ○/.test(TX(t2.data))
+       && /Disco de Oro/.test(TX(t4.data)) && /drop-sube-3\.gif\?t=77\.4$/.test(gif(t4.data))
        && bt(t4.data).label === 'Abrir' && bt(t4.data).custom_id === 'dt:d:77:5.0.3.1011', JSON.stringify([t1, t2, t4].map((x) => x && x.data)));
     const t4b = await toque('dt:d:77:4.0.0.0000');
-    ok('🎞️ si el cuarto toque no sube, el GIF es el del brillo (listo para abrir)', /drop-listo-0\.gif$/.test(gif(t4b.data)), JSON.stringify(t4b));
+    // 🔁 la revisión del 20/11/2026: cada pantalla con su dirección, o un toque que no sube repite la del anterior y Discord
+    // no vuelve a reproducir un GIF que ya terminó (el drop queda quieto en los toques 2 y 3)
+    const n2 = await toque('dt:d:78:2.0.0.0000'), n3 = await toque('dt:d:78:3.0.0.0000');
+    ok('🎞️ dos toques seguidos que no suben llevan direcciones distintas (si no, el segundo no se mueve)',
+       /drop-nada-0\.gif/.test(gif(n2.data)) && /drop-nada-0\.gif/.test(gif(n3.data)) && gif(n2.data) !== gif(n3.data), gif(n2.data) + ' ' + gif(n3.data));
+    ok('🎞️ si el cuarto toque no sube, el GIF es el del brillo (listo para abrir)', /drop-listo-0\.gif\?t=77\.4$/.test(gif(t4b.data)), JSON.stringify(t4b));
     const ab = await toque('dt:d:77:5.0.3.1011');
     ok('🎞️ «Abrir» contesta «ya va» sobre el mismo mensaje (tipo 6) y le pide el premio al objeto', ab?.type === 6, JSON.stringify(ab));
     const tx = D.textoPremioDrop({ nombre: 'Disco de Oro', rareza: 3, puntos: 1000, titulo: 'Aliento de Dragón' }, 'drop', 2, '700957',

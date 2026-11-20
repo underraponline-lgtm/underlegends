@@ -132,6 +132,9 @@ jobs:
           # 🧭 el /setup (19/11/2026): cada pantalla contra los topes de Discord, el objeto, y de /setup a «Aplicar» y al
           # «Que sumen» de Dlx con un Discord simulado: una escritura de KV, nada repetido y el DM sólo a Dlx
           node bot/setup_prueba.mjs
+          # 🎞️ el Drop de Discord de punta a punta (20/11/2026): el Worker contra el objeto de verdad, de «Abrir un Drop» al
+          # premio, 90 drops y stars: la rareza nunca baja, el premio es el guardado, se paga una vez y cada GIF existe
+          node bot/drop_discord_prueba.mjs
           # 🏟️ la tanda B del plan de los tiers (20/11/2026): seguir a un servidor, el evento flojo, los suplentes, el padrino
           # y calificar el evento, sobre el objeto de verdad
           node bot/tanda_b_prueba.mjs
