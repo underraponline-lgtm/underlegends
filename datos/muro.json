@@ -1065,6 +1065,12 @@
 "rg": "",
 "c": []
 },
+"yeyox": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "ezze": {
 "rg": "",
 "c": []
@@ -2108,13 +2114,6 @@
 "rg": "",
 "c": []
 },
-"yeyox": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "faso": {
 "rg": "",
 "c": [
@@ -2908,14 +2907,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T03:47:06Z",
-"quien": [
-"rodrilp"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-13T04:00:43Z",
@@ -6299,6 +6290,18 @@
 "six"
 ],
 "racha": 5
+},
+{
+"tipo": "svtop",
+"t": "2026-11-20T05:40:15Z",
+"sv": "URBF",
+"quien": [
+"Carlosmo"
+],
+"ks": [
+"carlosmo"
+],
+"pts": 67200
 }
 ],
 "noche_antes": {
@@ -8106,7 +8109,7 @@
 "n": "Julda",
 "k": "julda",
 "de": 425,
-"a": 129
+"a": 130
 }
 ],
 "sorpresas": [
@@ -8126,7 +8129,7 @@
 "DDF": "carlosss",
 "ACAD": "mathhias",
 "FDS": "tøkiø",
-"URBF": "motera",
+"URBF": "carlosmo",
 "SR": "juanpa",
 "CEU": "marcos"
 },
@@ -8400,7 +8403,8 @@
 "flash": 2,
 "julda": 1,
 "lalox": 1,
-"beneroo": 0
+"beneroo": 0,
+"yeyox": 1
 },
 "sem": {
 "id": "2026-11-16",
