@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "7.13",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T23:28:00-05:00",
+        "titulo": "Tu perfil, rehecho",
+        "items": [
+            "**Tu perfil, rehecho**: tus momentos arriba como los destacados de Instagram, tu récord, tu mejor noche y tus rivales en una fila, y abajo tus publicaciones, eventos, videos y logros en pestañas.",
+            "**Tu ELO, en el color de tu piedra**, al lado de tu OVR y tu letra.",
+            "**Inventario y una Vitrina viva** en la cabecera, junto a Tarjetas.",
+            "**Sobre ti**: qué días sueles jugar, dónde, desde cuándo, y lo que llevas puesto."
+        ]
+    },
+    {
         "version": "7.12",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T23:30:00-05:00",
