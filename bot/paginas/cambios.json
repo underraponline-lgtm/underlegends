@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "7.18",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T01:23:00-05:00",
+        "titulo": "Tu panel avisa si tu evento choca con otro",
+        "items": [
+            "**«Tus eventos» avisa si a esa hora ya hay otro evento en la Liga**: al elegir la hora, el panel de tu servidor te dice qué otro evento empieza a menos de 2 horas y cuánto antes o después. Puedes anunciarlo igual; si lo mueves, la gente puede jugar los dos.",
+            "**Si tu servidor recién entró, tu panel te dice desde cuándo cuenta lo que pide tu tier**: tienes tu primer tramo entero (4 semanas en Tier 3, 8 en Tier 1 y 2) antes de que se mida."
+        ]
+    },
+    {
         "version": "7.17",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T01:13:00-05:00",

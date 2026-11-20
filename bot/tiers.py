@@ -498,8 +498,9 @@ def _arranque():
         return None
 
 
-def medir(D, hoy, svs, nivel, miembros=None):
-    """`[{sv, nombre, tier, puntos, partes, m, antes, rec, porque}]` de cada servidor de la Liga. `D` trae: `llaves`
+def medir(D, hoy, svs, nivel, miembros=None, desde=None):
+    """`[{sv, nombre, tier, puntos, partes, m, antes, rec, porque}]` de cada servidor de la Liga. `desde`: `{sigla: día en
+    que entró}` (`desde_de()`): quien todavía no cumplió su primer tramo no se da por «no llega» (`nuevo`). `D` trae: `llaves`
     (llaves_t1), `ayudas` ([(sv, día)]: preguntas y correcciones), `anuncios` ([(sv, día, dice_staff)]), `cancelados`
     ([(sv, día)]), `promos` ([(sv, día)]), `ligas` ({id: {sv, batallas}})."""
     fin = hoy + dt.timedelta(days=1)
@@ -561,10 +562,14 @@ def medir(D, hoy, svs, nivel, miembros=None):
         ult = max((d for d, s, _ns in evs if s == sv), default=None)
         sin = (hoy - ult).days if ult else None
         m['miembros'] = (miembros or {}).get(sv)
-        rec, porque = ('casa', 'la casa de la Liga: no se evalúa como socio') if sv in CASA else recomendar(t, pts, m, sin, m8)
+        mide = mide_desde(t, (desde or {}).get(sv), arranque, hoy)
+        rec, porque = ('casa', 'la casa de la Liga: no se evalúa como socio') if sv in CASA else recomendar(t, pts, m, sin, m8, mide)
         out.append({'sv': sv, 'nombre': (svs.get(sv) or {}).get('nombre') or sv, 'tier': t, 'puntos': pts,
                     'antes': pts0, 'compara': compara, 'compara_desde': compara_desde, 'partes': partes, 'm': m, 'm8': m8,
                     'ultimo': str(ult) if ult else '', 'sin_jugar': sin, 'rec': rec, 'porque': porque})
+        # 🐣 sólo si en su primer tramo todavía no llega: al que ya cumple no hay que decirle desde cuándo cuenta
+        if mide and no_llega(t, m, m8):
+            out[-1]['mide_desde'] = mide.isoformat()
     out.sort(key=lambda x: (x['tier'], -x['puntos'], x['sv']))
     return out
 
@@ -587,22 +592,75 @@ def _cumple(req, pts, m8):
             and (pts or 0) >= req.get('puntos', 0))
 
 
-def recomendar(tier, pts, m, sin_jugar, m8=None):
+#: 📅 cuánto mide cada tier para quedarse (`SEGUIR`): Tier 1 y 2, las 8 semanas; Tier 3, «seguir vivo» en 4
+VENTANA_SEGUIR = {1: 56, 2: 56, 3: 28}
+
+
+def desde_de(viejo, nivel, hoy):
+    """`{sigla: 'AAAA-MM-DD'}`, el día en que cada servidor entró a la Liga: lo que ya estaba en `datos/niveles.json`
+    (`desde`) y, el que no estaba, hoy, que es la primera vuelta del ciclo que lo ve. Los que estaban el 20/11/2026 se
+    sembraron a mano con el día de su nota en `datos/servidores.json`. Pura."""
+    v = dict(viejo or {})
+    return {sv: v.get(sv) or hoy.isoformat() for sv in sorted(nivel)}
+
+
+def mide_desde(tier, entro, arranque, hoy):
+    """🐣 El día desde el que vale lo que pide su tier, si todavía no llegó; `None` si ya cuenta. El tramo arranca el día
+    en que entró o el del arranque de la temporada, el más nuevo: CHZ entró el 19/11/2026 y al otro día salía «no llega»
+    con cero eventos, y al arrancar la T2 saldrían todos. Pura."""
+    v = VENTANA_SEGUIR.get(tier)
+    if not v:
+        return None
+    try:
+        ini = dt.date.fromisoformat(str(entro)[:10]) if entro else None
+    except ValueError:
+        ini = None
+    hay = [x for x in (ini, arranque) if x]
+    if not hay:
+        return None
+    cuenta = max(hay) + dt.timedelta(days=v)
+    return cuenta if cuenta > hoy else None
+
+
+def _primer_tramo(mide, tier, m, m8):
+    """La aclaración de «Bien» en su primer tramo, sólo si todavía no llega: al que ya cumple no se le dice nada."""
+    return ' (lo que pide su tier cuenta desde el %s)' % mide.strftime('%d/%m') if mide and m8 is not None and no_llega(tier, m, m8) else ''
+
+
+def no_llega(tier, m, m8, mide=None):
+    """El porqué de «Revisar» si no llega a lo que pide su tier (`pide()`), o `''`. Nada en su primer tramo ni sin `m8`."""
+    if mide or m8 is None:
+        return ''
+    falta = [r for r in pide(tier, m, m8) if not r[2]]
+    return ('no llega a lo que pide Tier %d: ' % tier + '; '.join('%s (%s)' % (r[0], r[1]) for r in falta)) if falta else ''
+
+
+def recomendar(tier, pts, m, sin_jugar, m8=None, mide=None):
     """`(recomendación, por qué)`. Recomienda: decide Dlx. `m8`: los eventos y raperos por evento de las últimas 8 semanas
-    (lo que mira subir, `SUBE`)."""
+    (lo que mira subir, `SUBE`, y quedarse, `SEGUIR`). `mide`: el día desde el que cuenta lo que pide su tier, si todavía
+    no llegó (`mide_desde()`). Sin `m8` no se mide quedarse: es una medición que no está, no un «no llega».
+    🔁 Hasta el 20/11/2026 un Tier 2 o 3 que no llegaba a lo que pide su tier salía «Bien» (FVS con 2 eventos de 4, FFS sin
+    un evento en 4 semanas) mientras su panel decía «Te falta»: las dos pantallas tienen que decir lo mismo."""
     gente = m.get('miembros')
+    medido = m8 is not None
     m8 = m8 or {}
     if tier == 1:
         if sin_jugar is None or sin_jugar > 21:
             return 'revisar', 'hace %s que no juega un evento' % ('más de 4 semanas' if sin_jugar is None else '%d días' % sin_jugar)
         if pts < 35:
             return 'revisar', 'puntaje bajo (%d): poca actividad o mucha ayuda para leer sus llaves' % pts
-        return 'bien', 'cumple como Tier 1' + recomendado(1, gente)
+        falta = no_llega(1, m, m8 if medido else None, mide)
+        if falta:
+            return 'revisar', falta
+        return 'bien', 'cumple como Tier 1' + recomendado(1, gente) + _primer_tramo(mide, 1, m, m8 if medido else None)
     a = {2: 1, 3: 2}.get(tier)
     if a and _cumple(SUBE[a], pts, m8):
         return 'subir', ('listo para Tier %d: %d eventos en 8 semanas con %s raperos por evento' % (
             a, m8.get('eventos', 0), str(m8.get('por_evento', 0)).replace('.', ','))) + recomendado(a, gente)
-    return 'bien', 'se mantiene en Tier %d' % tier + recomendado(tier, gente)
+    falta = no_llega(tier, m, m8 if medido else None, mide)
+    if falta:
+        return 'revisar', falta
+    return 'bien', 'se mantiene en Tier %d' % tier + recomendado(tier, gente) + _primer_tramo(mide, tier, m, m8 if medido else None)
 
 
 # ── 📊 EL PANEL DE CADA SOCIO (los tres tiers desde el 20/10/2026; nació para 1 y 2) ─────────────────────────────────────────────────────────────────────────
@@ -1076,7 +1134,8 @@ def correr(aplicar=False, ahora=None):
             print('   ⚠️ los tiers: no leí los miembros (%s)' % str(e)[:60])
     D = datos()
     D['_vuelven'] = quien_vuelve(D.get('llaves') or {}, hoy)
-    filas = medir(D, hoy, svs, nivel, gente)
+    desde = desde_de(viejo.get('desde'), nivel, hoy)
+    filas = medir(D, hoy, svs, nivel, gente, desde)
     # 🎛️ los beneficios de cada uno van con su fila: el Dashboard dibuja los interruptores y el objeto filtra el panel
     for f in filas:
         f['ben'] = ben.get(f['sv']) or {}
@@ -1108,6 +1167,9 @@ def correr(aplicar=False, ahora=None):
                 f['panel']['pide'] = pide(f['tier'], f.get('m'), f.get('m8'))
                 # los números de `SEGUIR` de su tier: con eso la cabina dibuja los bloques sin copiar las reglas
                 f['panel']['seguir'] = SEGUIR.get(f['tier'])
+                # 🐣 en su primer tramo, la cabina dice desde cuándo cuenta en vez de «Te falta»
+                if f.get('mide_desde'):
+                    f['panel']['mide_desde'] = f['mide_desde']
                 su = sugerencias_ir(f['panel'], f.get('m'))
                 f['panel']['sugerencias'] = [t for t, _ in su]
                 f['panel']['sug_ir'] = [d for _, d in su]
@@ -1129,8 +1191,10 @@ def correr(aplicar=False, ahora=None):
                  # 🎛️ lo que resulta (los lectores preguntan con `sin()`) y lo que Dlx eligió, para cuando el Dashboard
                  # no contesta
                  'beneficios': {sv: ben[sv] for sv in sorted(ben)},
-                 'beneficios_elegidos': elegidos_b}
-        if any(nuevo.get(k) != viejo.get(k) for k in ('niveles', 'beneficios', 'beneficios_elegidos')):
+                 'beneficios_elegidos': elegidos_b,
+                 # 📅 el día en que entró cada uno (`desde_de()`): lo que pide su tier cuenta desde su primer tramo entero
+                 'desde': desde}
+        if any(nuevo.get(k) != viejo.get(k) for k in ('niveles', 'beneficios', 'beneficios_elegidos', 'desde')):
             with io.open(NIVELES, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(nuevo, f, ensure_ascii=False, indent=1)
             print('   🤝 los niveles cambiaron: %s' % ', '.join('%s %d' % kv for kv in sorted(nivel.items())))
@@ -1283,13 +1347,30 @@ def _self_check():
     ok('m8' in f['CCC'] and set(f['CCC']['m8']) == {'eventos', 'por_evento', 'ligas'}, 'cada fila trae sus 8 semanas', str(f['CCC']))
     # 🪜 las reglas de 8 semanas (Dlx, 19/11/2026): anunciar ya no alcanza para Tier 2
     ok(recomendar(3, 50, {'anuncios': 6}, 3, {'eventos': 9, 'por_evento': 8.5})[0] == 'subir'
-       and recomendar(3, 50, {'anuncios': 6}, 3, {'eventos': 9, 'por_evento': 6})[0] == 'bien'
+       and recomendar(3, 50, {'anuncios': 6, 'eventos': 2}, 3, {'eventos': 9, 'por_evento': 6})[0] == 'bien'
        and recomendar(3, 50, {'anuncios': 6}, 3)[0] == 'bien',
        'un Tier 3 sube con 8 eventos en 8 semanas y 8 raperos por evento; anunciar ya no alcanza')
     ok(recomendar(2, 70, {}, 3, {'eventos': 12, 'por_evento': 10})[0] == 'subir'
        and recomendar(2, 55, {}, 3, {'eventos': 12, 'por_evento': 10})[0] == 'bien'
        and recomendar(2, 70, {}, 3, {'eventos': 11, 'por_evento': 10})[0] == 'bien',
        'un Tier 2 sube con 12 eventos, 10 por evento y 60 puntos; con uno menos, no')
+    # 📋 quedarse (20/11/2026): el que no llega a lo que pide su tier sale «Revisar», salvo en su primer tramo
+    hoy2 = dt.date(2026, 11, 20)
+    arr = dt.date(2026, 9, 22)
+    ok(desde_de({'AAA': '2026-10-12'}, {'AAA': 2, 'NUE': 3}, hoy2) == {'AAA': '2026-10-12', 'NUE': '2026-11-20'},
+       'el día en que entró: el de antes se queda, el nuevo es hoy')
+    ok(mide_desde(3, '2026-11-19', arr, hoy2) == dt.date(2026, 12, 17) and mide_desde(2, '2026-10-12', arr, hoy2) == dt.date(2026, 12, 7)
+       and mide_desde(1, '2026-09-01', arr, hoy2) is None and mide_desde(3, '2026-09-28', arr, hoy2) is None
+       and mide_desde(2, None, dt.date(2026, 11, 1), hoy2) == dt.date(2026, 12, 27) and mide_desde(9, '2026-11-19', arr, hoy2) is None,
+       'el primer tramo: 4 semanas en Tier 3 y 8 en Tier 1 y 2, desde que entró o desde el arranque, el más nuevo')
+    r2 = recomendar(2, 50, {'eventos': 1}, 3, {'eventos': 2, 'por_evento': 8.5})
+    r2n = recomendar(2, 50, {'eventos': 1}, 3, {'eventos': 2, 'por_evento': 8.5}, dt.date(2026, 12, 7))
+    r3 = recomendar(3, 30, {'eventos': 0, 'ligas': 0}, None, {'eventos': 0, 'por_evento': 0})
+    r1 = recomendar(1, 60, {}, 3, {'eventos': 9, 'por_evento': 7.5})
+    ok(r2[0] == 'revisar' and '4 eventos en 8 semanas (llevas 2)' in r2[1] and r2n[0] == 'bien' and 'desde el 07/12' in r2n[1]
+       and r3[0] == 'revisar' and 'Seguir vivo' in r3[1] and r1[0] == 'revisar' and '7,5' in r1[1]
+       and recomendar(3, 30, {'eventos': 0, 'ligas': 1}, None, {'eventos': 0, 'por_evento': 0})[0] == 'bien',
+       'no llegar a lo que pide su tier es «Revisar» (como dice su panel); en el primer tramo, no', str((r2, r2n, r3, r1)))
     p1 = pide(1, {}, {'eventos': 9, 'por_evento': 7.5})
     ok(len(p1) == 2 and p1[0][2] and not p1[1][2] and '7,5' in p1[1][1]
        and pide(3, {'eventos': 0, 'ligas': 1})[0][2] and not pide(3, {'eventos': 0, 'ligas': 0})[0][2]

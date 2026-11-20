@@ -993,7 +993,15 @@ function TierCaja({ x, liga, tier, cambiar, ocup, i, aj, hacer }) {
         {m.eventos ? ' · ' + (Math.round((10 * (m.ayudas || 0)) / m.eventos) / 10) + ' ayudas por llave' : ''}
         {m.anuncios ? ' · staff en ' + Math.round((100 * (m.con_staff || 0)) / m.anuncios) + ' % de sus anuncios' : ''}
         {m.cancelados ? ' · ' + m.cancelados + ' cancelados' : ''}{m.promos ? ' · ' + m.promos + ' promos' : ''}{m.ligas ? ' · ' + m.ligas + ' ligas' : ''}</p>
-      <p className="ti-rec"><span>{ic} {et}</span> {x.porque}</p>
+      {/* con la lista de abajo, el porqué de «no llega» va corto: el detalle está una línea más abajo */}
+      <p className="ti-rec"><span>{ic} {et}</span> {((x.panel || {}).pide || []).length ? String(x.porque || '').replace(/^(no llega a lo que pide Tier \d+):.*$/, '$1') : x.porque}</p>
+      {/* 📋 lo que pide su tier para quedarse, fila por fila: lo mismo que «En el aire» de su cabina (`pide()` de bot/tiers.py) */}
+      {((x.panel || {}).pide || []).length ? (
+        <div className="ti-pide">
+          <small>Para quedarse en Tier {x.tier}{x.mide_desde ? ' · recién llegó: se mide desde el ' + corto(x.mide_desde) : ''}</small>
+          <ul>{x.panel.pide.map(([q, c, si]) => <li key={q} className={si ? 'ok' : x.mide_desde ? '' : 'no'}><b>{si ? 'Hecho' : x.mide_desde ? 'Va' : 'Falta'}</b> {q} · {c}</li>)}</ul>
+        </div>
+      ) : null}
       <Beneficios x={x} tier={tier} aj={aj} hacer={hacer} ocup={ocup} />
       <DuenoSocio x={x} aj={aj} hacer={hacer} ocup={ocup} />
     </article>
@@ -2042,6 +2050,15 @@ function atencion(d, liga, q, logs) {
       ? ['⚠️', 'La última vuelta del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Puedes correrlo de nuevo desde Salud.', 'salud', 'sa-corridas'] : null,
     ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las ' + hora(renuevaKV()) + '.', 'salud', 'sa-cuotas']),
     ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado, 'pendientes', '']),
+    // 📋 LOS QUE NO LLEGAN A LO QUE PIDE SU TIER (20/11/2026): el `rec` del ciclo (`recomendar()` de bot/tiers.py), el mismo
+    // «Te falta» que ve su dueño en la cabina. Avisa y nada más: el tier lo cambias tú. Quien está en su primer tramo no sale
+    ...(() => {
+      const no = ((d.tiers || {}).servidores || []).filter((x) => x.rec === 'revisar');
+      if (!no.length) return [];
+      return [['📋', no.length === 1 ? siglaDe(no[0].sv) + ': revisar su tier' : no.length + ' servidores para revisar su tier',
+        no.map((x) => siglaDe(x.sv) + ' (Tier ' + x.tier + ') ' + String(x.porque || '').replace(/^no llega a lo que pide Tier \d+: /, '')).join(' · ')
+          + '. Avisa y nada más: el tier lo cambias tú.', 'servidores', 'sv-cada']];
+    })(),
     ...(() => {
       const v = logsVistos();
       const n = ((logs && logs.xs) || []).filter((x) => x.nivel === 'rojo' && !v.includes(x.id)).length;
@@ -4605,10 +4622,13 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
             const ops = FACTORES.indexOf(vm) < 0 ? [...FACTORES, vm].sort((a, b) => a - b) : FACTORES;
             const evd = (c.evd || {})[sv];
             const t = tierDe(sv);
+            const xT = tiersT.find((y) => y.sv === sv);
             return (
               <Fragment key={sv}>
                 <tr className={ficha === sv ? 'on' : ''}>
-                  <th scope="row"><span className="dz-svt-n"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><i className={prendido(sv) ? 'ok' : ''} title={prendido(sv) ? 'el bot habla ahí' : 'el bot no habla ahí'} /></span></th>
+                  <th scope="row"><span className="dz-svt-n"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><i className={prendido(sv) ? 'ok' : ''} title={prendido(sv) ? 'el bot habla ahí' : 'el bot no habla ahí'} />
+                    {/* 📋 lo que recomienda el ciclo, en la fila: «Revisar» si no llega a lo que pide su tier, «Puede subir» si llega al de arriba */}
+                    {xT && (xT.rec === 'revisar' || xT.rec === 'subir') ? <em className={'dz-svt-rec rec-' + xT.rec} title={xT.porque}>{xT.rec === 'revisar' ? 'Revisar' : 'Puede subir'}</em> : null}</span></th>
                   <td><select aria-label={'El tier de ' + siglaDe(sv)} value={bajar && bajar[0] === sv ? String(bajar[1]) : t ? String(t) : ''} disabled={ocup}
                     onChange={(e) => { const n = Number(e.target.value); if (t !== 3 && n === 3) setBajar([sv, n]); else { setBajar(null); cambiarTier(sv, n); } }}>
                     {!t ? <option value="">—</option> : null}{[1, 2, 3].map((n) => <option key={n} value={String(n)}>Tier {n}</option>)}</select></td>

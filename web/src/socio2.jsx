@@ -21,7 +21,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
-import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe } from './liga.js';
+import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.js';
 import { Cara, DosToques, Ico, Sec, diaET, masDias } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import CSS_PAGINA from './css/socio2.css?inline';
@@ -656,8 +656,12 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const faltan = (filas || []).filter((r) => !r[2]);
   const s = p.subir;
   const llega = s && s.a && s.pide.every((y) => y[2]);
-  const corto = !filas ? 'Se mide' : faltan.length ? 'Te falta ' + faltan.length : 'Al día';
+  // 🐣 EN SU PRIMER TRAMO (`mide_desde` de bot/tiers.py): todavía no tuvo sus 4 u 8 semanas, así que no es «Te falta» sino
+  // desde cuándo cuenta. CHZ entró el 19/11/2026 y al otro día su cabina le decía «Te falta 1» con cero eventos
+  const tramo = faltan.length && p.mide_desde ? fechaCorta(p.mide_desde) : '';
+  const corto = !filas ? 'Se mide' : tramo ? 'Recién llegas' : faltan.length ? 'Te falta ' + faltan.length : 'Al día';
   const frase = !filas ? 'Lo que te pide tu tier se mide en la próxima corrida (cada media hora).'
+    : tramo ? 'se mide desde el ' + tramo + '. Por ahora, ' + faltan.map((r) => r[0] + ' (' + r[1] + ')').join('; ') + '.'
     : faltan.length ? faltan.map((r) => r[0] + ' (' + r[1] + ')').join('; ') + '.'
       : 'Cumples lo que te pide tu Tier ' + x.tier + (llega ? ', y ya llegas a lo de Tier ' + s.a + ': la Liga decide el cambio.' : ' este mes.');
   const claves = Object.keys(seg).filter((k) => k !== 'vivo');
@@ -695,8 +699,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
               {k === 'cola' && preg.length && p_('final') ? <span className="cz-cuenta">{preg.length}</span> : null}</button>
           ))}</nav>
           {actual === 'hoy'
-            ? <div className="cz-tier corta"><span className="t"><b>Tier {x.tier}</b><span>{corto}</span></span>{filas ? <Bloques n={hechos} de={filas.length} falta /> : null}</div>
-            : <button type="button" className="cz-tier" onClick={() => ir('hoy')}><span className="t"><b>Tier {x.tier}</b><span>{corto}</span></span>{filas ? <Bloques n={hechos} de={filas.length} falta /> : null}<p>{frase}</p><u>Ver en la cabina</u></button>}
+            ? <div className="cz-tier corta"><span className="t"><b>Tier {x.tier}</b><span>{corto}</span></span>{filas ? <Bloques n={hechos} de={filas.length} falta={!tramo} /> : null}</div>
+            : <button type="button" className="cz-tier" onClick={() => ir('hoy')}><span className="t"><b>Tier {x.tier}</b><span>{corto}</span></span>{filas ? <Bloques n={hechos} de={filas.length} falta={!tramo} /> : null}<p>{frase.charAt(0).toUpperCase() + frase.slice(1)}</p><u>Ver en la cabina</u></button>}
         </aside></div>
         <div className="cz-principal">
           {svs.length > 1 ? <div className="cz-elegir-cel"><Elegir liga={liga} svs={svs} sel={x.sv} onSel={onSel} /></div> : null}
@@ -730,12 +734,12 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                 <dd className="cz-c">{v.n >= MIN_VUELVEN ? <>En la Liga vuelve el <b>{vl} %</b></> : 'Todavía pocos para medir si vuelven'}</dd></div>
             </dl>
             <div className="cz-grid">
-              <section className={'cz-aire' + (filas && !faltan.length ? ' ok' : '')}>
-                <div className="cz-aire-cab"><span className="cz-luz"><i />{filas && !faltan.length ? 'Al día' : 'En el aire'}</span>
+              <section className={'cz-aire' + (filas && !faltan.length ? ' ok' : tramo ? ' tramo' : '')}>
+                <div className="cz-aire-cab"><span className="cz-luz"><i />{filas && !faltan.length ? 'Al día' : tramo ? 'Tu primer tramo' : 'En el aire'}</span>
                   <div><small>Lo que te pide tu Tier {x.tier} este mes</small><b>{faltan.length ? corto + ': ' + frase : frase}</b></div></div>
                 {filas ? <ul className="cz-req">{filas.map((r, i) => { const [n, de] = bloq(r, i); return (
-                  <li key={r[0]}>{r[2] ? <span className="cz-sello">Hecho</span> : <span className="cz-falta">Falta</span>}
-                    <span className="cz-tx"><b>{r[0]}</b><small><Bloques n={n} de={de} falta={!r[2]} />{r[1][0].toUpperCase() + r[1].slice(1)}</small></span></li>
+                  <li key={r[0]}>{r[2] ? <span className="cz-sello">Hecho</span> : <span className="cz-falta">{tramo ? 'Va' : 'Falta'}</span>}
+                    <span className="cz-tx"><b>{r[0]}</b><small><Bloques n={n} de={de} falta={!r[2] && !tramo} />{r[1][0].toUpperCase() + r[1].slice(1)}</small></span></li>
                 ); })}</ul> : null}
                 <p className="cz-aire-pie">Los Pases (Tier 1) y los estilos de juego (Tier 2) se suman acá cuando estén listos.</p>
               </section>
@@ -759,7 +763,7 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
             </> : null}
             {tab === 'setlist' ? <>
               <Sec id="sp-agenda" titulo="Tus eventos" bajada="Anuncia un evento acá y sale en Eventos y en la campana, aunque el bot no lea el anuncio de tu canal.">
-                <AgendaStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>
+                <AgendaStaff sv={x.sv} rol={x.rol} permisos={permisos} liga={liga} /></Sec>
               {pasados.length ? <Sec id="cz-pasados" titulo="Lo que ya tocaste" bajada="Tus últimos eventos y si el bot ya leyó su llave.">
                 <ol className="cz-bols">{pasados.map((c) => (
                   <li key={c.t + c.n} className="cz-bol"><span className="cz-f"><b>{W.fmtFecha ? W.fmtFecha(c.t, { day: 'numeric' }) : String(c.t).slice(8, 10)}</b><span>{W.fmtFecha ? W.fmtFecha(c.t, { weekday: 'short' }).replace('.', '') : ''}</span></span>
@@ -1297,7 +1301,27 @@ function QuienStaff({ sv, rol, permisos }) {
 
 // 📅 TUS EVENTOS: anunciar uno sin depender de que el bot lea el anuncio (lo mismo que `/agendar` en Discord). Si después
 // lo anuncian en el canal, gana el anuncio de verdad
-function AgendaStaff({ sv, rol, permisos }) {
+// ⏰ HORARIOS SIN CHOQUES (el plan de los tiers, 19/11/2026): lo que otro servidor de la Liga ya anunció a menos de 2 h de
+// la hora elegida (`liga.proximos()`: lo del payload y lo que el vigía vio después, sin los cancelados). Avisa y nada más:
+// anunciar igual se puede. Las 2 h son las de `MISMO_EVENTO_H` de la llave: lo que dura un evento de los de la Liga
+const CHOQUE_MS = 2 * 3600 * 1000;
+function choquesDe(liga, sv, ini) {
+  if (!liga || !liga.proximos || !Number.isFinite(ini)) return [];
+  const vistos = new Set();
+  return liga.proximos().filter((p) => p.sv && p.sv !== sv && !(liga.esCancelado && liga.esCancelado(p)))
+    .map((p) => ({ p, t: utc(p.cuando).getTime() }))
+    .filter((x) => Number.isFinite(x.t) && Math.abs(x.t - ini) < CHOQUE_MS)
+    .filter((x) => { const k = x.p.sv + '|' + x.t; if (vistos.has(k)) return false; vistos.add(k); return true; })
+    .sort((a, b) => Math.abs(a.t - ini) - Math.abs(b.t - ini));
+}
+// «1 h 30 min antes»: cuándo empieza el otro, contra el tuyo
+const cuantoAntes = (ms) => {
+  const m = Math.round(Math.abs(ms) / 60000);
+  if (m < 10) return 'a la misma hora';
+  return (m < 60 ? m + ' min' : Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + (m % 60) + ' min' : '')) + (ms < 0 ? ' antes' : ' después');
+};
+
+function AgendaStaff({ sv, rol, permisos, liga }) {
   const [j, setJ] = useState(null);
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
@@ -1320,6 +1344,7 @@ function AgendaStaff({ sv, rol, permisos }) {
   // del dispositivo y, con otra zona elegida, el evento quedaba corrido para todos
   const ini = f.cuando ? msDeLocal(f.cuando) : NaN;
   const xs = (j && j.ok && j.agenda) || [];
+  const choques = puedo ? choquesDe(liga, sv, ini) : [];
   return (
     <div className="sp-ll">
       {puedo ? <div className="sp-lg-form">
@@ -1329,6 +1354,15 @@ function AgendaStaff({ sv, rol, permisos }) {
         <button type="button" className="btn verde" disabled={ocup || !f.nombre.trim() || !Number.isFinite(ini)}
           onClick={() => hacer('agregar', { nombre: f.nombre.trim(), ini, formato: f.formato.trim() }, 'Anunciado: sale en Eventos y en la campana en la próxima media hora.')}>Anunciar</button>
       </div> : <p className="sp-ll-ayuda">Los eventos los anuncian el dueño, los admins y los moderadores.</p>}
+      {choques.length ? (
+        <div className="sp-choque" role="status">
+          <b>{choques.length === 1 ? 'A esa hora ya hay otro evento en la Liga' : 'A esa hora ya hay ' + choques.length + ' eventos en la Liga'}</b>
+          <ul>{choques.slice(0, 3).map(({ p, t }) => (
+            <li key={p.sv + t}><span>{nombreEv(p.nombre)}</span><small>{siglaDe(p.sv)} · {W.fmtHora ? W.fmtHora(new Date(t)) : ''} · empieza {cuantoAntes(t - ini)}</small></li>
+          ))}</ul>
+          <small>Puedes anunciarlo igual. Si lo mueves, la gente puede jugar los dos.</small>
+        </div>
+      ) : null}
       {xs.length ? <ol className="sp-lg-l">{xs.map((x) => (
         <li key={x.id}><span><b>{x.nombre}</b><small>{(W.fmtFecha ? W.fmtFecha(x.ini, { weekday: 'long', day: 'numeric', month: 'numeric' }) : new Date(x.ini).toLocaleDateString())
           + (W.fmtHora ? ' · ' + W.fmtHora(new Date(x.ini)) : '') + (x.formato ? ' · ' + x.formato : '')}</small></span>
