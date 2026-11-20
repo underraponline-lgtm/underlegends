@@ -355,61 +355,6 @@
   }
  },
  "batallas": {
-  "1570588902991995002": {
-   "id": "1570588902991995002",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1794527974604,
-   "a": "MCAREPA",
-   "b": "CRK",
-   "ganador": "CRK",
-   "votos": "1–0"
-  },
-  "1570590321660928055": {
-   "id": "1570590321660928055",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1794528312841,
-   "a": "ERIAN 🇩🇴",
-   "b": "LVS 🇪🇸",
-   "ganador": "ERIAN 🇩🇴",
-   "votos": "1–0"
-  },
-  "1570590620668661931": {
-   "id": "1570590620668661931",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1794528384130,
-   "a": "MARTYNEZ 🇺🇾",
-   "b": "LIZZENNIN 🇦🇷",
-   "ganador": "MARTYNEZ 🇺🇾",
-   "votos": "1–0"
-  },
-  "1570591785624018955": {
-   "id": "1570591785624018955",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1794528661877,
-   "a": "ERIAN 🇩🇴",
-   "b": "MARTYNEZ 🇺🇾",
-   "ganador": "ERIAN 🇩🇴",
-   "votos": "1–0"
-  },
-  "1570592459463852196": {
-   "id": "1570592459463852196",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1794528822533,
-   "a": "VILCA",
-   "b": "DIOS",
-   "ganador": "DIOS",
-   "votos": "1–0"
-  },
   "1570597486953889854": {
    "id": "1570597486953889854",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -7163,6 +7108,51 @@
      [
       "mcarepa",
       "Teo"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1573118977239027874": {
+   "id": "1573118977239027874",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795131191311,
+   "ed": 1795134060567,
+   "texto": "`[ CUARTOS ]`\n⌞Vandu 🇨🇴⌝ 🆚 ⌞Mito 🇦🇷⌝ 🆚 ⌞Mauzz 🇻🇪⌝ 🆚 ⌞Nc 🇲🇿⌝ 🆚 ⌞Mexicano 🇲🇽 -⌝\n⌞kyss 🇲🇽⌝ 🆚 ⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Vandu 🇨🇴",
+      "Mito 🇦🇷",
+      "Mauzz 🇻🇪",
+      "Nc 🇲🇿",
+      "Mexicano 🇲🇽 -"
+     ],
+     "Vandu 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "kyss 🇲🇽",
+      "trelok 🇨🇴 + Nc  🇦🇷",
+      "Paria 🇦🇷 -"
+     ],
+     "kyss 🇲🇽",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "trelok 🇨🇴 + Nc  🇦🇷",
+      "Paria 🇦🇷 -"
      ],
      null,
      "última ronda y no dice campeón",

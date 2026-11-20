@@ -50,7 +50,7 @@
    "n": 658,
    "sv": "LKR",
    "vence": "2026-11-20T00:02:33+00:00",
-   "vencido": false
+   "vencido": true
   },
   "23": {
    "con": null,
@@ -1812,7 +1812,7 @@
    "n": 658,
    "sv": "LKR",
    "vence": "2026-11-20T00:02:33+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Lalox": {
    "con": null,
