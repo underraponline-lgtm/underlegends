@@ -1909,6 +1909,10 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
                             data: { custom_id: 'dd:nido:x:700953', component_type: 2 } });
   ok('el botón del Nido le pasa a su dueño el link de la página, y a otro no', /Nido.*drops=1/s.test(rn.json?.data?.content || '')
      && rn.json?.data?.flags === 64 && /otra persona/.test(rn2.json?.data?.content || ''), JSON.stringify([rn.json?.data, rn2.json?.data]));
+  // 🎁 «Abrir mis premios» (19/11/2026): un solo botón sin dueño; a cualquiera que lo toque, «pensando» y efímero (sus drops)
+  const rm = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700956' } }, message: { id: '1' },
+                           data: { custom_id: 'dd:mis', component_type: 2 } });
+  ok('«Abrir mis premios» contesta «pensando», sólo a quien lo tocó', rm.json?.type === 5 && rm.json?.data?.flags === 64, JSON.stringify(rm.json));
   // 🌙 «Tu nota» y «Perfiles» al pie del aviso de ganadores (18/11/2026): leen `noche:<n>` de KV, sólo a quien toca
   PUESTO['noche:700'] = JSON.stringify({ ev: '700', t: 'RED BULL BATALLA', sv: 'CEU', perf: [['Mats', 'mats'], ['Marcos', 'marcos']], p: [
     { n: 'Mats', k: 'mats', d: '700960', nota: 8.9, pos: 'Campeón', mvp: true, bat: false, eq: false, elo: [1046, 1090], pts: '7500',

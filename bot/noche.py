@@ -40,6 +40,15 @@ sys.path[:0] = [SCR, os.path.join(BASE, 'sheet'), BASE]
 
 MAG = '#E41373'
 ORO = '#E7B622'
+#: 👑 la corona de cada tarjeta campeona (19/11/2026): tres puntas con sus perlas, en el dorado de la imagen y con un
+#: borde oscuro para que se lea sobre el fondo y sobre la tarjeta
+CORONA = ('<svg class="corona" viewBox="0 0 48 34" aria-hidden="true">'
+          '<path d="M4 12 L14 21 L24 5 L34 21 L44 12 L40 30 L8 30 Z" fill="%s" stroke="#030304" stroke-width="2.4" '
+          'stroke-linejoin="round"/>'
+          '<rect x="8" y="26" width="32" height="5" fill="#C8960F" stroke="#030304" stroke-width="2"/>'
+          '<circle cx="4" cy="11" r="3.4" fill="%s" stroke="#030304" stroke-width="2"/>'
+          '<circle cx="24" cy="4" r="3.6" fill="%s" stroke="#030304" stroke-width="2"/>'
+          '<circle cx="44" cy="11" r="3.4" fill="%s" stroke="#030304" stroke-width="2"/></svg>') % (ORO, ORO, ORO, ORO)
 ORDEN_PUESTO = {'Campeón': 0, 'Subcampeón': 1, 'Tercero': 2, 'Cuarto': 3, 'Semifinal': 4, 'Cuartos': 5, 'Octavos': 6,
                 'Dieciseisavos': 7}
 ETQ = {'Campeón': ('🏆 Campeón', '🏆 Campeones'), 'Subcampeón': ('🥈 Subcampeón', '🥈 Subcampeones'),
@@ -422,7 +431,7 @@ def html(ev):
         return '<span class="elo">ELO <b>%s</b> <i class="%s">%s</i></span>' % (
             miles(b), 'sube' if dl > 0 else 'baja' if dl < 0 else '', sig)
 
-    def cartas(u, alto, sube=False):
+    def cartas(u, alto, sube=False, corona=False):
         gs = u['gente'][:3]
         m = len(gs)
         giro = {1: [0], 2: [-4, 4], 3: [-6, 0, 6]}[m]
@@ -433,7 +442,18 @@ def html(ev):
             st = 'height:%dpx;%stransform:rotate(%ddeg);z-index:%d' % (
                 alto, 'margin-left:-%dpx;' % paso if i else '', giro[i], 5 - abs(i - (m - 1) / 2) * 2)
             c = carta(n, sv)
-            if c:
+            # 👑 LOS CAMPEONES, CON SU CORONA (Dlx, 19/11/2026: «me gusta ese, quizás pon como unas coronitas a los
+            # campeones»). Una por tarjeta, sobre su borde de arriba y girada con ella: la tarjeta va adentro de una caja
+            # que lleva el giro (`.ctw`), y la corona es un dibujo y no un emoji, así sale igual en cualquier máquina
+            if corona:
+                ancho = 'width:%dpx' % int(alto * 300 / 440) if not c else ''
+                if c:
+                    adentro = '<img class="ct" src="%s" alt="">' % c
+                else:
+                    band = ''.join(chr(0x1F1E6 + ord(ch) - 97) for ch in str(cc or '').lower()) if len(str(cc or '')) == 2 else ''
+                    adentro = '<div class="ct sinc">%s</div>' % K._carta_sin({'n': n, 'fl': band}, d, 'sin', alto / 440)
+                out.append('<span class="ctw" style="%s%s">%s%s</span>' % (st, ';' + ancho if ancho else '', adentro, CORONA))
+            elif c:
                 out.append('<img class="ct" src="%s" alt="" style="%s">' % (c, st))
             else:
                 # la silueta del VS: la caja de 300×440 escalada al alto
@@ -549,7 +569,7 @@ def html(ev):
         chip = '<span class="chip" style="background:%s">%s</span>' % (color(u['nota']), nota_txt(u['nota'])) if u['nota'] else ''
         return ''.join([
             '<div class="col %s rol-%s"%s>' % (clase, rol, estilo),
-            cartas(u, alto, sube).replace('">', '">' + debut_c, 1),
+            cartas(u, alto, sube, corona=u['pos'] == 'Campeón').replace('">', '">' + debut_c, 1),
             '<div class="plato"><span class="et pos">%s</span>' % etq,
             '<b class="nom%s" style="%s">%s</b>' % (' largo' if len(nombres) > 60 or len(u['gente']) > 2 else '', est_nom, nombres),
             '<div class="dat">%s%s%s</div>%s%s</div></div>' % (chip, eloh(u), mini, extra, sello)])
@@ -628,6 +648,11 @@ body{margin:0;width:1200px;height:675px;overflow:hidden;background:#030304}
 #c .cartas{display:flex;justify-content:center;align-items:flex-end;position:relative;align-self:center;width:fit-content}
 #c .ct{position:relative;transform-origin:50% 100%;filter:drop-shadow(0 10px 16px rgba(0,0,0,.65));flex:none}
 #c .ct.sinc{display:block}
+#c .ctw{position:relative;display:block;flex:none;transform-origin:50% 100%}
+#c .ctw > img.ct{height:100%;width:auto;display:block}
+#c .ctw > .ct.sinc{height:100%;width:100%}
+#c .corona{position:absolute;left:50%;top:-25px;width:44px;height:auto;transform:translateX(-50%) rotate(-4deg);z-index:6;
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,.75))}
 #c .ct.sinc > .sin{position:absolute;left:0;bottom:0;transform-origin:0 100%}
 #c .mas-n{position:absolute;right:-6px;bottom:6px;z-index:9;background:#030304;border:2px solid #F6F6F6;font:900 16px/1 Archivo,sans-serif;padding:4px 7px}
 #c .plato{margin-top:8px;padding:8px 10px;background:rgba(3,3,4,.9);border:1px solid #2a2a2e;display:flex;flex-direction:column;align-items:flex-start;gap:6px;position:relative;height:112px;min-height:0;overflow:visible}
@@ -687,6 +712,19 @@ AJUSTAR = """() => {
     if (mi && sobra(d)) mi.textContent = mi.textContent.split(' · ').pop();
     if (mi && sobra(d)) mi.remove();
   }
+  // 👑 la corona baja sobre la tarjeta lo que haga falta para no tocar el título ni los datos de los costados: con una
+  // tarjeta sola (un 1v1) la tarjeta es alta y la corona quedaba encima de «Cypherhood · 19/11 · …»
+  const R = (e) => e.getBoundingClientRect();
+  const arriba = [...document.querySelectorAll('.tit h1, .tit p, .tit .et, .lado-i .dato, .lado-d .dato')].map(R);
+  for (const k of document.querySelectorAll('.corona')) {
+    let n = 0;
+    while (n++ < 30) {
+      const b = R(k);
+      const choca = arriba.some((a) => a.right > b.left + 1 && b.right > a.left + 1 && a.bottom + 3 > b.top && b.bottom > a.top);
+      if (!choca) break;
+      k.style.top = (parseFloat(getComputedStyle(k).top) + 1) + 'px';
+    }
+  }
   return true;
 }"""
 
@@ -701,8 +739,8 @@ MEDIR = """() => {
     || e.scrollHeight > e.clientHeight + 1).map((e) => e.textContent);
   const pisa = pl.some((a, i) => pl.some((b, j) => i < j && pisan(a, b, 1)));
   const desborda = [...document.querySelectorAll('.plato')].filter((e) => e.scrollHeight > e.clientHeight + 1).length;
-  const sel = [...document.querySelectorAll('.sello, .debut-c')];
-  const otros = [...document.querySelectorAll('.sello, .debut-c, .plato .pos, .plato .nom, .plato .chip, .plato .mini, .plato .noche, .plato .porque, .tira .t, .tit h1, .tit p, .lado-i .dato, .lado-d .dato')];
+  const sel = [...document.querySelectorAll('.sello, .debut-c, .corona')];
+  const otros = [...document.querySelectorAll('.sello, .debut-c, .corona, .plato .pos, .plato .nom, .plato .chip, .plato .mini, .plato .noche, .plato .porque, .tira .t, .tit h1, .tit p, .lado-i .dato, .lado-d .dato')];
   const sellos = [], contra_tarjeta = [];
   sel.forEach((s, i) => {
     const rs = R(s);

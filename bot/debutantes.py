@@ -123,27 +123,73 @@ def _link(sv):
     return WEB + 'eventos'
 
 
-def mensaje_chat(gente, sv=''):
-    """El mensaje del chat de un servidor: `(texto, [discord_ids])`. `gente` = `[(raw, reto)]` de ese servidor.
+def _norm(s):
+    """Un nombre para comparar: sin banderas ni emoji, sin espacios ni signos, en minúscula («Mc uchiha 🇮🇹» → «mcuchiha»)."""
+    return ''.join(ch for ch in str(s or '').lower() if ch.isalnum())
 
-    🖼️ El link es el de su servidor, `/s/<sigla>/eventos/` (Dlx, 12/10/2026: «que la foto de portada tenga temática de
-    ese servidor»): la vista previa que arma Discord sale con su imagen y lleva a los eventos, que es lo que dice el
-    mensaje (`herramientas/banner_link.py`). Sin esa página, los eventos sin su imagen."""
-    nombres = ['<@%s>' % r['did'] if r.get('did') else '**%s**' % raw for raw, r in gente]
-    if len(nombres) > 1:
-        quien = ', '.join(nombres[:-1]) + ' y ' + nombres[-1]
-    else:
-        quien = nombres[0]
+
+def cuentas_inscritas(gente_evs, Q=None):
+    """`{n_evento: {nombre_normalizado: cuenta}}`: quién se anotó a SÍ MISMO en cada evento, para mencionar a un debutante
+    que todavía no tiene su Discord en la Lista (Dlx, 19/11/2026: «intenta mencionar a la gente»).
+
+    ⚠️ UNA INSCRIPCIÓN NO SIEMPRE ES DEL AUTOR (el staff anota a otros): vale sólo la cuenta que en ese evento anotó UN
+    nombre, y que no es la cuenta de OTRA persona de la Lista (`Q`: nombre → Discord ID). Ante la duda, no se menciona:
+    va en negrita, como antes."""
+    de_otro = {}
+    for n, i in (Q or {}).items():
+        de_otro.setdefault(str(i), set()).add(_norm(n))
+    out = {}
+    for ev, x in (gente_evs or {}).items():
+        ins = [y for y in (x or {}).get('ins') or [] if isinstance(y, dict) and y.get('cuenta')]
+        por_cuenta = {}
+        for y in ins:
+            por_cuenta.setdefault(str(y['cuenta']), set()).add(_norm(y.get('es') or y.get('t')))
+        m = {}
+        for cuenta, nombres in por_cuenta.items():
+            if len(nombres) != 1:
+                continue
+            nombre = next(iter(nombres))
+            if not nombre or (cuenta in de_otro and nombre not in de_otro[cuenta]):
+                continue
+            m[nombre] = cuenta
+        if m:
+            out[str(ev)] = m
+    return out
+
+
+def mensaje_chat(gente, sv='', cuentas=None):
+    """El mensaje del chat de un servidor: `(cuerpo, [discord_ids], texto)`. `gente` = `[(raw, reto)]` de ese servidor;
+    `cuentas` = `cuentas_inscritas()`.
+
+    ✂️ REHECHO EL 19/11/2026, MÁS CORTO (Dlx, con la captura del de FFA: *«remakear la segunda imagen porque mucho spam,
+    e intenta mencionar a la gente»*). Era tres renglones y la vista previa grande del link de los eventos, que ocupaba
+    más que todo el resto:
+    - DOS RENGLONES: la bienvenida con los nombres y, en chico, el reto;
+    - LA MENCIÓN, también para quien todavía no tiene su Discord en la Lista, si se anotó él mismo en el evento con el
+      que debutó (`cuentas_inscritas()`); si no se sabe, en negrita;
+    - EL LINK, UN BOTÓN («Próximos eventos», el de su servidor, `_link()`), sin vista previa.
+    Antes (04/11/2026, *«Dale»*): «Lo que sigue: en la Liga se juega casi todas las noches…» y el link suelto."""
+    ids, nombres = [], []
+    for raw, r in gente:
+        i = r.get('did') or ((cuentas or {}).get(str(r.get('n'))) or {}).get(_norm(raw))
+        if i:
+            if str(i) not in ids:
+                ids.append(str(i))
+            nombres.append('<@%s>' % i)
+        else:
+            nombres.append('**%s**' % raw)
+    quien = nombres[0] if len(nombres) == 1 else ', '.join(nombres[:-1]) + ' y ' + nombres[-1]
     vence = min(dt.datetime.fromisoformat(r['vence']) for _raw, r in gente)
     varios = len(gente) > 1
-    texto = ('🎤 **Bienvenida a la Liga Global:** %s %s su primer evento.\n'
-             '**Lo que sigue:** en la Liga se juega casi todas las noches. Todos los eventos están aquí, y con la campana '
-             '%s avisamos al minuto: %s\n'
-             '**Reto:** %s otro antes del %s y %s **%s Puntos de Tienda**. Cualquier servidor cuenta.'
-             % (quien, 'jugaron' if varios else 'jugó', 'les' if varios else 'te', _link(sv),
-                'jueguen' if varios else 'juega', _dia(vence), 'se llevan' if varios else 'te llevas',
+    texto = ('🎤 **¡%s a la Liga Global!** %s %s su primer evento.\n'
+             '-# 🎁 %s otro antes del %s y %s **%s Puntos de Tienda**: cualquier servidor cuenta.'
+             % ('Bienvenidos' if varios else 'Bienvenida', quien, 'jugaron' if varios else 'jugó',
+                'Jueguen' if varios else 'Juega', _dia(vence), 'se llevan' if varios else 'te llevas',
                 '{:,}'.format(PREMIO).replace(',', '.')))
-    return texto, [r['did'] for _raw, r in gente if r.get('did')]
+    boton = {'type': 2, 'style': 5, 'label': 'Próximos eventos', 'emoji': {'name': '📅'}, 'url': _link(sv)}
+    cuerpo = {'content': texto[:1900], 'components': [{'type': 1, 'components': [boton]}],
+              'allowed_mentions': {'parse': [], 'users': ids[:20]}}
+    return cuerpo, ids[:20], texto
 
 
 def _leer():
@@ -162,12 +208,11 @@ def _guardar(d):
         f.write('\n')
 
 
-def _mandar_chat(canal, texto, ids):
-    """Al chat, mencionando SÓLO a los debutantes (nunca @here ni roles)."""
+def _mandar_chat(canal, cuerpo):
+    """Al chat, mencionando SÓLO a los debutantes (nunca @here ni roles: `cuerpo['allowed_mentions']`)."""
     import escuchar as E
     s = E.sesion()
-    r = s.post('https://discord.com/api/v10/channels/%s/messages' % canal,
-               json={'content': texto[:1900], 'allowed_mentions': {'parse': [], 'users': ids[:20]}})
+    r = s.post('https://discord.com/api/v10/channels/%s/messages' % canal, json=cuerpo)
     return r.status_code in (200, 201), r.status_code
 
 
@@ -198,11 +243,17 @@ def correr(aplicar=False, ahora=None):
         if not r.get('chat') and not r['cumplido'] and not r['vencido'] and r['sv']:
             por_sv.setdefault(r['sv'], []).append((raw, r))
     salida = []
+    import drops_merito as DM
+    try:
+        cuentas = cuentas_inscritas(json.load(io.open(os.path.join(BASE, 'datos', 'gente_eventos.json'), encoding='utf-8')),
+                                    DM.quienes())
+    except (OSError, ValueError):
+        cuentas = {}
     for sv, gente in sorted(por_sv.items()):
         if chats.get(sv) == hoy:
             continue
-        texto, ids = mensaje_chat(gente, sv)
-        salida.append((sv, gente, texto, ids))
+        cuerpo, ids, texto = mensaje_chat(gente, sv, cuentas)
+        salida.append((sv, gente, cuerpo, ids))
         print('\n   💬 %s%s:\n      %s' % (sv, '' if CHAT else ' (apagado: CHAT = False)', texto.replace('\n', '\n      ')))
     if not aplicar:
         return 0
@@ -219,11 +270,11 @@ def correr(aplicar=False, ahora=None):
         import multiplicadores as MU
         canales = AV.canales_chat() or {}
         vivo = ((MU.ajustes_dueno() or {}).get('en_vivo') or {})
-        for sv, gente, texto, ids in salida:
+        for sv, gente, cuerpo, ids in salida:
             if vivo.get(sv) is not True or not canales.get(sv):
                 print('   · %s: el bot en vivo está apagado ahí, no se manda' % sv)
                 continue
-            ok, cod = _mandar_chat(canales[sv], texto, ids)
+            ok, cod = _mandar_chat(canales[sv], cuerpo)
             print('   %s %s: %s' % ('✅' if ok else '⚠️', sv, 'mandado' if ok else 'no salió (%d)' % cod))
             if ok:
                 chats[sv] = hoy
@@ -250,17 +301,26 @@ def _self_check():
          list(tienda({'retos': r}).values()) == [['123456', PREMIO, int(t(14, 23).timestamp() * 1000)]]),
         ('el mensaje menciona por cuenta y nombra al que no tiene',
          mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[1] == ['123456']
-         and '<@123456>' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0]
-         and '**Caro**' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0]),
-        ('el mensaje no menciona a nadie más que a los debutantes: ni @here ni @everyone',
-         '@here' not in mensaje_chat([('Beto', r['Beto'])])[0] and '@everyone' not in mensaje_chat([('Beto', r['Beto'])])[0]),
-        ('el link del chat de un servidor lleva su sigla y va a los eventos: la vista previa sale con su imagen',
-         '/s/urbf/eventos/' in mensaje_chat([('Beto', r['Beto'])], 'URBF')[0]
-         and '/freestyle-rap/eventos' in mensaje_chat([('Beto', r['Beto'])], 'ZZZ')[0]),
-        ('el mensaje dice qué sigue antes que el premio',
-         mensaje_chat([('Beto', r['Beto'])])[0].index('Lo que sigue') < mensaje_chat([('Beto', r['Beto'])])[0].index('Reto')),
+         and '<@123456>' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[2]
+         and '**Caro**' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[2]),
+        ('el mensaje no menciona a nadie más que a los debutantes: ni @here ni @everyone, y `parse` vacío',
+         '@here' not in mensaje_chat([('Beto', r['Beto'])])[2] and '@everyone' not in mensaje_chat([('Beto', r['Beto'])])[2]
+         and mensaje_chat([('Beto', r['Beto'])])[0]['allowed_mentions'] == {'parse': [], 'users': ['123456']}),
+        ('✂️ (19/11) el link es un BOTÓN «Próximos eventos» con la sigla de su servidor, no un link suelto con vista previa',
+         mensaje_chat([('Beto', r['Beto'])], 'URBF')[0]['components'][0]['components'][0]['url'].endswith('/s/urbf/eventos/')
+         and mensaje_chat([('Beto', r['Beto'])], 'ZZZ')[0]['components'][0]['components'][0]['url'].endswith('/freestyle-rap/eventos')
+         and 'http' not in mensaje_chat([('Beto', r['Beto'])], 'URBF')[0]['content']),
+        ('✂️ dos renglones: la bienvenida y el reto en chico',
+         mensaje_chat([('Beto', r['Beto'])])[2].count(chr(10)) == 1 and chr(10) + '-# 🎁' in mensaje_chat([('Beto', r['Beto'])])[2]),
         ('a varios les habla en plural',
-         'les avisamos' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0] and 'te avisamos' in mensaje_chat([('Beto', r['Beto'])])[0]),
+         'Bienvenidos' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[2] and 'jugaron' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[2]
+         and 'Bienvenida' in mensaje_chat([('Beto', r['Beto'])])[2] and 'te llevas' in mensaje_chat([('Beto', r['Beto'])])[2]),
+        ('la mención de quien se anotó a sí mismo en su evento de debut, aunque no esté en la Lista',
+         '<@900>' in mensaje_chat([('Caro', r['Caro'])], '', cuentas_inscritas(
+             {str(r['Caro']['n']): {'ins': [{'cuenta': '900', 'es': 'Caro 🇨🇱', 't': 'Caro 🇨🇱'}]}}))[2]),
+        ('una cuenta que anotó a dos personas (staff) no se usa, ni la de otra persona de la Lista',
+         cuentas_inscritas({'5': {'ins': [{'cuenta': '901', 'es': 'Caro'}, {'cuenta': '901', 'es': 'Dani'}]}}) == {}
+         and cuentas_inscritas({'5': {'ins': [{'cuenta': '123456', 'es': 'Caro'}]}}, {'Beto': '123456'}) == {}),
     ]
     for que, ok in casos:
         mal += not ok

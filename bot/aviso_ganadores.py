@@ -14,14 +14,16 @@ post-evento en el chat general: prendido en todos los socios, el dueño lo apaga
 - EN EL CHAT GENERAL DEL SERVIDOR DEL EVENTO, con la misma regla que `chats.chat_general()`. Sólo socios donde está el bot.
 - MENCIONA SÓLO A LOS GANADORES con su cuenta en la Lista (`allowed_mentions.users`, nunca @everyone ni roles). Los
   demás, en negrita y con `/vincular`: si se vinculan en `VENTANA_DIAS`, el drop les llega igual (`drops_merito`).
-- BOTONES (desde el 18/11/2026): UNO POR GANADOR Y POR PREMIO, con su nombre, que sólo abre esa persona
-  (`dd:<drop|star|nido>:x:<id>`, worker.js); el del Nido le pasa el link de la página, donde se abre. «Ver mis drops»
-  (`?drops=1`), al costado de los premios. Antes eran
-  «Abrir mi Drop / Star» sin dueño, y cualquiera abría los suyos desde el aviso de otro.
-- EL FORMATO, el de los anuncios de la Liga (Componentes V2): un recuadro con el color del servidor, con los puntos del
-  evento por puesto, y LAS MENCIONES AFUERA, en una línea arriba (Dlx: «gente dentro del embed no se menciona»).
+- ✂️ DESDE EL 19/11/2026, SÓLO LOS PREMIOS Y UN BOTÓN (Dlx: «lo tercero debería estar de menos… ver mis recompensas en
+  un solo botón en vez de 6… y esos botones de la tercera imagen son de la primera»): sin recuadro, sin los puntos ni el
+  campeón repetidos (los dice «La noche de…»), las menciones en las líneas de los premios y «🎁 Abrir mis premios»
+  (`dd:mis`: a quien lo toca, sus drops, como `/drops`). Ver `mensaje()`. Del 18/11 al 19/11 fue un botón por ganador y
+  por premio (`dd:<drop|star|nido>:x:<id>`, que el Worker sigue entendiendo para los avisos que ya salieron).
+- EL FORMATO: Componentes V2 sin recuadro. Del 18/11 al 19/11 fue un recuadro con el color del servidor, los puntos del
+  evento por puesto y las menciones afuera, en una línea arriba (Dlx: «gente dentro del embed no se menciona»).
 - 🌙 AL PIE, LA IMAGEN «LA NOCHE DE…» (`bot/noche.py`, Dlx 18/11/2026: la nota de cada uno, el MVP, el batacazo y el
-  ELO, como al final de un partido) y una fila de cinco botones: 🎯 Tu nota y 👤 Perfiles (los contesta el Worker,
+  ELO, como al final de un partido; con 👑 sobre las tarjetas de los campeones desde el 19/11) y una fila de cinco
+  botones, que van con la imagen, en el cierre del bot en vivo si lo hay: 🎯 Tu nota y 👤 Perfiles (los contesta el Worker,
   sólo a quien toca, con lo que se guarda en KV `noche:<n>`), y los links a La llave, el Ranking y los Próximos eventos.
   SÓLO DESDE EL EVENTO `NOCHE_DESDE` (Dlx: «sólo los próximos eventos… NO los actuales y pasados»). Si la imagen
   falla, el aviso sale igual, sin ella.
@@ -172,125 +174,70 @@ def _oficiales():
     return out
 
 
-def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None):
+def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None, solo_premios=False):
     """`(componentes, ids, texto)` del aviso de un evento: un mensaje de Componentes V2 (`flags` 32768) con su texto
-    plano para la consola. `g`: lo de `ganadores()`; `Q`: nombre → Discord ID; `miembros`: los IDs de DRA (los drops
-    por ganar se abren siendo miembro). Sin campeón, `None`.
+    plano para la consola. `g`: lo de `ganadores()`; `Q`: nombre → Discord ID. Sin campeón, `None`.
 
-    🎨 REHECHO EL 18/11/2026 (Dlx, con la captura del primero, el de NEW GENESIS: «asegúrate también que estos botones
-    sólo los abran las respectivas personas… y remakear ese texto también»). Era texto suelto con «Abrir mi Drop» y
-    «Abrir mi Star» sin dueño: cualquiera que tuviera un drop guardado abría el SUYO desde el aviso de otro. Ahora:
-    - el formato de los anuncios de la Liga (la v1.07): un recuadro con la barra del color del servidor, el evento
-      arriba, el campeón, los premios y la letra chica;
-    - UN BOTÓN POR GANADOR Y POR PREMIO, con su nombre («Drop · Oasis»), que sólo abre esa persona (`dd:<tipo>:x:<id>`:
-      el Worker contesta «eso es de otra persona» a los demás). El Nido no se abre en Discord: su botón le manda el
-      link de la página, sólo a él (`dd:nido`);
-    - el título sin el adorno del organizador (`_titulo()`).
-
-    🔁 SEGUNDA VUELTA, EL MISMO DÍA (Dlx, a la muestra por DM: «recuerda que gente dentro del embed no se menciona.
-    ¿Dónde están las puntuaciones al finalizar el evento? Eso de si todavía no eres miembro de DRA, quita eso»):
-    - LAS MENCIONES VAN AFUERA del recuadro, en una línea de texto arriba (un Text Display suelto): adentro, los nombres
-      van en negrita;
-    - LOS PUNTOS DEL EVENTO, por puesto (`puntos`, de `puntos_de()`): campeón, subcampeón, semis y cuartos;
-    - sin la línea de «si todavía no eres Miembro de DRA» (`miembros` queda en la firma, sin uso).
-    """
+    ✂️ REHECHO EL 19/11/2026, MÁS CORTO (Dlx, con las capturas de GRISELDA TIME VOL. 7: *«lo tercero debería estar de
+    menos, eso ya está en la primera imagen; lo único que tendríamos que hacer es cómo ponemos las recompensas, quizás ver
+    mis recompensas en un solo botón en vez de 6, y esos botones de la tercera imagen son de la primera»*):
+    - SIN RECUADRO, SIN LOS PUNTOS Y SIN EL CAMPEÓN REPETIDO: eso lo dice «La noche de…», que va en el cierre del bot en
+      vivo (y si no hay cierre, en este mismo mensaje, debajo);
+    - LOS PREMIOS, CON LAS MENCIONES ADENTRO: «🥚 Nido por el título: @Vandu, @Trelok y @Kyss». Mencionadas suenan
+      (`allowed_mentions.users`, sólo los ganadores con su cuenta en la Lista); quien no tiene cuenta, en negrita y con
+      `/vincular`;
+    - UN SOLO BOTÓN, «Abrir mis premios» (`dd:mis`): a quien lo toca, el Worker le muestra SUS drops para abrir, como
+      `/drops` (sólo a él). Eran seis, uno por ganador y por premio;
+    - `solo_premios`: cuando la imagen va en el cierre, el aviso es sólo esto, con su título («🎁 Los premios de…»). Sin
+      cierre, arriba dice qué terminó y dónde, porque es el único mensaje del evento.
+    Antes (18/11/2026): un recuadro con el color del servidor, el campeón, los puntos por puesto y un botón por premio,
+    con las menciones en una línea afuera (*«gente dentro del embed no se menciona»*: acá no hay recuadro)."""
     if not g.get('camp'):
         return None
-    ids, sin, botones = [], [], []
+    ids, sin = [], []
     banderas = {n: cc for _pos, gente in (puntos or []) for n, cc, _p in gente}
 
     def nombre(n):
-        """Adentro del recuadro: el nombre en negrita, con su bandera. Y anota a quién mencionar afuera"""
+        """La mención si tiene su cuenta en la Lista; si no, en negrita con su bandera (y se anota para `/vincular`)"""
         i = Q.get(n)
         if i:
             if i not in ids:
                 ids.append(i)
-        elif n not in sin:
+            return '<@%s>' % i
+        if n not in sin:
             sin.append(n)
         fl = _bandera(banderas.get(n))
         return '**%s**%s' % (_md(n), ' ' + fl if fl else '')
-
-    def boton(tipo, n):
-        i = Q.get(n)
-        cid = 'dd:%s:x:%s' % (tipo, i) if i else ''
-        if not i or len(botones) >= BOTONES or any(b['custom_id'] == cid for b in botones):
-            return
-        emoji, premio = {'nido': ('🥚', 'Nido'), 'drop': ('🎁', 'Drop'), 'star': ('⚡', 'Star')}[tipo]
-        botones.append({'type': 2, 'style': 1 if tipo != 'nido' else 2, 'label': ('%s · %s' % (premio, (oficiales or {}).get(i) or n))[:80],
-                        'emoji': {'name': emoji}, 'custom_id': cid})
 
     def y(xs):
         xs = list(xs)
         return xs[0] if len(xs) == 1 else ', '.join(xs[:-1]) + ' y ' + xs[-1]
 
     titulo = _titulo(evento)
-    nombre_sv, color = _sv_info(sv) if sv else ('', COLOR_UL)
+    nombre_sv, _color = _sv_info(sv) if sv else ('', COLOR_UL)
     camps = g.get('camps') or [g['camp']]
-    cabeza = '## 🏆 %s\n-# %s' % (_md(titulo) if titulo else 'Terminó el evento',
-                                  ('Terminó en **%s**' % _md(nombre_sv)) if nombre_sv else 'Terminó')
-    if len(camps) == 1:
-        camp, tipo = camps[0]
-        corona = '👑 Campeón: %s\n%s Se lleva un **%s** por el título.' % (
-            nombre(camp), '🥚' if tipo == 'nido' else '🎁', 'Nido' if tipo == 'nido' else 'Drop')
+    lineas = []
+    if solo_premios:
+        lineas.append('### 🎁 Los premios de %s' % (_md(titulo) if titulo else 'este evento'))
     else:
-        # 👥 por equipos: los campeones juntos, y cada uno con lo suyo (el Nido es el primer título de SU semana)
-        corona = '👑 Campeones: %s\n%s' % (' + '.join(nombre(c) for c, _t in camps), '\n'.join(
-            '%s %s se lleva un **%s** por el título.' % ('🥚' if t == 'nido' else '🎁', nombre(c), 'Nido' if t == 'nido' else 'Drop')
-            for c, t in camps))
-    for c, t in camps:
-        boton('nido' if t == 'nido' else 'drop', c)
-    premios = []
+        lineas.append('### 🏆 Terminó %s%s' % ('**%s**' % _md(titulo) if titulo else 'el evento',
+                                               (' en **%s**' % _md(nombre_sv)) if nombre_sv else ''))
+    nidos = [c for c, t in camps if t == 'nido']
+    drops_c = [c for c, t in camps if t != 'nido']
+    if nidos:
+        lineas.append('🥚 **Nido** por el título: %s' % y(nombre(c) for c in nidos))
+    if drops_c:
+        lineas.append('🎁 **Drop** por el título: %s' % y(nombre(c) for c in drops_c))
     if g.get('pod'):
-        premios.append('🎁 **Drop** por el podio: %s' % y(nombre(n) for n in g['pod']))
-        for n in g['pod']:
-            boton('drop', n)
+        lineas.append('🎁 **Drop** por el podio: %s' % y(nombre(n) for n in g['pod']))
     for gan, perd in g.get('bat') or []:
-        premios.append('⚡ **Star** por el batacazo: %s, que le ganó a **%s**' % (nombre(gan), _md(perd)))
-        boton('star', gan)
-    # 📊 los puntos del evento, por puesto
-    tabla = []
-    for pos, gente in (puntos or [])[:PUESTOS]:
-        pts = sorted({p for _n, _c, p in gente}, reverse=True)
-        cuanto = _miles(pts[0]) + (' c/u' if len(gente) > 1 and len(pts) == 1 else '') if pts else ''
-        quienes = ', '.join('%s%s' % (_md(n), ' ' + _bandera(c) if _bandera(c) else '') for n, c, _p in gente)
-        tabla.append('%s **%s** · %s · **%s**' % (MEDALLA.get(pos, '▫️'), _md(pos), quienes, cuanto))
-    resto = sum(len(gente) for _pos, gente in (puntos or [])[PUESTOS:])
-    if resto:
-        tabla.append('-# y %d más sumaron puntos: la tabla entera, en la página' % resto)
-    # 🧹 sin «Cada botón lo abre sólo quien ganó…» ni «Ver mis drops» suelto al final (Dlx, a la muestra 2: «elimina ese
-    # texto… queda raro que esté solo, la parte del final»): el link va en la fila de los botones
-    chica = []
+        lineas.append('⚡ **Star** por el batacazo: %s, que le ganó a **%s**' % (nombre(gan), _md(perd)))
     if sin:
-        chica.append('-# 🔗 %s: vincula tu cuenta con `/vincular` en los próximos 14 días y lo que ganaste es tuyo.'
-                     % y('**%s**' % _md(n) for n in sin))
-    # 🐉 «VER MIS DROPS», AL COSTADO DE LOS PREMIOS (Dlx, 18/11/2026: primero «queda raro ver mis drops solo, hay un espacio
-    # ahí vacío» —con cuatro ganadores Discord lo bajaba a otra línea, solo— y después «pero ver drops creo que es necesario…
-    # las tarjetas son el lugar donde más gente ha entrado»: el link a la página es lo que trae gente). Va como el botón
-    # de una Sección (type 9): a la derecha del texto de los premios, o del campeón si no hay premios. Nunca queda solo
-    ver = {'type': 2, 'style': 5, 'label': 'Ver mis drops', 'emoji': {'name': '🐉'}, 'url': WEB_DROPS}
-    # 🛡️ el título con el logo del servidor a la derecha (una Sección con su miniatura), si el servidor tiene logo
-    logo = _logo(sv)
-    adentro = [{'type': 9, 'components': [{'type': 10, 'content': cabeza}], 'accessory': {'type': 11, 'media': {'url': logo}}}
-               if logo else {'type': 10, 'content': cabeza},
-               {'type': 9, 'components': [{'type': 10, 'content': corona}], 'accessory': ver} if not premios
-               else {'type': 10, 'content': corona}]
-    if tabla:
-        adentro += [{'type': 14, 'divider': True, 'spacing': 1}, {'type': 10, 'content': '### 📊 Los puntos\n' + '\n'.join(tabla)}]
-    if premios:
-        adentro += [{'type': 14, 'divider': True, 'spacing': 1},
-                    {'type': 9, 'components': [{'type': 10, 'content': '### 🎁 Los premios\n' + '\n'.join(premios)}], 'accessory': ver}]
-    if chica:
-        adentro.append({'type': 10, 'content': '\n'.join(chica)})
-    # 🧱 en filas PAREJAS (con seis: 3 y 3, no 5 y 1): uno solo abajo quedaba suelto, como «Ver mis drops»
-    por_fila = -(-len(botones) // -(-len(botones) // 5)) if botones else 5
-    adentro += [{'type': 1, 'components': botones[i:i + por_fila]} for i in range(0, len(botones), por_fila)]
-    comps = [{'type': 17, 'accent_color': color, 'components': adentro}]
-    # 🔔 las menciones, AFUERA del recuadro y arriba: la única línea que suena
-    if ids:
-        afuera = '🏆 Terminó **%s**: %s, sus premios están abajo 👇' % (_md(titulo) if titulo else 'el evento', y('<@%s>' % i for i in ids[:MENCIONES]))
-        comps.insert(0, {'type': 10, 'content': afuera})
-    texto = '\n'.join(([comps[0]['content']] if ids else []) + [cabeza, corona] + tabla + premios
-                      + ['[%s]' % ' '.join(b['label'] for b in botones)] + chica)
+        lineas.append('-# 🔗 %s: vincula tu cuenta con `/vincular` en los próximos 14 días y lo que ganaste es tuyo.'
+                      % y('**%s**' % _md(n) for n in sin))
+    boton = {'type': 2, 'style': 1, 'label': 'Abrir mis premios', 'emoji': {'name': '🎁'}, 'custom_id': 'dd:mis'}
+    comps = [{'type': 10, 'content': '\n'.join(lineas)}, {'type': 1, 'components': [boton]}]
+    texto = '\n'.join(lineas + ['[🎁 Abrir mis premios]'])
     return comps, ids[:MENCIONES], texto
 
 
@@ -352,10 +299,20 @@ def noche(ev, Q):
 # `minutosAlCiclo()`) y esta vuelta le CAMBIA la tarjeta a ese mensaje por la imagen. El aviso de ganadores sale igual,
 # con sus menciones y sus botones, y sin repetirla. Sin cierre (el servidor no tiene el bot en vivo), si el cierre ya
 # lleva el aviso de otro evento o si Discord no la toma, la imagen va en el aviso, también como link (`pie_con_url()`).
-def con_noche(msg, url, alt):
+def _ya_tiene_fila(comps):
+    """¿Ya lleva la fila de la imagen? (los botones `nn:` o el link a La llave): una segunda vuelta no la repite"""
+    return any(c.get('type') == 1 and any(str(b.get('custom_id') or '').startswith('nn:') or '/llave/' in str(b.get('url') or '')
+                                          for b in c.get('components') or []) for c in comps)
+
+
+def con_noche(msg, url, alt, fila=None):
     """El cuerpo del PATCH que cambia la imagen de `msg` (el mensaje como lo devuelve Discord) por `url`: en Componentes
     V2, la galería de afuera del recuadro (o una nueva al final); en el formato de antes, la imagen del primer embed.
-    `None` si no hay dónde ponerla. No menciona a nadie (una edición no suena igual)."""
+    `None` si no hay dónde ponerla. No menciona a nadie (una edición no suena igual).
+
+    🔘 Y LOS BOTONES DE LA IMAGEN, DEBAJO DE ELLA (`fila`, la de `fila_noche()`; Dlx, 19/11/2026: *«esos botones de la
+    tercera imagen son de la primera»*): Tu nota, Perfiles, La llave, el Ranking y los Próximos eventos van con la imagen,
+    en el cierre, y no en el aviso de los premios."""
     item = {'media': {'url': url}, 'description': str(alt or '')[:1000]}
     if int(msg.get('flags') or 0) & 32768:
         comps = [dict(c) for c in msg.get('components') or []]
@@ -363,16 +320,22 @@ def con_noche(msg, url, alt):
         if i is None:
             # 🔘 sin tarjeta, la imagen va ARRIBA de los botones: desde el 19/11/2026 van debajo de la imagen y afuera del
             # recuadro (`cuerpoV2()` de avisos.js)
-            j = next((k for k, c in enumerate(comps) if c.get('type') == 1), len(comps))
-            comps.insert(j, {'type': 12, 'items': [item]})
+            i = next((k for k, c in enumerate(comps) if c.get('type') == 1), len(comps))
+            comps.insert(i, {'type': 12, 'items': [item]})
         else:
             comps[i] = {'type': 12, 'items': [item]}
+        if fila and not _ya_tiene_fila(comps):
+            comps.insert(i + 1, fila)
         return {'components': comps, 'allowed_mentions': {'parse': []}}
     es = [dict(e) for e in msg.get('embeds') or []]
     if not es:
         return None
     es[0]['image'] = {'url': url}
-    return {'embeds': es, 'allowed_mentions': {'parse': []}}
+    out = {'embeds': es, 'allowed_mentions': {'parse': []}}
+    viejas = [dict(c) for c in msg.get('components') or []]
+    if fila and not _ya_tiene_fila(viejas) and len(viejas) < 5:
+        out['components'] = viejas + [fila]
+    return out
 
 
 def _subir_noche(ev, png):
@@ -394,7 +357,7 @@ def _url_noche(ev, png):
         return None
 
 
-def al_cierre(ev, nombre, sv, fecha, png, alt, s):
+def al_cierre(ev, nombre, sv, fecha, png, alt, s, fila=None):
     """🌙 Pone «La noche de…» en el cierre del bot en vivo de ese evento, en lugar de la tarjeta. `{canal, msg, url}` si
     quedó; `None` si no hay cierre, si ya lleva el aviso de OTRO evento (la regla de `avisar.evento()`) o si Discord no
     la tomó. `s` es la sesión del bot. **Nunca levanta.**"""
@@ -412,7 +375,7 @@ def al_cierre(ev, nombre, sv, fecha, png, alt, s):
         if r.status_code != 200:
             return None
         url = _subir_noche(ev, png)
-        cuerpo_ = con_noche(r.json() or {}, url, alt) if url else None
+        cuerpo_ = con_noche(r.json() or {}, url, alt, fila) if url else None
         if not cuerpo_:
             return None
         r = s.patch('%s/channels/%s/messages/%s' % (API, canal, cierre), json=cuerpo_, timeout=30)
@@ -567,7 +530,8 @@ def correr(aplicar=False):
         comps, ids, texto = m
         print('\n   🏆 #%s %s (%s) · %d mención(es)\n      %s' % (ev, nombre, sv, len(ids), texto.replace('\n', '\n      ')))
         if ev.isdigit() and int(ev) >= NOCHE_DESDE:
-            print('      🌙 + la imagen «La noche de…» y sus cinco botones')
+            print('      🌙 + la imagen «La noche de…» y sus cinco botones (en el cierre del bot en vivo si lo hay; ahí el aviso va '
+                  'sólo con los premios)')
         if not aplicar:
             continue
         gid = svs.get(sv)
@@ -606,10 +570,12 @@ def correr(aplicar=False):
         en_cierre = None
         if archivo and pie and pie[0].get('type') == 12:
             alt = ((pie[0].get('items') or [{}])[0] or {}).get('description') or ''
-            en_cierre = al_cierre(ev, nombre, sv, fecha, archivo[1], alt, s)
+            en_cierre = al_cierre(ev, nombre, sv, fecha, archivo[1], alt, s, pie[1] if len(pie) > 1 else None)
             if en_cierre:
-                print('      🌙 la imagen, en el cierre del bot en vivo (en lugar de la tarjeta): el aviso va sin ella')
-                pie, archivo = pie[1:], None
+                # ✂️ y con ella sus botones (19/11/2026): el aviso queda sólo con los premios y «Abrir mis premios»
+                print('      🌙 la imagen y sus botones, en el cierre del bot en vivo: el aviso va sólo con los premios')
+                pie, archivo = [], None
+                comps, ids, _t = mensaje(nombre, sv, G[ev], Q, miembros, oficiales, puntos_de(res, ev), solo_premios=True)
             else:
                 # 🌙 va en el aviso, como LINK y no adjunta (`pie_con_url()`): adjuntar pide un permiso que no todos
                 # los chats le dan al bot. Si R2 no la toma, adjunta, como antes
@@ -662,39 +628,26 @@ def _self_check():
     ok([x[0] for x in P] == ['Campeón', 'Subcampeón', 'Semifinal', 'Cuartos', 'Octavos'] and P[2][1][1] == ('Dani', 'co', 5250),
        'los puntos del evento, por puesto y en el orden de la hoja')
     comps, ids, t = mensaje('__ TOKYO VOL 27 __', 'FFA', G['700'], Q, {'111111'}, None, P)
-    afuera = comps[0]
-    caja = json.dumps(comps[1], ensure_ascii=False)
-    bots = [b for c in comps[1]['components'] if c['type'] == 1 for b in c['components']]
-    ok(afuera['type'] == 10 and '<@111111>' in afuera['content'] and '<@222222>' in afuera['content'] and ids == ['111111', '222222'],
-       'las menciones van AFUERA del recuadro, arriba, una vez cada uno')
-    ok(comps[1]['type'] == 17 and comps[1]['accent_color'] == 0x26045B and '<@' not in caja,
-       'adentro del recuadro (con el color del servidor) no hay ninguna mención: los nombres van en negrita')
-    ok('Los puntos' in caja and '10.000' in caja and '5.250 c/u' in caja and 'Dani 🇨🇴' in caja and 'y 1 más' in caja and 'Fer' not in caja,
-       'los puntos: campeón, sub, semis (c/u) y cuartos, con bandera; del resto, cuántos')
-    ok('## 🏆 TOKYO VOL 27' in caja and '__' not in caja.split('TOKYO')[0][-5:], 'el título sin los «__» del organizador')
-    ok('**Caro\\\\*' in caja and '/vincular' in caja, 'quien no tiene cuenta va en negrita (escapado) y con cómo vincularse')
-    ok('Miembro de DRA' not in json.dumps(comps, ensure_ascii=False) and 'Cada botón' not in caja,
-       'sin la línea de «si todavía no eres Miembro de DRA» ni la de «cada botón lo abre…»')
-    filas = [c for c in comps[1]['components'] if c['type'] == 1]
-    secs = [c for c in comps[1]['components'] if c['type'] == 9 and c['accessory'].get('type') == 2]
-    ok(comps[1]['components'][-1]['type'] == 1 and len(filas) == 1 and 'Ver mis drops' not in json.dumps(filas, ensure_ascii=False)
-       and len(secs) == 1 and secs[0]['accessory'].get('url') == WEB_DROPS and 'Los premios' in secs[0]['components'][0]['content'],
-       '«Ver mis drops» al costado de los premios (una Sección), nunca solo en una fila; termina con los botones de los ganadores')
-    cids = [b.get('custom_id') for b in bots]
-    ok(cids[:3] == ['dd:nido:x:111111', 'dd:drop:x:222222', 'dd:star:x:222222'] and 'dd:drop:x:' not in cids
-       and [b.get('label') for b in bots][:3] == ['Nido · Ana', 'Drop · Beto', 'Star · Beto'],
-       'un botón por ganador y premio, con su nombre y su dueño (Caro no tiene cuenta: sin botón); ninguno sin dueño')
+    todo = json.dumps(comps, ensure_ascii=False)
+    ok(comps[0]['type'] == 10 and '<@111111>' in comps[0]['content'] and '<@222222>' in comps[0]['content'] and ids == ['111111', '222222'],
+       '✂️ (19/11/2026) sin recuadro: los premios con las menciones adentro, una vez cada uno')
+    ok('🥚 **Nido** por el título: <@111111>' in todo and 'Drop** por el podio: <@222222> y **Caro' in todo
+       and 'Star** por el batacazo: <@222222>, que le ganó a **Fuerte**' in todo,
+       'el Nido del campeón, el Drop del podio y el Star del batacazo, cada uno con su gente')
+    ok('Los puntos' not in todo and '10.000' not in todo and 'Campeón:' not in todo and comps[0]['content'].startswith('### 🏆 Terminó **TOKYO VOL 27**'),
+       'sin los puntos ni el campeón repetidos (los dice «La noche de…»); arriba, qué terminó, sin los «__»')
+    ok('**Caro\\\\*' in todo and '/vincular' in todo, 'quien no tiene cuenta va en negrita (escapado) y con cómo vincularse')
+    bots = [b for c in comps if c['type'] == 1 for b in c['components']]
+    ok(len(comps) == 2 and len(bots) == 1 and bots[0]['custom_id'] == 'dd:mis' and bots[0]['label'] == 'Abrir mis premios',
+       'UN SOLO BOTÓN, «Abrir mis premios», para todos (antes eran seis, uno por ganador y por premio)')
+    cp, _ip, _tp = mensaje('__ TOKYO VOL 27 __', 'FFA', G['700'], Q, {'111111'}, None, P, solo_premios=True)
+    ok(cp[0]['content'].startswith('### 🎁 Los premios de TOKYO VOL 27') and 'Terminó' not in cp[0]['content'],
+       'con la imagen en el cierre, el aviso se titula «Los premios de…»')
     c2, _i2, t2 = mensaje('(sin titulo)', 'LKR', {'camp': ('Ana', 'drop'), 'pod': [], 'bat': []}, Q, {'111111'})
     t2j = json.dumps(c2, ensure_ascii=False)
-    ok('Terminó el evento' in t2j and 'dd:star' not in t2j and 'Los puntos' not in t2j and 'dd:drop:x:111111' in t2j
-       and c2[-1]['components'][1]['type'] == 9 and c2[-1]['components'][1]['accessory'].get('url') == WEB_DROPS,
-       'sin título, «Terminó el evento»; sin batacazos ni puntos, sin esas partes; el campeón con su Drop y «Ver mis drops» a su lado')
+    ok('Terminó el evento' in t2j and 'Star' not in t2j and 'Drop** por el título: <@111111>' in t2j,
+       'sin título, «Terminó el evento»; sin batacazos, sin esa línea; el campeón con su Drop')
     ok(_titulo('**__ NEW GENESIS __**') == 'NEW GENESIS' and _titulo('(sin titulo)') == '', 'el adorno del título se va')
-    cab0 = comps[1]['components'][0]
-    ok(cab0['type'] == 9 and cab0['accessory']['type'] == 11 and cab0['accessory']['media']['url'].endswith('/logos/ffa.webp')
-       and '## 🏆' in cab0['components'][0]['content'], 'el título lleva el logo del servidor a la derecha (FFA tiene)')
-    c_sin, _i, _t = mensaje('X', 'ZZZ', {'camp': ('Ana', 'drop'), 'pod': [], 'bat': []}, Q, set())
-    ok(c_sin[-1]['components'][0]['type'] == 10, 'un servidor sin logo: el título solo, sin miniatura rota')
     res3 = [['Evento #', 'Fecha', 'Servidor', 'Rapero', 'Posición'],
             ['800', '13/11/2026', 'ACAD', 'Zanti', 'Campeón'], ['800', '13/11/2026', 'ACAD', 'Mayeu', 'Campeón'],
             ['800', '13/11/2026', 'ACAD', 'Mini', 'Campeón'], ['800', '13/11/2026', 'ACAD', 'Chuwin', 'Subcampeón'],
@@ -704,11 +657,9 @@ def _self_check():
     ok(len(G3['800']['camps']) == 3 and G3['800']['camp'] == G3['800']['camps'][0],
        'por equipos: los TRES campeones, cada uno con su premio (antes quedaba sólo el último)')
     c3b, ids3, _t3b = mensaje('PANDILLAS', 'ACAD', G3['800'], Q3, set())
-    filas3 = [c['components'] for c in c3b[-1]['components'] if c['type'] == 1]
-    ok(len(ids3) == 6 and [len(f) for f in filas3] == [3, 3] and 'Campeones:' in json.dumps(c3b, ensure_ascii=False),
-       'los seis con su botón, en dos filas de tres (no cinco y uno), y «Campeones» con los tres')
-    c3, _i3, _t3 = mensaje('X', 'FFA', {'camp': ('rodrilp', 'drop'), 'pod': [], 'bat': []}, {'rodrilp': '333333'}, set(), {'333333': 'Rodri LP'})
-    ok('Drop · Rodri LP' in json.dumps(c3, ensure_ascii=False), 'el botón con el nombre de la Lista, no con la clave de la hoja')
+    ok(len(ids3) == 6 and '<@900000>, <@900001> y <@900002>' in json.dumps(c3b, ensure_ascii=False)
+       and len([b for c in c3b if c['type'] == 1 for b in c['components']]) == 1,
+       'los tres campeones juntos en una línea, los seis mencionados, y un solo botón')
     ok(mensaje('X', 'FFA', {'camp': None, 'pod': ['Ana'], 'bat': []}, Q, set()) is None, 'sin campeón, no hay aviso')
     ok(_md('@everyone') == '@​everyone', 'un nombre con @ no puede mencionar a nadie')
     ok(_fecha('17/11', dt.date(2026, 11, 18)) == dt.date(2026, 11, 17) and _fecha('31/12', dt.date(2027, 1, 1)) == dt.date(2026, 12, 31),
@@ -764,6 +715,18 @@ def _self_check():
        and v1['embeds'][0]['image']['url'].endswith('servidor.webp'),
        'en el formato de antes, la imagen del embed (sin tocar el mensaje que se leyó)')
     ok(con_noche({'flags': 0, 'content': 'hola'}, U, '') is None, 'sin embed ni componentes, no hay dónde ponerla')
+    # 🔘 los botones de la imagen van con ella, en el cierre (Dlx, 19/11/2026: «esos botones… son de la primera»)
+    F = fila_noche('700')
+    pf = con_noche(v2, U, '', F)
+    ok([c['type'] for c in pf['components']] == [10, 17, 12, 1] and pf['components'][3] == F,
+       '🔘 en el cierre, la fila de la imagen (Tu nota, Perfiles, La llave…) va justo debajo de ella')
+    pb = con_noche(con_bot, U, '', F)
+    ok([c['type'] for c in pb['components']] == [10, 17, 12, 1, 1] and pb['components'][3] == F,
+       'si el cierre ya tenía botones, la fila de la imagen va debajo de la imagen y los de antes quedan')
+    ok(len([c for c in con_noche(dict(v2, components=pf['components']), U, '', F)['components'] if c['type'] == 1]) == 1,
+       'una segunda vuelta no repite la fila')
+    pv = con_noche(v1, U, '', F)
+    ok(pv.get('components') == [F], 'en el formato de antes, la fila va como componentes del mensaje')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 

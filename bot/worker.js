@@ -5225,6 +5225,9 @@ export default {
         const esperarD = frenado(yo, 'click');
         if (esperarD) return espera(esperarD);
         if (dueno && dueno !== yo) return aviso('Eso es de otra persona: usa **`/drops`** para ver los tuyos.');
+        // 🎁 «Abrir mis premios» (el aviso de ganadores, 19/11/2026: Dlx, «ver mis recompensas en un solo botón en vez de 6»):
+        // sin dueño; a quien lo toca, SUS drops para abrir, como `/drops` (efímero)
+        if (que === 'dd' && quien === 'mis') return pensandoYEditar(i, ctx, () => panelDrops(env, yo));
         // 🥚 el Nido del campeón (el aviso de ganadores, 18/11/2026) no se abre en Discord: a él solo, el link de la página
         if (que === 'dd' && quien === 'nido') return aviso('🥚 Tu **Nido** se abre en la página, con su animación: ' + HUB_URL + '/freestyle-rap/?drops=1');
         if (que === 'dd') return (quien === 'drop' || quien === 'star') ? pensandoYEditar(i, ctx, () => abrirDropChat(env, yo, quien)) : aviso('Ese botón ya no anda.');
