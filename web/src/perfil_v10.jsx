@@ -15,6 +15,7 @@ import { crewDe, useCrews } from './crews.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { pedirLigas } from './ligas_datos.js';
 import { useCompetencias } from './competencias_datos.js';
+import { bDe } from './prueba_elo.js';
 import { useAplausos } from './aplausos.js';
 import { useComentarios } from './comentarios.jsx';
 import { Felicitar, Fila } from './publicaciones2.jsx';
@@ -85,7 +86,9 @@ function useHistorico(activo, sello) {
       .then((r) => (r.ok ? r.json() : null)).catch(() => null)
       .then((j) => { histPidiendo = null; return j; });
     histPidiendo.then((j) => {
-      if (j && j.b && j.b._hist && typeof j.b._hist === 'object') { HIST = j.b._hist; histDe = sello; }
+      // 🧪 con `?prev=elo`, el histórico de la prueba en sombra del ELO nuevo (prueba_elo.js)
+      const b = bDe(j);
+      if (b && b._hist && typeof b._hist === 'object') { HIST = b._hist; histDe = sello; }
       if (vivo) setH(HIST && histDe === sello ? HIST : {});
     });
     return () => { vivo = false; };

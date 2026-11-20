@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { MESES, hora, limpio, num } from './liga.js';
 import { Alguien, Cara } from './piezas.jsx';
 import { Franja } from './ranking_a.jsx';
+import { bDe } from './prueba_elo.js';
 
 const zonaDe = (n, z) => Math.min(z, Math.floor(n / 3));
 // 🏁 EL RANKING ELO CON LA ESTRUCTURA DE LA LLAVE (el remake A del Ranking, tanda 2, 19/11/2026: Dlx, «SIGUE CON TODO»).
@@ -253,7 +254,9 @@ function useBatallas(activo, sello) {
       .then((r) => (r.ok ? r.json() : null)).catch(() => null)
       .then((j) => { batPidiendo = null; return j; });
     batPidiendo.then((j) => {
-      if (j && j.b && typeof j.b === 'object') { BAT = j.b; batDe = sello; }
+      // 🧪 con `?prev=elo`, las de la prueba en sombra del ELO nuevo (prueba_elo.js)
+      const b = bDe(j);
+      if (b && typeof b === 'object') { BAT = b; batDe = sello; }
       if (vivo) setB(BAT && batDe === sello ? BAT : {});
     });
     return () => { vivo = false; };

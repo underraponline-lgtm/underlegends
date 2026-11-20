@@ -607,7 +607,14 @@ const DIV_ELO = {
   et: 'Ranking ELO',
   baj: <>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, de Hierro a Mítico, y subes o bajas con cada batalla 1v1. Se mira cada lunes; llegar por primera vez a cada rango paga <b>Puntos de Tienda</b>.</>,
 };
-export const subDe = (liga, id) => (id === 'divisiones' && liga && liga.d.div && liga.d.div.m === 'elo' ? { ...SUBS.divisiones, ...DIV_ELO } : SUBS[id]);
+// 🪨 DESDE LA T2 (el lobby trae `et`): el ELO de temporada (docs/elo_temporada.md). Lo destapó la prueba en sombra del
+// 20/11/2026 (`?prev=elo`): este texto seguía diciendo «cada batalla 1v1»
+const DIV_ELO_T2 = {
+  et: 'Ranking ELO',
+  baj: <>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO de temporada</b>, que arranca en 0 cada temporada y sube o baja sólo con las batallas contra gente de tu área. Se mira cada lunes; llegar por primera vez a cada rango paga <b>Puntos de Tienda</b>.</>,
+};
+export const subDe = (liga, id) => (id === 'divisiones' && liga && liga.d.div && liga.d.div.m === 'elo'
+  ? { ...SUBS.divisiones, ...(liga.d.div.et ? DIV_ELO_T2 : DIV_ELO) } : SUBS[id]);
 export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'servidores', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
 
 function req(L, id) {

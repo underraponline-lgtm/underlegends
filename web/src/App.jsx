@@ -23,6 +23,7 @@ import { AvisoVersion } from './novedad.jsx';
 import { FranjaMods } from './mods.jsx';
 import { vistaMods } from './mods.js';
 import { FichaHover } from './ficha.jsx';
+import { pedirPrueba, prevElo } from './prueba_elo.js';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
@@ -615,10 +616,20 @@ export default function App() {
     pedirCalendario(D.sello).then((x) => { if (vivo && x) setCalE(x); });
     return () => { vivo = false; };
   }, [D && D.sello, pideCal]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 🧪 LA PRUEBA EN SOMBRA DEL ELO NUEVO (`?prev=elo`, ver prueba_elo.js): su `div` reemplaza al del lobby, sólo en
+  // este navegador. Mientras nadie jugó desde que arrancó, no trae `d` y se queda el de siempre
+  const [pruebaE, setPruebaE] = useState(null);
+  useEffect(() => {
+    if (!D || !prevElo()) return undefined;
+    let vivo = true;
+    pedirPrueba(D.sello).then((x) => { if (vivo) setPruebaE(x); });
+    return () => { vivo = false; };
+  }, [D && D.sello]); // eslint-disable-line react-hooks/exhaustive-deps
   const D2 = useMemo(() => {
-    const d = D && !D.ligas && ligasL ? Object.assign({}, D, { ligas: ligasL }) : D;
+    let d = D && !D.ligas && ligasL ? Object.assign({}, D, { ligas: ligasL }) : D;
+    if (d && pruebaE && pruebaE.d) d = Object.assign({}, d, { div: pruebaE.d });
     return juntarCalendario(d, calE);
-  }, [D, ligasL, calE]);
+  }, [D, ligasL, calE, pruebaE]);
   // 🙋 TU FILA SI NO ESTÁS ENTRE LOS 200 DEL LOBBY (12/11/2026): viene en tu perfil (`/api/perfiles`, `p[k].f`), que se
   // pide sólo en ese caso. Sin esto, el panel, el inventario y tus cartas te trataban como a alguien que nunca jugó
   const [yoFila, setYoFila] = useState(null);
@@ -868,6 +879,12 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv || ''} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="FranjaMods"><FranjaMods /></Aislada>
+      {/* 🧪 la prueba en sombra del ELO nuevo (`?prev=elo`, prueba_elo.js): que se note que lo que ves no es lo de todos */}
+      {prevElo() ? <p className="es-prueba-h" role="status">🧪 Prueba del ELO nuevo
+        {pruebaE && pruebaE.desde ? ' · desde el ' + pruebaE.desde.slice(8, 10) + '/' + pruebaE.desde.slice(5, 7) : ''}
+        {' · todos en 0 · sólo lo ves tú, no paga nada'}
+        {pruebaE && !pruebaE.d ? ' · todavía nadie jugó: abajo ves el ELO de siempre' : ''}
+        {' · '}<a href="?noprev=elo">quitar</a></p> : null}
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>

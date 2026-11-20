@@ -88,6 +88,10 @@ PREMIO_SUB = 150
 PREMIO_FIN = (0, 300, 600, 1000, 2000, 3500)
 
 SALIDA = os.path.join(BASE, 'datos', 'divisiones.json')
+#: 🧪 la prueba en sombra del ELO de temporada (`correr_prueba()`): aparte, para que nada de lo que paga la lea
+SALIDA_PRUEBA = os.path.join(BASE, 'datos', 'divisiones_prueba.json')
+#: 🧪 el día de arranque de la prueba en sombra MIENTRAS corre `correr_prueba()`; fuera de ahí `None`, y nada cambia
+_PRUEBA = None
 
 
 def zona(n):
@@ -168,7 +172,9 @@ def _orden(grupo, gente):
 
 def _temporada():
     """🪨 ¿Las piedras salen del ELO DE TEMPORADA (`bot/elo_temporada.py`)? Desde la T2; la T1 sigue con `bot/elo.py`, que
-    es con lo que se cobraron sus subidas."""
+    es con lo que se cobraron sus subidas. 🧪 Y mientras corre la prueba en sombra (`correr_prueba()`)."""
+    if _PRUEBA is not None:
+        return True
     import elo_temporada as ET
     return ET.prendido()
 
@@ -188,12 +194,12 @@ def _escalera():
 
 def _corte():
     """La primera semana de las divisiones por ELO: `CORTE_ELO` en la T1; desde la T2, la semana de su arranque (las de
-    antes son de la temporada anterior)."""
+    antes son de la temporada anterior). 🧪 En la prueba en sombra, la semana del día en que arrancó."""
     if not _temporada():
         return CORTE_ELO
     import elo_temporada as ET
     import multiplicadores as MU
-    ini = ET.inicio()
+    ini = _PRUEBA if _PRUEBA is not None else ET.inicio()
     if ini is None:
         return CORTE_ELO
     return MU.periodo(dt.datetime(ini.year, ini.month, ini.day, 17, tzinfo=dt.timezone.utc))[0]
@@ -356,6 +362,12 @@ def correr(filas, ahora=None, aplicar=False):
     desde = MU._arranque()
     if desde and desde > ahora:
         desde = None
+    if _PRUEBA is not None:
+        # 🧪 la prueba en sombra arranca su día: las semanas de antes son de la T1 de siempre, no de la prueba (si no,
+        # las cerraría con la regla vieja de los puntos y la tabla de ahora saldría con las divisiones de entonces)
+        from comun import temporada as T
+        pi = T._medianoche_et(_PRUEBA.isoformat())
+        desde = max(desde, pi) if desde else pi
     sem, ini, fin = MU.periodo(ahora)
     fac = MU.factor_de(filas=filas)
     semanas = puntos_por_semana(filas, fac, MU.bonos(filas), MU.periodo, desde)
@@ -426,7 +438,9 @@ def _elo_temporada_de(filas, ahora):
         if f[3]:
             raw_de.setdefault(CO.norm(f[3]), f[3])
     lunes = _lunes_desde(_corte(), MU.periodo(ahora)[0])
-    r = ET.calcular(ET.todas_las_llaves(), desde=ET.inicio(), arranque=ET.arranque(),
+    # 🧪 la prueba en sombra: desde su día y todos en 0 (Dlx: «todos inician de 0 ahora»), sin el arranque de nadie
+    desde, arr = (_PRUEBA, {}) if _PRUEBA is not None else (ET.inicio(), ET.arranque())
+    r = ET.calcular(ET.todas_las_llaves(), desde=desde, arranque=arr,
                     cortes=[dt.date.fromisoformat(s) + dt.timedelta(days=7) for s in lunes])
     ya = {k: {'elo': int(round(v['pts'])), 'n': v['n'], 'h': v['h']} for k, v in r['temp'].items()}
 
@@ -437,6 +451,38 @@ def _elo_temporada_de(filas, ahora):
     # 🪨 el histórico de cada uno que jugó la temporada, para su perfil (va con sus últimas batallas: `batallas_web()`)
     elo_al.historico = {raw_de[k]: v['elo'] for k, v in r['hist'].items() if k in raw_de}
     return elo_al, raw_de
+
+
+def correr_prueba(filas, ahora=None, aplicar=False):
+    """🧪 LA PRUEBA EN SOMBRA DEL ELO DE TEMPORADA (`elo_temporada.PRUEBA`; Dlx, 20/11/2026: «todos inician de 0 ahora, y
+    vemos cómo funciona estos días», y que la vea «sólo yo»). Las divisiones como serán desde la T2 —las piedras de 65
+    a 85, el área, la semana—, pero desde el día de la prueba y con todos en 0. Con `aplicar`, a
+    `datos/divisiones_prueba.json`; `None` si la prueba no corre.
+
+    ⚠️ NADIE LA LEE PARA PAGAR NI PARA DAR NADA: `tienda()`, las insignias, los apodos, los tiers de las crews y las
+    copas leen `divisiones.json`. Sólo la página, con `?prev=elo` (`subir_web.py` → `web:divisiones` → `prueba`). Y
+    por las dudas no lleva subidas: lo que habría pagado queda en `pagaria`, para medirlo."""
+    global _PRUEBA
+    import elo_temporada as ET
+    ini = ET.en_prueba()
+    if ini is None:
+        return None
+    _PRUEBA = ini
+    try:
+        out = correr(filas, ahora)
+    finally:
+        _PRUEBA = None
+    out['_leeme'] = ('🧪 La prueba en sombra del ELO de temporada, desde el %s y con todos en 0: la arma '
+                     'bot/divisiones.py (correr_prueba) en cada corrida y la ve sólo la página con ?prev=elo. No paga '
+                     'nada: lo que habría pagado está en `pagaria`.' % ini.isoformat())
+    out['prueba'] = ini.isoformat()
+    out['pagaria'] = {'subidas': out.get('subidas') or [], 'subs': out.get('subs') or []}
+    out['subidas'], out['subs'] = [], []
+    if aplicar:
+        with io.open(SALIDA_PRUEBA, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write('\n')
+    return out
 
 
 def leer(ruta=None):
@@ -672,6 +718,28 @@ def _self_check():
            'el histórico viaja con las últimas batallas (para el perfil), sólo desde la T2')
     finally:
         globals()['_temporada'], ET.inicio = antes
+    # 🧪 LA PRUEBA EN SOMBRA (`correr_prueba()`): la escalera de la T2 desde el día de la prueba, todos en 0, aparte
+    viejo_l, viejo_p = ET.todas_las_llaves, ET.en_prueba
+    try:
+        ET.todas_las_llaves = lambda base=None: {'1': ET._ev('2026-11-21', [('Final', [(('A', 'B'), 'A')])],
+                                                              [('A', 'Campeón'), ('B', 'Subcampeón')])}
+        ET.en_prueba = lambda temp=None: None
+        ok(correr_prueba([], l0) is None, 'sin prueba en sombra, no hay nada aparte')
+        ET.en_prueba = lambda temp=None: dt.date(2026, 11, 20)
+        t21 = dt.datetime(2026, 11, 22, 2, 0, tzinfo=utc)           # el sábado 21 a las 9 PM ET
+        pr = correr_prueba([(1, 'FFA', t21, 'A', 100), (1, 'FFA', t21, 'B', 50),
+                            (0, 'FFA', t21 - dt.timedelta(days=30), 'B', 900)], t21 + dt.timedelta(hours=1))
+        fp = {f[0]: f for gs in pr['divs'] for g in gs for f in g}
+        ok(pr['prueba'] == '2026-11-20' and pr['escalera'] == 'temporada' and pr['tramos'] == [375, 290, 210, 135, 65]
+           and fp['A'][1] > 0 and fp['B'][1] == 0 and pr['ult'] is None and pr['nivel'] == {},
+           'la prueba: el ELO de temporada desde su día y todos en 0 (A ganó, B quedó en 0, y la semana de antes no '
+           'se cierra con la regla vieja)')
+        ok(_PRUEBA is None and _escalera()[0] == TRAMOS and _corte() == CORTE_ELO,
+           'al terminar la prueba, todo vuelve a la T1')
+        ok(pr['subidas'] == [] and pr['subs'] == [] and 'pagaria' in pr,
+           'la prueba nunca paga: lo que habría pagado queda en `pagaria`')
+    finally:
+        ET.todas_las_llaves, ET.en_prueba = viejo_l, viejo_p
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))
     return not fallas
 

@@ -1119,7 +1119,8 @@ export function Competencias({ liga, dc, sub = '' }) {
         <ul className="cm9-glos">
           <li><span className="cm9-tag real">REAL</span>Se cruzaron de verdad en un evento: cuenta esa batalla, y dice en cuál.</li>
           <li><span className="cm9-tag sim">SIMULADO</span>No se cruzaron: deciden el nivel de cada uno y cómo llega, y lo vota un jurado de jueces de verdad, sorteado. Si queda dividido, puede ir a réplica. Los batacazos pasan.</li>
-          <li><span className="cm9-tag pend">65 %</span>Tus chances si se simula. Salen de tu nivel: a quién le ganaste y con quién perdiste en todas tus batallas 1v1 de la temporada.</li>
+          {/* 🪨 desde la T2 (el lobby trae `et`) las chances salen del ELO histórico: cuentan las de tres y no se reinicia */}
+          <li><span className="cm9-tag pend">65 %</span>Tus chances si se simula. Salen de tu nivel: {liga.d.div && liga.d.div.et ? 'tu ELO histórico, a quién le ganaste y con quién perdiste en todas tus batallas, de todas las temporadas.' : 'a quién le ganaste y con quién perdiste en todas tus batallas 1v1 de la temporada.'}</li>
         </ul>
         <Simulada liga={liga} C={C} />
         <h3 className="cmx-pop-t">Preguntas</h3>

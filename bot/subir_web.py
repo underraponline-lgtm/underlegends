@@ -4044,6 +4044,24 @@ def _div():
         return None, None
 
 
+def _div_prueba():
+    """🧪 La prueba en sombra del ELO de temporada (`divisiones.correr_prueba()`, Dlx 20/11/2026: «Sólo yo»):
+    `{'desde', 'd': como el `div` del lobby, 'b': sus últimas batallas y el histórico}`, o `None` si no corre. Va a
+    `CLAVE_DIVISIONES` → `prueba`, que lee sólo la página con `?prev=elo`; nunca al lobby. `d` es `None` mientras
+    nadie jugó desde que arrancó (como `para_web()`). Nunca frena nada."""
+    try:
+        import divisiones as _D
+        import elo_temporada as _ET
+        ini = _ET.en_prueba()
+        d = _D.leer(_D.SALIDA_PRUEBA) if ini else None
+        if not d or d.get('prueba') != ini.isoformat():
+            return None
+        return {'desde': d['prueba'], 'd': _D.para_web(d), 'b': _D.batallas_web(d)}
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la prueba del ELO nuevo no viaja: %s' % str(e)[:120])
+        return None
+
+
 _INS = {}
 
 
@@ -5343,10 +5361,21 @@ def main():
                          if okd else '🔴 no pude subir los duelos'))
     # ⚔️ LAS ÚLTIMAS BATALLAS DEL RANKING ELO, aparte del lobby (09/11/2026): sólo si cambió, que es cuando entra una
     # batalla 1v1. `None` fuera del modo ELO: ahí no se escribe nada
-    if div_det is not None:
-        okb = subir({'b': div_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_DIVISIONES)
-        print('   %s' % ('✓ las batallas del ELO: igual' if okb is None else '✅ las batallas del ELO, subidas (%d)'
-                         % len(div_det) if okb else '🔴 no pude subir las batallas del ELO'))
+    # 🧪 Y LA PRUEBA EN SOMBRA DEL ELO NUEVO (20/11/2026), en la MISMA clave (`prueba`): sólo la mira la página con
+    # `?prev=elo`. Cambia cuando entra un evento, igual que las batallas: no suma escrituras de KV ni rutas al Worker
+    div_pr = _div_prueba()
+    if div_det is not None or div_pr:
+        val = {'b': div_det or {}}
+        if div_pr:
+            val['prueba'] = div_pr
+        okb = subir(val, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_DIVISIONES)
+        pr_txt = ' · y la prueba del ELO nuevo' if div_pr else ''
+        if okb is None:
+            print('   ✓ las batallas del ELO%s: igual' % pr_txt)
+        elif okb:
+            print('   ✅ las batallas del ELO, subidas (%d)%s' % (len(div_det or {}), pr_txt))
+        else:
+            print('   🔴 no pude subir las batallas del ELO%s' % pr_txt)
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None

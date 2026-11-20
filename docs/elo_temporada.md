@@ -355,3 +355,24 @@ piedras se prenden solas con `ACTUAL = 't2'`.
   página publicada: el perfil de Oasis y la Guía se ven como antes.
 
 **Lo único que falta**: el 1v1 ranked (×`FORMATO_1V1`) y lo que votaba el público, cuando existan.
+
+## 9 · La prueba en sombra (desde el 20/11/2026)
+
+Dlx, 20/11/2026: *«podemos probar con el ELO ahora con el nuevo, o sea todos inician de 0 ahora, y vemos cómo funciona
+estos días, y luego lo cambiamos»*. A quién mostrarla: *«Sólo yo»* (la otra opción era para todos: todos a 0 y a
+Hierro, también en el apodo, y o se volvían a pagar las piedras —500 Puntos de Tienda cada una, 150 cada subnivel, y no
+se deshace— o se subía sin premio).
+
+- **Qué es**: el ELO de temporada de la T2, con todo lo decidido, corriendo en paralelo desde el 20/11 con **todos en
+  0** (`PRUEBA` en `bot/elo_temporada.py`). Lo arma el ciclo en cada corrida, después de las divisiones de siempre
+  (`divisiones.correr_prueba()`, desde `sheet/rankings.py`), en `datos/divisiones_prueba.json`.
+- **Quién la ve**: sólo quien abre la página con **`?prev=elo`** (queda en ese navegador; `?noprev=elo` la saca). Ahí
+  el Ranking ELO, la escalera, el perfil (con el histórico) y los textos son los de la T2, con una franja amarilla
+  arriba que lo dice. Viaja en `/api/divisiones` → `prueba` (`subir_web._div_prueba()`): la misma clave de KV que ya
+  existía, así que no suma escrituras ni rutas al Worker, y el lobby no cambia ni un byte.
+- **Qué NO hace**: no paga Puntos de Tienda ni da insignias (lo que habría pagado queda en `pagaria`, para medirlo),
+  y no toca apodos, tiers de crews ni copas: todo eso lee `datos/divisiones.json`, que sigue idéntico (probado contra
+  el código de antes con los datos de verdad). «La noche de…» y las Competencias siguen con el ELO de la T1.
+- **Cómo se apaga**: `PRUEBA = None`. Con la T2 se apaga sola (ahí el ELO de temporada ya es el de verdad).
+- **Lo que destapó al mirarla**: la explicación del Ranking ELO (`DIV_ELO` de `web/src/ranking.jsx`) y la de las
+  chances de las Competencias seguían diciendo «batallas 1v1» para la T2. Arregladas (5:48 AM).

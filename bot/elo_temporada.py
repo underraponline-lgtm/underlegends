@@ -195,6 +195,21 @@ def inicio(temp=None):
     return dt.date.fromisoformat(f[0]) if f else None
 
 
+#: 🧪 LA PRUEBA EN SOMBRA (Dlx, 20/11/2026: «podemos probar con el ELO ahora con el nuevo, o sea todos inician de 0
+#: ahora, y vemos cómo funciona estos días»; a quién mostrarla: «Sólo yo»). Desde este día corre en paralelo el ELO de
+#: temporada, todos en 0, y lo ve sólo quien abre la página con `?prev=elo`. No paga Puntos de Tienda ni da insignias, y
+#: no toca apodos, crews ni copas: vive aparte (`bot/divisiones.py` `correr_prueba()` → `datos/divisiones_prueba.json`
+#: → `web:divisiones` → `prueba`). `None` la apaga; con la T2 prendida no corre, porque ahí éste ya es el de verdad
+PRUEBA = '2026-11-20'
+
+
+def en_prueba(temp=None):
+    """El primer día de la prueba en sombra (`PRUEBA`), o `None` si no corre."""
+    if not PRUEBA or prendido(temp):
+        return None
+    return dt.date.fromisoformat(PRUEBA)
+
+
 def ruta_arranque(temp, base=BASE):
     return os.path.join(base, 'datos', '%s_elo_arranque.json' % temp)
 
@@ -557,6 +572,10 @@ def _self_check():
     ok(viejo == {} and nuevo['a']['elo'] == 1024 and fz2['1']['nivel'] == H_INI
        and fz2['1']['pre'][('a', 'b')] == [(medio, medio)],
        'desde la T2, elo.calcular() y notas.fuerzas() salen de acá: la de tres cuenta, y el ELO de antes de cada 1v1')
+    # 🧪 la prueba en sombra: corre en la T1 y se apaga sola con la T2
+    ok(en_prueba('t1') == (dt.date.fromisoformat(PRUEBA) if PRUEBA else None) and en_prueba('t2') is None,
+       'la prueba en sombra corre en la T1 (desde %s) y no en la T2, donde el ELO de temporada ya es el de verdad'
+       % (PRUEBA or 'apagada'))
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 

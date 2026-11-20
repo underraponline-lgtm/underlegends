@@ -1390,6 +1390,16 @@ def _semanales(filas):
     except Exception as e:                           # noqa: BLE001
         print('   ⚠️ las divisiones no se calcularon: %s' % str(e)[:160])
     try:
+        # 🧪 LA PRUEBA EN SOMBRA DEL ELO NUEVO (Dlx, 20/11/2026: «todos inician de 0 ahora», y que la vea «sólo yo»):
+        # aparte, a `datos/divisiones_prueba.json`, que no lee nada de lo que paga. `None` si la prueba no corre
+        import divisiones as _DV
+        _p = _DV.correr_prueba(filas, aplicar=True)
+        if _p:
+            print('   🧪 la prueba del ELO nuevo (desde el %s): %d jugando' % (
+                _p['prueba'], sum(len(g) for gs in _p['divs'] for g in gs)))
+    except Exception as e:                           # noqa: BLE001
+        print('   ⚠️ la prueba del ELO nuevo no se calculó: %s' % str(e)[:160])
+    try:
         import misiones as _MI
         _m = _MI.correr(aplicar=True)
         _s = (_m.get('semanas') or {}).get(_m.get('sem') or '') or {}
