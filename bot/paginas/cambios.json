@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.15",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T00:39:00-05:00",
+        "titulo": "Tu perfil y Privacidad, de vuelta en la computadora",
+        "items": [
+            "En la computadora, **Tu perfil** y **Privacidad y datos** de Tu cuenta salían en blanco: ya se ven enteras otra vez."
+        ]
+    },
+    {
         "version": "7.14",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T00:13:00-05:00",

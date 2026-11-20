@@ -256,7 +256,10 @@
      Una parte que no dibuja nada (Tu servidor sin entrar con Discord) no deja su borde vacío, y las que quedan se reparten
      el ancho (`auto-fit` junta las pistas que sobran) */
 .cpc-2c.tres{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.cpc-2c .cpc-parte:empty,.cpc-2c>div:not(:has(>.cpc-parte:not(:empty))){display:none}
+/*   ⚠️ SÓLO LAS COLUMNAS QUE TRAEN PARTES (20/11/2026): sin el `:has(>.cpc-parte)` de adelante escondía también las de
+     `DosCol` —una parte partida en dos, con sus cajas sueltas y sin `.cpc-parte`—, y Tu perfil y Privacidad quedaron en
+     blanco en la compu desde el 18/11 (Dlx: «aquí no hay nada»). Medido con `cajas.py`: 0 de 5 cajas visibles en las dos */
+.cpc-2c .cpc-parte:empty,.cpc-2c>div:has(>.cpc-parte):not(:has(>.cpc-parte:not(:empty))){display:none}
 @media (max-width:1100px){.cpc-2c,.cpc-2c.tres{grid-template-columns:minmax(0,1fr)}}
 /* · Hora y zona: las diez zonas de a dos (de 672 a 505 px de alto), así La app termina pareja con Instalar */
 .cpc [data-parte="hora"] .cu-lista.radio{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
