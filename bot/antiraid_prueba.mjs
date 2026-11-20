@@ -4,6 +4,8 @@
 //
 //     node bot/antiraid_prueba.mjs
 import * as AR from './antiraid.js';
+// 🧱 el panel va en V2 desde el 20/11/2026: el texto que se ve, las piezas de un tipo y los topes (bot/vista.js)
+import { textoV2 as TX, piezas as PZ, medir as MEDIR } from './vista.js';
 
 let fallas = 0;
 const ok = (c, que, extra) => {
@@ -86,17 +88,21 @@ ok(inv.test('entren a discord.gg/xyz') && inv.test('https://discord.com/invite/A
   'la regla de invitaciones agarra discord.gg y discord.com/invite');
 
 const pn = AR.panel('DDF', { canal: '', oleada: false }, '0');
-const botonesPn = pn.components.flatMap((f) => f.components);
-ok(/\*\*el dueño del servidor y Dlx\*\*/.test(pn.content) && botonesPn.find((b) => b.custom_id === 'ar:oleada').disabled
-  && /Gestionar servidor/.test(pn.content), 'el panel: sin canal no se prende la alarma, y dice qué permiso le falta al bot');
+const botonesPn = PZ(pn, [2, 8]);
+ok(/\*\*el dueño del servidor y Dlx\*\*/.test(TX(pn)) && botonesPn.find((b) => b.custom_id === 'ar:oleada').disabled
+  && /Gestionar servidor/.test(TX(pn)), 'el panel: sin canal no se prende la alarma, y dice qué permiso le falta al bot');
+// 🧱 en V2 (20/11/2026): la franja del anti-raid, entra en los topes, el canal en una fila afuera y un solo azul
+ok((pn.flags & 32768) && (pn.flags & 64) && PZ(pn, 12).some((g) => /portada-antiraid/.test(g.items[0].media.url))
+  && MEDIR(pn).problemas.length === 0 && pn.components.some((c) => c.type === 1 && c.components[0].custom_id === 'ar:canal'),
+  'el panel en V2: con su franja, dentro de los topes, el canal afuera y un solo azul', JSON.stringify(MEDIR(pn)));
 // 🤝 AUTOMÁTICO prendido por Dlx (20/10/2026): el panel lo dice, y lo que hace lleva la nota (sólo al actuar)
-ok(/lo prendió \*\*Dlx\*\*/.test(AR.panel('DDF', { canal: '1', oleada: true, auto: true, por: 'dlx' }, '8').content)
-  && !/lo prendió/.test(AR.panel('DDF', { canal: '1', oleada: true, auto: true }, '8').content)
+ok(/lo prendió \*\*Dlx\*\*/.test(TX(AR.panel('DDF', { canal: '1', oleada: true, auto: true, por: 'dlx' }, '8')))
+  && !/lo prendió/.test(TX(AR.panel('DDF', { canal: '1', oleada: true, auto: true }, '8')))
   && /Sólo el propietario del servidor o Dlx/.test(AR.NOTA_DLX) && AR.DLX === '739338101603696681',
   'AUTOMÁTICO prendido por Dlx: el panel lo dice y la nota de cuando actúa nombra al propietario y a Dlx');
 const pnA = AR.panel('DDF', { canal: '555', staff: true, auto: true }, '8');
-ok(botonesPn.find((b) => b.custom_id === 'ar:auto').disabled && /AUTOMÁTICO/.test(pnA.content) && /Nunca expulsa ni banea/.test(pnA.content) && pnA.content.length < 1800
-  && pnA.components[0].components.find((b) => b.custom_id === 'ar:auto').label === 'Apagar AUTOMÁTICO',
+ok(botonesPn.find((b) => b.custom_id === 'ar:auto').disabled && /AUTOMÁTICO/.test(TX(pnA)) && /Nunca expulsa ni banea/.test(TX(pnA)) && TX(pnA).length < 2400
+  && PZ(pnA, 2).find((b) => b.custom_id === 'ar:auto').label === 'Apagar AUTOMÁTICO' && MEDIR(pnA).problemas.length === 0,
 'AUTOMÁTICO en el panel: sin canal ni avisos prendidos no se prende, y dice que nunca expulsa ni banea');
 ok(AR.faltan('8').length === 0 && AR.faltan(String((1n << 28n) | 128n | 32n)).length === 0, 'con Administrador o los tres permisos, no falta nada');
 ok(AR.puedeResponder({ member: { permissions: '8' } }) && !AR.puedeResponder({ member: { permissions: String(1n << 28n) } }),
@@ -277,10 +283,12 @@ if (!DatabaseSync) {
   const editados = () => pedidos.filter((p) => p.u.includes('/messages/@original')).map((p) => p.b);
   let r = AR.comando(inter(OTRO), env, {}, h);
   await Promise.all(promesas.splice(0));
-  ok((await r.json()).type === 5 && /sólo el dueño/.test(editados().pop().content), '`/antiraid` de un admin que no es el dueño: no le abre el panel');
+  // 🧱 el primer mensaje ya en V2 (tipo 4, con la franja) y la edición sólo reemplaza piezas (la regla del /setup)
+  ok((await r.json()).type === 4 && /sólo el dueño/.test(TX(editados().pop())), '`/antiraid` de un admin que no es el dueño: no le abre el panel');
   r = AR.comando(inter(DUENO_G), env, {}, h);
   await Promise.all(promesas.splice(0));
-  ok(/Anti-raid de DDF/.test(editados().pop().content), 'el dueño abre su panel');
+  const ed = editados().pop();
+  ok(/Anti-raid de DDF/.test(TX(ed)) && (ed.flags & 32768) && !(ed.flags & 64), 'el dueño abre su panel (la edición va en V2 y sin el bit de efímero, que no cambia)');
   const n5 = pedidos.length;
   r = AR.componente(inter(DUENO_G, { data: { custom_id: 'ar:escudo' } }), env, {}, h);
   await Promise.all(promesas.splice(0));
@@ -297,7 +305,7 @@ if (!DatabaseSync) {
     'ni desde otro servidor');
 
   // ── la pasada de bugs del 19/10/2026: los botones ──
-  const aparteDe = () => pedidos.filter((p) => p.m === 'POST' && /\/webhooks\/app\/tok$/.test(p.u)).map((p) => p.b.content);
+  const aparteDe = () => pedidos.filter((p) => p.m === 'POST' && /\/webhooks\/app\/tok$/.test(p.u)).map((p) => TX(p.b));
   const ROL_ALTO = '600000000000000001';
   AR.componente(inter(OTRO, { data: { custom_id: 'ar:x:ok:' + G + '::' + OTRO },
     message: { embeds: [{ description: 'x' }], components: [{ type: 1, components: [{ custom_id: 'ar:x:ok:' + G + '::' + OTRO }] }] } }), env, {}, h);

@@ -64,7 +64,7 @@ API = ('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/namespaces/%
 sys.path.insert(0, BASE)
 from comun.requisitos import REQUISITOS  # noqa: E402
 from comun.requisitos import falta as REQ_FALTA  # noqa: E402
-from comun.rangos import UMBRAL  # noqa: E402
+from comun.rangos import UMBRAL, ACENTO  # noqa: E402
 sys.path.insert(0, SCR)
 import verificados as VERIF  # noqa: E402
 import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
@@ -956,6 +956,9 @@ def armar():
         'rangos': {
             'umbral': UMBRAL,
             'viejo': UMBRAL_VIEJO,
+            # 🎨 el color de cada letra, para el recuadro de los mensajes del bot (20/11/2026, Dlx: «el de tu rango en lo
+            # tuyo»): sale de acá y no se escribe en el Worker, que sería el sexto lugar donde vive el rango
+            'color': dict(ACENTO),
             'desfase': desfase_rangos([x for _, x in gente]),
         },
         # ⚠️ QUE SERVIDORES TIENEN SU CARTA ARRIBA. Se MIDE contra el

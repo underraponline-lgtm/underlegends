@@ -38,6 +38,8 @@ const AQUI = dirname(fileURLToPath(import.meta.url));
 const RAIZ = dirname(AQUI);
 
 const { default: worker, SERVIDORES } = await import('./worker.js');
+// 🧱 los mensajes van en V2 desde el 20/11/2026: el texto que se ve y las piezas de un tipo (bot/vista.js)
+const { textoV2: TX, piezas: PZ } = await import('./vista.js');
 
 const hex = (b) => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
 const par = await crypto.subtle.generateKey('Ed25519', true, ['sign', 'verify']);
@@ -218,10 +220,18 @@ for (let n = 0; n < conId.length; n++) {
                   { name: 'carta', value: c }],
       },
     });
-    const txt = r.data?.content || '';
+    const txt = TX(r.data) || '';
     if (!txt) { anotar(`${ga.n} vs ${gb.n}`, `${c}: respuesta sin texto`); continue; }
     vs++;
-    for (const bt of (r.data?.components || [])[0]?.components || []) {
+    // ⚔️ las dos cartas arriba (20/11/2026, «4A»): las mismas de /card, así que tienen que estar en R2
+    for (const g of PZ(r.data, 12)) {
+      for (const it of g.items || []) {
+        if (it.media && it.media.url && it.media.url.startsWith(R2) && !existe(it.media.url)) {
+          anotar(`${ga.n} vs ${gb.n}`, `${c}: carta del versus que no está: ${claveDe(it.media.url)}`);
+        }
+      }
+    }
+    for (const bt of PZ(r.data, 2).filter((x) => /^v:/.test(x.custom_id || ''))) {
       if (bt.custom_id.length > maxV) { maxV = bt.custom_id.length; maxVQuien = `${ga.n} vs ${gb.n}`; }
       // un botón que ofrece una categoría que no tienen los dos
       const cat = bt.custom_id.split(':')[2];

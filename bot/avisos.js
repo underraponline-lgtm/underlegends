@@ -51,6 +51,8 @@ import * as AR from './antiraid.js';
 import * as CW from './crews.js';
 import * as TI from './tienda.js';
 import * as LIV from './ligas_vivo.js';
+// 🧱 las piezas de los mensajes en V2 (20/11/2026): `kitListo()` arma ahí la llave y el afiche terminados
+import * as V from './vista.js';
 
 export const CRON_VIGIA = '* * * * *';
 
@@ -1955,7 +1957,8 @@ export async function editarConAdjunto(urlApi, urlImg, nombre, extra, headers) {
   if (!buf.byteLength || buf.byteLength > 8 * 1024 * 1024) return null;
   const png = /\.png$/i.test(nombre);
   const fd = new FormData();
-  fd.append('payload_json', JSON.stringify(Object.assign({ embeds: [], attachments: [{ id: 0, filename: nombre }],
+  const v2 = !!(extra && (Number(extra.flags) & 32768));
+  fd.append('payload_json', JSON.stringify(Object.assign(v2 ? {} : { embeds: [] }, { attachments: [{ id: 0, filename: nombre }],
     allowed_mentions: { parse: [] } }, extra || {})));
   fd.append('files[0]', new Blob([buf], { type: png ? 'image/png' : 'image/jpeg' }), nombre);
   try {
@@ -18186,12 +18189,21 @@ export class Avisos {
     const url = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/kit\/[\w.-]+\.png$/.test(String(d.url || '')) ? String(d.url) : null;
     const texto = String((url ? d.texto : d.error) || '').slice(0, 400) || (url ? '🧰' : 'No pude armarla esta vez.');
     const api = `https://discord.com/api/v10/webhooks/${k.app}/${k.token}/messages/@original`;
-    // 🖼️ como adjunto, que se ve más grande (ver `editarConAdjunto()`); si no se pudo, en el embed de antes
-    let r = url ? await editarConAdjunto(api, url, k.tipo === 'llave' ? 'llave.png' : 'afiche.png', { content: texto }) : null;
+    // 🧱 EN V2 DESDE EL 20/11/2026 (el primer mensaje de `kit()` ya lo es): la imagen adentro del recuadro del color del
+    // servidor —sin franja: la imagen ES la portada—, el texto debajo y el link a la página afuera
+    const nombre = k.tipo === 'llave' ? 'llave.png' : 'afiche.png';
+    const fila = k.tipo === 'llave' && url ? [V.enlace('Verla en la página', V.PAGINAS + '/freestyle-rap/eventos')] : [];
+    const cuerpo = (img) => {
+      const m = V.mensaje({ color: colorChat(k.sv), efimero: false, filas: [fila],
+        dentro: [img ? V.galeria({ media: { url: img }, description: k.tipo === 'llave' ? 'La llave' : 'El afiche' }) : null, V.T(texto)] });
+      return m;
+    };
+    // 🖼️ como adjunto, que se ve más grande (ver `editarConAdjunto()`); si no se pudo, la imagen de R2 en la galería
+    let r = url ? await editarConAdjunto(api, url, nombre, cuerpo('attachment://' + nombre)) : null;
     if (!r || !r.ok) {
       r = await fetch(api, {
         method: 'PATCH', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ content: texto, embeds: url ? [{ image: { url }, color: 0xE41373 }] : [], allowed_mentions: { parse: [] } }),
+        body: JSON.stringify(cuerpo(url)),
       });
     }
     return { ok: r.ok, estado: r.status };

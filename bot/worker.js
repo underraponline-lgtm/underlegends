@@ -38,6 +38,8 @@
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
 import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida, quienPide } from './avisos.js';
+// 🎨 el color de cada servidor y su ícono, los mismos del bot en vivo y de `eventos-hoy` (nunca escritos acá)
+import { colorChat, visualRed, DROP_TITULOS } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, sesionDe, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
@@ -48,6 +50,8 @@ import { normCrew } from './crews.js';
 // 🧭 /setup (19/11/2026): el paso a paso de un servidor que entra a la Liga. Todo en `bot/setup.js`; el borrador y lo
 // aplicado viven en el objeto (`setupOp()` de avisos.js)
 import * as SU from './setup.js';
+// 🧱 las piezas de los mensajes en Componentes V2 (20/11/2026, el rediseño de los comandos): un solo lugar, `bot/vista.js`
+import * as V from './vista.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -537,25 +541,33 @@ async function quienPidieron(env, i, ops, optUsuario, optNombre) {
 const ligasDe = (g) => (g && Array.isArray(g.lg) ? g.lg : []);
 const ligaDe = (g, lid) => { const l = ligasDe(g); return l.find(x => x[0] === lid) || l[0] || null; };
 
+/** 🖼️ LA IMAGEN DE UNA CARTA, en un solo lugar: la de `/card` y las dos del versus salen de acá (20/11/2026). `svAhora`:
+ *  el servidor que se muestra (la Servidor); `lg`: la liga (la de liga). */
+function urlImagen(quien, g, cual, svAhora, m, lg) {
+  // ⚡ y la de su último redibujo a pedido (`vr`): sin esto Discord seguiría mostrando la de antes de su caché
+  const v = m && m.sello ? m.sello + (g && g.vr ? '-' + g.vr : '') : '';
+  // 🖼️ con su marco en la imagen, si tiene la foto con el marco que lleva hoy (`mi`, ver bot/con_marco.py). La de
+  // Servidor, sólo la suya: la de otro servidor es otra carta
+  const conMarco = (c) => !!(g && Array.isArray(g.mi) && g.mi.includes(c));
+  if (lg) return urlCarta(quien, 'liga-' + lg[0], lg[2]);
+  if (bloqueada(g, cual)) return urlCarta(quien, 'bloq-' + cual, v);
+  if (cual === 'servidor') {
+    const urlSv = urlServidor(quien, svAhora, propiaDe(g), v);
+    return conMarco('servidor') && urlSv === urlCarta(quien, 'servidor', v) ? urlCarta(quien, 'servidor-m', v) : urlSv;
+  }
+  return urlCarta(quien, conMarco(cual) ? cual + '-m' : cual, v);
+}
+
 function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
   const enSv = cual === 'servidor';
   const enLiga = cual === 'liga';
   const lg = enLiga ? ligaDe(g, sv) : null;
-  // ⚡ y la de su último redibujo a pedido (`vr`): sin esto Discord seguiría mostrando la de antes de su caché
-  const v = m && m.sello ? m.sello + (g && g.vr ? '-' + g.vr : '') : '';
   const svAhora = enSv ? svQueVa(g, sv, aqui, m) : ((g && g.sv) || '');
-
-  // 🖼️ con su marco en la imagen, si tiene la foto con el marco que lleva hoy (`mi`, ver bot/con_marco.py). La de
-  // Servidor, sólo la suya: la de otro servidor es otra carta
-  const conMarco = (c) => !!(g && Array.isArray(g.mi) && g.mi.includes(c));
-  const urlSv = enSv ? urlServidor(quien, svAhora, propiaDe(g), v) : '';
   const componentes = [
     {
       type: COMP.GALERIA,
       items: [{
-        media: { url: lg ? urlCarta(quien, 'liga-' + lg[0], lg[2]) : bloqueada(g, cual) ? urlCarta(quien, 'bloq-' + cual, v)
-                      : enSv ? (conMarco('servidor') && urlSv === urlCarta(quien, 'servidor', v) ? urlCarta(quien, 'servidor-m', v) : urlSv)
-                             : urlCarta(quien, conMarco(cual) ? cual + '-m' : cual, v) },
+        media: { url: urlImagen(quien, g, cual, svAhora, m, lg) },
         description: lg ? `Carta de liga de ${(g && g.n) || quien} en ${lg[1]}` : `Carta ${cual} de ${(g && g.n) || quien}`,
       }],
     },
@@ -677,10 +689,10 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
   return componentes;
 }
 
-// 🔴 NO MUESTRA LAS TARJETAS: DICE QUIÉN GANA. Dlx, 20/09/2026: *«la idea es
-// que no muestre las tarjetas. La cosa es hacer quién gana básicamente»*.
-// Nació dibujando las dos cartas lado a lado y eso era otra cosa — dos
-// imágenes y que cada uno leyera los números. Acá el bot los lee y contesta.
+// 🔴 DICE QUIÉN GANA, Y DESDE EL 20/11/2026 TAMBIÉN MUESTRA LAS DOS CARTAS. Dlx, 20/09/2026: *«la idea es que no
+// muestre las tarjetas. La cosa es hacer quién gana básicamente»*; y a la maqueta de los comandos (20/11/2026), «4A»:
+// las dos cartas lado a lado, ARRIBA de la tabla. La tabla y el veredicto siguen siendo lo que contesta: las cartas son
+// las mismas de `/card` (`urlImagen()`), así que no se dibuja nada nuevo.
 //
 // ⚠️ CADA CATEGORÍA COMPARA **SU** NÚMERO, y por eso la categoría es una sola
 // para los dos. Es la primera regla del proyecto —«el número de cada carta
@@ -758,7 +770,9 @@ const vsTxt = (x, dec) => {
 // padrón es «MauzzitoEmeces»— con margen.
 const corto = (s, n) => (String(s).length > n ? String(s).slice(0, n - 1) + '…' : String(s));
 
-function versus(a, ga, b, gb, cual, dueno, m, aqui) {
+/** La cuenta del versus, sin dibujarla: `{na, nb, et, sinNumeros, quien}` o `{na, nb, et, lineas, veredicto, ganador,
+ *  marcador, nota}` (`ganador`: 'a', 'b' o null si empatan). La dibujan `versus()` (V2) y `versusTexto()` (la de antes). */
+function tablaVs(a, ga, b, gb, cual) {
   const def = VS[cual] || VS.servidor;
   const va = ((ga && ga.vs) || {})[def.k] || null;
   const vb = ((gb && gb.vs) || {})[def.k] || null;
@@ -768,15 +782,7 @@ function versus(a, ga, b, gb, cual, dueno, m, aqui) {
   // ⚠️ SIN NÚMEROS NO SE INVENTA UN EMPATE. Pasa con los 331 que tienen carta
   // de Servidor y nunca compitieron: el pipeline no les manda `vs`, y decir
   // «empatan» sería afirmar que midieron lo mismo.
-  if (!va || !vb) {
-    const quien = !va ? na : nb;
-    return {
-      content: `**${na}** vs **${nb}** · ${et}\n\n` +
-        `No tengo números de **${quien}** en esta categoría, así que no puedo ` +
-        'decir quién gana.',
-      components: botonesVs(a, ga, b, gb, cual, dueno),
-    };
-  }
+  if (!va || !vb) return { na, nb, et, sinNumeros: true, quien: !va ? na : nb };
 
   // ⚠️ EL VEREDICTO Y EL MARCADOR DE LA FILA TIENEN QUE SALIR DE LA MISMA
   // CUENTA. La primera versión los separaba: la fila «Puesto» comparaba
@@ -817,11 +823,12 @@ function versus(a, ga, b, gb, cual, dueno, m, aqui) {
                 + ' ' + mB + ' ' + vsTxt(vb[f[1]], dec).padStart(col));
   }
 
-  let veredicto;
+  let veredicto, ganador = null;
   if (da === null || db === null || da === db) {
     veredicto = `🤝 **Empatan** en ${etC}`;
   } else {
-    veredicto = `🏆 Gana **${(sgC > 0 ? da > db : da < db) ? na : nb}**`;
+    ganador = (sgC > 0 ? da > db : da < db) ? 'a' : 'b';
+    veredicto = `🏆 Gana **${ganador === 'a' ? na : nb}**`;
   }
   // ⚠️ EL AVISO DE LAS POBLACIONES DISTINTAS VA SÓLO CUANDO LO SON. Ponerlo
   // siempre lo convierte en ruido que nadie lee, y justo el día que importa
@@ -835,12 +842,40 @@ function versus(a, ga, b, gb, cual, dueno, m, aqui) {
   // ⚠️ EL CONTEO SOLO SI HAY SUB-STATS QUE CONTAR. Con una sola fila
   // debajo de la cabeza, un «0 · 0» no dice nada y ocupa un renglón.
   const marcador = (ga_ + gb_) ? `-# ${na} ${ga_} · ${nb} ${gb_}` : '';
-  return {
-    content: `⚔️ **${na}** vs **${nb}** · ${et}\n\n${veredicto}\n` +
-      '```\n' + lineas.join('\n') + '\n```\n' +
-      marcador + nota,
-    components: botonesVs(a, ga, b, gb, cual, dueno),
-  };
+  return { na, nb, et, lineas, veredicto, ganador, marcador, nota };
+}
+
+/** 🗄️ El versus de antes, en texto: sólo para los botones de un mensaje que nació sin el flag V2 (ver `legado()`). */
+function versusTexto(a, ga, b, gb, cual, dueno) {
+  const t = tablaVs(a, ga, b, gb, cual);
+  if (t.sinNumeros) {
+    return { content: `**${t.na}** vs **${t.nb}** · ${t.et}\n\nNo tengo números de **${t.quien}** en esta categoría, así que no puedo ` +
+      'decir quién gana.', components: botonesVs(a, ga, b, gb, cual, dueno) };
+  }
+  return { content: `⚔️ **${t.na}** vs **${t.nb}** · ${t.et}\n\n${t.veredicto}\n` + '```\n' + t.lineas.join('\n') + '\n```\n' +
+    t.marcador + t.nota, components: botonesVs(a, ga, b, gb, cual, dueno) };
+}
+
+/**
+ * ⚔️ EL VERSUS EN V2 (Dlx, 20/11/2026, «4A»): público, en un recuadro del color del rango de QUIEN GANA (sin color si
+ * empatan o si no tiene letra), con las dos cartas lado a lado arriba —las de `/card`— y abajo la tabla y «🏆 Gana X».
+ * Los botones de categoría van debajo y afuera, con la regla de `/card`: la que estás mirando, gris y apagada.
+ */
+function versus(a, ga, b, gb, cual, dueno, m, aqui) {
+  const t = tablaVs(a, ga, b, gb, cual);
+  const sv = cual === 'servidor' ? svDeAmbos(ga, gb, aqui, m) : null;
+  const img = (q, g, n) => ({ media: { url: urlImagen(q, g, cual, cual === 'servidor' ? svQueVa(g, sv, aqui, m) : ((g && g.sv) || ''), m, null) },
+    description: `Carta ${cual} de ${n}` });
+  const color = t.ganador === 'a' ? colorRango(m, ga && ga.rg) : t.ganador === 'b' ? colorRango(m, gb && gb.rg) : null;
+  const dentro = [V.galeria(img(a, ga, t.na), img(b, gb, t.nb)), V.T(`### ${t.na} vs ${t.nb} · ${t.et}`)];
+  if (t.sinNumeros) {
+    dentro.push(V.T(`No tengo números de **${t.quien}** en esta categoría, así que no puedo decir quién gana.`));
+  } else {
+    dentro.push(V.T('```\n' + t.lineas.join('\n') + '\n```'));
+    dentro.push(V.T(t.veredicto + (t.marcador ? '\n' + t.marcador : '') + t.nota));
+  }
+  return { flags: V2, components: [V.caja(color, dentro)].concat(botonesVs(a, ga, b, gb, cual, dueno).filter((f) => f.components.length)),
+    allowed_mentions: { parse: [] } };
 }
 
 // ⚠️ SÓLO LAS CATEGORÍAS QUE TIENEN LOS DOS, Y DESBLOQUEADAS. Es `tieneReal()`
@@ -898,19 +933,70 @@ const responder = (tipo, componentes) => new Response(JSON.stringify({
   data: { flags: V2, components: componentes },
 }), { headers: { 'content-type': 'application/json' } });
 
-// ⚠️ EL VERSUS NO USA V2 Y NO ES UN DESCUIDO. El flag V2 **desactiva
-// `content`**, y este mensaje ES texto: una tabla dentro de un bloque de
-// código. Las tarjetas van por `responder()` porque son una galería sin nada
-// escrito al lado; esto va por acá porque es exactamente lo contrario.
-// Mezclar los dos mundos hace que Discord rechace el payload entero sin decir
-// cuál de los dos campos sobraba.
-//
-// ⚠️ Y VA PÚBLICO, sin EFIMERO: es la misma decisión que la carta —Dlx,
-// 17/09— y además un versus que sólo ve quien lo pidió no tiene gracia.
+// 🗄️ EL VERSUS DE ANTES ERA TEXTO (sin V2), y desde el 20/11/2026 va en V2 con las dos cartas. Esto queda SÓLO para
+// los botones de un versus viejo, que sigue en el canal: un mensaje que nació sin el flag se edita sin el flag.
+// ⚠️ Y VA PÚBLICO, sin EFIMERO: es la misma decisión que la carta —Dlx, 17/09—.
 const responderTexto = (tipo, d) => new Response(JSON.stringify({
   type: tipo,
   data: { content: d.content, components: d.components },
 }), { headers: { 'content-type': 'application/json' } });
+
+// ── 🧱 LAS RESPUESTAS EN V2 (20/11/2026) ─────────────────────────────────────────────────────────────────────────────
+// Todo mensaje nuevo del bot sale con el flag V2 y en un recuadro (`bot/vista.js`). ⚠️ El flag NO se le pone a un mensaje
+// que nació sin él (los paneles, versus e invitaciones de antes, que siguen en el chat): `legado()` lo dice, mirando las
+// banderas del mensaje que trae el clic. Sin banderas (no debería pasar), se toma como nuevo.
+const responderV2 = (tipo, data) => V.respuesta(tipo, data);
+const legado = (i) => !!(i && i.message && typeof i.message.flags === 'number' && !(i.message.flags & V2));
+const esEfimero = (i) => !!(i && i.message && (Number(i.message.flags) & EFIMERO));
+/** Pisa el mensaje del clic (tipo 7) con uno V2; si ese mensaje es de antes (sin el flag), manda uno nuevo y efímero. */
+const editarAqui = (i, data) => (legado(i)
+  ? responderV2(RESPONDE.MENSAJE, Object.assign({}, data, { flags: V2 | EFIMERO }))
+  : responderV2(RESPONDE.ACTUALIZAR, data));
+/** Edita la respuesta de esta interacción (la de un comando, o el mensaje del botón tras un tipo 6). */
+const editarOriginal = (i, data) => fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
+  method: 'PATCH', headers: { 'content-type': 'application/json' },
+  body: JSON.stringify(Object.assign({ allowed_mentions: { parse: [] } }, data,
+    data && data.flags !== undefined ? { flags: Number(data.flags) & ~EFIMERO } : {})),
+}).catch(() => {});
+
+// 🎨 EL COLOR DE TU RANGO, del dato: `meta.rangos.color` lo escribe `bot/subir_datos.py` desde `comun/rangos.py`. Sin el
+// dato (un `meta` de antes) o sin letra (menos de 10 eventos), el recuadro va sin color: sin dato no hay pieza
+const colorRango = (m, rg) => (rg && m && m.rangos && m.rangos.color ? V.deHex(m.rangos.color[rg]) : null);
+const leerMeta = async (env) => { try { return JSON.parse((await env.KV.get('meta', { cacheTtl: 300 })) || '{}') || {}; } catch (e) { return {}; } };
+/** Quién es por su Discord ID: `{clave, g, m}` (su ficha y el meta), lo que piden el color y el nombre de un panel. */
+async function personaDe(env, did) {
+  let clave = '', g = null;
+  const [c, m] = await Promise.all([claveCarta(env, did).catch(() => null), leerMeta(env)]);
+  clave = c || '';
+  if (clave) { try { g = JSON.parse((await leerP(env, clave)) || 'null'); } catch (e) { g = null; } }
+  return { clave, g, m: m || {} };
+}
+// 🙂 TU CARA AL COSTADO: la foto congelada de la temporada (R2, la de tus cartas) si está; si no, tu avatar de Discord, que
+// viene en el pedido firmado; si no hay ninguna, nada. ⚠️ Sólo en lo que ves tú (efímero): la dirección de la foto no
+// se adivina (lleva sal) y no tiene que quedar a la vista de un canal.
+async function caraDe(env, i, clave) {
+  if (clave && env.CARTAS) {
+    try {
+      const k = claveFoto(env, clave);
+      const h = await env.CARTAS.head(k);
+      if (h) return `${R2}/${k}?v=${encodeURIComponent(String(h.etag || h.size || '1')).slice(0, 40)}`;
+    } catch (e) { /* sin R2, la de Discord */ }
+  }
+  const { id, hash } = avatarDe(i);
+  return id && hash ? `https://cdn.discordapp.com/avatars/${id}/${hash}.webp?size=128` : '';
+}
+const nombreDe = (g, clave) => String((g && g.n) || clave || '').replace(/[`*_~|<>@]/g, '');
+/**
+ * La ficha de un comando: la franja de su familia, el título (con la cara o el escudo al costado), lo de adentro y las
+ * filas de botones afuera. `cuerpo`: textos, `'—'` (un separador) o piezas hechas.
+ */
+function ficha(o) {
+  const cabeza = o.cabeza || ((o.titulo ? '### ' + o.titulo : '') + (o.sub ? (o.titulo ? '\n' : '') + '-# ' + o.sub : ''));
+  const dentro = [cabeza ? V.seccion(cabeza, o.acc || V.mini(o.cara)) : null];
+  for (const c of o.cuerpo || []) dentro.push(c === '—' ? V.SEP : typeof c === 'string' ? (c ? V.T(c) : null) : c);
+  return V.mensaje({ color: o.color, familia: o.fam === undefined ? null : o.fam, dentro, filas: o.filas || [],
+    efimero: o.efimero !== false, arriba: o.arriba, menciones: o.menciones });
+}
 
 // ⚠️ UN BOTÓN DE LINK NO ES UN BOTÓN. Estilo 5, lleva `url` y **no lleva
 // `custom_id`**: Discord lo dibuja como botón pero al apretarlo abre el link
@@ -941,8 +1027,7 @@ const botonAvisos = (ocupados) => (ocupados < 5
   ? [{ type: 2, style: 5, label: 'Avisos', emoji: { name: '🔔' }, url: AVISOS_URL }]
   : []);
 
-const filaDe = (botones) =>
-  (botones && botones.length) ? [{ type: 1, components: botones.slice(0, 5) }] : [];
+// (la fila de botones de los mensajes de antes, `filaDe()`, se fue el 20/11/2026: las arma `V.fila()` de bot/vista.js)
 
 /** 🗳️ Anota el voto y devuelve el texto para quien votó. */
 async function votoChat(env, did, id, lado) {
@@ -1074,10 +1159,9 @@ export function perfilesNoche(f) {
   return { texto: t.join('\n').slice(0, 1990), botones };
 }
 
-const aviso = (txt, botones) => new Response(JSON.stringify({
-  type: RESPONDE.MENSAJE,
-  data: { flags: EFIMERO, content: txt, components: filaDe(botones) },
-}), { headers: { 'content-type': 'application/json' } });
+// 🚧 EL AVISO, EN UN RECUADRO CHICO Y SIN COLOR (Dlx, 20/11/2026: «5A»). Es la respuesta de ~140 lugares —errores, el
+// freno, «eso es de otra persona»—: se cambió acá y no en cada uno. Sin franja: la franja no va nunca en un error
+const aviso = (txt, botones) => responderV2(RESPONDE.MENSAJE, V.avisoMsg(txt, botones));
 
 // ⚠️ EL FRENO CONTESTA CON UN MENSAJE NUEVO Y EFÍMERO (tipo 4), NUNCA CON
 // ACTUALIZAR. Con el 7 la respuesta pisaría la carta pública y el castigo por
@@ -1085,7 +1169,7 @@ const aviso = (txt, botones) => new Response(JSON.stringify({
 // que el freno quiere evitar. Es la misma razón que el aviso de «esa carta la
 // pidió otra persona».
 const espera = (seg) => aviso(
-  `Para un poco 🙂 Prueba de nuevo en **${seg} s**.`);
+  `**Para un poco** 🙂\n-# Prueba de nuevo en **${seg} s**.`);
 
 // ── La invitación ─────────────────────────────────────────────────────────
 // ⚠️ EL BOT NO PUEDE SABER EN QUÉ SERVIDORES ESTÁS, y conviene tenerlo claro
@@ -1202,18 +1286,38 @@ const botonEventos = () => ({ type: 2, style: 5, label: 'Ver los próximos event
 
 // 🔑 QUÉ PIDE CADA CARTA (Dlx, 05/10/2026: «si alguien nuevo usa el comando, que le diga que tiene que verificarse
 // en la página… y así desbloquea la tarjeta de servidor para cada sv que él se encuentre», «C», «nivel 1»). Sin
-// verificarse, ninguna; la Temporada es la recompensa del nivel 1 del Pase. Lo usan `/card` y `/versus`; la regla
-// vive en `bot/verificados.puede()`
-const QUE_PIDE = '1️⃣ **Verifícate en la página**: se desbloquea tu **Servidor**, ' +
-  'la de cada servidor donde estás.\n' +
-  '2️⃣ **Cumplí tu primera Tarea del Pase de rapero** y se desbloquea tu **Temporada**. Si todavía no jugaste, ' +
-  'sale con «—» y se llena con tu primer evento.\n' +
-  'La **Competitiva** pide 10 eventos y la de **País**, 3 cruces nacionales y 3 internacionales (en un 1 contra 1 o en un triple).';
+// verificarse, ninguna; la Temporada es la recompensa del nivel 1 del Pase. Lo dicen `/card` y `/versus` con
+// `dosPasos()` (era el texto `QUE_PIDE` hasta el 20/11/2026, que además decía «Cumplí»: voseo); la regla vive en
+// `bot/verificados.puede()`
 // 🎟️ el Pase, donde están las Tareas de la semana
 const URL_PASE = 'https://underlegends.pages.dev/freestyle-rap/pase';
 // 🎒 el Inventario (26/10/2026): `/<carta>` lo abre en esa carta
 const URL_INVENTARIO = 'https://underlegends.pages.dev/freestyle-rap/inventario';
-const botonPase = () => ({ type: 2, style: 5, label: 'Ver el Pase', url: URL_PASE });
+
+/**
+ * 🃏 «TODAVÍA NO TIENES TARJETA», COMO DOS FILAS CON SU BOTÓN (Dlx, 20/11/2026, la maqueta): lo que hoy eran 800 letras
+ * pasa a dos pasos, cada uno con su botón al costado —el de verificarse y el del Pase—, y lo demás en letra chica. Es lo
+ * que decía `QUE_PIDE`, en ficha. `{aqui, titulo, sub, nota, eventos}`: `nota` va al pie; `eventos`, «Ver los próximos».
+ */
+function dosPasos(o) {
+  const enDra = o.aqui === VERIFICA.sv;
+  return ficha({ fam: 'cartas', titulo: o.titulo, sub: o.sub,
+    cuerpo: ['—',
+      V.seccion('**1 · Verifícate en la página**\n-# Se desbloquea tu **Servidor**, la de cada servidor donde estás.' +
+        (enDra ? '' : ' Si no estás en **Discord Rap Español**, la página te mete.'), V.enlace('Verificarme', URL_VERIFICAR)),
+      V.seccion('**2 · Cumple tu primera Tarea del Pase de rapero**\n-# Se desbloquea tu **Temporada**. Si todavía no jugaste, ' +
+        'sale con «—» y se llena con tu primer evento.', V.enlace('Ver el Pase', URL_PASE)),
+      '—',
+      '-# La **Competitiva** pide 10 eventos y la de **País**, 3 cruces nacionales y 3 internacionales (en un 1 contra 1 o en ' +
+        'un triple).' + (o.nota ? '\n-# ' + o.nota : '')],
+    filas: [o.eventos ? [botonEventos()] : []] });
+}
+const ANOTE_CORTO = '✍️ Ya te anoté: si Discord sabe tu país (bandera en tu apodo o un rol de país), quedas en la Lista en ' +
+  'menos de una hora; si no, te lo pido en la página.';
+/** Lo que no puede esperar al objeto dormido (~4 s en frío): lo que llegue antes de `ms`, o `siNo`. Lo que no llegó sigue
+ *  en el fondo (y despierta al objeto para lo que viene). */
+const aTiempo = (p, ms, siNo) => Promise.race([Promise.resolve(p).catch(() => siNo),
+  new Promise((r) => setTimeout(() => r(siNo), ms))]);
 
 // «Verificate…» -> «verificate…», para seguir una frase
 const minuscula = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t);
@@ -1253,12 +1357,13 @@ function luego(ctx, promesa) {
   else promesa.catch(() => {});
 }
 
-const seguir = (i, txt, botones) =>
+// 🧱 en V2 (20/11/2026): un mensaje aparte, efímero, en el mismo recuadro chico que `aviso()`. `data` en vez de texto: uno
+// ya armado (`ficha()`)
+const seguir = (i, txt, botones, data) =>
   fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      flags: EFIMERO, content: txt, components: filaDe(botones) }),
+    body: JSON.stringify(data || V.avisoMsg(txt, botones)),
   });
 
 // ═══ 🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (Discord, tanda 1, 17/11/2026) ═══════════════════════════════════════════
@@ -1279,31 +1384,33 @@ const alObjeto = (env, ruta, cuerpo) => env.AVISOS.get(env.AVISOS.idFromName('li
   method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}),
 }).then((r) => r.json()).catch(() => ({ error: 'red' }));
 
-/** «Pensando» ya, y el mensaje (efímero) cuando `trabajo()` termina: `{content, components}` */
-function pensandoYEditar(i, ctx, trabajo) {
+/**
+ * «Un momento» ya, y el mensaje (efímero) cuando `trabajo()` termina: un mensaje V2 (`ficha()`).
+ *
+ * ⚠️ NO ES EL «PENSANDO» (tipo 5) DESDE EL 20/11/2026: el primer mensaje sale YA en V2 —con la franja de su familia y un
+ * «⏳ Un momento…»— y la edición reemplaza sus piezas. Es la regla del `/setup` (`cargando()`): así la edición nunca tiene
+ * que CAMBIAR el formato de un mensaje, que Discord no deja deshacer. `familia`: la franja que lleva desde el primer momento.
+ */
+function pensandoYEditar(i, ctx, trabajo, familia = null) {
   luego(ctx, (async () => {
     let data;
-    try { data = await trabajo(); } catch (e) { data = { content: 'No pude: prueba de nuevo en un minuto.' }; }
-    await fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
-      method: 'PATCH', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(Object.assign({ allowed_mentions: { parse: [] } }, data)),
-    }).catch(() => {});
+    try { data = await trabajo(); } catch (e) { data = V.avisoMsg('No pude: prueba de nuevo en un minuto.'); }
+    await editarOriginal(i, V.aV2(data, true));
   })());
-  return new Response(JSON.stringify({ type: RESPONDE.PENSANDO, data: { flags: EFIMERO } }), { headers: { 'content-type': 'application/json' } });
+  return responderV2(RESPONDE.MENSAJE, V.momentoMsg(familia, true));
 }
 
-/** «Ya va» sin mensaje nuevo (tipo 6), y el MISMO mensaje del botón editado cuando `trabajo()` termina: `{content, embeds,
- *  components}`. Para lo que pide el objeto desde un botón que tiene que cambiar su propio mensaje (abrir el Drop) */
-function actualizarLuego(i, ctx, trabajo) {
+/** «Ya va» sin mensaje nuevo (tipo 6), y el MISMO mensaje del botón editado cuando `trabajo()` termina (un mensaje V2).
+ *  Para lo que pide el objeto desde un botón que tiene que cambiar su propio mensaje (abrir el Drop, el menú de /equipar).
+ *  ⚠️ Un mensaje de antes (sin el flag) no se edita: se le contesta con uno nuevo (`pensandoYEditar()`) */
+function actualizarLuego(i, ctx, trabajo, familia = null) {
+  if (legado(i)) return pensandoYEditar(i, ctx, trabajo, familia);
   luego(ctx, (async () => {
     let data;
-    try { data = await trabajo(); } catch (e) { data = { content: 'No pude: prueba de nuevo en un minuto.', embeds: [], components: [] }; }
-    await fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
-      method: 'PATCH', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(Object.assign({ allowed_mentions: { parse: [] } }, data)),
-    }).catch(() => {});
+    try { data = await trabajo(); } catch (e) { data = V.avisoMsg('No pude: prueba de nuevo en un minuto.'); }
+    await editarOriginal(i, V.aV2(data, true));
   })());
-  return new Response(JSON.stringify({ type: 6 }), { headers: { 'content-type': 'application/json' } });
+  return V.respuesta(6);
 }
 
 // ── 🎞️ EL DROP SE ABRE A TOQUES, CON LA ANIMACIÓN DE LA PÁGINA (20/11/2026) ─────────────────────────────────────────
@@ -1342,7 +1449,8 @@ export function leerDt(id) {
 const dtDe = (e, k) => `dt:${e.anim === 'star' ? 's' : 'd'}:${e.id}:${k}.${e.base}.${e.fin}.${e.plan.join('')}`;
 //: la rareza después de `k` toques
 const rzTrasToques = (e, k) => Math.min(e.fin, e.base + e.plan.slice(0, k).reduce((a, b) => a + b, 0));
-/** Una pantalla del Drop: el GIF, la rareza que se ve, los toques y el botón. `{content, embeds, components}` */
+/** Una pantalla del Drop, en V2 (20/11/2026): el GIF arriba —la animación ES la portada, sin franja—, la rareza que se ve,
+ *  los toques y el botón, debajo y afuera. El recuadro lleva el color de la rareza, el de la página (`RZ` en drops_show.js) */
 export function pantallaDrop(e, k, gif) {
   const r = rzTrasToques(e, k), listo = k >= DROP_TOQUES;
   const pips = Array.from({ length: DROP_TOQUES }, (_, i) => (i < k ? '●' : '○')).join(' ');
@@ -1352,12 +1460,10 @@ export function pantallaDrop(e, k, gif) {
   const boton = listo
     ? { type: COMP.BOTON, style: 3, label: 'Abrir', emoji: { name: '🐉' }, custom_id: dtDe(e, DROP_TOQUES + 1) }
     : { type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Tap', emoji: { name: '👆' }, custom_id: dtDe(e, k + 1) };
-  return {
-    content: '',
-    embeds: [{ color: DROP_COLOR[r] || DROP_COLOR[0], title: '🐉 ' + que + ' · ' + RAREZA_NOMBRE[r], description: pista + '\n' + pips,
-      image: { url: gif } }],
-    components: filaDe([boton]),
-  };
+  return V.mensaje({ color: DROP_COLOR[r] || DROP_COLOR[0], efimero: true,
+    dentro: [V.galeria({ media: { url: gif }, description: que + ' · ' + RAREZA_NOMBRE[r] }),
+      V.T('### ' + que + ' · ' + RAREZA_NOMBRE[r] + '\n' + pista + '\n-# ' + pips)],
+    filas: [[boton]] });
 }
 /** Un toque (el `k`-ésimo, del 1 al 4): si sube, el GIF de la subida; si no, se sacude. Con el cuarto, brilla */
 export function toqueDrop(e) {
@@ -1369,48 +1475,57 @@ export function toqueDrop(e) {
 
 const tipoDeDrop = (o) => (/^star:/.test(String(o || '')) ? 'star' : /^nido:/.test(String(o || '')) ? 'nido' : /^cofre5:/.test(String(o || '')) ? 'cofre' : 'drop');
 const plural = (n, uno, varios) => n + ' ' + (n === 1 ? uno : varios);
+//: el arte del Drop que usa la página (los GIF de `herramientas/gif_drops.py`): la llegada del común, en Maqueta
+const ARTE_DROP = () => gifDrop('drop', 'entra', 0);
 
-/** 🐉 Lo de `/drops`: cuántos tienes para abrir, los botones del Drop y el Star, y la página para el resto */
-async function panelDrops(env, did) {
-  const j = await alObjeto(env, 'drops', { quien: did });
-  if (!j || !j.ok) return { content: 'No pude ver tus drops: prueba de nuevo en un minuto.' };
+/** 🐉 Lo de `/drops` (Dlx, 20/11/2026, la maqueta): cada tipo en su fila con su botón al costado, un solo azul (el que
+ *  más tienes). El Drop y el Star se abren acá y cambian ESTE mensaje; el Nido y los cofres, en la página */
+async function panelDrops(env, did, i) {
+  const [j, yo] = await Promise.all([alObjeto(env, 'drops', { quien: did }), personaDe(env, did)]);
+  if (!j || !j.ok) return V.avisoMsg('No pude ver tus drops: prueba de nuevo en un minuto.');
   const cerr = (j.cerrados || []).map((x) => Object.assign({}, x, { t: x.tipo || tipoDeDrop(x.origen) }));
   const cuenta = (t) => cerr.filter((x) => x.t === t).length;
   const traba = j.miembro === false;
   const meritos = cerr.filter((x) => /merito/.test(String(x.origen || ''))).length;
+  const color = colorRango(yo.m, yo.g && yo.g.rg);
+  const nom = nombreDe(yo.g, yo.clave);
   if (!cerr.length) {
-    return { content: '🐉 **No tienes drops para abrir.** Se ganan con la barra del día en la página, jugando y ganando eventos.',
-      components: filaDe([botonLink('Abrir la página', URL_DROPS)]) };
+    return ficha({ fam: 'drops', color, titulo: 'No tienes drops para abrir', acc: V.mini(ARTE_DROP()),
+      sub: 'Se ganan con la barra del día en la página, jugando y ganando eventos.',
+      filas: [[V.enlace('Abrir la página', URL_DROPS)]] });
   }
-  const partes = [[cuenta('drop'), 'Drop', 'Drops'], [cuenta('star'), 'Star', 'Stars'], [cuenta('nido'), 'Nido', 'Nidos'], [cuenta('cofre'), 'cofre', 'cofres']]
-    .filter((x) => x[0]).map((x) => plural(x[0], x[1], x[2]));
-  const lineas = ['🐉 **Tienes ' + plural(cerr.length, 'drop', 'drops') + ' para abrir:** ' + partes.join(' · ') + '.'];
-  const bots = [];
   const puede = (t) => cerr.some((x) => x.t === t && !(traba && /merito/.test(String(x.origen || ''))));
-  if (puede('drop')) bots.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Abrir un Drop', custom_id: 'dd:drop:x:' + did });
-  if (puede('star')) bots.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Abrir un Star', custom_id: 'dd:star:x:' + did });
-  if (cuenta('nido') || cuenta('cofre')) lineas.push('Los Nidos y los cofres se abren en la página, con su animación.');
-  if (traba && meritos) {
-    lineas.push('🔒 ' + plural(meritos, 'lo ganaste', 'los ganaste') + ' compitiendo: se abren siendo **Miembro de DRA**. Vincula tu cuenta con **`/vincular`** y quedan listos.');
-  }
-  bots.push(botonLink('Abrir en la página', URL_DROPS));
-  return { content: lineas.join('\n'), components: filaDe(bots) };
+  const nD = cuenta('drop'), nS = cuenta('star'), nN = cuenta('nido'), nC = cuenta('cofre');
+  // un solo azul: el de lo que más tienes para abrir acá
+  const azul = puede('drop') && (nD >= nS || !puede('star')) ? 'drop' : puede('star') ? 'star' : '';
+  const linea = (n, uno, que, acc) => (n ? V.seccion(`**${uno}** × ${n}\n-# ${que}`, acc) : null);
+  const abrir = (t, n) => (puede(t) ? V.boton(n > 1 ? 'Abrir uno' : 'Abrir', 'dd:' + t + ':x:' + did, azul === t ? 1 : 2) : null);
+  return ficha({ fam: 'drops', color, titulo: plural(cerr.length, 'drop', 'drops') + ' para abrir', acc: V.mini(ARTE_DROP()),
+    sub: nom ? 'Los Dragón Drops de ' + nom : 'Tus Dragón Drops',
+    cuerpo: ['—',
+      linea(nD, 'Drop', 'De Maqueta a Micrófono de Oro', abrir('drop', nD)),
+      linea(nS, 'Star', 'La escama azul: desde Vinilo', abrir('star', nS)),
+      linea(nN, 'Nido', 'Se abre en la página, con su animación', V.enlace('Abrir', URL_DROPS)),
+      linea(nC, 'Cofre', 'Se abre en la página, con su animación', V.enlace('Abrir', URL_DROPS)),
+      traba && meritos ? '🔒 ' + plural(meritos, 'lo ganaste', 'los ganaste') + ' compitiendo: se abren siendo **Miembro de DRA**. ' +
+        'Vincula tu cuenta con **`/vincular`** y quedan listos.' : ''],
+    filas: [[V.enlace('Abrir en la página', URL_DROPS)]] });
 }
 
 /** 🐉 Abre el primer Drop o Star cerrado de quien tocó y dice qué salió */
 async function abrirDropChat(env, did, tipo) {
   const j = await alObjeto(env, 'drops', { quien: did });
-  if (!j || !j.ok) return { content: 'No pude ver tus drops: prueba de nuevo en un minuto.' };
+  if (!j || !j.ok) return V.avisoMsg('No pude ver tus drops: prueba de nuevo en un minuto.');
   const traba = j.miembro === false;
   const cerr = (j.cerrados || []).filter((x) => (x.tipo || tipoDeDrop(x.origen)) === tipo);
   const x = cerr.find((y) => !(traba && /merito/.test(String(y.origen || ''))));
   if (!x) {
-    if (cerr.length && traba) return { content: '🔒 Ése lo ganaste compitiendo: se abre siendo **Miembro de DRA**. Vincula tu cuenta con **`/vincular`**.' };
-    return { content: tipo === 'star' ? 'No te quedan Stars para abrir.' : 'No te quedan Drops para abrir.', components: filaDe([botonLink('Ver mis drops', URL_DROPS)]) };
+    if (cerr.length && traba) return V.avisoMsg('🔒 Ése lo ganaste compitiendo: se abre siendo **Miembro de DRA**. Vincula tu cuenta con **`/vincular`**.');
+    return V.avisoMsg(tipo === 'star' ? 'No te quedan Stars para abrir.' : 'No te quedan Drops para abrir.', [botonLink('Ver mis drops', URL_DROPS)]);
   }
   const r = await alObjeto(env, 'drop-abrir', { quien: did, id: Number(x.id) });
   if (!r || !r.ok) {
-    return { content: r && r.error === 'vincula' ? '🔒 Ése se abre siendo **Miembro de DRA**: `/vincular`.' : 'No pude abrirlo: prueba de nuevo en un minuto.' };
+    return V.avisoMsg(r && r.error === 'vincula' ? '🔒 Ése se abre siendo **Miembro de DRA**: `/vincular`.' : 'No pude abrirlo: prueba de nuevo en un minuto.');
   }
   // 🎞️ ya está abierto y pagado; lo que sigue es la animación (ver `pantallaDrop()`). Arranca en la rareza mínima del
   // drop (un Star, en Vinilo) y sube en los toques que diga el plan, hasta lo que salió
@@ -1427,45 +1542,73 @@ async function premioDropChat(env, did, e) {
   const tipo = e.anim === 'star' ? 'star' : 'drop';
   const [r, j] = await Promise.all([alObjeto(env, 'drop-abrir', { quien: did, id: e.id }), alObjeto(env, 'drops', { quien: did })]);
   if (!r || !r.ok) {
-    return { content: 'No pude mostrarlo: prueba de nuevo en un minuto. Lo que te salió ya es tuyo.', embeds: [],
-      components: filaDe([botonLink('Ver mis drops', URL_DROPS)]) };
+    return V.avisoMsg('No pude mostrarlo: prueba de nuevo en un minuto. Lo que te salió ya es tuyo.', [botonLink('Ver mis drops', URL_DROPS)]);
   }
   const cerr = ((j && j.cerrados) || []).filter((y) => (y.tipo || tipoDeDrop(y.origen)) === tipo);
   const fin = Math.max(0, Math.min(4, Number(r.rareza) || 0));
-  // el texto arriba (lo que te llevas: el número cambia en cada drop, así que no va en el GIF) y la apertura debajo
-  return Object.assign(textoPremioDrop(r, tipo, cerr.length, did), {
-    embeds: [{ color: DROP_COLOR[fin], image: { url: r.titulo ? gifDrop(e.anim, 'titulo', fin, r.titulo) : gifDrop(e.anim, 'abre', fin) } }],
-  });
+  return textoPremioDrop(r, tipo, cerr.length, did, r.titulo ? gifDrop(e.anim, 'titulo', fin, r.titulo) : gifDrop(e.anim, 'abre', fin));
 }
 
-/** El texto y los botones del premio, sin la imagen: lo que dice el bot con la apertura. `quedan`: los que siguen cerrados */
-export function textoPremioDrop(r, tipo, quedan, did) {
+//: 🌟 desde Vinilo un Drop se puede mostrar en el canal (Dlx, 20/11/2026: «6C»)
+const DROP_MOSTRAR = 2;
+/** Lo que te llevaste, en una frase. */
+const premioDe = (r) => (r.titulo ? 'el título **«' + r.titulo + '»**' + (r.puntos ? ' y **+' + milesChat(r.puntos) + '** Puntos de Tienda' : '')
+  : '**+' + milesChat(r.puntos) + '** Puntos de Tienda');
+/** El botón «Mostrarlo en el canal»: `dm:<d|s>:<rareza>:<puntos>:<título>` (el título, por su lugar en `DROP_TITULOS`) */
+const idMostrar = (r, tipo) => {
+  const t = r.titulo ? (DROP_TITULOS[r.rareza] || []).indexOf(r.titulo) : -1;
+  return ['dm', tipo === 'star' ? 's' : 'd', Number(r.rareza) || 0, Math.max(0, Math.round(Number(r.puntos) || 0)), t >= 0 ? t : '-'].join(':');
+};
+/** Lo que te salió (efímero): la apertura arriba, lo que te llevas abajo, y los botones afuera (abrir otro, mostrarlo en el
+ *  canal si es bueno, la página). `quedan`: los que siguen cerrados; `gif`: la apertura (sin él, sólo el texto) */
+export function textoPremioDrop(r, tipo, quedan, did, gif) {
   const nom = r.nombre || RAREZA_NOMBRE[r.rareza] || '';
-  const premio = r.titulo ? 'el título **«' + r.titulo + '»**' + (r.puntos ? ' y **+' + milesChat(r.puntos) + '** Puntos de Tienda' : '')
-    : '**+' + milesChat(r.puntos) + '** Puntos de Tienda';
+  const fin = Math.max(0, Math.min(4, Number(r.rareza) || 0));
+  const uno = tipo === 'star' ? 'Star' : 'Drop', varios = tipo === 'star' ? 'Stars' : 'Drops';
   const bots = [];
   if (quedan > 0) bots.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: tipo === 'star' ? 'Abrir otro Star' : 'Abrir otro Drop', custom_id: 'dd:' + tipo + ':x:' + did });
+  if (fin >= DROP_MOSTRAR) bots.push(V.boton('Mostrarlo en el canal', idMostrar(r, tipo), ESTILO.SECUNDARIO, { emoji: { name: '📣' } }));
   bots.push(botonLink('Ver en la página', URL_DROPS));
-  return { content: '🐉 **' + (tipo === 'star' ? 'Star' : 'Drop') + ' abierto: ' + nom + '.** Te llevas ' + premio + '.'
-    + (r.sin_tope ? '\n*(Esta semana ya pasaste el tope: lo de arriba de 10.000 va a la mitad.)*' : '')
-    + (quedan > 0 ? '\nTe quedan ' + plural(quedan, tipo === 'star' ? 'Star' : 'Drop', tipo === 'star' ? 'Stars' : 'Drops') + '.' : ''),
-  components: filaDe(bots) };
+  return V.mensaje({ color: DROP_COLOR[fin], efimero: true, filas: [bots],
+    dentro: [gif ? V.galeria({ media: { url: gif }, description: uno + ' abierto: ' + nom }) : null,
+      V.T('### 🐉 ' + uno + ' abierto: ' + nom + '\nTe llevas ' + premioDe(r) + '.'
+        + (r.sin_tope ? '\n-# Esta semana ya pasaste el tope: lo de arriba de 10.000 va a la mitad.' : '')
+        + (quedan > 0 ? '\n-# Te ' + (quedan === 1 ? 'queda ' : 'quedan ') + plural(quedan, uno, varios) + '.' : ''))] });
 }
 
-/** 💰 Lo de `/billetera` */
-async function panelBilletera(env, did) {
-  const c = await datosApuesta(env, did);
-  if (!c) return { content: 'La billetera todavía no está lista: prueba en un rato.' };
-  const j = await alObjeto(env, 'billetera', { quien: did, inicial: c.inicial, desde: c.desde });
-  if (!j || !j.ok) return { content: 'No pude ver tu billetera: prueba de nuevo en un minuto.' };
+/** 📣 «Mostrarlo en el canal»: lo mismo, público y sin que suene nadie (la mención dice quién, no avisa). Todo sale del
+ *  botón: no hay nada que leer, así que contesta al toque. `null` si el botón no se entiende */
+export function mostrarDrop(cid, did) {
+  const m = /^dm:([ds]):([0-4]):(\d{1,9}):(\d|-)$/.exec(String(cid || ''));
+  if (!m || !/^\d{5,25}$/.test(String(did || ''))) return null;
+  const star = m[1] === 's', rz = Number(m[2]);
+  if (rz < DROP_MOSTRAR) return null;
+  const titulo = m[4] === '-' ? '' : ((DROP_TITULOS[rz] || [])[Number(m[4])] || '');
+  const r = { rareza: rz, puntos: Number(m[3]), titulo };
+  const anim = star ? 'star' : 'drop';
+  const que = star ? 'un Star Dragon' : 'un Dragón Drop';
+  return V.mensaje({ color: DROP_COLOR[rz], efimero: false, menciones: { parse: [] },
+    dentro: [V.galeria({ media: { url: titulo ? gifDrop(anim, 'titulo', rz, titulo) : gifDrop(anim, 'abre', rz) }, description: RAREZA_NOMBRE[rz] }),
+      V.T('### <@' + did + '> abrió ' + que + ': ' + RAREZA_NOMBRE[rz] + '\nSe lleva ' + premioDe(r) + '.')],
+    filas: [[botonLink('Abrir los míos', URL_DROPS)]] });
+}
+
+/** 💰 Lo de `/billetera` (la maqueta): el número grande arriba, con tu cara al costado y el color de tu rango */
+async function panelBilletera(env, did, i) {
+  const [c, yo] = await Promise.all([datosApuesta(env, did), personaDe(env, did)]);
+  if (!c) return V.avisoMsg('La billetera todavía no está lista: prueba en un rato.');
+  const [j, cara] = await Promise.all([alObjeto(env, 'billetera', { quien: did, inicial: c.inicial, desde: c.desde }), caraDe(env, i, yo.clave)]);
+  if (!j || !j.ok) return V.avisoMsg('No pude ver tu billetera: prueba de nuevo en un minuto.');
   const ahora = Date.now();
   const act = (j.mios || []).filter((m) => !m.estado && m.fin > ahora);
   const enJuego = act.reduce((a, m) => a + (Number(m.monto) || 0), 0);
-  return { content: ['💰 **Tienes ' + milesChat(j.saldo) + ' Puntos de Tienda.**',
-    '· Cobrado cazando esta temporada: **' + milesChat(j.cobrado) + '**',
-    act.length ? '· En juego: **' + milesChat(enJuego) + '** en ' + plural(act.length, 'cabeza', 'cabezas') + ' (si nadie las caza, vuelven)' : '',
-    'Se ganan jugando, entrando cada día, con el Pase, cazando y con los Dragón Drops.'].filter(Boolean).join('\n'),
-  components: filaDe([botonLink('Ir a la Tienda', URL_TIENDA)]) };
+  const nom = nombreDe(yo.g, yo.clave);
+  return ficha({ fam: 'tienda', color: colorRango(yo.m, yo.g && yo.g.rg), titulo: milesChat(j.saldo) + ' Puntos de Tienda', cara,
+    sub: nom ? 'La billetera de ' + nom : 'Tu billetera',
+    cuerpo: ['—', ['Cobrado cazando esta temporada: **' + milesChat(j.cobrado) + '**',
+      act.length ? 'En juego: **' + milesChat(enJuego) + '** en ' + plural(act.length, 'cabeza', 'cabezas') + ' (si nadie las caza, vuelven)' : '',
+      '-# Se ganan jugando, entrando cada día, con el Pase, cazando y con los Dragón Drops.'].filter(Boolean).join('\n')],
+    filas: [[botonLink('Ir a la Tienda', URL_TIENDA), V.boton('Mis drops', 'dd:mis:x:' + did, ESTILO.SECUNDARIO)]] });
 }
 
 /** 🎒 `/tienda` del objeto para quien tocó (su clave, si está verificado, y la billetera) */
@@ -1476,45 +1619,61 @@ async function tiendaDe(env, did) {
   return alObjeto(env, 'tienda', Object.assign({ quien: did, de }, c ? { inicial: c.inicial, desde: c.desde } : {}));
 }
 
-/** 🎒 Lo de `/inventario`: lo de la Tienda que tienes y lo que tienes puesto */
-async function panelInventario(env, did) {
-  const S = await tiendaDe(env, did);
-  if (!S || !S.ok || !S.yo) return { content: S && S.ok && !S.abierta ? 'La Tienda todavía no abrió.' : 'No pude ver tu inventario: prueba de nuevo en un minuto.' };
+//: cuántos lugares entran como fila con su botón (cada uno son tres piezas: con todo el resto, 9 entran en las 40)
+const INV_FILAS = 9;
+/** 🎒 Lo de `/inventario` (la maqueta): cada lugar en su fila, con lo puesto y un botón al costado que abre lo de
+ *  `/equipar` para ese lugar en ESTE mensaje */
+async function panelInventario(env, did, i) {
+  const [S, yo] = await Promise.all([tiendaDe(env, did), personaDe(env, did)]);
+  if (!S || !S.ok || !S.yo) return V.avisoMsg(S && S.ok && !S.abierta ? 'La Tienda todavía no abrió.' : 'No pude ver tu inventario: prueba de nuevo en un minuto.');
   const P = (S.cat && S.cat.piezas) || {};
   const inv = (S.yo.inv || []).filter((x) => P[x.p]);
   const puesto = S.yo.puesto || {};
+  const color = colorRango(yo.m, yo.g && yo.g.rg);
+  const cara = await caraDe(env, i, yo.clave);
   if (!inv.length) {
-    return { content: '🎒 **Todavía no tienes nada de la Tienda.** Tienes **' + milesChat(S.yo.saldo) + '** Puntos de Tienda para estrenar.',
-      components: filaDe([botonLink('Ir a la Tienda', URL_TIENDA)]) };
+    return ficha({ fam: 'tienda', color, cara, titulo: 'Todavía no tienes nada de la Tienda',
+      sub: 'Tienes **' + milesChat(S.yo.saldo) + '** Puntos de Tienda para estrenar.', filas: [[botonLink('Ir a la Tienda', URL_TIENDA)]] });
   }
   const por = {};
   for (const x of inv) { const r = P[x.p].c; por[r] = (por[r] || 0) + 1; }
-  const tienes = Object.entries(por).map(([r, n]) => (RANURA_NOMBRE[r] || r) + ' ' + n).join(' · ');
-  const puestas = Object.entries(puesto).filter(([, id]) => P[id]).map(([r, id]) => '· ' + (RANURA_NOMBRE[r] || r) + ': **' + P[id].n + '**');
-  return { content: ['🎒 **De la Tienda tienes ' + plural(inv.length, 'pieza', 'piezas') + ':** ' + tienes + '.',
-    puestas.length ? '**Puesto ahora:**\n' + puestas.join('\n') : 'No tienes nada puesto: **`/equipar`** te lo pone.',
-    'Te quedan **' + milesChat(S.yo.saldo) + '** Puntos de Tienda.'].join('\n'),
-  components: filaDe([botonLink('Tu Inventario', URL_INVENTARIO), botonLink('La Tienda', URL_TIENDA)]) };
+  const lugares = Object.keys(RANURA_NOMBRE).filter((r) => por[r]).concat(Object.keys(por).filter((r) => !RANURA_NOMBRE[r]));
+  const filas = lugares.slice(0, INV_FILAS).map((r) => {
+    const p = puesto[r] && P[puesto[r]];
+    const txt = '**' + (RANURA_NOMBRE[r] || r) + '** · ' + por[r] + '\n-# ' + (p ? 'Puesto: **' + p.n + '**' : 'Sin poner');
+    return RANURA_NOMBRE[r] ? V.seccion(txt, V.boton(p ? 'Cambiar' : 'Ponerme uno', 'eq:' + r + ':ver:' + did, ESTILO.SECUNDARIO)) : V.T(txt);
+  });
+  const resto = lugares.slice(INV_FILAS);
+  return ficha({ fam: 'tienda', color, cara, titulo: 'Tu inventario',
+    sub: plural(inv.length, 'pieza', 'piezas') + ' de la Tienda · te quedan **' + milesChat(S.yo.saldo) + '** Puntos',
+    cuerpo: ['—'].concat(filas, resto.length ? ['-# Y también: ' + resto.map((r) => (RANURA_NOMBRE[r] || r) + ' ' + por[r]).join(' · ') + '.'] : []),
+    filas: [[botonLink('Tu Inventario', URL_INVENTARIO), botonLink('La Tienda', URL_TIENDA)]] });
 }
 
-/** 🎽 Lo de `/equipar que:<ranura>`: un menú con lo tuyo de ese lugar (y «Quitar») */
-async function panelEquipar(env, did, ranura) {
-  const S = await tiendaDe(env, did);
-  if (!S || !S.ok || !S.yo) return { content: 'No pude ver lo tuyo: prueba de nuevo en un minuto.' };
+/** 🎽 Lo de `/equipar que:<ranura>` (la maqueta): el lugar, lo puesto y el menú debajo. Elegir cambia ESTE mensaje (y lo
+ *  dice en `nota`) */
+async function panelEquipar(env, did, ranura, i, nota) {
+  const [S, yo] = await Promise.all([tiendaDe(env, did), personaDe(env, did)]);
+  if (!S || !S.ok || !S.yo) return V.avisoMsg('No pude ver lo tuyo: prueba de nuevo en un minuto.');
   const P = (S.cat && S.cat.piezas) || {};
   const mias = (S.yo.inv || []).filter((x) => P[x.p] && P[x.p].c === ranura);
   const ahora = (S.yo.puesto || {})[ranura] || '';
   const nombre = RANURA_NOMBRE[ranura] || ranura;
+  const color = colorRango(yo.m, yo.g && yo.g.rg);
+  const cara = await caraDe(env, i, yo.clave);
   if (!mias.length) {
-    return { content: '🎽 No tienes nada de **' + nombre + '** todavía.', components: filaDe([botonLink('Ver en la Tienda', URL_TIENDA)]) };
+    return ficha({ fam: 'tienda', color, cara, titulo: nombre, sub: 'Todavía no tienes nada de **' + nombre + '**.',
+      cuerpo: [nota || ''], filas: [[botonLink('Ver en la Tienda', URL_TIENDA)]] });
   }
   const opciones = mias.slice(0, 24).map((x) => ({ label: String(P[x.p].n).slice(0, 100), value: x.p, default: x.p === ahora }));
   if (ahora) opciones.push({ label: 'Quitar lo que tengo puesto', value: '-' });
-  return { content: '🎽 **' + nombre + '**' + (ahora && P[ahora] ? ' · ahora: **' + P[ahora].n + '**' : '') + '\nElige qué ponerte:',
-    components: [{ type: COMP.FILA, components: [{ type: COMP.SELECT, custom_id: 'eq:' + ranura + ':x:' + did, placeholder: 'Elige…', options: opciones }] }] };
+  return ficha({ fam: 'tienda', color, cara, titulo: nombre,
+    sub: ahora && P[ahora] ? 'Puesto ahora: **' + P[ahora].n + '**' : 'No tienes nada puesto acá.',
+    cuerpo: [nota || ''],
+    filas: [{ type: COMP.FILA, components: [{ type: COMP.SELECT, custom_id: 'eq:' + ranura + ':x:' + did, placeholder: 'Elige qué ponerte', options: opciones }] }] });
 }
 
-/** 🎽 Ponerse (o sacarse) lo elegido en el menú de `/equipar` */
+/** 🎽 Ponerse (o sacarse) lo elegido en el menú de `/equipar`: `{ok, texto}` */
 async function ponerChat(env, did, ranura, pieza) {
   const c = await datosApuesta(env, did);
   let de = '';
@@ -1523,10 +1682,9 @@ async function ponerChat(env, did, ranura, pieza) {
     c ? { inicial: c.inicial, desde: c.desde } : {}));
   if (!j || !j.ok) {
     const por = { verificate: 'Primero verifícate: **`/vincular`**.', no_la_tienes: 'Ésa no es tuya.', ranura: 'Eso no va ahí.' };
-    return { content: '🎽 ' + (por[j && j.error] || 'No pude ponértelo: prueba de nuevo en un minuto.'), components: [] };
+    return { ok: false, texto: por[j && j.error] || 'No pude ponértelo: prueba de nuevo en un minuto.' };
   }
-  return { content: pieza === '-' ? '🎽 Listo: te lo quité.' : '🎽 **Listo, te lo pusiste.** Se ve en la página en unos minutos' + (ranura === 'carta' ? ', y en `/card` cuando se rehaga tu carta.' : '.'),
-    components: [] };
+  return { ok: true, texto: pieza === '-' ? '✅ Listo: te lo quité.' : '✅ **Listo, te lo pusiste.** Se ve en la página en unos minutos' + (ranura === 'carta' ? ', y en `/card` cuando se rehaga tu carta.' : '.') };
 }
 
 // ── Los botones se apagan solos ───────────────────────────────────────────
@@ -2411,19 +2569,6 @@ export function panelNotify(aqui, escuchados, elegidos) {
   // lo elegido en el menú; si todavía no se tocó, el servidor donde se escribió
   const sel = Array.isArray(elegidos) ? elegidos.filter(hay) : aqui && hay(aqui) ? [aqui] : [];
   const todos = !sel.length || sel.length >= lista.length;
-  const lineas = ['## 🔔 Avisos de eventos en tu celular o compu',
-    'Cuando un servidor de la Liga anuncia un evento, te llega un aviso al minuto, ' +
-    'aunque no tengas Discord abierto.',
-    '',
-    '**Elegidos:** ' + (todos ? 'todos los servidores.' : sel.map((sv) => '**' + nombre(sv) + '**').join(', ') + '.'),
-    '1. Cámbialos con el menú si quieres.',
-    '2. Toca **Activar**: se abre la página y aceptas las notificaciones. Listo.',
-    '',
-    '📱 **En iPhone**, antes: Safari → **Compartir** → **Agregar a inicio**, y abre la Liga desde ese ícono.',
-    'Se activa una vez en cada dispositivo. Si ya lo tenías, **Activar** cambia los servidores.'];
-  if (aqui && !hay(aqui)) {
-    lineas.push('', `⚠️ Todavía no se escuchan los eventos de **${nombre(aqui)}**.`);
-  }
   const botones = [];
   if (!todos) {
     botones.push({ type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: 'Todos los servidores',
@@ -2431,14 +2576,24 @@ export function panelNotify(aqui, escuchados, elegidos) {
   }
   botones.push(Object.assign(botonLink('Activar', AVISOS_URL + '/' + (todos ? 'todos' : sel.join(','))),
     { emoji: { name: '🔔' } }));
-  return { content: lineas.join('\n'), components: [
+  // 🧱 en V2 (20/11/2026): la franja de Eventos, lo que hace en el recuadro y el menú y «Activar» debajo, afuera
+  return V.mensaje({ familia: 'eventos', efimero: true, dentro: [
+    V.T('### Avisos de eventos en tu celular o compu\n-# Cuando un servidor de la Liga anuncia un evento, te llega un aviso ' +
+      'al minuto, aunque no tengas Discord abierto.'),
+    V.SEP,
+    V.T('**Elegidos:** ' + (todos ? 'todos los servidores.' : sel.map((sv) => '**' + nombre(sv) + '**').join(', ') + '.') +
+      '\n1. Cámbialos con el menú si quieres.\n2. Toca **Activar**: se abre la página y aceptas las notificaciones. Listo.'),
+    V.T('-# 📱 **En iPhone**, antes: Safari → **Compartir** → **Agregar a inicio**, y abre la Liga desde ese ícono. Se activa ' +
+      'una vez en cada dispositivo; si ya lo tenías, **Activar** cambia los servidores.'),
+    aqui && !hay(aqui) ? V.T(`⚠️ Todavía no se escuchan los eventos de **${nombre(aqui)}**.`) : null,
+  ], filas: [
     { type: COMP.FILA, components: [{
       type: COMP.SELECT, custom_id: 'ntf:svs', placeholder: 'Elige de qué servidores',
       min_values: 1, max_values: lista.length,
       options: lista.map((x) => ({ label: x.nombre, value: x.sv, default: !todos && sel.indexOf(x.sv) >= 0 })),
     }] },
-    { type: COMP.FILA, components: botones },
-  ] };
+    botones,
+  ] });
 }
 
 async function escuchados(env) {
@@ -2496,107 +2651,71 @@ function puedeAjustar(i) {
   }
 }
 
-// El panel: texto arriba y una fila por ajuste. Se usa igual para abrirlo y
-// para redibujarlo después de cada click, así que el estado sale siempre de
-// `cfg` y nunca del `custom_id`.
+// El panel (Dlx, 20/11/2026, la maqueta): una sección por ajuste, con su estado y su botón al costado; los menús de canal se
+// abren al tocar «Elegir» (`panelElegir()`). Un solo azul: lo que está apagado y conviene prender (el bot en vivo). Se usa
+// igual para abrirlo y para redibujarlo después de cada click, así que el estado sale siempre de `cfg` y nunca del
+// `custom_id`.
 function panelAjustes(sv, cfg) {
   const canales = cfg.canales && cfg.canales.length
     ? cfg.canales.map(c => `<#${c}>`).join(' ')
     : '**todos**';
   const avisos = cfg.avisos ? `<#${cfg.avisos}>` : '**ninguno**';
-  const vivo = cfg.vivo ? `<#${cfg.vivo}>` : '**apagado**';
   const nivel = NIVELES_CHAT[cfg.vivo_nivel] ? cfg.vivo_nivel : 'normal';
-  const texto = [
-    `## ⚙️ Ajustes de la Liga en **${sv}**`,
-    '',
-    `**Las marcas de la Liga en el apodo** · ${cfg.nick ? '🟢 activadas' : '🔴 apagadas'}`,
-    cfg.nick
-      ? '> Quien no eligió nada lleva su #N y su crew (`#23 | FLB | Nombre`). Cada uno lo cambia con `/apodo`.'
-      : '> Quien no eligió nada queda con su nombre solo. Cada uno puede elegir su estilo con `/apodo`.',
-    '',
-    `**Canales donde se puede usar \`/card\`** · ${canales}`,
-    '> Vacío = en cualquiera.',
-    '',
-    `**Avisos de cambio de rango** · ${avisos}`,
-    '> Dónde anunciar cuando alguien sube o baja de rango.',
-    '',
-    `**El bot en vivo** · ${vivo}` + (cfg.vivo ? ` · habla: **${NIVELES_CHAT[nivel][0].toLowerCase()}**` : ''),
-    '> Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va. Cuánto habla lo eliges abajo: ' +
-    '**lo justo** (el arranque y el campeón), **normal** (además quién pasa cada ronda y la final; como mucho un ' +
-    'mensaje cada 10 minutos) o **cada batalla** (quién gana cada una apenas se sabe; como mucho uno cada 2 ' +
-    'minutos). Nunca menciona a nadie.',
-    '',
-    // 🎲 siempre, en todos los niveles (11/11/2026, ver `hayApuestas()` en avisos.js)
-    '**Apuestas** · 🟢 siempre',
-    '> Con el bot en vivo, antes de cada batalla se puede apostar con Puntos de Tienda desde unos botones en el chat, ' +
-    'y el pozo se reparte entre los que aciertan. En «Con datos» y «A full» van en el mensaje de cada cruce; en los otros ' +
-    'niveles, en un mensaje con la batalla que viene. Desde la Liga se pueden apagar para un servidor.',
-    '',
-    `**📈 El ascenso de sus ligas** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}`,
-    '> El bot mantiene su ranking de ascenso al día en ese canal. Se elige con el botón **Ascenso**.',
-  ].join('\n');
+  const vivo = cfg.vivo ? `<#${cfg.vivo}> · habla: **${NIVELES_CHAT[nivel][0].toLowerCase()}**` : '**apagado**';
+  const linea = (t, sub, b) => V.seccion(t + '\n-# ' + sub, b);
+  return V.mensaje({ familia: 'ajustes', efimero: true, dentro: [
+    V.T(`### Ajustes de la Liga en ${sv}\n-# Lo ven y lo cambian los admins del servidor (o quien tenga *Gestionar roles*).`),
+    V.SEP,
+    linea(`**Las marcas de la Liga en el apodo** · ${cfg.nick ? '🟢 activadas' : '🔴 apagadas'}`, cfg.nick
+      ? 'Quien no eligió nada lleva su #N y su crew (`#23 | FLB | Nombre`). Cada uno lo cambia con `/apodo`.'
+      : 'Quien no eligió nada queda con su nombre solo. Cada uno puede elegir su estilo con `/apodo`.',
+    V.boton(cfg.nick ? 'Apagar' : 'Prender', 'cfg:nick', ESTILO.SECUNDARIO)),
+    linea(`**Dónde se usa \`/card\`** · ${canales}`, 'Vacío = en cualquiera.', V.boton('Elegir', 'cfg:elegir:canales', ESTILO.SECUNDARIO)),
+    linea(`**Avisos de cambio de rango** · ${avisos}`, 'Dónde anunciar cuando alguien sube o baja de rango.',
+      V.boton('Elegir', 'cfg:elegir:avisos', ESTILO.SECUNDARIO)),
+    linea(`**El bot en vivo** · ${vivo}`, 'Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va. ' +
+      'Nunca menciona a nadie.', V.boton(cfg.vivo ? 'Cambiar' : 'Prender', 'cfg:elegir:vivo', cfg.vivo ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO)),
+    // 🎲 siempre, en todos los niveles (11/11/2026, ver `hayApuestas()` en avisos.js): no hay botón
+    V.T('**Apuestas** · siempre\n-# Con el bot en vivo, antes de cada batalla se puede apostar con Puntos de Tienda, y el pozo ' +
+      'se reparte entre los que aciertan. Desde la Liga se pueden apagar para un servidor.'),
+    linea(`**El ascenso de sus ligas** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}`,
+      'El bot mantiene su ranking de ascenso al día en ese canal.', V.boton('Elegir', 'cfg:asc', ESTILO.SECUNDARIO)),
+  ], filas: [
+    // 📣 lo que hasta el 16/11/2026 estaba sólo en la página (el aviso de cada evento, las ligas, el resumen): su panel
+    [V.boton('Más canales', 'cfg:mas', ESTILO.SECUNDARIO, { emoji: { name: '📣' } })],
+  ] });
+}
 
-  return {
-    content: texto,
-    components: [
-      { type: COMP.FILA, components: [{
-        type: COMP.BOTON,
-        style: cfg.nick ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
-        label: cfg.nick ? 'Apagar el #N para el servidor' : 'Activar el #N para el servidor',
-        custom_id: 'cfg:nick',
-      },
-      // 🎲 «Prender las apuestas» se fue el 11/11/2026: salen siempre, en todos los niveles (`hayApuestas()` en avisos.js).
-      // El `cfg:apuestas` de abajo queda para los paneles viejos que alguien todavía tenga abiertos, y no cambia nada
-      // 📈 el ascenso tiene su propio panel: las cinco filas ya están usadas (17/10/2026)
-      {
-        type: COMP.BOTON,
-        style: ESTILO.SECUNDARIO,
-        label: '📈 Ascenso',
-        custom_id: 'cfg:asc',
-      },
-      // 📣 lo que hasta el 16/11/2026 estaba sólo en la página (el aviso de cada evento, las ligas, el resumen): su panel
-      {
-        type: COMP.BOTON,
-        style: ESTILO.SECUNDARIO,
-        label: '📣 Más canales',
-        custom_id: 'cfg:mas',
-      }] },
-      { type: COMP.FILA, components: [{
-        type: 8,                       // CHANNEL_SELECT
-        custom_id: 'cfg:canales',
-        placeholder: 'Canales donde se puede usar /card (vacío = todos)',
-        // ⚠️ `min_values: 0` ES LO QUE DEJA VOLVER ATRÁS. Sin eso no hay
-        // manera de sacar la restricción una vez puesta: el menú exige
-        // elegir al menos uno y el servidor queda encerrado en su propia
-        // configuración.
-        min_values: 0, max_values: 10,
-        channel_types: [0],            // sólo texto
-      }] },
-      { type: COMP.FILA, components: [{
-        type: 8,
-        custom_id: 'cfg:avisos',
-        placeholder: 'Canal para avisar cambios de rango (vacío = ninguno)',
-        min_values: 0, max_values: 1,
-        channel_types: [0],
-      }] },
-      { type: COMP.FILA, components: [{
-        type: 8,
-        custom_id: 'cfg:vivo',
-        placeholder: 'Canal del bot en vivo (vacío = apagado)',
-        min_values: 0, max_values: 1,
-        channel_types: [0],
-      }] },
-      // 🔊 cuánto habla: la quinta fila, la última que Discord deja poner en un mensaje
-      { type: COMP.FILA, components: [{
-        type: COMP.SELECT,
-        custom_id: 'cfg:nivel',
-        placeholder: 'Cuánto habla el bot en vivo',
-        min_values: 1, max_values: 1,
-        options: Object.entries(NIVELES_CHAT).map(([v, [label, description]]) =>
-          ({ label, value: v, description, default: v === nivel })),
-      }] },
-    ],
-  };
+// ⚙️ LOS MENÚS DE CANAL, CADA UNO EN SU SUBPANEL (20/11/2026): se abren con «Elegir» y, al elegir, se vuelve al panel.
+// ⚠️ `min_values: 0` ES LO QUE DEJA VOLVER ATRÁS: sin eso no hay manera de sacar la restricción una vez puesta.
+// ⚠️ Sin `default_values`: un canal borrado hace que Discord rechace el mensaje entero (lo elegido se ve en el texto).
+const ELEGIR = {
+  canales: ['Dónde se usa /card', 'Los canales donde se pueden pedir cartas. Vacío = en cualquiera.',
+    () => [{ type: 8, custom_id: 'cfg:canales', placeholder: 'Canales donde se puede usar /card (vacío = todos)',
+      min_values: 0, max_values: 10, channel_types: [0] }]],
+  avisos: ['Avisos de cambio de rango', 'El canal donde se anuncia cuando alguien sube o baja de rango. Vacío = ninguno.',
+    () => [{ type: 8, custom_id: 'cfg:avisos', placeholder: 'Canal para avisar cambios de rango (vacío = ninguno)',
+      min_values: 0, max_values: 1, channel_types: [0] }]],
+  vivo: ['El bot en vivo', 'Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va. Cuánto habla: ' +
+    '**lo justo** (el arranque y el campeón), **normal** (además quién pasa cada ronda y la final; como mucho un mensaje ' +
+    'cada 10 minutos) o **cada batalla** (quién gana cada una apenas se sabe; como mucho uno cada 2 minutos). Nunca ' +
+    'menciona a nadie. Vacío = apagado.',
+    (cfg, nivel) => [{ type: 8, custom_id: 'cfg:vivo', placeholder: 'Canal del bot en vivo (vacío = apagado)',
+      min_values: 0, max_values: 1, channel_types: [0] }, {
+      type: COMP.SELECT, custom_id: 'cfg:nivel', placeholder: 'Cuánto habla el bot en vivo', min_values: 1, max_values: 1,
+      options: Object.entries(NIVELES_CHAT).map(([v, [label, description]]) => ({ label, value: v, description, default: v === nivel })),
+    }]],
+};
+function panelElegir(cfg, que) {
+  const e = ELEGIR[que];
+  if (!e) return null;
+  const nivel = NIVELES_CHAT[cfg.vivo_nivel] ? cfg.vivo_nivel : 'normal';
+  const ahora = que === 'canales' ? (cfg.canales && cfg.canales.length ? cfg.canales.map((c) => `<#${c}>`).join(' ') : '**todos**')
+    : que === 'avisos' ? (cfg.avisos ? `<#${cfg.avisos}>` : '**ninguno**')
+      : (cfg.vivo ? `<#${cfg.vivo}> · habla: **${NIVELES_CHAT[nivel][0].toLowerCase()}**` : '**apagado**');
+  return V.mensaje({ familia: 'ajustes', efimero: true, dentro: [V.T(`### ${e[0]}\nAhora: ${ahora}\n-# ${e[1]}`)],
+    filas: e[2](cfg, nivel).map((c) => ({ type: COMP.FILA, components: [c] }))
+      .concat([[V.boton('‹ Volver a los ajustes', 'cfg:volver', ESTILO.SECUNDARIO)]]) });
 }
 
 // ── 📈 EL ASCENSO DE SUS LIGAS (Dlx, 17/10/2026: «crear un ascenso actualizado para cada servidor para sus ligas. Que
@@ -2610,35 +2729,26 @@ async function panelAscenso(env, gid, cfg) {
   try { asc = (JSON.parse((await env.KV.get('meta', { cacheTtl: 300 })) || '{}') || {}).asc || {}; } catch (e) { asc = {}; }
   const [liga, destino] = (sv && asc[sv]) || [];
   const nombre = (SERVIDORES.find((s) => s.sv === sv) || {}).nombre || 'este servidor';
-  const texto = [
-    '## 📈 El ascenso de sus ligas, al día',
-    '',
-    liga
+  return V.mensaje({ familia: 'ajustes', efimero: true, dentro: [
+    V.T('### El ascenso de sus ligas, al día\n' + (liga
       ? `Ya tenemos las reglas de **${nombre}**: el ascenso a la **${liga}**.`
-      : 'Todavía no tenemos las reglas del ascenso de este servidor: pásale su tabla y sus rangos a **@itsdlx**.',
-    '',
-    'El bot parte de **su tabla oficial** y le suma lo que vino después —las compes con su rango, con **sus** ' +
-    'puntos—. Mantiene **un solo mensaje** en el canal que elijan: lo edita cuando cambia algo y nunca menciona a ' +
-    'nadie. Lo que no sabe (una compe sin rango publicado) no suma y lo dice. La tabla oficial sigue siendo la de ustedes.',
-    '',
-    `**Canal** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}`,
-    liga && destino ? `> También está en la página: ${HUB_URL}/freestyle-rap/ligas/${destino}` : '',
-  ].filter((x, k, a) => x || a[k - 1]).join('\n');
-  return {
-    content: texto,
-    components: [
-      { type: COMP.FILA, components: [{
-        type: 8,                       // CHANNEL_SELECT
-        custom_id: 'cfg:asc_canal',
-        placeholder: 'Canal del ascenso (vacío = apagado)',
-        min_values: 0, max_values: 1,
-        channel_types: [0],
-      }] },
-      { type: COMP.FILA, components: [{
-        type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: '‹ Volver a los ajustes', custom_id: 'cfg:volver',
-      }] },
-    ],
-  };
+      : 'Todavía no tenemos las reglas del ascenso de este servidor: pásale su tabla y sus rangos a **@itsdlx**.')),
+    V.T('-# El bot parte de **su tabla oficial** y le suma lo que vino después —las compes con su rango, con **sus** ' +
+      'puntos—. Mantiene **un solo mensaje** en el canal que elijan: lo edita cuando cambia algo y nunca menciona a ' +
+      'nadie. Lo que no sabe (una compe sin rango publicado) no suma y lo dice. La tabla oficial sigue siendo la de ustedes.'),
+    V.SEP,
+    V.T(`**Canal** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}` +
+      (liga && destino ? `\n-# También está en la página: ${HUB_URL}/freestyle-rap/ligas/${destino}` : '')),
+  ], filas: [
+    { type: COMP.FILA, components: [{
+      type: 8,                       // CHANNEL_SELECT
+      custom_id: 'cfg:asc_canal',
+      placeholder: 'Canal del ascenso (vacío = apagado)',
+      min_values: 0, max_values: 1,
+      channel_types: [0],
+    }] },
+    [V.boton('‹ Volver a los ajustes', 'cfg:volver', ESTILO.SECUNDARIO)],
+  ] });
 }
 
 // ── 📣 MÁS CANALES (Dlx, 16/11/2026: «todo», a que /settings tenga lo mismo que el panel del socio en la página) ─────
@@ -2648,42 +2758,32 @@ async function panelAscenso(env, gid, cfg) {
 function panelMas(cfg) {
   const ae = cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no' ? cfg.aviso_evento : '';
   const ligas = cfg.ligas === 'no' ? '**apagadas**' : cfg.ligas ? `<#${cfg.ligas}>` : '**donde habla el bot en vivo**';
-  const texto = [
-    '## 📣 Más canales',
-    '',
-    `**El aviso de cada evento** · ${ae === 'no' ? '**apagado**' : ae === 'chat' ? '**en el chat general**' : '**donde habla el bot en vivo**'}`,
-    '> Un mensaje cuando arranca cada evento de este servidor, con su nivel, que se edita solo. Nunca menciona a nadie.',
-    '',
-    `**Las batallas de sus ligas** · ${ligas}`,
-    '> Cada batalla de liga con su VS, mientras se juega. Una liga en particular a otro canal se elige en la página, en el panel del servidor.',
-    '',
-    `**El resumen de los lunes** · ${cfg.resumen ? `<#${cfg.resumen}>` : '**ninguno**'}`,
-    '> Los lunes a las 12 del mediodía (hora del este): cómo le fue a este servidor en la semana.',
-  ].join('\n');
-  return {
-    content: texto,
-    components: [
-      { type: COMP.FILA, components: [{
-        type: COMP.SELECT, custom_id: 'cfg:aviso_evento', placeholder: 'Dónde va el aviso de cada evento', min_values: 1, max_values: 1,
-        options: [['vivo', 'Donde habla el bot en vivo'], ['chat', 'En el chat general'], ['no', 'Apagado']]
-          .map(([v, label]) => ({ label, value: v, default: (ae || 'vivo') === v })),
-      }] },
-      { type: COMP.FILA, components: [{
-        type: 8, custom_id: 'cfg:ligas', placeholder: 'Canal de las batallas de liga (vacío = donde habla en vivo)',
-        min_values: 0, max_values: 1, channel_types: [0],
-      }] },
-      { type: COMP.FILA, components: [{
-        type: 8, custom_id: 'cfg:resumen', placeholder: 'Canal del resumen de los lunes (vacío = ninguno)',
-        min_values: 0, max_values: 1, channel_types: [0],
-      }] },
-      { type: COMP.FILA, components: [{
-        type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: '‹ Volver a los ajustes', custom_id: 'cfg:volver',
-      }, {
-        type: COMP.BOTON, style: cfg.ligas === 'no' ? ESTILO.PRIMARIO : ESTILO.SECUNDARIO,
-        label: cfg.ligas === 'no' ? 'Prender las batallas de liga' : 'Apagar las batallas de liga', custom_id: 'cfg:ligas_no',
-      }] },
-    ],
-  };
+  return V.mensaje({ familia: 'ajustes', efimero: true, dentro: [
+    V.T('### Más canales\n-# Lo mismo que el panel del servidor en la página.'),
+    V.SEP,
+    V.T(`**El aviso de cada evento** · ${ae === 'no' ? '**apagado**' : ae === 'chat' ? '**en el chat general**' : '**donde habla el bot en vivo**'}` +
+      '\n-# Un mensaje cuando arranca cada evento de este servidor, con su nivel, que se edita solo. Nunca menciona a nadie.'),
+    V.T(`**Las batallas de sus ligas** · ${ligas}` +
+      '\n-# Cada batalla de liga con su VS, mientras se juega. Una liga en particular a otro canal se elige en la página, en el panel del servidor.'),
+    V.T(`**El resumen de los lunes** · ${cfg.resumen ? `<#${cfg.resumen}>` : '**ninguno**'}` +
+      '\n-# Los lunes a las 12 del mediodía (hora del este): cómo le fue a este servidor en la semana.'),
+  ], filas: [
+    { type: COMP.FILA, components: [{
+      type: COMP.SELECT, custom_id: 'cfg:aviso_evento', placeholder: 'Dónde va el aviso de cada evento', min_values: 1, max_values: 1,
+      options: [['vivo', 'Donde habla el bot en vivo'], ['chat', 'En el chat general'], ['no', 'Apagado']]
+        .map(([v, label]) => ({ label, value: v, default: (ae || 'vivo') === v })),
+    }] },
+    { type: COMP.FILA, components: [{
+      type: 8, custom_id: 'cfg:ligas', placeholder: 'Canal de las batallas de liga (vacío = donde habla en vivo)',
+      min_values: 0, max_values: 1, channel_types: [0],
+    }] },
+    { type: COMP.FILA, components: [{
+      type: 8, custom_id: 'cfg:resumen', placeholder: 'Canal del resumen de los lunes (vacío = ninguno)',
+      min_values: 0, max_values: 1, channel_types: [0],
+    }] },
+    [V.boton('‹ Volver a los ajustes', 'cfg:volver', ESTILO.SECUNDARIO),
+      V.boton(cfg.ligas === 'no' ? 'Prender las batallas de liga' : 'Apagar las batallas de liga', 'cfg:ligas_no', ESTILO.SECUNDARIO)],
+  ] });
 }
 
 // 🛡️ lo que `bot/antiraid.js` toma del Worker: cómo diferir, quién tocó, el nombre del servidor y las invitaciones de la
@@ -2698,10 +2798,12 @@ const ayudaAR = (i) => ({
 // (`meta.nuevos` le suma los que entraron sin pasar por el código: ver `conNuevos()` de avisos.js)
 const ayudaSU = () => ({ luego, idDe, aviso, espera, frenado, SERVIDORES });
 
-const responderPanel = (tipo, p) => new Response(JSON.stringify({
-  type: tipo,
-  data: { flags: EFIMERO, content: p.content, components: p.components },
-}), { headers: { 'content-type': 'application/json' } });
+// 🧱 un panel (efímero y en V2, 20/11/2026): `p` es un mensaje armado (`ficha()`, `V.mensaje()`), o uno de antes con
+// `{content, components}`, que se pasa a V2. En un clic (tipo 7) sobre un panel de antes, va uno nuevo (`editarAqui()`)
+const responderPanel = (tipo, p, i) => {
+  const data = Object.assign(V.aV2(p, true), { flags: V2 | EFIMERO });
+  return tipo === RESPONDE.ACTUALIZAR && i ? editarAqui(i, data) : responderV2(tipo, data);
+};
 
 // ── El «#N» efectivo: lo del usuario gana, y si no eligió manda el servidor ─
 // Dlx, 19/09/2026: «si un usuario estaba en on y después yo lo apago, gana el
@@ -2844,7 +2946,7 @@ function requisitos(m) {
   };
   // 🔑 LA SERVIDOR Y LA TEMPORADA NO SALEN DEL META DESDE EL 05/10/2026 (2.41, Dlx: «C», «4. nivel 1»): las abre el
   // portón —verificarse— y la Temporada además el nivel 1 del Pase. El meta seguía diciendo «1 participación» y «sin
-  // requisito», que era la regla del 29/09. Es lo mismo que dice `QUE_PIDE`
+  // requisito», que era la regla del 29/09. Es lo mismo que dice `dosPasos()`
   return ['· **Servidor** — verificarte en la página, entrando con Discord',
           '· **Temporada** — verificarte y tu primera Tarea del Pase de rapero (el nivel 1)',
           linea('competitivo', 'Competitiva') + ' · y verificarte',
@@ -2899,8 +3001,8 @@ const AYUDA = {
     'Con `contra:` eliges tú a los dos, así que sirve para armar un cruce ' +
     'entre otras dos personas.',
     '',
-    '`carta:` elige la categoría. Por defecto es la de **Servidor**, y los ' +
-    'botones de abajo la cambian sin volver a tirar el comando.',
+    '`carta:` elige la categoría. Por defecto, la **Competitiva** si la tienen los dos (si no, la de **Servidor**), y los ' +
+    'botones de abajo la cambian sin volver a tirar el comando. Arriba salen las dos cartas.',
     '',
     '**Cada categoría compara su propio número**',
     '· **Temporada** — el OVR, y los cinco que lo forman',
@@ -3047,35 +3149,75 @@ const AYUDA = {
 
   help: () => [
     '## `/help`',
-    'Esto. Con `comando:` te cuento uno en detalle.',
+    'Esto. Con `comando:` te cuento uno en detalle, o lo eliges en el menú de abajo.',
+  ].join('\n'),
+
+  crew: () => [
+    '## `/crew` — tu crew',
+    '· **`/crew ver`** — tu crew (o la de quien elijas): cuántos son, el Líder y tu rango ahí.',
+    '· **`/crew invitar`** — invita a alguien: le llega en el canal, con «Aceptar». También con click derecho en la ' +
+    'persona → **Apps** → **Invitar a mi crew**.',
+    '· **`/crew unirme`** — pide entrar a una crew por su nombre.',
+    '· **`/crew link`** — un link para entrar directo, sin pedir permiso (para 1, 5 o 10 personas, dura 7 días).',
+    '· **`/crew salir`** — te vas de tu crew. Después esperas 7 días para entrar a otra.',
+    '',
+    'Las crews se arman en la página: crear una cuesta Puntos de Tienda y son de los Miembros verificados de DRA, hasta 20.',
+  ].join('\n'),
+
+  setup: () => [
+    '## `/setup` — sumar el servidor a la Liga',
+    'Para los **admins** (Administrador o *Gestionar servidor*). En seis pasos: los permisos del bot, una plantilla ' +
+    '(Liga completa · Lo básico · Sólo leer), tus canales, lo que hace el bot acá, ver todo y aplicar.',
+    '',
+    'No cambia nada en tu servidor hasta el paso 5, y no crea canales ni roles.',
+  ].join('\n'),
+
+  'borrar-mis-datos': () => [
+    '## `/borrar-mis-datos` — borrar lo tuyo de la Liga',
+    'Borra, ahora y para siempre, tu perfil, tus tarjetas, tu foto, tus redes, tus votos y el vínculo de tus avisos, y ' +
+    'deja anotado que no te vuelva a sumar solo. Primero te pregunta, con dos botones.',
   ].join('\n'),
 };
 
-const AYUDA_INDICE = [
-  '# Liga Global',
-  'Las tarjetas de la Liga, adentro de Discord.',
-  '',
-  '· **`/card`** — tu tarjeta, o la de quien elijas',
-  '· **`/verificar`** — qué te falta para verificarte (y tener las cuatro)',
-  '· **`/notify`** — activa los avisos de eventos en tu celular o compu',
-  '· **`/website`** — la página de la Liga',
-  '· **`/drops`** — tus Dragón Drops: el Drop y el Star se abren acá',
-  '· **`/billetera`** — tus Puntos de Tienda',
-  '· **`/inventario`** y **`/equipar`** — lo tuyo de la Tienda, y ponértelo',
-  '· **`/vincular`** — tu cuenta con tu perfil de la Liga',
-  '· **`/versus`** — quién gana entre dos, en la categoría que elijas',
-  '· **`/foto`** — usa tu foto de Discord en tus tarjetas ' +
-  '*(una por temporada, libre hasta que arranque)*',
-  '· **`/apodo`** — cómo va tu apodo: con tu #N, tu crew, tu puesto de la Temporada, tu ELO, tu bandera o solo el nombre',
-  '· **`/settings`** — los ajustes del servidor *(admins)*',
-  '· **`/antiraid`** — el anti-raid del servidor *(el dueño)*',
-  '· **`/afiche`** y **`/llave`** — la imagen del último anuncio y de la última llave *(staff y organizadores)*',
-  '· **`/agendar`** — un evento en el calendario de la Liga, con tiempo *(staff y organizadores)*',
-  '· **`/borrar-mis-datos`** — borra tu perfil, tus tarjetas y tu foto de la Liga',
-  '· **`/ping`** — ¿está vivo?',
-  '',
-  'Para el detalle de uno: **`/help comando:card`**',
-].join('\n');
+// 🧭 EL ÍNDICE EN GRUPOS Y UN MENÚ PARA CADA COMANDO (Dlx, 20/11/2026, la maqueta): hoy eran 1.289 letras en una lista.
+// Elegir en el menú cambia ESTE mensaje (`hp:ver`). Suma `/crew` y «Invitar a mi crew», que no estaban.
+const AYUDA_GRUPOS = [
+  ['Tus cartas', ['card', 'versus'], 'y en el perfil de alguien, «Carta»'],
+  ['Tu cuenta', ['verificar', 'vincular', 'foto', 'apodo', 'notify', 'borrar-mis-datos']],
+  ['Tienda y drops', ['billetera', 'inventario', 'equipar', 'drops']],
+  ['Crews', ['crew'], 'y en el perfil de alguien, «Invitar a mi crew»'],
+  ['Para el staff', ['agendar', 'llave', 'afiche', 'settings', 'setup', 'antiraid']],
+  ['La Liga', ['website', 'help', 'ping']],
+];
+//: lo que hace cada uno, en el menú (hasta 100 letras)
+const AYUDA_CORTA = {
+  card: 'tu tarjeta, o la de quien elijas', versus: 'quién gana entre dos, en la categoría que elijas',
+  verificar: 'qué te falta para verificarte', vincular: 'tu cuenta con tu perfil de la Liga', foto: 'tu foto de Discord en tus tarjetas',
+  apodo: 'cómo va tu apodo en los servidores', notify: 'los avisos de eventos en tu celular o compu',
+  'borrar-mis-datos': 'borra tu perfil, tus tarjetas y tu foto', billetera: 'tus Puntos de Tienda', inventario: 'lo tuyo de la Tienda',
+  equipar: 'ponerte algo de la Tienda', drops: 'tus Dragón Drops: el Drop y el Star se abren acá', crew: 'tu crew: verla, invitar, entrar o salir',
+  agendar: 'un evento en el calendario de la Liga', llave: 'la última llave, como imagen', afiche: 'el afiche del último anuncio',
+  settings: 'los ajustes del servidor (admins)', setup: 'sumar el servidor a la Liga, paso a paso (admins)',
+  antiraid: 'el anti-raid del servidor (el dueño)', website: 'la página de la Liga', help: 'esto', ping: '¿está vivo?',
+};
+/** El menú de la ayuda, con `actual` elegido. */
+const menuAyuda = (actual) => ({ type: COMP.FILA, components: [{ type: COMP.SELECT, custom_id: 'hp:ver',
+  placeholder: 'Ver cómo se usa un comando', min_values: 1, max_values: 1,
+  options: [{ label: 'El índice', value: 'indice', description: 'Todos los comandos, en grupos', default: actual === 'indice' }]
+    .concat(AYUDA_GRUPOS.flatMap((g) => g[1]).filter((k) => AYUDA[k]).slice(0, 24)
+      .map((k) => ({ label: '/' + k, value: k, description: String(AYUDA_CORTA[k] || '').slice(0, 100), default: k === actual }))) }] });
+const enlacesAyuda = () => [botonLink('La página', HUB_URL + '/freestyle-rap/'), botonLink('La Guía', HUB_URL + '/freestyle-rap/guia')];
+function ayudaIndice() {
+  return ficha({ fam: 'ayuda', titulo: 'Liga Global en Discord', sub: 'Lo que puedes hacer con el bot. Elige un comando abajo para ver cómo se usa.',
+    cuerpo: ['—', AYUDA_GRUPOS.map(([g, ks, extra]) => `**${g}** · ` + ks.map((k) => '`/' + k + '`').join(' · ') + (extra ? ' · ' + extra : ''))
+      .join('\n')],
+    filas: [menuAyuda('indice'), enlacesAyuda()] });
+}
+/** La página de un comando: su texto de `AYUDA`, con el mismo menú para ir a otro. */
+function ayudaPagina(k, m) {
+  const txt = AYUDA[k](m).replace(/^## /, '### ');
+  return ficha({ fam: 'ayuda', cuerpo: [txt], filas: [menuAyuda(k), enlacesAyuda()] });
+}
 
 // ── /foto — la cara, congelada por temporada ──────────────────────────────
 // 🔴 ESTO MATA EL BUG MAS VIEJO DEL PROYECTO. La columna `av` del Sheet
@@ -3307,64 +3449,40 @@ async function guardarFoto(env, i, quien, id, hash) {
   const arranco0 = await temporadaArrancada(env);
   const res = await fotoAR2(env, quien, id, hash, arranco0);
   if (!res.ok && res.paso === 'cdn' && res.error) {
-    return seguir(i, 'No pude llegar al CDN de Discord (`' +
-                     res.error + '`). Prueba de nuevo en un rato.');
+    return V.avisoMsg('No pude llegar al CDN de Discord (`' + res.error + '`). Prueba de nuevo en un rato.');
   }
   if (!res.ok && res.paso === 'cdn') {
     // 🔴 PASA DE VERDAD, Y NO ES UN ERROR NUESTRO. Medido el 20/09/2026:
     // `ropomc` tiene un hash que la lista de miembros de Discord devuelve y
     // que el CDN ya no sirve — 404 en los cuatro formatos. O sea que ni el
     // dato fresco de Discord garantiza un hash vivo.
-    return seguir(i, 'Discord no me dio tu foto (`' + res.estado + '`).\n' +
-                  'Suele arreglarse volviéndotela a poner en Discord y ' +
-                  'probando de nuevo.');
+    return V.avisoMsg('Discord no me dio tu foto (`' + res.estado + '`).\nSuele arreglarse volviéndotela a poner en Discord y ' +
+      'probando de nuevo.');
   }
   if (!res.ok) {
-    return seguir(i, 'No pude guardar tu foto (`' + res.error +
-                     '`). Prueba de nuevo en un rato — **no te gasté** el ' +
-                     'cambio de la temporada.');
+    return V.avisoMsg('No pude guardar tu foto (`' + res.error + '`). Prueba de nuevo en un rato — **no te gasté** el ' +
+      'cambio de la temporada.');
   }
-  // ⚠️ EL SELLO SE ESCRIBE **DESPUES** DE GUARDAR. Al revés, un fallo del
-  // CDN le gastaría a la persona su único cambio de la temporada sin haberle
-  // cambiado nada.
-  //
-  // 🔴 Y SU FALLO SE CUENTA APARTE, porque el estado que deja es distinto:
-  // acá la foto **ya está guardada** y lo único que no quedó es la marca de
-  // que la usaste. Decir «no pude» sería mentir —la foto está— y decir
-  // «listo» escondería que vas a poder cambiarla otra vez.
-  //
-  // ⚠️ Es el caso realista: KV son **1.000 escrituras por día** y una sola
-  // corrida del pipeline se come el 47 %.
-  // 🔴 NO SE ANOTA EL USO SI LA TEMPORADA NO ARRANCÓ. Si se anotara,
-  // quien acomoda su perfil ahora empezaría la T1 **con su cambio ya
-  // gastado**, sin haberla jugado.
-  //
-  // Y eso contradice el motivo del límite: existe porque la Histórica
-  // necesita la cara que cada uno tenía **en cada temporada**. La que
-  // cuenta para la T1 es la que tenga cuando la T1 esté corriendo; lo
-  // que cambie antes no deja historia que proteger.
-  //
-  // ⚠️ La misma `meta.arrancada` que decide si el límite rige decide si
-  // se anota. Las dos preguntas tienen que contestarse igual o el
-  // contador se llena en un mundo donde todavía no cuenta.
+  // ⚠️ EL SELLO SE ESCRIBE **DESPUES** DE GUARDAR (`fotoAR2()`): al revés, un fallo del CDN le gastaría a la persona su
+  // único cambio de la temporada sin haberle cambiado nada. 🔴 Y su fallo se cuenta aparte: la foto **ya está guardada**
+  // y lo único que no quedó es la marca. 🔴 Y NO SE ANOTA SI LA TEMPORADA NO ARRANCÓ (`res.libre`): quien acomoda su
+  // perfil ahora empezaría la T1 con su cambio ya gastado.
+  // 🙂 la foto recién guardada, al costado (`?v=` del momento: Discord guarda las imágenes por dirección)
+  const yo = await personaDe(env, id);
+  const f = (titulo, sub, cuerpo) => ficha({ fam: 'cuenta', color: colorRango(yo.m, yo.g && yo.g.rg), titulo, sub, cuerpo,
+    cara: env.CARTAS ? `${R2}/${claveFoto(env, quien)}?v=${Date.now()}` : '' });
   if (res.libre) {
     const hasta = libreHastaTexto(env);
-    return seguir(i, '📸 Tu foto **quedó guardada**.\n' + (hasta
+    return f('Tu foto quedó guardada 📸', hasta
       ? 'Hasta el **' + hasta + '** puedes cambiarla las veces que quieras.'
-      : 'La temporada todavía no arrancó, así que puedes ' +
-        'cambiarla las veces que quieras hasta que empiece.'));
+      : 'La temporada todavía no arrancó, así que puedes cambiarla las veces que quieras hasta que empiece.');
   }
   if (!res.anotado) {
-    return seguir(i, '📸 Tu foto **quedó guardada**.\n' +
-                     '⚠️ Pero no pude anotar que ya usaste tu cambio de la ' +
-                     'temporada (`' + res.error + '`), así que ' +
-                     '`/foto` te va a dejar cambiarla de nuevo. Avísale a Dlx.');
+    return f('Tu foto quedó guardada 📸', null, ['⚠️ Pero no pude anotar que ya usaste tu cambio de la temporada (`' + res.error +
+      '`), así que `/foto` te va a dejar cambiarla de nuevo. Avísale a Dlx.']);
   }
-  return seguir(i,
-    '📸 Listo: ésa es tu foto de la **' + temporadaDe(env).toUpperCase() + '**.\n' +
-    '· Queda **congelada**: aunque cambies la de Discord, tus cartas de esta ' +
-    'temporada siguen con ésta.\n' +
-    '· Se ve en la próxima vez que se dibujen tus cartas.');
+  return f('Listo: ésa es tu foto de la ' + temporadaDe(env).toUpperCase() + ' 📸', 'Se ve la próxima vez que se dibujen tus cartas.',
+    ['Queda **congelada**: aunque cambies la de Discord, tus cartas de esta temporada siguen con ésta.']);
 }
 
 // ── /owner — lo GLOBAL, y sólo Dlx ────────────────────────────────────────
@@ -3421,20 +3539,17 @@ function panelRangos(m) {
     'del pipeline. Baja solo cuando el Sheet adopte los ocho, y vuelve a ' +
     'subir solo si alguien los separa.',
     '',
-    '**Dónde vive el rango** _(checklist al 20/09/2026 — desde acá el bot no ' +
-    'puede mirar ni el Sheet ni los roles)_',
-    '· ✅ `comun/rangos.py` — la fuente',
-    '· ✅ las cuatro cartas — salen de ahí',
-    '· ✅ `sync.py` — desde el 20/09 saca la letra del **Score**, no de la columna',
-    '· ⬜ la columna `Rango` del Sheet — sale sola con el Sheet nuevo',
-    '· ⬜ la Guía — se reescribe con el Sheet',
-    '· ⬜ `Index.html` del Apps Script — **a mano**, tiene seis pintados',
-    '· ⬜ **los roles de Discord** — **a mano**: faltan `SSS` y `SS`, y hay ' +
-    'que reasignar',
+    '**Dónde vive el rango** _(al 20/11/2026 — desde acá el bot no puede mirar los roles: los pregunta ' +
+    '`herramientas/roles_de_rango.py` en la auditoría semanal)_',
+    '· ✅ `comun/rangos.py` — la fuente, con los ocho y sus colores',
+    '· ✅ las cuatro cartas y los mensajes del bot — salen de ahí',
+    '· ✅ la columna `Rango` de las vitrinas — se calcula (`rankings.rangos_de()`), con la puerta de 10 eventos',
+    '· ✅ **los roles de Discord** — los ocho, de `Rango SSS` a `Rango E` (verificado el 23/09/2026)',
+    '· ✅ `Index.html` del Apps Script — retirado el 24/09/2026: manda a la página',
+    '· ⬜ la Guía vieja del Sheet — seis tramos; la de la página ya dice ocho',
     '',
-    '🔴 Los roles son **lo único irreversible de cara al público**: la gente ' +
-    'ya lleva el suyo puesto. Van **antes** de que arranque la T1 — a mitad ' +
-    'serían personas viendo cambiar su letra sin haber competido.',
+    '⚠️ Si alguna vez se mueven los umbrales, va **antes** de que arranque una temporada: a mitad serían personas viendo ' +
+    'cambiar su letra sin haber competido.',
   ].join('\n');
 }
 
@@ -3452,7 +3567,7 @@ function panelEstado(m, disp) {
     `último disparo      ${u && u.t ? horaEste(u.t) + (u.ok ? ' · ok' : ' · FALLÓ ' + (u.estado || '')) : '(sin dato)'}`,
     `personas con carta  ${m.gente != null ? m.gente : '?'}`,
     `con Discord ID      ${m.con_id != null ? m.con_id : '?'}` +
-      (m.gente ? `  (${Math.round(100 * m.con_id / m.gente)} %)` : ''),
+      (m.gente && m.con_id != null ? `  (${Math.round(100 * m.con_id / m.gente)} %)` : ''),
     '```',
   ];
   if (m.con_id != null && m.gente && m.con_id < m.gente) {
@@ -3480,23 +3595,22 @@ function panelEstado(m, disp) {
 // aprieta sin querer. El estado va entero en el `custom_id`, como en el resto
 // de los botones: `baja:si::<id>` o `baja:no::<id>`.
 export function panelBaja(id) {
-  return {
-    content: '## 🗑️ Borrar tus datos de la Liga\n' +
-      'Esto borra, ahora y para siempre:\n' +
+  // 🟥 EL ÚNICO RECUADRO ROJO DEL BOT, Y SIN FRANJA (Dlx, 20/11/2026, la maqueta): es lo único que no se deshace
+  return V.mensaje({ color: V.COLOR.rojo, efimero: true, dentro: [
+    V.T('### Borrar tus datos de la Liga\n-# Ahora y para siempre: no se puede deshacer.'),
+    V.SEP,
+    V.T('Esto borra:\n' +
       '- tu perfil y tus tarjetas (también las de cada servidor),\n' +
       '- tu foto de las tarjetas,\n' +
       '- tus redes guardadas, tus votos en las encuestas, a quién felicitaste y el vínculo de tus avisos.\n\n' +
       'Además queda anotado que **no te vuelva a sumar solo**. Tus resultados en ' +
       'eventos quedan en el historial de la Liga; si quieres que cambiemos tu ' +
       'nombre ahí, pídeselo a un admin.\n' +
-      '-# Si después quieres volver, también se lo pides a un admin.',
-    components: [{ type: COMP.FILA, components: [
-      { type: COMP.BOTON, style: ESTILO.PELIGRO, label: 'Borrar mis datos',
-        custom_id: `baja:si::${id}` },
-      { type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: 'Cancelar',
-        custom_id: `baja:no::${id}` },
-    ] }],
-  };
+      '-# Si después quieres volver, también se lo pides a un admin.'),
+  ], filas: [[
+    { type: COMP.BOTON, style: ESTILO.PELIGRO, label: 'Borrar mis datos', custom_id: `baja:si::${id}` },
+    { type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: 'Cancelar', custom_id: `baja:no::${id}` },
+  ]] });
 }
 
 /**
@@ -3593,10 +3707,13 @@ async function kit(i, env, ctx, tipo) {
   if (!(await esStaff(i, env))) return aviso('`/' + tipo + '` es para el staff y los organizadores del servidor.');
   if (!env.GH_TOKEN || !env.GH_REPO || !env.AVISOS) return aviso('Ahora no puedo armarla: prueba en un rato.');
   const id = [...crypto.getRandomValues(new Uint8Array(12))].map((b) => b.toString(16).padStart(2, '0')).join('');
-  const editar = (txt) => fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
-    method: 'PATCH', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ content: txt, allowed_mentions: { parse: [] } }),
-  });
+  // 🧱 en V2 y con el color del servidor (20/11/2026): el primer mensaje ya lo es, así la imagen de `kitListo()` (avisos.js)
+  // sólo reemplaza piezas. Sin franja: cuando llega, la imagen es la portada
+  const color = colorChat(sv);
+  const msg = (txt) => V.mensaje({ color, efimero: false, dentro: [V.T(txt)] });
+  const editar = (txt) => editarOriginal(i, msg(txt));
+  const armando = '🧰 Armando ' + (tipo === 'afiche' ? 'el afiche del último anuncio' : 'la última llave') + ' de ' + sv +
+    '… en uno o dos minutos aparece acá.';
   luego(ctx, (async () => {
     try {
       const g = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/kit', {
@@ -3613,11 +3730,10 @@ async function kit(i, env, ctx, tipo) {
         body: JSON.stringify({ ref: 'main', inputs: { tipo, sv, id } }),
       });
       if (r.status !== 204) return editar('Ahora no puedo armarla: prueba en un rato.');
-      return editar('🧰 Armando ' + (tipo === 'afiche' ? 'el afiche del último anuncio' : 'la última llave') + ' de ' + sv +
-        '… en uno o dos minutos aparece acá.');
+      return null;
     } catch (e) { return editar('Ahora no puedo armarla: prueba en un rato.'); }
   })());
-  return new Response(JSON.stringify({ type: RESPONDE.PENSANDO }), { headers: { 'content-type': 'application/json' } });
+  return responderV2(RESPONDE.MENSAJE, msg(armando));
 }
 
 // ── 📅 /agendar (Dlx, 12/10/2026, «5. D»: «casi no hay eventos futuros… la mayoría anuncian eventos instantáneos»).
@@ -3697,6 +3813,20 @@ function crewSemana(c, todas) {
     ':R>) o se borra.';
 }
 
+// 🎨 EL COLOR DE UNA CREW: el primero de su escudo armado (`esc:forma.simbolo.aaaaaa…`, bot/crews.js); sin escudo, el
+// verde de la Liga. 🛡️ Y SU LOGO AL COSTADO sólo si es una imagen (el escudo armado lo dibuja la página: acá no hay
+// imagen, así que no va: sin dato no hay pieza)
+const colorCrew = (c) => {
+  const m = /^esc:[a-z]+\.[a-z]+\.([0-9a-f]{6})\./.exec(String((c && c.logo) || ''));
+  return m ? parseInt(m[1], 16) : V.COLOR.verde;
+};
+const logoCrew = (c) => (/^https:\/\//.test(String((c && c.logo) || '')) ? String(c.logo) : '');
+const linkCrew = (mia, r) => ficha({ fam: 'crews', color: colorCrew(mia), acc: V.mini(logoCrew(mia)),
+  titulo: 'Tu link para entrar a ' + mia.nombre,
+  sub: (r.max ? 'Para ' + r.max + (r.max === 1 ? ' persona' : ' personas') : 'Hasta que se llene') + ', dura 7 días. Con este link se ' +
+    'entra directo, sin pedir permiso.',
+  cuerpo: [urlCrew(mia.id) + '?u=' + r.cod], filas: [[botonLink('Abrir', urlCrew(mia.id) + '?u=' + r.cod)]] });
+
 async function crewComando(i, env, sub, op) {
   const id = idDe(i);
   if (!id) return aviso('No pude saber quién eres.');
@@ -3705,21 +3835,25 @@ async function crewComando(i, env, sub, op) {
   if (!env.AVISOS) return aviso('Ahora no puedo: prueba en un rato.');
   const de = await crewPerfil(env, id);
   const todas = await crewAvisos(env, '/crews');
+  const lasCrews = [{ type: 2, style: 5, label: 'Las crews', url: HUB_URL + '/freestyle-rap/ranking/crews' }];
   if (sub === 'ver') {
     const t = op.quien || id;
     const k = t === id ? de : await crewPerfil(env, t);
     const c = k ? crewDeK(todas, k) : null;
     if (!c) {
-      return aviso((t === id ? 'No estás en ninguna crew.' : '<@' + t + '> no está en ninguna crew.') + ' Las crews se arman en la página.',
-        [{ type: 2, style: 5, label: 'Las crews', url: HUB_URL + '/freestyle-rap/ranking/crews' }]);
+      return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'crews', titulo: t === id ? 'No estás en ninguna crew' : 'Sin crew',
+        sub: (t === id ? '' : '<@' + t + '> no está en ninguna crew. ') + 'Las crews se arman en la página.', filas: [lasCrews] }));
     }
     const lid = (c.gente.find((g) => g[1] === 'lider') || [])[0];
     const rol = (c.gente.find((g) => g[0] === k) || [])[1] || '';
     const ROL = { lider: 'Líder', colider: 'Colíder', veterano: 'Veterano', miembro: 'Miembro' };
-    return aviso('👥 **' + c.nombre + '**' + (c.sigla ? ' [' + c.sigla + ']' : '') + ' · ' + c.gente.length + ' de ' + (todas.max || 20) +
-      (lid ? ' · Líder: **' + (await crewNombre(env, lid)) + '**' : '') + (c.desc ? '\n> ' + c.desc : '') +
-      (rol ? '\n' + (t === id ? 'Eres ' : '<@' + t + '> es ') + ROL[rol] + '.' : '') + crewSemana(c, todas),
-    [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]);
+    // 🧱 la maqueta: el escudo al costado y los números en una línea; «Mi link para entrar», si la crew es la tuya
+    return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'crews', color: colorCrew(c), acc: V.mini(logoCrew(c)),
+      cabeza: '### ' + c.nombre + (c.sigla ? '  `' + c.sigla + '`' : '') + '\n' + c.gente.length + ' de ' + (todas.max || 20) +
+        (lid ? ' · Líder: **' + (await crewNombre(env, lid)) + '**' : '') + (c.desc ? '\n> ' + c.desc : '') +
+        (rol ? '\n-# ' + (t === id ? 'Eres ' : '<@' + t + '> es ') + ROL[rol] + '.' : '') + crewSemana(c, todas),
+      filas: [[{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) },
+        t === id && rol ? V.boton('Mi link para entrar', 'cw:link:1:' + id, ESTILO.SECUNDARIO) : null]] }));
   }
   if (sub === 'invitar') {
     const t = String(op.quien || '');
@@ -3734,26 +3868,36 @@ async function crewComando(i, env, sub, op) {
     if (!r.ok) return aviso(textoCrew(r));
     if (r.ya) return aviso('Ya invitaste a <@' + t + '>: la invitación sigue en pie una semana.');
     if (!r.invitado) return aviso('✅ <@' + t + '> ya había pedido entrar: entró a **' + mia.nombre + '**.');
-    // (pública y con la mención: es la única forma de que le llegue sin un DM. `responderPanel` es siempre efímero)
-    return publicoConMencion({
-      content: '👥 <@' + t + '>, **' + (await crewNombre(env, de)) + '** te invita a la crew **' + mia.nombre + '**. Tienes una semana.',
-      allowed_mentions: { users: [t] },
-      components: [{ type: 1, components: [
+    // (pública y con la mención: es la única forma de que le llegue sin un DM. La mención va ARRIBA y AFUERA del
+    // recuadro, y es la única que suena: `allowed_mentions` la nombra a ella sola)
+    return publicoConMencion(ficha({ fam: 'crews', efimero: false, color: colorCrew(mia), acc: V.mini(logoCrew(mia)),
+      arriba: ['<@' + t + '>'], menciones: { users: [t] },
+      cabeza: '### ' + (await crewNombre(env, de)) + ' te invita a ' + mia.nombre + '\n-# Crew' + (mia.sigla ? ' `' + mia.sigla + '`' : '') +
+        ' · ' + mia.gente.length + ' de ' + (todas.max || 20) + ' · tienes una semana para contestar',
+      filas: [[
         { type: 2, style: ESTILO.PRIMARIO, label: 'Aceptar', custom_id: ('cw:si:' + mia.id + ':' + t).slice(0, 100) },
         { type: 2, style: ESTILO.SECUNDARIO, label: 'No, gracias', custom_id: ('cw:no:' + mia.id + ':' + t).slice(0, 100) },
         { type: 2, style: 5, label: 'Ver la crew', url: urlCrew(mia.id) },
-      ] }],
-    });
+      ]] }));
   }
   if (sub === 'unirme') {
     if (!de) return aviso(ERRORES_CREW.verificate);
     const q = normCrew(op.nombre);
     const c = ((todas && todas.crews) || []).find((x) => normCrew(x.nombre) === q || normCrew(x.id) === q);
-    if (!c) return aviso('No encontré una crew con ese nombre.', [{ type: 2, style: 5, label: 'Las crews', url: HUB_URL + '/freestyle-rap/ranking/crews' }]);
+    if (!c) return aviso('No encontré una crew con ese nombre.', lasCrews);
+    // 🔴 YA EN OTRA CREW (encontrado al capturar, 20/11/2026): el objeto contesta `ya_en_crew` y se le decía «Ya está en
+    // esa crew.», el texto de invitar, en tercera persona y con la crew equivocada. Se dice cuál es la tuya y qué hacer
+    const mia = crewDeK(todas, de);
+    if (mia) {
+      return aviso(mia.id === c.id ? 'Ya estás en **' + c.nombre + '**.'
+        : 'Ya estás en **' + mia.nombre + '**: para entrar a **' + c.nombre + '**, primero sal de la tuya con `/crew salir`.');
+    }
     const r = await crewAvisos(env, '/crew', { accion: 'pedir', quien: id, de, crew: c.id });
-    if (!r.ok) return aviso(textoCrew(r));
-    return aviso(r.pedido ? '📨 Pediste entrar a **' + c.nombre + '**: te avisamos en la campana de la página cuando te acepten.'
-      : '✅ Entraste a **' + c.nombre + '**.', [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]);
+    if (!r.ok) return aviso(r.error === 'ya_en_crew' ? 'Ya estás en una crew: para entrar a otra, primero sal de la tuya con `/crew salir`.' : textoCrew(r));
+    return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'crews', color: colorCrew(c), acc: V.mini(logoCrew(c)),
+      titulo: r.pedido ? 'Pediste entrar a ' + c.nombre : 'Entraste a ' + c.nombre + ' ✅',
+      sub: r.pedido ? 'Te avisamos en la campana de la página cuando te acepten.' : null,
+      filas: [[{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]] }));
   }
   // 🔗 un link de invitación, desde Discord (19/10/2026, Dlx: «me gusta todo»): los links se comparten acá, y hasta
   // ahora se armaban sólo en la página. Con él se entra directo (`link_unirse` en bot/crews.js)
@@ -3764,43 +3908,145 @@ async function crewComando(i, env, sub, op) {
     const max = [1, 5, 10, 0].includes(Number(op.para)) ? Number(op.para) : 1;
     const r = await crewAvisos(env, '/crew', { accion: 'link_crear', quien: id, de, max });
     if (!r.ok) return aviso(textoCrew(r));
-    const url = urlCrew(mia.id) + '?u=' + r.cod;
-    return aviso('🔗 Tu link para entrar a **' + mia.nombre + '** (' + (r.max ? 'para ' + r.max + (r.max === 1 ? ' persona' : ' personas') : 'hasta que se llene')
-      + ', dura 7 días). Con este link se entra directo, sin pedir permiso:\n' + url,
-    [{ type: 2, style: 5, label: 'Abrir', url }]);
+    return responderV2(RESPONDE.MENSAJE, linkCrew(mia, r));
   }
   if (sub === 'salir') {
     const c = de ? crewDeK(todas, de) : null;
     if (!c) return aviso(ERRORES_CREW.sin_crew);
-    return aviso('¿Seguro que quieres salir de **' + c.nombre + '**? Después esperas 7 días para entrar a otra.',
-      [{ type: 2, style: ESTILO.PELIGRO, label: 'Sí, salir', custom_id: 'cw:salir:x:' + id }]);
+    // 🟥 lo que no se deshace en una semana: rojo y sin franja, como /borrar-mis-datos
+    return responderV2(RESPONDE.MENSAJE, V.mensaje({ color: V.COLOR.rojo, efimero: true,
+      dentro: [V.T('### ¿Salir de ' + c.nombre + '?\n-# Después esperas 7 días para entrar a otra.')],
+      filas: [[{ type: 2, style: ESTILO.PELIGRO, label: 'Sí, salir', custom_id: 'cw:salir:x:' + id },
+        V.boton('Cancelar', 'cw:quedar:x:' + id, ESTILO.SECUNDARIO)]] }));
   }
   return aviso('No conozco esa opción.');
 }
 
-/** 👥 Los botones `cw:` (la invitación y el «sí, salir»): sólo los toca la persona del botón. */
+/** 👥 Los botones `cw:` (la invitación, «sí, salir», «Cancelar» y «Mi link para entrar»): sólo los toca la persona del
+ *  botón. ⚠️ Una invitación de antes (sin el flag V2) se contesta como antes: un mensaje no cambia de formato */
 async function crewBoton(i, env, que, crew, dueno) {
   const id = idDe(i);
-  if (!dueno || id !== dueno) return aviso(que === 'salir' ? 'Ese botón es de otra persona.' : 'Esa invitación es para otra persona.');
+  if (!dueno || id !== dueno) return aviso(que === 'salir' || que === 'quedar' || que === 'link' ? 'Ese botón es de otra persona.' : 'Esa invitación es para otra persona.');
   const esperar = frenado(id, 'click');
   if (esperar) return espera(esperar);
+  if (que === 'quedar') return editarAqui(i, V.avisoMsg('Listo: sigues en tu crew.'));
   if (!env.AVISOS) return aviso('Ahora no puedo: prueba en un rato.');
   const de = await crewPerfil(env, id);
+  if (que === 'link') {
+    const todas = await crewAvisos(env, '/crews');
+    const mia = de ? crewDeK(todas, de) : null;
+    if (!mia) return aviso(ERRORES_CREW.sin_crew);
+    const r = await crewAvisos(env, '/crew', { accion: 'link_crear', quien: id, de, max: [1, 5, 10, 0].includes(Number(crew)) ? Number(crew) : 1 });
+    if (!r.ok) return aviso(textoCrew(r));
+    return responderV2(RESPONDE.MENSAJE, linkCrew(mia, r));
+  }
   if (que === 'salir') {
     const r = await crewAvisos(env, '/crew', { accion: 'salir', quien: id, de });
     if (!r.ok) return aviso(textoCrew(r));
-    return responderPanel(RESPONDE.ACTUALIZAR, { content: r.cerrada ? 'Listo: la crew se cerró.' : '👋 Saliste de la crew. En 7 días puedes entrar a otra.', components: [] });
+    return editarAqui(i, V.avisoMsg(r.cerrada ? 'Listo: la crew se cerró.' : '👋 Saliste de la crew. En 7 días puedes entrar a otra.'));
   }
   const r = await crewAvisos(env, '/crew', { accion: 'responder', quien: id, de, crew, si: que === 'si' });
   if (!r.ok) return aviso(textoCrew(r));
   const todas = await crewAvisos(env, '/crews');
   const c = ((todas && todas.crews) || []).find((x) => x.id === crew);
   const nombre = c ? c.nombre : crew;
-  return responderPanel(RESPONDE.ACTUALIZAR, {
-    content: que === 'si' ? '✅ <@' + id + '> entró a la crew **' + nombre + '**.' : 'La invitación a **' + nombre + '** quedó sin aceptar.',
-    allowed_mentions: { parse: [] },
-    components: que === 'si' ? [{ type: 1, components: [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(crew) }] }] : [],
+  const texto = que === 'si' ? '✅ <@' + id + '> entró a la crew **' + nombre + '**.' : 'La invitación a **' + nombre + '** quedó sin aceptar.';
+  const botones = que === 'si' ? [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(crew) }] : [];
+  if (legado(i)) {
+    return responderV2(RESPONDE.ACTUALIZAR, { content: texto, allowed_mentions: { parse: [] },
+      components: botones.length ? [{ type: 1, components: botones }] : [] });
+  }
+  return responderV2(RESPONDE.ACTUALIZAR, ficha({ fam: 'crews', efimero: false, color: c ? colorCrew(c) : V.COLOR.verde,
+    acc: V.mini(logoCrew(c)), cabeza: texto, filas: [botones] }));
+}
+
+// 🏷️ /apodo (Dlx, 18/11/2026: «en vez del comando de numeración sea otro… que tengas opciones e incluso para
+// combinar»). Seis estilos listos (`bot/apodo.js`), uno para todos los servidores de la Liga: se guarda en
+// `apodo:<id>` y se aplica AL TOQUE en este servidor —con las piezas que deja el ciclo en `apodos`, el mismo nombre
+// base y el mismo `decidir()` que `herramientas/sincronizar_puesto.py`, así la vuelta siguiente no lo «corrige»— y en
+// los demás, en esa vuelta. Sin `estilo:` muestra los seis con lo tuyo.
+// 🧱 Y DESDE EL 20/11/2026 (la maqueta) los seis se ven armados con lo tuyo y se eligen en un MENÚ (`apo:`), que cambia
+// este mismo mensaje: ya no hace falta volver a escribir `/apodo estilo:`. Devuelve `{msg}` o `{aviso}`.
+async function apodoPanel(i, env, nuevo) {
+  const gid = i.guild_id;
+  const uid = idDe(i);
+  const sv = aquiEs(gid) || 'este servidor';
+  let todo = null;
+  let mio = null;
+  try {
+    const [a, m] = await Promise.all([env.KV.get('apodos'), env.KV.get('apodo:' + uid)]);
+    todo = a ? JSON.parse(a) : null;
+    mio = m ? JSON.parse(m) : null;
+  } catch (e) { todo = todo || null; }
+  const [viejo, cfg, meta] = await Promise.all([eleccionNick(env, gid, uid), ajustes(env, gid), leerMeta(env)]);
+  const fila = todo && todo.p ? todo.p[uid] : null;
+  const p = AP.piezasDe(fila);
+  const siglas = (todo && todo.s) || [];
+  let actual = (i.member && i.member.nick) || '';
+  const u0 = (i.member && i.member.user) || {};
+  const base = (fila && fila[6]) || AP.nombreDe(actual) || u0.global_name || u0.username || '';
+  let hecho = '';
+  if (nuevo) {
+    const n = AP.estiloValido(nuevo) || AP.POR_DEFECTO;
+    // 🔴 SI KV NO ESCRIBE, SE DICE Y NO SE TOCA EL APODO (como el /numeral de antes): sin la elección guardada, la
+    // próxima vuelta lo devolvería a lo que diga el servidor
+    if (!mio || AP.estiloValido(mio.e) !== n) {
+      try {
+        await env.KV.put('apodo:' + uid, JSON.stringify({ e: n, ts: Date.now() }));
+      } catch (e) {
+        return { aviso: 'No pude guardar tu elección (`' + String(e).slice(0, 60) + '`), así que no te toqué el apodo. ' +
+                        'Prueba de nuevo en un rato.' };
+      }
+    }
+    mio = { e: n };
+    const nombreEstilo = (AP.ESTILOS.find((e) => e[0] === n) || [])[1] || '';
+    if (!todo) {
+      hecho = `Anotado: estilo **${n}** (${nombreEstilo}). ⏳ Te lo pongo en la próxima vuelta del bot, en todos los servidores.`;
+    } else {
+      const destino = AP.decidir(actual, p, n, base, siglas);
+      if ((destino || '') === actual) {
+        hecho = `Listo: estilo **${n}** (${nombreEstilo}). En **${sv}** tu apodo ya era \`${actual || '(sin apodo)'}\`.` +
+          (p ? '' : '\nTodavía no tienes piezas para el apodo (crew, #N, puesto…): cuando las tengas, aparecen solas.');
+      } else {
+        const res = await cambiarApodo(env, gid, uid, destino);
+        if (res === 'ok') {
+          hecho = `Listo: estilo **${n}** (${nombreEstilo}).\nTu apodo en **${sv}** ahora es \`${destino || '(sin apodo)'}\`; ` +
+            'en los demás servidores de la Liga, en la próxima vuelta del bot.';
+          actual = destino || '';
+        } else if (res === 'sin-token') {
+          hecho = `Anotado: estilo **${n}** (${nombreEstilo}). Tu apodo va a quedar \`${destino || '(sin apodo)'}\`.\n` +
+            '⏳ Se aplica en la próxima vuelta del bot. Si no quieres esperar, póntelo tú.';
+        } else {
+          // ⚠️ LA ELECCIÓN QUEDA GUARDADA AUNQUE EL APODO FALLE: al dueño del servidor y a quien tenga un rol más alto que
+          // el del bot, Discord no les deja tocar el apodo nunca
+          hecho = `Anotado: estilo **${n}** (${nombreEstilo}).\n⚠️ Pero no pude cambiarte el apodo acá (\`${res}\`). Suele ser ` +
+            'porque eres el dueño del servidor o tienes un rol más alto que el del bot: ' +
+            `ponlo a mano como \`${destino || '(sin apodo)'}\`.`;
+        }
+      }
+    }
+  }
+  // lo que rige hoy: lo tuyo (/apodo), si no tu /numeral de antes acá, si no el servidor, si no el 1
+  const rige = AP.estiloValido(mio && mio.e) || (viejo ? (viejo.on ? AP.POR_DEFECTO : AP.SOLO_NOMBRE)
+    : cfg.nick !== false ? AP.POR_DEFECTO : AP.SOLO_NOMBRE);
+  const porque = mio && AP.estiloValido(mio.e) ? 'lo elegiste tú' : viejo ? 'lo elegiste con el `/numeral` de antes'
+    : cfg.nick !== false ? 'es el de siempre' : `${sv} apagó las marcas`;
+  const sale = (n) => (p ? AP.armar(n, base, p) : base);
+  const lineas = AP.ESTILOS.map(([n, t]) => {
+    const falta = p && n !== AP.SOLO_NOMBRE && !AP.adelante(n, p) ? ' *(te falta esa pieza)*' : '';
+    return `${n === rige ? '▶' : '·'} **${n}** · ${t} — \`${sale(n) || '(sin apodo)'}\`${falta}`;
   });
+  const nombreRige = (AP.ESTILOS.find((e) => e[0] === rige) || [])[1] || '';
+  // 🎨 el color de tu letra: la pieza `r` del apodo (`B-` → B), la misma que sale en el estilo 5
+  const letra = p && p.r ? String(p.r).replace(/[^A-Z]/g, '') : '';
+  return { msg: ficha({ fam: 'apodo', color: colorRango(meta, letra),
+    cabeza: `### Tu apodo en ${sv}\n\`${actual || '(sin apodo)'}\`\n-# Va con el estilo **${rige}** · ${nombreRige} (${porque}). ` +
+      'Vale para todos los servidores de la Liga.',
+    cuerpo: [hecho, '—', lineas.join('\n')],
+    filas: [{ type: COMP.FILA, components: [{ type: COMP.SELECT, custom_id: 'apo:x:x:' + uid, placeholder: 'Cambiar de estilo',
+      min_values: 1, max_values: 1,
+      options: AP.ESTILOS.map(([n, t]) => ({ label: `${n} · ${t}`, value: String(n), default: n === rige,
+        description: String(sale(n) || '(sin apodo)').slice(0, 100) })) }] }] }) };
 }
 
 const COMANDOS = {
@@ -3827,7 +4073,9 @@ const COMANDOS = {
       const r = await objeto.fetch('https://avisos/agendar', { method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ sv, borrar: true, nombre }) });
       const d = await r.json().catch(() => ({}));
-      return aviso(d.ok ? '🗑️ Saqué **' + nombre + '** de la agenda de la Liga.' : 'No encontré **' + nombre + '** agendado en este servidor.');
+      if (!d.ok) return aviso('No encontré **' + nombre + '** agendado en este servidor.');
+      return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'eventos', color: colorChat(sv), titulo: 'Saqué ' + nombre + ' de la agenda',
+        sub: 'Ya no sale en el calendario de la Liga.' }));
     }
     const fm = /^\s*(\d{1,2})\s*[\/.-]\s*(\d{1,2})\s*$/.exec(String(op.dia || ''));
     const hm = /^\s*(\d{1,2})(?:\s*[:.h]\s*(\d{2}))?\s*(?:hs?)?\s*$/i.exec(String(op.hora || ''));
@@ -3846,9 +4094,12 @@ const COMANDOS = {
     if (!d.ok) return aviso('Ahora no puedo agendarlo: prueba en un rato.');
     const s = Math.floor(ini / 1000);
     const conTiempo = ini - Date.now() >= 12 * 3600000;
-    return aviso('📅 Agendado: **' + nombre + '** · <t:' + s + ':F> (<t:' + s + ':R>; cada uno lo ve en su hora).\n' +
-      'Sale en el calendario de la Liga en la próxima media hora.' +
-      (conTiempo ? ' Con 12 horas o más de anticipación, quienes lo juegan suman **+10 %**.' : ''));
+    // 🧱 la maqueta: el evento como título, la hora de Discord (cada uno la ve en la suya) y el ícono del servidor
+    const ico = (visualRed(sv, await leerMeta(env), Date.now()) || {}).ico || '';
+    return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'eventos', color: colorChat(sv), acc: V.mini(ico),
+      cabeza: '### Agendado: ' + nombre + '\n<t:' + s + ':F> · <t:' + s + ':R>',
+      cuerpo: ['—', '-# Cada uno lo ve en su hora. Sale en el calendario de la Liga en la próxima media hora.' +
+        (conTiempo ? ' Con 12 horas o más de anticipación, quienes lo juegan suman **+10 %**.' : '')] }));
   },
   async afiche(i, env, ctx) { return kit(i, env, ctx, 'afiche'); },
   async llave(i, env, ctx) { return kit(i, env, ctx, 'llave'); },
@@ -3868,17 +4119,16 @@ const COMANDOS = {
 
   async help(i, env, ctx) {
     const op = ((i.data && i.data.options) || []).find(o => o.name === 'comando');
-    if (!op) return aviso(AYUDA_INDICE);
-    const f = AYUDA[String(op.value).toLowerCase()];
+    const k = op ? String(op.value).toLowerCase() : '';
     // ⚠️ El valor viene de una lista cerrada de Discord, así que esto no
     // debería pasar nunca — pero «no debería» no es «no puede», y contestar
     // el índice es más útil que un error.
-    if (!f) return aviso(AYUDA_INDICE);
+    if (!k || !AYUDA[k]) return responderV2(RESPONDE.MENSAJE, ayudaIndice());
     // ⚠️ SÓLO LA AYUDA DE `/card` LEE KV, porque es la única que dice números
-    // que pueden cambiar. Las otras tres son texto fijo y no gastan una
+    // que pueden cambiar. Las otras son texto fijo y no gastan una
     // lectura por curiosidad.
-    const m = f.length ? JSON.parse((await env.KV.get('meta')) || '{}') : null;
-    return aviso(f(m));
+    const m = AYUDA[k].length ? JSON.parse((await env.KV.get('meta')) || '{}') : null;
+    return responderV2(RESPONDE.MENSAJE, ayudaPagina(k, m));
   },
 
   async foto(i, env, ctx) {
@@ -3943,10 +4193,7 @@ const COMANDOS = {
     }
     // ⚠️ RESPUESTA DIFERIDA: bajar del CDN y escribir en R2 puede pasarse de
     // los 3 segundos que da Discord. Con el tipo 5 hay 15 minutos.
-    luego(ctx, guardarFoto(env, i, quien, id, hash));
-    return new Response(JSON.stringify({
-      type: RESPONDE.PENSANDO, data: { flags: EFIMERO },
-    }), { headers: { 'content-type': 'application/json' } });
+    return pensandoYEditar(i, ctx, () => guardarFoto(env, i, quien, id, hash), 'cuenta');
   },
 
   async owner(i, env, ctx) {
@@ -4029,43 +4276,45 @@ const COMANDOS = {
       const faltan = ['temporada', 'competitivo', 'pais', 'servidor']
         .filter((c) => (g.cs || []).indexOf(c) < 0);
       if (faltan.length) L.push('', '⚠️ **Sin carta:** ' + faltan.join(' · '));
-      return aviso(L.join('\n'));
+      return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'ayuda', color: colorRango(await leerMeta(env), g.rg),
+        cuerpo: [L.join('\n').replace(/^## /, '### ')] }));
     }
 
     // ⚠️ UNA SOLA LECTURA PARA LOS OTROS DOS, y es la misma clave que lee
     // `/card`: si `meta` estuviera vieja, estos paneles la muestran vieja
     // también — que es exactamente lo que hay que poder ver.
     const m = JSON.parse((await env.KV.get('meta')) || '{}');
-    if (sub.name === 'rangos') return aviso(panelRangos(m));
+    const fichaOwner = (txt) => responderV2(RESPONDE.MENSAJE, ficha({ fam: 'ayuda', cuerpo: [String(txt).replace(/^## /, '### ')] }));
+    if (sub.name === 'rangos') return fichaOwner(panelRangos(m));
     let disp = null;
     try {
       const r = await rutaAvisos(new Request('https://x/avisos/estado'), env, '/avisos/estado');
       disp = (await r.json()).disparador || null;
     } catch (e) { disp = null; }
-    return aviso(panelEstado(m, disp));
+    return fichaOwner(panelEstado(m, disp));
   },
 
   // 🐉 /drops — los tuyos para abrir; el Drop y el Star se abren acá (Discord, tanda 1)
   drops(i, env, ctx) {
     const did = idDe(i);
-    return pensandoYEditar(i, ctx, () => panelDrops(env, did));
+    return pensandoYEditar(i, ctx, () => panelDrops(env, did, i), 'drops');
   },
   // 💰 /billetera — tus Puntos de Tienda
   billetera(i, env, ctx) {
     const did = idDe(i);
-    return pensandoYEditar(i, ctx, () => panelBilletera(env, did));
+    return pensandoYEditar(i, ctx, () => panelBilletera(env, did, i), 'tienda');
   },
   // 🎒 /inventario — lo de la Tienda que tienes y lo que tienes puesto
   inventario(i, env, ctx) {
     const did = idDe(i);
-    return pensandoYEditar(i, ctx, () => panelInventario(env, did));
+    return pensandoYEditar(i, ctx, () => panelInventario(env, did, i), 'tienda');
   },
   // 🎽 /equipar que:<lugar> — un menú con lo tuyo de ese lugar
   equipar(i, env, ctx) {
     const did = idDe(i);
     const ranura = String(((i.data.options || []).find((o) => o.name === 'que') || {}).value || '');
     if (!RANURA_NOMBRE[ranura]) return aviso('Elige un lugar: aro, decoración, nombre, carta, perfil o un fondo.');
-    return pensandoYEditar(i, ctx, () => panelEquipar(env, did, ranura));
+    return pensandoYEditar(i, ctx, () => panelEquipar(env, did, ranura, i), 'tienda');
   },
   // 🔗 /vincular — tu cuenta de Discord con tu perfil de la Liga (para que tus premios y drops sean tuyos)
   async vincular(i, env, ctx) {
@@ -4073,19 +4322,24 @@ const COMANDOS = {
     let k = '';
     try { k = (await env.KV.get('d:' + did)) || ''; } catch (e) { k = ''; }
     if (k) {
-      return aviso('🔗 **Tu cuenta ya está vinculada:** en la Liga eres **' + k + '** ✅\nTus premios y tus drops van directo a ti.',
-        [botonLink('Tu perfil', HUB_URL + '/freestyle-rap/r/' + encodeURIComponent(k))]);
+      // 🎨 el color de tu rango y tu cara, si llegan a tiempo (el objeto puede estar dormido: sin ellos, igual contesta)
+      const [crudo, m, cara] = await Promise.all([aTiempo(leerP(env, k), 1200, null), leerMeta(env), aTiempo(caraDe(env, i, k), 1200, '')]);
+      let g = null;
+      try { g = JSON.parse(crudo || 'null'); } catch (e) { g = null; }
+      return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'cuenta', color: colorRango(m, g && g.rg), cara, titulo: 'Tu cuenta ya está vinculada ✅',
+        sub: 'En la Liga eres **' + k + '**: tus premios y tus drops van directo a ti.',
+        filas: [[botonLink('Tu perfil', HUB_URL + '/freestyle-rap/r/' + encodeURIComponent(k))]] }));
     }
-    return aviso('🔗 **Vincula tu cuenta** para que tus premios y tus Dragón Drops sean tuyos. El botón te lleva a la página: '
-      + 'entras con Discord y te suma a **DRA**, el servidor de la Liga. Si después te vas de DRA, lo que ganaste queda guardado hasta que vuelvas.',
-      [botonLink('Vincular mi cuenta', URL_VINCULAR)]);
+    return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'cuenta', cara: await caraDe(env, i, ''), titulo: 'Vincula tu cuenta',
+      sub: 'Para que tus premios y tus Dragón Drops sean tuyos.',
+      cuerpo: ['El botón te lleva a la página: entras con Discord y te suma a **DRA**, el servidor de la Liga.\n-# Si después te ' +
+        'vas de DRA, lo que ganaste queda guardado hasta que vuelvas.'],
+      filas: [[botonLink('Vincular mi cuenta', URL_VINCULAR)]] }));
   },
   ping(i) {
-    return aviso(
-      '🏓 **Liga Global** responde.\n' +
-      `· servidor \`${i.guild_id || '(fuera de un servidor)'}\`\n` +
-      '· la firma Ed25519 validó\n' +
-      '· esto salió de un Worker, sin nada prendido entre comando y comando');
+    return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'ayuda', titulo: 'La Liga responde 🏓',
+      cuerpo: [`Servidor \`${i.guild_id || '(fuera de un servidor)'}\` · la firma Ed25519 validó.\n` +
+        '-# Esto salió de un Worker, sin nada prendido entre comando y comando.'] }));
   },
 
   // 🔑 Ver `panelNotify()`. Los servidores escuchados salen del estado del
@@ -4096,25 +4350,37 @@ const COMANDOS = {
 
   // 🔑 Dlx, 25/09/2026: «/website, que te redirigiría a la página».
   async website(i, env, ctx) {
-    return aviso('🌐 **La Liga Global**: los rankings, el perfil de cada rapero, las llaves ' +
-                 'de cada evento y el calendario.', [botonLink('Abrir la página', HUB_URL + '/freestyle-rap/')]);
+    return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'ayuda', titulo: 'La Liga Global',
+      sub: 'Los rankings, el perfil de cada rapero, las llaves de cada evento y el calendario.',
+      filas: [[botonLink('Abrir la página', HUB_URL + '/freestyle-rap/')]] }));
   },
 
   async verificar(i, env, ctx) {
     const yo = idDe(i);
     const [ya, mCrudo] = await Promise.all([env.KV.get('d:' + yo), env.KV.get('meta')]);
-    if (ya) return aviso('Ya estás verificado ✅ — tu tarjeta sale con `/card`.');
     let mm = null;
     try { mm = mCrudo ? JSON.parse(mCrudo) : null; } catch (e) { mm = null; }
+    // 🧱 la ficha de /verificar (la maqueta): los requisitos como una lista que se tilda, y lo que pasa después en letra chica
+    const fv = (titulo, sub, cuerpo, botones, extra) => responderV2(RESPONDE.MENSAJE,
+      ficha(Object.assign({ fam: 'cuenta', titulo, sub, cuerpo, filas: [botones || []] }, extra || {})));
+    if (ya) {
+      const [crudo, cara] = await Promise.all([aTiempo(leerP(env, ya), 1200, null), aTiempo(caraDe(env, i, ya), 1200, '')]);
+      let g = null;
+      try { g = JSON.parse(crudo || 'null'); } catch (e) { g = null; }
+      return fv('Ya estás verificado ✅', 'Tu tarjeta sale con `/card`.', [], [], { color: colorRango(mm, g && g.rg), cara });
+    }
     const P = mm && mm.porton;
-    const v = comoVerificarse(aquiEs(i.guild_id));
+    const v0 = comoVerificarse(aquiEs(i.guild_id));
+    // 🧱 sin el «👇» (el botón ya está abajo) y con la lista que se tilda, quedan los tres ✅/❌: como mucho tres emoji
+    const v = Object.assign({}, v0, { texto: v0.texto.replace(/ 👇$/, '.') });
     const d = datosDe(i, yo);
+    const cara = await caraDe(env, i, '');
     // ⚠️ SIN EL PORTÓN EN KV O SIN EL TOKEN NO SE PUEDE MIRAR: se hace lo de
     // `/card`, que es anotar y explicar. Un comando que no puede contestar lo
     // que promete igual deja a la persona un paso más cerca.
     if (!P || !P.guild || !env.DISCORD_TOKEN) {
       anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
-      return aviso(YA_TE_ANOTE + '\n\n' + v.texto, v.botones);
+      return fv('Todavía no tienes tarjeta', null, [YA_TE_ANOTE.replace(/^Todavía no tienes tarjeta 🃏 — s/, 'S'), v.texto], v.botones, { cara });
     }
     const { estado, miembro } = await miembroDra(env, P.guild, yo);
     if (!miembro && estado !== 404) {
@@ -4132,28 +4398,26 @@ const COMANDOS = {
       `${si(unPais)} Tener un país` + (unPais ? ' ' + emojiBandera(dg.paises[0]) : ''),
     ].join('\n');
     if (!dg.enDra) {
-      return aviso('Para verificarte hace falta estar en **Discord Rap Español**, y ahí ' +
-                   'no te encuentro.\n\n' + lista + '\n\n' + v.texto, v.botones);
+      return fv('Te falta entrar a Discord Rap Español', 'Para verificarte hace falta estar en **Discord Rap Español**, y ahí ' +
+        'no te encuentro.', [lista, '—', v.texto], v.botones, { cara });
     }
     if (dg.paises.length > 1) {
-      return aviso(lista + '\n\nTienes **' + dg.paises.length + ' países** en DRA (' +
-                   dg.paises.map(emojiBandera).join(' ') + '): deja uno solo y vuelve a ' +
-                   'escribir `/verificar`.', aLaPagina);
+      return fv('Tienes ' + dg.paises.length + ' países en DRA', null, [lista, 'Tienes **' + dg.paises.length + ' países** en DRA (' +
+        dg.paises.map(emojiBandera).join(' ') + '): deja uno solo y vuelve a escribir `/verificar`.'], aLaPagina, { cara });
     }
     if (!unPais) {
       // 🔑 y desde el 01/10/2026 se elige en la página: el bot te pone el rol
-      return aviso(lista + '\n\nNo encuentro tu **país** en DRA. Elígelo en la página y el ' +
-                   'bot te pone el rol 👇 (o elige tu rol de país en DRA, o pon tu bandera ' +
-                   'en el apodo, y vuelve a escribir `/verificar`).', v.botones);
+      return fv('Te falta tu país', null, [lista, 'No encuentro tu **país** en DRA. Elígelo en la página y el bot te pone el ' +
+        'rol (o elige tu rol de país en DRA, o pon tu bandera en el apodo, y vuelve a escribir `/verificar`).'], v.botones, { cara });
     }
     // las reglas de DRA sin aceptar: Discord no deja darle roles a quien no entró del todo
     if (miembro && miembro.pending === true) {
-      return aviso(lista + '\n\nTe falta **aceptar las reglas de DRA**: Discord te las muestra al abrir el ' +
-                   'servidor, es un toque. Después vuelve a escribir `/verificar`.', aLaPagina);
+      return fv('Te falta aceptar las reglas de DRA', null, [lista, 'Te falta **aceptar las reglas de DRA**: Discord te las ' +
+        'muestra al abrir el servidor, es un toque. Después vuelve a escribir `/verificar`.'], aLaPagina, { cara });
     }
     if ((P.revisa || []).indexOf(String(yo)) >= 0) {
-      return aviso(lista + '\n\nLo tuyo está completo. Tu caso lo revisa un admin: no ' +
-                   'hace falta que hagas nada más.', aLaPagina);
+      return fv('Lo tuyo está completo', null, [lista, 'Lo tuyo está completo. Tu caso lo revisa un admin: no hace falta que ' +
+        'hagas nada más.'], aLaPagina, { cara });
     }
     // ✅ «A»: lo tuyo está completo y te falta el Miembro: te lo damos ahora (`darMiembro()`), no en la vuelta del ciclo
     let dimos = false;
@@ -4165,14 +4429,14 @@ const COMANDOS = {
     anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
     const vuelta = proximaVuelta(Date.now());
     const hora = vuelta ? horaEste(vuelta.toISOString()).replace(/^\S+ /, '') : '';
-    const cuando = hora ? ` La próxima vuelta arranca a las **${hora}**.` : '';
-    return aviso(lista2 + '\n\n' + (dimos
-      ? '¡Listo! Te dimos el rol de **Miembro** en DRA ✅: ya estás verificado. Tu tarjeta sale cuando el bot te ' +
+    const cuando = hora ? `\n-# La próxima vuelta arranca a las **${hora}**.` : '';
+    return fv(dimos || dg.rol ? 'Ya estás verificado' : 'Lo tuyo está completo', null, [lista2, '—', (dimos
+      ? '¡Listo! Te dimos el rol de **Miembro** en DRA: ya estás verificado. Tu tarjeta sale cuando el bot te ' +
         'cargue, en menos de una hora.'
       : dg.rol
-        ? 'Estás verificado en DRA ✅. Tu tarjeta sale cuando el bot te cargue: en menos de una hora.'
-        : 'Lo tuyo está completo ✅. El rol de **Miembro** te lo da el bot solo, y con él sale tu tarjeta: en ' +
-          'menos de una hora.') + cuando, aLaPagina);
+        ? 'Estás verificado en DRA. Tu tarjeta sale cuando el bot te cargue: en menos de una hora.'
+        : 'El rol de **Miembro** te lo da el bot solo, y con él sale tu tarjeta: en ' +
+          'menos de una hora.') + cuando], aLaPagina, { cara });
   },
 
   async card(i, env, ctx) {
@@ -4255,18 +4519,17 @@ const COMANDOS = {
           // 🔑 DESDE LAS LIBRES (29/09/2026) NO TODO ES VERIFICARSE: quien
           // está en la Lista y todavía no jugó tiene la Temporada y la
           // Servidor en cuanto juegue. Verificarse es para las otras dos.
-          // 🔑 Y DESDE EL 05/10/2026, SIN VERIFICARSE NINGUNA: los dos pasos de `QUE_PIDE`
-          return aviso('Ya estás cargado en la Liga ✅ — no hace falta que ' +
-                       'nadie te agregue.\n\n' + QUE_PIDE + '\n\nPara verificarte:\n• si ya estás en DRA ' +
-                       'y Discord sabe tu país (bandera en tu apodo o un rol ' +
-                       'de país), el bot te verifica solo en la próxima ' +
-                       'vuelta (~30 min);\n• si no, ' + minuscula(v.texto), v.botones.concat([botonPase()]));
+          // 🔑 Y DESDE EL 05/10/2026, SIN VERIFICARSE NINGUNA: los dos pasos de `dosPasos()`
+          return responderV2(RESPONDE.MENSAJE, dosPasos({ aqui: aquiEs(i.guild_id), titulo: 'Ya estás cargado en la Liga ✅',
+            sub: 'No hace falta que nadie te agregue: te faltan estos dos pasos, y los dos son tuyos.',
+            nota: 'Para verificarte: si ya estás en DRA y Discord sabe tu país (bandera en tu apodo o un rol de país), el bot te ' +
+              'verifica solo en la próxima vuelta (~30 min); si no, ' + minuscula(v.texto).replace(/ 👇$/, '') + '.' }));
         }
         const d = datosDe(i, yo);
         anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
-        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n\n' + v.texto +
-                     '\n\nSi ya jugaste con otro nombre: `/card nombre:<ese nombre>`.',
-                     v.botones.concat([botonPase(), botonEventos()]));
+        return responderV2(RESPONDE.MENSAJE, dosPasos({ aqui: aquiEs(i.guild_id), titulo: 'Todavía no tienes tarjeta',
+          sub: 'Se consiguen en dos pasos, y los dos son tuyos.', eventos: true,
+          nota: ANOTE_CORTO + ' ¿Jugaste con otro nombre? `/card nombre:<ese nombre>`' }));
       }
     }
     const [crudo, meta] = await Promise.all([
@@ -4386,8 +4649,8 @@ const COMANDOS = {
       if (!pedido) {
         const d = datosDe(i, idDe(i));
         anotar(env, ctx, idDe(i), d.nick, d.user, d.glob, i.guild_id, 'yo');
-        const vf = comoVerificarse(aquiEs(i.guild_id));
-        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n\n' + vf.texto, vf.botones.concat([botonPase(), botonEventos()]));
+        return responderV2(RESPONDE.MENSAJE, dosPasos({ aqui: aquiEs(i.guild_id), titulo: 'Todavía no tienes tarjeta',
+          sub: 'Para un versus hace falta la tuya: se consigue en dos pasos, y los dos son tuyos.', eventos: true, nota: ANOTE_CORTO }));
       }
       if (mio.id) {
         const d = datosDe(i, mio.id);
@@ -4447,8 +4710,7 @@ const COMANDOS = {
                    'así que las dos cartas saldrían de lugares distintos.\n' +
                    'Prueba con otra categoría.');
     }
-    return responderTexto(RESPONDE.MENSAJE,
-      versus(mio.clave, ga, rival.clave, gb, cual, idDe(i), m, aqui));
+    return responderV2(RESPONDE.MENSAJE, versus(mio.clave, ga, rival.clave, gb, cual, idDe(i), m, aqui));
   },
 
   // ⚠️ SE GUARDA EL APODO ANTERIOR, no un «1». Apagar es fácil —se le saca el
@@ -4481,79 +4743,11 @@ const COMANDOS = {
     return SU.comando(i, env, ctx, ayudaSU());
   },
 
-  // 🏷️ /apodo (Dlx, 18/11/2026: «en vez del comando de numeración sea otro… que tengas opciones e incluso para
-  // combinar»). Seis estilos listos (`bot/apodo.js`), uno para todos los servidores de la Liga: se guarda en
-  // `apodo:<id>` y se aplica AL TOQUE en este servidor —con las piezas que deja el ciclo en `apodos`, el mismo nombre
-  // base y el mismo `decidir()` que `herramientas/sincronizar_puesto.py`, así la vuelta siguiente no lo «corrige»— y en
-  // los demás, en esa vuelta. Sin `estilo:` muestra los seis con lo tuyo.
   async apodo(i, env, ctx) {
-    const gid = i.guild_id;
-    const uid = idDe(i);
-    if (!gid) return aviso('`/apodo` va **adentro de un servidor de la Liga**: ahí te cambio el apodo al toque.');
-    const sv = aquiEs(gid) || 'este servidor';
-    let todo = null;
-    let mio = null;
-    try {
-      const [a, m] = await Promise.all([env.KV.get('apodos'), env.KV.get('apodo:' + uid)]);
-      todo = a ? JSON.parse(a) : null;
-      mio = m ? JSON.parse(m) : null;
-    } catch (e) { todo = todo || null; }
-    const [viejo, cfg] = await Promise.all([eleccionNick(env, gid, uid), ajustes(env, gid)]);
-    const fila = todo && todo.p ? todo.p[uid] : null;
-    const p = AP.piezasDe(fila);
-    const siglas = (todo && todo.s) || [];
-    const actual = (i.member && i.member.nick) || '';
-    const u0 = (i.member && i.member.user) || {};
-    const base = (fila && fila[6]) || AP.nombreDe(actual) || u0.global_name || u0.username || '';
-    // lo que rige hoy: lo tuyo (/apodo), si no tu /numeral de antes acá, si no el servidor, si no el 1
-    const rige = AP.estiloValido(mio && mio.e) || (viejo ? (viejo.on ? AP.POR_DEFECTO : AP.SOLO_NOMBRE)
-      : cfg.nick !== false ? AP.POR_DEFECTO : AP.SOLO_NOMBRE);
-    const porque = mio && AP.estiloValido(mio.e) ? 'lo elegiste tú' : viejo ? 'lo elegiste con el `/numeral` de antes'
-      : cfg.nick !== false ? 'es el de siempre' : `${sv} apagó las marcas`;
+    if (!i.guild_id) return aviso('`/apodo` va **adentro de un servidor de la Liga**: ahí te cambio el apodo al toque.');
     const op = ((i.data && i.data.options) || []).find((o) => o.name === 'estilo');
-    if (!op) {
-      const lineas = AP.ESTILOS.map(([n, t]) => {
-        const sale = p ? AP.armar(n, base, p) : base;
-        const falta = p && n !== AP.SOLO_NOMBRE && !AP.adelante(n, p) ? ' *(te falta esa pieza)*' : '';
-        return `${n === rige ? '▶' : '·'} **${n}** · ${t} — \`${sale || '(sin apodo)'}\`${falta}`;
-      });
-      return aviso(`Tu apodo en **${sv}**: \`${actual || '(sin apodo)'}\` · estilo **${rige}** (${porque}).\n\n` +
-                   lineas.join('\n') + '\n\nPara cambiarlo: `/apodo estilo:` y eliges uno. Vale para todos los servidores de la Liga.');
-    }
-    const n = AP.estiloValido(op.value) || AP.POR_DEFECTO;
-    // 🔴 SI KV NO ESCRIBE, SE DICE Y NO SE TOCA EL APODO (como el /numeral de antes): sin la elección guardada, la
-    // próxima vuelta lo devolvería a lo que diga el servidor
-    if (!mio || AP.estiloValido(mio.e) !== n) {
-      try {
-        await env.KV.put('apodo:' + uid, JSON.stringify({ e: n, ts: Date.now() }));
-      } catch (e) {
-        return aviso('No pude guardar tu elección (`' + String(e).slice(0, 60) + '`), así que no te toqué el apodo. ' +
-                     'Prueba de nuevo en un rato.');
-      }
-    }
-    const nombreEstilo = (AP.ESTILOS.find((e) => e[0] === n) || [])[1] || '';
-    if (!todo) {
-      return aviso(`Anotado: estilo **${n}** (${nombreEstilo}). ⏳ Te lo pongo en la próxima vuelta del bot, en todos los servidores.`);
-    }
-    const destino = AP.decidir(actual, p, n, base, siglas);
-    if ((destino || '') === actual) {
-      return aviso(`Listo: estilo **${n}** (${nombreEstilo}). En **${sv}** tu apodo ya era \`${actual || '(sin apodo)'}\`.` +
-                   (p ? '' : '\nTodavía no tienes piezas para el apodo (crew, #N, puesto…): cuando las tengas, aparecen solas.'));
-    }
-    const res = await cambiarApodo(env, gid, uid, destino);
-    if (res === 'ok') {
-      return aviso(`Listo: estilo **${n}** (${nombreEstilo}).\nTu apodo en **${sv}** ahora es \`${destino || '(sin apodo)'}\`; ` +
-                   'en los demás servidores de la Liga, en la próxima vuelta del bot.');
-    }
-    if (res === 'sin-token') {
-      return aviso(`Anotado: estilo **${n}** (${nombreEstilo}). Tu apodo va a quedar \`${destino || '(sin apodo)'}\`.\n` +
-                   '⏳ Se aplica en la próxima vuelta del bot. Si no quieres esperar, póntelo tú.');
-    }
-    // ⚠️ LA ELECCIÓN QUEDA GUARDADA AUNQUE EL APODO FALLE: al dueño del servidor y a quien tenga un rol más alto que el
-    // del bot, Discord no les deja tocar el apodo nunca
-    return aviso(`Anotado: estilo **${n}** (${nombreEstilo}).\n⚠️ Pero no pude cambiarte el apodo acá (\`${res}\`). Suele ser ` +
-                 'porque eres el dueño del servidor o tienes un rol más alto que el del bot: ' +
-                 `ponlo a mano como \`${destino || '(sin apodo)'}\`.`);
+    const r = await apodoPanel(i, env, op ? op.value : 0);
+    return r.aviso ? aviso(r.aviso) : responderV2(RESPONDE.MENSAJE, r.msg);
   },
 
   // ⏳ el comando de antes: Discord tarda un rato en sacarlo de la lista de cada servidor
@@ -5277,10 +5471,8 @@ export default {
       const monto = escrito ? Math.min(Number(escrito), 1e6) : 0;
       // ⏱️ «PENSANDO» PRIMERO Y LA RESPUESTA DESPUÉS (12/11/2026): son tres pedidos seguidos al objeto y a KV, y Discord da
       // la interacción por fallida a los 3 s (ver el `ve` de abajo, donde pasó). Con el aviso diferido hay 15 minutos
-      const editar = (txt) => fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
-        method: 'PATCH', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ content: txt, allowed_mentions: { parse: [] } }),
-      });
+      // 🧱 y desde el 20/11/2026 el «un momento» ya va en V2, en el recuadro chico de `aviso()`, y la edición lo reemplaza
+      const editar = (txt) => editarOriginal(i, V.avisoMsg(txt));
       luego(ctx, (async () => {
         let txt = '';
         try {
@@ -5292,8 +5484,7 @@ export default {
         } catch (e) { txt = 'No pude anotarlo: prueba de nuevo.'; }
         await editar(txt);
       })());
-      return new Response(JSON.stringify({ type: RESPONDE.PENSANDO, data: { flags: EFIMERO } }),
-        { headers: { 'content-type': 'application/json' } });
+      return responderV2(RESPONDE.MENSAJE, V.momentoMsg(null, true));
     }
 
     if (i.type === RECIBE.COMPONENTE) {
@@ -5345,8 +5536,18 @@ export default {
         if (!e) return aviso('Ese botón ya no anda: usa **`/drops`**.');
         // del 1 al 4 son los toques; el 5 es «Abrir», que le pide el premio al objeto (puede estar dormido: tipo 6 y después)
         if (e.k > DROP_TOQUES) return actualizarLuego(i, ctx, () => premioDropChat(env, yo, e));
-        return new Response(JSON.stringify({ type: RESPONDE.ACTUALIZAR, data: Object.assign({ allowed_mentions: { parse: [] } }, toqueDrop(e)) }),
-          { headers: { 'content-type': 'application/json' } });
+        return editarAqui(i, toqueDrop(e));
+      }
+
+      // ── 📣 «Mostrarlo en el canal» (`dm:`, 20/11/2026, Dlx: «6C»): lo que te salió, público y sin que suene nadie. El botón
+      // vive en tu mensaje efímero, así que sólo lo toca su dueño; todo lo que se muestra viene en el botón ────────────
+      if (que === 'dm') {
+        const yo = idDe(i);
+        const esperarM = frenado(yo, 'click');
+        if (esperarM) return espera(esperarM);
+        const msg = mostrarDrop(id, yo);
+        if (!msg) return aviso('Ese botón ya no anda: usa **`/drops`**.');
+        return responderV2(RESPONDE.MENSAJE, msg);
       }
 
       // ── 🐉 «Abrir un Drop / Star» (`dd:<drop|star>:x:<dueño>`) y 🎽 el menú de `/equipar` (`eq:<lugar>:x:<dueño>`) ─
@@ -5358,13 +5559,24 @@ export default {
         if (dueno && dueno !== yo) return aviso('Eso es de otra persona: usa **`/drops`** para ver los tuyos.');
         // 🎁 «Abrir mis premios» (el aviso de ganadores, 19/11/2026: Dlx, «ver mis recompensas en un solo botón en vez de 6»):
         // sin dueño; a quien lo toca, SUS drops para abrir, como `/drops` (efímero)
-        if (que === 'dd' && quien === 'mis') return pensandoYEditar(i, ctx, () => panelDrops(env, yo));
+        // 🧱 DESDE SU PANEL (efímero), EL CLIC CAMBIA ESE MISMO MENSAJE (20/11/2026): antes cada clic de `/drops` o de
+        // `/equipar` dejaba un mensaje nuevo. Desde un mensaje público (el aviso de ganadores), uno nuevo y sólo para ti
+        const abrirEn = (trabajo, fam) => (esEfimero(i) ? actualizarLuego(i, ctx, trabajo, fam) : pensandoYEditar(i, ctx, trabajo, fam));
+        if (que === 'dd' && quien === 'mis') return abrirEn(() => panelDrops(env, yo, i), 'drops');
         // 🥚 el Nido del campeón (el aviso de ganadores, 18/11/2026) no se abre en Discord: a él solo, el link de la página
         if (que === 'dd' && quien === 'nido') return aviso('🥚 Tu **Nido** se abre en la página, con su animación: ' + HUB_URL + '/freestyle-rap/?drops=1');
-        if (que === 'dd') return (quien === 'drop' || quien === 'star') ? pensandoYEditar(i, ctx, () => abrirDropChat(env, yo, quien)) : aviso('Ese botón ya no anda.');
+        if (que === 'dd') return (quien === 'drop' || quien === 'star') ? abrirEn(() => abrirDropChat(env, yo, quien), null) : aviso('Ese botón ya no anda.');
+        // 🎒 «Cambiar» o «Ponerme uno» del inventario (`eq:<lugar>:ver:<dueño>`): el menú de ese lugar, en el mismo mensaje
+        if (extra === 'ver') {
+          if (!RANURA_NOMBRE[quien]) return aviso('Ese botón ya no anda: usa **`/equipar`**.');
+          return abrirEn(() => panelEquipar(env, yo, quien, i), 'tienda');
+        }
         const val = ((i.data && i.data.values) || [])[0] || '';
         if (!RANURA_NOMBRE[quien] || !val) return aviso('Ese menú ya no anda: usa **`/equipar`** de nuevo.');
-        return pensandoYEditar(i, ctx, () => ponerChat(env, yo, quien, val));
+        return abrirEn(async () => {
+          const res = await ponerChat(env, yo, quien, val);
+          return panelEquipar(env, yo, quien, i, res.texto);
+        }, 'tienda');
       }
 
       // ── 📊 «Ver estadísticas» de un cruce (02/11/2026, el remake del VS): `vx:<id>` ─────────────────────────────
@@ -5566,10 +5778,14 @@ export default {
         const antesCfg = JSON.stringify(cfg);
         const vals = (i.data && i.data.values) || [];
         // 📈 abrir el panel del ascenso, o volver: no cambian nada
-        if (quien === 'asc') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg));
-        if (quien === 'mas') return responderPanel(RESPONDE.ACTUALIZAR, panelMas(cfg));
+        if (quien === 'asc') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg), i);
+        if (quien === 'mas') return responderPanel(RESPONDE.ACTUALIZAR, panelMas(cfg), i);
+        // ⚙️ «Elegir»: el menú de ese canal en su subpanel (20/11/2026). No cambia nada todavía
+        if (quien === 'elegir') {
+          return responderPanel(RESPONDE.ACTUALIZAR, panelElegir(cfg, extra) || panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg), i);
+        }
         if (quien === 'volver') {
-          return responderPanel(RESPONDE.ACTUALIZAR, panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
+          return responderPanel(RESPONDE.ACTUALIZAR, panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg), i);
         }
         if (quien === 'nick') cfg.nick = !cfg.nick;
         else if (quien === 'apuestas') cfg.apuestas = cfg.apuestas !== true;
@@ -5597,10 +5813,10 @@ export default {
         // panel que deja un mensaje por click convierte tres ajustes en tres
         // paneles contradictorios, y el último no es necesariamente el que
         // está abajo.
-        if (quien === 'asc_canal') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg));
-        if (['aviso_evento', 'ligas', 'ligas_no', 'resumen'].includes(quien)) return responderPanel(RESPONDE.ACTUALIZAR, panelMas(cfg));
+        if (quien === 'asc_canal') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg), i);
+        if (['aviso_evento', 'ligas', 'ligas_no', 'resumen'].includes(quien)) return responderPanel(RESPONDE.ACTUALIZAR, panelMas(cfg), i);
         return responderPanel(RESPONDE.ACTUALIZAR,
-          panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
+          panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg), i);
       }
 
       // ── /borrar-mis-datos: la confirmación ─────────────────────────────
@@ -5612,7 +5828,7 @@ export default {
         if (esperarB) return espera(esperarB);
         if (quien !== 'si') {
           return responderPanel(RESPONDE.ACTUALIZAR,
-            { content: 'Listo, no borré nada.', components: [] });
+            { content: 'Listo, no borré nada.', components: [] }, i);
         }
         let h;
         try {
@@ -5620,7 +5836,7 @@ export default {
         } catch (e) {
           return responderPanel(RESPONDE.ACTUALIZAR, { content: 'No pude terminar de ' +
             'borrar (`' + String(e).slice(0, 60) + '`). Prueba de nuevo en un rato: lo ' +
-            'que ya se borró no vuelve.', components: [] });
+            'que ya se borró no vuelve.', components: [] }, i);
         }
         return responderPanel(RESPONDE.ACTUALIZAR, {
           content: '✅ **Listo.** ' + (h.clave
@@ -5630,7 +5846,7 @@ export default {
             'Quedó anotado que no te vuelva a sumar solo.\n' +
             '-# La página se pone al día en la próxima vuelta del ciclo (menos de una hora).',
           components: [],
-        });
+        }, i);
       }
 
       // ── /notify: el menú de servidores y «Todos» ───────────────────────
@@ -5643,7 +5859,7 @@ export default {
         const elegidos = quien === 'svs' ? ((i.data && i.data.values) || [])
           : quien === 'todos' ? [] : null;
         return responderPanel(RESPONDE.ACTUALIZAR,
-          panelNotify(aquiEs(i.guild_id), await escuchados(env), elegidos));
+          panelNotify(aquiEs(i.guild_id), await escuchados(env), elegidos), i);
       }
 
       // ── Los botones del versus ─────────────────────────────────────────
@@ -5677,8 +5893,28 @@ export default {
           return aviso('Ya no comparten ningún servidor, así que las dos cartas ' +
                        'saldrían de lugares distintos.');
         }
-        return responderTexto(RESPONDE.ACTUALIZAR,
-          versus(quien, ga, rival, gb, extra, dueno, m, aqui));
+        // 🗄️ un versus de antes (texto, sin el flag) se sigue editando como texto: un mensaje no cambia de formato
+        if (legado(i)) return responderTexto(RESPONDE.ACTUALIZAR, versusTexto(quien, ga, rival, gb, extra, dueno));
+        return responderV2(RESPONDE.ACTUALIZAR, versus(quien, ga, rival, gb, extra, dueno, m, aqui));
+      }
+
+      // ── 🏷️ el menú de `/apodo` (`apo:x:x:<dueño>`, 20/11/2026): elige el estilo y cambia este mismo mensaje ────────
+      if (que === 'apo') {
+        if (!i.guild_id) return aviso('Esto va adentro de un servidor de la Liga.');
+        if (dueno && idDe(i) !== dueno) return aviso('Ese menú es de otra persona: tira `/apodo` y tienes el tuyo.');
+        const esperarAp = frenado(idDe(i), 'click');
+        if (esperarAp) return espera(esperarAp);
+        const r = await apodoPanel(i, env, Number(((i.data && i.data.values) || [])[0]) || 0);
+        return r.aviso ? aviso(r.aviso) : editarAqui(i, r.msg);
+      }
+
+      // ── 🧭 el menú de `/help` (`hp:ver`, 20/11/2026): cada comando en el mismo mensaje ────────────────────────────────
+      if (que === 'hp') {
+        const esperarH = frenado(idDe(i), 'click');
+        if (esperarH) return espera(esperarH);
+        const k = String(((i.data && i.data.values) || [])[0] || 'indice');
+        if (k === 'indice' || !AYUDA[k]) return editarAqui(i, ayudaIndice());
+        return editarAqui(i, ayudaPagina(k, AYUDA[k].length ? await leerMeta(env) : null));
       }
 
       if (que !== 'c' && que !== 's' && que !== 'l') {

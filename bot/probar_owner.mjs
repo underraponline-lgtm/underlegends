@@ -73,7 +73,9 @@ const owner = (uid, sub, opciones, dm) => pedir({
   data: { name: 'owner', options: [{ name: sub, type: 1, options: opciones || [] }] },
 });
 
-const texto = (r) => (r && r.data && r.data.content) || '';
+// 🧱 los mensajes van en V2 desde el 20/11/2026: el texto que se ve sale de sus Text Display (bot/vista.js)
+const { textoV2: TX } = await import('./vista.js');
+const texto = (r) => TX(r && r.data) || '';
 const efimero = (r) => !!(r && r.data && (r.data.flags & 64));
 
 // ⚠️ `--ver` IMPRIME LOS PANELES EN VEZ DE AFIRMAR SOBRE ELLOS, y hace falta

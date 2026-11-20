@@ -22,6 +22,8 @@ import { webcrypto } from 'node:crypto';
 import { VERIFICA } from './worker.js';
 // el número de la app de Discord: `discordDe()` sólo acepta permisos suyos (revisión del 03/10/2026)
 import { APP_ID, DUENO } from './avisos.js';
+// 🧱 el texto que se ve de un mensaje V2 (los Text Display) y las piezas de un tipo, en cualquier nivel (20/11/2026)
+import { textoV2 as TX, piezas as PZ, medir as MEDIR } from './vista.js';
 // lo que contesta Discord con un permiso: `/oauth2/@me` trae de qué app es y quién es; lo demás, el usuario solo
 const comoDiscord = (url, u, app = APP_ID) => new Response(JSON.stringify(String(url).endsWith('/oauth2/@me')
   ? { application: { id: app }, user: u } : u), { status: 200 });
@@ -145,10 +147,15 @@ Date.now = () => RELOJ;
 
 // Lo que el Worker manda por su cuenta después de contestar (la invitación).
 let SEGUIMIENTOS = [];
+// 🧱 TODO LO QUE CONTESTA Y EDITA EL WORKER, PARA AUDITARLO AL FINAL (20/11/2026): los topes de Discord y las reglas de la
+// forma (`medir()` de bot/vista.js) sobre cada mensaje, no sobre los que una prueba se acordó de mirar
+const AUDITADOS = [];
 // Los links reales de la tabla, para devolverlos después de las pruebas.
 let ORIGINAL_INVITA = [];
 globalThis.fetch = async (url, opc) => {
   SEGUIMIENTOS.push({ url: String(url), cuerpo: JSON.parse(opc.body) });
+  const c = SEGUIMIENTOS[SEGUIMIENTOS.length - 1].cuerpo;
+  if (/\/webhooks\//.test(String(url)) && c && Array.isArray(c.components)) AUDITADOS.push({ de: 'seguimiento', tipo: 0, msg: c });
   return new Response('{}', { status: 200 });
 };
 // ⚠️ `ctx` no existe en las pruebas si no se lo pasa, y el Worker lo usa para
@@ -181,6 +188,9 @@ async function pedir(objeto, { romperFirma = false, romperCuerpo = false,
   }), env, ctx);
   let cuerpoResp = null;
   try { cuerpoResp = JSON.parse(await r.clone().text()); } catch { /* texto */ }
+  if (cuerpoResp && cuerpoResp.type !== 9 && cuerpoResp.data && Array.isArray(cuerpoResp.data.components)) {
+    AUDITADOS.push({ de: String((objeto.data && (objeto.data.name || objeto.data.custom_id)) || '?'), tipo: cuerpoResp.type, msg: cuerpoResp.data });
+  }
   return { status: r.status, json: cuerpoResp };
 }
 
@@ -250,7 +260,7 @@ console.log('\nEL WORKER, SIN DISCORD Y SIN CLOUDFLARE\n');
   ok('/ping contesta un mensaje', r.status === 200 && r.json?.type === 4);
   ok('/ping es EFÍMERO', (d?.flags & (1 << 6)) !== 0,
      `flags ${d?.flags}` + (d?.flags ? '' : '  ← lo vería todo el canal'));
-  ok('/ping nombra el servidor', (d?.content || '').includes('123456789'));
+  ok('/ping nombra el servidor', (TX(d) || '').includes('123456789'));
 }
 {
   const r = await pedir({ type: 2, data: { name: 'noexiste' } });
@@ -289,8 +299,8 @@ console.log('\nLA CARTA\n');
   // ⚠️ LA CARTA ES PUBLICA desde el 17/09/2026: la ve todo el canal.
   ok('la carta NO es efímera', (d?.flags & EF) === 0, `flags ${d?.flags}`);
   // ⚠️ El flag V2 DESACTIVA content y embeds: si van, Discord rechaza el body.
-  ok('NO manda content ni embeds', !d?.content && !d?.embeds,
-     (d?.content || d?.embeds) ? '← el flag V2 los prohíbe' : '');
+  ok('NO manda content ni embeds', !TX(d) && !d?.embeds,
+     (TX(d) || d?.embeds) ? '← el flag V2 los prohíbe' : '');
   ok('trae una galería con la imagen', !!galeria(c)?.items?.[0]?.media?.url,
      galeria(c)?.items?.[0]?.media?.url || '');
   // ⚠️ ABRE EN LA SERVIDOR AUNQUE TENGA LA COMPETITIVA. Konan tiene 95
@@ -454,7 +464,7 @@ console.log('\nLA INVITACIÓN\n');
   // cambio de servidor.
   const r = await pedir({ type: 3, guild_id: G.FFA, application_id: 'app', token: 'tok',
     data: { custom_id: 's:konan::999111', values: ['DRA'] }, member: { user: { id: '999111' } } });
-  const t = r.json?.data?.content || '';
+  const t = TX(r.json?.data) || '';
   ok('sin link cargado no promete nada', !/invitaci|admin/.test(t), t.slice(0, 48));
   ok('pero sí dice que la carta no está', /no tengo tu carta/.test(t), t.slice(0, 48));
 }
@@ -474,15 +484,15 @@ console.log('\nLA INVITACIÓN\n');
   const d = r.json?.data;
   ok('elegir un servidor sin carta NO pisa el mensaje', r.json?.type === 4,
      `type ${r.json?.type}` + (r.json?.type === 7 ? '  ← borraría la carta pública' : ''));
-  ok('y contesta con la invitación', /Entra por acá/.test(d?.content || ''),
-     (d?.content || '').slice(0, 48));
+  ok('y contesta con la invitación', /Entra por acá/.test(TX(d) || ''),
+     (TX(d) || '').slice(0, 48));
   // ⚠️ EL LINK VIVE EN EL BOTÓN, NO EN EL TEXTO, desde el 18/09/2026. Se
   // comprueba la forma entera —estilo 5, con `url` y SIN `custom_id`— porque
   // un botón de link mal armado no falla al mandarse: Discord lo rechaza, el
   // aviso no llega, y desde acá parecería que la invitación simplemente no se
   // envió. Con `custom_id` además Discord esperaría una respuesta que nadie
   // va a dar, y la persona vería «esta interacción falló».
-  const bs = (d?.components || []).flatMap(f => f.components || []);
+  const bs = PZ(d, [2, 3, 5, 6, 7, 8]);
   const link = bs.find(b => (b.url || '').includes('discord.gg/prueba'));
   ok('lleva el link, y en un botón', !!link, bs.map(b => b.label).join(' · '));
   // ⚠️ Y SOLO SI LA CARTA ES TUYA. Dlx, 19/09/2026: miraba la carta de Sombra,
@@ -492,8 +502,8 @@ console.log('\nLA INVITACIÓN\n');
     const r2 = await pedir({ type: 3, guild_id: G.FFA, application_id: 'app', token: 'tok',
       data: { custom_id: 's:konan::777222', values: ['DRA'] },
       member: { user: { id: '777222' } } });   // 777222 NO es konan
-    const c2 = r2.json?.data?.content || '';
-    const b2 = (r2.json?.data?.components || []).flatMap(f => f.components || []);
+    const c2 = TX(r2.json?.data) || '';
+    const b2 = PZ(r2.json?.data, [2, 3, 5, 6, 7, 8]);
     ok('mirando la carta de OTRO, no te invitan a ti',
        !/Entra por acá/.test(c2) && !b2.some(b => (b.url || '').includes('discord.gg/')),
        c2.slice(0, 60));
@@ -504,7 +514,7 @@ console.log('\nLA INVITACIÓN\n');
      link?.style === 5 && link?.type === 2 && !link?.custom_id,
      `style ${link?.style}  custom_id ${link?.custom_id ?? '(ninguno)'}`);
   ok('la invitación es efímera', (d?.flags & EF) !== 0);
-  ok('nombra el servidor', (d?.content || '').includes('DRA'));
+  ok('nombra el servidor', (TX(d) || '').includes('DRA'));
 }
 {
   // ⚠️ NO SE INVITA A DONDE YA ESTÁS, aunque la carta todavía no exista.
@@ -513,7 +523,7 @@ console.log('\nLA INVITACIÓN\n');
   // PERTENENCIA son dos cosas distintas y caían en la misma rama.
   const r = await pedir({ type: 3, guild_id: G.FFA, application_id: 'app', token: 'tok',
     data: { custom_id: 's:konan::999111', values: ['FFA'] }, member: { user: { id: '999111' } } });
-  const t = r.json?.data?.content || '';
+  const t = TX(r.json?.data) || '';
   ok('sin carta pero estando ahí, NO invita', !/Entra por acá|invitaci/.test(t),
      t.slice(0, 48));
   ok('y dice que la está generando', /generando/.test(t), t.slice(0, 48));
@@ -597,12 +607,12 @@ console.log('\nLOS DATOS\n');
     member: { user: { id: '000000' } }, data: { name: 'card' } });
   // ⚠️ SE PIDE EL CAMINO, NO LA FRASE. Lo que no puede faltar es cómo
   // verificarse. Afirmar el texto entero haría fallar la prueba por una coma.
-  const c = r.json?.data?.content || '';
+  const c = TX(r.json?.data) || '';
   ok('un ID desconocido avisa en vez de reventar', c.includes('Verifícate en la página'), c.slice(0, 48));
   // 🔑 DESDE EL 01/10/2026 ES UN BOTÓN, A LA PÁGINA (Dlx: «que esto te
   // redirija, y que te entres a DRA automáticamente»). Antes eran dos —la
   // invitación y el canal de DRA—, y la página hace los dos pasos.
-  const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
+  const bs = PZ(r.json?.data, [2, 3, 5, 6, 7, 8]);
   // 📅 y desde el 04/10/2026 también «Ver los próximos eventos»; y desde el 05/10/2026 el Pase, porque la Temporada
   // es la recompensa de su nivel 1 (Dlx: «C»). Primero verificarse: sin eso, ninguna tarjeta
   ok('y le da TRES botones: verificarse en la página, el Pase y los próximos eventos', bs.length === 3 &&
@@ -619,10 +629,10 @@ console.log('\nLOS DATOS\n');
   // lo mete (ya está adentro: la interacción vino de ahí).
   const r = await pedir({ type: 2, guild_id: G.DRA,
     member: { user: { id: '000000' } }, data: { name: 'card' } });
-  const c = r.json?.data?.content || '';
+  const c = TX(r.json?.data) || '';
   ok('parado en DRA también va a la página, sin «te mete»',
      c.includes('Verifícate en la página') && !/te mete/.test(c), c.slice(-90));
-  const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
+  const bs = PZ(r.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('y le quedan verificarse, el Pase y los próximos eventos', bs.length === 3 &&
      /\.dev\/cuenta\/verificar$/.test(bs[0]?.url || ''), bs.map(b => b.label).join(' · '));
   ok('y NO le manda la invitación a donde ya está',
@@ -643,7 +653,7 @@ console.log('\nLOS DATOS\n');
   const r = await pedir({ type: 3, guild_id: '1',
     data: { custom_id: 'c:nadie:pais:999111' }, member: { user: { id: '999111' } } });
   ok('un boton de alguien que ya no esta avisa',
-     (r.json?.data?.content || '').includes('ya no está'));
+     (TX(r.json?.data) || '').includes('ya no está'));
 }
 
 // ── Los botones son del que pidió la carta ────────────────────────────────
@@ -664,7 +674,7 @@ console.log('\nDE QUIÉN SON LOS BOTONES\n');
     data: { custom_id: 'c:konan:pais:999111' } });
   const d = r.json?.data;
   ok('otra persona NO puede usar tus botones',
-     (d?.content || '').includes('otra persona'), d?.content ? '' : 'le cambió la carta');
+     (TX(d) || '').includes('otra persona'), TX(d) ? '' : 'le cambió la carta');
   // ⚠️ y el aviso SI es efímero: si no, cada click ajeno ensucia el canal
   ok('y el aviso sale efímero', (d?.flags & EF) !== 0);
   ok('el mensaje original NO se toca', r.json?.type === 4,
@@ -714,7 +724,7 @@ console.log('\nTRES MANERAS DE PEDIR\n');
   // la invitación sería decirle que entre a un servidor donde ya está.
   const r = await pedir({ type: 2, guild_id: '1', member: { user: { id: '777222' } },
     data: { name: 'card', options: [{ name: 'quien', type: 6, value: '555000' }] } });
-  const c = r.json?.data?.content || '';
+  const c = TX(r.json?.data) || '';
   ok('si el bot no lo conoce, dice que la tarjeta es de quien juega y ofrece el nombre',
      /todavía no tiene tarjeta/.test(c) && c.includes('nombre:') && !/admin/.test(c), c.slice(0, 60));
   ok('y no le manda a ÉL la invitación, que es de otro',
@@ -722,7 +732,7 @@ console.log('\nTRES MANERAS DE PEDIR\n');
   // 🔴 elegirse a uno mismo en `quien:` es «yo» (Adriagner, 04/10/2026): segunda persona, no «su nombre»
   const r2 = await pedir({ type: 2, guild_id: '1', member: { user: { id: '777333' } },
     data: { name: 'card', options: [{ name: 'quien', type: 6, value: '777333' }] } });
-  const c2 = r2.json?.data?.content || '';
+  const c2 = TX(r2.json?.data) || '';
   ok('elegirse a uno mismo en «quien» contesta como a uno mismo', /Todavía no tienes tarjeta/.test(c2) && !/su nombre/.test(c2),
      c2.slice(0, 60));
 }
@@ -775,8 +785,8 @@ CUANDO FALTA UNA CARTA
   ok('un boton viejo a una carta que no esta, avisa', r.json?.type === 4,
      `type ${r.json?.type}`);
   ok('y no pisa el mensaje con un hueco',
-     /no tiene carta/.test(r.json?.data?.content || ''),
-     (r.json?.data?.content || '').slice(0, 44));
+     /no tiene carta/.test(TX(r.json?.data) || ''),
+     (TX(r.json?.data) || '').slice(0, 44));
 }
 {
   // Konan si las tiene: el `cs` ausente vale por "las cuatro" (KV viejo)
@@ -793,7 +803,7 @@ CUANDO FALTA UNA CARTA
   // los apaga todos.
   const r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999666' } },
     data: { name: 'card' } });
-  const txt = r.json?.data?.content || '';
+  const txt = TX(r.json?.data) || '';
   ok('con `cs: []` se dice que espere, no se manda una imagen rota',
      /todav[ií]a no est[aá]n dibujadas/i.test(txt), txt.slice(0, 52));
   ok('y no es «no existís»: dice que YA está en la Liga',
@@ -844,8 +854,8 @@ const mensajeDe = (d, hace) => ({
   ok('y el menú también', select(muerto.json?.data?.components)?.disabled === true);
   ok('el porqué sale aparte y efímero', SEGUIMIENTOS.length === 1 &&
      (SEGUIMIENTOS[0]?.cuerpo?.flags & EF) !== 0);
-  ok('lo dice con palabras', /apagué los botones/.test(SEGUIMIENTOS[0]?.cuerpo?.content || ''),
-     (SEGUIMIENTOS[0]?.cuerpo?.content || '').slice(0, 40));
+  ok('lo dice con palabras', /apagué los botones/.test(TX(SEGUIMIENTOS[0]?.cuerpo) || ''),
+     (TX(SEGUIMIENTOS[0]?.cuerpo) || '').slice(0, 40));
 
   // ⚠️ REDIBUJA LA QUE SE ESTABA VIENDO, NO LA DEL BOTÓN. El custom_id dice a
   // dónde querías ir; apagar tiene que dejar el mensaje como estaba.
@@ -938,13 +948,13 @@ console.log('\nEL FRENO AL SPAM\n');
       { seguido: true }));
   }
   const pasaron = tiros.filter(r => r.json?.type === 4 &&
-    !/Para un poco/.test(r.json?.data?.content || '')).length;
+    !/Para un poco/.test(TX(r.json?.data) || '')).length;
   ok('/card seguido se corta a las cuatro', pasaron === 4, `pasaron ${pasaron} de 6`);
   const frenado = tiros[5];
   ok('y el quinto avisa cuánto falta',
-     /Para un poco/.test(frenado.json?.data?.content || ''),
-     (frenado.json?.data?.content || '').slice(0, 40));
-  ok('el aviso dice los segundos', /\*\*\d+ s\*\*/.test(frenado.json?.data?.content || ''));
+     /Para un poco/.test(TX(frenado.json?.data) || ''),
+     (TX(frenado.json?.data) || '').slice(0, 40));
+  ok('el aviso dice los segundos', /\*\*\d+ s\*\*/.test(TX(frenado.json?.data) || ''));
   ok('y es efímero', (frenado.json?.data?.flags & EF) !== 0,
      'si no, el freno al spam sería spam');
 }
@@ -959,8 +969,8 @@ console.log('\nEL FRENO AL SPAM\n');
   const r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: YO } },
     data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } });
   ok('pasado el minuto vuelve a andar',
-     !/Para un poco/.test(r.json?.data?.content || ''),
-     (r.json?.data?.content || '').slice(0, 40));
+     !/Para un poco/.test(TX(r.json?.data) || ''),
+     (TX(r.json?.data) || '').slice(0, 40));
 }
 {
   // ⚠️ EL BOTÓN TIENE LA MANO MÁS SUELTA, y no es arbitrario: contesta con
@@ -991,7 +1001,7 @@ console.log('\nEL FRENO AL SPAM\n');
     data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } },
     { seguido: true });
   ok('frenar a uno no frena a los demás',
-     !/Para un poco/.test(r.json?.data?.content || ''));
+     !/Para un poco/.test(TX(r.json?.data) || ''));
 }
 
 // ── SE ANOTA A QUIEN EL BOT NO CONOCE ─────────────────────────────────────
@@ -1005,8 +1015,8 @@ console.log('\nSE ANOTA A QUIEN EL BOT NO CONOCE\n');
     member: { nick: '🐉 | Lil Drako',
               user: { id: '900001', username: 'lildrako', global_name: 'Drako' } } });
   await esperarSeguimientos();
-  ok('al desconocido le dice que lo anotó', /anot/i.test(r.json?.data?.content || ''),
-     (r.json?.data?.content || '').slice(0, 40));
+  ok('al desconocido le dice que lo anotó', /anot/i.test(TX(r.json?.data) || ''),
+     (TX(r.json?.data) || '').slice(0, 40));
   const guardado = PUESTO['reg:900001'] ? JSON.parse(PUESTO['reg:900001']) : null;
   ok('y su ID quedó en la cola `reg:`', !!guardado, guardado ? 'reg:900001' : 'no se anotó');
   ok('con su apodo del servidor, que es el que sirve para matchear',
@@ -1060,7 +1070,7 @@ console.log('\nSE ANOTA A QUIEN EL BOT NO CONOCE\n');
   const r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '900777' } },
     data: { name: 'card' } });
   await esperarSeguimientos();
-  const txt = r.json?.data?.content || '';
+  const txt = TX(r.json?.data) || '';
   ok('al que ya está cargado NO se le promete un admin',
      !/un admin te va a cargar/i.test(txt), txt.slice(0, 52));
   ok('se le dice que lo que falta es verificarse (y la primera Tarea del Pase)',
@@ -1078,8 +1088,8 @@ console.log('\nSE ANOTA A QUIEN EL BOT NO CONOCE\n');
     data: { name: 'card' } });
   await esperarSeguimientos();
   ok('sin `cargados` en KV se sigue anotando como antes',
-     /te anot/i.test(r.json?.data?.content || '') && !!PUESTO['reg:900778'],
-     (r.json?.data?.content || '').slice(0, 40));
+     /te anot/i.test(TX(r.json?.data) || '') && !!PUESTO['reg:900778'],
+     (TX(r.json?.data) || '').slice(0, 40));
 }
 
 console.log('\nLOS 331 QUE NO COMPITIERON: SU CARTA SALE IGUAL\n');
@@ -1318,14 +1328,23 @@ const ayuda = (cual) => ({
   data: cual ? { name: 'help', options: [{ name: 'comando', type: 3, value: cual }] }
              : { name: 'help' },
 });
-const txt = (r) => r.json?.data?.content || '';
+const txt = (r) => TX(r.json?.data) || '';
 
 {
   const r = await pedir(ayuda());
   const t = txt(r);
   ok('sin argumento lista los comandos',
      ['/card', '/apodo', '/settings', '/ping'].every(c => t.includes(c)));
-  ok('y dice cómo pedir el detalle', /\/help comando:/.test(t));
+  // 🧭 desde el 20/11/2026 el detalle se elige en el menú del mismo mensaje (`hp:ver`), con una opción por comando
+  const menu = PZ(r.json?.data, 3).find((s) => s.custom_id === 'hp:ver');
+  ok('y dice cómo ver el detalle: el menú con cada comando', /Elige un comando/.test(t) && !!menu && menu.options.length >= 20
+     && menu.options.length <= 25 && ['card', 'crew', 'apodo', 'settings'].every((k) => menu.options.some((o) => o.value === k)), t.slice(0, 160));
+  // 🔴 /help no nombraba /crew ni «Invitar a mi crew» (encontrado al capturar, 20/11/2026)
+  ok('y nombra /crew y el menú «Invitar a mi crew»', /`\/crew`/.test(t) && /Invitar a mi crew/.test(t), t);
+  const rp = await pedir({ type: 3, guild_id: G.DRA, member: { user: { id: '666001' } }, message: { id: '1', flags: 64 | 32768 },
+    data: { custom_id: 'hp:ver', component_type: 3, values: ['crew'] } });
+  ok('elegir /crew en el menú cambia ESE mensaje por su página', rp.json?.type === 7 && /`\/crew` — tu crew/.test(TX(rp.json?.data))
+     && /Invitar a mi crew/.test(TX(rp.json?.data)), TX(rp.json?.data).slice(0, 120));
   ok('es efímero', (r.json?.data?.flags & 64) === 64,
      'un manual en el canal es ruido para los demás');
 }
@@ -1368,7 +1387,7 @@ const cmdApodo = (guild, uid, estilo, nick = '#22 | Bloody') => ({
   member: { nick, user: { id: uid }, permissions: '0' },
   data: estilo === undefined ? { name: 'apodo' } : { name: 'apodo', options: [{ name: 'estilo', type: 4, value: estilo }] },
 });
-const texto = (r) => r.json?.data?.content || '';
+const texto = (r) => TX(r.json?.data) || '';
 const leerApodo = (u) => { try { return JSON.parse(PUESTO['apodo:' + u]); } catch { return null; } };
 const fila = [22, 40, 1, 'co', 'B-', 'FLB', 'Bloody'];
 PUESTO.apodos = JSON.stringify({ v: 1, s: ['FLB'], p: Object.fromEntries(['777002', '777003', '777004', '777005', '777006'].map((u) => [u, fila])) });
@@ -1382,7 +1401,11 @@ PUESTO.apodos = JSON.stringify({ v: 1, s: ['FLB'], p: Object.fromEntries(['77700
   ok('sin estilo muestra el que rige y de dónde sale', /estilo \*\*1\*\*/.test(texto(r)) && /el de siempre/.test(texto(r)), texto(r).slice(0, 120));
   ok('… y los seis armados con sus piezas', /#22 \| FLB \| Bloody/.test(texto(r)) && /40º \| FLB \| Bloody/.test(texto(r))
      && /💎 \| FLB \| Bloody/.test(texto(r)) && /🇨🇴 \| FLB \| Bloody/.test(texto(r)) && /B- \| FLB \| Bloody/.test(texto(r)), texto(r));
-  ok('… y cómo cambiarlo, con un comando que existe', /\/apodo estilo:/.test(texto(r)) && !/\/numeral/.test(texto(r)));
+  // 🧱 desde el 20/11/2026 se cambia con el menú del mismo mensaje (`apo:`), con los seis armados con lo tuyo
+  const menuApodo = PZ(r.json?.data, 3).find((s) => /^apo:/.test(s.custom_id || ''));
+  ok('… y cómo cambiarlo: el menú con los seis, que es de quien lo pidió', !!menuApodo && menuApodo.options.length === 6
+     && /:777002$/.test(menuApodo.custom_id) && menuApodo.options.some((o) => o.default) && !/\/numeral/.test(texto(r)),
+     JSON.stringify(menuApodo || {}).slice(0, 200));
 }
 {
   const r = await pedir(cmdApodo(G.FFA, '777003', 6));
@@ -1506,7 +1529,12 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
   // 🎤 el bot en vivo (05/10/2026): apagado hasta que el admin elige el canal, y vaciarlo lo apaga
   const r0 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:nick', []));
   ok('el bot en vivo arranca apagado', /El bot en vivo\*\* · \*\*apagado\*\*/.test(texto(r0))
-     && JSON.stringify(r0.json).includes('cfg:vivo'));
+     && JSON.stringify(r0.json).includes('cfg:elegir:vivo'));
+  // ⚙️ el menú del canal se abre al tocar «Elegir» (20/11/2026), con el de cuánto habla, y no cambia nada todavía
+  const rSub = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:elegir:vivo', []));
+  ok('«Elegir» abre el subpanel del bot en vivo: el menú del canal, el de cuánto habla y «Volver», en el mismo mensaje',
+     rSub.json?.type === 7 && PZ(rSub.json?.data, 8).some((s) => s.custom_id === 'cfg:vivo') && PZ(rSub.json?.data, 3).some((s) => s.custom_id === 'cfg:nivel')
+     && PZ(rSub.json?.data, 2).some((b) => b.custom_id === 'cfg:volver'), JSON.stringify(rSub.json).slice(0, 200));
   await pedir(clickCfg(G.FFA, ADMIN, 'cfg:nick', []));
   const r = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:vivo', ['777888']));
   const cfgVivo = JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}');
@@ -1615,7 +1643,7 @@ console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
     data: { name: 'owner', options: [{ name: 'estado', type: 1 }] },
   });
   env.AVISOS = antes;
-  const t = r.json?.data?.content || '';
+  const t = TX(r.json?.data) || '';
   ok('/owner estado dice el último disparo, en hora del este',
      /último disparo\s+25\/09 2:22 PM ET · ok/.test(t), t.split('\n').slice(2, 5).join(' | '));
   ok('y el sello de las cartas también en ET, no en UTC pelado',
@@ -1885,34 +1913,44 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
 {
   // /vincular sin cuenta vinculada: el botón a la página, que te suma a DRA
   const rv = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700950' } }, data: { name: 'vincular' } });
-  const bv = (rv.json?.data?.components || []).flatMap((f) => f.components || []);
+  const bv = PZ(rv.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('/vincular sin vincular: efímero, con el botón a la página que te suma a DRA',
-     rv.json?.data?.flags === 64 && bv.some((b) => /\/cuenta\/verificar$/.test(b.url || '')) && /DRA/.test(rv.json?.data?.content || ''), JSON.stringify(rv.json?.data));
-  // los que hablan con el objeto contestan «pensando» y efímero (el objeto puede estar dormido)
-  for (const n of ['drops', 'billetera', 'inventario']) {
+     (rv.json?.data?.flags & 64) === 64 && bv.some((b) => /\/cuenta\/verificar$/.test(b.url || '')) && /DRA/.test(TX(rv.json?.data) || ''), JSON.stringify(rv.json?.data));
+  // los que hablan con el objeto contestan «un momento» y efímero (el objeto puede estar dormido). 🧱 Desde el 20/11/2026 ese
+  // primer mensaje ya es V2 (tipo 4, con la franja de su familia), así la edición sólo reemplaza piezas: la regla del /setup
+  const momento = (r, fam) => r.json?.type === 4 && (r.json?.data?.flags & 64) === 64 && (r.json?.data?.flags & 32768) === 32768
+    && /Un momento/.test(TX(r.json?.data)) && (!fam || PZ(r.json?.data, 12).some((g) => g.items.some((x) => x.media.url.includes('portada-' + fam))));
+  for (const [n, fam] of [['drops', 'drops'], ['billetera', 'tienda'], ['inventario', 'tienda']]) {
     const r = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700951' } }, data: { name: n } });
-    ok('/' + n + ' contesta «pensando», sólo para quien lo pidió', r.json?.type === 5 && r.json?.data?.flags === 64, JSON.stringify(r.json));
+    ok('/' + n + ' contesta «un momento», sólo para quien lo pidió, ya en V2 y con su franja', momento(r, fam), JSON.stringify(r.json));
   }
   const re = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700952' } }, data: { name: 'equipar', options: [{ name: 'que', value: 'nada' }] } });
-  ok('/equipar con un lugar que no existe: lo dice, sin llamar al objeto', re.json?.type === 4 && /Elige un lugar/.test(re.json?.data?.content || ''), JSON.stringify(re.json?.data));
+  ok('/equipar con un lugar que no existe: lo dice, sin llamar al objeto', re.json?.type === 4 && /Elige un lugar/.test(TX(re.json?.data) || ''), JSON.stringify(re.json?.data));
   // el botón de abrir un drop: de quien lo pidió, no de otro
   const rb = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1' },
                            data: { custom_id: 'dd:drop:x:700954', component_type: 2 } });
-  ok('el botón «Abrir un Drop» de otro no abre nada', /otra persona/.test(rb.json?.data?.content || ''), JSON.stringify(rb.json?.data));
+  ok('el botón «Abrir un Drop» de otro no abre nada', /otra persona/.test(TX(rb.json?.data) || ''), JSON.stringify(rb.json?.data));
   const rp = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1' },
                            data: { custom_id: 'dd:drop:x:700953', component_type: 2 } });
-  ok('y el suyo contesta «pensando»', rp.json?.type === 5, JSON.stringify(rp.json));
+  ok('y el suyo contesta «un momento» (desde un mensaje que no es su panel, uno nuevo)', momento(rp), JSON.stringify(rp.json));
+  // 🧱 desde su panel (efímero) el clic CAMBIA ese mensaje: «ya va» (tipo 6) y se edita después
+  const rpp = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1', flags: 64 | 32768 },
+                            data: { custom_id: 'dd:drop:x:700953', component_type: 2 } });
+  ok('y desde su panel efímero, el clic cambia ESE mensaje (tipo 6), no manda otro', rpp.json?.type === 6, JSON.stringify(rpp.json));
+  const rpv = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1', flags: 64 },
+                            data: { custom_id: 'dd:drop:x:700953', component_type: 2 } });
+  ok('pero un panel de antes (sin el flag V2) no se convierte: va un mensaje nuevo', momento(rpv), JSON.stringify(rpv.json));
   // 🥚 el Nido del campeón (aviso de ganadores, 18/11/2026): a él, el link de la página; a otro, «es de otra persona»
   const rn = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700953' } }, message: { id: '1' },
                            data: { custom_id: 'dd:nido:x:700953', component_type: 2 } });
   const rn2 = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700955' } }, message: { id: '1' },
                             data: { custom_id: 'dd:nido:x:700953', component_type: 2 } });
-  ok('el botón del Nido le pasa a su dueño el link de la página, y a otro no', /Nido.*drops=1/s.test(rn.json?.data?.content || '')
-     && rn.json?.data?.flags === 64 && /otra persona/.test(rn2.json?.data?.content || ''), JSON.stringify([rn.json?.data, rn2.json?.data]));
+  ok('el botón del Nido le pasa a su dueño el link de la página, y a otro no', /Nido.*drops=1/s.test(TX(rn.json?.data) || '')
+     && (rn.json?.data?.flags & 64) === 64 && /otra persona/.test(TX(rn2.json?.data) || ''), JSON.stringify([rn.json?.data, rn2.json?.data]));
   // 🎁 «Abrir mis premios» (19/11/2026): un solo botón sin dueño; a cualquiera que lo toque, «pensando» y efímero (sus drops)
   const rm = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700956' } }, message: { id: '1' },
                            data: { custom_id: 'dd:mis', component_type: 2 } });
-  ok('«Abrir mis premios» contesta «pensando», sólo a quien lo tocó', rm.json?.type === 5 && rm.json?.data?.flags === 64, JSON.stringify(rm.json));
+  ok('«Abrir mis premios» contesta «un momento», sólo a quien lo tocó', momento(rm, 'drops'), JSON.stringify(rm.json));
   // 🎞️ EL DROP A TOQUES, CON LOS GIF DE LA PÁGINA (20/11/2026, Dlx: «si le das click al botón tap, ahí evoluciona, o no…
   // y puedes presionar 4 veces… Y al finalizar cambia el gif a abrir uno»). Todo el estado va en el botón `dt:`
   {
@@ -1931,28 +1969,48 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
     // de Maqueta (0) a Disco de Oro (3), subiendo en los toques 1, 3 y 4
     const e = { anim: 'drop', id: 77, base: 0, fin: 3, plan: [1, 0, 1, 1] };
     const p0 = D.pantallaDrop(e, 0, D.gifDrop('drop', 'entra', 0));
-    const bt = (p) => (p.components[0] || {}).components?.[0] || {};
+    // 🧱 en V2 (20/11/2026): el GIF en la galería del recuadro, el texto debajo y el botón en una fila afuera
+    const bt = (p) => PZ(p, 2)[0] || {};
+    const gif = (p) => ((PZ(p, 12)[0] || {}).items || [{}])[0].media?.url || '';
     ok('🎞️ la primera pantalla: Maqueta, el GIF de la llegada y «Tap» que lleva al toque 1',
-       /Maqueta/.test(p0.embeds[0].title) && /drop-entra-0\.gif$/.test(p0.embeds[0].image.url) && bt(p0).label === 'Tap'
-       && bt(p0).custom_id === 'dt:d:77:1.0.3.1011' && /○ ○ ○ ○/.test(p0.embeds[0].description), JSON.stringify(p0));
+       /Maqueta/.test(TX(p0)) && /drop-entra-0\.gif$/.test(gif(p0)) && bt(p0).label === 'Tap'
+       && bt(p0).custom_id === 'dt:d:77:1.0.3.1011' && /○ ○ ○ ○/.test(TX(p0)) && !p0.embeds && (p0.flags & 32768), JSON.stringify(p0));
     const toque = async (cid) => (await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700957' } }, message: { id: '9' },
                                                  data: { custom_id: cid, component_type: 2 } })).json;
     const t1 = await toque('dt:d:77:1.0.3.1011');
     const t2 = await toque('dt:d:77:2.0.3.1011');
     const t4 = await toque('dt:d:77:4.0.3.1011');
     ok('🎞️ cada toque PISA el mismo mensaje al instante (tipo 7): el 1 sube a Mixtape, el 2 se sacude, el 4 sube y queda listo para abrir',
-       t1?.type === 7 && /Mixtape/.test(t1.data.embeds[0].title) && /drop-sube-1\.gif$/.test(t1.data.embeds[0].image.url)
-       && /drop-nada-1\.gif$/.test(t2.data.embeds[0].image.url) && /● ● ○ ○/.test(t2.data.embeds[0].description)
-       && /Disco de Oro/.test(t4.data.embeds[0].title) && /drop-sube-3\.gif$/.test(t4.data.embeds[0].image.url)
-       && bt(t4.data).label === 'Abrir' && bt(t4.data).custom_id === 'dt:d:77:5.0.3.1011', JSON.stringify([t1, t2, t4].map((x) => x && x.data && x.data.embeds)));
+       t1?.type === 7 && /Mixtape/.test(TX(t1.data)) && /drop-sube-1\.gif$/.test(gif(t1.data))
+       && /drop-nada-1\.gif$/.test(gif(t2.data)) && /● ● ○ ○/.test(TX(t2.data))
+       && /Disco de Oro/.test(TX(t4.data)) && /drop-sube-3\.gif$/.test(gif(t4.data))
+       && bt(t4.data).label === 'Abrir' && bt(t4.data).custom_id === 'dt:d:77:5.0.3.1011', JSON.stringify([t1, t2, t4].map((x) => x && x.data)));
     const t4b = await toque('dt:d:77:4.0.0.0000');
-    ok('🎞️ si el cuarto toque no sube, el GIF es el del brillo (listo para abrir)', /drop-listo-0\.gif$/.test(t4b.data.embeds[0].image.url), JSON.stringify(t4b));
+    ok('🎞️ si el cuarto toque no sube, el GIF es el del brillo (listo para abrir)', /drop-listo-0\.gif$/.test(gif(t4b.data)), JSON.stringify(t4b));
     const ab = await toque('dt:d:77:5.0.3.1011');
     ok('🎞️ «Abrir» contesta «ya va» sobre el mismo mensaje (tipo 6) y le pide el premio al objeto', ab?.type === 6, JSON.stringify(ab));
-    const tx = D.textoPremioDrop({ nombre: 'Disco de Oro', rareza: 3, puntos: 1000, titulo: 'Aliento de Dragón' }, 'drop', 2, '700957');
+    const tx = D.textoPremioDrop({ nombre: 'Disco de Oro', rareza: 3, puntos: 1000, titulo: 'Aliento de Dragón' }, 'drop', 2, '700957',
+      D.gifDrop('drop', 'titulo', 3, 'Aliento de Dragón'));
     ok('🎞️ el premio dice el título y los Puntos, y deja abrir el siguiente (el botón es de quien lo abrió)',
-       /«Aliento de Dragón».*\+1\.000/.test(tx.content) && /Te quedan 2 Drops/.test(tx.content)
-       && tx.components[0].components[0].custom_id === 'dd:drop:x:700957', JSON.stringify(tx));
+       /«Aliento de Dragón».*\+1\.000/.test(TX(tx)) && /Te quedan 2 Drops/.test(TX(tx))
+       && PZ(tx, 2)[0].custom_id === 'dd:drop:x:700957' && /drop-titulo-aliento-de-dragon\.gif$/.test(gif(tx)), JSON.stringify(tx));
+    // 🔴 «Te quedan 1 Drop» (encontrado al capturar, 20/11/2026): con uno, en singular
+    const t1q = D.textoPremioDrop({ nombre: 'Maqueta', rareza: 0, puntos: 100 }, 'drop', 1, '700957');
+    ok('🎞️ con uno solo cerrado dice «Te queda 1 Drop», en singular', /Te queda 1 Drop\./.test(TX(t1q)) && !/quedan 1/.test(TX(t1q)), TX(t1q));
+    // 📣 «Mostrarlo en el canal» (Dlx, 20/11/2026, «6C»): sólo desde Vinilo, y lo que sale es público y sin que suene nadie
+    const mostrar = (p) => PZ(p, 2).find((b) => /^dm:/.test(b.custom_id || ''));
+    ok('📣 una Maqueta no trae «Mostrarlo en el canal»; un Disco de Oro, sí (y es gris: el azul es «Abrir otro»)',
+       !mostrar(t1q) && mostrar(tx)?.style === 2 && PZ(tx, 2).filter((b) => b.style === 1).length === 1, JSON.stringify(PZ(tx, 2)));
+    const sh = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700957' } }, message: { id: '9', flags: 64 | 32768 },
+                             data: { custom_id: mostrar(tx).custom_id, component_type: 2 } });
+    ok('📣 mostrarlo manda un mensaje PÚBLICO con la misma apertura y el mismo premio, sin que suene nadie',
+       sh.json?.type === 4 && !((sh.json?.data?.flags || 0) & 64) && (sh.json?.data?.flags & 32768)
+       && /<@700957> abrió un Dragón Drop: Disco de Oro/.test(TX(sh.json?.data)) && /«Aliento de Dragón».*\+1\.000/.test(TX(sh.json?.data))
+       && /drop-titulo-aliento-de-dragon\.gif$/.test(gif(sh.json?.data)) && (sh.json?.data?.allowed_mentions?.parse || ['x']).length === 0
+       && !sh.json?.data?.allowed_mentions?.users, JSON.stringify(sh.json));
+    const sh2 = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700957' } }, message: { id: '9', flags: 64 | 32768 },
+                              data: { custom_id: 'dm:d:1:100:-', component_type: 2 } });
+    ok('📣 y un botón de algo peor que Vinilo no muestra nada', (sh2.json?.data?.flags & 64) === 64 && /ya no anda/.test(TX(sh2.json?.data)), JSON.stringify(sh2.json));
   }
   // 🌙 «Tu nota» y «Perfiles» al pie del aviso de ganadores (18/11/2026): leen `noche:<n>` de KV, sólo a quien toca
   PUESTO['noche:700'] = JSON.stringify({ ev: '700', t: 'RED BULL BATALLA', sv: 'CEU', perf: [['Mats', 'mats'], ['Marcos', 'marcos']], p: [
@@ -1963,28 +2021,28 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
   const boton = (id, cid) => pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id } }, message: { id: '1' },
                                      data: { custom_id: cid, component_type: 2 } });
   const t1 = await boton('700960', 'nn:nota:700');
-  const b1 = (t1.json?.data?.components || []).flatMap((f) => f.components || []);
+  const b1 = PZ(t1.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('«Tu nota»: la suya, efímera, con su ELO, el MVP y por qué; sin tarjeta, «Consigue tu tarjeta»',
-     t1.json?.data?.flags === 64 && /Tu nota en RED BULL BATALLA: 8,9/.test(t1.json?.data?.content || '') && /MVP/.test(t1.json?.data?.content || '')
-     && /1\.046 → \*\*1\.090/.test(t1.json?.data?.content || '') && /ganó en Final \*\*\+0,8/.test(t1.json?.data?.content || '')
+     (t1.json?.data?.flags & 64) === 64 && /Tu nota en RED BULL BATALLA: 8,9/.test(TX(t1.json?.data) || '') && /MVP/.test(TX(t1.json?.data) || '')
+     && /1\.046 → \*\*1\.090/.test(TX(t1.json?.data) || '') && /ganó en Final \*\*\+0,8/.test(TX(t1.json?.data) || '')
      && b1.some((b) => /\/freestyle-rap\/tarjetas$/.test(b.url || '')), JSON.stringify(t1.json?.data));
   const t2 = await boton('700961', 'nn:nota:700');
-  const b2 = (t2.json?.data?.components || []).flatMap((f) => f.components || []);
+  const b2 = PZ(t2.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('«Tu nota» de otro: la suya (6,6, con su batacazo) y, con tarjeta, el link a su perfil',
-     /6,6/.test(t2.json?.data?.content || '') && /Batacazo de la noche/.test(t2.json?.data?.content || '') && !/8,9/.test(t2.json?.data?.content || '')
+     /6,6/.test(TX(t2.json?.data) || '') && /Batacazo de la noche/.test(TX(t2.json?.data) || '') && !/8,9/.test(TX(t2.json?.data) || '')
      && b2.some((b) => /\/freestyle-rap\/r\/marcos$/.test(b.url || '')), JSON.stringify(t2.json?.data));
   const t3 = await boton('700962', 'nn:nota:700');
   ok('«Tu nota» de quien no jugó (o no vinculó): se lo dice, con /vincular y La llave',
-     /No te encuentro/.test(t3.json?.data?.content || '') && /vincular/.test(t3.json?.data?.content || ''), JSON.stringify(t3.json?.data));
+     /No te encuentro/.test(TX(t3.json?.data) || '') && /vincular/.test(TX(t3.json?.data) || ''), JSON.stringify(t3.json?.data));
   const t4 = await boton('700962', 'nn:perf:700');
-  const b4 = (t4.json?.data?.components || []).flatMap((f) => f.components || []);
-  ok('«Perfiles»: los del podio, con un botón a cada perfil', t4.json?.data?.flags === 64 && /Mats/.test(t4.json?.data?.content || '')
+  const b4 = PZ(t4.json?.data, [2, 3, 5, 6, 7, 8]);
+  ok('«Perfiles»: los del podio, con un botón a cada perfil', (t4.json?.data?.flags & 64) === 64 && /Mats/.test(TX(t4.json?.data) || '')
      && b4.map((b) => b.url).join() === 'https://underlegends.pages.dev/freestyle-rap/r/mats,https://underlegends.pages.dev/freestyle-rap/r/marcos',
      JSON.stringify(t4.json?.data));
   const t5 = await boton('700963', 'nn:nota:701');
   const t6 = await boton('700963', 'nn:nota:abc');
-  ok('una noche que no está guardada lo dice; un botón roto, también', /ya no está guardada/.test(t5.json?.data?.content || '')
-     && /ya no anda/.test(t6.json?.data?.content || ''), JSON.stringify([t5.json?.data, t6.json?.data]));
+  ok('una noche que no está guardada lo dice; un botón roto, también', /ya no está guardada/.test(TX(t5.json?.data) || '')
+     && /ya no anda/.test(TX(t6.json?.data) || ''), JSON.stringify([t5.json?.data, t6.json?.data]));
   delete PUESTO['noche:700'];
 }
 
@@ -1993,7 +2051,7 @@ console.log('\n/WEBSITE Y /NOTIFY\n');
 {
   const r = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1',
                           member: { user: { id: '700900' } }, data: { name: 'website' } });
-  const bots = (r.json?.data?.components || []).flatMap((f) => f.components || []);
+  const bots = PZ(r.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('/website deja el botón a la página', bots.some((b) => /underlegends\.pages\.dev/.test(b.url || '')),
      JSON.stringify(r.json?.data));
   // 🔴 SIN DMs: Dlx, 25/09/2026, «no debería usar el bot para enviarte DMs,
@@ -2001,7 +2059,7 @@ console.log('\n/WEBSITE Y /NOTIFY\n');
   // Discord: «seleccionar los servidores o para todos».
   const r2 = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1',
                            member: { user: { id: '700901' } }, data: { name: 'notify' } });
-  const b2 = (r2.json?.data?.components || []).flatMap((f) => f.components || []);
+  const b2 = PZ(r2.json?.data, [2, 3, 5, 6, 7, 8]);
   const act = (bs) => bs.find((b) => b.style === 5) || {};
   ok('/notify en FFA viene con FFA elegido y el botón lleva a la campana con eso',
      /underlegends\.pages\.dev\/freestyle-rap\/avisos\/FFA$/.test(act(b2).url || ''), JSON.stringify(b2).slice(0, 160));
@@ -2009,18 +2067,18 @@ console.log('\n/WEBSITE Y /NOTIFY\n');
      b2.some((b) => b.custom_id === 'ntf:todos'));
   ok('y dice que es para el celular o la compu', /celular o compu/.test(texto(r2)), texto(r2).slice(0, 80));
   const r3 = await pedir({ type: 2, user: { id: '700902' }, data: { name: 'notify' } });
-  const b3 = (r3.json?.data?.components || []).flatMap((f) => f.components || []);
+  const b3 = PZ(r3.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('fuera de un servidor de la Liga, todos', /\/freestyle-rap\/avisos\/todos$/.test(act(b3).url || ''), JSON.stringify(b3).slice(0, 160));
   const r4 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700903' } },
                            data: { custom_id: 'ntf:svs', component_type: 3, values: ['FFA', 'SR'] } });
-  const b4 = (r4.json?.data?.components || []).flatMap((f) => f.components || []);
+  const b4 = PZ(r4.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('elegir en el menú redibuja el panel con la elección en el link',
      r4.json?.type === 7 && /\/freestyle-rap\/avisos\/FFA,SR$/.test(act(b4).url || ''), act(b4).url);
   const r5 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700904' } },
                            data: { custom_id: 'ntf:todos', component_type: 2 } });
   ok('«Todos» deja el link en todos y se saca el botón',
-     /\/freestyle-rap\/avisos\/todos$/.test(act((r5.json?.data?.components || []).flatMap((f) => f.components || [])).url || '') &&
-     !(r5.json?.data?.components || []).flatMap((f) => f.components || []).some((b) => b.custom_id === 'ntf:todos'));
+     /\/freestyle-rap\/avisos\/todos$/.test(act(PZ(r5.json?.data, [2, 3, 5, 6, 7, 8])).url || '') &&
+     !PZ(r5.json?.data, [2, 3, 5, 6, 7, 8]).some((b) => b.custom_id === 'ntf:todos'));
   const r6 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700905' } },
                            data: { custom_id: 'ntf:off', component_type: 2 } });
   ok('un botón de un panel viejo (el de los DMs) muestra el de ahora',
@@ -2028,7 +2086,7 @@ console.log('\n/WEBSITE Y /NOTIFY\n');
   const { panelNotify } = await import('./worker.js');
   const p7 = panelNotify('FFA', ['DRA', 'SR'], null);
   ok('si el vigía no escucha ese servidor, no lo ofrece y lo dice',
-     !p7.components[0].components[0].options.some((o) => o.value === 'FFA') && /Todavía no se escuchan/.test(p7.content));
+     !PZ(p7, 3)[0].options.some((o) => o.value === 'FFA') && /Todavía no se escuchan/.test(TX(p7)));
   ok('y nadie queda anotado a DMs: el único link es la página',
      b2.filter((b) => b.style === 5).every((b) => /^https:\/\/underlegends\.pages\.dev\//.test(b.url)));
 }
@@ -2090,7 +2148,7 @@ console.log('\n/VERIFICAR\n');
   r = await pedirVer('700003', { roles: ['R_AR', 'R_CL'], user: {} });
   ok('dos países: pide dejar uno', /deja uno solo/.test(texto(r)), texto(r));
   r = await pedirVer('700004', { roles: ['R_AR'], user: {} });
-  const bots = (r.json?.data?.components || []).flatMap((f) => f.components || []);
+  const bots = PZ(r.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('completo sin Miembro: se lo damos EN EL MOMENTO (Dlx, 12/10/2026: «A»), y dice cuándo sale la tarjeta',
      /Te dimos el rol de \*\*Miembro\*\*/.test(texto(r)) && /✅ Tener el rol \*\*Miembro\*\*/.test(texto(r))
      && /próxima vuelta arranca/.test(texto(r)) && ROLES_PUESTOS.some((u) => u.endsWith('/members/700004/roles/' + P.rol)), texto(r));
@@ -2549,8 +2607,8 @@ console.log('\nTU CARTA SIN TU FOTO\n');
     ok('verificado, con foto en Discord y sin la de la temporada: se la guarda ya',
        puestos.includes('fotos/t1/konan.webp'), JSON.stringify(puestos));
     ok('y se lo dice sólo a él, con la hora en la de quien lee',
-       mandados.length === 1 && (mandados[0].flags & 64) && /ya la guardé/.test(mandados[0].content) &&
-       /<t:\d+:t>/.test(mandados[0].content), JSON.stringify(mandados));
+       mandados.length === 1 && (mandados[0].flags & 64) && /ya la guardé/.test(TX(mandados[0])) &&
+       /<t:\d+:t>/.test(TX(mandados[0])), JSON.stringify(mandados));
     ok('🔴 la primera foto NO gasta el cambio de la temporada', !PUESTO['foto:t1:konan']);
     r = await pedirMia('999111', 'abc123');
     ok('con la foto ya guardada, ni un mensaje ni otra escritura', !mandados.length &&
@@ -2559,15 +2617,15 @@ console.log('\nTU CARTA SIN TU FOTO\n');
     puestos.length = 0;
     r = await pedirMia('999111', null);
     ok('sin foto en Discord: que se ponga una, sin guardar el gris de Discord',
-       !puestos.length && mandados.length === 1 && /no tienes foto en Discord/.test(mandados[0].content));
+       !puestos.length && mandados.length === 1 && /no tienes foto en Discord/.test(TX(mandados[0])));
     cdn = 404;
     r = await pedirMia('999111', 'muerto');
     ok('si el CDN no la da, se calla: la carta ya salió y el ciclo reintenta', !puestos.length && !mandados.length);
     cdn = 200;
     r = await pedirMia('999777', 'abc123');
-    const b = (mandados[0]?.components?.[0]?.components || [])[0] || {};
+    const b = PZ(mandados[0], 2)[0] || {};
     ok('sin verificar: «verifícate en la página», con el botón (lo que pidió Dlx)',
-       mandados.length === 1 && /verificados en DRA/.test(mandados[0].content) &&
+       mandados.length === 1 && /verificados en DRA/.test(TX(mandados[0])) &&
        b.url === 'https://underlegends.pages.dev/cuenta/verificar' && !puestos.length, JSON.stringify(mandados));
     r = await pedirMia('999555', 'abc123', { data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } });
     ok('la carta de OTRO: ningún aviso, ninguna foto', !mandados.length && !puestos.length);
@@ -2585,7 +2643,7 @@ console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
     data: { name: 'card' } });
   let c = r.json?.data?.components;
   ok('/card encuentra a quien está en `dn:`', r.json?.type === 4 && !!galeria(c),
-     (r.json?.data?.content || '').slice(0, 80));
+     (TX(r.json?.data) || '').slice(0, 80));
   ok('y abre en su Servidor', (galeria(c)?.items?.[0]?.media?.url || '').includes('/libre/'),
      galeria(c)?.items?.[0]?.media?.url || '');
   const bs = botones(c);
@@ -2600,11 +2658,11 @@ console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
   // el candado, apretado por el dueño: «verificate», sin tocar la carta
   r = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:libre:competitivo:999777' },
     member: { user: { id: '999777' } } });
-  let txt = r.json?.data?.content || '';
+  let txt = TX(r.json?.data) || '';
   ok('el candado contesta aparte (4), no pisa la carta', r.json?.type === 4, `type ${r.json?.type}`);
   ok('y es efímero', ((r.json?.data?.flags || 0) & (1 << 6)) !== 0);
   ok('le dice que es de los verificados', txt.includes('verificados') && txt.includes('Competitiva'), txt);
-  ok('y cómo verificarse, con el botón', (r.json?.data?.components?.[0]?.components || [])
+  ok('y cómo verificarse, con el botón', PZ(r.json?.data, 2)
      .some(b => b.label === 'Verificarme en la página'));
 
   // las libres sí cambian la carta
@@ -2619,36 +2677,36 @@ console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
   ok('por nombre también sale', r.json?.type === 4 && botones(r.json?.data?.components).length === 4);
   r = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:libre:pais:999111' },
     member: { user: { id: '999111' } } });
-  txt = r.json?.data?.content || '';
+  txt = TX(r.json?.data) || '';
   ok('en la de otro, dice que ÉL no se verificó', txt.includes('**Libre** todavía no se verificó'), txt);
 
   // elegido en el selector
   r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999111' } },
     data: { name: 'card', options: [{ name: 'quien', value: '999777' }] } });
   ok('y elegido en el selector, por su `dn:`', r.json?.type === 4 && !!galeria(r.json?.data?.components),
-     (r.json?.data?.content || '').slice(0, 80));
+     (TX(r.json?.data) || '').slice(0, 80));
 
   // /versus: la Competitiva no es «no tiene carta», es «no se verificó»
   r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999333' } },
     data: { name: 'versus', options: [{ name: 'rival', value: '999777' },
                                       { name: 'carta', value: 'competitivo' }] } });
-  txt = r.json?.data?.content || '';
+  txt = TX(r.json?.data) || '';
   ok('/versus en Competitiva: «todavía no se verificó»', txt.includes('todavía no se verificó'), txt);
   r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777' } },
     data: { name: 'versus', options: [{ name: 'rival', value: '999333' },
                                       { name: 'carta', value: 'competitivo' }] } });
-  txt = r.json?.data?.content || '';
+  txt = TX(r.json?.data) || '';
   ok('y si es él: «tú todavía no te verificaste»', txt.includes('Tú todavía no te verificaste'), txt);
 
   // lo de la cuenta sigue siendo de los verificados
   r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777', avatar: 'abc' } },
     data: { name: 'foto' } });
-  txt = r.json?.data?.content || '';
+  txt = TX(r.json?.data) || '';
   ok('/foto: no es «no estás en la Liga», es «verifícate»', txt.includes('verificado en DRA') &&
      !txt.includes('no estás en la Liga'), txt);
   r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777' } },
     data: { name: 'verificar' } });
-  txt = r.json?.data?.content || '';
+  txt = TX(r.json?.data) || '';
   ok('/verificar no le dice «ya estás verificado»', !txt.includes('Ya estás verificado'), txt.slice(0, 80));
   await esperarSeguimientos();
   ok('y no lo vuelve a anotar en la cola: ya está en la Lista', !('reg:999777' in PUESTO));
@@ -2693,7 +2751,7 @@ console.log('\n/borrar-mis-datos\n');
                         member: { user: { id: ID } }, data: { name: 'borrar-mis-datos' } });
   const ids = JSON.stringify(r.json?.data?.components || []);
   ok('pregunta antes, sólo a quien lo pidió, con los dos botones',
-     r.json?.data?.flags === 64 && ids.includes('baja:si::' + ID) && ids.includes('baja:no::' + ID),
+     (r.json?.data?.flags & 64) === 64 && ids.includes('baja:si::' + ID) && ids.includes('baja:no::' + ID),
      ids.slice(0, 120));
   r = await boton('700801', 'baja:si::' + ID);
   ok('el botón de otro no borra nada', /de otra persona/.test(texto(r)) && PUESTO['d:' + ID] === 'borrame',
@@ -2775,7 +2833,7 @@ console.log('\nLAS ENCUESTAS\n');
       data: { custom_id: 'vm:q1:A:ap1', components: [{ type: 1, components: [{ type: 4, custom_id: 'monto', value: v }] }] } }, quien(n)));
     await esperarSeguimientos();
     const s = SEGUIMIENTOS.filter((x) => /\/messages\/@original$/.test(x.url)).pop();
-    return Object.assign(r, { t: s ? s.cuerpo.content : '' });
+    return Object.assign(r, { t: s ? TX(s.cuerpo) : '' });
   };
   let r = await boton(1);
   const m = r.json?.data || {};
@@ -2784,7 +2842,9 @@ console.log('\nLAS ENCUESTAS\n');
      && campo.type === 4 && campo.value === '0' && /Sin tope · 0 = nada/.test(campo.label) && campo.label.length <= 45, JSON.stringify(m).slice(0, 220));
   llamadas.length = 0;
   r = await modal(2, '0');
-  ok('el modal contesta «pensando» enseguida, sólo para quien lo mandó', r.json?.type === 5 && r.json?.data?.flags === 64, JSON.stringify(r.json));
+  // 🧱 desde el 20/11/2026 el «pensando» es un «un momento» que ya va en V2 (tipo 4) y se edita después
+  ok('el modal contesta «un momento» enseguida, sólo para quien lo mandó', r.json?.type === 4 && (r.json?.data?.flags & 64) === 64
+     && (r.json?.data?.flags & 32768) === 32768 && /Un momento/.test(TX(r.json?.data)), JSON.stringify(r.json));
   ok('con 0 vota, no apuesta y dice cuánto tiene', llamadas.some((c) => c[0] === '/qg-votar') && !llamadas.some((c) => c[0] === '/apostar')
      && /Votaste por \*\*Ana\*\*/.test(r.t) && /No apostaste: sigues con \*\*5\.000\*\*/.test(r.t), r.t);
   llamadas.length = 0;
@@ -3784,7 +3844,7 @@ console.log('\n«EL PASE DE RAPERO»\n');
     data: valor ? { component_type: 3, custom_id: custom, values: [valor] } : { component_type: 2, custom_id: custom } });
   let r = await tocar(botones, '111222333444555666', '0', `dud:${L}:${O}:0:a`);
   ok('lo que no se entendió: alguien que no es el organizador ni el staff no lo marca',
-     r.json?.type === 4 && r.json?.data?.flags === 64 && !anotadas.length, JSON.stringify(r.json).slice(0, 160));
+     r.json?.type === 4 && (r.json?.data?.flags & 64) === 64 && !anotadas.length, JSON.stringify(r.json).slice(0, 160));
   r = await tocar(botones, O, '0', `dud:${L}:${O}:0:a`);
   let c = r.json?.data || {};
   ok('el botón: el organizador marca la final, el mensaje dice quién ganó y queda sin botones', r.json?.type === 7
@@ -3805,10 +3865,12 @@ console.log('\nLAS CREWS\n');
   const antes = env.AVISOS;
   const pedidos = [];
   const CR = { id: 'Los del Barrio', nombre: 'Los del Barrio', sigla: '', entrada: 'pedido', gente: [['dora', 'lider', 1]] };
+  const CR2 = { id: 'La Otra', nombre: 'La Otra', sigla: 'OTR', entrada: 'pedido', gente: [['lara', 'lider', 1]],
+    logo: 'esc:escudo.corona.2f6fdb.f2b705' };
   env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
     const u = String(url);
     if (/\/(uso|medir)$/.test(u)) return new Response('{"ok":true}');
-    if (u.endsWith('/crews')) return new Response(JSON.stringify({ max: 20, crews: [CR] }));
+    if (u.endsWith('/crews')) return new Response(JSON.stringify({ max: 20, crews: [CR, CR2] }));
     if (u.includes('/persona')) return new Response('{"n":"Dora"}');
     const b = opc && opc.body ? JSON.parse(opc.body) : null;
     pedidos.push(b);
@@ -3828,12 +3890,17 @@ console.log('\nLAS CREWS\n');
   const d = r.json?.data || {};
   const cids = JSON.stringify(d.components || []);
   ok('invitar: un mensaje PÚBLICO que menciona sólo al invitado, con sus dos botones',
-     r.json?.type === 4 && !d.flags && (d.allowed_mentions?.users || []).join() === INV && d.content.includes('<@' + INV + '>')
+     r.json?.type === 4 && !((d.flags || 0) & 64) && (d.allowed_mentions?.users || []).join() === INV && TX(d).includes('<@' + INV + '>')
      && cids.includes('cw:si:Los del Barrio:' + INV) && cids.includes('cw:no:Los del Barrio:' + INV), JSON.stringify(r.json).slice(0, 240));
+  // 🧱 la mención va ARRIBA y AFUERA del recuadro (es la que suena), «Aceptar» es el único azul y los botones van afuera
+  ok('invitar en V2: la mención arriba y afuera, el recuadro con la franja de Crews y «Aceptar» el único azul',
+     (d.flags & 32768) && d.components[0]?.type === 10 && d.components[0].content === '<@' + INV + '>' && d.components[1]?.type === 17
+     && PZ({ components: [d.components[1]] }, 12).some((g) => /portada-crews/.test(g.items[0].media.url))
+     && MEDIR(d).problemas.length === 0 && PZ(d, 2).filter((b) => b.style === 1).map((b) => b.label).join() === 'Aceptar', JSON.stringify(d).slice(0, 300));
   ok('y al objeto le llega quién invita según Discord, su perfil y el del invitado',
      pedidos[0]?.accion === 'invitar' && pedidos[0]?.quien === LID && pedidos[0]?.de === 'dora' && pedidos[0]?.a === 'fabi', JSON.stringify(pedidos[0]));
   r = await cmd(LID, 'invitar', [{ name: 'quien', type: 6, value: OTRO }]);
-  ok('a quien no está verificado no se lo invita (y no se lo menciona)', r.json?.data?.flags === 64 && /no está verificado/.test(texto(r))
+  ok('a quien no está verificado no se lo invita (y no se lo menciona)', (r.json?.data?.flags & 64) === 64 && /no está verificado/.test(texto(r))
      && pedidos.length === 1, texto(r));
   r = await boton(OTRO, 'cw:si:Los del Barrio:' + INV);
   ok('el botón de otro no acepta nada', /para otra persona/.test(texto(r)) && pedidos.length === 1, texto(r));
@@ -3842,8 +3909,22 @@ console.log('\nLAS CREWS\n');
      r.json?.type === 7 && /entró a la crew \*\*Los del Barrio\*\*/.test(texto(r)) && pedidos[1]?.accion === 'responder'
      && pedidos[1]?.quien === INV && pedidos[1]?.de === 'fabi' && pedidos[1]?.si === true
      && JSON.stringify(r.json?.data?.allowed_mentions || {}) !== JSON.stringify({ users: [INV] }), JSON.stringify(r.json).slice(0, 220));
+  // 🔴 «Ya está en esa crew.» (encontrado al capturar, 20/11/2026): pedir entrar a OTRA crew estando en una le hablaba en
+  // tercera persona y de la crew equivocada. Ahora dice cuál es la tuya y que primero hay que salir, sin preguntarle al objeto
+  const nPed = pedidos.length;
+  r = await cmd(LID, 'unirme', [{ name: 'nombre', type: 3, value: 'La Otra' }]);
+  ok('/crew unirme estando en otra crew: dice cuál es la tuya y que primero salgas (y no le pide nada al objeto)',
+     /Ya estás en \*\*Los del Barrio\*\*/.test(texto(r)) && /La Otra/.test(texto(r)) && /\/crew salir/.test(texto(r))
+     && !/Ya está en esa crew/.test(texto(r)) && pedidos.length === nPed, texto(r));
+  r = await cmd(LID, 'unirme', [{ name: 'nombre', type: 3, value: 'Los del Barrio' }]);
+  ok('… y a la tuya misma: «Ya estás en Los del Barrio.»', /^Ya estás en \*\*Los del Barrio\*\*\.$/.test(texto(r)), texto(r));
+  // 🎨 la crew con escudo armado lleva su color; sin escudo, el verde de la Liga (y ninguna imagen rota al costado)
+  r = await cmd(LID, 'ver', []);
+  const caja = (r.json?.data?.components || []).find((c) => c.type === 17) || {};
+  ok('/crew ver: el recuadro con el verde de la Liga (sin escudo), sin miniatura y «Mi link para entrar» al lado de «Ver la crew»',
+     caja.accent_color === 0x29B298 && !PZ(r.json?.data, 11).length && PZ(r.json?.data, 2).some((b) => b.custom_id === 'cw:link:1:' + LID), JSON.stringify(r.json?.data).slice(0, 200));
   r = await cmd(LID, 'salir', []);
-  ok('salir pide confirmar, con un botón de esa persona', r.json?.data?.flags === 64 && JSON.stringify(r.json?.data?.components || []).includes('cw:salir:x:' + LID), texto(r));
+  ok('salir pide confirmar, con un botón de esa persona', (r.json?.data?.flags & 64) === 64 && JSON.stringify(r.json?.data?.components || []).includes('cw:salir:x:' + LID), texto(r));
   r = await boton(OTRO, 'cw:salir:x:' + LID);
   ok('y otro no puede tocarlo', /de otra persona/.test(texto(r)) && pedidos.length === 2, texto(r));
   delete PUESTO['d:' + LID];
@@ -3935,6 +4016,35 @@ console.log('\nAGREGARON EL BOT A UN SERVIDOR\n');
     delete PUESTO['llego:' + NUEVO];
     delete PUESTO['llego:' + G.FFA];
   }
+}
+
+// 🧱 LA FORMA DE CADA RESPUESTA (20/11/2026, el rediseño de los comandos). Sobre TODO lo que contestó o editó el Worker en
+// este archivo: que entre en los topes de Discord (40 componentes, 4.000 letras, ids de 100, 5 por fila, 25 opciones), que
+// con el flag V2 no vaya `content` ni `embeds`, que las filas de botones vayan AFUERA del recuadro y que haya un solo
+// azul. Las dos excepciones son decisiones: la fila de cartas de `/card` y del versus (la que miras gris, las otras
+// azules, 17/09) y el `/setup`, que quedó como estaba (sus filas van adentro)
+console.log('\n🧱 LA FORMA DE CADA RESPUESTA\n');
+{
+  const v2 = AUDITADOS.filter((a) => (Number(a.msg.flags) & 32768));
+  const libres = /^(card|Carta|versus|c:|s:|l:|v:)/;
+  const malos = [];
+  for (const a of v2) {
+    const setup = JSON.stringify(a.msg).includes('"su:');
+    const m = MEDIR(a.msg, { azules: libres.test(a.de) || setup ? Infinity : 1 });
+    const p = m.problemas.filter((x) => !(setup && /adentro del recuadro/.test(x)));
+    if (p.length) malos.push(a.de + ': ' + p.join(', '));
+  }
+  ok(`las ${v2.length} respuestas en V2 entran en los topes de Discord, sin content, con las filas afuera y un solo azul`,
+     v2.length > 150 && !malos.length, malos.slice(0, 6).join(' | '));
+  // los que quedan sin V2 son los de antes a propósito: la edición de un mensaje que nació sin el flag (el versus viejo, la
+  // pregunta de una llave del ciclo) y la del modal de apostar, que edita su «pensando»
+  const nuevos = AUDITADOS.filter((a) => a.tipo === 4);
+  const sinV2 = nuevos.filter((a) => !(Number(a.msg.flags) & 32768));
+  ok(`y los ${nuevos.length} mensajes nuevos (tipo 4) van en V2, todos`, nuevos.length > 100 && !sinV2.length,
+     sinV2.slice(0, 5).map((a) => a.de + ' ' + JSON.stringify(a.msg).slice(0, 80)).join(' | '));
+  const errores = nuevos.filter((a) => (Number(a.msg.flags) & 64) && a.msg.components.length && a.msg.components[0].type === 17
+    && !a.msg.components[0].accent_color && !PZ({ components: [a.msg.components[0]] }, 12).length);
+  ok('y los avisos (errores, el freno) son un recuadro chico, efímero, sin color ni franja', errores.length > 40, String(errores.length));
 }
 
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');

@@ -30,6 +30,9 @@
  */
 import { DUENO, APP_ID, NIVELES_CHAT, CFG_BASE, chatGeneralDe, categoriasStaff, PATRON_VIGIA, PATRON_INSC, STAFF,
   PATRON_VEREDICTOS, NO_VEREDICTOS, conNuevos } from './avisos.js';
+// 🧱 las piezas V2 (el texto, el separador, el recuadro, la miniatura, la sección) y los colores de la marca viven en
+// `bot/vista.js` desde el 20/11/2026: el resto del bot pasó a V2 con las mismas. Las de acá eran idénticas
+import { T, SEP, caja, mini, seccion, COLOR } from './vista.js';
 
 const API = 'https://discord.com/api/v10';
 const UA = 'DiscordBot (https://underlegends.pages.dev, 1)';
@@ -41,7 +44,6 @@ export const VERSION = 'v1';
 export const TOPES = { componentes: 40, letras: 4000, id: 100 };
 //: un borrador que nadie tocó en una semana ya no se ofrece para retomar
 export const BORRADOR_VIVE = 7 * 24 * 3600e3;
-const COLOR = { mag: 0xE41373, verde: 0x29B298, amar: 0xF5C542 };
 
 // ── 🔐 LOS PERMISOS, EN BigInt (el bitfield de Discord pasa de 2^53) ───────────────────────────────────────────────────
 export const P = {
@@ -303,14 +305,9 @@ export function estadoLiga(gid, meta, SERVIDORES) {
 }
 
 // ── 🖼️ LAS PANTALLAS (componentes V2: sin `content`, todo en un contenedor) ────────────────────────────────────────
-const T = (content) => ({ type: 10, content });
-const SEP = { type: 14, divider: true, spacing: 1 };
 const fila = (...c) => ({ type: 1, components: c.filter(Boolean) });
 const boton = (label, a, x, style = 2, extra) => Object.assign({ type: 2, style, label, custom_id: idSu(a, x) }, extra || {});
 const enlace = (label, url) => ({ type: 2, style: 5, label, url });
-const caja = (color, comps) => ({ type: 17, accent_color: color, components: comps.filter(Boolean) });
-const mini = (url) => (url ? { type: 11, media: { url } } : null);
-const seccion = (texto, acc) => (acc ? { type: 9, components: [T(texto)], accessory: acc } : T(texto));
 const canalSel = (a, x, def, placeholder, max = 1) => {
   const dv = (Array.isArray(def) ? def : [def]).filter((d) => /^\d{15,22}$/.test(String(d || ''))).slice(0, max)
     .map((id) => ({ id: String(id), type: 'channel' }));

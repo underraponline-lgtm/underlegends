@@ -157,7 +157,7 @@ const COMANDOS = [
       {
         name: 'comando',
         type: 3,
-        description: 'de cuál querés el detalle',
+        description: 'de cuál quieres el detalle',
         required: false,
         choices: [
           { name: '/card', value: 'card' },
@@ -177,6 +177,10 @@ const COMANDOS = [
           { name: '/afiche', value: 'afiche' },
           { name: '/llave', value: 'llave' },
           { name: '/agendar', value: 'agendar' },
+          // 👥 /crew no estaba (encontrado al capturar, 20/11/2026), ni /setup ni /borrar-mis-datos: los tres tienen página
+          { name: '/crew', value: 'crew' },
+          { name: '/setup', value: 'setup' },
+          { name: '/borrar-mis-datos', value: 'borrar-mis-datos' },
           { name: '/ping', value: 'ping' },
         ],
       },
@@ -200,7 +204,7 @@ const COMANDOS = [
       {
         name: 'quien',
         type: 6,
-        description: 'elegí a la persona (si no ponés nada, sos vos)',
+        description: 'elige a la persona (si no pones nada, eres tú)',
         required: false,
       },
     ],
@@ -282,7 +286,7 @@ const COMANDOS = [
         // un campo de distancia y no haya que pasar por éste.
         name: 'contra',
         type: 6,
-        description: 'quién va del otro lado (si no ponés nada, sos vos)',
+        description: 'quién va del otro lado (si no pones nada, eres tú)',
         required: false,
       },
     ],

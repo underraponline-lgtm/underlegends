@@ -21,6 +21,8 @@ if (!globalThis.crypto) globalThis.crypto = webcrypto;
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const { default: worker } = await import('./worker.js');
+// 🧱 los mensajes van en V2 desde el 20/11/2026: el texto que se ve sale de sus Text Display (bot/vista.js)
+const { textoV2: TX } = await import('./vista.js');
 
 const hex = (b) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 const par = await crypto.subtle.generateKey('Ed25519', true, ['sign', 'verify']);
@@ -67,7 +69,7 @@ globalThis.fetch = async (u, op) => {
     return new Response('imagen', { status: 200 });
   }
   if (url.indexOf('/webhooks/') >= 0) {
-    enviados.push(JSON.parse(op.body).content);
+    enviados.push(TX(JSON.parse(op.body)));
     return new Response('{}', { status: 200 });
   }
   return new Response('{}', { status: 200 });
@@ -101,8 +103,9 @@ const foto = (env, { id = UNO, hash = 'abc123', roles = [], dm = false } = {}) =
     data: { name: 'foto' },
   });
 
-const txt = (r) => (r && r.data && r.data.content) || '';
-const diferida = (r) => r && r.type === 5;
+const txt = (r) => TX(r && r.data) || '';
+// 🧱 «diferida» desde el 20/11/2026 es un «⏳ Un momento» que ya va en V2 (tipo 4) y se edita después, no el «pensando»
+const diferida = (r) => r && r.type === 4 && /Un momento/.test(txt(r)) && ((r.data.flags || 0) & 32768) !== 0;
 
 let mal = 0;
 const caso = (etq, ok, detalle) => {
@@ -113,7 +116,7 @@ const caso = (etq, ok, detalle) => {
 console.log('\n══ EL CAMINO FELIZ ══\n');
 let env = nuevoEntorno();
 let r = await foto(env);
-caso('contesta diferida (tipo 5), no un mensaje', diferida(r));
+caso('contesta diferida («un momento» en V2, que se edita), no la respuesta de una', diferida(r));
 caso('guardó en fotos/t1/<clave>.webp', !!r2[`fotos/t1/${CLAVE_UNO}.webp`]);
 caso('la guardó como image/webp',
      (r2[`fotos/t1/${CLAVE_UNO}.webp`] || {}).httpMetadata?.contentType === 'image/webp');

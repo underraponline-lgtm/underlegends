@@ -28,6 +28,8 @@
 //      sobre un bot que expulsa en masa (otro anti-raid haciendo su trabajo) ni sobre un rol que dio el dueño.
 // ⚠️ NUNCA POR MENSAJE DIRECTO (el bot no manda DMs): al canal que elige el dueño.
 
+import * as V from './vista.js';
+
 export const API = 'https://discord.com/api/v10';
 export const AR_BASE = { canal: '', escudo: [], oleada: false, staff: false, cerrado: null, auto: false, por: '' };
 
@@ -144,55 +146,53 @@ export function faltan(appPerms) {
 }
 
 // ── el panel ─────────────────────────────────────────────────────────────────────────────────────────────────────────
-const ON = (x) => (x ? '🟢 prendido' : '🔴 apagado');
-export function panel(nombre, cfg, appPerms) {
+// 🧱 EN V2 DESDE EL 20/11/2026 (el rediseño de los comandos): la franja del anti-raid, una sección por protección con su
+// estado y su botón al costado, el canal debajo y afuera. Un solo azul: lo primero apagado que se puede prender. El pánico
+// en rojo, que es lo único que se cierra. `notas`: lo que dijo el último botón, al pie
+const ON = (x) => (x ? '**prendido**' : 'apagado');
+export function panel(nombre, cfg, appPerms, notas) {
   const c = { ...AR_BASE, ...(cfg || {}) };
   const cerrado = c.cerrado && Date.parse(c.cerrado.hasta || '') > Date.now();
   const sinCanal = !c.canal;
   const falta = faltan(appPerms);
-  const texto = [
-    `## 🛡️ Anti-raid de ${nombre}`,
-    'Sólo lo ven y lo cambian **el dueño del servidor y Dlx**. Todo es opcional y, salvo con AUTOMÁTICO, **nunca actúa solo**: ' +
-    'los avisos traen botones y decide el staff. Nada va por mensaje directo.',
-    '',
-    `**1 · Escudo de Discord** · ${ON(c.escudo && c.escudo.length)}`,
-    '> Reglas de AutoMod que corre Discord, **al instante**: bloquea menciones masivas (5 o más), spam, insultos de odio ' +
-    'y links de invitación a otros servidores (los de la Liga pasan). A quien menciona en masa o pega links lo aísla 10 ' +
-    'minutos. Avisa en el canal.',
-    `**2 · Alarma de oleada** · ${ON(c.oleada)}`,
-    '> Si entran muchas cuentas de golpe, avisa con un botón para cerrar el servidor. Mira cada minuto, de día y de noche.',
-    `**3 · Vigilancia del staff** · ${ON(c.staff)}`,
-    '> Si alguien expulsa, banea o borra canales en masa —o le da un rol con permisos de banear a una cuenta que **no es ' +
-    'un bot**, como pasó en DDF—, avisa con un botón para sacarle los roles. Lee el registro de auditoría cada minuto.',
-    `**4 · Botón de pánico** · ${cerrado ? `🚨 **cerrado** hasta <t:${Math.floor(Date.parse(c.cerrado.hasta) / 1000)}:t>` : 'abierto'}`,
-    `> Pausa las invitaciones y los mensajes directos del servidor (hasta ${PANICO_H} h) y pone la verificación al ` +
-    'máximo. **Abrir** lo deja como estaba.',
-    `**5 · AUTOMÁTICO** _(experimental)_ · ${ON(c.auto)}${c.auto && c.por === 'dlx' ? ' · lo prendió **Dlx**' : ''}`,
-    `> Si **nadie responde** un aviso en ${ESPERA_AUTO_MS / 60000} minutos, actúa: con una oleada cierra el servidor; si no, ` +
-    'le saca los roles a la cuenta en peligro o a quien hace el daño (se devuelven con un botón). **Nunca expulsa ni banea**.',
-    '',
-    `**Canal de los avisos** · ${c.canal ? `<#${c.canal}>` : '**elige uno abajo** (sin canal, la 2 y la 3 no pueden avisar)'}`,
-    falta.length ? '\n⚠️ Al bot le falta: ' + falta.join(' · ') + '.' : '',
-  ].filter((x, k, a) => x !== '' || a[k - 1] !== '').join('\n');
-  const btn = (id, label, on, extra = {}) => ({ type: 2, style: on ? 2 : 1, label, custom_id: id, ...extra });
-  return {
-    content: texto,
-    components: [
-      { type: 1, components: [
-        btn('ar:escudo', c.escudo && c.escudo.length ? 'Apagar el escudo' : 'Prender el escudo', c.escudo && c.escudo.length),
-        btn('ar:oleada', c.oleada ? 'Apagar la alarma' : 'Prender la alarma de oleada', c.oleada, { disabled: sinCanal && !c.oleada }),
-        btn('ar:staff', c.staff ? 'Apagar la vigilancia' : 'Prender la vigilancia del staff', c.staff, { disabled: sinCanal && !c.staff }),
-        btn('ar:auto', c.auto ? 'Apagar AUTOMÁTICO' : 'Prender AUTOMÁTICO', c.auto, { disabled: !c.auto && (sinCanal || !(c.oleada || c.staff)) }),
-      ] },
-      { type: 1, components: [{
-        type: 8, custom_id: 'ar:canal', placeholder: 'El canal de los avisos (uno que vea el staff)',
-        min_values: 0, max_values: 1, channel_types: [0],
-      }] },
-      { type: 1, components: [cerrado
+  const prendido = { escudo: !!(c.escudo && c.escudo.length), oleada: !!c.oleada, staff: !!c.staff, auto: !!c.auto };
+  const apagado = { oleada: sinCanal && !c.oleada, staff: sinCanal && !c.staff, auto: !c.auto && (sinCanal || !(c.oleada || c.staff)) };
+  const azul = ['escudo', 'oleada', 'staff', 'auto'].find((k) => !prendido[k] && !apagado[k]) || '';
+  const btn = (k, label, extra = {}) => ({ type: 2, style: k === azul ? 1 : 2, label, custom_id: 'ar:' + k, ...extra });
+  const linea = (t, sub, b) => V.seccion(t + '\n-# ' + sub, b);
+  const dentro = [
+    V.T(`### Anti-raid de ${nombre}\n-# Sólo lo ven y lo cambian **el dueño del servidor y Dlx**. Todo es opcional y, salvo con ` +
+      'AUTOMÁTICO, **nunca actúa solo**: los avisos traen botones y decide el staff. Nada va por mensaje directo.'),
+    V.SEP,
+    linea(`**1 · Escudo de Discord** · ${ON(prendido.escudo)}`, 'Reglas de AutoMod que corre Discord, **al instante**: menciones ' +
+      'masivas (5 o más), spam, insultos de odio y links de invitación a otros servidores (los de la Liga pasan). A quien ' +
+      'menciona en masa o pega links lo aísla 10 minutos.', btn('escudo', prendido.escudo ? 'Apagar el escudo' : 'Prender el escudo')),
+    linea(`**2 · Alarma de oleada** · ${ON(prendido.oleada)}`, 'Si entran muchas cuentas de golpe, avisa con un botón para ' +
+      'cerrar el servidor. Mira cada minuto, de día y de noche.',
+    btn('oleada', c.oleada ? 'Apagar la alarma' : 'Prender la alarma', { disabled: apagado.oleada })),
+    linea(`**3 · Vigilancia del staff** · ${ON(prendido.staff)}`, 'Si alguien expulsa, banea o borra canales en masa —o le da un ' +
+      'rol con permisos de banear a una cuenta que **no es un bot**, como pasó en DDF—, avisa con un botón para sacarle los ' +
+      'roles. Lee el registro de auditoría cada minuto.', btn('staff', c.staff ? 'Apagar la vigilancia' : 'Prender la vigilancia', { disabled: apagado.staff })),
+    linea(`**4 · Botón de pánico** · ${cerrado ? `🚨 **cerrado** hasta <t:${Math.floor(Date.parse(c.cerrado.hasta) / 1000)}:t>` : 'abierto'}`,
+      `Pausa las invitaciones y los mensajes directos del servidor (hasta ${PANICO_H} h) y pone la verificación al máximo. ` +
+      '**Abrir** lo deja como estaba.', cerrado
         ? { type: 2, style: 3, label: 'Abrir el servidor', custom_id: 'ar:abrir' }
-        : { type: 2, style: 4, label: '🚨 Cerrar el servidor', custom_id: 'ar:cerrar' }] },
-    ],
-  };
+        : { type: 2, style: 4, label: 'Cerrar el servidor', custom_id: 'ar:cerrar' }),
+    linea(`**5 · AUTOMÁTICO** _(experimental)_ · ${ON(prendido.auto)}${c.auto && c.por === 'dlx' ? ' · lo prendió **Dlx**' : ''}`,
+      `Si **nadie responde** un aviso en ${ESPERA_AUTO_MS / 60000} minutos, actúa: con una oleada cierra el servidor; si no, ` +
+      'le saca los roles a la cuenta en peligro o a quien hace el daño (se devuelven con un botón). **Nunca expulsa ni banea**.',
+    btn('auto', c.auto ? 'Apagar AUTOMÁTICO' : 'Prender AUTOMÁTICO', { disabled: apagado.auto })),
+    V.SEP,
+    V.T(`**Canal de los avisos** · ${c.canal ? `<#${c.canal}>` : '**elige uno abajo** (sin canal, la 2 y la 3 no pueden avisar)'}` +
+      (falta.length ? '\n⚠️ Al bot le falta: ' + falta.join(' · ') + '.' : '')),
+    notas && notas.length ? V.T(notas.map((x) => '> ' + x).join('\n')) : null,
+  ];
+  return V.mensaje({ familia: 'antiraid', efimero: true, dentro, filas: [
+    { type: 1, components: [{
+      type: 8, custom_id: 'ar:canal', placeholder: 'El canal de los avisos (uno que vea el staff)',
+      min_values: 0, max_values: 1, channel_types: [0],
+    }] },
+  ] });
 }
 
 // ── 1 · el escudo: las reglas de AutoMod ─────────────────────────────────────────────────────────────────────────────
@@ -469,12 +469,14 @@ async function guardarCfg(env, gid, cfg, solo) {
 //: qué toca cada botón del panel
 const CAMPOS = { escudo: ['escudo'], oleada: ['oleada'], staff: ['staff'], auto: ['auto', 'por'],
   canal: ['canal', 'escudo', 'oleada', 'staff', 'auto', 'por'], cerrar: ['cerrado'], abrir: ['cerrado'] };
+// ⚠️ una edición no cambia lo efímero: el bit va fuera del PATCH (el de V2 se queda)
 const editar = (i, data) => fetch(`${API}/webhooks/${i.application_id}/${i.token}/messages/@original`, {
   method: 'PATCH', headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ allowed_mentions: { parse: [] }, ...data }) });
+  body: JSON.stringify({ allowed_mentions: { parse: [] }, ...data, ...(data && data.flags !== undefined ? { flags: data.flags & ~64 } : {}) }) });
+// 🧱 un aviso aparte, en el recuadro chico de los errores (V2, 20/11/2026)
 const aparte = (i, txt) => fetch(`${API}/webhooks/${i.application_id}/${i.token}`, {
   method: 'POST', headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ content: txt, flags: 64, allowed_mentions: { parse: [] } }) });
+  body: JSON.stringify(V.avisoMsg(txt)) });
 const diferir = (tipo, efimero) => new Response(JSON.stringify(efimero ? { type: tipo, data: { flags: 64 } } : { type: tipo }),
   { headers: { 'content-type': 'application/json' } });
 export async function mandar(env, canal, cuerpo) {
@@ -499,12 +501,13 @@ export function comando(i, env, ctx, h) {
   h.luego(ctx, (async () => {
     try {
       const es = await puedeConfigurar(env, gid, h.idDe(i));
-      if (es === null) return editar(i, { content: 'No pude preguntarle a Discord quién es el dueño del servidor: prueba en un rato.' });
-      if (!es) return editar(i, { content: '🛡️ El anti-raid lo configuran **sólo el dueño del servidor y Dlx**.' });
+      if (es === null) return editar(i, V.avisoMsg('No pude preguntarle a Discord quién es el dueño del servidor: prueba en un rato.'));
+      if (!es) return editar(i, V.avisoMsg('🛡️ El anti-raid lo configuran **sólo el dueño del servidor y Dlx**.'));
       return editar(i, panel(h.nombre, await leerCfg(env, gid), i.app_permissions));
-    } catch (e) { return editar(i, { content: 'Algo falló al abrir el anti-raid: prueba en un rato.' }); }
+    } catch (e) { return editar(i, V.avisoMsg('Algo falló al abrir el anti-raid: prueba en un rato.')); }
   })());
-  return diferir(5, true);
+  // 🧱 el primer mensaje ya en V2, con la franja (la regla del `/setup`: la edición sólo reemplaza piezas)
+  return V.respuesta(4, V.momentoMsg('antiraid', true));
 }
 
 /** Los botones: `ar:<acción>` del panel (sólo el dueño) y `ar:x:<acción>:<gid>[:<uid>]` de un aviso (dueño o admin). */
@@ -599,8 +602,7 @@ function delPanel(i, env, ctx, h, que) {
         } else nota.push('⚠️ No pude abrir: el bot necesita **Gestionar servidor**.');
       }
       const guardado = await guardarCfg(env, gid, cfg, CAMPOS[que] || []);
-      const pn = panel(h.nombre, guardado || cfg, ap);
-      return editar(i, { ...pn, content: pn.content + (nota.length ? '\n\n' + nota.map((x) => '> ' + x).join('\n') : '') });
+      return editar(i, panel(h.nombre, guardado || cfg, ap, nota));
     } catch (e) { return aparte(i, 'Algo falló: prueba de nuevo.'); }
   })());
   return diferir(6);
