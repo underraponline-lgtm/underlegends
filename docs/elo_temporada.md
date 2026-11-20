@@ -89,13 +89,18 @@ sorpresa de ganarle a alguien mucho mejor se la siguen llevando la nota y el �
 | **el veredicto** | un 3–0 se juega más que un 2–1 | unánime ×1,2 · dividido ×0,8 (con 2 jurados o más) |
 | **lo que votaba el público** | ganar cuando el chat daba al otro se juega más | sólo hacia adelante, en los servidores con el bot en vivo |
 
-### El área: tu piedra (Dlx, 20/11/2026, 3 AM)
+### El área: tu piedra y los subniveles de al lado (Dlx, 20/11/2026, 3 y 4 AM)
 
-**El ELO de temporada se mueve sólo en las batallas contra alguien de tu piedra**; afuera no cuenta, ni ganando ni
+**El ELO de temporada se mueve sólo en las batallas contra alguien de tu área**; afuera no cuenta, ni ganando ni
 perdiendo (Dlx: *«la idea principal es que el ELO se suba y se baje solamente cuando luchas con personas de tu misma
-piedra»*). Cuenta la piedra de cada uno **al empezar la noche**. Una batalla fuera del área igual **mueve la nota y el
-ELO histórico** (los dos miran el nivel), y la sorpresa del de abajo se la lleva el 🔥 Batacazo. Vale también para lo
-de la noche (ver abajo).
+piedra»*). **El área de cada piedra** (Dlx, 4 AM: *«una piedra debería jugar con la anterior y la siguiente, pero la
+anterior que esté en rangos altos, digamos Hierro 2 y Hierro 3, y para el siguiente Oro 1 y Oro 2»* y *«sólo Mítico
+juegue con la anterior piedra»*): **toda tu piedra, II y III de la anterior, y I y II de la siguiente**. Mítico, que
+no tiene siguiente, juega con **toda Diamante**. Una batalla entre dos piedras distintas cuenta cuando **cada uno está
+en la lista del otro**, porque lo que gana uno lo pierde el otro y tiene que valer para los dos: un Jade III contra un
+Zafiro I, sí; un Jade I contra un Zafiro II, no, porque Zafiro juega con Jade II y III. Cuenta la piedra de cada uno
+**al empezar la noche**. Una batalla fuera del área igual **mueve la nota y el ELO histórico** (los dos miran el
+nivel), y la sorpresa del de abajo se la lleva el 🔥 Batacazo. Vale también para lo de la noche (ver abajo).
 
 ⚠️ **Sola, se traba arriba** (T1 simulada con la chance del histórico, `elo_piedra.py` del scratchpad de esa sesión; con la A
 da casi lo mismo: 85 → 57 → 44 % y nadie pasa de Rubí): al principio todos son Hierro
@@ -106,8 +111,9 @@ rival lo pone la llave, no la piedra** —con el área anterior, la mitad de las
 piedras o más abajo—. Lo que lo resuelve de verdad es el 1v1 ranked (empareja por piedra) y los eventos de piedras de
 DRA.
 
-**Propuesta, espera el OK: la piedra se abre sola si te quedas sin rivales.** Si pasa **una semana** sin que te toque
-nadie de tu piedra, cuenta también la de al lado (arriba y abajo); **dos semanas**, dos piedras. Se cierra apenas te
+**Propuesta, espera el OK: encima de los subniveles, el área se abre sola si te quedas sin rivales.** Si pasa **una
+semana** sin que te toque nadie de tu piedra, cuenta también toda la de al lado (arriba y abajo); **dos semanas**, dos
+piedras. Se cierra apenas te
 toca alguien de tu piedra, y al cambiar de piedra el reloj arranca de nuevo. Es lo que hace cualquier emparejamiento
 cuando no aparece nadie de tu nivel: ampliar la búsqueda.
 
@@ -128,6 +134,22 @@ más batallas cuenta, **con el tiempo no se vacía** (las otras bajan mes a mes)
 la mejor. «Menos de 12 jugando» deja la cima abierta todo el tiempo y hasta 3 piedras: casi como no tener área. Con la
 chance del histórico, contar noches jugadas en vez de días ponía 1.º a Makmah por volumen; con la A ya no, pero se
 vacía en noviembre (64 %).
+
+Y con los subniveles de Dlx (`elo_subniveles.py`, con la A):
+
+| área | cuentan (sep → oct → nov) | arriba al final | en su nivel · a una o menos | a Oasis le cuentan |
+|---|---|---|---|---|
+| sólo tu piedra | 58 % (85 → 57 → 44) | Rubí 1 | 71 % · 98 % | 18 de 77 |
+| la semana | 74 % (85 → 71 → 75) | Diamante 1 · Rubí 7 | 73 % · 99 % | 26 de 77 |
+| los subniveles | 65 % (87 → 65 → 52) | Rubí 4 | 68 % · 98 % | 20 de 77 |
+| los subniveles, si alcanza con que uno tenga al otro | 79 % (96 → 79 → 69) | Diamante 1 · Rubí 10 | 72 % · 97 % | 26 de 77 |
+| **los subniveles + la semana** | **78 % (88 → 75 → 78)** | **Diamante 1 · Rubí 9** | **72 % · 98 %** | **34 de 77** |
+
+Los subniveles solos arreglan los bordes (antes, un Jade III contra un Zafiro I, a un paso, no contaba) y cuentan más
+que «sólo tu piedra», pero arriba siguen sin alcanzar: Oasis queda solo en Diamante y en los últimos 12 días de la T1
+no le cuenta nada, porque en un evento abierto casi nunca le toca alguien cerca de su piedra. Con la semana encima es
+lo mejor de todo lo medido: la que más cuenta sin vaciarse con el tiempo, y al final de la T1 a los cinco de arriba les
+había contado una batalla en los últimos 6 días. Mítico con toda Diamante no se ve en la T1: nadie llega.
 
 Historia: hasta las 3 AM el área eran **2 piedras de diferencia hasta Zafiro y 1 de Rubí para arriba** (12 % de las
 batallas afuera). Antes se probó que perder fuera del área SÍ reste (y ganar no sume) y no sirve (Dlx, 2:15 AM: *«¿de
@@ -182,7 +204,8 @@ piedra más alta de la T1.
 
 ## 5 · La T1 simulada con este diseño (sin el 1v1 ni el público, que no existen todavía)
 
-**Con el diseño decidido** (el área de la piedra, la semana, la A, y lo de la noche sólo con batallas del área):
+**Con la semana y la A** (antes de los subniveles; con ellos cuenta el 78 %: Oasis 423 · Walker 353 · Carlosss 340 ·
+Mats 333 · Motera 330 · Panchok 327 · Yinn 324 · Agus 318, y Diamante 1 · Rubí 9 · Zafiro 24 · Jade 49 · Hierro 534):
 cuenta el 74 % de las batallas. Oasis 410 · Agus 356 · Walker 349 · Carlosss 347 · Mats 334 · Motera 330 · Panchok
 314 · OG 306. Piedras: Diamante 1, Rubí 7, Zafiro 20, Jade 53, Hierro 534. Con el reinicio del borrador, **la T2
 arrancaría con 395 de los 410 activos en Hierro**: se sube menos que con el área anterior, así que el reinicio y el
@@ -196,12 +219,13 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **Cuándo se abre tu piedra** si te quedas sin rivales: la propuesta es una semana (§3).
+1. **Si el área se abre cuando te quedas sin rivales**: la propuesta es la semana, encima de los subniveles (§3).
 2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
    sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
 3. **El tamaño de las piedras**, que ahora depende del 1.
 
-Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra; las semis no llevan regla
+Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
+lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante); las semis no llevan regla
 propia; la chance de cada batalla sale del ELO de temporada, como Brawl (*«Sí, la A»*). El resto de **cuánto** se gana
 o se pierde es otro tema (Dlx: *«cuánto, pues ahí es otro caso»*).
 
