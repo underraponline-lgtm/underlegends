@@ -1,4 +1,81 @@
 {
  "_leeme": "🗞️ Las imágenes de la semana para las redes de cada socio (`bot/redes.py`): qué semana se dibujó (`s`, el lunes), qué piezas (`p`), el mensaje en su canal (`m`) y el último día que se miró si eligió canal (`mira`). Las imágenes viven en R2, `redes/<sv>/<pieza>.jpg`",
- "sv": {}
+ "sv": {
+  "ACAD": {
+   "s": "2026-11-09",
+   "p": [
+    "campeon",
+    "top"
+   ],
+   "mira": "2026-11-20"
+  },
+  "CH": {
+   "s": "2026-11-09",
+   "p": [
+    "campeon",
+    "top",
+    "historia",
+    "evento",
+    "viene"
+   ],
+   "mira": "2026-11-20"
+  },
+  "DDF": {
+   "s": "2026-11-09",
+   "p": [
+    "campeon",
+    "top",
+    "historia",
+    "evento",
+    "viene"
+   ],
+   "mira": "2026-11-20"
+  },
+  "DRA": {
+   "s": "2026-11-09",
+   "p": []
+  },
+  "FFA": {
+   "s": "2026-11-09",
+   "p": [
+    "campeon",
+    "top",
+    "historia",
+    "evento",
+    "viene"
+   ],
+   "mira": "2026-11-20"
+  },
+  "FRZ": {
+   "s": "2026-11-09",
+   "p": [
+    "campeon",
+    "top"
+   ],
+   "mira": "2026-11-20"
+  },
+  "FVS": {
+   "s": "2026-11-09",
+   "p": []
+  },
+  "SR": {
+   "s": "2026-11-09",
+   "p": [
+    "campeon",
+    "top"
+   ],
+   "mira": "2026-11-20"
+  },
+  "URBF": {
+   "s": "2026-11-09",
+   "p": [
+    "campeon",
+    "top",
+    "historia",
+    "evento",
+    "viene"
+   ],
+   "mira": "2026-11-20"
+  }
+ }
 }
