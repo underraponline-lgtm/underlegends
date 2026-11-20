@@ -252,12 +252,12 @@ export function SvProximo({ liga, sv }) {
 }
 
 // ── 🎮 CÓMO SE JUEGA ACÁ (20/11/2026, el plan de los tiers: «dale», para todos): lo que un nuevo necesita saber antes de
-// anotarse, sacado de los anuncios de la temporada (`como` de `_servidores()` en bot/subir_web.py: nada se escribe a mano).
-// El día y la hora fuerte ya están en «Cuándo juega», en la hora de quien mira ──
+// anotarse, sacado de los anuncios de la temporada (`como` de `/api/perfiles`, `como_se_juega()` en bot/subir_web.py: nada
+// se escribe a mano; no va en el lobby, que está al tope). El día y la hora fuerte ya están en «Cuándo juega» ──
 const antTxt = (h) => (h < 0.25 ? 'al empezar' : h < 1.5 ? Math.max(10, Math.round((h * 60) / 5) * 5) + ' min antes'
   : h < 36 ? Math.round(h) + ' h antes' : Math.round(h / 24) + ' días antes');
-export function SvComo({ liga, sv, D }) {
-  const c = ((liga.svs || {})[sv] || {}).como;
+export function SvComo({ sv, D, P }) {
+  const c = ((P && P.como) || {})[sv];
   if (!c) return null;
   const ev = D ? D.evs : [];
   const prom = ev.length ? ev.reduce((t, e) => t + e.gente, 0) / ev.length : 0;

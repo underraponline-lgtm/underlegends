@@ -231,7 +231,7 @@ export function PerfilSv({ liga, sv, enc }) {
             <Banda color="negra">
               <div className="pf9-g pf9-g-forma">
                 <SvForma liga={liga} D={D} />
-                <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvComo liga={liga} sv={sv} D={D} /><SvVistazo D={D} sv={sv} /></div>
+                <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvComo sv={sv} D={D} P={P} /><SvVistazo D={D} sv={sv} /></div>
               </div>
             </Banda>
             {cartas}
@@ -259,7 +259,7 @@ export function PerfilSv({ liga, sv, enc }) {
           <>
             <Banda color="negra">
               <div className="pf9-g sv9-dos"><SvProximo liga={liga} sv={sv} /><SvTabla liga={liga} sv={sv} /></div>
-              <SvComo liga={liga} sv={sv} D={null} />
+              <SvComo sv={sv} D={null} P={P} />
               <SvMuro liga={liga} sv={sv} />
             </Banda>
             {cartas}

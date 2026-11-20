@@ -710,6 +710,16 @@ def armar():
                 _pf['p'][_k]['st'] = _v
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ el staff en el perfil no se armó (%s)' % str(e)[:60])
+    # 🎮 «Cómo se juega acá»: de los anuncios de la temporada (`como_se_juega()`). Va con los perfiles (`/api/perfiles`),
+    # que la página de cada servidor ya baja, y NO en el lobby: el 20/11/2026 lo pasó del tope (50,8 KB comprimido)
+    try:
+        import cuando as _CU
+        _an = _json('datos', 'anuncios.json') or {}
+        if isinstance(_pf, dict):
+            _pf['como'] = como_se_juega(_an.get('anuncios'), _an.get('inscripciones'),
+                                        (_json('datos', 'servidores.json') or {}).get('servidores') or {}, _CU.momento, _CU._leer_iso)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ «Cómo se juega acá» no se armó (%s)' % str(e)[:60])
     # 👥 quién organiza, con su perfil —también el staff que no compite y los de fuera de la tabla— (14/10/2026)
     _orgs_pago = _orgs(ann, tabla, pool, staff=_staff_rol, perfiles=set(_pf or {}))
     _en_t = {f.get('k') for f in tabla}
@@ -3379,14 +3389,6 @@ def _servidores(gente):
     miembros = _miembros(svs)
     _guardar_iconos(miembros)
     pags = _paginas_socios()
-    # 🎮 «Cómo se juega acá»: de los anuncios de la temporada (`como_se_juega()`); si algo falla, la página no lo dibuja
-    try:
-        import cuando as _CU
-        _an = _json('datos', 'anuncios.json') or {}
-        como = como_se_juega(_an.get('anuncios'), _an.get('inscripciones'), svs, _CU.momento, _CU._leer_iso)
-    except Exception as e:                               # noqa: BLE001
-        print('   ⚠️ «Cómo se juega acá» no se armó (%s)' % str(e)[:60])
-        como = {}
     logos = os.path.join(SCR, 'paginas', 'logos')
     # 🏅 los tiers: si `bot/tiers.py` no se puede leer, la página no dice nada (sin dato no hay pieza)
     nivel, sin_t, sin_c, min_solo = {}, set(), set(), 0
@@ -3420,8 +3422,6 @@ def _servidores(gente):
             a['redes'] = [[str(r), str(u)] for r, u in pg['redes']][:8]
         if str(pg.get('banner') or '').startswith('https://'):
             a['banner'] = pg['banner']
-        if como.get(sv):
-            a['como'] = como[sv]
         # 🔑 LOS PUNTOS DE ASCENSO DE CADA RANGO, en SU servidor (Snake Rap,
         # 27/09/2026). Son de su ranking, no de la Liga: la página los muestra
         # junto al rango del evento y no suman en ningún lado.
