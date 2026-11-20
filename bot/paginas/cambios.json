@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.06",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T21:00:00-05:00",
+        "titulo": "El escenario en vivo, sin encimarse",
+        "items": [
+            "**El escenario en vivo ya no se encima**: una llave larga en vivo empujaba el título y los botones debajo de las historias. Ahora la llave va con tope y un botón para ver el resto."
+        ]
+    },
+    {
         "version": "7.05",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T20:53:00-05:00",
