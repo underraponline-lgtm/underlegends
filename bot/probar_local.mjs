@@ -2001,13 +2001,21 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
     const mostrar = (p) => PZ(p, 2).find((b) => /^dm:/.test(b.custom_id || ''));
     ok('📣 una Maqueta no trae «Mostrarlo en el canal»; un Disco de Oro, sí (y es gris: el azul es «Abrir otro»)',
        !mostrar(t1q) && mostrar(tx)?.style === 2 && PZ(tx, 2).filter((b) => b.style === 1).length === 1, JSON.stringify(PZ(tx, 2)));
-    const sh = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700957' } }, message: { id: '9', flags: 64 | 32768 },
+    // 🔁 una sola vez (revisión, 20/11/2026): el clic apaga el botón en tu mensaje y lo público sale APARTE
+    SEGUIMIENTOS.length = 0;
+    const sh = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', application_id: 'app', token: 'tok', member: { user: { id: '700957' } },
+                             message: { id: '9', flags: 64 | 32768, components: tx.components },
                              data: { custom_id: mostrar(tx).custom_id, component_type: 2 } });
-    ok('📣 mostrarlo manda un mensaje PÚBLICO con la misma apertura y el mismo premio, sin que suene nadie',
-       sh.json?.type === 4 && !((sh.json?.data?.flags || 0) & 64) && (sh.json?.data?.flags & 32768)
-       && /<@700957> abrió un Dragón Drop: Disco de Oro/.test(TX(sh.json?.data)) && /«Aliento de Dragón».*\+1\.000/.test(TX(sh.json?.data))
-       && /drop-titulo-aliento-de-dragon\.gif$/.test(gif(sh.json?.data)) && (sh.json?.data?.allowed_mentions?.parse || ['x']).length === 0
-       && !sh.json?.data?.allowed_mentions?.users, JSON.stringify(sh.json));
+    await esperarSeguimientos();
+    const pubM = SEGUIMIENTOS[0]?.cuerpo;
+    ok('📣 mostrarlo apaga el botón en tu mensaje (tipo 7, «Ya lo mostraste»): no se puede publicar dos veces',
+       sh.json?.type === 7 && (sh.json?.data?.flags & 32768)
+       && PZ(sh.json?.data, 2).some((b) => /^dm:/.test(b.custom_id || '') && b.disabled && b.label === 'Ya lo mostraste'), JSON.stringify(sh.json));
+    ok('📣 y manda aparte un mensaje PÚBLICO con la misma apertura y el mismo premio, sin que suene nadie',
+       SEGUIMIENTOS.length === 1 && !((pubM?.flags || 0) & 64) && (pubM?.flags & 32768)
+       && /<@700957> abrió un Dragón Drop: Disco de Oro/.test(TX(pubM)) && /«Aliento de Dragón».*\+1\.000/.test(TX(pubM))
+       && /drop-titulo-aliento-de-dragon\.gif$/.test(gif(pubM)) && (pubM?.allowed_mentions?.parse || ['x']).length === 0
+       && !pubM?.allowed_mentions?.users, JSON.stringify(pubM));
     const sh2 = await pedir({ type: 3, guild_id: G.FFA, channel_id: '1', member: { user: { id: '700957' } }, message: { id: '9', flags: 64 | 32768 },
                               data: { custom_id: 'dm:d:1:100:-', component_type: 2 } });
     ok('📣 y un botón de algo peor que Vinilo no muestra nada', (sh2.json?.data?.flags & 64) === 64 && /ya no anda/.test(TX(sh2.json?.data)), JSON.stringify(sh2.json));

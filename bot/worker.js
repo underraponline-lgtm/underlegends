@@ -46,7 +46,7 @@ import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, 
 import * as AR from './antiraid.js';
 import * as AP from './apodo.js';
 // 👥 las crews (19/10/2026): la forma de comparar nombres, la misma que el objeto
-import { normCrew } from './crews.js';
+import { normCrew, puede as puedeCrew } from './crews.js';
 // 🧭 /setup (19/11/2026): el paso a paso de un servidor que entra a la Liga. Todo en `bot/setup.js`; el borrador y lo
 // aplicado viven en el objeto (`setupOp()` de avisos.js)
 import * as SU from './setup.js';
@@ -1591,6 +1591,19 @@ export function mostrarDrop(cid, did) {
     dentro: [V.galeria({ media: { url: titulo ? gifDrop(anim, 'titulo', rz, titulo) : gifDrop(anim, 'abre', rz) }, description: RAREZA_NOMBRE[rz] }),
       V.T('### <@' + did + '> abrió ' + que + ': ' + RAREZA_NOMBRE[rz] + '\nSe lleva ' + premioDe(r) + '.')],
     filas: [[botonLink('Abrir los míos', URL_DROPS)]] });
+}
+
+/** Los mismos componentes con el botón `cid` apagado y diciendo que ya se usó (en filas, adentro de recuadros o al costado
+ *  de una sección). Apagarlo y no sacarlo: una sección sin su botón al costado no es válida para Discord. */
+export function apagarBoton(cs, cid) {
+  return (cs || []).map((c) => {
+    if (!c || typeof c !== 'object') return c;
+    if (c.type === 2 && c.custom_id === cid) return Object.assign({}, c, { disabled: true, label: 'Ya lo mostraste', style: 2 });
+    const o = Object.assign({}, c);
+    if (Array.isArray(c.components)) o.components = apagarBoton(c.components, cid);
+    if (c.accessory) o.accessory = apagarBoton([c.accessory], cid)[0];
+    return o;
+  });
 }
 
 /** 💰 Lo de `/billetera` (la maqueta): el número grande arriba, con tu cara al costado y el color de tu rango */
@@ -3853,7 +3866,7 @@ async function crewComando(i, env, sub, op) {
         (lid ? ' · Líder: **' + (await crewNombre(env, lid)) + '**' : '') + (c.desc ? '\n> ' + c.desc : '') +
         (rol ? '\n-# ' + (t === id ? 'Eres ' : '<@' + t + '> es ') + ROL[rol] + '.' : '') + crewSemana(c, todas),
       filas: [[{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) },
-        t === id && rol ? V.boton('Mi link para entrar', 'cw:link:1:' + id, ESTILO.SECUNDARIO) : null]] }));
+        t === id && rol && puedeCrew(rol, 'invitar') ? V.boton('Mi link para entrar', 'cw:link:1:' + id, ESTILO.SECUNDARIO) : null]] }));
   }
   if (sub === 'invitar') {
     const t = String(op.quien || '');
@@ -5547,7 +5560,17 @@ export default {
         if (esperarM) return espera(esperarM);
         const msg = mostrarDrop(id, yo);
         if (!msg) return aviso('Ese botón ya no anda: usa **`/drops`**.');
-        return responderV2(RESPONDE.MENSAJE, msg);
+        // 🔁 UNA VEZ Y DONDE EL SERVIDOR DEJA (revisión, 20/11/2026): el botón quedaba vivo y cada clic publicaba otro
+        // mensaje, también en canales donde el servidor limitó lo de la Liga. Ahora se apaga en tu mensaje (tipo 7) y lo
+        // público va aparte, sólo en los canales de `/card` si el servidor los eligió
+        if (i.guild_id) {
+          const cfgM = await ajustes(env, i.guild_id);
+          if (cfgM && Array.isArray(cfgM.canales) && cfgM.canales.length && !cfgM.canales.includes(i.channel_id)) {
+            return aviso('Acá el servidor no deja mostrar cosas de la Liga: muéstralo en <#' + cfgM.canales[0] + '>.');
+          }
+        }
+        luego(ctx, seguir(i, '', null, msg));
+        return responderV2(RESPONDE.ACTUALIZAR, { flags: V2, components: apagarBoton((i.message && i.message.components) || [], id) });
       }
 
       // ── 🐉 «Abrir un Drop / Star» (`dd:<drop|star>:x:<dueño>`) y 🎽 el menú de `/equipar` (`eq:<lugar>:x:<dueño>`) ─
@@ -5772,7 +5795,10 @@ export default {
         if (!puedeAjustar(i)) {
           return aviso('Ya no tienes permiso para tocar los ajustes del servidor.');
         }
-        const esperarA = frenado(idDe(i), 'ajuste');
+        // ⚠️ navegar no gasta el freno de guardar (revisión, 20/11/2026): con «Elegir» y «Volver», configurar tres canales
+        // eran 6 clics y el sexto decía «Para un poco»
+        const navega = quien === 'asc' || quien === 'mas' || quien === 'elegir' || quien === 'volver';
+        const esperarA = frenado(idDe(i), navega ? 'click' : 'ajuste');
         if (esperarA) return espera(esperarA);
         const cfg = await ajustes(env, i.guild_id);
         const antesCfg = JSON.stringify(cfg);
@@ -5902,7 +5928,9 @@ export default {
       if (que === 'apo') {
         if (!i.guild_id) return aviso('Esto va adentro de un servidor de la Liga.');
         if (dueno && idDe(i) !== dueno) return aviso('Ese menú es de otra persona: tira `/apodo` y tienes el tuyo.');
-        const esperarAp = frenado(idDe(i), 'click');
+        // ⚠️ el freno de los ajustes y no el de un clic (revisión, 20/11/2026): cada estilo nuevo es una escritura de KV
+        // (`apodo:<id>`) y un cambio de apodo en Discord, y KV tiene 1.000 por día para todo el bot
+        const esperarAp = frenado(idDe(i), 'ajuste');
         if (esperarAp) return espera(esperarAp);
         const r = await apodoPanel(i, env, Number(((i.data && i.data.values) || [])[0]) || 0);
         return r.aviso ? aviso(r.aviso) : editarAqui(i, r.msg);

@@ -470,9 +470,19 @@ async function guardarCfg(env, gid, cfg, solo) {
 const CAMPOS = { escudo: ['escudo'], oleada: ['oleada'], staff: ['staff'], auto: ['auto', 'por'],
   canal: ['canal', 'escudo', 'oleada', 'staff', 'auto', 'por'], cerrar: ['cerrado'], abrir: ['cerrado'] };
 // ⚠️ una edición no cambia lo efímero: el bit va fuera del PATCH (el de V2 se queda)
-const editar = (i, data) => fetch(`${API}/webhooks/${i.application_id}/${i.token}/messages/@original`, {
-  method: 'PATCH', headers: { 'content-type': 'application/json' },
-  body: JSON.stringify({ allowed_mentions: { parse: [] }, ...data, ...(data && data.flags !== undefined ? { flags: data.flags & ~64 } : {}) }) });
+// 🧱 un panel abierto ANTES del despliegue del 20/11/2026 es texto, y un mensaje sin el bit de V2 no se puede editar a V2:
+// el PATCH fallaba en silencio y el dueño no veía el cambio (revisión). En ese caso va el panel nuevo aparte, efímero
+const editar = (i, data) => {
+  const viejo = i && i.type === 3 && i.message && !(Number(i.message.flags) & 32768) && data && (data.flags & 32768);
+  if (viejo) {
+    return fetch(`${API}/webhooks/${i.application_id}/${i.token}`, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ allowed_mentions: { parse: [] }, ...data, flags: data.flags | 64 }) });
+  }
+  return fetch(`${API}/webhooks/${i.application_id}/${i.token}/messages/@original`, {
+    method: 'PATCH', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ allowed_mentions: { parse: [] }, ...data, ...(data && data.flags !== undefined ? { flags: data.flags & ~64 } : {}) }) });
+};
 // 🧱 un aviso aparte, en el recuadro chico de los errores (V2, 20/11/2026)
 const aparte = (i, txt) => fetch(`${API}/webhooks/${i.application_id}/${i.token}`, {
   method: 'POST', headers: { 'content-type': 'application/json' },
