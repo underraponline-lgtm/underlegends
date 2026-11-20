@@ -21,6 +21,18 @@ piedra; el problema es que hay pocas de momento»*.
 | **La nota** | cómo te fue esa noche, del 1 al 10 | no se acumula | la carta, el perfil, el MVP (`bot/notas.py`, ya existe) |
 | **ELO de temporada** | tu ranked de la temporada | se acumula, **se reinicia con cada temporada** | las piedras, los premios, el ranking de la temporada |
 
+🎯 **PARA QUÉ SIRVE EL DE TEMPORADA, Y POR QUÉ NO ES EL COMPETITIVO** (Dlx, 20/11/2026: *«el competitivo ya dice
+quiénes son los mejores en general, pero con esto veremos quiénes son los mejores en sus respectivos niveles, y esa es la
+meta»*). El Competitivo (`sheet/competitivo.py`) pone a todos en una sola escala con sus **resultados** —eficiencia 25 %,
+consistencia 24 %, dominancia 21 %, diversidad 20 % y racha 10 %, × la confianza— y **nunca mira a quién le ganaste**.
+El de temporada es al revés: **las piedras son los niveles** y la tabla de cada piedra, los mejores de ese nivel.
+
+Medido sobre la T1 con el área de la piedra y la semana (`elo_niveles.py` de la sesión; el nivel es el ELO histórico
+al final): la mediana del nivel sube piedra por piedra —981 · 1048 · 1137 · 1199 · 1339—, el **99 % queda en la piedra
+de su nivel o en la de al lado** (con el área anterior, 93 %) y el ELO de temporada se parece **0,79** al Competitivo,
+que se parece 0,87 al nivel: se toca, no es una copia. Y arriba de cada piedra aparece gente que el Competitivo no pone
+arriba: la cima de Jade son Prosu y Flash (sin letra todavía) y Geoka (C).
+
 ⚠️ **La nota NO entra al ELO de temporada**, aunque mire cosas parecidas (el rival, la ronda, el veredicto): si entra,
 lo mismo se cuenta dos veces. Es la descripción de la noche; el ELO es la consecuencia.
 
@@ -49,6 +61,22 @@ Junta todas las temporadas.
 Cada batalla que cuenta es **un traspaso entre los dos**: lo que suma el que gana lo resta el que pierde.
 
     lo que se juega = K × (1 − la chance que tenía el que ganó, por el ELO HISTÓRICO) × los factores
+
+⚠️ **Propuesta, espera el OK: la chance, del ELO DE TEMPORADA (como Brawl).** Con la del histórico, el que gana lo que
+se esperaba de su nivel casi no suma —ganarle a uno más flojo paga poco y perder con él resta mucho—, así que el de
+temporada termina midiendo **quién le ganó a lo esperado** (cuánto subió su histórico), no quién es el mejor de su
+piedra. En la T1 casi no se nota porque el histórico también arrancó en 1000 para todos; **en la T2 ya sabe quién es
+quién**. Con la chance del ELO de temporada, adentro de tu piedra cada victoria vale parecido (unos 15, según la ronda
+y el evento) y el que gana más sube: la escalera encuentra sola el nivel de cada uno. Medido:
+
+| | en la piedra de su nivel | parecido con el nivel |
+|---|---|---|
+| T1, la semana · chance del histórico → de la temporada | 68 % → **73 %** | 0,68 → **0,77** |
+| T2 de prueba (las mismas batallas, con el histórico ya armado) · la semana | 64 % → **71 %** | 0,61 → **0,76** |
+| T2 de prueba · sólo tu piedra | 66 % → **73 %** | 0,55 → **0,69** |
+
+El histórico sigue para lo que hace bien: los cruces, el pronóstico del VS, la nota y el emparejamiento del 1v1. La
+sorpresa de ganarle a alguien mucho mejor se la siguen llevando la nota y el 🔥 Batacazo.
 
 | factor | qué hace | borrador |
 |---|---|---|
@@ -163,9 +191,10 @@ hay que ajustar el tamaño.
 ## 6 · Lo que falta decidir
 
 1. **Cuándo se abre tu piedra** si te quedas sin rivales: la propuesta es una semana (§3).
-2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
+2. **De dónde sale la chance de cada batalla**: la propuesta es del ELO de temporada, como Brawl (§3, «La unidad»).
+3. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
    sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
-3. **El tamaño de las piedras**, que ahora depende del 1.
+4. **El tamaño de las piedras**, que ahora depende del 1 y del 2.
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra; las semis no llevan regla
 propia. **Cuánto** se gana o se pierde en cada batalla es otro tema (Dlx: *«cuánto, pues ahí es otro caso»*).
