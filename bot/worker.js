@@ -1595,6 +1595,27 @@ async function firmaValida(req, crudo, clavePublica) {
   }
 }
 
+// 🤖 AGREGARON EL BOT A UN SERVIDOR (19/11/2026). Dlx: «directo, el bot me escribe x DM que lo agregaron a X servidor».
+// Discord lo avisa con un Webhook Event (`APPLICATION_AUTHORIZED`) en esta ruta, `POST /eventos-discord`. Se configura
+// UNA vez en el portal de desarrolladores (la app → Webhooks → Events: la URL `<worker>/eventos-discord`, prendido y con
+// el evento «Application Authorized»). Viene firmado igual que las interacciones, con la misma clave pública.
+// ⚠️ OTRA RUTA Y NO `POST /`: en las interacciones el tipo 1 es el PING, y acá el PING es el 0 y el 1 es un evento.
+// ⚠️ SE CONTESTA 204 YA, SIEMPRE: si Discord no recibe un 2xx en 3 segundos reintenta, y si falla seguido apaga los
+// eventos. El DM va detrás (`SU.llego()`, que también deduplica). Lo que no es un servidor —instalar la app en una
+// cuenta (`integration_type` 1)— no avisa nada.
+async function eventosDiscord(req, env, ctx) {
+  const crudo = await req.text();
+  if (!await firmaValida(req, crudo, env.DISCORD_PUBLIC_KEY)) return new Response('firma invalida', { status: 401 });
+  let b = null;
+  try { b = JSON.parse(crudo); } catch (e) { b = null; }
+  const ev = b && b.type === 1 ? b.event || {} : {};
+  const d = ev.data || {};
+  if (ev.type === 'APPLICATION_AUTHORIZED' && d.integration_type === 0 && d.guild && d.guild.id) {
+    ctx.waitUntil(SU.llego(env, d, ayudaSU()).catch((e) => console.error('[eventos] el DM del servidor nuevo:', e)));
+  }
+  return new Response(null, { status: 204 });
+}
+
 // ── Los comandos ──────────────────────────────────────────────────────────
 // ── El «#N» del apodo: prendido o apagado, POR SERVIDOR ───────────────────
 // Dlx, 19/09/2026: «una funcion local o sea por servidor que te deje activar y
@@ -4977,7 +4998,8 @@ export default {
     let esCiclo = false;
     const kc = req.headers.get('x-lg-ciclo') || '';
     if (kc && env0.DISCORD_TOKEN) { try { esCiclo = kc === await claveCiclo(env0.DISCORD_TOKEN); } catch (e) { esCiclo = false; } }
-    if (!(req.method === 'POST' && camino === '/') && !esCiclo && claveIP
+    // 🤖 `/eventos-discord` tampoco: los eventos de Discord vienen firmados y desde Discord, como las interacciones
+    if (!(req.method === 'POST' && (camino === '/' || camino === '/eventos-discord')) && !esCiclo && claveIP
       && await frenoIP(env0, claveIP)) return muchos();
     // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
     const env = kvMedido(env0, ctx, req.method === 'POST' && camino === '/' ? 'interaccion' : camino);
@@ -5002,6 +5024,8 @@ export default {
     if (camino === '/cuenta/mira' && req.method === 'POST') return cuentaMira(req, env);
     // 🤝 unirte a los Tier 1 que elegiste, con tu permiso (13/11/2026, ver `cuentaUnirse()`)
     if (camino === '/cuenta/unirse' && req.method === 'POST') return cuentaUnirse(req, env);
+    // 🤖 agregaron el bot a un servidor: el DM a Dlx (19/11/2026, ver `eventosDiscord()`)
+    if (camino === '/eventos-discord' && req.method === 'POST') return eventosDiscord(req, env, ctx);
 
     if (req.method === 'GET') {
       const ruta = camino;

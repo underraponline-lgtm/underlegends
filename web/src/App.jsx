@@ -141,6 +141,8 @@ const Ranking = pag(() => import('./ranking.jsx').then((m) => ({ default: m.Rank
 const Eventos = pag(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
 const Publicaciones = pag(() => import('./publicaciones2.jsx').then((m) => ({ default: m.Publicaciones })));
 const Socios = pag(() => import('./socios2.jsx').then((m) => ({ default: m.Socios })));
+// 🏟️ «Suma tu servidor» (19/11/2026): la página para el dueño de un servidor, dentro de Socios (`#/socios/sumar`)
+const SumaTuServidor = pag(() => import('./sumar2.jsx').then((m) => ({ default: m.SumaTuServidor })));
 const Guia = pag(() => import('./guia2.jsx').then((m) => ({ default: m.Guia })));
 const Tarjetas = pag(() => import('./tarjetas.jsx').then((m) => ({ default: m.Tarjetas })));
 const Perfil = pag(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
@@ -701,7 +703,8 @@ export default function App() {
   // lugar al abrir, y `#/avisos` baja hasta la campana
   // 🏠 EL INICIO TAMBIÉN (18/11/2026): su `lugar` es '' y el `lugar &&` lo dejaba afuera, así que tocar «Inicio» desde el
   // Ranking bajado a 2.300 px abría el Inicio a esa altura, en Noticias y no en las historias
-  const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' ? pagina + '/' + (partes[1] || '') : paginaMenu;
+  // 🏟️ y `socios/sumar` es otra página que Socios (19/11/2026): sin esto, el botón de Socios la abría a la altura del botón
+const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagina === 'socios' && partes[1] === 'sumar') ? pagina + '/' + (partes[1] || '') : paginaMenu;
   useEffect(() => {
     if (pagina !== 'r' && pagina !== 'llave' && pagina !== 'avisos') window.scrollTo(0, 0);
   }, [lugar]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -740,7 +743,7 @@ export default function App() {
   const nombreSv = sv && liga && liga.svs[sv] ? liga.svs[sv].nombre || sv : sv;
   useEffect(() => {
     const crewT = pagina === 'crew' && liga ? (liga.d.crews || []).find((c) => (c.clave || c.crew) === crewId) : null;
-    const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios'
+    const t = sv ? nombreSv : pagina === 'socios' && partes[1] === 'sumar' ? 'Suma tu servidor' : pagina === 'socios' || pagina === 'mundo' ? 'Socios'
       : pagina === 'tarjetas' ? 'Tarjetas'
       : pagina === 'salon' ? 'Salón de la fama'
       : pagina === 'competencias' ? ({ mini: 'Mini eventos', ligas: 'Las ligas' }[partes[1]] || 'Competencias')
@@ -877,6 +880,7 @@ export default function App() {
       {sv ? <Aislada key={'PerfilSv' + sv} n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
         : pagina === 'kit' ? <Aislada key="Kit" n="Kit" pagina><Suspense fallback={<Cargando />}><Kit liga={liga} cod={partes[1] || ''} /></Suspense></Aislada>
+        : pagina === 'socios' && partes[1] === 'sumar' ? <Aislada key="Sumar" n="Sumar" pagina><Suspense fallback={<Cargando />}><SumaTuServidor liga={liga} /></Suspense></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
         : pagina === 'llave' && partes[1] ? <Aislada key={'Llave' + partes.slice(1).join('/')} n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>

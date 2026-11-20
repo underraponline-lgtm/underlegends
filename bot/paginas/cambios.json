@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "7.04",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T20:40:00-05:00",
+        "titulo": "«Suma tu servidor», su propia página",
+        "items": [
+            "**Suma tu servidor** tiene su página, adentro de Socios: cómo entra un servidor a la Liga en cuatro pasos, la tabla de los tres tiers con lo que pide y da cada uno, y lo que trae la Liga desde el primer evento.",
+            "El botón **Agregar el bot** suma el bot directo, y `/setup` lo deja listo en seis pasos.",
+            "Ningún tier pide una cantidad de miembros: la página dice cuántos **recomendamos** para cada uno."
+        ]
+    },
+    {
         "version": "7.03",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T19:50:00-05:00",

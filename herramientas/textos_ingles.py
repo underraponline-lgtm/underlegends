@@ -29,7 +29,7 @@ WEB = os.environ.get('LG_WEB_RAIZ') or 'https://underlegends.pages.dev'
 RUTAS = ['/freestyle-rap', '/freestyle-rap/ranking', '/freestyle-rap/ranking/competitivo', '/freestyle-rap/ranking/duelos',
          '/freestyle-rap/ranking/podios', '/freestyle-rap/ranking/rachas', '/freestyle-rap/ranking/paises', '/freestyle-rap/ranking/crews',
          '/freestyle-rap/eventos', '/freestyle-rap/ligas', '/freestyle-rap/ligas/fmh-espana', '/freestyle-rap/tarjetas',
-         '/freestyle-rap/pase', '/freestyle-rap/tienda', '/freestyle-rap/publicaciones', '/freestyle-rap/socios', '/freestyle-rap/guia',
+         '/freestyle-rap/pase', '/freestyle-rap/tienda', '/freestyle-rap/publicaciones', '/freestyle-rap/socios', '/freestyle-rap/socios/sumar', '/freestyle-rap/guia',
          '/freestyle-rap/salon', '/freestyle-rap/crews', '/freestyle-rap/r/makmah', '/freestyle-rap/r/oasis', '/freestyle-rap/sv/FFA',
          '/freestyle-rap/sv/DDF', '/freestyle-rap/pais/ar', '/freestyle-rap/llave/660', '/cuenta', '/freestyle-rap/invitar',
          '/freestyle-rap/r/erian', '/freestyle-rap/r/pichulamc', '/freestyle-rap/r/valen', '/freestyle-rap/sv/LKR',

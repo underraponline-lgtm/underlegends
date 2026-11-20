@@ -21,7 +21,7 @@ import { webcrypto } from 'node:crypto';
 // leen directo — el resto entra por la puerta, como lo haría Discord.
 import { VERIFICA } from './worker.js';
 // el número de la app de Discord: `discordDe()` sólo acepta permisos suyos (revisión del 03/10/2026)
-import { APP_ID } from './avisos.js';
+import { APP_ID, DUENO } from './avisos.js';
 // lo que contesta Discord con un permiso: `/oauth2/@me` trae de qué app es y quién es; lo demás, el usuario solo
 const comoDiscord = (url, u, app = APP_ID) => new Response(JSON.stringify(String(url).endsWith('/oauth2/@me')
   ? { application: { id: app }, user: u } : u), { status: 200 });
@@ -3827,6 +3827,69 @@ console.log('\nEL /setup, POR EL WORKER\n');
   ok('un botón de otra versión del /setup: se dice, no se adivina', /versión vieja/.test(texto(r)), texto(r));
   r = await pedir({ type: 3, user: { id: '888002' }, data: { custom_id: 'su:v1:si:1600000000000000777' } });
   ok('el «Que sumen» de alguien que no es Dlx: no', /equipo de la Liga/.test(texto(r)), texto(r));
+}
+
+// 🤖 AGREGARON EL BOT A UN SERVIDOR (19/11/2026): el Webhook Event de Discord (`APPLICATION_AUTHORIZED`) llega a
+// `/eventos-discord`, firmado como las interacciones, y el Worker le escribe a Dlx (`SU.llego()` en bot/setup.js)
+console.log('\nAGREGARON EL BOT A UN SERVIDOR\n');
+{
+  const evento = async (objeto, { romperFirma = false } = {}) => {
+    RELOJ += 60000;
+    const cuerpo = JSON.stringify(objeto);
+    const ts = String(Math.floor(Date.now() / 1000));
+    let sig = await firmar(cuerpo, ts);
+    if (romperFirma) sig = sig.replace(/^../, sig.startsWith('00') ? '11' : '00');
+    const r = await worker.fetch(new Request('https://x/eventos-discord', { method: 'POST',
+      headers: { 'x-signature-ed25519': sig, 'x-signature-timestamp': ts }, body: cuerpo }), env, ctx);
+    return r.status;
+  };
+  const autorizado = (gid, tipo = 0) => ({ version: 1, application_id: APP_ID, type: 1,
+    event: { type: 'APPLICATION_AUTHORIZED', timestamp: '2026-11-19T20:00:00Z',
+      data: { integration_type: tipo, scopes: ['bot', 'applications.commands'], user: { id: '1600000000000000999', username: 'alguien' },
+        guild: tipo === 0 ? { id: gid, name: 'Freestyle **Nuevo**', icon: null } : undefined } } });
+  const f0 = globalThis.fetch;
+  const llamadas = [];
+  globalThis.fetch = async (url, o = {}) => {
+    const u = String(url);
+    llamadas.push({ u, b: o.body ? JSON.parse(o.body) : null });
+    if (u.endsWith('/@me/channels')) return new Response(JSON.stringify({ id: '999000' }), { status: 200 });
+    if (/\/guilds\/\d+\?with_counts=true$/.test(u)) return new Response(JSON.stringify({ approximate_member_count: 245 }), { status: 200 });
+    return new Response('{}', { status: 200 });
+  };
+  const NUEVO = '1600000000000000001';
+  try {
+    ok('eventos: el PING de Discord se contesta 204', await evento({ version: 1, application_id: APP_ID, type: 0 }) === 204);
+    ok('eventos: con la firma rota, 401 (Discord lo prueba antes de aceptar la URL)', await evento(autorizado(NUEVO), { romperFirma: true }) === 401);
+    await esperarSeguimientos();
+    ok('y sin firma no se manda nada', !llamadas.length);
+    const st = await evento(autorizado(NUEVO));
+    await esperarSeguimientos();
+    const dm = llamadas.find((x) => x.u.endsWith('/@me/channels'));
+    const msj = llamadas.find((x) => x.u.endsWith('/channels/999000/messages'));
+    const txt = JSON.stringify((msj && msj.b) || {});
+    ok('agregaron el bot: 204 enseguida y un DM a Dlx, a nadie más', st === 204 && dm?.b?.recipient_id === DUENO && !!msj, JSON.stringify(dm?.b));
+    ok('el DM dice el servidor (sin su markdown), cuántos son y quién lo agregó, sin hacer sonar a nadie',
+       /Agregaron el bot a Freestyle Nuevo/.test(txt) && /245 miembros/.test(txt) && txt.includes('<@1600000000000000999>')
+       && JSON.stringify(msj?.b?.allowed_mentions) === '{"parse":[]}', txt.slice(0, 300));
+    ok('y que todavía no es socio', /Todavía no es socio/.test(txt), txt.slice(0, 300));
+    llamadas.length = 0;
+    await evento(autorizado(NUEVO));
+    await esperarSeguimientos();
+    ok('el mismo servidor otra vez enseguida: no repite el DM', !llamadas.some((x) => x.u.endsWith('/@me/channels')));
+    llamadas.length = 0;
+    await evento(autorizado('', 1));
+    await esperarSeguimientos();
+    ok('instalar la app en una cuenta, no en un servidor: nada', !llamadas.length, JSON.stringify(llamadas).slice(0, 160));
+    llamadas.length = 0;
+    await evento(autorizado(G.FFA));
+    await esperarSeguimientos();
+    const t2 = JSON.stringify((llamadas.find((x) => x.u.endsWith('/messages')) || {}).b || {});
+    ok('si ya es socio, lo dice', /Ya es socio de la Liga \(\*\*FFA\*\*\)/.test(t2), t2.slice(0, 220));
+  } finally {
+    globalThis.fetch = f0;
+    delete PUESTO['llego:' + NUEVO];
+    delete PUESTO['llego:' + G.FFA];
+  }
 }
 
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');

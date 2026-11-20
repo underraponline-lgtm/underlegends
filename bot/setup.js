@@ -636,6 +636,21 @@ export function dmDlx(v) {
   return mensaje(caja(COLOR.amar, comps));
 }
 
+/** 🤖 El DM a Dlx cuando AGREGAN el bot a un servidor (19/11/2026, ver `llego()`). Dlx: «directo, el bot me escribe x DM
+ *  que lo agregaron a X servidor». Sin los botones de decidir: eso llega con el /setup, que es cuando hay plantilla,
+ *  canales y sigla para mirar. `v` = `{gid, nombre, icono, miembros, por, estado}` (`estado` de `estadoLiga()`). */
+export function dmLlego(v) {
+  const n = limpiarNombre(v.nombre);
+  const e = v.estado || { es: 'nuevo' };
+  const quien = /^\d{15,22}$/.test(String(v.por || '')) ? `<@${v.por}>` : 'alguien';
+  const datos = [`### 🤖 Agregaron el bot a ${n}`,
+    [v.miembros ? `${Number(v.miembros).toLocaleString('es-AR')} miembros` : '', `lo agregó ${quien}`].filter(Boolean).join(' · '),
+    e.es === 'socio' ? `-# Ya es socio de la Liga (**${e.sv}**): volvieron a poner el bot.`
+      : e.es === 'fuera' ? `-# Está registrado **fuera de la Liga** (**${e.sv}**): no entra solo.`
+        : '-# Todavía no es socio. Cuando un admin escriba /setup, te llega acá para que decidas si sus eventos suman.'].join('\n');
+  return mensaje(caja(COLOR.verde, [seccion(datos, mini(v.icono)), fila(enlace('Verlo en el Dashboard', HUB + '/freestyle-rap/dashboard'))]));
+}
+
 /** Cuántos componentes, cuántas letras de texto y el id más largo de un mensaje: lo que Discord rechaza si se pasa. */
 export function medir(msg) {
   let componentes = 0, letras = 0, idMax = 0;
@@ -1033,4 +1048,30 @@ async function mandarDlx(env, msg) {
   } catch (e) {
     return false;
   }
+}
+
+/** 🤖 AGREGARON EL BOT A UN SERVIDOR (19/11/2026): el `APPLICATION_AUTHORIZED` que Discord le manda a
+ *  `/eventos-discord` (ver `eventosDiscord()` en worker.js), con `data` = `{integration_type, user, guild}`.
+ *  ⚠️ UNA VEZ POR SERVIDOR CADA 6 HORAS (`llego:<gid>` en KV): quien saca y vuelve a poner el bot probando permisos no
+ *  le llena el DM a Dlx. Se anota ANTES de mandar, así un reintento de Discord no lo duplica; si el DM falla, se borra
+ *  para que el próximo aviso sí llegue. Devuelve `true` si lo mandó. */
+export async function llego(env, d, h) {
+  const g = (d && d.guild) || {};
+  const gid = String(g.id || '');
+  if (!/^\d{15,22}$/.test(gid) || (d && d.integration_type !== 0)) return false;
+  const clave = 'llego:' + gid;
+  if (await env.KV.get(clave)) return false;
+  await env.KV.put(clave, '1', { expirationTtl: 6 * 3600 });
+  // el bot ya está adentro, así que puede preguntar cuántos son (el evento no lo trae)
+  let miembros = g.approximate_member_count;
+  try {
+    const r = await dc(env, `/guilds/${gid}?with_counts=true`);
+    if (r.ok) miembros = (await r.json()).approximate_member_count || miembros;
+  } catch (e) { /* sin el número, el DM sale igual */ }
+  let meta = {};
+  try { meta = JSON.parse((await env.KV.get('meta', { cacheTtl: 60 })) || '{}') || {}; } catch (e) { meta = {}; }
+  const ok = await mandarDlx(env, dmLlego({ gid, nombre: g.name, icono: iconoDe(g), miembros,
+    por: d.user && d.user.id, estado: estadoLiga(gid, meta, (h && h.SERVIDORES) || []) }));
+  if (!ok) await env.KV.delete(clave).catch(() => null);
+  return ok;
 }

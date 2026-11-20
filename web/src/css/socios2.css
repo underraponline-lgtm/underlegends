@@ -115,17 +115,17 @@
 .sk-pat{display:flex;flex-wrap:wrap;gap:14px;margin:0;padding:0;list-style:none}
 .sk-pat img{display:block;height:56px;width:auto}
 
-/* ── suma tu servidor: los tres pasos, lo que gana y lo que hace el bot ── */
-.sk-sumar-p{margin:0 0 16px;max-width:74ch;font:500 15px/1.5 Archivo,sans-serif;color:#D8D8D4}
-.sk-pasos{display:grid;gap:10px;margin:0 0 8px;padding:0;list-style:none}
-.sk-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;padding:16px;border:2px solid #3A3A3E;background:var(--caja)}
-.sk-pasos li.cta{border-color:#29B298;box-shadow:4px 4px 0 #29B298}
-.sk-paso-n{font:900 30px/1 Archivo,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums;color:#29B298}
-.sk-pasos .btn{max-width:100%;white-space:normal;line-height:1.15;text-align:center}
-.sk-pasos h3{margin:0 0 6px;font:900 17px/1.2 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
-.sk-pasos p{margin:0 0 12px;font:500 14.5px/1.45 Archivo,sans-serif;color:#D8D8D4}
-.sk-pasos li:not(.cta) p{margin:0}
-.sk-sumar .soc-feats li{background:var(--caja)}
+/* ── suma tu servidor: la tira que lleva a su página (#/socios/sumar, 19/11/2026) ── */
+.sk-sumar-tira{display:grid;gap:16px;align-items:center;margin:0 0 22px;padding:20px;border:2px solid #29B298;box-shadow:5px 5px 0 #29B298;background:var(--caja);color:#F6F6F6;text-decoration:none;transition:transform .16s cubic-bezier(.23,1,.32,1),box-shadow .16s cubic-bezier(.23,1,.32,1)}
+.sk-sumar-tira:focus-visible{outline:2px solid #F6F6F6;outline-offset:3px}
+.sk-sumar-tx{display:grid;gap:8px;min-width:0}
+.sk-sumar-tx > b{font:900 22px/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.sk-sumar-tx > span:not(.sk-sumar-l){max-width:68ch;font:500 15px/1.5 Archivo,sans-serif;color:#D8D8D4}
+.sk-sumar-l{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.sk-sumar-l img{width:30px;height:30px;object-fit:cover;border-radius:50%;border:1.5px solid #3A3A3E;background:#0D0D10}
+.sk-sumar-tira .btn{justify-self:start;pointer-events:none}
+@media (hover: hover) and (pointer: fine){.sk-sumar-tira:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #29B298}}
+@media (prefers-reduced-motion: reduce){.sk-sumar-tira{transition:none}.sk-sumar-tira:hover{transform:none}}
 .sk-sumar .soc-ul a{display:inline-flex;align-items:center;justify-content:center;min-height:44px}
 .sk-bot{display:grid;gap:12px;margin:22px 0 18px}
 .sk-bot-c{padding:16px;border:2px solid #3A3A3E;background:var(--caja)}
@@ -160,6 +160,6 @@
   .app .sk-cart{grid-template-columns:repeat(var(--cols,7),minmax(0,1fr));gap:24px 14px}
   .app .pf-vid.sk-vid{display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));overflow:visible;padding-bottom:0}
   .app .sk-redes{grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
-  .app .sk-pasos{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .app .sk-sumar-tira{grid-template-columns:minmax(0,1fr) auto;gap:28px;padding:24px 28px}
   .app .sk-bot{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 }

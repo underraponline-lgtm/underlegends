@@ -714,8 +714,12 @@ async function conVista(req, env, url, v) {
   return new Response(out.body, { status: 200, headers: h });
 }
 
-async function vistaPagina(req, env, pagina, url) {
-  const [nombre, desc] = PAGINAS[pagina];
+// 🏟️ las páginas de adentro de otra, con su propio título (19/11/2026): «Suma tu servidor» vive en `socios/sumar` y es el
+// link que Dlx le pasa al dueño de un servidor. La imagen es la de la página que la contiene
+const SUBPAGINAS = { 'socios/sumar': ['Suma tu servidor', 'Debuta en el Tier 3 y asciende jugando: agrega el bot, escribe /setup y tus eventos suman a la tabla de la Liga.'] };
+
+async function vistaPagina(req, env, pagina, url, sub) {
+  const [nombre, desc] = (sub && SUBPAGINAS[pagina + '/' + sub]) || PAGINAS[pagina];
   // 🎬 la de cine (bot/og_links.py, 18/11/2026: Dlx, de las maquetas, «Yes, move them»), si ya está; si no, la de antes
   const img = (await hayOg('pag', pagina)) || url.origin + (SIN_PNG.has(pagina) ? '/og.png' : '/og/p/' + pagina + '.png');
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · Liga Global de Freestyle', desc,
@@ -857,7 +861,7 @@ export default {
       if (id && pagina === 'ligas') v = await vistaLiga(req, env, id, url).catch(() => null);
       else if (id && mPag[1] === 'llave') v = await vistaLlave(req, env, id, url).catch(() => null);
       else if (id && mPag[1] === 'pais') v = await vistaPais(req, env, id, url).catch(() => null);
-      if (!v && PAGINAS[pagina]) v = await vistaPagina(req, env, pagina, url).catch(() => null);
+      if (!v && PAGINAS[pagina]) v = await vistaPagina(req, env, pagina, url, id).catch(() => null);
       if (v) return v;
     }
     // 👥 y la de cada crew (ver `vistaCrew()`)

@@ -26,7 +26,6 @@ import { limpio, mult, num, siglaDe } from './liga.js';
 import { Algunos, Carta, Compartir, Ico, Sec, enlace } from './piezas.jsx';
 import { LaLiga } from './medio.jsx';
 import { REDES } from './servidor.jsx';
-import { DLX, QueGana } from './sumar.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import CSS_VIEJO from './css/socios.css?inline';
 import CSS_PAGINA from './css/socios2.css?inline';
@@ -333,7 +332,7 @@ export function Socios({ liga }) {
               <p className="hero-p">Los servidores que hacen la Liga: cada uno organiza sus eventos, y todos suman para la misma tabla. Esto pasa todas las semanas en sus servidores.</p>
             </div>
             <div className="sk-acc-h">
-              <button type="button" className="btn verde" onClick={() => irA('sk-sumar')}>Suma tu servidor</button>
+              <a className="btn verde" href="#/socios/sumar">Suma tu servidor</a>
               <Compartir cls="btn borde" url={enlace('#/socios')} texto="Los servidores de la Liga Global" />
             </div>
           </div>
@@ -355,24 +354,18 @@ export function Socios({ liga }) {
           <ul className="sk-pat">{pat.map((p, i) => <li key={i}><a href={p.link} target="_blank" rel="noopener noreferrer"><img alt={p.nombre} src={p.logo} /></a></li>)}</ul>
         </Sec>
       ) : null}
+      {/* 🏟️ «SUMA TU SERVIDOR» ES SU PROPIA PÁGINA desde el 19/11/2026 (`#/socios/sumar`, sumar2.jsx). Dlx: «que estén dentro
+          de la página de socio en vez de extender todo eso, si alguien está interesado en meterlo, que haya un botón ahí».
+          Acá queda la tira que lleva hasta allá, con los escudos de los que ya están */}
       <Sec id="sk-sumar" titulo="Suma tu servidor" extra="negra sk-sumar">
-        <p className="sk-sumar-p">Los de arriba ya están: {svs.map((s) => siglaDe(s.sv)).join(', ')}. Así se suma el tuyo, y esto es lo que la Liga hace por cada uno.</p>
-        <ol className="sk-pasos">
-          <li><b className="sk-paso-n">01</b><div><h3>Tu Discord, con 300 miembros o más</h3><p>Es el mínimo; se recomiendan 500.</p></div></li>
-          <li className="cta"><b className="sk-paso-n">02</b><div><h3>Escríbele a <span className="soc-at">@itsdlx</span> en Discord</h3><p>Lo demás se habla con él.</p>
-            {/* el usuario de Discord va como es, en minúsculas: el botón pone todo en mayúsculas */}
-            <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer"><span>Escribirle a <span className="soc-at">@itsdlx</span> ↗</span></a></div></li>
-          <li><b className="sk-paso-n">03</b><div><h3>Entra el bot, y tus eventos suman</h3><p>Lee tus anuncios y tus llaves y arma cada evento solo: desde el próximo, todo cuenta para la Liga.</p></div></li>
-        </ol>
-        <h3 className="sk-st">Lo que gana tu servidor</h3>
-        {/* 🔍 cada caja se toca y muestra su ejemplo (Dlx, 03/10/2026) */}
-        <QueGana ejemplos />
-        {/* ⚠️ TODO LO DE ACÁ ESTÁ MEDIDO EN EL CÓDIGO (la crítica de la tanda 2 encontró que faltaba el anti-raid): la llamada,
-            sólo con un evento en vivo (`bot/en_llamada.py`); el `#N` del apodo, prendido por defecto (`ajustes()` y la
-            ayuda de `/settings` y `/apodo` en `bot/worker.js`); el bot en vivo nombra con @ sin hacer sonar a nadie
-            (2.82, `allowed_mentions` vacío); el anti-raid es del dueño, avisa con botones y ni en AUTOMÁTICO expulsa ni
-            banea (`bot/antiraid.js`). Si algo de eso cambia, se cambia acá */}
-        <QueHaceElBot />
+        <a className="sk-sumar-tira" href="#/socios/sumar">
+          <span className="sk-sumar-tx">
+            <b>¿Tienes un servidor de freestyle?</b>
+            <span>Debuta en el Tier 3 y asciende jugando: tus eventos suman a la misma tabla que los de estos servidores.</span>
+            <span className="sk-sumar-l" aria-hidden="true">{svs.map((s) => <img key={s.sv} alt="" src={liga.logo(s.sv)} />)}</span>
+          </span>
+          <span className="btn verde">Suma tu servidor →</span>
+        </a>
         {(liga.d.redes || []).length ? (
           <nav className="soc-ul" aria-label="Las redes de Under Legends">
             <span>LAS REDES DE UNDER LEGENDS</span>
