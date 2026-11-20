@@ -275,7 +275,13 @@ html.calma #lg-carga .lg-img{scale:1!important;translate:none!important;transiti
   // (llave_vivo.js solo son 96 KB). Acá sale apenas se lee la página, y nucleo.js usa ESTA promesa (`__lobbyP`) en vez
   // de pedirlo otra vez: el Response se lee una sola vez. Un `<link rel=preload>` no: si el navegador no lo reconoce como
   // el mismo pedido, baja el lobby (230 KB) dos veces
-  try { window.__lobbyP = fetch('/api/lobby', { headers: { accept: 'application/json' } }); } catch (e) { window.__lobbyP = null; }
+  // 🎬 en la recarga de una versión nueva (`lg:estreno`, ver la pantalla de carga), sin la caché del navegador: el lobby
+  // se guarda ahí 60 s (y 120 más «mientras revalida»), y «Recargar para verla» tiene que traer todo de nuevo
+  // (se lee y se borra ACÁ, que corre siempre: la pantalla de carga no corre en la vista en inglés)
+  try {
+    try { var est = sessionStorage.getItem('lg:estreno'); if (est) { sessionStorage.removeItem('lg:estreno'); window.__lgEstreno = JSON.parse(est) || {}; } } catch (e) {}
+    window.__lobbyP = fetch('/api/lobby', window.__lgEstreno ? { headers: { accept: 'application/json' }, cache: 'no-cache' } : { headers: { accept: 'application/json' } });
+  } catch (e) { window.__lobbyP = null; }
   // 🔑 LAS RUTAS DE VERDAD: /freestyle-rap/ranking en vez de #/ranking (ver web/montar.py). Todo el código de la
   // página sigue pidiendo y escribiendo `#/…`: acá se traduce, en un solo lugar.
   //   rutaLG()  la ruta pedida, sin «/» adelante: «ranking/temporada». Un `#/…` (un link viejo) gana
@@ -449,6 +455,12 @@ html.calma #lg-carga .lg-img{scale:1!important;translate:none!important;transiti
     try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
     // ⏳ la primera vez, 4 s; si volvió en los últimos 30 minutos, lo que tarde
     try { primera = t0 - (+localStorage.getItem('lg:carga') || 0) > 18e5; localStorage.setItem('lg:carga', String(t0)); } catch (e) {}
+    // 🎬 LA RECARGA DE UNA VERSIÓN NUEVA ES ENTERA (20/11/2026, Dlx: «cada vez que le doy a recargar página no se recarga
+    // al 100%»). «Recargar para verla» (web/src/novedad.jsx) deja `lg:estreno` y esta carga va como la primera: los 4 s
+    // completos, de 0 a 100. Antes caía en «volviste hace menos de 30 min», la barra corría en 2,6 s hasta su 92 % y ahí se
+    // quedaba mientras la app se armaba atrás (medido en un celular lento: 92 % quieto 6 s). El lobby de esta carga,
+    // además, sale sin la caché del navegador (ver `script()`)
+    if (window.__lgEstreno) primera = true;
     var MIN = primera ? 4000 : 0;
     // 🎬 la salida, al azar (ver «CINCO SALIDAS» en el CSS). `__lgTrForzar` es para las pruebas
     var SALIDAS = ['corte', 'barrido', 'caida', 'telon', 'flash'];
@@ -533,22 +545,34 @@ html.calma #lg-carga .lg-img{scale:1!important;translate:none!important;transiti
     }
     // 🎞️ LA BARRA Y EL NÚMERO, EN EL COMPOSITOR: los dos siguen la misma curva, de 0 a 92 % en 4 s la primera vez (en
     // 2,6 las demás); el resto, cuando la app está lista. El número es una tira de 0 % a 100 % que sube a saltos
+    // 🐢 Y DESPUÉS DEL 92 NO SE QUEDA QUIETA (20/11/2026): la app se arma atrás con el hilo principal ocupado, y
+    // completar la barra pide un cuadro de ese hilo. En un celular lento eran segundos con «92 %» clavado, que se lee
+    // como «no cargó» (Dlx: «no se recarga al 100%»). Ahora sigue sola, en el compositor, del 92 al 99 en `COLA` ms,
+    // cada vez más despacio: nunca llega al 100 sin la app, y nunca se ve trabada
     var barra = el.querySelector('.lg-barra i'), cifras = el.querySelector('.lg-cifras');
     var A = 0.92, K = 2.2, T = MIN || 2600, E = 1 - Math.exp(-K), LIN = 1.15, tA = performance.now(), anims = [];
-    var avance = function (ms) { return A * (1 - Math.exp(-K * Math.min(ms, T) / T)) / E; };
-    var cuando = function (y) { return -T / K * Math.log(1 - y * E / A); };
+    var B = 0.99, K2 = 2.5, COLA = 14000, E2 = 1 - Math.exp(-K2), TT = T + COLA;
+    var avance = function (ms) {
+      if (ms <= T) return A * (1 - Math.exp(-K * ms / T)) / E;
+      return A + (B - A) * (1 - Math.exp(-K2 * Math.min(ms - T, COLA) / COLA)) / E2;
+    };
+    var cuando = function (y) {
+      if (y <= A) return -T / K * Math.log(1 - y * E / A);
+      return T - COLA / K2 * Math.log(1 - (y - A) / (B - A) * E2);
+    };
     var fila = function (q) { return { transform: 'translateY(-' + (q * LIN).toFixed(2) + 'em)', easing: 'steps(1, end)' }; };
     var tira = '';
     for (var q = 0; q <= 100; q++) tira += (q ? '<br>' : '') + q + '%';
     cifras.innerHTML = tira;
     try {
       var kb = [], kc = [];
-      for (var i = 0; i <= 24; i++) kb.push({ offset: i / 24, transform: 'scaleX(' + avance(i / 24 * T).toFixed(4) + ')' });
-      for (var q2 = 0; q2 <= 92; q2++) { var f = fila(q2); f.offset = Math.min(1, cuando(q2 / 100) / T); kc.push(f); }
+      for (var i = 0; i <= 24; i++) kb.push({ offset: i / 24 * T / TT, transform: 'scaleX(' + avance(i / 24 * T).toFixed(4) + ')' });
+      for (var i2 = 1; i2 <= 14; i2++) kb.push({ offset: (T + i2 / 14 * COLA) / TT, transform: 'scaleX(' + avance(T + i2 / 14 * COLA).toFixed(4) + ')' });
+      for (var q2 = 0; q2 <= 99; q2++) { var f = fila(q2); f.offset = Math.min(1, cuando(q2 / 100) / TT); kc.push(f); }
       // ⚠️ el último, en 1 JUSTO: con 0,9999999 el navegador agrega uno en 1 con el valor de base, y al terminar la
       // subida el número volvía a «0 %» (pasó: lo mostró el video)
-      kc[0].offset = 0; kc[kc.length - 1].offset = 1;
-      anims = [barra.animate(kb, { duration: T, fill: 'forwards' }), cifras.animate(kc, { duration: T, fill: 'forwards' })];
+      kc[0].offset = 0; kc[kc.length - 1].offset = 1; kb[kb.length - 1].offset = 1;
+      anims = [barra.animate(kb, { duration: TT, fill: 'forwards' }), cifras.animate(kc, { duration: TT, fill: 'forwards' })];
     } catch (e) { anims = []; }
     // 📦 mientras tanto, las demás páginas: que después no haya esperas (no con ahorro de datos ni en 2G)
     function precargar() {
@@ -577,25 +601,33 @@ html.calma #lg-carga .lg-img{scale:1!important;translate:none!important;transiti
       var y = avance(performance.now() - tA), q0 = Math.min(99, Math.floor(y * 100)), kc = [];
       anims.forEach(function (a) { try { a.cancel(); } catch (e) {} });
       for (var q = q0; q <= 100; q++) { var f = fila(q); f.offset = (q - q0) / (100 - q0); kc.push(f); }
+      // «Listo» sale cuando el número LLEGÓ al 100 (`finished`), no a los `dur` ms de pedirlo: con el hilo ocupado la
+      // animación arranca tarde, y el reloj no se entera (salía «Listo» con «98 %» al lado)
+      var fin = null;
       try {
         barra.animate([{ transform: 'scaleX(' + y.toFixed(4) + ')' }, { transform: 'scaleX(1)' }], { duration: dur, fill: 'forwards' });
-        cifras.animate(kc, { duration: dur, fill: 'forwards' });
+        fin = cifras.animate(kc, { duration: dur, fill: 'forwards' }).finished;
       } catch (e) { barra.style.transform = 'scaleX(1)'; cifras.style.transform = fila(100).transform; }
-      setTimeout(function () {
+      var lleno = false, alFin = function () {
+        if (lleno) return; lleno = true;
         el.classList.add('lleno');
         setTimeout(function () {
           h.classList.add('lg-sale');
-          setTimeout(function () { h.classList.add('lg-fuera'); }, quieto ? 300 : 1700);
+          setTimeout(function () { h.classList.add('lg-fuera'); precargar(); }, quieto ? 300 : 1700);
         }, quieto ? 80 : 300);   // que se vea llena antes del corte
-      }, dur);
+      };
+      // y si `finished` no contesta (un navegador viejo, la pestaña atrás), el reloj, con margen
+      if (fin && fin.then) fin.then(alFin, alFin);
+      setTimeout(alFin, fin ? dur + 900 : dur);
     }
     var tic = setInterval(function () {
       if (h.classList.contains('sin-pagina')) { clearInterval(tic); return; }
       if (!h.classList.contains('lg-listo')) return;
       clearInterval(tic);
-      precargar();
+      // 📦 la precarga de las demás páginas va DESPUÉS de la salida (20/11/2026): pedía ~50 archivos justo cuando la
+      // barra tenía que completarse, y les peleaba el hilo y la red
       // la primera vez, la barra se completa en los últimos 0,4 s de los 4: hasta ahí no hay nada que esperar
-      setTimeout(function () { suelto(terminar, 1500); }, Math.max(0, MIN - 400 - (Date.now() - t0)));
+      setTimeout(function () { suelto(terminar, 900); }, Math.max(0, MIN - 400 - (Date.now() - t0)));
     }, 100);
   } catch (e) { entro(); }
 })();
