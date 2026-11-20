@@ -127,8 +127,11 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReport
 /**
  * El hilo de una publicación. Cerrado muestra el último comentario y «Ver los N»; abierto, todos y la caja para
  * escribir. `chico`: dentro de una fila de un grupo (los rangos, los anuncios), sólo el botón hasta que se abre.
+ * 📰 `ver`: cuántos se ven cerrado (la edición del día, 20/11/2026: dos en cada nota y cuatro en el titular; Dlx: «más
+ * comentarios y respuestas»). `rapidas`: las respuestas de un toque, que se mandan como un comentario más.
  */
-export function Hilo({ liga, it, chico }) {
+const RAPIDAS = ['👑 Merecido', '🔥 Qué nivel', '😮 No lo vi venir', '🎤 Quiero revancha'];
+export function Hilo({ liga, it, chico, ver: verN = 1, rapidas = false }) {
   useComentarios();
   const pub = usePases();
   const [abierto, setAbierto] = useState(() => !!it.id && W.__pubFoco === it.id);
@@ -165,13 +168,20 @@ export function Hilo({ liga, it, chico }) {
     if (j && j.ok) { E.mios.borrados = Object.assign({}, E.mios.borrados, { [c.c]: 1 }); setMsg('Gracias: lo vamos a revisar.'); avisar(); }
     else if (j) setMsg(j.error === 'espera' ? 'Ya reportaste mucho hoy.' : 'No se pudo reportar.');
   };
-  const enviar = async (e) => {
-    e.preventDefault();
-    if (!tx.trim() || va || !W.conCuenta) return;
+  // 💬 una respuesta rápida: sin cuenta, a entrar; sin verificar, el aviso; si no, se manda como un comentario más
+  const rapida = (texto) => {
+    setAbierto(true);
+    if (!dc) { accion.entrar(); return; }
+    if (!yo) { setMsg('Para comentar necesitas tu cuenta verificada.'); return; }
+    mandar(texto);
+  };
+  const enviar = (e) => { e.preventDefault(); mandar(tx); };
+  const mandar = async (texto) => {
+    if (!String(texto || '').trim() || va || !W.conCuenta) return;
     setVa(true);
     setMsg('');
     try {
-      const j = await W.conCuenta('/api/avisos/comentar', { id: it.id, tx, resp: resp ? resp.id : '' }, 'p');
+      const j = await W.conCuenta('/api/avisos/comentar', { id: it.id, tx: texto, resp: resp ? resp.id : '' }, 'p');
       if (!j) return;
       // 🔁 repetido y sin la fila (ver `yaEstaba()`): no se empuja una fila rota
       if (j.ok && j.ya && !j.t) {
@@ -192,12 +202,12 @@ export function Hilo({ liga, it, chico }) {
   if (chico && !abierto) {
     return <button type="button" className="cmh-chico" onClick={() => setAbierto(true)} aria-label={'Comentarios: ' + n}>💬 {n || ''}</button>;
   }
-  const ver = abierto ? todos : todos.slice(-1);
+  const ver = abierto ? todos : todos.slice(-verN);
   return (
     <div className={'cmh' + (chico ? ' en-fila' : '')}>
       {n ? (
         <>
-          {!abierto && n > 1 ? <button type="button" className="cmh-mas" onClick={() => setAbierto(true)}>Ver los {n} comentarios</button> : null}
+          {!abierto && n > verN ? <button type="button" className="cmh-mas" onClick={() => setAbierto(true)}>Ver los {n} comentarios</button> : null}
           <ul className="cmh-l">
             {ver.map((c) => <Comentario key={c.id} liga={liga} c={c} ahora={ahora} yo={yo} dueno={dueno} todos={todos} pub={pub}
               onResponder={responder} onBorrar={borrar} onReportar={reportar} />)}
@@ -223,6 +233,11 @@ export function Hilo({ liga, it, chico }) {
           {msg ? <small className="cmh-msg" role="alert">{msg}</small> : null}
         </form>
       )}
+      {rapidas ? (
+        <div className="cmh-rap" role="group" aria-label="Respuestas rápidas">
+          {RAPIDAS.map((r) => <button key={r} type="button" disabled={va} onClick={() => rapida(r)}>{r}</button>)}
+        </div>
+      ) : null}
     </div>
   );
 }

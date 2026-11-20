@@ -20,15 +20,14 @@ import { CrewCirculo, escenaDe } from './arriba.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Alguien, Algunos, Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
-import { Elegido, X2 } from './encuestas.jsx';
 import { useAplausos } from './aplausos.js';
 import { Hilo, delHilo, useComentarios } from './comentarios.jsx';
 import { LuNube, LuSocial } from './medio.jsx';
 import { usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
 import { PopCab } from './pop.jsx';
-import { QuienGana } from './quiengana.jsx';
 import { useCalma } from './anima.js';
+import { EdCab, Edicion, useDias } from './edicion.jsx';
 import { PLATAFORMA } from './publicaciones.jsx';
 import CSS_PAGINA from './css/publicaciones2.css?inline';
 import { usarCss } from './css.js';
@@ -448,38 +447,6 @@ function MuroCargando() {
     return () => clearTimeout(t);
   }, []);
   return <p className="pronto-p" role="status">{tarde ? 'No pude traer las publicaciones. Prueba de nuevo en un rato.' : 'Buscando las publicaciones…'}</p>;
-}
-
-// ── lo más felicitado de la semana: barras contra el primero, como el Ranking ──
-function MasFelicitado({ liga, pubs, A }) {
-  const cu = (it) => Number((it.id && A.cu[it.id]) || 0);
-  const top = pubs.filter((it) => LOGROS[it.tipo] && cu(it) > 0).sort((a, b) => cu(b) - cu(a)).slice(0, 5);
-  if (!top.length) return null;
-  const max = cu(top[0]);
-  return (
-    <section className="pb-bloque"><h2 className="pb-st">Lo más felicitado<small>esta semana</small></h2>
-    <ol className="pb-top">
-      {top.map((it) => {
-        const g = genteDe(liga, it);
-        const k = ksDe(it)[0] || (g[0] && g[0].k);
-        const quien = g.map((x) => x.n).join(' y ');
-        // 🔄 los de bot/muro_solos.py con su nombre (18/11/2026): se sumaron a LOGROS el 15/11 y todo lo que esto no
-        // reconocía caía en «Most Wanted» (un top 10 decía «Vandu · Most Wanted»). Ahora sólo la caza y el que sobrevivió
-        const que = it.tipo === 'campeon' ? nombreEv(it.ev, it.ll) : it.tipo === 'rango' ? 'rango ' + it.rg
-          : it.tipo === 'pase' || it.tipo === 'sorteo' ? 'Pase de rapero' : it.tipo === 'ligahito' ? limpio(it.ln)
-            : it.tipo === 'mesaward' ? 'MES AWARDS' : it.tipo === 'podio' ? 'primer podio · ' + nombreEv(it.ev, it.ll)
-              : it.tipo === 'top10' ? 'top 10 · #' + it.pos : it.tipo === 'subio' ? 'subió ' + ((it.de || 0) - (it.a || 0)) + ' puestos'
-                : it.tipo === 'racha' ? it.racha + ' eventos seguidos' : it.tipo === 'svtop' ? '#1 de ' + siglaDe(it.sv) : 'Most Wanted';
-        return (
-          <li key={it.id}><Cara liga={liga} k={k || ''} nombre={quien} cls="cara pb-top-cara" />
-            <span className="pb-top-n"><b><Algunos liga={liga} nombres={g.map((x) => x.n)} ks={g.map((x) => x.k)} cara={false} /></b><small>{que}</small>
-              <i className="pb-top-b" style={{ width: Math.max(8, Math.round((cu(it) / max) * 100)) + '%' }} /></span>
-            <em>👏 {num(cu(it))}</em></li>
-        );
-      })}
-    </ol>
-    </section>
-  );
 }
 
 // 🔔 que te llegue cuando te felicitan: se va solo cuando está todo
@@ -911,20 +878,6 @@ function Minis({ liga, todos, setFil, desliza }) {
   );
 }
 
-// ── las encuestas, cortas, al costado (abiertas, la grilla del ×2 ocupaba media pantalla) ──
-function EncCortas({ liga, enc }) {
-  const x2 = liga.encuesta('x2');
-  const el = liga.encuesta('elegido');
-  if ((!x2 && !el) || !enc) return null;
-  return (
-    <section data-tuto="pb-encs" className="pb-bloque pw-encs" aria-label="Encuestas">
-      <h2 className="pb-st">Encuestas<small>vota antes de que cierren</small></h2>
-      {x2 ? <X2 liga={liga} enc={enc} E={x2} corta /> : null}
-      {el ? <Elegido liga={liga} enc={enc} E={el} corta /> : null}
-    </section>
-  );
-}
-
 // ── la hoja de una publicación: lo suyo arriba y el hilo entero (`Hilo` se abre solo con `__pubFoco`) ──
 function Hoja({ liga, it, A, P }) {
   const pub = usePases();
@@ -1049,7 +1002,14 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   // nuevo, el primer día (de hace semanas) decía «3 nuevas» y la raya «Lo de arriba salió desde tu última visita» caía
   // debajo de una publicación vieja
   const nuevas = visto ? pubs.filter((it) => utc(it.t) > visto).length : 0;
-  const masFel = <MasFelicitado liga={liga} pubs={todos.filter((it) => utc(it.t) >= liga.desdeLunes())} A={A} />;
+  // 📰 LA EDICIÓN DEL DÍA (20/11/2026, edicion.jsx): sin filtro, ni servidor, ni búsqueda, Publicaciones es la edición;
+  // con cualquiera de los tres, la lista de siempre. Lo que se fue (AskUserQuestion, 20/11): «¿Quién gana la final?» (sigue
+  // en el chat del bot en vivo), las Encuestas (en el Premio gratis del Inicio) y «Lo más felicitado» («Felicita hoy»)
+  const pub = usePases();
+  const eds = useDias(liga, todos);
+  const [di, setDi] = useState(0);
+  const lista = enteros || !eds.length;
+  const H = { contenido, LOGROS, Felicitar, Autor, hace, Avisame, pub };
   const fila = (it, nuevo) => (it.tipo === 'g-tarjeta' ? <CartasG liga={liga} xs={it.xs} nuevo={nuevo} />
     : it.tipo === 'g-rango' ? <RangosG liga={liga} xs={it.xs} nuevo={nuevo} />
         : it.tipo === 'g-crewtier' ? <Tiers liga={liga} xs={it.xs} visto={visto} A={A} P={P} />
@@ -1059,7 +1019,7 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   let raya = false;
   return (
     <div className="pw">
-      <Escenario liga={liga} xs={destacadas} A={A} />
+      {lista ? <Escenario liga={liga} xs={destacadas} A={A} /> : <EdCab liga={liga} todos={todos} D={eds[Math.min(di, eds.length - 1)]} H={H} />}
       <Circulos liga={liga} todos={todos} sv={sv} setSv={setSv} sigo={sigo} visto={visto} />
       <div ref={marca} aria-hidden="true" />
       <div data-tuto="pb-fil" className="pw-barra">
@@ -1073,11 +1033,10 @@ export function Publicaciones({ liga, enc, foco = '' }) {
           ))}
         </div>
       </div>
+      {lista ? (
       <div className="pw-cuerpo">
         <div className="pw-solo-cel"><Minis liga={liga} todos={todos} setFil={setFil} desliza /></div>
         <main className="pw-muro">
-          {/* 🗳️ la final de cada evento en vivo, para votar quién gana: arriba de todo mientras se juega */}
-          {fil !== 'anuncios' && fil !== 'promos' ? <QuienGana liga={liga} /> : null}
           {porDia.length ? porDia.slice(0, dias).map((d, n) => {
             const t = titulo(d.k);
             // 📖 abiertos hasta juntar 8: de madrugada «Hoy» tiene una sola (el resumen de la noche) y con sólo el primer día
@@ -1102,7 +1061,6 @@ export function Publicaciones({ liga, enc, foco = '' }) {
                     );
                   }) : <ResumenDia liga={liga} xs={d.todos} abrir={() => setAbiertos((a) => ({ ...a, [d.k]: 1 }))} />}
                 </section>
-                {n === 0 ? <div className="pw-solo-cel">{masFel}</div> : null}
               </Fragment>
             );
           }) : (
@@ -1115,11 +1073,10 @@ export function Publicaciones({ liga, enc, foco = '' }) {
                   : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo." acciones={[['Ver los eventos', '#/eventos']]} />
           )}
           {porDia.length > dias ? <button type="button" className="btn borde2 chico pw-mas" onClick={() => setDias(dias + 4)}>Ver los días de antes</button> : null}
-          <div className="pw-solo-cel pw-pila"><EncCortas liga={liga} enc={enc} /><Sigo liga={liga} sigo={sigo} onVer={() => setSv('sigo')} /><Avisame /></div>
+          <div className="pw-solo-cel pw-pila"><Sigo liga={liga} sigo={sigo} onVer={() => setSv('sigo')} /><Avisame /></div>
         </main>
         <aside className="pw-rail">
           <Minis liga={liga} todos={todos} setFil={setFil} />
-          {masFel}
           {fil === 'promos' ? (
             <section className="pb-bloque">
               <h2 className="pb-st">Las promos</h2>
@@ -1128,11 +1085,11 @@ export function Publicaciones({ liga, enc, foco = '' }) {
                 cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p>
             </section>
           ) : null}
-          <EncCortas liga={liga} enc={enc} />
           <Sigo liga={liga} sigo={sigo} onVer={() => setSv('sigo')} />
           <Avisame />
         </aside>
       </div>
+      ) : <Edicion liga={liga} todos={todos} dias={eds} di={di} setDi={setDi} A={A} P={P} H={H} />}
       {foco0 ? <Hoja liga={liga} it={foco0} A={A} P={P} /> : null}
     </div>
   );

@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "7.24",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T02:28:00-05:00",
+        "titulo": "Publicaciones, la edición del día",
+        "items": [
+            "**Publicaciones es la edición del día**: el campeón de la noche en portada, con su podio y los comentarios abiertos; al costado los resultados, lo que nadie felicitó todavía, lo que suma a tu Pase y lo que viene.",
+            "Cada publicación con su **portada**: el cartel de Se busca, la carta nueva, el flyer de la liga, la letra del rango o el nivel del Pase.",
+            "Las **promos** de la historia, las **ligas** con su tabla y su última jornada, lo más movido de los **chats** y las **ediciones anteriores**.",
+            "**Respuestas rápidas** para comentar de un toque, **Seguir** desde cada publicación y «¿Le quieres ganar?» con el aviso de su servidor."
+        ]
+    },
+    {
         "version": "7.23",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T02:20:00-05:00",

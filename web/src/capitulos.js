@@ -87,7 +87,8 @@ export const CAPITULOS = [
     pasos: [
       { sel: 'pb-cab', k: 'PUBLICACIONES', h: 'Lo que pasa en la Liga', p: 'Campeones, rangos nuevos y los anuncios de cada servidor. Felicita un logro y le llega el aviso.' },
       { sel: 'pb-fil', k: 'FILTRA', h: 'Lo que te interesa', p: 'Por tipo de publicación o por servidor.' },
-      { sel: 'pb-encs', k: 'ENCUESTAS', h: 'Vota las de la semana', p: 'Votarlas todas te da un cofre de Dragón Drops.' },
+      // (20/11/2026: las Encuestas se fueron de Publicaciones, al Premio gratis del Inicio; el paso pasa a «Tu día acá»)
+      { sel: 'pb-dia', k: 'TU PASE', h: 'Suma XP acá', p: 'Felicitar, comentar y mirar una llave en vivo suman XP a tu Pase de rapero.' },
     ] },
   { id: 'cuenta', ruta: '#/cuenta', pag: ['cuenta'], t: 'Tu cuenta y verificarte', d: 'Tu perfil, tu foto, tus redes y el rol de Miembro.',
     linea: 'Verifícate en Discord Rap Español con tu país: se abre tu tarjeta de Servidor y puedes comentar.',
