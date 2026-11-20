@@ -39,17 +39,24 @@
 "cuando":"18/11/2026 02:55 AM ET",
 "como":"id",
 "por":"se anotó así 1 vez/veces + su apodo o nombre visible"
+},
+"1481526823522406501":{
+"n":"angelo",
+"cuando":"20/11/2026 02:55 AM ET",
+"como":"fila nueva",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible",
+"pais":""
 }
 },
-"ultima":"2026-11-19T23:55-05:00",
+"ultima":"2026-11-20T02:55-05:00",
 "ultimo_conteo":{
 "nada":112,
 "no":29,
 "empate":16,
 "probable":23,
 "disfraz":50,
-"seguro":1,
-"sin_id":231,
-"auto":0
+"seguro":2,
+"sin_id":232,
+"auto":1
 }
 }
