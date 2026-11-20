@@ -601,7 +601,13 @@ const PAGINAS = {
   cuenta: ['Tu cuenta', 'Entra con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.'],
   cambios: ['Lo nuevo', 'Cada cambio de la página y del bot, con su versión y su hora.'],
   socio: ['El panel de tu servidor', 'Tu puntaje, cuándo hay actividad, tus raperos y los ajustes del bot, para los dueños.'],
+  // 🆕 las tres que daban el cartel genérico (19/11/2026, Dlx: «sí, hazlas»). Sólo tienen la de cine (bot/og_links.py):
+  // no hay `/og/p/<pagina>.png` de respaldo, así que mientras el ciclo no la arma va `og.png` (ver `SIN_PNG`)
+  competencias: ['Competencias', 'La Copa de 32, la Liga de 10 y la Rapid: compite cada semana.'],
+  invitar: ['Invita y gana', 'Tu link de invitación: quien entra con él recibe 500 Puntos de Tienda.'],
+  inventario: ['Inventario', 'Tus marcos, TAGs, fondos y estilos: arma tu carta.'],
 };
+const SIN_PNG = new Set(['competencias', 'invitar', 'inventario']);
 // los nombres viejos de algunas páginas, que siguen abriendo lo mismo: la misma vista previa
 const ALIAS = { avisos: 'eventos', mundo: 'socios', duelos: 'ranking' };
 // `/cuenta` y `/cambios` son de toda la marca y viven en la raíz (`EN_RAIZ` de web/montar.py); el resto, en /freestyle-rap
@@ -711,7 +717,7 @@ async function conVista(req, env, url, v) {
 async function vistaPagina(req, env, pagina, url) {
   const [nombre, desc] = PAGINAS[pagina];
   // 🎬 la de cine (bot/og_links.py, 18/11/2026: Dlx, de las maquetas, «Yes, move them»), si ya está; si no, la de antes
-  const img = (await hayOg('pag', pagina)) || url.origin + '/og/p/' + pagina + '.png';
+  const img = (await hayOg('pag', pagina)) || url.origin + (SIN_PNG.has(pagina) ? '/og.png' : '/og/p/' + pagina + '.png');
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · Liga Global de Freestyle', desc,
     img, alt: nombre + ' en la Liga Global de Freestyle' });
 }

@@ -60,6 +60,12 @@ FONDOS = {
     'liga': ('camo', 0.0875, 0.1787, 0.7125, 0.762, 1.0),                  # DEM Battles
     'invita_a': ('ardean_rival', 0.1899, 0.1249, 0.9042, 0.7915, 1.25),    # la invitación con carta (Sailuker)
     'invita_b': ('sombra5_b', 0.0, 0.2646, 0.7143, 0.9312, 1.35),          # la invitación sin carta (BVS Network)
+    # 🆕 las tres páginas del menú que no tenían (19/11/2026, Dlx: «sí, hazlas»): tres caras que no estaban en ningún fondo,
+    # sacadas de sus videos como las demás: el cuadro más nítido de la cara en ±1,5 s y ×4 con Real-ESRGAN (los de la pantalla
+    # de carga que no estaban usados salían blandos o con la cara tapada)
+    'competencias': ('madrid_mira', 0.065, 0.05, 0.765, 0.703, 1.0),       # el del Madrid, mirando a cámara (BVS Network)
+    'invitar': ('gorra_roja', 0.014, 0.0, 0.814, 0.747, 1.15),              # el de gorra roja (El Potrero)
+    'inventario': ('mullet_rayas', 0.0, 0.0, 0.95, 0.887, 1.0),            # el de la chaqueta de rayas, de perfil (El Potrero)
 }
 #: los de la cara arriba al medio, para las que llevan carta a la derecha (servidor y país)
 COLUMNA = ('servidor', 'pais', 'ranking', 'tarjetas', 'socios', 'guia', 'perfil')

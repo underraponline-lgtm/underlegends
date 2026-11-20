@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "6.98",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T19:22:00-05:00",
+        "titulo": "Competencias, Invita y gana e Inventario, con su propia vista previa",
+        "items": [
+            "**Cuando compartes** Competencias, Invita y gana o el Inventario en Discord o WhatsApp, ahora sale su propia vista previa, con el mismo estilo de cine que las demás páginas, en vez del cartel genérico de antes."
+        ]
+    },
+    {
         "version": "6.97",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T18:46:00-05:00",

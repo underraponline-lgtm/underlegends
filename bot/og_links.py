@@ -234,6 +234,10 @@ def _cine(L, LG=None, nombres=None, ahora=None):
     pag('cuenta', 'cuenta', 'a', 'Tu cuenta', 'Entra', 'con Discord', ['Tus cartas, tu Pase y tus Puntos'])
     pag('cambios', 'cambios', 'a', 'Cambios', 'Lo nuevo', 'cada cambio, con su hora', ['La página y el bot, al día'])
     pag('socio', 'socio', 'a', 'Para dueños', 'Tu servidor', 'en números', ['Puntaje, actividad y el bot'])
+    # 🆕 y las tres que no tenían (19/11/2026, Dlx: «sí, hazlas»): daban `og.png`, el cartel de antes
+    pag('competencias', 'competencias', 'a', 'Competencias', 'Compite', 'cada semana', ['*32* en la Copa · la Liga de 10 y la Rapid'])
+    pag('invitar', 'invitar', 'a', 'Invita y gana', 'Invita', 'y gana', ['Quien entra con tu link: *500* Puntos de Tienda', 'Con *10* invitados, el marco Embajador'])
+    pag('inventario', 'inventario', 'a', 'Inventario', 'Arma', 'tu carta', ['Marcos, TAGs, fondos y estilos'])
 
     # 🏟️ cada servidor que tiene gente: su escudo y la carta de Servidor del mejor de ahí
     for i, s in enumerate(s for s in L.get('svs') or [] if isinstance(s, dict) and s.get('n') and s.get('logo')):
