@@ -2551,6 +2551,11 @@ bot/              el lector de Discord y el ciclo
                                   larga el vigía (`llamada()` en avisos.js).
                                   ⚠️ Nunca una conexión por minuto: 1.000
                                   IDENTIFY por día y Discord resetea el token
+                                  🎙️ Desde el 19/11/2026 manda también quién
+                                  tiene el MICRÓFONO abierto (IDs, al objeto:
+                                  `/avisos/voz-vivo`): el bot en vivo anuncia
+                                  la batalla que se juega de verdad y no la
+                                  que sigue en la llave (`batallaVivo()`)
                   avisos.js       la campana: vigía de cada minuto, cola y
                                   envío cifrado (Durable Object + SQLite)
                   ligas_vivo.js   las batallas de liga mientras se juegan: el lector

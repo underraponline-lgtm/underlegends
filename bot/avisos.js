@@ -439,6 +439,9 @@ export const VS_VENCE = 8 * MIN;
 //: 🖼️ cuánto espera el cruce a su imagen antes de salir sin ella (ver `vsEspera()`). La tarea tarda 62 s la mitad de las
 //: veces y casi 5 minutos el 10 % más lento (medido el 19/11/2026, sus últimas 100 corridas)
 export const VS_ESPERA = 3 * MIN;
+//: 🎙️ cuánto vale lo que mandó la conexión de la llamada sobre los micrófonos (ver `vozVivo()`): manda cada minuto aunque
+//: no cambie nada, así que con dos minutos y medio sin noticias se cayó, y el bot vuelve al orden de la llave
+export const VOZ_FRESCA = 150 * 1000;
 //: en «cada batalla», lo que se juntó sin decir se dice hasta este tanto; lo de antes ya es viejo
 export const CHAT_JUNTAS = 8;
 /** El nivel que vale: el de Dlx, si eligió; si no, el del admin; si no, «normal». */
@@ -791,7 +794,8 @@ function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO
   const conVs = van.find((x) => x.vs);
   plan.push(Object.assign({ tipo: 'mandar', m: van.map((x) => x.m).concat(junto),
     texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') }, img ? { img } : {},
-  conVs ? { vs: conVs.vs, vsm: conVs.m } : {}));
+  // 🎙️ y si ya se está jugando (`ya`, `batallaVivo()`), no espera la imagen
+  conVs ? Object.assign({ vs: conVs.vs, vsm: conVs.m }, conVs.ya ? { ya: true } : {}) : {}));
   return ed.concat(plan);
 }
 
@@ -1009,6 +1013,60 @@ export function batallaChat(L) {
     }
   }
   return null;
+}
+
+/**
+ * 🎙️ LA BATALLA QUE SE ESTÁ JUGANDO, POR LOS MICRÓFONOS (19/11/2026, Dlx: «arregla lo del orden de los cruces»).
+ * `batallaChat()` toma la que sigue en el ORDEN de la llave, y esa noche Cypherhood jugó los Octavos salteados
+ * (Lalox–Angelo, Sanito–.@, Dios–Beneroo y CNC–Flash, según su #veredictos): el bot anunció «Julda vs LRS», que no se
+ * jugaba —LRS no estaba en la llamada—, y «Dios vs Beneroo» salió sólo con su resultado. Medido en esa llamada a las
+ * 10:39 PM: los dos que pelean tienen el micrófono abierto y el resto lo tiene cerrado (`self_mute`).
+ * `voz` es lo de `vozVivo()` (`{ab, en}`: micrófono abierto, y en la llamada) e `idsDe(lado)` las cuentas de un lado de
+ * la llave (`genteChat()`). En la ronda que se está jugando (la primera con batallas sin decidir, y la de la llave):
+ * - UNA batalla sin decidir con todos sus lados con el micrófono abierto (`porVoz: 'fuerte'`) o, si no hay ninguna así,
+ *   UNA con todos abiertos menos un lado que no se sabe quién es (`'debil'`): ésa se está jugando.
+ * - Si no, la de la llave, salvo que alguien de ella NO esté en la llamada: no se puede estar jugando, y no se anuncia.
+ * - Con `probada` (en esta llave ya hubo una 'fuerte': en ese servidor los micrófonos dicen la verdad) la de la llave
+ *   espera a que se abran sus micrófonos (`esperaMic`), y mientras tanto se le dibuja la imagen. Sólo si alguien de ella
+ *   tiene cuenta conocida y está en la llamada (si no, nunca se vería) y si no hay varias con el micrófono abierto.
+ * ⚠️ LA RONDA DE DESPUÉS NO CUENTA: el que acaba de ganar sigue hablando con el micrófono abierto, y ya está anotado en
+ * su batalla siguiente. Sin `voz` (la conexión de la llamada no anda), es `batallaChat()`, como antes.
+ */
+export function batallaVivo(L, voz, idsDe, probada) {
+  const base = batallaChat(L);
+  if (!voz || typeof idsDe !== 'function') return base;
+  const ab = new Set((voz.ab || []).map(String));
+  const en = new Set((voz.en || []).map(String));
+  const lado = (l) => {
+    const ids = [].concat(idsDe(l) || []).map(String).filter((x) => /^\d{5,25}$/.test(x));
+    if (!ids.length) return '?';
+    if (ids.some((id) => ab.has(id))) return 'abierto';
+    return ids.some((id) => en.has(id)) ? 'callado' : 'fuera';
+  };
+  const fuertes = [], debiles = [];
+  // las rondas con batallas por jugar, y la ÚLTIMA que ya tiene todas sus batallas armadas: si la de después está entera,
+  // la de antes terminó aunque el organizador no haya marcado alguna (Cypherhood, 19/11/2026 a las 11:20 PM: los Octavos
+  // con un «Sanito vs yeyoz vs mats» que nunca se marcó y los Cuartos ya armados y jugándose)
+  const conPend = ((L && L.rondas) || []).map((R) => ({ R, pend: (R.b || []).map((b, i) => ({ b, i, lados: (b[0] || []).filter(Boolean) }))
+    .filter((x) => x.lados.length >= 2 && !x.b[1] && !/^pasan \d/.test(String(x.b[2] || ''))) })).filter((x) => x.pend.length);
+  const armada = conPend.filter(({ R }) => (R.b || []).every((b) => (b[0] || []).filter(Boolean).length >= 2 || b[1])).pop();
+  for (const { R, pend } of conPend) {
+    if (R !== conPend[0].R && !(base && base.r === R.r) && !(armada && armada.R === R)) continue;
+    for (const x of pend) {
+      const e = x.lados.map(lado);
+      const abiertos = e.filter((s) => s === 'abierto').length;
+      const bat = { r: R.r, i: x.i, lados: x.lados, hecha: false };
+      if (abiertos === e.length) fuertes.push(bat);
+      else if (abiertos && abiertos === e.length - 1 && e.includes('?')) debiles.push(bat);
+    }
+  }
+  if (fuertes.length === 1) return Object.assign(fuertes[0], { porVoz: 'fuerte' });
+  if (!fuertes.length && debiles.length === 1) return Object.assign(debiles[0], { porVoz: 'debil' });
+  if (!base) return null;
+  const eb = base.lados.map(lado);
+  if (eb.includes('fuera')) return null;
+  return probada && fuertes.length < 2 && debiles.length < 2 && eb.includes('callado')
+    ? Object.assign({}, base, { esperaMic: true }) : base;
 }
 
 /**
@@ -3659,6 +3717,8 @@ const RUTAS = {
   // ⚡ el redibujo a pedido terminó (`bot/redibujo.py`, con su clave)
   '/avisos/redibujo-listo': 'POST',
   '/avisos/veredictos-vivo': 'POST',
+  // 🎙️ y quién tiene el micrófono abierto en la llamada (`bot/en_llamada.py --seguir`, con su clave): ver `vozVivo()`
+  '/avisos/voz-vivo': 'POST',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
   // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (sólo con ajustes)
@@ -7598,6 +7658,14 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/veredictos-vivo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
+  // 🎙️ quién tiene el micrófono abierto, de la misma conexión (ver `vozVivo()`)
+  if (ruta === '/avisos/voz-vivo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 60000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/voz-vivo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
   // 💬 lo que importó en los chats generales (17/11/2026, `bot/chats.py`): con la clave del ciclo y sólo al objeto
   if (ruta === '/avisos/chats-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -9465,6 +9533,7 @@ export class Avisos {
       if (ruta === '/dueno-ficha') return json(this.duenoFicha(d));
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
       if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
+      if (ruta === '/voz-vivo') return json(this.vozVivo(d));
       if (ruta === '/redibujo-listo') return json(this.redibujoListo(d));
       // 💬 lo que importó en los chats generales (`chatsCiclo()`): sólo para el Dashboard
       if (ruta === '/chats-ciclo') return json(this.chatsCiclo(d));
@@ -10284,7 +10353,7 @@ export class Avisos {
     if (!LV) return 0;
     const generales = (this.leer('canales') || {}).generales || [];
     const cfgs = new Map();
-    let pedidos = 0, mandados = 0, editados = 0, esperando = 0, lobby = null;
+    let pedidos = 0, mandados = 0, editados = 0, esperando = 0, esperanMic = 0, lobby = null;
     const errores = [];
     // 🔑 el nombre del evento es el del ANUNCIO, no el título de la llave: la de la DESGRACIAS EN TOKYO VOL 23
     // (05/10/2026) decía «VOL 22» —el organizador copió la anterior— y el bot anunció «Arrancó … VOL 22». Lo junta
@@ -10467,11 +10536,30 @@ export class Avisos {
           L.id, canal, m, '', '', ahora);
         hechos[m] = { m, msg: '', texto: '' };
       }
-      // 🔥🎲 «CON DATOS» Y «A FULL»: la batalla que VIENE (`batallaChat()`), con su título, su «¿sabías que…?» y la
+      // 🎙️ LA BATALLA QUE SE ESTÁ JUGANDO, por los micrófonos de la llamada (`batallaVivo()`, 19/11/2026): la del orden
+      // de la llave sólo si nadie dice otra cosa. `probada`: en esta llave los micrófonos ya acertaron una vez
+      const voz = fresca ? this.vozDe(b.g, ahora) : null;
+      const sel = fresca ? batallaVivo(L, voz, (l) => genteChat(l, buscar, dc.tabla, opc.ids).map((y) => y.id).filter(Boolean),
+        !!hechos.voz) : null;
+      if (sel && sel.porVoz === 'fuerte' && !hechos.voz) {
+        this.sql.exec("INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, 'voz', '', '', ?)", L.id, canal, ahora);
+        hechos.voz = { m: 'voz', msg: '', texto: '' };
+      }
+      // el cruce, al mensaje; o, si espera sus micrófonos (`esperaMic`), todavía no: sólo se le dibuja la imagen
+      const ponerCruce = (x, bat) => {
+        if (bat.esperaMic) {
+          if (x.vs) { try { this.vsPrevio(canal, L.id + ':' + x.m, x.vs, b.sv || '', ahora); } catch (e) { /* sin imagen */ } }
+          esperanMic++;
+          return false;
+        }
+        ms.push(Object.assign(x, bat.porVoz ? { ya: true } : {}));
+        return true;
+      };
+      // 🔥🎲 «CON DATOS» Y «A FULL»: la batalla que VIENE (`batallaVivo()`), con su título, su «¿sabías que…?» y la
       // apuesta, que va con botones en el mismo mensaje (`hayApuestas()`). Sólo de dos lados, y una vez por batalla
       let apuesta = null, voto = null;
       if ((nivel === 'datos' || nivel === 'full') && fresca) {
-        const bat = batallaChat(L);
+        const bat = sel;
         // 🌙 lo de esta noche, para que la forma, el cara a cara y la racha estén al día (`duelosDeLlave()`)
         const hoyD = duelosDeLlave(L, (l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv), dc);
         // 🧮 TODOS CONTRA TODOS (1v1v1, 1v1v1v1, o tres equipos): el cruce también sale, con un botón de voto por lado. Sin
@@ -10502,7 +10590,7 @@ export class Avisos {
               titulo: equipos ? bat.lados.length + ' EQUIPOS' : 'TODOS CONTRA TODOS', sub: '', grupos: gs.map((g) => g.map(persona)) };
             // 👤 y «Perfiles», como el mano a mano (`perfilesGruposGuardar()`)
             this.perfilesGruposGuardar(vs, gs, dc, L.id + ':' + clave, { sv: svChat, ev: vs.ev, ronda: bat.r }, ahora);
-            ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n'), vs });
+            if (!ponerCruce({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n'), vs }, bat)) voto = null;
           }
         }
         if (bat && bat.lados.length === 2) {
@@ -10579,7 +10667,10 @@ export class Avisos {
             // 👤 CON EQUIPOS (2v2, 2v1, el 8 contra 1 del Multiverse), «Perfiles» también (11/11/2026, Dlx: «Sí, agrégalo»).
             // «Estadísticas» sigue siendo del mano a mano: compara a dos personas (`perfilesGruposGuardar()`)
             if (vs && vs.grupos) this.perfilesGruposGuardar(vs, [ga, gb], dc, L.id + ':' + clave, { sv: svChat, ev: vs.ev, ronda: bat.r }, ahora);
-            ms.push(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}));
+            if (!ponerCruce(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}), bat)) {
+              apuesta = null;
+              voto = null;
+            }
           }
         }
       }
@@ -10591,7 +10682,9 @@ export class Avisos {
       // mucho uno cada 10 minutos, y la apuesta cierra a los 3 —frenada, saldría con la batalla ya jugada—. Una por batalla
       // (`v:<ronda>:<i>`, la misma clave del cruce)
       if (nivel !== 'datos' && nivel !== 'full' && fresca && pedidos < CHAT_TOPE && hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
-        const bat = batallaChat(L);
+        // 🎙️ la que se está jugando (`batallaVivo()`); la que espera sus micrófonos, todavía no
+        const bat = sel && !sel.esperaMic ? sel : null;
+        if (sel && sel.esperaMic) esperanMic++;
         const mv = bat ? 'v:' + bat.r + ':' + bat.i : '';
         if (bat && bat.lados.length === 2 && !hechos[mv]) {
           const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
@@ -10682,8 +10775,9 @@ export class Avisos {
       // ⏳ UN CRUCE QUE YA ESPERA A SU IMAGEN (`vsEspera()`) pasó por el «cada cuánto» cuando se pidió: al salir no vuelve a
       // esperar. Lo frenaba una edición de esta llave —el «✅ Pasa…» de la batalla anterior mueve `ult`—, y antes del
       // 19/11/2026 salía en la misma vuelta que esa edición. Sólo los cruces de ahora (`ms`): uno que ya no viene no cuenta
-      const yaEspera = ms.some((x) => x.vs && !hechos[x.m] && this.sql.exec("SELECT 1 AS x FROM vs_cola WHERE canal = ? AND clave = ? AND msg = '' LIMIT 1",
-        canal, L.id + ':' + x.m).toArray().length > 0);
+      // 🎙️ Y UNO QUE YA SE ESTÁ JUGANDO (`ya`, sus micrófonos se abrieron) tampoco espera el «cada cuánto»
+      const yaEspera = ms.some((x) => x.vs && !hechos[x.m] && (x.ya || this.sql.exec("SELECT 1 AS x FROM vs_cola WHERE canal = ? AND clave = ? AND msg = '' LIMIT 1",
+        canal, L.id + ':' + x.m).toArray().length > 0));
       for (const p of planChat(ms, hechos, yaEspera ? 0 : ult, ahora, fresca, nivel, entre)) {
         if (p.tipo === 'saltar') {
           this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
@@ -10695,7 +10789,7 @@ export class Avisos {
         // a pedir en la vuelta siguiente (o `vsListo()`, cuando la imagen llega)
         let conVs = null;
         if (p.tipo === 'mandar' && p.vs && p.vsm) {
-          try { conVs = this.vsEspera(canal, L.id + ':' + p.vsm, p.vs, b.sv || '', ahora); } catch (e) { conVs = { url: '', fila: null }; }
+          try { conVs = this.vsEspera(canal, L.id + ':' + p.vsm, p.vs, b.sv || '', ahora, { ya: !!p.ya }); } catch (e) { conVs = { url: '', fila: null }; }
           if (conVs.espera) { esperando++; continue; }
         }
         pedidos++;
@@ -10766,7 +10860,9 @@ export class Avisos {
         }
       }
     }
-    if (pedidos || esperando) this.guardar('chat_vivo', { t: ahora, mandados, editados, esperando, errores: errores.slice(0, 5) });
+    if (pedidos || esperando || esperanMic) {
+      this.guardar('chat_vivo', { t: ahora, mandados, editados, esperando, esperanMic, errores: errores.slice(0, 5) });
+    }
     // 🎲 y las apuestas: cerrar, pagar o devolver (ver `apuestasRevisar()`)
     try { await this.apuestasRevisar(ahora, llaves); } catch (e) { this.guardar('apuestas', { t: ahora, error: String(e).slice(0, 160) }); }
     // 🗳️ y los votos de «¿Quién gana?»: cómo va y, con el resultado, si el público acertó (ver `qgRevisar()`)
@@ -10821,6 +10917,30 @@ export class Avisos {
     }
     if (n) this.guardar('veredictos_vivo', { t: ahora, n });
     return { ok: true, n };
+  }
+
+  /**
+   * 🎙️ QUIÉN TIENE EL MICRÓFONO ABIERTO EN LA LLAMADA (19/11/2026, ver `batallaVivo()`). Lo manda la conexión de la
+   * llamada (`bot/en_llamada.py --seguir`, la misma de los veredictos) cuando cambia y cada minuto aunque no cambie:
+   * `{g: {<guild>: {sv, ab: [ids], en: [ids]}}}` (micrófono abierto, y en la llamada). Una fila de `estado` para todos
+   * los servidores en vivo; vale `VOZ_FRESCA` (`vozDe()`): sin noticias, el bot vuelve al orden de la llave.
+   */
+  vozVivo(d, ahora = Date.now()) {
+    const ids = (xs) => (Array.isArray(xs) ? xs : []).map(String).filter((x) => /^\d{5,25}$/.test(x)).slice(0, 400);
+    const g = {};
+    for (const [gid, v] of Object.entries((d && d.g) || {}).slice(0, 30)) {
+      if (!/^\d{5,25}$/.test(gid) || !v || typeof v !== 'object') continue;
+      g[gid] = { ab: ids(v.ab), en: ids(v.en), t: ahora };
+    }
+    this.guardar('voz_vivo', { t: ahora, g });
+    return { ok: true, n: Object.keys(g).length };
+  }
+
+  /** Lo de `vozVivo()` de un servidor si está al día (`{ab, en}`), o `null`. */
+  vozDe(g, ahora = Date.now()) {
+    const v = this.leer('voz_vivo');
+    const x = v && v.g && v.g[String(g || '')];
+    return x && ahora - (Number(x.t) || 0) <= VOZ_FRESCA ? x : null;
   }
 
   /** Los veredictos de los servidores con un evento en juego. Ver `PATRON_VEREDICTOS`. */
@@ -12696,9 +12816,12 @@ export class Avisos {
    * voto, la apuesta y el resultado se cuelgan del número del mensaje, y así no hay un estado nuevo que cuidar.
    * `{espera: true}`, o `{url, fila}` para mandarlo (`url` vacía: sin imagen).
    */
-  vsEspera(canal, clave, vs, sv, ahora = Date.now()) {
+  vsEspera(canal, clave, vs, sv, ahora = Date.now(), opc = {}) {
     canal = String(canal);
     clave = String(clave);
+    // 🎙️ `opc.ya`: una batalla que ya se está jugando (sus micrófonos se abrieron, `batallaVivo()`) no espera: sale con la
+    // imagen si ya está —se dibujó mientras esperaba sus micrófonos, `vsPrevio()`—, y si no, sin ella y se le agrega
+    const ya = !!(opc && opc.ya);
     // 🔴 LA IMAGEN TIENE QUE SER DE ESTE CRUCE, NO DE ESTE LUGAR (19/11/2026): la clave es el lugar de la batalla en la
     // llave, y si la llave se rehace mientras el mensaje espera, ese lugar es de otros. Se buscaba sólo por clave, y
     // «Lalox vs Flash» salió en Cypherhood con la imagen de «Julda vs LRS». Ahora, la de esa clave Y esa firma (`firmaVs()`)
@@ -12716,11 +12839,23 @@ export class Avisos {
       const r = this.vsEncolar(Object.assign({}, vs, { sv, canal, msg: '', clave, firma }), ahora);
       if (!r || !r.ok) return { url: '', fila: null };
       // ya esperó: sale sin imagen, y la de ESTE cruce se le agrega editándolo cuando llegue (`vsAtar()`)
-      return ahora - t0 < VS_ESPERA ? { espera: true } : { url: '', fila: { id: r.id } };
+      return !ya && ahora - t0 < VS_ESPERA ? { espera: true } : { url: '', fila: { id: r.id } };
     }
     if (f.estado === 'hecho' && f.url) return { url: f.url, fila: f };
-    if ((f.estado === 'espera' || f.estado === 'dibujando') && ahora - Math.min(t0, f.t) < VS_ESPERA) return { espera: true };
+    if (!ya && (f.estado === 'espera' || f.estado === 'dibujando') && ahora - Math.min(t0, f.t) < VS_ESPERA) return { espera: true };
     return { url: '', fila: f };
+  }
+
+  /**
+   * 🎙️ La imagen de un cruce que todavía no se anuncia porque espera sus micrófonos (`esperaMic` de `batallaVivo()`): se
+   * encola UNA vez, sin mensaje, así está lista cuando se abran. Al anunciarlo, `vsEspera()` la encuentra por su firma.
+   */
+  vsPrevio(canal, clave, vs, sv, ahora = Date.now()) {
+    const firma = firmaVs(vs);
+    if (this.sql.exec('SELECT 1 AS x FROM vs_cola WHERE canal = ? AND clave = ? AND firma = ? LIMIT 1',
+      String(canal), String(clave), firma).toArray().length) return false;
+    const r = this.vsEncolar(Object.assign({}, vs, { sv, canal: String(canal), msg: '', clave: String(clave), firma }), ahora);
+    return !!(r && r.ok);
   }
 
   /** ⏳ Ya mandado: el vs queda atado a su mensaje, así una imagen que llega tarde se le agrega editándolo (`vsListo()`). */

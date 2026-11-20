@@ -67,6 +67,10 @@ INTENTS_SEGUIR = INTENTS | (1 << 9) | (1 << 15)
 #: cada cuánto se vuelve a preguntar qué canales son de veredictos, y cada cuánto se manda lo que llegó
 CANALES_CADA_S = 10 * 60
 VEREDICTOS_CADA_S = 2
+#: 🎙️ los micrófonos (ver «6 · los micrófonos»): se mira cada `MIC_CADA_S` y se manda si cambió, o cada `MIC_LATIDO_S`
+#: aunque no cambie (el objeto los da por caídos a los 2 min 30 s sin noticias, `VOZ_FRESCA` en bot/avisos.js)
+MIC_CADA_S = 5
+MIC_LATIDO_S = 60
 #: la ventana del vigía: de 15 min antes del arranque a 5 h después…
 ANTES_MIN = 15
 DESPUES_H = 5
@@ -326,8 +330,21 @@ RAW = 'https://raw.githubusercontent.com/underraponline-lgtm/underlegends/main/d
 
 
 def nueva_voz():
-    """El estado de voz de un servidor: quién está en qué canal, sus nombres y los canales."""
-    return {'voz': {}, 'nombres': {}, 'canales': {}, 'bots': set()}
+    """El estado de voz de un servidor: quién está en qué canal, sus nombres, los canales y quién tiene el micrófono
+    abierto (`mic`, ver «6 · los micrófonos»)."""
+    return {'voz': {}, 'nombres': {}, 'canales': {}, 'bots': set(), 'mic': {}}
+
+
+def mic_abierto(v):
+    """¿Ese estado de voz tiene el micrófono abierto? Ni silenciado por el servidor ni por sí mismo, ni ensordecido, ni de
+    público en un escenario (`suppress`)."""
+    return not any((v or {}).get(k) for k in ('mute', 'self_mute', 'deaf', 'self_deaf', 'suppress'))
+
+
+def microfonos(e):
+    """`{ab, en}` de un servidor: los IDs con el micrófono abierto y los que están en la llamada, sin los bots, en orden."""
+    en = sorted(uid for uid in e['voz'] if uid not in e['bots'])
+    return {'ab': [uid for uid in en if e.get('mic', {}).get(uid)], 'en': en}
 
 
 def evento_gateway(estados, t, d):
@@ -350,6 +367,7 @@ def evento_gateway(estados, t, d):
         for v in d.get('voice_states') or ():
             if v.get('user_id') and v.get('channel_id'):
                 e['voz'][str(v['user_id'])] = v['channel_id']
+                e['mic'][str(v['user_id'])] = mic_abierto(v)
     elif t == 'VOICE_STATE_UPDATE' and d.get('guild_id'):
         e = estados.setdefault(str(d['guild_id']), nueva_voz())
         uid = str(d.get('user_id') or '')
@@ -364,8 +382,10 @@ def evento_gateway(estados, t, d):
             e['nombres'][uid] = ns
         if d.get('channel_id'):
             e['voz'][uid] = d['channel_id']
+            e.setdefault('mic', {})[uid] = mic_abierto(d)
         else:
             e['voz'].pop(uid, None)
+            e.setdefault('mic', {}).pop(uid, None)
     elif t in ('CHANNEL_CREATE', 'CHANNEL_UPDATE') and d.get('guild_id') and d.get('id'):
         estados.setdefault(str(d['guild_id']), nueva_voz())['canales'][d['id']] = d.get('name') or ''
 
@@ -453,6 +473,8 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
     # 🗳️ los veredictos: qué canales escuchar, lo que espera para salir, y cuántos se mandaron (sólo el número va al log)
     canales, canales_t = (canales_veredictos() or set()), time.time()
     pend, pend_t, mandados = [], time.time(), 0
+    # 🎙️ los micrófonos: la última foto mandada, cuándo se miró y cuándo se mandó (ver «6 · los micrófonos»)
+    mic_ult, mic_t, mic_mandada_t, mic_envios = {}, 0.0, 0.0, 0
     print('   🗳️ escucho %d canal(es) de veredictos' % len(canales))
 
     def _veredictos():
@@ -506,6 +528,13 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                     ack, proximo_latido = False, ahora + latido
                 if pend and ahora - pend_t >= VEREDICTOS_CADA_S:
                     _veredictos()
+                if ahora - mic_t >= MIC_CADA_S:
+                    mic_t = ahora
+                    foto_mic = microfonos_vivos(estados, vivos)
+                    if mandar_mic(foto_mic, mic_ult, ahora, mic_mandada_t) and \
+                            (not aplicar or _ciclo('POST', '/avisos/voz-vivo', {'g': foto_mic}) is not None):
+                        mic_ult, mic_mandada_t = foto_mic, ahora
+                        mic_envios += 1
                 if ahora - canales_t >= CANALES_CADA_S:
                     canales_t = ahora
                     canales = canales_veredictos() or canales
@@ -523,9 +552,11 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                         if gente:
                             anotar_minuto(sesion, sv, gente, marca)
                             sucios.add(sv)
-                        cuantos.append('%s %d' % (sv, len(gente)))
+                        abiertos = len(microfonos(estados[gid])['ab']) if gid in estados else 0
+                        cuantos.append('%s %d 🎙️%d' % (sv, len(gente), abiertos))
                     # 🔒 cuántos, nunca quién: el log de Actions es público
-                    print('   %s · %s · 🗳️ %d' % (time.strftime('%H:%M'), ', '.join(cuantos) or 'nada en vivo', mandados))
+                    print('   %s · %s · 🗳️ %d · 🎙️ %d envíos' % (time.strftime('%H:%M'), ', '.join(cuantos) or 'nada en vivo',
+                                                            mandados, mic_envios))
                     if ahora - guardado_t >= GUARDAR_CADA_S:
                         _guardar('cada 10 minutos')
                     if ahora - ultimo_vivo >= QUIETO_S or ahora - inicio >= tope_s:
@@ -567,6 +598,27 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                     ws.close()
             except Exception:                                # noqa: BLE001
                 pass
+
+
+# ── 6 · los micrófonos, para saber qué batalla se juega ──────────────────────
+#
+# 🎙️ Dlx, 19/11/2026: «arregla lo del orden de los cruces». El bot en vivo anunciaba la batalla que sigue en el ORDEN
+# de la llave, y esa noche Cypherhood jugó los Octavos salteados: anunció «Julda vs LRS» sin que se jugara y «Dios vs
+# Beneroo» salió sólo con su resultado. Medido en esa llamada a las 10:39 PM: los dos que pelean tienen el micrófono
+# abierto y el resto lo tiene cerrado (`self_mute`). Esta conexión ya recibe cada cambio (`VOICE_STATE_UPDATE` trae
+# `mute`, `self_mute`, `suppress`…): manda al objeto quién tiene el micrófono abierto y quién está en la llamada, de los
+# servidores en vivo (`/avisos/voz-vivo`, `vozVivo()` y `batallaVivo()` en bot/avisos.js). 🔒 IDs, al objeto y a
+# ningún otro lado; el log dice cuántos.
+
+def microfonos_vivos(estados, vivos):
+    """`{guild: {sv, ab, en}}` de los servidores en vivo de los que ya llegó el estado: lo que se le manda al objeto."""
+    return {gid: dict(microfonos(estados[gid]), sv=sv) for gid, sv in sorted((vivos or {}).items()) if gid in estados}
+
+
+def mandar_mic(foto, ultima, ahora, mandada_t):
+    """¿Se manda esta foto de los micrófonos? Si cambió, o si pasó `MIC_LATIDO_S` desde la última (para que el objeto
+    sepa que sigue al día). Sin servidores en vivo, no."""
+    return bool(foto) and (foto != ultima or ahora - mandada_t >= MIC_LATIDO_S)
 
 
 # ── 5 · los veredictos en tiempo real ────────────────────────────────────────
@@ -743,6 +795,29 @@ def _self_check():
     ok(kv['gente']['104']['t'] == [30000, 60000, 120000] and kv['gente']['100']['c'] == ['🎤 Escenario'],
        'lo de la sesión se suma a lo de KV, en orden y sin perder la foto del ciclo')
     ok(fusionar_sesion(kv, ses['FFA'], 130000) == kv, 'y sumarlo dos veces no cambia nada (se repara lo que se pisó)')
+
+    # 6 · los micrófonos (19/11/2026): quién lo tiene abierto, cambio por cambio
+    gm = {'id': '1', 'channels': [], 'members': [{'user': {'id': '101', 'bot': True}}],
+          'voice_states': [{'user_id': '100', 'channel_id': '10', 'self_mute': True},
+                           {'user_id': '101', 'channel_id': '10'},
+                           {'user_id': '102', 'channel_id': '10'},
+                           {'user_id': '103', 'channel_id': '10', 'mute': True}]}
+    em = {}
+    evento_gateway(em, 'GUILD_CREATE', gm)
+    ok(microfonos(em['1']) == {'ab': ['102'], 'en': ['100', '102', '103']},
+       'abierto, sólo 102: 100 se silenció, a 103 lo silenció el servidor, y el bot no cuenta')
+    evento_gateway(em, 'VOICE_STATE_UPDATE', {'guild_id': '1', 'user_id': '100', 'channel_id': '10', 'self_mute': False})
+    evento_gateway(em, 'VOICE_STATE_UPDATE', {'guild_id': '1', 'user_id': '102', 'channel_id': '10', 'self_mute': True})
+    ok(microfonos(em['1'])['ab'] == ['100'], 'uno lo abre y el otro lo cierra: se sigue cambio por cambio')
+    evento_gateway(em, 'VOICE_STATE_UPDATE', {'guild_id': '1', 'user_id': '100', 'channel_id': None})
+    ok(microfonos(em['1']) == {'ab': [], 'en': ['102', '103']}, 'el que se va de la llamada sale de las dos listas')
+    ok(not mic_abierto({'suppress': True}) and not mic_abierto({'self_deaf': True}) and mic_abierto({}),
+       'de público en un escenario o ensordecido, cerrado; sin marcas, abierto')
+    fm = microfonos_vivos(em, {'1': 'CH', '9': 'FFA'})
+    ok(fm == {'1': {'ab': [], 'en': ['102', '103'], 'sv': 'CH'}}, 'se manda sólo lo de los servidores en vivo que ya llegaron')
+    ok(mandar_mic(fm, {}, 100, 0) and not mandar_mic(fm, fm, 100, 90) and mandar_mic(fm, fm, 100 + MIC_LATIDO_S, 100)
+       and not mandar_mic({}, fm, 1000, 0),
+       'se manda si cambió o al minuto aunque no cambie; sin nada en vivo, no')
 
     # 🔁 los cortes (13/11/2026): los op 7 de rutina no suman hacia rendirse; los seguidos, sí
     n = 0

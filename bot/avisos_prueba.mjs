@@ -2210,6 +2210,131 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🎙️ EL CRUCE QUE SE JUEGA DE VERDAD, POR LOS MICRÓFONOS (19/11/2026, Dlx: «arregla lo del orden de los cruces»). Esa noche
+// Cypherhood jugó los Octavos salteados: el bot anunció «Julda vs LRS» (LRS no estaba en la llamada) y «Dios vs Beneroo»
+// salió sólo con su resultado. La conexión de la llamada manda quién tiene el micrófono abierto (`vozVivo()`) y el bot
+// anuncia la batalla que se está jugando (`batallaVivo()`)
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n🎙️ el cruce que se juega de verdad, por los micrófonos de la llamada\n');
+    const T = Date.parse('2026-11-20T03:10:00Z');
+    const G = '111222333444';
+    const CANAL = '555000000000000029';
+    const ID = { ana: '700000000000000001', bea: '700000000000000002', cami: '700000000000000003', dora: '700000000000000004',
+      eva: '700000000000000005', fio: '700000000000000006' };
+    const todos = Object.values(ID);
+    const IMG = R2_PRUEBA + '/vs/ffa-cd-mic.jpg';
+    const CUARTOS = '# COPA V\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n⌞Eva 🇵🇪⌝ 🆚 ⌞Fio 🇺🇾⌝\n';
+    const GANA_ANA = CUARTOS + '`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n';
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body && typeof op.body === 'string' ? vista(JSON.parse(op.body)) : null });
+      return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
+    };
+    const nuevo = async () => {
+      const db = new DatabaseSync(':memory:');
+      const sql = {
+        exec(q, ...ps) {
+          const t = String(q).trim();
+          if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+          const st = db.prepare(t);
+          if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+          st.run(...ps);
+          return { toArray: () => [] };
+        },
+      };
+      const kv = new Map([['cfg:' + G, JSON.stringify({ vivo: CANAL, vivo_nivel: 'full' })],
+        ['turnos:nombres', JSON.stringify({ v: 1, n: ID })],
+        ['web:lobby', JSON.stringify({ tabla: Object.keys(ID).map((k, i) => ({ n: k[0].toUpperCase() + k.slice(1), k, ovr: 80 - i })) })]]);
+      const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+        blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+      o.state = o.state || {};
+      o.state.storage = o.state.storage || { transactionSync: (f) => f() };
+      if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
+      await new Promise((r) => setTimeout(r, 5));
+      const llave = (texto, ed) => sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+        "VALUES ('9', '2', 'FFA', ?, 'x', ?, ?, ?, ?, '[]') ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, " +
+        'texto = excluded.texto', G, T - 60000, ed, texto, ed);
+      const mic = (ab, en, t) => o.vozVivo({ g: { [G]: { sv: 'FFA', ab, en } } }, t);
+      return { o, sql, llave, mic };
+    };
+    // los cruces que SALIERON (mensajes nuevos; las ediciones del mismo mensaje no cuentan)
+    const cruces = () => pedidos.filter((p) => p.m === 'POST' && p.b && /⚔️ Cuartos: /.test(p.b.content || ''))
+      .map((p) => [p.m, (p.b.content.match(/⚔️ Cuartos: [^\n]*/) || [''])[0], p.b.img || '']);
+
+    // 0 · lo que manda la conexión de la llamada: vale 2 min 30 s y sólo de servidores de verdad
+    {
+      const { o } = await nuevo();
+      o.vozVivo({ g: { [G]: { sv: 'FFA', ab: [ID.ana, 'x'], en: todos }, abc: { ab: [ID.bea] } } }, T);
+      const v1 = o.vozDe(G, T + 60000);
+      ok(v1 && v1.ab.join() === ID.ana && v1.en.length === 6 && !o.vozDe('abc', T) && o.vozDe(G, T + A.VOZ_FRESCA + 1) === null,
+        'los micrófonos que manda la llamada valen 2 min 30 s; un ID que no es de Discord no entra', JSON.stringify(v1));
+    }
+
+    // 1 · salteada: la llave dice Cami vs Dora, y los que tienen el micrófono abierto son Eva y Fio
+    {
+      const { o, sql, llave, mic } = await nuevo();
+      pedidos.length = 0;
+      llave(GANA_ANA, T);
+      mic([ID.eva, ID.fio], todos, T);
+      await o.chatVivo(T);
+      const cs = cruces();
+      const fila = sql.exec("SELECT msg, datos FROM vs_cola WHERE msg != ''").toArray()[0];
+      ok(cs.length === 1 && /\*\*Eva 🇵🇪\*\* vs \*\*Fio 🇺🇾\*\*/.test(cs[0][1]) && !cs[0][2]
+        && fila && JSON.parse(fila.datos).a.n === 'Eva' && sql.exec("SELECT 1 FROM chat_vivo WHERE m = 'voz'").toArray().length === 1,
+      'la llave dice Cami vs Dora y los micrófonos abiertos son los de Eva y Fio: sale Eva vs Fio, ya (la imagen se le agrega)',
+      JSON.stringify(cs));
+    }
+
+    // 2 · alguien de la batalla de la llave no está en la llamada: no se puede estar jugando, no se anuncia
+    {
+      const { o, sql, llave, mic } = await nuevo();
+      pedidos.length = 0;
+      llave(GANA_ANA, T);
+      mic([], todos.filter((x) => x !== ID.cami), T);
+      await o.chatVivo(T);
+      ok(!cruces().length && !sql.exec('SELECT 1 FROM vs_cola').toArray().length,
+        'Cami no está en la llamada: Cami vs Dora no se anuncia', JSON.stringify(cruces()));
+    }
+
+    // 3 · en orden, con los micrófonos ya probados en esta llave: la que sigue espera sus micrófonos con la imagen lista
+    {
+      const { o, sql, llave, mic } = await nuevo();
+      pedidos.length = 0;
+      llave(CUARTOS, T);
+      mic([ID.ana, ID.bea], todos, T);
+      await o.chatVivo(T);
+      const c1 = cruces();
+      llave(GANA_ANA, T + 4 * 60000);
+      mic([], todos, T + 4 * 60000);
+      const antes = pedidos.length;
+      await o.chatVivo(T + 4 * 60000);
+      const pre = sql.exec("SELECT id FROM vs_cola WHERE msg = '' AND clave LIKE '%:v:Cuartos:1'").toArray();
+      const despues = pedidos.slice(antes).filter((p) => p.b);
+      ok(c1.length === 1 && /Ana 🇦🇷\*\* vs \*\*Bea/.test(c1[0][1]) && cruces().length === 1 && pre.length === 1
+        && despues.some((p) => /✅/.test(p.b.content || '')),
+      'Ana le ganó a Bea: el «✅» sale, y Cami vs Dora NO se anuncia todavía, pero su imagen ya se dibuja',
+      JSON.stringify({ c1, cruces: cruces(), pre, despues: despues.map((p) => [p.m, String(p.b.content || '').slice(0, 80)]) }));
+      // (en la cola también está la de Ana y Bea, que salió sin esperarla: se le agrega a su mensaje)
+      const cola = o.vsCola('FFA', T + 5 * 60000).vs;
+      const cd = cola.find((x) => x.a && x.a.n === 'Cami');
+      const l1 = await o.vsListo({ id: cd && cd.id, url: IMG }, T + 6 * 60000);
+      ok(!!cd && cd.b.n === 'Dora' && l1.espera && cruces().length === 1,
+        'la imagen de Cami y Dora llega y el cruce sigue esperando: nadie abrió el micrófono',
+        JSON.stringify({ l1, cola: cola.map((x) => [x.a.n, x.b.n]), cruces: cruces() }));
+      mic([ID.cami, ID.dora], todos, T + 9 * 60000);
+      await o.chatVivo(T + 9 * 60000);
+      const c3 = cruces();
+      ok(c3.length === 2 && /Cami 🇻🇪\*\* vs \*\*Dora 🇲🇽/.test(c3[1][1]) && c3[1][2] === IMG,
+        'Cami y Dora abren el micrófono: el cruce sale en ese momento, con la imagen que ya estaba', JSON.stringify(c3));
+    }
+    globalThis.fetch = antesF;
+  }
+}
+
 // 🎲 LAS APUESTAS SOBRE EL OBJETO DE VERDAD (07/10/2026, «A full»): se abre con botones, se apuesta con sus frenos, se
 // cierra a los 3 minutos y se paga el pozo cuando la llave dice quién ganó
 {
