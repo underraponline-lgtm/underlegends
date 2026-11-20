@@ -906,6 +906,10 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
     oc_ = MS.ocultos()
     if oc_:
         muro['items'] = [x for x in muro['items'] if str(x.get('id') or '') not in oc_]
+    # 📌 y la fijada arriba con Mods (20/11/2026, `MS.fijo()`): va de titular en la edición del día. Sólo si sigue en el muro
+    fj_ = MS.fijo()
+    if fj_ and any(str(x.get('id') or '') == fj_ for x in muro['items']):
+        muro['fijo'] = fj_
     # 💬 Y LOS COMENTARIOS SIMULADOS de cada publicación (Dlx, 12/11/2026: «Sí, constrúyelo»): ver bot/comentarios_sim.py.
     # ⚠️ Después de los ids y las claves: el `id` no los mira, así felicitar y comentar siguen apuntando a lo mismo
     try:

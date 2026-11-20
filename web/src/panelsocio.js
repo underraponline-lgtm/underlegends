@@ -72,6 +72,13 @@ export function pedirStaff(sv, que, accion, extra) {
   return W.conCuenta('/api/avisos/socio-staff', Object.assign({ sv, que, accion: accion || 'ver' }, extra || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
+/** 🛠️ Lo de Mods que no es de un servidor (20/11/2026): `ident` (quién es quién, sólo Dlx), `fijar` (una publicación
+ *  arriba, Dlx y los Admin y Moderadores de la página) y `estilo` (un evento de estilo de la Liga, sólo Dlx). `/avisos/mods` */
+export function pedirMods(que, accion, extra) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/mods', Object.assign({ que, accion: accion || 'ver' }, extra || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
 /** 🛡️ ¿Ese rol puede `que`? Con `permisos`, la tabla que manda el Worker (`SOCIO_PERMISOS` de bot/avisos.js, vía
  *  `pedirRoles()`): la página no tiene su copia. El dueño y Dlx, todo */
 export const puede = (rol, que, permisos) => rol === 'dlx' || rol === 'dueno' || ((permisos || {})[rol] || []).includes(que);

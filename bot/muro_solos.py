@@ -108,7 +108,9 @@ def apagados(s=None):
                 with io.open(COPIA, 'w', encoding='utf-8') as f:
                     # 🙈 y las publicaciones que ocultó el staff de su servidor (16/11/2026, `ocultos()`), en la misma copia
                     json.dump({'no': sorted(str(k) for k in d.get('no') or []),
-                               'ocultos': sorted(str(k) for k in d.get('ocultos') or [])}, f)
+                               'ocultos': sorted(str(k) for k in d.get('ocultos') or []),
+                               # 📌 y la fijada arriba con Mods (20/11/2026, `fijo()`)
+                               'fijo': d.get('fijo') if isinstance(d.get('fijo'), dict) else None}, f)
         except Exception:                                # noqa: BLE001
             d = None
     if d is None:
@@ -129,6 +131,24 @@ def ocultos():
             return {str(k) for k in (json.load(f) or {}).get('ocultos') or []}
     except (OSError, ValueError):
         return set()
+
+
+def fijo(ahora_ms=None):
+    """📌 El `id` de la publicación fijada arriba con Mods (20/11/2026, `modsFijar()` de bot/avisos.js), o `''` si no hay
+    o ya venció (`hasta`, en ms). Viaja en `muro:no`, así que sale de la copia que deja `apagados(s)`."""
+    import time
+    try:
+        with io.open(COPIA, encoding='utf-8') as f:
+            x = (json.load(f) or {}).get('fijo') or {}
+    except (OSError, ValueError):
+        return ''
+    ahora = int(time.time() * 1000) if ahora_ms is None else ahora_ms
+    i = str(x.get('id') or '') if isinstance(x, dict) else ''
+    try:
+        vence = int(x.get('hasta') or 0)
+    except (TypeError, ValueError):
+        vence = 0
+    return i if i and vence > ahora else ''
 
 
 def sin_apagados(items, no):

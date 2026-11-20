@@ -211,6 +211,8 @@ export class Liga {
   constructor(D, muro, ahora, yo, sigue, yoFila) {
     this.d = D;
     this.muro = (muro && muro.items) || [];
+    // 📌 la fijada arriba con Mods (20/11/2026, `bot/muro.py`): el `id` de una del muro, o nada
+    this.muroFijo = String((muro && muro.fijo) || '');
     // ⏳ el muro llega después del lobby: «no hay nada» y «todavía no llegó» son cosas distintas
     this.muroListo = !!muro;
     this.ahora = ahora || new Date();

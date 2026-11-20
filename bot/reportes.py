@@ -898,6 +898,21 @@ def _self_check():
     ok(len(_h) == 2 and len(_h2) == 1 and _m['por_servidor'] == {'LKR': {'BETO': 'Carla'}} and len(_m['_leeme']) == 2,
        'los nombres del staff: «es» alguien de la Lista, por servidor; reemplaza lo de antes, uno de afuera de la Lista no '
        'entra, y quitar lo saca una vez')
+    # 🪪 quién es quién de Mods (20/11/2026): juntar va a `pares`, separar a `no_confundir`, lo contrario se va
+    _mi = {'pares': [['Zeta', 'Ana']], 'no_confundir': [['Beto', 'Carla', 'Dlx, 01/10: dos'], ['Dani', 'Eva', 'de antes']], '_leeme': []}
+    _pi = {'ana': 'Ana', 'carla': 'Carla', 'eva': 'Eva', 'dani': 'Dani'}
+    _hi = ident_mods([{'id': 1, 'tipo': 'mismo', 'a': 'BETO', 'b': 'carla', 'estado': 'activo'},
+                      {'id': 2, 'tipo': 'otro', 'a': 'zeta', 'b': 'Ana', 'estado': 'activo'},
+                      {'id': 3, 'tipo': 'mismo', 'a': 'X', 'b': 'Nadie', 'estado': 'activo'},
+                      {'id': 4, 'tipo': 'otro', 'a': 'Dani', 'b': 'Eva', 'estado': 'quitado'}], _mi, _pi)
+    _hi2 = ident_mods([{'id': 1, 'tipo': 'mismo', 'a': 'BETO', 'b': 'carla', 'estado': 'activo'},
+                       {'id': 2, 'tipo': 'otro', 'a': 'zeta', 'b': 'Ana', 'estado': 'activo'}], _mi, _pi)
+    _hi3 = ident_mods([{'id': 1, 'tipo': 'mismo', 'a': 'BETO', 'b': 'carla', 'estado': 'quitado'},
+                       {'id': 2, 'tipo': 'otro', 'a': 'zeta', 'b': 'Ana', 'estado': 'quitado'}], _mi, _pi)
+    ok(len(_hi) == 2 and not _hi2 and len(_hi3) == 2 and _mi['pares'] == []
+       and _mi['no_confundir'] == [['Dani', 'Eva', 'de antes']] and len(_mi['_leeme']) == 2,
+       'quién es quién de Mods: juntar va a `pares` y saca el «no confundir» de los dos; separar va a `no_confundir` y saca '
+       'el par; nadie de afuera de la Lista; repetir no hace nada; volver atrás saca sólo lo de Mods')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
@@ -1012,6 +1027,84 @@ def nombres_socios(filas, mano, porclave):
     return hechos
 
 
+# lo que deja Mods en `no_confundir`, para poder sacarlo cuando Dlx lo vuelve atrás (y no tocar lo de antes)
+MARCA_MODS = 'Dlx, desde Mods (el perfil)'
+
+
+def ident_mods(filas, mano, porclave):
+    """🪪 QUIÉN ES QUIÉN DESDE EL PERFIL (Mods, 20/11/2026; sólo Dlx, `modsIdent()` de bot/avisos.js). Cada fila es
+    `{id, tipo, a, b, estado}`: `mismo` es «`a` es la misma persona que `b`» y va a `pares` como `[a, b]` (alias y nombre
+    real; `b` tiene que estar en la Lista); `otro` es «`a` y `b` son dos personas» y va a `no_confundir` con la marca de
+    Mods. Lo activo se asegura en cada corrida (y saca lo contrario sobre los mismos dos); lo quitado se saca si todavía
+    está. Por `id`, así la última palabra de Dlx es la que queda. Devuelve los cambios."""
+    from comun.claves import clave
+    hechos = []
+    pares = mano.setdefault('pares', [])
+    cuid = mano.setdefault('no_confundir', [])
+    mismos = lambda x, y, u, v: {clave(x), clave(y)} == {clave(u), clave(v)}  # noqa: E731
+    for f in sorted(filas or [], key=lambda x: int(x.get('id') or 0)):
+        a, b = str(f.get('a') or '').strip(), str(f.get('b') or '').strip()
+        if not a or not b or clave(a) == clave(b):
+            continue
+        activo = f.get('estado') == 'activo'
+        if f.get('tipo') == 'mismo':
+            real = porclave.get(clave(b))
+            if not real:
+                continue
+            ya = [p for p in pares if len(p) == 2 and clave(p[0]) == clave(a) and clave(p[1]) == clave(real)]
+            if activo:
+                fuera = [c for c in cuid if len(c) >= 2 and mismos(c[0], c[1], a, real)]
+                al_reves = [p for p in pares if len(p) == 2 and clave(p[0]) == clave(real) and clave(p[1]) == clave(a)]
+                for c in fuera:
+                    cuid.remove(c)
+                for p in al_reves:
+                    pares.remove(p)
+                if not ya:
+                    pares.append([a, real])
+                if not ya or fuera or al_reves:
+                    hechos.append('«%s» es %s' % (a, real))
+            elif ya:
+                for p in ya:
+                    pares.remove(p)
+                hechos.append('«%s» ya no es %s' % (a, real))
+        elif f.get('tipo') == 'otro':
+            x, y = porclave.get(clave(a)) or a, porclave.get(clave(b)) or b
+            ya = [c for c in cuid if len(c) >= 2 and mismos(c[0], c[1], x, y)]
+            if activo:
+                juntos = [p for p in pares if len(p) == 2 and mismos(p[0], p[1], x, y)]
+                for p in juntos:
+                    pares.remove(p)
+                if not ya:
+                    cuid.append([x, y, MARCA_MODS + ': son dos personas.'])
+                if not ya or juntos:
+                    hechos.append('%s y %s son dos personas' % (x, y))
+            else:
+                mios = [c for c in ya if len(c) >= 3 and str(c[2]).startswith(MARCA_MODS)]
+                for c in mios:
+                    cuid.remove(c)
+                if mios:
+                    hechos.append('%s y %s: vuelve atrás «son dos»' % (x, y))
+    if hechos and isinstance(mano.get('_leeme'), list):
+        mano['_leeme'].append('🪪 %s: lo dijo Dlx desde Mods, en el perfil: %s.' % (_et(int(time.time() * 1000)), '; '.join(hechos)))
+    return hechos
+
+
+def _sv_nombres_objeto():
+    """Lo de `/avisos/sv-nombres` del Worker (con la clave del ciclo): `{nombres, ident}`, o `None`."""
+    try:
+        import requests
+        import avisar
+        import clave_ciclo as CC
+        t = avisar._token()
+        if not t:
+            return None
+        r = requests.get(avisar.WORKER + '/avisos/sv-nombres', headers={'x-lg-ciclo': CC.clave(t)}, timeout=20)
+        j = r.json() if r.ok else None
+    except Exception:                                    # noqa: BLE001
+        return None
+    return j if isinstance(j, dict) else None
+
+
 def _nombres_del_objeto():
     """Los nombres del staff de cada servidor, del Worker (`/avisos/sv-nombres`, con la clave del ciclo), o `None`."""
     try:
@@ -1032,16 +1125,19 @@ def main():
     if '--auto' in sys.argv:
         return _self_check()
     if '--corregir' in sys.argv:
-        # 🪪 los nombres que puso el staff de cada servidor (16/11/2026), a `akas_a_mano.json` (`por_servidor`)
+        # 🪪 los nombres que puso el staff de cada servidor (16/11/2026), a `akas_a_mano.json` (`por_servidor`); y quién es
+        # quién de Mods (20/11/2026, `ident_mods()`), a `pares` y `no_confundir`. Un solo pedido para las dos
         try:
-            de_socios = _nombres_del_objeto()
-            if de_socios:
+            j = _sv_nombres_objeto() or {}
+            de_socios = j.get('nombres') if isinstance(j.get('nombres'), list) else None
+            de_mods = j.get('ident') if isinstance(j.get('ident'), list) else None
+            if de_socios or de_mods:
                 import motor
                 resolver, _n = motor._resolvedor()
                 ruta = os.path.join(BASE, 'datos', 'akas_a_mano.json')
                 with io.open(ruta, encoding='utf-8') as f:
                     mano = json.load(f) or {}
-                hechos = nombres_socios(de_socios, mano, resolver.padron)
+                hechos = nombres_socios(de_socios or [], mano, resolver.padron) + ident_mods(de_mods or [], mano, resolver.padron)
                 for h in hechos:
                     print('   🪪 %s' % h)
                 if hechos and '--aplicar' in sys.argv:

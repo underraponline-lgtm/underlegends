@@ -31,6 +31,7 @@ import { FraseEditor } from './frase.jsx';
 import { CrewsParaVos, InvitarACrew, RolCrew } from './crewpanel.jsx';
 import { Banda, Rivalidades, SuCamino, SuForma, SuMejorNoche, SuMuro, SusHistorias, SusRecords, usePerfilDatos } from './perfil_bandas.jsx';
 import { EloNum, PerfilV10, PlacasVitrina } from './perfil_v10.jsx';
+import { QuienEsMods } from './mods_perfil.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
 
@@ -1689,6 +1690,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           rivales arriba, en negro; abajo su próximo evento, sus ligas, las pestañas y el costado (perfil_v10.jsx). Las piezas
           que ya existían van tal cual: su camino, lo que le falta, su ficha de jurado, sus récords, el precio, los videos y
           los logros (con el inventario, en el tuyo). `key={k}`: al pasar a otro perfil, nada se queda con el filtro del anterior */}
+      {/* 🪪 quién es quién, con los lápices de Mods (20/11/2026, sólo Dlx): juntar este nombre con otro o separarlos */}
+      <QuienEsMods liga={liga} k={k} nombre={f.n} />
       {!P ? <div className="cargando">Cargando…</div> : (
         <PerfilV10 key={k} liga={liga} k={k} f={f} p={p} P={P} esYo={esYo} tab0={t}
           piezas={{

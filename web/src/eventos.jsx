@@ -16,6 +16,7 @@ import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './hi
 import CSS_PAGINA from './css/eventos.css?inline';
 import { usarCss } from './css.js';
 import { useAplausos } from './aplausos.js';
+import { EstiloMods } from './mods_estilo.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/eventos.css)
 usarCss('eventos', CSS_PAGINA);
@@ -662,6 +663,8 @@ function Elegido({ liga, it, sig, pub, Ap }) {
       {est === 'vivo' && it.arriba ? <p className="t-nota evp-tx">La llave en vivo está arriba, en el escenario.</p> : null}
       {est === 'vivo' && !it.L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
       {est === 'prox' || (est === 'vivo' && !it.L) ? <Anotados liga={liga} e={e} /> : null}
+      {/* 🎭 marcarlo de estilo, con los lápices de Mods (20/11/2026): Dlx, o el staff de su servidor si es Tier 1 o 2 */}
+      <EstiloMods e={e} />
       <div className="evs-acc">
         <Acciones liga={liga} e={e} L={it.L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} est={est} />
         {pub ? <Aplauso liga={liga} it={pub} A={Ap} /> : null}

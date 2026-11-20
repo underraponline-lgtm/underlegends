@@ -147,7 +147,7 @@ function Nota({ liga, it, xs, A, P, H, fuerte, reto }) {
         <div className="ed-acc">{logro ? <H.Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}{it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} sinCm /> : null}</div>
         {reto ? <Reto liga={liga} it={it} /> : null}
         {it.id ? <Hilo liga={liga} it={it} ver={chica() ? 1 : 2} rapidas /> : null}
-        <OcultarMods it={it} />
+        <OcultarMods it={it} fijo={liga.muroFijo} />
       </div>
     </article>
   );
@@ -337,7 +337,9 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
   if (!dias.length) return null;
   const D = dias[Math.min(di, dias.length - 1)];
   const xs = D.xs;
-  const h = titularDe(xs);
+  // 📌 la fijada con Mods (20/11/2026) es el titular de la edición de hoy, aunque sea de otro día (`bot/muro.py`, `fijo`)
+  const fijada = di === 0 && liga.muroFijo ? todos.find((it) => it.id === liga.muroFijo) || null : null;
+  const h = fijada || titularDe(xs);
   const ch = H.contenido(liga, h, H.pub);
   const evs = xs.filter((it) => it.tipo === 'campeon');
   const podio = xs.filter((it) => it.tipo === 'podio' && it.ev && it.ev === h.ev);
@@ -394,12 +396,13 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
         {h && ch ? (
           <article className={'ed-prin ed-t-' + tono(h)} data-pub={h.id || undefined}>
             <Tapa liga={liga} it={h} xs={xs} grande />
-            <p className="ed-kicker">{ch.cat}{h.part ? ' · ' + h.part + ' raperos' : ''}</p>
+            <p className="ed-kicker">{fijada ? <span className="ed-fija">📌 Fijada</span> : null}{ch.cat}{h.part ? ' · ' + h.part + ' raperos' : ''}</p>
             <h2 className="ed-tit">«{ch.txt}»</h2>
             <p className="ed-bajada"><b>{limpio(quien1(h) || '')}</b>{quien1(h) ? ', ' + H.hace(liga, h.t).toLowerCase() + '. ' : ''}{podio.map((p) => limpio(quien1(p)) + (p.puesto === 'Subcampeón' ? ' salió segundo' : ' salió tercero')).join(' y ')}{podio.length ? '.' : ''}</p>
             <div className="ed-acc">{H.LOGROS[h.tipo] ? <H.Felicitar liga={liga} it={h} A={A} /> : null}{ch.acc}{h.id ? <LuSocial liga={liga} it={h} A={A} hilo={hiloH} P={P} sinCm /> : null}</div>
             {h.tipo === 'campeon' ? <Reto liga={liga} it={h} /> : null}
             {h.id ? <Hilo liga={liga} it={h} ver={4} rapidas /> : null}
+            <OcultarMods it={h} fijo={liga.muroFijo} />
           </article>
         ) : null}
         <aside className="ed-col"><Resultados liga={liga} evs={evs} /><FelicitaHoy liga={liga} xs={xs} A={A} H={H} /><TuDia P={P} /><LoQueViene liga={liga} /></aside>

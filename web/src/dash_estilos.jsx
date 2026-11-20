@@ -11,21 +11,14 @@
 import { useState } from 'react';
 import CAT from './estilos_juego.json';
 import { siglaDe } from './liga.js';
+// 🔑 las claves de un evento viven en estilo_claves.js (20/11/2026): las usa también el lápiz de Mods en Eventos, que no
+// tiene que bajar el catálogo de 76 KB que importa este archivo
+import { clavesDe } from './estilo_claves.js';
+export { clavesDe };
 
 const NOMBRE = Object.fromEntries(CAT.estilos.map(([k, n]) => [k, n]));
 const FAMILIA = { ATAQUE: 'Ataque', FOCO: 'Foco', CABEZA: 'Cabeza' };
 
-/** Las claves con las que puede estar marcado un evento del calendario: su número y el id de su anuncio */
-export function clavesDe(e) {
-  const out = [];
-  // ⚠️ sólo si es un NÚMERO DE EVENTO (hasta 6 cifras): la llave de un servidor que no suma (Tier 2 y 3,
-  // `datos/llaves_sin_sumar.json`) trae en `ll` su registro (`#126047346`), que no es un evento; ese va por su anuncio.
-  // El Worker rechaza el ajuste entero con una clave así. (18/11/2026: esto decía «una llave en vivo», y no lo es)
-  if (e && e.ll && /^[0-9]{1,6}$/.test(String(e.ll))) out.push(String(e.ll));
-  const m = /\/([0-9]{15,22})\/?$/.exec((e && e.link) || '');
-  if (m) out.push('a:' + m[1]);
-  return out;
-}
 
 export function AjEventosEstilo({ liga, aj, hacer, ocup }) {
   const marcados = aj.eventos_estilo || {};

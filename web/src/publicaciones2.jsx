@@ -802,7 +802,7 @@ export function Fila({ liga, it, A, P, nuevo }) {
           {c.det ? <small className="pw-det">{c.det}</small> : null}
           {logro || c.acc ? <div className="pw-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
           {social}
-          <OcultarMods it={it} />
+          <OcultarMods it={it} fijo={liga.muroFijo} />
         </div>
       </article>
     );
@@ -818,7 +818,7 @@ export function Fila({ liga, it, A, P, nuevo }) {
         {c.media ? <div className="pw-media">{c.vis}</div> : null}
         {c.acc || (logro && it.tipo !== 'rango') ? <div className="pw-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
         {social}
-        <OcultarMods it={it} />
+        <OcultarMods it={it} fijo={liga.muroFijo} />
       </div>
       <span className="pw-der"><time>{hace(liga, it.t)}</time>
         {it.tipo === 'rango' ? <i className="pw-letra grande" style={{ background: liga.colorRg(it.rg) }} aria-label={'Rango ' + it.rg}>{it.rg}</i> : null}

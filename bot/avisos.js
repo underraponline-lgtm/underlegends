@@ -4847,6 +4847,8 @@ export const SOCIO_PERMISOS = {
 //: No es un rol del equipo de un socio: no entra a su panel ni a sus ajustes
 //: (y desde la tanda 3, 20/11/2026: `muro`, ocultar una publicación de cualquier servidor, que es lo del Moderador de la página)
 export const LIGA_STAFF = ['ver', 'final', 'llaves', 'ligas', 'sugerir', 'muro'];
+//: 📌 cuántos días queda arriba una publicación fijada con Mods, si nadie la suelta antes (20/11/2026, `modsFijar()`)
+export const FIJO_DIAS = 3;
 export function socioPuede(rol, que) {
   if (rol === 'dlx' || rol === 'dueno') return true;
   if (rol === 'liga') return LIGA_STAFF.includes(que);
@@ -8106,11 +8108,32 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
-    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) || !['registro', 'alguien'].includes(d.que)
-        || (d.que === 'alguien' && !/^[a-z0-9._-]{1,60}$/.test(String(d.k || '')))) return json({ error: 'faltan datos' }, 400);
+    const corto = (x, n) => x === undefined || (typeof x === 'string' && x.length <= n);
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || !['registro', 'alguien', 'ident', 'fijar', 'estilo'].includes(d.que)
+        || (d.que === 'alguien' && !/^[a-z0-9._-]{1,60}$/.test(String(d.k || '')))
+        || !/^[a-z]{2,10}$/.test(String(d.accion || 'ver')) || !corto(d.a, 80) || !corto(d.b, 80) || !corto(d.pub, 20) || !corto(d.es, 20)
+        || (d.id !== undefined && !Number.isInteger(Number(d.id)))
+        || (d.ids !== undefined && (!Array.isArray(d.ids) || d.ids.length > 2 || d.ids.some((x) => typeof x !== 'string' || x.length > 30)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
     const dueno = q.id === DUENO;
+    // 🪪 QUIÉN ES QUIÉN DESDE EL PERFIL y 🎭 LOS EVENTOS DE ESTILO DE LA LIGA (20/11/2026): sólo Dlx. Juntar a dos personas
+    // mueve rankings, títulos y cartas de las dos, y los eventos de estilo de la Liga son su ajuste (el del Dashboard)
+    if (d.que === 'ident' || d.que === 'estilo') {
+      if (!dueno) return json({ error: 'no' }, 403);
+      return elObjeto(env).fetch('https://avisos/mods-' + d.que, { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ quien: q.id, accion: d.accion || 'ver', a: d.a, b: d.b, id: d.id, ids: d.ids, es: d.es }) });
+    }
+    // 📌 FIJAR UNA PUBLICACIÓN (20/11/2026): Dlx y los Admin y Moderadores de la página (`reportes`): es arriba de la de todos
+    if (d.que === 'fijar') {
+      const rol = dueno ? 'dlx' : (await puede(q.id, 'reportes')) ? 'liga' : '';
+      if (!rol) return json({ error: 'no' }, 403);
+      return elObjeto(env).fetch('https://avisos/mods-fijar', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ quien: q.id, rol, accion: d.accion || 'ver', pub: d.pub }) });
+    }
     if (d.que === 'alguien') {
       if (!dueno) return json({ error: 'no' }, 403);
       let pcfg = null;
@@ -8802,6 +8825,12 @@ export class Avisos {
       this.sql.exec("CREATE TABLE IF NOT EXISTS sv_nombres (id INTEGER PRIMARY KEY AUTOINCREMENT, sv TEXT NOT NULL, nombre TEXT NOT NULL, " +
         "es TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'activo')");
       this.sql.exec('CREATE TABLE IF NOT EXISTS muro_oculto (id TEXT PRIMARY KEY, sv TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 🛠️ MODS (20/11/2026, lo que quedaba): 🪪 quién es quién desde el perfil —`mismo` («es la misma persona que…», va a
+      // `pares` de datos/akas_a_mano.json) u `otro` («no es…», a `no_confundir`)—, lo aplica el ciclo (`bot/reportes.py`,
+      // `ident_mods()`); y 📌 la publicación fijada arriba de Publicaciones (una sola, `FIJO_DIAS`), viaja en `muro:no`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS mods_ident (id INTEGER PRIMARY KEY AUTOINCREMENT, tipo TEXT NOT NULL, a TEXT NOT NULL, " +
+        "b TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'activo')");
+      this.sql.exec('CREATE TABLE IF NOT EXISTS muro_fijo (id TEXT PRIMARY KEY, sv TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, hasta INTEGER NOT NULL)');
       this.sql.exec("CREATE TABLE IF NOT EXISTS liga_cambios (id INTEGER PRIMARY KEY AUTOINCREMENT, liga TEXT NOT NULL, sv TEXT NOT NULL, " +
         "tipo TEXT NOT NULL, dato TEXT NOT NULL, quien TEXT NOT NULL, rol TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, " +
         "estado TEXT NOT NULL DEFAULT 'activo')");
@@ -9666,7 +9695,10 @@ export class Avisos {
         return json(Object.assign(Object.fromEntries(Object.entries(this.leer('vs_elegido') || {}).map(([k, v]) => [k, 'repo:' + v])),
           Object.fromEntries(Object.entries(this.vsFondosDueno()).map(([k, v]) => [k, v.url]))), 200, 60);
       }
-      if (ruta === '/sv-nombres') return json({ ok: true, nombres: this.sql.exec('SELECT sv, nombre, es, t, estado FROM sv_nombres ORDER BY id').toArray() }, 200, 0);
+      if (ruta === '/sv-nombres') {
+        return json({ ok: true, nombres: this.sql.exec('SELECT sv, nombre, es, t, estado FROM sv_nombres ORDER BY id').toArray(),
+          ident: this.sql.exec('SELECT id, tipo, a, b, t, estado FROM mods_ident ORDER BY id').toArray() }, 200, 0);
+      }
       if (ruta === '/fondos') return json(this.delMinuto('/fondos', 300, () => this.fondos()), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
       if (ruta === '/uso-ciclo') return json(this.usoCiclo());
@@ -9943,6 +9975,9 @@ export class Avisos {
       if (ruta === '/socio-llave') return json(await this.socioLlave(d));
       if (ruta === '/mods-registro') return json(this.modsRegistro(d));
       if (ruta === '/mods-alguien') return json(this.modsAlguien(d));
+      if (ruta === '/mods-ident') return json(this.modsIdent(d));
+      if (ruta === '/mods-fijar') return json(await this.modsFijar(d));
+      if (ruta === '/mods-estilo') return json(this.modsEstilo(d));
       if (ruta === '/socio-liga') return json(await this.socioLiga(d));
       if (ruta === '/socio-staff') return json(await this.socioStaff(d));
       if (ruta === '/socio-ajustes') return this.socioAjustes(d);
@@ -16059,8 +16094,11 @@ export class Avisos {
     // 🙈 y las publicaciones que ocultó el staff de su servidor (16/11/2026): las saca `bot/muro.py` (`MS.ocultos()`)
     let ocultos = [];
     try { ocultos = this.sql.exec('SELECT id FROM muro_oculto ORDER BY id').toArray().map((r) => r.id); } catch (e) { ocultos = []; }
+    // 📌 y la fijada arriba (Mods, 20/11/2026, `modsFijar()`): la pone `bot/muro.py` (`MS.fijo()`) mientras no venza
+    let fijo = null;
+    try { fijo = this.sql.exec('SELECT id, hasta FROM muro_fijo WHERE hasta > ? ORDER BY t DESC LIMIT 1', ahora).toArray()[0] || null; } catch (e) { fijo = null; }
     try {
-      await this.env.KV.put('muro:no', JSON.stringify({ v: 1, no, ocultos }));
+      await this.env.KV.put('muro:no', JSON.stringify({ v: 1, no, ocultos, fijo }));
       this.guardar('murono_t', ahora);
       this.guardar('murono_pend', 0);
     } catch (e) { this.guardar('murono_pend', 1); }
@@ -17032,6 +17070,99 @@ export class Avisos {
       out.avisos = this.sql.exec('SELECT t, tipo, titulo, visto FROM bandeja WHERE quien = ? ORDER BY t DESC LIMIT 8', id).toArray();
     } catch (e) { out.avisos = []; }
     return out;
+  }
+
+  /**
+   * 🪪 QUIÉN ES QUIÉN DESDE EL PERFIL (Mods, 20/11/2026; sólo Dlx, lo decide la ruta). `juntar`: `a` es la misma persona que
+   * `b`, y queda `b` (va a `pares` como `[a, b]`, alias y nombre real); `separar`: `a` y `b` son dos personas (`no_confundir`);
+   * `quitar` (`id`): lo vuelve atrás. Lo aplica el ciclo en su próxima vuelta (`bot/reportes.py`, `ident_mods()`), que pide
+   * que el que queda esté en la Lista. `ver`: lo último, para «Lo que hiciste» y el perfil
+   */
+  modsIdent(d) {
+    const quien = String((d && d.quien) || ''), accion = String((d && d.accion) || 'ver');
+    const lista = () => this.sql.exec('SELECT id, tipo, a, b, t, estado FROM mods_ident ORDER BY id DESC LIMIT 40').toArray();
+    if (accion === 'ver') return { ok: true, ident: lista() };
+    if (accion === 'quitar') {
+      const r = this.sql.exec("UPDATE mods_ident SET estado = 'quitado' WHERE id = ? AND estado = 'activo'", Number(d.id));
+      if (!r.rowsWritten) return { error: 'ya no está' };
+      this.socioAnotar('LG', quien, 'dlx', 'quién es: vuelve atrás el ' + Number(d.id), '', '', 'Dlx');
+      return { ok: true, ident: lista() };
+    }
+    const nom = (x) => { const t = String(x == null ? '' : x).replace(/\s+/g, ' ').trim(); return t && t.length <= 60 && !/[<>@]/.test(t) ? t : ''; };
+    const a = nom(d.a), b = nom(d.b);
+    if (!a || !b || a.toLowerCase() === b.toLowerCase()) return { error: 'falta el nombre' };
+    const tipo = accion === 'juntar' ? 'mismo' : accion === 'separar' ? 'otro' : '';
+    if (!tipo) return { error: 'datos' };
+    if (!this.cuentaCambio(quien, 'mods_ident', 40)) return { error: 'tope' };
+    // lo contrario sobre los mismos dos (en cualquier orden) se va: la última palabra de Dlx es la que vale
+    this.sql.exec("UPDATE mods_ident SET estado = 'quitado' WHERE estado = 'activo' AND ((lower(a) = lower(?) AND lower(b) = lower(?)) OR (lower(a) = lower(?) AND lower(b) = lower(?)))",
+      a, b, b, a);
+    this.sql.exec('INSERT INTO mods_ident (tipo, a, b, quien, t) VALUES (?, ?, ?, ?, ?)', tipo, a, b, quien, Date.now());
+    const id = (this.sql.exec('SELECT MAX(id) AS id FROM mods_ident').toArray()[0] || {}).id;
+    this.socioAnotar('LG', quien, 'dlx', tipo === 'mismo' ? 'quién es: junta' : 'quién es: separa', a, b, 'Dlx');
+    return { ok: true, id, ident: lista() };
+  }
+
+  /**
+   * 📌 LA PUBLICACIÓN FIJADA ARRIBA DE PUBLICACIONES (Mods, 20/11/2026): una sola, por `FIJO_DIAS` o hasta que se suelte.
+   * La fijan Dlx y los Admin y Moderadores de la página (`rol` 'liga', lo decide la ruta); tiene que estar en el muro
+   * publicado. Viaja en `muro:no` (`espejarMuroNo()`) y `bot/muro.py` la pone en el muro (`fijo`): sale de titular en la
+   * edición del día. A Dlx le llega a la campana lo que fija otro
+   */
+  async modsFijar(d) {
+    const quien = String((d && d.quien) || ''), rol = d && d.rol === 'dlx' ? 'dlx' : 'liga', accion = String((d && d.accion) || 'ver');
+    const ahora = Date.now();
+    const actual = () => this.sql.exec('SELECT id, sv, t, hasta FROM muro_fijo WHERE hasta > ? ORDER BY t DESC LIMIT 1', ahora).toArray()[0] || null;
+    if (accion === 'ver') return { ok: true, fijo: actual() };
+    const nombre = rol === 'dlx' ? 'Dlx' : this.nombrePor(quien) || 'La Liga';
+    if (accion === 'soltar') {
+      const r = this.sql.exec('DELETE FROM muro_fijo');
+      if (!r.rowsWritten) return { error: 'ya no está' };
+      this.socioAnotar('LG', quien, rol, 'publicaciones: suelta la fijada', '', '', nombre);
+      await this.espejarMuroNo(false);
+      return { ok: true, fijo: null };
+    }
+    if (accion !== 'fijar') return { error: 'datos' };
+    const id = String((d && d.pub) || '');
+    if (!/^[0-9a-f]{6,16}$/.test(id)) return { error: 'datos' };
+    let muro = {};
+    try { muro = JSON.parse((await this.env.KV.get('web:muro', { cacheTtl: 60 })) || '{}') || {}; } catch (e) { muro = {}; }
+    const it = (muro.items || []).find((x) => x && String(x.id) === id);
+    if (!it) return { error: 'no_esta' };
+    if (!this.cuentaCambio(quien, 'mods_fijar', 20)) return { error: 'tope' };
+    this.sql.exec('DELETE FROM muro_fijo');
+    this.sql.exec('INSERT INTO muro_fijo (id, sv, quien, t, hasta) VALUES (?, ?, ?, ?, ?)', id, String(it.sv || ''), quien, ahora, ahora + FIJO_DIAS * DIA_MS);
+    this.socioAnotar('LG', quien, rol, 'publicaciones: fija ' + id, '', String(it.tipo || ''), nombre);
+    if (rol !== 'dlx') {
+      this.aBandeja(DUENO, 'mods-fijar:' + ahora, 'socio', ('📌 ' + nombre + ' fijó una publicación').slice(0, 120),
+        ('Una de tipo «' + String(it.tipo || '') + '» (' + id + '), arriba de Publicaciones por ' + FIJO_DIAS + ' días.').slice(0, 240),
+        HUB + '/freestyle-rap/publicaciones', '', ahora);
+    }
+    await this.espejarMuroNo(false);
+    return { ok: true, fijo: actual() };
+  }
+
+  /**
+   * 🎭 MARCAR UN EVENTO DE ESTILO DESDE EL EVENTO (Mods, 20/11/2026; sólo Dlx). Es el mismo ajuste que el Dashboard
+   * (`eventos_estilo`, con su historial y su Deshacer), cambiado acá adentro para no pisar lo que se haya marcado en otra
+   * pestaña. `ids`: las claves del evento (su número y/o `a:<id del anuncio>`); se guarda en la primera, como el Dashboard
+   */
+  modsEstilo(d) {
+    const accion = String((d && d.accion) || 'ver');
+    const actual = Object.assign({}, this.ajustes().eventos_estilo || {});
+    if (accion === 'ver') return { ok: true, marcados: actual };
+    const ids = Array.isArray(d && d.ids) ? d.ids.map(String).filter((k) => /^(a:[0-9]{15,22}|[0-9]{1,6})$/.test(k)) : [];
+    if (!ids.length) return { error: 'datos' };
+    for (const k of ids) delete actual[k];
+    if (accion === 'marcar') {
+      if (!JUEGOS.includes(String(d.es || ''))) return { error: 'datos' };
+      actual[ids[0]] = String(d.es);
+    } else if (accion !== 'quitar') return { error: 'datos' };
+    const v = ajusteValido('eventos_estilo', Object.keys(actual).length ? actual : null);
+    if (v === undefined) return { error: 'valor' };
+    this.ajuste({ cual: 'eventos_estilo', valor: v, por: String(d.quien || '') });
+    this.socioAnotar('LG', String(d.quien || ''), 'dlx', 'estilo: ' + accion + ' ' + ids[0], '', accion === 'marcar' ? String(d.es) : '', 'Dlx');
+    return { ok: true, marcados: v || {} };
   }
 
   socioAnotar(sv, quien, rol, que, antes, despues, n = '') {

@@ -7350,4 +7350,18 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .app .om-b.lapiz{border-color:#E41373;color:var(--magenta-tx,#E41373)}
 .app .om-b.fuerte{background:#E41373;border-color:#E41373;color:#fff}
 .om-err{color:var(--magenta-tx,#E41373)}
+.md-qe-ok{color:var(--verde,#29B298)}
+/* 🪪 quién es quién en el perfil y 🎭 de estilo en el evento (Mods, 20/11/2026): mods_perfil.jsx y mods_estilo.jsx */
+.md-qe{display:flex;flex-direction:column;gap:10px}
+.md-qe .om{margin:0}
+.md-qe-c{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.md-qe-c h3{margin:0;font:800 17px/1.2 Archivo,sans-serif;color:var(--magenta-tx,#E41373)}
+.md-qe-modos{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.md-qe-d{font:500 13.5px/1.4 Archivo,sans-serif;color:var(--gris,var(--tinta))}
+.md-qe-in{display:flex;flex-direction:column;gap:4px;max-width:420px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.md-qe-in input,.md-est select{min-height:38px;padding:0 10px;border:1.4px solid var(--linea);border-radius:3px;background:var(--caja,transparent);color:var(--tinta);font:500 15px/1 Archivo,sans-serif;text-transform:none;letter-spacing:0}
+.md-qe-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.md-qe-l li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font:600 13.5px/1.35 Archivo,sans-serif}
+.ed-fija{margin-right:8px;color:var(--magenta-tx,#E41373)}
+@media (max-width: 899.98px){.md-qe-in input,.md-est select{min-height:44px;font-size:16px}}
 @media (max-width: 899.98px){.app .om-b{min-height:44px}}

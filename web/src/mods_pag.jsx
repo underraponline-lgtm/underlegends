@@ -9,12 +9,14 @@
 // Worker, los Admin y Moderadores de la página en llaves y ligas (`liga` de `socio-roles`).
 // Tanda 3 (20/11/2026, con el Worker): «Alguien…» en la lente (sólo Dlx: lo de una persona, para mirar), el registro de
 // Mods del servidor (`/avisos/mods`, de `socio_log`) y «Ocultar» en las publicaciones (mods_ocultar.jsx).
-// ⏳ Lo que falta: los lápices en los perfiles (quién es quién) y en los eventos (de estilo), y fijar una publicación.
+// Tanda 4 (20/11/2026, con el Worker, Dlx: «termina lo que queda de Mods»): quién es quién en los perfiles (sólo Dlx,
+// mods_perfil.jsx), marcar un evento de estilo desde el evento (Dlx, y el staff de un Tier 1 o 2: mods_estilo.jsx) y
+// fijar una publicación arriba (Dlx y los Admin y Moderadores de la página, en mods_ocultar.jsx).
 import { useEffect, useState } from 'react';
 import { DUENO } from './liga.js';
 import { ahoraReal, deshechaMods, ponerMod, prendidosMods, rolMods, tieneMods, useHistorialMods, useModsEstado, useQuienMod } from './mods.js';
 import { horaMods } from './mods.jsx';
-import { pedirLlave, pedirRoles, pedirStaff } from './panelsocio.js';
+import { pedirLlave, pedirMods, pedirRoles, pedirStaff } from './panelsocio.js';
 import { abrirDePrueba, abrirMomento } from './drops.jsx';
 import { pedirRecorrido } from './primera.js';
 import { Ico } from './piezas.jsx';
@@ -143,7 +145,13 @@ function Hecho() {
   const deshacer = (x) => {
     if (va || !x.deshacer) return;
     setVa(x.t); setErr('');
-    const p = x.deshacer.tipo === 'muro' ? pedirStaff(x.deshacer.sv, 'muro', 'mostrar', { pub: x.deshacer.pub }) : pedirLlave(x.deshacer.sv, 'corregir', { fix: x.deshacer.fix });
+    const D = x.deshacer;
+    // 🪪 quién es quién, 📌 la fijada y 🎭 un evento de estilo (20/11/2026): cada uno vuelve atrás por su camino
+    const p = D.tipo === 'muro' ? pedirStaff(D.sv, 'muro', 'mostrar', { pub: D.pub })
+      : D.tipo === 'ident' ? pedirMods('ident', 'quitar', { id: D.id })
+        : D.tipo === 'fijar' ? pedirMods('fijar', 'soltar')
+          : D.tipo === 'estilo' ? (D.dlx ? pedirMods('estilo', 'quitar', { ids: D.ids }) : pedirStaff(D.sv, 'estilo', 'quitar', { id: (D.ids || [])[0] }))
+            : pedirLlave(D.sv, 'corregir', { fix: D.fix });
     p.then((j) => {
       setVa(0);
       if (j && j.ok) deshechaMods(x.t); else setErr('No se pudo deshacer: prueba de nuevo en un rato.');
@@ -289,7 +297,9 @@ export function ModsPagina({ liga, dc }) {
                 {owner || deLiga ? <a className="md-fl" href="#/ligas"><span className="md-ic"><Ico n="ligas" t={18} /></span><span><h3>Las ligas</h3><p>Al final de cada liga: quién ganó, una que no cuenta, cargar una batalla, un DF, un invitado o el campeón.</p></span><i>›</i></a> : null}
                 {Q.admin ? <a className="md-fl" href="#/crews"><span className="md-ic"><Ico n="crews" t={18} /></span><span><h3>Las crews</h3><p>Sus Ajustes, rangos y pedidos, como su Líder.</p></span><i>›</i></a> : null}
                 {Q.admin ? <a className="md-fl" href="#/competencias"><span className="md-ic"><Ico n="competencias" t={18} /></span><span><h3>Competencias</h3><p>Todas las llaves de la Copa y la Rapid, también donde no juegas.</p></span><i>›</i></a> : null}
-                {owner || deLiga ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Publicaciones</h3><p>Ocultar una publicación de cualquier servidor, desde la publicación. Sale del muro en la próxima vuelta del ciclo.</p></span><i>›</i></a> : null}
+                {owner || deLiga ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Publicaciones</h3><p>Ocultar una publicación de cualquier servidor, o fijar una arriba: sale de titular por 3 días. Las dos, en la próxima vuelta del ciclo.</p></span><i>›</i></a> : null}
+                {owner ? <a className="md-fl" href="#/ranking"><span className="md-ic"><Ico n="ranking" t={18} /></span><span><h3>Los perfiles</h3><p>Quién es quién, arriba de cada perfil: juntar a dos nombres que son la misma persona, o separarlos.</p></span><i>›</i></a> : null}
+                {owner ? <a className="md-fl" href="#/eventos"><span className="md-ic"><Ico n="eventos" t={18} /></span><span><h3>Los eventos de estilo</h3><p>En cada evento: marcarlo de un estilo, como en tu Dashboard. Jugarlo da nivel en ese estilo.</p></span><i>›</i></a> : null}
                 {owner ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Los comentarios</h3><p>Borrar cualquier comentario, desde el comentario. Siempre, sin prender nada.</p></span><i>›</i></a> : null}
                 {owner ? <a className="md-fl" href="#/socio"><span className="md-ic"><Ico n="servidor" t={18} /></span><span><h3>El panel de cualquier servidor</h3><p>Como su dueño: sus números, el bot y su equipo.</p></span><i>›</i></a> : null}
               </div>
