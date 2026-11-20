@@ -367,3 +367,222 @@
 .sp-vs-f:disabled{cursor:default}
 .sp-vs-f:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .sp-vs-def{display:grid;place-items:center;aspect-ratio:16/10;font:800 14px/1.2 Archivo,sans-serif;text-transform:uppercase}
+
+/* ── 🎛️ LA CABINA (19/11/2026): la estructura de la llave (escena + papel con pestañas) con la barra lateral de la B.
+   Las medidas salen de css/rka.css (franja, cajas, pestañas). Ningún color de servidor vive acá: `--cv` lo pone la
+   página con el color del lobby, aclarado hasta que se vea sobre el negro. Prefijo `cz-` (`cb-` ya era de vivo.css) ── */
+.cz{--cz-caja:color-mix(in srgb,var(--esc-tinta) 6%,var(--escenario));--cz-vtx:var(--verde);--cz-pad:clamp(20px,3vw,48px)}
+.clara .cz{--cz-vtx:#0A7D69}
+.cz-cuerpo{display:grid;grid-template-columns:252px minmax(0,1fr)}
+.cz-principal{min-width:0}
+.cz-top-cel,.cz-elegir-cel{display:none}
+/* la barra: escenario negro hasta abajo; adentro, fija */
+.cz-lado-col{background:var(--escenario);border-right:1px solid var(--esc-linea)}
+.cz-lado{position:sticky;top:0;height:100vh;min-height:640px;display:flex;flex-direction:column;gap:20px;padding:20px 16px;color:var(--esc-tinta);overflow:auto;scrollbar-width:none}
+.cz-emb{display:flex;align-items:center;gap:12px;min-width:0}
+.cz-logo{width:52px;height:52px;flex:none;display:grid;place-items:center;background:#030304;border:3px solid #F6F6F6;box-shadow:5px 5px 0 var(--cv);overflow:hidden;color:#F6F6F6;font:900 14px/1 Archivo,sans-serif}
+.cz-logo img{width:100%;height:100%;object-fit:cover}
+.cz-emb > span:last-child{min-width:0}
+.cz-emb b{display:block;font:900 15px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
+.cz-emb small{display:block;margin-top:4px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--esc-gris)}
+.cz-lado nav{display:flex;flex-direction:column;gap:4px}
+.cz-lado nav button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:42px;padding:6px 12px;font:800 14px/1.15 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;color:var(--esc-gris)}
+.cz-lado nav button:hover{color:var(--esc-tinta)}
+.cz-lado nav button svg{width:18px;height:18px;flex:none}
+.cz-lado nav button[aria-current="page"]{background:#F6F6F6;color:#030304;box-shadow:4px 4px 0 var(--verde)}
+.cz-lado nav button:focus-visible,.cz-tier:focus-visible,.cz-pes button:focus-visible,.cz-vs-l:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
+.cz-cuenta{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;margin-left:auto;background:var(--magenta);color:#FFF;font:900 12px/1 Archivo,sans-serif}
+.cz-lado .sp-elegir{margin:0}
+/* la tarjeta del tier: corta mientras se ve la cabina, completa al bajar al papel */
+.cz-tier{all:unset;box-sizing:border-box;cursor:pointer;margin-top:auto;display:flex;flex-direction:column;gap:10px;padding:14px;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 var(--cv)}
+.cz-tier.corta{cursor:default}
+.cz-tier .t{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.cz-tier .t b{font:900 26px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.cz-tier .t span{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.cz-tier p{margin:0;font:600 14px/1.4 Archivo,sans-serif}
+.cz-tier u{font:800 13px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;text-underline-offset:3px}
+.cz-tier .cz-xp i{border-color:#030304}
+/* ── la escena ── */
+.cz-esc{position:relative;overflow:hidden;background:var(--escenario);color:var(--esc-tinta);padding:40px max(var(--cz-pad),calc((100% - 1180px) / 2)) 36px;display:flex;flex-direction:column;gap:22px}
+.cz-deco{position:absolute;pointer-events:none}
+.cz-deco.d1{right:-70px;top:28px;width:250px;height:46px;background:var(--magenta);transform:rotate(-32deg)}
+.cz-deco.d2{left:0;bottom:0;width:110px;height:110px;background:var(--verde);clip-path:polygon(0 0,0 100%,100% 100%)}
+.cz-esc > :not(.cz-deco){position:relative}
+.cz-cab{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:start}
+.cz-h1{margin:14px 0 0;font:900 58px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;text-wrap:balance}
+.cz-d{margin:14px 0 0;padding:0;max-width:46ch;font:500 16px/1.45 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-d b{color:var(--esc-tinta)}
+.cz-meta{margin-top:12px;display:flex;flex-direction:column;gap:4px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris)}
+.cz-acc{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+.cz .btn.cz-borde{border:1.6px solid var(--esc-tinta);color:var(--esc-tinta);background:none}
+.cz-stk{margin:10px 18px 0 0;font:900 38px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;background:#F6F6F6;color:#030304;padding:12px 16px;border:2px solid #030304;box-shadow:6px 6px 0 var(--cv);transform:rotate(-4deg);white-space:nowrap}
+/* la franja: cuatro medidores de 10 luces, cada uno con contra qué se mide */
+.cz-franja{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;background:var(--cz-caja)}
+.cz-kpi{display:grid;gap:6px;align-content:start;padding:14px 16px;min-width:0}
+.cz-kpi + .cz-kpi{border-left:1px solid var(--esc-linea)}
+.cz-kpi dt{font:600 13px/1.2 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-kpi dd{margin:0}
+.cz-v{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 8px;font:800 24px/1.05 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--esc-tinta)}
+.cz-v em{font-style:normal;font-weight:700;font-size:15px;color:var(--esc-gris)}
+.cz-vu{display:flex;gap:3px}
+.cz-vu i{display:block;flex:1;max-width:22px;height:7px;background:var(--esc-linea)}
+.cz-vu i.on{background:var(--verde)}
+.cz-c{font:500 13px/1.35 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-c b{color:var(--esc-tinta);font-weight:600}
+.cz-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;grid-template-areas:"aire consola" "cola consola";grid-template-rows:auto 1fr;gap:18px;align-items:start}
+.cz-consola-caja{align-self:stretch}
+.cz-caja{background:var(--cz-caja);padding:16px;min-width:0}
+.cz-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 0 12px;font:800 14px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--esc-tinta)}
+.cz-h small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:var(--esc-gris);text-align:right}
+/* EN EL AIRE: la pieza blanca, con la luz roja mientras falte algo */
+.cz-aire{grid-area:aire;--tinta:#030304;--gris:#55554F;--suave:#DCDCD7;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 var(--verde);padding:18px 18px 12px}
+.cz-aire-cab{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding-bottom:14px;border-bottom:1px solid #DCDCD7}
+.cz-luz{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;background:#030304;color:#F6F6F6;font:900 15px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;white-space:nowrap}
+.cz-luz i{position:relative;width:12px;height:12px;border-radius:50%;background:var(--magenta)}
+.cz-luz i::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--magenta);opacity:0}
+.cz-aire.ok .cz-luz i{background:var(--verde)} .cz-aire.ok .cz-luz i::after{border-color:var(--verde)}
+.cz-aire-cab small{display:block;margin-bottom:4px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#55554F}
+.cz-aire-cab b{display:block;font:800 19px/1.25 Archivo,sans-serif}
+.cz-req{list-style:none;margin:0;padding:0}
+.cz-req li{display:grid;grid-template-columns:82px minmax(0,1fr);align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #DCDCD7}
+.cz-req li:last-child{border-bottom:0}
+.cz-tx b{display:block;font:800 16px/1.25 Archivo,sans-serif}
+.cz-tx small{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:#55554F}
+.cz-sello{justify-self:center;font:900 14px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;color:#086354;border:2.5px solid #086354;padding:6px 7px;transform:rotate(-8deg)}
+.cz-falta{justify-self:center;font:900 14px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;color:#C40F64;border:2.5px dashed #C40F64;padding:6px 7px}
+.cz-xp{display:inline-flex;gap:3px;align-items:center;flex-wrap:wrap}
+.cz-xp i{display:block;width:13px;height:11px;border:1.5px solid #030304}
+.cz-xp i.on{background:var(--verde);border-color:var(--verde)}
+.cz-xp i.mag{border-color:#C40F64;border-style:dashed}
+.cz-aire-pie{margin:10px 0 0;font:600 13px/1.4 Archivo,sans-serif;color:#55554F}
+/* LA CONSOLA */
+.cz-consola-caja{grid-area:consola;display:flex;flex-direction:column}
+.cz-consola{flex:1;display:grid;grid-template-columns:72px repeat(4,minmax(0,1fr));gap:6px;align-items:stretch;padding:6px 2px 0}
+.cz-ch{display:grid;grid-template-rows:auto minmax(150px,1fr) auto;justify-items:center;gap:8px;text-align:center;min-width:0}
+.cz-val{font:900 15px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.cz-val small{font-weight:700;color:var(--esc-gris)}
+.cz-riel{position:relative;width:34px;display:flex;justify-content:center}
+.cz-riel::before{content:"";position:absolute;top:0;bottom:0;width:6px;background:#000;box-shadow:inset 0 0 0 1px var(--esc-linea)}
+.cz-ll{position:absolute;bottom:0;width:6px;background:var(--verde);transform-origin:bottom}
+.cz-perilla{position:absolute;left:50%;width:34px;height:18px;margin-left:-17px;background:#F6F6F6;border:2px solid #030304;transform:translateY(50%)}
+.cz-perilla::after{content:"";position:absolute;left:4px;right:4px;top:50%;height:2px;margin-top:-1px;background:#030304}
+.cz-nom{font:700 14px/1.1 "Barlow Condensed",sans-serif;color:var(--esc-gris)}
+.cz-ch.tope .cz-nom{color:var(--esc-tinta)}
+.cz-ch.maestro .cz-riel{width:60px}
+.cz-muesca{position:absolute;left:0;right:0;height:0;border-top:2px dashed var(--esc-linea)}
+.cz-muesca span{position:absolute;left:-2px;top:-9px;font:900 13px/1 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-muesca.aca span{color:var(--esc-tinta)}
+.cz-perilla.tier{width:40px;height:40px;margin-left:-14px;background:#030304;border:2px solid #F6F6F6;box-shadow:4px 4px 0 var(--cv);overflow:hidden}
+.cz-perilla.tier::after{display:none}
+.cz-perilla.tier img{width:100%;height:100%;object-fit:cover}
+.cz-subir{margin-top:16px;padding-top:12px;border-top:1px solid var(--esc-linea);display:flex;flex-direction:column;gap:8px}
+.cz-subir > span{font:800 14px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.cz-r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;font:600 14px/1.3 Archivo,sans-serif}
+.cz-r em{font-style:normal;font-weight:800}
+.cz-r.ok{color:var(--esc-gris)} .cz-r.ok em{color:var(--verde)}
+.cz-subir p,.cz-nota-esc{margin:0;font:600 14px/1.35 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-subir p.llega{color:var(--verde)}
+.cz-nota-esc{margin-top:12px}
+/* EN COLA: la próxima pregunta del bot */
+.cz-cola{grid-area:cola}
+.cz-cola-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:center}
+.cz-vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center;max-width:460px}
+.cz-vs.muchos{display:flex;flex-wrap:wrap;gap:8px}
+.cz-vs-x{font:900 20px/1 Archivo,sans-serif;font-style:normal;color:#FF4FA3}
+.cz-vs-l{all:unset;box-sizing:border-box;cursor:pointer;display:grid;justify-items:center;gap:8px;padding:10px 6px;border:2px solid transparent;text-align:center;color:var(--esc-tinta);min-height:110px;align-content:center}
+.cz-vs-l:hover{border-color:var(--verde)}
+.cz-vs-l.pide{border-color:var(--verde);background:color-mix(in srgb,var(--verde) 14%,transparent)}
+.cz-vs-l b{font:800 15px/1.1 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:break-word}
+.cz-vs-l small{font:600 13px/1.3 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-vs-l:disabled{cursor:default;opacity:.6}
+.cz .cz-cara{width:52px;height:52px;border:2px solid #F6F6F6}
+.cz-cola-pie{display:flex;flex-direction:column;gap:10px;font:600 15px/1.4 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-cola-pie p{margin:0}
+.cz-cola-pie b{color:var(--esc-tinta)}
+.cz-cola-pie a{color:var(--esc-tinta);text-decoration:underline;text-underline-offset:3px}
+.cz-pie{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:10px;border-top:1px solid var(--esc-linea)}
+.cz-msg{color:var(--verde) !important}
+.cz-vacia{margin:0;font:600 15px/1.4 Archivo,sans-serif;color:var(--esc-gris)}
+/* ── el papel ── */
+.cz-papel{padding:28px max(var(--cz-pad),calc((100% - 1180px) / 2)) 44px}
+.cz-pes{display:flex;gap:24px;margin:0 0 8px;border-bottom:1px solid var(--suave);overflow-x:auto;scrollbar-width:none}
+.cz-pes::-webkit-scrollbar{display:none}
+.cz-pes button{all:unset;cursor:pointer;position:relative;flex:none;display:inline-flex;align-items:center;gap:6px;padding:6px 0 12px;color:var(--gris);font:800 15px/1 Archivo,sans-serif}
+.cz-pes button small{font:700 14px/1 "Barlow Condensed",sans-serif;color:inherit}
+.cz-pes button .cz-cuenta{margin-left:0}
+.cz-pes button[aria-selected="true"]{color:var(--tinta)}
+.cz-pes button[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--tinta)}
+.cz-papel > .sec,.cz-papel > section{padding-inline:0}
+/* lo que ya tocaste: boletos con su talón de fecha, en piel */
+.cz-bols{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+.cz-bol{display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;background:var(--caja);min-height:68px}
+.cz-f{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:var(--inv);color:var(--inv-tinta)}
+.cz-f b{font:900 24px/1 Archivo,sans-serif;font-stretch:115%}
+.cz-f span{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em}
+.cz-n{padding:10px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.cz-n b{font:900 15px/1.2 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
+.cz-n span{font:600 14px/1.3 Archivo,sans-serif;color:var(--gris)}
+.cz-d{padding:0 16px}
+.cz-chip{display:inline-block;white-space:nowrap;font:900 12px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;padding:5px 7px}
+.cz-chip.si{background:var(--verde);color:#030304}
+.cz-chip.no{border:2px solid var(--magenta-tx,#C40F64);color:var(--magenta-tx,#C40F64)}
+/* ── debajo de 1200 px la barra se vuelve una barra de arriba; debajo de 900, todo en una columna ── */
+@media (max-width:1199px){
+  .cz-cuerpo{grid-template-columns:1fr}
+  .cz-lado-col{display:none}
+  .cz-top-cel{display:flex;align-items:center;gap:12px;padding:12px max(var(--cz-pad),calc((100% - 1180px) / 2));background:var(--escenario);color:var(--esc-tinta);border-bottom:1px solid var(--esc-linea)}
+  .cz-elegir-cel{display:block;padding:10px var(--cz-pad) 0;background:var(--escenario)}
+}
+@media (max-width:899px){
+  .cz-esc{padding:24px 16px;gap:16px}
+  .cz-papel{padding:20px 16px 32px}
+  .cz-top-cel{padding:12px 16px}
+  .cz-top-cel .cz-logo{width:40px;height:40px;border-width:2px;box-shadow:3px 3px 0 var(--cv)}
+  .cz-deco.d1{width:150px;height:30px;right:-50px;top:18px}
+  .cz-deco.d2{width:70px;height:70px}
+  .cz-cab{grid-template-columns:1fr}
+  .cz-h1{font-size:28px;margin-top:22px}
+  .cz-stk{position:absolute;right:4px;top:-8px;font-size:18px;padding:7px 9px;margin:0;box-shadow:4px 4px 0 var(--cv)}
+  .cz-d{font-size:15px}
+  .cz-acc{flex-direction:column}
+  .cz-acc .btn{width:100%}
+  .cz-franja{grid-template-columns:1fr 1fr}
+  .cz-kpi{padding:12px}
+  .cz-kpi:nth-child(odd){border-left:0}
+  .cz-kpi:nth-child(n+3){border-top:1px solid var(--esc-linea)}
+  .cz-v{font-size:20px}
+  .cz-grid{grid-template-columns:1fr;grid-template-areas:"aire" "cola" "consola"}
+  .cz-aire-cab{grid-template-columns:1fr;gap:10px}
+  .cz-aire-cab .cz-luz{justify-self:start}
+  .cz-req li{grid-template-columns:auto minmax(0,1fr);gap:12px}
+  .cz-cola-in{grid-template-columns:1fr;gap:12px}
+  .cz-consola{grid-template-columns:62px repeat(4,minmax(0,1fr));gap:4px}
+  .cz-ch{grid-template-rows:auto minmax(170px,1fr) auto}
+  .cz-ch.maestro .cz-riel{width:52px}
+  .cz-nom{font-size:13px}
+  .cz-pes{gap:20px}
+  .cz-bol{grid-template-columns:64px minmax(0,1fr)}
+  .cz-d{grid-column:2;padding:0 16px 12px}
+}
+/* ── lo que se mueve, sólo al abrir (a los 1,6 s la cabina pasa a `quieto`) ── */
+.cz.quieto *{animation:none !important}
+@media (prefers-reduced-motion: no-preference){
+  .cz-esc > :not(.cz-deco){animation:cz-entra .44s cubic-bezier(.16,1,.3,1) both}
+  .cz-franja{animation-delay:.07s !important} .cz-grid{animation-delay:.14s !important}
+  @keyframes cz-entra{from{opacity:0;transform:translateY(14px)}}
+  .cz-vu i.on{animation:cz-prende .01s linear both;animation-delay:calc(var(--b,0) * 45ms + 300ms)}
+  .cz-xp i.on{animation:cz-prende .01s linear both;animation-delay:calc(var(--b,0) * 22ms + 500ms)}
+  @keyframes cz-prende{from{background:transparent}}
+  .cz-ll{animation:cz-sube .8s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--b,0) * 90ms + 350ms)}
+  @keyframes cz-sube{from{transform:scaleY(0)}}
+  .cz-perilla{animation:cz-perilla .8s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--b,0) * 90ms + 350ms)}
+  @keyframes cz-perilla{from{bottom:0}}
+  .cz-sello{animation:cz-sello .32s cubic-bezier(.2,1.4,.4,1) both;animation-delay:.6s}
+  @keyframes cz-sello{from{opacity:0;transform:rotate(-8deg) scale(1.9)}}
+  .cz-luz i::after{animation:cz-onda 1.4s ease-out 3 both;animation-delay:.6s}
+  @keyframes cz-onda{0%{opacity:.9;transform:scale(.6)}100%{opacity:0;transform:scale(1.6)}}
+}
+/* en la barra, los servidores de quien tiene más de uno bajan de línea: en la compu no hay filas de costado */
+.cz-lado .sp-elegir{background:none;border:0}
+.cz-lado .sp-elegir ol{flex-wrap:wrap;padding:0;overflow:visible}
+.cz-lado .sp-elegir button{min-height:38px}

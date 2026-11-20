@@ -18,13 +18,12 @@
 // servidor (`panelSocio()` de bot/avisos.js); Dlx los ve todos. Pregunta en silencio: a Discord se va recién si la persona
 // aprieta «Entrar con Discord».
 // ⚠️ SIN EMOJIS (13/10/2026: cada celular los dibuja distinto): los títulos de cada rapero llevan el ícono de la copa.
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
-import { limpio, msDeLocal, nombreEv, num, siglaDe } from './liga.js';
-import { DosToques, Ico, Sec, diaET, masDias, silueta } from './piezas.jsx';
+import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe } from './liga.js';
+import { Cara, DosToques, Ico, Sec, diaET, masDias } from './piezas.jsx';
 import { useNumero } from './anima.js';
-import { Indice, Portada } from './entidad2.jsx';
 import CSS_PAGINA from './css/socio2.css?inline';
 import { usarCss } from './css.js';
 
@@ -45,7 +44,6 @@ const PARTES = [['actividad', 'Actividad', 35, 'Eventos por semana: con 2 llega 
   ['comunidad', 'Comunidad', 15, 'Los nuevos que vuelven, las promos y las ligas.']];
 // a qué parte del panel lleva cada sugerencia (`sug_ir`, lo manda el ciclo: `sugerencias_ir()` de bot/tiers.py)
 const IR = { 'sp-vuelven': 'Ver quién vuelve', 'sp-cuando': 'Ver cuándo', 'sp-semanas': 'Ver las semanas', 'sp-gente': 'Ver tu gente', 'sp-puntaje': 'Ver el puntaje', 'sp-ajustes': 'Ver los ajustes' };
-const TIER = { 1: 'TIER 1 · TEMPORADA Y COMPETITIVO', 2: 'TIER 2 · TEMPORADA Y COMPETITIVO', 3: 'TIER 3 · SU PÁGINA Y SUS LIGAS' };
 // lo que trae el panel, para quien todavía no entró
 const TRAE = [['copa', 'Su puntaje', 'De 0 a 100 con las últimas 4 semanas: lo que mira la Liga para el nivel de cada socio.'],
   ['brote', 'Lo que conviene', 'Qué días juntan más gente, qué días la Liga está llena y cómo vienes.'],
@@ -93,52 +91,6 @@ function Elegir({ liga, svs, sel, onSel }) {
         </li>
       ))}</ol>
     </nav>
-  );
-}
-
-// ── el puntaje: la tendencia y sus cuatro partes. Con todo en cero, una línea: cuatro barras vacías no dicen nada ──
-function Puntaje({ x }) {
-  const dif = (x.puntos || 0) - (x.antes || 0);
-  if (!x.puntos && !Object.values(x.partes || {}).some(Boolean)) {
-    return <p className="sp-vacio">Todavía no hay con qué medirlo: el puntaje se mueve con tus eventos de las últimas 4 semanas.</p>;
-  }
-  const filas = PARTES.map(([k, t, tope, que]) => ({ k, t, tope, que, v: (x.partes || {})[k] || 0 }));
-  const falta = filas.reduce((a, b) => (b.tope - b.v > a.tope - a.v ? b : a));
-  return (
-    <>
-      {/* 📈 sólo contra 4 semanas de ESTA temporada: contra las de antes del arranque, todos «subían» */}
-      {x.compara === false
-        ? <p className="sp-tend">La comparación con las 4 semanas anteriores llega el <b>{fechaCorta(x.compara_desde)}</b>, cuando la temporada tenga 8 semanas.</p>
-        : <p className={'sp-tend' + (dif > 0 ? ' sube' : dif < 0 ? ' baja' : '')}><b>{dif > 0 ? '▲ ' + dif : dif < 0 ? '▼ ' + -dif : '='}</b> contra las 4 semanas de antes, que dieron {x.antes || 0}.</p>}
-      {/* cada parte, tan ancha como lo que pesa: lo lleno de la barra entera ES el puntaje */}
-      <div className="sp-regla" role="img" aria-label={'Puntaje: ' + filas.map((f) => f.t + ' ' + f.v + ' de ' + f.tope).join(', ')}>
-        {filas.map((f) => <span key={f.k} className={f.v >= f.tope ? 'tope' : ''} style={{ flexGrow: f.tope }}><u style={{ width: pct(f.v, f.tope) }} /></span>)}
-      </div>
-      <ol className="sp-partes">{filas.map((f) => (
-        <li key={f.k} className={f.v >= f.tope ? 'tope' : ''} style={{ '--peso': f.tope }}>
-          <b>{f.t}</b><span><strong>{f.v}</strong> de {f.tope}</span>
-          <small>{f.que}</small>
-        </li>
-      ))}</ol>
-      {falta.tope > falta.v ? <p className="sp-falta">Donde más puntos puedes sumar: <b>{falta.t}</b>, te faltan {falta.tope - falta.v}.</p> : null}
-    </>
-  );
-}
-
-// ── cuánto falta para el tier de arriba: lo que mira la Liga, con cómo va cada cosa. En Tier 1, nada ──
-function ComoSubir({ s }) {
-  if (!s || !s.a) return null;
-  const van = s.pide.filter((x) => x[2]).length;
-  return (
-    <div className="sp-sube">
-      <h3 className="sp-h">Para llegar a Tier {s.a} <small>{van} de {s.pide.length}</small></h3>
-      <ul>{s.pide.map(([t, d, si]) => (
-        <li key={t} className={si ? 'si' : ''}><i aria-hidden="true">{si ? <Ico n="ok" t={14} /> : null}</i><b>{t}</b><span>{si ? <span className="sp-oculto">Cumplido: </span> : null}{d}</span></li>
-      ))}</ul>
-      {/* 👥 los miembros, aparte: desde el 19/11/2026 se recomiendan, no se piden (`como_subir()` los manda en `rec`) */}
-      {s.rec ? <p className="sp-nota">{s.rec[0]} ({s.rec[1]}). No es un requisito.</p> : null}
-      <p className="sp-nota">Se mide solo con tus últimas 4 semanas. Cuando cumplas todo, Dlx confirma el cambio.</p>
-    </div>
   );
 }
 
@@ -559,129 +511,297 @@ function Ajustes({ sv }) {
   );
 }
 
-// ── un servidor, entero ──
+// ── 🎛️ LA CABINA (19/11/2026). Dlx: «remakea… el panel que tiene cada owner… porque es demasiado», eligió la B, «que sea
+// viva no triste», «remakéalo más, mira el estilo con los últimos remakes» → «Como la llave» + «La cabina», y «me gusta,
+// sólo agrega una barra lateral así como antes». Maqueta: https://claude.ai/artifact/2DMvUX7dBdmxcCv9kZHGrY (versión 5).
+// - LA ESTRUCTURA DE LA LLAVE (6.73) Y EL RANKING (6.74): escena negra arriba (el nombre, la franja de cuatro medidores con
+//   su porqué, «En el aire» = la pieza blanca, la consola y la cola del bot) y el papel abajo con pestañas.
+// - LA BARRA LATERAL DE LA B: el emblema, Hoy + las cinco pestañas, y la tarjeta del tier fija abajo (corta mientras se ve la
+//   cabina, completa al bajar al papel). Debajo de 1200 px se vuelve una barra de arriba.
+// - NADA SE SACÓ: las 17 secciones de antes viven en las pestañas, con las mismas piezas (Preguntas, LlavesStaff, LigasStaff…).
+// - LO QUE PIDE CADA TIER SALE DEL CICLO (`pide`, `subir`, `seguir` del panel; `SEGUIR` y `SUBE` de bot/tiers.py): acá no se
+//   escribe ninguna regla. Sin eso todavía (el ciclo de antes), «En el aire» dice que se mide en la próxima corrida.
+// - CONTESTAR ES DEFINITIVO (vale la primera respuesta): la cola pide un segundo toque (`DosToques`) en vez de dejar deshacer.
+// - SE ANIMA SÓLO AL ABRIR: a los 1,6 s la cabina pasa a `quieto` y lo que se monta después (otra pestaña) ya no se mueve.
+const AREAS_CZ = [['cola', 'Para contestar'], ['setlist', 'El setlist'], ['gente', 'Tu gente'], ['servidor', 'Tu servidor'], ['ajustes', 'Ajustes']];
+const SVG_CZ = (d) => <svg aria-hidden="true" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square">{d}</svg>;
+const ICO_CZ = {
+  hoy: SVG_CZ(<path d="M2.5 8.5 9 3l6.5 5.5V15h-13z" />),
+  cola: SVG_CZ(<path d="M2.5 3.5h13v9h-7l-4 3v-3h-2z" />),
+  setlist: SVG_CZ(<><rect x="2.5" y="3.5" width="13" height="12" /><path d="M2.5 7.5h13M6 1.5v3M12 1.5v3" /></>),
+  gente: SVG_CZ(<><circle cx="7" cy="6" r="2.8" /><path d="M2 15.5c.6-2.7 2.5-4 5-4s4.4 1.3 5 4M12.5 3.6a2.6 2.6 0 0 1 0 4.8M14 11.6c1.1.6 1.8 1.8 2.1 3.9" /></>),
+  servidor: SVG_CZ(<><rect x="2.5" y="2.5" width="13" height="13" /><path d="M2.5 6.5h13M5.5 10h7M5.5 12.8h4.5" /></>),
+  ajustes: SVG_CZ(<><circle cx="9" cy="9" r="2.4" /><path d="M9 1.5v2.5M9 14v2.5M1.5 9H4M14 9h2.5M3.7 3.7l1.8 1.8M12.5 12.5l1.8 1.8M3.7 14.3l1.8-1.8M12.5 5.5l1.8-1.8" /></>),
+};
+const LO_ALTO = '«Unirme a los Tier 1», el escalón de arriba de la Liga';
+// el color del servidor (del lobby, nunca escrito en el CSS), aclarado hasta que se vea sobre el negro: FFA es #26045B
+const visibleCz = (hex) => {
+  const a = /^#[0-9a-f]{6}$/i.test(hex || '') ? hex : '#29B298';
+  const n = parseInt(a.slice(1), 16);
+  let c = [n >> 16 & 255, n >> 8 & 255, n & 255];
+  const L = (q) => q.reduce((s, v, i) => { const x = v / 255; return s + [0.2126, 0.7152, 0.0722][i] * (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4); }, 0);
+  for (let i = 0; i < 12 && (L(c) + 0.05) / (L([3, 3, 4]) + 0.05) < 3.4; i++) c = c.map((v) => Math.round(v + (255 - v) * 0.14));
+  return '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
+};
+// 📏 las 8 semanas de los requisitos: del ciclo (`m8`); si todavía no vino, de las semanas del panel (mismas cuentas)
+const ochoSemanas = (x) => {
+  const p = x.panel || {}, s8 = (p.semanas || []).slice(-8);
+  const ev = x.m8 ? x.m8.eventos : s8.reduce((a, s) => a + (s[1] || 0), 0);
+  const part = s8.reduce((a, s) => a + (s[2] || 0), 0);
+  const pe = x.m8 ? x.m8.por_evento : (ev ? part / ev : 0);
+  const nue = s8.reduce((a, s) => a + (s[3] || 0), 0);
+  // el promedio de la Liga, pesado por cuántos eventos tiene cada día (`liga`: [eventos por semana, raperos por evento])
+  const lg = p.liga || [], lev = lg.reduce((a, d) => a + (d[0] || 0), 0);
+  return { ev, pe, nue, lpe: lev ? lg.reduce((a, d) => a + (d[0] || 0) * (d[1] || 0), 0) / lev : 0 };
+};
+function Vu({ n }) {
+  return <span className="cz-vu" aria-hidden="true">{Array.from({ length: 10 }, (_, i) => <i key={i} className={i < n ? 'on' : ''} style={{ '--b': i }} />)}</span>;
+}
+function Bloques({ n, de, falta }) {
+  return <span className="cz-xp" aria-hidden="true">{Array.from({ length: de }, (_, i) => <i key={i} className={i < n ? 'on' : falta ? 'mag' : ''} style={{ '--b': i }} />)}</span>;
+}
+
+// ── la cola: la próxima pregunta del bot, contestada ahí (con dos toques: es definitivo) ──
+function Cola({ liga, sv, preg, setPreg, puede, verTodas }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const q = puede ? preg[0] : null;
+  const elegir = (i, nombre) => {
+    setOcup(true); setMsg('');
+    contestarFinal(sv, q.k, i < 0 ? 'z' : LETRAS[i]).then((j) => {
+      setOcup(false);
+      if (j && j.ok) { setPreg(j.preguntas || []); setMsg('Listo: ' + (j.ya || nombre) + '. Entra al ranking en la próxima media hora.'); }
+      else if (j && j.error === 'ya no está') { setPreg(preg.filter((y) => y.k !== q.k)); setMsg('Esa ya la había marcado alguien.'); }
+      else setMsg('No se pudo: ' + ((j && j.error) || 'la red') + '.');
+    });
+  };
+  return (
+    <section className="cz-caja cz-cola">
+      <h3 className="cz-h">En cola <small>{q ? (preg.length > 1 ? 'la próxima de ' + preg.length : 'la única') : 'nada en cola'}</small></h3>
+      {q ? (
+        <div className="cz-cola-in">
+          <div className={'cz-vs' + (q.lados.length === 2 ? '' : ' muchos')}>{q.lados.map((l, i) => (
+            <Fragment key={i}>
+              {i ? <i className="cz-vs-x">VS</i> : null}
+              <DosToques className="cz-vs-l" disabled={ocup} confirmar={<><b>¿Ganó {limpio(l)}?</b><small>Toca de nuevo para confirmar</small></>} onClick={() => elegir(i, l)}>
+                <Cara liga={liga} k={claveDe(l)} nombre={l} cls="cara cz-cara" /><b>{limpio(l)}</b>
+              </DosToques>
+            </Fragment>
+          ))}</div>
+          <div className="cz-cola-pie">
+            <p>¿Quién ganó? <b>{RONDA(q.ronda)} de {q.evento}</b>, {q.fecha}. Toca al ganador.
+              {q.link ? <> <a href={q.link} target="_blank" rel="noopener noreferrer">Ver la llave</a></> : null}</p>
+            {q.nadie ? <DosToques className="btn borde chico cz-borde" disabled={ocup} confirmar="Toca de nuevo: nadie siguió" onClick={() => elegir(-1, 'Nadie siguió')}>Nadie siguió</DosToques> : null}
+            {preg.length > 1 ? <div className="cz-pie"><span>Quedan <b>{preg.length - 1}</b> más en «Para contestar».</span><button type="button" className="btn borde chico cz-borde" onClick={verTodas}>Ver todas</button></div> : null}
+            {msg ? <p className="cz-msg" role="status">{msg}</p> : null}
+          </div>
+        </div>
+      ) : <p className="cz-vacia">{msg || (puede ? 'El bot leyó todas tus llaves: no hay nada que contestar.' : 'Las preguntas del bot las contestan el dueño y los moderadores.')}</p>}
+    </section>
+  );
+}
+
+// ── la consola: el fader de tu tier y uno por cada parte del puntaje, tan alto como lo que sumó de su tope ──
+function Consola({ x, logo, s }) {
+  const t = x.tier, alto = (n) => 10 + (3 - n) * 40;
+  return (
+    <section className="cz-caja cz-consola-caja">
+      <h3 className="cz-h">La consola <small>tu tier y tu puntaje</small></h3>
+      <div className="cz-consola">
+        <div className="cz-ch maestro"><span className="cz-val">Tier {t}</span>
+          <span className="cz-riel">{[1, 2, 3].map((n) => <span key={n} className={'cz-muesca' + (n === t ? ' aca' : '')} style={{ bottom: alto(n) + '%' }}><span>{n}</span></span>)}
+            <span className="cz-perilla tier" style={{ bottom: alto(t) + '%', '--b': 0 }}>{logo ? <img alt="" src={logo} /> : null}</span></span>
+          <span className="cz-nom">Tu tier</span></div>
+        {PARTES.map(([k, tt, tope], j) => {
+          const v = (x.partes || {})[k] || 0, h = Math.max(0, Math.min(100, Math.round((100 * v) / tope)));
+          return (
+            <div key={k} className={'cz-ch' + (v >= tope ? ' tope' : '')} title={tt + ': ' + v + ' de ' + tope}>
+              <span className="cz-val">{v}<small>/{tope}</small></span>
+              <span className="cz-riel"><span className="cz-ll" style={{ height: h + '%', '--b': j + 1 }} /><span className="cz-perilla" style={{ bottom: h + '%', '--b': j + 1 }} /></span>
+              <span className="cz-nom">{tt}</span>
+            </div>
+          );
+        })}
+      </div>
+      {s && s.a ? (
+        <div className="cz-subir"><span>Para llegar a Tier {s.a}</span>
+          {s.pide.map(([tt, d, si]) => <div key={tt} className={'cz-r' + (si ? ' ok' : '')}><span>{tt}</span><em>{d.replace(/^llevas /, '')}</em></div>)}
+          <p className={s.pide.every((y) => y[2]) ? 'llega' : ''}>{s.pide.every((y) => y[2]) ? 'Ya cumples todo: la Liga decide el cambio.' : 'Cuando cumplas todo, la Liga decide el cambio.'}{s.despues ? ' ' + s.despues + '.' : ''}</p>
+        </div>
+      ) : <div className="cz-subir"><span>Tier 1: lo más alto</span><p>{LO_ALTO}.</p></div>}
+      <p className="cz-nota-esc">Los cuatro canales suman tu puntaje, con las últimas 4 semanas.{s && s.rec ? ' ' + s.rec[0] + ' (' + s.rec[1] + '): no es un requisito.' : ''}</p>
+    </section>
+  );
+}
+
+// ── un servidor, entero: la cabina con su barra ──
 function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const p = x.panel || {};
   const m = x.m || {};
-  const color = ((liga.svs || {})[x.sv] || {}).color || '#29B298';
+  const cv = visibleCz(((liga.svs || {})[x.sv] || {}).color);
   const logo = liga.logo ? liga.logo(x.sv, true) : '';
-  const pts = x.puntos || 0;
-  const sube = x.compara !== false && pts > (x.antes || 0);
-  const sugs = p.sugerencias || [];
-  const irs = p.sug_ir || [];
-  const vu = p.vuelven && p.vuelven.n != null ? p.vuelven : null;
-  const preg = x.preguntas || [];
-  // 🛡️ qué ve cada rol (16/11/2026): los ajustes y la página, de admin para arriba; el equipo, sólo el dueño
   const p_ = (que) => puede(x.rol, que, permisos);
-  // 🧭 las secciones que sí se dibujan (18/11/2026): a un moderador o un asistente la sugerencia «Trajiste N raperos
-  // nuevos…» le ofrecía «Ver los ajustes», que no se le dibujan, y el botón no hacía nada. Lo mismo «Ver las semanas»
-  // con las ocho en cero. Son las mismas condiciones de cada `<Sec>` de abajo
-  const hay = new Set(['sp-puntaje', vu && 'sp-vuelven', (p.dias || []).length && 'sp-cuando', (p.semanas || []).some((s) => s[2]) && 'sp-semanas',
-    (p.raperos || []).length && 'sp-gente', p_('ajustes') && 'sp-ajustes'].filter(Boolean));
   const dueno = x.rol === 'dueno' || x.rol === 'dlx';
-  const items = [...(preg.length && p_('final') ? [['sp-preg', 'Para contestar', preg.length]] : []), ['sp-llaves', 'Tus llaves', null], ['sp-ligas', 'Tus ligas', null],
-    ['sp-quien', 'Quién es quién', null], ['sp-agenda', 'Tus eventos', null], ['sp-muro', 'Publicaciones', null], ...(p_('ajustes') ? [['sp-vs', 'Fondo del VS', null]] : []),
-    ['sp-puntaje', 'Puntaje', null], ['sp-sug', 'Lo que conviene', sugs.length], ['sp-vuelven', '¿Vuelven?', vu ? null : 0], ['sp-cuando', 'Cuándo', null],
-    ['sp-semanas', 'Semanas', null], ['sp-gente', 'Su gente', null], ['sp-visitas', 'Visitas', null], ...(p_('ajustes') ? [['sp-ajustes', 'Ajustes', null]] : []),
-    ...(p_('pagina') ? [['sp-pagina', 'Tu página', null]] : []), ...(dueno ? [['sp-equipo', 'Equipo', null]] : [])];
+  const [preg, setPreg] = useState(x.preguntas || []);
+  const [tab, setTab] = useState(() => ((x.preguntas || []).length && puede(x.rol, 'final', permisos) ? 'cola' : 'setlist'));
+  const [nav, setNav] = useState('hoy');
+  const [quieto, setQuieto] = useState(false);
+  useEffect(() => { const k = setTimeout(() => setQuieto(true), 1600); return () => clearTimeout(k); }, []);
+  const raiz = useRef(null);
+  const o = ochoSemanas(x);
+  const v = p.vuelven || {}, L = v.liga || {};
+  const vv = pc(v.v || 0, v.n || 0), vl = pc(L.v || 0, L.n || 0);
+  const seg = p.seguir || {};
+  const filas = p.pide || null;
+  const faltan = (filas || []).filter((r) => !r[2]);
+  const s = p.subir;
+  const llega = s && s.a && s.pide.every((y) => y[2]);
+  const corto = !filas ? 'Se mide' : faltan.length ? 'Te falta ' + faltan.length : 'Al día';
+  const frase = !filas ? 'Lo que te pide tu tier se mide en la próxima corrida (cada media hora).'
+    : faltan.length ? faltan.map((r) => r[0] + ' (' + r[1] + ')').join('; ') + '.'
+      : 'Cumples lo que te pide tu Tier ' + x.tier + (llega ? ', y ya llegas a lo de Tier ' + s.a + ': la Liga decide el cambio.' : ' este mes.');
+  const claves = Object.keys(seg).filter((k) => k !== 'vivo');
+  const bloq = (r, i) => {
+    const k = claves[i];
+    if (seg.vivo) return [r[2] ? 1 : 0, 1];
+    if (k === 'eventos') return [Math.min(o.ev, seg.eventos), seg.eventos];
+    if (k === 'por_evento') return [Math.min(Math.floor(o.pe), seg.por_evento), seg.por_evento];
+    return [r[2] ? 1 : 0, 1];
+  };
+  const dif = (x.puntos || 0) - (x.antes || 0);
+  const pideEv = seg.eventos || (s && s.a === 2 ? 8 : 0);
+  const hay = new Set([v.n != null && 'sp-vuelven', (p.dias || []).length && 'sp-cuando', (p.semanas || []).some((w) => w[2]) && 'sp-semanas', (p.raperos || []).length && 'sp-gente'].filter(Boolean));
+  const sugs = p.sugerencias || [], irs = p.sug_ir || [];
+  const pasados = ((liga.d && liga.d.calendario) || []).filter((c) => c.sv === x.sv && Date.parse(c.t) < Date.now()).slice(-6).reverse();
   const ROL_TXT = { admin: 'admin', moderador: 'moderador', asistente: 'asistente' };
+  const ir = (k) => {
+    if (k === 'hoy') { setNav('hoy'); if (raiz.current) raiz.current.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
+    setTab(k); setNav('papel');
+    requestAnimationFrame(() => { const el = raiz.current && raiz.current.querySelector('#cz-papel'); if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+  };
+  const AREAS = AREAS_CZ.filter(([k]) => k !== 'ajustes' || p_('ajustes') || dueno);
+  const actual = nav === 'hoy' ? 'hoy' : tab;
+  const hechos = (filas || []).length - faltan.length;
+  const emb = <div className="cz-emb"><span className="cz-logo">{logo ? <img alt="" src={logo} /> : <b>{siglaDe(x.sv)}</b>}</span><span><b>{limpio(x.nombre || siglaDe(x.sv))}</b><small>{m.miembros ? num(m.miembros) + ' miembros' : siglaDe(x.sv)}</small></span></div>;
   return (
-    <>
-      {svs.length > 1 ? <Elegir liga={liga} svs={svs} sel={x.sv} onSel={onSel} /> : null}
-      <Portada forma="cuadrado" color={color} nombre={limpio(x.nombre || siglaDe(x.sv))}
-        estilo={logo ? { '--mo-logo': 'url("' + logo + '")', ...silueta(x.sv, color) } : silueta(x.sv, color)}
-        emblema={logo ? <img alt="" src={logo} /> : <b className="sp-sigla">{siglaDe(x.sv)}</b>}
-        tag={TIER[x.tier] || 'TIER ' + x.tier}
-        sub={<>{siglaDe(x.sv)}{x.ultimo ? ' · último evento el ' + fechaCorta(x.ultimo) : ''}{m.miembros ? ' · ' + num(m.miembros) + ' miembros en su Discord' : ''}
-          {ROL_TXT[x.rol] ? <small className="sp-medido">Entraste como {ROL_TXT[x.rol]}: te sumó el dueño del servidor.</small> : null}
-          {t ? <small className="sp-medido">Medido el {W.fmtFecha ? W.fmtFecha(t, { day: 'numeric', month: 'numeric' }) : fechaCorta(String(t).slice(0, 10))}
-            {W.fmtHora ? ' a las ' + W.fmtHora(new Date(t)) : ''}. Se actualiza cada media hora.</small> : null}</>}
-        acciones={<>
-          <a className="btn verde" href={'#/sv/' + encodeURIComponent(siglaDe(x.sv))}>Su página</a>
-          {p_('ajustes') ? <button type="button" className="btn borde" onClick={(e) => irA(e, 'sp-ajustes')}>Ajustes del bot</button>
-            : <button type="button" className="btn borde" onClick={(e) => irA(e, 'sp-llaves')}>Tus llaves</button>}
-        </>}
-        numeros={[['PUNTAJE', <><Contador v={pts} /><small className="sp-de"> de 100</small></>, 'dest' + (sube ? ' sube' : '')],
-          ['EVENTOS · 4 SEMANAS', num(m.eventos || 0)], ['RAPEROS POR EVENTO', m.eventos ? coma(m.por_evento || 0) : '—'],
-          // ⚠️ el «vuelve» de abajo, con sus 14 días cumplidos: el de los nuevos de 4 semanas daba otro número al lado del de la sección
-          ['NUEVOS · 4 SEMANAS', <>{num(m.nuevos || 0)}{vu && vu.n >= MIN_VUELVEN ? <small className="sp-de"> vuelve el {pc(vu.v, vu.n)} %</small> : null}</>]]} />
-      <Indice items={items} />
-      {preg.length && p_('final') ? (
-        <Sec id="sp-preg" titulo="Para contestar" bajada="Batallas de tus llaves donde el bot no encontró quién ganó. Las puede marcar el dueño acá o el staff con los botones de Discord: vale la primera." extra="negra">
-          <Preguntas sv={x.sv} xs={preg} />
-        </Sec>
-      ) : null}
-      {/* 🛡️ TUS LLAVES Y TUS LIGAS (16/11/2026): lo que corrige el staff de tu servidor, sin pasar por la Liga */}
-      <Sec id="sp-llaves" titulo="Tus llaves" bajada="Lo que reportó la gente de tus llaves y lo que sugirió tu equipo. Los moderadores, los admins y tú lo corrigen; los asistentes lo sugieren.">
-        <LlavesStaff sv={x.sv} rol={x.rol} permisos={permisos} />
-      </Sec>
-      <Sec id="sp-ligas" titulo="Tus ligas" bajada="Corrige lo que el bot leyó de tus ligas —quién ganó, un invitado, una batalla que no cuenta—, carga lo que no leyó, suma o resta puntos sueltos y cierra la temporada con su campeón.">
-        <LigasStaff sv={x.sv} rol={x.rol} permisos={permisos} />
-      </Sec>
-      <Sec id="sp-quien" titulo="Quién es quién" bajada="Los nombres de tus eventos que el bot no reconoce, y tus inscripciones. Contesta quién es cada uno y el ranking lo cuenta bien.">
-        <QuienStaff sv={x.sv} rol={x.rol} permisos={permisos} />
-      </Sec>
-      <Sec id="sp-agenda" titulo="Tus eventos" bajada="Anuncia un evento acá y sale en Eventos y en la campana, aunque el bot no lea el anuncio de tu canal.">
-        <AgendaStaff sv={x.sv} rol={x.rol} permisos={permisos} />
-      </Sec>
-      <Sec id="sp-muro" titulo="Tus publicaciones" bajada="Lo que sale de tu servidor en Publicaciones. Lo que ocultes sale del muro en la próxima media hora.">
-        <MuroStaff sv={x.sv} rol={x.rol} permisos={permisos} />
-      </Sec>
-      {p_('ajustes') ? <Sec id="sp-vs" titulo="El fondo del VS" bajada="Detrás de cada VS de tu servidor en el chat. Elige uno de las escenas de la Liga.">
-        <FondoVs sv={x.sv} rol={x.rol} permisos={permisos} />
-      </Sec> : null}
-      <Sec id="sp-puntaje" titulo="Su puntaje" bajada="De 0 a 100, con las últimas 4 semanas: es lo que mira la Liga para el nivel de cada socio. Cada parte tiene su tope.">
-        <Puntaje x={x} />
-        <ComoSubir s={p.subir} />
-      </Sec>
-      {sugs.length ? (
-        <Sec id="sp-sug" titulo="Lo que conviene" bajada="Sale de tus números de las últimas semanas." extra="negra">
-          {/* el botón una vez por destino: cuatro «Ver cuándo» seguidos llevan al mismo lugar */}
-          <ol className="sp-sug">{sugs.map((s, i) => (
-            <li key={s}><span>{String(i + 1).padStart(2, '0')}</span><p>{resaltar(s)}</p>
-              {IR[irs[i]] && hay.has(irs[i]) && irs.indexOf(irs[i]) === i ? <button type="button" className="sp-ir" onClick={(e) => irA(e, irs[i])}>{IR[irs[i]]}</button> : null}</li>
-          ))}</ol>
-        </Sec>
-      ) : null}
-      {vu ? (
-        <Sec id="sp-vuelven" titulo="¿Vuelve tu gente?" bajada={'De quienes jugaron su primer evento de la temporada en tu servidor' + (vu.desde ? ', desde el ' + fechaCorta(vu.desde) : '') + '. No cuenta a quien debutó hace menos de 14 días. Volver es otro evento, otro día, en cualquier servidor de la Liga.'}>
-          <Vuelven v={vu} />
-        </Sec>
-      ) : null}
-      {(p.dias || []).length ? (
-        <Sec id="sp-cuando" titulo="Cuándo hay actividad" bajada="Cuánta gente juntan tus eventos cada día, y cuántos eventos tiene el resto de la Liga ese día: un día lleno compite por la misma gente.">
-          <Cuando p={p} />
-        </Sec>
-      ) : null}
-      {/* ocho semanas en cero no son un gráfico: es «sin dato no hay pieza» */}
-      {(p.semanas || []).some((s) => s[2]) ? (
-        <Sec id="sp-semanas" titulo="Semana a semana" bajada="Las participaciones de cada semana de la temporada, de lunes a domingo: cada rapero cuenta una vez por evento que juega. En verde agua, los que debutaban en la Liga en tu servidor.">
-          <Semanas p={p} />
-        </Sec>
-      ) : null}
-      {(p.raperos || []).length ? (
-        <Sec id="sp-gente" titulo="Su gente" bajada="Lo de cada uno en tu servidor, esta temporada.">
-          <SuGente p={p} />
-        </Sec>
-      ) : null}
-      <Sec id="sp-visitas" titulo="Visitas a su página" bajada="Personas por día que abrieron la página de tu servidor, las últimas 4 semanas.">
-        <Visitas x={x} />
-      </Sec>
-      {/* ⚠️ «el aviso de cada evento» y «Eventos de Discord» NO están en /settings (bot/worker.js): son sólo de acá y del
-          Dashboard. Decir «es lo mismo que /settings» era falso para esos dos */}
-      {p_('ajustes') ? <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y los que sólo están acá: el aviso de cada evento, las batallas de tus ligas y los eventos de Discord.">
-        <Ajustes sv={x.sv} />
-      </Sec> : null}
-      {p_('pagina') ? <Sec id="sp-pagina" titulo="Tu página" bajada="Lo que se ve arriba en la página de tu servidor: un texto, tus redes y un banner. Sale en la próxima media hora.">
-        <TuPagina sv={x.sv} />
-      </Sec> : null}
-      {/* 👥 TU EQUIPO (Dlx, 11/11/2026): sólo el dueño lo ve y lo maneja; cada uno entra con su propia cuenta y con su rol */}
-      {dueno ? (
-        <Sec id="sp-equipo" titulo="Tu equipo" bajada="Los de tu servidor que pueden usar este panel, cada uno con su rol. Entran con su propia cuenta de Discord.">
-          <Equipo sv={x.sv} />
-        </Sec>
-      ) : null}
-    </>
+    <div ref={raiz} className={'cz' + (quieto ? ' quieto' : '')} style={{ '--cv': cv }}>
+      <div className="cz-top-cel">{emb}</div>
+      <div className="cz-cuerpo">
+        <div className="cz-lado-col"><aside className="cz-lado">
+          {emb}
+          {svs.length > 1 ? <Elegir liga={liga} svs={svs} sel={x.sv} onSel={onSel} /> : null}
+          <nav aria-label="Tu panel">{[['hoy', 'Hoy'], ...AREAS].map(([k, tt]) => (
+            <button type="button" key={k} aria-current={actual === k ? 'page' : undefined} onClick={() => ir(k)}>{ICO_CZ[k]}{tt}
+              {k === 'cola' && preg.length && p_('final') ? <span className="cz-cuenta">{preg.length}</span> : null}</button>
+          ))}</nav>
+          {actual === 'hoy'
+            ? <div className="cz-tier corta"><span className="t"><b>Tier {x.tier}</b><span>{corto}</span></span>{filas ? <Bloques n={hechos} de={filas.length} falta /> : null}</div>
+            : <button type="button" className="cz-tier" onClick={() => ir('hoy')}><span className="t"><b>Tier {x.tier}</b><span>{corto}</span></span>{filas ? <Bloques n={hechos} de={filas.length} falta /> : null}<p>{frase}</p><u>Ver en la cabina</u></button>}
+        </aside></div>
+        <div className="cz-principal">
+          {svs.length > 1 ? <div className="cz-elegir-cel"><Elegir liga={liga} svs={svs} sel={x.sv} onSel={onSel} /></div> : null}
+          <section className="cz-esc">
+            <i className="cz-deco d1" /><i className="cz-deco d2" />
+            <div className="cz-cab">
+              <div>
+                <span className="tag">Tu panel</span>
+                <h1 className="cz-h1">{limpio(x.nombre || siglaDe(x.sv))}</h1>
+                <p className="cz-d">Tu cabina: <b>lo que te pide tu tier</b>, lo que el bot necesita de ti y cómo suena tu servidor.</p>
+                <div className="cz-meta">
+                  {m.miembros ? <span>{num(m.miembros)} miembros en su Discord</span> : null}
+                  {t ? <span>Medido el {W.fmtFecha ? W.fmtFecha(t, { day: 'numeric', month: 'numeric' }) : fechaCorta(String(t).slice(0, 10))}{W.fmtHora ? ' a las ' + W.fmtHora(new Date(t)) : ''}: se actualiza cada media hora</span> : null}
+                  {ROL_TXT[x.rol] ? <span>Entraste como {ROL_TXT[x.rol]}: te sumó el dueño del servidor</span> : null}
+                </div>
+                <div className="cz-acc">
+                  <button type="button" className="btn verde" onClick={() => ir('setlist')}>＋ Anunciar un evento</button>
+                  <a className="btn borde chico cz-borde" href={'#/sv/' + encodeURIComponent(siglaDe(x.sv))}>Su página</a>
+                </div>
+              </div>
+              <span className="cz-stk">Tier {x.tier}</span>
+            </div>
+            <dl className="cz-franja">
+              <div className="cz-kpi"><dt>Tu puntaje</dt><dd className="cz-v"><Contador v={x.puntos || 0} /><em>de 100</em></dd><Vu n={Math.round((x.puntos || 0) / 10)} />
+                <dd className="cz-c">{x.compara === false ? <>Se compara desde el {fechaCorta(x.compara_desde)}</> : <><b>{dif > 0 ? '+' : ''}{dif < 0 ? '−' + -dif : dif}</b> contra las 4 semanas de antes</>}</dd></div>
+              <div className="cz-kpi"><dt>Eventos en 8 semanas</dt><dd className="cz-v"><Contador v={o.ev} /></dd><Vu n={pideEv ? Math.min(10, Math.round((o.ev / (pideEv * 2)) * 10)) : 0} />
+                <dd className="cz-c">{pideEv ? <>{seg.eventos ? 'Tu tier pide' : 'Tier 2 pide'} <b>{pideEv}</b>; la luz se llena con el doble</> : 'En las últimas 8 semanas'}</dd></div>
+              <div className="cz-kpi"><dt>Raperos por evento</dt><dd className="cz-v">{coma(o.pe)}</dd><Vu n={o.lpe ? Math.min(10, Math.round((o.pe / (o.lpe * 2)) * 10)) : 0} />
+                <dd className="cz-c">{o.lpe ? <>La Liga junta <b>{coma(o.lpe)}</b> de promedio</> : 'De promedio, en 8 semanas'}</dd></div>
+              <div className="cz-kpi"><dt>Debutaron acá</dt><dd className="cz-v"><Contador v={o.nue} />{v.n >= MIN_VUELVEN ? <em>vuelve el {vv} %</em> : null}</dd><Vu n={v.n >= MIN_VUELVEN && vl ? Math.min(10, Math.round((vv / (vl * 2)) * 10)) : 0} />
+                <dd className="cz-c">{v.n >= MIN_VUELVEN ? <>En la Liga vuelve el <b>{vl} %</b></> : 'Todavía pocos para medir si vuelven'}</dd></div>
+            </dl>
+            <div className="cz-grid">
+              <section className={'cz-aire' + (filas && !faltan.length ? ' ok' : '')}>
+                <div className="cz-aire-cab"><span className="cz-luz"><i />{filas && !faltan.length ? 'Al día' : 'En el aire'}</span>
+                  <div><small>Lo que te pide tu Tier {x.tier} este mes</small><b>{faltan.length ? corto + ': ' + frase : frase}</b></div></div>
+                {filas ? <ul className="cz-req">{filas.map((r, i) => { const [n, de] = bloq(r, i); return (
+                  <li key={r[0]}>{r[2] ? <span className="cz-sello">Hecho</span> : <span className="cz-falta">Falta</span>}
+                    <span className="cz-tx"><b>{r[0]}</b><small><Bloques n={n} de={de} falta={!r[2]} />{r[1][0].toUpperCase() + r[1].slice(1)}</small></span></li>
+                ); })}</ul> : null}
+                <p className="cz-aire-pie">Los Pases (Tier 1) y los estilos de juego (Tier 2) se suman acá cuando estén listos.</p>
+              </section>
+              <Consola x={x} logo={logo} s={s} />
+              <Cola liga={liga} sv={x.sv} preg={preg} setPreg={setPreg} puede={p_('final')} verTodas={() => ir('cola')} />
+            </div>
+          </section>
+          <section className="cz-papel" id="cz-papel">
+            <nav className="cz-pes" role="tablist">{AREAS.map(([k, tt]) => (
+              <button type="button" role="tab" key={k} aria-selected={tab === k} onClick={() => { setTab(k); setNav('papel'); }}>{tt}
+                {k === 'cola' && preg.length && p_('final') ? <span className="cz-cuenta">{preg.length}</span> : null}
+                {k === 'gente' && p.gente_total ? <small>{num(p.gente_total)}</small> : null}</button>
+            ))}</nav>
+            {tab === 'cola' ? <>
+              {preg.length && p_('final') ? <Sec id="sp-preg" titulo="Quién ganó" bajada="Batallas de tus llaves donde el bot no encontró quién ganó. Las puede marcar el dueño acá o el staff con los botones de Discord: vale la primera.">
+                <Preguntas sv={x.sv} xs={preg} onCambio={setPreg} /></Sec> : null}
+              <Sec id="sp-quien" titulo="Quién es quién" bajada="Los nombres de tus eventos que el bot no reconoce, y tus inscripciones. Contesta quién es cada uno y el ranking lo cuenta bien.">
+                <QuienStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>
+              <Sec id="sp-llaves" titulo="Tus llaves" bajada="Lo que reportó la gente de tus llaves y lo que sugirió tu equipo. Los moderadores, los admins y tú lo corrigen; los asistentes lo sugieren.">
+                <LlavesStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>
+            </> : null}
+            {tab === 'setlist' ? <>
+              <Sec id="sp-agenda" titulo="Tus eventos" bajada="Anuncia un evento acá y sale en Eventos y en la campana, aunque el bot no lea el anuncio de tu canal.">
+                <AgendaStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>
+              {pasados.length ? <Sec id="cz-pasados" titulo="Lo que ya tocaste" bajada="Tus últimos eventos y si el bot ya leyó su llave.">
+                <ol className="cz-bols">{pasados.map((c) => (
+                  <li key={c.t + c.n} className="cz-bol"><span className="cz-f"><b>{W.fmtFecha ? W.fmtFecha(c.t, { day: 'numeric' }) : String(c.t).slice(8, 10)}</b><span>{W.fmtFecha ? W.fmtFecha(c.t, { weekday: 'short' }).replace('.', '') : ''}</span></span>
+                    <span className="cz-n"><b>{nombreEv ? nombreEv(c.n) : c.n}</b><span>{W.fmtHora ? W.fmtHora(new Date(c.t)) : ''}</span></span>
+                    <span className="cz-d">{c.ll || c.jugado ? <span className="cz-chip si">Llave leída</span> : <span className="cz-chip no">Sin llave todavía</span>}</span></li>
+                ))}</ol></Sec> : null}
+              <Sec id="sp-ligas" titulo="Tus ligas" bajada="Corrige lo que el bot leyó de tus ligas —quién ganó, un invitado, una batalla que no cuenta—, carga lo que no leyó, suma o resta puntos sueltos y cierra la temporada con su campeón.">
+                <LigasStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>
+            </> : null}
+            {tab === 'gente' ? <>
+              {sugs.length ? <Sec id="sp-sug" titulo="Lo que conviene" bajada="Sale de tus números de las últimas semanas." extra="negra">
+                <ol className="sp-sug">{sugs.map((s1, i) => (
+                  <li key={s1}><span>{String(i + 1).padStart(2, '0')}</span><p>{resaltar(s1)}</p>
+                    {IR[irs[i]] && hay.has(irs[i]) && irs.indexOf(irs[i]) === i ? <button type="button" className="sp-ir" onClick={(e) => irA(e, irs[i])}>{IR[irs[i]]}</button> : null}</li>
+                ))}</ol></Sec> : null}
+              {v.n != null ? <Sec id="sp-vuelven" titulo="¿Vuelve tu gente?" bajada={'De quienes jugaron su primer evento de la temporada en tu servidor' + (v.desde ? ', desde el ' + fechaCorta(v.desde) : '') + '. No cuenta a quien debutó hace menos de 14 días. Volver es otro evento, otro día, en cualquier servidor de la Liga.'}>
+                <Vuelven v={v} /></Sec> : null}
+              {(p.dias || []).length ? <Sec id="sp-cuando" titulo="Cuándo hay actividad" bajada="Cuánta gente juntan tus eventos cada día, y cuántos eventos tiene el resto de la Liga ese día: un día lleno compite por la misma gente.">
+                <Cuando p={p} /></Sec> : null}
+              {(p.semanas || []).some((w) => w[2]) ? <Sec id="sp-semanas" titulo="Semana a semana" bajada="Las participaciones de cada semana de la temporada, de lunes a domingo: cada rapero cuenta una vez por evento que juega. En verde agua, los que debutaban en la Liga en tu servidor.">
+                <Semanas p={p} /></Sec> : null}
+              {(p.raperos || []).length ? <Sec id="sp-gente" titulo="Su gente" bajada="Lo de cada uno en tu servidor, esta temporada."><SuGente p={p} /></Sec> : null}
+              <Sec id="sp-visitas" titulo="Visitas a su página" bajada="Personas por día que abrieron la página de tu servidor, las últimas 4 semanas."><Visitas x={x} /></Sec>
+            </> : null}
+            {tab === 'servidor' ? <>
+              {p_('pagina') ? <Sec id="sp-pagina" titulo="Tu página" bajada="Lo que se ve arriba en la página de tu servidor: un texto, tus redes y un banner. Sale en la próxima media hora."><TuPagina sv={x.sv} /></Sec> : null}
+              <Sec id="sp-muro" titulo="Tus publicaciones" bajada="Lo que sale de tu servidor en Publicaciones. Lo que ocultes sale del muro en la próxima media hora.">
+                <MuroStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>
+              {p_('ajustes') ? <Sec id="sp-vs" titulo="El fondo del VS" bajada="Detrás de cada VS de tu servidor en el chat. Elige uno de las escenas de la Liga.">
+                <FondoVs sv={x.sv} rol={x.rol} permisos={permisos} /></Sec> : null}
+            </> : null}
+            {tab === 'ajustes' ? <>
+              {/* ⚠️ «el aviso de cada evento» y «Eventos de Discord» NO están en /settings (bot/worker.js): son sólo de acá y del Dashboard */}
+              {p_('ajustes') ? <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y los que sólo están acá: el aviso de cada evento, las batallas de tus ligas y los eventos de Discord.">
+                <Ajustes sv={x.sv} /></Sec> : null}
+              {/* 👥 TU EQUIPO (Dlx, 11/11/2026): sólo el dueño lo ve y lo maneja; cada uno entra con su propia cuenta y con su rol */}
+              {dueno ? <Sec id="sp-equipo" titulo="Tu equipo" bajada="Los de tu servidor que pueden usar este panel, cada uno con su rol. Entran con su propia cuenta de Discord."><Equipo sv={x.sv} /></Sec> : null}
+            </> : null}
+          </section>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -828,17 +948,19 @@ function Equipo({ sv }) {
 // de Discord y vale la primera respuesta, venga de donde venga. A las 48 h lo que falte lo cierra la Liga
 const LETRAS = 'abcdefghijklmnopqrstuvwxy';
 const RONDA = (r) => { const x = String(r || '').toLowerCase(); return x ? x[0].toUpperCase() + x.slice(1) : ''; };
-function Preguntas({ sv, xs }) {
+function Preguntas({ sv, xs, onCambio }) {
   const [lista, setLista] = useState(xs);
   const [ocup, setOcup] = useState('');
   const [msg, setMsg] = useState('');
   useEffect(() => { setLista(xs); }, [xs]);
+  // 🎛️ la cola de la cabina (arriba) y esta lista dicen lo mismo: lo que se contesta acá le llega allá (`onCambio`)
+  const poner = (ys) => { setLista(ys); if (onCambio) onCambio(ys); };
   const elegir = (x, v, nombre) => {
     setOcup(x.k); setMsg('');
     contestarFinal(sv, x.k, v).then((j) => {
       setOcup('');
-      if (j && j.ok) { setLista(j.preguntas || []); setMsg('Listo: ' + (j.ya || nombre) + '. Entra al ranking en la próxima media hora.'); }
-      else if (j && j.error === 'ya no está') { setLista(lista.filter((y) => y.k !== x.k)); setMsg('Esa ya la había marcado alguien.'); }
+      if (j && j.ok) { poner(j.preguntas || []); setMsg('Listo: ' + (j.ya || nombre) + '. Entra al ranking en la próxima media hora.'); }
+      else if (j && j.error === 'ya no está') { poner(lista.filter((y) => y.k !== x.k)); setMsg('Esa ya la había marcado alguien.'); }
       else setMsg('No se pudo: ' + ((j && j.error) || 'la red') + '.');
     });
   };

@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "7.12",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T23:30:00-05:00",
+        "titulo": "El panel de cada servidor, rehecho: la cabina",
+        "items": [
+            "**El panel del dueño de cada servidor, rehecho**: arriba, lo que te pide tu tier este mes, cuatro medidores que dicen contra qué se miden, la consola con tu tier y las cuatro partes de tu puntaje, y la próxima pregunta del bot para contestar ahí mismo. Abajo, todo lo de antes en pestañas: Para contestar, El setlist, Tu gente, Tu servidor y Ajustes.",
+            "**Una barra al costado** con tus áreas y la tarjeta de tu tier, que queda a la vista mientras bajas.",
+            "**Los tiers miden 8 semanas**: para pasar a Tier 2, 8 eventos con 8 raperos por evento de promedio; para Tier 1, 12 eventos, 10 raperos por evento y 60 puntos, y después un mes de prueba. Para quedarte: Tier 1, 8 eventos con 8 raperos por evento; Tier 2, 4 eventos; Tier 3, un evento o una fecha de liga por mes."
+        ]
+    },
+    {
         "version": "7.11",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T23:07:00-05:00",

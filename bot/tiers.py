@@ -87,8 +87,9 @@ def reglas():
     Las claves de tier van como texto ('1', '2', '3'): así llegan de un JSON."""
     da = {3: sorted(PRESET[3]), 2: sorted((PRESET[2] - PRESET[3]) | {'carta', 'mes_awards'}),
           1: sorted(PRESET[1] - PRESET[2]) + ['unirse']}
-    sube = {2: 'Anunciar %d eventos o más en 4 semanas' % A_TIER2_ANUNCIOS,
-            1: '%d puntos o más, %d eventos o más en 4 semanas y llaves que el bot lee casi solo' % (A_TIER1_PUNTOS, A_TIER1_EVENTOS)}
+    sube = {2: '%d eventos en 8 semanas, con %d raperos por evento de promedio' % (SUBE[2]['eventos'], SUBE[2]['por_evento']),
+            1: '%d eventos en 8 semanas, %d raperos por evento de promedio y %d puntos; después, un mes de prueba' % (
+                SUBE[1]['eventos'], SUBE[1]['por_evento'], SUBE[1]['puntos'])}
     return {'rec': {str(k): v for k, v in sorted(RECOMENDADO.items())}, 'sube': {str(k): v for k, v in sube.items()},
             'da': {str(k): v for k, v in da.items()}}
 
@@ -554,39 +555,54 @@ def medir(D, hoy, svs, nivel, miembros=None):
     for sv, t in nivel.items():
         m, partes, pts = parte(sv, ini, fin)
         _m0, _p0, pts0 = parte(sv, ini0, ini)
+        # 📏 las 8 semanas de los requisitos (`SUBE`, `SEGUIR`): las mismas cuentas de `parte()`, en la ventana doble
+        x8 = parte(sv, ini0, fin)[0]
+        m8 = {'eventos': x8['eventos'], 'por_evento': x8['por_evento'], 'ligas': x8['ligas']}
         ult = max((d for d, s, _ns in evs if s == sv), default=None)
         sin = (hoy - ult).days if ult else None
         m['miembros'] = (miembros or {}).get(sv)
-        rec, porque = ('casa', 'la casa de la Liga: no se evalúa como socio') if sv in CASA else recomendar(t, pts, m, sin)
+        rec, porque = ('casa', 'la casa de la Liga: no se evalúa como socio') if sv in CASA else recomendar(t, pts, m, sin, m8)
         out.append({'sv': sv, 'nombre': (svs.get(sv) or {}).get('nombre') or sv, 'tier': t, 'puntos': pts,
-                    'antes': pts0, 'compara': compara, 'compara_desde': compara_desde, 'partes': partes, 'm': m, 'ultimo': str(ult) if ult else '', 'sin_jugar': sin,
-                    'rec': rec, 'porque': porque})
+                    'antes': pts0, 'compara': compara, 'compara_desde': compara_desde, 'partes': partes, 'm': m, 'm8': m8,
+                    'ultimo': str(ult) if ult else '', 'sin_jugar': sin, 'rec': rec, 'porque': porque})
     out.sort(key=lambda x: (x['tier'], -x['puntos'], x['sv']))
     return out
 
 
-#: lo que pide subir de tier: lo miran `recomendar()` y `como_subir()`, y lo dice docs/anuncios/kit_servidor_nuevo.md
-A_TIER2_ANUNCIOS = 2
-A_TIER1_PUNTOS = 60
-A_TIER1_EVENTOS = 4
+#: 🪜 LO QUE PIDE SUBIR DE TIER, EN LAS ÚLTIMAS 8 SEMANAS (el plan de los tiers, Dlx 19/11/2026: «Para tier 2, me gusta ese
+#: requisito para subir»). Hasta ese día era «anunciar 2 eventos en 4 semanas» para Tier 2 y «60 puntos, 4 eventos y llaves
+#: que el bot lee casi solo» para Tier 1. Lo miran `recomendar()`, `como_subir()` y `reglas()`, y lo dice
+#: docs/anuncios/kit_servidor_nuevo.md (y web/src/kit.jsx). A Tier 1, después de cumplir, un mes de prueba
+SUBE = {2: {'eventos': 8, 'por_evento': 8}, 1: {'eventos': 12, 'por_evento': 10, 'puntos': 60}}
+#: 📋 LO QUE PIDE CADA TIER PARA QUEDARSE (el mismo plan): Tier 1, 8 eventos en 8 semanas con 8 raperos por evento; Tier 2,
+#: 4 eventos en 8 semanas; Tier 3, seguir vivo (un evento o una fecha de liga en las últimas 4 semanas). Los Pases (Tier 1) y
+#: los estilos de juego (Tier 2) se suman cuando existan. Lo dice el panel de cada socio (`pide()`); no mueve a nadie
+SEGUIR = {1: {'eventos': 8, 'por_evento': 8}, 2: {'eventos': 4}, 3: {'vivo': 1}}
 
 
-def recomendar(tier, pts, m, sin_jugar):
-    """`(recomendación, por qué)`. Recomienda: decide Dlx."""
+def _cumple(req, pts, m8):
+    """¿Llega a lo que pide `req` (de `SUBE`) con sus 8 semanas?"""
+    m8 = m8 or {}
+    return (m8.get('eventos', 0) >= req.get('eventos', 0) and m8.get('por_evento', 0) >= req.get('por_evento', 0)
+            and (pts or 0) >= req.get('puntos', 0))
+
+
+def recomendar(tier, pts, m, sin_jugar, m8=None):
+    """`(recomendación, por qué)`. Recomienda: decide Dlx. `m8`: los eventos y raperos por evento de las últimas 8 semanas
+    (lo que mira subir, `SUBE`)."""
     gente = m.get('miembros')
+    m8 = m8 or {}
     if tier == 1:
         if sin_jugar is None or sin_jugar > 21:
             return 'revisar', 'hace %s que no juega un evento' % ('más de 4 semanas' if sin_jugar is None else '%d días' % sin_jugar)
         if pts < 35:
             return 'revisar', 'puntaje bajo (%d): poca actividad o mucha ayuda para leer sus llaves' % pts
         return 'bien', 'cumple como Tier 1' + recomendado(1, gente)
-    if tier == 2:
-        if pts >= A_TIER1_PUNTOS and m['eventos'] >= A_TIER1_EVENTOS and (m['ayudas'] / m['eventos'] if m['eventos'] else 9) <= 1:
-            return 'subir', 'listo para Tier 1: %d eventos en 4 semanas y el bot los lee casi solo' % m['eventos'] + recomendado(1, gente)
-        return 'bien', 'se mantiene en Tier 2' + recomendado(2, gente)
-    if m['anuncios'] >= A_TIER2_ANUNCIOS:
-        return 'subir', 'ya anuncia eventos (%d): puede pasar a Tier 2' % m['anuncios'] + recomendado(2, gente)
-    return 'bien', 'se mantiene en Tier 3' + recomendado(3, gente)
+    a = {2: 1, 3: 2}.get(tier)
+    if a and _cumple(SUBE[a], pts, m8):
+        return 'subir', ('listo para Tier %d: %d eventos en 8 semanas con %s raperos por evento' % (
+            a, m8.get('eventos', 0), str(m8.get('por_evento', 0)).replace('.', ','))) + recomendado(a, gente)
+    return 'bien', 'se mantiene en Tier %d' % tier + recomendado(tier, gente)
 
 
 # ── 📊 EL PANEL DE CADA SOCIO (los tres tiers desde el 20/10/2026; nació para 1 y 2) ─────────────────────────────────────────────────────────────────────────
@@ -712,11 +728,30 @@ def _pct(a, b):
     return round(100 * a / b) if b else 0
 
 
-def como_subir(tier, pts, m):
+def _coma(x):
+    return str(round(x or 0, 1)).replace('.', ',')
+
+
+def _filas_req(req, pts, m8):
+    """`[[qué, cómo va, si cumple]]` de un requisito de `SUBE`/`SEGUIR`, con las 8 semanas."""
+    m8 = m8 or {}
+    out = []
+    if 'eventos' in req:
+        out.append(['%d eventos en 8 semanas' % req['eventos'], 'llevas %d' % m8.get('eventos', 0), m8.get('eventos', 0) >= req['eventos']])
+    if 'por_evento' in req:
+        out.append(['%d raperos por evento, de promedio' % req['por_evento'], 'llevas %s en 8 semanas' % _coma(m8.get('por_evento', 0)),
+                    m8.get('por_evento', 0) >= req['por_evento']])
+    if 'puntos' in req:
+        out.append(['%d puntos o más' % req['puntos'], 'llevas %d' % (pts or 0), (pts or 0) >= req['puntos']])
+    return out
+
+
+def como_subir(tier, pts, m, m8=None):
     """🪜 Lo que le falta para el tier de arriba: `{'a': tier, 'pide': [[qué, cómo va, si cumple]], 'rec': [qué, cómo va, si
-    llega] | None}`; `None` en Tier 1. Lo mismo que mira `recomendar()`: si se cambia una regla, es ahí. Dlx, 04/11/2026, al
-    kit de los servidores nuevos: *«explica lo de tiers, como subir de tier»*. Los miembros van en `rec`, aparte de `pide`:
-    desde el 19/11/2026 son un recomendado, no un requisito, y no cuentan en «N de M»."""
+    llega] | None, 'despues': str}`; `None` en Tier 1. Lo mismo que mira `recomendar()` (`SUBE`): si se cambia una regla, es
+    ahí. Dlx, 04/11/2026, al kit de los servidores nuevos: *«explica lo de tiers, como subir de tier»*. Los miembros van en
+    `rec`, aparte de `pide`: desde el 19/11/2026 son un recomendado, no un requisito, y no cuentan en «N de M». `despues`: lo
+    que viene después de cumplir (a Tier 1, un mes de prueba), que no se mide."""
     m = m or {}
     a = {3: 2, 2: 1}.get(tier)
     if a is None:
@@ -724,14 +759,24 @@ def como_subir(tier, pts, m):
     gente = m.get('miembros')
     rec = (['Se recomiendan %s miembros en tu Discord' % _mil(RECOMENDADO[a]), 'tienes %s' % _mil(gente), gente >= RECOMENDADO[a]]
            if gente is not None else None)
-    if tier == 3:
-        return {'a': 2, 'pide': [['Anunciar %d eventos o más en 4 semanas' % A_TIER2_ANUNCIOS, 'llevas %d' % m.get('anuncios', 0),
-                                  m.get('anuncios', 0) >= A_TIER2_ANUNCIOS]], 'rec': rec}
-    ev, ay = m.get('eventos', 0), m.get('ayudas', 0)
-    pide = [['%d puntos o más' % A_TIER1_PUNTOS, 'llevas %d' % (pts or 0), (pts or 0) >= A_TIER1_PUNTOS],
-            ['%d eventos o más en 4 semanas' % A_TIER1_EVENTOS, 'llevas %d' % ev, ev >= A_TIER1_EVENTOS],
-            ['Llaves que el bot lee casi solo', '%d preguntas en %d eventos' % (ay, ev), bool(ev) and ay / ev <= 1]]
-    return {'a': 1, 'pide': pide, 'rec': rec}
+    out = {'a': a, 'pide': _filas_req(SUBE[a], pts, m8), 'rec': rec}
+    if a == 1:
+        out['despues'] = 'Después de cumplir, un mes de prueba en Tier 1'
+    return out
+
+
+def pide(tier, m, m8=None):
+    """📋 Lo que pide su tier para quedarse (`SEGUIR`): `[[qué, cómo va, si cumple]]`. Tier 3: seguir vivo, un evento o una
+    fecha de liga en las últimas 4 semanas (`m`). Lo dice «En el aire» del panel; no mueve a nadie (decide Dlx)."""
+    req = SEGUIR.get(tier)
+    if req is None:
+        return []
+    if 'vivo' in req:
+        m = m or {}
+        ev, lg = m.get('eventos', 0), m.get('ligas', 0)
+        return [['Seguir vivo: un evento o una fecha de liga por mes', 'llevas %d %s y %d %s en 4 semanas' % (
+            ev, 'evento' if ev == 1 else 'eventos', lg, 'liga' if lg == 1 else 'ligas'), ev + lg >= req['vivo']]]
+    return _filas_req(req, 0, m8)
 
 
 def panel(D, hoy, sv, ps=None, crews=None, otros=None):
@@ -1059,7 +1104,10 @@ def correr(aplicar=False, ahora=None):
         for f in filas:
             if f['tier'] in TIERS:
                 f['panel'] = panel(D, hoy, f['sv'], ps, crews, socios)
-                f['panel']['subir'] = como_subir(f['tier'], f['puntos'], f.get('m'))
+                f['panel']['subir'] = como_subir(f['tier'], f['puntos'], f.get('m'), f.get('m8'))
+                f['panel']['pide'] = pide(f['tier'], f.get('m'), f.get('m8'))
+                # los números de `SEGUIR` de su tier: con eso la cabina dibuja los bloques sin copiar las reglas
+                f['panel']['seguir'] = SEGUIR.get(f['tier'])
                 su = sugerencias_ir(f['panel'], f.get('m'))
                 f['panel']['sugerencias'] = [t for t, _ in su]
                 f['panel']['sug_ir'] = [d for _, d in su]
@@ -1232,10 +1280,21 @@ def _self_check():
     ok(a['m']['nuevos'] == 15 and a['m']['volvieron'] == 15 and a['rec'] == 'bien',
        'trajo 15 nuevos (p1 ya había jugado en BBB) y volvieron todos; cumple como Tier 1', str((a['m'], a['rec'])))
     ok(f['BBB']['rec'] == 'revisar' and f['BBB']['sin_jugar'] == 40, 'un Tier 1 que hace 40 días no juega: revisar', str(f['BBB']))
-    ok(f['CCC']['rec'] == 'subir', 'un Tier 3 que ya anuncia eventos: puede pasar a Tier 2', str(f['CCC']))
-    ok(recomendar(2, 70, {'eventos': 6, 'ayudas': 2, 'anuncios': 6}, 3)[0] == 'subir'
-       and recomendar(2, 70, {'eventos': 6, 'ayudas': 12, 'anuncios': 6}, 3)[0] == 'bien',
-       'un Tier 2 sube con puntaje, eventos y llaves que el bot lee casi solo; con mucha ayuda, no')
+    ok('m8' in f['CCC'] and set(f['CCC']['m8']) == {'eventos', 'por_evento', 'ligas'}, 'cada fila trae sus 8 semanas', str(f['CCC']))
+    # 🪜 las reglas de 8 semanas (Dlx, 19/11/2026): anunciar ya no alcanza para Tier 2
+    ok(recomendar(3, 50, {'anuncios': 6}, 3, {'eventos': 9, 'por_evento': 8.5})[0] == 'subir'
+       and recomendar(3, 50, {'anuncios': 6}, 3, {'eventos': 9, 'por_evento': 6})[0] == 'bien'
+       and recomendar(3, 50, {'anuncios': 6}, 3)[0] == 'bien',
+       'un Tier 3 sube con 8 eventos en 8 semanas y 8 raperos por evento; anunciar ya no alcanza')
+    ok(recomendar(2, 70, {}, 3, {'eventos': 12, 'por_evento': 10})[0] == 'subir'
+       and recomendar(2, 55, {}, 3, {'eventos': 12, 'por_evento': 10})[0] == 'bien'
+       and recomendar(2, 70, {}, 3, {'eventos': 11, 'por_evento': 10})[0] == 'bien',
+       'un Tier 2 sube con 12 eventos, 10 por evento y 60 puntos; con uno menos, no')
+    p1 = pide(1, {}, {'eventos': 9, 'por_evento': 7.5})
+    ok(len(p1) == 2 and p1[0][2] and not p1[1][2] and '7,5' in p1[1][1]
+       and pide(3, {'eventos': 0, 'ligas': 1})[0][2] and not pide(3, {'eventos': 0, 'ligas': 0})[0][2]
+       and not pide(2, {}, {'eventos': 3})[0][2] and pide(9, {}) == [],
+       'lo que pide cada tier para quedarse: Tier 1 eventos y gente, Tier 2 eventos, Tier 3 seguir vivo', str(p1))
     ok(_sv_de_sec('POESÍA CRUDA · URBF · 01/10 · #380') == ('URBF', dt.date(2026, 10, 1)), 'la sigla y el día de una pregunta')
     # 👥 los miembros, sólo recomendados (Dlx, 19/11/2026: «la cantidad no define… Tier 1 1000, Tier 2 500, tier 3 100»)
     g = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1}, {'AAA': 250})}
@@ -1244,20 +1303,21 @@ def _self_check():
     ok(g['AAA']['rec'] == 'bien' and 'se recomiendan 1.000' in g['AAA']['porque'] and g2['AAA']['rec'] == 'bien'
        and 'recomiendan' not in g2['AAA']['porque'] and sin['AAA']['rec'] == 'bien' and sin['AAA']['m']['miembros'] is None,
        'un Tier 1 con 250 miembros cumple igual y dice que se recomiendan 1000; con 1500 no dice nada; sin el dato, no se inventa')
-    r2 = recomendar(2, 70, {'eventos': 6, 'ayudas': 2, 'anuncios': 6, 'miembros': 120}, 3)
+    r2 = recomendar(2, 70, {'eventos': 6, 'ayudas': 2, 'anuncios': 6, 'miembros': 120}, 3, {'eventos': 12, 'por_evento': 10})
     ok(r2[0] == 'subir' and 'se recomiendan 1.000' in r2[1], 'un Tier 2 que trabaja como Tier 1 sube con 120 miembros', str(r2))
     ok('se recomiendan 100' in recomendar(3, 50, {'eventos': 1, 'ayudas': 0, 'anuncios': 0, 'miembros': 40}, 3)[1]
        and 'recomiendan' not in recomendar(3, 50, {'eventos': 1, 'ayudas': 0, 'anuncios': 0, 'miembros': 140}, 3)[1],
        'un Tier 3 con 40 miembros: se recomiendan 100; con 140, nada')
-    cs = como_subir(2, 70, {'eventos': 6, 'ayudas': 2, 'miembros': 300})
+    cs = como_subir(2, 70, {'eventos': 6, 'ayudas': 2, 'miembros': 300}, {'eventos': 12, 'por_evento': 10.5})
     ok(len(cs['pide']) == 3 and all(x[2] for x in cs['pide']) and cs['rec'] == ['Se recomiendan 1.000 miembros en tu Discord', 'tienes 300', False]
+       and 'mes de prueba' in cs['despues'] and 'despues' not in como_subir(3, 0, {})
        and como_subir(3, 0, {'anuncios': 2})['rec'] is None and como_subir(1, 90, {}) is None,
        'los miembros van en «rec», aparte de lo que se pide, y no frenan «N de M»', str(cs))
     rg = reglas()
     ok(rg['rec'] == {'1': 1000, '2': 500, '3': 100} and rg['da']['1'] == ['unirse']
        and {'competitivo', 'carta', 'mes_awards'} == set(rg['da']['2']) and 'competitivo' not in rg['da']['3']
        and 'duelos' in rg['da']['3']
-       and str(A_TIER2_ANUNCIOS) in rg['sube']['2'] and str(A_TIER1_PUNTOS) in rg['sube']['1']
+       and '8 semanas' in rg['sube']['2'] and str(SUBE[1]['puntos']) in rg['sube']['1'] and 'prueba' in rg['sube']['1']
        and len(json.dumps(rg, ensure_ascii=False, separators=(',', ':'))) < 600,
        'las reglas de la página: los recomendados, lo que suma cada tier y lo que pide subir, de las mismas constantes', str(rg))
     # 📊 el panel: la hora sale del mensaje de la llave, los días y la Liga, y lo que se sugiere con los números
@@ -1317,11 +1377,12 @@ def _self_check():
            'lo primero que conviene es esto', str(sg[:2]))
         ok(not any('vuelve' in t for t, _ in sugerencias_ir({'vuelven': dict(V, n=3, v=1)}, {})), 'con pocos debuts no se da un porcentaje')
     # 🪜 cómo subir: las reglas de recomendar()
-    s3, s2 = como_subir(3, 10, {'anuncios': 1}), como_subir(2, 70, {'eventos': 6, 'ayudas': 2, 'miembros': 120})
-    ok(como_subir(1, 90, {}) is None and s3['a'] == 2 and s3['pide'][0][2] is False and como_subir(3, 0, {'anuncios': 2})['pide'][0][2] is True,
-       'Tier 3 sube con 2 anuncios; Tier 1 no tiene a dónde')
+    s3, s2 = como_subir(3, 10, {'anuncios': 9}, {'eventos': 3, 'por_evento': 9}), como_subir(2, 70, {'eventos': 6, 'ayudas': 2, 'miembros': 120}, {'eventos': 12, 'por_evento': 10})
+    ok(como_subir(1, 90, {}) is None and s3['a'] == 2 and [x[2] for x in s3['pide']] == [False, True]
+       and all(x[2] for x in como_subir(3, 0, {}, {'eventos': 8, 'por_evento': 8})['pide']),
+       'Tier 3 sube con 8 eventos en 8 semanas y 8 por evento (anunciar ya no alcanza); Tier 1 no tiene a dónde')
     ok(s2['a'] == 1 and [x[2] for x in s2['pide']] == [True, True, True] and s2['rec'][2] is False,
-       'Tier 2: puntos, eventos y llaves bien, lo pide todo; los miembros, aparte y sólo recomendados', str(s2))
+       'Tier 2: eventos, gente por evento y puntos, lo pide todo; los miembros, aparte y sólo recomendados', str(s2))
     # 📦 el paquete entra en el tope del Worker, con margen para más socios: dos semanas sin llegar y nadie lo vio
     js = io.open(os.path.join(BASE, 'bot', 'avisos.js'), encoding='utf-8').read()
     t = re.search(r"ruta === '/avisos/tiers-ciclo' \? (\d+) : \d+", js)
