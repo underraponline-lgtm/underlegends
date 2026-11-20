@@ -1,7 +1,7 @@
 # El ELO por temporada y el histórico — el diseño (para la T2)
 
-> **Estado (20/11/2026, 3 AM ET): decidido en lo grande, por construir.** Los números son un borrador simulado sobre la
-> T1 y esperan el OK de Dlx. Todo lo que se decidió está acá; lo que falta decidir, al final. Las simulaciones son
+> **Estado (20/11/2026, 3:19 AM ET): decidido entero, por construir.** Los números están simulados sobre la T1 y
+> los aprobó Dlx. Todo lo que se decidió está acá. Las simulaciones son
 > scripts de una sesión (no están en el repo): cada número dice de dónde sale.
 
 Dlx, 20/11/2026: *«el ELO tendría que empezar de 0 así como en Brawl Stars y que dependiendo del rango máximo de la
@@ -251,7 +251,7 @@ arrancan en Hierro —casi todos jugaron poco en la T1— y tardan unos 16 días
 divisiones de la T1 (`datos/divisiones.json`, `mejor`) y se arranca de su piso: **Mítico → Rubí I, Diamante → Zafiro
 I, Rubí → Jade I, el resto a Hierro I**. Al 20/11: 13 llegaron a Mítico, 13 a Diamante y 32 a Rubí, de 692.
 
-### Los números (propuesta, espera el OK: como están)
+### Los números: como están (Dlx, 20/11/2026, 3:19 AM: *«Sí, como están»*)
 
 Con todo lo demás decidido (`elo_numeros.py` de la sesión, la T1, los 196 activos con 5 batallas o más): una batalla
 que cuenta vale **±15** (la mediana, con los factores); salir campeón de una llave de 16 o más da **unos +70** en la
@@ -295,11 +295,9 @@ Mats 415 · Erian 411. 25 finalistas habrían restado y no restan. El 12 % de la
 pirámide (Mítico 1, Diamante 7, Rubí 16, Zafiro 13, Jade 54, Hierro 579): con 100 por piedra la cima queda muy vacía, y
 hay que ajustar el tamaño.
 
-## 6 · Lo que falta decidir
+## 6 · Lo que se decidió
 
-1. **Los números**: la propuesta es dejarlos como están (§3, «Los números»).
-
-Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
+No queda nada por decidir. El 20/11/2026: los números, como están (*«Sí, como están»*); el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
 lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante) y, encima, la semana para el que se queda
 sin rivales (*«Sí, las dos»*); el reinicio es el del borrador, y la primera vez sale de la piedra más alta de las divisiones de la T1
 (*«Sí, el borrador»*); las semis no llevan regla propia; las piedras crecen de a 5, de 65 a 85 —Hierro 0 a 64, Jade 65, Zafiro 135, Rubí 210,
