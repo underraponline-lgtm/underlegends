@@ -40,7 +40,7 @@ const DONDE = {
 // la rehace `bot/con_marco.py`, con el freno del marco) y el fondo de Discord y el efecto en el VS en vivo (`bot/kit.py`)
 const EN_DISCORD = { carta: 'En /card se ve unos minutos después de ponértela.' };
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
-const ERRORES = { modo: 'En esta vista de MODS no se compra ni se guarda nada: apágala en el menú de MODS.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
+const ERRORES = { modo: 'En esta vista de Mods no se compra ni se guarda nada: apágala en la franja de arriba o en la página Mods.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',
   no_jugaste: 'Es para quien jugó en la temporada.', usada: 'Ya te la pusiste: no se puede deshacer.', tarde: 'Pasaron las 24 horas.',
   ya_deshecha: 'Ya la deshiciste una vez.', no_se_puede: 'No se puede deshacer.', tope: 'Ya mandaste tus regalos de esta semana.',
@@ -287,7 +287,7 @@ function tabs(S, st) {
   if (EXTRA[st.tab] && !base.some(([k]) => k === st.tab)) base.push([st.tab, EXTRA[st.tab]]);
   return `<nav class="tz-tabs" aria-label="Ranuras">${base.map(([k, n]) => `<button data-tab="${k}" aria-pressed="${st.tab === k}">${n}</button>`).join('')}</nav>`;
 }
-const pildora = (S, st) => S.anon ? '<span class="tz-bill-c"><button class="tz-bill" data-acc="entrar"><b>Entrar</b><small>con Discord para comprar</small></button></span>' : `<span class="tz-bill-c"><button class="tz-lista" data-tab="deseo" aria-pressed="${st.tab === 'deseo'}" aria-label="Tu lista, ${S.yo.deseos.length} piezas">♥ ${S.yo.deseos.length}</button><button class="tz-bill" data-abre="__bill"><b>${num(S.yo.saldo || 0)}</b><small>Puntos de Tienda${S.yo.prem ? ' · Premium' : ''}</small></button></span>`;
+const pildora = (S, st) => S.anon ? '<span class="tz-bill-c"><button class="tz-bill" data-acc="entrar"><b>Entrar</b><small>con Discord para comprar</small></button></span>' : `<span class="tz-bill-c"><button class="tz-lista" data-tab="deseo" aria-pressed="${st.tab === 'deseo'}" aria-label="Tu lista, ${S.yo.deseos.length} piezas">♥ ${S.yo.deseos.length}</button><button class="tz-bill" data-abre="__bill"><b>${S.modo === 'dinero' ? '∞' : num(S.yo.saldo || 0)}</b><small>${S.modo === 'dinero' ? 'Puntos de prueba' : 'Puntos de Tienda'}${S.yo.prem ? ' · Premium' : ''}</small></button></span>`;
 // 🎁 quien te lo mandó, por su nombre (18/11/2026): el objeto manda su clave («praiseriza») y salía tal cual. `dn` es el
 // nombre, si un día lo manda el objeto
 function regalosRecibidos(X, S, liga) {
@@ -463,7 +463,7 @@ const REGLAS = [
 ];
 const reglasPop = () => `<div class="tz-ficha" role="dialog" aria-label="Cómo funciona la Tienda">${popCab('Cómo funciona la Tienda', 'Ocho reglas, cortas')}<div class="tz-f-inf tz-reglas"><ol>${REGLAS.map(([t, d]) => `<li><details><summary>${t}</summary><p>${d}</p></details></li>`).join('')}</ol></div></div>`;
 // 🧪 lo que se tocó en una vista de MODS (no hay ficha abierta donde decirlo)
-const modoPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Vista de MODS">${popCab(S.modo === 'prueba' ? 'Modo prueba' : 'Como un usuario', 'Menú de MODS', '#E8B923')}<div class="tz-f-inf"><p>${ERRORES.modo}</p><button class="tz-b" data-acc="cerrar">Entendido</button></div></div>`;
+const modoPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Vista de Mods">${popCab(S.modo === 'prueba' ? 'Modo prueba' : S.modo === 'dinero' ? 'Dinero de prueba' : 'Como un usuario', 'Mods', '#E8B923')}<div class="tz-f-inf"><p>${ERRORES.modo}</p><button class="tz-b" data-acc="cerrar">Entendido</button></div></div>`;
 // ⚠️ EL ERROR DE UN TOQUE SIN FICHA ABIERTA (18/11/2026): el drop del día, el ♡ de la grilla, «Tu lista» o aceptar un
 // regalo guardaban el error y sólo las fichas lo dibujan, así que el toque no hacía nada visible («Ya abriste el de
 // hoy.», «El drop del día es de los Miembros de DRA.» y «Primero verifícate.» no salían nunca)
@@ -520,8 +520,11 @@ function desdeServidor(S) {
 // 🧪 LAS DOS VISTAS DEL MENÚ DE MODS, SÓLO PARA EL DUEÑO (17/11/2026): «Tener todo (prueba)» —todas las piezas como tuyas,
 // con Premium y las ediciones— y «Ver como un usuario» —sin tu Premium ni el ensayo—. No tocan nada del objeto: sólo cambian
 // lo que la página cree que tienes, y `accion()` no manda nada mientras estén prendidas (ponerte algo en la prueba, sí, acá)
-function verComo(S, prueba, usuario) {
-  if (!prueba && !usuario) return S;
+// 💸 Y «DINERO DE PRUEBA» (20/11/2026, la página Mods): Puntos que no se terminan. Lo que compras se suma acá, en lo que la
+// página cree que tienes (`yo.inv`), para que te lo pongas y lo veas puesto; al objeto no sale nada
+const DINERO_PRUEBA = 99999999;
+function verComo(S, prueba, usuario, dinero) {
+  if (!prueba && !usuario && !dinero) return S;
   const yo = Object.assign({}, S.yo);
   if (prueba) {
     yo.inv = Object.keys(S.cat.piezas).map((p) => ({ p, o: 'prueba', pagado: 0, t: 0, usada: false, deshacer: false }));
@@ -529,13 +532,15 @@ function verComo(S, prueba, usuario) {
     yo.numeros = Object.fromEntries(Object.keys(S.cat.ediciones || {}).map((id) => [id, 1]));
   }
   if (usuario) yo.prem = false;
-  return Object.assign({}, S, { yo, ensayo: false, modo: prueba ? 'prueba' : 'usuario' });
+  if (dinero && !prueba) { yo.saldo = DINERO_PRUEBA; yo.inv = (yo.inv || []).slice(); }
+  return Object.assign({}, S, { yo, ensayo: false, modo: prueba ? 'prueba' : dinero ? 'dinero' : 'usuario' });
 }
 
 export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   const M = useModsEstado();
   const yoDueno = !!dc && String(dc.id) === DUENO;
-  const S = useMemo(() => verComo(S0, yoDueno && !!M.prueba, yoDueno && !!M.usuario && !M.prueba), [S0, yoDueno, M.prueba, M.usuario]);
+  const S = useMemo(() => verComo(S0, yoDueno && !!M.prueba, yoDueno && !!M.usuario && !M.prueba && !M.dinero, yoDueno && !!M.dinero),
+    [S0, yoDueno, M.prueba, M.usuario, M.dinero]);
   const k = (dc && dc.clave) || '';
   const [A, falloArte, reintentarArte] = useArte(S.arte_v, !!S.anon);
   const [, repintar] = useState(0);
@@ -556,7 +561,17 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   async function accion(d, despues) {
     // 🧪 en una vista de MODS no sale nada al objeto: en la prueba, ponerse algo es local (para verlo puesto)
     if (S.modo) {
-      const p = d.accion === 'poner' && S.modo === 'prueba' ? S.cat.piezas[d.pieza] : null;
+      // 💸 con el dinero de prueba, comprar es sumarlo a lo que la página cree que tienes (y nada sale al objeto)
+      if (S.modo === 'dinero' && /^comprar/.test(d.accion)) {
+        const ids = d.accion === 'comprar-col' ? ((S.cat.colecciones[d.col] || {}).piezas || []) : d.piezas || [d.pieza];
+        const ya = new Set(S.yo.inv.map((x) => x.p));
+        for (const p of ids) if (p && !ya.has(p)) S.yo.inv.push({ p, o: 'prueba', pagado: 0, t: Date.now(), usada: false, deshacer: false });
+        if (d.poner && d.pieza && S.cat.piezas[d.pieza]) { const pz = S.cat.piezas[d.pieza]; if (esFondo(pz.c)) E.mio.fondo[pz.c] = d.pieza; else if (pz.c in E.mio.puesto) E.mio.puesto[pz.c] = d.pieza; }
+        if (despues) await despues({ ok: true });
+        pinta();
+        return { ok: true };
+      }
+      const p = d.accion === 'poner' && (S.modo === 'prueba' || S.modo === 'dinero') ? S.cat.piezas[d.pieza] : null;
       if (p) {
         if (esFondo(p.c)) E.mio.fondo[p.c] = d.pieza; else if (p.c in E.mio.puesto) E.mio.puesto[p.c] = d.pieza;
         if (despues) despues({ ok: true });
@@ -654,7 +669,8 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
           E.va = true;
           for (const [ra, x] of tuyos) {
             let j = null;
-            try { j = await pedir({ accion: 'poner', ranura: ra, pieza: x }); } catch (e) { j = null; }
+            // con una vista de Mods prendida, ponerse lo tuyo también es local (nada sale al objeto)
+            try { j = S.modo ? { ok: true } : await pedir({ accion: 'poner', ranura: ra, pieza: x }); } catch (e) { j = null; }
             // lo que no se pudo poner queda como estaba (y el error sale en la hoja)
             if (!(j && j.ok)) { E.error = (j && j.error) || 'error'; if (ra in mio.puesto) mio.puesto[ra] = E.mio.puesto[ra]; else mio.fondo[ra] = E.mio.fondo[ra]; }
           }
@@ -722,7 +738,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
       : id === '__prob' ? `<div class="tz-ficha" role="dialog" aria-label="El probador">${popCab('El probador', 'Lo que te estás probando', '#E41373')}<div class="tz-f-inf">${escenario(X, S, E)}${probando(S, E, tengo)}</div></div>`
       : S.cat.colecciones[id] ? fichaCol(X, S, E, tengo, liga, id) : S.cat.piezas[id] ? fichaPieza(X, S, E, tengo, liga, id) : '';
   }
-  const arriba = `${S.modo ? '<p class="tz-ensayo">' + (S.modo === 'prueba' ? 'Modo prueba (MODS): tienes todo de mentira. Te lo puedes poner para verlo; no se compra ni se guarda nada.' : 'Viendo la Tienda como un usuario (MODS): sin tu Premium y sin el ensayo. En esta vista no se compra nada.') + '</p>' : ''}${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S, liga)}${hero(X, S, E, tengo)}
+  const arriba = `${S.modo ? '<p class="tz-ensayo">' + (S.modo === 'prueba' ? 'Modo prueba (Mods): tienes todo de mentira. Te lo puedes poner para verlo; no se compra ni se guarda nada.' : S.modo === 'dinero' ? 'Dinero de prueba (Mods): Puntos que no se terminan. Lo que compras es de mentira: lo ves puesto mientras esté prendido, y no se guarda nada.' : 'Viendo la Tienda como un usuario (Mods): sin tu Premium y sin el ensayo. En esta vista no se compra nada.') + '</p>' : ''}${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S, liga)}${hero(X, S, E, tengo)}
     <section class="tz-sec" id="tz-prob" data-tuto="tz-probador"><div class="tz-sec-t"><h2>El probador</h2>${pildora(S, E)}</div>
       <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat" data-tuto="tz-piezas">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>
     <section class="tz-sec tz-sec-mas" data-tuto="tz-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>

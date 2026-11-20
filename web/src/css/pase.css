@@ -865,3 +865,6 @@ svg.po{display:block;flex:none;overflow:visible}
 .pa-muro .pc-salon li:first-child .pc-sb{background:rgba(3,3,4,.2)}
 .pa-muro .pc-salon li:first-child .pc-sb u{background:#030304}
 @media (prefers-reduced-motion: reduce){.pa-setlist .pc-col{transform:none}}
+
+/* 🛠️ el aviso de Mods cuando el Pase se dibuja en otro nivel (20/11/2026) */
+.pa-mods{margin:0;padding:10px var(--gut,40px);background:#E8B923;color:#030304;font:700 14px/1.35 Archivo,sans-serif}

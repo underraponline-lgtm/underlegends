@@ -108,6 +108,17 @@ export function abrirCajaNuevo(el, caja, alAbrir) {
     return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [item], { cofres: D && D.cofres, abrir, alCerrar: refrescar }));
   });
 }
+/**
+ * 🛠️ UN DROP DE PRUEBA, DESDE LA PÁGINA MODS (20/11/2026): la animación entera de la rareza que elijas (0 a 4: Maqueta a
+ * Micrófono de Oro), sin pasar por el objeto: no se gasta, no se suma nada y no cuenta para la garantía. Es la misma
+ * animación de verdad; lo único inventado es qué salió, que lo eligió quien la mira.
+ */
+export function abrirDePrueba(el, rareza) {
+  const r = Math.max(0, Math.min(4, Number(rareza) || 0));
+  const item = { id: 'prueba-' + Date.now(), tipo: 'drop', origen: '' };
+  const abrir = () => Promise.resolve({ ok: true, id: item.id, tipo: 'drop', rareza: r, nombre: NOMBRES[r], puntos: 0, titulo: '', sin_tope: 0, semana: { cobrado: 0, de: 0 } });
+  return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [item], { abrir, alCerrar: () => {} }));
+}
 /** 🐉 El dibujo del drop antes de abrirlo (`dropQuieto()` de drops_show.js), como texto SVG: el Pase lo muestra quieto */
 export function dropQuietoSvg(tipo, min) {
   return preparar().then((m) => m.dropQuieto(tipo, min));

@@ -1117,7 +1117,14 @@ export class Liga {
 function leer(k) {
   try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; }
 }
+// 🛠️ «VER COMO: SIN CUENTA» DE MODS (20/11/2026, mods_pag.jsx): la página se dibuja como la ve quien no entró. Sólo lo que
+// se dibuja: los pedidos siguen yendo con tu cuenta. Se lee directo de la pestaña (`lg:mods`) y no de mods.js, que ya
+// importa de acá
+function sinCuentaMods() {
+  try { return (window.__mods || JSON.parse(sessionStorage.getItem('lg:mods') || '{}') || {}).vista === 'sincuenta'; } catch (e) { return false; }
+}
 export function quienMira() {
+  if (sinCuentaMods()) return { k: null, dc: null };
   const dc = leer('lg:dc');
   if (dc && dc.clave) return { k: dc.clave, dc };
   const yo = leer('lg:yo');

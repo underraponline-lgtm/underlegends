@@ -11,6 +11,7 @@
 // entero con sus ramas (en espejo si entra), como antes.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PAIS, capital, esSinTitulo, limpio, norm, normNombre, num } from './liga.js';
+import { anotarMods, deshechaMods, useModsEstado } from './mods.js';
 import { Alguien, Algunos, Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { usePases, vioVivo, vivoPendiente } from './pase.js';
@@ -483,6 +484,14 @@ function etiquetas(ctx, b, est, copa) {
 // 🎬 EN VIVO, LO QUE SE ACABA DE DECIDIR SE VE PASAR (Dlx, 18/10/2026, a «la carta del que pierde se apaga en vivo y la
 // del que pasa salta a la ronda siguiente»: «all of them»). `pos` es el lugar de la batalla (`ronda:batalla`) y `ctx.anim`
 // lo que cambió en la última vuelta: la batalla que se decidió (`recien`) y quien acaba de llegar a otra (`llega`)
+// ✎ EL LÁPIZ DE MODS EN CADA BATALLA (20/11/2026, la página Mods: «Lápices para corregir»). Abre «Corregir» de
+// `StaffLlave` con esa batalla elegida; quién puede de verdad lo decide el Worker (`socioLlave()`)
+function Lapiz({ ctx, ronda, ls }) {
+  if (!ctx.lapiz || ronda == null || ls.length < 2) return null;
+  return <button type="button" className="lk-lapiz" aria-label={'Corregir ' + ls.map(limpio).join(' vs ')} title="Corregir esta batalla"
+    onClick={(e) => { e.stopPropagation(); ctx.lapiz(ronda, ls); }}>✎</button>;
+}
+
 function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
   const ls = b[0];
   const cp = ctx.caras ? compacta(b, pasan) : null;
@@ -494,6 +503,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
     const jv = ronda != null && ctx.votoDe ? ctx.votoDe(ronda, b) : null;
     return (
       <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '') + (recien ? ' recien' : '')} style={style} title={b[2] || undefined}>
+        <Lapiz ctx={ctx} ronda={ronda} ls={ls} />
         {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
         <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' lk-vs3' : '')}>
           {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} llega={!!an && an.s.has(pos + ':' + clave(s))} j={jv} li={i} />)}
@@ -505,6 +515,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
   return (
     <div className={'lk-b' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (ls.length ? '' : ' vacio') + (copa ? ' fin' : '') + (recien ? ' recien' : '')}
       style={style} title={b[2] || undefined}>
+      <Lapiz ctx={ctx} ronda={ronda} ls={ls} />
       {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
       {cp ? <>{cp.g.map((s, i) => <Lado key={i} ctx={ctx} b={b} s={s} copa={copa} alto={altos ? altos[i] : 0} pasa li={ls.indexOf(s)} ronda={ronda} />)}
         <Resto ctx={ctx} b={b} xs={cp.x} ronda={ronda} alto={altos ? altos[altos.length - 1] : 0} /></>
@@ -984,7 +995,22 @@ function Reporte({ n, nombres }) {
 // sugerir»). Sólo lo ve quien es del staff de ESE servidor (`pedirRoles()`): el moderador, el admin y el dueño corrigen
 // directo —lo mismo que el Dashboard: el ganador de una batalla, un nombre, «no cuenta»—, y el asistente lo sugiere. Lo
 // valida el Worker (`socioLlave()`) y lo aplica el ciclo en la próxima media hora; la Liga se entera y lo puede rehacer
+// 🛠️ Y DLX, EN CUALQUIER LLAVE, CON LOS LÁPICES DE MODS (20/11/2026, la página Mods: «A con lo de B»). El Worker ya lo
+// dejaba (`rolSocio()` le da «dlx» en todos los servidores); lo que no lo dejaba era esta pieza, que sólo miraba los
+// servidores donde es del staff. Con los lápices prendidos sale un ✎ en cada batalla (`Lapiz`) que abre esto con esa
+// batalla elegida, avisa qué cambia después en la llave (`despuesDe()`) y deja deshacer lo que se acaba de corregir
+//: las batallas de las rondas que vienen después de `ronda` donde está `quien`: lo que queda para revisar si deja de pasar
+function despuesDe(L, ronda, quien) {
+  const rs = L.rondas || [];
+  const i = rs.findIndex((R) => R.r === ronda);
+  if (i < 0 || !quien) return [];
+  const es = (s) => partes(s).some((m) => norm(m) === norm(quien)) || norm(s) === norm(quien);
+  const xs = [];
+  rs.slice(i + 1).forEach((R) => (R.b || []).forEach((b) => { if ((b[0] || []).some(es)) xs.push({ ronda: R.r, lados: b[0] }); }));
+  return xs;
+}
 function StaffLlave({ n, L }) {
+  const M = useModsEstado();
   const [rol, setRol] = useState('');
   const [perm, setPerm] = useState({});
   const [abierto, setAbierto] = useState(false);
@@ -996,21 +1022,61 @@ function StaffLlave({ n, L }) {
   const [va, setVa] = useState(false);
   const [est, setEst] = useState('');
   const [ok, setOk] = useState('');
+  //: lo último que se corrigió, para deshacerlo: `{fix, t}` (el ganador de antes va en `fix.ganador`)
+  const [ultimo, setUltimo] = useState(null);
+  const caja = useRef(null);
   useEffect(() => {
     let vivo = true;
     if (!L || !L.sv || !/^\d+$/.test(String(n))) return undefined;
-    pedirRoles().then((r) => { if (vivo) { setRol(((r && r.roles) || {})[L.sv] || ''); setPerm((r && r.permisos) || {}); } });
+    pedirRoles().then((r) => {
+      if (!vivo) return;
+      const rr = (r && r.roles) || {};
+      setRol(rr[L.sv] || (r && M.lapices ? (r.dlx ? 'dlx' : r.liga ? 'liga' : '') : ''));
+      setPerm((r && r.permisos) || {});
+    });
     return () => { vivo = false; };
-  }, [n, L && L.sv]); // eslint-disable-line react-hooks/exhaustive-deps
-  if (!rol || !puede(rol, 'sugerir', perm)) return null;
-  const directo = puede(rol, 'llaves', perm);
-  if (ok) return <p className="lk-rep-ok">✓ {ok}</p>;
-  if (!abierto) return <button type="button" className="btn verde chico" onClick={() => setAbierto(true)}>{directo ? 'Corregir' : 'Sugerir'} (staff de {L.sv})</button>;
+  }, [n, L && L.sv, M.lapices]); // eslint-disable-line react-hooks/exhaustive-deps
   const bats = [];
   (L.rondas || []).forEach((R) => (R.b || []).forEach((b) => { if ((b[0] || []).length >= 2) bats.push({ ronda: R.r, lados: b[0], ganador: b[1] }); }));
+  // ✎ el lápiz de una batalla abre esto con ella elegida
+  useEffect(() => {
+    const f = (e) => {
+      const d = (e && e.detail) || {};
+      if (String(d.n) !== String(n)) return;
+      const i = bats.findIndex((x) => x.ronda === d.ronda && x.lados.join('|') === (d.lados || []).join('|'));
+      setAbierto(true); setModo('ganador'); setBi(i); setGana(''); setOk(''); setEst('');
+      setTimeout(() => { if (caja.current) caja.current.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 30);
+    };
+    window.addEventListener('lg:llave-lapiz', f);
+    return () => window.removeEventListener('lg:llave-lapiz', f);
+  });
+  if (!rol || !puede(rol, 'sugerir', perm)) return null;
+  const directo = puede(rol, 'llaves', perm);
+  const nomL = limpio(L.nombre || L.n || '') || 'la llave #' + n;
+  const deshacer = () => {
+    if (!ultimo || va) return;
+    setVa(true); setEst('');
+    pedirLlave(L.sv, 'corregir', { fix: ultimo.fix }).then((j) => {
+      setVa(false);
+      if (j && j.ok) { deshechaMods(ultimo.t); setUltimo(null); setOk('Deshecho: vuelve a ganar ' + limpio(ultimo.fix.ganador) + '. Entra al ranking en la próxima media hora.'); return; }
+      setEst('No se pudo deshacer: prueba de nuevo en un rato.');
+    }).catch(() => { setVa(false); setEst('No se pudo deshacer: prueba de nuevo en un rato.'); });
+  };
+  if (ok) {
+    return (
+      <div className="lk-rep-ok-c" ref={caja}>
+        <p className="lk-rep-ok">✓ {ok}</p>
+        {ultimo ? <button type="button" className="btn borde2 chico" disabled={va} onClick={deshacer}>{va ? 'Deshaciendo…' : 'Deshacer'}</button> : null}
+        <span aria-live="polite">{est}</span>
+      </div>
+    );
+  }
+  const deMods = (rol === 'dlx' || rol === 'liga') && M.lapices;
+  if (!abierto) return <button type="button" className="btn verde chico" onClick={() => setAbierto(true)}>{directo ? 'Corregir' : 'Sugerir'}{deMods ? ' (Mods)' : ' (staff de ' + L.sv + ')'}</button>;
   const b = bats[bi];
   const nombres = nombresDe(L);
   const listo = modo === 'ganador' ? !!b && !!gana && gana !== b.ganador : modo === 'nombre' ? !!nom && es.trim().length >= 2 : true;
+  const cambia = modo === 'ganador' && b && gana && gana !== b.ganador ? despuesDe(L, b.ronda, b.ganador) : [];
   const mandar = () => {
     if (!listo || va) return;
     const fix = modo === 'ganador' ? { accion: 'ganador', n: String(n), ronda: b.ronda, lados: b.lados, ganador: gana }
@@ -1018,16 +1084,30 @@ function StaffLlave({ n, L }) {
     setVa(true); setEst('');
     pedirLlave(L.sv, directo ? 'corregir' : 'sugerir', { fix }).then((j) => {
       setVa(false);
-      if (j && j.ok) { setOk(directo ? 'Corregido: entra al ranking en la próxima media hora.' : 'Sugerido: lo aprueba un moderador, un admin o el dueño de tu servidor.'); return; }
+      if (j && j.ok) {
+        if (directo && modo === 'ganador' && b.ganador) {
+          // 📒 a «Lo que hiciste con Mods» (este navegador), con lo que hay que mandar para volver atrás
+          const t = Date.now();
+          const atras = Object.assign({}, fix, { ganador: b.ganador });
+          anotarMods({ t, que: 'El ganador de ' + b.lados.map(limpio).join(' vs '), donde: nomL + ' · ' + L.sv, ruta: '#/llave/' + encodeURIComponent(n),
+            deshacer: { sv: L.sv, fix: atras } });
+          setUltimo({ fix: atras, t });
+        } else if (directo) {
+          anotarMods({ que: modo === 'nombre' ? '«' + limpio(nom) + '» es ' + es.trim() : 'La llave no cuenta', donde: nomL + ' · ' + L.sv, ruta: '#/llave/' + encodeURIComponent(n) });
+        }
+        setOk(directo ? 'Corregido: entra al ranking en la próxima media hora.' : 'Sugerido: lo aprueba un moderador, un admin o el dueño de tu servidor.');
+        return;
+      }
       const e = (j && j.error) || '';
       setEst(e === 'no_es_tuya' ? 'Esta llave no es de tu servidor.' : e === 'no_rol' ? 'Tu rol no puede hacer eso.' : e === 'tope' ? 'Llegaste al tope de hoy.'
         : e === 'falta la batalla' ? 'Elige la batalla y quién ganó.' : 'No se pudo: prueba de nuevo en un rato.');
     }).catch(() => { setVa(false); setEst('No se pudo: prueba de nuevo en un rato.'); });
   };
   return (
-    <div className="lk-rep">
-      <p className="lk-rep-t">{directo ? 'Eres del staff de ' + L.sv + ': lo que corrijas acá entra al ranking en la próxima media hora, y la Liga se entera.'
-        : 'Eres asistente de ' + L.sv + ': lo que sugieras lo aprueba un moderador, un admin o el dueño.'}</p>
+    <div className="lk-rep" ref={caja}>
+      <p className="lk-rep-t">{deMods ? 'Mods: lo que corrijas acá entra al ranking en la próxima media hora, queda anotado con tu nombre y se deshace.'
+        : directo ? 'Eres del staff de ' + L.sv + ': lo que corrijas acá entra al ranking en la próxima media hora, y la Liga se entera.'
+          : 'Eres asistente de ' + L.sv + ': lo que sugieras lo aprueba un moderador, un admin o el dueño.'}</p>
       <div className="lk-rep-q" role="group" aria-label="Qué corregir">
         {[['ganador', 'El ganador'], ['nombre', 'Un nombre'], ['no_cuenta', 'La llave no cuenta']].map(([k, t]) => (
           <button key={k} type="button" aria-pressed={modo === k} className={modo === k ? 'on' : ''} onClick={() => { setModo(k); setEst(''); }}>{t}</button>))}
@@ -1041,8 +1121,11 @@ function StaffLlave({ n, L }) {
         {b ? <>
           <p className="lk-rep-t">¿Quién ganó?</p>
           <div className="lk-rep-q" role="group" aria-label="Quién ganó">
-            {b.lados.map((x) => <button key={x} type="button" aria-pressed={gana === x} className={gana === x ? 'on' : ''} onClick={() => setGana(x)}>{limpio(x)}{x === b.ganador ? ' (lo que dice ahora)' : ''}</button>)}
+            {b.lados.map((x) => <button key={x} type="button" aria-pressed={gana === x} className={gana === x ? 'on' : ''} onClick={() => setGana(x)}>{limpio(x)}{x === b.ganador ? ' (ahora)' : ''}</button>)}
           </div>
+          {cambia.length ? (
+            <p className="lk-rep-cambia"><b>Cambia también {cambia.length === 1 ? '1 batalla' : cambia.length + ' batallas'} de después.</b> {limpio(gana)} pasa en lugar de {limpio(b.ganador)}, y quedan para revisar: {cambia.map((x) => capital(String(x.ronda || '').toLowerCase()) + ' (' + x.lados.map(limpio).join(' vs ') + ')').join(', ')}.</p>
+          ) : null}
         </> : null}
       </> : modo === 'nombre' ? <>
         <p className="lk-rep-t">¿Qué nombre está mal?</p>
@@ -1053,7 +1136,7 @@ function StaffLlave({ n, L }) {
           placeholder={nom ? '¿Quién es «' + limpio(nom) + '»? Su nombre en la Liga' : 'Elige el nombre de arriba'} />
       </> : <p className="lk-rep-t">La llave entera deja de sumar para el ranking: para una llave de prueba, repetida o que no se jugó.</p>}
       <div className="lk-rep-pie">
-        <button type="button" className="btn verde chico" disabled={!listo || va} onClick={mandar}>{va ? 'Guardando…' : directo ? 'Corregir' : 'Sugerir'}</button>
+        <button type="button" className="btn verde chico" disabled={!listo || va} onClick={mandar}>{va ? 'Guardando…' : directo ? (modo === 'ganador' && gana ? 'Poner a ' + limpio(gana) : 'Corregir') : 'Sugerir'}</button>
         <span aria-live="polite">{est}</span>
       </div>
     </div>
@@ -1551,6 +1634,15 @@ function PuntosA({ ctx, L, orden, grupos }) {
 }
 
 export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
+  const Mm = useModsEstado();
+  // ✎ ¿los lápices de Mods valen acá? Dlx, o Admin y Moderador de la página (`liga` de `socio-roles`, 20/11/2026)
+  const [puedeLapiz, setPuedeLapiz] = useState(false);
+  useEffect(() => {
+    if (!Mm.lapices || !dc) { setPuedeLapiz(false); return undefined; }
+    let vivo = true;
+    pedirRoles().then((r) => { if (vivo) setPuedeLapiz(!!(r && (r.dlx || r.liga))); });
+    return () => { vivo = false; };
+  }, [Mm.lapices, dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
   let n = n0;
   try { n = decodeURIComponent(n0); } catch (e) { /* tal cual */ }
   const enVivo = String(n).indexOf('v:') === 0;
@@ -1836,8 +1928,10 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       </section>
     );
   }
+  const lapices = !!Mm.lapices && puedeLapiz && !L.vivo && /^\d+$/.test(String(n));
   const ctx = Object.assign({}, base, {
     liga, L, n, sigo, seguir, anim, compu,
+    lapiz: lapices ? (ronda, lados) => window.dispatchEvent(new CustomEvent('lg:llave-lapiz', { detail: { n: String(n), ronda, lados } })) : null,
     // 🅰️ el remake A (18/11/2026): las filas de la llave con caras, nota y votos (`Lado`, `compacta()`)
     caras: true, elegir: (id) => setSigo(id || ''),
     pasan: (i) => base.pasanDe[i] || null,

@@ -4840,8 +4840,13 @@ export const SOCIO_PERMISOS = {
   asistente: ['ver', 'sugerir'],
 };
 /** ¿Ese rol del panel puede `que`? `dlx` y `dueno` todo; `equipo`, sólo ellos. Pura (`bot/avisos_prueba.mjs`). */
+//: 🛠️ «LA LIGA» (20/11/2026, la página Mods): los Admin y Moderadores de la página —los que tienen `reportes` en el
+//: Dashboard— corrigen las llaves y las ligas de cualquier servidor con los lápices de Mods, como el staff de ese servidor.
+//: No es un rol del equipo de un socio: no entra a su panel ni a sus ajustes
+export const LIGA_STAFF = ['ver', 'final', 'llaves', 'ligas', 'sugerir'];
 export function socioPuede(rol, que) {
   if (rol === 'dlx' || rol === 'dueno') return true;
+  if (rol === 'liga') return LIGA_STAFF.includes(que);
   return (SOCIO_PERMISOS[rol] || []).includes(que);
 }
 //: 🏟️ LO QUE EL STAFF DE UN SERVIDOR PUEDE CAMBIAR DE SU LIGA (Dlx, 16/11/2026, Krish: «quiero poner las cosas por mi propia
@@ -8080,9 +8085,11 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    const cuerpo = roles ? { quien: q.id } : ruta === '/avisos/socio-llave'
-      ? { quien: q.id, sv: d.sv, accion: d.accion, id: d.id, fix: d.fix && typeof d.fix === 'object' ? d.fix : null }
-      : { quien: q.id, sv: d.sv, accion: d.accion, id: d.id, liga: d.liga, cambio: d.cambio && typeof d.cambio === 'object' ? d.cambio : null };
+    // 🛠️ Admin o Moderador de la página (Mods, 20/11/2026): lo dice el Dashboard (`reportes`), nunca la página
+    const jefe = await puede(q.id, 'reportes');
+    const cuerpo = roles ? { quien: q.id, jefe } : ruta === '/avisos/socio-llave'
+      ? { quien: q.id, jefe, sv: d.sv, accion: d.accion, id: d.id, fix: d.fix && typeof d.fix === 'object' ? d.fix : null }
+      : { quien: q.id, jefe, sv: d.sv, accion: d.accion, id: d.id, liga: d.liga, cambio: d.cambio && typeof d.cambio === 'object' ? d.cambio : null };
     return elObjeto(env).fetch('https://avisos' + ruta.replace('/avisos', ''), {
       method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
     });
@@ -9903,7 +9910,7 @@ export class Avisos {
       if (ruta === '/panel-socio') return this.panelSocio(d);
       if (ruta === '/finales-pend') return json(await this.finalesPend(d));
       if (ruta === '/socio-final') return json(this.socioFinal(d));
-      if (ruta === '/socio-roles') return json(this.socioRoles(String((d && d.quien) || '')));
+      if (ruta === '/socio-roles') return json(this.socioRoles(String((d && d.quien) || ''), !!(d && d.jefe === true)));
       if (ruta === '/socio-llave') return json(await this.socioLlave(d));
       if (ruta === '/socio-liga') return json(await this.socioLiga(d));
       if (ruta === '/socio-staff') return json(await this.socioStaff(d));
@@ -17426,12 +17433,13 @@ export class Avisos {
   }
 
   /** 🛡️ Los servidores donde quien pide es del staff y su rol en cada uno (`{SV: rol}`): la llave y las ligas lo usan */
-  socioRoles(quien) {
+  socioRoles(quien, jefe) {
     const { esDlx, lista } = this.sociosDe(quien);
     const roles = {};
     for (const x of lista) roles[x.sv] = esDlx ? 'dlx' : x.rol;
-    // y qué abre cada rol (`SOCIO_PERMISOS`): la página lo lee de acá, no tiene su copia
-    return { ok: true, roles, dlx: esDlx, permisos: SOCIO_PERMISOS };
+    // y qué abre cada rol (`SOCIO_PERMISOS`): la página lo lee de acá, no tiene su copia. `liga`: Admin o Moderador de la
+    // página (Mods), que corrige las llaves y las ligas de cualquier servidor (`LIGA_STAFF`)
+    return { ok: true, roles, dlx: esDlx, liga: !esDlx && jefe === true, permisos: Object.assign({}, SOCIO_PERMISOS, { liga: LIGA_STAFF }) };
   }
 
   /** 🗺️ De qué servidor es cada llave, `{n: SV}`: lo deja el ciclo en KV (`llaves_sv`, `bot/subir_web.py`). 10 min en memoria */
@@ -17467,12 +17475,12 @@ export class Avisos {
   async socioLlave(d) {
     const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
     const accion = String((d && d.accion) || '');
-    const rol = this.rolSocio(quien, sv);
+    const rol = this.rolSocio(quien, sv) || (d && d.jefe === true ? 'liga' : '');
     if (!rol) return { error: 'no' };
     const ahora = Date.now();
     const mapa = await this.llavesSv(ahora);
     const deSv = (n) => String(mapa[String(n)] || '') === sv;
-    const nombre = this.nombreEquipo(sv, quien) || (rol === 'dlx' ? 'Dlx' : rol === 'dueno' ? 'El dueño' : '');
+    const nombre = this.nombreEquipo(sv, quien) || (rol === 'dlx' ? 'Dlx' : rol === 'dueno' ? 'El dueño' : rol === 'liga' ? 'La Liga (Mods)' : '');
     const lista = () => this.reportesSv(sv, mapa, ahora);
     if (accion === 'ver') return { ok: true, rol, reportes: lista() };
     const resumen = (fx) => (fx.tipo === 'ganador' ? 'ganó ' + fx.ganador + ' (' + fx.ronda + ')' : fx.tipo === 'no_cuenta'
@@ -17541,11 +17549,11 @@ export class Avisos {
   async socioLiga(d) {
     const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
     const liga = String((d && d.liga) || ''), accion = String((d && d.accion) || '');
-    const rol = this.rolSocio(quien, sv);
+    const rol = this.rolSocio(quien, sv) || (d && d.jefe === true ? 'liga' : '');
     if (!rol) return { error: 'no' };
     const ahora = Date.now();
     if (!(await this.ligasCfg(ahora)).some((L) => L && L.sv === sv && String(L.id) === liga)) return { error: 'no_es_tuya' };
-    const nombre = this.nombreEquipo(sv, quien) || (rol === 'dlx' ? 'Dlx' : rol === 'dueno' ? 'El dueño' : '');
+    const nombre = this.nombreEquipo(sv, quien) || (rol === 'dlx' ? 'Dlx' : rol === 'dueno' ? 'El dueño' : rol === 'liga' ? 'La Liga (Mods)' : '');
     const lista = () => this.sql.exec('SELECT id, tipo, dato, quien, rol, t, estado FROM liga_cambios WHERE liga = ? ORDER BY id DESC LIMIT 80', liga)
       .toArray().map((f) => {
         let dato = {};

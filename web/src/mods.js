@@ -15,17 +15,24 @@ import { useSocio } from './panelsocio.js';
 
 const W = window;
 const CLAVE = 'lg:mods';
-// lo que se prende: cada uno es un interruptor del menú
+// 🛠️ LA PÁGINA MODS (20/11/2026, Dlx, de la maqueta privada 2n91HAK3krNGWeK6u7zFF1: «A con lo de B, dale»). Mods dejó de ser
+// una ventana con cinco interruptores sueltos: es una página (`#/mods`, mods_pag.jsx) en tres grupos, y cada cosa es un
+// estado de esta pestaña:
+//   · la lente, que sólo cambia lo que ves: `vista` ('' · 'usuario' · 'sincuenta')
+//   · probar sin gastar: `prueba` (tener todo), `dinero` (Puntos de prueba), `pase` + `paseN` + `paseP` (el Pase en otro
+//     nivel, con o sin Premium). Nada de esto sale al objeto
+//   · corregir de verdad: `lapices` (un lápiz en cada cosa que puedes corregir, en su propia página)
+// Lo de antes (`crews`, `todo`, `fuera`, `usuario`) sale de esto en `derivar()`, así que las páginas que ya lo miraban
+// (crew2.jsx, competencias.jsx, tienda3.jsx) siguen igual.
+//: lo que dice la franja de cada cosa prendida (las que no están acá no salen en la franja)
 export const INTERRUPTORES = {
-  crews: 'Manejar cualquier crew como su Líder',
-  todo: 'Ver todas las llaves',
-  fuera: 'Mirar como quien no juega',
-  // 🛍️ la Tienda, sólo para el dueño (17/11/2026, Dlx: «que en el menú de mods haya la opción de tener todo y en tienda todo
-  // también, no es algo verdadero pero es como what if… también la opción para ver cómo lo ve un usuario»). Son VISTAS: no
-  // se compra ni se guarda nada. Las mismas dos claves sirven para el resto de la página
-  prueba: 'Tener todo (prueba)',
-  usuario: 'Ver como un usuario',
+  vista: 'Ver como',
+  prueba: 'Tener todo',
+  dinero: 'Dinero de prueba',
+  pase: 'El Pase en otro nivel',
+  lapices: 'Lápices para corregir',
 };
+export const VISTAS = { usuario: 'un usuario', sincuenta: 'sin cuenta' };
 
 function leer() {
   try {
@@ -34,23 +41,70 @@ function leer() {
   } catch (e) { return {}; }
 }
 
-/** Prende o apaga un interruptor (o todos, con `null`) y le avisa a la página. */
+/** Prende o apaga una cosa (o todas, con `null`) y le avisa a la página. Un valor que no es sí/no (la vista, el nivel)
+ *  se guarda tal cual; vacío o 0, apagado. */
 export function ponerMod(k, v) {
-  const x = k === null ? {} : Object.assign(leer(), { [k]: !!v });
+  const x = k === null ? {} : Object.assign(leer(), { [k]: typeof v === 'boolean' ? v : v || '' });
   try { W.sessionStorage.setItem(CLAVE, JSON.stringify(x)); } catch (e) { /* sin sessionStorage: dura lo que la página */ }
   W.__mods = x;
   W.dispatchEvent(new Event('lg:mods'));
 }
 
-/** Los interruptores prendidos: `{crews, todo, fuera}`. */
+/** Lo prendido, con lo de antes calculado: los lápices abren las crews y todas las llaves de Competencias, y ver como un
+ *  usuario es la Tienda sin tu Premium y Competencias como quien no juega. */
+function derivar(x) {
+  const usuario = x.vista === 'usuario';
+  return Object.assign({}, x, { crews: !!x.lapices, todo: !!x.lapices && !usuario, fuera: usuario, usuario });
+}
+
+/** La vista de la lente, para quien no puede usar hooks (liga.js `quienMira()`, App.jsx): '' si no hay ninguna */
+export function vistaMods() {
+  return (W.__mods || leer()).vista || '';
+}
+
+/** Lo prendido: `{vista, prueba, dinero, pase, paseN, paseP, lapices}` y lo de antes (`crews`, `todo`, `fuera`, `usuario`). */
 export function useModsEstado() {
-  const [m, setM] = useState(() => W.__mods || leer());
+  const [m, setM] = useState(() => derivar(W.__mods || leer()));
   useEffect(() => {
-    const f = () => setM(Object.assign({}, W.__mods || leer()));
+    const f = () => setM(derivar(Object.assign({}, W.__mods || leer())));
     W.addEventListener('lg:mods', f);
     return () => W.removeEventListener('lg:mods', f);
   }, []);
   return m;
+}
+
+/** Cuántas cosas hay prendidas (lo dicen la franja y «Tus paneles») */
+export function prendidosMods(M) {
+  return Object.keys(INTERRUPTORES).filter((k) => !!M[k]).length;
+}
+
+// 📒 LO QUE HICISTE CON MODS, EN ESTE NAVEGADOR (20/11/2026): las correcciones con su Deshacer. Es una comodidad de quien
+// mira, no el registro: lo que corriges queda anotado con tu nombre en el objeto (`socioAnotar()`), y el registro del
+// servidor llega a la página en la próxima tanda
+const HIST = 'lg:mods-hist';
+export function historialMods() {
+  try { const x = JSON.parse(localStorage.getItem(HIST) || '[]'); return Array.isArray(x) ? x : []; } catch (e) { return []; }
+}
+/** Anota una corrección: `{t, que, donde, ruta, deshacer?}` (deshacer: lo que hay que mandar para volver atrás) */
+export function anotarMods(x) {
+  const xs = [Object.assign({ t: Date.now() }, x), ...historialMods()].slice(0, 30);
+  try { localStorage.setItem(HIST, JSON.stringify(xs)); } catch (e) { /* sin almacenamiento: no queda */ }
+  W.dispatchEvent(new Event('lg:mods-hist'));
+}
+/** Marca una como deshecha (por su `t`) */
+export function deshechaMods(t) {
+  const xs = historialMods().map((x) => (x.t === t ? Object.assign({}, x, { deshecha: Date.now() }) : x));
+  try { localStorage.setItem(HIST, JSON.stringify(xs)); } catch (e) { /* nada */ }
+  W.dispatchEvent(new Event('lg:mods-hist'));
+}
+export function useHistorialMods() {
+  const [h, setH] = useState(historialMods);
+  useEffect(() => {
+    const f = () => setH(historialMods());
+    W.addEventListener('lg:mods-hist', f);
+    return () => W.removeEventListener('lg:mods-hist', f);
+  }, []);
+  return h;
 }
 
 /** Quién es quien mira, para el menú: `{owner, admin, mod, socio}`. ⚠️ Si es socio se pregunta SÓLO en la página de un
@@ -68,56 +122,10 @@ export function useQuienMod(dc, k, sv) {
   };
 }
 
-/**
- * Lo que el menú ofrece en ESTA página, para esta persona: `[{k, t, d}]` interruptores y `[{t, d, ruta}]` atajos. Vacío:
- * el botón no se dibuja.
- */
-export function opcionesMods(Q, pagina, sv) {
-  const sw = [], atajos = [];
-  if (Q.admin && (pagina === 'crews' || pagina === 'crew')) {
-    sw.push({ k: 'crews', t: INTERRUPTORES.crews, d: 'Sus Ajustes, como si fueras el Líder: entrada, rangos, pedidos, nombre y escudo. Gratis, y cada cosa queda anotada con tu nombre.' });
-  }
-  if (Q.admin && pagina === 'competencias') {
-    sw.push({ k: 'todo', t: INTERRUPTORES.todo, d: 'La Copa, la Rapid y los mini eventos completos, también donde no juegas.' });
-    sw.push({ k: 'fuera', t: INTERRUPTORES.fuera, d: 'La página como la ve la mayoría: sin tu cruce ni tu lugar.' });
-  }
-  if (Q.owner && pagina === 'tienda') {
-    sw.push({ k: 'prueba', t: INTERRUPTORES.prueba, d: 'La Tienda como si tuvieras todas las piezas: te las pones y las ves. Nada es de verdad: no se compra ni se guarda nada.' });
-    sw.push({ k: 'usuario', t: INTERRUPTORES.usuario, d: 'La Tienda como la ve alguien sin tus permisos: sin tu Premium y sin el ensayo. Es una vista: no se compra nada.' });
-  }
-  if (sv && (Q.socio || Q.owner)) atajos.push({ t: 'El panel de tu servidor', d: 'estadísticas, ajustes del bot y tu equipo', ruta: '#/socio' });
-  if (Q.mod && (pagina === 'publicaciones' || pagina === 'r')) atajos.push({ t: 'El Dashboard', d: 'lo que espera que decidas', ruta: '#/dashboard' });
-  return { sw, atajos };
-}
-
 /** Quién es, en una palabra: lo que dice arriba del menú y de la ventana. */
 export function rolMods(Q) {
   return Q.owner ? 'Owner' : Q.admin ? 'Admin' : Q.mod ? 'Moderación' : 'Tu servidor';
 }
 
-/**
- * 🗺️ TODOS LOS LUGARES, PARA «TUS PANELES» (Dlx, 17/11/2026: «pon el menú de mods dentro de tus paneles… o si se puede
- * ponlo en ambos lugares. La diferencia es que en el de tus paneles ahí te aparece un pop up con todos los lugares que
- * puedes usar el mod menu dependiendo quién tú eres»). El botón de la cabecera muestra lo de ESTA página; la ventana de
- * Tus paneles, lo de todas. Cada lugar es una página de `opcionesMods()`: lo que se ofrece sale de ahí y no de una
- * segunda lista, así que un interruptor nuevo aparece en los dos sitios. `ruta` vacía: el lugar es la página de tu
- * servidor, que es una por socio, y su atajo ya lleva a donde hace falta.
- */
-export const LUGARES = [
-  { pagina: 'crews', t: 'Crews', d: 'la lista y la página de cada crew', ruta: '#/crews', ico: 'crews' },
-  { pagina: 'competencias', t: 'Competencias', d: 'la Copa, la Rapid y las ligas simuladas', ruta: '#/competencias', ico: 'competencias' },
-  { pagina: 'servidor', sv: true, t: 'Tu servidor', d: 'desde la página de tu servidor', ruta: '', ico: 'servidor' },
-  { pagina: 'publicaciones', t: 'Publicaciones y perfiles', d: 'para lo que reporta la gente', ruta: '#/publicaciones', ico: 'publicaciones' },
-  { pagina: 'tienda', t: 'La Tienda', d: 'con todo de prueba, o como un usuario', ruta: '#/tienda', ico: 'tienda' },
-];
-
-/** Los lugares de `LUGARES` donde esta persona tiene algo, cada uno con sus `sw` y `atajos`. */
-export function lugaresMods(Q) {
-  return LUGARES.map((L) => Object.assign({}, L, opcionesMods(Q, L.pagina, L.sv ? 'tu-servidor' : '')))
-    .filter((L) => L.sw.length || L.atajos.length);
-}
-
-/** Abre la ventana de todos los lugares (`LugaresMods`, montada una vez en App.jsx) con quién es quien la pide. */
-export function abrirLugaresMods(Q) {
-  W.dispatchEvent(new CustomEvent('lg:mods-lugares', { detail: Q }));
-}
+/** ¿Tiene algo para hacer en Mods? (la fila de «Tus paneles» y la página) */
+export const tieneMods = (Q) => !!(Q && (Q.owner || Q.admin || Q.mod || Q.socio));

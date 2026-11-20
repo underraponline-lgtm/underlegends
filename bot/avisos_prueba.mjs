@@ -3830,6 +3830,11 @@ const ok = (cond, que, det) => {
     && A.socioPuede('asistente', 'sugerir') && !A.socioPuede('asistente', 'llaves') && !A.socioPuede('asistente', 'final')
     && !A.socioPuede('', 'ver') && !A.socioPuede('otro', 'ver') && A.SOCIO_ROLES.join() === 'admin,moderador,asistente',
   'los roles del equipo de un socio: el dueño todo, el admin todo menos el equipo, el moderador llaves, ligas y quién ganó, el asistente sólo sugiere');
+  // 🛠️ «la Liga» (20/11/2026, Mods): Admin y Moderador de la página corrigen llaves y ligas de cualquier servidor, y nada más
+  ok(A.socioPuede('liga', 'llaves') && A.socioPuede('liga', 'ligas') && A.socioPuede('liga', 'final') && A.socioPuede('liga', 'sugerir')
+    && !A.socioPuede('liga', 'ajustes') && !A.socioPuede('liga', 'equipo') && !A.socioPuede('liga', 'pagina') && !A.socioPuede('liga', 'muro')
+    && !A.SOCIO_ROLES.includes('liga'),
+  'los lápices de Mods para Admin y Moderador de la página: llaves y ligas de cualquier servidor, sin el panel ni el equipo de nadie');
   const cl = A.validarCambioLiga;
   ok(cl({ tipo: 'ganador', bat: '155', gana: 'ANA', como: 'replica' }).dato.como === 'replica'
     && cl({ tipo: 'ganador', bat: '155', gana: 'ANA', como: 'df' }).error && cl({ tipo: 'no_cuenta', bat: '15 5' }).error

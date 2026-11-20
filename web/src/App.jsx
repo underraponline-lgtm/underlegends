@@ -20,7 +20,8 @@ import { MarcoSolo } from './marco_solo.jsx';
 import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
-import { FranjaMods, LugaresMods } from './mods.jsx';
+import { FranjaMods } from './mods.jsx';
+import { vistaMods } from './mods.js';
 import { FichaHover } from './ficha.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
@@ -173,6 +174,8 @@ const Cuenta = pag(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta
 const Dashboard = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m.Dashboard })));
 // 🏠 y en el Inicio, sólo para Dlx (el mismo archivo: se baja una vez)
 const PanelDueno = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m.PanelDueno })));
+// 🛠️ la página Mods (20/11/2026): sólo para quien tiene algo para hacer ahí; la puerta de verdad la pone el Worker en cada pedido
+const ModsPagina = pag(() => import('./mods_pag.jsx').then((m) => ({ default: m.ModsPagina })));
 
 // 📣 EL AVISO DE LA PÁGINA (el Dashboard de Dlx, 04/10/2026): viaja con `/api/avisos/vivo`, que datos.js ya pide al
 // abrir y cada pocos minutos (`window.VIVO.aviso`). Cada uno lo puede cerrar; uno nuevo vuelve a aparecer
@@ -444,6 +447,8 @@ export default function App() {
     const ajustes = () => setAhora(new Date());
     window.addEventListener('lg:ajustes', ajustes);
     window.addEventListener('lg:cuenta', cuenta);
+    // 🛠️ «Ver como» de Mods cambia quién mira (`quienMira()` de liga.js): la página se vuelve a armar
+    window.addEventListener('lg:mods', cuenta);
     window.addEventListener('lg:sigo', sigo);
     window.addEventListener('lg:datos', datos);
     window.addEventListener('lg:enc', votos);
@@ -480,7 +485,7 @@ export default function App() {
       window.removeEventListener('lg:vivo', vivo); window.removeEventListener('lg:ruta', ruta);
       window.removeEventListener('hashchange', ruta); window.removeEventListener('storage', ruta);
       window.removeEventListener('lg:dir', ruta);
-      window.removeEventListener('lg:cuenta', cuenta); window.removeEventListener('lg:sigo', sigo);
+      window.removeEventListener('lg:cuenta', cuenta); window.removeEventListener('lg:sigo', sigo); window.removeEventListener('lg:mods', cuenta);
       window.removeEventListener('lg:ajustes', ajustes);
       clearInterval(plazo); clearInterval(reloj);
     };
@@ -754,7 +759,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
         ? nombrePais(String(partes[1]).toLowerCase())
-      : pagina === 'cuenta' || pagina === 'ajustes' ? 'Tu cuenta' : pagina === 'dashboard' ? 'Dashboard'
+      : pagina === 'cuenta' || pagina === 'ajustes' ? 'Tu cuenta' : pagina === 'dashboard' ? 'Dashboard' : pagina === 'mods' ? 'Mods'
       : pagina === 'ranking' || pagina === 'duelos' ? 'Los rankings'
       : pagina === 'eventos' || pagina === 'avisos' ? 'Los eventos'
       : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda' : pagina === 'invitar' ? 'Invita y gana'
@@ -863,8 +868,6 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv || ''} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="FranjaMods"><FranjaMods /></Aislada>
-      {/* 🗺️ la ventana de MODS con todos los lugares: la abre «Tus paneles» del menú de tu cara (mods.jsx) */}
-      <Aislada n="LugaresMods"><LugaresMods /></Aislada>
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
@@ -905,6 +908,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
+        : pagina === 'mods' ? <Aislada key="Mods" n="Mods" pagina><Suspense fallback={<Cargando />}><ModsPagina dc={yo.dc} liga={liga} /></Suspense></Aislada>
         : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada>
         : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <div className={'pg-entra' + (va ? ' va-' + va : '')} key="inicio">
         {/* 🐣 LAS MISIONES PARA NUEVOS, LO PRIMERO DEL INICIO (17/11/2026, Dlx a la maqueta, «Tus elecciones»): antes iban
@@ -912,7 +916,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
             Sólo mientras dura tu semana (`pistaDe()` de nuevos.jsx: si no, no se dibuja y el Inicio queda como siempre) */}
         <Aislada n="PistaNuevos"><div className="nvp-arriba"><PistaNuevos liga={liga} dc={yo.dc} /></div></Aislada>
         {/* 🏠 el Dashboard, sólo para Dlx: si la cuenta del navegador no es la suya ni se baja (la puerta igual es el servidor) */}
-        {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
+        {yo.dc && String(yo.dc.id) === DUENO && !vistaMods() ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         {(() => { try { return localStorage.getItem('lg:prev-escenario'); } catch (e) { return null; } })() ? <Aislada n="EscenarioPrueba"><EscenarioPrueba liga={liga} /></Aislada> : null}

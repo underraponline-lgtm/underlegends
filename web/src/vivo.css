@@ -7050,23 +7050,15 @@ button.nvp-caja small{color:#F5C542}
 /* 🛠️ MODS (16/11/2026, mods.jsx): los interruptores de la ventana «Tus paneles» y la franja. Magenta: es lo que no es de
    todos. ⚠️ SIN EL BOTÓN DE LA CABECERA desde el 18/11/2026 (Dlx: «remove the mods menu from the top»): ocupaba los ~70 px
    que le faltaban al menú y la marca quedaba pegada («LIGA GLOBAL · T1INICIO»). Vive en el menú de tu cara */
-.app .mods-sw:focus-visible,.app .mods-ir:focus-visible,.app .mods-franja button:focus-visible{outline:2px solid #29B298;outline-offset:2px}
-.app .mods-sw,.app .mods-ir{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:56px;margin:0 0 8px;padding:10px 12px;border:1.6px solid #2A2A2E;border-radius:3px;background:#141417;color:#F6F6F6;font:inherit;text-align:left;text-decoration:none;cursor:pointer}
-@media (hover: hover) and (pointer: fine){.app .mods-sw:hover,.app .mods-ir:hover{border-color:#F6F6F6}}
-.mods-sw b,.mods-ir b{display:block;font:800 15px/1.25 Archivo,sans-serif}
-.mods-sw small,.mods-ir small{display:block;margin-top:3px;font:500 13px/1.35 Archivo,sans-serif;color:#A5A5A0}
-.mods-sw i{flex:none;position:relative;width:42px;height:24px;border:1.6px solid #A5A5A0;border-radius:2px}
-.mods-sw i::after{content:"";position:absolute;top:3px;left:3px;width:15px;height:15px;background:#A5A5A0;border-radius:1px;transition:transform .16s ease-out}
-.mods-sw[aria-checked="true"]{border-color:#E41373}
-.mods-sw[aria-checked="true"] i{border-color:#E41373;background:#E41373}
-.mods-sw[aria-checked="true"] i::after{transform:translateX(18px);background:#fff}
-.mods-ir i{font-style:normal;font-size:22px;color:#A5A5A0}
-.mods-pie{margin:4px 0 0;font:500 12.5px/1.4 Archivo,sans-serif;color:#A5A5A0}
-.mods-franja{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px var(--gut,40px);background:#E41373;color:#fff;font:700 15px/1.25 "Barlow Condensed",sans-serif;letter-spacing:0.04em}
-.mods-franja b{margin-right:10px;letter-spacing:0.1em}
-.app .mods-franja button{min-height:36px;padding:0 14px;border:1.6px solid #fff;border-radius:3px;background:#030304;color:#fff;font:inherit;cursor:pointer}
-@media (prefers-reduced-motion: reduce){.mods-sw i::after{transition:none}}
-@media (max-width: 899.98px){.mods-franja{padding-left:16px;padding-right:16px}}
+/* 🛠️ la franja de Mods (20/11/2026, con la página Mods): cada cosa prendida con su ✕, y «Apagar todo» a la derecha */
+.mods-franja{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px var(--gut,40px);background:#E41373;color:#fff;font:700 15px/1.25 "Barlow Condensed",sans-serif;letter-spacing:0.04em}
+.app .mods-franja .mods-fr-t{margin-right:4px;letter-spacing:0.12em;color:#fff;text-decoration:none}
+.app .mods-franja .mods-chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 10px;border:1.4px solid rgba(255,255,255,.75);border-radius:3px;background:transparent;color:#fff;font:inherit;cursor:pointer}
+.mods-chip i{font-style:normal;font-size:13px;opacity:.85}
+.app .mods-franja .mods-fin{margin-left:auto;min-height:36px;padding:0 14px;border:1.6px solid #fff;border-radius:3px;background:#030304;color:#fff;font:inherit;cursor:pointer}
+.app .mods-franja button:focus-visible,.app .mods-franja a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.app .mods-franja .mods-chip:hover{border-color:#fff;background:rgba(0,0,0,.18)}}
+@media (max-width: 899.98px){.mods-franja{padding-left:16px;padding-right:16px}.app .mods-franja .mods-chip,.app .mods-franja .mods-fin{min-height:44px}.app .mods-franja .mods-fin{margin-left:0}}
 
 /* ── 💬 LOS COMENTARIOS FLOTANDO (flotantes.jsx, 17/11/2026; prefijo `cfl-`: `.cf` y `.cf-q` son del «¿Cómo funciona?»): entran desde abajo y empujan a los de arriba, como en un vivo.
    Cada uno es una burbuja de alto fijo (nombre + una línea de texto) puesta con `--pos` (0 = la más nueva, abajo) y
@@ -7125,21 +7117,6 @@ button.nvp-caja small{color:#F5C542}
 .fh-chips .fh-rg.sin{background:#1f1f24;color:#B9B9B4}
 /* 🗺️ la ventana de «Tus paneles»: un bloque por lugar, con su ícono, su «Ir», y los mismos interruptores y atajos del
    menú de la cabecera. Es un `pn-pop` como los del panel: al centro en la compu, hoja desde abajo en el celular */
-dialog.pn-pop.mods-lug{--pc:#E41373}
-.mods-lug-in{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:14px 16px 16px;display:grid;gap:10px;align-content:start}
-.mods-lug-g{display:grid;gap:8px;padding:12px;border:1.5px solid #1f2126;border-radius:4px;background:#08090B}
-.mods-lug-h{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:10px;align-items:center}
-.mods-lug-ic{width:36px;height:36px;display:grid;place-items:center;border-radius:4px;background:#2a0f1c;color:#FF5BA3}
-.mods-lug-tt{display:grid;gap:2px;min-width:0}
-.mods-lug-tt b{font:800 16px/1.2 Archivo,sans-serif}
-.mods-lug-tt small{font:500 13px/1.3 Archivo,sans-serif;color:#A5A5A0}
-.app .mods-lug-ir{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1.5px solid #2A2C31;border-radius:3px;background:#000;
-  color:#F6F6F6;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
-@media (hover: hover) and (pointer: fine){.app .mods-lug-ir:hover{border-color:#F6F6F6}}
-.app .mods-lug-ir:focus-visible{outline:2px solid #29B298;outline-offset:2px}
-.mods-lug-ir i{font-style:normal;font-size:18px;line-height:1}
-.app .mods-lug .mods-sw,.app .mods-lug .mods-ir{margin:0}
-.mods-lug .mods-pie{margin:2px 0 0}
 
 /* 🪪 UN NOMBRE CON SU CARA Y SU PERFIL (`Alguien` de piezas.jsx, 17/11/2026, Dlx: «si alguien escribe velatzzzz, debería
    mostrarse con su aka oficial… y hazlo más bonito con su foto y su cuenta»). En el texto, la cara a la altura de la letra

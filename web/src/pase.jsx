@@ -9,7 +9,8 @@
 // público (las Tareas, los premios y el Salón, sin nadie adentro) viaja con `/avisos/pases`, así quien no entró también
 // ve qué es. ⚠️ EL PREMIUM NO TIENE PRECIO EN NINGÚN LADO: en la T1 lo desbloquea el rol de DRA, que se sortea acá.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { aQuienSigo, limpio, num } from './liga.js';
+import { DUENO, aQuienSigo, limpio, num } from './liga.js';
+import { useModsEstado } from './mods.js';
 import { Cara, Carta, Sec, accion } from './piezas.jsx';
 import { Franja } from './ranking_a.jsx';
 import { avance, multAhora, pasePost, pedirPase, proximoEspecial, refrescarPases, usePase, usePases } from './pase.js';
@@ -628,9 +629,21 @@ function Proximo({ miembro, nivel, N, libres, prem, tiene, a, onPista }) {
   );
 }
 
+// 🛠️ «EL PASE EN OTRO NIVEL» DE MODS (20/11/2026, la página Mods): tu Pase dibujado en el nivel `n` (y con o sin Premium),
+// para ver los premios, la pista y el CIELO de cada nivel. Es una vista: cobrar sigue preguntándole al objeto, que sabe
+// tu nivel de verdad
+function conNivelDePrueba(P, n, prem, cfg) {
+  const u = (cfg && cfg.umbrales) || [];
+  const desde = Number(u[n]) || 0, hasta = Number(u[n + 1]) || 0;
+  return Object.assign({}, P, { nivel: n, miembro: true, desde, hasta: hasta > desde ? hasta : null, xp: hasta > desde ? Math.round((desde + hasta) / 2) : desde,
+    premium: prem ? Object.assign({}, P.premium || {}, { hasta: null }) : null });
+}
+
 export function Pase({ liga, dc }) {
   const P0 = usePase(!!dc, true);
   const pub = usePases();
+  const M = useModsEstado();
+  const nivelPrueba = dc && String(dc.id) === DUENO && M.pase ? Math.max(1, Math.min(50, Number(M.paseN) || 1)) : 0;
   const compu = useCompu();
   const ahora = useAhora(30000);
   const [q, setQ] = useState('');
@@ -638,7 +651,8 @@ export function Pase({ liga, dc }) {
   const [fecha, setFecha] = useState(0);
   const cuerpo = useRef(null);
   useEntran(cuerpo);
-  const P = dc && P0 && P0.listo ? P0 : null;
+  const P1 = dc && P0 && P0.listo ? P0 : null;
+  const P = P1 && nivelPrueba ? conNivelDePrueba(P1, nivelPrueba, !!M.paseP, pub && pub.cfg) : P1;
   const miembro = !!(P && P.miembro);
   const cfg = (pub && pub.cfg) || (P ? { premios: P.premios, niveles: P.niveles, temp: P.temp, premium: P.fila_premium } : {});
   const temp = (P && P.temp) || cfg.temp || '';
@@ -715,6 +729,7 @@ export function Pase({ liga, dc }) {
   const contar = (k) => (k === 'tareas' ? (miembro ? hechas(hoyH) + ' de ' + hoyH.length + ' hoy' : 'cómo se sube') : k === 'premium' ? (tiene ? 'lo tienes' : 'con candado') : String(enSalon));
   return (
     <>
+      {nivelPrueba ? <p className="pa-mods" role="status">Mods: tu Pase en el nivel {nivelPrueba}{M.paseP ? ', con Premium' : ''}. Es una vista: lo que cobres sigue siendo lo de tu nivel de verdad.</p> : null}
       <div className="escena pa-esc" style={{ '--esc': 'url("' + ESCENA_PASE + '")', '--mo-c': '#F5C542', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
         <span className="pa-foto" aria-hidden="true" />
         <section className="pa-cab rka" aria-label="Tu Pase">

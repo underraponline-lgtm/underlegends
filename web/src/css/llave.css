@@ -460,3 +460,15 @@
 .cal-e button:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .cal-e em{font:700 14px/1 Archivo,sans-serif;font-style:normal;color:var(--gris);margin-left:6px}
 .cal-m{margin:0;font:600 14px/1.4 Archivo,sans-serif}
+
+/* ✎ EL LÁPIZ DE MODS EN CADA BATALLA (20/11/2026, «Lápices para corregir»): magenta, arriba a la derecha, y su área de
+   toque de 44 px (el dibujo mide 24) */
+.lk-lapiz{position:absolute;z-index:3;top:-11px;right:-11px;width:24px;height:24px;padding:0;border:2px solid var(--fondo);border-radius:50%;background:#E41373;color:#fff;font:700 13px/1 Archivo,sans-serif;display:grid;place-items:center;cursor:pointer}
+.lk-lapiz::before{content:"";position:absolute;inset:-10px}
+.lk-lapiz:focus-visible{outline:2px solid #29B298;outline-offset:2px}
+@media (hover: hover) and (pointer: fine){.lk-lapiz:hover{transform:scale(1.1)}}
+@media (prefers-reduced-motion: no-preference){.lk-lapiz{transition:transform .15s ease-out}}
+/* lo que cambia después en la llave si se corrige un ganador, y el Deshacer de lo recién corregido */
+.lk-rep-cambia{margin:0;padding:10px 12px;border:1.6px dashed #E41373;border-radius:3px;font:500 14px/1.45 Archivo,sans-serif}
+.lk-rep-cambia b{font-weight:800}
+.lk-rep-ok-c{display:flex;flex-wrap:wrap;align-items:center;gap:10px}

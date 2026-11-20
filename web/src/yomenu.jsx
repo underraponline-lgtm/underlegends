@@ -17,7 +17,7 @@ import { Ico } from './piezas.jsx';
 import { DUENO } from './liga.js';
 import { useRoles } from './roles.js';
 import { useSocio } from './panelsocio.js';
-import { INTERRUPTORES, abrirLugaresMods, lugaresMods, useModsEstado } from './mods.js';
+import { prendidosMods, tieneMods, useModsEstado } from './mods.js';
 
 export function YoMenu({ k, dc, nombre, cara, abajo = false, sale = false, onCerrar }) {
   const [nuevos, setNuevos] = useState(0);
@@ -64,12 +64,11 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, sale = false, onCer
   }, []);
   // 🛠️ MODS, también acá (Dlx, 17/11/2026: «pon el menú de mods dentro de tus paneles… o si se puede ponlo en ambos
   // lugares»): en el celular el botón de la cabecera no entra —partía la cabecera en dos renglones—, y acá entra siempre.
-  // No abre el menú de una página sino la ventana con TODOS los lugares donde puedes usarlo (mods.jsx, `LugaresMods`).
+  // Desde el 20/11/2026 lleva a la página Mods (`#/mods`, mods_pag.jsx), que reemplazó a la ventana de todos los lugares.
   // Quién es sale de lo mismo que ya miran las dos filas de arriba
   const quien = { owner: esDlx, admin: esDlx || misRoles.includes('admin'), mod: dashboard, socio: !!socio };
-  const lugares = lugaresMods(quien);
   const M = useModsEstado();
-  const prendidos = Object.keys(INTERRUPTORES).filter((x) => M[x]).length;
+  const prendidos = prendidosMods(M);
   // 🧹 ACOMODADO EL 18/11/2026 (Dlx, con una captura del menú largo: «acomoda esas cosas de ajustes de mejor manera»).
   // Eran once filas iguales y el final no entraba: «Cuenta y ayuda» quedaba debajo del scroll. Ahora:
   // - TUS PANELES, como fichas en una fila (Dashboard, los servidores, MODS): son atajos de quien administra, no cosas tuyas;
@@ -81,7 +80,7 @@ export function YoMenu({ k, dc, nombre, cara, abajo = false, sale = false, onCer
     // en la ficha entra el nombre y nada más (medido: a 340 px de menú, «lo que espera» se cortaba); MODS dice cuántos prendidos
     dashboard ? ['#/dashboard', 'tablero', 'Dashboard', ''] : null,
     socio ? ['#/socio', 'servidor', esDlx ? 'Servidores' : 'Mi servidor', ''] : null,
-    lugares.length ? ['', 'escudo', 'MODS', prendidos ? (prendidos === 1 ? '1 prendido' : prendidos + ' prendidos') : '', () => abrirLugaresMods(quien)] : null,
+    tieneMods(quien) ? ['#/mods', 'escudo', 'Mods', prendidos ? (prendidos === 1 ? '1 prendido' : prendidos + ' prendidos') : ''] : null,
   ].filter(Boolean);
   const tuyo = [
     // ⚙️ Tu cuenta, la primera de la lista, y Soporte, la última (Dlx, 18/11/2026: «te dije que tu cuenta y soporte
