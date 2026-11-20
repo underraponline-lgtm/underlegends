@@ -51,7 +51,7 @@ Cada batalla que cuenta es **un traspaso entre los dos**: lo que suma el que gan
 | factor | qué hace | borrador |
 |---|---|---|
 | **el rival y lo esperado** | ganarle a alguien mejor suma más; perder siendo favorito resta más | la base: K 30, ±15 en una pareja |
-| **el formato** | una batalla más larga se juega más | evento ×1 · **1v1 ranked ×1,5 (a confirmar)** |
+| **el formato** | una batalla más larga se juega más | evento ×1 · **1v1 ranked ×1,5** (Dlx, 20/11/2026: *«Sí, ×1,5»*) |
 | **la ronda** | la final pesa más que unos octavos | cuartos ×1,1 · semis ×1,2 · final ×1,3 |
 | **nivel del evento** | un evento fuerte pesa más | ×0,7 a ×1,3 (el ELO promedio de los que jugaron) |
 | **tamaño del evento** | una llave grande pesa más | ×0,85 a ×1,25 (de 4 a 83 en la T1) |
@@ -121,10 +121,11 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **Cuánto pesa el 1v1 ranked** contra una batalla de evento (borrador ×1,5: es un formato más largo).
-2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio.
-3. **El tamaño de las piedras**, para que la pirámide tenga gente arriba.
-4. **Las semis**: ¿llegar a semis en una llave grande también debería no restar?
+1. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio.
+2. **El tamaño de las piedras**, para que la pirámide tenga gente arriba.
+3. **Las semis**: ¿llegar a semis en una llave grande también debería no restar?
+
+Decidido: el 1v1 ranked pesa ×1,5 una batalla de evento (20/11/2026).
 
 ## 7 · Qué se toca al construirlo
 
