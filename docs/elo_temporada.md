@@ -53,9 +53,28 @@ Junta todas las temporadas.
 ### La escalera
 
 - Arranca en **0**, nunca baja de 0. Quien empieza la temporada sin historia, en 0.
-- **Abajo de todo perder resta menos**: abajo de 100 no resta, de 100 a 299 resta la mitad (borrador).
+- **Abajo de todo perder resta menos**: en Hierro no resta; en Jade y Zafiro, la mitad (borrador).
 - Las **piedras** salen de él (Hierro, Jade, Zafiro, Rubí, Diamante, Mítico, con sus I · II · III de `bot/divisiones.py`).
-  Borrador: 100 por piedra.
+  **Propuesta, espera el OK: 75 por piedra** (abajo).
+
+**El tamaño de las piedras — propuesta, espera el OK: 75 por piedra.** Hierro de 0 a 74 · Jade desde 75 · Zafiro
+desde 150 · Rubí desde 225 · Diamante desde 300 · Mítico desde 375, y cada subnivel de 25: subir una piedra son unas
+5 victorias netas. Medido sobre la T1 con el diseño decidido (`elo_tamano.py` de la sesión; los 196 activos con 5
+batallas o más; la protección de abajo y el reinicio se miden por piedra, así que se mueven con el tamaño):
+
+| por piedra | Mítico · Diamante · Rubí · Zafiro | en la piedra de su nivel | cuentan | bajaron de piedra alguna vez |
+|---|---|---|---|---|
+| 100 (el borrador) | 0 · 1 · 9 · 23 | 72 % | 78 % | 13 % |
+| **75** | **1 · 4 · 15 · 20** | **68 %** | **71 %** | **16 %** |
+| 60 | 4 · 9 · 16 · 25 | 59 % | 66 % | 22 % |
+| 50 | 8 · 11 · 18 · 29 | 49 % | 63 % | 24 % |
+| creciente (50 · 60 · 70 · 80 · 90) | 1 · 8 · 19 · 31 | 56 % | 66 % | 23 % |
+| Hierro 100 y las demás 60 | 1 · 9 · 9 · 20 | 67 % | 72 % | 16 % |
+
+Las piedras chicas llenan la cima pero mezclan niveles (el área se angosta con ellas) y hacen rebotar a más gente.
+Y esto es al día 58 de los 100 de la T1: del 21/10 al 20/11, con 75, Rubí o más pasó de 3 a 20 personas y Mítico de
+0 a 1, así que a fin de temporada serían unos 2 o 3 en Mítico y unos 10 en Diamante. Con 100, Mítico seguiría vacío;
+con 60 tendría unos 10.
 
 ### La unidad: la batalla
 
@@ -189,8 +208,9 @@ nada, ni el campeón; la racha cuenta sólo las batallas del área. Con el área
 ### El reinicio de cada temporada
 
 Según tu **piedra más alta** de la temporada, un **multiplicador con piso** (Dlx: *«el multiplicador depende de qué tan
-alto llegaste pero sirve hasta cierta piedra y ELO»*). Borrador: Mítico ×0,6 sin bajar de 300 · Diamante ×0,55 sin bajar
-de 200 · Rubí ×0,5 sin bajar de 100 · Zafiro ×0,4 · Jade y Hierro a 0. **La primera vez, de la T1 a la T2**, sale de la
+alto llegaste pero sirve hasta cierta piedra y ELO»*). Borrador: Mítico ×0,6 sin bajar del piso de Rubí · Diamante ×0,55 sin
+bajar del piso de Zafiro · Rubí ×0,5 sin bajar del piso de Jade · Zafiro ×0,4 · Jade y Hierro a 0 (con 100 por piedra eran
+300 · 200 · 100). **La primera vez, de la T1 a la T2**, sale de la
 piedra más alta de la T1.
 
 ## 4 · Lo que se probó y no sirve
@@ -219,8 +239,7 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **El tamaño de las piedras**: con 100 por piedra la cima queda casi vacía (en la T1, Diamante 1 · Rubí 9). Ya se
-   puede medir, porque el área y la chance están decididas.
+1. **El tamaño de las piedras**: la propuesta es 75 por piedra (§3, «La escalera»).
 2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
    sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
 
