@@ -54,8 +54,10 @@ SALIDA = os.path.join(BASE, 'bot', 'paginas', 'global.json')
 
 # Las fuentes, en orden de preferencia cuando dos traen la misma batalla.
 FUENTES = (('fms', 'global_fuente_fms'), ('fstats', 'global_fuente_fstats'), ('youtube', 'global_fuente_youtube'),
-           ('liga', 'global_fuente_liga'))
-AFUERA = {'fms', 'fstats', 'youtube'}  # las fuentes de fuera de la Liga: entre ellas se unen solas por el nombre
+           ('urbanstreet', 'global_fuente_urbanstreet'), ('liga', 'global_fuente_liga'))
+AFUERA = {'fms', 'fstats', 'youtube', 'urbanstreet'}  # las de fuera de la Liga: entre ellas se unen solas por el nombre
+# Las que fechan aproximado: YouTube por el día en que se SUBIÓ el video, UrbanStreet a veces por el día de la nota.
+FECHA_APROX = {'youtube', 'urbanstreet'}
 
 # Lo que pesa cada evento (Dlx, 20/11/2026).
 PESO = {'rb_internacional': 10, 'fms_internacional': 10, 'world_cup': 10,
@@ -140,6 +142,23 @@ def _par(b):
     return frozenset((claves.clave(b['a']['nombre']), claves.clave(b['b']['nombre'])))
 
 
+def _familia(tipo):
+    t = str(tipo or '')
+    if t.startswith('rb_') or t == 'plazas_final':
+        return 'rb'
+    if t.startswith('fms_') or t == 'world_cup':
+        return 'fms'
+    if t.startswith('liga'):
+        return 'liga'
+    return 'calle'  # plaza, independiente, resto: lo que no es ni Red Bull, ni FMS, ni la Liga
+
+
+def _par_igual_orden(x, y):
+    """Si las dos fuentes escriben la batalla con los mismos lados (A de una es A de la otra). Si no, el `gana`
+    de una es el contrario en la otra."""
+    return claves.clave(x['a']['nombre']) == claves.clave(y['a']['nombre'])
+
+
 def _dia(s):
     try:
         return dt.date.fromisoformat(str(s)[:10])
@@ -162,23 +181,28 @@ def deduplicar(batallas):
         b = dict(b)
         b['fuentes'] = sorted(set(b.get('fuentes') or [b.get('fuente')]))
         d = _dia(b['evento'].get('fecha'))
-        clave = (_par(b), b.get('ronda'))
+        clave = _par(b)
         igual = None
         for otra in por_par.get(clave, []):
             d2 = _dia(otra['evento'].get('fecha'))
             if otra['fuente'] == b['fuente'] or not (d and d2):
                 continue
-            # YouTube fecha por el día en que se SUBIÓ el video, que puede ser semanas después: ahí se pide además
-            # el mismo tipo de evento y hasta 30 días.
-            yt = 'youtube' in (otra['fuente'], b['fuente'])
-            if abs((d - d2).days) <= (30 if yt else 1) and (not yt or otra['evento'].get('tipo') == b['evento'].get('tipo')):
+            # Una ronda que una fuente no sabe (None) no separa: es la misma batalla si lo demás coincide.
+            if otra.get('ronda') and b.get('ronda') and otra['ronda'] != b['ronda']:
+                continue
+            # Con una fuente de fecha aproximada se pide además la misma familia de evento, y hasta 30 días. Familia y
+            # no tipo: UrbanStreet marca «independiente» lo que no reconoce, y para YouTube ese mismo evento es «plaza».
+            aprox = bool(FECHA_APROX & {otra['fuente'], b['fuente']})
+            if abs((d - d2).days) <= (30 if aprox else 1) and (
+                    not aprox or _familia(otra['evento'].get('tipo')) == _familia(b['evento'].get('tipo'))):
                 igual = otra
                 break
         if igual:
             igual['fuentes'] = sorted(set(igual['fuentes']) | set(b['fuentes']))
-            for campo in ('votos', 'replica', 'pts', 'gana'):
+            for campo in ('votos', 'replica', 'pts', 'gana', 'ronda'):
                 if igual.get(campo) is None and b.get(campo) is not None:
-                    igual[campo] = b[campo]
+                    igual[campo] = b[campo] if campo != 'gana' or _par_igual_orden(igual, b) else (
+                        'b' if b['gana'] == 'a' else 'a')
             continue
         por_par.setdefault(clave, []).append(b)
     return [b for lista in por_par.values() for b in lista]
@@ -467,6 +491,19 @@ def _self_check():
                                                                               len(g['Grinder']['t']))))
     if not any(t[1] == 'MVP' for t in g['Pro']['t']):
         mal.append('el MVP de la jornada cuenta como un título')
+    # Una fuente sin ronda ni ganador se junta con la que sí los trae, y el ganador se da vuelta si los lados van al
+    # revés.
+    sin = _b('urbanstreet', 'us-x', 'rb_nacional', '2026-10-05', None, 'Cami', 'Dora', None)
+    con = _b('fstats', 'fs-x', 'rb_nacional', '2026-10-02', 'final', 'Dora', 'Cami', 'a')
+    junta = deduplicar([sin, con])
+    if len(junta) != 1 or junta[0]['ronda'] != 'final' or junta[0]['fuentes'] != ['fstats', 'urbanstreet']:
+        mal.append('una batalla sin ronda de UrbanStreet se junta con la de Freestylestats: %r'
+                   % [(j['ronda'], j['fuentes']) for j in junta])
+    con2 = _b('fstats', 'fs-y', 'rb_nacional', '2026-10-02', 'final', 'Eva', 'Flor', None)
+    sin2 = _b('urbanstreet', 'us-y', 'rb_nacional', '2026-10-03', 'final', 'Flor', 'Eva', 'a')
+    j2 = deduplicar([con2, sin2])
+    if len(j2) != 1 or j2[0]['gana'] != 'b':
+        mal.append('el ganador que llega de otra fuente con los lados al revés se da vuelta: %r' % [j['gana'] for j in j2])
     dups = [b for b in deduplicar(bs) if _par(b) == frozenset(('rival1', 'rival2'))]
     if len(dups) != 1 or dups[0]['fuentes'] != ['fms', 'fstats']:
         mal.append('la misma batalla en FMS y Freestylestats es una sola, con las dos fuentes: %r'

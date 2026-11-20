@@ -1,0 +1,563 @@
+{
+ "_leeme": "Notas reales de urbanstreet.com.pe, recortadas por `global_fuente_urbanstreet.py --casos`: sólo las etiquetas que lee el lector. Las usa su --auto.",
+ "lista": [
+  {
+   "id": 6261,
+   "date": "2026-10-02T19:17:23",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/resultados-de-red-bull-batalla-argentina-2026/",
+   "title": {
+    "rendered": "Mecha gana la Red Bull Argentina 2026: resultados y final"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6271,
+   "date": "2026-10-02T19:36:35",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/mecha-bicampeon-red-bull-batalla-argentina-2026/",
+   "title": {
+    "rendered": "MECHA es bicampeón de la Red Bull Batalla Argentina 2026"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6239,
+   "date": "2026-10-02T09:25:54",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-argentina-2026-v/",
+   "title": {
+    "rendered": "Red Bull Argentina 2026: Mecha campeón, batallas y replay"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7130,
+   "date": "2026-10-17T20:50:34",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/resultados-red-bull-batalla-colombia-2026/",
+   "title": {
+    "rendered": "Resultados Red Bull Batalla Colombia 2026"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7125,
+   "date": "2026-10-17T20:31:43",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/marithea-bicampeona-red-bull-batalla-colombia-2026/",
+   "title": {
+    "rendered": "Marithea es bicampeona de Red Bull Batalla Colombia 2026"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6734,
+   "date": "2026-10-10T15:55:54",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-regional-centro-2/",
+   "title": {
+    "rendered": "Red Bull Batalla Regional Centro Chile 2026: Resultados, emparejamientos y campeón"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6748,
+   "date": "2026-10-10T16:54:20",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/elemece-es-el-campeon-de-la-rbrcc/",
+   "title": {
+    "rendered": "Elemece es el campeón de la Regional Centro de Red Bull Batalla Chile 2026"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7440,
+   "date": "2026-10-24T16:39:51",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-regional-sur/",
+   "title": {
+    "rendered": "Red Bull Batalla Regional Sur Chile 2026: Resultados y campeón"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7444,
+   "date": "2026-10-24T17:50:00",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/draker-es-campeon-de-la-regional/",
+   "title": {
+    "rendered": "Draker es campeón de la Regional Sur de Red Bull Batalla Chile 2026"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8158,
+   "date": "2026-11-08T16:39:02",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/regional-norte-red-bull-batalla-3/",
+   "title": {
+    "rendered": "Regional Norte Red Bull Batalla Chile 2026: Resultados, emparejamientos y campeón"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8177,
+   "date": "2026-11-08T17:19:39",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/jotaka-campeon-regional-norte/",
+   "title": {
+    "rendered": "Jotaka se corona campeón de la Regional Norte Red Bull Batalla Chile: su camino al oro en Coquimbo"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 4688,
+   "date": "2026-09-19T20:00:23",
+   "link": "https://urbanstreet.com.pe/internacional/torneo-de-plazas-resultados/",
+   "title": {
+    "rendered": "Resultados del Torneo de Plazas Red Bull Batalla 2026"
+   },
+   "categories": [
+    5
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 4697,
+   "date": "2026-09-19T22:06:20",
+   "link": "https://urbanstreet.com.pe/noticias/hammer-campeon-del-torneo-de-plza/",
+   "title": {
+    "rendered": "Hammer campeón del Torneo de Plazas Red Bull Batalla 2026"
+   },
+   "categories": [
+    3
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8537,
+   "date": "2026-11-15T11:53:28",
+   "link": "https://urbanstreet.com.pe/fms-colombia/fms-colombia-jornada-2-resultados/",
+   "title": {
+    "rendered": "FMS Colombia Jornada 2 resultados: ganadores, tabla y MVP en Cali"
+   },
+   "categories": [
+    5992
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7157,
+   "date": "2026-10-18T20:16:24",
+   "link": "https://urbanstreet.com.pe/fms-argentina/resultados-fms-argentina-2026/",
+   "title": {
+    "rendered": "Resultados FMS Argentina 2026: Jornada 1 en Buenos Aires"
+   },
+   "categories": [
+    5993
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7507,
+   "date": "2026-10-25T20:35:41",
+   "link": "https://urbanstreet.com.pe/liga-bazooka/resultados-liga-bazooka-argentina-segun-el-publico/",
+   "title": {
+    "rendered": "Resultados de Liga Bazooka Argentina 2026 según el público: quién ganó cada batalla en el Gran Rex"
+   },
+   "categories": [
+    5995
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8096,
+   "date": "2026-11-07T16:45:37",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/gazir-contra-todos-resultados-2026/",
+   "title": {
+    "rendered": "Gazir Contra Todos: recibe placa Guinness tras ganar 197 de 200 batallas"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8483,
+   "date": "2026-11-14T10:33:24",
+   "link": "https://urbanstreet.com.pe/proximos-eventos/supremacia-mc-2026-hoy-lima/",
+   "title": {
+    "rendered": "Supremacía MC 2026 HOY: la Gran Final Internacional con 24 MCs en Lima donde ver en VIVO"
+   },
+   "categories": [
+    63
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8489,
+   "date": "2026-11-14T10:30:00",
+   "link": "https://urbanstreet.com.pe/lfv/liga-freestyle-venezuela-hoy4j/",
+   "title": {
+    "rendered": "Liga Freestyle Venezuela HOY: Jornada 04 en Maracay donde ver en VIVO"
+   },
+   "categories": [
+    8241
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7420,
+   "date": "2026-10-24T11:55:08",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/regional-sur-red-bull-batalla-ch-2/",
+   "title": {
+    "rendered": "Regional Sur Red Bull Batalla Chile 2026 HOY: Horario, 24 MCs y dónde ver en vivo"
+   },
+   "categories": [
+    5984
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7115,
+   "date": "2026-10-17T11:09:48",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-colombia-2026-2/",
+   "title": {
+    "rendered": "Red Bull Batalla Colombia 2026: Horario, Participantes y Dónde Ver (ya hay campeona)"
+   },
+   "categories": [
+    5984,
+    63
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6309,
+   "date": "2026-10-03T22:14:22",
+   "link": "https://urbanstreet.com.pe/freestylers/cacha-vs-facu-hdr-eje-de-la-rima/",
+   "title": {
+    "rendered": "Cacha reaparece tras la polémica de Red Bull: Batallón de exhibición ante Facu HDR en el Eje de la Rima"
+   },
+   "categories": [
+    4
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 7468,
+   "date": "2026-10-25T02:00:00",
+   "link": "https://urbanstreet.com.pe/noticias/willis-campeon-mundial-red-bull-dance-your-style-2026/",
+   "title": {
+    "rendered": "Willis vence a Yoon Ji y gana la Final Mundial de Red Bull Dance Your Style 2026"
+   },
+   "categories": [
+    3
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8381,
+   "date": "2026-11-12T17:59:31",
+   "link": "https://urbanstreet.com.pe/internacional/trueno-y-milo-j-latin-grammy-2026/",
+   "title": {
+    "rendered": "Trueno y Milo J ganan el Latin Grammy a Mejor Interpretación Urbana"
+   },
+   "categories": [
+    5
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8905,
+   "date": "2026-11-19T15:00:00",
+   "link": "https://urbanstreet.com.pe/internacional/travis-scott-cancion-burn/",
+   "title": {
+    "rendered": "Travis Scott sorprende con la aparición de su canción «Burn» dentro de una misión de GTA VI"
+   },
+   "categories": [
+    5
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 8918,
+   "date": "2026-11-19T18:00:00",
+   "link": "https://urbanstreet.com.pe/en/guides-features/how-to-freestyle-rap/",
+   "title": {
+    "rendered": "How to Freestyle Rap: 10 Exercises for Beginners"
+   },
+   "categories": [
+    6261
+   ],
+   "lang": "en"
+  },
+  {
+   "id": 7338,
+   "date": "2026-10-23T14:48:10",
+   "link": "https://urbanstreet.com.pe/freestylers/marithea-conquista-colombia/",
+   "title": {
+    "rendered": "Marithea conquista Colombia y apunta a Lima: la bicampeona que buscará brillar en Red Bull Batalla Final Internacional"
+   },
+   "categories": [
+    4
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6102,
+   "date": "2026-09-29T19:37:04",
+   "link": "https://urbanstreet.com.pe/freestylers/azuky-titulos-freestyle/",
+   "title": {
+    "rendered": "Azuky títulos freestyle: los 14 trofeos que marcan su carrera"
+   },
+   "categories": [
+    4
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6255,
+   "date": "2026-10-02T14:44:58",
+   "link": "https://urbanstreet.com.pe/freestylers/teorema-vs-el-menor-el-1-de-ch/",
+   "title": {
+    "rendered": "Teorema vs El Menor: ¿quién es el #1 de Chile? Títulos, enfrentamientos y legado"
+   },
+   "categories": [
+    4
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 5302,
+   "date": "2026-09-21T20:22:06",
+   "link": "https://urbanstreet.com.pe/torneo-de-plazas/torneo-de-plazas-kg-elegido/",
+   "title": {
+    "rendered": "KG es elegido Favorito del Público del Torneo de Plazas de Red Bull Batalla 2026/27"
+   },
+   "categories": [
+    6000
+   ],
+   "lang": "es"
+  },
+  {
+   "id": 6213,
+   "date": "2026-10-01T19:56:14",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-argentina-2/",
+   "title": {
+    "rendered": "Predicciones Red Bull Batalla Argentina 2026 ¿quién gana según la IA?"
+   },
+   "categories": [
+    5984,
+    63
+   ],
+   "lang": "es"
+  }
+ ],
+ "notas": [
+  {
+   "id": 6261,
+   "date": "2026-10-02T19:17:23",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/resultados-de-red-bull-batalla-argentina-2026/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Mecha gana la Red Bull Argentina 2026: resultados y final"
+   },
+   "content": {
+    "rendered": "<p>La Final Nacional de <strong>Red Bull Batalla Argentina 2026</strong> se celebra hoy, <strong>viernes 2 de octubre</strong>, en el <strong>Deseo Club</strong> de Buenos Aires, y la emoción está al máximo. Los 16 mejores freestylers del país se enfrentan en un formato de eliminación directa con un único objetivo: coronarse campeón nacional y asegurar el cupo para representar a Argentina en la <strong>Final Internacional 2027</strong>, que se disputará en Perú.</p>\n<p>El evento arrancó a las 18:00 hs con la previa, y a las 18:40 se realizó el sorteo de emparejamientos que definió las llaves de octavos de final. La competencia oficial comenzó a las 19:00 hs y se extenderá hasta que se corone al nuevo monarca del freestyle argentino. A continuación, te presentamos todos los resultados actualizados ronda por ronda.</p>\n<h3>Los 16 clasificados: quiénes buscan el título</h3>\n<p>El cuadro de participantes combina a competidores consagrados con una camada de debutantes que llegan desde el circuito underground. La lista completa de clasificados es la siguiente:</p>\n<ul>\n<li><strong>Por podio de la Nacional 2025:</strong> Cobe CLK (subcampeón), Exe y Nasir Catriel.</li>\n<li><strong>Clasificados mediante audición virtual:</strong> Mecha, Klan, Cacha, Dybbuk, Sophia, Rife, Abel, Franchute, Tobi y Ritter.</li>\n<li><strong>Campeones de torneos de plazas:</strong> Dyse (El Eje de la Rima – Buenos Aires), GW (Elite Free – Rosario) y Naista (Don Rimador – Córdoba).</li>\n</ul>\n<h3>El contexto: una final con sabor a revancha y debut</h3>\n<p>Esta edición de la Final Nacional llega con varios alicientes. En primer lugar, la ausencia del campeón vigente, <strong>Larrix</strong>, quien decidió no defender su título y formará parte del jurado. En su lugar, los grandes favoritos son <strong>Mecha</strong>, campeón nacional en 2022 y reciente campeón de FMS Argentina, y <strong>Klan</strong>, quien buscará su primera corona nacional tras ocho participaciones consecutivas.</p>\n<p>Además, seis debutantes tendrán su primera experiencia en una final nacional: <strong>Abel, Franchute, Rife, Tobi, Dyse y GW</strong>. Su irrupción promete añadir un componente de frescura y sorpresa a la competencia.</p>\n<h3>Octavos de final: resultados y llaves</h3>\n<p>El sorteo de emparejamientos se realizó a las 18:40 hs y definió los siguientes cruces de octavos de final. A continuación, los resultados Resultados de Red Bull Batalla Argentina 2026 en los octavos:</p>\n<table><thead><tr><th>⚔️ Batalla</th><th>🎤 MC 1</th><th>🎤 MC 2</th><th>Ganador</th></tr></thead><tbody><tr><td><strong>Octavos 1</strong></td><td>Nasir Catriel</td><td>Dybbuk</td><td>Dybbuk</td></tr><tr><td><strong>Octavos 2</strong></td><td>Naista</td><td>Sophia</td><td>Sophia</td></tr><tr><td><strong>Octavos 3</strong></td><td>1Tobi</td><td>Cobe CLK</td><td>1Tobi</td></tr><tr><td><strong>Octavos 4</strong></td><td>Dyse</td><td>Exe</td><td>Dyse</td></tr><tr><td><strong>Octavos 5</strong></td><td>GW</td><td>Ritter</td><td>GW</td></tr><tr><td><strong>Octavos 6</strong></td><td>Mecha</td><td>Franchute</td><td>Mecha</td></tr><tr><td><strong>Octavos 7</strong></td><td>Abel</td><td>Rife</td><td>Abel</td></tr><tr><td><strong>Octavos 8</strong></td><td>Cacha</td><td>Klan</td><td>Cacha</td></tr></tbody></table>\n<p>Esta tabla se actualizará a medida que se confirmen los resultados de cada batalla.</p>\n<h3>Cuartos de final: los cruces por el pase a semifinales</h3>\n<table><thead><tr><th>⚔️ Batalla</th><th>🎤 MC 1</th><th>🎤 MC 2</th><th>Ganador</th></tr></thead><tbody><tr><td><strong>Cuartos 1</strong></td><td>Dybbuk</td><td>Sophia</td><td>Dybbuk</td></tr><tr><td><strong>Cuartos 2</strong></td><td>1Tobi</td><td>Dyse</td><td>1Tobi</td></tr><tr><td><strong>Cuartos 3</strong></td><td>GW</td><td>Mecha</td><td>Mecha</td></tr><tr><td><strong>Cuartos 4</strong></td><td>Abel</td><td>Cacha</td><td>Abel</td></tr></tbody></table>\n<div>\n</div>\n<h3>Semifinales: a un paso de la gloria</h3>\n<table><thead><tr><th>⚔️ Batalla</th><th>🎤 MC 1</th><th>🎤 MC 2</th><th>Ganador</th></tr></thead><tbody><tr><td><strong>Semifinal 1</strong></td><td>Dybbuk</td><td>1Tobi</td><td>1Tobi</td></tr><tr><td><strong>Semifinal 2</strong></td><td>Mecha</td><td>Abel</td><td>Mecha</td></tr></tbody></table>\n<h3>Gran Final: la batalla por el cinturón</h3>\n<table><thead><tr><th>⚔️ Batalla</th><th>🎤 MC 1</th><th>🎤 MC 2</th><th>Ganador</th></tr></thead><tbody><tr><td><strong>Final</strong></td><td>1Tobi</td><td>Mecha</td><td>Mecha</td></tr></tbody></table>\n<h3>¿Dónde ver la Final Nacional en vivo?</h3>\n<p>Si no pudiste conseguir entradas para el Deseo Club, la Final Nacional se transmite en vivo a través de los canales oficiales de <strong>Red Bull Batalla</strong> en YouTube y otras plataformas digitales. La previa comenzó a las 18:00 hs, y la competencia principal arrancó a las 19:00 hs.</p>\n<div>\n<div></div>\n</div>\n<h3>El campeón es Mecha</h3>\n<p>El ganador fue <strong>Mecha</strong>. El freestyler argentino se consagró campeón de la Final Nacional de Red Bull Batalla Argentina 2026 tras una noche impecable en el Deseo Club de Buenos Aires. Con este triunfo, Mecha suma su segundo título nacional (ya había ganado en 2022) y asegura su cupo para representar a Argentina en la Final Internacional 2027 que se disputará en Perú. Mecha confirmó así la predicción de la IA que lo señalaba como el más completo para llevarse la corona.</p>\n<h3>Clasificados a la Final Internacional de Red Bull Batalla 2027: Mecha se suma a la lista</h3>\n<p>La Final Nacional de Argentina 2026 no solo coronó a <strong>Mecha</strong> como nuevo campeón nacional, sino que también confirmó su nombre en la lista de clasificados para la <strong>Final Internacional de Red Bull Batalla 2027</strong>. El cordobés se une así a un cartel que ya cuenta con varios nombres de peso y que promete ser uno de los más competitivos de los últimos años.</p>\n<p>La cita internacional se celebrará el <strong>20 de marzo de 2027</strong> en la <strong>Plaza de Toros de Acho, en Lima (Perú)</strong>, once años después de la última vez que la capital peruana acogió una final mundial. La lista de participantes seguirá creciendo a medida que avancen las Finales Nacionales de los distintos países, pero estos son los freestylers que ya tienen su plaza asegurada:</p>\n<table><thead><tr><th>🎤 MC</th><th>🌍 País</th><th>📊 Vía de clasificación</th></tr></thead><tbody><tr><td><strong>El Menor</strong></td><td>Chile</td><td>Campeón de la Final Internacional 2026</td></tr><tr><td><strong>Almendrades</strong></td><td>Perú</td><td>Subcampeón de la Final Internacional 2026</td></tr><tr><td><strong>Valles-T</strong></td><td>Colombia</td><td>Tercer lugar en la Final Internacional 2026</td></tr><tr><td><strong>Lancer Lirical</strong></td><td>Venezuela</td><td>Conserva su cupo tras no poder participar en 2026</td></tr><tr><td><strong>Nekroos</strong></td><td>Perú</td><td>Campeón de la Final Nacional de Perú 2026</td></tr><tr><td><strong>Hammer</strong></td><td>Uruguay</td><td>Campeón del Torneo de Plazas 2026</td></tr><tr><td><strong>Mecha</strong></td><td>Argentina</td><td>Campeón de la Final Nacional de Argentina 2026</td></tr></tbody></table>\n<p>Con este título, <strong>Mecha</strong> se asegura su regreso a una Final Internacional después de su última participación en la edición de 2022. El cordobés llega a Lima en un momento de forma inmejorable: además de su corona nacional, viene de consagrarse campeón de <strong>FMS Argentina</strong>, lo que lo coloca como uno de los grandes candidatos a pelear por el título mundial.</p>\n<p><strong>Nekroos</strong>, por su parte, se convirtió en el segundo representante peruano confirmado tras ganarle a KIAN y coronarse campeón de la Final Nacional de Perú 2026, disputada el 12 de septiembre en Paradiso Lima. El peruano tendrá la oportunidad de competir en casa y ante su público, un factor que podría jugar a su favor en una competición donde la localía suele sentirse con fuerza.</p>\n<div>\n<div></div>\n</div>\n\n<p>La lista de clasificados aún está en construcción. En los próximos meses se definirán los campeones de las Finales Nacionales de <strong>Colombia</strong> (17 de octubre), <strong>Centroamérica</strong>, <strong>Sudamérica</strong>, <strong>México</strong>, <strong>Chile</strong>, <strong>Estados Unidos</strong> y <strong>España</strong> (6 de marzo de 2027 en Tenerife). Además, Red Bull Batalla suele reservar cupos adicionales, como el de «Mejor Segundo», que podrían sumar más nombres al cartel final.</p>"
+   }
+  },
+  {
+   "id": 6271,
+   "date": "2026-10-02T19:36:35",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/mecha-bicampeon-red-bull-batalla-argentina-2026/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "MECHA es bicampeón de la Red Bull Batalla Argentina 2026"
+   },
+   "content": {
+    "rendered": "<p><strong>Mecha se consagró bicampeón de la Red Bull Batalla Argentina al ganar la Final Nacional 2026 en Deseo Club, superando a Franchute, GW, Abel y 1Tobi en su recorrido hasta el título.</strong> Con esta corona, el cordobés suma su segundo título nacional, tras el que ya había levantado en 2022.</p>\n<h2>El camino de Mecha hacia su segundo título nacional</h2>\n<p>Mecha arrancó su camino en la Final Nacional de Red Bull Batalla Argentina 2026 venciendo a <strong>Franchute</strong>, resultado que lo clasificó a Cuartos de Final. Ya en cuartos, superó a <strong>GW</strong> para avanzar a Semifinales, donde se cruzó con <strong>Abel</strong> y lo venció para meterse en la Gran Final. Ahí, Mecha cerró su camino perfecto al ganarle a <strong>1Tobi</strong> y quedarse con el título de la Final Nacional.</p>\n<div>\n<div></div>\n</div>\n<h2>El segundo título nacional de Mecha</h2>\n<p>Esta no es la primera vez que Mecha se corona campeón de la Red Bull Batalla Argentina: el cordobés ya había ganado la Final Nacional en 2022. Con el título de 2026, Mecha se confirma como uno de los nombres más grandes de la escena argentina, sumando este nuevo logro al que ya tenía como campeón vigente de FMS Argentina.</p>\n<h2>Qué sigue para Mecha tras ganar la Final Nacional</h2>\n<p>El título de la Final Nacional le da a Mecha el pasaje directo a la Final Internacional de Red Bull Batalla, que en su próxima edición se disputará en Perú. El bicampeón argentino llega a esa cita como uno de los candidatos a pelear por el título mundial, en una temporada donde Argentina también compitió a nivel internacional en el Mundial por Equipos de Red Bull Batalla.</p>"
+   }
+  },
+  {
+   "id": 6239,
+   "date": "2026-10-02T09:25:54",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-argentina-2026-v/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Red Bull Argentina 2026: Mecha campeón, batallas y replay"
+   },
+   "content": {
+    "rendered": "<p><strong>¡YA HAY CAMPEÓN!</strong> Mecha se consagró bicampeón de <strong>Red Bull Batalla Argentina 2026</strong> tras vencer a 1Tobi en la Gran Final.</p>\n<p><strong>Consulta aquí todos los resultados de Red Bull Batalla Argentina 2026</strong><br><br>La <strong>Red Bull Batalla Argentina 2026</strong> se disputó el viernes 2 de octubre en Deseo Club, Buenos Aires, y ya tiene campeón: <strong>Mecha derrotó a 1Tobi en la Gran Final y se consagró bicampeón nacional</strong>.</p>\n<p>Si llegaste buscando el horario, las batallas o dónde ver Red Bull Argentina 2026, el evento ya finalizó. Puedes consultar <strong>todos los resultados y ganadores ronda por ronda</strong> o conocer dónde ver la repetición de la Final Nacional.</p>\n<p>Mecha consiguió además la clasificación directa a la <strong>Final Internacional de Red Bull Batalla 2027 en Perú</strong>.</p>\n<h2>Red Bull Batalla Argentina 2026: ¿a qué hora empieza?</h2>\n<p>La Final Nacional de <strong>Red Bull Batalla Argentina 2026</strong> se realizará este viernes 2 de octubre en Deseo Club, ubicado en Av. Chorroarín 1040, Ciudad Autónoma de Buenos Aires.</p>\n<p>Las puertas del recinto abrirán a las <strong>17:00 horas</strong>, mientras que el evento comenzará oficialmente a las <strong>19:00 horas de Argentina</strong>. Red Bull confirmó que la transmisión podrá seguirse en vivo a partir de ese horario.</p>\n<p>Antes de las batallas habrá actividades especiales. El DJ Set Pre-Show de Zone está programado entre las 17:00 y las 18:30, mientras que el <strong>sorteo de las llaves será a las 18:40</strong> y podrá seguirse en directo.</p>\n<h3>Horario de Red Bull Batalla Argentina 2026 por país</h3>\n<ul>\n<li>🇦🇷 Argentina: <strong>19:00</strong></li>\n<li>🇨🇱 Chile: <strong>19:00</strong></li>\n<li>🇺🇾 Uruguay: <strong>19:00</strong></li>\n<li>🇵🇾 Paraguay: <strong>19:00</strong></li>\n<li>🇧🇴 Bolivia: <strong>18:00</strong></li>\n<li>🇻🇪 Venezuela: <strong>18:00</strong></li>\n<li>🇵🇪 Perú: <strong>17:00</strong></li>\n<li>🇨🇴 Colombia: <strong>17:00</strong></li>\n<li>🇪🇨 Ecuador: <strong>17:00</strong></li>\n<li>🇲🇽 México: <strong>16:00</strong> (hora del centro)</li>\n<li>🇪🇸 España: <strong>00:00 del sábado 3 de octubre</strong></li>\n</ul>\n<h2>¿Cuáles son las batallas de Red Bull Batalla Argentina 2026?</h2>\n<p>Una de las grandes novedades de la jornada es que <strong>las batallas de primera ronda todavía no están definidas</strong>.</p>\n<p>Red Bull realizará el <strong>sorteo de las llaves a las 18:40</strong>, por lo que los enfrentamientos quedarán establecidos poco antes del comienzo de la Final Nacional. Esto significa que cualquier cartelera que circule antes del sorteo no debe considerarse oficial.</p>\n<p>Los 16 MCs que estarán en competencia son:</p>\n<ul>\n<li>Cobe CLK</li>\n<li>Exe</li>\n<li>Nasir Catriel</li>\n<li>Ritter</li>\n<li>Abel</li>\n<li>Cacha</li>\n<li>Dybbuk</li>\n<li>Franchute</li>\n<li>Klan</li>\n<li>Mecha</li>\n<li>Rife</li>\n<li>Sophia</li>\n<li>Tobi</li>\n<li>Dyse</li>\n<li>GW</li>\n<li>Naista</li>\n\n</ul>\n<p>La principal modificación de última hora es la salida de <strong>CTZ</strong>, cuyo lugar será ocupado por <strong>Ritter</strong>. La cuenta oficial de Red Bull Batalla confirmó el cambio y señaló que Ritter competirá en la Final Nacional en su lugar.</p>\n<p>Por lo tanto, las <strong>batallas de Red Bull Batalla Argentina 2026 se conocerán oficialmente durante el sorteo de las 18:40</strong>.</p>\n<h2>¿Dónde ver Red Bull Batalla Argentina 2026 EN VIVO?</h2>\n<p>Los seguidores podrán disfrutar de la Final Nacional de forma online a través de los canales oficiales de <strong>Red Bull Batalla</strong>.</p>\n<p>La transmisión podrá seguirse desde el <strong>canal oficial de YouTube de Red Bull Batalla</strong> y también mediante <strong>Red Bull TV</strong>. En Argentina, además, la competencia estará disponible por <strong>Telecentro, canal 1065</strong>, y mediante la plataforma <strong>T-Play</strong>.</p>\n<p>La cuenta oficial de Red Bull Batalla confirmó que la Final Nacional será transmitida en sus canales desde las <strong>19:00 horas de Argentina</strong>.</p>\n<h2>Los 16 participantes de la Final Nacional</h2>\n<p>La edición 2026 reúne nombres con amplia experiencia en Red Bull Batalla y varios competidores que llegan por primera vez a una Final Nacional.</p>\n<div>\n</div>\n<p>Entre los nombres más destacados aparecen <strong>Mecha</strong>, campeón nacional de Red Bull Batalla en 2022, y <strong>Klan</strong>, campeón argentino en 2021. También estarán Cobe CLK, subcampeón nacional en 2025; Exe, Nasir Catriel, Cacha, Dybbuk y Sophia.</p>\n<p>La nueva generación estará representada por competidores como <strong>Rife, Franchute, Tobi, Abel, Dyse y GW</strong>, quienes llegan a esta instancia después de destacar en diferentes competencias del circuito.</p>\n<h2>¿Quiénes son los jueces de Red Bull Batalla Argentina 2026?</h2>\n<p>El jurado estará integrado por tres nombres de peso dentro de la escena:</p>\n<ul>\n<li><strong>Akapellah</strong></li>\n<li><strong>Juancín</strong></li>\n<li><strong>Larrix</strong></li>\n</ul>\n<p>La conducción estará a cargo de <strong>Shulio</strong>, mientras que <strong>Pacha One</strong> será el DJ oficial de la competencia.</p>\n<p>La transmisión contará además con <strong>Barba Roja y Ro Zarazaga</strong> como casters. Zone estará encargado del DJ Set Pre-Show y Naicuist acompañará los side acts.</p>\n<h2>¿Qué gana el campeón de Red Bull Batalla Argentina 2026?</h2>\n<p>El ganador de la Final Nacional no solamente se quedará con el título de campeón argentino.</p>\n<p>El vencedor conseguirá también el <strong>pase directo a la Final Internacional de Red Bull Batalla</strong>, que se disputará en Perú en 2027. De esta manera, el representante argentino tendrá la oportunidad de enfrentarse a los mejores MCs clasificados de otros países.</p>\n<p>La edición de este año tiene además un significado especial: se celebra en el marco del <strong>20.º aniversario de Red Bull Batalla Argentina</strong>.</p>\n<h2>Red Bull Batalla Argentina 2026: todo listo para conocer las batallas</h2>\n<p>La Final Nacional llega a su día decisivo con 16 MCs, un nuevo integrante de última hora y un cuadro que todavía está por definirse.</p>\n<p>El <strong>sorteo de las batallas será a las 18:40</strong>, mientras que la competencia comenzará a las <strong>19:00 horas de Argentina</strong> desde Deseo Club.</p>\n<p>A partir de ese momento quedarán definidos los cruces que marcarán el camino hacia el cinturón nacional.</p>\n<p><strong>Red Bull Batalla Argentina 2026 se podrá ver EN VIVO y gratis a través de los canales oficiales de Red Bull Batalla y Red Bull TV.</strong></p>"
+   }
+  },
+  {
+   "id": 7130,
+   "date": "2026-10-17T20:50:34",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/resultados-red-bull-batalla-colombia-2026/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Resultados Red Bull Batalla Colombia 2026"
+   },
+   "content": {
+    "rendered": "<p><strong>Marithea es la campeona de la Final Nacional de Red Bull Batalla Colombia 2026.</strong> En la Gran Final venció a Horus, y antes dejó en el camino a J1, JM Serna y Puppy. Aquí están todos los cruces, de octavos a la final.</p>\n<div>\n  HOY\n  Arranca FMS Argentina: Mecha vs Dybbuk. Empieza a las 15:30 en Perú y Colombia (17:30 en Argentina).\n  Horarios y dónde ver\n</div>\n<h2>Resultados de octavos de final de Red Bull Batalla Colombia 2026</h2>\n<p>Los 16 MCs se enfrentaron en el Royal Center de Bogotá con eliminación directa. Así quedaron los octavos, con el ganador en negrita:</p>\n<ul>\n<li><strong>JM Serna</strong> venció a Coloso</li>\n<li><strong>Marithea</strong> venció a J1</li>\n<li><strong>Urko</strong> venció a Axl Evans</li>\n<li><strong>Puppy</strong> venció a Visionario</li>\n<li><strong>Lit Ignis</strong> venció a Coffy, tras réplica</li>\n<li><strong>Horus</strong> venció a Fat N</li>\n<li><strong>Pandora</strong> venció a Jazz MC</li>\n<li><strong>Airon</strong> venció a Hunter</li>\n</ul>\n<p>Dos nombres de peso se despidieron temprano: J1, subcampeón de 2025, cayó ante Marithea, y Fat N, campeón de Red Bull Batalla: Nueva Historia 2025, perdió con Horus, un debutante en la Final Nacional.</p>\n<h2>Resultados de cuartos de final: Marithea, Puppy, Horus y Pandora avanzan</h2>\n<ul>\n<li><strong>Marithea</strong> venció a JM Serna</li>\n<li><strong>Puppy</strong> venció a Urko, tras réplica</li>\n<li><strong>Horus</strong> venció a Lit Ignis</li>\n<li><strong>Pandora</strong> venció a Airon</li>\n</ul>\n<h2>Semifinales: Marithea y Horus se meten a la Gran Final</h2>\n<ul>\n<li><strong>Marithea</strong> venció a Puppy, ganador de la Regional de Medellín 2025</li>\n<li><strong>Horus</strong> venció a Pandora, semifinalista en 2024</li>\n</ul>\n<h2>Marithea vence a Horus en la Gran Final de Red Bull Batalla Colombia</h2>\n<p>En la final, <strong>Marithea venció a Horus</strong> y se coronó campeona nacional. Es su segundo título, cinco años después del de 2021, cuando se convirtió en la primera mujer en ganar la Nacional colombiana. Aczino, integrante del jurado junto con Elevn y Afromak, fue quien le entregó el trofeo.</p>\n<p>Tras la victoria, la campeona dijo que no esperaba ganar: «Para ser totalmente sincera, no pensé que hoy fuera a ganar». Puedes leer más en la nota completa: Marithea es bicampeona de Red Bull Batalla Colombia 2026.</p>\n<h2>Qué sigue para la campeona: la Final Internacional de Red Bull Batalla 2027</h2>\n<p>La campeona nacional obtiene el cupo a la Final Internacional de Red Bull Batalla, que se jugará en marzo de 2027 en Perú. Valles-T, ganador en 2025, no defendió el título: su tercer puesto en la Final Internacional 2026 ya le aseguró plaza. Si quieres revisar el panorama previo, repasa los participantes y el horario de la final, los hosts y el DJ o el pronóstico de la IA.<br>Revisa quiénes más tienen plaza en la <strong>lista de clasificados a la Final Internacional de Red Bull Batalla 2027</strong>.</p>"
+   }
+  },
+  {
+   "id": 7125,
+   "date": "2026-10-17T20:31:43",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/marithea-bicampeona-red-bull-batalla-colombia-2026/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Marithea es bicampeona de Red Bull Batalla Colombia 2026"
+   },
+   "content": {
+    "rendered": "<p><strong>Marithea ganó la Final Nacional de Red Bull Batalla Colombia 2026 y suma su segundo título nacional, cinco años después del primero.</strong> En la gran final venció a Horus, un debutante en esta instancia, tras dejar en el camino a J1, JM Serna y Puppy.<br>Aquí están todos los resultados de la final.</p>\n<h2>Cómo ganó Marithea la Final Nacional de Red Bull Batalla Colombia 2026</h2>\n<p>La final se jugó en el Royal Center de Bogotá, con 16 MCs y eliminación directa. Marithea ganó cada cruce hasta el título:</p>\n<ul>\n<li><strong>Octavos de final:</strong> venció a J1 y pasó a cuartos. J1 llegaba como subcampeón de 2025.</li>\n<li><strong>Cuartos de final:</strong> venció a JM Serna y pasó a semifinales.</li>\n<li><strong>Semifinales:</strong> venció a Puppy, ganador de la Regional de Medellín 2025, y clasificó a la Gran Final.</li>\n<li><strong>Gran Final:</strong> venció a Horus y se coronó campeona.</li>\n</ul>\n<p>Consulta <strong>todos los cruces, de octavos a la final,</strong> en los <strong>resultados completos de Red Bull Batalla Colombia 2026</strong>.<br>El jurado lo integraron Aczino, Elevn y Afromak. La conducción estuvo a cargo de Arci y JP El Residente, como adelantó la nota sobre los hosts y el DJ de la final de Bogotá.</p>\n<p>Aczino, integrante del jurado, fue quien le entregó el trofeo a Marithea.</p>\n<h2>Qué dijo Marithea tras ganar la Final Nacional de Red Bull Batalla Colombia</h2>\n<p>Con el trofeo en mano, Marithea habló sin libreto y con humildad. «Yo, por lo general, soy mala con las palabras y, para ser totalmente sincera, no pensé que hoy fuera a ganar», dijo. También advirtió que cada año la Red Bull de Colombia se pone más difícil: «Esos peladitos vienen con un nivel y con una cosa que… es imposible».</p>\n<p>La campeona tuvo palabras para su rival y para la nueva generación de Bogotá: «Este chino es el futuro (Horus), junto con el JN y el J1. Bogotá se está volviendo una plaza muy fuerte». Cerró agradeciendo a Dios y al público: «Voy a intentar representarlos de la mejor manera posible. Muchas gracias».</p>\n<h2>Marithea, la primera mujer campeona de Red Bull Batalla Colombia, vuelve a ganar</h2>\n<p>Marithea, nacida en Cali, ya había hecho historia en 2021, cuando se convirtió en la primera mujer en ganar la Nacional de Red Bull Batalla Colombia. Aquella noche lo celebró con un grito: «¡Mamá, lo logré! Soy campeona». Después fue tercera en 2023 y semifinalista en 2025, y este año volvió a la Nacional entre los nombres a seguir. Antes de la final, en la entrevista previa de Red Bull, dijo que no se compara con la Marithea de 2021 «porque ella ya no existe».</p>\n<h2>Quién es Horus, el rival de Marithea en la Final Nacional de Red Bull Batalla Colombia</h2>\n<p>Horus disputaba su primera Final Nacional y se quedó a un paso del título. Red Bull lo presentó como debutante, sin más datos de su recorrido. La propia Marithea lo señaló después de la final como «el futuro» de la plaza bogotana.</p>\n<h2>Qué gana Marithea: cupo para la Final Internacional de Red Bull Batalla 2027</h2>\n<p>La campeona nacional obtiene el cupo directo a la Final Internacional de Red Bull Batalla, que se jugará en marzo de 2027 en Perú. Colombia tenía un campeón nuevo asegurado: Valles-T, ganador en 2025, no defendía el título porque su tercer puesto en la Final Internacional 2026 ya le aseguró plaza en 2027. Si quieres revisar cómo era el panorama antes de la final, repasa el pronóstico de la IA para la Final Nacional.<br>Con este título, Marithea se suma a la <strong>lista actualizada de clasificados a la Final Internacional de Red Bull Batalla 2027</strong>.</p>"
+   }
+  },
+  {
+   "id": 6734,
+   "date": "2026-10-10T15:55:54",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-regional-centro-2/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Red Bull Batalla Regional Centro Chile 2026: Resultados, emparejamientos y campeón"
+   },
+   "content": {
+    "rendered": "<p>La <strong>Red Bull Batalla Regional Centro Chile 2026</strong> ya tiene definido a su campeon después de una intensa jornada de freestyle disputada este sábado 10 de octubre. <strong>Elemece y Rodamiento</strong> se enfrentaron en la Gran Final de la competencia, luego de superar las distintas rondas del cuadro y dejar en el camino a varios de los nombres destacados del circuito chileno.</p>\n<p>La competición, celebrada en Concón, reúne a 24 MCs en busca de un lugar en la próxima Final Nacional de Red Bull Batalla Chile. Con los resultados de octavos de final, cuartos y semifinales ya reflejados en el cuadro de la jornada, la atención se concentra ahora en la batalla decisiva y en conocer quién se quedará con el título de la Regional Centro.</p>\n<p>Entre los resultados más destacados aparecen las clasificaciones de <strong>Elemece, que eliminó a Basek y posteriormente a El Barto</strong>, y de <strong>Rodamiento, que avanzó tras superar a Krayzi, MC Samo y Drose</strong>. Por su parte, Drose también logró alcanzar la final de su sector antes de caer en la ronda decisiva de esa llave.</p>\n<p>A continuación, repasamos todos los resultados de la <strong>Red Bull Batalla Regional Centro 2026</strong>, los enfrentamientos de cada ronda y el desenlace del torneo.</p>\n<h2><strong>¿Cuándo y dónde se disputa la Regional Centro de Red Bull Batalla?</strong></h2>\n<p>La Regional Centro de Red Bull Batalla Chile se celebra este <strong>sábado 10 de octubre de 2026 en la Plaza Patricio Lynch de Concón</strong>, en la Región de Valparaíso.</p>\n<p>Esta competencia forma parte del calendario de clasificatorias regionales de la temporada 2026/27 y representa una oportunidad importante para los freestylers que buscan avanzar hacia la<strong> Final Nacional</strong>.</p>\n<p>Los principales datos del evento son:</p>\n<ul>\n<li><strong>Competencia:</strong> Red Bull Batalla Regional Centro Chile 2026.</li>\n<li><strong>Fecha:</strong> sábado 10 de octubre de 2026.</li>\n<li><strong>Lugar:</strong> Plaza Patricio Lynch, Concón.</li>\n<li><strong>Temporada:</strong> 2026/27.</li>\n<li><strong>Finalistas:</strong> Elemece y Rodamiento.</li>\n</ul>\n<h2><strong>Octavos de final: Red Bull Batalla Regional Centro Chile</strong></h2>\n<p>La primera ronda dejó ocho enfrentamientos de eliminación directa. Varios de los favoritos consiguieron avanzar, mientras que otros competidores quedaron fuera de la lucha por el título de la <strong>Red Bull Batalla Regional Centro Chile</strong>.</p>\n<p>Los resultados de octavos de final fueron los siguientes:</p>\n<ul>\n<li><strong>El Barto derrotó a Rufián</strong> y avanzó a cuartos de final.</li>\n<li><strong>Elemece derrotó a Basek</strong> y se clasificó a la siguiente ronda.</li>\n<li><strong>Eskai derrotó a Stigma</strong> y continuó en competencia.</li>\n<li><strong>Joqerr derrotó a Satim</strong> y consiguió su lugar en cuartos.</li>\n<li><strong>Drose derrotó a 99</strong> y avanzó a la siguiente fase.</li>\n<li><strong>Blade derrotó a Relax</strong> y se mantuvo en carrera.</li>\n<li><strong>Rodamiento derrotó a Krayzi</strong> y consiguió su clasificación.</li>\n<li><strong>MC Samo derrotó a Masta Smoke</strong> y completó el grupo de ocho clasificados.</li>\n</ul>\n<p>De esta manera, <strong>El Barto, Elemece, Eskai, Joqerr, Drose, Blade, Rodamiento y MC Samo</strong> continuaron en la competencia.</p>\n<div>\n</div>\n<h2><strong>Cuartos de final: Elemece y Rodamiento siguieron firmes</strong> <strong>en la Red Bull Batalla Regional Centro Chile</strong></h2>\n<p>La segunda ronda comenzó a definir el camino hacia las semifinales. Los ocho clasificados volvieron a enfrentarse en cuatro batallas que determinaron quiénes continuarían luchando por el campeonato.</p>\n<p>Los resultados de la <strong>Red Bull Batalla Regional Centro Chile</strong> en esta ronda fueron:</p>\n<ul>\n<li><strong>El Barto derrotó a Eskai</strong> y avanzó a semifinales.</li>\n<li><strong>Elemece derrotó a El Barto</strong> y consiguió su clasificación.</li>\n<li><strong>Drose derrotó a Blade</strong> y se instaló entre los cuatro mejores.</li>\n<li><strong>Rodamiento derrotó a MC Samo</strong> y aseguró su presencia en semifinales.</li>\n</ul>\n<p>La clasificación de Elemece fue especialmente importante, ya que el MC consiguió superar dos enfrentamientos consecutivos para acercarse a la definición. Rodamiento, por su parte, mantuvo su buen rendimiento y continuó avanzando en el sector derecho del cuadro.</p>\n<h2><strong>Semifinales: Elemece y Rodamiento clasificaron a la Gran Final</strong></h2>\n<p>Las semifinales definieron a los dos últimos competidores en carrera por el título de la Regional Centro.</p>\n<p>En el lado izquierdo del cuadro, <strong>Elemece derrotó a Joqerr</strong>, consiguiendo el pase a la batalla por el campeonato después de haber eliminado previamente a Basek y El Barto.</p>\n<p>En la otra semifinal, <strong>Rodamiento derrotó a Drose</strong> y selló su clasificación a la Gran Final. El MC completó así un recorrido que comenzó con su victoria ante Krayzi, continuó frente a MC Samo y terminó con el triunfo ante uno de los competidores que habían alcanzado las instancias decisivas.</p>\n<p>Los resultados de semifinales quedaron de la siguiente manera:</p>\n<ul>\n<li><strong>Elemece derrotó a Joqerr</strong> y es finalista.</li>\n<li><strong>Rodamiento derrotó a Drose</strong> y es finalista.</li>\n</ul>\n<p>Con estas victorias, ambos freestylers se convirtieron en los protagonistas de la última batalla de la jornada.</p>\n<h2><strong>Tercer puesto: Joqerr vence a Drose y se queda con el último cupo a la Final Nacional</strong></h2>\n<p>Una de las batallas más importantes de la <strong>Regional Centro de Red Bull Batalla Chile 2026</strong> fue el enfrentamiento por el <strong>tercer y cuarto puesto</strong>, donde <strong>Joqerr y Drose</strong> se jugaron mucho más que una posición en el podio: estaba en disputa el <strong>último cupo disponible para la Final Nacional de Chile</strong> que otorgaba este torneo.</p>\n<div>\n</div>\n<p>Con un sistema de clasificación reservado para los <strong>tres primeros lugares</strong>, el ganador de esta batalla aseguraba su presencia en la instancia nacional, mientras que el cuarto puesto quedaba fuera de la clasificación. Finalmente, <strong>Joqerr se impuso ante Drose</strong>, consiguió el <strong>tercer lugar de la Regional Centro</strong> y se quedó con el último boleto para competir en la <strong>Final Nacional de Red Bull Batalla Chile 2026</strong>.</p>\n<h2><strong>Gran Final: Elemece vs. Rodamiento</strong> <strong>en la Red Bull Batalla Regional Centro Chile</strong></h2>\n<p>La Gran Final de la <strong>Red Bull Batalla Regional Centro Chile 2026</strong> enfrentará a Elemece y Rodamiento, dos MCs que consiguieron superar tres rondas para alcanzar la definición.</p>\n<p>El duelo determinaria quién se queda con el título de la regional y se convierte en uno de los nombres destacados de esta <strong>primera etapa de la temporada 2026/27</strong>.</p>\n<p><strong>Gran Final:</strong> Elemece vs. Rodamiento.</p>\n<p><strong>Campeón:</strong> Elemece.</p>\n<p><strong>Subcampeón:</strong> Rodamiento.</p>\n<p>Resultados completos de Red Bull Batalla Regional Centro 2026</p>\n<h3>Octavos de final</h3>\n<ul>\n<li>El Barto derrotó a Rufián.</li>\n<li>Elemece derrotó a Basek.</li>\n<li>Eskai derrotó a Stigma.</li>\n<li>Joqerr derrotó a Satim.</li>\n<li>Drose derrotó a 99.</li>\n<li>Blade derrotó a Relax.</li>\n<li>Rodamiento derrotó a Krayzi.</li>\n<li>MC Samo derrotó a Masta Smoke.</li>\n</ul>\n<h3>Cuartos de final</h3>\n<ul>\n<li>El Barto derrotó a Eskai.</li>\n<li>Elemece derrotó a El Barto.</li>\n<li>Drose derrotó a Blade.</li>\n<li>Rodamiento derrotó a MC Samo.</li>\n</ul>\n<h3>Semifinales</h3>\n<ul>\n<li>Elemece derrotó a Joqerr.</li>\n<li>Rodamiento derrotó a Drose.</li>\n</ul>\n<h3>Gran Final</h3>\n<ul>\n<li><strong>Elemece vs. Rodamiento: Elemece derroto a Rodamiento</strong></li>\n</ul>\n<h2>Red Bull Batalla Regional Centro: Elemece Campeon</h2>\n<div>\n</div>\n<p>La Regional Centro de Red Bull Batalla Chile 2026 entro en su etapa definitiva con <strong>Elemece y Rodamiento como finalistas</strong>, después de una jornada marcada por enfrentamientos de eliminación directa y varias victorias que modificaron el cuadro inicial.</p>\n<p>Elemece consiguió llegar a la final tras superar a Basek, El Barto y Joqerr. Rodamiento, en tanto, dejó en el camino a Krayzi, MC Samo y Drose para ganarse su lugar en la definición.</p>\n<p>La batalla por el campeonato fue el último capítulo de esta regional y permitió conocer al ganador de una de las primeras citas competitivas de la temporada 2026/27, quien gano de forma unánime Elemece.</p>\n<p><strong>Última actualización: sábado 10 de octubre de 2026</strong>.</p>"
+   }
+  },
+  {
+   "id": 6748,
+   "date": "2026-10-10T16:54:20",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/elemece-es-el-campeon-de-la-rbrcc/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Elemece es el campeón de la Regional Centro de Red Bull Batalla Chile 2026"
+   },
+   "content": {
+    "rendered": "<p>El freestyler <strong>Elemece se consagró campeón de la Regional Centro de Red Bull Batalla Chile 2026</strong>, luego de imponerse ante <strong>Rodamiento en la gran final</strong> del torneo, disputado este <strong>sábado 10 de octubre en la Plaza Patricio Lynch de Concón</strong>, en la Región de Valparaíso. La competencia reunió a destacados exponentes de la improvisación chilena en una jornada clave para la temporada de <strong>Red Bull Batalla</strong>.</p>\n<p>Con una serie de enfrentamientos decisivos, <strong>Elemece logró superar cada ronda hasta quedarse con el primer lugar</strong> de una regional que entregó protagonismo a los talentos de la escena nacional y puso en juego <strong>tres cupos para la Final Nacional</strong>.</p>\n<h2><strong>Elemece conquista la Regional Centro de Red Bull Batalla</strong></h2>\n<p>La <strong>Regional Centro de Red Bull Batalla Chile 2026</strong> se desarrolló con un formato de eliminación directa, en el que los competidores debieron demostrar su capacidad para responder bajo presión, construir patrones y superar a sus rivales en cada batalla.</p>\n<div>\n</div>\n<p>En este contexto, <strong>Elemece fue uno de los grandes protagonistas de la jornada</strong>. El MC avanzó ronda a ronda y terminó imponiéndose en la final frente a <strong>Rodamiento</strong>, quien también firmó una destacada participación durante el torneo.</p>\n<p>La victoria representa un resultado importante para <strong>Elemece y su recorrido dentro del freestyle chileno</strong>, en una temporada en la que los competidores buscan asegurar su presencia en las instancias nacionales de la competición.</p>\n<h2><strong>El camino de Elemece hasta el campeonato</strong></h2>\n<p>Para alcanzar el título, <strong>Elemece tuvo que superar cuatro enfrentamientos</strong> ante rivales que también buscaban quedarse con el campeonato de la Regional Centro.</p>\n<ul>\n<li><strong>Octavos de final:</strong> Elemece derrotó a <strong>Basek</strong> y aseguró su clasificación a la siguiente ronda.</li>\n<li><strong>Cuartos de final:</strong> el MC se impuso ante <strong>El Barto</strong>, avanzando entre los cuatro mejores de la competencia.</li>\n<li><strong>Semifinal:</strong> Elemece venció a <strong>Joqerr</strong> y consiguió su pase a la gran final.</li>\n<li><strong>Gran final:</strong> el freestyler superó a <strong>Rodamiento</strong> y se quedó con el título de <strong>campeón de la Regional Centro de Red Bull Batalla Chile 2026</strong>.</li>\n</ul>\n<p>De esta manera, <strong>Elemece completó una actuación ganadora a lo largo del torneo</strong>, superando cada obstáculo hasta convertirse en el nombre más destacado de la jornada celebrada en Concón.</p>\n<h2><strong>Rodamiento se queda con el segundo lugar</strong></h2>\n<p>Aunque no logró quedarse con el campeonato, <strong>Rodamiento fue uno de los competidores más destacados de la Regional Centro</strong>. Su recorrido hasta la final incluyó victorias ante <strong>Krayzi en octavos de final, MC Samo en cuartos y Drose en semifinales</strong>.</p>\n<div>\n</div>\n<p>Estos resultados le permitieron disputar el título frente a Elemece y cerrar la jornada como <strong>subcampeón de la competencia</strong>.</p>\n<p>La final entre ambos MCs puso el broche de oro a una jornada que reunió a distintos representantes de la escena chilena y dejó nuevos nombres en el foco de la temporada de <strong>Red Bull Batalla</strong>.</p>\n<h2><strong>Red Bull Batalla Chile continúa su camino hacia la Final Nacional</strong></h2>\n<p>La Regional Centro forma parte del calendario de <strong>Red Bull Batalla Chile 2026</strong>, que contempla otras fechas regionales para definir a los representantes que competirán en la Final Nacional.</p>\n<p>El circuito continuará con la <strong>Regional Sur, programada en Concepción para el 24 de octubre</strong>, y la <strong>Regional Norte, prevista en Coquimbo para el 7 de noviembre</strong>.</p>\n<p>La <strong>Final Nacional de Red Bull Batalla Chile está prevista para el 5 de febrero de 2027</strong>. En esa instancia, los clasificados buscarán el título nacional y la oportunidad de seguir avanzando dentro de la competición.</p>\n<div>\n</div>\n<p>Con su victoria en Concón, <strong>Elemece se convirtió en el campeón de la Regional Centro 2026</strong>, mientras que Rodamiento cerró su participación como subcampeón. La confirmación de los cupos oficiales para la Final Nacional deberá revisarse en los canales oficiales de <strong>Red Bull Batalla</strong>.</p>\n<p><strong>La Regional Centro dejó a Elemece como el gran ganador de la jornada y sumó un nuevo capítulo a la temporada del freestyle chileno.</strong></p>"
+   }
+  },
+  {
+   "id": 7440,
+   "date": "2026-10-24T16:39:51",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/red-bull-batalla-regional-sur/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Red Bull Batalla Regional Sur Chile 2026: Resultados y campeón"
+   },
+   "content": {
+    "rendered": "<p><strong>Draker es el campeón de la Red Bull Batalla Regional Sur Chile 2026/27.</strong> El freestyler se quedó con el primer puesto de la jornada disputada en Concepción, donde <strong>Nano terminó como subcampeón y Erreka consiguió el tercer lugar</strong>. Los tres MCs obtuvieron su clasificación a la próxima Final Nacional de Red Bull Batalla Chile.</p>\n<p>La competencia se celebró el sábado 24 de octubre en <strong>La Bodeguita de Nicanor, en Concepción</strong>, con 24 participantes que buscaban uno de los tres cupos disponibles para la instancia nacional. La regional reunió a freestylers con experiencia en el circuito chileno y representantes que buscaban consolidarse en una de las competiciones más importantes del calendario.</p>\n<p>Con el podio ya definido, <strong>Draker, Nano y Erreka se convierten en los tres clasificados de la Regional Sur</strong> para la temporada 2026/27. El resultado marca un nuevo paso en el camino hacia la Final Nacional, prevista para febrero de 2027.</p>\n<p>A continuación, repasamos los resultados confirmados, el podio y los datos más importantes de la Red Bull Batalla Regional Sur Chile 2026.</p>\n<h2>¿Cuándo y dónde se disputó la Regional Sur de Red Bull Batalla?</h2>\n<p>La <strong>Regional Sur de Red Bull Batalla Chile 2026/27</strong> se celebró el sábado 24 de octubre en La Bodeguita de Nicanor, en Concepción. La jornada correspondió a la segunda parada del calendario regional chileno, después de la competencia disputada en la zona Centro.</p>\n<p>Estos son los principales datos del evento:</p>\n<ul>\n<li><strong>Competencia:</strong> Red Bull Batalla Regional Sur Chile.</li>\n<li><strong>Temporada:</strong> 2026/27.</li>\n<li><strong>Fecha:</strong> sábado 24 de octubre de 2026.</li>\n<li><strong>Lugar:</strong> La Bodeguita de Nicanor, Concepción, Chile.</li>\n<li><strong>Participantes:</strong> 24 MCs.</li>\n<li><strong>Campeón:</strong> Draker.</li>\n<li><strong>Subcampeón:</strong> Nano.</li>\n<li><strong>Tercer puesto:</strong> Erreka.</li>\n<li><strong>Clasificados a la Final Nacional:</strong> Draker, Nano y Erreka.</li>\n<li><strong>Jurado:</strong> Acertijo, Blazzt y Pepe Grillo.</li>\n<li><strong>Host:</strong> Mati Ortega.</li>\n<li><strong>DJ:</strong> Enfabeats.</li>\n</ul>\n<p>La competencia entregó tres plazas para la Final Nacional, por lo que los dos finalistas y el ganador de la batalla por el tercer puesto aseguraron su continuidad en el campeonato.</p>\n<h2>Draker es el campeón de la Red Bull Batalla Regional Sur Chile 2026</h2>\n<p><strong>Draker se consagró campeón de la Regional Sur de Red Bull Batalla Chile 2026/27</strong>, consiguiendo el primer lugar de una jornada que reunió a 24 freestylers en Concepción.</p>\n<p>El resultado representa un nuevo logro para el MC, que ya había ganado la Regional de Temuco en 2025 y participado posteriormente en la Final Nacional celebrada en Concepción. Con este triunfo, Draker vuelve a demostrar su capacidad para competir en el formato de eliminación directa y se asegura un lugar en la próxima definición nacional.</p>\n<div>\n</div>\n<p>Su victoria también lo convierte en uno de los primeros nombres clasificados desde la zona Sur para la Final Nacional de la temporada 2026/27. Allí tendrá la oportunidad de enfrentarse a los mejores competidores de las otras regionales y a los MCs que consiguieron su cupo por otras vías de clasificación.</p>\n<p><strong>Draker es el campeón de la Regional Sur y uno de los representantes del sur de Chile que buscará luchar por el título nacional.</strong></p>\n<h2>Nano termina segundo y se clasifica a la Final Nacional</h2>\n<p><strong>Nano se quedó con el segundo puesto de la Regional Sur</strong>, después de alcanzar la Gran Final frente a Draker. El freestyler volvió a destacar en una competición de Red Bull Batalla y consiguió una nueva clasificación para la siguiente etapa del circuito chileno.</p>\n<p>Nano cuenta con una trayectoria importante en el formato, con participaciones en las Finales Nacionales de <strong>2020, 2023, 2024 y 2025</strong>. Su experiencia en escenarios de máxima exigencia lo convierte en uno de los nombres con mayor recorrido dentro de la convocatoria sureña.</p>\n<p>Aunque no logró quedarse con el campeonato regional, el segundo puesto le permite cumplir el objetivo de avanzar a la Final Nacional de 2027. Allí tendrá la oportunidad de medirse nuevamente con competidores de distintas zonas del país y buscar un resultado destacado.</p>\n<p>De esta manera, <strong>Nano se convierte en el subcampeón de la Regional Sur de Red Bull Batalla Chile 2026/27</strong> y asegura su presencia en la próxima instancia nacional.</p>\n<h2>Tercer puesto: Erreka completa el podio de la Regional Sur</h2>\n<p><strong>Erreka consiguió el tercer lugar de la Regional Sur de Red Bull Batalla Chile 2026/27</strong>, completando el podio junto a Draker y Nano. El MC obtuvo así el último cupo que entregaba esta clasificatoria para la Final Nacional.</p>\n<p>Su resultado tiene un valor especial por su trayectoria dentro del freestyle chileno. Erreka ya había participado en una Final Nacional de Red Bull Batalla en 2016, por lo que cuenta con experiencia en una de las principales competiciones del país.</p>\n<p>Con su tercer puesto en Concepción, el freestyler vuelve a ganarse un espacio en la definición nacional y tendrá la oportunidad de enfrentarse a los mejores MCs de Chile en la temporada 2026/27.</p>\n<p>La batalla por el tercer lugar es especialmente importante en el formato regional, ya que <strong>los dos finalistas clasifican directamente y los dos competidores que pierden en semifinales disputan el último cupo disponible</strong>.</p>\n<p>Finalmente, <strong>Erreka se quedó con la tercera posición y completó el grupo de clasificados de la Regional Sur</strong>.</p>\n<h2>Gran Final: Draker vs. Nano en la Regional Sur de Red Bull Batalla Chile</h2>\n<p>La Gran Final de la Regional Sur enfrentó a <strong>Draker y Nano</strong>, dos competidores con experiencia en el circuito chileno que consiguieron superar las rondas previas para luchar por el campeonato.</p>\n<p>Draker terminó imponiéndose en la definición y se quedó con el título regional, mientras que Nano cerró la jornada como subcampeón. Ambos aseguraron su clasificación a la Final Nacional, independientemente del resultado de la batalla decisiva.</p>\n<p>El enfrentamiento definió al campeón de una regional que reunió a 24 participantes y entregó tres plazas para la siguiente etapa del campeonato.</p>\n<p>Los resultados principales de la definición quedaron de la siguiente manera:</p>\n<ul>\n<li><strong>Gran Final:</strong> Draker vs. Nano.</li>\n<li><strong>Campeón:</strong> Draker.</li>\n<li><strong>Subcampeón:</strong> Nano.</li>\n<li><strong>Tercer puesto:</strong> Erreka.</li>\n</ul>\n<h2>Resultados de la Red Bull Batalla Regional Sur Chile 2026</h2>\n<p>El podio de la competencia quedó conformado por los siguientes freestylers:</p>\n<ul>\n<li><strong>1.º lugar: Draker — campeón de la Regional Sur.</strong></li>\n<li><strong>2.º lugar: Nano — subcampeón de la Regional Sur.</strong></li>\n<li><strong>3.º lugar: Erreka — tercer puesto de la Regional Sur.</strong></li>\n</ul>\n<p>Estos tres MCs obtuvieron los cupos de la Regional Sur para la Final Nacional de Red Bull Batalla Chile 2026/27.</p>\n<h3>Resultados por rondas</h3>\n<p>La Regional Sur se desarrolló bajo un formato de eliminación directa, con octavos de final, cuartos de final, semifinales, batalla por el tercer puesto y Gran Final.</p>\n<p>Para publicar el cuadro completo con cada enfrentamiento de octavos, cuartos y semifinales, es necesario contrastar los cruces individuales con el bracket oficial de la jornada. La información consultada permite confirmar el podio, pero no ofrece un registro verificable de todos esos enfrentamientos; por ello, no se incluyen emparejamientos que puedan atribuirse erróneamente a los participantes.</p>\n<h2>¿Quiénes clasificaron a la Final Nacional de Red Bull Batalla Chile 2027?</h2>\n<p>Con los resultados de la Regional Sur, <strong>Draker, Nano y Erreka aseguraron su presencia en la Final Nacional de Red Bull Batalla Chile</strong>, prevista para febrero de 2027.</p>\n<p>Los tres se suman a los clasificados de la Regional Centro, que entregó sus cupos a Elemece, Rodamiento y Joqerr. También cuentan con clasificación directa los integrantes del podio nacional de la temporada anterior: Teorema, Adesong y Anubis.</p>\n<p>La Final Nacional reunirá a 16 MCs, con plazas distribuidas entre las regionales, el podio de la edición anterior y las competencias clasificatorias de plaza. El objetivo será coronar al campeón chileno que avanzará hacia la Final Internacional de Red Bull Batalla 2027, en Perú.</p>\n<h2>Draker, Nano y Erreka: el podio que sale de Concepción</h2>\n<p>La Regional Sur de Red Bull Batalla Chile 2026/27 ya tiene a sus tres representantes para la Final Nacional. <strong>Draker se quedó con el campeonato, Nano terminó en el segundo puesto y Erreka completó el podio</strong>, cerrando una jornada clave para el freestyle chileno.</p>\n<p>Los tres freestylers avanzan a la siguiente etapa y tendrán la oportunidad de medirse con los mejores nombres del país en busca del título nacional.</p>\n<p>Con la Regional Sur ya definida, el calendario de Red Bull Batalla Chile continuará con la Regional Norte, donde otros 24 MCs buscarán conseguir los últimos cupos regionales para la Final Nacional de 2027.</p>\n<p><strong>Draker es el campeón de la Regional Sur de Red Bull Batalla Chile 2026, Nano es el subcampeón y Erreka se queda con el tercer puesto.</strong> Los tres ya tienen asegurado su lugar en la próxima Final Nacional.</p>\n<p>Si te ha gustado esta noticia debes leer todo sobre la Red Bull Batalla Región Centro Chile.</p>"
+   }
+  },
+  {
+   "id": 7444,
+   "date": "2026-10-24T17:50:00",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/draker-es-campeon-de-la-regional/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Draker es campeón de la Regional Sur de Red Bull Batalla Chile 2026"
+   },
+   "content": {
+    "rendered": "<p><strong>Draker se consagró campeón de la Regional Sur de Red Bull Batalla Chile 2026/27</strong>, celebrada en Concepción, y aseguró su lugar entre los clasificados a la Final Nacional. El freestyler chileno se quedó con el primer puesto de una jornada que reunió a 24 competidores y que terminó con Nano en la segunda posición y Erreka en el tercer lugar.</p>\n<p>El resultado confirma el buen momento competitivo de Draker, quien volvió a demostrar su capacidad para competir en el formato de Red Bull Batalla. Después de conquistar la Regional de Temuco en 2025, el MC consiguió un nuevo triunfo regional y dio otro paso importante en su camino dentro de la escena chilena del freestyle.</p>\n<h2>Draker conquista la Regional Sur de Red Bull Batalla Chile 2026</h2>\n<p>La Regional Sur de Red Bull Batalla Chile 2026/27 se disputó el sábado 24 de octubre en La Bodeguita de Nicanor, en Concepción. La competición reunió a 24 MCs que buscaban uno de los tres cupos disponibles para la próxima Final Nacional.</p>\n<p>Entre los nombres más destacados de la convocatoria estaban Draker, Nano y Erreka, tres competidores con experiencia en el circuito chileno y antecedentes que los convertían en protagonistas a seguir durante la jornada.</p>\n<div>\n</div>\n<p>Finalmente, <strong>Draker terminó en lo más alto del podio</strong>, seguido por Nano y Erreka. Los tres consiguieron el objetivo de avanzar hacia la siguiente instancia nacional, aunque con resultados diferentes en una competencia que exigió superar varias rondas de eliminación directa.</p>\n<h2>Draker vuelve a demostrar su nivel en Red Bull Batalla</h2>\n<p>El campeonato de la Regional Sur representa otro resultado importante para Draker dentro de Red Bull Batalla. El freestyler ya había ganado la Regional de Temuco en 2025, un antecedente que le permitió llegar a la temporada 2026/27 con experiencia en este tipo de competiciones.</p>\n<p>Su nueva victoria confirma su capacidad para mantenerse competitivo en un formato donde cada enfrentamiento puede determinar el final del recorrido de un participante. Con 24 MCs en carrera y solo tres plazas para la Final Nacional, el margen de error era reducido desde las primeras batallas.</p>\n<p>Esta vez, Draker logró completar el torneo como campeón y se aseguró un lugar entre los representantes que buscarán competir por el título chileno en febrero de 2027.</p>\n<h2>Nano se queda con el segundo puesto y Erreka completa el podio</h2>\n<p><strong>Nano finalizó como subcampeón de la Regional Sur</strong>, sumando otro resultado destacado a una trayectoria que incluye participaciones en las Finales Nacionales de Red Bull Batalla de 2020, 2023, 2024 y 2025.</p>\n<p>Su presencia entre los dos mejores de la jornada reafirma su experiencia en el circuito y le permite mantener sus aspiraciones de competir nuevamente por el campeonato nacional.</p>\n<div>\n</div>\n<p>Por su parte, <strong>Erreka obtuvo el tercer puesto</strong>, completando el podio junto a Draker y Nano. El MC cuenta con antecedentes en la escena chilena y participó en una Final Nacional en 2016, por lo que su clasificación representa una nueva oportunidad para volver a competir en el principal escenario nacional de Red Bull Batalla.</p>\n<p>Con estos resultados, los tres freestylers se posicionaron como los representantes más destacados de la Regional Sur 2026/27.</p>\n<h2>¿Quiénes clasificaron a la Final Nacional de Red Bull Batalla Chile 2027?</h2>\n<p>El podio de la Regional Sur quedó conformado de la siguiente manera:</p>\n<ul>\n<li><strong>1.º Draker:</strong> campeón de la Regional Sur.</li>\n<li><strong>2.º Nano:</strong> subcampeón de la Regional Sur.</li>\n<li><strong>3.º Erreka:</strong> tercer puesto de la competición.</li>\n</ul>\n<p>Los tres primeros lugares entregan el pase a la Final Nacional de Red Bull Batalla Chile 2026/27, prevista para febrero de 2027. Allí se reunirán los clasificados de las distintas regionales y los competidores que ya habían asegurado su participación mediante los resultados de la temporada anterior y las otras vías clasificatorias.</p>\n<p>La <strong>Regional Sur</strong> constituye una de las tres etapas regionales del calendario chileno, junto a las <strong>competiciones Centro y Norte</strong>. Cada una entrega tres plazas, por lo que sus resultados son determinantes para completar la lista de participantes que lucharán por el título nacional.</p>"
+   }
+  },
+  {
+   "id": 8158,
+   "date": "2026-11-08T16:39:02",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/regional-norte-red-bull-batalla-3/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Regional Norte Red Bull Batalla Chile 2026: Resultados, emparejamientos y campeón"
+   },
+   "content": {
+    "rendered": "<p><strong>Jotaka conquistó la Regional Norte de Red Bull Batalla Chile 2026 tras imponerse a Vuscooh en la gran final. Afax completó el podio y también consiguió su clasificación a la Final Nacional, en una jornada marcada por las sorpresas, incluida la eliminación de Jokker a manos de Aries.</strong></p>\n<p>La <strong>Regional Norte de Red Bull Batalla Chile 2026</strong> ya tiene a sus tres clasificados para la Final Nacional. La competición, celebrada en Coquimbo, dejó una jornada llena de emociones, enfrentamientos exigentes y resultados inesperados que modificaron los pronósticos iniciales del torneo.</p>\n<p>El gran protagonista fue <strong>Jotaka</strong>, quien consiguió imponerse en la batalla definitiva frente a Vuscooh para levantar el título regional y convertirse en uno de los nombres que habrá que seguir de cerca en la próxima instancia de la competición.</p>\n<p>Por su parte, <strong>Vuscooh consiguió el segundo puesto</strong>, mientras que <strong>Afax se quedó con la tercera posición</strong> después de ganar la batalla por el último cupo clasificatorio. De esta manera, los tres MCs aseguraron su presencia en la Final Nacional de Red Bull Batalla Chile.</p>\n<h2>Jokker cae eliminado ante Aries en la Regional Norte</h2>\n<p>Uno de los resultados que más llamó la atención de la jornada fue la eliminación de <strong>Jokker</strong>, quien llegaba como uno de los principales candidatos para conquistar la Regional Norte.</p>\n<p>El experimentado freestyler, reconocido por su trayectoria y sus títulos dentro de la escena chilena, no consiguió superar su enfrentamiento contra <strong>Aries</strong>, que terminó protagonizando una de las grandes sorpresas del campeonato.</p>\n<div>\n</div>\n<p>La derrota del bicampeón modificó considerablemente el panorama de la competición. <strong>Su eliminación abrió nuevas posibilidades para los demás participantes</strong> y confirmó que no había favoritos asegurados en una regional donde cada batalla podía cambiar el destino de los competidores.</p>\n<p>La victoria de Aries también representó una demostración del crecimiento y el nivel de los talentos que buscan hacerse un espacio en el circuito nacional. En un formato eliminatorio como el de <strong>Red Bull Batalla</strong>, la experiencia no siempre garantiza avanzar de ronda.</p>\n<h2>Jotaka conquista la final frente a Vuscooh</h2>\n<p>Con el cuadro avanzando hacia sus últimas instancias, <strong>Jotaka consiguió consolidarse como uno de los competidores más destacados de la Regional Norte</strong>. Su rendimiento le permitió superar los diferentes desafíos del torneo y alcanzar la gran final, donde se encontró con Vuscooh.</p>\n<p>El enfrentamiento definitivo reunió a dos MCs que buscaban el mismo objetivo: conseguir el campeonato y asegurar su presencia en la Final Nacional.</p>\n<div>\n</div>\n<p><strong>Vuscooh llegó a la última batalla después de demostrar un gran nivel durante la competición</strong>, apostando por su agilidad mental, recursos métricos y capacidad de respuesta. Sin embargo, Jotaka consiguió marcar diferencias en los momentos determinantes del enfrentamiento.</p>\n<p>Con una propuesta agresiva, contundencia en sus remates y una destacada presencia escénica, <strong>Jotaka terminó imponiéndose para quedarse con el campeonato de la Regional Norte de Red Bull Batalla Chile 2026</strong>.</p>\n<p>De esta manera, el freestyler cerró una destacada participación y se convirtió en el primer nombre del podio de Coquimbo.</p>\n<h2>Afax completa el podio y consigue el último cupo</h2>\n<p>La disputa por la tercera posición también tuvo un papel fundamental, ya que estaba en juego el último boleto disponible para la Final Nacional.</p>\n<p>En ese enfrentamiento, <strong>Afax consiguió imponerse y quedarse con el tercer puesto</strong>, completando así el podio de la Regional Norte. El MC logró reponerse de la exigencia de las instancias anteriores y aprovechar su oportunidad para continuar en la competición nacional.</p>\n<p>Su clasificación representa una nueva oportunidad para demostrar su nivel frente a los mejores exponentes de las demás regiones de Chile.</p>\n<h2>Resultados y clasificados de la Regional Norte de Red Bull Batalla Chile 2026</h2>\n<p>El podio definitivo de la competición quedó conformado de la siguiente manera:</p>\n<ol>\n<li><strong>Jotaka:</strong> campeón de la Regional Norte.</li>\n<li><strong>Vuscooh:</strong> subcampeón.</li>\n<li><strong>Afax:</strong> tercer puesto.</li>\n</ol>\n<p>Los tres freestylers consiguieron su clasificación directa a la <strong>Final Nacional de Red Bull Batalla Chile 2026/27</strong>, donde se encontrarán con los representantes de las demás regionales para luchar por el título nacional.</p>\n<p>Con la consagración de <strong>Jotaka, Coquimbo</strong> dejó definido a sus representantes para la siguiente etapa del torneo. Ahora, los tres clasificados tendrán el desafío de medirse ante los mejores talentos del país, con el objetivo de conquistar el campeonato chileno y conseguir el anhelado boleto a la Final Internacional de Red Bull Batalla.</p>"
+   }
+  },
+  {
+   "id": 8177,
+   "date": "2026-11-08T17:19:39",
+   "link": "https://urbanstreet.com.pe/red-bull-batalla/jotaka-campeon-regional-norte/",
+   "categories": [
+    5984
+   ],
+   "title": {
+    "rendered": "Jotaka se corona campeón de la Regional Norte Red Bull Batalla Chile: su camino al oro en Coquimbo"
+   },
+   "content": {
+    "rendered": "<p>La temporada de <strong>Red Bull Batalla Chile</strong> comenzó con una intensa jornada de freestyle en Coquimbo, ciudad que recibió la <strong>Regional Zona Norte</strong>, una de las competencias clasificatorias rumbo a la próxima Final Nacional. Los mejores talentos del norte del país se dieron cita en un torneo donde cada enfrentamiento representaba una oportunidad para acercarse al objetivo de convertirse en campeón nacional.</p>\n<p>En una jornada marcada por grandes batallas, sorpresas y un elevado nivel competitivo, <strong>Jotaka se consagró campeón de la Regional Norte de Red Bull Batalla</strong>, firmando una actuación sobresaliente que le permitió superar cada una de las rondas hasta levantar el trofeo.</p>\n<p>El podio también tuvo como protagonistas a <strong>Vuscooh</strong>, quien consiguió el segundo lugar después de alcanzar la gran final, y <strong>Afax</strong>, que completó el tercer puesto y aseguró su clasificación a la siguiente instancia de la competencia. De esta manera, los tres MC consiguieron destacar en Coquimbo y quedarse con los principales boletos clasificatorios de la jornada.</p>\n<h2>Octavos de final: Jotaka supera a Deco y comienza su camino al título</h2>\n<p>El recorrido de <strong>Jotaka en la Regional Norte de Red Bull Batalla</strong> comenzó en los octavos de final, donde tuvo que enfrentarse a Deco. Desde su primera intervención, el competidor dejó en claro que llegaba preparado para luchar por el campeonato.</p>\n<div>\n</div>\n<p>En una batalla donde era fundamental encontrar respuestas rápidas y construir buenos argumentos, Jotaka consiguió imponer su estilo. Su capacidad para conectar patrones, desarrollar ideas y cerrar sus intervenciones con contundencia le permitió tomar ventaja frente a su rival.</p>\n<p>Finalmente, los jueces le otorgaron la victoria, asegurando su clasificación a los cuartos de final y manteniendo intactas sus aspiraciones de convertirse en el nuevo campeón de la Zona Norte.</p>\n<h2>Cuartos de final: Jotaka elimina a Rash y se mete entre los cuatro mejores</h2>\n<p>En la siguiente instancia, el desafío aumentó considerablemente. <strong>Jotaka se enfrentó a Rash</strong> en una batalla donde ambos buscaban conseguir uno de los cuatro lugares disponibles en las semifinales.</p>\n<div>\n</div>\n<p>Rash intentó imponer sus condiciones sobre el escenario, pero Jotaka respondió con una propuesta competitiva que le permitió controlar los momentos importantes del enfrentamiento. Su capacidad para adaptarse a la instrumental, encontrar respuestas y mantener la intensidad durante los turnos fue determinante.</p>\n<p>Con otra victoria, <strong>Jotaka consiguió instalarse en las semifinales</strong>, quedando a solamente dos batallas de alcanzar el campeonato regional y asegurar su presencia en la Final Nacional.</p>\n<h2>Semifinales: Jotaka frena a Aries, verdugo de Jokker</h2>\n<p>Uno de los enfrentamientos más interesantes de la jornada llegó en las semifinales. Jotaka tuvo que medirse ante Aries, un competidor que había conseguido protagonizar una de las grandes sorpresas del torneo al eliminar a <strong>Jokker, bicampeón y uno de los principales favoritos</strong> para quedarse con el título.</p>\n<p>Aries llegaba con confianza después de ese importante triunfo, pero todavía tenía un obstáculo por superar para alcanzar la gran final.</p>\n<div>\n</div>\n<p>Jotaka no permitió que el impulso de su rival condicionara su rendimiento. Durante el enfrentamiento consiguió responder a sus ataques, mantener la contundencia de sus intervenciones y demostrar personalidad en una instancia donde cada detalle podía marcar la diferencia.</p>\n<p>La victoria terminó favoreciendo a Jotaka, quien eliminó al verdugo de Jokker y aseguró su clasificación a la gran final. Además, con este resultado consiguió uno de los objetivos principales de la jornada: <strong>clasificar a la Final Nacional de Red Bull Batalla Chile</strong>.</p>\n<h2>Gran Final: Jotaka vence a Vuscooh y conquista Coquimbo</h2>\n<p>La última batalla de la Regional Norte enfrentó a <strong>Jotaka y Vuscooh</strong>, los dos competidores que lograron superar todas las rondas hasta llegar a la definición del campeonato.</p>\n<p>Vuscooh también había protagonizado una destacada campaña, consiguiendo avanzar hasta la final después de superar una exigente llave ante Afax. Su propuesta estuvo marcada por el flow, la agilidad y la capacidad de encontrar respuestas durante los intercambios.</p>\n<div>\n</div>\n<p>Sin embargo, Jotaka tenía un último objetivo: cerrar su participación con el título regional.</p>\n<p>En una definición que reunió a dos de los mejores exponentes de la jornada, el futuro campeón consiguió imponer sus condiciones y convencer al jurado. Su rendimiento durante los turnos decisivos terminó inclinando la balanza a su favor, permitiéndole quedarse con la victoria más importante de la competencia.</p>\n<p>De esta manera, <strong>Jotaka se coronó campeón de la Regional Norte de Red Bull Batalla Chile en Coquimbo</strong>, completando un recorrido que incluyó victorias frente a Deco, Rash, Aries y Vuscooh.</p>\n<h2>Jotaka, Vuscooh y Afax clasifican a la Final Nacional</h2>\n<p>Con el campeonato de Jotaka, el segundo lugar de Vuscooh y el tercer puesto de Afax, la Regional Norte definió a sus principales representantes para la siguiente etapa de Red Bull Batalla Chile.</p>\n<p>La actuación de Jotaka lo posiciona como uno de los nombres a seguir en el camino hacia la Final Nacional. Después de superar cuatro enfrentamientos y dejar atrás a competidores de gran nivel, el freestyler consiguió transformar su participación en Coquimbo en una jornada inolvidable.</p>\n<p><strong>El norte ya tiene a su campeón: Jotaka levantó el oro y ahora buscará repetir su gran rendimiento cuando llegue el momento de competir por el título nacional de Red Bull Batalla Chile.</strong></p>"
+   }
+  },
+  {
+   "id": 4688,
+   "date": "2026-09-19T20:00:23",
+   "link": "https://urbanstreet.com.pe/internacional/torneo-de-plazas-resultados/",
+   "categories": [
+    5
+   ],
+   "title": {
+    "rendered": "Resultados del Torneo de Plazas Red Bull Batalla 2026"
+   },
+   "content": {
+    "rendered": "<p>El Skatepark de Chorrillos fue el escenario de una jornada larga y exigente para los 16 freestylers que llegaron a Lima en busca del título del <strong>Torneo de Plazas de Red Bull Batalla 2026/27</strong>. Por primera vez, la competencia internacional se celebró en Perú y reunió a representantes de 15 países, con un premio adicional de enorme importancia: el campeón consiguió el cupo directo a la <strong>Final Internacional de Red Bull Batalla 2027</strong>, que también se disputará en Lima.</p>\n<p>Entre los participantes se encontraba <strong>Fat N</strong>, vigente campeón del torneo, además de nombres como KG, único representante peruano, 99, subcampeón de la edición anterior, y Hammer, representante de Uruguay. Después de superar todas las rondas, <strong>Hammer y Fat N llegaron a la Gran Final</strong>, donde el uruguayo terminó quedándose con el campeonato.</p>\n<h2>Octavos de Final: los resultados que definieron a los 8 clasificados</h2>\n<p>La primera ronda del torneo enfrentó a los 16 participantes en duelos de eliminación directa. Los resultados fueron:</p>\n<ul>\n<li><strong>Fat N</strong> le ganó a <strong>Artil</strong> y está clasificado a Cuartos de Final.</li>\n<li><strong>99</strong> le ganó a <strong>KNT</strong> y está clasificado a Cuartos de Final.</li>\n<li><strong>KG</strong> le ganó a <strong>Nocre</strong> y está clasificado a Cuartos de Final.</li>\n<li><strong>Mitze</strong> le ganó a <strong>Knnon</strong> y está clasificado a Cuartos de Final.</li>\n<li><strong>Hammer</strong> le ganó a <strong>R16</strong> y está clasificado a Cuartos de Final.</li>\n<li><strong>Darío</strong> le ganó a <strong>Daser</strong> y está clasificado a Cuartos de Final.</li>\n<li><strong>TNT</strong> le ganó a <strong>Parna</strong> y está clasificado a Cuartos de Final.</li>\n<li><strong>JM Serna</strong> le ganó a <strong>Thodal</strong> y está clasificado a Cuartos de Final.</li>\n</ul>\n<p>De esta manera, los ocho MCs que continuaron con vida fueron <strong>Fat N, 99, KG, Mitze, Hammer, Darío, TNT y JM Serna</strong>.</p>\n<p>La edición reunió a competidores procedentes de diferentes circuitos de plaza. Red Bull Batalla había confirmado que el torneo contaría con 16 competencias clasificatorias provenientes de 15 países, consolidando nuevamente el vínculo entre la escena underground y el circuito internacional.</p>\n<h2>Cuartos de Final: así se armaron las semifinales</h2>\n<p>Con los ocho clasificados definidos, la segunda ronda dejó los siguientes cruces:</p>\n<ul>\n<li><strong>Fat N</strong> le ganó a <strong>99</strong> y está clasificado a Semifinales.</li>\n<li><strong>KG</strong> le ganó a <strong>Mitze</strong> y está clasificado a Semifinales.</li>\n<li><strong>Hammer</strong> le ganó a <strong>Darío</strong> y está clasificado a Semifinales.</li>\n<li><strong>JM Serna</strong> le ganó a <strong>TNT</strong> y está clasificado a Semifinales.</li>\n</ul>\n<p>Así, el cuadro quedó configurado con dos semifinales: <strong>Fat N vs. KG</strong> y <strong>Hammer vs. JM Serna</strong>.</p>\n<p>Para Fat N, la victoria significaba mantener vivo su intento de repetir el título conseguido en la temporada anterior. El colombiano llegaba a Lima como campeón defensor después de haber conquistado el torneo en Bogotá en febrero de 2026.</p>\n<p>Del otro lado del cuadro, Hammer continuaba avanzando después de haber superado a R16 y Darío, manteniendo su camino hacia una definición que terminaría siendo completamente distinta a la de la edición anterior.</p>\n<h2>Semifinales: Fat N y Hammer sellan su boleto a la Gran Final del Torneo de Plazas</h2>\n<p>La penúltima ronda dejó definidos a los dos protagonistas de la batalla por el campeonato:</p>\n<ul>\n<li><strong>Fat N</strong> le ganó a <strong>KG</strong> y es finalista.</li>\n<li><strong>Hammer</strong> le ganó a <strong>JM Serna</strong> y es finalista.</li>\n</ul>\n<p>Con estas dos victorias, <strong>Fat N y Hammer</strong> se convirtieron en los últimos dos competidores en pie del Torneo de Plazas 2026/27.</p>\n<p>La clasificación de Fat N le permitió regresar a la Gran Final un año después de haber conquistado el título. Hammer, por su parte, consiguió llegar por primera vez a la definición de esta edición después de superar tres rondas desde los octavos de final.</p>\n<p>El cruce también significaba un enfrentamiento entre dos competidores con antecedentes diferentes dentro de la competición: Fat N llegaba como campeón defensor, mientras que Hammer había conseguido su clasificación como representante de <strong>Hypnotic Palace</strong>, una de las competencias de plaza que otorgaron cupo para esta temporada.</p>\n<h2>La Gran Final: Hammer es el nuevo campeón del Torneo de Plazas</h2>\n<p><strong>Hammer se coronó campeón del Torneo de Plazas de Red Bull Batalla 2026/27</strong> después de derrotar a <strong>Fat N</strong> en la Gran Final disputada en el Skatepark de Chorrillos, Lima.</p>\n<p>El uruguayo completó así un recorrido que comenzó en los octavos de final frente a R16, continuó con una victoria ante Darío en cuartos y siguió con el triunfo frente a JM Serna en semifinales. Finalmente, en la definición, superó al vigente campeón Fat N para quedarse con el trofeo.</p>\n<div>\n<div></div>\n</div>\n<p>El campeonato tiene además una consecuencia deportiva directa: <strong>Hammer obtiene el cupo para representar al Torneo de Plazas en la Final Internacional de Red Bull Batalla 2027</strong>, que se celebrará en Lima el próximo 20 de marzo.</p>\n<p>Para Fat N, la final representó el cierre de su defensa del título. El colombiano había llegado a Perú como vigente campeón después de ganar la edición 2025/26, pero esta vez tuvo que conformarse con el subcampeonato.</p>\n<h3>El camino de Hammer hasta el título</h3>\n<p>El recorrido del nuevo campeón quedó de la siguiente manera:</p>\n<ul>\n<li><strong>Octavos de Final:</strong> Hammer vs. R16 — victoria de Hammer.</li>\n<li><strong>Cuartos de Final:</strong> Hammer vs. Darío — victoria de Hammer.</li>\n<li><strong>Semifinal:</strong> Hammer vs. JM Serna — victoria de Hammer.</li>\n<li><strong>Gran Final:</strong> Hammer vs. Fat N — victoria de Hammer.</li>\n</ul>\n<p>Cuatro batallas y cuatro victorias para el uruguayo, que terminó levantando el trofeo en la primera edición del Torneo de Plazas celebrada en territorio peruano.</p>\n<h2>Fat N no consigue el bicampeonato del Torneo de Plazas</h2>\n<p>Uno de los grandes focos de atención de la jornada estaba puesto sobre <strong>Fat N</strong>.</p>\n<p>El colombiano llegaba a Lima como campeón defensor después de haber ganado la edición anterior y tenía la posibilidad de convertirse en el primer bicampeón del Torneo de Plazas. Sin embargo, su recorrido terminó en la última batalla frente a Hammer.</p>\n<p>Su actuación le permitió volver a disputar la Gran Final, pero el título finalmente cambió de manos.</p>\n<p>La edición anterior había terminado con Fat N como campeón y 99 como subcampeón. Precisamente 99 también participó en esta nueva edición, aunque esta vez no consiguió repetir su presencia en la definición.</p>\n<h2>KG, el representante peruano, entre los cuatro mejores</h2>\n<p>Uno de los resultados más destacados para el público local fue la actuación de <strong>KG</strong>.</p>\n<p>El peruano, clasificado desde Raptablo, consiguió avanzar hasta las semifinales y terminó entre los cuatro mejores competidores del torneo. Su recorrido se detuvo frente a Fat N, que posteriormente llegaría a la Gran Final.</p>\n<p>KG era el único representante peruano del cartel y competía en casa después de conseguir su clasificación mediante una de las competencias de plaza que formaron parte del proceso clasificatorio de esta temporada.</p>\n<p>Su presencia en semifinales convirtió a KG en uno de los protagonistas de una jornada histórica para el freestyle peruano.</p>\n<h2>Un nuevo campeón para el Torneo de Plazas</h2>\n<p>Con el triunfo de Hammer, el historial del Torneo de Plazas suma ahora un nuevo campeón.</p>\n<p>Las ediciones anteriores tuvieron como campeones a <strong>Jair Wong, Wolf, Airon y Fat N</strong>, por lo que el uruguayo se incorpora a una lista de nombres que han conseguido convertir su paso por las plazas en un título internacional.</p>\n<div>\n</div>\n<p>Hammer consiguió su clasificación después de ganar <strong>Hypnotic Palace</strong>, en Uruguay, y terminó llevando ese recorrido hasta el campeonato en Lima.</p>\n<p>El título también mantiene una característica particular del torneo: desde su creación, diferentes representantes han conseguido levantar el trofeo, sin que hasta esta edición se hubiera producido un bicampeonato.</p>\n<h2>Hammer representará al Torneo de Plazas en la Final Internacional 2027</h2>\n<p>El campeonato conseguido en Lima le entrega a Hammer un premio que va más allá del trofeo.</p>\n<p>El uruguayo tendrá un lugar asegurado en la <strong>Final Internacional de Red Bull Batalla 2027</strong>, que se disputará el <strong>20 de marzo de 2027 en Lima, Perú</strong>. Allí se enfrentará a los representantes que consigan sus respectivos cupos a lo largo de la temporada internacional.</p>\n<div>\n</div>\n<p>De esta manera, Hammer pasa directamente de una competencia nacida en las plazas a uno de los escenarios más importantes de la temporada de Red Bull Batalla.</p>\n<h2>Resultados completos del Torneo de Plazas 2026/27</h2>\n<p><strong>Octavos de Final</strong></p>\n<ul>\n<li>Fat N derrotó a Artil.</li>\n<li>99 derrotó a KNT.</li>\n<li>KG derrotó a Nocre.</li>\n<li>Mitze derrotó a Knnon.</li>\n<li>Hammer derrotó a R16.</li>\n<li>Darío derrotó a Daser.</li>\n<li>TNT derrotó a Parna.</li>\n<li>JM Serna derrotó a Thodal.</li>\n</ul>\n<p><strong>Cuartos de Final</strong></p>\n<ul>\n<li>Fat N derrotó a 99.</li>\n<li>KG derrotó a Mitze.</li>\n<li>Hammer derrotó a Darío.</li>\n<li>JM Serna derrotó a TNT.</li>\n</ul>\n<p><strong>Semifinales</strong></p>\n<ul>\n<li>Fat N derrotó a KG.</li>\n<li>Hammer derrotó a JM Serna.</li>\n</ul>\n<p><strong>Gran Final</strong></p>\n<ul>\n<li><strong>Hammer derrotó a Fat N y se proclamó campeón.</strong></li>\n</ul>\n<h2>Hammer hace historia en Lima</h2>\n<p>El Torneo de Plazas 2026/27 terminó con un nuevo campeón y una historia que comenzó lejos de los grandes escenarios.</p>\n<p>Hammer llegó a Lima como representante de Hypnotic Palace, superó cuatro rondas y terminó derrotando al vigente campeón en la batalla definitiva. Con ello, el uruguayo consiguió el título y, al mismo tiempo, el boleto directo a la Final Internacional de Red Bull Batalla 2027.</p>\n<p>Fat N se quedó con el subcampeonato, mientras que <strong>KG y JM Serna</strong> completaron el grupo de semifinalistas.</p>\n<p>La primera edición del Torneo de Plazas celebrada en Perú terminó así con una nueva corona: <strong>Hammer es el campeón del Torneo de Plazas de Red Bull Batalla 2026/27.</strong></p>"
+   }
+  },
+  {
+   "id": 4697,
+   "date": "2026-09-19T22:06:20",
+   "link": "https://urbanstreet.com.pe/noticias/hammer-campeon-del-torneo-de-plza/",
+   "categories": [
+    3
+   ],
+   "title": {
+    "rendered": "Hammer campeón del Torneo de Plazas Red Bull Batalla 2026"
+   },
+   "content": {
+    "rendered": "<p>Hammer se consagró campeón del <strong>Torneo de Plazas de Red Bull Batalla 2026/27</strong> tras imponerse a Fat N en la gran final disputada este sábado 19 de septiembre en el Skatepark de Chorrillos, Lima. El uruguayo completó un torneo perfecto con cuatro victorias y consiguió el premio más importante de la competencia: un cupo directo a la <strong>Final Internacional de Red Bull Batalla 2027</strong>.</p>\n<p>La jornada reunió a 16 MCs provenientes de diferentes países y circuitos de freestyle. Por primera vez, la definición del Torneo de Plazas se celebró en Perú, con el escenario limeño como punto de encuentro para representantes de las competencias callejeras que consiguieron su clasificación durante la temporada.</p>\n<h2>Hammer se queda con el título</h2>\n<p>El recorrido de Hammer comenzó en los octavos de final, donde enfrentó a <strong>R16</strong>. El uruguayo consiguió avanzar y posteriormente volvió a imponerse en cuartos de final frente a <strong>Darío</strong>.</p>\n<p>En semifinales apareció uno de los cruces más importantes de la jornada. Hammer se midió con <strong>JM Serna</strong> y consiguió nuevamente la victoria para instalarse en la definición del campeonato.</p>\n<p>Su último rival fue <strong>Fat N</strong>, vigente campeón del Torneo de Plazas. El colombiano buscaba repetir el título conseguido en la edición anterior, pero Hammer terminó imponiéndose en la batalla decisiva y levantó el trofeo.</p>\n<p>De esta manera, el uruguayo cerró la competición con un registro de cuatro triunfos en cuatro rondas disputadas.</p>\n<h2>Resultados del Torneo de Plazas 2026/27</h2>\n<h3>Octavos de final</h3>\n<ul>\n<li>Fat N derrotó a Artil.</li>\n<li>99 derrotó a KNT.</li>\n<li>KG derrotó a Nocre.</li>\n<li>Mitze derrotó a Knnon.</li>\n<li>Hammer derrotó a R16.</li>\n<li>Darío derrotó a Daser.</li>\n<li>TNT derrotó a Parna.</li>\n<li>JM Serna derrotó a Thodal.</li>\n</ul>\n<h3>Cuartos de final</h3>\n<ul>\n<li>Fat N derrotó a 99.</li>\n<li>KG derrotó a Mitze.</li>\n<li>Hammer derrotó a Darío.</li>\n<li>JM Serna derrotó a TNT.</li>\n</ul>\n<h3>Semifinales</h3>\n<ul>\n<li>Fat N derrotó a KG.</li>\n<li>Hammer derrotó a JM Serna.</li>\n</ul>\n<h3>Gran final</h3>\n<ul>\n<li><strong>Hammer derrotó a Fat N.</strong></li>\n</ul>\n<p>El resultado dejó a Hammer como campeón y a Fat N como subcampeón. KG y JM Serna completaron el grupo de semifinalistas de esta edición.</p>\n<h2>Fat N se queda sin el bicampeonato</h2>\n<p>El campeonato también puso fin a la posibilidad de que <strong>Fat N</strong> consiguiera dos títulos consecutivos. El colombiano llegaba a Lima como campeón defensor después de conquistar la edición anterior y alcanzó nuevamente la gran final.</p>\n<p>Su camino hasta la definición incluyó victorias sobre Artil en octavos, 99 en cuartos y KG en semifinales. Sin embargo, no pudo superar a Hammer en la última batalla de la jornada.</p>\n<p>Fat N continuará formando parte de la historia del torneo como uno de sus campeones, aunque esta vez tuvo que conformarse con el segundo puesto.</p>\n<h2>Hammer clasifica a la Final Internacional 2027</h2>\n<p>Más allá del trofeo, la victoria tiene una consecuencia directa para Hammer. El uruguayo obtiene el <strong>cupo a la Final Internacional de Red Bull Batalla 2027</strong>, que se disputará el <strong>20 de marzo de 2027 en Lima</strong>.</p>\n<div>\n</div>\n<p> Así, el campeón del Torneo de Plazas ya tiene asegurada su presencia en uno de los eventos más importantes de la próxima temporada internacional.</p>\n<h3>Nuevo campeón en el torneo de plazas.</h3>\n<p>El Torneo de Plazas 2026/27 termina con un nuevo nombre en lo más alto. Hammer superó cuatro rondas, derrotó al campeón defensor en la final y convirtió su clasificación desde las plazas en un boleto directo hacia la gran escena internacional, pero nos deja con un increíble final entre dos competidores que dieron todo de si para llegar al evento mas importante de la temporada, solo toca esperar quien quedara campeón de la final internacional.</p>\n<p><strong>Hammer es el campeón del Torneo de Plazas de Red Bull Batalla 2026/27.</strong></p>"
+   }
+  }
+ ]
+}

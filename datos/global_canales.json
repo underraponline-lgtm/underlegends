@@ -137,6 +137,261 @@
    "pais": "cl",
    "tipo": "plaza",
    "pais_sin_bandera": true
+  },
+  {
+   "id": "UCGfR7FkEVOtBVy-PlEegRwA",
+   "slug": "combate-mortal",
+   "nombre": "Combate Mortal Freestyle",
+   "pais": "do",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "reglas": [
+    {"si": ["internacional"], "tipo": "independiente", "pais": null}
+   ],
+   "renombra": {"Round of 16": "Octavos", "Quarterfinals": "Cuartos", "Semifinals": "Semifinal", "| Gran final de Combate Mortal Freestyle": "| Gran final | Combate Mortal Freestyle Internacional"}
+  },
+  {
+   "id": "UCL8WiYCNt5iCfeKePnjeSOw",
+   "slug": "verso-final",
+   "nombre": "Verso Final",
+   "pais": "cl",
+   "tipo": "independiente",
+   "pais_sin_bandera": true,
+   "renombra": {"Round of 16": "Octavos", "Quarterfinals": "Cuartos", "Semifinals": "Semifinal", "Final Verse": "Verso Final", "| Batalla de Freestyle |": "|", "| Freestyle Battle |": "|"}
+  },
+  {
+   "id": "UCgUhRQkCPti-l_eXjA7484A",
+   "slug": "reyes-del-parque",
+   "nombre": "Los Reyes del Parque",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "renombra": {"Round of 16": "Octavos", "Quarterfinals": "Cuartos", "Semifinals": "Semifinal", "Matchday": "Fecha", ", Fecha": ", Los Reyes del Parque Fecha"}
+  },
+  {
+   "id": "UCxsNNAg4vxjqCSZz2qWuzPQ",
+   "slug": "srn",
+   "nombre": "Son Raperos Natos",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UC3722ORXK-9FPCXoyeibywA",
+   "slug": "gdp",
+   "nombre": "Gladiadores del Puerto",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCnQRlOCoG5phkjmH4So7EOA",
+   "slug": "titanes",
+   "nombre": "Titanes Liricistas",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UC0BqKzPg3gBzcKjLfyE0SFQ",
+   "slug": "iraki",
+   "nombre": "Iraki Battles",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCSSNd4EsPDOfI3kb-4T8U1g",
+   "slug": "kinta",
+   "nombre": "Kinta Dimensión",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "equipos": ["multiverse"],
+   "renombra": {"Round of 16": "Octavos", "Quarterfinals": "Cuartos", "Semifinals": "Semifinal", "BIG BATTLE": "BATALLÓN", ": Date ": ": Fecha "}
+  },
+  {
+   "id": "UC4RElsQezBKHrXjgpcCBSwA",
+   "slug": "parke-viejo",
+   "nombre": "Parke Viejo Freestyle",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCgjBD-TF3qDy7_Ifc2V0yLw",
+   "slug": "lz",
+   "nombre": "LZ (Límite Zero)",
+   "pais": "pe",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCeLMamSm3qq8IUYupBjawjg",
+   "slug": "untalrap",
+   "nombre": "UNT al Rap",
+   "pais": "pe",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCAZ5YxDTAye8gQXAyfYNQZw",
+   "slug": "linea404",
+   "nombre": "Línea 404",
+   "pais": "pe",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "renombra": {"PRIMERA RONDA": "FILTRO"}
+  },
+  {
+   "id": "UC6R7oEtqoeB9b9zvViteUpA",
+   "slug": "villurca",
+   "nombre": "La Villurca Freestyle",
+   "pais": "ar",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCCpOc1hVqAiMMMqs6aMFuSA",
+   "slug": "corrientes",
+   "nombre": "Corrientes Free",
+   "pais": "ar",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCL1n8wJHrUKhmjxU25rkObQ",
+   "slug": "dem-uruguay",
+   "nombre": "DEM Uruguay",
+   "pais": "uy",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "equipos": ["triplice"]
+  },
+  {
+   "id": "UCgsgvJDkUqPEv3z2c896oEQ",
+   "slug": "kof",
+   "nombre": "King of Freestylers",
+   "pais": "uy",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "renombra": {"Eompiendo": "Rompiendo", "Internacionall": "Internacional"}
+  },
+  {
+   "id": "UClxpvR6m02fo77PU6smOWWA",
+   "slug": "gambito",
+   "nombre": "Gambito Freestyle",
+   "pais": "co",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCHZPrtbR1f6v6_-iW_UUBJw",
+   "slug": "octavo-imperio",
+   "nombre": "Octavo Imperio",
+   "pais": "ve",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCzJh6BY_EcXwfoLJ_KeLYAQ",
+   "slug": "sueltale",
+   "nombre": "Suéltale el Beat",
+   "pais": "ve",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCieyTYDyjWZhFxwuOpa8SJg",
+   "slug": "pila-de-ra",
+   "nombre": "Pila de Ra'",
+   "pais": "do",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "renombra": {"Round of 16": "Octavos", "Quarterfinals": "Cuartos", "Semifinals": "Semifinal", "MATCHDAY": "FECHA", "| DATE ": "| FECHA ", "RA' STACK": "PILA DE RA'", "RA’ STACK": "PILA DE RA’", "HEAP OF STYLE": "PILA DE RA’"}
+  },
+  {
+   "id": "UCM8vN8V778Mqj1Dhi2T5Krg",
+   "slug": "bvs",
+   "nombre": "BVS Freestyle",
+   "pais": "pr",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCViU6L0Tunt4z9SS6-ro7Cg",
+   "slug": "perros-de-traba",
+   "nombre": "Perros de Traba",
+   "pais": "cr",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCcmbviOpySdu8yLJR9Foh_A",
+   "slug": "aqua",
+   "nombre": "AQUA Freestyle",
+   "pais": "gt",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCSQGp9XsrQtzEY9LVN0Mqsg",
+   "slug": "gym-tj",
+   "nombre": "Freestyle GYM TJ",
+   "pais": "mx",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UC9FQ-s0U2kVAXgI6aAL-Juw",
+   "slug": "rest-in-beats",
+   "nombre": "Rest In Beats",
+   "pais": "mx",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "renombra": {"#FECHA": "FECHA "}
+  },
+  {
+   "id": "UCTCgb6l8-nvAc2pFXq1mSJQ",
+   "slug": "lfm",
+   "nombre": "Liga de Freestyle Monterrey",
+   "pais": "mx",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCmd7DZs85aTnnFWmYrIE4-g",
+   "slug": "rml",
+   "nombre": "Rap Masters League",
+   "pais": "mx",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "renombra": {" / ": " | "}
+  },
+  {
+   "id": "UCzkQKyWGle3m4nqiG-SAK7Q",
+   "slug": "colima",
+   "nombre": "Falcon Music Colima",
+   "pais": "mx",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "renombra": {" | FREESTYLE COLIMA": "", " | FREESTYLE": "", "3ER Y 4TO PUESTO": "3ER PUESTO"}
+  },
+  {
+   "id": "UCwYBW39bDMkcaI-353DzHLA",
+   "slug": "xamoralarte",
+   "nombre": "xAmorAlArte Battles",
+   "pais": null,
+   "tipo": "plaza",
+   "renombra": {"3ER Y 4TO LUGAR": "3ER LUGAR"}
+  },
+  {
+   "id": "UCQGuunixzamZMz62H5AgZLQ",
+   "slug": "zona-groove",
+   "nombre": "Zona Groove",
+   "pais": "es",
+   "tipo": "plaza",
+   "renombra": {"─": "|"}
   }
  ]
 }

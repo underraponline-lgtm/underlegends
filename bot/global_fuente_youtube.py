@@ -189,6 +189,10 @@ def leer_titulo(t, canal=None):
                 break
     # el evento: lo que viene después de la batalla, más lo que sobra del tramo de la ronda («Regional Coquimbo»)
     partes = [o for k, (o, _) in enumerate(tr) if k > i and k != j] + ([resto] if resto.strip() else [])
+    if not any(_limpio(s) for s in partes):
+        # «| FECHA 11 | PERROS DE TRABA | 2026 | A vs B | SEMIFINAL |»: sin nada detrás de la batalla, el evento va
+        # delante. Sin esto todas las fechas del canal se juntaban en una sola, con el nombre del canal
+        partes = [o for k, (o, _) in enumerate(tr) if k < i and k != j]
     x['evento'] = ' · '.join(s for s in (_limpio(s) for s in partes) if s)
     x['banderas'] = sorted({_iso(b) for s in partes for b in _BANDERA.findall(s)})
     x['ronda'] = ronda
@@ -394,9 +398,11 @@ def _partible(fs, conocidos):
 
 
 def _medio_conocido(fs, conocidos):
-    """Empieza o termina con alguien que batalló solo («BASEK RAPTOR»): una pista de dupla, no una prueba."""
+    """Empieza o termina con alguien que batalló solo («BASEK RAPTOR»): una pista de dupla, no una prueba.
+    ⚠️ Un nombre de una sola letra no es pista: con «G» (Costa Rica) conocido, «G DICHT» y «ORIGINAL G» (Chile)
+    pasaban por duplas y se caía el evento entero de Gladiadores del Puerto."""
     for k in range(1, len(fs)):
-        if fs[:k] in conocidos or fs[k:] in conocidos:
+        if any(p in conocidos and len(''.join(p)) > 1 for p in (fs[:k], fs[k:])):
             return True
     return False
 
@@ -795,6 +801,9 @@ def _self_check():
        'la ronda antes de la batalla: %r' % x)
     x = leer_titulo('Ajabaraja vs Balam (octavos rumbo a FMS under)')
     ok(x['ronda'] == 'octavos' and x['lados'][1][0][0] == 'Balam', 'la ronda entre paréntesis: %r' % x)
+    x = leer_titulo('| FECHA 11 | PERROS DE TRABA FREESTYLE-RAP | 2026 | WHITE vs ABC | SEMIFINAL |')
+    ok(x['motivo'] is None and x['ronda'] == 'semifinal'
+       and x['evento'] == 'FECHA 11 · PERROS DE TRABA FREESTYLE-RAP · 2026', 'el evento delante de la batalla: %r' % x)
     x = leer_titulo('KG 🇵🇪 VS NAHUAL DEXO 🇲🇽 - FINAL INTERNACIONAL | Supremacía Mc Internacional 2026')
     ok(x['ronda'] == 'final' and x['evento'] == 'Supremacía Mc Internacional 2026'
        and x['lados'] == [[('KG', 'pe')], [('NAHUAL DEXO', 'mx')]], 'Supremacía: %r' % x)
@@ -813,6 +822,8 @@ def _self_check():
     ok(leer_titulo('(BATALLÓN) MZETA vs LETRAO: Semifinal - Liga Inmortal')['aparece'], 'un batallón sigue el cuadro')
     ok(_partible(('el', 'barto', 'bti'), {('el', 'barto'), ('bti',)}) and not _partible(('bti',), {('bti',)}),
        'una dupla que no lo dice')
+    ok(_medio_conocido(('basek', 'raptor'), {('basek',)}) and not _medio_conocido(('g', 'dicht'), {('g',)}),
+       'un nombre de una letra no es pista de dupla')
 
     # los casos reales
     r, resumen = correr('2026-09-22', '2026-12-31', red=False)
