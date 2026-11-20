@@ -4047,32 +4047,14 @@ li.nt-f{cursor:default}
 @keyframes avv-linea{from{transform:translateY(105%)}}
 @keyframes avv-llena{to{transform:none}}
 @keyframes avv-sube{from{opacity:0;transform:translateY(6px)}}
-/* 🎞️ «Recargar para verla»: el fotograma crece desde el aviso hasta llenar la pantalla (`estreno()` en novedad.jsx), con
-   la misma foto, las franjas, «Versión nueva · v…» y el título EN EL MISMO LUGAR que los pone la pantalla de carga que
-   viene después (web/montar.py): la recarga se ve como un solo corte. Vive en la raíz y no en `.app` (el zoom) */
-.avv-est{position:fixed;inset:0;z-index:2000;background:#030304;color:#F6F6F6;clip-path:inset(var(--ci,0));
+/* 🎞️ «Recargar para verla»: el fotograma crece desde el aviso hasta llenar la pantalla (`estreno()` en novedad.jsx), sólo
+   con su foto, y la recarga sigue en la pantalla de carga DE SIEMPRE con esa misma foto (Dlx, 20/11/2026: «que las intros o
+   las transiciones o openings sean las mismas»). Vive en la raíz y no en `.app` (el zoom) */
+.avv-est{position:fixed;inset:0;z-index:2000;background:#030304;clip-path:inset(var(--ci,0));
   animation:avv-crece .48s cubic-bezier(.77,0,.175,1) forwards}
 .avv-est-foto{position:absolute;inset:0;background:#030304 center/cover no-repeat;opacity:.55;animation:avv-acerca 3s cubic-bezier(.23,1,.32,1) both}
-.avv-est .avv-fr{height:11vh;z-index:2;transform-origin:50% 0;animation:avv-fr-crece .48s cubic-bezier(.77,0,.175,1) both}
-.avv-est .avv-fr.ab{transform-origin:50% 100%}
-.avv-est-txt{position:absolute;left:50%;top:max(24px,5.2vw);translate:-50% 0;z-index:3;width:min(90vw,900px);display:grid;justify-items:center;gap:max(10px,.9vw);
-  text-align:center;animation:avv-sube .4s cubic-bezier(.23,1,.32,1) .3s both}
-.avv-est-sello{padding:7px 12px 6px;border-radius:2px;background:#E41373;color:#fff;transform:rotate(-3deg);box-shadow:4px 4px 0 #29B298;
-  font:700 clamp(12px,1vw,17px)/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase}
-.avv-est-txt b{max-width:20ch;font:900 clamp(28px,3.4vw,64px)/.94 Archivo,system-ui,sans-serif;font-stretch:125%;text-transform:uppercase;text-wrap:balance}
-.avv-est-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;z-index:3;width:min(560px,82vw);display:grid;gap:12px;
-  animation:avv-sube .4s cubic-bezier(.23,1,.32,1) .36s both}
-.avv-est-pie span{color:#C9C9C4;font:700 clamp(12px,1.1vw,17px)/1.2 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase}
-.avv-est-pie i{position:relative;height:4px;overflow:hidden;border-radius:2px;background:rgba(246,246,246,.2)}
-@media (max-width:899.98px) and (orientation:portrait){
-  .avv-est-txt{top:min(16vw,7.4vh)}
-  .avv-est-txt b{font-size:min(7vw,3.4vh)}
-  .avv-est .avv-fr{height:9vh}
-  .avv-est-pie{width:82vw;bottom:calc(min(11vw,5vh) + env(safe-area-inset-bottom,0px))}
-}
 @keyframes avv-crece{to{clip-path:inset(0)}}
 @keyframes avv-acerca{from{transform:scale(1.06)}}
-@keyframes avv-fr-crece{from{transform:scaleY(.12)}}
 @media (prefers-reduced-motion: reduce){.avv,.avv *,.avv *::before,.avv *::after,.avv-est,.avv-est *{animation:none!important}}
 .app.calma .avv,.app.calma .avv *,.app.calma .avv *::before,.app.calma .avv *::after{animation:none!important}
 /* 🆕 MIENTRAS HAY UN MENÚ ABIERTO, LA TARJETA SE CORRE (18/11/2026, Dlx: «arregla lo de la tarjeta de actualización encima

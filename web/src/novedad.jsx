@@ -12,8 +12,8 @@
 // de carga que ya bajó (`__lgFondo`), con sus franjas negras y la versión como código de tiempo, 00:07:17—, una marca por
 // cada cambio y el cambio de ahora debajo. En el celular, una isla de un renglón y medio: no tapa más que el cuadro de
 // antes. Y DIRECTO: dice «Versión nueva de la página» y qué cambió, con «Recargar para verla»; nada de «presenta».
-// «Recargar» agranda el fotograma hasta llenar la pantalla y recarga ENTERA (ver `recargarVersion()`); la pantalla de
-// carga sigue el mismo cuadro, con la misma foto, y al 100 las franjas se abren sobre la página nueva (web/montar.py)
+// «Recargar» agranda el fotograma hasta llenar la pantalla y recarga ENTERA (ver `recargarVersion()`); después viene la
+// pantalla de carga DE SIEMPRE, con la misma foto (Dlx: «que las intros o las transiciones o openings sean las mismas»)
 import { useEffect, useRef, useState } from 'react';
 import { nuevaQue } from './liga.js';
 import { PRIMERA_VISITA, quiereTutorial } from './primera.js';
@@ -54,15 +54,14 @@ const tiempo = (v) => { const [a, b] = String(v || '').split('.'); return [dos(a
 // 🎬 RECARGAR UNA VERSIÓN NUEVA ES UNA CARGA ENTERA (20/11/2026, Dlx: «cada vez que le doy a recargar página no se
 // recarga al 100%», y con el tráiler, «que recargue bien la página»). Tres cosas, para que nada viejo se cuele:
 //   1. `lg:estreno` le avisa a la pantalla de carga (web/montar.py) que ésta va completa —los 4 s, de 0 a 100, con la
-//      foto de este aviso y el título de la versión— y al lobby que salga sin la caché del navegador;
+//      foto de este aviso; el resto, como siempre— y al lobby que salga sin la caché del navegador;
 //   2. mientras el fotograma se agranda, el HTML, el código y la hoja de estilos se vuelven a pedir con
 //      `cache: 'reload'`, que salta la caché Y la reescribe: la recarga encuentra lo nuevo aunque el navegador sea uno
 //      que guarda en memoria (el iPhone con la página en la pantalla de inicio). Como mucho `ESPERA` ms;
 //   3. no es `reload()` sino otra dirección (`?_v=<versión>`), que el primer script de la página saca de la barra.
 function recargarVersion(u) {
   try {
-    sessionStorage.setItem('lg:estreno', JSON.stringify({ v: u.version, t: limpio(u.titulo),
-      i: (u.items || []).slice(0, 3).map((x) => corto(limpio(x).split(':')[0], 60)), f: nomFondo() }));
+    sessionStorage.setItem('lg:estreno', JSON.stringify({ v: u.version, f: nomFondo() }));
   } catch (e) { /* igual recarga */ }
   const pide = ['/inicio/inicio.js', '/inicio/inicio.css', '/cambios.json', location.pathname]
     .map((x) => fetch(x, { cache: 'reload', credentials: 'same-origin' }).catch(() => null));
@@ -92,10 +91,11 @@ function hayAlgoEscrito() {
     .some((e) => String(e.value || e.textContent || '').trim());
 }
 
-// 🎞️ EL ESTRENO: el fotograma crece desde el aviso hasta llenar la pantalla, con la misma foto, las franjas, «Versión
-// nueva» y el título, igual que la pantalla de carga que viene después. Va en la raíz de la página y no adentro de
+// 🎞️ EL FOTOGRAMA CRECE desde el aviso hasta llenar la pantalla: sólo la foto, sin texto ni franjas, porque lo que viene
+// después es la pantalla de carga de siempre, que entra en negro con esa misma foto (la 7.19 le ponía «Versión nueva» y el
+// título, y la carga se vestía igual: Dlx pidió que las intros no cambien). Va en la raíz de la página y no adentro de
 // `.app`: la página va con `zoom` desde 1440 px y lo fijo de adentro se agrandaría con ella
-function estreno(desde, u) {
+function estreno(desde) {
   const raiz = desde.getRootNode();
   const r = desde.getBoundingClientRect();
   const W = innerWidth, H = innerHeight;
@@ -104,12 +104,8 @@ function estreno(desde, u) {
   e.setAttribute('aria-hidden', 'true');
   e.style.setProperty('--ci', `${Math.max(0, r.top)}px ${Math.max(0, W - r.right)}px ${Math.max(0, H - r.bottom)}px ${Math.max(0, r.left)}px`);
   const f = fondo();
-  e.innerHTML = '<i class="avv-est-foto"></i><i class="avv-fr ar"></i><i class="avv-fr ab"></i>' +
-    '<div class="avv-est-txt"><span class="avv-est-sello"></span><b></b></div>' +
-    '<div class="avv-est-pie"><span>Recargando la página</span><i></i></div>';
+  e.innerHTML = '<i class="avv-est-foto"></i>';
   if (f) e.querySelector('.avv-est-foto').style.backgroundImage = `url("${f}")`;
-  e.querySelector('.avv-est-sello').textContent = 'Versión nueva · v' + u.version;
-  e.querySelector('b').textContent = limpio(u.titulo);
   raiz.appendChild(e);
 }
 
@@ -167,7 +163,7 @@ export function AvisoVersion({ pagina }) {
     setVa(true);
     guardarVista(c.version);
     // el fotograma crece desde el aviso entero (en el celular, la isla)
-    if (caja.current && !calma()) estreno(caja.current, c);
+    if (caja.current && !calma()) estreno(caja.current);
     recargarVersion(c);
   };
   const [tm, ts] = tiempo(c.version);
