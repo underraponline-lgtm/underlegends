@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "7.10",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T22:26:00-05:00",
+        "titulo": "El Inicio, sin piezas encimadas",
+        "items": [
+            "**El equipo campeón, sin taparse**: cuando gana un equipo (como en las pandillas), sus caras van arriba y su camino debajo; antes se montaban.",
+            "**Entrar, en su lugar en celulares chicos**: el botón del panel ya no se sale del cuadro."
+        ]
+    },
+    {
         "version": "7.09",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T22:21:00-05:00",
