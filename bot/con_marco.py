@@ -38,6 +38,25 @@ SALIDA = os.path.join(BASE, 'salida_marcos')
 #: la carta se dibuja a 300 px (la misma que «completa» en `ConMarco`) y se fotografía a 3× → 900 px, como las cartas
 ESCALA = 3
 
+# 🎞️ LA FOTO SE MUEVE COMO EN LA PÁGINA (20/11/2026, Dlx: «no podemos ponernos efectos en las tarjetas porque salen en PNG,
+# no en GIF donde el efecto se puede poner… asegúrate que cuando mostremos el comando de tarjeta todo se vea y funcione
+# correctamente… y que se vea bien en el celular»). Los efectos de carta de la Tienda (C1…C17) y el marco del Pase (su
+# brillo que barre y sus destellos) son animaciones de CSS: la foto quieta las congelaba en un cuadro cualquiera. Ahora,
+# si algo de la carta se mueve, se FILMA: se congelan todas sus animaciones y se las adelanta cuadro por cuadro con
+# `currentTime` (exacto, no depende de lo rápida que sea la máquina) y sale un WebP ANIMADO, con transparencia entera.
+#   · WebP y no GIF, MEDIDO EN SU CELULAR: Discord mueve los dos, pero el GIF tiene transparencia de todo o nada y le dejaba
+#     un círculo detrás a cada destello (el halo, cortado), y pesaba 9 veces más (C2: 382 KB contra 3,4 MB)
+#   · LA VUELTA: el mínimo común múltiplo de lo que tarda cada animación (con `alternate`, el doble), si entra en
+#     `TOPE_LOOP`; si no (el marco: 5,5 s y 2,4 s), la más larga, y el final se funde con el principio en `FUNDIDO` cuadros
+#   · FILMADA A 2× (600 px de carta), en otra página: Discord no la muestra más ancha, a 3× pesaba más del doble, y el
+#     filtro SVG del contorno del marco hacía que cada cuadro tardara 4 s (a 2×, 1,8)
+FPS = 15
+FPS_LARGO = 10      # la vuelta pasa de 3 s (con el filtro del marco, cada cuadro cuesta)
+TOPE_LOOP = 6000    # ms
+FUNDIDO = 6         # cuadros
+ESCALA_ANIM = 2
+PESO_MAX = 2500000  # bytes: más que esto, se saltea un cuadro de cada dos y baja la calidad
+
 
 def _j(*p, defecto=None):
     try:
@@ -90,59 +109,198 @@ def datos_de(raw):
     return k, sv, cc, [c for c in CARTAS if c in tiene]
 
 
+def abrir(pag, k, carta, sv, cc):
+    """Abre la carta sola con su marco y deja todo transparente alrededor. Devuelve la caja a fotografiar (con `prop`, el
+    alto / ancho de la carta sola), o `None` si no lleva nada puesto."""
+    pag.goto('%s/marco/%s/%s/%s/%s' % (WEB, k, carta, sv or '-', cc or '-'), wait_until='domcontentloaded', timeout=45000)
+    # listo: la carta cargó y el marco ya se sabe (ver marco_solo.jsx)
+    pag.wait_for_function("""() => { const h = document.querySelector('#inicio-nuevo');
+        const m = h && h.shadowRoot && h.shadowRoot.querySelector('.ms');
+        return m && m.dataset.listo === '1'; }""", timeout=45000)
+    # 🎞️ y que la pantalla de carga ya se haya ido: mientras tapa, la página tiene sus animaciones apagadas
+    # (`.app.tapado`) y la foto saldría quieta aunque la carta se mueva
+    try:
+        pag.wait_for_function("() => document.documentElement.classList.contains('lg-fuera') || "
+                              "!document.getElementById('lg-carga')", timeout=15000)
+    except Exception:                                    # noqa: BLE001
+        pass
+    pag.wait_for_timeout(600)
+    return pag.evaluate("""() => {
+        // todo transparente alrededor, y nada de la página vieja encima
+        const st = document.createElement('style');
+        st.textContent = 'html,body{background:transparent!important} body *{visibility:hidden!important} #inicio-nuevo{visibility:visible!important}';
+        document.head.appendChild(st);
+        const raiz = document.querySelector('#inicio-nuevo').shadowRoot;
+        const ms = raiz.querySelector('.ms');
+        if (ms.dataset.marco !== '1') return null;
+        // la unión de todo lo que se pinta (la corona y las alas salen de la caja de la carta), CON MARGEN: el
+        // contorno del marco es un filtro SVG que pinta por fuera de las cajas, y medir sólo las cajas cortaba
+        // el pie (Dlx, 26/10/2026: «se sigue cortando un poquito el espacio de abajo»). El recorte justo lo
+        // hace Python después, por el alfa de lo que de verdad se pintó
+        let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+        for (const e of ms.querySelectorAll('*')) {
+          if (e.closest('.mk-defs')) continue;
+          const r = e.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1) continue;
+          x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top); x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom);
+        }
+        const img = ms.querySelector('.ms-img').getBoundingClientRect();
+        const M = 60;
+        return { x: Math.max(0, x0 - M), y: Math.max(0, y0 - M), width: x1 - x0 + 2 * M, height: y1 - y0 + 2 * M,
+                 prop: img.height / img.width };
+    }""")
+
+
 def fotos(trabajos):
-    """`trabajos`: `[(clave, carta, servidor, país)]`. Devuelve `{(clave, carta): ruta del PNG}` de las que salieron."""
+    """`trabajos`: `[(clave, carta, servidor, país)]`. Devuelve `{(clave, carta): ruta}` de las que salieron: un PNG
+    (quieta) o un WebP animado."""
     from playwright.sync_api import sync_playwright
     os.makedirs(SALIDA, exist_ok=True)
     out = {}
     with sync_playwright() as pw:
         nav = pw.chromium.launch()
         pag = nav.new_page(viewport={'width': 900, 'height': 1100}, device_scale_factor=ESCALA)
+        # 🎞️ la que filma, a `ESCALA_ANIM`: el contorno del marco es un filtro SVG que se vuelve a dibujar en cada cuadro,
+        # y a 3× cada uno tardaba 4 s (medido con el de Embajador: 375 s una carta); a 2×, 1,8 s
+        cine = None
         for k, carta, sv, cc in trabajos:
             try:
-                pag.goto('%s/marco/%s/%s/%s/%s' % (WEB, k, carta, sv or '-', cc or '-'), wait_until='domcontentloaded', timeout=45000)
-                # listo: la carta cargó y el marco ya se sabe (ver marco_solo.jsx)
-                pag.wait_for_function("""() => { const h = document.querySelector('#inicio-nuevo');
-                    const m = h && h.shadowRoot && h.shadowRoot.querySelector('.ms');
-                    return m && m.dataset.listo === '1'; }""", timeout=45000)
-                pag.wait_for_timeout(600)
-                caja = pag.evaluate("""() => {
-                    // todo transparente alrededor, y nada de la página vieja encima
-                    const st = document.createElement('style');
-                    st.textContent = 'html,body{background:transparent!important} body *{visibility:hidden!important} #inicio-nuevo{visibility:visible!important}';
-                    document.head.appendChild(st);
-                    const raiz = document.querySelector('#inicio-nuevo').shadowRoot;
-                    const ms = raiz.querySelector('.ms');
-                    if (ms.dataset.marco !== '1') return null;
-                    // la unión de todo lo que se pinta (la corona y las alas salen de la caja de la carta), CON MARGEN: el
-                    // contorno del marco es un filtro SVG que pinta por fuera de las cajas, y medir sólo las cajas cortaba
-                    // el pie (Dlx, 26/10/2026: «se sigue cortando un poquito el espacio de abajo»). El recorte justo lo
-                    // hace Python después, por el alfa de lo que de verdad se pintó
-                    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-                    for (const e of ms.querySelectorAll('*')) {
-                      if (e.closest('.mk-defs')) continue;
-                      const r = e.getBoundingClientRect();
-                      if (r.width < 1 || r.height < 1) continue;
-                      x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top); x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom);
-                    }
-                    const img = ms.querySelector('.ms-img').getBoundingClientRect();
-                    const M = 60;
-                    return { x: Math.max(0, x0 - M), y: Math.max(0, y0 - M), width: x1 - x0 + 2 * M, height: y1 - y0 + 2 * M,
-                             prop: img.height / img.width };
-                }""")
+                caja = abrir(pag, k, carta, sv, cc)
                 if not caja:
                     print('   · %s/%s: sin marco puesto' % (k, carta))
                     continue
-                ruta = os.path.join(SALIDA, '%s_%s.png' % (k, carta))
                 prop = caja.pop('prop')
-                pag.screenshot(path=ruta, clip=caja, omit_background=True)
-                recortar(ruta, prop)
+                # 🎞️ si algo se mueve (el efecto de la Tienda, el marco), se filma; si no, la foto de siempre
+                if pag.evaluate(JS_QUIETAS):
+                    cine = cine or nav.new_page(viewport={'width': 900, 'height': 1100}, device_scale_factor=ESCALA_ANIM)
+                    c2 = abrir(cine, k, carta, sv, cc)
+                    c2.pop('prop')
+                    ruta = os.path.join(SALIDA, '%s_%s.webp' % (k, carta))
+                    n = animada(filmar(cine, c2, cine.evaluate(JS_QUIETAS)), prop, ruta)
+                    print('   ✅ %s/%s · animada, %d cuadros, %d KB' % (k, carta, n, os.path.getsize(ruta) // 1024))
+                else:
+                    ruta = os.path.join(SALIDA, '%s_%s.png' % (k, carta))
+                    pag.screenshot(path=ruta, clip=caja, omit_background=True)
+                    recortar(ruta, prop)
+                    print('   ✅ %s/%s' % (k, carta))
                 out[(k, carta)] = ruta
-                print('   ✅ %s/%s' % (k, carta))
             except Exception as e:                       # noqa: BLE001
                 print('   ⚠️ %s/%s: %s' % (k, carta, str(e)[:90]))
         nav.close()
     return out
+
+
+#: 🎞️ en la página: termina lo que se está moviendo una sola vez (una entrada, una transición: si no, los primeros cuadros
+#: salen con un velo), congela todo lo que se repite DENTRO DE LA CARTA (`.ms`) y devuelve lo que tarda en volver al
+#: principio cada una (con `alternate`, el doble). `[]` si nada se mueve: va la foto de siempre
+JS_QUIETAS = """() => {
+    const raiz = document.querySelector('#inicio-nuevo').shadowRoot, ms = raiz.querySelector('.ms');
+    const todas = [...document.getAnimations(), ...raiz.getAnimations()];
+    for (const a of todas) {
+      const t = a.effect && a.effect.getTiming();
+      if (t && t.iterations !== Infinity) { try { a.finish(); } catch (e) {} }
+    }
+    const dentro = (a) => { const e = a.effect && a.effect.target; return !!(e && ms.contains(e)); };
+    const rep = raiz.getAnimations().filter((a) => a.effect && a.effect.getTiming().iterations === Infinity && dentro(a));
+    window.__lgFilmar = rep.map((a) => { a.pause(); return [a, Number(a.currentTime) || 0]; });
+    return rep.map((a) => { const t = a.effect.getTiming();
+      return Math.round((Number(t.duration) || 0) * (/alternate/.test(t.direction) ? 2 : 1)); }).filter((d) => d >= 100);
+}"""
+
+
+def vuelta(periodos):
+    """Cuánto dura la vuelta entera (ms) y si cierra justa: el mínimo común múltiplo de los períodos (en décimas) si entra en
+    `TOPE_LOOP`; si no, el más largo (cortado en el tope), y entonces el final se funde con el principio."""
+    import math
+    ds = sorted(set(max(1, int(round(p / 100.0))) for p in periodos if p > 0))
+    if not ds:
+        return 0, True
+    m = 1
+    for d in ds:
+        m = m * d // math.gcd(m, d)
+    if m * 100 <= TOPE_LOOP:
+        return m * 100, True
+    return min(ds[-1] * 100, TOPE_LOOP), False
+
+
+def filmar(pag, caja, periodos):
+    """Los cuadros de una vuelta, en PNG (bytes), con la página congelada (`JS_QUIETAS`). Si la vuelta no cierra justa,
+    `FUNDIDO` cuadros más, los que siguen al final, para fundirlos con el principio. Devuelve (cuadros, ms por cuadro,
+    cuántos son del fundido)."""
+    L, justa = vuelta(periodos)
+    fps = FPS if L <= 3000 else FPS_LARGO
+    n = max(2, int(round(L / 1000.0 * fps)))
+    extra = 0 if justa else FUNDIDO
+    cuadros = []
+    for i in range(n + extra):
+        pag.evaluate('(t) => { for (const [a, c] of window.__lgFilmar) a.currentTime = c + t; }', i * float(L) / n)
+        cuadros.append(pag.screenshot(clip=caja, omit_background=True, type='png'))
+    return cuadros, int(round(float(L) / n)), extra
+
+
+def animada(filmado, prop, ruta, aire=6):
+    """Arma el WebP animado: el mismo recorte para todos los cuadros (lo que se pintó en CUALQUIERA, con `aire`), el aire a
+    los costados si queda más alta que la carta (como `recortar()`; los cuadros ya vienen a `ESCALA_ANIM`), el final fundido con el
+    principio si hace falta, y más liviana si pasa de `PESO_MAX`. Devuelve cuántos cuadros quedaron."""
+    from PIL import Image
+    cuadros, ms, extra = filmado
+    ims = [Image.open(io.BytesIO(b)).convert('RGBA') for b in cuadros]
+    caja = None
+    for im in ims:
+        bb = im.getchannel('A').point(lambda a: 255 if a > 8 else 0).getbbox()
+        if bb:
+            caja = bb if not caja else (min(caja[0], bb[0]), min(caja[1], bb[1]), max(caja[2], bb[2]), max(caja[3], bb[3]))
+    if not caja:
+        raise ValueError('la carta no se pintó en ningún cuadro')
+    W, H = ims[0].size
+    x0, y0, x1, y1 = max(0, caja[0] - aire), max(0, caja[1] - aire), min(W, caja[2] + aire), min(H, caja[3] + aire)
+    w, h = x1 - x0, y1 - y0
+    ancho = int(round(h / prop)) if prop and h / float(w) > prop else w
+    out = []
+    for im in ims:
+        im = im.crop((x0, y0, x1, y1))
+        if ancho != w:
+            lienzo = Image.new('RGBA', (ancho, h), (0, 0, 0, 0))
+            lienzo.alpha_composite(im, ((ancho - w) // 2, 0))
+            im = lienzo
+        out.append(im)
+    # 🔁 la vuelta que no cierra justa: los primeros cuadros pasan de lo que seguía al final a lo que eran, de a poco
+    if extra:
+        n = len(out) - extra
+        for i in range(extra):
+            out[i] = Image.blend(out[n + i], out[i], (i + 1.0) / (extra + 1))
+        out = out[:n]
+
+    def guardar(cs, dur, q):
+        cs[0].save(ruta, save_all=True, append_images=cs[1:], duration=dur, loop=0, quality=q, method=4, lossless=False)
+        return os.path.getsize(ruta)
+
+    if guardar(out, ms, 75) > PESO_MAX:
+        out, ms = out[::2], ms * 2
+        guardar(out, ms, 65)
+    chk = Image.open(ruta)
+    if not getattr(chk, 'is_animated', False) or chk.mode != 'RGBA':
+        raise ValueError('el WebP no quedó animado con transparencia')
+    return len(out)
+
+
+def subir_animada(s, ruta, clave, intentos=3):
+    """Sube el WebP animado TAL CUAL: `subir_cartas.subir()` lo volvería a comprimir desde una imagen quieta y quedaría sólo
+    el primer cuadro. Devuelve (bytes, md5) o (None, por qué), como aquél."""
+    import hashlib
+    import subir_cartas as SC
+    with open(ruta, 'rb') as f:
+        datos = f.read()
+    if len(datos) < 1024:
+        return None, 'pesa %d bytes' % len(datos)
+    for _ in range(intentos):
+        try:
+            r = s.put('%s/objects/%s' % (SC.API, clave), data=datos, headers={'Content-Type': 'image/webp'}, timeout=120)
+            if SC._ok(r, clave) is not None:
+                return len(datos), hashlib.md5(datos).hexdigest()[:8]
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ %s: %s' % (clave, str(e)[:80]))
+    return None, 'no subió'
 
 
 def recortar(ruta, prop, aire=6):
@@ -167,12 +325,14 @@ def recortar(ruta, prop, aire=6):
 
 
 def subir(hechas):
-    """Sube cada PNG como `<clave>/<carta>-m.webp`. Devuelve las que subieron."""
+    """Sube cada foto como `<clave>/<carta>-m.webp`: la quieta (PNG) convertida, la animada tal cual. Devuelve las que
+    subieron."""
     import subir_cartas as SC
     s = SC.sesion()
     ok = []
     for (k, carta), ruta in hechas.items():
-        r = SC.subir(s, ruta, '%s/%s-m.webp' % (k, carta))
+        clave_r2 = '%s/%s-m.webp' % (k, carta)
+        r = subir_animada(s, ruta, clave_r2) if ruta.endswith('.webp') else SC.subir(s, ruta, clave_r2)
         if r[0]:
             ok.append((k, carta))
         else:
@@ -238,6 +398,32 @@ def _self_check():
     # 🃏 la firma: igual a la de antes sin efecto (las fotos que ya están siguen valiendo) y con el efecto de la Tienda al final
     ok(firma_de(['plata', 'camiseta'], '') == 'plata|camiseta' and firma_de(['plata', 'camiseta'], 'C1') == 'plata|camiseta|C1'
        and firma_de(None, 'C1') == '-|-|C1' and firma_de(None, '') == '', 'la firma de la foto: el marco y el efecto de carta')
+    # 🎞️ la vuelta de la foto animada: justa cuando entra, la más larga con fundido cuando no
+    ok(vuelta([2200] * 14) == (2200, True), 'un efecto de un solo ritmo (C2: 2,2 s) cierra justo')
+    ok(vuelta([2600, 3000]) == (3000, False), 'dos ritmos que no cierran en el tope (C15) van con fundido')
+    ok(vuelta([1800, 3600 * 2]) == (TOPE_LOOP if 7200 > TOPE_LOOP else 7200, 7200 <= TOPE_LOOP),
+       'el «alternate» cuenta la ida y la vuelta')
+    ok(vuelta([1200, 1800]) == (3600, True), 'el mínimo común múltiplo, cuando entra')
+    ok(vuelta([]) == (0, True), 'sin animaciones, sin vuelta')
+    ok(ESCALA_ANIM <= ESCALA and FUNDIDO >= 2 and PESO_MAX > 10 ** 6, 'la animada: más chica que la quieta, fundido y tope')
+    # y la animada se arma de verdad: dos cuadros distintos → un WebP animado con transparencia
+    try:
+        import tempfile
+        from PIL import Image
+        cs = []
+        for c in ((255, 0, 0, 255), (0, 0, 255, 255), (0, 255, 0, 255)):
+            # con un borde suave, como el de una carta de verdad: con transparencia de todo o nada, Pillow (12.3) arma
+            # el WebP animado SIN alfa y lo transparente sale negro (`animada()` lo frena: no la sube)
+            im = Image.new('RGBA', (90, 120), (0, 0, 0, 0))
+            im.paste(Image.new('RGBA', (62, 92), c[:3] + (110,)), (14, 14))
+            im.paste(Image.new('RGBA', (60, 90), c), (15, 15))
+            b = io.BytesIO(); im.save(b, 'PNG'); cs.append(b.getvalue())
+        ruta = os.path.join(tempfile.mkdtemp(), 'x.webp')
+        n = animada((cs, 100, 1), 1.5, ruta)
+        im = Image.open(ruta)
+        ok(n == 2 and getattr(im, 'is_animated', False) and im.mode == 'RGBA', 'el WebP animado sale con sus cuadros y su transparencia')
+    except Exception as e:                               # noqa: BLE001
+        ok(False, 'el WebP animado: %s' % str(e)[:80])
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
