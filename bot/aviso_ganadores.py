@@ -361,7 +361,10 @@ def con_noche(msg, url, alt):
         comps = [dict(c) for c in msg.get('components') or []]
         i = next((j for j, c in enumerate(comps) if c.get('type') == 12), None)
         if i is None:
-            comps.append({'type': 12, 'items': [item]})
+            # 🔘 sin tarjeta, la imagen va ARRIBA de los botones: desde el 19/11/2026 van debajo de la imagen y afuera del
+            # recuadro (`cuerpoV2()` de avisos.js)
+            j = next((k for k, c in enumerate(comps) if c.get('type') == 1), len(comps))
+            comps.insert(j, {'type': 12, 'items': [item]})
         else:
             comps[i] = {'type': 12, 'items': [item]}
         return {'components': comps, 'allowed_mentions': {'parse': []}}
@@ -752,6 +755,9 @@ def _self_check():
     sin = {'flags': 32768, 'components': v2['components'][:2]}
     ok([c['type'] for c in con_noche(sin, U, '')['components']] == [10, 17, 12],
        'un cierre V2 sin tarjeta (campeones de a varios) la suma abajo')
+    con_bot = {'flags': 32768, 'components': v2['components'][:2] + [{'type': 1, 'components': [{'type': 2, 'style': 5, 'url': 'x'}]}]}
+    ok([c['type'] for c in con_noche(con_bot, U, '')['components']] == [10, 17, 12, 1],
+       'y si tiene botones, la imagen va arriba de ellos (los botones van debajo de la imagen)')
     v1 = {'flags': 0, 'embeds': [{'description': 'campeón', 'image': {'url': 'https://r2/ana/servidor.webp'}}]}
     p1 = con_noche(v1, U, '')
     ok(p1['embeds'][0]['image'] == {'url': U} and p1['embeds'][0]['description'] == 'campeón'

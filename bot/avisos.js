@@ -436,6 +436,9 @@ export const CHAT_ENTRE_TODO = 2 * MIN;
 //: no se dibujó en `VS_VENCE` ya no va: esa batalla ya se jugó
 export const VS_ENTRE = 75 * 1000;
 export const VS_VENCE = 8 * MIN;
+//: 🖼️ cuánto espera el cruce a su imagen antes de salir sin ella (ver `vsEspera()`). La tarea tarda 62 s la mitad de las
+//: veces y casi 5 minutos el 10 % más lento (medido el 19/11/2026, sus últimas 100 corridas)
+export const VS_ESPERA = 3 * MIN;
 //: en «cada batalla», lo que se juntó sin decir se dice hasta este tanto; lo de antes ya es viejo
 export const CHAT_JUNTAS = 8;
 /** El nivel que vale: el de Dlx, si eligió; si no, el del admin; si no, «normal». */
@@ -539,8 +542,10 @@ export const colorChat = (sv) => (VS_SV[String(sv || '').toUpperCase()] || [0x26
 /**
  * 🎨 UN MENSAJE DEL BOT EN VIVO EN COMPONENTES V2 (Dlx, 18/11/2026: «sigue con el bot en vivo en V2», sobre la muestra que
  * aprobó: «me gusta cómo se ve, buena idea»). Arriba y AFUERA, una línea con las menciones (no suenan: `allowed_mentions`
- * vacío, como siempre); el RECUADRO del color del servidor, con el primer renglón de título, el resto del texto con los
- * nombres en negrita y los botones; y la imagen grande ABAJO, afuera (el vs o la tarjeta del campeón).
+ * vacío, como siempre); el RECUADRO del color del servidor, con el primer renglón de título y el resto del texto con los
+ * nombres en negrita; la imagen grande ABAJO, afuera (el vs o la tarjeta del campeón); y debajo de todo, los botones.
+ * 🔘 Los botones iban adentro del recuadro hasta el 19/11/2026 (Dlx: «que esos botones estén debajo de la imagen, no
+ * dentro del embed»).
  */
 export function cuerpoV2(texto, filas, img, color) {
   const t = String(texto == null ? '' : texto);
@@ -553,9 +558,9 @@ export function cuerpoV2(texto, filas, img, color) {
   }
   const cab = lineas.length > 1 && lineas[0].trim() && lineas[0].length <= 140 ? '### ' + lineas[0] : lineas[0];
   const dentro = [{ type: 10, content: ([cab].concat(lineas.slice(1)).join('\n').slice(0, 2400)) || '…' }];
-  for (const f of filas || []) if (f && f.type === 1 && Array.isArray(f.components) && f.components.length) dentro.push(f);
   comps.push({ type: 17, accent_color: color || colorChat(''), components: dentro });
   if (img) comps.push({ type: 12, items: [{ media: { url: String(img) } }] });
+  for (const f of filas || []) if (f && f.type === 1 && Array.isArray(f.components) && f.components.length) comps.push(f);
   return { flags: 32768, components: comps, allowed_mentions: { parse: [] } };
 }
 /** Los nombres de `genteChat()`, cada uno con su bandera: «RodriLP 🇦🇷, Velatz 🇨🇱 y Snow 🇨🇴». */
@@ -782,9 +787,11 @@ function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO
   const junto = conLider.filter((x) => !viejasM.has(x.de)).map((x) => x.m);
   const cab = !van.some((x) => x.m === 'llave') && van.find((x) => x.cab);
   const img = (van.find((x) => x.img) || {}).img;
-  const vs = (van.find((x) => x.vs) || {}).vs;
+  // 🖼️ el vs y de qué momento es (`vsm`): con eso el mensaje espera a su imagen (ver `vsEspera()`)
+  const conVs = van.find((x) => x.vs);
   plan.push(Object.assign({ tipo: 'mandar', m: van.map((x) => x.m).concat(junto),
-    texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') }, img ? { img } : {}, vs ? { vs } : {}));
+    texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') }, img ? { img } : {},
+  conVs ? { vs: conVs.vs, vsm: conVs.m } : {}));
   return ed.concat(plan);
 }
 
@@ -8324,6 +8331,10 @@ export class Avisos {
         "msg TEXT NOT NULL, datos TEXT NOT NULL, estado TEXT NOT NULL DEFAULT 'espera', t INTEGER NOT NULL)");
       // 🔁 cuándo pasó a «dibujando» (02/11/2026): si la tarea se cae, el vs vuelve a la cola en vez de vencer callado
       try { this.sql.exec('ALTER TABLE vs_cola ADD COLUMN tom INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* ya estaba */ }
+      // ⏳ el mensaje que espera a su imagen (19/11/2026, ver `vsEspera()`): de qué cruce es (`clave`, mientras `msg` está
+      // vacío) y la imagen ya dibujada (`url`), que se le pone al mandarlo
+      try { this.sql.exec("ALTER TABLE vs_cola ADD COLUMN clave TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      try { this.sql.exec("ALTER TABLE vs_cola ADD COLUMN url TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       // 📊 lo de «Ver estadísticas» de cada cruce (02/11/2026): se calcula una vez, al armar el vs, y el botón sólo lo lee.
       // Ver `fichaVs()` y `vsFicha()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS vs_ficha (id TEXT PRIMARY KEY, datos TEXT NOT NULL, t INTEGER NOT NULL)');
@@ -8779,6 +8790,8 @@ export class Avisos {
         // ese índice en vez de ir por `vivo_ed`: se sacó. Antes de sumar uno, comparar el plan de TODAS las consultas
         ['jugo_temp_k', 'jugo_temp', 'k'], ['idk_k', 'idk', 'k'],
         ['qg_estado', 'qg', 'estado, abre'], ['vs_cola_estado', 'vs_cola', 'estado, t'], ['vs_cola_msg', 'vs_cola', 'canal, msg, t'],
+        // ⏳ y el del cruce que espera a su imagen (19/11/2026, `vsEspera()`): lo pregunta cada vuelta mientras espera
+        ['vs_cola_clave', 'vs_cola', 'canal, clave'],
         ['veredictos_hist_ed', 'veredictos_hist', 'ed']]) {
         this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
       }
@@ -10254,7 +10267,7 @@ export class Avisos {
     if (!LV) return 0;
     const generales = (this.leer('canales') || {}).generales || [];
     const cfgs = new Map();
-    let pedidos = 0, mandados = 0, editados = 0, lobby = null;
+    let pedidos = 0, mandados = 0, editados = 0, esperando = 0, lobby = null;
     const errores = [];
     // 🔑 el nombre del evento es el del ANUNCIO, no el título de la llave: la de la DESGRACIAS EN TOKYO VOL 23
     // (05/10/2026) decía «VOL 22» —el organizador copió la anterior— y el bot anunció «Arrancó … VOL 22». Lo junta
@@ -10515,8 +10528,8 @@ export class Avisos {
             lineas.push(lineaVoto(voto.a, voto.b, 0, 0));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🖼️ EL VS CON LAS DOS TARJETAS (Dlx, 12/10/2026: «hacerlo más visual… las tarjetas», «B», «con datos y a
-            // full»): sólo mano a mano. La imagen la dibuja `bot/kit.py` (`vsEncolar()`) y llega en un minuto: el mensaje
-            // sale ya, con el texto, y la imagen se le agrega editándolo (una edición no le suena a nadie)
+            // full»): sólo mano a mano. La imagen la dibuja `bot/kit.py` (`vsEncolar()`) y el mensaje la ESPERA: sale
+            // cuando llega, con ella (desde el 19/11/2026, ver `vsEspera()`)
             // 🧩 CON EQUIPOS (2v2, 1v3, 8v1 del Multiverse) TAMBIÉN, con todas las tarjetas (19/10/2026, Dlx: «hacer algo
             // para que muestre sus tarjetas en estos formatos distintos»): `grupos`, que dibuja `html_vs_grupos()`
             const persona = (y) => personaVs(y, dc, { sv: svChat, noche: hoyD });
@@ -10649,13 +10662,25 @@ export class Avisos {
           for (const m of Object.keys(hechos)) if (hechos[m].msg === msg) hechos[m].texto = e.texto;
         }
       }
-      for (const p of planChat(ms, hechos, ult, ahora, fresca, nivel, entre)) {
+      // ⏳ UN CRUCE QUE YA ESPERA A SU IMAGEN (`vsEspera()`) pasó por el «cada cuánto» cuando se pidió: al salir no vuelve a
+      // esperar. Lo frenaba una edición de esta llave —el «✅ Pasa…» de la batalla anterior mueve `ult`—, y antes del
+      // 19/11/2026 salía en la misma vuelta que esa edición. Sólo los cruces de ahora (`ms`): uno que ya no viene no cuenta
+      const yaEspera = ms.some((x) => x.vs && !hechos[x.m] && this.sql.exec("SELECT 1 AS x FROM vs_cola WHERE canal = ? AND clave = ? AND msg = '' LIMIT 1",
+        canal, L.id + ':' + x.m).toArray().length > 0);
+      for (const p of planChat(ms, hechos, yaEspera ? 0 : ult, ahora, fresca, nivel, entre)) {
         if (p.tipo === 'saltar') {
           this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
             L.id, canal, p.m, '', '', ahora);
           continue;
         }
         if (pedidos >= CHAT_TOPE) break;
+        // 🖼️ EL CRUCE ESPERA A SU IMAGEN (ver `vsEspera()`): mientras tanto no se manda ni se anota nada, y el plan lo vuelve
+        // a pedir en la vuelta siguiente (o `vsListo()`, cuando la imagen llega)
+        let conVs = null;
+        if (p.tipo === 'mandar' && p.vs && p.vsm) {
+          try { conVs = this.vsEspera(canal, L.id + ':' + p.vsm, p.vs, b.sv || '', ahora); } catch (e) { conVs = { url: '', fila: null }; }
+          if (conVs.espera) { esperando++; continue; }
+        }
         pedidos++;
         // 🎲 la apuesta va en el mensaje que lleva su cruce, con sus botones
         const conAp = apuesta && p.tipo === 'mandar' && [].concat(p.m).includes(apuesta.m) ? apuesta : null;
@@ -10669,7 +10694,7 @@ export class Avisos {
           // 🛑 nunca menciona a nadie (las menciones se ven y no suenan). 🏆 Con imagen (la tarjeta del campeón), abajo del
           // recuadro (`chatFetch()` la saca del embed). ⚠️ Una EDICIÓN no trae botones ni imagen: quedan los que el mensaje tiene
           r = await this.chatFetch(canal, p.tipo === 'editar' ? p.msg : '', Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
-            p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
+            p.tipo === 'editar' ? {} : conVs && conVs.url ? { img: conVs.url } : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
             conAp || conVoto || filaT.length ? { components: (conAp && conVoto ? botonesElegir(conVoto, conAp.id)
               : conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos, conAp.gente)
                 : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || [], conVoto.gente) : []).concat(filaT) } : {}), b.sv);
@@ -10687,9 +10712,9 @@ export class Avisos {
             this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
               L.id, canal, m, id, p.texto, ahora);
           }
-          // 🖼️ el vs: a la cola de las imágenes, con el mensaje donde va (ver `vsEncolar()`)
+          // 🖼️ el vs, atado al mensaje (ver `vsEspera()`): si salió sin su imagen, se le agrega editándolo cuando llegue
           if (p.vs && id) {
-            try { this.vsEncolar(Object.assign({}, p.vs, { sv: b.sv || '', canal, msg: id }), ahora); } catch (e) { /* sin imagen */ }
+            try { this.vsAtar(conVs && conVs.fila, p.vs, b.sv || '', canal, id, ahora); } catch (e) { /* sin imagen */ }
           }
           if (conVoto && id) {
             this.sql.exec('INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre, mas, gente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -10724,7 +10749,7 @@ export class Avisos {
         }
       }
     }
-    if (pedidos) this.guardar('chat_vivo', { t: ahora, mandados, editados, errores: errores.slice(0, 5) });
+    if (pedidos || esperando) this.guardar('chat_vivo', { t: ahora, mandados, editados, esperando, errores: errores.slice(0, 5) });
     // 🎲 y las apuestas: cerrar, pagar o devolver (ver `apuestasRevisar()`)
     try { await this.apuestasRevisar(ahora, llaves); } catch (e) { this.guardar('apuestas', { t: ahora, error: String(e).slice(0, 160) }); }
     // 🗳️ y los votos de «¿Quién gana?»: cómo va y, con el resultado, si el público acertó (ver `qgRevisar()`)
@@ -12581,8 +12606,9 @@ export class Avisos {
   // Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a las dos
   // formas, «B» (una imagen armada, con las dos tarjetas y el VS); y «salen en cada nivel con datos y a full». El Worker
   // no dibuja: el vs queda en `vs_cola`, el vigía prende la tarea `kit.yml` (tipo vs, uno por servidor cada `VS_ENTRE`),
-  // `bot/kit.py` se lleva los de su servidor (`/avisos/vs-cola`), los dibuja y devuelve cada imagen (`vsListo()`), que se
-  // le agrega al mensaje editándolo. Lo que no llegó en `VS_VENCE` ya no se dibuja: esa batalla ya se jugó.
+  // `bot/kit.py` se lleva los de su servidor (`/avisos/vs-cola`), los dibuja y devuelve cada imagen (`vsListo()`). Desde el
+  // 19/11/2026 el mensaje la ESPERA y sale con ella (`vsEspera()`); si tarda más de `VS_ESPERA`, sale sin ella y la imagen
+  // se le agrega editándolo, como antes. Lo que no llegó en `VS_VENCE` ya no se dibuja: esa batalla ya se jugó.
   /** 🖼️ Qué va detrás de la mitad de `k` en el VS en vivo: la url de su imagen, `bandera`, o '' (el del servidor). */
   fondoVivo(k) {
     if (!k) return '';
@@ -12595,7 +12621,9 @@ export class Avisos {
 
   /** Un vs para dibujar: `{sv, canal, msg, ev, ronda, titulo, sub, a, b}`, cada lado `{n, fl, k, ovr, carta}`. */
   vsEncolar(d, ahora = Date.now()) {
-    if (!/^\d{5,25}$/.test(String(d.canal || '')) || !/^\w{1,25}$/.test(String(d.msg || ''))) return { error: 'datos' };
+    // ⏳ o sin mensaje todavía, con la `clave` del cruce que lo espera (ver `vsEspera()`)
+    const clave = String(d.clave || '').slice(0, 200);
+    if (!/^\d{5,25}$/.test(String(d.canal || '')) || !(/^\w{1,25}$/.test(String(d.msg || '')) || (!d.msg && clave))) return { error: 'datos' };
     const id = [...crypto.getRandomValues(new Uint8Array(10))].map((x) => x.toString(16).padStart(2, '0')).join('');
     // 🛍️ lo que cada lado tiene puesto en la Tienda (tanda 3b): el fondo de Discord (`fd`) y el efecto de carta. Viajan
     // sólo los ids de pieza; el dibujo lo baja `bot/kit.py` de `/avisos/tienda-uso`
@@ -12634,9 +12662,38 @@ export class Avisos {
     // 🏟️ una batalla de liga: su id, su nombre y la jornada (`html_vs_liga()` de bot/kit.py). ⚠️ Lo que no está en esta lista no llega
     d.liga && LIGA_ID.test(String(d.liga.id || '')) ? { liga: { id: String(d.liga.id), n: String(d.liga.n || '').slice(0, 40),
       j: Math.max(0, Math.min(99, Number(d.liga.j) || 0)) || null } } : {});
-    this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
-      String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
+    this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t, clave) VALUES (?, ?, ?, ?, ?, ?, ?)', id,
+      String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg || ''), JSON.stringify(datos), ahora, clave);
     return { ok: true, id };
+  }
+
+  /**
+   * ⏳ EL MENSAJE ESPERA A SU IMAGEN (19/11/2026, Dlx con el «Arrancó GRISELDA TIME VOL. 7» de las 6:59 PM: «me gustaría
+   * que el mensaje se envíe cuando la imagen esté lista. Así se envía ambos»). Hasta acá el cruce salía ya y la imagen se
+   * le agregaba editándolo uno o dos minutos después: la dibuja `bot/kit.py` en GitHub, que tarda 62 s la mitad de las
+   * veces. Ahora el mensaje que lleva un vs NO SALE hasta que su imagen está: la primera vez el vs se encola sin mensaje
+   * (con `clave`, el cruce) y no se anota nada, así el plan lo vuelve a pedir en la vuelta siguiente; cuando la imagen
+   * llega (`vsListo()`, que en ese momento corre la charla), sale con ella. Si a los `VS_ESPERA` no llegó o la tarea
+   * falló, sale sin imagen y se le agrega editándolo, como antes. ⚠️ Mientras espera no se anota nada a propósito: el
+   * voto, la apuesta y el resultado se cuelgan del número del mensaje, y así no hay un estado nuevo que cuidar.
+   * `{espera: true}`, o `{url, fila}` para mandarlo (`url` vacía: sin imagen).
+   */
+  vsEspera(canal, clave, vs, sv, ahora = Date.now()) {
+    const f = this.sql.exec('SELECT id, estado, url, t FROM vs_cola WHERE canal = ? AND clave = ? ORDER BY t DESC LIMIT 1',
+      String(canal), String(clave)).toArray()[0];
+    if (!f) {
+      const r = this.vsEncolar(Object.assign({}, vs, { sv, canal, msg: '', clave }), ahora);
+      return r && r.ok ? { espera: true } : { url: '', fila: null };
+    }
+    if (f.estado === 'hecho' && f.url) return { url: f.url, fila: f };
+    if ((f.estado === 'espera' || f.estado === 'dibujando') && ahora - f.t < VS_ESPERA) return { espera: true };
+    return { url: '', fila: f };
+  }
+
+  /** ⏳ Ya mandado: el vs queda atado a su mensaje, así una imagen que llega tarde se le agrega editándolo (`vsListo()`). */
+  vsAtar(fila, vs, sv, canal, id, ahora = Date.now()) {
+    if (fila) this.sql.exec('UPDATE vs_cola SET msg = ? WHERE id = ?', String(id), fila.id);
+    else this.vsEncolar(Object.assign({}, vs, { sv, canal, msg: id }), ahora);
   }
 
   /** 🃏 La fila de «Conseguí tu tarjeta» de un mensaje ya mandado, para las ediciones que cambian sus botones: sale del
@@ -12684,13 +12741,26 @@ export class Avisos {
   }
 
   /** La imagen de un vs ya dibujada (`/avisos/vs-listo`): se le agrega al mensaje, editándolo. Sólo una imagen nuestra. */
-  async vsListo(d) {
+  async vsListo(d, ahora = Date.now()) {
     const f = this.sql.exec('SELECT * FROM vs_cola WHERE id = ?', String(d.id || '')).toArray()[0];
     if (!f) return { error: 'no existe' };
     const url = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/vs\/[\w.-]+\.(?:png|jpg)$/.test(String(d.url || '')) ? String(d.url) : null;
     if (!url || f.estado === 'vencido') {
       this.sql.exec("UPDATE vs_cola SET estado = 'error' WHERE id = ?", f.id);
       return { error: url ? 'vencido' : 'url' };
+    }
+    // ⏳ un mensaje que la ESPERA (`vsEspera()`): todavía no salió. Queda la imagen y la charla corre ya, así sale con ella
+    // sin esperar la vuelta del vigía. Con el mismo candado: si el vigía está hablando, lo manda él en la vuelta siguiente.
+    // (Una batalla de liga sale en la próxima vuelta de `ligasRonda()`, que va en su propio pedido)
+    if (!f.msg) {
+      this.sql.exec("UPDATE vs_cola SET estado = 'hecho', url = ? WHERE id = ?", url, f.id);
+      if (!this.chatEn || ahora - this.chatEn > 3 * MIN) {
+        this.chatEn = ahora;
+        try { await this.chatVivo(ahora); } catch (e) {
+          this.guardar('chat_vivo', { t: ahora, error: String(e).slice(0, 160) });
+        } finally { this.chatEn = 0; }
+      }
+      return { ok: true, espera: true };
     }
     // 🎨 un mensaje del bot en vivo en V2 (`chatFetch()`): la imagen va ABAJO del recuadro, grande, con el link de R2
     if (this.sql.exec('SELECT 1 FROM chat_v2 WHERE canal = ? AND msg = ?', String(f.canal), String(f.msg)).toArray().length) {
@@ -12857,8 +12927,15 @@ export class Avisos {
     }
     const texto = LIV.textoArranca(L.n, b.j, '**' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**', lineas);
     const filas = vs ? filasVs(vs) : [];
+    // ⏳ el VS espera a su imagen, como el cruce del bot en vivo (ver `vsEspera()`): mientras tanto no sale, y la vuelta
+    // siguiente lo vuelve a intentar (`b.msg` sigue vacío)
+    let conVs = null;
+    if (vs) {
+      try { conVs = this.vsEspera(donde.canal, 'liga:' + b.id, vs, L.sv, ahora); } catch (e) { conVs = { url: '', fila: null }; }
+      if (conVs.espera) return 'espera';
+    }
     const r = await this.chatFetch(donde.canal, '', Object.assign({ content: texto, allowed_mentions: { parse: [] }, flags: 4 },
-      filas.length ? { components: filas } : {}), L.sv);
+      conVs && conVs.url ? { img: conVs.url } : {}, filas.length ? { components: filas } : {}), L.sv);
     if (!r.ok) {
       let ra = 0;
       if (r.status === 429) { try { ra = Number((await r.json()).retry_after) || 0; } catch (e) { ra = 0; } }
@@ -12871,7 +12948,7 @@ export class Avisos {
     try { id = String((await r.json()).id || ''); } catch (e) { id = ''; }
     if (!id) return false;
     Object.assign(b, { canal: donde.canal, msg: id, texto });
-    if (vs) { try { this.vsEncolar(Object.assign({}, vs, { sv: L.sv, canal: donde.canal, msg: id }), ahora); } catch (e) { /* sin imagen */ } }
+    if (vs) { try { this.vsAtar(conVs && conVs.fila, vs, L.sv, donde.canal, id, ahora); } catch (e) { /* sin imagen */ } }
     return true;
   }
 

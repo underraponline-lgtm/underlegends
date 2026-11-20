@@ -19,7 +19,10 @@ const vista = (b) => {
   return Object.assign({}, b, {
     content: caja.components.filter((c) => c.type === 10).map((c) => String(c.content).replace(/^### /, '')).join('\n'),
     afuera: top.filter((c) => c.type === 10).map((c) => c.content).join('\n'),
-    components: caja.components.filter((c) => c.type === 1),
+    // 🔘 desde el 19/11/2026 los botones van debajo de la imagen, afuera del recuadro: se leen de los dos lados
+    components: caja.components.filter((c) => c.type === 1).concat(top.filter((c) => c.type === 1)),
+    img: (top.find((c) => c.type === 12) || { items: [{ media: { url: '' } }] }).items[0].media.url,
+    orden: top.map((c) => c.type),
   });
 };
 
@@ -157,16 +160,25 @@ if (!DatabaseSync) {
   pub(VIS, '# <:FMH:1> BLOODY 🇨🇴 <:vs:2> VARGAS 🇨🇴 <:FMH:1>', 0);
   pub(VER, '# <:FMH:1> BLOODY 🇨🇴 <:vs:2> VARGAS 🇨🇴 <:FMH:1>', 0);
   await vuelta(0);
-  ok(estadoDe().join() === 'arranca' && mandados.length === 1 && /🔴 \*\*FMH Tricolor\*\*/.test(mandados[0].content) && /está arrancando/.test(mandados[0].content)
-    && JSON.stringify(mandados[0].allowed_mentions) === '{"parse":[]}', 'el título en los dos canales es UNA batalla: arranca, y sale una vez en el chat sin mencionar a nadie', );
+  // ⏳ en «Con datos» el VS ESPERA a su imagen (19/11/2026, `vsEspera()`): arranca, y el mensaje todavía no sale
+  const esperaL = sql.exec('SELECT id, msg, clave FROM vs_cola').toArray();
+  ok(estadoDe().join() === 'arranca' && !mandados.length && esperaL.length === 1 && esperaL[0].msg === '' && /^liga:/.test(esperaL[0].clave),
+    'el título en los dos canales es UNA batalla: arranca, y el mensaje espera a su imagen (el VS va a la cola sin mensaje)', JSON.stringify(esperaL));
   ok(!(o.leer('ligas_vivo').errores || []).length && !o.leer('ligas_vivo').ult_error, 'sin errores: ' + JSON.stringify(o.leer('ligas_vivo').errores));
-  // ⚠️ se cuentan BOTONES y no filas: desde la 6.54 van juntos en una sola fila mientras entren (`filasVs()`)
-  ok(sql.exec('SELECT COUNT(*) AS n FROM vs_cola').toArray()[0].n === 1 && (mandados[0].components || []).flatMap((f) => f.components || []).length >= 2,
-    'en «Con datos» lleva el VS y sus botones');
   const vsL = JSON.parse(sql.exec('SELECT datos FROM vs_cola').toArray()[0].datos);
   ok(vsL.liga && vsL.liga.id === 'fmh-tricolor' && vsL.liga.n === 'FMH Tricolor' && vsL.a.k === 'bloody',
     'el VS llega a la cola marcado como de liga, con la clave de cada uno: así se dibuja como afiche con sus cartas de liga');
+  // 🖼️ llega la imagen: la vuelta siguiente manda el mensaje, con ella y los botones debajo
+  const IMG_L = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/urbf-1.jpg';
+  const vlL = await o.vsListo({ id: esperaL[0].id, url: IMG_L }, T0 + 0.5 * M);
   await vuelta(1);
+  ok(vlL.ok && mandados.length === 1 && /🔴 \*\*FMH Tricolor\*\*/.test(mandados[0].content) && /está arrancando/.test(mandados[0].content)
+    && JSON.stringify(mandados[0].allowed_mentions) === '{"parse":[]}' && mandados[0].img === IMG_L && /^(10,)?17,12(,1)+$/.test(mandados[0].orden.join()),
+  'llega la imagen y sale una vez en el chat, con ella y los botones debajo, sin mencionar a nadie', JSON.stringify(mandados[0] && mandados[0].orden));
+  // ⚠️ se cuentan BOTONES y no filas: desde la 6.54 van juntos en una sola fila mientras entren (`filasVs()`)
+  ok(sql.exec('SELECT COUNT(*) AS n FROM vs_cola').toArray()[0].n === 1 && (mandados[0].components || []).flatMap((f) => f.components || []).length >= 2,
+    'en «Con datos» lleva el VS y sus botones');
+  await vuelta(1.5);
   ok(mandados.length === 1, 'y no se repite');
   ok(o.ligasAhora(T0 + M)[0].txt === 'Está arrancando' && !JSON.stringify(o.ligasAhora(T0 + M)).includes(BL), 'la página lo ve, sin IDs de nadie');
 
@@ -200,8 +212,20 @@ if (!DatabaseSync) {
   await vuelta(300);
   enVoz.add(BL);
   await vuelta(301);
-  ok(mandados.length === 2 && estadoDe().includes('arranca'), 'con uno de los dos en la llamada: arranca, y sale');
+  ok(mandados.length === 1 && estadoDe().includes('arranca'), 'con uno de los dos en la llamada: arranca, y espera a su imagen');
   enVoz.clear();
+  // ⏳ la imagen no llega: a los `VS_ESPERA` (3 minutos) sale sin ella, y si llega tarde se le agrega editándolo, como antes
+  await vuelta(303);
+  ok(mandados.length === 1, 'antes de los 3 minutos sigue esperando');
+  await vuelta(304.5);
+  const sinImg = mandados[1];
+  const vs2 = sql.exec("SELECT id, msg FROM vs_cola WHERE clave != '' ORDER BY t DESC LIMIT 1").toArray()[0];
+  ok(mandados.length === 2 && sinImg && !sinImg.img && vs2 && vs2.msg === '92',
+    'a los 3 minutos sin imagen sale sin ella, y el VS queda atado al mensaje', JSON.stringify({ n: mandados.length, vs2 }));
+  const nEd = editados.length;
+  await o.vsListo({ id: vs2.id, url: 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/urbf-2.jpg' }, T0 + 305 * M);
+  ok(editados.length === nEd + 1 && editados[nEd].img.endsWith('/urbf-2.jpg') && /^(10,)?17,12(,1)+$/.test(editados[nEd].orden.join()),
+    'la imagen que llega tarde se le agrega editándolo, con los botones debajo', JSON.stringify(editados[nEd] && editados[nEd].orden));
   await vuelta(314);
   ok(estadoDe().includes('espera'), 'doce minutos sin señal y los dos fuera de la llamada: falta el resultado');
   ok(o.ligasAhora(T0 + 314 * M)[0].txt === 'Falta el resultado', 'y la página lo dice');

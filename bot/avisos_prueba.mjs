@@ -36,8 +36,11 @@ const vista = (b) => {
   return Object.assign({}, b, {
     content: caja.components.filter((c) => c.type === 10).map((c) => String(c.content).replace(/^### /, '')).join('\n'),
     afuera: top.filter((c) => c.type === 10).map((c) => c.content).join('\n'),
-    components: caja.components.filter((c) => c.type === 1),
+    // 🔘 los botones: desde el 19/11/2026 van debajo de la imagen, afuera del recuadro (antes, adentro). Se leen de los dos
+    components: caja.components.filter((c) => c.type === 1).concat(top.filter((c) => c.type === 1)),
     img: gal ? gal.items[0].media.url : '',
+    // de arriba a abajo: 10 las menciones · 17 el recuadro · 12 la imagen · 1 los botones
+    orden: top.map((c) => c.type),
   });
 };
 
@@ -1898,9 +1901,23 @@ const ok = (cond, que, det) => {
     const llave = (texto, ed) => sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
       "VALUES ('9', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]') ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, " +
       'texto = excluded.texto', T - 60000, ed, texto, ed);
+    // ⏳ desde el 19/11/2026 el cruce con vs ESPERA a su imagen (`vsEspera()`): `vuelta()` es la vuelta del vigía y, si
+    // quedó un cruce esperando, la imagen que llega (`vsListo()`, que lo manda en ese momento, con ella)
+    const R2V = R2_PRUEBA + '/vs/ffa-';
+    const vuelta = async (t) => {
+      await o.chatVivo(t);
+      for (const f of sql.exec("SELECT id FROM vs_cola WHERE msg = '' AND estado != 'hecho'").toArray()) {
+        await o.vsListo({ id: f.id, url: R2V + f.id + '.jpg' }, t);
+      }
+    };
     llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n', T);
     await o.chatVivo(T);
+    ok(!pedidos.length && sql.exec("SELECT COUNT(*) AS n FROM vs_cola WHERE msg = ''").toArray()[0].n === 1,
+      'el cruce espera a su imagen: todavía no sale nada, y el vs va a la cola sin mensaje', JSON.stringify(pedidos));
+    await vuelta(T);
     const m1 = pedidos[0];
+    ok(m1 && m1.m === 'POST' && m1.b.img.startsWith(R2V) && /^10,17,12(,1)+$/.test(m1.b.orden.join()),
+      'la imagen llega y el cruce sale CON ella: las menciones, el recuadro, la imagen y debajo los botones', m1 && m1.b.orden.join());
     // 🎨 en V2 (18/11/2026): la mención va AFUERA del recuadro, en la línea de arriba, y adentro su nombre en negrita
     ok(pedidos.length === 1 && m1.m === 'POST' && m1.b.flags === 32768 && m1.b.content.includes('⚔️ Cuartos: **Ana 🇦🇷** vs **Bea 🇨🇱**')
       && m1.b.afuera.includes('<@' + ANA + '>') && !m1.b.content.includes('<@') && JSON.stringify(m1.b.allowed_mentions) === '{"parse":[]}',
@@ -1911,7 +1928,7 @@ const ok = (cond, que, det) => {
       && fila1.components.every((x) => /^ve:/.test(x.custom_id)) && fila1.components.map((x) => x.label).join('|') === 'Ana|Bea',
     'con datos: la apuesta va en el cruce, siempre, y los botones dicen el nombre del ranking', JSON.stringify(m1 && m1.b.components));
     llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ ✅ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 3 * 60000);
-    await o.chatVivo(T + 3 * 60000);
+    await vuelta(T + 3 * 60000);
     const ed = pedidos.find((p, i) => i >= 1 && p.m === 'PATCH');
     const nuevo = pedidos.find((p, i) => i >= 1 && p.m === 'POST');
     // 🎨 en V2 una edición manda TODO: el texto con el resultado, y los botones que el mensaje ya tenía (`chat_v2`)
@@ -1923,7 +1940,7 @@ const ok = (cond, que, det) => {
     const n2 = pedidos.length;
     llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ ✅ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ ✅ 🆚 ⌞Dora 🇲🇽⌝\n`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Cami 🇻🇪⌝\n',
       T + 6 * 60000);
-    await o.chatVivo(T + 6 * 60000);
+    await vuelta(T + 6 * 60000);
     const finales = pedidos.slice(n2).filter((p) => p.m === 'POST');
     ok(finales.length === 1 && /⚔️ Final: /.test(finales[0].b.content) && !/🔥 La final de/.test(finales[0].b.content),
       'la final sale una sola vez: el cruce, sin el «🔥 La final de…» repetido', JSON.stringify(finales.map((p) => p.b.content)));
@@ -1933,7 +1950,7 @@ const ok = (cond, que, det) => {
     sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
       "VALUES ('10', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]')", T + 29 * 60000, T + 30 * 60000,
     '# COPA Z\n`[ CUARTOS ]`\n⌞Frifaier 🇨🇱⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n', T + 30 * 60000);
-    await o.chatVivo(T + 30 * 60000);
+    await vuelta(T + 30 * 60000);
     const zf = pedidos.slice(n3).find((p) => p.m === 'POST' && /COPA Z/.test((p.b && p.b.content) || ''));
     ok(zf && zf.b.afuera.includes('<@' + ANA + '>') && zf.b.content.includes('**Ana') && !zf.b.content.includes('Frifaier'),
       'quien se anotó con otro nombre sale como quien es (por la inscripción, `quien`)', zf && zf.b.content);
@@ -1943,7 +1960,7 @@ const ok = (cond, que, det) => {
     sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
       "VALUES ('11', '3', 'FFA', '111', 'z', ?, ?, ?, ?, '[]')", T + 59 * 60000, T + 60 * 60000,
     '# COPA TRES\n`[ OCTAVOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝ 🆚 ⌞Cami 🇻🇪⌝\n⌞Dora 🇲🇽⌝ 🆚 ⌞Eli 🇨🇴⌝ 🆚 ⌞Fer 🇵🇪⌝\n', T + 60 * 60000);
-    await o.chatVivo(T + 60 * 60000);
+    await vuelta(T + 60 * 60000);
     const tres = pedidos.slice(n4).find((p) => p.m === 'POST' && /TODOS CONTRA TODOS/.test((p.b && p.b.content) || ''));
     const bts = tres && tres.b.components && tres.b.components[0] ? tres.b.components[0].components : [];
     ok(tres && bts.length === 3 && bts.map((x) => x.custom_id.slice(-1)).join('') === 'ABC'
@@ -1974,18 +1991,21 @@ const ok = (cond, que, det) => {
     const c2 = A.cuerpoV2('🎤 Arrancó **COPA**\n✅ ' + A.nombreChat({ id: ANA, n: 'Ana' }) + ' pasa · **' + A.nombreChat({ id: '700000777', n: 'Bea' }) + ' 🇨🇱**',
       [{ type: 1, components: [{ type: 2, style: 5, label: 'Síguela', url: 'https://x' }] }], 'https://pub-a.r2.dev/vs/a.jpg', A.colorChat('FFA'));
     ok(c2.flags === 32768 && c2.components[0].type === 10 && c2.components[0].content === '🎤 <@' + ANA + '> y <@700000777>'
-      && c2.components[1].type === 17 && c2.components[1].components[0].content === '### 🎤 Arrancó **COPA**\n✅ **Ana** pasa · **Bea 🇨🇱**'
-      && c2.components[1].components[1].type === 1 && c2.components[2].type === 12 && c2.components[2].items[0].media.url.endsWith('/a.jpg')
+      && c2.components[1].type === 17 && c2.components[1].components.length === 1
+      && c2.components[1].components[0].content === '### 🎤 Arrancó **COPA**\n✅ **Ana** pasa · **Bea 🇨🇱**'
+      && c2.components[2].type === 12 && c2.components[2].items[0].media.url.endsWith('/a.jpg') && c2.components[3].type === 1
       && JSON.stringify(c2.allowed_mentions) === '{"parse":[]}',
-    'V2: las menciones arriba y afuera; adentro el título, los nombres en negrita (sin doble negrita) y los botones; la imagen abajo',
+    'V2: las menciones arriba y afuera; adentro el título y los nombres en negrita (sin doble negrita); la imagen abajo, y los botones debajo de la imagen, afuera del recuadro (19/11/2026)',
     JSON.stringify(c2));
+    const c3 = A.cuerpoV2('🎤 Arrancó **COPA**', [{ type: 1, components: [{ type: 2, style: 5, label: 'x', url: 'https://x' }] }], '', A.colorChat('FFA'));
+    ok(c3.components.map((c) => c.type).join() === '17,1', 'sin imagen, los botones van igual afuera, debajo del recuadro', JSON.stringify(c3));
     // 👥🏷️ CON EQUIPOS (11/11/2026, Dlx: «Sí, agrégalo» y «que ahí abajo sea el nombre como aparece en el ranking»): «Perfiles»
     // de los dos lados, sin «Estadísticas», y los botones con el nombre de la Liga aunque la llave diga «ana» y «bea»
     const n5 = pedidos.length;
     sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
       "VALUES ('12', '4', 'FFA', '111', 'z', ?, ?, ?, ?, '[]')", T + 119 * 60000, T + 120 * 60000,
     '# COPA EQUIPOS\n`[ FINAL ]`\n⌞ana 🇦🇷 + bea 🇨🇱⌝ 🆚 ⌞Cami 🇻🇪⌝\n', T + 120 * 60000);
-    await o.chatVivo(T + 120 * 60000);
+    await vuelta(T + 120 * 60000);
     const eq = pedidos.slice(n5).find((p) => p.m === 'POST' && /Final: /.test((p.b && p.b.content) || ''));
     const bEq = ((eq && eq.b.components) || []).flatMap((f) => f.components || []);
     const veEq = bEq.filter((x) => /^ve:/.test(x.custom_id || '')), vpEq = bEq.find((x) => /^vp:/.test(x.custom_id || ''));
@@ -2127,8 +2147,31 @@ const ok = (cond, que, det) => {
       'texto = excluded.texto', T - 60000, ed, texto, ed);
     llave(CU, T);
     await o.chatVivo(T);
+    // ⏳ EL CRUCE ESPERA A SU IMAGEN (19/11/2026, Dlx: «que el mensaje se envíe cuando la imagen esté lista», `vsEspera()`):
+    // no sale nada, no abre la apuesta y el vs va a la cola sin mensaje
+    const espera0 = sql.exec('SELECT id, msg, clave FROM vs_cola').toArray();
+    ok(pedidos.length === 0 && espera0.length === 1 && espera0[0].msg === '' && /:v:Cuartos:0$/.test(espera0[0].clave)
+      && !sql.exec('SELECT * FROM apuestas').toArray().length,
+    'A full: el cruce espera a su imagen: no sale nada, no abre la apuesta y el vs va a la cola sin mensaje', JSON.stringify(espera0));
+    await o.chatVivo(T + 20000);
+    ok(pedidos.length === 0 && sql.exec('SELECT COUNT(*) AS n FROM vs_cola').toArray()[0].n === 1,
+      'mientras espera, la vuelta siguiente no lo manda ni lo encola otra vez');
+    // 🖼️ la tarea se lo lleva y devuelve la imagen: el cruce sale EN ESE MOMENTO, con ella
+    const cola = o.vsCola('FFA', T + 30000).vs;
+    ok(cola.length === 1 && cola[0].a.n === 'Ana' && cola[0].b.n === 'Bea' && cola[0].ronda === 'Cuartos'
+      && cola[0].titulo === 'LA REVANCHA' && o.vsCola('FFA', T + 31000).vs.length === 0,
+    'el vs de dos va a la cola de las imágenes, y la tarea se lo lleva una sola vez', cola[0]);
+    ok((await o.vsListo({ id: cola[0].id, url: 'https://otro.sitio/x.png' }, T + 35000)).error === 'url' && pedidos.length === 0,
+      'la imagen tiene que ser nuestra (del bucket de las cartas), y sin ella no sale nada');
+    const IMG = R2_PRUEBA + '/vs/ffa-abc.jpg';
+    const vl = await o.vsListo({ id: cola[0].id, url: IMG }, T + 40000);
     const msg = pedidos[0] && pedidos[0].b;
     const ap = sql.exec('SELECT * FROM apuestas').toArray()[0];
+    ok(vl.ok && vl.espera && pedidos.length === 1 && pedidos[0].m === 'POST' && !pedidos[0].form && msg.img === IMG
+      && msg.orden.join() === '17,12,1,1' && sql.exec('SELECT msg FROM vs_cola WHERE id = ?', cola[0].id).toArray()[0].msg === 'm1'
+      && ap && ap.abre === T + 40000,
+    'la imagen llega y el cruce sale en ese momento: el recuadro, la imagen y debajo los botones; el vs queda atado al mensaje y la apuesta abre ahí',
+    JSON.stringify({ vl, orden: msg && msg.orden, img: msg && msg.img, ap }));
     ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱/.test(msg.content)
       && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 2 && ap && ap.estado === 'abierta'
       && /^ve:[0-9a-f]+:A:[0-9a-f]+$/.test(msg.components[0].components[0].custom_id) && /🗳️ /.test(msg.content)
@@ -2138,22 +2181,6 @@ const ok = (cond, que, det) => {
         && o.vsFicha(x.custom_id.slice(3)).ok && /Cara a cara/.test(JSON.stringify(o.vsFicha(x.custom_id.slice(3)).comps))),
     'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje; y como Ana y Bea no tienen tarjeta, debajo «Consigue tu tarjeta»',
     msg && msg.content);
-    // 🖼️ el vs de dos: a la cola, con el mensaje donde va; la tarea se lo lleva y la imagen se le agrega editándolo
-    const cola = o.vsCola('FFA', T + 1000).vs;
-    ok(cola.length === 1 && cola[0].a.n === 'Ana' && cola[0].b.n === 'Bea' && cola[0].ronda === 'Cuartos'
-      && cola[0].titulo === 'LA REVANCHA' && o.vsCola('FFA', T + 2000).vs.length === 0,
-    'el vs de dos va a la cola de las imágenes, y la tarea se lo lleva una sola vez', cola[0]);
-    ok((await o.vsListo({ id: cola[0].id, url: 'https://otro.sitio/x.png' })).error === 'url',
-      'la imagen tiene que ser nuestra (del bucket de las cartas)');
-    const nped = pedidos.length;
-    const vl = await o.vsListo({ id: cola[0].id, url: 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/ffa-abc.jpg' });
-    ok(vl.ok === true || vl.estado === undefined || true, 'vsListo contesta');
-    const ed = pedidos[pedidos.length - 1];
-    // 🎨 en V2 (18/11/2026) la imagen va ABAJO del recuadro, grande, con el link de R2: una sola edición, sin bajarla, y el
-    // mensaje conserva su texto y sus botones (`chat_v2`)
-    ok(pedidos.length === nped + 1 && ed.m === 'PATCH' && !ed.form && ed.u.endsWith('/messages/' + 'm1') && ed.b.flags === 32768
-      && ed.b.img === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/ffa-abc.jpg' && /LA REVANCHA/.test(ed.b.content)
-      && ed.b.components.length === 2, 'y se le agrega al mensaje del cruce abajo del recuadro, editándolo con todo lo que tenía', ed);
     const ini = { inicial: 5000, desde: 0 };
     const pedir = async (d, t = T + 60000) => (await o.apostar(Object.assign({}, ini, d), t)).json();
     const U1 = '100000000000000001', U2 = '100000000000000002', U3 = '100000000000000003';
