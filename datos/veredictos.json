@@ -2378,6 +2378,17 @@
    "b": "Makma",
    "ganador": "MAT",
    "votos": "1–0"
+  },
+  "1573138399991300190": {
+   "id": "1573138399991300190",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795135822056,
+   "a": "Vandu 🇨🇴  + Mito 🇦🇷",
+   "b": "Kyss 🇲🇽  + Trelok 🇨🇴",
+   "ganador": "Kyss 🇲🇽  + Trelok 🇨🇴",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7110,8 +7121,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795131191311,
-   "ed": 1795135822056,
-   "texto": "`[ CUARTOS ]`\n⌞Vandu 🇨🇴⌝ 🆚 ⌞Mito 🇦🇷⌝ 🆚 ⌞Mauzz 🇻🇪⌝ 🆚 ⌞Nc 🇲🇿⌝ 🆚 ⌞Mexicano 🇲🇽 -⌝\n⌞kyss 🇲🇽⌝ 🆚 ⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞MCO 🇦🇷⌝ 🆚 ⌞Mc uchiha 🇮🇹⌝ 🆚 ⌞Trot🍅 🇪🇸⌝ 🆚 ⌞TEURONIHAGE 🇦🇪⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞XXXX 🇻🇪⌝ 🆚 ⌞Six 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞Mc uchiha 🇨🇱⌝\n⌞Lord 🇨🇴⌝ 🆚 ⌞Tenor 🇻🇪⌝ 🆚 ⌞Drexx 🇵🇪⌝ 🆚 ⌞doble h 🇨🇱⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞XXX 🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞Six 🇦🇷 + Bna 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴 + XXX 🇻🇪⌝\n⌞Vandu 🇨🇴  + Mito 🇦🇷⌝ 🆚 ⌞Kyss 🇲🇽  + Trelok 🇨🇴⌝",
+   "ed": 1795136534353,
+   "texto": "`[ CUARTOS ]`\n⌞Vandu 🇨🇴⌝ 🆚 ⌞Mito 🇦🇷⌝ 🆚 ⌞Mauzz 🇻🇪⌝ 🆚 ⌞Nc 🇲🇿⌝ 🆚 ⌞Mexicano 🇲🇽 -⌝\n⌞kyss 🇲🇽⌝ 🆚 ⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞MCO 🇦🇷⌝ 🆚 ⌞Mc uchiha 🇮🇹⌝ 🆚 ⌞Trot🍅 🇪🇸⌝ 🆚 ⌞TEURONIHAGE 🇦🇪⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞XXXX 🇻🇪⌝ 🆚 ⌞Six 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞Mc uchiha 🇨🇱⌝\n⌞Lord 🇨🇴⌝ 🆚 ⌞Tenor 🇻🇪⌝ 🆚 ⌞Drexx 🇵🇪⌝ 🆚 ⌞doble h 🇨🇱⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞XXX 🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞Six 🇦🇷 + Bna 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴 + XXX 🇻🇪⌝\n⌞Vandu 🇨🇴  + Mito 🇦🇷⌝ 🆚 ⌞Kyss 🇲🇽  + Trelok 🇨🇴⌝\n`[ FINAL ]`\n⌞Bna 🇦🇷 + Six 🇦🇷 + Colesito 🇨🇴⌝ 🆚 ⌞Vandu 🇨🇴 + Trelok 🇨🇴 + Kyss 🇲🇽⌝\n⌞Bna 🇦🇷⌝ 🆚 ⌞Vandu 🇨🇴 #⌝\n⌞COLESITO 🇨🇴⌝ 🆚 ⌞TRELOK 🇨🇴 #⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7193,7 +7204,7 @@
       "Colesito 🇨🇴 + XXX 🇻🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -7201,6 +7212,36 @@
      [
       "Vandu 🇨🇴  + Mito 🇦🇷",
       "Kyss 🇲🇽  + Trelok 🇨🇴"
+     ],
+     "Kyss 🇲🇽  + Trelok 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Bna 🇦🇷 + Six 🇦🇷 + Colesito 🇨🇴",
+      "Vandu 🇨🇴 + Trelok 🇨🇴 + Kyss 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Bna 🇦🇷",
+      "Vandu 🇨🇴 #"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "COLESITO 🇨🇴",
+      "TRELOK 🇨🇴 #"
      ],
      null,
      "última ronda y no dice campeón",

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-20T00:55:12+00:00",
+ "cuando": "2026-11-20T01:04:16+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7477,6 +7477,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "riolu🇪🇸",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1573141404539027537",
+   "cuando": "2026-11-20T01:02:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lewito 🇦🇷",
+   "quien": "l3wito",
+   "discord_id": "1086485696572817418",
+   "msg_id": "1573139702876213279",
+   "cuando": "2026-11-20T00:55:32"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43458,24 +43476,6 @@
    "discord_id": "1071185986366742630",
    "msg_id": "1560756802117968024",
    "cuando": "2026-10-16T20:50:19"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "erian 🇪🇷",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1560756143666634874",
-   "cuando": "2026-10-16T20:47:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "erian",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1560755591511543979",
-   "cuando": "2026-10-16T20:45:30"
   }
  ]
 }
