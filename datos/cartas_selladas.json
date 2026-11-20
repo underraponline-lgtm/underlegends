@@ -52,10 +52,10 @@
    "servidor": "78ed14c31b1c:0bd0fbf67396:9397f6"
   },
   "Adriagner": {
-   "competitivo": "587736f3a395:38a840be60e7",
+   "competitivo": "b9df3aabacd7:38a840be60e7",
    "pais": "f7ed790c3ccc:f1f52e1c6d42",
    "servidor": "c70af87ae462:0bd0fbf67396:cde293",
-   "temporada": "8c58fdfc6647:a8d8b7335469"
+   "temporada": "9c12177f5a48:a8d8b7335469"
   },
   "Adrianex": {
    "competitivo": "0a127aa3a93c:38a840be60e7",
@@ -305,10 +305,10 @@
    "temporada": "a37aa7872ad0:a8d8b7335469"
   },
   "Cronox": {
-   "competitivo": "6bf72701bccf:38a840be60e7",
+   "competitivo": "4119d5ea8d48:38a840be60e7",
    "pais": "ae6ce677f1de:f1f52e1c6d42",
    "servidor": "e39b09e5187a:0bd0fbf67396:e4fbfa",
-   "temporada": "5b9d02e7c737:a8d8b7335469"
+   "temporada": "83fc26972035:a8d8b7335469"
   },
   "Cruz": {
    "servidor": "8a80c6b7775d:0bd0fbf67396:972ec9"
@@ -976,8 +976,8 @@
   },
   "L": {},
   "LAST": {
-   "competitivo": "f0a10ae527c9:38a840be60e7",
-   "pais": "247e2c9e882a:f1f52e1c6d42",
+   "competitivo": "10d9c4105d36:38a840be60e7",
+   "pais": "dafdee64df18:f1f52e1c6d42",
    "servidor": "e0ee9ebcd9c0:0bd0fbf67396:88f477",
    "temporada": "57260af4b2ef:a8d8b7335469"
   },
@@ -994,10 +994,10 @@
    "temporada": "37b4996f3bab:a8d8b7335469"
   },
   "LRS": {
-   "competitivo": "54becacd5d04:38a840be60e7",
+   "competitivo": "05181932b127:38a840be60e7",
    "pais": "fdf287d5f801:f1f52e1c6d42",
    "servidor": "2454fed93ec3:0bd0fbf67396:132451",
-   "temporada": "a0e8e2c1646e:a8d8b7335469"
+   "temporada": "ddc681cc8e59:a8d8b7335469"
   },
   "LVS": {
    "servidor": "6de376e25d79:0bd0fbf67396:c4a5ef"
@@ -1148,10 +1148,10 @@
    "servidor": "7ecafa90adde:0bd0fbf67396:980594"
   },
   "MaYeuTyK": {
-   "competitivo": "ae4ff0605eb2:38a840be60e7",
+   "competitivo": "c447ebc6024e:38a840be60e7",
    "pais": "e8b973edee19:f1f52e1c6d42",
    "servidor": "32b0e67b7964:0bd0fbf67396:d6a988",
-   "temporada": "f89663163402:a8d8b7335469"
+   "temporada": "6158090ab958:a8d8b7335469"
   },
   "Magic": {
    "competitivo": "d42f50707c9e:38a840be60e7",
@@ -1847,10 +1847,10 @@
    "temporada": "07c188a53811:a8d8b7335469"
   },
   "Trot": {
-   "competitivo": "b1e794b4f10b:38a840be60e7",
-   "pais": "1ccbd076fa2f:f1f52e1c6d42",
-   "servidor": "48c535553691:0bd0fbf67396:c0bf45",
-   "temporada": "39aff9601ee9:a8d8b7335469"
+   "competitivo": "f22a47b21a79:38a840be60e7",
+   "pais": "6cd6a107bccf:f1f52e1c6d42",
+   "servidor": "f199ff8a615e:0bd0fbf67396:c0bf45",
+   "temporada": "e53ae36fd4a2:a8d8b7335469"
   },
   "Tuca": {},
   "Tusicario": {
@@ -2190,5 +2190,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-20T16:44:03+00:00"
+ "cuando": "2026-11-20T16:49:13+00:00"
 }
