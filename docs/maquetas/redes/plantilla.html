@@ -1,0 +1,169 @@
+<title>Imágenes de la semana</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500;100..125,800;100..125,900&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+/* Escenario negro de la Liga: papel blanco con sombra dura, una sola nota magenta. Una columna; las imágenes mandan. */
+:root{
+  --escenario:#030304; --tabla:#0E0E11; --linea:#26262B; --papel:#F2EEE6; --tinta:#F6F6F4; --gris:#A9A9B0;
+  --verde:#29B298; --mag:#E41373; --oro:#E7B622;
+  --f-tit:'Archivo','Arial Black',system-ui,sans-serif; --f-et:'Barlow Condensed','Arial Narrow',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--escenario);color:var(--tinta);font:500 16px/1.55 var(--f-tit);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1180px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:64px}
+.et{font:700 15px/1 var(--f-et);letter-spacing:.16em;text-transform:uppercase}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.cab{display:flex;flex-direction:column;gap:18px}
+.cab .et{color:var(--verde)}
+.cab h1{font:900 clamp(40px,7vw,88px)/.9 var(--f-tit);font-stretch:125%;text-transform:uppercase}
+.cab .lede{max-width:66ch;color:#D6D6D2;font-size:18px}
+.datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,230px));gap:14px;margin-top:6px}
+.datos div{background:var(--papel);color:var(--escenario);padding:12px 16px;box-shadow:6px 6px 0 var(--verde);display:flex;flex-direction:column;gap:4px;min-width:0}
+.datos b{font:900 26px/1 var(--f-tit)}
+.datos span{font:700 15px/1.1 var(--f-et);letter-spacing:.08em;text-transform:uppercase}
+.dir{display:flex;flex-direction:column;gap:22px}
+.dir-h{display:flex;gap:20px;align-items:flex-start}
+.letra{flex:none;width:72px;height:72px;display:grid;place-items:center;background:var(--papel);color:var(--escenario);
+  font:900 50px/1 var(--f-tit);box-shadow:6px 6px 0 var(--mag)}
+.dir-h div{display:flex;flex-direction:column;gap:8px;min-width:0}
+.dir-h h2{font:900 clamp(28px,4vw,44px)/1 var(--f-tit);font-stretch:118%;text-transform:uppercase}
+.dir-h p{max-width:70ch;color:#D6D6D2}
+.dir-h .por{color:var(--oro);font:700 17px/1.3 var(--f-et);letter-spacing:.06em;text-transform:uppercase}
+.grilla{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:start}
+.grilla.tres{grid-template-columns:repeat(3,minmax(0,1fr));max-width:900px}
+figure{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ver{all:unset;cursor:zoom-in;display:block;border:2px solid var(--linea);transition:border-color .15s}
+.ver:hover{border-color:var(--tinta)}
+.ver:focus-visible{outline:3px solid var(--oro);outline-offset:3px}
+.ver img{display:block;width:100%;height:auto}
+figcaption{display:flex;flex-direction:column;gap:2px}
+figcaption b{font:700 16px/1.2 var(--f-et);letter-spacing:.08em;text-transform:uppercase}
+figcaption span{font-size:14px;color:var(--gris)}
+.sec-t{display:flex;flex-direction:column;gap:10px}
+.sec-t .et{color:var(--verde)}
+.sec-t h2{font:900 clamp(26px,3.6vw,40px)/1 var(--f-tit);font-stretch:118%;text-transform:uppercase}
+.sec-t p{max-width:70ch;color:#D6D6D2}
+.feeds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.feed{display:flex;flex-direction:column;gap:10px;min-width:0}
+.feed-t{font:700 15px/1 var(--f-et);letter-spacing:.12em;text-transform:uppercase;color:var(--gris)}
+.feed-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;max-width:360px}
+.feed-g img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover}
+.tiers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.tier{background:var(--tabla);border:2px solid var(--linea);padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.tier.t1{border-color:var(--oro);box-shadow:8px 8px 0 var(--oro)}
+.tier h3{font:900 26px/1 var(--f-tit);text-transform:uppercase;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.tier h3 span{font:700 18px/1 var(--f-et);letter-spacing:.1em;color:var(--oro)}
+.tier ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+.tier li{display:flex;gap:12px;align-items:baseline}
+.tier li i{flex:none;font:900 18px/1 var(--f-tit);font-style:normal;color:var(--escenario);background:var(--papel);width:30px;height:30px;display:grid;place-items:center}
+.tier li div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tier li b{font-weight:800}
+.tier li span{color:var(--gris);font-size:15px}
+.tier li.nueva i{background:var(--oro)}
+.cuida{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.cuida div{border-left:4px solid var(--verde);padding:4px 0 4px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.cuida b{font-weight:800}
+.cuida span{color:#D6D6D2;font-size:15px}
+.elige{background:var(--papel);color:var(--escenario);padding:28px;box-shadow:10px 10px 0 var(--mag);display:flex;flex-direction:column;gap:16px}
+.elige h2{font:900 clamp(26px,3.6vw,40px)/1 var(--f-tit);font-stretch:118%;text-transform:uppercase}
+.elige ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.elige li{max-width:72ch}
+.fuente{color:var(--gris);font-size:14px;max-width:80ch}
+dialog{padding:0;border:0;background:transparent;max-width:min(96vw,1080px);max-height:96vh}
+dialog::backdrop{background:rgba(3,3,4,.92)}
+dialog img{display:block;max-width:100%;max-height:94vh;width:auto;height:auto;margin:auto}
+dialog form{position:fixed;top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px))}
+dialog button{font:700 16px/1 var(--f-et);letter-spacing:.12em;text-transform:uppercase;background:var(--papel);color:var(--escenario);border:0;padding:12px 16px;cursor:pointer}
+@media (max-width:900px){.grilla,.grilla.tres{grid-template-columns:repeat(2,minmax(0,1fr))}.feeds{grid-template-columns:1fr}}
+@media (max-width:640px){.tiers,.cuida{grid-template-columns:1fr}.dir-h{flex-direction:column}}
+@media (prefers-reduced-motion:reduce){.ver{transition:none}}
+</style>
+
+<main>
+  <header class="cab">
+    <span class="et">El plan de los tiers · maqueta</span>
+    <h1>Las imágenes de la semana</h1>
+    <p class="lede">Cada lunes, el ciclo arma las imágenes de la semana de cada servidor con sus datos de verdad, listas para subir a Instagram y TikTok. Todas las de esta página salieron de la semana del 16 al 22 de noviembre: Cypherhood (3 eventos, 50 jugaron) y Freestyle For All (2 eventos, 44 jugaron).</p>
+    <div class="datos">
+      <div><b>2 por semana</b><span>Tier 2</span></div>
+      <div><b>5 por semana</b><span>Tier 1</span></div>
+      <div><b>1080 × 1350</b><span>post (4:5)</span></div>
+      <div><b>1080 × 1920</b><span>historia y TikTok (9:16)</span></div>
+    </div>
+  </header>
+
+  <!--DIRS-->
+
+  <section class="sec-t" aria-labelledby="t-feed">
+    <span class="et">A tamaño real</span>
+    <h2 id="t-feed">Así se ven en el feed</h2>
+    <p>En un perfil de Instagram cada post se ve de unos 120 píxeles de ancho. Ahí se decide si alguien entra.</p>
+    <div class="feeds"><!--FEED--></div>
+  </section>
+
+  <section class="sec-t" aria-labelledby="t-largo">
+    <span class="et">Inventado para probar</span>
+    <h2 id="t-largo">El peor caso</h2>
+    <p>Un campeón de nombre largo («Mr Still Ballin»), sin tarjeta y con tres títulos, uno de ellos con un nombre de evento larguísimo. No pasó: es la prueba de que el generador lo aguanta. El nombre baja a dos renglones, los eventos se achican y nada se corta.</p>
+    <div class="grilla tres"><!--LARGO--></div>
+  </section>
+
+  <section class="sec-t" aria-labelledby="t-tier">
+    <span class="et">La propuesta</span>
+    <h2 id="t-tier">Qué lleva cada tier</h2>
+    <div class="tiers">
+      <div class="tier"><h3>Tier 2 <span>2 por semana</span></h3>
+        <ol>
+          <li><i>1</i><div><b>El campeón de la semana</b><span>Quien ganó más eventos del servidor; con empate, quien sumó más puntos.</span></div></li>
+          <li><i>2</i><div><b>El top 5</b><span>Los que más puntos sumaron en el servidor esa semana.</span></div></li>
+        </ol></div>
+      <div class="tier t1"><h3>Tier 1 <span>5 por semana</span></h3>
+        <ol>
+          <li><i>1</i><div><b>El campeón de la semana</b><span>Igual que el Tier 2.</span></div></li>
+          <li><i>2</i><div><b>El top 5</b><span>Igual que el Tier 2.</span></div></li>
+          <li class="nueva"><i>3</i><div><b>La historia del campeón</b><span>La misma pieza en 9:16, para historias y TikTok.</span></div></li>
+          <li class="nueva"><i>4</i><div><b>El evento de la semana</b><span>Su noche más grande, con el podio y las notas («La noche de…» en formato post).</span></div></li>
+          <li class="nueva"><i>5</i><div><b>Lo que viene</b><span>Sus eventos de la semana que empieza, con día y hora, para historias.</span></div></li>
+        </ol></div>
+    </div>
+  </section>
+
+  <section class="sec-t" aria-labelledby="t-cuida">
+    <span class="et">Para todos los servidores</span>
+    <h2 id="t-cuida">Lo que se resuelve solo</h2>
+    <div class="cuida">
+      <div><b>Quien no tiene tarjeta</b><span>Va su silueta con los rayos del color del servidor y «Sin tarjeta». Flash ganó dos eventos y no tiene.</span></div>
+      <div><b>Colores muy oscuros</b><span>El morado de FFA (#26045B) casi no se ve sobre negro: los detalles usan una versión más clara del mismo tono.</span></div>
+      <div><b>Nombres y eventos largos</b><span>Se achican hasta entrar («CHOP COMPE NOCTURNA V.1»). El generador mide cada imagen y avisa si algo se corta.</span></div>
+      <div><b>La zona segura de las historias</b><span>Nada importante en los 250 píxeles de arriba ni en los 330 de abajo, donde Instagram pone su barra.</span></div>
+    </div>
+  </section>
+
+  <section class="elige" aria-labelledby="t-elige">
+    <h2 id="t-elige">Lo que tienes que elegir</h2>
+    <ol>
+      <li><b>La dirección:</b> A, B o C. Recomiendo la C. También se pueden mezclar, por ejemplo el campeón de la A y el top 5 de la C.</li>
+      <li><b>Las cinco del Tier 1:</b> si te sirven las tres que se suman (historia, evento de la semana y lo que viene) o prefieres otras.</li>
+      <li><b>Dónde las reciben:</b> la propuesta es que el dueño las baje desde «Tu servidor» cada lunes, y si quiere, que el bot las deje en un canal suyo.</li>
+    </ol>
+  </section>
+
+  <p class="fuente">Referencias de 21st.dev: los pósters impresos con eco y sello (Fashion Poster Footer, Halftone Wordmark), el papel rasgado (Torn Poster, Torn Portrait), los tickets con talón (Admit One, Boarding Pass) y las pegatinas en estrella (Stamp, Sticker Slap). Las tarjetas son las de verdad, de R2.</p>
+</main>
+
+<dialog id="grande" aria-label="Imagen en grande"><form method="dialog"><button type="submit">Cerrar</button></form><img alt=""></dialog>
+<script>
+(() => {
+  const d = document.getElementById('grande'), im = d.querySelector('img');
+  document.querySelectorAll('.ver').forEach((b) => b.addEventListener('click', () => {
+    const src = b.querySelector('img');
+    im.src = src.src; im.alt = src.alt;
+    if (typeof d.showModal === 'function') d.showModal();
+  }));
+  d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+})();
+</script>
