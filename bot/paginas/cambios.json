@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "7.28",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T04:10:00-05:00",
+        "titulo": "Los comandos del bot, rehechos",
+        "items": [
+            "**Los comandos del bot, con otra cara**: cada respuesta llega en un recuadro con la franja de su familia (Tienda, Drops, Crews, Tu cuenta, Ajustes…), el color de tu rango en lo tuyo y del servidor en lo del servidor.",
+            "**La acción, al lado de lo que toca**: en `/drops` cada tipo tiene su botón «Abrir»; en `/inventario`, cada lugar su «Cambiar»; `/apodo` y `/help` se eligen en un menú, y todo cambia el mismo mensaje en vez de mandar otro.",
+            "**`/versus` con las dos cartas lado a lado**, arriba de la tabla, en el color de quien gana. `/card` queda igual que siempre.",
+            "**«Mostrarlo en el canal»**: si al abrir un Drop te sale Vinilo o algo mejor, lo puedes mostrar en el chat, una vez y sin que suene nadie.",
+            "Arreglado: «Te queda 1 Drop» en singular, `/crew unirme` cuando ya estás en otra crew, y `/help` ahora incluye `/crew`."
+        ]
+    },
+    {
         "version": "7.27",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T03:26:00-05:00",
