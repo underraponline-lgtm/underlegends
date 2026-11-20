@@ -75,6 +75,23 @@ CASA = frozenset({'DRA'})
 RECOMENDADO = {1: 1000, 2: 500, 3: 100}
 
 
+def reglas():
+    """📦 Lo que pide y da cada tier, para la página: `tiers_reglas` del lobby (`subir_web.py`). Sale de las mismas
+    constantes que `recomendar()` y `como_subir()`, así la página nunca dice otra cosa que el código.
+      `rec`:  los miembros que se recomiendan en cada tier (no es requisito)
+      `sube`: lo que pide llegar a ese tier desde el de abajo, en una frase
+      `da`:   lo que SUMA cada tier sobre el de abajo: las claves de `PRESET` (pagina, calendario, ligas, panel, suma,
+              competitivo, duelos) más `carta` (la de Servidor: el Tier 3 no la tiene), `mes_awards` (sólo nomina en 1 y 2,
+              `mes_awards.nominar_sv`) y `unirse` («Unirme a los Tier 1», que pregunta por el tier en el Worker)
+    Las claves de tier van como texto ('1', '2', '3'): así llegan de un JSON."""
+    da = {3: sorted(PRESET[3]), 2: sorted((PRESET[2] - PRESET[3]) | {'carta', 'mes_awards'}),
+          1: sorted(PRESET[1] - PRESET[2]) + ['unirse']}
+    sube = {2: 'Anunciar %d eventos o más en 4 semanas' % A_TIER2_ANUNCIOS,
+            1: '%d puntos o más, %d eventos o más en 4 semanas y llaves que el bot lee casi solo' % (A_TIER1_PUNTOS, A_TIER1_EVENTOS)}
+    return {'rec': {str(k): v for k, v in sorted(RECOMENDADO.items())}, 'sube': {str(k): v for k, v in sube.items()},
+            'da': {str(k): v for k, v in da.items()}}
+
+
 def recomendado(tier, gente):
     """«(con N miembros: se recomiendan M)» si el servidor tiene menos que lo recomendado para ese tier; vacío si no se
     sabe cuántos tiene o si llega."""
@@ -1229,6 +1246,12 @@ def _self_check():
     ok(len(cs['pide']) == 3 and all(x[2] for x in cs['pide']) and cs['rec'] == ['Se recomiendan 1.000 miembros en tu Discord', 'tienes 300', False]
        and como_subir(3, 0, {'anuncios': 2})['rec'] is None and como_subir(1, 90, {}) is None,
        'los miembros van en «rec», aparte de lo que se pide, y no frenan «N de M»', str(cs))
+    rg = reglas()
+    ok(rg['rec'] == {'1': 1000, '2': 500, '3': 100} and rg['da']['1'] == ['unirse']
+       and {'competitivo', 'duelos', 'carta', 'mes_awards'} == set(rg['da']['2']) and 'competitivo' not in rg['da']['3']
+       and str(A_TIER2_ANUNCIOS) in rg['sube']['2'] and str(A_TIER1_PUNTOS) in rg['sube']['1']
+       and len(json.dumps(rg, ensure_ascii=False, separators=(',', ':'))) < 600,
+       'las reglas de la página: los recomendados, lo que suma cada tier y lo que pide subir, de las mismas constantes', str(rg))
     # 📊 el panel: la hora sale del mensaje de la llave, los días y la Liga, y lo que se sugiere con los números
     snow = lambda d, h: '%d' % ((int((dt.datetime(d.year, d.month, d.day, tzinfo=dt.timezone.utc)  # noqa: E731
                                       + dt.timedelta(hours=h + 4)).timestamp() * 1000) - 1420070400000) << 22)

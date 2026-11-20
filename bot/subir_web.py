@@ -776,6 +776,9 @@ def armar():
         # ⚠️ con `todos`, no con la tabla (revisión del 04/11/2026): cortados en 200, FRZ y FVS salían «esperando su primer
         # evento» con 8 y 5 jugadores, Snake Rap con 6 de 49 y Argentina con 54 de 141
         'svs': _servidores(todos),
+        # 🏅 lo que pide y da cada tier (19/11/2026), para que la página lo lea en vez de escribirlo: sale de las constantes
+        # de `bot/tiers.py`, así cambia solo cuando cambian las reglas. ~140 bytes comprimidos
+        'tiers_reglas': _tiers_reglas(),
         'paises': _paises(todos),
         'rangos': _escalera(),
         # 🔑 TODO LO DE ACA SALE DE LOS DOS POOLS QUE YA ESTABAN. No hay
@@ -3183,6 +3186,16 @@ def _paginas_socios():
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ las páginas de los socios no llegaron (%s): van con lo de siempre' % str(e)[:60])
     return {}
+
+
+def _tiers_reglas():
+    """🏅 `tiers.reglas()`, o nada si `bot/tiers.py` no se puede leer (sin dato no hay pieza)."""
+    try:
+        import tiers as _TI
+        return _TI.reglas()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las reglas de los tiers no se leyeron (%s): la página no las muestra' % str(e)[:60])
+        return None
 
 
 def _servidores(gente):
