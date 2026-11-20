@@ -107,6 +107,13 @@ def fuerzas(llaves):
     import datetime as dt
     import competencias as CO
     import elo as EL
+    import elo_temporada as ET
+    if ET.prendido():
+        # 🪨 DESDE LA T2, DEL HISTÓRICO NUEVO (`bot/elo_temporada.historico()`): el mismo nivel de cada evento y el mismo
+        # ELO de antes de cada 1v1, con las batallas de tres y K 48/24, y con todas las temporadas
+        todas = dict(ET.todas_las_llaves())
+        todas.update(llaves or {})
+        return ET.historico(todas)[1]
     cr = CO.cruces(llaves, dt.datetime(2000, 1, 1, tzinfo=dt.timezone.utc), dt.datetime(2100, 1, 1, tzinfo=dt.timezone.utc))
     por_ev = {}
     for c in cr:

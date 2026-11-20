@@ -74,6 +74,13 @@ def correr(cruces):
 def calcular(llaves, hasta=None):
     """El ELO de todos con los 1v1 de `llaves` anteriores a `hasta` (todos si es `None`). Los 1v1 son los mismos que
     cuentan en las Competencias (`competencias.cruces`): sin equipos, sin walk-in, sin lo que no se peleó."""
+    import elo_temporada as ET
+    if ET.prendido():
+        # 🪨 DESDE LA T2, EL HISTÓRICO (`bot/elo_temporada.py`, docs/elo_temporada.md): con las batallas de tres y K 48/24,
+        # y con TODAS las temporadas, no sólo las llaves que se pasen. La T1 sigue con lo de abajo hasta su cierre
+        todas = dict(ET.todas_las_llaves())
+        todas.update(llaves or {})
+        return ET.historico(todas, hasta)[0]
     import competencias as CO
     desde = dt.datetime(2000, 1, 1, tzinfo=dt.timezone.utc)
     return correr(CO.cruces(llaves, desde, hasta or dt.datetime(2100, 1, 1, tzinfo=dt.timezone.utc)))

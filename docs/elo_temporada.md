@@ -340,12 +340,16 @@ caso»*).
 **El día del cambio** (después de la gala, el 1/1 desde las 11 AM ET): lo de siempre de `nueva_temporada()`. Las
 piedras se prenden solas con `ACTUAL = 't2'`.
 
+- **El histórico, para lo que hoy usa `bot/elo.py`**: desde la T2, `elo.calcular()` —los grupos y las simulaciones de
+  las Competencias— y `notas.fuerzas()` —la nota y el MVP— salen de `elo_temporada.historico()`, con todas las
+  temporadas. Con las batallas de la T1: Oasis 1339 con el nuevo, contra 1306 con el de hoy. Y nada lee el número de
+  las divisiones como nivel: las chances salen de ahí, no de las piedras.
+
 **Lo que falta antes de la T2:**
 
-1. Pasar al histórico nuevo lo que hoy usa `bot/elo.py`: los grupos y las simulaciones de las Competencias
-   (`competencias.fuerzas`), la nota (`notas.fuerzas`) y el pronóstico del VS. Hoy siguen con el ELO de la T1.
-2. Ver de dónde saca el ELO el pronóstico del VS de la página y del bot: si es de las divisiones, desde la T2 serían
-   puntos de temporada.
-3. Los textos de `web/src/invitar.jsx` y de la Guía que dicen «batallas 1v1».
-4. El histórico en el perfil.
+1. «La noche de…» (`bot/noche.py`, `elo_noche()`) sigue con la cuenta de la T1: decidir si desde la T2 muestra el
+   histórico o lo que se movió el de temporada.
+2. Los textos de `web/src/invitar.jsx` y de la Guía que dicen «batallas 1v1».
+3. El histórico en el perfil.
+4. Construir la página antes del cambio: el código está, el bundle no.
 5. El 1v1 ranked (×`FORMATO_1V1`) y lo que votaba el público, cuando existan.

@@ -298,6 +298,49 @@ def _batallas(ev, votos, NO, norm):
     return out
 
 
+def historico(llaves, hasta=None):
+    """El ELO HISTÓRICO solo (sin el de temporada), con las llaves de antes de `hasta`: una fecha (`date`: los eventos de
+    antes de ese día) o un instante (`datetime`: como `competencias.cruces()`, el evento cuenta a las 16 UTC de su día).
+    Devuelve `(elos, fuerzas)`: `elos` es lo que da `elo.calcular()` —`{clave: {'elo', 'n', 'h'}}`— y `fuerzas` lo que
+    da `notas.fuerzas()` —`{n: {'nivel', 'pre'}}`: el nivel de cada evento al empezar y el ELO de cada 1v1 justo antes—.
+    Desde la T2 los dos los sacan de acá (`prendido()`)."""
+    import competencias as CO
+    import notas as NO
+    norm = CO.norm
+    orden = sorted(llaves, key=lambda n: (str((llaves[n] or {}).get('dia') or ''), int(n) if str(n).isdigit() else 0))
+    hist, nb, h_ult, fz = {}, collections.Counter(), collections.defaultdict(list), {}
+    for n in orden:
+        ev = llaves[n] or {}
+        hoy = _dia(ev)
+        if hoy is None:
+            continue
+        if isinstance(hasta, dt.datetime):
+            if dt.datetime(hoy.year, hoy.month, hoy.day, 16, tzinfo=dt.timezone.utc) >= hasta:
+                continue
+        elif hasta and hoy >= hasta:
+            continue
+        gente = {norm(p) for nombre, _pu, _x in ev.get('tabla') or [] for p in NO.personas(nombre)} - {''}
+        nivel = sum(hist.get(q, H_INI) for q in gente) / len(gente) if gente else None
+        pre = {}
+        for _mr, g, pierden, _mv in _batallas(ev, None, NO, norm):
+            medio = 0.5 if len(pierden) > 1 else 1.0
+            for p in pierden:
+                eg, ep = hist.get(g, H_INI), hist.get(p, H_INI)
+                if len(pierden) == 1:
+                    pre.setdefault((g, p), []).append((eg, ep))
+                e = esperado(eg, ep)
+                dg = (H_K_NUEVO if nb[g] < H_NUEVO else H_K) * medio * (1 - e)
+                dp = (H_K_NUEVO if nb[p] < H_NUEVO else H_K) * medio * (1 - e)
+                hist[g], hist[p] = eg + dg, ep - dp
+                h_ult[g].append([int(round(dg)), p, str(n)])
+                h_ult[p].append([-int(round(dp)), g, str(n)])
+            for q in [g] + pierden:
+                nb[q] += 1
+        fz[str(n)] = {'nivel': nivel, 'pre': pre}
+    elos = {k: {'elo': int(round(v)), 'n': nb[k], 'h': h_ult[k][::-1][:ULTIMAS]} for k, v in hist.items()}
+    return elos, fz
+
+
 def calcular(llaves, desde=None, hasta=None, arranque=None, cortes=(), fz=None, votos=None):
     """El histórico (con todas las llaves de antes de `hasta`) y el de temporada (con las de `desde` en adelante,
     arrancando de `arranque`: `{clave: puntos}`).
@@ -486,6 +529,25 @@ def _self_check():
     r = calcular(L3, arranque={kz: 150.0}, cortes=[dt.date(2027, 1, 14)], votos={})
     ok(r['cortes'][dt.date(2027, 1, 14)][kz]['elo'] == 150 and r['temp'][kz]['pts'] > 150,
        'los cortes guardan el de temporada de antes de ese día (para las semanas de las divisiones)')
+    # 🪨 desde la T2, `elo.calcular()` y `notas.fuerzas()` salen del histórico nuevo; en la T1, del de siempre
+    import elo as EL
+    import notas as NO
+    hs, fzs = historico(L4)
+    ok(hs == {k: dict(v, h=hs[k]['h']) for k, v in calcular(L4, votos={})['hist'].items()} and fzs['1']['pre'] == {},
+       'el histórico solo da lo mismo que el de la temporada (y una de tres no es un 1v1 para la nota)')
+    # ⚠️ se parchea el MÓDULO que importan elo.py y notas.py: corriendo este archivo, este es `__main__`, otro objeto
+    mod = __import__('elo_temporada')
+    viejo = EL.calcular(L4)
+    antes = mod.prendido
+    try:
+        mod.prendido = lambda temp=None: True
+        nuevo, fz2 = EL.calcular(L4), NO.fuerzas(L)
+    finally:
+        mod.prendido = antes
+    medio = H_INI + H_K_NUEVO / 2
+    ok(viejo == {} and nuevo['a']['elo'] == 1024 and fz2['1']['nivel'] == H_INI
+       and fz2['1']['pre'][('a', 'b')] == [(medio, medio)],
+       'desde la T2, elo.calcular() y notas.fuerzas() salen de acá: la de tres cuenta, y el ELO de antes de cada 1v1')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
