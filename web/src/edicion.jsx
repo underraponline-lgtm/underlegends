@@ -356,7 +356,14 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
   const jornadas = ligasLobby.map((L) => [L, ((ligasFull[L.id] || {}).fechas || []).find((f) => f.d === D.k)]).filter(([, f]) => f && (f.b || []).length);
   const promos = todos.filter((it) => it.tipo === 'promo').slice(0, 6);
   const chats = xs.filter((it) => it.tipo === 'svchat').concat(di === 0 ? (dias[1] || { xs: [] }).xs.filter((it) => it.tipo === 'svchat') : []).slice(0, 6);
-  const tick = xs.slice(0, 12).map((it) => { const c = H.contenido(liga, it, H.pub); return c ? (DE_SERVIDOR.has(it.tipo) ? siglaDe(liga.svDe(it)) : limpio(quien1(it))) + ': ' + (typeof c.txt === 'string' ? c.txt : c.cat) : ''; }).filter(Boolean);
+  // (sin nombre —el resumen de la noche, una liga— va sólo lo que pasó: salía «: RESUMEN DE LA NOCHE»)
+  const tick = xs.slice(0, 12).map((it) => {
+    const c = H.contenido(liga, it, H.pub);
+    if (!c) return '';
+    const q = DE_SERVIDOR.has(it.tipo) ? siglaDe(liga.svDe(it)) : limpio(quien1(it));
+    const que = typeof c.txt === 'string' ? c.txt : c.cat;
+    return q ? q + ': ' + que : que;
+  }).filter(Boolean);
   const hiloH = h && h.id ? delHilo(h, Date.now()) : [];
   // 🧩 las piezas de «Lo que pasó», en orden: lo fuerte, la jornada de liga, lo demás y los grupos. «¿Le quieres ganar?» va
   // una vez por servidor (el titular primero): salía «Avisarme de CYH» en cada nota de CYH
