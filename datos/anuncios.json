@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-20T03:55:27+00:00",
+ "cuando": "2026-11-20T04:24:50+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6047,8 +6047,8 @@
    "cupo_total": null,
    "rango": "",
    "modalidad": "",
-   "horario": "7:00 PM",
-   "fecha": "SÁBADO 21",
+   "horario": "7:00 PM HORA PERU",
+   "fecha": "SÁBADO 21 DE NOVIEMBRE",
    "premios": "",
    "staff": {},
    "autor": "Benji Price",
@@ -7428,6 +7428,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Kuzoh🇲🇽",
+   "quien": "kuzoh_",
+   "discord_id": "1447024559197782138",
+   "msg_id": "1573188973772152978",
+   "cuando": "2026-11-20T04:11:19"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Adriagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1573187907789783111",
+   "cuando": "2026-11-20T04:07:05"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1573187360244367451",
+   "cuando": "2026-11-20T04:04:55"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1573186967397466113",
+   "cuando": "2026-11-20T04:03:21"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1573186719891853347",
+   "cuando": "2026-11-20T04:02:22"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "DarnBless 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1573186703995183186",
+   "cuando": "2026-11-20T04:02:18"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Ojitos canábicos 🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1573186651239354369",
+   "cuando": "2026-11-20T04:02:06"
+  },
   {
    "servidor": "DDS",
    "canal": "📜〕INSCRIPCIONES",
@@ -43364,69 +43427,6 @@
    "discord_id": "820803699928072193",
    "msg_id": "1560839378845180016",
    "cuando": "2026-10-17T02:18:26"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Ariaxer🇦🇷 }",
-   "quien": "ariaxer",
-   "discord_id": "659687894587277322",
-   "msg_id": "1560839357274005646",
-   "cuando": "2026-10-17T02:18:21"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Nxuz",
-   "quien": "elinzano1009",
-   "discord_id": "1089661639508377630",
-   "msg_id": "1560836804637233233",
-   "cuando": "2026-10-17T02:08:13"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "oasis",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1560836023599239291",
-   "cuando": "2026-10-17T02:05:06"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "juasmio",
-   "quien": "bloodypintor",
-   "discord_id": "692881329573986317",
-   "msg_id": "1560835946226909215",
-   "cuando": "2026-10-17T02:04:48"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "vandu",
-   "quien": "wackmc1",
-   "discord_id": "1493013247488430202",
-   "msg_id": "1560835625308004403",
-   "cuando": "2026-10-17T02:03:31"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "partim",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1560835607683534859",
-   "cuando": "2026-10-17T02:03:27"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "axinu",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1560835554193703034",
-   "cuando": "2026-10-17T02:03:15"
   }
  ]
 }
