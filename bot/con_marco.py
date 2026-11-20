@@ -125,7 +125,18 @@ def abrir(pag, k, carta, sv, cc):
     except Exception:                                    # noqa: BLE001
         pass
     pag.wait_for_timeout(600)
-    return pag.evaluate("""() => {
+    # 📐 la carta entera adentro de la caja, o se vuelve a medir: una vez (20/11/2026, el dragón C15) se midió antes de que
+    # la carta terminara de acomodarse y la foto salió cortada a la altura del número. Tres intentos; si no, no va
+    for _ in range(3):
+        c = pag.evaluate(JS_CAJA)
+        if not c or (c['carta'][3] > 50 and c['carta'][1] + c['carta'][3] <= c['height'] + 1):
+            return c
+        pag.wait_for_timeout(800)
+    raise ValueError('la carta no entra entera en la foto')
+
+
+#: la caja a fotografiar, con todo transparente alrededor (ver `abrir()`)
+JS_CAJA = """() => {
         // todo transparente alrededor, y nada de la página vieja encima
         const st = document.createElement('style');
         st.textContent = 'html,body{background:transparent!important} body *{visibility:hidden!important} #inicio-nuevo{visibility:visible!important}';
@@ -146,9 +157,11 @@ def abrir(pag, k, carta, sv, cc):
         }
         const img = ms.querySelector('.ms-img').getBoundingClientRect();
         const M = 60;
-        return { x: Math.max(0, x0 - M), y: Math.max(0, y0 - M), width: x1 - x0 + 2 * M, height: y1 - y0 + 2 * M,
-                 prop: img.height / img.width };
-    }""")
+        const x = Math.max(0, x0 - M), y = Math.max(0, y0 - M);
+        // y dónde está la carta sola dentro de la foto (para `limitar()`)
+        return { x, y, width: x1 - x0 + 2 * M, height: y1 - y0 + 2 * M, prop: img.height / img.width,
+                 carta: [img.left - x, img.top - y, img.width, img.height] };
+    }"""
 
 
 def fotos(trabajos):
@@ -169,19 +182,17 @@ def fotos(trabajos):
                 if not caja:
                     print('   · %s/%s: sin marco puesto' % (k, carta))
                     continue
-                prop = caja.pop('prop')
+                prop, cj = caja.pop('prop'), caja.pop('carta')
                 # 🎞️ si algo se mueve (el efecto de la Tienda, el marco), se filma; si no, la foto de siempre
                 if pag.evaluate(JS_QUIETAS):
                     cine = cine or nav.new_page(viewport={'width': 900, 'height': 1100}, device_scale_factor=ESCALA_ANIM)
-                    c2 = abrir(cine, k, carta, sv, cc)
-                    c2.pop('prop')
                     ruta = os.path.join(SALIDA, '%s_%s.webp' % (k, carta))
-                    n = animada(filmar(cine, c2, cine.evaluate(JS_QUIETAS)), prop, ruta)
+                    n = filmar_carta(cine, k, carta, sv, cc, prop, ruta)
                     print('   ✅ %s/%s · animada, %d cuadros, %d KB' % (k, carta, n, os.path.getsize(ruta) // 1024))
                 else:
                     ruta = os.path.join(SALIDA, '%s_%s.png' % (k, carta))
                     pag.screenshot(path=ruta, clip=caja, omit_background=True)
-                    recortar(ruta, prop)
+                    recortar(ruta, prop, carta=[v * ESCALA for v in cj])
                     print('   ✅ %s/%s' % (k, carta))
                 out[(k, carta)] = ruta
             except Exception as e:                       # noqa: BLE001
@@ -238,7 +249,53 @@ def filmar(pag, caja, periodos):
     return cuadros, int(round(float(L) / n)), extra
 
 
-def animada(filmado, prop, ruta, aire=6):
+#: 📐 CUÁNTO PUEDE SALIRSE UN EFECTO POR CADA COSTADO DE LA CARTA, en la foto de /card (en anchos de carta), y en cuánto se
+#: desvanece donde se corta. Dlx, 20/11/2026, mirando en su celular la niebla (C3): *«este último es pequeñísimo»*. Se salía
+#: un 35 % por lado, la foto quedaba más ancha que alta (1035 × 888) y Discord achicaba todo para que entrara: la carta
+#: salía chiquita. El dragón (C15, 25 % por lado) se veía bien: ése es el tope. En la página el efecto no cambia
+SALE_MAX = 0.25
+DESVANECE = 0.07
+
+
+def limitar(x0, x1, carta):
+    """El recorte de costado a costado (`x0`, `x1`, en píxeles de la foto) sin pasar de `SALE_MAX` anchos de carta por
+    cada lado de la carta (`[x, y, ancho, alto]`). Devuelve `(x0, x1, corta_izq, corta_der)`."""
+    if not carta or carta[2] <= 0:
+        return x0, x1, False, False
+    cx, cw = carta[0], carta[2]
+    izq, der = int(round(cx - SALE_MAX * cw)), int(round(cx + cw + SALE_MAX * cw))
+    return max(x0, izq), min(x1, der), x0 < izq, x1 > der
+
+
+def desvanecer(im, izq, der, ancho):
+    """El alfa de `im` se apaga en `ancho` píxeles en cada costado que se cortó: la niebla no termina en una línea recta."""
+    from PIL import Image, ImageChops
+    ancho = max(1, min(int(ancho), im.width // 2))
+    if not (izq or der):
+        return im
+    fila = [255] * im.width
+    for i in range(ancho):
+        v = int(round(255.0 * (i + 1) / (ancho + 1)))
+        if izq:
+            fila[i] = min(fila[i], v)
+        if der:
+            fila[im.width - 1 - i] = min(fila[im.width - 1 - i], v)
+    m = Image.new('L', (im.width, 1))
+    m.putdata(fila)
+    m = m.resize((im.width, im.height))
+    r, g, b, a = im.split()
+    return Image.merge('RGBA', (r, g, b, ImageChops.multiply(a, m)))
+
+
+def filmar_carta(cine, k, carta, sv, cc, prop, ruta):
+    """La carta animada de `k` en `ruta`, filmada en la página `cine` (a `ESCALA_ANIM`). Devuelve cuántos cuadros quedaron."""
+    c2 = abrir(cine, k, carta, sv, cc)
+    c2.pop('prop')
+    cj = c2.pop('carta')
+    return animada(filmar(cine, c2, cine.evaluate(JS_QUIETAS)), prop, ruta, [v * ESCALA_ANIM for v in cj])
+
+
+def animada(filmado, prop, ruta, carta=None, aire=6):
     """Arma el WebP animado: el mismo recorte para todos los cuadros (lo que se pintó en CUALQUIERA, con `aire`), el aire a
     los costados si queda más alta que la carta (como `recortar()`; los cuadros ya vienen a `ESCALA_ANIM`), el final fundido con el
     principio si hace falta, y más liviana si pasa de `PESO_MAX`. Devuelve cuántos cuadros quedaron."""
@@ -254,11 +311,15 @@ def animada(filmado, prop, ruta, aire=6):
         raise ValueError('la carta no se pintó en ningún cuadro')
     W, H = ims[0].size
     x0, y0, x1, y1 = max(0, caja[0] - aire), max(0, caja[1] - aire), min(W, caja[2] + aire), min(H, caja[3] + aire)
+    x0, x1, ci, cd = limitar(x0, x1, carta)
     w, h = x1 - x0, y1 - y0
+    # y la carta entera en los cuadros: si se pintó menos de lo que mide, algo se midió antes de tiempo y no va
+    if carta and h < carta[3] * 0.95:
+        raise ValueError('la carta salió cortada (%d de %d px de alto)' % (h, carta[3]))
     ancho = int(round(h / prop)) if prop and h / float(w) > prop else w
     out = []
     for im in ims:
-        im = im.crop((x0, y0, x1, y1))
+        im = desvanecer(im.crop((x0, y0, x1, y1)), ci, cd, DESVANECE * carta[2] if carta else 0)
         if ancho != w:
             lienzo = Image.new('RGBA', (ancho, h), (0, 0, 0, 0))
             lienzo.alpha_composite(im, ((ancho - w) // 2, 0))
@@ -303,17 +364,19 @@ def subir_animada(s, ruta, clave, intentos=3):
     return None, 'no subió'
 
 
-def recortar(ruta, prop, aire=6):
+def recortar(ruta, prop, aire=6, carta=None):
     """Recorta la foto a lo que de verdad se pintó (por el alfa) con `aire` px de margen, y si queda más alta que la
     carta sola (`prop` = alto / ancho) le agrega aire transparente a los costados: Discord recorta lo que pasa de cierto
-    alto (Dlx, 26/10/2026: «la parte de abajo en el discord se cortó un poco»)."""
+    alto (Dlx, 26/10/2026: «la parte de abajo en el discord se cortó un poco»). Con `carta` (dónde está la carta sola, en
+    píxeles de la foto), lo que se sale por los costados se corta en `SALE_MAX` y se desvanece (`limitar()`)."""
     from PIL import Image
     im = Image.open(ruta).convert('RGBA')
     caja = im.getchannel('A').point(lambda a: 255 if a > 8 else 0).getbbox()
     if not caja:
         return
     x0, y0, x1, y1 = max(0, caja[0] - aire), max(0, caja[1] - aire), min(im.width, caja[2] + aire), min(im.height, caja[3] + aire)
-    im = im.crop((x0, y0, x1, y1))
+    x0, x1, ci, cd = limitar(x0, x1, carta)
+    im = desvanecer(im.crop((x0, y0, x1, y1)), ci, cd, DESVANECE * carta[2] if carta else 0)
     w = im.width
     if prop and im.height / float(w) > prop:
         w = int(round(im.height / prop))
@@ -405,6 +468,11 @@ def _self_check():
        'el «alternate» cuenta la ida y la vuelta')
     ok(vuelta([1200, 1800]) == (3600, True), 'el mínimo común múltiplo, cuando entra')
     ok(vuelta([]) == (0, True), 'sin animaciones, sin vuelta')
+    # 📐 lo que se sale por los costados: la niebla (35 % por lado) se corta en `SALE_MAX`; el dragón (25 %) queda
+    ok(limitar(0, 1035, [210, 20, 600, 850]) == (60, 960, True, True), 'la niebla se corta en un cuarto de carta por lado')
+    ok(limitar(150, 906, [153, 20, 600, 850]) == (150, 903, False, True) and limitar(160, 760, [160, 0, 600, 850])[2:] == (False, False),
+       'lo que apenas se sale no se toca')
+    ok(limitar(0, 900, None) == (0, 900, False, False), 'sin saber dónde está la carta, no se corta nada')
     ok(ESCALA_ANIM <= ESCALA and FUNDIDO >= 2 and PESO_MAX > 10 ** 6, 'la animada: más chica que la quieta, fundido y tope')
     # y la animada se arma de verdad: dos cuadros distintos → un WebP animado con transparencia
     try:
