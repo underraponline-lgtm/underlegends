@@ -939,6 +939,48 @@ _FECHA_AFICHE = re.compile(r'\b(?:LUNES|MARTES|MI[EÉ]RCOLES|JUEVES|VIERNES|S[A�
                            r'SETIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE)\b|\b\d{1,2}/\d{1,2}\b', re.I)
 
 
+def _pegar_renglones(ls):
+    """Los renglones del afiche con «DE <MES>» y «HORA <PAÍS>» pegados al de arriba. Ver `rotular_afiche()`.
+
+    ⚠️ SÓLO SI EL DE ARRIBA ES DE LO MISMO: «DE NOVIEMBRE» va con un renglón que termina en el día («SÁBADO 21») y
+    «HORA PERU» con uno que trae una hora («7:00 PM»). Suelto, «HORA PERU» debajo del título se pegaría al nombre del
+    evento. «HORAS EN OTROS PAÍSES» no es «HORA <PAÍS>»: no se toca."""
+    import cuando as _C
+    mes = re.compile(r'^\(?\s*DE\s+(?:%s|SETIEMBRE)\b' % '|'.join(_C._MESES))
+    pais = re.compile(r'^\(?\s*HORA\s+(?:DE\s+|EN\s+)?(?:%s)\b' % '|'.join(sorted(_C.PAIS_NOMBRE, key=len, reverse=True)))
+    out = []
+    for l in ls:
+        t = _C._sin_tildes(l)
+        if out and ((mes.match(t) and re.search(r'\b\d{1,2}\s*$', out[-1]))
+                    or (pais.match(t) and _HORA_AFICHE.search(out[-1]))):
+            out[-1] += ' ' + l
+        else:
+            out.append(l)
+    return out
+
+
+#: 🔑 EL AFICHE YA LEÍDO SIGUE MIENTRAS SU EVENTO NO PASÓ (TORNEO CLASIFICATORIO, DDS, 18/11/2026, anunciado para el
+#: sábado 21). `pide_ocr()` corta a las 72 horas para no pagarle a la IA por afiches viejos, y con eso el anuncio se
+#: caía del calendario tres días después de publicarse, aunque el evento fuera recién al cuarto. Lo que ya está en
+#: `datos/ocr_anuncios.json` no cuesta nada: se vuelve a leer de ahí hasta estas horas DESPUÉS de que arrancó, para que
+#: la llave que se publica durante el evento todavía encuentre su anuncio (`llaves_a_entrada.anuncio_de_llave()` mira
+#: hasta 5 horas). Sin momento —no se sabe cuándo es— no se queda: es lo de siempre.
+AFICHE_HORAS_DESPUES = 12
+
+
+def afiche_guardado_vigente(m, mem, a, ahora=None):
+    """¿El afiche de `m`, ya leído (`mem`) y pasado de `OCR_HORAS`, sigue? `a` es el anuncio que dio su texto."""
+    import datetime as dt
+    import cuando as _C
+    if not a or str(m.get('id') or '') not in (mem or {}).get('msgs', {}):
+        return False
+    t = _C._leer_iso(_C.momento(a))
+    if t is None:
+        return False
+    ahora = (ahora or dt.datetime.now(dt.timezone.utc)).replace(tzinfo=None)
+    return ahora <= t + dt.timedelta(hours=AFICHE_HORAS_DESPUES)
+
+
 def rotular_afiche(texto):
     """El texto de un afiche con los rótulos de una plantilla, para `parsear()`.
 
@@ -953,13 +995,20 @@ def rotular_afiche(texto):
 
     🔴 UN HORARIO DE CLASES NO ES UN AFICHE (LKR, 15/11/2026: «Nº HORA LUNES MARTES…» y «2D0 AÑO SECCIÓN "B"», subido
     a fms-anuncios, entró al calendario como evento). Tres o más franjas «7:00 - 8:20», o un renglón con cuatro días de
-    la semana: es una tabla, no un evento. Se devuelve vacío y `parsear()` no ve nada."""
+    la semana: es una tabla, no un evento. Se devuelve vacío y `parsear()` no ve nada.
+
+    🔴 EL AFICHE PARTE LA FECHA Y LA HORA EN RENGLONES (TORNEO CLASIFICATORIO, DDS, 18/11/2026): «SÁBADO 21» / «DE
+    NOVIEMBRE» / «7:00 PM» / «HORA PERU». Leído renglón por renglón, la fecha quedaba sin mes y la hora sin país, así
+    que `cuando.momento()` no sabía cuándo era y el evento del sábado salió en «Lo que pasó» el mismo día en que se
+    anunció. «DE <MES>» se pega al renglón de arriba cuando ése termina en un número (el día), y «HORA <PAÍS>» cuando
+    el de arriba trae una hora: ver `_pegar_renglones()`."""
     ls = [l.strip() for l in str(texto or '').splitlines() if l.strip()]
     franjas = sum(bool(re.search(r'\b\d{1,2}[:.]\d{2}\s*[-–a]\s*\d{1,2}[:.]\d{2}\b', l)) for l in ls)
     if franjas >= 3 or any(len(re.findall(r'\b(?:%s)\b' % '|'.join(('LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES',
                                                                     'SABADO', 'DOMINGO')), norm_linea(l))) >= 4
                            for l in ls):
         return ''
+    ls = _pegar_renglones(ls)
     titulo, resto, visto = [], [], False
     for l in ls:
         if campo_de(l):
@@ -1322,13 +1371,19 @@ def leer(s, por_canal=None):
             if tipo == 'eventos':
                 a = parsear(m, cod, nombre, gid)
                 # 🖼️ UN AFICHE: el mismo lector, sobre su texto (ver `texto_de_imagen()`)
-                if not a and pide_ocr(m):
+                # ⚠️ el ya leído entra también pasadas las 72 horas, sin pedirle nada a la IA: ver
+                # `afiche_guardado_vigente()`
+                nuevo = not a and pide_ocr(m)
+                viejo = not a and not nuevo and imagen_de(m) and str(m.get('id') or '') in leer.ocr['msgs']
+                if nuevo or viejo:
                     t_img = texto_de_imagen(m, leer.ocr, cuenta_ocr)
                     if t_img:
                         # ⚠️ EL AFICHE PRIMERO: su título es el nombre del evento; lo que se
                         # escribe al lado («vengan a inscribirse…») es la invitación
                         a = parsear(dict(m, content=rotular_afiche(t_img) + '\n' + (m.get('content') or '')),
                                     cod, nombre, gid)
+                        if a and viejo and not afiche_guardado_vigente(m, leer.ocr, a):
+                            a = None
                         if a:
                             a['de_imagen'] = True
                 if a:
@@ -1834,6 +1889,34 @@ def _self_check():
                  'ACAD', 'torneos') is None
     mal += not ok
     print('   %s un afiche sin hora ni fecha no es un anuncio' % ('✅' if ok else '🔴'))
+    # 🔴 EL TORNEO CLASIFICATORIO DE DDS (18/11/2026), con el texto que devolvió la IA: la fecha y la hora partidas
+    _dds = ('TORNEO CLASIFICATORIO\nPOR UN CUPO A LA \nDISCORD LEAGUE STYLE 2 WORLD\n\nSÁBADO 21 \nDE NOVIEMBRE\n'
+            '7:00 PM\nHORA PERU\n\nHORAS EN OTROS PAÍSES\n\nColombia: 7:00 PM\nMéxico (CDMX): 6:00 PM\n'
+            'Estados Unidos (Los Angeles): 1:00 AM (22)\n\n¡DEMUESTRA TU NIVEL \nY ASEGURA TU CUPO!')
+    af_dds = dict(afiche, id='1572422869164498946', timestamp='2026-11-18T01:27:06+00:00')
+    a2 = parsear(dict(af_dds, content='@everyone\n' + rotular_afiche(_dds)), 'DDS', 'anuncios')
+    ok = bool(a2) and a2['nombre'] == 'TORNEO CLASIFICATORIO' and a2['fecha'] == 'SÁBADO 21 DE NOVIEMBRE' \
+        and _C.momento(a2) == '2026-11-22T00:00:00'
+    # ⚠️ y «HORA PERU» suelto debajo del título no se pega al nombre: el de arriba no trae hora
+    a3 = parsear(dict(afiche, content='@everyone\n' + rotular_afiche('LA COMPE\nHORA PERU\nSÁBADO 21\n7 PM')),
+                 'DDS', 'anuncios')
+    ok = ok and bool(a3) and a3['nombre'] == 'LA COMPE'
+    mal += not ok
+    print('   %s un afiche con «DE NOVIEMBRE» y «HORA PERU» en su renglón: el sábado 21/11 a las 7 PM de Perú%s'
+          % ('✅' if ok else '🔴', '' if ok else '  %s · %s' % (a2 and {k: a2[k] for k in ('nombre', 'horario', 'fecha')},
+                                                                 a3 and a3['nombre'])))
+    mem = {'msgs': {'1572422869164498946': {'texto': _dds, 't': '2026-11-18T01:32:21'}}}
+    d20 = _dt.datetime(2026, 11, 21, 3, 0, tzinfo=_dt.timezone.utc)
+    ok = (not pide_ocr(af_dds, d20)
+          and afiche_guardado_vigente(af_dds, mem, a2, d20)
+          and afiche_guardado_vigente(af_dds, mem, a2, d20 + _dt.timedelta(hours=32))
+          and not afiche_guardado_vigente(af_dds, mem, a2, d20 + _dt.timedelta(hours=34))
+          and not afiche_guardado_vigente(af_dds, {'msgs': {}}, a2, d20)
+          and not afiche_guardado_vigente(afiche, {'msgs': {afiche['id']: {}}},
+                                          parsear(dict(afiche, content='@everyone\n# X\nCUPOS: 8'), 'ACAD', 'torneos'), d20))
+    mal += not ok
+    print('   %s un afiche ya leído sigue pasadas las 72 horas mientras su evento no pasó (hasta %d horas después);'
+          ' sin leer o sin hora, no' % ('✅' if ok else '🔴', AFICHE_HORAS_DESPUES))
 
     # 📢 LOS ANUNCIOS OFICIALES: un anuncio de verdad sí; un «@everyone» solo, lo del bot de la Liga y lo vacío, no
     real = {'id': '1560000000000000001', 'timestamp': '2026-11-12T18:00:00+00:00', 'author': {'id': '9'},
