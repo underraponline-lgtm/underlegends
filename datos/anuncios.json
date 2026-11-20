@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-20T21:25:40+00:00",
+ "cuando": "2026-11-20T21:55:13+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7157,6 +7157,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "PODIO DE LA RED BULL MEXCARIBE QUEDANDO CAMPEÓN",
+   "tx": "",
+   "cuando": "2026-11-20T21:38:35",
+   "msg_id": "1573452526634930206",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573452526634930206"
+  },
+  {
    "servidor": "ACAD",
    "canal": "📢┇anuncios・",
    "tit": "GG , you just advanced to level 1!",
@@ -7272,15 +7281,6 @@
    "cuando": "2026-11-18T19:47:46",
    "msg_id": "1572699860694474836",
    "link": "https://discord.com/channels/1408218254803075203/1408218255537209390/1572699860694474836"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "fms-anuncios",
-   "tit": "UNA NUEVA LIGA COMIENZA LLEGA FMS KRONO",
-   "tx": "",
-   "cuando": "2026-11-18T14:52:21",
-   "msg_id": "1572625516916113541",
-   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1572625516916113541"
   },
   {
    "servidor": "DDS",
