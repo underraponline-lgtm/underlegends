@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.02",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T19:48:00-05:00",
+        "titulo": "Arreglado: la vista previa de Competencias, Invita y gana e Inventario",
+        "items": [
+            "**La 6.98 les dio su miniatura**, pero al compartirlas todavía salía el cartel genérico de antes. Ahora sale la suya."
+        ]
+    },
+    {
         "version": "7.01",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T19:39:00-05:00",

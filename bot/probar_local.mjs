@@ -2402,6 +2402,19 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
   };
   const DISCORD = 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)';
   try {
+    // 🧭 CADA PÁGINA CON VISTA PREVIA TIENE QUE PASAR POR EL WORKER (19/11/2026): `_routes.json` dice qué rutas llegan a
+    // `_worker.js`, y lo demás lo sirve Pages directo. Competencias, Invita y gana e Inventario entraron a `PAGINAS` sin
+    // entrar acá, y en vivo daban `og.png` mientras esta prueba (que llama al Worker sin pasar por Pages) daba verde
+    {
+      const { readFileSync } = await import('node:fs');
+      const rutas = JSON.parse(readFileSync(new URL('./paginas/_routes.json', import.meta.url), 'utf8')).include || [];
+      const src = readFileSync(new URL('./paginas/_worker.js', import.meta.url), 'utf8');
+      const bloque = (src.match(/const PAGINAS = \{([\s\S]*?)\r?\n\};/) || [])[1] || '';
+      const pags = [...bloque.matchAll(/^ {2}([a-z]+): \[/gm)].map((m) => m[1]);
+      const faltan = pags.filter((k) => !rutas.includes('/freestyle-rap/' + k));
+      ok('las ' + pags.length + ' páginas de PAGINAS están en _routes.json (si no, el Worker no las ve y la vista previa es la genérica)',
+        pags.length >= 14 && !faltan.length, 'faltan: ' + faltan.join(', '));
+    }
     let r = await ver('/freestyle-rap/r/oasis', DISCORD);
     ok('Discord pega el link de Oasis: su nombre con bandera, sus números y su Temporada de imagen (con su versión)',
       r.j && r.j.title === 'Oasis 🇨🇱 · Liga Global de Freestyle' && /#1 de la T1 · OVR 95 · Rango SS · 23 eventos\./.test(r.j['meta[property="og:description"]'])
