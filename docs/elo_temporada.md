@@ -1,6 +1,6 @@
 # El ELO por temporada y el histórico — el diseño (para la T2)
 
-> **Estado (20/11/2026, 3 AM ET): decidido en lo grande, por construir.** Los números son un borrador simulado sobre la
+> **Estado (20/11/2026, 4 AM ET): decidido en lo grande, por construir.** Los números son un borrador simulado sobre la
 > T1 y esperan el OK de Dlx. Todo lo que se decidió está acá; lo que falta decidir, al final. Las simulaciones son
 > scripts de una sesión (no están en el repo): cada número dice de dónde sale.
 
@@ -111,7 +111,7 @@ rival lo pone la llave, no la piedra** —con el área anterior, la mitad de las
 piedras o más abajo—. Lo que lo resuelve de verdad es el 1v1 ranked (empareja por piedra) y los eventos de piedras de
 DRA.
 
-**Propuesta, espera el OK: encima de los subniveles, el área se abre sola si te quedas sin rivales.** Si pasa **una
+✅ **Encima de los subniveles, el área se abre sola si te quedas sin rivales** (Dlx, 20/11/2026: *«Sí, las dos»*). Si pasa **una
 semana** sin que te toque nadie de tu piedra, cuenta también toda la de al lado (arriba y abajo); **dos semanas**, dos
 piedras. Se cierra apenas te
 toca alguien de tu piedra, y al cambiar de piedra el reloj arranca de nuevo. Es lo que hace cualquier emparejamiento
@@ -219,15 +219,16 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **Si el área se abre cuando te quedas sin rivales**: la propuesta es la semana, encima de los subniveles (§3).
+1. **El tamaño de las piedras**: con 100 por piedra la cima queda casi vacía (en la T1, Diamante 1 · Rubí 9). Ya se
+   puede medir, porque el área y la chance están decididas.
 2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
    sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
-3. **El tamaño de las piedras**, que ahora depende del 1.
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
-lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante); las semis no llevan regla
-propia; la chance de cada batalla sale del ELO de temporada, como Brawl (*«Sí, la A»*). El resto de **cuánto** se gana
-o se pierde es otro tema (Dlx: *«cuánto, pues ahí es otro caso»*).
+lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante) y, encima, la semana para el que se queda
+sin rivales (*«Sí, las dos»*); las semis no llevan regla propia; la chance de cada batalla sale del ELO de temporada,
+como Brawl (*«Sí, la A»*). El resto de **cuánto** se gana o se pierde es otro tema (Dlx: *«cuánto, pues ahí es otro
+caso»*).
 
 ## 7 · Qué se toca al construirlo
 
