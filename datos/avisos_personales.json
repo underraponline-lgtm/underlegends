@@ -181,7 +181,10 @@
 "rg": "E"
 },
 "1096531415916621936": {
-"cs": [],
+"cs": [
+"servidor",
+"temporada"
+],
 "pos": 132,
 "rg": ""
 },
@@ -197,7 +200,8 @@
 },
 "1105224678026518580": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 218,
 "rg": ""
@@ -247,21 +251,24 @@
 },
 "1131762620345634927": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 203,
 "rg": ""
 },
 "1138939531903643718": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 170,
 "rg": ""
 },
 "1147639724132012114": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 174,
 "rg": ""
@@ -297,7 +304,8 @@
 },
 "1173707334216859860": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 226,
 "rg": ""
@@ -469,7 +477,8 @@
 },
 "1240446191506817144": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 173,
 "rg": ""
@@ -563,7 +572,8 @@
 },
 "1276644368693858356": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 156,
 "rg": ""
@@ -642,7 +652,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 42,
+"pos": 41,
 "rg": "C"
 },
 "1316497034131275817": {
@@ -659,7 +669,8 @@
 },
 "1318011300994875516": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 219,
 "rg": ""
@@ -796,7 +807,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 41,
+"pos": 45,
 "rg": "D"
 },
 "1355612971144839439": {
@@ -841,7 +852,8 @@
 },
 "1360027435126493426": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 255,
 "rg": ""
@@ -919,7 +931,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 43,
+"pos": 42,
 "rg": "E"
 },
 "1385749808945561734": {
@@ -982,7 +994,8 @@
 "1401047963853389965": {
 "cs": [
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 147,
 "rg": ""
@@ -1034,7 +1047,8 @@
 },
 "1418621904713027636": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 235,
 "rg": ""
@@ -1174,7 +1188,8 @@
 },
 "1451400270264274944": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 239,
 "rg": ""
@@ -1317,7 +1332,8 @@
 },
 "1484973996184440953": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 216,
 "rg": ""
@@ -1342,7 +1358,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 45,
+"pos": 44,
 "rg": "D"
 },
 "1488340333355077642": {
@@ -1365,7 +1381,8 @@
 },
 "1490902626970239088": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 187,
 "rg": ""
@@ -1484,7 +1501,8 @@
 },
 "1505432009491615864": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 208,
 "rg": ""
@@ -1550,7 +1568,8 @@
 },
 "1513243793116102867": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 217,
 "rg": ""
@@ -1641,7 +1660,8 @@
 },
 "1523008096660885505": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 202,
 "rg": ""
@@ -1780,7 +1800,8 @@
 },
 "308675581308829698": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 243,
 "rg": ""
@@ -1799,7 +1820,8 @@
 },
 "328677463624515605": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 223,
 "rg": ""
@@ -1823,14 +1845,16 @@
 },
 "360165225955065868": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 193,
 "rg": ""
 },
 "380869870264254465": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 229,
 "rg": ""
@@ -1886,7 +1910,8 @@
 },
 "434469958295093260": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 228,
 "rg": ""
@@ -2006,7 +2031,8 @@
 },
 "542215330970468354": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 150,
 "rg": ""
@@ -2059,7 +2085,8 @@
 },
 "569551932247506953": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 154,
 "rg": ""
@@ -2292,7 +2319,8 @@
 },
 "680268290962227243": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 241,
 "rg": ""
@@ -2326,7 +2354,8 @@
 },
 "691801856099221594": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 180,
 "rg": ""
@@ -2367,14 +2396,16 @@
 },
 "696598268259336222": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 238,
 "rg": ""
 },
 "698611862031433779": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 102,
 "rg": ""
@@ -2470,7 +2501,8 @@
 },
 "729064766307434587": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 227,
 "rg": ""
@@ -2573,7 +2605,8 @@
 },
 "747256544055263364": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 159,
 "rg": ""
@@ -2616,7 +2649,8 @@
 },
 "752763980077858829": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 233,
 "rg": ""
@@ -2657,7 +2691,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 44,
+"pos": 43,
 "rg": "C"
 },
 "768561204707983361": {
@@ -2825,14 +2859,16 @@
 },
 "820803699928072193": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 242,
 "rg": ""
 },
 "825179002091995136": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 212,
 "rg": ""
@@ -2944,7 +2980,8 @@
 },
 "857797095804895242": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 207,
 "rg": ""
@@ -2966,7 +3003,8 @@
 },
 "868896089233838120": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 258,
 "rg": ""
@@ -3008,7 +3046,8 @@
 },
 "883943680304635954": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 188,
 "rg": ""
@@ -3113,7 +3152,8 @@
 },
 "928059886762356767": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 172,
 "rg": ""
@@ -3128,14 +3168,16 @@
 },
 "931693691532378162": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 249,
 "rg": ""
 },
 "937885067601141790": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 213,
 "rg": ""
