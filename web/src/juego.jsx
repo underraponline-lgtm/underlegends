@@ -109,7 +109,7 @@ const ESCALERA = [
   ['Desbloqueado', 'Lo dejaste, o recién lo eliges'],
   ['Jugaste uno', 'Un evento de ese estilo'],
   ['Cuarto de arriba', 'En un evento de ese estilo'],
-  ['Otra vez arriba', 'El tope. Vuelve a 0 cada temporada'],
+  ['Otra vez arriba', 'El tope. Se queda de una temporada a la otra'],
 ];
 
 export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
@@ -276,7 +276,7 @@ export default function EstiloJuego({ liga, dc, k, Cuadro, Titulo }) {
       {/* 🪜 cómo se sube, con el estilo que estás mirando, y el próximo evento de estilo */}
       <div className="jg-pie">
         <section>
-          <Titulo extra={<small className="ves-de">vuelven a 0 cada temporada</small>}>Cómo se sube</Titulo>
+          <Titulo extra={<small className="ves-de">se quedan de una temporada a la otra</small>}>Cómo se sube</Titulo>
           <ol className="jg-esc">
             {ESCALERA.map(([t, s], n) => (
               <li key={n} className={tiene(e.k) ? (n === nv ? 'on' : n < nv ? 'ya' : '') : ''}>

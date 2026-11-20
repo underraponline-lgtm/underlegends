@@ -19,7 +19,11 @@ Dlx marca eventos de DRA con un estilo en el Dashboard; `bot/eventos_estilo.py` 
     dos de nivel más alto, y en un empate el más reciente; los demás quedan desbloqueados;
   · el que elegiste **arranca de 0 desde que lo elegiste**: lo que jugaste con ese estilo antes de elegirlo no cuenta
     para él (Dlx: «si eliges una nueva empieza desde 0»). El día en que el ciclo lo vio elegido va en `desde`;
-  · los niveles **vuelven a 0 cada temporada**: salen de los resultados de la temporada que corre.
+  · 🔁 **SE ACUMULA TODO DE UNA TEMPORADA A LA OTRA** (Dlx, 20/11/2026: *«se quedan todos… que la gente acumule los
+    estilos y que los mejoren es la meta. Y que desbloquee cada uno también»*; al nivel, *«Sí, el nivel se queda»*; y
+    *«que se vaya acumulando todo»*). Hasta ese día los niveles volvían a 0 cada temporada. Ahora, la primera vuelta de una
+    temporada nueva guarda lo de la que cerró en `antes` (`cerrar_temporada()`) y los niveles de la temporada arrancan de
+    ahí (`calcular(base=…)`): un estilo en 3 sigue en 3, y el 2.º y 3.º lugar salen de todo lo ganado.
 
 DÓNDE QUEDA: `datos/estilos.json` (`{clave: [[estilo, nivel], …]}` en el orden de los lugares, lo que dibuja la carta) y
 `datos/estilos_niveles.json` (`desde`, `niveles` por estilo y los `ganados` del 2.º y 3.º lugar).
@@ -46,7 +50,8 @@ LEEME = ('🎭 Los estilos de juego de la Competitiva, por clave: [[estilo, nive
          '02_Competitivo/v2/estilos_juego.py')
 LEEME_N = ('🎭 Lo que no se ve en la carta: desde cuándo tiene cada uno su estilo elegido (`desde`, el día en que el ciclo lo '
            'vio), el nivel de cada estilo que jugó (`niveles`) y los que van en su 2.º y 3.º lugar (`ganados`). Lo escribe '
-           'bot/juegos.py con los eventos de estilo y los resultados de la temporada')
+           'bot/juegos.py con los eventos de estilo y los resultados de la temporada, arrancando de lo acumulado en las '
+           'temporadas que cerraron (`antes`: se acumula todo, Dlx 20/11/2026)')
 
 
 def _j(ruta, defecto):
@@ -87,8 +92,24 @@ def actualizar_desde(desde, elegidos, hoy):
     return out
 
 
-def calcular(eventos, filas, dias, elegidos, desde, clave_de, LLEGO, umbral, norm):
-    """Los niveles de la temporada y el 2.º y 3.º lugar.
+def cerrar_temporada(viejo, actual):
+    """🔁 `antes`: lo acumulado de las temporadas que cerraron, `{clave: {estilo: nivel}}`. Si lo guardado es de otra
+    temporada (la primera vuelta de una nueva), sus niveles —que ya traían lo de antes— pasan a `antes`; si no, queda el
+    `antes` que había. Pura, y se puede repetir: si la vuelta se corta antes de escribir, la siguiente cierra igual."""
+    antes = {k: dict(v) for k, v in ((viejo or {}).get('antes') or {}).items() if isinstance(v, dict)}
+    if (viejo or {}).get('temporada') and viejo.get('temporada') != actual:
+        for k, xs in (viejo.get('niveles') or {}).items():
+            if not isinstance(xs, dict):
+                continue
+            for est, n in xs.items():
+                if n in (1, 2, 3):
+                    antes.setdefault(k, {})[est] = max(antes.get(k, {}).get(est, 0), n)
+    return {k: dict(sorted(v.items())) for k, v in sorted(antes.items()) if v}
+
+
+def calcular(eventos, filas, dias, elegidos, desde, clave_de, LLEGO, umbral, norm, base=None):
+    """Los niveles de la temporada y el 2.º y 3.º lugar. `base`: lo acumulado de antes (`cerrar_temporada()`), de donde
+    arrancan los niveles: se acumula todo.
 
     `eventos` `{número: estilo}` · `filas` las de `t1_resultados` (`[n, fecha, sv, escala, rapero, país, posición, …]`)
     · `dias` `{número: 'AAAA-MM-DD'}` · `elegidos` `{clave: estilo}` · `desde` `{clave: [estilo, día]}`.
@@ -99,6 +120,11 @@ def calcular(eventos, filas, dias, elegidos, desde, clave_de, LLEGO, umbral, nor
         if len(f) > 6 and str(f[0]) in eventos:
             por_ev.setdefault(str(f[0]), []).append((f[4], norm(f[6])))
     niv, ult = {}, {}
+    # 🔁 lo de las temporadas que cerraron, primero: un estilo en 3 sigue en 3 (y, en un empate, va detrás de lo nuevo)
+    for k, xs in (base or {}).items():
+        for est, v in (xs or {}).items():
+            if v in (1, 2, 3):
+                niv[(k, est)], ult[(k, est)] = v, 0
     for n in sorted(por_ev, key=int):
         est, gente, dia = eventos[n], por_ev[n], dias.get(n, '')
         tam = max((LLEGO.get(p, 0) for _, p in gente), default=0)
@@ -178,15 +204,18 @@ def correr(aplicar):
     elegidos = {k: (x or {}).get('juego') for k, x in el.items()
                 if isinstance(x, dict) and (x or {}).get('juego') in EJ.CATALOGO and isinstance(k, str) and k}
     viejo = _j(NIVELES, {})
+    antes = cerrar_temporada(viejo, ACTUAL)
+    if viejo.get('temporada') and viejo.get('temporada') != ACTUAL:
+        print('      🎭 temporada nueva (%s → %s): lo de %d personas pasa entero, con sus niveles' % (viejo.get('temporada'), ACTUAL, len(antes)))
     desde = actualizar_desde(viejo.get('desde') or {}, elegidos, _hoy())
     eventos = (_j(EVENTOS, {}).get('eventos') or {})
     filas = (_j(os.path.join(BASE, 'datos', '%s_resultados.json' % ACTUAL), {}).get('filas') or [])
     llaves = _j(os.path.join(BASE, 'datos', 'llaves_%s.json' % ACTUAL), {})
     dias = {str(n): (r or {}).get('dia', '') for n, r in llaves.items() if isinstance(r, dict)}
-    niveles, ganados = calcular(eventos, filas, dias, elegidos, desde, _CL, RK.LLEGO, RK._umbral, RK._norm)
+    niveles, ganados = calcular(eventos, filas, dias, elegidos, desde, _CL, RK.LLEGO, RK._umbral, RK._norm, base=antes)
     gente = armar(elegidos, niveles, ganados, EJ.CATALOGO)
-    antes = {k: v for k, v in EJ.todos().items() if not k.startswith('_')}
-    cambian = sorted(k for k in set(antes) | set(gente) if antes.get(k) != gente.get(k))
+    en_carta = {k: v for k, v in EJ.todos().items() if not k.startswith('_')}
+    cambian = sorted(k for k in set(en_carta) | set(gente) if en_carta.get(k) != gente.get(k))
     print('      🎭 %d con estilo de juego · %d eventos de estilo%s' % (
         len(gente), len(eventos), (' · cambian: ' + ', '.join(cambian[:12]) + ('…' if len(cambian) > 12 else ''))
         if cambian else ' · nada cambió'))
@@ -196,7 +225,7 @@ def correr(aplicar):
     if traer({'lugares': gente, 'niveles': niveles}) is None:
         print('      🎭 los lugares no llegaron al objeto: el Inventario muestra los de la vuelta anterior')
     nuevo_n = {'_leeme': LEEME_N, 'temporada': ACTUAL, 'desde': dict(sorted(desde.items())), 'niveles': niveles,
-               'ganados': ganados}
+               'ganados': ganados, 'antes': antes}
     if {k: v for k, v in viejo.items() if k != '_leeme'} != {k: v for k, v in nuevo_n.items() if k != '_leeme'}:
         _escribir(NIVELES, nuevo_n)
     if cambian or not os.path.exists(ARCH):
@@ -257,6 +286,19 @@ def _self_check():
                         {'ana': 'punchline', 'beto': 'flow'}, '2026-11-17')
        == {'ana': ['punchline', '2026-10-01'], 'beto': ['flow', '2026-11-17']},
        'desde: si el estilo sigue, la fecha de antes; si cambió, hoy; si ya no tiene, afuera')
+    # 🔁 se acumula todo (Dlx, 20/11/2026): lo de la temporada que cerró es la base de la nueva
+    base = cerrar_temporada({'temporada': 't1', 'niveles': {'ana': {'flow': 2, 'punchline': 3}, 'dani': {'frio': 1}},
+                             'antes': {'dani': {'frio': 2, 'burla': 1}}}, 't2')
+    ok(base == {'ana': {'flow': 2, 'punchline': 3}, 'dani': {'burla': 1, 'frio': 2}}
+       and cerrar_temporada({'temporada': 't2', 'niveles': {'ana': {'flow': 3}}, 'antes': base}, 't2') == base
+       and cerrar_temporada({}, 't1') == {},
+       'al cambiar de temporada lo ganado pasa entero (el nivel más alto); en la misma temporada, `antes` no se toca')
+    n2, g2 = calcular({'20': 'flow'}, [[20, '05/01', 'DRA', '8-15', 'Ana', 'ar', 'Campeón'], [20, '05/01', 'DRA', '8-15', 'Eli', 'ar', 'Cuartos']],
+                      {'20': '2027-01-05'}, {'ana': 'punchline'}, {'ana': ['punchline', '2026-10-01']}, clave, LLEGO, umbral, norm,
+                      base={'ana': {'flow': 2, 'punchline': 3}, 'dani': {'burla': 1, 'frio': 2}})
+    ok(n2['ana'] == {'flow': 3, 'punchline': 3} and n2['dani'] == {'burla': 1, 'frio': 2} and g2['dani'] == ['frio', 'burla']
+       and n2['eli'] == {'flow': 1} and armar({'ana': 'punchline'}, n2, g2, EJ.CATALOGO)['ana'] == [['punchline', 3], ['flow', 3]],
+       'en la T2 se arranca de lo de antes: Ana sube Flow de 2 a 3 y su Punchline sigue en 3; Dani conserva sus dos sin jugar')
     EJ._cache = g
     ok(EJ.de('ana') == [('punchline', 3), ('flow', 2)] and EJ.de('dani') == [('punchline', 2), ('flow', 1)],
        'y lo que escribe, la carta lo entiende (`estilos_juego.de()`)')
