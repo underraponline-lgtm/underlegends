@@ -883,7 +883,9 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       {prevElo() ? <p className="es-prueba-h" role="status">🧪 Prueba del ELO nuevo
         {pruebaE && pruebaE.desde ? ' · desde el ' + pruebaE.desde.slice(8, 10) + '/' + pruebaE.desde.slice(5, 7) : ''}
         {' · todos en 0 · sólo lo ves tú, no paga nada'}
-        {pruebaE && !pruebaE.d ? ' · todavía nadie jugó: abajo ves el ELO de siempre' : ''}
+        {/* ⚠️ «no llegó» y «nadie jugó» son cosas distintas: si el ciclo no la arma, no puede parecer una noche sin eventos */}
+        {pruebaE && !pruebaE.desde ? ' · todavía no llegó del ciclo: abajo ves el ELO de siempre' : ''}
+        {pruebaE && pruebaE.desde && !pruebaE.d ? ' · todavía nadie jugó: abajo ves el ELO de siempre' : ''}
         {' · '}<a href="?noprev=elo">quitar</a></p> : null}
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
