@@ -1,0 +1,4 @@
+{
+ "_leeme": "🗞️ Las imágenes de la semana para las redes de cada socio (`bot/redes.py`): qué semana se dibujó (`s`, el lunes), qué piezas (`p`), el mensaje en su canal (`m`) y el último día que se miró si eligió canal (`mira`). Las imágenes viven en R2, `redes/<sv>/<pieza>.jpg`",
+ "sv": {}
+}

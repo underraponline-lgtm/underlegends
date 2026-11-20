@@ -85,8 +85,11 @@ def reglas():
               competitivo, duelos) más `carta` (la de Servidor: el Tier 3 no la tiene), `mes_awards` (sólo nomina en 1 y 2,
               `mes_awards.nominar_sv`) y `unirse` («Unirme a los Tier 1», que pregunta por el tier en el Worker)
     Las claves de tier van como texto ('1', '2', '3'): así llegan de un JSON."""
-    da = {3: sorted(PRESET[3]), 2: sorted((PRESET[2] - PRESET[3]) | {'carta', 'mes_awards'}),
-          1: sorted(PRESET[1] - PRESET[2]) + ['unirse']}
+    # 🗞️ y lo del plan de los tiers (20/11/2026): el Tier 2 da estilos, recibe 2 imágenes por semana y vota en el consejo;
+    # el Tier 1 recibe 5, regala Pases, saluda a quien llega, tiene su Tarea del Pase, lo nuevo primero y, desde el mismo
+    # 20/11 (Dlx: «otro beneficio de TIER 1 es la posibilidad de nosotros hacer camisetas y prendas de los tier 1»), prendas
+    da = {3: sorted(PRESET[3]), 2: sorted((PRESET[2] - PRESET[3]) | {'carta', 'mes_awards'}) + ['estilos', 'redes2', 'consejo'],
+          1: sorted(PRESET[1] - PRESET[2]) + ['unirse', 'redes5', 'pases_t1', 'tarea_t1', 'bienvenida', 'lo_nuevo', 'prendas']}
     sube = {2: '%d eventos en 8 semanas, con %d raperos por evento de promedio' % (SUBE[2]['eventos'], SUBE[2]['por_evento']),
             1: '%d eventos en 8 semanas, %d raperos por evento de promedio y %d puntos; después, un mes de prueba' % (
                 SUBE[1]['eventos'], SUBE[1]['por_evento'], SUBE[1]['puntos'])}
@@ -1499,8 +1502,8 @@ def _self_check():
        and como_subir(3, 0, {'anuncios': 2})['rec'] is None and como_subir(1, 90, {}) is None,
        'los miembros van en «rec», aparte de lo que se pide, y no frenan «N de M»', str(cs))
     rg = reglas()
-    ok(rg['rec'] == {'1': 1000, '2': 500, '3': 100} and rg['da']['1'] == ['unirse']
-       and {'competitivo', 'carta', 'mes_awards'} == set(rg['da']['2']) and 'competitivo' not in rg['da']['3']
+    ok(rg['rec'] == {'1': 1000, '2': 500, '3': 100} and rg['da']['1'][0] == 'unirse' and {'redes5', 'prendas', 'pases_t1'} <= set(rg['da']['1'])
+       and {'competitivo', 'carta', 'mes_awards', 'estilos', 'redes2', 'consejo'} == set(rg['da']['2']) and 'competitivo' not in rg['da']['3']
        and 'duelos' in rg['da']['3']
        and '8 semanas' in rg['sube']['2'] and str(SUBE[1]['puntos']) in rg['sube']['1'] and 'prueba' in rg['sube']['1']
        and len(json.dumps(rg, ensure_ascii=False, separators=(',', ':'))) < 600,

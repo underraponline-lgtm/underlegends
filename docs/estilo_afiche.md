@@ -99,10 +99,18 @@ para lo que se grita; Barlow Condensed 700 en mayúsculas, `letter-spacing
 8. **Se mide cada imagen**: `MEDIR` avisa si un texto se corta, si algo sale
    del lienzo o si pisa la zona de la barra de Instagram.
 
-## Lo que todavía no está decidido
+## Dónde vive hoy
 
-- **Las cinco del Tier 1.** La propuesta es: el campeón, el top 5, la
-  historia del campeón, «El evento de la semana» y «Lo que viene». Dlx no
-  contestó.
-- **Dónde llegan.** La propuesta es que el dueño las baje desde «Tu
-  servidor» y, si quiere, que el bot las deje en un canal suyo. Sin contestar.
+**`bot/redes.py`** dibuja las imágenes de la semana de cada socio con la B.
+Lo hace cada lunes desde las 12 PM ET y es el paso 2b4d del ciclo. Dlx
+contestó *«Sí, ármalo»* a la propuesta:
+
+- **Tier 2:** el campeón y el top 5.
+- **Tier 1:** además, la historia del campeón, «El evento de la semana» y
+  «Lo que viene».
+
+El dueño las baja desde «Tu servidor». Si elige un canal en Ajustes, el bot
+también las deja ahí.
+
+Su CSS es una copia de la maqueta, recortada a la B. Si el estilo cambia, se
+cambia en los dos lados, o la maqueta deja de mostrar lo que sale.

@@ -2522,6 +2522,9 @@ bot/              el lector de Discord y el ciclo
                   avisar.py       avisa en Discord, una vez por llave
                   olvidar.py      la salida: borrar a alguien de R2 y KV
                   subir_web.py    el payload del lobby, a KV (paso 2c)
+                  redes.py        las imágenes de la semana para las redes de cada
+                                  socio (estilo afiche B, docs/estilo_afiche.md):
+                                  los lunes, a R2 y a «Tu servidor» (paso 2b4d)
                   encuestas.py    El Elegido y el ×2 votado: qué se vota,
                                   hasta cuándo y quién ganó
                   precios.py      el precio por cabeza: quién cazó qué, lo

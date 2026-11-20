@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "7.29",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T04:36:00-05:00",
+        "titulo": "Imágenes para las redes de cada servidor",
+        "items": [
+            "**Imágenes para las redes de cada servidor**: cada lunes, los servidores Tier 1 y Tier 2 reciben en su panel las imágenes de su semana (el campeón, el top 5 y, en el Tier 1, también la historia del campeón, el evento de la semana y lo que viene), listas para Instagram y TikTok.",
+            "**Lo que da cada tier, completo**: en «El ascenso» ahora sale todo, también las imágenes para redes, el consejo de socios, los Pases de regalo y, en el Tier 1, la posibilidad de camisetas y prendas del servidor hechas por la Liga."
+        ]
+    },
+    {
         "version": "7.28",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T04:10:00-05:00",

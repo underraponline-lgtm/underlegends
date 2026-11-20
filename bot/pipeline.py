@@ -1462,6 +1462,14 @@ def _lo_barato(correr):
         paso('2b4c', 'el aviso de los ganadores')
         if not corre(['bot/aviso_ganadores.py', '--aplicar'], callado=False):
             print('      ⚠️ el aviso de los ganadores falló: queda para la próxima corrida')
+    # ── 2b4d · 🗞️ las imágenes de la semana para las redes de cada socio (`bot/redes.py`, el plan de los tiers; Dlx,
+    # 20/11/2026: «Sí, ármalo»): desde el lunes a las 12 PM ET, una vez por servidor y semana, dos al Tier 2 y cinco al
+    # Tier 1, a R2 y a «Tu servidor»; y al canal que eligió su dueño. Después de las notas (2b8h) y de la gente (2b8h2),
+    # que dibuja. Nunca frena el ciclo
+    if correr:
+        paso('2b4d', 'las imágenes de la semana para redes')
+        if not corre(['bot/redes.py', '--aplicar'], callado=True, mostrar=('🗞️', '⚠️', '📨')):
+            print('      ⚠️ las imágenes de la semana fallaron: se reintentan en la próxima corrida')
     # ── 2b8i · 🏆 las competencias de la semana (`bot/competencias.py`, Dlx 26/10/2026): la Copa por grupos, la Liga de
     # 10 y la Rapid del día, después de las notas (la simulación usa la forma). Nunca frena el ciclo
     if correr:

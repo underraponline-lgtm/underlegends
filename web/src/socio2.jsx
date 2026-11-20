@@ -22,7 +22,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
 import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.js';
-import { Cara, DosToques, Ico, Sec, diaET, masDias } from './piezas.jsx';
+import { Cara, DosToques, Ico, Sec, diaET, masDias, usePerfiles } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import CSS_PAGINA from './css/socio2.css?inline';
 import CAT_EST from './estilos_juego.json';
@@ -438,6 +438,9 @@ function Ajustes({ sv, tier }) {
           {/* 👋 la bienvenida (20/11/2026): sólo llega gente por «Unirme a los Tier 1» a los Tier 1 */}
           {tier === 1 ? <Fila label t="La bienvenida" sello={sello === 'bienvenida'} ayuda="Cuando alguien entra a tu servidor con «Unirme a los Tier 1», el bot lo saluda ahí. Apagada hasta que elijas un canal.">
             <Canal {...sel} cual="bienvenida" vacio="Apagada" /></Fila> : null}
+          {/* 🗞️ las imágenes de la semana (20/11/2026): además de en «Tu servidor», en un canal suyo si lo elige */}
+          {tier === 1 || tier === 2 ? <Fila label t="Tus imágenes de la semana" sello={sello === 'redes'} ayuda="Cada lunes, las imágenes para tus redes también llegan a ese canal. Siempre están en «Tu servidor».">
+            <Canal {...sel} cual="redes" vacio="No mandar" /></Fila> : null}
         </fieldset>
         {/* 🏟️ LAS BATALLAS DE SUS LIGAS (Dlx, 11/11/2026: «uno, y cambiar por liga»): un canal para todas y, si quiere, otro
             para alguna. Sin elegir, donde habla el bot en vivo, como hasta hoy */}
@@ -806,6 +809,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
               <Sec id="sp-visitas" titulo="Visitas a su página" bajada="Personas por día que abrieron la página de tu servidor, las últimas 4 semanas."><Visitas x={x} /></Sec>
             </> : null}
             {tab === 'servidor' ? <>
+              {x.tier === 1 || x.tier === 2 ? <Sec id="sp-redes" titulo="Tus imágenes de la semana" bajada="Cada lunes, con lo de la semana que terminó: listas para Instagram y TikTok. Bájalas y súbelas a tus redes.">
+                <RedesPanel sv={x.sv} tier={x.tier} liga={liga} /></Sec> : null}
               {x.tier === 1 ? <Sec id="sp-pases" titulo="Tus Pases para regalar" bajada="Cada mes la Liga te da Pases premium para regalar: se los lleva el campeón de los eventos que se eligieron.">
                 <PasesPanel x={x} liga={liga} /></Sec> : null}
               {x.tier === 1 || x.tier === 2 ? <Sec id="sp-consejo" titulo="El consejo de socios" bajada="Lo que la Liga propone y el voto de tu servidor: uno por servidor Tier 1 o 2, durante 7 días.">
@@ -1494,6 +1499,54 @@ function ConsejoStaff({ sv, rol, permisos }) {
 }
 
 // 🎟️ TUS PASES PARA REGALAR (Tier 1, 20/11/2026): los que la Liga te asignó este mes, en qué eventos, y los de tu Alianza
+// 🗞️ LAS IMÁGENES DE LA SEMANA PARA SUS REDES (el plan de los tiers; Dlx, 20/11/2026: «Sí, ármalo»): las dibuja el ciclo cada
+// lunes (`bot/redes.py`), viven en R2 y acá se ven y se bajan. Qué semana y cuáles, de `redes` de /api/perfiles; los títulos
+// viajan con ellas (`t`) para no escribirlos dos veces. Bajar es con fetch y blob, como las cartas (`bajar()` de visor.jsx):
+// con otro origen, `<a download>` sólo abre la imagen
+const MESES_L = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+function semanaTxt(s) {
+  const a = new Date(s + 'T12:00:00Z'), b = new Date(a.getTime() + 6 * 86400000);
+  return 'La semana del ' + a.getUTCDate() + (a.getUTCMonth() === b.getUTCMonth() ? '' : ' de ' + MESES_L[a.getUTCMonth()])
+    + ' al ' + b.getUTCDate() + ' de ' + MESES_L[b.getUTCMonth()];
+}
+function bajarImg(url, nombre) {
+  const abrir = () => { const a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove(); };
+  fetch(url, { mode: 'cors', cache: 'no-store' }).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.blob(); }).then((bl) => {
+    const u = URL.createObjectURL(bl);
+    const a = document.createElement('a');
+    a.href = u; a.download = nombre;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(u), 4000);
+  }).catch(abrir);
+}
+function RedesPanel({ sv, tier, liga }) {
+  const P = usePerfiles();
+  const R = (P && P.redes) || {};
+  const x = (R.sv || {})[sv];
+  const r2 = (liga.d && liga.d.r2) || '';
+  const cuantas = tier === 1 ? 5 : 2;
+  if (P === null) return <p className="sp-ll-ayuda">Cargando…</p>;
+  if (!x || !r2) return <p className="sp-ll-ayuda">{cuantas} imágenes cada lunes, de la semana que terminó. Las primeras salen el lunes a las 12 PM (hora del este), si tu servidor tuvo eventos esa semana.</p>;
+  const [s, ps] = x;
+  const url = (p) => r2 + '/redes/' + String(sv).toLowerCase() + '/' + p + '.jpg?v=' + s;
+  return (
+    <div className="sp-redes">
+      <p className="sp-ll-ayuda">{semanaTxt(s)}{ps.length < cuantas ? '. Las que faltan no tenían con qué: sin campeón, sin top 5 o sin horarios.' : '.'}</p>
+      <div className="sp-redes-g">{ps.map((p) => {
+        const t = (R.t || {})[p] || [p, 1080, 1350];
+        const alta = t[2] > 1400;
+        return (
+          <figure key={p} className={'sp-red' + (alta ? ' alta' : '')}>
+            <a href={url(p)} target="_blank" rel="noopener"><img src={url(p)} alt={t[0]} loading="lazy" /></a>
+            <figcaption><b>{t[0]}</b><span>{alta ? 'Historia · 1080 × 1920' : 'Post · 1080 × 1350'}</span></figcaption>
+            <button type="button" className="btn borde2 chico" onClick={() => bajarImg(url(p), String(sv).toLowerCase() + '-' + p + '-' + s + '.jpg')}>Bajar</button>
+          </figure>
+        );
+      })}</div>
+    </div>
+  );
+}
+
 function PasesPanel({ x, liga }) {
   const p = x.pases && x.pases.mes === new Date(Date.now() - 5 * 3600000).toISOString().slice(0, 7) ? x.pases : null;
   const bonos = x.alianza_bonus || [];

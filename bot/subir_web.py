@@ -733,6 +733,14 @@ def armar():
                                         (_json('datos', 'servidores.json') or {}).get('servidores') or {}, _CU.momento, _CU._leer_iso)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ «Cómo se juega acá» no se armó (%s)' % str(e)[:60])
+    # 🗞️ las imágenes de la semana para las redes de cada socio (`bot/redes.py`, 20/11/2026): qué semana y qué piezas,
+    # para que «Tu servidor» las muestre para bajar. Las imágenes viven en R2; acá van sólo sus nombres
+    try:
+        import redes as _RE
+        if isinstance(_pf, dict):
+            _pf['redes'] = _RE.para_web()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las imágenes de redes no entraron a la web (%s)' % str(e)[:60])
     # 👥 quién organiza, con su perfil —también el staff que no compite y los de fuera de la tabla— (14/10/2026)
     _orgs_pago = _orgs(ann, tabla, pool, staff=_staff_rol, perfiles=set(_pf or {}))
     _en_t = {f.get('k') for f in tabla}

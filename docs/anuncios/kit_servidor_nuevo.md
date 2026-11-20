@@ -57,8 +57,8 @@ Ahí ves tu puntaje, qué días juntan más gente, cuántos vuelven a jugar, a q
 ```text
 **Cómo funcionan los tiers**
 · **Tier 3:** lo que ya tienes.
-· **Tier 2:** además, tus eventos cuentan para el Competitivo y los Duelos, tu gente tiene la carta de tu servidor y tienes tus propios MES AWARDS.
-· **Tier 1:** lo mismo, y tu servidor sale en «Unirme a los Tier 1», el botón que suma gente a tu Discord con un toque.
+· **Tier 2:** además, tus eventos cuentan para el Competitivo y los Duelos, tu gente tiene la carta de tu servidor, tienes tus propios MES AWARDS, das estilos de juego en tus eventos, recibes 2 imágenes por semana para tus redes y votas en el consejo de socios.
+· **Tier 1:** lo mismo, y tu servidor sale en «Unirme a los Tier 1», el botón que suma gente a tu Discord con un toque. Además: 5 imágenes por semana para tus redes, Pases premium para regalar a tus campeones, una Tarea del Pase que lleva gente a tus eventos, la bienvenida del bot, lo nuevo antes que nadie y la posibilidad de camisetas y prendas de tu servidor, hechas por la Liga.
 
 **Cómo subir**
 El dashboard te da un puntaje de 0 a 100 con tus últimas 4 semanas:

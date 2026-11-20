@@ -50,8 +50,19 @@ const DA = {
   calendario: ['tiene', () => 'tus eventos en el calendario y la campana'],
   ligas: ['tiene', () => 'tus ligas'],
   panel: ['tiene', () => 'tu panel'],
+  // 🗞️ lo del plan de los tiers (20/11/2026): tandas B y C, las imágenes de la semana y las prendas
+  estilos: ['cuenta', () => 'tus eventos dan estilos de juego'],
+  pases_t1: ['cuenta', () => 'regalas los Pases premium que te da la Liga a tus campeones'],
+  tarea_t1: ['cuenta', () => 'el Pase tiene una Tarea que lleva gente a tus eventos'],
+  redes2: ['tiene', () => '2 imágenes por semana para tus redes'],
+  redes5: ['tiene', () => '5 imágenes por semana para tus redes'],
+  consejo: ['tiene', () => 'tu voto en el consejo de socios'],
+  bienvenida: ['tiene', () => 'la bienvenida del bot a quien llega a tu Discord'],
+  lo_nuevo: ['tiene', () => 'lo nuevo antes que nadie'],
+  prendas: ['tiene', () => 'la posibilidad de camisetas y prendas de tu servidor, hechas por la Liga'],
 };
-const ORDEN_DA = ['suma', 'competitivo', 'duelos', 'unirse', 'carta', 'mes_awards', 'pagina', 'calendario', 'ligas', 'panel'];
+const ORDEN_DA = ['suma', 'competitivo', 'duelos', 'estilos', 'unirse', 'pases_t1', 'tarea_t1', 'carta', 'mes_awards', 'redes2', 'redes5',
+  'consejo', 'bienvenida', 'lo_nuevo', 'prendas', 'pagina', 'calendario', 'ligas', 'panel'];
 const lista = (xs) => (xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : xs[0] || '');
 const mayus = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 // los puntos de un servidor, cortos (como los carteles de Socios)
