@@ -24,6 +24,13 @@ async function ultima() {
 }
 //: la versión con la que se abrió la página: si después aparece otra, hay que recargar para verla
 let alAbrir = '';
+// 🎬 RECARGAR UNA VERSIÓN NUEVA ES UNA CARGA ENTERA (20/11/2026, Dlx: «cada vez que le doy a recargar página no se
+// recarga al 100%»). `lg:estreno` le avisa a la pantalla de carga (web/montar.py) que ésta va completa —los 4 s, de 0 a
+// 100— y al lobby que salga sin la caché del navegador
+function recargarVersion(u) {
+  try { sessionStorage.setItem('lg:estreno', JSON.stringify({ v: u.version, t: u.titulo || '' })); } catch (e) { /* igual recarga */ }
+  location.reload();
+}
 
 // 🔄 SE RECARGA SOLA AL VOLVER (Dlx, 14/11/2026, con la captura de su iPhone a las 8:40 PM del 13/11, que todavía
 // tenía la tira de círculos verdes de antes de las 2:54 AM: «osea el mío sigue como outdated no?», y al arreglo:
@@ -52,7 +59,7 @@ export function AvisoVersion({ pagina }) {
       try { u = await ultima(); } catch (e) { return; }
       if (!vivo || !u || !u.version) return;
       if (!alAbrir) alAbrir = u.version;
-      if (volviste && nuevaQue(u.version, alAbrir) && !hayAlgoEscrito()) { location.reload(); return; }
+      if (volviste && nuevaQue(u.version, alAbrir) && !hayAlgoEscrito()) { recargarVersion(u); return; }
       // primera vez en este navegador: nada es «nuevo»
       if (PRIMERA_VISITA && !leerVista()) { guardarVista(u.version); return; }
       setC(u);
@@ -88,7 +95,7 @@ export function AvisoVersion({ pagina }) {
       <p className="av-t">{c.titulo}</p>
       {item ? <p className="av-d">{item.length > 160 ? item.slice(0, 157) + '…' : item}</p> : null}
       <div className="av-btns">
-        {recargar ? <button type="button" className="btn verde chico" onClick={() => { guardarVista(c.version); location.reload(); }}>Recargar para verla</button>
+        {recargar ? <button type="button" className="btn verde chico" onClick={() => { guardarVista(c.version); recargarVersion(c); }}>Recargar para verla</button>
           : <a className="btn verde chico" href="#/cambios" onClick={cerrar}>Ver qué cambió</a>}
         <button type="button" className="av-x" aria-label="Cerrar el aviso de la actualización" onClick={cerrar}>✕</button>
       </div>
