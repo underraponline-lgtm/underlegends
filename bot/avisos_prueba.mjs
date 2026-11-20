@@ -2101,6 +2101,115 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🖼️ LA IMAGEN ES DEL CRUCE, NO DEL LUGAR (19/11/2026, CHOP COMPE NOCTURNA en Cypherhood): la llave se rehízo mientras el
+// cruce esperaba su imagen, el primer lugar pasó a ser de otros, y «Lalox vs Flash» salió con la de «Julda vs LRS». La
+// clave del cruce es su lugar (`v:<ronda>:<i>`); la imagen se busca por lugar Y por quiénes (`firmaVs()`, `vsEspera()`)
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n🖼️ la imagen del vs es de ese cruce, aunque la llave cambie mientras espera\n');
+    const T = Date.parse('2026-11-20T02:50:00Z');
+    const CANAL = '555000000000000019';
+    const AB = '# COPA Z\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n';
+    const CD = '# COPA Z\n`[ CUARTOS ]`\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n';
+    const IMG_AB = R2_PRUEBA + '/vs/ffa-ab.jpg';
+    const IMG_CD = R2_PRUEBA + '/vs/ffa-cd.jpg';
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body && typeof op.body === 'string' ? vista(JSON.parse(op.body)) : null });
+      return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
+    };
+    // un objeto nuevo por caso, con la base en memoria
+    const nuevo = async () => {
+      const db = new DatabaseSync(':memory:');
+      const sql = {
+        exec(q, ...ps) {
+          const t = String(q).trim();
+          if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+          const st = db.prepare(t);
+          if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+          st.run(...ps);
+          return { toArray: () => [] };
+        },
+      };
+      const kv = new Map([['cfg:111', JSON.stringify({ vivo: CANAL, vivo_nivel: 'full' })],
+        ['web:lobby', JSON.stringify({ tabla: [{ n: 'Ana', k: 'ana', ovr: 88 }, { n: 'Bea', k: 'bea', ovr: 60 },
+          { n: 'Cami', k: 'cami', ovr: 70 }, { n: 'Dora', k: 'dora', ovr: 50 }] })]]);
+      const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+        blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+      o.state = o.state || {};
+      o.state.storage = o.state.storage || { transactionSync: (f) => f() };
+      if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
+      await new Promise((r) => setTimeout(r, 5));
+      const llave = (texto, ed) => sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+        "VALUES ('9', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]') ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, " +
+        'texto = excluded.texto', T - 60000, ed, texto, ed);
+      return { o, sql, llave };
+    };
+    const posts = () => pedidos.filter((p) => p.m === 'POST' && p.b);
+
+    // 1 · lo de Cypherhood: la tarea ya se llevó la de Ana y Bea, la llave se rehace, y esa imagen llega tarde
+    {
+      const { o, sql, llave } = await nuevo();
+      pedidos.length = 0;
+      llave(AB, T);
+      await o.chatVivo(T);
+      const c1 = o.vsCola('FFA', T + 20000).vs;
+      llave(CD, T + 30000);
+      await o.chatVivo(T + 30000);
+      const l1 = await o.vsListo({ id: c1[0] && c1[0].id, url: IMG_AB }, T + 40000);
+      ok(c1.length === 1 && c1[0].a.n === 'Ana' && l1.espera && !posts().length,
+        'la imagen de Ana y Bea llega cuando el primer lugar ya es de Cami y Dora: con ella no sale nada',
+        JSON.stringify({ c1: c1.map((x) => [x.a.n, x.b.n]), l1, posts: posts().map((p) => [p.b.content, p.b.img]) }));
+      const c2 = o.vsCola('FFA', T + 50000).vs;
+      ok(c2.length === 1 && c2[0].a.n === 'Cami' && c2[0].b.n === 'Dora',
+        'ese lugar pide la imagen de los que pelean ahora, y la tarea se la lleva', JSON.stringify(c2.map((x) => [x.a.n, x.b.n])));
+      await o.vsListo({ id: c2[0] && c2[0].id, url: IMG_CD }, T + 60000);
+      const m = posts()[0];
+      ok(posts().length === 1 && m.b.img === IMG_CD && /⚔️ Cuartos: \*\*Cami 🇻🇪\*\* vs \*\*Dora 🇲🇽/.test(m.b.content)
+        && !/\*\*Ana 🇦🇷\*\* vs/.test(m.b.content),
+      'y el cruce de Cami y Dora sale con SU imagen', JSON.stringify(posts().map((p) => [p.b.img, p.b.content.slice(-260)])));
+      const atadas = sql.exec("SELECT id FROM vs_cola WHERE msg != ''").toArray().map((x) => x.id);
+      ok(atadas.length === 1 && c2[0] && atadas[0] === c2[0].id,
+        'y queda atada a ese mensaje la imagen de Cami y Dora, no la de Ana y Bea', JSON.stringify(atadas));
+    }
+
+    // 2 · la llave cambia cerca del final de la espera: no vuelve a esperar los tres minutos enteros, sale sin imagen y la de
+    // ESE cruce se le agrega editándolo. La de Ana y Bea, que la tarea todavía no se había llevado, ya no se dibuja
+    {
+      const { o, sql, llave } = await nuevo();
+      pedidos.length = 0;
+      llave(AB, T);
+      await o.chatVivo(T);
+      llave(CD, T + 150000);
+      await o.chatVivo(T + 150000);
+      const antes = posts().length;
+      await o.chatVivo(T + 190000);
+      const m = posts()[0];
+      const cola = o.vsCola('FFA', T + 200000).vs;
+      ok(antes === 0 && m && !m.b.img && /Cami 🇻🇪\*\* vs \*\*Dora 🇲🇽/.test(m.b.content) && cola.length === 1 && cola[0].a.n === 'Cami'
+        && sql.exec("SELECT COUNT(*) AS n FROM vs_cola WHERE estado = 'vencido'").toArray()[0].n === 1,
+      'si la llave cambia a los 2:30, el cruce sale a los 3:00 sin imagen, y la de Ana y Bea ya no se dibuja',
+      JSON.stringify({ antes, m: m && [m.b.content, m.b.img], cola: cola.map((x) => [x.a.n, x.b.n]) }));
+      pedidos.length = 0;
+      const l2 = await o.vsListo({ id: cola[0] && cola[0].id, url: IMG_CD }, T + 230000);
+      const ed = pedidos.find((p) => p.m === 'PATCH' && p.b);
+      ok(l2.ok && ed && ed.b.img === IMG_CD, 'y cuando llega la imagen de Cami y Dora, se le agrega editándolo',
+        JSON.stringify({ l2, ed: ed && [ed.b.content, ed.b.img] }));
+    }
+    // 3 · la firma: quiénes, en qué orden, la ronda y el título; no lo que cambia sola durante la noche
+    const base = { ev: 'COPA Z', ronda: 'Cuartos', titulo: 'LA REVANCHA', sub: '', a: { n: 'Ana', k: 'ana', ovr: 80 }, b: { n: 'Bea', k: 'bea' } };
+    ok(A.firmaVs(base) === A.firmaVs(Object.assign({}, base, { a: { n: 'Ana', k: 'ana', ovr: 81, forma: 'GGP' } }))
+      && A.firmaVs(base) !== A.firmaVs(Object.assign({}, base, { a: base.b, b: base.a }))
+      && A.firmaVs(base) !== A.firmaVs(Object.assign({}, base, { titulo: 'SANGRE NUEVA' }))
+      && A.firmaVs({ grupos: [[{ k: 'a' }, { k: 'b' }], [{ k: 'c' }]] }) !== A.firmaVs({ grupos: [[{ k: 'a' }], [{ k: 'b' }, { k: 'c' }]] }),
+    'la firma cambia con quién pelea, de qué lado y el título; no con el OVR ni la forma de la noche');
+    globalThis.fetch = antesF;
+  }
+}
+
 // 🎲 LAS APUESTAS SOBRE EL OBJETO DE VERDAD (07/10/2026, «A full»): se abre con botones, se apuesta con sus frenos, se
 // cierra a los 3 minutos y se paga el pozo cuando la llave dice quién ganó
 {

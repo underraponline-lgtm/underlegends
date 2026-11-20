@@ -1459,6 +1459,21 @@ export function filasVs(vs) {
 }
 
 /**
+ * 🖼️ DE QUIÉN ES LA IMAGEN DE UN VS: quiénes pelean (en orden, como salen a cada lado), la ronda, el evento y el título.
+ * La clave de un cruce es su LUGAR en la llave (`v:<ronda>:<i>`), y un lugar puede cambiar de dueño: el 19/11/2026 se
+ * rehízo la llave de CHOP COMPE NOCTURNA mientras el cruce esperaba su imagen, el primer lugar pasó de «Julda vs LRS» a
+ * «Lalox vs Flash», y «Lalox vs Flash» salió con la imagen de «Julda vs LRS» (`vsEspera()`). Lo que cambia solo durante
+ * la noche (el OVR, la forma, «esta noche») no entra: no hace a otra imagen.
+ */
+export function firmaVs(vs) {
+  const v = vs || {};
+  const lado = (y) => String((y && (y.k || y.n)) || '');
+  const quien = Array.isArray(v.grupos) ? v.grupos.map((g) => (Array.isArray(g) ? g : []).map(lado).join('+')).join(' vs ')
+    : lado(v.a) + ' vs ' + lado(v.b);
+  return codigoDe([v.ev, v.ronda, quien, v.titulo, v.sub].map((x) => String(x || '')).join('\n'));
+}
+
+/**
  * 📱 LOS BOTONES EN EL CELULAR: de a dos por fila y con nombres cortos, para que un nombre larguísimo no parta la fila.
  * ⚠️ SIN RELLENO INVISIBLE desde el 11/11/2026 (Dlx: «quita lo de los caracteres invisibles de los botones»): el U+2800
  * emparejaba los dos de cada fila, y Dlx lo prefiere sin.
@@ -8335,6 +8350,8 @@ export class Avisos {
       // vacío) y la imagen ya dibujada (`url`), que se le pone al mandarlo
       try { this.sql.exec("ALTER TABLE vs_cola ADD COLUMN clave TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       try { this.sql.exec("ALTER TABLE vs_cola ADD COLUMN url TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      // 🖼️ y de quién es esa imagen (`firmaVs()`, 19/11/2026): el lugar de un cruce en la llave puede cambiar de dueño
+      try { this.sql.exec("ALTER TABLE vs_cola ADD COLUMN firma TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       // 📊 lo de «Ver estadísticas» de cada cruce (02/11/2026): se calcula una vez, al armar el vs, y el botón sólo lo lee.
       // Ver `fichaVs()` y `vsFicha()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS vs_ficha (id TEXT PRIMARY KEY, datos TEXT NOT NULL, t INTEGER NOT NULL)');
@@ -12662,8 +12679,9 @@ export class Avisos {
     // 🏟️ una batalla de liga: su id, su nombre y la jornada (`html_vs_liga()` de bot/kit.py). ⚠️ Lo que no está en esta lista no llega
     d.liga && LIGA_ID.test(String(d.liga.id || '')) ? { liga: { id: String(d.liga.id), n: String(d.liga.n || '').slice(0, 40),
       j: Math.max(0, Math.min(99, Number(d.liga.j) || 0)) || null } } : {});
-    this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t, clave) VALUES (?, ?, ?, ?, ?, ?, ?)', id,
-      String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg || ''), JSON.stringify(datos), ahora, clave);
+    this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t, clave, firma) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', id,
+      String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg || ''), JSON.stringify(datos), ahora, clave,
+      clave ? String(d.firma || firmaVs(d)) : '');
     return { ok: true, id };
   }
 
@@ -12679,14 +12697,29 @@ export class Avisos {
    * `{espera: true}`, o `{url, fila}` para mandarlo (`url` vacía: sin imagen).
    */
   vsEspera(canal, clave, vs, sv, ahora = Date.now()) {
-    const f = this.sql.exec('SELECT id, estado, url, t FROM vs_cola WHERE canal = ? AND clave = ? ORDER BY t DESC LIMIT 1',
-      String(canal), String(clave)).toArray()[0];
+    canal = String(canal);
+    clave = String(clave);
+    // 🔴 LA IMAGEN TIENE QUE SER DE ESTE CRUCE, NO DE ESTE LUGAR (19/11/2026): la clave es el lugar de la batalla en la
+    // llave, y si la llave se rehace mientras el mensaje espera, ese lugar es de otros. Se buscaba sólo por clave, y
+    // «Lalox vs Flash» salió en Cypherhood con la imagen de «Julda vs LRS». Ahora, la de esa clave Y esa firma (`firmaVs()`)
+    const firma = firmaVs(vs);
+    // la que esperaba con los de antes ya no va: si la tarea todavía no se la llevó, no se dibuja
+    this.sql.exec("UPDATE vs_cola SET estado = 'vencido' WHERE canal = ? AND clave = ? AND firma != ? AND msg = '' AND estado = 'espera'",
+      canal, clave, firma);
+    const f = this.sql.exec('SELECT id, estado, url, t FROM vs_cola WHERE canal = ? AND clave = ? AND firma = ? ORDER BY t DESC LIMIT 1',
+      canal, clave, firma).toArray()[0];
+    // ⏳ la espera cuenta desde la PRIMERA vez que ese lugar pidió imagen (en los últimos `VS_VENCE`), con quien fuera: si la
+    // llave cambia mientras espera, el mensaje no vuelve a esperar los tres minutos enteros
+    const t0 = Number((this.sql.exec('SELECT MIN(t) AS t FROM vs_cola WHERE canal = ? AND clave = ? AND t > ?',
+      canal, clave, ahora - VS_VENCE).toArray()[0] || {}).t) || ahora;
     if (!f) {
-      const r = this.vsEncolar(Object.assign({}, vs, { sv, canal, msg: '', clave }), ahora);
-      return r && r.ok ? { espera: true } : { url: '', fila: null };
+      const r = this.vsEncolar(Object.assign({}, vs, { sv, canal, msg: '', clave, firma }), ahora);
+      if (!r || !r.ok) return { url: '', fila: null };
+      // ya esperó: sale sin imagen, y la de ESTE cruce se le agrega editándolo cuando llegue (`vsAtar()`)
+      return ahora - t0 < VS_ESPERA ? { espera: true } : { url: '', fila: { id: r.id } };
     }
     if (f.estado === 'hecho' && f.url) return { url: f.url, fila: f };
-    if ((f.estado === 'espera' || f.estado === 'dibujando') && ahora - f.t < VS_ESPERA) return { espera: true };
+    if ((f.estado === 'espera' || f.estado === 'dibujando') && ahora - Math.min(t0, f.t) < VS_ESPERA) return { espera: true };
     return { url: '', fila: f };
   }
 
