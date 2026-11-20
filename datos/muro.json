@@ -379,6 +379,15 @@
 "temporada"
 ]
 },
+"trot": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "adriagner": {
 "rg": "C",
 "c": [
@@ -405,15 +414,6 @@
 ]
 },
 "cronox": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"trot": {
 "rg": "D",
 "c": [
 "competitivo",
