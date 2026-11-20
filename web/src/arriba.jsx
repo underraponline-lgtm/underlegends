@@ -1623,7 +1623,14 @@ export const ganador = (b) => limpio(typeof b[1] === 'string' ? b[1] : (b[1] || 
 // 🔑 `previa`: la llave en vivo que todavía sólo tiene la fase previa —el CYPHER de POESÍA CRUDA (URBF, 01/10/2026),
 // grupos de tres y los cuartos vacíos—. Sin esto no se veía nada: los filtros no van en el cuadro.
 const PREVIAS = ['Filtros', 'Clasificatorias', 'Preliminares'];
-function CuadroRondas({ liga, ll, previa }) {
+// 📏 EL CUADRO POR RONDAS NO TENÍA TOPE DE ALTO (19/11/2026, Dlx con una captura del Inicio: la GRISELDA TIME de FFA, en
+// vivo, con Cuartos de cinco y de tres). El cuadro con caras ya se cuidaba (`ALTO_LLAVE`) y éste crecía lo que midiera: ~700
+// px, y como el escenario apoya el texto abajo, el título quedaba debajo de la tira de historias. En el escenario (`onResto`)
+// va con el mismo tope que la llave grande —`.cm-tope`, el desvanecido y «Ver el resto de la llave»—; en Eventos, entero
+const FILA_CR = 36;
+const altoRondas = (rondas) => 70 + Math.max(0, ...rondas.map((r) => 22 + (r.b || []).reduce((s, b) => s + Math.max(2, lados(b).length) * FILA_CR + 10, 0)));
+const TOPE_CR = 400;
+function CuadroRondas({ liga, ll, previa, onResto }) {
   // 🔑 LA DOBLE, SÓLO EL FINAL (Dlx, 08/10/2026, con la Doble Eliminación Vol. 2 en la portada: «esto está así»):
   // entera son once columnas y la mitad quedaba cortada a la derecha. Acá van la última de ganadores, las dos últimas
   // de perdedores y la gran final; la llave entera está a un botón
@@ -1632,8 +1639,9 @@ function CuadroRondas({ liga, ll, previa }) {
     .concat(d.P.slice(-2).map((R) => ({ r: /^final/i.test(R.r) ? R.r : 'Perdedores · ' + R.r, b: R.b })),
       d.F.length ? [{ r: 'Gran final', b: d.F }] : [])
     : (ll.rondas || []).filter((r) => r.r !== 'Tercer puesto' && (previa || r.r !== 'Filtros'));
+  const tope = !!onResto && altoRondas(rondas) > TOPE_CR;
   return (
-    <>
+    <div className={tope ? 'cm-tope cr' : 'cr'}>
       <div className="llave-cab"><span>{d ? 'DOBLE ELIMINACIÓN' : 'CUADRO'}</span><span className="apag">{d ? 'LAS FINALES' : 'POR RONDAS'}</span></div>
       <div className="llave-wrap"><div className="llave" style={{ gridTemplateColumns: 'repeat(' + rondas.length + ',150px)' }}>
         {rondas.map((r, ri) => (
@@ -1645,7 +1653,8 @@ function CuadroRondas({ liga, ll, previa }) {
           </div>
         ))}
       </div></div>
-    </>
+      {tope ? <button type="button" className="cm-tope-b" onClick={onResto}>Ver el resto de la llave</button> : null}
+    </div>
   );
 }
 
@@ -1858,14 +1867,14 @@ function LadoCm({ liga, n, W }) {
       <em title={nom}>{entra ? nom : ns[0]}</em></>
   );
 }
-export function CuadroMini({ liga, ll, lugar }) {
+export function CuadroMini({ liga, ll, lugar, onResto }) {
   const M0 = useMedida();
   const M = lugar ? medidaPara(lugar) : M0;
   // la doble no es un árbol: tiene dos llaves y una gran final (`partirDoble()`)
-  if (esDoble(ll.rondas)) return <CuadroRondas liga={liga} ll={ll} />;
+  if (esDoble(ll.rondas)) return <CuadroRondas liga={liga} ll={ll} onResto={onResto} />;
   const base = (ll.rondas || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
   let todas = completar(base);
-  if (!todas.length && (ll.rondas || []).some((r) => PREVIAS.includes(r.r))) return <CuadroRondas liga={liga} ll={ll} previa />;
+  if (!todas.length && (ll.rondas || []).some((r) => PREVIAS.includes(r.r))) return <CuadroRondas liga={liga} ll={ll} previa onResto={onResto} />;
   const arbol = esArbol(todas);
   if (!arbol) todas = enRondas(base);
   // quién pasó de cada cruce: el ganador, o —si pasan varios, como en un grupo de tres donde siguen dos— los que aparecen
@@ -1894,7 +1903,7 @@ export function CuadroMini({ liga, ll, lugar }) {
   const rondas = todas.slice(desde, desde + M.rondas);
   const conFinal = desde + rondas.length === todas.length;
   const regular = rondas.length && rondas.every((r, i) => i === rondas.length - 1 || rondas[i + 1].b.length * 2 === r.b.length);
-  if (!regular) return <CuadroRondas liga={liga} ll={ll} />;
+  if (!regular) return <CuadroRondas liga={liga} ll={ll} onResto={onResto} />;
   const { G } = M;
   // el campeón sólo si se ve la Final: si no, el «campeón» sería el ganador de otra ronda
   // 📐 y si con su columna las casillas quedan más angostas que 104, el campeón no entra: en el teléfono, adentro de la
@@ -2371,7 +2380,7 @@ function momentos(liga, vivoL, ctx = {}) {
       vis: L ? (mano ? <VsVivo liga={liga} m={ml} /> : corta ? <LlaveCorta liga={liga} m={corta} />
         : tope ? <div className="cm-tope"><div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>
           <button type="button" className="cm-tope-b" onClick={() => accion.llave('v:' + L.id)}>Ver el resto de la llave</button></div>
-          : <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>)
+          : <div className="cm-wrap"><CuadroMini liga={liga} ll={L} onResto={() => accion.llave('v:' + L.id)} /></div>)
         : <div className="es-prox-w"><div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div><MasSuman liga={liga} sv={e.sv} /></div>,
     });
   });
