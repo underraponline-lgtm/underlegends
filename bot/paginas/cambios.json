@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.07", "dia": "2026-11-19", "cuando": "2026-11-19T21:17:00-05:00", "titulo": "Invita y gana: qué le falta a cada invitado", "items": ["En **Invita y gana**, cada invitado que todavía no cuenta muestra sus tres pasos por separado: llegó con tu link, se verificó y llegó al nivel 1 del Pase.", "En cuanto se verifica ves **quién es**, con su cara y su nombre, y una barra con la XP del Pase que lleva y cuánta le falta.", "Al abrir la página se revisa de nuevo a tus invitados: si alguno ya cumple, cuenta en ese momento.", "Con tus 10 completos, la página te dice que los que llegan ahora ya no suman."]},
     {
         "version": "7.06",
         "dia": "2026-11-19",

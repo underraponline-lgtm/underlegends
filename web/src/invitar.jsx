@@ -11,8 +11,8 @@
 //   · QUIEN INVITA: su entrada de la temporada (`/i/<clave>`), el talonario con los premios y a quién trajo.
 // Los números (cuánto paga, el tope, las metas) vienen del objeto (`refMio()`, REF_TRACK en bot/avisos.js): acá no se
 // escribe ninguno, salvo el texto de quien todavía no entró (sin cuenta no se le pueden pedir).
-// ⚠️ De los que todavía no cuentan el objeto manda sólo cuándo llegaron: no se sabe quién es hasta que se verifica, y la
-// página no lo inventa.
+// ⚠️ De los que todavía no cuentan el objeto manda cuándo llegaron, si ya se verificaron (`v`) y, verificados, quiénes son
+// y cuánta XP del Pase llevan (19/11/2026). Antes de verificarse no se sabe quién es, y la página no lo inventa.
 import { useEffect, useState } from 'react';
 import { capital, diaISO, hora, limpio, num, siglaDe, utc } from './liga.js';
 import { Cara, Compartir, Ico, accion, usePerfiles } from './piezas.jsx';
@@ -358,6 +358,8 @@ function Invitados({ liga, R }) {
   if (!xs.length) return null;
   const ya = xs.filter((x) => x.cumple), pend = xs.filter((x) => !x.cumple);
   const max = R.max || 10;
+  // 🔟 con el talonario lleno el objeto ya no cuenta a nadie más (y no paga la bienvenida): los pendientes no suman
+  const lleno = (R.hechos || 0) >= max;
   const texto = '¿Ya entraste a la Liga? Verifícate y haz dos Tareas del Pase: te llegan ' + num(R.bien) +
     ' Puntos de Tienda de bienvenida. https://underlegends.pages.dev/i/' + encodeURIComponent(R.k); // 🔤 codificada, como en `TuLink` (18/11/2026)
   const copiar = async () => {
@@ -366,28 +368,58 @@ function Invitados({ liga, R }) {
   return (
     <div className="rf-col">
       <h2 className="rf-h2">Tus invitados</h2>
+      <p className="rf-iv-cuenta">{xs.length + (xs.length === 1 ? ' llegó' : ' llegaron') + ' · ' + ya.length + (ya.length === 1 ? ' cuenta' : ' cuentan')}</p>
       <ul className="rf-iv-l">
         {ya.map((x, i) => {
           const n = x.k ? nombreK(liga, x.k) : 'Invitado ' + x.n;
           const dentro = (
             <>
               <Cara liga={liga} k={x.k} nombre={n} cls="cara rf-iv-c" lazy />
-              <span className="rf-iv-t"><b>{n}</b>{x.t ? <small>Cuenta desde el {diaCrew(x.t)}</small> : null}</span>
-              <span className="rf-iv-ok">Cuenta · {x.n} de {max}</span>
+              <span className="rf-iv-t"><b>{n}</b>{x.t ? <small>Cuenta desde el <time>{diaCrew(x.t)}</time></small> : null}</span>
+              <span className="rf-iv-ok">{'Cuenta · ' + x.n + ' de ' + max}</span>
             </>
           );
           return <li key={'c' + i}>{x.k ? <a className="rf-iv" href={'#/r/' + encodeURIComponent(x.k)}>{dentro}</a> : <span className="rf-iv">{dentro}</span>}</li>;
         })}
-        {pend.map((x, i) => (
-          <li key={'p' + i}>
-            <span className="rf-iv rf-iv-p">
-              <span className="rf-iv-q" aria-hidden="true">?</span>
-              <span className="rf-iv-t"><b>Alguien llegó el {diaCrew(x.t)}</b><small>Le falta verificarse y llegar al nivel 1 del Pase (dos Tareas)</small></span>
-            </span>
-          </li>
-        ))}
+        {/* 🔎 QUÉ LE FALTA A CADA UNO, POR SEPARADO (19/11/2026, Dlx: «la persona que invité me dice que ya se verificó»): decía
+            «le falta verificarse y llegar al nivel 1» a todos por igual. Ahora los tres pasos —llegó, se verificó, nivel 1
+            del Pase— con la XP que lleva, y quién es en cuanto se verifica (antes no es de la Liga: «Alguien») */}
+        {pend.map((x, i) => {
+          const n = x.v && x.k ? nombreK(liga, x.k) : '';
+          // sin `v` es un objeto de antes de este cambio: no sabemos si se verificó, y no hay que decir que no
+          const sabe = typeof x.v === 'boolean';
+          const meta = x.meta || 0;
+          const xp = Math.min(x.xp || 0, meta || Infinity);
+          const falta = x.v && meta ? Math.max(0, meta - (x.xp || 0)) : 0;
+          return (
+            <li key={'p' + i}>
+              <span className="rf-iv rf-iv-p rf-iv-pend">
+                {n ? <Cara liga={liga} k={x.k} nombre={n} cls="cara rf-iv-c" lazy /> : <span className="rf-iv-q" aria-hidden="true">?</span>}
+                <span className="rf-iv-t">
+                  <b>{n || (x.v ? 'Tu invitado' : 'Alguien')}</b>
+                  <small>Llegó el <time>{diaCrew(x.t)}</time></small>
+                  <span className="rf-pasos">
+                    <i className="si">Llegó con tu link</i>
+                    <i className={x.v ? 'si' : ''}>{!sabe ? 'Verificarse' : x.v ? 'Verificado' : 'Falta verificarse'}</i>
+                    <i className={x.v && !falta ? 'si' : ''}>{x.v && meta ? 'Pase: ' + num(xp) + ' de ' + num(meta) + ' XP' : 'Nivel 1 del Pase'}</i>
+                  </span>
+                  {x.v && meta ? (
+                    <span className="rf-xp" role="progressbar" aria-label="XP del Pase para el nivel 1" aria-valuemin={0} aria-valuemax={meta} aria-valuenow={xp}>
+                      <b style={{ width: Math.round((100 * xp) / meta) + '%' }} />
+                    </span>
+                  ) : null}
+                  <small className="rf-falta">{lleno ? 'Ya completaste tus ' + max + ': los que llegan ahora no suman.'
+                    : !sabe ? 'Cuenta cuando se verifique y llegue al nivel 1 del Pase (dos Tareas).'
+                    : !x.v ? 'Cuando se verifique (con el rol Miembro de DRA) aparece acá con su nombre. Puede tardar hasta media hora en verse.'
+                    : falta ? 'Le faltan ' + num(falta) + ' XP del Pase para el nivel 1: con las Tareas diarias o una semanal llega.'
+                      : 'Ya llegó al nivel 1: cuenta en un momento.'}</small>
+                </span>
+              </span>
+            </li>
+          );
+        })}
       </ul>
-      {pend.length ? (
+      {pend.length && !lleno ? (
         <div className="rf-rec">
           <b>¿Se trabó alguien? Pásale esto:</b>
           <p>«{texto}»</p>

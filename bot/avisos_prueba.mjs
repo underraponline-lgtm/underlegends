@@ -4410,7 +4410,18 @@ const ok = (cond, que, det) => {
     ok(o.refLlegue({ quien: NUEVO, de: 'ana' }).ok && o.refLlegue({ quien: NUEVO, de: 'ana' }).ya
       && o.refMio({ quien: ANA, accion: 'ver' }).lista.length === 1 && !tienda(NUEVO).length,
     'el nuevo queda anotado una vez y todavía no paga nada');
-    cumplir(NUEVO);
+    // 🔎 QUÉ LE FALTA A CADA UNO, POR SEPARADO (19/11/2026, Dlx: «la persona que invité me dice que ya se verificó»)
+    const p0 = o.refMio({ quien: ANA, accion: 'ver' }).lista[0];
+    ok(p0 && !p0.cumple && p0.v === true && p0.xp === 0 && p0.meta === 300,
+      'todavía no cuenta y se ve por qué: ya es miembro (v) y lleva 0 de 300 XP para el nivel 1', JSON.stringify(p0));
+    const SINV = '777777777777777777';
+    o.refLlegue({ quien: SINV, de: 'ana' });
+    const ps = o.refMio({ quien: ANA, accion: 'ver' }).lista.find((x) => !x.cumple && !x.v);
+    ok(ps && ps.v === false && ps.xp === undefined && ps.k === undefined,
+      'quien todavía no se verificó: sin XP y sin decir quién es (todavía no es de la Liga)', JSON.stringify(ps));
+    // 🔁 cumplió y nadie lo revisó (el aviso de la Tarea se perdió): mirar la página lo cuenta
+    sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)', NUEVO, 't1', 's1', 'dra', Date.now());
+    o.pxpOlvidar();
     const ya = o.refMio({ quien: ANA, accion: 'ver' });
     ok(ya.hechos === 1 && tienda(NUEVO).some((t) => t.id === 'refb:' + NUEVO && t.monto === 500)
       && tienda(ANA).some((t) => t.id === 'ref:' + ANA + ':' + NUEVO && t.monto === 250)
@@ -4425,6 +4436,11 @@ const ok = (cond, que, det) => {
       && sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ?', ANA).toArray()[0].n === 3
       && o.paseXP(ANA, o.paseDatos().cfg) === 1500 && o.refLlegue({ quien: otros[9], de: 'ana' }).error === 'lleno',
     'a los 10: el marco Embajador, el título Reclutador, los 1.500 de la meta 5, tres drops, 1.500 XP; el 11 ya no entra', JSON.stringify(diez).slice(0, 300));
+    // 🔟 con el talonario lleno, quien llegó antes sigue en la lista sin contar, y `hechos` llega al tope: la página lo dice
+    // en vez de prometer «cuenta en un momento» (la revisión del 19/11/2026)
+    const pl = diez.lista.find((x) => !x.cumple);
+    ok(diez.hechos === diez.max && pl && pl.cumple === false && !tienda(SINV).some((t) => t.id === 'refb:' + SINV),
+      'con los 10 completos, el que llegó antes queda en la lista sin contar y sin la bienvenida, y `hechos` llega al tope', JSON.stringify(pl));
     // ✨ y los títulos que no son del Pase se ponen, cada uno en su carta (Dlx: «arregla lo de los títulos de novato»)
     sql.exec('INSERT INTO nuevo_titulo (quien, titulo, t) VALUES (?, ?, ?)', ANA, 'Novato de Oro', Date.now());
     const tm = o.tagsMios(ANA);

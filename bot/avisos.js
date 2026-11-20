@@ -15907,11 +15907,35 @@ export class Avisos {
         'k = excluded.k, temp = excluded.temp, t = excluded.t', quien, k, temp, ahora);
     }
     const ln = this.sql.exec('SELECT k, temp, t FROM ref_link WHERE quien = ?', quien).toArray()[0];
+    // 🔁 LOS QUE TODAVÍA NO CUENTAN, REVISADOS OTRA VEZ AL MIRAR (19/11/2026, Dlx: «la persona que invité me dice que ya se
+    // verificó»). `refRevisar()` corría sólo al anotarle una Tarea o al llegar: si algo de eso pasó antes de que el ciclo lo
+    // sumara a los miembros, nadie lo volvía a mirar. Son 40 como mucho, y con el talonario lleno no se revisa ninguno:
+    // `refRevisar()` ya no cuenta a nadie pasado el tope, y cada vuelta lee el Pase de esa persona (el objeto llega en frío)
+    const contados = () => Number((this.sql.exec('SELECT COUNT(*) AS n FROM referidos WHERE de = ? AND cumple = 1', quien).toArray()[0] || {}).n) || 0;
+    if (contados() < REF_MAX) {
+      for (const r of this.sql.exec('SELECT quien FROM referidos WHERE de = ? AND cumple = 0 ORDER BY t DESC LIMIT 40', quien).toArray()) {
+        try { this.refRevisar(r.quien); } catch (e) { /* mirar no frena por uno */ }
+      }
+    }
     const filas = this.sql.exec('SELECT quien, t, cumple, n, t_cumple FROM referidos WHERE de = ? ORDER BY t DESC LIMIT 40', quien).toArray();
-    // 👤 de los que ya cuentan, su perfil (son verificados); de los que no, sólo cuándo llegaron: todavía no son de la Liga
-    const lista = filas.map((r) => (r.cumple === 1 ? { k: this.claveDe(r.quien) || '', n: r.n, t: r.t_cumple, cumple: true }
-      : { t: r.t, cumple: false }));
-    const hechos = filas.filter((r) => r.cumple === 1).length;
+    // 👤 de los que ya cuentan, su perfil (son verificados). De los que no: cuándo llegaron y QUÉ LES FALTA, por separado
+    // —verificarse (`v`: ya es Miembro de DRA, la lista del Pase) y la XP del Pase hasta el nivel 1 (`xp` de `meta`)—, y
+    // quién es sólo si ya se verificó: antes todavía no es de la Liga
+    const P = this.paseDatos();
+    const meta = P.cfg && Array.isArray(P.cfg.umbrales) ? Number(P.cfg.umbrales[0]) || 0 : 0;
+    const lista = filas.map((r) => {
+      if (r.cumple === 1) return { k: this.claveDe(r.quien) || '', n: r.n, t: r.t_cumple, cumple: true };
+      const v = !!(P.cfg && P.miembros.has(r.quien));
+      const x = { t: r.t, cumple: false, v };
+      if (v) {
+        x.k = this.claveDe(r.quien) || '';
+        x.xp = this.paseXP(r.quien, P.cfg);
+        x.meta = meta;
+      }
+      return x;
+    });
+    // los que cuentan, contados en la tabla y no en las 40 de la lista: con el tope lleno la página lo dice en vez de prometer
+    const hechos = contados();
     return {
       ok: true, puede: !!k, k: ln ? ln.k : k, activo: !!(ln && ln.temp === temp), temp,
       hechos, max: REF_MAX, track: REF_TRACK, pdt: REF_PDT, xp: REF_XP, bien: REF_BIEN, lista,

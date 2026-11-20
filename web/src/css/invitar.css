@@ -221,3 +221,18 @@ a.rf-iv:hover{outline:2px solid var(--linea);outline-offset:-2px}
   .rf-tk.off .rf-tk-talon{border-top-color:#5E5E5A}
   .rf-tk-talon b{font-size:28px}
 }
+
+/* 🔎 CADA INVITADO PENDIENTE, CON LO QUE LE FALTA (19/11/2026, Dlx: «la persona que invité me dice que ya se verificó»):
+   los tres pasos —llegó, verificado, nivel 1 del Pase— en fichas, y la XP del Pase en una barra. Lo hecho en el verde de
+   la página (`--rf-vtx`), lo que falta en gris y punteado. Sin degradés */
+.rf-iv-pend{align-items:flex-start}
+.rf-iv-pend .rf-iv-c,.rf-iv-pend .rf-iv-q{margin-top:2px}
+.rf-pasos{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.rf-pasos i{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;font-style:normal;
+  padding:5px 8px;border-radius:3px;border:1.5px dashed var(--rf-borde);color:var(--gris)}
+.rf-pasos i.si{border-style:solid;border-color:var(--rf-vtx);background:var(--rf-palido);color:var(--rf-vtx)}
+.rf-pasos i.si::before{content:'✓ '}
+.rf-xp{display:block;height:6px;margin-top:8px;border-radius:2px;background:var(--rf-borde);overflow:hidden;max-width:320px}
+.rf-xp b{display:block;height:100%;background:var(--rf-vtx);min-width:2px}
+.rf-iv-t small.rf-falta{margin-top:6px;color:var(--tinta);opacity:.8}
+.rf-col .rf-iv-cuenta{margin:-4px 0 0;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
