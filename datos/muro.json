@@ -1068,7 +1068,8 @@
 "yeyox": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "ezze": {
@@ -2907,15 +2908,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-13T04:00:43Z",
-"quien": [
-"NC"
-],
-"rg": "D",
-"primero": false
-},
 {
 "tipo": "rango",
 "t": "2026-10-13T04:00:43Z",
@@ -6302,6 +6294,14 @@
 "carlosmo"
 ],
 "pts": 67200
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-20T05:49:00Z",
+"quien": [
+"Yeyox"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
