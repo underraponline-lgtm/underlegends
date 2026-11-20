@@ -145,6 +145,25 @@ export function firmaLiga(meta) {
   return JSON.stringify([Array.isArray(m.liga) ? m.liga : [], (m.fuera && typeof m.fuera === 'object') ? m.fuera : {}]);
 }
 
+/**
+ * 🧭 LOS SERVIDORES QUE ENTRARON SIN PASAR POR EL CÓDIGO (19/11/2026, el /setup). `SERVIDORES` de worker.js está
+ * escrito a mano, y un servidor que entra solo con `/setup` (o con el alta del Dashboard) no está ahí: el vigía no leía
+ * sus anuncios aunque el ciclo ya lo hubiera confirmado. El ciclo los manda en `meta.nuevos`
+ * (`{sv: [guild, nombre, sigla]}`, `bot/subir_datos.py`) y esto los suma AL FINAL de la lista.
+ * ⚠️ LO ESCRITO GANA: un código o un guild que ya está en la lista no se toca (LKR y DDS, del Dashboard, ya están a
+ * mano), y los nuevos van sin carta de Servidor (`sinCarta`): entran como Tier 3, que no la tiene. Pura.
+ */
+export function conNuevos(base, meta) {
+  const out = Array.isArray(base) ? base.slice() : [];
+  const n = meta && meta.nuevos && typeof meta.nuevos === 'object' && !Array.isArray(meta.nuevos) ? meta.nuevos : {};
+  for (const [sv, x] of Object.entries(n)) {
+    if (!/^[A-Z]{2,6}$/.test(sv) || !Array.isArray(x) || !/^\d{15,22}$/.test(String(x[0] || ''))) continue;
+    if (out.some((s) => s && (s.sv === sv || String(s.guild || '') === String(x[0])))) continue;
+    out.push({ sv, nombre: String(x[1] || sv).slice(0, 60), guild: String(x[0]), sigla: String(x[2] || sv).slice(0, 6), sinCarta: true, nuevo: true });
+  }
+  return out;
+}
+
 // 🔑 LAS INSCRIPCIONES, CADA MINUTO. Dlx, 29/09/2026: «cuando anuncian un
 // evento, tienes que estar chequeando las inscripciones constantemente». Los
 // organizadores LIMPIAN el canal después del evento —el de FFA no tenía ni un
@@ -5531,6 +5550,20 @@ export function ajusteValido(cual, valor) {
     }
     return out;
   }
+  // 🧭 los puntos de Temporada de los que entraron con /setup (19/11/2026, Dlx: «tus elecciones», la 4A):
+  // `{guild: {si, t}}`. Lo escriben el DM («Que sumen · Tier 3» / «Todavía no») y el Dashboard; lo lee el ciclo
+  // (`aprobar_setup()` de bot/tiers.py). ⚠️ ES LA ÚNICA PUERTA: sin `si: true` acá, sus eventos no suman nunca
+  if (cual === 'setup_suma') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 200) return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[0-9]{15,22}$/.test(k) || !v || typeof v !== 'object' || typeof v.si !== 'boolean') return undefined;
+      const t = Number(v.t);
+      out[k] = { si: v.si, t: Number.isFinite(t) && t > 0 ? Math.round(t) : 0 };
+    }
+    return out;
+  }
   // ➕ los servidores que Dlx da de alta (20/10/2026): `{sigla: {n, g, t, tag}}`; el ciclo los suma (`bot/tiers.py altas()`)
   if (cual === 'altas') {
     if (valor === null) return null;
@@ -8705,6 +8738,11 @@ export class Avisos {
       // la tarea `afiche.yml` lo lea. Ver `encolarAfiche()` y `afichePoner()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS afiches (id TEXT PRIMARY KEY, c TEXT NOT NULL, m TEXT NOT NULL, ' +
         't INTEGER NOT NULL, estado INTEGER NOT NULL DEFAULT 0, texto TEXT NOT NULL DEFAULT \'\')');
+      // 🧭 EL /setup DE CADA SERVIDOR (19/11/2026): el borrador mientras lo corre un admin y lo que ya se aplicó, una fila
+      // por guild. Acá y no en KV: un setup son quince clics y KV son ~1.000 escrituras por día para toda la cuenta.
+      // Ver `setupOp()` y bot/setup.js
+      this.sql.exec("CREATE TABLE IF NOT EXISTS setup (g TEXT PRIMARY KEY, borr TEXT NOT NULL DEFAULT '', " +
+        "hecho TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL) WITHOUT ROWID");
       // 👥 LAS CREWS QUE ARMA LA GENTE (19/10/2026): sus tablas viven con su lógica, en bot/crews.js
       CW.crewTablas(this.sql);
       // 🛍️ LA TIENDA (17/11/2026): sus tablas viven con su lógica, en bot/tienda.js
@@ -9273,7 +9311,15 @@ export class Avisos {
     try {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
       if (ruta === '/estado') return json(this.delMinuto('/estado', 20, () => this.estado()), 200, 20);
-      if (ruta === '/ajustes') return json(this.ajustes());
+      // ⚙️ los ajustes para el ciclo, y con ellos los servidores que corrieron /setup (`setup_altas`, 19/11/2026): así
+      // `bot/tiers.py` los da de alta en la misma lectura, sin otra ruta. ⚠️ `setup_altas` NO es un ajuste de Dlx: no se
+      // escribe por `/ajuste` (`ajusteValido()` no lo conoce) y el Dashboard no lo recibe por acá
+      if (ruta === '/ajustes') return json(Object.assign({}, this.ajustes(), { setup_altas: this.setupAltas() }));
+      // 🧭 el /setup (19/11/2026): sólo lo llama el Worker (`bot/setup.js`), que ya comprobó quién toca
+      if (ruta === '/setup') {
+        const d = await req.json().catch(() => null);
+        return d ? json(this.setupOp(d)) : json({ error: 'no es JSON' }, 400);
+      }
       if (ruta === '/ajuste') {
         const d = await req.json().catch(() => null);
         if (!d) return json({ error: 'no es JSON' }, 400);
@@ -9683,6 +9729,9 @@ export class Avisos {
       });
       if (r.status === 200) yo = (await r.json()).id || '';
     } catch (e) { yo = ''; }
+    // 🧭 los canales que cada servidor eligió en su /setup (19/11/2026): `{guild: {an, in, ve, ge}}`
+    let setupC = {};
+    try { setupC = this.setupCanales(); } catch (e) { setupC = {}; }
     for (const s of servidores || []) {
       if (!s.guild) continue;
       const r = await fetch(`${DC}/guilds/${s.guild}/channels`, {
@@ -9697,8 +9746,13 @@ export class Avisos {
       for (const id of fueraSv[s.sv] || []) fuera.add(String(id));
       // el nombre de cada categoría, normalizado: ver `enTorneos` abajo
       const catNombre = new Map(cs.filter((c) => c && c.type === 4).map((c) => [String(c.id), String(c.name || '').normalize('NFKD')]));
+      // 🧭 lo que el servidor eligió en su /setup (19/11/2026): el chat general manda sobre el que se adivina, y sus
+      // canales de anuncios, inscripciones y veredictos se SUMAN a los que se encuentran por nombre (abajo). Sólo si el
+      // canal existe y es de texto: uno borrado no se lee
+      const suyo = setupC[String(s.guild)] || {};
+      const deTexto = (id) => /^\d{15,22}$/.test(String(id || '')) && cs.find((c) => String(c.id) === String(id) && (c.type === 0 || c.type === 5));
       // 🎤 el chat general, para el bot en vivo cuando lo prende el Dashboard (ver `chatVivo()`)
-      const gen = chatGeneralDe(cs, fuera);
+      const gen = (deTexto(suyo.ge) && String(suyo.ge)) || chatGeneralDe(cs, fuera);
       if (gen) generales.push({ sv: s.sv, g: s.guild, id: gen });
       for (const c of cs) {
         if (c.type !== 0 && c.type !== 5) continue;
@@ -9722,6 +9776,15 @@ export class Avisos {
         const enTorneos = /anuncio/i.test(n) && PATRON_VIGIA.test(catNombre.get(String(c.parent_id || '')) || '');
         if (STAFF.test(n) || PATRON_INSC.test(n) || (!PATRON_VIGIA.test(n) && !enTorneos)) continue;
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild, p: String(c.parent_id || '') });
+      }
+      // 🧭 y los del /setup que el nombre no encontró (DESPUÉS de buscar por nombre: así uno que ya está no se duplica)
+      for (const [k, dest] of [['an', lista], ['in', insc], ['ve', ver]]) {
+        const c = deTexto(suyo[k]);
+        if (!c || fuera.has(String(c.parent_id || '')) || dest.some((x) => String(x.id) === String(c.id))) continue;
+        const nom = String(c.name || '').normalize('NFKD');
+        dest.push(k === 'an' ? { id: c.id, nombre: nom, sv: s.sv, svn: s.nombre || s.sv, g: s.guild, p: String(c.parent_id || '') }
+          : k === 'in' ? { id: c.id, nombre: nom, sv: s.sv, g: s.guild, p: String(c.parent_id || '') }
+            : { id: c.id, nombre: nom, sv: s.sv, g: s.guild });
       }
     }
     const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, inscripciones: insc, generales,
@@ -9810,17 +9873,24 @@ export class Avisos {
     // campana lo encontraba recién en la búsqueda de las 6 h —de madrugada,
     // dormida: a las 11 AM—. `meta` ya se lee cada minuto (`llaves()`).
     let firma = '';
-    try { firma = firmaLiga(JSON.parse((await this.env.KV.get('meta', { cacheTtl: 60 })) || '{}')); } catch (e) { firma = ''; }
+    // 🧭 y los que entraron sin pasar por el código (el /setup, 19/11/2026): `meta.nuevos` los suma al final de la lista
+    // escrita en el Worker (`conNuevos()`); sin meta, la lista de siempre
+    let svsV = (d && Array.isArray(d.servidores)) ? d.servidores : [];
+    try {
+      const metaV = JSON.parse((await this.env.KV.get('meta', { cacheTtl: 60 })) || '{}') || {};
+      firma = firmaLiga(metaV);
+      svsV = conNuevos(svsV, metaV);
+    } catch (e) { firma = ''; }
     if (!canales || !canales.lista || !canales.lista.length ||
         canales.v !== CANALES_V || ahora - (canales.t || 0) > REDESCUBRIR ||
         (firma && canales.firma !== firma)) {
-      canales = await this.descubrir(d && d.servidores, ahora);
+      canales = await this.descubrir(svsV, ahora);
     }
     // 🗺️ qué guild es cada servidor, para lo que llega por una ruta y no por el vigía (el panel del socio, 19/10/2026).
     // La lista viene cada minuto: se escribe sólo si cambió
     try {
       const gs = {};
-      for (const s of (d && Array.isArray(d.servidores)) ? d.servidores : []) if (s && s.sv && s.guild) gs[String(s.sv)] = String(s.guild);
+      for (const s of svsV) if (s && s.sv && s.guild) gs[String(s.sv)] = String(s.guild);
       if (Object.keys(gs).length && JSON.stringify(gs) !== JSON.stringify(this.leer('guilds') || {})) this.guardar('guilds', gs);
     } catch (e) { /* es un mapa de apoyo */ }
     this.yo = canales.yo || '';
@@ -19973,6 +20043,123 @@ export class Avisos {
     return { ok: true, ajustes: a, hist: this.leer('ajustes_hist') || [] };
   }
 
+  // ── 🧭 EL /setup (19/11/2026) ────────────────────────────────────────────────────────────────────────────────────
+  // Una fila por guild en la tabla `setup`: `borr` (el borrador mientras un admin lo corre) y `hecho` (lo que se aplicó,
+  // con el alta, la invitación, los mensajes de prueba y si ya se le avisó a Dlx). Lo llama SÓLO el Worker
+  // (`bot/setup.js`), que ya comprobó que quien toca es admin de ESE servidor o Dlx. La decisión de Dlx sobre los puntos
+  // NO vive acá: es el ajuste `setup_suma`, el mismo que cambia el Dashboard (un solo lugar, con su historial)
+
+  /** Una operación del setup sobre la fila de un guild. Ver arriba */
+  setupOp(d) {
+    const g = String((d && d.g) || '');
+    if (!/^\d{15,22}$/.test(g)) return { error: 'g' };
+    const ahora = Date.now();
+    const f = this.sql.exec('SELECT borr, hecho FROM setup WHERE g = ?', g).toArray()[0];
+    const de = (s) => { try { return s ? JSON.parse(s) : null; } catch (e) { return null; } };
+    let borr = f ? de(f.borr) : null;
+    let hecho = f ? de(f.hecho) : null;
+    const guardar = () => this.sql.exec('INSERT INTO setup (g, borr, hecho, t) VALUES (?, ?, ?, ?) ' +
+      'ON CONFLICT(g) DO UPDATE SET borr = excluded.borr, hecho = excluded.hecho, t = excluded.t',
+    g, borr ? JSON.stringify(borr) : '', hecho ? JSON.stringify(hecho) : '', ahora);
+    const dec = () => (this.ajustes().setup_suma || {})[g] || null;
+    const op = String(d.op || '');
+    if (op === 'leer') return { ok: true, borr, hecho, dec: dec() };
+    if (op === 'borrador') {
+      const b = d.borr && typeof d.borr === 'object' && !Array.isArray(d.borr) ? d.borr : null;
+      if (b && JSON.stringify(b).length > 6000) return { error: 'grande' };
+      borr = b;
+      guardar();
+      return { ok: true };
+    }
+    if (op === 'hecho') {
+      const n = d.hecho && typeof d.hecho === 'object' && !Array.isArray(d.hecho) ? d.hecho : null;
+      if (!n || JSON.stringify(n).length > 8000) return { error: 'hecho' };
+      const antes = hecho || {};
+      // ⚠️ lo que sólo se hace una vez NO se pisa: el alta (con su hora), el DM a Dlx y el candado de esta vuelta; los
+      // mensajes de prueba se suman (un canal ya probado no se vuelve a probar)
+      hecho = Object.assign({}, antes, n, { alta: antes.alta || n.alta || null, dm: antes.dm || null, lock: antes.lock || 0,
+        pruebas: Object.assign({}, antes.pruebas || {}, n.pruebas || {}) });
+      if (d.limpiar) borr = null;
+      guardar();
+      // 📺 si cambiaron los canales elegidos, el vigía los vuelve a buscar en su próxima vuelta (`descubrir()` los suma)
+      if (JSON.stringify(antes.c || {}) !== JSON.stringify(hecho.c || {})) {
+        const cn = this.leer('canales');
+        if (cn) { cn.t = 0; this.guardar('canales', cn); }
+      }
+      return { ok: true, hecho, dec: dec() };
+    }
+    // 🔒 una sola aplicación a la vez por servidor (dos clics en «Aplicar», o dos admins): la otra espera
+    if (op === 'candado') {
+      if (hecho && hecho.lock && ahora - hecho.lock < 2 * MIN) return { ok: false };
+      hecho = Object.assign({}, hecho || {}, { lock: ahora });
+      guardar();
+      return { ok: true };
+    }
+    if (op === 'soltar') {
+      if (hecho && hecho.lock) { hecho.lock = 0; guardar(); }
+      return { ok: true };
+    }
+    // 📨 el DM a Dlx, una vez por servidor: se reserva ANTES de mandar (dos aplicaciones no lo mandan dos veces) y se
+    // suelta si falló (la próxima lo vuelve a intentar)
+    if (op === 'dm') {
+      const x = hecho && hecho.dm;
+      if (x && (x.ok || ahora - (x.reserva || 0) < 5 * MIN)) return { ok: false };
+      hecho = Object.assign({}, hecho || {}, { dm: { reserva: ahora } });
+      guardar();
+      return { ok: true };
+    }
+    if (op === 'dm-fin') {
+      if (hecho) { hecho.dm = d.ok ? { t: ahora, ok: true } : null; guardar(); }
+      return { ok: true };
+    }
+    // ✅ lo que decide Dlx desde su DM: el ajuste `setup_suma`, por el mismo camino que el Dashboard (con su historial)
+    if (op === 'decidir') {
+      if (!hecho || !hecho.alta) return { error: 'no existe' };
+      const v = ajusteValido('setup_suma', Object.assign({}, this.ajustes().setup_suma || {}, { [g]: { si: d.si === true, t: ahora } }));
+      if (v === undefined || v === null) return { error: 'valor' };
+      this.ajuste({ cual: 'setup_suma', valor: v, por: d.por || DUENO });
+      return { ok: true, hecho, dec: v[g] };
+    }
+    return { error: 'op' };
+  }
+
+  /** Las filas del setup con su `hecho`, leídas. */
+  setupFilas() {
+    return this.sql.exec("SELECT g, hecho, t FROM setup WHERE hecho != ''").toArray().map((r) => {
+      let h = null;
+      try { h = JSON.parse(r.hecho); } catch (e) { h = null; }
+      return h && h.t ? { g: r.g, h, t: r.t } : null;
+    }).filter(Boolean);
+  }
+
+  /** ➕ Los servidores que pidieron entrar con /setup, para el ciclo (`altas_setup()` de bot/tiers.py). ⚠️ SIN QUIÉN LO
+   *  CORRIÓ: lo que sale de acá termina en `datos/servidores.json`, y el repo es público */
+  setupAltas() {
+    return this.setupFilas().filter((x) => x.h.alta).map(({ g, h }) => ({
+      g, n: String(h.nombre || '').slice(0, 60), sigla: String(h.sigla || ''), pl: String(h.pl || ''), t: (h.alta && h.alta.t) || 0,
+      aviso: /^\d{15,22}$/.test(String(h.aviso || '')) ? String(h.aviso) : '', fuera: h.es === 'fuera',
+      inv: h.inv && h.inv.codigo ? { codigo: String(h.inv.codigo), canal: String(h.inv.canal || ''), canal_id: String(h.inv.canal_id || '') } : null,
+      c: Object.fromEntries(Object.entries(h.c || {}).filter(([k, v]) => ['an', 'in', 've', 'ge'].includes(k) && /^\d{15,22}$/.test(String(v || ''))))
+    })).sort((a, b) => b.t - a.t).slice(0, 60);
+  }
+
+  /** 🔒 Para el Dashboard: los que corrieron /setup y piden entrar, con lo que decidió Dlx. Los más nuevos primero */
+  setupDueno() {
+    const dec = this.ajustes().setup_suma || {};
+    return this.setupFilas().filter((x) => x.h.alta).map(({ g, h }) => ({
+      g, nombre: String(h.nombre || ''), sigla: String(h.sigla || ''), pl: String(h.pl || ''), t: (h.alta && h.alta.t) || 0,
+      por: String(h.por || ''), miembros: h.miembros || 0, admin: !!(h.perm && h.perm.admin), faltan: (h.perm && h.perm.faltan) || [],
+      fuera: h.es === 'fuera', dm: !!(h.dm && h.dm.ok), dec: dec[g] || null,
+    })).sort((a, b) => b.t - a.t).slice(0, 30);
+  }
+
+  /** 📺 Los canales que cada servidor eligió en su /setup, `{guild: {an, in, ve, ge}}`, para el vigía (`descubrir()`) */
+  setupCanales() {
+    const out = {};
+    for (const { g, h } of this.setupFilas()) if (h.c && typeof h.c === 'object') out[g] = h.c;
+    return out;
+  }
+
   /** 📣 El aviso de la página, si sigue vigente: `{texto, hasta}` o `null` */
   avisoWeb() {
     const a = this.ajustes().aviso_web;
@@ -20030,6 +20217,8 @@ export class Avisos {
       uso_semanas: this.usoSemanas(ahora),
       // 🤝 cómo viene trabajando cada servidor, para «Los tiers» (`bot/tiers.py`)
       tiers: this.leer('tiers'),
+      // 🧭 los que corrieron /setup y esperan su respuesta sobre los puntos de Temporada (19/11/2026)
+      setup: this.setupDueno(),
       // 👥 los números de las crews (`crewNumeros()` de bot/crews.js) y cuántos dueños abrieron su panel de socio
       crews_num: Object.assign(CW.crewNumeros(this, ahora), { paneles: this.panelesVistos(ahora) }),
       tutorial: this.tutorialResumen(),

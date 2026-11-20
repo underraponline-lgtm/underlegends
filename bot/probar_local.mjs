@@ -3793,5 +3793,28 @@ console.log('\nLAS CREWS\n');
   env.AVISOS = antes;
 }
 
+// 🧭 EL /setup ENTRA POR LA PUERTA DE VERDAD (19/11/2026): el comando y los clics `su:` llegan a bot/setup.js. El camino
+// entero, con el objeto y un Discord simulado, lo prueba bot/setup_prueba.mjs; acá, que el Worker lo enchufa bien
+console.log('\nEL /setup, POR EL WORKER\n');
+{
+  const cmdSetup = (perms) => ({ type: 2, guild_id: G.FFA, member: { user: { id: '888002' }, permissions: perms }, data: { name: 'setup' } });
+  const clickSu = (perms, cid) => ({ type: 3, guild_id: G.FFA, member: { user: { id: '888002' }, permissions: perms }, data: { custom_id: cid } });
+  let r = await pedir(cmdSetup('0'));
+  ok('/setup: un usuario común no lo puede correr', r.json?.type === 4 && /admins/.test(texto(r)), texto(r));
+  r = await pedir(cmdSetup('32'));
+  ok('/setup: con Gestionar servidor, el mensaje efímero en V2 al toque (y la pantalla se edita encima)',
+     r.json?.type === 4 && r.json?.data?.flags === (64 | 32768) && Array.isArray(r.json?.data?.components), JSON.stringify(r.json).slice(0, 160));
+  await esperarSeguimientos();
+  r = await pedir(clickSu('0', 'su:v1:ir:1'));
+  ok('un clic del /setup sin permiso: no', /Ya no tienes permiso/.test(texto(r)), texto(r));
+  r = await pedir(clickSu('8', 'su:v1:ir:1'));
+  ok('un clic del /setup con permiso: «lo edito después» (tipo 6)', r.json?.type === 6, JSON.stringify(r.json));
+  await esperarSeguimientos();
+  r = await pedir(clickSu('8', 'su:v9:ir:1'));
+  ok('un botón de otra versión del /setup: se dice, no se adivina', /versión vieja/.test(texto(r)), texto(r));
+  r = await pedir({ type: 3, user: { id: '888002' }, data: { custom_id: 'su:v1:si:1600000000000000777' } });
+  ok('el «Que sumen» de alguien que no es Dlx: no', /equipo de la Liga/.test(texto(r)), texto(r));
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

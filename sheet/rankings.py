@@ -102,6 +102,16 @@ FILA_CAB = 16
 # la misma lista, así que el hueco llegaba hasta la carta. La de País
 # reventaba buscando `sv_.png`.
 SERVIDORES = ('FFA', 'EFA', 'TWR', 'TFC', 'SR', 'FTN', 'URBF', 'FRZ', 'DRA', 'FFS', 'DDF', 'ACAD', 'FVS', 'FDS', 'LKR', 'CH', 'DDS', 'CEU')
+# 🧭 Y LOS QUE ENTRARON SOLOS CON /setup Y DLX APROBÓ (19/11/2026, «Que sumen · Tier 3»), AL FINAL y en el orden en que
+# se aprobaron (`tiers.con_setup()`): es lo que hacía a mano `herramientas/sumar_servidor.py` con esta lista, y lo que la
+# vitrina sabe agregar sola (`columnas_que_faltan()`: sólo crece al final). Lo escrito arriba no se mueve. Sin aprobar no
+# entra, y entonces sus eventos no suman (`tiers.beneficios()`). ⚠️ La línea de arriba sigue siendo la que leen
+# `tiers.en_el_codigo()` y `sumar_servidor.py`: esto la extiende, no la reemplaza
+try:
+    import tiers as _TIERS_SETUP                          # noqa: E402
+    SERVIDORES = _TIERS_SETUP.con_setup(SERVIDORES)
+except Exception:                                         # noqa: BLE001
+    pass
 
 # columna de la vitrina -> de donde sale. `None` = no se puede hoy.
 DE_DONDE = {
@@ -3367,6 +3377,28 @@ def _self_check():
         ('con otra forma (una columna distinta en el medio): no se toca',
          columnas_que_faltan(['#', 'Rapero', 'Otra'] + vieja[3:]), []),
         ('vacía: no se inventa', columnas_que_faltan([]), []),
+    ]
+    for que, dio, esp in casos:
+        ok = dio == esp
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
+    # 🧭 LOS DEL /setup APROBADOS, AL FINAL (19/11/2026): lo escrito a mano es el principio de la lista, igual que antes, y
+    # lo que se agrega es sólo de los aprobados (`tiers.aprobados_setup()`)
+    print('\n  la lista de servidores con los del /setup')
+    _txt = io.open(os.path.abspath(__file__), encoding='utf-8').read()
+    _m = re.search(r"^SERVIDORES = \((.*)\)$", _txt, re.M)
+    _escritos = tuple(re.findall(r"'([^']*)'", _m.group(1))) if _m else ()
+    try:
+        import tiers as _TS
+        _extra = tuple(_TS.aprobados_setup())
+    except Exception:                                    # noqa: BLE001
+        _extra = None
+    casos = [
+        ('lo escrito a mano va primero y en su orden', SERVIDORES[:len(_escritos)] == _escritos and bool(_escritos), True),
+        ('lo que se agrega son sólo los del /setup que Dlx aprobó', _extra is not None
+         and SERVIDORES[len(_escritos):] == tuple(s for s in _extra if s not in _escritos), True),
+        ('y la vitrina los tiene al final', CAB_TEMPORADA[-len(SERVIDORES):] == [ver(s) for s in SERVIDORES], True),
     ]
     for que, dio, esp in casos:
         ok = dio == esp

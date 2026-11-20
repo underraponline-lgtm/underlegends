@@ -49,7 +49,8 @@ COMPAT = '2026-09-16'
 #: las clases de los Durable Objects, y por eso re-exporta `Avisos`.
 #: 🛒 `tienda.js` desde el 17/11/2026 (la Tienda, etapa 4): avisos.js lo importa y, sin él en esta lista, Cloudflare
 #: rechazaba el script entero («No such module tienda.js»). `_faltan_modulos()` revisa los imports antes de subir
-MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js', 'ligas_vivo.js', 'tienda.js', 'apodo.js')
+#: 🧭 `setup.js` desde el 19/11/2026 (el /setup): worker.js lo importa
+MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js', 'ligas_vivo.js', 'tienda.js', 'apodo.js', 'setup.js')
 #: de dónde sale cada módulo, si no está en `bot/` con su nombre. 🔑 `llave_vivo.js` es EL lector de la página
 #: (`bot/paginas/llave_vivo.js`): el vigía lo usa para «te toca» (`turnos()` en avisos.js). Un solo archivo para
 #: los dos —si fueran dos copias, la página y el aviso leerían distinto la misma llave—
@@ -431,8 +432,9 @@ def ver_servidores():
     fuera = set(_re.findall(r"\{\s*sv:\s*'([^']+)'[^}]*\bfuera:\s*true", js))
     malos = []
     for sv, v in tabla.items():
-        # ➕ los dados de alta desde el Dashboard (`bot/tiers.py altas()`) no están en worker.js, a propósito
-        if v.get('alta') == 'dashboard' and sv not in enel:
+        # ➕ los dados de alta desde el Dashboard (`bot/tiers.py altas()`) no están en worker.js, a propósito; 🧭 ni los
+        # que entraron solos con /setup (19/11/2026, `altas_setup()`): el Worker los conoce por `meta.nuevos`
+        if v.get('alta') in ('dashboard', 'setup') and sv not in enel:
             continue
         if (v.get('en_la_liga') is False) != (sv in fuera):
             malos.append('%s: en_la_liga del json %r · fuera del worker %r' % (sv, v.get('en_la_liga'), sv in fuera))

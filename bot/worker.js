@@ -45,6 +45,9 @@ import * as AR from './antiraid.js';
 import * as AP from './apodo.js';
 // 👥 las crews (19/10/2026): la forma de comparar nombres, la misma que el objeto
 import { normCrew } from './crews.js';
+// 🧭 /setup (19/11/2026): el paso a paso de un servidor que entra a la Liga. Todo en `bot/setup.js`; el borrador y lo
+// aplicado viven en el objeto (`setupOp()` de avisos.js)
+import * as SU from './setup.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -2551,6 +2554,10 @@ const ayudaAR = (i) => ({
   pasan: SERVIDORES.map((s) => String(s.invita || '').replace(/^https?:\/\//, '')).filter(Boolean),
 });
 
+// 🧭 lo que `bot/setup.js` toma del Worker: cómo diferir, quién tocó, el freno y la lista de servidores escrita acá
+// (`meta.nuevos` le suma los que entraron sin pasar por el código: ver `conNuevos()` de avisos.js)
+const ayudaSU = () => ({ luego, idDe, aviso, espera, frenado, SERVIDORES });
+
 const responderPanel = (tipo, p) => new Response(JSON.stringify({
   type: tipo,
   data: { flags: EFIMERO, content: p.content, components: p.components },
@@ -4328,6 +4335,12 @@ const COMANDOS = {
     return AR.comando(i, env, ctx, ayudaAR(i));
   },
 
+  // 🧭 /setup — los admins del servidor (Dlx, 19/11/2026: «tus elecciones», 1A 2A 3A 4A 5A). Todo en `bot/setup.js`.
+  // ⚠️ `/settings` sigue igual: el setup escribe el mismo `cfg:<guild>`, así que lo último que se toque es lo que vale
+  setup(i, env, ctx) {
+    return SU.comando(i, env, ctx, ayudaSU());
+  },
+
   // 🏷️ /apodo (Dlx, 18/11/2026: «en vez del comando de numeración sea otro… que tengas opciones e incluso para
   // combinar»). Seis estilos listos (`bot/apodo.js`), uno para todos los servidores de la Liga: se guarda en
   // `apodo:<id>` y se aplica AL TOQUE en este servidor —con las piezas que deja el ciclo en `apodos`, el mismo nombre
@@ -5153,6 +5166,10 @@ export default {
       // mensaje se actualiza con cómo va en la vuelta siguiente del vigía (`qgRevisar()`)
       // ── 👥 las crews (19/10/2026): `cw:si|no:<crew>:<invitado>` y `cw:salir:x:<quien>` (ver `crewBoton`) ──────────
       if (que === 'cw') return crewBoton(i, env, quien, extra, dueno);
+
+      // ── 🧭 el /setup (19/11/2026): `su:v1:<acción>[:<dato>]`. El permiso se vuelve a mirar en cada clic, y los botones
+      // del DM de Dlx (`su:v1:si|no:<guild>`) sólo los usa él (ver `componente()` en bot/setup.js)
+      if (que === 'su') return SU.componente(i, env, ctx, ayudaSU());
 
       // ── 🌙 «Tu nota» y «Perfiles» del aviso de ganadores (`nn:<nota|perf>:<n>`, 18/11/2026): sólo a quien toca ─────
       if (que === 'nn') {

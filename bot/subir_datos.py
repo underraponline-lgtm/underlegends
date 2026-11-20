@@ -44,6 +44,7 @@ dibujar, no va.
 import io
 import json
 import os
+import re
 import sys
 import time
 
@@ -878,6 +879,10 @@ def armar():
         # marca es `confirmado` de `datos/servidores.json`; acá sólo viaja.
         'liga': sorted(k for k, v in ((_json_servidores().get('servidores') or {}).items())
                        if v.get('confirmado')),
+        # 🧭 Y LOS QUE ENTRARON SIN PASAR POR EL CÓDIGO (/setup o el alta del Dashboard, 19/11/2026): su guild y su
+        # nombre, porque `SERVIDORES` de worker.js está escrito a mano y sin esto el vigía no sabe dónde leerlos.
+        # El Worker los suma al final y lo escrito gana (`conNuevos()` de avisos.js). ~70 bytes por servidor
+        'nuevos': _nuevos(_json_servidores()),
         # 🔑 Y LAS CATEGORÍAS QUE CADA UNO DECLARA AFUERA: las ligas regionales
         # de FFS (Dlx, 28/09/2026: «más adelante, al ranking de ligas»). El
         # vigía las salta igual que las de staff. Ver `escuchar.categorias_fuera()`.
@@ -1337,6 +1342,21 @@ def _json_servidores():
         return {}
 
 
+def _nuevos(d):
+    """🧭 `{sv: [guild, nombre, sigla]}` de los servidores confirmados que entraron con `/setup` o con el alta del
+    Dashboard (`alta`), para `meta.nuevos`: el Worker los suma a su lista escrita a mano (`conNuevos()` de avisos.js)."""
+    out = {}
+    for k, v in ((d or {}).get('servidores') or {}).items():
+        if not isinstance(v, dict) or not v.get('confirmado') or v.get('en_la_liga') is False:
+            continue
+        if v.get('alta') not in ('setup', 'dashboard'):
+            continue
+        g = str(v.get('guild_id') or '')
+        if re.match(r'^\d{15,22}$', g) and re.match(r'^[A-Z]{2,6}$', str(k)):
+            out[k] = [g, str(v.get('nombre') or k)[:60], str(v.get('sigla') or k)[:6]]
+    return out
+
+
 WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 
 
@@ -1725,6 +1745,16 @@ def _self_check():
     sem = eh.get('sem')
     ok(sem is None or (sem['desde'] < sem['hasta'] and all(v > 1 for v in sem['mult'].values())),
        'eventos-hoy: la semana en curso, sólo los multiplicadores de más de ×1')
+    # 🧭 `meta.nuevos` (19/11/2026): sólo los confirmados que entraron sin pasar por el código, nunca uno de afuera
+    nu = _nuevos({'servidores': {
+        'FFA': {'confirmado': True, 'guild_id': '1468472442925092958'},
+        'LKR': {'confirmado': True, 'guild_id': '1558611504046153750', 'alta': 'dashboard', 'nombre': 'LATÍN KING RAP', 'sigla': 'LKR'},
+        'FNC': {'confirmado': True, 'guild_id': '555555555555555555', 'alta': 'setup', 'nombre': 'Nuevo'},
+        'TFC': {'confirmado': True, 'en_la_liga': False, 'guild_id': '1043611686524944404', 'alta': 'setup'},
+        'SIN': {'confirmado': False, 'guild_id': '666666666666666666', 'alta': 'setup'},
+        'mal': {'confirmado': True, 'guild_id': '777777777777777777', 'alta': 'setup'}}})
+    ok(nu == {'LKR': ['1558611504046153750', 'LATÍN KING RAP', 'LKR'], 'FNC': ['555555555555555555', 'Nuevo', 'FNC']},
+       'meta.nuevos: los del /setup y del Dashboard confirmados; ni los de siempre, ni los de afuera, ni una sigla mal')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

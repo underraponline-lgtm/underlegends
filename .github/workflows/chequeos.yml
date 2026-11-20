@@ -129,6 +129,9 @@ jobs:
           node bot/perfil_prueba.mjs
           # 🏷️ /apodo: bot/apodo.js arma los seis estilos igual que bot/apodo.py (los mismos casos, bot/apodo_casos.json)
           node bot/apodo_prueba.mjs
+          # 🧭 el /setup (19/11/2026): cada pantalla contra los topes de Discord, el objeto, y de /setup a «Aplicar» y al
+          # «Que sumen» de Dlx con un Discord simulado: una escritura de KV, nada repetido y el DM sólo a Dlx
+          node bot/setup_prueba.mjs
 
       # 🗺️ `herramientas/que_pide_cada_carta.py --auto` (04/11/2026) dibuja las cuatro cartas y da rojo si una pide un dato que
       # `datos/campos_por_carta.json` no tiene, porque ese dato no redibuja nada. No escribe: volver a medir redibuja todas las

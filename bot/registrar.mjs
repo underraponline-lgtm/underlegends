@@ -384,6 +384,16 @@ const COMANDOS = [
     default_member_permissions: '8',
   },
   {
+    name: 'setup',
+    type: 1,
+    description: 'deja el bot listo en este servidor y súmalo a la Liga (admins)',
+    ...SOLO_EN_SERVIDOR,
+    // 🧭 Dlx, 19/11/2026 («tus elecciones», 1A): lo corren los admins del servidor. '32' = MANAGE_GUILD sólo lo
+    // ESCONDE (el dueño y Administrador lo ven igual); el que decide, en cada clic, es `puedeSetup()` de bot/setup.js.
+    // Todo en bot/setup.js
+    default_member_permissions: '32',
+  },
+  {
     name: 'foto',
     type: 1,
     description: 'usá tu foto de Discord actual como la de tus cartas (una por temporada)',

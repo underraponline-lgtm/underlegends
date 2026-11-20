@@ -1136,8 +1136,26 @@ def canales(s):
                 out.append((c['id'], n, cod, 'inscripciones', g, str(c.get('parent_id') or '')))
             elif PATRON.search(n):
                 out.append((c['id'], n, cod, 'eventos', g, str(c.get('parent_id') or '')))
+        out += del_setup(cs, d, cod, g, fuera, out)
     canales.sin_acceso = sin_acceso
     return out
+
+
+def del_setup(cs, d, cod, g, fuera, ya):
+    """🧭 Los canales que el servidor eligió en su /setup (`canales_setup`, 19/11/2026: `an` anuncios, `in`
+    inscripciones) y el nombre no encontró: se SUMAN, nunca reemplazan. Sólo si el canal existe, es de texto y no está
+    en una categoría de afuera; uno que ya está en `ya` no se repite. Puro: lo prueba el self-check."""
+    elegidos = (d or {}).get('canales_setup') or {}
+    vistos = {str(x[0]) for x in ya or []}
+    extra = []
+    for k, tipo in (('an', 'eventos'), ('in', 'inscripciones')):
+        cid = str(elegidos.get(k) or '')
+        c = next((x for x in cs or [] if str(x.get('id')) == cid and x.get('type') in (0, 5)), None)
+        if not c or cid in vistos or str(c.get('parent_id') or '') in (fuera or set()):
+            continue
+        vistos.add(cid)
+        extra.append((c['id'], unicodedata.normalize('NFKD', c.get('name', '')), cod, tipo, g, str(c.get('parent_id') or '')))
+    return extra
 
 
 canales.sin_acceso = 0
@@ -1844,6 +1862,19 @@ def _self_check():
     mal += not ok
     print('   %s los oficiales: sin repetir, los %d más nuevos de cada servidor y nada de hace más de %d días'
           % ('✅' if ok else '🔴', OFICIALES_POR_SV, OFICIALES_DIAS))
+
+    # 🧭 lo elegido en el /setup se suma a lo encontrado por nombre, sin repetir y sin lo de afuera (19/11/2026)
+    cs = [{'id': '1', 'name': 'torneos-semanales', 'type': 0}, {'id': '2', 'name': 'anotate-aca', 'type': 0},
+          {'id': '3', 'name': 'eventos', 'type': 0}, {'id': '4', 'name': 'oculto', 'type': 0, 'parent_id': '9'},
+          {'id': '5', 'name': 'voz', 'type': 2}]
+    ya = [('3', 'eventos', 'X', 'eventos', 'g', '')]
+    e1 = del_setup(cs, {'canales_setup': {'an': '1', 'in': '2'}}, 'X', 'g', set(), ya)
+    e2 = del_setup(cs, {'canales_setup': {'an': '3', 'in': '4'}}, 'X', 'g', {'9'}, ya)
+    e3 = del_setup(cs, {'canales_setup': {'an': '5'}}, 'X', 'g', set(), ya) + del_setup(cs, {}, 'X', 'g', set(), ya)
+    ok = ([(x[0], x[3]) for x in e1] == [('1', 'eventos'), ('2', 'inscripciones')] and e2 == [] and e3 == [])
+    mal += not ok
+    print('   %s los canales del /setup se suman a los encontrados por nombre; uno repetido, uno de afuera o uno de voz, no'
+          % ('✅' if ok else '🔴'))
 
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0

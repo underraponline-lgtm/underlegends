@@ -140,32 +140,207 @@ SOLO_TEMPORADA_DESDE = ''
 PIDEN_CODIGO = ('suma', 'competitivo', 'duelos')
 
 
-def en_el_codigo():
-    """Las siglas que `sheet/rankings.py` conoce (su `SERVIDORES`): las únicas que pueden sumar al ranking."""
+# ── 🧭 LOS QUE ENTRAN SOLOS CON /setup (19/11/2026) ────────────────────────────────────────────────────────────────────
+# Dlx, 19/11/2026, a la maqueta del /setup: «tus elecciones» (1A 2A 3A 4A 5A). La 4A: terminar el setup mete al
+# servidor en la Liga SOLO —confirmado, Tier 3, sus anuncios leídos, su página y su kit— pero sus eventos NO suman a la
+# Temporada hasta que Dlx lo apruebe («Que sumen · Tier 3» en su DM o en el Dashboard: el ajuste `setup_suma`).
+#
+# 🔑 LA APROBACIÓN ES LA PUERTA, Y ESTÁ EN TRES LUGARES QUE DICEN LO MISMO:
+#   · `beneficios()`: un servidor del setup sin aprobar tiene `suma`, `competitivo` y `duelos` apagados, aunque Dlx
+#     prenda el interruptor en su caja: lo que lo prende es la aprobación;
+#   · `guilds_sin()`: sus guilds van en «no suman» leyendo `datos/servidores.json` DIRECTO, sin depender de que
+#     `datos/niveles.json` ya lo tenga (un ciclo cortado entre escribir uno y otro no lo deja sumar);
+#   · `en_el_codigo()` y `sheet/rankings.py`: el aprobado entra a la lista de servidores del ranking AL FINAL, que es lo
+#     que hacía a mano `herramientas/sumar_servidor.py` (su columna en la vitrina, su `Sv`). Sin aprobar, no entra.
+# ⚠️ Y SÓLO TOCA LO QUE TIENE `alta: 'setup'`: un servidor que ya era de la Liga y corre /setup no cambia en nada acá.
+
+def _svs(servidores=None):
+    return servidores if servidores is not None else ((_j('datos', 'servidores.json') or {}).get('servidores') or {})
+
+
+def de_setup(x):
+    """¿Esta entrada de `datos/servidores.json` entró con /setup y está en la Liga?"""
+    return isinstance(x, dict) and x.get('alta') == 'setup' and bool(x.get('confirmado')) and x.get('en_la_liga') is not False
+
+
+def aprobados_setup(servidores=None):
+    """Las siglas del /setup que Dlx aprobó, EN EL ORDEN EN QUE LAS APROBÓ (y por sigla si empatan). ⚠️ El orden importa:
+    `sheet/rankings.py` las agrega al final de sus columnas, y la vitrina sólo crece sola si lo nuevo va DESPUÉS de lo que
+    ya tenía (`columnas_que_faltan()`); por sigla, una aprobada hoy podría caer antes que una de ayer."""
+    svs = _svs(servidores)
+    return [sv for _a, sv in sorted((str(x.get('suma_aprobada')), sv) for sv, x in svs.items()
+                                    if de_setup(x) and x.get('suma_aprobada') and re.match(r'^[A-Z]{2,6}$', sv))]
+
+
+def pendientes_setup(servidores=None):
+    """Las siglas del /setup que todavía esperan a Dlx (o a las que les dijo «Todavía no»)."""
+    return {sv for sv, x in _svs(servidores).items() if de_setup(x) and not x.get('suma_aprobada')}
+
+
+def con_setup(base, servidores=None):
+    """La lista de servidores del ranking (`base`, escrita a mano) con los aprobados del /setup al final. Lo escrito no
+    se mueve ni se repite: para los de siempre, `con_setup(base)[:len(base)] == base`."""
+    base = tuple(base)
+    return base + tuple(sv for sv in aprobados_setup(servidores) if sv not in base)
+
+
+def en_el_codigo(servidores=None):
+    """Las siglas que `sheet/rankings.py` conoce (su `SERVIDORES`): las únicas que pueden sumar al ranking. Con los
+    aprobados del /setup, que el ranking agrega solo (ver arriba)."""
     try:
         txt = io.open(os.path.join(BASE, 'sheet', 'rankings.py'), encoding='utf-8').read()
         m = re.search(r"^SERVIDORES = \((.*)\)$", txt, re.M)
-        return set(re.findall(r"'([^']*)'", m.group(1))) if m else set()
+        escritos = set(re.findall(r"'([^']*)'", m.group(1))) if m else set()
     except OSError:
-        return set()
+        escritos = set()
+    return escritos | set(aprobados_setup(servidores))
 
 
-def beneficios(nivel, elegidos=None, codigo=None):
+def beneficios(nivel, elegidos=None, codigo=None, pendientes=None):
     """`{sigla: {beneficio: bool}}`: el preset de su tier, con lo que Dlx eligió encima; `suma` y `duelos`, sólo si el
-    servidor está en el código. Y `bloq`: los que no se pueden prender todavía, para que el Dashboard diga por qué."""
+    servidor está en el código. Y `bloq`: los que no se pueden prender todavía, para que el Dashboard diga por qué.
+    🧭 `pendientes`: los del /setup sin aprobar (`pendientes_setup()`): ésos no suman AUNQUE estén en el código."""
     codigo = en_el_codigo() if codigo is None else codigo
+    pendientes = pendientes_setup() if pendientes is None else pendientes
     out, bloq = {}, {}
     for sv, t in nivel.items():
         b = {k: k in PRESET.get(t, PRESET[3]) for k, _t in BENEFICIOS}
         for k, v in ((elegidos or {}).get(sv) or {}).items():
             if k in b and isinstance(v, bool):
                 b[k] = v
-        if sv not in codigo:
+        if sv not in codigo or sv in pendientes:
             for k in PIDEN_CODIGO:
                 b[k] = False
             bloq[sv] = list(PIDEN_CODIGO)
         out[sv] = b
     return out, bloq
+
+
+def sigla_libre(propuesta, nombre, usadas):
+    """La sigla de un servidor del /setup: la propuesta (la que vio Dlx en el DM) si está libre; si no, de las iniciales
+    del nombre, como `siglaPropuesta()` de bot/setup.js. 2 a 6 letras, que nadie use como código ni como sigla."""
+    import unicodedata
+    usadas = {str(x).upper() for x in usadas}
+    p = str(propuesta or '').upper()
+    if re.match(r'^[A-Z]{2,6}$', p) and p not in usadas:
+        return p
+    t = unicodedata.normalize('NFKD', str(nombre or ''))
+    t = ''.join(c for c in t if not unicodedata.combining(c)).upper()
+    palabras = [re.sub(r'[^A-Z]', '', w) for w in re.split(r'[^A-Z0-9]+', t)]
+    palabras = [w for w in palabras if w]
+    ini, todo = ''.join(w[0] for w in palabras), ''.join(palabras)
+    cands = ([ini[:6]] if len(ini) >= 2 else []) + [todo[:n] for n in (3, 4, 5, 6) if len(todo) >= n]
+    if len(ini) >= 2:
+        cands += [ini[:5] + x for x in todo]
+    for c in cands:
+        if re.match(r'^[A-Z]{2,6}$', c) and c not in usadas:
+            return c
+    for a in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+        for b in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            if 'SV' + a + b not in usadas:
+                return 'SV' + a + b
+    return ''
+
+
+def altas_setup(aj, svs, ahora=None):
+    """➕ Los que corrieron /setup (`aj['setup_altas']`, del objeto): entran a `svs` confirmados, Tier 3, con
+    `alta: 'setup'`, su invitación y los canales que eligieron. Devuelve las siglas que entraron.
+    ⚠️ UN GUILD QUE YA ESTÁ NO SE TOCA: ni un socio de antes (FFA corre /setup y no le pasa nada acá) ni uno registrado
+    fuera de la Liga (TFC: «Olvida TFC»), que el setup marca `fuera` y sólo le llega a Dlx.
+    ⚠️ Y NADA DE QUIÉN LO CORRIÓ: esto va a `datos/servidores.json`, y el repo es público."""
+    nuevas = []
+    ah = ahora or dt.datetime.now(dt.timezone.utc)
+    hoy = ah.strftime('%d/%m/%Y')
+    usadas = set(svs) | {str(x.get('sigla')) for x in svs.values() if isinstance(x, dict) and x.get('sigla')}
+    guilds = {str(x.get('guild_id')) for x in svs.values() if isinstance(x, dict) and x.get('guild_id')}
+    pedidos = [x for x in ((aj or {}).get('setup_altas') or []) if isinstance(x, dict)]
+    for x in sorted(pedidos, key=lambda y: (y.get('t') or 0, str(y.get('g')))):
+        g, n = str(x.get('g') or ''), str(x.get('n') or '').strip()
+        if x.get('fuera') or not re.match(r'^\d{15,22}$', g) or not n or g in guilds:
+            continue
+        sv = sigla_libre(x.get('sigla'), n, usadas)
+        if not sv:
+            print('   ⚠️ /setup de «%s»: no encontré una sigla libre' % n[:40])
+            continue
+        aviso = str(x.get('aviso') or '')
+        e = {'nombre': n[:60], 'guild_id': g, 'en_el_sheet': False, 'confirmado': True, 'sigla': sv, 'tier': 3,
+             'alta': 'setup',
+             'nota': 'entró solo con /setup el %s (bot/tiers.py `altas_setup()`): sus puntos de Temporada esperan la '
+                     'aprobación de Dlx (`setup_suma`)' % hoy,
+             'setup': {'plantilla': str(x.get('pl') or '')[:10], 'aviso': aviso if re.match(r'^\d{15,22}$', aviso) else '',
+                       'desde': ah.strftime('%Y-%m-%d')}}
+        inv = x.get('inv') if isinstance(x.get('inv'), dict) else None
+        if inv and re.match(r'^[A-Za-z0-9-]{2,32}$', str(inv.get('codigo') or '')):
+            # 🔗 la que creó el setup: con `invitacion_liga` puesta, `bot/invitaciones.py` no crea otra
+            e['invitacion'] = 'https://discord.gg/%s' % inv['codigo']
+            e['invitacion_liga'] = {'codigo': str(inv['codigo']), 'canal': str(inv.get('canal') or '')[:80],
+                                    'canal_id': str(inv.get('canal_id') or ''), 'creada': ah.strftime('%Y-%m-%d')}
+        c = {k: str(v) for k, v in (x.get('c') or {}).items() if k in ('an', 'in', 've', 'ge') and re.match(r'^\d{15,22}$', str(v))}
+        if c:
+            e['canales_setup'] = c
+        svs[sv] = e
+        usadas.add(sv)
+        guilds.add(g)
+        nuevas.append(sv)
+    return nuevas
+
+
+def aprobar_setup(aj, svs, ahora=None):
+    """✅ Lo que decidió Dlx (`aj['setup_suma']`, `{guild: {si, t}}`) sobre los del /setup: `suma_aprobada` (la hora)
+    es un ESPEJO de `si: true`. Sin decisión, o con «Todavía no» —también un «Deshacer»—, no está aprobado. Sólo mira
+    los `alta: 'setup'`. Devuelve las siglas que cambiaron."""
+    dec = (aj or {}).get('setup_suma')
+    dec = dec if isinstance(dec, dict) else {}
+    t = (ahora or dt.datetime.now(dt.timezone.utc)).strftime('%Y-%m-%dT%H:%MZ')
+    cambios = []
+    for sv, x in svs.items():
+        if not de_setup(x):
+            continue
+        d = dec.get(str(x.get('guild_id')))
+        si = isinstance(d, dict) and d.get('si') is True
+        if si and not x.get('suma_aprobada'):
+            x['suma_aprobada'] = t
+            cambios.append(sv)
+        elif not si and x.get('suma_aprobada'):
+            x.pop('suma_aprobada', None)
+            x.pop('suma_avisada', None)
+            cambios.append(sv)
+    return cambios
+
+
+def avisar_suma(svs, ben, tok, ahora=None, mandar=None):
+    """📣 El aviso al servidor cuando sus eventos YA suman (aprobado y con `suma` prendido en esta vuelta): un mensaje en
+    el canal donde el bot escribe (`setup.aviso`), una sola vez (`suma_avisada`). Con «Sólo leer» no hay canal: se anota
+    igual, y el servidor lo ve en su /setup. Devuelve las siglas anotadas. `mandar(canal, texto) -> bool` es para la prueba."""
+    hechas = []
+    for sv, x in svs.items():
+        if not de_setup(x) or not x.get('suma_aprobada') or x.get('suma_avisada') or not (ben.get(sv) or {}).get('suma'):
+            continue
+        canal = str((x.get('setup') or {}).get('aviso') or '')
+        if canal:
+            txt = ('✅ **Los eventos de %s ya suman a la Temporada de la Liga Global.** Desde ahora, lo que se juegue acá con '
+                   '%d participantes o más entra al ranking: <https://underlegends.pages.dev/freestyle-rap/ranking>'
+                   % (re.sub(r'[\\`*_~|>#\[\]<@]', '', str(x.get('nombre') or sv))[:60], MIN_SOLO_TEMPORADA))
+            ok = mandar(canal, txt) if mandar else _mandar_canal(canal, txt, tok)
+            if not ok:
+                print('   ⚠️ no pude avisarle a %s que ya suma: queda para la vuelta siguiente' % sv)
+                continue
+        x['suma_avisada'] = (ahora or dt.datetime.now(dt.timezone.utc)).strftime('%Y-%m-%d')
+        hechas.append(sv)
+    return hechas
+
+
+def _mandar_canal(canal, texto, tok):
+    import requests
+    if not tok:
+        return False
+    try:
+        r = requests.post('https://discord.com/api/v10/channels/%s/messages' % canal, timeout=20,
+                          headers={'Authorization': 'Bot ' + tok, 'User-Agent': 'DiscordBot (underlegends, 1.0)'},
+                          json={'content': texto, 'allowed_mentions': {'parse': []}})
+        return r.status_code == 200
+    except Exception:                                    # noqa: BLE001
+        return False
 
 
 def sin(beneficio, guardado=None):
@@ -179,9 +354,14 @@ def sin(beneficio, guardado=None):
 
 
 def guilds_sin(beneficio, servidores=None, guardado=None):
-    """Los guild ID de los servidores con ese beneficio apagado (para el lector de llaves: `suma`)."""
+    """Los guild ID de los servidores con ese beneficio apagado (para el lector de llaves: `suma`).
+    🧭 Y los del /setup sin aprobar, para `suma`, `competitivo` y `duelos`, leídos de `servidores.json` y no de
+    `niveles.json`: si el ciclo se cortara después de darlo de alta y antes de escribir los niveles, igual no suma."""
     svs = servidores if servidores is not None else ((_j('datos', 'servidores.json') or {}).get('servidores') or {})
-    return {str(svs[sv].get('guild_id')) for sv in sin(beneficio, guardado) if svs.get(sv, {}).get('guild_id')}
+    out = {str(svs[sv].get('guild_id')) for sv in sin(beneficio, guardado) if svs.get(sv, {}).get('guild_id')}
+    if beneficio in PIDEN_CODIGO:
+        out |= {str(svs[sv].get('guild_id')) for sv in pendientes_setup(svs) if svs[sv].get('guild_id')}
+    return out
 
 
 # ── ➕ EL ALTA DESDE EL DASHBOARD (ajuste `altas`, `{sigla: {n, g, t, tag}}`) ─────────────────────────────────────
@@ -787,18 +967,27 @@ def correr(aplicar=False, ahora=None):
             elegidos_b = aj.get('beneficios') or {}
             # ➕ los servidores nuevos del Dashboard, antes de medir: así entran a la lista en esta misma corrida
             nuevas = altas(aj, svs, ahora=ahora)
-            if nuevas:
+            # 🧭 y los del /setup (19/11/2026), y lo que Dlx decidió de sus puntos de Temporada
+            nuevas_su = altas_setup(aj, svs, ahora=ahora)
+            aprobadas = aprobar_setup(aj, svs, ahora=ahora)
+            if nuevas or nuevas_su or aprobadas:
                 with io.open(os.path.join(BASE, 'datos', 'servidores.json'), 'w', encoding='utf-8', newline='\n') as f:
                     json.dump(todo_svs, f, ensure_ascii=False, indent=1)
                     f.write('\n')
-                print('   ➕ dados de alta desde el Dashboard: %s' % ', '.join(nuevas))
+                if nuevas:
+                    print('   ➕ dados de alta desde el Dashboard: %s' % ', '.join(nuevas))
+                if nuevas_su:
+                    print('   🧭 entraron con /setup (Tier 3, sin sumar hasta que Dlx apruebe): %s' % ', '.join(nuevas_su))
+                if aprobadas:
+                    print('   ✅ los puntos de Temporada del /setup cambiaron: %s' % ', '.join(
+                        '%s %s' % (sv, 'aprobado' if svs[sv].get('suma_aprobada') else 'sin aprobar') for sv in aprobadas))
                 try:
                     import fotos as F
-                    _alta_completar(nuevas, svs, F.env('DISCORD_TOKEN', obligatorio=False))
+                    _alta_completar(nuevas + nuevas_su, svs, F.env('DISCORD_TOKEN', obligatorio=False))
                 except Exception as e:                   # noqa: BLE001
                     print('   ⚠️ el bot y la invitación de los nuevos: %s' % str(e)[:80])
     nivel = niveles(svs, elegidos)
-    ben, bloq = beneficios(nivel, elegidos_b)
+    ben, bloq = beneficios(nivel, elegidos_b, codigo=en_el_codigo(svs), pendientes=pendientes_setup(svs))
     # 👥 los miembros de cada Discord, de su invitación (lo mismo que muestra Socios: `subir_web._miembros()`)
     gente = {}
     if aplicar:
@@ -817,6 +1006,10 @@ def correr(aplicar=False, ahora=None):
             f['bloq'] = bloq[f['sv']]
         if (svs.get(f['sv']) or {}).get('alta') == 'dashboard':
             f['alta'] = True
+        # 🧭 los del /setup: el Dashboard dice «espera tu respuesta» en vez de «falta sumarlo al código»
+        if de_setup(svs.get(f['sv'])):
+            f['alta'] = True
+            f['setup'] = 'aprobado' if svs[f['sv']].get('suma_aprobada') else 'pendiente'
     # 📊 el panel de cada socio, con su dueño (ver arriba). Los tres tiers: Dlx, 20/10/2026, del dueño de FDS (Tier 3),
     # «para que pueda ver su página y sus estadísticas»
     try:
@@ -860,6 +1053,18 @@ def correr(aplicar=False, ahora=None):
             with io.open(NIVELES, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(nuevo, f, ensure_ascii=False, indent=1)
             print('   🤝 los niveles cambiaron: %s' % ', '.join('%s %d' % kv for kv in sorted(nivel.items())))
+        # 📣 a los del /setup que YA suman (aprobados y con `suma` prendido), su aviso, una vez. Después de escribir los
+        # niveles: el aviso dice algo que ya es cierto
+        try:
+            import fotos as F
+            avisados = avisar_suma(svs, ben, F.env('DISCORD_TOKEN', obligatorio=False), ahora=ahora)
+            if avisados:
+                with io.open(os.path.join(BASE, 'datos', 'servidores.json'), 'w', encoding='utf-8', newline='\n') as f:
+                    json.dump(todo_svs, f, ensure_ascii=False, indent=1)
+                    f.write('\n')
+                print('   📣 les avisé que ya suman: %s' % ', '.join(avisados))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ el aviso de «ya suman»: %s' % str(e)[:80])
         try:
             _mandar({'t': (ahora or dt.datetime.now(dt.timezone.utc)).strftime('%Y-%m-%dT%H:%M:%SZ'), 'semanas': SEMANAS,
                      'servidores': filas})
@@ -912,6 +1117,72 @@ def _self_check():
     ok(nv == ['NUE'] and sv2['NUE']['confirmado'] and sv2['NUE']['tier'] == 3 and sv2['NUE']['alta'] == 'dashboard'
        and sv2['NUE']['tag'] == 'COMUNIDAD',
        'el alta: entra el nuevo, confirmado y con su tier; ni una sigla que ya está, ni un guild repetido, ni una sigla mal')
+    # 🧭 EL /setup (19/11/2026): entra solo, NO suma hasta que Dlx apruebe, y lo que ya estaba no cambia
+    G1, G2, G3, G4, G5 = '111111111111111111', '444444444444444444', '555555555555555555', '999999999999999999', '666666666666666666'
+    base_su = {'AAA': {'confirmado': True, 'guild_id': G1, 'nombre': 'Uno'},
+               'FUE': {'en_la_liga': False, 'confirmado': True, 'guild_id': G2, 'nombre': 'Afuera'}}
+    aj_su = {'setup_altas': [
+        {'g': G3, 'n': 'Freestyle Nuevo Club', 'sigla': 'FNC', 'pl': 'completa', 't': 2, 'aviso': G5,
+         'inv': {'codigo': 'abcDEF12', 'canal': 'bienvenida', 'canal_id': '777777777777777777'},
+         'c': {'an': '888888888888888888', 'xx': '1'}, 'por': '123456789012345678'},
+        {'g': G1, 'n': 'Uno otra vez', 'sigla': 'UNO', 't': 1},
+        {'g': G2, 'n': 'Afuera', 'sigla': 'AFU', 't': 1, 'fuera': True},
+        {'g': G4, 'n': 'Otro Uno', 'sigla': 'AAA', 't': 3}]}
+    s1 = json.loads(json.dumps(base_su))
+    ah = dt.datetime(2026, 11, 19, 22, 0, tzinfo=dt.timezone.utc)
+    nv_su = altas_setup(aj_su, s1, ahora=ah)
+    f1 = s1.get('FNC') or {}
+    ok(nv_su == ['FNC', 'OU'] and s1['AAA'] == base_su['AAA'] and s1['FUE'] == base_su['FUE'],
+       'el /setup: entran los nuevos; un guild que ya es de la Liga o que está registrado afuera no se toca; una sigla '
+       'ocupada se cambia por otra libre', str(nv_su))
+    ok(f1.get('confirmado') and f1.get('tier') == 3 and f1.get('alta') == 'setup' and f1.get('sigla') == 'FNC'
+       and (f1.get('invitacion_liga') or {}).get('codigo') == 'abcDEF12' and f1.get('canales_setup') == {'an': '888888888888888888'}
+       and (f1.get('setup') or {}).get('aviso') == G5 and '123456789012345678' not in json.dumps(f1),
+       'el del /setup entra confirmado, Tier 3, con su invitación y sus canales, y SIN quién lo corrió (el repo es público)', str(f1))
+    ok(pendientes_setup(s1) == {'FNC', 'OU'} and aprobados_setup(s1) == [], 'recién entrado, espera a Dlx')
+    nv1 = niveles(s1, {})
+    b_pend, q_pend = beneficios(nv1, {'FNC': {'suma': True}}, codigo={'AAA', 'FNC', 'OU'}, pendientes=pendientes_setup(s1))
+    ok(not b_pend['FNC']['suma'] and not b_pend['OU']['suma'] and b_pend['AAA']['suma'] and q_pend.get('FNC') == list(PIDEN_CODIGO)
+       and b_pend['FNC']['pagina'] and b_pend['FNC']['calendario'],
+       'sin aprobar NO suma: ni estando en el código ni con el interruptor prendido; su página y sus eventos, sí')
+    gs = guilds_sin('suma', s1, {'beneficios': {'AAA': {'suma': True}}})
+    ok(G3 in gs and G4 in gs and G1 not in gs,
+       'y su guild va en «no suman» aunque niveles.json todavía no lo tenga (un ciclo cortado a mitad no lo deja sumar)', str(gs))
+    camb = aprobar_setup({'setup_suma': {G3: {'si': True, 't': 1}, G1: {'si': True, 't': 1}}}, s1, ahora=ah)
+    ok(camb == ['FNC'] and s1['FNC'].get('suma_aprobada') and 'suma_aprobada' not in s1['AAA'] and aprobados_setup(s1) == ['FNC']
+       and con_setup(('AAA', 'BBB'), s1) == ('AAA', 'BBB', 'FNC') and 'FNC' in en_el_codigo(s1),
+       '«Que sumen»: lo aprueba, y sólo a los del /setup (a AAA, que ya era de la Liga, no le escribe nada); entra al final '
+       'de la lista del ranking', str(camb))
+    b_ok, _q = beneficios(niveles(s1, {}), {}, codigo=en_el_codigo(s1), pendientes=pendientes_setup(s1))
+    gs2 = guilds_sin('suma', s1, {'beneficios': b_ok})
+    ok(b_ok['FNC']['suma'] and not b_ok['FNC']['competitivo'] and G3 not in gs2 and G4 in gs2,
+       'aprobado: suma a la Temporada (Tier 3: sin el Competitivo); el otro sigue esperando')
+    mandados = []
+    av1 = avisar_suma(s1, b_ok, None, ahora=ah, mandar=lambda c, t: mandados.append((c, t)) or True)
+    av2 = avisar_suma(s1, b_ok, None, ahora=ah, mandar=lambda c, t: mandados.append((c, t)) or True)
+    ok(av1 == ['FNC'] and av2 == [] and len(mandados) == 1 and mandados[0][0] == G5 and 'ya suman' in mandados[0][1],
+       'el aviso «ya suman», una sola vez, en el canal donde escribe el bot', str(mandados))
+    camb2 = aprobar_setup({'setup_suma': {G3: {'si': False, 't': 2}}}, s1, ahora=ah)
+    ok(camb2 == ['FNC'] and 'suma_aprobada' not in s1['FNC'] and 'suma_avisada' not in s1['FNC'] and 'FNC' in pendientes_setup(s1)
+       and aprobar_setup({}, s1) == [], '«Todavía no» (o un «Deshacer») lo vuelve a apagar; sin decisión, nada cambia')
+    s3 = {'XA': {'confirmado': True, 'alta': 'setup', 'guild_id': G3, 'suma_aprobada': '2026-11-20T10:00Z'},
+          'AB': {'confirmado': True, 'alta': 'setup', 'guild_id': G4, 'suma_aprobada': '2026-11-21T10:00Z'}}
+    ok(aprobados_setup(s3) == ['XA', 'AB'], 'en el orden en que se aprobaron, no por sigla: la vitrina crece sólo al final')
+    ok(sigla_libre('XYZ', 'algo', {'AAA'}) == 'XYZ' and sigla_libre('AAA', 'Freestyle Zona Ártica', {'AAA'}) == 'FZA'
+       and sigla_libre('', 'Freestyle Zona Ártica', {'FZA'}) == 'FRE' and sigla_libre('x', '', {'AAA'}) == 'SVAA',
+       'la sigla: la propuesta si está libre; si no, las iniciales (sin tildes), y si no, otra')
+    # y lo de verdad: para todo servidor que NO entró con /setup, los beneficios y los «no suman» son los de antes
+    rs, rn = _j('datos', 'servidores.json') or {}, _j('datos', 'niveles.json') or {}
+    rsv = rs.get('servidores') or {}
+    rnv = niveles(rsv, rn.get('niveles') or {})
+    cod = en_el_codigo(rsv)
+    con, _ = beneficios(rnv, rn.get('beneficios_elegidos') or {}, codigo=cod, pendientes=pendientes_setup(rsv))
+    antes, _ = beneficios(rnv, rn.get('beneficios_elegidos') or {}, codigo=cod, pendientes=set())
+    viejos = [sv for sv in rnv if not de_setup(rsv.get(sv))]
+    pend_g = {str(rsv[s].get('guild_id')) for s in pendientes_setup(rsv)}
+    ok(viejos and all(con[sv] == antes[sv] for sv in viejos)
+       and guilds_sin('suma', rsv, rn) - pend_g == {str(rsv[s].get('guild_id')) for s in sb('suma', rn) if rsv.get(s, {}).get('guild_id')},
+       'con los datos de verdad: los %d servidores de antes del /setup tienen los mismos beneficios y los mismos «no suman»' % len(viejos))
     hoy = dt.date(2026, 10, 18)
     tb = lambda *ns: [[n, 'x', 1] for n in ns]  # noqa: E731
     ll = {str(i): {'dia': str(hoy - dt.timedelta(days=i * 3)), 'sv': 'AAA', 'tabla': tb(*['p%d' % j for j in range(16)])}

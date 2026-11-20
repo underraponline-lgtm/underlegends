@@ -776,9 +776,11 @@ function Beneficios({ x, tier, aj, hacer, ocup }) {
     <div className="ti-ben">
       <small>Lo que recibe {Object.keys(mios).length ? <button type="button" className="ti-ben-x" disabled={ocup} onClick={volver}>volver al tier</button> : null}</small>
       {BENEF.map(([b, t]) => (
-        <label key={b} className={bloq.includes(b) ? 'off' : ''} title={bloq.includes(b) ? 'Para sumar al ranking hay que sumarlo al código: pídeselo a Claude.' : ''}>
+        <label key={b} className={bloq.includes(b) ? 'off' : ''} title={bloq.includes(b) ? (x.setup === 'pendiente'
+          ? 'Entró con /setup: suma cuando le digas «Que sumen» (en tu DM o en «Los que corrieron /setup»).'
+          : 'Para sumar al ranking hay que sumarlo al código: pídeselo a Claude.') : ''}>
           <input type="checkbox" checked={val(b)} disabled={ocup || bloq.includes(b)} onChange={(e) => poner(b, e.target.checked)} />
-          <span>{t}{bloq.includes(b) ? ' · falta sumarlo al código' : ''}</span>
+          <span>{t}{bloq.includes(b) ? (x.setup === 'pendiente' ? ' · espera tu respuesta (/setup)' : ' · falta sumarlo al código') : ''}</span>
         </label>
       ))}
     </div>
@@ -902,6 +904,36 @@ function SumarServidor({ T, aj, hacer, ocup }) {
           <button type="button" className="ti-ben-x" disabled={ocup} onClick={() => quitar(sv)}>quitar</button></li>
       ))}</ul> : null}
     </form>
+  );
+}
+// 🧭 LOS QUE ENTRARON SOLOS CON /setup (19/11/2026, Dlx: «tus elecciones», la 4A). Ya están en la Liga (Tier 3, sus
+// anuncios, su página y su kit); lo único que espera es si sus eventos suman a la Temporada. Es el ajuste `setup_suma`
+// (`{guild: {si, t}}`), el MISMO que escriben los botones del DM: lo último que toques, acá o allá, es lo que vale, y el
+// ciclo lo aplica en su próxima vuelta (`aprobar_setup()` de bot/tiers.py)
+const PLANT = { completa: 'Liga completa', basico: 'Lo básico', leer: 'Sólo leer' };
+function SetupNuevos({ lista, aj, hacer, ocup }) {
+  if (!lista || !lista.length) return null;
+  const dec = aj.setup_suma || {};
+  const decidir = (x, si) => hacer('setup_suma', Object.assign({}, dec, { [x.g]: { si, t: Date.now() } }),
+    (x.nombre || x.sigla) + (si ? ': sus eventos suman a la Temporada (Tier 3) desde la próxima vuelta del ciclo.'
+      : ': todavía no suma. Lo puedes cambiar cuando quieras.'));
+  return (
+    <div className="ti-alta">
+      <small>Entran solos y como Tier 3: sus anuncios, su página y su kit. Sus puntos de Temporada esperan tu respuesta (también te llegó por DM).</small>
+      <ul className="ti-alta-p">{lista.map((x) => {
+        const d = dec[x.g] || null;
+        return (
+          <li key={x.g}><b>{x.sigla || '—'}</b> {x.nombre} · {x.miembros ? num(x.miembros) + ' miembros · ' : ''}{PLANT[x.pl] || x.pl}
+            {' · '}{x.admin ? 'el bot es Administrador' : (x.faltan || []).length ? 'al bot le falta ' + x.faltan.join(', ').toLowerCase() : 'el bot tiene lo que necesita'}
+            {' · '}{hace(x.t)}
+            {x.fuera ? <span> · <b>estaba fuera de la Liga</b>: no entra solo (súmalo arriba si lo quieres)</span>
+              : <span> · {d && d.si ? '✅ suma' : d ? '⏸️ todavía no' : '⏳ espera tu respuesta'}
+                {' '}<button type="button" className="ti-ben-x" disabled={ocup || (d && d.si)} onClick={() => decidir(x, true)}>Que sumen · Tier 3</button>
+                {' '}<button type="button" className="ti-ben-x" disabled={ocup || (d && !d.si)} onClick={() => decidir(x, false)}>Todavía no</button></span>}
+          </li>
+        );
+      })}</ul>
+    </div>
   );
 }
 const REC = { bien: ['✅', 'Bien'], subir: ['⬆️', 'Puede subir'], revisar: ['⚠️', 'Revisar'], casa: ['🏠', 'La casa'] };
@@ -2108,6 +2140,7 @@ const NOMBRE_AJ = { campana_pausada: 'La campana', pase_sorteo: 'El sorteo del p
   apuestas: 'Las apuestas', aviso_evento: 'Dónde va el aviso de cada evento', avisos_nivel: 'Cuánto dice el aviso de cada evento',
   // 🏷️ y los que salían con el código crudo (25/10/2026)
   eventos_discord: 'Los eventos de Discord', tiers: 'El tier de los servidores', beneficios: 'Lo que recibe cada servidor', altas: 'Sumar un servidor',
+  setup_suma: 'Los puntos de los que corrieron /setup',
   socios_duenos: 'El dueño de un servidor socio', promos_mano: 'Las promos a mano', promos_quitar: 'Las promos sacadas', mes_sacar: 'Los nominados de los MES AWARDS',
   crew_precio: 'Lo que cuesta crear una crew', crew_precio_nombre: 'Lo que cuesta cambiarle el nombre a una crew', crew_precio_logo: 'Lo que cuesta cambiarle el logo a una crew',
   crews_ranking: 'El ranking de crews', crews_tiers_num: 'Los tiers de las crews', eventos_estilo: 'Los eventos de estilo' };
@@ -3722,6 +3755,7 @@ const BUSCABLES = [
   // ⚓ `sv-tiers` ya no existe (18/11/2026: se fue con la tabla del 25/10): el tier y el dueño viven en la Ficha de cada
   // fila (`sv-cada`) y sumar uno en `sv-sumar`. Con el ancla muerta, el buscador dejaba al principio del área
   ['Los tiers de los servidores', 'servidores', 'sv-cada'], ['Sumar un servidor', 'servidores', 'sv-sumar'], ['El dueño de un servidor socio', 'servidores', 'sv-cada'],
+  ['Los que corrieron /setup (sus puntos de Temporada)', 'servidores', 'sv-setup'],
   ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'], ['Errores en las llaves', 'pendientes', '', 'llaves'],
   ['Fondos, fotos de carta, logos y videos', 'pendientes', '', 'imagenes'], ['Pedidos de la gente', 'pendientes', '', 'pedidos'],
   ['Comparar semanas', 'numeros', 'nu-semanas'], ['El bot y la página, 7 días', 'numeros', 'nu-uso'], ['El tutorial', 'numeros', 'nu-tuto'],
@@ -5471,6 +5505,8 @@ export function Dashboard({ dc, liga }) {
         {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
         {sec('sv-cada', 'LOS SERVIDORES', 'una fila cada uno: se cambia ahí mismo',
           <ServidoresTabla liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} T={d.tiers} origen={(d.primerizos || {}).por_sv} />)}
+        {(d.setup || []).length ? sec('sv-setup', 'LOS QUE CORRIERON /setup', 'sus puntos de Temporada esperan tu respuesta',
+          <SetupNuevos lista={d.setup} aj={aj} hacer={hacer} ocup={ocup} />) : null}
         {d.tiers ? sec('sv-sumar', 'SUMAR UN SERVIDOR', d.tiers.t ? 'el puntaje, medido ' + hace(d.tiers.t) : null,
           <SumarServidor T={d.tiers} aj={aj} hacer={hacer} ocup={ocup} />) : null}
         {d.organizadores && (d.organizadores.sv || []).length ? sec('sv-org', 'LOS ORGANIZADORES Y EL BOT',
