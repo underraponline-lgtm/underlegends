@@ -306,7 +306,8 @@ export function cancelado(estado, m, cuerpo, avisado) {
 //   (a) cuando ya no está en la llave: el organizador lo reemplazó. Sale solo: la llave se lee de nuevo cada minuto
 //       y sólo se llama a quien la llave nombra; a quien entró en su lugar le llega su propio aviso;
 //   (b) cuando está en la llamada: se le pregunta a Discord antes de cada aviso (`enLaLlamada()`), y con un sí no se
-//       lo vuelve a llamar por esa batalla;
+//       lo vuelve a llamar por esa batalla. 🎙️ Desde el 19/11/2026, con los micrófonos de la llamada al día, se sabe
+//       sin preguntar (`vozVivo()`), y la batalla de AHORA es la que tiene los micrófonos abiertos (`turnosVivo()`);
 //   (c) cuando su batalla ya tiene ganador.
 //
 // ⚠️ NO ANTES DE QUE SE JUEGUE LA PRIMERA. La llave se publica antes de que el evento arranque, y ahí la primera
@@ -1067,6 +1068,38 @@ export function batallaVivo(L, voz, idsDe, probada) {
   if (eb.includes('fuera')) return null;
   return probada && fuertes.length < 2 && debiles.length < 2 && eb.includes('callado')
     ? Object.assign({}, base, { esperaMic: true }) : base;
+}
+
+/** La batalla sin decidir que viene después de `bat` en el orden de la llave (dos lados o más), o `null`. */
+export function siguienteChat(L, bat) {
+  let visto = false;
+  for (const R of (L && L.rondas) || []) {
+    for (const [i, b] of (R.b || []).entries()) {
+      if (!visto) { visto = !!bat && R.r === bat.r && i === bat.i; continue; }
+      const lados = (b[0] || []).filter(Boolean);
+      if (lados.length >= 2 && !b[1] && !/^pasan \d/.test(String(b[2] || ''))) return { r: R.r, i, lados, hecha: false };
+    }
+  }
+  return null;
+}
+
+/**
+ * 🎤🎙️ «TE TOCA» CON LOS MICRÓFONOS (19/11/2026, Dlx: «haz que "te toca" también use los micrófonos»). Es `turnosDe()`,
+ * salvo cuando los micrófonos dicen qué batalla se está jugando (`batallaVivo()`):
+ * - si es la que la llave dice que va AHORA, la que SIGUE es la de siempre y «Sos el próximo» sale como antes. También
+ *   antes de la primera batalla decidida: la llave se publica antes de arrancar, pero si sus raperos ya tienen el
+ *   micrófono abierto, arrancó;
+ * - si es OTRA (la jugaron salteada), AHORA es ésa —su gente ya está en la llamada: no se llama a nadie— y la que sigue no
+ *   se sabe, así que no se avisa. Así no le suena «¡Te toca!» a quien la llave nombra mientras pelean otros.
+ * Sin micrófonos (o sin ninguna batalla con el micrófono abierto), `turnosDe()` como antes.
+ */
+export function turnosVivo(L, voz, idsDe) {
+  const t = turnosDe(L);
+  const sel = voz ? batallaVivo(L, voz, idsDe, false) : null;
+  if (!sel || !sel.porVoz) return t;
+  const base = batallaChat(L);
+  if (!base || base.r !== sel.r || base.i !== sel.i) return { ahora: sel, sigue: null, porVoz: true };
+  return { ahora: sel, sigue: siguienteChat(L, sel), porVoz: true };
 }
 
 /**
@@ -11760,7 +11793,10 @@ export class Avisos {
       if (!L) continue;
       llaves++;
       if (ahora - (L.ed || 0) > LLAVE_QUIETA) continue;
-      for (const c of aLlamar(L, turnosDe(L), idx, hecho, ahora)) cands.push({ ...c, L, g: b.g });
+      // 🎙️ con los micrófonos de la llamada, si están al día (`turnosVivo()`, `vozVivo()`)
+      const voz = this.vozDe(b.g, ahora);
+      const idsDe = (l) => String(l).split(/\s*[,+&]\s*/).map((m) => idx[claveTurno(m)]).filter(Boolean);
+      for (const c of aLlamar(L, turnosVivo(L, voz, idsDe), idx, hecho, ahora)) cands.push({ ...c, L, g: b.g, voz });
     }
     // primero los de AHORA, y de ésos los que todavía no sonaron
     cands.sort((a, b) => (a.tipo === 'ahora' ? 0 : 1) - (b.tipo === 'ahora' ? 0 : 1) || a.n - b.n);
@@ -11770,10 +11806,12 @@ export class Avisos {
       if (!subs.length) { sinVinculo++; continue; }
       // ⚠️ LA PERSONA ENTERA O NADA —la pregunta a Discord y sus envíos—: si no entra en el tope de este minuto, sale
       // en el siguiente (no se anota nada)
-      if (pedidos + 1 + subs.length > TOPE_TURNOS) continue;
-      pedidos++;
-      // (b) ya está en la llamada: no se lo llama más por esta batalla
-      if (await this.enLaLlamada(c.g, c.did) === true) {
+      if (pedidos + (c.voz ? 0 : 1) + subs.length > TOPE_TURNOS) continue;
+      // (b) ya está en la llamada: no se lo llama más por esta batalla. 🎙️ Con los micrófonos al día se sabe sin
+      // preguntarle a Discord (la conexión de la llamada ve a todos los que están en un canal de voz de ese servidor)
+      if (!c.voz) pedidos++;
+      const enVoz = c.voz ? (c.voz.en || []).map(String).includes(String(c.did)) : await this.enLaLlamada(c.g, c.did);
+      if (enVoz === true) {
         this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', c.base + ':voz', ahora);
         enLlamada++;
         continue;

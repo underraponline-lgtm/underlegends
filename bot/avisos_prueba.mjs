@@ -148,6 +148,26 @@ const ok = (cond, que, det) => {
   const ll2 = A.aLlamar(jugada, A.turnosDe(jugada), IDX, de({}), T0);
   ok(!ll2.some((c) => c.did === '3') && ll2.some((c) => c.did === '5' && c.tipo === 'ahora'),
     '(c) con la batalla jugada se deja de llamar, y le toca a la siguiente');
+  // 🎙️ «te toca» con los micrófonos de la llamada (19/11/2026, `turnosVivo()`)
+  const LT = R([[['Ana', 'Bea'], 'Ana', ''], [['Cami', 'Dora'], '', ''], [['Eli', 'Fer'], '', ''], [['Gabo', 'Hugo'], '', '']]);
+  const IDV = { ana: '700000000000000011', bea: '700000000000000012', cami: '700000000000000013', dora: '700000000000000014',
+    eli: '700000000000000015', fer: '700000000000000016', gabo: '700000000000000017', hugo: '700000000000000018' };
+  const idsV = (l) => String(l).split(/\s*[,+&]\s*/).map((m) => IDV[A.claveTurno(m)]).filter(Boolean);
+  const tv = (L, ab) => A.turnosVivo(L, ab === null ? null : { ab, en: Object.values(IDV) }, idsV);
+  const ladosV = (b) => (b ? b.lados.join(',') : '-');
+  ok(JSON.stringify(tv(LT, null)) === JSON.stringify(A.turnosDe(LT)) && JSON.stringify(tv(LT, [])) === JSON.stringify(A.turnosDe(LT)),
+    '«te toca» sin micrófonos, o entre batalla y batalla (nadie con el micrófono abierto): el de siempre');
+  const enOrden = tv(LT, [IDV.cami, IDV.dora]);
+  ok(enOrden && ladosV(enOrden.ahora) === 'Cami,Dora' && ladosV(enOrden.sigue) === 'Eli,Fer',
+    'la que la llave dice, con sus micrófonos abiertos: «Sos el próximo» a la que sigue, como siempre');
+  const salteada = tv(LT, [IDV.gabo, IDV.hugo]);
+  const llS = A.aLlamar(LT, salteada, { cami: '3', dora: '4', gabo: '7', hugo: '8' }, de({}), T0);
+  ok(salteada && ladosV(salteada.ahora) === 'Gabo,Hugo' && salteada.sigue === null && !llS.some((c) => c.did === '3' || c.did === '4'),
+    'salteada (pelean Gabo y Hugo): a Cami y Dora no les suena «¡Te toca!», y la que sigue no se sabe', JSON.stringify(llS));
+  const sinJugar = R([[['Ana', 'Bea'], '', ''], [['Cami', 'Dora'], '', '']]);
+  const arranco = tv(sinJugar, [IDV.ana, IDV.bea]);
+  ok(A.turnosDe(sinJugar) === null && arranco && ladosV(arranco.ahora) === 'Ana,Bea' && ladosV(arranco.sigue) === 'Cami,Dora',
+    'antes de la primera decidida no se avisaba; con los micrófonos de Ana y Bea abiertos arrancó: «Sos el próximo» a Cami y Dora');
   // el lector de la página, cargado como módulo: lo que hace el vigía (`turnos()`)
   await import('./paginas/llave_vivo.js');
   const LV = globalThis.LlaveVivo;
@@ -2330,6 +2350,41 @@ const ok = (cond, que, det) => {
       const c3 = cruces();
       ok(c3.length === 2 && /Cami 🇻🇪\*\* vs \*\*Dora 🇲🇽/.test(c3[1][1]) && c3[1][2] === IMG,
         'Cami y Dora abren el micrófono: el cruce sale en ese momento, con la imagen que ya estaba', JSON.stringify(c3));
+    }
+
+    // 4 · «¡Te toca!» con los micrófonos (`turnos()` con `turnosVivo()`): quién está en la llamada sale de los micrófonos,
+    // sin preguntarle a Discord; y salteada, a los que la llave nombra no les suena
+    {
+      const { o, sql, llave, mic } = await nuevo();
+      const sub = (k, n) => sql.exec('INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES (?, ?, ?, ?, ?, ?)',
+        'https://push.ejemplo/' + n, 'p', 'a', T, T, ID[k]);
+      sub('cami', 1);
+      sub('dora', 2);
+      llave(GANA_ANA, T);
+      pedidos.length = 0;
+      mic([], todos.filter((x) => x !== ID.dora), T);
+      await o.turnos(T);
+      const t1 = o.leer('turnos') || {};
+      const voz1 = sql.exec("SELECT id FROM hechos WHERE id LIKE 'turno:%:voz'").toArray().map((x) => x.id);
+      ok(!pedidos.some((p) => /voice-states/.test(p.u)) && t1.en_llamada === 1 && t1.pedidos === 1
+        && voz1.length === 1 && voz1[0].endsWith(':' + ID.cami + ':voz'),
+      '«¡Te toca!»: Cami ya está en la llamada y se sabe por los micrófonos, sin preguntarle a Discord; a Dora se la llama',
+      JSON.stringify({ t1, voz1, discord: pedidos.filter((p) => /voice-states/.test(p.u)).length }));
+    }
+    {
+      const { o, sql, llave, mic } = await nuevo();
+      const sub = (k, n) => sql.exec('INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES (?, ?, ?, ?, ?, ?)',
+        'https://push.ejemplo/' + n, 'p', 'a', T, T, ID[k]);
+      sub('cami', 1);
+      sub('dora', 2);
+      llave(GANA_ANA, T);
+      mic([ID.eva, ID.fio], todos, T);
+      await o.turnos(T);
+      const t2 = o.leer('turnos') || {};
+      const nombrados = sql.exec('SELECT id FROM hechos WHERE id LIKE ? OR id LIKE ?', '%' + ID.cami + '%', '%' + ID.dora + '%').toArray();
+      ok(t2.llamados === 2 && t2.sin_vinculo === 2 && !nombrados.length,
+        'salteada (pelean Eva y Fio): a Cami y Dora, que la llave pone ahora, no les suena «¡Te toca!»',
+        JSON.stringify({ t2, nombrados }));
     }
     globalThis.fetch = antesF;
   }
