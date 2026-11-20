@@ -682,17 +682,6 @@
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chilau/sv-frz.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chilau/sv-sr.webp"
  },
- "christopher": {
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/servidor.webp",
-  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-ch.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-ffa.webp",
-  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-ffs.webp",
-  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-frz.webp",
-  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-fvs.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/sv-urbf.webp",
-  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/christopher/temporada.webp"
- },
  "chupapene": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chupapene/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/chupapene/sv-dra.webp",
@@ -1829,16 +1818,6 @@
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/sv-ffs.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/sv-frz.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/sv-sr.webp"
- },
- "jazi": {
-  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/bloq-competitivo.webp",
-  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/bloq-pais.webp",
-  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/competitivo.webp",
-  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/pais.webp",
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/servidor.webp",
-  "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/sv-ch.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/sv-dra.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jazi/sv-sr.webp"
  },
  "jd": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jd/bloq-competitivo.webp",
