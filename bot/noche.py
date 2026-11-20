@@ -193,10 +193,22 @@ def tiene_carta(nombre):
 
 # ── lo que pasó esa noche ────────────────────────────────────────────────────────────────────────────────────────────
 def elo_noche(ev):
-    """`{identidad: (antes, después)}` de los que jugaron 1v1 en ese evento (`bot/elo.py`, recorrido en orden)."""
+    """`{identidad: (antes, después)}` de los que jugaron 1v1 en ese evento (`bot/elo.py`, recorrido en orden).
+
+    🪨 DESDE LA T2, EL ELO DE TEMPORADA (Dlx, 20/11/2026: «Sí, el de temporada»): lo que tenía cada uno al empezar esa
+    noche y al cerrarla, con lo de la noche adentro —es lo que mueve su piedra—, de todos los que pelearon. Se calcula
+    una vez por corrida para todas las noches (`elo_temporada.calcular(…, por_evento=True)`)."""
     import competencias as CO
     import elo as E
+    import elo_temporada as ET
     D = _d()
+    if ET.prendido():
+        if D.get('temporada') is None:
+            todas = dict(ET.todas_las_llaves())
+            todas.update(D['LL'] or {})
+            D['temporada'] = ET.calcular(todas, desde=ET.inicio(), arranque=ET.arranque(), fz=D.get('FZ'),
+                                         votos=D.get('VOT'), por_evento=True)['por_evento']
+        return dict(D['temporada'].get(str(ev)) or {})
     if D['cruces'] is None:
         D['cruces'] = CO.cruces(D['LL'], dt.datetime(2000, 1, 1, tzinfo=dt.timezone.utc),
                                 dt.datetime(2100, 1, 1, tzinfo=dt.timezone.utc))

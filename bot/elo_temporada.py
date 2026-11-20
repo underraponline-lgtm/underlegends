@@ -341,13 +341,15 @@ def historico(llaves, hasta=None):
     return elos, fz
 
 
-def calcular(llaves, desde=None, hasta=None, arranque=None, cortes=(), fz=None, votos=None):
+def calcular(llaves, desde=None, hasta=None, arranque=None, cortes=(), fz=None, votos=None, por_evento=False):
     """El histórico (con todas las llaves de antes de `hasta`) y el de temporada (con las de `desde` en adelante,
     arrancando de `arranque`: `{clave: puntos}`).
 
     `desde` y `hasta` son fechas (`date`). `cortes` son fechas en las que se guarda cómo estaba el de temporada justo
     antes de ese día (para las semanas de `bot/divisiones.py`): `out['cortes'][fecha] = {clave: {'elo', 'n', 'h'}}`.
-    `fz` y `votos` son los de `notas.fuerzas()` y `notas.indice_votos()` (sin ellos, se calculan)."""
+    `fz` y `votos` son los de `notas.fuerzas()` y `notas.indice_votos()` (sin ellos, se calculan). Con `por_evento`,
+    `out['por_evento'][n] = {clave: (antes, después)}`: el de temporada de cada uno al empezar esa noche y al cerrarla,
+    con lo de la noche adentro (lo que muestra «La noche de…», `bot/noche.py`)."""
     import competencias as CO
     import notas as NO
     norm = CO.norm
@@ -360,7 +362,7 @@ def calcular(llaves, desde=None, hasta=None, arranque=None, cortes=(), fz=None, 
     racha, btot, bcon = collections.Counter(), collections.Counter(), collections.Counter()
     h_ult = collections.defaultdict(list)
     pendientes = sorted(set(cortes))
-    snaps, fin = {}, None
+    snaps, fin, noches = {}, None, {}
 
     def foto():
         return {k: {'elo': int(round(v)), 'n': btot[k], 'h': h_ult[k][::-1][:ULTIMAS]} for k, v in pts.items()}
@@ -381,10 +383,12 @@ def calcular(llaves, desde=None, hasta=None, arranque=None, cortes=(), fz=None, 
             fin = hoy
             mn = NO._mult_nivel(nivel)
             mt = tamano(ev.get('participantes') or len(gente))
-            for q in gente | {x for _mr, g, ps, _mv in bats for x in [g] + ps}:
+            jugaron = gente | {x for _mr, g, ps, _mv in bats for x in [g] + ps}
+            for q in jugaron:
                 ultima[q] = hoy
                 ult_misma.setdefault(q, hoy)
                 pts.setdefault(q, 0.0)
+            al_empezar = {q: pts[q] for q in jugaron} if por_evento else None
             s_ini = {q: piedra(pts.get(q, 0.0)) for q in gente}
 
             def abierta(q):
@@ -452,13 +456,15 @@ def calcular(llaves, desde=None, hasta=None, arranque=None, cortes=(), fz=None, 
                 ult_misma[q] = hoy
         for q in misma:
             ult_misma[q] = hoy
+        if por_evento:
+            noches[str(n)] = {q: (a, pts.get(q, 0.0)) for q, a in al_empezar.items()}
     for c in pendientes:
         snaps[c] = foto()
     activos = {q for q, d in ultima.items() if fin and (fin - d).days <= ACTIVO_DIAS}
     return {'hist': {k: {'elo': int(round(v)), 'n': nb[k]} for k, v in hist.items()},
             'temp': {k: {'pts': round(v, 1), 'piedra': piedra(v), 'sub': subnivel(v), 'max': maxp.get(k, piedra(v)),
                          'n': btot[k], 'cuentan': bcon[k], 'h': h_ult[k][::-1][:ULTIMAS]} for k, v in pts.items()},
-            'cortes': snaps, 'activos': sorted(activos), 'fin': fin.isoformat() if fin else None}
+            'cortes': snaps, 'activos': sorted(activos), 'fin': fin.isoformat() if fin else None, 'por_evento': noches}
 
 
 def nombre_piedra(x):
@@ -500,8 +506,11 @@ def _self_check():
     # una noche de cuatro en Hierro: A le gana a C, B a D, A a B en la final
     L = {'1': _ev('2027-01-05', [('Semifinales', [(('A', 'C'), 'A'), (('B', 'D'), 'B')]), ('Final', [(('A', 'B'), 'A')])],
                   [('A', 'Campeón'), ('B', 'Subcampeón'), ('C', ''), ('D', '')])}
-    r = calcular(L, votos={})
+    r = calcular(L, votos={}, por_evento=True)
     t = {k: v['pts'] for k, v in r['temp'].items()}
+    pe = r['por_evento']['1']
+    ok(pe['a'][0] == 0.0 and round(pe['a'][1], 1) == t['a'] and pe['b'] == (0.0, 0.0),
+       'el antes y el después de cada noche, con lo de la noche adentro (para «La noche de…»)')
     ok(t['a'] > 40 and t['b'] == 0 and t['c'] == 0 and t['d'] == 0,
        'una noche: el campeón suma, la final nunca resta (B queda en 0) y en Hierro perder no resta')
     h = r['hist']

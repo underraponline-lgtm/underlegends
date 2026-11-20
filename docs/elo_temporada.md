@@ -345,11 +345,13 @@ piedras se prenden solas con `ACTUAL = 't2'`.
   temporadas. Con las batallas de la T1: Oasis 1339 con el nuevo, contra 1306 con el de hoy. Y nada lee el número de
   las divisiones como nivel: las chances salen de ahí, no de las piedras.
 
+- **«La noche de…»** (`bot/noche.py`, `elo_noche()`): desde la T2 muestra lo que se movió el **ELO de temporada** esa
+  noche, con lo de la noche adentro (Dlx, 20/11/2026, 4:02 AM: *«Sí, el de temporada»*). Con el #649 de prueba: Mats de
+  106 a 192, que lo ganó. En la T1 sigue mostrando el de siempre.
+
 **Lo que falta antes de la T2:**
 
-1. «La noche de…» (`bot/noche.py`, `elo_noche()`) sigue con la cuenta de la T1: decidir si desde la T2 muestra el
-   histórico o lo que se movió el de temporada.
-2. Los textos de `web/src/invitar.jsx` y de la Guía que dicen «batallas 1v1».
-3. El histórico en el perfil.
-4. Construir la página antes del cambio: el código está, el bundle no.
-5. El 1v1 ranked (×`FORMATO_1V1`) y lo que votaba el público, cuando existan.
+1. Los textos de `web/src/invitar.jsx` y de la Guía que dicen «batallas 1v1».
+2. El histórico en el perfil.
+3. Construir la página antes del cambio: el código está, el bundle no.
+4. El 1v1 ranked (×`FORMATO_1V1`) y lo que votaba el público, cuando existan.
