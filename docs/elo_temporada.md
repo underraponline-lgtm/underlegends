@@ -60,15 +60,22 @@ Cada batalla que cuenta es **un traspaso entre los dos**: lo que suma el que gan
 
 ### Las áreas (como el emparejamiento de Brawl)
 
-**Ganarle a alguien muy por debajo de tu piedra no suma** (y a él no le resta): no es tu área. Hasta Zafiro, el área son
-2 piedras de diferencia; de Rubí para arriba, 1. **Perder contra alguien muy por debajo sí resta**: fallaste. En la T1,
-el 7 % de las batallas quedan fuera de área.
+**Una batalla contra alguien muy lejos de tu piedra no cuenta para el ELO de temporada, ni ganando ni perdiendo**: no es
+tu área. Hasta Zafiro, el área son 2 piedras de diferencia; de Rubí para arriba, 1. En la T1, el 12 % de las batallas
+quedan fuera de área. Perderla igual **baja la nota y el ELO histórico** (los dos miran el nivel); y la sorpresa del de
+abajo se la lleva el 🔥 Batacazo.
+
+⚠️ **Se probó que perderla SÍ reste (y ganarla no sume), y no sirve** (Dlx, 20/11/2026, 2:15 AM: *«¿de cuánto ELO va a
+ganar Oasis que está en Mítico si todos los demás son de Hierro?»*): a alguien de arriba un evento flojo **sólo le podía
+restar** —+5 si lo ganaba todo, −15 a −25 si se caía una vez—, y jugar eventos abiertos le bajaba el ELO. Con 86 % por
+batalla, Oasis gana un evento de ~4 batallas la mitad de las veces. Elegido: *«No cuenta, ni ganando ni perdiendo»*. Sin
+regla de área (que la cuenta del ELO decida) también se probó: Oasis 790, +13 por noche arriba.
 
 ### Dónde se juega, y cómo se cierra cada cosa
 
 | de dónde viene la batalla | cómo se cierra |
 |---|---|
-| **un evento abierto** (las llaves de los servidores) | se juntan todas sus batallas y **se cierra la noche**: llegar a la final **nunca resta**; salir campeón **siempre suma**. Las áreas, como arriba |
+| **un evento abierto** (las llaves de los servidores) | se juntan todas sus batallas y **se cierra la noche**: llegar a la final **nunca resta**; salir campeón **siempre suma** (aunque todas sus batallas hayan sido fuera de su área: el mínimo, +5). Las áreas, como arriba |
 | **el 1v1 ranked** (por construir) | cada partida se cierra sola, como en Brawl. Empareja por área, así que casi nunca hay batallas fuera de área |
 | **los eventos de piedras de DRA** (por construir) | como un evento abierto, con todos en el área; el nivel del evento ya los hace pesar más |
 
@@ -83,8 +90,8 @@ tercero y la nota **no suman solos**: perdieron una batalla, o repiten lo que ya
 
 ### Cuándo se pierde ELO de temporada
 
-- **Saliendo temprano** contra alguien de tu nivel o de abajo; cuanto más débil, más resta.
-- Perder contra alguien mejor resta poco.
+- **Saliendo temprano** contra alguien de tu área; cuanto más débil era (dentro del área), más resta.
+- Perder contra alguien mejor resta poco. Contra alguien fuera de tu área, nada (sí la nota y el histórico).
 - **Llegar a la final nunca resta.** Perder en semis después de ganar dos casi siempre deja la noche en positivo.
 - Abajo de todo, perder resta menos o nada.
 
@@ -106,10 +113,11 @@ piedra más alta de la T1.
 
 ## 5 · La T1 simulada con este diseño (sin el 1v1 ni el público, que no existen todavía)
 
-Oasis 592 (23 noches, 6 restaron: −25 y −23 las peores, saliendo temprano) · Mats 426 · Abyssus 411 · Panchok 408 ·
-Praiseriza 394 · Over 375 · … · Makmah 308 (en 54 de sus 87 noches salió temprano). 36 finalistas habrían restado y no
-restan. Piedras en pirámide (Mítico 1, Diamante 3, Rubí 17, Zafiro 21, Jade 51, Hierro 580): con 100 por piedra la cima
-queda muy vacía, y hay que ajustar el tamaño.
+Oasis 623 (21 noches que cuentan, 3 restaron: −23 las peores, saliendo temprano contra alguien de su área; arriba de
+300, +6 por noche) · Makmah 484 (70 noches, 36 restaron) · Praiseriza 475 · Carlosss 460 · Panchok 433 · Abyssus 424 ·
+Mats 415 · Erian 411. 25 finalistas habrían restado y no restan. El 12 % de las batallas, fuera de área. Piedras en
+pirámide (Mítico 1, Diamante 7, Rubí 16, Zafiro 13, Jade 54, Hierro 579): con 100 por piedra la cima queda muy vacía, y
+hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
