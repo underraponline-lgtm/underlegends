@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.16", "dia": "2026-11-20", "cuando": "2026-11-20T01:00:00-05:00", "titulo": "«Consigue tu tarjeta» en el cierre de cada evento", "items": ["Debajo de la imagen **«La noche de…»** que cierra cada evento en Discord, junto a Tu nota, Perfiles, La llave, Ranking y Próximos eventos, ahora está **Consigue tu tarjeta**: te lleva a Tarjetas, donde ves qué te falta para la tuya."]},
     {
         "version": "7.15",
         "dia": "2026-11-20",

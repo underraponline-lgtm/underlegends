@@ -255,10 +255,23 @@ def fila_noche(ev, con_ficha=True):
     return {'type': 1, 'components': b}
 
 
+def fila_tarjeta():
+    """🃏 «Consigue tu tarjeta», en su propia fila debajo de los cinco (Dlx, 20/11/2026, con una captura del cierre de la
+    CHOP COMPE NOCTURNA: *«agrega el botón consigue tu tarjeta ahí»*). Discord admite cinco botones por fila y la de la
+    imagen ya tiene cinco. Va siempre: la imagen muestra el podio con «SIN TARJETA» y el mensaje lo lee todo el chat. El
+    link es el de `filaTarjeta()` del vs (bot/avisos.js): Tarjetas, donde «Las tuyas» le dice a cada uno qué le falta."""
+    return {'type': 1, 'components': [{'type': 2, 'style': 5, 'label': 'Consigue tu tarjeta', 'emoji': {'name': '🃏'},
+                                       'url': WEB + '/freestyle-rap/tarjetas'}]}
+
+
+def filas_noche(ev, con_ficha=True):
+    """🌙 Las dos filas de la imagen: los cinco botones (`fila_noche()`) y «Consigue tu tarjeta» (`fila_tarjeta()`)."""
+    return [fila_noche(ev, con_ficha), fila_tarjeta()]
+
+
 def pie_noche(alt, con_ficha, ev):
-    """🌙 Lo que va DEBAJO del recuadro: la imagen (una Galería de Medios con su descripción) y la fila de botones."""
-    return [{'type': 12, 'items': [{'media': {'url': 'attachment://noche.png'}, 'description': alt[:1000]}]},
-            fila_noche(ev, con_ficha)]
+    """🌙 Lo que va DEBAJO del recuadro: la imagen (una Galería de Medios con su descripción) y sus dos filas de botones."""
+    return [{'type': 12, 'items': [{'media': {'url': 'attachment://noche.png'}, 'description': alt[:1000]}]}] + filas_noche(ev, con_ficha)
 
 
 def pie_con_url(pie, url):
@@ -312,7 +325,9 @@ def con_noche(msg, url, alt, fila=None):
 
     🔘 Y LOS BOTONES DE LA IMAGEN, DEBAJO DE ELLA (`fila`, la de `fila_noche()`; Dlx, 19/11/2026: *«esos botones de la
     tercera imagen son de la primera»*): Tu nota, Perfiles, La llave, el Ranking y los Próximos eventos van con la imagen,
-    en el cierre, y no en el aviso de los premios."""
+    en el cierre, y no en el aviso de los premios. `fila` puede ser una fila o una lista (`filas_noche()`: también la de
+    «Consigue tu tarjeta»), y van todas juntas, en ese orden."""
+    filas = [f for f in (fila if isinstance(fila, list) else [fila]) if f]
     item = {'media': {'url': url}, 'description': str(alt or '')[:1000]}
     if int(msg.get('flags') or 0) & 32768:
         comps = [dict(c) for c in msg.get('components') or []]
@@ -324,8 +339,8 @@ def con_noche(msg, url, alt, fila=None):
             comps.insert(i, {'type': 12, 'items': [item]})
         else:
             comps[i] = {'type': 12, 'items': [item]}
-        if fila and not _ya_tiene_fila(comps):
-            comps.insert(i + 1, fila)
+        if filas and not _ya_tiene_fila(comps):
+            comps[i + 1:i + 1] = filas
         return {'components': comps, 'allowed_mentions': {'parse': []}}
     es = [dict(e) for e in msg.get('embeds') or []]
     if not es:
@@ -333,8 +348,11 @@ def con_noche(msg, url, alt, fila=None):
     es[0]['image'] = {'url': url}
     out = {'embeds': es, 'allowed_mentions': {'parse': []}}
     viejas = [dict(c) for c in msg.get('components') or []]
-    if fila and not _ya_tiene_fila(viejas) and len(viejas) < 5:
-        out['components'] = viejas + [fila]
+    if filas and not _ya_tiene_fila(viejas):
+        # ⚠️ en el formato de antes van como mucho cinco filas: si no entran todas, va la de la imagen sola
+        filas = filas if len(viejas) + len(filas) <= 5 else filas[:1] if len(viejas) < 5 else []
+        if filas:
+            out['components'] = viejas + filas
     return out
 
 
@@ -570,7 +588,7 @@ def correr(aplicar=False):
         en_cierre = None
         if archivo and pie and pie[0].get('type') == 12:
             alt = ((pie[0].get('items') or [{}])[0] or {}).get('description') or ''
-            en_cierre = al_cierre(ev, nombre, sv, fecha, archivo[1], alt, s, pie[1] if len(pie) > 1 else None)
+            en_cierre = al_cierre(ev, nombre, sv, fecha, archivo[1], alt, s, pie[1:] or None)
             if en_cierre:
                 # ✂️ y con ella sus botones (19/11/2026): el aviso queda sólo con los premios y «Abrir mis premios»
                 print('      🌙 la imagen y sus botones, en el cierre del bot en vivo: el aviso va sólo con los premios')
@@ -587,7 +605,7 @@ def correr(aplicar=False):
         if con_imagen and r.status_code not in (200, 201):
             # ⚠️ con lo que contestó Discord: el 403 del #664 no decía qué permiso faltaba
             print('      ⚠️ con la imagen no salió (%s %s): va sin ella' % (r.status_code, r.text[:160]))
-            r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + [fila_noche(ev, False)], ids))
+            r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + filas_noche(ev, False), ids))
         if r.status_code in (200, 201):
             avisados[ev] = {'sv': sv, 'canal': str(canal), 'msg': str((r.json() or {}).get('id') or ''), 'dia': hoy.isoformat()}
             if en_cierre:
@@ -681,7 +699,7 @@ def _self_check():
     pj = json.loads(cm['data']['payload_json'])
     ok('json' in cj and cj['json']['flags'] == 32768 and cm['files']['files[0]'][0] == 'noche.png'
        and pj['attachments'] == [{'id': 0, 'filename': 'noche.png'}] and cm['headers'] == {'Content-Type': None}
-       and pj['components'][-2]['type'] == 12 and pj['allowed_mentions']['users'] == ids,
+       and [c['type'] for c in pj['components']][-3:] == [12, 1, 1] and pj['allowed_mentions']['users'] == ids,
        'con imagen va en multipart (payload_json + files[0]); sin imagen, JSON como siempre')
     pu = pie_con_url(pie, 'https://r2/noche/700-abc.png')
     ok(pu[0]['items'][0]['media']['url'] == 'https://r2/noche/700-abc.png'
@@ -691,7 +709,7 @@ def _self_check():
     ok(pie_con_url(pie, None) is pie and pie_con_url(pie[1:], 'https://x') == pie[1:],
        'sin link, el pie queda como estaba; sin imagen, no inventa una')
     cu = cuerpo(comps + pu, ids)
-    ok('json' in cu and 'files' not in cu and cu['json']['components'][-2]['items'][0]['media']['url'].startswith('https://'),
+    ok('json' in cu and 'files' not in cu and cu['json']['components'][-3]['items'][0]['media']['url'].startswith('https://'),
        'con link, el aviso va en JSON, sin archivo adjunto')
     # 🌙 «La noche de…» en el cierre del bot en vivo, en lugar de la tarjeta (`con_noche()`)
     U = 'https://r2/noche/700-abc.png'
@@ -727,6 +745,19 @@ def _self_check():
        'una segunda vuelta no repite la fila')
     pv = con_noche(v1, U, '', F)
     ok(pv.get('components') == [F], 'en el formato de antes, la fila va como componentes del mensaje')
+    # 🃏 «Consigue tu tarjeta», en su propia fila debajo de los cinco (Dlx, 20/11/2026: «agrega el botón consigue tu tarjeta ahí»)
+    T = pie[2]['components'] if len(pie) > 2 else []
+    ok(len(pie) == 3 and len(T) == 1 and T[0]['label'] == 'Consigue tu tarjeta' and T[0]['url'].endswith('/freestyle-rap/tarjetas')
+       and all(len(c['components']) <= 5 for c in pie[1:]),
+       '🃏 debajo de los cinco botones, una fila con «Consigue tu tarjeta» (Discord no deja más de cinco por fila)')
+    F2 = filas_noche('700')
+    p2 = con_noche(v2, U, '', F2)
+    ok([c['type'] for c in p2['components']] == [10, 17, 12, 1, 1] and p2['components'][3:5] == F2
+       and len([c for c in con_noche(dict(v2, components=p2['components']), U, '', F2)['components'] if c['type'] == 1]) == 2,
+       '🃏 en el cierre van las dos filas debajo de la imagen, y una segunda vuelta no las repite')
+    ok(con_noche(v1, U, '', F2).get('components') == F2
+       and con_noche(dict(v1, components=[{'type': 1, 'components': []}] * 4), U, '', F2)['components'][-1] == F2[0],
+       '🃏 en el formato de antes también; si no entran las dos (cinco filas como mucho), va la de la imagen sola')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
