@@ -1337,7 +1337,8 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           {cup > 0 ? (
             <div className="evp-bol-cup">
               <span><u style={{ width: Math.min(100, Math.round((100 * nAn) / cup)) + '%' }} /></span>
-              <small>{nAn} de {cup} cupos{String(px.cupos).trim() !== String(cup) ? ' · ' + String(px.cupos).toLowerCase() : ''}</small>
+              {/* 🪑 lleno: los que se anotaron después del último cupo son suplentes, en orden (20/11/2026, Dlx: «suplentes») */}
+              <small>{Math.min(nAn, cup)} de {cup} cupos{nAn > cup ? ' · ' + (nAn - cup) + (nAn - cup === 1 ? ' suplente' : ' suplentes') : ''}{String(px.cupos).trim() !== String(cup) ? ' · ' + String(px.cupos).toLowerCase() : ''}</small>
             </div>
           ) : px.cupos ? <small className="evp-mo-s">Cupos: {String(px.cupos).toLowerCase()}</small> : null}
         </div>

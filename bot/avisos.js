@@ -3871,6 +3871,10 @@ const RUTAS = {
   '/avisos/foto-carta': 'POST', '/avisos/mi-foto-carta': 'POST', '/avisos/dueno/foto-carta': 'POST',
   // 📣 seguir a un organizador, con tu sesión. Ver `seguirOrg()`
   '/avisos/seguir-org': 'POST',
+  // 🏟️ seguir a un servidor, con tu sesión (20/11/2026). Ver `seguirSv()`
+  '/avisos/seguir-sv': 'POST',
+  // ⭐ calificar el evento que jugaste, con tu sesión (20/11/2026). Ver `calificar()`
+  '/avisos/calificar': 'POST',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -4430,6 +4434,16 @@ export const REF_MAX = 10;
 export const REF_PDT = 250;
 export const REF_XP = 150;
 export const REF_BIEN = 500;
+//: 🥇 EL PADRINO (Dlx, 20/11/2026: «250 PdT y un Drop»): cuando alguien que llegó con tu link juega su PRIMER evento de la
+//: Liga, esto y un Drop básico, una vez por invitado (sólo los que ya cuentan, dentro del tope). Ver `refJugo()`
+export const REF_JUGO_PDT = 250;
+//: 🔥 EL EVENTO FLOJO (Dlx, 20/11/2026: «1 h antes, menos de la mitad»): cuándo mira (entre 65 y 50 minutos antes del
+//: arranque, que el vigía pasa cada minuto) y el piso sin cupos en el anuncio. Ver `eventoFlojo()`
+export const FLOJO_DESDE = 65 * 60 * 1000;
+export const FLOJO_HASTA = 50 * 60 * 1000;
+export const FLOJO_SIN_CUPOS = 8;
+//: a cuántos les avisa por evento, como mucho
+export const FLOJO_TOPE = 60;
 //: las metas: `[cuántos, [[premio, …]]]`. El marco de la última es nuevo (`embajador`, ver MARCOS)
 export const REF_TRACK = [
   [1, [['drop', 1]]],
@@ -7400,6 +7414,40 @@ export async function rutaAvisos(req, env, ruta) {
         si: d.si !== false }),
     });
   }
+  // 🏟️ SEGUIR A UN SERVIDOR (20/11/2026, el plan de los tiers: «dale»): quién sos lo dice Discord. Ver `seguirSv()`
+  if (ruta === '/avisos/seguir-sv') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/seguir-sv', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, accion: String(d.accion || '').slice(0, 6), sv: String(d.sv || '').slice(0, 8),
+        si: d.si !== false }),
+    });
+  }
+  // ⭐ CALIFICAR EL EVENTO (20/11/2026, Dlx: «Los que jugaron, 1 a 5»): quién sos lo dice Discord. Ver `calificar()`
+  if (ruta === '/avisos/calificar') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/calificar', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, accion: String(d.accion || '').slice(0, 6), ev: String(d.ev || '').slice(0, 10),
+        nota: Number(d.nota) || 0 }),
+    });
+  }
   // 🏆 EL HINCHA DEL MES, PARA EL CICLO: con su clave (trae Discord IDs). Ver `hinchas()`
   if (ruta === '/avisos/hinchas') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -8549,6 +8597,18 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS sigue_org (quien TEXT NOT NULL, org TEXT NOT NULL, nombre TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, org))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_org_o ON sigue_org (org)');
+      // 🏟️ SEGUIR A UN SERVIDOR (20/11/2026): a qué servidores sigue cada uno. Ver `seguirSv()` y `colaSv()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS sigue_sv (quien TEXT NOT NULL, sv TEXT NOT NULL, t INTEGER NOT NULL, ' +
+        'PRIMARY KEY (quien, sv))');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_sv_s ON sigue_sv (sv)');
+      // ⭐ CALIFICAR EL EVENTO (20/11/2026): quién jugó cada uno de los últimos días (lo manda el ciclo, `evg`) y las notas
+      // de 1 a 5. Ver `calificar()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS ev_gente (ev TEXT PRIMARY KEY, sv TEXT NOT NULL, ini INTEGER NOT NULL, q TEXT NOT NULL)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS ev_nota (ev TEXT NOT NULL, quien TEXT NOT NULL, sv TEXT NOT NULL, nota INTEGER NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (ev, quien))');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS ev_nota_sv ON ev_nota (sv, t)');
+      // 🔥 los eventos flojos ya avisados, uno por anuncio (20/11/2026). Ver `eventoFlojo()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS flojo (id TEXT PRIMARY KEY, n INTEGER NOT NULL, t INTEGER NOT NULL)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS org_cola (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
         'clave TEXT NOT NULL, titulo TEXT NOT NULL, cuerpo TEXT NOT NULL, url TEXT NOT NULL, t INTEGER NOT NULL, ' +
         'hecho INTEGER NOT NULL DEFAULT 0)');
@@ -9553,6 +9613,8 @@ export class Avisos {
       if (ruta === '/vs-listo') return json(await this.vsListo(d));
       if (ruta === '/mis-videos') return this.misVideos(d);
       if (ruta === '/seguir-org') return json(this.seguirOrg(d));
+      if (ruta === '/seguir-sv') return json(this.seguirSv(d));
+      if (ruta === '/calificar') return json(this.calificar(d));
       // 📅 /agendar: sólo el Worker llega acá (no está en `RUTAS_AVISOS`), ya con el staff comprobado
       if (ruta === '/agendar') return json(this.agendar(d));
       if (ruta === '/video-reportar') return this.videoReportar(d);
@@ -10133,6 +10195,10 @@ export class Avisos {
       // 🙋 y quiénes se anotaron a cada evento, antes de la llave. Nunca frena al vigía: ver `anotados()`
       try { await this.anotados(ahora); } catch (e) {
         this.guardar('anotados', { ...(this.leer('anotados') || {}), error: String(e).slice(0, 160) });
+      }
+      // 🔥 y el evento flojo, una hora antes. Nunca frena al vigía: ver `eventoFlojo()`
+      try { this.eventoFlojo(ahora); } catch (e) {
+        this.guardar('flojo_error', { t: ahora, error: String(e).slice(0, 160) });
       }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
@@ -11940,7 +12006,8 @@ export class Avisos {
       if (!(c.tipo === 'evento' && c.ini != null && c.sv) || cxs.some((x) => x.id === r.id)) return null;
       const pub = msDeId(r.id);
       const antes = cxs.filter((x) => x.sv === c.sv && x.t && x.t === tit(c.t) && x.pub < pub && pub - x.pub < 12 * HORA);
-      return { id: r.id, sv: c.sv, ini: c.ini, pub: Math.min(pub, ...antes.map((x) => x.pub)) };
+      return { id: r.id, sv: c.sv, ini: c.ini, pub: Math.min(pub, ...antes.map((x) => x.pub)), n: c.t || '', url: c.url || '',
+        cup: c.cup || '' };
     }).filter((e) => e && e.pub && e.ini - INSC_ANTES <= ahora && ahora <= e.ini + INSC_DESPUES);
     if (!evs.length) {
       if (Object.keys((this.leer('anotados') || {}).ev || {}).length) this.guardar('anotados', { t: ahora, ev: {} });
@@ -11952,6 +12019,8 @@ export class Avisos {
     const insc = [...svs].flatMap((sv) => this.sql.exec('SELECT autor_id, sv, pub, texto FROM inscritos WHERE sv = ? AND pub > ? ORDER BY pub',
       sv, desdeInsc).toArray()).sort((a, b) => a.pub - b.pub);
     const por = anotadosDe(evs, insc);
+    // 🪑 los suplentes y su aviso (`suplentes()`). Nunca frena lo demás
+    try { this.suplentes(evs, por, ahora); } catch (e) { /* sigue */ }
     // ⚠️ LA CARA DE LA CUENTA, SÓLO A QUIEN SE ANOTÓ UNA VEZ: quien anota a otros en varios mensajes no le presta la
     // cara a nadie. Por MENSAJE y no por nombre desde los equipos (03/10/2026): «yinn+ji sung park» es un mensaje, y
     // la cara va sólo al nombre que coincide con la cuenta (`claveDeNombre()`)
@@ -12256,6 +12325,8 @@ export class Avisos {
         claves.add(k);
         this.colaOrg(n, a.nombre, ini, cuerpo.url, c.svn || c.sv, m.id, ahora, ya);
       }
+      // 🏟️ y a quienes siguen al servidor (`colaSv()`): el mismo `ya`, así quien sigue a los dos recibe uno
+      this.colaSv(c.sv, a.nombre, cuerpo.url, c.svn || c.sv, m.id, ahora, ya);
     } catch (e) { /* sigue */ }
     // y a la cola de `eventos-hoy`, salvo que el anuncio haya salido de ahí
     if (c.id !== CANAL_RED) {
@@ -13441,6 +13512,161 @@ export class Avisos {
     return enviados;
   }
 
+  // ── 🏟️ SEGUIR A UN SERVIDOR (20/11/2026, el plan de los tiers: «dale») ─────
+  // La campana ya avisa por servidor en cada TELÉFONO (`subs.svs`); esto es por CUENTA: «avísame de lo de FFA», en todos
+  // tus teléfonos vinculados y en la bandeja. El dueño ve cuántos lo siguen, nunca quién.
+  /** Seguir (`si`) o dejar de seguir a un servidor, o ver cuáles sigues (`ver`). */
+  seguirSv(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const lista = () => this.sql.exec('SELECT sv FROM sigue_sv WHERE quien = ? ORDER BY t DESC', quien).toArray().map((r) => r.sv);
+    if (d.accion === 'ver') return { ok: true, svs: lista() };
+    const sv = String(d.sv || '').toUpperCase();
+    if (!/^[A-Z]{2,6}$/.test(sv) || sv === SV_PRUEBA) return { error: 'servidor' };
+    if (d.si === false) this.sql.exec('DELETE FROM sigue_sv WHERE quien = ? AND sv = ?', quien, sv);
+    else {
+      if (this.sql.exec('SELECT COUNT(*) AS n FROM sigue_sv WHERE quien = ?', quien).toArray()[0].n >= 30) return { error: 'muchos' };
+      this.sql.exec('INSERT OR REPLACE INTO sigue_sv (quien, sv, t) VALUES (?, ?, ?)', quien, sv, Date.now());
+    }
+    return { ok: true, svs: lista() };
+  }
+
+  /** Cuántos siguen a `sv` (el número, para su panel). */
+  seguidoresSv(sv) {
+    try { return Number(this.sql.exec('SELECT COUNT(*) AS n FROM sigue_sv WHERE sv = ?', String(sv)).toArray()[0].n) || 0; } catch (e) { return 0; }
+  }
+
+  /**
+   * Un anuncio nuevo de `sv`: a la bandeja de quienes lo siguen y a la cola del push. El push no va a quien ya lo recibe
+   * por la campana de ese teléfono (todos los servidores, o ése): serían dos avisos iguales.
+   */
+  colaSv(sv, evento, url, svn, id, ahora, ya = null) {
+    if (!/^[A-Z]{2,6}$/.test(String(sv || ''))) return 0;
+    const qs = this.sql.exec('SELECT quien FROM sigue_sv WHERE sv = ? LIMIT 300', sv).toArray();
+    let n = 0;
+    for (const q of qs) {
+      if (ya) {
+        if (ya.has(q.quien)) continue;
+        ya.add(q.quien);
+      }
+      const titulo = '🏟️ ' + String(svn || sv) + ' anunció ' + String(evento || '').slice(0, 60);
+      const cuerpo = 'Sigues a ' + String(svn || sv) + ' · toca para ver el anuncio';
+      this.aBandeja(q.quien, 'sv:' + id, 'servidor', titulo, cuerpo, url, '', ahora);
+      const yaLlega = this.sql.exec("SELECT 1 AS x FROM subs WHERE quien = ? AND (svs = '' OR instr(svs, ?) > 0) LIMIT 1", q.quien,
+        '|' + sv + '|').toArray().length;
+      if (!yaLlega) {
+        this.sql.exec('INSERT INTO org_cola (quien, clave, titulo, cuerpo, url, t) VALUES (?, ?, ?, ?, ?, ?)', q.quien,
+          'sv' + id, titulo, cuerpo, url, ahora);
+      }
+      n++;
+    }
+    return n;
+  }
+
+  // ── 🔥 EL EVENTO FLOJO (20/11/2026, el plan de los tiers: «dale»; Dlx: «1 h antes, menos de la mitad») ─────────────
+  /**
+   * Una hora antes de cada evento anunciado con hora, si tiene menos de la mitad de sus cupos anotados (o menos de
+   * `FLOJO_SIN_CUPOS` si el anuncio no dice cupos), la campana les avisa a los que juegan seguido en ese servidor (`frec`
+   * de su fila de tiers: los Discord IDs que manda el ciclo, `bot/tiers.py`) y no se anotaron. Un aviso por evento, a la
+   * campana y a la bandeja: nunca por DM, y nunca en el horario de silencio.
+   */
+  eventoFlojo(ahora) {
+    const aj = this.ajustes();
+    if (enSilencio(aj, ahora)) return 0;
+    const anot = (this.leer('anotados') || {}).ev || {};
+    const ids = (this.leer('anotados_id') || {}).ev || {};
+    const filas = ((this.leer('tiers') || {}).servidores) || [];
+    let avisados = 0;
+    for (const a of this.anunciosVistos(ahora, 36, 60)) {
+      if (!a.ini || a.cx || a.ini - ahora > FLOJO_DESDE || a.ini - ahora < FLOJO_HASTA) continue;
+      if (this.sql.exec('SELECT 1 AS x FROM flojo WHERE id = ?', a.id).toArray().length) continue;
+      const n = (anot[a.id] || []).length;
+      const cupos = /^\s*\d+\s*$/.test(String(a.cup || '')) ? Number(a.cup) : 0;
+      const piso = cupos ? Math.ceil(cupos / 2) : FLOJO_SIN_CUPOS;
+      this.sql.exec('INSERT OR IGNORE INTO flojo (id, n, t) VALUES (?, ?, ?)', a.id, n, ahora);
+      if (n >= piso) continue;
+      const anotados = new Set(ids[a.id] || []);
+      const frec = ((filas.find((x) => x && x.sv === a.sv) || {}).frec || []).filter((q) => /^[0-9]{5,25}$/.test(String(q)) && !anotados.has(String(q)));
+      const titulo = '🔥 ' + String(a.n).slice(0, 60) + ' tiene lugar';
+      const cuerpo = 'Arranca en 1 h y van ' + n + (cupos ? ' de ' + cupos : '') + ' anotados · toca para anotarte';
+      for (const q of frec.slice(0, FLOJO_TOPE)) {
+        this.aBandeja(String(q), 'flojo:' + a.id, 'flojo', titulo, cuerpo, a.url, '', ahora);
+        this.sql.exec('INSERT INTO org_cola (quien, clave, titulo, cuerpo, url, t) VALUES (?, ?, ?, ?, ?, ?)', String(q),
+          'flojo' + a.id, titulo, cuerpo, a.url, ahora);
+        avisados++;
+      }
+    }
+    this.sql.exec('DELETE FROM flojo WHERE t < ?', ahora - 3 * DIA_MS);
+    return avisados;
+  }
+
+  // ── ⭐ CALIFICAR EL EVENTO (20/11/2026, Dlx: «Los que jugaron, 1 a 5», con un Drop básico) ──────────────────────────
+  /**
+   * Quien jugó un evento de los últimos días (`ev_gente`, del ciclo) le pone de 1 a 5; la primera vez, un Drop básico
+   * (`nota:<ev>`: repetir o cambiar la nota no da otro). Con `accion: 'ver'`, su nota y si puede. Los demás, nada: el
+   * evento que no está en `ev_gente` ya cerró.
+   */
+  calificar(d) {
+    const quien = String(d.quien || ''), ev = String(d.ev || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !/^\d{1,7}$/.test(ev)) return { error: 'faltan datos' };
+    const fila = this.sql.exec('SELECT sv, q FROM ev_gente WHERE ev = ?', ev).toArray()[0];
+    let q = [];
+    try { q = fila ? JSON.parse(fila.q) || [] : []; } catch (e) { q = []; }
+    const jugo = q.includes(quien);
+    const mia = (this.sql.exec('SELECT nota FROM ev_nota WHERE ev = ? AND quien = ?', ev, quien).toArray()[0] || {}).nota || 0;
+    if (d.accion === 'ver') return { ok: true, nota: mia, puede: !!fila && jugo };
+    if (!fila) return { error: 'cerrado' };
+    if (!jugo) return { error: 'no_jugaste' };
+    const nota = Number(d.nota);
+    if (!Number.isInteger(nota) || nota < 1 || nota > 5) return { error: 'nota' };
+    const ahora = Date.now();
+    this.sql.exec('INSERT OR REPLACE INTO ev_nota (ev, quien, sv, nota, t) VALUES (?, ?, ?, ?, ?)', ev, quien, fila.sv, nota, ahora);
+    const drop = this.dropDar(quien, 'nota:' + ev, 0, ahora);
+    this.sql.exec('DELETE FROM ev_nota WHERE t < ?', ahora - 120 * DIA_MS);
+    return { ok: true, nota, drop };
+  }
+
+  /** ⭐ `[[evento, cuántos, promedio]]` de `sv`, los últimos 30 días: lo que ve su dueño (nunca quién puso qué). */
+  notasSv(sv) {
+    try {
+      return this.sql.exec('SELECT ev, COUNT(*) AS n, AVG(nota) AS p FROM ev_nota WHERE sv = ? AND t > ? GROUP BY ev ORDER BY MAX(t) DESC LIMIT 40',
+        String(sv), Date.now() - 30 * DIA_MS).toArray().map((r) => [r.ev, Number(r.n), Math.round(Number(r.p) * 10) / 10]);
+    } catch (e) { return []; }
+  }
+
+  // ── 🪑 LOS SUPLENTES (20/11/2026, Dlx: «marca y avisa, pero suplentes») ─────────────────────────────────────────────
+  /**
+   * Con cupos en el anuncio, los que se anotaron después del último cupo son suplentes, en orden. Si un titular se borra
+   * y un suplente pasa a titular, la campana le avisa (una vez por evento). `por` es lo de `anotadosDe()`: el orden en
+   * que se anotaron, con la cuenta que escribió cada uno (`autor`). Guarda también los Discord IDs de cada evento en
+   * `anotados_id`, que NO viaja a la página (el evento flojo no le avisa a quien ya se anotó).
+   */
+  suplentes(evs, por, ahora) {
+    const prev = this.leer('suplentes') || {};
+    const nuevo = {}, ids = {};
+    for (const e of evs) {
+      const l = (por[e.id] || []).map((y) => ({ a: String(y.autor || ''), k: String(y.autor || '') + '|' + String(y.aka || y.n || '') }));
+      ids[e.id] = [...new Set(l.map((y) => y.a).filter((x) => /^[0-9]{5,25}$/.test(x)))].slice(0, 80);
+      const cupos = /^\s*\d+\s*$/.test(String(e.cup || '')) ? Number(e.cup) : 0;
+      if (!cupos || !l.length) continue;
+      nuevo[e.id] = l.slice(cupos).map((y) => y.k).slice(0, 40);
+      if (ahora >= e.ini) continue;
+      const antes = new Set(prev[e.id] || []);
+      for (const y of l.slice(0, cupos)) {
+        if (!antes.has(y.k) || !/^[0-9]{5,25}$/.test(y.a)) continue;
+        const clave = 'sup:' + e.id + ':' + y.a;
+        if (this.sql.exec('SELECT 1 AS x FROM bandeja WHERE quien = ? AND clave = ? LIMIT 1', y.a, clave).toArray().length) continue;
+        const titulo = '🪑 Entraste a ' + String(e.n || 'el evento').slice(0, 60);
+        const cuerpo = 'Se liberó un cupo y pasaste de suplente a titular · toca para ver el anuncio';
+        this.aBandeja(y.a, clave, 'suplente', titulo, cuerpo, e.url, '', ahora);
+        this.sql.exec('INSERT INTO org_cola (quien, clave, titulo, cuerpo, url, t) VALUES (?, ?, ?, ?, ?, ?)', y.a,
+          'sup' + e.id, titulo, cuerpo, e.url, ahora);
+      }
+    }
+    this.guardar('suplentes', nuevo);
+    this.guardar('anotados_id', { t: ahora, ev: ids });
+  }
+
   // ── 📅 /agendar ──────────────────────────────────────────────────────
   /** Agendar (o `borrar`) un evento de un servidor: como mucho 20 por servidor, y lo pasado sale solo. */
   agendar(d) {
@@ -13660,6 +13886,8 @@ export class Avisos {
     // 📣 a quién seguís como organizador, y sus avisos (12/10/2026)
     this.sql.exec('DELETE FROM sigue_org WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM org_cola WHERE quien = ?', String(d.quien));
+    // 🏟️ y a qué servidores sigue (20/11/2026)
+    this.sql.exec('DELETE FROM sigue_sv WHERE quien = ?', String(d.quien));
     // 🎬 tus pedidos de videos y tus reportes (12/10/2026)
     this.sql.exec('DELETE FROM videos_pedidos WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM videos_reportes WHERE quien = ?', String(d.quien));
@@ -15344,7 +15572,7 @@ export class Avisos {
     if (!/^[0-9]{5,25}$/.test(viejo) || !/^[0-9]{5,25}$/.test(nuevo) || viejo === nuevo) return { error: 'faltan datos' };
     const tablas = ['subs', 'votos', 'liga_voto', 'tienda', 'precios', 'sigue', 'servidor', 'activo', 'jugo_temp', 'foto_oculta',
       'reportes', 'aplausos', 'pase_hecho', 'pase_vivo', 'pase_log', 'pase_hito', 'xp_log', 'promo_visto', 'promo_extra',
-      'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'org_cola', 'videos_pedidos',
+      'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'sigue_sv', 'org_cola', 'videos_pedidos',
       'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue',
       // 💎🖼️ lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
       'pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part',
@@ -16144,7 +16372,7 @@ export class Avisos {
     const hechos = contados();
     return {
       ok: true, puede: !!k, k: ln ? ln.k : k, activo: !!(ln && ln.temp === temp), temp,
-      hechos, max: REF_MAX, track: REF_TRACK, pdt: REF_PDT, xp: REF_XP, bien: REF_BIEN, lista,
+      hechos, max: REF_MAX, track: REF_TRACK, pdt: REF_PDT, xp: REF_XP, bien: REF_BIEN, jugo: REF_JUGO_PDT, lista,
     };
   }
 
@@ -16231,6 +16459,26 @@ export class Avisos {
     this.aBandeja(de, 'ref:cuenta:' + quien, 'ref', '🎁 ' + (nombre || 'Tu invitado') + ' ya cuenta · ' + n + ' de ' + REF_MAX,
       '+' + REF_PDT + ' Puntos de Tienda y +' + REF_XP + ' XP del Pase.' + (metas.length ? ' Llegaste a ' + n + ': ganaste ' + metas.join(' y ') + '.' : ''),
       HUB + '/freestyle-rap/invitar', '', ahora);
+  }
+
+  /**
+   * 🥇 EL PADRINO (Dlx, 20/11/2026: «250 PdT y un Drop»): cuando alguien que llegó con tu link y ya cuenta (`cumple`)
+   * juega su primer evento, `REF_JUGO_PDT` Puntos de Tienda y un Drop básico para quien lo invitó, una sola vez por
+   * invitado (las claves lo aseguran). Lo llama el ciclo cada vez que dice quién jugó (`resolverPrecios()`).
+   */
+  refJugo(quien, eventos, ahora = Date.now()) {
+    if (!(eventos > 0)) return false;
+    const r = this.sql.exec('SELECT de FROM referidos WHERE quien = ? AND cumple = 1', String(quien)).toArray()[0];
+    if (!r) return false;
+    const ins = this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'refj:' + r.de + ':' + quien,
+      r.de, REF_JUGO_PDT, ahora);
+    if (!ins.rowsWritten) return false;
+    this.dropDar(r.de, 'refj:' + quien, 0, ahora);
+    let nombre = '';
+    try { const kq = this.claveDe(quien); nombre = kq ? String((JSON.parse(this.persona('p:' + kq) || '{}') || {}).n || '') : ''; } catch (e) { nombre = ''; }
+    this.aBandeja(r.de, 'ref:jugo:' + quien, 'ref', '🥇 ' + (nombre || 'Tu invitado') + ' jugó su primer evento',
+      '+' + REF_JUGO_PDT + ' Puntos de Tienda y un Drop por traerlo a jugar.', HUB + '/freestyle-rap/invitar', '', ahora);
+    return true;
   }
 
   /** Las metas del track hasta `n`, cada una una sola vez (las claves lo aseguran). Devuelve las que tocan justo en `n` */
@@ -16927,6 +17175,10 @@ export class Avisos {
       sv: x.sv, nombre: x.nombre, tier: x.tier, puntos: x.puntos, antes: x.antes, compara: x.compara !== false,
       compara_desde: x.compara_desde || '', partes: x.partes, m: x.m, ultimo: x.ultimo,
       sin_jugar: x.sin_jugar, panel: x.panel || null, preguntas: this.preguntasDe(x.sv), rol: x.rol,
+      // 🏟️ cuántos lo siguen en la página (nunca quién: 20/11/2026)
+      seguidores: this.seguidoresSv(x.sv),
+      // ⭐ cómo calificaron sus eventos los que jugaron, los últimos 30 días (nunca quién)
+      notas: this.notasSv(x.sv),
       visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
         .map((r) => [r.dia, Number(r.n) || 0]),
     }));
@@ -17842,6 +18094,26 @@ export class Avisos {
     if (r.comp && typeof r.comp === 'object') {
       cambios += this.tiendaIgualar('comp:', r.comp, ahora);
     }
+    // ⭐ quién jugó cada evento de los últimos días (`racha.gente_reciente()`): ENTERO, se reemplaza. Lo que sale es lo que
+    // ya no se puede calificar (`calificar()`)
+    if (r.evg && typeof r.evg === 'object') {
+      // 🔔 a los que jugaron un evento NUEVO en la lista, su aviso en la bandeja de la página (nunca push ni DM)
+      const antes = new Set(this.sql.exec('SELECT ev FROM ev_gente').toArray().map((x) => x.ev));
+      this.sql.exec('DELETE FROM ev_gente');
+      for (const [ev, x] of Object.entries(r.evg).slice(0, 400)) {
+        if (!/^\d{1,7}$/.test(ev) || !Array.isArray(x) || !Array.isArray(x[2])) continue;
+        const q = x[2].filter((y) => /^[0-9]{5,25}$/.test(String(y))).slice(0, 200).map(String);
+        this.sql.exec('INSERT OR REPLACE INTO ev_gente (ev, sv, ini, q) VALUES (?, ?, ?, ?)', ev, String(x[0] || '').slice(0, 8),
+          Number(x[1]) || 0, JSON.stringify(q));
+        if (antes.has(ev)) continue;
+        const nom = String(x[3] || '').slice(0, 60) || 'el evento #' + ev;
+        for (const quien of q) {
+          this.aBandeja(quien, 'cal:' + ev, 'calificar', '⭐ ¿Qué tal estuvo ' + nom + '?',
+            'Califícalo de 1 a 5 y te llevas un Drop. Tienes 3 días.', HUB + '/freestyle-rap/llave/' + ev, '', ahora);
+        }
+      }
+      cambios++;
+    }
     // 🔥 LA RACHA: los números y quién jugó qué días (`bot/racha.py`). Lo de la temporada en curso llega ENTERO y se
     // reemplaza (sólo esa temporada); los días se suman, y uno que ya contó no se borra
     if (r.rcfg && typeof r.rcfg === 'object') this.guardar('racha_cfg', r.rcfg);
@@ -17853,6 +18125,8 @@ export class Avisos {
         const ev = Number.isInteger(x[1]) && x[1] > 0 ? x[1] : 0;
         this.sql.exec('INSERT OR REPLACE INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', quien, temp,
           String(x[0] || '').slice(0, 60), ev);
+        // 🥇 su primer evento: el premio de quien lo invitó (`refJugo()`)
+        try { this.refJugo(quien, ev, ahora); } catch (e) { /* sigue */ }
         for (const dia of Array.isArray(x[2]) ? x[2].slice(0, 400) : []) {
           if (/^\d{4}-\d{2}-\d{2}$/.test(String(dia))) {
             this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, String(dia));

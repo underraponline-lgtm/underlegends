@@ -15,7 +15,8 @@
 // ⚠️ Todo sale del payload, como en servidor.jsx y grupo.jsx: `svs`, `paises`, `crews`, `crews_tiers`, la tabla, las
 // llaves, los próximos, el muro, Se busca. Ningún color de servidor ni de tier se escribe acá.
 import { useRef, useState } from 'react';
-import { limpio, mult, num, siglaDe, utc } from './liga.js';
+import { limpio, mult, num, quienMira, siglaDe, utc } from './liga.js';
+import { seguirSv, useSvsSigo } from './svs_sigo.js';
 import { Algunos, Bandera, Cara, Compartir, Ico, Poster, Sec, aDiscord, accion, enlace, nombrePais, silueta, usePerfiles } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
@@ -153,6 +154,27 @@ function NoEsta({ que, href, volver }) {
 }
 
 // ═══ EL SERVIDOR ═══════════════════════════════════════════════════════════════════════════════════════════════════
+// 🏟️ SEGUIR A UN SERVIDOR (20/11/2026, el plan de los tiers: «dale»): con tu cuenta, la campana te avisa cuando anuncia
+// un evento (`svs_sigo.js`). Sin cuenta, lleva a entrar con Discord
+function SeguirSv({ sv }) {
+  const dc = quienMira().dc;
+  const svs = useSvsSigo(dc);
+  const [nota, setNota] = useState('');
+  const si = (svs || []).includes(sv);
+  const alternar = async () => {
+    if (!dc) { accion.entrar(); return; }
+    const e = await seguirSv(sv, !si);
+    setNota(e === 'sin_sesion' || e === 'discord' ? 'Entra con Discord para seguirlo.' : e === 'muchos' ? 'Ya sigues a 30 servidores.'
+      : e ? 'No se pudo.' : !si ? 'Te avisamos en la campana cuando anuncie un evento.' : '');
+  };
+  return (
+    <>
+      <button type="button" className="btn borde" aria-pressed={si} onClick={alternar}>{si ? 'Siguiendo' : 'Seguir'}</button>
+      {nota ? <small className="ent-nota ent-nota-sv" role="status">{nota}</small> : null}
+    </>
+  );
+}
+
 export function PerfilSv({ liga, sv, enc }) {
   // los MES AWARDS del servidor llegan por su cuenta: pedirlos acá también (va a la misma memoria) hace que la página se
   // vuelva a dibujar cuando llegan, y el índice se entera de que la sección apareció
@@ -210,6 +232,7 @@ export function PerfilSv({ liga, sv, enc }) {
           {s.desc ? <p className="ent-desc">{s.desc}</p> : null}
           {(s.redes || []).length ? <nav className="ent-redes" aria-label="Sus redes">{s.redes.map(([r, u]) => <a key={r} href={u} target="_blank" rel="noopener noreferrer">{REDES[r] || r} ↗</a>)}</nav> : null}</>}
         acciones={<>{s.invita ? <a className="btn verde" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar al servidor ↗</a> : null}
+          <SeguirSv sv={sv} />
           <Compartir cls="btn borde" url={enlace('#/sv/' + siglaDe(sv))} texto={(s.nombre || siglaDe(sv)) + ' en la Liga Global'} /></>}
         // la celda de la semana se resalta sólo si suma: un «×0,75» o un «×1» resaltados al lado de tres ceros decían lo contrario
         numeros={[['ESTA SEMANA', x ? mult(x) : '×1', x > 1 ? 'dest sube' : ''], ['RAPEROS', num(s.n || 0)], ['PUNTOS', num(s.pts || 0)], ['EVENTOS', num(s.ev || 0)]]}

@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "7.25",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T02:45:00-05:00",
+        "titulo": "Seguir servidores, calificar eventos y suplentes",
+        "items": [
+            "**Seguir a un servidor**: en su página, «Seguir». Cuando anuncia un evento te llega a la campana y a tu bandeja, en todos tus teléfonos vinculados.",
+            "**Califica el evento que jugaste**: en la llave, de 1 a 5 estrellas, durante 3 días. La primera vez te llevas un Drop. Tu nota no la ve nadie: al servidor le llega el promedio.",
+            "**Suplentes**: si un evento se llena, los que se anotan después del último cupo son suplentes, en orden («Eres suplente #2»). Si alguien se borra y entras, la campana te avisa.",
+            "**¿Hay lugar?**: una hora antes de un evento con menos de la mitad de sus cupos, la campana les avisa a los que juegan seguido en ese servidor.",
+            "**Padrino**: cuando alguien que trajiste con tu link de Invita y gana juega su primer evento, te llevas 250 Puntos de Tienda y un Drop."
+        ]
+    },
+    {
         "version": "7.24",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T02:28:00-05:00",

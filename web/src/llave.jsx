@@ -17,6 +17,7 @@ import { usePases, vioVivo, vivoPendiente } from './pase.js';
 import { ConMarco } from './marcos.jsx';
 import { TEMAS_SV, leerTemas } from './temas.js';
 import CSS_PAGINA from './css/llave.css?inline';
+import Calificar from './calificar.jsx';
 import { usarCss } from './css.js';
 import { pedirLlave, pedirRoles, puede } from './panelsocio.js';
 
@@ -1982,6 +1983,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             ) : null}
           </div>
         </section>
+        {/* ⭐ calificarla: quien jugó, durante 3 días (20/11/2026). Quién puede lo dice el objeto (`calificar()`) */}
+        {!L.vivo && juegoAca && /^\d+$/.test(String(n)) ? <Calificar ev={n} nombre={nomL} /> : null}
         {/* ⚔️ lo que se juega ahora, en grande */}
         {/* ⚔️ lo que se juega ahora, en grande: lo que dice el canal de veredictos si dice algo (es lo más fresco: el
             mensaje de la llave se edita después); si no, el orden de la llave */}

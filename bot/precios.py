@@ -239,7 +239,7 @@ def tienda_mw(mw, dids):
     return out
 
 
-def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr=None, mes=None, comp=None):
+def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr=None, mes=None, comp=None, evg=None):
     """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}, jugo, rcfg}`.
 
     Sólo lo resuelto (cazado o devuelto). Quien cazó sin Discord conocido no
@@ -265,7 +265,7 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr
     m = tienda_mw(mw, dids) if mw is not None else {}
     v = hashlib.sha1(json.dumps([r, m, jugo, rcfg, div] + ([deb] if deb is not None else [])
                                 + ([wr] if wr is not None else []) + ([mes] if mes else [])
-                                + ([comp] if comp else []), sort_keys=True,
+                                + ([comp] if comp else []) + ([evg] if evg else []), sort_keys=True,
                                 ensure_ascii=False).encode()).hexdigest()[:16]
     out = {'v': v, 'r': r, 'mw': m}
     if jugo is not None:
@@ -288,6 +288,9 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr
     # 💰 y los premios de Competencias (`competencias.tienda()`): el libro entero y se REEMPLAZA (`comp:`)
     if comp is not None:
         out['comp'] = comp
+    # ⭐ y quién jugó cada evento de los últimos 3 días (`racha.gente_reciente()`): el objeto deja calificarlo sólo a ellos
+    if evg is not None:
+        out['evg'] = evg
     return out
 
 
@@ -373,8 +376,14 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ los premios de Competencias no viajan esta vez: %s' % str(e)[:80])
             comp = None
+        # ⭐ quién jugó cada evento de los últimos días, para calificarlo (`racha.gente_reciente()`)
+        try:
+            evg = RA.gente_reciente(evs, dids, ahora or dt.datetime.now(dt.timezone.utc))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ quién jugó cada evento no viaja esta vez: %s' % str(e)[:80])
+            evg = None
         _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, o), RA.config(o, MU.temporada_actual(ahora)),
-                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer()), wr, mes, comp),
+                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer()), wr, mes, comp, evg),
                CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados, las divisiones, los debuts y el Writing')
     return out
 

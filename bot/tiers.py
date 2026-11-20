@@ -592,6 +592,35 @@ def _cumple(req, pts, m8):
             and (pts or 0) >= req.get('puntos', 0))
 
 
+#: 🔥 quién juega seguido en un servidor, para el aviso de evento flojo (`frecuentes()`): eventos ahí en las 8 semanas
+FRECUENTE_MIN = 2
+#: a cuántos manda por servidor, como mucho
+FRECUENTE_TOPE = 80
+
+
+def frecuentes(llaves, hoy, did_de):
+    """🔥 `{sigla: [Discord ID, …]}`: los que jugaron `FRECUENTE_MIN` eventos o más en ese servidor en las últimas 8
+    semanas, los que más primero. Para el aviso de evento flojo del Worker (`eventoFlojo()` de bot/avisos.js: una hora
+    antes, si tiene menos de la mitad de sus cupos, les avisa la campana). `did_de(nombre)` da la cuenta o ''. Va SÓLO al
+    objeto, con la fila del servidor (`frec`): son cuentas de personas y el panel del dueño no lo lleva. Pura."""
+    desde = hoy - dt.timedelta(days=7 * 8 - 1)
+    cuenta = {}
+    for v in (llaves or {}).values():
+        if not isinstance(v, dict):
+            continue
+        d, sv = _dia(v.get('dia')), (v.get('sv') or '').upper()
+        if not d or not sv or d < desde or d > hoy:
+            continue
+        for f in v.get('tabla') or []:
+            if f and f[0]:
+                did = did_de(f[0])
+                if did:
+                    c = cuenta.setdefault(sv, {})
+                    c[did] = c.get(did, 0) + 1
+    return {sv: [q for q, n in sorted(c.items(), key=lambda x: (-x[1], x[0])) if n >= FRECUENTE_MIN][:FRECUENTE_TOPE]
+            for sv, c in sorted(cuenta.items()) if any(n >= FRECUENTE_MIN for n in c.values())}
+
+
 #: 📅 cuánto mide cada tier para quedarse (`SEGUIR`): Tier 1 y 2, las 8 semanas; Tier 3, «seguir vivo» en 4
 VENTANA_SEGUIR = {1: 56, 2: 56, 3: 28}
 
@@ -1136,6 +1165,16 @@ def correr(aplicar=False, ahora=None):
     D['_vuelven'] = quien_vuelve(D.get('llaves') or {}, hoy)
     desde = desde_de(viejo.get('desde'), nivel, hoy)
     filas = medir(D, hoy, svs, nivel, gente, desde)
+    # 🔥 quién juega seguido en cada uno, para el aviso de evento flojo (`frecuentes()`): sólo al objeto, con la fila
+    try:
+        import construir_padron as _PAD
+        _idx = {_PAD.norm(x['raw']): str(x.get('discord_id') or '') for x in _PAD.cargar() if x.get('raw')}
+        _fr = frecuentes(D.get('llaves'), hoy, lambda n: _idx.get(_PAD.norm(n), ''))
+        for f in filas:
+            if _fr.get(f['sv']):
+                f['frec'] = _fr[f['sv']]
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los que juegan seguido no se armaron (%s): el aviso de evento flojo espera' % str(e)[:60])
     # 🎛️ los beneficios de cada uno van con su fila: el Dashboard dibuja los interruptores y el objeto filtra el panel
     for f in filas:
         f['ben'] = ben.get(f['sv']) or {}
@@ -1371,6 +1410,14 @@ def _self_check():
        and r3[0] == 'revisar' and 'Seguir vivo' in r3[1] and r1[0] == 'revisar' and '7,5' in r1[1]
        and recomendar(3, 30, {'eventos': 0, 'ligas': 1}, None, {'eventos': 0, 'por_evento': 0})[0] == 'bien',
        'no llegar a lo que pide su tier es «Revisar» (como dice su panel); en el primer tramo, no', str((r2, r2n, r3, r1)))
+    # 🔥 los que juegan seguido en cada servidor
+    hoy3 = dt.date(2026, 11, 20)
+    ll = {str(i): {'dia': str(hoy3 - dt.timedelta(days=d)), 'sv': sv, 'tabla': [[n, 'x', 1] for n in ns]}
+          for i, (d, sv, ns) in enumerate(((1, 'AAA', ['Ana', 'Beto']), (5, 'AAA', ['Ana', 'Beto', 'Cami']), (9, 'AAA', ['Ana']),
+                                           (70, 'AAA', ['Cami', 'Cami2']), (2, 'BBB', ['Beto', 'Nadie'])))}
+    fr = frecuentes(ll, hoy3, lambda n: {'Ana': '1', 'Beto': '2', 'Cami': '3'}.get(n, ''))
+    ok(fr == {'AAA': ['1', '2']}, 'los que juegan seguido: 2 eventos o más en 8 semanas, los que más primero; lo de hace 70 '
+       'días no cuenta, y sin cuenta de Discord no va', str(fr))
     p1 = pide(1, {}, {'eventos': 9, 'por_evento': 7.5})
     ok(len(p1) == 2 and p1[0][2] and not p1[1][2] and '7,5' in p1[1][1]
        and pide(3, {'eventos': 0, 'ligas': 1})[0][2] and not pide(3, {'eventos': 0, 'ligas': 0})[0][2]

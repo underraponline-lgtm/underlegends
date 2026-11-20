@@ -347,7 +347,9 @@ function Talonario({ liga, R }) {
           );
         })}
       </ol>
-      {R ? <p className="rf-nota">Y por cada uno que cuenta: <b>{num(R.pdt)} Puntos de Tienda</b> y <b>{num(R.xp)} XP del Pase</b>. A quien llega, {num(R.bien)} de bienvenida.</p> : null}
+      {R ? <p className="rf-nota">Y por cada uno que cuenta: <b>{num(R.pdt)} Puntos de Tienda</b> y <b>{num(R.xp)} XP del Pase</b>. A quien llega, {num(R.bien)} de bienvenida.
+        {/* 🥇 el padrino (20/11/2026, Dlx: «250 PdT y un Drop»): cuando tu invitado juega su primer evento (`refJugo()`) */}
+        {R.jugo ? <> Y cuando juega su primer evento: <b>{num(R.jugo)} Puntos de Tienda más y un Drop</b>.</> : null}</p> : null}
     </section>
   );
 }

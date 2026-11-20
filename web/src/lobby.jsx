@@ -483,7 +483,12 @@ function ElBoton({ liga }) {
   const reto = !!primero && vence > ahora;
   const m = liga.multSv(e.sv);
   const ins = aDiscord(liga, e, false);
-  const et = anotado ? 'ESTÁS ANOTADO' : reto ? 'TU SEGUNDO EVENTO' : yo && ev === 0 ? 'TU PRIMER EVENTO' : 'EL PRÓXIMO EVENTO';
+  // 🪑 anotado después del último cupo: suplente, con su número (20/11/2026, Dlx: «suplentes»). Si un titular se borra y
+  // entras, la campana te avisa (`suplentes()` de bot/avisos.js)
+  const cupN = parseInt((/^\s*(\d+)\s*$/.exec(String(e.cupos || '')) || [])[1], 10);
+  const lugar = anotado && yo && cupN > 0 ? liga.anotados(e).findIndex((x) => x.f && x.f.k === yo.k) : -1;
+  const sup = lugar >= cupN && cupN > 0 ? lugar - cupN + 1 : 0;
+  const et = sup ? 'ERES SUPLENTE #' + sup : anotado ? 'ESTÁS ANOTADO' : reto ? 'TU SEGUNDO EVENTO' : yo && ev === 0 ? 'TU PRIMER EVENTO' : 'EL PRÓXIMO EVENTO';
   // 🎯 EL BUSCADO EN TU EVENTO (Dlx, 13/10/2026, «me gusta»): si alguien de Se busca que sigue suelto está anotado, el
   // botón lo dice y cuánto cobrás. Vos no contás: si te buscan a vos, eso ya lo dice Se busca
   const anot = liga.anotados(e);

@@ -677,6 +677,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const hay = new Set([v.n != null && 'sp-vuelven', (p.dias || []).length && 'sp-cuando', (p.semanas || []).some((w) => w[2]) && 'sp-semanas', (p.raperos || []).length && 'sp-gente'].filter(Boolean));
   const sugs = p.sugerencias || [], irs = p.sug_ir || [];
   const pasados = ((liga.d && liga.d.calendario) || []).filter((c) => c.sv === x.sv && Date.parse(c.t) < Date.now()).slice(-6).reverse();
+  // ⭐ la nota de cada evento: `[evento, cuántos, promedio]` (`notasSv()` de bot/avisos.js)
+  const notaDe = (ll) => (ll ? (x.notas || []).find((y) => String(y[0]) === String(ll)) : null);
   const ROL_TXT = { admin: 'admin', moderador: 'moderador', asistente: 'asistente' };
   const ir = (k) => {
     if (k === 'hoy') { setNav('hoy'); if (raiz.current) raiz.current.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
@@ -713,6 +715,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                 <p className="cz-d">Tu cabina: <b>lo que te pide tu tier</b>, lo que el bot necesita de ti y cómo suena tu servidor.</p>
                 <div className="cz-meta">
                   {m.miembros ? <span>{num(m.miembros)} miembros en su Discord</span> : null}
+                  {/* 🏟️ cuántos lo siguen en la página (20/11/2026): la campana les avisa de cada evento que anuncia */}
+                  {x.seguidores ? <span>{num(x.seguidores)} {x.seguidores === 1 ? 'lo sigue' : 'lo siguen'} en la página</span> : null}
                   {t ? <span>Medido el {W.fmtFecha ? W.fmtFecha(t, { day: 'numeric', month: 'numeric' }) : fechaCorta(String(t).slice(0, 10))}{W.fmtHora ? ' a las ' + W.fmtHora(new Date(t)) : ''}: se actualiza cada media hora</span> : null}
                   {ROL_TXT[x.rol] ? <span>Entraste como {ROL_TXT[x.rol]}: te sumó el dueño del servidor</span> : null}
                 </div>
@@ -768,7 +772,9 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                 <ol className="cz-bols">{pasados.map((c) => (
                   <li key={c.t + c.n} className="cz-bol"><span className="cz-f"><b>{W.fmtFecha ? W.fmtFecha(c.t, { day: 'numeric' }) : String(c.t).slice(8, 10)}</b><span>{W.fmtFecha ? W.fmtFecha(c.t, { weekday: 'short' }).replace('.', '') : ''}</span></span>
                     <span className="cz-n"><b>{nombreEv ? nombreEv(c.n) : c.n}</b><span>{W.fmtHora ? W.fmtHora(new Date(c.t)) : ''}</span></span>
-                    <span className="cz-d">{c.ll || c.jugado ? <span className="cz-chip si">Llave leída</span> : <span className="cz-chip no">Sin llave todavía</span>}</span></li>
+                    <span className="cz-d">{c.ll || c.jugado ? <span className="cz-chip si">Llave leída</span> : <span className="cz-chip no">Sin llave todavía</span>}
+                      {/* ⭐ cómo lo calificaron los que jugaron (20/11/2026): el promedio, nunca quién */}
+                      {notaDe(c.ll) ? <span className="cz-nota" title={notaDe(c.ll)[1] + (notaDe(c.ll)[1] === 1 ? ' calificó' : ' calificaron')}>★ {String(notaDe(c.ll)[2]).replace('.', ',')} · {notaDe(c.ll)[1]}</span> : null}</span></li>
                 ))}</ol></Sec> : null}
               <Sec id="sp-ligas" titulo="Tus ligas" bajada="Corrige lo que el bot leyó de tus ligas —quién ganó, un invitado, una batalla que no cuenta—, carga lo que no leyó, suma o resta puntos sueltos y cierra la temporada con su campeón.">
                 <LigasStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>

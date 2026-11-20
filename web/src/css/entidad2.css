@@ -93,6 +93,8 @@
 .ent-h{display:flex;align-items:baseline;gap:8px;margin:0;font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .ent-h small{font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .ent-nota{margin:0;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+/* 🏟️ lo que contestó «Seguir», debajo de los botones (20/11/2026) */
+.ent-nota-sv{flex-basis:100%}
 .ent-esca{display:grid;gap:10px;padding:14px;border:2px solid var(--linea);background:var(--caja)}
 .ent-esca-l{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:0;padding:0;list-style:none}
 .ent-esca-l li i{display:block;height:12px;background:var(--suave)}

@@ -109,6 +109,25 @@ def jugo(evs, dids, desde=None):
     return {k: [v[0], v[1], sorted(v[2])] for k, v in out.items()}
 
 
+#: ⭐ CALIFICAR EL EVENTO (Dlx, 20/11/2026: «Los que jugaron, 1 a 5»): los días que se puede, desde que se jugó
+CALIFICAR_DIAS = 3
+
+
+def gente_reciente(evs, dids, ahora, dias=CALIFICAR_DIAS):
+    """⭐ `{número: [sigla, ms del arranque, [discord_id, …], nombre]}` de los eventos de los últimos `dias` días: quién jugó cada
+    uno, para que el objeto deje calificar sólo a ellos (`calificar()` de bot/avisos.js). Viaja con `jugo`
+    (`precios.para_objeto()`). Pura."""
+    out = {}
+    for ev in evs:
+        t = ev.get('t')
+        if not t or not ev.get('n') or t > ahora or (ahora - t).total_seconds() > dias * 86400:
+            continue
+        q = sorted({dids[raw] for raw in _gente(ev) if dids.get(raw)})
+        if q:
+            out[str(ev['n'])] = [ev.get('sv') or '', int(t.timestamp() * 1000), q, (ev.get('nombre') or '')[:60]]
+    return out
+
+
 def xp_para(n):
     """Los puntos que hacen falta para llegar al nivel `n`."""
     return PASO * n * (n - 1)
@@ -147,6 +166,11 @@ def _self_check():
     ok('Cami' not in str(j) and len(j) == 3, 'sin Discord en el padrón no hay a quién anotarle el día')
     j2 = jugo(evs, dids, desde=dt.datetime(2026, 10, 1, 4, 0, tzinfo=utc))
     ok(j2['111'][1] == 2 and '2026-09-20' not in j2['111'][2], 'lo de antes del arranque no cuenta')
+    # ⭐ quién jugó cada evento de los últimos días, para calificarlo
+    evn = [dict(e, n=i + 1, sv='FFA') for i, e in enumerate(evs)]
+    g = gente_reciente(evn, dids, dt.datetime(2026, 10, 5, 12, 0, tzinfo=utc))
+    ok(g == {'1': ['FFA', 1791082800000, ['111', '222'], ''], '2': ['FFA', 1791144000000, ['111', '444'], '']},
+       'quién jugó cada evento de los últimos 3 días, con su Discord (lo del 20/09 ya no se califica)' + ('' if g.get('1') else ' ' + str(g)))
     ok([xp_para(n) for n in (1, 2, 3, 5, 10)] == [0, 20, 60, 200, 900], 'la escalera de los niveles')
     ok((nivel(0), nivel(19), nivel(20), nivel(899), nivel(900)) == (1, 1, 2, 9, 10), 'el nivel de cada experiencia')
     c = config(dt.datetime(2026, 10, 12, 4, 0, tzinfo=utc), 't1')

@@ -446,3 +446,17 @@
 .lk-vr-e{font:700 12px/1.2 Archivo,sans-serif;font-style:normal;color:var(--gris)}
 .lk-vr-e.ya{color:var(--magenta-tx,#B80F5D)}
 .lk-vr-t{margin-left:auto;font:600 12px/1.2 "Barlow Condensed",sans-serif;color:var(--gris);white-space:nowrap}
+
+/* ⭐ calificar el evento (20/11/2026): en el escenario oscuro, debajo de la cabecera */
+.cal{display:grid;gap:10px;margin:14px 0 4px;padding:14px 16px;border:2px solid var(--verde);background:color-mix(in srgb,var(--verde) 8%,transparent)}
+.cal-t{display:grid;gap:4px}
+.cal-t b{font:900 18px/1.1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.cal-t small{font:500 13.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+.cal-e{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cal-e button{width:44px;height:44px;display:grid;place-items:center;background:none;border:0;padding:0;cursor:pointer;color:inherit}
+.cal-e button:disabled{cursor:wait}
+.cal-e svg{width:30px;height:30px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+.cal-e button.on svg{fill:var(--verde);stroke:var(--verde)}
+.cal-e button:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.cal-e em{font:700 14px/1 Archivo,sans-serif;font-style:normal;color:var(--gris);margin-left:6px}
+.cal-m{margin:0;font:600 14px/1.4 Archivo,sans-serif}
