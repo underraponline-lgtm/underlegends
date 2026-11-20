@@ -238,7 +238,7 @@
    "servidor": "9ed42d99e2c3:0bd0fbf67396:e4fbfa"
   },
   "Calíz": {
-   "competitivo": "9ae111659340:c41ff817042a",
+   "competitivo": "9ae111659340:38a840be60e7",
    "pais": "4a4fb7598e5f:f1f52e1c6d42",
    "servidor": "8ab9e87bd240:0bd0fbf67396:c82496",
    "temporada": "0332ae01d2c2:a8d8b7335469"
@@ -304,7 +304,7 @@
   "Cronox": {
    "competitivo": "acedb636d9b4:38a840be60e7",
    "pais": "ae6ce677f1de:f1f52e1c6d42",
-   "servidor": "e39b09e5187a:0bd0fbf67396:ed8290",
+   "servidor": "e39b09e5187a:0bd0fbf67396:e4fbfa",
    "temporada": "5b9d02e7c737:a8d8b7335469"
   },
   "Cruz": {
@@ -333,7 +333,7 @@
    "servidor": "0e8f51b25221:0bd0fbf67396:055f77"
   },
   "DLX": {
-   "competitivo": "4b136859ad83:c41ff817042a",
+   "competitivo": "4b136859ad83:38a840be60e7",
    "pais": "548d1b7cfece:f1f52e1c6d42",
    "servidor": "2e83f176139b:0bd0fbf67396:132451",
    "temporada": "2a9f8f893f11:a8d8b7335469"
@@ -501,7 +501,7 @@
    "temporada": "8eb63f217539:a8d8b7335469"
   },
   "Erian": {
-   "competitivo": "99d5fdb62c00:c41ff817042a",
+   "competitivo": "99d5fdb62c00:38a840be60e7",
    "pais": "7017b36674dd:f1f52e1c6d42",
    "servidor": "1bb134de7abe:0bd0fbf67396:c82496",
    "temporada": "842d89b1c47c:a8d8b7335469"
@@ -1134,7 +1134,7 @@
   },
   "Mail O": {},
   "Majiztral": {
-   "competitivo": "b0f791d9e8dd:c41ff817042a",
+   "competitivo": "b0f791d9e8dd:38a840be60e7",
    "pais": "481eda712601:f1f52e1c6d42",
    "servidor": "484e1d77c720:0bd0fbf67396:132451",
    "temporada": "e2d23479cbcd:a8d8b7335469"
@@ -1779,7 +1779,7 @@
   "Tmax Turbo [PN]": {
    "competitivo": "afddacca81c0:38a840be60e7",
    "pais": "b8071d55004c:f1f52e1c6d42",
-   "servidor": "b07fc7d9260d:0bd0fbf67396:bcd566",
+   "servidor": "b07fc7d9260d:0bd0fbf67396:c82496",
    "temporada": "7e9fddeddf41:a8d8b7335469"
   },
   "Tole Lirica": {
@@ -1791,7 +1791,7 @@
    "servidor": "5d6bcb03125c:0bd0fbf67396:c29281"
   },
   "Trelok": {
-   "competitivo": "b8a60a0906dd:c41ff817042a",
+   "competitivo": "b8a60a0906dd:38a840be60e7",
    "pais": "17fa63baf35e:f1f52e1c6d42",
    "servidor": "e42d2ea23335:0bd0fbf67396:16bc7a",
    "temporada": "07c188a53811:a8d8b7335469"
@@ -2133,5 +2133,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-20T02:37:03+00:00"
+ "cuando": "2026-11-20T05:05:40+00:00"
 }
