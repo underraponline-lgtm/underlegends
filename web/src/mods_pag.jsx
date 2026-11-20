@@ -7,12 +7,14 @@
 // Qué es cada estado y quién lo lee: mods.js. ⚠️ Lo que se ve acá no da permisos: el Worker decide en cada pedido.
 // Tanda 2 (20/11/2026): la hora en la lente, tener todo en el Inventario, el festejo, los lápices en las ligas y, con el
 // Worker, los Admin y Moderadores de la página en llaves y ligas (`liga` de `socio-roles`).
-// ⏳ Lo que falta: «Alguien…» en la lente, y los lápices en perfiles, publicaciones y eventos (piden el Worker).
+// Tanda 3 (20/11/2026, con el Worker): «Alguien…» en la lente (sólo Dlx: lo de una persona, para mirar), el registro de
+// Mods del servidor (`/avisos/mods`, de `socio_log`) y «Ocultar» en las publicaciones (mods_ocultar.jsx).
+// ⏳ Lo que falta: los lápices en los perfiles (quién es quién) y en los eventos (de estilo), y fijar una publicación.
 import { useEffect, useState } from 'react';
 import { DUENO } from './liga.js';
 import { ahoraReal, deshechaMods, ponerMod, prendidosMods, rolMods, tieneMods, useHistorialMods, useModsEstado, useQuienMod } from './mods.js';
 import { horaMods } from './mods.jsx';
-import { pedirLlave, pedirRoles } from './panelsocio.js';
+import { pedirLlave, pedirRoles, pedirStaff } from './panelsocio.js';
 import { abrirDePrueba, abrirMomento } from './drops.jsx';
 import { pedirRecorrido } from './primera.js';
 import { Ico } from './piezas.jsx';
@@ -79,15 +81,70 @@ function Pildoras({ xs, val, al }) {
   );
 }
 
+/**
+ * 👀 «ALGUIEN…» (sólo Dlx; la puerta la pone el Worker): lo de una persona, para mirar —su Pase, sus Puntos, sus piezas, sus
+ * Drops sin abrir y sus últimos avisos—, para contestar «¿por qué no me llegó…?» sin pedirle una captura
+ */
+function Alguien({ liga }) {
+  const [q, setQ] = useState('');
+  const [x, setX] = useState(null);
+  const [va, setVa] = useState(false);
+  const tabla = (liga && liga.d && liga.d.tabla) || [];
+  const deNombre = (t) => { const n = String(t || '').trim().toLowerCase(); const f = tabla.find((r) => String(r.n || '').toLowerCase() === n || r.k === n); return f ? f.k : n.replace(/[^a-z0-9._-]/g, ''); };
+  const ver = () => {
+    const k = deNombre(q);
+    if (!k || va || !W.conCuenta) return;
+    setVa(true);
+    W.conCuenta('/api/avisos/mods', { que: 'alguien', k }).then((j) => { setVa(false); setX(j && j.ok ? j : { error: 1 }); }).catch(() => { setVa(false); setX({ error: 1 }); });
+  };
+  const P = x && x.pase, T = x && x.tienda;
+  const nombre = x && x.k ? ((tabla.find((r) => r.k === x.k) || {}).n || x.k) : '';
+  return (
+    <div className="md-fila"><span className="lab">Alguien</span>
+      <div className="md-alg">
+        <form className="md-alg-f" onSubmit={(e) => { e.preventDefault(); ver(); }}>
+          <input list="md-alg-l" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Su nombre en la Liga" aria-label="Ver lo de alguien" />
+          <datalist id="md-alg-l">{tabla.slice(0, 400).map((r) => <option key={r.k} value={r.n} />)}</datalist>
+          <button type="submit" className="btn borde2 chico" disabled={!q.trim() || va}>{va ? 'Buscando…' : 'Ver'}</button>
+        </form>
+        {x && x.error ? <p className="md-nota">No pude traerlo: prueba de nuevo en un rato.</p> : null}
+        {x && x.sin_cuenta ? <p className="md-nota"><b>{nombre}</b> no entró nunca con Discord: no tiene Pase, Puntos ni avisos.</p> : null}
+        {x && x.ok && !x.sin_cuenta ? (
+          <div className="md-ficha">
+            <p className="md-ficha-t"><b>{nombre}</b> <a href={'#/r/' + encodeURIComponent(x.k)}>Su perfil ›</a></p>
+            <div className="md-ficha-n">
+              <span><small>Pase</small><b>{P ? (P.miembro ? 'Nivel ' + P.nivel : 'Sin el rol') : '—'}</b><em>{P ? P.xp + ' XP' + (P.premium ? ' · Premium' : '') : ''}</em></span>
+              <span><small>Puntos de Tienda</small><b>{T && T.saldo != null ? T.saldo.toLocaleString('es') : '—'}</b><em>{T ? T.piezas + (T.piezas === 1 ? ' pieza' : ' piezas') : ''}</em></span>
+              <span><small>Drops sin abrir</small><b>{x.drops ? x.drops.cerrados : '—'}</b></span>
+            </div>
+            {P && (P.hoy.length || P.semana.length) ? <p className="md-ficha-l"><small>Sus Tareas</small>{[...P.hoy, ...P.semana].map((t) => (t.hecha ? '✓ ' : '') + t.t + ' (' + Math.min(t.lleva, t.meta) + '/' + t.meta + ')').join(' · ')}</p> : null}
+            {(x.avisos || []).length ? (
+              <ul className="md-ficha-av">{x.avisos.map((a, i) => <li key={i}><b>{a.titulo}</b><small>{haceCorto(a.t)}{a.visto ? ' · visto' : ' · sin ver'}</small></li>)}</ul>
+            ) : <p className="md-nota">Sin avisos en su campana.</p>}
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 /** Lo que hiciste con Mods (este navegador), con su Deshacer */
 function Hecho() {
   const H = useHistorialMods();
+  // 🗂️ el registro del servidor (`socio_log`): lo de todos para Dlx, lo tuyo para el resto. Sin el Worker nuevo, no está
+  const [reg, setReg] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    if (W.conCuenta) W.conCuenta('/api/avisos/mods', { que: 'registro' }).then((j) => { if (vivo && j && j.ok) setReg(j); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [H.length]);
   const [va, setVa] = useState(0);
   const [err, setErr] = useState('');
   const deshacer = (x) => {
     if (va || !x.deshacer) return;
     setVa(x.t); setErr('');
-    pedirLlave(x.deshacer.sv, 'corregir', { fix: x.deshacer.fix }).then((j) => {
+    const p = x.deshacer.tipo === 'muro' ? pedirStaff(x.deshacer.sv, 'muro', 'mostrar', { pub: x.deshacer.pub }) : pedirLlave(x.deshacer.sv, 'corregir', { fix: x.deshacer.fix });
+    p.then((j) => {
       setVa(0);
       if (j && j.ok) deshechaMods(x.t); else setErr('No se pudo deshacer: prueba de nuevo en un rato.');
     }).catch(() => { setVa(0); setErr('No se pudo deshacer: prueba de nuevo en un rato.'); });
@@ -106,7 +163,17 @@ function Hecho() {
         </ul>
       ) : <p className="md-gris">Todavía nada. Lo que corrijas con los lápices sale acá, con su Deshacer.</p>}
       {err ? <p className="md-err" role="alert">{err}</p> : null}
-      <p className="md-gris md-chico">Lo de este navegador. Lo que corriges queda anotado con tu nombre en la Liga.</p>
+      <p className="md-gris md-chico">Lo de este navegador, con su Deshacer.</p>
+      {reg && reg.items && reg.items.length ? (
+        <>
+          <h3 className="md-h3b">{reg.todo ? 'El registro del equipo' : 'Tu registro en la Liga'}</h3>
+          <ul className="md-log">
+            {reg.items.slice(0, 10).map((x, i) => (
+              <li key={x.t + ':' + i}><span><b>{x.que}{x.despues ? ' · ' + x.despues : ''}</b><small>{[x.sv, reg.todo ? x.n || x.rol : '', haceCorto(x.t)].filter(Boolean).join(' · ')}</small></span></li>
+            ))}
+          </ul>
+        </>
+      ) : null}
     </section>
   );
 }
@@ -168,6 +235,7 @@ export function ModsPagina({ liga, dc }) {
                     {M.hora ? <p className="md-nota md-hora-n">La página corre desde el <b>{horaMods(M.hora)}</b> (hora del este). Lo que viene del servidor sigue siendo de ahora: los datos, los eventos y lo en vivo.</p> : null}
                   </div>
                 ) : null}
+                {owner ? <Alguien liga={liga} /> : null}
                 <div className="md-fila"><span className="lab">Idioma</span>
                   <Pildoras xs={[['es', 'Español'], ['en', 'English']]} val={en ? 'en' : 'es'} al={(v) => { if ((v === 'en') !== en) idioma(v); }} />
                 </div>
@@ -221,6 +289,7 @@ export function ModsPagina({ liga, dc }) {
                 {owner || deLiga ? <a className="md-fl" href="#/ligas"><span className="md-ic"><Ico n="ligas" t={18} /></span><span><h3>Las ligas</h3><p>Al final de cada liga: quién ganó, una que no cuenta, cargar una batalla, un DF, un invitado o el campeón.</p></span><i>›</i></a> : null}
                 {Q.admin ? <a className="md-fl" href="#/crews"><span className="md-ic"><Ico n="crews" t={18} /></span><span><h3>Las crews</h3><p>Sus Ajustes, rangos y pedidos, como su Líder.</p></span><i>›</i></a> : null}
                 {Q.admin ? <a className="md-fl" href="#/competencias"><span className="md-ic"><Ico n="competencias" t={18} /></span><span><h3>Competencias</h3><p>Todas las llaves de la Copa y la Rapid, también donde no juegas.</p></span><i>›</i></a> : null}
+                {owner || deLiga ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Publicaciones</h3><p>Ocultar una publicación de cualquier servidor, desde la publicación. Sale del muro en la próxima vuelta del ciclo.</p></span><i>›</i></a> : null}
                 {owner ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Los comentarios</h3><p>Borrar cualquier comentario, desde el comentario. Siempre, sin prender nada.</p></span><i>›</i></a> : null}
                 {owner ? <a className="md-fl" href="#/socio"><span className="md-ic"><Ico n="servidor" t={18} /></span><span><h3>El panel de cualquier servidor</h3><p>Como su dueño: sus números, el bot y su equipo.</p></span><i>›</i></a> : null}
               </div>
@@ -246,7 +315,7 @@ export function ModsPagina({ liga, dc }) {
             <table className="md-mtz">
               <thead><tr><th /><th>Owner</th><th>Admin</th><th>Mod</th><th>Socio</th></tr></thead>
               <tbody>
-                {[['Cómo ves la página', 1, 1, 0, 0], ['Probar sin gastar', 1, 0, 0, 0], ['Corregir llaves y ligas', 1, 1, 1, 2], ['Crews y Competencias', 1, 1, 0, 0], ['El Dashboard', 1, 1, 1, 0], ['Su servidor', 1, 0, 0, 1]]
+                {[['Cómo ves la página', 1, 1, 0, 0], ['Probar sin gastar', 1, 0, 0, 0], ['Corregir llaves y ligas', 1, 1, 1, 2], ['Crews y Competencias', 1, 1, 0, 0], ['Ocultar publicaciones', 1, 1, 1, 2], ['Ver como alguien', 1, 0, 0, 0], ['El Dashboard', 1, 1, 1, 0], ['Su servidor', 1, 0, 0, 1]]
                   .map(([t, ...v]) => <tr key={t}><td>{t}</td>{v.map((x, i) => <td key={i}><span className={'md-pt' + (x === 2 ? ' m' : x ? '' : ' n')} aria-label={x === 2 ? 'sólo su servidor' : x ? 'sí' : 'no'} /></td>)}</tr>)}
               </tbody>
             </table>

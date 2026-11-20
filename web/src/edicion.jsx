@@ -23,6 +23,7 @@ import { LuSocial } from './medio.jsx';
 import { pedirLigas } from './ligas_datos.js';
 import CSS_ED from './css/edicion.css?inline';
 import { usarCss } from './css.js';
+import { OcultarMods } from './mods_ocultar.jsx';
 
 usarCss('edicion', CSS_ED);
 const W = typeof window !== 'undefined' ? window : {};
@@ -146,6 +147,7 @@ function Nota({ liga, it, xs, A, P, H, fuerte, reto }) {
         <div className="ed-acc">{logro ? <H.Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}{it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} sinCm /> : null}</div>
         {reto ? <Reto liga={liga} it={it} /> : null}
         {it.id ? <Hilo liga={liga} it={it} ver={chica() ? 1 : 2} rapidas /> : null}
+        <OcultarMods it={it} />
       </div>
     </article>
   );

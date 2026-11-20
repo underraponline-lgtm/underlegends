@@ -7344,3 +7344,10 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
    comía 7 de los 5 px de aire a 360. Un píxel menos entre la cara y el texto, y sin espaciado de letras. En inglés va
    «UP NOW» (ingles.json): «YOUR TURN» se pasaba 23 px del bloque */
 .tabbar.e .tb-jg.toca .l1{gap:4px;letter-spacing:0}
+/* ✎ «Ocultar» de Mods en una publicación (20/11/2026, mods_ocultar.jsx): el magenta del lápiz, chico y al pie */
+.om{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0 0;font:600 13.5px/1.35 Archivo,sans-serif}
+.app .om-b{min-height:32px;padding:0 10px;border:1.4px solid var(--linea);border-radius:3px;background:transparent;color:var(--tinta);font:700 13.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.app .om-b.lapiz{border-color:#E41373;color:var(--magenta-tx,#E41373)}
+.app .om-b.fuerte{background:#E41373;border-color:#E41373;color:#fff}
+.om-err{color:var(--magenta-tx,#E41373)}
+@media (max-width: 899.98px){.app .om-b{min-height:44px}}

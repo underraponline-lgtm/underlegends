@@ -30,6 +30,25 @@
 .md-elegir input{min-height:38px;padding:0 10px;border:1.4px solid var(--esc-linea);border-radius:3px;background:transparent;color:var(--esc-tinta);font:500 14px/1 Archivo,sans-serif;color-scheme:dark}
 .app .md-elegir .btn{color:var(--esc-tinta);border-color:var(--esc-linea)}
 .md-hora-n{grid-column:1 / -1;border-top:0;padding-top:0}
+/* «alguien»: el buscador y su ficha, sobre el escenario */
+.md-alg{display:flex;flex-direction:column;gap:10px;min-width:0}
+.md-alg-f{display:flex;flex-wrap:wrap;gap:8px}
+.md-alg-f input{flex:1 1 220px;min-height:38px;padding:0 12px;border:1.4px solid var(--esc-linea);border-radius:3px;background:transparent;color:var(--esc-tinta);font:500 15px/1 Archivo,sans-serif}
+.app .md-alg-f .btn{color:var(--esc-tinta);border-color:var(--esc-linea)}
+.md-ficha{border:1.4px solid var(--esc-linea);border-radius:3px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.md-ficha-t{margin:0;display:flex;justify-content:space-between;gap:10px;font-size:16px}
+.md-ficha-t a{color:var(--esc-tinta);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.md-ficha-n{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.md-ficha-n span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.md-ficha-n small,.md-ficha-l small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
+.md-ficha-n b{font:400 26px/1 Anton,sans-serif}
+.md-ficha-n em{font-style:normal;font-size:12.5px;color:var(--esc-gris)}
+.md-ficha-l{margin:0;font-size:13.5px;line-height:1.45;display:flex;flex-direction:column;gap:4px}
+.md-ficha-av{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.md-ficha-av li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--esc-linea);font-size:13.5px}
+.md-ficha-av small{color:var(--esc-gris);white-space:nowrap}
+.md-h3b{margin:10px 0 0;font:900 14px/1.2 Archivo,sans-serif}
+@media (max-width: 899.98px){.md-ficha-n{grid-template-columns:minmax(0,1fr)}}
 /* probar sin gastar */
 .md-prueba{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .md-pc{border:1.6px solid var(--linea);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;min-width:0}

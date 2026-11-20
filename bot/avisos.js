@@ -3705,7 +3705,7 @@ const RUTAS = {
   '/avisos/socio-final': 'POST',
   // 🛡️ el staff de cada servidor (16/11/2026): sus roles, sus llaves y sus ligas. Ver `socioRoles()`, `socioLlave()` y
   // `socioLiga()` del objeto; y los cambios de liga, para el ciclo (`bot/ligas.py`, con su clave)
-  '/avisos/socio-roles': 'POST', '/avisos/socio-llave': 'POST', '/avisos/socio-liga': 'POST', '/avisos/liga-cambios': 'GET',
+  '/avisos/socio-roles': 'POST', '/avisos/socio-llave': 'POST', '/avisos/socio-liga': 'POST', '/avisos/liga-cambios': 'GET', '/avisos/mods': 'POST',
   // 🛡️ y lo demás del staff (16/11/2026): ¿quién es?, nombres, fondo del VS, agenda y publicaciones (`socioStaff()`);
   // los nombres, para el ciclo (`bot/reportes.py`, con su clave)
   '/avisos/socio-staff': 'POST', '/avisos/sv-nombres': 'GET',
@@ -4843,7 +4843,8 @@ export const SOCIO_PERMISOS = {
 //: 🛠️ «LA LIGA» (20/11/2026, la página Mods): los Admin y Moderadores de la página —los que tienen `reportes` en el
 //: Dashboard— corrigen las llaves y las ligas de cualquier servidor con los lápices de Mods, como el staff de ese servidor.
 //: No es un rol del equipo de un socio: no entra a su panel ni a sus ajustes
-export const LIGA_STAFF = ['ver', 'final', 'llaves', 'ligas', 'sugerir'];
+//: (y desde la tanda 3, 20/11/2026: `muro`, ocultar una publicación de cualquier servidor, que es lo del Moderador de la página)
+export const LIGA_STAFF = ['ver', 'final', 'llaves', 'ligas', 'sugerir', 'muro'];
 export function socioPuede(rol, que) {
   if (rol === 'dlx' || rol === 'dueno') return true;
   if (rol === 'liga') return LIGA_STAFF.includes(que);
@@ -8095,6 +8096,31 @@ export async function rutaAvisos(req, env, ruta) {
     });
   }
   // 🛡️ LO DEMÁS DEL STAFF DE CADA SERVIDOR (16/11/2026): quién pide lo dice Discord; qué puede, `socioStaff()`
+  // 🛠️ MODS (20/11/2026, la página Mods, tanda 3): `registro` —lo que corrigió el staff con su nombre (`socio_log`): Dlx ve
+  // el de todos y cada uno el suyo— y `alguien` —lo de una persona, para mirar: su Pase, sus Puntos, sus piezas, sus Drops y
+  // sus avisos—, sólo para Dlx. Quién es lo dice Discord; nada de esto se cambia desde acá
+  if (ruta === '/avisos/mods') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) || !['registro', 'alguien'].includes(d.que)
+        || (d.que === 'alguien' && !/^[a-z0-9._-]{1,60}$/.test(String(d.k || '')))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    const dueno = q.id === DUENO;
+    if (d.que === 'alguien') {
+      if (!dueno) return json({ error: 'no' }, 403);
+      let pcfg = null;
+      try { pcfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { pcfg = null; }
+      const billetera = pcfg && Number.isInteger(pcfg.inicial) ? { desde: Date.parse(pcfg.desde || '') || 0, inicial: pcfg.inicial } : null;
+      return elObjeto(env).fetch('https://avisos/mods-alguien', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ k: String(d.k), billetera }) });
+    }
+    const jefe = dueno || await puede(q.id, 'reportes');
+    return elObjeto(env).fetch('https://avisos/mods-registro', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, todo: dueno, jefe }) });
+  }
   if (ruta === '/avisos/socio-staff') {
     const crudo = await req.text();
     if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
@@ -8110,9 +8136,10 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
+    const jefe = d.que === 'muro' ? await puede(q.id, 'reportes') : false;
     return elObjeto(env).fetch('https://avisos/socio-staff', {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ quien: q.id, sv: d.sv, que: d.que, accion: d.accion || 'ver', id: d.id, r: d.r, borrar: d.borrar === true,
+      body: JSON.stringify({ quien: q.id, jefe, sv: d.sv, que: d.que, accion: d.accion || 'ver', id: d.id, r: d.r, borrar: d.borrar === true,
         nombre: d.nombre, es: d.es, fondo: d.fondo, ini: d.ini !== undefined ? Number(d.ini) : undefined, formato: d.formato, pub: d.pub }),
     });
   }
@@ -9912,6 +9939,8 @@ export class Avisos {
       if (ruta === '/socio-final') return json(this.socioFinal(d));
       if (ruta === '/socio-roles') return json(this.socioRoles(String((d && d.quien) || ''), !!(d && d.jefe === true)));
       if (ruta === '/socio-llave') return json(await this.socioLlave(d));
+      if (ruta === '/mods-registro') return json(this.modsRegistro(d));
+      if (ruta === '/mods-alguien') return json(this.modsAlguien(d));
       if (ruta === '/socio-liga') return json(await this.socioLiga(d));
       if (ruta === '/socio-staff') return json(await this.socioStaff(d));
       if (ruta === '/socio-ajustes') return this.socioAjustes(d);
@@ -16954,6 +16983,55 @@ export class Avisos {
    * desde un panel: quién (su ID y si era el dueño, un admin o Dlx), qué, lo de antes y lo de después. Un año, en su
    * tabla: no se pisa como `socio_hist`, que eran los 50 últimos. ⚠️ Nunca se le muestra a un socio.
    */
+  /**
+   * 🛠️ EL REGISTRO DE MODS (20/11/2026): lo que corrigió el staff, de `socio_log`. Dlx (`todo`) ve las últimas 40 de todos,
+   * con el nombre de cada uno; los demás, sus últimas 20. Sin `jefe` ni ser del staff de algún servidor, nada
+   */
+  modsRegistro(d) {
+    const quien = String((d && d.quien) || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    try {
+      this.sql.exec('CREATE TABLE IF NOT EXISTS socio_log (t INTEGER NOT NULL, sv TEXT NOT NULL, quien TEXT NOT NULL, rol TEXT, n TEXT, que TEXT NOT NULL, antes TEXT, despues TEXT)');
+      const xs = d.todo === true
+        ? this.sql.exec('SELECT t, sv, rol, n, que, despues FROM socio_log ORDER BY t DESC LIMIT 40').toArray()
+        : (d.jefe === true || this.sociosDe(quien).lista.length)
+          ? this.sql.exec('SELECT t, sv, rol, n, que, despues FROM socio_log WHERE quien = ? ORDER BY t DESC LIMIT 20', quien).toArray() : [];
+      return { ok: true, todo: d.todo === true, items: xs };
+    } catch (e) { return { ok: true, items: [] }; }
+  }
+
+  /**
+   * 👀 «VER COMO ALGUIEN» (20/11/2026, sólo Dlx: lo decide la ruta). Lo de una persona por su clave, para mirar y nada más:
+   * el Pase (nivel, XP y sus Tareas de hoy y de la semana), los Puntos de Tienda (`billetera` de la ruta), cuántas piezas
+   * tiene y si es Premium, sus Drops sin abrir y sus últimos avisos. Sin cuenta vinculada (`idk`), lo dice
+   */
+  modsAlguien(d) {
+    const k = String((d && d.k) || '').toLowerCase();
+    const r = this.sql.exec('SELECT id FROM idk WHERE k = ?', k).toArray()[0];
+    if (!r) return { ok: true, k, sin_cuenta: true };
+    const id = String(r.id);
+    const out = { ok: true, k };
+    try {
+      const P = this.paseDe(id);
+      const tareas = (x) => ((x && x.tareas) || []).map((t) => ({ t: t.t, lleva: t.lleva, meta: t.meta, hecha: !!t.hecha }));
+      out.pase = P && P.listo !== false ? { miembro: !!P.miembro, nivel: P.nivel || 0, xp: P.xp || 0, hasta: P.hasta || null,
+        premium: !!(P.premium && P.premium.hasta == null), hoy: tareas(P.hoy), semana: tareas(P.semana) } : null;
+    } catch (e) { out.pase = null; }
+    try {
+      const b = d.billetera;
+      const inv = this.sql.exec('SELECT COUNT(*) AS n FROM tienda_inv WHERE quien = ?', id).toArray()[0];
+      out.tienda = { saldo: b && Number.isInteger(b.inicial) ? this.saldo(id, Number(b.desde) || 0, b.inicial) : null, piezas: Number((inv || {}).n) || 0 };
+    } catch (e) { out.tienda = null; }
+    try {
+      const dr = this.dropsDe(id);
+      out.drops = dr && !dr.error ? { cerrados: (dr.cerrados || []).length } : null;
+    } catch (e) { out.drops = null; }
+    try {
+      out.avisos = this.sql.exec('SELECT t, tipo, titulo, visto FROM bandeja WHERE quien = ? ORDER BY t DESC LIMIT 8', id).toArray();
+    } catch (e) { out.avisos = []; }
+    return out;
+  }
+
   socioAnotar(sv, quien, rol, que, antes, despues, n = '') {
     try {
       this.sql.exec('CREATE TABLE IF NOT EXISTS socio_log (t INTEGER NOT NULL, sv TEXT NOT NULL, quien TEXT NOT NULL, rol TEXT, n TEXT, que TEXT NOT NULL, antes TEXT, despues TEXT)');
@@ -17600,7 +17678,8 @@ export class Avisos {
   async socioStaff(d) {
     const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
     const que = String((d && d.que) || ''), accion = String((d && d.accion) || 'ver');
-    const rol = this.rolSocio(quien, sv);
+    // 🛠️ «la Liga» (Mods): de lo del staff de un servidor, sólo ocultar publicaciones
+    const rol = this.rolSocio(quien, sv) || (d && d.jefe === true && que === 'muro' ? 'liga' : '');
     if (!rol) return { error: 'no' };
     const ahora = Date.now();
     const nombre = this.nombreEquipo(sv, quien) || (rol === 'dlx' ? 'Dlx' : rol === 'dueno' ? 'El dueño' : '');
