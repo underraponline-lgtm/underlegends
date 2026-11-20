@@ -3282,7 +3282,7 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
     } catch (e) { setMsg((m) => Object.assign({}, m, { todos: 'No se pudo: ' + e.message })); }
   };
   return (
-    <div><h3>Errores en las llaves <small>reportados</small></h3>
+    <div><h3>Reportes de la gente <small>errores en las llaves y en los perfiles</small></h3>
       <Buscar q={q} setQ={setQ} que="un nombre o una llave" />
       <Filtros f={f} setF={setF} limpiar={limpiar} n={vista.length} total={lista.length} grupos={[
         ['sv', 'Servidor', opciones(lista, (r) => r.evid && r.evid.sv)],
@@ -3880,7 +3880,9 @@ const AREAS = [
   ['roles', 'Roles', 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M3 21v-1a6 6 0 0 1 12 0v1M17 11l2 2 4-4'],
 ];
 // las cuatro colas de Pendientes
-const SUBP = [['quien', '¿Quién es quién?'], ['llaves', 'Errores en las llaves'], ['imagenes', 'Imágenes y videos'], ['pedidos', 'Pedidos']];
+// 📣 LOS REPORTES DE LA GENTE, PRIMERO (20/11/2026, el plan de los tiers: «los reportes de su gente arriba en tu Dashboard»,
+// para todos los servidores y sin orden por tier): en los cuadrados de «Para decidir», en la bandeja y en sus filtros
+const SUBP = [['llaves', 'Reportes de la gente'], ['quien', '¿Quién es quién?'], ['imagenes', 'Imágenes y videos'], ['pedidos', 'Pedidos']];
 const AREA = 'lg:db-area';
 const leerArea = () => { try { const t = localStorage.getItem(AREA); return AREAS.some(([k]) => k === t) ? t : 'resumen'; } catch (e) { return 'resumen'; } };
 const ponerArea = (t) => { try { localStorage.setItem(AREA, t); } catch (e) { /* sin almacenamiento */ } };
@@ -3898,7 +3900,7 @@ const BUSCABLES = [
   // fila (`sv-cada`) y sumar uno en `sv-sumar`. Con el ancla muerta, el buscador dejaba al principio del área
   ['Los tiers de los servidores', 'servidores', 'sv-cada'], ['Sumar un servidor', 'servidores', 'sv-sumar'], ['El dueño de un servidor socio', 'servidores', 'sv-cada'],
   ['Los que corrieron /setup (sus puntos de Temporada)', 'servidores', 'sv-setup'],
-  ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'], ['Errores en las llaves', 'pendientes', '', 'llaves'],
+  ['Reportes de la gente (errores en las llaves)', 'pendientes', '', 'llaves'], ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'],
   ['Fondos, fotos de carta, logos y videos', 'pendientes', '', 'imagenes'], ['Pedidos de la gente', 'pendientes', '', 'pedidos'],
   ['Comparar semanas', 'numeros', 'nu-semanas'], ['El bot y la página, 7 días', 'numeros', 'nu-uso'], ['El tutorial', 'numeros', 'nu-tuto'],
   ['Qué se toca en la página', 'numeros', 'nu-clics'], ['¿El lobby hace volver a la gente?', 'numeros', 'nu-lobby'], ['Las crews (números)', 'numeros', 'nu-crews'],
@@ -4044,10 +4046,10 @@ function programado(aj, liga) {
 // ⌨️ En la compu: J y K para moverse, A aprobar y R rechazar (imágenes y videos), / para buscar
 // Lo que ya revisó el filtro automático y lo que se resolvió solo quedan abajo, plegado
 const TIPO_B = {
-  quien: ['¿QUIÉN ES QUIÉN?', 'urg'], llave: ['ERROR EN UNA LLAVE', 'urg'], imagen: ['IMAGEN', 'ojo'], video: ['VIDEO', 'ojo'], pedido: ['PEDIDO', 'ojo'],
+  quien: ['¿QUIÉN ES QUIÉN?', 'urg'], llave: ['REPORTE DE LA GENTE', 'urg'], imagen: ['IMAGEN', 'ojo'], video: ['VIDEO', 'ojo'], pedido: ['PEDIDO', 'ojo'],
 };
 const SUB_A_FILTRO = { quien: 'quien', llaves: 'llave', imagenes: 'imagen', videos: 'video', pedidos: 'pedido' };
-const FILTROS_B = [['', 'Todo'], ['quien', '¿Quién es quién?'], ['llave', 'Llaves'], ['imagen', 'Imágenes'], ['video', 'Videos'], ['pedido', 'Pedidos']];
+const FILTROS_B = [['', 'Todo'], ['llave', 'Reportes'], ['quien', '¿Quién es quién?'], ['imagen', 'Imágenes'], ['video', 'Videos'], ['pedido', 'Pedidos']];
 const linea1 = (s) => String(s || '').split('\n').map((x) => x.trim()).find(Boolean) || '';
 
 // todo lo que espera algo de ti, de las cinco colas, en una sola lista: lo urgente primero y, adentro, lo más nuevo
@@ -4083,7 +4085,8 @@ function itemsBandeja(d, ver, sueltas) {
   }
   if (ver.video) for (const v of d.videos || []) xs.push({ k: 'v' + v[0], tipo: 'video', t: 0, titulo: v[2] || v[3], sub: 'lo reclama ' + limpio(v[1]) + ' · ' + v[4], v });
   if (ver.pedido) for (const p of d.pedidos || []) if (p.estado === '') xs.push({ k: 'd' + p.id, tipo: 'pedido', t: msDe(p.t), titulo: PED_TIPO[p.tipo] || p.tipo, sub: p.k ? 'de ' + p.k : '', ped: p });
-  const urg = (x) => (TIPO_B[x.tipo][1] === 'urg' ? 0 : 1);
+  // 📣 los reportes de la gente arriba de todo (20/11/2026); después las dudas de ✅ Decidir; después lo que no apura
+  const urg = (x) => (x.tipo === 'llave' ? 0 : TIPO_B[x.tipo][1] === 'urg' ? 1 : 2);
   // 🧮 las de ✅ Decidir, por evento: primero el evento que más puntos mueve, y adentro la que más mueve (11/11/2026)
   const evMax = {};
   for (const x of xs) if (x.tipo === 'quien') evMax[x.p.sec] = Math.max(evMax[x.p.sec] || 0, x.pts || 0);
@@ -5582,8 +5585,8 @@ export function Dashboard({ dc, liga }) {
   const primeroRep = (d.reportes || []).find((x) => x.estado === '');
   const primerPed = (d.pedidos || []).find((x) => x.estado === '');
   const CUADROS = [
+    ['llaves', n.llaves, 'Reportes de la gente', primeroRep ? etiquetaRep(primeroRep).toLowerCase() + (primeroRep.de ? ' · lo reportó ' + primeroRep.de : '') : 'reportados por la gente', true, 'llaves'],
     ['quien', n.quien, '¿Quién es quién?', 'nombres que el bot no reconoció', true, 'quien'],
-    ['llaves', n.llaves, 'Errores en las llaves', primeroRep ? etiquetaRep(primeroRep).toLowerCase() + (primeroRep.de ? ' · lo reportó ' + primeroRep.de : '') : 'reportados por la gente', true, 'llaves'],
     ['imagenes', n.imagenes, 'Imágenes', 'fondos, fotos de carta y logos', false, 'imagenes'],
     ['videos', n.videos, 'Videos', 'alguien dice «es mío»', false, 'videos'],
     ['pedidos', n.pedidos, 'Pedidos', primerPed ? PED_TIPO[primerPed.tipo] || primerPed.tipo : 'cuenta perdida, país, un video', false, 'pedidos'],
