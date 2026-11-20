@@ -251,6 +251,26 @@ arrancan en Hierro —casi todos jugaron poco en la T1— y tardan unos 16 días
 divisiones de la T1 (`datos/divisiones.json`, `mejor`) y se arranca de su piso: **Mítico → Rubí I, Diamante → Zafiro
 I, Rubí → Jade I, el resto a Hierro I**. Al 20/11: 13 llegaron a Mítico, 13 a Diamante y 32 a Rubí, de 692.
 
+### Los números (propuesta, espera el OK: como están)
+
+Con todo lo demás decidido (`elo_numeros.py` de la sesión, la T1, los 196 activos con 5 batallas o más): una batalla
+que cuenta vale **±15** (la mediana, con los factores); salir campeón de una llave de 16 o más da **unos +70** en la
+noche, casi una piedra, y de una chica unos +53; los premios (campeón +15, MVP +8, 🔥 +6, racha +2 · +4 · +6, × lo
+esperado) son el 38 % de los puntos del top 8.
+
+| | Mítico · Diamante · Rubí · Zafiro | en la piedra de su nivel | bajaron de piedra | premio de fin |
+|---|---|---|---|---|
+| **como están: ±15 y los premios** | **1 · 5 · 16 · 26** | **62 %** | **17 %** | **64.300 PdT** |
+| batalla ±10 | 0 · 1 · 13 · 21 | 70 % | 10 % | 43.700 |
+| batalla ±20 | 1 · 13 · 12 · 36 | 55 % | 24 % | 83.500 |
+| premios a la mitad | 0 · 2 · 13 · 28 | 68 % | 18 % | 51.200 |
+| sin premios | 0 · 1 · 8 · 20 | 72 % | 20 % | 42.400 |
+
+Por qué como están: las piedras se eligieron con estos números, y con ±10 o con los premios a la mitad la cima se
+vuelve a vaciar; con ±20 rebota uno de cada cuatro y el premio de fin sale un 30 % más caro. Sacar premios ordena
+mejor por nivel, pero arriba no llega casi nadie. Los factores (ronda, nivel y tamaño del evento, veredicto), la
+protección de abajo y el mínimo del campeón, también como están.
+
 ## 4 · Lo que se probó y no sirve
 
 - **La escalera batalla por batalla, sin reglas de llave**: premia jugar mucho (Makmah 1.º con 52 % en 167 batallas).
@@ -277,7 +297,7 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **Los números**: K, los factores, los extras y la protección de abajo.
+1. **Los números**: la propuesta es dejarlos como están (§3, «Los números»).
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
 lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante) y, encima, la semana para el que se queda
