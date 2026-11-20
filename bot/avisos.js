@@ -1045,7 +1045,7 @@ export function batallaVivo(L, voz, idsDe, probada) {
   };
   const fuertes = [], debiles = [];
   // las rondas con batallas por jugar, y la ÚLTIMA que ya tiene todas sus batallas armadas: si la de después está entera,
-  // la de antes terminó aunque el organizador no haya marcado alguna (Cypherhood, 19/11/2026 a las 11:20 PM: los Octavos
+  // la de antes terminó aunque el organizador no haya marcado alguna (Cypherhood, 19/11/2026 a las 11:03 PM: los Octavos
   // con un «Sanito vs yeyoz vs mats» que nunca se marcó y los Cuartos ya armados y jugándose)
   const conPend = ((L && L.rondas) || []).map((R) => ({ R, pend: (R.b || []).map((b, i) => ({ b, i, lados: (b[0] || []).filter(Boolean) }))
     .filter((x) => x.lados.length >= 2 && !x.b[1] && !/^pasan \d/.test(String(x.b[2] || ''))) })).filter((x) => x.pend.length);
