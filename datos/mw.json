@@ -97,10 +97,22 @@
     "nivel": "B",
     "base": 9000,
     "o": 3,
-    "estado": "suelto",
+    "estado": "cazado",
     "ev": 1,
     "fase": "Octavos",
-    "valor": 10750
+    "valor": 9000,
+    "caza": {
+     "n": 666,
+     "evento": "CHOP COMPE NOCTURNA V.1",
+     "sv": "CH",
+     "t": "2026-11-20T02:47:21Z",
+     "por": [
+      {
+       "n": "Yeyox",
+       "cobra": 18000
+      }
+     ]
+    }
    },
    {
     "n": "Marcos",

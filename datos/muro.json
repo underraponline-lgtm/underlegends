@@ -1268,6 +1268,10 @@
 "temporada"
 ]
 },
+"beneroo": {
+"rg": "",
+"c": []
+},
 "riolu": {
 "rg": "",
 "c": [
@@ -8090,19 +8094,19 @@
 "n": "Lalox",
 "k": "lalox",
 "de": 713,
-"a": 318
+"a": 319
+},
+{
+"n": "beneroo",
+"k": "beneroo",
+"de": 636,
+"a": 315
 },
 {
 "n": "Julda",
 "k": "julda",
 "de": 425,
 "a": 129
-},
-{
-"n": "beneroo",
-"k": "",
-"de": 636,
-"a": 402
 }
 ],
 "sorpresas": [
@@ -8395,7 +8399,8 @@
 "rodrilp": 3,
 "flash": 2,
 "julda": 1,
-"lalox": 1
+"lalox": 1,
+"beneroo": 0
 },
 "sem": {
 "id": "2026-11-16",
