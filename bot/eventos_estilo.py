@@ -51,13 +51,21 @@ def _limpio(marcados, catalogo):
             if re.match(r'^(a:[0-9]{15,22}|[0-9]{1,6})$', str(k)) and v in catalogo}
 
 
-def resolver(calendario, marcados, catalogo):
+def resolver(calendario, marcados, catalogo, socios=None):
     """Marca el calendario (`je`) y devuelve `{número: estilo}` de lo que ya se jugó. Lo marcado directo por número
-    cuenta aunque no esté en el calendario."""
+    cuenta aunque no esté en el calendario.
+
+    🎭 `socios` `{sigla: {clave: estilo}}`: lo que marcó el dueño de un Tier 1 o 2 desde su panel (20/11/2026, el plan de
+    los tiers: «el Tier 2 da 1 evento de estilo por mes»). Vale SÓLO para eventos de su servidor (`sv` del calendario) y
+    nunca por número suelto: un número que no está en el calendario no se sabe de quién es. Lo de Dlx gana."""
     marcados = _limpio(marcados, catalogo)
+    socios = {str(sv): _limpio(m, catalogo) for sv, m in (socios or {}).items() if isinstance(m, dict)}
     eventos = {k: v for k, v in marcados.items() if not k.startswith('a:')}
     for it in calendario or []:
         est = next((marcados[k] for k in claves(it) if k in marcados), None)
+        if not est:
+            mio = socios.get(str(it.get('sv') or '')) or {}
+            est = next((mio[k] for k in claves(it) if k in mio), None)
         if not est:
             continue
         it['je'] = catalogo[est][0]                     # el NOMBRE, listo para la página: no carga el catálogo
@@ -93,8 +101,11 @@ def marcar(calendario, aj=None, escribir=True):
         resolver(calendario, antes.get('marcados') or {}, EJ.CATALOGO)
         return None
     marcados = _limpio(aj.get('eventos_estilo') or {}, EJ.CATALOGO)
-    eventos = resolver(calendario, marcados, EJ.CATALOGO)
+    socios = {sv: _limpio(m, EJ.CATALOGO) for sv, m in (aj.get('estilo_socios') or {}).items() if isinstance(m, dict)}
+    eventos = resolver(calendario, marcados, EJ.CATALOGO, socios)
     nuevo = {'_leeme': LEEME, 'marcados': dict(sorted(marcados.items())), 'eventos': eventos}
+    if any(socios.values()):
+        nuevo['socios'] = {sv: dict(sorted(m.items())) for sv, m in sorted(socios.items()) if m}
     if escribir and ({k: v for k, v in antes.items() if k != '_leeme'} != {k: v for k, v in nuevo.items() if k != '_leeme'}
                      or not antes):
         with io.open(ARCH, 'w', encoding='utf-8', newline='\n') as f:

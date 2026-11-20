@@ -913,6 +913,83 @@ function SumarServidor({ T, aj, hacer, ocup }) {
 // (`{guild: {si, t}}`), el MISMO que escriben los botones del DM: lo último que toques, acá o allá, es lo que vale, y el
 // ciclo lo aplica en su próxima vuelta (`aprobar_setup()` de bot/tiers.py)
 const PLANT = { completa: 'Liga completa', basico: 'Lo básico', leer: 'Sólo leer' };
+// 🏛️ EL CONSEJO DE SOCIOS (20/11/2026, Dlx: «Tú propones, 1 voto por servidor», «manda salvo veto mío», «Sí, a las 48 h»):
+// propones acá, vota cada servidor Tier 1 o 2 desde su panel (7 días, o antes si votan todos), gana el sí con más votos que
+// el no y tienes 48 h para vetarlo. Ver `consejoDueno()` en bot/avisos.js
+const CONSEJO_EST = { abierta: ['Votando', ''], veto: ['Ganó: puedes vetarla', 'ojo'], aprobada: ['Aprobada', ''], no_paso: ['No pasó', ''], vetada: ['Vetada', ''] };
+async function pedirConsejo(cuerpo) {
+  try {
+    const r = await fetch('/api/avisos/dueno/consejo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(cuerpo) });
+    const j = await r.json().catch(() => ({}));
+    return r.ok && !j.error ? j : { error: j.error || String(r.status) };
+  } catch (e) { return { error: 'red' }; }
+}
+function Consejo() {
+  const [j, setJ] = useState(null);
+  const [f, setF] = useState({ titulo: '', texto: '' });
+  const [msg, setMsg] = useState('');
+  const [ocup, setOcup] = useState(false);
+  useEffect(() => { pedirConsejo({ accion: 'ver' }).then(setJ); }, []);
+  const hacer = (cuerpo, listo) => {
+    setOcup(true); setMsg('');
+    pedirConsejo(cuerpo).then((x) => {
+      setOcup(false);
+      if (x.error) { setMsg(x.error === 'fuera_de_plazo' ? 'Ya pasaron las 48 h para vetarla.' : 'No se pudo: ' + x.error + '.'); return; }
+      setJ(x); setMsg(listo);
+      if (cuerpo.accion === 'crear') setF({ titulo: '', texto: '' });
+    });
+  };
+  if (!j) return <p className="db-tx">Cargando…</p>;
+  if (j.error) return <p className="db-tx">No pude leer el consejo ({j.error}).</p>;
+  return (
+    <div className="dz-cons">
+      <p className="db-tx">Votan {(j.votan || []).map(siglaDe).join(', ') || 'nadie todavía'}: un voto por servidor, del dueño o sus admins, durante 7 días.</p>
+      <div className="dz-cons-f">
+        <input value={f.titulo} maxLength={120} placeholder="La propuesta, en una línea" aria-label="La propuesta" onChange={(e) => setF(Object.assign({}, f, { titulo: e.target.value }))} />
+        <textarea value={f.texto} maxLength={1200} rows={2} placeholder="Si hace falta, el detalle" aria-label="El detalle" onChange={(e) => setF(Object.assign({}, f, { texto: e.target.value }))} />
+        <button type="button" className="btn verde chico" disabled={ocup || !f.titulo.trim()} onClick={() => hacer({ accion: 'crear', titulo: f.titulo.trim(), texto: f.texto.trim() }, 'Propuesta: les llega a los dueños en su bandeja.')}>Proponer</button>
+      </div>
+      {(j.lista || []).length ? <ul className="dz-cons-l">{j.lista.map((c) => {
+        const [et, cl] = CONSEJO_EST[c.estado] || [c.estado, ''];
+        return (
+          <li key={c.id}>
+            <div><b>{c.titulo}</b>{c.texto ? <small>{c.texto}</small> : null}
+              <small>Sí {c.si} · No {c.no} · se abstienen {c.abs} · votaron {c.votaron} de {c.total}{c.estado === 'abierta' ? ' · cierra en ' + Math.max(1, Math.ceil((c.cierra - Date.now()) / 864e5)) + ' días' : ''}{c.estado === 'veto' ? ' · puedes vetarla hasta ' + hora(new Date(c.veto_hasta)) : ''}</small></div>
+            <span className={'db-chip' + (cl ? ' ' + cl : '')}>{et}</span>
+            <span className="dz-cons-b">
+              {c.estado === 'veto' ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: la vetas" onClick={() => hacer({ accion: 'vetar', id: c.id }, 'Vetada.')}>Vetar</DosToques> : null}
+              <DosToques className="dz-lnk" disabled={ocup} confirmar="Toca de nuevo para borrarla" onClick={() => hacer({ accion: 'borrar', id: c.id }, 'Borrada.')}>Borrar</DosToques>
+            </span>
+          </li>
+        );
+      })}</ul> : <p className="db-tx">Todavía no propusiste nada.</p>}
+      {msg ? <p className="db-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
+// 🆕 LO NUEVO PRIMERO (20/11/2026, Dlx: «Prueban lo nuevo antes»): lo que los Tier 1 prueban unos días antes que el resto;
+// sale en su panel hasta el día que pongas (`lo_nuevo_t1`)
+function LoNuevoT1({ aj, hacer, ocup }) {
+  const xs = aj.lo_nuevo_t1 || [];
+  const [f, setF] = useState({ texto: '', hasta: '' });
+  return (
+    <div className="dz-cons">
+      {xs.length ? <ul className="dz-cons-l">{xs.map((y, i) => (
+        <li key={i}><div><b>{y.texto}</b><small>hasta el {corto(y.hasta)}</small></div>
+          <span className="dz-cons-b"><button type="button" className="dz-lnk" disabled={ocup} onClick={() => hacer('lo_nuevo_t1', xs.filter((_z, j) => j !== i), 'Sacado del panel de los Tier 1.')}>Sacar</button></span></li>
+      ))}</ul> : <p className="db-tx">Nada en prueba ahora.</p>}
+      <div className="dz-cons-f">
+        <input value={f.texto} maxLength={240} placeholder="Qué prueban, en una línea" aria-label="Qué prueban" onChange={(e) => setF(Object.assign({}, f, { texto: e.target.value }))} />
+        <input type="date" value={f.hasta} aria-label="Hasta cuándo" onChange={(e) => setF(Object.assign({}, f, { hasta: e.target.value }))} />
+        <button type="button" className="btn verde chico" disabled={ocup || !f.texto.trim() || !f.hasta || xs.length >= 6}
+          onClick={() => { hacer('lo_nuevo_t1', [...xs, { texto: f.texto.trim(), hasta: f.hasta }], 'Sale en el panel de los Tier 1 hasta el ' + corto(f.hasta) + '.'); setF({ texto: '', hasta: '' }); }}>Avisar a los Tier 1</button>
+      </div>
+    </div>
+  );
+}
+
 function SetupNuevos({ lista, aj, hacer, ocup }) {
   if (!lista || !lista.length) return null;
   const dec = aj.setup_suma || {};
@@ -966,6 +1043,50 @@ function DuenoSocio({ x, aj, hacer, ocup }) {
   );
 }
 
+// 🎟️ LOS PASES QUE REGALA UN TIER 1 (20/11/2026, Dlx: «Los asigno yo»): cuántos este mes y en qué eventos; el campeón de
+// cada uno se lleva un Pase premium a su Inventario (bot/pases_t1.py). Y 🤝 SU ALIANZA («La armas tú, 2 Pases»): con qué
+// Tier 2 o 3 va; cuando su aliado sube, +2 Pases para ese mes (`alianza_bonus()` de bot/tiers.py)
+const mesET = () => new Date(Date.now() - 5 * 3600000).toISOString().slice(0, 7);
+const claveDeEv = (e) => {
+  const m = /\/([0-9]{15,22})\/?$/.exec(String((e && e.link) || ''));
+  return m ? 'a:' + m[1] : e && e.ll && /^[0-9]{1,6}$/.test(String(e.ll)) ? String(e.ll) : '';
+};
+function PasesT1({ x, liga, aj, hacer, ocup }) {
+  const mes = mesET();
+  const todos = aj.pases_t1 || {};
+  const mio = todos[x.sv] && todos[x.sv].mes === mes ? todos[x.sv] : { mes, n: 0, ev: [] };
+  const [n, setN] = useState(mio.n);
+  const [ev, setEv] = useState(mio.ev);
+  const al = (aj.alianzas || {})[x.sv] || [];
+  const cal = ((liga.d && liga.d.calendario) || []).filter((e) => e.sv === x.sv && String(e.t).slice(0, 7) >= mes);
+  const prox = (liga.proximos ? liga.proximos() : []).filter((p) => p.sv === x.sv).map((p) => ({ n: p.nombre, t: p.cuando, link: p.link }));
+  const ops = [];
+  for (const e of [...cal, ...prox]) { const k = claveDeEv(e); if (k && !ops.some((o) => o[0] === k)) ops.push([k, e.n || e.nombre || '', e.t]); }
+  for (const k of ev) if (!ops.some((o) => o[0] === k)) ops.push([k, k.startsWith('a:') ? 'un evento anunciado' : 'el evento #' + k, '']);
+  const guardar = () => hacer('pases_t1', Object.assign({}, todos, { [x.sv]: { mes, n: Number(n) || 0, ev } }),
+    siglaDe(x.sv) + ' regala ' + (Number(n) || 0) + ' Pases este mes: el ciclo se los da al campeón de cada evento marcado.');
+  const otros = Object.keys(liga.svs || {}).filter((s) => s !== x.sv && (liga.svs[s] || {}).tier && (liga.svs[s] || {}).tier > 1);
+  const bonos = x.alianza_bonus || [];
+  return (
+    <div className="ti-pases">
+      <small>Pases para regalar · {mes}{bonos.length ? ' · +' + bonos.reduce((t, b) => t + (b.pases || 0), 0) + ' de su Alianza (' + bonos.map((b) => siglaDe(b.aliado) + ' subió a Tier ' + b.a).join(', ') + ')' : ''}</small>
+      <label className="ti-pases-n"><span>Cuántos</span><input type="number" min="0" max="20" value={n} onChange={(e) => setN(e.target.value)} /></label>
+      {ops.length ? <ul className="ti-pases-l">{ops.slice(0, 12).map(([k, nom, t]) => (
+        <li key={k}><label><input type="checkbox" checked={ev.includes(k)} onChange={(e) => setEv(e.target.checked ? [...ev, k].slice(0, 12) : ev.filter((y) => y !== k))} />
+          <span>{limpio(nom) || k}{t ? ' · ' + corto(diaISO(new Date(t))) : ''}</span></label></li>
+      ))}</ul> : <p className="db-tx">Todavía no tiene eventos este mes para marcar.</p>}
+      <button type="button" className="btn verde chico" disabled={ocup || (Number(n) === mio.n && ev.join() === mio.ev.join())} onClick={guardar}>Guardar los Pases</button>
+      <small>Su Alianza: {al.length ? al.map(siglaDe).join(', ') : 'ninguna'}</small>
+      <span className="ti-pases-al">{otros.map((s) => {
+        const si = al.includes(s);
+        return <button key={s} type="button" className={'btn chico ' + (si ? 'verde' : 'borde2')} aria-pressed={si} disabled={ocup}
+          onClick={() => hacer('alianzas', Object.assign({}, aj.alianzas || {}, { [x.sv]: si ? al.filter((y) => y !== s) : [...al, s].slice(0, 5) }),
+            si ? siglaDe(x.sv) + ' deja de acompañar a ' + siglaDe(s) + '.' : siglaDe(x.sv) + ' acompaña a ' + siglaDe(s) + ': si sube de tier, +2 Pases.')}>{siglaDe(s)}</button>;
+      })}</span>
+    </div>
+  );
+}
+
 function TierCaja({ x, liga, tier, cambiar, ocup, i, aj, hacer }) {
   const pts = useNumero(x.puntos);
   const m = x.m || {};
@@ -999,9 +1120,10 @@ function TierCaja({ x, liga, tier, cambiar, ocup, i, aj, hacer }) {
       {((x.panel || {}).pide || []).length ? (
         <div className="ti-pide">
           <small>Para quedarse en Tier {x.tier}{x.mide_desde ? ' · recién llegó: se mide desde el ' + corto(x.mide_desde) : ''}</small>
-          <ul>{x.panel.pide.map(([q, c, si]) => <li key={q} className={si ? 'ok' : x.mide_desde ? '' : 'no'}><b>{si ? 'Hecho' : x.mide_desde ? 'Va' : 'Falta'}</b> {q} · {c}</li>)}</ul>
+          <ul>{x.panel.pide.map(([q, c, si, cuenta]) => <li key={q} className={si ? 'ok' : x.mide_desde || cuenta ? '' : 'no'}><b>{si ? 'Hecho' : x.mide_desde || cuenta ? 'Va' : 'Falta'}</b> {q} · {c}{cuenta && !si ? ' · cuenta desde el ' + corto(cuenta) : ''}</li>)}</ul>
         </div>
       ) : null}
+      {tier === 1 ? <PasesT1 x={x} liga={liga} aj={aj} hacer={hacer} ocup={ocup} /> : null}
       <Beneficios x={x} tier={tier} aj={aj} hacer={hacer} ocup={ocup} />
       <DuenoSocio x={x} aj={aj} hacer={hacer} ocup={ocup} />
     </article>
@@ -5528,6 +5650,8 @@ export function Dashboard({ dc, liga }) {
         {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
         {sec('sv-cada', 'LOS SERVIDORES', 'una fila cada uno: se cambia ahí mismo',
           <ServidoresTabla liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} T={d.tiers} origen={(d.primerizos || {}).por_sv} />)}
+        {sec('sv-consejo', 'EL CONSEJO DE SOCIOS', 'propones, votan los Tier 1 y 2, y tienes 48 h para vetar', <Consejo />)}
+        {sec('sv-nuevo', 'LO NUEVO PRIMERO', 'lo que los Tier 1 prueban antes que el resto', <LoNuevoT1 aj={aj} hacer={hacer} ocup={ocup} />)}
         {(d.setup || []).length ? sec('sv-setup', 'LOS QUE CORRIERON /setup', 'sus puntos de Temporada esperan tu respuesta',
           <SetupNuevos lista={d.setup} aj={aj} hacer={hacer} ocup={ocup} />) : null}
         {d.tiers ? sec('sv-sumar', 'SUMAR UN SERVIDOR', d.tiers.t ? 'el puntaje, medido ' + hace(d.tiers.t) : null,

@@ -552,13 +552,19 @@ def medir(D, hoy, svs, nivel, miembros=None, desde=None):
     arranque = _arranque()
     compara = arranque is None or ini0 >= arranque
     compara_desde = (arranque + dt.timedelta(days=7 * SEMANAS * 2 - 1)).isoformat() if arranque else ''
+    est_ev = [(_dia(v.get('dia')), (v.get('sv') or '').upper()) for n, v in (D.get('llaves') or {}).items()
+              if isinstance(v, dict) and str(n) in (D.get('estilos') or {}) and _dia(v.get('dia'))]
     out = []
     for sv, t in nivel.items():
         m, partes, pts = parte(sv, ini, fin)
         _m0, _p0, pts0 = parte(sv, ini0, ini)
         # 📏 las 8 semanas de los requisitos (`SUBE`, `SEGUIR`): las mismas cuentas de `parte()`, en la ventana doble
         x8 = parte(sv, ini0, fin)[0]
-        m8 = {'eventos': x8['eventos'], 'por_evento': x8['por_evento'], 'ligas': x8['ligas']}
+        m8 = {'eventos': x8['eventos'], 'por_evento': x8['por_evento'], 'ligas': x8['ligas'],
+              # 🎭 sus eventos de estilo en las 8 semanas (`datos/eventos_estilo.json`, lo marca Dlx o su dueño)
+              'estilos': sum(1 for d, s in est_ev if s == sv and ini0 <= d < fin)}
+        if hoy < ESTILOS_DESDE + dt.timedelta(days=56):
+            m8['estilos_cuenta'] = (ESTILOS_DESDE + dt.timedelta(days=56)).isoformat()
         ult = max((d for d, s, _ns in evs if s == sv), default=None)
         sin = (hoy - ult).days if ult else None
         m['miembros'] = (miembros or {}).get(sv)
@@ -582,7 +588,10 @@ SUBE = {2: {'eventos': 8, 'por_evento': 8}, 1: {'eventos': 12, 'por_evento': 10,
 #: 📋 LO QUE PIDE CADA TIER PARA QUEDARSE (el mismo plan): Tier 1, 8 eventos en 8 semanas con 8 raperos por evento; Tier 2,
 #: 4 eventos en 8 semanas; Tier 3, seguir vivo (un evento o una fecha de liga en las últimas 4 semanas). Los Pases (Tier 1) y
 #: los estilos de juego (Tier 2) se suman cuando existan. Lo dice el panel de cada socio (`pide()`); no mueve a nadie
-SEGUIR = {1: {'eventos': 8, 'por_evento': 8}, 2: {'eventos': 4}, 3: {'vivo': 1}}
+SEGUIR = {1: {'eventos': 8, 'por_evento': 8}, 2: {'eventos': 4, 'estilos': 2}, 3: {'vivo': 1}}
+#: 🎭 desde cuándo se pueden marcar eventos de estilo en un Tier 2 (la 7.27): el requisito cuenta desde ahí, y se pide recién
+#: con sus 8 semanas enteras (si no, los cuatro Tier 2 salían «Revisar» el mismo día en que se pudo empezar)
+ESTILOS_DESDE = dt.date(2026, 11, 20)
 
 
 def _cumple(req, pts, m8):
@@ -590,6 +599,23 @@ def _cumple(req, pts, m8):
     m8 = m8 or {}
     return (m8.get('eventos', 0) >= req.get('eventos', 0) and m8.get('por_evento', 0) >= req.get('por_evento', 0)
             and (pts or 0) >= req.get('puntos', 0))
+
+
+#: 🤝 LA ALIANZA (Dlx, 20/11/2026: «La armas tú, 2 Pases»): un Tier 1 acompaña a un Tier 2 o 3 (el ajuste `alianzas`,
+#: `{T1: [aliado, …]}`); cuando su aliado sube de tier, el Tier 1 suma estos Pases a los de ese mes (`alianza_bonus()`)
+ALIANZA_PASES = 2
+
+
+def alianza_bonus(alianzas, viejos, nuevos, hoy, previo=None):
+    """🤝 `[{t1, aliado, de, a, dia, pases}]`: lo de antes y, si un aliado subió de tier en esta vuelta (su número bajó), un
+    bono nuevo. Uno por subida (el mismo aliado al mismo tier no repite). Pura."""
+    out = [dict(x) for x in (previo or []) if isinstance(x, dict)]
+    for t1, aliados in sorted((alianzas or {}).items()):
+        for a in aliados or []:
+            de, al = (viejos or {}).get(a), (nuevos or {}).get(a)
+            if de and al and al < de and not any(x.get('t1') == t1 and x.get('aliado') == a and x.get('a') == al for x in out):
+                out.append({'t1': t1, 'aliado': a, 'de': de, 'a': al, 'dia': hoy.isoformat(), 'pases': ALIANZA_PASES})
+    return out[-40:]
 
 
 #: 🔥 quién juega seguido en un servidor, para el aviso de evento flojo (`frecuentes()`): eventos ahí en las 8 semanas
@@ -660,7 +686,7 @@ def no_llega(tier, m, m8, mide=None):
     """El porqué de «Revisar» si no llega a lo que pide su tier (`pide()`), o `''`. Nada en su primer tramo ni sin `m8`."""
     if mide or m8 is None:
         return ''
-    falta = [r for r in pide(tier, m, m8) if not r[2]]
+    falta = [r for r in pide(tier, m, m8) if not r[2] and len(r) < 4]
     return ('no llega a lo que pide Tier %d: ' % tier + '; '.join('%s (%s)' % (r[0], r[1]) for r in falta)) if falta else ''
 
 
@@ -830,6 +856,14 @@ def _filas_req(req, pts, m8):
                     m8.get('por_evento', 0) >= req['por_evento']])
     if 'puntos' in req:
         out.append(['%d puntos o más' % req['puntos'], 'llevas %d' % (pts or 0), (pts or 0) >= req['puntos']])
+    # 🎭 el Tier 2 da estilos (Dlx, 20/11/2026: «1 por mes»): los eventos de estilo de SU servidor en las 8 semanas
+    if 'estilos' in req:
+        si = m8.get('estilos', 0) >= req['estilos']
+        fila = ['%d eventos de estilo en 8 semanas (1 por mes)' % req['estilos'], 'llevas %d' % m8.get('estilos', 0), si]
+        # ⏳ el cuarto lugar es desde cuándo cuenta, mientras no tuvo sus 8 semanas: va, pero todavía no es «no llega»
+        if not si and m8.get('estilos_cuenta'):
+            fila.append(m8['estilos_cuenta'])
+        out.append(fila)
     return out
 
 
@@ -1065,7 +1099,8 @@ def datos():
             an[mid] = (a.get('servidor') or '', _dia(a.get('cuando')), bool(a.get('staff')))
     canc = [(x.get('sv') or '', _dia(x.get('t'))) for x in ((_j('datos', 'cancelados.json') or {}).get('eventos') or {}).values()]
     pro = [(x.get('sv') or '', _dia(x.get('t'))) for x in ((_j('datos', 'promos.json') or {}).get('items') or [])]
-    return {'llaves': _j('datos', 'llaves_t1.json') or {}, 'ayudas': ayudas, 'anuncios': list(an.values()),
+    return {'estilos': (_j('datos', 'eventos_estilo.json') or {}).get('eventos') or {},
+            'llaves': _j('datos', 'llaves_t1.json') or {}, 'ayudas': ayudas, 'anuncios': list(an.values()),
             'cancelados': canc, 'promos': pro, 'ligas': (_j('datos', 'ligas.json') or {}).get('ligas') or {}}
 
 
@@ -1120,6 +1155,7 @@ def correr(aplicar=False, ahora=None):
     elegidos = dict(viejo.get('niveles') or {})
     elegidos_b = dict(viejo.get('beneficios_elegidos') or {})
     # lo elegido en el Dashboard manda; sin poder leerlo, queda lo de antes (un Worker que no contesta no es «Dlx cambió»)
+    aj = None
     if aplicar:
         try:
             import multiplicadores as MU
@@ -1232,8 +1268,11 @@ def correr(aplicar=False, ahora=None):
                  'beneficios': {sv: ben[sv] for sv in sorted(ben)},
                  'beneficios_elegidos': elegidos_b,
                  # 📅 el día en que entró cada uno (`desde_de()`): lo que pide su tier cuenta desde su primer tramo entero
-                 'desde': desde}
-        if any(nuevo.get(k) != viejo.get(k) for k in ('niveles', 'beneficios', 'beneficios_elegidos', 'desde')):
+                 'desde': desde,
+                 # 🤝 los bonos de la Alianza (`alianza_bonus()`): +2 Pases al Tier 1 cuando su aliado sube
+                 'alianza_bonus': alianza_bonus((aj or {}).get('alianzas'), viejo.get('niveles') or {}, nivel, hoy,
+                                                viejo.get('alianza_bonus'))}
+        if any(nuevo.get(k) != viejo.get(k) for k in ('niveles', 'beneficios', 'beneficios_elegidos', 'desde', 'alianza_bonus')):
             with io.open(NIVELES, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(nuevo, f, ensure_ascii=False, indent=1)
             print('   🤝 los niveles cambiaron: %s' % ', '.join('%s %d' % kv for kv in sorted(nivel.items())))
@@ -1249,6 +1288,12 @@ def correr(aplicar=False, ahora=None):
                 print('   📣 les avisé que ya suman: %s' % ', '.join(avisados))
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ el aviso de «ya suman»: %s' % str(e)[:80])
+        # 🤝 a cada Tier 1, los bonos de su Alianza de este mes (para su panel y el Dashboard)
+        mes = hoy.strftime('%Y-%m')
+        for f in filas:
+            bs = [b for b in nuevo.get('alianza_bonus') or [] if b.get('t1') == f['sv'] and str(b.get('dia') or '')[:7] == mes]
+            if bs:
+                f['alianza_bonus'] = bs
         try:
             _mandar({'t': (ahora or dt.datetime.now(dt.timezone.utc)).strftime('%Y-%m-%dT%H:%M:%SZ'), 'semanas': SEMANAS,
                      'servidores': filas})
@@ -1383,15 +1428,15 @@ def _self_check():
     ok(a['m']['nuevos'] == 15 and a['m']['volvieron'] == 15 and a['rec'] == 'bien',
        'trajo 15 nuevos (p1 ya había jugado en BBB) y volvieron todos; cumple como Tier 1', str((a['m'], a['rec'])))
     ok(f['BBB']['rec'] == 'revisar' and f['BBB']['sin_jugar'] == 40, 'un Tier 1 que hace 40 días no juega: revisar', str(f['BBB']))
-    ok('m8' in f['CCC'] and set(f['CCC']['m8']) == {'eventos', 'por_evento', 'ligas'}, 'cada fila trae sus 8 semanas', str(f['CCC']))
+    ok('m8' in f['CCC'] and {'eventos', 'por_evento', 'ligas', 'estilos'} <= set(f['CCC']['m8']), 'cada fila trae sus 8 semanas', str(f['CCC']))
     # 🪜 las reglas de 8 semanas (Dlx, 19/11/2026): anunciar ya no alcanza para Tier 2
     ok(recomendar(3, 50, {'anuncios': 6}, 3, {'eventos': 9, 'por_evento': 8.5})[0] == 'subir'
        and recomendar(3, 50, {'anuncios': 6, 'eventos': 2}, 3, {'eventos': 9, 'por_evento': 6})[0] == 'bien'
        and recomendar(3, 50, {'anuncios': 6}, 3)[0] == 'bien',
        'un Tier 3 sube con 8 eventos en 8 semanas y 8 raperos por evento; anunciar ya no alcanza')
     ok(recomendar(2, 70, {}, 3, {'eventos': 12, 'por_evento': 10})[0] == 'subir'
-       and recomendar(2, 55, {}, 3, {'eventos': 12, 'por_evento': 10})[0] == 'bien'
-       and recomendar(2, 70, {}, 3, {'eventos': 11, 'por_evento': 10})[0] == 'bien',
+       and recomendar(2, 55, {}, 3, {'eventos': 12, 'por_evento': 10, 'estilos': 2})[0] == 'bien'
+       and recomendar(2, 70, {}, 3, {'eventos': 11, 'por_evento': 10, 'estilos': 2})[0] == 'bien',
        'un Tier 2 sube con 12 eventos, 10 por evento y 60 puntos; con uno menos, no')
     # 📋 quedarse (20/11/2026): el que no llega a lo que pide su tier sale «Revisar», salvo en su primer tramo
     hoy2 = dt.date(2026, 11, 20)
@@ -1410,6 +1455,12 @@ def _self_check():
        and r3[0] == 'revisar' and 'Seguir vivo' in r3[1] and r1[0] == 'revisar' and '7,5' in r1[1]
        and recomendar(3, 30, {'eventos': 0, 'ligas': 1}, None, {'eventos': 0, 'por_evento': 0})[0] == 'bien',
        'no llegar a lo que pide su tier es «Revisar» (como dice su panel); en el primer tramo, no', str((r2, r2n, r3, r1)))
+    # 🤝 la Alianza
+    b = alianza_bonus({'FFA': ['LKR', 'CEU']}, {'LKR': 3, 'CEU': 3}, {'LKR': 2, 'CEU': 3}, dt.date(2026, 11, 20))
+    b2 = alianza_bonus({'FFA': ['LKR']}, {'LKR': 2}, {'LKR': 2}, dt.date(2026, 11, 21), b)
+    ok(b == [{'t1': 'FFA', 'aliado': 'LKR', 'de': 3, 'a': 2, 'dia': '2026-11-20', 'pases': 2}] and b2 == b
+       and len(alianza_bonus({'FFA': ['LKR']}, {'LKR': 2}, {'LKR': 1}, dt.date(2026, 12, 1), b)) == 2,
+       'la Alianza: +2 Pases al Tier 1 cuando su aliado sube (una vez por subida)', str(b))
     # 🔥 los que juegan seguido en cada servidor
     hoy3 = dt.date(2026, 11, 20)
     ll = {str(i): {'dia': str(hoy3 - dt.timedelta(days=d)), 'sv': sv, 'tabla': [[n, 'x', 1] for n in ns]}
@@ -1418,6 +1469,12 @@ def _self_check():
     fr = frecuentes(ll, hoy3, lambda n: {'Ana': '1', 'Beto': '2', 'Cami': '3'}.get(n, ''))
     ok(fr == {'AAA': ['1', '2']}, 'los que juegan seguido: 2 eventos o más en 8 semanas, los que más primero; lo de hace 70 '
        'días no cuenta, y sin cuenta de Discord no va', str(fr))
+    ok(recomendar(2, 55, {}, 3, {'eventos': 12, 'por_evento': 10, 'estilos': 0, 'estilos_cuenta': '2027-01-15'})[0] == 'bien'
+       and len(pide(2, {}, {'eventos': 5, 'estilos': 0, 'estilos_cuenta': '2027-01-15'})[1]) == 4,
+       'los eventos de estilo del Tier 2 cuentan desde que se pudieron marcar: hasta sus 8 semanas, «va» y no «no llega»')
+    p2 = pide(2, {}, {'eventos': 5, 'estilos': 1})
+    ok(len(p2) == 2 and p2[0][2] and not p2[1][2] and 'estilo' in p2[1][0] and pide(2, {}, {'eventos': 5, 'estilos': 2})[1][2],
+       'el Tier 2 pide además 1 evento de estilo por mes (2 en 8 semanas)', str(p2))
     p1 = pide(1, {}, {'eventos': 9, 'por_evento': 7.5})
     ok(len(p1) == 2 and p1[0][2] and not p1[1][2] and '7,5' in p1[1][1]
        and pide(3, {'eventos': 0, 'ligas': 1})[0][2] and not pide(3, {'eventos': 0, 'ligas': 0})[0][2]

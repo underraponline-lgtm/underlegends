@@ -444,6 +444,7 @@
 /* 🐣 el primer tramo: ni magenta (no le falta nada todavía) ni verde (no cumple): la luz blanca, apagada de anillo */
 .cz-aire.tramo .cz-luz i{background:#F6F6F6} .cz-aire.tramo .cz-luz i::after{border-color:#F6F6F6}
 .cz-aire.tramo .cz-falta{color:#55554F;border-color:#55554F}
+.cz-req li.va .cz-falta{color:#55554F;border-color:#55554F}
 .cz-aire-cab small{display:block;margin-bottom:4px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#55554F}
 .cz-aire-cab b{display:block;font:800 19px/1.25 Archivo,sans-serif}
 .cz-req{list-style:none;margin:0;padding:0}
@@ -599,3 +600,24 @@
 .sp-choque small{font:500 13px/1.35 Archivo,sans-serif;color:var(--gris)}
 /* ⭐ la nota de cada evento en «Lo que ya tocaste» (20/11/2026) */
 .cz-nota{display:inline-block;margin-left:8px;white-space:nowrap;font:900 13px/1 Archivo,sans-serif;color:#030304}
+/* 🎭 tus eventos de estilo (20/11/2026) */
+.sp-est-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sp-est-l li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;padding:10px 12px;border:1.5px solid var(--linea)}
+.sp-est-l li span{display:grid;gap:2px;min-width:0}
+.sp-est-l li b{font:800 15px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.sp-est-l li small{font:500 13px/1.3 Archivo,sans-serif;color:var(--gris)}
+.sp-est-f{display:flex !important;flex-wrap:wrap;gap:6px;align-items:center}
+.sp-est-f select{min-height:36px;max-width:100%}
+/* 🏛️ el consejo de socios (20/11/2026) */
+.sp-cons-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sp-cons-l li{display:grid;gap:8px;padding:10px 12px;border:1.5px solid var(--linea)}
+.sp-cons-l li div{display:grid;gap:3px;min-width:0}
+.sp-cons-l li b{font:800 15px/1.3 Archivo,sans-serif;overflow-wrap:anywhere}
+.sp-cons-l li small{font:500 13px/1.35 Archivo,sans-serif;color:var(--gris)}
+.sp-cons-b{display:flex;flex-wrap:wrap;gap:6px}
+/* 🎟️ tus Pases y 🆕 lo nuevo primero (20/11/2026) */
+.sp-pases-n{margin:0;font:600 16px/1.3 Archivo,sans-serif}
+.sp-pases-n b{font:900 26px/1 Archivo,sans-serif;font-stretch:125%}
+.cz-nuevo{display:grid;gap:4px;margin:12px 0 0;padding:10px 12px;border:2px solid var(--verde);color:var(--esc-tinta)}
+.cz-nuevo b{font:900 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:var(--verde)}
+.cz-nuevo span{font:500 14.5px/1.4 Archivo,sans-serif}

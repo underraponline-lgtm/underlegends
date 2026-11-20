@@ -227,6 +227,8 @@ const AVISOS = {
   '/api/avisos/seguir-org': 'POST',
   // 🏟️ seguir a un servidor y ⭐ calificar el evento que jugaste (20/11/2026): con tu sesión. Ver `seguirSv()` y `calificar()`
   '/api/avisos/seguir-sv': 'POST', '/api/avisos/calificar': 'POST',
+  // 🏛️ el consejo de socios, desde el Dashboard (20/11/2026). Ver `consejoDueno()`
+  '/api/avisos/dueno/consejo': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por

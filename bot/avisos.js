@@ -417,8 +417,10 @@ export const CHAT_FRESCA = 30 * MIN;
 // 🏟️ `ligas`: dónde van las batallas de sus ligas (11/11/2026, Dlx: «Canal para las ligas… uno, y cambiar por liga»): ''
 // donde habla el bot en vivo, un canal, o 'no'; `ligas_por` cambia el de una liga (`{<liga>: canal | 'no'}`).
 // 📅 `resumen`: el canal del resumen de la semana de ese servidor, los lunes ('' = no se manda)
+// 👋 `bienvenida`: el canal donde el bot saluda a quien entra con «Unirme a los Tier 1» ('' = apagada; 20/11/2026, el plan de
+// los tiers: «la bienvenida en su servidor, apagada por defecto, la prende el dueño»). Ver `cuentaUnirse()` de bot/worker.js
 export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '',
-  ligas: '', ligas_por: {}, resumen: '', leer_chat: true, ganadores: true };
+  ligas: '', ligas_por: {}, resumen: '', leer_chat: true, ganadores: true, bienvenida: '' };
 
 export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
@@ -2994,7 +2996,7 @@ export function xpDeFuentes(cuentas) {
 // DRA) y `caza` (buscados cazados) los manda el ciclo; los días (`activo`), las felicitaciones y las llaves en vivo
 // (`pase_log`) y los precios (`precios`) los ve pasar el objeto
 //: 🏠 `voto`, `apuesta` y `sigue`: las Tareas que reemplazan a las de DRA mientras DRA no organice (`pase.SIN_DRA`)
-export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo', 'cm'];
+export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo', 'cm', 't1'];
 const diaNum = (s) => Math.round(Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / DIA_MS);
 //: «hasta el final de la temporada», para las cuentas de temporada (un número y no `Infinity`: va a SQLite)
 const SIEMPRE = Number.MAX_SAFE_INTEGER;
@@ -3756,6 +3758,8 @@ const RUTAS = {
   '/avisos/dueno/vuelve': 'POST',
   // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (sólo con ajustes)
   '/avisos/dueno/sorteo': 'POST',
+  // 🏛️ el consejo de socios (20/11/2026): proponer, ver y vetar. Ver `consejoDueno()`
+  '/avisos/dueno/consejo': 'POST',
   // 🤝 el anti-raid que prende Dlx en un servidor (con la clave del ciclo): ver `antiraidDlx()`
   '/avisos/antiraid-dlx': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
@@ -4442,6 +4446,9 @@ export const REF_JUGO_PDT = 250;
 export const FLOJO_DESDE = 65 * 60 * 1000;
 export const FLOJO_HASTA = 50 * 60 * 1000;
 export const FLOJO_SIN_CUPOS = 8;
+//: 🏛️ el consejo de socios: cuánto dura una votación y cuánto tiene Dlx para vetar lo que ganó. Ver `consejoDe()`
+export const CONSEJO_DIAS = 7;
+export const CONSEJO_VETO = 48 * 60 * 60 * 1000;
 //: a cuántos les avisa por evento, como mucho
 export const FLOJO_TOPE = 60;
 //: las metas: `[cuántos, [[premio, …]]]`. El marco de la última es nuevo (`embajador`, ver MARCOS)
@@ -5518,7 +5525,7 @@ export function socioAjusteValido(cual, valor, canales, ligas) {
     if (valor === 'no') return 'no';
     return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
   }
-  if (cual === 'resumen') {
+  if (cual === 'resumen' || cual === 'bienvenida') {
     if (valor === '' || valor === null) return '';
     return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
   }
@@ -5726,6 +5733,44 @@ export function ajusteValido(cual, valor) {
     for (const [k, v] of Object.entries(valor)) {
       if (!/^(a:[0-9]{15,22}|[0-9]{1,6})$/.test(k) || !JUEGOS.includes(v)) return undefined;
       out[k] = v;
+    }
+    return out;
+  }
+  // 🎟️ LOS PASES QUE REGALA CADA TIER 1 (20/11/2026, Dlx: «Los asigno yo»): `{SV: {mes, n, ev: [clave]}}`. Ver bot/pases_t1.py
+  if (cual === 'pases_t1') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor)) return undefined;
+    const out = {};
+    for (const [sv, x] of Object.entries(valor).slice(0, 30)) {
+      if (!/^[A-Z]{2,6}$/.test(sv) || !x || typeof x !== 'object') return undefined;
+      const n = Number(x.n), ev = Array.isArray(x.ev) ? x.ev.map(String) : [];
+      if (!Number.isInteger(n) || n < 0 || n > 20 || !/^\d{4}-\d{2}$/.test(String(x.mes || '')) || ev.length > 12
+        || ev.some((k) => !/^(a:[0-9]{15,22}|[0-9]{1,6})$/.test(k))) return undefined;
+      out[sv] = { mes: String(x.mes), n, ev: [...new Set(ev)] };
+    }
+    return out;
+  }
+  // 🤝 LA ALIANZA (20/11/2026, Dlx: «La armas tú, 2 Pases»): `{T1: [aliado, …]}`. Ver `alianza_bonus()` de bot/tiers.py
+  if (cual === 'alianzas') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor)) return undefined;
+    const out = {};
+    for (const [sv, xs] of Object.entries(valor).slice(0, 30)) {
+      if (!/^[A-Z]{2,6}$/.test(sv) || !Array.isArray(xs) || xs.length > 5 || xs.some((a) => !/^[A-Z]{2,6}$/.test(String(a)) || a === sv)) return undefined;
+      if (xs.length) out[sv] = [...new Set(xs.map(String))];
+    }
+    return out;
+  }
+  // 🆕 LO NUEVO PRIMERO PARA LOS TIER 1 (20/11/2026, Dlx: «Prueban lo nuevo antes»): `[{texto, hasta: AAAA-MM-DD}]`, el aviso
+  // que sale en el panel de cada Tier 1 mientras lo prueban
+  if (cual === 'lo_nuevo_t1') {
+    if (valor === null) return null;
+    if (!Array.isArray(valor) || valor.length > 6) return undefined;
+    const out = [];
+    for (const x of valor) {
+      const texto = String((x && x.texto) || '').replace(/[<>]/g, '').trim();
+      if (!texto || texto.length > 240 || !/^\d{4}-\d{2}-\d{2}$/.test(String((x && x.hasta) || ''))) return undefined;
+      out.push({ texto, hasta: String(x.hasta) });
     }
     return out;
   }
@@ -7792,6 +7837,23 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ accion: d.accion || 'ver', por: q.id }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🏛️ EL CONSEJO DE SOCIOS, DESDE EL DASHBOARD (20/11/2026, Dlx: «Tú propones, 1 voto por servidor»). Ver `consejoDueno()`
+  if (ruta === '/avisos/dueno/consejo') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !['ver', 'crear', 'vetar', 'borrar'].includes(String(d.accion || 'ver'))
+        || (d.titulo !== undefined && String(d.titulo).length > 120) || (d.texto !== undefined && String(d.texto).length > 1200)
+        || (d.id !== undefined && !Number.isInteger(Number(d.id)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'ajustes'))) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/dueno-consejo', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ accion: d.accion || 'ver', titulo: d.titulo, texto: d.texto, id: d.id !== undefined ? Number(d.id) : undefined, por: q.id }),
+    });
+  }
   // 🗂️ la ficha de alguien (cualquiera que abre el Dashboard) y las notas del staff (quien puede cerrar reportes)
   if (ruta === '/avisos/dueno/ficha' || ruta === '/avisos/dueno/nota') {
     const crudo = await req.text();
@@ -8030,7 +8092,7 @@ export async function rutaAvisos(req, env, ruta) {
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
     const corto = (x, n) => x === undefined || (typeof x === 'string' && x.length <= n);
     if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
-        || !/^[A-Z]{2,6}$/.test(String(d.sv || '')) || !['quien', 'nombres', 'vs', 'agenda', 'muro'].includes(d.que)
+        || !/^[A-Z]{2,6}$/.test(String(d.sv || '')) || !['quien', 'nombres', 'vs', 'agenda', 'muro', 'estilo', 'consejo'].includes(d.que)
         || !/^[a-z]{2,10}$/.test(String(d.accion || 'ver')) || (d.id !== undefined && !/^[A-Za-z0-9:_-]{1,40}$/.test(String(d.id)))
         || !corto(d.r, 80) || !corto(d.nombre, 80) || !corto(d.es, 80) || !corto(d.fondo, 20) || !corto(d.formato, 60) || !corto(d.pub, 20)
         || (d.ini !== undefined && !Number.isFinite(Number(d.ini)))) {
@@ -8607,6 +8669,11 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS ev_nota (ev TEXT NOT NULL, quien TEXT NOT NULL, sv TEXT NOT NULL, nota INTEGER NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (ev, quien))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS ev_nota_sv ON ev_nota (sv, t)');
+      // 🏛️ EL CONSEJO DE SOCIOS (20/11/2026): las propuestas de Dlx y el voto de cada servidor Tier 1 o 2. Ver `consejoDe()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS consejo (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT NOT NULL, texto TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, cierra INTEGER NOT NULL, veto INTEGER NOT NULL DEFAULT 0, borrado INTEGER NOT NULL DEFAULT 0)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS consejo_voto (id INTEGER NOT NULL, sv TEXT NOT NULL, voto TEXT NOT NULL, quien TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (id, sv))');
       // 🔥 los eventos flojos ya avisados, uno por anuncio (20/11/2026). Ver `eventoFlojo()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS flojo (id TEXT PRIMARY KEY, n INTEGER NOT NULL, t INTEGER NOT NULL)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS org_cola (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
@@ -9505,7 +9572,8 @@ export class Avisos {
       // ⚙️ los ajustes para el ciclo, y con ellos los servidores que corrieron /setup (`setup_altas`, 19/11/2026): así
       // `bot/tiers.py` los da de alta en la misma lectura, sin otra ruta. ⚠️ `setup_altas` NO es un ajuste de Dlx: no se
       // escribe por `/ajuste` (`ajusteValido()` no lo conoce) y el Dashboard no lo recibe por acá
-      if (ruta === '/ajustes') return json(Object.assign({}, this.ajustes(), { setup_altas: this.setupAltas() }));
+      // 🎭 y lo que marcaron los dueños como eventos de estilo (`estilo_socios`, 20/11/2026): tampoco es un ajuste de Dlx
+      if (ruta === '/ajustes') return json(Object.assign({}, this.ajustes(), { setup_altas: this.setupAltas(), estilo_socios: this.leer('estilo_socios') || {} }));
       // 🧭 el /setup (19/11/2026): sólo lo llama el Worker (`bot/setup.js`), que ya comprobó quién toca
       if (ruta === '/setup') {
         const d = await req.json().catch(() => null);
@@ -9625,6 +9693,7 @@ export class Avisos {
       if (ruta === '/dueno-caso') return json(this.duenoCaso(d));
       if (ruta === '/dueno-vuelve') return json(this.avisoVuelve(d));
       if (ruta === '/dueno-sorteo') return json(this.sorteoDueno(d));
+      if (ruta === '/dueno-consejo') return json(this.consejoDueno(d));
       if (ruta === '/dueno-ficha') return json(this.duenoFicha(d));
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
       if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
@@ -13531,6 +13600,78 @@ export class Avisos {
     return { ok: true, svs: lista() };
   }
 
+  // ── 🏛️ EL CONSEJO DE SOCIOS (20/11/2026, Dlx: «Tú propones, 1 voto por servidor»; «opina, yo decido» y «manda salvo veto
+  // mío»; «Sí, a las 48 h») ─────────────────────────────────────────────────────────────────────────────────────────────
+  // Dlx propone desde el Dashboard; vota cada servidor Tier 1 o 2, uno por servidor (el dueño o sus admins), durante
+  // `CONSEJO_DIAS`. Cierra antes si ya votaron todos. Gana el «sí» con más votos que el «no»; si gana, Dlx tiene
+  // `CONSEJO_VETO` para vetarlo, y si no lo veta, queda aprobada.
+  /** Los servidores que votan: los Tier 1 y 2 de hoy. */
+  consejoVotan() {
+    const T = this.leer('tiers') || {};
+    const svs = new Set([...(((T.servidores) || []).map((x) => x && x.sv)), ...Object.keys(this.ajustes().tiers || {})].filter(Boolean));
+    return [...svs].filter((sv) => { const t = this.tierSv(sv); return t === 1 || t === 2; }).sort();
+  }
+
+  /** Una propuesta con su estado (`abierta`, `veto`, `aprobada`, `no_paso`, `vetada`) y su cuenta; `sv`: el voto de ése. */
+  consejoDe(c, ahora, votan, sv) {
+    const vs = this.sql.exec('SELECT sv, voto, t FROM consejo_voto WHERE id = ?', c.id).toArray().filter((v) => votan.includes(v.sv));
+    const n = (x) => vs.filter((v) => v.voto === x).length;
+    const todos = votan.length > 0 && vs.length >= votan.length;
+    const cerro = todos ? Math.max(...vs.map((v) => v.t)) : c.cierra;
+    let estado = 'abierta';
+    if (ahora >= c.cierra || todos) {
+      estado = n('si') <= n('no') ? 'no_paso' : c.veto ? 'vetada' : ahora < cerro + CONSEJO_VETO ? 'veto' : 'aprobada';
+    }
+    const mio = sv ? (vs.find((v) => v.sv === sv) || {}).voto || '' : undefined;
+    return { id: c.id, titulo: c.titulo, texto: c.texto, t: c.t, cierra: Math.min(c.cierra, cerro), estado, si: n('si'), no: n('no'),
+      abs: n('abs'), votaron: vs.length, total: votan.length, veto_hasta: cerro + CONSEJO_VETO, ...(sv ? { mio } : {}) };
+  }
+
+  /** Las últimas propuestas (sin las borradas), con su estado; con `sv`, también su voto. */
+  consejoLista(sv = '', ahora = Date.now()) {
+    const votan = this.consejoVotan();
+    return this.sql.exec('SELECT id, titulo, texto, t, cierra, veto FROM consejo WHERE borrado = 0 ORDER BY id DESC LIMIT 20').toArray()
+      .map((c) => this.consejoDe(c, ahora, votan, sv));
+  }
+
+  /** El Dashboard: `ver`, `crear` (título y texto), `vetar` (sólo dentro de las 48 h) y `borrar`. */
+  consejoDueno(d) {
+    const ahora = Date.now();
+    const accion = String((d && d.accion) || 'ver');
+    const limpio = (x, n) => String(x == null ? '' : x).replace(/[<>]/g, '').trim().slice(0, n);
+    if (accion === 'crear') {
+      const titulo = limpio(d.titulo, 120), texto = limpio(d.texto, 1200);
+      if (!titulo) return { error: 'falta el título' };
+      this.sql.exec('INSERT INTO consejo (titulo, texto, t, cierra) VALUES (?, ?, ?, ?)', titulo, texto, ahora, ahora + CONSEJO_DIAS * DIA_MS);
+      // 🔔 a los dueños de los que votan, en su bandeja de la página (nunca por DM)
+      const filas = ((this.leer('tiers') || {}).servidores) || [];
+      for (const sv of this.consejoVotan()) {
+        const dn = String(((filas.find((x) => x && x.sv === sv) || {}).dueno) || '');
+        if (/^[0-9]{5,25}$/.test(dn)) {
+          this.aBandeja(dn, 'consejo:' + titulo.slice(0, 40), 'consejo', '🏛️ El consejo vota: ' + titulo.slice(0, 80),
+            'Tu servidor tiene un voto. Tienes ' + CONSEJO_DIAS + ' días para votar desde tu panel.', HUB + '/freestyle-rap/socio', '', ahora);
+        }
+      }
+    } else if (accion === 'vetar' || accion === 'borrar') {
+      const c = this.sql.exec('SELECT id, titulo, texto, t, cierra, veto FROM consejo WHERE id = ? AND borrado = 0', Number(d.id)).toArray()[0];
+      if (!c) return { error: 'no_esta' };
+      if (accion === 'borrar') this.sql.exec('UPDATE consejo SET borrado = 1 WHERE id = ?', c.id);
+      else {
+        if (this.consejoDe(c, ahora, this.consejoVotan()).estado !== 'veto') return { error: 'fuera_de_plazo' };
+        this.sql.exec('UPDATE consejo SET veto = 1 WHERE id = ?', c.id);
+      }
+    } else if (accion !== 'ver') return { error: 'datos' };
+    return { ok: true, lista: this.consejoLista('', ahora), votan: this.consejoVotan() };
+  }
+
+  /** El tier de `sv`: lo que eligió Dlx en el Dashboard y, si no, lo que midió el ciclo (0 si no es socio). */
+  tierSv(sv) {
+    const elegido = Number((this.ajustes().tiers || {})[sv]) || 0;
+    if (elegido) return elegido;
+    const x = (((this.leer('tiers') || {}).servidores) || []).find((y) => y && y.sv === sv);
+    return Number((x && x.tier) || 0) || 0;
+  }
+
   /** Cuántos siguen a `sv` (el número, para su panel). */
   seguidoresSv(sv) {
     try { return Number(this.sql.exec('SELECT COUNT(*) AS n FROM sigue_sv WHERE sv = ?', String(sv)).toArray()[0].n) || 0; } catch (e) { return 0; }
@@ -17179,6 +17320,9 @@ export class Avisos {
       seguidores: this.seguidoresSv(x.sv),
       // ⭐ cómo calificaron sus eventos los que jugaron, los últimos 30 días (nunca quién)
       notas: this.notasSv(x.sv),
+      // 🎟️🤝🆕 lo del Tier 1 (20/11/2026): sus Pases de este mes, su Alianza, sus bonos y lo nuevo que prueba primero
+      ...(x.tier === 1 ? { pases: (this.ajustes().pases_t1 || {})[x.sv] || null, alianza: (this.ajustes().alianzas || {})[x.sv] || [],
+        alianza_bonus: x.alianza_bonus || [], lo_nuevo: (this.ajustes().lo_nuevo_t1 || []).filter((y) => y.hasta >= diaET()) } : {}),
       visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
         .map((r) => [r.dia, Number(r.n) || 0]),
     }));
@@ -17542,6 +17686,50 @@ export class Avisos {
         HUB + '/freestyle-rap/eventos');
       return { ok: true, rol, agenda: lista() };
     }
+    // 🎭 LOS EVENTOS DE ESTILO DE SU SERVIDOR (20/11/2026, el plan de los tiers: el Tier 2 da 1 por mes, el Tier 1 si quiere):
+    // `id` es la clave del evento (su número o `a:<id del anuncio>`) y `es` el estilo. Que el evento sea de SU servidor lo
+    // mira el ciclo (`eventos_estilo.resolver()`); lo de Dlx gana
+    if (que === 'estilo') {
+      const tier = this.tierSv(sv);
+      const todos = this.leer('estilo_socios') || {};
+      const mios = Object.assign({}, todos[sv] || {});
+      const puede = tier === 1 || tier === 2;
+      if (accion === 'ver') return { ok: true, rol, tier, puede, marcados: mios };
+      if (!puede) return { error: 'tier' };
+      if (!socioPuede(rol, 'eventos')) return { error: 'no_rol' };
+      const clave = String((d && d.id) || '');
+      if (!/^(a:[0-9]{15,22}|[0-9]{1,6})$/.test(clave)) return { error: 'datos' };
+      let est = '';
+      if (accion === 'quitar') delete mios[clave];
+      else if (accion === 'marcar') {
+        est = String((d && d.es) || '');
+        if (!JUEGOS.includes(est)) return { error: 'datos' };
+        if (!mios[clave] && Object.keys(mios).length >= 20) return { error: 'tope' };
+        mios[clave] = est;
+      } else return { error: 'datos' };
+      if (!this.cuentaCambio(quien, 'socio_estilo', 30)) return { error: 'tope' };
+      if (Object.keys(mios).length) todos[sv] = mios; else delete todos[sv];
+      this.guardar('estilo_socios', todos);
+      this.socioAnotar(sv, quien, rol, 'estilo: ' + accion + ' ' + clave, '', est, nombre);
+      return { ok: true, rol, tier, puede, marcados: mios };
+    }
+    // 🏛️ EL CONSEJO DE SOCIOS (20/11/2026): un voto por servidor Tier 1 o 2, del dueño o sus admins (`ajustes`). Mientras
+    // la propuesta está abierta se puede cambiar. `id` es la propuesta y `r` el voto (`si`, `no` o `abs`)
+    if (que === 'consejo') {
+      const tier = this.tierSv(sv);
+      const puede = tier === 1 || tier === 2;
+      if (accion === 'ver') return { ok: true, rol, tier, puede, lista: puede ? this.consejoLista(sv, ahora) : [] };
+      if (!puede) return { error: 'tier' };
+      if (!socioPuede(rol, 'ajustes')) return { error: 'no_rol' };
+      const id = Number((d && d.id) || 0), voto = String((d && d.r) || '');
+      if (accion !== 'votar' || !Number.isInteger(id) || !['si', 'no', 'abs'].includes(voto)) return { error: 'datos' };
+      const c = this.sql.exec('SELECT id, titulo, texto, t, cierra, veto FROM consejo WHERE id = ? AND borrado = 0', id).toArray()[0];
+      if (!c) return { error: 'no_esta' };
+      if (this.consejoDe(c, ahora, this.consejoVotan()).estado !== 'abierta') return { error: 'cerrada' };
+      this.sql.exec('INSERT OR REPLACE INTO consejo_voto (id, sv, voto, quien, t) VALUES (?, ?, ?, ?, ?)', id, sv, voto, quien, ahora);
+      this.socioAnotar(sv, quien, rol, 'consejo: vota ' + voto + ' en #' + id, '', String(c.titulo).slice(0, 60), nombre);
+      return { ok: true, rol, tier, puede, lista: this.consejoLista(sv, ahora) };
+    }
     if (que === 'muro') {
       const lista = () => this.sql.exec('SELECT id, t FROM muro_oculto WHERE sv = ? ORDER BY t DESC LIMIT 100', sv).toArray();
       if (accion === 'ver') return { ok: true, rol, ocultos: lista() };
@@ -17706,7 +17894,7 @@ export class Avisos {
         aviso_evento: (cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no') ? cfg.aviso_evento : '',
         ligas: String(cfg.ligas || ''), ligas_por: (cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {},
         resumen: String(cfg.resumen || ''), silencio: cfg.silencio && typeof cfg.silencio === 'object' ? cfg.silencio : '',
-        leer_chat: cfg.leer_chat !== false, ganadores: cfg.ganadores !== false },
+        leer_chat: cfg.leer_chat !== false, ganadores: cfg.ganadores !== false, bienvenida: String(cfg.bienvenida || '') },
       ligas, rol: x.rol,
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',
@@ -18792,7 +18980,7 @@ export class Avisos {
       if (!id(q) || !x || typeof x !== 'object') continue;
       const y = {};
       for (const [s, v] of Object.entries(x)) {
-        if (fecha(s) && Array.isArray(v)) y[s] = [entero(v[0], 0, 100, 0), entero(v[1], 0, 100, 0)];
+        if (fecha(s) && Array.isArray(v)) y[s] = [entero(v[0], 0, 100, 0), entero(v[1], 0, 100, 0), entero(v[2], 0, 100, 0)];
       }
       hechas[q] = y;
     }
@@ -19022,10 +19210,10 @@ export class Avisos {
       return this.sql.exec('SELECT COUNT(*) AS n FROM ' + tabla + ' WHERE quien = ? AND t >= ? AND t < ?', quien, ini, fin)
         .toArray()[0].n;
     }
-    if (mide === 'dra' || mide === 'caza') {
+    if (mide === 'dra' || mide === 'caza' || mide === 't1') {
       const h = P.hechas[quien] || {};
       let n = 0;
-      for (const s of P.sem) if (s[1] >= ini && s[2] <= fin && h[s[0]]) n += h[s[0]][mide === 'dra' ? 0 : 1] || 0;
+      for (const s of P.sem) if (s[1] >= ini && s[2] <= fin && h[s[0]]) n += h[s[0]][mide === 'dra' ? 0 : mide === 'caza' ? 1 : 2] || 0;
       return n;
     }
     return 0;
@@ -19167,6 +19355,13 @@ export class Avisos {
    * lo nuevo. Devuelve cuántas Tareas nuevas. ⚠️ Sólo de los miembros de DRA: el Pase es de ellos (Dlx). Lo llaman el
    * día que cuenta (`diaActivo()`), el aplauso, la llave en vivo, el precio, lo que manda el ciclo y pedir tu Pase.
    */
+  /** 🏆 Las semanales que valen en la semana que arranca en `ini`: sin las que se sumaron después (`semanales_desde`, del
+   * ciclo: `SEMANALES_DESDE` de bot/pase.py). Así una semanal nueva no se paga para atrás ni cambia el sorteo de antes. */
+  semanalesDe(cfg, ini) {
+    const d = (cfg && cfg.semanales_desde) || {};
+    return ((cfg && cfg.semanales) || []).filter((t) => !(Number(d[t[0]]) > Number(ini)));
+  }
+
   paseRevisar(quien) {
     const P = this.paseDatos();
     if (!P.cfg || !P.miembros.has(quien) || !P.sem.length) return 0;
@@ -19196,11 +19391,11 @@ export class Avisos {
     for (const s of P.sem) {
       if (s[1] > ahora) continue;
       const ya = this.paseYa(quien, cfg.temp, s[0]);
-      if ((cfg.semanales || []).every((t) => ya.has(t[0]))) continue;
+      if (this.semanalesDe(cfg, s[1]).every((t) => ya.has(t[0]))) continue;
       // 🛟 LA SEMANA DE GRACIA (25/10/2026): la semana que acaba de terminar sigue abierta siete días más (desde
       // `gracia_desde`): lo que hagas esta semana también le cumple las que te faltaron. Paga en SU semana
       const fin = cfg.gracia_desde && s[0] >= cfg.gracia_desde && s[2] <= ahora && ahora < s[2] + 7 * DIA_MS ? s[2] + 7 * DIA_MS : s[2];
-      anotar(s[0], this.paseLista(quien, cfg.semanales, s[1], fin, P, ya, true));
+      anotar(s[0], this.paseLista(quien, this.semanalesDe(cfg, s[1]), s[1], fin, P, ya, true));
     }
     const yaT = this.paseYa(quien, cfg.temp, 'temp');
     if (!(cfg.temporada || []).every((t) => yaT.has(t[0]))) {
@@ -19355,7 +19550,7 @@ export class Avisos {
       const [i, f] = rangoDiaET(dia);
       hoy = { dia, fin: f, tareas: this.paseLista(quien, paseDelDia(cfg, dia), i, f, P, ya('d:' + dia), miembro) };
     }
-    const semana = s ? { id: s[0], fin: s[2], tareas: this.paseLista(quien, cfg.semanales, s[1], s[2], P, ya(s[0]), miembro) } : null;
+    const semana = s ? { id: s[0], fin: s[2], tareas: this.paseLista(quien, this.semanalesDe(cfg, s[1]), s[1], s[2], P, ya(s[0]), miembro) } : null;
     const temporada = P.sem.length ? this.paseLista(quien, cfg.temporada, P.sem[0][1], SIEMPRE, P, ya('temp'), miembro) : [];
     const cobrado = miembro ? this.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ? AND id LIKE ?",
       quien, 'pase:' + cfg.temp + ':%').toArray()[0].n : 0;
@@ -19389,7 +19584,7 @@ export class Avisos {
       // 🛟 la semana que terminó, si todavía está en su semana de gracia y le falta alguna
       const prev = P.sem.filter((x) => x[2] <= ahora).slice(-1)[0];
       if (prev && cfg.gracia_desde && prev[0] >= cfg.gracia_desde && ahora < prev[2] + 7 * DIA_MS) {
-        const ts = this.paseLista(quien, cfg.semanales, prev[1], prev[2] + 7 * DIA_MS, P, ya(prev[0]), miembro).filter((t) => !t.hecha);
+        const ts = this.paseLista(quien, this.semanalesDe(cfg, prev[1]), prev[1], prev[2] + 7 * DIA_MS, P, ya(prev[0]), miembro).filter((t) => !t.hecha);
         if (ts.length) out.gracia = { id: prev[0], fin: prev[2] + 7 * DIA_MS, tareas: ts };
       }
       const s = P.sem.filter((x) => x[1] <= ahora).slice(-1)[0];
@@ -19453,7 +19648,7 @@ export class Avisos {
       const xp = this.paseXP(quien, P.cfg), nivel = nivelDeXP(P.cfg, xp);
       if (nivel >= P.cfg.niveles) continue;
       const falta = P.cfg.umbrales[nivel] - xp;
-      const pend = this.paseLista(quien, P.cfg.semanales, s[1], s[2], P, this.paseYa(quien, P.cfg.temp, s[0]), true).filter((t) => !t.hecha);
+      const pend = this.paseLista(quien, this.semanalesDe(P.cfg, s[1]), s[1], s[2], P, this.paseYa(quien, P.cfg.temp, s[0]), true).filter((t) => !t.hecha);
       const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', quien).toArray();
       if (!subs.length) continue;
       if (pedidos + subs.length > TOPE_PERSONALES && pedidos) { quedan++; continue; }
@@ -19539,12 +19734,13 @@ export class Avisos {
     if (!S || ahora >= Date.parse(S.cierra)) return { error: 'cerrado' };
     const P = this.paseDatos();
     if (!P.cfg || !P.miembros.has(quien)) return { error: 'miembro' };
-    const nSem = (P.cfg.semanales || []).length;
     let llenas = 0;
     for (const s of P.sem) {
       if (s[2] > ahora) continue;
       const ya = this.paseYa(quien, P.cfg.temp, s[0]);
-      if (nSem && (P.cfg.semanales || []).every((t) => ya.has(t[0]))) llenas++;
+      // 🏆 con las semanales que valían ESA semana (`semanalesDe()`): sumar una no le quita boletos a nadie
+      const sem = this.semanalesDe(P.cfg, s[1]);
+      if (sem.length && sem.every((t) => ya.has(t[0]))) llenas++;
     }
     const boletos = Math.min(3, 1 + llenas);
     this.sql.exec('INSERT INTO sorteo_part (sorteo, quien, boletos, t) VALUES (?, ?, ?, ?) ON CONFLICT(sorteo, quien) DO UPDATE SET ' +

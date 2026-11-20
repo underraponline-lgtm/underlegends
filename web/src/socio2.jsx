@@ -25,6 +25,7 @@ import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.
 import { Cara, DosToques, Ico, Sec, diaET, masDias } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import CSS_PAGINA from './css/socio2.css?inline';
+import CAT_EST from './estilos_juego.json';
 import { usarCss } from './css.js';
 
 usarCss('socio2', CSS_PAGINA);
@@ -353,7 +354,7 @@ function HorasSinBot({ sil, ocup, cambiar }) {
     </span>
   );
 }
-function Ajustes({ sv }) {
+function Ajustes({ sv, tier }) {
   const [j, setJ] = useState(null);
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState(null);
@@ -434,6 +435,9 @@ function Ajustes({ sv }) {
             <Canal {...sel} cual="ascenso" vacio="Apagado" /><Probar cual="ascenso" /></Fila>
           <Fila label t="El resumen de la semana" sello={sello === 'resumen'} ayuda="Cada lunes al mediodía: tus eventos, tu gente, los que más puntos hicieron y cuántos vuelven. Sin mencionar a nadie.">
             <Canal {...sel} cual="resumen" vacio="No mandar" /><Probar cual="resumen" /></Fila>
+          {/* 👋 la bienvenida (20/11/2026): sólo llega gente por «Unirme a los Tier 1» a los Tier 1 */}
+          {tier === 1 ? <Fila label t="La bienvenida" sello={sello === 'bienvenida'} ayuda="Cuando alguien entra a tu servidor con «Unirme a los Tier 1», el bot lo saluda ahí. Apagada hasta que elijas un canal.">
+            <Canal {...sel} cual="bienvenida" vacio="Apagada" /></Fila> : null}
         </fieldset>
         {/* 🏟️ LAS BATALLAS DE SUS LIGAS (Dlx, 11/11/2026: «uno, y cambiar por liga»): un canal para todas y, si quiere, otro
             para alguna. Sin elegir, donde habla el bot en vivo, como hasta hoy */}
@@ -653,7 +657,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const vv = pc(v.v || 0, v.n || 0), vl = pc(L.v || 0, L.n || 0);
   const seg = p.seguir || {};
   const filas = p.pide || null;
-  const faltan = (filas || []).filter((r) => !r[2]);
+  // ⏳ una fila con su cuarto lugar (desde cuándo cuenta) va, pero todavía no falta (el estilo del Tier 2, 7.27)
+  const faltan = (filas || []).filter((r) => !r[2] && !r[3]);
   const s = p.subir;
   const llega = s && s.a && s.pide.every((y) => y[2]);
   // 🐣 EN SU PRIMER TRAMO (`mide_desde` de bot/tiers.py): todavía no tuvo sus 4 u 8 semanas, así que no es «Te falta» sino
@@ -670,6 +675,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
     if (seg.vivo) return [r[2] ? 1 : 0, 1];
     if (k === 'eventos') return [Math.min(o.ev, seg.eventos), seg.eventos];
     if (k === 'por_evento') return [Math.min(Math.floor(o.pe), seg.por_evento), seg.por_evento];
+    // 🎭 los eventos de estilo: el número sale de su fila («llevas N»)
+    if (k === 'estilos') return [Math.min(parseInt((/\d+/.exec(r[1]) || ['0'])[0], 10), seg.estilos), seg.estilos];
     return [r[2] ? 1 : 0, 1];
   };
   const dif = (x.puntos || 0) - (x.antes || 0);
@@ -713,6 +720,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                 <span className="tag">Tu panel</span>
                 <h1 className="cz-h1">{limpio(x.nombre || siglaDe(x.sv))}</h1>
                 <p className="cz-d">Tu cabina: <b>lo que te pide tu tier</b>, lo que el bot necesita de ti y cómo suena tu servidor.</p>
+                {/* 🆕 lo nuevo que prueban primero los Tier 1 (20/11/2026, `lo_nuevo_t1` del Dashboard) */}
+                {(x.lo_nuevo || []).map((y) => <p key={y.texto} className="cz-nuevo"><b>Lo nuevo, primero para ti</b><span>{y.texto}</span></p>)}
                 <div className="cz-meta">
                   {m.miembros ? <span>{num(m.miembros)} miembros en su Discord</span> : null}
                   {/* 🏟️ cuántos lo siguen en la página (20/11/2026): la campana les avisa de cada evento que anuncia */}
@@ -742,8 +751,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                 <div className="cz-aire-cab"><span className="cz-luz"><i />{filas && !faltan.length ? 'Al día' : tramo ? 'Tu primer tramo' : 'En el aire'}</span>
                   <div><small>Lo que te pide tu Tier {x.tier} este mes</small><b>{faltan.length ? corto + ': ' + frase : frase}</b></div></div>
                 {filas ? <ul className="cz-req">{filas.map((r, i) => { const [n, de] = bloq(r, i); return (
-                  <li key={r[0]}>{r[2] ? <span className="cz-sello">Hecho</span> : <span className="cz-falta">{tramo ? 'Va' : 'Falta'}</span>}
-                    <span className="cz-tx"><b>{r[0]}</b><small><Bloques n={n} de={de} falta={!r[2] && !tramo} />{r[1][0].toUpperCase() + r[1].slice(1)}</small></span></li>
+                  <li key={r[0]} className={r[3] && !r[2] ? 'va' : ''}>{r[2] ? <span className="cz-sello">Hecho</span> : <span className="cz-falta">{tramo || r[3] ? 'Va' : 'Falta'}</span>}
+                    <span className="cz-tx"><b>{r[0]}</b><small><Bloques n={n} de={de} falta={!r[2] && !tramo && !r[3]} />{r[1][0].toUpperCase() + r[1].slice(1)}{r[3] && !r[2] ? ' · cuenta desde el ' + fechaCorta(r[3]) : ''}</small></span></li>
                 ); })}</ul> : null}
                 <p className="cz-aire-pie">Los Pases (Tier 1) y los estilos de juego (Tier 2) se suman acá cuando estén listos.</p>
               </section>
@@ -768,6 +777,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
             {tab === 'setlist' ? <>
               <Sec id="sp-agenda" titulo="Tus eventos" bajada="Anuncia un evento acá y sale en Eventos y en la campana, aunque el bot no lea el anuncio de tu canal.">
                 <AgendaStaff sv={x.sv} rol={x.rol} permisos={permisos} liga={liga} /></Sec>
+              {x.tier === 1 || x.tier === 2 ? <Sec id="sp-estilo" titulo="Tus eventos de estilo" bajada={x.tier === 2 ? 'Tu tier pide 1 por mes: marca uno de tus próximos eventos con un estilo de juego y quien lo juegue lo desbloquea o lo sube.' : 'Si quieres, marca uno de tus próximos eventos con un estilo de juego: quien lo juegue lo desbloquea o lo sube.'}>
+                <EstiloStaff sv={x.sv} rol={x.rol} permisos={permisos} liga={liga} /></Sec> : null}
               {pasados.length ? <Sec id="cz-pasados" titulo="Lo que ya tocaste" bajada="Tus últimos eventos y si el bot ya leyó su llave.">
                 <ol className="cz-bols">{pasados.map((c) => (
                   <li key={c.t + c.n} className="cz-bol"><span className="cz-f"><b>{W.fmtFecha ? W.fmtFecha(c.t, { day: 'numeric' }) : String(c.t).slice(8, 10)}</b><span>{W.fmtFecha ? W.fmtFecha(c.t, { weekday: 'short' }).replace('.', '') : ''}</span></span>
@@ -795,6 +806,10 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
               <Sec id="sp-visitas" titulo="Visitas a su página" bajada="Personas por día que abrieron la página de tu servidor, las últimas 4 semanas."><Visitas x={x} /></Sec>
             </> : null}
             {tab === 'servidor' ? <>
+              {x.tier === 1 ? <Sec id="sp-pases" titulo="Tus Pases para regalar" bajada="Cada mes la Liga te da Pases premium para regalar: se los lleva el campeón de los eventos que se eligieron.">
+                <PasesPanel x={x} liga={liga} /></Sec> : null}
+              {x.tier === 1 || x.tier === 2 ? <Sec id="sp-consejo" titulo="El consejo de socios" bajada="Lo que la Liga propone y el voto de tu servidor: uno por servidor Tier 1 o 2, durante 7 días.">
+                <ConsejoStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec> : null}
               {p_('pagina') ? <Sec id="sp-pagina" titulo="Tu página" bajada="Lo que se ve arriba en la página de tu servidor: un texto, tus redes y un banner. Sale en la próxima media hora."><TuPagina sv={x.sv} /></Sec> : null}
               <Sec id="sp-muro" titulo="Tus publicaciones" bajada="Lo que sale de tu servidor en Publicaciones. Lo que ocultes sale del muro en la próxima media hora.">
                 <MuroStaff sv={x.sv} rol={x.rol} permisos={permisos} /></Sec>
@@ -804,7 +819,7 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
             {tab === 'ajustes' ? <>
               {/* ⚠️ «el aviso de cada evento» y «Eventos de Discord» NO están en /settings (bot/worker.js): son sólo de acá y del Dashboard */}
               {p_('ajustes') ? <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y los que sólo están acá: el aviso de cada evento, las batallas de tus ligas y los eventos de Discord.">
-                <Ajustes sv={x.sv} /></Sec> : null}
+                <Ajustes sv={x.sv} tier={x.tier} /></Sec> : null}
               {/* 👥 TU EQUIPO (Dlx, 11/11/2026): sólo el dueño lo ve y lo maneja; cada uno entra con su propia cuenta y con su rol */}
               {dueno ? <Sec id="sp-equipo" titulo="Tu equipo" bajada="Los de tu servidor que pueden usar este panel, cada uno con su rol. Entran con su propia cuenta de Discord."><Equipo sv={x.sv} /></Sec> : null}
             </> : null}
@@ -1003,7 +1018,9 @@ const ROLES_EQ = [['admin', 'Admin', 'todo menos el equipo'], ['moderador', 'Mod
 const ERR_STAFF = { no: 'Este servidor no es tuyo.', no_rol: 'Tu rol no puede hacer eso.', no_es_tuya: 'Eso no es de tu servidor.',
   tope: 'Llegaste al tope de cambios de hoy.', 'ya no está': 'Eso ya no está.', 'ya está aplicado': 'Eso ya se aplicó.',
   'falta quién ganó': 'Elige quién ganó.', 'faltan los dos': 'Escribe los dos nombres, distintos.', 'falta el día': 'Elige el día.',
-  'falta el nombre': 'Escribe el nombre.', 'falta el campeón': 'Elige al campeón.', red: 'No hay conexión: prueba de nuevo en un rato.' };
+  'falta el nombre': 'Escribe el nombre.', 'falta el campeón': 'Elige al campeón.', red: 'No hay conexión: prueba de nuevo en un rato.',
+  // 🎭🏛️ los eventos de estilo y el consejo son de los Tier 1 y 2 (20/11/2026)
+  tier: 'Esto es de los servidores Tier 1 y 2.', cerrada: 'La votación ya cerró.', no_esta: 'Esa propuesta ya no está.' };
 const errStaff = (x) => ERR_STAFF[x && x.error] || 'No se pudo: ' + ((x && x.error) || 'la red') + '.';
 
 // 🛠️ TUS LLAVES: lo que reportó la gente de tus llaves y lo que sugirió tu equipo. Corregir se hace en la llave misma
@@ -1375,6 +1392,122 @@ function AgendaStaff({ sv, rol, permisos, liga }) {
           {puedo ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: se borra" onClick={() => hacer('borrar', { nombre: x.nombre }, 'Borrado.')}>Borrar</DosToques> : null}</li>
       ))}</ol> : j ? <p className="sp-vacio">No anunciaste ningún evento desde acá.</p> : <p className="pronto-p">Buscando…</p>}
       {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
+// 🎭 TUS EVENTOS DE ESTILO (20/11/2026, el plan de los tiers: el Tier 2 da 1 por mes, el Tier 1 si quiere). Marcas uno de
+// tus próximos eventos con un estilo y quien lo juega lo sube o lo desbloquea (`bot/juegos.py`). Lo guarda el objeto
+// (`estilo_socios`) y el ciclo lo toma sólo para eventos de tu servidor (`eventos_estilo.resolver()`)
+const NOMBRE_EST = Object.fromEntries((CAT_EST.estilos || []).map(([k, n]) => [k, n]));
+const claveEv = (e) => { const m = /\/([0-9]{15,22})\/?$/.exec(String((e && e.link) || '')); return m ? 'a:' + m[1] : ''; };
+function EstiloStaff({ sv, rol, permisos, liga }) {
+  const [j, setJ] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [sel, setSel] = useState({});
+  useEffect(() => {
+    let vivo = true;
+    setJ(null); setMsg('');
+    pedirStaff(sv, 'estilo', 'ver').then((r) => { if (vivo) setJ(r || { error: 'red' }); });
+    return () => { vivo = false; };
+  }, [sv]);
+  if (!j || j.error || !j.puede) return j && !j.error && j.tier === 3 ? <p className="sp-ll-ayuda">Los eventos de estilo los dan los Tier 2 y 1.</p> : null;
+  const yo = puede(rol, 'eventos', permisos);
+  const marcados = j.marcados || {};
+  const prox = (liga && liga.proximos ? liga.proximos() : []).filter((p) => p.sv === sv && claveEv(p)).slice(0, 8);
+  const hacer = (accion, clave, es) => {
+    setOcup(true); setMsg('');
+    pedirStaff(sv, 'estilo', accion, { id: clave, es }).then((x) => {
+      setOcup(false);
+      if (x && x.ok) { setJ(x); setMsg(accion === 'marcar' ? 'Marcado: quien lo juegue gana ese estilo.' : 'Desmarcado.'); } else setMsg(errStaff(x));
+    });
+  };
+  return (
+    <div className="sp-ll sp-est">
+      {prox.length ? <ul className="sp-est-l">{prox.map((p) => {
+        const k = claveEv(p), m = marcados[k];
+        return (
+          <li key={k}><span><b>{nombreEv(p.nombre)}</b><small>{(W.fmtFecha ? W.fmtFecha(utc(p.cuando), { weekday: 'long', day: 'numeric', month: 'numeric' }) : '')
+            + (W.fmtHora ? ' · ' + W.fmtHora(utc(p.cuando)) : '')}{m ? ' · ' + (NOMBRE_EST[m] || m) : ''}</small></span>
+            {yo ? (m ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => hacer('quitar', k)}>Quitar</button> : (
+              <span className="sp-est-f">
+                <select aria-label={'El estilo de ' + nombreEv(p.nombre)} value={sel[k] || ''} onChange={(e) => setSel(Object.assign({}, sel, { [k]: e.target.value }))}>
+                  <option value="">Elige un estilo</option>
+                  {Object.entries(NOMBRE_EST).map(([c, n]) => <option key={c} value={c}>{n}</option>)}
+                </select>
+                <button type="button" className="btn verde chico" disabled={ocup || !sel[k]} onClick={() => hacer('marcar', k, sel[k])}>Marcar</button>
+              </span>
+            )) : (m ? <span className="cz-chip si">{NOMBRE_EST[m] || m}</span> : null)}
+          </li>
+        );
+      })}</ul> : <p className="sp-vacio">Cuando anuncies un evento, aparece acá para marcarlo.</p>}
+      {!yo ? <p className="sp-ll-ayuda">Los marcan el dueño, los admins y los moderadores.</p> : null}
+      {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
+// 🏛️ EL CONSEJO DE SOCIOS (20/11/2026): lo que propone la Liga y el voto de tu servidor, uno por servidor Tier 1 o 2. Vota
+// el dueño o sus admins; mientras está abierta se puede cambiar. Gana el sí con más votos que el no, y la Liga tiene 48 h
+// para vetarlo (`consejoDe()` de bot/avisos.js)
+const CONS_EST = { abierta: 'Votando', veto: 'Ganó el sí', aprobada: 'Aprobada', no_paso: 'No pasó', vetada: 'La Liga la vetó' };
+const CONS_VOTO = [['si', 'Sí'], ['no', 'No'], ['abs', 'Me abstengo']];
+function ConsejoStaff({ sv, rol, permisos }) {
+  const [j, setJ] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    let vivo = true;
+    setJ(null); setMsg('');
+    pedirStaff(sv, 'consejo', 'ver').then((r) => { if (vivo) setJ(r || { error: 'red' }); });
+    return () => { vivo = false; };
+  }, [sv]);
+  if (!j || j.error || !j.puede) return null;
+  const yo = puede(rol, 'ajustes', permisos);
+  const votar = (id, r) => {
+    setOcup(true); setMsg('');
+    pedirStaff(sv, 'consejo', 'votar', { id: String(id), r }).then((x) => {
+      setOcup(false);
+      if (x && x.ok) { setJ(x); setMsg('Tu voto quedó. Mientras esté abierta, lo puedes cambiar.'); } else setMsg(errStaff(x));
+    });
+  };
+  const xs = j.lista || [];
+  return (
+    <div className="sp-ll sp-cons">
+      {xs.length ? <ul className="sp-cons-l">{xs.map((c) => (
+        <li key={c.id}>
+          <div><b>{c.titulo}</b>{c.texto ? <small>{c.texto}</small> : null}
+            <small>{CONS_EST[c.estado] || c.estado} · votaron {c.votaron} de {c.total}{c.estado !== 'abierta' ? ' · Sí ' + c.si + ', No ' + c.no : ''}{c.mio ? ' · tu servidor votó «' + ((CONS_VOTO.find((v) => v[0] === c.mio) || [])[1] || c.mio) + '»' : ''}</small></div>
+          {c.estado === 'abierta' && yo ? (
+            <span className="sp-cons-b" role="group" aria-label={'Tu voto en ' + c.titulo}>
+              {CONS_VOTO.map(([v, t]) => <button key={v} type="button" className={'btn chico ' + (c.mio === v ? 'verde' : 'borde2')} aria-pressed={c.mio === v} disabled={ocup} onClick={() => votar(c.id, v)}>{t}</button>)}
+            </span>
+          ) : null}
+        </li>
+      ))}</ul> : <p className="sp-vacio">Cuando la Liga proponga algo, se vota acá.</p>}
+      {!yo ? <p className="sp-ll-ayuda">Vota el dueño o sus admins.</p> : null}
+      {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
+// 🎟️ TUS PASES PARA REGALAR (Tier 1, 20/11/2026): los que la Liga te asignó este mes, en qué eventos, y los de tu Alianza
+function PasesPanel({ x, liga }) {
+  const p = x.pases && x.pases.mes === new Date(Date.now() - 5 * 3600000).toISOString().slice(0, 7) ? x.pases : null;
+  const bonos = x.alianza_bonus || [];
+  const nb = bonos.reduce((t, b) => t + (b.pases || 0), 0);
+  const nombreDe = (k) => {
+    const todos = [...((liga.d && liga.d.calendario) || []), ...(liga.proximos ? liga.proximos().map((y) => ({ n: y.nombre, link: y.link })) : [])];
+    const e = todos.find((y) => k === 'a:' + ((/\/([0-9]{15,22})\/?$/.exec(String(y.link || '')) || [])[1]) || String(y.ll) === k);
+    return e ? nombreEv(e.n) : k.startsWith('a:') ? 'un evento anunciado' : 'el evento #' + k;
+  };
+  return (
+    <div className="sp-ll">
+      <p className="sp-pases-n"><b>{p ? p.n : 0}</b> {p && p.n === 1 ? 'Pase este mes' : 'Pases este mes'}{nb ? <> · <b>+{nb}</b> de tu Alianza</> : null}</p>
+      {p && (p.ev || []).length ? <p className="sp-ll-ayuda">Se los llevan los campeones de: {p.ev.map(nombreDe).join(', ')}.</p>
+        : <p className="sp-ll-ayuda">Todavía no se eligieron los eventos de este mes.</p>}
+      {(x.alianza || []).length ? <p className="sp-ll-ayuda">Tu Alianza: acompañas a {x.alianza.map(siglaDe).join(', ')}. Si sube de tier, +2 Pases para ese mes.{bonos.length ? ' ' + bonos.map((b) => siglaDe(b.aliado) + ' subió a Tier ' + b.a + '.').join(' ') : ''}</p> : null}
     </div>
   );
 }

@@ -83,7 +83,8 @@ COLA = (1000, 300)
 #: lo que el objeto sabe contar. `activo`: días de la racha · `fel`: felicitaciones · `vivo`: llaves en vivo
 #: distintas · `precio`: precios por cabeza · `dra`: eventos jugados en DRA · `caza`: buscados cazados (estos dos, del
 #: ciclo). Si se agrega uno, también en `PASE_MIDE` de `bot/avisos.js`
-MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo', 'cm')
+#: `t1`: eventos jugados en un servidor Tier 1 (20/11/2026, del ciclo, como `dra`)
+MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo', 'cm', 't1')
 #: las Tareas: `(id, texto, cómo se cumple, qué mide, meta, xp)`, en el orden en que se muestran
 DIARIAS = (
     ('entrar', 'Entra hoy', 'Con tu cuenta en la página, usando el bot o jugando un evento.', 'activo', 1, 150),
@@ -137,7 +138,13 @@ SEMANALES = (
      'vivo', 2, 500),
     ('precio', 'Pon precio a una cabeza', 'En la Tienda, con tus Puntos de Tienda: a cualquiera de los buscados.',
      'precio', 1, 500),
+    # 🏆 LA TAREA DEL TIER 1 (20/11/2026, el plan de los tiers; Dlx: «Como 6.ª semanal»): lleva gente a sus eventos. Vale
+    # desde la semana del 16/11 (`SEMANALES_DESDE`): el objeto no la paga en las semanas de antes ni le cuenta para el sorteo
+    ('t1', 'Juega en un servidor Tier 1', 'Cualquier evento de un servidor Tier 1 de esta semana (DRA también cuenta).', 't1', 1, 500),
 )
+#: 🏆 desde qué semana vale cada semanal que se sumó después (el lunes, en hora del este): sin esto, el objeto la revisaría
+#: en TODAS las semanas del Pase y la pagaría para atrás (ver `config()`)
+SEMANALES_DESDE = {'t1': '2026-11-16T00:00'}
 TEMPORADA = (
     ('fel10', 'Felicita a 10 personas', 'En toda la temporada, con 👏 en Publicaciones.', 'fel', 10, 1500),
     ('vivo5', 'Mira 5 llaves en vivo', 'En toda la temporada.', 'vivo', 5, 1500),
@@ -391,6 +398,7 @@ def config(temp, dra=True, nuevas=True, curva=True, cm=True):
            'diarias': lista(DIARIAS_CM if nuevas and curva and cm else DIARIAS_SIEMPRE if nuevas and curva
                             else DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA,
            'semanales': lista(SEMANALES),
+           'semanales_desde': {k: _ms_et(v) for k, v in SEMANALES_DESDE.items()},
            'temporada': lista(TEMPORADA + (TEMPORADA_NUEVAS if nuevas else ())), 'premios': premios(curva),
            'publicar': list(PUBLICAR)}
     # 🎟️ lo del 25/10/2026 (Dlx: «haz todo de una»): la bienvenida, la XP doble, la gracia, la crew y la fila premium. Las
@@ -465,24 +473,30 @@ def _cazas(mw):
     return out
 
 
-def hechas(sems, evs, cazas, quien_es, miembros):
-    """`{discord_id: {semana: [eventos en DRA, buscados cazados]}}` de los miembros que hicieron algo de eso.
+def hechas(sems, evs, cazas, quien_es, miembros, t1=None):
+    """`{discord_id: {semana: [eventos en DRA, buscados cazados, eventos en un Tier 1]}}` de los miembros que hicieron algo
+    de eso. `t1`, las siglas de los servidores Tier 1 (`datos/niveles.json`).
 
     `evs` son los de `most_wanted.cargar_todo()` (con `sv` y su instante `t`); `cazas`, los de `_cazas()`;
     `quien_es`, `buscador()`. Cuenta eventos, no batallas: dos rondas del mismo evento son uno."""
     out = {}
 
+    t1 = set(t1 or ())
+
     def suma(did, sid, i):
         if did and did in miembros:
-            x = out.setdefault(did, {}).setdefault(sid, [0, 0])
+            x = out.setdefault(did, {}).setdefault(sid, [0, 0, 0])
             x[i] += 1
     for sid, ini, fin in sems:
         dentro = lambda t: t and ini <= t.timestamp() * 1000 < fin
         for ev in evs:
-            if ev.get('sv') != 'DRA' or not dentro(ev.get('t')):
+            if not dentro(ev.get('t')) or (ev.get('sv') != 'DRA' and ev.get('sv') not in t1):
                 continue
             for did in {quien_es(raw) for raw in _gente(ev)}:
-                suma(did, sid, 0)
+                if ev.get('sv') == 'DRA':
+                    suma(did, sid, 0)
+                if ev.get('sv') in t1:
+                    suma(did, sid, 2)
         for t, por in cazas:
             if dentro(t):
                 for did in {quien_es(raw) for raw in por}:
@@ -503,7 +517,13 @@ def armar(ahora=None):
     pool, evs, _R = MW.cargar_todo()
     sems = semanas(ahora)
     miembros = sorted(ids)
-    h = hechas(sems, evs, _cazas(MW.leer()), buscador(PR.discords(pool)), set(miembros))
+    # 🏆 los Tier 1 de hoy, para la semanal de jugar en uno (`datos/niveles.json`, lo que escribe bot/tiers.py)
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'niveles.json'), encoding='utf-8') as f:
+            t1 = {sv for sv, t in ((json.load(f) or {}).get('niveles') or {}).items() if t == 1}
+    except (OSError, ValueError):
+        t1 = set()
+    h = hechas(sems, evs, _cazas(MW.leer()), buscador(PR.discords(pool)), set(miembros), t1)
     # 🆕 las Tareas nuevas entran con la semana del 19/10 (`TAREAS_DESDE`), no a mitad de ésta
     nuevas = MU.periodo(ahora)[0] >= TAREAS_DESDE
     # 🎯 la curva nueva y el brillo en el 4, desde la semana del 26/10 (`CURVA_DESDE`)
@@ -518,7 +538,8 @@ def armar(ahora=None):
            'sem': sems,
            'miembros': miembros, 'hechas': h,
            # 🏆 una temporada de Pase premium para cada campeón de liga (15/11/2026): ver `vales_campeones()`
-           'vales': vales_campeones(),
+           # 🎟️ y uno para el campeón de cada evento en que un Tier 1 regala un Pase (20/11/2026): ver `bot/pases_t1.py`
+           'vales': vales_campeones() + _vales_t1(),
            # 🥚 los Dragón Drops por ganar (la tanda 1 del rework, 17/11/2026): ver bot/drops_merito.py
            'drops': drops_por_ganar(),
            # 🔔 quién puede votar los MES AWARDS abiertos, para los avisos de la campana: ver `mes_votan()`
@@ -540,6 +561,16 @@ def vales_de_salon(sl):
         m = 'Campeón de %s' % (x.get('n') or lid) + (' (temporada %s)' % x['lt'] if x.get('lt') else '')
         out.append({'o': 'liga:%s:%s' % (lid, ult), 'k': k, 'm': m[:120]})
     return sorted(out, key=lambda v: v['o'])
+
+
+def _vales_t1():
+    """🎟️ Los Pases que regalan los Tier 1 (`pases_t1.vales_ciclo()`): nunca frena el Pase."""
+    try:
+        import pases_t1 as _PT
+        return _PT.vales_ciclo()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los Pases de regalo de los Tier 1: %s' % str(e)[:80])
+        return []
 
 
 def vales_campeones():
@@ -771,8 +802,8 @@ def _self_check():
        'cada Tarea tiene un id único, mide algo que el objeto sabe contar, y da XP')
     ok(not [t for t in todas if 'misi' in t[0] or 'misi' in t[1].lower()],
        'ninguna Tarea es una Misión (Dlx, 06/10: «hay TAREAS y misiones que son diferentes»)')
-    ok(sum(1 for t in todas if t[3] == 'dra') == 3 and len(SEMANALES) == 5,
-       'de DRA, jugar ahí (una semanal y dos de temporada); cinco semanales')
+    ok(sum(1 for t in todas if t[3] == 'dra') == 3 and len(SEMANALES) == 6 and SEMANALES[-1][3] == 't1' and 't1' in SEMANALES_DESDE,
+       'de DRA, jugar ahí (una semanal y dos de temporada); seis semanales, la del Tier 1 desde su semana (20/11/2026)')
     # 🏠 mientras DRA no organice, esas tres cambian (Dlx, 12/10/2026: «6. B»), valen lo mismo y no piden jugar
     sd = config('t1', dra=False)
     ids_sd = [t[0] for t in sd['semanales'] + sd['temporada']]
@@ -886,9 +917,11 @@ def _self_check():
     cazas = [(t, ['Cami🇨🇱']), (dt.datetime(2026, 9, 1, tzinfo=U), ['Ana'])]
     dids = {'Ana': '111111', 'Bea': '222222', 'Cami': '333333'}
     h = hechas(sems, evs, cazas, buscador(dids), {'111111', '333333'})
-    ok(h.get('111111') == {'2026-10-05': [2, 0]}, 'Ana jugó dos eventos en DRA (la caza de septiembre no es de la semana)')
+    ok(h.get('111111') == {'2026-10-05': [2, 0, 0]}, 'Ana jugó dos eventos en DRA (la caza de septiembre no es de la semana)')
+    ok(hechas(sems, evs, cazas, buscador(dids), {'111111', '333333'}, {'DRA'}).get('111111') == {'2026-10-05': [2, 0, 2]},
+       'y si DRA es Tier 1, esos dos cuentan también para la semanal del Tier 1')
     ok('222222' not in h, 'Bea jugó en DRA pero no es miembro: no entra')
-    ok(h.get('333333') == {'2026-10-05': [0, 1]}, 'Cami cazó a un buscado (su nombre con bandera la encuentra igual)')
+    ok(h.get('333333') == {'2026-10-05': [0, 1, 0]}, 'Cami cazó a un buscado (su nombre con bandera la encuentra igual)')
     q = buscador({'SOL': '1', 'SOL🇵🇪': '2'})
     ok(q('SOL') == '1' and q('SOL🇵🇪') == '2' and q('Sol') is None, 'dos con el mismo nombre: no se adivina')
     mw = {'actual': {'id': 'x', 'temporada': 't1', 'buscados': [

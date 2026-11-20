@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "7.27",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T03:26:00-05:00",
+        "titulo": "Pases de regalo, más eventos de estilo y una Tarea nueva",
+        "items": [
+            "**Una Tarea nueva del Pase**: «Juega en un servidor Tier 1», la sexta semanal, desde esta semana (DRA también cuenta).",
+            "**Más eventos de estilo**: los servidores Tier 2 (y los Tier 1 que quieran) marcan sus propios eventos de estilo. Juégalos para desbloquear o subir ese estilo.",
+            "**Pases de regalo**: algunos eventos de los servidores Tier 1 regalan un Pase premium a su campeón. Te llega a tu Inventario.",
+            "**Bienvenida**: si entras a un servidor con «Unirme a los Tier 1», el bot te saluda ahí (si ese servidor la prendió)."
+        ]
+    },
+    {
         "version": "7.26",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T02:47:00-05:00",

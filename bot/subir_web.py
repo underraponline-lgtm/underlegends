@@ -646,11 +646,24 @@ def armar():
         calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora, _info)
         # 🎭 los eventos de estilo que marcó Dlx en el Dashboard (17/11/2026): `je` en cada evento marcado y, resuelto a
         # número, `datos/eventos_estilo.json` para los niveles (`bot/juegos.py`). Nunca frena la web
+        # 🎟️ y los Pases que regala cada Tier 1 (`bot/pases_t1.py`, 20/11/2026): los mismos ajustes, una sola lectura
+        try:
+            import multiplicadores as _MU
+            _aj_d = _MU.ajustes_dueno()
+        except Exception as _e:                          # noqa: BLE001
+            print('   ⚠️ los ajustes del Dashboard: %s' % str(_e)[:80])
+            _aj_d = None
         try:
             import eventos_estilo as _EE
-            _EE.marcar(calendario, escribir='--aplicar' in sys.argv)
+            _EE.marcar(calendario, aj=_aj_d, escribir='--aplicar' in sys.argv)
         except Exception as _e:                          # noqa: BLE001
             print('   ⚠️ los eventos de estilo: %s' % str(_e)[:80])
+        if _aj_d is not None:
+            try:
+                import pases_t1 as _PT
+                _PT.marcar(calendario, aj=_aj_d, escribir='--aplicar' in sys.argv)
+            except Exception as _e:                      # noqa: BLE001
+                print('   ⚠️ los Pases de los Tier 1: %s' % str(_e)[:80])
         # 🔁 y en «Lo que pasó», el anuncio repetido lleva la llave de su evento (`reanuncio()`)
         for _p in pas:
             if _p.get('llave'):

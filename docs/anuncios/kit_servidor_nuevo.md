@@ -69,7 +69,7 @@ El dashboard te da un puntaje de 0 a 100 con tus últimas 4 semanas:
 
 **De Tier 3 a Tier 2:** 8 eventos en 8 semanas, con 8 raperos por evento de promedio.
 **De Tier 2 a Tier 1:** 12 eventos en 8 semanas, 10 raperos por evento de promedio y 60 puntos; después, un mes de prueba.
-**Para quedarte:** en Tier 1, 8 eventos en 8 semanas con 8 raperos por evento; en Tier 2, 4 eventos en 8 semanas; en Tier 3, un evento o una fecha de liga por mes.
+**Para quedarte:** en Tier 1, 8 eventos en 8 semanas con 8 raperos por evento; en Tier 2, 4 eventos en 8 semanas y 1 evento de estilo por mes; en Tier 3, un evento o una fecha de liga por mes.
 **Los miembros de tu Discord no son requisito.** Se recomiendan 100 en Tier 3, 500 en Tier 2 y 1.000 en Tier 1.
 El sistema lo mide y yo confirmo el cambio.
 

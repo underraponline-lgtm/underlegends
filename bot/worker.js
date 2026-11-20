@@ -2018,6 +2018,20 @@ export async function cuentaUnirse(req, env) {
       break;
     }
   }
+  // 👋 LA BIENVENIDA (20/11/2026, el plan de los tiers): en cada servidor donde ENTRÓ recién (201), si su dueño la prendió
+  // (`bienvenida` de `cfg:<guild>`, un canal), el bot lo saluda ahí. Menciona sólo a quien entró. Nunca frena la respuesta
+  for (const sv of pide) {
+    if (res[sv] !== 'ok') continue;
+    const S = SERVIDORES.find((x) => x.sv === sv && x.guild);
+    try {
+      const cfg = S ? await env.KV.get('cfg:' + S.guild, 'json') : null;
+      const canal = String((cfg && cfg.bienvenida) || '');
+      if (!/^[0-9]{15,22}$/.test(canal)) continue;
+      await fetch(`${DC_API}/channels/${canal}/messages`, { method: 'POST', headers: bot,
+        body: JSON.stringify({ content: '👋 ¡Bienvenido, <@' + u.id + '>! Llegó desde la **Liga Global** con «Unirme a los Tier 1». Pasen y salúdenlo.',
+          allowed_mentions: { users: [String(u.id)] } }) });
+    } catch (e) { /* la bienvenida no frena la respuesta */ }
+  }
   return json({ ok: true, res });
 }
 
