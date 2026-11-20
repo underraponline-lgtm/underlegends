@@ -380,8 +380,8 @@ def correr(filas, ahora=None, aplicar=False):
         out.update(modo='elo', tramos=list(tr), prov=pv, nombres=list(PIEDRAS), colores=list(COLOR_PIEDRA),
                    premio_sub=PREMIO_SUB, subs=c.get('subs') or [], mejor=c.get('mejor') or {})
         if _temporada():
-            # 🪨 sólo desde la T2: lo que mide cada piedra (ya no son todas de 50) y de qué ELO salen
-            out.update(anchos=list(an), escalera='temporada')
+            # 🪨 sólo desde la T2: lo que mide cada piedra (ya no son todas de 50), de qué ELO salen y el histórico
+            out.update(anchos=list(an), escalera='temporada', historico=getattr(elo_al, 'historico', None) or {})
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
@@ -434,6 +434,8 @@ def _elo_temporada_de(filas, ahora):
         if sem is None:
             return ya
         return r['cortes'].get(dt.date.fromisoformat(sem) + dt.timedelta(days=7), ya)
+    # 🪨 el histórico de cada uno que jugó la temporada, para su perfil (va con sus últimas batallas: `batallas_web()`)
+    elo_al.historico = {raw_de[k]: v['elo'] for k, v in r['hist'].items() if k in raw_de}
     return elo_al, raw_de
 
 
@@ -543,8 +545,13 @@ def batallas_web(d):
     (`bot/subir_web.py`, `CLAVE_DIVISIONES`) y la pide Ranking → Divisiones para «Tus últimas batallas»."""
     if not d or d.get('modo') != 'elo':
         return None
-    return {f[0]: f[5] for gs in d.get('divs') or [] for g in gs or [] for f in g
-            if len(f) > 5 and f[5]}
+    out = {f[0]: f[5] for gs in d.get('divs') or [] for g in gs or [] for f in g
+           if len(f) > 5 and f[5]}
+    if d.get('escalera') == 'temporada':
+        # 🪨 desde la T2, el HISTÓRICO de cada uno, para su perfil: en el lobby no entra (está en su tope), y esto se pide
+        # sólo al abrirse. `_hist` no es el nombre de nadie, así que la pestaña de Divisiones no lo ve
+        out['_hist'] = d.get('historico') or {}
+    return out
 
 
 # ── self-check ───────────────────────────────────────────────────────────
@@ -660,6 +667,9 @@ def _self_check():
         w2 = para_web(dt2)
         ok(w2['t'] == [375, 290, 210, 135, 65] and w2['a'] == [85, 85, 80, 75, 70, 65] and w2['pv'] == 0 and w2['et'] == 1
            and 'a' not in we and 'et' not in we, 'el lobby lleva el ancho de cada piedra sólo desde la T2')
+        bh = batallas_web(dict(dt2, historico={'Oasis': 1339}))
+        ok(bh['_hist'] == {'Oasis': 1339} and '_hist' not in (batallas_web(de) or {}),
+           'el histórico viaja con las últimas batallas (para el perfil), sólo desde la T2')
     finally:
         globals()['_temporada'], ET.inicio = antes
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))

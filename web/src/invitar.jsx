@@ -109,6 +109,8 @@ function Llegaste({ liga, dc, rp }) {
   const D = liga.d && liga.d.div;
   const elo = !!(D && D.m === 'elo' && Array.isArray(D.n) && D.n.length);
   const piso = elo ? D.n[D.n.length - 1] : 'Sexta';
+  // 🪨 desde la T2, el ELO de temporada (bot/elo_temporada.py): cuentan las batallas contra gente de tu área
+  const et = elo && !!D.et;
   const hoy = diaISO(new Date()), manana = diaISO(new Date(Date.now() + 864e5));
   const dia = (t) => {
     const d = utc(t), x = diaISO(d);
@@ -170,7 +172,8 @@ function Llegaste({ liga, dc, rp }) {
           </div>
           <div className="rl-caja">
             <b>Empiezas en {piso}</b>
-            <small>{elo ? 'Juegas un evento y entras en ' + piso + ', la piedra de quien recién empieza: tu ELO sube ganando batallas 1v1 y la piedra se mira cada lunes.'
+            <small>{et ? 'Juegas un evento y entras en ' + piso + ', la piedra de quien recién empieza: tu ELO de temporada sube ganando batallas contra gente de tu área y la piedra se mira cada lunes.'
+              : elo ? 'Juegas un evento y entras en ' + piso + ', la piedra de quien recién empieza: tu ELO sube ganando batallas 1v1 y la piedra se mira cada lunes.'
               : 'Juegas un evento y entras en Sexta, la división de quien recién empieza: compites con gente de tu nivel y los primeros de cada grupo suben cada lunes.'}</small>
             <span className="rl-divs" aria-hidden="true">{[0, 1, 2, 3, 4, 5].map((i) => <i key={i} className={i === 5 ? 'on' : ''} />)}</span>
           </div>

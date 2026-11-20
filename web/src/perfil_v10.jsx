@@ -121,6 +121,28 @@ export function useV10(liga, k, f, p, e) {
 }
 
 // 💎 SU ELO Y SU PIEDRA (la tabla de divisiones del lobby, como la lee divisiones.jsx: `[nombre, ELO, batallas, …]`)
+// 🪨 EL HISTÓRICO, DESDE LA T2 (docs/elo_temporada.md): el número de la piedra pasa a ser el ELO de temporada, y el
+// nivel de verdad, que no se reinicia, viaja en `/api/divisiones` (`b._hist`, de bot/divisiones.batallas_web): en el
+// lobby no entra. Se pide una vez por lobby nuevo (`sello`) y sólo si el lobby dice que es la T2 (`et`)
+let HIST = null, histDe = null, histPidiendo = null;
+function useHistorico(activo, sello) {
+  const [h, setH] = useState(histDe === sello ? HIST : null);
+  useEffect(() => {
+    if (!activo) return undefined;
+    if (HIST && histDe === sello) { setH(HIST); return undefined; }
+    let vivo = true;
+    histPidiendo = histPidiendo || fetch('/api/divisiones', { headers: { accept: 'application/json' } })
+      .then((r) => (r.ok ? r.json() : null)).catch(() => null)
+      .then((j) => { histPidiendo = null; return j; });
+    histPidiendo.then((j) => {
+      if (j && j.b && j.b._hist && typeof j.b._hist === 'object') { HIST = j.b._hist; histDe = sello; }
+      if (vivo) setH(HIST && histDe === sello ? HIST : {});
+    });
+    return () => { vivo = false; };
+  }, [activo, sello]);
+  return h;
+}
+
 export function eloDe(liga, k) {
   const V = liga.d && liga.d.div;
   if (!V || V.m !== 'elo' || !Array.isArray(V.d)) return null;
@@ -137,7 +159,7 @@ export function eloDe(liga, k) {
         const piso = di < t.length ? t[di] : (t[t.length - 1] || 0) - an(t.length);
         const s = Math.max(0, Math.min(2, Math.floor((r[1] - piso) / (an(di) / 3))));
         const prox = s < 2 ? [(V.n || [])[di] + ' ' + SUBS[s + 1], piso + Math.ceil(((s + 1) * an(di)) / 3)] : di > 0 ? [(V.n || [])[di - 1] + ' I', t[di - 1]] : null;
-        return { elo: r[1], bat: r[2], piedra: (V.n || [])[di] || '', sub: SUBS[s], c: (V.c || [])[di] || '#8A8F98', pos: i + 1, tot: g.length, prox, prov: r[2] < (V.pv == null ? 5 : V.pv) };
+        return { elo: r[1], bat: r[2], piedra: (V.n || [])[di] || '', sub: SUBS[s], c: (V.c || [])[di] || '#8A8F98', pos: i + 1, tot: g.length, prox, prov: r[2] < (V.pv == null ? 5 : V.pv), raw: r[0], et: !!V.et };
       }
     }
   }
@@ -145,12 +167,14 @@ export function eloDe(liga, k) {
 }
 export function EloNum({ liga, k }) {
   const e = eloDe(liga, k);
+  const hist = useHistorico(!!(e && e.et), liga.d && liga.d.sello);
   if (!e) return null;
+  const h = e.et && hist ? hist[e.raw] : null;
   const tt = e.prox ? 'Le faltan ' + (e.prox[1] - e.elo) + ' de ELO para ' + e.prox[0] : 'Lo más alto que hay';
   return (
     <a className="pv-elo" href="#/ranking/divisiones" style={{ '--pc': e.c }} title={tt}>
       <i className="pv-gema" aria-hidden="true" />
-      <span><b>{num(e.elo)}</b><small>ELO · <em>{e.piedra} {e.sub}</em>{e.prov ? ' · provisional' : ''}</small></span>
+      <span><b>{num(e.elo)}</b><small>{e.et ? 'ELO de temporada' : 'ELO'} · <em>{e.piedra} {e.sub}</em>{e.prov ? ' · provisional' : ''}{h ? ' · histórico ' + num(h) : ''}</small></span>
     </a>
   );
 }

@@ -16,7 +16,7 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import TAGS from './tags_catalogo.json';
 import { norm, num } from './liga.js';
 import { Carta, Ico } from './piezas.jsx';
-import { MW_TIENDA, NOMBRE_EV, PALABRAS, PREGUNTAS, PUESTOS, SEMANA, pideLargo } from './guia.jsx';
+import { MW_TIENDA, NOMBRE_EV, PALABRAS, PREGUNTAS, PUESTOS, SEMANA, pideLargo, textoSemana } from './guia.jsx';
 import { Franja } from './ranking_a.jsx';
 import CSS_PAGINA from './css/guia2.css?inline';
 import { usarCss } from './css.js';
@@ -230,10 +230,11 @@ function MwTienda({ mw }) {
 
 // 📅 LA SEMANA EN CARRILES: lo que arranca el lunes, lo que dura toda la semana, lo que pasa al jugar y lo que se cobra al
 // cerrar; abajo, lo de toda la temporada
-function Semana() {
-  const item = ([t, d], i) => {
+function Semana({ et }) {
+  const item = (x, i) => {
+    const t = x[0];
     const c = CIFRA[t];
-    return <Abrible key={t} id={'gx-sem-' + i} cls="gx-it" texto={d}>{c ? <span className="x">{c[0]}</span> : null}<b>{t}</b></Abrible>;
+    return <Abrible key={t} id={'gx-sem-' + i} cls="gx-it" texto={textoSemana(x, et)}>{c ? <span className="x">{c[0]}</span> : null}<b>{t}</b></Abrible>;
   };
   const de = (k) => SEMANA.map((x, i) => [x, i]).filter(([x]) => (CARRIL[x[0]] || 'tem') === k);
   return (
@@ -340,6 +341,8 @@ function Palabras() {
 
 export function Guia({ liga, dc }) {
   const G = liga.d.guia || {};
+  // 🪨 desde la T2 el Ranking ELO es el de temporada (el lobby trae `et` en las divisiones)
+  const esT2 = !!(liga.d.div && liga.d.div.et);
   const P = G.puntos || {};
   const reqs = liga.d.requisitos || [];
   const rangos = liga.d.rangos || [];
@@ -371,7 +374,7 @@ export function Guia({ liga, dc }) {
     }).filter(Boolean).join(' · ');
     return [
       ...PALABRAS.map(([t, d], i) => ['palabras', t, d, { id: 'gx-pal-' + i }]),
-      ...SEMANA.map(([t, d], i) => ['semana', t, d, { id: 'gx-sem-' + i }]),
+      ...SEMANA.map((x, i) => ['semana', x[0], textoSemana(x, esT2), { id: 'gx-sem-' + i }]),
       ...MW_TIENDA.map(([t, d], i) => ['mw', t, d.replace('{MW}', ''), { id: 'gx-mw-' + i }]),
       ...PREGUNTAS.map(([t, a], i) => ['preguntas', t, plano(a), { id: 'gx-faq-' + i }]),
       ...reqs.map((x) => ['tarjetas', x.titulo, x.mide + ' ' + (x.pide || []).map(pideLargo).join(' · '), { id: 'gx-car-' + x.id, lomo: x.id }]),
@@ -506,7 +509,7 @@ export function Guia({ liga, dc }) {
         {tab === 'semana' ? (
           <div className="gx-p" id="gx-semana">
             <p className="gx-nota">Lo que cambia los puntos semana a semana, y cuándo pasa. La semana arranca el lunes a las 11 AM (hora del este).</p>
-            <Semana />
+            <Semana et={esT2} />
           </div>
         ) : null}
 
