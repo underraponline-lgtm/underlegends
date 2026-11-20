@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.09",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T22:21:00-05:00",
+        "titulo": "El cruce del bot en vivo, siempre con su propia imagen",
+        "items": [
+            "Si la llave se rehace mientras el cruce del bot en vivo espera su imagen, el mensaje ya no sale con la imagen de los que estaban antes en ese lugar: espera la de los que pelean ahora, y si ya esperó, sale sin imagen y se la agrega en cuanto está lista."
+        ]
+    },
+    {
         "version": "7.08",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T21:43:00-05:00",
