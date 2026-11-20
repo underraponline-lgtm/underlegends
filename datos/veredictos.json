@@ -355,17 +355,6 @@
   }
  },
  "batallas": {
-  "1570643678224060498": {
-   "id": "1570643678224060498",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1794541034037,
-   "a": "JORNADA 9 --> ARTEZZY",
-   "b": "MC AREPA",
-   "ganador": "MC AREPA",
-   "votos": "1–0"
-  },
   "1570865983617368136": {
    "id": "1570865983617368136",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -2366,6 +2355,50 @@
    "a": "Lalox",
    "b": "Angelo",
    "ganador": "Lalox",
+   "votos": "1–0"
+  },
+  "1573176784940179487": {
+   "id": "1573176784940179487",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795144973741,
+   "a": "CNC",
+   "b": "FLASH",
+   "ganador": "FLASH",
+   "votos": "1–0"
+  },
+  "1573179281192779938": {
+   "id": "1573179281192779938",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795145568894,
+   "a": "Julba",
+   "b": "LRS",
+   "ganador": "Julba",
+   "votos": "1–0"
+  },
+  "1573180651413442583": {
+   "id": "1573180651413442583",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795145895580,
+   "a": "Colesito",
+   "b": "23",
+   "ganador": "23",
+   "votos": "1–0"
+  },
+  "1573182420054704129": {
+   "id": "1573182420054704129",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795146317257,
+   "a": "Tommy",
+   "b": "Lvel",
+   "ganador": "Tommy",
    "votos": "1–0"
   }
  },
