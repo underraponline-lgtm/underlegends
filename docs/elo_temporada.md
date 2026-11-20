@@ -27,11 +27,12 @@ meta»*). El Competitivo (`sheet/competitivo.py`) pone a todos en una sola escal
 consistencia 24 %, dominancia 21 %, diversidad 20 % y racha 10 %, × la confianza— y **nunca mira a quién le ganaste**.
 El de temporada es al revés: **las piedras son los niveles** y la tabla de cada piedra, los mejores de ese nivel.
 
-Medido sobre la T1 con el área de la piedra y la semana (`elo_niveles.py` de la sesión; el nivel es el ELO histórico
-al final): la mediana del nivel sube piedra por piedra —981 · 1048 · 1137 · 1199 · 1339—, el **99 % queda en la piedra
-de su nivel o en la de al lado** (con el área anterior, 93 %) y el ELO de temporada se parece **0,79** al Competitivo,
-que se parece 0,87 al nivel: se toca, no es una copia. Y arriba de cada piedra aparece gente que el Competitivo no pone
-arriba: la cima de Jade son Prosu y Flash (sin letra todavía) y Geoka (C).
+Medido sobre la T1 con el diseño decidido (el área de la piedra, la semana y la A; `elo_niveles.py` de la sesión; el
+nivel es el ELO histórico al final): la mediana del nivel sube piedra por piedra —978 · 1066 · 1128 · 1199 · 1339—, el
+**99 % queda en la piedra de su nivel o en la de al lado** (con el área anterior, 93 %) y el ELO de temporada se parece
+**0,85** al Competitivo, que se parece 0,87 al nivel: se tocan, no es una copia. Y arriba de cada piedra aparece gente
+que el Competitivo no pone arriba: la cima de Jade son Prosu y Giansito (sin letra todavía) y Tuca (B); la de Hierro,
+Velatz y Mayeutyk (C) y NC (D).
 
 ⚠️ **La nota NO entra al ELO de temporada**, aunque mire cosas parecidas (el rival, la ronda, el veredicto): si entra,
 lo mismo se cuenta dos veces. Es la descripción de la noche; el ELO es la consecuencia.
@@ -60,14 +61,14 @@ Junta todas las temporadas.
 
 Cada batalla que cuenta es **un traspaso entre los dos**: lo que suma el que gana lo resta el que pierde.
 
-    lo que se juega = K × (1 − la chance que tenía el que ganó, por el ELO HISTÓRICO) × los factores
+    lo que se juega = K × (1 − la chance que tenía el que ganó, por el ELO DE TEMPORADA) × los factores
 
-⚠️ **Propuesta, espera el OK: la chance, del ELO DE TEMPORADA (como Brawl).** Con la del histórico, el que gana lo que
-se esperaba de su nivel casi no suma —ganarle a uno más flojo paga poco y perder con él resta mucho—, así que el de
-temporada termina midiendo **quién le ganó a lo esperado** (cuánto subió su histórico), no quién es el mejor de su
-piedra. En la T1 casi no se nota porque el histórico también arrancó en 1000 para todos; **en la T2 ya sabe quién es
-quién**. Con la chance del ELO de temporada, adentro de tu piedra cada victoria vale parecido (unos 15, según la ronda
-y el evento) y el que gana más sube: la escalera encuentra sola el nivel de cada uno. Medido:
+✅ **La chance sale del mismo ELO de temporada, como Brawl** (Dlx, 20/11/2026: *«Sí, la A»*): adentro de tu piedra
+cada victoria vale parecido —unos 15, según la ronda y el evento— y el que gana más sube, así que la escalera encuentra
+sola el nivel de cada uno. Hasta esa decisión salía del histórico, y no servía: el que gana lo que se esperaba de su
+nivel casi no suma —ganarle a uno más flojo paga poco y perder con él resta mucho—, así que el de temporada terminaba
+midiendo **quién le ganó a lo esperado** (cuánto subió su histórico), no quién es el mejor de su piedra. En la T1 casi
+no se nota porque el histórico también arrancó en 1000 para todos; **en la T2 ya sabe quién es quién**. Medido:
 
 | | en la piedra de su nivel | parecido con el nivel |
 |---|---|---|
@@ -80,7 +81,7 @@ sorpresa de ganarle a alguien mucho mejor se la siguen llevando la nota y el �
 
 | factor | qué hace | borrador |
 |---|---|---|
-| **el rival y lo esperado** | ganarle a alguien mejor suma más; perder siendo favorito resta más | la base: K 30, ±15 en una pareja |
+| **el rival y lo esperado** | por el ELO de temporada: adentro de tu piedra, casi parejo; ganarle a alguien con más puntos suma un poco más | la base: K 30, ±15 en una pareja |
 | **el formato** | una batalla más larga se juega más | evento ×1 · **1v1 ranked ×1,5** (Dlx, 20/11/2026: *«Sí, ×1,5»*) |
 | **la ronda** | la final pesa más que unos octavos | cuartos ×1,1 · semis ×1,2 · final ×1,3 |
 | **nivel del evento** | un evento fuerte pesa más | ×0,7 a ×1,3 (el ELO promedio de los que jugaron) |
@@ -96,7 +97,8 @@ piedra»*). Cuenta la piedra de cada uno **al empezar la noche**. Una batalla fu
 ELO histórico** (los dos miran el nivel), y la sorpresa del de abajo se la lleva el 🔥 Batacazo. Vale también para lo
 de la noche (ver abajo).
 
-⚠️ **Sola, se traba arriba** (T1 simulada, `elo_piedra.py` del scratchpad de esa sesión): al principio todos son Hierro
+⚠️ **Sola, se traba arriba** (T1 simulada con la chance del histórico, `elo_piedra.py` del scratchpad de esa sesión; con la A
+da casi lo mismo: 85 → 57 → 44 % y nadie pasa de Rubí): al principio todos son Hierro
 y cuenta casi todo, y a medida que la gente se separa cuenta cada vez menos —**83 % de las batallas en septiembre, 55 %
 en octubre, 44 % en noviembre**—. Nadie pasa de Rubí en toda la T1: Oasis llega el 07/11 y, como es el único, desde ahí
 juega y no le cuenta nada (de sus 77 batallas contaron 20). **No es sólo que haya poca gente: en un evento abierto el
@@ -109,19 +111,23 @@ nadie de tu piedra, cuenta también la de al lado (arriba y abajo); **dos semana
 toca alguien de tu piedra, y al cambiar de piedra el reloj arranca de nuevo. Es lo que hace cualquier emparejamiento
 cuando no aparece nadie de tu nivel: ampliar la búsqueda.
 
-| cuándo se abre a la piedra de al lado | cuentan (sep → oct → nov) | arriba al final | 1.º |
-|---|---|---|---|
-| nunca | 57 % (83 → 55 → 44) | Rubí 1 | Oasis 324 |
-| si en tu piedra hay menos de 8 jugando (último mes) | 59 % | Rubí 2 | Oasis 365 |
-| si hay menos de 12 | 62 % | Mítico 1 · Rubí 4 | Oasis 535 |
-| **una semana sin rival de tu piedra** | **71 % (83 → 68 → 72)** | **Diamante 1 · Rubí 7** | **Oasis 413** |
-| dos semanas | 63 % | Rubí 4 | Oasis 369 |
-| 2 noches jugadas sin rival de tu piedra | 74 % | Mítico 1 · Diamante 3 · Rubí 5 | Makmah 535 |
+Medido con la A ya decidida (`elo_con_a.py`; «en su nivel»: si se ordena a todos por nivel y se reparten las piedras
+con las mismas cantidades, cuántos caen en la misma):
 
-Por qué la de la semana: para casi todos sigue siendo «sólo tu piedra» (se abre para el que se quedó solo), **con el
-tiempo no se vacía** (las otras bajan mes a mes) y arriba el orden se parece al del nivel (Oasis 1.º, con 86 % por
-batalla). «Menos de 12 jugando» deja la cima abierta todo el tiempo y hasta 3 piedras: casi como no tener área. Contar
-noches jugadas en vez de días premia jugar mucho (Makmah 1.º, lo que se le criticó a la escalera sin reglas).
+| cuándo se abre a la piedra de al lado | cuentan (sep → oct → nov) | arriba al final | en su nivel · a una o menos |
+|---|---|---|---|
+| nunca | 58 % (85 → 57 → 44) | Rubí 1 | 71 % · 98 % |
+| si en tu piedra hay menos de 8 jugando (último mes) | 60 % (94 → 57 → 45) | Rubí 2 | 69 % · 99 % |
+| si hay menos de 12 | 62 % (100 → 59 → 46) | Diamante 1 · Rubí 2 | 74 % · 98 % |
+| **una semana sin rival de tu piedra** | **74 % (85 → 71 → 75)** | **Diamante 1 · Rubí 7** | **73 % · 99 %** |
+| dos semanas | 65 % (85 → 62 → 62) | Rubí 5 | 70 % · 99 % |
+| 2 noches jugadas sin rival de tu piedra | 72 % (90 → 71 → 64) | Diamante 1 · Rubí 8 | 68 % · 98 % |
+
+Por qué la de la semana: para casi todos sigue siendo «sólo tu piedra» (se abre para el que se quedó solo), es la que
+más batallas cuenta, **con el tiempo no se vacía** (las otras bajan mes a mes) y junta los niveles casi tan bien como
+la mejor. «Menos de 12 jugando» deja la cima abierta todo el tiempo y hasta 3 piedras: casi como no tener área. Con la
+chance del histórico, contar noches jugadas en vez de días ponía 1.º a Makmah por volumen; con la A ya no, pero se
+vacía en noviembre (64 %).
 
 Historia: hasta las 3 AM el área eran **2 piedras de diferencia hasta Zafiro y 1 de Rubí para arriba** (12 % de las
 batallas afuera). Antes se probó que perder fuera del área SÍ reste (y ganar no sume) y no sirve (Dlx, 2:15 AM: *«¿de
@@ -176,11 +182,11 @@ piedra más alta de la T1.
 
 ## 5 · La T1 simulada con este diseño (sin el 1v1 ni el público, que no existen todavía)
 
-**Con el área de la piedra y la semana** (y lo de la noche sólo con batallas del área): cuenta el 71 % de las batallas.
-Oasis 413 · Carlosss 339 · Abyssus 333 · Panchok 333 · Walker 322 · Agus 308 · Makmah 307 · Motera 302. Piedras:
-Diamante 1, Rubí 7, Zafiro 19, Jade 58, Hierro 529. Con el reinicio del borrador, **la T2 arrancaría con 391 de los 409
-activos en Hierro**: se sube menos que con el área anterior, así que el reinicio y el tamaño de las piedras hay que
-recalcularlos con esta regla.
+**Con el diseño decidido** (el área de la piedra, la semana, la A, y lo de la noche sólo con batallas del área):
+cuenta el 74 % de las batallas. Oasis 410 · Agus 356 · Walker 349 · Carlosss 347 · Mats 334 · Motera 330 · Panchok
+314 · OG 306. Piedras: Diamante 1, Rubí 7, Zafiro 20, Jade 53, Hierro 534. Con el reinicio del borrador, **la T2
+arrancaría con 395 de los 410 activos en Hierro**: se sube menos que con el área anterior, así que el reinicio y el
+tamaño de las piedras hay que recalcularlos con esta regla.
 
 Con el área anterior (2 piedras / 1): Oasis 623 (21 noches que cuentan, 3 restaron: −23 las peores, saliendo temprano contra alguien de su área; arriba de
 300, +6 por noche) · Makmah 484 (70 noches, 36 restaron) · Praiseriza 475 · Carlosss 460 · Panchok 433 · Abyssus 424 ·
@@ -191,19 +197,20 @@ hay que ajustar el tamaño.
 ## 6 · Lo que falta decidir
 
 1. **Cuándo se abre tu piedra** si te quedas sin rivales: la propuesta es una semana (§3).
-2. **De dónde sale la chance de cada batalla**: la propuesta es del ELO de temporada, como Brawl (§3, «La unidad»).
-3. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
+2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
    sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
-4. **El tamaño de las piedras**, que ahora depende del 1 y del 2.
+3. **El tamaño de las piedras**, que ahora depende del 1.
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra; las semis no llevan regla
-propia. **Cuánto** se gana o se pierde en cada batalla es otro tema (Dlx: *«cuánto, pues ahí es otro caso»*).
+propia; la chance de cada batalla sale del ELO de temporada, como Brawl (*«Sí, la A»*). El resto de **cuánto** se gana
+o se pierde es otro tema (Dlx: *«cuánto, pues ahí es otro caso»*).
 
 ## 7 · Qué se toca al construirlo
 
 - `bot/elo.py`: el histórico con los dos arreglos, y el de temporada aparte (con su escalera, su área y el cierre por
   noche). El área pide guardar, por persona, **la fecha de su última batalla contra alguien de su piedra** (vuelve a
-  arrancar al cambiar de piedra).
+  arrancar al cambiar de piedra). La chance de cada batalla del de temporada se calcula con el mismo de temporada: el
+  histórico no entra ahí.
 - `bot/divisiones.py`: las piedras salen del de temporada, con tramos nuevos (hoy son 950 a 1150 sobre el de 1000).
 - Las Competencias, la nota (`bot/notas.py`), el pronóstico del VS y el emparejamiento del 1v1: del **histórico**.
 - El cambio de temporada (`sheet/espejo_t1.py --nueva-temporada`): el reinicio por piedra máxima.
