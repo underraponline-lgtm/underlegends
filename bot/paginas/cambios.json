@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "7.01",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T19:39:00-05:00",
+        "titulo": "El bot en vivo: el cruce sale junto con su imagen, y los botones debajo",
+        "items": [
+            "El mensaje del cruce que viene sale cuando su imagen está lista, los dos juntos: ya no llega el texto primero y la imagen después. Si la imagen tarda más de 3 minutos, sale sin ella y se le agrega cuando llega.",
+            "Los botones (votar, apostar, Estadísticas, Perfiles y Consigue tu tarjeta) van debajo de la imagen, afuera del recuadro.",
+            "Lo mismo en las batallas de liga en vivo."
+        ]
+    },
+    {
         "version": "7.00",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T19:33:00-05:00",
