@@ -55,11 +55,10 @@ Junta todas las temporadas.
 - Arranca en **0**, nunca baja de 0. Quien empieza la temporada sin historia, en 0.
 - **Abajo de todo perder resta menos**: en Hierro no resta; en Jade y Zafiro, la mitad (borrador).
 - Las **piedras** salen de él (Hierro, Jade, Zafiro, Rubí, Diamante, Mítico, con sus I · II · III de `bot/divisiones.py`).
-  **Propuesta, espera el OK: 75 por piedra** (abajo).
+  **75 de promedio y distinto en cada una** (abajo).
 
-**El tamaño de las piedras — propuesta, espera el OK: 75 por piedra.** Hierro de 0 a 74 · Jade desde 75 · Zafiro
-desde 150 · Rubí desde 225 · Diamante desde 300 · Mítico desde 375, y cada subnivel de 25: subir una piedra son unas
-5 victorias netas. Medido sobre la T1 con el diseño decidido (`elo_tamano.py` de la sesión; los 196 activos con 5
+**El tamaño de las piedras: 75 de promedio** (Dlx, 20/11/2026: *«sí»*) **y distinto en cada una** (*«pero que varíe
+con cada piedra»*). Primero, piedras parejas, medidas sobre la T1 con el diseño decidido (`elo_tamano.py` de la sesión; los 196 activos con 5
 batallas o más; la protección de abajo y el reinicio se miden por piedra, así que se mueven con el tamaño):
 
 | por piedra | Mítico · Diamante · Rubí · Zafiro | en la piedra de su nivel | cuentan | bajaron de piedra alguna vez |
@@ -75,6 +74,24 @@ Las piedras chicas llenan la cima pero mezclan niveles (el área se angosta con 
 Y esto es al día 58 de los 100 de la T1: del 21/10 al 20/11, con 75, Rubí o más pasó de 3 a 20 personas y Mítico de
 0 a 1, así que a fin de temporada serían unos 2 o 3 en Mítico y unos 10 en Diamante. Con 100, Mítico seguiría vacío;
 con 60 tendría unos 10.
+
+**Propuesta, espera el OK: la suave, cada piedra 5 más larga que la anterior** —Hierro de 0 a 64 · Jade desde 65 ·
+Zafiro 135 · Rubí 210 · Diamante 290 · Mítico 375, el mismo Mítico que con 75 parejo—. Salir de Hierro cuesta unas 4
+victorias netas y llegar a Mítico desde Diamante, unas 6; cada subnivel es un tercio de su piedra. Medido igual
+(`elo_variable.py`; todas con Mítico en 375):
+
+| cómo cambia | salen de Hierro (batallas, mediana) | Mítico · Diamante · Rubí · Zafiro | en la piedra de su nivel | bajaron de piedra |
+|---|---|---|---|---|
+| pareja: 75 todas | 46 % (12) | 1 · 4 · 15 · 20 | 68 % | 16 % |
+| **suave: 65 · 70 · 75 · 80 · 85** | **51 % (11)** | **1 · 5 · 16 · 26** | **62 %** | **17 %** |
+| media: 60 · 70 · 75 · 80 · 90 | 53 % (11) | 1 · 6 · 15 · 30 | 62 % | 20 % |
+| fuerte: 55 · 65 · 75 · 85 · 95 | 55 % (10) | 1 · 7 · 15 · 31 | 62 % | 19 % |
+| al revés: 85 · 80 · 75 · 70 · 65 | 43 % (13) | 1 · 5 · 11 · 22 | 65 % | 12 % |
+
+Crecer de abajo hacia arriba hace que más gente salga de Hierro, y más rápido —lo que importa con la retención: el
+42 % jugó una sola vez—, y que arriba cueste más. Lo que cuesta: las de abajo quedan algo más mezcladas (62 % contra
+68 %). De las que crecen, la suave es la que menos rebote suma; al revés rebota menos, pero deja a más gente en
+Hierro.
 
 ### La unidad: la batalla
 
@@ -239,13 +256,14 @@ hay que ajustar el tamaño.
 
 ## 6 · Lo que falta decidir
 
-1. **El tamaño de las piedras**: la propuesta es 75 por piedra (§3, «La escalera»).
+1. **Cómo cambia el tamaño de piedra a piedra**: la propuesta es la suave, de 65 a 85 (§3, «La escalera»).
 2. **Los números**: K, los factores, los extras, la protección de abajo y el reinicio (con la regla de la piedra se
    sube menos, y el reinicio del borrador deja la T2 casi entera en Hierro).
 
 Decidido el 20/11/2026: el 1v1 ranked pesa ×1,5 una batalla de evento; el área es tu piedra con los subniveles de al
 lado (II y III de la anterior, I y II de la siguiente; Mítico, toda Diamante) y, encima, la semana para el que se queda
-sin rivales (*«Sí, las dos»*); las semis no llevan regla propia; la chance de cada batalla sale del ELO de temporada,
+sin rivales (*«Sí, las dos»*); las semis no llevan regla propia; las piedras miden 75 de promedio y cada una distinto (*«sí, pero que
+varíe con cada piedra»*); la chance de cada batalla sale del ELO de temporada,
 como Brawl (*«Sí, la A»*). El resto de **cuánto** se gana o se pierde es otro tema (Dlx: *«cuánto, pues ahí es otro
 caso»*).
 
