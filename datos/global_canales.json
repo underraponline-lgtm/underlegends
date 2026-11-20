@@ -1,0 +1,142 @@
+{
+ "_leeme": "Los canales de YouTube que lee bot/global_fuente_youtube.py para el ranking global (Dlx, 20/11/2026). Se edita a mano y el orden importa: si dos canales suben la misma batalla, cuenta la del que va primero. Cada canal: «id» (el UC… del canal), «slug» (corto; va en el id de sus eventos, así que no se cambia), «nombre», «pais» (ISO-2 en minúsculas, o null si es internacional) y «tipo» (cuánto pesa un evento suyo: ver PESO en bot/global_ranking.py; null = sólo cuentan los eventos que reconozca una regla). Opcionales: «reglas», que se prueban en orden contra el NOMBRE DEL EVENTO (sin tildes ni mayúsculas; basta una de las palabras de «si»): la primera que trae «tipo» lo decide, y lo mismo con «pais» y «pais_sin_bandera». «pais_sin_bandera»: true cuando el canal le pone bandera sólo a los de afuera, así quien no la trae es del país del evento; un evento con dos banderas en el nombre es binacional y no la usa. «equipos»: palabras del nombre del evento que lo marcan como de equipos aunque sus títulos no lo digan («secret wars»: «EL BARTO BTI» son dos). «renombra»: {texto del título: cómo leerlo}, para títulos que el canal sube traducidos. Nunca se lee ni se guarda una vista ni un like: YouTube no deja sacar métricas de sus datos.",
+ "canales": [
+  {
+   "id": "UCRRtRg9N0R0WHZcyPZGiLKg",
+   "slug": "redbull",
+   "nombre": "Red Bull Batalla",
+   "pais": null,
+   "tipo": null,
+   "reglas": [
+    {"si": ["torneo de plazas"], "tipo": "plazas_final", "pais": null},
+    {"si": ["coquimbo", "concepcion"], "pais": "cl", "pais_sin_bandera": true},
+    {"si": ["zaragoza"], "pais": "es", "pais_sin_bandera": true},
+    {"si": ["regional", "regionales"], "tipo": "rb_regional"},
+    {"si": ["internacional", "international", "final mundial", "world final"], "tipo": "rb_internacional", "pais": null},
+    {"si": ["centroamerica"], "tipo": "rb_nacional", "pais": null},
+    {"si": ["argentina"], "tipo": "rb_nacional", "pais": "ar", "pais_sin_bandera": true},
+    {"si": ["bolivia"], "tipo": "rb_nacional", "pais": "bo", "pais_sin_bandera": true},
+    {"si": ["chile"], "tipo": "rb_nacional", "pais": "cl", "pais_sin_bandera": true},
+    {"si": ["colombia"], "tipo": "rb_nacional", "pais": "co", "pais_sin_bandera": true},
+    {"si": ["costa rica"], "tipo": "rb_nacional", "pais": "cr", "pais_sin_bandera": true},
+    {"si": ["cuba"], "tipo": "rb_nacional", "pais": "cu", "pais_sin_bandera": true},
+    {"si": ["ecuador"], "tipo": "rb_nacional", "pais": "ec", "pais_sin_bandera": true},
+    {"si": ["el salvador"], "tipo": "rb_nacional", "pais": "sv", "pais_sin_bandera": true},
+    {"si": ["espana"], "tipo": "rb_nacional", "pais": "es", "pais_sin_bandera": true},
+    {"si": ["estados unidos", "usa", "eeuu"], "tipo": "rb_nacional", "pais": "us", "pais_sin_bandera": true},
+    {"si": ["guatemala"], "tipo": "rb_nacional", "pais": "gt", "pais_sin_bandera": true},
+    {"si": ["honduras"], "tipo": "rb_nacional", "pais": "hn", "pais_sin_bandera": true},
+    {"si": ["mexico"], "tipo": "rb_nacional", "pais": "mx", "pais_sin_bandera": true},
+    {"si": ["nicaragua"], "tipo": "rb_nacional", "pais": "ni", "pais_sin_bandera": true},
+    {"si": ["panama"], "tipo": "rb_nacional", "pais": "pa", "pais_sin_bandera": true},
+    {"si": ["paraguay"], "tipo": "rb_nacional", "pais": "py", "pais_sin_bandera": true},
+    {"si": ["peru"], "tipo": "rb_nacional", "pais": "pe", "pais_sin_bandera": true},
+    {"si": ["puerto rico"], "tipo": "rb_nacional", "pais": "pr", "pais_sin_bandera": true},
+    {"si": ["republica dominicana"], "tipo": "rb_nacional", "pais": "do", "pais_sin_bandera": true},
+    {"si": ["uruguay"], "tipo": "rb_nacional", "pais": "uy", "pais_sin_bandera": true},
+    {"si": ["venezuela"], "tipo": "rb_nacional", "pais": "ve", "pais_sin_bandera": true}
+   ]
+  },
+  {
+   "id": "UCz2RMwQ7-_4e08TXIxgAugQ",
+   "slug": "supremacia",
+   "nombre": "Supremacía MC",
+   "pais": "pe",
+   "tipo": "plaza",
+   "reglas": [
+    {"si": ["internacional", "international"], "tipo": "independiente", "pais": null},
+    {"si": ["final nacional", "nacional"], "tipo": "independiente"}
+   ],
+   "renombra": {"International MC Supremacy": "Supremacía Mc Internacional", "Test of Cowardice": "Prueba de cobardía"}
+  },
+  {
+   "id": "UCvXmT2bjGcUvoAEuDYUcwJQ",
+   "slug": "dem",
+   "nombre": "DEM Battles",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "reglas": [
+    {"si": ["final nacional", "nacional"], "tipo": "independiente"}
+   ],
+   "equipos": ["secret wars"]
+  },
+  {
+   "id": "UCmaotvG4dA27vH7--RFpO1Q",
+   "slug": "dem-peru",
+   "nombre": "DEM Perú",
+   "pais": "pe",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "reglas": [
+    {"si": ["final nacional", "nacional"], "tipo": "independiente"}
+   ]
+  },
+  {
+   "id": "UCP8bmhXTdZXV_nr1jWen7aQ",
+   "slug": "dem-argentina",
+   "nombre": "DEM Argentina",
+   "pais": "ar",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "reglas": [
+    {"si": ["final nacional", "nacional"], "tipo": "independiente"}
+   ]
+  },
+  {
+   "id": "UCDO5BUxW2WazWbpFV_bFr3Q",
+   "slug": "inmortal",
+   "nombre": "Liga Inmortal",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true,
+   "equipos": ["multiverse"]
+  },
+  {
+   "id": "UC1Ql53opBR0cNiu9M3wRk2w",
+   "slug": "hypnotic",
+   "nombre": "Hypnotic Palace",
+   "pais": "uy",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCLlN9iBlHghbUlSDX68I98w",
+   "slug": "raptablo",
+   "nombre": "Raptablo",
+   "pais": "pe",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UC6kmCkrAmgxLGcG70rWiqOg",
+   "slug": "funko",
+   "nombre": "Funko Battles",
+   "pais": null,
+   "tipo": "plaza"
+  },
+  {
+   "id": "UC-oaE-ix2gXX6nUukoK_-RA",
+   "slug": "bau",
+   "nombre": "Bienvenido al Underground",
+   "pais": null,
+   "tipo": "plaza"
+  },
+  {
+   "id": "UCs1qLwjY_dpsx419yq28K8Q",
+   "slug": "ctbr",
+   "nombre": "Colombia Tiene Buena Rima",
+   "pais": "co",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  },
+  {
+   "id": "UCO3r7Bp92Ur65F0O8bQgymQ",
+   "slug": "golden",
+   "nombre": "Golden Age Battles",
+   "pais": "cl",
+   "tipo": "plaza",
+   "pais_sin_bandera": true
+  }
+ ]
+}

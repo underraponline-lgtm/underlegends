@@ -1,0 +1,22 @@
+{
+ "_leeme": "La fuerza con la que ARRANCAN los gigantes en el ranking global (1 a 10), antes de que la temporada tenga resultados. Es sólo el punto de partida: bot/global_ranking.py la mezcla con sus puntos en tres vueltas, así que quien no rinde baja solo. Sin esta lista, la primera semana ganarle a El Menor valdría lo mismo que ganarle a cualquier MC de FMS. Se edita a mano; los nombres se comparan con comun/claves.clave() y nunca se aplican a alguien de la Liga.",
+ "fuerza": {
+  "El Menor": 10,
+  "Gazir": 9.5,
+  "Chuty": 9.5,
+  "Aczino": 9.5,
+  "Mecha": 9,
+  "Larrix": 9,
+  "Valles-T": 9,
+  "Bnet": 9,
+  "Skone": 8.5,
+  "Teorema": 8.5,
+  "Jaze": 8.5,
+  "Kodigo": 8,
+  "Stuart": 8,
+  "Jony Beltrán": 8,
+  "KG": 8,
+  "Marithea": 8,
+  "Puppy": 8
+ }
+}

@@ -1,0 +1,71 @@
+# 🌍 EL RANKING GLOBAL, UNA VEZ POR SEMANA (20/11/2026).
+#
+# Dlx: «la idea es que sea automatizado y que se actualice cada semana, no a diario». Lee las fuentes (FMS, Freestylestats
+# y la Liga), recalcula con `bot/global_ranking.py` y deja `bot/paginas/global.json`, que la página lee como un archivo
+# más: no pasa por el Worker ni por KV.
+#
+# ⚠️ EL HORARIO DE GITHUB ES DE MEJOR ESFUERZO (carga.yml se saltó un día entero). Por eso el ciclo, que sí es confiable
+# porque lo dispara el vigía, revisa los lunes desde las 5 PM ET si esta semana ya hubo una corrida buena y, si no, la
+# dispara (job `global` de ciclo.yml). Este `schedule:` es el primer intento.
+#
+# ⚠️ NO NECESITA SECRETS: las fuentes son públicas y la Liga sale de los archivos del repo.
+name: global
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 22:00 UTC del lunes = 5 PM EST (noviembre–marzo) / 6 PM EDT. Lejos de la madrugada sin ciclo (3 a 11 AM ET).
+    - cron: '0 22 * * 1'
+
+concurrency:
+  group: global
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  global:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: instalar
+        run: pip install -r requirements.txt
+      - name: el chequeo, antes de leer nada
+        run: |
+          python bot/global_ranking.py --auto
+          for f in bot/global_fuente_*.py; do python "$f" --auto; done
+      - name: leer y calcular
+        run: python bot/global_ranking.py --leer
+      - name: guardar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name  "liga-global-ciclo"
+          git config user.email "ciclo@users.noreply.github.com"
+          git add datos/global_batallas.json bot/paginas/global.json
+          if git diff --cached --quiet; then
+            echo "nada cambió"
+            exit 0
+          fi
+          CUANDO=$(python3 -c "import datetime,zoneinfo;print(datetime.datetime.now(zoneinfo.ZoneInfo('America/New_York')).strftime('%d/%m/%Y %I:%M %p ET'))")
+          git commit -q -m "global: el ranking de la semana ($CUANDO)"
+          for i in 1 2 3 4 5; do
+            if git pull -q --rebase origin main && git push -q origin HEAD:main; then
+              echo "✅ guardado"
+              # Un push hecho con este token no dispara otros workflows; el de la web sí se puede pedir a mano.
+              gh workflow run web.yml --ref main || echo "⚠️ no pude pedir la publicación: la hace el ciclo"
+              exit 0
+            fi
+            sleep $((i * 7))
+          done
+          echo "🔴 no pude guardar después de 5 intentos"
+          exit 1

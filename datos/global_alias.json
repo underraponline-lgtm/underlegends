@@ -1,0 +1,5 @@
+{
+ "_leeme": "Quién es quién en el ranking global, a mano. «une»: {id de una fuente: id al que se une} (por ejemplo «fstats:1tobi»: «fms:tobi», o un pro con su perfil de la Liga: «fms:x»: «liga:x»). «separa»: pares de ids que el sistema uniría por el nombre y son dos personas. Por defecto, en la duda, dos perfiles: unir de más mezcla dos historiales.",
+ "une": {},
+ "separa": []
+}

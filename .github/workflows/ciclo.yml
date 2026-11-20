@@ -212,6 +212,50 @@ jobs:
               print('🖼️ disparé los fondos de hoy')
 
   # ══════════════════════════════════════════════════════════════════
+  # 🌍 EL RANKING GLOBAL, UNA VEZ POR SEMANA (20/11/2026)
+  #
+  # Lo mismo que `fondos`, pero semanal: Dlx, «que se actualice cada
+  # semana, no a diario». Desde el lunes a las 5 PM ET, si esta semana
+  # (desde el lunes 00:00 ET) no hay una corrida de `global.yml` buena
+  # o andando, la dispara. Si esta semana ya fallaron dos, espera a la
+  # que viene. ⚠️ No baja el repo: es una pregunta a la API, segundos.
+  # ══════════════════════════════════════════════════════════════════
+  global:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      actions: write
+    steps:
+      - name: el ranking global de esta semana, si falta
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: python3 {0}
+        run: |
+          import datetime, json, subprocess, zoneinfo
+          ET = zoneinfo.ZoneInfo('America/New_York')
+          ahora = datetime.datetime.now(ET)
+          lunes = (ahora - datetime.timedelta(days=ahora.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+          if ahora.weekday() == 0 and ahora.hour < 17:
+              print('lunes antes de las 5 PM ET: le toca a su propio horario')
+              raise SystemExit
+          crudo = subprocess.run(['gh', 'run', 'list', '--workflow', 'global.yml', '--limit', '20',
+                                  '--json', 'createdAt,status,conclusion'], capture_output=True, text=True)
+          if crudo.returncode:
+              print('no pude mirar las corridas de global.yml:', crudo.stderr[:200])
+              raise SystemExit
+          semana = [r for r in json.loads(crudo.stdout or '[]')
+                    if datetime.datetime.fromisoformat(r['createdAt'].replace('Z', '+00:00')).astimezone(ET) >= lunes]
+          buenas = [r for r in semana if r['status'] != 'completed' or r['conclusion'] == 'success']
+          if buenas:
+              print('esta semana ya hay %d (buena o andando)' % len(buenas))
+          elif len(semana) >= 2:
+              print('esta semana ya fallaron %d: hasta la que viene' % len(semana))
+          else:
+              subprocess.run(['gh', 'workflow', 'run', 'global.yml', '--ref', 'main'], check=True)
+              print('🌍 disparé el ranking global de esta semana')
+
+  # ══════════════════════════════════════════════════════════════════
   # ESCUCHAR — cada media hora, y nunca dibuja.
   #
   # 🔴 ESTE TRABAJO EXISTE POR FRESCURA, NO SOLO POR PLATA. Antes era un
