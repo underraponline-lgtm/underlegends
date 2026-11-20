@@ -162,7 +162,7 @@
    "competitivo": "5983e9da5d7a:c41ff817042a",
    "pais": "e963b8bf9afd:f1f52e1c6d42",
    "servidor": "f5c314c7acdf:0bd0fbf67396:88f477",
-   "temporada": "8a79559df815:a8d8b7335469"
+   "temporada": "c3011e460c01:a8d8b7335469"
   },
   "Badterne": {},
   "Baltrip": {},
@@ -1402,10 +1402,10 @@
    "servidor": "4dc0846afdea:0bd0fbf67396:9b3a50"
   },
   "Over": {
-   "competitivo": "00859357ec6a:c41ff817042a",
-   "pais": "5d75c2ed0218:f1f52e1c6d42",
+   "competitivo": "8610be166b84:c41ff817042a",
+   "pais": "ff10beea7632:f1f52e1c6d42",
    "servidor": "7ac3a0c2fa24:0bd0fbf67396:ed8290",
-   "temporada": "5effbae8e22e:a8d8b7335469"
+   "temporada": "6c4c1d716080:a8d8b7335469"
   },
   "PARADOJA": {},
   "PLA PLA": {},
@@ -1421,7 +1421,7 @@
   "PUBLIC ENEMY": {},
   "Panchok": {
    "competitivo": "77e2c01db2d3:c41ff817042a",
-   "pais": "d5b61245fd2c:f1f52e1c6d42",
+   "pais": "957723228013:f1f52e1c6d42",
    "servidor": "9bb1937865b3:0bd0fbf67396:132451",
    "temporada": "313c09337489:a8d8b7335469"
   },
@@ -2133,5 +2133,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-19T23:55:35+00:00"
+ "cuando": "2026-11-20T00:00:10+00:00"
 }
