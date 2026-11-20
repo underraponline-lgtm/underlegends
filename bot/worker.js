@@ -226,6 +226,8 @@ export const SERVIDORES = [
   // 🖤 FMS CEUTA (15/11/2026): socio Tier 3 (Dlx: «asegurate de incluir este servidor como tier 3»), sumado con
   // `herramientas/sumar_servidor.py --tier 3`: su página, sus eventos y su liga, SIN carta de Servidor (`sinCarta`)
   { sv: 'CEU', nombre: 'FMS Ceuta', guild: '1513624656538636459', invita: 'https://discord.gg/mmXHVpUajm', sigla: 'CEU', sinCarta: true },
+  // ♟️ CHEZZTYLE (19/11/2026): socio Tier 3 (Dlx: «mete este servidor, tag es versatilidad como tier 3»), SIN carta de Servidor
+  { sv: 'CHZ', nombre: 'Chezztyle', guild: '1408218254803075203', invita: 'https://discord.gg/35kjKdthJf', sigla: 'CHZ', sinCarta: true },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());

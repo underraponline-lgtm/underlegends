@@ -101,7 +101,7 @@ FILA_CAB = 16
 # ⚠️ Y NO ERA SÓLO LA VITRINA: `sheet/construir_pool_temporada.py` tiene
 # la misma lista, así que el hueco llegaba hasta la carta. La de País
 # reventaba buscando `sv_.png`.
-SERVIDORES = ('FFA', 'EFA', 'TWR', 'TFC', 'SR', 'FTN', 'URBF', 'FRZ', 'DRA', 'FFS', 'DDF', 'ACAD', 'FVS', 'FDS', 'LKR', 'CH', 'DDS', 'CEU')
+SERVIDORES = ('FFA', 'EFA', 'TWR', 'TFC', 'SR', 'FTN', 'URBF', 'FRZ', 'DRA', 'FFS', 'DDF', 'ACAD', 'FVS', 'FDS', 'LKR', 'CH', 'DDS', 'CEU', 'CHZ')
 # 🧭 Y LOS QUE ENTRARON SOLOS CON /setup Y DLX APROBÓ (19/11/2026, «Que sumen · Tier 3»), AL FINAL y en el orden en que
 # se aprobaron (`tiers.con_setup()`): es lo que hacía a mano `herramientas/sumar_servidor.py` con esta lista, y lo que la
 # vitrina sabe agregar sola (`columnas_que_faltan()`: sólo crece al final). Lo escrito arriba no se mueve. Sin aprobar no

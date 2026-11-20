@@ -817,6 +817,46 @@
     ]
    },
    "leer_hondo_hasta": "2026-11-18"
+  },
+  "CHZ": {
+   "nombre": "Chezztyle",
+   "guild_id": "1408218254803075203",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "CHZ",
+   "tag": "VERSATILIDAD",
+   "nota": "19/11/2026: Dlx, «mete este servidor, tag es versatilidad como tier 3». En Discord «Chezztyle 💤» (54 miembros, el bot ya está adentro). Sus batallas van en «Batalla» (inscripciones-rap-impo, entreno-hilos, ring-hilos), «Red Bull» (impo escrita: nacional, internacional, 5 vidas), «Competencias» (CHEZZTYLE-BATTLE, Trova Dobletiada) y «Vc battlesss»; también tiene ajedrez. Su logo es un peón con gorra verde: el color es el verde de la gorra. Tier 3: sus eventos de 8 o más suman a la Temporada, no al Competitivo ni a los duelos, y sin carta de Servidor. Su categoría «Ajedrez» va a categorias_fuera: son torneos de ajedrez, no de rap (no se leen como eventos ni llevan invitación de inscripción).",
+   "tier": 3,
+   "alta": "a mano",
+   "leer_hondo_hasta": "2026-11-26",
+   "invitacion": "https://discord.gg/35kjKdthJf",
+   "invitacion_liga": {
+    "codigo": "35kjKdthJf",
+    "canal": "𝗕𝗶𝗲𝗻𝘃𝗲𝗻𝗶𝗱𝗮𝘀-🙋🙋‍♀️",
+    "canal_id": "1408218255537209386",
+    "creada": "2026-11-20"
+   },
+   "categorias_fuera": {
+    "ids": [
+     "1572432030451507261"
+    ]
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "35AMt3Ktnn",
+     "canal": "inscripciones-rap-impo-📝",
+     "canal_id": "1570989642088714332",
+     "categoria_id": "1571274140671934565",
+     "creada": "2026-11-20"
+    },
+    {
+     "codigo": "Pkw9Wn955H",
+     "canal": "inscripción-vc-🎙️",
+     "canal_id": "1572763669081755678",
+     "categoria_id": "1572762397226041344",
+     "creada": "2026-11-20"
+    }
+   ]
   }
  },
  "_fuera_de_la_tabla": [
