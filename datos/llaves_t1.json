@@ -59532,11 +59532,18 @@
      [
       [
        "0223 🇧🇧",
-       "Simon🇺🇸",
+       "Simon"
+      ],
+      "",
+      "cobra: 0223 🇧🇧; cobra: Simon🇺🇸; cobra: Nestor🇺🇾; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "0223 🇧🇧",
        "Nestor🇺🇾"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 0223 🇧🇧; cobra: Simon🇺🇸; cobra: Nestor🇺🇾; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -59656,6 +59663,11 @@
     2500
    ],
    [
+    "0223 🇧🇧",
+    "Octavos",
+    1250
+   ],
+   [
     "23",
     "Octavos",
     1250
@@ -59676,12 +59688,22 @@
     1250
    ],
    [
+    "Nestor🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
     "OG",
     "Octavos",
     1250
    ],
    [
     "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Simon",
     "Octavos",
     1250
    ],

@@ -2,6 +2,15 @@
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
  "avisado": "2026-11-09",
  "dia": {
+  "0223": [
+   0,
+   4125,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
   "123": [
    0,
    3750,
@@ -497,6 +506,15 @@
    0,
    0
   ],
+  "nestor": [
+   0,
+   4125,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
   "nitro": [
    1500,
    0,
@@ -653,6 +671,15 @@
   "shadow": [
    2888,
    0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "simon": [
+   0,
+   6188,
    0,
    0,
    0,
@@ -1011,6 +1038,7 @@
   ]
  ],
  "pts": {
+  "0223": 4125,
   "123": 3750,
   "23": 12375,
   "abyssus": 4125,
@@ -1066,6 +1094,7 @@
   "mexicano": 7500,
   "mito": 28000,
   "nc": 19125,
+  "nestor": 4125,
   "nitro": 1500,
   "oasis": 22500,
   "og": 4125,
@@ -1084,6 +1113,7 @@
   "romeo": 3750,
   "sanito": 4125,
   "shadow": 2888,
+  "simon": 6188,
   "sinlimites": 12000,
   "sintext": 3750,
   "six": 7500,

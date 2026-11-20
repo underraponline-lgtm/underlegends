@@ -2,7 +2,7 @@
  "hoja": "Ranking Mundial",
  "cabecera": ["#", "País", "Raperos", "Puntos", "Eventos", "🥇", "Mejor", "Pts del mejor"],
  "filas": [
-  [1, "Argentina", 152, 6661576, 1070, 103, "PichulaMc", 481924],
+  [1, "Argentina", 152, 6667764, 1071, 103, "PichulaMc", 481924],
   [2, "Chile", 87, 3532069, 587, 65, "Oasis", 629229],
   [3, "Venezuela", 54, 3300680, 533, 47, "Makmah", 862228],
   [4, "Colombia", 66, 2991400, 513, 37, "Vandu", 428908],

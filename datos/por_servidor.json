@@ -79,6 +79,18 @@
     "pts": 8662,
     "racha": "0/0"
    },
+   "CH": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 7,
@@ -10501,6 +10513,20 @@
     "racha": "0/0"
    }
   },
+  "Nestor🇺🇾": {
+   "CH": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "NewCharacter🇦🇷": {
    "FFA": {
     "duelos": "1/1",
@@ -13224,11 +13250,11 @@
   "Simon": {
    "CH": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 2062,
+    "pts": 8250,
     "racha": "0/0",
     "tg": {
      "nuevo": true

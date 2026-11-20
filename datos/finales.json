@@ -2031,6 +2031,13 @@
   "autor": "1364747464170668042",
   "canal": "1222379620494741604",
   "canal_pregunta": "1538678065306140684",
+  "cerrada": {
+   "como": "nadie siguió",
+   "n": 1,
+   "sin": 1,
+   "t": "2026-11-20 2:02 AM ET",
+   "tot": 14
+  },
   "cuando": "2026-11-18T03:02:41.095000+00:00",
   "donde": "staff",
   "evento": "CHOP ES CEO V.4",
@@ -2048,7 +2055,15 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "48h",
+    "t": 1795158145330
+   }
+  },
+  "respondidas": {
+   "0": "(nadie siguió)"
+  },
   "sin_permiso": false,
   "staff_probado": true,
   "sv": "CH",

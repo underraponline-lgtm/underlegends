@@ -2314,6 +2314,18 @@
    "vence": "2026-10-29T03:33:52+00:00",
    "vencido": true
   },
+  "Nestor": {
+   "avisado": "2026-11-20",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T03:02:41+00:00",
+   "did": "",
+   "evento": "CHOP ES CEO V.4",
+   "n": 661,
+   "sv": "CH",
+   "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
   "Nitro": {
    "avisado": "2026-11-12",
    "con": null,
@@ -2819,9 +2831,10 @@
   },
   "Simon": {
    "avisado": "2026-11-16",
+   "avisado_cumplido": "2026-11-20",
    "chat": "2026-11-16",
-   "con": null,
-   "cumplido": "",
+   "con": 661,
+   "cumplido": "2026-11-18T03:02:41+00:00",
    "debut": "2026-11-16T02:04:55+00:00",
    "did": "1196284004194852897",
    "evento": "CHOP COMPE CEO V.3",

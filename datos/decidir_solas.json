@@ -2,52 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "5ba43e41d7",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Joven sexlong» es Joven shenlong? La cuenta de Joven shenlong en la Lista se anotó como «Joven sexlong», y en el ranking suman aparte. Si es la misma persona, los puntos de «Joven sexlong» pasan a Joven shenlong.\nLa cuenta: https://discord.com/users/926257282667413564",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no hace falta: «Joven sexlong» ya no suma aparte en el ranking",
-   "t": 1793943035915,
-   "filas": [
-    1119
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Joven sexlong» → «Joven shenlong» · cuenta 926257282667413564"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "3ef2fb3696",
-   "tipo": "Nombre desconocido",
-   "sec": "VALHALLA VOL1 · ACAD · 04/10 · #400",
-   "que": "¿Quién es «MCGALILEO 🇻🇪»?",
-   "r": "Es Galileo",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Galileo: la misma cuenta de Discord",
-   "t": 1793944811405,
-   "filas": [
-    1120
-   ],
-   "variantes": [
-    "MCGALILEO 🇻🇪"
-   ],
-   "escribio": {
-    "alias": [
-     "MCGALILEO",
-     "Galileo"
-    ],
-    "filas": [
-     344
-    ]
-   }
-  },
-  {
    "id": "af64735432",
    "tipo": "Nombre desconocido",
    "sec": "GALACTICOS DEL FREESTYLE VOL.17 · DDF · 06/11 · #575",
@@ -4424,6 +4378,30 @@
     "alta": [
      "tommy",
      "1544203018457587752"
+    ]
+   }
+  },
+  {
+   "id": "1dcdd4a62c",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP ES CEO V.4 · CH · 17/11 · #661",
+   "que": "¿Quién es «Nestor🇺🇾»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1484973996184440953",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1484973996184440953)",
+   "t": 1795158527173,
+   "filas": [
+    1529
+   ],
+   "variantes": [
+    "Nestor🇺🇾"
+   ],
+   "escribio": {
+    "alta": [
+     "Nestor",
+     "1484973996184440953"
     ]
    }
   }
