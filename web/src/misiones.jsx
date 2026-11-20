@@ -3,16 +3,27 @@
 // Temporada y las tres juntas dan un bono. La cuenta la hace el ciclo (`bot/misiones.py`) y viaja en el lobby
 // (`mis`): acá sólo se muestra. Las TAREAS son otra cosa: son del Pase.
 //
-// 🎮 LA PÁGINA COMO UN JUEGO (Dlx, 14/10/2026): arriba TUS misiones, cada una con su barra y lo que te falta dicho en
-// palabras, y la cuenta atrás hasta el lunes a las 11; después la cacería con la cara y la carta de la presa y quién
-// ya la cazó, y la Semana perfecta (los que cumplieron las tres, con su bono). Abajo, como estaban, «Esta semana» y
-// «En la temporada».
+// 🎟️ «EL TABLÓN» (Dlx, 20/11/2026, a la maqueta privada 5gUBkNwHzpqSTdLad5nMLj: «B · El tablón»). Cada cosa con su forma:
+//   · arriba, en negro, tus tres misiones como BOLETOS (lo que pide a la izquierda; lo que paga en el TALÓN, que se sella
+//     al cumplirla) y el bono como un boleto con tres agujeros que se perforan; la que falta trae el botón a Eventos;
+//   · al costado, TU PRESA como cartel de Se busca, quién te está cazando a ti y el reloj hasta el lunes;
+//   · abajo, el dorado, la de todos (la cacería) y los buscados del Most Wanted;
+//   · en el papel, la carrera de la semana (podio, cuántos cumplieron cada una y la lista con sus marcas), la Semana
+//     perfecta y lo sumado en la temporada.
+// 🎯 TU PRESA (Dlx, 20/11/2026: «una combinación de todo y que te deje una pista de qué días compite y dónde»): cada uno
+// la suya, elegida el lunes por el ciclo (`presas_de()` de bot/misiones.py); se caza quedando por encima en un evento
+// donde estén los dos, o ganándole un duelo. Arranca la semana del lunes 23/11 (`pre_desde`): antes, se anuncia.
 import { useEffect, useState } from 'react';
-import { MESES, limpio, num, quienMira, utc } from './liga.js';
+import { DIAS, MESES, limpio, num, quienMira, utc } from './liga.js';
 import { Cara, Carta, accion } from './piezas.jsx';
+import CSS from './css/misiones.css?inline';
+import { usarCss } from './css.js';
 
-const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil', caza: 'Cacería', dorado: 'Evento dorado', writing: 'Writing' };
-// las tres del bono: la cacería y el dorado van aparte
+usarCss('misiones', CSS);
+
+const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil', caza: 'La de todos', dorado: 'El dorado', writing: 'Writing' };
+const COLOR = { facil: '#29B298', media: '#E8A93B', dificil: '#E41373', caza: 'var(--mt-cz)', dorado: '#E7B622', writing: '#8B7CF6' };
+// las tres del bono: la cacería, el dorado y el Writing van aparte
 const DEL_BONO = ['facil', 'media', 'dificil'];
 // lo que se aclara debajo de las que tienen letra chica (`q` de `bot/misiones.py`)
 const ACLARA = {
@@ -21,18 +32,21 @@ const ACLARA = {
   paises: 'El país de cada uno es el de la Lista: un rival sin país no cuenta.',
   cuartos: 'Llegar más lejos también cuenta.',
   chico: 'Uno de los servidores que menos juegan: cualquier evento suyo de esta semana.',
-  dorado: 'El primer evento de ese servidor desde el día del dorado: vale ×3.',
   // ✍️ el Writing Challenge de FFA (Dlx, 14/10/2026): sólo las semanas con fecha
   writing: 'Sumar puntos en la fecha de esta semana del Writing Challenge de FFA. Va aparte del bono.',
 };
+// 🎯 desde cuándo hay presa (`PRESA_DESDE` de bot/misiones.py): sólo para un lobby que todavía no trae `pre_desde`
+const PRESA_DESDE = '2026-11-23';
 const LLEGAR = { semis: 'llegar a una semifinal', final: 'llegar a una final', campeon: 'ganar un evento' };
+const RONDA = { campeon: 'la final', subcampeon: 'la final', final: 'la final', semifinal: 'la semifinal', semifinales: 'la semifinal',
+  tercero: 'la semifinal', cuarto: 'la semifinal', cuartos: 'los cuartos', octavos: 'los octavos', r32: 'los dieciseisavos', dieciseisavos: 'los dieciseisavos' };
 
 function fechaCorta(iso) {
   const d = new Date(String(iso || '') + 'T12:00:00');
-  return isNaN(d) ? '' : d.getDate() + ' ' + MESES[d.getMonth()].slice(0, 3);
+  return isNaN(d) ? '' : d.getDate() + ' de ' + MESES[d.getMonth()];
 }
-
 const de = (n, uno, varios) => (n === 1 ? uno : varios);
+const yJunto = (xs) => (xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : xs[0] || '');
 
 // ⚠️ EL SERVIDOR CON SU NOMBRE, como lo escribe `misiones._nombre_sv()`
 function nombreSv(liga, sv) {
@@ -66,111 +80,135 @@ function falta(liga, x, v) {
     }
     case 'nuevo': return 'Te falta jugar en un servidor donde todavía no jugaste';
     case 'chico': return 'Te falta jugar un evento de ' + nombreSv(liga, x.sv || x.x);
-    case 'caza': return 'Te falta ganarle un duelo a ' + limpio(x.x || 'la presa');
     case 'dorado': return 'Te falta jugar el evento dorado';
     default: return x.m > 1 ? 'Llevas ' + (v || 0) + ' de ' + x.m : 'Todavía no';
   }
 }
+// el título corto y los ejemplos como chips: «Juega un evento que no sea 1 vs 1: 2 vs 2, pandillas…» (se cortaba)
+function partes(t) {
+  const i = String(t || '').indexOf(': ');
+  return i < 0 ? [t, []] : [t.slice(0, i), t.slice(i + 2).split(',').map((x) => x.replace(/…$/, '').trim()).filter(Boolean)];
+}
 
-// ⏳ la cuenta atrás hasta el lunes a las 11 AM ET: segundo a segundo, como un juego
-function Reloj({ fin, liga }) {
+// ⏳ la cuenta atrás hasta el lunes a las 11 AM ET: al minuto (el sello no necesita segundos)
+function useFalta(fin) {
   const [ahora, setAhora] = useState(() => Date.now());
   useEffect(() => {
-    const t = setInterval(() => setAhora(Date.now()), 1000);
+    const t = setInterval(() => setAhora(Date.now()), 30000);
     return () => clearInterval(t);
   }, []);
   const s = Math.max(0, Math.floor((utc(fin) - ahora) / 1000));
-  if (isNaN(s)) return null;
-  const d = Math.floor(s / 86400);
-  const h = Math.floor((s % 86400) / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const p = (n) => String(n).padStart(2, '0');
+  return isNaN(s) ? null : { d: Math.floor(s / 86400), h: Math.floor((s % 86400) / 3600), m: Math.floor((s % 3600) / 60), s };
+}
+function Reloj({ fin, liga }) {
+  const f = useFalta(fin);
+  if (!f) return null;
+  const p2 = (n) => String(n).padStart(2, '0');
   return (
-    <div className="mi-reloj" role="timer" aria-label={'Se renuevan ' + liga.dia(fin)}>
-      <small>SE RENUEVAN EN</small>
-      {s ? <b>{d ? d + 'd ' : ''}{p(h)}:{p(m)}:{p(s % 60)}</b> : <b>En un rato</b>}
-      <small>{liga.dia(fin)}</small>
+    <div className="mt-reloj" role="timer" aria-label={'Se renuevan ' + liga.dia(fin)}>
+      <span className="mt-lab">Se renuevan</span>
+      {f.s ? <span className="mt-dig"><b>{f.d}</b><small>D</small><b>{p2(f.h)}</b><small>H</small><b>{p2(f.m)}</b><small>M</small></span> : <b className="mt-ya">En un rato</b>}
+      <span className="mt-lab">{liga.dia(fin)}</span>
     </div>
   );
 }
 
 // la cara de alguien de la lista (por nombre), con su perfil si tiene
-function Quien({ liga, raw, cls = 'cara dv-cara' }) {
+function Quien({ liga, raw, cls = 'cara' }) {
   const f = liga.fila(raw);
   return f ? <Cara liga={liga} k={f.k} nombre={f.n} cls={cls} /> : <span className={cls + ' ini'}>{limpio(raw).slice(0, 1).toUpperCase()}</span>;
 }
-
-// 🎮 una misión, como carta de juego: su nivel, lo que da, la barra y lo que falta
-function Mision({ liga, x, v, cumplieron }) {
-  const ok = v != null && v >= x.m;
-  const pct = v == null ? 0 : Math.round((100 * Math.min(v, x.m)) / (x.m || 1));
-  const presa = x.n === 'caza' && x.x ? liga.fila(x.x) : null;
+// quiénes la cumplieron: hasta cinco caras y cuántos
+function Pila({ liga, quienes, n }) {
   return (
-    <li className={'mi-m mi-' + x.n + (ok ? ' ok' : '')}>
-      <div className="mi-arr">
-        <span className="mi-niv">{NIVEL[x.n] || x.n}</span>
-        <span className="mi-p">{ok ? '✓ ' : ''}+{num(x.p)}</span>
-      </div>
-      <div className="mi-cuerpo">
-        {x.sv ? <img className="mi-sv" alt="" src={liga.logo(x.sv)} loading="lazy" /> : null}
-        {x.n === 'caza' && x.x ? <Quien liga={liga} raw={x.x} cls="cara mi-cara" /> : null}
-        {/* 18/11/2026: «Gánale», con tú; «Ganale» era voseo (como el CATALOGO de bot/misiones.py) */}
-        <b className="mi-t">{presa ? <>Gánale un duelo a <a href={'#/r/' + encodeURIComponent(presa.k)}>{limpio(presa.n)}</a></> : x.t}</b>
-      </div>
-      {v != null ? (
-        <>
-          <span className="mb mi-barra" role="img" aria-label={(ok ? x.m : Math.min(v, x.m)) + ' de ' + x.m}><i style={{ width: pct + '%' }} /></span>
-          <span className="mi-yo">{ok ? '✓ La cumpliste' : falta(liga, x, v)}{!ok && x.m > 1 ? <small> · {Math.min(v, x.m)} de {x.m}</small> : null}</span>
-        </>
-      ) : null}
-      {ACLARA[x.q] ? <small className="mi-acl">{ACLARA[x.q]}</small> : null}
-      <small className="mi-c">{cumplieron === 1 ? '1 la cumplió' : num(cumplieron) + ' la cumplieron'}</small>
-    </li>
+    <span className="mt-pila">
+      {quienes.length ? <span className="mt-cs">{quienes.slice(0, 5).map((q) => <Quien key={q} liga={liga} raw={q} cls="cara mt-c" />)}</span> : null}
+      {n ? n + (n === 1 ? ' la cumplió' : ' la cumplieron') : 'Nadie todavía'}
+    </span>
   );
 }
 
-// 🎯 la cacería: la presa con su cara y su carta, y quién ya la cazó
-function Caceria({ liga, M, i, esYo, mio }) {
-  const x = M.lista[i];
-  if (!x || !x.x) return null;
-  const f = liga.fila(x.x);
-  const prog = M.prog || {};
-  const cazaron = Object.keys(prog).filter((q) => (prog[q] || [])[i] >= 1)
-    .sort((a, b) => (M.pts[b] || 0) - (M.pts[a] || 0) || (a < b ? -1 : 1));
-  const yoSi = mio && (prog[mio] || [])[i] >= 1;
+// 🎟️ una misión del bono, como boleto: lo que pide a la izquierda y el talón con lo que paga (sellado si la cumpliste)
+function Boleto({ liga, x, v, n, quienes, pend, prox }) {
+  const ok = v != null && v >= x.m;
+  const [t, ej] = partes(x.t);
   return (
-    <section className="dv-g mi-cz" aria-label="La cacería de la semana">
-      <h3 className="dv-gt">La cacería<small>+{num(x.p)} · aparte del bono</small></h3>
-      <div className="mi-presa">
-        <div className="mi-presa-c">
-          {f ? <Carta liga={liga} k={f.k} cual="temporada" cls="ci mi-presa-ci" /> : <Quien liga={liga} raw={x.x} cls="cara mi-presa-cara" />}
-        </div>
-        <div className="mi-presa-tx">
-          <span className="mi-eti">LA PRESA DE LA SEMANA</span>
-          <div className="mi-presa-n">
-            <Quien liga={liga} raw={x.x} cls="cara mi-presa-cara" />
-            {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <b className="dv-n">{limpio(x.x)}</b>}
+    <article className={'mt-bol' + (ok ? ' ok' : '')} style={{ '--c': COLOR[x.n] }}>
+      <div className="mt-q">
+        <span className="mt-lab">{NIVEL[x.n] || x.n}</span>
+        <h3>{t}</h3>
+        {ej.length ? <div className="mt-chips">{ej.map((e) => <span key={e}>{e}</span>)}</div> : null}
+        {x.sv && x.q === 'chico' ? <span className="mt-sv"><img alt="" src={liga.logo(x.sv)} loading="lazy" />{nombreSv(liga, x.sv)}</span> : null}
+        {ok ? <span className="mt-est"><i>✓</i>La cumpliste</span>
+          : v != null && !ej.length && x.q !== 'formato' ? <span className="mt-falta">{falta(liga, x, v)}{x.m > 1 ? <small> · {Math.min(v, x.m)} de {x.m}</small> : null}</span> : null}
+        {!ok && ACLARA[x.q] ? <small className="mt-acl">{ACLARA[x.q]}</small> : null}
+        {pend ? (
+          <div className="mt-ir">
+            <a className="btn mt-inv" href="#/eventos">Ver los eventos</a>
+            {prox ? <span className="mt-prox">El próximo: <b>{limpio(prox.nombre)}</b> · {nombreSv(liga, prox.sv)} · {liga.dia(prox.cuando)}</span> : null}
           </div>
-          {/* 18/11/2026: «Gánale» con tú, que la misma frase sigue con «sumas» (decía «Ganale», voseo) */}
-          <p>Una de las más activas de la Liga. Gánale un duelo en cualquier evento de la semana y sumas <b>+{num(x.p)}</b> a tu Temporada.</p>
-          {mio != null ? <p className={'mi-presa-yo' + (yoSi ? ' si' : '')}>{yoSi ? '✓ La cazaste' : 'Todavía no la cazaste'}</p> : null}
-          <span className="mi-eti">{cazaron.length ? 'YA LA ' + de(cazaron.length, 'CAZÓ 1', 'CAZARON ' + cazaron.length) : 'NADIE LA CAZÓ TODAVÍA'}</span>
-          {cazaron.length ? (
-            <ul className="mi-caras">
-              {cazaron.slice(0, 12).map((q) => {
-                const g = liga.fila(q);
-                return (
-                  <li key={q} className={esYo(q) ? 'yo' : ''} title={limpio(q)}>
-                    {g ? <a href={'#/r/' + encodeURIComponent(g.k)} aria-label={limpio(g.n)}><Quien liga={liga} raw={q} cls="cara mi-cc" /></a> : <Quien liga={liga} raw={q} cls="cara mi-cc" />}
-                  </li>
-                );
-              })}
-              {cazaron.length > 12 ? <li className="mi-mas">+{cazaron.length - 12}</li> : null}
-            </ul>
-          ) : <p className="mi-nada">El primero que le gane un duelo aparece acá.</p>}
-        </div>
+        ) : null}
+        <Pila liga={liga} quienes={quienes} n={n} />
       </div>
-    </section>
+      <div className="mt-talon"><b>+{num(x.p)}</b>{ok ? <span className="mt-sello">Cumplida</span> : <small>Temporada</small>}</div>
+    </article>
+  );
+}
+
+// 🎯 tu presa como cartel de Se busca: la carta, por qué te tocó, la pista y lo que paga. Sin sesión o sin presa, lo dice
+function Presa({ liga, M, mio, esYo, dc }) {
+  const pre = M.pre || null;
+  const paga = M.pre_p || 600;
+  // (sin `pre_desde`, un lobby de antes del código nuevo: la fecha de arranque de bot/misiones.py, `PRESA_DESDE`)
+  const desde = M.pre_desde || PRESA_DESDE;
+  const antes = !pre && String(M.sem || '') < String(desde);
+  const vacio = (tx, boton) => (
+    <div className="mt-cartel vacio">
+      <span className="mt-lab">Tu presa<span className="mt-nueva">Nueva</span></span>
+      <span className="mt-se">Se busca</span>
+      <span className="mt-sil" aria-hidden="true">?</span>
+      <p>{tx}</p>
+      {boton}
+      <span className="mt-paga">+{num(paga)} <small>a tu Temporada</small></span>
+    </div>
+  );
+  if (antes) {
+    return vacio(<>Desde el <b>lunes {fechaCorta(desde)}</b>, cada uno tiene su presa: alguien a quien cazar, elegido para ti (el último que te ganó, alguien de tu escena o el de al lado en la tabla), con una pista de qué días juega y dónde. Se caza quedando por encima en un evento donde estén los dos, o ganándole un duelo.</>);
+  }
+  if (!dc) return vacio(<>Cada semana te toca alguien a quien cazar, con una pista de qué días juega y dónde. Entra y te decimos quién es.</>, <button type="button" className="btn mt-inv" onClick={accion.entrar}>Entrar con Discord</button>);
+  const k = pre ? Object.keys(pre).find(esYo) : null;
+  const a = k ? pre[k] : null;
+  if (!a) return vacio(<>Juega un evento esta semana y el lunes te toca tu presa, con una pista de qué días juega y dónde.</>);
+  const [x, hecha, motivo, nEv, sv, ronda] = a;
+  const f = liga.fila(x);
+  const pista = (M.pis || {})[x] || [[], []];
+  const dias = (pista[0] || []).map((d) => DIAS[(d + 1) % 7]);
+  const svs = (pista[1] || []).map((s) => nombreSv(liga, s));
+  const porque = motivo === 'r' ? <>Te ganó {RONDA[ronda] || 'un duelo'} del evento #{nEv}{sv ? ' de ' + nombreSv(liga, sv) : ''}. Es la revancha.</>
+    : motivo === 'e' ? <>Juega donde juegas tú y está cerca tuyo en la tabla.</> : <>Está cerca tuyo en la Temporada.</>;
+  return (
+    <div className={'mt-cartel' + (hecha ? ' cazada' : '')}>
+      <span className="mt-lab">Tu presa{motivo === 'r' ? ' · la revancha' : ''}<span className="mt-nueva">Nueva</span></span>
+      <span className="mt-se">{hecha ? 'Cazada' : 'Se busca'}</span>
+      {f ? <Carta liga={liga} k={f.k} cual="temporada" cls="ci mt-ci" /> : <Quien liga={liga} raw={x} cls="cara mt-ci" />}
+      <h3>{f ? <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : limpio(x)}</h3>
+      <p>{porque}</p>
+      {dias.length || svs.length ? <p className="mt-pista"><b>La pista:</b> suele jugar{dias.length ? ' los ' + yJunto(dias.map((d) => d + (d.endsWith('s') ? '' : 's'))) : ''}{svs.length ? ', en ' + yJunto(svs) : ''}.</p> : null}
+      <p>{hecha ? <b>¡La cazaste! Sumaste +{num(paga)}.</b> : <>Queda <b>por encima en un evento donde estén los dos</b>, o gánale un duelo.</>}</p>
+      <span className="mt-paga">+{num(paga)} <small>a tu Temporada</small></span>
+    </div>
+  );
+}
+// quién te tiene a ti de presa
+function Cazan({ liga, M, esYo }) {
+  const pre = M.pre || {};
+  const qs = Object.keys(pre).filter((q) => esYo(pre[q][0]));
+  if (!qs.length) return null;
+  return (
+    <div className="mt-cazan">
+      <span className="mt-cs">{qs.slice(0, 3).map((q) => <Quien key={q} liga={liga} raw={q} cls="cara" />)}</span>
+      <span><b>Te {de(qs.length, 'está cazando ' + limpio(qs[0]), 'están cazando ' + qs.length)}</b>{qs.length === 1 && pre[qs[0]][2] === 'r' ? ': la última vez le ganaste tú.' : '.'}</span>
+    </div>
   );
 }
 
@@ -183,33 +221,28 @@ function quienesPerfecta(M) {
   return Object.keys(prog).filter((q) => idx.every((j) => (prog[q] || [])[j] >= M.lista[j].m))
     .sort((a, b) => (M.pts[b] || 0) - (M.pts[a] || 0) || (a < b ? -1 : 1));
 }
-function Perfecta({ liga, M, esYo }) {
-  const quienes = quienesPerfecta(M);
-  if (!quienes) return null;
+
+// una fila de la carrera: el puesto, la cara, la barra de sus puntos, las marcas de cada misión y lo que sumó
+function Fila({ liga, raw, pts, i, mx, M, esYo }) {
+  const f = liga.fila(raw);
+  const h = M.lista.map((x, j) => ((M.prog || {})[raw] || [])[j] >= x.m);
   return (
-    <section className="dv-g mi-perf" aria-label="Semana perfecta">
-      <h3 className="dv-gt">Semana perfecta<small>las tres: +{num(M.bono)} de bono</small></h3>
-      {quienes.length ? (
-        <ol className="dv-tabla mi-perf-l">
-          {quienes.map((q) => {
-            const f = liga.fila(q);
-            return (
-              <li key={q} className={esYo(q) ? 'yo' : ''}>
-                <Quien liga={liga} raw={q} />
-                {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(q)}</a> : <span className="dv-n">{limpio(q)}</span>}
-                <span className="mi-bono-s">+{num(M.bono)} BONO</span>
-                <b className="dv-p">+{num(M.pts[q] || 0)}</b>
-              </li>
-            );
-          })}
-        </ol>
-      ) : <p className="mi-nada">Nadie cumplió las tres todavía: la primera persona que lo haga aparece acá, con su bono de +{num(M.bono)}.</p>}
-    </section>
+    <li className={esYo(raw) ? 'yo' : ''}>
+      {i != null ? <span className="mt-pos">{i}</span> : null}
+      <Quien liga={liga} raw={raw} />
+      <span className="mt-n">{f ? <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <b>{limpio(raw)}</b>}<i style={{ width: Math.max(3, Math.round(100 * pts / (mx || 1))) + '%' }} /></span>
+      <span className="mt-mk" role="img" aria-label={h.filter(Boolean).length + ' de ' + h.length + ' cumplidas'}>
+        {h.map((si, j) => <i key={j} className={(si ? 'si' : '') + (M.lista[j].n === 'dorado' ? ' rb' : '')} style={{ '--c': COLOR[M.lista[j].n] }} />)}
+      </span>
+      <b className="mt-pt">+{num(pts)}</b>
+    </li>
   );
 }
 
 export function Misiones({ liga }) {
   const M = liga.d.mis;
+  const [tab, setTab] = useState('carrera');
+  const [todas, setTodas] = useState(false);
   if (!M) return null;
   const yo = liga.yo;
   const esYo = (raw) => !!yo && liga.esDe(raw, yo.k);
@@ -219,95 +252,149 @@ export function Misiones({ liga }) {
   const dc = quienMira().dc;
   const cumplieron = (i) => Object.values(prog).filter((v) => (v[i] || 0) >= lista[i].m).length;
   const semana = Object.entries(M.pts || {}).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+  const quienes = (i) => semana.filter(([q]) => (prog[q] || [])[i] >= lista[i].m).map(([q]) => q);
   const total = Object.entries(M.total || {}).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, 10);
   // 🔑 quien juega la temporada y todavía no hizo nada esta semana lleva 0, no «nada» (revisión del 05/10/2026)
   const valor = (i) => (mio ? (prog[mio] || [])[i] || 0 : yo ? 0 : null);
   const tres = lista.map((x, i) => [x, i]).filter(([x]) => DEL_BONO.includes(x.n));
   const hechas = tres.filter(([x, i]) => valor(i) != null && valor(i) >= x.m).length;
+  const pend = yo ? (tres.find(([x, i]) => !(valor(i) >= x.m)) || [])[1] : -1;
+  const aparte = lista.map((x, i) => [x, i]).filter(([x]) => !DEL_BONO.includes(x.n));
   const iCaza = lista.findIndex((x) => x.n === 'caza');
-  const mios = mio ? (M.pts || {})[mio] || 0 : 0;
-  const perf = quienesPerfecta(M);
-  const alLado = iCaza >= 0 && !!perf && !perf.length && semana.length <= 6;
-  const estaSemana = (
-    <section className="dv-g" aria-label="Los que sumaron esta semana">
-      <h3 className="dv-gt">Esta semana<small>{semana.length ? semana.length + ' sumaron' : 'todavía nadie'}</small></h3>
-      {semana.length ? (
-        <ol className="dv-tabla mi-tabla mi-cols">
-          {semana.map(([raw, pts]) => {
-            const f = liga.fila(raw);
-            const h = lista.map((x, j) => (prog[raw] || [])[j] >= x.m);
+  const perf = quienesPerfecta(M) || [];
+  const pos = mio ? semana.findIndex(([q]) => q === mio) + 1 : 0;
+  const ahora = Date.now();
+  const prox = (liga.proximos() || []).filter((p) => utc(p.cuando) >= ahora - 2 * 3600000).sort((a, b) => utc(a.cuando) - utc(b.cuando))[0] || null;
+  const mw = (liga.d.mw && liga.d.mw.b) || [];
+  const cab = !yo ? ['Las misiones de la semana', <>Las mismas para todos, y se cumplen <b>jugando</b>: cada una suma a tu Temporada, y las tres juntas, <b>+{num(M.bono)}</b> más.</>]
+    : hechas === tres.length ? ['¡Semana perfecta!', <>Cumpliste las tres: sumaste el bono de <b>+{num(M.bono)}</b>.</>]
+      : hechas === 0 ? ['Tus tres misiones', <>Ninguna todavía. La {NIVEL[lista[tres[0][1]].n].toLowerCase()} da <b>+{num(lista[tres[0][1]].p)}</b>{cumplieron(tres[0][1]) ? <> y ya la cumplieron {cumplieron(tres[0][1])} esta semana</> : null}.</>]
+        : ['Llevas ' + hechas + ' de ' + tres.length, <>Te falta <b>la {NIVEL[lista[pend].n].toLowerCase()}</b>: +{num(lista[pend].p)}, y con ella el bono de <b>+{num(M.bono)}</b>.</>];
+  const mx = semana.length ? semana[0][1] : 1;
+  const mxc = Math.max(1, ...lista.map((_x, i) => cumplieron(i)));
+  return (
+    <div className="mt">
+      <section className="mt-esc" aria-label={yo ? 'Tus misiones' : 'Las misiones de la semana'}>
+        <div className="mt-cab">
+          <div className="mt-cab-tx">
+            <span className="mt-lab">Semana del {fechaCorta(M.sem)}{yo ? ' · tus misiones' : ''}</span>
+            <h2>{cab[0]}</h2>
+            <p>{cab[1]}</p>
+          </div>
+          {pos ? <div className="mt-lugar"><b>#{pos}</b><span><small>de {semana.length} esta semana</small><small>+{num((M.pts || {})[mio] || 0)}</small></span></div> : null}
+          {!dc ? <button type="button" className="btn mt-inv" onClick={accion.entrar}>Entrar con Discord</button> : null}
+        </div>
+        <div className="mt-mesa">
+          <div className="mt-boletos">
+            {tres.map(([x, i]) => <Boleto key={x.id} liga={liga} x={x} v={valor(i)} n={cumplieron(i)} quienes={quienes(i)} pend={i === pend} prox={prox} />)}
+            <div className="mt-bono">
+              <span className="mt-ag" aria-hidden="true">{tres.map(([x, i]) => <i key={x.id} className={valor(i) >= x.m ? 'si' : ''} />)}</span>
+              <div><h3>Semana perfecta</h3><p>{!yo ? 'Las tres de arriba juntas: se perfora un agujero por cada una.' : hechas === tres.length ? '¡Las tres! El bono ya se sumó.' : 'Las tres de arriba juntas. Llevas ' + hechas + '.'}</p></div>
+              <b className="mt-mas">+{num(M.bono)}</b>
+            </div>
+          </div>
+          <div className="mt-lado">
+            <Presa liga={liga} M={M} mio={mio} esYo={esYo} dc={dc} />
+            {yo ? <Cazan liga={liga} M={M} esYo={esYo} /> : null}
+            <Reloj fin={M.fin} liga={liga} />
+          </div>
+        </div>
+        <div className="mt-fila">
+          {aparte.map(([x, i]) => {
+            const v = valor(i), ok = v != null && v >= x.m;
+            const f = x.n === 'caza' && x.x ? liga.fila(x.x) : null;
             return (
-              <li key={raw} className={esYo(raw) ? 'yo' : ''}>
-                <Quien liga={liga} raw={raw} />
-                {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
-                <span className="mi-marcas" role="img" aria-label={h.filter(Boolean).length + ' de ' + lista.length + ' cumplidas'}>
-                  {h.map((si, j) => <i key={j} className={si ? 'si' : ''} />)}
-                </span>
-                <b className="dv-p">+{num(pts)}</b>
-              </li>
+              <div key={x.id} className={'mt-mini' + (ok ? ' ok' : '')} style={{ '--c': COLOR[x.n] }}>
+                {x.n === 'caza' ? (f ? <Carta liga={liga} k={f.k} cual="temporada" cls="ci mt-mci" /> : <Quien liga={liga} raw={x.x} cls="cara mt-mci" />)
+                  : x.sv ? <img className="mt-lg" alt="" src={liga.logo(x.sv)} loading="lazy" /> : <span className="mt-lg" />}
+                <div>
+                  <span className="mt-lab">{x.n === 'dorado' ? <i className="mt-rombo" /> : null}{NIVEL[x.n] || x.n}{x.n === 'caza' ? ' · aparte del bono' : ''}</span>
+                  <h4>{x.n === 'caza' && f ? <>Gánale un duelo a <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a></> : x.t}</h4>
+                  <p>{ok ? '✓ La cumpliste' : x.n === 'dorado' ? 'Su evento vale ×3 para la Temporada.' : x.n === 'caza' ? (cumplieron(i) ? de(cumplieron(i), '1 la cazó', cumplieron(i) + ' la cazaron') : 'Nadie la cazó todavía.') : ACLARA[x.q] || ''}</p>
+                </div>
+                <b className="mt-p">+{num(x.p)}</b>
+              </div>
             );
           })}
-        </ol>
-      ) : <p className="dv-cab">Cuando alguien cumpla la primera, aparece acá.</p>}
-    </section>
-  );
-  return (
-    <div className="mi">
-      <section className="mi-tus" aria-label={yo ? 'Tus misiones' : 'Las misiones de la semana'}>
-        <div className="mi-tus-cab">
-          <div className="mi-tus-tx">
-            <span className="mi-eti">SEMANA DEL {fechaCorta(M.sem).toUpperCase()}</span>
-            <h2>{yo ? 'Tus misiones' : 'Las misiones de la semana'}</h2>
-            {yo ? (
-              <div className="mi-bono" role="img" aria-label={hechas + ' de ' + tres.length + ' del bono'}>
-                <span className="mi-bono-m">{tres.map(([x, i]) => <i key={x.id} className={valor(i) >= x.m ? 'si mi-' + x.n : ''} />)}</span>
-                <span>{hechas === tres.length ? <><b>¡Semana perfecta!</b> Sumaste el bono de +{num(M.bono)}.</>
-                  : <>Llevas <b>{hechas} de {tres.length}</b>: las tres juntas suman <b>+{num(M.bono)}</b> más.</>}
-                {mios ? <> Esta semana, <b>+{num(mios)}</b> a tu Temporada.</> : null}</span>
-              </div>
-            ) : (
-              <p className="mi-intro">{dc ? 'Con tu primer evento de la ' + liga.temp + ' acá ves cuánto llevas de cada una.'
-                : 'Entra con Discord y acá ves cuánto llevas de cada una.'}
-                {!dc ? <> <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></> : null}</p>
-            )}
-          </div>
-          <Reloj fin={M.fin} liga={liga} />
+          {mw.length ? (
+            <a className="mt-mini mt-mw" href="#/ranking/mw">
+              <span className="mt-cs">{mw.slice(0, 4).map((b) => <Cara key={b.k || b.n} liga={liga} k={b.k} nombre={b.n} cls="cara" />)}</span>
+              <div><span className="mt-lab">Los buscados</span><h4>{mw.length} esta semana</h4><p>{mw.filter((b) => b.e !== 'cazado').length} sueltos · cada uno vale distinto</p></div>
+              <b className="mt-p" aria-hidden="true">›</b>
+            </a>
+          ) : null}
         </div>
-        <ol className="mi-lista">
-          {lista.map((x, i) => <Mision key={x.id} liga={liga} x={x} v={valor(i)} cumplieron={cumplieron(i)} />)}
-        </ol>
-        <p className="mi-reglas">Las mismas para todos, y se cumplen <b>jugando</b>: cada una suma a tu <b>Temporada</b>, y la fácil, la media y la difícil juntas, <b>+{num(M.bono)}</b> más.
-          {iCaza >= 0 ? ' La cacería va aparte.' : ''}
-          {/* ✨ el evento dorado (Dlx, 12/10/2026: «4. Dale»): sale entre los servidores que juegan poco */}
-          {lista.some((x) => x.n === 'dorado') ? ' El evento dorado también: es el de un servidor más chico y vale ×3.' : ''}
-          {lista.some((x) => x.n === 'writing') ? ' Y la del Writing Challenge de FFA, las semanas con fecha.' : ''}</p>
+        <p className="mt-reglas">Las mismas para todos, y se cumplen <b>jugando</b>. Las de abajo y tu presa van aparte del bono.{iCaza >= 0 ? ' La de todos es la misma presa para toda la Liga.' : ''}</p>
       </section>
-      {/* la cacería y la Semana perfecta, lado a lado en la compu. 🧱 Con la Semana perfecta vacía (una línea) y pocos en
-          «Esta semana», ésa sube debajo de la perfecta: al lado de la cacería quedaban 464×360 en blanco (medido a 1333,
-          18/11/2026). Con más de seis va abajo, a lo ancho, como antes: en la columna dejaría el hueco debajo de la cacería */}
-      <div className="mi-dos">
-        {iCaza >= 0 ? <Caceria liga={liga} M={M} i={iCaza} esYo={esYo} mio={yo ? mio || '' : null} /> : null}
-        {alLado ? <div className="mi-col"><Perfecta liga={liga} M={M} esYo={esYo} />{estaSemana}</div> : <Perfecta liga={liga} M={M} esYo={esYo} />}
-      </div>
-      {alLado ? null : estaSemana}
-      {total.length ? (
-        <section className="dv-g" aria-label="Lo sumado en la temporada">
-          <h3 className="dv-gt">En la temporada<small>lo sumado con misiones</small></h3>
-          <ol className="dv-tabla mi-tabla con-i mi-cols">
-            {total.map(([raw, pts], i) => {
-              const f = liga.fila(raw);
-              return (
-                <li key={raw} className={esYo(raw) ? 'yo' : ''}>
-                  <span className="dv-i">{i + 1}</span>
-                  <Quien liga={liga} raw={raw} />
-                  {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
-                  <b className="dv-p">{num(pts)}</b>
-                </li>
-              );
-            })}
-          </ol>
-        </section>
-      ) : null}
+
+      <section className="mt-papel" aria-label="La semana de todos">
+        <div className="mt-tabs" role="tablist">
+          {[['carrera', 'Carrera', semana.length], ['perfecta', 'Perfecta', perf.length], ['temporada', 'Temporada', null]].map(([k, t, n]) => (
+            <button key={k} type="button" role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>{t}{n != null ? <small>{n}</small> : null}</button>
+          ))}
+        </div>
+        {tab === 'carrera' ? (
+          semana.length ? (
+            <>
+              <div className="mt-podio-f">
+                {semana.length >= 3 ? (
+                  <div className="mt-podio">
+                    {[1, 0, 2].map((i) => {
+                      const [q, pts] = semana[i];
+                      return <div key={q} className={esYo(q) ? 'yo' : ''}><Quien liga={liga} raw={q} cls="cara mt-pc" /><b>{limpio(q)}</b><small>+{num(pts)}</small><span className="mt-alto">{i + 1}</span></div>;
+                    })}
+                  </div>
+                ) : null}
+                <div className="mt-snum">
+                  <span className="mt-lab">Cuántos la cumplieron</span>
+                  {lista.map((x, i) => (
+                    <div key={x.id} className="mt-r" style={{ '--c': COLOR[x.n] }}><span>{NIVEL[x.n] || x.n}</span><span><i className={cumplieron(i) ? '' : 'd'} style={{ width: cumplieron(i) ? Math.round(100 * cumplieron(i) / mxc) + '%' : '6%' }} /></span><b>{cumplieron(i)}</b></div>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-ley">{lista.map((x) => <span key={x.id} className="mt-mk"><i className={'si' + (x.n === 'dorado' ? ' rb' : '')} style={{ '--c': COLOR[x.n] }} />{NIVEL[x.n] || x.n}</span>)}</div>
+              {(() => {
+                const desde = semana.length >= 3 ? 3 : 0;
+                const xs = semana.slice(desde, todas ? undefined : desde + 12);
+                return (
+                  <>
+                    <ol className="mt-carrera" style={{ '--filas': Math.ceil(xs.length / 2) }}>
+                      {xs.map(([raw, pts], k) => <Fila key={raw} liga={liga} raw={raw} pts={pts} i={desde + k + 1} mx={mx} M={M} esYo={esYo} />)}
+                    </ol>
+                    {!todas && semana.length > desde + 12 ? <button type="button" className="btn mt-ver" onClick={() => setTodas(true)}>Ver los {semana.length}</button> : null}
+                  </>
+                );
+              })()}
+            </>
+          ) : <p className="mt-vacio">Cuando alguien cumpla la primera, aparece acá.</p>
+        ) : null}
+        {tab === 'perfecta' ? (
+          perf.length ? (
+            <ol className="mt-carrera" style={{ '--filas': Math.ceil(perf.length / 2) }}>
+              {perf.map((q, k) => <Fila key={q} liga={liga} raw={q} pts={M.pts[q] || 0} i={k + 1} mx={mx} M={M} esYo={esYo} />)}
+            </ol>
+          ) : <p className="mt-vacio">Nadie cumplió las tres todavía: la primera persona que lo haga aparece acá, con su bono de +{num(M.bono)}.</p>
+        ) : null}
+        {tab === 'temporada' ? (
+          total.length ? (
+            <>
+              <p className="mt-vacio">Lo sumado con misiones en toda la temporada.</p>
+              <ol className="mt-carrera mt-tot" style={{ '--filas': Math.ceil(total.length / 2) }}>
+                {total.map(([raw, pts], i) => {
+                  const f = liga.fila(raw);
+                  return (
+                    <li key={raw} className={esYo(raw) ? 'yo' : ''}>
+                      <span className="mt-pos">{i + 1}</span><Quien liga={liga} raw={raw} />
+                      <span className="mt-n">{f ? <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <b>{limpio(raw)}</b>}<i style={{ width: Math.round(100 * pts / (total[0][1] || 1)) + '%' }} /></span>
+                      <b className="mt-pt">{num(pts)}</b>
+                    </li>
+                  );
+                })}
+              </ol>
+            </>
+          ) : <p className="mt-vacio">Todavía nadie sumó con misiones esta temporada.</p>
+        ) : null}
+      </section>
     </div>
   );
 }

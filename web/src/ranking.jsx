@@ -581,7 +581,7 @@ const SUBS = {
   misiones: {
     et: 'Misiones', propia: Misiones, filas: () => [], orden: () => 0, hay: (L) => !!L.d.mis,
     siNo: <><b>Misiones</b>: tres por semana, las mismas para todos, que se cumplen jugando y suman a tu Temporada. Las primeras arrancan el lunes a las 11 AM.</>,
-    baj: <>Tres por semana, las mismas para todos: se cumplen <b>jugando</b> y cada una suma a tu <b>Temporada</b>. Las tres juntas dan un bono.</>,
+    baj: <>Tres por semana, las mismas para todos: se cumplen <b>jugando</b> y cada una suma a tu <b>Temporada</b>. Las tres juntas dan un bono, y cada uno tiene además <b>su presa</b>.</>,
   },
   // 📈 LOS ASCENSOS (Dlx, 17/10/2026: «quizás crear uno que diga RANKING ASCENSOS en la página de rankings»): el
   // ranking de ascenso de cada servidor, al día (`bot/ascenso.py`). Su propia vista (`Ascensos`): un servidor por vez

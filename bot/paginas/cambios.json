@@ -11,6 +11,19 @@
   ],
   "cambios": [
     {
+        "version": "7.33",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T06:40:00-05:00",
+        "titulo": "Misiones, rehecha: tus boletos y tu presa",
+        "items": [
+            "La pestaña **Misiones** del Ranking es nueva: cada misión es un **boleto**, con lo que paga en el talón; cuando la cumples, el talón lleva el sello. El bono de la Semana perfecta es un boleto con tres agujeros que se perforan.",
+            "La misión que te falta trae un botón a **Eventos**, con el próximo evento.",
+            "**Tu presa** es nueva: desde el **lunes 23**, cada uno tiene a alguien a quien cazar. Puede ser el último que te ganó, alguien de tu escena o alguien cerca tuyo en la tabla. Viene con una pista de qué días juega y dónde, y se caza quedando por encima de esa persona en un evento donde estén los dos, o ganándole un duelo. Paga **+600** a tu Temporada, aparte del bono.",
+            "Y ves **quién te está cazando a ti**.",
+            "Abajo, la carrera de la semana: el podio, cuántos cumplieron cada misión y la lista con las marcas de cada uno."
+        ]
+    },
+    {
         "version": "7.32",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T05:50:00-05:00",

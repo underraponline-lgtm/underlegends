@@ -146,7 +146,18 @@ PUNTOS_DORADO = 600
 #: semilla, y ésta se agrega después. Desde la semana del lunes 19/10 (la del 12 ya estaba sorteada); `None` la apaga
 WRITING_DESDE = '2026-10-19'
 PUNTOS_WRITING = 300
-#: las que van aparte del bono (el bono es por las tres sorteadas)
+#: 🎯 TU PRESA (Dlx, 20/11/2026, a la maqueta de Misiones: «una combinación de todo y que te deje una pista de qué días
+#: compite y dónde»; «quedar por encima o un duelo»; «+600»). Cada uno tiene la suya, distinta, elegida el lunes con lo de
+#: antes (`presas_de()`): entre el último que te ganó un duelo (la revancha), la gente de tu escena (con quien jugaste en
+#: las dos semanas de antes) y los de al lado tuyo en la Temporada, gana la que más suma de esas tres cosas. Se caza
+#: quedando por encima de ella en un evento donde estén los dos, o ganándole un duelo. Medido sobre las ocho semanas de la
+#: T1: todos los que jugaron reciben una (641 contra 498 con sólo la revancha) y se cumple ~15 de cada 100 semanas, como la
+#: difícil. Desde la semana del lunes 23/11: empezarla a mitad de semana la daría por cumplida a quien no sabía que existía
+PRESA_DESDE = '2026-11-23'
+PUNTOS_PRESA = 600
+#: la pista de tu presa: en qué días y servidores jugó en las cuatro semanas de antes (los dos de más, si se repiten)
+PISTA_DIAS = 28
+#: las que van aparte del bono (el bono es por las tres sorteadas). `presa` no es una misión de la lista: es de cada uno
 APARTE = ('caza', 'dorado', 'writing')
 #: hasta qué ronda llegó cada puesto de `Resultados` (como `rankings.LLEGO`)
 LLEGO = {'campeon': 1, 'subcampeon': 2, 'tercero': 4, 'cuarto': 4, 'semifinal': 4, 'cuartos': 8,
@@ -240,6 +251,90 @@ def presa(sid, ini, evs, desde=None):
     if not act:
         return None
     return random.Random('caza:' + str(sid)).choice(act)
+
+
+def presas_de(ini, evs, dus, pts, desde=None):
+    """🎯 La presa de cada uno para la semana que empieza en `ini`: `({cazador: [presa, motivo, como]}, {presa: pista})`.
+
+    Cazador es quien jugó algo en los `CAZA_DIAS` días antes; presa puede ser cualquiera de los activos (dos eventos o
+    más en esos días y alguno en la última semana, como `presa()`). Para cada cazador se miran los candidatos —el último
+    que le ganó un duelo, los tres de arriba con quien ya jugó, los tres de arriba y los dos de abajo en la Temporada— y
+    gana el que más suma: revancha 3, ya jugaron juntos 2, a diez puestos o menos 1, jugó la semana pasada 1; empatados,
+    el más cercano en la tabla y después el nombre. `motivo`: `revancha`, `escena` o `cerca`; `como`, para la revancha,
+    `[evento, servidor, fecha, ronda]`. `pts` es `{(evento, quién): puntos}` (la Temporada antes del lunes, para la
+    cercanía). La pista: `{'d': [días de la semana, 0 = lunes, en hora del este], 's': [servidores]}`."""
+    hace, sem1 = ini - dt.timedelta(days=CAZA_DIAS), ini - dt.timedelta(days=7)
+    en14, en7, tot = {}, {}, {}
+    for e in evs:
+        if e[2] is None or (desde and e[2] < desde) or e[2] >= ini:
+            continue
+        tot[e[3]] = tot.get(e[3], 0) + (pts or {}).get((e[0], e[3]), 0)
+        if e[2] >= hace:
+            en14.setdefault(e[3], set()).add(e[0])
+            if e[2] >= sem1:
+                en7.setdefault(e[3], set()).add(e[0])
+    act = [q for q, ns in en14.items() if len(ns) >= 2 and q in en7]
+    rk = sorted(act, key=lambda q: (-tot.get(q, 0), q))
+    pos_de = {q: i for i, q in enumerate(rk)}
+    verdugo = {}
+    for d in sorted((d for d in dus if d[1] is not None and d[1] < ini and not (desde and d[1] < desde) and len(d) > 3 and d[3]),
+                    key=lambda d: d[1]):
+        verdugo[d[3]] = d
+    asignadas = {}
+    for q in sorted(en14):
+        # dónde estaría en la tabla de los activos (quien no es activo también tiene su lugar por puntos)
+        pos = pos_de.get(q)
+        if pos is None:
+            pos = sum(1 for x in rk if tot.get(x, 0) > tot.get(q, 0))
+        juntos = {x for x in act if x != q and en14[q] & en14.get(x, set())}
+        v = verdugo.get(q)
+        rev = v[2] if v and v[2] in pos_de and v[2] != q else None
+        arriba_j = [x for x in rk[:pos] if x in juntos][-3:]
+        pool = ({rev} if rev else set()) | set(arriba_j) | set(rk[max(0, pos - 3):pos]) | set(rk[pos:pos + 3])
+        pool.discard(q)
+        if not pool:
+            continue
+
+        def punt(x, q=q, pos=pos, juntos=juntos, rev=rev):
+            cerca = abs(pos_de[x] - pos)
+            return (-(3 * (x == rev) + 2 * (x in juntos) + (cerca <= 10) + (x in en7)), cerca, x)
+        x = min(pool, key=punt)
+        motivo = 'revancha' if x == rev else 'escena' if x in juntos else 'cerca'
+        como = [v[0], v[4], v[5], v[6]] if motivo == 'revancha' and len(v) > 6 else None
+        asignadas[q] = [x, motivo, como]
+    # la pista: los días y los servidores donde jugó cada presa en las cuatro semanas de antes
+    try:
+        import zoneinfo
+        ET = zoneinfo.ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        ET = dt.timezone(dt.timedelta(hours=-5))
+    hace28 = ini - dt.timedelta(days=PISTA_DIAS)
+    pistas = {}
+    for x in {a[0] for a in asignadas.values()}:
+        dias, svs, vistos = {}, {}, set()
+        for e in evs:
+            if e[3] != x or e[2] is None or not (hace28 <= e[2] < ini) or e[0] in vistos:
+                continue
+            vistos.add(e[0])
+            w = e[2].astimezone(ET).weekday()
+            dias[w] = dias.get(w, 0) + 1
+            svs[e[1]] = svs.get(e[1], 0) + 1
+        dd = [d for d, n in sorted(dias.items(), key=lambda t: (-t[1], t[0])) if n >= 2][:2]
+        ss = [k for k, n in sorted(svs.items(), key=lambda t: (-t[1], t[0]))][:2]
+        pistas[x] = {'d': sorted(dd), 's': ss}
+    return asignadas, pistas
+
+
+def cazo(x, ev_s, contra, quien):
+    """🎯 ¿`quien` cazó a `x` esta semana? Le ganó un duelo, o quedó más arriba que `x` en un evento donde estaban los
+    dos (por la ronda a la que llegó cada uno: `LLEGO`, menor es mejor; la misma ronda no alcanza)."""
+    if x in (contra.get(quien) or set()):
+        return True
+    mios = {e[0]: LLEGO.get(e[3], 99) for e in ev_s.get(quien) or []}
+    for e in ev_s.get(x) or []:
+        if e[0] in mios and mios[e[0]] < LLEGO.get(e[3], 99):
+            return True
+    return False
 
 
 def servidor_chico(sid, ini, evs, desde=None, evitar=()):
@@ -374,7 +469,9 @@ def filas_de(res, uno, instantes=None, canon=None, es_troll=None):
         num = _n(f[0])
         # y a quién le ganó: la cacería pide ganarle un duelo a alguien en particular
         perd = next((str(x).strip() for x in (f[4], f[5]) if str(x).strip() and canon(str(x).strip()) != gan), '')
-        dus.append((num, cuando(num, f[1]), gan, canon(perd) if perd else ''))
+        # 🎯 y dónde fue (servidor, fecha y ronda): la revancha de tu presa lo dice
+        dus.append((num, cuando(num, f[1]), gan, canon(perd) if perd else '', str(f[2]).strip(), str(f[1]).strip(),
+                    _norm(f[3])))
     return evs, dus
 
 
@@ -485,6 +582,8 @@ def calcular(evs, dus, ahora, desde=None, mult=None, writing=None, ctx=None):
                     contra.setdefault(d[2], set()).add(d[3])
         s = {'ev': ev_s, 'du': du_s, 'contra': contra, 'antes': svs_antes, 'top': tops.get(sid, set()), 'rg': rg,
              'pais': ctx.get('pais'), 'formato': ctx.get('formato') or {}}
+        # 🎯 la presa de cada uno (desde `PRESA_DESDE`): elegida con lo de antes del lunes
+        presas, pistas = (presas_de(ini, evs, dus, ctx.get('pts') or {}, desde) if sid >= PRESA_DESDE else ({}, {}))
         prog, pts = {}, {}
         s['wr_q'] = wr_q if wr_f else set()
         # ✍️ quien sólo escribió esa semana también tiene su fila: la misión del Writing no pide jugar un evento
@@ -494,12 +593,19 @@ def calcular(evs, dus, ahora, desde=None, mult=None, writing=None, ctx=None):
             # ⚠️ el bono es por las tres de siempre: la cacería, el dorado y el Writing van aparte
             p = sum(x[4] for x, h in zip(lista, hechas) if h) + (
                 BONO if all(h for x, h in zip(lista, hechas) if x[0] not in APARTE) else 0)
+            # 🎯 y tu presa, aparte del bono
+            if quien in presas and cazo(presas[quien][0], ev_s, contra, quien):
+                presas[quien] = presas[quien][:3] + [1]
+                p += PUNTOS_PRESA
             prog[quien] = vs
             if p:
                 pts[quien] = p
                 suma[quien] = suma.get(quien, 0) + p
         out_sem[sid] = {'lista': lista, 'prog': prog, 'pts': pts,
                         'fin': fin.astimezone(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}
+        if presas:
+            out_sem[sid]['presas'] = {q: (a + [0])[:4] for q, a in presas.items()}
+            out_sem[sid]['pistas'] = pistas
     return {'sem': sem_hoy, 'semanas': out_sem, 'suma': suma}
 
 
@@ -593,7 +699,27 @@ def formatos(regs=None):
 
 def contexto(res, evs, desde=None, canon=None):
     """🆕 Lo que piden las familias nuevas (`calcular(ctx=…)`): el rango al empezar cada semana, el país y el formato."""
-    return {'rangos': rangos_al(res, evs, desde, canon), 'pais': pais_de(), 'formato': formatos()}
+    return {'rangos': rangos_al(res, evs, desde, canon), 'pais': pais_de(), 'formato': formatos(), 'pts': puntos_de(res, canon)}
+
+
+def puntos_de(res, canon=None):
+    """🎯 `{(evento, quién): puntos}` de `Resultados` (la columna final, o la base si está vacía), para saber quién está
+    cerca de quién en la Temporada al elegir las presas (`presas_de()`)."""
+    canon = canon or (lambda x: x)
+    out = {}
+    for f in res or []:
+        f = list(f) + [''] * 11
+        q = str(f[4]).strip()
+        if not q:
+            continue
+        try:
+            n = int(float(str(f[0]).strip() or 0))
+            v = float(str(f[9] or f[7] or 0).replace(',', '.'))
+        except ValueError:
+            continue
+        k = (n, canon(q))
+        out[k] = out.get(k, 0) + v
+    return out
 
 
 def correr(res=None, uno=None, ahora=None, aplicar=False):
@@ -688,10 +814,20 @@ def para_web(d):
         if x[0] == 'dorado' and len(x) > 6 and x[6]:
             out['sv'] = x[6]
         return out
-    return {'sem': d['sem'], 'fin': s.get('fin'), 'bono': d.get('bono', BONO),
-            'lista': [fila(x, m) for x, m in zip(lista, metas)],
-            'prog': {q: mostrar(vs) for q, vs in (s.get('prog') or {}).items()},
-            'pts': s.get('pts') or {}, 'total': top_total(d.get('suma'))}
+    out = {'sem': d['sem'], 'fin': s.get('fin'), 'bono': d.get('bono', BONO),
+           'lista': [fila(x, m) for x, m in zip(lista, metas)],
+           'prog': {q: mostrar(vs) for q, vs in (s.get('prog') or {}).items()},
+           'pts': s.get('pts') or {}, 'total': top_total(d.get('suma')),
+           # 🎯 tu presa: desde cuándo existe (la página la anuncia antes) y cuánto paga; de esta semana, la de cada uno,
+           # `[presa, cazada 0|1, motivo r|e|c]` y, si es la revancha, `+ [evento, servidor, ronda]`; y la pista de cada
+           # presa, `[[días, 0 = lunes, en hora del este], [servidores]]`. Lo más compacto que se pudo: son ~290 cazadores
+           # y ~4 KB comprimidos en cada visita (medido el 20/11/2026 con la semana del 16)
+           'pre_desde': PRESA_DESDE, 'pre_p': PUNTOS_PRESA}
+    if s.get('presas'):
+        out['pre'] = {q: [a[0], int(a[3] if len(a) > 3 else 0), (a[1] or 'c')[0]] + ([a[2][0], a[2][1], a[2][3]] if a[2] else [])
+                      for q, a in s['presas'].items()}
+        out['pis'] = {x: [v.get('d') or [], v.get('s') or []] for x, v in (s.get('pistas') or {}).items()}
+    return out
 
 
 def _self_check_nuevas(ok):
@@ -795,6 +931,8 @@ def _self_check_nuevas(ok):
             h = [cumplida(x[0], v, x[3]) for x, v in zip(sx['lista'], vs)]
             p = sum(x[4] for x, y in zip(sx['lista'], h) if y)
             p += BONO if all(y for x, y in zip(sx['lista'], h) if x[0] not in ('caza', 'dorado')) else 0
+            # 🎯 y la presa cazada, desde PRESA_DESDE (aparte del bono)
+            p += PUNTOS_PRESA if ((sx.get('presas') or {}).get(q) or [0, 0, 0, 0])[3] else 0
             cuenta_bien &= (sx['pts'].get(q, 0) == p)
     salen = {x[0] for sid in sems for x in rw['semanas'][sid]['lista']}
     ok(len(sems) >= 8 and cuenta_bien and salen & nuevas
@@ -854,6 +992,24 @@ def _self_check():
         nonlocal mal
         mal += not c
         print('   %s %s' % ('✅' if c else '🔴', q))
+    # 🎯 tu presa (20/11/2026): la revancha gana si es activa; la pista dice días y servidores; se caza quedando arriba
+    U0 = dt.timezone.utc
+    ini_p = dt.datetime(2026, 11, 23, 16, 0, tzinfo=U0)
+    t_a = dt.datetime(2026, 11, 13, 2, 0, tzinfo=U0)     # jueves 12/11, 9 PM ET
+    t_b = dt.datetime(2026, 11, 20, 2, 0, tzinfo=U0)     # jueves 19/11, 9 PM ET
+    evs_p = [(1, 'FFA', t_a, 'Ana', 'cuartos'), (1, 'FFA', t_a, 'Bea', 'campeon'), (1, 'FFA', t_a, 'Cia', 'octavos'),
+             (2, 'CH', t_b, 'Ana', 'semifinal'), (2, 'CH', t_b, 'Bea', 'subcampeon'), (2, 'CH', t_b, 'Cia', 'cuartos')]
+    dus_p = [(1, t_a, 'Bea', 'Ana', 'FFA', '12/11', 'cuartos')]
+    asig, pis = presas_de(ini_p, evs_p, dus_p, {(1, 'Bea'): 900, (1, 'Ana'): 300, (1, 'Cia'): 100, (2, 'Bea'): 700,
+                                                 (2, 'Ana'): 400, (2, 'Cia'): 200})
+    ok(asig.get('Ana', [None])[0] == 'Bea' and asig['Ana'][1] == 'revancha' and asig['Ana'][2] == [1, 'FFA', '12/11', 'cuartos']
+       and asig.get('Bea', [None])[0] in ('Ana', 'Cia') and pis.get('Bea') == {'d': [3], 's': ['CH', 'FFA']},
+       'tu presa: la revancha gana, y la pista dice el día (jueves) y los servidores donde jugó')
+    t_c = dt.datetime(2026, 11, 25, 2, 0, tzinfo=U0)
+    ev_w = {'Ana': [(5, 'FFA', t_c, 'semifinal')], 'Bea': [(5, 'FFA', t_c, 'cuartos')], 'Cia': [(6, 'DRA', t_c, 'campeon')]}
+    ok(cazo('Bea', ev_w, {}, 'Ana') and not cazo('Ana', ev_w, {}, 'Bea') and not cazo('Bea', ev_w, {}, 'Cia')
+       and cazo('Bea', {}, {'Cia': {'Bea'}}, 'Cia'),
+       'se caza quedando más arriba en el mismo evento o ganándole un duelo; en otro evento, no')
     a, b = elegir('2026-10-05'), elegir('2026-10-05')
     ok(a == b and [x[2] for x in a] == list(NIVELES), 'la misma semana da las mismas tres: una de cada nivel')
     c = elegir('2026-10-12', [x[0] for x in a])
