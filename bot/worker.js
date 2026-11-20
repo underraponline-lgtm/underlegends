@@ -4134,7 +4134,18 @@ const IMG_TEXTO = {
   espera: (que) => `${que} se está armando: prueba en unos minutos.`,
   limite: (que) => `${que} ya se armó muchas veces hoy: prueba mañana.`,
   lleno: () => 'Hay muchas imágenes en camino: prueba en unos minutos.',
+  muchas: () => 'Ya tienes varias imágenes en camino: espera a que lleguen y prueba de nuevo.',
   error: () => 'Ahora no puedo armarla: prueba en un rato.',
+};
+/**
+ * 🔗 De qué mensaje es esta interacción: el id de la interacción que lo CREÓ (el comando). En un comando es la suya; en un
+ * botón, la que trae el mensaje (`interaction_metadata`). Es lo que ata una espera del objeto a su mensaje: un clic de vista
+ * en ese mensaje la suelta (`imgSoltar()`), así la imagen que llega tarde no pisa la Vitrina o las Cartas que se eligieron
+ */
+const refImg = (i) => {
+  const m = (i && i.message) || null;
+  const x = m ? ((m.interaction_metadata && m.interaction_metadata.id) || (m.interaction && m.interaction.id) || m.id) : i && i.id;
+  return /^\d{5,25}$/.test(String(x || '')) ? String(x) : '';
 };
 /**
  * Le pide al objeto la imagen de `k` y deja el permiso para editar ESTA respuesta cuando llegue (`imgPedir()`). Va en
@@ -4147,8 +4158,8 @@ async function pedirImg(env, i, base, actual, hecho, armando) {
   try {
     const o = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/img-pedir', {
       method: 'POST', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ k: base.k, tipo: base.tipo, a: actual, token: i.token, app: i.application_id, dueno: base.dueno,
-        n: base.n, cartas: base.cartas, armando }),
+      body: JSON.stringify({ k: base.k, tipo: base.tipo, a: actual, token: i.token, app: i.application_id, ref: refImg(i),
+        dueno: base.dueno, n: base.n, cartas: base.cartas, armando }),
     });
     r = await o.json().catch(() => null);
   } catch (e) { r = null; }
@@ -4156,18 +4167,28 @@ async function pedirImg(env, i, base, actual, hecho, armando) {
     return editarOriginal(i, V.mensajeImg(Object.assign({ url: V.urlImg(R2, base.tipo, base.k, r.listo) }, base)));
   }
   if (!armando || (r && (r.cola || r.listo))) return null;
-  const txt = (IMG_TEXTO[(r && (r.espera ? 'espera' : r.limite ? 'limite' : r.lleno ? 'lleno' : '')) || 'error'] || IMG_TEXTO.error)(que);
-  return editarOriginal(i, V.mensajeImg(Object.assign({ texto: txt }, base)));
+  const cual = r && (r.espera ? 'espera' : r.limite ? 'limite' : r.lleno ? 'lleno' : r.muchas ? 'muchas' : '');
+  return editarOriginal(i, V.mensajeImg(Object.assign({ texto: (IMG_TEXTO[cual || 'error'] || IMG_TEXTO.error)(que) }, base)));
+}
+/** 🖐️ Un clic de vista que no pide imagen (la que hay ya es la de hoy, o «Cartas»): lo que el mensaje esperaba, se suelta */
+function soltarImg(env, i) {
+  const ref = refImg(i);
+  if (!ref || !env.AVISOS) return null;
+  return env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/img-soltar', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ref }),
+  }).catch(() => null);
 }
 /**
- * La respuesta de `/perfil` o `/vitrina` de `k` (comando o botón): `{msg, pedir}`. Con imagen, ésa (y si es de antes de los
- * datos de hoy, `pedir` la nueva: la respuesta se edita cuando llega); sin imagen, «Armando…» y `pedir`.
+ * La respuesta de `/perfil` o `/vitrina` de `k` (comando o botón). Con imagen, ésa (y si es de antes de los datos de hoy, se
+ * pide la nueva: la respuesta se edita cuando llega); sin imagen, «Armando…» y el pedido. Un botón que no pide nada suelta
+ * lo que su mensaje esperaba (`soltarImg()`).
  */
 function vistaImg(env, i, ctx, k, g, tipo, dueno) {
   const [actual, hecho] = sellosImg(g, tipo);
   const base = { tipo, k, n: String(g.n || k).replace(/[`*_~|<>@]/g, ''), dueno: dueno || '', cartas: tieneCartas(g) };
   if (hecho) {
     if (actual && actual !== hecho && env.AVISOS) luego(ctx, pedirImg(env, i, base, actual, hecho, false));
+    else if (i.message) luego(ctx, soltarImg(env, i));
     return V.mensajeImg(Object.assign({ url: V.urlImg(R2, tipo, k, hecho) }, base));
   }
   if (env.AVISOS) luego(ctx, pedirImg(env, i, base, actual, '', true));
@@ -6130,6 +6151,7 @@ export default {
         if (letra === 'c') {
           if (!tieneCartas(gI)) return aviso(`**${String(gI.n || k).replace(/[`*_~|<>@]/g, '')}** todavía no tiene cartas.`);
           const mI = JSON.parse((await env.KV.get('meta')) || '{}');
+          luego(ctx, soltarImg(env, i));
           return responder(RESPONDE.ACTUALIZAR, carta(k, gI, cartaQueAbre(gI, i.guild_id), null, dueno, mI, aquiI)
             .concat([V.filaImg(k, dueno, 'cartas', { cartas: true })]));
         }

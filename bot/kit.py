@@ -1507,6 +1507,17 @@ def correr_img():
               'fallas': [{'k': k, 'tipo': OG.TIPOS_IMG[t]} for (t, k) in lista if (t, k) not in subidas]}
     rr = requests.post(AV.WORKER + '/avisos/img-listo', headers={'x-lg-ciclo': _clave()}, timeout=60, json=cuerpo)
     print('   ✅ %d de %d · el objeto: %d %s' % (len(subidas), len(lista), rr.status_code, rr.text[:120]))
+    # 🗑️ quien pidió que lo olviden MIENTRAS se dibujaba: el objeto no la anota y dice qué sacar de R2 (`imgListo()`)
+    try:
+        borrar = [b for b in ((rr.json() or {}).get('borrar') or []) if re.match(r'^(perfil|vitrina)/[^/]+\.webp$', str(b))]
+    except ValueError:
+        borrar = []
+    if borrar:
+        import subir_cartas as SC
+        s = SC.sesion()
+        for b in borrar:
+            SC._ok(s.delete('%s/objects/%s' % (SC.API, b), timeout=30), 'borrar')
+        print('   🗑️ %d borradas: pidieron que los olviden' % len(borrar))
     return 1 if not subidas else 0
 
 

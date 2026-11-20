@@ -6154,6 +6154,14 @@ export const IMG_DIA = 6;
 export const IMG_ENTRE = 75 * 1000;
 export const IMG_COLA_MAX = 30;
 export const IMG_TOKEN = 14 * 60 * 1000;
+// (revisión del 20/11/2026) todo «Armando…» termina antes de que venza el permiso: a los `IMG_PLAZO` sin imagen, dice «no
+// pude»; cuántas pendientes puede tener una misma persona (con `nombre:` uno solo llenaba los 30 lugares); y cuántos
+// pedidos salientes (ediciones de Discord) hace una llamada como mucho (el tope de Cloudflare es 50 por invocación)
+export const IMG_PLAZO = 12 * 60 * 1000;
+export const IMG_POR_PERSONA = 3;
+export const IMG_EDICIONES = 25;
+//: cuánto viven las filas de la cola ya cerradas (lo hecho lo usa el ciclo un día o dos; el freno, el mismo día)
+export const IMG_VIVEN = 2 * 24 * 60 * 60 * 1000;
 const IMG_TIPOS = { p: 'perfil', v: 'vitrina' };
 
 /** 🗳️ La marca de un veredicto borrado en `veredictos_hist`. */
@@ -9036,6 +9044,15 @@ export class Avisos {
         "dia TEXT NOT NULL DEFAULT '', veces INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (k, tipo))");
       this.sql.exec('CREATE TABLE IF NOT EXISTS img_msj (id TEXT PRIMARY KEY, k TEXT NOT NULL, tipo TEXT NOT NULL, token TEXT NOT NULL, ' +
         'app TEXT NOT NULL, dueno TEXT NOT NULL, n TEXT NOT NULL, cartas INTEGER NOT NULL, armando INTEGER NOT NULL, t INTEGER NOT NULL)');
+      // (revisión del 20/11/2026) `ref`: de qué mensaje es la espera —el id de la interacción que lo creó—, así un clic en
+      // ese mensaje la suelta (`imgSoltar()`); `por`: quién pidió la imagen, para el tope por persona (`IMG_POR_PERSONA`)
+      try { this.sql.exec("ALTER TABLE img_msj ADD COLUMN ref TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      try { this.sql.exec("ALTER TABLE img_cola ADD COLUMN por TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      // ⚡ el vigía pregunta cada minuto «¿hay algo esperando?» y `imgPedir()` cuenta lo pendiente: con índice leen sólo eso
+      // (este objeto ya se pasó dos veces de los 5 millones de filas leídas por día, ver `memo()`)
+      this.sql.exec('CREATE INDEX IF NOT EXISTS img_cola_estado ON img_cola (estado, pedido)');
+      // 🗑️ quien pidió que lo olviden (`olvidar()`): la cola no lo entrega y lo que la tarea suba de él se borra
+      this.sql.exec('CREATE TABLE IF NOT EXISTS img_olvido (k TEXT PRIMARY KEY, t INTEGER NOT NULL)');
       // 🏷️ EL TAG QUE CADA UNO ELIGE PARA CADA CARTA (Dlx, 25/10/2026: «que los tags de abajo sean personalizables en cada
       // tarjeta… desde el inventario»). `tag` es la clave del catálogo (`sheet/catalogo_tags.py`) o `pase:<título>`. El
       // inventario lo trae el ciclo (`/avisos/tags-ciclo`, en `estado` como `tags_ganados`)
@@ -9786,6 +9803,7 @@ export class Avisos {
       // 🖼️ /perfil y /vitrina: el pedido, sólo del Worker (no está en `RUTAS`); la imagen ya dibujada, de la tarea
       if (ruta === '/img-pedir') return json(await this.imgPedir(d));
       if (ruta === '/img-listo') return json(await this.imgListo(d));
+      if (ruta === '/img-soltar') return json(this.imgSoltar(d));
       if (ruta === '/mis-videos') return this.misVideos(d);
       if (ruta === '/seguir-org') return json(this.seguirOrg(d));
       if (ruta === '/seguir-sv') return json(this.seguirSv(d));
@@ -14059,6 +14077,9 @@ export class Avisos {
     // 👥 y su lugar en una crew, sus invitaciones y sus pedidos (19/10/2026). Si era el líder, la crew pasa al colíder
     // más viejo; si era el único, se cierra (`crewOlvidar()`)
     if (d.clave && typeof d.clave === 'string') { try { CW.crewOlvidar(this, d.clave.slice(0, 100)); } catch (e) { /* sigue con lo demás */ } }
+    // 🖼️ y sus imágenes de /perfil y /vitrina pedidas (20/11/2026): fuera de la cola y de las esperas, y anotado para que la
+    // tarea no las vuelva a subir (`imgListo()` le devuelve qué borrar). Las de R2 las borra el Worker
+    try { this.imgOlvidar(typeof d.clave === 'string' ? d.clave.slice(0, 100) : '', String(d.quien)); } catch (e) { /* sigue con lo demás */ }
     try { this.sql.exec("UPDATE crew_miembros SET quien = '' WHERE quien = ?", String(d.quien)); } catch (e) { /* sin crews */ }
     // 🛍️ y lo suyo de la Tienda: lo que compró, lo que se puso, su lista y sus regalos (bot/tienda.js)
     try { TI.tiendaOlvidar(this, String(d.quien)); } catch (e) { /* sin tienda */ }
@@ -20632,62 +20653,128 @@ export class Avisos {
   // antes de los datos de hoy, se pide acá cuando alguien usa el comando: el Worker contesta en el momento (con la imagen
   // que hay, o «Armando…») y manda el permiso para editar ESA respuesta; la tarea `kit.yml` (`bot/kit.py --tipo img`) se
   // lleva la cola, dibuja con la página y devuelve cada imagen (`imgListo()`), y la respuesta se edita sola.
+  // 🔁 Lo de la revisión del mismo día: cada espera es de UN mensaje (`ref`) y un clic en él la suelta; todo «Armando…»
+  // termina antes de que venza el permiso de Discord (`IMG_PLAZO`); tope por quien pide; tope de ediciones por llamada; y
+  // quien pidió que lo olviden no vuelve a la cola ni a R2.
   /**
-   * `d`: `{k, tipo: 'perfil'|'vitrina', a: el sello de hoy (del `p:`, '' si no se sabe), token, app, dueno, n, cartas,
+   * `d`: `{k, tipo: 'perfil'|'vitrina', a: el sello de hoy (del `p:`, '' si no se sabe), token, app, ref, dueno, n, cartas,
    * armando}`. Devuelve `{listo: sello}` si la que armó el kit ya es la de hoy (el `p:` todavía no se enteró), `{cola}` si
-   * quedó pedida (la respuesta se edita cuando llega) o el freno: `{espera: ms}`, `{limite}` (6 por día) o `{lleno}`.
-   * ⚠️ EL FRENO ES POR PERSONA E IMAGEN, no por quien pide: cien mirando la vitrina de Makmah piden UNA imagen. Y la cola
-   * tiene tope (`IMG_COLA_MAX`): pedir las de 500 personas distintas no prende 500 tareas.
+   * quedó pedida (la respuesta se edita cuando llega) o el freno: `{espera: ms}`, `{limite}` (6 por día), `{lleno}` (la
+   * cola entera) o `{muchas}` (las de quien pide).
+   * ⚠️ EL FRENO ES POR PERSONA E IMAGEN Y POR QUIEN PIDE: cien mirando la vitrina de Makmah piden UNA imagen, y uno solo
+   * pidiendo la de 30 personas distintas con `nombre:` se queda en `IMG_POR_PERSONA`.
    */
   async imgPedir(d, ahora = Date.now()) {
     const tipo = d && d.tipo === 'vitrina' ? 'v' : d && d.tipo === 'perfil' ? 'p' : '';
     const k = String((d && d.k) || '');
     if (!tipo || !claveValida(k)) return { error: 'datos' };
     const a = /^[0-9a-f]{10}$/.test(String(d.a || '')) ? String(d.a) : '';
-    this.sql.exec('DELETE FROM img_msj WHERE t < ?', ahora - IMG_TOKEN);
+    const ref = /^\d{5,25}$/.test(String(d.ref || '')) ? String(d.ref) : '';
+    const por = /^\d{5,25}$/.test(String(d.dueno || '')) ? String(d.dueno) : '';
+    if (this.sql.exec('SELECT 1 FROM img_olvido WHERE k = ?', k).toArray().length) return { error: 'olvido' };
+    // este mensaje deja de esperar lo que esperaba: ahora espera esto (o nada)
+    if (ref) this.sql.exec('DELETE FROM img_msj WHERE ref = ?', ref);
     const f = this.sql.exec('SELECT * FROM img_cola WHERE k = ? AND tipo = ?', k, tipo).toArray()[0];
     if (f && f.estado === 'hecho' && f.hecho && (!a || f.hecho === a)) return { listo: f.hecho };
-    // el permiso para editar esta respuesta cuando llegue la imagen (cinco por imagen como mucho: las demás se quedan con
-    // lo que ya mostraron)
+    // el permiso para editar esta respuesta cuando llegue la imagen. Cinco por imagen como mucho: las que muestran una imagen
+    // se quedan con ella, y un «Armando…» que no entra se contesta ya (si no, quedaba así para siempre)
     const anotar = () => {
-      if (!/^[\w.-]{20,500}$/.test(String(d.token || '')) || !/^\d{5,25}$/.test(String(d.app || ''))) return;
+      if (!/^[\w.-]{20,500}$/.test(String(d.token || '')) || !/^\d{5,25}$/.test(String(d.app || ''))) return false;
       const ya = Number((this.sql.exec('SELECT COUNT(*) AS n FROM img_msj WHERE k = ? AND tipo = ?', k, tipo).toArray()[0] || {}).n) || 0;
-      if (ya >= 5) return;
+      if (ya >= 5) return false;
       const id = [...crypto.getRandomValues(new Uint8Array(8))].map((x) => x.toString(16).padStart(2, '0')).join('');
-      this.sql.exec('INSERT INTO img_msj (id, k, tipo, token, app, dueno, n, cartas, armando, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        id, k, tipo, String(d.token), String(d.app), /^\d{5,25}$/.test(String(d.dueno || '')) ? String(d.dueno) : '',
-        String(d.n || k).replace(/[`*_~|<>@]/g, '').slice(0, 60), d.cartas ? 1 : 0, d.armando ? 1 : 0, ahora);
+      this.sql.exec('INSERT INTO img_msj (id, k, tipo, token, app, dueno, n, cartas, armando, t, ref) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        id, k, tipo, String(d.token), String(d.app), por, String(d.n || k).replace(/[`*_~|<>@]/g, '').slice(0, 60), d.cartas ? 1 : 0,
+        d.armando ? 1 : 0, ahora, ref);
+      return true;
     };
-    if (f && (f.estado === 'espera' || f.estado === 'dibujando')) { anotar(); return { cola: true }; }
+    const esperando = () => (anotar() || !d.armando ? { cola: true } : { espera: IMG_ENTRE });
+    if (f && (f.estado === 'espera' || f.estado === 'dibujando')) return esperando();
     const hoy = new Date(ahora).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
     if (f && f.dia === hoy && f.veces >= IMG_DIA) return { limite: true };
     if (f && ahora - f.pedido < IMG_ESPERA) return { espera: f.pedido + IMG_ESPERA - ahora };
-    const n = Number((this.sql.exec("SELECT COUNT(*) AS n FROM img_cola WHERE estado IN ('espera', 'dibujando')").toArray()[0] || {}).n) || 0;
-    if (n >= IMG_COLA_MAX) return { lleno: true };
-    this.sql.exec("INSERT INTO img_cola (k, tipo, estado, pedido, dia, veces) VALUES (?, ?, 'espera', ?, ?, 1) ON CONFLICT(k, tipo) DO UPDATE SET " +
+    // (las dos cuentas van por el índice de `estado`: leen sólo lo pendiente, que son 30 filas como mucho)
+    const pend = this.sql.exec("SELECT por FROM img_cola WHERE estado IN ('espera', 'dibujando')").toArray();
+    if (pend.length >= IMG_COLA_MAX) return { lleno: true };
+    if (por && pend.filter((x) => x.por === por).length >= IMG_POR_PERSONA) return { muchas: true };
+    this.sql.exec("INSERT INTO img_cola (k, tipo, estado, pedido, dia, veces, por) VALUES (?, ?, 'espera', ?, ?, 1, ?) ON CONFLICT(k, tipo) DO UPDATE SET " +
       "estado = 'espera', pedido = excluded.pedido, tom = 0, veces = CASE WHEN img_cola.dia = excluded.dia THEN img_cola.veces + 1 ELSE 1 END, " +
-      'dia = excluded.dia', k, tipo, ahora, hoy);
-    anotar();
+      'dia = excluded.dia, por = excluded.por', k, tipo, ahora, hoy, por);
+    const r = esperando();
     try { await this.imgDespachar(ahora); } catch (e) { this.guardar('img', { t: ahora, error: String(e).slice(0, 160) }); }
-    return { cola: true };
+    return r;
   }
 
-  /** ✏️ Edita una respuesta que esperaba su imagen (`m` es una fila de `img_msj`), con su permiso de Discord */
-  imgEditar(m, cuerpo) {
+  /** 🖐️ Un clic de vista (Perfil, Vitrina, Cartas) en un mensaje: lo que ese mensaje esperaba ya no se le pone */
+  imgSoltar(d) {
+    const ref = String((d && d.ref) || '');
+    if (!/^\d{5,25}$/.test(ref)) return { error: 'datos' };
+    return { ok: true, n: this.sql.exec('DELETE FROM img_msj WHERE ref = ?', ref).rowsWritten || 0 };
+  }
+
+  /** ✏️ Edita una respuesta que esperaba su imagen (`m` es una fila de `img_msj`), con su permiso de Discord. `pres` es el tope
+   *  de pedidos salientes de esta llamada (`{n}`): sin lugar, no edita y devuelve `null` (la fila queda para la vuelta siguiente) */
+  async imgEditar(m, cuerpo, pres) {
+    if (pres && pres.n <= 0) return null;
+    if (pres) pres.n -= 1;
     return fetch(`https://discord.com/api/v10/webhooks/${m.app}/${m.token}/messages/@original`, {
       method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo),
     }).then((r) => r.ok).catch(() => false);
   }
+  /** El «no pude» de una respuesta que decía «Armando…» */
+  imgNoPude(m) {
+    return V.mensajeImg({ tipo: IMG_TIPOS[m.tipo], k: m.k, n: m.n, dueno: m.dueno, cartas: !!m.cartas,
+      texto: 'No pude armar ' + (m.tipo === 'v' ? 'la vitrina' : 'el perfil') + ' de **' + m.n + '** esta vez: prueba de nuevo en un rato.' });
+  }
+  /** La respuesta con la imagen ya hecha */
+  imgConImagen(m, sello) {
+    return V.mensajeImg({ tipo: IMG_TIPOS[m.tipo], k: m.k, n: m.n, dueno: m.dueno, cartas: !!m.cartas,
+      url: V.urlImg(R2_PUB, IMG_TIPOS[m.tipo], m.k, sello) });
+  }
 
-  /** La tarea, si hay algo esperando y no se prendió en los últimos `IMG_ENTRE` (se lleva toda la cola: ver `imgCola()`).
-   *  Lo que se cayó vuelve a la cola a los 4 minutos; lo que no salió en 20, error (y su «Armando…» lo dice) */
+  /**
+   * ⏱️ Cada minuto (el vigía) y después de cada pedido. ⚡ BARATO CUANDO NO HAY NADA: dos `LIMIT 1` por el índice y se va.
+   * Si hay: las respuestas cuya imagen ya está (las que no entraron en el tope de `imgListo()`), los «Armando…» de más de
+   * `IMG_PLAZO` («no pude», dentro de los 15 minutos del permiso), lo que una tarea caída dejó «dibujando» (vuelve a la
+   * cola a los 4 minutos), lo pendiente de más de 20 minutos (error) y la tarea, como mucho una vez cada `IMG_ENTRE` (se
+   * lleva toda la cola: ver `imgCola()`). La limpieza de lo viejo, una vez por día.
+   */
   async imgDespachar(ahora) {
-    const vencidas = this.sql.exec("SELECT k, tipo FROM img_cola WHERE estado IN ('espera', 'dibujando') AND pedido < ?", ahora - 20 * MIN).toArray();
-    for (const v of vencidas) await this.imgFallo(v.k, v.tipo, ahora);
+    const pres = { n: IMG_EDICIONES };
+    const hayMsj = this.sql.exec('SELECT 1 FROM img_msj LIMIT 1').toArray().length > 0;
+    const hayCola = this.sql.exec("SELECT 1 FROM img_cola WHERE estado IN ('espera', 'dibujando') LIMIT 1").toArray().length > 0;
+    const dia = new Date(ahora).toISOString().slice(0, 10);
+    if (this.leer('img_limpio') !== dia) {
+      this.guardar('img_limpio', dia);
+      this.sql.exec("DELETE FROM img_cola WHERE estado IN ('hecho', 'error') AND pedido < ? AND hecho_t < ?", ahora - IMG_VIVEN, ahora - IMG_VIVEN);
+      this.sql.exec('DELETE FROM img_olvido WHERE t < ?', ahora - 7 * DIA_MS);
+    }
+    if (hayMsj) {
+      // las que esperaban una imagen que ya está
+      const listas = this.sql.exec("SELECT m.*, c.hecho AS sello FROM img_msj m JOIN img_cola c ON c.k = m.k AND c.tipo = m.tipo " +
+        "WHERE c.estado = 'hecho' AND c.hecho != '' AND c.hecho_t >= m.t LIMIT ?", IMG_EDICIONES).toArray();
+      for (const m of listas) {
+        const r = await this.imgEditar(m, this.imgConImagen(m, m.sello), pres);
+        if (r === null) break;
+        this.sql.exec('DELETE FROM img_msj WHERE id = ?', m.id);
+      }
+      // los «Armando…» de una imagen que falló y no entraron en el tope de `imgFallo()`, y los que ya no llegan a tiempo:
+      // «no pude», antes de que venza el permiso
+      const tarde = this.sql.exec("SELECT m.* FROM img_msj m LEFT JOIN img_cola c ON c.k = m.k AND c.tipo = m.tipo " +
+        "WHERE m.armando = 1 AND (m.t < ? OR c.estado = 'error') LIMIT ?", ahora - IMG_PLAZO, IMG_EDICIONES).toArray();
+      for (const m of tarde) {
+        const r = await this.imgEditar(m, this.imgNoPude(m), pres);
+        if (r === null) break;
+        this.sql.exec('DELETE FROM img_msj WHERE id = ?', m.id);
+      }
+      // y las que mostraban una imagen y ya no se pueden editar
+      this.sql.exec('DELETE FROM img_msj WHERE armando = 0 AND t < ?', ahora - IMG_TOKEN);
+    }
+    if (!hayCola) return 0;
+    this.sql.exec("UPDATE img_cola SET estado = 'error' WHERE estado IN ('espera', 'dibujando') AND pedido < ?", ahora - 20 * MIN);
     this.sql.exec("UPDATE img_cola SET estado = 'espera' WHERE estado = 'dibujando' AND tom < ?", ahora - 4 * MIN);
-    this.sql.exec("DELETE FROM img_cola WHERE estado IN ('hecho', 'error') AND pedido < ? AND hecho_t < ?", ahora - 30 * DIA_MS, ahora - 30 * DIA_MS);
-    const n = Number((this.sql.exec("SELECT COUNT(*) AS n FROM img_cola WHERE estado = 'espera'").toArray()[0] || {}).n) || 0;
-    if (!n || !this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
+    if (!this.sql.exec("SELECT 1 FROM img_cola WHERE estado = 'espera' LIMIT 1").toArray().length) return 0;
+    if (!this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
     if (ahora - (Number(this.leer('img_desp')) || 0) < IMG_ENTRE) return 0;
     this.guardar('img_desp', ahora);
     const id = [...crypto.getRandomValues(new Uint8Array(12))].map((x) => x.toString(16).padStart(2, '0')).join('');
@@ -20697,22 +20784,26 @@ export class Avisos {
     return r.status === 204 ? 1 : 0;
   }
 
-  /** Para la tarea (`/avisos/img-cola`, con la clave del ciclo): lo que espera, que pasa a «dibujando» */
+  /** Para la tarea (`/avisos/img-cola`, con la clave del ciclo): lo que espera, que pasa a «dibujando». Nunca a quien pidió
+   *  que lo olviden */
   imgCola(ahora = Date.now()) {
-    const filas = this.sql.exec("SELECT k, tipo FROM img_cola WHERE estado = 'espera' ORDER BY pedido LIMIT 12").toArray();
+    const filas = this.sql.exec("SELECT k, tipo FROM img_cola WHERE estado = 'espera' AND k NOT IN (SELECT k FROM img_olvido) " +
+      'ORDER BY pedido LIMIT 12').toArray();
     for (const f of filas) this.sql.exec("UPDATE img_cola SET estado = 'dibujando', tom = ? WHERE k = ? AND tipo = ?", ahora, f.k, f.tipo);
     return { img: filas.map((f) => ({ k: f.k, tipo: IMG_TIPOS[f.tipo] })) };
   }
 
-  /** Una que no salió: error, y las respuestas que decían «Armando…» lo dicen (las que mostraban una imagen, la siguen mostrando) */
-  async imgFallo(k, tipo, ahora) {
+  /** Una que no salió: error, y las respuestas que decían «Armando…» lo dicen (las que mostraban una imagen, la siguen
+   *  mostrando). Las que no entran en el tope quedan: las contesta el vigía, a tiempo (`IMG_PLAZO`) */
+  async imgFallo(k, tipo, ahora, pres) {
     this.sql.exec("UPDATE img_cola SET estado = 'error' WHERE k = ? AND tipo = ?", k, tipo);
-    const ms = this.sql.exec('SELECT * FROM img_msj WHERE k = ? AND tipo = ? AND t > ?', k, tipo, ahora - IMG_TOKEN).toArray();
-    this.sql.exec('DELETE FROM img_msj WHERE k = ? AND tipo = ?', k, tipo);
+    this.sql.exec('DELETE FROM img_msj WHERE k = ? AND tipo = ? AND armando = 0', k, tipo);
     let n = 0;
-    for (const m of ms.filter((x) => x.armando).slice(0, 5)) {
-      if (await this.imgEditar(m, V.mensajeImg({ tipo: IMG_TIPOS[tipo], k, n: m.n, dueno: m.dueno, cartas: !!m.cartas,
-        texto: 'No pude armar ' + (tipo === 'v' ? 'la vitrina' : 'el perfil') + ' de **' + m.n + '** esta vez: prueba de nuevo en un rato.' }))) n++;
+    for (const m of this.sql.exec('SELECT * FROM img_msj WHERE k = ? AND tipo = ? AND t > ?', k, tipo, ahora - IMG_TOKEN).toArray()) {
+      const r = await this.imgEditar(m, this.imgNoPude(m), pres);
+      if (r === null) break;
+      this.sql.exec('DELETE FROM img_msj WHERE id = ?', m.id);
+      if (r) n++;
     }
     return n;
   }
@@ -20720,36 +20811,52 @@ export class Avisos {
   /**
    * La tarea terminó (`/avisos/img-listo`, con la clave del ciclo): `{hechas: [{k, tipo, sello}], fallas: [{k, tipo}]}`. Cada
    * hecha queda anotada (el Worker la usa antes de que el ciclo le cambie el `p:`, y el ciclo no la vuelve a armar) y las
-   * respuestas que la esperaban se editan con ella. La dirección la arma el objeto: de la tarea llegan sólo la clave y el sello
+   * respuestas que la esperaban se editan con ella, hasta `IMG_EDICIONES` en total por llamada (las demás, el vigía). La
+   * dirección la arma el objeto: de la tarea llegan sólo la clave y el sello. 🗑️ La de alguien que pidió que lo olviden
+   * mientras se dibujaba no se anota y vuelve en `borrar`, para que la tarea la saque de R2.
    */
   async imgListo(d, ahora = Date.now()) {
     let n = 0, editadas = 0;
+    const pres = { n: IMG_EDICIONES };
+    const borrar = [];
     const tipoDe = (x) => (x && x.tipo === 'vitrina' ? 'v' : x && x.tipo === 'perfil' ? 'p' : '');
+    const olvido = (k) => this.sql.exec('SELECT 1 FROM img_olvido WHERE k = ?', k).toArray().length > 0;
     for (const x of (d && Array.isArray(d.hechas) ? d.hechas : []).slice(0, 24)) {
       const tipo = tipoDe(x), k = String((x && x.k) || ''), s = String((x && x.sello) || '');
       if (!tipo || !claveValida(k) || !/^[0-9a-f]{10}$/.test(s)) continue;
+      if (olvido(k)) { borrar.push(IMG_TIPOS[tipo] + '/' + k + '.webp'); continue; }
       this.sql.exec("INSERT INTO img_cola (k, tipo, estado, pedido, hecho, hecho_t) VALUES (?, ?, 'hecho', ?, ?, ?) ON CONFLICT(k, tipo) DO UPDATE SET " +
         "estado = 'hecho', hecho = excluded.hecho, hecho_t = excluded.hecho_t", k, tipo, ahora, s, ahora);
       n++;
-      const ms = this.sql.exec('SELECT * FROM img_msj WHERE k = ? AND tipo = ? AND t > ?', k, tipo, ahora - IMG_TOKEN).toArray();
-      this.sql.exec('DELETE FROM img_msj WHERE k = ? AND tipo = ?', k, tipo);
-      for (const m of ms) {
-        if (editadas >= 30) break;
-        if (await this.imgEditar(m, V.mensajeImg({ tipo: IMG_TIPOS[tipo], k, n: m.n, dueno: m.dueno, cartas: !!m.cartas,
-          url: V.urlImg(R2_PUB, IMG_TIPOS[tipo], k, s) }))) editadas++;
+      for (const m of this.sql.exec('SELECT * FROM img_msj WHERE k = ? AND tipo = ? AND t > ?', k, tipo, ahora - IMG_TOKEN).toArray()) {
+        const r = await this.imgEditar(m, this.imgConImagen(m, s), pres);
+        if (r === null) break;
+        this.sql.exec('DELETE FROM img_msj WHERE id = ?', m.id);
+        if (r) editadas++;
       }
     }
     for (const x of (d && Array.isArray(d.fallas) ? d.fallas : []).slice(0, 24)) {
       const tipo = tipoDe(x), k = String((x && x.k) || '');
-      if (tipo && claveValida(k)) await this.imgFallo(k, tipo, ahora);
+      if (tipo && claveValida(k)) await this.imgFallo(k, tipo, ahora, pres);
     }
-    return { ok: true, n, editadas };
+    return { ok: true, n, editadas, borrar };
   }
 
   /** Para el ciclo (`/avisos/img-hechas`): las que armó el kit en los últimos días, `[[p|v, clave, sello, día ET]]` */
   imgHechas() {
-    const filas = this.sql.exec("SELECT k, tipo, hecho, hecho_t FROM img_cola WHERE hecho != '' AND hecho_t > ?", Date.now() - 8 * DIA_MS).toArray();
+    const filas = this.sql.exec("SELECT k, tipo, hecho, hecho_t FROM img_cola WHERE estado = 'hecho' AND hecho != '' AND hecho_t > ?",
+      Date.now() - IMG_VIVEN).toArray();
     return { hechas: filas.map((f) => [f.tipo, f.k, f.hecho, new Date(f.hecho_t).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })]) };
+  }
+
+  /** 🗑️ Quien pidió que lo olviden (`olvidar()`): fuera de la cola y de las esperas, y anotado para que nada lo vuelva a subir */
+  imgOlvidar(k, quien) {
+    if (claveValida(k)) {
+      this.sql.exec('DELETE FROM img_cola WHERE k = ?', k);
+      this.sql.exec('DELETE FROM img_msj WHERE k = ?', k);
+      this.sql.exec('INSERT OR REPLACE INTO img_olvido (k, t) VALUES (?, ?)', k, Date.now());
+    }
+    if (quien) this.sql.exec('DELETE FROM img_msj WHERE dueno = ?', String(quien));
   }
 
   /** ⚡ `bot/redibujo.py` subió esas cartas: les cambia la versión (`vr`, que /card y la página ponen en la URL). Y

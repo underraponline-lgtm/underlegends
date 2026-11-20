@@ -683,19 +683,46 @@ def _hechas_a_pedido():
     return out
 
 
+def sin_olvidados(sellos, gente=None):
+    """Los sellos sin quien pidió que lo olviden (`bot/olvidar.py`, `datos/olvidados.json`), por su nombre normalizado
+    contra la clave. `gente` es para el self-check"""
+    try:
+        import olvidar as OLV
+        g = OLV.olvidados() if gente is None else gente
+        fuera = {OLV.norm((v or {}).get('quien') or '') for v in g.values()} - {''}
+        return {k: v for k, v in sellos.items() if OLV.norm(k) not in fuera}
+    except Exception:                                    # noqa: BLE001
+        return sellos
+
+
+def mezclar_hechas(est, hechas, sellos):
+    """Lo que el kit armó a pedido cuenta como hecho SÓLO si es la imagen de HOY (su sello es el de `sellos`). 🔴 Antes se
+    tomaba cualquiera que fuera distinta de la anotada: el objeto devuelve lo del kit durante 8 días, así que una imagen
+    que el ciclo ya había rehecho volvía a figurar como la vieja del kit, y se redibujaba en CADA corrida (revisión del
+    20/11/2026). Devuelve cuántas tomó."""
+    n = 0
+    for tipo, xs in (hechas or {}).items():
+        i = 0 if tipo == 'perfil-img' else 1
+        for k, v in xs.items():
+            hoy_k = (sellos.get(k) or ['', ''])[i]
+            ya = (est.get(tipo) or {}).get(k)
+            if v[0] == hoy_k and (not isinstance(ya, list) or ya[0] != v[0]):
+                est.setdefault(tipo, {})[k] = v
+                n += 1
+    return n
+
+
 def correr_img(est):
     """🖼️ El paso de /perfil y /vitrina, adentro de `correr()`: los sellos de hoy, lo que cambió y la foto de eso. Escribe
     `SELLOS_HOY` para bot/subir_datos.py y anota en `est` lo que subió. Nunca frena el ciclo"""
     sellos = sellos_img()
     if sellos is None:
         return 0
+    # 🗑️ quien pidió que lo olviden no se dibuja (hasta que la página lo saque, todavía puede venir en los perfiles)
+    sellos = sin_olvidados(sellos)
     os.makedirs(SALIDA, exist_ok=True)
-    # lo que el kit armó a pedido desde la última corrida cuenta como hecho, si es más nuevo
-    for tipo, xs in _hechas_a_pedido().items():
-        for k, v in xs.items():
-            ya = (est.get(tipo) or {}).get(k)
-            if not isinstance(ya, list) or ya[0] != v[0]:
-                est.setdefault(tipo, {})[k] = v
+    # lo que el kit armó a pedido desde la última corrida cuenta como hecho, si es la de hoy
+    mezclar_hechas(est, _hechas_a_pedido(), sellos)
     hoy = _hoy()
     lista = que_img(sellos, est, hoy)
     print('   🖼️ /perfil y /vitrina: %d con carta, %d para armar ahora' % (len(sellos), len(lista)))
@@ -861,6 +888,21 @@ def _self_check():
     ok(q == [('perfil-img', 'cy', s3), ('vitrina-img', 'cy', s3), ('vitrina-img', 'ana', s2), ('perfil-img', 'bo', s1)],
        'qué rearmar: primero las que nunca se armaron, después las que cambiaron y al final las de más de %d días (%s)' % (VIEJA_DIAS, q))
     ok(len(que_img({'k%d' % i: [s1, s2] for i in range(40)}, {}, hoy_)) == MAX_IMG, 'de a MAX_IMG (%d) por corrida' % MAX_IMG)
+    # 🔴 lo del kit, sólo si es la de hoy: tres corridas seguidas con una vieja del kit en `img-hechas` no redibujan nada
+    est1 = {'perfil-img': {'ana': [s2, hoy_]}, 'vitrina-img': {'ana': [s3, hoy_]}}
+    kit_viejo = {'perfil-img': {'ana': [s1, '2026-11-18']}}              # lo que armó el kit ANTES de que el ciclo lo rehiciera
+    redib = []
+    for _ in range(3):
+        mezclar_hechas(est1, kit_viejo, {'ana': [s2, s3]})
+        redib.append(len(que_img({'ana': [s2, s3]}, est1, hoy_)))
+    ok(redib == [0, 0, 0] and est1['perfil-img']['ana'][0] == s2,
+       'una imagen vieja del kit no pisa la del ciclo: tres corridas, ninguna redibuja (%s)' % redib)
+    ok(sin_olvidados({'lil-drako': [s1, s2], 'ana': [s1, s2]}, {'123': {'quien': 'Lil Drako'}}) == {'ana': [s1, s2]},
+       'quien pidió que lo olviden no se dibuja')
+    est2 = {'perfil-img': {'bo': [s1, '2026-11-19']}}
+    ok(mezclar_hechas(est2, {'perfil-img': {'bo': [s2, hoy_]}}, {'bo': [s2, s3]}) == 1 and est2['perfil-img']['bo'][0] == s2
+       and not [x for x in que_img({'bo': [s2, s3]}, est2, hoy_) if x[0] == 'perfil-img'],
+       'la del kit que SÍ es la de hoy cuenta como hecha (el ciclo no la vuelve a armar)')
     ok(_vieja('2026-11-13', hoy_) and not _vieja('2026-11-14', hoy_) and _vieja('', hoy_), 'vieja a los %d días (sin fecha, vieja)' % VIEJA_DIAS)
     ok(clave_r2_img('perfil-img', 'makmah') == 'perfil/makmah.webp' and clave_r2_img('vitrina-img', 'nc') == 'vitrina/nc.webp',
        'las claves fijas de R2: perfil/<clave>.webp y vitrina/<clave>.webp (las mismas que arma el Worker, `V.urlImg()`)')

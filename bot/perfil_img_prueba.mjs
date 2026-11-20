@@ -35,6 +35,10 @@ const P = {
 const KV = { 'd:111': 'makmah', 'd:222': 'nc', 'd:333': 'sincarta', 'd:444': LARGA,
   meta: JSON.stringify({ sello: '202611200400', svs: [], bot_en: ['DRA', 'FFA'], req: {} }) };
 let PEDIDOS = [];
+let SOLTADOS = [];
+// el id de la interacción que creó el mensaje (`interaction_metadata.id`): es lo que ata una espera a su mensaje
+const REF = '900000000000000001';
+const nid = () => String(100000000000000000 + Math.floor(Math.random() * 8e17));
 let CONTESTA = () => ({ cola: true });
 const objeto = {
   async fetch(url, opc) {
@@ -47,6 +51,10 @@ const objeto = {
       const d = JSON.parse(opc.body);
       PEDIDOS.push(d);
       return new Response(JSON.stringify(CONTESTA(d)));
+    }
+    if (u.pathname === '/img-soltar') {
+      SOLTADOS.push(JSON.parse(opc.body).ref);
+      return new Response('{"ok":true}');
     }
     return new Response('{}');
   },
@@ -80,11 +88,12 @@ async function pedir(obj) {
   return JSON.parse(await r.text());
 }
 const G = '1468472442925092958';           // FFA
-const comando = (nombre, yo, ops) => ({ type: 2, id: 'i' + Math.random(), application_id: '1489029633960312923', token: 'tok-' + 'x'.repeat(30),
+const comando = (nombre, yo, ops) => ({ type: 2, id: nid(), application_id: '1489029633960312923', token: 'tok-' + 'x'.repeat(30),
   guild_id: G, channel_id: '777', member: { user: { id: yo, username: 'u' + yo }, roles: [], permissions: '0' }, data: { name: nombre, options: ops || [] } });
-const clic = (yo, cid, mensaje) => ({ type: 3, id: 'c' + Math.random(), application_id: '1489029633960312923', token: 'tok-' + 'y'.repeat(30),
+const clic = (yo, cid, mensaje) => ({ type: 3, id: nid(), application_id: '1489029633960312923', token: 'tok-' + 'y'.repeat(30),
   guild_id: G, channel_id: '777', member: { user: { id: yo, username: 'u' + yo }, roles: [], permissions: '0' },
-  message: Object.assign({ id: '1', timestamp: new Date(RELOJ - 60000).toISOString(), flags: V2 }, mensaje || {}), data: { custom_id: cid, component_type: 2 } });
+  message: Object.assign({ id: '1', timestamp: new Date(RELOJ - 60000).toISOString(), flags: V2, interaction_metadata: { id: REF } }, mensaje || {}),
+  data: { custom_id: cid, component_type: 2 } });
 const galeria = (m) => PZ(m, 12).map((g) => ((g.items || [])[0] || {}).media && g.items[0].media.url).filter(Boolean);
 const botones = (m) => PZ(m, 2);
 const filaPi = (m) => botones(m).filter((b) => String(b.custom_id || '').startsWith('pi:'));
@@ -133,7 +142,7 @@ try {
   ok(!SALIDAS.filter((x) => /webhooks/.test(x.url)).length, 'en la cola: la respuesta no se toca (la edita el objeto)');
 
   // 3b · el freno: lo dice en la misma respuesta
-  for (const [res, txt] of [[{ limite: true }, /muchas veces hoy/], [{ espera: 300000 }, /se está armando/], [{ lleno: true }, /muchas imágenes en camino/], [{ error: 'x' }, /no puedo armarla/]]) {
+  for (const [res, txt] of [[{ limite: true }, /muchas veces hoy/], [{ espera: 300000 }, /se está armando/], [{ lleno: true }, /muchas imágenes en camino/], [{ muchas: true }, /varias imágenes en camino/], [{ error: 'x' }, /no puedo armarla/]]) {
     PEDIDOS = []; SALIDAS = [];
     CONTESTA = () => res;
     await pedir(comando('vitrina', '222'));
@@ -144,12 +153,16 @@ try {
   CONTESTA = () => ({ cola: true });
 
   // 4 · los botones: Vitrina, Cartas (lo de /card con la fila debajo), una carta, y Perfil otra vez — todo en el mismo mensaje
-  PEDIDOS = []; SALIDAS = [];
-  let m0 = (await pedir(comando('perfil', '111'))).data;
+  PEDIDOS = []; SALIDAS = []; SOLTADOS = [];
+  const cmd0 = comando('perfil', '111');
+  let m0 = (await pedir(cmd0)).data;
   r = await pedir(clic('111', 'pi:v:makmah:111', m0));
   ok(r.type === 7 && galeria(r.data)[0] === R2 + '/vitrina/makmah.webp?v=' + S.c && apagadoPi(r.data)[0].label === 'Vitrina',
     'Vitrina: cambia en el mismo mensaje (tipo 7), Vitrina apagado', [r.type, galeria(r.data)]);
+  // (revisión del 20/11) la espera es de ESE mensaje: la del clic lleva el id de la interacción que lo creó
+  ok(PEDIDOS.length === 1 && PEDIDOS[0].ref === REF, 'el pedido de un clic va atado a su mensaje (`ref`)', PEDIDOS.map((x) => x.ref));
   r = await pedir(clic('111', 'pi:c:makmah:111', r.data));
+  ok(SOLTADOS.length === 1 && SOLTADOS[0] === REF, 'Cartas suelta lo que el mensaje esperaba: la vitrina que llegue no la pisa', SOLTADOS);
   const cartas = r.data;
   const cBot = botones(cartas).filter((b) => String(b.custom_id || '').startsWith('c:'));
   ok(r.type === 7 && cBot.length >= 2 && apagadoPi(cartas)[0].label === 'Cartas' && /\/makmah\/competitivo\.webp/.test(galeria(cartas)[0] || ''),
@@ -160,6 +173,12 @@ try {
     'una carta desde ahí: la fila de /perfil se queda para volver', [galeria(r.data), apagadoPi(r.data).map((b) => b.label)]);
   r = await pedir(clic('111', 'pi:p:makmah:111', r.data));
   ok(r.type === 7 && galeria(r.data)[0] === R2 + '/perfil/makmah.webp?v=' + S.a && apagadoPi(r.data)[0].label === 'Perfil', 'y Perfil, de vuelta', galeria(r.data));
+  ok(SOLTADOS.length === 2 && SOLTADOS[1] === REF, 'un Perfil que ya está al día también suelta la espera', SOLTADOS);
+  // un comando nuevo no suelta nada (no tiene mensaje de antes) y su pedido va con el id de su interacción
+  PEDIDOS = []; SOLTADOS = [];
+  const cmd1 = comando('perfil', '222');
+  await pedir(cmd1);
+  ok(!SOLTADOS.length && PEDIDOS.length === 1 && PEDIDOS[0].ref === cmd1.id, 'el «Armando…» de un comando queda atado a ese comando', PEDIDOS.map((x) => x.ref));
   // y una /card de siempre no gana la fila
   r = await pedir(comando('card', '111'));
   const rc = await pedir(clic('111', 'c:makmah:temporada:111', r.data));
@@ -212,19 +231,24 @@ if (!DatabaseSync) {
   console.log('\n  ⓘ sin node:sqlite (Node ' + process.version + '): el objeto no se prueba acá');
 } else {
   console.log('\n🖼️ /perfil y /vitrina, en el objeto\n');
-  const db = new DatabaseSync(':memory:');
-  const sql = {
-    exec(q, ...ps) {
-      const t = String(q).trim();
-      if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
-      const st = db.prepare(t);
-      if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows, rowsWritten: 0 }; }
-      const r0 = st.run(...ps);
-      return { toArray: () => [], rowsWritten: Number(r0.changes) };
-    },
+  // un objeto de verdad sobre su propia base en memoria
+  const nuevoObjeto = () => {
+    const db0 = new DatabaseSync(':memory:');
+    const sql0 = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db0.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
+        const st = db0.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows, rowsWritten: 0 }; }
+        const r0 = st.run(...ps);
+        return { toArray: () => [], rowsWritten: Number(r0.changes) };
+      },
+    };
+    const o0 = new A.Avisos({ storage: { sql: sql0, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { KV: { get: async () => null, put: async () => {}, delete: async () => {} }, GH_TOKEN: 'gh-de-mentira', GH_REPO: 'liga/prueba' });
+    return { o: o0, sql: sql0, db: db0 };
   };
-  const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
-    { KV: { get: async () => null }, GH_TOKEN: 'gh-de-mentira', GH_REPO: 'liga/prueba' });
+  const { o, sql, db } = nuevoObjeto();
   await new Promise((res) => setTimeout(res, 5));
   try {
     const t0 = Date.parse('2026-11-20T18:00:00Z');
@@ -271,7 +295,8 @@ if (!DatabaseSync) {
     ok(ult.limite === true, 'seis por día por persona e imagen: la séptima, no', ult);
     // el tope de la cola
     const t2 = t0 + 2 * 86400000;
-    for (let i = 0; i < A.IMG_COLA_MAX; i++) await o.imgPedir(pide('p' + i, 'vitrina'), t2 + i);
+    // (de gente distinta: una sola persona tiene su propio tope, `IMG_POR_PERSONA`)
+    for (let i = 0; i < A.IMG_COLA_MAX; i++) await o.imgPedir(pide('p' + i, 'vitrina', { dueno: '20000000000000' + String(i).padStart(4, '0') }), t2 + i);
     x = await o.imgPedir(pide('uno-mas', 'vitrina'), t2 + 100);
     ok(x.lleno === true, 'con ' + A.IMG_COLA_MAX + ' esperando, la cola no crece', x);
     // lo que se le pasa al ciclo
@@ -288,6 +313,91 @@ if (!DatabaseSync) {
     o.imgCola(t3);
     await o.imgDespachar(t3 + 5 * 60000);
     ok(Number(sql.exec("SELECT COUNT(*) AS n FROM img_cola WHERE estado = 'espera'").toArray()[0].n) > 0, 'una tarea que se cayó: lo suyo vuelve a la cola a los 4 minutos');
+
+    // ── 🔁 la revisión del 20/11/2026, sobre un objeto nuevo ──
+    console.log('\n🔁 la revisión\n');
+    // ⚡ 2 · el índice, y el vigía barato cuando no hay nada
+    const idx = db.prepare("SELECT name FROM sqlite_master WHERE type = 'index' AND tbl_name = 'img_cola'").all().map((y) => y.name);
+    const plan = db.prepare("EXPLAIN QUERY PLAN SELECT 1 FROM img_cola WHERE estado IN ('espera', 'dibujando') LIMIT 1").all().map((y) => y.detail).join(' | ');
+    const plan2 = db.prepare("EXPLAIN QUERY PLAN SELECT por FROM img_cola WHERE estado IN ('espera', 'dibujando')").all().map((y) => y.detail).join(' | ');
+    ok(idx.includes('img_cola_estado') && /img_cola_estado/.test(plan) && /img_cola_estado/.test(plan2),
+      'img_cola tiene índice por estado: el «¿hay algo?» del vigía y la cuenta de lo pendiente lo usan', [idx, plan, plan2]);
+    const { o: q, sql: sq } = nuevoObjeto();
+    await new Promise((res) => setTimeout(res, 5));
+    const T = Date.parse('2026-11-21T18:00:00Z');
+    // (como texto: 3e17 + n pierde el n, pasa la precisión de un número de JS)
+    const yo = (n) => '30000000000000' + String(n).padStart(4, '0');
+    const R = (n) => '91000000000000' + String(n).padStart(4, '0');
+    SALIDAS = [];
+    await q.imgDespachar(T);
+    ok(!SALIDAS.length, 'sin nada esperando, el vigía no pide nada afuera');
+    // 7 · tope por quien pide
+    let y1 = [];
+    for (const k of ['a1', 'a2', 'a3', 'a4']) y1.push(await q.imgPedir(pide(k, 'perfil', { dueno: yo(1), ref: R(1) }), T + 1000));
+    const y2 = await q.imgPedir(pide('a4', 'perfil', { dueno: yo(2) }), T + 2000);
+    ok(y1.slice(0, 3).every((y) => y.cola) && y1[3].muchas === true && y2.cola,
+      'una persona puede tener ' + A.IMG_POR_PERSONA + ' pendientes: la cuarta, «muchas»; otra persona, sí', [y1, y2]);
+    // 4 · un clic de vista suelta la espera de su mensaje
+    await q.imgPedir(pide('b1', 'perfil', { dueno: yo(3), ref: R(3) }), T + 3000);
+    ok(q.imgSoltar({ ref: R(3) }).n === 1, 'soltar: la espera de ese mensaje se va');
+    await q.imgPedir(pide('b2', 'perfil', { dueno: yo(4), ref: R(4) }), T + 3000);
+    await q.imgPedir(pide('b2', 'vitrina', { dueno: yo(4), ref: R(4) }), T + 3500);
+    const delR4 = sq.exec('SELECT tipo FROM img_msj WHERE ref = ?', R(4)).toArray().map((y) => y.tipo);
+    ok(JSON.stringify(delR4) === '["v"]', 'el mismo mensaje pide otra vista: espera sólo la nueva', delR4);
+    q.imgCola(T + 4000);
+    SALIDAS = [];
+    let z = await q.imgListo({ hechas: [{ k: 'b1', tipo: 'perfil', sello: S.a }, { k: 'b2', tipo: 'perfil', sello: S.a }] }, T + 60000);
+    ok(z.n === 2 && z.editadas === 0 && !SALIDAS.length, 'llegan las dos: ninguna pisa un mensaje que cambió de vista', [z, SALIDAS.length]);
+    // 6 · todo «Armando…» termina a tiempo
+    await q.imgPedir(pide('c1', 'perfil', { dueno: yo(5), ref: R(5), n: 'Ce' }), T + 5000);
+    SALIDAS = [];
+    await q.imgDespachar(T + 5000 + A.IMG_PLAZO - 60000);
+    const antesPlazo = SALIDAS.filter((s) => /webhooks/.test(s.url)).length;
+    await q.imgDespachar(T + 5000 + A.IMG_PLAZO + 1000);
+    const np = SALIDAS.filter((s) => /webhooks/.test(s.url) && /No pude armar el perfil de \*\*Ce\*\*/.test(TX(s.cuerpo)));
+    ok(!antesPlazo && np.length === 1 && A.IMG_PLAZO < A.IMG_TOKEN && !sq.exec("SELECT 1 FROM img_msj WHERE k = 'c1'").toArray().length,
+      'un «Armando…» sin imagen a los ' + A.IMG_PLAZO / 60000 + ' min: «no pude», antes de que venza el permiso (' + A.IMG_TOKEN / 60000 + ')', [antesPlazo, np.length]);
+    const seis = [];
+    for (let i = 0; i < 6; i++) seis.push(await q.imgPedir(pide('d1', 'vitrina', { dueno: yo(6), ref: R(60 + i) }), T + 6000 + i));
+    ok(seis.slice(0, 5).every((y) => y.cola) && seis[5].espera > 0,
+      'el sexto «Armando…» de la misma imagen no queda colgado: se le contesta ya', seis);
+    // 8 · el tope de pedidos salientes por llamada
+    const { o: w, sql: sw } = nuevoObjeto();
+    await new Promise((res) => setTimeout(res, 5));
+    for (let j = 0; j < 12; j++) {
+      for (let m = 0; m < 5; m++) await w.imgPedir(pide('e' + j, 'perfil', { dueno: yo(100 + j), ref: R(100 + j * 10 + m) }), T + j * 10 + m);
+    }
+    w.imgCola(T + 1000);
+    w.imgCola(T + 1001);
+    SALIDAS = [];
+    z = await w.imgListo({ hechas: Array.from({ length: 12 }, (_, j) => ({ k: 'e' + j, tipo: 'perfil', sello: S.a })) }, T + 60000);
+    const v1 = SALIDAS.length;
+    SALIDAS = [];
+    await w.imgDespachar(T + 120000);
+    const v2 = SALIDAS.length;
+    SALIDAS = [];
+    await w.imgDespachar(T + 180000);
+    const v3 = SALIDAS.length;
+    const quedan = Number(sw.exec('SELECT COUNT(*) AS n FROM img_msj').toArray()[0].n);
+    ok(z.n === 12 && v1 <= A.IMG_EDICIONES && v2 <= A.IMG_EDICIONES + 1 && v1 + v2 + v3 === 60 && !quedan,
+      '60 respuestas esperando: de a ' + A.IMG_EDICIONES + ' por llamada como mucho, y el vigía entrega el resto (' + [v1, v2, v3].join(' + ') + ')', [v1, v2, v3, quedan]);
+    // 5 · quien pidió que lo olviden
+    const { o: u, sql: su } = nuevoObjeto();
+    await new Promise((res) => setTimeout(res, 5));
+    await u.imgPedir(pide('zeta', 'perfil', { dueno: yo(7), ref: R(7) }), T);
+    await u.imgPedir(pide('omega', 'vitrina', { dueno: yo(8), ref: R(8) }), T);
+    const tomadas = u.imgCola(T + 1000).img.map((y) => y.k);
+    await u.olvidar({ quien: yo(70), clave: 'zeta' });
+    SALIDAS = [];
+    z = await u.imgListo({ hechas: [{ k: 'zeta', tipo: 'perfil', sello: S.a }, { k: 'omega', tipo: 'vitrina', sello: S.b }] }, T + 60000);
+    ok(tomadas.includes('zeta') && JSON.stringify(z.borrar) === '["perfil/zeta.webp"]' && z.n === 1
+      && !su.exec("SELECT 1 FROM img_cola WHERE k = 'zeta'").toArray().length && !su.exec("SELECT 1 FROM img_msj WHERE k = 'zeta'").toArray().length,
+      'pidió que lo olviden mientras se dibujaba: no se anota y la tarea la borra de R2', z);
+    ok((await u.imgPedir(pide('zeta', 'perfil', { dueno: yo(9) }), T + 70000)).error === 'olvido' && !u.imgHechas().hechas.some((y) => y[1] === 'zeta'),
+      'y no vuelve a la cola ni a lo que se le pasa al ciclo');
+    await u.imgPedir(pide('omega', 'perfil', { dueno: yo(10) }), T + 80000);
+    await u.olvidar({ quien: yo(71), clave: 'omega' });
+    ok(!u.imgCola(T + 90000).img.length, 'olvidado con algo en la cola: la cola no lo entrega');
   } catch (e) {
     fallas += 1;
     console.log('  🔴 se cayó: ' + (e && e.stack || e));

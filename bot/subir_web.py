@@ -2147,8 +2147,13 @@ def _perfiles(gente, comp, regs):
     # 🏆 SU PUESTO EN EL COMPETITIVO (20/11/2026, la imagen de /vitrina): el `#` de la vitrina del Competitivo, que es el
     # oficial —sin los de fuera de concurso y con el desempate del Score sin redondear, que la tabla del lobby no trae (NC
     # y Trot empatan a 22,4)—. `rk['co'] = [puesto, de cuántos]`; sin archivo, nada (sin dato no hay pieza)
+    # ⚠️ Puede no coincidir con el Ranking Competitivo de la página en un EMPATE: la página ordena la tabla del lobby por el
+    # Score redondeado a un decimal y la vitrina por el Score entero (NC y Trot, 22,4 los dos). La imagen usa este, el oficial
     pos_co, n_co = {}, 0
     try:
+        _sheet = os.path.join(BASE, 'sheet')
+        if _sheet not in sys.path:
+            sys.path.append(_sheet)
         import espejo_t1 as _ESP
         _vc = [f for f in ((_ESP.leer('Ranking Competitivo') or {}).get('filas') or [])
                if isinstance(f, list) and len(f) > 1 and isinstance(f[0], int) and f[0] > 0]

@@ -73,7 +73,6 @@ export function huellaImg(s) {
 
 // la rareza por el % de la gente que la tiene: la misma regla que la Colección (coleccion.jsx `RAREZA`)
 const RAREZA = (p) => (p == null ? '' : p >= 20 ? 'Común' : p >= 5 ? 'Rara' : p >= 1 ? 'Épica' : 'Legendaria');
-const pctTxt = (p) => (!p ? 'nadie todavía' : String(p < 1 ? p.toFixed(2) : p < 10 ? p.toFixed(1) : Math.round(p)).replace('.', ',') + ' %');
 const RARZ = [['Comunes', 'Común'], ['Raras', 'Rara'], ['Épicas', 'Épica'], ['Legendarias', 'Legendaria']];
 const COL_RAR = { Común: 'var(--rar-comun)', Rara: 'var(--rar-rara)', Épica: 'var(--rar-epica)', Legendaria: 'var(--rar-leg)' };
 const primeraUrl = (bg) => { const m = /url\("([^"]+)"\)/.exec(bg || ''); return m ? m[1] : ''; };
@@ -142,7 +141,9 @@ export function modelos(liga, B, k, ex) {
     k, n, cara, ini: ini(n), fondo, tag: (f.solo ? 'En la Liga' : f.pos ? '#' + f.pos + ' de la Temporada' : 'Fuera de concurso') + ' · ' + temp,
     color: pa && pa[2] ? pa[2] : '', emb: ver.map((x) => [x.g, x.t, !!x.unico, x.rol || '']), mas: Math.max(0, ems.length - ver.length), chips,
     ovr: f.ovr || 0, rg: f.rg || '', rgc, elo, pts: num(f.pts || 0), ev: f.ev || 0, wr: wrTxt(f.wr),
-    rec: tot ? [D.g, D.perd, Math.round((100 * D.g) / tot), rk.du ? rk.du : null] : null, forma, oro: D.oro, seg: D.seg, noche,
+    // 🔏 el puesto en Duelos SIN «de 199»: el total crece cada vez que alguien juega su primer duelo, y movía el sello de
+    // todos los que tienen duelos (revisión del 20/11/2026). Lo que la imagen muestra, y como lo muestra
+    rec: tot ? [D.g, D.perd, Math.round((100 * D.g) / tot), rk.du ? Number(rk.du[0]) || 0 : 0] : null, forma, oro: D.oro, seg: D.seg, noche,
   };
 
   // 🏆 LA VITRINA: los títulos y las finales por IMPORTANCIA (cuánta gente jugó), los títulos primero
@@ -177,31 +178,32 @@ export function modelos(liga, B, k, ex) {
   const suyas = cat.filter((x) => mias.has(x[0])).sort((a, b) => pct(a[0]) - pct(b[0]));
   let ins;
   if (suyas.length > 5) {
-    ins = suyas.slice(0, 4).map((x) => [x[1], x[2], RAREZA(pct(x[0])), pctTxt(pct(x[0])), 0])
+    ins = suyas.slice(0, 4).map((x) => [x[1], x[2], RAREZA(pct(x[0])), '', 0])
       .concat([['+' + (suyas.length - 4), 'Más', 'Común', 'en la página', 2]]);
   } else {
     // con pocas, lo próximo: las que tiene más gente y él todavía no (las más fáciles), apagadas
     const prox = cat.filter((x) => !mias.has(x[0])).sort((a, b) => pct(b[0]) - pct(a[0])).slice(0, 5 - suyas.length);
-    ins = suyas.map((x) => [x[1], x[2], RAREZA(pct(x[0])), pctTxt(pct(x[0])), 0])
+    ins = suyas.map((x) => [x[1], x[2], RAREZA(pct(x[0])), '', 0])
       .concat(prox.map((x) => [x[1], x[2], RAREZA(pct(x[0])), 'Lo próximo', 1]));
   }
   const vitrina = {
     k, n, cara, ini: ini(n), fondo, rg: f.rg || '', rgc, pc: ci >= 0 ? ci + 1 : 0, elo,
     oro: D.oro, seg: D.seg, ter: D.ter, placas: todas.slice(0, 10), resto: Math.max(0, tit.length + fin.length - mostradas),
-    barras, ins, nIns: mias.size,
+    // la colección, contada sobre el catálogo (17 de 77): no se mueve con lo que hacen los demás
+    barras, ins, nIns: mias.size, nCat: cat.length,
   };
   return { perfil, vitrina };
 }
 
 /** 🔏 Los dos sellos de alguien: la huella de lo que muestra cada imagen, sin lo de un pedido por persona.
- *  ⚠️ SIN EL «0,30 %» DE CADA INSIGNIA: el porcentaje se mueve con cada perfil nuevo de la Liga, y con él adentro las
- *  vitrinas de todos cambiarían de sello a cada rato. Entra la rareza (Común… Legendaria), que es lo que se lee de lejos;
- *  el número queda como estaba en la última foto hasta que cambie otra cosa */
+ *  ⚠️ EL SELLO LLEVA SÓLO LO QUE LA IMAGEN MUESTRA, Y COMO LO MUESTRA (revisión del 20/11/2026): por eso la imagen no
+ *  muestra cifras que se mueven solas para todos —el «de 199» de Duelos, el «0,30 %» de cada insignia—: con ellas el sello
+ *  de casi todos cambiaba después de cada noche (228 de 297 con la noche del 19/11) y el ciclo redibujaba a gente que no
+ *  jugó. El puesto de la Temporada sí va: es lo que cada uno quiere ver al día */
 export function sellosDe(liga, B, k) {
   const m = modelos(liga, B, k, null);
   if (!m) return null;
-  const vit = Object.assign({}, m.vitrina, { ins: m.vitrina.ins.map((x) => (x[4] === 0 ? [x[0], x[1], x[2], '', 0] : x)) });
-  return [huellaImg(JSON.stringify([DISENO_IMG, 'p', m.perfil])), huellaImg(JSON.stringify([DISENO_IMG, 'v', vit]))];
+  return [huellaImg(JSON.stringify([DISENO_IMG, 'p', m.perfil])), huellaImg(JSON.stringify([DISENO_IMG, 'v', m.vitrina]))];
 }
 
 // ── 🖼️ esperar a que esté todo: las imágenes bajadas y las letras puestas ──
@@ -305,7 +307,7 @@ function DibujoPerfil({ m, temp }) {
           {m.rec ? (
             <>
               <div className="oi-rec">{m.rec[0]}<span>–{m.rec[1]}</span></div>
-              <span className="oi-sub">{m.rec[2]} % ganados{m.rec[3] ? ' · #' + m.rec[3][0] + ' de ' + m.rec[3][1] + ' en Duelos' : ''}</span>
+              <span className="oi-sub">{m.rec[2]} % ganados{m.rec[3] ? ' · #' + m.rec[3] + ' en Duelos' : ''}</span>
             </>
           ) : <div className="oi-vacio oi-sub"><b>Su primer duelo</b>El récord arranca en su primer 1v1 de una llave.</div>}
         </div>
@@ -417,7 +419,7 @@ function DibujoVitrina({ m, temp }) {
       <div style={{ position: 'absolute', left: 48, right: 48, top: dos ? 696 : 500, display: 'grid', gridTemplateColumns: '400px 1fr', gap: 48,
         alignItems: 'start', borderTop: '1px solid rgba(255,255,255,.12)', paddingTop: 22 }}>
         <div style={{ display: 'grid', gap: 12 }}>
-          <span className="oi-ic">Su colección · {m.nIns} {m.nIns === 1 ? 'insignia' : 'insignias'}</span>
+          <span className="oi-ic">Su colección · {m.nIns} de {m.nCat} insignias</span>
           {m.barras.map(([et, r, n, t]) => (
             <div key={r} className="oi-cat"><span>{et}</span><u style={{ '--v': Math.round((100 * n) / t) + '%', '--col': COL_RAR[r] }} /><b>{n}/{t}</b></div>
           ))}
@@ -427,7 +429,7 @@ function DibujoVitrina({ m, temp }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
             {m.ins.map(([ic, nm, r, txt, cual], i) => (
               <div key={i} className={'oi-ins' + (cual === 1 ? ' bloq' : '')} style={{ '--rc': COL_RAR[r] || 'var(--rar-comun)' }}>
-                <i className={cual === 2 ? 'mas' : undefined}>{ic}</i><b>{nm}</b><span>{cual === 2 || cual === 1 ? txt : r + ' · ' + txt}</span>
+                <i className={cual === 2 ? 'mas' : undefined}>{ic}</i><b>{nm}</b><span>{cual === 2 || cual === 1 ? txt : r}</span>
               </div>
             ))}
           </div>
