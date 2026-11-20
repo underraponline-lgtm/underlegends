@@ -55,8 +55,10 @@ export function Insignia({ k, nivel = 1, tam = 52, c = BLANCO }) {
   const j = { strokeLinejoin: 'round' };
   let cuerpo, op = 1, col = '#fff';
   if (nivel === 0) {
-    cuerpo = <path d={d} fill="rgba(8,8,14,.55)" stroke={c} strokeOpacity=".6" strokeWidth="4" strokeDasharray="7 6" {...j} />;
-    op = 0.45;
+    // 🔆 como en la carta (19/11/2026, Dlx: «que no sea transparente, que se note un poco más»): el cuerpo oscuro del 1, el
+    // borde punteado y el ícono un poco apagado. Antes era casi transparente (relleno .55, borde .6, ícono .45)
+    cuerpo = <path d={d} fill="#15151F" stroke={c} strokeWidth="4.5" strokeDasharray="8 5" {...j} />;
+    op = 0.8;
   } else if (nivel === 1) {
     cuerpo = <path d={d} fill="#15151F" stroke={c} strokeWidth="5" {...j} />;
   } else if (nivel === 2) {

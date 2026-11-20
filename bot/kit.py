@@ -504,8 +504,8 @@ def _css_suelo(ca):
 #c .evento{position:absolute;left:50%%;bottom:10px;transform:translateX(-50%%);max-width:336px;box-sizing:border-box;background:#030304;padding:6px 14px 6px;text-align:center;z-index:30}
 #c .evento b{display:block;font-weight:800;font-size:17px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
 #c .evento span{display:block;font-size:15px;line-height:1.15;letter-spacing:.1em;color:#A5A5A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#c .sin,#c .gs{position:relative;width:300px;height:440px;flex:none}
-#c .sc-marco,#c .sc-in{position:absolute;left:0;top:30px;width:300px;height:405px}
+#c .sin,#c .gs{position:relative;width:300px;height:%(sc_alto)spx;flex:none}
+#c .sc-marco,#c .sc-in{position:absolute;left:0;top:%(sc_cuerpo)spx;width:300px;height:405px}
 #c .sc-marco{background:%(placa)s}
 #c .sc-in{transform:scale(.97);background:radial-gradient(ellipse 72%% 52%% at 50%% 40%%,%(luz)s 0%%,%(luz_m)s 52%%,%(luz_f)s 100%%);overflow:hidden}
 #c .sc-rayos{position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50%% 40%%,rgba(255,255,255,.09) 0 7deg,transparent 7deg 17deg)}
@@ -521,11 +521,13 @@ def _css_suelo(ca):
 #c .sc-tag{font-weight:800;font-size:13px;letter-spacing:.14em;line-height:21px;text-transform:uppercase;color:#A5A5A0;border:1.5px solid #4a4a4e;padding:1px 10px 0}
 #c .ul-m{position:absolute;right:22px;bottom:16px;height:36px;width:auto;z-index:30;filter:drop-shadow(0 1px 3px #000)}
 #c .t-m{position:absolute;left:24px;bottom:16px;font-weight:900;font-style:italic;font-size:32px;line-height:36px;color:#F6F6F6;z-index:30;text-shadow:0 1px 4px #000}
-#c .sc-esc{position:absolute;left:50%%;top:0;width:60px;height:60px;transform:translateX(-50%%);border-radius:50%%;object-fit:cover;background:#030304;
+#c .sc-esc{position:absolute;left:50%%;top:%(esc_top)spx;width:%(esc_lado)spx;height:%(esc_lado)spx;transform:translateX(-50%%);border-radius:50%%;object-fit:cover;background:#030304;
   border:3px solid %(placa)s;box-shadow:0 0 0 2px #030304}
 #c .fl{height:.75em;width:auto;vertical-align:.04em;margin-left:6px}
 #c .perdio{filter:grayscale(1) brightness(.92);opacity:.78}
-""" % ca
+""" % dict(ca, sc_alto=SC_ALTO, sc_cuerpo=SC_CUERPO,
+           # el escudo: la caja con su borde de 3 px adentro del anillo oscuro de 2, así el círculo entero mide lo de la carta real
+           esc_top=SC_ESC[0] + 2, esc_lado=SC_ESC[1] - 2 * 2 - 2 * 3)
 
 
 def _linea_html(p1, p2, ancho=10, adentro=3.5, horizontal=False):
@@ -609,6 +611,16 @@ _SILS = {}
 #: el de cuerpo entero apoya los pies justo sobre el panel. Medido con su tinta en `_self_check()`.
 SIL_ALTO = {0: (222, 10), 1: (190, 10), 2: (222, 0), 3: (222, 10)}
 SIL_PANEL = 270
+#: 📐 LA CARTA DE QUIEN NO TIENE CARTA MIDE LO MISMO QUE UNA CARTA DE SERVIDOR DE VERDAD (19/11/2026, Dlx: «posiciona bien
+#: todo porque hay cosas que se mueven»). Medido sobre las exportadas que están en R2 (1200 × 1839, o sea 300 × 459,75): el
+#: cuerpo de pico (300 × 405) empieza a 54,75 y el escudo es un círculo de 75,5 con el borde de arriba a 22,5, contando el
+#: anillo oscuro. La de antes tenía 300 × 440, el cuerpo a 30 y un escudo de 60: en la misma caja salía un 4,5 % más
+#: grande y más arriba que la carta de al lado, y en un abanico la de al lado le tapaba los números
+SC_ALTO = 459.75
+SC_CUERPO = 54.75
+SC_ESC = (22.5, 75.5)
+#: hasta dónde baja el escudo dentro del cuerpo: la figura no puede arrancar más arriba (`_self_check()`)
+SC_ESC_ADENTRO = SC_ESC[0] + SC_ESC[1] - SC_CUERPO
 
 
 def _sil_vs(n):
@@ -797,7 +809,8 @@ def html_vs_grupos(v, d):
             if y.get('carta'):
                 carta = '<img class="gc" style="height:%.1fpx" src="%s" alt="">' % (alto_carta, _e(y['carta']))
             else:
-                carta = '<div class="gh" style="height:%.1fpx">%s</div>' % (alto_carta, _carta_sin(y, d, 'gs', min(w / 300, alto_carta / 440)))
+                # 📐 la misma escala que la imagen de una carta de verdad en esta caja (`SC_ALTO`): así quedan del mismo tamaño
+                carta = '<div class="gh" style="height:%.1fpx">%s</div>' % (alto_carta, _carta_sin(y, d, 'gs', min(w / 300, alto_carta / SC_ALTO)))
             out.append('<div class="gi%s" style="%s">%s%s</div>' % (perdio, caja, carta, tira(y, w) if con_tira else ''))
         return ''.join(out)
 
@@ -874,7 +887,10 @@ def html_vs_grupos(v, d):
         arriba = ('<div class="pr varios"><div class="pr-b">%s</div></div>'
                   % ''.join('<i style="flex:%d 1 0;background:%s"></i>' % (p, cols[i % len(cols)]) for i, p in enumerate(pr[0])))
     else:
-        arriba = '<div class="pr varios nada"><div class="pr-b"><span class="et">Pronóstico: sin datos de un lado</span></div></div>'
+        # ✂️ con cuatro, el título va arriba entre los dos cuadrantes (a 52 px) y tapaba este renglón (de 46 a 68): sube a la
+        # altura de la barra, que sin datos no se dibuja (19/11/2026, en GRISELDA TIME VOL. 7 se leía «PI… TODOS CONTRA TODOS …O»)
+        arriba = ('<div class="pr varios nada%s"><div class="pr-b"><span class="et">Pronóstico: sin datos de un lado</span></div></div>'
+                  % (' cuatro' if S == 4 else ''))
 
     # ── el medio: el escudo, el VS y la historia. Con tres o más lados, una fila arriba y el escudo en la esquina ──
     formato = ' VS '.join(str(len(g)) for g in grupos) if S == 2 else ''
@@ -909,6 +925,7 @@ def html_vs_grupos(v, d):
 #c .historia.g2{left:600px;top:212px;width:176px;padding-top:42px;transform:translateX(-50%%);box-sizing:border-box}
 #c .vs.chico.cruce{left:578px;top:370px;width:44px;height:36px;font-size:19px}
 #c .cab.cuatro{max-width:410px}
+#c .pr.varios.nada.cuatro .pr-b .et{top:0}
 #c .cab.cuatro .historia.g3{flex-direction:column;gap:2px;max-width:410px;white-space:normal}
 #c .cab{position:absolute;left:50%%;top:68px;transform:translateX(-50%%);display:flex;align-items:center;gap:12px;z-index:30;max-width:1000px}
 #c .cab .escudo{position:static;transform:none;flex:none;border-width:3px}
@@ -1103,7 +1120,8 @@ def html_vs(v, d):
                 return ('<div class="ld %s%s"><div class="ta-raiz ctw" style="--carta:url(&quot;%s&quot;);--dragon:%s">%s</div></div>'
                         % (cls, perdio, _e(u), _dragon(), capa))
             return '<div class="ld %s%s"><img class="carta" src="%s" alt=""></div>' % (cls, perdio, _e(y['carta']))
-        return '<div class="ld %s%s">%s</div>' % (cls, perdio, _carta_sin(y, d, 'sin', 1.036))
+        # 📐 el alto de la carta de al lado (`.carta`, 456 px): con `SC_ALTO`, las dos miden lo mismo
+        return '<div class="ld %s%s">%s</div>' % (cls, perdio, _carta_sin(y, d, 'sin', 456 / SC_ALTO))
 
     def pie(y, cls):
         """🧾 debajo de cada carta: sus últimos 5 duelos —verde ganó, vacío perdió, del más viejo al más nuevo— y lo que
@@ -1621,7 +1639,17 @@ def _self_check():
          all(int(c, 16) == int(camiseta(_sv_datos(sv))['placa'].lstrip('#'), 16)
              for sv, c in re.findall(r"^\s*(\w+): \[0x([0-9A-F]{6}),", _texto_avisos(), re.M))),
         ('la silueta: los pies o el corte siempre sobre el panel, sin tapar el escudo de arriba',
-         all(SIL_PANEL + h - a >= 34 and h >= 0 for a, h in SIL_ALTO.values())),
+         all(SIL_PANEL + h - a >= SC_ESC_ADENTRO and h >= 0 for a, h in SIL_ALTO.values())),
+        ('la carta sin carta mide lo mismo que una de Servidor de verdad (300 × 459,75, el cuerpo a 54,75): en el mano a mano '
+         'y en los grupos, del mismo tamaño y a la misma altura que la de al lado (19/11/2026)',
+         abs(300 / SC_ALTO - 1200 / 1839) < 0.0005 and 'height:459.75px' in vs and 'top:54.75px;width:300px;height:405px' in vs
+         and 'zoom:%.3f' % (456 / SC_ALTO) in vs and 'top:24.5px;width:65.5px;height:65.5px' in vs
+         and all(abs(float(z) * SC_ALTO - float(h)) < 1.5 for h, z in re.findall(
+             r'class="gh" style="height:([\d.]+)px"><div class="gs" style="zoom:([\d.]+)"',
+             html_vs({'grupos': [[{'n': 'A'}], [{'n': 'B'}, {'n': 'C'}, {'n': 'D'}]]}, d)))),
+        ('con cuatro lados y sin datos de uno, «Pronóstico: sin datos» sube a la barra: el título de arriba lo tapaba',
+         'pr varios nada cuatro' in html_vs({'grupos': [[{'n': 'A', 'ovr': 70}], [{'n': 'B'}], [{'n': 'C'}], [{'n': 'D'}]]}, d)
+         and 'nada cuatro' not in html_vs({'grupos': [[{'n': 'A', 'ovr': 70}], [{'n': 'B'}], [{'n': 'C'}]]}, d)),
         ('con grupos, el resultado: quiénes pasan y el resto en gris, sin pronóstico',
          'Ana y Beto pasan' in html_vs({'grupos': [[{'n': 'Ana'}, {'n': 'Beto'}], [{'n': 'C'}]], 'gano': [0]}, d)
          and 'gi perdio' in html_vs({'grupos': [[{'n': 'Ana'}], [{'n': 'C'}]], 'gano': [0]}, d)

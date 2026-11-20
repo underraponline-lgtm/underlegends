@@ -150,9 +150,12 @@ def _cuerpo(forma, nivel, g):
     """El cuerpo y sus aros, y cómo va el ícono: (svg, opacidad, color)."""
     d = FORMA[forma]
     j = 'stroke-linejoin="round"'
-    if nivel == 0:      # elegido, sin nada más: punteado y apagado
-        return ('<path d="%s" fill="rgba(8,8,14,.55)" style="stroke:var(--acc)" stroke-opacity=".6" '
-                'stroke-width="4" stroke-dasharray="7 6" %s/>' % (d, j)), .45, '#fff'
+    if nivel == 0:      # elegido, sin nada más: el cuerpo oscuro del 1, con el borde punteado y el ícono un poco apagado
+        # 🔆 hasta el 19/11/2026 era casi transparente —el relleno al 55 %, el borde al 60 % y el ícono al 45 %— y sobre la
+        # carta no se veía (Dlx: «ese playstyle nivel 0 quisiera que no sea transparente, que se note un poco más»). Lo que lo
+        # separa del 1 sigue siendo el borde punteado. La página lo dibuja igual (`Insignia` de web/src/juego.jsx)
+        return ('<path d="%s" fill="url(#%s)" style="stroke:var(--acc)" stroke-width="4.5" stroke-dasharray="8 5" %s/>'
+                % (d, g, j)), .8, '#fff'
     if nivel == 1:      # oscuro, como los rombos de antes
         return ('<path d="%s" fill="url(#%s)" style="stroke:var(--acc)" stroke-width="5" %s/>' % (d, g, j)), 1, '#fff'
     if nivel == 2:      # media luz y un aro
