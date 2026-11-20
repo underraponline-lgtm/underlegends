@@ -1582,6 +1582,19 @@
   [664, "19/11", "CH", "cuartos", "mats", "Status", "mats", "Status"],
   [664, "19/11", "CH", "semifinales", "Makmah", "Colesito", "Makmah", "Colesito"],
   [664, "19/11", "CH", "semifinales", "mats", "Soulb", "mats", "Soulb"],
-  [664, "19/11", "CH", "final", "mats", "Makmah", "mats", "Makmah"]
+  [664, "19/11", "CH", "final", "mats", "Makmah", "mats", "Makmah"],
+  [666, "19/11", "CH", "octavos", "Lalox", "angelo 🇵🇪", "Lalox", "angelo 🇵🇪"],
+  [666, "19/11", "CH", "octavos", "Julda", "LRS", "Julda", "LRS"],
+  [666, "19/11", "CH", "octavos", "beneroo", "Dios", "beneroo", "Dios"],
+  [666, "19/11", "CH", "octavos", "Flash", "CNC", "Flash", "CNC"],
+  [666, "19/11", "CH", "octavos", "23", "Colesito", "23", "Colesito"],
+  [666, "19/11", "CH", "octavos", "tommy", "Lvel 🇻🇪", "tommy", "Lvel 🇻🇪"],
+  [666, "19/11", "CH", "cuartos", "Lalox", "Abyssus", "Lalox", "Abyssus", "Walk-in 1: Abysus🇵🇦"],
+  [666, "19/11", "CH", "cuartos", "Flash", "beneroo", "Flash", "beneroo"],
+  [666, "19/11", "CH", "cuartos", "Julda", "tommy", "Julda", "tommy"],
+  [666, "19/11", "CH", "cuartos", "Yeyox", "23", "Yeyox", "23"],
+  [666, "19/11", "CH", "semifinales", "Lalox", "Julda", "Lalox", "Julda"],
+  [666, "19/11", "CH", "semifinales", "Flash", "Yeyox", "Flash", "Yeyox"],
+  [666, "19/11", "CH", "final", "Flash", "Lalox", "Flash", "Lalox"]
  ]
 }

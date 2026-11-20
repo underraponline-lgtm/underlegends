@@ -60398,5 +60398,251 @@
    "min": 80,
    "v": 1
   }
+ },
+ "666": {
+  "dia": "2026-11-19",
+  "escala": "16+",
+  "fecha": "19/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1573167841333743658"
+  ],
+  "n": 666,
+  "nombre": "CHOP COMPE NOCTURNA V.1",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Lalox",
+       "angelo 🇵🇪"
+      ],
+      "Lalox",
+      ""
+     ],
+     [
+      [
+       "Julda",
+       "LRS"
+      ],
+      "Julda",
+      ""
+     ],
+     [
+      [
+       "beneroo",
+       "Dios"
+      ],
+      "beneroo",
+      ""
+     ],
+     [
+      [
+       "Flash",
+       "CNC"
+      ],
+      "Flash",
+      ""
+     ],
+     [
+      [
+       "23",
+       "Colesito"
+      ],
+      "23",
+      ""
+     ],
+     [
+      [
+       "tommy",
+       "Lvel 🇻🇪"
+      ],
+      "tommy",
+      ""
+     ],
+     [
+      [
+       "yeyoz🇲🇽",
+       "Sanito🇨🇱",
+       "Erian"
+      ],
+      "yeyoz🇲🇽",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Lalox",
+       "Abyssus"
+      ],
+      "Lalox",
+      "Walk-in 1: Abysus🇵🇦"
+     ],
+     [
+      [
+       "Flash",
+       "beneroo"
+      ],
+      "Flash",
+      ""
+     ],
+     [
+      [
+       "Julda",
+       "tommy"
+      ],
+      "Julda",
+      ""
+     ],
+     [
+      [
+       "Yeyox",
+       "23"
+      ],
+      "Yeyox",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Lalox",
+       "Julda"
+      ],
+      "Lalox",
+      ""
+     ],
+     [
+      [
+       "Flash",
+       "Yeyox"
+      ],
+      "Flash",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Julda",
+       "Yeyox"
+      ],
+      "Julda",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Flash",
+       "Lalox"
+      ],
+      "Flash",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "Flash",
+    "Campeón",
+    10000
+   ],
+   [
+    "Lalox",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Julda",
+    "Tercero",
+    6000
+   ],
+   [
+    "Yeyox",
+    "Cuarto",
+    4500
+   ],
+   [
+    "23",
+    "Cuartos",
+    2500
+   ],
+   [
+    "beneroo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "tommy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Abyssus",
+    "Cuartos",
+    1250
+   ],
+   [
+    "CNC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dios",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sanito🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "angelo 🇵🇪",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 132,
+   "v": 1
+  }
  }
 }

@@ -372,6 +372,7 @@
   "mfdoom": "Agente sombra",
   "lambo": "Lambroggini",
   "soulog": "Magic",
+  "yeyoz": "Yeyox",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1941,6 +1942,10 @@
   [
    "SOUL OG",
    "Magic"
+  ],
+  [
+   "yeyoz",
+   "Yeyox"
   ],
   [
    "Zetryco",

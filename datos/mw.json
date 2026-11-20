@@ -72,10 +72,22 @@
     "nivel": "A",
     "base": 8000,
     "o": 92,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 8000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 8000,
+    "caza": {
+     "n": 666,
+     "evento": "CHOP COMPE NOCTURNA V.1",
+     "sv": "CH",
+     "t": "2026-11-20T02:47:21Z",
+     "por": [
+      {
+       "n": "beneroo",
+       "cobra": 16000
+      }
+     ]
+    }
    },
    {
     "n": "Erian",
@@ -86,9 +98,9 @@
     "base": 9000,
     "o": 3,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 10750
    },
    {
     "n": "Marcos",

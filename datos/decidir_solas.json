@@ -2,191 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "a7ae639b0f",
-   "tipo": "Nombre desconocido",
-   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
-   "que": "¿Quién es «JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793930901077,
-   "filas": [
-    1092
-   ],
-   "variantes": [
-    "JD 🇪🇨  - TONY  🇦🇷 - LEITAN  🇦🇷 - Makma 🇻🇪"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "df3199f0dd",
-   "tipo": "Nombre desconocido",
-   "sec": "PANDILLAS NO VAMOS A TAGUEAR NI A ESPERAR A NADIE VOL 2 · CH · 20/10 · #571",
-   "que": "¿Quién es «Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1793930901077,
-   "filas": [
-    1098
-   ],
-   "variantes": [
-    "Seko Boy🇨🇴  Lamborguini 🇦🇷 - Makma 🇻🇪"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "be56deb869",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Lizeninn» es Mito? La cuenta de Mito en la Lista se anotó como «Lizeninn», y en el ranking suman aparte. Si es la misma persona, los puntos de «Lizeninn» pasan a Mito.\nLa cuenta: https://discord.com/users/1493416945037611140",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «Lizeninn» ya es alias de Mito",
-   "t": 1793936268700,
-   "filas": [
-    785
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Lizeninn» → «Mito» · cuenta 1493416945037611140"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "9d176e9e5d",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«Lizen» es Mito? La cuenta de Mito en la Lista se anotó como «Lizen», y en el ranking suman aparte. Si es la misma persona, los puntos de «Lizen» pasan a Mito.\nLa cuenta: https://discord.com/users/1493416945037611140",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «Lizen» ya es alias de Mito",
-   "t": 1793936268700,
-   "filas": [
-    984
-   ],
-   "variantes": [
-    "DOS NOMBRES: «Lizen» → «Mito» · cuenta 1493416945037611140"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "f4ad3bab2a",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 11 · FFA · 05/11 · #574",
-   "que": "¿Quién es «dyzzcord🇨🇱»?",
-   "r": "Es Dyzz (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @dyzzmc (en Discord: «#60 | 📿», «Dyzzmzt») · en la Lista: Dyzz se anotó como «dyzzcord» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793939854821,
-   "filas": [
-    1116
-   ],
-   "variantes": [
-    "dyzzcord🇨🇱"
-   ],
-   "escribio": {
-    "quien": "QCYO RAPEEN 11 · FFA · 05/11 · dyzzcord🇨🇱"
-   }
-  },
-  {
-   "id": "faef3ac161",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 11 · FFA · 05/11 · #574",
-   "que": "¿Quién es «Joven shenlong 🇵🇦»?",
-   "r": "Es alguien nuevo: alta con su cuenta 926257282667413564",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (926257282667413564)",
-   "t": 1793939854821,
-   "filas": [
-    1114
-   ],
-   "variantes": [
-    "Joven shenlong 🇵🇦"
-   ],
-   "escribio": {
-    "alta": [
-     "Joven shenlong",
-     "926257282667413564"
-    ]
-   }
-  },
-  {
-   "id": "73900323e0",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 11 · FFA · 05/11 · #574",
-   "que": "¿Quién es «arce🇵🇾»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1240446191506817144",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1240446191506817144)",
-   "t": 1793939854821,
-   "filas": [
-    1115
-   ],
-   "variantes": [
-    "arce🇵🇾"
-   ],
-   "escribio": {
-    "alta": [
-     "arce",
-     "1240446191506817144"
-    ]
-   }
-  },
-  {
-   "id": "b5b479cb0e",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen · FFA · 02/11 · #563",
-   "que": "¿Quién es «Joven sexlong 🇵🇦»?",
-   "r": "Es Joven shenlong (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @godkiller___ · en la Lista: Joven shenlong se anotó como «Joven sexlong» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1793941508268,
-   "filas": [
-    1039
-   ],
-   "variantes": [
-    "Joven sexlong 🇵🇦"
-   ],
-   "escribio": {
-    "quien": "qcyo rapeen · FFA · 02/11 · Joven sexlong 🇵🇦"
-   }
-  },
-  {
-   "id": "f32c74f9fc",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«dyzzcord» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «dyzzcord», y en el ranking suman aparte. Si es la misma persona, los puntos de «dyzzcord» pasan a Dyzz.\nLa cuenta: https://discord.com/users/1525996330042921081",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no hace falta: «dyzzcord» ya no suma aparte en el ranking",
-   "t": 1793941508268,
-   "filas": [
-    1117
-   ],
-   "variantes": [
-    "DOS NOMBRES: «dyzzcord» → «Dyzz» · cuenta 1525996330042921081"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "5ba43e41d7",
    "tipo": "Alias posible",
    "sec": "🪪 Identidad",
@@ -4534,6 +4349,81 @@
     "alta": [
      "Mc uchiha",
      "1250930515670728996"
+    ]
+   }
+  },
+  {
+   "id": "51968b8a17",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE NOCTURNA V.1 · CH · 19/11 · #666",
+   "que": "¿Quién es «yeyoz🇲🇽»?",
+   "r": "Es Yeyox",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Yeyox: estaba en la llamada del evento con un nombre parecido",
+   "t": 1795151451858,
+   "filas": [
+    1528
+   ],
+   "variantes": [
+    "yeyoz🇲🇽"
+   ],
+   "escribio": {
+    "alias": [
+     "yeyoz",
+     "Yeyox"
+    ],
+    "filas": [
+     380
+    ]
+   }
+  },
+  {
+   "id": "1a8fedf4ba",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE NOCTURNA V.1 · CH · 19/11 · #666",
+   "que": "¿Quién es «Sanito🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1566423995677679750",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1566423995677679750)",
+   "t": 1795151451858,
+   "filas": [
+    1524
+   ],
+   "variantes": [
+    "Sanito🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "Sanito",
+     "1566423995677679750"
+    ]
+   }
+  },
+  {
+   "id": "e3cdcfdcbf",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE NOCTURNA V.1 · CH · 19/11 · #666",
+   "que": "¿Quién es «tommy»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1544203018457587752",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1544203018457587752)",
+   "t": 1795151451858,
+   "filas": [
+    1526
+   ],
+   "variantes": [
+    "tommy"
+   ],
+   "escribio": {
+    "alta": [
+     "tommy",
+     "1544203018457587752"
     ]
    }
   }

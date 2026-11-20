@@ -474,6 +474,11 @@
     "t1",
     1793029252929
    ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795151460346
+   ],
    "🌐 IMPERIO": [
     "🌐 IMPERIO",
     "t1",
@@ -1666,6 +1671,15 @@
     "🥉 AL PODIO",
     "t1",
     1793489849164
+   ]
+  }
+ },
+ "beneroo": {
+  "temporada": {
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1795151460346
    ]
   }
  },
@@ -4031,6 +4045,11 @@
     "t1",
     1794353523538
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795151460346
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -5509,6 +5528,11 @@
  },
  "flash": {
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1795151460346
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
@@ -5516,13 +5540,18 @@
    ]
   },
   "temporada": {
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1795151460346
+   ],
    "🌱 PROMESA": [
     "🌱 PROMESA",
     "t1",
     1794981844562
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1794981844562
    ],
@@ -6660,6 +6689,20 @@
    ]
   }
  },
+ "julda": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795151460346
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795151460346
+   ]
+  }
+ },
  "julix": {
   "servidor": {
    "🏅 PODIOS": [
@@ -7255,6 +7298,15 @@
     "🧳 VIAJERO",
     "t1",
     1794981844562
+   ]
+  }
+ },
+ "lalox": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795151460346
    ]
   }
  },

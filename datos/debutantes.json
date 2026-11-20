@@ -1033,9 +1033,10 @@
   },
   "Flash": {
    "avisado": "2026-11-18",
+   "avisado_cumplido": "2026-11-20",
    "chat": "2026-11-19",
-   "con": null,
-   "cumplido": "",
+   "con": 666,
+   "cumplido": "2026-11-20T02:47:21+00:00",
    "debut": "2026-11-18T03:02:41+00:00",
    "did": "1339483432207781928",
    "evento": "CHOP ES CEO V.4",
@@ -2736,6 +2737,18 @@
    "vence": "2026-11-11T01:53:16+00:00",
    "vencido": true
   },
+  "Sanito": {
+   "avisado": "2026-11-20",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-20T02:47:21+00:00",
+   "did": "",
+   "evento": "CHOP COMPE NOCTURNA V.1",
+   "n": 666,
+   "sv": "CH",
+   "vence": "2026-11-27T02:47:21+00:00",
+   "vencido": false
+  },
   "Scritura": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-15",
@@ -3250,6 +3263,18 @@
    "vence": "2026-11-16T03:16:00+00:00",
    "vencido": true
   },
+  "angelo": {
+   "avisado": "2026-11-20",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-20T02:47:21+00:00",
+   "did": "",
+   "evento": "CHOP COMPE NOCTURNA V.1",
+   "n": 666,
+   "sv": "CH",
+   "vence": "2026-11-27T02:47:21+00:00",
+   "vencido": false
+  },
   "arce": {
    "avisado": "2026-11-06",
    "chat": "2026-11-06",
@@ -3302,9 +3327,10 @@
   },
   "beneroo": {
    "avisado": "2026-11-17",
+   "avisado_cumplido": "2026-11-20",
    "chat": "2026-11-18",
-   "con": null,
-   "cumplido": "",
+   "con": 666,
+   "cumplido": "2026-11-20T02:47:21+00:00",
    "debut": "2026-11-15T19:01:05+00:00",
    "did": "899160988480319508",
    "evento": "VERSO ELITE VOL.1",
@@ -3671,6 +3697,18 @@
    "n": 661,
    "sv": "CH",
    "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
+  "tommy": {
+   "avisado": "2026-11-20",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-20T02:47:21+00:00",
+   "did": "",
+   "evento": "CHOP COMPE NOCTURNA V.1",
+   "n": 666,
+   "sv": "CH",
+   "vence": "2026-11-27T02:47:21+00:00",
    "vencido": false
   },
   "wosito": {

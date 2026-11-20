@@ -2455,6 +2455,17 @@
    "b": "FLASH",
    "ganador": "FLASH",
    "votos": "1–0"
+  },
+  "1573200779701911614": {
+   "id": "1573200779701911614",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795150694538,
+   "a": "FLASH",
+   "b": "Lalox",
+   "ganador": "FLASH",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -7239,6 +7250,27 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1573200779701911614": {
+   "id": "1573200779701911614",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795150694538,
+   "ed": 1795150731159,
+   "texto": "`[ FINAL ]`\n⌞FLASH⌝ 🆚 ⌞LALOX⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "FLASH",
+      "LALOX"
+     ],
+     "FLASH",
+     "veredicto",
      []
     ]
    ]

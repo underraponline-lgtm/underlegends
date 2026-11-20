@@ -191,7 +191,7 @@
 "c": []
 },
 "abyssus": {
-"rg": "S",
+"rg": "A",
 "c": [
 "competitivo",
 "servidor",
@@ -934,6 +934,10 @@
 "temporada"
 ]
 },
+"flash": {
+"rg": "",
+"c": []
+},
 "juanpa": {
 "rg": "",
 "c": [
@@ -1245,10 +1249,6 @@
 "temporada"
 ]
 },
-"flash": {
-"rg": "",
-"c": []
-},
 "19": {
 "rg": "",
 "c": []
@@ -1290,6 +1290,13 @@
 "temporada"
 ]
 },
+"julda": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "sintext": {
 "rg": "",
 "c": []
@@ -1301,6 +1308,10 @@
 "servidor",
 "temporada"
 ]
+},
+"lalox": {
+"rg": "",
+"c": []
 },
 "campoy": {
 "rg": "",
@@ -8009,8 +8020,8 @@
 "tipo": "resnoche",
 "t": "2026-11-20T08:00:00Z",
 "dia": "2026-11-19",
-"eventos": 2,
-"part": 38,
+"eventos": 3,
+"part": 55,
 "campeones": [
 {
 "ev": "CHOP COMPE CHILL V.1",
@@ -8041,9 +8052,26 @@
 "kyss"
 ]
 ]
+},
+{
+"ev": "CHOP COMPE NOCTURNA V.1",
+"sv": "CH",
+"ll": 666,
+"quien": [
+[
+"Flash",
+"flash"
+]
+]
 }
 ],
 "suman": [
+{
+"n": "Flash",
+"k": "flash",
+"pts": 10000,
+"ev": 1
+},
 {
 "n": "mats",
 "k": "mats",
@@ -8053,34 +8081,28 @@
 {
 "n": "Colesito",
 "k": "colesito",
-"pts": 8125,
-"ev": 2
-},
-{
-"n": "Makmah",
-"k": "makmah",
-"pts": 7500,
-"ev": 1
+"pts": 9375,
+"ev": 3
 }
 ],
 "suben": [
 {
-"n": "XXXX 🇻🇪",
-"k": "",
-"de": 625,
-"a": 469
+"n": "Lalox",
+"k": "lalox",
+"de": 713,
+"a": 318
 },
 {
-"n": "MauzzitoEmeces",
-"k": "",
-"de": 432,
-"a": 368
+"n": "Julda",
+"k": "julda",
+"de": 425,
+"a": 129
 },
 {
-"n": "doble h",
+"n": "beneroo",
 "k": "",
-"de": 172,
-"a": 150
+"de": 636,
+"a": 402
 }
 ],
 "sorpresas": [
@@ -8165,7 +8187,7 @@
 "makmah": 1,
 "oasis": 4,
 "pichulamc": 1,
-"erian": 1,
+"erian": 0,
 "praiseriza": 0,
 "snow": 0,
 "six": 5,
@@ -8174,7 +8196,7 @@
 "panchok": 3,
 "carlosss": 2,
 "liberia": 1,
-"colesito": 2,
+"colesito": 0,
 "agus": 0,
 "mrstillballin": 5,
 "mco": 1,
@@ -8253,7 +8275,7 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 4,
+"dios": 0,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,
@@ -8371,7 +8393,9 @@
 "deko": 2,
 "sintext": 0,
 "rodrilp": 3,
-"flash": 1
+"flash": 2,
+"julda": 1,
+"lalox": 1
 },
 "sem": {
 "id": "2026-11-16",
