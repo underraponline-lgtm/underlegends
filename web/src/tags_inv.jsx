@@ -48,7 +48,8 @@ import { CartaViva } from './cartaviva.jsx';
 import { FraseEditor } from './frase.jsx';
 import { ConEfecto, pedirArte } from './puesto.js';
 import { RZ } from './tienda_rz.js';
-import { num } from './liga.js';
+import { DUENO, num } from './liga.js';
+import { useModsEstado } from './mods.js';
 
 usarCss('inventario', CSS_PAGINA);
 // 🎭 tu estilo de juego (16/11/2026): su pestaña, en su propio pedazo (trae el catálogo con los íconos). Ver `juego.jsx`
@@ -202,7 +203,14 @@ const anchoDe = () => (esTelAhora() ? Math.min(210, window.innerWidth - 150)
   : Math.max(200, Math.min(300, Math.round((window.innerHeight - 495) * 300 / 438))));
 
 export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
-  const [yo, setYo] = useState(undefined);
+  // 🛠️ MODS (20/11/2026): «Tener todo» suma los efectos de carta de la Tienda (los TAGs y los marcos ya son todos tuyos:
+  // `yo.dueno`), para probártelos puestos; un efecto que no es tuyo no se guarda. «Ver como un usuario» saca eso de dueño
+  const Mm = useModsEstado();
+  const esDueno = !!dc && String(dc.id) === DUENO;
+  const pruebaInv = esDueno && !!Mm.prueba;
+  const comoUsuario = esDueno && Mm.vista === 'usuario';
+  const [yo0, setYo] = useState(undefined);
+  const yo = yo0 && comoUsuario ? Object.assign({}, yo0, { dueno: false }) : yo0;
   const [mk, setMk] = useState(null);
   const [sec, setSec] = useState(['principal', 'fondo', 'frase', 'emblemas'].includes(ranura0) ? 'perfil' : ranura0 === 'coleccion' ? 'col'
     : ranura0 === 'juego' ? 'juego' : 'cartas');
@@ -336,7 +344,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   // 🛍️ el efecto: el puesto en la Tienda, el del borrador, y el que muestra la carta (`undefined` = el puesto)
   const efectoG = (ti && ti.puesto) || '';
   const efectoAhora = 'efecto' in bor ? bor.efecto : efectoG;
-  const efMio = (id) => !id || !!(ti && ti.mias.has(id));
+  const efMio = (id) => !id || pruebaInv || !!(ti && ti.mias.has(id));
   const efDe = (id) => ((ti && ti.piezas.find(([x]) => x === id)) || [])[1] || null;
   const precioEf = (p) => Math.round((ti.precios[p.r] || 0) * (ti.prem && !(p.t || []).includes('num') ? ti.desc : 1));
   const efBloq = 'efecto' in bor && !efMio(bor.efecto);
@@ -424,7 +432,10 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       const d = await pasePost('carta-principal', { carta: principalAhora });
       if (d && d._ok) setYo(d); else { ok = false; avisos.push('La carta principal no se pudo guardar.'); }
     }
-    if ('efecto' in bor) {
+    // 🛠️ con «Tener todo» de Mods, el efecto que no es tuyo se ve puesto y no se guarda
+    if ('efecto' in bor && pruebaInv && bor.efecto && !(ti && ti.mias.has(bor.efecto))) {
+      ok = false; avisos.push('El efecto es de prueba (Mods): se ve puesto, pero no se guarda.');
+    } else if ('efecto' in bor) {
       // 📶 sin red `conCuenta` rechaza (18/11/2026): sin el catch, `guardar()` se cortaba acá y «Guardando…» quedaba
       // trabado, sin mensaje. Así cuenta como «no se pudo poner» y sigue hasta soltar los botones
       const d = await window.conCuenta('/api/avisos/tienda-accion', { accion: 'poner', ranura: 'carta', pieza: bor.efecto || null }).catch(() => null);

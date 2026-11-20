@@ -1098,9 +1098,10 @@ const CAMBIO_TXT = (c) => {
           : c.tipo === 'nombre' ? '«' + limpio(d.nombre) + '» es ' + limpio(d.es) : 'Campeón: ' + limpio(d.c);
 };
 const hoyIso = () => new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
-function LigasStaff({ sv, rol, permisos }) {
+// 🛠️ `lid0` (20/11/2026, Mods): la liga elegida al abrir, desde la página de esa liga con los lápices (ligas.jsx)
+export function LigasStaff({ sv, rol, permisos, lid0 = '' }) {
   const [det, setDet] = useState(null);
-  const [sel, setSel] = useState('');
+  const [sel, setSel] = useState(lid0);
   const [j, setJ] = useState(null);
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');

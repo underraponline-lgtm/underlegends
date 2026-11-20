@@ -18,7 +18,8 @@ const CLAVE = 'lg:mods';
 // 🛠️ LA PÁGINA MODS (20/11/2026, Dlx, de la maqueta privada 2n91HAK3krNGWeK6u7zFF1: «A con lo de B, dale»). Mods dejó de ser
 // una ventana con cinco interruptores sueltos: es una página (`#/mods`, mods_pag.jsx) en tres grupos, y cada cosa es un
 // estado de esta pestaña:
-//   · la lente, que sólo cambia lo que ves: `vista` ('' · 'usuario' · 'sincuenta')
+//   · la lente, que sólo cambia lo que ves: `vista` ('' · 'usuario' · 'sincuenta') y `hora` (ms: el reloj de la página
+//     corre desde ahí; lo aplica el script del principio, web/montar.py, así que cambiarla recarga)
 //   · probar sin gastar: `prueba` (tener todo), `dinero` (Puntos de prueba), `pase` + `paseN` + `paseP` (el Pase en otro
 //     nivel, con o sin Premium). Nada de esto sale al objeto
 //   · corregir de verdad: `lapices` (un lápiz en cada cosa que puedes corregir, en su propia página)
@@ -27,6 +28,7 @@ const CLAVE = 'lg:mods';
 //: lo que dice la franja de cada cosa prendida (las que no están acá no salen en la franja)
 export const INTERRUPTORES = {
   vista: 'Ver como',
+  hora: 'La hora',
   prueba: 'Tener todo',
   dinero: 'Dinero de prueba',
   pase: 'El Pase en otro nivel',
@@ -41,13 +43,19 @@ function leer() {
   } catch (e) { return {}; }
 }
 
+/** La hora de verdad (con `hora` prendida, `Date` está corrido: ver web/montar.py) */
+export const ahoraReal = () => Math.round(performance.timeOrigin + performance.now());
+
 /** Prende o apaga una cosa (o todas, con `null`) y le avisa a la página. Un valor que no es sí/no (la vista, el nivel)
  *  se guarda tal cual; vacío o 0, apagado. */
 export function ponerMod(k, v) {
   const x = k === null ? {} : Object.assign(leer(), { [k]: typeof v === 'boolean' ? v : v || '' });
   try { W.sessionStorage.setItem(CLAVE, JSON.stringify(x)); } catch (e) { /* sin sessionStorage: dura lo que la página */ }
+  const hora = Number((W.__mods || {}).hora) || 0;
   W.__mods = x;
   W.dispatchEvent(new Event('lg:mods'));
+  // 🕐 la hora se aplica al cargar la página (web/montar.py): si cambió, se recarga
+  if ((Number(x.hora) || 0) !== hora) { try { W.location.reload(); } catch (e) { /* queda para la próxima carga */ } }
 }
 
 /** Lo prendido, con lo de antes calculado: los lápices abren las crews y todas las llaves de Competencias, y ver como un
@@ -58,6 +66,8 @@ function derivar(x) {
 }
 
 /** La vista de la lente, para quien no puede usar hooks (liga.js `quienMira()`, App.jsx): '' si no hay ninguna */
+if (!W.__mods) W.__mods = leer();
+
 export function vistaMods() {
   return (W.__mods || leer()).vista || '';
 }
@@ -87,7 +97,7 @@ export function historialMods() {
 }
 /** Anota una corrección: `{t, que, donde, ruta, deshacer?}` (deshacer: lo que hay que mandar para volver atrás) */
 export function anotarMods(x) {
-  const xs = [Object.assign({ t: Date.now() }, x), ...historialMods()].slice(0, 30);
+  const xs = [Object.assign({ t: ahoraReal() }, x), ...historialMods()].slice(0, 30);
   try { localStorage.setItem(HIST, JSON.stringify(xs)); } catch (e) { /* sin almacenamiento: no queda */ }
   W.dispatchEvent(new Event('lg:mods-hist'));
 }

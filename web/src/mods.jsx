@@ -5,10 +5,19 @@
 // Y SIN LA VENTANA DE «TUS PANELES» desde el 20/11/2026: la reemplazó la página (Dlx, a la maqueta: «A con lo de B»)
 import { INTERRUPTORES, VISTAS, ponerMod, useModsEstado } from './mods.js';
 
+/** «jue 31/12 · 8 PM», en hora del este */
+export function horaMods(ms) {
+  try {
+    return new Intl.DateTimeFormat('es', { timeZone: 'America/New_York', weekday: 'short', day: 'numeric', month: 'numeric', hour: 'numeric', hour12: true })
+      .format(new Date(Number(ms))).replace(/\s?([ap])\.?\s?m\.?/i, (x, a) => ' ' + a.toUpperCase() + 'M');
+  } catch (e) { return ''; }
+}
+
 /** Lo que dice la franja de cada cosa prendida */
 function nombre(k, M) {
   if (k === 'vista') return 'Ver como: ' + (VISTAS[M.vista] || M.vista);
   if (k === 'pase') return 'El Pase en el nivel ' + (Number(M.paseN) || 1) + (M.paseP ? ' · Premium' : '');
+  if (k === 'hora') return 'La hora: ' + horaMods(M.hora);
   return INTERRUPTORES[k];
 }
 

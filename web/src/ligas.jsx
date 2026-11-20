@@ -14,7 +14,7 @@
 //
 // ⚠️ LA TABLA ES LA QUE SALE DE LOS VEREDICTOS QUE SE PUDIERON LEER: directa 3 y 0, réplica 2 y 1, sin los ExtraPlayers.
 // La oficial de cada liga puede tener sanciones o defaults que acá no están; por eso va el link a la suya.
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, nombrePais, silueta } from './piezas.jsx';
 import { Numero, useDesliza } from './anima.js';
@@ -24,6 +24,10 @@ import { BatallasAhora } from './ligas_ahora.jsx';
 import { escenaDe } from './arriba.jsx';
 import CSS_PAGINA from './css/ligas.css?inline';
 import { usarCss } from './css.js';
+import { useModsEstado } from './mods.js';
+import { pedirRoles } from './panelsocio.js';
+// 🛠️ la corrección del staff, sólo para quien la abre con los lápices de Mods (es del panel del socio: se baja aparte)
+const LigasStaff = lazy(() => import('./socio2.jsx').then((m) => ({ default: m.LigasStaff })));
 
 // 🎨 lo del remake (web/src/css/ligas.css): la portada nueva y el Álbum
 usarCss('ligas', CSS_PAGINA);
@@ -1235,6 +1239,29 @@ function Minis3({ liga, L, h }) {
   );
 }
 
+// ✎ LOS LÁPICES DE MODS EN UNA LIGA (20/11/2026, la página Mods). Dlx, o Admin y Moderador de la página (`liga` de
+// `socio-roles`): lo mismo que el staff de su servidor en su panel —quién ganó, una que no cuenta, cargar una batalla, un
+// DF, un nombre, un invitado, el campeón—, desde la liga misma. Lo valida el Worker (`socioLiga()`) y lo aplica el ciclo
+function ModsLiga({ L }) {
+  const M = useModsEstado();
+  const [r, setR] = useState(null);
+  useEffect(() => {
+    if (!M.lapices) { setR(null); return undefined; }
+    let vivo = true;
+    pedirRoles().then((x) => { if (vivo) setR(x || null); });
+    return () => { vivo = false; };
+  }, [M.lapices]);
+  if (!M.lapices || !r || !L || !L.sv) return null;
+  const rol = (r.roles || {})[L.sv] || (r.dlx ? 'dlx' : r.liga ? 'liga' : '');
+  if (!rol) return null;
+  return (
+    <section className="lp3-mods" aria-label="Corregir esta liga">
+      <h2><span aria-hidden="true">✎</span> Corregir esta liga <small>Mods · entra en la próxima media hora y queda anotado con tu nombre</small></h2>
+      <Suspense fallback={<p className="lp3-mods-c">Cargando…</p>}><LigasStaff sv={L.sv} rol={rol} permisos={r.permisos || {}} lid0={L.id} /></Suspense>
+    </section>
+  );
+}
+
 function LigaPerfil({ liga, id }) {
   // 🔑 el detalle, con el sello del lobby (18/11/2026, ver LigasPortada)
   const det = useDetalle(liga.d.sello);
@@ -1379,6 +1406,7 @@ function LigaPerfil({ liga, id }) {
           </nav>
         </Sec>
       ) : null}
+      {vieja ? null : <ModsLiga L={L} />}
     </>
   );
 }

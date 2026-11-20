@@ -653,6 +653,18 @@ def script():
     e.preventDefault(); window.__instalar = e; window.dispatchEvent(new Event('lg:instalar'));
   });
   window.addEventListener('appinstalled', function () { window.__instalar = null; window.dispatchEvent(new Event('lg:instalar')); });
+  // 🕐 LA HORA DE MODS (20/11/2026, la página Mods): con `hora` en la pestaña (`lg:mods`) y la cuenta de Dlx, el reloj de
+  // la página entera corre desde esa hora —el cierre de la T1, la gala, un viernes en vivo—. Va acá, antes que todo, para
+  // que lo vea cada pieza. Lo que viene del servidor sigue siendo de ahora; cambiarla recarga la página
+  try {
+    var mH = JSON.parse(sessionStorage.getItem('lg:mods') || '{}') || {}, dH = JSON.parse(localStorage.getItem('lg:dc') || 'null');
+    if (Number(mH.hora) > 0 && dH && String(dH.id) === '739338101603696681') {
+      var RD = Date, OFF = Number(mH.hora) - RD.now();
+      var DM = function () { var a = Array.prototype.slice.call(arguments); return a.length ? new (Function.prototype.bind.apply(RD, [null].concat(a)))() : new RD(RD.now() + OFF); };
+      DM.prototype = RD.prototype; DM.now = function () { return RD.now() + OFF; }; DM.UTC = RD.UTC; DM.parse = RD.parse;
+      window.Date = DM; window.__lgHora = Number(mH.hora);
+    }
+  } catch (e) { /* la hora de siempre */ }
   // ⚠️ SIN PÁGINA, UN AVISO Y «REINTENTAR» (27/10/2026: el Inicio viejo, que era el respaldo, se fue con app.js). Lo
   // llaman el plan B de acá abajo, nucleo.js si `/api/lobby` no contesta y la app si se rompe entera (`Respaldo`)
   window.__sinPagina = function (por) {

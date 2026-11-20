@@ -5,13 +5,15 @@
 // Cada rol ve sólo lo suyo (la crítica de la maqueta: un Moderador veía 14 cosas y podía usar una).
 //
 // Qué es cada estado y quién lo lee: mods.js. ⚠️ Lo que se ve acá no da permisos: el Worker decide en cada pedido.
-// ⏳ Lo que falta del pedido (la próxima tanda): «Alguien…» y la hora en la lente, tener todo en el Inventario, el festejo,
-// los Admin en las llaves (pide el Worker) y los lápices en ligas, perfiles, publicaciones, eventos y paneles.
-import { useState } from 'react';
+// Tanda 2 (20/11/2026): la hora en la lente, tener todo en el Inventario, el festejo, los lápices en las ligas y, con el
+// Worker, los Admin y Moderadores de la página en llaves y ligas (`liga` de `socio-roles`).
+// ⏳ Lo que falta: «Alguien…» en la lente, y los lápices en perfiles, publicaciones y eventos (piden el Worker).
+import { useEffect, useState } from 'react';
 import { DUENO } from './liga.js';
-import { deshechaMods, ponerMod, prendidosMods, rolMods, tieneMods, useHistorialMods, useModsEstado, useQuienMod } from './mods.js';
-import { pedirLlave } from './panelsocio.js';
-import { abrirDePrueba } from './drops.jsx';
+import { ahoraReal, deshechaMods, ponerMod, prendidosMods, rolMods, tieneMods, useHistorialMods, useModsEstado, useQuienMod } from './mods.js';
+import { horaMods } from './mods.jsx';
+import { pedirLlave, pedirRoles } from './panelsocio.js';
+import { abrirDePrueba, abrirMomento } from './drops.jsx';
 import { pedirRecorrido } from './primera.js';
 import { Ico } from './piezas.jsx';
 import CSS from './css/mods.css?inline';
@@ -21,9 +23,26 @@ const W = window;
 //: las rarezas de los Dragón Drops, con sus colores (drops.jsx `COLOR_RZ`)
 const RAREZAS = [['Maqueta', '#9AA4B2'], ['Mixtape', '#29B298'], ['Vinilo', '#9B5CFF'], ['Disco de Oro', '#FF4F93'], ['Micrófono de Oro', '#F5C542']];
 
+// 🕐 las horas de la lente, en hora del este (noviembre a enero: −5): el próximo viernes a las 10 PM, el cierre de la T1
+// y la gala (NOVEDADES: la T1 va del 22/09 al 31/12 y la gala es el 1/1 a las 11 AM)
+const ET = -5 * 3600000;
+function viernes() {
+  const et = new Date(ahoraReal() + ET);
+  const d = (5 - et.getUTCDay() + 7) % 7 || (et.getUTCHours() >= 22 ? 7 : 0);
+  return Date.UTC(et.getUTCFullYear(), et.getUTCMonth(), et.getUTCDate() + d, 22) - ET;
+}
+const HORAS = () => [['', 'Ahora'], [String(viernes()), 'Viernes 10 PM', 'en vivo'], [String(Date.parse('2026-12-31T20:00:00-05:00')), 'Cierre de la T1', '31/12'],
+  [String(Date.parse('2027-01-01T11:00:00-05:00')), 'La gala', '1/1 11 AM']];
+//: los festejos de verdad (el momento de drops_show.js), con lo que diría cada uno
+const FESTEJOS = [
+  ['Un día completo', { sub: 'Día 3 de 7', titulo: '¡Completaste el día!', lista: [{ txt: '500 Puntos de Tienda', small: 'Premio del día', tipo: 'pdt' }, { txt: '1 Star Dragon', small: 'Tu primera reacción', tipo: 'star' }], nota: 'Mañana: el Flight case', pal: { c: '#E41373', b1: '#FF5A9C', b2: '#2A0313' } }],
+  ['La Caja del Nuevo', { sub: 'Día 7 de 7', titulo: '¡Terminaste tu primera semana!', lista: [{ txt: '5.000 Puntos de Tienda', small: 'Caja del Nuevo', tipo: 'pdt' }, { txt: '2 Star Dragons', small: 'Caja del Nuevo', tipo: 'star' }, { txt: 'Título «Recién llegado»', small: 'Caja del Nuevo', tipo: 'titulo' }], pal: { c: '#F5C542', b1: '#FFE07A', b2: '#7E4C00' } }],
+  ['Un Drop', { sub: 'Pase de rapero', titulo: '¡Un Dragón Drop!', lista: [{ txt: 'Mixtape', small: 'Nivel 6 del Pase', tipo: 'drop' }], pal: { c: '#29B298', b1: '#5CE0C6', b2: '#04241D' } }],
+];
+
 /** «hace 3 min», «hace 2 h», «ayer», «hace 4 días» */
 function haceCorto(t) {
-  const s = Math.max(0, (Date.now() - t) / 1000);
+  const s = Math.max(0, (ahoraReal() - t) / 1000);
   if (s < 60) return 'recién';
   if (s < 3600) return 'hace ' + Math.floor(s / 60) + ' min';
   if (s < 86400) return 'hace ' + Math.floor(s / 3600) + ' h';
@@ -99,6 +118,15 @@ export function ModsPagina({ liga, dc }) {
   const M = useModsEstado();
   const owner = !!dc && String(dc.id) === DUENO;
   const [cayo, setCayo] = useState(false);
+  // ✎ ¿corrige llaves y ligas de cualquier servidor? Dlx, o Admin y Moderador de la página (`liga`, el Worker lo dice)
+  const [deLiga, setDeLiga] = useState(false);
+  useEffect(() => {
+    if (!dc) return undefined;
+    let vivo = true;
+    pedirRoles().then((r) => { if (vivo) setDeLiga(!!(r && (r.dlx || r.liga))); });
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [horaElegir, setHoraElegir] = useState('');
   if (!dc || !tieneMods(Q)) {
     return (
       <div className="md-pag">
@@ -130,6 +158,16 @@ export function ModsPagina({ liga, dc }) {
                 <div className="md-fila"><span className="lab">Ver como</span>
                   <Pildoras xs={[['', owner ? 'Tú · Owner' : 'Tú · Admin'], ['usuario', 'Un usuario'], ['sincuenta', 'Sin cuenta']]} val={M.vista || ''} al={(v) => ponerMod('vista', v)} />
                 </div>
+                {owner ? (
+                  <div className="md-fila"><span className="lab">La hora</span>
+                    <div className="md-hora">
+                      <Pildoras xs={HORAS()} val={M.hora && HORAS().some(([v]) => v === String(M.hora)) ? String(M.hora) : M.hora ? 'otra' : ''} al={(v) => ponerMod('hora', v ? Number(v) : '')} />
+                      <label className="md-elegir"><span>Elegir</span><input type="datetime-local" value={horaElegir} onChange={(e) => setHoraElegir(e.target.value)} aria-label="Elegir día y hora (hora del este)" />
+                        <button type="button" className="btn borde2 chico" disabled={!horaElegir} onClick={() => ponerMod('hora', Date.parse(horaElegir + ':00-05:00'))}>Ir</button></label>
+                    </div>
+                    {M.hora ? <p className="md-nota md-hora-n">La página corre desde el <b>{horaMods(M.hora)}</b> (hora del este). Lo que viene del servidor sigue siendo de ahora: los datos, los eventos y lo en vivo.</p> : null}
+                  </div>
+                ) : null}
                 <div className="md-fila"><span className="lab">Idioma</span>
                   <Pildoras xs={[['es', 'Español'], ['en', 'English']]} val={en ? 'en' : 'es'} al={(v) => { if ((v === 'en') !== en) idioma(v); }} />
                 </div>
@@ -141,8 +179,9 @@ export function ModsPagina({ liga, dc }) {
             <section className="md-sec" aria-labelledby="md-prueba">
               <div className="md-sec-h"><h2 id="md-prueba">Probar sin gastar</h2><small>no se compra ni se guarda nada</small></div>
               <div className="md-prueba">
-                <Prueba t="Tener todo" k="prueba" M={M} d="En la Tienda: todas las piezas como tuyas, para ponértelas y verlas puestas.">
+                <Prueba t="Tener todo" k="prueba" M={M} d="En la Tienda y en tu Inventario: todas las piezas y todos los efectos de carta como tuyos, para ponértelos y verlos puestos.">
                   <a className="btn borde2 chico" href="#/tienda">Ir a la Tienda</a>
+                  <a className="btn borde2 chico" href="#/inventario">Ir al Inventario</a>
                 </Prueba>
                 <Prueba t="Dinero de prueba" k="dinero" M={M} d="Puntos de Tienda que no se terminan: compras y te lo pones. Al apagarlo, todo vuelve a como estaba.">
                   <span className="md-wallet"><b>∞</b><small>Puntos de prueba<br />los tuyos de verdad, quietos</small></span>
@@ -159,6 +198,9 @@ export function ModsPagina({ liga, dc }) {
                   <div className="md-rz">{RAREZAS.map(([t, c], i) => <button key={t} type="button" onClick={(e) => drop(i, e)}><i style={{ background: c }} />{t}</button>)}</div>
                   {cayo ? <p className="md-err" role="alert">No se pudo abrir: prueba de nuevo.</p> : null}
                 </Prueba>
+                <Prueba t="Disparar un festejo" M={M} d="El momento de verdad, con lo que diría: para mirar la animación sin esperar a ganarlo.">
+                  {FESTEJOS.map(([t, x]) => <button key={t} type="button" className="btn borde2 chico" onClick={(e) => abrirMomento(e.currentTarget, Object.assign({ botones: [{ txt: 'Listo', blanco: true }] }, x)).catch(() => setCayo(true))}>{t}</button>)}
+                </Prueba>
                 <Prueba t="Como alguien nuevo" M={M} d="La bienvenida y el tutorial, como los ve quien llega por primera vez.">
                   <a className="btn borde2 chico" href="#/bienvenida">Ver la bienvenida</a>
                   <button type="button" className="btn borde2 chico" onClick={() => pedirRecorrido()}>Hacer el tutorial</button>
@@ -166,7 +208,7 @@ export function ModsPagina({ liga, dc }) {
               </div>
             </section>
           ) : null}
-          {Q.owner || Q.admin ? (
+          {Q.owner || Q.admin || deLiga ? (
             <section className="md-sec" aria-labelledby="md-corregir">
               <div className="md-sec-h"><h2 id="md-corregir">Corregir de verdad</h2><small>queda anotado con tu nombre</small></div>
               <div className="md-lapices">
@@ -175,9 +217,12 @@ export function ModsPagina({ liga, dc }) {
                 <Sw k="lapices" M={M} t="Lápices para corregir" />
               </div>
               <div className="md-donde"><span className="lab">Dónde aparecen</span>
-                {owner ? <a className="md-fl" href="#/eventos"><span className="md-ic"><Ico n="eventos" t={18} /></span><span><h3>Cualquier llave</h3><p>En cada batalla: quién ganó, un nombre o «la llave no cuenta». Avisa qué cambia después en la llave.</p></span><i>›</i></a> : null}
-                <a className="md-fl" href="#/crews"><span className="md-ic"><Ico n="crews" t={18} /></span><span><h3>Las crews</h3><p>Sus Ajustes, rangos y pedidos, como su Líder.</p></span><i>›</i></a>
-                <a className="md-fl" href="#/competencias"><span className="md-ic"><Ico n="competencias" t={18} /></span><span><h3>Competencias</h3><p>Todas las llaves de la Copa y la Rapid, también donde no juegas.</p></span><i>›</i></a>
+                {owner || deLiga ? <a className="md-fl" href="#/eventos"><span className="md-ic"><Ico n="eventos" t={18} /></span><span><h3>Cualquier llave</h3><p>En cada batalla: quién ganó, un nombre o «la llave no cuenta». Avisa qué cambia después en la llave.</p></span><i>›</i></a> : null}
+                {owner || deLiga ? <a className="md-fl" href="#/ligas"><span className="md-ic"><Ico n="ligas" t={18} /></span><span><h3>Las ligas</h3><p>Al final de cada liga: quién ganó, una que no cuenta, cargar una batalla, un DF, un invitado o el campeón.</p></span><i>›</i></a> : null}
+                {Q.admin ? <a className="md-fl" href="#/crews"><span className="md-ic"><Ico n="crews" t={18} /></span><span><h3>Las crews</h3><p>Sus Ajustes, rangos y pedidos, como su Líder.</p></span><i>›</i></a> : null}
+                {Q.admin ? <a className="md-fl" href="#/competencias"><span className="md-ic"><Ico n="competencias" t={18} /></span><span><h3>Competencias</h3><p>Todas las llaves de la Copa y la Rapid, también donde no juegas.</p></span><i>›</i></a> : null}
+                {owner ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Los comentarios</h3><p>Borrar cualquier comentario, desde el comentario. Siempre, sin prender nada.</p></span><i>›</i></a> : null}
+                {owner ? <a className="md-fl" href="#/socio"><span className="md-ic"><Ico n="servidor" t={18} /></span><span><h3>El panel de cualquier servidor</h3><p>Como su dueño: sus números, el bot y su equipo.</p></span><i>›</i></a> : null}
               </div>
             </section>
           ) : null}
@@ -201,7 +246,7 @@ export function ModsPagina({ liga, dc }) {
             <table className="md-mtz">
               <thead><tr><th /><th>Owner</th><th>Admin</th><th>Mod</th><th>Socio</th></tr></thead>
               <tbody>
-                {[['Cómo ves la página', 1, 1, 0, 0], ['Probar sin gastar', 1, 0, 0, 0], ['Corregir llaves', 1, 0, 0, 2], ['Crews y Competencias', 1, 1, 0, 0], ['El Dashboard', 1, 1, 1, 0], ['Su servidor', 1, 0, 0, 1]]
+                {[['Cómo ves la página', 1, 1, 0, 0], ['Probar sin gastar', 1, 0, 0, 0], ['Corregir llaves y ligas', 1, 1, 1, 2], ['Crews y Competencias', 1, 1, 0, 0], ['El Dashboard', 1, 1, 1, 0], ['Su servidor', 1, 0, 0, 1]]
                   .map(([t, ...v]) => <tr key={t}><td>{t}</td>{v.map((x, i) => <td key={i}><span className={'md-pt' + (x === 2 ? ' m' : x ? '' : ' n')} aria-label={x === 2 ? 'sólo su servidor' : x ? 'sí' : 'no'} /></td>)}</tr>)}
               </tbody>
             </table>
