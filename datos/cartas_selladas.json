@@ -74,7 +74,7 @@
    "temporada": "688901779d94:a8d8b7335469"
   },
   "Aktybo": {
-   "competitivo": "9ad0bb187ea0:38a840be60e7",
+   "competitivo": "68753b4cde8a:38a840be60e7",
    "pais": "1932137b0756:f1f52e1c6d42",
    "servidor": "5a69d2b34521:0bd0fbf67396:aa8232"
   },
@@ -185,10 +185,10 @@
   "Benju": {},
   "Benshi": {},
   "Bishop": {
-   "competitivo": "e44f3cfb0c91:38a840be60e7",
+   "competitivo": "b85c2846ebae:38a840be60e7",
    "pais": "6ceb65c5ea10:f1f52e1c6d42",
    "servidor": "e063273d2a77:0bd0fbf67396:35630e",
-   "temporada": "bd3114ec824d:a8d8b7335469"
+   "temporada": "cbb3f622f885:a8d8b7335469"
   },
   "Blaxx": {
    "competitivo": "dc90c73f4462:38a840be60e7",
@@ -236,7 +236,7 @@
   },
   "CJ": {},
   "CULT": {
-   "competitivo": "6a382c3c2093:38a840be60e7",
+   "competitivo": "81ba11781fe3:38a840be60e7",
    "pais": "c73fbd5b66d4:f1f52e1c6d42",
    "servidor": "d3f4c5ea88c3:0bd0fbf67396:e4fbfa"
   },
@@ -377,7 +377,7 @@
    "servidor": "5326ca7e9e57:0bd0fbf67396:ce9c52"
   },
   "David": {
-   "competitivo": "42babdbdf9bb:38a840be60e7",
+   "competitivo": "ef975cef1d5a:38a840be60e7",
    "pais": "f70fe99a0c99:f1f52e1c6d42",
    "servidor": "b331a4508e38:0bd0fbf67396:1f00d0"
   },
@@ -1250,10 +1250,10 @@
    "servidor": "c3e39b4d3573:0bd0fbf67396:77728e"
   },
   "Minis": {
-   "competitivo": "0eab20598d33:38a840be60e7",
+   "competitivo": "77b530d142ef:38a840be60e7",
    "pais": "c7d9cb1064c2:f1f52e1c6d42",
    "servidor": "fa9df3b797b0:0bd0fbf67396:e4fbfa",
-   "temporada": "6cd77b78af46:a8d8b7335469"
+   "temporada": "2c6897ece006:a8d8b7335469"
   },
   "Mito": {
    "competitivo": "2b7d38f32e7a:38a840be60e7",
@@ -1643,16 +1643,16 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "853de6e6c9e9:38a840be60e7",
+   "competitivo": "37375a159aa4:38a840be60e7",
    "pais": "88508a57d501:f1f52e1c6d42",
    "servidor": "6c1d4957a6e6:0bd0fbf67396:afbca9"
   },
   "SMAFF": {},
   "SNE": {
-   "competitivo": "f4311047c55f:38a840be60e7",
+   "competitivo": "1e44b8a807ba:38a840be60e7",
    "pais": "e8fa6f07fd6f:f1f52e1c6d42",
    "servidor": "0011d75c7fab:0bd0fbf67396:3eef23",
-   "temporada": "e1311eb5ef1e:a8d8b7335469"
+   "temporada": "852e75529334:a8d8b7335469"
   },
   "SOL": {
    "competitivo": "f646c3f84966:38a840be60e7",
@@ -2193,5 +2193,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-20T20:12:36+00:00"
+ "cuando": "2026-11-20T23:33:36+00:00"
 }
