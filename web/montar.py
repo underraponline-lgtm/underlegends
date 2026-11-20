@@ -164,6 +164,31 @@ html.lg-sale #lg-carga.tr-telon .lg-capa.m,html.lg-sale #lg-carga.tr-telon .lg-c
 html.lg-carga-js #lg-carga.tr-flash .lg-capa.n{transform-origin:var(--fo,50% 45%)}
 html.lg-sale #lg-carga.tr-flash .lg-flash{animation:lg-flash .75s .12s ease-out forwards}
 html.lg-sale #lg-carga.tr-flash .lg-capa.n{animation:lg-acerca .8s .12s cubic-bezier(.5,0,.75,0) forwards}
+/* 🎞️ EL ESTRENO DE UNA VERSIÓN NUEVA (20/11/2026, Dlx eligió «El tráiler» del aviso: web/src/novedad.jsx). La recarga de
+   «Recargar para verla» llega acá con `lg:estreno` (`estreno` en #lg-carga): las franjas de cine arriba y abajo —el aviso
+   las tenía en su fotograma, y el fotograma crecía hasta llenar la pantalla—, el título de la versión en lugar de LIGA
+   GLOBAL DE FREESTYLE, y una sexta salida que sólo usa el estreno: la foto se apaga y las franjas se abren, la de arriba
+   para arriba y la de abajo para abajo, sobre la página nueva. El título, la marca y la barra, en su lugar de siempre */
+#lg-carga .lg-fr{display:none}
+#lg-carga.estreno .lg-fr{display:block;position:absolute;left:0;right:0;height:11vh;background:#030304;z-index:3;transform-origin:50% 0;
+  animation:lg-fr-entra .6s cubic-bezier(.23,1,.32,1) both}
+#lg-carga.estreno .lg-fr.ar{top:0}
+#lg-carga.estreno .lg-fr.ab{bottom:0;transform-origin:50% 100%}
+#lg-carga.estreno .lg-logo{width:min(92vw,1100px)}
+#lg-carga.estreno .lg-t{white-space:normal;text-wrap:balance;max-width:min(20ch,92vw);font-size:clamp(28px,3.4vw,64px);line-height:.94;text-transform:uppercase}
+#lg-carga.estreno .lg-t2{display:none}
+#lg-carga.tr-franjas .lg-capa.m,#lg-carga.tr-franjas .lg-capa.v{display:none}
+html.lg-sale #lg-carga.tr-franjas .lg-capa.n{animation:lg-apaga .55s .15s ease-out forwards}
+html.lg-sale #lg-carga.tr-franjas .lg-fr.ar{animation:lg-fr-sube .75s .1s cubic-bezier(.7,0,.3,1) forwards}
+html.lg-sale #lg-carga.tr-franjas .lg-fr.ab{animation:lg-fr-baja .75s .1s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes lg-fr-entra{from{transform:scaleY(.2)}}
+@keyframes lg-apaga{to{opacity:0}}
+@keyframes lg-fr-sube{to{transform:translateY(-100%)}}
+@keyframes lg-fr-baja{to{transform:translateY(100%)}}
+@media (max-width:899.98px) and (orientation:portrait){
+  #lg-carga.estreno .lg-t{font-size:min(7vw,3.4vh)}
+  #lg-carga.estreno .lg-fr{height:9vh}
+}
 /* 🌅 QUE EMPIECE DE A POCO (Dlx, 12/11/2026: «se lagea un poquito cuando la página de carga empieza… que empiece poco a
    poco»). Tironeaba por tres cosas a la vez: el título salía con la letra del sistema y saltaba a la nuestra al llegar,
    todo entraba en el mismo instante en que la página baja su código, y el relleno del título se movía (repintarlo en
@@ -250,10 +275,23 @@ def cabeza_carga():
     return (letras + '<link rel="modulepreload" href="/inicio/inicio.js">\n<script>\n' + """(function () {
   // 🎲 EL FONDO, ELEGIDO YA: cada uno con la misma chance; en «La batalla», cada video con la suya (Dlx, 12/11/2026)
   var C = window.__lgC = @CONF@;
+  // 🎬 LA RECARGA DE UNA VERSIÓN NUEVA (`lg:estreno`, web/src/novedad.jsx, 20/11/2026): se lee y se borra ACÁ, lo primero
+  // de todo, y su dirección (`?_v=7.18`, que la hace otra dirección para el navegador) vuelve a ser la de siempre antes
+  // de que nadie la lea. El fondo es el mismo del aviso (`f`): la foto que crecía hasta llenar la pantalla sigue ahí
+  var E = null;
+  try { var es = sessionStorage.getItem('lg:estreno'); if (es) { sessionStorage.removeItem('lg:estreno'); E = window.__lgEstreno = JSON.parse(es) || {}; } } catch (e) {}
+  try {
+    if (/[?&]_v=/.test(location.search)) {
+      history.replaceState(history.state, '', location.pathname + location.search.replace(/[?&]_v=[^&#]*/, '').replace(/^&/, '?') + location.hash);
+    }
+  } catch (e) {}
   try {
     var n = C.f[Math.floor(Math.random() * C.f.length)];
     var vid = n === 2 && C.bv ? C.bv[Math.floor(Math.random() * C.bv.length)] : null;
     var bat = vid ? vid[Math.floor(Math.random() * vid.length)] : '';
+    var ef = E && typeof E.f === 'string' ? E.f : '';
+    if (/^\\d$/.test(ef) && C.f.indexOf(+ef) >= 0) { n = +ef; bat = ''; }
+    else if (/^2-[\\w-]+$/.test(ef) && C.f.indexOf(2) >= 0 && [].concat.apply([], C.bv || []).indexOf(ef.slice(2)) >= 0) { n = 2; bat = ef.slice(2); }
     var nom = n === 2 ? '2-' + bat : String(n);
     var asp = innerWidth / Math.max(1, innerHeight), fmt = asp < 0.8 ? 'cel' : 'pc';
     // 📐 la batalla trae además la de la tablet parada (de 0,6 a 0,8: antes se estiraba la del teléfono) y la de las
@@ -296,7 +334,7 @@ def html_carga():
      mueve después lo anima el compositor, que no se traba cuando la app se arma atrás.
      ✂️ Y SE VA CON UNA DE CINCO SALIDAS (17/11/2026; hasta ahí, sólo el corte del 18/10): el corte en diagonal, el
      barrido, la caída, el telón y el flash, al azar. Tres capas —negra, magenta, verde—; el fondo vive en la negra. -->
-<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"><b class="lg-img"></b><b class="lg-velo"></b><svg class="lg-grano"><filter id="lg-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#lg-gr)"/></svg></b></i><i class="lg-flash"></i><div class="lg-c"><span class="lg-marca"><img src="/ul-blanco.png" alt="" width="160" height="130"><i></i><b>@TEMP@</b></span><div class="lg-logo"><span class="lg-sello">Temporada @NUM@ · en juego</span><span class="lg-t"><span class="lg-t1">LIGA GLOBAL</span><span class="lg-t2">DE FREESTYLE</span></span></div><div class="lg-pie"><div class="lg-fila"><span class="lg-tip">@TIPS@<span class="lg-ya">Listo</span></span><b class="lg-pct"><span class="lg-cifras">0%</span></b></div><span class="lg-barra"><i></i></span></div></div></div>
+<div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"><b class="lg-foto"><b class="lg-img"></b><b class="lg-velo"></b><svg class="lg-grano"><filter id="lg-gr"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#lg-gr)"/></svg></b></i><i class="lg-flash"></i><i class="lg-fr ar"></i><i class="lg-fr ab"></i><div class="lg-c"><span class="lg-marca"><img src="/ul-blanco.png" alt="" width="160" height="130"><i></i><b>@TEMP@</b></span><div class="lg-logo"><span class="lg-sello">Temporada @NUM@ · en juego</span><span class="lg-t"><span class="lg-t1">LIGA GLOBAL</span><span class="lg-t2">DE FREESTYLE</span></span></div><div class="lg-pie"><div class="lg-fila"><span class="lg-tip">@TIPS@<span class="lg-ya">Listo</span></span><b class="lg-pct"><span class="lg-cifras">0%</span></b></div><span class="lg-barra"><i></i></span></div></div></div>
 <script>
 (function () {
   var h = document.documentElement, el = document.getElementById('lg-carga');
@@ -323,11 +361,26 @@ def html_carga():
     // completos, de 0 a 100. Antes caía en «volviste hace menos de 30 min», la barra corría en 2,6 s hasta su 92 % y ahí se
     // quedaba mientras la app se armaba atrás (medido en un celular lento: 92 % quieto 6 s). El lobby de esta carga,
     // además, sale sin la caché del navegador (ver `script()`)
-    if (window.__lgEstreno) primera = true;
+    var E = window.__lgEstreno;
+    if (E) primera = true;
     var MIN = primera ? 4000 : 0;
+    // 🎞️ Y ES EL ESTRENO DEL AVISO (20/11/2026, Dlx eligió «El tráiler»): las franjas de cine, «Versión nueva · v7.18»
+    // en el sello, el título de la versión en lugar de LIGA GLOBAL DE FREESTYLE, sus cambios en los consejos, «Listo · ya
+    // estás en la 7.18» y la salida de las franjas que se abren sobre la página nueva. Todo con textContent: el texto
+    // viene del changelog, pero se escribe como texto y nunca como HTML
+    if (E && typeof E.v === 'string' && E.v) {
+      try {
+        el.classList.add('estreno');
+        el.querySelector('.lg-sello').textContent = 'Versión nueva · v' + E.v;
+        if (typeof E.t === 'string' && E.t) el.querySelector('.lg-t1').textContent = E.t.slice(0, 90);
+        var tx = ['Cargando la versión nueva'].concat((E.i || []).filter(function (x) { return typeof x === 'string' && x; }));
+        [].forEach.call(el.querySelectorAll('.lg-tip>span:not(.lg-ya)'), function (s, j) { s.textContent = tx[j % tx.length]; });
+        el.querySelector('.lg-ya').textContent = 'Listo · ya estás en la ' + E.v;
+      } catch (e) {}
+    }
     // 🎬 la salida, al azar (ver «CINCO SALIDAS» en el CSS). `__lgTrForzar` es para las pruebas
     var SALIDAS = ['corte', 'barrido', 'caida', 'telon', 'flash'];
-    var tr = window.__lgTrForzar || SALIDAS[Math.floor(Math.random() * SALIDAS.length)];
+    var tr = window.__lgTrForzar || (el.classList.contains('estreno') ? 'franjas' : SALIDAS[Math.floor(Math.random() * SALIDAS.length)]);
     window.__lgTr = tr;
     el.classList.add('tr-' + tr);
     if (tr !== 'corte') el.classList.add('tr-plano');
@@ -519,9 +572,8 @@ def script():
   // el mismo pedido, baja el lobby (230 KB) dos veces
   // 🎬 en la recarga de una versión nueva (`lg:estreno`, ver la pantalla de carga), sin la caché del navegador: el lobby
   // se guarda ahí 60 s (y 120 más «mientras revalida»), y «Recargar para verla» tiene que traer todo de nuevo
-  // (se lee y se borra ACÁ, que corre siempre: la pantalla de carga no corre en la vista en inglés)
+  // (`__lgEstreno` lo deja el primer script de la página, `cabeza_carga()`, que lo lee y lo borra)
   try {
-    try { var est = sessionStorage.getItem('lg:estreno'); if (est) { sessionStorage.removeItem('lg:estreno'); window.__lgEstreno = JSON.parse(est) || {}; } } catch (e) {}
     window.__lobbyP = fetch('/api/lobby', window.__lgEstreno ? { headers: { accept: 'application/json' }, cache: 'no-cache' } : { headers: { accept: 'application/json' } });
   } catch (e) { window.__lobbyP = null; }
   // 🔑 LAS RUTAS DE VERDAD: /freestyle-rap/ranking en vez de #/ranking (ver web/montar.py). Todo el código de la

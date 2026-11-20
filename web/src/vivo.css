@@ -3972,16 +3972,109 @@ li.nt-f{cursor:default}
 .cu-tema.tsv b img{width:18px;height:18px;border-radius:50%;object-fit:cover}
 .cu-temas.sv{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));max-width:none}
 
-/* 🆕 «hay una actualización» (13/10/2026): abajo, arriba de la barra en el celular; a la derecha en la compu */
-.aviso-version{position:fixed;z-index:40;left:16px;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));max-width:380px;margin-left:auto;padding:12px 14px;background:var(--fondo);color:var(--tinta);border:2px solid var(--tinta);box-shadow:4px 4px 0 var(--magenta)}
-.aviso-version p{margin:0}
-.aviso-version .av-et{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--magenta-tx)}
-.aviso-version .av-t{margin-top:4px;font-weight:800;font-size:15px;line-height:1.3}
-.aviso-version .av-d{margin-top:4px;font-size:13.5px;line-height:1.4;color:var(--gris)}
-.aviso-version .av-btns{display:flex;align-items:center;gap:10px;margin-top:10px}
-.aviso-version .av-x{margin-left:auto;padding:6px 8px;border:0;background:none;color:var(--gris);font-size:16px;cursor:pointer}
-@media (min-width: 900px){.aviso-version{bottom:20px;left:auto;right:20px}}
-@media (prefers-reduced-motion: no-preference){.aviso-version{animation:av-entra .25s ease-out}@keyframes av-entra{from{transform:translateY(12px);opacity:0}}}
+/* 🎬 «HAY UNA VERSIÓN NUEVA», EL TRÁILER (20/11/2026, Dlx eligió la B de la maqueta privada: «el B pero que sea directo en lo
+   que es también»; antes, desde el 13/10, un cuadro con texto). En la compu, un fotograma de cine abajo a la derecha: el
+   fondo de la pantalla de carga que ya bajó, con sus franjas negras, «Versión nueva» y la versión como código de tiempo;
+   abajo el título, una marca por cambio y el cambio de ahora. En el celular, una isla de una línea y media arriba de la
+   barra: no tapa más que el cuadro de antes (que se había achicado a dos renglones a propósito). SIEMPRE NEGRO, también en
+   Clara: es un objeto de cine, y el botón blanco por inversión es lo único claro. Sin degradés: el velo es un negro plano */
+.aviso-version.avv{position:fixed;z-index:40;right:20px;bottom:20px;left:auto;width:400px;max-width:calc(100vw - 32px);margin:0;padding:0;
+  background:#0D0D10;color:#F6F6F6;border:0;border-radius:3px;overflow:hidden;box-shadow:5px 5px 0 #29B298;
+  animation:avv-entra .42s cubic-bezier(.23,1,.32,1) both}
+.avv p{margin:0}
+.avv-cuadro{position:relative;height:118px;background:#030304 center 35%/cover no-repeat;overflow:hidden}
+.avv-cuadro::before{content:"";position:absolute;inset:0;background:inherit;animation:avv-kb 9s linear both}
+.avv-cuadro::after{content:"";position:absolute;inset:0;background:rgba(3,3,4,.32)}
+.avv-fr{position:absolute;left:0;right:0;height:14px;background:#030304;z-index:2}
+.avv-fr.ar{top:0}.avv-fr.ab{bottom:0}
+.avv-chip{position:absolute;left:14px;top:22px;z-index:3;padding:5px 7px 4px;border-radius:2px;background:#F6F6F6;color:#030304;
+  font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.avv-tc{position:absolute;right:14px;top:22px;z-index:3;display:flex;align-items:center;gap:6px;white-space:nowrap;
+  font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-shadow:0 1px 6px #030304}
+.avv-tc i{width:7px;height:7px;border-radius:50%;background:#E41373;animation:avv-late 1.2s steps(2,jump-none) infinite}
+.avv-tcn{white-space:nowrap}
+.avv-rollo{display:inline-block;height:1em;overflow:hidden;vertical-align:top}
+.avv-rollo span{display:block;animation:avv-rueda .5s cubic-bezier(.23,1,.32,1) .6s both}
+.avv-cuerpo{padding:14px 16px 16px;display:grid;gap:10px;min-width:0}
+.avv-pre{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#FF4D9A}
+.avv-pre span{color:#A2A2AC}
+.avv-pre em{font-style:normal}
+.avv-t{overflow:hidden;font:900 19px/1.04 Archivo,system-ui,sans-serif;font-stretch:125%;text-transform:uppercase}
+.avv-t span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;animation:avv-linea .5s cubic-bezier(.23,1,.32,1) .1s both}
+.avv-linea{display:flex;gap:4px;height:4px}
+.avv-linea i{position:relative;flex:1;overflow:hidden;border-radius:1px;background:#26262C}
+.avv-linea i::after{content:"";position:absolute;inset:0;background:#F6F6F6;transform:scaleX(0);transform-origin:0 50%}
+.avv-linea i.hecha::after{transform:none}
+.avv-linea i.ahora::after{animation:avv-llena var(--paso,3.4s) linear both}
+.avv-d{min-height:2.8em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:#B4B4BC;font-size:13.5px;line-height:1.4;animation:avv-sube .3s cubic-bezier(.23,1,.32,1)}
+.avv-btns{display:flex;align-items:center;gap:8px}
+.avv-play{display:inline-flex;align-items:center;gap:10px;padding:10px 16px 10px 11px;border:0;border-radius:3px;background:#F6F6F6;color:#030304;
+  font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;
+  transition:transform .16s cubic-bezier(.23,1,.32,1)}
+.avv-play:active{transform:scale(.97)}
+.avv-play i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#030304;color:#F6F6F6}
+.avv-play svg{width:10px;height:10px;margin-left:2px}
+.avv-x{display:inline-flex;align-items:center;gap:6px;margin-left:auto;padding:10px 6px;border:0;background:none;color:#A2A2AC;cursor:pointer;
+  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.avv-x svg{width:11px;height:11px}
+@media (hover: hover){.avv-x:hover{color:#F6F6F6}}
+.avv :focus-visible{outline:2px solid #29B298;outline-offset:2px}
+.avv.va{opacity:0;transition:opacity .2s ease-out}
+/* 📱 la isla: [foto] Versión nueva · v7.18 / el título [✕] [▶]. La foto es el mismo fotograma, redondo y chico */
+@media (max-width: 760px){
+  .aviso-version.avv{left:12px;right:12px;width:auto;max-width:none;bottom:calc(76px + env(safe-area-inset-bottom,0px));height:62px;
+    display:flex;align-items:center;gap:10px;padding:0 8px;border-radius:31px;background:#030304;box-shadow:0 0 0 1px #2A2A30,4px 4px 0 #29B298;
+    animation-name:avv-isla}
+  .avv-cuadro{flex:none;width:46px;height:46px;border-radius:50%}
+  .avv-fr{height:6px}
+  .avv-chip,.avv-tc,.avv-linea,.avv-d,.avv-pre em,.avv-x span,.avv-play span{display:none}
+  .avv-cuerpo{flex:1;padding:0;grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:auto auto;gap:3px 2px;align-items:center}
+  .avv-pre,.avv-t{grid-column:1}
+  .avv-pre{font-size:11.5px;letter-spacing:.12em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .avv-t{font-size:14.5px;font-stretch:118%;line-height:1.05}
+  .avv-t span{display:block;white-space:nowrap;text-overflow:ellipsis;animation:none}
+  .avv-btns{display:contents}
+  .avv-x{grid-column:2;grid-row:1/3;justify-content:center;width:40px;height:40px;margin:0;padding:0}
+  .avv-play{grid-column:3;grid-row:1/3;justify-content:center;width:46px;height:46px;padding:0;border-radius:50%}
+  .avv-play i{width:auto;height:auto;background:none;color:#030304}
+  .avv-play svg{width:13px;height:13px;margin-left:3px}
+}
+@keyframes avv-entra{from{transform:translateY(14px);opacity:0}}
+@keyframes avv-isla{from{transform:scale(.7,.5) translateY(24px);opacity:0}}
+@keyframes avv-kb{to{transform:scale(1.08)}}
+@keyframes avv-late{50%{opacity:.25}}
+@keyframes avv-rueda{to{transform:translateY(-1em)}}
+@keyframes avv-linea{from{transform:translateY(105%)}}
+@keyframes avv-llena{to{transform:none}}
+@keyframes avv-sube{from{opacity:0;transform:translateY(6px)}}
+/* 🎞️ «Recargar para verla»: el fotograma crece desde el aviso hasta llenar la pantalla (`estreno()` en novedad.jsx), con
+   la misma foto, las franjas, «Versión nueva · v…» y el título EN EL MISMO LUGAR que los pone la pantalla de carga que
+   viene después (web/montar.py): la recarga se ve como un solo corte. Vive en la raíz y no en `.app` (el zoom) */
+.avv-est{position:fixed;inset:0;z-index:2000;background:#030304;color:#F6F6F6;clip-path:inset(var(--ci,0));
+  animation:avv-crece .48s cubic-bezier(.77,0,.175,1) forwards}
+.avv-est-foto{position:absolute;inset:0;background:#030304 center/cover no-repeat;opacity:.55;animation:avv-acerca 3s cubic-bezier(.23,1,.32,1) both}
+.avv-est .avv-fr{height:11vh;z-index:2;transform-origin:50% 0;animation:avv-fr-crece .48s cubic-bezier(.77,0,.175,1) both}
+.avv-est .avv-fr.ab{transform-origin:50% 100%}
+.avv-est-txt{position:absolute;left:50%;top:max(24px,5.2vw);translate:-50% 0;z-index:3;width:min(90vw,900px);display:grid;justify-items:center;gap:max(10px,.9vw);
+  text-align:center;animation:avv-sube .4s cubic-bezier(.23,1,.32,1) .3s both}
+.avv-est-sello{padding:7px 12px 6px;border-radius:2px;background:#E41373;color:#fff;transform:rotate(-3deg);box-shadow:4px 4px 0 #29B298;
+  font:700 clamp(12px,1vw,17px)/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.avv-est-txt b{max-width:20ch;font:900 clamp(28px,3.4vw,64px)/.94 Archivo,system-ui,sans-serif;font-stretch:125%;text-transform:uppercase;text-wrap:balance}
+.avv-est-pie{position:absolute;left:50%;bottom:max(20px,3.2vw);translate:-50% 0;z-index:3;width:min(560px,82vw);display:grid;gap:12px;
+  animation:avv-sube .4s cubic-bezier(.23,1,.32,1) .36s both}
+.avv-est-pie span{color:#C9C9C4;font:700 clamp(12px,1.1vw,17px)/1.2 "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.avv-est-pie i{position:relative;height:4px;overflow:hidden;border-radius:2px;background:rgba(246,246,246,.2)}
+@media (max-width:899.98px) and (orientation:portrait){
+  .avv-est-txt{top:min(16vw,7.4vh)}
+  .avv-est-txt b{font-size:min(7vw,3.4vh)}
+  .avv-est .avv-fr{height:9vh}
+  .avv-est-pie{width:82vw;bottom:calc(min(11vw,5vh) + env(safe-area-inset-bottom,0px))}
+}
+@keyframes avv-crece{to{clip-path:inset(0)}}
+@keyframes avv-acerca{from{transform:scale(1.06)}}
+@keyframes avv-fr-crece{from{transform:scaleY(.12)}}
+@media (prefers-reduced-motion: reduce){.avv,.avv *,.avv *::before,.avv *::after,.avv-est,.avv-est *{animation:none!important}}
+.app.calma .avv,.app.calma .avv *,.app.calma .avv *::before,.app.calma .avv *::after{animation:none!important}
 /* 🆕 MIENTRAS HAY UN MENÚ ABIERTO, LA TARJETA SE CORRE (18/11/2026, Dlx: «arregla lo de la tarjeta de actualización encima
    del menú»). En el celular tapaba la mitad de abajo del menú de tu cara: ese menú vive adentro de la barra de abajo
    (`.tabbar`, sticky con z-index 30), así que su 70 sólo vale ahí adentro y la tarjeta (40) le ganaba igual; en la compu le
@@ -6823,14 +6916,10 @@ button.nvp-caja small{color:#F5C542}
 
 /* 1 · UN AVISO A LA VEZ: el del Dashboard primero; el del tutorial espera a que lo cierres (estaban los dos, 278 px). El de
    instalar tampoco sale mientras haya otro. El de la versión nueva, en dos renglones y sin el texto largo: tapaba casi un
-   cuarto de la pantalla, abajo */
+   cuarto de la pantalla, abajo. Desde el 20/11/2026 es la isla del tráiler (`.avv`, más arriba) */
 @media (max-width: 760px){
   .app .aviso-web ~ .rc-franja{display:none}
   .app:has(.aviso-web, .rc-franja) .instalar{display:none}
-  .aviso-version{padding:9px 12px;box-shadow:3px 3px 0 var(--magenta)}
-  .aviso-version .av-d{display:none}
-  .aviso-version .av-t{margin-top:2px;font-size:14px;line-height:1.25}
-  .aviso-version .av-btns{margin-top:7px}
 }
 
 /* 2 · EL ESCENARIO, A 16 PX Y NO A 48: los 48 eran para las flechas, que en el teléfono tapaban «CUARTOS» de la llave. Se
