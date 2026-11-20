@@ -251,6 +251,40 @@ export function SvProximo({ liga, sv }) {
   );
 }
 
+// ── 🎮 CÓMO SE JUEGA ACÁ (20/11/2026, el plan de los tiers: «dale», para todos): lo que un nuevo necesita saber antes de
+// anotarse, sacado de los anuncios de la temporada (`como` de `_servidores()` en bot/subir_web.py: nada se escribe a mano).
+// El día y la hora fuerte ya están en «Cuándo juega», en la hora de quien mira ──
+const antTxt = (h) => (h < 0.25 ? 'al empezar' : h < 1.5 ? Math.max(10, Math.round((h * 60) / 5) * 5) + ' min antes'
+  : h < 36 ? Math.round(h) + ' h antes' : Math.round(h / 24) + ' días antes');
+export function SvComo({ liga, sv, D }) {
+  const c = ((liga.svs || {})[sv] || {}).como;
+  if (!c) return null;
+  const ev = D ? D.evs : [];
+  const prom = ev.length ? ev.reduce((t, e) => t + e.gente, 0) / ev.length : 0;
+  const mod = c.mod || [];
+  const ins = c.ins || {};
+  const xs = [
+    mod.length ? ['Qué se juega', (mod[1] ? 'también ' + mod[1][0] + ' · ' : '') + mod[0][1] + ' de sus ' + c.n + ' anuncios', mod[0][0]] : null,
+    c.cup ? ['Cupos', 'lo que suele dar cada evento', String(c.cup)] : null,
+    prom >= 2 ? ['Por evento', 'raperos de promedio en la temporada', coma(prom)] : null,
+    c.ant != null ? ['Avisa', c.ant < 1.5 ? 'con la campana te enteras al minuto' : 'anuncia con tiempo', antTxt(c.ant)] : null,
+    ins.canal ? ['Para anotarte', '#' + String(ins.canal).replace(/^#/, ''), 'En su canal'] : null,
+  ].filter(Boolean);
+  if (!xs.length) return null;
+  return (
+    <section className="pf9-pz pf9-rec sv9-como tinte-g">
+      <header className="pf9-h"><h3>Cómo se juega acá</h3><span>de sus anuncios</span></header>
+      <ul>{xs.map((x) => <li key={x[0]}><span>{x[0]}<small>{x[1]}</small></span><b>{x[2]}</b></li>)}</ul>
+      {ins.link || (c.ant != null && c.ant < 1.5) ? (
+        <div className="sv9-acc">
+          {ins.link ? <a className="pf9-btn bl" href={ins.link} target="_blank" rel="noopener noreferrer">Ir a inscribirte ↗</a> : null}
+          {c.ant != null && c.ant < 1.5 ? <a className="sv9-lk" href="#/avisos">Activar la campana</a> : null}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 // ── 👀 de un vistazo: seis números ──
 export function SvVistazo({ D, sv }) {
   const ev = D.evs;

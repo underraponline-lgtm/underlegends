@@ -685,6 +685,12 @@ function SobreEl({ liga, k, f, p, D, esYo }) {
   }
   if (ev[0]) xs.push(['Debutó', fecha(ev[0].t), sinTit(ev[0]) ? siglaDe(ev[0].sv) : ev[0].nom]);
   if (ev.length > 1) { const u = ev[ev.length - 1]; const d = Math.round((Date.now() - u.t) / 864e5); xs.push([esYo ? 'Tu último evento' : 'Su último evento', d <= 0 ? 'hoy' : d === 1 ? 'ayer' : 'hace ' + d + ' días', sinTit(u) ? siglaDe(u.sv) : u.nom]); }
+  // 🎙️ el staff (20/11/2026, el plan de los tiers): en cuántos eventos de la temporada fue jurado, host, DJ u organizador
+  // (`p.st`, de `staff_por_persona()` en bot/subir_web.py)
+  const st = (p && p.st) || {};
+  const stx = [['j', 'jurado en '], ['h', 'host en '], ['d', 'DJ en '], ['o', 'organizó ']].filter(([c]) => st[c]);
+  if (stx.length) xs.push(['En el staff', stx.slice(0, 2).map(([c, t]) => t + st[c]).join(' · ').replace(/^./, (x) => x.toUpperCase()),
+    (stx.length > 2 ? stx.slice(2).map(([c, t]) => t + st[c]).join(' · ') + ' · ' : '') + 'eventos de la temporada']);
   if (f.cc) xs.push(['País', <a key="cc" href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pv-flag" />{String(f.cc).toUpperCase()}</a>, '']);
   if (!xs.length && !sem) return null;
   return (

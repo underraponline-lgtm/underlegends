@@ -22,7 +22,7 @@ import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
 import { CasaCrew, EntrarCrew, PanelCrew, RolCrew, SinVerificar, TierChip } from './crewpanel.jsx';
 import { MesSv, PromosSv, REDES } from './servidor.jsx';
-import { Banda, SvCampeones, SvCuando, SvDuelo, SvEventos, SvFieles, SvForma, SvHistorias, SvMuro, SvNoche, SvOrganiza, SvProximo, SvRecords, SvTabla, SvVistazo, SvVuelven, B2_FLEX, B3_FLEX, aLaDerecha, useBalanceSv, useSvDatos } from './servidor_bandas.jsx';
+import { Banda, SvCampeones, SvCuando, SvDuelo, SvEventos, SvFieles, SvForma, SvHistorias, SvMuro, SvNoche, SvOrganiza, SvProximo, SvComo, SvRecords, SvTabla, SvVistazo, SvVuelven, B2_FLEX, B3_FLEX, aLaDerecha, useBalanceSv, useSvDatos } from './servidor_bandas.jsx';
 import { useSalon } from './mesawards.jsx';
 import { useIndice } from './indice.js';
 import CSS_PAGINA from './css/entidad2.css?inline';
@@ -231,7 +231,7 @@ export function PerfilSv({ liga, sv, enc }) {
             <Banda color="negra">
               <div className="pf9-g pf9-g-forma">
                 <SvForma liga={liga} D={D} />
-                <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvVistazo D={D} sv={sv} /></div>
+                <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvComo liga={liga} sv={sv} D={D} /><SvVistazo D={D} sv={sv} /></div>
               </div>
             </Banda>
             {cartas}
@@ -259,6 +259,7 @@ export function PerfilSv({ liga, sv, enc }) {
           <>
             <Banda color="negra">
               <div className="pf9-g sv9-dos"><SvProximo liga={liga} sv={sv} /><SvTabla liga={liga} sv={sv} /></div>
+              <SvComo liga={liga} sv={sv} D={null} />
               <SvMuro liga={liga} sv={sv} />
             </Banda>
             {cartas}

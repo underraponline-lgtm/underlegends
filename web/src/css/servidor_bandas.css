@@ -10,6 +10,9 @@
 .sv9-prox-d{margin:0;font:500 13px/1.4 Archivo,sans-serif;color:#3A3A3E}
 .sv9-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
 .sv9-acc .sv9-lk{color:#030304}
+/* 🎮 «Cómo se juega acá» va sobre la pieza oscura: el link en claro (el de la regla de arriba es para las piezas claras) */
+.sv9-como .sv9-acc{margin-top:12px}
+.sv9-como .sv9-acc .sv9-lk{color:#F6F6F6}
 .pf9-btn.sv9-negro{background:#030304;border-color:#030304;color:#F6F6F6;text-decoration:none}
 /* su noche más grande: el podio */
 .sv9-pod li.cop{background:#F5C542;color:#030304}

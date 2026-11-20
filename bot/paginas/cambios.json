@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "7.23",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T02:20:00-05:00",
+        "titulo": "Cómo se juega en cada servidor, y el staff en tu perfil",
+        "items": [
+            "**«Cómo se juega acá» en la página de cada servidor**: qué modalidad juega, cuántos cupos suele dar, cuántos raperos van por evento, con cuánta anticipación anuncia y dónde anotarte, con un botón para ir a inscribirte. Sale de sus propios anuncios de la temporada.",
+            "**El staff en tu perfil**: en «Sobre ti», en cuántos eventos de la temporada fuiste jurado, host, DJ u organizador. Votar en los veredictos cuenta como jurado.",
+            "**Los cupos de lo que viene**: los eventos anunciados con hora volvían sin sus cupos; ya salen."
+        ]
+    },
+    {
         "version": "7.22",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T02:00:00-05:00",

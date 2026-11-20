@@ -508,7 +508,8 @@ def armar():
         'sv': x.get('servidor') or '',
         # 🔑 EL INSTANTE, EN ISO UTC. El texto lo arma el navegador.
         'cuando': x['cuando'],
-        'cupos': x.get('cupos') or '',
+        # 🔴 `cupos` no existe en `datos/anuncios.json` (0 de 236, 20/11/2026): lo que viene salía sin sus cupos
+        'cupos': x.get('cupos_texto') or (str(x['cupo_total']) if x.get('cupo_total') else ''),
         # 🔑 EL LINK AL ANUNCIO. Dlx, 24/09/2026: *«lo que se viene
         # próximamente, EN VIVO (con el link del canal o invitación)»*.
         # Un link de Discord pide los **tres** ids —guild, canal y
@@ -699,6 +700,16 @@ def armar():
     _pf = _perfiles(todos, list(_comp.values()), regs)
     debutantes(tabla, _pf)
     _perfiles_extra(_pf, filas_todas[TOPE:], _staff_rol, _avs, _vd_de(), r2, _puede)
+    # 🎙️ el staff en el perfil: en cuántos eventos fue jurado, host, DJ u organizador (`staff_por_persona()`)
+    try:
+        _de_q = _quien(todos)
+        _st = staff_por_persona(_json('datos', 'gente_eventos.json') or {}, _de_q,
+                                {_de_q.norm(x['raw']): x['k'] for x in _staff_rol if x.get('raw') and x.get('k')})
+        for _k, _v in _st.items():
+            if _k in ((_pf or {}).get('p') or {}):
+                _pf['p'][_k]['st'] = _v
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el staff en el perfil no se armó (%s)' % str(e)[:60])
     # 👥 quién organiza, con su perfil —también el staff que no compite y los de fuera de la tabla— (14/10/2026)
     _orgs_pago = _orgs(ann, tabla, pool, staff=_staff_rol, perfiles=set(_pf or {}))
     _en_t = {f.get('k') for f in tabla}
@@ -1937,6 +1948,43 @@ def _perfiles_extra(pf, filas, staff, avs, vdf=None, r2=None, puede=None):
         vd = vdf({'raw': x['raw'], 'discord_id': x['did']}) if vdf else ''
         if vd:
             pp[x['k']]['vd'] = vd
+
+
+#: 🎙️ los papeles del staff que cuenta el perfil, con su letra en `p[k].st` (`staff_por_persona()`)
+STAFF_ROLES = (('jurado', 'j'), ('host', 'h'), ('dj', 'd'), ('org', 'o'))
+
+
+def staff_por_persona(gente_ev, de, extra=None):
+    """🎙️ EL STAFF EN EL PERFIL (el plan de los tiers, Dlx 19/11/2026: «me gusta»): en cuántos eventos de la temporada fue
+    cada uno jurado, host, DJ u organizador. `gente_ev` es `datos/gente_eventos.json` (`bot/gente_evento.py`: el staff del
+    anuncio y los que votaron en #veredictos, `jur`); `de(nombre)` da la clave (`_quien()`) y `extra` `{nombre normalizado:
+    clave}` suma al staff que no compite. Cada evento cuenta una vez por papel. Devuelve `{clave: {j, h, d, o}}`, sólo lo
+    que no es cero. Pura."""
+    extra = extra or {}
+    norm = getattr(de, 'norm', None) or (lambda s: str(s or '').strip().lower())
+
+    def k_de(n):
+        return de(n) or extra.get(norm(n))
+    vistos = set()
+    for ev, x in (gente_ev or {}).items():
+        if str(ev).startswith('_') or not isinstance(x, dict):
+            continue
+        st = x.get('staff') or {}
+        for rol, c in STAFF_ROLES:
+            for p in st.get(rol) or []:
+                k = k_de((p or {}).get('n'))
+                if k:
+                    vistos.add((k, c, str(ev)))
+        # ⚖️ quien votó en #veredictos fue jurado de ese evento aunque el anuncio no lo nombrara
+        for b in x.get('jur') or []:
+            for v in (b or {}).get('v') or []:
+                k = k_de(v[0] if isinstance(v, list) and v else '')
+                if k:
+                    vistos.add((k, 'j', str(ev)))
+    out = defaultdict(dict)
+    for k, c, _ev in vistos:
+        out[k][c] = out[k].get(c, 0) + 1
+    return {k: dict(sorted(v.items())) for k, v in sorted(out.items())}
 
 
 def _cartas_staff(x, r2, puede):
@@ -3198,6 +3246,83 @@ def _tiers_reglas():
         return None
 
 
+# ── 🎮 «CÓMO SE JUEGA ACÁ» (el plan de los tiers, Dlx 19/11/2026: «dale», para todos): en la página de cada servidor, lo
+# que un nuevo necesita saber antes de anotarse, sacado de SUS anuncios de la temporada (nada se escribe a mano): qué
+# modalidad juega, cuántos cupos suele dar, cómo se anota la gente y con cuánta anticipación anuncia. El día y la hora
+# fuerte ya los dibuja la página («Cuándo juega», en la hora de quien mira), así que acá no van.
+#: anuncios que tiene que haber para decir algo: con uno solo, «suele» sería inventar
+COMO_MIN = 3
+
+
+def _modalidad(m):
+    """«1VS1 30 segundos» → «1v1»; «PANDILLAS» → «Pandillas». '' si no se entiende."""
+    t = ''.join(c for c in unicodedata.normalize('NFKD', str(m or '')) if not unicodedata.combining(c)).lower()
+    x = re.search(r'(\d)\s*v\s*s?\s*(\d)', t)
+    if x:
+        return '%sv%s' % (x.group(1), x.group(2))
+    for k, n in (('pandilla', 'Pandillas'), ('triple', 'Triples'), ('trio', 'Triples'), ('cuarteto', '4 por batalla'),
+                 ('equipo', 'Por equipos'), ('5 vidas', '5 vidas'), ('cinco vidas', '5 vidas'), ('libre', 'Libre')):
+        if k in t:
+            return n
+    return ''
+
+
+def _cupos_num(x):
+    """Los cupos de un anuncio como número (el tope de «8-12»), o `None`. Sin texto raro: entre 2 y 128."""
+    v = x.get('cupo_total')
+    if isinstance(v, int) and 2 <= v <= 128:
+        return v
+    ns = [int(n) for n in re.findall(r'\d{1,3}', str(x.get('cupos_texto') or ''))]
+    ns = [n for n in ns if 2 <= n <= 128]
+    return ns[-1] if ns else None
+
+
+def como_se_juega(anuncios, inscripciones, svs_cfg, momento, leer):
+    """`{sigla: {mod: [[modalidad, n], …], cup: n, ins: {canal, link}, ant: horas, n: anuncios}}`. Pura: `momento(x)`
+    da el arranque en ISO UTC y `leer(iso)` el instante. Sin `COMO_MIN` anuncios, ese servidor no va."""
+    por = defaultdict(list)
+    for x in anuncios or []:
+        if isinstance(x, dict) and x.get('servidor'):
+            por[x['servidor']].append(x)
+    canales = defaultdict(Counter)
+    for i in inscripciones or []:
+        if isinstance(i, dict) and i.get('servidor') and i.get('canal'):
+            canales[i['servidor']][str(i['canal'])] += 1
+    out = {}
+    for sv, xs in por.items():
+        if len(xs) < COMO_MIN:
+            continue
+        o = {'n': len(xs)}
+        mods = Counter(m for m in (_modalidad(x.get('modalidad')) for x in xs) if m)
+        if sum(mods.values()) >= COMO_MIN:
+            o['mod'] = [[m, c] for m, c in mods.most_common(2)]
+        cups = sorted(c for c in (_cupos_num(x) for x in xs) if c)
+        if len(cups) >= COMO_MIN:
+            o['cup'] = cups[len(cups) // 2]
+        ant = []
+        for x in xs:
+            ini, pub = momento(x), leer(x.get('cuando'))
+            t0 = leer(ini) if ini else None
+            if t0 and pub:
+                h = (t0 - pub).total_seconds() / 3600
+                if 0 <= h <= 24 * 14:
+                    ant.append(h)
+        if len(ant) >= COMO_MIN:
+            ant.sort()
+            o['ant'] = round(ant[len(ant) // 2], 1)
+        ops = [i for i in ((svs_cfg.get(sv) or {}).get('invitaciones_inscripcion') or []) if i.get('codigo')]
+        ins = {}
+        if canales.get(sv):
+            ins['canal'] = canales[sv].most_common(1)[0][0][:40]
+        if ops:
+            ins['link'] = 'https://discord.gg/' + ops[0]['codigo']
+        if ins:
+            o['ins'] = ins
+        if len(o) > 1:
+            out[sv] = o
+    return out
+
+
 def _servidores(gente):
     """Los servidores confirmados de la Liga, con su gente en la T1.
 
@@ -3254,6 +3379,14 @@ def _servidores(gente):
     miembros = _miembros(svs)
     _guardar_iconos(miembros)
     pags = _paginas_socios()
+    # 🎮 «Cómo se juega acá»: de los anuncios de la temporada (`como_se_juega()`); si algo falla, la página no lo dibuja
+    try:
+        import cuando as _CU
+        _an = _json('datos', 'anuncios.json') or {}
+        como = como_se_juega(_an.get('anuncios'), _an.get('inscripciones'), svs, _CU.momento, _CU._leer_iso)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ «Cómo se juega acá» no se armó (%s)' % str(e)[:60])
+        como = {}
     logos = os.path.join(SCR, 'paginas', 'logos')
     # 🏅 los tiers: si `bot/tiers.py` no se puede leer, la página no dice nada (sin dato no hay pieza)
     nivel, sin_t, sin_c, min_solo = {}, set(), set(), 0
@@ -3287,6 +3420,8 @@ def _servidores(gente):
             a['redes'] = [[str(r), str(u)] for r, u in pg['redes']][:8]
         if str(pg.get('banner') or '').startswith('https://'):
             a['banner'] = pg['banner']
+        if como.get(sv):
+            a['como'] = como[sv]
         # 🔑 LOS PUNTOS DE ASCENSO DE CADA RANGO, en SU servidor (Snake Rap,
         # 27/09/2026). Son de su ranking, no de la Liga: la página los muestra
         # junto al rango del evento y no suman en ningún lado.
@@ -4538,6 +4673,28 @@ def _self_check():
         nonlocal mal
         mal += not cond
         print('   %s %s' % ('ok' if cond else '🔴', que))
+
+    # 🎙️ el staff en el perfil
+    _q = lambda n: {'rubik': 'rubik', 'ana 🇦🇷': 'ana'}.get(str(n).lower())  # noqa: E731
+    _stp = staff_por_persona({'1': {'staff': {'host': [{'n': 'Rubik'}], 'jurado': [{'n': 'Rubik'}, {'n': 'Nadie'}], 'org': [{'n': 'POR'}]},
+                                    'jur': [{'v': [['Rubik', 0], ['Ana 🇦🇷', 1]]}, {'v': [['Rubik', 1]]}]},
+                              '2': {'staff': {'dj': [{'n': 'Rubik'}]}}, '_leeme': 'x'}, _q, {'por': 'por'})
+    ok(_stp == {'ana': {'j': 1}, 'por': {'o': 1}, 'rubik': {'d': 1, 'h': 1, 'j': 1}},
+       'el staff en el perfil: un evento cuenta una vez por papel, votar en #veredictos es ser jurado, y el que no compite '
+       'también suma' + ('' if _stp.get('rubik') == {'d': 1, 'h': 1, 'j': 1} else ' ' + str(_stp)))
+
+    # 🎮 «Cómo se juega acá»
+    _an = [{'servidor': 'AAA', 'modalidad': m, 'cupos_texto': c, 'cuando': '2026-11-0%dT20:00:00' % i, 'ini': '2026-11-0%dT23:00:00Z' % i}
+           for i, (m, c) in enumerate((('1VS1 30 segundos', '16'), ('1v1', '8-12'), ('PANDILLAS', ''), ('1 vs 1', '16')), 1)]
+    _an += [{'servidor': 'BBB', 'modalidad': '1v1', 'cuando': '2026-11-01T20:00:00'}]
+    import datetime as _dt0
+    _cm = como_se_juega(_an, [{'servidor': 'AAA', 'canal': '#inscripciones'}] * 2,
+                        {'AAA': {'invitaciones_inscripcion': [{'codigo': 'abc'}]}}, lambda x: x.get('ini'),
+                        lambda s: _dt0.datetime.fromisoformat(str(s).replace('Z', '')) if s else None)
+    ok(_cm == {'AAA': {'n': 4, 'mod': [['1v1', 3], ['Pandillas', 1]], 'cup': 16, 'ant': 3.0,
+                       'ins': {'canal': '#inscripciones', 'link': 'https://discord.gg/abc'}}},
+       '«Cómo se juega acá»: la modalidad que más juega, los cupos de siempre (el tope de «8-12»), 3 h antes y cómo anotarse; '
+       'con un solo anuncio, nada' + ('' if _cm.get('AAA') else ' ' + str(_cm)))
 
     _SIN_RED[0] = True
     p = armar()
