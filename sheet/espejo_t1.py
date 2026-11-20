@@ -1449,6 +1449,18 @@ def nueva_temporada(nueva, de=ACTUAL, base=BASE, aplicar=False, sin_gala=False):
             with io.open(dst, 'w', encoding='utf-8', newline='\n') as f:
                 f.write(nuevo)
         out.append((h, que))
+    # 🪨 EL ELO DE TEMPORADA DE LA QUE EMPIEZA (bot/elo_temporada.py; Dlx, 20/11/2026: «Sí, el borrador»): con cuántos
+    # puntos arranca cada uno, según cómo terminó la que se va. La primera vez (de la T1 a la T2) sale de la piedra más
+    # alta de sus divisiones (`datos/divisiones.json`), que hay que leer ANTES de que el ciclo de la nueva lo reescriba:
+    # por eso va acá, con lo demás del cambio
+    if os.path.join(BASE, 'bot') not in sys.path:
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+    import elo_temporada as ET
+    if os.path.exists(ET.ruta_arranque(nueva, base)):
+        out.append(('ELO de temporada', 'ya está: no la toco'))
+    else:
+        pts = ET.guardar_arranque(nueva, de, base=base, aplicar=aplicar)
+        out.append(('ELO de temporada', '%d arrancan arriba de Hierro' % sum(1 for v in pts.values() if v >= ET.UMBRALES[1])))
     return out
 
 
@@ -1468,6 +1480,13 @@ def faltan_para_la_temporada(base=BASE):
     except OSError:
         g = ''
     lista = set(g[g.find('ARCHIVOS="'):].split('"')[1].split()) if 'ARCHIVOS="' in g else set()
+    # 🪨 desde la T2, el arranque del ELO de temporada: sin él todos arrancarían en 0, y nada avisaría
+    if os.path.join(BASE, 'bot') not in sys.path:
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+    import elo_temporada as ET
+    if ET.prendido() and not os.path.exists(ET.ruta_arranque(ACTUAL, base)):
+        malos.append('no existe %s (`--nueva-temporada %s --aplicar`)'
+                     % (os.path.relpath(ET.ruta_arranque(ACTUAL, base), base), ACTUAL))
     for a in archivos(base=base):
         if not os.path.exists(os.path.join(base, a)):
             malos.append('no existe %s (`--nueva-temporada %s --aplicar`)' % (a, ACTUAL))
@@ -1900,12 +1919,13 @@ def _self_check():
         otra = dict(nueva_temporada('t2', de='t1', base=tmp, aplicar=True))
         t1_igual = all(_texto_de(ruta(h, temp='t1', base=tmp)) == t1_antes[h] for h in SIN_SHEET)
     ok(sin_gala_frena, 'el cambio de temporada se niega mientras la gala de la que termina no se nominó, y no escribe nada')
-    ok(len(simulacro) == len(SIN_SHEET) + 1 and nada_aun and lista2 and pend2 and cont2 and t1_igual
+    ok(len(simulacro) == len(SIN_SHEET) + 2 and nada_aun and lista2 and pend2 and cont2 and t1_igual
        and res2.get('cabecera') == ['#', 'Rapero', 'Puntos'] and res2.get('filas') == []
        and vit2.get('filas') == [] and plan['contador'] == 'sigue en 611'
        and all(v == 'ya está: no la toco' for v in otra.values()),
        '🗓️ la temporada que viene: la Lista, AKAs, Config y las colas pasan; resultados y vitrinas vacíos con su '
-       'cabecera; el contador sigue; sin --aplicar no escribe, y nunca pisa ni toca la anterior')
+       'cabecera; el contador sigue; el ELO de temporada deja su arranque; sin --aplicar no escribe, y nunca pisa '
+       'ni toca la anterior')
     faltan = faltan_para_la_temporada()
     ok(not faltan, '🗓️ los archivos de %s existen y `guardar.sh` los commitea%s'
        % (ACTUAL, ('  ← ' + '; '.join(faltan[:3])) if faltan else ''))

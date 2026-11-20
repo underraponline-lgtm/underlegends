@@ -2556,6 +2556,9 @@ bot/              el lector de Discord y el ciclo
                                   `/avisos/voz-vivo`): el bot en vivo anuncia
                                   la batalla que se juega de verdad y no la
                                   que sigue en la llave (`batallaVivo()`)
+                  elo_temporada.py  el ELO de temporada y el histórico de la T2
+                                  (docs/elo_temporada.md): apagado en la T1, se
+                                  prende solo con `ACTUAL = 't2'`
                   avisos.js       la campana: vigía de cada minuto, cola y
                                   envío cifrado (Durable Object + SQLite)
                   ligas_vivo.js   las batallas de liga mientras se juegan: el lector

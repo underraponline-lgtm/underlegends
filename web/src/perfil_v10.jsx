@@ -132,10 +132,12 @@ export function eloDe(liga, k) {
         const q = r && liga.quien(r[0]);
         if (!q || q.k !== k) continue;
         const t = V.t || [];
-        const piso = di < t.length ? t[di] : (t[t.length - 1] || 0) - 50;
-        const s = Math.max(0, Math.min(2, Math.floor((r[1] - piso) / (50 / 3))));
-        const prox = s < 2 ? [(V.n || [])[di] + ' ' + SUBS[s + 1], piso + Math.ceil(((s + 1) * 50) / 3)] : di > 0 ? [(V.n || [])[di - 1] + ' I', t[di - 1]] : null;
-        return { elo: r[1], bat: r[2], piedra: (V.n || [])[di] || '', sub: SUBS[s], c: (V.c || [])[di] || '#8A8F98', pos: i + 1, tot: g.length, prox, prov: r[2] < (V.pv || 5) };
+        // 🪨 desde la T2 cada piedra mide distinto (`a`, ver divisiones.jsx); en la T1, todas de 50
+        const an = (x) => (Array.isArray(V.a) && V.a.length ? V.a[Math.min(x, V.a.length - 1)] : 50);
+        const piso = di < t.length ? t[di] : (t[t.length - 1] || 0) - an(t.length);
+        const s = Math.max(0, Math.min(2, Math.floor((r[1] - piso) / (an(di) / 3))));
+        const prox = s < 2 ? [(V.n || [])[di] + ' ' + SUBS[s + 1], piso + Math.ceil(((s + 1) * an(di)) / 3)] : di > 0 ? [(V.n || [])[di - 1] + ' I', t[di - 1]] : null;
+        return { elo: r[1], bat: r[2], piedra: (V.n || [])[di] || '', sub: SUBS[s], c: (V.c || [])[di] || '#8A8F98', pos: i + 1, tot: g.length, prox, prov: r[2] < (V.pv == null ? 5 : V.pv) };
       }
     }
   }

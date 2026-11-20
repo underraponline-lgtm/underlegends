@@ -190,19 +190,24 @@ const TOPE_FILAS = 50;
 // 💎 como Brawl Stars Ranked (Dlx, 26/10/2026): piedras de Hierro a Mítico (`D.n`, con su color en `D.c`) y tres
 // subniveles, I · II · III de abajo arriba (`divisiones.subnivel()`: tercios del tramo de 50)
 const SUBS = ['I', 'II', 'III'];
+// 🪨 DESDE LA T2 (`et`), EL ELO DE TEMPORADA (`bot/elo_temporada.py`): cada piedra mide distinto (`a`, de arriba abajo,
+// Sexta incluida: 85 · 85 · 80 · 75 · 70 · 65) y no hay provisional (`pv` 0, que con `||` se volvía 5). Sin `a`, todas
+// de 50, como en la T1
+const anchoDe = (D, d) => (Array.isArray(D.a) && D.a.length ? D.a[Math.min(d, D.a.length - 1)] : 50);
+const pvDe = (D) => (D.pv == null ? 5 : D.pv);
 const rango = (D, d, s) => (D.n || [])[d] + ' ' + SUBS[s || 0];
 const signo = (x) => (x > 0 ? '+' : x < 0 ? '−' : '±') + Math.abs(x);
 // el ELO desde el que empieza el subnivel `s` de la división `d` (Hierro se mide desde 50 abajo de su techo)
 function corteDe(D, d, s) {
-  const piso = d < D.t.length ? D.t[d] : D.t[D.t.length - 1] - 50;
-  return piso + Math.ceil((s * 50) / 3);
+  const piso = d < D.t.length ? D.t[d] : D.t[D.t.length - 1] - anchoDe(D, D.t.length);
+  return piso + Math.ceil((s * anchoDe(D, d)) / 3);
 }
 // 🪨 el subnivel de un ELO EN la división `d` (18/11/2026): es `divisiones.subnivel(elo, d)`. El de la fila (`f[4]`) es el
 // de la división de «si cerrara ahora» (`f[3]`), y cruzado con la de esta semana daba «Hierro II» con 1072 de ELO o
 // «Zafiro III» debajo del piso de Zafiro
 function subEn(D, d, elo) {
-  const piso = d < D.t.length ? D.t[d] : D.t[D.t.length - 1] - 50;
-  return Math.max(0, Math.min(2, Math.floor((elo - piso) / (50 / 3))));
+  const piso = d < D.t.length ? D.t[d] : D.t[D.t.length - 1] - anchoDe(D, D.t.length);
+  return Math.max(0, Math.min(2, Math.floor((elo - piso) / (anchoDe(D, d) / 3))));
 }
 // el próximo escalón por encima de alguien: [su nombre, el ELO desde el que empieza], o null en Mítico III
 function proximo(D, d, s) {
@@ -223,8 +228,8 @@ function miFila(divs, esYo) {
 // qué le pasa a cada uno si la semana cerrara ahora, en palabras
 function estadoElo(D, nombres, di, f) {
   const [, elo, n, a, s] = f;
-  if (n < (D.pv || 5)) {
-    const faltan = (D.pv || 5) - n;
+  if (n < pvDe(D)) {
+    const faltan = pvDe(D) - n;
     return { msg: <>Tu ELO es <b>provisional</b>: te {faltan === 1 ? 'falta 1 batalla' : 'faltan ' + faltan + ' batallas'} 1v1 para que cuente. Hasta entonces no te mueve.</>, chip: 'provisional' };
   }
   if (a < di) return { msg: <>Si la semana cierra así, <b className="sube">subes a {rango(D, a, s)}</b>. Cada piedra nueva paga {num(D.p)} Puntos de Tienda la primera vez, y cada subnivel {num(D.ps || 150)}.</>, chip: 'subirías' };
@@ -265,7 +270,8 @@ function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
     return (
       <section className="dv-tu" aria-label="Tu ELO">
         <div className="dv-tu-c"><b>{rango(D, nombres.length - 1, 0)}</b><small>todavía no tienes ELO</small></div>
-        <p>Tu ELO sale de tus batallas 1v1: juega una y entras en el ranking. Con {D.pv || 5} ya cuenta para subir de división.</p>
+        <p>{D.et ? 'Tu ELO de temporada sale de tus batallas contra gente de tu área: juega una y entras en el ranking.'
+          : 'Tu ELO sale de tus batallas 1v1: juega una y entras en el ranking. Con ' + pvDe(D) + ' ya cuenta para subir de división.'}</p>
         <div className="dv-tu-chips">{reloj}</div>
       </section>
     );
@@ -308,7 +314,7 @@ function GrupoElo({ liga, g, sel, nombres, D, esYo }) {
       <ol className="dv-tabla dv-tabla2 elo">
         {vis.map(([[raw, elo, n, a, s, h], i]) => {
           const f = liga.quien(raw);
-          const prov = n < (D.pv || 5);
+          const prov = n < pvDe(D);
           const zona = prov ? '' : a < sel ? 'sube' : a > sel ? 'baja' : '';
           return (
             <li key={raw} className={zona + (esYo(raw) ? ' yo' : '') + (i >= TOPE_FILAS ? ' corte' : '')}>
@@ -340,7 +346,7 @@ function PreviaElo({ liga, D, esYo }) {
   return (
     <div className="dvp">
       <p className="dvp-cab"><b>{yo ? rango(D, di, yo.f[3] === di ? yo.f[4] : subEn(D, di, yo.f[1])) : nombres[di]}</b> · {g.length} {g.length === 1 ? 'rapero' : 'raperos'} en {nombres[di]} · cierra {liga.dia(D.fin)}</p>
-      <p className="dvp-yo">{e ? e.msg : 'Tu división sale de tu ELO: juega batallas 1v1 y entras en el ranking.'}</p>
+      <p className="dvp-yo">{e ? e.msg : D.et ? 'Tu piedra sale de tu ELO de temporada: juega batallas contra gente de tu área y entras en el ranking.' : 'Tu división sale de tu ELO: juega batallas 1v1 y entras en el ranking.'}</p>
       <ol className="dv-tabla dvp-tabla">
         {filas.map(([[raw, elo], i]) => {
           const p = liga.quien(raw);
@@ -514,9 +520,9 @@ export function Divisiones({ liga, parte, sel: selP, setSel: setSelP }) {
   const ultima = nombres.length - 1;
   const nadie = !divs.some((x) => (x || []).length);
   const como = elo ? (
-    <p>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él. Se mira cada lunes a las {(D.fin && hora(D.fin).replace(/\.$/, '')) || '11 AM (hora del este)'}.
+    <p>Como el Ranked de Brawl Stars: {D.et ? <>tu piedra sale de tu <b>ELO de temporada</b>, que arranca en 0 cada temporada y sube o baja sólo con las batallas contra gente de tu área.</> : <>tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él.</>} Se mira cada lunes a las {(D.fin && hora(D.fin).replace(/\.$/, '')) || '11 AM (hora del este)'}.
       {' '}{nombres.slice(0, D.t.length).map((x, i) => x + ' desde ' + num(D.t[i])).join(', ')}, y {nombres[nombres.length - 1]} abajo; cada uno con tres subniveles, I, II y III.
-      {' '}La primera vez que llegas a una piedra cobras <b>{num(D.p)} Puntos de Tienda</b>, y a un subnivel {num(D.ps || 150)}. Al final de la temporada hay premio según el rango más alto que alcanzaste. Con menos de {D.pv || 5} batallas tu ELO es provisional y no te mueve.</p>
+      {' '}La primera vez que llegas a una piedra cobras <b>{num(D.p)} Puntos de Tienda</b>, y a un subnivel {num(D.ps || 150)}. Al final de la temporada hay premio según el rango más alto que alcanzaste.{pvDe(D) ? ' Con menos de ' + pvDe(D) + ' batallas tu ELO es provisional y no te mueve.' : ''}</p>
   ) : null;
   const caras = (xs) => xs.slice(0, 14).map((raw) => {
     const f = liga.quien(raw);
@@ -602,9 +608,9 @@ export function Divisiones({ liga, parte, sel: selP, setSel: setSelP }) {
           <h4>Cómo funciona</h4>
           {/* 🕐 la hora del cierre, la de quien mira (18/11/2026): decía «11 AM» a mano y sin zona —la 1 PM en Argentina—.
               Sin su punto final: con 12 h en Ajustes sale «11:00 a. m.» y, con el de la frase, «a. m..» */}
-          {elo ? <p>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él. Se mira cada lunes a las {(D.fin && hora(D.fin).replace(/\.$/, '')) || '11 AM (hora del este)'}.
+          {elo ? <p>Como el Ranked de Brawl Stars: {D.et ? <>tu piedra sale de tu <b>ELO de temporada</b>, que arranca en 0 cada temporada y sube o baja sólo con las batallas contra gente de tu área.</> : <>tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él.</>} Se mira cada lunes a las {(D.fin && hora(D.fin).replace(/\.$/, '')) || '11 AM (hora del este)'}.
             {' '}{nombres.slice(0, D.t.length).map((x, i) => x + ' desde ' + num(D.t[i])).join(', ')}, y {nombres[nombres.length - 1]} abajo; cada uno con tres subniveles, I, II y III.
-            {' '}La primera vez que llegas a una piedra cobras <b>{num(D.p)} Puntos de Tienda</b>, y a un subnivel {num(D.ps || 150)}. Al final de la temporada hay premio según el rango más alto que alcanzaste. Con menos de {D.pv || 5} batallas tu ELO es provisional y no te mueve.</p> : <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Juegas un evento y entras en Sexta; los grupos son de 30.
+            {' '}La primera vez que llegas a una piedra cobras <b>{num(D.p)} Puntos de Tienda</b>, y a un subnivel {num(D.ps || 150)}. Al final de la temporada hay premio según el rango más alto que alcanzaste.{pvDe(D) ? ' Con menos de ' + pvDe(D) + ' batallas tu ELO es provisional y no te mueve.' : ''}</p> : <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Juegas un evento y entras en Sexta; los grupos son de 30.
             {' '}Al cierre, los {D.z} primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>, y los {D.z} últimos bajan. En un grupo chico, un tercio.</p>}
         </section>
         {ult ? (

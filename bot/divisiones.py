@@ -166,20 +166,54 @@ def _orden(grupo, gente):
     return sorted(grupo, key=lambda q: (-round(gente[q][0], 2), -gente[q][1], gente[q][2], q))
 
 
+def _temporada():
+    """🪨 ¿Las piedras salen del ELO DE TEMPORADA (`bot/elo_temporada.py`)? Desde la T2; la T1 sigue con `bot/elo.py`, que
+    es con lo que se cobraron sus subidas."""
+    import elo_temporada as ET
+    return ET.prendido()
+
+
+def _escalera():
+    """`(tramos, anchos, provisional)`: los pisos de Primera a Quinta, lo que mide cada división de arriba abajo (Sexta
+    incluida) y desde cuántas batallas el número deja de ser provisional. En la T1, los del ELO de hoy: tramos de 50
+    sobre el de 1000. Desde la T2, los del ELO de temporada: piedras de 65 a 85 desde 0 (Dlx, 20/11/2026: «Sí, la
+    suave») y sin provisional, porque el número arranca en 0 o en lo que dejó el reinicio: no hay nada que adivinar."""
+    if _temporada():
+        import elo_temporada as ET
+        u = ET.UMBRALES
+        return tuple(reversed(u[1:])), tuple(ET.ancho(s) for s in range(len(u) - 1, -1, -1)), 0
+    import elo as EL
+    return TRAMOS, (50,) * len(NOMBRES), EL.PROVISIONAL
+
+
+def _corte():
+    """La primera semana de las divisiones por ELO: `CORTE_ELO` en la T1; desde la T2, la semana de su arranque (las de
+    antes son de la temporada anterior)."""
+    if not _temporada():
+        return CORTE_ELO
+    import elo_temporada as ET
+    import multiplicadores as MU
+    ini = ET.inicio()
+    if ini is None:
+        return CORTE_ELO
+    return MU.periodo(dt.datetime(ini.year, ini.month, ini.day, 17, tzinfo=dt.timezone.utc))[0]
+
+
 def tramo(elo):
     """La división de un ELO: 0 es Primera, `ENTRADA` es Sexta."""
-    for i, c in enumerate(TRAMOS):
+    for i, c in enumerate(_escalera()[0]):
         if elo >= c:
             return i
     return ENTRADA
 
 
 def subnivel(elo, d=None):
-    """0, 1 o 2 (I, II, III): en qué tercio del tramo de su división está un ELO. Sexta, que no tiene piso, se mide
-    desde 50 abajo de Quinta; Primera, que no tiene techo, sigue de a tercios y se queda en III."""
+    """0, 1 o 2 (I, II, III): en qué tercio de su división está un ELO. Sexta, que no tiene piso, se mide desde un ancho
+    abajo de Quinta; Primera, que no tiene techo, sigue de a tercios y se queda en III."""
+    tramos, anchos, _pv = _escalera()
     d = tramo(elo) if d is None else d
-    piso = TRAMOS[d] if d < len(TRAMOS) else TRAMOS[-1] - 50
-    return max(0, min(2, int((elo - piso) // (50 / 3.0))))
+    piso = tramos[d] if d < len(tramos) else tramos[-1] - anchos[-1]
+    return max(0, min(2, int((elo - piso) // (anchos[min(d, len(anchos) - 1)] / 3.0))))
 
 
 def escalon(d, s=0):
@@ -201,10 +235,10 @@ def calcular(semanas, actual, elo_al=None, raw_de=None):
     nivel, subidas, ult, mejor, subs = {}, [], None, {}, []
     cerradas = sorted(s for s in semanas if s < actual)
     if elo_al is not None:
-        cerradas = sorted(set(cerradas) | {s for s in _lunes_desde(CORTE_ELO, actual)})
+        cerradas = sorted(set(cerradas) | {s for s in _lunes_desde(_corte(), actual)})
     for sem in cerradas:
-        if elo_al is not None and sem >= CORTE_ELO:
-            ult = _semana_elo(sem, elo_al(sem), raw_de or {}, nivel, mejor, subidas, subs, pagar=sem != CORTE_ELO)
+        if elo_al is not None and sem >= _corte():
+            ult = _semana_elo(sem, elo_al(sem), raw_de or {}, nivel, mejor, subidas, subs, pagar=sem != _corte())
             continue
         gente = semanas.get(sem) or {}
         mov = {}
@@ -232,7 +266,7 @@ def calcular(semanas, actual, elo_al=None, raw_de=None):
         for q, d in nivel.items():
             mejor[q] = max(escalon(d), mejor.get(q, 0))
         ult = {'sem': sem, 'sube': sorted(sube), 'baja': sorted(baja)}
-    if elo_al is not None and actual >= CORTE_ELO:
+    if elo_al is not None and actual >= _corte():
         return {'nivel': nivel, 'divs': _tablas_elo(elo_al(None), raw_de or {}, nivel), 'ult': ult, 'subidas': subidas,
                 'subs': subs, 'mejor': mejor}
     gente = semanas.get(actual) or {}
@@ -272,7 +306,7 @@ def _semana_elo(sem, elos, raw_de, nivel, mejor, subidas, subs, pagar=True):
     sube, baja = [], []
     for k, e in sorted(elos.items()):
         q = raw_de.get(k)
-        if not q or e['n'] < EL.PROVISIONAL:
+        if not q or e['n'] < _escalera()[2]:
             continue
         antes = nivel.get(q, ENTRADA)
         d = tramo(e['elo'])
@@ -305,7 +339,7 @@ def _tablas_elo(elos, raw_de, nivel):
         if not q:
             continue
         d = nivel.get(q, ENTRADA)
-        a = tramo(e['elo']) if e['n'] >= EL.PROVISIONAL else d
+        a = tramo(e['elo']) if e['n'] >= _escalera()[2] else d
         h = [[x[0], raw_de.get(x[1], x[1])] for x in e.get('h') or []]
         filas.setdefault(d, []).append([q, e['elo'], e['n'], a, subnivel(e['elo'], a), h])
     for d, xs in filas.items():
@@ -326,8 +360,8 @@ def correr(filas, ahora=None, aplicar=False):
     fac = MU.factor_de(filas=filas)
     semanas = puntos_por_semana(filas, fac, MU.bonos(filas), MU.periodo, desde)
     elo_al = raw_de = None
-    if sem >= CORTE_ELO:
-        elo_al, raw_de = _elo_de(filas, ahora)
+    if sem >= _corte():
+        elo_al, raw_de = (_elo_temporada_de if _temporada() else _elo_de)(filas, ahora)
     c = calcular(semanas, sem, elo_al, raw_de)
     out = {'_leeme': 'Las divisiones de la semana: las arma bot/divisiones.py en el paso 1c, enteras en cada corrida. '
                      'Las reglas y los números viven en ese archivo.',
@@ -342,9 +376,12 @@ def correr(filas, ahora=None, aplicar=False):
     # 📅 y por día, para «Por día» de la página de cada crew (bot/crews_tiers.py los suma por crew)
     out['pts_dia'] = puntos_por_dia(filas, fac, max(ini, desde) if desde else ini, fin)
     if elo_al is not None:
-        import elo as EL
-        out.update(modo='elo', tramos=list(TRAMOS), prov=EL.PROVISIONAL, nombres=list(PIEDRAS), colores=list(COLOR_PIEDRA),
+        tr, an, pv = _escalera()
+        out.update(modo='elo', tramos=list(tr), prov=pv, nombres=list(PIEDRAS), colores=list(COLOR_PIEDRA),
                    premio_sub=PREMIO_SUB, subs=c.get('subs') or [], mejor=c.get('mejor') or {})
+        if _temporada():
+            # 🪨 sólo desde la T2: lo que mide cada piedra (ya no son todas de 50) y de qué ELO salen
+            out.update(anchos=list(an), escalera='temporada')
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
@@ -374,6 +411,29 @@ def _elo_de(filas, ahora):
             hasta = ahora if sem is None else MU.periodo(dt.datetime.fromisoformat(sem).replace(hour=17, tzinfo=dt.timezone.utc))[2]
             cache[sem] = EL.calcular(llaves, hasta)
         return cache[sem]
+    return elo_al, raw_de
+
+
+def _elo_temporada_de(filas, ahora):
+    """🪨 Desde la T2: `(elo_al, raw_de)` con el ELO DE TEMPORADA (`bot/elo_temporada.py`), en UNA pasada con un corte al
+    cierre de cada semana —el lunes siguiente: los eventos son de noche, después de las 11 AM—. `elo_al(None)` es el de
+    ahora. Las llaves son las de todas las temporadas: el histórico, que da el nivel de cada evento, no se reinicia."""
+    import competencias as CO
+    import elo_temporada as ET
+    import multiplicadores as MU
+    raw_de = {}
+    for f in filas or []:
+        if f[3]:
+            raw_de.setdefault(CO.norm(f[3]), f[3])
+    lunes = _lunes_desde(_corte(), MU.periodo(ahora)[0])
+    r = ET.calcular(ET.todas_las_llaves(), desde=ET.inicio(), arranque=ET.arranque(),
+                    cortes=[dt.date.fromisoformat(s) + dt.timedelta(days=7) for s in lunes])
+    ya = {k: {'elo': int(round(v['pts'])), 'n': v['n'], 'h': v['h']} for k, v in r['temp'].items()}
+
+    def elo_al(sem):
+        if sem is None:
+            return ya
+        return r['cortes'].get(dt.date.fromisoformat(sem) + dt.timedelta(days=7), ya)
     return elo_al, raw_de
 
 
@@ -461,6 +521,10 @@ def para_web(d):
     if d.get('modo') == 'elo':
         out.update(m='elo', t=d.get('tramos') or list(TRAMOS), pv=d.get('prov'), c=d.get('colores') or list(COLOR_PIEDRA),
                    ps=d.get('premio_sub', PREMIO_SUB))
+        if d.get('escalera') == 'temporada':
+            # 🪨 desde la T2 (sólo entonces, así el lobby de la T1 no cambia ni un byte): el ancho de cada piedra, de
+            # arriba abajo, para los subniveles de la página, y que el número es el ELO de temporada
+            out.update(a=d.get('anchos'), et=1)
         # 📦 EN MODO ELO EL LOBBY VA SIN `v` NI LAS ÚLTIMAS BATALLAS (09/11/2026). El lobby se pasó de su tope (51,0 KB
         # contra 52.000 bytes) y lo que creció fue esto: +6,2 KB en una semana, porque el ELO es de toda la temporada y
         # cada fila suma a alguien. `v` (la división de 629 personas, 2,9 KB) sólo lo leen las pantallas de la semana
@@ -579,6 +643,25 @@ def _self_check():
        'el lobby del ELO va sin `v` y con las cinco primeras columnas de cada fila')
     ok(be == {f[0]: [[12, 'X']] for gs in de['divs'] for g in gs for f in g} and batallas_web(c) is None
        and 'v' in (para_web(c) or {}), 'las últimas batallas van aparte; fuera del ELO, `v` se queda y no hay aparte')
+    # 🪨 DESDE LA T2: la escalera del ELO de temporada (`bot/elo_temporada.py`), con la T2 simulada
+    import elo_temporada as ET
+    ok(_escalera() == (TRAMOS, (50,) * len(NOMBRES), __import__('elo').PROVISIONAL) and _corte() == CORTE_ELO,
+       'en la T1, la escalera de siempre: tramos de 50 sobre el ELO de hoy, desde el 02/11')
+    antes = (globals()['_temporada'], ET.inicio)
+    globals()['_temporada'] = lambda: True
+    ET.inicio = lambda temp=None: dt.date(2027, 1, 1)
+    try:
+        ok(_escalera() == ((375, 290, 210, 135, 65), (85, 85, 80, 75, 70, 65), 0),
+           'desde la T2: las piedras del ELO de temporada (65 a 85 desde 0) y sin provisional')
+        ok(all(tramo(x) == ENTRADA - ET.piedra(x) and subnivel(x) == ET.subnivel(x) for x in range(0, 600)),
+           'la división y el subnivel de cada número son los mismos que da bot/elo_temporada.py')
+        ok(_corte() == '2026-12-28', 'las semanas arrancan con la de la temporada (la del 01/01, que empieza el 28/12)')
+        dt2 = dict(de, tramos=list(_escalera()[0]), anchos=list(_escalera()[1]), prov=0, escalera='temporada')
+        w2 = para_web(dt2)
+        ok(w2['t'] == [375, 290, 210, 135, 65] and w2['a'] == [85, 85, 80, 75, 70, 65] and w2['pv'] == 0 and w2['et'] == 1
+           and 'a' not in we and 'et' not in we, 'el lobby lleva el ancho de cada piedra sólo desde la T2')
+    finally:
+        globals()['_temporada'], ET.inicio = antes
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))
     return not fallas
 

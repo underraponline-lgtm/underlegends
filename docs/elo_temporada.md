@@ -316,3 +316,36 @@ caso»*).
 - Las Competencias, la nota (`bot/notas.py`), el pronóstico del VS y el emparejamiento del 1v1: del **histórico**.
 - El cambio de temporada (`sheet/espejo_t1.py --nueva-temporada`): el reinicio por piedra máxima.
 - La página (el Ranked, el perfil, `/apodo`): las piedras y el número de temporada; el histórico, en el perfil.
+
+## 8 · Cómo se prende (construido el 20/11/2026, 3:48 AM ET)
+
+**Lo que ya está, apagado hasta la T2** (`bot/elo_temporada.py`, con su self-check en CI):
+
+- **El motor**: el histórico con los dos arreglos y el de temporada con todo lo decidido. La T1 rehecha con él
+  (`python bot/elo_temporada.py`) da lo mismo que el diseño: Oasis 412, y Mítico 1 · Diamante 5 · Rubí 18 entre los 196
+  activos con 5 batallas o más (el diseño: 414 y 1 · 5 · 16). La semana abre **como mucho dos piedras**
+  (`ABIERTA_TOPE`), que es lo que dice el diseño: sin tope, Oasis llegaba a 435.
+- **Las divisiones** (`bot/divisiones.py`): en la T1, idénticas —probado contra el código de antes con el ELO de
+  verdad: la división y el subnivel de 700 ELO, las divisiones enteras y el lobby—. Desde la T2 salen del de temporada,
+  con las piedras nuevas, sin provisional y desde la semana del arranque. Simulada la T2 con las batallas de la T1:
+  Oasis solo en Mítico y cuatro en Diamante; y el pago por subir queda parecido al de la T1 (unos 145.000 Puntos de
+  Tienda en una temporada, contra 163.500 de la T1 hasta hoy).
+- **El reinicio**: `python sheet/espejo_t1.py --nueva-temporada t2 --aplicar` deja `datos/t2_elo_arranque.json`. Con
+  lo de hoy, 13 arrancarían en Rubí I, 13 en Zafiro I y 32 en Jade I, y el resto en Hierro I. Si falta, el self-check
+  de la temporada se pone rojo.
+- **La página** (`web/src/divisiones.jsx`, `perfil_v10.jsx`): el ancho de cada piedra, sin provisional y los textos
+  del ELO de temporada, **sólo si el lobby los trae** (`a`, `et`: desde la T2). Está en el código y **no construido**:
+  sale con el próximo build sin cambiar nada de la T1 (el lobby de la T1 no los trae).
+
+**El día del cambio** (después de la gala, el 1/1 desde las 11 AM ET): lo de siempre de `nueva_temporada()`. Las
+piedras se prenden solas con `ACTUAL = 't2'`.
+
+**Lo que falta antes de la T2:**
+
+1. Pasar al histórico nuevo lo que hoy usa `bot/elo.py`: los grupos y las simulaciones de las Competencias
+   (`competencias.fuerzas`), la nota (`notas.fuerzas`) y el pronóstico del VS. Hoy siguen con el ELO de la T1.
+2. Ver de dónde saca el ELO el pronóstico del VS de la página y del bot: si es de las divisiones, desde la T2 serían
+   puntos de temporada.
+3. Los textos de `web/src/invitar.jsx` y de la Guía que dicen «batallas 1v1».
+4. El histórico en el perfil.
+5. El 1v1 ranked (×`FORMATO_1V1`) y lo que votaba el público, cuando existan.
