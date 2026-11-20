@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-20T01:20:22Z",
+ "cuando": "2026-11-20T02:05:27Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 563.9,
+ "dur_s": 1843.3,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 1.1
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.2
+   "s": 10.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 28.1
+   "s": 249.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 385.4
+   "s": 1407.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 80.6
+   "s": 108.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.0
+   "s": 63.5
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "664",
-  "nombre": "CHOP COMPE CHILL V.1",
-  "sv": "CH",
+  "n": "665",
+  "nombre": "GRISELDA TIME VOL. 7",
+  "sv": "FFA",
   "dia": "2026-11-19"
  },
  "cuotas": {
   "kv": {
-   "write": 67,
-   "read": 3806
+   "write": 101,
+   "read": 5506
   },
   "objeto": {
-   "leidas": 417769,
-   "escritas": 6036,
-   "pedidos": 2741
+   "leidas": 718870,
+   "escritas": 11709,
+   "pedidos": 4603
   },
   "worker": {
-   "pedidos": 22532,
-   "errores": 0,
-   "sub": 23226,
-   "cortados": 0,
+   "pedidos": 23476,
+   "errores": 1,
+   "sub": 24385,
+   "cortados": 1,
    "p50_ms": 0.94,
-   "p99_ms": 13.44,
+   "p99_ms": 13.24,
    "cpu": {
-    "total": 45622,
-    "objeto_10": 1788,
-    "worker_10": 448
+    "total": 47712,
+    "objeto_10": 1805,
+    "worker_10": 452
    }
   },
   "r2": {
