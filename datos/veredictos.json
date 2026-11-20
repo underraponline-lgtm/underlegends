@@ -355,28 +355,6 @@
   }
  },
  "batallas": {
-  "1570634286439202820": {
-   "id": "1570634286439202820",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794538794861,
-   "a": "MATS + MITO",
-   "b": "MINIBOY + OKAM",
-   "ganador": "MINIBOY + OKAM",
-   "votos": "1–0"
-  },
-  "1570637762036629595": {
-   "id": "1570637762036629595",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794539623508,
-   "a": "NC + AKUS",
-   "b": "MINIBOY + OKAM",
-   "ganador": "MINIBOY + OKAM",
-   "votos": "1–0"
-  },
   "1570643678224060498": {
    "id": "1570643678224060498",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -2377,6 +2355,17 @@
    "a": "Six 🇦🇷",
    "b": "Kyss 🇲🇽  #",
    "ganador": "Kyss 🇲🇽  #",
+   "votos": "1–0"
+  },
+  "1573173632161554493": {
+   "id": "1573173632161554493",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795144222060,
+   "a": "Lalox",
+   "b": "Angelo",
+   "ganador": "Lalox",
    "votos": "1–0"
   }
  },
