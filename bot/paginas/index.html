@@ -425,9 +425,17 @@ html.calma #lg-carga .lg-img{scale:1!important;translate:none!important;transiti
   // segundo después, no volvía. Si su archivo NO baja, va al toque
   if (document.readyState === 'complete') setTimeout(planB, 8000);
   else window.addEventListener('load', function () { setTimeout(planB, 8000); });
+  // ⚠️ Y SI NO BAJA UNO DE LA CAÑERÍA, TAMBIÉN (20/11/2026, el registro de errores: «Cannot set properties of undefined
+  // (setting 'sinCuenta')», 18/11). Sin comun.js, social.js se corta en su primera línea y deja sus funciones sin sus
+  // datos: la app se arma igual y se rompe por partes. Mejor el aviso con «Reintentar»
+  // (`__sinDatos`: es una falla y no «tardó», así la app no lo saca al llegar el lobby. social.js no está a propósito: sin
+  // él la página anda, porque la app pregunta antes de llamar a sus funciones, y un bloqueador podría frenarlo por el nombre)
   window.addEventListener('error', function (e) {
     var t = e && e.target;
-    if (t && t.tagName === 'SCRIPT' && /\/inicio\/inicio\.js/.test(t.src || '')) planB();
+    if (!t || t.tagName !== 'SCRIPT') return;
+    var s = t.src || '';
+    if (/\/inicio\/inicio\.js/.test(s)) planB();
+    else if (/\/(comun|cuenta|tienda|datos|nucleo)\.js(\?|$)/.test(s)) { window.__sinDatos = true; window.__sinPagina('La página no terminó de cargar.'); }
   }, true);
 })();
 </script>

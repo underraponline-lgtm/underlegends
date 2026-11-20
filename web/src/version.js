@@ -15,7 +15,9 @@
 const CLAVE = 'lg:recarga-version';
 
 /** Lo que dice un navegador cuando un pedazo de la página no está o no coincide con el principal */
-export const esDeVersion = (e) => /dynamically imported module|Importing a module script failed|does not provide an export named|error loading dynamically imported|Unable to preload/i
+// (20/11/2026: + «'text/html' is not a valid JavaScript MIME type», lo que dicen Safari y Firefox cuando el pedazo ya no
+// está y Pages contesta con la página; el 18/11 un Perfil se apagó así sin recargar)
+export const esDeVersion = (e) => /dynamically imported module|Importing a module script failed|does not provide an export named|error loading dynamically imported|Unable to preload|is not a valid JavaScript MIME type/i
   .test(String((e && (e.message || e.reason)) || e || ''));
 
 /** Recarga UNA vez: con un minuto de por medio (si el archivo de verdad falta, no queda en bucle), nunca sin conexión

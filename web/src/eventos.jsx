@@ -1054,8 +1054,11 @@ function nombreDia(k, hoyK) {
   if (k === hoyK) return 'Hoy';
   if (k === diaMas(hoyK, -1)) return 'Ayer';
   if (k === diaMas(hoyK, 1)) return 'Mañana';
-  const [y, m, d] = k.split('-').map(Number);
-  return DIAS[new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay()].slice(0, 3);
+  // ⚠️ sin día no hay nombre (20/11/2026, el registro de errores del 15/11): con una hora que no se pudo leer,
+  // `diaClave()` da '' y `DIAS[NaN].slice` apagaba Eventos entero
+  const [y, m, d] = String(k || '').split('-').map(Number);
+  const nom = DIAS[new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay()];
+  return nom ? nom.slice(0, 3) : '';
 }
 
 // 🗓️ LA SEMANA (Dlx, 21/10/2026: «que se pueda alternar el calendario por semana, por mes y por día»): de lunes a

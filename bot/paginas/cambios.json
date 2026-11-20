@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "7.26",
+        "dia": "2026-11-20",
+        "cuando": "2026-11-20T02:47:00-05:00",
+        "titulo": "Arreglos de la página",
+        "items": [
+            "Si una parte de la página no llega a bajar, ahora sale **«No pude cargar» con Reintentar** en vez de una página que se rompe de a pedazos.",
+            "Con la página abierta mientras sale una versión nueva, en el iPhone y en Firefox **se recarga sola** al abrir otra sección, como ya pasaba en Chrome.",
+            "**Eventos** ya no se apaga si un evento llega con una hora que no se puede leer."
+        ]
+    },
+    {
         "version": "7.25",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T02:45:00-05:00",
