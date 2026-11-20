@@ -47,7 +47,7 @@ Ahí ves tu puntaje, qué días juntan más gente, cuántos vuelven a jugar, a q
 · **Promoción:** tu página con tu invitación y tus redes, tus posts en las redes de Under Legends, y lo que tu gente comparte en tu canal de promoción sale en Publicaciones.
 · **Tus eventos:** en el calendario de la Liga y en los avisos al celular, con la llave en vivo.
 · **Competencias:** tu gente entra a las ligas por niveles, la Copa, las Rapid y los mini eventos.
-· **Tus ligas:** con su lugar en la sección Ligas.
+· **Tus ligas:** con su lugar en la sección Ligas, y sus batallas cuentan como duelos de la Liga.
 · **Cada semana:** multiplicador de puntos y guerra contra otro servidor.
 · **Anti-raid:** opcional, con `/antiraid`.
 ```

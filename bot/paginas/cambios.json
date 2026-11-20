@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.03",
+        "dia": "2026-11-19",
+        "cuando": "2026-11-19T19:50:00-05:00",
+        "titulo": "Las ligas de los servidores Tier 3 cuentan como duelos",
+        "items": [
+            "**Las batallas de las ligas de los servidores Tier 3** ahora cuentan como duelos, igual que las de Tier 1 y 2: suman al Ranking de Duelos y a tu porcentaje de victorias. No cambian tu Score del Competitivo."
+        ]
+    },
+    {
         "version": "7.02",
         "dia": "2026-11-19",
         "cuando": "2026-11-19T19:48:00-05:00",

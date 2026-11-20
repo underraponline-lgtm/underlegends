@@ -29,7 +29,8 @@ QUÉ ES CADA UNO
 🔑 Y LO QUE ES DE TODOS, EN CUALQUIER TIER (Dlx, 20/10/2026: «I want their events to be promoted and social media. I
 think that should be a general benefit… because we provide information to the Liga Global»): sus eventos en el
 calendario, la campana y Publicaciones, y sus redes en Socios. Por eso `bot/anuncios.py` lee a TODOS los confirmados sin
-mirar el tier; lo que el tier apaga son las llaves (`escuchar._guilds_liga()`) y los duelos de las ligas.
+mirar el tier; lo que el tier apaga es que sus llaves cuenten para el Competitivo (desde el 19/11/2026, el Tier 3 también
+cuenta sus ligas como duelos).
 
 DE DÓNDE SALE EL NIVEL: lo elige Dlx en el Dashboard (ajuste `tiers`, `{sigla: 1|2|3}`); sin elegir, el `tier` escrito en
 `datos/servidores.json`, y si tampoco, Tier 1 quien está en la Liga. El ciclo lo copia a `datos/niveles.json` (público:
@@ -152,14 +153,17 @@ BENEFICIOS = (
 #: lo que prende cada tier. Los eventos y la página son de todos (Dlx, 20/10: «a general benefit»).
 #: 🏆 SUMAR A LA TEMPORADA, TODOS LOS SOCIOS (Dlx, 26/10/2026: «cada servidor que sea socio nuestro, automáticamente sus
 #: eventos cuenten para el ranking de temporada únicamente… así motivamos a los demás a CRECER SUS COMUNIDADES»). El
-#: Competitivo y los duelos, sólo el 1: es lo que mide calidad. Los que suman sólo a la Temporada piden 8 participantes
+#: Competitivo, sólo el 1 (y el 2 desde el 19/11/2026): es lo que mide calidad. Los que suman sólo a la Temporada piden 8 participantes
 #: (`MIN_SOLO_TEMPORADA`); sin tope semanal (Dlx: «quita eso de tope semanal… no me agrada esa idea»)
 #: 🥈 Y EL TIER 2, TODO LO DEL 1 (Dlx, 19/11/2026: «Tier 2 que cuenten sus eventos para competitivo»): lo que los separa
 #: no es un beneficio de esta lista sino el botón «Unirme a los Tier 1», que pregunta por el tier y no por `competitivo`
 #: (Worker y web/src/unirse.jsx)
 PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
           2: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
-          3: {'pagina', 'calendario', 'ligas', 'panel', 'suma'}}
+          3: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'}}
+#: 🏟️ Y LAS LIGAS DEL TIER 3 CUENTAN COMO DUELOS, desde el 19/11/2026 (Dlx: «que sus ligas sí cuenten si son tier 3»; a
+#: «¿lo aplico ya?»: «Yes, apply it»). Medido antes: 158 batallas de la T1 (LKR 102, CEU 32, FDS 24; 9 ligas) y 102
+#: personas, que suman al Ranking Duelos y al Win%, nunca al Score (`rankings.duelos_de_ligas()`)
 #: cuántos participantes pide un evento de un servidor que suma sólo a la Temporada (sin `competitivo`)
 MIN_SOLO_TEMPORADA = 8
 #: y desde cuándo: DESDE EL ARRANQUE DE LA T1, como todos (Dlx, 26/10/2026: «haz que sus eventos cuenten desde el día que
@@ -377,11 +381,12 @@ def _mandar_canal(canal, texto, tok):
 
 def sin(beneficio, guardado=None):
     """Las siglas con ese beneficio APAGADO, de `datos/niveles.json`. Sin `beneficios` guardados (antes de la primera
-    corrida con esto), lo de antes: los bajados (Tier 3) no cuentan Competitivo ni duelos, y lo demás lo tienen todos."""
+    corrida con esto), lo de antes: los bajados (Tier 3) no cuentan para el Competitivo (sus ligas sí son duelos desde el
+    19/11/2026), y lo demás lo tienen todos."""
     g = guardado if guardado is not None else (_j('datos', 'niveles.json') or {})
     ben = g.get('beneficios')
     if not isinstance(ben, dict):
-        return {sv for sv, t in (g.get('niveles') or {}).items() if t == 3} if beneficio in ('competitivo', 'duelos') else set()
+        return {sv for sv, t in (g.get('niveles') or {}).items() if t == 3} if beneficio == 'competitivo' else set()
     return {sv for sv, b in ben.items() if isinstance(b, dict) and b.get(beneficio) is False}
 
 
@@ -449,8 +454,8 @@ def _alta_completar(nuevas, svs, tok):
 
 
 def bajados(servidores=None, guardados=None):
-    """Las siglas en Tier 3: no cuentan para el Competitivo ni sus ligas como duelos. Desde el 19/11/2026 el Tier 2 cuenta
-    todo (ver `PRESET`); hasta ese día esto eran «Tier 2 o 3»."""
+    """Las siglas en Tier 3: no cuentan para el Competitivo (sus ligas sí son duelos desde el 19/11/2026). Desde el 19/11/2026
+    el Tier 2 cuenta todo (ver `PRESET`); hasta ese día esto eran «Tier 2 o 3»."""
     return {sv for sv, t in niveles(servidores, guardados).items() if t == 3}
 
 
@@ -1122,8 +1127,10 @@ def _self_check():
        and bajados(svs, {'BBB': 2}) == set() and guilds_bajados(svs, {'BBB': 2, 'CCC': 3}) == {'3'},
        'lo elegido manda; un número que no es tier no vale; sólo el Tier 3 es «bajado» (el 2 cuenta todo desde el 19/11)')
     # 🥈 el Tier 2 prende lo mismo que el 1 (Dlx, 19/11/2026): lo que los separa es el botón de unirse, no un beneficio
-    ok(PRESET[2] == PRESET[1] and PRESET[3] < PRESET[1] and not ({'competitivo', 'duelos'} & PRESET[3]),
-       'el Tier 2 prende lo mismo que el 1, y el 3 todo menos el Competitivo y los duelos')
+    ok(PRESET[2] == PRESET[1] and PRESET[3] < PRESET[1] and 'competitivo' not in PRESET[3] and 'duelos' in PRESET[3]
+       and globals()['sin']('duelos', {'niveles': {'X': 3}}) == set()
+       and globals()['sin']('competitivo', {'niveles': {'X': 3}}) == {'X'},
+       'el Tier 2 prende lo mismo que el 1, y el 3 todo menos el Competitivo: sus ligas también son duelos (19/11/2026)')
     # 🎛️ los beneficios y el alta
     bn, bq = beneficios({'AAA': 1, 'BBB': 3, 'CCC': 1}, {'BBB': {'ligas': False}, 'CCC': {'suma': True}}, codigo={'AAA', 'BBB'})
     ok(bn['AAA']['suma'] and bn['AAA']['competitivo'] and bn['BBB']['suma'] and not bn['BBB']['competitivo']
@@ -1248,7 +1255,8 @@ def _self_check():
        'los miembros van en «rec», aparte de lo que se pide, y no frenan «N de M»', str(cs))
     rg = reglas()
     ok(rg['rec'] == {'1': 1000, '2': 500, '3': 100} and rg['da']['1'] == ['unirse']
-       and {'competitivo', 'duelos', 'carta', 'mes_awards'} == set(rg['da']['2']) and 'competitivo' not in rg['da']['3']
+       and {'competitivo', 'carta', 'mes_awards'} == set(rg['da']['2']) and 'competitivo' not in rg['da']['3']
+       and 'duelos' in rg['da']['3']
        and str(A_TIER2_ANUNCIOS) in rg['sube']['2'] and str(A_TIER1_PUNTOS) in rg['sube']['1']
        and len(json.dumps(rg, ensure_ascii=False, separators=(',', ':'))) < 600,
        'las reglas de la página: los recomendados, lo que suma cada tier y lo que pide subir, de las mismas constantes', str(rg))
