@@ -2897,14 +2897,6 @@
 "tipo": "tarjeta",
 "t": "2026-10-13T00:26:49Z",
 "quien": [
-"Prosu"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T00:26:49Z",
-"quien": [
 "Zeta"
 ],
 "carta": "temporada"
@@ -6279,6 +6271,12 @@
 35,
 26
 ]
+},
+{
+"tipo": "svnuevo",
+"t": "2026-11-20T01:20:17Z",
+"sv": "CHZ",
+"tier": 0
 }
 ],
 "noche_antes": {
@@ -8086,7 +8084,8 @@
 "FRZ": 2,
 "FVS": 2,
 "DRA": 1,
-"FFS": 3
+"FFS": 3,
+"CHZ": 0
 },
 "meta": [
 "2026-11-16",
