@@ -774,7 +774,7 @@
    "n": 628,
    "sv": "FFA",
    "vence": "2026-11-20T01:52:37+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Dobell": {
    "avisado": "2026-11-09",
@@ -2118,11 +2118,12 @@
    "vencido": true
   },
   "Mc uchiha": {
+   "avisado": "2026-11-19",
    "chat": "2026-11-19",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-19T23:53:40+00:00",
-   "did": "",
+   "did": "1250930515670728996",
    "evento": "GRISELDA TIME VOL. 7",
    "n": 665,
    "sv": "FFA",
@@ -2130,6 +2131,7 @@
    "vencido": false
   },
   "Mexicano": {
+   "avisado": "2026-11-19",
    "chat": "2026-11-19",
    "con": null,
    "cumplido": "",
@@ -3105,6 +3107,7 @@
    "vencido": false
   },
   "XXX": {
+   "avisado": "2026-11-19",
    "chat": "2026-11-19",
    "con": null,
    "cumplido": "",
@@ -3117,6 +3120,7 @@
    "vencido": false
   },
   "XXXX": {
+   "avisado": "2026-11-19",
    "chat": "2026-11-19",
    "con": null,
    "cumplido": "",
@@ -3725,7 +3729,7 @@
    "n": 628,
    "sv": "FFA",
    "vence": "2026-11-20T01:52:37+00:00",
-   "vencido": false
+   "vencido": true
   },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {
    "con": null,

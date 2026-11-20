@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-20T01:25:08+00:00",
+ "cuando": "2026-11-20T01:55:31+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7428,6 +7428,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Tayo🇵🇪",
+   "quien": "tayo0016",
+   "discord_id": "1531835171291005059",
+   "msg_id": "1573152907501772957",
+   "cuando": "2026-11-20T01:48:00"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43418,15 +43427,6 @@
    "discord_id": "1048744067313451050",
    "msg_id": "1560762546238259284",
    "cuando": "2026-10-16T21:13:08"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "adrianex🇪🇸",
-   "quien": "adrianleanca_64287",
-   "discord_id": "1276857675316989962",
-   "msg_id": "1560762527611093145",
-   "cuando": "2026-10-16T21:13:04"
   }
  ]
 }
