@@ -40996,7 +40996,7 @@
        "ikonoxx"
       ],
       "Badterne, Erian",
-      "triple (3 bandas, pasan 2); también pasa: erian"
+      "triple (3 bandas, pasan 2); también pasa: erian 🇮🇶"
      ],
      [
       [
@@ -47546,7 +47546,7 @@
        "Player"
       ],
       "crakero, Erian, PRAISERIZA",
-      "triple (5 bandas, pasan 3); también pasa: erian / praiseriza; Revivido: Za🇮🇨"
+      "triple (5 bandas, pasan 3); también pasa: erian 🇮🇶 / praiseriza; Revivido: Za🇮🇨"
      ]
     ],
     "r": "Clasificatorias"
@@ -60204,6 +60204,198 @@
   ],
   "ver": {
    "min": 180,
+   "v": 1
+  }
+ },
+ "665": {
+  "dia": "2026-11-19",
+  "escala": "16+",
+  "fecha": "19/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1573124134169223169"
+  ],
+  "n": 665,
+  "nombre": "GRISELDA TIME VOL. 7",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Vandu",
+       "Mito",
+       "MauzzitoEmeces",
+       "NC",
+       "Mexicano🇲🇽"
+      ],
+      "Vandu, Mito",
+      "triple (5 bandas, pasan 2); también pasa: Mito🇦🇷; Drafteado: Vandu 🇨🇦"
+     ],
+     [
+      [
+       "Kyss",
+       "Trelok, NC",
+       "Paria"
+      ],
+      "Kyss",
+      "triple (3 bandas); Drafteado: trelok 🇨🇴"
+     ],
+     [
+      [
+       "BNA",
+       "Six",
+       "Colesito",
+       "XXXX 🇻🇪",
+       "Mc uchiha 🇮🇹"
+      ],
+      "BNA, Six, Colesito",
+      "triple (5 bandas, pasan 3); también pasa: six / colesito🇦🇬"
+     ],
+     [
+      [
+       "Colesito",
+       "XXX 🇻🇪",
+       "Lord Viruzz",
+       "Tenor",
+       "Drexx",
+       "doble h"
+      ],
+      "Colesito, XXX 🇻🇪",
+      "triple (6 bandas, pasan 2); también pasa: XXX 🇻🇪; Drafteado: colesito🇦🇬"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kyss, Trelok",
+       "Vandu, Mito"
+      ],
+      "Kyss, Trelok",
+      ""
+     ],
+     [
+      [
+       "Six, BNA",
+       "Colesito, XXX 🇻🇪"
+      ],
+      "Six, BNA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vandu, Trelok, Kyss",
+       "BNA, Six, Colesito"
+      ],
+      "Vandu, Trelok, Kyss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Vandu",
+    "Campeón",
+    5958
+   ],
+   [
+    "Colesito",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Trelok",
+    "Campeón",
+    4583
+   ],
+   [
+    "Kyss",
+    "Campeón",
+    3333
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    2625
+   ],
+   [
+    "XXX 🇻🇪",
+    "Semifinal",
+    2625
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MauzzitoEmeces",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mc uchiha 🇮🇹",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mexicano🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "XXXX 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "doble h",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "ver": {
+   "min": 80,
    "v": 1
   }
  }

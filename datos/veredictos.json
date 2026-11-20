@@ -2389,80 +2389,42 @@
    "b": "Kyss 🇲🇽  + Trelok 🇨🇴",
    "ganador": "Kyss 🇲🇽  + Trelok 🇨🇴",
    "votos": "1–0"
-  }
- },
- "llaves": {
-  "1565531921096642712": {
-   "id": "1565531921096642712",
+  },
+  "1573141387581329451": {
+   "id": "1573141387581329451",
    "sv": "[FFA] Freestyle For All 👾",
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
-   "pub": 1793322296166,
-   "ed": 1793327191077,
-   "texto": "`[ CUARTOS ]`\n⌞DREXX LRS ADRIAGNER⌝ 🆚 ⌞YINN VERC⌝\n⌞DREXX⌝ 🆚 ⌞VERC⌝\n⌞GUAICURUS⌝ 🆚 ⌞KARUMAI⌝\n`[ SEMIFINALES ]`\n⌞GUAICURUS⌝ 🆚 ⌞LIBERIA KIBAK⌝\n`[ FINAL ]`\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "DREXX LRS ADRIAGNER",
-      "YINN VERC"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "DREXX",
-      "VERC"
-     ],
-     "VERC",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "GUAICURUS",
-      "KARUMAI"
-     ],
-     "GUAICURUS",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "GUAICURUS",
-      "LIBERIA KIBAK"
-     ],
-     "GUAICURUS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ABBYSUS",
-      "PARK JI SUNG"
-     ],
-     "ABBYSUS",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ABBYSUS",
-      "PARK JI SUNG"
-     ],
-     "PARK JI SUNG",
-     "veredicto",
-     []
-    ]
-   ]
+   "pub": 1795136534353,
+   "a": "COLESITO 🇨🇴",
+   "b": "TRELOK 🇨🇴 #",
+   "ganador": "TRELOK 🇨🇴 #",
+   "votos": "1–0"
   },
+  "1573142297518932111": {
+   "id": "1573142297518932111",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795136751299,
+   "a": "Six 🇦🇷",
+   "b": "TRELOK 🇨🇴 #",
+   "ganador": "Six 🇦🇷",
+   "votos": "1–0"
+  },
+  "1573143546511360001": {
+   "id": "1573143546511360001",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795137049082,
+   "a": "Six 🇦🇷",
+   "b": "Kyss 🇲🇽  #",
+   "ganador": "Kyss 🇲🇽  #",
+   "votos": "1–0"
+  }
+ },
+ "llaves": {
   "1565551002948477030": {
    "id": "1565551002948477030",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -7121,8 +7083,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795131191311,
-   "ed": 1795136534353,
-   "texto": "`[ CUARTOS ]`\n⌞Vandu 🇨🇴⌝ 🆚 ⌞Mito 🇦🇷⌝ 🆚 ⌞Mauzz 🇻🇪⌝ 🆚 ⌞Nc 🇲🇿⌝ 🆚 ⌞Mexicano 🇲🇽 -⌝\n⌞kyss 🇲🇽⌝ 🆚 ⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞MCO 🇦🇷⌝ 🆚 ⌞Mc uchiha 🇮🇹⌝ 🆚 ⌞Trot🍅 🇪🇸⌝ 🆚 ⌞TEURONIHAGE 🇦🇪⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞XXXX 🇻🇪⌝ 🆚 ⌞Six 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞Mc uchiha 🇨🇱⌝\n⌞Lord 🇨🇴⌝ 🆚 ⌞Tenor 🇻🇪⌝ 🆚 ⌞Drexx 🇵🇪⌝ 🆚 ⌞doble h 🇨🇱⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞XXX 🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞Six 🇦🇷 + Bna 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴 + XXX 🇻🇪⌝\n⌞Vandu 🇨🇴  + Mito 🇦🇷⌝ 🆚 ⌞Kyss 🇲🇽  + Trelok 🇨🇴⌝\n`[ FINAL ]`\n⌞Bna 🇦🇷 + Six 🇦🇷 + Colesito 🇨🇴⌝ 🆚 ⌞Vandu 🇨🇴 + Trelok 🇨🇴 + Kyss 🇲🇽⌝\n⌞Bna 🇦🇷⌝ 🆚 ⌞Vandu 🇨🇴 #⌝\n⌞COLESITO 🇨🇴⌝ 🆚 ⌞TRELOK 🇨🇴 #⌝",
+   "ed": 1795137049082,
+   "texto": "`[ CUARTOS ]`\n⌞Vandu 🇨🇴⌝ 🆚 ⌞Mito 🇦🇷⌝ 🆚 ⌞Mauzz 🇻🇪⌝ 🆚 ⌞Nc 🇲🇿⌝ 🆚 ⌞Mexicano 🇲🇽 -⌝\n⌞kyss 🇲🇽⌝ 🆚 ⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞trelok 🇨🇴 + Nc  🇦🇷⌝ 🆚 ⌞Paria 🇦🇷 -⌝\n⌞MCO 🇦🇷⌝ 🆚 ⌞Mc uchiha 🇮🇹⌝ 🆚 ⌞Trot🍅 🇪🇸⌝ 🆚 ⌞TEURONIHAGE 🇦🇪⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞XXXX 🇻🇪⌝ 🆚 ⌞Six 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞Mc uchiha 🇨🇱⌝\n⌞Lord 🇨🇴⌝ 🆚 ⌞Tenor 🇻🇪⌝ 🆚 ⌞Drexx 🇵🇪⌝ 🆚 ⌞doble h 🇨🇱⌝ 🆚 ⌞Colesito 🇨🇴⌝ 🆚 ⌞XXX 🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞Six 🇦🇷 + Bna 🇦🇷⌝ 🆚 ⌞Colesito 🇨🇴 + XXX 🇻🇪⌝\n⌞Vandu 🇨🇴  + Mito 🇦🇷⌝ 🆚 ⌞Kyss 🇲🇽  + Trelok 🇨🇴⌝\n`[ FINAL ]`\n⌞Bna 🇦🇷 💀 + Six 🇦🇷 + Colesito 🇨🇴 💀⌝ 🆚 ⌞Vandu 🇨🇴💀  + Trelok 🇨🇴 💀 + Kyss 🇲🇽⌝\n⌞Bna 🇦🇷⌝ 🆚 ⌞Vandu 🇨🇴 #⌝\n⌞COLESITO 🇨🇴⌝ 🆚 ⌞TRELOK 🇨🇴 #⌝\n⌞Six 🇦🇷⌝ 🆚 ⌞Trelok 🇨🇴  #⌝\n⌞Six 🇦🇷⌝ 🆚 ⌞Kyss 🇲🇽  #⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -7220,8 +7182,8 @@
     [
      "FINAL",
      [
-      "Bna 🇦🇷 + Six 🇦🇷 + Colesito 🇨🇴",
-      "Vandu 🇨🇴 + Trelok 🇨🇴 + Kyss 🇲🇽"
+      "Bna 🇦🇷 💀 + Six 🇦🇷 + Colesito 🇨🇴 💀",
+      "Vandu 🇨🇴💀  + Trelok 🇨🇴 💀 + Kyss 🇲🇽"
      ],
      null,
      "última ronda y no dice campeón",
@@ -7242,6 +7204,26 @@
      [
       "COLESITO 🇨🇴",
       "TRELOK 🇨🇴 #"
+     ],
+     "TRELOK 🇨🇴 #",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Six 🇦🇷",
+      "Trelok 🇨🇴  #"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Six 🇦🇷",
+      "Kyss 🇲🇽  #"
      ],
      null,
      "última ronda y no dice campeón",

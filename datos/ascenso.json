@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-20T01:08:45Z",
+ "t": "2026-11-20T01:31:52Z",
  "sv": {
   "SR": {
    "filas": [
@@ -702,8 +702,8 @@
     [
      "SIX",
      "ar",
-     6630,
-     0,
+     6780,
+     150,
      "Six"
     ],
     [
@@ -805,6 +805,13 @@
      "Molusco"
     ],
     [
+     "colesito",
+     "ca",
+     3330,
+     150,
+     "Colesito"
+    ],
+    [
      "Neo",
      "ar",
      3325,
@@ -817,13 +824,6 @@
      3200,
      0,
      "Polosport"
-    ],
-    [
-     "colesito",
-     "ca",
-     3180,
-     0,
-     "Colesito"
     ],
     [
      "Mr still ballin",
@@ -868,18 +868,18 @@
      "Velatz"
     ],
     [
+     "Trrrr",
+     "jm",
+     2485,
+     150,
+     "BNA"
+    ],
+    [
      "Panchok",
      "cl",
      2460,
      0,
      "Panchok"
-    ],
-    [
-     "Trrrr",
-     "jm",
-     2335,
-     0,
-     "BNA"
     ],
     [
      "Geoka",
@@ -896,18 +896,18 @@
      "Tenor"
     ],
     [
+     "vandu",
+     "ca",
+     1850,
+     200,
+     "Vandu"
+    ],
+    [
      "Paria",
      "ar",
      1760,
      0,
      "Paria"
-    ],
-    [
-     "vandu",
-     "ca",
-     1650,
-     0,
-     "Vandu"
     ],
     [
      "BENJIXO",
@@ -938,6 +938,13 @@
      "MCO"
     ],
     [
+     "Ax",
+     "ve",
+     1320,
+     110,
+     "Xubaru"
+    ],
+    [
      "Eze",
      "ar",
      1275,
@@ -950,13 +957,6 @@
      1225,
      0,
      "YOUNG VLAD"
-    ],
-    [
-     "Ax",
-     "ve",
-     1210,
-     0,
-     "Xubaru"
     ],
     [
      "Respawn",
@@ -1169,6 +1169,13 @@
      "Warap"
     ],
     [
+     "Trelok",
+     "co",
+     610,
+     200,
+     "Trelok"
+    ],
+    [
      "onzas.s",
      "ve",
      600,
@@ -1181,6 +1188,13 @@
      590,
      0,
      "Sin Limites"
+    ],
+    [
+     "kyss",
+     "ye",
+     575,
+     200,
+     "Kyss"
     ],
     [
      "CJ",
@@ -1316,11 +1330,11 @@
      "1200"
     ],
     [
-     "Trelok",
-     "co",
+     "Lizeninn",
+     "ar",
      410,
-     0,
-     "Trelok"
+     110,
+     "Mito"
     ],
     [
      "Prosu",
@@ -1377,13 +1391,6 @@
      375,
      0,
      "Nmb"
-    ],
-    [
-     "kyss",
-     "ye",
-     375,
-     0,
-     "Kyss"
     ],
     [
      "",
@@ -1475,13 +1482,6 @@
      300,
      0,
      "Deuxs"
-    ],
-    [
-     "Lizeninn",
-     "ar",
-     300,
-     0,
-     "Mito"
     ],
     [
      "kychi",
@@ -1918,6 +1918,55 @@
       ],
       [
        "rodrilp",
+       "Tercero",
+       110
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "Griselda Time Vol. 7",
+     "dia": "2026-11-19",
+     "rango": "bronce iii",
+     "puntos": [
+      [
+       "Trelok",
+       "Campeón",
+       200
+      ],
+      [
+       "Kyss",
+       "Campeón",
+       200
+      ],
+      [
+       "Vandu",
+       "Campeón",
+       200
+      ],
+      [
+       "Six",
+       "Subcampeón",
+       150
+      ],
+      [
+       "BNA",
+       "Subcampeón",
+       150
+      ],
+      [
+       "Colesito",
+       "Subcampeón",
+       150
+      ],
+      [
+       "Mito",
+       "Tercero",
+       110
+      ],
+      [
+       "Xubaru",
        "Tercero",
        110
       ]

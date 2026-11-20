@@ -63,6 +63,24 @@
 "temporada"
 ]
 },
+"vandu": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"colesito": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "panchok": {
 "rg": "S",
 "c": [
@@ -81,28 +99,10 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "carlosss": {
 "rg": "S",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"colesito": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -334,6 +334,15 @@
 "rg": "A",
 "c": []
 },
+"drexx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "caliz": {
 "rg": "D",
 "c": [
@@ -352,8 +361,8 @@
 "temporada"
 ]
 },
-"bloody": {
-"rg": "B",
+"tenor": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -361,8 +370,8 @@
 "temporada"
 ]
 },
-"tenor": {
-"rg": "C",
+"bloody": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -374,15 +383,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"drexx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -431,10 +431,6 @@
 "temporada"
 ]
 },
-"dominick": {
-"rg": "D",
-"c": []
-},
 "lordviruzz": {
 "rg": "D",
 "c": [
@@ -444,7 +440,15 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": []
+},
 "xclusivo": {
+"rg": "C",
+"c": []
+},
+"bna": {
 "rg": "C",
 "c": []
 },
@@ -482,10 +486,6 @@
 "temporada"
 ]
 },
-"bna": {
-"rg": "C",
-"c": []
-},
 "19fleivawack": {
 "rg": "B",
 "c": []
@@ -507,6 +507,10 @@
 "servidor",
 "temporada"
 ]
+},
+"paria": {
+"rg": "D",
+"c": []
 },
 "last": {
 "rg": "E",
@@ -560,10 +564,6 @@
 "temporada"
 ]
 },
-"paria": {
-"rg": "D",
-"c": []
-},
 "dynoco": {
 "rg": "C",
 "c": [
@@ -595,6 +595,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"kyss": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -656,14 +664,6 @@
 "eclipsito": {
 "rg": "C",
 "c": []
-},
-"kyss": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "mtz": {
 "rg": "C",
@@ -828,6 +828,14 @@
 "temporada"
 ]
 },
+"trelok": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "rodas": {
 "rg": "E",
 "c": [
@@ -843,14 +851,6 @@
 "1200": {
 "rg": "E",
 "c": []
-},
-"trelok": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "krish": {
 "rg": "E",
@@ -2893,31 +2893,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T00:26:49Z",
-"quien": [
-"Zeta"
-],
-"carta": "temporada"
-},
-{
-"tipo": "rango",
-"t": "2026-10-13T03:02:31Z",
-"quien": [
-"Guess"
-],
-"rg": "C",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T03:02:31Z",
-"quien": [
-"Guess"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-13T03:47:06Z",
@@ -6277,6 +6252,38 @@
 "t": "2026-11-20T01:20:17Z",
 "sv": "CHZ",
 "tier": 0
+},
+{
+"tipo": "rango",
+"t": "2026-11-20T01:32:55Z",
+"quien": [
+"Kyss"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "top10",
+"t": "2026-11-20T01:32:55Z",
+"quien": [
+"Colesito"
+],
+"ks": [
+"colesito"
+],
+"rk": "temporada",
+"pos": 9
+},
+{
+"tipo": "racha",
+"t": "2026-11-20T01:32:55Z",
+"quien": [
+"Six"
+],
+"ks": [
+"six"
+],
+"racha": 5
 }
 ],
 "noche_antes": {
@@ -8002,8 +8009,8 @@
 "tipo": "resnoche",
 "t": "2026-11-20T08:00:00Z",
 "dia": "2026-11-19",
-"eventos": 1,
-"part": 18,
+"eventos": 2,
+"part": 38,
 "campeones": [
 {
 "ev": "CHOP COMPE CHILL V.1",
@@ -8013,6 +8020,25 @@
 [
 "mats",
 "mats"
+]
+]
+},
+{
+"ev": "GRISELDA TIME VOL. 7",
+"sv": "FFA",
+"ll": 665,
+"quien": [
+[
+"Vandu",
+"vandu"
+],
+[
+"Trelok",
+"trelok"
+],
+[
+"Kyss",
+"kyss"
 ]
 ]
 }
@@ -8025,39 +8051,47 @@
 "ev": 1
 },
 {
+"n": "Colesito",
+"k": "colesito",
+"pts": 8125,
+"ev": 2
+},
+{
 "n": "Makmah",
 "k": "makmah",
 "pts": 7500,
-"ev": 1
-},
-{
-"n": "Colesito",
-"k": "colesito",
-"pts": 3000,
 "ev": 1
 }
 ],
 "suben": [
 {
-"n": "Magic",
+"n": "XXXX 🇻🇪",
 "k": "",
-"de": 159,
-"a": 145
+"de": 625,
+"a": 475
 },
 {
-"n": "Soulb",
-"k": "soulb",
-"de": 48,
-"a": 37
+"n": "MauzzitoEmeces",
+"k": "",
+"de": 432,
+"a": 368
 },
 {
-"n": "mats",
-"k": "mats",
-"de": 39,
-"a": 33
+"n": "doble h",
+"k": "",
+"de": 172,
+"a": 151
 }
 ],
-"sorpresas": []
+"sorpresas": [
+{
+"n": "Kyss",
+"k": "kyss",
+"que": "primer",
+"ev": "GRISELDA TIME VOL. 7",
+"desde": 64
+}
+]
 }
 },
 "extra": {
@@ -8085,7 +8119,7 @@
 "FVS": 2,
 "DRA": 1,
 "FFS": 3,
-"CHZ": 0
+"CHZ": 3
 },
 "meta": [
 "2026-11-16",
@@ -8102,9 +8136,9 @@
 "praiseriza",
 "snow",
 "six",
-"panchok",
-"verc",
-"vandu"
+"vandu",
+"colesito",
+"panchok"
 ],
 "competitivo": [
 "oasis",
@@ -8124,7 +8158,8 @@
 "temporada:panchok": "2026-11-16T19:02:43Z",
 "competitivo:walker": "2026-11-17T22:09:56Z",
 "competitivo:over": "2026-11-17T23:32:17Z",
-"temporada:vandu": "2026-11-18T00:39:14Z"
+"temporada:vandu": "2026-11-18T00:39:14Z",
+"temporada:colesito": "2026-11-20T01:32:55Z"
 },
 "racha": {
 "makmah": 1,
@@ -8133,13 +8168,13 @@
 "erian": 1,
 "praiseriza": 0,
 "snow": 0,
-"six": 4,
+"six": 5,
 "verc": 0,
-"vandu": 0,
+"vandu": 1,
 "panchok": 3,
 "carlosss": 2,
 "liberia": 1,
-"colesito": 1,
+"colesito": 2,
 "agus": 0,
 "mrstillballin": 5,
 "mco": 1,
@@ -8187,7 +8222,7 @@
 "mats": 3,
 "numberve": 0,
 "soulb": 1,
-"bna": 0,
+"bna": 1,
 "paria": 0,
 "last": 0,
 "masino": 0,
@@ -8226,13 +8261,13 @@
 "richard": 0,
 "1200": 0,
 "nemmiias": 0,
-"kyss": 1,
+"kyss": 2,
 "19fleivawack": 0,
 "artezzy": 0,
 "vallest": 0,
 "darnbless": 0,
 "sultan": 0,
-"trelok": 0,
+"trelok": 1,
 "emizor": 0,
 "krish": 0,
 "rodas": 0,

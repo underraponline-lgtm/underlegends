@@ -4,6 +4,7 @@
   "ACAD": 2,
   "CEU": 3,
   "CH": 1,
+  "CHZ": 3,
   "DDF": 1,
   "DDS": 3,
   "DRA": 1,
@@ -42,6 +43,15 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
+   "duelos": true
+  },
+  "CHZ": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "competitivo": false,
    "duelos": true
   },
   "DDF": {
