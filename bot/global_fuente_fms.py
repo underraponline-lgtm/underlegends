@@ -736,6 +736,10 @@ def _armar(crudo, desde, hasta, avisos):
         avisos.append('sin la API de MCs no hay ids estables: no devuelvo batallas de FMS (quedan las de la vez anterior)')
         return salida
     mcs = _indice_mcs(crudo['mcs'])
+    # El plantel de cada liga FMS que lista fms.tv: son PRO en el ranking aunque todavía no hayan jugado en la T1
+    # (Dlx, 21/11/2026: «asegúrate a quién metes en cada tag»). El generico «Extra Player» no es nadie.
+    salida['plantel'] = [{'id': 'fms:%d' % m['id'], 'nombre': m['nombre'], 'pais': m['pais'], 'ligas': m['ligas']}
+                         for m in mcs['id'].values() if m['nombre'] and m['ligas'] and m['id'] != 9083]
     jornadas, en_pagina = _jornadas(secciones, etiquetas, desde, hasta, avisos)
     if crudo.get('ur') is None:
         avisos.append('sin urbanroosters: los Extra Players sin perfil quedan sin nombre y el MVP sale sólo de fms.tv')

@@ -51,11 +51,13 @@ BATALLAS = os.path.join(BASE, 'datos', 'global_batallas.json')
 ALIAS = os.path.join(BASE, 'datos', 'global_alias.json')
 SEMILLAS = os.path.join(BASE, 'datos', 'global_semillas.json')
 SALIDA = os.path.join(BASE, 'bot', 'paginas', 'global.json')
+PROS = os.path.join(BASE, 'datos', 'global_pros.json')
+SEMILLA_PRO = 7.5  # quien es pro arranca, como mínimo, como un MC de FMS
 
 # Las fuentes, en orden de preferencia cuando dos traen la misma batalla.
 FUENTES = (('fms', 'global_fuente_fms'), ('fstats', 'global_fuente_fstats'), ('youtube', 'global_fuente_youtube'),
            ('urbanstreet', 'global_fuente_urbanstreet'), ('liga', 'global_fuente_liga'))
-AFUERA = {'fms', 'fstats', 'youtube', 'urbanstreet'}  # las de fuera de la Liga: entre ellas se unen solas por el nombre
+AFUERA = {'fms', 'fstats', 'youtube', 'urbanstreet', 'pro'}  # las de fuera de la Liga: se unen solas por el nombre
 # Las que fechan aproximado: YouTube por el día en que se SUBIÓ el video, UrbanStreet a veces por el día de la nota.
 FECHA_APROX = {'youtube', 'urbanstreet'}
 
@@ -109,10 +111,10 @@ def ahora_et():
 
 # ── 1. Leer ──────────────────────────────────────────────────────────────────────────────────────────────────────────
 def leer_fuentes(red=True, previo=None, solo=None):
-    """`(batallas, mvps, semillas_liga, estado)`. Una fuente que falla deja lo suyo de la semana anterior."""
+    """`(batallas, mvps, semillas_liga, estado, plantel)`. Una fuente que falla deja lo suyo de la semana anterior."""
     desde, hasta = temporada.FECHAS[temporada.ACTUAL]
     previo = previo or {}
-    batallas, mvps, semillas, estado = [], [], {}, {}
+    batallas, mvps, semillas, estado, plantel = [], [], {}, {}, []
     for nombre, modulo in FUENTES:
         if solo and nombre not in solo:
             continue
@@ -132,9 +134,14 @@ def leer_fuentes(red=True, previo=None, solo=None):
             mvps.extend(r.get('mvp') or [])
         batallas.extend(bs)
         semillas.update(r.get('semillas') or {})
+        # El plantel de las ligas pro (hoy sólo FMS): sin él, quien todavía no jugó en la T1 no aparece.
+        pl = list(r.get('plantel') or [])
+        if not pl:
+            pl = [p for p in previo.get('plantel') or [] if str(p.get('id', '')).startswith(nombre + ':')]
+        plantel.extend(pl)
         av.extend(r.get('avisos') or [])
         estado[nombre] = {'n': len(bs), 'ok': ok, 'av': av[:40]}
-    return batallas, mvps, semillas, estado
+    return batallas, mvps, semillas, estado, plantel
 
 
 # ── 2. Juntar lo repetido ────────────────────────────────────────────────────────────────────────────────────────────
@@ -209,12 +216,51 @@ def deduplicar(batallas):
 
 
 # ── 3. Quién es quién ────────────────────────────────────────────────────────────────────────────────────────────────
-def identidades(batallas, mvps, alias=None):
-    """`(de_id, personas)`: de cada id de fuente a la clave global, y los datos de cada persona."""
+LIGAS_FMS = {'spain': 'España', 'mexico': 'México', 'peru': 'Perú', 'argentina': 'Argentina', 'chile': 'Chile',
+             'colombia': 'Colombia', 'caribe': 'Caribe'}
+
+
+def pros_de(plantel, a_mano):
+    """Quién es PRO: el plantel de las ligas FMS que lista fms.tv y los grupos de `datos/global_pros.json` (las
+    internacionales y los campeones nacionales de Red Bull). `[{id, nombre, pais, por}]`, uno por nombre.
+
+    ⚠️ Dlx, 21/11/2026: «KG es profesional, está en la liga de FMS Perú… asegúrate a quién metes en cada tag». Antes el
+    grupo salía de los eventos de la ventana, y KG —que en la T1 sólo jugó plazas y Supremacía— salía de plaza.
+    """
+    out, por_clave = [], {}
+    for p in plantel or []:
+        ligas = [l for l in p.get('ligas') or [] if l not in ('internacional', 'fswc')]
+        if not ligas:  # «MÉXICO» del Freestyle World Cup es una selección, no una persona
+            continue
+        por = 'FMS ' + ', '.join(LIGAS_FMS.get(l, l.capitalize()) for l in ligas)
+        x = {'id': p['id'], 'nombre': p['nombre'], 'pais': p.get('pais'), 'por': [por]}
+        out.append(x)
+        por_clave.setdefault(claves.clave(p['nombre']), x)
+    for g in (a_mano or {}).get('grupos') or []:
+        for nombre, cc in g.get('gente') or []:
+            k = claves.clave(nombre)
+            if k in por_clave:
+                if g['por'] not in por_clave[k]['por']:
+                    por_clave[k]['por'].append(g['por'])
+                continue
+            x = {'id': 'pro:' + k, 'nombre': nombre, 'pais': cc, 'por': [g['por']]}
+            out.append(x)
+            por_clave[k] = x
+    return out
+
+
+def identidades(batallas, mvps, alias=None, extra=None):
+    """`(de_id, personas)`: de cada id de fuente a la clave global, y los datos de cada persona.
+
+    `extra`: gente que entra aunque no tenga batallas en la ventana (los pros de `pros_de()`): «habrá todos».
+    """
     alias = alias or {}
     une = dict((alias.get('une') or {}))  # {id de fuente: id de fuente al que se une}
     separa = {frozenset(x) for x in alias.get('separa') or [] if len(x) == 2}
     ids = {}
+    for p in extra or []:
+        ids.setdefault(p['id'], {'nombre': p['nombre'], 'pais': p.get('pais'),
+                                 'fuente': p['id'].split(':', 1)[0], 'otros': set()})
     for b in batallas:
         for lado in ('a', 'b'):
             p = b[lado]
@@ -279,6 +325,9 @@ def identidades(batallas, mvps, alias=None):
             personas[r] = {'k': k, 'n': x['nombre'], 'cc': x['pais'], 'ids': [],
                            'lg': claves.clave(x['nombre']) if x['fuente'] == 'liga' else None}
         personas[r]['ids'].append(i)
+        # El nombre más prolijo: «Mecha» y no «MECHA» (fms.tv escribe todo en mayúsculas).
+        if personas[r]['n'].isupper() and ids[i]['nombre'] and not ids[i]['nombre'].isupper():
+            personas[r]['n'] = ids[i]['nombre']
         if not personas[r]['cc'] and ids[i]['pais']:
             personas[r]['cc'] = ids[i]['pais']
         if ids[i]['fuente'] == 'liga':
@@ -288,8 +337,16 @@ def identidades(batallas, mvps, alias=None):
 
 
 # ── 4. La fuerza con la que arranca cada uno ─────────────────────────────────────────────────────────────────────────
-def semillas_iniciales(batallas, de_id, personas, elo_liga=None, a_mano=None):
+def semillas_iniciales(batallas, de_id, personas, elo_liga=None, a_mano=None, pro_keys=None):
+    """`(s0, escena)`. La escena NO sale de dónde jugó en la ventana sino de quién es: pro si está en `pros_de()`,
+    plaza si es de afuera de la Liga, Liga si es de la Liga. Jugar una final nacional de Red Bull no te hace pro."""
     s0, escena = {}, {}
+    pro_keys = set(pro_keys or ())
+    for k, p in personas.items():
+        escena[k] = 'pro' if k in pro_keys else 'liga' if p.get('lg') and all(
+            i.startswith('liga:') for i in p['ids']) else 'plaza'
+        if k in pro_keys:
+            s0[k] = SEMILLA_PRO
     for b in batallas:
         t = b['evento'].get('tipo')
         for lado in ('a', 'b'):
@@ -299,9 +356,6 @@ def semillas_iniciales(batallas, de_id, personas, elo_liga=None, a_mano=None):
                 v = FINALISTA_NACIONAL
             if v:
                 s0[k] = max(s0.get(k, 0), v)
-            e = 'pro' if t in PRO else 'plaza' if t in PLAZA else 'liga'
-            if {'pro': 3, 'plaza': 2, 'liga': 1}[e] > {'pro': 3, 'plaza': 2, 'liga': 1}.get(escena.get(k), 0):
-                escena[k] = e
     elo = {de_id[i]: e for i, e in (elo_liga or {}).items() if i in de_id and e is not None}
     if elo:
         orden = sorted(elo.values())
@@ -410,10 +464,16 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
 
 
 # ── 6. Armar la salida ───────────────────────────────────────────────────────────────────────────────────────────────
-def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None):
+def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None, pros=None):
     batallas = deduplicar(batallas)
-    de_id, personas = identidades(batallas, mvps, alias)
-    s0, escena = semillas_iniciales(batallas, de_id, personas, semillas_liga, a_mano)
+    de_id, personas = identidades(batallas, mvps, alias, extra=pros)
+    por_pro = {}
+    for p in pros or []:
+        k = de_id.get(p['id'])
+        if k:
+            por_pro.setdefault(k, [])
+            por_pro[k] += [x for x in p['por'] if x not in por_pro[k]]
+    s0, escena = semillas_iniciales(batallas, de_id, personas, semillas_liga, a_mano, pro_keys=por_pro)
     calc = puntos(batallas, mvps, de_id, personas, s0, escena)
     eventos, ev_i = [], {}
     for b in sorted(batallas, key=lambda x: (x['evento'].get('fecha') or '', x['evento']['id'])):
@@ -429,6 +489,8 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
                       'nb': c['nb'], 'jb': c['jb'], 'f': c['f'],
                       'b': [[ev_i[e], r, el, cod, round(pts, 1), nf] for pts, e, r, el, cod, nf in c['bat'] if pts > 0],
                       't': [[ev_i[e], puesto, round(pts, 1)] for pts, e, puesto in c['tit'] if pts > 0]})
+        if por_pro.get(k):
+            gente[-1]['por'] = por_pro[k][:3]  # por qué es pro: «FMS Chile», «FMS Internacional 2026»…
     gente.sort(key=lambda g: (-g['p'], -g['jb'], g['n'].lower()))
     d0, d1 = temporada.FECHAS[temporada.ACTUAL]
     return {'v': 1, 't': (cuando or ahora_et()).isoformat(), 'temporada': temporada.ACTUAL, 'ventana': [d0, d1],
@@ -438,18 +500,20 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
 def correr(red=False, escribir=True):
     previo = _leer(BATALLAS, {}) or {}
     if red:
-        batallas, mvps, semillas, estado = leer_fuentes(True, previo)
+        batallas, mvps, semillas, estado, plantel = leer_fuentes(True, previo)
         if escribir:
             _escribir(BATALLAS, {'batallas': batallas, 'mvp': mvps, 'semillas': semillas, 'fu': estado,
-                                 't': ahora_et().isoformat()})
+                                 'plantel': plantel, 't': ahora_et().isoformat()})
     else:
         batallas, mvps = previo.get('batallas') or [], previo.get('mvp') or []
         semillas, estado = previo.get('semillas') or {}, previo.get('fu') or {}
+        plantel = previo.get('plantel') or []
         if not batallas:
             # Sin nada guardado, sólo la Liga, que sale de los archivos del ciclo. Las de afuera sin red leen sus
             # casos de prueba: una foto vieja que no puede llegar al ranking de verdad.
-            batallas, mvps, semillas, estado = leer_fuentes(False, previo, solo={'liga'})
-    out = armar(batallas, mvps, semillas, estado, _leer(ALIAS, {}), _leer(SEMILLAS, {}))
+            batallas, mvps, semillas, estado, plantel = leer_fuentes(False, previo, solo={'liga'})
+    out = armar(batallas, mvps, semillas, estado, _leer(ALIAS, {}), _leer(SEMILLAS, {}),
+                pros=pros_de(plantel, _leer(PROS, {})))
     if escribir:
         _escribir(SALIDA, out, compacto=True)
     return out
@@ -517,6 +581,25 @@ def _self_check():
     pr = _b('fms', 'e', 'fms_jornada', '2026-10-10', 'jornada', 'X', 'Y', 'b', replica=True)
     if _resultado(pr, 'a', 3, 8)[1] != PIERDE_REPLICA or _resultado(pr, 'a', 8, 3)[1] != 0:
         mal.append('perder con réplica suma sólo contra alguien más fuerte')
+    # Quién es pro sale de quién ES, no de dónde jugó en la ventana: KG jugó plazas y es pro (FMS Internacional);
+    # un MC de plaza que llegó a una final nacional de Red Bull sigue siendo de plaza; y un pro sin batallas en la T1
+    # aparece igual, con 0.
+    pros = pros_de([{'id': 'fms:1', 'nombre': 'Pro', 'pais': None, 'ligas': ['colombia']}],
+                   {'grupos': [{'por': 'Red Bull Internacional', 'gente': [['KG', 'pe'], ['Quieto', 'pe']]}]})
+    kb = [_b('youtube', 'yt-raptablo', 'plaza', '2026-10-01', 'final', 'KG', 'Plazero', 'a'),
+          _b('fstats', 'rb-pe', 'rb_nacional', '2026-10-02', 'final', 'Plazero', 'Otro', 'a')]
+    o2 = armar(bs + kb, mvps, {}, {}, cuando=dt.datetime(2026, 11, 23, 17, tzinfo=ET), pros=pros)
+    g2 = {x['n']: x for x in o2['g']}
+    if g2['KG']['esc'] != 'pro' or g2['Plazero']['esc'] != 'plaza' or g2['Pro']['esc'] != 'pro':
+        mal.append('los grupos: KG pro, Plazero plaza, Pro pro: %r' % [(n, g2[n]['esc']) for n in ('KG', 'Plazero', 'Pro')])
+    kgs = [x for x in o2['g'] if x['n'] == 'KG']
+    if len(kgs) != 1 or kgs[0]['p'] <= 0:
+        mal.append('KG de la lista de pros y KG de las batallas son UNA persona, con sus puntos: %r'
+                   % [(x['esc'], x['p']) for x in kgs])
+    if 'Quieto' not in g2 or g2['Quieto']['p'] != 0 or g2['Quieto']['esc'] != 'pro':
+        mal.append('un pro sin batallas en la T1 aparece con 0: %r' % g2.get('Quieto'))
+    if g2['Grinder']['esc'] != 'liga':
+        mal.append('el de la Liga es de la Liga: %r' % g2['Grinder']['esc'])
     # En la duda, dos perfiles: la Liga no se une sola con un pro del mismo nombre.
     de_id, pers = identidades([_b('liga', 'l', 'liga', '2026-10-01', 'final', 'Sol', 'Luna', 'a'),
                                _b('fms', 'f', 'fms_jornada', '2026-10-01', 'jornada', 'Sol', 'Rival1', 'a')], [])

@@ -1,0 +1,19 @@
+{
+ "_leeme": "Quién es PRO en el ranking global, además de las ligas FMS que fms.tv lista solas (bot/global_fuente_fms.py → plantel). Dlx, 21/11/2026: «KG es profesional, está en la liga de FMS Perú… asegúrate a quién metes en cada tag». Pro = jugó la última final internacional de FMS o de Red Bull, o es campeón nacional de Red Bull esta temporada (va a la internacional), o está en una liga pro que fms.tv no lista. Un pro aparece en la tabla aunque todavía no haya jugado en la T1 («habrá todos»). Plaza = el resto de los de afuera; Liga = los de la Liga. Cada grupo con su fuente; se edita a mano y se revisa cada temporada.",
+ "grupos": [
+  {"por": "FMS Internacional 2026 (25/04/2026, Ciudad Juárez)",
+   "url": "https://www.sdpnoticias.com/espectaculos/musica/fms-internacional-2026-participantes-confirmados/",
+   "gente": [["Aczino", "mx"], ["Chuty", "es"], ["Gazir", "es"], ["El Menor", "cl"], ["Jony Beltrán", "mx"],
+             ["Stuart", "ar"], ["KG", "pe"], ["Arkano", "es"], ["Valles-T", "co"], ["Acertijo", "cl"],
+             ["Marithea", "co"], ["Teorema", "cl"], ["Azuky", null], ["Larrix", "ar"], ["Kodigo", null],
+             ["Éxodo Lirical", "do"]]},
+  {"por": "Red Bull Batalla Final Internacional 2026 (11/04/2026, Santiago)",
+   "url": "https://www.cnnchile.com/cultura/final-internacional-red-bull-batalla-2026-en-chile-horario-y-participantes_20260410/",
+   "gente": [["Chuty", "es"], ["Gazir", "es"], ["El Menor", "cl"], ["Exe", null], ["Bnet", "es"], ["Teorema", "cl"],
+             ["Larrix", "ar"], ["Almendrades", null], ["Valles-T", "co"], ["Fat Tony", null], ["Reverse", null],
+             ["Fat N", "co"], ["Androide", null], ["Éxodo Lirical", "do"], ["Rapder", null], ["Nekroos", "pe"]]},
+  {"por": "Campeón nacional de Red Bull Batalla 2026/27 (va a la Final Internacional 2027)",
+   "url": "https://www.redbull.com/pe-es/nekroos-campeon-red-bull-batalla-peru-2026-27",
+   "gente": [["Nekroos", "pe"], ["Mecha", "ar"], ["Marithea", "co"], ["Hammer", "uy"]]}
+ ]
+}
