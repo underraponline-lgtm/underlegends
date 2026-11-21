@@ -1561,6 +1561,10 @@
 "ascenso": [
 "2026-10-26T15:30:43Z",
 "prueba"
+],
+"tricampeon": [
+"2026-11-21T23:28:55Z",
+"prueba"
 ]
 },
 "CLENCHOT": {
@@ -5015,6 +5019,10 @@
 "trotamundos": [
 "2026-11-06T00:50:40Z",
 "prueba"
+],
+"ascenso": [
+"2026-11-21T23:28:55Z",
+"prueba"
 ]
 },
 "Kravitz": {
@@ -8269,6 +8277,18 @@
 "liga": [
 "2026-10-16T15:26:51Z",
 "prueba"
+],
+"duelista": [
+"2026-11-21T23:28:55Z",
+"prueba"
+],
+"racha": [
+"2026-11-21T23:28:55Z",
+"prueba"
+],
+"trotamundos": [
+"2026-11-21T23:28:55Z",
+"prueba"
 ]
 },
 "Provenza": {
@@ -8988,6 +9008,14 @@
 "Sami": {
 "debut": [
 "2026-10-04T18:45:44Z",
+"prueba"
+],
+"ascenso": [
+"2026-11-21T23:28:55Z",
+"prueba"
+],
+"trotamundos": [
+"2026-11-21T23:28:55Z",
 "prueba"
 ]
 },
@@ -10328,6 +10356,10 @@
 ],
 "ascenso": [
 "2026-11-17T02:56:33Z",
+"prueba"
+],
+"trotamundos": [
+"2026-11-21T23:28:55Z",
 "prueba"
 ]
 },

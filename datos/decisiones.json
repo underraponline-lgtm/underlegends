@@ -395,6 +395,23 @@
    "cuando": "2026-11-15 12:35 PM ET",
    "por": "el ciclo (R24)",
    "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
+  },
+  "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS · DW · 27/09": {
+   "campeon": {
+    "ganador": "(sin campeón)",
+    "promedio": true,
+    "ronda": "final",
+    "batallas": [
+     [
+      "Mau Kc 🇨🇴💀  + Gutan 🇲🇽 💀",
+      "Bloody 🇨🇴 💀 + Volk 🇲🇽 💀"
+     ]
+    ],
+    "pasaron": []
+   },
+   "cuando": "2026-11-21 6:33 PM ET",
+   "por": "el ciclo (R24)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
   }
  },
  "no_rankear": {
@@ -1382,6 +1399,13 @@
    "cuando": "2026-11-20 2:02 AM ET",
    "por": "bot/finales.py: nadie la marcó en 48 h",
    "nota": "el último recurso (Dlx, 11/11/2026: «48 h»): cobran la ronda y no hay duelo"
+  },
+  "compemakmitavol2|DW|30/09|cuartos|bloody|colesito": {
+   "ganador": "(nadie siguió)",
+   "batalla": "COMPE MAKMITA VOL2 · DW · 30/09 · cuartos · Bloody 🇨🇴 🆚 Colesito 🇨🇴",
+   "cuando": "2026-11-21 6:33 PM ET",
+   "por": "el ciclo (R25)",
+   "nota": "nadie dijo quién ganó en 52 días: cada uno cobra la ronda, como las 48 h cuando se le pudo preguntar al organizador"
   }
  },
  "anuncios_fuera": {

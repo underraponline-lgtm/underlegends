@@ -921,6 +921,14 @@
 "rg": "",
 "c": []
 },
+"prosu": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -1021,6 +1029,14 @@
 "rg": "E",
 "c": []
 },
+"juasmio": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "assuan": {
 "rg": "",
 "c": []
@@ -1029,23 +1045,7 @@
 "rg": "",
 "c": []
 },
-"prosu": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "erik": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"juasmio": {
 "rg": "",
 "c": [
 "pais",
@@ -1111,6 +1111,10 @@
 ]
 },
 "giansito": {
+"rg": "",
+"c": []
+},
+"cj": {
 "rg": "",
 "c": []
 },
@@ -1199,10 +1203,6 @@
 ]
 },
 "emilioalva": {
-"rg": "",
-"c": []
-},
-"cj": {
 "rg": "",
 "c": []
 },
@@ -2910,14 +2910,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T15:40:35Z",
-"quien": [
-"DarnBless"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-13T17:02:51Z",
@@ -6302,6 +6294,18 @@
 ],
 "rg": "S",
 "primero": false
+},
+{
+"tipo": "svtop",
+"t": "2026-11-21T23:33:15Z",
+"sv": "SR",
+"quien": [
+"Prosu"
+],
+"ks": [
+"prosu"
+],
+"pts": 44580
 }
 ],
 "noche_antes": {
@@ -8195,7 +8199,7 @@
 "n": "Telmex",
 "k": "",
 "de": 236,
-"a": 151
+"a": 152
 },
 {
 "n": "Chente",
@@ -8214,7 +8218,7 @@
 "ACAD": "mathhias",
 "FDS": "tøkiø",
 "URBF": "carlosmo",
-"SR": "juanpa",
+"SR": "prosu",
 "CEU": "marcos"
 },
 "tier": {

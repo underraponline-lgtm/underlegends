@@ -2,97 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "af64735432",
-   "tipo": "Nombre desconocido",
-   "sec": "GALACTICOS DEL FREESTYLE VOL.17 · DDF · 06/11 · #575",
-   "que": "¿Quién es «SAIDEM 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 723968697798099057",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (723968697798099057)",
-   "t": 1793999305027,
-   "filas": [
-    1124
-   ],
-   "variantes": [
-    "SAIDEM 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "SAIDEM",
-     "723968697798099057"
-    ]
-   }
-  },
-  {
-   "id": "a02ce0a512",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen · FFA · 02/11 · #563",
-   "que": "¿Quién es «Dominic 🇲🇽»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794013259442,
-   "filas": [
-    1038
-   ],
-   "variantes": [
-    "Dominic 🇲🇽"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "6d86be471a",
-   "tipo": "Nombre desconocido",
-   "sec": "FAT BATTLES PALOOZA FECHA 10 FINALS · ACAD · 06/11 · #576",
-   "que": "¿Quién es «Aszecas 🇲🇽»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1060325188723548210",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1060325188723548210)",
-   "t": 1794020811914,
-   "filas": [
-    1126
-   ],
-   "variantes": [
-    "Aszecas 🇲🇽"
-   ],
-   "escribio": {
-    "alta": [
-     "Aszecas",
-     "1060325188723548210"
-    ]
-   }
-  },
-  {
-   "id": "1a0a1b050a",
-   "tipo": "Nombre desconocido",
-   "sec": "FAT BATTLES PALOOZA FECHA 10 FINALS · ACAD · 06/11 · #576",
-   "que": "¿Quién es «romeo🇲🇽»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1283642314517909517",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1283642314517909517)",
-   "t": 1794020811914,
-   "filas": [
-    1127
-   ],
-   "variantes": [
-    "romeo🇲🇽"
-   ],
-   "escribio": {
-    "alta": [
-     "romeo",
-     "1283642314517909517"
-    ]
-   }
-  },
-  {
    "id": "a502cf1b77",
    "tipo": "Alias posible",
    "sec": "🪪 Identidad",
@@ -4423,6 +4332,48 @@
     "Park ji sunk🇰🇷"
    ],
    "escribio": {}
+  },
+  {
+   "id": "f75cec2182",
+   "tipo": "Batalla sin ganador",
+   "sec": "COMPE MAKMITA VOL2 · DW · 30/09 · #669",
+   "que": "¿Quién ganó en cuartos?\nBloody 🇨🇴 🆚 Colesito 🇨🇴",
+   "r": "Nadie siguió (cobran la ronda)",
+   "regla": "R25 · una batalla sin ganador de dieciseisavos, octavos o cuartos, a los 28 días: «nadie siguió»",
+   "rk": "R25",
+   "por": "el ciclo",
+   "porque": "nadie dijo quién ganó en 52 días: cada uno cobra la ronda, como las 48 h cuando se le pudo preguntar al organizador",
+   "t": 1795304013149,
+   "filas": [
+    1537
+   ],
+   "variantes": [
+    "COMPE MAKMITA VOL2 · DW · 30/09 · cuartos · Bloody 🇨🇴 🆚 Colesito 🇨🇴"
+   ],
+   "escribio": {
+    "batalla": "COMPE MAKMITA VOL2 · DW · 30/09 · cuartos · Bloody 🇨🇴 🆚 Colesito 🇨🇴"
+   }
+  },
+  {
+   "id": "eb746dc234",
+   "tipo": "Bracket incompleto",
+   "sec": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS · DW · 27/09",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 28 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 28 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 55 días: los dos finalistas (Mau Kc 🇨🇴💀  + Gutan 🇲🇽 💀 y Bloody 🇨🇴 💀 + Volk 🇲🇽 💀) cobran el promedio de 1.º y 2.º",
+   "t": 1795304013149,
+   "filas": [
+    1538
+   ],
+   "variantes": [
+    "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS · DW · 27/09"
+   ],
+   "escribio": {
+    "campeon": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS · DW · 27/09"
+   }
   }
  ],
  "deshechas": []

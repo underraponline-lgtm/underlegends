@@ -61107,5 +61107,138 @@
    "min": 72,
    "v": 1
   }
+ },
+ "669": {
+  "dia": "2026-09-30",
+  "escala": "8-15",
+  "fecha": "30/09",
+  "links": [
+   "https://discord.com/channels/1300152346189496330/1394905025230147584/1555058615470260335"
+  ],
+  "n": 669,
+  "nombre": "COMPE MAKMITA VOL2",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Prosu",
+       "Saito"
+      ],
+      "Prosu",
+      ""
+     ],
+     [
+      [
+       "Sami",
+       "CJ",
+       "Zignos"
+      ],
+      "Sami, CJ",
+      "triple (3 bandas, pasan 2); también pasa: CJ 🇻🇪"
+     ],
+     [
+      [
+       "Juasmio",
+       "Denik",
+       "Volk"
+      ],
+      "Juasmio",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Bloody 🇨🇴",
+       "Colesito 🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "CJ",
+       "Juasmio"
+      ],
+      "CJ",
+      ""
+     ],
+     [
+      [
+       "Prosu",
+       "Sami"
+      ],
+      "Prosu",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "CJ",
+       "Prosu, Sami"
+      ],
+      "CJ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DW",
+  "tabla": [
+   [
+    "CJ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Sami",
+    "Semifinal",
+    6000
+   ],
+   [
+    "Juasmio",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Prosu",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Denik",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Saito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Volk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 83,
+   "v": 1
+  }
  }
 }

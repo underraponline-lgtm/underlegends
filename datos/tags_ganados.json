@@ -2995,7 +2995,7 @@
   },
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x3",
     "t1",
     1793029252929
    ],
@@ -3003,6 +3003,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1795304022728
    ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
@@ -13780,6 +13785,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795304022728
    ]
   }
  },
@@ -14500,6 +14510,15 @@
     "🧳 VIAJERO",
     "t1",
     1794778788639
+   ]
+  }
+ },
+ "sami": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795304022728
    ]
   }
  },
@@ -17577,6 +17596,15 @@
     "🧳 VIAJERO",
     "t1",
     1793133210111
+   ]
+  }
+ },
+ "volk": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795304022728
    ]
   }
  },

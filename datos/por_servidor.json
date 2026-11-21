@@ -2000,6 +2000,19 @@
    }
   },
   "CJ": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 7500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "4/4",
     "ev": 4,
@@ -3315,6 +3328,18 @@
    }
   },
   "Denik": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 4,
@@ -6453,6 +6478,18 @@
    }
   },
   "Juasmio": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 2,
@@ -11752,6 +11789,19 @@
    }
   },
   "Prosu": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 3500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "4/4",
     "ev": 2,
@@ -12809,6 +12859,18 @@
    }
   },
   "Saito": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "1/2",
     "ev": 2,
@@ -12839,6 +12901,18 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
+   },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 9000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    },
    "FFA": {
     "duelos": "0/1",
@@ -14852,6 +14926,18 @@
     "pts": 4125,
     "racha": "0/0"
    },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 3,
@@ -15513,6 +15599,18 @@
     "pod": 0,
     "pts": 4562,
     "racha": "0/0"
+   },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    },
    "FFA": {
     "duelos": "6/14",

@@ -24253,7 +24253,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "96352d2682947b22",
+  "firma": "fb8f9b4bd3f535e6",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24521,7 +24521,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "47ff212ab04c5b1b",
+  "firma": "483f7e62616f06d7",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -38708,7 +38708,7 @@
    "NXUZ": 36
   },
   "fecha": "07/11",
-  "firma": "bf4eeb2ee2cad325",
+  "firma": "bcfa10a5a8731712",
   "msg": "1569508050510028801",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 586,
@@ -39819,7 +39819,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "9525bc16d030295f",
+  "firma": "b456bf35da05f902",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -40487,7 +40487,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "e4ef5bb9ee1b1ddb",
+  "firma": "19f53dcaa5ef846b",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -41391,7 +41391,7 @@
    "yinn": 33
   },
   "fecha": "09/11",
-  "firma": "b422fb66bf15e53a",
+  "firma": "11dbbd64e218e637",
   "msg": "1569560949965197485",
   "nombre": "TORNEO CLANDESTINO V.1",
   "num": 600,
@@ -42084,7 +42084,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "322db526444dddc0",
+  "firma": "8ae4ec6513f71b12",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -46166,7 +46166,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "bae11585098cc7b6",
+  "firma": "115512a8750ef195",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47616,7 +47616,7 @@
    "francis": 4
   },
   "fecha": "13/11",
-  "firma": "66beff9fcec0247c",
+  "firma": "16a61adc8b641f4c",
   "msg": "1571002908307099750",
   "nombre": "KISS OF SHINIGAMI",
   "num": 633,
@@ -52572,7 +52572,7 @@
    "romeo": 5
   },
   "fecha": "17/11",
-  "firma": "7d5a67f6a7bd3daf",
+  "firma": "15bccf5e9821be33",
   "msg": "1572482511865380916",
   "nombre": "__ NEW GENESIS __",
   "num": 660,
@@ -53497,7 +53497,7 @@
    "Vilca": 26
   },
   "fecha": "21/11",
-  "firma": "4304933288a5812d",
+  "firma": "1a860d4822b5ad75",
   "msg": "1573818856223539201",
   "nombre": "RED BULL REGIONAL",
   "num": 668,
@@ -53547,6 +53547,150 @@
     "Vilca",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "669": {
+  "antes": {
+   "CJ": [
+    312,
+    170,
+    true
+   ],
+   "Denik": [
+    370,
+    266,
+    true
+   ],
+   "Juasmio": [
+    106,
+    143,
+    false
+   ],
+   "Prosu": [
+    104,
+    141,
+    false
+   ],
+   "Saito": [
+    474,
+    410,
+    true
+   ],
+   "Sami": [
+    157,
+    265,
+    false
+   ],
+   "Volk": [
+    180,
+    341,
+    false
+   ],
+   "Zignos": [
+    28,
+    30,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Prosu",
+    "Saito",
+    "Prosu"
+   ],
+   [
+    "Sami",
+    "Zignos",
+    "Sami"
+   ],
+   [
+    "Juasmio",
+    "Denik",
+    "Juasmio"
+   ],
+   [
+    "Juasmio",
+    "Volk",
+    "Juasmio"
+   ],
+   [
+    "CJ",
+    "Juasmio",
+    "CJ"
+   ],
+   [
+    "Prosu",
+    "Sami",
+    "Prosu"
+   ],
+   [
+    "CJ",
+    "Prosu, Sami",
+    "CJ"
+   ]
+  ],
+  "ev_antes": {
+   "CJ": 4,
+   "Denik": 4,
+   "Juasmio": 5,
+   "Prosu": 7,
+   "Saito": 2,
+   "Sami": 4,
+   "Volk": 4,
+   "Zignos": 32
+  },
+  "fecha": "30/09",
+  "nombre": "COMPE MAKMITA VOL2",
+  "num": 669,
+  "participantes": 10,
+  "sello": {
+   "CJ": ""
+  },
+  "sv": "DW",
+  "t": "2026-11-21T23:26:53Z",
+  "tabla": [
+   [
+    "CJ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Sami",
+    "Semifinal",
+    6000
+   ],
+   [
+    "Prosu",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Juasmio",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Saito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Denik",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Volk",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2
