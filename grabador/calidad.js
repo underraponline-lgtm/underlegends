@@ -34,6 +34,10 @@ export const SATURA_DB = -10;        // RMS de la voz por encima de esto: satura
 export const SATURA_FRAC = 0.005;    // o más de 0,5 % de las muestras con voz por encima de −1 dB
 export const CORTA_FRAC = 0.08;      // más de 8 % de paquetes perdidos adentro de las ráfagas: se corta
 export const TELEFONO_FRAC = 0.5;    // más de la mitad de los paquetes en banda angosta: calidad de teléfono
+// 🩺 EL INFORME DEL EVENTO ENTERO va por la parte de lo que habló cada uno (ver `resumen()`): un problema cuenta desde el
+// 10 % de sus ventanas juzgadas, y «se corta» o «satura» es 🔴 desde el 25 %
+export const PARTE_AMARILLO = 0.10;
+export const PARTE_ROJO = 0.25;
 
 /** La banda de audio que dice el primer byte de un paquete Opus (RFC 6716 §3.1). */
 export function bandaDe(p) {
@@ -170,9 +174,16 @@ export class MedidorVoz {
     const t = this.total;
     const db = t.dbs.length ? t.dbs.reduce((a, b) => a + b, 0) / t.dbs.length : null;
     const perdida = t.esp > 0 ? Math.max(0, 1 - t.rec / t.esp) : 0;
-    const peor = ORDEN.find((p) => (t.problemas[p] || 0) >= SOSTENIDO);
-    return { voz_s: t.voz_s, db, perdida, angosta: t.paq ? t.angosta / t.paq : 0, tope: t.tope, peor,
-      color: !t.ventanas ? '⚪' : peor === 'corta' || peor === 'satura' ? '🔴' : peor ? '🟡' : '🟢' };
+    // 🩺 PARA EL EVENTO ENTERO PESA CUÁNTO DE LO QUE HABLÓ (21/11/2026, el primer evento real: DESGRACIAS EN TOKYO VOL
+    // 32, 1 h 55 min). Con «dos ventanas en todo el evento» salían 🔴 «se corta» tres personas que perdieron el 2–3 % en
+    // total: 20 s sueltos en dos horas. Ahora el problema cuenta si fue al menos el `PARTE_AMARILLO` de sus ventanas
+    // juzgadas (y como mínimo `SOSTENIDO`), y «se corta» o «satura» es 🔴 desde el `PARTE_ROJO`. El aviso en vivo no cambia:
+    // ése sigue saliendo con 20 s seguidos (`ventana()`)
+    const parte = (p) => (t.ventanas ? (t.problemas[p] || 0) / t.ventanas : 0);
+    const peor = ORDEN.find((p) => (t.problemas[p] || 0) >= SOSTENIDO && parte(p) >= PARTE_AMARILLO) || null;
+    const grave = peor && (peor === 'corta' || peor === 'satura') && parte(peor) >= PARTE_ROJO;
+    return { voz_s: t.voz_s, db, perdida, angosta: t.paq ? t.angosta / t.paq : 0, tope: t.tope, peor, parte: peor ? parte(peor) : 0,
+      color: !t.ventanas ? '⚪' : grave ? '🔴' : peor ? '🟡' : '🟢' };
   }
 }
 

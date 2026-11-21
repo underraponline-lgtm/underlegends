@@ -161,6 +161,12 @@ const avisos = [];
 for (let k = 0; k < 3; k++) avisos.push((await medir(bajo, () => false, mA)).avisar);
 ok(avisos.join() === 'false,true,false', 'avisa a los 20 s del mismo problema, y una sola vez (' + avisos.join() + ')');
 ok(mA.resumen().color === '🟡' && mA.resumen().peor === 'bajo', 'el informe lo da 🟡 bajito');
+// 🩺 el informe del evento entero va por la parte de lo que habló (21/11/2026: 2 ventanas en 2 horas eran 🔴)
+const colorCon = (ventanas, problemas) => { const m = new MedidorVoz('x'); Object.assign(m.total, { ventanas, problemas }); return m.resumen(); };
+const c1 = colorCon(100, { corta: 2 }), c2 = colorCon(100, { corta: 12 }), c3 = colorCon(100, { corta: 30 }), c4 = colorCon(100, { bajo: 40 });
+ok(c1.color === '🟢' && !c1.peor && c2.color === '🟡' && c2.peor === 'corta' && Math.abs(c2.parte - 0.12) < 1e-9
+  && c3.color === '🔴' && c4.color === '🟡',
+`20 s con cortes en un evento largo no lo pintan (🟢); el 12 % es 🟡 y el 30 %, 🔴; «bajito» nunca pasa de 🟡 (${[c1, c2, c3, c4].map((c) => c.color).join(' ')})`);
 
 // ── 🎛️ cada voz al mismo volumen ──
 console.log('🎛️ cada voz al mismo volumen');

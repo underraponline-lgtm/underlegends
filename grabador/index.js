@@ -283,12 +283,14 @@ class Grabacion {
     const filas = gente.map((id) => ({ id, r: this.medidores.get(id)?.resumen() })).filter((x) => x.r && x.r.color !== '⚪');
     if (!filas.length) return '';
     const n = (c) => filas.filter((x) => x.r.color === c).length;
-    const por = (r) => ({
-      corta: `se corta (${Math.round(r.perdida * 100)} % perdido)`,
-      satura: `satura (${r.db?.toFixed(0)} dB)`,
-      bajo: `bajito (${r.db?.toFixed(0)} dB)`,
-      telefono: `calidad de teléfono (${Math.round(r.angosta * 100)} %)`,
-    })[r.peor];
+    // en qué parte de lo que habló (`resumen().parte`), y el número de todo el evento entre paréntesis
+    const por = (r) => `${{ corta: 'se corta', satura: 'satura', bajo: 'bajito', telefono: 'calidad de teléfono' }[r.peor]}`
+      + ` en el ${Math.round((r.parte || 0) * 100)} % de lo que habló (` + ({
+      corta: `${Math.round(r.perdida * 100)} % perdido en total`,
+      satura: `${r.db?.toFixed(0)} dB de promedio`,
+      bajo: `${r.db?.toFixed(0)} dB de promedio`,
+      telefono: `${Math.round(r.angosta * 100)} % en banda angosta`,
+    })[r.peor] + ')';
     const malos = filas.filter((x) => x.r.peor).sort((a, b) => (a.r.color === '🔴' ? -1 : 1) - (b.r.color === '🔴' ? -1 : 1));
     return `🩺 Cómo se escuchó: 🟢 ${n('🟢')} · 🟡 ${n('🟡')} · 🔴 ${n('🔴')}`
       + malos.slice(0, 12).map((x) => `\n${x.r.color} ${this.quien.get(x.id)?.nombre || x.id} — ${por(x.r)}`).join('')
