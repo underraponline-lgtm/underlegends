@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "7.38",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T04:35:00-05:00",
+        "titulo": "Los paneles de los servidores, más ordenados",
+        "items": [
+            "**El panel de cada servidor, en grupos**: Hoy, Tus eventos, Tu gente y Tu bot, igual en la compu y en el celular.",
+            "**«Cuándo juega tu gente»**: los eventos de tu servidor por día y por hora, con una línea que dice cuál es tu horario fuerte.",
+            "**«Tus raperos»**: los cinco mejores de tu servidor, a la vista desde el principio del panel.",
+            "Para el staff de la Liga: las herramientas de corrección se abren desde un botón en cada página."
+        ]
+    },
+    {
         "version": "7.37",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T04:13:00-05:00",
