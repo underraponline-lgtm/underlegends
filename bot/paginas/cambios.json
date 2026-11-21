@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "7.41",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T04:49:00-05:00",
+        "titulo": "Un lugar por persona en las competencias",
+        "items": [
+            "Si alguien jugaba con **dos nombres**, podía quedar en **dos copas, dos Rapid o dos ligas** a la vez, y cobrar en las dos. Ahora queda en **uno solo**: el de su nombre, o el de más arriba.",
+            "En una **copa** o una **Rapid**, el otro lugar pasa a ser un **pase libre** para su rival. Si ahí ya había quedado afuera, no se toca nada: lo jugado queda como está.",
+            "En una **liga**, cada rival le gana a ese lugar por **pase libre** cuando cierra su jornada, también en las que ya se jugaron, así es parejo para todo el grupo. Ese lugar no está en la tabla.",
+            "En los cruces se ve **PASE LIBRE**."
+        ]
+    },
+    {
         "version": "7.40",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T04:44:09-05:00",
