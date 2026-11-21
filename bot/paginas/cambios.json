@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.60",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T15:05:00-05:00",
+        "titulo": "Vincularte, a un clic",
+        "items": [
+            "**Cuando el bot te pide `/vincular`**, ahora trae el botón **«Haz clic aquí para vincularte · te toma menos de 1 minuto»**: te lleva directo a la página, sin escribir el comando. Va en los avisos de premios, en los drops que se abren siendo Miembro de DRA, en «Tu nota» y en la ayuda."
+        ]
+    },
+    {
         "version": "7.59",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T15:20:00-05:00",

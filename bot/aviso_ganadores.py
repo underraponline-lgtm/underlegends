@@ -142,6 +142,11 @@ def _titulo(evento):
 
 
 WEB = 'https://underlegends.pages.dev'
+# 🔗 (21/11/2026) Dlx: «si el embed te dice que corras el slash command vincular, que cree un botón que te diga haz clic
+# aquí para vincularte, te toma menos de 1 minuto». El mismo botón que el Worker suma solo (`BOTON_VINCULAR` de
+# bot/vista.js: el self-check revisa que digan lo mismo), al lado de «Abrir mis premios» cuando alguien no está vinculado.
+TXT_VINCULAR = 'Haz clic aquí para vincularte · te toma menos de 1 minuto'
+BOTON_VINCULAR = {'type': 2, 'style': 5, 'label': TXT_VINCULAR, 'emoji': {'name': '🔗'}, 'url': WEB + '/cuenta/verificar'}
 
 
 def _logo(sv):
@@ -236,8 +241,9 @@ def mensaje(evento, sv, g, Q, miembros, oficiales=None, puntos=None, solo_premio
         lineas.append('-# 🔗 %s: vincula tu cuenta con `/vincular` en los próximos 14 días y lo que ganaste es tuyo.'
                       % y('**%s**' % _md(n) for n in sin))
     boton = {'type': 2, 'style': 1, 'label': 'Abrir mis premios', 'emoji': {'name': '🎁'}, 'custom_id': 'dd:mis'}
-    comps = [{'type': 10, 'content': '\n'.join(lineas)}, {'type': 1, 'components': [boton]}]
-    texto = '\n'.join(lineas + ['[🎁 Abrir mis premios]'])
+    botones = [boton] + ([BOTON_VINCULAR] if sin else [])
+    comps = [{'type': 10, 'content': '\n'.join(lineas)}, {'type': 1, 'components': botones}]
+    texto = '\n'.join(lineas + ['[🎁 Abrir mis premios]'] + (['[🔗 %s]' % TXT_VINCULAR] if sin else []))
     return comps, ids[:MENCIONES], texto
 
 
@@ -656,8 +662,14 @@ def _self_check():
        'sin los puntos ni el campeón repetidos (los dice «La noche de…»); arriba, qué terminó, sin los «__»')
     ok('**Caro\\\\*' in todo and '/vincular' in todo, 'quien no tiene cuenta va en negrita (escapado) y con cómo vincularse')
     bots = [b for c in comps if c['type'] == 1 for b in c['components']]
-    ok(len(comps) == 2 and len(bots) == 1 and bots[0]['custom_id'] == 'dd:mis' and bots[0]['label'] == 'Abrir mis premios',
-       'UN SOLO BOTÓN, «Abrir mis premios», para todos (antes eran seis, uno por ganador y por premio)')
+    ok(len(comps) == 2 and len(bots) == 2 and bots[0]['custom_id'] == 'dd:mis' and bots[0]['label'] == 'Abrir mis premios',
+       'UN SOLO BOTÓN de premios, «Abrir mis premios», para todos (antes eran seis, uno por ganador y por premio)')
+    ok(bots[1] == BOTON_VINCULAR and bots[1]['style'] == 5 and bots[1]['url'].endswith('/cuenta/verificar')
+       and 'menos de 1 minuto' in bots[1]['label'] and len(bots[1]['label']) <= 80,
+       '🔗 quien no está vinculado: al lado, el botón para vincularte (un link a la página, ≤80 letras)')
+    vista = io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vista.js'), encoding='utf-8').read()
+    ok("TXT_VINCULAR = '%s'" % TXT_VINCULAR in vista and "PAGINAS + '/cuenta/verificar'" in vista,
+       'el botón dice lo mismo y va al mismo lugar que el que el Worker suma solo (bot/vista.js)')
     cp, _ip, _tp = mensaje('__ TOKYO VOL 27 __', 'FFA', G['700'], Q, {'111111'}, None, P, solo_premios=True)
     ok(cp[0]['content'].startswith('### 🎁 Los premios de TOKYO VOL 27') and 'Terminó' not in cp[0]['content'],
        'con la imagen en el cierre, el aviso se titula «Los premios de…»')

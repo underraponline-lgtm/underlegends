@@ -23,7 +23,7 @@ import { VERIFICA } from './worker.js';
 // el número de la app de Discord: `discordDe()` sólo acepta permisos suyos (revisión del 03/10/2026)
 import { APP_ID, DUENO } from './avisos.js';
 // 🧱 el texto que se ve de un mensaje V2 (los Text Display) y las piezas de un tipo, en cualquier nivel (20/11/2026)
-import { textoV2 as TX, piezas as PZ, medir as MEDIR } from './vista.js';
+import { textoV2 as TX, piezas as PZ, medir as MEDIR, mensaje as MSJ, pideVincular, URL_VINCULAR } from './vista.js';
 // lo que contesta Discord con un permiso: `/oauth2/@me` trae de qué app es y quién es; lo demás, el usuario solo
 const comoDiscord = (url, u, app = APP_ID) => new Response(JSON.stringify(String(url).endsWith('/oauth2/@me')
   ? { application: { id: app }, user: u } : u), { status: 200 });
@@ -1335,6 +1335,29 @@ const ayuda = (cual) => ({
 const txt = (r) => TX(r.json?.data) || '';
 
 {
+  // 🔗 el botón para vincularte lo suma `V.mensaje()` solo, y no donde `/vincular` es un nombre de la lista
+  const aVincular = (r) => PZ(r.json?.data, 2).filter((b) => /\/cuenta\/verificar$/.test(b.url || ''));
+  const ri = await pedir(ayuda());
+  ok('🔗 el índice de /help nombra /vincular y NO lleva el botón para vincularte', /\/vincular/.test(txt(ri)) && aVincular(ri).length === 0,
+     JSON.stringify(aVincular(ri)));
+  const rv = await pedir(ayuda('vincular'));
+  ok('🔗 la página de /vincular en /help sí lo lleva, una vez', aVincular(rv).length === 1, JSON.stringify(PZ(rv.json?.data, 2)));
+  const rd = await pedir(ayuda('drops'));
+  ok('🔗 la de /drops («se abren siendo Miembro de DRA (`/vincular`)») también', aVincular(rd).length === 1, JSON.stringify(PZ(rd.json?.data, 2)));
+  const conV = (txt, o) => PZ(MSJ(Object.assign({ dentro: [{ type: 10, content: txt }] }, o || {})), 2).filter((b) => b.url === URL_VINCULAR);
+  ok('🔗 la regla: «usa `/vincular`» y «/vincular» al principio lo llevan; la dirección …pages.dev/vincular/ y «/vinculado» no',
+     conV('usa **`/vincular`**').length === 1 && conV('/vincular y listo').length === 1
+     && conV('Abre https://underlegends.pages.dev/vincular/ para tus roles').length === 0 && conV('ya quedó /vinculado').length === 0
+     && pideVincular('(`/vincular`)') && !pideVincular('x/vincular'), '');
+  ok('🔗 `sinVincular` lo apaga, y con el botón ya puesto en una fila no se suma otro',
+     conV('usa `/vincular`', { sinVincular: true }).length === 0
+     && conV('usa `/vincular`', { filas: [[{ type: 2, style: 5, label: 'Vincular mi cuenta', url: URL_VINCULAR }]] }).length === 1, '');
+  const rc = await pedir(ayuda('card'));
+  ok('🔗 y la de /card, que no pide /vincular, no', !/(^|[^\w.\/-])\/vincular\b/.test(txt(rc)) ? aVincular(rc).length === 0 : true,
+     JSON.stringify(aVincular(rc)));
+}
+
+{
   const r = await pedir(ayuda());
   const t = txt(r);
   ok('sin argumento lista los comandos',
@@ -1920,6 +1943,8 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
   const bv = PZ(rv.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('/vincular sin vincular: efímero, con el botón a la página que te suma a DRA',
      (rv.json?.data?.flags & 64) === 64 && bv.some((b) => /\/cuenta\/verificar$/.test(b.url || '')) && /DRA/.test(TX(rv.json?.data) || ''), JSON.stringify(rv.json?.data));
+  ok('🔗 /vincular: UN solo botón a la página (el suyo; el que se suma solo no se repite)',
+     bv.filter((b) => /\/cuenta\/verificar$/.test(b.url || '')).length === 1, JSON.stringify(bv));
   // los que hablan con el objeto contestan «un momento» y efímero (el objeto puede estar dormido). 🧱 Desde el 20/11/2026 ese
   // primer mensaje ya es V2 (tipo 4, con la franja de su familia), así la edición sólo reemplaza piezas: la regla del /setup
   const momento = (r, fam) => r.json?.type === 4 && (r.json?.data?.flags & 64) === 64 && (r.json?.data?.flags & 32768) === 32768
@@ -2051,6 +2076,11 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
   const t3 = await boton('700962', 'nn:nota:700');
   ok('«Tu nota» de quien no jugó (o no vinculó): se lo dice, con /vincular y La llave',
      /No te encuentro/.test(TX(t3.json?.data) || '') && /vincular/.test(TX(t3.json?.data) || ''), JSON.stringify(t3.json?.data));
+  // 🔗 (21/11/2026) Dlx: «si el embed te dice que corras el slash command vincular, que cree un botón… te toma menos de 1 minuto»
+  const b3 = PZ(t3.json?.data, 2);
+  ok('🔗 y como te pide /vincular, trae el botón «Haz clic aquí para vincularte · te toma menos de 1 minuto» (y La llave)',
+     b3.some((b) => b.style === 5 && /\/cuenta\/verificar$/.test(b.url || '') && /Haz clic aquí para vincularte/.test(b.label)
+       && /menos de 1 minuto/.test(b.label) && b.label.length <= 80) && b3.length >= 2, JSON.stringify(b3));
   const t4 = await boton('700962', 'nn:perf:700');
   const b4 = PZ(t4.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('«Perfiles»: los del podio, con un botón a cada perfil', (t4.json?.data?.flags & 64) === 64 && /Mats/.test(TX(t4.json?.data) || '')

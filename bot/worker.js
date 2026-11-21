@@ -995,7 +995,7 @@ function ficha(o) {
   const dentro = [cabeza ? V.seccion(cabeza, o.acc || V.mini(o.cara)) : null];
   for (const c of o.cuerpo || []) dentro.push(c === '—' ? V.SEP : typeof c === 'string' ? (c ? V.T(c) : null) : c);
   return V.mensaje({ color: o.color, familia: o.fam === undefined ? null : o.fam, dentro, filas: o.filas || [],
-    efimero: o.efimero !== false, arriba: o.arriba, menciones: o.menciones });
+    efimero: o.efimero !== false, arriba: o.arriba, menciones: o.menciones, sinVincular: o.sinVincular });
 }
 
 // ⚠️ UN BOTÓN DE LINK NO ES UN BOTÓN. Estilo 5, lleva `url` y **no lleva
@@ -1378,7 +1378,7 @@ const RANURA_NOMBRE = { aro: 'Aro', deco: 'Decoración', nom: 'Nombre', carta: '
 const RAREZA_NOMBRE = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de Oro', 'Disco de Diamante'];
 const URL_DROPS = HUB_URL + '/freestyle-rap/?drops=1';
 const URL_TIENDA = HUB_URL + '/freestyle-rap/tienda';
-const URL_VINCULAR = HUB_URL + '/cuenta/verificar';
+const URL_VINCULAR = V.URL_VINCULAR; // la misma página que el botón que `V.mensaje()` suma solo donde se pide `/vincular`
 
 const alObjeto = (env, ruta, cuerpo) => env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/' + ruta, {
   method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}),
@@ -3255,7 +3255,7 @@ function ayudaIndice() {
   return ficha({ fam: 'ayuda', titulo: 'Liga Global en Discord', sub: 'Lo que puedes hacer con el bot. Elige un comando abajo para ver cómo se usa.',
     cuerpo: ['—', AYUDA_GRUPOS.map(([g, ks, extra]) => `**${g}** · ` + ks.map((k) => '`/' + k + '`').join(' · ') + (extra ? ' · ' + extra : ''))
       .join('\n')],
-    filas: [menuAyuda('indice'), enlacesAyuda()] });
+    filas: [menuAyuda('indice'), enlacesAyuda()], sinVincular: true }); // `/vincular` acá es un nombre de la lista
 }
 /** La página de un comando: su texto de `AYUDA`, con el mismo menú para ir a otro. */
 function ayudaPagina(k, m) {

@@ -68,6 +68,18 @@ export const deHex = (s) => {
 // redibujan, se sube `PORTADA_V` o seguirá mostrando las de antes.
 export const PAGINAS = 'https://underlegends.pages.dev';
 export const PORTADA_V = '1';
+
+// ── 🔗 EL BOTÓN PARA VINCULARTE (21/11/2026) ─────────────────────────────────────────────────────────────────────────
+// Dlx: «si el embed te dice que corras el slash command vincular, que cree un botón que te diga haz clic aquí para
+// vincularte, te toma menos de 1 minuto». Lo pone `mensaje()` SOLO, en todo mensaje cuyo texto pida `/vincular` (el
+// comando, no la dirección `…/vincular/` de los roles vinculados): así lo lleva también el que se escriba mañana. No se
+// repite si el mensaje ya trae un botón a la misma página (el propio `/vincular`), y `sinVincular` lo apaga donde
+// `/vincular` es sólo un nombre en una lista (el índice de la ayuda). Va a la misma página que el comando.
+export const URL_VINCULAR = PAGINAS + '/cuenta/verificar';
+export const TXT_VINCULAR = 'Haz clic aquí para vincularte · te toma menos de 1 minuto';
+export const BOTON_VINCULAR = { type: 2, style: 5, label: TXT_VINCULAR, url: URL_VINCULAR, emoji: { name: '🔗' } };
+/** ¿El texto le pide a alguien que corra `/vincular`? (no cuenta la dirección `pages.dev/vincular/`) */
+export const pideVincular = (txt) => /(^|[^\w.\/-])\/vincular\b/.test(String(txt || ''));
 export const FAMILIAS = {
   cartas: 'Tus cartas', tienda: 'Tienda', drops: 'Dragón Drops', crews: 'Crews', cuenta: 'Tu cuenta', eventos: 'Eventos',
   ajustes: 'Ajustes', ayuda: 'Liga Global', antiraid: 'Anti-raid', apodo: 'Tu apodo',
@@ -86,6 +98,7 @@ export const portada = (familia) => {
  *   filas     las filas de botones o menús, debajo y AFUERA del recuadro (cada una, un array de botones o una fila hecha)
  *   arriba    lo que va antes del recuadro, afuera (la mención de una invitación: así le suena)
  *   menciones el `allowed_mentions`; por defecto no suena nadie
+ *   sinVincular  true = sin el botón para vincularte aunque el texto diga `/vincular` (ver BOTON_VINCULAR)
  */
 export function mensaje(o) {
   const x = o || {};
@@ -95,6 +108,10 @@ export function mensaje(o) {
   for (const f of x.filas || []) {
     const r = Array.isArray(f) ? fila(...f) : f;
     if (r && r.components && r.components.length) comps.push(r);
+  }
+  const m = { components: comps };
+  if (!x.sinVincular && pideVincular(textoV2(m)) && !piezas(m, 2).some((b) => b.url === URL_VINCULAR)) {
+    comps.push(fila(BOTON_VINCULAR));
   }
   return { flags: V2 | (x.efimero ? EFIMERO : 0), components: comps, allowed_mentions: x.menciones || { parse: [] } };
 }
