@@ -15,7 +15,7 @@
 //
 // Lo que agrega el remake (estructura, no pintura): el podio con las cartas de verdad, «tu lugar» siempre a la vista
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { PopCab } from './pop.jsx';
 import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
@@ -36,6 +36,8 @@ import { conCrewsVivas, useCrews } from './crews.js';
 import { AUnPaso, EscaleraLetras, EstaSemana, Franja, MasPodios, Movidos, Pelea, PorServidor, franjaDe, peleaDe } from './ranking_a.jsx';
 import CSS_PAGINA from './css/ranking.css?inline';
 import { usarCss } from './css.js';
+// 🌍 el Ranking global se baja aparte (21/11/2026): su página, su CSS y su json no los paga ninguna otra pestaña
+const RankingGlobal = lazy(() => import('./global.jsx').then((m) => ({ default: m.RankingGlobal })));
 
 // 🎨 su CSS, con su pedazo (web/src/css/ranking.css)
 usarCss('ranking', CSS_PAGINA);
@@ -591,6 +593,12 @@ const SUBS = {
     siNo: <><b>Ascensos</b>: el ranking de ascenso de cada servidor que tiene ligas, al día.</>,
     baj: <>El ranking de <b>ascenso</b> de cada servidor, al día: su tabla oficial más lo que se jugó después, con <b>sus</b> reglas. Lo oficial lo decide su staff.</>,
   },
+  // 🌍 EL RANKING GLOBAL (21/11/2026): todos los que rapean en español, la Liga, las plazas y los Pro. Dibuja su página
+  // entera (global.jsx) debajo de las pestañas: otra gente, otro json (`/global.json`) y otra cuenta
+  global: {
+    et: 'Global', entera: true, nuevo: '2026-12-07', filas: () => [], orden: () => 0,
+    baj: <>Todos los freestylers del habla hispana en una sola tabla: los <b>Pro</b>, las <b>plazas</b> y la <b>Liga</b>.</>,
+  },
   // 🏟️ las divisiones de la semana (04/10/2026): su propia vista (`Divisiones`), no la tabla de los demás
   divisiones: {
     // ⚠️ `orden` tiene que estar aunque no haya tabla: `armar()` busca su columna en `COL` y sin él revienta
@@ -615,7 +623,7 @@ const DIV_ELO_T2 = {
 };
 export const subDe = (liga, id) => (id === 'divisiones' && liga && liga.d.div && liga.d.div.m === 'elo'
   ? { ...SUBS.divisiones, ...(liga.d.div.et ? DIV_ELO_T2 : DIV_ELO) } : SUBS[id]);
-export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'servidores', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
+export const RANKINGS = ['temporada', 'divisiones', 'global', 'competitivo', 'servidores', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
 
 function req(L, id) {
   const q = (L.d.requisitos || []).find((x) => x.id === id);
@@ -1500,12 +1508,13 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             return (
               <a key={id} href={'#/ranking/' + id} className={(id === sub ? 'on' : '') + (pr ? ' pronto' : '')} aria-current={id === sub ? 'page' : undefined}
                 onClick={(e) => { e.preventDefault(); elegir(id); }}>
-                {s.et}{pr ? <i>{s.cuando || 'PRONTO'}</i> : null}
+                {s.et}{pr ? <i>{s.cuando || 'PRONTO'}</i> : s.nuevo && +new Date(liga.ahora) < Date.parse(s.nuevo) ? <i>NUEVO</i> : null}
               </a>
             );
           })}
         </div>
       </nav>
+      {cfg.entera ? <Suspense fallback={<section className="escena rk-cab" aria-busy="true"><p className="hero-p">Cargando el ranking global…</p></section>}><RankingGlobal liga={liga} dc={dc} movil={movil} /></Suspense> : <>
       <div className="escena rk-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9 }}>
         {/* las flechas, como las del escenario del Inicio (Dlx, 02/10/2026: «arrows… in the black space like we have in
             INICIO»): al ranking de al lado, salteando los que todavía no existen. Sólo en la compu */}
@@ -1720,6 +1729,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             : lugar.ir ? <button type="button" className="btn verde chico" onClick={encontrarme}>Encontrarme</button> : null}
         </aside>
       ) : null}
+      </>}
     </>
   );
 }

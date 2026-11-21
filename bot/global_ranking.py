@@ -545,8 +545,36 @@ def correr(red=False, escribir=True):
             batallas, mvps, semillas, estado, plantel = leer_fuentes(False, previo, solo={'liga'})
     out = armar(batallas, mvps, semillas, estado, _leer(ALIAS, {}), _leer(SEMILLAS, {}),
                 pros=pros_de(plantel, _leer(PROS, {})))
+    flechas(out, _leer(SALIDA, {}))
     if escribir:
         _escribir(SALIDA, out, compacto=True)
+    return out
+
+
+def _lunes(iso):
+    d = _dia(iso)
+    return d - dt.timedelta(days=d.weekday()) if d else None
+
+
+def flechas(out, viejo):
+    """Cuántos puestos subió o bajó cada uno desde la tabla de la SEMANA ANTERIOR (`mv`: + sube, − baja, 'n' nuevo).
+
+    La tabla se recalcula también entre semana (un cambio de código, una fuente nueva): esas corridas no son «la semana
+    anterior», así que se compara siempre contra la última tabla de una semana distinta, que viaja en `antes`
+    ({clave: puesto}) y `antes_t`. Sin semana anterior no hay flechas: la página dice cuándo arrancan.
+    """
+    viejo = viejo or {}
+    if viejo.get('g') and _lunes(viejo.get('t')) and _lunes(out['t']) and _lunes(viejo['t']) < _lunes(out['t']):
+        antes = {g['k']: i + 1 for i, g in enumerate(viejo['g']) if g.get('p', 0) > 0}
+        antes_t = viejo['t']
+    else:
+        antes, antes_t = viejo.get('antes') or {}, viejo.get('antes_t')
+    if not antes:
+        return out
+    out['antes'], out['antes_t'] = antes, antes_t
+    for i, g in enumerate(out['g']):
+        if g['p'] > 0:
+            g['mv'] = antes[g['k']] - (i + 1) if g['k'] in antes else 'n'
     return out
 
 
@@ -604,6 +632,15 @@ def _self_check():
                                     cuando=dt.datetime(2026, 11, 23, 17, tzinfo=ET))['g']}
     if g4['Nuevo']['esc'] != 'pro' or g4['Otro']['esc'] != 'pro' or g4['Nuevo'].get('por') != ['FMS Chile 2026/27']:
         mal.append('quien juega una jornada de FMS es pro: %r' % {n: (x['esc'], x.get('por')) for n, x in g4.items()})
+    # Las flechas: contra la tabla de la semana anterior, nunca contra una corrida de la misma semana.
+    t1 = {'t': '2026-11-16T17:00:00-05:00', 'g': [{'k': 'a', 'p': 9}, {'k': 'b', 'p': 5}]}
+    t2 = flechas({'t': '2026-11-23T17:00:00-05:00', 'g': [{'k': 'b', 'p': 9}, {'k': 'a', 'p': 5}, {'k': 'c', 'p': 1}]},
+                 t1)
+    t3 = flechas({'t': '2026-11-25T17:00:00-05:00', 'g': [{'k': 'b', 'p': 9}, {'k': 'c', 'p': 6}, {'k': 'a', 'p': 5}]},
+                 t2)
+    if [g.get('mv') for g in t2['g']] != [1, -1, 'n'] or [g.get('mv') for g in t3['g']] != [1, 'n', -2]             or flechas({'t': '2026-11-23T17:00:00-05:00', 'g': [{'k': 'a', 'p': 9}]}, {}).get('antes'):
+        mal.append('las flechas salen de la semana anterior: %r / %r' % ([g.get('mv') for g in t2['g']],
+                                                                         [g.get('mv') for g in t3['g']]))
     if not any(t[1] == 'MVP' for t in g['Pro']['t']):
         mal.append('el MVP de la jornada cuenta como un título')
     # Una fuente sin ronda ni ganador se junta con la que sí los trae, y el ganador se da vuelta si los lados van al
