@@ -225,13 +225,26 @@ function conVeredictos(L, lvs) {
 
 /* ── de app.js: los perfiles: PERF y perfiles() ── */
 var PERF = null, PERF_PIDIENDO = null;
+/* ⏳ CON PLAZO (21/11/2026, revisión de robustez): si la red se trababa —el
+   pedido salía y nunca contestaba—, `PERF_PIDIENDO` quedaba pendiente para
+   siempre y todo el que pedía los perfiles esperaba con él: el perfil en
+   «Cargando…» toda la visita, sin un error que reintentar. A los 20 s se
+   corta (`AbortController` + `setTimeout`, no `AbortSignal.timeout`, que
+   Safari viejo no tiene), da `null` como cualquier fallo y suelta el
+   pedido, así el próximo vuelve a pedir. El plazo cubre también bajar el
+   cuerpo: el reloj se apaga recién cuando terminó de leerlo */
+var PERF_PLAZO = 20000;
 function perfiles() {
   if (PERF) return Promise.resolve(PERF);
   if (!PERF_PIDIENDO) {
-    PERF_PIDIENDO = fetch('/api/perfiles', { headers: { accept: 'application/json' } })
+    var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    var plazo = setTimeout(function () { if (ctl) ctl.abort(); }, PERF_PLAZO);
+    var este = PERF_PIDIENDO = fetch('/api/perfiles', { headers: { accept: 'application/json' }, signal: ctl ? ctl.signal : undefined })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
       .then(function (d) { PERF = taparPerfiles(d || {}); return PERF; })
-      .catch(function () { PERF_PIDIENDO = null; return null; });
+      // ⚠️ suelta sólo el suyo: si mientras tanto salió otro pedido, ése sigue siendo el compartido
+      .catch(function () { if (PERF_PIDIENDO === este) PERF_PIDIENDO = null; return null; })
+      .then(function (x) { clearTimeout(plazo); return x; });
   }
   return PERF_PIDIENDO;
 }

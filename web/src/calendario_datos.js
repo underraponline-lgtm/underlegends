@@ -4,14 +4,25 @@
 // temporada entera vive en `/api/calendario` (la KV `web:calendario`) y se pide al abrir Eventos o una llave, una vez
 // por cada lobby nuevo (`sello`). App.jsx la junta con la del lobby (`juntarCalendario()`), así quien lo lee no cambia
 let pedido = null, de = null;
+// ⏳ CON PLAZO (21/11/2026, revisión de robustez): colgado, el pedido quedaba guardado para ese lobby sin contestar nunca,
+// y Eventos no llegaba a la temporada entera hasta el lobby siguiente. A los 20 s se corta (`AbortController` +
+// `setTimeout`: `AbortSignal.timeout` no está en Safari viejo) y se suelta, como cualquier fallo
+const PLAZO = 20000;
 export function pedirCalendario(sello) {
   if (pedido && de === sello) return pedido;
   de = sello;
-  pedido = fetch('/api/calendario', { headers: { accept: 'application/json' } })
+  const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  const plazo = setTimeout(() => { if (ctl) ctl.abort(); }, PLAZO);
+  const este = fetch('/api/calendario', { headers: { accept: 'application/json' }, signal: ctl ? ctl.signal : undefined })
     .then((r) => (r.ok ? r.json() : null))
     .catch(() => null)
-    // sin respuesta, la próxima vez se pide de nuevo
-    .then((x) => { if (!x || !Array.isArray(x.calendario)) { pedido = null; return null; } return x.calendario; });
+    // sin respuesta, la próxima vez se pide de nuevo (se suelta sólo el suyo: si ya salió otro, ése es el que queda)
+    .then((x) => {
+      clearTimeout(plazo);
+      if (!x || !Array.isArray(x.calendario)) { if (pedido === este) pedido = null; return null; }
+      return x.calendario;
+    });
+  pedido = este;
   return pedido;
 }
 

@@ -49,7 +49,9 @@ function useQG() {
   const votar = async (q, lado) => {
     if (!q.abierta || !W.conCuenta || mios[q.id] === lado) return;
     setMsg('');
-    const j = await W.conCuenta('/api/avisos/qg-votar-web', { id: q.id, lado }, 'p');
+    // 📵 sin red `conCuenta()` revienta (21/11/2026, revisión de robustez): el toque no hacía nada y el voto no salía
+    let j = null;
+    try { j = await W.conCuenta('/api/avisos/qg-votar-web', { id: q.id, lado }, 'p'); } catch (e) { setMsg('Sin conexión: prueba de nuevo.'); return; }
     if (!j) return;
     if (j.ok) {
       const m = Object.assign({}, mios, { [q.id]: lado });

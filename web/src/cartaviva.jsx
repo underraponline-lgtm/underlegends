@@ -37,7 +37,10 @@ export function useArmable(liga, k, cual) {
     const c = cache.get(url);
     if (c !== undefined && !(c instanceof Promise)) { setA(c); return undefined; }
     setA(undefined);
-    const p = c instanceof Promise ? c : fetch(url).then((r) => (r.ok ? r.text() : null)).then((doc) => {
+    // 📵 «NO HAY» NO ES «NO LLEGÓ» (21/11/2026, revisión de robustez): un 404 es que la carta todavía no tiene armable, y
+    // eso se guarda; un corte de red o un error del servidor guardaba el mismo `null` y la carta quedaba en imagen toda la
+    // visita. Ahora eso no se guarda: va la imagen esta vez y la próxima se vuelve a pedir
+    const p = c instanceof Promise ? c : fetch(url).then((r) => (r.ok ? r.text() : r.status === 404 ? null : Promise.reject(r.status))).then((doc) => {
       if (!doc) return null;
       const m = doc.match(/name="carta" content="(\d+)x(\d+)"/);
       let piezas = {};
@@ -50,7 +53,7 @@ export function useArmable(liga, k, cual) {
       // propósito, la carta trae nombres que escribió la gente— y cada uno dejaba un error en la consola. En la armable
       // la foto ya va adentro: no tiene cómo fallar
       return m ? { doc: doc.replace(/\son[a-z]+="[^"]*"/gi, ''), w: +m[1], h: +m[2], piezas } : null;
-    }).catch(() => null).then((x) => { cache.set(url, x); return x; });
+    }).then((x) => { cache.set(url, x); return x; }, () => { if (cache.get(url) === p) cache.delete(url); return null; });
     cache.set(url, p);
     p.then((x) => { if (vivo) setA(x); });
     return () => { vivo = false; };

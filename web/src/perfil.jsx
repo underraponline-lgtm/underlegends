@@ -10,7 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
-import { Alguien, Algunos, Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Alguien, Algunos, Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, reintentarPerfiles, usePerfiles } from './piezas.jsx';
 import { LigaTeSigue, ligaSigue } from './sugeridos.jsx';
 import { CapaPerfilT, FondoT, NombreT } from './puesto.js';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
@@ -1511,6 +1511,18 @@ function useEmblemas(f, k, p, e, ex) {
   });
 }
 
+// ⚠️ «FALLÓ» NO ES «CARGANDO» (21/11/2026, revisión de robustez): si /api/perfiles no contesta, `usePerfiles()` da `false`,
+// y el perfil lo trataba igual que `null` —«Cargando…» para siempre, sin nada que tocar—. Ahora lo dice y deja volver a
+// pedir (`reintentarPerfiles()`: vuelve a «Cargando…» mientras pide, y si falla otra vez, de nuevo esto)
+function PerfilesFallaron() {
+  return (
+    <section className="sec pf-sec" role="status">
+      <p className="pronto-p">No pude cargar el perfil.{' '}
+        <button type="button" className="btn borde2 chico" onClick={reintentarPerfiles}>Reintentar</button></p>
+    </section>
+  );
+}
+
 export function Perfil({ liga, dc, k: k0, tab }) {
   let k = k0;
   try { k = decodeURIComponent(k0); } catch (e) { /* tal cual */ }
@@ -1637,6 +1649,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   const D = usePerfilDatos(liga, f || {}, p, P && P.e);
   if (!f) {
     // sin la tabla no se sabe todavía: puede venir en los perfiles, que bajan después
+    // ⚠️ `false` es que fallaron (`usePerfiles()`), no que tardan: «Cargando…» para siempre no deja hacer nada
+    if (P === false) return <PerfilesFallaron />;
     if (!P) return <div className="cargando">Cargando…</div>;
     return (
       <section className="sec pf-sec">
@@ -1696,7 +1710,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           los logros (con el inventario, en el tuyo). `key={k}`: al pasar a otro perfil, nada se queda con el filtro del anterior */}
       {/* 🪪 quién es quién, con los lápices de Mods (20/11/2026, sólo Dlx): juntar este nombre con otro o separarlos */}
       <QuienEsMods liga={liga} k={k} nombre={f.n} />
-      {!P ? <div className="cargando">Cargando…</div> : (
+      {P === false ? <PerfilesFallaron /> : !P ? <div className="cargando">Cargando…</div> : (
         <PerfilV10 key={k} liga={liga} k={k} f={f} p={p} P={P} esYo={esYo} tab0={t}
           piezas={{
             camino: <SuCamino key="camino" liga={liga} f={f} p={p} esYo={esYo} />,

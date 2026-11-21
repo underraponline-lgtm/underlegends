@@ -362,6 +362,14 @@ class Aislada extends Component {
     if ((esDeVersion(e) && recargarPorVersion()) || window.__lgRecargando) return;
     console.error('[inicio:' + this.props.n + ']', e); reportarError(this.props.n, e);
   }
+  // 🔁 Y VUELVE A PROBAR CON DATOS NUEVOS (21/11/2026, revisión de robustez): una sección que se rompía una vez quedaba
+  // apagada toda la visita —la Cabecera, la barra de abajo, el menú o la llave en vivo, hasta recargar—, aunque el dato que
+  // la rompió ya se hubiera ido. `reinicio` es la versión de lo que dibuja (el sello del lobby y el lugar; en la llave,
+  // también lo en vivo): si cambia, se intenta de nuevo. ⚠️ Sólo si YA estaba rota antes de este cambio (`prevS.roto`):
+  // si se rompe con los datos nuevos, no se reintenta con esos mismos, y no hay vuelta en bucle
+  componentDidUpdate(prev, prevS) {
+    if (this.state.roto && prevS.roto && prev.reinicio !== this.props.reinicio) this.setState({ roto: false });
+  }
   render() {
     // 🎞️ una PÁGINA entra con su transición (`.pg-entra`, vivo.css): como va con `key` por página, cambiar de sección la
     // vuelve a montar y la animación corre de nuevo (Dlx, 17/10/2026: «mejores transiciones, animaciones… tampoco tan
@@ -491,8 +499,16 @@ export default function App() {
         if (window.__sinPagina) window.__sinPagina('El servidor no contestó.');
       }
     }, 400);
-    const reloj = setInterval(() => setAhora(new Date()), 60000);
+    // ⏱️ EL RELOJ, SÓLO CON LA PESTAÑA A LA VISTA (21/11/2026, revisión de robustez): cada minuto rehacía la Liga y
+    // redibujaba la página entera aunque nadie la mirara (una pestaña olvidada, el teléfono bloqueado). Escondida no
+    // avanza; al volver a verla se pone al día de una, si ya pasó el minuto
+    let ultTic = Date.now();
+    const tic = () => { ultTic = Date.now(); setAhora(new Date()); };
+    const reloj = setInterval(() => { if (!document.hidden) tic(); }, 60000);
+    const alVolver = () => { if (!document.hidden && Date.now() - ultTic >= 60000) tic(); };
+    document.addEventListener('visibilitychange', alVolver);
     return () => {
+      document.removeEventListener('visibilitychange', alVolver);
       window.removeEventListener('lg:datos', datos); window.removeEventListener('lg:enc', votos);
       window.removeEventListener('lg:vivo', vivo); window.removeEventListener('lg:ruta', ruta);
       window.removeEventListener('hashchange', ruta); window.removeEventListener('storage', ruta);
@@ -743,6 +759,12 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
   useEffect(() => {
     if (pagina !== 'r' && pagina !== 'llave' && pagina !== 'avisos') window.scrollTo(0, 0);
   }, [lugar]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 🔁 CON QUÉ VUELVE A PROBAR UNA SECCIÓN ROTA (21/11/2026, ver `Aislada`): el lobby nuevo (`sello`), otro lugar de la
+  // página y los perfiles cuando llegan. Lo en vivo va aparte (`reVivo`) y sólo a lo que lo dibuja: cada llave con su
+  // última edición, así no cambia con cada vuelta del vigía si nada se movió
+  const vivoVer = useMemo(() => Object.keys(vivoL || {}).map((i) => i + ':' + ((vivoL[i] && (vivoL[i].ed || vivoL[i].pub)) || 0)).join(','), [vivoL]);
+  const reinicio = ((D && D.sello) || '') + '|' + lugar + '|' + perfV;
+  const reVivo = reinicio + '|' + vivoVer;
   // 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: medir antes de mover la tira). Cada
   // sección cuenta UNA vez por día y por navegador (`lg:secc`, en hora del este como la visita) y el vigía sólo suma un
   // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda
@@ -901,10 +923,10 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
         e.preventDefault(); el.focus(); el.scrollIntoView({ block: 'start' });
       }}>Saltar al contenido</a>
       <div className="barra-ul" />
-      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv || ''} onMenu={() => setMenu(true)} /></Aislada>
-      <Aislada n="FranjaMods"><FranjaMods /></Aislada>
+      <Aislada reinicio={reinicio} n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv || ''} onMenu={() => setMenu(true)} /></Aislada>
+      <Aislada reinicio={reinicio} n="FranjaMods"><FranjaMods /></Aislada>
       {/* 📱 la M de Mods, sólo en el celular y donde hay algo para hacer (21/11/2026, mods_herramientas.jsx) */}
-      <Aislada n="BotonModsFlot"><BotonModsFlot dc={yo.dc} k={(liga && liga.yo && liga.yo.k) || (yo.dc && yo.dc.clave) || ''} /></Aislada>
+      <Aislada reinicio={reinicio} n="BotonModsFlot"><BotonModsFlot dc={yo.dc} k={(liga && liga.yo && liga.yo.k) || (yo.dc && yo.dc.clave) || ''} /></Aislada>
       {/* 🧪 la prueba en sombra del ELO nuevo (`?prev=elo`, prueba_elo.js): que se note que lo que ves no es lo de todos */}
       {prevElo() ? <p className="es-prueba-h" role="status">🧪 Prueba del ELO nuevo
         {pruebaE && pruebaE.desde ? ' · desde el ' + pruebaE.desde.slice(8, 10) + '/' + pruebaE.desde.slice(5, 7) : ''}
@@ -913,100 +935,100 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
         {pruebaE && !pruebaE.desde ? ' · todavía no llegó del ciclo: abajo ves el ELO de siempre' : ''}
         {pruebaE && pruebaE.desde && !pruebaE.d ? ' · todavía nadie jugó: abajo ves el ELO de siempre' : ''}
         {' · '}<a href="?noprev=elo">quitar</a></p> : null}
-      <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
+      <Aislada reinicio={reinicio + (aviso ? '|' + aviso.texto + '|' + aviso.hasta : '')} n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
-      <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
-      {pagina === 'bienvenida' ? <Aislada n="Bienvenida"><Suspense fallback={null}><Bienvenida liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
-      {quiereTutorial() || repite.n ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} pedido={repite} /></Suspense></Aislada> : null}
+      <Aislada reinicio={reinicio} n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
+      {pagina === 'bienvenida' ? <Aislada reinicio={reinicio} n="Bienvenida"><Suspense fallback={null}><Bienvenida liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
+      {quiereTutorial() || repite.n ? <Aislada reinicio={reinicio} n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} pedido={repite} /></Suspense></Aislada> : null}
       {/* ❓ el «¿Cómo funciona?» de cada página con capítulo, y el aviso de que el tutorial es nuevo (comofunciona.jsx) */}
-      <Aislada n="ComoFunciona"><ComoFunciona pagina={paginaMenu} /></Aislada>
+      <Aislada reinicio={reinicio} n="ComoFunciona"><ComoFunciona pagina={paginaMenu} /></Aislada>
       <span id="contenido" tabIndex={-1} />
       {/* 🔑 UNA POR SERVIDOR, UNA POR LLAVE Y UNA POR PERSONA (18/11/2026), como las crews y los países: con la `key` fija,
           pasar de FFA a CEU dejaba puesto el filtro de «Su muro» (CEU sin esas publicaciones y sin chips: vacío), y de
           un perfil a otro la búsqueda de «Sus eventos» («0 de 4» sin buscador). Un `Aislada` roto rompía los siguientes.
           El perfil va sólo con la clave: `#/r/<k>/eventos` baja a la sección sin volver a montar */}
-      {sv ? <Aislada key={'PerfilSv' + sv} n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
-        : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
-        : pagina === 'kit' ? <Aislada key="Kit" n="Kit" pagina><Suspense fallback={<Cargando />}><Kit liga={liga} cod={partes[1] || ''} /></Suspense></Aislada>
-        : pagina === 'socios' && partes[1] === 'sumar' ? <Aislada key="Sumar" n="Sumar" pagina><Suspense fallback={<Cargando />}><SumaTuServidor liga={liga} /></Suspense></Aislada>
-        : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
-        : pagina === 'llave' && partes[1] ? <Aislada key={'Llave' + partes.slice(1).join('/')} n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'invitar' ? <Aislada key="Invitar" n="Invitar" pagina><Suspense fallback={<Cargando />}><Invitar liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'crew' && partes[1] && crewAj !== null ? <Aislada key={'CrewAj' + partes[1]} n="CrewAj" pagina><Suspense fallback={<Cargando />}><AjustesCrew liga={liga} id={crewId} sec={crewAj} /></Suspense></Aislada>
-        : pagina === 'crew' && partes[1] ? <Aislada key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>
-        : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
-        : pagina === 'r' && partes[1] ? <Aislada key={'Perfil' + partes[1]} n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
-        : pagina === 'salon' ? <Aislada key="Salon" n="Salon" pagina><Suspense fallback={<Cargando />}><SalonFama liga={liga} enc={enc} /></Suspense></Aislada>
-        : pagina === 'competencias' ? <Aislada key="Competencias" n="Competencias" pagina><Suspense fallback={<Cargando />}><Competencias liga={liga} dc={yo.dc} sub={partes[1] || ''} /></Suspense></Aislada>
-        : pagina === 'inventario' ? <Aislada key="Inventario" n="Inventario" pagina><Suspense fallback={<Cargando />}><PaginaInventario liga={liga} dc={yo.dc} carta={partes[1] || ''} ranura={partes[2] || ''} /></Suspense></Aislada>
-        : pagina === 'crews' ? <Aislada key="Crews" n="Crews" pagina><Suspense fallback={<Cargando />}><CrewsPagina liga={liga} dc={yo.dc} qs={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
-        : pagina === 'socio' ? <Aislada key="Socio" n="Socio" pagina><Suspense fallback={<Cargando />}><PanelSocio liga={liga} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
-        : pagina === 'ligas' ? <Aislada key="Ligas" n="Ligas" pagina><Suspense fallback={<Cargando />}><LigasPagina liga={liga} id={ligaId} /></Suspense></Aislada>
-        : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
-        : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'publicaciones' ? <Aislada key="Publicaciones" n="Publicaciones" pagina><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} foco={partes[1] || ''} /></Suspense></Aislada>
-        : pagina === 'eventos' || pagina === 'avisos' ? <Aislada key="Eventos" n="Eventos" pagina><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>
+      {sv ? <Aislada reinicio={reinicio} key={'PerfilSv' + sv} n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
+        : pagina === 'cambios' ? <Aislada reinicio={reinicio} key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
+        : pagina === 'kit' ? <Aislada reinicio={reinicio} key="Kit" n="Kit" pagina><Suspense fallback={<Cargando />}><Kit liga={liga} cod={partes[1] || ''} /></Suspense></Aislada>
+        : pagina === 'socios' && partes[1] === 'sumar' ? <Aislada reinicio={reinicio} key="Sumar" n="Sumar" pagina><Suspense fallback={<Cargando />}><SumaTuServidor liga={liga} /></Suspense></Aislada>
+        : pagina === 'socios' || pagina === 'mundo' ? <Aislada reinicio={reinicio} key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
+        : pagina === 'llave' && partes[1] ? <Aislada reinicio={reVivo} key={'Llave' + partes.slice(1).join('/')} n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'tienda' ? <Aislada reinicio={reinicio} key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'invitar' ? <Aislada reinicio={reinicio} key="Invitar" n="Invitar" pagina><Suspense fallback={<Cargando />}><Invitar liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'pase' ? <Aislada reinicio={reinicio} key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'crew' && partes[1] && crewAj !== null ? <Aislada reinicio={reinicio} key={'CrewAj' + partes[1]} n="CrewAj" pagina><Suspense fallback={<Cargando />}><AjustesCrew liga={liga} id={crewId} sec={crewAj} /></Suspense></Aislada>
+        : pagina === 'crew' && partes[1] ? <Aislada reinicio={reinicio} key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>
+        : pagina === 'pais' && partes[1] ? <Aislada reinicio={reinicio} key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
+        : pagina === 'r' && partes[1] ? <Aislada reinicio={reinicio} key={'Perfil' + partes[1]} n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
+        : pagina === 'salon' ? <Aislada reinicio={reinicio} key="Salon" n="Salon" pagina><Suspense fallback={<Cargando />}><SalonFama liga={liga} enc={enc} /></Suspense></Aislada>
+        : pagina === 'competencias' ? <Aislada reinicio={reinicio} key="Competencias" n="Competencias" pagina><Suspense fallback={<Cargando />}><Competencias liga={liga} dc={yo.dc} sub={partes[1] || ''} /></Suspense></Aislada>
+        : pagina === 'inventario' ? <Aislada reinicio={reinicio} key="Inventario" n="Inventario" pagina><Suspense fallback={<Cargando />}><PaginaInventario liga={liga} dc={yo.dc} carta={partes[1] || ''} ranura={partes[2] || ''} /></Suspense></Aislada>
+        : pagina === 'crews' ? <Aislada reinicio={reinicio} key="Crews" n="Crews" pagina><Suspense fallback={<Cargando />}><CrewsPagina liga={liga} dc={yo.dc} qs={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
+        : pagina === 'socio' ? <Aislada reinicio={reinicio} key="Socio" n="Socio" pagina><Suspense fallback={<Cargando />}><PanelSocio liga={liga} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
+        : pagina === 'ligas' ? <Aislada reinicio={reinicio} key="Ligas" n="Ligas" pagina><Suspense fallback={<Cargando />}><LigasPagina liga={liga} id={ligaId} /></Suspense></Aislada>
+        : pagina === 'tarjetas' ? <Aislada reinicio={reinicio} key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
+        : pagina === 'guia' ? <Aislada reinicio={reinicio} key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'publicaciones' ? <Aislada reinicio={reinicio} key="Publicaciones" n="Publicaciones" pagina><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} foco={partes[1] || ''} /></Suspense></Aislada>
+        : pagina === 'eventos' || pagina === 'avisos' ? <Aislada reinicio={reVivo} key="Eventos" n="Eventos" pagina><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>
         // el Ranking (02/10/2026); `#/duelos` es el link viejo del de Duelos
-        : pagina === 'ranking' || pagina === 'duelos' ? <Aislada key="Ranking" n="Ranking" pagina><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} ver={partes[2] || ''} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>
+        : pagina === 'ranking' || pagina === 'duelos' ? <Aislada reinicio={reinicio} key="Ranking" n="Ranking" pagina><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} ver={partes[2] || ''} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
-        : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
-        : pagina === 'mods' ? <Aislada key="Mods" n="Mods" pagina><Suspense fallback={<Cargando />}><ModsPagina dc={yo.dc} liga={liga} /></Suspense></Aislada>
-        : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada>
-        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <div className={'pg-entra' + (va ? ' va-' + va : '')} key="inicio">
+        : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada reinicio={reinicio} key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'dashboard' ? <Aislada reinicio={reinicio} key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
+        : pagina === 'mods' ? <Aislada reinicio={reinicio} key="Mods" n="Mods" pagina><Suspense fallback={<Cargando />}><ModsPagina dc={yo.dc} liga={liga} /></Suspense></Aislada>
+        : pagina === 'cuenta' ? <Aislada reinicio={reinicio} key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada>
+        : pagina === 'ajustes' ? <Aislada reinicio={reinicio} key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <div className={'pg-entra' + (va ? ' va-' + va : '')} key="inicio">
         {/* 🐣 LAS MISIONES PARA NUEVOS, LO PRIMERO DEL INICIO (17/11/2026, Dlx a la maqueta, «Tus elecciones»): antes iban
             dentro del lobby, debajo de las historias, el escenario y la tira, y en un teléfono de 844 empezaban en y=1118.
             Sólo mientras dura tu semana (`pistaDe()` de nuevos.jsx: si no, no se dibuja y el Inicio queda como siempre) */}
-        <Aislada n="PistaNuevos"><div className="nvp-arriba"><PistaNuevos liga={liga} dc={yo.dc} /></div></Aislada>
+        <Aislada reinicio={reinicio} n="PistaNuevos"><div className="nvp-arriba"><PistaNuevos liga={liga} dc={yo.dc} /></div></Aislada>
         {/* 🏠 el Dashboard, sólo para Dlx: si la cuenta del navegador no es la suya ni se baja (la puerta igual es el servidor) */}
-        {yo.dc && String(yo.dc.id) === DUENO && !vistaMods() ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
-        <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
-        <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
-        {(() => { try { return localStorage.getItem('lg:prev-escenario'); } catch (e) { return null; } })() ? <Aislada n="EscenarioPrueba"><EscenarioPrueba liga={liga} /></Aislada> : null}
+        {yo.dc && String(yo.dc.id) === DUENO && !vistaMods() ? <Aislada reinicio={reinicio} n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
+        <Aislada reinicio={reinicio} n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
+        <Aislada reinicio={reVivo} n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada reinicio={reinicio} n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
+        {(() => { try { return localStorage.getItem('lg:prev-escenario'); } catch (e) { return null; } })() ? <Aislada reinicio={reinicio} n="EscenarioPrueba"><EscenarioPrueba liga={liga} /></Aislada> : null}
         {/* 🔴 las batallas de liga que se están jugando (04/11/2026). Se apaga sola: casi siempre no se ve */}
-        <Aislada n="LigasAhora"><BatallasAhora liga={liga} cls="sec" /></Aislada>
+        <Aislada reinicio={reinicio} n="LigasAhora"><BatallasAhora liga={liga} cls="sec" /></Aislada>
         {/* 🏆 la semana: en qué vas en cada competencia (26/10/2026, Dlx: «me gustan… las posiciones de los mini eventos»,
             y el Inicio, como está). Se apaga sola sin datos */}
         {/* 📅 y desde el 12/11/2026 vive en el panel, al lado de la Tienda (Dlx: «eso de la semana día 3 de 7 creo que
             deberíamos hacerlo un botón dentro del panel al costado de tienda»): ver `PnSemana` en panel.jsx */}
-        {pasosEnInicio(yo.dc) ? <Aislada n="PrimerosPasos"><Suspense fallback={null}><PrimerosPasos liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
+        {pasosEnInicio(yo.dc) ? <Aislada reinicio={reinicio} n="PrimerosPasos"><Suspense fallback={null}><PrimerosPasos liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
         {/* 🚪 EL INICIO ES UN LOBBY (Dlx, 13/10/2026: «que se sienta como un inicio, un home, un lobby»): el escenario,
             las puertas, y después todo lo de antes. ⚠️ NO SE SACA NADA SIN NÚMEROS (Dlx, el mismo día, al ver el Inicio
             de seis bloques: «enfoquémonos en cambiar, mejorar o mover; remover, al último de la lista»): volvieron los
             cinco, Se busca subió (le gusta en el Inicio) y Encuestas se achicó. Qué se toca acá lo cuenta `TOQUES` */}
-        <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
-        <Aislada n="Lobby"><Lobby liga={liga} dc={yo.dc} enc={enc} /></Aislada>
-        <Aislada n="Instalar"><Instalar /></Aislada>
+        <Aislada reinicio={reinicio} n="IrA"><IrA raiz={raiz} /></Aislada>
+        <Aislada reinicio={reinicio} n="Lobby"><Lobby liga={liga} dc={yo.dc} enc={enc} /></Aislada>
+        <Aislada reinicio={reinicio} n="Instalar"><Instalar /></Aislada>
         {/* 🎮 con el lobby, cada dato una vez (Dlx, 13/10/2026, «3. A» y «4. A»): tu próximo evento va en el botón y la
             semana en la puerta de Eventos, y Se busca es el destacado amarillo; el tablero entero sigue en el Ranking.
             Por eso Fechas y el panel de Se busca ya no van acá. Y tampoco el panel de Misiones y el Pase (Dlx, 13/10/2026:
             «hay uno de panel pero abajo hay misiones y el pase de rapero… quita esa parte de abajo»): el Pase ya es una
             puerta y está en tu barra, y las Misiones viven en el Ranking. `Panel` de medio.jsx queda, sin usar */}
-        <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
+        <Aislada reinicio={reinicio} n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         {/* 🧪 `?prev=loultimo`: una novedad de cada tipo, con carta nueva y sin ella (`muestraLU()` de medio.jsx) */}
         {(() => { try { return localStorage.getItem('lg:prev-loultimo'); } catch (e) { return null; } })() ? <>
-          <Aislada n="NoticiasPrueba"><Noticias liga={liga} raiz={raiz} prueba="todo" /></Aislada>
-          <Aislada n="NoticiasPrueba2"><Noticias liga={liga} raiz={raiz} prueba="logro" /></Aislada></> : null}
+          <Aislada reinicio={reinicio} n="NoticiasPrueba"><Noticias liga={liga} raiz={raiz} prueba="todo" /></Aislada>
+          <Aislada reinicio={reinicio} n="NoticiasPrueba2"><Noticias liga={liga} raiz={raiz} prueba="logro" /></Aislada></> : null}
         {/* 🗳️ Encuestas, Tus eventos y Divisiones ya no van acá (Dlx, 12/11/2026: «así borramos la parte de abajo que dice
             encuestas, tus eventos y divisiones»): las encuestas se votan en el Premio gratis de la fila de arriba (y en
             Publicaciones), tus eventos están en tu perfil y las divisiones en el Ranking. `Encuestas` queda, sin usar acá */}
-        <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
-        <Aislada n="Merch"><Merch liga={liga} /></Aislada>
+        <Aislada reinicio={reinicio} n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
+        <Aislada reinicio={reinicio} n="Merch"><Merch liga={liga} /></Aislada>
         {/* 📊 La Liga en números ya no va en el Inicio (Dlx, 13/10/2026: «QUITA LA liga en numeros de inicio»): vive en
             Socios, que es donde estaba desde la 2.87 además de acá */}
       </div>}
-      <Aislada n="Pie"><Pie liga={liga} /></Aislada>
-      <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
-      {pagina && !sv ? <Aislada n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
-      <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} pagina={paginaMenu} /></Aislada>
-      {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={() => { setDesde(''); cerrarHistoria(); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
-      {propias && historia === null ? <Aislada n="VisorPerfil"><Visor liga={liga} grupos={[propias]} abierto={0} onCerrar={() => { setDesde(''); setPropias(null); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
-      <Aislada n="Video"><VentanaVideo /></Aislada>
-      <Aislada n="AvisoPromo"><AvisoPromo /></Aislada>
-      <Aislada n="FichaHover"><FichaHover liga={liga} /></Aislada>
-      {carta ? <Aislada key={'c' + carta} n="VisorCarta"><Suspense fallback={null}><VisorCarta liga={liga} dc={yo.dc} k={String(carta).split('|')[0]} inicial={String(carta).split('|')[1] || ''} onCerrar={cerrarCarta} /></Suspense></Aislada> : null}
+      <Aislada reinicio={reinicio} n="Pie"><Pie liga={liga} /></Aislada>
+      <Aislada reinicio={reinicio} n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
+      {pagina && !sv ? <Aislada reinicio={reinicio} n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
+      <Aislada reinicio={reinicio} n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} pagina={paginaMenu} /></Aislada>
+      {historia !== null ? <Aislada reinicio={reinicio} n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={() => { setDesde(''); cerrarHistoria(); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
+      {propias && historia === null ? <Aislada reinicio={reinicio} n="VisorPerfil"><Visor liga={liga} grupos={[propias]} abierto={0} onCerrar={() => { setDesde(''); setPropias(null); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
+      <Aislada reinicio={reinicio} n="Video"><VentanaVideo /></Aislada>
+      <Aislada reinicio={reinicio} n="AvisoPromo"><AvisoPromo /></Aislada>
+      <Aislada reinicio={reinicio} n="FichaHover"><FichaHover liga={liga} /></Aislada>
+      {carta ? <Aislada reinicio={reinicio} key={'c' + carta} n="VisorCarta"><Suspense fallback={null}><VisorCarta liga={liga} dc={yo.dc} k={String(carta).split('|')[0]} inicial={String(carta).split('|')[1] || ''} onCerrar={cerrarCarta} /></Suspense></Aislada> : null}
     </div>
   );
 }

@@ -3803,6 +3803,16 @@ const ok = (cond, que, det) => {
     ok(await puerta('sv-FFA') === 200 && await puerta('ranking') === 200 && await puerta('sv-ffa') === 400
       && await puerta('sv-') === 400 && await puerta('zzz') === 400 && alObjeto.join() === 'sv-FFA,ranking',
       'la puerta deja pasar la página de un servidor; lo que no es ni eso ni de la lista no llega al objeto', alObjeto.join());
+    // 🔗 la visita con su canal POR LA PUERTA (21/11/2026): la 7.63 mandaba `{}` fijo al objeto y no contaba nada; la
+    // prueba llamaba a `visita()` directo. Ahora pasa sólo `de`, validado, y nada más del cuerpo
+    const aVisita = [];
+    const envVis = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, op) => {
+      aVisita.push(op.body); return new Response('{"ok":true}'); } }) } };
+    for (const cuerpo of ['{"de":"urbanstreet","otro":1}', '{"de":"<b>"}', '{}', 'no es json', '{"de":"' + 'x'.repeat(300) + '"}']) {
+      await A.rutaAvisos(new Request('https://x/avisos/visita', { method: 'POST', body: cuerpo }), envVis, '/avisos/visita');
+    }
+    ok(aVisita.join('|') === '{"de":"urbanstreet"}|{}|{}|{}|{}',
+      'la visita por la puerta: pasa sólo el canal válido (sin lo demás del cuerpo); lo inválido o enorme llega como {}', aVisita.join('|'));
     // 📊 el panel de los socios (19/10/2026): las visitas de cada servidor, y quién ve qué
     o.guardar('tiers', { t: '2026-10-19T23:00:00Z', semanas: 4, servidores: [
       { sv: 'FFA', nombre: 'Freestyle For All', tier: 1, dueno: '400000000000000001', puntos: 81, antes: 40, rec: 'bien', porque: 'x',

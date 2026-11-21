@@ -267,9 +267,27 @@ export function usePerfiles() {
     pedir();
     const on = () => { if (vivo && !listo && n && !va) { clearTimeout(t); pedir(); } };
     window.addEventListener('online', on);
-    return () => { vivo = false; clearTimeout(t); window.removeEventListener('online', on); };
+    // 🔁 Y A PEDIDO (21/11/2026, revisión de robustez): el «Reintentar» de quien muestra el `false` (el perfil) avisa
+    // `reintentarPerfiles()`. Vuelve a «cargando» (`null`) mientras se pide —así se ve que hizo algo— y arranca de cero
+    // la cuenta de reintentos solos. Si ya hay uno en vuelo no sale otro: contesta ése
+    const otra = () => {
+      if (!vivo || listo) return;
+      clearTimeout(t);
+      n = 0;
+      setP((x) => (x === false ? null : x));
+      pedir();
+    };
+    window.addEventListener('lg:perfiles-otra', otra);
+    return () => {
+      vivo = false; clearTimeout(t);
+      window.removeEventListener('online', on); window.removeEventListener('lg:perfiles-otra', otra);
+    };
   }, []);
   return p;
+}
+/** 🔁 que cada `usePerfiles()` que quedó en `false` (falló) vuelva a pedir /api/perfiles: el «Reintentar» del perfil */
+export function reintentarPerfiles() {
+  try { window.dispatchEvent(new Event('lg:perfiles-otra')); } catch (e) { /* nada */ }
 }
 
 // ── adónde lleva un evento en Discord. Dlx, 03/10/2026: «en vez de que sea el link del mensaje del anuncio, que sea el

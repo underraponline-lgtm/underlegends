@@ -2873,6 +2873,19 @@ async function eleccionNick(env, gid, uid) {
 // servidor. Quién pide lo dice Discord (`quienPide`); sólo verificados (`d:`), porque el «#» es del Competitivo.
 // ⚠️ NO TOCA EL APODO ACÁ: sin el apodo de hoy de cada servidor (un pedido a Discord por servidor) se lo pondría a
 // ciegas; lo hace el ciclo, que ya los baja. Y sólo escribe lo que cambia: cada clave es una escritura del cupo de KV
+/** 🛡️ ¿Le queda a `id` otro cambio de numeral hoy? Cuenta y contesta (ver el tope en `numeralPagina()`) */
+const NUMERAL_USO = new Map();
+const NUMERAL_TOPE = 40;
+function numeralCabe(id) {
+  const dia = new Date().toISOString().slice(0, 10);
+  const k = dia + '|' + id;
+  const n = NUMERAL_USO.get(k) || 0;
+  if (n >= NUMERAL_TOPE) return false;
+  if (NUMERAL_USO.size > 5000) NUMERAL_USO.clear();
+  NUMERAL_USO.set(k, n + 1);
+  return true;
+}
+
 async function numeralPagina(req, env) {
   const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
   const json = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: h });
@@ -2894,6 +2907,11 @@ async function numeralPagina(req, env) {
       if (!aquiEs(gid) || typeof on !== 'boolean') continue;
       const prev = await eleccionNick(env, gid, q.id);
       if (prev && !!prev.on === on) continue;
+      // 🛡️ CON TOPE (21/11/2026, la revisión de seguridad de ese día): cada cambio es una escritura de KV, y alternando
+      // prendido/apagado en los 19 servidores una sola persona verificada se comía en ~50 pedidos las 1.000 escrituras
+      // del día de toda la cuenta —el ciclo se quedaba sin poder subir el lobby—. 40 por persona y por día, en la memoria
+      // de cada instancia (no es exacto entre instancias, pero corta la ráfaga, que es lo que costaba)
+      if (!numeralCabe(q.id)) return json({ error: 'tope' }, 429);
       try {
         await env.KV.put(claveNick(gid, q.id), JSON.stringify({ on, antes: (prev && prev.antes) || '', ts: Date.now() }));
       } catch (e) {

@@ -2543,9 +2543,12 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     return new Response('{}', { status: 404 });
   };
   const ASSETS = { fetch: async () => new Response('<html>la de siempre</html>', { status: 200 }) };
-  const { default: proxy } = await import('./paginas/_worker.js');
+  // ⚡ un módulo nuevo en cada pedido (21/11/2026): las vistas guardan lo que leen un minuto (`jsonDelOrigen()`), y estas
+  // pruebas cambian el lobby entre un pedido y otro. Con el mismo módulo verían el de antes
+  let vuelta = 0;
   const ver = async (ruta, ua) => {
     pedidos.length = 0;
+    const { default: proxy } = await import('./paginas/_worker.js?v=' + (++vuelta));
     const r = await proxy.fetch(new Request('https://underlegends.pages.dev' + ruta, { headers: { 'user-agent': ua } }), { ASSETS });
     const t = await r.text();
     let j = null;
@@ -2661,6 +2664,29 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     ok('a la gente, la página de siempre', r.t === '<html>la de siempre</html>' && !r.pedidos.length, r.t.slice(0, 80));
     r = await ver('/freestyle-rap/sv/TWR', DISCORD);
     ok('un servidor que no es de la Liga: la vista previa de la Liga', r.t === '<html>la de siempre</html>', r.t.slice(0, 80));
+    // ⚡ la memoria de las vistas (21/11/2026): con el mismo módulo, dos vistas seguidas leen el lobby UNA vez, y una clave
+    // que no puede ser de nadie no le pregunta nada a nadie
+    {
+      const { default: px } = await import('./paginas/_worker.js?memo=1');
+      const pedirV = async (ruta) => (await px.fetch(new Request('https://underlegends.pages.dev' + ruta,
+        { headers: { 'user-agent': DISCORD } }), { ASSETS })).text();
+      pedidos.length = 0;
+      await pedirV('/freestyle-rap/r/oasis');
+      await pedirV('/freestyle-rap/r/oasis');
+      await pedirV('/freestyle-rap/sv/FRZ');
+      const lobbys = pedidos.filter((u) => /\/lobby\?json=1$/.test(u)).length;
+      pedidos.length = 0;
+      await pedirV('/freestyle-rap/r/%3Cscript%3E');
+      ok('las vistas leen el lobby una vez por minuto (3 vistas, ' + lobbys + ' pedido del lobby), y una clave imposible no pide nada',
+        lobbys === 1 && !pedidos.some((u) => /lobby|perfiles/.test(u)), String(lobbys) + ' · ' + pedidos.join(','));
+    }
+    // 🔎 una dirección inventada debajo de una página: la canónica es la de la madre (el sondeo del 21/11/2026)
+    r = await ver('/freestyle-rap/ligas/%3Csvg%3E', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+    ok('una liga inventada (/ligas/<svg>): la canónica es /freestyle-rap/ligas',
+      r.j && /href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/ligas"/.test(r.j.head || ''), String(r.j && r.j.head).slice(0, 140));
+    r = await ver('/freestyle-rap/ranking/' + 'x'.repeat(300), 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+    ok('una pestaña del ranking de 300 letras: la canónica es /freestyle-rap/ranking',
+      r.j && /href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/ranking"/.test(r.j.head || ''), String(r.j && r.j.head).slice(0, 140));
   } finally {
     globalThis.fetch = antes;
     globalThis.HTMLRewriter = antesRW;
@@ -3104,6 +3130,17 @@ console.log('\nLAS ENCUESTAS\n');
   ok('verificado: lo apaga en DRA con la clave de /numeral, ignora un guild que no es de la Liga y dice cómo está cada uno',
      r.status === 200 && JSON.parse(PUESTO['pnick:841017460341604382:' + VIEJO] || '{}').on === false && !('pnick:123:' + VIEJO in PUESTO) &&
      dra.mio === false && (r.json.svs || []).length >= 10, JSON.stringify(r.json).slice(0, 200));
+  // 🛡️ con tope (21/11/2026): alternar prendido/apagado sin fin gastaba las 1.000 escrituras de KV del día de la cuenta
+  {
+    let ultimo = null, escritos = 0;
+    for (let i = 0; i < 45 && !(ultimo && ultimo.status === 429); i++) {
+      const antes = PUESTO['pnick:841017460341604382:' + VIEJO];
+      ultimo = await numR({ token: 'permisoBueno1234567890', cambiar: { '841017460341604382': i % 2 === 0 } });
+      if (PUESTO['pnick:841017460341604382:' + VIEJO] !== antes) escritos++;
+    }
+    ok('el #N alternado sin fin: frena en 429 «tope» antes de 41 escrituras (una ya se hizo arriba)',
+      ultimo.status === 429 && ultimo.json.error === 'tope' && escritos <= 40, ultimo.status + ' · ' + escritos + ' escritos');
+  }
   // 🏷️ tu apodo desde el perfil (18/11/2026): la misma clave que `/apodo`, sólo verificados, y los seis armados con lo tuyo
   const apR = async (cuerpo) => {
     const x = await worker.fetch(new Request('https://x/avisos/apodo', { method: 'POST', body: JSON.stringify(cuerpo) }), env, ctx);
@@ -3509,11 +3546,16 @@ console.log('\n👏 FELICITAR\n');
   ok('y /aplausos, con 30 s en el borde (de verdad)', fue && fue.u.endsWith('/avisos/aplausos') && ebA.pedidos === 1 && ebA.ttl === 30,
      JSON.stringify(ebA));
   // ⚡ y `?r=` (después de elegir un marco) pasa de largo y renueva lo guardado; el lobby, con su encabezado de siempre
+  // 🛡️ (21/11/2026) …pero uno por segundo por ruta: dos seguidos, el segundo sale de lo recién guardado; y en una ruta que
+  // la página no refresca así (`/aplausos`), `?r=` no salta el borde (ver `frescoPermitido()` en paginas/_worker.js)
   const ebP = await enBorde(proxy, envP, '/api/avisos/pases?r=1');
   const ebL = await enBorde(proxy, envP, '/api/lobby');
-  ok('/pases?r= va siempre al Worker y renueva lo guardado; el lobby, un minuto en el borde con su encabezado de siempre',
-     ebP.pedidos === 2 && ebP.ttl === 300 && ebL.pedidos === 1 && ebL.ttl === 60
+  ok('/pases?r= va al Worker y renueva lo guardado (el segundo en el mismo segundo, de lo guardado); el lobby, un minuto en el borde con su encabezado de siempre',
+     ebP.pedidos === 1 && ebP.ttl === 300 && ebL.pedidos === 1 && ebL.ttl === 60
      && ebL.navegador === 'public, max-age=60, stale-while-revalidate=120', JSON.stringify({ ebP, ebL }));
+  const ebR = await enBorde(proxy, envP, '/api/avisos/aplausos?r=1');
+  ok('y `?r=` en una ruta que la página no refresca así (/aplausos) no salta el borde: un solo pedido al Worker',
+     ebR.pedidos === 1, JSON.stringify(ebR));
   // ⚡ y un 5xx se guarda 15 s (que una caída no multiplique los pedidos al Worker), sin caché para el navegador; un 429
   // no se guarda: es el freno de UNA IP y se lo daría a todos los de esa ciudad (10/11/2026)
   const conEstado = async (st) => {

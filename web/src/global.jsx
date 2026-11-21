@@ -92,8 +92,16 @@ function useGlobal() {
     if (D) return undefined;
     let vivo = true;
     if (!pedido) {
-      pedido = fetch('/global.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : Promise.reject(r.status)));
-      pedido.then((d) => { pedido.listo = d; }, () => { pedido = null; });
+      // ⏳ CON PLAZO (21/11/2026, revisión de robustez): colgado, el pedido no fallaba nunca y la página no llegaba a decir
+      // que no pudo (`mal`) ni a dejar reintentar. A los 20 s se corta (`AbortController` + `setTimeout`, no
+      // `AbortSignal.timeout`: Safari viejo) y es un fallo más: se suelta, y el próximo intento vuelve a pedir
+      const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+      const plazo = setTimeout(() => { if (ctl) ctl.abort(); }, 20000);
+      const este = fetch('/global.json', { cache: 'no-cache', signal: ctl ? ctl.signal : undefined })
+        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+        .finally(() => clearTimeout(plazo));
+      pedido = este;
+      este.then((d) => { este.listo = d; }, () => { if (pedido === este) pedido = null; });
     }
     pedido.then((d) => { if (vivo) setD(d); }, () => { if (vivo) setMal(true); });
     return () => { vivo = false; };

@@ -6778,8 +6778,16 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' } });
   }
   // 📊 una visita sin cuenta: no lleva nada de nadie, sólo suma (ver `visita()` del objeto)
-  if (ruta === '/avisos/visita') return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: '{}', 
-    headers: { 'content-type': 'application/json' } });
+  // 🔗 y el canal del link por el que llegó (`?de=`, 21/11/2026), SÓLO ese campo y validado con `CANAL`: la revisión de
+  // seguridad de ese día vio que acá se mandaba `{}` fijo y la 7.63 no contaba nada (`avisos_prueba.mjs` llamaba a
+  // `visita()` directo, sin pasar por acá: ahora entra por `fetch()`)
+  if (ruta === '/avisos/visita') {
+    const crudo = await req.text().catch(() => '');
+    let de = '';
+    try { const d = crudo.length <= 200 ? JSON.parse(crudo) : null; de = d && typeof d.de === 'string' && CANAL.test(d.de) ? d.de : ''; } catch (e) { de = ''; }
+    return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: JSON.stringify(de ? { de } : {}),
+      headers: { 'content-type': 'application/json' } });
+  }
   // 🔑 LO QUE SE ANOTÓ, PARA EL CICLO: trae Discord IDs, así que sin la clave
   // del ciclo contesta que no existe (ver `claveCiclo()`)
   if (ruta === '/avisos/inscritos') {

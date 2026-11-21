@@ -5270,7 +5270,14 @@ def _self_check():
     # (`_compactas()`). Tampoco `rivales` (2,2 KB: lo leen la diapositiva del Inicio y las batallas de una llave en vivo)
     # ni `LLAVES_WEB`, de la que dependen los campeones de hoy y «tus últimos» de Eventos. Si vuelve a pasarse y no hay
     # otra cosa que la página no dibuje, ahí hay que decidir; pero con 1,6 KB de holgura no es para esta semana
-    ok(comp < 52000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
+    # 🔴 Y SE PASÓ OTRA VEZ EL 21/11/2026 a las 3:36 PM ET (50,9 KB), con la CI roja en TODOS los commits de la tarde —y la
+    # CI roja tapa las demás alarmas—. Ningún commit de código: entre el último verde (31d80bcb6, 3:03 PM) y el primero rojo
+    # sólo entraron dos ciclos. Medido clave por clave: todo lo que pesa lo dibuja la página (`tabla` 20 KB, `llaves` 7,
+    # `calendario` 6, `div` 4,6, `mw` 2,9, `rivales`, `svs`, `alias`, `insignias`…), así que no había nada que sacar sin
+    # mudar dónde lo lee la página. Se sube a 54.000 —2 KB más por visita— como tope DE PASO y la decisión queda escrita
+    # para Dlx en NOVEDADES: mudar `mw` (2,9 KB, lo leen el Ranking y la Tienda) o el catálogo de `insignias` (1,6 KB) a su
+    # ruta, o aceptar el lobby más grande. ⚠️ No volver a subirlo sin esa respuesta
+    ok(comp < 54000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
 

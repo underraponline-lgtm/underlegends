@@ -170,15 +170,21 @@ export function Hilo({ liga, it, chico, ver: verN = 1, rapidas = false }) {
     setTx((t) => (t.startsWith('@') ? t : '@' + autorDe(liga, c) + ' ' + t));
     setTimeout(() => { if (caja.current) caja.current.focus(); }, 0);
   };
+  // 📵 SIN RED, CON AVISO (21/11/2026, revisión de robustez): `conCuenta()` revienta si el pedido no sale, y borrar y
+  // reportar no lo atajaban: el toque no hacía nada y quedaba un error suelto en la consola. Abre el hilo para que se lea:
+  // el aviso vive en la caja de escribir, que cerrado no está
+  const SIN_RED = 'Sin conexión: prueba de nuevo.';
   const borrar = async (c) => {
     if (!W.conCuenta) return;
-    const j = await W.conCuenta('/api/avisos/comentario-borrar', { c: c.c }, 'p');
+    let j = null;
+    try { j = await W.conCuenta('/api/avisos/comentario-borrar', { c: c.c }, 'p'); } catch (e) { setAbierto(true); setMsg(SIN_RED); return; }
     if (j && j.ok) { E.mios.borrados = Object.assign({}, E.mios.borrados, { [c.c]: 1 }); avisar(); }
   };
   // 🚩 reportar: con tres personas distintas se esconde solo (`comentarioReportar()`); para quien reporta, se va ya
   const reportar = async (c) => {
     if (!W.conCuenta) return;
-    const j = await W.conCuenta('/api/avisos/comentario-reportar', { c: c.c }, 'p');
+    let j = null;
+    try { j = await W.conCuenta('/api/avisos/comentario-reportar', { c: c.c }, 'p'); } catch (e) { setAbierto(true); setMsg(SIN_RED); return; }
     if (j && j.ok) { E.mios.borrados = Object.assign({}, E.mios.borrados, { [c.c]: 1 }); setMsg('Gracias: lo vamos a revisar.'); avisar(); }
     else if (j) setMsg(j.error === 'espera' ? 'Ya reportaste mucho hoy.' : 'No se pudo reportar.');
   };
@@ -211,6 +217,9 @@ export function Hilo({ liga, it, chico, ver: verN = 1, rapidas = false }) {
         setResp(null);
         avisar();
       } else setMsg(ERR[j.error] || (j.status === 401 ? 'Entra con Discord de nuevo.' : 'No se pudo: prueba de nuevo.'));
+    } catch (e) {
+      // 📵 el mismo agujero que borrar y reportar (arriba), en comentar: el botón volvía y no decía nada
+      setMsg(SIN_RED);
     } finally { setVa(false); }
   };
   if (chico && !abierto) {

@@ -1073,6 +1073,10 @@ function HvSocial({ liga, it, A, P, onFoco, onIr }) {
     try {
       const r = await comentar(it, tx);
       if (r.ok) { setTx(''); setMsg('Comentario enviado'); } else if (r.msg) setMsg(r.msg);
+    } catch (e2) {
+      // 📵 sin red el pedido revienta (21/11/2026, revisión de robustez): antes el botón volvía y no decía nada, y el
+      // texto quedaba escrito como si se hubiera mandado
+      setMsg('Sin conexión: prueba de nuevo.');
     } finally { setVa(false); }
   };
   const foco = (x) => { escribe.current = x; onFoco(x || abierto); };

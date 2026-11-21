@@ -277,6 +277,22 @@ const SEGURO = { 'x-content-type-options': 'nosniff' };
 // · `fresco`: no lee lo guardado y lo reemplaza (`?r=` de `refrescarPases()`, después de elegir un marco)
 // · se guarda sólo un 200: un error del objeto no se repite durante `ttl`
 // · es por ciudad de Cloudflare: cada una arma su copia una vez cada `ttl`
+// 🛡️ `?r=` SÓLO DONDE LA PÁGINA LO USA, Y NO EN RÁFAGA (21/11/2026, la revisión de seguridad de ese día). Cualquier GET
+// con `?r=` saltaba el borde, así que un script con `?r=` en `/api/avisos/comentarios` o `/seguidores` llegaba al objeto
+// en cada pedido —esas se arman leyendo miles de filas— y en minutos se comía las 5 millones de filas leídas del día:
+// el objeto (sesiones, campana, Tienda) quedaba caído para todos hasta las 00:00 UTC. La página lo pide en tres lugares
+// (crews.js, pase.js, puesto.js), cada uno después de una acción: más de uno por segundo por ruta, sale lo guardado
+// (un segundo y no más: quien acaba de elegir un marco tiene que ver lo suyo)
+const FRESCO_RUTAS = new Set(['/api/avisos/crews', '/api/avisos/pases', '/api/avisos/tienda-uso']);
+const FRESCO_ULT = new Map();
+function frescoPermitido(ruta) {
+  if (!FRESCO_RUTAS.has(ruta)) return false;
+  const ahora = Date.now();
+  if (ahora - (FRESCO_ULT.get(ruta) || 0) < 1000) return false;
+  FRESCO_ULT.set(ruta, ahora);
+  return true;
+}
+
 async function delBorde(ctx, url, ttl, pedir, cab, fresco) {
   const clave = new Request(url.origin + '/__borde' + url.pathname, { method: 'GET' });
   if (!fresco) {
@@ -404,7 +420,8 @@ async function avisos(req, url, ctx) {
     'cache-control': metodo === 'GET' ? 'public, max-age=20' : 'no-store' };
   // ⚡ por el borde de verdad (ver `delBorde()`); `?r=` es «lo de ahora»: después de elegir un marco (`refrescarPases()`)
   if (metodo === 'GET' && ttl) {
-    return delBorde(ctx, url, ttl, () => fetch(ORIGEN + url.pathname.slice('/api'.length), init), cab, url.searchParams.has('r'));
+    return delBorde(ctx, url, ttl, () => fetch(ORIGEN + url.pathname.slice('/api'.length), init), cab,
+      url.searchParams.has('r') && frescoPermitido(url.pathname));
   }
   const r = await fetch(ORIGEN + url.pathname.slice('/api'.length), init);
   // 👥 una crew que cambió (18/11/2026): se tira la copia de `/api/avisos/crews` del borde de esta ciudad antes de
@@ -529,17 +546,36 @@ function seo(rw, url, v) {
 // 🛡️ con la IP de quien pidió la vista previa (`x-lg-ip`, 18/11/2026), en ésta y en todos los subpedidos de las vistas
 // previas: el freno de Pages es por isolate, y así también los cuenta el del Worker (ver `fetch()` de abajo)
 async function fichaVista(k, req) {
-  const pedir = async (ruta) => {
-    const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) }, cf: { cacheTtl: 300, cacheEverything: true } });
-    return r.ok ? r.json() : null;
-  };
-  const L = await pedir('/lobby?json=1').catch(() => null);
+  // 🛡️ una clave que no puede ser de nadie no le pregunta nada a nadie (21/11/2026): ver `jsonDelOrigen()`
+  if (!CLAVE_VISTA.test(String(k || ''))) return null;
+  const L = await jsonDelOrigen('/lobby?json=1', req);
   let f = L && (L.tabla || []).find((x) => x && x.k === k);
   if (!f) {
-    const P = await pedir('/perfiles').catch(() => null);
+    const P = await jsonDelOrigen('/perfiles', req);
     f = P && P.p && P.p[k] && P.p[k].f;
   }
   return f ? { f, temp: String((L && L.temporada) || 'T1').toUpperCase(), cartas: (L && L.cartas) || [] } : null;
+}
+
+// ⚡ LO QUE LEEN LAS VISTAS, UNA VEZ POR MINUTO Y NO UNA POR PEDIDO (21/11/2026, la revisión de seguridad de ese día). Cada
+// vista para un bot bajaba y parseaba el lobby (~250 KB) y, para quien no está entre los 200 de la tabla, `/perfiles`
+// (~950 KB): el `cf.cacheTtl` no guarda nada contra workers.dev (ver `delBorde()`), así que con un User-Agent de bot —que
+// se falsea gratis— cada pedido costaba dos subpedidos, dos lecturas de KV y casi todos los 10 ms de CPU. Y desde el
+// sitemap (7.62), Google y las IA piden los 868 perfiles. Acá se guarda la promesa ya parseada en la memoria de cada
+// instancia 60 s (una que falla no se guarda). ⚠️ Lo que devuelve se COMPARTE entre pedidos: las vistas sólo lo leen
+const MEMO_JSON = new Map();
+const CLAVE_VISTA = /^[\p{L}\p{N}][\p{L}\p{N}._-]{0,79}$/u;
+function jsonDelOrigen(ruta, req) {
+  const ahora = Date.now();
+  const hay = MEMO_JSON.get(ruta);
+  if (hay && ahora - hay.t < 60000) return hay.p;
+  const p = fetch(ORIGEN + ruta, { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) }, cf: { cacheTtl: 300, cacheEverything: true } })
+    .then((r) => (r.ok ? r.json() : null)).catch(() => null)
+    .then((v) => { if (v == null && MEMO_JSON.get(ruta) === nuevo) MEMO_JSON.delete(ruta); return v; });
+  const nuevo = { t: ahora, p };
+  MEMO_JSON.set(ruta, nuevo);
+  if (MEMO_JSON.size > 16) MEMO_JSON.delete(MEMO_JSON.keys().next().value);
+  return p;
 }
 
 /** Lo que dice la vista previa de alguien: `{titulo, desc, img, alt}`. Sin `img` queda el cartel de la Liga */
@@ -562,6 +598,8 @@ function textoVista(f, k, temp, cartas) {
 
 /** El index.html con la vista previa de esa persona; `null` si no se sabe quién es (queda la de la Liga) */
 async function vistaPerfil(req, env, k, url) {
+  // 🛡️ una clave imposible no le pregunta nada a nadie, tampoco a R2 (21/11/2026, ver `jsonDelOrigen()`)
+  if (!CLAVE_VISTA.test(String(k || ''))) return null;
   const [x, og] = await Promise.all([fichaVista(k, req).catch(() => null), hayOg('perfil', slugOg(k)).catch(() => '')]);
   if (!x) return null;
   const tv = textoVista(x.f, k, x.temp, x.cartas);
@@ -605,9 +643,7 @@ async function vistaPerfil(req, env, k, url) {
 // `herramientas/banner_link.py`)—, sólo faltaba que su página la dijera. Igual que el perfil: sólo para los bots, con el
 // lobby cacheado. Sin ese servidor en el lobby queda la de la Liga
 async function vistaServidor(req, env, x, url) {
-  const r = await fetch(ORIGEN + '/lobby?json=1', { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
-    cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
-  const L = r && r.ok ? await r.json().catch(() => null) : null;
+  const L = await jsonDelOrigen('/lobby?json=1', req);
   const X = String(x || '').toUpperCase();
   const s = L && (L.svs || []).find((y) => y && (y.sv === X || String(y.sigla || '').toUpperCase() === X));
   if (!s || !/^[A-Z]{2,5}$/.test(String(s.sv || ''))) return null;
@@ -676,9 +712,8 @@ const R2_CREWS = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/crews\/[\w.-]+$/;
 /** Un json del Worker del bot, cacheado 5 min (el lobby, las llaves viejas); `null` si no contestó. `req`, para la IP
  *  de quien pidió la vista previa (ver `fichaVista()`) */
 async function pedirJson(ruta, req) {
-  const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
-    cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
-  return r && r.ok ? r.json().catch(() => null) : null;
+  // ⚡ una vez por minuto por instancia (21/11/2026, ver `jsonDelOrigen()`)
+  return jsonDelOrigen(ruta, req);
 }
 
 /** La imagen de un servidor (`/og/<sv>.png`, de banner_link.py: hay una por servidor con logo), o la de esa página */
@@ -784,9 +819,16 @@ async function vistaPagina(req, env, pagina, url, sub) {
   const [nombre, desc] = (sub && SUBPAGINAS[pagina + '/' + sub]) || PAGINAS[pagina];
   // 🎬 la de cine (bot/og_links.py, 18/11/2026: Dlx, de las maquetas, «Yes, move them»), si ya está; si no, la de antes
   const img = (await hayOg('pag', pagina)) || url.origin + (SIN_PNG.has(pagina) ? '/og.png' : '/og/p/' + pagina + '.png');
+  // 🔎 una dirección inventada debajo de una página (`/ligas/<svg>`, `/ranking/` + 2.000 letras) no es una página más
+  // (21/11/2026, el sondeo de ese día): su canónica es la de la página madre, así Google no junta copias infinitas. Se
+  // queda la suya sólo lo que parece una pestaña de verdad (una palabra: `ranking/global`, `competencias/mini`)
+  const madre = WEB + (EN_RAIZ_VISTA.has(pagina) ? '/' : '/freestyle-rap/') + pagina;
+  const can = sub && !SUBPAGINAS[pagina + '/' + sub] && !/^[a-z0-9-]{1,30}$/.test(String(sub)) ? madre : undefined;
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · Liga Global de Freestyle', desc,
-    img, alt: nombre + ' en la Liga Global de Freestyle' });
+    img, alt: nombre + ' en la Liga Global de Freestyle', can });
 }
+// las páginas de toda la marca, en la raíz (`EN_RAIZ` de web/montar.py)
+const EN_RAIZ_VISTA = new Set(['cuenta', 'cambios', 'ajustes', 'dashboard']);
 
 // 🎬 Y LA PORTADA (`/` y `/freestyle-rap`): el mismo título y la misma bajada del index.html, sólo con la imagen de cine en
 // vez de `og.png` cuando ya está. 🔎 Desde el 21/11/2026 sale siempre (con la imagen o sin ella): lleva la marca, la
@@ -813,9 +855,7 @@ async function vistaInicio(req, env, url) {
 // 👥 Y LA DE CADA CREW: su nombre, su descripción, cuántos son y su logo (`/avisos/crews` es público y se cachea 5 min).
 // Sin logo, o si la crew no existe, la imagen de la página de crews
 async function vistaCrew(req, env, id, url) {
-  const r = await fetch(ORIGEN + '/avisos/crews', { headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) },
-    cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
-  const j = r && r.ok ? await r.json().catch(() => null) : null;
+  const j = await jsonDelOrigen('/avisos/crews', req);
   // 🔤 con otras mayúsculas también (19/11/2026): la página abre `/crew/ks` como KS (entidad2.jsx busca sin mirar mayúsculas),
   // y la vista previa le daba la genérica. Primero la exacta; después, la misma por su slug
   const cs = (j && j.crews) || [];
