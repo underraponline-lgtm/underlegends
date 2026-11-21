@@ -1,0 +1,19 @@
+{
+  "name": "underlegends-grabador",
+  "private": true,
+  "description": "Graba el audio de los eventos de la Liga (cada voz por separado) y lo entrega mezclado. Corre en Railway.",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "prueba": "node prueba.js",
+    "revisar": "node index.js --revisar"
+  },
+  "dependencies": {
+    "@discordjs/voice": "0.19.2",
+    "discord.js": "14.28.1"
+  }
+}
