@@ -475,6 +475,14 @@ export const VS_ESPERA = 6 * MIN;
 //: 🎙️ cuánto vale lo que mandó la conexión de la llamada sobre los micrófonos (ver `vozVivo()`): manda cada minuto aunque
 //: no cambie nada, así que con dos minutos y medio sin noticias se cayó, y el bot vuelve al orden de la llave
 export const VOZ_FRESCA = 150 * 1000;
+//: 👀 EL PÚBLICO DE CADA EVENTO (21/11/2026; Dlx, a «premiar al que mira»: «A… aunque pueden pasar muchas cosas en
+//: llamada, ten en cuenta eso, A»). Railway (`grabador/vivo.js`) suma los minutos de cada uno en la llamada del evento,
+//: sin ensordecer, y los manda en tandas (`publico()`). A los `PUBLICO_MIN` minutos de una llave —sumados, no seguidos—
+//: le toca un Dragón Drop (uno por día: el origen es `mira:<día>`) y esa llave cuenta como vista para las Tareas del Pase
+//: de «Mira llaves en vivo», las que ya existían: no cambia ningún número del Pase
+export const PUBLICO_MIN = 20;
+//: lo más que puede traer una tanda por persona: Railway manda cada 5 minutos, con margen por si una tanda se atrasó
+export const PUBLICO_TANDA_MAX = 15;
 //: en «cada batalla», lo que se juntó sin decir se dice hasta este tanto; lo de antes ya es viejo
 export const CHAT_JUNTAS = 8;
 /** El nivel que vale: el de Dlx, si eligió; si no, el del admin; si no, «normal». */
@@ -3825,6 +3833,8 @@ const RUTAS = {
   '/avisos/veredictos-vivo': 'POST',
   // 🎙️ y quién tiene el micrófono abierto en la llamada (`bot/en_llamada.py --seguir`, con su clave): ver `vozVivo()`
   '/avisos/voz-vivo': 'POST',
+  // 👀 y el público de cada evento (`grabador/vivo.js` en Railway, con su clave): ver `publico()`
+  '/avisos/publico': 'POST',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
   // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (sólo con ajustes)
@@ -7961,6 +7971,14 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 60000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/voz-vivo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
+  // 👀 el público de cada evento, de Railway (`grabador/vivo.js`, ver `publico()`): con la clave del ciclo y sólo al objeto
+  if (ruta === '/avisos/publico') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 60000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/publico', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
   // 💬 lo que importó en los chats generales (17/11/2026, `bot/chats.py`): con la clave del ciclo y sólo al objeto
   if (ruta === '/avisos/chats-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -9080,6 +9098,12 @@ export class Avisos {
         "origen TEXT NOT NULL, min INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL, abierto INTEGER NOT NULL DEFAULT 0, " +
         "rareza INTEGER NOT NULL DEFAULT -1, premio TEXT NOT NULL DEFAULT '', t_abierto INTEGER NOT NULL DEFAULT 0, UNIQUE (quien, origen))");
       this.sql.exec('CREATE INDEX IF NOT EXISTS drops_quien ON drops (quien, abierto)');
+      // 👀 EL PÚBLICO DE CADA EVENTO (21/11/2026, ver `publico()`): los minutos de cada uno en cada llave, si ya se le dio
+      // lo suyo, y las tandas que ya llegaron (una tanda repetida no suma dos veces). IDs de Discord: van al olvidar
+      this.sql.exec('CREATE TABLE IF NOT EXISTS publico (llave TEXT NOT NULL, quien TEXT NOT NULL, min INTEGER NOT NULL, ' +
+        't INTEGER NOT NULL, dado INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (llave, quien)) WITHOUT ROWID');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS publico_quien ON publico (quien)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS publico_tanda (id TEXT PRIMARY KEY, t INTEGER NOT NULL)');
       // 🧢 la billetera de UNA persona (el tope de los drops la pide al abrir cada uno, y `saldo()` siempre la pidió)
       this.sql.exec('CREATE INDEX IF NOT EXISTS tienda_quien ON tienda (quien, t)');
       // ⚔️ LAS BATALLAS LIBRES (12/11/2026, Dlx: «Hacerla real»): `a` retó a `b` (claves de perfil) para la hora `t`. Pasada
@@ -9974,6 +9998,7 @@ export class Avisos {
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
       if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
       if (ruta === '/voz-vivo') return json(this.vozVivo(d));
+      if (ruta === '/publico') return json(this.publico(d));
       if (ruta === '/redibujo-listo') return json(this.redibujoListo(d));
       // 💬 lo que importó en los chats generales (`chatsCiclo()`): sólo para el Dashboard
       if (ruta === '/chats-ciclo') return json(this.chatsCiclo(d));
@@ -11437,6 +11462,45 @@ export class Avisos {
     }
     this.guardar('voz_vivo', { t: ahora, g });
     return { ok: true, n: Object.keys(g).length };
+  }
+
+  /**
+   * 👀 EL PÚBLICO DE CADA EVENTO (21/11/2026, ver `PUBLICO_MIN`). Lo manda Railway (`grabador/vivo.js`) cada 5 minutos:
+   * `{g, llave, tanda, min: {<id>: minutos}}`, los minutos de esa tanda que cada uno estuvo en la llamada del evento sin
+   * ensordecer. Se SUMAN por llave (Dlx: «pueden pasar muchas cosas en llamada»: se corta, se cambia de canal, el bot se
+   * reinicia), y una tanda que llega dos veces cuenta una. Al pasar `PUBLICO_MIN`: un Dragón Drop (`mira:<día>`, así que
+   * uno por día aunque mire tres eventos) y esa llave, vista para el Pase (`paseVio()`, `vivo`: la misma cuenta que
+   * abrirla en la página, una vez por llave). 🔒 IDs: sólo al objeto; el estado dice cuántos.
+   */
+  publico(d, ahora = Date.now()) {
+    const llave = String((d && d.llave) || '');
+    const tanda = String((d && d.tanda) || '').slice(0, 80);
+    if (!/^\d{5,25}$/.test(llave) || !tanda || !d.min || typeof d.min !== 'object') return { error: 'datos' };
+    if (this.sql.exec('SELECT 1 AS x FROM publico_tanda WHERE id = ?', tanda).toArray().length) return { ok: true, ya: true };
+    this.sql.exec('INSERT INTO publico_tanda (id, t) VALUES (?, ?)', tanda, ahora);
+    let n = 0, premiados = 0;
+    for (const [quien, m0] of Object.entries(d.min).slice(0, 400)) {
+      const m = Math.max(0, Math.min(PUBLICO_TANDA_MAX, Math.round(Number(m0) || 0)));
+      if (!/^\d{5,25}$/.test(quien) || !m) continue;
+      n++;
+      this.sql.exec('INSERT INTO publico (llave, quien, min, t) VALUES (?, ?, ?, ?) ' +
+        'ON CONFLICT(llave, quien) DO UPDATE SET min = min + excluded.min, t = excluded.t', llave, quien, m, ahora);
+      const f = this.sql.exec('SELECT min, dado FROM publico WHERE llave = ? AND quien = ?', llave, quien).toArray()[0];
+      if (!f || f.dado || f.min < PUBLICO_MIN) continue;
+      this.sql.exec('UPDATE publico SET dado = 1 WHERE llave = ? AND quien = ?', llave, quien);
+      this.dropDar(quien, 'mira:' + diaET(ahora), 0, ahora);
+      try { this.paseVio(quien, 'vivo', llave, ahora); } catch (e) { /* el Pase no frena al drop */ }
+      premiados++;
+    }
+    // lo viejo, una vez por día: las tandas a los 2 días y los minutos a los 14 (lo que dura `voz:` en KV)
+    const dia = diaET(ahora);
+    if (this.leer('publico_limpio') !== dia) {
+      this.guardar('publico_limpio', dia);
+      this.sql.exec('DELETE FROM publico_tanda WHERE t < ?', ahora - 2 * DIA_MS);
+      this.sql.exec('DELETE FROM publico WHERE t < ?', ahora - 14 * DIA_MS);
+    }
+    this.guardar('publico', { t: ahora, n, premiados });
+    return { ok: true, n, premiados };
   }
 
   /** Lo de `vozVivo()` de un servidor si está al día (`{ab, en}`), o `null`. */
@@ -14352,6 +14416,8 @@ export class Avisos {
     this.sql.exec('DELETE FROM referidos WHERE quien = ? OR de = ?', String(d.quien), String(d.quien));
     this.sql.exec('DELETE FROM cm_reporte WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM dia_pasos WHERE quien = ?', String(d.quien));
+    // 👀 y cuánto miró de cada evento en la llamada
+    this.sql.exec('DELETE FROM publico WHERE quien = ?', String(d.quien));
     // 📖 y qué historias vio
     this.sql.exec('DELETE FROM hvistas WHERE quien = ?', String(d.quien));
     // 🎟️ y su Pase: las Tareas que cumplió y las llaves en vivo que miró
@@ -16119,7 +16185,7 @@ export class Avisos {
     const tablas = ['subs', 'votos', 'liga_voto', 'tienda', 'precios', 'sigue', 'servidor', 'activo', 'jugo_temp', 'foto_oculta',
       'reportes', 'aplausos', 'pase_hecho', 'pase_vivo', 'pase_log', 'pase_hito', 'xp_log', 'promo_visto', 'promo_extra',
       'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'sigue_sv', 'org_cola', 'videos_pedidos',
-      'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue',
+      'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue', 'publico',
       // 💎🖼️ lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
       'pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part',
       // 🏷️ y el TAG que eligió para cada carta

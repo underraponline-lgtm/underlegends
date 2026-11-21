@@ -81,7 +81,8 @@ CURVA_DESDE = '2026-10-26'
 #: después del último nivel: cada `COLA[0]` de XP paga `COLA[1]` Puntos de Tienda
 COLA = (1000, 300)
 #: lo que el objeto sabe contar. `activo`: días de la racha · `fel`: felicitaciones · `vivo`: llaves en vivo
-#: distintas · `precio`: precios por cabeza · `dra`: eventos jugados en DRA · `caza`: buscados cazados (estos dos, del
+#: distintas (abrirla en la página 20 s, o desde el 21/11/2026 mirar el evento 20 minutos en la llamada: lo cuenta Railway,
+#: `grabador/vivo.js`, y lo anota `publico()` de bot/avisos.js; la misma llave cuenta una vez) · `precio`: precios por cabeza · `dra`: eventos jugados en DRA · `caza`: buscados cazados (estos dos, del
 #: ciclo). Si se agrega uno, también en `PASE_MIDE` de `bot/avisos.js`
 #: `t1`: eventos jugados en un servidor Tier 1 (20/11/2026, del ciclo, como `dra`)
 MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo', 'cm', 't1')
@@ -134,8 +135,8 @@ SEMANALES = (
      'activo', 3, 500),
     ('felicitar', 'Felicita a 3 personas', 'Con 👏 en Publicaciones: tres publicaciones distintas.', 'fel', 3, 500),
     ('dra', 'Juega un evento en DRA', 'Cualquier evento de DRA de esta semana.', 'dra', 1, 500),
-    ('vivo', 'Mira 2 llaves en vivo', 'Dos llaves distintas mientras se juegan, con tu cuenta: 20 segundos cada una.',
-     'vivo', 2, 500),
+    ('vivo', 'Mira 2 llaves en vivo', 'Dos llaves distintas mientras se juegan, con tu cuenta: 20 segundos cada una en la '
+     'página, o 20 minutos en la llamada del evento.', 'vivo', 2, 500),
     ('precio', 'Pon precio a una cabeza', 'En la Tienda, con tus Puntos de Tienda: a cualquiera de los buscados.',
      'precio', 1, 500),
     # 🏆 LA TAREA DEL TIER 1 (20/11/2026, el plan de los tiers; Dlx: «Como 6.ª semanal»): lleva gente a sus eventos. Vale
@@ -147,10 +148,12 @@ SEMANALES = (
 SEMANALES_DESDE = {'t1': '2026-11-16T00:00'}
 TEMPORADA = (
     ('fel10', 'Felicita a 10 personas', 'En toda la temporada, con 👏 en Publicaciones.', 'fel', 10, 1500),
-    ('vivo5', 'Mira 5 llaves en vivo', 'En toda la temporada.', 'vivo', 5, 1500),
+    ('vivo5', 'Mira 5 llaves en vivo', 'En toda la temporada: en la página, o 20 minutos en la llamada del evento.', 'vivo',
+     5, 1500),
     ('dra3', 'Juega 3 eventos en DRA', 'En toda la temporada.', 'dra', 3, 2000),
     ('fel20', 'Felicita a 20 personas', 'En toda la temporada.', 'fel', 20, 2000),
-    ('vivo10', 'Mira 10 llaves en vivo', 'En toda la temporada.', 'vivo', 10, 2000),
+    ('vivo10', 'Mira 10 llaves en vivo', 'En toda la temporada: en la página, o 20 minutos en la llamada del evento.',
+     'vivo', 10, 2000),
     ('caza', 'Caza a un buscado', 'Gánale a un buscado del Most Wanted, en cualquier servidor de la Liga.', 'caza', 1,
      3000),
     ('dra5', 'Juega 5 eventos en DRA', 'En toda la temporada.', 'dra', 5, 3000),

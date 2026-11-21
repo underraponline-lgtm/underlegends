@@ -2121,6 +2121,60 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 👀 EL PÚBLICO DE CADA EVENTO (21/11/2026; Dlx: «A… aunque pueden pasar muchas cosas en llamada, ten en cuenta eso,
+// A»): Railway manda los minutos de cada uno en la llamada, en tandas; se suman por llave, una tanda repetida cuenta una,
+// y a los `PUBLICO_MIN` va un Dragón Drop, uno por día (`publico()`)
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n👀 el público de cada evento: minutos sumados, un drop por día\n');
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    o.state = o.state || {};
+    o.state.storage = o.state.storage || { transactionSync: (f) => f() };
+    if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
+    await new Promise((r) => setTimeout(r, 5));
+    const T = Date.parse('2026-11-21T21:00:00Z');
+    const L1 = '1573781006723588198', L2 = '1573781006723588199', L3 = '1573781006723588200';
+    const ANA = '700000000000000101', BEA = '700000000000000102';
+    const drops = (q) => sql.exec('SELECT origen FROM drops WHERE quien = ? ORDER BY origen', q).toArray().map((x) => x.origen);
+    const min = (l, q) => (sql.exec('SELECT min FROM publico WHERE llave = ? AND quien = ?', l, q).toArray()[0] || {}).min || 0;
+
+    const r1 = o.publico({ g: '1', llave: L1, tanda: L1 + ':1', min: { [ANA]: 10, [BEA]: 5, x: 9 } }, T);
+    ok(r1.ok && r1.n === 2 && r1.premiados === 0 && min(L1, ANA) === 10 && min(L1, BEA) === 5,
+      'una tanda: suma los minutos de cada uno; un ID que no es de Discord no entra', JSON.stringify(r1));
+    const r2 = o.publico({ g: '1', llave: L1, tanda: L1 + ':1', min: { [ANA]: 10 } }, T + 1000);
+    ok(r2.ya && min(L1, ANA) === 10, 'la misma tanda otra vez (un reintento) no suma dos veces');
+    const r3 = o.publico({ g: '1', llave: L1, tanda: L1 + ':2', min: { [ANA]: 10, [BEA]: 999 } }, T + 5 * 60000);
+    ok(r3.premiados === 2 && min(L1, ANA) === 20 && min(L1, BEA) === 5 + A.PUBLICO_TANDA_MAX
+      && drops(ANA).length === 1 && drops(ANA)[0] === 'mira:' + A.diaET(T),
+    'a los 20 minutos SUMADOS le toca su Dragón Drop: a Ana (10 + 10) y a Bea (5 + el tope de 15 por tanda, aunque mandó 999)', JSON.stringify({ r3, d: drops(ANA) }));
+    o.publico({ g: '1', llave: L1, tanda: L1 + ':3', min: { [ANA]: 10 } }, T + 10 * 60000);
+    ok(drops(ANA).length === 1, 'seguir mirando la misma llave no da otro');
+    o.publico({ g: '2', llave: L2, tanda: L2 + ':1', min: { [ANA]: 15 } }, T + 60 * 60000);
+    o.publico({ g: '2', llave: L2, tanda: L2 + ':2', min: { [ANA]: 15 } }, T + 65 * 60000);
+    ok(drops(ANA).length === 1, 'otro evento el mismo día: uno por día, no da otro drop');
+    o.publico({ g: '1', llave: L3, tanda: L3 + ':1', min: { [ANA]: 15 } }, T + 26 * 3600000);
+    o.publico({ g: '1', llave: L3, tanda: L3 + ':2', min: { [ANA]: 15 } }, T + 26 * 3600000 + 5 * 60000);
+    ok(drops(ANA).length === 2 && drops(BEA).length === 1, 'al día siguiente, otro; y Bea llegó a los 20 con la tanda de 999 (tope 15)',
+      JSON.stringify({ ana: drops(ANA), bea: drops(BEA) }));
+    ok(o.publico({ llave: 'x', tanda: 't', min: {} }).error === 'datos' && o.publico({ llave: L1, min: { [ANA]: 5 } }).error === 'datos',
+      'sin llave o sin tanda, nada');
+  }
+}
+
 // 🎨 EL DIBUJADOR DE RAILWAY PRIMERO, GITHUB DE RESPALDO (21/11/2026, Dlx: «combinar… que eso también se quede en
 // cualquier caso de error»). `pedirDibujo()` le pide al servicio de Railway (`dibujador/servidor.py`); si no lo toma, o lo
 // que espera ya pasó los `DIBUJADOR_PLAZO`, va la tarea de GitHub (`kit.yml`) como siempre
