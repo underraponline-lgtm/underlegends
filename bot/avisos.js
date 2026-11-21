@@ -22370,6 +22370,10 @@ export class Avisos {
       servicios,
       // 🏟️ el vigía de las batallas de liga: sólo cuentas (`ligasVuelta()`)
       ligas_vivo: this.leer('ligas_vivo') || null,
+      // 🎙️👀 lo que mandan las conexiones de la llamada (GitHub y Railway, 21/11/2026): cuándo llegaron los micrófonos y de
+      // cuántos servidores, y la última tanda del público con cuántos y cuántos llegaron a los 20 min. Sólo cuentas, nunca IDs
+      voz_vivo: (() => { const v = this.leer('voz_vivo'); return v ? { t: v.t, servidores: Object.keys(v.g || {}).length } : null; })(),
+      publico: this.leer('publico') || null,
       pruebas: {
         dispositivos: conPrueba,
         ultima: up ? { t: new Date(up.creado).toISOString(), estado: up.estado,
