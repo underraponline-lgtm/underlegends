@@ -6,4 +6,6 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY *.js ./
+# las frases de la prueba de micro (voz/hacer_voz.py): Piper no viaja, sólo lo que hizo
+COPY voz/*.ogg ./voz/
 CMD ["node", "index.js"]

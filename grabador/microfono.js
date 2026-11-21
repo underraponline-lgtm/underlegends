@@ -1,0 +1,166 @@
+// 🎙️ LA PRUEBA DE MICRO: ENTRAS A UN CANAL, ULAYA TE ESCUCHA Y TE DICE EN VOZ QUÉ HACER (21/11/2026).
+//
+// Dlx, 21/11/2026: *«un canal de voz que el bot te escuche en vivo y pruebe tu mic antes del evento, y el bot te diga
+// en voz qué tienes que hacer específicamente»*; a cuándo, *«Armarla ya, bot después»*; la voz, Piper con voz de
+// mujer (voz/hacer_voz.py).
+//
+// LO QUE PASA:
+//   1. entras a un canal de `PRUEBA_MICRO` y el bot entra detrás
+//   2. «Hola, soy ULAYA… después del pitido, habla o rapea unos diez segundos» + pitido
+//   3. te escucha hasta `VOZ_OBJETIVO_S` de voz (o `ESCUCHAR_MAX_S`); con menos de `VOZ_MIN_S`, «no te escuché»
+//   4. te mide con lo mismo que el grabador (calidad.js) y te dice el problema más grave y cómo arreglarlo, o «perfecto»
+//   5. «Así te escuchan los demás» y te pone `ECO_S` de tu propia voz, tal como llegó
+//   6. lo mismo por escrito en el chat del canal, con tu mención, y sale
+//
+// ⚠️ UN BOT ESTÁ EN UNA SOLA LLAMADA POR SERVIDOR. Con el bot de siempre, la prueba no entra si está grabando en ese
+// servidor (lo dice por escrito, una vez cada `OCUPADO_CADA`) y el grabador no entra mientras hay una prueba (index.js
+// pregunta `activa()`): si no, Discord movería al bot de una llamada a la otra a mitad de una grabación. Con
+// `PRUEBA_TOKEN` en Railway la hace un segundo bot, con su propio grupo de conexiones, y las dos cosas van juntas.
+//
+// ⚠️ NO SE GUARDA NADA: lo que dijiste vive en memoria lo que dura la prueba y el .ogg del eco se borra al terminar.
+
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { performance } from 'node:perf_hooks';
+import {
+  joinVoiceChannel, createAudioPlayer, createAudioResource, StreamType, AudioPlayerStatus, entersState,
+  VoiceConnectionStatus, EndBehaviorType, NoSubscriberBehavior,
+} from '@discordjs/voice';
+import { PistaOpus, muestrasDe, HZ } from './ogg.js';
+import { MedidorVoz, TEXTOS, VOZ_MIN_S } from './calidad.js';
+
+const VOZ = path.join(path.dirname(fileURLToPath(import.meta.url)), 'voz');
+export const VOZ_OBJETIVO_S = 8;      // con esto de voz ya alcanza para medir
+export const ESCUCHAR_MAX_S = 20;     // si en este tiempo no juntó `VOZ_MIN_S`, «no te escuché»
+export const ECO_S = 5;               // cuánto de tu voz te devuelve
+const OCUPADO_CADA = 30 * 60000;      // el «estoy grabando» por escrito, como mucho una vez cada media hora por canal
+//: las frases que tiene que haber en voz/ (las revisa prueba.js)
+export const FRASES = ['hola', 'pitido', 'noteoigo', 'bien', 'bajo', 'satura', 'corta', 'telefono', 'escucha', 'otravez', 'deauno'];
+
+export class PruebaMicro {
+  /**
+   * @param {object} o
+   * @param {import('discord.js').Client} o.client  el bot que hace la prueba
+   * @param {string[]} o.canales                    los canales de voz de prueba
+   * @param {string} o.grupo                        el grupo de conexiones de @discordjs/voice ('default' si es el bot de siempre)
+   * @param {(gid: string) => boolean} o.ocupado    si ese bot está grabando en ese servidor
+   * @param {Function} o.anotar                     el log
+   */
+  constructor({ client, canales, grupo = 'default', ocupado = () => false, anotar = console.log }) {
+    Object.assign(this, { client, canales: new Set(canales), grupo, ocupado, anotar });
+    this.sesiones = new Map();      // guild -> { canal, persona }
+    this.avisoOcupado = new Map();  // canal -> cuándo
+  }
+
+  /** ¿Hay una prueba en curso en ese servidor? (el grabador no entra mientras tanto) */
+  activa(gid) { return this.sesiones.has(gid); }
+
+  /** Lo llama `VoiceStateUpdate`. */
+  async cambio(antes, ahora) {
+    const canal = ahora.channel;
+    if (!canal || !this.canales.has(canal.id) || ahora.member?.user?.bot || antes.channelId === canal.id) return;
+    const gid = canal.guild.id;
+    if (this.ocupado(gid)) {
+      if (Date.now() - (this.avisoOcupado.get(canal.id) || 0) > OCUPADO_CADA) {
+        this.avisoOcupado.set(canal.id, Date.now());
+        await canal.send({ content: '🎙️ Ahora estoy grabando la competencia de este servidor. Prueba tu micro antes del '
+          + 'próximo evento.', allowedMentions: { parse: [] } }).catch(() => {});
+      }
+      return;
+    }
+    if (this.sesiones.has(gid)) return;           // ya hay una: la de quien llegó primero
+    this.sesiones.set(gid, { canal: canal.id, persona: ahora.id });
+    try {
+      await this.probar(canal, ahora.member);
+    } catch (e) {
+      this.anotar('⚠️ prueba de micro:', String(e.message || e).slice(0, 150));
+    } finally {
+      this.sesiones.delete(gid);
+    }
+  }
+
+  async probar(canal, miembro) {
+    const humanos = () => [...canal.members.values()].filter((m) => !m.user.bot);
+    const sigue = () => canal.members.has(miembro.id);
+    const con = joinVoiceChannel({
+      channelId: canal.id, guildId: canal.guild.id, adapterCreator: canal.guild.voiceAdapterCreator,
+      selfDeaf: false, selfMute: false, group: this.grupo,
+    });
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'micro-'));
+    try {
+      await entersState(con, VoiceConnectionStatus.Ready, 20000);
+      const player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Play } });
+      con.subscribe(player);
+      const decir = async (archivo) => {
+        player.play(createAudioResource(fs.createReadStream(archivo), { inputType: StreamType.OggOpus }));
+        await entersState(player, AudioPlayerStatus.Playing, 5000);
+        await entersState(player, AudioPlayerStatus.Idle, 30000);
+      };
+      const frase = (k) => decir(path.join(VOZ, k + '.ogg'));
+      this.anotar(`🎙️ prueba de micro en ${canal.guild.name} / ${canal.name}`);
+
+      if (humanos().length > 1) { await frase('deauno'); return; }
+      await frase('hola');
+      if (!sigue()) return;
+      await frase('pitido');
+
+      // ── escuchar ──
+      const paquetes = [];
+      const t0 = performance.now();
+      let voz = 0;
+      const st = con.receiver.subscribe(miembro.id, { end: { behavior: EndBehaviorType.Manual } });
+      await new Promise((listo) => {
+        const fin = () => { clearInterval(reloj); st.destroy(); listo(); };
+        st.on('data', (p) => {
+          paquetes.push({ p: Buffer.from(p), ms: performance.now() - t0 });
+          voz += muestrasDe(p) / HZ;
+          if (voz >= VOZ_OBJETIVO_S) fin();
+        });
+        st.once('error', fin);
+        const reloj = setInterval(() => {
+          if (!sigue() || performance.now() - t0 > ESCUCHAR_MAX_S * 1000) fin();
+        }, 250);
+      });
+      if (!sigue()) return;
+      if (voz < VOZ_MIN_S) {
+        await frase('noteoigo');
+        await this.escribir(canal, `🎙️ <@${miembro.id}> no te escuché: revisa que tu micrófono no esté silenciado y que `
+          + 'en Ajustes de usuario → Voz y video esté elegido el correcto.', miembro.id);
+        return;
+      }
+
+      // ── medir: lo mismo que mide el grabador ──
+      const m = new MedidorVoz(miembro.id);
+      paquetes.forEach(({ p, ms }) => m.agregar(p, ms));
+      const r = await m.ventana(dir);
+      const problema = r.problema;
+      this.anotar(`🎙️ prueba de micro: ${problema || 'bien'}`
+        + (r.medida ? ` (${r.medida.db?.toFixed(1)} dB · ${(r.medida.perdida * 100).toFixed(1)} % perdido)` : ''));
+      await frase(problema || 'bien');
+      if (!sigue()) return;
+
+      // ── el eco: los últimos segundos de tu voz, tal como llegaron ──
+      const eco = path.join(dir, 'eco.ogg');
+      const pista = new PistaOpus(eco);
+      let n = 0;
+      const desde = Math.max(0, paquetes.length - Math.round(ECO_S * 50));
+      paquetes.slice(desde).forEach(({ p }) => pista.agregar(p, (n++) * 20));
+      pista.cerrar();
+      await frase('escucha');
+      await decir(eco);
+      await frase('otravez');
+      await this.escribir(canal, problema ? TEXTOS[problema](miembro.id)
+        : `🎙️ <@${miembro.id}> se te escucha **perfecto**. Estás listo para competir.`, miembro.id);
+    } finally {
+      try { con.destroy(); } catch (e) { /* ya estaba */ }
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  }
+
+  async escribir(canal, texto, id) {
+    await canal.send({ content: texto, allowedMentions: { users: [id] } })
+      .catch((e) => this.anotar('⚠️ no pude escribir en la prueba de micro:', String(e.message || e).slice(0, 100)));
+  }
+}

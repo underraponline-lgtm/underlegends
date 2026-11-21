@@ -1,0 +1,18 @@
+{
+  "_leeme": [
+    "Lo que dice ULAYA en la prueba de micro (microfono.js). Cada clave es un .ogg de esta carpeta, hecho con hacer_voz.py.",
+    "Si se cambia un texto, se vuelve a correr hacer_voz.py: el .ogg viejo seguiría diciendo lo de antes.",
+    "Voz: es_AR-daniela-high de Piper (rhasspy/piper-voices), entrenada con el corpus de openslr.org/61, CC BY-SA 4.0.",
+    "Español con tú, nunca vos. Los menús se nombran como los muestra Discord en español: Ajustes, Voz y video."
+  ],
+  "hola": "Hola, soy ULAYA. Voy a revisar cómo se te escucha. Después del pitido, habla o rapea unos diez segundos, como en una batalla.",
+  "noteoigo": "No te escuché. Revisa que tu micrófono no esté silenciado, y que en Ajustes, Voz y video, esté elegido el micrófono correcto. Después sal y vuelve a entrar.",
+  "bien": "Se te escucha perfecto. Estás listo para competir.",
+  "bajo": "Se te escucha bajito. Entra a Ajustes, Voz y video, y sube el volumen de entrada. O acércate más al micrófono.",
+  "satura": "Tu micrófono satura, y la voz se distorsiona. Entra a Ajustes, Voz y video, y baja el volumen de entrada. O aléjate un poco del micrófono.",
+  "corta": "Se te corta el audio: tu conexión está perdiendo pedazos. Cierra descargas u otras aplicaciones, o acércate al wifi.",
+  "telefono": "Tu audio llega con calidad de teléfono. Suele ser la conexión, o el ahorro de datos del celular. Si estás en el celular, desactívalo.",
+  "escucha": "Así te escuchan los demás.",
+  "otravez": "Si cambias algo, sal y vuelve a entrar, y lo pruebo de nuevo.",
+  "deauno": "Hay varias personas en la llamada. Para probar el micrófono, entren de a uno."
+}

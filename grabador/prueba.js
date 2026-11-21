@@ -182,6 +182,29 @@ const pico = Number(spawnSync('ffmpeg', ['-nostats', '-i', sale2, '-af',
   .match(/Peak level dB: (-?[0-9.]+)/)?.[1] ?? 99);
 ok(pico < 0, `nada pasa del tope (pico ${pico.toFixed(1)} dB)`);
 
+// ── 🎙️ la voz de la prueba de micro ──
+console.log('🎙️ la voz de la prueba de micro');
+const { FRASES } = await import('./microfono.js');
+const VOZ = path.join(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), 'voz');
+const faltan = FRASES.filter((k) => !fs.existsSync(path.join(VOZ, k + '.ogg')));
+ok(!faltan.length, 'están las ' + FRASES.length + ' frases' + (faltan.length ? ' (faltan: ' + faltan.join(', ') + ')' : ''));
+const textos = JSON.parse(fs.readFileSync(path.join(VOZ, 'frases.json'), 'utf8'));
+ok(FRASES.every((k) => k === 'pitido' || textos[k]), 'cada frase tiene su texto en frases.json');
+const de20 = FRASES.filter((k) => !faltan.includes(k)).every((k) => paquetesDe(path.join(VOZ, k + '.ogg')).every((p) => muestrasDe(p) === 960));
+ok(de20, 'todas en paquetes de 20 ms: Discord las recibe sin volver a codificar');
+// el mismo camino que usa @discordjs/voice al hablar: Ogg Opus -> reproductor, sin codificador de Opus instalado
+const { createAudioPlayer, createAudioResource, StreamType, AudioPlayerStatus, entersState, NoSubscriberBehavior } = await import('@discordjs/voice');
+const rep = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Play } });
+let sono = false;
+try {
+  rep.play(createAudioResource(fs.createReadStream(path.join(VOZ, 'bien.ogg')), { inputType: StreamType.OggOpus }));
+  await entersState(rep, AudioPlayerStatus.Playing, 5000);
+  await entersState(rep, AudioPlayerStatus.Idle, 15000);
+  sono = true;
+} catch (e) { /* abajo */ }
+ok(sono, 'el reproductor de Discord pasa una frase de punta a punta');
+rep.stop();
+
 fs.rmSync(dir, { recursive: true, force: true });
 console.log(mal ? `\n❌ ${mal} mal` : '\n✅ todo bien');
 process.exit(mal ? 1 : 0);

@@ -24,6 +24,9 @@
 // satura, bajito, calidad de teléfono— dura 20 s, se lo dice UNA vez en el evento, con cómo arreglarlo. Como mucho
 // `AVISOS_MAX` por evento. Y al entregar, cada voz va al mismo volumen y la entrega trae cómo se escuchó cada uno.
 //
+// 🎙️ Y LA PRUEBA DE MICRO (microfono.js): en los canales de `PRUEBA_MICRO`, ULAYA te escucha y te dice en voz qué
+// hacer. Con `PRUEBA_TOKEN` la hace un segundo bot; sin él, éste, cuando no está grabando en ese servidor.
+//
 // ⚠️ NO AVISA QUE GRABA, A PROPÓSITO. La primera versión mandaba «🔴 Grabando esta llamada… toca ❌ si no quieres
 // que se guarde tu voz», y Dlx, 21/11/2026, en la primera prueba: *«elimina eso… es muy troll… La gente que está en
 // la Liga Global acepta términos de que los eventos pueden ser grabados incluso cuando uno entra al servidor»*. Que
@@ -48,6 +51,7 @@ import {
 import { PistaOpus } from './ogg.js';
 import { mezclar, partir, duracion, sonoridad, ganancia } from './mezcla.js';
 import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
+import { PruebaMicro } from './microfono.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
 const num = (s, d) => (Number.isFinite(Number(s)) && String(s).trim() !== '' ? Number(s) : d);
@@ -71,6 +75,9 @@ export const ESPERA_SALIR = num(E.ESPERA_SALIR_S, 300) * 1000;
 export const MAX_H = num(E.MAX_H, 6);
 //: cuántos avisos de «se te escucha mal» como mucho por evento: con más, el chat de la llamada sería sólo eso
 export const AVISOS_MAX = num(E.AVISOS_MAX, 12);
+//: los canales de voz de la prueba de micro (vacío = apagada). Los crea cada servidor y se cargan en Railway
+export const PRUEBA_MICRO = lista(E.PRUEBA_MICRO);
+let prueba = null;
 //: una llave publicada hace más que esto ya no cuenta como «en juego» (lo mismo que `LLAVE_H` de en_llamada.py)
 const LLAVE_H = 3;
 const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
@@ -348,6 +355,8 @@ async function vuelta(client) {
     if (!guild) continue;
     const g = grabando.get(gid);
     if (g) { g.revisar(); continue; }
+    // con el mismo bot haciendo una prueba de micro ahí, entrar a grabar lo sacaría de esa llamada: se espera
+    if (prueba && prueba.client === client && prueba.activa(gid)) continue;
     const c = candidata(guild);
     // el piso es el más bajo de los dos: con MIN_SIN=1 (la prueba de una persona) el de MIN_VIVO lo dejaba afuera
     if (!c || c.n < Math.min(MIN_VIVO, MIN_SIN) || c.otro) { pendiente.delete(gid); continue; }
@@ -410,6 +419,15 @@ async function revisarYSalir(client) {
     const entra = c && !c.otro && (c.n >= MIN_SIN || (c.n >= MIN_VIVO && llaves.has(gid)));
     console.log(`  → ${entra ? `entraría a ${c.canal.name} en ${ESPERA_ENTRAR / 1000} s` : 'no entraría a ninguna'}`);
   }
+  for (const id of PRUEBA_MICRO) {
+    const c = await client.channels.fetch(id).catch(() => null);
+    const yo = c?.guild?.members.me;
+    const puede = c && c.permissionsFor(yo)?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.Connect,
+      PermissionFlagsBits.Speak]);
+    console.log(`prueba de micro: ${c ? `${c.guild.name} / ${c.name}` : '❌ no veo el canal ' + id}`
+      + (c && !puede ? ' · ⚠️ sin permiso para entrar o hablar' : '')
+      + ` · la hace ${E.PRUEBA_TOKEN ? 'el segundo bot' : 'este bot (cuando no graba ahí)'}`);
+  }
   let ok = false;
   try { await client.channels.fetch(ENTREGA); ok = true; } catch (e) { /* abajo */ }
   console.log(`\nentrega: ${ok ? 'el canal existe y el bot lo ve' : '❌ el bot no ve el canal ' + ENTREGA}`);
@@ -436,8 +454,24 @@ client.once(Events.ClientReady, async () => {
   anotar(`✅ conectado como ${client.user.tag} · graba en ${GRABAR_EN.length} servidor(es) · entrega en ${ENTREGA}`);
   if (process.argv.includes('--revisar')) return revisarYSalir(client);
   setInterval(() => vuelta(client).catch((e) => anotar('⚠️ vuelta:', String(e.message || e).slice(0, 150))), 20000);
+  arrancarPrueba(client);
   setInterval(medir, 300000);
   medir();
 });
 client.on('error', (e) => anotar('⚠️ discord:', String(e.message || e).slice(0, 150)));
+
+/** La prueba de micro: con el segundo bot si hay `PRUEBA_TOKEN`, si no con éste. */
+function arrancarPrueba(principal) {
+  if (!PRUEBA_MICRO.length) return;
+  const con = (cli, grupo, ocupado) => {
+    prueba = new PruebaMicro({ client: cli, canales: PRUEBA_MICRO, grupo, ocupado, anotar });
+    cli.on(Events.VoiceStateUpdate, (a, b) => { prueba.cambio(a, b); });
+    anotar(`🎙️ prueba de micro en ${PRUEBA_MICRO.length} canal(es), con ${cli.user.tag}`);
+  };
+  if (!E.PRUEBA_TOKEN) return con(principal, 'default', (gid) => grabando.has(gid));
+  const otro = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
+  otro.once(Events.ClientReady, () => con(otro, 'prueba', () => false));
+  otro.on('error', (e) => anotar('⚠️ discord (prueba):', String(e.message || e).slice(0, 150)));
+  otro.login(E.PRUEBA_TOKEN).catch((e) => anotar('❌ el segundo bot no entró:', String(e.message || e).slice(0, 150)));
+}
 client.login(E.DISCORD_TOKEN);
