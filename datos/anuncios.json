@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T16:55:04+00:00",
+ "cuando": "2026-11-21T17:04:58+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7284,6 +7284,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "DW",
+   "canal": "「🔔」ANUNCIOS",
+   "tit": "TABLA DE LA JORNADA 1",
+   "tx": "¡NO OLVIDEN SEGUIRNOS EN INSTAGRAM!",
+   "cuando": "2026-11-21T16:58:06",
+   "msg_id": "1573744329254633504",
+   "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1573744329254633504"
+  },
+  {
    "servidor": "FDS",
    "canal": "📢・anuncios-generales",
    "tit": "La regional de red bull en FDS sera en el estadio metropolitano",
@@ -7543,15 +7552,6 @@
    "cuando": "2026-11-13T16:53:02",
    "msg_id": "1570843950380482591",
    "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1570843950380482591"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📩」anuncios",
-   "tit": "RED BULL BATALLA 2026",
-   "tx": "🚨 LA ÚLTIMA INTERNACIONAL DEL AÑO 🚨 ⚠️ Es importante mencionar que esta Red Bull NO incluirá premio monetario como la anterior edición. Tampoco será de 16 participantes, será solo de 8 como anteriores ediciones, donde so",
-   "cuando": "2026-11-10T16:18:56",
-   "msg_id": "1569748204642107492",
-   "link": "https://discord.com/channels/838593179187544064/850777668386291712/1569748204642107492"
   }
  ],
  "inscripciones": [
