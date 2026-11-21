@@ -134,7 +134,8 @@ function Resumen({ liga, dc }) {
     <>
       <div className="cpc-nums">
         <div><b>{yo && yo.pos ? '#' + yo.pos : '—'}</b><small>{yo && yo.pos ? 'de la ' + liga.temp + ' · OVR ' + (yo.ovr || '—') : 'sin puesto todavía'}</small></div>
-        <div><b>{num((yo && yo.ev) || 0)}</b><small>{(yo && yo.ev) === 1 ? 'evento esta temporada' : 'eventos esta temporada'}</small></div>
+        {/* sin entrar, «—»: un «0 eventos» le habla a alguien que no se sabe quién es (21/11/2026, G6#14) */}
+        <div><b>{yo ? num(yo.ev || 0) : dc ? '0' : '—'}</b><small>{(yo && yo.ev) === 1 ? 'evento esta temporada' : 'eventos esta temporada'}</small></div>
         <div><b>{R && R.racha && R.racha.actual ? R.racha.actual + (R.racha.actual === 1 ? ' día' : ' días') : '—'}</b><small>{R && R.racha ? 'seguidos · tu mejor: ' + (R.racha.maxima || 0) : 'tu racha'}</small></div>
         <div><b>{n ? 'Nivel ' + n.n : '—'}</b><small>{n ? (n.xp - n.base) + ' de ' + tramo + ' para el ' + (n.n + 1) : 'tu nivel'}</small>
           {n ? <i className="cpc-barra"><u style={{ width: Math.min(100, Math.round((100 * (n.xp - n.base)) / tramo)) + '%' }} /></i> : null}</div>
@@ -151,8 +152,10 @@ function Resumen({ liga, dc }) {
       <div className="cpc-tres">
         <div className="cpc-parte" data-parte="cuenta"><Parte id="cuenta" liga={liga} dc={dc} /></div>
         <section className="cu-caja"><h3>Tu gente</h3>
-          <p className="cu-d">{crew ? 'Tu crew: ' + limpio(crew.c.nombre) + '.' : 'Todavía no estás en una crew.'} Sigues a {nSigue} {nSigue === 1 ? 'rapero' : 'raperos'}.</p>
-          <div className="cu-btns"><a className="btn borde2 chico" href="#/cuenta/crew">Tu crew</a><a className="btn borde2 chico" href="#/cuenta/siguiendo">Siguiendo</a></div></section>
+          {dc ? <>
+            <p className="cu-d">{crew ? 'Tu crew: ' + limpio(crew.c.nombre) + '.' : 'Todavía no estás en una crew.'} Sigues a {nSigue} {nSigue === 1 ? 'rapero' : 'raperos'}.</p>
+            <div className="cu-btns"><a className="btn borde2 chico" href="#/cuenta/crew">Tu crew</a><a className="btn borde2 chico" href="#/cuenta/siguiendo">Siguiendo</a></div>
+          </> : <p className="cu-d">Entra con Discord para ver tu crew y a quién sigues.</p>}</section>
         <section className="cu-caja"><h3>Ayuda</h3>
           <p className="cu-d">Si algo está mal (perdiste tu cuenta, tu país, un video que no es tuyo), o para repasar cómo funciona la Liga.</p>
           <div className="cu-btns"><a className="btn borde2 chico" href="#/cuenta/algo-mal">Algo está mal</a><a className="btn borde2 chico" href="#/cuenta/guia">Guía</a></div></section>
@@ -234,13 +237,24 @@ export function CuentaPC({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, soci
             <small>{[yo && yo.pos ? '#' + yo.pos : '', nItems ? 'nivel ' + nItems : '', R && R.racha && R.racha.actual ? R.racha.actual + (R.racha.actual === 1 ? ' día' : ' días') : ''].filter(Boolean).join(' · ') || 'tu cuenta'}</small></span>
         </div>
         <Buscador />
-        {grupos.map(([g, xs]) => (
-          <div className="cpc-g" key={g}><span className="cpc-gt">{g}</span>
+        {grupos.map(([g, xs]) => {
+          const lista = (
             <ul>{xs.map(([h, ico, n, s, id]) => (
               <li key={h}><a href={h} className={id === activo ? 'on' : ''} aria-current={id === activo ? 'page' : undefined}>
                 <i aria-hidden="true"><Ico n={ico} t={16} /></i><span><b>{n}</b>{s ? <small>{s}</small> : null}</span></a></li>
-            ))}</ul></div>
-        ))}
+            ))}</ul>
+          );
+          // 🔒 SIN ENTRAR, «TÚ» Y «TU GENTE» PLEGADOS (21/11/2026, la revisión visual G6#14): todo lo de adentro pide entrar,
+          // y abiertos estiraban el menú 380 px más abajo que la página. Se abren con un toque (o solos si estás en una)
+          if (!dc && (g === 'Tú' || g === 'Tu gente')) {
+            return (
+              <details className="cpc-g cpc-plega" key={g} open={xs.some((x) => x[4] === activo) || undefined}>
+                <summary className="cpc-gt"><span>{g}</span><small>{xs.length}</small><i aria-hidden="true">›</i></summary>
+                {lista}</details>
+            );
+          }
+          return <div className="cpc-g" key={g}><span className="cpc-gt">{g}</span>{lista}</div>;
+        })}
         {dc ? <button type="button" className="cpc-salir" onClick={accion.salir}><Ico n="salir" t={16} />Salir de tu cuenta</button>
           : <><EntrarError /><button type="button" className="btn verde chico" data-tuto="cu-entrar" onClick={accion.entrar}>Entrar con Discord</button></>}
       </aside>

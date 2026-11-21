@@ -271,10 +271,13 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     window.addEventListener('resize', f);
     return () => window.removeEventListener('resize', f);
   }, []);
+  // 🔒 sin cuenta no se pide nada (21/11/2026, la revisión visual G6#2): salían dos 401 antes del «Entra con Discord»
   useEffect(() => {
+    if (!dc) return;
+    setYo(undefined);
     pasePost('tags-mios', {}).then((d) => setYo(d && d._ok ? d : null));
     pasePost('marcos', {}).then((d) => setMk(d && d._ok ? d : null));
-  }, []);
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (yo) marcarVisto(yo); }, [yo]);
   const k = (dc && dc.clave) || (yo && yo.k) || '';
   // 🃏 tus cartas también desde tu perfil (quien está en la Liga sin competir), y tus insignias para la Colección
@@ -312,7 +315,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
 
   if (!dc) {
     return (
-      <div className="ves"><section className="ves-sin"><div className="ves-sin-cab"><span className="ves-sin-ic" aria-hidden="true"><Ico n="tarjetas" t={26} /></span>
+      <div className="ves"><section className="ves-sin ves-entrar"><div className="ves-sin-cab"><span className="ves-sin-ic" aria-hidden="true"><Ico n="tarjetas" t={26} /></span>
         <div><b>Tu inventario</b><p>Tus TAGs, tus marcos y tus cartas, en un solo lugar. Entra con Discord para verlo.</p></div></div>
         <button type="button" className="ves-btn blanco" onClick={accion.entrar}>Entrar con Discord</button></section></div>
     );

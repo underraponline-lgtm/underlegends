@@ -172,7 +172,8 @@ function Hecho() {
         </ul>
       ) : <p className="md-gris">Todavía nada. Lo que corrijas con los lápices sale acá, con su Deshacer.</p>}
       {err ? <p className="md-err" role="alert">{err}</p> : null}
-      <p className="md-gris md-chico">Lo de este navegador, con su Deshacer.</p>
+      {/* (21/11/2026, G6#23) sin repetir «con su Deshacer», que ya dice la línea de arriba cuando no hay nada */}
+      <p className="md-gris md-chico">Sólo lo de este navegador.</p>
       {reg && reg.items && reg.items.length ? (
         <>
           <h3 className="md-h3b">{reg.todo ? 'El registro del equipo' : 'Tu registro en la Liga'}</h3>
@@ -207,6 +208,7 @@ export function ModsPagina({ liga, dc }) {
   const [tab0, setTab0] = useState(() => { try { return ruta[1] || localStorage.getItem('lg:mods-tab') || 'corregir'; } catch (e) { return ruta[1] || 'corregir'; } });
   useEffect(() => { if (ruta[0] === 'mods' && ruta[1]) setTab0(ruta[1]); }, [ruta[0], ruta[1]]); // eslint-disable-line react-hooks/exhaustive-deps
   const boton = useBotonMods();
+  const historial = useHistorialMods();
   if (!dc || !tieneMods(Q)) {
     return (
       <div className="md-pag">
@@ -224,6 +226,9 @@ export function ModsPagina({ liga, dc }) {
   // La pestaña va en la dirección (`#/mods/<pestaña>`, el panel de cada página lleva a Registro) y se recuerda
   const TABS = [['corregir', 'Corregir'], Q.owner || Q.admin ? ['mirar', 'Mirar'] : null, Q.owner ? ['probar', 'Probar'] : null, ['registro', 'Registro']].filter(Boolean);
   const tab = TABS.some(([x]) => x === tab0) ? tab0 : 'corregir';
+  // 🗂️ el costado, sólo con algo hecho (21/11/2026, la revisión visual G6#6): con «Todavía nada» quedaba una caja de
+  // 140 px y debajo cientos de px vacíos; ese «Todavía nada» ya vive en Registro
+  const costado = tab !== 'registro' && (Q.owner || Q.admin) && historial.length > 0;
   const elegir = (x) => {
     setTab0(x);
     try { localStorage.setItem('lg:mods-tab', x); } catch (e) { /* sin almacenamiento */ }
@@ -295,9 +300,10 @@ export function ModsPagina({ liga, dc }) {
           <h1 className="md-h1">Mods</h1>
           <p className="md-gris">{rolMods(Q)}. Lo que prendas sirve en esta pestaña hasta que lo apagues o la cierres{n ? ' (tienes ' + (n === 1 ? '1 cosa prendida' : n + ' cosas prendidas') + ')' : ''}. Cada uno ve sólo lo de su rol.</p>
         </div>
-        {n ? <button type="button" className="btn borde2" onClick={() => ponerMod(null)}>Apagar todo</button> : null}
+        {/* sin «Apagar todo» acá (21/11/2026, la revisión visual G6#23): con algo prendido ya está la franja magenta de
+            arriba (mods.jsx), que lo tiene, y en el celular salía dos veces a 200 px */}
       </div>
-      <div className={'md-grid' + (tab !== 'registro' && (Q.owner || Q.admin) ? '' : ' uno')}>
+      <div className={'md-grid' + (costado ? '' : ' uno')}>
         <div className="md-main">
           <div className="md-pes" role="tablist" aria-label="Partes de Mods">{TABS.map(([k1, t1]) => (
             <button key={k1} type="button" role="tab" aria-selected={tab === k1} className={tab === k1 ? 'on' : ''} onClick={() => elegir(k1)}>{t1}</button>
@@ -379,7 +385,7 @@ export function ModsPagina({ liga, dc }) {
           </div> : null}
         </div>
         {/* en la compu, lo que hiciste queda al costado (menos en Registro, que ya lo tiene); en el celular, en Registro */}
-        {tab !== 'registro' && (Q.owner || Q.admin) ? <aside className="md-costado"><Hecho /></aside> : null}
+        {costado ? <aside className="md-costado"><Hecho /></aside> : null}
       </div>
     </div>
   );

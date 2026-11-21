@@ -4808,27 +4808,27 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
                   <th scope="row"><span className="dz-svt-n"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><i className={prendido(sv) ? 'ok' : ''} title={prendido(sv) ? 'el bot habla ahí' : 'el bot no habla ahí'} />
                     {/* 📋 lo que recomienda el ciclo, en la fila: «Revisar» si no llega a lo que pide su tier, «Puede subir» si llega al de arriba */}
                     {xT && (xT.rec === 'revisar' || xT.rec === 'subir') ? <em className={'dz-svt-rec rec-' + xT.rec} title={xT.porque}>{xT.rec === 'revisar' ? 'Revisar' : 'Puede subir'}</em> : null}</span></th>
-                  <td><select aria-label={'El tier de ' + siglaDe(sv)} value={bajar && bajar[0] === sv ? String(bajar[1]) : t ? String(t) : ''} disabled={ocup}
+                  <td data-t="Tier"><select aria-label={'El tier de ' + siglaDe(sv)} value={bajar && bajar[0] === sv ? String(bajar[1]) : t ? String(t) : ''} disabled={ocup}
                     onChange={(e) => { const n = Number(e.target.value); if (t !== 3 && n === 3) setBajar([sv, n]); else { setBajar(null); cambiarTier(sv, n); } }}>
                     {!t ? <option value="">—</option> : null}{[1, 2, 3].map((n) => <option key={n} value={String(n)}>Tier {n}</option>)}</select></td>
-                  {m.id ? <td><select aria-label={'El multiplicador de ' + siglaDe(sv)} value={String(vm)} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
+                  {m.id ? <td data-t="Multiplicador"><select aria-label={'El multiplicador de ' + siglaDe(sv)} value={String(vm)} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
                     {ops.map((x) => <option key={x} value={String(x)}>{mult(x)}</option>)}</select></td> : null}
-                  <td><select aria-label={'El bot en vivo en ' + siglaDe(sv)} value={dash[sv] === true ? 'si' : dash[sv] === false ? 'no' : ''} disabled={ocup}
+                  <td data-t="Bot en vivo"><select aria-label={'El bot en vivo en ' + siglaDe(sv)} value={dash[sv] === true ? 'si' : dash[sv] === false ? 'no' : ''} disabled={ocup}
                     onChange={(e) => cambiar('en_vivo', dash, sv, e.target.value === '' ? '' : e.target.value === 'si')}>
                     <option value="">{admin[sv] ? 'Admin: sí' : 'Admin: no'}</option><option value="si">Prendido</option><option value="no">Apagado</option></select></td>
-                  <td><select aria-label={'Cuánto habla el bot en ' + siglaDe(sv)} value={niveles[dashNivel[sv]] ? dashNivel[sv] : ''} disabled={ocup || !prendido(sv)}
+                  <td data-t="Cuánto habla"><select aria-label={'Cuánto habla el bot en ' + siglaDe(sv)} value={niveles[dashNivel[sv]] ? dashNivel[sv] : ''} disabled={ocup || !prendido(sv)}
                     onChange={(e) => cambiar('en_vivo_nivel', dashNivel, sv, e.target.value)}>
                     <option value="">{'Admin: ' + ((niveles[nivelAdmin(sv)] || ['normal'])[0]).toLowerCase()}</option>
                     {Object.keys(niveles).map((k) => <option key={k} value={k}>{niveles[k][0]}</option>)}</select></td>
-                  <td><select aria-label={'El aviso de cada evento en ' + siglaDe(sv)} value={porSv[sv] || ''} disabled={ocup} onChange={(e) => cambiarAviso(sv, e.target.value)}>
+                  <td data-t="Aviso de evento"><select aria-label={'El aviso de cada evento en ' + siglaDe(sv)} value={porSv[sv] || ''} disabled={ocup} onChange={(e) => cambiarAviso(sv, e.target.value)}>
                     <option value="">Donde habla</option><option value="chat">Chat general</option><option value="no">Apagado</option></select></td>
-                  <td><select aria-label={'Los eventos de Discord de ' + siglaDe(sv)} value={(aj.eventos_discord || {})[sv] === true ? 'si' : ''} disabled={ocup}
+                  <td data-t="Eventos Discord"><select aria-label={'Los eventos de Discord de ' + siglaDe(sv)} value={(aj.eventos_discord || {})[sv] === true ? 'si' : ''} disabled={ocup}
                     onChange={(e) => cambiar('eventos_discord', aj.eventos_discord || {}, sv, e.target.value === 'si' ? true : '')}>
                     <option value="">Apagados</option><option value="si">Prendidos</option></select>
                     {evd ? <small className={evd.error ? 'db-mal' : ''}>{(evd.creados || 0) + ' en 7 días' + (evd.error === 'permiso' ? ' · falta permiso' : evd.error ? ' · ' + evd.error : '')}</small> : null}</td>
-                  <td className="dz-num-c">{(origen || {})[sv] && origen[sv][0] ? <b>{Math.round((100 * origen[sv][1]) / origen[sv][0])} %</b> : '—'}
+                  <td className="dz-num-c" data-t="Vuelven">{(origen || {})[sv] && origen[sv][0] ? <b>{Math.round((100 * origen[sv][1]) / origen[sv][0])} %</b> : '—'}
                     {(origen || {})[sv] && origen[sv][0] ? <small>{num(origen[sv][1])}/{num(origen[sv][0])}</small> : null}</td>
-                  <td><button type="button" className="dz-lnk" aria-expanded={ficha === sv} disabled={!tiersT.some((y) => y.sv === sv)}
+                  <td className="dz-svt-fi"><button type="button" className="dz-lnk" aria-expanded={ficha === sv} disabled={!tiersT.some((y) => y.sv === sv)}
                     onClick={() => {
                       setFicha(ficha === sv ? '' : sv);
                       if (ficha !== sv) setTimeout(() => { if (fichaRef.current) fichaRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 60);
@@ -5749,7 +5749,7 @@ export function Dashboard({ dc, liga }) {
           ) : null}
           {/* 📅 lo que está programado o prendido a mano */}
           <section className="dzt-t dzt-prog" aria-label="Lo que está programado">
-            <h3 className="dzt-h">Lo que está programado</h3>
+            <h3 className="dzt-h">Programado</h3>
             {prog.length ? <ul className="dz-lista">{prog.map(([t, s, a, an]) => (
               <li key={t}><span><b>{t}</b> · {s}</span><button type="button" className="dz-lnk" onClick={() => ir(a, an)}>Cambiar</button></li>
             ))}</ul> : <p className="db-tx">Nada programado ni prendido a mano.</p>}

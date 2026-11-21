@@ -240,10 +240,16 @@ function hero(X, S, st, tengo, liga, llevan) {
   }
   else bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`) + (seProbar(it) ? `<button class="tz-b" data-probar-ir="${s.id}">Probártelo</button>` : '') + (mio ? '' : cor);
   // el cajón: todas las fundas de la vitrina, paradas
+  // 🏷️ (21/11/2026, la revisión visual G5#19) el tipo antes del precio: había dos «Ecualizador» y dos «Dragón» sin decir
+  // cuál era el aro y cuál la carta. Y un nombre se muestra escrito como «Tú»: el arte de muestra de algunos trae un nombre
+  // de ejemplo («DLX») que en la funda chica no entraba
+  const muestra = Object.assign({}, X, { n: 'Tú', crudo: 'Tú' });
   const fundas = L.map((x, i) => {
     const y = S.cat.piezas[x.id];
-    const sub = x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de 10' : tengo.has(x.id) ? 'Tuyo' : num(precioIt(S, x.id));
-    return `<button class="dq-fu" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}" aria-label="${esc(y.n)}, ${RZ[y.r][0]}"><span class="dq-fu-v">${esFondo(y.c) ? arteFondo(X, x.id) : vista(X, x.id)}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
+    const tipo = esFondo(y.c) ? 'Fondo' : RANURA[y.c] || '';
+    const sub = (tipo ? tipo + ' · ' : '') + (x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de 10' : tengo.has(x.id) ? 'Tuyo' : num(precioIt(S, x.id)));
+    const arte = esFondo(y.c) ? arteFondo(X, x.id) : y.c === 'nom' ? nombre(muestra, x.id) : vista(X, x.id);
+    return `<button class="dq-fu" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}" aria-label="${esc(y.n)}, ${esc(tipo)}, ${RZ[y.r][0]}"><span class="dq-fu-v">${arte}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
   }).join('');
   // (18/11/2026) «a la venta el …» sólo antes de la venta; una edición de 10 no lleva descuento Premium
   const precio = s.t === 'nav' || mio ? '' : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' ? (ed && Date.now() < ed.venta ? ' · a la venta el ' + diaCorto(ed.venta) : '') : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;

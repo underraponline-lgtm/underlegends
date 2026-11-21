@@ -236,7 +236,16 @@ function Cabezas({ liga, dc }) {
       {sel.n === n && sel.d === d ? <Panel liga={liga} n={n} f={fila(n)} dc={dc} /> : null}
     </li>
   ));
-  const cazas = (T.cazas || []).slice().reverse();
+  // 🧮 las cazas repetidas, juntas (21/11/2026, la revisión visual G5#18): cada precio puesto sobre la misma cabeza se cobra
+  // aparte, y «Yeyox le ganó a Erian» salía 5 veces seguidas. Misma cabeza, mismo evento y los mismos que cobraron = una
+  // fila, con el total y «×5»
+  const cazas = [];
+  (T.cazas || []).slice().reverse().forEach((x) => {
+    const clave = [x.cabeza, x.ev, (x.por || []).map((y) => y[0]).sort().join('|')].join('·');
+    const ant = cazas.length ? cazas[cazas.length - 1] : null;
+    if (ant && ant.clave === clave) { ant.monto += Number(x.monto) || 0; ant.veces += 1; return; }
+    cazas.push(Object.assign({}, x, { clave, monto: Number(x.monto) || 0, veces: 1 }));
+  });
   const nombre = (x) => liga.aka(x);
   return (
     <section data-tuto="tn-precio" className="sec tn-sec" id="tn-cabeza" aria-labelledby="tn-cab-t">
@@ -274,7 +283,7 @@ function Cabezas({ liga, dc }) {
                   <span className="tn-libro-c">{x.por.slice(0, 2).map((y) => { const g = liga.quien(y[0]); return <Cara key={y[0]} liga={liga} k={g ? g.k : ''} nombre={y[0]} cls="tn-lc" />; })}</span>
                   {/* 🪪 con su perfil (17/11/2026): las caras de quienes cobraron ya están a la izquierda; la de la cabeza, en el texto */}
                   <span className="tn-libro-t"><span><b><Algunos liga={liga} nombres={x.por.map((y) => y[0])} cara={false} /></b>{x.por.length > 1 ? ' le ganaron a ' : ' le ganó a '}
-                    <b><Alguien liga={liga} nombre={x.cabeza} /></b></span><small>{limpio(x.ev)}{x.t ? ' · ' + liga.cuando(x.t) : ''}</small></span>
+                    <b><Alguien liga={liga} nombre={x.cabeza} /></b>{x.veces > 1 ? ' ×' + x.veces : ''}</span><small>{limpio(x.ev)}{x.t ? ' · ' + liga.cuando(x.t) : ''}</small></span>
                   <b className="tn-mas">+{num(x.monto)}{x.por.length > 1 ? <small> entre {x.por.length}</small> : null}</b>
                 </li>
               );
@@ -438,6 +447,11 @@ function useTiendaNueva(dc) {
   // que ésa. Con «hay un pedido más nuevo» a secas, si cada respuesta tardaba más que el sondeo de 15 s (red lenta) todas
   // llegaban con otro pedido ya salido, se tiraban todas y la Tienda nueva no se montaba nunca
   const ya = useRef(0);
+  // 🔒 LA SESIÓN VENCIDA NO ES «LA TIENDA ABRE PRONTO» (21/11/2026, la revisión visual G5#18/G6#16): con `dc` en el
+  // navegador y la cookie vencida, `conCuenta` contesta 401 y la página caía en la vieja, y el sondeo de 15 s repetía el
+  // 401. Ahora, sin nada bueno antes, se pide el catálogo `anon` (lo mismo que ve quien no entró) y no se sondea más
+  // hasta que la cuenta vuelva a contestar: comprar o la lista mandan a entrar con Discord, como sin cuenta
+  const vencida = useRef(false);
   const pedir = useCallback(() => {
     const este = ++n.current;
     const falla = () => {
@@ -451,12 +465,18 @@ function useTiendaNueva(dc) {
       de.current = id;
       setS(j.yo ? j : Object.assign({}, j, { yo: YO_VACIO, anon: true }));
     };
-    if (!dc) {
-      return fetch('/api/avisos/tienda', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"anon":1}' })
-        .then((r) => r.json()).then(listo).catch(falla);
-    }
-    if (typeof window.conCuenta !== 'function') { falla(); return Promise.resolve(); }
-    return window.conCuenta('/api/avisos/tienda', {}).then(listo).catch(falla);
+    const anon = (luego) => fetch('/api/avisos/tienda', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"anon":1}' })
+      .then((r) => r.json()).then(listo).catch(luego);
+    if (!dc) return anon(falla);
+    if (typeof window.conCuenta !== 'function') return anon(falla);
+    return window.conCuenta('/api/avisos/tienda', {}).then((j) => {
+      if (j && j.ok) { vencida.current = false; listo(j); return undefined; }
+      if (j && j.status === 401) vencida.current = true;
+      // sin una Tienda buena de esta misma persona a la vista, la de todos en vez de la vieja
+      if (!(de.current === id && ya.current)) return anon(falla);
+      falla();
+      return undefined;
+    }).catch(() => anon(falla));
   }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { pedir(); }, [pedir]);
   // 💰 EL SALDO NO SE QUEDA VIEJO (17/11/2026, Dlx: «acabo de apostar y perdí todo mi dinero pero la página no se
@@ -469,7 +489,7 @@ function useTiendaNueva(dc) {
     if (!dc) return undefined;
     // ⚠️ volver dispara `focus` y `visibilitychange` juntos: un pedido, no dos
     let ult = 0;
-    const ver = () => { if (document.hidden || Date.now() - ult < 2000) return; ult = Date.now(); pedir(); };
+    const ver = () => { if (document.hidden || vencida.current || Date.now() - ult < 2000) return; ult = Date.now(); pedir(); };
     const t = setInterval(ver, 15000);
     document.addEventListener('visibilitychange', ver);
     window.addEventListener('focus', ver);

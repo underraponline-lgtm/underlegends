@@ -3,7 +3,10 @@
    llevan `ves-` para no chocar con las globales del shadow root. Tu carta va viva en `cartaviva.jsx` (`.cv`) */
 .ves{--v-fondo:#030304;--v-panel:#0B0C0E;--v-borde:#1f2126;--v-borde2:#2A2C31;--v-tinta:#F6F6F6;--v-gris:#A5A5A0;--v-verde:#29B298;
   --v-rosa:#E41373;--v-oro:#F5C542;--t1:#F5C542;--t2:#B07CFF;--t3:#56A2F2;--t4:#A5A5A0;
-  display:grid;gap:16px;max-width:1240px;margin:0 auto;padding:18px 16px 30px;background:var(--v-fondo);color:var(--v-tinta);min-width:0}
+  display:grid;gap:16px;margin:0 auto;padding:18px 16px 30px;background:var(--v-fondo);color:var(--v-tinta);min-width:0;
+  /* el negro de lado a lado, como las demás portadas, y lo de adentro sigue en 1208 px (21/11/2026, la revisión visual
+     G6#15: con `max-width:1240px` quedaban franjas blancas a los costados en Clara) */
+  padding-inline:max(16px,calc((100% - 1208px) / 2))}
 .ves > *{min-width:0}
 .ves-nota{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:var(--v-gris)}
 .ves-p{margin:0;font:500 14px/1.5 Archivo,sans-serif;color:#C9C9CC;max-width:70ch}
@@ -248,6 +251,12 @@
 .ves-sin-ic{display:grid;place-items:center;width:52px;height:52px;border:1.5px dashed var(--v-borde2);color:var(--v-tinta)}
 .ves-sin-cab b{display:block;font:900 20px/1.1 Archivo,sans-serif;text-transform:uppercase}
 .ves-sin-cab p{margin:6px 0 0;font:500 14px/1.5 Archivo,sans-serif;color:#C9C9CC;max-width:62ch}
+/* el negro del vestidor llega hasta el pie: sin esto, el `margin-top:26px` del pie dejaba una franja blanca en Clara
+   (como `.lk-sec.piel+.pie` de la llave, 21/11/2026, G6#15) */
+.pg-entra:has(> .ves:last-child) + .pie{margin-top:0}
+/* 🔒 sin cuenta (21/11/2026, la revisión visual G6#15): la tarjeta a lo ancho, con el botón a su derecha en la compu */
+.ves-sin.ves-entrar{max-width:none}
+@media (min-width: 761px){.ves-sin.ves-entrar{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px}}
 .ves-pasos{display:grid;gap:8px;margin:0;padding:0;list-style:none}
 .ves-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border:1.5px solid var(--v-borde2);background:#08080A}
 .ves-pasos i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--v-tinta);color:#030304;font:900 14px/1 Archivo,sans-serif;font-style:normal}

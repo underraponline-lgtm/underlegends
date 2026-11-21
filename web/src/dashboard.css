@@ -575,6 +575,23 @@
 .dz-svt-rec{font:800 11.5px/1 Archivo,sans-serif;font-style:normal;padding:4px 6px;border:2px solid currentColor;white-space:nowrap}
 .dz-svt-rec.rec-revisar{color:var(--magenta-tx)}
 .dz-svt-rec.rec-subir{color:var(--tinta)}
+/* 📱 en el celular, cada servidor es una tarjeta (21/11/2026, la revisión visual G6#20): la tabla de nueve columnas se
+   cortaba en «MULTIPLICA» y «Bot en vivo» quedaba escondido sin pista de que se deslizaba. El servidor arriba y cada
+   ajuste con su nombre (`data-t`), de a dos */
+@media (max-width: 599px){
+  .dz-tabla{overflow:visible;border:0;background:none}
+  .dz-tabla table,.dz-tabla tbody{display:block}
+  .dz-tabla thead{display:none}
+  .dz-tabla tbody tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;padding:12px;margin-bottom:8px;border:2px solid var(--linea);border-radius:4px;background:var(--caja)}
+  .dz-tabla tbody tr > *{display:grid;align-content:start;gap:4px;min-width:0;padding:0;border:0;white-space:normal;position:static;background:none}
+  .dz-tabla tbody tr.on > *{background:none}
+  .dz-tabla tbody tr.on{border-color:var(--tinta)}
+  .dz-tabla tbody th{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center}
+  .dz-tabla td[data-t]::before{content:attr(data-t);font:800 11.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+  .dz-tabla select{width:100%;min-height:40px}
+  .dz-tabla td.dz-svt-fi{align-content:end}
+  .dz-tabla td.dz-svt-fi .dz-lnk{min-height:40px}
+}
 .dz-svt-ficha{display:grid;gap:8px;max-width:640px}
 /* 🎛️ la página y el bot, en filas: qué hace, cómo está hoy y su control */
 .dz-filas{display:grid;gap:8px}
@@ -1063,7 +1080,7 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .dzt-fila:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .dzt-mas{margin:0;font-size:13px;line-height:1.4;color:var(--gris)}
 .dzt-grande .dz-aldia{margin:0}
-.dzt-ir{margin-top:auto;width:100%;min-height:48px;padding:0 16px;border:0;border-radius:4px;background:var(--tinta);color:var(--fondo);
+.dzt-ir{margin-top:4px;width:100%;min-height:48px;padding:0 16px;border:0;border-radius:4px;background:var(--tinta);color:var(--fondo);
   font:800 14px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
 .dzt-ir:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 /* la salud */
@@ -1096,6 +1113,14 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .dzt-sv.rev{outline:2px solid var(--magenta-tx);outline-offset:1px}
 .dzt-sv:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .dzt-svs>.dz-lnk{align-self:flex-start;margin-top:auto}
+/* (21/11/2026, la revisión visual G6#22) en la compu el tier va arriba de sus chips: al costado se comía 60 px y DRA y
+   FVS quedaban solos en su renglón. Y «Programado» en una línea, con «Cambiar» debajo de lo que cambia */
+@media (min-width:761px){
+  .dzt-tiers li{grid-template-columns:minmax(0,1fr);gap:4px}
+  .dzt-tiers li>b{padding-top:0}
+}
+.dzt-prog .dz-lista li{display:grid;justify-items:start;gap:2px}
+.dzt-prog .dz-lista li .dz-lnk{flex:none}
 /* lo que pide atención: el nombre de lo que es, sin emoji */
 .dzt-at ul{list-style:none;margin:0;padding:0;display:grid}
 .dzt-at li{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--suave)}

@@ -134,7 +134,8 @@
 .app .md-pes button.on{background:var(--tinta);color:var(--fondo)}
 .app .md-pes button:focus-visible{outline:2px solid var(--magenta);outline-offset:-4px}
 .md-boton{margin-top:12px}
-.md-boton .md-lp-ic{color:var(--magenta)}
+/* (21/11/2026, la revisión visual G6#7) el escudo blanco sobre magenta, como el lápiz: con `color:var(--magenta)` era
+   magenta sobre magenta y el cuadro se veía liso */
 @media (max-width: 899.98px){.md-costado{display:none}}
 
 /* 🗂️ sin columna de al lado (Registro, o quien no tiene lo hecho): una sola columna, y Registro en dos a lo ancho */
@@ -142,3 +143,8 @@
 .md-reg{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
 .md-reg-d{display:flex;flex-direction:column;gap:18px;min-width:0}
 @media (max-width: 899.98px){.md-reg{grid-template-columns:minmax(0,1fr)}}
+/* quien no es Owner ni Admin no tiene lo hecho: «Quién puede qué» y los atajos solos, a lo ancho (G6#5) */
+.md-reg > :only-child{grid-column:1 / -1}
+@media (min-width: 900px){.md-reg > .md-reg-d:only-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+/* en el celular el subtítulo va debajo del título: al lado partía «Corregir / de verdad» (G6#23) */
+@media (max-width: 899.98px){.md-sec-h{flex-direction:column;align-items:flex-start;gap:2px}}
