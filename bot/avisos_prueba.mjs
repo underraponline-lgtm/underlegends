@@ -264,6 +264,31 @@ const ok = (cond, que, det) => {
   ok(g2.length === 4 && /✅ \*\*Ana 🇦🇷\*\* pasa · Octavos · de un grupo con Bea 🇨🇱 y Cami 🇻🇪/.test(g2[0].texto)
     && new Set(g2.map((x) => x.m)).size === 4,
   'cada batalla: uno por cada uno que pasa, y un grupo dice «de un grupo con» (no «contra»: pueden pasar dos)', g2.map((x) => x.texto).join(' | '));
+  // 🔁 EL REPECHAJE Y EL RENGLÓN COPIADO (21/11/2026, DESGRACIAS EN TOKYO VOL 32 de FFA): quien aparece en dos batallas de
+  // la misma ronda pasa de una sola (`dondePaso()`). Bea pierde su grupo y pasa por el repechaje (el último grupo): «Bea
+  // pasa» sale del repechaje y no de su grupo. Y si un renglón copiado deja a Ana ganando dos grupos, no se dice nada
+  {
+    const REPECHAJE = '# COPA R\n`[ OCTAVOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝ 🆚 ⌞Cami 🇻🇪⌝\n⌞Dora 🇲🇽⌝ 🆚 ⌞Eli 🇦🇷⌝ 🆚 ⌞Fer 🇨🇱⌝\n'
+      + '⌞Gil 🇨🇴⌝ 🆚 ⌞Hugo 🇵🇪⌝ 🆚 ⌞Ivo 🇺🇾⌝\n⌞Bea 🇨🇱⌝ 🆚 ⌞Eli 🇦🇷⌝ 🆚 ⌞Hugo 🇵🇪⌝ 🆚 ⌞Ivo 🇺🇾⌝\n'
+      + '`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Dora 🇲🇽⌝\n⌞Gil 🇨🇴⌝ 🆚 ⌞Bea 🇨🇱⌝\n';
+    const r1 = A.momentosChat(llaveDe(REPECHAJE), 'COPA R', [], 'todo').filter((x) => /^b:Octavos:/.test(x.m));
+    const quien = r1.map((x) => x.m.replace(/^b:Octavos:/, ''));
+    ok(quien.join() === '0:ana,1:dora,2:gil,3:bea'
+      && /✅ \*\*Bea 🇨🇱\*\* pasa · Octavos · de un grupo con Eli 🇦🇷, Hugo 🇵🇪 y Ivo 🇺🇾/.test(r1[3].texto),
+      'el repechaje: Bea perdió su grupo y pasó por el repechaje; su «pasa» sale una vez, del repechaje', quien.join());
+    const normal = A.momentosChat(llaveDe(REPECHAJE), 'COPA R', []).find((x) => x.m === 'rondas');
+    ok(normal && /pasaron Ana 🇦🇷, Dora 🇲🇽, Gil 🇨🇴, Bea 🇨🇱/.test(normal.texto) && (normal.texto.match(/Bea/g) || []).length === 1,
+      'y en «normal», el resumen de la ronda la nombra una sola vez', normal && normal.texto);
+    const COPIADO = '# COPA C\n`[ OCTAVOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝ 🆚 ⌞Cami 🇻🇪⌝\n⌞Ana 🇦🇷⌝ 🆚 ⌞Dora 🇲🇽⌝ 🆚 ⌞Eli 🇦🇷⌝\n'
+      + '`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n';
+    const r2 = A.momentosChat(llaveDe(COPIADO), 'COPA C', [], 'todo').filter((x) => /^b:/.test(x.m));
+    ok(!r2.length, 'un renglón copiado deja a Ana ganando dos grupos: no se dice ningún «pasa» hasta que la llave se arregle',
+      r2.map((x) => x.texto).join(' | '));
+    const r3 = A.momentosChat(llaveDe(COPIADO.replace('⌞Ana 🇦🇷⌝ 🆚 ⌞Dora 🇲🇽⌝', '⌞Fio 🇺🇾⌝ 🆚 ⌞Dora 🇲🇽⌝')), 'COPA C', [], 'todo')
+      .filter((x) => /^b:/.test(x.m));
+    ok(r3.length === 1 && r3[0].m === 'b:Octavos:0:ana', 'cuando el organizador lo arregla, sale el de Ana, de su grupo',
+      r3.map((x) => x.m).join());
+  }
   // 🧑‍🤝‍🧑 LOS CINCO ERRORES DE LA COMPE POR 1.5 DÓLARES (FFA, 12/10/2026): banderas, equipos que crecen y mayúsculas
   {
     const g = A.genteChat('RODRILP 🇦🇷, 🇨🇱 VELATZ 🇨🇱, 🇨🇴 SNOW 🇨🇴 🇦🇷');

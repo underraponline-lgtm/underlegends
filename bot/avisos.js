@@ -497,12 +497,35 @@ export const escMd = (s) => String(s || '').replace(/([\\*_~|`>])/g, '\\$1');
 const batallasDe = (R) => ((R && R.b) || []).filter((b) => (b[0] || []).filter(Boolean).length >= 2);
 const jugadaChat = (b) => !!b[1] || /^pasan \d/.test(String(b[2] || ''));
 
+/**
+ * 🔁 LA BATALLA DE LA RONDA `R` DE LA QUE PASÓ `lado`, CUANDO APARECE EN MÁS DE UNA (21/11/2026, DESGRACIAS EN TOKYO VOL 32
+ * de FFA). En los Octavos de a tres de FFA, los que pierden su grupo juegan un REPECHAJE en la misma ronda (el grupo de 4:
+ * Gus, Agustín la reliquia, Soul y Majiztral). Agustín perdió el grupo 1 y pasó por el repechaje, y como estaba en
+ * Cuartos el grupo 1 le daba el pase también a él: el bot dijo «✅ EIDP pasa · de un grupo con Abyssus y Deko» (3:19 PM).
+ * Y un organizador que copia un renglón deja a alguien en dos grupos (2:46 PM: «Mito pasa» de dos grupos a la vez; Dlx:
+ * «decía que Mito le ganó a X cuando fue Deko»). Pasa de la que GANÓ; si figura ganando dos, la llave se contradice y no
+ * se dice nada hasta que el organizador la arregle (`null`); sin ganador en ninguna, de la ÚLTIMA (el repechaje se juega
+ * después). `undefined`: aparece en una sola, no hay nada que decidir.
+ */
+function dondePaso(R, lado) {
+  const key = claveTurno(lado);
+  const es = (l) => !!l && claveTurno(l) === key;
+  const suyas = ((R && R.b) || []).filter((x) => (x[0] || []).some(es));
+  if (suyas.length < 2) return undefined;
+  const gana = suyas.filter((x) => es(x[1]));
+  if (gana.length === 1) return gana[0];
+  if (gana.length > 1) return null;
+  return suyas[suyas.length - 1];
+}
+
 /** Quién pasó en la batalla `b` de la ronda `k`: el ganador, o los del grupo que aparecen en la ronda siguiente. */
 function pasaronChat(rondas, k, b) {
-  if (b[1]) return [b[1]];
+  // 🔁 quien aparece en otra batalla de esta ronda pasa de una sola (`dondePaso()`)
+  const vale = (lado) => { const d = dondePaso(rondas[k], lado); return d === undefined || d === b; };
+  if (b[1]) return vale(b[1]) ? [b[1]] : [];
   const sig = new Set();
   for (const x of batallasDe(rondas[k + 1])) for (const lado of x[0] || []) sig.add(claveTurno(lado));
-  return (b[0] || []).filter((lado) => lado && sig.has(claveTurno(lado)));
+  return (b[0] || []).filter((lado) => lado && sig.has(claveTurno(lado)) && vale(lado));
 }
 
 const BANDERAS_RE = /[\u{1F1E6}-\u{1F1FF}]{2}/gu;
