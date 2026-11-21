@@ -31,6 +31,12 @@ function ffmpeg(args) {
   });
 }
 
+/** ⚔️ Un pedazo de un audio, de `desde` a `hasta` segundos, sin volver a codificar (`batallas.js`). */
+export async function cortar(ruta, desde, hasta, salida) {
+  await ffmpeg(['-ss', String(Math.max(0, desde)), '-i', ruta, '-t', String(Math.max(1, hasta - desde)), '-c', 'copy', salida]);
+  return salida;
+}
+
 /** Lo que dura un audio, en segundos. */
 export function duracion(ruta) {
   return Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', ruta])

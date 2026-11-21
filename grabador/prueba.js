@@ -256,6 +256,120 @@ for (const b of bs) {
   ok(sobre.every((v) => v >= 6), `${b.titulo}: cada palabra se oye sobre el beat (${sobre.map((v) => '+' + v.toFixed(0)).join(' ')} dB)`);
 }
 
+// ── 🎙️👀 los micrófonos y el público de las llamadas en vivo (vivo.js, 21/11/2026) ──
+console.log('\n🎙️👀 las llamadas en vivo: micrófonos y público\n');
+{
+  const V = await import('./vivo.js');
+  const A = await import('../bot/avisos.js');
+  ok(V.claveCiclo('abc') === await A.claveCiclo('abc'), 'la clave del ciclo da lo mismo que la del Worker');
+  const e = (id, canal, x = {}) => Object.assign({ id, canal, bot: false, mute: false, selfMute: false, deaf: false, selfDeaf: false, suppress: false }, x);
+  const est = [e('3', 'c1'), e('1', 'c1', { selfMute: true }), e('2', 'c1', { selfDeaf: true }), e('9', 'c1', { bot: true }),
+    e('4', 'c2'), e('5', 'c2', { suppress: true }), e('6', null), e('7', 'afk')];
+  const m = V.microfonos(est);
+  ok(m.ab.join() === '3,4,7' && m.en.join() === '1,2,3,4,5,7',
+    'micrófonos: abiertos sin silenciar, ensordecer ni escenario; en la llamada, todos menos los bots (como en_llamada.py)');
+  ok([...V.llamadasDelEvento(est, ['c2', 'c9'], 'afk')].join() === 'c2,c9', 'con las llamadas de competencia conocidas, ésas');
+  ok([...V.llamadasDelEvento(est, null, 'afk')].join() === 'c1', 'sin conocerlas, la que tiene más gente (sin bots ni la de AFK)');
+  ok(V.oyentes(est, new Set(['c1'])).join() === '1,3', 'el público: silenciado vale, ensordecido no, los bots no');
+  const T = Date.parse('2026-11-21T21:00:00Z');
+  const ll = [{ id: '1000001', g: '111111', sv: 'FFA', ed: T - 10 * 60000 }, { id: '1000002', g: '111111', sv: 'FFA', ed: T - 5 * 60000 },
+    { id: '1000003', g: '222222', sv: 'DRA', ed: T - 4 * 3600000 }, { id: 'x', g: '333333', ed: T }, { id: '1000004', g: '444444', sv: 'CH', pub: T - 60 * 60000 }];
+  const j3 = V.enJuego(ll, T, 3), j45 = V.enJuego(ll, T, 0.75);
+  ok(Object.keys(j3).sort().join() === '111111,444444' && j3['111111'].llave === '1000002' && j3['444444'].sv === 'CH',
+    'en juego: la llave más nueva de cada servidor, de las últimas 3 horas');
+  ok(Object.keys(j45).join() === '111111', 'para el público, sólo la tocada hace menos de 45 minutos');
+
+  // una vuelta entera, con un Discord y un Worker de mentira
+  const vs = (id, ch, x = {}) => ({ id, channelId: ch, member: { user: { bot: !!x.bot } }, serverMute: false, selfMute: !!x.mudo,
+    serverDeaf: false, selfDeaf: !!x.sordo, suppress: false });
+  const voz = new Map([['701', vs('701', 'comp')], ['702', vs('702', 'comp', { mudo: true })], ['703', vs('703', 'comp', { sordo: true })],
+    ['704', vs('704', 'charla')], ['799', vs('799', 'comp', { bot: true })]]);
+  const client = { on() {}, guilds: { cache: new Map([['111111', { id: '111111', afkChannelId: 'afk', voiceStates: { cache: voz } }]]) } };
+  const pedidos = [];
+  let falla = false;
+  const fetchFalso = async (url, op = {}) => {
+    const ruta = String(url).replace(V.VIGIA, '');
+    pedidos.push({ ruta, h: op.headers || {}, b: op.body ? JSON.parse(op.body) : null });
+    if (ruta === '/avisos/vivo') return new Response(JSON.stringify({ llaves: [{ id: '1000002', g: '111111', sv: 'FFA', ed: Date.now() - 60000 }] }));
+    if (falla) return new Response('{}', { status: 500 });
+    return new Response(JSON.stringify({ ok: true, premiados: 0 }));
+  };
+  const L = new V.LlamadasVivo({ client, token: 'abc', canalesDe: () => null, anotar: () => {}, fetch: fetchFalso });
+  const t0 = Date.now();
+  await L.minuto(t0);
+  const mic = pedidos.find((p) => p.ruta === '/avisos/voz-vivo');
+  ok(mic && mic.h['x-lg-ciclo'] === V.claveCiclo('abc') && mic.b.g['111111'].sv === 'FFA' && mic.b.g['111111'].ab.join() === '701,704'
+    && mic.b.g['111111'].en.join() === '701,702,703,704',
+  'los micrófonos van al objeto con la clave del ciclo, en el formato de en_llamada.py', JSON.stringify(mic && mic.b));
+  await L.minuto(t0 + 20000);   // (en la prueba es un minuto más del público: en Railway, minuto() va cada 60 s)
+  ok(pedidos.filter((p) => p.ruta === '/avisos/voz-vivo').length === 1, 'sin cambios, no se repite antes del latido');
+  for (let i = 1; i <= 4; i++) await L.minuto(t0 + i * 60000);
+  ok(!pedidos.some((p) => p.ruta === '/avisos/publico'), 'a los 4 minutos, la tanda del público todavía se junta');
+  falla = true;
+  await L.minuto(t0 + 5 * 60000);
+  const p1 = pedidos.filter((p) => p.ruta === '/avisos/publico').pop();
+  ok(p1 && p1.b.llave === '1000002' && p1.b.min['701'] === 7 && p1.b.min['702'] === 7 && !('703' in p1.b.min) && !('704' in p1.b.min)
+    && !('799' in p1.b.min) && L.tandas.size === 1,
+  'a los 5 minutos sale la tanda: los de la llamada del evento (silenciado vale; ensordecido, en otro canal o bot, no)', JSON.stringify(p1 && p1.b));
+  falla = false;
+  await L.minuto(t0 + 6 * 60000);
+  const p2 = pedidos.filter((p) => p.ruta === '/avisos/publico').pop();
+  ok(p2 && p2.b.tanda === p1.b.tanda && p2.b.min['701'] === 8 && L.tandas.size === 0,
+    'si no llegó, sale de nuevo con el MISMO id (el objeto no la cuenta dos veces) y lo de ese minuto adentro');
+}
+
+// ── ⚔️ cada batalla en la grabación (batallas.js, 21/11/2026) ──
+console.log('\n⚔️ cada batalla en la grabación\n');
+{
+  const B = await import('./batallas.js');
+  const { cortar, duracion } = await import('./mezcla.js');
+  // una noche de mentira (en segundos): Ana y Bea pelean de 100 a 340, turnos de 60 s; el host habla entre turnos;
+  // Cami y Dora de 400 a 640; antes, Ana y Bea charlan un poco (20 a 40) y Eva tiene el micrófono con ruido
+  const h = new B.Habla();
+  const habla = (id, a, b) => { for (let ms = a * 1000; ms < b * 1000; ms += 20) h.agregar(id, ms); };
+  habla('ana', 20, 24); habla('bea', 30, 33);
+  habla('ana', 100, 160); habla('host', 160, 165); habla('bea', 165, 225); habla('host', 225, 228);
+  habla('ana', 228, 285); habla('bea', 288, 340);
+  habla('host', 345, 360);
+  habla('cami', 400, 460); habla('dora', 465, 525); habla('cami', 528, 585); habla('dora', 588, 640);
+  for (let t = 0; t < 700; t += 30) habla('eva', t, t + 2);
+  const seg = h.segundos();
+  ok(seg.ana === 4 + 60 + 57 && seg.bea === 3 + 60 + 52, 'quién habló cuánto, de los paquetes (un hueco de más de 300 ms corta)');
+  const ab = B.ubicar([['ana'], ['bea']], h.t, 700);
+  const cd = B.ubicar([['cami'], ['dora']], h.t, 700);
+  ok(ab && ab.desde >= 90 && ab.desde <= 100 && ab.hasta >= 340 && ab.hasta <= 360, `Ana vs Bea: de ${ab && B.mmss(ab.desde)} a ${ab && B.mmss(ab.hasta)} (pelearon de 1:40 a 5:40)`);
+  ok(cd && cd.desde >= 390 && cd.desde <= 400 && cd.hasta >= 640 && cd.hasta <= 660, `Cami vs Dora: de ${cd && B.mmss(cd.desde)} a ${cd && B.mmss(cd.hasta)} (de 6:40 a 10:40)`);
+  ok(B.ubicar([['ana'], ['cami']], h.t, 700) === null, 'dos que nunca pelearon entre sí no dan ninguna batalla');
+  ok(B.ubicar([['ana'], ['nadie']], h.t, 700) === null && B.ubicar([['ana']], h.t, 700) === null,
+    'con un solo lado conocido no se puede ubicar');
+  ok(B.ubicar([['ana'], ['eva']], h.t, 700) === null, 'un micrófono con ruido no arma una batalla con nadie');
+  const llaves = [{ id: '1', nombre: 'COPA', rondas: [{ r: 'Cuartos', b: [
+    { gano: 'Cami', lados: [[{ n: 'Cami', id: 'cami' }], [{ n: 'Dora', id: 'dora' }]] },
+    { gano: 'Ana', lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Bea', id: 'bea' }]] },
+    { gano: '', lados: [[{ n: 'Fio', id: '' }], [{ n: 'Gus', id: '' }]] }] }] }];
+  const todas = B.ubicarTodas(llaves, h.t, 700);
+  ok(todas.length === 2 && todas[0].nombres.join() === 'Ana,Bea' && todas[1].nombres.join() === 'Cami,Dora',
+    'todas las de la llave que se pueden ubicar, en el orden en que se jugaron (no el de la llave)');
+  // un MC que gana y sigue: Ana le gana a Bea (100 a 340) y pelea con Cami enseguida (360 a 600, abre Ana)
+  const h2 = new B.Habla();
+  const habla2 = (id, a, b) => { for (let ms = a * 1000; ms < b * 1000; ms += 20) h2.agregar(id, ms); };
+  habla2('ana', 100, 160); habla2('bea', 165, 225); habla2('ana', 228, 285); habla2('bea', 288, 340); habla2('host', 342, 358);
+  habla2('ana', 360, 420); habla2('cami', 425, 485); habla2('ana', 488, 545); habla2('cami', 548, 600);
+  const dos = B.ubicarTodas([{ id: '2', rondas: [{ r: 'Octavos', b: [{ lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Bea', id: 'bea' }]] }] },
+    { r: 'Cuartos', b: [{ lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Cami', id: 'cami' }]] }] }] }], h2.t, 700);
+  ok(dos.length === 2 && dos[0].hasta <= dos[1].desde && dos[0].hasta >= 330 && dos[0].hasta <= 370 && dos[1].desde >= 330
+    && dos[1].desde <= 370 && dos[0].desde <= 100 && dos[1].hasta >= 600,
+  `un MC que pelea dos seguidas: no se pisan y el corte cae entre las dos (${dos.map((b) => B.mmss(b.desde) + '–' + B.mmss(b.hasta)).join(', ')})`);
+  ok(B.mmss(65) === '1:05' && B.mmss(3725) === '1:02:05' && B.nombreClip({ r: 'Cuartos', nombres: ['Ánà 🇦🇷', 'Bea + Ñoño'] })
+    === 'cuartos-ana-vs-bea-nono.ogg', 'los minutos y el nombre del archivo, sin tildes ni símbolos');
+  // el corte, con ffmpeg de verdad sobre 12 s de audio
+  const src = path.join(dir, 'corte_src.ogg'), sal = path.join(dir, 'corte_sal.ogg');
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=f=440:d=12', '-c:a', 'libopus', '-b:a', '64k', src]);
+  await cortar(src, 3, 8, sal);
+  const d = duracion(sal);
+  ok(Math.abs(d - 5) < 0.3, `cortar(): de 3 a 8 s da ${d.toFixed(2)} s, sin volver a codificar`);
+}
+
 fs.rmSync(dir, { recursive: true, force: true });
 console.log(mal ? `\n❌ ${mal} mal` : '\n✅ todo bien');
 process.exit(mal ? 1 : 0);

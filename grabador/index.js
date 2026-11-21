@@ -49,9 +49,11 @@ import {
   joinVoiceChannel, EndBehaviorType, VoiceConnectionStatus, entersState, generateDependencyReport,
 } from '@discordjs/voice';
 import { PistaOpus } from './ogg.js';
-import { mezclar, partir, duracion, sonoridad, ganancia } from './mezcla.js';
+import { mezclar, partir, duracion, sonoridad, ganancia, cortar } from './mezcla.js';
 import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 import { PruebaMicro } from './microfono.js';
+import { LlamadasVivo, claveCiclo } from './vivo.js';
+import { Habla, ubicarTodas, mmss, nombreClip } from './batallas.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
 const num = (s, d) => (Number.isFinite(Number(s)) && String(s).trim() !== '' ? Number(s) : d);
@@ -78,6 +80,8 @@ export const AVISOS_MAX = num(E.AVISOS_MAX, 12);
 //: los canales de voz de la prueba de micro (vacío = apagada). Los crea cada servidor y se cargan en Railway
 export const PRUEBA_MICRO = lista(E.PRUEBA_MICRO);
 let prueba = null;
+//: 🎙️👀 los micrófonos y el público de las llamadas en vivo (vivo.js). `VIVO=0` en Railway lo apaga
+let llamadas = null;
 //: una llave publicada hace más que esto ya no cuenta como «en juego» (lo mismo que `LLAVE_H` de en_llamada.py)
 const LLAVE_H = 3;
 const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
@@ -158,6 +162,7 @@ class Grabacion {
     this.subs = new Map();       // id -> AudioReceiveStream
     this.quien = new Map();      // id -> { nombre, bot }
     this.medidores = new Map();  // id -> MedidorVoz (sólo personas: la música de un bot no recibe avisos)
+    this.habla = new Habla();     // ⚔️ cuándo habló cada uno (sólo personas): para ubicar cada batalla (batallas.js)
     this.avisos = 0;
     this.midiendo = false;
     this.vacia = null;           // desde cuándo hay menos de SALIR_CON
@@ -208,6 +213,7 @@ class Grabacion {
       const ms = this.ms();
       pista.agregar(p, ms);
       medidor?.agregar(p, ms);
+      if (medidor) this.habla.agregar(id, ms);
     });
     // un error de descifrado corta el flujo: se suelta y el próximo «empezó a hablar» lo vuelve a abrir
     st.once('error', (e) => { anotar('⚠️ una voz se cortó:', String(e.message || e).slice(0, 100)); this.subs.delete(id); });
@@ -330,6 +336,10 @@ class Grabacion {
             allowedMentions: { parse: [] },
           });
         }
+        // ⚔️ y cada batalla por separado, si se puede: nunca frena la entrega de la grabación entera
+        try { await this.entregarBatallas(canal, mezcla, seg); } catch (e) {
+          anotar('⚠️ no pude armar las batallas:', String(e.message || e).slice(0, 200));
+        }
         fs.rmSync(this.dir, { recursive: true, force: true });
         return;
       } catch (e) {
@@ -341,6 +351,49 @@ class Grabacion {
       }
     }
     throw new Error('Discord no aceptó ni partido en cuatro');
+  }
+
+  /**
+   * ⚔️ UN AUDIO POR BATALLA (batallas.js). Le pide al Worker las batallas de las llaves de este servidor que se tocaron
+   * mientras grababa (con la cuenta de cada lado), las ubica por cuándo habló cada uno, y manda la lista con los minutos
+   * y un audio de cada una, en mensajes de hasta 10 archivos.
+   */
+  async entregarBatallas(canal, mezcla, seg) {
+    const q = new URLSearchParams({ g: this.guild.id, desde: String(this.inicio.getTime()), hasta: String(Date.now()) });
+    const r = await fetch(VIGIA + '/avisos/batallas?' + q, { headers: { 'x-lg-ciclo': claveCiclo(E.DISCORD_TOKEN) },
+      signal: AbortSignal.timeout(20000) });
+    const d = r.ok ? await r.json() : {};
+    const total = (d.llaves || []).reduce((s, L) => s + (L.rondas || []).reduce((t, R) => t + (R.b || []).length, 0), 0);
+    const bs = ubicarTodas(d.llaves, this.habla.t, seg);
+    anotar(`⚔️ batallas: ${bs.length} ubicadas de ${total} en la llave`);
+    if (!bs.length) return;
+    const lineas = bs.map((b) => `\`${mmss(b.desde)}\` ${b.r} · ${b.nombres.join(' vs ')}`);
+    let texto = `⚔️ **Las batallas**, en minutos desde que empezó la grabación (aprox.: salen de quién habló cuándo)`
+      + ` · ${bs.length} de ${total}`;
+    for (const l of lineas) { if ((texto + '\n' + l).length > 1900) { texto += '\n…'; break; } texto += '\n' + l; }
+    const tope = topeDe(this.guild?.id === canal.guildId ? this.guild : canal.guild);
+    const clips = [];
+    for (const [i, b] of bs.entries()) {
+      const ruta = path.join(this.dir, `batalla-${i}.ogg`);
+      await cortar(mezcla, b.desde, b.hasta, ruta);
+      clips.push({ attachment: ruta, name: nombreClip(b), peso: fs.statSync(ruta).size });
+    }
+    let lote = [], peso = 0, primero = true;
+    const mandar = async () => {
+      if (!lote.length && !primero) return;
+      await canal.send({ content: primero ? texto : undefined, files: lote.map(({ attachment, name }) => ({ attachment, name })),
+        allowedMentions: { parse: [] } });
+      primero = false;
+      lote = [];
+      peso = 0;
+    };
+    for (const c of clips) {
+      if (c.peso > tope) continue;
+      if (lote.length >= 10 || peso + c.peso > tope) await mandar();
+      lote.push(c);
+      peso += c.peso;
+    }
+    await mandar();
   }
 }
 
@@ -439,6 +492,8 @@ process.on('unhandledRejection', (e) => anotar('⚠️ sin atrapar:', String(e?.
 process.on('uncaughtException', (e) => anotar('⚠️ sin atrapar:', String(e?.message || e).slice(0, 200)));
 process.on('SIGTERM', async () => {
   anotar('🛑 Railway me apaga: cierro lo que haya');
+  // 👀 la tanda del público que estaba juntando, antes de irse (si no, se pierden esos minutos)
+  if (llamadas) await llamadas.mandarPublico(Date.now(), true).catch(() => {});
   await Promise.allSettled([...grabando.values()].map((g) => g.terminar('se reinició el grabador')));
   process.exit(0);
 });
@@ -455,6 +510,11 @@ client.once(Events.ClientReady, async () => {
   if (process.argv.includes('--revisar')) return revisarYSalir(client);
   setInterval(() => vuelta(client).catch((e) => anotar('⚠️ vuelta:', String(e.message || e).slice(0, 150))), 20000);
   arrancarPrueba(client);
+  if (E.VIVO !== '0') {
+    llamadas = new LlamadasVivo({ client, token: E.DISCORD_TOKEN, canalesDe: (gid) => CANALES_DE[gid] || null, anotar });
+    llamadas.arrancar();
+    anotar('🎙️👀 micrófonos y público de las llamadas en vivo: prendido');
+  }
   setInterval(medir, 300000);
   medir();
 });
