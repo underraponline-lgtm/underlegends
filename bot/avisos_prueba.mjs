@@ -2334,6 +2334,108 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🖼️ UN RESULTADO NUNCA SALE SOLO EN UN RECUADRO DE TEXTO (21/11/2026, Dlx con una captura del chat de FFA: «el bot
+// debería enviar todo junto la imagen y el texto, o sea no rushear y publicar únicamente el embed. Y también asegurarte que
+// los botones respectivos estén»). «✅ Mito pasa…» salió sin imagen ni botones: su cruce esperaba la imagen y la batalla se
+// definió antes. Ahora el resultado toma la imagen de su cruce y sale con ella; si no hay, con la carta del que pasó
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  // los botones de un resultado que sale solo: el perfil de quien pasó y la tarjeta si a alguno le falta
+  const fr = A.filasResultado({ pasan: [{ n: 'Ana', k: 'ana', carta: true }], todos: [{ n: 'Ana', k: 'ana', carta: true }, { n: 'Bea', k: 'bea', carta: false }] });
+  const fr2 = A.filasResultado({ pasan: [{ n: 'Ana', k: 'ana', carta: true }], todos: [{ n: 'Ana', k: 'ana', carta: true }] });
+  ok(fr.length === 1 && fr[0].components.length === 2 && /\/freestyle-rap\/r\/ana$/.test(fr[0].components[0].url)
+    && fr[0].components[1].label === 'Consigue tu tarjeta' && fr2[0].components.length === 1 && !A.filasResultado(null).length
+    && !A.filasResultado({ pasan: [{ n: 'Ana', k: '', carta: false }], todos: [{ n: 'Ana', k: '', carta: true }] }).length,
+  'los botones del resultado: el perfil de quien pasó, y «Consigue tu tarjeta» sólo si a alguno de esa batalla le falta',
+  JSON.stringify([fr, fr2]));
+  if (DatabaseSync) {
+    console.log('\n🖼️ un resultado sale con la imagen de su cruce y con sus botones, nunca solo\n');
+    const T = Date.parse('2026-11-21T19:40:00Z');
+    const CANAL = '555000000000000021';
+    const AB = '# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n';
+    // Ana pasa: aparece en la ronda siguiente (así lo escribe el organizador)
+    const GANA = AB + '`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n';
+    const IMG = R2_PRUEBA + '/vs/ffa-ab2.jpg';
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body && typeof op.body === 'string' ? vista(JSON.parse(op.body)) : null });
+      return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
+    };
+    const nuevo = async (nivel = 'full') => {
+      const db = new DatabaseSync(':memory:');
+      const sql = {
+        exec(q, ...ps) {
+          const t = String(q).trim();
+          if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+          const st = db.prepare(t);
+          if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+          st.run(...ps);
+          return { toArray: () => [] };
+        },
+      };
+      // Ana tiene su tarjeta de Temporada; Bea, Cami y Dora no
+      const kv = new Map([['cfg:111', JSON.stringify({ vivo: CANAL, vivo_nivel: nivel })],
+        ['web:lobby', JSON.stringify({ r2: R2_PRUEBA, cartas: ['temporada'], tabla: [{ n: 'Ana', k: 'ana', ovr: 88, c: ['temporada'] },
+          { n: 'Bea', k: 'bea', ovr: 60 }, { n: 'Cami', k: 'cami', ovr: 70 }, { n: 'Dora', k: 'dora', ovr: 50 }] })]]);
+      const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+        blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+      o.state = o.state || {};
+      o.state.storage = o.state.storage || { transactionSync: (f) => f() };
+      if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
+      await new Promise((r) => setTimeout(r, 5));
+      const llave = (texto, ed) => sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+        "VALUES ('9', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]') ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, " +
+        'texto = excluded.texto', T - 60000, ed, texto, ed);
+      return { o, sql, llave };
+    };
+    const posts = () => pedidos.filter((p) => p.m === 'POST' && p.b);
+    const urls = (m) => (m.b.components || []).flatMap((f) => f.components || []).map((c) => c.label || '');
+
+    // 1 · lo de FFA: el cruce de Ana y Bea espera su imagen, y la batalla se define antes de que llegue
+    {
+      const { o, sql, llave } = await nuevo();
+      pedidos.length = 0;
+      llave(AB, T);
+      await o.chatVivo(T);
+      const c1 = o.vsCola('FFA', T + 20000).vs;
+      llave(GANA, T + 60000);
+      await o.chatVivo(T + 60000);
+      ok(c1.length === 1 && c1[0].a.n === 'Ana' && !posts().length,
+        'el cruce espera su imagen, Ana gana mientras tanto, y su «pasa» no sale solo: espera esa imagen',
+        JSON.stringify({ c1: c1.map((x) => [x.a.n, x.b.n]), posts: posts().map((p) => [p.b.content, p.b.img]) }));
+      await o.vsListo({ id: c1[0] && c1[0].id, url: IMG }, T + 90000);
+      const m = posts()[0];
+      const anot = sql.exec("SELECT m, msg FROM chat_vivo WHERE m = 'v:Cuartos:0'").toArray()[0];
+      ok(posts().length === 1 && m.b.img === IMG && /^🎤 Arrancó \*\*COPA Y\*\*/.test(m.b.content)
+        && /✅ \*\*Ana 🇦🇷\*\* pasa · Cuartos/.test(m.b.content) && !/Cami 🇻🇪\*\* vs/.test(m.b.content)
+        && ['Estadísticas', 'Perfiles', 'Consigue tu tarjeta'].every((l) => urls(m).includes(l)),
+      'llega la imagen: «Arrancó» y el «pasa» de Ana salen juntos, con la imagen de su cruce y sus botones (estadísticas, perfiles, tarjeta)',
+      JSON.stringify(posts().map((p) => [p.b.content.slice(-300), p.b.img, urls(p)])));
+      ok(anot && anot.msg !== '',
+        'y queda anotado también como ese cruce: lo que venga de esa batalla se le agrega a ese mensaje', JSON.stringify(anot));
+      const atada = sql.exec("SELECT msg FROM vs_cola WHERE id = ?", c1[0].id).toArray()[0];
+      ok(atada && atada.msg && atada.msg === anot.msg, 'y la imagen queda atada a ese mensaje', JSON.stringify(atada));
+    }
+
+    // 2 · en «cada batalla» no hay cruces: el «pasa» sale solo, con la tarjeta de quien pasó y sus botones
+    {
+      const { o, llave } = await nuevo('todo');
+      pedidos.length = 0;
+      llave(AB, T);
+      await o.chatVivo(T);
+      llave(GANA, T + 3 * 60000);
+      await o.chatVivo(T + 3 * 60000);
+      const m = posts().find((p) => /✅ \*\*Ana 🇦🇷\*\* pasa/.test(p.b.content || ''));
+      ok(m && m.b.img === R2_PRUEBA + '/ana/temporada.webp' && urls(m).some((l) => /Ana/.test(l)) && urls(m).includes('Consigue tu tarjeta'),
+        'en «cada batalla», el «pasa» sale con la tarjeta de Ana abajo y con los botones de su perfil y de la tarjeta',
+        JSON.stringify(posts().map((p) => [p.b.content.slice(-300), p.b.img, urls(p)])));
+    }
+    globalThis.fetch = antesF;
+  }
+}
+
 // 🎙️ EL CRUCE QUE SE JUEGA DE VERDAD, POR LOS MICRÓFONOS (19/11/2026, Dlx: «arregla lo del orden de los cruces»). Esa noche
 // Cypherhood jugó los Octavos salteados: el bot anunció «Julda vs LRS» (LRS no estaba en la llamada) y «Dios vs Beneroo»
 // salió sólo con su resultado. La conexión de la llamada manda quién tiene el micrófono abierto (`vozVivo()`) y el bot

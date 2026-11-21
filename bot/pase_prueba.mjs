@@ -27,7 +27,8 @@ const sql = {
   },
 };
 const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
-  { KV: { get: async () => null } });
+  // 🔑 en KV, el perfil de cada cuenta (`d:<id>`, el Miembro de DRA): `perfilDe()` lo vuelve a pedir pasadas 6 horas
+  { KV: { get: async (k) => ({ 'd:111111111111111111': 'ana', 'd:222222222222222222': 'bea' })[k] ?? null } });
 await new Promise((r) => setTimeout(r, 5));
 
 const H = 3600000, DIA = 24 * H;
@@ -178,15 +179,17 @@ try {
   ok(A.ajusteValido('pase_sorteo', { id: 'x y', cierra: '2026-10-30', sorteo: '2026-10-31' }) === undefined
     && A.ajusteValido('pase_sorteo', { id: 'abc', cierra: '2026-11-01', sorteo: '2026-10-31' }) === undefined
     && A.ajusteValido('pase_sorteo', null) === null, 'el ajuste del sorteo: id limpio y cierra antes de sortear');
-  sql.exec("INSERT OR IGNORE INTO idk (id, k, t) VALUES (?, 'ana', 1)", ANA);
-  sql.exec("INSERT INTO idk (id, k, t) VALUES (?, 'bea', 1)", BEA);
-  const eA = o.sorteoEntrar({ quien: ANA }), eB = o.sorteoEntrar({ quien: BEA });
+  // los perfiles de Ana y Bea, como los deja `perfilDe()`: recién buscados (con más de 6 horas los vuelve a pedir a KV)
+  sql.exec("INSERT OR IGNORE INTO idk (id, k, t) VALUES (?, 'ana', ?)", ANA, AHORA);
+  sql.exec("INSERT INTO idk (id, k, t) VALUES (?, 'bea', ?)", BEA, AHORA);
+  // (`sorteoEntrar()` es asíncrona desde el 21/11/2026: busca el perfil de quien entra, `perfilDe()`)
+  const eA = await o.sorteoEntrar({ quien: ANA }), eB = await o.sorteoEntrar({ quien: BEA });
   ok(eA.ok && eA.mio === 2 && eB.mio === 1 && eB.sorteo.personas === 2 && eB.sorteo.boletos === 3
-    && o.sorteoEntrar({ quien: DANI }).error === 'miembro',
+    && (await o.sorteoEntrar({ quien: DANI })).error === 'miembro',
   'entrar al sorteo: Ana con 2 boletos (completó la semana pasada), Bea con 1; quien no es del Pase, no', JSON.stringify([eA.mio, eB.mio]));
   ok(await o.sortear(AHORA) === null && !o.sorteoDe('').resultado, 'antes de la hora no se sortea');
   AHORA = Date.parse('2026-10-31T00:00:30Z');
-  ok(o.sorteoEntrar({ quien: CAMI }).error === 'cerrado', 'después del cierre no se entra');
+  ok((await o.sorteoEntrar({ quien: CAMI })).error === 'cerrado', 'después del cierre no se entra');
   const g = await o.sortear(AHORA);
   const sd = o.sorteoDe(BEA);
   ok([ANA, BEA].includes(g) && sd.resultado && sd.resultado.personas === 2 && sd.resultado.boletos === 3
@@ -230,16 +233,16 @@ try {
 
   // ── 🎟️ el sorteo en el Dashboard (12/11/2026): quién entró y los anteriores, por clave; volver a sortear sólo si el
   // ganador ya no está en DRA (`rol` -1), y entonces sale de la lista y el vigía sortea entre los demás ──
-  const dv = o.sorteoDueno({});
+  const dv = await o.sorteoDueno({});
   ok(dv.ok && dv.partes.length === 2 && dv.partes.some((p) => p.k === 'ana' && p.b === 2) && dv.hist.length === 1
-    && dv.hist[0].id === 'premium-t1' && !JSON.stringify(dv).includes(ANA) && !JSON.stringify(dv).includes(BEA)
-    && o.sorteoDueno({ accion: 'rehacer' }).error,
-  'el Dashboard ve quién entró y con cuántos boletos, por clave y nunca por cuenta; con el rol puesto no se rehace', JSON.stringify(dv));
+    && dv.hist[0].id === 'premium-t1' && !JSON.stringify(dv).includes(ANA) && !JSON.stringify(dv).includes(BEA),
+  // (hasta el 21/11/2026, con el rol puesto no se rehacía; desde la 7.50 Dlx lo rehace él: ver avisos_prueba.mjs)
+  'el Dashboard ve quién entró y con cuántos boletos, por clave y nunca por cuenta', JSON.stringify(dv));
   sql.exec("UPDATE sorteo_res SET rol = -1 WHERE sorteo = 'premium-t1'");
-  const rh = o.sorteoDueno({ accion: 'rehacer' });
+  const rh = await o.sorteoDueno({ accion: 'rehacer' });
   const g2 = await o.sortear(AHORA + 120000);
   ok(rh.rehecho && rh.partes.length === 1 && rh.hist.length === 0 && rh.rehechos.length === 1 && g2 && g2 !== g
-    && o.sorteoDueno({}).hist[0].k === (g2 === ANA ? 'ana' : 'bea'),
+    && (await o.sorteoDueno({})).hist[0].k === (g2 === ANA ? 'ana' : 'bea'),
   'si el ganador ya no está en DRA: su resultado va al historial, su boleto sale y el vigía sortea entre los demás',
   JSON.stringify({ rh, g2 }));
 

@@ -712,11 +712,18 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
           // un mano a mano dice contra quién; un grupo, con quiénes (de ahí puede pasar más de uno)
           const resto = !otros.length ? '' : lados.length === 2 ? ' · contra ' + otros[0] : ' · de un grupo con ' + conY(otros);
           const cab = '⚔️ **' + tit + '**';
-          out.push({ m: base, cab, bi: R.r + ':' + i, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto,
+          // 🖼️ Y LO QUE LLEVA SI SALE SOLO (21/11/2026, Dlx con una captura del chat de FFA: «el bot debería enviar todo
+          // junto la imagen y el texto, o sea no rushear y publicar únicamente el embed. Y también asegurarte que los botones
+          // respectivos estén»): la carta del que pasó, abajo del recuadro, y sus botones (`filasResultado()`). Si su
+          // cruce todavía espera su imagen, lleva ÉSA y sale con ella (`chatVivo()`)
+          const chico = (y) => ({ n: y.n, k: y.k || '', carta: !!(y.k && opc.cartaDe && opc.cartaDe(y.k, opc.sv)) });
+          const imgG = gs[0].k && opc.cartaDe ? opc.cartaDe(gs[0].k, opc.sv) : '';
+          out.push(Object.assign({ m: base, cab, bi: R.r + ':' + i, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto,
             // lo que se le agrega al mensaje del cruce cuando ya salió: los nombres ya están arriba, alcanza con quién
             res: '✅ ' + (gs.length > 1 ? 'Pasan' : 'Pasa') + ' **' + nombresChat(gs) + '**',
             // 🏁 quién pasó (la imagen del resultado ya no se dibuja desde el 11/11/2026)
-            gk: gs[0].k || claveTurno(gs[0].n) });
+            gk: gs[0].k || claveTurno(gs[0].n),
+            bt: { pasan: gs.map(chico), todos: lados.flatMap((l) => gente(l)).map(chico) } }, imgG ? { img: imgG } : {}));
           for (const y of gs.slice(1)) {
             out.push({ m: 'u:' + R.r + ':' + i + ':' + (y.k || claveTurno(y.n)), de: base, cab,
               texto: '🧩 **' + nombreChat(gs[0]) + '** suma a **' + nombresChat([y]) + '** a su equipo' });
@@ -820,15 +827,32 @@ function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO
   for (const x of conLider) if (viejasM.has(x.de)) plan.push({ tipo: 'saltar', m: x.m });
   const van = propias.filter((x) => !viejas.has(x));
   if (!van.length) return plan;
-  const junto = conLider.filter((x) => !viejasM.has(x.de)).map((x) => x.m);
-  const cab = !van.some((x) => x.m === 'llave') && van.find((x) => x.cab);
-  const img = (van.find((x) => x.img) || {}).img;
-  // 🖼️ el vs y de qué momento es (`vsm`): con eso el mensaje espera a su imagen (ver `vsEspera()`)
-  const conVs = van.find((x) => x.vs);
-  plan.push(Object.assign({ tipo: 'mandar', m: van.map((x) => x.m).concat(junto),
-    texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') }, img ? { img } : {},
-  // 🎙️ también la que ya se está jugando (sus micrófonos se abrieron, `batallaVivo()`): desde el 21/11/2026 espera igual
-  conVs ? { vs: conVs.vs, vsm: conVs.m } : {}));
+  // un mensaje con los momentos `g`: su título, su imagen, su vs y sus botones
+  const mensaje = (g) => {
+    const junto = conLider.filter((x) => !viejasM.has(x.de) && g.some((y) => y.m === x.de)).map((x) => x.m);
+    const cab = !g.some((x) => x.m === 'llave') && g.find((x) => x.cab);
+    const img = (g.find((x) => x.img) || {}).img;
+    // 🖼️ el vs y de qué momento es (`vsm`): con eso el mensaje espera a su imagen (ver `vsEspera()`). Un resultado cuyo
+    // cruce no llegó a salir trae la imagen de ese cruce (`vsm` = `v:<lugar>`, `vsFila`, ver `chatVivo()`): el mensaje
+    // queda anotado también como ese cruce, así lo que venga de esa batalla se le agrega
+    const conVs = g.find((x) => x.vs);
+    const vsm = conVs ? conVs.vsm || conVs.m : '';
+    // 🔘 los botones de los resultados (`filasResultado()`): quiénes pasaron y si a alguno le falta la tarjeta
+    const bts = g.filter((x) => x.bt).map((x) => x.bt);
+    const bt = bts.length ? { pasan: bts.flatMap((y) => y.pasan || []), todos: bts.flatMap((y) => y.todos || []) } : null;
+    return Object.assign({ tipo: 'mandar', m: g.map((x) => x.m).concat(junto).concat(vsm && !g.some((x) => x.m === vsm) ? [vsm] : []),
+      texto: (cab ? [cab.cab] : []).concat(g.map((x) => x.texto)).join('\n') }, img ? { img } : {},
+    // 🎙️ también la que ya se está jugando (sus micrófonos se abrieron, `batallaVivo()`): desde el 21/11/2026 espera igual
+    conVs ? { vs: conVs.vs, vsm } : {}, conVs && conVs.vsFila ? { vsFila: conVs.vsFila } : {}, bt ? { bt } : {});
+  };
+  // 🖼️ UN RESULTADO CON LA IMAGEN DE SU CRUCE VA EN SU PROPIO MENSAJE (21/11/2026): junto con el cruce que sigue, ese cruce
+  // saldría con la imagen ajena. Primero los resultados, cada uno con la suya; después lo demás, como siempre
+  // ⚠️ «Arrancó» va con el primero: si no, el resultado saldría antes que el arranque del evento
+  const solos = van.filter((x) => x.vsFila).map((x) => [x]);
+  const arranque = solos.length ? van.find((x) => x.m === 'llave') : null;
+  if (arranque) solos[0].unshift(arranque);
+  const resto = van.filter((x) => !x.vsFila && x !== arranque);
+  for (const g of solos.concat(resto.length ? [resto] : [])) plan.push(mensaje(g));
   return ed.concat(plan);
 }
 
@@ -1579,6 +1603,20 @@ export function filasVs(vs) {
   // celular Discord los baja solo si no entran
   const todos = filas.flatMap((f) => f.components);
   return todos.length && todos.length <= 5 ? [{ type: 1, components: todos }] : filas;
+}
+
+/**
+ * 🔘 LOS BOTONES DE UN RESULTADO QUE SALE SOLO (21/11/2026, Dlx: «asegurarte que los botones respectivos estén»): el perfil
+ * de quien pasó (hasta dos) y «Consigue tu tarjeta» si alguno de esa batalla no la tiene, como el cruce (`filasVs()`). `bt`
+ * es `{pasan, todos}` de `momentosChat()`: `[{n, k, carta}]`.
+ */
+export function filasResultado(bt) {
+  if (!bt) return [];
+  const perfiles = (bt.pasan || []).filter((y) => y && y.k).slice(0, 2).map((y) => ({ type: 2, style: 5, label: nombreBoton(y.n),
+    emoji: { name: '👤' }, url: HUB + '/freestyle-rap/r/' + encodeURIComponent(y.k) }));
+  const sinCarta = (bt.todos || []).some((y) => y && !y.carta);
+  const todos = perfiles.concat(sinCarta ? [{ type: 2, style: 5, label: 'Consigue tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] : []);
+  return todos.length ? [{ type: 1, components: todos }] : [];
 }
 
 /**
@@ -11093,6 +11131,28 @@ export class Avisos {
           }
         }
       }
+      // 🖼️ EL RESULTADO DE UN CRUCE QUE NO LLEGÓ A SALIR SALE CON SU IMAGEN (21/11/2026, Dlx con una captura del chat de FFA:
+      // «el bot debería enviar todo junto la imagen y el texto, o sea no rushear y publicar únicamente el embed. Y también
+      // asegurarte que los botones respectivos estén»). El cruce sale sólo para la batalla que se está jugando, y espera a
+      // su imagen hasta `VS_ESPERA`: si esa batalla se define antes, deja de ser la de ahora y el cruce no sale nunca, y su
+      // «✅ pasa» salía solo, en un recuadro de texto, sin imagen ni botones (DESGRACIAS EN TOKYO VOL 32, 2:46 PM: «Mito
+      // pasa…»). Ahora ese resultado toma la imagen de su cruce —la de la cola, todavía sin mensaje—, la espera y sale con
+      // ella y con los botones del cruce. ⚠️ Sólo si el que pasó está en esa imagen: la llave se edita en vivo
+      if (porBatalla(nivel)) {
+        for (const x of ms) {
+          if (!x.bi || x.vs || hechos[x.m] || hechos['v:' + x.bi]) continue;
+          const f = this.sql.exec("SELECT id, datos FROM vs_cola WHERE canal = ? AND clave = ? AND msg = '' AND estado != 'vencido' " +
+            'AND t > ? ORDER BY t DESC LIMIT 1', canal, L.id + ':v:' + x.bi, ahora - VS_VENCE).toArray()[0];
+          if (!f) continue;
+          let d = null;
+          try { d = JSON.parse(f.datos); } catch (e) { d = null; }
+          if (!d) continue;
+          const quienes = (Array.isArray(d.grupos) ? d.grupos.flat() : [d.a, d.b]).filter(Boolean)
+            .flatMap((y) => [y.k, claveTurno(y.n || '')]).filter(Boolean);
+          if (x.gk && !quienes.includes(x.gk)) continue;
+          Object.assign(x, { vs: d, vsm: 'v:' + x.bi, vsFila: f.id });
+        }
+      }
       // 🧹 MENOS DE GOLPE (Dlx, 12/10/2026, el General de Urban: «siento que eso es mucho spam… todo de golpe»):
       // en «Con datos» y «A full», (a) la final sale UNA vez —el cruce ya la anuncia con su título y su dato, y
       // «🔥 La final de…» la repetía en el mismo mensaje— y (b) el resultado de una batalla cuyo cruce ya salió se le
@@ -11141,7 +11201,7 @@ export class Avisos {
       // 19/11/2026 salía en la misma vuelta que esa edición. Sólo los cruces de ahora (`ms`): uno que ya no viene no cuenta
       // 🎙️ Y UNO QUE YA SE ESTÁ JUGANDO (`ya`, sus micrófonos se abrieron) tampoco espera el «cada cuánto»
       const yaEspera = ms.some((x) => x.vs && !hechos[x.m] && (x.ya || this.sql.exec("SELECT 1 AS x FROM vs_cola WHERE canal = ? AND clave = ? AND msg = '' LIMIT 1",
-        canal, L.id + ':' + x.m).toArray().length > 0));
+        canal, L.id + ':' + (x.vsm || x.m)).toArray().length > 0));
       for (const p of planChat(ms, hechos, yaEspera ? 0 : ult, ahora, fresca, nivel, entre)) {
         if (p.tipo === 'saltar') {
           this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
@@ -11153,8 +11213,12 @@ export class Avisos {
         // a pedir en la vuelta siguiente (o `vsListo()`, cuando la imagen llega)
         let conVs = null;
         if (p.tipo === 'mandar' && p.vs && p.vsm) {
-          try { conVs = this.vsEspera(canal, L.id + ':' + p.vsm, p.vs, b.sv || '', ahora); } catch (e) { conVs = { url: '', fila: null }; }
-          if (conVs.espera) { esperando++; continue; }
+          try {
+            conVs = p.vsFila ? this.vsDeFila(p.vsFila, canal, L.id + ':' + p.vsm, ahora) : this.vsEspera(canal, L.id + ':' + p.vsm, p.vs, b.sv || '', ahora);
+          } catch (e) { conVs = { url: '', fila: null }; }
+          // ⏳ un resultado que espera la imagen de su cruce frena lo que viene detrás: si no, la batalla siguiente se
+          // anunciaría antes que el resultado de la anterior
+          if (conVs.espera) { esperando++; if (p.vsFila) break; continue; }
         }
         pedidos++;
         // 🎲 la apuesta va en el mensaje que lleva su cruce, con sus botones
@@ -11163,7 +11227,8 @@ export class Avisos {
         // 🃏 y debajo, «Conseguí tu tarjeta» si alguno sale con la silueta. Sólo al mandar: una edición sin `components`
         // deja los botones que el mensaje ya tiene
         // 📊 y «Ver estadísticas» en la misma fila (`filasVs()`)
-        const filaT = p.tipo === 'mandar' ? filasVs(p.vs) : [];
+        // 🔘 y un resultado que sale solo, con los suyos: el perfil de quien pasó y la tarjeta (`filasResultado()`, 21/11/2026)
+        const filaT = p.tipo === 'mandar' ? (p.vs ? filasVs(p.vs) : filasResultado(p.bt)) : [];
         let r = null;
         try {
           // 🛑 nunca menciona a nadie (las menciones se ven y no suenan). 🏆 Con imagen (la tarjeta del campeón), abajo del
@@ -13235,6 +13300,20 @@ export class Avisos {
       String(canal), String(clave), firma).toArray().length) return false;
     const r = this.vsEncolar(Object.assign({}, vs, { sv, canal: String(canal), msg: '', clave: String(clave), firma }), ahora);
     return !!(r && r.ok);
+  }
+
+  /**
+   * 🖼️ La imagen ya pedida del cruce de un resultado (21/11/2026, ver `chatVivo()`): por su fila, sin volver a calcular la
+   * firma —la de la cola ya es de esa batalla—. Lo mismo que `vsEspera()`: `{espera: true}` o `{url, fila}`.
+   */
+  vsDeFila(id, canal, clave, ahora = Date.now()) {
+    const f = this.sql.exec('SELECT id, estado, url, t FROM vs_cola WHERE id = ?', String(id)).toArray()[0];
+    if (!f) return { url: '', fila: null };
+    const t0 = Number((this.sql.exec('SELECT MIN(t) AS t FROM vs_cola WHERE canal = ? AND clave = ? AND t > ?',
+      String(canal), String(clave), ahora - VS_VENCE).toArray()[0] || {}).t) || f.t;
+    if (f.estado === 'hecho' && f.url) return { url: f.url, fila: f };
+    if ((f.estado === 'espera' || f.estado === 'dibujando') && ahora - Math.min(t0, f.t) < VS_ESPERA) return { espera: true };
+    return { url: '', fila: f };
   }
 
   /** ⏳ Ya mandado: el vs queda atado a su mensaje, así una imagen que llega tarde se le agrega editándolo (`vsListo()`). */
