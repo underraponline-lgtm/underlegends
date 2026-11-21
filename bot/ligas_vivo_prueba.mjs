@@ -214,16 +214,17 @@ if (!DatabaseSync) {
   await vuelta(301);
   ok(mandados.length === 1 && estadoDe().includes('arranca'), 'con uno de los dos en la llamada: arranca, y espera a su imagen');
   enVoz.clear();
-  // ⏳ la imagen no llega: a los `VS_ESPERA` (3 minutos) sale sin ella, y si llega tarde se le agrega editándolo, como antes
-  await vuelta(303);
-  ok(mandados.length === 1, 'antes de los 3 minutos sigue esperando');
-  await vuelta(304.5);
+  // ⏳ la imagen no llega: a los `VS_ESPERA` (6 minutos desde el 21/11/2026) sale sin ella, y si llega tarde se le agrega
+  // editándolo, como antes
+  await vuelta(306);
+  ok(mandados.length === 1, 'antes de los 6 minutos sigue esperando');
+  await vuelta(307.5);
   const sinImg = mandados[1];
   const vs2 = sql.exec("SELECT id, msg FROM vs_cola WHERE clave != '' ORDER BY t DESC LIMIT 1").toArray()[0];
   ok(mandados.length === 2 && sinImg && !sinImg.img && vs2 && vs2.msg === '92',
-    'a los 3 minutos sin imagen sale sin ella, y el VS queda atado al mensaje', JSON.stringify({ n: mandados.length, vs2 }));
+    'a los 6 minutos sin imagen sale sin ella, y el VS queda atado al mensaje', JSON.stringify({ n: mandados.length, vs2 }));
   const nEd = editados.length;
-  await o.vsListo({ id: vs2.id, url: 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/urbf-2.jpg' }, T0 + 305 * M);
+  await o.vsListo({ id: vs2.id, url: 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/urbf-2.jpg' }, T0 + 308 * M);
   ok(editados.length === nEd + 1 && editados[nEd].img.endsWith('/urbf-2.jpg') && /^(10,)?17,12(,1)+$/.test(editados[nEd].orden.join()),
     'la imagen que llega tarde se le agrega editándolo, con los botones debajo', JSON.stringify(editados[nEd] && editados[nEd].orden));
   await vuelta(314);

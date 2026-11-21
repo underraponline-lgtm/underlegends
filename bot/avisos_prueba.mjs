@@ -2196,25 +2196,27 @@ const ok = (cond, que, det) => {
         'y queda atada a ese mensaje la imagen de Cami y Dora, no la de Ana y Bea', JSON.stringify(atadas));
     }
 
-    // 2 · la llave cambia cerca del final de la espera: no vuelve a esperar los tres minutos enteros, sale sin imagen y la de
+    // 2 · la llave cambia cerca del final de la espera: no vuelve a esperar `VS_ESPERA` entero, sale sin imagen y la de
     // ESE cruce se le agrega editándolo. La de Ana y Bea, que la tarea todavía no se había llevado, ya no se dibuja
     {
       const { o, sql, llave } = await nuevo();
       pedidos.length = 0;
       llave(AB, T);
       await o.chatVivo(T);
-      llave(CD, T + 150000);
-      await o.chatVivo(T + 150000);
+      // (con `VS_ESPERA`: eran 3 minutos y desde el 21/11/2026 son 6; la llave cambia 30 s antes de que se cumplan)
+      const E = A.VS_ESPERA;
+      llave(CD, T + E - 30000);
+      await o.chatVivo(T + E - 30000);
       const antes = posts().length;
-      await o.chatVivo(T + 190000);
+      await o.chatVivo(T + E + 10000);
       const m = posts()[0];
-      const cola = o.vsCola('FFA', T + 200000).vs;
+      const cola = o.vsCola('FFA', T + E + 20000).vs;
       ok(antes === 0 && m && !m.b.img && /Cami 🇻🇪\*\* vs \*\*Dora 🇲🇽/.test(m.b.content) && cola.length === 1 && cola[0].a.n === 'Cami'
         && sql.exec("SELECT COUNT(*) AS n FROM vs_cola WHERE estado = 'vencido'").toArray()[0].n === 1,
-      'si la llave cambia a los 2:30, el cruce sale a los 3:00 sin imagen, y la de Ana y Bea ya no se dibuja',
+      'si la llave cambia 30 s antes de cumplirse la espera, el cruce sale al cumplirse, sin imagen, y la de Ana y Bea ya no se dibuja',
       JSON.stringify({ antes, m: m && [m.b.content, m.b.img], cola: cola.map((x) => [x.a.n, x.b.n]) }));
       pedidos.length = 0;
-      const l2 = await o.vsListo({ id: cola[0] && cola[0].id, url: IMG_CD }, T + 230000);
+      const l2 = await o.vsListo({ id: cola[0] && cola[0].id, url: IMG_CD }, T + E + 50000);
       const ed = pedidos.find((p) => p.m === 'PATCH' && p.b);
       ok(l2.ok && ed && ed.b.img === IMG_CD, 'y cuando llega la imagen de Cami y Dora, se le agrega editándolo',
         JSON.stringify({ l2, ed: ed && [ed.b.content, ed.b.img] }));
@@ -2301,12 +2303,20 @@ const ok = (cond, que, det) => {
       llave(GANA_ANA, T);
       mic([ID.eva, ID.fio], todos, T);
       await o.chatVivo(T);
+      // ⏳ desde el 21/11/2026 la que se está jugando también ESPERA a su imagen (Dlx: «que se demore sí, pero que lleguen
+      // juntas»): no sale nada y Eva vs Fio va a la cola sin mensaje
+      const fila = sql.exec("SELECT msg, datos FROM vs_cola").toArray();
+      ok(!cruces().length && fila.length === 1 && fila[0].msg === '' && JSON.parse(fila[0].datos).a.n === 'Eva'
+        && sql.exec("SELECT 1 FROM chat_vivo WHERE m = 'voz'").toArray().length === 1,
+      'la llave dice Cami vs Dora y los micrófonos abiertos son los de Eva y Fio: Eva vs Fio espera a su imagen, sin mandar nada',
+      JSON.stringify({ cruces: cruces(), fila }));
+      await o.chatVivo(T + 60000);
+      ok(!cruces().length, 'un minuto después, sin imagen, sigue esperando aunque la batalla ya se esté jugando');
+      const cola = o.vsCola('FFA', T + 70000).vs;
+      await o.vsListo({ id: cola[0] && cola[0].id, url: IMG }, T + 90000);
       const cs = cruces();
-      const fila = sql.exec("SELECT msg, datos FROM vs_cola WHERE msg != ''").toArray()[0];
-      ok(cs.length === 1 && /\*\*Eva 🇵🇪\*\* vs \*\*Fio 🇺🇾\*\*/.test(cs[0][1]) && !cs[0][2]
-        && fila && JSON.parse(fila.datos).a.n === 'Eva' && sql.exec("SELECT 1 FROM chat_vivo WHERE m = 'voz'").toArray().length === 1,
-      'la llave dice Cami vs Dora y los micrófonos abiertos son los de Eva y Fio: sale Eva vs Fio, ya (la imagen se le agrega)',
-      JSON.stringify(cs));
+      ok(cs.length === 1 && /\*\*Eva 🇵🇪\*\* vs \*\*Fio 🇺🇾\*\*/.test(cs[0][1]) && cs[0][2] === IMG,
+        'llega la imagen: Eva vs Fio sale en ese momento, con ella', JSON.stringify(cs));
     }
 
     // 2 · alguien de la batalla de la llave no está en la llamada: no se puede estar jugando, no se anuncia
@@ -2327,6 +2337,9 @@ const ok = (cond, que, det) => {
       llave(CUARTOS, T);
       mic([ID.ana, ID.bea], todos, T);
       await o.chatVivo(T);
+      // ⏳ Ana y Bea abren el micrófono: su cruce espera a su imagen (21/11/2026) y sale con ella
+      const ab = o.vsCola('FFA', T + 30000).vs.find((x) => x.a && x.a.n === 'Ana');
+      await o.vsListo({ id: ab && ab.id, url: R2_PRUEBA + '/vs/ffa-ab-mic.jpg' }, T + 60000);
       const c1 = cruces();
       llave(GANA_ANA, T + 4 * 60000);
       mic([], todos, T + 4 * 60000);
@@ -2334,11 +2347,10 @@ const ok = (cond, que, det) => {
       await o.chatVivo(T + 4 * 60000);
       const pre = sql.exec("SELECT id FROM vs_cola WHERE msg = '' AND clave LIKE '%:v:Cuartos:1'").toArray();
       const despues = pedidos.slice(antes).filter((p) => p.b);
-      ok(c1.length === 1 && /Ana 🇦🇷\*\* vs \*\*Bea/.test(c1[0][1]) && cruces().length === 1 && pre.length === 1
+      ok(c1.length === 1 && /Ana 🇦🇷\*\* vs \*\*Bea/.test(c1[0][1]) && /ffa-ab-mic/.test(c1[0][2]) && cruces().length === 1 && pre.length === 1
         && despues.some((p) => /✅/.test(p.b.content || '')),
       'Ana le ganó a Bea: el «✅» sale, y Cami vs Dora NO se anuncia todavía, pero su imagen ya se dibuja',
       JSON.stringify({ c1, cruces: cruces(), pre, despues: despues.map((p) => [p.m, String(p.b.content || '').slice(0, 80)]) }));
-      // (en la cola también está la de Ana y Bea, que salió sin esperarla: se le agrega a su mensaje)
       const cola = o.vsCola('FFA', T + 5 * 60000).vs;
       const cd = cola.find((x) => x.a && x.a.n === 'Cami');
       const l1 = await o.vsListo({ id: cd && cd.id, url: IMG }, T + 6 * 60000);

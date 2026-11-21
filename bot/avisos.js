@@ -444,8 +444,11 @@ export const CHAT_ENTRE_TODO = 2 * MIN;
 export const VS_ENTRE = 75 * 1000;
 export const VS_VENCE = 8 * MIN;
 //: 🖼️ cuánto espera el cruce a su imagen antes de salir sin ella (ver `vsEspera()`). La tarea tarda 62 s la mitad de las
-//: veces y casi 5 minutos el 10 % más lento (medido el 19/11/2026, sus últimas 100 corridas)
-export const VS_ESPERA = 3 * MIN;
+//: veces y casi 5 minutos el 10 % más lento (medido el 19/11/2026, sus últimas 100 corridas). ⏳ Eran 3 minutos y el
+//: 21/11/2026 pasaron a 6 (Dlx: «que se demore sí, pero que lleguen juntas»): de las últimas 20 tareas, 7 tardaron
+//: más de 170 s y la peor 299, y antes de arrancar espera la vuelta del vigía (hasta un minuto). Menos que `VS_VENCE`:
+//: si llega entre los dos, se le agrega editándolo
+export const VS_ESPERA = 6 * MIN;
 //: 🎙️ cuánto vale lo que mandó la conexión de la llamada sobre los micrófonos (ver `vozVivo()`): manda cada minuto aunque
 //: no cambie nada, así que con dos minutos y medio sin noticias se cayó, y el bot vuelve al orden de la llave
 export const VOZ_FRESCA = 150 * 1000;
@@ -801,8 +804,8 @@ function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO
   const conVs = van.find((x) => x.vs);
   plan.push(Object.assign({ tipo: 'mandar', m: van.map((x) => x.m).concat(junto),
     texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') }, img ? { img } : {},
-  // 🎙️ y si ya se está jugando (`ya`, `batallaVivo()`), no espera la imagen
-  conVs ? Object.assign({ vs: conVs.vs, vsm: conVs.m }, conVs.ya ? { ya: true } : {}) : {}));
+  // 🎙️ también la que ya se está jugando (sus micrófonos se abrieron, `batallaVivo()`): desde el 21/11/2026 espera igual
+  conVs ? { vs: conVs.vs, vsm: conVs.m } : {}));
   return ed.concat(plan);
 }
 
@@ -11127,7 +11130,7 @@ export class Avisos {
         // a pedir en la vuelta siguiente (o `vsListo()`, cuando la imagen llega)
         let conVs = null;
         if (p.tipo === 'mandar' && p.vs && p.vsm) {
-          try { conVs = this.vsEspera(canal, L.id + ':' + p.vsm, p.vs, b.sv || '', ahora, { ya: !!p.ya }); } catch (e) { conVs = { url: '', fila: null }; }
+          try { conVs = this.vsEspera(canal, L.id + ':' + p.vsm, p.vs, b.sv || '', ahora); } catch (e) { conVs = { url: '', fila: null }; }
           if (conVs.espera) { esperando++; continue; }
         }
         pedidos++;
@@ -13167,12 +13170,14 @@ export class Avisos {
    * voto, la apuesta y el resultado se cuelgan del número del mensaje, y así no hay un estado nuevo que cuidar.
    * `{espera: true}`, o `{url, fila}` para mandarlo (`url` vacía: sin imagen).
    */
-  vsEspera(canal, clave, vs, sv, ahora = Date.now(), opc = {}) {
+  vsEspera(canal, clave, vs, sv, ahora = Date.now()) {
     canal = String(canal);
     clave = String(clave);
-    // 🎙️ `opc.ya`: una batalla que ya se está jugando (sus micrófonos se abrieron, `batallaVivo()`) no espera: sale con la
-    // imagen si ya está —se dibujó mientras esperaba sus micrófonos, `vsPrevio()`—, y si no, sin ella y se le agrega
-    const ya = !!(opc && opc.ya);
+    // 🎙️ UNA BATALLA QUE YA SE ESTÁ JUGANDO TAMBIÉN ESPERA (21/11/2026). Hasta acá la que se anunciaba porque sus
+    // micrófonos se abrieron (`batallaVivo()`) salía al toque, y si su imagen no estaba —se dibuja mientras espera sus
+    // micrófonos (`vsPrevio()`), pero sólo la que sigue en la llave— salía sin ella. En DESGRACIAS EN TOKYO VOL 32 el
+    // «Player vs BNA vs Andres» salió a las 2:27:30 PM y su imagen llegó a las 2:28:36, editándolo. Dlx: «que se demore
+    // sí, pero que lleguen juntas al mismo tiempo».
     // 🔴 LA IMAGEN TIENE QUE SER DE ESTE CRUCE, NO DE ESTE LUGAR (19/11/2026): la clave es el lugar de la batalla en la
     // llave, y si la llave se rehace mientras el mensaje espera, ese lugar es de otros. Se buscaba sólo por clave, y
     // «Lalox vs Flash» salió en Cypherhood con la imagen de «Julda vs LRS». Ahora, la de esa clave Y esa firma (`firmaVs()`)
@@ -13183,17 +13188,17 @@ export class Avisos {
     const f = this.sql.exec('SELECT id, estado, url, t FROM vs_cola WHERE canal = ? AND clave = ? AND firma = ? ORDER BY t DESC LIMIT 1',
       canal, clave, firma).toArray()[0];
     // ⏳ la espera cuenta desde la PRIMERA vez que ese lugar pidió imagen (en los últimos `VS_VENCE`), con quien fuera: si la
-    // llave cambia mientras espera, el mensaje no vuelve a esperar los tres minutos enteros
+    // llave cambia mientras espera, el mensaje no vuelve a esperar `VS_ESPERA` entero
     const t0 = Number((this.sql.exec('SELECT MIN(t) AS t FROM vs_cola WHERE canal = ? AND clave = ? AND t > ?',
       canal, clave, ahora - VS_VENCE).toArray()[0] || {}).t) || ahora;
     if (!f) {
       const r = this.vsEncolar(Object.assign({}, vs, { sv, canal, msg: '', clave, firma }), ahora);
       if (!r || !r.ok) return { url: '', fila: null };
       // ya esperó: sale sin imagen, y la de ESTE cruce se le agrega editándolo cuando llegue (`vsAtar()`)
-      return !ya && ahora - t0 < VS_ESPERA ? { espera: true } : { url: '', fila: { id: r.id } };
+      return ahora - t0 < VS_ESPERA ? { espera: true } : { url: '', fila: { id: r.id } };
     }
     if (f.estado === 'hecho' && f.url) return { url: f.url, fila: f };
-    if (!ya && (f.estado === 'espera' || f.estado === 'dibujando') && ahora - Math.min(t0, f.t) < VS_ESPERA) return { espera: true };
+    if ((f.estado === 'espera' || f.estado === 'dibujando') && ahora - Math.min(t0, f.t) < VS_ESPERA) return { espera: true };
     return { url: '', fila: f };
   }
 
