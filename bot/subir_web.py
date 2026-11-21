@@ -3376,6 +3376,16 @@ def como_se_juega(anuncios, inscripciones, svs_cfg, momento, leer):
     return out
 
 
+def icono_cdn(sv, tam=256, iconos=None):
+    """🧭 La URL del ícono de hoy de `sv` en Discord, de `datos/iconos_sv.json` (lo escribe el ciclo solo, ver
+    `_guardar_iconos()`), o `''`. Es el logo de un servidor que entró con /setup: el ciclo no puede guardarle uno en
+    `comun/logos_color/` (sólo commitea `datos/`), y éste ya lo tiene desde su primera vuelta."""
+    ico = (iconos if iconos is not None else ((_json('datos', 'iconos_sv.json') or {}).get('iconos') or {})).get(sv) or ''
+    if not re.match(r'^\d{15,22}/(a_)?[0-9a-f]{32}$', str(ico)):
+        return ''
+    return 'https://cdn.discordapp.com/icons/%s.png?size=%d' % (ico, tam)
+
+
 def _servidores(gente):
     """Los servidores confirmados de la Liga, con su gente en la T1.
 
@@ -3476,6 +3486,11 @@ def _servidores(gente):
             a['logo'] = miembros[sv]['icono']
         elif os.path.exists(os.path.join(logos, sv.lower() + '.webp')):
             a['logo'] = 'logos/%s.webp' % sv.lower()
+        # 🧭 Y SI NO HAY NINGUNO GUARDADO, EL ÍCONO DE HOY (`datos/iconos_sv.json`, que el ciclo escribe solo): un
+        # servidor que entró con /setup no tiene logo en el repo —el ciclo sólo commitea `datos/`— y sin red la
+        # invitación no contesta. DW (21/11/2026) dejó este chequeo en rojo por eso. Ver `icono_cdn()`
+        elif icono_cdn(sv):
+            a['logo'] = icono_cdn(sv)
         if (miembros.get(sv) or {}).get('miembros'):
             a['miembros'] = miembros[sv]['miembros']
         # 🏅 SU TIER Y QUÉ LE CUENTA (Dlx, 13/11/2026: «en socios especificar qué TIER son cada socio… si cuentan puntos
@@ -4974,6 +4989,11 @@ def _self_check():
        'cada uno con su nombre y su invitación')
     _sin_logo = [s for s in _svs if s in _ps and not _ps[s].get('logo')]
     ok(not _sin_logo, 'y con su logo  %s' % (_sin_logo or '—'))
+    # 🧭 el de un servidor del /setup, sin logo en el repo: su ícono de hoy (21/11/2026)
+    _ic = {'NUE': '1300152346189496330/a_' + 'f' * 32, 'MAL': '13/abc'}
+    ok(icono_cdn('NUE', iconos=_ic) == 'https://cdn.discordapp.com/icons/1300152346189496330/a_%s.png?size=256' % ('f' * 32)
+       and icono_cdn('MAL', iconos=_ic) == '' and icono_cdn('OTRO', iconos=_ic) == '',
+       'el logo de un servidor sin logo guardado es su ícono de Discord (y uno mal anotado, ninguno)')
     ok(all('miembros' not in s for s in p['svs']),
        'sin red no hay cantidad de miembros (sin dato no hay pieza)')
     # 🔢 `no` (18/11/2026): los que tienen número, por servidor y por país. Nunca más que `n`, y entre todos los países

@@ -36,6 +36,7 @@ import base64
 import io
 import json
 import os
+import re
 import sys
 
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -71,13 +72,46 @@ def _datauri(p):
         return 'data:image/%s;base64,%s' % (tipo, base64.b64encode(f.read()).decode('ascii'))
 
 
-def logo_de(sv):
-    """El logo a color del servidor (`comun/logos_color/<sv>.png|jpg`), o `''`."""
+def icono_discord(sv):
+    """🧭 El ícono de hoy de `sv` en Discord, `'guild/hash'`, de `datos/iconos_sv.json` (lo escribe el ciclo solo:
+    `subir_web._guardar_iconos()`), o `''`."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'iconos_sv.json'), encoding='utf-8') as f:
+            ico = str(((json.load(f) or {}).get('iconos') or {}).get(sv) or '')
+    except (OSError, ValueError):
+        return ''
+    return ico if re.match(r'^\d{15,22}/(a_)?[0-9a-f]{32}$', ico) else ''
+
+
+def logo_de(sv, bajar=True):
+    """El logo a color del servidor (`comun/logos_color/<sv>.png|jpg`) o, si no hay, su ícono de hoy de Discord
+    (`icono_discord()`), bajado a un caché del sistema —nunca al repo—; `''` si no hay ninguno. Con `bajar=False` no
+    sale a la red: sólo el guardado.
+
+    🧭 POR LOS QUE ENTRAN CON /setup (21/11/2026): el alta los mete en la Liga sola, pero un logo en `comun/logos_color/`
+    lo pone una persona —el ciclo sólo commitea `datos/`—, así que DW quedó sin él y este chequeo en rojo. Su ícono de
+    Discord ya lo guarda el ciclo desde su primera vuelta."""
     for ext in ('png', 'jpg', 'webp'):
         p = os.path.join(BASE, 'comun', 'logos_color', '%s.%s' % (sv.lower(), ext))
         if os.path.exists(p):
             return p
-    return ''
+    ico = icono_discord(sv) if bajar else ''
+    if not ico:
+        return ''
+    import tempfile
+    p = os.path.join(tempfile.gettempdir(), 'ul_logos_sv', ico.replace('/', '_') + '.png')
+    if not os.path.exists(p):
+        try:
+            import requests
+            r = requests.get('https://cdn.discordapp.com/icons/%s.png?size=512' % ico, timeout=20)
+            if r.status_code != 200 or not r.content:
+                return ''
+            os.makedirs(os.path.dirname(p), exist_ok=True)
+            with open(p, 'wb') as f:
+                f.write(r.content)
+        except Exception:                                # noqa: BLE001
+            return ''
+    return p
 
 
 def fondo_de(sv):
@@ -191,14 +225,18 @@ def _self_check():
         mal += 0 if c else 1
     svs = _servidores()
     ok(len(svs) >= 3, 'los servidores de la Liga salen de datos/servidores.json (%d)' % len(svs))
-    sin_logo = [sv for sv in svs if not logo_de(sv)]
-    ok(not sin_logo, 'cada uno tiene su logo en comun/logos_color/ (faltan: %s)' % (', '.join(sin_logo) or 'ninguno'))
+    # 🧭 el guardado o, para el que entró con /setup, su ícono de Discord (sin red: que esté anotado)
+    sin_logo = [sv for sv in svs if not logo_de(sv, bajar=False) and not icono_discord(sv)]
+    ok(not sin_logo, 'cada uno tiene su logo: en comun/logos_color/ o su ícono de Discord en datos/iconos_sv.json '
+       '(faltan: %s)' % (', '.join(sin_logo) or 'ninguno'))
+    ok(logo_de('NO-EXISTE', bajar=False) == '' and icono_discord('NO-EXISTE') == '',
+       'un servidor sin logo ni ícono anotado no tiene logo, y sin red no se sale a buscarlo')
     hay = sorted(f[:-4].upper() for f in os.listdir(SALIDA) if f.endswith('.jpg')) if os.path.isdir(SALIDA) else []
     ok(set(hay) <= set(svs), 'no queda un banner de un servidor que ya no es de la Liga (%s)' % (', '.join(hay) or 'ninguno'))
     sin_fondo = [sv for sv in hay if not fondo_de(sv)]
     ok(not sin_fondo, 'cada banner sale de su imagen propia, no de la escena del VS (sin imagen: %s)'
        % (', '.join(sin_fondo) or 'ninguno'))
-    ok(all(logo_lleno(logo_de(sv)) for sv in ('DRA', 'DDS') if logo_de(sv)),
+    ok(all(logo_lleno(logo_de(sv, bajar=False)) for sv in ('DRA', 'DDS') if logo_de(sv, bajar=False)),
        'los íconos que llenan su cuadrado (DRA, DDS) van a sangre: el círculo los recorta')
     falta = sorted(set(svs) - set(hay))
     # ⏳ no es un error: sin imagen no hay banner, y la tarjeta sale sin él
