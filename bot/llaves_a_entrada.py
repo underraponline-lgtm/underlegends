@@ -734,6 +734,18 @@ def hallazgo_de_veredicto(V, h0, quien=None, conocidos=None):
                 cuando=_iso_de(V['pub']), editado=_iso_de(V['ed']), menciones={}, veredicto=True)
 
 
+def ya_contestada(ev, sv, fecha, ronda, lados):
+    """Lo que ✅ Decidir ya sabe de esa batalla: el ganador, `''` si no se jugó, o `None` si nadie la contestó (o si no se
+    puede leer). Con la misma clave que la pregunta (`decidir.detalle_batalla()`, con los lados como se leen en la llave),
+    así encuentra la respuesta aunque la persona hoy tenga otro nombre. Ver «LO QUE UNA PERSONA YA CONTESTÓ» en
+    `filas_de()`."""
+    try:
+        import decidir as DEC
+        return DEC.decision_batalla(DEC.detalle_batalla(ev, sv, fecha, ronda, lados))
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
 def nombre_visible(lado, ids):
     """`[<@750…>🇪🇨]` -> `ricardflex 🇪🇨`: la mención, con su nombre.
 
@@ -1488,8 +1500,16 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
         # —sin campeón, el evento entero no suma—; en #veredictos decía `PICHULAMC vs Riferian` y `PICHULAMC X MÍNIMA`.
         # Los dos lados tienen que ser los del veredicto, en ese servidor y a pocas horas: ver
         # `escuchar.ganador_por_veredicto()`. La fila lo dice en la nota.
+        #
+        # 🧑‍⚖️ PERO LO QUE UNA PERSONA YA CONTESTÓ MANDA SOBRE EL VEREDICTO (21/11/2026). Una batalla se pregunta en ✅
+        # Decidir (o con el botón al organizador) porque el lector no tenía con qué decidirla: el veredicto se había borrado
+        # a los 7 días o no coincidía. Cuando los veredictos pasaron a guardarse toda la temporada volvieron 839, y la
+        # final de esta misma POESÍA CRUDA (#380) cambió de campeón: el organizador había contestado Riferian (Erian) el
+        # 12/10, y el veredicto del 01/10 dice PichulaMc. Una respuesta de una persona no se da vuelta sola: si está mal,
+        # se cambia en ✅ Decidir. La batalla sigue sin ganador acá y la decide `decision_batalla()` más abajo
         por_veredicto = False
-        if ganador is None and len(lados) == 2 and 'pasan' not in razon and 'tercer puesto' not in razon:
+        if (ganador is None and len(lados) == 2 and 'pasan' not in razon and 'tercer puesto' not in razon
+                and ya_contestada(ev, sv, fecha, ronda, [nombre_visible(l, ids) for l in lados]) is None):
             g_v = E.ganador_por_veredicto(lados, hallazgo.get('guild'), hallazgo.get('cuando'), quien=_q)
             if g_v:
                 ganador, por_veredicto = g_v, True
@@ -4322,12 +4342,20 @@ def _self_check():
         _ver_antes = E._VER_BATALLAS[0]
         E._VER_BATALLAS[0] = [{'id': '1', 'sv': 'URBF', 'g': str(h.get('guild')), 'pub': 1790900887000,
                                'a': 'PICHULAMC 🇦🇷', 'b': 'Riferian 🇵🇦', 'ganador': 'PICHULAMC 🇦🇷', 'votos': '1–0'}]
+        # ⚠️ sin mirar el ✅ Decidir de verdad (`ya_contestada()` lee datos/decisiones.json): la prueba no depende de él
+        _ya_antes = globals()['ya_contestada']
         try:
+            globals()['ya_contestada'] = lambda *a: None
             fpc, dpc, _s = filas_de(dict(h, texto=pc, cuando=_cu))
+            # 🧑‍⚖️ y si la final ya la contestó alguien, esa respuesta manda (21/11/2026: el organizador dijo Riferian)
+            globals()['ya_contestada'] = lambda *a: 'Riferian 🇵🇦'
+            fpcd, dpcd, _s = filas_de(dict(h, texto=pc, cuando=_cu))
+            globals()['ya_contestada'] = lambda *a: None
             E._VER_BATALLAS[0] = []
             fpc0, dpc0, _s = filas_de(dict(h, texto=pc, cuando=_cu))
         finally:
             E._VER_BATALLAS[0] = _ver_antes
+            globals()['ya_contestada'] = _ya_antes
         # 🔑 la llave como se jugó, de #votaciones, en lugar de la del organizador (DOS GENERACIONES VOL 2, recortada):
         # el organizador puso a ACH y un «pasan 2»; en #votaciones ACH no estaba y en el de tres pasó Six solo
         _org = ('# Dos Generaciones\n`[ OCTAVOS ]`\n⌞ACH⌝ 🆚 ⌞Yor⌝ 🆚 ⌞Soneto⌝\n⌞Kurlw⌝ 🆚 ⌞Abyssus⌝ 🆚 ⌞Six⌝\n'
@@ -4810,6 +4838,10 @@ def _self_check():
          and not any(str(d[1]).upper() == 'FINAL' for d in dpc)),
         ('… y sin el veredicto, como antes: sin campeón y la pregunta a ✅ Decidir (la prueba mide algo)',
          not tiene_campeon(fpc0) and any(str(d[1]).upper() == 'FINAL' for d in dpc0)),
+        ('… pero si alguien ya la contestó en ✅ Decidir, manda su respuesta: el veredicto no se mira y la final queda '
+         'para esa decisión (POESÍA CRUDA: el organizador contestó Riferian el 12/10)',
+         not any(f['ronda'] == 'final' and 'veredictos' in f['notas'] for f in fpcd)
+         and any(str(d[1]).upper() == 'FINAL' for d in dpcd)),
         ('la llave de #votaciones es ESTE evento y reemplaza a la del organizador',
          bool(_V) and tiene_campeon(_fver)),
         ('… y manda lo que se jugó: ACH no peleó, y en el de tres pasó Six solo (Abyssus cae ahí)',
