@@ -19,8 +19,10 @@
 //     de competencia: no habría grabado nunca. `OTROS` (env `NO_SI_ESTA`) queda para el día que haga falta
 // Y SALE cuando quedan menos de `SALIR_CON` personas durante `ESPERA_SALIR`, a las `MAX_H` horas, o si lo sacan.
 //
-// AVISA AL ENTRAR, en el chat de esa llamada, y quien toca ❌ en ese aviso no se graba: su pista se borra entera y se
-// deja de escuchar. Si saca la ❌, se lo vuelve a grabar desde ese momento.
+// ⚠️ NO AVISA EN LA LLAMADA, A PROPÓSITO. La primera versión mandaba «🔴 Grabando esta llamada… toca ❌ si no quieres
+// que se guarde tu voz», y Dlx, 21/11/2026, en la primera prueba: *«elimina eso… es muy troll… La gente que está en
+// la Liga Global acepta términos de que los eventos pueden ser grabados incluso cuando uno entra al servidor»*. Que
+// está grabando se ve igual: el bot aparece adentro de la llamada.
 //
 // ENTREGA el audio mezclado en `ENTREGA` (por ahora el canal de Logs de DRA), partido si no entra en un mensaje.
 // ⚠️ NUNCA POR DM: el bot sólo le escribe por privado a Dlx. Al organizador le llega por un canal o por el panel
@@ -67,7 +69,6 @@ const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
 //: otros grabadores con los que NO se entra (vacío: ver arriba). El de Drako es «Freestyle for All», 1557056218164629535
 const OTROS = new Set(lista(E.NO_SI_ESTA));
 const BASE = E.CARPETA || path.join(os.tmpdir(), 'grabaciones');
-const NO = '❌';
 
 //: el log va en hora del este, como todo el proyecto (Railway muestra su propia hora al costado, en la del navegador)
 const RELOJ = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -141,10 +142,8 @@ class Grabacion {
     this.pistas = new Map();     // id -> PistaOpus
     this.subs = new Map();       // id -> AudioReceiveStream
     this.quien = new Map();      // id -> { nombre, bot }
-    this.fuera = new Set();      // quienes tocaron ❌
     this.vacia = null;           // desde cuándo hay menos de SALIR_CON
     this.cerrando = false;
-    this.aviso = null;
   }
 
   ms() { return performance.now() - this.t0; }
@@ -168,22 +167,11 @@ class Grabacion {
       }
     });
     this.con.on('error', (e) => anotar('⚠️ la conexión de voz:', String(e.message || e).slice(0, 120)));
-    try {
-      this.aviso = await this.canal.send({
-        content: '🔴 **Grabando esta llamada.** Under Legends graba el audio de este evento —cada voz por separado— '
-          + 'para el resumen y los clips. Si no quieres que se guarde tu voz, toca ' + NO + ' acá abajo: tu pista se '
-          + 'borra y no se te graba más.',
-        allowedMentions: { parse: [] },
-      });
-      await this.aviso.react(NO);
-    } catch (e) {
-      anotar('⚠️ no pude avisar en el chat de la llamada:', String(e.message || e).slice(0, 120));
-    }
     anotar(`🔴 grabando en ${this.guild.name} / ${this.canal.name} (${this.motivo})`);
   }
 
   escuchar(id) {
-    if (this.cerrando || this.subs.has(id) || this.fuera.has(id)) return;
+    if (this.cerrando || this.subs.has(id)) return;
     const m = this.guild.members.cache.get(id);
     if (!this.quien.has(id)) this.quien.set(id, { nombre: m?.displayName || m?.user?.username || id, bot: !!m?.user?.bot });
     let pista = this.pistas.get(id);
@@ -194,30 +182,11 @@ class Grabacion {
     const st = this.con.receiver.subscribe(id, { end: { behavior: EndBehaviorType.Manual } });
     this.subs.set(id, st);
     st.on('data', (p) => {
-      if (!this.cerrando && !this.fuera.has(id)) pista.agregar(p, this.ms());
+      if (!this.cerrando) pista.agregar(p, this.ms());
     });
     // un error de descifrado corta el flujo: se suelta y el próximo «empezó a hablar» lo vuelve a abrir
     st.once('error', (e) => { anotar('⚠️ una voz se cortó:', String(e.message || e).slice(0, 100)); this.subs.delete(id); });
     st.once('close', () => { if (this.subs.get(id) === st) this.subs.delete(id); });
-  }
-
-  /** ❌: se borra su pista y no se lo escucha más. */
-  sacar(id) {
-    this.fuera.add(id);
-    this.subs.get(id)?.destroy();
-    this.subs.delete(id);
-    const p = this.pistas.get(id);
-    if (p) {
-      p.cerrar();
-      fs.rmSync(p.ruta, { force: true });
-      this.pistas.delete(id);
-    }
-    anotar('🙅 alguien pidió no grabarse');
-  }
-
-  /** Sacó la ❌: se lo graba de nuevo desde ahora (su pista arranca con silencio hasta este momento). */
-  volver(id) {
-    this.fuera.delete(id);
   }
 
   /** Cada vuelta: ¿sigue habiendo gente? */
@@ -251,11 +220,6 @@ class Grabacion {
     } catch (e) {
       anotar('❌ no pude entregar la grabación:', String(e.message || e).slice(0, 300));
     }
-    try {
-      await this.aviso?.edit({
-        content: `⏹️ **Grabación terminada** · ${largo(fin / 1000)} · ${voces.filter((id) => !this.quien.get(id)?.bot).length} voces.`,
-      });
-    } catch (e) { /* el aviso se borró */ }
     grabando.delete(this.guild.id);
   }
 
@@ -266,7 +230,6 @@ class Grabacion {
     const cab = `🎙️ **Grabación** · ${this.guild.name} · <#${this.canal.id}>\n`
       + `${horaET(this.inicio)} · ${largo(seg)} · ${gente.length} voces`
       + (voces.length > gente.length ? ' + la música' : '')
-      + (this.fuera.size ? ` · ${this.fuera.size} pidieron no grabarse` : '')
       + `\nEntró porque ${this.motivo}; salió porque ${razon}.`;
     if (!voces.length) {
       await canal.send({ content: cab + '\nNo habló nadie: no hay audio.', allowedMentions: { parse: [] } });
@@ -399,7 +362,7 @@ if (!E.DISCORD_TOKEN) {
   process.exit(1);
 }
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
 });
 client.once(Events.ClientReady, async () => {
   anotar(`✅ conectado como ${client.user.tag} · graba en ${GRABAR_EN.length} servidor(es) · entrega en ${ENTREGA}`);
@@ -407,14 +370,6 @@ client.once(Events.ClientReady, async () => {
   setInterval(() => vuelta(client).catch((e) => anotar('⚠️ vuelta:', String(e.message || e).slice(0, 150))), 20000);
   setInterval(medir, 300000);
   medir();
-});
-client.on(Events.MessageReactionAdd, (r, u) => {
-  if (u.bot || r.emoji.name !== NO) return;
-  for (const g of grabando.values()) if (g.aviso?.id === r.message.id) g.sacar(u.id);
-});
-client.on(Events.MessageReactionRemove, (r, u) => {
-  if (u.bot || r.emoji.name !== NO) return;
-  for (const g of grabando.values()) if (g.aviso?.id === r.message.id) g.volver(u.id);
 });
 client.on('error', (e) => anotar('⚠️ discord:', String(e.message || e).slice(0, 150)));
 client.login(E.DISCORD_TOKEN);
