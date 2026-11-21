@@ -14,15 +14,15 @@ Lo que hace (tanda 1):
     gente, por hora, quién habló y a quién se mencionó (por clave de perfil, sólo gente de la Lista)
   · los mensajes que IMPORTAN (`importante()`: eventos falsos o trucados, fraude, raids y estafas, quejas sobre la
     Liga) van al objeto (`/avisos/chats-ciclo`) y se ven sólo en el Dashboard, con el link al mensaje
-  · el resto de los mensajes se lee y se tira: no se guarda en ningún lado
+  · el resto de los mensajes se lee y se tira (desde la tanda 4, salvo las FRASES de las historias)
 Tanda 2 (17/11/2026; *«Todo sale solo»* y *«Ambos»*):
   · CÓMO SE HABLA, de una LISTA CERRADA (`JERGA`, `RISAS_RX`, `SANOS`): qué palabras de la jerga usa cuánta gente, cómo
     se ríen y qué emoji ponen. Lo que no está en esas listas no se cuenta nunca: ni nombres, ni insultos, ni frases
   · LA VOZ de cada uno (`voz`), SÓLO de quien dijo que sí a los comentarios con su cara (`cm:permisos`): las mismas
     tres cosas y si escribe en minúscula o gritando. De los demás, nada
   · LOS DÍAS FUERTES (`momentos()`): el chat que explotó (el doble de un día normal), el nombre del día (lo mencionó
-    mucha gente) y la polémica. Salen solos a las historias de su servidor (`svchat` en bot/muro.py); nunca con lo que
-    alguien escribió, nunca con un nombre en una polémica, y nada el día de un raid o una estafa
+    mucha gente) y la polémica. Salen solos a las historias de su servidor (`svchat` en bot/muro.py). (Hasta la tanda 4:
+    nunca con lo que alguien escribió, nunca con un nombre en una polémica y nada el día de un raid)
   · la jerga, la risa, los emoji y la voz los usa bot/comentarios_sim.py (desde su `V3_DESDE`)
 Tanda 3 (21/11/2026; Dlx: *«quiero que seas más directo con los chats… que publiques cosas que están pasando. No sólo
 que mucha gente está escribiendo. Sino como algo dramático, como noticias sin ser noticias»*):
@@ -30,8 +30,19 @@ que mucha gente está escribiendo. Sino como algo dramático, como noticias sin 
     quién felicita medio chat, el favorito de la noche, quién anuncia que vuelve o que se retira, y dos que no paran de
     contestarse. Se guarda quién y a quién (claves de la Lista) y cuántos, NUNCA lo que escribió
   · salen como titulares en las historias de su servidor (`momentos()`: hasta `POR_DIA` por servidor y día, lo más
-    dramático primero, `ORDEN_QUE`). ⚠️ El día que alguien denuncia un evento falso o un fraude, NINGUNA lleva nombre:
-    el de la historia podría ser el acusado. Y el día de un raid, nada
+    dramático primero, `ORDEN_QUE`). (Hasta la tanda 4, el día de una denuncia ninguna llevaba nombre)
+Tanda 4 (21/11/2026). Dlx, a «nunca el texto, una polémica sin nombres y nada el día de un raid»: *«lo más importante
+ahora debería guardar… el raid debería, de hecho… la polémica sí debería, esto es muy importante, para el show»*, y a
+cómo: *«eso y citarlo público… estos mini pasos me hacen perder tiempo… la mayoría apoya esto»*:
+  · LA FRASE de cada historia (`cita_limpia()`, `_frase()`): el mensaje que la armó, citado en la historia con el nombre
+    de quien lo escribió. Sin links (una estafa citada sigue siendo una estafa), sin emoji del servidor y las menciones
+    como @Nombre. Viven en KV (`CITAS_KV`, los últimos `DIAS` días) y NO en el repo: el repo es público y su historial no
+    se borra, y quien pide salir (bot/olvidar.py) sale también de las frases
+  · TODA LA TEMPORADA (`ARCHIVO_KV`): lo importante (con su texto y su link) y las frases, en KV. Sólo se escribe
+  · LA POLÉMICA CON NOMBRES (`_pelean()`): quién acusó y a quién, y su frase. El día de una denuncia, las historias con
+    nombre salen igual
+  · EL RAID ES UNA HISTORIA (`RAID_RX`, `RAID_MIN`): cuántos mensajes de spam y de cuántas cuentas, sin nombres ni frase
+    (quien manda el spam suele ser una cuenta robada). Un link de estafa suelto ya no apaga el día: no es un raid
 
 ⚠️ El chat general se elige con la MISMA regla que el vigía (`chatGeneralDe()` en bot/avisos.js): si se toca una, la otra.
 ⚠️ Apagado en el panel del socio (`cfg:<guild>.leer_chat === false`) = no se lee NADA de ese servidor. Si no se puede
@@ -71,6 +82,11 @@ TOPE = 3000
 DIAS = 40
 #: lo importante: como mucho por servidor y en total, por lectura
 MAX_SV, MAX_TOTAL = 10, 40
+#: 🗨️ tanda 4: dónde viven las frases (las lee el muro) y el archivo de la temporada, en KV
+CITAS_KV, ARCHIVO_KV = 'chats:citas', 'chats:temporada:%s'
+#: una frase: cuántas letras como mucho y como poco; cuántas por día, servidor y clase (las más largas), y por pareja en
+#: cara a cara; y lo importante de un servidor en un día, en el archivo
+CITA_MAX, CITA_MIN, CITAS_POR, CITAS_PAREJA, ARCHIVO_DIA = 180, 10, 6, 3, 60
 ET = None
 
 
@@ -145,6 +161,43 @@ def importante(texto):
         if rx.search(t):
             return motivo
     return ''
+
+
+#: 🚨 tanda 4: el raid, de verdad: la palabra o un link en un mensaje de seguridad. «Es una estafa» o «me hackearon»
+#: siguen yendo al Dashboard, pero no son un raid
+RAID_RX = re.compile(r'\b(raid|raidear|raideo|raidean|raidearon|raideando|nitro gratis|free nitro|phishing|token grabber)\b')
+URL_RX = re.compile(r'(https?://|www\.|discord\.gg/)\S+', re.I)
+#: 🗨️ lo que no se cita nunca, aunque arme la historia (sobre el texto sin tildes): insultos que discriminan y lo sexual
+#: explícito. Probado con FFA del 19/11: la frase más larga de un cara a cara era un insulto sexual de 180 letras
+NO_CITAR = re.compile(r'\b(maricon\w*|sudaca\w*|sidos[oa]\w*|travelo\w*|mongolic[oa]\w*|negro de mierda|indio de mierda|'
+                      r'vagina\w*|pene|penes|verga\w*|cog(er|i|io|ieron|eme|erte)|cojer\w*|foll(ar|o|e|aron|ando)|polla\w*|pija\w*|'
+                      r'semen|tetas?|porno\w*|viol(ar|o|e|aron|ada|ado)|mamad\w*|chupa(la|mela|mel[ao]|me la))\b')
+#: 🗨️ y lo que se cita sólo si no hay otra: los insultos fuertes. En una batalla son parte del show; en la historia gana la
+#: frase que se entiende sin ellos (`_peso()`)
+FEO = re.compile(r'\b(put[oa]s?|hdp|conch\w*|maraca\w*|zorra\w*|mierda\w*|culo\w*|culer[oa]\w*|pendej\w*|malparid\w*|'
+                 r'gonorrea\w*|perra\w*|imbecil\w*|idiota\w*|sarnos[oa]\w*|hij[oa] de)\b')
+
+
+def cita_limpia(texto, por_id=None, nombre_de=None):
+    """🗨️ La frase que se puede citar en público, o '': sin links, sin emoji del servidor, sin formato de Discord, las
+    menciones como @Nombre (de la Lista; si no, @alguien), hasta `CITA_MAX` letras. Menos de `CITA_MIN` letras no dice
+    nada, y un insulto que discrimina no se cita."""
+    t = str(texto or '')
+    t = URL_RX.sub('', t)
+    t = re.sub(r'<a?:\w+:\d+>|<(#|@&)\d+>|<t:\d+(:\w)?>', '', t)
+
+    def _men(m):
+        k = (por_id or {}).get(m.group(1))
+        return '@' + (((nombre_de or {}).get(k) or k) if k else 'alguien')
+    t = MENCION.sub(_men, t)
+    t = re.sub(r'\|\||\*\*|__|~~|`+', '', t)
+    t = re.sub(r'^\s*>+\s*', '', t)
+    t = re.sub(r'\s+', ' ', t).strip()
+    if len(re.sub(r'\W', '', t)) < CITA_MIN or NO_CITAR.search(_norm(t)):
+        return ''
+    if len(t) > CITA_MAX:
+        t = t[:CITA_MAX].rsplit(' ', 1)[0].rstrip(',.;:') + '…'
+    return t
 
 
 # ── lo que está pasando (tanda 3, 21/11/2026) ───────────────────────────────────────────────────────────────────────────
@@ -286,22 +339,25 @@ def _snow(ms):
 
 def _vacio():
     return {'msgs': 0, 'gente': 0, 'hora': [0] * 24, 'habla': {}, 'menciona': {}, 'mencionan': {}, 'jerga': {}, 'risa': {},
-            'emoji': {}, 'motivos': {}, 'retos': {}, 'elogios': {}, 'favoritos': {}, 'regresos': {}, 'retiros': {}, 'responde': {}}
+            'emoji': {}, 'motivos': {}, 'retos': {}, 'elogios': {}, 'favoritos': {}, 'regresos': {}, 'retiros': {}, 'responde': {},
+            'pelean': {}, 'raid': 0, 'raiders': 0}
 
 
 def _mas(d, k, n=1):
     d[k] = d.get(k, 0) + n
 
 
-def contar(mensajes, por_id, dias=None, si=(), nombres=None):
+def contar(mensajes, por_id, dias=None, si=(), nombres=None, citas=None, nombre_de=None):
     """`{dia ET: {msgs, gente, hora: [24], habla, menciona, mencionan, jerga, risa, emoji, motivos, voz?}}` de una lista de
     mensajes de un canal (`[{id, autor, bot, texto, menciona?}]`). Los bots no cuentan; las claves, sólo de gente de la
     Lista. `mencionan` y `jerga` cuentan PERSONAS distintas (uno que repite no infla nada); `voz`, sólo de las claves de
-    `si` (dijeron que sí a los comentarios con su cara). `nombres`, lo de `por_nombre()` (tanda 3: quién está nombrado)."""
+    `si` (dijeron que sí a los comentarios con su cara). `nombres`, lo de `por_nombre()` (tanda 3: quién está nombrado).
+    `citas` (tanda 4), un dict que se llena con las frases que pueden ir en una historia: `{dia: [frase]}`, con
+    `nombre_de` (`{clave: nombre}`) para escribir las menciones."""
     rx_n, por_n = nombres if nombres else (None, {})
     out = dias if dias is not None else {}
     si = set(si or ())
-    gente, sets = {}, {}
+    gente, sets, raiders = {}, {}, {}
     for m in mensajes:
         if m.get('bot'):
             continue
@@ -353,6 +409,20 @@ def contar(mensajes, por_id, dias=None, si=(), nombres=None):
         mot = importante(m.get('texto'))
         if mot:
             _mas(x['motivos'], mot)
+        # 🔥 tanda 4: quién acusó y a quién (la polémica con nombres) y el raid de verdad (cuántos mensajes y cuentas)
+        if mot in MOTIVOS_POLEMICA and k:
+            for b in objetivos or ('',):
+                _mas(x['pelean'], k + '>' + b)
+        if mot == 'seguridad' and (RAID_RX.search(_norm(m.get('texto'))) or URL_RX.search(m.get('texto') or '')):
+            x['raid'] += 1
+            raiders.setdefault(dia, set()).add(a)
+        # 🗨️ tanda 4: la frase, si el mensaje puede armar una historia
+        if citas is not None:
+            q = sorted(hs) + (['polemica'] if mot in MOTIVOS_POLEMICA else []) + (['cara'] if kr and k and kr != k else [])
+            txt = cita_limpia(m.get('texto'), por_id, nombre_de) if q else ''
+            if txt:
+                citas.setdefault(dia, []).append({'q': q, 'k': k or '', 'u': a, 'a': sorted(objetivos), 'txt': txt, 'id': str(m.get('id')),
+                                                  'n': ((nombre_de or {}).get(k) if k else '') or str(m.get('nombre') or '')[:40]})
         if k and k in si:
             v = x.setdefault('voz', {}).setdefault(k, {'m': 0, 'mi': 0, 'ma': 0, 'j': {}, 'r': {}, 'e': {}})
             v['m'] += 1
@@ -366,6 +436,7 @@ def contar(mensajes, por_id, dias=None, si=(), nombres=None):
                 _mas(v['e'], e)
     for dia, g in gente.items():
         out[dia]['gente'] = max(out[dia].get('gente', 0), len(g))
+        out[dia]['raiders'] = max(out[dia].get('raiders', 0), len(raiders.get(dia) or ()))
         for c, d_ in sets[dia].items():
             for k, quienes in d_.items():
                 out[dia][c][k] = max(out[dia][c].get(k, 0), len(quienes))
@@ -380,9 +451,11 @@ def _sumar(y, x):
     y['msgs'] += x.get('msgs', 0)
     y['gente'] = max(y['gente'], x.get('gente', 0))
     y['hora'] = [a + b for a, b in zip(y['hora'] or [0] * 24, x.get('hora') or [0] * 24)]
-    for c in ('habla', 'menciona', 'risa', 'emoji', 'motivos', 'retos', 'responde'):
+    for c in ('habla', 'menciona', 'risa', 'emoji', 'motivos', 'retos', 'responde', 'pelean'):
         for k, n in (x.get(c) or {}).items():
             _mas(y[c], k, n)
+    y['raid'] = int(y.get('raid') or 0) + int(x.get('raid') or 0)
+    y['raiders'] = max(int(y.get('raiders') or 0), int(x.get('raiders') or 0))
     for c in ('mencionan', 'jerga', 'elogios', 'favoritos', 'regresos', 'retiros'):
         for k, n in (x.get(c) or {}).items():
             y[c][k] = max(y[c].get(k, 0), n)
@@ -405,7 +478,7 @@ def _recortar(x, n=15):
     for c in ('habla', 'menciona', 'mencionan'):
         if c in x or c in ('habla', 'menciona'):
             x[c] = _top(x.get(c), n)
-    for c, tope in (('jerga', 40), ('emoji', 12), ('risa', 9), ('retos', 10), ('responde', 15), ('elogios', 10), ('favoritos', 10),
+    for c, tope in (('jerga', 40), ('emoji', 12), ('risa', 9), ('retos', 10), ('responde', 15), ('pelean', 10), ('elogios', 10), ('favoritos', 10),
                     ('regresos', 10), ('retiros', 10)):
         if c in x:
             x[c] = _top(x[c], tope)
@@ -427,7 +500,9 @@ POLEMICA, MOTIVOS_POLEMICA = 2, ('evento falso', 'fraude', 'queja de la liga')
 RETO_MIN, ELOGIO_MIN, FAVORITO_MIN, CARA_MIN = 2, 5, 4, 4
 #: cuántas historias del chat por servidor y día, como mucho, y cuál va primero
 POR_DIA = 2
-ORDEN_QUE = ('reto', 'cara', 'retiro', 'regreso', 'elogio', 'favorito', 'polemica', 'pico', 'tema')
+ORDEN_QUE = ('raid', 'reto', 'polemica', 'cara', 'retiro', 'regreso', 'elogio', 'favorito', 'pico', 'tema')
+#: 🚨 tanda 4: un raid es una historia con tantos mensajes de spam, o de tantas cuentas
+RAID_MIN, RAID_CUENTAS = 5, 3
 
 
 def _dia_et(s):
@@ -486,7 +561,154 @@ def hechos_del_dia(x):
     return out
 
 
-def momentos(chats, camps=None, nombres=None):
+def _pelean(x):
+    """🔥 Quiénes discutieron en una polémica: el que más acusó y a quién (o, si no apuntó a nadie, el segundo que más
+    acusó). `[]` si los que acusaron no son de la Lista."""
+    por_a, por_b = {}, {}
+    for ab, n in (x.get('pelean') or {}).items():
+        a, _, b = ab.partition('>')
+        if a:
+            por_a[a] = por_a.get(a, 0) + n
+        if b and b != a:
+            por_b[b] = por_b.get(b, 0) + n
+    if not por_a:
+        return []
+    a = max(sorted(por_a), key=lambda k: por_a[k])
+    otros = {k: n for k, n in por_b.items() if k != a} or {k: n for k, n in por_a.items() if k != a}
+    return [a, max(sorted(otros), key=lambda k: otros[k])] if otros else [a]
+
+
+def _peso(c):
+    """🗨️ Cuál frase va primero: la que no insulta fuerte (`FEO`), la que se lee de una (de 20 a 140 letras: un rollo
+    cortado con «…» no es una frase) y, entre esas, la más larga."""
+    t = str(c.get('txt') or '')
+    return (0 if FEO.search(_norm(t)) else 1, 1 if 20 <= len(t) <= 140 else 0, len(t), str(c.get('id')))
+
+
+def _frase(lista, que, ks, mutuo=False):
+    """🗨️ La frase de una historia: de su clase y de quien corresponde (el que pide la batalla, uno de los dos de cara a
+    cara, el que se retira o vuelve, alguien que felicita al de la historia, el que acusa). La de más `_peso()`, o None."""
+    ks = list(ks or [])
+
+    def sirve(c):
+        if que not in (c.get('q') or []):
+            return False
+        a, obj = c.get('k') or '', c.get('a') or []
+        if que == 'reto' or que == 'cara':
+            if len(ks) < 2:
+                return False
+            return (a == ks[0] and ks[1] in obj) or ((mutuo or que == 'cara') and a == ks[1] and ks[0] in obj)
+        if que in ('retiro', 'regreso'):
+            return bool(ks) and a == ks[0]
+        if que in ('elogio', 'favorito'):
+            return bool(ks) and ks[0] in obj
+        if que == 'polemica':
+            return not ks or a in ks
+        return False
+    buenas = [c for c in lista or [] if sirve(c)]
+    return max(buenas, key=_peso) if buenas else None
+
+
+def _podar(lista):
+    """Las frases que se guardan de un día y un servidor: de cada clase las `CITAS_POR` de más `_peso()` (en cara a cara,
+    por pareja), sin repetir un mensaje."""
+    vistos, unicas = set(), []
+    for c in lista or []:
+        if c.get('id') not in vistos:
+            vistos.add(c.get('id'))
+            unicas.append(c)
+    grupos = {}
+    for i, c in enumerate(unicas):
+        for q in c.get('q') or []:
+            grupos.setdefault((q, c.get('k'), tuple(c.get('a') or ())) if q == 'cara' else (q,), []).append(i)
+    quedan = set()
+    for g, ix in grupos.items():
+        quedan.update(sorted(ix, key=lambda i: _peso(unicas[i]), reverse=True)[
+            :CITAS_PAREJA if g[0] == 'cara' else CITAS_POR])
+    return [unicas[i] for i in sorted(quedan)]
+
+
+def _juntar(a, b):
+    """Suma las frases nuevas (`b`, `{dia: {sv: [frase]}}`) a las de antes (`a`) y las poda."""
+    out = {d: {sv: list(v) for sv, v in (svs or {}).items()} for d, svs in (a or {}).items()}
+    for d, svs in (b or {}).items():
+        for sv, v in (svs or {}).items():
+            out.setdefault(d, {})[sv] = _podar(out.get(d, {}).get(sv, []) + list(v))
+    return out
+
+
+def _sesion_kv():
+    """La sesión de Cloudflare, o None (sin `.env` o sin la clave): sin eso, las historias salen sin frase."""
+    try:
+        import subir_datos as SD
+        return SD.sesion(), SD.API
+    except BaseException:                                # noqa: BLE001  (subir_datos.env() hace sys.exit)
+        return None, None
+
+
+def _kv_leer(s, api, clave):
+    try:
+        r = s.get('%s/values/%s' % (api, clave), timeout=25)
+        if r.status_code == 200:
+            d = r.json()
+            return d if isinstance(d, dict) else {}
+        return {} if r.status_code == 404 else None
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
+def _kv_poner(s, api, clave, x):
+    try:
+        r = s.put('%s/values/%s' % (api, clave), timeout=40,
+                  files={'value': (None, json.dumps(x, ensure_ascii=False, separators=(',', ':'))), 'metadata': (None, '{}')})
+        return r.status_code == 200
+    except Exception:                                    # noqa: BLE001
+        return False
+
+
+def citas_kv():
+    """🗨️ Las frases de KV (`CITAS_KV`): `{dia: {sv: [frase]}}`. Sin Cloudflare, ninguna."""
+    s, api = _sesion_kv()
+    return (_kv_leer(s, api, CITAS_KV) or {}) if s else {}
+
+
+def guardar_citas(nuevas, imp, corte):
+    """🗨️ Las frases nuevas a KV (las de los últimos `DIAS` días, que lee el muro) y la temporada entera al archivo
+    (`ARCHIVO_KV`: lo importante, con su texto y su link, y las frases). Si KV no contesta, los números ya quedaron."""
+    s, api = _sesion_kv()
+    if not s:
+        print('   ⚠️ las frases no se guardaron: sin Cloudflare')
+        return False
+    viejas = _kv_leer(s, api, CITAS_KV)
+    if viejas is None:
+        print('   ⚠️ las frases no se guardaron: KV no contestó (no piso las de antes)')
+        return False
+    todas = {d: v for d, v in _juntar(viejas, nuevas).items() if d >= corte}
+    ok1 = _kv_poner(s, api, CITAS_KV, todas)
+    from comun.temporada import ACTUAL
+    clave = ARCHIVO_KV % ACTUAL
+    arch = _kv_leer(s, api, clave)
+    ok2 = False
+    if arch is not None:
+        vistos = {m.get('id') for m in arch.get('imp') or []}
+        arch = {'imp': (arch.get('imp') or []) + [m for m in imp if m.get('id') not in vistos],
+                'citas': _juntar(arch.get('citas') or {}, nuevas)}
+        ok2 = _kv_poner(s, api, clave, arch)
+    n = sum(len(v) for svs in nuevas.values() for v in svs.values())
+    print('   🗨️ %d frases nuevas%s · el archivo de la temporada%s' % (n, '' if ok1 else ' (⚠️ no quedaron)', '' if ok2 else ' ⚠️ no quedó'))
+    return ok1 and ok2
+
+
+def _olvidados():
+    """Los Discord ID de quienes pidieron salir (bot/olvidar.py): sus frases no salen."""
+    try:
+        import olvidar
+        return set(olvidar.olvidados())
+    except Exception:                                    # noqa: BLE001
+        return set()
+
+
+def momentos(chats, camps=None, nombres=None, citas=None, fuera=None):
     """💬 Los días fuertes del chat general de cada servidor, como publicaciones `svchat` del muro:
     `{tipo, t, sv, dia, que: 'pico'|'tema'|'polemica', msgs, gente, h, en_h, x?, hablan?, ev?, ll?}`.
 
@@ -499,9 +721,14 @@ def momentos(chats, camps=None, nombres=None):
     🗞️ Tanda 3 (21/11/2026): también las historias CON NOMBRE de `hechos_del_dia()` (`que`: reto, cara, retiro, regreso,
     elogio, favorito; con `ks` y `quien`), hasta `POR_DIA` por servidor y día, en el orden de `ORDEN_QUE`. Nunca el día
     de una denuncia (cualquier mensaje de evento falso, fraude o queja: el nombre podría ser el acusado), ni el de un raid.
-    `nombres`, `{clave: nombre}` (sin él, el padrón)."""
+    `nombres`, `{clave: nombre}` (sin él, el padrón).
+
+    🗨️ Tanda 4 (21/11/2026): CON SU FRASE (`citas`, de KV: `cita` = `{txt, n, k}`, nunca de alguien de `fuera`, los que
+    pidieron salir), la polémica CON NOMBRES (`_pelean()`), el raid como historia (`que: 'raid'`, `n` mensajes de
+    `cuentas` cuentas, sin nombres ni frase) y el día de una denuncia con sus historias con nombre."""
     dias = (chats or {}).get('dias') or {}
     nombres = _nombres() if nombres is None else nombres
+    fuera = _olvidados() if fuera is None else set(fuera)
     leido = str((chats or {}).get('leido') or '')
     orden = sorted(dias)
     out = []
@@ -510,8 +737,7 @@ def momentos(chats, camps=None, nombres=None):
             continue
         for sv, x in sorted((dias[d] or {}).items()):
             mot = x.get('motivos') or {}
-            if mot.get('seguridad'):
-                continue
+            raid = int(x.get('raid') or 0) >= RAID_MIN or int(x.get('raiders') or 0) >= RAID_CUENTAS
             msgs = int(x.get('msgs') or 0)
             antes = [int(dias[e][sv].get('msgs') or 0) for e in orden[max(0, i - 7):i] if sv in (dias[e] or {})]
             base = sorted(antes)[len(antes) // 2] if len(antes) >= 3 else None
@@ -521,11 +747,13 @@ def momentos(chats, camps=None, nombres=None):
                 pico = msgs >= PICO_MIN and msgs >= PICO_X * max(base, 1) and msgs - base >= PICO_MAS
             fuerte = sum(int(mot.get(m) or 0) for m in MOTIVOS_POLEMICA)
             polemica = pico and fuerte >= POLEMICA
-            hablan = [] if fuerte else [k for k, n in sorted((x.get('mencionan') or {}).items(), key=lambda kv: (-kv[1], kv[0]))
-                                        if n >= TEMA_GENTE][:3]
-            cands = [] if fuerte else hechos_del_dia(x)
-            if polemica:
-                cands.append({'que': 'polemica'})
+            hablan = [k for k, n in sorted((x.get('mencionan') or {}).items(), key=lambda kv: (-kv[1], kv[0])) if n >= TEMA_GENTE][:3]
+            cands = hechos_del_dia(x)
+            if raid:
+                # 🚨 el chat explotó por el raid: no es un pico ni un tema
+                cands.append({'que': 'raid', 'n': int(x.get('raid') or 0), 'cuentas': int(x.get('raiders') or 0)})
+            elif polemica:
+                cands.append({'que': 'polemica', 'ks': _pelean(x)})
             elif pico:
                 cands.append({'que': 'pico'})
             elif hablan:
@@ -548,8 +776,14 @@ def momentos(chats, camps=None, nombres=None):
                     z['hablan'] = hablan
                 if c.get('ks'):
                     z['quien'] = [nombres.get(k) or k for k in c['ks']]
-                if not polemica and ev:
+                elif 'ks' in z:
+                    del z['ks']
+                if not polemica and not raid and ev:
                     z['ev'], z['ll'] = ev.get('ev') or '', ev.get('ll')
+                f = _frase([q for q in ((citas or {}).get(d) or {}).get(sv) or [] if str(q.get('u') or '') not in fuera],
+                           c['que'], c.get('ks'), c.get('mutuo')) if c['que'] != 'raid' else None
+                if f:
+                    z['cita'] = {'txt': f.get('txt') or '', 'n': nombres.get(f.get('k')) or f.get('n') or '', 'k': f.get('k') or ''}
                 out.append(z)
     return out
 
@@ -708,6 +942,8 @@ def correr(aplicar=False, ya=False):
     si = _si()
     dias = estado.get('dias') or {}
     marcados, por_sv, leidos = [], {}, []
+    # 🗨️ tanda 4: las frases de cada servidor y todo lo importante (el archivo de la temporada)
+    nombre_de, citas_n, todo_imp = _nombres(), {}, []
     hace24 = _snow(int(time.time() * 1000) - 24 * 3600 * 1000)
     for sv, gid in svs:
         ap = _apagado(gid)
@@ -729,7 +965,10 @@ def correr(aplicar=False, ya=False):
         ms = leer(s, canal, cursor.get(canal) or hace24)
         if ms:
             cursor[canal] = ms[-1]['id']
-        nuevos = contar(ms, pid, si=si, nombres=pnom)
+        cs_sv = {}
+        nuevos = contar(ms, pid, si=si, nombres=pnom, citas=cs_sv, nombre_de=nombre_de)
+        for dia, v in cs_sv.items():
+            citas_n.setdefault(dia, {})[sv] = _podar(v)
         for dia, x in nuevos.items():
             _sumar(dias.setdefault(dia, {}).setdefault(sv, _vacio()), x)
         imp = []
@@ -739,6 +978,7 @@ def correr(aplicar=False, ya=False):
                 imp.append({'sv': sv, 'g': gid, 'c': canal, 'id': m['id'], 'autor': m['autor'], 'n': m['nombre'][:40],
                             'k': pid.get(m['autor'], ''), 't': _ms(m['id']), 'texto': m['texto'][:400], 'motivo': mot})
         marcados += imp[-MAX_SV:]
+        todo_imp += imp[-ARCHIVO_DIA:]
         por_sv[sv] = {'msgs': len([m for m in ms if not m['bot']]), 'marcados': len(imp)}
         leidos.append(sv)
         print('   💬 %s: %d mensajes, %d que importan' % (sv, por_sv[sv]['msgs'], len(imp)))
@@ -750,6 +990,7 @@ def correr(aplicar=False, ya=False):
     _guardar(CURSOR, cursor)
     if leidos:
         _mandar({'dia': hoy, 'por_sv': por_sv, 'marcados': marcados})
+        guardar_citas(citas_n, todo_imp, corte)
     print('   💬 los chats generales: %d servidores leídos, %d mensajes que importan' % (len(leidos), len(marcados)))
     return 0
 
@@ -812,7 +1053,9 @@ def _self_check():
     normal = {'2026-11-%02d' % d: {'DRA': dia(100), 'FFA': dia(50)} for d in range(1, 8)}
     ch = {'leido': '2026-11-12', 'dias': dict(normal, **{
         '2026-11-08': {'DRA': dia(420, mencionan={'konan': 9, 'bea': 2}), 'FFA': dia(60)},
-        '2026-11-09': {'DRA': dia(500, motivos={'evento falso': 2}, mencionan={'konan': 12}), 'FFA': dia(300, motivos={'seguridad': 1})},
+        '2026-11-09': {'DRA': dia(500, motivos={'evento falso': 2}, mencionan={'konan': 12}, pelean={'ana>bea': 2, 'cami>': 1}),
+                       'FFA': dia(300, motivos={'seguridad': 7}, raid=7, raiders=4)},
+        '2026-11-11': {'FFA': dia(260, motivos={'seguridad': 1})},
         '2026-11-10': {'DRA': dia(110, mencionan={'tam': 7})},
         '2026-11-12': {'DRA': dia(900)}})}
     mo = momentos(ch, [{'tipo': 'campeon', 'sv': 'DRA', 't': '2026-11-09T02:30:00Z', 'ev': 'COPA', 'll': 7}])
@@ -821,11 +1064,15 @@ def _self_check():
     ok(p8.get('que') == 'pico' and p8.get('x') == 4.2 and p8.get('hablan') == ['konan'] and p8.get('ev') == 'COPA' and p8.get('t') == '2026-11-09T03:30:00Z',
        'el chat que explotó: cuántas veces un día normal, de quién se habló y el evento de esa noche (las 10 PM ET de ese día)')
     p9 = por.get(('2026-11-09', 'DRA')) or {}
-    ok(p9.get('que') == 'polemica' and 'hablan' not in p9 and 'ev' not in p9,
-       'la polémica: sin nombres y sin el evento')
-    ok(('2026-11-09', 'FFA') not in por and ('2026-11-12', 'DRA') not in por and por.get(('2026-11-10', 'DRA'), {}).get('que') == 'tema'
-       and not any(k[1] == 'FFA' and k[0] < '2026-11-09' for k in por),
-       'nada el día de un raid, nada del día que todavía no terminó, el nombre del día sin pico, y un día normal no sale')
+    ok(p9.get('que') == 'polemica' and 'hablan' not in p9 and 'ev' not in p9 and p9.get('ks') == ['ana', 'bea'],
+       'la polémica: con quién acusó y a quién (tanda 4), sin el evento de esa noche')
+    f9 = por.get(('2026-11-09', 'FFA')) or {}
+    ok(f9.get('que') == 'raid' and f9.get('n') == 7 and f9.get('cuentas') == 4 and 'ks' not in f9 and 'cita' not in f9
+       and [m['que'] for m in mo if m['sv'] == 'FFA' and m['dia'] == '2026-11-09'] == ['raid'],
+       'el raid es una historia (tanda 4): cuántos mensajes y cuántas cuentas, sin nombres, y no es un pico')
+    ok(por.get(('2026-11-11', 'FFA'), {}).get('que') == 'pico' and ('2026-11-12', 'DRA') not in por
+       and por.get(('2026-11-10', 'DRA'), {}).get('que') == 'tema' and not any(k[1] == 'FFA' and k[0] < '2026-11-09' for k in por),
+       'un link de estafa suelto no apaga el día, nada del día que todavía no terminó, el nombre del día sin pico, y un día normal no sale')
     ok(momentos({'leido': '2026-11-03', 'dias': {'2026-11-02': {'DRA': dia(390)}}}) == []
        and len(momentos({'leido': '2026-11-03', 'dias': {'2026-11-02': {'DRA': dia(400)}}})) == 1,
        'sin días de antes, sólo un día enorme')
@@ -858,7 +1105,37 @@ def _self_check():
     ok([m['que'] for m in m3] == ['reto', 'cara'] and m3[0]['quien'] == ['Ana', 'Bea'] and m3[1]['quien'] == ['dani', 'eli'],
        'como mucho dos por servidor y día, lo más dramático primero, con el nombre de la Lista')
     ch4 = {'leido': '2026-11-18', 'dias': {'2026-11-17': {'DRA': dict(y3, motivos={'fraude': 1})}}}
-    ok(momentos(ch4, [], {}) == [], 'el día de una denuncia, ninguna historia con nombre (podría ser el acusado)')
+    ok([m['que'] for m in momentos(ch4, [], {}, fuera=())] == ['reto', 'cara'], 'el día de una denuncia, las historias con nombre salen igual (tanda 4)')
+    # 🗨️ tanda 4: la frase
+    ok(cita_limpia('<@22222> te reto, revancha ya https://x.y/z <:fuego:123> **ya**', {'22222': 'bea'}, {'bea': 'Bea'}) == '@Bea te reto, revancha ya ya'
+       and cita_limpia('gg') == '' and cita_limpia('jaja que maricon ese tipo') == '' and cita_limpia('<@9> mirá esto https://nitro.gift/x') == ''
+       and len(cita_limpia('a ' * 200)) <= CITA_MAX + 1 and cita_limpia('> **la rompiste** hermano') == 'la rompiste hermano',
+       'la frase: sin links ni emoji del servidor, las menciones con su nombre, ni muy corta ni un insulto que discrimina')
+    cs3 = {}
+    contar(ms3 + [{'id': _snow(base + 99000), 'autor': '11111', 'texto': 'este evento es falso, nunca se jugo <@22222>'}], pid,
+           citas=cs3, nombre_de={'bea': 'Bea'})
+    c3 = cs3.get('2026-11-17') or []
+    fr = _frase(_podar(c3), 'reto', ['ana', 'bea'])
+    fp = _frase(_podar(c3), 'polemica', ['ana', 'bea'])
+    ok(fr and fr['txt'] == '@Bea te reto, revancha ya' and fr['k'] == 'ana' and fp and 'falso' in fp['txt']
+       and _frase(c3, 'reto', ['bea', 'ana']) is None and not any(c['txt'] == 'y?' for c in c3),
+       'cada historia con la frase de quien corresponde (el reto, del que lo pidió; la polémica, del que acusa)')
+    ok(len(_podar([{'q': ['elogio'], 'id': str(i), 'txt': 'x' * i, 'a': ['bea']} for i in range(20)])) == CITAS_POR,
+       'de cada clase, las %d que más pesan' % CITAS_POR)
+    lis = [{'q': ['cara'], 'k': 'ana', 'a': ['bea'], 'id': '1', 'txt': 'callate puta que no sabes rimar ni una sola barra hermano'},
+           {'q': ['cara'], 'k': 'ana', 'a': ['bea'], 'id': '2', 'txt': 'en la final te espero'},
+           {'q': ['cara'], 'k': 'ana', 'a': ['bea'], 'id': '3', 'txt': 'x ' * 90}]
+    ok(_frase(lis, 'cara', ['ana', 'bea'])['id'] == '2' and _frase(lis[:1], 'cara', ['ana', 'bea'])['id'] == '1'
+       and cita_limpia('tu vieja tiene la vagina con piojos') == '',
+       'la frase: la limpia antes que la del insulto, la que se lee de una antes que el rollo, y nunca lo sexual explícito')
+    m4 = momentos(ch3, [], {'ana': 'Ana', 'bea': 'Bea'}, citas={'2026-11-17': {'DRA': _podar(c3)}}, fuera=())
+    m5 = momentos(ch3, [], {'ana': 'Ana', 'bea': 'Bea'}, citas={'2026-11-17': {'DRA': _podar(c3)}}, fuera={'11111'})
+    ok(m4[0].get('cita') == {'txt': '@Bea te reto, revancha ya', 'n': 'Ana', 'k': 'ana'} and 'cita' not in m5[0],
+       'la historia lleva su frase con el nombre de quien la escribió, y la de quien pidió salir no sale')
+    y6 = contar([{'id': _snow(base + i * 1000), 'autor': a, 'texto': t} for i, (a, t) in enumerate(
+        [('88801', 'raid raid raid'), ('88802', 'free nitro https://x.y'), ('11111', 'es una estafa eso jaja')])], pid)['2026-11-17']
+    ok(y6['raid'] == 2 and y6['raiders'] == 2 and y6['motivos'].get('seguridad') == 3,
+       'el raid de verdad: la palabra o un link (una charla sobre una estafa va al Dashboard, pero no es un raid)')
     t11 = dt.datetime(2026, 11, 17, 16, 30, tzinfo=dt.timezone.utc)   # 11:30 AM ET
     t13 = dt.datetime(2026, 11, 17, 18, 0, tzinfo=dt.timezone.utc)    # 1 PM ET
     ok(not toca({}, t11) and toca({}, t13) and not toca({'leido': '2026-11-17'}, t13) and toca({'leido': '2026-11-16'}, t13),
@@ -900,10 +1177,15 @@ def probar(sv, dias=1):
             mot[k] = mot.get(k, 0) + 1
     print('   que importan: %s' % (mot or 'ninguno'))
     # 🗞️ tanda 3: qué historias con nombre saldrían (claves, nunca el texto)
-    for dia, x in sorted(contar(ms, por_id(), nombres=por_nombre()).items()):
+    pid, nd, cs_p = por_id(), _nombres(), {}
+    for dia, x in sorted(contar(ms, pid, nombres=por_nombre(), citas=cs_p, nombre_de=nd).items()):
+        print('   %s: raid %s mensajes de %s cuentas · pelean %s' % (dia, x['raid'], x['raiders'], _top(x['pelean'], 4)))
         print('   %s: retos %s · elogios %s · favoritos %s · regresos %s · retiros %s' % (
             dia, _top(x['retos'], 5), _top(x['elogios'], 5), _top(x['favoritos'], 5), list(x['regresos']), list(x['retiros'])))
         print('      historias: %s' % ([(h['que'], h['ks'], h.get('n')) for h in hechos_del_dia(x)] or 'ninguna'))
+        for h in hechos_del_dia(x) + ([{'que': 'polemica', 'ks': _pelean(x)}] if x['pelean'] else []):
+            f = _frase(_podar(cs_p.get(dia) or []), h['que'], h.get('ks'), h.get('mutuo'))
+            print('      %s %s: %s' % (h['que'], h.get('ks'), ('«%s» (%s)' % (f['txt'], f['n'])) if f else 'sin frase'))
     return 0
 
 

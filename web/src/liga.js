@@ -7,7 +7,7 @@ import { cartaPrincipalDe, versionRedibujo } from './pase.js';
 // el servidor (`DUENO` de bot/avisos.js, el mismo número)
 // 🗞️ las etiquetas de las historias del chat (bot/chats.py `ORDEN_QUE`; tanda 3, 21/11/2026)
 const CHAT_ETQ = { reto: 'DESAFÍO', cara: 'CARA A CARA', retiro: '¿SE RETIRA?', regreso: 'VUELVE', elogio: 'EL CHAT SE RINDE',
-  favorito: 'FAVORITO', polemica: 'POLÉMICA', pico: 'EL CHAT', tema: 'EL CHAT' };
+  favorito: 'FAVORITO', polemica: 'POLÉMICA', raid: 'RAID', pico: 'EL CHAT', tema: 'EL CHAT' };
 
 export const DUENO = '739338101603696681';
 
@@ -1049,8 +1049,12 @@ export class Liga {
     const en = nos ? 'en nuestro chat' : 'en el chat de ' + sv;
     const ev = it.que !== 'polemica' && it.ev ? limpio(it.ev) : '';
     const p = de(it.ks);
+    // 🗨️ LA FRASE QUE ARMÓ LA HISTORIA (tanda 4, 21/11/2026; Dlx: «citarlo público»), con quien la escribió: el nombre de
+    // su perfil si es de la Lista, el de Discord si no. El raid no lleva (el spam no se cita)
+    const qc = it.cita && it.cita.k ? this.quienK(it.cita.k) : null;
+    const cita = it.cita && it.cita.txt && it.que !== 'raid' ? { txt: String(it.cita.txt), n: limpio((qc && qc.n) || it.cita.n || '') } : null;
     const dos = ['reto', 'cara'].includes(it.que);
-    if (CHAT_ETQ[it.que] && !['polemica', 'pico', 'tema'].includes(it.que)) {
+    if (CHAT_ETQ[it.que] && !['polemica', 'raid', 'pico', 'tema'].includes(it.que)) {
       if (p.length < (dos ? 2 : 1)) return null;
       const T = {
         reto: it.mutuo ? [p[0] + ' y ' + p[1] + ' se tienen ganas', 'Los dos se pidieron batalla ' + en]
@@ -1061,15 +1065,26 @@ export class Liga {
         elogio: [(nos ? 'Nuestro chat se rinde ante ' : 'El chat de ' + sv + ' se rinde ante ') + p[0], (it.n || 'Muchas') + ' personas lo felicitaron'],
         favorito: [(nos ? 'Nuestro chat ya tiene favorito: ' : 'En ' + sv + ' ya tienen favorito: ') + p[0], (it.n || 'Muchos') + ' lo dan como ganador'],
       }[it.que];
-      return { tit: T[0], sub: T[1], nombres: p.join(' y '), ev, ks: it.ks || [] };
+      return { tit: T[0], sub: T[1], nombres: p.join(' y '), ev, ks: it.ks || [], cita };
+    }
+    // 🚨 el raid (tanda 4): cuántos mensajes de spam y de cuántas cuentas, sin nombres
+    if (it.que === 'raid') {
+      return { tit: nos ? 'Nos quisieron raidear el chat' : 'Raid en el chat de ' + sv,
+        sub: num(it.n) + ' mensajes de spam' + (it.cuentas > 1 ? ' de ' + num(it.cuentas) + ' cuentas' : ''), nombres: '', ev: '', ks: [], cita: null };
+    }
+    // 🔥 la polémica, con quién acusó y a quién (tanda 4; Dlx: «sí debería, esto es muy importante, para el show»)
+    if (it.que === 'polemica') {
+      const ante = nos ? 'Se armó en nuestro chat' : 'Se armó en el chat de ' + sv;
+      const tit = p.length > 1 ? ante + ': ' + p[0] + ' contra ' + p[1] : p.length ? ante + ', y ' + p[0] + ' está en el medio'
+        : nos ? 'Se armó la polémica en nuestro chat' : ante;
+      return { tit, sub: 'Hubo acusaciones ' + en, nombres: p.join(' y '), ev: '', ks: (it.ks || []).filter((k) => this.quienK(k)), cita };
     }
     let tit;
-    if (it.que === 'polemica') tit = nos ? 'Se armó la polémica en nuestro chat' : 'Se armó en el chat de ' + sv;
-    else if (it.que === 'tema') {
+    if (it.que === 'tema') {
       if (!nombres) return null;
       tit = (nos ? 'En nuestro chat todos hablan de ' : 'Todo ' + sv + ' habla de ') + nombres;
     } else tit = (nos ? 'Nuestro chat explotó' : 'Explotó el chat de ' + sv) + (it.x >= 2 ? ': ' + String(it.x).replace('.', ',') + ' veces un día normal' : '');
-    return { tit, sub: '', nombres, ev, ks: [] };
+    return { tit, sub: '', nombres, ev, ks: [], cita };
   }
   // la etiqueta de cada historia del chat
   chatEtq(it) { return CHAT_ETQ[it.que] || 'EL CHAT'; }

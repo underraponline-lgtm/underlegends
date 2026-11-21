@@ -150,7 +150,7 @@ CUANTOS = {'campeon': (2, 4), 'ligahito': (2, 4), 'mesaward': (2, 5), 'premios':
            'svchat': (1, 3), 'svchat_pol': (1, 2),
            # 🗞️ tanda 3 de los chats (21/11/2026): las historias con nombre
            'svchat_reto': (2, 4), 'svchat_cara': (1, 3), 'svchat_retiro': (2, 4), 'svchat_regreso': (2, 4),
-           'svchat_elogio': (2, 4), 'svchat_favorito': (1, 3)}
+           'svchat_elogio': (2, 4), 'svchat_favorito': (1, 3), 'svchat_raid': (1, 3)}
 #: nunca más que esto en una publicación
 TOPE = 6
 #: en cuáles comenta también un personaje de la Liga, y con qué chance
@@ -242,6 +242,9 @@ GENTE['svchat_elogio'] = ['merecido, {q}', 'todos hablando de {q}', 'qué nivel'
                           'el chat no miente']
 GENTE['svchat_favorito'] = ['yo también voy con {q}', '~no sé, yo veo a otro', 'favorito no es campeón', '~{q} tiene todo para ganarla',
                             'veremos en la llave']
+# 🚨 el raid (tanda 4): nadie nombra a nadie (quien manda el spam suele ser una cuenta robada)
+GENTE['svchat_raid'] = ['no toquen ningún link', '~¿otra vez?', 'baneen a esos bots', '~justo cuando estaba bueno el chat',
+                        'reporten esas cuentas', '~cuidado con el nitro gratis', 'qué ganas de molestar']
 GENTE['svchat_pol'] = ['¿qué pasó anoche en {sv}?', '~me perdí todo, alguien que me explique', 'tranquilos todos',
                        'que lo vea el staff y listo', '~yo sólo vine por las batallas', 'ojalá se arregle']
 
@@ -291,7 +294,7 @@ EMOJI = {'campeon': ['🔥', '👑', '🏆', '👏', '💪'], 'ligahito': ['👑
          'rango': ['📈', '🔥', '💪'], 'pase': ['📈', '💪', '🔥'], 'elegido': ['👀', '🎯'], 'sobrevivio': ['👀', '🔥'],
          'precio': ['💰', '🎯'], 'premios': ['🏅', '👏', '🔥'], 'resnoche': ['🌙', '🔥', '🎤'],
          'anuncio': ['🎤', '🔥', '💪', '🙌'], 'flyer': ['👀', '🔥', '🎤'], 'sorteo': ['🍀', '🎉'],
-         'crewtier': ['💪', '🔥', '🛡️'], 'mesaward': ['🏆', '👑', '👏'], 'svchat': ['🔥', '👀', '💬'], 'svchat_pol': ['👀'],
+         'crewtier': ['💪', '🔥', '🛡️'], 'mesaward': ['🏆', '👑', '👏'], 'svchat': ['🔥', '👀', '💬'], 'svchat_pol': ['👀'], 'svchat_raid': ['🚨', '👀'],
          'svchat_reto': ['👀', '🔥', '🎤'], 'svchat_cara': ['👀', '😳'], 'svchat_retiro': ['😭', '🙏', '👏'], 'svchat_regreso': ['🔥', '👀', '💪'],
          'svchat_elogio': ['👏', '🔥', '👑'], 'svchat_favorito': ['👀', '🎯']}
 #: cómo se ríe cada uno

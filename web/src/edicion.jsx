@@ -447,6 +447,7 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
             return (
               <article key={it.id || sv} className="ed-chat"><div className="ed-ch-cab"><img className="ed-rc" alt="" src={liga.logo(sv)} loading="lazy" /><b>{(liga.svs[sv] && liga.svs[sv].nombre) || siglaDe(sv)}</b><small>{num(it.msgs)} mensajes · {it.gente} personas</small></div>
                 {ct ? <p className="ed-ch-tit"><span className="et">{liga.chatEtq(it)}</span>{ct.tit}</p> : null}
+                {ct && ct.cita ? <p className="ed-ch-cita">«{ct.cita.txt}»{ct.cita.n ? <span>{ct.cita.n}</span> : null}</p> : null}
                 {ct && ct.ks.length ? <div className="ed-ch-gente">{ct.ks.filter((k) => liga.quienK(k)).map((k) => <Cara key={k} liga={liga} k={k} nombre={liga.nombreDe(k)} cls="ed-rc" />)}</div> : <Barras hs={it.hs} />}
                 {(it.hablan || []).length ? <div className="ed-ch-f"><span className="et">Habló más</span><Cara liga={liga} k={it.hablan[0]} nombre={it.hablan[0]} cls="ed-rc" /><b>{limpio((liga.T[it.hablan[0]] || {}).n || it.hablan[0])}</b></div> : null}
               </article>

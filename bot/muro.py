@@ -714,7 +714,17 @@ def _fuentes():
             # 🌙 el puesto de cada uno, para «quién subió» en el resumen de la noche (`noches()`)
             'pool': _j('datos', 'temporada_pool.json'),
             # 💬 los chats generales (bot/chats.py): sus días fuertes (`chats_muro()`) y la jerga de los comentarios
-            'chats': _j('datos', 'chats_dia.json')}
+            'chats': _j('datos', 'chats_dia.json'),
+            # 🗨️ y sus frases (tanda 4, 21/11/2026): viven en KV y no en el repo (`chats.citas_kv()`); sin Cloudflare, ninguna
+            'citas': _citas_chat()}
+
+
+def _citas_chat():
+    try:
+        import chats as CH
+        return CH.citas_kv()
+    except Exception:                                    # noqa: BLE001
+        return {}
 
 
 def _arranque(ahora):
@@ -802,11 +812,11 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
             + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
             + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro()
             + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas'))
-            + chats_muro(fuentes.get('chats'), camps))
+            + chats_muro(fuentes.get('chats'), camps, fuentes.get('citas')))
     return todo, estado, anotados, extra
 
 
-def chats_muro(ch, camps):
+def chats_muro(ch, camps, citas=None):
     """💬 Los días fuertes del chat general de cada servidor (`bot/chats.py` `momentos()`, 17/11/2026: Dlx, «si pasan
     cosas dramáticas ponerlas en las historias», y a si se aprueban, «Todo sale solo»). Van a las historias de su
     servidor y a Publicaciones, firmadas por el servidor. Si algo falla, nada: nunca frena el muro."""
@@ -814,7 +824,7 @@ def chats_muro(ch, camps):
         return []
     try:
         import chats as CH
-        return CH.momentos(ch, camps)
+        return CH.momentos(ch, camps, citas=citas)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ el muro sin los días fuertes del chat (%s)' % str(e)[:80])
         return []
@@ -902,7 +912,12 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
             'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x) or del_sv(x)], p.get('tabla'), _tabla_entera(p, perfiles))}
     # 🙈 quien apagó sus publicaciones en Tu cuenta (bot/muro_solos.py): sin `apagados`, la copia de la última lectura
     import muro_solos as MS
-    muro['items'] = MS.sin_apagados(muro['items'], MS.apagados(None) if apagados is None else apagados)
+    no_ = MS.apagados(None) if apagados is None else apagados
+    muro['items'] = MS.sin_apagados(muro['items'], no_)
+    # 🗨️ y la frase de quien apagó sus publicaciones (bot/chats.py, tanda 4): la historia sale, su frase no
+    for x in muro['items']:
+        if x.get('tipo') == 'svchat' and (x.get('cita') or {}).get('k') in (no_ or ()):
+            x.pop('cita', None)
     # 🙈 y las que ocultó el staff de su servidor desde su panel (16/11/2026, `MS.ocultos()`)
     oc_ = MS.ocultos()
     if oc_:

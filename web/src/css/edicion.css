@@ -211,3 +211,7 @@
 .ed-ch-tit { margin: 0; display: grid; gap: 4px; font: 800 16px/1.25 Archivo, sans-serif; color: var(--tinta); text-wrap: balance; }
 .ed-ch-tit .et { font-size: 11px; color: var(--gris); }
 .ed-ch-gente { display: flex; gap: 6px; }
+/* 🗨️ la frase que armó la historia (tanda 4, 21/11/2026) */
+.ed-ch-cita { margin: 0; font: italic 500 14px/1.35 Archivo, sans-serif; color: var(--tinta); overflow-wrap: anywhere; }
+.ed-ch-cita span { display: block; margin-top: 3px; font: 800 11px/1 Archivo, sans-serif; font-style: normal; color: var(--gris); }
+.ed-ch-cita span::before { content: "— "; }

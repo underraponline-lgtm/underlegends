@@ -424,6 +424,9 @@
 .pw-tx{display:grid;gap:6px;min-width:0;align-content:start}
 .pw-cat{font:700 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--pw-c)}
 .pw-t{margin:0;font:600 15px/1.35 Archivo,sans-serif;overflow-wrap:anywhere}
+/* 🗨️ la frase que armó la historia del chat (tanda 4, 21/11/2026) */
+.pw-cita{display:block;margin-top:6px;font-style:italic;font-weight:500}
+.pw-cita i{font-style:normal;font-weight:800;opacity:.7}
 .pw-t b,.pw-fu-t b{font-weight:900}
 .pw-t a,.pw-fu-t a{color:inherit;font-weight:900;text-underline-offset:3px}
 .pw-det{color:var(--gris);font:500 12.5px/1.4 Archivo,sans-serif;overflow-wrap:anywhere}
