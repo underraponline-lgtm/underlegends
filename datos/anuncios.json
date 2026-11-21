@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T02:57:07+00:00",
+ "cuando": "2026-11-21T03:07:14+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7119,6 +7119,96 @@
    "autor": "Krish el adivino (la revolucion)",
    "staff_cuentas": {},
    "categoria_id": "1518542367907647498"
+  },
+  {
+   "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS VOL 2",
+   "servidor": "DW",
+   "canal": "「🗓️」EVENTOS",
+   "msg_id": "1555047995572097025",
+   "cuando": "2026-10-01T02:45:33",
+   "canal_id": "1394905727729930241",
+   "guild_id": "1300152346189496330",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Geronimo",
+     "id": "897942226955563068"
+    }
+   ],
+   "autor_h": "9dbbad01fab207c3",
+   "cupos_texto": "8-12-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "SI SE LLENAN 8 CUPOS ANTES DE LAS 9 MX CENTRAL SE HACE",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {},
+   "autor": "Geronimo",
+   "staff_cuentas": {},
+   "categoria_id": "1300152346537496623"
+  },
+  {
+   "nombre": "DANGER WORLD CUP",
+   "servidor": "DW",
+   "canal": "「🗓️」EVENTOS",
+   "msg_id": "1554191873458045101",
+   "cuando": "2026-09-28T18:03:38",
+   "canal_id": "1394905727729930241",
+   "guild_id": "1300152346189496330",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "1f8d1fb1dea825d0",
+   "cupos_texto": "8-12-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "11PM🇨🇴 - 10PM🇲🇽",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "DANGER WORLD",
+   "staff_cuentas": {},
+   "categoria_id": "1300152346537496623"
+  },
+  {
+   "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
+   "servidor": "DW",
+   "canal": "「🗓️」EVENTOS",
+   "msg_id": "1553924415186796705",
+   "cuando": "2026-09-28T00:20:51",
+   "canal_id": "1394905727729930241",
+   "guild_id": "1300152346189496330",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "DENIK",
+     "id": "393418014135156737"
+    },
+    {
+     "n": "DANGER WORLD",
+     "id": "1451728184801234944"
+    },
+    {
+     "n": "Geronimo",
+     "id": "897942226955563068"
+    }
+   ],
+   "autor_h": "9dbbad01fab207c3",
+   "cupos_texto": "8-12-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "9PM MEXICO CENTRAL",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {},
+   "autor": "Geronimo",
+   "staff_cuentas": {},
+   "categoria_id": "1300152346537496623"
   }
  ],
  "oficiales": [
@@ -7267,6 +7357,15 @@
    "link": "https://discord.com/channels/1468472442925092958/1468478722884501709/1572308019134599297"
   },
   {
+   "servidor": "DW",
+   "canal": "「🔔」ANUNCIOS",
+   "tit": "LINE UP OFICIAL DANGER LEAGUE T5 🏆",
+   "tx": "CJ 🇻🇪 VOLK 🇲🇽 MAU KC 🇨🇴 BLOODY 🇨🇴 USAGI 🇨🇴 DENIK 🇵🇪 MAKI 🇲🇽 GUTAN 🇲🇽 VAYEYA 🇨🇴 MAKMA 🇻🇪 ALDRE 🇦🇷 DIEGUITO MOMAZOS 🇲🇽",
+   "cuando": "2026-11-16T16:08:38",
+   "msg_id": "1571919939453853797",
+   "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1571919939453853797"
+  },
+  {
    "servidor": "URBF",
    "canal": "⋆📢│🐔⋅Anuncios⋅📢",
    "tit": "🇪🇸 CAMPOY CAMPEON RED BULL NACIONAL DE PLAZAS TEMPORADA 5 🇪🇸",
@@ -7283,6 +7382,15 @@
    "cuando": "2026-11-16T02:29:06",
    "msg_id": "1571713695950577788",
    "link": "https://discord.com/channels/1074328197400887388/1081721420373041264/1571713695950577788"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「🔔」ANUNCIOS",
+   "tit": "ASI CIERRA LA TEMPORADA DE DANGER WORLD.",
+   "tx": "",
+   "cuando": "2026-11-15T23:47:06",
+   "msg_id": "1571672927508766790",
+   "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1571672927508766790"
   },
   {
    "servidor": "FRZ",
@@ -7373,24 +7481,6 @@
    "cuando": "2026-10-29T01:53:43",
    "msg_id": "1565181811825320049",
    "link": "https://discord.com/channels/1489848581203689535/1489852871188152461/1565181811825320049"
-  },
-  {
-   "servidor": "CEU",
-   "canal": "anuncios",
-   "tit": "ya les puse los numeros del ranking detras del nombre",
-   "tx": "",
-   "cuando": "2026-10-23T08:24:49",
-   "msg_id": "1563105908890800199",
-   "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1563105908890800199"
-  },
-  {
-   "servidor": "CEU",
-   "canal": "anuncios",
-   "tit": "YA TENEMOS CANAL DE YOUTUBE SOLO ES UNA BATALLA DEL OTRO SV PERO SE PUBLICARAN TAMBIEN DE ",
-   "tx": "",
-   "cuando": "2026-10-19T18:15:49",
-   "msg_id": "1561805084717883553",
-   "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1561805084717883553"
   }
  ],
  "inscripciones": [
