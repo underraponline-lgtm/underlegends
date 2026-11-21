@@ -911,7 +911,8 @@ const FELICITABLE = { campeon: 1, rango: 1, caza: 1 };
 // títulos y lo que se festeja, boom bap; lo que es pelea —desafíos, cara a cara, polémica, cazas—, drill; el chat que
 // explota, el raid y el rango, trap. Las demás (cartas, anuncios, flyers, promos con su video) van sin. Ver beats.js
 // 🔥 Y desde el 21/11/2026 (Dlx: «pon beats también en las historias de clásico y racha»): EL CLÁSICO, drill (es pelea), y
-// EN RACHA, trap. Ésas no salen de `slidesDe()`: llevan su `beat` donde se arman, en `historiasLiga()`
+// EN RACHA, trap. Ésas no salen de `slidesDe()`: llevan su `beat` donde se arman, en `historiasLiga()`. Y el cartel de
+// SE BUSCA · MOST WANTED, drill como la caza (Dlx, el mismo día: «pon beats también en las historias de Se busca»)
 const BEAT_DE = { campeon: 'boombap', caza: 'drill', rango: 'trap' };
 const BEAT_CHAT = { reto: 'drill', cara: 'drill', polemica: 'drill', raid: 'trap', pico: 'trap', tema: 'trap',
   elogio: 'boombap', favorito: 'boombap', retiro: 'boombap', regreso: 'boombap' };
@@ -1212,7 +1213,7 @@ function historiasLiga(liga, mm) {
     out.push(Slide('SE BUSCA · MOST WANTED', <><h3 className="st-h">{sueltos.length === 1 ? 'Un buscado suelto' : sueltos.length + ' buscados sueltos'}</h3>
       <ul className="hx-buscados">{sueltos.slice(0, 6).map((b) => <li key={b.k || b.n}><Cara liga={liga} k={b.k || ''} nombre={b.n} cls="hx-busc-f" /><b>{limpio(b.n)}</b><span className="hx-precio">{num(b.v)}</span></li>)}</ul>
       <small className="st-s">{sueltos.length > 6 ? 'Y ' + (sueltos.length - 6) + ' más. ' : ''}Gánale a uno en un evento y cobras su precio.</small></>,
-    'hasta ' + liga.dia(mw.fin), 'Ver Se busca', { ancla: 'sebusca' }, 'mw:' + mw.id + ':' + sueltos.length, '', { esc: svMas, tono: 'oro' }));
+    'hasta ' + liga.dia(mw.fin), 'Ver Se busca', { ancla: 'sebusca' }, 'mw:' + mw.id + ':' + sueltos.length, '', { esc: svMas, tono: 'oro', beat: 'drill' }));
   }
   // ▲ los que más subieron en el Ranking desde el lunes
   const suben = T.filter((f) => (f.mv || 0) > 0).sort((a, b) => b.mv - a.mv).slice(0, 3);
