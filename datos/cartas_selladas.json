@@ -430,7 +430,7 @@
   "Dios": {
    "competitivo": "52c7d17030a7:38a840be60e7",
    "pais": "beefd9ecad15:f1f52e1c6d42",
-   "servidor": "2f9596af6877:0bd0fbf67396:c82496",
+   "servidor": "2f9596af6877:0bd0fbf67396:132451",
    "temporada": "d1899e6e96d7:a8d8b7335469"
   },
   "Dobell": {},
@@ -1402,7 +1402,7 @@
   "Number VE": {
    "competitivo": "b0b7992fc630:38a840be60e7",
    "pais": "095d2e1825a7:f1f52e1c6d42",
-   "servidor": "c8b77f62c0be:0bd0fbf67396:62e67f",
+   "servidor": "c8b77f62c0be:0bd0fbf67396:43ab01",
    "temporada": "add0e00c8f31:a8d8b7335469"
   },
   "OEP": {
@@ -1938,7 +1938,7 @@
   "Xervoe": {
    "competitivo": "cbc574193028:38a840be60e7",
    "pais": "6a78e5c97791:f1f52e1c6d42",
-   "servidor": "5815d5ca531f:0bd0fbf67396:35630e",
+   "servidor": "5815d5ca531f:0bd0fbf67396:c0bf45",
    "temporada": "a96d08a0b539:a8d8b7335469"
   },
   "Xhay": {
@@ -2191,5 +2191,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-21T03:15:19+00:00"
+ "cuando": "2026-11-21T05:02:46+00:00"
 }
