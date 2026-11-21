@@ -448,7 +448,8 @@
   "wos": "wosito",
   "bootraxx": "BTRX",
   "volg": "Rodas",
-  "betelguese": "Benjixo"
+  "betelguese": "Benjixo",
+  "parkjisunk": "Oasis"
  },
  "pares": [
   [
@@ -2262,6 +2263,10 @@
   [
    "Betelgeuse",
    "Benjixo"
+  ],
+  [
+   "Park ji sunk",
+   "Oasis"
   ]
  ],
  "no_confundir": [
