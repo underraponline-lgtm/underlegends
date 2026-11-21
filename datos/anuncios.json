@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T19:07:26+00:00",
+ "cuando": "2026-11-21T19:25:40+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7555,6 +7555,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "aby",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1573779414909722645",
+   "cuando": "2026-11-21T19:17:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "COMPARE",
+   "quien": "rene0129",
+   "discord_id": "1157322349775949855",
+   "msg_id": "1573778975216500769",
+   "cuando": "2026-11-21T19:15:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bna🇦🇿",
+   "quien": "benjaclink31",
+   "discord_id": "849765868819972166",
+   "msg_id": "1573777871694991533",
+   "cuando": "2026-11-21T19:11:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Agustín la reliquia 🇺🇾",
+   "quien": "fabrythenoob7n76687",
+   "discord_id": "595648807920861205",
+   "msg_id": "1573777832771846155",
+   "cuando": "2026-11-21T19:11:14"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43518,42 +43554,6 @@
    "discord_id": "1150099153238630410",
    "msg_id": "1561135883770536027",
    "cuando": "2026-10-17T21:56:39"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "MC GLOCK 🇲🇽",
-   "quien": "mc_glock_",
-   "discord_id": "1520281483309224017",
-   "msg_id": "1561135741105348730",
-   "cuando": "2026-10-17T21:56:05"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "erian 🇵🇦",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1561135066556407892",
-   "cuando": "2026-10-17T21:53:24"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "SHADOW 🇨🇴 última",
-   "quien": "tenacious_dragon_23394",
-   "discord_id": "1548906948307451906",
-   "msg_id": "1561134178920308758",
-   "cuando": "2026-10-17T21:49:52"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1561133156797649059",
-   "cuando": "2026-10-17T21:45:49"
   }
  ]
 }
