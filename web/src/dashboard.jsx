@@ -72,6 +72,16 @@ function Cajas({ u }) {
   );
 }
 
+// 🔗 DE QUÉ LINK LLEGARON (21/11/2026, el plan de alcance): un link con `?de=urbanstreet` (o el canal que sea) cuenta la
+// visita nueva de ese canal (`visita()` de bot/avisos.js). Sólo números: nunca quién. Sin ningún link así, no se dibuja
+function Llegadas({ l }) {
+  return (
+    <div className="dz-nums">{l.map((x) => (
+      <div key={x.de} className="dz-num"><span>{x.de}</span><b>{num(x.n || 0)}</b><small>visitas nuevas</small></div>
+    ))}</div>
+  );
+}
+
 // día por día, las tres cosas en barras: el alto es contra el máximo de cada serie, así una no aplasta a las otras
 function Dias({ dias }) {
   const tope = (k) => Math.max(1, ...dias.map((d) => d[k] || 0));
@@ -5830,6 +5840,7 @@ export function Dashboard({ dc, liga }) {
               abriendo directo en esta pestaña llegaban null y quedaba comparando la primera semana contra sí misma */}
           {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas key={semanas ? 'si' : 'no'} S={semanas} uso={d.uso_semanas} liga={liga} />)}
           {(d.dias || []).length ? sec('', 'DÍA POR DÍA · DOS SEMANAS', 'hasta hoy', <Dias dias={d.dias} />) : null}
+          {(u.llegadas || []).length ? sec('', 'DE QUÉ LINK LLEGARON · 30 DÍAS', 'las visitas nuevas con ?de= en el link', <Llegadas l={u.llegadas} />) : null}
         </>],
         S || d.clics || (d.tutorial && Object.keys(d.tutorial.n || {}).length) ? ['pagina', 'La página', <>
           {S ? sec('nu-clics', 'QUÉ SECCIONES SE ABREN · 7 DÍAS', S.desde ? 'se cuenta desde el ' + corto(S.desde) : null, <SeccionesNumeros s={S} />) : null}

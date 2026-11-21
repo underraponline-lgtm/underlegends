@@ -1281,6 +1281,22 @@ const ok = (cond, que, det) => {
     ok(ss.length === 2 && b.lunes === '2026-10-12' && b.personas === 2 && b.bot === 1 && b.web === 1 && b.visitas === 15
       && a.lunes === '2026-10-05' && a.personas === 3 && a.visitas === 10 && a.k.personas === 1 && a.k.visitas === 7,
     'el uso por semana: personas, bot, cuenta y visitas de lunes a domingo, y la anterior también a igual día', JSON.stringify(ss));
+    // 🔗 de qué link llegó la visita (21/11/2026, el plan de alcance): el canal suma, lo inválido no, y 40 canales por día
+    const vis0 = () => o.sql.exec('SELECT COALESCE(SUM(n), 0) AS n FROM visitas WHERE dia = ?', A.diaET()).toArray()[0].n;
+    const v0 = vis0();
+    for (const de of ['urbanstreet', 'urbanstreet', 'redgol', 'MAYUS', '<script>', 'a', 'x'.repeat(31)]) o.visita({ de });
+    o.visita({});
+    o.visita(null);
+    let L = o.llegadasResumen();
+    ok(vis0() - v0 === 9 && L.length === 2 && L[0].de === 'urbanstreet' && L[0].n === 2 && L[1].de === 'redgol' && L[1].n === 1,
+      'la visita con ?de=: urbanstreet 2, redgol 1; mayúsculas, código, una letra y 31 letras no son canal (pero la visita cuenta)',
+      JSON.stringify(L));
+    for (let i = 0; i < 45; i++) o.visita({ de: 'canal-' + i });
+    L = o.llegadasResumen();
+    ok(L.length === 40 && !L.some((x) => x.de === 'canal-40') && L.some((x) => x.de === 'urbanstreet'),
+      'y con tope: 40 canales por día (urbanstreet y redgol ya estaban; los que sobran no entran)', String(L.length));
+    o.visita({ de: 'urbanstreet' });
+    ok(o.llegadasResumen().find((x) => x.de === 'urbanstreet').n === 3, 'un canal que ya estaba sigue sumando pasado el tope');
   }
 }
 

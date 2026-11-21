@@ -123,6 +123,16 @@ function anotarUnaVez(k) {
 // de trabajo justo al abrir el Inicio (Dlx, esa noche: «el inicio se mueve rapidísimo»). No van el Dashboard, el panel
 // del socio ni verificarse: son de pocos (la lista ya viene sin ellos)
 const pag = (f) => lazy(f);
+
+/** 🔗 El canal del link por el que se llegó (`?de=urbanstreet` o `?utm_source=…`), o `''`. La misma regla que `CANAL` de
+ *  bot/avisos.js: minúsculas, números y guiones, de 2 a 30 */
+export function canalDe(busqueda) {
+  try {
+    const q = new URLSearchParams(busqueda || '');
+    const c = String(q.get('de') || q.get('utm_source') || '').trim().toLowerCase();
+    return /^[a-z0-9][a-z0-9-]{1,29}$/.test(c) ? c : '';
+  } catch (e) { return ''; }
+}
 if (typeof window !== 'undefined') {
   window.__lgPrecargar = () => {
     try { const cx = navigator.connection; if (cx && (cx.saveData || /2g/.test(cx.effectiveType || ''))) return; } catch (e) { /* sigue */ }
@@ -501,8 +511,13 @@ export default function App() {
       const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
       if (localStorage.getItem('lg:visita') === hoy) return;
       localStorage.setItem('lg:visita', hoy);
-      fetch('/api/avisos/visita', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}', keepalive: true })
-        .catch(() => {});
+      // 🔗 y de qué link llegó (21/11/2026, el plan de alcance): `?de=<canal>` —o `utm_source`— en el link que se le pasa a
+      // un medio, un aliado o un directorio. Va sólo el canal, nunca nada de quien mira; el primero queda en `lg:de` para
+      // saber después de dónde llegó la gente que volvió a jugar. ⚠️ La regla del canal es `CANAL` de bot/avisos.js
+      const de = canalDe(location.search);
+      if (de && !localStorage.getItem('lg:de')) localStorage.setItem('lg:de', JSON.stringify({ de, dia: hoy }));
+      fetch('/api/avisos/visita', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(de ? { de } : {}),
+        keepalive: true }).catch(() => {});
     } catch (e) { /* sin almacenamiento, no se cuenta */ }
   }, []);
 

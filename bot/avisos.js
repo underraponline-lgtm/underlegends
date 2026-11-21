@@ -2335,6 +2335,10 @@ export function logsRojos(ms, ahora) {
  * no falla, se saltea. Dos rondas distintas nombradas y cuatro renglones con dos nombres o más (sin contar los de las
  * rondas). ⚠️ La plantilla vacía (`(< >) ⚔️ (< >)`) y la charla del canal («arrancan los cuartos, la final a las 9») no.
  */
+/** 🔗 El canal de un link (`?de=urbanstreet`, 21/11/2026): minúsculas, números y guiones, de 2 a 30. La misma regla que
+ *  `canalDe()` de web/src/App.jsx */
+export const CANAL = /^[a-z0-9][a-z0-9-]{1,29}$/;
+
 /**
  * 🧭 LO QUE CUENTA EL TUTORIAL (12/10/2026, web/src/primera.js): `tour` lo vio, `tour_fin` lo terminó, `salta0`…`salta4`
  * lo cortó en ese paso (0 es la bienvenida), `repite` lo volvió a pedir desde la Guía, `franja` llegó por un link y vio
@@ -8845,6 +8849,9 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS uso (dia TEXT NOT NULL, quien TEXT NOT NULL, por TEXT NOT NULL, ' +
         'PRIMARY KEY (dia, quien, por)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS visitas (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
+      // 🔗 y de qué link llegó la visita nueva (21/11/2026, el plan de alcance): `?de=<canal>`. Sólo el canal y un número
+      this.sql.exec('CREATE TABLE IF NOT EXISTS llegadas (dia TEXT NOT NULL, de TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
+        'PRIMARY KEY (dia, de)) WITHOUT ROWID');
       // 🧭 y el tutorial (12/10/2026): cuántos navegadores vieron, terminaron o saltearon cada cosa, por día. Sólo números
       this.sql.exec('CREATE TABLE IF NOT EXISTS tutorial (dia TEXT NOT NULL, ev TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, ev)) WITHOUT ROWID');
@@ -10202,7 +10209,7 @@ export class Avisos {
         }
         return json({ ok: true });
       }
-      if (ruta === '/visita') return this.visita();
+      if (ruta === '/visita') return this.visita(d);
       // 🔴 CON `d`, NO CON OTRO `req.json()` (12/10/2026): el cuerpo ya se leyó arriba, así que leerlo de nuevo daba
       // null y el tutorial contestó «faltan datos» a todo desde que salió (2.78). Las pruebas llamaban a `tutorial()`
       // directo y no pasaban por acá; ahora `avisos_prueba.mjs` entra por `fetch()`, como la página
@@ -10616,6 +10623,7 @@ export class Avisos {
       // 📊 el uso: quién, `USO_DIAS` días; las visitas (sólo un número por día), 90
       this.sql.exec('DELETE FROM uso WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      this.sql.exec('DELETE FROM llegadas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM secciones WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM clics WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
@@ -21469,10 +21477,28 @@ export class Avisos {
 
   /** Una visita sin cuenta: el navegador avisa una vez por día. ⚠️ Con tope: es un número que cualquiera puede
    *  empujar, y un script no tiene que poder llevarlo a cualquier lado */
-  visita() {
-    this.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000',
-      diaET());
+  visita(d) {
+    const dia = diaET();
+    this.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000', dia);
+    // 🔗 DE QUÉ LINK LLEGÓ (21/11/2026, el plan de alcance; Dlx: «dale»). `?de=<canal>` en un link que se le pasa a un
+    // medio, a un aliado o a un directorio: la página lo manda en la visita del día (App.jsx) y acá se suma un número por
+    // canal y por día, nada de quién. Con dos topes, porque lo puede empujar cualquiera: 5.000 por canal y 40 canales
+    // por día —un canal nuevo pasado eso no entra—
+    const de = d && typeof d.de === 'string' && CANAL.test(d.de) ? d.de : '';
+    if (de) {
+      const hay = this.sql.exec('SELECT 1 FROM llegadas WHERE dia = ? AND de = ?', dia, de).toArray().length > 0;
+      if (hay || this.sql.exec('SELECT COUNT(*) AS n FROM llegadas WHERE dia = ?', dia).toArray()[0].n < 40) {
+        this.sql.exec('INSERT INTO llegadas (dia, de, n) VALUES (?, ?, 1) ON CONFLICT(dia, de) DO UPDATE SET n = n + 1 WHERE n < 5000',
+          dia, de);
+      }
+    }
     return json({ ok: true });
+  }
+
+  /** 🔗 De qué link llegaron las visitas nuevas en los últimos 30 días: `[{de, n}]`, el que más trajo primero */
+  llegadasResumen() {
+    return this.sql.exec('SELECT de, SUM(n) AS n FROM llegadas WHERE dia > ? GROUP BY de ORDER BY n DESC LIMIT 40',
+      diaET(Date.now() - 30 * DIA_MS)).toArray().map((f) => ({ de: f.de, n: f.n }));
   }
 
   /** 🧭 Algo del tutorial, de un navegador (ver `TUTO_EV`). Con tope por día, como la visita */
@@ -21688,6 +21714,8 @@ export class Avisos {
         visitas_dia: v14.d ? Math.round(v14.n / v14.d) : 0, dias: v14.d },
       // desde cuándo se cuenta: el primer día con algo anotado
       desde: (this.sql.exec('SELECT MIN(dia) AS d FROM uso').toArray()[0] || {}).d || null,
+      // 🔗 de qué link llegaron (ver `visita()`)
+      llegadas: this.llegadasResumen(),
     };
   }
 
