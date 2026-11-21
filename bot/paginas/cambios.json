@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.40",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T04:44:09-05:00",
+        "titulo": "El logo de los servidores nuevos, solo",
+        "items": [
+            "**Un servidor que entra con `/setup` ya sale con su logo**: en Socios y en los banners de sus eventos usa el ícono que tiene en Discord, sin esperar a que alguien lo suba a mano."
+        ]
+    },
+    {
         "version": "7.38",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T04:35:00-05:00",
