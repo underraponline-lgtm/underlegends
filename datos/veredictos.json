@@ -355,28 +355,6 @@
   }
  },
  "batallas": {
-  "1571020527319908455": {
-   "id": "1571020527319908455",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794630881863,
-   "a": "EZZE",
-   "b": "TOMY HILFIGHER",
-   "ganador": "EZZE",
-   "votos": "1–0"
-  },
-  "1571021675212841032": {
-   "id": "1571021675212841032",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1794631155542,
-   "a": "GOCHO",
-   "b": "PARK JI SUNG",
-   "ganador": "PARK JI SUNG",
-   "votos": "1–0"
-  },
   "1571028835242348586": {
    "id": "1571028835242348586",
    "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
@@ -2062,58 +2040,6 @@
   }
  },
  "llaves": {
-  "1565944325601361981": {
-   "id": "1565944325601361981",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793420621062,
-   "ed": 1793421760557,
-   "texto": "`[ SEMIFINALES ]`\n⌞PRAISERIZAS BETELGEUSE⌝ 🆚 ⌞SIX TENOR⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "PRAISERIZAS BETELGEUSE",
-      "SIX TENOR"
-     ],
-     "PRAISERIZAS BETELGEUSE",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "PARIA"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ]
-   ]
-  },
-  "1565945449045557270": {
-   "id": "1565945449045557270",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793420888912,
-   "ed": 1793421760557,
-   "texto": "`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝",
-   "batallas": [
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "PARIA"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1565980514471649362": {
    "id": "1565980514471649362",
    "sv": "[FFA] Freestyle For All 👾",

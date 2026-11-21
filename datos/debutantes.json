@@ -1902,7 +1902,7 @@
    "n": 656,
    "sv": "CH",
    "vence": "2026-11-21T04:32:52+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Luciano": {
    "avisado": "2026-11-16",
@@ -3302,7 +3302,7 @@
    "n": 656,
    "sv": "CH",
    "vence": "2026-11-21T04:32:52+00:00",
-   "vencido": false
+   "vencido": true
   },
   "atari": {
    "avisado": "2026-10-31",
