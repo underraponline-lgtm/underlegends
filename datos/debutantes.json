@@ -800,7 +800,7 @@
    "n": 636,
    "sv": "CH",
    "vence": "2026-11-21T20:22:29+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Dominic": {
    "avisado": "2026-11-17",
@@ -848,7 +848,7 @@
    "n": 636,
    "sv": "CH",
    "vence": "2026-11-21T20:22:29+00:00",
-   "vencido": false
+   "vencido": true
   },
   "EL PIBE": {
    "avisado": "2026-11-05",
@@ -3367,7 +3367,7 @@
    "n": 636,
    "sv": "CH",
    "vence": "2026-11-21T20:22:29+00:00",
-   "vencido": false
+   "vencido": true
   },
   "botrax": {
    "con": null,
@@ -3482,7 +3482,7 @@
    "n": 636,
    "sv": "CH",
    "vence": "2026-11-21T20:22:29+00:00",
-   "vencido": false
+   "vencido": true
   },
   "jazi": {
    "avisado": "2026-10-30",
