@@ -10,6 +10,18 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {
+        "version": "7.53",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T11:18:00-05:00",
+        "titulo": "Todas las páginas, revisadas y arregladas",
+        "items": [
+            "**Revisamos las 49 páginas** en compu, tablet y celular, con el tema Clara y el Noche, y arreglamos lo que se salía de la pantalla, lo cortado, lo encimado, los huecos y lo que costaba leer.",
+            "**En el celular**: nada se sale de la pantalla, los nombres largos ya no se parten a mitad de palabra y los links del pie y de las filas se tocan mejor.",
+            "**El Ranking**: las 14 pestañas entran en la compu, Países y Crews se leen bien en el celular y cada podio dice por qué ordena.",
+            "**Publicaciones, perfiles y servidores**: el muro ya no se sale en el teléfono, los textos se leen en el tema Clara y la página de cada servidor no deja huecos."
+        ]
+    },
     {"version": "7.52", "dia": "2026-11-21", "cuando": "2026-11-21T10:12:00-05:00", "titulo": "El Ranking global, como una cartelera", "items": ["El **Ranking global** ahora es una cartelera: arriba el afiche con los tres primeros, y justo abajo **tu pelea**: tú contra el que tienes justo arriba y cuánto te falta para pasarlo.", "Tus **10 batallas que cuentan**, una por una, y cara a cara con un gigante para ver de dónde salieron sus puntos.", "En **¿Cómo funciona?**, arma un bloque: elige la ronda y el resultado y mira cómo entra en tus 10."]},
     {
         "version": "7.51",
