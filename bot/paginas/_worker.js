@@ -463,7 +463,10 @@ const muchos = () => new Response('{"error":"demasiados"}', { status: 429,
 // sus números y SU TARJETA de imagen, en vez del cartel de la Liga. ⚠️ SÓLO PARA LOS BOTS que arman la vista previa: a la
 // gente le llega el index.html de siempre, sin pedir nada más. Ocupa poco: dos lecturas cacheadas (el lobby, y los
 // perfiles sólo si no está entre los 200 de la tabla) por cada link pegado
-const BOTS_VISTA = /discordbot|twitterbot|facebookexternalhit|facebot|whatsapp|telegrambot|slackbot|linkedinbot|embedly|skypeuripreview|redditbot|pinterest|vkshare|iframely|mastodon|bluesky|cardyb|googlebot|bingbot|applebot/i;
+// 🔎 Y LOS BUSCADORES Y LAS IA (21/11/2026, el plan de alcance; Dlx: «dale»). Googlebot y Bingbot ya estaban; faltaban
+// la prueba en vivo de Search Console (`Google-InspectionTool`, que no dice «googlebot»), DuckDuckGo y los de las IA
+// —ChatGPT, Claude, Perplexity—, que no corren JavaScript: sin esto leían «Cargando el ranking…» en cada página
+const BOTS_VISTA = /discordbot|twitterbot|facebookexternalhit|facebot|whatsapp|telegrambot|slackbot|linkedinbot|embedly|skypeuripreview|redditbot|pinterest|vkshare|iframely|mastodon|bluesky|cardyb|googlebot|bingbot|applebot|google-inspectiontool|duckduckbot|gptbot|oai-searchbot|chatgpt-user|claudebot|claude-user|claude-searchbot|perplexitybot|perplexity-user/i;
 const R2_CARTAS = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
 const ORDEN_CARTA = ['temporada', 'servidor', 'competitivo', 'pais'];
 const banderaDe = (cc) => (/^[a-z]{2}$/i.test(String(cc || ''))
@@ -474,6 +477,53 @@ const banderaDe = (cc) => (/^[a-z]{2}$/i.test(String(cc || ''))
 // 0 bytes). Como ya hacía `vistaPais()` con los nombres. Y la respuesta sale sin ese ETag (`h.delete('etag')`): no cambia
 // cuando cambian el OVR, el puesto o la imagen, y con él una revalidación daría por vigente una vista previa vieja
 const plantilla = (env, url) => env.ASSETS.fetch(new Request(url.origin + '/'));
+
+// 🔎 LO QUE LEEN GOOGLE Y LAS IA EN CADA VISTA (21/11/2026, el plan de alcance; Dlx: «dale»). Medido ese día: Google no
+// tenía ni una página del sitio, no había dirección canónica ni datos estructurados, y sin JavaScript el cuerpo decía
+// «Cargando el ranking…». Tres piezas, en todas las vistas de abajo:
+//   · la dirección canónica (`/`, `/freestyle-rap` y `/freestyle-rap/` son la misma portada; sin barra final ni consulta);
+//   · los datos estructurados: la marca (Under Legends) y el sitio, y lo que es cada página (un perfil es un ProfilePage);
+//   · un `<noscript>` con el título y la bajada que ya dice la vista: lo leen los que no corren JavaScript (las IA) y no
+//     se dibuja en ningún navegador. ⚠️ Es LO MISMO que ve la persona, dicho en texto: nada que la página no muestre.
+// ⚠️ «Under Legends» es la marca (Dlx, 29/09/2026) y por eso va como nombre del sitio; el título de la portada lleva lo que
+// la gente escribe en Google («batallas de rap online»). Nunca «Discord» en el nombre: lo prohíbe su guía de marca
+const WEB = 'https://underlegends.pages.dev';
+const escH = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const SITIO = { '@type': 'WebSite', '@id': WEB + '/#sitio', name: 'Under Legends', alternateName: ['Liga Global de Freestyle', 'Liga Global'],
+  url: WEB + '/freestyle-rap/', inLanguage: 'es', publisher: { '@id': WEB + '/#marca' } };
+const MARCA = { '@type': 'Organization', '@id': WEB + '/#marca', name: 'Under Legends', url: WEB + '/freestyle-rap/', logo: WEB + '/ul-192.png',
+  description: 'Batallas de rap y freestyle online en español: la Liga Global une los rankings de los servidores de rap de Discord en una sola tabla.' };
+
+/** La dirección canónica de lo que se pidió: la portada es una sola, y sin barra final ni consulta */
+function canonica(url) {
+  const p = url.pathname.replace(/\/+$/, '');
+  return WEB + (p === '' || p === '/freestyle-rap' ? '/freestyle-rap/' : p);
+}
+
+/** Le suma a una vista la canónica, sus datos estructurados y el texto para quien no corre JavaScript.
+ *  `v`: `{titulo, desc, tipo ('inicio' | 'perfil' | 'pagina'), nombre?, img?, mas?: [líneas], can?}`. `can`, cuando la
+ *  misma página se abre por más de una dirección (un servidor por su sigla, una crew con otras mayúsculas) */
+function seo(rw, url, v) {
+  const can = v.can || canonica(url);
+  let pag;
+  if (v.tipo === 'inicio') pag = null;
+  else if (v.tipo === 'perfil') {
+    pag = { '@type': 'ProfilePage', '@id': can, url: can, name: v.titulo, description: v.desc, inLanguage: 'es', isPartOf: { '@id': SITIO['@id'] },
+      mainEntity: Object.assign({ '@type': 'Person', name: v.nombre || v.titulo, description: v.desc, url: can }, v.img ? { image: v.img } : {}) };
+  } else {
+    pag = { '@type': 'WebPage', '@id': can, url: can, name: v.titulo, description: v.desc, inLanguage: 'es', isPartOf: { '@id': SITIO['@id'] } };
+  }
+  const ld = { '@context': 'https://schema.org', '@graph': [MARCA, SITIO].concat(pag ? [pag] : []) };
+  // `<` escapado: un nombre con «</script>» no puede cerrar el bloque
+  const cab = '<link rel="canonical" href="' + escH(can) + '"><script type="application/ld+json">'
+    + JSON.stringify(ld).replace(/</g, '\\u003c') + '</script>';
+  const cuerpo = '<noscript><main><h1>' + escH(v.titulo) + '</h1><p>' + escH(v.desc) + '</p>'
+    + (v.mas || []).filter(Boolean).map((x) => '<p>' + escH(x) + '</p>').join('')
+    + '<p><a href="' + WEB + '/freestyle-rap/">Liga Global de Freestyle</a>: batallas de rap y freestyle online en español, '
+    + 'de Under Legends. <a href="' + WEB + '/freestyle-rap/ranking/global">Ranking global de freestyle 2026</a>.</p></main></noscript>';
+  return rw.on('head', { element(el) { el.append(cab, { html: true }); } })
+    .on('body', { element(el) { el.prepend(cuerpo, { html: true }); } });
+}
 
 /** La fila de alguien para su vista previa: `{f, temp, cartas}` (la tabla del lobby, o su perfil si no entra), o `null` */
 // 🛡️ con la IP de quien pidió la vista previa (`x-lg-ip`, 18/11/2026), en ésta y en todos los subpedidos de las vistas
@@ -541,6 +591,7 @@ async function vistaPerfil(req, env, k, url) {
       .on('meta[property="og:image:height"]', sacar)
       .on('meta[property="og:image:alt"]', poner('content', alt));
   }
+  rw = seo(rw, url, { tipo: 'perfil', titulo, desc, nombre: String(x.f.n || k).trim(), img });
   const r = rw.transform(pag);
   const h = new Headers(r.headers);
   h.set('cache-control', 'public, max-age=300');
@@ -568,7 +619,8 @@ async function vistaServidor(req, env, x, url) {
   const img = (await hayOg('sv', slugOg(s.sv))) || url.origin + '/og/' + s.sv.toLowerCase() + '.png';
   const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
-  const rw = new HTMLRewriter()
+  const rw = seo(new HTMLRewriter(), url, { tipo: 'pagina', titulo: nombre + ' · Liga Global de Freestyle', desc,
+    can: WEB + '/freestyle-rap/sv/' + s.sv })
     .on('title', { element(el) { el.setInnerContent(nombre + ' · Liga Global de Freestyle'); } })
     .on('meta[property="og:title"]', poner('content', titulo))
     .on('meta[property="og:description"]', poner('content', desc))
@@ -699,7 +751,7 @@ async function vistaPais(req, env, cc, url) {
 async function conVista(req, env, url, v) {
   const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
-  const rw = new HTMLRewriter()
+  const rw = seo(new HTMLRewriter(), url, { tipo: 'pagina', titulo: v.tab, desc: v.desc, can: v.can })
     .on('title', { element(el) { el.setInnerContent(v.tab); } })
     .on('meta[property="og:title"]', poner('content', v.titulo))
     .on('meta[property="og:description"]', poner('content', v.desc))
@@ -723,7 +775,10 @@ async function conVista(req, env, url, v) {
 
 // 🏟️ las páginas de adentro de otra, con su propio título (19/11/2026): «Suma tu servidor» vive en `socios/sumar` y es el
 // link que Dlx le pasa al dueño de un servidor. La imagen es la de la página que la contiene
-const SUBPAGINAS = { 'socios/sumar': ['Suma tu servidor', 'Debuta en el Tier 3 y asciende jugando: agrega el bot, escribe /setup y tus eventos suman a la tabla de la Liga.'] };
+const SUBPAGINAS = { 'socios/sumar': ['Suma tu servidor', 'Debuta en el Tier 3 y asciende jugando: agrega el bot, escribe /setup y tus eventos suman a la tabla de la Liga.'],
+  // 🔎 con lo que se escribe en Google: «ranking freestyle 2026», «ranking freestyle mundial» (autocompletado, 21/11/2026)
+  'ranking/global': ['Ranking global de freestyle 2026', 'Los pros de FMS, Red Bull Batalla y God Level, las plazas y el freestyle '
+    + 'online en una sola tabla, con sus batallas de la temporada. Se actualiza cada lunes.'] };
 
 async function vistaPagina(req, env, pagina, url, sub) {
   const [nombre, desc] = (sub && SUBPAGINAS[pagina + '/' + sub]) || PAGINAS[pagina];
@@ -734,14 +789,21 @@ async function vistaPagina(req, env, pagina, url, sub) {
 }
 
 // 🎬 Y LA PORTADA (`/` y `/freestyle-rap`): el mismo título y la misma bajada del index.html, sólo con la imagen de cine en
-// vez de `og.png` cuando ya está. Sin ella, `null`: queda la de siempre
+// vez de `og.png` cuando ya está. 🔎 Desde el 21/11/2026 sale siempre (con la imagen o sin ella): lleva la marca, la
+// canónica y el texto para las IA (ver `seo()`)
+const INICIO = ['Batallas de rap online en español · Liga Global de Freestyle',
+  'Batallas de freestyle online cada semana en servidores de Discord en español: el ranking mundial, tu tarjeta tipo FIFA, '
+  + 'las llaves en vivo y el ranking global 2026.'];
 async function vistaInicio(req, env, url) {
   const img = await hayOg('pag', 'inicio');
-  if (!img) return null;
   const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
-  const out = new HTMLRewriter().on('meta[property="og:image"]', poner('content', img)).on('meta[name="twitter:image"]', poner('content', img))
-    .transform(pag);
+  let rw = seo(new HTMLRewriter(), url, { tipo: 'inicio', titulo: INICIO[0], desc: INICIO[1],
+    mas: ['Cada semana se juegan torneos en los servidores de rap online socios de la Liga (FFA, DRA, Snake Rap, FRZ y más); '
+      + 'cada batalla suma al ranking de la temporada, al Competitivo y al Ranking global, donde los de la Liga se miden con '
+      + 'los profesionales de FMS, Red Bull Batalla y God Level y con las plazas.'] });
+  if (img) rw = rw.on('meta[property="og:image"]', poner('content', img)).on('meta[name="twitter:image"]', poner('content', img));
+  const out = rw.transform(pag);
   const h = new Headers(out.headers);
   h.set('cache-control', 'public, max-age=300');
   h.delete('etag');
@@ -768,7 +830,8 @@ async function vistaCrew(req, env, id, url) {
   const og = await hayOg('crew', slugOg(id));
   const img = og || (R2_CREWS.test(String(c.logo || '')) ? String(c.logo) : url.origin + '/og/p/crews.png');
   return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · crew de la Liga Global', desc, img,
-    alt: og ? nombre + ', una crew de la Liga Global de Freestyle' : 'El logo de ' + nombre });
+    alt: og ? nombre + ', una crew de la Liga Global de Freestyle' : 'El logo de ' + nombre,
+    can: WEB + '/freestyle-rap/crew/' + encodeURIComponent(id) });
 }
 
 // 🎁 LAS MINIATURAS DE LOS LINKS CORTOS (17/11/2026, Dlx: «que tenga un thumbnail personalizable… de la crew en este caso,

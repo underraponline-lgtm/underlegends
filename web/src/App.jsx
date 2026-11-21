@@ -775,6 +775,8 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
         ? nombrePais(String(partes[1]).toLowerCase())
       : pagina === 'cuenta' || pagina === 'ajustes' ? 'Tu cuenta' : pagina === 'dashboard' ? 'Dashboard' : pagina === 'mods' ? 'Mods'
+      // 🔎 el Ranking global, con lo que se escribe en Google («ranking freestyle 2026», autocompletado del 21/11/2026)
+      : pagina === 'ranking' && partes[1] === 'global' ? 'Ranking global de freestyle 2026'
       : pagina === 'ranking' || pagina === 'duelos' ? 'Los rankings'
       : pagina === 'eventos' || pagina === 'avisos' ? 'Los eventos'
       : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda' : pagina === 'invitar' ? 'Invita y gana'
@@ -782,7 +784,10 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       : pagina === 'cambios' ? 'Changelog'
       : pagina === 'kit' ? 'El kit de tu servidor' : '';
     if (!sv && (pagina === 'r' || pagina === 'llave')) return undefined;
-    const poner = () => { document.title = t ? t + ' · Liga Global de Freestyle' : 'Liga Global de Freestyle'; };
+    // 🔎 LA PORTADA DICE LO QUE SE BUSCA (21/11/2026, el plan de alcance; Dlx: «dale»). «Liga Global de Freestyle» no lo
+    // escribe nadie en Google y «Under Legends» se mezcla con un manhwa; «batallas de rap online» sí. La marca no cambia:
+    // va como nombre del sitio en los datos estructurados (`seo()` de bot/paginas/_worker.js). El mismo título que index.html
+    const poner = () => { document.title = t ? t + ' · Liga Global de Freestyle' : 'Batallas de rap online en español · Liga Global de Freestyle'; };
     poner();
     const r = setTimeout(poner, 0);
     return () => clearTimeout(r);

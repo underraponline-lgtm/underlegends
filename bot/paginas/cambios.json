@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.62", "dia": "2026-11-21", "cuando": "2026-11-21T16:05:00-05:00", "titulo": "La página, para Google y las IA", "items": ["Google y las IA ya pueden leer cada página: los perfiles, los servidores, los países y el **Ranking global de freestyle 2026**, cada uno con su título y su descripción.", "La portada dice lo que la gente busca: **batallas de rap online en español**."]},
     {
         "version": "7.61",
         "dia": "2026-11-21",

@@ -88,6 +88,87 @@ def archivos():
     return sorted(out)
 
 
+#: 🔎 la dirección pública del sitio (la del mapa, la de los datos que lo arman)
+WEB = 'https://underlegends.pages.dev'
+#: las páginas fijas del mapa del sitio. Sin las de cada cuenta o del dueño (Mi cuenta, el Dashboard, el panel del socio,
+#: el Inventario): no tienen nada que buscar, y `robots.txt` les dice que no
+PAGINAS_MAPA = ('/freestyle-rap/', '/freestyle-rap/eventos', '/freestyle-rap/tarjetas', '/freestyle-rap/ligas',
+                '/freestyle-rap/ligas/superliga', '/freestyle-rap/ligas/clausura', '/freestyle-rap/pase',
+                '/freestyle-rap/tienda', '/freestyle-rap/publicaciones', '/freestyle-rap/socios',
+                '/freestyle-rap/socios/sumar', '/freestyle-rap/guia', '/freestyle-rap/salon', '/freestyle-rap/crews',
+                '/freestyle-rap/competencias', '/freestyle-rap/invitar', '/cambios')
+
+
+def _rankings():
+    """Las pestañas del Ranking, de `RANKINGS` en web/src/ranking.jsx: un solo lugar, o la que se sume no entra al mapa."""
+    import re
+    try:
+        src = io.open(os.path.join(BASE, 'web', 'src', 'ranking.jsx'), encoding='utf-8').read()
+        m = re.search(r'export const RANKINGS = \[([^\]]*)\]', src)
+        return re.findall(r"'([a-z]+)'", m.group(1)) if m else []
+    except OSError:
+        return []
+
+
+def sitemap(requests):
+    """🔎 EL MAPA DEL SITIO PARA GOOGLE (21/11/2026, el plan de alcance; Dlx: «dale»). `(bytes, cuántas, de dónde)`.
+
+    Medido ese día: Google no tenía ni una página del sitio, y `/sitemap.xml` contestaba el index.html. Los links de
+    adentro son `#/…` y Google ignora lo que va después del `#`, así que sin esto no tiene cómo saber que existen los
+    perfiles, los servidores o el Ranking global.
+
+    ⚠️ SE ARMA AL PUBLICAR, NO EN EL WORKER NI EN EL REPO. Los perfiles son 869 y viajan en `/api/perfiles` (casi 1 MB):
+    leerlos en el Worker de Pages se come sus 10 ms, y `guardar.sh` sólo commitea `datos/`. Acá se leen de la página
+    publicada —lo que el ciclo ya subió—, y como esto corre en los dos que publican (web.yml y el paso 2c del ciclo), el
+    mapa sale igual en los dos. Sin `lastmod` a propósito: cambiaría el sello en cada corrida y no le dice nada a Google.
+
+    ⚠️ Sin datos no se publica un mapa pelado: se reusa el publicado, y si tampoco está, van sólo las páginas fijas.
+    """
+    from urllib.parse import quote
+    rutas = list(PAGINAS_MAPA) + ['/freestyle-rap/ranking/' + r for r in _rankings()]
+    de = 'las páginas fijas'
+
+    def pedir(ruta):
+        r = requests.get(WEB + ruta, headers={'accept': 'application/json'}, timeout=90)
+        return r.json() if r.status_code == 200 else None
+    try:
+        L = pedir('/api/lobby') or {}
+        P = (pedir('/api/perfiles') or {}).get('p') or {}
+        G = pedir('/api/ligas') or {}
+    except Exception as e:                                   # noqa: BLE001
+        print('   ⚠️ el mapa del sitio: no pude leer la página publicada (%s)' % str(e)[:80])
+        L, P, G = {}, {}, {}
+    claves = {str(f.get('k')) for f in (L.get('tabla') or []) if f and f.get('k')} | set(P)
+    if L and claves:
+        de = 'la página publicada'
+        rutas += ['/freestyle-rap/sv/' + s['sv'] for s in (L.get('svs') or []) if s and s.get('sv')]
+        rutas += ['/freestyle-rap/pais/' + str(p['cc']).lower() for p in (L.get('paises') or []) if p and p.get('cc')]
+        rutas += ['/freestyle-rap/ligas/' + quote(str(x['id']), safe='') for x in ((G.get('lobby') or {}).get('ligas') or [])
+                  if x and x.get('id') and x.get('n')]
+        rutas += ['/freestyle-rap/crew/' + quote(str(c.get('clave') or c.get('crew')), safe='') for c in (L.get('crews') or [])
+                  if c and (c.get('clave') or c.get('crew'))]
+        # sin las claves que son un ID de Discord (un nombre que la llave trajo pegado a su número): no son un perfil
+        import re
+        rutas += ['/freestyle-rap/r/' + quote(k, safe='') for k in sorted(claves) if not re.search(r'\d{15,}', k)]
+    else:
+        try:
+            r = requests.get(WEB + '/sitemap.xml', timeout=60)
+            if r.status_code == 200 and r.content.lstrip().startswith(b'<?xml') and b'<urlset' in r.content:
+                n = r.content.count(b'<loc>')
+                print('   ⚠️ el mapa del sitio: sin datos, reuso el publicado (%d direcciones)' % n)
+                return r.content, n, 'el publicado'
+        except Exception:                                    # noqa: BLE001
+            pass
+    vistas, unicas = set(), []
+    for r in rutas:
+        if r not in vistas:
+            vistas.add(r)
+            unicas.append(r)
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           + ''.join('<url><loc>%s%s</loc></url>\n' % (WEB, r.replace('&', '&amp;')) for r in unicas) + '</urlset>\n')
+    return xml.encode('utf-8'), len(unicas), de
+
+
 def _hash(datos, ruta):
     """El identificador que Pages le da a un archivo.
 
@@ -201,6 +282,11 @@ def main():
                        timeout=30).json()['result'][0]['id']
 
     fs = archivos()
+    # 🔎 el mapa del sitio, armado con lo publicado (ver `sitemap()`); uno escrito a mano en paginas/ manda sobre éste
+    if not any(r == 'sitemap.xml' for r, _d in fs):
+        mapa, n, de = sitemap(requests)
+        print('   🔎 sitemap.xml: %d direcciones (de %s)' % (n, de))
+        fs = sorted(fs + [('sitemap.xml', mapa)])
     mal = dueno_distinto()
     if mal:
         sys.exit(mal)

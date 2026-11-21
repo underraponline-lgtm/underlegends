@@ -1,0 +1,29 @@
+# Under Legends · Liga Global de Freestyle
+
+> Batallas de rap y freestyle online en español. La Liga Global une los rankings de los servidores de rap de Discord en una sola tabla: cada semana se juegan torneos en los servidores socios y cada batalla suma a la temporada.
+
+Under Legends es la marca; la Liga Global de Freestyle es su competencia principal, y DRA (Discord Rap En Español) es el servidor donde vive. La página es https://underlegends.pages.dev/freestyle-rap/ y está en español (también en inglés en /en).
+
+## Qué hay
+
+- [Inicio](https://underlegends.pages.dev/freestyle-rap/): lo que se juega hoy, lo último que pasó y la tabla.
+- [Ranking de la temporada](https://underlegends.pages.dev/freestyle-rap/ranking/temporada): los puntos de cada uno en la temporada en curso (la T1 va del 22/09/2026 al 31/12/2026).
+- [Ranking global de freestyle 2026](https://underlegends.pages.dev/freestyle-rap/ranking/global): los profesionales (FMS, Red Bull Batalla, God Level), las plazas y la Liga en una sola tabla. Cuentan las 10 mejores batallas de cada uno en la temporada y sus 3 mejores títulos. Se actualiza cada lunes.
+- [Ranking competitivo](https://underlegends.pages.dev/freestyle-rap/ranking/competitivo): la calidad (el Score de 0 a 100 y el rango, de E a SSS). Pide 10 eventos.
+- [Eventos](https://underlegends.pages.dev/freestyle-rap/eventos): el calendario de todos los servidores, con la llave en vivo.
+- [Socios](https://underlegends.pages.dev/freestyle-rap/socios): los servidores de rap online que suman al ranking, y cómo sumar uno.
+- [Guía](https://underlegends.pages.dev/freestyle-rap/guia): cómo se ganan los puntos, los rangos y las tarjetas.
+- Cada rapero tiene su perfil en `https://underlegends.pages.dev/freestyle-rap/r/<nombre>`, con sus tarjetas tipo FIFA (Temporada, Competitiva, Servidor y País) y sus batallas.
+
+## Cómo se juega
+
+- Los torneos son llaves de batallas de freestyle por voz en los servidores socios. Ganar, llegar lejos y jugar seguido suma puntos de Temporada.
+- El rango sale sólo del Score competitivo, y es uno por persona.
+- Para entrar: unirse a DRA y verificarse con el bot de la Liga.
+
+## De dónde salen los datos
+
+- Los resultados los lee el bot de la Liga de las llaves de cada servidor; el ciclo los procesa cada media hora.
+- El Ranking global suma además batallas públicas de fms.tv, Freestylestats y UrbanStreet.
+
+- [Mapa del sitio](https://underlegends.pages.dev/sitemap.xml)

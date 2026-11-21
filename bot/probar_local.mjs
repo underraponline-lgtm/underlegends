@@ -2520,7 +2520,9 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
       const hecho = {};
       for (const [sel, h] of this.hs) {
         h.element({ setAttribute: (a, v) => { hecho[sel] = v; }, setInnerContent: (v) => { hecho[sel] = v; },
-          remove: () => { hecho[sel] = '(sacado)'; } });
+          remove: () => { hecho[sel] = '(sacado)'; },
+          // 🔎 lo que se suma al <head> y al <body> (la canónica, los datos estructurados y el texto de `seo()`)
+          append: (v) => { hecho[sel] = (hecho[sel] || '') + v; }, prepend: (v) => { hecho[sel] = v + (hecho[sel] || ''); } });
       }
       return new Response(JSON.stringify(hecho), { status: 200, headers: { 'content-type': 'text/html' } });
     }
@@ -2572,6 +2574,45 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
       && r.j['meta[property="og:image:width"]'] === '(sacado)' && r.j['meta[property="og:url"]'] === 'https://underlegends.pages.dev/freestyle-rap/r/oasis',
     JSON.stringify(r.j));
     ok('y sin el servidor: sale sólo si lo eligió (Dlx, 12/10/2026)', r.j && !/FFA/.test(r.j['meta[property="og:description"]']));
+    // 🔎 lo que leen Google y las IA (21/11/2026, el plan de alcance): la canónica, el perfil como ProfilePage con la
+    // marca y el sitio, y el texto para quien no corre JavaScript, escapado
+    {
+      const cab = (r.j && r.j.head) || '', ld = /<script type="application\/ld\+json">(.*?)<\/script>/.exec(cab);
+      let g = null;
+      try { g = ld && JSON.parse(ld[1]); } catch (e) { g = null; }
+      const tipos = g ? g['@graph'].map((x) => x['@type']).join(',') : '';
+      ok('el perfil para Google: canónica, Under Legends + el sitio + ProfilePage de Oasis, y el texto en <noscript>',
+        /<link rel="canonical" href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/r\/oasis">/.test(cab)
+        && tipos === 'Organization,WebSite,ProfilePage' && g['@graph'][2].mainEntity.name === 'Oasis'
+        && g['@graph'][1].name === 'Under Legends' && /^<noscript><main><h1>Oasis 🇨🇱 · Liga Global de Freestyle<\/h1>/.test(r.j.body || ''),
+      JSON.stringify(r.j && { head: r.j.head, body: r.j.body }));
+    }
+    for (const ua of ['Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; GPTBot/1.2; +https://openai.com/gptbot)',
+      'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; ClaudeBot/1.0; +claudebot@anthropic.com)',
+      'Mozilla/5.0 (compatible; Google-InspectionTool/1.0;)']) {
+      r = await ver('/freestyle-rap/r/oasis', ua);
+      ok('y la IA o la prueba de Search Console (' + ua.match(/(GPTBot|ClaudeBot|Google-InspectionTool)/)[1] + ') también reciben la vista',
+        r.j && r.j.title === 'Oasis 🇨🇱 · Liga Global de Freestyle' && /<noscript>/.test(r.j.body || ''), r.t.slice(0, 80));
+    }
+    // un nombre con «</script>» no cierra el bloque de datos ni se cuela en el texto
+    lobby.tabla.push({ n: 'Malo</script><b>x', k: 'malo', pos: 9, ovr: 40, ev: 1, c: [] });
+    r = await ver('/freestyle-rap/r/malo', DISCORD);
+    ok('un nombre con «</script>»: escapado en los datos (\\u003c) y en el texto (&lt;)',
+      r.j && !/Malo<\/script>/.test(r.j.head || '') && /Malo\\u003c\/script>/.test(r.j.head || '') && /Malo&lt;\/script&gt;/.test(r.j.body || ''),
+      JSON.stringify(r.j && { head: r.j.head, body: r.j.body }));
+    lobby.tabla.pop();
+    // la portada: siempre con la marca, también sin la imagen de cine, y una sola canónica para / y /freestyle-rap
+    for (const ruta of ['/', '/freestyle-rap', '/freestyle-rap/']) {
+      r = await ver(ruta, 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+      ok('la portada por ' + ruta + ': canónica /freestyle-rap/, Under Legends como sitio y el texto de lo que es',
+        r.j && /href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/"/.test(r.j.head || '') && /"WebSite"/.test(r.j.head || '')
+        && /Batallas de rap online en español/.test(r.j.body || ''), r.t.slice(0, 120));
+    }
+    // y el Ranking global con lo que se busca en Google
+    r = await ver('/freestyle-rap/ranking/global', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)');
+    ok('el Ranking global: «Ranking global de freestyle 2026», con su canónica',
+      r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle'
+      && /href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/ranking\/global"/.test(r.j.head || ''), JSON.stringify(r.j && r.j.title));
     r = await ver('/freestyle-rap/r/lejos', 'WhatsApp/2.23');
     ok('quien no está entre los 200: de los perfiles, con la carta que tiene (Servidor) y sin repetir la bandera',
       r.j && r.j.title === 'Lejos 🇦🇷 · Liga Global de Freestyle' && /\/lejos\/servidor\.webp\?v=z$/.test(r.j['meta[property="og:image"]'])
@@ -2590,9 +2631,10 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     ogEtag['crew/ks'] = '"fd55c2ad78db0000"';
     for (const ruta of ['/freestyle-rap/crew/KS', '/freestyle-rap/crew/ks']) {
       r = await ver(ruta, DISCORD);
-      ok('la crew por ' + ruta + ': su nombre y su miniatura, con su versión',
+      ok('la crew por ' + ruta + ': su nombre y su miniatura, con su versión, y la canónica de la crew (KS)',
         r.j && r.j['meta[property="og:title"]'] === 'Knowledge Sombrío · crew de la Liga Global'
-        && r.j['meta[property="og:image"]'] === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/crew/ks.jpg?v=fd55c2ad78db', JSON.stringify(r.j));
+        && r.j['meta[property="og:image"]'] === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/crew/ks.jpg?v=fd55c2ad78db'
+        && /href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/crew\/KS"/.test(r.j.head || ''), JSON.stringify(r.j));
     }
     r = await ver('/freestyle-rap/crew/nadie', DISCORD);
     ok('una crew que no existe: la vista previa de siempre', r.t === '<html>la de siempre</html>', r.t.slice(0, 80));
@@ -2613,6 +2655,8 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     r = await ver('/freestyle-rap/sv/snk', DISCORD);
     ok('por la sigla también (SNK es Snake Rap), con su tag', r.j && r.j['meta[property="og:image"]'] === 'https://underlegends.pages.dev/og/sr.png'
       && /^Talentos\./.test(r.j['meta[property="og:description"]']), JSON.stringify(r.j));
+    ok('y una sola canónica para Snake Rap: /sv/SR, también abierta por /sv/snk (la del mapa del sitio)',
+      r.j && /<link rel="canonical" href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/sv\/SR">/.test(r.j.head || ''), String(r.j && r.j.head).slice(0, 120));
     r = await ver('/freestyle-rap/sv/FRZ', 'Mozilla/5.0 (Linux; Android 14) Chrome/130');
     ok('a la gente, la página de siempre', r.t === '<html>la de siempre</html>' && !r.pedidos.length, r.t.slice(0, 80));
     r = await ver('/freestyle-rap/sv/TWR', DISCORD);

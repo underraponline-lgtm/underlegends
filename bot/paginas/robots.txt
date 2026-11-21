@@ -1,0 +1,22 @@
+# Under Legends - Liga Global de Freestyle
+# Batallas de rap y freestyle online en espanol. Ver /llms.txt.
+#
+# Todo se puede leer, tambien las IA. /api/ NO se cierra a proposito: la pagina arma cada vista con lo que
+# baja de ahi, y Google, para entenderla, la dibuja igual que un navegador (sin /api/ veria una pagina vacia).
+# Lo de abajo es de cada cuenta o del dueno: no tiene nada que buscar.
+# (Sin tildes a proposito: Pages sirve los .txt sin charset.)
+
+User-agent: *
+Allow: /
+Disallow: /cuenta
+Disallow: /ajustes
+Disallow: /dashboard
+Disallow: /mapa.html
+Disallow: /vincular/
+# el panel del socio, con $: sin el, "/freestyle-rap/socio" tambien cerraria /socios (robots.txt compara el principio)
+Disallow: /freestyle-rap/socio$
+Disallow: /freestyle-rap/socio/
+Disallow: /freestyle-rap/inventario
+Disallow: /freestyle-rap/mods
+
+Sitemap: https://underlegends.pages.dev/sitemap.xml
