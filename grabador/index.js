@@ -69,7 +69,9 @@ const OTROS = new Set(lista(E.NO_SI_ESTA));
 const BASE = E.CARPETA || path.join(os.tmpdir(), 'grabaciones');
 const NO = '❌';
 
-const anotar = (...x) => console.log(new Date().toISOString().slice(11, 19), ...x);
+//: el log va en hora del este, como todo el proyecto (Railway muestra su propia hora al costado, en la del navegador)
+const RELOJ = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+const anotar = (...x) => console.log(RELOJ.format(new Date()) + ' ET', ...x);
 
 /** «9:05 PM ET» — todas las horas en hora del este. */
 export function horaET(d) {
