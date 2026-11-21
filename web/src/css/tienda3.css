@@ -24,14 +24,11 @@
 .tz-cor-b[aria-pressed="true"],.tz-corb[aria-pressed="true"]{color:#FF4F93;border-color:#FF4F93}
 @media (hover:hover) and (pointer:fine){.tz-b:hover{border-color:#F6F6F6}.tz-b.l:hover{background:var(--caja)}}
 
-/* ── la vitrina: como «Se busca» del Inicio, con la pieza puesta en ti ── */
-.tz-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr);gap:16px;padding:22px 16px 16px;background:#0B0C0E;color:#F6F6F6}
-.tz-hero-in{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
-.tz-hero-tx{display:grid;gap:11px;align-content:center;min-width:0}
-.tz-hero-et{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+/* ── la vitrina, «la disquera» (21/11/2026, la A de la maqueta + la pelea de la B): cada pieza es un disco en su funda;
+   el disco sale de la funda con la pieza puesta en ti en la etiqueta. Siempre negra, también en Clara (como antes) ── */
+.tz-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;padding:22px 16px 18px;background:#0B0C0E;color:#F6F6F6}
 .tz-etq{display:inline-block;padding:5px 9px;background:#D0106A;color:#F6F6F6;font:700 13px/1 var(--tz-e);letter-spacing:.08em;text-transform:uppercase;box-shadow:3px 3px 0 #29B298}
 .tz-cambia{font:700 13px/1 var(--tz-e);letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
-.tz-hero h2{font:900 32px/.92 var(--tz-f);font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em;overflow-wrap:anywhere;text-wrap:balance;color:#F6F6F6}
 .tz-rz{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font:700 13.5px/1.2 var(--tz-e);letter-spacing:.08em;text-transform:uppercase;color:#F6F6F6}
 .tz-rz i{width:10px;height:10px;background:var(--r);transform:rotate(45deg)}
 .tz-rz span{color:#A5A5A0}
@@ -42,51 +39,105 @@
 .tz-bots .tz-b{flex:1 1 auto;min-width:0;padding:0 8px;font-size:11.5px}
 .tz-bots .tz-cor-b{flex:0 0 44px}
 .tz-hecho{font:800 15px/1 var(--tz-f);color:#29B298}
-.tz-hero-vis{position:relative;order:-1;display:grid;place-items:center;min-height:200px;background:#030304;border:1.5px solid #2A2C31;border-top:4px solid var(--r);border-radius:4px;overflow:hidden}
-.tz-sobre{position:absolute;left:10px;top:10px;z-index:7;font:700 12px/1 var(--tz-e);letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
-.tz-yo{display:flex;align-items:center;justify-content:center;gap:16px}
-.tz-yo-a{display:grid;justify-items:center;gap:8px}
-.tz-yo .ta-av{width:120px;height:120px}.tz-yo-c .ta-carta{width:104px}
-.tz-yo.c .tz-yo-a .ta-av{width:96px;height:96px}.tz-yo.c .tz-yo-c .ta-carta{width:130px}
 .tz-yo-n .ta-nom{font-size:26px}
-.tz-yo-f{position:relative;width:100%;height:200px}
-.tz-fl{position:absolute;top:40%;z-index:3;width:40px;height:60px;display:none;place-items:center;background:none;border:0;color:#F6F6F6;font:300 46px/1 var(--tz-f);cursor:pointer}
-.tz-fl.izq{left:6px}.tz-fl.der{right:6px}
-/* las fichas: corren de derecha a izquierda; una luz del color de la rareza da la vuelta a cada cuadrado */
-.tz-hcs-c{position:relative;display:flex;align-items:center;gap:6px;min-width:0}
-.tz-hcs{flex:1;min-width:0;overflow:hidden}
-.tz-hcs-pista{display:flex;width:max-content;animation:tz-cinta 46s linear infinite}
-.tz-hcs-mitad{display:flex;gap:8px;padding-right:8px}
-.tz-hcs:hover .tz-hcs-pista,.tz-hcs:focus-within .tz-hcs-pista{animation-play-state:paused}
-@keyframes tz-cinta{to{transform:translateX(-50%)}}
-.tz-hc{position:relative;flex:none;display:flex;align-items:center;gap:8px;width:168px;min-height:54px;padding:6px 10px 6px 6px;background:#0B0C0E;border:1.5px solid #2A2C31;border-bottom:3px solid var(--r);border-radius:3px;cursor:pointer;text-align:left;color:#F6F6F6}
-.tz-hc.on{border-color:#F6F6F6;border-bottom-color:var(--r)}
-.tz-hc-luz{position:absolute;inset:-1.5px;width:calc(100% + 3px);height:calc(100% + 3px);pointer-events:none;overflow:visible}
-.tz-hc-luz rect{fill:none;stroke:var(--r);stroke-width:2;stroke-dasharray:16 84;animation:tz-luz 3.2s linear infinite;animation-delay:calc(var(--i) * -.32s)}
-.tz-hc.on .tz-hc-luz rect{stroke-width:2.5;stroke-dasharray:30 70}
-@keyframes tz-luz{to{stroke-dashoffset:-100}}
-.tz-hc-v{position:relative;flex:none;width:40px;height:40px;overflow:hidden;border-radius:3px;background:#030304;display:grid;place-items:center}
-.tz-hc-v .ta-av{width:40px;height:40px}.tz-hc-v .ta-carta{width:26px}.tz-hc-v .ta-nom{font-size:11px}
-.tz-hc-v .ta-fondo{position:absolute;inset:0}
-.tz-hc-t{display:grid;gap:3px;min-width:0}
-.tz-hc-t b{font:800 13.5px/1.1 var(--tz-f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tz-hc-t small{font:700 12px/1 var(--tz-e);letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
-.tz-hcs-fl{flex:none;width:36px;height:54px;background:#0B0C0E;border:1.5px solid #2A2C31;border-radius:3px;color:#F6F6F6;font:400 24px/1 var(--tz-f);cursor:pointer}
-@media (prefers-reduced-motion:reduce){
-  .tz-hcs{overflow-x:auto;scrollbar-width:none}.tz-hcs-pista{animation:none}.tz-hcs-mitad[aria-hidden]{display:none}
-  .tz-hc-luz rect{animation:none;stroke-dasharray:none;opacity:.5}
-}
+.dq-cab{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.dq-bill{margin-left:auto;display:inline-flex;align-items:baseline;gap:6px;min-height:36px;padding:0 12px;background:#F6F6F6;border:0;border-radius:3px;color:#030304;cursor:pointer;font:700 14px/1 var(--tz-e);letter-spacing:.06em;text-transform:uppercase;box-shadow:3px 3px 0 #29B298}
+.dq-bill b{font:900 17px/1 var(--tz-f);letter-spacing:0;font-variant-numeric:tabular-nums}
+.dq-main{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:center}
+/* la funda y el disco: el disco vive detrás y sale hacia la derecha */
+.dq-vis{position:relative;width:100%;max-width:330px;height:196px}
+.dq-funda{position:absolute;left:0;top:0;z-index:2;width:180px;height:180px;display:grid;grid-template-rows:minmax(0,1fr) auto;overflow:hidden;background:#131317;border-radius:3px;box-shadow:0 0 0 2px var(--r),6px 6px 0 #000}
+.dq-arte{position:relative;display:grid;place-items:center;overflow:hidden}
+.dq-arte .ta-fondo,.dq-arte .ta-mk{position:absolute;inset:0}
+.dq-arte .ta-av{width:132px;height:132px}.dq-arte .ta-carta{width:84px}.dq-arte .ta-nom{font-size:30px}
+.dq-pie{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:7px 9px;background:#000}
+.dq-pie b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:900 14px/1 var(--tz-f);font-stretch:125%;text-transform:uppercase}
+.dq-pie small{display:none;flex:none;font:700 11px/1 var(--tz-e);letter-spacing:.12em;text-transform:uppercase;color:#A5A5A0}
+.dq-st{position:absolute;right:8px;top:8px;z-index:3;width:60px;height:60px;display:grid;place-items:center;text-align:center;border-radius:50%;background:var(--r);color:#030304;transform:rotate(-12deg);box-shadow:3px 3px 0 #000}
+.dq-st span{font:700 9.5px/1.05 var(--tz-e);letter-spacing:.04em;text-transform:uppercase}
+.dq-st b{display:block;font:900 13px/1 var(--tz-f);letter-spacing:0;font-variant-numeric:tabular-nums}
+.dq-disco{position:absolute;left:0;top:8px;width:180px;height:180px;border-radius:50%;transform:translateX(78%)}
+.dq-vis.sale .dq-disco{animation:dq-sale .55s var(--ease-out,cubic-bezier(.23,1,.32,1)) both}
+@keyframes dq-sale{from{transform:translateX(0)}to{transform:translateX(78%)}}
+.dq-surcos{position:absolute;inset:0;width:100%;height:100%;animation:dq-gira 6s linear infinite}
+@keyframes dq-gira{to{transform:rotate(360deg)}}
+.dq-etq{position:absolute;inset:31%;display:grid;place-items:center;overflow:hidden;border-radius:50%;background:var(--r);box-shadow:0 0 0 3px #000}
+.dq-etq::after{content:"";position:absolute;width:7%;height:7%;border-radius:50%;background:#000}
+.dq-etq-in{display:grid;place-items:center}
+.dq-etq .ta-av{width:62px;height:62px}.dq-etq .ta-carta{width:30px}.dq-etq .ta-nom{font-size:11px}
+.dq-etq .ta-fondo{position:absolute;inset:0}
+.dq-info{display:grid;gap:11px;align-content:center;min-width:0}
+.dq-info h2{font:900 32px/.92 var(--tz-f);font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em;overflow-wrap:break-word;text-wrap:balance;color:#F6F6F6}
+.dq-llevan{display:flex;align-items:center;gap:10px;font:700 13.5px/1.2 var(--tz-e);letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
+.dq-llevan b{color:#F6F6F6}
+.dq-caras{display:flex}
+.dq-caras img{width:26px;height:26px;border-radius:50%;object-fit:cover;background:#1C1C22;box-shadow:0 0 0 2px #0B0C0E;margin-left:-7px}
+.dq-caras img:first-child{margin-left:0}
+/* el cajón: las fundas paradas. En el celular se desliza; en la compu, en filas (nada de costado) */
+.dq-cajon{padding-top:16px;border-top:2px solid #1D1D22}
+.dq-cajon-f{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:14px 2px 6px}
+.dq-fu{flex:0 0 104px;scroll-snap-align:start;display:grid;gap:6px;padding:0;background:none;border:0;color:#F6F6F6;text-align:left;cursor:pointer;transition:transform .2s var(--ease-out,cubic-bezier(.23,1,.32,1))}
+.dq-fu-v{position:relative;aspect-ratio:1;display:grid;place-items:center;overflow:hidden;background:#131317;border-radius:2px;box-shadow:inset 0 3px 0 var(--r)}
+.dq-fu-v .ta-av{width:84px;height:84px}.dq-fu-v .ta-carta{width:50px}.dq-fu-v .ta-nom{font-size:19px}
+.dq-fu-v .ta-fondo,.dq-fu-v .ta-mk{position:absolute;inset:0}
+.dq-fu-t{font:700 14px/1.1 var(--tz-e);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dq-fu-s{font:700 12px/1 var(--tz-e);letter-spacing:.08em;color:#A5A5A0;font-variant-numeric:tabular-nums}
+.dq-fu[aria-pressed="true"]{transform:translateY(-10px)}
+.dq-fu[aria-pressed="true"] .dq-fu-v{box-shadow:inset 0 3px 0 var(--r),0 0 0 2px #F6F6F6}
+.dq-fu:active .dq-fu-v{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.dq-fu:not([aria-pressed="true"]):hover{transform:translateY(-5px)}}
+/* la pelea: las dos más fuertes de lo que sólo pasa por la vitrina, con sus ♡ y compras de verdad (sin voto) */
+.dq-pelea{display:grid;gap:14px;padding:4px 16px 22px;background:#0B0C0E;color:#F6F6F6}
+.dq-pelea-t{display:grid;gap:6px;padding-top:14px;border-top:2px solid #1D1D22}
+.dq-pelea-t h2{font:900 24px/1 var(--tz-f);font-stretch:125%;text-transform:uppercase}
+.dq-pelea-t p{max-width:70ch;color:#C9C9C4;font-size:14.5px}
+.dq-pelea-t p b{color:#F6F6F6}
+.dq-ring{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.dq-esq{display:grid;gap:8px;align-content:start;min-width:0;padding:12px 10px;background:#131317;border-radius:3px;box-shadow:inset 0 4px 0 var(--r)}
+.dq-esq .tz-rz{font-size:11px;letter-spacing:.06em}
+.dq-esq-v{position:relative;height:130px;display:grid;place-items:center;overflow:hidden}
+.dq-esq-v .ta-av{width:112px;height:112px}.dq-esq-v .ta-carta{width:76px}.dq-esq-v .ta-nom{font-size:22px}
+.dq-esq-v .ta-fondo{position:absolute;inset:0}
+.dq-esq h3{font:900 18px/1 var(--tz-f);text-transform:uppercase;overflow-wrap:break-word}
+.dq-esq-s{font:700 12px/1.2 var(--tz-e);letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
+.dq-cuenta{font:700 14px/1.2 var(--tz-e);letter-spacing:.04em;text-transform:uppercase;color:#A5A5A0}
+.dq-cuenta b{font:900 16px/1 var(--tz-f);letter-spacing:0;color:#F6F6F6;font-variant-numeric:tabular-nums}
+.dq-cuenta em{font-style:normal;color:#29B298}
+.dq-esq-b{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.dq-esq-b .tz-b{padding:0 8px;font-size:11.5px}
+.dq-esq .dq-llevan{font-size:12px;gap:8px}
+.dq-vs{position:absolute;left:50%;top:96px;z-index:3;transform:translateX(-50%) rotate(-6deg);padding:6px 8px 4px;background:#0B0C0E;border-radius:2px;box-shadow:0 0 0 2px #E41373}
+.dq-vs b{font:900 26px/.9 var(--tz-f);font-stretch:125%;color:#FF4D9A}
+.dq-barra{position:relative;height:10px;overflow:hidden;border-radius:2px;background:var(--r2)}
+.dq-barra i{position:absolute;inset:0;background:var(--r);transform-origin:0 50%;transform:scaleX(var(--v));box-shadow:2px 0 0 #0B0C0E}
+@media (prefers-reduced-motion:reduce){.dq-surcos{animation:none}.dq-vis.sale .dq-disco{animation:none}.dq-fu{transition:none}}
+.app.calma .dq-surcos,.app.calma .dq-vis.sale .dq-disco{animation:none}
 @media (min-width:900px){
-  .tz-hero{padding:30px var(--gut) 18px;gap:20px}
-  .tz-hero-in{grid-template-columns:minmax(0,1fr) 420px;align-items:center;gap:36px;min-height:340px}
-  .tz-hero-vis{order:0;min-height:330px}
-  .tz-hero h2{font-size:62px}
+  .tz-hero{padding:30px var(--gut) 20px;gap:22px}
+  .dq-main{grid-template-columns:minmax(0,600px) minmax(0,1fr);gap:36px}
+  .dq-vis{max-width:600px;height:330px}
+  .dq-funda{width:310px;height:310px}
+  .dq-arte .ta-av{width:230px;height:230px}.dq-arte .ta-carta{width:150px}.dq-arte .ta-nom{font-size:54px}
+  .dq-pie{padding:10px 12px}.dq-pie b{font-size:22px}
+  .dq-st{width:74px;height:74px;right:10px;top:10px}.dq-st span{font-size:11px}.dq-st b{font-size:15px}
+  .dq-disco{left:120px;top:20px;width:290px;height:290px;transform:translateX(50%)}
+  @keyframes dq-sale{from{transform:translateX(0)}to{transform:translateX(50%)}}
+  .dq-etq .ta-av{width:104px;height:104px}.dq-etq .ta-carta{width:48px}.dq-etq .ta-nom{font-size:16px}
+  .dq-info h2{font-size:58px}
   .tz-precio b{font-size:38px}
   .tz-bots{flex-wrap:wrap}.tz-bots .tz-b{flex:none;padding:0 16px;font-size:13px}
-  .tz-yo .ta-av{width:170px;height:170px}.tz-yo-c .ta-carta{width:176px}
-  .tz-yo.c .tz-yo-a .ta-av{width:130px;height:130px}.tz-yo.c .tz-yo-c .ta-carta{width:210px}
-  .tz-yo-f{height:330px}
-  .tz-fl{display:grid}
+  .dq-cajon-f{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));overflow:visible;padding:14px 0 4px}
+  .dq-fu-v .ta-av{width:96px;height:96px}.dq-fu-v .ta-carta{width:58px}
+  .dq-pelea{padding:6px var(--gut) 26px}
+  .dq-ring{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:stretch}
+  .dq-vs{position:static;align-self:center;transform:rotate(-6deg);background:none;box-shadow:none;padding:0}
+  .dq-vs b{font-size:58px}
+  .dq-esq{padding:16px;gap:10px}
+  .dq-esq-v{height:240px}
+  .dq-esq-v .ta-av{width:210px;height:210px}.dq-esq-v .ta-carta{width:140px}.dq-esq-v .ta-nom{font-size:40px}
+  .dq-esq h3{font-size:30px;font-stretch:125%}
+  .dq-esq-b{grid-template-columns:auto auto;justify-content:start}
+  .dq-esq-b .tz-b{padding:0 16px;font-size:13px}
 }
 
 /* ── las secciones de la página (Clara o Noche) ── */

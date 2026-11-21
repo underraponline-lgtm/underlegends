@@ -16,7 +16,7 @@ import { DUENO, hora, num } from './liga.js';
 import { useModsEstado } from './mods.js';
 import CSS_PAGINA from './css/tienda3.css?inline';
 import { usarCss } from './css.js';
-import { refrescarPases } from './pase.js';
+import { refrescarPases, usePases } from './pase.js';
 
 usarCss('tienda3', CSS_PAGINA);
 
@@ -119,14 +119,6 @@ function carta(X, id) { const a = id && X.p[id]; return envolver(X, a && a.carta
 const vista = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).v));
 const arteFondo = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).fondo));
 const enLugar = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).lugar));
-function sobreTi(X, S, st, id) {
-  const p = S.cat.piezas[id];
-  if (!p) return '';
-  if (esFondo(p.c)) return `<div class="tz-yo-f">${enLugar(X, id)}</div>`;
-  if (!['aro', 'deco', 'nom', 'carta'].includes(p.c)) return `<div class="tz-yo-f">${vista(X, id)}</div>`;
-  const q = Object.assign({}, st.puesto, { [p.c]: id });
-  return `<div class="tz-yo${p.c === 'carta' ? ' c' : ''}"><div class="tz-yo-a">${avatar(X, q.aro, q.deco)}<div class="tz-yo-n">${nombre(X, q.nom)}</div></div><div class="tz-yo-c">${carta(X, q.carta)}</div></div>`;
-}
 
 // ── lo que se ve ──
 function cambiado(st) {
@@ -175,7 +167,59 @@ function slides(S) {
 // 🕐 la hora del cambio en la zona de Ajustes (18/11/2026): «11 AM» escrito a mano es la del este, sin decirlo
 function cambiaTxt(S) { const h = S.cat.vitrina.hasta; return h ? 'Cambia el lunes ' + diaCorto(h) + ' · ' + hora(h) : 'Cambia los lunes · 11 AM (hora del este)'; }
 
-function hero(X, S, st, tengo) {
+// 💿 LA VITRINA, «LA DISQUERA» (21/11/2026). Dlx eligió la A de la maqueta privada, «con algo de B»: la pelea, sin voto.
+// Las rarezas de la Tienda ya se llaman como discos (Maqueta, Mixtape, Vinilo, Disco de Oro…): cada pieza es un disco en
+// su funda, con la rareza y el precio en la etiqueta redonda; tocas una funda y el disco SALE GIRANDO con la pieza PUESTA
+// EN TI en el centro. Abajo, el cajón con todas las fundas (en la compu, en filas: nada de costado; en el celular se
+// desliza). Y debajo, la PELEA de la vitrina (`peleaVitrina()` de bot/tienda.js): las dos piezas más fuertes de lo que
+// sólo pasa por ella, cara a cara, con sus ♡ y compras de verdad; vuelve en la próxima vitrina la que junte más.
+// ⚠️ El HTML se rehace entero en cada cambio, así que «sale el disco» no es una transición: la clase `sale` la pone
+// `useLayoutEffect` sólo cuando cambió la funda elegida (si no, cada ♡ o cada pedido de 15 s volvía a sacar el disco)
+const SURCOS = (() => {
+  let s = '<circle cx="50" cy="50" r="50" fill="#050506"/>';
+  for (let r = 49; r > 16; r -= 2.2) s += `<circle cx="50" cy="50" r="${r.toFixed(1)}" fill="none" stroke="${r > 47 ? '#2A2A30' : '#141418'}" stroke-width="${r > 47 ? 2 : 0.9}"/>`;
+  return `<svg class="dq-surcos" viewBox="0 0 100 100" aria-hidden="true">${s}<path d="M50 4 A46 46 0 0 1 86 22" stroke="#3A3A42" stroke-width="1.2" fill="none"/></svg>`;
+})();
+// en la etiqueta del disco: la pieza puesta en ti (el aro y la deco en tu cara, tu nombre escrito, tu carta); un fondo, el suyo
+function enEtiqueta(X, S, id) {
+  const p = S.cat.piezas[id];
+  if (p.c === 'aro') return avatar(X, id, null);
+  if (p.c === 'deco') return avatar(X, null, id);
+  if (p.c === 'nom') return nombre(X, id);
+  if (p.c === 'carta') return carta(X, id);
+  return esFondo(p.c) ? arteFondo(X, id) : vista(X, id);
+}
+// 👥 quién la lleva puesta: lo público del Pase (`tp`), con su cara si la página ya la muestra; si nadie, se dice así
+function llevanHtml(liga, llevan, id) {
+  const ks = (llevan && llevan[id]) || [];
+  if (!ks.length) return '<p class="dq-llevan"><span>Nadie la lleva todavía · <b>sé el primero</b></span></p>';
+  const caras = ks.slice(0, 4).map((k) => { const u = liga.avUrl ? liga.avUrl(k, 64) : ''; return u ? `<img alt="" src="${esc(u)}" data-ini="${esc(inicialSvg(k))}">` : `<img alt="" src="${esc(inicialSvg(k))}">`; }).join('');
+  return `<p class="dq-llevan"><span class="dq-caras">${caras}</span><span><b>${num(ks.length)}</b> ${ks.length === 1 ? 'la lleva' : 'la llevan'}</span></p>`;
+}
+function pelea(X, S, liga, llevan) {
+  const pe = S.cat.pelea;
+  if (!pe || !pe.ids || pe.ids.length !== 2 || !pe.ids.every((id) => S.cat.piezas[id] && pe.cuenta[id])) return '';
+  const [a, b] = pe.ids, s = (id) => pe.cuenta[id][0] + pe.cuenta[id][1], tot = s(a) + s(b);
+  const pa = tot ? Math.round(s(a) / tot * 100) : 50;
+  const lado = (id, cual) => {
+    const p = S.cat.piezas[id], [cor, com] = pe.cuenta[id], en = S.yo && S.yo.deseos.includes(id), gana = tot && pe.gana === id;
+    return `<div class="dq-esq" style="--r:${RZ[p.r][1]}"><p class="tz-rz"><i></i>${cual} · ${RZ[p.r][0]}</p>
+      <div class="dq-esq-v">${enEtiqueta(X, S, id)}</div>
+      <h3>${esc(p.n)}</h3><p class="dq-esq-s">${esc(subDe(S, id))}</p>
+      <p class="dq-cuenta"><b>${num(cor)}</b> ♡ · <b>${num(com)}</b> ${com === 1 ? 'compra' : 'compras'}${gana ? ' · <em>va ganando</em>' : ''}</p>
+      <div class="dq-esq-b"><button class="tz-b${en ? '' : ' blanco'}" data-deseo="${id}" aria-pressed="${!!en}">${en ? '♥ En tu lista' : '♡ A tu lista'}</button><button class="tz-b" data-abre="${id}">Ver</button></div>
+      ${llevanHtml(liga, llevan, id)}</div>`;
+  };
+  const g = S.cat.piezas[pe.gana];
+  const dice = tot ? `Hoy va ganando <b>${esc(g.n)}</b>.` : 'Todavía nadie las puso en su lista: tu ♡ desempata.';
+  return `<section class="dq-pelea" aria-label="La pelea de la vitrina">
+    <div class="dq-pelea-t"><h2>La pelea de la vitrina</h2><p>Vuelve en la próxima vitrina la que junte más ♡ y compras hasta el ${S.cat.vitrina.hasta ? 'lunes ' + diaCorto(S.cat.vitrina.hasta) : 'lunes'}; la otra, dentro de dos meses. ${dice}</p></div>
+    <div class="dq-ring">${lado(a, 'Esquina roja')}<div class="dq-vs" aria-hidden="true"><b>VS</b></div>${lado(b, 'Esquina azul')}</div>
+    <div class="dq-barra" role="img" aria-label="${esc(S.cat.piezas[a].n)} ${pa} %, ${esc(S.cat.piezas[b].n)} ${100 - pa} %" style="--v:${pa / 100};--r:${RZ[S.cat.piezas[a].r][1]};--r2:${RZ[S.cat.piezas[b].r][1]}"><i></i></div>
+  </section>`;
+}
+
+function hero(X, S, st, tengo, liga, llevan) {
   const L = slides(S);
   if (!L.length) return '';
   const s = L[Math.min(st.slide, L.length - 1)], it = S.cat.piezas[s.id];
@@ -195,28 +239,34 @@ function hero(X, S, st, tengo) {
       : cerro ? '' : `<button class="tz-b blanco" data-deseo="${s.id}">${enLista ? '♥ Te avisamos ese día' : '♡ Avísame'}</button>`) + '<button class="tz-b" data-tab="num">Ver las ediciones</button>';
   }
   else bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`) + (seProbar(it) ? `<button class="tz-b" data-probar-ir="${s.id}">Probártelo</button>` : '') + (mio ? '' : cor);
-  const chips = L.map((x, i) => {
+  // el cajón: todas las fundas de la vitrina, paradas
+  const fundas = L.map((x, i) => {
     const y = S.cat.piezas[x.id];
-    const sub = x.t === 'nav' ? 'Navidad · gratis' : x.t === 'num' ? 'Edición de 10 · ' + diaCorto((S.cat.ediciones[x.id] || {}).venta || Date.now()) : (RANURA[y.c] || LUGAR_DE[y.c] || '') + ' · ' + (tengo.has(x.id) ? 'tuyo' : num(precioIt(S, x.id)));
-    return `<button class="tz-hc${i === st.slide ? ' on' : ''}" data-slide="${i}" style="--r:${RZ[y.r][1]};--i:${i}"><svg class="tz-hc-luz" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="1" y="1" width="98" height="98" pathLength="100" vector-effect="non-scaling-stroke"/></svg><span class="tz-hc-v">${esFondo(y.c) ? arteFondo(X, x.id) : vista(X, x.id)}</span><span class="tz-hc-t"><b>${esc(y.n)}</b><small>${sub}</small></span></button>`;
+    const sub = x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de 10' : tengo.has(x.id) ? 'Tuyo' : num(precioIt(S, x.id));
+    return `<button class="dq-fu" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}" aria-label="${esc(y.n)}, ${RZ[y.r][0]}"><span class="dq-fu-v">${esFondo(y.c) ? arteFondo(X, x.id) : vista(X, x.id)}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
   }).join('');
   // (18/11/2026) «a la venta el …» sólo antes de la venta; una edición de 10 no lleva descuento Premium
   const precio = s.t === 'nav' || mio ? '' : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' ? (ed && Date.now() < ed.venta ? ' · a la venta el ' + diaCorto(ed.venta) : '') : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;
-  return `<section class="tz-hero" aria-label="La vitrina de esta semana">
-    <div class="tz-hero-in">
-      <div class="tz-hero-tx" data-tuto="tz-vitrina">
-        <div class="tz-hero-et"><span class="tz-etq">La vitrina · ${esc(String(S.cat.temp || '').toUpperCase())}</span><span class="tz-cambia">${cambiaTxt(S)}</span></div>
+  // la etiqueta redonda de la funda: la rareza y el precio, como el sticker de un disco
+  const sticker = `<span class="dq-st"><span>${RZ[it.r][0]}<b>${s.t === 'nav' ? 'Gratis' : mio ? 'Tuyo' : num(precioIt(S, s.id))}</b></span></span>`;
+  const bill = S.anon ? '' : `<button class="dq-bill" data-abre="__bill">Tienes <b>${S.modo === 'dinero' ? '∞' : num(S.yo.saldo || 0)}</b></button>`;
+  return `<section class="tz-hero dq" aria-label="La vitrina" style="--r:${RZ[it.r][1]}">
+    <div class="dq-cab"><span class="tz-etq">La vitrina · ${esc(String(S.cat.temp || '').toUpperCase())}</span><span class="tz-cambia">${cambiaTxt(S)}</span>${bill}</div>
+    <div class="dq-main">
+      <div class="dq-vis" data-slide-id="${esc(s.id)}">
+        <div class="dq-disco">${SURCOS}<div class="dq-etq"><div class="dq-etq-in">${enEtiqueta(X, S, s.id)}</div></div></div>
+        <div class="dq-funda"><div class="dq-arte">${esFondo(it.c) ? arteFondo(X, s.id) : vista(X, s.id)}</div><div class="dq-pie"><b>${esc(it.n)}</b><small>${esc(subDe(S, s.id))}</small></div>${sticker}</div>
+      </div>
+      <div class="dq-info" data-tuto="tz-vitrina">
+        <p class="tz-rz"><i></i>${subDe(S, s.id)} · <span>${eti}</span></p>
         <h2>${esc(it.n)}</h2>
-        <p class="tz-rz" style="--r:${RZ[it.r][1]}"><i></i>${subDe(S, s.id)} · <span>${eti}</span></p>
         <p class="tz-hero-p">${esc(it.d)} ${baja}</p>${precio}
         <div class="tz-bots">${bot}</div>
+        ${s.t === 'nav' || s.t === 'num' ? '' : llevanHtml(liga, llevan, s.id)}
       </div>
-      <div class="tz-hero-vis" style="--r:${RZ[it.r][1]}"><span class="tz-sobre">Así te queda</span>${sobreTi(X, S, st, s.id)}</div>
     </div>
-    <button class="tz-fl izq" data-slide="${(st.slide + L.length - 1) % L.length}" aria-label="Anterior">‹</button>
-    <button class="tz-fl der" data-slide="${(st.slide + 1) % L.length}" aria-label="Siguiente">›</button>
-    <div class="tz-hcs-c"><div class="tz-hcs" aria-label="Las piezas de la vitrina"><div class="tz-hcs-pista"><div class="tz-hcs-mitad">${chips}</div><div class="tz-hcs-mitad" aria-hidden="true" inert>${chips}</div></div></div><button class="tz-hcs-fl" data-slide="${(st.slide + 1) % L.length}" aria-label="Siguiente pieza">›</button></div>
-  </section>`;
+    <div class="dq-cajon"><div class="dq-cajon-f" role="group" aria-label="Las piezas de la vitrina">${fundas}</div></div>
+  </section>${pelea(X, S, liga, llevan)}`;
 }
 
 function escenario(X, S, st) {
@@ -556,6 +606,13 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   // lo tuyo cambia cuando el objeto contesta: lo puesto del servidor manda sobre «lo tuyo»
   useEffect(() => { const m = desdeServidor(S); E.mio = m; }, [S]);
   const tengo = new Set(S.yo.inv.map((x) => x.p));
+  // 👥 quién lleva cada pieza (lo público del Pase, `tp`): «Lo llevan» de la vitrina y de la pelea
+  const pub = usePases();
+  const llevan = useMemo(() => {
+    const m = {};
+    for (const [kk, t] of Object.entries((pub && pub.tp) || {})) for (const id of new Set(Object.values(t || {}))) (m[id] = m[id] || []).push(kk);
+    return m;
+  }, [pub]);
   const pedir = useCallback((d) => window.conCuenta('/api/avisos/tienda-accion', d), []);
 
   async function accion(d, despues) {
@@ -684,7 +741,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
         return;
       }
     }
-    else if (d.tab) { E.tab = d.tab; if (t.closest('.tz-hero')) irAlProbador(); }
+    else if (d.tab) { E.tab = d.tab; if (t.closest('.dq')) irAlProbador(); }
     else if (d.lugar) E.lugar = d.lugar;
     else if (d.prueba) { probar(d.prueba); E.comparar = false; }
     else if (d.saca) { for (const x of Object.keys(E.puesto)) if (E.puesto[x] === d.saca) E.puesto[x] = E.mio.puesto[x]; for (const x of Object.keys(E.fondo)) if (E.fondo[x] === d.saca) E.fondo[x] = E.mio.fondo[x]; }
@@ -721,6 +778,15 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     return () => el.removeEventListener('error', f, true);
   });
 
+  // 💿 el disco sale de la funda sólo cuando cambió la funda elegida (el HTML se rehace entero en cada cambio)
+  const fundaVista = useRef(null);
+  useLayoutEffect(() => {
+    const v = raiz.current && raiz.current.querySelector('.dq-vis');
+    if (!v || fundaVista.current === v.dataset.slideId) return;
+    fundaVista.current = v.dataset.slideId;
+    v.classList.add('sale');
+  });
+
   // sin arte después de los reintentos, se dice y se deja reintentar (18/11/2026): quedaba «Cargando…» para siempre
   if (!A) return <section className="sec"><div className="sec-t"><h2>Tienda</h2></div>{falloArte
     ? <p className="pronto-p">No pude cargar la Tienda.{' '}<button type="button" className="btn borde2 chico" onClick={reintentarArte}>Reintentar</button></p>
@@ -738,7 +804,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
       : id === '__prob' ? `<div class="tz-ficha" role="dialog" aria-label="El probador">${popCab('El probador', 'Lo que te estás probando', '#E41373')}<div class="tz-f-inf">${escenario(X, S, E)}${probando(S, E, tengo)}</div></div>`
       : S.cat.colecciones[id] ? fichaCol(X, S, E, tengo, liga, id) : S.cat.piezas[id] ? fichaPieza(X, S, E, tengo, liga, id) : '';
   }
-  const arriba = `${S.modo ? '<p class="tz-ensayo">' + (S.modo === 'prueba' ? 'Modo prueba (Mods): tienes todo de mentira. Te lo puedes poner para verlo; no se compra ni se guarda nada.' : S.modo === 'dinero' ? 'Dinero de prueba (Mods): Puntos que no se terminan. Lo que compras es de mentira: lo ves puesto mientras esté prendido, y no se guarda nada.' : 'Viendo la Tienda como un usuario (Mods): sin tu Premium y sin el ensayo. En esta vista no se compra nada.') + '</p>' : ''}${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S, liga)}${hero(X, S, E, tengo)}
+  const arriba = `${S.modo ? '<p class="tz-ensayo">' + (S.modo === 'prueba' ? 'Modo prueba (Mods): tienes todo de mentira. Te lo puedes poner para verlo; no se compra ni se guarda nada.' : S.modo === 'dinero' ? 'Dinero de prueba (Mods): Puntos que no se terminan. Lo que compras es de mentira: lo ves puesto mientras esté prendido, y no se guarda nada.' : 'Viendo la Tienda como un usuario (Mods): sin tu Premium y sin el ensayo. En esta vista no se compra nada.') + '</p>' : ''}${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S, liga)}${hero(X, S, E, tengo, liga, llevan)}
     <section class="tz-sec" id="tz-prob" data-tuto="tz-probador"><div class="tz-sec-t"><h2>El probador</h2>${pildora(S, E)}</div>
       <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat" data-tuto="tz-piezas">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>
     <section class="tz-sec tz-sec-mas" data-tuto="tz-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>

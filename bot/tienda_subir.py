@@ -54,6 +54,32 @@ def resumen(c):
             f"ediciones {len(c.get('ediciones') or {})} · {'ABIERTA' if c.get('abierta') else 'cerrada (sólo el dueño)'}")
 
 
+def pelea(c, forzar=False):
+    """⚔️ La pelea de la vitrina (21/11/2026): la Tienda promete que la pieza que junta más ♡ y compras vuelve en la
+    próxima vitrina (`peleaVitrina()` de bot/tienda.js). Si este catálogo cambia la vitrina y deja afuera a la que va
+    ganando, no se sube (con `--forzar`, sólo avisa). Sin conexión o sin pelea, no frena nada."""
+    import requests
+    try:
+        vivo = (requests.post('https://underlegends.pages.dev/api/avisos/tienda', json={'anon': 1}, timeout=30).json() or {}).get('cat') or {}
+    except (OSError, ValueError):
+        print('  ⓘ no pude leer la pelea de la vitrina publicada')
+        return []
+    pe, antes = vivo.get('pelea') or {}, (vivo.get('vitrina') or {}).get('ids') or []
+    gana, nueva = pe.get('gana'), ((c.get('vitrina') or {}).get('ids') or [])
+    if not gana or nueva == antes:
+        return []
+    cu = (pe.get('cuenta') or {}).get(gana) or [0, 0]
+    nombre = ((vivo.get('piezas') or {}).get(gana) or {}).get('n') or gana
+    print('  ⚔️ ganó la pelea de la vitrina: %s (%s, %d ♡ y %d compras)' % (nombre, gana, cu[0], cu[1]))
+    if gana in nueva:
+        return []
+    msj = 'la vitrina nueva deja afuera a la que ganó la pelea (%s): la Tienda promete que vuelve' % gana
+    if forzar:
+        print('  ⚠️', msj, '(--forzar: se sube igual)')
+        return []
+    return [msj]
+
+
 def main(argv):
     rutas = [a for i, a in enumerate(argv) if not a.startswith('--') and not (i and argv[i - 1] == '--arte')]
     if not rutas:
@@ -61,7 +87,7 @@ def main(argv):
         return 2
     with io.open(rutas[0], encoding='utf-8') as f:
         c = json.load(f)
-    mal = revisar(c)
+    mal = revisar(c) + pelea(c, '--forzar' in argv)
     print('catálogo:', resumen(c) if not mal else 'con problemas')
     for m in mal:
         print('  ❌', m)

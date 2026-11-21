@@ -4913,6 +4913,17 @@ const ok = (cond, que, det) => {
       'si una pieza baja, quien la compró hace poco recibe la diferencia (en proporción a lo que pagó)', JSON.stringify(r));
     ok(r.avisos >= 1, 'y la lista avisa lo que entra en la vitrina');
 
+    // ⚔️ la pelea de la vitrina (21/11/2026): las dos que rotan, con sus ♡ y compras de verdad, sin voto
+    const pe = TI.tiendaMia(o, { quien: '' }, H).cat.pelea;
+    ok(pe && pe.ids.join() === 'X4,X3' && pe.cuenta.X4[0] >= 1 && pe.gana === 'X4',
+      'la pelea: las dos que rotan, la de rareza más alta primero, y gana la de más ♡ y compras', JSON.stringify(pe));
+    const cp = { precios: [1, 2, 3], piezas: { A: { c: 'aro', r: 2, n: 'Eq', t: ['rot'] }, B: { c: 'carta', r: 2, n: 'Eq', t: ['rot'] },
+      C: { c: 'deco', r: 1, n: 'Spray', t: ['rot'] }, D: { c: 'aro', r: 1, n: 'Cinta', t: ['rot'] } } };
+    ok(TI.rivales(cp, ['A', 'B', 'C', 'D']).join() === 'A,D' && !TI.rivales(cp, ['A']) && TI.rivales(cp, ['A', 'B']) === null,
+      'su rival: de la misma ranura si se puede, y nunca una que se llama igual');
+    ok(TI.ganaPelea(cp, ['A', 'D'], { A: [1, 0], D: [0, 1] }) === 'D' && TI.ganaPelea(cp, ['A', 'D'], { A: [0, 0], D: [0, 0] }) === 'A',
+      'empatadas, gana la de más compras; si no, la más fuerte');
+
     // el drop del día
     ok(acc(BEA, 'bea', { accion: 'drop' }).error === 'no_miembro', 'el drop del día es de los Miembros de DRA');
     r = acc(A.DUENO, 'dlx', { accion: 'drop' });

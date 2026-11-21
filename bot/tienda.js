@@ -71,6 +71,9 @@ export function tiendaTablas(sql) {
   // las colecciones que completó cada uno (el premio se da una vez)
   sql.exec('CREATE TABLE IF NOT EXISTS tienda_col (quien TEXT NOT NULL, col TEXT NOT NULL, t INTEGER NOT NULL, ' +
     'PRIMARY KEY (quien, col)) WITHOUT ROWID');
+  // ⚔️ la pelea de la vitrina cuenta ♡ y compras de dos piezas en cada pedido: por pieza, así lee sólo esas filas
+  sql.exec('CREATE INDEX IF NOT EXISTS tienda_deseo_pieza ON tienda_deseo (pieza)');
+  sql.exec('CREATE INDEX IF NOT EXISTS tienda_inv_pieza ON tienda_inv (pieza, origen, t)');
 }
 
 // ── EL CATÁLOGO ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -266,7 +269,45 @@ function publico(o, cat) {
     ediciones[id] = Object.assign({}, e, { duenos: ds });
   }
   return { temp: cat.temp, precios: cat.precios, piezas: cat.piezas, vitrina: cat.vitrina, colecciones: cat.colecciones, ediciones,
-    gratis: cat.gratis, navidad: cat.navidad, desc: cat.desc, regalos_semana: cat.regalos_semana, deshacer_h: cat.deshacer_h };
+    gratis: cat.gratis, navidad: cat.navidad, desc: cat.desc, regalos_semana: cat.regalos_semana, deshacer_h: cat.deshacer_h,
+    pelea: peleaVitrina(o, cat) };
+}
+
+// ⚔️ LA PELEA ESTELAR DE LA VITRINA (21/11/2026). Dlx eligió la disquera «con la pelea, sin voto»: *«la gente no vota
+// mucho, me he dado cuenta»*. Las dos piezas más fuertes de lo que SÓLO pasa por la vitrina (`rot`), cara a cara —de la
+// misma ranura si se puede, nunca dos que se llaman igual—, y vuelve en la próxima vitrina la que junte más ♡ (las listas
+// de hoy) y compras (desde que entró a la vitrina, `tienda_vit_desde`). Sin voto: se mueve con lo que la gente ya hace.
+// Los números son los de verdad, nunca inventados. `bot/tienda_subir.py` frena una vitrina nueva sin la ganadora.
+/** `{ids: [a, b], cuenta: {id: [♡, compras]}, gana}` o `null` si en la vitrina hay menos de dos piezas que rotan */
+export function peleaVitrina(o, cat) {
+  const rot = cat.vitrina.ids.filter((id) => cat.piezas[id] && cat.piezas[id].t.includes('rot'));
+  const a = rivales(cat, rot);
+  if (!a) return null;
+  const desde = Number(o.leer('tienda_vit_desde')) || 0;
+  const cuenta = {};
+  for (const id of a) {
+    const cor = Number((fila(o, 'SELECT COUNT(*) AS n FROM tienda_deseo WHERE pieza = ?', id) || {}).n) || 0;
+    const com = Number((fila(o, "SELECT COUNT(*) AS n FROM tienda_inv WHERE pieza = ? AND origen = 'compra' AND t >= ?", id, desde) || {}).n) || 0;
+    cuenta[id] = [cor, com];
+  }
+  return { ids: a, cuenta, gana: ganaPelea(cat, a, cuenta) };
+}
+/** Las dos de la pelea: la más fuerte (rareza y precio; empatadas, la primera de la vitrina) y su rival */
+export function rivales(cat, rot) {
+  if (rot.length < 2) return null;
+  const pr = (id) => cat.precios[cat.piezas[id].r] || 0;
+  const orden = rot.slice().sort((x, y) => cat.piezas[y].r - cat.piezas[x].r || pr(y) - pr(x) || rot.indexOf(x) - rot.indexOf(y));
+  const uno = orden[0], nom = (id) => cat.piezas[id].n || id;
+  const otros = orden.slice(1).filter((id) => nom(id) !== nom(uno));
+  const dos = otros.find((id) => cat.piezas[id].c === cat.piezas[uno].c) || otros[0];
+  return dos ? [uno, dos] : null;
+}
+/** La que va ganando: más ♡ + compras; empatadas, la de más compras, y si no, la más fuerte (la primera) */
+export function ganaPelea(cat, ids, cuenta) {
+  const [a, b] = ids, s = (id) => cuenta[id][0] + cuenta[id][1];
+  if (s(a) !== s(b)) return s(a) > s(b) ? a : b;
+  if (cuenta[a][1] !== cuenta[b][1]) return cuenta[a][1] > cuenta[b][1] ? a : b;
+  return a;
 }
 
 // ── LAS ACCIONES ────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -579,6 +620,8 @@ export function catalogoGuardar(o, d) {
     if (sube.length && !d.forzar) return mal('sube', 409, { piezas: sube });
   }
   o.guardar('tienda_cat', nuevo);
+  // ⚔️ desde cuándo cuentan las compras de la pelea: desde que cambió la vitrina
+  if (!viejo || viejo.vitrina.ids.join() !== nuevo.vitrina.ids.join()) o.guardar('tienda_vit_desde', ahora);
   let devueltos = 0, avisos = 0;
   for (const [id, a, b] of baja) {
     const compras = filas(o, "SELECT quien, pagado, t FROM tienda_inv WHERE pieza = ? AND origen = 'compra' AND t >= ? AND pagado > 0",
