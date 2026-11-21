@@ -297,7 +297,7 @@ export function ModsPagina({ liga, dc }) {
         </div>
         {n ? <button type="button" className="btn borde2" onClick={() => ponerMod(null)}>Apagar todo</button> : null}
       </div>
-      <div className="md-grid">
+      <div className={'md-grid' + (tab !== 'registro' && (Q.owner || Q.admin) ? '' : ' uno')}>
         <div className="md-main">
           <div className="md-pes" role="tablist" aria-label="Partes de Mods">{TABS.map(([k1, t1]) => (
             <button key={k1} type="button" role="tab" aria-selected={tab === k1} className={tab === k1 ? 'on' : ''} onClick={() => elegir(k1)}>{t1}</button>
@@ -352,8 +352,11 @@ export function ModsPagina({ liga, dc }) {
           </> : null}
           {tab === 'mirar' ? lenteSec : null}
           {tab === 'probar' ? pruebaSec : null}
-          {tab === 'registro' ? <>
+          {/* 🗂️ Registro a lo ancho (21/11/2026, la revisión visual: en la compu la columna de al lado quedaba vacía):
+              lo hecho a la izquierda y «Quién puede qué» y los atajos a la derecha */}
+          {tab === 'registro' ? <div className="md-reg">
             {Q.owner || Q.admin ? <Hecho /> : null}
+          <div className="md-reg-d">
           <details className="md-caja">
             <summary><h3>Quién puede qué</h3><i aria-hidden="true">›</i></summary>
             <table className="md-mtz">
@@ -372,7 +375,8 @@ export function ModsPagina({ liga, dc }) {
             {owner ? <a href="/mapa.html" target="_blank" rel="noopener">El mapa en vivo <span>↗</span></a> : null}
             <a href="#/cuenta">Tu cuenta <span>›</span></a>
           </details>
-          </> : null}
+          </div>
+          </div> : null}
         </div>
         {/* en la compu, lo que hiciste queda al costado (menos en Registro, que ya lo tiene); en el celular, en Registro */}
         {tab !== 'registro' && (Q.owner || Q.admin) ? <aside className="md-costado"><Hecho /></aside> : null}

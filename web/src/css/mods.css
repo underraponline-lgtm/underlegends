@@ -136,3 +136,9 @@
 .md-boton{margin-top:12px}
 .md-boton .md-lp-ic{color:var(--magenta)}
 @media (max-width: 899.98px){.md-costado{display:none}}
+
+/* 🗂️ sin columna de al lado (Registro, o quien no tiene lo hecho): una sola columna, y Registro en dos a lo ancho */
+.md-grid.uno{grid-template-columns:minmax(0,1fr)}
+.md-reg{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
+.md-reg-d{display:flex;flex-direction:column;gap:18px;min-width:0}
+@media (max-width: 899.98px){.md-reg{grid-template-columns:minmax(0,1fr)}}
