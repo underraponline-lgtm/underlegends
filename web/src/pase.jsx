@@ -239,8 +239,10 @@ function Sorteo({ liga, dc, miembro }) {
           <ul className="ps-srt-d">
             {/* 🔢 el singular (18/11/2026): con uno solo decía «1 entraron, con 1 boletos» */}
             <li><b>{num(res.personas)} {res.personas === 1 ? 'entró' : 'entraron'}</b>, con {num(res.boletos)} {res.boletos === 1 ? 'boleto' : 'boletos'} en total.</li>
+            {/* ✋ el ganador elegido a mano por la Liga (21/11/2026, `sorteoDueno()`): sin semilla que repetir */}
+            {res.semilla === 'a-mano' ? <li><b>Cómo se eligió</b>: lo eligió la Liga.</li> : <>
             <li><b>Cómo se eligió</b>: la semilla es el SHA-256 del sorteo y de la lista de boletos; el ganador, la semilla dividida por los boletos (lo que sobra). Cualquiera con la lista repite la cuenta.</li>
-            <li className="ps-semilla">Semilla: <code>{res.semilla.slice(0, 16)}…</code></li>
+            <li className="ps-semilla">Semilla: <code>{res.semilla.slice(0, 16)}…</code></li></>}
           </ul>
         </div>
       ) : (

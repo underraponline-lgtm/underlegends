@@ -5024,6 +5024,82 @@ const ok = (cond, que, det) => {
   [...vistos].length);
 }
 
+// 🎟️ EL SORTEO DEL PREMIUM SOBRE EL OBJETO (21/11/2026): el ganador salía «(sin perfil)» porque la tabla de paso (`idk`)
+// se borraba a las 24 horas, y Dlx pidió poder arreglarlo él (volver a sortear, darle el premio a otro, el rol)
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: Number(r.changes) || 0 };
+      },
+    };
+    const kv = new Map([['d:100000001', 'ana'], ['d:100000002', 'bea']]);
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const pedidos = [];
+    const antesFs = globalThis.fetch;
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push((op.method || 'GET') + ' ' + String(u));
+      if (/\/members\/100000003$/.test(String(u))) return new Response(JSON.stringify({ nick: null, user: { global_name: 'Cami Dc', username: 'cami' } }), { status: 200 });
+      if (/\/members\/\d+$/.test(String(u))) return new Response('{}', { status: 404 });
+      return new Response(null, { status: 204 });
+    };
+    const T = Date.now();
+    o.guardar('ajustes_dueno', { pase_sorteo: { id: 's1', cierra: new Date(T - 7200000).toISOString(), sorteo: new Date(T - 3600000).toISOString() } });
+    o.guardar('pase_v', '1');
+    o.guardar('pase', { cfg: { temp: 't1', umbrales: [0, 100], niveles: 1, rol_regalo: '900000000000000001' }, sem: [], miembros: ['100000001', '100000002', '100000003'], hechas: {} });
+    for (const [q, b] of [['100000001', 1], ['100000002', 3], ['100000003', 2]]) {
+      sql.exec('INSERT INTO sorteo_part (sorteo, quien, boletos, t) VALUES (?, ?, ?, ?)', 's1', q, b, T - 9000000 + Number(q.slice(-1)));
+    }
+    const g = await o.sortear(T);
+    ok(!!g, 'se sortea');
+    // el bug: la tabla de paso borrada a las 24 h
+    sql.exec('DELETE FROM idk');
+    ok(o.claveDe('100000001') === '' && o.claveDe('100000002') === '', 'sin la tabla de paso, nadie tiene perfil (el bug)');
+    await o.sorteoCalentar(['100000001', '100000002', '100000003']);
+    ok(o.claveDe('100000001') === 'ana' && o.claveDe('100000002') === 'bea' && o.claveDe('100000003') === '', 'calentar: el perfil vuelve desde d:');
+    sql.exec("UPDATE idk SET t = ? WHERE k != ''", T - 3 * 24 * 3600000);
+    sql.exec("DELETE FROM idk WHERE (k = '' AND t < ?) OR t < ?", T - 24 * 3600000, T - 180 * 24 * 3600000);
+    ok(o.claveDe('100000001') === 'ana', 'lo que tiene perfil no se borra a las 24 horas');
+    const v = await o.sorteoDueno({ accion: 'ver' });
+    ok(v.ok && v.partes.length === 3 && v.partes.find((p) => p.k === '').dn === 'Cami Dc' && v.partes.every((p) => p.ref) && v.ganador,
+      'ver: cada uno con su fila, y quien no tiene perfil con su nombre de DRA ' + JSON.stringify(v.partes.map((p) => [p.k, p.dn, p.gana])));
+    const g1 = v.ganador;
+    const r1 = await o.sorteoDueno({ accion: 'rehacer' });
+    ok(r1.ok && r1.rehecho && !r1.ganador && r1.partes.length === 2 && r1.rehechos.length === 1, 'volver a sortear: el de antes sale sin su boleto');
+    await o.sortear(Date.now());
+    const v2 = await o.sorteoDueno({ accion: 'ver' });
+    ok(v2.ganador && JSON.stringify(v2.ganador) !== JSON.stringify(g1), 'el vigía sortea entre los demás');
+    const otro = v2.partes.find((p) => !p.gana);
+    const e1 = await o.sorteoDueno({ accion: 'elegir', ref: otro.ref });
+    ok(e1.ok && e1.hecho === 'elegido' && e1.ganador.mano && e1.partes.find((p) => p.gana).ref === otro.ref && e1.rehechos.length === 2,
+      'darle el premio a otro: gana el elegido, a mano, y el anterior queda en la lista');
+    ok((await o.sorteoDueno({ accion: 'elegir', ref: 999 })).error, 'una fila que no es del sorteo, no');
+    sql.exec('UPDATE sorteo_res SET rol = 1');
+    const s1 = await o.sorteoDueno({ accion: 'sacar_rol', cual: 'ganador' });
+    ok(s1.ok && pedidos.some((p) => /^DELETE .*\/roles\/900000000000000001$/.test(p)) && sql.exec('SELECT rol FROM sorteo_res').toArray()[0].rol === 2,
+      'sacarle el rol al ganador: Discord DELETE y queda marcado');
+    const re = s1.rehechos[0];
+    sql.exec('UPDATE sorteo_hist SET rol = 1 WHERE rowid = ?', re.ref);
+    const s2 = await o.sorteoDueno({ accion: 'sacar_rol', cual: re.ref });
+    ok(s2.ok && s2.rehechos.find((h) => h.ref === re.ref).rol === 2, 'sacarle el rol a uno de antes');
+    const p1 = await o.sorteoDueno({ accion: 'reintentar_rol' });
+    ok(p1.ok && sql.exec('SELECT rol FROM sorteo_res').toArray()[0].rol === 0, 'ponerle el rol: el vigía lo vuelve a intentar');
+    const pub = o.sorteoDe('');
+    ok(pub.resultado && pub.resultado.semilla === 'a-mano' && typeof pub.resultado.k === 'string', 'la página pública ve el elegido a mano');
+    globalThis.fetch = antesFs;
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

@@ -1437,7 +1437,10 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
   const s = est && est.sorteo, res = est && est.resultado;
   // 👤 el nombre aunque no esté en la tabla (18/11/2026): `liga.T` trae 200 filas, y quien ganaba o entraba fuera de
   // ellas salía con la clave cruda («lautarolasinceridad»). Y el plural de «boletos» con su singular, como «persona»
-  const nom = (k) => (k ? liga.nombreDe(k) : '(sin perfil)');
+  // 👤 y quien no tiene perfil, con su nombre en DRA (21/11/2026: salía «(sin perfil)» y no había cómo saber quién era)
+  const nom = (k, dn) => (k ? liga.nombreDe(k) : dn ? dn + ' (sin perfil)' : '(sin perfil)');
+  const gan = du && du.ganador;
+  const gk = (res && res.k) || (gan && gan.k) || '';
   const ahora = Date.now();
   const abierto = !!S && ahora < Date.parse(S.cierra), porSortear = !!S && !res && ahora >= Date.parse(S.cierra);
   const usados = new Set([...((du && du.hist) || []).map((h) => h.id), S && S.id].filter(Boolean));
@@ -1455,15 +1458,22 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
   // sin la hora en el texto: la verían igual en todas las zonas. El aviso se va solo cuando cierra (`hasta`)
   const avisar = () => hacer('aviso_web', { texto: '🎟️ El sorteo del Pase premium está abierto: entra gratis desde la pestaña Premium del Pase.',
     hasta: new Date(S.cierra).toISOString() }, 'Aviso puesto arriba de la página hasta que cierre.');
-  const rehacer = async () => {
+  // 🛠️ LO QUE DLX ARREGLA A MANO (21/11/2026: «agrega funciones para que lo arregle yo»): volver a sortear, darle el premio
+  // a otro de los que entraron, sacarle el rol a quien no corresponde y volver a ponérselo. Ver `sorteoDueno()` (avisos.js)
+  const accion = async (cuerpo, bien) => {
     setBusy(true); setMsj('');
     try {
-      const r = await fetch('/api/avisos/dueno/sorteo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: '{"accion":"rehacer"}' });
+      const r = await fetch('/api/avisos/dueno/sorteo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
       const j = r.ok ? await r.json() : null;
-      setMsj(j && j.rehecho ? 'Listo: en menos de un minuto sale el ganador nuevo, entre los demás.' : 'No se pudo: ' + ((j && j.error) || 'el servidor no contestó'));
+      setMsj(j && j.ok ? bien : 'No se pudo: ' + ((j && j.error) || 'el servidor no contestó'));
       pedir();
     } finally { setBusy(false); }
   };
+  const rehacer = () => accion({ accion: 'rehacer' }, 'Listo: en menos de un minuto sale el ganador nuevo, entre los demás.');
+  const elegir = (p) => accion({ accion: 'elegir', ref: p.ref }, 'Listo: ' + nom(p.k, p.dn) + ' es el ganador. El bot le pone el rol en un minuto.');
+  const sacarRol = (cual) => accion({ accion: 'sacar_rol', cual }, 'Listo: se le sacó el rol «Pase Premium».');
+  const ponerRol = () => accion({ accion: 'reintentar_rol' }, 'Listo: el bot le pone el rol en un minuto.');
+  const quedan = ((du && du.partes) || []).filter((p) => !p.gana).length;
   // ○ un sorteo sin nadie (18/11/2026): `sortear()` (avisos.js) no escribe resultado con 0 personas, así que pasada la
   // hora quedaba en «⏳ Por sortear» para siempre y en verde. Ya no se va a sortear: se dice, y en gris
   const nadie = porSortear && !!s && !s.personas && ahora >= Date.parse(S.sorteo);
@@ -1475,14 +1485,16 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
 
       {S && res && !f ? (
         <div className="db-sr-res">
-          <Cara liga={liga} k={res.k} nombre={nom(res.k)} cls="db-sr-cara" />
+          <Cara liga={liga} k={gk} nombre={nom(gk, gan && gan.dn)} cls="db-sr-cara" />
           <div className="db-sr-txt">
             <span className="db-sr-et">Ganó</span>
-            <b className="db-sr-gan">{nom(res.k)}</b>
+            <b className="db-sr-gan">{nom(gk, gan && gan.dn)}</b>
             <span className="db-sr-dato">{liga.dia(res.t)} · entre {num(res.personas)} {res.personas === 1 ? 'persona' : 'personas'} y {num(res.boletos)} {res.boletos === 1 ? 'boleto' : 'boletos'}</span>
             <span className={'db-sr-rol' + (res.rol === -1 ? ' mal' : res.rol === 1 ? ' bien' : '')}>
-              {res.rol === 1 ? '✓ Ya tiene el rol «Pase Premium»' : res.rol === -1 ? '✕ Ya no está en DRA: el bot no pudo ponerle el rol' : '… el bot le está poniendo el rol'}</span>
-            {res.semilla ? <span className="db-sr-dato" title={res.semilla}>Cuenta para verificar: {res.semilla.slice(0, 12)}…</span> : null}
+              {res.rol === 1 ? '✓ Ya tiene el rol «Pase Premium»' : res.rol === -1 ? '✕ Ya no está en DRA: el bot no pudo ponerle el rol'
+                : res.rol === 2 ? '✕ Le sacaste el rol «Pase Premium»' : '… el bot le está poniendo el rol'}</span>
+            {res.semilla === 'a-mano' ? <span className="db-sr-dato">Lo elegiste a mano</span>
+              : res.semilla ? <span className="db-sr-dato" title={res.semilla}>Cuenta para verificar: {res.semilla.slice(0, 12)}…</span> : null}
           </div>
         </div>
       ) : null}
@@ -1515,7 +1527,9 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
           {!S || res ? <button type="button" className="btn verde chico" disabled={ocup} onClick={abrirNuevo}>Nuevo sorteo</button> : null}
           {S && !res ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={abrirCambio}>Cambiar fechas</button> : null}
           {abierto ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={avisar}>Avisar que está abierto</button> : null}
-          {res && res.rol === -1 && du ? <DosToques className="btn borde2 chico" disabled={ocup || busy} confirmar="Toca de nuevo: se sortea entre los demás" onClick={rehacer}>Volver a sortear</DosToques> : null}
+          {res && du && quedan ? <DosToques className="btn borde2 chico" disabled={ocup || busy} confirmar="Toca de nuevo: se sortea entre los demás" onClick={rehacer}>Volver a sortear</DosToques> : null}
+          {res && du && res.rol === 1 ? <DosToques className="btn borde2 chico" disabled={ocup || busy} confirmar="Toca de nuevo para sacárselo" onClick={() => sacarRol('ganador')}>Sacarle el rol</DosToques> : null}
+          {res && du && (res.rol === -1 || res.rol === 2) ? <button type="button" className="btn borde2 chico" disabled={ocup || busy} onClick={ponerRol}>Ponerle el rol</button> : null}
           {S ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para sacarlo" onClick={() => hacer('pase_sorteo', null, 'El sorteo se sacó de la página.')}>{res ? 'Sacarlo de la página' : 'Sacar el sorteo'}</DosToques> : null}
         </div>
       )}
@@ -1523,16 +1537,20 @@ export function AjSorteo({ liga, aj, hacer, ocup }) {
 
       {du && du.partes.length ? (
         <details className="db-sr-lista">
-          <summary>Quién entró ({num(du.partes.length)})</summary>
-          <ul>{du.partes.map((p, i) => <li key={i}><span>{nom(p.k)}</span><b>{p.b} {p.b === 1 ? 'boleto' : 'boletos'}</b></li>)}</ul>
+          <summary>Quién entró ({num(du.partes.length)}){res ? ' · darle el premio a otro' : ''}</summary>
+          <ul>{du.partes.map((p, i) => <li key={p.ref || i}><span>{nom(p.k, p.dn)}{p.gana ? <b className="db-sr-ya"> · ganó</b> : null}</span>
+            <span className="db-sr-der"><b>{p.b} {p.b === 1 ? 'boleto' : 'boletos'}</b>
+              {S && !p.gana && p.ref ? <DosToques className="btn borde2 chico" disabled={ocup || busy} confirmar="Toca de nuevo: gana este" onClick={() => elegir(p)}>Darle el premio</DosToques> : null}</span></li>)}</ul>
         </details>
       ) : null}
       {du && (du.hist.length || du.rehechos.length) ? (
         <details className="db-sr-lista">
           <summary>Los sorteos anteriores ({num(du.hist.length)})</summary>
           <ul>
-            {du.hist.map((h) => <li key={h.id}><span>{liga.dia(h.t)} · <b>{nom(h.k)}</b></span><span>{num(h.n)} {h.n === 1 ? 'persona' : 'personas'} · {num(h.b)} {h.b === 1 ? 'boleto' : 'boletos'}</span></li>)}
-            {du.rehechos.map((h, i) => <li key={'r' + i} className="db-sr-tachado"><span>{nom(h.k)} (se volvió a sortear: {h.motivo})</span><span>{liga.dia(h.t)}</span></li>)}
+            {du.hist.map((h) => <li key={h.id}><span>{liga.dia(h.t)} · <b>{nom(h.k, h.dn)}</b>{h.mano ? ' · a mano' : ''}</span><span>{num(h.n)} {h.n === 1 ? 'persona' : 'personas'} · {num(h.b)} {h.b === 1 ? 'boleto' : 'boletos'}</span></li>)}
+            {du.rehechos.map((h, i) => <li key={'r' + (h.ref || i)} className="db-sr-tachado"><span>{nom(h.k, h.dn)} (perdió el premio: {h.motivo}){h.rol === 2 ? ' · rol sacado' : ''}</span>
+              <span className="db-sr-der">{liga.dia(h.t)}
+                {h.rol === 1 && h.ref ? <DosToques className="btn borde2 chico" disabled={ocup || busy} confirmar="Toca de nuevo para sacárselo" onClick={() => sacarRol(h.ref)}>Sacarle el rol</DosToques> : null}</span></li>)}
           </ul>
         </details>
       ) : null}

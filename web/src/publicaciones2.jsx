@@ -209,7 +209,7 @@ function contenido(liga, it, pub) {
     c.cat = 'Sorteo del Pase premium';
     c.vis = cara;
     c.txt = <>Gané el sorteo y me llevo el rol <b>«Pase Premium»</b> de DRA</>;
-    c.det = num(it.personas) + ' entraron gratis · ' + num(it.boletos) + ' boletos · semilla ' + String(it.semilla || '').slice(0, 12) + '…';
+    c.det = num(it.personas) + ' entraron gratis · ' + num(it.boletos) + ' boletos · ' + (it.semilla === 'a-mano' ? 'lo eligió la Liga' : 'semilla ' + String(it.semilla || '').slice(0, 12) + '…');
     c.acc = <a className="pb-a" href="#/pase">Ver el Pase</a>;
   } else if (it.tipo === 'precio') {
     c.cat = 'Precio por su cabeza';
