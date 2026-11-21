@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.59",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T15:20:00-05:00",
+        "titulo": "La camiseta de FFA, en la Tienda",
+        "items": [
+            "**La camiseta de FFA**, con su foto, en la ropa de la Tienda: se compra en su Discord, y el botón lleva ahí."
+        ]
+    },
+    {
         "version": "7.58",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T14:48:00-05:00",
