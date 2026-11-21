@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T18:25:39+00:00",
+ "cuando": "2026-11-21T18:54:59+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7555,6 +7555,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1573766973207351469",
+   "cuando": "2026-11-21T18:28:05"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "andres 🇨🇱",
+   "quien": "andresnhp",
+   "discord_id": "1468995046161256706",
+   "msg_id": "1573766567294931075",
+   "cuando": "2026-11-21T18:26:28"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43536,24 +43554,6 @@
    "discord_id": "1400508144920170577",
    "msg_id": "1561131267095924910",
    "cuando": "2026-10-17T21:38:18"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Leyenda.X5 🇦🇷",
-   "quien": "microcrack",
-   "discord_id": "1358539185778327612",
-   "msg_id": "1561130856939266089",
-   "cuando": "2026-10-17T21:36:40"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Hotaru Adeyemi 🇦🇷🏳️‍⚧️ (háganla lo más tarde posible plis 😭)",
-   "quien": "hotaruadeyemi",
-   "discord_id": "1282772759902162954",
-   "msg_id": "1561130824689258609",
-   "cuando": "2026-10-17T21:36:33"
   }
  ]
 }
