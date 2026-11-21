@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T22:25:15+00:00",
+ "cuando": "2026-11-21T22:55:37+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -3966,7 +3966,7 @@
    "organizador": "- 4 Clasificatorias 12-16 Cupos",
    "orgs": [
     {
-     "n": "💝ValenAdoratesJuan💖",
+     "n": "JustValen",
      "id": "554330098812059679"
     }
    ],
@@ -3980,7 +3980,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "💝ValenAdoratesJuan💖",
+   "autor": "JustValen",
    "staff_cuentas": {},
    "categoria_id": "1511964043647123527"
   },
@@ -7555,6 +7555,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "DarnBless 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1573830169892888586",
+   "cuando": "2026-11-21T22:39:12"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Monet 🇨🇳",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1573829664194170906",
+   "cuando": "2026-11-21T22:37:12"
+  },
   {
    "servidor": "CHZ",
    "canal": "inscripción-vc-🎙️",
@@ -43536,24 +43554,6 @@
    "discord_id": "1282772759902162954",
    "msg_id": "1561416377867309057",
    "cuando": "2026-10-18T16:31:14"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "alejozz 🇪🇨 🇪🇨",
-   "quien": "zzzdeil",
-   "discord_id": "988931536080486420",
-   "msg_id": "1561297179635879947",
-   "cuando": "2026-10-18T08:37:35"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "╰➤-inscripciones-🏆",
-   "texto": "DXG",
-   "quien": "dxg_4018",
-   "discord_id": "1223701976655859805",
-   "msg_id": "1561227028701646912",
-   "cuando": "2026-10-18T03:58:49"
   }
  ]
 }
