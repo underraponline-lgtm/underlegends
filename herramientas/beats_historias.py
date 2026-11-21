@@ -15,7 +15,7 @@ acredita en la historia que lo toca, con el link a su video.
 
 Lo que hace con cada uno de `ELEGIDOS`:
   · lo baja de YouTube con yt-dlp, sólo el audio, a una carpeta temporal (el original NO entra al repo)
-  · busca dónde arranca de verdad (`donde_arranca()` de hacer_beat.py: salta la intro) y corta `LARGO` segundos
+  · busca dónde arranca de verdad (`donde_arranca()`: salta la intro) y corta `LARGO` segundos
   · lo deja en −16 LUFS (todos igual de fuerte: la página baja el volumen general) con fundidos cortitos en las puntas
     para que no hagan clic; los fundidos largos los hace la página, que cruza un beat con el siguiente
   · AAC de 96 kbps en `.m4a` (Safari, Chrome y Firefox lo tocan) en `bot/paginas/beats/`
@@ -24,14 +24,15 @@ Lo que hace con cada uno de `ELEGIDOS`:
 Los estilos son los de las historias (`beatDe()` de web/src/arriba.jsx): boom bap para lo que se festeja, drill para lo
 que es pelea, trap para el chat que explota, el rango y tu servidor.
 """
-import importlib.util
 import io
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
+import unicodedata
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CARPETA = os.path.join(BASE, 'bot', 'paginas', 'beats')
@@ -69,13 +70,48 @@ ELEGIDOS = [
 ]
 
 
-def _hacer_beat():
-    """Las funciones de la prueba de micro: el permiso y dónde arranca el beat (una sola regla para los dos usos)."""
-    ruta = os.path.join(BASE, 'grabador', 'voz', 'hacer_beat.py')
-    spec = importlib.util.spec_from_file_location('hacer_beat', ruta)
-    m = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)
-    return m
+# ⚠️ NO SE IMPORTA grabador/voz/hacer_beat.py (21/11/2026, la CI en rojo con la 7.54): esa herramienta es de la prueba de
+# micro y crece por su lado —ahora trae numpy, `ritmo` y un modelo de IA para contar las barras, y ya no tiene
+# `donde_arranca()`—. Cargarla rompía este self-check en un runner limpio (`No module named 'ritmo'`) y habría roto el
+# próximo `--hacer`. Acá van las tres cosas que hacen falta, chicas y sin dependencias; el permiso sale del MISMO archivo
+# (`datos/beatmakers.json`) con la misma forma de comparar nombres
+PERMISOS = os.path.join(BASE, 'datos', 'beatmakers.json')
+
+
+def clave(n):
+    n = re.sub(r'\(.*?\)', '', n or '')
+    n = unicodedata.normalize('NFKD', n).encode('ascii', 'ignore').decode()
+    return re.sub(r'[^a-z0-9]', '', n.lower())
+
+
+def con_permiso(beatmaker):
+    """El nombre como figura en datos/beatmakers.json, o None si no está."""
+    with io.open(PERMISOS, encoding='utf-8') as f:
+        lista = json.load(f)['beatmakers']
+    return next((b['nombre'] for b in lista if clave(b['nombre']) == clave(beatmaker)), None)
+
+
+def donde_arranca(ruta, largo):
+    """El primer segundo en el que el beat ya suena a pleno (salta intros habladas o en silencio): el primer momento desde
+    el que `SOSTENIDO_S` seguidos no bajan del nivel «a pleno» (el percentil 80 menos 2), y 1 s antes, para que entre con
+    su golpe. ⚠️ No el primer golpe: en los de DJ Bootrax el primer golpe cae adentro de la intro."""
+    r = subprocess.run(['ffmpeg', '-nostats', '-i', ruta, '-af', 'ebur128', '-f', 'null', '-'],
+                       capture_output=True, text=True, encoding='utf-8', errors='replace')
+    filas = re.findall(r't:\s*([0-9.]+).*?S:\s*(-?[0-9.]+|-inf)', r.stderr)
+    puntos = [(float(t), float(s)) for t, s in filas if s != '-inf']
+    if not puntos:
+        return 0.0
+    sostenido = 8
+    niveles = sorted(s for _, s in puntos)
+    pleno = niveles[int(len(niveles) * 0.8)] - 2
+    total = puntos[-1][0]
+    for i, (t, _) in enumerate(puntos):
+        if t + largo > total:
+            break
+        tramo = [s for u, s in puntos[i:] if u <= t + sostenido]
+        if tramo and min(tramo) >= pleno:
+            return max(0.0, round(t - 1, 1))
+    return 0.0
 
 
 def archivo_de(beatmaker, titulo, clave):
@@ -107,16 +143,15 @@ def lista(elegidos, clave):
 
 
 def correr(hacer=False):
-    hb = _hacer_beat()
     faltan, sin_permiso = [], []
     for vid, estilo, titulo, bm, libre in ELEGIDOS:
         if estilo not in ESTILOS:
             sin_permiso.append((titulo, 'estilo «%s» no existe' % estilo))
             continue
-        if not hb.con_permiso(bm) and not libre:
+        if not con_permiso(bm) and not libre:
             sin_permiso.append((titulo, '%s no está en datos/beatmakers.json' % bm))
             continue
-        if not os.path.exists(os.path.join(CARPETA, archivo_de(bm, titulo, hb.clave))):
+        if not os.path.exists(os.path.join(CARPETA, archivo_de(bm, titulo, clave))):
             faltan.append((vid, estilo, titulo, bm, libre))
     for t, por in sin_permiso:
         print('   ❌ %s: %s' % (t, por))
@@ -131,17 +166,17 @@ def correr(hacer=False):
         for vid, estilo, titulo, bm, libre in faltan:
             try:
                 origen = bajar(vid, tmp)
-                desde = hb.donde_arranca(origen, LARGO)
-                salida = os.path.join(CARPETA, archivo_de(bm, titulo, hb.clave))
+                desde = donde_arranca(origen, LARGO)
+                salida = os.path.join(CARPETA, archivo_de(bm, titulo, clave))
                 recortar(origen, salida, desde)
                 print('   ✅ %-34s %-8s desde %5.1f s · %4.0f KB' % (os.path.basename(salida), estilo, desde, os.path.getsize(salida) / 1e3))
             except Exception as e:                       # noqa: BLE001
                 print('   ⚠️ %s (%s): %s' % (titulo, vid, str(e)[:120]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    hechos = [e for e in ELEGIDOS if os.path.exists(os.path.join(CARPETA, archivo_de(e[3], e[2], hb.clave)))]
+    hechos = [e for e in ELEGIDOS if os.path.exists(os.path.join(CARPETA, archivo_de(e[3], e[2], clave)))]
     with io.open(LISTA, 'w', encoding='utf-8', newline='\n') as f:
-        json.dump(lista(hechos, hb.clave), f, ensure_ascii=False, indent=1)
+        json.dump(lista(hechos, clave), f, ensure_ascii=False, indent=1)
         f.write('\n')
     print('   📝 web/src/beats_lista.json: %s' % ', '.join('%s %d' % (e, sum(1 for x in hechos if x[1] == e)) for e in ESTILOS))
     return 0
@@ -154,9 +189,10 @@ def _self_check():
         nonlocal malos
         print('  %s %s' % ('✅' if c else '❌', que))
         malos += 0 if c else 1
-    hb = _hacer_beat()
     ok(all(e[1] in ESTILOS for e in ELEGIDOS), 'cada elegido tiene un estilo de las historias')
-    ok(all(hb.con_permiso(e[3]) or e[4] for e in ELEGIDOS), 'todos con permiso: el beatmaker en datos/beatmakers.json o de uso libre')
+    ok(all(con_permiso(e[3]) or e[4] for e in ELEGIDOS), 'todos con permiso: el beatmaker en datos/beatmakers.json o de uso libre')
+    ok(clave("Alejandre's Beats (ex)") == 'alejandresbeats' and con_permiso('AZERBEATS') == 'Azerbeats' and con_permiso('nadie raro') is None,
+       'el permiso compara nombres como la prueba de micro: sin tildes, mayúsculas ni signos')
     ok(len({e[0] for e in ELEGIDOS}) == len(ELEGIDOS), 'ningún beat dos veces')
     try:
         doc = json.load(io.open(LISTA, encoding='utf-8'))
