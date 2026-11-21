@@ -4,8 +4,15 @@
 // normalizar (con `normalize` cada voz bajaría a 1/N y con 31 personas en la llamada no se oiría a nadie) y un
 // limitador al final para que dos gritando juntos no saturen.
 //
-// ⚠️ La mejora del audio (ruido, volumen parejo entre voces) es para la tanda que sigue: primero se mide cómo suena
-// una grabación de verdad.
+// 🎛️ CADA VOZ AL MISMO VOLUMEN ANTES DE SUMAR (21/11/2026; Dlx: «¿hay algo que se pueda hacer para personas que se
+// escuchan mal?»). `sonoridad()` mide cada pista en LUFS —con compuerta, así el silencio rellenado no cuenta— y
+// `mezclar()` le aplica la ganancia que la lleva a `VOZ_LUFS` (la música de los bots, a `MUSICA_LUFS`: queda debajo de
+// las voces), con un tope de ±`GANANCIA_MAX`: una voz casi muda subida 30 dB sería sólo ruido. Antes, un pasa-altos
+// a 80 Hz saca el retumbe (golpes al micrófono, ventiladores) que no es voz. Y al final un limitador a −1 dB: la
+// prueba del 21/11 tenía el pico en +0,2 dB.
+//
+// ⚠️ NO HAY REDUCCIÓN DE RUIDO A PROPÓSITO: Discord ya la hace (Krisp) antes de mandar, y la medición de la prueba dio
+// −91 dB entre frase y frase. Sumar otra encima suele dejar la voz «con agua».
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -30,13 +37,47 @@ export function duracion(ruta) {
     .toString().trim()) || 0;
 }
 
-/** Mezcla las pistas en `salida` (.ogg Opus). */
-export async function mezclar(rutas, salida) {
+export const VOZ_LUFS = -19;
+export const MUSICA_LUFS = -27;
+export const GANANCIA_MAX = 15;
+
+/** La sonoridad integrada de un audio (LUFS), o null si no tiene nada que medir. */
+export function sonoridad(ruta) {
+  return new Promise((ok) => {
+    const p = spawn('ffmpeg', ['-nostats', '-i', ruta, '-af', 'ebur128', '-f', 'null', '-'], { stdio: ['ignore', 'ignore', 'pipe'] });
+    let err = '';
+    p.stderr.on('data', (d) => { err += d; if (err.length > 2e6) err = err.slice(-1e5); });
+    p.on('error', () => ok(null));
+    p.on('close', () => {
+      const m = err.slice(err.lastIndexOf('Summary:')).match(/I:\s*(-?[0-9.]+) LUFS/);
+      const v = m ? Number(m[1]) : null;
+      ok(v == null || v <= -69 ? null : v);
+    });
+  });
+}
+
+/** La ganancia (dB) que lleva una pista de `lufs` al objetivo, con su tope. */
+export function ganancia(lufs, musica = false) {
+  if (lufs == null) return 0;
+  const g = (musica ? MUSICA_LUFS : VOZ_LUFS) - lufs;
+  return Math.max(-GANANCIA_MAX, Math.min(GANANCIA_MAX, Math.round(g * 10) / 10));
+}
+
+/**
+ * Mezcla las pistas en `salida` (.ogg Opus). `cada` (opcional, en el mismo orden): `{ db, musica }` — la ganancia de
+ * esa pista y si es la música de un bot (a ésa no se le corta el grave).
+ */
+export async function mezclar(rutas, salida, cada = []) {
   if (!rutas.length) throw new Error('no hay pistas');
   const ins = rutas.flatMap((r) => ['-i', r]);
-  const filtro = rutas.length > 1
-    ? `amix=inputs=${rutas.length}:duration=longest:normalize=0,alimiter=limit=0.95`
-    : 'alimiter=limit=0.95';
+  const prep = rutas.map((_, i) => {
+    const c = cada[i] || {};
+    return `[${i}:a]${c.musica ? '' : 'highpass=f=80,'}volume=${(c.db || 0).toFixed(1)}dB[v${i}]`;
+  });
+  const todas = rutas.map((_, i) => `[v${i}]`).join('');
+  const filtro = prep.join(';') + ';' + todas
+    + (rutas.length > 1 ? `amix=inputs=${rutas.length}:duration=longest:normalize=0,` : 'anull,')
+    + 'alimiter=limit=0.89:level=false';
   await ffmpeg([...ins, '-filter_complex', filtro, '-ac', '2', '-c:a', 'libopus', '-b:a', KBPS + 'k', salida]);
   return salida;
 }

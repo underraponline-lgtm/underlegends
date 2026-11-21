@@ -19,7 +19,12 @@
 //     de competencia: no habría grabado nunca. `OTROS` (env `NO_SI_ESTA`) queda para el día que haga falta
 // Y SALE cuando quedan menos de `SALIR_CON` personas durante `ESPERA_SALIR`, a las `MAX_H` horas, o si lo sacan.
 //
-// ⚠️ NO AVISA EN LA LLAMADA, A PROPÓSITO. La primera versión mandaba «🔴 Grabando esta llamada… toca ❌ si no quieres
+// 🩺 PERO SÍ LE AVISA A QUIEN SE ESCUCHA MAL (Dlx, 21/11/2026: «que el bot te avise en vivo que no se te escucha tan
+// bien», en el chat de la llamada): cada `VENTANA_S` mide cada voz (calidad.js) y, si el mismo problema —se corta,
+// satura, bajito, calidad de teléfono— dura 20 s, se lo dice UNA vez en el evento, con cómo arreglarlo. Como mucho
+// `AVISOS_MAX` por evento. Y al entregar, cada voz va al mismo volumen y la entrega trae cómo se escuchó cada uno.
+//
+// ⚠️ NO AVISA QUE GRABA, A PROPÓSITO. La primera versión mandaba «🔴 Grabando esta llamada… toca ❌ si no quieres
 // que se guarde tu voz», y Dlx, 21/11/2026, en la primera prueba: *«elimina eso… es muy troll… La gente que está en
 // la Liga Global acepta términos de que los eventos pueden ser grabados incluso cuando uno entra al servidor»*. Que
 // está grabando se ve igual: el bot aparece adentro de la llamada.
@@ -41,7 +46,8 @@ import {
   joinVoiceChannel, EndBehaviorType, VoiceConnectionStatus, entersState, generateDependencyReport,
 } from '@discordjs/voice';
 import { PistaOpus } from './ogg.js';
-import { mezclar, partir, duracion } from './mezcla.js';
+import { mezclar, partir, duracion, sonoridad, ganancia } from './mezcla.js';
+import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
 const num = (s, d) => (Number.isFinite(Number(s)) && String(s).trim() !== '' ? Number(s) : d);
@@ -63,6 +69,8 @@ export const ESPERA_ENTRAR = num(E.ESPERA_ENTRAR_S, 60) * 1000;
 export const SALIR_CON = num(E.SALIR_CON, 2);
 export const ESPERA_SALIR = num(E.ESPERA_SALIR_S, 300) * 1000;
 export const MAX_H = num(E.MAX_H, 6);
+//: cuántos avisos de «se te escucha mal» como mucho por evento: con más, el chat de la llamada sería sólo eso
+export const AVISOS_MAX = num(E.AVISOS_MAX, 12);
 //: una llave publicada hace más que esto ya no cuenta como «en juego» (lo mismo que `LLAVE_H` de en_llamada.py)
 const LLAVE_H = 3;
 const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
@@ -142,6 +150,9 @@ class Grabacion {
     this.pistas = new Map();     // id -> PistaOpus
     this.subs = new Map();       // id -> AudioReceiveStream
     this.quien = new Map();      // id -> { nombre, bot }
+    this.medidores = new Map();  // id -> MedidorVoz (sólo personas: la música de un bot no recibe avisos)
+    this.avisos = 0;
+    this.midiendo = false;
     this.vacia = null;           // desde cuándo hay menos de SALIR_CON
     this.cerrando = false;
   }
@@ -158,6 +169,8 @@ class Grabacion {
     this.t0 = performance.now();
     this.inicio = new Date();
     this.con.receiver.speaking.on('start', (id) => this.escuchar(id));
+    this.reloj = setInterval(() => this.medirVoces().catch((e) => anotar('⚠️ medir:', String(e.message || e).slice(0, 100))),
+      VENTANA_S * 1000);
     this.con.on(VoiceConnectionStatus.Disconnected, async () => {
       try {
         await Promise.race([entersState(this.con, VoiceConnectionStatus.Signalling, 5000),
@@ -179,14 +192,42 @@ class Grabacion {
       pista = new PistaOpus(path.join(this.dir, id + '.ogg'));
       this.pistas.set(id, pista);
     }
+    if (!this.quien.get(id).bot && !this.medidores.has(id)) this.medidores.set(id, new MedidorVoz(id));
+    const medidor = this.medidores.get(id);
     const st = this.con.receiver.subscribe(id, { end: { behavior: EndBehaviorType.Manual } });
     this.subs.set(id, st);
     st.on('data', (p) => {
-      if (!this.cerrando) pista.agregar(p, this.ms());
+      if (this.cerrando) return;
+      const ms = this.ms();
+      pista.agregar(p, ms);
+      medidor?.agregar(p, ms);
     });
     // un error de descifrado corta el flujo: se suelta y el próximo «empezó a hablar» lo vuelve a abrir
     st.once('error', (e) => { anotar('⚠️ una voz se cortó:', String(e.message || e).slice(0, 100)); this.subs.delete(id); });
     st.once('close', () => { if (this.subs.get(id) === st) this.subs.delete(id); });
+  }
+
+  /** Cada `VENTANA_S`: cómo se escucha cada uno, y el aviso a quien se escucha mal hace 20 s. De a uno: es ffmpeg. */
+  async medirVoces() {
+    if (this.cerrando || this.midiendo) return;
+    this.midiendo = true;
+    try {
+      for (const [id, m] of this.medidores) {
+        if (this.cerrando) break;
+        const r = await m.ventana(this.dir);
+        if (!r.avisar) continue;
+        anotar(`🩺 a alguien ${NOMBRE_PROBLEMA[r.problema]} (aviso ${this.avisos + 1})`);
+        if (this.avisos >= AVISOS_MAX) continue;
+        this.avisos++;
+        try {
+          await this.canal.send({ content: TEXTOS[r.problema](id), allowedMentions: { users: [id] } });
+        } catch (e) {
+          anotar('⚠️ no pude avisar en el chat de la llamada:', String(e.message || e).slice(0, 100));
+        }
+      }
+    } finally {
+      this.midiendo = false;
+    }
   }
 
   /** Cada vuelta: ¿sigue habiendo gente? */
@@ -206,6 +247,7 @@ class Grabacion {
     this.cerrando = true;
     const fin = this.ms();
     anotar(`⏹️ termina (${razon}) a los ${largo(fin / 1000)}`);
+    clearInterval(this.reloj);
     for (const st of this.subs.values()) st.destroy();
     try { this.con.destroy(); } catch (e) { /* ya estaba cerrada */ }
     const voces = [];
@@ -223,6 +265,23 @@ class Grabacion {
     grabando.delete(this.guild.id);
   }
 
+  /** 🩺 Cómo se escuchó cada uno: el conteo por color y, de los que no dieron 🟢, quién y por qué. */
+  informe(gente) {
+    const filas = gente.map((id) => ({ id, r: this.medidores.get(id)?.resumen() })).filter((x) => x.r && x.r.color !== '⚪');
+    if (!filas.length) return '';
+    const n = (c) => filas.filter((x) => x.r.color === c).length;
+    const por = (r) => ({
+      corta: `se corta (${Math.round(r.perdida * 100)} % perdido)`,
+      satura: `satura (${r.db?.toFixed(0)} dB)`,
+      bajo: `bajito (${r.db?.toFixed(0)} dB)`,
+      telefono: `calidad de teléfono (${Math.round(r.angosta * 100)} %)`,
+    })[r.peor];
+    const malos = filas.filter((x) => x.r.peor).sort((a, b) => (a.r.color === '🔴' ? -1 : 1) - (b.r.color === '🔴' ? -1 : 1));
+    return `🩺 Cómo se escuchó: 🟢 ${n('🟢')} · 🟡 ${n('🟡')} · 🔴 ${n('🔴')}`
+      + malos.slice(0, 12).map((x) => `\n${x.r.color} ${this.quien.get(x.id)?.nombre || x.id} — ${por(x.r)}`).join('')
+      + (malos.length > 12 ? `\n… y ${malos.length - 12} más` : '');
+  }
+
   async entregar(voces, seg, razon) {
     const canal = await this.client.channels.fetch(ENTREGA);
     const gente = voces.filter((id) => !this.quien.get(id)?.bot);
@@ -237,9 +296,17 @@ class Grabacion {
     }
     const t = performance.now();
     const mezcla = path.join(this.dir, 'mezcla.ogg');
-    await mezclar(voces.map((id) => this.pistas.get(id).ruta), mezcla);
+    // cada voz al mismo volumen (mezcla.js): se mide de a una, y la música de los bots queda debajo
+    const cada = [];
+    for (const id of voces) {
+      const musica = !!this.quien.get(id)?.bot;
+      cada.push({ db: ganancia(await sonoridad(this.pistas.get(id).ruta), musica), musica });
+    }
+    await mezclar(voces.map((id) => this.pistas.get(id).ruta), mezcla, cada);
     const mb = fs.statSync(mezcla).size / 1e6;
-    anotar(`🎚️ mezcla: ${voces.length} pistas, ${mb.toFixed(1)} MB, ${((performance.now() - t) / 1000).toFixed(0)} s`);
+    anotar(`🎚️ mezcla: ${voces.length} pistas, ${mb.toFixed(1)} MB, ${((performance.now() - t) / 1000).toFixed(0)} s`
+      + ` · ganancias ${cada.map((c) => (c.db > 0 ? '+' : '') + c.db).join(' ')}`);
+    const informe = this.informe(gente);
     let tope = topeDe(this.guild?.id === canal.guildId ? this.guild : canal.guild);
     for (let intento = 0; intento < 3; intento++) {
       const partes = await partir(mezcla, tope);
@@ -248,8 +315,9 @@ class Grabacion {
           const nombre = `grabacion-${this.inicio.toISOString().slice(0, 10)}${partes.length > 1 ? '-parte' + (i + 1) : ''}.ogg`;
           await canal.send({
             content: i === 0
-              ? cab + `\n${nombres.slice(0, 40).join(', ')}${nombres.length > 40 ? '…' : ''}`
-                + (partes.length > 1 ? `\nParte 1 de ${partes.length} (${largo(duracion(partes[0]))})` : '')
+              ? (cab + `\n${nombres.slice(0, 40).join(', ')}${nombres.length > 40 ? '…' : ''}`
+                + (informe ? '\n' + informe : '')
+                + (partes.length > 1 ? `\nParte 1 de ${partes.length} (${largo(duracion(partes[0]))})` : '')).slice(0, 1990)
               : `Parte ${i + 1} de ${partes.length}`,
             files: [{ attachment: partes[i], name: nombre }],
             allowedMentions: { parse: [] },

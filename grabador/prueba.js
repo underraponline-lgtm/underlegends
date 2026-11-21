@@ -14,9 +14,10 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { PistaOpus, muestrasDe, crcOgg, SILENCIO } from './ogg.js';
-import { mezclar, partir } from './mezcla.js';
+import { mezclar, partir, sonoridad, ganancia, VOZ_LUFS } from './mezcla.js';
+import { MedidorVoz, bandaDe } from './calidad.js';
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'grabador-prueba-'));
 let mal = 0;
@@ -53,6 +54,27 @@ function tono(hz, seg) {
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', `sine=frequency=${hz}:duration=${seg}:sample_rate=48000`,
     '-ac', '2', '-c:a', 'libopus', '-b:a', '64k', '-frame_duration', '20', f]);
   return paquetesDe(f);
+}
+
+/** Seis segundos de «voz» de prueba con un filtro y unos ajustes del codificador: los casos de calidad.js. */
+function voz(nombre, filtro = 'anull', cod = ['-b:a', '64k']) {
+  const f = path.join(dir, nombre + '.ogg');
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=frequency=300:duration=6:sample_rate=48000',
+    '-af', filtro, '-ac', '2', '-c:a', 'libopus', ...cod, '-frame_duration', '20', f]);
+  return paquetesDe(f).slice(1);
+}
+
+/** Lo que mide calidad.js de una ventana con esos paquetes; `cae(i)` simula los que la red perdió. */
+async function medir(paquetes, cae = () => false, m = new MedidorVoz('x')) {
+  paquetes.forEach((p, i) => { if (!cae(i)) m.agregar(p, i * 20); });
+  return m.ventana(dir);
+}
+
+/** LUFS de un tramo de un audio. */
+function lufsEntre(ruta, a, b) {
+  const t = path.join(dir, `tramo-${a}.ogg`);
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(a), '-to', String(b), '-i', ruta, '-c', 'copy', t]);
+  return sonoridad(t);
 }
 
 /** ¿Suena algo alrededor de cada instante de `ts` (±50 ms, RMS por encima de -40 dB)? Lejos de los bordes a
@@ -110,6 +132,55 @@ ok(suena(sale, T) === esperoM, 'en la mezcla suenan las dos, cada una en su luga
 const partes = await partir(sale, Math.ceil(fs.statSync(sale).size / 2.5));
 ok(partes.length >= 2, 'una mezcla más grande que el tope sale en partes (' + partes.length + ')');
 ok(Math.abs(partes.reduce((s, p) => s + dura(p), 0) - dura(sale)) < 0.15, 'las partes suman lo que la mezcla');
+
+// ── 🩺 cómo se escucha cada voz (calidad.js) ──
+console.log('🩺 cómo se escucha cada voz');
+ok(bandaDe(Buffer.from([0x00])) === 'NB' && bandaDe(Buffer.from([0x40])) === 'WB' && bandaDe(Buffer.from([0xe0])) === 'FB'
+  && bandaDe(SILENCIO) === 'FB', 'la banda sale del primer byte del paquete');
+const normal = voz('normal');
+const rN = await medir(normal);
+ok(rN.problema === null, `una voz normal no tiene problema (${rN.medida.db.toFixed(1)} dB, ${(rN.medida.perdida * 100).toFixed(1)} % perdido)`);
+const rB = await medir(voz('bajo', 'volume=-18dB'));
+ok(rB.problema === 'bajo', `una voz 18 dB más baja es «bajito» (${rB.medida.db?.toFixed(1)} dB)`);
+const rS = await medir(voz('satura', 'volume=24dB,aformat=sample_fmts=s16'));
+ok(rS.problema === 'satura', `una voz que pega en el tope «satura» (${rS.medida.db?.toFixed(1)} dB)`);
+const rT = await medir(voz('telefono', 'anull', ['-b:a', '12k', '-cutoff', '4000']));
+ok(rT.problema === 'telefono', `una voz en banda angosta es «calidad de teléfono» (${(rT.medida.angosta * 100).toFixed(0)} % angosta)`);
+const rC = await medir(normal, (i) => i % 8 === 3);
+ok(rC.problema === 'corta' && Math.abs(rC.medida.perdida - 0.125) < 0.02,
+  `perder 1 de cada 8 paquetes «se corta» (${(rC.medida.perdida * 100).toFixed(1)} %)`);
+// el corte de red de la prueba de arriba: diez paquetes atrasados que llegan juntos NO son pérdida
+const mE = new MedidorVoz('e');
+normal.forEach((p, i) => mE.agregar(p, i >= 100 && i < 110 ? 2200 : i * 20));
+const rE = await mE.ventana(dir);
+ok(rE.medida.perdida < 0.01, `un corte de red que después entrega todo no cuenta como pérdida (${(rE.medida.perdida * 100).toFixed(1)} %)`);
+// el aviso: recién a la segunda ventana seguida, y una sola vez
+const mA = new MedidorVoz('a');
+const bajo = voz('bajo2', 'volume=-18dB');
+const avisos = [];
+for (let k = 0; k < 3; k++) avisos.push((await medir(bajo, () => false, mA)).avisar);
+ok(avisos.join() === 'false,true,false', 'avisa a los 20 s del mismo problema, y una sola vez (' + avisos.join() + ')');
+ok(mA.resumen().color === '🟡' && mA.resumen().peor === 'bajo', 'el informe lo da 🟡 bajito');
+
+// ── 🎛️ cada voz al mismo volumen ──
+console.log('🎛️ cada voz al mismo volumen');
+const pf = new PistaOpus(path.join(dir, 'fuerte.ogg'), 5), pd = new PistaOpus(path.join(dir, 'floja.ogg'), 6);
+voz('fuerte2', 'volume=6dB').forEach((p, i) => pf.agregar(p, i * 20));
+voz('floja2', 'volume=-12dB').forEach((p, i) => pd.agregar(p, 7000 + i * 20));
+pf.silencioHasta(13000); pd.silencioHasta(13000);
+pf.cerrar(); pd.cerrar();
+const lf = await sonoridad(pf.ruta), ld = await sonoridad(pd.ruta);
+const cada = [{ db: ganancia(lf) }, { db: ganancia(ld) }];
+const sale2 = path.join(dir, 'pareja.ogg');
+await mezclar([pf.ruta, pd.ruta], sale2, cada);
+const a1 = await lufsEntre(sale2, 1, 5), a2 = await lufsEntre(sale2, 8, 12);
+ok(Math.abs(lf - ld) > 15, `las dos voces entran muy distintas (${lf.toFixed(1)} y ${ld.toFixed(1)} LUFS)`);
+ok(Math.abs(a1 - a2) < 2 && Math.abs(a1 - VOZ_LUFS) < 3,
+  `en la mezcla quedan parejas, cerca de ${VOZ_LUFS} (${a1.toFixed(1)} y ${a2.toFixed(1)} LUFS)`);
+const pico = Number(spawnSync('ffmpeg', ['-nostats', '-i', sale2, '-af',
+  'astats=measure_overall=Peak_level:measure_perchannel=none', '-f', 'null', '-']).stderr.toString()
+  .match(/Peak level dB: (-?[0-9.]+)/)?.[1] ?? 99);
+ok(pico < 0, `nada pasa del tope (pico ${pico.toFixed(1)} dB)`);
 
 fs.rmSync(dir, { recursive: true, force: true });
 console.log(mal ? `\n❌ ${mal} mal` : '\n✅ todo bien');
