@@ -28,3 +28,9 @@
 # 🔎 el texto para las IA (21/11/2026, `llms.txt`): Pages sirve los .txt sin charset y el castellano llegaba roto
 /llms.txt
   Content-Type: text/plain; charset=utf-8
+
+# 🎧 los beats de las historias (21/11/2026): ~520 KB cada uno, y Pages los servía con `max-age=0`, así que cada visita
+# volvía a preguntar por cada uno antes de que la historia sonara. Una semana: un recorte rehecho con el MISMO nombre tarda
+# hasta 7 días en llegarle a quien ya lo tenía (los nombres son beatmaker-título: rehacerlo es raro)
+/beats/*
+  Cache-Control: public, max-age=604800

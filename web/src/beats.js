@@ -25,6 +25,16 @@
 //   · mantener apretada la historia pausa el beat (como la historia); la pestaña oculta, también
 //   · lo que suena se dice en la historia, con el link a su video (`alCambiar()`): el crédito es parte del permiso
 //   · sin recortes de un estilo, o si el archivo no baja, suena el sintetizado de arriba: nunca se queda mudo por eso
+//
+// ⏳ TANDA 3, LA HISTORIA ESPERA A SU CANCIÓN (21/11/2026). Dlx: *«las historias cargan algunas y está a medias de terminar y la
+// canción no ha empezado»*. Cada recorte son ~520 KB y se decodifica entero antes de sonar: desde una PC baja en 0,7 s, en un
+// celular varios segundos, y el reloj de la historia no lo esperaba. Ahora:
+//   · `esperando()` dice si la historia pidió un beat que todavía no suena, y el visor no corre el reloj mientras tanto (con
+//     un tope: ver `ESPERA_BEAT` en abajo.jsx). La barra y la canción arrancan juntas
+//   · `precargar()` baja el de la historia que sigue (y el del círculo que tocas o tienes debajo del mouse) antes de llegar:
+//     sólo los bytes, que no piden audio encendido. Con «ahorro de datos», no se adelanta nada
+//   · entre una historia con beat y una sin, el audio se queda encendido y callado (`parar()`), y se apaga recién al cerrar
+//     el visor (`apagar()`): volver a encenderlo sin un toque es lo que el iPhone puede no dejar
 
 import LISTA from './beats_lista.json';
 
@@ -40,6 +50,10 @@ let paso = 0;
 let proximo = 0;
 //: el estilo que pidió la historia que se ve ('' = nada): el de verdad o el sintetizado
 let quiere = '';
+//: el estilo que se oye de verdad ('' = nada todavía): lo que `esperando()` compara con `quiere`
+let sonando = '';
+//: el visor está abierto: el audio se queda encendido aunque la historia de ahora no traiga beat (lo apaga `apagar()`)
+let encendido = false;
 
 export const mudo = () => { try { return localStorage.getItem(MUDO) === '0'; } catch (e) { return false; } };
 export function ponerMudo(v) {
@@ -52,6 +66,8 @@ function abrir() {
   const AC = typeof window !== 'undefined' && (window.AudioContext || window.webkitAudioContext);
   if (!AC) return null;
   ctx = new AC();
+  // 🍏 el iPhone deja sonar un contexto recién después de que algo suena adentro del toque: una muestra en silencio
+  try { const s = ctx.createBufferSource(); s.buffer = ctx.createBuffer(1, 1, 22050); s.connect(ctx.destination); s.start(0); } catch (e) { /* sin audio */ }
   comp = ctx.createDynamicsCompressor();
   comp.threshold.value = -14;
   comp.ratio.value = 4;
@@ -66,7 +82,7 @@ function abrir() {
   document.addEventListener('visibilitychange', () => {
     if (!ctx) return;
     if (document.hidden) ctx.suspend().catch(() => {});
-    else if (quiere) ctx.resume().catch(() => {});
+    else if (quiere || encendido) ctx.resume().catch(() => {});
   });
   return ctx;
 }
@@ -260,6 +276,7 @@ function sintesis(estilo) {
   master.gain.linearRampToValueAtTime(actual && actual !== estilo ? 0.0001 : master.gain.value, t + 0.12);
   master.gain.linearRampToValueAtTime(VOL, t + 0.6);
   actual = estilo;
+  sonando = estilo;
   paso = 0;
   proximo = t + 0.14;
   if (!reloj) reloj = setInterval(programar, 25);
@@ -303,15 +320,43 @@ const lista = (estilo) => ((LISTA && LISTA[estilo]) || []);
 const hashS = (s) => { let h = 7; for (const c of String(s || '')) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 export const hayReales = (estilo) => lista(estilo).length > 0;
 
+// los bytes, aparte de lo decodificado: bajarlos no pide audio encendido, así que se pueden adelantar (`precargar()`)
+const crudos = new Map();
+function bajar(a) {
+  if (!crudos.has(a)) {
+    crudos.set(a, fetch(RAIZ + a).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.arrayBuffer(); }));
+    // ocho como mucho (son ~520 KB cada uno)
+    if (crudos.size > 8) crudos.delete(crudos.keys().next().value);
+    crudos.get(a).catch(() => crudos.delete(a));
+  }
+  return crudos.get(a);
+}
+
 function cargar(a) {
   if (!bufs.has(a)) {
-    bufs.set(a, fetch(RAIZ + a).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.arrayBuffer(); })
-      .then((ab) => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej))));
+    // una copia: decodificar se queda con el ArrayBuffer, y el mismo recorte puede tener que decodificarse otra vez
+    bufs.set(a, bajar(a).then((ab) => new Promise((res, rej) => ctx.decodeAudioData(ab.slice(0), res, rej))));
     // como mucho cuatro en memoria (uno decodificado son ~15 MB)
     if (bufs.size > 4) bufs.delete(bufs.keys().next().value);
     bufs.get(a).catch(() => bufs.delete(a));
   }
   return bufs.get(a);
+}
+
+/** ⏭️ Baja de antes el recorte que va a sonar en una historia de ese estilo y ese círculo (el mismo que elegiría `tocar()`).
+ * Silenciado, sin recortes o con «ahorro de datos», nada. */
+export function precargar(estilo, semilla) {
+  const xs = lista(estilo);
+  if (!xs.length || mudo()) return;
+  try { if (navigator.connection && navigator.connection.saveData) return; } catch (e) { /* sin el dato */ }
+  bajar(xs[hashS(semilla) % xs.length].a).catch(() => {});
+}
+
+/** ⏳ ¿La historia pidió un beat que todavía no se oye? (bajando, decodificando o con el audio sin encender). El visor
+ * no corre el reloj mientras tanto, con un tope. Silenciado o sin beat, nunca espera. */
+export function esperando() {
+  if (!quiere || mudo()) return false;
+  return sonando !== quiere || !ctx || ctx.state !== 'running';
 }
 
 function soltarReal(cruce) {
@@ -346,6 +391,7 @@ async function ponerReal(estilo, i) {
   g.gain.linearRampToValueAtTime(VOL_REAL, t + CRUCE);
   src.connect(g).connect(ctx.destination);
   src.start(t);
+  sonando = estilo;
   real = { estilo, i, src, g, fin: t + buf.duration };
   avisar({ t: p.t, b: p.b, u: p.u });
   // el que sigue de este estilo, bajando de antes
@@ -369,6 +415,7 @@ export function tocar(estilo, semilla) {
   if (!estilo || !ESTILOS[estilo] || mudo()) { parar(); return; }
   if (!abrir()) return;
   quiere = estilo;
+  encendido = true;
   if (ctx.state === 'suspended' && !document.hidden) ctx.resume().catch(() => {});
   const xs = lista(estilo);
   if (!xs.length) { soltarReal(CRUCE); avisar(null); sintesis(estilo); return; }
@@ -377,13 +424,20 @@ export function tocar(estilo, semilla) {
   ponerReal(estilo, hashS(semilla) % xs.length);
 }
 
-/** Baja el volumen y para. */
+/** Baja el volumen y para, con el audio encendido: la historia que sigue puede traer otro beat (ver la tanda 3, arriba). */
 export function parar() {
   quiere = '';
+  sonando = '';
   turno++;
   if (!ctx) return;
   soltarReal(0.4);
   pararSintesis();
   avisar(null);
+}
+
+/** Al cerrar el visor: para y apaga el audio, que no gaste nada con la página quieta. */
+export function apagar() {
+  parar();
+  encendido = false;
   setTimeout(() => { if (!quiere && ctx) ctx.suspend().catch(() => {}); }, 600);
 }

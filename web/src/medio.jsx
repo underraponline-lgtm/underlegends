@@ -2,7 +2,7 @@
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, ksDe, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
-import { autorDe, delHilo, pjDe, useComentarios } from './comentarios.jsx';
+import { autorDe, comentarAca, delHilo, pjDe, useComentarios } from './comentarios.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Algunos, Alguien, Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
@@ -234,7 +234,9 @@ export const irPub = (e, id) => {
 };
 
 // `sinCm`: sin el botón de comentar (la grande lo lleva en su fila de botones); sin reacciones tampoco, no dibuja nada
-export function LuSocial({ liga, it, A, hilo, P, sinCm = false }) {
+// 💬 `aca` (21/11/2026): en el Inicio, el globito abre la hoja de comentarios encima de la página (`comentarAca`) en vez de
+// ir a Publicaciones. En Publicaciones no va: ahí la hoja ya es la de la página
+export function LuSocial({ liga, it, A, hilo, P, sinCm = false, aca = false }) {
   const [abierto, setAbierto] = useState(false);
   const caja = useRef(null);
   useEffect(() => {
@@ -276,7 +278,7 @@ export function LuSocial({ liga, it, A, hilo, P, sinCm = false }) {
           <Carita />{reac.length ? null : <span className="lu-car-t">Reaccionar</span>}
         </button>
       ) : null}
-      {sinCm ? null : <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id)} onClick={(e) => irPub(e, id)} aria-label={nc ? nc + (nc === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
+      {sinCm ? null : <a className="lu-cm" href={'#/publicaciones/' + encodeURIComponent(id)} onClick={aca ? comentarAca(it) : (e) => irPub(e, id)} aria-label={nc ? nc + (nc === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
         <Ico n="globo" t={15} />{nc ? <em>{num(nc)}</em> : null}</a>}
       {err && err.error === 'reaccion' ? <small className="lu-err">Esa reacción es del Pase premium</small> : null}
       {abierto ? (
@@ -307,13 +309,13 @@ export function LuSocial({ liga, it, A, hilo, P, sinCm = false }) {
 // 💬 EL ÚLTIMO COMENTARIO, A LA VISTA (Dlx, 13/11/2026: «que ese pop up de los comentarios sean mejores y quizás más
 // grandes»). Antes flotaba al pasar el mouse y no se leía; ahora va debajo de la novedad, con la cara de quien escribió.
 // En la grande, los dos últimos. ⚠️ El simulado lleva su etiqueta: eso lo decide el permiso en el ciclo, nunca acá
-export function LuNube({ liga, it, hilo, n = 1 }) {
+export function LuNube({ liga, it, hilo, n = 1, aca = false }) {
   // 💎 el aro dorado en la cara de quien tiene el Pase de rapero premium
   const pub = usePases();
   if (!hilo.length) return null;
   const cs = hilo.slice(-n);
   return (
-    <a className={'lu-nube' + (n > 1 ? ' grande' : '')} href={'#/publicaciones/' + encodeURIComponent(it.id || '')} onClick={(e) => irPub(e, it.id)}>
+    <a className={'lu-nube' + (n > 1 ? ' grande' : '')} href={'#/publicaciones/' + encodeURIComponent(it.id || '')} onClick={aca ? comentarAca(it) : (e) => irPub(e, it.id)}>
       {cs.map((c) => {
         const pj = c.et === 'l' ? pjDe(c.k, liga) : null;
         return (
@@ -414,8 +416,8 @@ export function Noticias({ liga, raiz, prueba = '' }) {
             <span className="lu-cat">{x[0]}</span>
             <b>{x[1]}</b>
             {sub ? <small>{sub}</small> : null}
-            <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} />
-            <LuNube liga={liga} it={it} hilo={hilo} />
+            <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} aca />
+            <LuNube liga={liga} it={it} hilo={hilo} aca />
           </span>
           <span className="lu-r-der">
             <span className="nt-hora">{luHace(liga, it.t)}</span>
@@ -463,12 +465,12 @@ export function Noticias({ liga, raiz, prueba = '' }) {
             }}>Su perfil</a> : null}
             {/* 💬 comentar, en la fila de los botones (Dlx, 17/11/2026: «ese comentario muévelo a otra parte»): solo, abajo,
                 ocupaba una fila entera para un botón chico */}
-            {feat.id ? <a className="lu-btn lu-btn-cm" href={'#/publicaciones/' + encodeURIComponent(feat.id)} onClick={(e) => irPub(e, feat.id)}
+            {feat.id ? <a className="lu-btn lu-btn-cm" href={'#/publicaciones/' + encodeURIComponent(feat.id)} onClick={comentarAca(feat)}
               aria-label={hilo.length ? hilo.length + (hilo.length === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
               <Ico n="globo" t={14} />{hilo.length ? num(hilo.length) : 'Comentar'}</a> : null}
           </span>
-          <LuSocial liga={liga} it={feat} A={A} hilo={hilo} P={P} sinCm />
-          {hilo.length >= 2 ? <ComentariosFlotantes liga={liga} it={feat} hilo={hilo} cls="cfl-feat" /> : <LuNube liga={liga} it={feat} hilo={hilo} n={2} />}
+          <LuSocial liga={liga} it={feat} A={A} hilo={hilo} P={P} sinCm aca />
+          {hilo.length >= 2 ? <ComentariosFlotantes liga={liga} it={feat} hilo={hilo} cls="cfl-feat" onAbrir={() => comentarAca(feat)()} /> : <LuNube liga={liga} it={feat} hilo={hilo} n={2} aca />}
         </span>
       </div>
     );

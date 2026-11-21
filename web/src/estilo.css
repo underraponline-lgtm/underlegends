@@ -769,6 +769,11 @@ h1,h2,h3,p{margin:0}
 @keyframes hv-eq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
 @media (prefers-reduced-motion: reduce){.hv-eq b{animation:none;transform:scaleY(.7)}}
 .calma .hv-eq b{animation:none;transform:scaleY(.7)}
+/* ⏳ mientras el beat baja (21/11/2026): las tres barras quietas y apagadas, latiendo juntas; la historia espera */
+.hv-beat.carga{color:rgba(246,246,246,.82)}
+.hv-beat.carga .hv-eq b{background:rgba(246,246,246,.55);animation:hv-carga 1s ease-in-out infinite;animation-delay:0s;transform:scaleY(.45)}
+@keyframes hv-carga{0%,100%{opacity:.35}50%{opacity:1}}
+@media (prefers-reduced-motion: reduce){.hv-beat.carga .hv-eq b{animation:none;opacity:.7}}
 .hv-zona.izq{left:0;width:34%}
 .hv-zona.der{right:0;width:66%}
 .st{display:grid;justify-items:center;gap:12px;max-width:340px}

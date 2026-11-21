@@ -891,7 +891,8 @@ function Minis({ liga, todos, setFil, desliza }) {
 }
 
 // ── la hoja de una publicación: lo suyo arriba y el hilo entero (`Hilo` se abre solo con `__pubFoco`) ──
-function Hoja({ liga, it, A, P }) {
+// `onCerrar`: abierta desde afuera de esta página (`HojaComentarios`, abajo), cerrar no toca la dirección
+function Hoja({ liga, it, A, P, onCerrar }) {
   const pub = usePases();
   const ref = useRef(null);
   useEffect(() => {
@@ -922,7 +923,7 @@ function Hoja({ liga, it, A, P }) {
     } catch (e) { location.hash = '#/publicaciones'; }
   };
   return (
-    <dialog ref={ref} className="pn-pop pw-hoja" aria-label={c.cat} onClose={alCerrar}
+    <dialog ref={ref} className="pn-pop pw-hoja" aria-label={c.cat} onClose={onCerrar || alCerrar}
       onClick={(e) => { if (e.target === ref.current) cerrar(); }}>
       <PopCab ico="globo" t={c.cat} sub={hace(liga, it.t)} cerrar={cerrar} />
       <div className="pw-hoja-in">
@@ -931,12 +932,61 @@ function Hoja({ liga, it, A, P }) {
           <div className="pw-tx"><Autor liga={liga} it={it} pub={pub} cara={false} /><p className="pw-t">{c.txt}</p>{c.det ? <small className="pw-det">{c.det}</small> : null}
             {c.media ? <div className="pw-media">{c.vis}</div> : null}
             <div className="pw-acc">{LOGROS[it.tipo] ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div>
-            {it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} /> : null}</div>
+            {/* abierta desde afuera, sin el globito: el hilo ya está abierto justo debajo */}
+            {it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} sinCm={!!onCerrar} /> : null}</div>
         </div>
         <Hilo liga={liga} it={it} />
       </div>
     </dialog>
   );
+}
+
+/**
+ * 💬 LA MISMA HOJA, ENCIMA DEL INICIO (21/11/2026). Dlx: «cada vez q le doy a comentar una publicación en inicio o q puedo
+ * hacerlo desde ahí q no me lleve directamente a publicaciones». Tocar «Comentar», el globito o la nube de un comentario
+ * en el Inicio abría esta página. Ahora abre esta hoja —la publicación arriba, el hilo entero ya abierto y la caja para
+ * escribir— sin cambiar de página: la pide `abrirComentarios()` (comentarios.jsx) y la monta App.jsx. Este pedazo, con su
+ * CSS, baja recién al primer toque. «Atrás» en el celular la cierra, como el visor de historias; ir a otra página desde
+ * adentro (un perfil, la carta) también
+ */
+export function HojaComentarios({ liga, it, onCerrar }) {
+  const A = useAplausos();
+  useComentarios();
+  const P = usePase(typeof window !== 'undefined' && !!window.DC);
+  const pub = usePases();
+  // el hilo se abre solo con `__pubFoco` (ver `Hilo`): se pone antes de dibujarlo
+  if (typeof window !== 'undefined') window.__pubFoco = it.id;
+  const cerrarR = useRef(onCerrar);
+  cerrarR.current = onCerrar;
+  const ok = !!contenido(liga, it, pub);
+  useEffect(() => {
+    let paso = false;
+    try { history.pushState(Object.assign({}, history.state || {}, { lgCm: 1 }), ''); paso = true; } catch (e) { /* sin historial */ }
+    const pop = () => { if (paso) { paso = false; cerrarR.current(); } };
+    const dir = () => cerrarR.current();
+    window.addEventListener('popstate', pop);
+    window.addEventListener('lg:dir', dir);
+    return () => {
+      window.removeEventListener('popstate', pop);
+      window.removeEventListener('lg:dir', dir);
+      if (window.__pubFoco === it.id) window.__pubFoco = '';
+      // cerrada con la X, Escape o tocando afuera: el paso que se sumó al abrir se saca (si se fue a otra página, no)
+      if (paso && history.state && history.state.lgCm) { try { history.back(); } catch (e) { /* queda un paso de más */ } }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // una que esta hoja no sabe dibujar: a su lugar en Publicaciones, como antes
+  useEffect(() => {
+    if (ok) return;
+    cerrarR.current();
+    location.hash = '#/publicaciones/' + encodeURIComponent(it.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ok]);
+  if (!ok) return null;
+  // 🎨 adentro de un `.pw`, como en su página: ahí viven sus colores (va en negro) y tres reglas suyas. Afuera, el nombre del
+  // autor salía casi negro sobre el fondo oscuro y «Felicitar» en blanco (medido: rgb(3,3,4) contra rgb(246,246,246) en
+  // Publicaciones). `display: contents`: hereda sin dibujar una caja (la hoja va en la capa de arriba igual)
+  return <div className="pw" style={{ display: 'contents' }}><Hoja liga={liga} it={it} A={A} P={P} onCerrar={() => cerrarR.current()} /></div>;
 }
 
 export function Publicaciones({ liga, enc, foco = '' }) {

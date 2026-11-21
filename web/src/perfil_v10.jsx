@@ -523,8 +523,9 @@ function FilaLU({ liga, k, f, it, A, P }) {
           <span className="lu-cat">{x[0]}</span>
           <b>{x[1]}</b>
           {sub ? <small>{sub}</small> : null}
-          <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} />
-          <LuNube liga={liga} it={it} hilo={hilo} />
+          {/* 💬 comentar abre la hoja encima del perfil, sin ir a Publicaciones (21/11/2026, ver `HojaComentarios`) */}
+          <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} aca />
+          <LuNube liga={liga} it={it} hilo={hilo} aca />
         </span>
         <span className="lu-r-der"><span className="nt-hora">{c ? c.charAt(0).toUpperCase() + c.slice(1) : ''}</span>{der}</span>
       </div>

@@ -153,6 +153,8 @@ const PrimerosPasos = pag(() => import('./tutorial.jsx').then((m) => ({ default:
 const Ranking = pag(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
 const Eventos = pag(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
 const Publicaciones = pag(() => import('./publicaciones2.jsx').then((m) => ({ default: m.Publicaciones })));
+// 💬 la hoja de comentarios de una publicación, encima de cualquier página (21/11/2026): ver `HojaComentarios`
+const HojaComentarios = pag(() => import('./publicaciones2.jsx').then((m) => ({ default: m.HojaComentarios })));
 const Socios = pag(() => import('./socios2.jsx').then((m) => ({ default: m.Socios })));
 // 🏟️ «Suma tu servidor» (19/11/2026): la página para el dueño de un servidor, dentro de Socios (`#/socios/sumar`)
 const SumaTuServidor = pag(() => import('./sumar2.jsx').then((m) => ({ default: m.SumaTuServidor })));
@@ -427,6 +429,13 @@ export default function App() {
   const [temaSv, setTemaSv] = useState(() => leerTemas().sv);
   const [menu, setMenu] = useState(false);
   const [historia, setHistoria] = useState(null);
+  // 💬 la publicación cuya hoja de comentarios está abierta encima de la página (`abrirComentarios()` de comentarios.jsx)
+  const [hojaCm, setHojaCm] = useState(null);
+  useEffect(() => {
+    const f = (e) => setHojaCm((e && e.detail) || null);
+    window.addEventListener('lg:hoja-cm', f);
+    return () => window.removeEventListener('lg:hoja-cm', f);
+  }, []);
   // 🃏 la tarjeta abierta (la ventana nueva): la pide cualquier parte con `accion.carta()`, que avisa `lg:carta`
   const [carta, setCarta] = useState(null);
   useEffect(() => {
@@ -1024,6 +1033,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       {pagina && !sv ? <Aislada reinicio={reinicio} n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
       <Aislada reinicio={reinicio} n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} pagina={paginaMenu} /></Aislada>
       {historia !== null ? <Aislada reinicio={reinicio} n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={() => { setDesde(''); cerrarHistoria(); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
+      {hojaCm ? <Aislada reinicio={reinicio} key={'hcm' + hojaCm.id} n="HojaComentarios"><Suspense fallback={null}><HojaComentarios liga={liga} it={hojaCm} onCerrar={() => setHojaCm(null)} /></Suspense></Aislada> : null}
       {propias && historia === null ? <Aislada reinicio={reinicio} n="VisorPerfil"><Visor liga={liga} grupos={[propias]} abierto={0} onCerrar={() => { setDesde(''); setPropias(null); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
       <Aislada reinicio={reinicio} n="Video"><VentanaVideo /></Aislada>
       <Aislada reinicio={reinicio} n="AvisoPromo"><AvisoPromo /></Aislada>

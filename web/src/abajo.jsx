@@ -1121,6 +1121,44 @@ function HvSocial({ liga, it, A, P, onFoco, onIr }) {
   );
 }
 
+// ⏳ cuánto espera una historia a que su beat suene antes de arrancar igual (21/11/2026): con 3G un recorte puede tardar más,
+// y una historia quieta para siempre es peor que una que empieza callada; el beat entra cuando llega, con su cruce
+const ESPERA_BEAT = 4000;
+
+/**
+ * ⏱️ CUÁNTO DURA UNA HISTORIA, SEGÚN LO QUE ES (21/11/2026). Dlx: «cambia la duración de la historia dependiendo de lo que
+ * sea». Desde el 18/10 se contaban las letras y nada más, y casi todas caían entre 5 y 7 s: medido sobre las 55 de ese día,
+ * la carta sola, el afiche con su texto adentro y la lista de seis caras duraban parecido. Ahora suma lo que hay para leer
+ * y lo que hay para mirar:
+ *   · leer: 1,5 s para ubicarse + 0,22 s por palabra (unas 4,5 por segundo: letra grande, se lee de un vistazo) + 0,35 s
+ *     por renglón de una lista
+ *   · mirar: un afiche (`.st-flyer`, o la imagen de un anuncio) +3 s, porque trae su propio texto; una carta +1,5 s; la
+ *     miniatura de un video +1,5 s; las caras y los logos, +0,6 s la primera y +0,3 cada otra (hasta seis)
+ *   · con beat, 8 s como poco: que la canción se llegue a oír. Las fuertes (`lento`), 12 s, como siempre
+ *   · entre 4,5 y 14 s (4,5 era el piso de antes: con 4, un anuncio corto se iba antes de leerlo)
+ * ⚠️ La primera vuelta, con 0,28 s por palabra y 9 s con beat, subió la media de ~6 a 9,4 s: variaban, pero todas se
+ *   alargaban. Con éstos la media queda cerca de la de antes y lo que cambia es el reparto
+ * Se mide sobre lo dibujado, así una historia nueva entra sola sin tener que darle un número
+ */
+export function duracionHistoria(cu, s) {
+  const st = (cu && cu.querySelector('.st')) || cu;
+  if (!st) return 5000;
+  const palabras = String(st.innerText || st.textContent || '').split(/\s+/).filter(Boolean).length;
+  const filas = st.querySelectorAll('li').length;
+  const afiche = st.querySelector('.st-flyer, img.st-promo');
+  const video = st.querySelector('.st-promo:not(img)');
+  const carta = st.querySelector('.hx-carta');
+  const caras = [...st.querySelectorAll('img')].filter((im) => ![afiche, video, carta].some((x) => x && x.contains(im))).length;
+  let ms = 1500 + palabras * 220 + filas * 350;
+  if (afiche) ms += 3000;
+  if (video) ms += 1500;
+  if (carta) ms += 1500;
+  if (caras) ms += 600 + Math.min(caras - 1, 5) * 300;
+  if (s && s.beat) ms = Math.max(ms, 8000);
+  if (s && s.lento) ms = Math.max(ms, 12000);
+  return Math.round(Math.max(4500, Math.min(14000, ms)));
+}
+
 // ── el visor de historias, como las de Instagram ──────────────────────────────────────────────────
 export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, raiz, desde = '' }) {
   // 🔴 el grupo abierto se sigue por su ID, no por su lugar en la fila: los datos se rehacen cada minuto y, si
@@ -1225,7 +1263,29 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   useEffect(() => { if (idAct) onVisto(idAct); }, [idAct, onVisto]);
   const beat = ((g && g.slides.find((x) => x.id === idAct)) || {}).beat || '';
   useEffect(() => { if (sonido && beat) BEAT.tocar(beat, gid); else BEAT.parar(); }, [beat, sonido, gid]);
-  useEffect(() => () => BEAT.parar(), []);
+  // al cerrar, el audio se apaga (entre historias queda encendido: ver la tanda 3 de beats.js)
+  useEffect(() => () => BEAT.apagar(), []);
+  // ⏳ el reloj lee estos dos sin volver a arrancar: silenciar a mitad de una historia no la vuelve a cero
+  const sonidoR = useRef(sonido);
+  sonidoR.current = sonido;
+  const beatR = useRef(beat);
+  beatR.current = beat;
+  // mientras la historia espera a su beat, el crédito dice que está cargando (sólo cambia al empezar y al terminar)
+  const [cargaB, setCargaB] = useState(false);
+  // ⏭️ el beat de la historia que sigue —en este círculo o en el próximo con algo sin ver—, bajando desde ya
+  useEffect(() => {
+    if (!sonido || !g) return;
+    const k = ids.indexOf(idAct);
+    let s2 = null;
+    let g2 = gid;
+    if (k >= 0 && k < ids.length - 1) s2 = g.slides.find((x) => x.id === ids[k + 1]);
+    else {
+      const j = grupos.findIndex((x, n) => n > gi && pend(x).length);
+      if (j >= 0) { s2 = grupos[j].slides.find((x) => !vistos[x.id]); g2 = grupos[j].id; }
+    }
+    if (s2 && s2.beat) BEAT.precargar(s2.beat, g2);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idAct, sonido]);
   // si su grupo desaparece (el evento en vivo terminó), el visor se cierra en vez de quedar abierto y vacío
   useEffect(() => { if (!hay) onCerrar(); }, [hay, onCerrar]);
   // el foco entra al visor: con el teclado, Escape y las flechas ya andaban, pero el Tab seguía en la página de atrás
@@ -1268,29 +1328,29 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
       imgs.forEach((im) => { im.addEventListener('load', listo, { once: true }); im.addEventListener('error', listo, { once: true }); });
       espera = setTimeout(() => { cargando.current = false; }, 2500);
     }
-    // ⏱️ CUÁNTO DURA, SEGÚN LO QUE MUESTRA (Dlx, 18/10/2026, a las ideas de historias: «todas»): una carta sola, poco;
-    // una lista, más. Se cuenta lo que hay para leer —letras y renglones— y queda entre 4,5 y 12 segundos
-    let dur = 5000;
-    if (cuerpoR.current) {
-      const letras = (cuerpoR.current.textContent || '').length;
-      const filas = cuerpoR.current.querySelectorAll('li').length;
-      dur = Math.max(4500, Math.min(12000, 3500 + letras * 30 + filas * 400));
-    }
-    // 🔥 las fuertes (el doble campeón, la caza, la letra alta) se quedan 12 s, como en el escenario
+    // ⏱️ CUÁNTO DURA, SEGÚN LO QUE ES (18/10/2026 y 21/11/2026): ver `duracionHistoria()`, arriba. Las fuertes (el doble
+    // campeón, la caza, la letra alta) se quedan 12 s, como en el escenario
     const sAct = g.slides.find((x) => x.id === ids[Math.min(si, ids.length - 1)]);
-    if (sAct && sAct.lento) dur = Math.max(dur, 12000);
+    const dur = duracionHistoria(cuerpoR.current, sAct);
+    // (para medirla desde afuera: herramientas y pruebas la leen de acá)
+    if (barras.current) barras.current.dataset.dur = String(dur);
     foco.current = false;
+    // ⏳ y espera a su beat, hasta `ESPERA_BEAT`: la barra y la canción arrancan juntas
+    const t0 = performance.now();
+    let esperabaB = false;
     const tick = (t) => {
+      const esperaB = !!(sonidoR.current && beatR.current) && BEAT.esperando() && t - t0 < ESPERA_BEAT;
+      if (esperaB !== esperabaB) { esperabaB = esperaB; setCargaB(esperaB); }
       // ⏱️ con tope: al volver de otra pestaña o de la pantalla bloqueada, `t - antes` eran minutos y la historia se
       // salteaba de golpe. Y con la pestaña oculta, quieta
-      if (!pausa.current && !foco.current && !cargando.current && !document.hidden) acum += Math.min(100, t - antes);
+      if (!pausa.current && !foco.current && !cargando.current && !esperaB && !document.hidden) acum += Math.min(100, t - antes);
       antes = t;
       if (barra.current) barra.current.style.width = Math.min(100, (acum / dur) * 100) + '%';
       if (acum >= dur) { sig.current(); return; }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => { cancelAnimationFrame(raf); clearTimeout(espera); };
+    return () => { cancelAnimationFrame(raf); clearTimeout(espera); if (esperabaB) setCargaB(false); };
   }, [gid, si, hay]);
   useEffect(() => {
     if (!hay) return undefined;
@@ -1438,7 +1498,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
             title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         {/* 🎧 lo que suena y de quién es, con el link a su video: el crédito es parte del permiso del beatmaker */}
-        {beat && sonido && pista ? <a className="hv-beat" href={pista.u} target="_blank" rel="noopener noreferrer"
+        {/* ⏳ mientras baja: la barra quieta y esto, así se entiende por qué no arranca */}
+        {beat && sonido && cargaB ? <span className="hv-beat carga" role="status"><i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span>Cargando el beat…</span></span>
+          : beat && sonido && pista ? <a className="hv-beat" href={pista.u} target="_blank" rel="noopener noreferrer"
           onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}
           aria-label={'Suena ' + pista.t + ', de ' + pista.b + '. Abrir en YouTube'} title="Abrir el beat en YouTube">
           <i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span><b>{pista.t}</b> · {pista.b}</span></a> : null}

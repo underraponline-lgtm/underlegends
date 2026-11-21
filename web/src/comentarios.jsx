@@ -75,6 +75,20 @@ export async function comentar(it, tx) {
   return { ok: false, msg: ERR[j.error] || (j.status === 401 ? 'Entra con Discord de nuevo.' : 'No se pudo: prueba de nuevo.') };
 }
 
+/**
+ * 💬 COMENTAR SIN SALIR DEL INICIO (21/11/2026; ver `HojaComentarios` de publicaciones2.jsx): abre la hoja de esa
+ * publicación encima de la página. App.jsx la monta al oír `lg:hoja-cm`.
+ */
+export function abrirComentarios(it) {
+  if (it && it.id) W.dispatchEvent(new CustomEvent('lg:hoja-cm', { detail: it }));
+}
+/** El clic de un link a Publicaciones que comenta acá: con Ctrl, la rueda o en otra pestaña, el link de siempre */
+export const comentarAca = (it) => (e) => {
+  if (e && (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey)) { e.stopPropagation(); return; }
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  abrirComentarios(it);
+};
+
 export const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#FFD24A'] };
 // 📣 LAS BARRAS DE CADA SERVIDOR (21/11/2026, Dlx: «sí» a los fans de la Liga, bots a la vista): «La barra de FFA» es un
 // personaje más de la Liga (`b:<servidor>`), con la sigla de su servidor sobre su color y la pastilla «Liga». Devuelve

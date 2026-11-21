@@ -10,7 +10,7 @@ import { YoMenu } from './yomenu.jsx';
 import { BotonModsCab } from './mods_herramientas.jsx';
 import { ERR_LIBRE, libreAccion, pedirLibres, useLibres } from './libres.js';
 import { useAplausos } from './aplausos.js';
-import { delHilo, useComentarios } from './comentarios.jsx';
+import { comentarAca, delHilo, useComentarios } from './comentarios.jsx';
 import { usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
 import { Numero, usePresencia } from './anima.js';
@@ -19,6 +19,7 @@ import { LuNube, LuSocial } from './medio.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
 import { escenaDe } from './fondos.js';
 import { PreguntaCab } from './comofunciona.jsx';
+import { precargar } from './beats.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Era el de la tira de abajo del celular hasta la barra E (19/11/2026: cinco fijos y el resto en el ☰ en
@@ -1622,24 +1623,27 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
     antesApagado = apag;
     const visto = apag ? ' visto' : '';
     const abrir = () => onAbrir(i);
+    // ⏭️ con el mouse encima o el dedo apoyado, el beat de su primera historia sin ver que traiga uno ya empieza a bajar
+    // (beats.js, tanda 3): el toque llega 100 ms después y el mouse, mucho más
+    const pre = () => { const s = g.slides.find((x) => !vistos[x.id] && x.beat) || g.slides.find((x) => x.beat); if (s) precargar(s.beat, g.id); };
     if (g.tipo === 'vivo') {
-      partes.push(<button type="button" key={g.id} className={'h en-vivo' + visto} onClick={abrir}><span className="h-w"><span className="h-c"><img alt="" src={g.logo} /></span>
+      partes.push(<button type="button" key={g.id} className={'h en-vivo' + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}><span className="h-w"><span className="h-c"><img alt="" src={g.logo} /></span>
         <span className="h-badge vivo-late">EN VIVO</span></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'liga') {
-      partes.push(<button type="button" key={g.id} className={'h liga nuevo' + visto} onClick={abrir}><span className="h-c"><img alt="" src="/ul.png" /></span><small>La Liga</small></button>);
+      partes.push(<button type="button" key={g.id} className={'h liga nuevo' + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}><span className="h-c"><img alt="" src="/ul.png" /></span><small>La Liga</small></button>);
     } else if (g.tipo === 'yo') {
-      partes.push(<button type="button" key={g.id} className={'h yo nuevo' + visto} onClick={abrir}><CaraH liga={liga} k={g.k} nombre={liga.yo ? liga.yo.n : ''} cc={g.cc} /><small>Tu semana</small></button>);
+      partes.push(<button type="button" key={g.id} className={'h yo nuevo' + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}><CaraH liga={liga} k={g.k} nombre={liga.yo ? liga.yo.n : ''} cc={g.cc} /><small>Tu semana</small></button>);
     } else if (g.tipo === 'promos') {
-      partes.push(<button type="button" key={g.id} className={'h promos nuevo' + visto} onClick={abrir}><span className="h-c"><Orbe /></span><small>Promos</small></button>);
+      partes.push(<button type="button" key={g.id} className={'h promos nuevo' + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}><span className="h-c"><Orbe /></span><small>Promos</small></button>);
     } else if (g.tipo === 'sv') {
-      partes.push(<button type="button" key={g.id} className={'h sv' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} style={ZOOM_LOGO[g.sv] ? { transform: 'scale(' + ZOOM_LOGO[g.sv] + ')' } : undefined} /></span><small>{g.nom}</small></button>);
+      partes.push(<button type="button" key={g.id} className={'h sv' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}><span className="h-c"><img alt="" src={g.logo} style={ZOOM_LOGO[g.sv] ? { transform: 'scale(' + ZOOM_LOGO[g.sv] + ')' } : undefined} /></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'pais') {
-      partes.push(<button type="button" key={g.id} className={'h pais' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}>
+      partes.push(<button type="button" key={g.id} className={'h pais' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}>
         <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span><small>{g.nom}</small><em>tu país</em></button>);
     } else if (g.tipo === 'crew') {
-      partes.push(<button type="button" key={g.id} className={'h crew' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><CrewCirculo c={g.crew} /><small>{g.nom}</small><em>tu crew</em></button>);
+      partes.push(<button type="button" key={g.id} className={'h crew' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}><CrewCirculo c={g.crew} /><small>{g.nom}</small><em>tu crew</em></button>);
     } else {
-      partes.push(<button type="button" key={g.id} className={'h gente' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}>
+      partes.push(<button type="button" key={g.id} className={'h gente' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir} onPointerEnter={pre} onPointerDown={pre}>
         <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} /><small>{g.nom}</small><em>{g.et}</em></button>);
     }
   });
@@ -2158,7 +2162,8 @@ function Social({ liga, it, ctx, hilo }) {
   if (!it || !it.id || !ctx || !ctx.A) return null;
   const h = hilo || delHilo(it, liga.ahora);
   // 💬 con dos o más comentarios, flotando (17/11/2026); con uno, la nube de siempre
-  return <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={h} P={ctx.P} />{h.length >= 2 ? <ComentariosFlotantes liga={liga} it={it} hilo={h} cls="cfl-es" /> : <LuNube liga={liga} it={it} hilo={h} />}</div>;
+  // 💬 y comentar abre la hoja encima del Inicio, sin ir a Publicaciones (21/11/2026)
+  return <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={h} P={ctx.P} aca />{h.length >= 2 ? <ComentariosFlotantes liga={liga} it={it} hilo={h} cls="cfl-es" onAbrir={() => comentarAca(it)()} /> : <LuNube liga={liga} it={it} hilo={h} aca />}</div>;
 }
 // ⚔️ EN VIVO, CARA A CARA (Dlx, 14/11/2026, a las mejoras: «todas»): la batalla de ahora con las dos cartas (o las caras), el
 // favorito por el OVR de la Temporada —una cuenta simple, y lo dice— y la que sigue debajo
