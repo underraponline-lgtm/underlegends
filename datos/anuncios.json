@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T20:25:36+00:00",
+ "cuando": "2026-11-21T20:54:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6256,7 +6256,7 @@
      "id": "987149314591719474"
     },
     {
-     "n": "VILCA",
+     "n": "NEXUS",
      "id": "846870712950194196"
     }
    ],
@@ -7555,6 +7555,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1573803630006640683",
+   "cuando": "2026-11-21T20:53:45"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Yo mc 🇨🇱",
+   "quien": "curtirelmambonuncafueunaopcion",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1573800160771973213",
+   "cuando": "2026-11-21T20:39:58"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Nxuz 🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1573798516504010775",
+   "cuando": "2026-11-21T20:33:26"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -43527,33 +43554,6 @@
    "discord_id": "1385452830684614697",
    "msg_id": "1561206616303345774",
    "cuando": "2026-10-18T02:37:43"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "ANTONIOKAST🇨🇱",
-   "quien": "yatusabee_2",
-   "discord_id": "1535790068395024454",
-   "msg_id": "1561206001795989625",
-   "cuando": "2026-10-18T02:35:16"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Verc",
-   "quien": "jovenvesta",
-   "discord_id": "913652602208649226",
-   "msg_id": "1561205903766720514",
-   "cuando": "2026-10-18T02:34:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Guess 🇦🇷",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1561204907569057823",
-   "cuando": "2026-10-18T02:30:55"
   }
  ]
 }

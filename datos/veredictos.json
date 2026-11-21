@@ -10797,6 +10797,28 @@
    "b": "LIZENINN 🇦🇷",
    "ganador": "LAST 🇺🇾",
    "votos": "1–0"
+  },
+  "1573798962090082418": {
+   "id": "1573798962090082418",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1795293312333,
+   "a": "VILCA",
+   "b": "TELMEX",
+   "ganador": "TELMEX",
+   "votos": "1–0"
+  },
+  "1573800020052811787": {
+   "id": "1573800020052811787",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1795293564571,
+   "a": "RAIZER",
+   "b": "MAJIZTRAL",
+   "ganador": "MAJIZTRAL",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14957,6 +14979,77 @@
      ],
      "FLASH",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1573795087161229394": {
+   "id": "1573795087161229394",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1795292388478,
+   "ed": 1795293632342,
+   "texto": "`[ OCTAVOS ]`\n⌞Telmex⌝ 🆚 ⌞Vilca⌝\n⌞DARKO⌝ 🆚 ⌞mco⌝\n⌞Mito⌝ 🆚 ⌞miniboy⌝\n`[ CUARTOS ]`\n⌞mcarepa⌝ 🆚 ⌞chente⌝\n⌞raizer⌝ 🆚 ⌞majiztral⌝\n⌞chaz⌝ 🆚 ⌞telmex⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Telmex",
+      "Vilca"
+     ],
+     "Telmex",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "DARKO",
+      "mco"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Mito",
+      "miniboy"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "mcarepa",
+      "chente"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "raizer",
+      "majiztral"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "chaz",
+      "telmex"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
