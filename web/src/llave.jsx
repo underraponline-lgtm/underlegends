@@ -92,14 +92,17 @@ function pedirTodas() {
 // toda la data»): `<r2>/llaves/<n>.json` pesa ~1,5 KB contra los 75 KB comprimidos de todas. La sube el ciclo
 // (`subir_web.subir_llaves_sueltas()`); si todavía no está o R2 no contesta, la de siempre
 const UNA = {};
+// 🙈 el nombre explícito, tapado (Dlx, 21/11/2026: «tápalos»): `evTapado()` de datos.js, el mismo de los perfiles y el lobby
+const tapar = (l, n) => { if (l && l.nombre && window.evTapado) l.nombre = window.evTapado(l.nombre, l.n || n); return l; };
 // 📶 'error' si no se pudo bajar NADA (18/11/2026): sin red fallaban R2 y /api/llaves, y el null de «no la bajé» se
 // leía como «no existe»: «Esa llave no está… el link está mal copiado», de una llave que existe y sin reintentar
-const deTodas = (n) => pedirTodas().then((t) => (t ? (t[n] || null) : 'error'));
+const deTodas = (n) => pedirTodas().then((t) => (t ? tapar(t[n] || null, n) : 'error'));
 function pedirUna(n, r2) {
   if (!/^\d+$/.test(String(n)) || !r2) return deTodas(n);
   if (!UNA[n]) {
     UNA[n] = fetch(r2 + '/llaves/' + n + '.json', { headers: { accept: 'application/json' } })
       .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then((l) => tapar(l, n))
       .catch(() => { delete UNA[n]; return deTodas(n); });
   }
   return UNA[n];

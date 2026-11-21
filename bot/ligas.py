@@ -179,6 +179,14 @@ FECHAS_WEB = 40
 #: 🖼️ cuántos afiches de cada liga viajan a la galería, y cuántos nuevos se suben a R2 por corrida (la primera vez son
 #: muchos: así entran de a poco y la corrida no se alarga)
 FLYERS_WEB, FLYERS_SUBIR = 12, 4
+# 🟩 UNA IMAGEN DE UN SOLO COLOR NO ES UN AFICHE (21/11/2026, Dlx: «arréglalo tú»). FMS Ceuta anunció «ALFINLPAPA» con un
+# cuadrado verde liso de 1284×1277 —así está en Discord, no es nuestra conversión— y la página lo mostraba como su
+# flyer en Ligas y en Publicaciones. `subir_flyer()` mide el desvío del gris y, si es casi cero, no lo sube y lo anota
+# en `lisos` de la liga, así no se vuelve a bajar en cada corrida. `LISOS_CONOCIDOS`: los que ya estaban guardados
+# antes de esta regla (el ciclo los saca de `flyer` y `flyers` en la próxima vuelta)
+LISO_DESVIO = 4.0
+LISOS_CONOCIDOS = {'ceu-fms-ceuta': {'1570079229809270914'}}
+LISOS = {}                      # los que encontró esta corrida: {liga: {id}}
 #: 🧑‍⚖️ cuántos del staff de cada liga, y cuántos días sigue alguien en la lista sin publicar en sus canales
 STAFF_WEB, STAFF_DIAS = 12, 60
 #: 🔔 cuánto dura una novedad para «Seguir la liga» (lo que lee el vigía de `bot/avisos.js`)
@@ -236,6 +244,9 @@ def lados(linea, primera=False):
     if not l.startswith('#') and not (primera and '🆚' in l):
         return None
     l = l.lstrip('#').strip()
+    # 🆔 las menciones no son parte del nombre (21/11/2026, FMS Ceuta: «# MARCOS VS MOTE RA <@1320135304916762695>»
+    # guardó «MOTE RA 1320135304916762695» como rapero, en la tabla y en la cinta de Ligas)
+    l = re.sub(r'<(?:@[!&]?|#)\d+>|@everyone|@here', ' ', l).strip()
     if re.search(r'EXHIBICI[OÓ]N', _plano(l), re.I) or re.search(r'PTB|TABLA', _plano(l), re.I):
         return None
     # el logo de la liga y los fuegos que envuelven el título no son de nadie: se va todo emoji propio que no sea el VS
@@ -1398,11 +1409,12 @@ def titulo_flyer(texto):
     return re.sub(r'\s+', ' ', t).strip(' .-:')[:90]
 
 
-def flyer_de(L, msgs):
+def flyer_de(L, msgs, saltar=()):
     """El último afiche de la liga en su canal de anuncios: `{id, t, w, h, tit, src}` o `None`. `src` es el link de
-    Discord, que VENCE: sirve para bajarlo ahora (`subir_flyer()`), nunca se guarda ni se muestra."""
+    Discord, que VENCE: sirve para bajarlo ahora (`subir_flyer()`), nunca se guarda ni se muestra. `saltar`: los
+    mensajes cuya imagen era de un solo color (`lisos`)"""
     for m in reversed(msgs):
-        if not _de_la_liga(L, m.get('content') or ''):
+        if not _de_la_liga(L, m.get('content') or '') or m['id'] in saltar:
             continue
         for a in m.get('adj') or []:
             if es_flyer(a) and a.get('u'):
@@ -1411,7 +1423,7 @@ def flyer_de(L, msgs):
     return None
 
 
-def flyers_de(L, msgs, desde='', tope=FLYERS_WEB):
+def flyers_de(L, msgs, desde='', tope=FLYERS_WEB, saltar=()):
     """🖼️ Los afiches de la liga en su canal de anuncios, el más nuevo primero: `[{id, msg, t, w, h, tit, src}]`. Un
     mensaje con dos afiches da dos (`<mensaje>-1`). `desde`: los de la temporada (lo de antes es otra)."""
     out = []
@@ -1419,6 +1431,8 @@ def flyers_de(L, msgs, desde='', tope=FLYERS_WEB):
         if not _de_la_liga(L, m.get('content') or '') or (desde and str(m.get('t') or '') < desde):
             continue
         for i, a in enumerate([a for a in m.get('adj') or [] if es_flyer(a) and a.get('u')]):
+            if (m['id'] + ('-%d' % i if i else '')) in saltar:
+                continue
             out.append({'id': m['id'] + ('-%d' % i if i else ''), 'msg': m['id'], 't': m['t'], 'w': int(a['w']),
                         'h': int(a['h']), 'tit': titulo_flyer(m.get('content')), 'src': a['u']})
             if len(out) >= tope:
@@ -1499,6 +1513,13 @@ def novedades(lid, antes, bats, prox_antes, prox, viejas, ahora=None):
     return out
 
 
+def es_liso(im):
+    """¿La imagen es de un solo color? El desvío del gris, sobre una copia chica: un afiche con fondo liso igual tiene
+    letras, y eso ya pasa de 20; el cuadrado verde de FMS Ceuta da 0."""
+    from PIL import ImageStat
+    return ImageStat.Stat(im.convert('L').resize((64, 64))).stddev[0] < LISO_DESVIO
+
+
 def subir_flyer(lid, fl):
     """🖼️ El afiche, re-alojado en R2 como `ligas/<liga>/<mensaje>.webp` y achicado a `ANCHO_FLYER`: `(url, w, h)` o
     `None`. Igual que las imágenes del kit (`kit.subir()`): el link de Discord trae `?ex=` y vence a las horas.
@@ -1521,6 +1542,10 @@ def subir_flyer(lid, fl):
             im = fondo
         else:
             im = im.convert('RGB')
+        if es_liso(im):
+            print('      🟩 el flyer de %s (%s) es de un solo color: no es un afiche' % (lid, fl['id']))
+            LISOS.setdefault(lid, set()).add(fl['id'])
+            return None
         if im.width > ANCHO_FLYER:
             im = im.resize((ANCHO_FLYER, round(im.height * ANCHO_FLYER / im.width)), Image.LANCZOS)
         buf = io.BytesIO()
@@ -2489,7 +2514,13 @@ def correr(aplicar=False):
             por_an[an] = _mensajes(s, an, 1, limite=ANUNCIOS_LEER)
             time.sleep(0.3)
         ms_an = por_an.get(an) or []
-        flyer = _flyer_nuevo(lid, flyer_de(L, ms_an), v.get('flyer'), aplicar)
+        # 🟩 los de un solo color, fuera: los anotados y los que ya estaban guardados de antes de la regla
+        lisos = set(v.get('lisos') or []) | LISOS_CONOCIDOS.get(lid, set())
+        if (v.get('flyer') or {}).get('id') in lisos:
+            v = dict(v, flyer=None)
+        if any(f.get('id') in lisos for f in v.get('flyers') or []):
+            v = dict(v, flyers=[f for f in v.get('flyers') or [] if f.get('id') not in lisos])
+        flyer = _flyer_nuevo(lid, flyer_de(L, ms_an, lisos), v.get('flyer'), aplicar)
         # sin el canal (Discord no contestó) queda la de antes; `para_web()` no muestra una que ya pasó
         prox = proxima_de(L, ms_an) if ms_an else v.get('prox')
         out[lid] = {'n': L['n'], 'sv': L['sv'], 'jornada': max(js) if js else None,
@@ -2516,9 +2547,12 @@ def correr(aplicar=False):
             t0 = _instante(bats[0][1])
             desde = (t0 - dt.timedelta(days=30)).strftime('%Y-%m-%dT%H:%M:%SZ') if t0 else ''
         viejos = list(v.get('flyers') or []) + ([flyer] if flyer and flyer.get('url') else [])
-        fls = _flyers_nuevos(lid, flyers_de(L, ms_an, desde) if ms_an else [], viejos, aplicar)
+        fls = _flyers_nuevos(lid, flyers_de(L, ms_an, desde, saltar=lisos) if ms_an else [], viejos, aplicar)
         if fls:
             out[lid]['flyers'] = fls
+        lisos |= LISOS.get(lid, set())
+        if lisos:
+            out[lid]['lisos'] = sorted(lisos)[-30:]
         # 🧑‍⚖️ quién la lleva: lo que se leyó ahora, y si Discord no contestó, lo de antes
         stf = staff_de(L, por_canal.get(L['ver']) or [], ms_an, v.get('staff')) \
             if (por_canal.get(L['ver']) or ms_an) else (v.get('staff') or [])
@@ -3523,6 +3557,18 @@ def _self_check():
     fg, fn = flyer_de(LIGAS['snake-generations'], sr), flyer_de(LIGAS['snake-new-chapter'], sr)
     ok(fg and fg['id'] == '1' and fg['w'] == 1080 and fn is None,
        'en el canal compartido de Snake Rap, el afiche va a la liga de su emoji; el separador no es afiche', str(fg))
+    ok(lados('# MARCOS VS MOTE RA <@1320135304916762695>')[:2] == ('MARCOS', 'MOTE RA'),
+       'una mención en el título de la batalla no es parte del nombre')
+    # 🟩 el cuadrado verde de FMS Ceuta no es un afiche; uno de fondo liso con letras, sí. Y los anotados se saltean
+    from PIL import Image as _Im, ImageDraw as _Dr
+    _liso = _Im.new('RGB', (1284, 1277), (115, 247, 75))
+    _con = _liso.copy()
+    _Dr.Draw(_con).rectangle((200, 500, 1100, 760), fill=(10, 10, 10))
+    _ms = [{'id': '9', 't': 'a', 'content': 'x', 'adj': [{'ct': 'image/png', 'w': 900, 'h': 900, 'u': 'u9'}]},
+           {'id': '8', 't': 'b', 'content': 'y', 'adj': [{'ct': 'image/png', 'w': 900, 'h': 900, 'u': 'u8'}]}]
+    ok(es_liso(_liso) and not es_liso(_con) and flyer_de({}, _ms, {'8'})['id'] == '9'
+       and [f['id'] for f in flyers_de({}, _ms, saltar={'8'})] == ['9'],
+       'una imagen de un solo color no es un flyer, y la anotada en `lisos` no se vuelve a bajar')
     ok(_flyer_nuevo('x', {'id': '1', 't': 'a', 'src': 'https://cdn/x'}, {'id': '1', 'url': 'https://r2/1.webp'}, False)
        == {'id': '1', 'url': 'https://r2/1.webp'} and _flyer_nuevo('x', {'id': '2', 'src': 's'}, None, False) is None,
        'el mismo afiche no se vuelve a subir, y sin la copia en R2 no se guarda (el de Discord vence)')

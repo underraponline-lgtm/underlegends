@@ -30,6 +30,14 @@ const FUERA =/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{31
 // 🆔 y el ID de Discord pegado a un nombre: una mención que el lector de llaves guardó como nombre se leía «MOTERA
 // 1320135304916762695 le ganó a…» en la cinta de Ligas y en Publicaciones (revisión 21/11, G3#1 y G4#6). Sólo cuando va
 // DESPUÉS de otro texto: un ID solo (una clave, un `dc.id`) queda como está
+// 🙈 Y LO EXPLÍCITO, TAPADO (Dlx, 21/11/2026, sobre los eventos de CEU: «tápalos»). «PORNO GAY» o «NOS FOLLAMOS TODOS
+// A …» salían con nombres de personas al lado en la página del servidor, en Eventos y en las llaves. El nombre de un
+// evento que lo lleva se cambia entero por «la llave #N» o «un evento» (`nombreEv()`), como la llave sin título.
+// ⚠️ Sólo palabras sexuales explícitas: «gay» o «lésbico» solos no se tapan. Y «foll…» con sus terminaciones, para no
+// comerse «follow». ⚠️ SÓLO EN NOMBRES DE EVENTOS, nunca en `limpio()`: hay raperos que se llaman «Sexo», «XXX» o
+// «Pornito», y su nombre es su nombre (por eso «sexo» y «xxx» ni están en la lista)
+const EXPLICITO = /(?<![\p{L}\p{N}])(?:porn\p{L}*|foll(?:a|ar|o|amos|an|ando|ad|é|ó|aron)|hentai|onlyfans|verga)(?![\p{L}\p{N}])/giu;
+export const esExplicito = (s) => { EXPLICITO.lastIndex = 0; return EXPLICITO.test(String(s || '')); };
 export function limpio(s) {
   return String(s || '').replace(FUERA, '').replace(/\s+\d{17,20}(?=\s|$)/g, '').replace(/\s+/g, ' ').replace(/^[ ·•-]+|[ ·•-]+$/g, '');
 }
@@ -70,7 +78,7 @@ export function resultado(r, corto = false) {
 export const esSinTitulo = (s) => /^\(?\s*sin\s+t[ií]tulo\s*\)?$/i.test(limpio(s));
 export function nombreEv(ev, ll) {
   const s = limpio(ev);
-  return !s || esSinTitulo(s) ? (ll ? 'la llave #' + ll : 'un evento') : s;
+  return !s || esSinTitulo(s) || esExplicito(ev) ? (ll ? 'la llave #' + ll : 'un evento') : s;
 }
 export const num = (n) => String(Math.trunc(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 export const mult = (x) => '×' + String(x || 1).replace('.', ',');

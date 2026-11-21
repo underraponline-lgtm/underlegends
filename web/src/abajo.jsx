@@ -240,7 +240,7 @@ export function Stickers({ logos }) {
 export function Merch({ liga }) {
   const svs = liga ? Object.values(liga.svs || {}).filter((s) => s.color && s.sv && s.logo) : [];
   const ropa = [
-    { k: 'remera', n: 'Remera UL', dib: <Prenda tipo="remera" color="#141414" logo="/ul.png" /> },
+    { k: 'remera', n: 'Camiseta UL', dib: <Prenda tipo="remera" color="#141414" logo="/ul.png" /> },
     { k: 'buzo', n: 'Buzo Liga Global', dib: <Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" /> },
     { k: 'gorra', n: 'Gorra UL', dib: <Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" /> },
     svs.length ? { k: 'stickers', n: 'Stickers', dib: <Stickers logos={['/ul.png', ...svs.map((s) => liga.logo(s.sv))]} /> } : null,

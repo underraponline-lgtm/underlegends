@@ -23,6 +23,37 @@
 /* ── de app.js: D, el lobby ── */
 var D = null;
 
+/* 🙈 LOS NOMBRES DE EVENTOS EXPLÍCITOS, TAPADOS AL LLEGAR (Dlx, 21/11/2026,
+   sobre los de CEU: «tápalos»). «PORNO GAY» o «NOS FOLLAMOS TODOS A …»
+   salían con nombres de personas al lado en la página del servidor, en los
+   perfiles, en Eventos y en las llaves. Se cambian por «Evento #N» acá, en
+   los tres lugares por donde entran —el lobby (`calendario`), los perfiles
+   (`e` y el muro de cada uno) y las llaves (`evTapado()`, para llave.jsx)—,
+   así ninguna página tiene que acordarse. ⚠️ SÓLO NOMBRES DE EVENTOS: hay
+   raperos que se llaman «Sexo», «XXX» o «Pornito», y su nombre es su nombre.
+   Y la misma lista que `EXPLICITO` de web/src/liga.js (`nombreEv()`). */
+var EV_EXPLICITO = /(?<![\p{L}\p{N}])(?:porn\p{L}*|foll(?:a|ar|o|amos|an|ando|ad|é|ó|aron)|hentai|onlyfans|verga)(?![\p{L}\p{N}])/iu;
+function evTapado(s, n) {
+  return EV_EXPLICITO.test(String(s || '')) ? (n ? 'Evento #' + n : 'Un evento') : s;
+}
+window.evTapado = evTapado;
+function taparLobby(d) {
+  try {
+    (d && d.calendario || []).forEach(function (c) { c.n = evTapado(c.n, c.ll); });
+    (d && d.proximos || []).forEach(function (x) { x.nombre = evTapado(x.nombre); });
+  } catch (e) { /* nada */ }
+  return d;
+}
+function taparPerfiles(d) {
+  try {
+    Object.keys(d && d.e || {}).forEach(function (n) { var x = d.e[n]; if (x) x[0] = evTapado(x[0], n); });
+    Object.keys(d && d.p || {}).forEach(function (k) {
+      (d.p[k].mu || []).forEach(function (m) { if (m && m.ev) m.ev = evTapado(m.ev, m.ll); });
+    });
+  } catch (e) { /* nada */ }
+  return d;
+}
+
 /* ── de app.js: lo en vivo: VIVO, VIVO_L, VIVO_B, pedirVivo y su sondeo, llaveDeEvento y conVeredictos ── */
 /* ── las llaves en vivo ─────────────────────────────────────────────────
    🔑 Dlx, 27/09/2026: «llaves en vivo… como las notificaciones, que se
@@ -48,7 +79,12 @@ function pedirVivo() {
   VIVO_PEDIDO = Date.now();
   fetch('/api/avisos/vivo', { headers: { accept: 'application/json' } })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(function (d) { VIVO = d || { llaves: [] }; pintaVivo(); })
+    .then(function (d) {
+      VIVO = d || { llaves: [] };
+      // 🙈 y lo que se juega ahora, con el mismo filtro (`evTapado()`, abajo)
+      try { Object.keys(VIVO).forEach(function (q) { if (Array.isArray(VIVO[q])) VIVO[q].forEach(function (x) { if (x && x.nombre) x.nombre = evTapado(x.nombre); }); }); } catch (e) { /* nada */ }
+      pintaVivo();
+    })
     .catch(function () { /* sin red o sin vigía: queda lo que había */ })
     .then(programarVivo);
 }
@@ -194,7 +230,7 @@ function perfiles() {
   if (!PERF_PIDIENDO) {
     PERF_PIDIENDO = fetch('/api/perfiles', { headers: { accept: 'application/json' } })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(function (d) { PERF = d || {}; return PERF; })
+      .then(function (d) { PERF = taparPerfiles(d || {}); return PERF; })
       .catch(function () { PERF_PIDIENDO = null; return null; });
   }
   return PERF_PIDIENDO;
@@ -376,7 +412,7 @@ function refrescarDatos() {
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (d) {
       if (!d || !d.tabla || d.sello === D.sello) return;
-      D = d;
+      D = taparLobby(d);
       pintaDatos();
     })
     .catch(function () { /* la próxima vez */ });

@@ -210,7 +210,7 @@ var lobbyP = window.__lobbyP || fetch('/api/lobby', { headers: { accept: 'applic
 window.__lobbyP = null;
 lobbyP
   .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(function (d) { D = d; pinta(); })
+  .then(function (d) { D = taparLobby(d); pinta(); })
   .catch(function (e) {
     // 🔴 QUE FALLE SE VE, y no como una página vacía: lo dice y deja reintentar
     console.error('[lobby]', e);

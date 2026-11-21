@@ -393,10 +393,10 @@ function Merch({ liga }) {
   const socios = svs.filter((s) => s.logo).slice(0, 4);
   /* eslint-disable react/jsx-key */
   const items = [
-    ['remera', 'Remera Under Legends', 'Negra, con el logo al pecho', <Prenda tipo="remera" color="#141414" logo="/ul.png" />],
+    ['remera', 'Camiseta Under Legends', 'Negra, con el logo al pecho', <Prenda tipo="remera" color="#141414" logo="/ul.png" />],
     ['buzo', 'Buzo Liga Global', 'Magenta, con el logo y «LIGA GLOBAL»', <Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" />],
     ['gorra', 'Gorra UL', 'Blanca, con el logo bordado', <Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" />],
-    ...socios.map((s) => ['sv-' + s.sv, 'Remera ' + (s.sigla || s.sv), s.nombre + ', socio de la Liga',
+    ...socios.map((s) => ['sv-' + s.sv, 'Camiseta ' + (s.sigla || s.sv), s.nombre + ', socio de la Liga',
       <Prenda tipo="remera" color={s.color} logo={liga.logo(s.sv)} texto={String(s.sigla || s.sv).toUpperCase()} />]),
     ...(svs.length ? [['stickers', 'Stickers de la Liga', 'Los logos de los socios',
       <Stickers logos={['/ul.png', ...svs.filter((s) => s.logo).map((s) => liga.logo(s.sv))]} />]] : []),

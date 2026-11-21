@@ -3535,6 +3535,12 @@ def _servidores(gente):
     return sorted(out, key=lambda a: (-a['pts'], -a.get('miembros', 0), a['sv']))
 
 
+# 🚫 LOS QUE NO CUENTAN COMO PAÍSES DE LA LIGA (Dlx, 22/09/2026: «Emiratos y Brasil no deberían existir, no se les toma
+# en cuenta»; y otra vez el 21/11/2026, «sácalo», cuando la página seguía contando a Brasil en «#11 de 22»). Se van de la
+# tabla de países y de su total; la persona conserva su país y sus cartas, como decidió el 22/09
+NO_CUENTAN = frozenset({'br', 'ae'})
+
+
 def _paises(gente):
     """Lo mismo por país, ordenado por PUNTOS.
 
@@ -3548,7 +3554,7 @@ def _paises(gente):
     acc = {}
     for p in gente:
         cc = (p.get('cc') or '').lower()
-        if not cc:
+        if not cc or cc in NO_CUENTAN:
             continue
         a = acc.setdefault(cc, {'cc': cc, 'n': 0, 'no': 0, 'pts': 0})
         a['n'] += 1
