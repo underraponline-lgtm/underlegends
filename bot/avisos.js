@@ -11169,11 +11169,18 @@ export class Avisos {
         // los micrófonos: la final, dos veces)
         const finalV = ms.some((x) => /^v:final:/i.test(x.m)) || Object.keys(hechos).some((m) => /^v:final:/i.test(m))
           || retenidos.some((m) => /^v:final:/i.test(m));
-        if (finalV && ms.some((x) => x.m === 'final') && !hechos.final) {
+        // 🖼️ Y NUNCA SOLA (21/11/2026, la misma final: salió como recuadro de texto, sin imagen ni botones, lo que Dlx pidió
+        // que no pase: «el bot debería enviar todo junto la imagen y el texto»). Además del cruce retenido, queda el caso en
+        // que alguien de la final no está en la llamada (`batallaVivo()` no da cruce y no hay nada retenido): la final espera
+        // a su cruce, que la anuncia con su imagen y sus botones; y si se decide sin que el cruce salga, la cuenta el campeón
+        // —con su tarjeta, y «en la final le ganó a…»—
+        const conCampeon = ms.some((x) => x.m === 'campeon');
+        if ((finalV || conCampeon) && ms.some((x) => x.m === 'final') && !hechos.final) {
           this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
             L.id, canal, 'final', '', '', ahora);
           hechos.final = { m: 'final', msg: '', texto: '' };
         }
+        if (!hechos.final) ms = ms.filter((x) => x.m !== 'final');
         const ediciones = new Map();
         for (const x of ms) {
           const v = x.bi && x.res && !hechos[x.m] ? hechos['v:' + x.bi] : null;
