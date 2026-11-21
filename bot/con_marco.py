@@ -46,16 +46,24 @@ ESCALA = 3
 # `currentTime` (exacto, no depende de lo rápida que sea la máquina) y sale un WebP ANIMADO, con transparencia entera.
 #   · WebP y no GIF, MEDIDO EN SU CELULAR: Discord mueve los dos, pero el GIF tiene transparencia de todo o nada y le dejaba
 #     un círculo detrás a cada destello (el halo, cortado), y pesaba 9 veces más (C2: 382 KB contra 3,4 MB)
-#   · LA VUELTA: el mínimo común múltiplo de lo que tarda cada animación (con `alternate`, el doble), si entra en
-#     `TOPE_LOOP`; si no (el marco: 5,5 s y 2,4 s), la más larga, y el final se funde con el principio en `FUNDIDO` cuadros
+#   · LA VUELTA CIERRA PERFECTA (21/11/2026, Dlx: «que inicien y terminen en un loop perfecto, ya que algunos terminan
+#     antes de tiempo y no se sincronizan bien»). Si lo que tarda cada animación (con `alternate`, el doble) cabe entero
+#     en `TOPE_LOOP`, es su mínimo común múltiplo y nada cambia. Si no —C7 tiene 42 destellos de 1,2 a 2,6 s; el marco
+#     Embajador, 5,5 y 2,4—, se busca la vuelta en la que cada una da un número ENTERO de vueltas con el menor ajuste de
+#     velocidad (`bucle()`): el último cuadro empalma con el primero. Antes se tomaba la más larga y se fundía el final,
+#     y las demás «terminaban antes»: se cortaban a mitad de su vuelta. En la página no cambia nada
 #   · FILMADA A 2× (600 px de carta), en otra página: Discord no la muestra más ancha, a 3× pesaba más del doble, y el
 #     filtro SVG del contorno del marco hacía que cada cuadro tardara 4 s (a 2×, 1,8)
 FPS = 15
 FPS_LARGO = 10      # la vuelta pasa de 3 s (con el filtro del marco, cada cuadro cuesta)
+# ⚡ lo que va A SALTOS (`steps()`: el parpadeo del neón, C10; el glitch, C11) cambia en un instante y dura poco: el neón
+# se apaga 50 ms tres veces en 5 s, y a 10 cuadros por segundo se veía una sola (medido el 21/11/2026). A 20, cada salto
+# de 50 ms o más cae en un cuadro; los cuadros iguales seguidos el WebP los junta, así que pesa casi lo mismo
+FPS_PASOS = 20
 TOPE_LOOP = 6000    # ms
-FUNDIDO = 6         # cuadros
+TOPE_LARGO = 8000   # ms: si una sola animación ya tarda más que TOPE_LOOP (la nebulosa de C14: 16 s)
 ESCALA_ANIM = 2
-PESO_MAX = 2500000  # bytes: más que esto, se saltea un cuadro de cada dos y baja la calidad
+PESO_MAX = 2500000  # bytes: más que esto, baja la calidad; si igual pasa, se saltea un cuadro de cada dos
 
 
 def _j(*p, defecto=None):
@@ -214,39 +222,55 @@ JS_QUIETAS = """() => {
     const dentro = (a) => { const e = a.effect && a.effect.target; return !!(e && ms.contains(e)); };
     const rep = raiz.getAnimations().filter((a) => a.effect && a.effect.getTiming().iterations === Infinity && dentro(a));
     window.__lgFilmar = rep.map((a) => { a.pause(); return [a, Number(a.currentTime) || 0]; });
+    // uno por animación, en el mismo orden que `__lgFilmar` (el ajuste de velocidad de cada una va por su lugar)
     return rep.map((a) => { const t = a.effect.getTiming();
-      return Math.round((Number(t.duration) || 0) * (/alternate/.test(t.direction) ? 2 : 1)); }).filter((d) => d >= 100);
+      return Math.round((Number(t.duration) || 0) * (/alternate/.test(t.direction) ? 2 : 1)); });
 }"""
 
 
-def vuelta(periodos):
-    """Cuánto dura la vuelta entera (ms) y si cierra justa: el mínimo común múltiplo de los períodos (en décimas) si entra en
-    `TOPE_LOOP`; si no, el más largo (cortado en el tope), y entonces el final se funde con el principio."""
+def bucle(periodos):
+    """La vuelta de la foto animada (ms) y cuánto avanza cada animación por cada ms de la vuelta (`ks`, en el orden de
+    `periodos`): con ese avance, cada una da un número entero de vueltas y el último cuadro empalma con el primero.
+    Devuelve `(L, ks, ajuste)`, con `ajuste` el mayor cambio de velocidad (0.08 = 8 %).
+    · si todas caben enteras en `TOPE_LOOP` (su mínimo común múltiplo, en centésimas), `ks` son todos 1: nada cambia
+    · si no, se prueba cada vuelta de 1 s al tope, de a 50 ms, y gana la de menor ajuste (y, empatadas, la más corta)"""
     import math
-    ds = sorted(set(max(1, int(round(p / 100.0))) for p in periodos if p > 0))
-    if not ds:
-        return 0, True
+    ps = [float(p) if p and p > 0 else 0.0 for p in periodos]
+    validos = sorted(set(int(round(p)) for p in ps if p >= 50))
+    if not validos:
+        return 0, [1.0] * len(ps), 0.0
     m = 1
-    for d in ds:
+    for d in set(max(1, int(round(p / 10.0))) for p in validos):
         m = m * d // math.gcd(m, d)
-    if m * 100 <= TOPE_LOOP:
-        return m * 100, True
-    return min(ds[-1] * 100, TOPE_LOOP), False
+    if m * 10 <= TOPE_LOOP:
+        return m * 10, [1.0] * len(ps), 0.0
+    tope = TOPE_LOOP if validos[-1] <= TOPE_LOOP else TOPE_LARGO
+    mejor = None
+    for L in range(1000, tope + 1, 50):
+        aj = max(abs(max(1, round(L / p)) * p / L - 1.0) for p in validos)
+        if mejor is None or aj < mejor[1] - 1e-9:
+            mejor = (L, aj)
+    L = mejor[0]
+    ks = [(max(1, round(L / p)) * p / L) if p >= 50 else 1.0 for p in ps]
+    return L, ks, round(mejor[1], 4)
 
 
 def filmar(pag, caja, periodos):
-    """Los cuadros de una vuelta, en PNG (bytes), con la página congelada (`JS_QUIETAS`). Si la vuelta no cierra justa,
-    `FUNDIDO` cuadros más, los que siguen al final, para fundirlos con el principio. Devuelve (cuadros, ms por cuadro,
-    cuántos son del fundido)."""
-    L, justa = vuelta(periodos)
+    """Los cuadros de una vuelta, en PNG (bytes), con la página congelada (`JS_QUIETAS`): cada animación avanza a su
+    ritmo de `bucle()`, así la vuelta cierra perfecta. Devuelve (cuadros, ms por cuadro)."""
+    L, ks, _ = bucle(periodos)
     fps = FPS if L <= 3000 else FPS_LARGO
+    # ⚡ el `steps()` de una animación de CSS vive en sus cuadros clave, no en `getTiming()` (que dice `linear`)
+    if pag.evaluate("""() => window.__lgFilmar.some(([a]) => /steps/.test(a.effect.getTiming().easing)
+                        || a.effect.getKeyframes().some((k) => /steps/.test(k.easing || '')))"""):
+        fps = FPS_PASOS
     n = max(2, int(round(L / 1000.0 * fps)))
-    extra = 0 if justa else FUNDIDO
     cuadros = []
-    for i in range(n + extra):
-        pag.evaluate('(t) => { for (const [a, c] of window.__lgFilmar) a.currentTime = c + t; }', i * float(L) / n)
+    for i in range(n):
+        pag.evaluate('([t, ks]) => { window.__lgFilmar.forEach(([a, c], j) => { a.currentTime = c + t * (ks[j] || 1); }); }',
+                     [i * float(L) / n, ks])
         cuadros.append(pag.screenshot(clip=caja, omit_background=True, type='png'))
-    return cuadros, int(round(float(L) / n)), extra
+    return cuadros, int(round(float(L) / n))
 
 
 #: 📐 CUÁNTO PUEDE SALIRSE UN EFECTO POR CADA COSTADO DE LA CARTA, en la foto de /card (en anchos de carta), y en cuánto se
@@ -297,10 +321,10 @@ def filmar_carta(cine, k, carta, sv, cc, prop, ruta):
 
 def animada(filmado, prop, ruta, carta=None, aire=6):
     """Arma el WebP animado: el mismo recorte para todos los cuadros (lo que se pintó en CUALQUIERA, con `aire`), el aire a
-    los costados si queda más alta que la carta (como `recortar()`; los cuadros ya vienen a `ESCALA_ANIM`), el final fundido con el
-    principio si hace falta, y más liviana si pasa de `PESO_MAX`. Devuelve cuántos cuadros quedaron."""
+    los costados si queda más alta que la carta (como `recortar()`; los cuadros ya vienen a `ESCALA_ANIM`), y más
+    liviana si pasa de `PESO_MAX`. Devuelve cuántos cuadros quedaron."""
     from PIL import Image
-    cuadros, ms, extra = filmado
+    cuadros, ms = filmado
     ims = [Image.open(io.BytesIO(b)).convert('RGBA') for b in cuadros]
     caja = None
     for im in ims:
@@ -325,20 +349,15 @@ def animada(filmado, prop, ruta, carta=None, aire=6):
             lienzo.alpha_composite(im, ((ancho - w) // 2, 0))
             im = lienzo
         out.append(im)
-    # 🔁 la vuelta que no cierra justa: los primeros cuadros pasan de lo que seguía al final a lo que eran, de a poco
-    if extra:
-        n = len(out) - extra
-        for i in range(extra):
-            out[i] = Image.blend(out[n + i], out[i], (i + 1.0) / (extra + 1))
-        out = out[:n]
 
     def guardar(cs, dur, q):
         cs[0].save(ruta, save_all=True, append_images=cs[1:], duration=dur, loop=0, quality=q, method=4, lossless=False)
         return os.path.getsize(ruta)
 
-    if guardar(out, ms, 75) > PESO_MAX:
+    # 🪶 pesada: primero menos calidad; si igual pasa, un cuadro de cada dos (el ritmo se mantiene: cada uno dura el doble)
+    if guardar(out, ms, 75) > PESO_MAX and guardar(out, ms, 60) > PESO_MAX:
         out, ms = out[::2], ms * 2
-        guardar(out, ms, 65)
+        guardar(out, ms, 60)
     chk = Image.open(ruta)
     if not getattr(chk, 'is_animated', False) or chk.mode != 'RGBA':
         raise ValueError('el WebP no quedó animado con transparencia')
@@ -461,19 +480,24 @@ def _self_check():
     # 🃏 la firma: igual a la de antes sin efecto (las fotos que ya están siguen valiendo) y con el efecto de la Tienda al final
     ok(firma_de(['plata', 'camiseta'], '') == 'plata|camiseta' and firma_de(['plata', 'camiseta'], 'C1') == 'plata|camiseta|C1'
        and firma_de(None, 'C1') == '-|-|C1' and firma_de(None, '') == '', 'la firma de la foto: el marco y el efecto de carta')
-    # 🎞️ la vuelta de la foto animada: justa cuando entra, la más larga con fundido cuando no
-    ok(vuelta([2200] * 14) == (2200, True), 'un efecto de un solo ritmo (C2: 2,2 s) cierra justo')
-    ok(vuelta([2600, 3000]) == (3000, False), 'dos ritmos que no cierran en el tope (C15) van con fundido')
-    ok(vuelta([1800, 3600 * 2]) == (TOPE_LOOP if 7200 > TOPE_LOOP else 7200, 7200 <= TOPE_LOOP),
-       'el «alternate» cuenta la ida y la vuelta')
-    ok(vuelta([1200, 1800]) == (3600, True), 'el mínimo común múltiplo, cuando entra')
-    ok(vuelta([]) == (0, True), 'sin animaciones, sin vuelta')
+    # 🎞️ la vuelta: justa cuando entra, y si no, cada animación da vueltas enteras con un ajuste chico
+    ok(bucle([2200] * 14)[:2] == (2200, [1.0] * 14), 'un solo ritmo (C2: 2,2 s): cierra justo, sin ajuste')
+    ok(bucle([1200, 1800])[:2] == (3600, [1.0, 1.0]), 'el mínimo común múltiplo, cuando entra')
+    ok(bucle([]) == (0, [], 0.0) and bucle([0, 2200])[1][0] == 1.0, 'sin animaciones, sin vuelta; una sin duración no se toca')
+    def enteras(ps):
+        L, ks, aj = bucle(ps)
+        return all(abs(k * L / p - round(k * L / p)) < 1e-6 for p, k in zip(ps, ks) if p >= 50), aj
+    for nombre, ps, tope_aj in (('C15 (3 s y 2,6 s)', [3000, 2600], 0.08), ('el marco Embajador (5,5 s y 2,4 s)', [5500, 2400, 2400], 0.10),
+                                ('C17 (21 ritmos de 2,4 a 3,7 s: en un confeti al azar, un 21 % no se nota)', [3700, 2400, 2800, 3100, 3500, 2500, 3200, 2700, 3600, 2600, 2900, 3400], 0.25),
+                                ('C14 (la nebulosa de 16 s y destellos de 1,8)', [16000, 1800], 1.01)):
+        e, aj = enteras(ps)
+        ok(e and aj <= tope_aj, '%s: vueltas enteras, ajuste %.0f %%' % (nombre, aj * 100))
     # 📐 lo que se sale por los costados: la niebla (35 % por lado) se corta en `SALE_MAX`; el dragón (25 %) queda
     ok(limitar(0, 1035, [210, 20, 600, 850]) == (60, 960, True, True), 'la niebla se corta en un cuarto de carta por lado')
     ok(limitar(150, 906, [153, 20, 600, 850]) == (150, 903, False, True) and limitar(160, 760, [160, 0, 600, 850])[2:] == (False, False),
        'lo que apenas se sale no se toca')
     ok(limitar(0, 900, None) == (0, 900, False, False), 'sin saber dónde está la carta, no se corta nada')
-    ok(ESCALA_ANIM <= ESCALA and FUNDIDO >= 2 and PESO_MAX > 10 ** 6, 'la animada: más chica que la quieta, fundido y tope')
+    ok(ESCALA_ANIM <= ESCALA and TOPE_LARGO >= TOPE_LOOP and PESO_MAX > 10 ** 6, 'la animada: más chica que la quieta, y sus topes')
     # y la animada se arma de verdad: dos cuadros distintos → un WebP animado con transparencia
     try:
         import tempfile
@@ -487,7 +511,7 @@ def _self_check():
             im.paste(Image.new('RGBA', (60, 90), c), (15, 15))
             b = io.BytesIO(); im.save(b, 'PNG'); cs.append(b.getvalue())
         ruta = os.path.join(tempfile.mkdtemp(), 'x.webp')
-        n = animada((cs, 100, 1), 1.5, ruta)
+        n = animada((cs[:2], 100), 1.5, ruta)
         im = Image.open(ruta)
         ok(n == 2 and getattr(im, 'is_animated', False) and im.mode == 'RGBA', 'el WebP animado sale con sus cuadros y su transparencia')
     except Exception as e:                               # noqa: BLE001

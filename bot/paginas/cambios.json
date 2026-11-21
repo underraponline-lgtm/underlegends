@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.35", "dia": "2026-11-21", "cuando": "2026-11-21T04:10:00-05:00", "titulo": "Los efectos cierran la vuelta", "items": ["La foto animada de `/card` ahora empieza y termina sin saltos: cada parte del efecto da sus vueltas enteras, en vez de cortarse a la mitad.", "El parpadeo del **Neón** y el **Glitch** de carta se ven enteros en la foto de `/card`.", "En la Tienda, **Rayos**, **Dragón** y **Galaxia** de carta, el aro **Cinta** y el fondo **Guarida del dragón** mezclaban dos ritmos que se iban separando: ahora van juntos (un poco más rápidos o más lentos, entre un 9 y un 15 %)."]},
     {
         "version": "7.34",
         "dia": "2026-11-21",
