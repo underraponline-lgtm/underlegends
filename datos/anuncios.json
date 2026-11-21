@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T17:26:55+00:00",
+ "cuando": "2026-11-21T17:55:28+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7555,6 +7555,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Adriagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1573751588445753538",
+   "cuando": "2026-11-21T17:26:57"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
@@ -43545,15 +43554,6 @@
    "discord_id": "885365894606381068",
    "msg_id": "1561062457886375949",
    "cuando": "2026-10-17T17:04:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "gus 🇺🇾",
-   "quien": "agusdema",
-   "discord_id": "989640104765177956",
-   "msg_id": "1561062411237335094",
-   "cuando": "2026-10-17T17:04:41"
   }
  ]
 }
