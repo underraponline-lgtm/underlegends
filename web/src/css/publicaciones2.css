@@ -145,7 +145,9 @@
 .pb-crew-c.chico{width:36px;height:36px}
 
 /* ── 👏 Felicitar: el único botón de verdad de cada logro ── */
-.pb-fel{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
+/* `max-width` + `flex-wrap` (revisión 21/11/2026): sin salto, «con La barra de FFA» lo llevaba a 283 px y se salía de
+   las tarjetas angostas (las destacadas del perfil, el muro en el celular). Ahora la etiqueta baja de renglón adentro */
+.pb-fel{display:inline-flex;flex-wrap:wrap;row-gap:4px;max-width:100%;align-items:center;gap:7px;min-height:44px;padding:6px 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
   box-shadow:3px 3px 0 var(--linea);font:800 14px/1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;cursor:pointer;
   transition:transform .08s ease,box-shadow .08s ease}
 .pb-fel em{font-style:normal;font-variant-numeric:tabular-nums;padding:3px 5px;background:var(--caja);border:1.5px solid var(--suave)}
@@ -420,8 +422,11 @@
 .pw-v .cara,.pw-v .pb-cara{width:46px;height:46px;font-size:17px}
 .pw-v .pb-logo,.pw-logo{width:46px;height:46px;border-radius:50%;object-fit:cover;display:block}
 .pw-v .pb-rg{width:46px;height:46px;display:grid;place-items:center;font:900 20px/1 Archivo,sans-serif;color:#0B0C0E}
-.pw-v .pb-flyer img,.pw-v .pb-carta{width:46px;height:auto;display:block}
-.pw-tx{display:grid;gap:6px;min-width:0;align-content:start}
+.pw-v .pb-flyer img,.pw-v .pb-carta,.pw-v .pw-mcarta{width:46px;height:auto;display:block}
+.pw-fu-v .pw-mcarta{width:96px}
+/* 📏 la columna explícita (revisión 21/11/2026): con `auto` la pista se estiraba al ancho mínimo del 👏 Felicitar y todo
+   el texto se salía de la tarjeta en el celular (crew, servidor: 283 px de pista en una caja de 237) */
+.pw-tx{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;min-width:0;align-content:start}
 .pw-cat{font:700 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--pw-c)}
 .pw-t{margin:0;font:600 15px/1.35 Archivo,sans-serif;overflow-wrap:anywhere}
 /* 🗨️ la frase que armó la historia del chat (tanda 4, 21/11/2026) */
@@ -454,7 +459,7 @@
 .pw-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
 .pw-fu-t{margin:0;font:400 clamp(20px,2.4vw,26px)/1.05 Anton,"Archivo",Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em;overflow-wrap:anywhere}
 .pw-fu-t b,.pw-fu-t a{font-weight:400}
-@media (max-width: 480px){.pw-f.fuerte{grid-template-columns:72px minmax(0,1fr);gap:12px}.pw-fu-carta,.pw-fu-v .pb-carta{width:72px}.pw-fu-v .cara,.pw-fu-v .pb-cara,.pw-fu-v .pb-logo{width:64px;height:64px}}
+@media (max-width: 480px){.pw-f.fuerte{grid-template-columns:72px minmax(0,1fr);gap:12px}.pw-fu-carta,.pw-fu-v .pb-carta,.pw-fu-v .pw-mcarta{width:72px}.pw-fu-v .cara,.pw-fu-v .pb-cara,.pw-fu-v .pb-logo{width:64px;height:64px}}
 /* los juntos: cartas en abanico, rangos en fila, anuncios en lista */
 .pw-abanico{display:flex;align-items:flex-end;padding:8px 0 4px 6px;overflow-x:auto;scrollbar-width:none}
 .pw-abanico::-webkit-scrollbar{display:none}
@@ -527,7 +532,11 @@ dialog.pn-pop.pw-hoja{--pc:#29B298;width:min(620px,calc(100vw - 32px));max-heigh
   letter-spacing:.08em;text-transform:uppercase}
 .pw-au-c{flex:none;width:24px;height:24px;border-radius:50%;object-fit:cover;font-size:11px}
 a.pw-autor:hover b{text-decoration:underline}
-.pw-top .pw-autor{flex:1}
+/* 👆 44 px para el dedo sin mover nada (revisión 21/11/2026) */
+@media (max-width:759.98px){a.pw-autor{padding-block:10px;margin-block:-10px}}
+/* `1 1 auto` y no `flex:1` (revisión 21/11/2026): con base 0 el nombre se achicaba a una letra («I AUTOMÁTICA») en vez de
+   mandar la fecha al renglón de abajo */
+.pw-top .pw-autor{flex:1 1 auto;min-width:0}
 .pw-firma{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0}
 .pw-firma .pw-cat{margin:0}
 .pw-hoja .pw-tx > .pw-autor{margin-bottom:4px}

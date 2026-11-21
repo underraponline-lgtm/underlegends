@@ -134,11 +134,11 @@ export function CrewVistazo({ D, c, pos, N, T, fila, cid }) {
   const tier = T ? fila[0] : null;
   const subidas = T ? (T.hist || []).filter((h) => h[1] === cid && h[3] > h[2]).length : 0;
   const top = D ? masComun(D.titK)[0] : null;
+  // 🔁 (revisión 21/11/2026) sin los puntos, el «por rapero» y «esta semana»: la portada los dice justo arriba y la página
+  // los repetía dos veces seguidas (y el puesto ya va en su etiqueta, «#1 de las crews»). Quedan el tier, con cuántas veces
+  // subió, los títulos y los eventos
   const xs = [
-    ['Puntos', num(c.pts || 0), pos ? '#' + pos + ' de las crews' : 'sin puesto: hacen falta tres'],
-    N ? ['Por rapero', num(Math.round((c.pts || 0) / N)), N + ' en la crew'] : null,
     T ? ['Tier', T.nombres[tier], subidas ? 'subió ' + subidas + (subidas === 1 ? ' vez' : ' veces') + ' en la temporada' : 'cambia cada lunes'] : null,
-    T && N ? ['Esta semana', fila[2] + '/' + N, (fila[2] === 1 ? 'jugó' : 'jugaron') + (fila[1] ? ' · ' + num(fila[1]) + ' pts' : '')] : null,
     D ? ['Títulos', String(D.titulos.length), top ? top[1] + ' de ' + D.nombre(top[0]) : D.finales.length ? D.finales.length + (D.finales.length === 1 ? ' final' : ' finales') : 'todavía ninguno'] : null,
     D ? ['Eventos', num(D.xs.length), D.porN.size + (D.porN.size === 1 ? ' noche distinta' : ' noches distintas') + ' · ' + D.svs.size + (D.svs.size === 1 ? ' servidor' : ' servidores')] : null,
   ].filter(Boolean);

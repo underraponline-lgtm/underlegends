@@ -4,8 +4,11 @@
    (oro lo que se ganó, magenta el Most Wanted, verde las cartas, azul las ligas, violeta el Pase), la letra del rango y
    los logos. Las clases van con `ed-`: `.letra` y `.ch` ya eran otra cosa y rompieron dos portadas de la maqueta */
 .ed, .ed-mast { --ed-oro: #FFD024; --ed-mw: #E41373; --ed-carta: #29B298; --ed-liga: #7FA8FF; --ed-pase: #B07CFF;
-  --ed-oro-t: #7A5C00; --ed-mw-t: #B40F5A; --ed-carta-t: #157564; --ed-liga-t: #2F5FC4; --ed-pase-t: #6B3FC2; --ed-g: var(--gut, 16px); }
-.noche .ed, .noche .ed-mast { --ed-oro-t: #FFD024; --ed-mw-t: #FF4FA3; --ed-carta-t: #29B298; --ed-liga-t: #7FA8FF; --ed-pase-t: #B07CFF; }
+  --ed-oro-t: #FFD024; --ed-mw-t: #FF4FA3; --ed-carta-t: #29B298; --ed-liga-t: #7FA8FF; --ed-pase-t: #B07CFF; --ed-g: 16px; }
+/* (revisión 21/11/2026) los tonos de texto, los mismos en Clara y en Noche: la edición va sobre negro en los dos temas, y
+   los oscuros de Clara (pensados para papel) daban 2,8–3,4:1 sobre las notas negras. Y el margen del celular es 16 fijo:
+   `var(--gut, 16px)` nunca caía en el 16 porque `.app` siempre define `--gut` (40), y Publicaciones iba con 40 px a cada
+   lado en el teléfono. El 40 de la compu lo pone la regla de 900 px */
 .ed-t-oro { --ed-tc: var(--ed-oro); --ed-tt: var(--ed-oro-t); } .ed-t-mw { --ed-tc: var(--ed-mw); --ed-tt: var(--ed-mw-t); }
 .ed-t-carta { --ed-tc: var(--ed-carta); --ed-tt: var(--ed-carta-t); } .ed-t-liga { --ed-tc: var(--ed-liga); --ed-tt: var(--ed-liga-t); }
 .ed-t-pase { --ed-tc: var(--ed-pase); --ed-tt: var(--ed-pase-t); }
@@ -17,6 +20,8 @@
 .ed-mast-mid { display: grid; gap: 12px; padding: 12px 0 10px; align-items: end; }
 .ed-nombre { margin: 0; font: 800 clamp(34px, 7vw, 66px)/.86 'Barlow Condensed', Archivo, sans-serif; text-transform: uppercase; color: var(--esc-tinta); }
 .ed-nombre small { display: block; margin-top: 6px; font: 700 13px/1.2 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .1em; color: var(--esc-gris); }
+.ed-franja-w { display: grid; gap: 6px; min-width: 0; }
+.ed-franja-t { font: 700 11.5px/1 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--esc-gris); }
 .ed-franja { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); background: #141416; }
 .ed-franja div { padding: 9px 12px; box-shadow: inset 1px 0 0 var(--esc-linea), inset 0 1px 0 var(--esc-linea); }
 .ed-franja b { display: block; font: 800 28px/1 'Barlow Condensed', Archivo, sans-serif; color: var(--esc-tinta); }
@@ -43,7 +48,9 @@
 .ed-res { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--suave); }
 .ed-fh .ed-res { grid-template-columns: 30px minmax(0, 1fr) auto; }
 .ed-res > span { min-width: 0; }
-.ed-res b { display: block; font: 800 13.5px/1.15 Archivo, sans-serif; color: var(--tinta); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* `> span > b` y no `b` (revisión 21/11/2026): también agarraba los <b> de adentro del <small> («Llegué al nivel / 10 /
+   del Pase…» en cuatro renglones) */
+.ed-res > span > b { display: block; font: 800 13.5px/1.15 Archivo, sans-serif; color: var(--tinta); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ed-res small { display: block; font-size: 12px; color: var(--gris); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ed-mini { width: 52px; height: 34px; object-fit: cover; background: var(--caja); }
 .ed-gana { display: flex; align-items: center; gap: 6px; font: 800 13px/1 Archivo, sans-serif; color: var(--tinta); }
@@ -58,6 +65,8 @@
 .ed-td.hecha .ed-td-n::after { content: ' ✓'; color: var(--ed-carta-t); }
 .ed-td-b { grid-column: 1 / -1; height: 6px; background: var(--suave); } .ed-td-b i { display: block; height: 100%; background: var(--ed-carta-t); }
 .ed-txt { font: 800 12.5px/1 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--tinta); text-decoration: underline; text-underline-offset: 4px; }
+/* «Ver las N notas»: el botón baja de renglón y no pasa el ancho (`.btn` trae `nowrap`: medía 356 px en una caja de 310) */
+.ed-mas { max-width: 100%; white-space: normal; }
 
 /* ── 🖼️ las portadas ── */
 .ed-tapa { position: relative; overflow: hidden; isolation: isolate; aspect-ratio: 16 / 10; background: #0b0b0c; color: #F6F6F6; container-type: inline-size; }
@@ -93,6 +102,7 @@
 .ed-nueva { position: absolute; right: 10px; bottom: 10px; font: 800 12.5px/1 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .08em; text-transform: uppercase; background: var(--ed-carta); color: #030304; padding: 6px 8px; transform: rotate(-6deg); }
 .ed-flyer::after { display: none; }
 .ed-flyer img, .ed-flyer .pb-vid-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.ed-flyer img.cuad { object-position: 50% 40%; }
 .ed-letras { display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 12px; padding: 12px; background: #141416; }
 .ed-letras::after { display: none; }
 .ed-letras > span { display: grid; justify-items: center; gap: 6px; font: 700 12px/1 'Barlow Condensed', Archivo, sans-serif; text-transform: uppercase; max-width: 68px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -123,16 +133,23 @@
 .cmh-rap button { flex: none; border: 0; cursor: pointer; padding: 8px 10px; min-height: 36px; border-radius: 18px; background: var(--fondo); color: var(--tinta); font: 600 12px/1 Archivo, sans-serif; box-shadow: inset 0 0 0 1.5px var(--suave); }
 .ed-prin .cmh-rap button { background: var(--caja); }
 .cmh-rap button:disabled { opacity: .5; }
+/* con el mouse, las respuestas rápidas bajan de renglón (revisión 21/11/2026): de costado y sin barra, «🎤 Quiero revancha»
+   quedaba en «Quie…» y no se podía mover */
+@media (hover: hover) and (pointer: fine) { .cmh-rap { flex-wrap: wrap; overflow: visible; } }
 
 /* ── ligas, promos, chats ── */
 .ed-bats { display: grid; gap: 6px; margin: 4px 0 10px; }
 .ed-bat { display: grid; grid-template-columns: minmax(0, 1fr) 84px minmax(0, 1fr); gap: 4px 8px; align-items: center; background: var(--fondo); padding: 6px 8px; font-size: 12.5px; }
 .ed-bat > span { display: flex; align-items: center; gap: 6px; min-width: 0; color: var(--gris); overflow: hidden; white-space: nowrap; }
 .ed-bat > span:last-of-type { justify-content: flex-end; }
+.ed-bn { font-style: normal; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 899px) { .ed-bat { grid-template-columns: minmax(0, 1fr) 52px minmax(0, 1fr); } }
 .ed-bat > span.ed-gano { color: var(--tinta); font-weight: 800; }
 .ed-bat em { font: 700 12px/1 'Barlow Condensed', Archivo, sans-serif; font-style: normal; color: var(--gris); text-align: center; }
 .ed-bat small { grid-column: 1 / -1; text-align: center; font: 700 10.5px/1 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .06em; text-transform: uppercase; color: var(--gris); }
-.ed-lgrid, .ed-vgrid, .ed-chgrid { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 calc(-1 * var(--ed-g)); padding: 0 var(--ed-g) 6px; scrollbar-width: none; }
+/* `scroll-padding-inline`: con el imán en `start` y sin él, la primera tarjeta quedaba pegada al borde (x=0) y los títulos
+   en el margen (revisión 21/11/2026) */
+.ed-lgrid, .ed-vgrid, .ed-chgrid { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--ed-g); margin: 0 calc(-1 * var(--ed-g)); padding: 0 var(--ed-g) 6px; scrollbar-width: none; }
 .ed-lg, .ed-v, .ed-chat { flex: 0 0 84%; scroll-snap-align: start; background: var(--caja); min-width: 0; }
 .ed-lg .ed-tapa { aspect-ratio: 16 / 9; }
 .ed-lg .ed-cu h4 { margin-bottom: 4px; }
@@ -149,6 +166,9 @@
 .ed-v-img { position: relative; aspect-ratio: 16 / 9; background: #0b0b0c; overflow: hidden; }
 .ed-v-img .pb-vid { position: absolute; inset: 0; display: block; }
 .ed-v-img .pb-vid-img, .ed-v-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* una promo sin video ni imagen trae la cara de quien la comparte: al medio y grande, no de 64 px en la esquina */
+.ed-v-img > .cara, .ed-v-img > .pb-cara { position: absolute; inset: 0; margin: auto; width: 96px; height: 96px; font-size: 34px; }
+.ed-v-img > .cara img, .ed-v-img > .pb-cara img { border-radius: 50%; }
 .ed-v .ed-cu h4 { font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .ed-chat { padding: 14px; display: grid; gap: 8px; align-content: start; }
 .ed-ch-cab { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 2px 10px; align-items: center; color: var(--tinta); }
@@ -181,7 +201,6 @@
 @media (min-width: 900px) {
   .ed, .ed-mast { --ed-g: var(--gut, 40px); }
   .ed-mast { padding: 16px var(--ed-g) 6px; }
-  .ed-mast-top { padding-right: 190px; }
   .ed-mast-mid { grid-template-columns: auto minmax(0, 1fr); gap: 24px; }
   .ed-franja { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .ed-solo-pc { display: inline; }
@@ -198,11 +217,17 @@
   .ed-vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; overflow: visible; margin: 0; padding: 0; }
   .ed-chgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; overflow: visible; margin: 0; padding: 0; }
   .ed-lg, .ed-v, .ed-chat { flex: none; }
-  .ed-breves { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* `auto-fit`: con una sola breve, a lo ancho y no en un tercio (revisión 21/11/2026) */
+  .ed-breves { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
   .ed-eds { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .ed-prin .ed-reto { grid-template-columns: 28px minmax(0, 1fr) auto; } .ed-prin .ed-reto-b { grid-column: auto; }
 }
-@media (min-width: 900px) and (max-width: 1180px) { .ed-lgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ed-breves { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 900px) and (max-width: 1180px) { .ed-lgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* «¿Cómo funciona?» (`.cf`, vivo.css) aparece desde 760: el lugar para la pastilla, desde ahí y no desde 900 (en la tablet
+   tapaba «VIERNES 20 DE NOVIEMBRE») */
+@media (min-width: 760px) { .ed-mast-top { padding-right: 190px; } }
+/* 👆 «Avísame», de 44 px para el dedo sin mover nada */
+@media (max-width: 759.98px) { .ed-txt { display: inline-flex; align-items: center; padding-block: 15px; margin-block: -15px; } }
 /* 📱 el celular, más corto: cada nota con un comentario (Nota pide `ver` 1) y las respuestas rápidas sólo en el titular */
 @media (max-width: 899px) { .ed-nota .cmh-rap { display: none; } }
 @media (prefers-reduced-motion: reduce) { .ed-pista { animation: none !important; } .ed-ticker { overflow-x: auto; } .ed-ti + .ed-ti { display: none; } }

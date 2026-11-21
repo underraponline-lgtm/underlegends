@@ -215,10 +215,24 @@ export function PerfilSv({ liga, sv, enc }) {
     ['sv-mes', 'MES AWARDS', null], ['sv-promos', 'Promos', null], ['ent-buscados', 'Se busca', buscados.length], ['ent-otros', 'Los otros', otros.length]];
   // las piezas que el balance mueve de lado (`useBalanceSv`): «Sus noches» y «Su temporada»
   const b2 = D ? { 'sv9-duelo': <SvDuelo key="du" liga={liga} D={D} sv={sv} />, 'sv9-org': <SvOrganiza key="or" liga={liga} sv={sv} /> } : {};
-  const b3 = D ? { 'sv9-camp': <SvCampeones key="ca" liga={liga} D={D} />, 'sv9-hm': <SvCuando key="hm" D={D} />, 'pf9-rec': <SvRecords key="re" D={D} /> } : {};
+  const b3 = D ? { 'sv9-camp': <SvCampeones key="ca" liga={liga} D={D} />, 'sv9-hm': <SvCuando key="hm" D={D} />, 'sv9-recs': <SvRecords key="re" D={D} /> } : {};
+  // 🔑 18/11/2026: la key con el nombre de respaldo, como en abajo.jsx: un buscado sin clave (k:'', el nombre no está en
+  // `gente`) daba keys repetidas en cuanto dos caían en el mismo servidor
+  const carteles = <div className="mw-rail" style={{ '--cols': Math.ceil(buscados.length / Math.ceil(buscados.length / 6)) }}>{buscados.map((b) => <Poster key={b.k || 'n:' + b.n} liga={liga} b={b} />)}</div>;
+  // 🧩 (revisión 21/11/2026) con 3 cartas o menos y 3 buscados o menos, los dos en una banda, lado a lado: separados, CEU
+  // dejaba ~700 px vacíos al lado de sus 2 cartas y ~550 al lado de sus 2 carteles
+  const juntos = gente.length > 0 && gente.length <= 3 && buscados.length > 0 && buscados.length <= 3;
   const cartas = gente.length ? (
     <Sec id="ent-cartas" titulo={'Los que mandan en ' + siglaDe(sv)} enlace="Todos los raperos" href="#/ranking" extra="negra">
-      <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { sv }) || 'temporada'} />)}</div>
+      <div className={'ent-mandan' + (juntos ? ' pocas' : '')}>
+        <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { sv }) || 'temporada'} />)}</div>
+        {juntos ? (
+          <div id="ent-buscados" className="ent-busc">
+            <h3 className="ent-h">{'Se busca en ' + siglaDe(sv)}<a className="te-link" href="#/ranking/mw">Most Wanted</a></h3>
+            {carteles}
+          </div>
+        ) : null}
+      </div>
     </Sec>
   ) : null;
   return (
@@ -235,7 +249,9 @@ export function PerfilSv({ liga, sv, enc }) {
           <SeguirSv sv={sv} />
           <Compartir cls="btn borde" url={enlace('#/sv/' + siglaDe(sv))} texto={(s.nombre || siglaDe(sv)) + ' en la Liga Global'} /></>}
         // la celda de la semana se resalta sólo si suma: un «×0,75» o un «×1» resaltados al lado de tres ceros decían lo contrario
-        numeros={[['ESTA SEMANA', x ? mult(x) : '×1', x > 1 ? 'dest sube' : ''], ['RAPEROS', num(s.n || 0)], ['PUNTOS', num(s.pts || 0)], ['EVENTOS', num(s.ev || 0)]]}
+        // 🏷️ «QUE SUMAN» (revisión 21/11/2026): acá son los que suman para el servidor y sus llaves; «De un vistazo», justo
+        // abajo, cuenta a todos los que jugaron acá. Con el mismo rótulo, FFA decía 406 y 423 raperos en la misma pantalla
+        numeros={[['ESTA SEMANA', x ? mult(x) : '×1', x > 1 ? 'dest sube' : ''], ['RAPEROS QUE SUMAN', num(s.n || 0)], ['PUNTOS', num(s.pts || 0)], ['EVENTOS QUE SUMAN', num(s.ev || 0)]]}
         extra={semana.length ? (
           <ul className="ent-semana">
             {semana.map(([t, d, pct]) => (
@@ -292,12 +308,8 @@ export function PerfilSv({ liga, sv, enc }) {
       {/* sin envoltorio: entre dos secciones negras, uno de más cortaba `.sec.negra+.sec.negra` y dejaba una franja clara */}
       <MesSv liga={liga} sv={sv} enc={enc} />
       <PromosSv liga={liga} sv={sv} />
-      {/* 🔑 18/11/2026: la key con el nombre de respaldo, como en abajo.jsx: un buscado sin clave (k:'', el nombre no está en
-          `gente`) daba keys repetidas en cuanto dos caían en el mismo servidor */}
-      {buscados.length ? (
-        <Sec id="ent-buscados" titulo={'Se busca en ' + siglaDe(sv)} enlace="Most Wanted" href="#/ranking/mw" extra="negra">
-          <div className="mw-rail" style={{ '--cols': Math.ceil(buscados.length / Math.ceil(buscados.length / 6)) }}>{buscados.map((b) => <Poster key={b.k || 'n:' + b.n} liga={liga} b={b} />)}</div>
-        </Sec>
+      {buscados.length && !juntos ? (
+        <Sec id="ent-buscados" titulo={'Se busca en ' + siglaDe(sv)} enlace="Most Wanted" href="#/ranking/mw" extra="negra">{carteles}</Sec>
       ) : null}
       <Sec id="ent-otros" titulo="Los otros servidores">
         <Otros href="#/socios" et="Todos los socios"
@@ -455,7 +467,13 @@ export function PaginaPais({ liga, cc: cc0 }) {
   const nroP = {};
   gente.filter((f) => f.pos && !f.fc).forEach((f, j) => { nroP[f.k] = j + 1; });
   const numP = (_c, f) => nroP[f.k] || 0;
-  const pelP = gente.length > 2 ? peleaDe({ cfg: { valor: [(f) => f.ovr || 0] }, base: gente, numero: numP }) : null;
+  // (revisión 21/11/2026) la pelea, con 5 o más en la tabla: con tres, «la más cerrada» de Costa Rica separaba a dos por
+  // 32.600 pts. Y «Se movieron», los 3 que más subieron y los 3 que más bajaron (eran hasta 11 filas, y estiraban la pelea
+  // de al lado a 430 px con dos caras en el medio)
+  const pelP = gente.length >= 5 ? peleaDe({ cfg: { valor: [(f) => f.ovr || 0] }, base: gente, numero: numP }) : null;
+  const conMv = gente.filter((f) => f.mv && f.pos);
+  const movs = [...conMv.filter((f) => f.mv > 0).sort((a, b) => b.mv - a.mv || a.pos - b.pos).slice(0, 3),
+    ...conMv.filter((f) => f.mv < 0).sort((a, b) => a.mv - b.mv || a.pos - b.pos).slice(0, 3)];
   const tope = (liga.d.tabla || []).length;
   const crews = (liga.d.crews || []).filter((c) => (c.gente || []).some((x) => { const f = liga.fila(x); return f && String(f.cc).toLowerCase() === cc; }));
   const otros = ps.filter((p) => String(p.cc).toLowerCase() !== cc);
@@ -473,14 +491,19 @@ export function PaginaPais({ liga, cc: cc0 }) {
       <Indice items={items} />
       {gente.length ? (
         <Sec id="ent-cartas" titulo={'Los que mandan en ' + nom} extra="negra">
-          <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { pais: cc }) || 'temporada'} />)}</div>
-          {pelP ? (
-            <div className="rka ent-pelea">
-              <Pelea liga={liga} p={pelP} va={'#' + numP(0, pelP.a) + ' · ' + num(pelP.a.pts) + ' pts'} vb={'#' + numP(0, pelP.b) + ' · ' + num(pelP.b.pts) + ' pts'}
-                pie={pelP.d ? <>Separados por <b>{pelP.d} de OVR</b>.</> : <>Los dos con <b>{pelP.a.ovr} de OVR</b>; los separan <b>{num(pelP.d2)} pts</b>.</>} />
-              <Movidos liga={liga} base={gente} yoK={liga.yo ? liga.yo.k : ''} />
-            </div>
-          ) : null}
+          {/* 🃏 siempre la de País (revisión 21/11/2026): quien no la tiene sale con su cara y «SIN CARTA» (`Carta`), del
+              mismo tamaño. Con la de Temporada de respaldo, Lalox salía con otra forma, más alta y con números de otra cosa */}
+          {/* con 3 cartas o menos, lo de abajo sube a su derecha (`pocas`, entidad2.css): si no, 480 px vacíos al lado */}
+          <div className={'ent-mandan' + (cartas(gente).length <= 3 ? ' pocas' : '')}>
+            <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="pais" />)}</div>
+            {pelP || movs.length ? (
+              <div className={'rka ent-pelea' + (pelP && movs.length ? '' : ' solo')}>
+                {pelP ? <Pelea liga={liga} p={pelP} va={'#' + numP(0, pelP.a) + ' · ' + num(pelP.a.pts) + ' pts'} vb={'#' + numP(0, pelP.b) + ' · ' + num(pelP.b.pts) + ' pts'}
+                  pie={pelP.d ? <>Separados por <b>{pelP.d} de OVR</b>.</> : <>Los dos con <b>{pelP.a.ovr} de OVR</b>; los separan <b>{num(pelP.d2)} pts</b>.</>} /> : null}
+                {movs.length ? <Movidos liga={liga} base={movs} yoK={liga.yo ? liga.yo.k : ''} /> : null}
+              </div>
+            ) : null}
+          </div>
         </Sec>
       ) : null}
       {/* la tabla trae a los primeros de la Liga: el número de gente del país puede ser más grande que su lista */}

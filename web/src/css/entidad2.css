@@ -132,6 +132,12 @@
 .ent-otros li.todos b{font-size:13px}
 
 .ent-notas{margin:0}
+/* «Se busca», adentro de «Los que mandan» cuando los dos son cortos (entidad2.jsx `juntos`) */
+.ent-busc{display:grid;gap:12px;margin-top:22px;min-width:0}
+.ent-busc .ent-h{justify-content:space-between}
+.ent-busc .ent-h a{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+@media (min-width: 900px){.app .ent-mandan.pocas .ent-busc{margin-top:0}}
+@media (max-width: 759.98px){.app .ent-busc .ent-h a{display:inline-flex;align-items:center;padding-block:15px;margin-block:-15px}}
 
 @media (max-width: 599px){
   /* el emblema arriba, con el nombre: centrado quedaba flotando al lado de las redes y los botones */
@@ -166,6 +172,9 @@
   .app .ent-tx .hero-ev.muy-largo{font-size:min(58px,10.8cqi)}
   .app .ent-num{grid-column:auto;align-self:end}
   .app .ent-lado{grid-column:auto;align-self:end}
+  /* con «¿Cómo funciona?» arriba a la derecha (`.cf`, la crew), los números bajan 14 px: la pastilla montaba el borde de
+     arriba del cuadro (revisión 21/11/2026) */
+  .app:has(> .cf) .ent-lado{margin-top:14px}
   .app .ent-emb.cuadrado,.app .ent-emb.redondo{width:132px;height:132px}
   .app .ent-emb.bandera{width:168px}
   .app .ent-semana{padding:0 var(--gut) 24px}
@@ -187,7 +196,21 @@
   .app .ent-dos .ent-gh.dos>div+div{display:none}
   /* «los otros» en filas parejas: la cuenta de columnas viene del largo (`--cols`); con dos o tres, del ancho */
   .app .ent-otros{grid-template-columns:repeat(var(--cols,6),minmax(0,1fr))}
-  .app .ent-otros.pocos{grid-template-columns:repeat(auto-fill,minmax(160px,200px))}
+  /* con dos o tres, a lo ancho (revisión 21/11/2026): de 200 px dejaban 584 px vacíos a la derecha */
+  .app .ent-otros.pocos{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+  /* una lista corta (8 o menos) mide lo que una de las dos columnas de la larga: Costa Rica, con 3 filas, ponía el nombre
+     a la izquierda y los números a 950 px */
+  .app .ent-gente:not(.dos),.app .ent-gh:not(.dos){max-width:calc(50% - 18px)}
+  /* 🃏 tres cartas o menos: lo de abajo (la pelea, se movieron, los buscados) sube a la derecha de las cartas */
+  .app .ent-mandan.pocas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:24px;align-items:start}
+  .app .ent-mandan.pocas .ent-pelea{margin-top:0;grid-template-columns:minmax(0,1fr)}
+  .app .ent-mandan.pocas .mcs2{grid-template-columns:repeat(auto-fill,minmax(180px,220px))}
+  .app .ent-mandan.pocas #ent-buscados .mw-rail,.app .ent-mandan.pocas #ent-buscados .mw-rail:has(> :nth-child(3)){grid-auto-flow:row;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));overflow:visible}
+  .app .ent-mandan.pocas .mw-rail .poster{width:auto}
+  /* la pelea y «Se movieron» no se estiran a lo que mide la otra (Argentina: 590×430 con dos caras en el medio) */
+  .app .ent-pelea{align-items:start}
+  .app .ent-pelea.solo{grid-template-columns:minmax(0,1fr)}
   .app .ent-notas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
   /* las dos columnas de Lo último arrancan parejas: la raya de arriba es sólo de la primera de cada una */
   .app .ent-notas li:nth-child(2){border-top:0}

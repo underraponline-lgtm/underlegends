@@ -395,7 +395,7 @@ function Rivales4({ liga, f, D, esYo }) {
       <><em>#{ce.f.pos}</em> · {ce.arriba ? 'le faltan ' + num(gap) + ' pts para pasarlo' : 'a ' + num(gap) + ' pts de alcanzarlo'}</>));
   }
   if (xs.length < 4 && !cl) xs.push(<div key="v1" className="pv-rv vac"><span><b>{esYo ? 'Tu clásico' : 'Su clásico'}</b>Aparece al cruzarse tres veces con el mismo rival.</span></div>);
-  if (xs.length < 4 && !mv) xs.push(<div key="v2" className="pv-rv vac"><span><b>{esYo ? 'Tu mejor victoria' : 'Su mejor victoria'}</b>La primera vez que le gane a alguien de la tabla, va acá.</span></div>);
+  if (xs.length < 4 && !mv) xs.push(<div key="v2" className="pv-rv vac"><span><b>{esYo ? 'Tu mejor victoria' : 'Su mejor victoria'}</b>{esYo ? 'La primera vez que le ganes a alguien de la tabla, va acá.' : 'La primera vez que le gane a alguien de la tabla, va acá.'}</span></div>);
   return <div className="pv-rivs">{xs.slice(0, 4)}</div>;
 }
 

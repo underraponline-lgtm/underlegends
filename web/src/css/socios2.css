@@ -75,7 +75,14 @@
 .sk-ct-num dt{color:var(--gris);font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .sk-ct-num dd{margin:3px 0 0;font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
 .sk-ct-cu{display:flex;flex-wrap:wrap;gap:4px;margin:0}
-.sk-ct-cu span{padding:3px 5px;font:800 10.5px/1 Archivo,sans-serif;text-transform:uppercase}
+.sk-ct-cu span{padding:3px 5px;font:800 11.5px/1 Archivo,sans-serif;text-transform:uppercase}
+/* los que esperan su primer evento, aparte y en chico (socios2.jsx `aparte`): el afiche baja a una franja con el logo */
+.sk-esp-t{margin:30px 0 12px;font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.sk-cart.chicos .sk-af{aspect-ratio:auto;height:104px}
+.sk-cart.chicos .sk-ct-lg{width:64px}
+/* 👆 el nombre de cada socio, de 44 px para el dedo en el celular (medía 16) sin mover el cartel */
+@media (max-width: 759.98px){.app .sk-ct-n{padding-block:14px;margin-block:-14px}}
+@media (min-width: 900px){.app .sk-cart.chicos{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
 .sk-ct-cu .si{background:var(--suave);color:var(--tinta)}
 .sk-ct-cu .no{color:var(--gris);text-decoration:line-through}
 .sk-ct-ev{margin:0;font:500 12.5px/1.35 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}

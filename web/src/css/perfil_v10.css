@@ -88,7 +88,10 @@
 .pv-tape-ley i.m{width:2px;height:12px;background:var(--magenta)}
 /* sus rivales, en una fila */
 .pv-rivs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:22px;padding-top:22px;border-top:1px solid #2A2A2E}
-@media (min-width:900px){.app .pv-rivs{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+/* (revisión 21/11/2026) en el celular, uno por fila: de a dos, «SU CLÁSICO CA…» quedaba en dos letras. En la compu,
+   `auto-fit`: con dos cajas, cada una a media fila en vez de dos cuartos y un hueco de 600 px */
+@media (max-width:599.98px){.app .pv-rivs{grid-template-columns:minmax(0,1fr)}}
+@media (min-width:900px){.app .pv-rivs{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}}
 .pv-rv{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:center;padding:14px;border:0;border-radius:4px;background:#141417;color:#F6F6F6;
   text-align:left;font:inherit;cursor:pointer}
 .pv-rv:disabled{cursor:default}
@@ -101,7 +104,7 @@
 .pv-rv small{font-size:12.5px;line-height:1.3;color:#C9C9C4}
 .pv-rv em{font-style:normal;font-weight:800;color:#F6F6F6}
 .pv-rv.vac{grid-template-columns:minmax(0,1fr);border:1.5px dashed #3A3A40;background:none;color:#A5A5A0;font-size:13px;cursor:default}
-.pv-rv.vac b{display:block;color:#F6F6F6;font:800 13px/1.2 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+.pv-rv.vac b{display:block;color:#F6F6F6;font:800 13px/1.2 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.04em;white-space:normal}
 @media (hover:hover){.pv-rv:not(:disabled):not(.vac):hover{background:#1C1C20}}
 .pv-rv:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 
@@ -111,6 +114,8 @@
 .pv-izq{min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:18px;align-content:start}
 .pv-lado{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-content:start;min-width:0}
 .pv-mas-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+/* la que queda sola en su fila, a lo ancho (revisión 21/11/2026: «Dónde está» ocupaba media fila con 420 px vacíos al lado) */
+.pv-mas-g > :last-child:nth-child(odd){grid-column:1 / -1}
 @media (max-width:899.98px){.app .pv-mas-g{grid-template-columns:minmax(0,1fr)}}
 /* su próximo evento */
 .pv-prox{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 18px;border-radius:4px;
@@ -130,8 +135,10 @@
 .pv-lg-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
 .pv-lg-h h3{margin:0;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .pv-lg-h a{font:700 13px/1 Archivo,sans-serif;color:var(--tinta);text-decoration:underline;text-underline-offset:3px}
-.pv-lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
-@media (max-width:599.98px){.app .pv-lg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pv-lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+@media (max-width:599.98px){.app .pv-lg{grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* la que queda sola en su fila, a lo ancho (revisión 21/11/2026: «Ascenso a la FMH Under» sola, con media fila vacía) */
+  .app .pv-lg > :last-child:nth-child(odd){grid-column:1 / -1}}
 .pv-lg-c{display:grid;grid-template-rows:150px auto;min-width:0;overflow:hidden;border-radius:4px;background:var(--caja);color:var(--tinta);text-decoration:none}
 .pv-lg-fl{position:relative;display:grid;place-items:center;overflow:hidden;background:var(--svc)}
 .pv-lg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -144,7 +151,7 @@
 .pv-lg-ps small{margin-left:3px;font:700 11px/1 Archivo,sans-serif}
 .pv-lg-med{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;color:#030304;font:900 24px/1 Archivo,sans-serif}
 .pv-lg-tx{display:grid;gap:4px;padding:10px 12px 12px;min-width:0}
-.pv-lg-tx b{font:900 14.5px/1.1 Archivo,sans-serif;text-transform:uppercase;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.2em}
+.pv-lg-tx b{font:900 14.5px/1.1 Archivo,sans-serif;text-transform:uppercase;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.2em;overflow-wrap:anywhere}
 .pv-lg-tx small{font:500 12.5px/1.3 Archivo,sans-serif;color:var(--gris)}
 .pv-lg-c:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 /* las pestañas */
@@ -216,6 +223,10 @@
 .pv-ej-ic svg{width:28px;height:28px}
 .pv-ej-rg{display:grid;place-items:center;width:34px;height:34px;border-radius:3px;background:var(--tc);color:#030304;font:900 18px/1 Archivo,sans-serif}
 .pv-ej-i b{display:block;font:800 15px/1.2 Archivo,sans-serif}
+/* la letra del ejemplo de Rango: `.pv-ej-i b` le ganaba por especificidad y la «D» quedaba arriba a la izquierda */
+.pv-ej-i .pv-ej-rg{display:grid;place-items:center;font:900 18px/1 Archivo,sans-serif}
+/* en Clara el ejemplo va sobre blanco: el amarillo de Campeón daba 1,9:1. El rótulo y el ícono, oscurecidos; el borde sigue en --tc */
+.clara .pv-ej .pv-cat,.clara .pv-ej-ic{color:color-mix(in srgb,var(--tc) 55%,#030304)}
 .pv-ej-i small{display:block;margin-top:3px;font-size:13px;color:var(--gris)}
 /* eventos: cada noche un afiche */
 .pv-np-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
@@ -255,7 +266,7 @@
 /* ── el costado ── */
 .pv-cajal{padding:16px;border-radius:4px;background:var(--caja);min-width:0}
 .pv-cajal h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.pv-cajal h3 a{font:700 12.5px/1 Archivo,sans-serif;text-transform:none;font-stretch:100%;color:var(--tinta);text-decoration:underline;text-underline-offset:3px}
+.pv-cajal h3 a{font:700 12.5px/1 Archivo,sans-serif;text-transform:none;font-stretch:100%;color:var(--tinta);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 .pv-sem7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;align-items:end;height:64px}
 .pv-sem7 i{display:block;min-height:4px;border-radius:2px 2px 0 0;background:var(--suave)}
 .pv-sem7 i.on{background:var(--tinta)}
@@ -270,6 +281,7 @@
 .pv-flag{width:20px;height:14px;object-fit:cover;border-radius:2px}
 .pv-dl li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--suave);font-size:14px}
 .pv-dl b{color:var(--verde);font:800 14px/1 Archivo,sans-serif}
+.clara .pv-dl b{color:#157564}
 .pv-dl li.dv b{display:inline-flex;align-items:center;gap:8px;color:var(--pc)}
 .clara .pv-dl li.dv b{color:color-mix(in srgb,var(--pc) 60%,#030304)}
 .pv-gema{display:inline-block;flex:none;width:10px;height:10px;border-radius:2px;transform:rotate(45deg);background:var(--pc);box-shadow:inset 2px 2px 0 rgba(255,255,255,.38)}
@@ -346,3 +358,9 @@
 .clara .pv-lado .pf9-pz,.clara .pv-mas-g .pf9-pz{--fondo:#FFFFFF;--tinta:#030304;--linea:#030304;--suave:#E2E2DE;--gris:#6E6E6A;--caja:#F3F3F0;--inv:#030304;--inv-tinta:#F6F6F6;
   --magenta-tx:#D0106A;background:#F3F3F0;color:#030304;box-shadow:none}
 .noche .pv-lado .pf9-pz,.noche .pv-mas-g .pf9-pz{background:var(--caja);box-shadow:none}
+
+/* 👆 (revisión 21/11/2026) los enlaces de texto, de 44 px de alto para el dedo, sin mover el diseño: el relleno se come con
+   el margen negativo */
+@media (max-width:759.98px){
+  .app .pv-lg-h a,.app .pv-cajal h3 a{display:inline-flex;align-items:center;padding-block:14px;margin-block:-14px}
+}

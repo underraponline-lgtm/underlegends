@@ -85,7 +85,11 @@ export function MesSv({ liga, sv, enc }) {
 
 export function PromosSv({ liga, sv }) {
   const A = useAplausos();
-  const xs = (liga.muro || []).filter((it) => it.tipo === 'promo' && it.sv === sv && it.o !== 'liga').slice(0, 4);
+  // 🔁 sin las que ya salen en «Su muro» (revisión 21/11/2026): en DRA la única promo estaba en el muro, justo arriba, y la
+  // sección la repetía. Si no queda ninguna, la sección no se dibuja
+  let enMuro = new Set();
+  try { enMuro = new Set(liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && liga.svDe(it) === sv).map((it) => it.id)); } catch (e) { enMuro = new Set(); }
+  const xs = (liga.muro || []).filter((it) => it.tipo === 'promo' && it.sv === sv && it.o !== 'liga' && !enMuro.has(it.id)).slice(0, 4);
   if (!xs.length) return null;
   return (
     <Sec id="sv-promos" titulo={'Se promociona en ' + siglaDe(sv)} enlace="Todas las promos" href="#/publicaciones">

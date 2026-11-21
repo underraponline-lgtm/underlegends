@@ -98,8 +98,9 @@ function TapaGrupo({ liga, tipo, xs }) {
   }
   return (
     <div className="ed-tapa ed-letras">{xs.slice(0, 8).map((it, i) => (
-      <span key={it.id || i}>{tipo === 'rango' ? <Cara liga={liga} k={ksDe(it)[0]} nombre={quien1(it)} cls="ed-lc" /> : <img className="ed-lc" alt="" src={liga.logo(liga.svDe(it))} loading="lazy" />}
-        {tipo === 'rango' ? <i style={{ background: liga.colorRg(it.rg) }}>{it.rg}</i> : null}{tipo === 'rango' ? limpio(quien1(it)) : siglaDe(liga.svDe(it))}</span>
+      <span key={it.id || i}>{tipo === 'rango' || tipo === 'pase' ? <Cara liga={liga} k={ksDe(it)[0]} nombre={quien1(it)} cls="ed-lc" /> : <img className="ed-lc" alt="" src={liga.logo(liga.svDe(it))} loading="lazy" />}
+        {tipo === 'rango' ? <i style={{ background: liga.colorRg(it.rg) }}>{it.rg}</i> : tipo === 'pase' && it.nivel ? <i style={{ background: 'var(--ed-pase)' }}>{it.nivel}</i> : null}
+        {tipo === 'rango' || tipo === 'pase' ? limpio(quien1(it)) : siglaDe(liga.svDe(it))}</span>
     ))}</div>
   );
 }
@@ -153,10 +154,12 @@ function Nota({ liga, it, xs, A, P, H, fuerte, reto }) {
   );
 }
 function NotaGrupo({ liga, tipo, xs, H, A }) {
-  const lab = tipo === 'rango' ? 'Rangos' : tipo === 'tarjeta' ? 'Cartas nuevas' : 'Servidores';
-  const tit = tipo === 'rango' ? xs.length + ' raperos suben de rango' : tipo === 'tarjeta' ? xs.length + ' cartas nuevas' : xs.length + ' servidores';
+  const nvs = [...new Set(xs.map((it) => it.nivel).filter(Boolean))];
+  const lab = tipo === 'rango' ? 'Rangos' : tipo === 'tarjeta' ? 'Cartas nuevas' : tipo === 'pase' ? 'Pase de rapero' : 'Servidores';
+  const tit = tipo === 'rango' ? xs.length + ' raperos suben de rango' : tipo === 'tarjeta' ? xs.length + ' cartas nuevas'
+    : tipo === 'pase' ? (nvs.length === 1 ? xs.length + ' llegaron al nivel ' + nvs[0] + ' del Pase' : xs.length + ' suben de nivel en el Pase') : xs.length + ' servidores';
   return (
-    <article className={'ed-nota ed-t-' + (tipo === 'tarjeta' ? 'carta' : tipo === 'rango' ? 'carta' : 'liga')}>
+    <article className={'ed-nota ed-t-' + (tipo === 'tarjeta' || tipo === 'rango' ? 'carta' : tipo === 'pase' ? 'pase' : 'liga')}>
       <TapaGrupo liga={liga} tipo={tipo} xs={xs} />
       <div className="ed-cu"><span className="ed-lab">{lab}</span><h4>{tit}</h4>
         <ul className="ed-lista">{xs.slice(0, 8).map((it, i) => {
@@ -166,6 +169,7 @@ function NotaGrupo({ liga, tipo, xs, H, A }) {
               <span>{c ? c.txt : ''}</span>{H.LOGROS[it.tipo] ? <H.Felicitar liga={liga} it={it} A={A} chico /> : null}</li>
           );
         })}</ul>
+        {xs.length > 8 ? <p className="ed-nota-p">Y {xs.length - 8} más.</p> : null}
       </div>
     </article>
   );
@@ -173,19 +177,24 @@ function NotaGrupo({ liga, tipo, xs, H, A }) {
 
 // ── 🏟️ las ligas: la jornada de ese día como nota, y la banda con cada una (su flyer, su tabla, lo último) ──
 const COMO = { directa: 'directa', replica: 'por réplica' };
+// (revisión 21/11/2026) el nombre va en su `<i>` para cortarse con «…» (suelto se cortaba sin puntos, y el de la derecha
+// perdía el comienzo: «artim»), y sin una mención de Discord pegada: el lector de llaves guardó «MOTE RA 1320135304916762695»
+const nomBat = (x) => limpio(x || '').replace(/\s*\b\d{17,20}\b/g, '');
 function Batalla({ liga, b, ks }) {
   const pts = typeof b[4] === 'number' && typeof b[5] === 'number';
   return (
     <div className="ed-bat">
-      <span className={b[2] === b[0] ? 'ed-gano' : ''}><Cara liga={liga} k={(ks || {})[b[0]] || ''} nombre={b[0]} cls="ed-bc2" />{limpio(b[0])}</span>
+      <span className={b[2] === b[0] ? 'ed-gano' : ''}><Cara liga={liga} k={(ks || {})[b[0]] || ''} nombre={b[0]} cls="ed-bc2" /><i className="ed-bn">{nomBat(b[0])}</i></span>
       <em>{pts ? String(b[4]).replace('.', ',') + ' · ' + String(b[5]).replace('.', ',') : 'vs'}</em>
-      <span className={b[2] === b[1] ? 'ed-gano' : ''}>{limpio(b[1])}<Cara liga={liga} k={(ks || {})[b[1]] || ''} nombre={b[1]} cls="ed-bc2" /></span>
-      <small>{limpio(b[2] || '')} {COMO[b[3]] || b[3] || ''}</small>
+      <span className={b[2] === b[1] ? 'ed-gano' : ''}><i className="ed-bn">{nomBat(b[1])}</i><Cara liga={liga} k={(ks || {})[b[1]] || ''} nombre={b[1]} cls="ed-bc2" /></span>
+      <small>{nomBat(b[2])} {COMO[b[3]] || b[3] || ''}</small>
     </div>
   );
 }
 function PortadaLiga({ liga, L, fl }) {
-  if (fl) return <div className="ed-tapa ed-flyer"><img alt="" src={fl} loading="lazy" /></div>;
+  // 🖼️ un flyer casi cuadrado (o apaisado) se centra (revisión 21/11/2026): arriba de todo, el de FMS Ceuta (1200×1193)
+  // mostraba sólo su tercio de arriba, un verde liso. Los altos siguen desde arriba, donde va el título
+  if (fl) return <div className="ed-tapa ed-flyer"><img alt="" src={fl} loading="lazy" onLoad={(e) => { const im = e.currentTarget; if (im.naturalHeight < im.naturalWidth * 1.15) im.classList.add('cuad'); }} /></div>;
   const es = escenaDe(L.sv);
   return <div className="ed-tapa ed-t-liga">{es ? <img className="ed-esc" alt="" src={es} loading="lazy" /> : null}<img className="ed-prota logo" alt="" src={liga.logo(L.sv)} loading="lazy" /><span className="ed-rot">{limpio(L.n)}</span></div>;
 }
@@ -244,7 +253,8 @@ function FelicitaHoy({ liga, xs, A, H }) {
         const c = H.contenido(liga, it, H.pub);
         return <div key={it.id} className="ed-res"><Cara liga={liga} k={ksDe(it)[0]} nombre={quien1(it)} cls="ed-rc" /><span><b>{limpio(quien1(it))}</b><small>{c ? c.txt : ''}</small></span><H.Felicitar liga={liga} it={it} A={A} chico /></div>;
       })}
-      <p className="ed-nota-p">Nadie los felicitó todavía. Cada felicitación suma a tu Pase.</p>
+      {/* el «1» de cada botón es el de su barra (`Felicitar`): «nadie los felicitó» al lado de un 1 se contradecía */}
+      <p className="ed-nota-p">Todavía no los felicitó nadie más que su barra. Cada felicitación suma a tu Pase.</p>
     </section>
   );
 }
@@ -282,7 +292,9 @@ function LoQueViene({ liga }) {
 
 // ══════════ LA EDICIÓN ══════════
 const PRIO = { campeon: 0, caza: 1, precio: 2, resnoche: 3, pase: 4, rango: 5, tarjeta: 6 };
-const GRUPO = (it) => (it.tipo === 'rango' || it.tipo === 'tarjeta' ? it.tipo : DE_SERVIDOR.has(it.tipo) && it.tipo !== 'svchat' ? 'sv' : '');
+// 🎟️ los del Pase, también juntos (revisión 21/11/2026): «Lo que pasó» era una pared de 27 notas lila casi iguales
+// («10 · nivel del Pase») que tapaba a los campeones, las ligas y las crews. Una nota con las caras, como las cartas
+const GRUPO = (it) => (it.tipo === 'rango' || it.tipo === 'tarjeta' || it.tipo === 'pase' ? it.tipo : DE_SERVIDOR.has(it.tipo) && it.tipo !== 'svchat' ? 'sv' : '');
 const BREVE = { podio: 1, top10: 1, racha: 1, svnuevo: 1, svmeta: 1 };
 function titularDe(xs) {
   const c = xs.filter((it) => it.tipo === 'campeon').sort((a, b) => (b.part || 0) - (a.part || 0))[0];
@@ -318,14 +330,19 @@ export function EdCab({ liga, todos, D, H }) {
   const cu = (f) => sem.filter(f).length;
   return (
     <header className="escena ed-mast">
-      <div className="ed-mast-top"><span>{nro > 0 ? <>N.º <b>{nro}</b> · </> : null}Temporada {String(liga.temp || '').replace(/^T/i, '')}</span><b>{fechaL.charAt(0).toUpperCase() + fechaL.slice(1)}</b><span className="ed-solo-pc">{xs.length} publicaciones · {xs.filter((it) => it.tipo === 'campeon').length} eventos</span></div>
+      {/* «este día» y «esta semana», dichos (revisión 21/11/2026): «31 PUBLICACIONES · 0 EVENTOS» al lado de «4 CAMPEONES» parecía
+          una cuenta que no cuadraba; uno es el día de la edición y la franja, la semana */}
+      <div className="ed-mast-top"><span>{nro > 0 ? <>N.º <b>{nro}</b> · </> : null}Temporada {String(liga.temp || '').replace(/^T/i, '')}</span><b>{fechaL.charAt(0).toUpperCase() + fechaL.slice(1)}</b><span className="ed-solo-pc">Este día: {xs.length} publicaciones · {xs.filter((it) => it.tipo === 'campeon').length} eventos</span></div>
       <div className="ed-mast-mid">
         <h1 className="ed-nombre"><span data-tuto="pb-cab">Publicaciones</span><small>La edición del {fechaL}</small></h1>
-        <div className="ed-franja">
-          <div><b>{cu((it) => it.tipo === 'campeon')}</b><span>Campeones</span></div>
-          <div><b>{cu((it) => it.tipo === 'rango')}</b><span>Suben de rango</span></div>
-          <div><b>{cu((it) => it.tipo === 'tarjeta')}</b><span>Cartas nuevas</span></div>
-          <div><b>{cu((it) => H.LOGROS[it.tipo] && it.tipo !== 'campeon' && it.tipo !== 'rango')}</b><span>Logros · la semana</span></div>
+        <div className="ed-franja-w">
+          <span className="ed-franja-t">Esta semana</span>
+          <div className="ed-franja">
+            <div><b>{cu((it) => it.tipo === 'campeon')}</b><span>Campeones</span></div>
+            <div><b>{cu((it) => it.tipo === 'rango')}</b><span>Suben de rango</span></div>
+            <div><b>{cu((it) => it.tipo === 'tarjeta')}</b><span>Cartas nuevas</span></div>
+            <div><b>{cu((it) => H.LOGROS[it.tipo] && it.tipo !== 'campeon' && it.tipo !== 'rango')}</b><span>Logros</span></div>
+          </div>
         </div>
       </div>
     </header>
@@ -429,7 +446,7 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
               <article key={L.id} className="ed-lg"><PortadaLiga liga={liga} L={L} fl={(((ligasFull[L.id] || {}).flyer) || {}).u} />
                 <div className="ed-cu"><span className="ed-lab">{(liga.svs[L.sv] && liga.svs[L.sv].nombre) || siglaDe(L.sv)} · {L.bat || 0} batallas</span><h4>{limpio(L.n)}</h4>
                   <ol className="ed-tabla">{(L.tabla || []).slice(0, 5).map((r, i) => (
-                    <li key={r[0]} className={i === 0 ? 'lider' : ''}><span className="pos">{i + 1}</span><Cara liga={liga} k={(L.ks || {})[r[0]] || ''} nombre={r[0]} cls="ed-bc2" /><b>{limpio(r[0])}</b><span className="pj">{r[1]} PJ</span>
+                    <li key={r[0]} className={i === 0 ? 'lider' : ''}><span className="pos">{i + 1}</span><Cara liga={liga} k={(L.ks || {})[r[0]] || ''} nombre={r[0]} cls="ed-bc2" /><b>{nomBat(r[0])}</b><span className="pj">{r[1]} PJ</span>
                       <span className="ed-bp"><i style={{ width: (fin ? Math.round(r[3] * 100 / fin) : 0) + '%' }} /></span><span className="pts">{r[3]}</span></li>
                   ))}</ol>
                   {(L.ult || []).length ? <><p className="ed-mini-t">Lo último</p><div className="ed-bats">{L.ult.slice(0, 2).map((b, i) => <Batalla key={i} liga={liga} b={b} ks={L.ks} />)}</div></> : null}

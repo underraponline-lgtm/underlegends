@@ -253,7 +253,7 @@ export function SuCamino({ liga, f, p, esYo }) {
         {/* 🏷️ `pf9-sig` y no `sig` (18/11/2026): `.sig` es una clase global de estilo.css (la del Inicio) y en el shadow root le
             ponía 14 px de margen arriba y otra letra, así que la casilla de la que sigue quedaba más abajo que las demás.
             Su aspecto —sin relleno, con el borde— va en línea, como el color de las otras: no depende de perfil.css */}
-        {sig ? <li className="pf9-sig"><span className="pf9-rg" style={{ background: 'transparent', color: '#F6F6F6', boxShadow: 'inset 0 0 0 1.5px #4A4A50' }}>{sig.r}</span><small>pide {sig.min}</small></li> : null}
+        {sig ? <li className="pf9-sig"><span className="pf9-rg" style={{ background: 'transparent', color: 'var(--tinta)', boxShadow: 'inset 0 0 0 1.5px var(--gris)' }}>{sig.r}</span><small>pide {sig.min}</small></li> : null}
       </ol>
       {sig && act ? (
         <>

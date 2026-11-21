@@ -257,4 +257,9 @@
   .stv-pes button{white-space:normal}
   .stv-mat-f{grid-template-columns:minmax(0,1fr) repeat(3,44px);gap:8px;font-size:13.5px}
   .stv-mat-cab > span:nth-child(n+2){font-size:11px}
+  /* el nombre en dos renglones y el logo más chico (revisión 21/11/2026): en uno salían «Dimensión del F…», «Discord Rap
+     Es…» con la columna de eventos medio vacía */
+  .stv-club{gap:8px}
+  .stv-club img{width:28px;height:28px}
+  .stv-club b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:14px;overflow-wrap:break-word}
 }

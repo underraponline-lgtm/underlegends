@@ -155,6 +155,9 @@
    tengan espacios innecesarios»): con tres de 320 px quedaba el lugar de una cuarta vacío, 528×288 (medido a 1333). Con
    más de las que entran siguen de 300 y se deslizan, como antes */
 @media (min-width: 900px){.app .crw-mazo{grid-auto-columns:minmax(300px,1fr)}}
+/* (revisión 21/11/2026) y en la compu, en filas: cuatro de 300 px y sus huecos son 1236 px en 1200, y la cuarta quedaba
+   cortada en el borde, de costado y sin barra (con el mouse no se mueve). Desde 900 bajan de renglón */
+@media (min-width: 900px){.app .crw-mazo{grid-auto-flow:row;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));overflow:visible}}
 
 /* ═══ EL REMAKE DE LAS CREWS (16/11/2026, la mezcla D): la piel del Inicio — negro, con piezas blancas (la franja de tu
    crew, la fila elegida, tu crew en la tabla) y la sombra corrida verde de «El próximo evento» ═══ */
@@ -223,10 +226,16 @@
 
 @media (min-width: 900px){
   .app .crw-cab2{grid-template-columns:minmax(0,1fr) auto}
+  /* los botones de la portada, cada uno en un renglón propio de texto («ENTRAR CON / DISCORD» se partía al lado de uno
+     entero) */
+  .app .crw-cta{max-width:none}
+  .app .crw-cta>.btn{flex:0 1 auto;white-space:nowrap}
   .app .crw-main2{padding:0 var(--gut) 40px}
   .app .crw-busqueda{grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr)}
   .app .crw-fila{grid-template-columns:minmax(0,1fr) auto 70px 70px 150px}
-  .app .crw-fila-d{display:grid;gap:2px;justify-items:end;white-space:nowrap;font:700 15px/1 "Barlow Condensed",sans-serif}
+  /* «11 /20» en un renglón y «gente» abajo (revisión 21/11/2026): en grilla, cada pedazo iba en su renglón */
+  .app .crw-fila-d{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:2px 0;white-space:nowrap;font:700 15px/1 "Barlow Condensed",sans-serif}
+  .app .crw-fila-d small{flex-basis:100%;text-align:right}
   .app .crw-fila-d b{font:900 17px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
   .app .crw-fila-d small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
   .app .crw-fila-b{grid-column:auto;justify-content:flex-end}
@@ -234,4 +243,8 @@
   .app .crw-prev .crw-ficha{box-shadow:6px 6px 0 var(--magenta)}
   .app .crw-prev-cel{display:none}
   .app .crw-dos{grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr)}
+}
+/* 👆 (revisión 21/11/2026) el nombre de cada crew y «Cómo funcionan los tiers»: 20–24 px de alto en el celular */
+@media (max-width: 759.98px){
+  .app .crw-nom a,.app .crw-como-b{padding-block:10px;margin-block:-10px}
 }

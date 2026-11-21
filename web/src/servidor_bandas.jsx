@@ -111,8 +111,13 @@ const Av = ({ liga, D, k, cls = '' }) => <Cara liga={liga} k={liga.existe(k) ? k
 // Los servidores chicos (pocas publicaciones, pocos eventos) no se emparejan sólo con las listas: además, las piezas que
 // pueden ir a cualquier lado (`B2_FLEX`, `B3_FLEX`) van donde dejan las dos columnas más parejas, como «Lo suyo» del perfil
 export const B2_FLEX = ['sv9-duelo', 'sv9-org'];
-export const B3_FLEX = ['sv9-camp', 'sv9-hm', 'pf9-rec'];
-const B0 = { ev: 6, mu: 5, fi: 8, b2: 0, b3: 0b011, v: 0 };
+// ⚠️ (revisión 21/11/2026) `sv9-recs` y no `pf9-rec`: «Cómo se juega acá» también es `.pf9-rec` y está antes en la página,
+// así que el alto de «Sus récords» se medía en otra pieza
+export const B3_FLEX = ['sv9-camp', 'sv9-hm', 'sv9-recs'];
+// `u2`/`u3`: los repartos ya probados en cada banda. Una pieza mide distinto en la columna ancha que en la angosta, así que
+// el mejor reparto calculado con los altos de un lado era otro con los del otro: FFA iba y volvía entre dos hasta gastar
+// las 20 vueltas, y el muro y la lista de eventos nunca se acomodaban (huecos de 320 y 416 px). Ahora no se vuelve a uno
+const B0 = { ev: 6, mu: 5, fi: 8, b2: 0, b3: 0b011, v: 0, u2: [0], u3: [0b011] };
 export const aLaDerecha = (mask, flex, c) => !!((mask >> (flex.length - 1 - flex.indexOf(c))) & 1);
 export function useBalanceSv(raiz, sv, listo) {
   const [L, setL] = useState(Object.assign({ sv: '' }, B0));
@@ -132,16 +137,19 @@ export function useBalanceSv(raiz, sv, listo) {
     const alto = (sel) => { const x = el.querySelector(sel); return x ? x.getBoundingClientRect().height + 8 : 60; };
     // primero, qué pieza va a cada lado: el alto de cada una (14 px de hueco) y todas las combinaciones
     const h = (c) => { const x = el.querySelector('.' + c); return x ? x.getBoundingClientRect().height + 14 : 0; };
-    const mejor = (fijoI, fijoD, flex, mask) => {
+    const mejor = (fijoI, fijoD, flex, mask, usados) => {
       const lados = (m) => flex.reduce((acc, c) => { acc[aLaDerecha(m, flex, c) ? 1 : 0] += h(c); return acc; }, [h(fijoI), h(fijoD)]);
       const desv = (m) => { const [a, b] = lados(m); return Math.abs(a - b); };
       let best = mask;
-      for (let m = 0; m < 1 << flex.length; m++) if (desv(m) < desv(best) - 60) best = m;
+      for (let m = 0; m < 1 << flex.length; m++) if (!usados.includes(m) && desv(m) < desv(best) - 60) best = m;
       return best;
     };
-    const b2 = mejor('pf9-noche', 'pf9-muro', B2_FLEX, B.b2);
-    const b3 = mejor('sv9-eventos', 'sv9-tsv', B3_FLEX, B.b3);
-    if (b2 !== B.b2 || b3 !== B.b3) { setL(Object.assign({}, B, { sv, b2, b3, v: B.v + 1 })); return; }
+    const b2 = mejor('pf9-noche', 'pf9-muro', B2_FLEX, B.b2, B.u2);
+    const b3 = mejor('sv9-eventos', 'sv9-tsv', B3_FLEX, B.b3, B.u3);
+    if (b2 !== B.b2 || b3 !== B.b3) {
+      setL(Object.assign({}, B, { sv, b2, b3, v: B.v + 1, u2: B.u2.includes(b2) ? B.u2 : B.u2.concat(b2), u3: B.u3.includes(b3) ? B.u3 : B.u3.concat(b3) }));
+      return;
+    }
     const n = Object.assign({}, B);
     const d2 = dif('sv9-b2'), h2 = alto('.pf9-filas > *');
     if (d2 > h2 && n.mu > 2) n.mu -= 1; else if (d2 < -h2 * 1.5 && n.mu < 10) n.mu += 1;
@@ -161,6 +169,11 @@ export function SvHistorias({ liga, sv }) {
   let v = {};
   try { v = JSON.parse(localStorage.getItem('lg:historias2')) || {}; } catch (e) { v = {}; }
   const xs = [...g.slides].reverse();
+  // 🪪 (revisión 21/11/2026) en el círculo, la cara de quien protagoniza la historia (la carta nueva, el campeón, el rango:
+  // su `ir` trae la clave); el logo del servidor sólo cuando no es de nadie. Con el logo en los siete no se distinguía cuál
+  // era cuál. Y la del servidor sin eventos (`vacio:`) traía su nombre de etiqueta («DISCORD RAP…»): dice qué es
+  const cara = (s) => { const k = s.ir && (s.ir.perfil || s.ir.carta); return (k && liga.avUrl && liga.avUrl(k, 256)) || liga.logo(s.esc || sv); };
+  const etq = (s) => (String(s.id || '').startsWith('vacio:') ? 'el servidor' : limpio(String(s.tag || '').split('·')[0]).toLowerCase());
   return (
     <section className="pf9-hist" aria-label="Sus historias">
       <h3 className="pf9-hist-t">Sus historias<small>{xs.length}</small></h3>
@@ -168,8 +181,8 @@ export function SvHistorias({ liga, sv }) {
         {xs.map((s) => (
           <li key={s.id}>
             <button type="button" className={'pf9-hist-b' + (v[s.id] ? ' vista' : '')} onClick={() => window.lgVerHistorias && window.lgVerHistorias(g, s.id)}>
-              <span className="pf9-hist-c" style={{ backgroundImage: 'url(' + liga.logo(s.esc || sv) + ')' }}><i>▶</i></span>
-              <b>{limpio(String(s.tag || '').split('·')[0]).toLowerCase()}</b>
+              <span className="pf9-hist-c" style={{ backgroundImage: 'url(' + cara(s) + ')' }}><i>▶</i></span>
+              <b>{etq(s)}</b>
               <small>{s.t ? fecha(s.t) : ''}</small>
             </button>
           </li>
@@ -302,7 +315,7 @@ export function SvVistazo({ D, sv }) {
   const pa = masComun(D.paises)[0];
   const xs = [
     ['Eventos', num(ev.length), (esta ? esta + ' esta semana · ' : '') + num(tot) + ' participaciones'],
-    ['Raperos', num(D.gente.size), 'distintos jugaron acá'],
+    ['Jugaron acá', num(D.gente.size), 'raperos distintos, de acá y de afuera'],
     ['Por evento', coma(tot / ev.length), 'el más lleno: ' + mayor],
     ['Campeones', String(D.titulos.size), top ? top[1] + (top[1] === 1 ? ' título de ' : ' títulos de ') + D.nombre(top[0]) : ''],
     pct != null && D.deb.length >= 3 ? ['Vuelven', pct + ' %', 'de los ' + D.deb.length + ' que debutaron acá · la Liga ' + pctL + ' %'] : null,
@@ -541,7 +554,7 @@ export function SvRecords({ D }) {
     top && top[1] > 1 ? ['El que más ganó', top[1] + ' títulos', D.nombre(top[0]) + ' · ' + (D.finales.get(top[0]) || top[1]) + ' finales'] : null,
   ].filter(Boolean);
   return (
-    <section className="pf9-pz pf9-rec tinte-o">
+    <section className="pf9-pz pf9-rec sv9-recs tinte-o">
       <header className="pf9-h"><h3>Sus récords</h3></header>
       <ul>{xs.map((x) => <li key={x[0]}><span>{x[0]}<small>{x[2]}</small></span><b>{x[1]}</b></li>)}</ul>
     </section>

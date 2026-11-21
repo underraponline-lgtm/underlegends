@@ -201,6 +201,10 @@ function Cartelera({ liga, svs, esperan, tab, setTab }) {
   if (esperan.length) tabs.push(['esp', 'Esperando', esperan.length]);
   const t = tabs.some((x) => x[0] === tab) ? tab : 'todos';
   const xs = t === 'todos' ? svs : t === 'esp' ? esperan : svs.filter((s) => 't' + s.tier === t);
+  // 🧩 (revisión 21/11/2026) en «Todos», los que esperan su primer evento van aparte, en carteles chicos y a lo ancho: con
+  // los 16 en seis columnas quedaban 6, 6 y 4, y un hueco de dos carteles (~470×600) al final
+  const aparte = t === 'todos' && xs.length - esperan.length >= 5 ? xs.filter((s) => esperan.includes(s)) : [];
+  const ys = aparte.length ? xs.filter((s) => !aparte.includes(s)) : xs;
   const min = (svs.find((s) => s.cu && s.cu.min) || { cu: {} }).cu.min;
   const QUE = QUE_TIER(min);
   const leg = t === 'todos' || t === 'esp' ? tiers : tiers.filter((n) => 't' + n === t);
@@ -220,9 +224,15 @@ function Cartelera({ liga, svs, esperan, tab, setTab }) {
           {leg.map((n) => <div key={n}><dt><TierChip s={{ tier: n }} /></dt><dd>{QUE[n].join(' · ')}</dd></div>)}
         </dl>
       ) : null}
-      <ul className="sk-cart" style={{ '--cols': colsDe(xs.length) }}>
-        {xs.map((s) => <Cartel key={s.sv} liga={liga} s={s} x={mm[s.sv]} />)}
+      <ul className="sk-cart" style={{ '--cols': colsDe(ys.length) }}>
+        {ys.map((s) => <Cartel key={s.sv} liga={liga} s={s} x={mm[s.sv]} />)}
       </ul>
+      {aparte.length ? (
+        <>
+          <h3 className="sk-st sk-esp-t">Esperando su primer evento</h3>
+          <ul className="sk-cart chicos">{aparte.map((s) => <Cartel key={s.sv} liga={liga} s={s} x={mm[s.sv]} />)}</ul>
+        </>
+      ) : null}
       <p className="sk-tleg-p">Y todos, sea cual sea su tier: sus eventos en el calendario, la campana y Publicaciones, su página y sus ligas.</p>
     </>
   );

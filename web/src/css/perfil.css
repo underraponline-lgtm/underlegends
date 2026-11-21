@@ -149,9 +149,13 @@
 .pf8-crew > b{display:grid;place-items:center;flex:none;height:28px;padding:0 6px;border-radius:3px;background:#F6F6F6;color:#030304;font:900 11px/1 Archivo,sans-serif}
 .pf8-crew > span{min-width:0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media (hover: hover) and (pointer: fine){a.pf8-crew:hover{box-shadow:inset 0 0 0 1px var(--esc-tinta)}}
-.pf8-segs{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;font:700 12.5px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--esc-gris)}
-.pf8-segs > :not(:first-child):not(.pf8-frase)::before{content:"·";margin:0 7px}
+/* «·» entre las piezas, nunca al principio de un renglón (revisión 21/11/2026: al partirse, la segunda línea arrancaba
+   con «· NIVEL 7» o «· (círculos)»). Cada pieza lleva su punto ANTES, el renglón entero va corrido 17 px a la izquierda
+   y esa franja se recorta: el punto de la primera pieza de cada renglón cae ahí y no se ve */
+.pf8-segs{margin:0 0 0 -17px;clip-path:inset(-8px -8px -8px 17px);display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;
+  font:700 12.5px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
+.pf8-segs > :not(.pf8-frase)::before{content:"·";display:inline-block;width:17px;text-align:center}
+.pf8-segs > .pf8-frase{margin-left:17px}
 .pf8-segs a{display:inline-flex;align-items:center;gap:5px;color:inherit;text-decoration:none}
 .pf8-segs .pf-flag{width:16px;height:11px}
 .pf8-segs img:not(.pf-flag){width:16px;height:16px;border-radius:50%;object-fit:cover}
@@ -634,8 +638,10 @@
 .pf9-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .pf9-h span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
 .pf9-k{font:800 11.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
-.pf9-pie{margin:0;font:500 12.5px/1.4 Archivo,sans-serif;color:#A5A5A0}
-.pf9-pie b{color:#F6F6F6;font-weight:800}
+/* con las variables del panel y no fijos (revisión 21/11/2026): en el costado de Clara el panel es claro y el 41,7 y la A
+   blancos no se veían. En los paneles negros las variables valen lo mismo que los fijos de antes */
+.pf9-pie{margin:0;font:500 12.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+.pf9-pie b{color:var(--tinta);font-weight:800}
 .pf9-av{width:36px;height:36px;border-radius:50%;overflow:hidden;flex:none;font-size:14px}
 .pf9-av.xs{width:22px;height:22px;font-size:10px}
 .pf9-av.lg{width:52px;height:52px;font-size:20px}
@@ -692,14 +698,16 @@
 .pf9-ruta li.cop .pf9-rd{color:#030304}
 .pf9-trofeo{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#030304;color:#F5C542;font:900 14px/1 Archivo,sans-serif}
 .pf9-otros{display:grid;gap:6px}
-.pf9-otros ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px}
+/* de a dos (revisión 21/11/2026): son hasta cuatro, y en tres columnas el cuarto quedaba solo en su fila. Con el doble de
+   ancho y dos renglones, los nombres largos ya no se cortan iguales («FREESTYLE FOR ALL …» dos veces) */
+.pf9-otros ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .pf9-otros button{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 8px;align-items:center;width:100%;min-height:44px;padding:8px 10px;border:0;border-radius:3px;
   background:#17171A;box-shadow:inset 3px 0 0 #F5C542;color:#F6F6F6;text-align:left;cursor:pointer}
 .pf9-otros.fp button{box-shadow:inset 3px 0 0 #C9CDD4}
 .pf9-otros button .pf9-av{grid-row:span 2}
 .pf9-otros button b,.pf9-otros button small{grid-column:2}
 .pf9-otros button:not(:has(.pf9-av)) b,.pf9-otros button:not(:has(.pf9-av)) small{grid-column:1 / -1}
-.pf9-otros b{font:800 13px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf9-otros b{font:800 13px/1.2 Archivo,sans-serif;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
 .pf9-otros small{font:500 11px/1.3 Archivo,sans-serif;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ⚔️ rivalidades */
@@ -725,17 +733,17 @@
 .pf9-rg{width:100%;height:38px;display:grid;place-items:center;border-radius:3px;font:900 18px/1 Archivo,sans-serif;color:#030304}
 /* (18/11/2026) el siguiente rango ya no es `li.sig`: `.sig` es global de estilo.css y le metía 14 px de margen, así que
    perfil_bandas.jsx usa `li.pf9-sig` con el aspecto en línea, y la regla de acá quedó sin nadie */
-.pf9-sube small{font:500 11px/1.2 Archivo,sans-serif;color:#A5A5A0;text-align:center}
-.pf9-scb{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0}
-.pf9-scb i{height:8px;border-radius:4px;background:#2A2A2E;overflow:hidden}
+.pf9-sube small{font:500 11px/1.2 Archivo,sans-serif;color:var(--gris);text-align:center}
+.pf9-scb{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris)}
+.pf9-scb i{height:8px;border-radius:4px;background:var(--suave);overflow:hidden}
 .pf9-scb u{display:block;height:100%;background:#29B298}
 
 /* 🏅 sus récords */
 .pf9-rec ul{list-style:none;margin:0;padding:0;display:grid}
-.pf9-rec li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-top:1px solid #1E1E22}
+.pf9-rec li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-top:1px solid var(--suave)}
 .pf9-rec li:first-child{border-top:0;padding-top:0}
 .pf9-rec li span{display:grid;gap:3px;font:600 13px/1.25 Archivo,sans-serif;min-width:0}
-.pf9-rec li small{font:500 11.5px/1.25 Archivo,sans-serif;color:#A5A5A0}
+.pf9-rec li small{font:500 11.5px/1.25 Archivo,sans-serif;color:var(--gris)}
 .pf9-rec li b{font:900 16px/1 Archivo,sans-serif;white-space:nowrap}
 
 /* 📰 su muro: las filas de Publicaciones (`.pw-f`, publicaciones2.css) adentro de un panel */
@@ -747,6 +755,8 @@
 @media (min-width: 900px){
   .app .pf9-bi{padding-inline:var(--gut)}
   .app .pf9-bh h2{font-size:36px}
+  /* las historias bajan de renglón (revisión 21/11/2026): de costado y sin barra, con el mouse no se llegaba a la quinta */
+  .app .pf9-hist ul{flex-wrap:wrap;overflow:visible;row-gap:12px}
   .app .pf9-g-forma{grid-template-columns:minmax(0,1fr) 380px;align-items:stretch}
   .app .pf9-g-forma > .pf9-forma{grid-template-rows:auto 1fr auto}
   /* sin «Su forma» (menos de dos eventos): la meta y De un vistazo ocupan la banda entera, lado a lado */
@@ -772,4 +782,10 @@
   .pf9-muro .pw-f.fuerte{grid-template-columns:68px minmax(0,1fr);padding:12px 10px}
   .pf9-muro .pw-fu-carta{width:68px}
   .pf9-muro .pw-top{flex-wrap:wrap;row-gap:4px}
+}
+/* 👆 (revisión 21/11/2026) el «Ver todo →» de cada banda, de 44 px para el dedo sin mover el diseño */
+@media (max-width: 759.98px){
+  .app .pf9-bl{display:inline-flex;align-items:center;padding-block:14px;margin-block:-14px}
+  /* y los de la línea de su país, su servidor y su Pase (16 px de alto) */
+  .app .pf8-segs a{padding-block:14px;margin-block:-14px}
 }

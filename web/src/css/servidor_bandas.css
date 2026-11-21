@@ -13,6 +13,12 @@
 /* 🎮 «Cómo se juega acá» va sobre la pieza oscura: el link en claro (el de la regla de arriba es para las piezas claras) */
 .sv9-como .sv9-acc{margin-top:12px}
 .sv9-como .sv9-acc .sv9-lk{color:#F6F6F6}
+/* sola en la banda (un servidor sin eventos en la temporada, como DRA): a 1200 px cada dato quedaba a 1100 px de su valor.
+   En la compu, los datos en columnas (revisión 21/11/2026) */
+@media (min-width: 900px){
+  .app .pf9-bi > .sv9-como ul{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 40px}
+  .app .pf9-bi > .sv9-como li{border-top:0;padding:0}
+}
 .pf9-btn.sv9-negro{background:#030304;border-color:#030304;color:#F6F6F6;text-decoration:none}
 /* su noche más grande: el podio */
 .sv9-pod li.cop{background:#F5C542;color:#030304}
@@ -121,3 +127,5 @@
 
 /* sin eventos en la temporada: el próximo evento y la tabla de servidores lado a lado (o uno solo a todo el ancho) */
 .sv9-dos{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+/* 👆 (revisión 21/11/2026) «Activar la campana», «Socios»: 13 px de alto en el celular. 44 para el dedo, sin mover nada */
+@media (max-width: 759.98px){.app .sv9-lk{display:inline-flex;align-items:center;padding-block:15px;margin-block:-15px}}

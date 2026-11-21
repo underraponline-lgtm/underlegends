@@ -6,17 +6,19 @@ import { useCompetencias } from './competencias_datos.js';
 import { usarCss } from './css.js';
 import { Alguien } from './piezas.jsx';
 
+// 🎨 con los colores del tema (revisión 21/11/2026): con los del escenario (`--esc-*`) los rótulos quedaban en #A5A5A0
+// sobre el gris claro de Clara (2,2:1)
 usarCss('jurado-ficha', `
-.jf{display:flex;flex-direction:column;gap:12px;padding:16px;border:1.6px solid var(--esc-linea,#2A2A2C)}
+.jf{display:flex;flex-direction:column;gap:12px;padding:16px;border:1.6px solid var(--suave,#2A2A2C)}
 .jf header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .jf-chip{display:inline-flex;align-items:center;gap:7px;padding:6px 9px;background:#E41373;color:#FFFFFF;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
 .jf header b{font:900 30px/1 Archivo,sans-serif;font-stretch:120%}
-.jf header small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--esc-gris,#A5A5A0)}
+.jf header small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris,#A5A5A0)}
 .jf dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:0}
-.jf dl div{display:flex;flex-direction:column;gap:5px;padding:10px;border:1.5px solid var(--esc-linea,#2A2A2C)}
-.jf dt{font:700 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--esc-gris,#A5A5A0)}
+.jf dl div{display:flex;flex-direction:column;gap:5px;padding:10px;border:1.5px solid var(--suave,#2A2A2C)}
+.jf dt{font:700 11px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris,#A5A5A0)}
 .jf dd{margin:0;font:900 17px/1.15 Archivo,sans-serif}
-.jf p{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:var(--esc-gris,#A5A5A0)}
+.jf p{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:var(--gris,#A5A5A0)}
 `);
 
 // 👤 (18/11/2026) «A quién más votó» traía el nombre crudo de #veredictos —«MAKMAH 🇻🇪», «RIZAS🇻🇪»— sin el AKA oficial ni
