@@ -10756,6 +10756,9 @@ export class Avisos {
     const generales = (this.leer('canales') || {}).generales || [];
     const cfgs = new Map();
     let pedidos = 0, mandados = 0, editados = 0, esperando = 0, esperanMic = 0, lobby = null;
+    // 🎙️ los cruces que esperan sus micrófonos en la llave de esta vuelta (`ponerCruce()`): no salen todavía, pero cuentan
+    // como «ya va a salir» para no anunciar la final dos veces
+    let retenidos = [];
     const errores = [];
     // 🔑 el nombre del evento es el del ANUNCIO, no el título de la llave: la de la DESGRACIAS EN TOKYO VOL 23
     // (05/10/2026) decía «VOL 22» —el organizador copió la anterior— y el bot anunció «Arrancó … VOL 22». Lo junta
@@ -10948,10 +10951,12 @@ export class Avisos {
         hechos.voz = { m: 'voz', msg: '', texto: '' };
       }
       // el cruce, al mensaje; o, si espera sus micrófonos (`esperaMic`), todavía no: sólo se le dibuja la imagen
+      retenidos = [];
       const ponerCruce = (x, bat) => {
         if (bat.esperaMic) {
           if (x.vs) { try { this.vsPrevio(canal, L.id + ':' + x.m, x.vs, b.sv || '', ahora); } catch (e) { /* sin imagen */ } }
           esperanMic++;
+          retenidos.push(x.m);
           return false;
         }
         ms.push(Object.assign(x, bat.porVoz ? { ya: true } : {}));
@@ -11159,7 +11164,11 @@ export class Avisos {
       // agrega a ESE mensaje, editándolo («✅ Pasan Guess y Nemi»): una edición no le suena a nadie y el chat no suma
       // otro mensaje por batalla
       if (nivel === 'datos' || nivel === 'full') {
-        const finalV = ms.some((x) => /^v:final:/i.test(x.m)) || Object.keys(hechos).some((m) => /^v:final:/i.test(m));
+        // 🎙️ también el cruce de la final que espera sus micrófonos (21/11/2026, DESGRACIAS EN TOKYO VOL 32 en FFA: el
+        // «🔥 La final de…» salió a las 3:50:31 PM porque el cruce estaba retenido, y el cruce iba a salir igual al abrirse
+        // los micrófonos: la final, dos veces)
+        const finalV = ms.some((x) => /^v:final:/i.test(x.m)) || Object.keys(hechos).some((m) => /^v:final:/i.test(m))
+          || retenidos.some((m) => /^v:final:/i.test(m));
         if (finalV && ms.some((x) => x.m === 'final') && !hechos.final) {
           this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
             L.id, canal, 'final', '', '', ahora);

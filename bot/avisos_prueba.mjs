@@ -2602,6 +2602,36 @@ const ok = (cond, que, det) => {
         'salteada (pelean Eva y Fio): a Cami y Dora, que la llave pone ahora, no les suena «¡Te toca!»',
         JSON.stringify({ t2, nombrados }));
     }
+
+    // 5 · la final que espera sus micrófonos sale UNA vez (21/11/2026, DESGRACIAS EN TOKYO VOL 32 en FFA): el cruce
+    // retenido no estaba en la cuenta de «la final ya va a salir», y el «🔥 La final de…» salía aparte
+    {
+      const { o, llave, mic } = await nuevo();
+      pedidos.length = 0;
+      const SEMIS = '# COPA V\n`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Cami 🇻🇪⌝\n⌞Eva 🇵🇪⌝ 🆚 ⌞Bea 🇨🇱⌝\n';
+      const FINAL = SEMIS + '`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Eva 🇵🇪⌝\n';
+      // los micrófonos aciertan una vez en esta llave (Ana y Cami): desde ahí, la de la llave espera los suyos
+      llave(SEMIS, T);
+      mic([ID.ana, ID.cami], todos, T);
+      await o.chatVivo(T);
+      const ac = o.vsCola('FFA', T + 20000).vs.find((x) => x.a && x.a.n === 'Ana');
+      await o.vsListo({ id: ac && ac.id, url: R2_PRUEBA + '/vs/ffa-ac.jpg' }, T + 40000);
+      // las dos semifinales jugadas y la final armada, con todos callados: el cruce de la final espera sus micrófonos
+      llave(FINAL, T + 6 * 60000);
+      mic([], todos, T + 6 * 60000);
+      await o.chatVivo(T + 6 * 60000);
+      await o.chatVivo(T + 9 * 60000);
+      const sueltas = () => pedidos.filter((p) => p.m === 'POST' && p.b && /La final de/.test(p.b.content || ''));
+      ok(!sueltas().length, 'el cruce de la final espera sus micrófonos: el «🔥 La final de…» no sale aparte',
+        JSON.stringify(pedidos.filter((p) => p.m === 'POST' && p.b).map((p) => String(p.b.content || '').slice(0, 90))));
+      const fin = o.vsCola('FFA', T + 9 * 60000 + 5000).vs.find((x) => x.ronda === 'Final' || /final/i.test(String(x.ronda)));
+      if (fin) await o.vsListo({ id: fin.id, url: R2_PRUEBA + '/vs/ffa-final.jpg' }, T + 9 * 60000 + 10000);
+      mic([ID.ana, ID.eva], todos, T + 10 * 60000);
+      await o.chatVivo(T + 10 * 60000);
+      const finales = pedidos.filter((p) => p.m === 'POST' && p.b && /Final: |La final de/.test(p.b.content || ''));
+      ok(finales.length === 1 && /Final: /.test(finales[0].b.content) && !sueltas().length,
+        'Ana y Eva abren el micrófono: la final sale una sola vez, con su cruce', JSON.stringify(finales.map((p) => p.b.content)));
+    }
     globalThis.fetch = antesF;
   }
 }
