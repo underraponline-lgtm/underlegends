@@ -218,7 +218,14 @@ ok(limite(tres.map((t) => t - 61 * MIN), [], T0) === null, 'las de hace más de 
 const sv = Array.from({ length: POR_SERVIDOR_HORA }, (_, i) => T0 - i * MIN);
 ok(limite([], sv, T0)?.por === 'servidor', `${POR_SERVIDOR_HORA} en una hora en el servidor: no entra nadie más`);
 ok(/10 min/.test(textoLimite(lp, '123')) && textoLimite(lp, '123').includes('<@123>'), 'el aviso del límite lo menciona y dice los minutos');
-ok(Array.isArray(beats()), 'sin beats cargados, la prueba sigue sin beat (beats() da ' + beats().length + ')');
+// los beats: cada uno con permiso (en datos/beatmakers.json o de uso libre), de ~30 s y en paquetes de 20 ms
+const permisos = JSON.parse(fs.readFileSync(path.join(VOZ, '..', '..', 'datos', 'beatmakers.json'), 'utf8')).beatmakers.map((b) => b.nombre);
+const bs = beats();
+ok(bs.every((b) => b.uso_libre || permisos.includes(b.beatmaker)),
+  `los ${bs.length} beats son de beatmakers con permiso o de uso libre`);
+ok(bs.every((b) => { const ps = paquetesDe(path.join(VOZ, 'beats', b.archivo)); return ps.length > 1300 && ps.every((p) => muestrasDe(p) === 960); }),
+  'cada beat dura ~30 s y va en paquetes de 20 ms (Discord lo manda sin recodificar)');
+ok(bs.every((b) => b.titulo && b.beatmaker), 'cada beat tiene título y beatmaker para el crédito');
 
 fs.rmSync(dir, { recursive: true, force: true });
 console.log(mal ? `\n❌ ${mal} mal` : '\n✅ todo bien');

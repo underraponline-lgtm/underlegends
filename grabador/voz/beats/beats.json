@@ -3,5 +3,54 @@
   "Los beats de la prueba de micro (grabador/microfono.js), hechos con voz/hacer_beat.py.",
   "Sólo de beatmakers de datos/beatmakers.json o de beats «Free»/«Uso libre». Se acreditan al final de la prueba."
  ],
- "beats": []
+ "beats": [
+  {
+   "archivo": "djbootrax-nuncaolvidar.ogg",
+   "titulo": "Nunca olvidar",
+   "beatmaker": "DJ Bootrax",
+   "uso_libre": false,
+   "fuente": "https://youtu.be/qd0qqOEr9ic",
+   "desde_s": 18.8
+  },
+  {
+   "archivo": "djbootrax-cartas.ogg",
+   "titulo": "Cartas",
+   "beatmaker": "DJ Bootrax",
+   "uso_libre": false,
+   "fuente": "https://youtu.be/63w2VR4vqB0",
+   "desde_s": 9.5
+  },
+  {
+   "archivo": "djbootrax-bukovosky.ogg",
+   "titulo": "Bukovosky",
+   "beatmaker": "DJ Bootrax",
+   "uso_libre": false,
+   "fuente": "https://youtu.be/TPxf2pERVsg",
+   "desde_s": 18.8
+  },
+  {
+   "archivo": "djbootrax-achimega.ogg",
+   "titulo": "Achimega",
+   "beatmaker": "DJ Bootrax",
+   "uso_libre": false,
+   "fuente": "https://youtu.be/u2jc4sovPMQ",
+   "desde_s": 19.3
+  },
+  {
+   "archivo": "djbootrax-3000km.ogg",
+   "titulo": "3000KM",
+   "beatmaker": "DJ Bootrax",
+   "uso_libre": false,
+   "fuente": "https://youtu.be/_QaD_2vfpfg",
+   "desde_s": 20.5
+  },
+  {
+   "archivo": "zkn-restinpeace.ogg",
+   "titulo": "Rest in Peace",
+   "beatmaker": "ZkN",
+   "uso_libre": false,
+   "fuente": "https://youtu.be/4WB7Yt160OU",
+   "desde_s": 23.2
+  }
+ ]
 }

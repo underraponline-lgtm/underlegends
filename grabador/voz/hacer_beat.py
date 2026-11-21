@@ -50,11 +50,20 @@ def donde_arranca(ruta, largo):
     puntos = [(float(t), float(s)) for t, s in filas if s != '-inf']
     if not puntos:
         return 0.0
-    pico = max(s for _, s in puntos)
+    # ⚠️ NO EL PRIMER GOLPE: EL PRIMER TRAMO QUE SE SOSTIENE. Con «el primer punto cerca del pico» los cinco de
+    # Bootrax arrancaban en el segundo 0-1,4, adentro de su intro (medido el 21/11: −17 a −20 LUFS los primeros 10-20 s
+    # y −14 cuando entra el beat). El nivel «a pleno» es el percentil 80, y vale el primer momento desde el que
+    # `SOSTENIDO_S` seguidos no bajan de ese nivel menos 2.
+    SOSTENIDO_S = 8
+    niveles = sorted(s for _, s in puntos)
+    pleno = niveles[int(len(niveles) * 0.8)] - 2
     total = puntos[-1][0]
-    for t, s in puntos:
-        if s >= pico - 8 and t + largo <= total:
-            return max(0.0, round(t - 3, 1))      # 3 s antes de llegar a pleno, para que entre con su golpe
+    for i, (t, _) in enumerate(puntos):
+        if t + largo > total:
+            break
+        tramo = [s for u, s in puntos[i:] if u <= t + SOSTENIDO_S]
+        if tramo and min(tramo) >= pleno:
+            return max(0.0, round(t - 1, 1))      # 1 s antes, para que entre con su golpe
     return 0.0
 
 
