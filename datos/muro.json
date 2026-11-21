@@ -392,15 +392,6 @@
 "rg": "B",
 "c": []
 },
-"lrs": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "mayeutyk": {
 "rg": "C",
 "c": [
@@ -437,6 +428,15 @@
 },
 "lordviruzz": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"lrs": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -926,10 +926,6 @@
 "rg": "",
 "c": []
 },
-"leyenda": {
-"rg": "",
-"c": []
-},
 "soneto": {
 "rg": "E",
 "c": [
@@ -1022,6 +1018,10 @@
 "temporada"
 ]
 },
+"leyenda": {
+"rg": "",
+"c": []
+},
 "blitz": {
 "rg": "E",
 "c": []
@@ -1059,10 +1059,6 @@
 ]
 },
 "mosquitrap": {
-"rg": "",
-"c": []
-},
-"scot": {
 "rg": "",
 "c": []
 },
@@ -1115,6 +1111,10 @@
 "rg": "",
 "c": []
 },
+"scot": {
+"rg": "",
+"c": []
+},
 "oriuz": {
 "rg": "",
 "c": []
@@ -1122,13 +1122,6 @@
 "berrun": {
 "rg": "",
 "c": []
-},
-"andy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "benji": {
 "rg": "",
@@ -1202,6 +1195,13 @@
 "pomberito": {
 "rg": "",
 "c": []
+},
+"andy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "emilioalva": {
 "rg": "",
