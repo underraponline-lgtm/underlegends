@@ -40,7 +40,7 @@
 import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida, quienPide } from './avisos.js';
 // 🎨 el color de cada servidor y su ícono, los mismos del bot en vivo y de `eventos-hoy` (nunca escritos acá)
 import { colorChat, visualRed, DROP_TITULOS, pedirDibujo } from './avisos.js';
-import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
+import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva, guardarServidores,
   sesionFin, sesionDe, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
 import * as AR from './antiraid.js';
@@ -2089,6 +2089,16 @@ async function cuentaDiscord(req, env) {
   // sigue preguntando y redirigiéndome»). Ver `sesionNueva()` en avisos.js.
   const ses = await sesionNueva(env, u.id);
   if (ses && ses.ses) h['set-cookie'] = cookieSesion(ses.ses, SESION_DIAS * 86400);
+  // 🫂 Y TUS SERVIDORES, SI DISTE EL PERMISO (Dlx, 21/11/2026: «que ese permiso esté en el Discord… y nada más»): la
+  // página pide `guilds` al entrar y Discord lo muestra en su pantalla. Con él, una lectura de tu lista, que va al objeto
+  // hasheada y sin DRA ni FFA (`guardarServidores()`), para «gente de la Liga en tus mismos servidores». Sin el permiso o
+  // si Discord no contesta, se entra igual
+  if (Array.isArray(q.scopes) && q.scopes.includes('guilds')) {
+    try {
+      const r = await fetch(`${DC_API}/users/@me/guilds?limit=200`, { headers: { Authorization: 'Bearer ' + t } });
+      if (r.ok) await guardarServidores(env, u.id, await r.json(), SERVIDORES.filter((x) => x.sv === 'DRA' || x.sv === 'FFA').map((x) => x.guild));
+    } catch (e) { /* se entra igual */ }
+  }
   // ⚠️ EL RAPERO SALE DE `d:<id>`, que existe sólo para quien pasa el portón.
   // Quien no está, entra igual y la página le dice qué le falta.
   //

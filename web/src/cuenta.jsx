@@ -26,7 +26,7 @@ import CSS_PAGINA from './css/cuenta.css?inline';
 import { usarCss } from './css.js';
 import { CuentaPC, EntrarError } from './cuenta_pc.jsx';
 import { achicar as achicarImagen, aBase64 } from './imagen.js';
-import { BotonSeguir, GenteParaSeguir, LigaTeSigue, ligaSigue, sugeridos } from './sugeridos.jsx';
+import { BotonSeguir, GenteParaSeguir, LigaTeSigue, ligaSigue, sugeridos, useComparten } from './sugeridos.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
 usarCss('cuenta', CSS_PAGINA);
@@ -1038,14 +1038,16 @@ function TeSiguen({ liga, dc }) {
   );
 }
 
-// ⭐ GENTE PARA SEGUIR (21/11/2026, sugeridos.jsx): quien te sigue y no sigues, con quien hablas en el chat, con quien te
+// ⭐ GENTE PARA SEGUIR (21/11/2026, sugeridos.jsx): quien te sigue y no sigues, quien está en tus mismos servidores
+// (`useComparten()`, con el permiso `guilds`), con quien hablas en el chat, con quien te
 // cruzaste en una llave y los primeros de tu servidor, cada uno con su porqué y su botón. Sin nadie que sugerir, no se dibuja
 function ParaSeguir({ liga, dc }) {
   const est = useCuentaEst();
   const P = usePerfiles();
   // quien te sigue ya está en «Te siguen», con su «Seguir de vuelta»: acá no se repite
   const ya = (est.ME_SIGUEN && est.ME_SIGUEN.perfiles) || [];
-  if (!liga.yo || !sugeridos(liga, P, null, 6, ya).length) return null;
+  const comparten = useComparten(dc);
+  if (!liga.yo || !sugeridos(liga, P, null, 6, ya, comparten).length) return null;
   return <Caja t="Gente para seguir" d="Te llega un aviso cuando ganan, y a ellos, que los sigues."><GenteParaSeguir liga={liga} dc={dc} P={P} meSiguen={null} excluir={ya} /></Caja>;
 }
 

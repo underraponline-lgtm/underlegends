@@ -118,6 +118,8 @@ jobs:
           node bot/llave_vivo_prueba.mjs
           # 🎟️ el Pase del 25/10: gracia, bienvenida, especiales, XP doble, crew, premium y sorteo
           node bot/pase_prueba.mjs
+          # 🫂 gente de la Liga en tus mismos servidores: huellas sin ID ni nombre, reemplazar, el tope y sin permiso
+          node bot/servidores_prueba.mjs
           # 🎭 el estilo de juego: la primera vez libre, un cambio por temporada, los viejos desbloqueados y lo del ciclo
           node bot/juego_prueba.mjs
           # 👗 los looks guardados del Inventario: el primero libre, pisar, el tope, borrar y cada uno los suyos

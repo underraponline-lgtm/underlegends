@@ -100,7 +100,7 @@ export function Pub({ liga, it, A }) {
     cat = 'CREWS · SUBE DE TIER';
     vis = /^esc:/.test(it.logo || '') ? <span className="pub-logo con-esc"><Escudo e={escudoDe(it.logo, it.nombre)} /></span>
       : it.logo ? <img className="pub-logo" alt="" src={it.logo} /> : <span className="pub-rg" style={{ background: col }}>{String(it.tn || '').slice(0, 2)}</span>;
-    txt = <><b>{limpio(it.nombre)}</b> sube a <b style={{ color: col }}>{it.tn}</b>{it.tarjeta ? ' y desbloquea su tarjeta de crew' : ''}</>;
+    txt = <><b>{limpio(it.nombre)}</b> sube a <b style={{ color: col }}>{it.tn}</b>{it.tarjeta ? ' y se gana su tarjeta de crew, que llega pronto' : ''}</>;
     det = it.pts ? num(it.pts) + ' puntos en la semana' : '';
     acc = <a className="pub-a" href={'#/crew/' + encodeURIComponent(it.crew)}>Ver la crew</a>;
   } else if (it.tipo === 'pase') {

@@ -409,7 +409,9 @@ export function QueHaceElBot() {
         <ul>
           <li><b>No expulsa ni banea</b> a nadie.</li>
           <li><b>No edita ni borra los mensajes</b> de tu gente.</li>
-          <li><b>No le manda mensajes privados</b> a nadie de tu servidor.</li>
+          {/* 🔒 21/11/2026, Dlx: «corregir el texto». Decía «a nadie de tu servidor», y la Liga sí le escribe al dueño cuando
+              hay algo de su panel (el DM del 04/11 y el del 21/11). A la gente del servidor, nunca: `herramientas/sin_dm.py` */}
+          <li><b>No le manda mensajes privados</b> a tu gente. A ti, el dueño, sólo te escribe la Liga cuando hay algo de tu panel.</li>
         </ul>
       </div>
     </div>

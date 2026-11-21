@@ -7,7 +7,7 @@
 //   · BOTÓN SEGUIR, el mismo de todas partes (`alternarSigo()` de social.js): verificado para seguir, y sólo a verificados
 //   · LA LIGA TE SIGUE: los personajes de la Liga (El Hype, ULAYA, El Jurado) siguen a la vista, con su pastilla y aparte
 //     del número: El Jurado a quien hizo podio, ULAYA a quien ganó una llave, El Hype a quien recién empieza
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { limpio } from './liga.js';
 import { Cara, accion } from './piezas.jsx';
 import CSS_PAGINA from './css/sugeridos.css?inline';
@@ -42,8 +42,36 @@ export function BotonSeguir({ liga, dc: dc0, k, de = false, chico = false }) {
   );
 }
 
+// 🫂 GENTE DE LA LIGA EN TUS MISMOS SERVIDORES (Dlx, 21/11/2026: «Hazla ahora»). Al entrar con Discord se pide también la
+// lista de tus servidores (`guilds`, lo pregunta Discord en su pantalla) y el Worker la guarda hasheada; acá se pide con
+// quién de la Liga compartes alguno (`/api/avisos/mis-servidores`: sólo claves y cuántos, nunca cuáles servidores). Un
+// pedido por visita, compartido entre las cajas que lo usen
+let COMP = null, COMP_P = null;
+function pedirComparten() {
+  if (COMP) return Promise.resolve(COMP);
+  if (!COMP_P) {
+    COMP_P = fetch('/api/avisos/mis-servidores', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => { COMP = j && Array.isArray(j.gente) ? j : { gente: [] }; return COMP; })
+      .catch(() => { COMP_P = null; return null; });
+  }
+  return COMP_P;
+}
+/** `[[clave, n], …]`: la gente de la Liga en tus mismos servidores. Vacío sin cuenta o sin el permiso */
+export function useComparten(dc) {
+  const [c, setC] = useState(COMP);
+  const id = (dc && dc.id) || '';
+  useEffect(() => {
+    if (!id) return undefined;
+    let vivo = true;
+    pedirComparten().then((j) => { if (vivo && j) setC(j); });
+    return () => { vivo = false; };
+  }, [id]);
+  return (id && c && c.gente) || [];
+}
+
 /** Los que la página te sugiere seguir, con el porqué, sin los que ya sigues ni los que no están verificados */
-export function sugeridos(liga, P, meSiguen, tope = 6, excluir = []) {
+export function sugeridos(liga, P, meSiguen, tope = 6, excluir = [], comparten = []) {
   const yo = liga.yo && liga.yo.k;
   if (!yo) return [];
   const out = [], vistos = new Set([yo, ...excluir]);
@@ -56,6 +84,8 @@ export function sugeridos(liga, P, meSiguen, tope = 6, excluir = []) {
   };
   // 1 · te sigue y no lo sigues
   for (const k of (meSiguen && meSiguen.perfiles) || []) suma(k, 'Te sigue', true);
+  // 1b · está en tus mismos servidores (los que dieron el permiso): lo más parecido a «tus amigos» que se puede saber
+  for (const [k, n] of comparten || []) suma(k, n === 1 ? 'En un servidor contigo' : 'En ' + n + ' servidores contigo');
   // 2 · hablan seguido en el chat (de la lectura diaria del chat de cada servidor)
   const mio = P && P.p && P.p[yo];
   for (const k of (mio && mio.ch) || []) suma(k, 'Hablan en el chat');
@@ -79,7 +109,8 @@ export function sugeridos(liga, P, meSiguen, tope = 6, excluir = []) {
 }
 
 export function GenteParaSeguir({ liga, dc, P, meSiguen, excluir }) {
-  const xs = sugeridos(liga, P, meSiguen, 6, excluir);
+  const comparten = useComparten(dc === undefined ? W.DC || null : dc);
+  const xs = sugeridos(liga, P, meSiguen, 6, excluir, comparten);
   if (!xs.length) return null;
   return (
     <ul className="sg-lista" aria-label="Gente para seguir">

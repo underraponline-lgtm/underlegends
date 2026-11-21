@@ -81,6 +81,8 @@ const AVISOS = {
   '/api/avisos/seguir': 'POST',
   '/api/avisos/sigo': 'POST',
   '/api/avisos/seguidores': 'GET',
+  // 🫂 gente de la Liga en tus mismos servidores (21/11/2026). Ver `misServidores()` en bot/avisos.js
+  '/api/avisos/mis-servidores': 'POST',
   // 🔑 «tu servidor» (28/09/2026): elegirlo, y cuál eligió cada perfil.
   // Ver `miServidor()` en bot/avisos.js
   '/api/avisos/mi-servidor': 'POST',

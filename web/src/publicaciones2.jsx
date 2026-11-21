@@ -196,7 +196,7 @@ function contenido(liga, it, pub) {
     // crew si el muro no lo trae
     const viva = (liga.d.crews || []).find((x) => (x.clave || x.crew) === it.crew);
     c.vis = <span className="pb-crew" style={{ boxShadow: '0 0 0 3px ' + col }}><CrewCirculo c={{ crew: it.nombre, logo: it.logo || (viva && viva.logo) || '' }} cls="pb-crew-c" /></span>;
-    c.txt = <><b>{limpio(it.nombre)}</b> sube a <b style={{ color: col }}>{it.tn}</b>{it.tarjeta ? ' y desbloquea su tarjeta de crew' : ''}</>;
+    c.txt = <><b>{limpio(it.nombre)}</b> sube a <b style={{ color: col }}>{it.tn}</b>{it.tarjeta ? ' y se gana su tarjeta de crew, que llega pronto' : ''}</>;
     c.det = it.pts ? num(it.pts) + ' puntos en la semana' : '';
     c.acc = <a className="pb-a" href={'#/crew/' + encodeURIComponent(it.crew)}>Ver la crew</a>;
   } else if (it.tipo === 'pase') {

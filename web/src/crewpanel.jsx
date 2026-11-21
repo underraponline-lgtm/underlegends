@@ -145,7 +145,7 @@ export function TierCrew({ T, id }) {
             {baja ? <> Con menos de {num(baja)}, baja a {T.nombres[n - 1]}.</> : null}</p>
         </>
       ) : <p className="cw-nota">El tier más alto.{baja ? <> Con menos de {num(baja)} puntos en la semana, baja a {T.nombres[n - 1]}.</> : null}</p>}
-      <p className="cw-nota">La semana cierra el lunes a las 11 AM (hora del este). {n >= T.tarjeta ? 'La crew tiene desbloqueada su tarjeta personalizable.'
+      <p className="cw-nota">La semana cierra el lunes a las 11 AM (hora del este). {n >= T.tarjeta ? 'La crew ya se ganó su tarjeta personalizable: la estamos diseñando y llega pronto.'
         : 'En ' + T.nombres[T.tarjeta] + ' se desbloquea la tarjeta de la crew, personalizable por su Líder.'}</p>
     </div>
   );

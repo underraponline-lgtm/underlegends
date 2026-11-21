@@ -3745,6 +3745,8 @@ const RUTAS = {
   '/avisos/precios': 'GET', '/avisos/precio': 'POST', '/avisos/billetera': 'POST',
   // 🔑 seguir raperos: ver `seguir()`, `sigo()`, `seguidores()` y `seguidos()`
   '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
+  // 🫂 gente de la Liga en tus mismos servidores (21/11/2026): ver `misServidores()`
+  '/avisos/mis-servidores': 'POST',
   // 📖 las historias que viste, en tu cuenta (18/10/2026): ver `historiasVistas()` del objeto
   '/avisos/historias': 'POST',
   // 🔑 «tu servidor»: elegirlo en Mi cuenta, y cuál eligió cada perfil. Ver `miServidor()`
@@ -6066,6 +6068,32 @@ export async function sesionDe(env, req) {
   return r && /^[0-9]{5,25}$/.test(String(r.quien || '')) ? String(r.quien) : '';
 }
 
+/** 🫂 Un servidor con más gente de la Liga que esto no cuenta para «en tus mismos servidores» (ver `misServidores()`) */
+export const SRV_TOPE = 60;
+/**
+ * 🫂 La lista de servidores de quien entró con el permiso `guilds`, al objeto: hasheada, sin `fuera` (DRA y FFA, donde
+ * están casi todos). Ver `servidoresGuardar()`. Nunca falla la entrada: si algo sale mal, no se guarda y listo.
+ */
+export async function guardarServidores(env, quien, guilds, fuera) {
+  if (!env.AVISOS || !/^[0-9]{5,25}$/.test(String(quien || '')) || !Array.isArray(guilds)) return null;
+  const no = new Set((fuera || []).map(String));
+  const g = [];
+  for (const x of guilds.slice(0, 250)) {
+    const gid = String((x && x.id) || '');
+    if (!/^[0-9]{5,25}$/.test(gid) || no.has(gid)) continue;
+    const h = new Uint8Array(await crypto.subtle.digest('SHA-256', utf8('lg-srv:' + gid)));
+    g.push([...h.slice(0, 8)].map((b) => b.toString(16).padStart(2, '0')).join(''));
+  }
+  try {
+    const r = await elObjeto(env).fetch('https://avisos/srv-guardar', {
+      method: 'POST', body: JSON.stringify({ quien: String(quien), g }), headers: { 'content-type': 'application/json' },
+    });
+    return r.ok ? await r.json() : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 /** Cierra la sesión de este pedido («Salir»). */
 export async function sesionFin(env, req) {
   const ses = sesDe(req);
@@ -7016,6 +7044,29 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/' + ruta.slice('/avisos/'.length), {
       method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
     });
+  }
+  // 🫂 GENTE DE LA LIGA EN TUS MISMOS SERVIDORES (21/11/2026): con tu sesión, a quién de la Liga —verificado, con su clave—
+  // tienes en tus servidores, y en cuántos. Sólo claves y números: nunca qué servidores son
+  if (ruta === '/avisos/mis-servidores') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object') return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let r = null;
+    try {
+      const x = await elObjeto(env).fetch('https://avisos/mis-servidores', {
+        method: 'POST', body: JSON.stringify({ quien: q.id }), headers: { 'content-type': 'application/json' },
+      });
+      r = x.ok ? await x.json() : null;
+    } catch (e) { r = null; }
+    if (!r) return json({ error: 'objeto' }, 503);
+    // de Discord ID a la clave del perfil: sólo los verificados (`d:`), que son los que se pueden seguir
+    const ks = await Promise.all((r.gente || []).slice(0, 30).map(([id]) => env.KV.get('d:' + id).catch(() => null)));
+    const gente = (r.gente || []).slice(0, 30).map(([, n], i) => [ks[i], n]).filter(([k]) => claveValida(k));
+    return json({ tengo: r.tengo || 0, gente });
   }
   if (ruta === '/avisos/seguir' || ruta === '/avisos/sigo') {
     const crudo = await req.text();
@@ -8883,6 +8934,11 @@ export class Avisos {
       // (`d:`/`dn:` de KV, guardado unas horas para no pedirlo cada minuto). Ver `quienes()`
       try { this.sql.exec("ALTER TABLE vivo ADD COLUMN men TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       this.sql.exec("CREATE TABLE IF NOT EXISTS idk (id TEXT PRIMARY KEY, k TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
+      // 🫂 EN QUÉ SERVIDORES ESTÁ CADA UNO, CON SU PERMISO (21/11/2026): ver `servidoresGuardar()`. `g` es un hash del
+      // servidor, nunca su ID ni su nombre; `id`, el Discord de la persona
+      this.sql.exec('CREATE TABLE IF NOT EXISTS srv_gente (g TEXT NOT NULL, id TEXT NOT NULL, t INTEGER NOT NULL, ' +
+        'PRIMARY KEY (g, id)) WITHOUT ROWID');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS srv_gente_id ON srv_gente (id)');
       // 🔑 UN ERROR EN UNA LLAVE (28/09/2026): ver `reportar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
@@ -10035,6 +10091,8 @@ export class Avisos {
         return json(r, r.estado || 200);
       }
       if (ruta === '/mi-servidor') return this.miServidor(d);
+      if (ruta === '/srv-guardar') return this.servidoresGuardar(d);
+      if (ruta === '/mis-servidores') return this.misServidores(d);
       if (ruta === '/sv-elegido') return json({ sv: this.svElegido(String(d.quien || '')) });
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
@@ -15424,6 +15482,41 @@ export class Avisos {
    * queda (`fijo`) hasta la temporada que viene. Elegir el que ya tenés no
    * gasta. Sin elegir en esta temporada, se ve el de la anterior.
    */
+  /**
+   * 🫂 GENTE DE LA LIGA EN TUS MISMOS SERVIDORES (Dlx, 21/11/2026: «Hazla ahora», y del permiso: «que ese permiso esté en
+   * el Discord… cuando uno entre vincule su cuenta con Discord que ahí aparezca eso y nada más, así la gente acepta»).
+   * Al entrar con Discord la página pide también `guilds` (la lista de tus servidores) y `cuentaDiscord()` de worker.js
+   * la manda acá. Se guarda un HASH de cada servidor, sin su nombre ni su ID, y sin DRA ni FFA (están casi todos). La
+   * lista se reemplaza entera cada vez que entras: si te vas de un servidor, deja de contar.
+   */
+  servidoresGuardar(d) {
+    const id = String(d.quien || '');
+    const gs = Array.isArray(d.g) ? [...new Set(d.g.map(String).filter((x) => /^[0-9a-f]{16}$/.test(x)))].slice(0, 250) : null;
+    if (!/^[0-9]{5,25}$/.test(id) || !gs) return json({ error: 'faltan datos' }, 400);
+    const t = Date.now();
+    this.sql.exec('DELETE FROM srv_gente WHERE id = ?', id);
+    for (const g of gs) this.sql.exec('INSERT OR REPLACE INTO srv_gente (g, id, t) VALUES (?, ?, ?)', g, id, t);
+    return json({ ok: true, n: gs.length });
+  }
+
+  /**
+   * Con quién compartes servidores, de los que también dieron el permiso: `{tengo, gente: [[discord id, n], …]}`, los de
+   * más servidores en común primero. ⚠️ Un servidor con más de `SRV_TOPE` de la Liga no cuenta: es un servidor grande de
+   * freestyle, no un círculo. Barato en frío: dos índices y una sola consulta, sin armar el mapa de todos.
+   */
+  misServidores(d) {
+    const id = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(id)) return json({ error: 'faltan datos' }, 400);
+    const tengo = this.sql.exec('SELECT COUNT(*) AS n FROM srv_gente WHERE id = ?', id).toArray()[0].n;
+    if (!tengo) return json({ tengo: 0, gente: [] });
+    const gente = this.sql.exec(
+      'WITH chicos AS (SELECT g FROM srv_gente WHERE g IN (SELECT g FROM srv_gente WHERE id = ?) ' +
+      'GROUP BY g HAVING COUNT(*) <= ?) ' +
+      'SELECT id, COUNT(*) AS n FROM srv_gente WHERE g IN (SELECT g FROM chicos) AND id != ? ' +
+      'GROUP BY id ORDER BY n DESC, MAX(t) DESC LIMIT 30', id, SRV_TOPE, id).toArray().map((f) => [String(f.id), f.n]);
+    return json({ tengo, gente });
+  }
+
   miServidor(d) {
     const quien = String(d.quien || ''), temp = String(d.temporada || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !/^[a-z0-9]{1,10}$/.test(temp)) return json({ error: 'faltan datos' }, 400);

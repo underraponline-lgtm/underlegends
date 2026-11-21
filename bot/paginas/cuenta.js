@@ -178,7 +178,10 @@ function urlLogin(modo) {
   }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
     '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
-    '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : modo === 'd' || modo === 'u' ? 'identify guilds.join' : 'identify') +
+    // 🫂 `guilds` (21/11/2026, Dlx: «que ese permiso esté en el Discord… cuando uno entre vincule su cuenta… y nada más»):
+    // la lista de tus servidores, para «gente de la Liga en tus mismos servidores». Lo pregunta Discord en su pantalla, una
+    // vez; el Worker la guarda hasheada y sin nombres (`guardarServidores()` de bot/avisos.js)
+    '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : modo === 'd' || modo === 'u' ? 'identify guilds.join' : 'identify guilds') +
     '&prompt=' + (conRedes || modo === 'u' ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
 }
 

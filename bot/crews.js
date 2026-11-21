@@ -1238,7 +1238,8 @@ export function crewTiersAvisar(o, d) {
     const tn = nombres[a] || 'otro tier';
     const sube = a > de;
     const titulo = sube ? '🏆 ' + c.nombre + ' sube a ' + tn : '📉 ' + c.nombre + ' baja a ' + tn;
-    const cuerpo = sube ? (a === d.tarjeta ? '¡Desbloquearon la tarjeta de crew! ' : '') + 'Lo que sumaron la semana pasada los subió.'
+    // 🃏 la tarjeta de crew todavía no existe (Dlx, 21/11/2026: «primero el aviso, después»): se la ganaron, llega pronto
+    const cuerpo = sube ? (a === d.tarjeta ? '¡Se ganaron la tarjeta de crew! La estamos diseñando y llega pronto. ' : '') + 'Lo que sumaron la semana pasada los subió.'
       : 'La semana pasada no alcanzó: esta semana pueden volver a subir.';
     for (const m of filas(o, 'SELECT k FROM crew_miembros WHERE crew = ? AND pend = 0', c.id)) {
       avisar(o, m.k, 'crew-tier:' + c.id + ':' + d.sem, titulo, cuerpo, '#/crew/' + encodeURIComponent(c.id));

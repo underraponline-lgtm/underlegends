@@ -311,17 +311,22 @@ def al_dia(viejo, hoy=None):
             llaves_.append(r)
         viejo[que] = llaves_
     # 🚪 en una liga el lugar no se borra: el calendario va por posición. Queda '' y su posición va a `libres` (o a
-    # `elite_libres`), y cada rival le gana por pase libre cuando cierra esa jornada (`jugar_liga()`). Un '' que no está
-    # en `libres` —el integrante sin letras de ascenso-9— sigue como siempre: eso lo decide Dlx aparte
+    # `elite_libres`), y cada rival le gana por pase libre cuando cierra esa jornada (`jugar_liga()`).
+    # 🕳️ Y TODO '' ES UN LUGAR LIBRE (Dlx, 21/11/2026, sobre el integrante sin letras de ascenso-9: «pase libre»). Ese grupo
+    # se armó con un nombre que al normalizarlo quedó vacío: sus 9 cruces se simulaban sin ganador, nadie sumaba contra él y
+    # ocupaba el 10.º de la tabla, cuando en los otros grupos un hueco ya era pase libre. Ahora cualquier '' entra en
+    # `libres`, venga de un AKA o de donde sea
     L = viejo.get('ligas')
     if isinstance(L, dict) and (L.get('grupos') or L.get('elite')):
         L = dict(L)
         gs = list(L.get('grupos') or [])
         xs, vac = _un_lugar([g.get('gente') or [] for g in gs], k)
+        vac = [set(v) | {i for i, q in enumerate(x) if not q} for x, v in zip(xs, vac)]
         L['grupos'] = [dict(g, gente=x, **({'libres': sorted(set(g.get('libres') or ()) | v)} if v or g.get('libres') else {}))
                        for g, x, v in zip(gs, xs, vac)]
         if L.get('elite'):
             (xe,), (ve,) = _un_lugar([L['elite']], k)
+            ve = set(ve) | {i for i, q in enumerate(xe) if not q}
             L['elite'] = xe
             if ve or L.get('elite_libres'):
                 L['elite_libres'] = sorted(set(L.get('elite_libres') or ()) | ve)
@@ -1673,11 +1678,11 @@ def _self_check():
                              'elite': ['oasis', 'otrooasis', 'j', 'k']}}, lambda x: hoy21_(x, x))
     g21 = v21c['ligas']['grupos']
     ok(g21[0]['gente'] == ['oasis', 'b', 'c', 'd'] and 'libres' not in g21[0]
-       and g21[1]['gente'] == ['e', '', 'f', ''] and g21[1]['libres'] == [1]
-       and g21[2]['gente'] == ['g', '', 'h', 'i'] and 'libres' not in g21[2]
+       and g21[1]['gente'] == ['e', '', 'f', ''] and g21[1]['libres'] == [1, 3]
+       and g21[2]['gente'] == ['g', '', 'h', 'i'] and g21[2]['libres'] == [1]
        and v21c['ligas']['elite'] == ['oasis', '', 'j', 'k'] and v21c['ligas']['elite_libres'] == [1],
        'en dos grupos de liga: el lugar del AKA queda vacío y en `libres`, sin achicar la lista (el calendario va por '
-       'posición); un vacío de antes, como el de ascenso-9, no entra en `libres`', v21c['ligas'])
+       'posición); y un vacío de antes, como el de ascenso-9, también es pase libre (Dlx, 21/11)', v21c['ligas'])
     # 🚪 y en la liga cada rival le gana a ese lugar por pase libre, recién cuando cierra la jornada
     d21 = dt.datetime(2026, 11, 16, 16, tzinfo=dt.timezone.utc)
     js21, t21 = jugar_liga(['a', 'b', '', 'd'], d21, {}, {}, d21 + dt.timedelta(days=30), 'liga', 9, 'x', libres=[2])
@@ -1691,7 +1696,7 @@ def _self_check():
        'antes de que cierre su jornada el pase no cuenta: nadie lleva más jornadas jugadas que el resto', t21b)
     js21c, t21c = jugar_liga(['a', 'b', '', 'd'], d21, {}, {}, d21 + dt.timedelta(days=30), 'liga', 9, 'x')
     ok('' in [f[0] for f in t21c] and not [m for j in js21c for m in j['partidos'] if m['como'] == 'pase'],
-       'y un vacío que no está en `libres` sigue como siempre (el de ascenso-9 lo decide Dlx aparte)', t21c)
+       'y `jugar_liga()` sin `libres` no inventa pases: los vacíos los marca `al_dia()`', t21c)
     ok(tabla(['x', 'y'], [{'a': '', 'b': 'x', 'g': 'x', 'como': 'pase', 'p': 0.0}], {}) == [['x', 1, 1, 3], ['y', 0, 0, 0]],
        'en la tabla, un pase libre es jugado y ganado', tabla(['x', 'y'], [{'a': '', 'b': 'x', 'g': 'x', 'como': 'pase', 'p': 0.0}], {}))
     lg21 = ligas({'desde': d21.isoformat(), 'temp': 9, 'grupos': [{'id': 'ascenso-1', 'nivel': 'ascenso',

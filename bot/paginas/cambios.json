@@ -355,8 +355,8 @@
         "cuando": "2026-11-20T00:13:00-05:00",
         "titulo": "«¡Te toca!» sigue la batalla que se juega de verdad",
         "items": [
-            "«¡Te toca!» y «Sos el próximo» siguen la batalla que se está jugando de verdad, por los micrófonos de la llamada: si el organizador juega otra antes, ya no te suena «¡Te toca!» mientras pelean otros.",
-            "Y «Sos el próximo» puede llegar desde la primera batalla, apenas sus raperos abren el micrófono."
+            "«¡Te toca!» y «Eres el próximo» siguen la batalla que se está jugando de verdad, por los micrófonos de la llamada: si el organizador juega otra antes, ya no te suena «¡Te toca!» mientras pelean otros.",
+            "Y «Eres el próximo» puede llegar desde la primera batalla, apenas sus raperos abren el micrófono."
         ]
     },
     {
@@ -4019,7 +4019,7 @@
       "cuando": "2026-10-20T00:18:00-04:00",
       "titulo": "«Vos» ordenada, y «Esta semana» en el Ranking",
       "items": [
-        "🪪 **«Vos» se ve como la maqueta**: tu tarjeta de identidad arriba (quién sos, tu rango y tu servidor, tu puesto) y cada opción en su caja, en grupos.",
+        "🪪 **«Vos» se ve como la maqueta**: tu tarjeta de identidad arriba (quién eres, tu rango y tu servidor, tu puesto) y cada opción en su caja, en grupos.",
         "📈 En el Ranking, **«Esta semana»** lleva el número de lo que sumaste desde el lunes al lado de las barritas; al abrir una fila, cada semana con su número y su fecha."
       ]
     },
@@ -4039,7 +4039,7 @@
       "cuando": "2026-10-19T23:56:00-04:00",
       "titulo": "Semana a semana en el Ranking",
       "items": [
-        "📈 **El Ranking de Temporada muestra cuánto sumó cada uno en cada semana**: barritas al lado de los puntos; la última, en magenta, es esta semana. Tocá una fila para ver los números.",
+        "📈 **El Ranking de Temporada muestra cuánto sumó cada uno en cada semana**: barritas al lado de los puntos; la última, en magenta, es esta semana. Toca una fila para ver los números.",
         "👥 En las crews, después de las cinco caras, **«+N»** con cuántos más son."
       ]
     },
@@ -4051,7 +4051,7 @@
       "items": [
         "⭕ En «Vos», **tu nivel del Pase es un anillo alrededor de tu foto**: se ve cuánto te falta para el próximo sin leer.",
         "🔴 **EN VIVO late**: un punto que respira delante de cada «EN VIVO». Con «Menos animaciones» se queda quieto.",
-        "🔎 **El buscador te muestra qué podés buscar**: un rapero, un servidor, una crew, un país."
+        "🔎 **El buscador te muestra qué puedes buscar**: un rapero, un servidor, una crew, un país."
       ]
     },
     {
@@ -4060,7 +4060,7 @@
       "cuando": "2026-10-19T23:38:00-04:00",
       "titulo": "«Vos»: tu cuenta, tu perfil y los ajustes en una sola página",
       "items": [
-        "👤 **Mi cuenta, Mi perfil y Ajustes son ahora una sola página: «Vos»** (el botón de abajo). Arriba, quién sos y «Ver mi perfil público»; abajo, todo agrupado por lo que querés hacer: tu perfil, tu gente, avisos, la app, ayuda y tus datos.",
+        "👤 **Mi cuenta, Mi perfil y Ajustes son ahora una sola página: «Vos»** (el botón de abajo). Arriba, quién eres y «Ver mi perfil público»; abajo, todo agrupado por lo que quieres hacer: tu perfil, tu gente, avisos, la app, ayuda y tus datos.",
         "⚙️ El engranaje de arriba abre «La app» (apariencia, hora y zona, accesibilidad, instalar) en esa misma página. Los links viejos a Ajustes siguen funcionando."
       ]
     },
@@ -4068,10 +4068,10 @@
       "version": "3.73",
       "dia": "2026-10-19",
       "cuando": "2026-10-19T23:27:00-04:00",
-      "titulo": "Las crews se arman en Crews, con recomendadas para vos",
+      "titulo": "Las crews se arman en Crews, con recomendadas para ti",
       "items": [
-        "👥 **Armá tu crew desde la página de Crews**: «Armar la mía» abre el formulario ahí mismo, arriba de la lista.",
-        "⭐ **Recomendadas para vos**: si buscás crew, arriba de todo tenés tres que te aceptan y están activas, primero las que tienen gente de tu servidor, de tu país o que seguís.",
+        "👥 **Arma tu crew desde la página de Crews**: «Armar la mía» abre el formulario ahí mismo, arriba de la lista.",
+        "⭐ **Recomendadas para ti**: si buscas crew, arriba de todo tienes tres que te aceptan y están activas, primero las que tienen gente de tu servidor, de tu país o que sigues.",
         "👤 Mi cuenta → Mi crew queda para lo tuyo: tu crew y tus invitaciones."
       ]
     },
@@ -4109,7 +4109,7 @@
       "cuando": "2026-10-19T22:24:00-04:00",
       "titulo": "Los dueños de los servidores socios manejan el bot desde su panel",
       "items": [
-        "⚙️ **Si sos dueño de un servidor socio, el bot se maneja desde tu panel**: el bot en vivo y cuánto habla, las apuestas, los eventos de Discord, los avisos de rango, el ascenso, el #N del apodo y en qué canales se usa `/card`. Es lo mismo que `/settings` en tu Discord: lo último que cambies, acá o allá, es lo que vale.",
+        "⚙️ **Si eres dueño de un servidor socio, el bot se maneja desde tu panel**: el bot en vivo y cuánto habla, las apuestas, los eventos de Discord, los avisos de rango, el ascenso, el #N del apodo y en qué canales se usa `/card`. Es lo mismo que `/settings` en tu Discord: lo último que cambies, acá o allá, es lo que vale.",
         "🏷️ En el panel, los servidores salen por su sigla (LCW, URB), como en toda la página."
       ]
     },
@@ -4122,7 +4122,7 @@
         "🖼️ **El vs de 2v2, 1v3 y 8v1** trae más de cada uno: debajo de cada tarjeta, su **letra**, sus **últimos 5** y su **racha**, como en el 1v1.",
         "🏷️ **Los TAG, en la Guía**: todos los de cada tarjeta, qué pide cada uno, **cuánta gente lo tiene** y **los tuyos de hoy**.",
         "🔗 **`/crew link`** en el bot: arma el link de invitación de tu crew sin entrar a la página.",
-        "👥 **Crews que te aceptan**: si todavía no tenés crew, en Mi cuenta y en tu perfil te mostramos algunas que te aceptan hoy.",
+        "👥 **Crews que te aceptan**: si todavía no tienes crew, en Mi cuenta y en tu perfil te mostramos algunas que te aceptan hoy.",
         "🏆 Cuando tu crew **sube o baja de tier** te llega a la campana, y las que suben salen en **Publicaciones** el lunes.",
         "🪪 Si tu crew tiene gente **sin verificar**, al Líder le avisamos **2 días antes** de que se venza su plazo.",
         "📊 En el panel de los servidores socios, la comparación con las 4 semanas anteriores aparece cuando la temporada tenga 8 semanas (antes comparaba con la pre-temporada)."
@@ -4134,7 +4134,7 @@
       "cuando": "2026-10-19T18:58:00-04:00",
       "titulo": "El panel de los servidores socios",
       "items": [
-        "📊 **Los dueños de los servidores socios tienen su panel**: su puntaje y cómo viene, sus eventos y su gente semana a semana, qué días y a qué hora juntan más raperos, qué días la Liga está más llena de eventos, sus raperos, sus crews y las visitas a su página. Con sugerencias de qué conviene. Si sos dueño, lo ves en **Mi cuenta → Mi servidor**."
+        "📊 **Los dueños de los servidores socios tienen su panel**: su puntaje y cómo viene, sus eventos y su gente semana a semana, qué días y a qué hora juntan más raperos, qué días la Liga está más llena de eventos, sus raperos, sus crews y las visitas a su página. Con sugerencias de qué conviene. Si eres dueño, lo ves en **Mi cuenta → Mi servidor**."
       ]
     },
     {
@@ -4158,9 +4158,9 @@
       "cuando": "2026-10-19T17:30:00-04:00",
       "titulo": "La página de crews",
       "items": [
-        "👥 **Crews tiene su propia página**, en el menú: cada crew con su tier, cuánta gente tiene, cómo se entra, qué tan activa está esta semana, su nivel y lo que pide. Ordenadas **para vos**: primero las que te aceptan, las que están vivas y las que tienen gente que seguís o de tu servidor.",
+        "👥 **Crews tiene su propia página**, en el menú: cada crew con su tier, cuánta gente tiene, cómo se entra, qué tan activa está esta semana, su nivel y lo que pide. Ordenadas **para ti**: primero las que te aceptan, las que están vivas y las que tienen gente que sigues o de tu servidor.",
         "🎯 El Líder puede pedir una **letra mínima** o un **mínimo de eventos** para entrar. A quien invita, entra igual.",
-        "📨 Ahora podés **invitar a alguien que ya está en otra crew**: si acepta, se cambia a la tuya. En Mi cuenta → Mi crew elegís si querés recibir esas invitaciones.",
+        "📨 Ahora puedes **invitar a alguien que ya está en otra crew**: si acepta, se cambia a la tuya. En Mi cuenta → Mi crew eliges si quieres recibir esas invitaciones.",
         "🔎 El buscador de **Invitar** encuentra a todos los que tienen perfil, con o sin espacios, y dice en qué crew está cada uno.",
         "⏳ Al armar la crew o cambiar el logo, una **barra** te muestra cómo va: el logo pasa por el filtro y puede tardar hasta medio minuto.",
         "📱 Arreglado: en **iPhone y iPad** no se podía subir el logo, el fondo ni la foto de tarjeta («la imagen trae datos escondidos»)."
@@ -4186,8 +4186,8 @@
       "cuando": "2026-10-19T07:00:00-04:00",
       "titulo": "Las crews, ahora las arman ustedes",
       "items": [
-        "👥 **Armá tu crew**: en Mi cuenta → Mi crew, si estás verificado, por 2.500 Puntos de Tienda. Hasta 20 raperos, con Líder, Colíder, Veterano y Miembro.",
-        "📨 **Invitá** desde la página de tu crew, desde el perfil de alguien o en Discord con `/crew invitar` (o click derecho → Invitar a mi crew). La invitación llega en el canal, y sólo el invitado puede aceptarla.",
+        "👥 **Arma tu crew**: en Mi cuenta → Mi crew, si estás verificado, por 2.500 Puntos de Tienda. Hasta 20 raperos, con Líder, Colíder, Veterano y Miembro.",
+        "📨 **Invita** desde la página de tu crew, desde el perfil de alguien o en Discord con `/crew invitar` (o click derecho → Invitar a mi crew). La invitación llega en el canal, y sólo el invitado puede aceptarla.",
         "🚪 Cada crew elige cómo se entra: abierta, con pedido o sólo por invitación. Para pasar de una crew a otra hay que esperar 7 días.",
         "🎯 **Most Wanted**: ahora son 15 buscados por semana.",
         "🎨 Una pasada de diseño por toda la página: las cartas otra vez con su forma, el tema Noche sin parches claros, menos huecos y los perfiles más cortos.",
@@ -4200,10 +4200,10 @@
       "cuando": "2026-10-19T03:50:00-04:00",
       "titulo": "La bienvenida",
       "items": [
-        "🎮 Si es tu primera vez en la página, te recibe una **pantalla de bienvenida**: te unís a la Liga con tu cuenta de Discord en un toque, te verificás ahí mismo y te mostramos dónde está cada cosa. Si preferís mirar primero, «En otro momento».",
+        "🎮 Si es tu primera vez en la página, te recibe una **pantalla de bienvenida**: te unes a la Liga con tu cuenta de Discord en un toque, te verificas ahí mismo y te mostramos dónde está cada cosa. Si prefieres mirar primero, «En otro momento».",
         "🔔 Con la campana activada, la página ya no te pide que la actives.",
         "🃏 Las cartas cargan más livianas también en **Tarjetas**, los perfiles y las historias.",
-        "⚡ La página arranca más rápido: cada sección trae su diseño cuando la abrís, no todo de entrada."
+        "⚡ La página arranca más rápido: cada sección trae su diseño cuando la abres, no todo de entrada."
       ]
     },
     {
@@ -4213,7 +4213,7 @@
       "titulo": "Las llaves más livianas",
       "items": [
         "🃏 Las llaves cargan mucho más rápido: cada carta viene en tamaño chico, siete veces más liviana. En grande (lo de ahora y el campeón) sigue la de siempre.",
-        "⏳ La entrada dura medio segundo más la primera vez que abrís la página.",
+        "⏳ La entrada dura medio segundo más la primera vez que abres la página.",
         "🔤 Dos personas con el mismo nombre y distinta bandera ya no se mezclan: cada una tiene su debut y su primera vez.",
         "🐞 Si una parte de la página se rompe, nos enteramos solos, sin nada que diga quién eras."
       ]
@@ -4241,8 +4241,8 @@
       "items": [
         "⚔️ En una llave en vivo, la batalla de ahora va arriba y en grande: carta contra carta, y quién sigue.",
         "🎬 Cuando se decide una batalla, la carta del que pierde se apaga y la del que pasa entra a la ronda siguiente.",
-        "🏆 El campeón, en grande con su carta y lo que cobró; y si jugás en esa llave, tu camino ya viene marcado.",
-        "📖 Si entrás con Discord, las historias que viste no te salen como nuevas en tus otros dispositivos.",
+        "🏆 El campeón, en grande con su carta y lo que cobró; y si juegas en esa llave, tu camino ya viene marcado.",
+        "📖 Si entras con Discord, las historias que viste no te salen como nuevas en tus otros dispositivos.",
         "💰 Los MES AWARDS de cada servidor pagan 1.000 Puntos de Tienda."
       ]
     },
@@ -4348,7 +4348,7 @@
       "items": [
         "🙋 «Tu semana»: con tu cuenta, un círculo con lo que jugaste desde el lunes y tu próximo evento.",
         "🏆 El podio de cada evento con las tres cartas, y 👏 Felicitar desde la historia.",
-        "🖼️ Guardá cualquier historia como imagen para Instagram o WhatsApp, y compartí su link.",
+        "🖼️ Guarda cualquier historia como imagen para Instagram o WhatsApp, y comparte su link.",
         "🔴 Lo en vivo muestra la ronda que se juega y quién va pasando.",
         "⬅️ El botón Atrás del celular cierra las historias, y cada una dura según lo que muestra."
       ]
@@ -4416,7 +4416,7 @@
       "cuando": "2026-10-18T01:55:00-04:00",
       "titulo": "Historias más fluidas",
       "items": [
-        "📸 Las historias: deslizá abajo para cerrar y al costado para cambiar de círculo; mantener apretado pausa.",
+        "📸 Las historias: desliza abajo para cerrar y al costado para cambiar de círculo; mantener apretado pausa.",
         "⚡ Cargan antes y no se saltean al volver de otra app."
       ]
     },
@@ -4496,7 +4496,7 @@
         "🗂️ Cada liga tiene pestañas: la tabla, las fechas, los números, el staff, los flyers, los videos y cómo funciona.",
         "📋 En las fechas, cada batalla con su ganador, si fue directa o réplica, el PTB y el veredicto en Discord.",
         "📊 Los números de la liga: el MVP de cada fecha, la batalla con más PTB, la más pareja y la racha más larga.",
-        "🔔 Podés seguir una liga: te avisamos cuando hay resultados o una fecha nueva."
+        "🔔 Puedes seguir una liga: te avisamos cuando hay resultados o una fecha nueva."
       ]
     },
     {
@@ -4526,10 +4526,10 @@
       "version": "3.29",
       "dia": "2026-10-17",
       "cuando": "2026-10-17T21:10:00-04:00",
-      "titulo": "«Algo está mal»: pedí que lo arreglemos",
+      "titulo": "«Algo está mal»: pide que lo arreglemos",
       "items": [
-        "🙋 En Mi cuenta hay una sección nueva, «Algo está mal»: si perdiste tu cuenta de Discord, si una llave te puso el resultado de otro, si tu país está mal o si un video de tu perfil no es tuyo, lo pedís ahí.",
-        "🔁 ¿Perdiste tu cuenta? Entrá con la nueva y pedilo: cuando lo aprueben, pasa todo a la nueva —tus tarjetas, tus Puntos de Tienda, tu Pase y a quién seguís—.",
+        "🙋 En Mi cuenta hay una sección nueva, «Algo está mal»: si perdiste tu cuenta de Discord, si una llave te puso el resultado de otro, si tu país está mal o si un video de tu perfil no es tuyo, lo pides ahí.",
+        "🔁 ¿Perdiste tu cuenta? Entra con la nueva y pídelo: cuando lo aprueben, pasa todo a la nueva —tus tarjetas, tus Puntos de Tienda, tu Pase y a quién sigues—.",
         "📋 Abajo ves tus pedidos y en qué quedó cada uno."
       ]
     },
@@ -4575,7 +4575,7 @@
       "items": [
         "🔵 El círculo de Promos de las historias está siempre, con un ícono nuevo que gira.",
         "📣 La Liga también promociona los videos de sus raperos: sus batallas, sus plazas y lo que suben a su YouTube.",
-        "🗓️ Cada promo está una semana en la página. ¿Querés que la tuya siga? En la Tienda, una semana más por 2.500 Puntos de Tienda."
+        "🗓️ Cada promo está una semana en la página. ¿Quieres que la tuya siga? En la Tienda, una semana más por 2.500 Puntos de Tienda."
       ]
     },
     {
@@ -4584,8 +4584,8 @@
       "cuando": "2026-10-16T09:47:00-04:00",
       "titulo": "Las promos pagan, y el orden del cierre",
       "items": [
-        "📣 Abrí con tu cuenta lo que promocionan los raperos —el video o el link, desde Publicaciones, un perfil, un servidor o su historia— y ganás 50 Puntos de Tienda, hasta 3 por día.",
-        "🎟️ Y suma a tu Pase: una Tarea nueva, «Abrí 10 promos».",
+        "📣 Abre con tu cuenta lo que promocionan los raperos —el video o el link, desde Publicaciones, un perfil, un servidor o su historia— y ganas 50 Puntos de Tienda, hasta 3 por día.",
+        "🎟️ Y suma a tu Pase: una Tarea nueva, «Abre 10 promos».",
         "🏆 En el Ranking Competitivo, una raya marca hasta dónde se clasifica directo a la Superliga: los 4 primeros.",
         "🗓️ El orden del cierre de la T1: primero la Clausura, después la Superliga, que todavía es de la T1."
       ]
@@ -4598,7 +4598,7 @@
       "items": [
         "🏆 Llegan los MES AWARDS: cada mes, el Rapero del mes, la Revelación, la Batalla del mes y el Servidor del mes, votados por la gente.",
         "🗳️ Los nominados salen solos de los números el día 1, y se vota tres días: una vez por categoría, con tu Discord.",
-        "🎖️ El ganador se lleva su insignia, Puntos de Tienda y su lugar en el Salón de la fama, donde ya podés ver cómo va octubre.",
+        "🎖️ El ganador se lleva su insignia, Puntos de Tienda y su lugar en el Salón de la fama, donde ya puedes ver cómo va octubre.",
         "📅 El primero es octubre: se vota del 1 al 4 de noviembre."
       ]
     },
@@ -4608,7 +4608,7 @@
       "cuando": "2026-10-16T08:27:00-04:00",
       "titulo": "Las promos de los servidores",
       "items": [
-        "📣 Lo que compartís en el canal de promoción de tu servidor —tus temas y tus videos— ahora también lo promociona la Liga.",
+        "📣 Lo que compartes en el canal de promoción de tu servidor —tus temas y tus videos— ahora también lo promociona la Liga.",
         "👀 Están en Publicaciones (pestaña Promos), en tu perfil, en la página de cada servidor y en un círculo de las historias. Los videos se miran ahí mismo."
       ]
     },
@@ -4641,7 +4641,7 @@
       "items": [
         "🏆 La Superliga: al cierre de la Temporada 1, los 16 primeros del Competitivo. Los 4 primeros entran directo; del 5º al 16º, un duelo a muerte por 6 lugares; y 10 en la liga, todos contra todos.",
         "🔒 La Clausura: los 16 primeros de la Temporada, en una llave desde octavos.",
-        "👀 Las dos tienen su página en Ligas, con quién entraría si la temporada terminara hoy, dónde estás vos y los premios.",
+        "👀 Las dos tienen su página en Ligas, con quién entraría si la temporada terminara hoy, dónde estás tú y los premios.",
         "🏅 En Ligas, lo mejor de todas las ligas juntas y sus invictos.",
         "📅 La Temporada 2 arranca cuando termina la Superliga."
       ]
@@ -4654,7 +4654,7 @@
       "items": [
         "🏟️ Ligas tiene su lugar en el menú, al lado de Tarjetas: todas las ligas de los servidores, con su flyer, cómo va cada una y quién lidera.",
         "📋 Cada liga tiene su página: el podio, la tabla, las fechas, la próxima, su flyer y quién gana según los votos.",
-        "🙋 Si jugás en alguna, arriba ves tu puesto en cada una."
+        "🙋 Si juegas en alguna, arriba ves tu puesto en cada una."
       ]
     },
     {
@@ -4665,7 +4665,7 @@
       "items": [
         "🔎 En el celular, la lupa arriba abre el buscador al toque.",
         "🎬 El reproductor de videos entra entero en el celular, también acostado.",
-        "🎥 Si en un video tuyo te dicen de otra forma, Mi cuenta te pregunta cómo aparecés y lo revisamos para sumarlo a tu perfil.",
+        "🎥 Si en un video tuyo te dicen de otra forma, Mi cuenta te pregunta cómo apareces y lo revisamos para sumarlo a tu perfil.",
         "🏆 El bot vuelve a mirar las llaves que quedaron sin campeón antes de preguntarle al organizador."
       ]
     },
@@ -4686,12 +4686,12 @@
       "cuando": "2026-10-15T00:30:00-04:00",
       "titulo": "Misiones nuevas, Writing Challenge, Ligas y muchos más TAGs",
       "items": [
-        "🎯 **Misiones nuevas** desde el lunes 19: ganale a alguien de rango más alto, a raperos de otros países, llegá a cuartos, hacé podio, jugá un formato distinto o un evento de un servidor chico.",
+        "🎯 **Misiones nuevas** desde el lunes 19: gánale a alguien de rango más alto, a raperos de otros países, llega a cuartos, haz podio, juega un formato distinto o un evento de un servidor chico.",
         "🎮 La página de Misiones, como un juego: tus misiones arriba con su barra y la cuenta atrás, la cacería con la carta de la presa y la Semana perfecta.",
         "✍️ El **Writing Challenge de FFA** cuenta para la Liga: puntos de Temporada y de Tienda por puesto, la insignia Pluma y su misión las semanas con fecha.",
-        "🏆 **Las Ligas**, como torneos: su tabla, su flyer, la próxima fecha y los resultados de cada una. Y votá quién gana cada liga.",
+        "🏆 **Las Ligas**, como torneos: su tabla, su flyer, la próxima fecha y los resultados de cada una. Y vota quién gana cada liga.",
         "🃏 Muchos más TAGs en las cuatro tarjetas, y la Servidor con su escalera de títulos.",
-        "🎟️ Pase: «Seguí a un rapero» entre las diarias, y dos tareas nuevas de temporada.",
+        "🎟️ Pase: «Sigue a un rapero» entre las diarias, y dos tareas nuevas de temporada.",
         "🔱 Freestyle Zone: su etiqueta, **Historia**, y su tema de colores en Apariencia.",
         "🏆 El campeón de un evento sale en un solo mensaje en el chat, también donde la llave se escribe de a una batalla."
       ]
@@ -4713,9 +4713,9 @@
       "version": "3.13",
       "dia": "2026-10-14",
       "cuando": "2026-10-14T19:10:00-04:00",
-      "titulo": "Conseguí tu tarjeta",
+      "titulo": "Consigue tu tarjeta",
       "items": [
-        "🃏 En los vs del chat en vivo, si alguno de los dos todavía no tiene tarjeta, abajo de la imagen aparece «Conseguí tu tarjeta»: te lleva a Tarjetas, donde «Las tuyas» te dice qué te falta."
+        "🃏 En los vs del chat en vivo, si alguno de los dos todavía no tiene tarjeta, abajo de la imagen aparece «Consigue tu tarjeta»: te lleva a Tarjetas, donde «Las tuyas» te dice qué te falta."
       ]
     },
     {
@@ -4734,7 +4734,7 @@
       "cuando": "2026-10-14T01:18:00-04:00",
       "titulo": "Divisiones, más clara",
       "items": [
-        "🎯 Arriba, **tu semana**: tu división, tu puesto, si subís o bajás, cuánto te falta y cuándo cierra.",
+        "🎯 Arriba, **tu semana**: tu división, tu puesto, si subes o bajas, cuánto te falta y cuándo cierra.",
         "🪜 La escalera con las caras de los primeros de cada división y «VOS» en la tuya.",
         "🏷️ La tabla en tres bloques: los que suben (y cobran 500), los que se quedan y los que bajan."
       ]
@@ -4747,7 +4747,7 @@
       "items": [
         "🏟️ En las ligas, cada nombre lleva a su perfil, también el del staff.",
         "👤 Tu perfil muestra **tus ligas**: tu puesto y tus ganadas.",
-        "✋ ¿Un nombre de una liga está mal? Avisá desde la liga y lo revisa la Liga."
+        "✋ ¿Un nombre de una liga está mal? Avisa desde la liga y lo revisa la Liga."
       ]
     },
     {
@@ -4757,7 +4757,7 @@
       "titulo": "Tu perfil, más tuyo",
       "items": [
         "📅 Tu perfil dice desde cuándo estás verificado.",
-        "📰 **Tus publicaciones**: lo que la Liga publicó de vos en toda la temporada, las últimas tres y «Ver todas».",
+        "📰 **Tus publicaciones**: lo que la Liga publicó de ti en toda la temporada, las últimas tres y «Ver todas».",
         "🔗 Al pegar el link de un perfil en Discord o WhatsApp, se ve su nombre, sus números y su tarjeta."
       ]
     },
@@ -4767,8 +4767,8 @@
       "cuando": "2026-10-14T00:15:00-04:00",
       "titulo": "Más formas de subir de nivel",
       "items": [
-        "⭐ Tu nivel ahora sube también mirando llaves en vivo, siguiendo raperos, votando, felicitando, apostando, poniendo precios, reportando errores y con las Tareas del Pase. Cada cosa cuenta una vez y con tope: en Mi cuenta, «Cómo subir de nivel», ves cuánto llevás de cada una.",
-        "🌱 El paso «Mirá una llave en vivo» de tus primeros 7 días ya se puede cumplir."
+        "⭐ Tu nivel ahora sube también mirando llaves en vivo, siguiendo raperos, votando, felicitando, apostando, poniendo precios, reportando errores y con las Tareas del Pase. Cada cosa cuenta una vez y con tope: en Mi cuenta, «Cómo subir de nivel», ves cuánto llevas de cada una.",
+        "🌱 El paso «Mira una llave en vivo» de tus primeros 7 días ya se puede cumplir."
       ]
     },
     {
@@ -4777,8 +4777,8 @@
       "cuando": "2026-10-14T00:00:00-04:00",
       "titulo": "La racha paga cada día",
       "items": [
-        "🔥 **La racha** tiene premio todos los días: tocá «Cobrar» en el Inicio. El domingo es un cofre si entraste 5 días de la semana, y a los 14 y 30 días seguidos hay premio extra.",
-        "🌱 **Tus primeros 7 días**: si sos nuevo, un paso por día con algo que hacer y su premio."
+        "🔥 **La racha** tiene premio todos los días: toca «Cobrar» en el Inicio. El domingo es un cofre si entraste 5 días de la semana, y a los 14 y 30 días seguidos hay premio extra.",
+        "🌱 **Tus primeros 7 días**: si eres nuevo, un paso por día con algo que hacer y su premio."
       ]
     },
     {
@@ -4787,7 +4787,7 @@
       "cuando": "2026-10-13T23:53:00-04:00",
       "titulo": "Tu rival, y los temas con tu nivel",
       "items": [
-        "⚔️ En el Inicio, **tu rival**: el que tenés justo arriba en el Ranking y cuánto te lleva.",
+        "⚔️ En el Inicio, **tu rival**: el que tienes justo arriba en el Ranking y cuánto te lleva.",
         "🎨 Los colores de los servidores se abren con tu nivel (2, 3 y 5). Clara y Noche, siempre."
       ]
     },
@@ -4826,7 +4826,7 @@
       "cuando": "2026-10-13T22:55:00-04:00",
       "titulo": "Tu propia foto en tus tarjetas",
       "items": [
-        "📸 Con el nivel 15 del Pase de rapero, tu propia foto en vez de la de Discord, en las tarjetas que elijas: una distinta en cada una si querés. Pasa por el filtro automático y cada tarjeta se cambia una vez por semana. En Mi cuenta → Mi perfil.",
+        "📸 Con el nivel 15 del Pase de rapero, tu propia foto en vez de la de Discord, en las tarjetas que elijas: una distinta en cada una si quieres. Pasa por el filtro automático y cada tarjeta se cambia una vez por semana. En Mi cuenta → Mi perfil.",
         "🗣️ Cuando el bot no entiende quién ganó en una llave, ahora le explica al organizador qué está haciendo y qué tiene que tocar."
       ]
     },
@@ -4855,7 +4855,7 @@
       "cuando": "2026-10-13T21:30:00-04:00",
       "titulo": "Más cuidado con tus datos",
       "items": [
-        "🛡️ Una imagen de fondo que traiga datos escondidos (como dónde se sacó la foto) no se acepta. Si la elegís desde Mi cuenta, se limpia sola."
+        "🛡️ Una imagen de fondo que traiga datos escondidos (como dónde se sacó la foto) no se acepta. Si la eliges desde Mi cuenta, se limpia sola."
       ]
     },
     {
@@ -4875,7 +4875,7 @@
       "cuando": "2026-10-13T21:00:00-04:00",
       "titulo": "Tu rol en la Liga, y los temas de los servidores",
       "items": [
-        "🏷️ En cada perfil, su rol en la Liga: Competidor, Organizador, Jurado, Host, Staff y Socio (el dueño de un servidor) salen solos del rol que tenés en cada servidor.",
+        "🏷️ En cada perfil, su rol en la Liga: Competidor, Organizador, Jurado, Host, Staff y Socio (el dueño de un servidor) salen solos del rol que tienes en cada servidor.",
         "🎨 Temas nuevos: además de Clara y Noche, uno con los colores de cada servidor de la Liga. Se eligen en Ajustes → Apariencia o desde el menú."
       ]
     },
@@ -4883,9 +4883,9 @@
       "version": "2.95",
       "dia": "2026-10-13",
       "cuando": "2026-10-13T20:15:00-04:00",
-      "titulo": "Lo que reportás de una llave, se corrige",
+      "titulo": "Lo que reportas de una llave, se corrige",
       "items": [
-        "📣 Si ves mal tu batalla y la reportás desde la llave («Reportar un error»), ahora se corrige: quién era un nombre o quién ganó, sólo en ese evento. Cuando quede, te llega a la campana.",
+        "📣 Si ves mal tu batalla y la reportas desde la llave («Reportar un error»), ahora se corrige: quién era un nombre o quién ganó, sólo en ese evento. Cuando quede, te llega a la campana.",
         "🔎 Para revisar un reporte, el bot mira las inscripciones de ese evento y quién estaba en la llamada. Esa información y el reporte se borran a los 14 días.",
         "🔧 Corregidos los primeros: el «Agus» de tres llaves eran otras personas.",
         "📊 Contamos las visitas de la página con Cloudflare Web Analytics: sin cookies y sin seguir a nadie (está en Privacidad)."
@@ -4906,10 +4906,10 @@
       "cuando": "2026-10-13T18:11:00-04:00",
       "titulo": "«¿Quién gana?», el premio de la semana y el vs nuevo",
       "items": [
-        "🎁 **Premio de la semana**: en el Inicio, con tu cuenta, cobrás 50 Puntos de Tienda y 50 más por cada día que entraste la semana pasada (hasta 400). Una vez por semana.",
+        "🎁 **Premio de la semana**: en el Inicio, con tu cuenta, cobras 50 Puntos de Tienda y 50 más por cada día que entraste la semana pasada (hasta 400). Una vez por semana.",
         "⏳ Debajo de tu barra, cuánto falta para que termine la T1 y si estás adentro del top 16 del torneo de cierre (o a cuánto de OVR).",
-        "👀 **Tus seguidos hoy**: quién de la gente que seguís juega hoy o ganó ayer.",
-        "🗳️ **¿Quién gana?**: en el chat de tu servidor, votá antes de cada cruce. Sin plata: al final dice si el público acertó.",
+        "👀 **Tus seguidos hoy**: quién de la gente que sigues juega hoy o ganó ayer.",
+        "🗳️ **¿Quién gana?**: en el chat de tu servidor, vota antes de cada cruce. Sin plata: al final dice si el público acertó.",
         "🖼️ La imagen del vs, más ordenada: el cara a cara, los últimos 5 duelos, la racha, la letra de cada uno con su color y el pronóstico con su barra.",
         "🎲 Las apuestas ya no necesitan el nivel «A full»: el admin de cada servidor las puede prender con `/settings`.",
         "📺 En Socios, **Lo que publican**: el último video de cada servidor y todas sus redes juntas. Compartimos sus eventos y también lo que suben.",
@@ -4935,7 +4935,7 @@
       "items": [
         "📉 Si alguien te pasa en el ranking de Temporada, te avisamos: quién es y cuánto OVR te lleva (una vez por día como mucho).",
         "🔥 Si tu racha se corta hoy, a las 8 PM (hora del este) te llega un aviso al teléfono para que no la pierdas.",
-        "🔔 Si ya jugaste y todavía no tenés los avisos, el Inicio te los ofrece debajo de tu próximo evento. Nunca por DM.",
+        "🔔 Si ya jugaste y todavía no tienes los avisos, el Inicio te los ofrece debajo de tu próximo evento. Nunca por DM.",
         "🏆 En Discord Rap Español, los canales 〢🏆〉ranking, 〢💀〉most-wanted y 〢📅〉esta-semana muestran la Liga en imagen, con botones a la página, y se actualizan solos."
       ]
     },
@@ -4956,10 +4956,10 @@
       "titulo": "El Inicio, como el lobby de un juego",
       "items": [
         "🎮 Arriba de todo, tu barra: tu racha, tu letra (o cuánto te falta), tu nivel del Pase y tus Puntos de Tienda.",
-        "🎯 Un botón grande con tu próximo evento y su cuenta atrás: te anotás de un toque. Si ya jugaste uno, te muestra tu segundo, con el premio del reto.",
-        "⚡ Durante tu evento, el botón te dice tu momento: «¡Te toca!» y contra quién, «Sos el próximo», si pasaste de ronda o, si quedaste afuera, cuál es el próximo evento.",
-        "🎯 Si en tu próximo evento juega alguien de Se busca, el botón te lo dice y cuánto cobrás si le ganás.",
-        "🟨 Se busca, en grande y en amarillo, y puertas a cada sección con lo que hay hoy para vos.",
+        "🎯 Un botón grande con tu próximo evento y su cuenta atrás: te anotas de un toque. Si ya jugaste uno, te muestra tu segundo, con el premio del reto.",
+        "⚡ Durante tu evento, el botón te dice tu momento: «¡Te toca!» y contra quién, «Eres el próximo», si pasaste de ronda o, si quedaste afuera, cuál es el próximo evento.",
+        "🎯 Si en tu próximo evento juega alguien de Se busca, el botón te lo dice y cuánto cobras si le ganas.",
+        "🟨 Se busca, en grande y en amarillo, y puertas a cada sección con lo que hay hoy para ti.",
         "🔁 Nada repetido: el panel de Misiones y el Pase de abajo se fue (las Misiones están en el Ranking), arriba ya no se repite tu próximo evento (lo dice el botón), la puerta del Pase muestra tus Tareas de hoy, la de la Tienda la cabeza más cara, y la que no tiene nada tuyo te dice cómo abrirla.",
         "🛟 Tu racha aguanta un día sin entrar por semana, y la página te festeja a los 7 y a los 30 días.",
         "🕴️ Quien no tiene foto ahora tiene una de cuatro siluetas, siempre la misma.",
@@ -4974,7 +4974,7 @@
       "titulo": "Vuelve todo al Inicio",
       "items": [
         "🎯 Se busca vuelve al Inicio, más arriba. Y Misiones, Encuestas, Merchandising y la Liga en números también.",
-        "🗳️ Las encuestas del Inicio ocupan menos: ves cómo va y tocás «Votar» para elegir."
+        "🗳️ Las encuestas del Inicio ocupan menos: ves cómo va y tocas «Votar» para elegir."
       ]
     },
     {
@@ -4984,7 +4984,7 @@
       "titulo": "El Inicio, como un lobby",
       "items": [
         "🚪 El Inicio es más corto y tiene puertas: Eventos, Ranking, Se busca, Tarjetas, Pase y Tienda, cada una con lo que hay hoy.",
-        "⏸️ Lo de arriba ya no pasa solo: lo pasás vos con las flechas.",
+        "⏸️ Lo de arriba ya no pasa solo: lo pasas tú con las flechas.",
         "📍 Se busca está ahora arriba del Most Wanted en el Ranking, el Merchandising en la Tienda y la Liga en números en Socios.",
         "🔤 La letra de las etiquetas es la misma de las tarjetas.",
         "🎨 Atrás de los títulos, la silueta del servidor cuando la página es de uno."
@@ -5039,7 +5039,7 @@
       "titulo": "El bot en vivo, menos de golpe",
       "items": [
         "🎤 En el chat de tu servidor, el resultado de cada batalla se suma al mensaje del vs en vez de llegar en otro, y la final se anuncia una sola vez.",
-        "👤 Los raperos salen nombrados con su @, sin que les suene nada: tocás el nombre y ves su perfil.",
+        "👤 Los raperos salen nombrados con su @, sin que les suene nada: tocas el nombre y ves su perfil.",
         "🖼️ El link de la Liga que manda el bot en cada servidor muestra la imagen de ese servidor."
       ]
     },
@@ -5049,7 +5049,7 @@
       "cuando": "2026-10-12T22:35:00-04:00",
       "titulo": "Verificarte, al momento",
       "items": [
-        "✅ Si ya tenés todo (estás en Discord Rap Español, con las reglas aceptadas y tu país), `/verificar` y la página te dan el rol de **Miembro** en el momento. Tu tarjeta sale con la vuelta siguiente del bot.",
+        "✅ Si ya tienes todo (estás en Discord Rap Español, con las reglas aceptadas y tu país), `/verificar` y la página te dan el rol de **Miembro** en el momento. Tu tarjeta sale con la vuelta siguiente del bot.",
         "🔗 `/verificar` trae siempre el botón para seguirlo en la página."
       ]
     },
@@ -5057,7 +5057,7 @@
       "version": "2.80",
       "dia": "2026-10-12",
       "cuando": "2026-10-12T22:30:00-04:00",
-      "titulo": "Tu servidor, sólo si lo elegís",
+      "titulo": "Tu servidor, sólo si lo eliges",
       "items": [
         "🏠 Tu perfil, el Ranking y Tarjetas muestran **el servidor que elegiste** en Mi cuenta. Si no elegiste ninguno, no se muestra ninguno."
       ]
@@ -5079,9 +5079,9 @@
       "cuando": "2026-10-12T21:10:00-04:00",
       "titulo": "Bienvenida para quien llega",
       "items": [
-        "🧭 La primera vez que entrás, un **recorrido** de un minuto por la página. Se vuelve a ver desde la Guía.",
+        "🧭 La primera vez que entras, un **recorrido** de un minuto por la página. Se vuelve a ver desde la Guía.",
         "✅ **Primeros pasos**: cinco cosas que se tildan solas, y ninguna pide jugar. La de Temporada sale con el nivel 1 del Pase.",
-        "💡 Una nota corta la primera vez que abrís cada página, con lo que se puede hacer ahí."
+        "💡 Una nota corta la primera vez que abres cada página, con lo que se puede hacer ahí."
       ]
     },
     {
@@ -5091,7 +5091,7 @@
       "titulo": "/agendar y seguir organizadores",
       "items": [
         "📅 **`/agendar`** para el staff de cada servidor: un evento con día, hora y país sale en el calendario de la Liga, y cada uno lo ve en su hora.",
-        "📣 En Eventos podés **seguir a un organizador**: te avisa la campana cuando anuncia un evento."
+        "📣 En Eventos puedes **seguir a un organizador**: te avisa la campana cuando anuncia un evento."
       ]
     },
     {
@@ -5109,10 +5109,10 @@
       "version": "2.75",
       "dia": "2026-10-12",
       "cuando": "2026-10-12T20:30:00-04:00",
-      "titulo": "Sumá tus batallas en video",
+      "titulo": "Suma tus batallas en video",
       "items": [
-        "🎬 En **Mi cuenta → Mi perfil** podés sumar tus batallas: el link de un video o de un canal de YouTube. Entran las que son una batalla con tu nombre, y salen en tu perfil en «De plazas y otras ligas».",
-        "🚩 Si un video del perfil de alguien no es suyo, tocá «Esto no es suyo»."
+        "🎬 En **Mi cuenta → Mi perfil** puedes sumar tus batallas: el link de un video o de un canal de YouTube. Entran las que son una batalla con tu nombre, y salen en tu perfil en «De plazas y otras ligas».",
+        "🚩 Si un video del perfil de alguien no es suyo, toca «Esto no es suyo»."
       ]
     },
     {
@@ -5131,7 +5131,7 @@
       "cuando": "2026-10-12T19:50:00-04:00",
       "titulo": "Tareas nuevas en el Pase, y el evento dorado para los servidores chicos",
       "items": [
-        "🎟️ **Pase de rapero**: «Votá en una encuesta», «Apostá en 3 batallas en vivo» y «Seguí a 5 raperos» reemplazan a las Tareas de jugar en DRA mientras DRA no organice eventos.",
+        "🎟️ **Pase de rapero**: «Vota en una encuesta», «Apuesta en 3 batallas en vivo» y «Sigue a 5 raperos» reemplazan a las Tareas de jugar en DRA mientras DRA no organice eventos.",
         "✨ Desde el lunes 19/10, el **evento dorado** sale entre los servidores que juegan menos, y jugarlo es una **misión** más de la semana."
       ]
     },
@@ -5171,7 +5171,7 @@
       "cuando": "2026-10-12T17:50:00-04:00",
       "titulo": "El reto de tu primer evento",
       "items": [
-        "🎤 **¿Jugaste tu primer evento en la Liga?** Tenés 7 días para jugar otro, en cualquier servidor, y te llevás **1.000 Puntos de Tienda**. Te avisamos en la página cuando debutás y cuando lo cumplís.",
+        "🎤 **¿Jugaste tu primer evento en la Liga?** Tienes 7 días para jugar otro, en cualquier servidor, y te llevas **1.000 Puntos de Tienda**. Te avisamos en la página cuando debutas y cuando lo cumples.",
         "🏆 **Equipos más justos**: en una llave que arranca de a uno y sigue por equipos, nadie de un equipo cobra menos que los que quedaron afuera en la última ronda de a uno."
       ]
     },
@@ -5216,7 +5216,7 @@
       "items": [
         "⚖️ **La llave dice quién organiza, el jurado, el host y el DJ**, sacados del anuncio del evento. También la que se está jugando en vivo: antes no decía ni quién la organizaba.",
         "🎭 **Lo de entre paréntesis al lado de un equipo es un pokémon**: «belleza(SNOW)» es belleza, y SNOW no gana nada por esa batalla.",
-        "🔎 **Las inscripciones en pareja también dicen quién es quién**: si tu cuenta se anota sola con tu bandera, en la pareja sos el que la lleva."
+        "🔎 **Las inscripciones en pareja también dicen quién es quién**: si tu cuenta se anota sola con tu bandera, en la pareja eres el que la lleva."
       ]
     },
     {
@@ -5337,9 +5337,9 @@
       "version": "2.54",
       "dia": "2026-10-07",
       "cuando": "2026-10-07T15:45:00-04:00",
-      "titulo": "Buscá por cualquier nombre",
+      "titulo": "Busca por cualquier nombre",
       "items": [
-        "🔎 **El buscador encuentra a cada rapero por cualquiera de sus akas**: buscás el otro nombre y aparece su perfil, con el aka con que lo encontraste abajo.",
+        "🔎 **El buscador encuentra a cada rapero por cualquiera de sus akas**: buscas el otro nombre y aparece su perfil, con el aka con que lo encontraste abajo.",
         "🏆 **La llave en vivo aparece aunque el anuncio escriba el nombre distinto** («WETTTSIIIDEE» y «WETTSIDDEE» son el mismo evento).",
         "🏷️ **Las crews, actualizadas.**"
       ]
@@ -5350,8 +5350,8 @@
       "cuando": "2026-10-07T15:20:00-04:00",
       "titulo": "Tu servidor, al verificarte",
       "items": [
-        "🏠 **Al terminar de verificarte, el último paso es elegir tu servidor**: de cuál venís o a cuál querés representar, entre todos los socios. Y si no es ninguno, **«Ninguno»**, que también está en Mi cuenta y no te gasta la elección de la temporada.",
-        "👥 **Si jugás con dos cuentas, se juntan**: tus puntos y eventos quedan en uno solo."
+        "🏠 **Al terminar de verificarte, el último paso es elegir tu servidor**: de cuál vienes o a cuál quieres representar, entre todos los socios. Y si no es ninguno, **«Ninguno»**, que también está en Mi cuenta y no te gasta la elección de la temporada.",
+        "👥 **Si juegas con dos cuentas, se juntan**: tus puntos y eventos quedan en uno solo."
       ]
     },
     {
@@ -5371,7 +5371,7 @@
       "titulo": "Un evento, una vez",
       "items": [
         "🔁 **La MAÑANA DE LLUVIA VOL 1 de FFA contaba tres veces**: su votación se leyó como un 5 vidas aparte. Ahora cuenta una, con sus puntos, sus duelos y sus insignias como corresponde.",
-        "🎟️ **La llave te dice si contó para el Pase**: «✓ Contó» cuando la miraste mientras se jugaba, y si ya terminó y tenés la Tarea pendiente, te avisa que cuenta con una que se esté jugando."
+        "🎟️ **La llave te dice si contó para el Pase**: «✓ Contó» cuando la miraste mientras se jugaba, y si ya terminó y tienes la Tarea pendiente, te avisa que cuenta con una que se esté jugando."
       ]
     },
     {
@@ -5390,7 +5390,7 @@
       "cuando": "2026-10-06T23:15:00-04:00",
       "titulo": "Tus dos nombres, una sola persona",
       "items": [
-        "👥 **Si te anotás con otro nombre desde tu cuenta, el ranking te lo junta solo**: tus puntos, eventos y podios quedan en tu nombre de la Lista. Si no está claro, lo decide el staff."
+        "👥 **Si te anotas con otro nombre desde tu cuenta, el ranking te lo junta solo**: tus puntos, eventos y podios quedan en tu nombre de la Lista. Si no está claro, lo decide el staff."
       ]
     },
     {
@@ -5420,7 +5420,7 @@
       "titulo": "El Pase de rapero, ahora con XP",
       "items": [
         "🎟️ **Las Tareas dan XP y la XP sube de nivel**, como en Brawl Stars: dos por día, cinco por semana y ocho de temporada que se cumplen en cualquier orden.",
-        "📈 **Tu XP, a la vista**: cuánto llevás del nivel y cuánto te falta para el próximo, en el Pase y en el Inicio.",
+        "📈 **Tu XP, a la vista**: cuánto llevas del nivel y cuánto te falta para el próximo, en el Pase y en el Inicio.",
         "🏛️ **El Salón del Pase**: quien llega al 30 entra, en el orden en que llegó, y la insignia Pase Oro queda para siempre.",
         "👏 **Llegar al nivel 10 y completar el Pase sale en Publicaciones**, para que te feliciten.",
         "🪙 **Después del 30 sigue sumando**: cada 1.000 XP, 300 Puntos de Tienda."
@@ -5452,7 +5452,7 @@
       "items": [
         "🏆 **La llave en vivo aparece aunque el anuncio se contradiga**: si el título dice «2v2» y la modalidad «1v1» (pasa cuando se copia el anuncio anterior), la llave de equipos ya no se pierde.",
         "⚡ **La página junta cada evento con su llave en vivo mucho más rápido**, también en el celular.",
-        "🃏 **Los dos pasos de las tarjetas, dichos igual en todos lados**: la Guía, Mi cuenta, tu perfil, Tarjetas, `/card` y `/verificar`. Verificate y sale tu **Servidor**; cumplí tu primera Tarea del Pase y sale tu **Temporada**.",
+        "🃏 **Los dos pasos de las tarjetas, dichos igual en todos lados**: la Guía, Mi cuenta, tu perfil, Tarjetas, `/card` y `/verificar`. Verifícate y sale tu **Servidor**; cumple tu primera Tarea del Pase y sale tu **Temporada**.",
         "🎤 **El bot en vivo**, en «cada batalla», dice también quién pasa de cada grupo, y mantiene el nombre del evento hasta el final.",
         "🗓️ **Misiones y Divisiones dicen el día en que cierran en tu zona horaria**, y si ya jugaste la temporada, una misión que todavía no empezaste dice «0»."
       ]
@@ -5474,8 +5474,8 @@
       "cuando": "2026-10-05T15:30:00-04:00",
       "titulo": "Tus tarjetas, en dos pasos",
       "items": [
-        "🃏 **Las tarjetas se consiguen en dos pasos**: verificate en la página y se desbloquea tu **Servidor**, la de cada servidor donde estás; cumplí tu primera Tarea del **Pase de rapero** y se desbloquea tu **Temporada**. Si todavía no jugaste, sale con «—» y se llena con tu primer evento. `/card` te lo explica, con el botón del Pase.",
-        "✅ **Si ya tenés tus tarjetas, no cambia nada**: las conservás hasta que arranque la T1, el lunes 12.",
+        "🃏 **Las tarjetas se consiguen en dos pasos**: verifícate en la página y se desbloquea tu **Servidor**, la de cada servidor donde estás; cumple tu primera Tarea del **Pase de rapero** y se desbloquea tu **Temporada**. Si todavía no jugaste, sale con «—» y se llena con tu primer evento. `/card` te lo explica, con el botón del Pase.",
+        "✅ **Si ya tienes tus tarjetas, no cambia nada**: las conservas hasta que arranque la T1, el lunes 12.",
         "🟣 **El logo de FFA va con sus colores** en la tarjeta de Temporada."
       ]
     },
@@ -5485,9 +5485,9 @@
       "cuando": "2026-10-05T12:45:00-04:00",
       "titulo": "El Pase de rapero",
       "items": [
-        "🎟️ **Llegó el Pase de rapero**, para los miembros de Discord Rap Español: 30 niveles por temporada. Cada semana hay cinco Tareas —entrá 3 días seguidos, jugá un evento en DRA, completá tus misiones, felicitá a 3 personas y mirá una llave en vivo— y cada una que cumplís es un nivel. Se cumplen solas: el Pase se entera de lo que hacés.",
+        "🎟️ **Llegó el Pase de rapero**, para los miembros de Discord Rap Español: 30 niveles por temporada. Cada semana hay cinco Tareas —entra 3 días seguidos, juega un evento en DRA, completa tus misiones, felicita a 3 personas y mira una llave en vivo— y cada una que cumples es un nivel. Se cumplen solas: el Pase se entera de lo que haces.",
         "🎁 **Cada nivel paga Puntos de Tienda**, y algunos dan más: dos insignias del Pase, dos títulos para tu perfil y tu nombre en dorado. La insignia del último nivel es tuya para siempre. Esta semana es de prueba: con la T1, el lunes 12, el Pase vuelve a cero.",
-        "🎯 **En el Inicio, las Misiones y el Pase ya no dicen «próximamente»**: ves las tres misiones de la semana con cuánto llevás, y tu nivel del Pase. Y la Guía explica las Misiones, las Divisiones y el Pase."
+        "🎯 **En el Inicio, las Misiones y el Pase ya no dicen «próximamente»**: ves las tres misiones de la semana con cuánto llevas, y tu nivel del Pase. Y la Guía explica las Misiones, las Divisiones y el Pase."
       ]
     },
     {
@@ -5569,9 +5569,9 @@
       "cuando": "2026-10-04T16:33:00-04:00",
       "titulo": "Las divisiones de la semana",
       "items": [
-        "🏟️ **Divisiones**: una tabla por semana, en grupos de 30. Jugás un evento y entrás; cuentan los puntos de Temporada que hacés esa semana. Están en el Ranking.",
+        "🏟️ **Divisiones**: una tabla por semana, en grupos de 30. Juegas un evento y entras; cuentan los puntos de Temporada que haces esa semana. Están en el Ranking.",
         "⬆️ **Los cinco primeros de cada grupo suben de división y ganan 500 Puntos de Tienda; los cinco últimos bajan.** Son seis, de Sexta a Primera, y la semana cierra el lunes a las 11 AM (hora del este).",
-        "🏅 **Dos insignias nuevas**: «Ascenso», la primera vez que subís, y «Primera División»."
+        "🏅 **Dos insignias nuevas**: «Ascenso», la primera vez que subes, y «Primera División»."
       ]
     },
     {
@@ -5580,8 +5580,8 @@
       "cuando": "2026-10-04T16:20:00-04:00",
       "titulo": "La racha diaria y los niveles",
       "items": [
-        "🔥 **La racha diaria**: cada día que usás el bot, entrás a la página con tu cuenta o jugás un evento suma un día. **Cada 7 días seguidos, +500 Puntos de Tienda.** La ves arriba, al lado de tu cuenta, y en Mi cuenta.",
-        "⭐ **Los niveles**: suben con cada evento que jugás (+10) y cada día que cuenta (+2), y miden qué tan antiguo sos en la Liga. Se ven en Mi cuenta y en el perfil de cada uno.",
+        "🔥 **La racha diaria**: cada día que usas el bot, entras a la página con tu cuenta o juegas un evento suma un día. **Cada 7 días seguidos, +500 Puntos de Tienda.** La ves arriba, al lado de tu cuenta, y en Mi cuenta.",
+        "⭐ **Los niveles**: suben con cada evento que juegas (+10) y cada día que cuenta (+2), y miden qué tan antiguo eres en la Liga. Se ven en Mi cuenta y en el perfil de cada uno.",
         "🗓️ **Las dos arrancan en cero con la Temporada 1**: lo de la prueba no cuenta."
       ]
     },
@@ -5621,7 +5621,7 @@
       "cuando": "2026-10-04T13:31:00-04:00",
       "titulo": "Avisos de la Liga, arriba de todo",
       "items": [
-        "📣 **Los avisos importantes de la Liga aparecen arriba de la página**: un cambio de horario, un mantenimiento. Lo cerrás con la ✕ y no vuelve, salvo que haya uno nuevo.",
+        "📣 **Los avisos importantes de la Liga aparecen arriba de la página**: un cambio de horario, un mantenimiento. Lo cierras con la ✕ y no vuelve, salvo que haya uno nuevo.",
         "🔔 **Si la campana está en pausa, la página de Eventos lo dice**, así no parece que se rompió.",
         "⚙️ **Si el multiplicador de la semana cambia a mitad de semana, vale desde ese momento**: lo que ya jugaste se queda con el de antes."
       ]
@@ -5633,7 +5633,7 @@
       "titulo": "Un /card más claro",
       "items": [
         "🃏 **/card dice lo que importa**: las tarjetas son de quienes juegan. Si todavía no jugaste, te lo dice y te lleva a los próximos eventos.",
-        "🙋 **Elegirte a vos mismo en /card ya no te contesta como si fueras otro.**",
+        "🙋 **Elegirte a ti mismo en /card ya no te contesta como si fueras otro.**",
         "🚪 **El menú de la tarjeta de Servidor muestra sólo los servidores de la Liga.**",
         "📄 **La privacidad cuenta cómo contamos cuánta gente usa el bot y la página**: tu ID con el día, una vez por día, 35 días, y las visitas sin cuenta sin guardar nada tuyo. El número lo ve sólo el dueño de la Liga."
       ]
@@ -5647,8 +5647,8 @@
         "🛡️ **La página se defiende mejor**: nadie puede meterla adentro de otra para engañar clics, sólo carga cosas de los lugares que usa (Discord, YouTube, nuestras tarjetas) y una acción de tu cuenta sólo vale si sale de esta página.",
         "🔐 **Al volver de entrar con Discord, tu permiso sale de la dirección al instante**: ya no queda en la barra ni en el historial.",
         "🔤 **Las letras salen de la propia página**: ya no se le piden a Google, así que tu visita no pasa por ahí.",
-        "✋ **Lo que gasta Puntos de Tienda y «Olvidar este dispositivo» piden un segundo toque**: el botón dice «tocá de nuevo» unos segundos.",
-        "⬆️ **Tocá de nuevo la pestaña en la que estás y volvés arriba**, como en Instagram.",
+        "✋ **Lo que gasta Puntos de Tienda y «Olvidar este dispositivo» piden un segundo toque**: el botón dice «toca de nuevo» unos segundos.",
+        "⬆️ **Toca de nuevo la pestaña en la que estás y vuelves arriba**, como en Instagram.",
         "♿ **«Saltar al contenido»** para quien usa la página con teclado."
       ]
     },
@@ -5710,7 +5710,7 @@
         "🚫 **Un evento que se canceló dice «CANCELADO»**, también cuando el anuncio quedó en pie y lo que se borró fue la llave (LA REDENCION). Antes decía «SIN LLAVE».",
         "🔤 **Las siglas, iguales en todos lados**: los filtros y la leyenda de Eventos dicen SNK y URB, como el resto de la página.",
         "🧾 **Cada uno con sus puntos en DDF**: Carlosss y Number VE ya no se confunden con Carlos y Number.",
-        "🤝 **«Sumá tu servidor» abierta para todos**, con lo que gana un servidor al sumarse."
+        "🤝 **«Suma tu servidor» abierta para todos**, con lo que gana un servidor al sumarse."
       ]
     },
     {
@@ -5789,7 +5789,7 @@
       "cuando": "2026-10-03T17:28:00-04:00",
       "titulo": "La Tienda y el Pase, nuevos",
       "items": [
-        "🛒 **La Tienda, rehecha**: tus Puntos de Tienda arriba, el precio por cabeza en tres pasos, las cabezas de la semana —tocás una y elegís cuánto ponerle— y lo último que se cobró.",
+        "🛒 **La Tienda, rehecha**: tus Puntos de Tienda arriba, el precio por cabeza en tres pasos, las cabezas de la semana —tocas una y eliges cuánto ponerle— y lo último que se cobró.",
         "🔎 **Buscar a quién ponerle precio**, con su cara y cuánto vale ya.",
         "🎟️ **El Pase de rapero**, con el estilo nuevo: todavía es un adelanto, y cuando salga se anuncia en la Liga."
       ]
@@ -5800,7 +5800,7 @@
       "cuando": "2026-10-03T17:07:00-04:00",
       "titulo": "Los anotados",
       "items": [
-        "🙋 **Quiénes se anotaron, antes de la llave**: en el Próximo del Inicio y en Eventos, «12 anotados» con sus caras; tocás y ves quiénes. Salen al minuto de anotarse y se van cuando aparece la llave.",
+        "🙋 **Quiénes se anotaron, antes de la llave**: en el Próximo del Inicio y en Eventos, «12 anotados» con sus caras; tocas y ves quiénes. Salen al minuto de anotarse y se van cuando aparece la llave.",
         "🧹 **Sólo cuenta quien se anota**: un nombre con su bandera, o uno que la Liga ya conoce. La charla del canal, las preguntas y los avisos del organizador no.",
         "🛠️ **Las tarjetas de los eventos que vienen, en Eventos**, salían con el nombre apretado en una columna angosta. Arreglado."
       ]
@@ -5811,8 +5811,8 @@
       "cuando": "2026-10-03T16:55:00-04:00",
       "titulo": "La llave, nueva",
       "items": [
-        "🏆 **La llave, rehecha**: arriba el evento y el podio; en el celular, una ronda por pantalla —deslizás y aparece la siguiente, con los puntos de cada ronda en sus pestañas—; en la compu, el cuadro entero con el camino del campeón.",
-        "👆 **Tocás un nombre y se marca su camino**: el resto se apaga, las pestañas marcan dónde jugó y abajo queda cómo le fue, con su perfil.",
+        "🏆 **La llave, rehecha**: arriba el evento y el podio; en el celular, una ronda por pantalla —deslizas y aparece la siguiente, con los puntos de cada ronda en sus pestañas—; en la compu, el cuadro entero con el camino del campeón.",
+        "👆 **Tocas un nombre y se marca su camino**: el resto se apaga, las pestañas marcan dónde jugó y abajo queda cómo le fue, con su perfil.",
         "🔗 **Cada llave tiene su página**: se comparte con su link, y el «atrás» del celular te devuelve a donde estabas.",
         "🃏 **La ventana de una tarjeta, nueva**: sus pestañas, sus números, Descargar y Ver su perfil.",
         "⏱️ **Un evento recién anunciado sale en el Inicio al minuto**, no media hora después."
@@ -5836,10 +5836,10 @@
       "cuando": "2026-10-03T12:55:00-04:00",
       "titulo": "Tarjetas, nueva",
       "items": [
-        "🃏 **Tarjetas, rehecha**: una pestaña por tipo —Temporada, Competitiva, Servidor y País— con qué mide cada una y qué pide, la galería apenas abrís (con buscador) y «Comparar dos» con el cara a cara si se cruzaron.",
-        "🙋 **Las tuyas**: si entraste con Discord, tus cuatro tarjetas arriba. En las que todavía no tenés, la bloqueada con cuánto te falta, requisito por requisito.",
+        "🃏 **Tarjetas, rehecha**: una pestaña por tipo —Temporada, Competitiva, Servidor y País— con qué mide cada una y qué pide, la galería apenas abres (con buscador) y «Comparar dos» con el cara a cara si se cruzaron.",
+        "🙋 **Las tuyas**: si entraste con Discord, tus cuatro tarjetas arriba. En las que todavía no tienes, la bloqueada con cuánto te falta, requisito por requisito.",
         "📸 **Tu tarjeta para historias**: debajo de cada tarjeta tuya, la imagen vertical lista para Instagram o WhatsApp.",
-        "🔎 **Filtros en la galería**: las nuevas de esta semana, a quién seguís y por servidor."
+        "🔎 **Filtros en la galería**: las nuevas de esta semana, a quién sigues y por servidor."
       ]
     },
     {
@@ -5879,9 +5879,9 @@
       "version": "2.04",
       "dia": "2026-10-03",
       "cuando": "2026-10-03T00:53:00-04:00",
-      "titulo": "Inscribite ya",
+      "titulo": "Inscríbete ya",
       "items": [
-        "✍️ **«Inscribite ya»**: el aviso de cada evento en Discord y los botones de la página te llevan con una invitación al canal de inscripciones de ese evento. El link al mensaje sólo abría si ya estabas en ese servidor. En vivo, «Entrar al servidor».",
+        "✍️ **«Inscríbete ya»**: el aviso de cada evento en Discord y los botones de la página te llevan con una invitación al canal de inscripciones de ese evento. El link al mensaje sólo abría si ya estabas en ese servidor. En vivo, «Entrar al servidor».",
         "🤝 **Socios, con las redes de cada servidor** en su tarjeta, y lo que se suma: compartimos sus posts en las redes de Under Legends y en la Liga Global."
       ]
     },
@@ -5906,7 +5906,7 @@
       "items": [
         "🤝 **Socios, lo que era Mundo**: los servidores de la Liga, cada uno con su gente en la temporada, sus puntos, su multiplicador de la semana y su mejor rapero con su carta. Abajo, cómo se suma un servidor y qué hace el bot ahí. Las crews y los países están en el Ranking.",
         "📖 **La Guía, rehecha**: arranca con cómo empezar en tres pasos y tiene un índice arriba; las tarjetas con cartas de verdad, los puntos, los ocho rangos y las palabras de la Liga, por tema.",
-        "🔔 **La campana es un panel de notificaciones**: lo que se juega hoy en la Liga y, entrando con Discord, lo tuyo —quién te sigue, quién te felicitó, lo de la gente que seguís—, aunque no tengas activados los avisos del celular."
+        "🔔 **La campana es un panel de notificaciones**: lo que se juega hoy en la Liga y, entrando con Discord, lo tuyo —quién te sigue, quién te felicitó, lo de la gente que sigues—, aunque no tengas activados los avisos del celular."
       ]
     },
     {
@@ -5936,7 +5936,7 @@
       "titulo": "Publicaciones nueva, y 👏 Felicitar",
       "items": [
         "📰 **Publicaciones, rehecha**: lo que pasa en la Liga día por día, con la carta, la letra o el logo de cada cosa, y las cartas nuevas de un mismo día juntas. Las encuestas de la semana se votan ahí mismo; si ya votaste en las dos, quedan al final.",
-        "👏 **Felicitá a quien gana**: un toque con tu Discord en un campeón, un rango o el Most Wanted. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega al celular.",
+        "👏 **Felicita a quien gana**: un toque con tu Discord en un campeón, un rango o el Most Wanted. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega al celular.",
         "⭐ **Te avisamos cuando alguien empieza a seguirte**, con su nombre si es de la Liga. Llega con los avisos activados y vinculados con tu Discord; nunca por DM."
       ]
     },
@@ -5955,7 +5955,7 @@
       "cuando": "2026-10-02T20:16:00-04:00",
       "titulo": "Mi cuenta y Ajustes, en tarjetas",
       "items": [
-        "🗂️ **En la compu, Mi cuenta y Ajustes muestran todo junto**: cada sección es una tarjeta, en dos columnas, sin espacios vacíos. En el celular sigue igual: la lista y entrás a cada una."
+        "🗂️ **En la compu, Mi cuenta y Ajustes muestran todo junto**: cada sección es una tarjeta, en dos columnas, sin espacios vacíos. En el celular sigue igual: la lista y entras a cada una."
       ]
     },
     {
@@ -5978,10 +5978,10 @@
       "cuando": "2026-10-02T17:37:00-04:00",
       "titulo": "Menos huecos en la compu, y flechas en el Ranking",
       "items": [
-        "⬅️ **Flechas en el Ranking**, como en el Inicio: pasás al ranking de al lado sin volver arriba.",
+        "⬅️ **Flechas en el Ranking**, como en el Inicio: pasas al ranking de al lado sin volver arriba.",
         "🧱 **Menos espacios vacíos en la compu**: las fechas del Inicio llenan la fila, el título del Ranking va arriba, Misiones muestra ejemplos y los buscados del perfil de cada servidor ocupan todo el ancho.",
         "📅 **Eventos**: «cuándo suele jugar cada servidor» va al costado, y un día sin eventos te muestra lo último que se jugó.",
-        "🗂️ **En las páginas que todavía no se rehicieron**: tu tarjeta te acompaña mientras bajás por tu perfil, y Mundo, la Guía y el Pase ya no dejan lugares vacíos.",
+        "🗂️ **En las páginas que todavía no se rehicieron**: tu tarjeta te acompaña mientras bajas por tu perfil, y Mundo, la Guía y el Pase ya no dejan lugares vacíos.",
         "⬛ **Abajo de una página corta**, el negro del pie en vez de blanco."
       ]
     },
@@ -6015,7 +6015,7 @@
       "titulo": "El Ranking: el buscador ya no queda tapado",
       "items": [
         "🔎 **En la compu, la tira de rankings tapaba los resultados del buscador.** Ahora el buscador queda arriba.",
-        "⚡ **El Ranking se carga aparte**, recién cuando lo abrís: el Inicio pesa un 7 % menos."
+        "⚡ **El Ranking se carga aparte**, recién cuando lo abres: el Inicio pesa un 7 % menos."
       ]
     },
     {
@@ -6026,8 +6026,8 @@
       "items": [
         "📈 **Las flechas**: al lado de cada número, cuántos puestos subió o bajó desde el lunes.",
         "🆕 **«NUEVO»** a quien jugó su primer evento esta semana, y un filtro para verlos a todos juntos.",
-        "👥 **Los que tenés cerca**: el de arriba, vos y el de abajo, con cuánto los separa. A quién pasás si ganás el próximo.",
-        "📂 **Tocá una fila y se abre ahí mismo**: sus números y sus últimos eventos, sin salir del ranking. El nombre sigue llevando a su perfil.",
+        "👥 **Los que tienes cerca**: el de arriba, tú y el de abajo, con cuánto los separa. A quién pasas si ganas el próximo.",
+        "📂 **Toca una fila y se abre ahí mismo**: sus números y sus últimos eventos, sin salir del ranking. El nombre sigue llevando a su perfil.",
         "📸 **Tu puesto como imagen para historias**: tu carta parada en su escalón, lista para Instagram o WhatsApp.",
         "🏆 En Temporada y Competitivo el podio ya no repite los puntos: la carta los dice."
       ]
@@ -6038,9 +6038,9 @@
       "cuando": "2026-10-02T14:35:00-04:00",
       "titulo": "El Ranking nuevo",
       "items": [
-        "🏆 **El Ranking, rehecho**: los 10 rankings en una tira que queda arriba mientras bajás, y el podio con las cartas de verdad de los tres primeros, cada una en su escalón. En Países van las banderas y en Crews los logos.",
+        "🏆 **El Ranking, rehecho**: los 10 rankings en una tira que queda arriba mientras bajas, y el podio con las cartas de verdad de los tres primeros, cada una en su escalón. En Países van las banderas y en Crews los logos.",
         "📍 **Tu lugar, siempre a la vista**: si entraste con Discord, abajo ves tu puesto y a cuánto estás del de arriba. «Encontrarme» te lleva hasta tu fila y la marca, aunque estés lejos.",
-        "🔎 **Filtros**: por servidor, por país y por la gente que seguís, además de buscar por nombre.",
+        "🔎 **Filtros**: por servidor, por país y por la gente que sigues, además de buscar por nombre.",
         "📱 **En el celular**, las columnas que entran sin deslizar; «Todas las columnas» abre el resto, con el puesto y el nombre fijos."
       ]
     },
@@ -6136,7 +6136,7 @@
       "cuando": "2026-10-02T09:25:00-04:00",
       "titulo": "Ocultar tu foto",
       "items": [
-        "🙈 **Ocultar tu foto**: en Mi cuenta → Privacidad. Si la ocultás, la página y tus tarjetas —también las de Discord— te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo (cada media hora, salvo de 3 a 11 AM, hora del este)."
+        "🙈 **Ocultar tu foto**: en Mi cuenta → Privacidad. Si la ocultas, la página y tus tarjetas —también las de Discord— te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo (cada media hora, salvo de 3 a 11 AM, hora del este)."
       ]
     },
     {
@@ -6145,8 +6145,8 @@
       "cuando": "2026-10-02T09:00:00-04:00",
       "titulo": "Mi cuenta, en su página",
       "items": [
-        "👤 **Mi cuenta, en su página**: tu tarjeta arriba y todo lo tuyo en partes, como los ajustes de Discord — tu foto de la tarjeta, tus redes, tu servidor, a quién seguís y quién te sigue. Los Ajustes, aparte, con el ⚙.",
-        "📱 **En el celular, el ⚙ arriba y vos abajo**: la barra de abajo es una tira que se desliza con todas las secciones, como el menú de la compu, y a la derecha queda «Yo», con tu cara. Arriba, la campana, el ⚙ y el menú."
+        "👤 **Mi cuenta, en su página**: tu tarjeta arriba y todo lo tuyo en partes, como los ajustes de Discord — tu foto de la tarjeta, tus redes, tu servidor, a quién sigues y quién te sigue. Los Ajustes, aparte, con el ⚙.",
+        "📱 **En el celular, el ⚙ arriba y tú abajo**: la barra de abajo es una tira que se desliza con todas las secciones, como el menú de la compu, y a la derecha queda «Yo», con tu cara. Arriba, la campana, el ⚙ y el menú."
       ]
     },
     {
@@ -6175,7 +6175,7 @@
       "cuando": "2026-10-01T23:35:00-04:00",
       "titulo": "Te avisamos cuando te toca",
       "items": [
-        "🎤 **«¡Te toca!»**: si vinculaste la campana con tu Discord, te llega una notificación cuando tu batalla es la próxima («Sos el próximo») y cuando te toca. Si no entrás a la llamada, vuelve a sonar cada minuto, hasta tres veces; se corta sola cuando entrás, cuando tu batalla ya tiene ganador o si el organizador te reemplazó.",
+        "🎤 **«¡Te toca!»**: si vinculaste la campana con tu Discord, te llega una notificación cuando tu batalla es la próxima («Eres el próximo») y cuando te toca. Si no entras a la llamada, vuelve a sonar cada minuto, hasta tres veces; se corta sola cuando entras, cuando tu batalla ya tiene ganador o si el organizador te reemplazó.",
         "⚠️ La primera batalla de cada llave no avisa (la llave se publica antes de que empiece el evento), y si las batallas no se juegan en orden, no avisa hasta saber cuál va.",
         "❌ **Si un evento se cancela, la copia en #eventos-hoy de DRA también lo dice**: el bot la edita a «CANCELADO»."
       ]
@@ -6184,7 +6184,7 @@
       "version": "1.75",
       "dia": "2026-10-01",
       "cuando": "2026-10-01T22:50:00-04:00",
-      "titulo": "Si un evento se cancela, te enterás",
+      "titulo": "Si un evento se cancela, te enteras",
       "items": [
         "❌ **El evento cancelado avisa**: si un servidor borra el anuncio de un evento (o lo edita a «cancelado») antes de que empiece, a quien tenía la campana de ese servidor le llega «Cancelado», en lugar del aviso del evento. Y el Inicio lo dice: en Fechas sale «CANCELADO», y ya no aparece como próximo ni en vivo.",
         "🔁 **La «R» después de la bandera es revivido**: «SIX 🇦🇷 R» en una llave quiere decir que entró revivido, y cobra la mitad de su puesto (la regla de los revividos). Cambia una sola llave de la T1: DESGRACIAS EN TOKYO VOL 18 2VS2.",
@@ -6231,7 +6231,7 @@
       "items": [
         "🔗 **La Liga Global vive en `underlegends.pages.dev/freestyle-rap`**: el ranking en `/freestyle-rap/ranking`, cada perfil en `/freestyle-rap/r/<nombre>`, cada servidor en `/freestyle-rap/sv/<sigla>`. Under Legends va a ser más cosas, y la Liga es su sección de freestyle.",
         "👤 **Lo tuyo, en la raíz**: tu cuenta en `/cuenta`, los ajustes en `/ajustes` y estas novedades en `/cambios`.",
-        "↩️ **Los links viejos siguen andando**: un `/#/r/<nombre>` que ya circula en Discord te lleva solo a la dirección nueva. Y los que copiás o compartís (una llave, un perfil, tu carta) ya salen con la nueva.",
+        "↩️ **Los links viejos siguen andando**: un `/#/r/<nombre>` que ya circula en Discord te lleva solo a la dirección nueva. Y los que copias o compartes (una llave, un perfil, tu carta) ya salen con la nueva.",
         "⚡ Cambiar de sección no recarga la página, y atrás y adelante del navegador funcionan como siempre."
       ]
     },
@@ -6281,7 +6281,7 @@
       "items": [
         "🏆 **La llave en vivo se ve entera**: Octavos, Cuartos, Semis y Final, con los cruces que faltan como lugares vacíos y el texto más a la izquierda para que entre. En el celular, las rondas que se están jugando.",
         "🎨 **Se veía gris**: las casillas eran blancas con letras blancas. Ahora van oscuras, como el resto del escenario.",
-        "🔒 **La privacidad, corregida**: dice que el repositorio del proceso es público, que con un evento en vivo se mira quién está en la llamada, qué guarda tu navegador y que a quién seguís se guarda si entrás con Discord.",
+        "🔒 **La privacidad, corregida**: dice que el repositorio del proceso es público, que con un evento en vivo se mira quién está en la llamada, qué guarda tu navegador y que a quién sigues se guarda si entras con Discord.",
         "🗑️ **`/borrar-mis-datos` borra en el momento también a quien está en la Lista sin verificar**, que antes esperaba a la limpieza semanal.",
         "♿ **Más legible y con teclado**: textos chicos con más contraste, el foco del buscador se ve, «Mis redes» arranca sin nada marcado y los Términos están en el pie."
       ]
@@ -6294,7 +6294,7 @@
       "items": [
         "📲 **Instalar la app, paso a paso y con un dibujo por paso**, para Android y para iPhone: en Ajustes → Instalar la app. El aviso del Inicio lleva ahí.",
         "📸 **23 tarjetas recuperan su foto**: era gente verificada con foto en Discord que nunca se había guardado. Desde ahora el bot trae solo las que falten, en cada vuelta.",
-        "📸 **Si pedís tu carta y no tiene tu foto, el bot te dice por qué**, en un mensaje que ves sólo vos: si no estás verificado, con el botón para verificarte en la página."
+        "📸 **Si pides tu carta y no tiene tu foto, el bot te dice por qué**, en un mensaje que ves sólo tú: si no estás verificado, con el botón para verificarte en la página."
       ]
     },
     {
@@ -6303,7 +6303,7 @@
       "cuando": "2026-10-01T17:13:00-04:00",
       "titulo": "Verificarte desde la página",
       "items": [
-        "✅ **Te verificás en la página, en un toque**: si no estás en Discord Rap Español, el bot te mete solo, y la página te dice qué te falta.",
+        "✅ **Te verificas en la página, en un toque**: si no estás en Discord Rap Español, el bot te mete solo, y la página te dice qué te falta.",
         "🏳️ **Tu país se elige en la página** y el bot te pone ese rol en DRA, después de que aceptes sus reglas.",
         "🤖 **El botón del bot ahora lleva ahí**: `/card` y `/verificar` tienen «Verificarme en la página».",
         "🔒 **La privacidad nombra el permiso nuevo** («unirse a servidores»): se usa una vez y no se guarda."
@@ -6337,7 +6337,7 @@
       "titulo": "Los que mandan, más limpio",
       "items": [
         "🃏 **Debajo de cada tarjeta ya no se repite lo que la tarjeta dice** (el nombre, el país, el puesto, el OVR): en Temporada y Competitivo va la tarjeta sola. En Duelos, Podios y Rachas queda una línea con lo que la tarjeta no dice, como «15 de 18 duelos ganados».",
-        "👤 **El perfil sigue a un toque**: tocás la tarjeta y su visor tiene «Ver su perfil»."
+        "👤 **El perfil sigue a un toque**: tocas la tarjeta y su visor tiene «Ver su perfil»."
       ]
     },
     {
@@ -6357,7 +6357,7 @@
       "cuando": "2026-10-01T14:07:00-04:00",
       "titulo": "Tu próximo evento, el buscador y la Liga en tu celular",
       "items": [
-        "🎯 **Tu próximo evento**: si todavía no tenés letra, el escenario te muestra primero el próximo evento de tu servidor, con la cuenta atrás y cuánto te falta para tu letra.",
+        "🎯 **Tu próximo evento**: si todavía no tienes letra, el escenario te muestra primero el próximo evento de tu servidor, con la cuenta atrás y cuánto te falta para tu letra.",
         "🔎 **El buscador encuentra servidores, países y crews**, además de raperos. En el celular está en el menú ☰.",
         "📲 **La Liga como app**: en Android, un botón para instalarla; en el iPhone, cómo agregarla a la pantalla de inicio (y así te llegan los avisos).",
         "👥 **Los que se llaman igual, separados en las llaves**: cada uno ve sus eventos y su último resultado, y el campeón lleva a su perfil."
@@ -6369,7 +6369,7 @@
       "cuando": "2026-10-01T13:19:00-04:00",
       "titulo": "Una revisión del Inicio nuevo",
       "items": [
-        "🧭 **Las historias y el escenario ya no saltan solos**: si empieza un evento en vivo mientras mirás, seguís donde estabas. Y el reloj de cada historia ya no vuelve a cero cuando se actualizan los datos.",
+        "🧭 **Las historias y el escenario ya no saltan solos**: si empieza un evento en vivo mientras miras, sigues donde estabas. Y el reloj de cada historia ya no vuelve a cero cuando se actualizan los datos.",
         "👥 **Dos raperos que se llaman igual** (con otra mayúscula) ya no ven los eventos del otro en «Tus eventos».",
         "🃏 **Una carta que no carga ya no muestra la imagen rota**: se vuelve a pedir y, si no llega, va la cara con «SIN CARTA».",
         "👤 **Si entraste con Discord y todavía no jugaste**, «Tus eventos» y «Tu temporada» te lo dicen, en vez de pedirte que entres.",
@@ -6420,7 +6420,7 @@
       "cuando": "2026-09-30T10:00:00-04:00",
       "titulo": "Tu cuenta arriba, y las historias con flechas",
       "items": [
-        "👤 **Tu cuenta de Discord, arriba**: con tu foto y tu nombre en la computadora, y como un círculo al lado de la campana en el celular. Ahora también si entraste y no sos rapero.",
+        "👤 **Tu cuenta de Discord, arriba**: con tu foto y tu nombre en la computadora, y como un círculo al lado de la campana en el celular. Ahora también si entraste y no eres rapero.",
         "⭕ **En las historias, flechas para pasar** y el círculo de arriba lleva a su perfil: el de la persona, su país, su crew o los servidores.",
         "🩷 **El dorado, en el rosa de la Liga.**",
         "↔️ **En la computadora, las flechas del escenario van a los costados** de la pantalla.",
@@ -6435,7 +6435,7 @@
       "titulo": "El Inicio, más lindo y más tuyo",
       "items": [
         "🏆 **La llave del escenario, más linda**: con la cara de cada uno, el ganador de cada cruce en blanco y el camino del campeón en verde. En el celular se ven la semifinal y la final, así el campeón entra en pantalla.",
-        "⭕ **Las historias de arriba son lo tuyo**: los servidores, tu país, tu crew y la gente que seguís. Si todavía no seguís a nadie, te invita a hacerlo desde su perfil.",
+        "⭕ **Las historias de arriba son lo tuyo**: los servidores, tu país, tu crew y la gente que sigues. Si todavía no sigues a nadie, te invita a hacerlo desde su perfil.",
         "🗳️ **Encuestas, arriba de Misiones**: el ×2 de la semana que viene y El Elegido, juntos. Mientras estén abiertas también aparecen en Lo último.",
         "📋 **Tus eventos son los tuyos**: los que jugaste esta temporada, con tu puesto y los puntos que sumaste.",
         "🩷 **El evento dorado se ve en rosa.**",
@@ -6507,7 +6507,7 @@
       "version": "1.48",
       "dia": "2026-09-29",
       "cuando": "2026-09-29T00:30:00-04:00",
-      "titulo": "FFS League se suma, y podés avisar si una llave está mal",
+      "titulo": "FFS League se suma, y puedes avisar si una llave está mal",
       "items": [
         "🌍 **FFS League se suma a la Liga** —«Evolución»—: sus eventos cuentan como los de los otros cuatro servidores, y tiene su tarjeta de Servidor.",
         "⚑ **¿Algo está mal en una llave?** Avisalo desde la misma llave (entrando con Discord) y lo revisa la Liga.",
@@ -6539,16 +6539,16 @@
         "⚡ **Los multiplicadores de la semana, más cómodos**: una cosa por página —los multiplicadores, la votación del ×2, los premios de la semana y la meta con el semillero—, con flechas como el panel de al lado.",
         "🎤 **Los organizadores con perfil salen con su cara** y abren su perfil: en «Cómo se juega», en «Lo que pasó», en cada llave y en los anuncios. Y «1vs1», «1V1» y «1 VS 1» ya cuentan como el mismo formato.",
         "👥 **Un equipo que la llave nombra con un solo nombre** («TEAM VENECIA» en un 2 vs 2) **cuenta como lo que es**: dos personas. La escala de puntos sale del formato.",
-        "🪪 **Si te anotás en el canal de inscripciones con un nombre nuevo, tus puntos te llegan con tu cuenta**, aunque el nombre sea de broma."
+        "🪪 **Si te anotas en el canal de inscripciones con un nombre nuevo, tus puntos te llegan con tu cuenta**, aunque el nombre sea de broma."
       ]
     },
     {
       "version": "1.45",
       "dia": "2026-09-28",
       "cuando": "2026-09-28T20:50:00-04:00",
-      "titulo": "Elegí tu servidor",
+      "titulo": "Elige tu servidor",
       "items": [
-        "🏠 **Tu servidor lo elegís vos**: en Mi cuenta, entrando con Discord, elegís el servidor que representás en la Liga y sale en tu perfil. Al arrancar la temporada se cambia libre (Mi cuenta dice hasta cuándo, igual que con la foto); después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde jugás.",
+        "🏠 **Tu servidor lo eliges tú**: en Mi cuenta, entrando con Discord, eliges el servidor que representas en la Liga y sale en tu perfil. Al arrancar la temporada se cambia libre (Mi cuenta dice hasta cuándo, igual que con la foto); después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde juegas.",
         "🗳️ **En la votación del ×2 se puede votar a cualquier servidor, también al tuyo.**"
       ]
     },
@@ -6556,13 +6556,13 @@
       "version": "1.44",
       "dia": "2026-09-28",
       "cuando": "2026-09-28T18:15:00-04:00",
-      "titulo": "Seguí a quien quieras",
+      "titulo": "Sigue a quien quieras",
       "items": [
-        "⭐ **Seguir a alguien ahora es de verdad**: entrando con Discord, a quién seguís se guarda con tu cuenta —lo ves igual en el teléfono y en la compu— y **te llega un aviso** cuando esa persona gana un evento, sube de rango, desbloquea una tarjeta o caza en el Most Wanted (con los avisos activados en ese dispositivo). Nunca por mensaje privado.",
-        "👥 **Cada perfil dice cuántos lo siguen**, y en Mi cuenta ves quién te sigue. Lo que ya seguías sin cuenta en ese dispositivo se guarda solo la primera vez que entrás.",
-        "📰 **En Publicaciones, «★ A quien sigo»**: sólo lo de la gente que seguís.",
+        "⭐ **Seguir a alguien ahora es de verdad**: entrando con Discord, a quién sigues se guarda con tu cuenta —lo ves igual en el teléfono y en la compu— y **te llega un aviso** cuando esa persona gana un evento, sube de rango, desbloquea una tarjeta o caza en el Most Wanted (con los avisos activados en ese dispositivo). Nunca por mensaje privado.",
+        "👥 **Cada perfil dice cuántos lo siguen**, y en Mi cuenta ves quién te sigue. Lo que ya seguías sin cuenta en ese dispositivo se guarda solo la primera vez que entras.",
+        "📰 **En Publicaciones, «★ A quien sigo»**: sólo lo de la gente que sigues.",
         "🔁 **Cuando alguien revive en una llave, la batalla que perdió ya tiene ganador** (antes quedaba en duda y frenaba los puntos del evento entero) y la escala es la del formato: una llave de 16 es de 16 aunque un nombre aparezca dos veces.",
-        "🆕 **Si jugaste con un nombre nuevo y tenés una sola cuenta de Discord en los servidores de la Liga, tus puntos te llegan solos**, sin esperar a que alguien pregunte quién sos.",
+        "🆕 **Si jugaste con un nombre nuevo y tienes una sola cuenta de Discord en los servidores de la Liga, tus puntos te llegan solos**, sin esperar a que alguien pregunte quién eres.",
         "🌱 **El Lunes de la Liga saluda a quienes debutaron la semana anterior.**",
         "🖼️ **El link de la página, pegado en Discord, sale con una imagen grande.**"
       ]
@@ -6660,7 +6660,7 @@
       "version": "1.35",
       "dia": "2026-09-28",
       "cuando": "2026-09-28T08:00:00-04:00",
-      "titulo": "Entrás con Discord una sola vez",
+      "titulo": "Entras con Discord una sola vez",
       "items": [
         "🔐 **Entrar con Discord ahora queda guardado 30 días**: votar, poner un precio por cabeza y ver tus Puntos de Tienda ya no te mandan a Discord cada vez.",
         "🐛 **Arreglado**: a veces, al votar, la página te mandaba a autorizar en Discord una y otra vez. Si Discord no contesta, ahora te lo dice en vez de mandarte de nuevo.",
@@ -6673,7 +6673,7 @@
       "cuando": "2026-09-28T08:05:00-04:00",
       "titulo": "El Most Wanted paga también en la Tienda",
       "items": [
-        "🎯 Cazar a un buscado del **Most Wanted** ahora da, además de sus puntos de Temporada, **el 10 % en Puntos de Tienda**: si cazás al Rey y cobrás 12.000, te llevás también 1.200 para la Tienda. Lo mismo el que sobrevive.",
+        "🎯 Cazar a un buscado del **Most Wanted** ahora da, además de sus puntos de Temporada, **el 10 % en Puntos de Tienda**: si cazas al Rey y cobras 12.000, te llevas también 1.200 para la Tienda. Lo mismo el que sobrevive.",
         "🪙 Los ves en la **Tienda**, entrando con Discord."
       ]
     },
@@ -6694,8 +6694,8 @@
       "cuando": "2026-09-28T07:45:00-04:00",
       "titulo": "La Tienda y el precio por cabeza",
       "items": [
-        "🛒 **Tienda**, nueva en el menú: tus **Puntos de Tienda** (todos arrancan con 5.000) y el precio por cabeza. Tus puntos los ves entrando con Discord, y sólo vos. La tienda en sí abre pronto.",
-        "💰 **Precio por cabeza**: poné Puntos de Tienda sobre un rapero de la temporada. El primero que le gana en un evento de la Liga se los lleva, **y lo mismo suma a su Temporada**. Si nadie lo caza en la semana, vuelven a quien los puso. Una cabeza vale como mucho 20.000, y nadie ve quién puso. Se pone desde la Tienda o desde el perfil de cada uno.",
+        "🛒 **Tienda**, nueva en el menú: tus **Puntos de Tienda** (todos arrancan con 5.000) y el precio por cabeza. Tus puntos los ves entrando con Discord, y sólo tú. La tienda en sí abre pronto.",
+        "💰 **Precio por cabeza**: pon Puntos de Tienda sobre un rapero de la temporada. El primero que le gana en un evento de la Liga se los lleva, **y lo mismo suma a su Temporada**. Si nadie lo caza en la semana, vuelven a quien los puso. Una cabeza vale como mucho 20.000, y nadie ve quién puso. Se pone desde la Tienda o desde el perfil de cada uno.",
         "📰 **Publicaciones**, nueva en el menú: próximamente.",
         "📱 En el celular, la barra de abajo **se desliza de costado** para ver todas las opciones."
       ]
@@ -6763,7 +6763,7 @@
       "cuando": "2026-09-27T13:05:00-04:00",
       "titulo": "La Copa de la Liga",
       "items": [
-        "🎤 **Organizador de la semana**: cada evento de 8 o más le suma a su organizador la gente que juntó. Cuenta el «Organiza:» del anuncio: si no lo ponés, no suma.",
+        "🎤 **Organizador de la semana**: cada evento de 8 o más le suma a su organizador la gente que juntó. Cuenta el «Organiza:» del anuncio: si no lo pones, no suma.",
         "🏆 **La Copa de la Liga**: el primero de la semana organiza la Copa de la siguiente, y **su próximo evento vale ×2**. Uno solo en toda la Liga, y es de la persona, en el servidor que sea.",
         "📅 La primera semana que cuenta arranca el **lunes 28** a las 11 AM (hora del este), así que la primera Copa se juega la semana del 5 de octubre."
       ]
@@ -6776,7 +6776,7 @@
       "items": [
         "🌟 **Evento dorado**: cada semana, el primer evento de un servidor desde un día sorteado vale **×3** encima de su multiplicador. Se sabe desde el lunes, y en «Lo que viene» lleva la etiqueta 🌟.",
         "⚔️ **Guerra de servidores**: cada semana los servidores se enfrentan de a dos. Gana el que más puntos hace por persona en sus eventos, y la semana siguiente lleva **×1,5**.",
-        "🎁 **Bonos**: tu segundo evento de la temporada vale **×1,5** si lo jugás dentro de los 7 días del primero. En una semana, jugar en **3 servidores** da **+1.500** y jugar **3 días distintos**, **+1.000**.",
+        "🎁 **Bonos**: tu segundo evento de la temporada vale **×1,5** si lo juegas dentro de los 7 días del primero. En una semana, jugar en **3 servidores** da **+1.500** y jugar **3 días distintos**, **+1.000**.",
         "📅 El dorado, la guerra y los bonos de la semana arrancan el **lunes 28** a las 11 AM (hora del este). El ×1,5 del segundo evento corre desde hoy.",
         "🔒 Nada de esto toca el Competitivo, y ningún evento pasa de ×5."
       ]
@@ -6790,7 +6790,7 @@
         "⚡ **Multiplicadores de la semana**: cada lunes a las 11 AM (hora del este) se sortea uno por servidor, de **×0,5 a ×5**. Esa semana, los puntos de Temporada de sus eventos valen eso. Están arriba en el Inicio, y cada evento lleva su «×N».",
         "🎰 El primero arranca hoy y dura hasta el lunes a las 11.",
         "🔒 El **Competitivo** y el **Most Wanted** no se multiplican.",
-        "🔄 **La página se actualiza sola**: si la dejás abierta, los datos nuevos aparecen sin recargar."
+        "🔄 **La página se actualiza sola**: si la dejas abierta, los datos nuevos aparecen sin recargar."
       ]
     },
     {
@@ -6800,7 +6800,7 @@
       "titulo": "Most Wanted: 3 por día, y suma a tus Puntos",
       "items": [
         "💀 **3 buscados por día**: uno grande, uno del medio y uno al alcance de cualquiera, con la categoría sorteada. Con la Temporada 1 serán **9 por semana**.",
-        "🎯 **Lo que cobrás suma a tus Puntos de la Temporada**, y **Cazó** entra en tu OVR. Al Competitivo, nunca.",
+        "🎯 **Lo que cobras suma a tus Puntos de la Temporada**, y **Cazó** entra en tu OVR. Al Competitivo, nunca.",
         "📊 En el Sheet de la Liga, las columnas 🎯 Cazó, 💀 Cazado y 🛡️ Sobrevivió ya se llenan solas.",
         "⚡ La página baja más liviana."
       ]
@@ -6813,7 +6813,7 @@
       "items": [
         "💀 **Most Wanted, en prueba y a diario**: cada día hay de 10 a 15 **buscados**, cada uno con su categoría —El Rey, El Imparable, El Verdugo…— y su recompensa. Están en el **tablero del Inicio**.",
         "🎯 **Cazalos en cualquier evento de la Liga**: el primero que le gana a un buscado cobra su recompensa, y más si viene de abajo en el ranking. En equipos y triples se reparte.",
-        "🛡️ **Si sos buscado**: tu recompensa sube por cada evento que jugás sin caer. Si jugaste y llegaste por lo menos a cuartos (El Rey, a semis) sin que te cacen, **sobreviviste** y te llevás la mitad. Si no jugaste, te escondiste y no ganás nada.",
+        "🛡️ **Si eres buscado**: tu recompensa sube por cada evento que juegas sin caer. Si jugaste y llegaste por lo menos a cuartos (El Rey, a semis) sin que te cacen, **sobreviviste** y te llevas la mitad. Si no jugaste, te escondiste y no ganas nada.",
         "🏆 **Ranking → Most Wanted**: los cazadores de la temporada. En cada perfil, **Su cacería**. Y en las llaves, quién cazó a quién; en las que se juegan en vivo, qué buscados están jugando.",
         "📅 **A diario hasta el 4 de octubre**, que termina la fase de prueba. Con la Temporada 1 pasa a ser semanal."
       ]
@@ -6825,9 +6825,9 @@
       "titulo": "El número es de los miembros",
       "items": [
         "🏅 **El puesto es de los miembros de la Liga**: estar en Discord Rap Español y verificado. Quien todavía no lo es **sigue en el ranking, con sus puntos y en su lugar**, pero sin número: en el **#** dice **—**. El podio, los líderes y los récords también son de los miembros.",
-        "✅ **Para tener tu número**: entrá a Discord Rap Español y escribí `/verificar`. Aparece en la corrida siguiente, con todos tus puntos.",
+        "✅ **Para tener tu número**: entra a Discord Rap Español y escribe `/verificar`. Aparece en la corrida siguiente, con todos tus puntos.",
         "🃏 El número de las tarjetas, el de tu apodo y el de las hojas de la Liga es el mismo que el de la página.",
-        "⚡ La página baja más liviana: las llaves viejas se piden recién cuando abrís una."
+        "⚡ La página baja más liviana: las llaves viejas se piden recién cuando abres una."
       ]
     },
     {
@@ -6861,7 +6861,7 @@
       "cuando": "2026-09-27T08:30:00-04:00",
       "titulo": "Las llaves se siguen con el dedo, y la hora con tu bandera",
       "items": [
-        "🏆 **Las llaves, más fáciles de seguir**: tocá un nombre y se ilumina todo su camino, con el puesto y los puntos que sumó ahí; tocalo otra vez para abrir su perfil. Los equipos van en un bloque con sus caras, cada batalla dice si hubo revivido, walk-in o cuántos pasaban, y también se pueden ver **por rondas**.",
+        "🏆 **Las llaves, más fáciles de seguir**: toca un nombre y se ilumina todo su camino, con el puesto y los puntos que sumó ahí; tócalo otra vez para abrir su perfil. Los equipos van en un bloque con sus caras, cada batalla dice si hubo revivido, walk-in o cuántos pasaban, y también se pueden ver **por rondas**.",
         "🔗 **Cada llave tiene su link**: «Copiar el link de esta llave» y se abre directo, para pegarlo en Discord.",
         "🕐 **La hora con tu bandera**: si entraste con Discord, al lado de la hora de cada evento va la bandera de tu país; si no, dice «hora local». Se acabó el «EDT».",
         "📱 **Los links de Discord abren la app** en Android, en vez de la página de Discord.",
@@ -6906,10 +6906,10 @@
       "cuando": "2026-09-26T16:00:04-04:00",
       "titulo": "Tus tarjetas en la página, y tus avisos a tiempo",
       "items": [
-        "🃏 **Nuevo en Tarjetas: cómo pedir la tuya.** Si todavía no tenés tarjeta, ahí dice qué te falta y cómo pedirla con `/verificar`. Si ya la tenés, no lo ves.",
+        "🃏 **Nuevo en Tarjetas: cómo pedir la tuya.** Si todavía no tienes tarjeta, ahí dice qué te falta y cómo pedirla con `/verificar`. Si ya la tienes, no lo ves.",
         "🖼️ **Todos ven sus tarjetas en la página**: a quienes tienen espacios o tildes en el nombre no se les mostraban sus tarjetas ni su «Mi perfil». Ya aparecen, y los links viejos a su perfil siguen andando.",
-        "🔔 **Tus avisos, a tiempo y sólo tuyos**: «desbloqueaste tu tarjeta» llega cuando la tarjeta ya está dibujada con tus números de hoy, y si salís de tu cuenta en un dispositivo, ese dispositivo deja de recibir tus avisos.",
-        "🔗 **Tus redes, sólo las públicas**: si una red deja de ser pública en Discord, sale de tu perfil la próxima vez que abrís «Mis redes».",
+        "🔔 **Tus avisos, a tiempo y sólo tuyos**: «desbloqueaste tu tarjeta» llega cuando la tarjeta ya está dibujada con tus números de hoy, y si sales de tu cuenta en un dispositivo, ese dispositivo deja de recibir tus avisos.",
+        "🔗 **Tus redes, sólo las públicas**: si una red deja de ser pública en Discord, sale de tu perfil la próxima vez que abres «Mis redes».",
         "🏅 **La letra de rango es siempre la del Competitivo**: en la página y en los avisos sale del Score, igual que en tu carta. Aparece a los 10 eventos.",
         "🛠️ **Arreglos**: un link roto ya no deja la página en blanco, y la foto y «Mis redes» te dicen qué pasó si Discord no contesta."
       ]
@@ -6929,16 +6929,16 @@
       "cuando": "2026-09-25T13:11:46-04:00",
       "titulo": "Tu foto, libre hasta el 9 de octubre",
       "items": [
-        "📷 **Cambiá tu foto las veces que quieras hasta el 9 de octubre**, con `/foto` o desde la página. Desde el 10 va **una por temporada**, y lo que hayas cambiado antes no cuenta."
+        "📷 **Cambia tu foto las veces que quieras hasta el 9 de octubre**, con `/foto` o desde la página. Desde el 10 va **una por temporada**, y lo que hayas cambiado antes no cuenta."
       ]
     },
     {
       "version": "1.12",
       "dia": "2026-09-25",
       "cuando": "2026-09-25T12:58:30-04:00",
-      "titulo": "Cambiá tu foto desde la página",
+      "titulo": "Cambia tu foto desde la página",
       "items": [
-        "📷 **Cambiá tu foto desde la página**: en **Mi cuenta** o abajo de tu tarjeta en tu perfil, «Cambiar mi foto». Te muestra cuál va a quedar —la de tu perfil de Discord— y la ponés con un toque. Es lo mismo que `/foto`: **una por temporada**.",
+        "📷 **Cambia tu foto desde la página**: en **Mi cuenta** o abajo de tu tarjeta en tu perfil, «Cambiar mi foto». Te muestra cuál va a quedar —la de tu perfil de Discord— y la pones con un toque. Es lo mismo que `/foto`: **una por temporada**.",
         "🏙️ **Urban Freestyle**: el bot ya escucha los cuatro canales de eventos del servidor."
       ]
     },
@@ -6948,7 +6948,7 @@
       "cuando": "2026-09-25T12:42:29-04:00",
       "titulo": "Tus avisos: rango y tarjetas",
       "items": [
-        "👤 **Avisos míos**: en **Eventos → Avisos**, «Vincular con mi Discord» y te llega un aviso al celular cuando **subís de rango** o **desbloqueás una tarjeta**. Sólo a los dispositivos que vinculaste, y lo podés desvincular cuando quieras."
+        "👤 **Avisos míos**: en **Eventos → Avisos**, «Vincular con mi Discord» y te llega un aviso al celular cuando **subes de rango** o **desbloqueas una tarjeta**. Sólo a los dispositivos que vinculaste, y lo puedes desvincular cuando quieras."
       ]
     },
     {
@@ -6957,7 +6957,7 @@
       "cuando": "2026-09-25T12:34:09-04:00",
       "titulo": "Tus redes en tu perfil",
       "items": [
-        "🔗 **Tus redes en tu perfil**: en **Mi cuenta → Mis redes en mi perfil** elegís cuáles de las redes que ya tenés conectadas en Discord (Instagram, TikTok, YouTube, X, Twitch…) se ven en tu perfil. Sólo las que mostrás en tu perfil de Discord, sólo las que marcás, y las podés quitar cuando quieras.",
+        "🔗 **Tus redes en tu perfil**: en **Mi cuenta → Mis redes en mi perfil** eliges cuáles de las redes que ya tienes conectadas en Discord (Instagram, TikTok, YouTube, X, Twitch…) se ven en tu perfil. Sólo las que muestras en tu perfil de Discord, sólo las que marcas, y las puedes quitar cuando quieras.",
         "📱 **Mi cuenta no se sale de la pantalla**: si tiene mucho, se desplaza adentro."
       ]
     },
@@ -6967,7 +6967,7 @@
       "cuando": "2026-09-25T12:29:32-04:00",
       "titulo": "Seguir raperos, tus próximos eventos y la comunidad",
       "items": [
-        "⭐ **Seguí a quien quieras**: en su perfil, «☆ Seguir». Aparece en **Mi cuenta** con su puesto de hoy, y con una ★ al lado de su nombre en toda la página. Queda en tu dispositivo.",
+        "⭐ **Sigue a quien quieras**: en su perfil, «☆ Seguir». Aparece en **Mi cuenta** con su puesto de hoy, y con una ★ al lado de su nombre en toda la página. Queda en tu dispositivo.",
         "📅 **Tus próximos eventos, en Mi cuenta**: los anunciados en tus servidores, con el link al anuncio para anotarte y para sumarlo a tu calendario.",
         "👥 **La comunidad, en «La Liga hoy»**: cuántas personas distintas hay en los servidores de la Liga, cuántas están en la Lista, cuántas con su Discord y cuántas verificadas con tarjeta."
       ]
@@ -6982,7 +6982,7 @@
         "🏷️ **Urban Freestyle con su nombre real** y su lema: **NUEVA GENERACIÓN**.",
         "🖼️ **Los logos de los servidores, siempre los de hoy**: las tarjetas toman el ícono que cada servidor tiene puesto en Discord. Los de Discord Rap Español, Snake Rap y The Warren Rap se habían quedado viejos.",
         "🌙 **Los cambios de diseño se aplican de madrugada**: si cambia cómo se ve una tarjeta pero no tus números, se redibuja entre las 12 y las 4 AM (hora del este de EE.UU.). Si cambiaron tus números, al momento.",
-        "🆔 **Urban Freestyle también reconoce a su gente**: el bot cruza sus miembros con la lista de la Liga, así `/card` sabe quién sos."
+        "🆔 **Urban Freestyle también reconoce a su gente**: el bot cruza sus miembros con la lista de la Liga, así `/card` sabe quién eres."
       ]
     },
     {
@@ -7016,9 +7016,9 @@
       "cuando": "2026-09-25T10:25:20-04:00",
       "titulo": "Los avisos desde Discord y tus tarjetas en Mi cuenta",
       "items": [
-        "🔔 **`/notify` ya no manda mensajes directos**: elegís en Discord de qué servidores querés los avisos (o todos) y el botón **Activar** abre la campana con eso elegido. Un toque y te llegan al celular o a la compu, aunque Discord esté cerrado.",
-        "👤 **Mi cuenta**: si tenés tarjeta y todavía no jugaste esta temporada, ahora ves tus tarjetas igual (con las bloqueadas y lo que les falta).",
-        "🥇 **El podio del Inicio, con flechas**: pasá por Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cada uno con sus tarjetas, banderas o logos.",
+        "🔔 **`/notify` ya no manda mensajes directos**: eliges en Discord de qué servidores quieres los avisos (o todos) y el botón **Activar** abre la campana con eso elegido. Un toque y te llegan al celular o a la compu, aunque Discord esté cerrado.",
+        "👤 **Mi cuenta**: si tienes tarjeta y todavía no jugaste esta temporada, ahora ves tus tarjetas igual (con las bloqueadas y lo que les falta).",
+        "🥇 **El podio del Inicio, con flechas**: pasa por Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cada uno con sus tarjetas, banderas o logos.",
         "🌎 **Los mejores de cada lado**, abajo del podio: el #1 de la temporada en cada país y en cada crew.",
         "🏟️ **La llave se lee mejor**: cómo leerla, arriba; cuántos puntos vale cada ronda; el ganador de cada batalla bien marcado; y pasando el mouse por un nombre se ilumina todo su camino.",
         "📜 **Este changelog**, abajo de Ajustes.",
@@ -7032,12 +7032,12 @@
       "dia": "2026-09-25",
       "titulo": "Mi cuenta, ajustes, rankings y la Guía",
       "items": [
-        "👤 **Entrá con Discord** en Mi cuenta (arriba a la derecha): la página sabe quién sos y te lleva a tu perfil y tus tarjetas. Sólo lee tu nombre y tu foto.",
+        "👤 **Entra con Discord** en Mi cuenta (arriba a la derecha): la página sabe quién eres y te lleva a tu perfil y tus tarjetas. Sólo lee tu nombre y tu foto.",
         "⚙️ **Ajustes**: formato de la hora, zona horaria y menos animaciones. Todas las horas se ven en tu zona.",
-        "🏆 **Los rankings en una sola tabla**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews. Tocá una columna para ordenar. Most Wanted, Misiones y Ligas, próximamente.",
+        "🏆 **Los rankings en una sola tabla**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews. Toca una columna para ordenar. Most Wanted, Misiones y Ligas, próximamente.",
         "👑 **Los dos campeones** en el Inicio: el de la temporada y el del competitivo, que queda vacante hasta que alguien juegue 10 eventos.",
         "📖 **Guía**: cuántos puntos da cada puesto, de qué están hechos el OVR y el Score, un glosario y preguntas frecuentes. La Histórica y la Prime llegan con la Temporada 2.",
-        "⚖️ **El Score usa los pesos nuevos**: Eficiencia 25, Consistencia 24, Dominancia 21, Diversidad 20 y Racha 10. La Diversidad mira dónde sumás tus puntos.",
+        "⚖️ **El Score usa los pesos nuevos**: Eficiencia 25, Consistencia 24, Dominancia 21, Diversidad 20 y Racha 10. La Diversidad mira dónde sumas tus puntos.",
         "🤖 **En Discord**: `/verificar` te dice qué te falta para tu tarjeta, mirado en ese momento, y `/website` te deja el link a la página."
       ]
     },
@@ -7058,9 +7058,9 @@
       "titulo": "La página nueva y los avisos de eventos",
       "items": [
         "🌐 **underlegends.pages.dev**: los rankings, las tarjetas, los eventos y el mundo de la Liga en una página que se actualiza sola cada media hora.",
-        "🔔 **Avisos de eventos**: activás la campana y te llega una notificación al celular o a la compu cuando un servidor anuncia un evento, aunque no tengas Discord abierto. Elegís de qué servidores.",
+        "🔔 **Avisos de eventos**: activas la campana y te llega una notificación al celular o a la compu cuando un servidor anuncia un evento, aunque no tengas Discord abierto. Eliges de qué servidores.",
         "🐍 **Snake Rap se sumó a la Liga**: sus eventos ya cuentan.",
-        "🃏 **Descargá tu tarjeta** desde la página."
+        "🃏 **Descarga tu tarjeta** desde la página."
       ]
     },
     {

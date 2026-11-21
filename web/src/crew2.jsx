@@ -321,7 +321,7 @@ function SemanaCaja({ liga, T, viva, fila, abajo }) {
         <div className="k2-jug"><span>Jugaron</span><span className="k2-caras">{kj.slice(0, 12).map((k) => <a key={k} href={'#/r/' + encodeURIComponent(k)} title={nombreDe(liga, k)}>
           <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara k2-c" lazy /></a>)}</span></div>
       ) : null}
-      <p className="k2-nota">{n >= T.tarjeta ? 'La crew tiene desbloqueada su tarjeta.' : 'En ' + T.nombres[T.tarjeta] + ' se desbloquea la tarjeta de la crew.'}</p>
+      <p className="k2-nota">{n >= T.tarjeta ? 'La crew ya se ganó su tarjeta: la estamos diseñando y llega pronto.' : 'En ' + T.nombres[T.tarjeta] + ' se desbloquea la tarjeta de la crew.'}</p>
       {abajo}
     </div>
   );
