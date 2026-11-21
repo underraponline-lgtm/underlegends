@@ -26,6 +26,7 @@ import CSS_PAGINA from './css/cuenta.css?inline';
 import { usarCss } from './css.js';
 import { CuentaPC, EntrarError } from './cuenta_pc.jsx';
 import { achicar as achicarImagen, aBase64 } from './imagen.js';
+import { BotonSeguir, GenteParaSeguir, LigaTeSigue, ligaSigue, sugeridos } from './sugeridos.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
 usarCss('cuenta', CSS_PAGINA);
@@ -1012,22 +1013,37 @@ function Sigues({ liga, dc }) {
 }
 
 // quién te sigue: cuántos, y de ésos los que son raperos (los demás no tienen perfil)
-function TeSiguen({ liga }) {
+function TeSiguen({ liga, dc }) {
   const est = useCuentaEst();
   // 🧑 también los de fuera de las 200 filas (18/11/2026): con `liga.T` el #250 que te sigue se contaba entre «personas
   // que no compiten». `quienK()` mira la tabla, los perfiles (por eso se piden: llegan después) y las filas ligeras
   usePerfiles();
   const ms = est.ME_SIGUEN;
-  if (!ms || !ms.n) return null;
+  // 🤖 los personajes de la Liga que te siguen, aparte del número (no son personas): `LigaTeSigue` de sugeridos.jsx
+  const liga1 = ligaSigue(liga.yo).length ? <LigaTeSigue f={liga.yo} yo /> : null;
+  if (!ms || !ms.n) return liga1 ? <Caja t="Te siguen">{liga1}</Caja> : null;
   const suyos = (ms.perfiles || []).map((k) => liga.quienK(k)).filter(Boolean);
   const otros = ms.n - suyos.length;
   return (
     <Caja t={'Te siguen ' + ms.n} d={otros > 0 ? (suyos.length ? 'Y ' : '') + otros + (otros === 1 ? ' persona que no compite.' : ' personas que no compiten.') : ''}>
       {suyos.length ? <ul className="cu-gente">{suyos.map((f) => (
-        <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b></a></li>
+        <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b></a>
+          {liga.sigo(f.k) ? null : <BotonSeguir liga={liga} dc={dc} k={f.k} de chico />}</li>
       ))}</ul> : null}
+      {liga1}
     </Caja>
   );
+}
+
+// ⭐ GENTE PARA SEGUIR (21/11/2026, sugeridos.jsx): quien te sigue y no sigues, con quien hablas en el chat, con quien te
+// cruzaste en una llave y los primeros de tu servidor, cada uno con su porqué y su botón. Sin nadie que sugerir, no se dibuja
+function ParaSeguir({ liga, dc }) {
+  const est = useCuentaEst();
+  const P = usePerfiles();
+  // quien te sigue ya está en «Te siguen», con su «Seguir de vuelta»: acá no se repite
+  const ya = (est.ME_SIGUEN && est.ME_SIGUEN.perfiles) || [];
+  if (!liga.yo || !sugeridos(liga, P, null, 6, ya).length) return null;
+  return <Caja t="Gente para seguir" d="Te llega un aviso cuando ganan, y a ellos, que los sigues."><GenteParaSeguir liga={liga} dc={dc} P={P} meSiguen={null} excluir={ya} /></Caja>;
 }
 
 // ── 🙋 ALGO ESTÁ MAL (Dlx, 17/10/2026: «deberíamos hacer un sistema de reportes… ¿qué pasa si alguien pierde acceso a su
@@ -1213,10 +1229,11 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
   if (id === 'crew') return <Caja t="Mi crew"><MiCrew liga={liga} dc={dc} /></Caja>;
   if (id === 'siguiendo') {
     const sigues = <Sigues key="sigues" liga={liga} dc={dc} />;
-    const teSiguen = <TeSiguen key="te" liga={liga} />;
+    const teSiguen = <TeSiguen key="te" liga={liga} dc={dc} />;
     const orgs = <OrgsCaja key="orgs" dc={dc} />;
-    if (cols) return <DosCol a={[sigues]} b={[teSiguen, orgs]} />;
-    return <>{sigues}{teSiguen}{orgs}</>;
+    const sug = <ParaSeguir key="sug" liga={liga} dc={dc} />;
+    if (cols) return <DosCol a={[sigues, sug]} b={[teSiguen, orgs]} />;
+    return <>{sigues}{sug}{teSiguen}{orgs}</>;
   }
   if (id === 'privacidad') {
     const xs = [

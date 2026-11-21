@@ -723,6 +723,14 @@ def armar():
                 _pf['p'][_k]['st'] = _v
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ el staff en el perfil no se armó (%s)' % str(e)[:60])
+    # ⭐ con quién conversa cada uno en el chat (`ch`, 21/11/2026): para «Gente para seguir» de Mi cuenta (web/src/sugeridos.jsx)
+    try:
+        if isinstance(_pf, dict):
+            for _k, _xs in _charla(_json('datos', 'chats_dia.json') or {}).items():
+                if _k in (_pf.get('p') or {}):
+                    _pf['p'][_k]['ch'] = _xs
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ con quién conversa cada uno no se armó (%s)' % str(e)[:60])
     # 🎮 «Cómo se juega acá»: de los anuncios de la temporada (`como_se_juega()`). Va con los perfiles (`/api/perfiles`),
     # que la página de cada servidor ya baja, y NO en el lobby: el 20/11/2026 lo pasó del tope (50,8 KB comprimido)
     try:
@@ -3330,6 +3338,26 @@ def _cupos_num(x):
     return ns[-1] if ns else None
 
 
+def _charla(chats, dias=14, tope=4):
+    """⭐ Con quién conversa cada uno (21/11/2026, Dlx: que los sugeridos para seguir salgan de «las personas con las que X
+    conversa… a través del reconocimiento de chat que hace el bot cada día»). De `responde` de la lectura diaria del chat
+    (`bot/chats.py`: «a>b», cuántas veces a le contestó a b; sólo claves y números, nunca el texto), los últimos `dias`
+    días, en los dos sentidos: `{clave: [las `tope` con las que más habló]}`. Sólo SUGIERE: seguir es de cada uno."""
+    ds = sorted((chats or {}).get('dias') or {})[-dias:]
+    par = {}
+    for d in ds:
+        for x in ((chats['dias'][d] or {}).values()):
+            for ab, n in ((x or {}).get('responde') or {}).items():
+                a, _, b = str(ab).partition('>')
+                if a and b and a != b:
+                    par[(a, b)] = par.get((a, b), 0) + int(n or 0)
+                    par[(b, a)] = par.get((b, a), 0) + int(n or 0)
+    de = {}
+    for (a, b), n in par.items():
+        de.setdefault(a, []).append((n, b))
+    return {a: [b for n, b in sorted(xs, key=lambda t: (-t[0], t[1]))[:tope]] for a, xs in de.items()}
+
+
 def como_se_juega(anuncios, inscripciones, svs_cfg, momento, leer):
     """`{sigla: {mod: [[modalidad, n], …], cup: n, ins: {canal, link}, ant: horas, n: anuncios}}`. Pura: `momento(x)`
     da el arranque en ISO UTC y `leer(iso)` el instante. Sin `COMO_MIN` anuncios, ese servidor no va."""
@@ -4758,6 +4786,14 @@ def _self_check():
     ok(_stp == {'ana': {'j': 1}, 'por': {'o': 1}, 'rubik': {'d': 1, 'h': 1, 'j': 1}},
        'el staff en el perfil: un evento cuenta una vez por papel, votar en #veredictos es ser jurado, y el que no compite '
        'también suma' + ('' if _stp.get('rubik') == {'d': 1, 'h': 1, 'j': 1} else ' ' + str(_stp)))
+
+    # ⭐ con quién conversa cada uno (para «Gente para seguir»): los dos sentidos, de todos los chats, los últimos días
+    _ch = _charla({'dias': {'2026-11-01': {'AAA': {'responde': {'ana>bea': 9}}},
+                            '2026-11-20': {'AAA': {'responde': {'ana>bea': 1, 'cami>ana': 3, 'ana>ana': 5}}, 'BBB': {'responde': {'dora>ana': 2}}},
+                            '2026-11-21': {'BBB': {'gente': 2}}}}, dias=2)
+    ok(_ch == {'ana': ['cami', 'dora', 'bea'], 'bea': ['ana'], 'cami': ['ana'], 'dora': ['ana']},
+       'con quién conversa cada uno: los dos sentidos, de todos los chats y sólo los últimos días (el 1/11 no cuenta)'
+       + ('' if _ch.get('ana') == ['cami', 'dora', 'bea'] else ' ' + str(_ch)))
 
     # 🎮 «Cómo se juega acá»
     _an = [{'servidor': 'AAA', 'modalidad': m, 'cupos_texto': c, 'cuando': '2026-11-0%dT20:00:00' % i, 'ini': '2026-11-0%dT23:00:00Z' % i}

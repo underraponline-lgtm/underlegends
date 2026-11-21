@@ -13,6 +13,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { PAIS, capital, esSinTitulo, limpio, norm, normNombre, num } from './liga.js';
 import { anotarMods, deshechaMods, useModsEstado } from './mods.js';
 import { Alguien, Algunos, Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
+import { SigueRivales } from './sugeridos.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { usePases, vioVivo, vivoPendiente } from './pase.js';
 import { ConMarco } from './marcos.jsx';
@@ -1449,6 +1450,8 @@ function CaminoA({ ctx, L }) {
         ))}
         {esCamp ? <li className="fin"><span className="lk-ca-r">Campeón</span></li> : null}
       </ol>
+      {/* ⭐ en tu camino, tus rivales de esta noche para seguir (sugeridos.jsx, 21/11/2026) */}
+      {ctx.liga.yo && id === 'k:' + ctx.liga.yo.k ? <SigueRivales liga={ctx.liga} ks={pasos.flatMap((p) => p.rivales.map((s) => ctx.idDe(partes(s)[0]))).filter((x) => String(x).startsWith('k:')).map((x) => x.slice(2))} /> : null}
     </section>
   );
 }
