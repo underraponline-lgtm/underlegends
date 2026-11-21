@@ -21,6 +21,7 @@ import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from '
 import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
 import { FranjaMods } from './mods.jsx';
+import { BotonModsFlot } from './mods_herramientas.jsx';
 import { vistaMods } from './mods.js';
 import { FichaHover } from './ficha.jsx';
 import { pedirPrueba, prevElo } from './prueba_elo.js';
@@ -879,6 +880,8 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv || ''} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="FranjaMods"><FranjaMods /></Aislada>
+      {/* 📱 la M de Mods, sólo en el celular y donde hay algo para hacer (21/11/2026, mods_herramientas.jsx) */}
+      <Aislada n="BotonModsFlot"><BotonModsFlot dc={yo.dc} k={(liga && liga.yo && liga.yo.k) || (yo.dc && yo.dc.clave) || ''} /></Aislada>
       {/* 🧪 la prueba en sombra del ELO nuevo (`?prev=elo`, prueba_elo.js): que se note que lo que ves no es lo de todos */}
       {prevElo() ? <p className="es-prueba-h" role="status">🧪 Prueba del ELO nuevo
         {pruebaE && pruebaE.desde ? ' · desde el ' + pruebaE.desde.slice(8, 10) + '/' + pruebaE.desde.slice(5, 7) : ''}

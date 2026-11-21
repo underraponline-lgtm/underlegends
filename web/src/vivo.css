@@ -7365,3 +7365,92 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .ed-fija{margin-right:8px;color:var(--magenta-tx,#E41373)}
 @media (max-width: 899.98px){.md-qe-in input,.md-est select{min-height:44px;font-size:16px}}
 @media (max-width: 899.98px){.app .om-b{min-height:44px}}
+
+/* 🛠️ LAS HERRAMIENTAS DE MODS EN CADA PÁGINA (21/11/2026, mods_herramientas.jsx). Dlx: «un botón sobresaliente en el menú
+   también en la PC… dependiendo de la página», y la M en el celular. El panel es el mismo en los dos (`.modt-panel`), con
+   el estilo del menú de tu cara: negro siempre, porque cuelga de la cabecera, que es negra en los dos temas.
+   ⚠️ El botón se fue de la cabecera el 18/11 porque el menú no entraba: hasta 1440 px es el escudo solo (medido) */
+.modt-envol{position:relative;display:inline-flex}
+.app .cab.una .modt-cab{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 12px;border:1.5px solid #E41373;border-radius:4px;background:#0B0C0E;
+  color:#F6F6F6;cursor:pointer;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;position:relative}
+.app .cab.una .modt-cab .ico{color:#E41373}
+.app .cab.una .modt-cab i{font-style:normal;min-width:18px;height:18px;padding:0 4px;display:grid;place-items:center;background:#E41373;color:#fff;font:800 11px/1 Archivo,sans-serif;letter-spacing:0;border-radius:2px}
+.app .cab.una .modt-cab.on{background:#E41373;color:#fff}
+.app .cab.una .modt-cab.on .ico{color:#fff}
+.app .cab.una .modt-cab.on i{background:#fff;color:#E41373}
+.app .cab.una .modt-cab:hover,.app .cab.una .modt-cab.ab{border-color:#F6F6F6}
+.app .cab.una .modt-cab:focus-visible{outline:2px solid #F6F6F6;outline-offset:2px}
+@media (max-width: 1439.98px){.app .cab.una .modt-cab{padding:0 9px;gap:5px}.app .cab.una .modt-cab > span{display:none}}
+@media (max-width: 899.98px){.app .cab.una .modt-envol{display:none}}
+.modt-panel{--mp-caja:#141417;--mp-linea:#232326;--mp-gris:#A5A5A0;position:absolute;top:calc(100% + 10px);right:0;z-index:72;width:360px;
+  max-height:min(calc(100vh - 86px),680px);overflow:auto;background:#0B0B0D;color:#F6F6F6;border:1px solid var(--mp-linea);border-radius:4px;
+  box-shadow:0 18px 40px rgba(0,0,0,.55);text-align:left;font:400 14px/1.45 Archivo,sans-serif;text-transform:none;letter-spacing:0;
+  transform-origin:calc(100% - 22px) 0;animation:pv-baja .18s var(--ease-out,ease-out)}
+.modt-panel,.modt-panel *{box-sizing:border-box}
+.modt-panel.abajo{position:fixed;top:auto;left:0;right:0;width:auto;bottom:0;max-height:82vh;border-width:3px 0 0;border-color:#F6F6F6;border-radius:0;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));transform-origin:50% 100%;animation-name:pv-sube;z-index:95}
+.modt-asa{display:block;width:40px;height:4px;margin:8px auto 0;background:#2A2A2C;border-radius:2px}
+.modt-velo{position:fixed;inset:0;z-index:94;background:rgba(3,3,4,.55)}
+.modt-h{display:flex;align-items:center;gap:10px;padding:12px 12px 10px 16px;border-bottom:1px solid var(--mp-linea)}
+.modt-ic{color:#E41373;display:inline-flex}
+.modt-h h2{flex:1;margin:0;font:400 22px/1 Anton,Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase;min-width:0}
+.modt-h h2 small{font:500 13px/1 Archivo,sans-serif;letter-spacing:0;text-transform:none;color:var(--mp-gris);margin-left:6px}
+.modt-x{width:36px;height:36px;display:grid;place-items:center;background:none;border:1px solid var(--mp-linea);border-radius:4px;color:#F6F6F6;cursor:pointer}
+.modt-sw-f{display:flex;align-items:center;gap:12px;margin:12px 12px 4px;padding:12px;background:var(--mp-caja);border-left:4px solid #E41373;border-radius:2px}
+.modt-sw-f > span{flex:1;min-width:0}
+.modt-sw-f b{display:block;font-weight:800}
+.modt-sw-f small{display:block;color:var(--mp-gris);font-size:12px;line-height:1.35}
+.modt-sw{flex:none;position:relative;width:44px;height:26px;padding:0;border:1.6px solid #F6F6F6;border-radius:13px;background:#0B0B0D;cursor:pointer}
+.modt-sw::before{content:"";position:absolute;inset:-10px -4px}
+.modt-sw::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#F6F6F6;transition:transform .15s var(--ease-out,ease-out)}
+.modt-sw.on{background:#E41373;border-color:#E41373}
+.modt-sw.on::after{transform:translateX(18px);background:#fff}
+.modt-sw.chico{width:36px;height:22px;pointer-events:none}
+.modt-sw.chico::after{width:13px;height:13px}
+.modt-sw.chico.on::after{transform:translateX(14px)}
+.modt-s{margin:12px 16px 4px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mp-gris)}
+.modt-l{list-style:none;margin:0;padding:0 8px}
+.modt-acc{display:flex;align-items:center;gap:11px;width:100%;min-height:52px;padding:9px 8px;border:0;border-top:1px solid var(--mp-linea);background:none;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.modt-l li:first-child .modt-acc{border-top:0}
+.modt-acc:disabled{cursor:default}
+.modt-acc:disabled i{display:none}
+.modt-acc-ic{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:var(--mp-caja);color:#E41373}
+.modt-acc-t{flex:1;min-width:0}
+.modt-acc-t b{display:block;font-weight:700}
+.modt-acc-t small{display:block;color:var(--mp-gris);font-size:12px;line-height:1.35}
+.modt-acc > i{font-style:normal;color:var(--mp-gris)}
+@media (hover: hover) and (pointer: fine){.modt-acc:not(:disabled):hover{background:var(--mp-caja)}}
+.modt-acc:focus-visible,.modt-pild button:focus-visible,.modt-ult:focus-visible,.modt-todo:focus-visible,.modt-x:focus-visible,.modt-sw:focus-visible{outline:2px solid #E41373;outline-offset:2px}
+.modt-nivel{display:flex;align-items:center;gap:10px;padding:2px 8px 10px 51px;font:700 12px "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--mp-gris)}
+.modt-nivel input{flex:1;accent-color:#E41373}
+.modt-nivel b{color:#F6F6F6;font:800 15px Archivo,sans-serif;min-width:22px;text-align:right}
+.modt-nada{margin:6px 16px 4px;color:var(--mp-gris);font-size:13px}
+.modt-pild{display:flex;gap:6px;flex-wrap:wrap;padding:2px 16px 4px}
+.modt-pild button{min-height:36px;padding:0 12px;border:1px solid #F6F6F6;border-radius:3px;background:none;color:#F6F6F6;font:700 13px Archivo,sans-serif;cursor:pointer}
+.modt-pild button.on{background:#F6F6F6;color:#030304}
+.modt-ult{display:block;margin:0 16px;padding:9px 0;color:inherit;text-decoration:none;border-bottom:1px solid var(--mp-linea)}
+.modt-ult b{display:block;font-weight:700}
+.modt-ult small{color:var(--mp-gris);font-size:12px}
+.modt-pie{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:12px 16px 14px;margin-top:8px;border-top:1px solid var(--mp-linea)}
+.modt-todo{color:#F6F6F6;font-weight:800;text-decoration:none}
+.modt-apagar{min-height:36px;padding:0 12px;border:1.6px solid #E41373;border-radius:3px;background:none;color:#F6F6F6;font:700 13px Archivo,sans-serif;cursor:pointer}
+/* la M del celular: arriba de la flecha de subir (`.subir`, 58 px en 78 px) */
+.modt-flot{display:none}
+@media (max-width: 899.98px){
+  .modt-flot{display:grid;place-items:center;position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 146px);z-index:26;width:48px;height:48px;
+    padding:0;border:0;border-radius:4px;background:#F6F6F6;color:#030304;font:400 22px/1 Anton,Archivo,sans-serif;cursor:pointer;
+    box-shadow:0 8px 22px rgba(0,0,0,.45);-webkit-touch-callout:none;user-select:none;touch-action:manipulation}
+  .modt-flot i{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 4px;display:grid;place-items:center;background:#E41373;color:#fff;
+    font:800 11px/1 Archivo,sans-serif;font-style:normal;border-radius:2px}
+  .modt-flot.on{background:#E41373;color:#fff}
+  .modt-flot.on i{background:#fff;color:#E41373}
+  .modt-flot:focus-visible{outline:2px solid #E41373;outline-offset:3px}
+  .clara .modt-flot{background:#030304;color:#F6F6F6}
+}
+.modt-esconder{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 140px);z-index:96;padding:14px;background:#0B0B0D;color:#F6F6F6;
+  border:1px solid #2A2A2C;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.55);font:400 14px/1.45 Archivo,sans-serif}
+.modt-esconder p{margin:0 0 10px}
+.modt-esconder span{display:flex;gap:8px;justify-content:flex-end}
+/* lo que se acaba de abrir desde el panel: un marco magenta un momento, para encontrarlo */
+.modt-brilla{outline:3px solid #E41373;outline-offset:4px;transition:outline-color 1.2s}
+@media (prefers-reduced-motion: reduce){.modt-panel,.modt-panel.abajo{animation:none}.modt-sw::after{transition:none}}

@@ -632,3 +632,46 @@
 .sp-red figcaption b{font:800 14px/1.25 Archivo,sans-serif}
 .sp-red figcaption span{font:500 12.5px/1.3 Archivo,sans-serif;color:var(--gris)}
 .sp-red .btn{align-self:flex-start}
+
+/* ── 🗂️ los grupos de la barra y de las pestañas (21/11/2026): los mismos nombres que tu Dashboard ── */
+.cz-lado nav{gap:2px}
+.cz-grupo{margin:12px 0 2px;padding:0 12px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--esc-gris)}
+.cz-lado nav .cz-grupo:first-child{margin-top:0}
+.cz-pes{align-items:flex-start;gap:28px}
+/* la cuenta de «Para contestar» no estira su pestaña: con 20 px quedaba 5 px más alta que las otras */
+.cz-pes button .cz-cuenta{margin:-4px 0}
+.cz-pes-g{display:flex;flex-direction:column;gap:2px;flex:none}
+.cz-pes-t{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+.cz-pes-b{display:flex;align-items:flex-end;gap:20px}
+/* ── 🕖 cuándo juega tu gente y 🎤 tus raperos: la fila de abajo de la cabina, con las columnas de arriba ── */
+.cz-dos{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
+.cz-dos.uno{grid-template-columns:minmax(0,640px)}
+.cz-mapa{display:grid;grid-template-columns:34px repeat(24,minmax(0,1fr));gap:2px;align-items:center}
+.cz-mapa i{display:block;height:16px;background:var(--esc-linea)}
+.cz-mapa i.n1{background:color-mix(in srgb,var(--magenta) 45%,var(--cz-caja))}
+.cz-mapa i.n2{background:var(--magenta)}
+.cz-mapa-d{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--esc-gris)}
+.cz-mapa-h{margin-top:4px;font:700 12px/1 "Barlow Condensed",sans-serif;color:var(--esc-gris);white-space:nowrap;overflow:visible}
+.cz-mapa-f{margin:12px 0 0;font:500 14px/1.45 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-mapa-f b{color:var(--esc-tinta);font-weight:800}
+.cz-rap{list-style:none;margin:0;padding:0}
+.cz-rap li{display:grid;grid-template-columns:22px minmax(0,1fr) auto 64px 36px;gap:10px;align-items:center;min-height:44px;padding:4px 0;border-bottom:1px solid var(--esc-linea);font-variant-numeric:tabular-nums}
+.cz-rap li:last-child{border-bottom:0}
+.cz-rap-p{font:900 15px/1 Archivo,sans-serif;color:var(--esc-gris)}
+.cz-rap a{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 15px/1.2 Archivo,sans-serif;color:var(--esc-tinta);text-decoration:none}
+.cz-rap a:hover{text-decoration:underline;text-underline-offset:3px}
+.cz-rap small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--esc-gris);white-space:nowrap}
+.cz-rap small b{color:var(--esc-tinta);font-weight:700}
+.cz-rg{justify-self:end;min-width:30px;padding:4px 5px;text-align:center;font:900 13px/1 Archivo,sans-serif;font-stretch:115%;color:#030304;background:var(--esc-tinta)}
+.cz-rap-ver{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;min-height:44px;margin-top:6px;font:800 14px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.03em;color:var(--esc-tinta);text-decoration:underline;text-underline-offset:4px}
+.cz-rap-ver:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
+@media (max-width:899px){
+  .cz-dos,.cz-dos.uno{grid-template-columns:1fr;gap:16px}
+  .cz-mapa{grid-template-columns:28px repeat(24,minmax(0,1fr));gap:1px}
+  .cz-mapa i{height:14px}
+  .cz-rap li{grid-template-columns:20px minmax(0,1fr) auto 56px 34px;gap:8px}
+  /* en el celular las pestañas son el menú: los cuatro grupos en dos columnas, con toques de 44 px */
+  .cz-pes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;overflow:visible;padding-bottom:8px}
+  .cz-pes-b{flex-direction:column;align-items:flex-start;gap:0}
+  .cz-pes button{box-sizing:border-box;min-height:44px;padding:4px 0}
+}

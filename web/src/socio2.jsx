@@ -18,7 +18,7 @@
 // servidor (`panelSocio()` de bot/avisos.js); Dlx los ve todos. Pregunta en silencio: a Discord se va recién si la persona
 // aprieta «Entrar con Discord».
 // ⚠️ SIN EMOJIS (13/10/2026: cada celular los dibuja distinto): los títulos de cada rapero llevan el ícono de la copa.
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
 import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.js';
@@ -641,6 +641,106 @@ function Consola({ x, logo, s }) {
   );
 }
 
+// 🗂️ LOS GRUPOS DE LA BARRA (21/11/2026, Dlx: «lo que tú recomiendes», la maqueta «Panel del socio»): los mismos nombres
+// que tu Dashboard, así el dueño ve el panel ordenado como lo ve la Liga. Cada grupo lista claves de `AREAS_CZ` (más `hoy`);
+// el que se queda sin nada (Ajustes, para quien no los puede tocar) no se dibuja
+const GRUPOS_CZ = [['Hoy', ['hoy', 'cola']], ['Tus eventos', ['setlist']], ['Tu gente', ['gente', 'servidor']], ['Tu bot', ['ajustes']]];
+const agrupar = (areas) => GRUPOS_CZ.map(([g, ks]) => [g, ks.map((k) => areas.find((a) => a[0] === k)).filter(Boolean)]).filter(([, xs]) => xs.length);
+
+// 🕖 CUÁNDO JUEGA TU GENTE (21/11/2026): los eventos del servidor en el calendario del lobby, día × hora, en hora del este
+// (Intl con la zona, nunca un −5 fijo: el horario de verano corre la hora). Sólo los ya jugados, y sin los que traen la
+// medianoche UTC exacta: esos son fechas sin hora, y caerían todos a las 8 PM del día anterior
+const ZONA_ET = 'America/New_York';
+const DIAS_EN = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 };
+const DIAS_PL = ['los lunes', 'los martes', 'los miércoles', 'los jueves', 'los viernes', 'los sábados', 'los domingos'];
+// con menos eventos que esto no hay mapa: «sin dato no hay pieza»
+const MIN_MAPA = 5;
+// el tramo fuerte se busca de a 4 horas seguidas (las noches de 7 a 11 PM)
+const TRAMO_H = 4;
+let fmtET = null;
+const partesET = (t) => {
+  if (!fmtET) fmtET = new Intl.DateTimeFormat('en-US', { timeZone: ZONA_ET, weekday: 'short', hour: 'numeric', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit' });
+  const o = {};
+  for (const p of fmtET.formatToParts(new Date(t))) o[p.type] = p.value;
+  return { d: DIAS_EN[o.weekday], h: Number(o.hour) % 24, dia: o.year + '-' + o.month + '-' + o.day };
+};
+const hora12 = (h) => (h === 0 ? 'medianoche' : h === 12 ? 'mediodía' : (h % 12) + (h < 12 ? ' AM' : ' PM'));
+// «de 7 a 11 PM», «de 10 PM a 2 AM», «de 8 PM a medianoche»
+const rangoH = (a, b) => {
+  const ca = a !== 0 && a !== 12, cb = b !== 0 && b !== 12;
+  if (ca && cb && (a < 12) === (b < 12)) return 'de ' + (a % 12) + ' a ' + hora12(b);
+  return 'de ' + hora12(a) + ' a ' + hora12(b);
+};
+function mapaDe(cal, sv) {
+  const ahora = Date.now();
+  const xs = (cal || []).filter((c) => c.sv === sv && c.t && Date.parse(c.t) < ahora && !/T00:00:00(\.0+)?Z$/.test(c.t));
+  if (xs.length < MIN_MAPA) return null;
+  const m = Array.from({ length: 7 }, () => Array(24).fill(0));
+  let ini = '', fin = '';
+  for (const c of xs) {
+    const q = partesET(c.t);
+    if (q.d == null || !(q.h >= 0)) continue;
+    m[q.d][q.h] += 1;
+    if (!ini || q.dia < ini) ini = q.dia;
+    if (!fin || q.dia > fin) fin = q.dia;
+  }
+  const H = Array.from({ length: 24 }, (_, h) => m.reduce((a, r) => a + r[h], 0));
+  const tot = H.reduce((a, b) => a + b, 0);
+  if (tot < MIN_MAPA) return null;
+  const suma = (s) => { let n = 0; for (let k = 0; k < TRAMO_H; k++) n += H[(s + k) % 24]; return n; };
+  let s = 0;
+  for (let i = 1; i < 24; i++) if (suma(i) > suma(s)) s = i;
+  const w = suma(s), e = (s + TRAMO_H) % 24, mid = (s + 2) % 24;
+  const per = mid < 6 ? 'madrugadas' : mid < 12 ? 'mañanas' : mid < 20 ? 'tardes' : 'noches';
+  // los días que sobresalen adentro del tramo: 2 eventos o más y la mitad más que el promedio de un día
+  const porDia = m.map((r) => { let n = 0; for (let k = 0; k < TRAMO_H; k++) n += r[(s + k) % 24]; return n; });
+  const prom = w / 7;
+  const fuertes = porDia.map((n, i) => [i, n]).filter(([, n]) => n >= 2 && n >= prom * 1.5).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([i]) => DIAS_PL[i]);
+  const cola = fuertes.length ? ', sobre todo ' + fuertes.join(' y ') : porDia.every((n) => n > 0) ? ', repartidos en toda la semana' : '';
+  const max = Math.max(1, ...m.map((r) => Math.max(...r)));
+  return { m, tot, ini, fin, alto: Math.max(2, Math.ceil(max / 2)),
+    fuerte: 'Tu fuerte son las ' + per + ' ' + rangoH(s, e), resto: ': ' + w + ' de tus ' + tot + ' eventos' + cola + '.' };
+}
+function MapaHoras({ mp }) {
+  return (
+    <section className="cz-caja cz-mapa-caja">
+      <h3 className="cz-h">Cuándo juega tu gente <small>del {fechaCorta(mp.ini)} al {fechaCorta(mp.fin)} · hora del este</small></h3>
+      <div className="cz-mapa" role="img" aria-label={'Tus ' + mp.tot + ' eventos por día y hora. ' + mp.fuerte + mp.resto}>
+        {mp.m.map((r, d) => (
+          <Fragment key={d}>
+            <span className="cz-mapa-d">{DIAS_C[d]}</span>
+            {r.map((n, h) => <i key={h} className={n >= mp.alto ? 'n2' : n ? 'n1' : ''} title={n ? DIAS_C[d] + ' ' + hora12(h) + ': ' + n + (n === 1 ? ' evento' : ' eventos') : undefined} />)}
+          </Fragment>
+        ))}
+        <span />
+        {Array.from({ length: 24 }, (_, h) => <span key={'h' + h} className="cz-mapa-h">{h % 3 ? '' : h}</span>)}
+      </div>
+      <p className="cz-mapa-f"><b>{mp.fuerte}</b>{mp.resto}</p>
+    </section>
+  );
+}
+
+// 🎤 TUS RAPEROS (21/11/2026): los 5 de mejor OVR que tienen a este servidor como el suyo, de la tabla del lobby. La lista
+// entera (lo que hizo cada uno acá) sigue en «Tu gente»; esto es la vista corta de la cabina. La letra va con el color de su
+// rango, que viene en la fila (`rgc`): nunca escrito en el CSS
+function TusRaperos({ xs, total, ver }) {
+  return (
+    <section className="cz-caja cz-rap-caja">
+      <h3 className="cz-h">Tus raperos <small>por OVR</small></h3>
+      <ol className="cz-rap">{xs.map((f, i) => (
+        <li key={f.k}>
+          <span className="cz-rap-p">{i + 1}</span>
+          <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a>
+          <small>{num(f.ev || 0)} ev</small>
+          <small>OVR <b>{f.ovr != null ? f.ovr : '—'}</b></small>
+          {f.rg ? <b className="cz-rg" style={f.rgc ? { background: f.rgc } : undefined}>{f.rg}</b> : <span />}
+        </li>
+      ))}</ol>
+      <button type="button" className="cz-rap-ver" onClick={ver}>Ver los {num(total)} ›</button>
+    </section>
+  );
+}
+
 // ── un servidor, entero: la cabina con su barra ──
 function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const p = x.panel || {};
@@ -687,6 +787,11 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const hay = new Set([v.n != null && 'sp-vuelven', (p.dias || []).length && 'sp-cuando', (p.semanas || []).some((w) => w[2]) && 'sp-semanas', (p.raperos || []).length && 'sp-gente'].filter(Boolean));
   const sugs = p.sugerencias || [], irs = p.sug_ir || [];
   const pasados = ((liga.d && liga.d.calendario) || []).filter((c) => c.sv === x.sv && Date.parse(c.t) < Date.now()).slice(-6).reverse();
+  const cal = liga.d && liga.d.calendario;
+  const mapa = useMemo(() => mapaDe(cal, x.sv), [cal, x.sv]);
+  const tabla = liga.d && liga.d.tabla;
+  const delSv = useMemo(() => (tabla || []).filter((f) => f.sv === x.sv && f.k).sort((a, b) => (b.ovr || 0) - (a.ovr || 0) || (a.pos || 0) - (b.pos || 0)), [tabla, x.sv]);
+  const top = delSv.slice(0, 5);
   // ⭐ la nota de cada evento: `[evento, cuántos, promedio]` (`notasSv()` de bot/avisos.js)
   const notaDe = (ll) => (ll ? (x.notas || []).find((y) => String(y[0]) === String(ll)) : null);
   const ROL_TXT = { admin: 'admin', moderador: 'moderador', asistente: 'asistente' };
@@ -706,9 +811,14 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
         <div className="cz-lado-col"><aside className="cz-lado">
           {emb}
           {svs.length > 1 ? <Elegir liga={liga} svs={svs} sel={x.sv} onSel={onSel} /> : null}
-          <nav aria-label="Tu panel">{[['hoy', 'Hoy'], ...AREAS].map(([k, tt]) => (
-            <button type="button" key={k} aria-current={actual === k ? 'page' : undefined} onClick={() => ir(k)}>{ICO_CZ[k]}{tt}
-              {k === 'cola' && preg.length && p_('final') ? <span className="cz-cuenta">{preg.length}</span> : null}</button>
+          <nav aria-label="Tu panel">{agrupar([['hoy', 'Tu cabina'], ...AREAS]).map(([g, xs]) => (
+            <Fragment key={g}>
+              <p className="cz-grupo">{g}</p>
+              {xs.map(([k, tt]) => (
+                <button type="button" key={k} aria-current={actual === k ? 'page' : undefined} onClick={() => ir(k)}>{ICO_CZ[k]}{tt}
+                  {k === 'cola' && preg.length && p_('final') ? <span className="cz-cuenta">{preg.length}</span> : null}</button>
+              ))}
+            </Fragment>
           ))}</nav>
           {actual === 'hoy'
             ? <div className="cz-tier corta"><span className="t"><b>Tier {x.tier}</b><span>{corto}</span></span>{filas ? <Bloques n={hechos} de={filas.length} falta={!tramo} /> : null}</div>
@@ -762,12 +872,24 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
               <Consola x={x} logo={logo} s={s} />
               <Cola liga={liga} sv={x.sv} preg={preg} setPreg={setPreg} puede={p_('final')} verTodas={() => ir('cola')} />
             </div>
+            {mapa || top.length ? (
+              <div className={'cz-dos' + (mapa && top.length ? '' : ' uno')}>
+                {mapa ? <MapaHoras mp={mapa} /> : null}
+                {top.length ? <TusRaperos xs={top} total={p.gente_total || delSv.length} ver={() => ir('gente')} /> : null}
+              </div>
+            ) : null}
           </section>
           <section className="cz-papel" id="cz-papel">
-            <nav className="cz-pes" role="tablist">{AREAS.map(([k, tt]) => (
-              <button type="button" role="tab" key={k} aria-selected={tab === k} onClick={() => { setTab(k); setNav('papel'); }}>{tt}
-                {k === 'cola' && preg.length && p_('final') ? <span className="cz-cuenta">{preg.length}</span> : null}
-                {k === 'gente' && p.gente_total ? <small>{num(p.gente_total)}</small> : null}</button>
+            {/* 🗂️ las pestañas, en los mismos grupos que la barra: en el celular no hay barra, y esto es el menú */}
+            <nav className="cz-pes" role="tablist" aria-label="Las partes de tu panel">{agrupar(AREAS).map(([g, xs]) => (
+              <div key={g} className="cz-pes-g" role="presentation">
+                <span className="cz-pes-t" aria-hidden="true">{g}</span>
+                <div className="cz-pes-b" role="presentation">{xs.map(([k, tt]) => (
+                  <button type="button" role="tab" key={k} aria-selected={tab === k} onClick={() => { setTab(k); setNav('papel'); }}>{tt}
+                    {k === 'cola' && preg.length && p_('final') ? <span className="cz-cuenta">{preg.length}</span> : null}
+                    {k === 'gente' && p.gente_total ? <small>{num(p.gente_total)}</small> : null}</button>
+                ))}</div>
+              </div>
             ))}</nav>
             {tab === 'cola' ? <>
               {preg.length && p_('final') ? <Sec id="sp-preg" titulo="Quién ganó" bajada="Batallas de tus llaves donde el bot no encontró quién ganó. Las puede marcar el dueño acá o el staff con los botones de Discord: vale la primera.">

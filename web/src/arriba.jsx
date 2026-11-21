@@ -7,6 +7,7 @@ import { Alguien, Algunos, Anotados, Cara, Carta, Chevron, Compartir, Ico, Poste
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 import { YoMenu } from './yomenu.jsx';
+import { BotonModsCab } from './mods_herramientas.jsx';
 import { ERR_LIBRE, libreAccion, pedirLibres, useLibres } from './libres.js';
 import { useAplausos } from './aplausos.js';
 import { delHilo, useComentarios } from './comentarios.jsx';
@@ -574,7 +575,10 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
         <PreguntaCab pagina={pagina} />
         <button className={'btn-ico lupa-b' + (busca ? ' on' : '')} type="button" aria-label={busca ? 'Cerrar el buscador' : 'Buscar (Ctrl K)'} aria-expanded={busca}
           title="Buscar · Ctrl K" onClick={() => setBusca((v) => !v)}><Ico n="buscar" t={20} /></button>
-        {/* 🛠️ MODS ya no va acá (18/11/2026): vive en «Tus paneles» del menú de tu cara (yomenu.jsx) */}
+        {/* 🛠️ MODS VUELVE ACÁ, SÓLO EN LA COMPU (21/11/2026, Dlx: «un botón sobresaliente en el menú también en la PC que tendrá
+            mods tools… dependiendo de la página»): sólo para quien tiene Mods, y con lo de esta página (mods_herramientas.jsx).
+            Se fue el 18/11 porque el menú no entraba: ahora es el ícono solo hasta 1440 px (medido en vivo.css) */}
+        <BotonModsCab dc={dc} k={yo ? yo.k : (dc && dc.clave) || ''} />
         {/* 🎁 INVITA Y GANA (17/11/2026, Dlx: «una nueva opción con el ícono de regalo… al costado de notificaciones»). Desde
             1280 px: más angosta no entra sin pisar el menú (medido); ahí está en tu menú y en el ☰ */}
         <a className={'btn-ico rf-b' + (pagina === 'invitar' ? ' on' : '')} href="#/invitar" aria-label="Invita y gana" title="Invita y gana"><Ico n="regalo" t={20} /></a>

@@ -71,6 +71,8 @@ const TRAZOS = {
   auris: <><path d="M4 15v-3a8 8 0 0116 0v3" /><path d="M4 14h4v6H4zM16 14h4v6h-4z" /></>,
   premio: <><circle cx="12" cy="9" r="5" /><path d="M9 13.2L7.5 21l4.5-2.5 4.5 2.5-1.5-7.8" /></>,
   escudo: <path d="M12 3l8 3v6c0 4.6-3.3 7.9-8 9-4.7-1.1-8-4.4-8-9V6z" />,
+  // ✎ el lápiz de Mods (21/11/2026, mods_herramientas.jsx)
+  lapiz: <path d="M4 20l4.5-1L19.5 8 16 4.5 5 15.5zM13.5 7l3.5 3.5" />,
   replica: <path d="M4 8.5h13.5M14 5l3.5 3.5L14 12M20 15.5H6.5M10 12l-3.5 3.5L10 19" />,
   brote: <path d="M12 21v-9M12 12c0-4.2 3-6.5 7.5-6.5 0 4.2-3 6.5-7.5 6.5zM12 15c0-3.2-2.3-5-6-5 0 3.2 2.3 5 6 5z" />,
   cruce: <path d="M4 4l6.5 6.5M20 20l-6.5-6.5M20 4L4 20M4 4h4.5M4 4v4.5M20 20h-4.5M20 20v-4.5" />,

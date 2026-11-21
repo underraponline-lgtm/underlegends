@@ -3879,6 +3879,42 @@ const AREAS = [
   // de mejor forma el dashboard y dar roles, quitar»): quién tiene uno, qué puede cada uno, y darlos o sacarlos
   ['roles', 'Roles', 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M3 21v-1a6 6 0 0 1 12 0v1M17 11l2 2 4-4'],
 ];
+// 🗂️ LAS NUEVE ÁREAS EN TRES GRUPOS CON NOMBRE (21/11/2026, la maqueta «Mods y paneles», Dlx: «para los dashboard me
+// gustan los tableros»). En la compu, la barra de la izquierda con el nombre de cada grupo; en el teléfono, un solo botón
+// «<área> ▾» que abre una hoja con los tres grupos (antes eran cuatro áreas y «Más…»). El orden de `AREAS` no cambia:
+// lo siguen usando Ctrl+K y `lg:db-area`
+const GRUPOS_AREA = [
+  ['Hoy', ['resumen', 'pendientes', 'salud']],
+  ['La Liga', ['servidores', 'control', 'roles']],
+  ['La página', ['web', 'numeros', 'historial']],
+];
+// 🎨 la tinta que se lee sobre el color de un servidor (sale del payload): negra sobre los claros, blanca sobre el resto
+const tintaSobre = (hex) => {
+  const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ''));
+  if (!m) return '#F6F6F6';
+  const v = parseInt(m[1], 16);
+  const c = [(v >> 16) & 255, (v >> 8) & 255, v & 255].map((x) => { const s = x / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; });
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2] > 0.4 ? '#030304' : '#F6F6F6';
+};
+// 📊 LOS EVENTOS JUGADOS, DÍA POR DÍA (el tablero): los del calendario del lobby con llave leída o marcados jugados, en
+// hora del este, los últimos 7 días hasta hoy. Lo mismo que cuenta la cartelera; no se pide nada nuevo
+function jugadosDe(liga) {
+  const cal = ((liga && liga.d) || {}).calendario || [];
+  const hoy = diaISO(new Date());
+  const dias = [];
+  for (let i = 6; i >= 0; i--) { const x = new Date(hoy + 'T12:00:00Z'); x.setUTCDate(x.getUTCDate() - i); dias.push(x.toISOString().slice(0, 10)); }
+  const n = Object.fromEntries(dias.map((x) => [x, 0]));
+  for (const c of cal) {
+    if (!(c.ll || c.jugado) || !c.t) continue;
+    const t = new Date(c.t);
+    if (Number.isNaN(+t)) continue;
+    const k = diaISO(t);
+    if (k in n) n[k] += 1;
+  }
+  const xs = dias.map((x) => [x, n[x]]);
+  const tope = Math.max(0, ...xs.map((x) => x[1]));
+  return { xs, hoy, total: xs.reduce((a, x) => a + x[1], 0), tope, fuertes: tope ? xs.filter((x) => x[1] === tope).map((x) => x[0]) : [] };
+}
 // las cuatro colas de Pendientes
 // 📣 LOS REPORTES DE LA GENTE, PRIMERO (20/11/2026, el plan de los tiers: «los reportes de su gente arriba en tu Dashboard»,
 // para todos los servidores y sin orden por tier): en los cuadrados de «Para decidir», en la bandeja y en sus filtros
@@ -5066,9 +5102,10 @@ function DashMed({ m }) {
 // 🗓️ LA SEMANA EN CUATRO LÍNEAS (25/10/2026; Dlx: «haz todas»). Sólo lunes y martes (hora del este): el resto de la
 // semana ya está en Números y el Resumen es para lo que pide acción. La vuelta de la última semana cerrada, qué falló
 // del bot, cuántos debutaron y no volvieron, y a cuántos se les avisó
-function SemanaCorta({ d, retencion, ir }) {
-  const dow = new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'short' });
-  if (dow !== 'Mon' && dow !== 'Tue') return null;
+// los lunes y martes, en hora del este: lo sabe también el tablero, para dejarle su lugar
+const semanaCortaHoy = () => ['Mon', 'Tue'].includes(new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'short' }));
+function SemanaCorta({ d, retencion, ir, clase }) {
+  if (!semanaCortaHoy()) return null;
   const cs = ((retencion && retencion.cohortes) || []).filter((c) => c.completa && c.nuevos);
   const ult = cs[cs.length - 1];
   const P = d.primerizos || {};
@@ -5087,7 +5124,7 @@ function SemanaCorta({ d, retencion, ir }) {
     ['Se les avisó que vuelvan', num(avisados) + ' en 7 días', 'numeros', 'nu-primerizos'],
   ].filter(Boolean);
   return (
-    <section className="dz-caja dz-semana">
+    <section className={(clase || 'dz-caja') + ' dz-semana'}>
       <h3 className="dz-h">La semana pasada<small>los lunes y martes</small></h3>
       <ul className="dz-lista">{lineas.map(([t, v, a, an]) => (
         <li key={t}><span><b>{t}:</b> {v}</span><button type="button" className="dz-lnk" onClick={() => ir(a, an)}>Ver</button></li>
@@ -5532,7 +5569,17 @@ export function Dashboard({ dc, liga }) {
   const [, tic] = useState(0);
   useEffect(() => { const id = setInterval(() => tic((n) => n + 1), 30000); return () => clearInterval(id); }, []);
   const [panel, setPanel] = useState(() => !panelCerrado());
-  const [masNav, setMasNav] = useState(false);
+  // 📱 la hoja de las áreas del teléfono («<área> ▾»): se cierra al elegir, con Escape o tocando afuera
+  const [hojaNav, setHojaNav] = useState(false);
+  const elegirRef = useRef(null);
+  const hojaRef = useRef(null);
+  useEffect(() => {
+    if (!hojaNav) return undefined;
+    const f = (e) => { if (e.key === 'Escape') { setHojaNav(false); if (elegirRef.current) elegirRef.current.focus(); } };
+    W.addEventListener && W.addEventListener('keydown', f);
+    const id = setTimeout(() => { const b = hojaRef.current && (hojaRef.current.querySelector('.dz-a.on') || hojaRef.current.querySelector('.dz-a')); if (b) b.focus(); }, 30);
+    return () => { clearTimeout(id); W.removeEventListener && W.removeEventListener('keydown', f); };
+  }, [hojaNav]);
   // 🗂️ la ficha abierta: `[clave, nombre]`
   const [ficha, setFicha] = useState(null);
   // 🎛️ a quién abrir en «Dar o sacar un rol» cuando se toca «Cambiar» en la lista
@@ -5596,53 +5643,129 @@ export function Dashboard({ dc, liga }) {
 
   let vista;
   if (areaV === 'resumen') {
+    // ── 🧱 EL TABLERO (21/11/2026, la maqueta «Mods y paneles», opción B; Dlx: «para los dashboard me gustan los
+    // tableros»). Un cuadro grande con lo que espera y, alrededor, un cuadro por pregunta: ¿anda todo?, ¿cuánto se jugó?,
+    // ¿cómo están los servidores? Todo lo que tenía el Resumen sigue acá: la salud, los cuadrados de «Para decidir» (ahora
+    // filas del cuadro grande), lo que pide atención, desde tu última visita, lo programado, la semana y lo en vivo.
+    // Cuadros planos separados por tono (`--caja`), sin bordes adentro de bordes ni sombras; en el teléfono, una columna
+    const enCola = CUADROS.filter((x) => x[1]);
+    const enCero = CUADROS.filter((x) => !x[1]);
+    const J = jugadosDe(liga);
+    const elegidos = aj.tiers || {};
+    const tiersT = ((d.tiers || {}).servidores || []).length ? d.tiers.servidores
+      : Object.values(liga.svs || {}).filter((x) => x.tier).map((x) => ({ sv: x.sv, tier: x.tier }));
+    const porTier = [1, 2, 3].map((t) => [t, tiersT.filter((x) => (elegidos[x.sv] || x.tier || 1) === t)]).filter(([, xs]) => xs.length);
+    const corr = (d.corridas || []).slice(0, 14).reverse();
+    const estCorr = (c) => (c.estado !== 'completed' ? 'va' : !c.fin || c.fin === 'success' || c.fin === 'skipped' || c.fin === 'neutral' ? 'ok' : 'mal');
+    const semana = semanaCortaHoy();
+    const dd = d.dias || [];
+    const ultDia = dd.length ? dd[dd.length - 1] : null;
+    // 🏷️ lo que pide atención, con su nombre en vez de un emoji (la regla del brain: nada de emojis como íconos)
+    const ET_AT = { '🔴': ['URGENTE', 'mal'], '⏸': ['EN PAUSA', 'ojo'], '📋': ['REVISAR', 'ojo'] };
+    const frase = [ve('ajustes') ? (sal.ok ? 'Todo anda' : 'Hay algo que mirar en la salud') : '',
+      total ? (total === 1 ? 'hay 1 cosa para decidir' : 'hay ' + num(total) + ' cosas para decidir') : 'no hay nada para decidir'].filter(Boolean).join(' y ');
     vista = (
       <>
-        <div className="dz-cab"><h2 className="dz-h1">{saludo}{d.yo ? ', ' + d.yo : ''}</h2></div>
-        {/* 💚 la salud en una frase */}
-        {ve('ajustes') ? (
-          <div className={'dz-salud' + (sal.ok ? '' : ' mal')}>
-            <span className="dz-pt" aria-hidden="true" />
-            <p>{sal.ok ? <b>Todo anda.</b> : <b>Ojo: {sal.mal.join(' · ')}.</b>} {sal.partes.join(' · ').replace(/^./, (c) => c.toUpperCase())}{sal.partes.length ? '.' : ''}</p>
-            <button type="button" className="dz-lnk" onClick={() => ir('salud')}>Ver la salud</button>
-          </div>
-        ) : null}
-        {/* 🟥 lo prioritario primero, en cuadrados (Dlx: «lo que me gusta de B es que aparece lo prioritario primero… en cuadrados») */}
-        <section className="dz-dec" aria-label="Para decidir">
-          <h3 className="dz-h">Para decidir{total ? <span> · {total}</span> : null}</h3>
-          <div className="dz-cuadros">{CUADROS.filter((x) => x[1]).map(([k, c, t, s, urg, a]) => (
-            <button key={k} type="button" className={'dz-cuadro' + (c ? (urg ? ' urg' : ' ojo') : ' cero')} onClick={() => ir('pendientes', '', a)}>
-              <b>{c || '✓'}</b><span>{t}</span><small>{c ? s : 'al día'}</small>
-            </button>
-          ))}</div>
-          {/* lo que está en cero no ocupa un cuadrado: una línea */}
-          {CUADROS.some((x) => !x[1]) ? <p className="dz-aldia">✓ Al día: {CUADROS.filter((x) => !x[1]).map((x) => x[2]).join(' · ')}</p> : null}
-        </section>
-        <SemanaCorta d={d} retencion={retencion} ir={ir} />
-        {/* lo que pide atención, con un botón que lleva a donde se arregla */}
-        {at.length ? (
-          <ul className="dz-at">{at.map(([ic, t, s, a, an]) => (
-            <li key={t} className={ic === '🔴' ? 'mal' : 'ojo'}><span aria-hidden="true">{ic}</span><div><em>{ic === '🔴' ? 'URGENTE' : ic === '⏸' ? 'EN PAUSA' : 'OJO'}</em><b>{t}</b>{s ? <small>{s}</small> : null}</div>
-              {a ? <button type="button" className="btn borde2 chico" onClick={() => ir(a, an)}>Ir</button> : null}</li>
-          ))}</ul>
-        ) : null}
-        <div className="dz-dos">
-          <section className="dz-caja">
-            <h3 className="dz-h">Desde tu última visita{prev ? <small>{hace(prev)}</small> : null}</h3>
+        <div className="dz-cab dzt-cab">
+          <h2 className="dz-h1">{saludo}{d.yo ? ', ' + d.yo : ''}</h2>
+          <p className="dzt-frase">{frase.replace(/^./, (c) => c.toUpperCase())}.</p>
+        </div>
+        <div className="dzt-g">
+          {/* 🟥 lo que espera tu decisión: el total grande y las colas que tienen algo, la más urgente arriba */}
+          <section className="dzt-t dzt-grande" aria-label="Para decidir">
+            <h3 className="dzt-h">Para decidir{enCola.length ? <small>{enCola.length === 1 ? 'una cola' : enCola.length + ' colas'}</small> : null}</h3>
+            <p className={'dzt-n' + (total ? '' : ' cero')}>{num(total)}<small>{total ? (total === 1 ? 'espera' : 'esperan') : 'nada espera'}</small></p>
+            {enCola.length ? (
+              <ul className="dzt-filas">{enCola.slice(0, 3).map(([k, c, t, sub, urg, a]) => (
+                <li key={k}><button type="button" className="dzt-fila" onClick={() => ir('pendientes', '', a)}>
+                  <b className={urg ? 'urg' : 'ojo'}>{num(c)}</b><span><em>{t}</em><small>{sub}</small></span>
+                </button></li>
+              ))}</ul>
+            ) : null}
+            {enCola.length > 3 ? <p className="dzt-mas">Y también: {enCola.slice(3).map((x) => x[2] + ' (' + num(x[1]) + ')').join(' · ')}</p> : null}
+            {enCero.length ? <p className="dz-aldia">✓ Al día: {enCero.map((x) => x[2]).join(' · ')}</p> : null}
+            {visibles.pendientes ? <button type="button" className="dzt-ir" onClick={() => ir('pendientes')}>Ir a Pendientes</button> : null}
+          </section>
+          {/* 💚 la salud: la frase de siempre y las últimas vueltas del ciclo, una por cuadrito */}
+          {ve('ajustes') ? (
+            <section className={'dzt-t dzt-salud' + (sal.ok ? '' : ' mal')} aria-label="Salud">
+              <h3 className="dzt-h">Salud<button type="button" className="dz-lnk" onClick={() => ir('salud')}>Ver la salud</button></h3>
+              <p className="dzt-est"><span className="dz-pt" aria-hidden="true" />{sal.ok ? <b>Todo anda.</b> : <b>Ojo: {sal.mal.join(' · ')}.</b>}</p>
+              {corr.length ? (
+                <div className="dzt-vueltas">
+                  <span className="dzt-cuad" role="img" aria-label={'Las últimas ' + corr.length + ' vueltas del ciclo: ' + corr.filter((c) => estCorr(c) === 'mal').length + ' con problemas'}>
+                    {corr.map((c) => <i key={c.creada} className={estCorr(c)} title={(c.empezo || c.creada ? hora(new Date(c.empezo || c.creada)) + ' · ' : '') + (c.estado === 'completed' ? (FIN_CORRIDA[c.fin] || c.fin || 'terminó') : (ESTADO_CORRIDA[c.estado] || c.estado))} />)}
+                  </span>
+                  <small>las últimas {corr.length} vueltas del ciclo</small>
+                </div>
+              ) : null}
+              {sal.partes.length ? <ul className="dzt-partes">{sal.partes.map((x) => <li key={x}>{x.replace(/^./, (c) => c.toUpperCase())}</li>)}</ul> : null}
+            </section>
+          ) : null}
+          {/* 📊 los eventos jugados, día por día (los del calendario con llave leída) */}
+          <section className="dzt-t dzt-jug" aria-label="Eventos jugados">
+            <h3 className="dzt-h">Jugados<small>7 días</small></h3>
+            <div className="dzt-barras" role="img" aria-label={num(J.total) + ' eventos jugados en 7 días'}>
+              {J.xs.map(([dia, c]) => (
+                <div key={dia} className={dia === J.hoy ? 'hoy' : ''} title={corto(dia) + ' · ' + c + (c === 1 ? ' evento' : ' eventos')}>
+                  <b>{c || ''}</b><i><u style={{ height: (J.tope ? (100 * c) / J.tope : 0).toFixed(1) + '%' }} /></i><span>{Number(dia.slice(8, 10))}</span>
+                </div>
+              ))}
+            </div>
+            <p className="dzt-pie">{J.total ? num(J.total) + (J.total === 1 ? ' evento' : ' eventos') + ' · ' + num(J.tope) + ' el ' + J.fuertes.map(corto).join(' y el ') : 'Ningún evento con llave en estos 7 días.'}</p>
+            {ultDia ? <p className="dzt-pie">Hoy: {num(ultDia.bot || 0)} usaron el bot · {num(ultDia.visitas || 0)} abrieron la página · <button type="button" className="dz-lnk" onClick={() => ir('numeros', 'nu-uso')}>Números</button></p> : null}
+          </section>
+          {/* 🏟️ los socios por tier, cada uno con su color */}
+          {visibles.servidores && porTier.length ? (
+            <section className="dzt-t dzt-svs" aria-label="Servidores">
+              <h3 className="dzt-h">Servidores<small>{num(tiersT.length)} socios</small></h3>
+              <ul className="dzt-tiers">{porTier.map(([t, xs]) => (
+                <li key={t}><b>Tier {t}</b><span>{xs.map((x) => {
+                  const c = ((liga.svs || {})[x.sv] || {}).color || '#7E8B89';
+                  return <button key={x.sv} type="button" className={'dzt-sv' + (x.rec === 'revisar' ? ' rev' : '')} style={{ background: c, color: tintaSobre(c) }}
+                    title={siglaDe(x.sv) + ' · Tier ' + t + (x.rec === 'revisar' ? ' · revisar su tier' : '')} onClick={() => ir('servidores', 'sv-cada')}>{siglaDe(x.sv)}</button>;
+                })}</span></li>
+              ))}</ul>
+              <button type="button" className="dz-lnk" onClick={() => ir('servidores')}>Ver los servidores</button>
+            </section>
+          ) : null}
+          {/* 📅 lo que está programado o prendido a mano */}
+          <section className="dzt-t dzt-prog" aria-label="Lo que está programado">
+            <h3 className="dzt-h">Lo que está programado</h3>
+            {prog.length ? <ul className="dz-lista">{prog.map(([t, s, a, an]) => (
+              <li key={t}><span><b>{t}</b> · {s}</span><button type="button" className="dz-lnk" onClick={() => ir(a, an)}>Cambiar</button></li>
+            ))}</ul> : <p className="db-tx">Nada programado ni prendido a mano.</p>}
+          </section>
+          {/* lo que pide atención, con un botón que lleva a donde se arregla */}
+          {at.length ? (
+            <section className="dzt-t dzt-todo dzt-at" aria-label="Pide atención">
+              <h3 className="dzt-h">Pide atención<small>{at.length === 1 ? 'una cosa' : at.length + ' cosas'}</small></h3>
+              <ul>{at.map(([ic, t, s, a, an]) => {
+                const [et, cl] = ET_AT[ic] || ['OJO', 'ojo'];
+                return (
+                  <li key={t} className={cl}><em>{et}</em><div><b>{t}</b>{s ? <small>{s}</small> : null}</div>
+                    {a ? <button type="button" className="btn borde2 chico" onClick={() => ir(a, an)}>Ir</button> : null}</li>
+                );
+              })}</ul>
+            </section>
+          ) : null}
+          {(d.vivo || []).length ? (
+            <section className="dzt-t dzt-todo" aria-label="En vivo ahora">
+              <h3 className="dzt-h">En vivo ahora<small>se pone al día solo</small></h3>
+              <EnVivo vivo={d.vivo} liga={liga} aj={aj} chat={d.chat} />
+            </section>
+          ) : null}
+          {/* 🕓 lo que pasó mientras no estabas */}
+          <section className={'dzt-t ' + (semana ? 'dzt-ancho' : 'dzt-todo')} aria-label="Desde tu última visita">
+            <h3 className="dzt-h">Desde tu última visita{prev ? <small>{hace(prev)}</small> : null}</h3>
             {!nuevo ? <p className="db-tx">Es la primera vez que lo abres así: desde la próxima, acá aparece lo que pasó mientras no estabas.</p>
               : !nuevo.length ? <p className="db-tx">Nada nuevo desde entonces.</p>
                 : <ul className="dz-lista">{nuevo.map(([t, tx, a, s]) => (
                   <li key={t + tx}><span className="dz-hora">{hora(new Date(t))}</span><button type="button" className="dz-lnk" onClick={() => ir(a, '', s)}>{tx}</button></li>
                 ))}</ul>}
           </section>
-          <section className="dz-caja">
-            <h3 className="dz-h">Lo que está programado</h3>
-            {prog.length ? <ul className="dz-lista">{prog.map(([t, s, a, an]) => (
-              <li key={t}><span><b>{t}</b> · {s}</span><button type="button" className="dz-lnk" onClick={() => ir(a, an)}>Cambiar</button></li>
-            ))}</ul> : <p className="db-tx">Nada programado ni prendido a mano.</p>}
-          </section>
+          <SemanaCorta d={d} retencion={retencion} ir={ir} clase="dzt-t" />
         </div>
-        {(d.vivo || []).length ? sec('', 'EN VIVO AHORA', 'se pone al día solo', <EnVivo vivo={d.vivo} liga={liga} aj={aj} chat={d.chat} />) : null}
       </>
     );
   } else if (areaV === 'pendientes') {
@@ -5755,20 +5878,38 @@ export function Dashboard({ dc, liga }) {
       <style>{ESTILO}</style>
       {d.mis_roles && !d.mis_roles.includes('owner') ? <p className="db-rol">Entraste como <b>{(d.mis_roles || []).map((r) => ({ admin: 'Admin', asistente: 'Asistente', moderador: 'Moderador de la página' }[r] || r)).join(' y ')}</b>{d.yo ? ' (' + d.yo + ')' : ''}: lo que hagas queda con tu nombre.</p> : null}
       <div className="dz-marco">
-        <nav className="dz-nav" aria-label="Áreas del Dashboard">
+        <nav className={'dz-nav' + (hojaNav ? ' dzn-abierta' : '')} aria-label="Áreas del Dashboard">
           <div className="dz-marca"><small>UNDER LEGENDS · {liga.temp}</small><b>Dashboard</b></div>
-          {AREAS.filter(([k]) => visibles[k]).map(([k, t, ic]) => {
-            const c = k === 'pendientes' ? total : 0;
-            // 📱 en el teléfono se ven cuatro (las del día a día) y la que está abierta; el resto, detrás de «Más»
-            const extra = !['resumen', 'pendientes', 'servidores', 'salud'].includes(k) && areaV !== k;
-            return (
-              <button key={k} type="button" className={'dz-a' + (areaV === k ? ' on' : '') + (extra ? ' dz-a-extra' + (masNav ? ' ver' : '') : '')} aria-current={areaV === k ? 'page' : undefined} onClick={() => ir(k)}>
-                <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true"><path d={ic} /></svg>{t}</span>
-                {c ? <i>{c}</i> : null}
-              </button>
-            );
-          })}
-          <button type="button" className="dz-a dz-a-mas" aria-expanded={masNav} onClick={() => setMasNav(!masNav)}><span>{masNav ? 'Menos' : 'Más…'}</span></button>
+          {/* 📱 en el teléfono: un solo botón con el área de ahora; abre la hoja con los tres grupos */}
+          <button type="button" ref={elegirRef} className="dzn-elegir" aria-expanded={hojaNav} aria-controls="dzn-hoja" onClick={() => setHojaNav(!hojaNav)}>
+            <span>{titulo}</span>
+            {total && areaV !== 'pendientes' ? <i aria-label={total + ' para decidir'}>{total}</i> : null}
+            <b aria-hidden="true">▾</b>
+          </button>
+          {hojaNav ? <div className="dzn-velo" aria-hidden="true" onClick={() => setHojaNav(false)} /> : null}
+          <div className="dzn-hoja" id="dzn-hoja" ref={hojaRef}>
+            <span className="dzn-asa" aria-hidden="true" />
+            {GRUPOS_AREA.map(([g, ks]) => {
+              const xs = AREAS.filter(([k]) => ks.includes(k) && visibles[k]);
+              if (!xs.length) return null;
+              return (
+                <div key={g} className="dzn-g" role="group" aria-label={g}>
+                  <p className="dzn-gt">{g}</p>
+                  {xs.map(([k, t, ic]) => {
+                    const c = k === 'pendientes' ? total : 0;
+                    return (
+                      <button key={k} type="button" className={'dz-a' + (areaV === k ? ' on' : '')} aria-current={areaV === k ? 'page' : undefined}
+                        onClick={() => { setHojaNav(false); ir(k); }}>
+                        <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true"><path d={ic} /></svg>{t}</span>
+                        {c ? <i>{c}</i> : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
+          <p className="dzn-pie"><kbd>Ctrl</kbd> <kbd>K</kbd> para buscar o hacer algo</p>
         </nav>
         <div className="dz-der">
           <div className="dz-top">

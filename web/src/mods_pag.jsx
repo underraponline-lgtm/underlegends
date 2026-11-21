@@ -20,6 +20,7 @@ import { pedirLlave, pedirMods, pedirRoles, pedirStaff } from './panelsocio.js';
 import { abrirDePrueba, abrirMomento } from './drops.jsx';
 import { pedirRecorrido } from './primera.js';
 import { Ico } from './piezas.jsx';
+import { ponerBotonMods, useBotonMods, useRuta } from './mods_herramientas.jsx';
 import CSS from './css/mods.css?inline';
 import { usarCss } from './css.js';
 
@@ -202,6 +203,10 @@ export function ModsPagina({ liga, dc }) {
     return () => { vivo = false; };
   }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
   const [horaElegir, setHoraElegir] = useState('');
+  const ruta = useRuta();
+  const [tab0, setTab0] = useState(() => { try { return ruta[1] || localStorage.getItem('lg:mods-tab') || 'corregir'; } catch (e) { return ruta[1] || 'corregir'; } });
+  useEffect(() => { if (ruta[0] === 'mods' && ruta[1]) setTab0(ruta[1]); }, [ruta[0], ruta[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  const boton = useBotonMods();
   if (!dc || !tieneMods(Q)) {
     return (
       <div className="md-pag">
@@ -214,19 +219,17 @@ export function ModsPagina({ liga, dc }) {
   const idioma = (l) => { try { W.location.href = W.location.pathname + '?lang=' + l + W.location.hash; } catch (e) { /* nada */ } };
   const en = (() => { try { return localStorage.getItem('lg:lang') === 'en'; } catch (e) { return false; } })();
   const drop = (i, e) => { setCayo(false); abrirDePrueba(e.currentTarget, i).catch(() => setCayo(true)); };
-  return (
-    <div className="md-pag">
-      <div className="md-tit">
-        <div>
-          <span className="lab">Tus paneles</span>
-          <h1 className="md-h1">Mods</h1>
-          <p className="md-gris">{rolMods(Q)}. Lo que prendas sirve en esta pestaña hasta que lo apagues o la cierres{n ? ' (tienes ' + (n === 1 ? '1 cosa prendida' : n + ' cosas prendidas') + ')' : ''}. Cada uno ve sólo lo de su rol.</p>
-        </div>
-        {n ? <button type="button" className="btn borde2" onClick={() => ponerMod(null)}>Apagar todo</button> : null}
-      </div>
-      <div className="md-grid">
-        <div className="md-main">
-          {Q.owner || Q.admin ? (
+  // 🗂️ CUATRO PESTAÑAS (21/11/2026, la maqueta privada K3F14JmtDQvEYLMn6d2Pb9): en el celular la página medía 4.032 px y los
+  // lápices quedaban a 2.780. Corregir primero; Mirar y Probar para quien los tiene; Registro con lo hecho y quién puede qué.
+  // La pestaña va en la dirección (`#/mods/<pestaña>`, el panel de cada página lleva a Registro) y se recuerda
+  const TABS = [['corregir', 'Corregir'], Q.owner || Q.admin ? ['mirar', 'Mirar'] : null, Q.owner ? ['probar', 'Probar'] : null, ['registro', 'Registro']].filter(Boolean);
+  const tab = TABS.some(([x]) => x === tab0) ? tab0 : 'corregir';
+  const elegir = (x) => {
+    setTab0(x);
+    try { localStorage.setItem('lg:mods-tab', x); } catch (e) { /* sin almacenamiento */ }
+    try { const r = '#/mods/' + x; history.replaceState(history.state, '', W.urlLG ? W.urlLG(r) : r); } catch (e) { /* queda la dirección */ }
+  };
+  const lenteSec = (Q.owner || Q.admin ? (
             <section className="md-sec" aria-labelledby="md-lente">
               <div className="md-sec-h"><h2 id="md-lente">Cómo ves la página</h2><small>sólo cambia lo que ves</small></div>
               <div className="md-lente">
@@ -250,8 +253,8 @@ export function ModsPagina({ liga, dc }) {
                 <p className="md-nota"><b>Los botones siguen siendo tuyos.</b> Si tocas algo mirando como un usuario o sin cuenta, lo haces tú. Para volver, la franja de arriba.</p>
               </div>
             </section>
-          ) : null}
-          {Q.owner ? (
+          ) : null);
+  const pruebaSec = (Q.owner ? (
             <section className="md-sec" aria-labelledby="md-prueba">
               <div className="md-sec-h"><h2 id="md-prueba">Probar sin gastar</h2><small>no se compra ni se guarda nada</small></div>
               <div className="md-prueba">
@@ -283,7 +286,23 @@ export function ModsPagina({ liga, dc }) {
                 </Prueba>
               </div>
             </section>
-          ) : null}
+          ) : null);
+  return (
+    <div className="md-pag">
+      <div className="md-tit">
+        <div>
+          <span className="lab">Tus paneles</span>
+          <h1 className="md-h1">Mods</h1>
+          <p className="md-gris">{rolMods(Q)}. Lo que prendas sirve en esta pestaña hasta que lo apagues o la cierres{n ? ' (tienes ' + (n === 1 ? '1 cosa prendida' : n + ' cosas prendidas') + ')' : ''}. Cada uno ve sólo lo de su rol.</p>
+        </div>
+        {n ? <button type="button" className="btn borde2" onClick={() => ponerMod(null)}>Apagar todo</button> : null}
+      </div>
+      <div className="md-grid">
+        <div className="md-main">
+          <div className="md-pes" role="tablist" aria-label="Partes de Mods">{TABS.map(([k1, t1]) => (
+            <button key={k1} type="button" role="tab" aria-selected={tab === k1} className={tab === k1 ? 'on' : ''} onClick={() => elegir(k1)}>{t1}</button>
+          ))}</div>
+          {tab === 'corregir' ? <>
           {Q.owner || Q.admin || deLiga ? (
             <section className="md-sec" aria-labelledby="md-corregir">
               <div className="md-sec-h"><h2 id="md-corregir">Corregir de verdad</h2><small>queda anotado con tu nombre</small></div>
@@ -291,6 +310,12 @@ export function ModsPagina({ liga, dc }) {
                 <span className="md-lp-ic" aria-hidden="true">✎</span>
                 <span><h3>Lápices para corregir</h3><p>Con esto prendido, sale un lápiz magenta en cada cosa que puedes corregir, en su propia página. Tocas, corriges y te queda el Deshacer.</p></span>
                 <Sw k="lapices" M={M} t="Lápices para corregir" />
+              </div>
+              {/* 🛠️ el botón de Mods en cada página (21/11/2026, mods_herramientas.jsx): se esconde y se vuelve a prender acá */}
+              <div className="md-lapices md-boton">
+                <span className="md-lp-ic" aria-hidden="true"><Ico n="escudo" t={20} /></span>
+                <span><h3>El botón Mods en cada página</h3><p>Arriba en la compu (al lado de la campana) y la M abajo a la derecha en el celular: lo que puedes hacer en la página donde estás, a un toque.</p></span>
+                <button type="button" role="switch" aria-checked={boton} aria-label="El botón Mods en cada página" className={'md-sw' + (boton ? ' on' : '')} onClick={() => ponerBotonMods(!boton)} />
               </div>
               <div className="md-donde"><span className="lab">Dónde aparecen</span>
                 {owner || deLiga ? <a className="md-fl" href="#/eventos"><span className="md-ic"><Ico n="eventos" t={18} /></span><span><h3>Cualquier llave</h3><p>En cada batalla: quién ganó, un nombre o «la llave no cuenta». Avisa qué cambia después en la llave.</p></span><i>›</i></a> : null}
@@ -317,9 +342,18 @@ export function ModsPagina({ liga, dc }) {
               <a className="md-fl" href="#/socio"><span className="md-ic"><Ico n="servidor" t={18} /></span><span><h3>El panel de tu servidor</h3><p>Y en las llaves de tu servidor, «Corregir» en cada una.</p></span><i>›</i></a>
             </section>
           ) : null}
-        </div>
-        <aside className="md-costado">
-          {Q.owner || Q.admin ? <Hecho /> : null}
+            {!(Q.owner || Q.admin || deLiga) ? (
+              <div className="md-lapices md-boton">
+                <span className="md-lp-ic" aria-hidden="true"><Ico n="escudo" t={20} /></span>
+                <span><h3>El botón Mods en cada página</h3><p>La M abajo a la derecha en el celular y el botón de arriba en la compu, donde hay algo para hacer.</p></span>
+                <button type="button" role="switch" aria-checked={boton} aria-label="El botón Mods en cada página" className={'md-sw' + (boton ? ' on' : '')} onClick={() => ponerBotonMods(!boton)} />
+              </div>
+            ) : null}
+          </> : null}
+          {tab === 'mirar' ? lenteSec : null}
+          {tab === 'probar' ? pruebaSec : null}
+          {tab === 'registro' ? <>
+            {Q.owner || Q.admin ? <Hecho /> : null}
           <details className="md-caja">
             <summary><h3>Quién puede qué</h3><i aria-hidden="true">›</i></summary>
             <table className="md-mtz">
@@ -338,7 +372,10 @@ export function ModsPagina({ liga, dc }) {
             {owner ? <a href="/mapa.html" target="_blank" rel="noopener">El mapa en vivo <span>↗</span></a> : null}
             <a href="#/cuenta">Tu cuenta <span>›</span></a>
           </details>
-        </aside>
+          </> : null}
+        </div>
+        {/* en la compu, lo que hiciste queda al costado (menos en Registro, que ya lo tiene); en el celular, en Registro */}
+        {tab !== 'registro' && (Q.owner || Q.admin) ? <aside className="md-costado"><Hecho /></aside> : null}
       </div>
     </div>
   );

@@ -126,3 +126,13 @@
   .app .md-pild button,.app .md-rz button,.app .md-pag .btn,.app .md-link{min-height:44px}
   .md-lapices{grid-template-columns:36px minmax(0,1fr) auto}
 }
+
+/* 🗂️ las cuatro pestañas (21/11/2026): Corregir · Mirar · Probar · Registro. En el celular, lo hecho va en Registro */
+.md-pes{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:2px solid var(--linea);border-radius:4px;overflow:hidden;max-width:560px}
+.app .md-pes button{min-height:44px;padding:0 10px;border:0;background:none;color:var(--tinta);cursor:pointer;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.app .md-pes button + button{border-left:2px solid var(--linea)}
+.app .md-pes button.on{background:var(--tinta);color:var(--fondo)}
+.app .md-pes button:focus-visible{outline:2px solid var(--magenta);outline-offset:-4px}
+.md-boton{margin-top:12px}
+.md-boton .md-lp-ic{color:var(--magenta)}
+@media (max-width: 899.98px){.md-costado{display:none}}

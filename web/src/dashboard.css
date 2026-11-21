@@ -460,33 +460,7 @@
 .dz-h span{color:var(--magenta-tx)}
 .dz-h small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris);text-transform:none}
 .dz-lnk{padding:0;border:0;background:none;color:var(--tinta);font:700 13.5px/1.35 Archivo,sans-serif;text-align:left;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
-/* 💚 la salud en una frase */
-.dz-salud{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 14px;border:2px solid var(--verde);border-radius:4px;background:var(--caja)}
-.dz-salud.mal{border-color:var(--magenta)}
 .dz-pt{flex:none;width:12px;height:12px;border-radius:50%;background:var(--verde)}
-.dz-salud.mal .dz-pt{background:var(--magenta)}
-.dz-salud p{flex:1 1 300px;margin:0;font-size:14.5px;line-height:1.45}
-.dz-salud p b{font-weight:800}
-/* 🟥 para decidir, en cuadrados */
-.dz-cuadros{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
-.dz-cuadro{display:grid;gap:6px;justify-items:start;align-content:start;min-height:124px;padding:14px;border:2px solid var(--linea);border-radius:4px;
-  background:var(--caja);color:var(--tinta);text-align:left;cursor:pointer}
-.dz-cuadro b{font:900 42px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.dz-cuadro span{font:800 15px/1.15 Archivo,sans-serif;text-transform:uppercase}
-.dz-cuadro small{font-size:12.5px;line-height:1.35;color:var(--gris);overflow-wrap:anywhere}
-.dz-cuadro.urg{border-color:var(--magenta)}
-.dz-cuadro.urg b{color:var(--magenta-tx)}
-.dz-cuadro.ojo b{color:#8A6400}
-.dz-cuadro.cero{border-color:var(--suave)}
-.dz-cuadro.cero b{color:var(--verde)}
-@media (hover: hover) and (pointer: fine){.dz-cuadro:hover{background:var(--tinta);color:var(--fondo);border-color:var(--tinta)}.dz-cuadro:hover b,.dz-cuadro:hover small{color:inherit}}
-.dz-cuadro:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
-/* lo que pide atención, con su botón */
-.dz-at{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.dz-at li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border:2px solid var(--magenta-tx);border-radius:4px;background:var(--caja)}
-.dz-at li>span{font-size:18px;line-height:1}
-.dz-at b{display:block;font:800 15px/1.2 Archivo,sans-serif}
-.dz-at small{display:block;margin-top:2px;color:var(--gris)}
 .dz-dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px;align-items:start}
 .dz-caja{padding:14px;border:2px solid var(--linea);border-radius:4px;background:var(--caja)}
 .dz-lista{list-style:none;margin:0;padding:0;display:grid}
@@ -528,14 +502,8 @@
 }
 /* 📱 en el teléfono la barra va arriba, en dos columnas, y el aviso queda encima de la barra de abajo de la página */
 @media (max-width:760px){
-  .dz-nav{flex-basis:100%;max-width:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:14px 12px}
-  .dz-marca{grid-column:1 / -1;padding-bottom:8px}
-  .dz-a{font-size:14px;padding:0 10px}
   .dz-der{padding:16px 14px 24px}
   .dz-h1{font-size:24px}
-  .dz-cuadros{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .dz-cuadro{min-height:108px;padding:12px}
-  .dz-cuadro b{font-size:34px}
   .dz-toast{bottom:92px}
   .dz-bbtn kbd{display:none}
 }
@@ -750,9 +718,6 @@
 .dz-acc-pos{padding-top:2px}
 .dz-sub-posp{border-style:dashed}
 .dz-aldia{margin:8px 0 0;font:700 13.5px/1.4 Archivo,sans-serif;color:var(--verde)}
-.dz-at li.ojo{border-color:#F2C230}
-.dz-at li em{display:block;margin-bottom:2px;font:800 11.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;color:var(--gris)}
-.dz-at li.mal em{color:var(--magenta-tx)}
 .dz-pieza-e{justify-self:start;padding:2px 5px;border-radius:3px;font:800 11px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;background:#F2C230;color:#030304}
 .dz-pieza.mal .dz-pieza-e{background:var(--magenta);color:#fff}
 .dz-vuelta{display:grid;gap:12px}
@@ -807,11 +772,7 @@
 .dz-tabla td.dz-num-c b{display:block;font:800 13px/1.1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 .dz-der .dz-tabla th,.dz-der .dz-tabla td{padding:6px 3px}
 .dz-der :focus-visible{outline:2px solid var(--verde);outline-offset:2px}
-.dz-a-mas{display:none}
 @media (max-width:760px){
-  .dz-a-extra{display:none}
-  .dz-a-extra.ver{display:flex}
-  .dz-a-mas{display:flex;justify-content:center;border:1.5px dashed #3A3A42}
   .dz-lado{width:100%}
 }
 /* 💰 tanda 4: los Puntos de Tienda */
@@ -1038,3 +999,117 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
 .ti-pases-l label{display:flex;gap:8px;align-items:flex-start;font:500 13.5px/1.35 Archivo,sans-serif}
 .ti-pases .btn{justify-self:start}
 .ti-pases-al{display:flex;flex-wrap:wrap;gap:6px}
+/* 🗂️ LAS ÁREAS EN TRES GRUPOS (21/11/2026, la maqueta «Mods y paneles»). En la compu, la barra negra de siempre con el
+   nombre de cada grupo; en el teléfono, un solo botón «<área> ▾» que abre una hoja de abajo con los tres grupos. Clases
+   con prefijo `dzn-`: las del prototipo son globales adentro del shadow root */
+.dzn-elegir,.dzn-velo,.dzn-asa{display:none}
+.dzn-hoja{display:flex;flex-direction:column;gap:14px}
+.dzn-g{display:flex;flex-direction:column;gap:2px}
+.dzn-gt{margin:0;padding:0 12px 4px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#A5A5A0}
+.dzn-pie{margin:auto 0 0;padding:14px 12px 0;font-size:12px;color:#A5A5A0}
+.dzn-pie kbd{font:700 11px/1 "Barlow Condensed",sans-serif;padding:3px 5px;border:1px solid #3A3A42;border-radius:3px}
+@media (max-width:760px){
+  .dz-nav{flex-basis:100%;max-width:none;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px}
+  .dz-marca{padding:0;min-width:0}
+  .dz-marca b{font-size:20px}
+  .dzn-pie{display:none}
+  .dzn-elegir{display:inline-flex;align-items:center;gap:8px;min-height:44px;max-width:62%;padding:0 12px;border:1.5px solid #F6F6F6;border-radius:3px;
+    background:none;color:#F6F6F6;font:800 14px/1.1 Archivo,sans-serif;cursor:pointer}
+  .dzn-elegir span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dzn-elegir i{display:grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:3px;background:#E41373;color:#fff;font:800 12px/1 Archivo,sans-serif;font-style:normal}
+  .dzn-elegir b{font-weight:800}
+  .dzn-elegir:focus-visible{outline:2px solid #29B298;outline-offset:2px}
+  .dzn-hoja{display:none}
+  .dzn-abierta .dzn-velo{display:block;position:fixed;inset:0;z-index:78;background:rgba(3,3,4,.6)}
+  .dzn-abierta .dzn-hoja{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:79;max-height:84vh;overflow-y:auto;gap:12px;
+    padding:10px 14px calc(16px + env(safe-area-inset-bottom,0px));border-top:2px solid #F6F6F6;border-radius:4px 4px 0 0;background:#030304;color:#F6F6F6}
+  .dzn-abierta .dzn-asa{display:block;align-self:center;width:40px;height:4px;border-radius:2px;background:#3A3A42}
+  .dzn-hoja .dz-a{min-height:48px}
+}
+/* 🧱 EL TABLERO DEL RESUMEN (21/11/2026, opción B «El tablero»). Cuadros planos separados por tono, sin bordes adentro
+   de bordes ni sombras, el radio de adentro igual al de afuera. Tres columnas en la compu (dos en una pantalla angosta; sin container queries: la contención le cambiaría a los pop-ups fijos de adentro su caja) y
+   una en el teléfono, con el cuadro grande primero. Prefijo `dzt-` */
+.dzt-cab{display:grid;gap:6px}
+.dzt-frase{margin:0;font-size:15px;line-height:1.45;color:var(--gris)}
+.dzt-g{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr);grid-auto-flow:row dense;gap:12px;align-items:stretch}
+.dzt-t{min-width:0;display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:4px;background:var(--caja);color:var(--tinta)}
+.dzt-grande{grid-row:span 2}
+.dzt-ancho{grid-column:span 2}
+.dzt-todo{grid-column:1 / -1}
+.dzt-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0;font:900 15px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.dzt-h small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:none;color:var(--gris)}
+.dzt-h .dz-lnk{font-size:13px;text-transform:none}
+.dzt-t .dz-lista li{border-bottom-color:var(--suave)}
+.dzt-t .db-tx{max-width:none}
+.dzt-pie{margin:0;font-size:13px;line-height:1.4;color:var(--gris)}
+.dzt-pie .dz-lnk{font-size:13px}
+/* el cuadro grande: el total en magenta y las colas que esperan */
+.dzt-n{display:flex;align-items:baseline;gap:10px;margin:0;font:900 72px/1 Archivo,sans-serif;font-stretch:112%;font-variant-numeric:tabular-nums;color:var(--magenta-tx)}
+.dzt-n small{font:800 15px/1.2 Archivo,sans-serif;font-stretch:100%;color:var(--tinta)}
+.dzt-n.cero{color:var(--verde)}
+.dzt-filas{list-style:none;margin:0;padding:0;display:grid}
+.dzt-filas li{border-top:1px solid var(--suave)}
+.dzt-fila{width:100%;display:grid;grid-template-columns:48px minmax(0,1fr);gap:10px;align-items:center;min-height:56px;padding:10px 0;border:0;background:none;color:var(--tinta);text-align:left;cursor:pointer}
+.dzt-fila b{font:900 26px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.dzt-fila b.urg{color:var(--magenta-tx)}
+.dzt-fila b.ojo{color:var(--tinta)}
+.dzt-fila span{display:grid;gap:3px;min-width:0}
+.dzt-fila em{font:800 14.5px/1.2 Archivo,sans-serif;font-style:normal}
+.dzt-fila small{font-size:12.5px;line-height:1.35;color:var(--gris);overflow-wrap:anywhere}
+@media (hover: hover) and (pointer: fine){.dzt-fila:hover em{text-decoration:underline;text-underline-offset:2px}}
+.dzt-fila:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.dzt-mas{margin:0;font-size:13px;line-height:1.4;color:var(--gris)}
+.dzt-grande .dz-aldia{margin:0}
+.dzt-ir{margin-top:auto;width:100%;min-height:48px;padding:0 16px;border:0;border-radius:4px;background:var(--tinta);color:var(--fondo);
+  font:800 14px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.dzt-ir:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+/* la salud */
+.dzt-est{display:flex;align-items:flex-start;gap:10px;margin:0;font-size:14.5px;line-height:1.4}
+.dzt-est .dz-pt{margin-top:4px}
+.dzt-salud.mal .dz-pt{background:var(--magenta)}
+.dzt-salud.mal .dzt-est b{color:var(--magenta-tx)}
+.dzt-vueltas{display:grid;gap:5px}
+.dzt-cuad{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:2px;max-width:280px}
+.dzt-cuad i{height:16px;border-radius:2px;background:var(--verde)}
+.dzt-cuad i.mal{background:var(--magenta)}
+.dzt-cuad i.va{background:var(--suave)}
+.dzt-vueltas small{font-size:12px;color:var(--gris)}
+.dzt-partes{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:13px;line-height:1.4;color:var(--gris)}
+/* los jugados */
+.dzt-barras{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;align-items:end}
+.dzt-barras>div{display:grid;gap:4px;justify-items:center}
+.dzt-barras b{min-height:13px;font:800 12px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris)}
+.dzt-barras i{position:relative;display:block;width:100%;height:84px;border-bottom:1.5px solid var(--suave)}
+.dzt-barras u{position:absolute;left:0;right:0;bottom:0;border-radius:2px 2px 0 0;background:var(--tinta)}
+.dzt-barras .hoy u{background:var(--magenta)}
+.dzt-barras .hoy b,.dzt-barras .hoy span{color:var(--magenta-tx)}
+.dzt-barras span{font:700 12px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+/* los servidores por tier, con su color del payload */
+.dzt-tiers{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dzt-tiers li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px;align-items:start}
+.dzt-tiers li>b{padding-top:4px;font:700 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.dzt-tiers li>span{display:flex;flex-wrap:wrap;gap:4px}
+.dzt-sv{min-width:40px;height:24px;padding:0 6px;border:0;border-radius:3px;font:800 11.5px/1 Archivo,sans-serif;letter-spacing:.02em;cursor:pointer}
+.dzt-sv.rev{outline:2px solid var(--magenta-tx);outline-offset:1px}
+.dzt-sv:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.dzt-svs>.dz-lnk{align-self:flex-start;margin-top:auto}
+/* lo que pide atención: el nombre de lo que es, sin emoji */
+.dzt-at ul{list-style:none;margin:0;padding:0;display:grid}
+.dzt-at li{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--suave)}
+.dzt-at li:first-child{border-top:0;padding-top:0}
+.dzt-at em{justify-self:start;padding:4px 6px;border-radius:3px;font:800 11.5px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;background:#F2C230;color:#030304}
+.dzt-at li.mal em{background:var(--magenta);color:#fff}
+.dzt-at b{display:block;font:800 14.5px/1.25 Archivo,sans-serif}
+.dzt-at small{display:block;margin-top:2px;font-size:13px;line-height:1.4;color:var(--gris)}
+@media (min-width:761px) and (max-width:1120px){
+  .dzt-g{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .dzt-ancho{grid-column:1 / -1}
+}
+@media (max-width:760px){
+  .dzt-g{grid-template-columns:minmax(0,1fr)}
+  .dzt-grande,.dzt-ancho,.dzt-todo{grid-row:auto;grid-column:auto}
+  .dzt-n{font-size:60px}
+  .dzt-t{padding:14px}
+  .dzt-at li{grid-template-columns:minmax(0,1fr) auto}
+  .dzt-at li>em{grid-column:1 / -1}
+}
