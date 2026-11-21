@@ -224,10 +224,22 @@
     "nivel": "C",
     "base": 6000,
     "o": 19,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 6000,
+    "caza": {
+     "n": 667,
+     "evento": "DESGRACIAS EN TOKYO VOL 32 1v1",
+     "sv": "FFA",
+     "t": "2026-11-21T19:10:48Z",
+     "por": [
+      {
+       "n": "Makmah",
+       "cobra": 6000
+      }
+     ]
+    }
    },
    {
     "n": "Akus",

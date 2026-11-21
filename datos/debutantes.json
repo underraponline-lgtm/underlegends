@@ -176,17 +176,6 @@
    "vence": "2026-11-22T16:12:50+00:00",
    "vencido": false
   },
-  "ANDER": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T16:48:55+00:00",
-   "did": "",
-   "evento": "HALOWEEN",
-   "n": 642,
-   "sv": "CEU",
-   "vence": "2026-11-06T16:48:55+00:00",
-   "vencido": true
-  },
   "ANG": {
    "avisado": "2026-10-27",
    "chat": "2026-10-28",
@@ -2862,9 +2851,10 @@
   },
   "Status": {
    "avisado": "2026-11-19",
+   "avisado_cumplido": "2026-11-21",
    "chat": "2026-11-20",
-   "con": null,
-   "cumplido": "",
+   "con": 667,
+   "cumplido": "2026-11-21T19:10:48+00:00",
    "debut": "2026-11-19T19:39:40+00:00",
    "did": "1028421976315920535",
    "evento": "CHOP COMPE CHILL V.1",

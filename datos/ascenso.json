@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-21T20:59:36Z",
+ "t": "2026-11-21T21:18:26Z",
  "sv": {
   "SR": {
    "filas": [
@@ -742,18 +742,18 @@
      "yinn"
     ],
     [
+     "Abyssus",
+     "pa",
+     4725,
+     400,
+     "Abyssus"
+    ],
+    [
      "Za",
      "ar",
      4345,
      0,
      "Provenza"
-    ],
-    [
-     "Abyssus",
-     "pa",
-     4325,
-     0,
-     "Abyssus"
     ],
     [
      "Erian",
@@ -840,6 +840,13 @@
      "Presagio"
     ],
     [
+     "Trrrr",
+     "jm",
+     2785,
+     450,
+     "BNA"
+    ],
+    [
      "Andres",
      "cl",
      2670,
@@ -866,13 +873,6 @@
      2495,
      0,
      "Velatz"
-    ],
-    [
-     "Trrrr",
-     "jm",
-     2485,
-     150,
-     "BNA"
     ],
     [
      "Panchok",
@@ -966,6 +966,13 @@
      "Respawn"
     ],
     [
+     "AGUSTIN LA RELIQUIA",
+     "uy",
+     1190,
+     240,
+     "EIDP"
+    ],
+    [
      "Mark",
      "co",
      1175,
@@ -1006,13 +1013,6 @@
      975,
      0,
      "Drexx"
-    ],
-    [
-     "AGUSTIN LA RELIQUIA",
-     "uy",
-     950,
-     0,
-     "EIDP"
     ],
     [
      "Yo mc",
@@ -1969,6 +1969,30 @@
        "Xubaru",
        "Tercero",
        110
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "Desgracias en Tokyo Vol. 32 1 Vs 1",
+     "dia": "2026-11-21",
+     "rango": "plata ii",
+     "puntos": [
+      [
+       "Abyssus",
+       "Campeón",
+       400
+      ],
+      [
+       "BNA",
+       "Subcampeón",
+       300
+      ],
+      [
+       "EIDP",
+       "Tercero",
+       240
       ]
      ],
      "fuera": []

@@ -56045,7 +56045,7 @@
      [
       [
        "Marcos",
-       "ANDER"
+       "Under"
       ],
       "Marcos",
       ""
@@ -56125,11 +56125,6 @@
     2000
    ],
    [
-    "ANDER",
-    "Cuartos",
-    2000
-   ],
-   [
     "Calíz",
     "Cuartos",
     2000
@@ -56141,6 +56136,11 @@
    ],
    [
     "Tmax Turbo [PN]",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Under",
     "Cuartos",
     2000
    ]
@@ -60671,6 +60671,288 @@
   ],
   "ver": {
    "min": 132,
+   "v": 1
+  }
+ },
+ "667": {
+  "dia": "2026-11-21",
+  "escala": "16+",
+  "fecha": "21/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1573777721866199171"
+  ],
+  "n": 667,
+  "nombre": "DESGRACIAS EN TOKYO VOL 32 1v1",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "EIDP",
+       "Deko"
+      ],
+      "Abyssus, EIDP",
+      "triple (3 bandas, pasan 2); también pasa: Agustín la reliquia 🇺🇾"
+     ],
+     [
+      [
+       "BNA",
+       "Chente",
+       "Andres"
+      ],
+      "BNA",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Status",
+       "BLITZ",
+       "Ariaxer"
+      ],
+      "Status",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Mito",
+       "compare",
+       "Gus"
+      ],
+      "Mito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "Magic",
+       "Player"
+      ],
+      "Colesito",
+      "triple (3 bandas); Revivido: Soul🇲🇽"
+     ],
+     [
+      [
+       "OG",
+       "Majiztral",
+       "Snow"
+      ],
+      "OG",
+      "triple (3 bandas); Revivido: Majiztral 🇨🇴"
+     ],
+     [
+      [
+       "Makmah",
+       "Andres",
+       "Miniboy"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "EIDP",
+       "Gus",
+       "Magic",
+       "Majiztral"
+      ],
+      "EIDP",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Colesito"
+      ],
+      "Abyssus",
+      ""
+     ],
+     [
+      [
+       "BNA",
+       "OG"
+      ],
+      "BNA",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Status"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "EIDP",
+       "Mito"
+      ],
+      "EIDP",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Makmah"
+      ],
+      "Abyssus",
+      ""
+     ],
+     [
+      [
+       "BNA",
+       "EIDP"
+      ],
+      "BNA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "EIDP",
+       "Makmah"
+      ],
+      "EIDP",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "BNA"
+      ],
+      "Abyssus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    10000
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "EIDP",
+    "Tercero",
+    6000
+   ],
+   [
+    "Makmah",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OG",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Status",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1875
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1875
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1875
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1875
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chente",
+    "Octavos",
+    1250
+   ],
+   [
+    "Deko",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1250
+   ],
+   [
+    "compare",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 116,
    "v": 1
   }
  }

@@ -22,7 +22,345 @@
   [],
   [],
   [],
-  []
+  [
+   [
+    [
+     "Abyssus",
+     80,
+     3,
+     4,
+     0,
+     [
+      [
+       22,
+       "BNA"
+      ],
+      [
+       20,
+       "Makmah"
+      ],
+      [
+       19,
+       "Colesito"
+      ]
+     ]
+    ],
+    [
+     "BNA",
+     42,
+     5,
+     5,
+     1,
+     [
+      [
+       -22,
+       "Abyssus"
+      ],
+      [
+       20,
+       "EIDP"
+      ],
+      [
+       19,
+       "OG"
+      ]
+     ]
+    ],
+    [
+     "EIDP",
+     24,
+     5,
+     5,
+     1,
+     [
+      [
+       -20,
+       "BNA"
+      ],
+      [
+       19,
+       "Mito"
+      ],
+      [
+       9,
+       "Majiztral"
+      ]
+     ]
+    ],
+    [
+     "Makmah",
+     15,
+     4,
+     5,
+     0,
+     [
+      [
+       -20,
+       "Abyssus"
+      ],
+      [
+       19,
+       "Status"
+      ],
+      [
+       9,
+       "Miniboy"
+      ]
+     ]
+    ],
+    [
+     "Colesito",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -19,
+       "Abyssus"
+      ],
+      [
+       9,
+       "Player"
+      ],
+      [
+       9,
+       "Magic"
+      ]
+     ]
+    ],
+    [
+     "Mito",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -19,
+       "EIDP"
+      ],
+      [
+       9,
+       "Gus"
+      ],
+      [
+       9,
+       "compare"
+      ]
+     ]
+    ],
+    [
+     "OG",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -19,
+       "BNA"
+      ],
+      [
+       9,
+       "Snow"
+      ],
+      [
+       9,
+       "Majiztral"
+      ]
+     ]
+    ],
+    [
+     "Status",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -19,
+       "Makmah"
+      ],
+      [
+       9,
+       "Ariaxer"
+      ],
+      [
+       9,
+       "BLITZ"
+      ]
+     ]
+    ],
+    [
+     "Andres",
+     0,
+     2,
+     5,
+     0,
+     [
+      [
+       -9,
+       "Makmah"
+      ],
+      [
+       -9,
+       "BNA"
+      ]
+     ]
+    ],
+    [
+     "Gus",
+     0,
+     2,
+     5,
+     0,
+     [
+      [
+       -9,
+       "EIDP"
+      ],
+      [
+       -9,
+       "Mito"
+      ]
+     ]
+    ],
+    [
+     "Magic",
+     0,
+     2,
+     5,
+     0,
+     [
+      [
+       -9,
+       "EIDP"
+      ],
+      [
+       -9,
+       "Colesito"
+      ]
+     ]
+    ],
+    [
+     "Majiztral",
+     0,
+     2,
+     5,
+     0,
+     [
+      [
+       -9,
+       "EIDP"
+      ],
+      [
+       -9,
+       "OG"
+      ]
+     ]
+    ],
+    [
+     "Ariaxer",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -9,
+       "Status"
+      ]
+     ]
+    ],
+    [
+     "BLITZ",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -9,
+       "Status"
+      ]
+     ]
+    ],
+    [
+     "Chente",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -9,
+       "BNA"
+      ]
+     ]
+    ],
+    [
+     "Miniboy",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -9,
+       "Makmah"
+      ]
+     ]
+    ],
+    [
+     "Player",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -9,
+       "Colesito"
+      ]
+     ]
+    ],
+    [
+     "Snow",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -9,
+       "OG"
+      ]
+     ]
+    ],
+    [
+     "compare",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -9,
+       "Mito"
+      ]
+     ]
+    ],
+    [
+     "Deko",
+     0,
+     0,
+     5,
+     0,
+     []
+    ]
+   ]
+  ]
  ],
  "escalera": "temporada",
  "fin": "2026-11-23T16:00:00Z",
@@ -43,8 +381,7 @@
   "AFINN": 975,
   "AGUSTÍN51K": 1018,
   "AL3": 1020,
-  "ALFINPAPA": 994,
-  "ANDER": 975,
+  "ALFINPAPA": 993,
   "ANTONIO🇵🇾": 990,
   "ARDEAN": 957,
   "AREZ": 929,
@@ -53,7 +390,7 @@
   "AbrahamH": 1047,
   "AbrahamSRRL": 975,
   "Aby": 988,
-  "Abyssus": 1142,
+  "Abyssus": 1173,
   "Acry": 974,
   "Adriagner": 1022,
   "Agente sombra": 993,
@@ -67,13 +404,13 @@
   "Alonso": 967,
   "Am": 1001,
   "Anderbarra": 986,
-  "Andres": 948,
+  "Andres": 940,
   "Andresito": 1017,
   "Andy": 982,
-  "Andy MC": 949,
+  "Andy MC": 947,
   "Antis antis": 997,
   "Apolo": 988,
-  "Ariaxer": 907,
+  "Ariaxer": 903,
   "Artezzy": 953,
   "Assuan": 1018,
   "Astral": 976,
@@ -83,10 +420,10 @@
   "BENJI 🇵🇪": 1018,
   "BLACKMEME": 1028,
   "BLANKO 🇺🇸": 1001,
-  "BLITZ": 920,
+  "BLITZ": 911,
   "BLUE BURKA🇦🇪": 992,
   "BM": 976,
-  "BNA": 1043,
+  "BNA": 1069,
   "BRAGEURITHER 🇦🇪": 990,
   "BROTAXX": 977,
   "BTRX": 1106,
@@ -123,7 +460,7 @@
   "Carpediem 🇨🇴": 976,
   "Catarsis": 1090,
   "Chase": 1128,
-  "Chente": 926,
+  "Chente": 918,
   "Choco": 958,
   "Choka": 988,
   "Chop": 1040,
@@ -131,7 +468,7 @@
   "Cinexfilo": 956,
   "Ciro": 988,
   "Clitax": 976,
-  "Colesito": 1100,
+  "Colesito": 1097,
   "Corvo": 1007,
   "CrisZJ": 992,
   "Crizcejotas": 977,
@@ -169,7 +506,7 @@
   "Dynoco": 1002,
   "Dyz 🇨🇱": 994,
   "Dyzz": 933,
-  "EIDP": 1021,
+  "EIDP": 1037,
   "EL PIBE 🇦🇷": 1007,
   "Eclipsito": 1003,
   "Efimero": 941,
@@ -239,7 +576,7 @@
   "Gosu Z": 976,
   "Guaicurús🇰🇷": 1024,
   "Guess": 1078,
-  "Gus": 990,
+  "Gus": 973,
   "Gustavo Urrutia Perez 🇲🇽": 991,
   "Gutty": 988,
   "Guty": 1021,
@@ -319,7 +656,7 @@
   "Korey": 944,
   "Kourier": 1010,
   "Kravitz": 958,
-  "Krish": 829,
+  "Krish": 828,
   "Krtman": 1002,
   "Kuni": 1004,
   "Kusoh": 988,
@@ -376,14 +713,14 @@
   "MTZ": 1048,
   "MZK": 994,
   "MaYeuTyK": 993,
-  "Magic": 957,
+  "Magic": 940,
   "Mail O": 969,
-  "Majiztral": 1032,
+  "Majiztral": 1021,
   "Mak Dok": 985,
-  "Makmah": 1125,
+  "Makmah": 1128,
   "Malva": 941,
   "Manolito🇨🇴": 989,
-  "Marcos": 1032,
+  "Marcos": 1031,
   "Mark98": 1008,
   "Marley🇦🇷": 1033,
   "Marto AR": 991,
@@ -399,15 +736,15 @@
   "MetriOdin": 1004,
   "Millonari-O": 967,
   "Milo": 1064,
-  "Miniboy": 900,
+  "Miniboy": 897,
   "Minis": 976,
   "Misterioso": 1026,
-  "Mito": 1007,
+  "Mito": 1006,
   "Mochi DG": 933,
   "Molt": 933,
   "Molusco": 1048,
   "Monamay": 977,
-  "Monet": 986,
+  "Monet": 984,
   "Mosquitrap 🦟": 1112,
   "Motera": 1188,
   "Mr Still Billin 🇧🇻": 987,
@@ -441,7 +778,7 @@
   "Number Laden 🇸🇦": 990,
   "Number VE": 924,
   "OEP": 970,
-  "OG": 1161,
+  "OG": 1154,
   "OKAM": 993,
   "OMEGAX": 1024,
   "ONDADISKO": 972,
@@ -469,7 +806,7 @@
   "Perrin": 976,
   "PichulaMc": 1144,
   "Pipe": 942,
-  "Player": 977,
+  "Player": 973,
   "Polosport": 1029,
   "Pomberito": 1065,
   "Poxe 🇵🇪": 960,
@@ -541,14 +878,14 @@
   "Skratch": 997,
   "Slasher": 993,
   "Snake": 992,
-  "Snow": 1104,
+  "Snow": 1099,
   "Sol 2da 🇵🇪": 972,
   "Sombra": 1002,
   "Soneto": 995,
   "Sosa": 970,
   "Soulb": 1000,
   "Spartan": 975,
-  "Status": 1008,
+  "Status": 1009,
   "Steven🇨🇴": 1000,
   "Stt🇮🇨": 991,
   "Surya": 991,
@@ -578,7 +915,7 @@
   "TøKīØ🦠🧠": 1034,
   "UDDIZIM": 988,
   "URKO": 1074,
-  "Under": 982,
+  "Under": 972,
   "V-zir": 1005,
   "VECA 🇧🇱": 1013,
   "VR": 907,
@@ -586,7 +923,7 @@
   "Valdoza": 914,
   "Valdrax": 989,
   "Valen": 1161,
-  "Vandu": 1115,
+  "Vandu": 1114,
   "Vargas": 989,
   "Velatz": 998,
   "Verc": 1139,
@@ -631,7 +968,7 @@
   "blackstar27": 976,
   "botrax": 1019,
   "cardozo": 990,
-  "compare": 953,
+  "compare": 943,
   "crakero": 914,
   "doble h": 975,
   "dxg": 920,
@@ -700,8 +1037,210 @@
  "premio_sub": 150,
  "prov": 0,
  "prueba": "2026-11-20",
- "pts_dia": {},
- "pts_sem": {},
+ "pts_dia": {
+  "Abyssus": [
+   0,
+   30000,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Andres": [
+   0,
+   5625,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Ariaxer": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "BLITZ": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "BNA": [
+   0,
+   22500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Chente": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Colesito": [
+   0,
+   7500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Deko": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "EIDP": [
+   0,
+   18000,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Gus": [
+   0,
+   5625,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Magic": [
+   0,
+   5625,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Majiztral": [
+   0,
+   5625,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Makmah": [
+   0,
+   13500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Miniboy": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Mito": [
+   0,
+   7500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "OG": [
+   0,
+   7500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Player": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Snow": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Status": [
+   0,
+   11250,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "compare": [
+   0,
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
+ "pts_sem": {
+  "Abyssus": 30000,
+  "Andres": 5625,
+  "Ariaxer": 3750,
+  "BLITZ": 3750,
+  "BNA": 22500,
+  "Chente": 3750,
+  "Colesito": 8500,
+  "Deko": 3750,
+  "EIDP": 18000,
+  "Gus": 5625,
+  "Magic": 5625,
+  "Majiztral": 5625,
+  "Makmah": 13500,
+  "Miniboy": 3750,
+  "Mito": 10000,
+  "OG": 7500,
+  "Player": 3750,
+  "Snow": 3750,
+  "Status": 11250,
+  "compare": 3750
+ },
  "sem": "2026-11-16",
  "subidas": [],
  "subs": [],

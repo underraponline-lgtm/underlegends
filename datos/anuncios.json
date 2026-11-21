@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T20:54:43+00:00",
+ "cuando": "2026-11-21T21:10:32+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7284,6 +7284,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
+   "tit": "4:30 COMENZAMOS CON LA PRIMERA BATALLA QUE ES @numbyng",
+   "tx": "",
+   "cuando": "2026-11-21T21:07:56",
+   "msg_id": "1573807199174533182",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573807199174533182"
+  },
+  {
    "servidor": "LKR",
    "canal": "anuncios",
    "tit": "ahí unas pares de alianzas",
@@ -7419,15 +7428,6 @@
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572722042409852968"
   },
   {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "🇻🇪 XCLUSIVO 🇻🇪",
-   "tx": "LLEGO EL FLEIVA EL CIERVO DE VENEZUELA A REPRESENTAR EN D'F I • GENESIS",
-   "cuando": "2026-11-18T21:14:39",
-   "msg_id": "1572721726662381619",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572721726662381619"
-  },
-  {
    "servidor": "CHZ",
    "canal": "Anuncios-📢",
    "tit": "No sé si empezar a hacer compes de vc así que se lo dejaré a ustedes,",
@@ -7555,6 +7555,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "CIRH 11 🇲🇽",
+   "quien": "cirh.11.rap",
+   "discord_id": "1561903567369936941",
+   "msg_id": "1573805260429066471",
+   "cuando": "2026-11-21T21:00:13"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1573804128528892088",
+   "cuando": "2026-11-21T20:55:44"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -43536,24 +43554,6 @@
    "discord_id": "1223701976655859805",
    "msg_id": "1561227028701646912",
    "cuando": "2026-10-18T03:58:49"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "Xubaru 🇻🇪",
-   "quien": "xxxxxx.fl",
-   "discord_id": "1397110475594010700",
-   "msg_id": "1561221576995639308",
-   "cuando": "2026-10-18T03:37:10"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1561206616303345774",
-   "cuando": "2026-10-18T02:37:43"
   }
  ]
 }
