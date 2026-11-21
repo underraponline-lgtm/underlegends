@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.65", "dia": "2026-11-21", "cuando": "2026-11-21T16:48:00-05:00", "titulo": "Mirar un evento te da un Dragón Drop", "items": ["**Mira un evento en la llamada 20 minutos** y te toca un **Dragón Drop**, uno por día. Los minutos se suman aunque te cortes o cambies de canal; silenciado cuenta, ensordecido no.", "Esos 20 minutos cuentan también para las Tareas del Pase de **Mira llaves en vivo**.", "Las **imágenes del bot** —el VS de cada cruce, /perfil, /vitrina, /afiche y /llave— salen en segundos, y el cruce del bot en vivo sale **junto con su imagen**."]},
     {"version": "7.64", "dia": "2026-11-21", "cuando": "2026-11-21T16:26:00-05:00", "titulo": "Todos los botones, revisados", "items": ["Revisamos **todos los botones de la página**: 49 páginas en la compu y en el teléfono, unos 3.000 toques, también con una cuenta abierta. Ni un error.", "El **«¿Cómo funciona?»** del Ranking y de Tarjetas quedaba tapado por la fila de pestañas: ahora se ve y se puede tocar."]},
     {"version": "7.62", "dia": "2026-11-21", "cuando": "2026-11-21T16:05:00-05:00", "titulo": "La página, para Google y las IA", "items": ["Google y las IA ya pueden leer cada página: los perfiles, los servidores, los países y el **Ranking global de freestyle 2026**, cada uno con su título y su descripción.", "La portada dice lo que la gente busca: **batallas de rap online en español**."]},
     {
