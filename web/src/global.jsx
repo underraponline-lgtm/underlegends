@@ -132,9 +132,21 @@ function preparar(D, liga) {
 }
 
 // ── piezas ──
+// 📸 la cara: los de la Liga, la de Discord (su perfil); los de afuera, la que subió global_fotos.py a R2 (`ft`), y si la
+// imagen no carga, la inicial
 function CaraG({ liga, g, cls = '' }) {
+  const [mal, setMal] = useState(false);
   if (g.esc === 'liga' && g.hk) return <Cara liga={liga} k={g.hk} nombre={g.n} cls={'gl-cara liga ' + cls} lazy />;
+  if (g.ft && !mal) {
+    return <span className={'gl-cara foto ' + (g.esc === 'pro' ? 'pro ' : '') + cls}><img alt="" src={g.ft} loading="lazy" decoding="async" onError={() => setMal(true)} /></span>;
+  }
   return <span className={'gl-cara ini ' + (g.esc === 'pro' ? 'pro ' : '') + cls} aria-hidden="true">{inicial(g)}</span>;
+}
+// el retrato recortado de fms.tv (fondo transparente), para el podio y el gigante; sin él, la cara grande
+function Retrato({ liga, g, cls = '' }) {
+  const [mal, setMal] = useState(false);
+  if (g.fr && !mal) return <img className={'gl-retrato ' + cls} alt="" src={g.fr} loading="lazy" decoding="async" onError={() => setMal(true)} />;
+  return <CaraG liga={liga} g={g} cls="g" />;
 }
 function Etiq({ g }) {
   if (g.esc === 'pro') return <span className="gl-ec pro" title={'Es pro porque: ' + (g.por || []).map(porTx).join(' · ')}>Pro</span>;
@@ -214,8 +226,8 @@ function Podio({ X, liga, abrir }) {
   const top = X.G.filter((g) => g.pos).slice(0, 3);
   if (top.length < 3) return null;
   const pie = (g) => (
-    <button key={g.k} type="button" className={'gl-pod p' + g.pos} onClick={() => abrir(g)}>
-      <CaraG liga={liga} g={g} cls="g" />
+    <button key={g.k} type="button" className={'gl-pod p' + g.pos + (g.fr ? ' con-retrato' : '')} onClick={() => abrir(g)}>
+      <Retrato liga={liga} g={g} />
       <b>{nombre(g)}</b>
       <span className="gl-pod-q"><Bandera cc={g.cc} cls="gl-flag" /><Etiq g={g} /></span>
       <em>{n1(g.p)} pts</em>

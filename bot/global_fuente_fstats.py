@@ -303,6 +303,7 @@ def _perfiles(filas):
             freestylers.setdefault(per['slug'], per)
         foto = (p.get('picture') or {}).get('id') if isinstance(p.get('picture'), dict) else None
         if foto:
+            per['foto'] = foto
             por_foto.setdefault(foto, per)
         por_nombre.setdefault(_norm(per['nombre']), [])
         if all(x['slug'] != per['slug'] for x in por_nombre[_norm(per['nombre'])]):
@@ -398,6 +399,11 @@ def _batallas_crudas(filas):
     return out
 
 
+def _url_foto(i):
+    """📸 La foto de perfil de Freestylestats (su servidor de archivos la recorta y achica: global_fotos.py)."""
+    return 'https://assets.freestylestats.com/assets/' + i if i and re.match(r'^[0-9a-f-]{20,}$', str(i)) else ''
+
+
 def _quien(lado, perfiles, avisos, donde):
     """El perfil de un lado: por la foto, si no por el nombre, y si no por parecido con los de la jornada."""
     por_foto, por_nombre, freestylers = perfiles
@@ -405,11 +411,11 @@ def _quien(lado, perfiles, avisos, donde):
     for f in lado['fotos']:
         if f in por_foto:
             p = por_foto[f]
-            return {'nombre': p['nombre'], 'id': 'fstats:' + p['slug'], 'pais': p['pais']}
+            return {'nombre': p['nombre'], 'id': 'fstats:' + p['slug'], 'pais': p['pais'], 'foto': _url_foto(f)}
     cand = por_nombre.get(_norm(nombre)) or []
     if len(cand) == 1:
         p = cand[0]
-        return {'nombre': p['nombre'], 'id': 'fstats:' + p['slug'], 'pais': p['pais']}
+        return {'nombre': p['nombre'], 'id': 'fstats:' + p['slug'], 'pais': p['pais'], 'foto': _url_foto(p.get('foto'))}
     if not cand and freestylers:
         # la llave puede escribir el nombre distinto que el perfil (Maniak / Maniack): sin foto, queda el parecido
         import difflib
@@ -419,7 +425,7 @@ def _quien(lado, perfiles, avisos, donde):
             p = notas[0][2]
             avisos.append('%s: «%s» no tiene perfil con ese nombre; lo asocio a «%s» (%s) por parecido' % (
                 donde, nombre, p['nombre'], p['slug']))
-            return {'nombre': p['nombre'], 'id': 'fstats:' + p['slug'], 'pais': p['pais']}
+            return {'nombre': p['nombre'], 'id': 'fstats:' + p['slug'], 'pais': p['pais'], 'foto': _url_foto(p.get('foto'))}
     avisos.append('%s: «%s» %s; le pongo un id provisorio' % (
         donde, nombre, 'tiene %d perfiles con ese nombre' % len(cand) if cand else 'no tiene perfil en la página'))
     return {'nombre': nombre, 'id': 'fstats:?' + (_norm(nombre) or 'sin-nombre'), 'pais': None}

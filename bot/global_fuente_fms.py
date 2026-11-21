@@ -343,7 +343,7 @@ def _bajar(desde, hasta, avisos):
         avisos.append('fms.tv/resultados no contestó (%s)' % _err(e))
         return crudo
     try:
-        crudo['mcs'] = _api(red, URL_MCS, {'per_page': 100, '_fields': 'id,slug,title,link,acf.league,acf.birth_place'},
+        crudo['mcs'] = _api(red, URL_MCS, {'per_page': 100, '_fields': 'id,slug,title,link,acf.league,acf.birth_place,acf.grid_image'},
                             avisos, 'la API de MCs de fms.tv')
     except Exception as e:  # noqa: BLE001
         avisos.append('la API de MCs de fms.tv no contestó (%s)' % _err(e))
@@ -695,7 +695,9 @@ def _indice_mcs(lista):
         origen = acf.get('birth_place') or ''
         mc = {'id': i, 'slug': (x.get('slug') or '').lower(),
               'nombre': ' '.join(_html.unescape(((x.get('title') or {}).get('rendered')) or '').split()),
-              'ligas': [str(l) for l in (acf.get('league') or [])], 'origen': origen, 'pais': _pais(origen)}
+              'ligas': [str(l) for l in (acf.get('league') or [])], 'origen': origen, 'pais': _pais(origen),
+              # 📸 la foto oficial (un recorte con fondo transparente): la usa el ranking global (global_fotos.py)
+              'foto': acf.get('grid_image') if isinstance(acf.get('grid_image'), str) else ''}
         por_id[i] = mc
         if mc['slug']:
             por_slug[mc['slug']] = mc
@@ -738,7 +740,8 @@ def _armar(crudo, desde, hasta, avisos):
     mcs = _indice_mcs(crudo['mcs'])
     # El plantel de cada liga FMS que lista fms.tv: son PRO en el ranking aunque todavía no hayan jugado en la T1
     # (Dlx, 21/11/2026: «asegúrate a quién metes en cada tag»). El generico «Extra Player» no es nadie.
-    salida['plantel'] = [{'id': 'fms:%d' % m['id'], 'nombre': m['nombre'], 'pais': m['pais'], 'ligas': m['ligas']}
+    salida['plantel'] = [{'id': 'fms:%d' % m['id'], 'nombre': m['nombre'], 'pais': m['pais'], 'ligas': m['ligas'],
+                          'foto': m.get('foto') or ''}
                          for m in mcs['id'].values() if m['nombre'] and m['ligas'] and m['id'] != 9083]
     jornadas, en_pagina = _jornadas(secciones, etiquetas, desde, hasta, avisos)
     if crudo.get('ur') is None:
@@ -788,7 +791,8 @@ def _armar(crudo, desde, hasta, avisos):
                     if _todo_mayus(nombre):  # «FACU HDR» -> «Facu HDR», si urbanroosters lo escribe igual
                         mejor = _mas_comun([a for a in alias_api[mc['id']] if _norm(a) == _norm(nombre)])
                         nombre = mejor if mejor and not _todo_mayus(mejor) else nombre
-                    ps.append({'nombre': nombre, 'id': 'fms:%d' % mc['id'], 'pais': mc['pais']})
+                    ps.append({'nombre': nombre, 'id': 'fms:%d' % mc['id'], 'pais': mc['pais'],
+                               'foto': mc.get('foto') or (lado['img'] if not _foto(lado['img'])[1] else '')})
                     if not mc['pais']:
                         sin_pais.add(nombre)
                 elif not lado['ref']:
@@ -816,7 +820,8 @@ def _armar(crudo, desde, hasta, avisos):
                             avisos.append('%s: el MC %d no tiene perfil ni post de urbanroosters; nombre provisional '
                                           '«%s», sacado de su foto' % (ev['nombre'], i_p, nombre))
                     if nombre:
-                        ps.append({'nombre': nombre, 'id': 'fms:%d' % i_p, 'pais': None})
+                        ps.append({'nombre': nombre, 'id': 'fms:%d' % i_p, 'pais': None,
+                                   'foto': lado['img'] if lado['img'] and not foto_p.get(i_p, ('', True))[1] else ''})
                     else:
                         motivo = 'el MC %d no tiene perfil ni nombre en urbanroosters' % i_p
                 if motivo:
@@ -947,7 +952,8 @@ def _self_check():
     ok(len({b['id'] for b in bs}) == len(bs), 'no hay dos batallas con el mismo id')
     claves_b = {'id', 'fuente', 'url', 'evento', 'ronda', 'a', 'b', 'gana', 'replica', 'votos', 'pts'}
     ok(all(set(b) == claves_b and set(b['evento']) == {'id', 'nombre', 'tipo', 'pais', 'fecha'}
-           and set(b['a']) == set(b['b']) == {'nombre', 'id', 'pais'} for b in bs), 'cada batalla tiene la forma pedida')
+           and all({'nombre', 'id', 'pais'} <= set(b[x]) <= {'nombre', 'id', 'pais', 'foto'} for x in 'ab') for b in bs),
+       'cada batalla tiene la forma pedida (la foto es opcional)')
     ok(all(b['gana'] in ('a', 'b') and b['replica'] is False and len(b['votos']) == 2 for b in bs),
        'todas con ganador, «sin réplica» y marcador')
 

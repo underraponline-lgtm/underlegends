@@ -21,6 +21,12 @@
 .gl-cara.pro{background:var(--inv);color:var(--inv-tinta);box-shadow:0 0 0 2px var(--fondo),0 0 0 3.5px var(--inv)}
 .gl-esc .gl-cara.pro{background:var(--esc-tinta);color:var(--escenario);box-shadow:none}
 .gl-cara.liga.ini{background:#29B298;color:#030304}
+.gl-cara.foto{background:var(--suave)}
+.gl-cara.foto.pro{background:#18181A}
+/* el retrato de fms.tv: el recorte entero, parado sobre el pedestal */
+.gl-retrato{display:block;width:auto;height:150px;max-width:100%;object-fit:contain;object-position:bottom;margin-bottom:-6px}
+.gl-pod.p1 .gl-retrato{height:190px}
+@media (min-width: 900px){.gl-retrato{height:180px}.gl-pod.p1 .gl-retrato{height:230px}}
 .gl-cara.g{width:52px;height:52px;font-size:21px}
 .gl-flag{flex:none;width:21px;height:14px;display:block;object-fit:cover;box-shadow:0 0 0 1px rgba(128,128,128,.35)}
 .gl-ec{display:inline-flex;align-items:center;height:20px;padding:0 6px;font:700 13px/1 var(--gl-l);letter-spacing:.05em;text-transform:uppercase;flex:none;border:1.5px solid transparent}

@@ -250,7 +250,7 @@ def pros_de(plantel, a_mano):
         if not ligas:  # «MÉXICO» del Freestyle World Cup es una selección, no una persona
             continue
         por = 'FMS ' + ', '.join(LIGAS_FMS.get(l, l.capitalize()) for l in ligas)
-        x = {'id': p['id'], 'nombre': p['nombre'], 'pais': p.get('pais'), 'por': [por]}
+        x = {'id': p['id'], 'nombre': p['nombre'], 'pais': p.get('pais'), 'por': [por], 'foto': p.get('foto') or ''}
         out.append(x)
         por_clave.setdefault(claves.clave(p['nombre']), x)
     for g in (a_mano or {}).get('grupos') or []:
@@ -277,14 +277,16 @@ def identidades(batallas, mvps, alias=None, extra=None):
     ids = {}
     for p in extra or []:
         ids.setdefault(p['id'], {'nombre': p['nombre'], 'pais': p.get('pais'),
-                                 'fuente': p['id'].split(':', 1)[0], 'otros': set()})
+                                 'fuente': p['id'].split(':', 1)[0], 'otros': set(), 'foto': p.get('foto') or ''})
     for b in batallas:
         for lado in ('a', 'b'):
             p = b[lado]
             ids.setdefault(p['id'], {'nombre': p['nombre'], 'pais': p.get('pais'), 'fuente': b['fuente'],
-                                     'otros': set()})
+                                     'otros': set(), 'foto': ''})
             if p.get('pais') and not ids[p['id']]['pais']:
                 ids[p['id']]['pais'] = p['pais']
+            if p.get('foto') and not ids[p['id']].get('foto'):
+                ids[p['id']]['foto'] = p['foto']
             ids[p['id']]['otros'].add(b[('b' if lado == 'a' else 'a')]['id'])
     for m in mvps:
         q = m.get('quien') or {}
@@ -340,8 +342,13 @@ def identidades(batallas, mvps, alias=None, extra=None):
                 k = '%s-%s' % (base, x['pais'] or len(usadas))
             usadas[k] = r
             personas[r] = {'k': k, 'n': x['nombre'], 'cc': x['pais'], 'ids': [],
-                           'lg': claves.clave(x['nombre']) if x['fuente'] == 'liga' else None}
+                           'lg': claves.clave(x['nombre']) if x['fuente'] == 'liga' else None, 'fo': ''}
         personas[r]['ids'].append(i)
+        # 📸 la foto: la oficial de fms.tv gana a la de Freestylestats (global_fotos.py la baja, la recorta y la sube)
+        f = ids[i].get('foto') or ''
+        if f and (not personas[r]['fo'] or (ids[i]['fuente'] in ('fms', 'pro') and 'fms.tv' in f
+                                            and 'fms.tv' not in personas[r]['fo'])):
+            personas[r]['fo'] = f
         # El nombre más prolijo: «Mecha» y no «MECHA» (fms.tv escribe todo en mayúsculas).
         if personas[r]['n'].isupper() and ids[i]['nombre'] and not ids[i]['nombre'].isupper():
             personas[r]['n'] = ids[i]['nombre']
@@ -483,7 +490,7 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
 
 
 # ── 6. Armar la salida ───────────────────────────────────────────────────────────────────────────────────────────────
-def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None, pros=None):
+def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None, pros=None, subir_fotos=False):
     batallas = deduplicar(batallas)
     de_id, personas = identidades(batallas, mvps, alias, extra=pros)
     batallas = deduplicar(batallas, de_id)  # otra vez, por persona: dos fuentes que escriben distinto el nombre
@@ -512,9 +519,11 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
         if e['id'] not in ev_i:
             ev_i[e['id']] = len(eventos)
             eventos.append([e['id'], e.get('nombre'), e.get('tipo'), e.get('fecha'), e.get('pais')])
-    gente = []
+    gente, fotos_de = [], {}
     for k, c in calc.items():
         p = personas[k]
+        if p.get('fo') and not p.get('lg'):
+            fotos_de[k] = p['fo']
         gente.append({'k': k, 'n': p['n'], 'cc': p.get('cc'), 'esc': escena.get(k, 'liga'), 'lg': p.get('lg'),
                       'p': round(c['p'], 1), 'pb': round(c['pb'], 1), 'pt': round(c['pt'], 1),
                       'nb': c['nb'], 'jb': c['jb'], 'f': c['f'],
@@ -524,8 +533,12 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
             gente[-1]['por'] = por_pro[k][:3]  # por qué es pro: «FMS Chile», «FMS Internacional 2026»…
     gente.sort(key=lambda g: (-g['p'], -g['jb'], g['n'].lower()))
     d0, d1 = temporada.FECHAS[temporada.ACTUAL]
-    return {'v': 1, 't': (cuando or ahora_et()).isoformat(), 'temporada': temporada.ACTUAL, 'ventana': [d0, d1],
-            'formula': {'peso': PESO, 'ronda': RONDA, 'mejores': MEJORES, 'mejores_titulos': MEJORES_TITULOS}, 'fu': estado, 'ev': eventos, 'g': gente}
+    out = {'v': 1, 't': (cuando or ahora_et()).isoformat(), 'temporada': temporada.ACTUAL, 'ventana': [d0, d1],
+           'formula': {'peso': PESO, 'ronda': RONDA, 'mejores': MEJORES, 'mejores_titulos': MEJORES_TITULOS}, 'fu': estado, 'ev': eventos, 'g': gente}
+    # 📸 las fotos, con lo que ya está subido (datos/global_fotos.json). Bajar y subir las nuevas es de `correr()`
+    import global_fotos
+    global_fotos.aplicar(out, fotos_de, subir=subir_fotos)
+    return out
 
 
 def correr(red=False, escribir=True):
@@ -544,7 +557,7 @@ def correr(red=False, escribir=True):
             # casos de prueba: una foto vieja que no puede llegar al ranking de verdad.
             batallas, mvps, semillas, estado, plantel = leer_fuentes(False, previo, solo={'liga'})
     out = armar(batallas, mvps, semillas, estado, _leer(ALIAS, {}), _leer(SEMILLAS, {}),
-                pros=pros_de(plantel, _leer(PROS, {})))
+                pros=pros_de(plantel, _leer(PROS, {})), subir_fotos=red and escribir)
     flechas(out, _leer(SALIDA, {}))
     if escribir:
         _escribir(SALIDA, out, compacto=True)
