@@ -127,6 +127,14 @@
 .tn-prenda-img svg{width:86%;height:auto}
 .tn-prenda b{font:800 14px/1.2 Archivo,sans-serif;color:#F6F6F6;text-transform:uppercase}
 .tn-prenda small{font:500 13px/1.3 Archivo,sans-serif;color:#A5A5A0}
+/* 👕 la que existe de verdad (la de FFA, 21/11/2026): su foto llena el cuadro, con su pastilla y el link a su Discord */
+.tn-prenda.real{border-color:#F6F6F6}
+.tn-prenda-img{position:relative;overflow:hidden}
+.tn-prenda-img img{width:100%;height:100%;object-fit:cover;display:block}
+.tn-prenda-real{position:absolute;left:6px;top:6px;padding:3px 7px;background:#F6F6F6;color:#0A0A0B;
+  font:800 11px/1 "Barlow Condensed",Archivo,sans-serif;letter-spacing:.08em;border-radius:2px}
+.tn-prenda-a{display:inline-flex;align-items:center;gap:4px;min-height:44px;font:700 13px/1.2 Archivo,sans-serif;color:#F6F6F6;
+  text-decoration:underline;text-underline-offset:3px}
 
 /* en el celular, una lista de precios: el nombre y adónde lleva a la izquierda, el precio a la derecha */
 @media (max-width: 639px){

@@ -387,12 +387,24 @@ function SeGanan({ liga }) {
   );
 }
 
+// 👕 LA CAMISETA DE FFA, DE VERDAD (21/11/2026, Dlx: «usa la foto de la camiseta de FFA en la tienda»). Se vende en el chat
+// general de FFA («Compren la camisa 20$», con foto): va primera, con su foto en vez del dibujo y el link a ese mensaje, y
+// el dibujo de FFA se va de los socios. La venden ellos, no la Tienda: se compra en su Discord, no con Puntos
+const ROPA_REAL = {
+  FFA: { foto: '/ropa/camiseta-ffa.webp', precio: '20 $', link: 'https://discord.com/channels/1468472442925092958/1468472443843776659/1573767760700514387' },
+};
 // ── la ropa de ejemplo (la de abajo.jsx), con «EJEMPLO» una sola vez ──
 function Merch({ liga }) {
   const svs = Object.values(liga.svs || {}).filter((s) => s.color && s.sv);
-  const socios = svs.filter((s) => s.logo).slice(0, 4);
+  const socios = svs.filter((s) => s.logo && !ROPA_REAL[s.sv]).slice(0, 4);
   /* eslint-disable react/jsx-key */
+  const reales = Object.entries(ROPA_REAL).map(([sv, r]) => {
+    const s = (liga.svs || {})[sv] || {};
+    return ['real-' + sv, 'Camiseta ' + (s.sigla || sv), (s.nombre || sv) + ' · ' + r.precio + ', en su Discord',
+      <img src={r.foto} alt={'La camiseta de ' + (s.nombre || sv)} loading="lazy" decoding="async" width="720" height="720" />, r.link];
+  });
   const items = [
+    ...reales,
     ['remera', 'Camiseta Under Legends', 'Negra, con el logo al pecho', <Prenda tipo="remera" color="#141414" logo="/ul.png" />],
     ['buzo', 'Buzo Liga Global', 'Magenta, con el logo y «LIGA GLOBAL»', <Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" />],
     ['gorra', 'Gorra UL', 'Blanca, con el logo bordado', <Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" />],
@@ -407,15 +419,16 @@ function Merch({ liga }) {
       <div className="sec-t"><h2 id="tn-merch-t">La ropa de UL llega pronto</h2><span className="tag-pronto">EJEMPLOS · NO ESTÁ A LA VENTA</span></div>
       <div className="tn-merch-cab">
         <p className="tn-merch-p">Acá vas a poder canjear tus Puntos de Tienda. Así podría ser la ropa de Under Legends y de sus socios: <b>todavía no se vende
-          nada</b>. Cuando abra se anuncia en la Liga y, con los avisos, te llega al teléfono.</p>
+          nada</b> acá. La de FFA sí existe: se compra en su Discord. Cuando abra se anuncia en la Liga y, con los avisos, te llega al teléfono.</p>
         <a className="btn borde chico" href="#/avisos">Activar los avisos</a>
       </div>
       <div className="tn-merch-rail">
-        {items.map(([k, n, d, dibujo]) => (
-          <article className="tn-prenda" key={k}>
-            <div className="tn-prenda-img">{dibujo}</div>
+        {items.map(([k, n, d, dibujo, link]) => (
+          <article className={'tn-prenda' + (link ? ' real' : '')} key={k}>
+            <div className="tn-prenda-img">{dibujo}{link ? <span className="tn-prenda-real">DE VERDAD</span> : null}</div>
             <b>{n}</b>
             <small>{d}</small>
+            {link ? <a className="tn-prenda-a" href={link} target="_blank" rel="noopener noreferrer">Verla en su Discord <Ico n="flecha" t={14} /></a> : null}
           </article>
         ))}
       </div>
