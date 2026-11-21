@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.52", "dia": "2026-11-21", "cuando": "2026-11-21T10:12:00-05:00", "titulo": "El Ranking global, como una cartelera", "items": ["El **Ranking global** ahora es una cartelera: arriba el afiche con los tres primeros, y justo abajo **tu pelea**: tú contra el que tienes justo arriba y cuánto te falta para pasarlo.", "Tus **10 batallas que cuentan**, una por una, y cara a cara con un gigante para ver de dónde salieron sus puntos.", "En **¿Cómo funciona?**, arma un bloque: elige la ronda y el resultado y mira cómo entra en tus 10."]},
     {
         "version": "7.51",
         "dia": "2026-11-21",
