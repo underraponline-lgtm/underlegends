@@ -184,14 +184,10 @@ def _hijo(salida):
     if leer:
         _nums = {n.strip() for n in leer.split(',') if n.strip().isdigit()}
         L._CARGADAS[0] = [x for x in L._cargadas() if str(x.get('n')) not in _nums]
-        # 🔒 Y TAMPOCO «LO CORRIGIÓ EL RECÁLCULO» CONTRA SÍ MISMO (21/11/2026, el #517). El candado de
-        # `corregido_por_recalculo()` es para que el CICLO, con sus 25 mensajes, no pise lo que corrigió un recálculo,
-        # y frenaba también al recálculo que pide ese número: el #517 (QCYO RAPEEN 3, FFA) tiene KEIDER contra dyss sin
-        # ganador, con su veredicto de vuelta desde hoy, y la relectura decía «no se pudo volver a leer» porque un
-        # recálculo lo había corregido el 06/11. Lo que se pide por número se está corrigiendo otra vez: con
-        # `--aplicar` su fecha se renueva, y el candado vuelve a valer para el ciclo
-        _rec0 = L._recalculados
-        L._recalculados = lambda: {k: v for k, v in _rec0().items() if str(k) not in _nums}
+        # 🔒 EL CANDADO DE `datos/recalculados.json` SÍ VALE ACÁ, a propósito (21/11/2026). No es sólo para que el
+        # ciclo no pise lo que corrigió un recálculo: también protege lo que se cargó a mano como se jugó (la
+        # Rempalago, #456). Sacarlo para lo que se pide por número dejaba que una relectura deshiciera eso. Lo que
+        # cambió es el informe: dice cuál de los pedidos tiene candado (`_candados()`)
     sys.argv = ['llaves_a_entrada.py']
     L.main()
     U = L.ULTIMA
@@ -235,6 +231,8 @@ def _hijo(salida):
         d['pos'][str(f[4]).strip()] = str(f[6])
     nombres = {str(v): k for k, v in ya.items()}
     out = {'hoy': hoy, 'nuevos': nuevos, 'nombres': {k: list(v) for k, v in nombres.items()},
+           # 🎯 los números que se pidieron con `--leer`, para que el informe separe «no se pudo» de «no se pidió»
+           'leer': sorted({n.strip() for n in (leer or '').split(',') if n.strip().isdigit()}, key=int),
            'sin_numero': sin_numero, 'pedidos': sum(p.pedidos for p in pag),
            'en_curso': [list(x[:2]) for x in U.get('en_curso') or []],
            'incompletos': [list(x[:3]) for x in U.get('incompletos') or []],
@@ -298,6 +296,31 @@ def emparejar(d):
                 break
     d['duplicados'] = dups
     return d
+
+
+def _candados():
+    """🔒 `{número: 'dd/mm'}` de los eventos con candado en `datos/recalculados.json`, con su día en ET.
+
+    El candado lo pone `--aplicar` (lo que corrigió un recálculo) y también protege lo que se cargó a mano como se
+    jugó (la Rempalago, #456): `llaves_a_entrada.corregido_por_recalculo()` no lo vuelve a escribir mientras su llave
+    no se edite después, tampoco cuando se pide con `--leer`."""
+    import datetime as _dt
+    from zoneinfo import ZoneInfo
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'recalculados.json'), encoding='utf-8') as f:
+            ev = (json.load(f) or {}).get('eventos') or {}
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for n, r in ev.items():
+        try:
+            t = _dt.datetime.fromisoformat(str((r or {}).get('cuando') or '').replace('Z', '+00:00'))
+            if t.tzinfo is None:
+                t = t.replace(tzinfo=_dt.timezone.utc)
+            out[str(n)] = t.astimezone(ZoneInfo('America/New_York')).strftime('%d/%m')
+        except (ValueError, AttributeError):
+            out[str(n)] = '?'
+    return out
 
 
 def _informe(d, detalle=None):
@@ -366,8 +389,18 @@ def _informe(d, detalle=None):
         cambios = sorted(((tot_n.get(q, 0) - tot_h.get(q, 0), q) for q in set(tot_h) | set(tot_n)
                           if tot_n.get(q, 0) != tot_h.get(q, 0)), key=lambda x: (-abs(x[0]), x[1]))
     d['_cambian'] = [k for k, _e, _m in ev_cambian]
-    print('   %d persona(s) cambian · %d evento(s) cambian · %d entran · %d duplicado(s) · %d no se pudieron volver '
-          'a leer\n' % (len(cambios), len(ev_cambian), len(entran), len(dups), len(no_leidos)))
+    # 🎯 CON `--leer`, «NO SE PUDO» ES SÓLO DE LO QUE SE PIDIÓ (21/11/2026): con leer=380,517,528 la lista traía los
+    # 300 eventos de la temporada, y los dos que importaban había que buscarlos a mano. Los otros quedan como están
+    # igual (cuentan en los totales de arriba): no se pidieron
+    pedidos_leer = [str(x) for x in d.get('leer') or []]
+    lista = [n for n in no_leidos if n in pedidos_leer] if pedidos_leer else no_leidos
+    cand = _candados() if lista else {}
+    if pedidos_leer:
+        nolei = '%d de %d pedido(s) no se pudieron volver a leer' % (len(lista), len(pedidos_leer))
+    else:
+        nolei = '%d no se pudieron volver a leer' % len(no_leidos)
+    print('   %d persona(s) cambian · %d evento(s) cambian · %d entran · %d duplicado(s) · %s\n'
+          % (len(cambios), len(ev_cambian), len(entran), len(dups), nolei))
     if dups:
         print('   -- cargados dos veces: el primero sale --')
         for n, m in sorted(dups.items(), key=lambda x: int(x[0])):
@@ -394,11 +427,17 @@ def _informe(d, detalle=None):
         print('\n   -- eventos que hoy no están y entrarían --')
         for k, e in entran:
             print('   %-36s %-5s %s  · %d con puntos' % (e['nombre'][:36], e['sv'], e['fecha'], len(e['pts'])))
-    if no_leidos:
+    if lista:
         print('\n   -- no se pudieron volver a leer (quedan como están) --')
-        for n in no_leidos:
+        for n in lista:
             nm = nombres.get(n) or ['?', hoy[n]['sv'], hoy[n]['fecha']]
-            print('   #%-4s %-30s %-5s %s' % (n, str(nm[0])[:30], nm[1], nm[2]))
+            print('   #%-4s %-30s %-5s %s%s' % (n, str(nm[0])[:30], nm[1], nm[2],
+                                            '   🔒 candado del %s' % cand[n] if n in cand else ''))
+        # 🔒 y por qué: el #517 decía sólo «no se pudo», igual que el #528, que tiene la llave borrada (21/11/2026)
+        if any(n in cand for n in lista):
+            print('   🔒 = con candado en datos/recalculados.json: lo corrigió un recálculo o se cargó a mano, y el '
+                  'lector no lo vuelve a escribir mientras su llave no se edite. Para releerlo a propósito se saca '
+                  'de ahí antes, sabiendo por qué estaba')
     if cambios:
         print('\n   -- por persona: los puntos de los eventos (sin Most Wanted) --')
         for v, q in cambios[:40]:
