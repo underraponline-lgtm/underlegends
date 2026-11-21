@@ -179,7 +179,8 @@
   "Bau": {
    "competitivo": "45245d0db6b2:38a840be60e7",
    "pais": "f3892c4d33f2:f1f52e1c6d42",
-   "servidor": "5a56f9b2df00:0bd0fbf67396:ca38c9"
+   "servidor": "5a56f9b2df00:0bd0fbf67396:ca38c9",
+   "temporada": "87605bb8c36f:a8d8b7335469"
   },
   "Benjixo": {},
   "Benju": {},
@@ -546,9 +547,6 @@
   "Fazer": {},
   "Felipinho23": {
    "servidor": "4a7ea968a064:0bd0fbf67396:fbc56e"
-  },
-  "Ferra": {
-   "servidor": "287c5cc58f74:0bd0fbf67396:80c07f"
   },
   "Filozico": {
    "competitivo": "35d51b3df837:38a840be60e7",
@@ -2193,5 +2191,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-20T23:33:36+00:00"
+ "cuando": "2026-11-21T03:15:19+00:00"
 }
