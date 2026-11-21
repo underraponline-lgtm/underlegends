@@ -4372,8 +4372,32 @@ def _memoria_veredictos():
         return {}
 
 
-#: cuántos días se guardan las batallas de #veredictos (`batallas_veredicto()`)
+#: cuántos días se guardan las batallas de #veredictos (`batallas_veredicto()`), COMO MÍNIMO: 🔴 desde el 21/11/2026 se
+#: guardan TODA LA TEMPORADA (`_desde_batallas()`). Con 7 días a secas, una llave que se releía después perdía su
+#: ganador: el lector la volvía a leer, el veredicto ya no estaba y la batalla se iba a ✅ Decidir. Pasó con tres —el
+#: #517 de FFA y el #528 de LKR en octubre, el #629 de ACAD el 20/11— y nadie lo vio, porque los puntos bajaban sin
+#: avisar; el #629 sí, porque era la única batalla de Park ji sunk: salía del Ranking Temporada, la tabla «encogería» y
+#: el freno dejó de escribirla. Ese día se devolvieron los 839 veredictos borrados desde el 01/10
 VER_BAT_DIAS = 7
+
+
+def _ms_arranque():
+    """La medianoche ET del arranque de la temporada en curso (`comun/temporada.py`), en ms, o `None`."""
+    try:
+        from comun import temporada as T
+        f = T.FECHAS.get(T.ACTUAL)
+        return int(T._medianoche_et(f[0]).timestamp() * 1000) if f else None
+    except Exception:                                     # noqa: BLE001
+        return None
+
+
+def _desde_batallas(ahora_ms):
+    """Desde qué instante (ms) se guardan las batallas de #veredictos: el arranque de la temporada en curso o
+    `VER_BAT_DIAS` atrás, lo que sea antes. Mientras dura la temporada sus llaves se pueden releer, y una llave que se
+    relee tiene que encontrar su veredicto; la de la temporada anterior ya no se escribe en ningún lado."""
+    corte = int(ahora_ms) - VER_BAT_DIAS * 86400000
+    ini = _ms_arranque()
+    return min(corte, ini) if ini is not None else corte
 
 
 def _memoria_batallas():
@@ -4520,11 +4544,13 @@ def vidas(s, mem, guilds, completo):
     evs = _unir_vidas(_memoria_veredictos(), veredictos(filas))
     evs = {k: e for k, e in evs.items() if ahora_ms - int(e.get('pub') or 0) <= VER_DIAS * 86400000}
     # 🔑 Y CADA BATALLA CON SU GANADOR, para la llave que no lo dice (02/10/2026): ver `batallas_veredicto()`.
-    # Se guardan `VER_BAT_DIAS`: la llave se relee días después, el veredicto no
+    # Se guardan TODA LA TEMPORADA (`_desde_batallas()`, 21/11/2026): la llave se relee días y semanas después, el
+    # veredicto no
     bats = {b['id']: b for b in _memoria_batallas()}
     for b in batallas_veredicto(filas):
         bats[b['id']] = b
-    bats = {k: b for k, b in bats.items() if ahora_ms - int(b.get('pub') or 0) <= VER_BAT_DIAS * 86400000}
+    desde = _desde_batallas(ahora_ms)
+    bats = {k: b for k, b in bats.items() if int(b.get('pub') or 0) >= desde}
     # 🏟️ LO GUARDADO DE UN CANAL QUE YA NO SE LEE, SE VA (12/10/2026). Los #veredictos de las LIGAS —las seis FMH de
     # Urban, las de DDF y las de Snake Rap— se leían como de eventos: una «RÉPLICA FINAL» de FMH Carimex quedó como la
     # llave «FINAL MCO 🆚 FORCE», y sus batallas servían para decidir el ganador de una llave que no lo dice. Ahora esas
@@ -5630,6 +5656,11 @@ def _check_veredicto_ganador():
         ('… y si dos veredictos de la pareja dicen otra cosa, no se elige',
          ganador_por_veredicto(['Pichulamc', 'Riferian'], '77', cuando,
                                batallas=bs + [dict(fin[0], id='x', ganador=fin[0]['b'])]) is None),
+        # 🔴 21/11/2026: los veredictos se guardan toda la temporada, no 7 días (el #629 de ACAD perdió su semifinal)
+        ('los veredictos se guardan toda la temporada: a los 60 días del arranque, desde el arranque',
+         _desde_batallas(_ms_arranque() + 60 * 86400000) == _ms_arranque()),
+        ('… y al arrancar una, por lo menos los últimos VER_BAT_DIAS',
+         _desde_batallas(_ms_arranque() + 2 * 86400000) == _ms_arranque() - (VER_BAT_DIAS - 2) * 86400000),
         # 🏛️ la ACADEMIA (04/10/2026) vota con la mano: 🫲 el de la izquierda, 🫱 el de la derecha, ❌ réplica
         ('🫲 es el de la izquierda del título, con tono de piel o sin',
          [b['ganador'] for b in batallas_veredicto([fila(200, '# KOCHI 🇨🇱 🆚 SEKKA 🇦🇷'),
