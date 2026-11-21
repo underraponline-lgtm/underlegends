@@ -6112,6 +6112,24 @@ export function borradasDelCanal(guardadas, msgs, limite) {
 //: cuántos canales de llaves se leen como mucho por minuto
 export const VIVO_TOPE = 4;
 
+/**
+ * Qué canales de llaves mira el vigía ESTE minuto: los que están en vivo primero y, con los lugares que quedan, una
+ * VENTANA del resto que va girando, así cada canal se mira cada `ceil(resto / libres)` minutos.
+ * 🔴 HASTA EL 21/11/2026 ERA `(min + i) % 5 === 0` Y DESPUÉS `.slice(0, 4)`: de cada cinco minutos tocaban ~N/5 canales y
+ * se leían 4, así que con más de 20 canales los de los puestos 20 en adelante NO SE MIRABAN NUNCA —y mirarlos es la única
+ * forma de que uno pase a «en vivo»—. Con los 25 de ese día eran LKR, SR y los tres de URBF. Lo encontró la revisión de
+ * las llaves del /setup, que suman canales a esta lista.
+ */
+export function llavesDelMinuto(lista, enVivo, min, tope = VIVO_TOPE) {
+  const vivos = (lista || []).filter((c) => enVivo.has(c.id));
+  const resto = (lista || []).filter((c) => !enVivo.has(c.id));
+  const libres = Math.max(0, tope - vivos.length);
+  if (!libres || !resto.length) return vivos.slice(0, tope);
+  const vueltas = Math.ceil(resto.length / libres);
+  const desde = (((Math.floor(min) % vueltas) + vueltas) % vueltas) * libres;
+  return vivos.concat(resto.slice(desde, desde + libres)).slice(0, tope);
+}
+
 /** ¿Parece una llave? Barato: una ronda y al menos dos batallas o marcos. */
 export function pareceLlave(texto) {
   // ⚠️ CON LAS LETRAS DE FANTASÍA EN LETRAS COMUNES: Snake Rap escribe sus
@@ -9688,7 +9706,10 @@ export class Avisos {
       // `bot/tiers.py` los da de alta en la misma lectura, sin otra ruta. ⚠️ `setup_altas` NO es un ajuste de Dlx: no se
       // escribe por `/ajuste` (`ajusteValido()` no lo conoce) y el Dashboard no lo recibe por acá
       // 🎭 y lo que marcaron los dueños como eventos de estilo (`estilo_socios`, 20/11/2026): tampoco es un ajuste de Dlx
-      if (ruta === '/ajustes') return json(Object.assign({}, this.ajustes(), { setup_altas: this.setupAltas(), estilo_socios: this.leer('estilo_socios') || {} }));
+      if (ruta === '/ajustes') {
+        return json(Object.assign({}, this.ajustes(), { setup_altas: this.setupAltas(), setup_canales: this.setupCanalesCiclo(),
+          estilo_socios: this.leer('estilo_socios') || {} }));
+      }
       // 🧭 el /setup (19/11/2026): sólo lo llama el Worker (`bot/setup.js`), que ya comprobó quién toca
       if (ruta === '/setup') {
         const d = await req.json().catch(() => null);
@@ -10532,9 +10553,7 @@ export class Avisos {
     if (!lista.length) return;
     const cal = new Set(this.sql.exec('SELECT DISTINCT canal FROM vivo WHERE ed > ?', ahora - 3 * HORA)
       .toArray().map((r) => r.canal));
-    const min = Math.floor(ahora / MIN);
-    const leer = lista.filter((c) => cal.has(c.id))
-      .concat(lista.filter((c, i) => !cal.has(c.id) && (min + i) % 5 === 0)).slice(0, VIVO_TOPE);
+    const leer = llavesDelMinuto(lista, cal, Math.floor(ahora / MIN));
     const rs = await Promise.all(leer.map(async (c) => {
       try {
         const r = await fetch(`${DC}/channels/${c.id}/messages?limit=${VIVO_LEE}`, {
@@ -21431,6 +21450,20 @@ export class Avisos {
       por: String(h.por || ''), miembros: h.miembros || 0, admin: !!(h.perm && h.perm.admin), faltan: (h.perm && h.perm.faltan) || [],
       fuera: h.es === 'fuera', dm: !!(h.dm && h.dm.ok), dec: dec[g] || null,
     })).sort((a, b) => b.t - a.t).slice(0, 30);
+  }
+
+  /** 🔑🏟️ Los canales de llaves (`ll`) y de resultados de cada liga (`lg`) que cada servidor eligió en su /setup, para el
+   *  ciclo (`canales_del_setup()` de bot/tiers.py): `{guild: {ll: [ids], lg: [ids]}}`. De TODOS los que lo aplicaron,
+   *  también los socios de antes (21/11/2026, por Makma): son canales para leer, no un alta. Las listas vacías también
+   *  viajan, así sacar uno en el /setup también llega. `ev`: sus canales de anuncios, inscripciones y veredictos, para
+   *  que el ciclo nunca tome la categoría de sus eventos como la de una liga (`ligas.candidatas()`) */
+  setupCanalesCiclo() {
+    const ids = (x, n) => (Array.isArray(x) ? x : []).map(String).filter((v) => /^\d{15,22}$/.test(v)).slice(0, n);
+    const out = {};
+    for (const { g, h } of this.setupFilas()) {
+      if (h.c && typeof h.c === 'object') out[g] = { ll: ids(h.c.ll, 3), lg: ids(h.c.lg, 5), ev: ids([h.c.an, h.c.in, h.c.ve], 3) };
+    }
+    return out;
   }
 
   /** 📺 Los canales que cada servidor eligió en su /setup, `{guild: {an, in, ve, ge}}`, para el vigía (`descubrir()`) */

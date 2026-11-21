@@ -197,17 +197,37 @@ export function tocar(borr, k, v) {
 
 // ── 📺 LOS CANALES: los busca solo, con los mismos nombres que ya usa el lector ─────────────────────────────────────
 export const ROLES_CANAL = [['an', 'Anuncios de eventos'], ['in', 'Inscripciones'], ['ve', 'Veredictos'], ['ge', 'Chat general']];
+/**
+ * 🔑🏟️ LOS QUE SE ELIGEN DE A VARIOS (21/11/2026). Dlx, por Makma: *«cómo puede agregar sus ligas o cómo agrega el canal
+ * de llaves»*. Hasta acá el paso 3 decía «tus llaves no hace falta elegirlas», y era cierto a medias: el ciclo las
+ * encuentra en cualquier canal, pero los canales que no conoce los mira UNA vez por día (`HORAS_BARRIDO` de
+ * bot/escuchar.py), y una liga entraba sólo si su categoría tenía nombre de liga (`candidatas()` de bot/ligas.py).
+ *   · `ll`: el canal de llaves (hasta 3). El ciclo lo lee en CADA vuelta desde el primer día, y la llave que es una imagen
+ *     se lee ahí aunque el canal no diga «llave»;
+ *   · `lg`: el canal donde se publican los RESULTADOS de cada liga (uno por liga, hasta 5). Su categoría es la liga: de
+ *     ahí salen su tabla y sus anuncios, como en las que el bot encuentra solo.
+ * Viajan al ciclo por `/ajustes` (`setup_canales`) → `canales_del_setup()` de bot/tiers.py → `canales_setup` de
+ * `datos/servidores.json`, para TODOS los que corren /setup: también un socio de antes (son canales para leer, no un alta).
+ */
+export const MULTI_CANAL = [['ll', 'Tus llaves', 3], ['lg', 'Tus ligas', 5]];
+//: el canal de llaves por el nombre: lo mismo que `canal_de_llaves()` de bot/escuchar.py
+const NOMBRE_LLAVES = /llave|bracket|cuadro/i;
 const nfkd = (s) => String(s || '').normalize('NFKD');
+/** Los ids de un `c[k]` de los que van de a varios (siempre una lista). */
+export const listaDe = (x, tope = 5) => (Array.isArray(x) ? x : []).map(String).filter((id) => /^\d{15,22}$/.test(id)).slice(0, tope);
 
 /**
  * `{an, in, ve, ge}` (ids, '' si no hay): los anuncios por `PATRON_VIGIA` (o «anuncios» adentro de una categoría de
  * torneos, como FVS), las inscripciones por `PATRON_INSC`, los veredictos por `PATRON_VEREDICTOS` y el chat general con
  * `chatGeneralDe()`. Los mismos patrones del vigía (`descubrir()` en avisos.js), nunca los de staff: un setup que
  * eligiera otros canales que el lector haría que el admin vea una cosa y el bot lea otra.
+ * `afuera`: las categorías que ese servidor declara afuera (`meta.fuera[sv]`, de `categorias_fuera` en
+ * datos/servidores.json: sus ligas, las «heats» de FRZ…). Ahí no se busca nada, igual que el vigía y el lector.
  */
-export function adivinarCanales(cs) {
+export function adivinarCanales(cs, afuera) {
   const lista = Array.isArray(cs) ? cs : [];
   const fuera = categoriasStaff(lista);
+  for (const id of afuera || []) fuera.add(String(id));
   const cat = new Map(lista.filter((c) => c && c.type === 4).map((c) => [String(c.id), nfkd(c.name)]));
   const texto = lista.filter((c) => c && (c.type === 0 || c.type === 5) && !fuera.has(String(c.parent_id || '')))
     .sort((a, b) => (a.position || 0) - (b.position || 0));
@@ -217,7 +237,71 @@ export function adivinarCanales(cs) {
   const ins = primero((n) => !STAFF.test(n) && PATRON_INSC.test(n));
   const ve = primero((n) => PATRON_VEREDICTOS.test(n) && !NO_VEREDICTOS.test(n) && !/llave/i.test(n) && !STAFF.test(n));
   const ge = chatGeneralDe(lista, fuera) || '';
-  return { an, in: ins, ve, ge: String(ge) };
+  // 🔑 las llaves por el nombre (hasta 3); las ligas no se adivinan: las que tienen nombre de liga ya las encuentra el ciclo
+  const ll = texto.filter((x) => !STAFF.test(nfkd(x.name)) && NOMBRE_LLAVES.test(nfkd(x.name))).slice(0, 3).map((x) => String(x.id));
+  return { an, in: ins, ve, ge: String(ge), ll, lg: [] };
+}
+
+/** Los canales de los EVENTOS de un `c` (anuncios, inscripciones, veredictos, llaves): no comparten categoría con una liga. */
+export const canalesDeEventos = (c) => [(c || {}).an, (c || {}).in, (c || {}).ve, ...listaDe((c || {}).ll, 3)]
+  .map((x) => String(x || '')).filter((x) => /^\d{15,22}$/.test(x));
+
+/**
+ * ¿El canal `id` sirve como el de resultados de una liga? `[est, texto, lugar]`, con `est` en ok (ya se lee) · nueva · no,
+ * y `lugar` = true cuando el «no» es por DÓNDE está (sin categoría, la de los eventos, un canal de eventos): ésa no se
+ * guarda al aplicar, porque el ciclo la rechazaría igual (`candidatas()` de bot/ligas.py). Un «no» de permisos sí se
+ * guarda: se arregla en Discord. `ligas`: las que el bot ya lee de este servidor (`{n, ver, an, tabla}`, de `todas` en
+ * `ligas:vigia`); `eventos`: `canalesDeEventos()`.
+ */
+export function estadoCanalLiga(id, cs, ctx, ligas, eventos) {
+  const lista = Array.isArray(cs) ? cs : [];
+  const c = lista.find((x) => String(x.id) === String(id));
+  if (!c) return ['no', 'ese canal ya no existe'];
+  const prob = problemaCanal(c, ctx, false);
+  if (prob) return ['no', prob];
+  const de = (L) => [L.ver, L.an, L.tabla].map((x) => String(x || '')).filter(Boolean);
+  const ya = (ligas || []).find((L) => L && de(L).includes(String(id)));
+  if (ya) return ['ok', `ya la leo: ${cortar(String(ya.n || 'tu liga'), 40)}`];
+  const cat = lista.find((x) => x.type === 4 && String(x.id) === String(c.parent_id || ''));
+  // ⚠️ SIN CATEGORÍA NO: la categoría pasa a `categorias_fuera` (bot/ligas.py `marcar_fuera()`) para que sus resultados
+  // no se lean TAMBIÉN como llaves de eventos —ya le pasó a Carimex con una «RÉPLICA FINAL»—, y de ella salen la tabla y
+  // los anuncios de la liga
+  if (!cat) return ['no', 'no está adentro de una categoría: muévelo a la categoría de esa liga, con su tabla y sus anuncios', true];
+  const hermanos = lista.filter((x) => String(x.parent_id || '') === String(cat.id));
+  // 🏟️ la categoría de una liga que ya se lee: es ésa (el ciclo no la vuelve a tomar)
+  const suya = (ligas || []).find((L) => L && hermanos.some((x) => de(L).includes(String(x.id))));
+  if (suya) return ['ok', `esa categoría es de ${cortar(String(suya.n || 'una liga'), 40)}: ya la leo`];
+  // ⚠️ y no la de los EVENTOS: esa categoría entera dejaría de leerse para las llaves y los anuncios (`NUEVA_NO`,
+  // `ELEGIDA_NO` y `eventos` en `candidatas()` de bot/ligas.py, que se niega igual)
+  const ev = new Set((eventos || []).map(String));
+  if (ev.has(String(id))) return ['no', 'ése es un canal de tus eventos: la liga necesita su propio canal de resultados', true];
+  if (hermanos.some((x) => ev.has(String(x.id)) || /llave|inscripci|evento/i.test(nfkd(x.name)))) {
+    return ['no', 'su categoría es la de tus eventos (tiene llaves, inscripciones o eventos): la liga necesita su propia categoría', true];
+  }
+  return ['nueva', `liga nueva en «${cortar(nfkd(cat.name).replace(/[*_`~|]/g, ''), 40)}»: la pruebo en la próxima vuelta del bot`];
+}
+
+/** ¿El canal `id` está en una categoría que el servidor declara afuera (`meta.fuera[sv]`)? Ahí no se leen llaves. */
+export const enAfuera = (id, cs, afuera) => {
+  const c = (Array.isArray(cs) ? cs : []).find((x) => String(x.id) === String(id));
+  return !!c && (afuera || []).map(String).includes(String(c.parent_id || ''));
+};
+const POR_AFUERA = 'está en una categoría que la Liga no lee como eventos (una liga, o la que el equipo dejó afuera)';
+
+/** Lo elegido que se GUARDA al aplicar: sin las llaves de una categoría de afuera ni las ligas mal ubicadas, que el ciclo
+ *  rechazaría igual (`validar_llaves_setup()` de bot/escuchar.py, `candidatas()` de bot/ligas.py): guardarlas sería
+ *  decir «listo» sobre algo que no se va a leer. Devuelve `{c, sacados: [{id, por}]}`. */
+export function elegidosQueQuedan(c, cs, afuera, ligas) {
+  const x = Object.assign({}, c || {});
+  const sacados = [];
+  x.ll = listaDe(x.ll, 3).filter((id) => !(enAfuera(id, cs, afuera) && sacados.push({ id, por: POR_AFUERA })));
+  const ev = canalesDeEventos(x);
+  x.lg = listaDe(x.lg, 5).filter((id) => {
+    const [, t, lugar] = estadoCanalLiga(id, cs, null, ligas, ev);
+    if (lugar) sacados.push({ id, por: t });
+    return !lugar;
+  });
+  return { c: x, sacados };
 }
 
 /** Los canales donde el bot va a escribir con esta configuración, con para qué: ahí va el mensaje de prueba. */
@@ -346,8 +430,9 @@ export function paso0(v) {
     seccion(intro, mini(v.icono)),
     SEP,
     T(['**1** · Revisar los permisos del bot', '**2** · Elegir una plantilla', '-# Liga completa · Lo básico · Sólo leer',
-      '**3** · Tus canales', '-# los busco solo, tú corriges', '**4** · Lo que hace el bot acá', '**5** · Ver todo y aplicar',
-      socio ? '**6** · Listo' : '**6** · Listo: tu servidor entra a la Liga'].join('\n')),
+      '**3** · Tus canales', '-# los busco solo, tú corriges · también tus llaves y tus ligas', '**4** · Lo que hace el bot acá',
+      '**5** · Ver todo y aplicar', socio ? '**6** · Listo, y compruebo que todo ande' : '**6** · Listo: tu servidor entra a la Liga, y compruebo que todo ande']
+      .join('\n')),
   ];
   if (b) comps.push(T(`-# Quedó uno a medias en el paso ${Math.min(5, Math.max(1, b.paso || 1))}: puedes retomarlo.`));
   comps.push(b
@@ -434,7 +519,26 @@ export function paso3(v) {
     comps.push(T(`**${et}** · ${estado}`));
     comps.push(fila(canalSel('ch', k, existe ? id : '', 'Elige el canal de ' + et.toLowerCase())));
   }
-  comps.push(T('-# 🔑 Tus llaves no hace falta elegirlas: el bot las encuentra por lo que dicen, en cualquier canal.'));
+  // 🔑 las llaves (ver `MULTI_CANAL`): sin elegir, el ciclo igual las busca, pero una vez por día
+  const ll = listaDe(c.ll, 3).filter((id) => cs.has(id));
+  const llMal = ll.map((id) => [id, enAfuera(id, v.canales, v.afuera) ? POR_AFUERA + ': no lo voy a leer'
+    : problemaCanal(cs.get(id), v.ctx, false)]).find(([, p]) => p);
+  const llEst = !ll.length ? 'sin elegir: las busco solo en todos tus canales, una vez por día'
+    : llMal ? `⚠️ ${mencion(llMal[0])}: ${llMal[1]}` : `${ce.ll === 'e' ? 'elegido' : 'encontrado'}: las leo en cada vuelta del bot`;
+  comps.push(T(`**Tus llaves** · ${llEst}\n-# el canal donde publicas tus llaves (hasta 3): lo leo cada 30 minutos`));
+  comps.push(fila(canalSel('ch', 'll', ll, 'Elige tu canal de llaves', 3)));
+  // 🏟️ las ligas: el canal de RESULTADOS de cada una, y lo que el bot ya lee de este servidor
+  const ya = (v.ligas || []).filter((L) => L && L.n);
+  const lg = listaDe(c.lg, 5).filter((id) => cs.has(id));
+  const lgEst = lg.map((id) => {
+    const [e, t] = estadoCanalLiga(id, v.canales, v.ctx, ya, canalesDeEventos(c));
+    return `${e === 'ok' ? '✅' : e === 'nueva' ? '🆕' : '⚠️'} ${mencion(id)} ${t}`;
+  });
+  const yaTxt = ya.length ? `-# ya leo ${ya.length === 1 ? 'tu liga' : 'tus ' + ya.length + ' ligas'}: ${cortar(ya.map((L) => L.n).join(', '), 160)}` : '';
+  comps.push(T(['**Tus ligas** · ' + (lgEst.length ? '' : 'sin elegir'), ...lgEst, yaTxt,
+    '-# si tienes ligas, elige el canal donde publicas los RESULTADOS de cada una (uno por liga, hasta 5), adentro de la categoría de esa liga']
+    .filter(Boolean).join('\n')));
+  comps.push(fila(canalSel('ch', 'lg', lg, 'Elige el canal de resultados de cada liga', 5)));
   comps.push(fila(boton('Siguiente', 'ir', 4, 1), boton('Atrás', 'ir', 2)));
   return mensaje(caja(COLOR.mag, comps));
 }
@@ -492,6 +596,12 @@ export function paso5(v) {
   l.push(v.invCanal
     ? `🔗 **La invitación de la Liga a tu servidor** · no vence\n-# a ${mencion(v.invCanal)}${v.invPuede === false ? ' · ⚠️ falta «Crear invitación»: la creo cuando el bot lo tenga' : ''}`
     : '🔗 **La invitación de la Liga**\n-# ⚠️ no encontré un canal que vea todo el mundo: la crea el equipo después');
+  const ll = listaDe((b.c || {}).ll, 3), lg = listaDe((b.c || {}).lg, 5);
+  if (ll.length || lg.length) {
+    l.push('🔑 **' + [ll.length ? `Tus llaves en ${ll.map(mencion).join(', ')}` : '', lg.length ? `${lg.length} ${lg.length === 1 ? 'liga' : 'ligas'} para leer` : '']
+      .filter(Boolean).join(' · ') + '**\n-# desde la próxima vuelta del bot (hasta una hora): las llaves en cada vuelta, y cada liga cuando entienda sus resultados');
+  }
+  l.push('🔎 **Compruebo que todo ande**\n-# que el bot lea cada canal, pueda escribir donde le toca y que la invitación funcione');
   if (es === 'socio') l.push(`✅ **${n} ya es de la Liga**\n-# no hace falta anotarlo: sólo se guardan los ajustes`);
   else if (es === 'fuera') l.push(`📝 **Le pido al equipo que sume ${n}**\n-# estaba registrado fuera de la Liga: lo decide el equipo`);
   else {
@@ -506,10 +616,13 @@ export function paso5(v) {
   ]));
 }
 
+//: el ícono de cada estado de una lista (lo aplicado y lo comprobado). `ojo`: anda, con algo para mirar
+const ICONO = { ok: '✅', no: '❌', va: '⏳', espera: '▫️', salto: '➖', ojo: '⚠️' };
+const renglones = (items) => (items || []).map((x) => `${ICONO[x.est] || '▫️'} **${x.t}**${x.sub ? '\n-# ' + x.sub : ''}`);
+
 /** Mientras aplica: cada cosa con su estado. `items` = `[{t, sub, est}]` con `est` en ok|no|va|espera. */
 export function aplicando(items, fin) {
-  const ic = { ok: '✅', no: '❌', va: '⏳', espera: '▫️', salto: '➖' };
-  const l = (items || []).map((x) => `${ic[x.est] || '▫️'} **${x.t}**${x.sub ? '\n-# ' + x.sub : ''}`);
+  const l = renglones(items);
   const algoMal = (items || []).some((x) => x.est === 'no');
   return mensaje(caja(algoMal && fin ? COLOR.amar : COLOR.mag, [
     cabeza(5, 'APLICANDO'),
@@ -539,7 +652,120 @@ export function chips(v) {
   return c.filter(Boolean).map((x) => '`' + x + '`').join(' ');
 }
 
-/** Paso 6: listo. `v` = `{nombre, icono, cfg, estado, aviso, kit, dec, hecho}`. */
+// ── 🔎 LA COMPROBACIÓN (21/11/2026) ─────────────────────────────────────────────────────────────────────────────────
+// Dlx: *«make sure the setup command check if everything worked out»*. Al final de «Aplicar», y cuando quieran con
+// «Comprobar que todo anda». NO es una cuenta de permisos: le pide a Discord lo mismo que le va a pedir el ciclo —el
+// último mensaje de cada canal que tiene que leer, la invitación— y dice qué contestó. La cuenta adivina (un permiso que
+// el canal hereda de su categoría, un rol que no se ve) y el pedido no.
+// ⚠️ LO QUE SE ESCRIBE NO SE VUELVE A PROBAR ACÁ: lo probó el mensaje de prueba de «Aplicar», y «Comprobar» no manda
+// nada al servidor. Se calcula con los permisos de cada canal.
+
+//: cuántos canales se leen de verdad por comprobación (el resto se calcula): con «Aplicar», unos 30 pedidos de los 50
+export const LEER_TOPE = 8;
+const QUE_LEA = 'dale «Ver canal» y «Leer el historial de mensajes» ahí (o Administrador)';
+const YA_NO = 'ese canal ya no existe: elígelo otra vez en «Cambiar un paso…» → Canales';
+
+/** Los canales que el bot tiene que LEER, con para qué: `[{id, que, k}]`, sin repetir. */
+export function canalesQueLee(c, cfg) {
+  const out = [];
+  const add = (id, que, k) => {
+    if (/^\d{15,22}$/.test(String(id || '')) && !out.some((x) => x.id === String(id))) out.push({ id: String(id), que, k });
+  };
+  const x = c || {};
+  add(x.an, 'tus anuncios de eventos', 'an');
+  add(x.in, 'tus inscripciones', 'in');
+  add(x.ve, 'tus veredictos', 've');
+  for (const id of listaDe(x.ll, 3)) add(id, 'tus llaves', 'll');
+  for (const id of listaDe(x.lg, 5)) add(id, 'los resultados de una liga', 'lg');
+  // el chat general se lee una vez por día (bot/chats.py), salvo que lo apaguen
+  if (!cfg || cfg.leer_chat !== false) add(x.ge, 'tu chat general', 'ge');
+  return out;
+}
+
+/**
+ * La lista de lo comprobado: `[{t, sub, est}]`. PURA (la prueba la arma sin Discord). `v` = `{c, cfg, cs, ctx, perm,
+ * ligas, lecturas, inv, invOk, cfgOk, afuera}`: `lecturas` es `{canal: status}` de lo que contestó Discord, y un canal que no se
+ * pidió (pasado el `LEER_TOPE`) se calcula con sus permisos.
+ */
+export function itemsComprobacion(v) {
+  const c = v.c || {};
+  const cfg = v.cfg || {};
+  const cs = Array.isArray(v.cs) ? v.cs : [];
+  const porId = new Map(cs.map((x) => [String(x.id), x]));
+  const out = [];
+  if (v.cfgOk === true) out.push({ t: 'Tus ajustes están guardados', sub: enPalabras(cfg), est: 'ok' });
+  else if (v.cfgOk === false) out.push({ t: 'Todavía no veo tus ajustes guardados', sub: 'Cloudflare puede tardar un minuto en mostrarlos: «Comprobar de nuevo»', est: 'va' });
+  for (const x of canalesQueLee(c, cfg)) {
+    const st = (v.lecturas || {})[x.id];
+    const canal = porId.get(x.id);
+    let est = 'ok', sub = '';
+    if (st === 403 || st === 401) { est = 'no'; sub = 'el bot no puede leer ahí: ' + QUE_LEA; }
+    else if (st === 404 || (st === undefined && !canal)) { est = 'no'; sub = YA_NO; }
+    else if (st !== undefined && st !== 200) { est = 'va'; sub = 'Discord no contestó: «Comprobar de nuevo» en un minuto'; }
+    else if (st === undefined && problemaCanal(canal, v.ctx, false)) { est = 'no'; sub = 'el bot no puede leer ahí: ' + QUE_LEA; }
+    let t = `Leo ${x.que} en ${mencion(x.id)}`;
+    if (est === 'ok' && x.k === 'll') sub = 'en cada vuelta del bot, cada 30 minutos';
+    if (x.k === 'll' && enAfuera(x.id, cs, v.afuera)) { est = 'no'; sub = POR_AFUERA + ': no lo leo'; }
+    if (est === 'ok' && x.k === 'lg') {
+      const [e, txt] = estadoCanalLiga(x.id, cs, v.ctx, v.ligas, canalesDeEventos(c));
+      if (e === 'ok') { t = `Leo la liga de ${mencion(x.id)}`; sub = txt; }
+      else if (e === 'nueva') {
+        t = `Liga nueva en ${mencion(x.id)}`;
+        est = 'va';
+        sub = txt + ' (hasta una hora): si entiendo cómo escribes los resultados y se está jugando, entra sola';
+      } else { t = `La liga de ${mencion(x.id)}`; est = 'no'; sub = txt; }
+    }
+    out.push({ t, sub, est });
+  }
+  if (!listaDe(c.ll, 3).length) {
+    out.push({ t: 'Tus llaves: las busco solo', sub: 'en todos tus canales, una vez por día. Si tienes un canal de llaves, elígelo en Canales y lo leo en cada vuelta', est: 'salto' });
+  }
+  // ✍️ donde escribe, calculado
+  for (const x of canalesQueEscribe(cfg, c)) {
+    const canal = porId.get(x.id);
+    const p = canal ? problemaCanal(canal, v.ctx, true) : 'ese canal ya no existe';
+    out.push({ t: `Escribo en ${mencion(x.id)}`, sub: p ? p + ': dale «Ver canal» y «Enviar mensajes» ahí' : x.que.join(', '), est: p ? 'no' : 'ok' });
+  }
+  if (cfg.nick) {
+    const b = big(v.perm && v.perm.bits);
+    const admin = !!(v.perm && v.perm.admin) || (b & P.ADMIN) !== 0n;
+    const arriba = Number((v.perm && v.perm.arriba) || 0);
+    if (!admin && !tiene(b, P.APODOS)) out.push({ t: 'El #N en los apodos', sub: 'al bot le falta «Gestionar apodos»', est: 'no' });
+    else if (arriba > 0) {
+      out.push({ t: 'El #N en los apodos', est: 'ojo', sub: `el rol del bot tiene ${arriba} ${arriba === 1 ? 'rol' : 'roles'} encima: a quien ` +
+        'tenga uno de ésos no le puedo cambiar el apodo (Ajustes del servidor → Roles: sube el del bot)' });
+    } else out.push({ t: 'Pongo el #N en los apodos', sub: '', est: 'ok' });
+  }
+  const inv = v.inv;
+  if (inv && inv.codigo) {
+    if (v.invOk === false) out.push({ t: 'La invitación de la Liga ya no anda', sub: 'la borraron en Discord: con «Aplicar» creo otra', est: 'no' });
+    else if (v.invOk === true) out.push({ t: 'La invitación de la Liga anda', sub: 'discord.gg/' + inv.codigo + ' · no vence', est: 'ok' });
+    else out.push({ t: 'La invitación de la Liga', sub: 'Discord no contestó: «Comprobar de nuevo» en un minuto', est: 'va' });
+  } else {
+    out.push({ t: 'Sin la invitación de la Liga', sub: 'la crea el ciclo cuando el bot tenga «Crear invitación»', est: 'ojo' });
+  }
+  return out;
+}
+
+const malas = (items) => (items || []).filter((x) => x.est === 'no').length;
+
+/** «Comprobar que todo anda» (desde el panel, o «Comprobar de nuevo»). `v` = `{nombre, items}`. */
+export function pasoComprobado(v) {
+  const n = limpiarNombre(v.nombre);
+  const items = v.items || [];
+  const mal = malas(items);
+  const ojo = items.filter((x) => x.est === 'ojo' || x.est === 'va').length;
+  const titulo = mal ? `### 🔎 ${n}: ${mal} ${mal === 1 ? 'cosa' : 'cosas'} para arreglar`
+    : ojo ? `### 🔎 ${n}: anda, con ${ojo} ${ojo === 1 ? 'cosa' : 'cosas'} para mirar` : `### ✅ ${n}: todo anda`;
+  return mensaje(caja(mal ? COLOR.amar : COLOR.verde, [
+    T(titulo),
+    T(renglones(items).join('\n') || 'No encontré nada que comprobar.'),
+    mal ? T('-# Arréglalo en Discord (los permisos de cada canal están en Editar canal → Permisos) y vuelve a comprobar.') : null,
+    fila(boton('Comprobar de nuevo', 'comprobar', '', mal ? 1 : 2), boton('Volver', 'ir', 7), enlace('Abrir mi dashboard', HUB + '/freestyle-rap/socio')),
+  ]));
+}
+
+/** Paso 6: listo. `v` = `{nombre, icono, cfg, estado, aviso, kit, dec, hecho, comp}` (`comp`: lo comprobado). */
 export function paso6(v) {
   const n = limpiarNombre(v.nombre);
   const es = (v.estado && v.estado.es) || 'nuevo';
@@ -554,16 +780,21 @@ export function paso6(v) {
     ? (v.aviso ? `-# Los puntos de Temporada se prenden cuando el equipo de la Liga revise tu servidor. Te aviso en ${mencion(v.aviso)} apenas pase.`
       : '-# Los puntos de Temporada se prenden cuando el equipo de la Liga revise tu servidor. Lo ves volviendo a correr `/setup`.')
     : null;
-  return mensaje(caja(COLOR.verde, [
+  // 🔎 lo comprobado: si algo no anda, el cierre lo dice arriba de todo lo demás y deja «Comprobar de nuevo»
+  const comp = Array.isArray(v.comp) ? v.comp : [];
+  const mal = malas(comp);
+  return mensaje(caja(mal ? COLOR.amar : COLOR.verde, [
     cabeza(6, '', true),
     seccion(`${titulo}\n${cuerpo}`, mini(v.icono)),
     T(chips(v)),
     nota ? T(nota) : null,
+    comp.length ? T(`**🔎 Lo comprobé**${mal ? ` · ${mal} ${mal === 1 ? 'cosa' : 'cosas'} para arreglar` : ''}\n` + renglones(comp).join('\n')) : null,
+    mal ? T('-# Lo aplicado ya quedó. Arregla eso en Discord (Editar canal → Permisos) y toca «Comprobar de nuevo».') : null,
     SEP,
     T('Hay más en tu dashboard: horario de silencio, tus ligas, el resumen semanal y tu equipo de admins.\n' +
       '-# 🛡️ El anti-raid lo prende el dueño del servidor con **`/antiraid`**.'),
     fila(enlace('Abrir mi dashboard', HUB + '/freestyle-rap/socio'), v.kit ? enlace('Mi kit', v.kit) : null,
-      boton('Cambiar algo', 'ir', 7)),
+      boton('Cambiar algo', 'ir', 7), mal ? boton('Comprobar de nuevo', 'comprobar', '', 1) : null),
   ]));
 }
 
@@ -583,7 +814,10 @@ export function paso7(v) {
       (r.admin ? 'Administrador' : r.falta.length ? 'faltan: ' + r.falta.join(', ').toLowerCase() : 'tiene lo que necesita') +
       (arriba ? ` · el rol del bot tiene ${arriba} ${arriba === 1 ? 'rol' : 'roles'} encima` : ' · el rol del bot está arriba'),
     `${ROLES_CANAL.some(([k]) => c[k]) ? '✅' : '⚠️'} **Canales**\n-# ` +
-      ROLES_CANAL.map(([k, et]) => et.toLowerCase().replace('anuncios de eventos', 'eventos') + ' ' + mencion(c[k])).join(' · '),
+      ROLES_CANAL.map(([k, et]) => et.toLowerCase().replace('anuncios de eventos', 'eventos') + ' ' + mencion(c[k])).join(' · ') +
+      // 🔑🏟️ las llaves y las ligas elegidas (21/11/2026)
+      (listaDe(c.ll, 3).length ? ' · llaves ' + listaDe(c.ll, 3).map(mencion).join(' ') : ' · llaves: las busco solo') +
+      (listaDe(c.lg, 5).length ? ` · ${listaDe(c.lg, 5).length} ${listaDe(c.lg, 5).length === 1 ? 'liga' : 'ligas'}` : ''),
     `${cfg.vivo ? '✅' : '➖'} **Bot en vivo**\n-# ` +
       (cfg.vivo ? `en ${mencion(cfg.vivo)} · ${((NIVELES_CHAT[cfg.vivo_nivel] || NIVELES_CHAT.normal)[0]).toLowerCase()}` : 'apagado'),
     `⚙️ **Lo demás**\n-# avisos de rango ${cfg.avisos ? 'en ' + mencion(cfg.avisos) : 'apagados'} · #N ${cfg.nick ? 'prendido' : 'apagado'}` +
@@ -596,10 +830,10 @@ export function paso7(v) {
     T(l.join('\n')),
     fila({ type: 3, custom_id: idSu('cambiar'), placeholder: 'Cambiar un paso…', min_values: 1, max_values: 1,
       options: [['1', 'Permisos', 'volver a revisarlos'], ['2', 'Plantilla', 'Liga completa · Lo básico · Sólo leer'],
-        ['3', 'Canales', 'eventos, inscripciones, veredictos, general'], ['4', 'Lo que hace el bot', 'en vivo, avisos, /card, #N']]
+        ['3', 'Canales', 'eventos, inscripciones, veredictos, general, llaves y ligas'], ['4', 'Lo que hace el bot', 'en vivo, avisos, /card, #N']]
         .map(([value, label, description]) => ({ value, label, description })) }),
     // ⏯️ un cambio que quedó a medias (otro admin, o el mismo hace un rato) se retoma desde acá
-    fila(enlace('Abrir mi dashboard', HUB + '/freestyle-rap/socio'),
+    fila(boton('Comprobar que todo anda', 'comprobar', '', b ? 2 : 1), enlace('Abrir mi dashboard', HUB + '/freestyle-rap/socio'),
       b ? boton(`Retomar el cambio (paso ${Math.min(5, Math.max(1, b.paso || 1))})`, 'retomar', '', 1) : null,
       boton('Empezar de nuevo', 'nuevo', '', 4)),
   ]));
@@ -725,7 +959,7 @@ export async function linkKit(env, gid) {
 }
 
 /** Lo que cada pantalla pide de Discord y de KV, una sola vez por clic (`una()` guarda la promesa). */
-function contexto(i, env) {
+function contexto(i, env, h) {
   const gid = String(i.guild_id || '');
   const m = {};
   const una = (k, f) => m[k] || (m[k] = f().catch(() => null));
@@ -738,6 +972,19 @@ function contexto(i, env) {
     meta: () => una('meta', async () => JSON.parse((await env.KV.get('meta', { cacheTtl: 60 })) || '{}') || {}),
     cfgCrudo: () => una('cfg', async () => { const t = await env.KV.get('cfg:' + gid); return t ? JSON.parse(t) : {}; }),
     lobby: () => una('lobby', async () => JSON.parse((await env.KV.get('web:lobby', { cacheTtl: 300 })) || '{}') || {}),
+    // 🏟️ las ligas que el bot ya lee de ESTE servidor: `todas` de `ligas:vigia` (`para_vigia()` de bot/ligas.py). ⚠️ No
+    // `lista`: ésa es sólo de las familias que el vigía sigue en vivo, la mitad (lo encontró la revisión del 21/11/2026)
+    ligas: () => una('ligas', async () => {
+      const x = JSON.parse((await env.KV.get('ligas:vigia', { cacheTtl: 300 })) || '{}') || {};
+      return (x.todas || x.lista || []).filter((L) => L && String(L.g || '') === gid)
+        .map((L) => ({ n: String(L.n || ''), ver: String(L.ver || ''), an: String(L.an || ''), tabla: String(L.tabla || '') }));
+    }),
+    // 🚫 las categorías que este servidor declara afuera (`meta.fuera`, de `categorias_fuera`): ahí no se buscan llaves
+    afuera: () => una('afuera', async () => {
+      const meta = await cx.meta();
+      const sv = estadoLiga(gid, meta, (h && h.SERVIDORES) || []).sv;
+      return sv && meta && meta.fuera && Array.isArray(meta.fuera[sv]) ? meta.fuera[sv].map(String) : [];
+    }),
   };
   /** `{bits, admin, arriba, rol, base, misRoles}`: lo del servidor sale de los roles; si Discord no los da, de los permisos
    *  que trajo el clic (`app_permissions`, que son los del canal donde se tocó) */
@@ -811,7 +1058,7 @@ async function correr(i, env, h, s) {
   try {
     const est = await objeto(env, { op: 'leer', g: gid });
     if (est.error) return editar(i, avisoV2('No pude leer cómo va tu setup: prueba de nuevo en un minuto.'));
-    const cx = contexto(i, env);
+    const cx = contexto(i, env, h);
     const hecho = est.hecho && est.hecho.t ? est.hecho : null;
     let borr = vigente(est.borr) ? est.borr : null;
     let paso = 0;
@@ -826,6 +1073,14 @@ async function correr(i, env, h, s) {
     } else if (s.a === 'aplicar') {
       if (!borr) return editar(i, await pantalla(hecho ? 7 : 0, null, hecho, est.dec, cx, i, env, h));
       return aplicar(i, env, h, cx, borr, hecho, est.dec);
+    } else if (s.a === 'comprobar') {
+      // 🔎 «Comprobar que todo anda»: sobre lo APLICADO (no el borrador) y sin escribir nada en el servidor
+      if (!hecho) return editar(i, await pantalla(0, borr, null, est.dec, cx, i, env, h));
+      const [g, mb] = await Promise.all([cx.guild(), cx.miembro()]);
+      if (!g || !mb) return editar(i, sinBot(gid));
+      const cfg = Object.assign({}, CFG_BASE, (await cx.cfgCrudo()) || {});
+      const items = await comprobar(env, cx, { c: hecho.c || {}, cfg, inv: hecho.inv || null, afuera: await cx.afuera() });
+      return editar(i, pasoComprobado({ nombre: g.name, items }));
     } else if (s.a === 'cambiar') {
       borr = borradorDeHecho(hecho, uid);
       paso = Math.min(4, Math.max(1, Number(vals[0]) || 1));
@@ -835,8 +1090,11 @@ async function correr(i, env, h, s) {
       else if (s.a === 'seguir') { borr.sin_perm = true; paso = 2; }
       else if (s.a === 'pl') { if (PLANTILLAS[vals[0]]) { borr.pl = vals[0]; borr.ov = {}; } paso = 2; }
       else if (s.a === 'ch') {
-        if (ROLES_CANAL.some(([k]) => k === s.x)) {
-          borr.c = Object.assign({}, borr.c || {}, { [s.x]: /^\d{15,22}$/.test(String(vals[0] || '')) ? String(vals[0]) : '' });
+        const multi = MULTI_CANAL.find(([k]) => k === s.x);
+        if (ROLES_CANAL.some(([k]) => k === s.x) || multi) {
+          // 🔑🏟️ las llaves y las ligas van de a varios (una lista); los otros, uno
+          const val = multi ? listaDe(vals, multi[2]) : (/^\d{15,22}$/.test(String(vals[0] || '')) ? String(vals[0]) : '');
+          borr.c = Object.assign({}, borr.c || {}, { [s.x]: val });
           borr.ce = Object.assign({}, borr.ce || {}, { [s.x]: 'e' });
           borr.adiv = true;
         }
@@ -848,8 +1106,8 @@ async function correr(i, env, h, s) {
     }
     if (borr && paso >= 1 && paso <= 5) {
       if (paso >= 3 && !borr.adiv) {
-        const cs = await cx.canales();
-        if (cs) { borr.c = adivinarCanales(cs); borr.ce = {}; borr.adiv = true; }
+        const [cs, afuera] = await Promise.all([cx.canales(), cx.afuera()]);
+        if (cs) { borr.c = adivinarCanales(cs, afuera); borr.ce = {}; borr.adiv = true; }
       }
       if (paso >= 3 && !borr.pl) borr.pl = 'completa';
       borr.paso = paso;
@@ -871,9 +1129,9 @@ async function pantalla(paso, borr, hecho, dec, cx, i, env, h) {
   if (paso === 1) return paso1({ gid: cx.gid, perm: await cx.perm(), borr });
   if (paso === 2) return paso2({ borr });
   if (paso === 3 || paso === 4) {
-    const [cs, perm] = await Promise.all([cx.canales(), cx.perm()]);
+    const [cs, perm, ligas, afuera] = await Promise.all([cx.canales(), cx.perm(), paso === 3 ? cx.ligas() : null, paso === 3 ? cx.afuera() : null]);
     const ctxP = perm && perm.base !== undefined ? { base: perm.base, gid: cx.gid, misRoles: perm.misRoles } : null;
-    return paso === 3 ? paso3({ borr, canales: cs || [], ctx: ctxP }) : paso4({ borr, canales: cs || [] });
+    return paso === 3 ? paso3({ borr, canales: cs || [], ctx: ctxP, ligas: ligas || [], afuera: afuera || [] }) : paso4({ borr, canales: cs || [] });
   }
   if (paso === 5) {
     const [cs, perm, meta] = await Promise.all([cx.canales(), cx.perm(), cx.meta()]);
@@ -922,11 +1180,15 @@ async function aplicar(i, env, h, cx, borr, hecho, dec) {
   try {
     const cfg = cfgFinal(borr);
     const pl = PLANTILLAS[borr.pl] ? borr.pl : 'completa';
-    const [g, cs, perm, meta, mb] = await Promise.all([cx.guild(), cx.canales(), cx.perm(), cx.meta(), cx.miembro()]);
+    const [g, cs, perm, meta, mb, ligas, afuera] = await Promise.all([cx.guild(), cx.canales(), cx.perm(), cx.meta(), cx.miembro(),
+      cx.ligas(), cx.afuera()]);
     if (!g || !mb) return editar(i, sinBot(gid));
     const estado = estadoLiga(gid, meta, h.SERVIDORES);
     const nombre = (g && g.name) || 'tu servidor';
-    const escribe = canalesQueEscribe(cfg, borr.c || {});
+    // 🔑🏟️ lo elegido que se guarda: sin llaves de una categoría de afuera ni ligas mal ubicadas (`elegidosQueQuedan()`)
+    const quedan = elegidosQueQuedan(borr.c || {}, cs || [], afuera || [], ligas || []);
+    const elegidos = quedan.c;
+    const escribe = canalesQueEscribe(cfg, elegidos);
     const itAj = { t: 'Guardo tus ajustes', sub: 'plantilla ' + PLANTILLAS[pl].et, est: 'va' };
     items.push(itAj);
     const itPr = escribe.map((x) => ({ id: x.id, t: 'Mensaje de prueba en ' + mencion(x.id), sub: '', est: 'espera' }));
@@ -953,7 +1215,7 @@ async function aplicar(i, env, h, cx, borr, hecho, dec) {
     }
     itAj.est = 'ok';
     itAj.t = 'Guardé tus ajustes';
-    itAj.sub = 'plantilla ' + PLANTILLAS[pl].et + ' · ' + ROLES_CANAL.filter(([k]) => (borr.c || {})[k]).length + ' canales';
+    itAj.sub = 'plantilla ' + PLANTILLAS[pl].et + ' · ' + canalesQueLee(elegidos, null).length + ' canales';
     await pintar(false);
 
     // 2 · un mensaje de prueba por canal, UNA vez por canal (lo ya probado en un setup anterior no se repite)
@@ -971,6 +1233,13 @@ async function aplicar(i, env, h, cx, borr, hecho, dec) {
 
     // 3 · la invitación permanente: la que ya hay, o una nueva con `unique: false` (Discord devuelve la equivalente)
     let inv = (hecho && hecho.inv && hecho.inv.codigo) ? hecho.inv : null;
+    // 🔎 la que ya hay se mira (21/11/2026): si la borraron en Discord (404), se crea otra en vez de dar por buena una muerta
+    let invOk;
+    if (inv) {
+      const rv = await dc(env, `/invites/${encodeURIComponent(inv.codigo)}`);
+      invOk = rv.ok ? true : rv.status === 404 ? false : undefined;
+      if (invOk === false) inv = null;
+    }
     if (inv) { itInv.est = 'ok'; itInv.sub = 'discord.gg/' + inv.codigo + ' · no vence'; }
     else {
       const c = canalInvitacion(g, cs || []);
@@ -983,6 +1252,7 @@ async function aplicar(i, env, h, cx, borr, hecho, dec) {
           const j = (await r.json().catch(() => ({}))) || {};
           if (j.code) {
             inv = { codigo: String(j.code), canal: String(c.name || '').slice(0, 80), canal_id: String(c.id), t: Date.now() };
+            invOk = true;
             itInv.est = 'ok';
             itInv.sub = 'discord.gg/' + inv.codigo + ' · no vence';
           } else { itInv.est = 'no'; itInv.sub = 'Discord no me dio el código: «Reintentar»'; }
@@ -997,9 +1267,9 @@ async function aplicar(i, env, h, cx, borr, hecho, dec) {
     // 4 · lo aplicado, en el objeto: de acá lo leen el ciclo (el alta), el vigía (los canales elegidos) y el Dashboard
     const usadas = conNuevos(h.SERVIDORES || [], meta).flatMap((x) => [x.sv, x.sigla].filter(Boolean));
     const sigla = (hecho && hecho.sigla) || siglaPropuesta(nombre, usadas);
-    const aviso = canalesQueEscribe(cfg, borr.c || {}).map((x) => x.id)[0] || '';
+    const aviso = canalesQueEscribe(cfg, elegidos).map((x) => x.id)[0] || '';
     const rr = resumenPermisos(perm, pl);
-    const nuevoHecho = { t: Date.now(), por: uid, pl, c: borr.c || {}, ov: borr.ov || {}, cfg, nombre: cortar(nombre, 100),
+    const nuevoHecho = { t: Date.now(), por: uid, pl, c: elegidos, ov: borr.ov || {}, cfg, nombre: cortar(nombre, 100),
       icono: iconoDe(g), miembros: (g && g.approximate_member_count) || 0, sigla, aviso, pruebas, inv,
       perm: { admin: rr.admin, faltan: rr.falta, arriba: (perm && perm.arriba) || 0 }, es: estado.es,
       alta: estado.es === 'socio' ? undefined : { t: Date.now() } };
@@ -1021,15 +1291,57 @@ async function aplicar(i, env, h, cx, borr, hecho, dec) {
     }
     // algo salió mal: queda la lista con «Reintentar» (hace sólo lo que falta) y «Seguir sin eso» (el cierre)
     if (items.some((x) => x.est === 'no')) return pintar(true);
+    // 6 · 🔎 y comprobar que todo ande (21/11/2026): lo que va a leer el ciclo, pedido de verdad
+    items.push({ t: 'Compruebo que todo ande', sub: 'leo cada canal como lo va a leer el bot', est: 'va' });
+    await pintar(false);
+    let comp = [];
+    try {
+      comp = await comprobar(env, cx, { c: elegidos, cfg: nuevo, inv, invOk, verCfg: true, afuera });
+      // lo que se dejó afuera, primero: el admin lo eligió y tiene que saber por qué no quedó
+      comp = quedan.sacados.map((x) => ({ t: 'No guardé ' + mencion(x.id), sub: x.por, est: 'no' })).concat(comp);
+    } catch (e) {
+      comp = [{ t: 'No pude comprobarlo', sub: 'lo aplicado ya quedó: «Comprobar de nuevo» en un minuto', est: 'va' }];
+    }
     const kit = estado.es === 'fuera' ? '' : await linkKit(env, gid);
     return editar(i, paso6({ nombre, icono: iconoDe(g), cfg, estado, aviso, kit, dec: (gu && gu.dec) || dec, hecho: gu.hecho || nuevoHecho,
-      suma: estado.es === 'socio' ? sumaDe(await cx.lobby(), estado.sv) : null }));
+      suma: estado.es === 'socio' ? sumaDe(await cx.lobby(), estado.sv) : null, comp }));
   } catch (e) {
     items.push({ t: 'Algo falló a mitad de camino', sub: 'lo que ya está hecho no se repite: «Reintentar»', est: 'no' });
     return pintar(true);
   } finally {
     await objeto(env, { op: 'soltar', g: gid });
   }
+}
+
+/**
+ * 🔎 La comprobación (ver `itemsComprobacion()`): el último mensaje de cada canal que el bot tiene que leer (hasta
+ * `LEER_TOPE`, a la vez), la invitación (salvo que «Aplicar» ya la haya mirado: `invOk`) y, con `verCfg`, los ajustes
+ * leídos otra vez de KV. `v` = `{c, cfg, inv, invOk, verCfg}`. No escribe nada.
+ */
+async function comprobar(env, cx, v) {
+  const [cs, perm, ligas] = await Promise.all([cx.canales(), cx.perm(), cx.ligas()]);
+  const lecturas = {};
+  await Promise.all(canalesQueLee(v.c || {}, v.cfg || {}).slice(0, LEER_TOPE).map(async (x) => {
+    try { lecturas[x.id] = (await dc(env, `/channels/${x.id}/messages?limit=1`)).status; } catch (e) { lecturas[x.id] = 0; }
+  }));
+  let invOk = v.invOk;
+  if (invOk === undefined && v.inv && v.inv.codigo) {
+    try {
+      const r = await dc(env, `/invites/${encodeURIComponent(v.inv.codigo)}`);
+      invOk = r.ok ? true : r.status === 404 ? false : undefined;
+    } catch (e) { invOk = undefined; }
+  }
+  let cfgOk;
+  if (v.verCfg) {
+    try {
+      const t = await env.KV.get('cfg:' + cx.gid);
+      const g = t ? JSON.parse(t) : {};
+      cfgOk = Object.entries(v.cfg || {}).every(([k, x]) => JSON.stringify(g[k]) === JSON.stringify(x));
+    } catch (e) { cfgOk = undefined; }
+  }
+  const ctx = perm && perm.base !== undefined ? { base: perm.base, gid: cx.gid, misRoles: perm.misRoles } : null;
+  return itemsComprobacion({ c: v.c, cfg: v.cfg, cs: cs || [], ctx, perm, ligas: ligas || [], lecturas, inv: v.inv, invOk, cfgOk,
+    afuera: v.afuera || [] });
 }
 
 /** 📨 El DM a Dlx. ⚠️ SÓLO A ÉL: `herramientas/sin_dm.py` pone rojo a CI si un DM va a otra persona. */

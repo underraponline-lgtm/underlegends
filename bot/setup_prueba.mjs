@@ -83,11 +83,57 @@ const CANALES = [
   oculto,
   { id: '1700000000000000010', type: 2, name: 'voz general', position: 8 },
 ];
-ok(JSON.stringify(SU.adivinarCanales(CANALES)) === JSON.stringify(C0),
+ok(JSON.stringify(SU.adivinarCanales(CANALES)) === JSON.stringify(Object.assign({}, C0, { ll: [], lg: [] })),
   'los canales: los encuentra solos con los nombres del lector (letras decoradas incluidas), nunca los del staff',
   JSON.stringify(SU.adivinarCanales(CANALES)));
 ok(SU.adivinarCanales(CANALES.filter((c) => c.id !== C0.an)).an === '1700000000000000007' && SU.adivinarCanales([]).an === '',
   'sin un canal de eventos, «Anuncios» adentro de una categoría de torneos (como FVS); sin canales, nada');
+// 🔑🏟️ las llaves y las ligas (21/11/2026)
+const LL1 = '1700000000000000011', LG1 = '1700000000000000012', LG2 = '1700000000000000014', CATL = '1650000000000000003';
+const CANALES_L = CANALES.concat([
+  { id: LL1, type: 0, name: '🔑┃𝙇𝙡𝙖𝙫𝙚𝙨', position: 10 },
+  { id: '1700000000000000013', type: 0, name: 'llaves-staff', parent_id: '1650000000000000002', position: 11 },
+  { id: CATL, type: 4, name: 'LOS DOMINGOS', position: 12 },
+  { id: LG1, type: 0, name: 'batallas', parent_id: CATL, position: 13 },
+  { id: LG2, type: 0, name: 'resultados-sueltos', position: 14 },
+  { id: '1700000000000000015', type: 0, name: 'resultados', parent_id: '1650000000000000001', position: 15 },
+  { id: '1700000000000000016', type: 0, name: 'llaves', parent_id: '1650000000000000001', position: 16 }]);
+ok(JSON.stringify(SU.adivinarCanales(CANALES_L).ll) === JSON.stringify([LL1, '1700000000000000016']) && SU.adivinarCanales(CANALES_L).lg.length === 0,
+  'las llaves: las encuentra por el nombre (letras decoradas incluidas) y nunca las del staff; las ligas no se adivinan',
+  JSON.stringify(SU.adivinarCanales(CANALES_L)));
+const LIGAS_YA = [{ n: 'FMS Titans', ver: '1700000000000000017' }];
+const CS_L = CANALES_L.concat([{ id: '1700000000000000017', type: 0, name: 'veredictos', parent_id: CATL }]);
+const sinVer = CS_L.filter((c) => c.id !== '1700000000000000017');
+ok(SU.estadoCanalLiga(LG1, sinVer, null, [])[0] === 'nueva' && /LOS DOMINGOS/.test(SU.estadoCanalLiga(LG1, sinVer, null, [])[1])
+  && SU.estadoCanalLiga('1700000000000000017', CS_L, null, LIGAS_YA)[0] === 'ok'
+  && SU.estadoCanalLiga(LG2, CS_L, null, [])[0] === 'no' && /categoría/.test(SU.estadoCanalLiga(LG2, CS_L, null, [])[1])
+  && SU.estadoCanalLiga('1700000000000000015', CS_L, null, [])[0] === 'no' && /eventos/.test(SU.estadoCanalLiga('1700000000000000015', CS_L, null, [])[1])
+  && SU.estadoCanalLiga(LG1, CS_L, null, [], [LG1])[0] === 'no' && SU.estadoCanalLiga('1', CS_L, null, [])[0] === 'no'
+  && SU.estadoCanalLiga(LG1, CS_L, { base: 0n, gid: GID, misRoles: [] }, [])[0] === 'no',
+'una liga: nueva en su categoría, «ya la leo» si es de una que se lee, y no sin categoría, en la de los eventos, si es un canal de eventos, si no existe o si el bot no la lee');
+// 🚫 lo que pidió la revisión: las categorías de afuera, las ligas que ya se leen por cualquiera de sus canales, y lo
+// que no se guarda al aplicar
+ok(JSON.stringify(SU.adivinarCanales(CANALES_L, ['1650000000000000001']).ll) === JSON.stringify([LL1])
+  && SU.adivinarCanales(CANALES_L, ['1650000000000000001']).an === C0.an,
+'adivinar no busca en las categorías que el servidor declara afuera (sus ligas): ni llaves ni nada');
+const YA2 = [{ n: 'FMS Domingos', ver: '9', an: '', tabla: LG1 }];
+const CS_EV = CS_L.concat([{ id: '1650000000000000004', type: 4, name: 'COMUNIDAD' },
+  { id: '1700000000000000021', type: 0, name: 'resultados', parent_id: '1650000000000000004' },
+  { id: '1700000000000000022', type: 0, name: '📢 eventos', parent_id: '1650000000000000004' }]);
+ok(SU.estadoCanalLiga(LG1, CS_L, null, YA2)[0] === 'ok' && SU.estadoCanalLiga('1700000000000000017', CS_L, null, YA2)[0] === 'ok'
+  && /es de FMS Domingos/.test(SU.estadoCanalLiga('1700000000000000017', CS_L, null, YA2)[1])
+  && SU.estadoCanalLiga('1700000000000000021', CS_EV, null, [])[0] === 'no' && SU.estadoCanalLiga('1700000000000000021', CS_EV, null, [])[2] === true
+  && SU.estadoCanalLiga(LG2, CS_L, null, [])[2] === true && SU.estadoCanalLiga(LG1, CS_L, { base: 0n, gid: GID, misRoles: [] }, [])[2] === undefined,
+'una liga que ya se lee se reconoce por cualquiera de sus canales (y por su categoría); la categoría con «eventos» es de los eventos; el «no» de lugar se marca, el de permisos no');
+const Q = SU.elegidosQueQuedan(Object.assign({}, C0, { ll: [LL1, '1700000000000000016'], lg: [LG1, LG2, '1700000000000000021'] }),
+  CS_EV, ['1650000000000000001'], []);
+ok(JSON.stringify(Q.c.ll) === JSON.stringify([LL1]) && JSON.stringify(Q.c.lg) === JSON.stringify([LG1]) && Q.sacados.length === 3
+  && Q.c.an === C0.an && Q.sacados.every((x) => x.por),
+'al aplicar no se guardan las llaves de una categoría de afuera ni las ligas mal ubicadas, y se dice por qué', JSON.stringify(Q));
+const COMP3 = SU.itemsComprobacion({ c: Object.assign({}, C0, { ll: ['1700000000000000016'] }), cfg: SU.cfgDePlantilla('leer', C0),
+  cs: CANALES_L, ctx: null, perm: { bits: '8', admin: true }, lecturas: { '1700000000000000016': 200 }, inv: null, afuera: ['1650000000000000001'] });
+ok(COMP3.some((x) => /tus llaves en/.test(x.t) && x.est === 'no' && /no lo leo/.test(x.sub)),
+  'y «Comprobar» marca una llave que después quedó en una categoría de afuera');
 const gInv = { id: GID, roles: ROLES, rules_channel_id: C0.an };
 ok(SU.canalInvitacion(gInv, CANALES).id === '1700000000000000006'
   && SU.canalInvitacion(gInv, CANALES.filter((c) => !/bienv/.test(c.name || ''))).id === C0.an
@@ -114,10 +160,40 @@ ok(cn.length === SERVIDORES.length + 1 && cn.slice(0, SERVIDORES.length).every((
   && cn[cn.length - 1].sv === 'FNC' && cn[cn.length - 1].sinCarta && A.conNuevos(SERVIDORES, {}).length === SERVIDORES.length,
 'conNuevos: los nuevos al final y sin carta; lo escrito en el Worker gana (ni un código ni un guild repetido); sin meta, lo de siempre');
 
+// 🔎 la comprobación (21/11/2026), pura: lo que contestó Discord, y lo que no se pidió se calcula
+const CC = Object.assign({}, C0, { ll: [LL1], lg: [LG1, LG2] });
+const lee = SU.canalesQueLee(CC, SU.cfgDePlantilla('completa', CC));
+ok(lee.map((x) => x.k).join() === 'an,in,ve,ll,lg,lg,ge' && SU.canalesQueLee(CC, { leer_chat: false }).every((x) => x.k !== 'ge')
+  && SU.canalesQueLee({ an: C0.an, ve: C0.an }, null).length === 1,
+'lo que el bot tiene que leer: eventos, inscripciones, veredictos, llaves, cada liga y el chat general (si lo lee), sin repetir');
+const COMP = SU.itemsComprobacion({ c: CC, cfg: SU.cfgDePlantilla('completa', CC), cs: CS_L, ctx: null,
+  perm: { bits: String(base | (1n << 27n)), arriba: 2 }, ligas: [], lecturas: { [C0.an]: 200, [C0.in]: 403, [C0.ve]: 404, [LL1]: 200, [LG1]: 200, [LG2]: 200, [C0.ge]: 500 },
+  inv: { codigo: 'abcDEF12' }, invOk: false, cfgOk: true });
+const est = (re) => (COMP.find((x) => re.test(x.t + ' ' + x.sub)) || {}).est;
+ok(est(/ajustes están guardados/) === 'ok' && est(/anuncios de eventos/) === 'ok' && est(/inscripciones/) === 'no'
+  && est(/veredictos/) === 'no' && est(/tus llaves en/) === 'ok' && est(new RegExp('Liga nueva en <#' + LG1)) === 'va'
+  && est(new RegExp('liga de <#' + LG2)) === 'no' && est(/chat general/) === 'va' && est(/^El #N en los apodos/) === 'ojo'
+  && est(/ya no anda/) === 'no' && est(/Escribo en/) === 'ok',
+'la comprobación: lo que contestó Discord manda (leer 403 o 404 es ❌, un 500 es ⏳), la liga nueva espera, la sin categoría no, el rol bajo avisa y la invitación muerta es ❌',
+JSON.stringify(COMP.map((x) => [x.t, x.est])));
+const COMP2 = SU.itemsComprobacion({ c: C0, cfg: SU.cfgDePlantilla('leer', C0), cs: CANALES, ctx: { base: 0n, gid: GID, misRoles: [] },
+  perm: { bits: '0' }, lecturas: {}, inv: null });
+ok(COMP2.some((x) => /las busco solo/.test(x.t) && x.est === 'salto') && COMP2.filter((x) => /^Leo /.test(x.t)).every((x) => x.est === 'no')
+  && COMP2.some((x) => /Sin la invitación/.test(x.t) && x.est === 'ojo') && !COMP2.some((x) => /Escribo en|apodos/.test(x.t)),
+'sin llaves elegidas lo dice; lo que no se pidió a Discord se calcula con los permisos; con «Sólo leer» no hay nada que escribir ni #N',
+JSON.stringify(COMP2.map((x) => [x.t, x.est])));
+
 // 📏 CADA PANTALLA CONTRA LOS TOPES, con el peor caso: nombre largo con emojis, todo prendido, todo lo que falta
 const NOM = '🔥🎤 La Hermandad del Freestyle Underground Latinoamericano Oficial 🎤🔥 '.repeat(2);
-const BORR = { v: 1, paso: 4, pl: 'completa', c: C0, ce: { an: 'e' }, ov: { canales: Array.from({ length: 10 }, (_, k) => '17000000000000001' + String(k).padStart(2, '0')) } };
-const CS = CANALES.concat(BORR.ov.canales.map((id) => ({ id, type: 0, name: 'x' })));
+const LG5 = Array.from({ length: 5 }, (_, k) => '17000000000000003' + String(k).padStart(2, '0'));
+const LL3 = Array.from({ length: 3 }, (_, k) => '17000000000000004' + String(k).padStart(2, '0'));
+const BORR = { v: 1, paso: 4, pl: 'completa', c: Object.assign({}, C0, { ll: LL3, lg: LG5 }), ce: { an: 'e' },
+  ov: { canales: Array.from({ length: 10 }, (_, k) => '17000000000000001' + String(k).padStart(2, '0')) } };
+const CS = CANALES.concat(BORR.ov.canales.map((id) => ({ id, type: 0, name: 'x' })),
+  LL3.map((id) => ({ id, type: 0, name: 'llaves' })), LG5.map((id, k) => ({ id, type: 0, name: 'resultados', parent_id: k % 2 ? CATL : '' })),
+  [{ id: CATL, type: 4, name: '🔥🎤 LA LIGA MÁS LARGA DEL FREESTYLE UNDERGROUND LATINOAMERICANO OFICIAL 🎤🔥' }]);
+const COMP_MAL = SU.itemsComprobacion({ c: BORR.c, cfg: SU.cfgFinal(BORR), cs: CS, ctx: { base: 0n, gid: GID, misRoles: [] },
+  perm: { bits: '0', arriba: 40 }, ligas: [], lecturas: {}, inv: { codigo: 'abcDEF12' }, invOk: false, cfgOk: false });
 const PERM_MAL = { bits: '0', arriba: 40, rol: NOM };
 const ITEMS = [{ t: 'Guardé tus ajustes', sub: 'plantilla Liga completa · 4 canales', est: 'ok' }].concat(
   [1, 2, 3].map((k) => ({ t: 'Mensaje de prueba en <#' + C0.ge + '>', sub: 'no puedo escribir ahí: dale al bot permiso de ver y enviar mensajes en ese canal', est: k === 2 ? 'no' : 'ok' })),
@@ -130,12 +206,16 @@ const PANTALLAS = {
   'paso 1 (falta todo)': SU.paso1({ gid: GID, perm: PERM_MAL, borr: BORR }),
   'paso 1 (admin)': SU.paso1({ gid: GID, perm: { bits: '8', admin: true, arriba: 0 }, borr: BORR }),
   'paso 2': SU.paso2({ borr: BORR }),
-  'paso 3': SU.paso3({ borr: BORR, canales: CS, ctx: { base: 0n, gid: GID, misRoles: [] } }),
+  'paso 3': SU.paso3({ borr: BORR, canales: CS, ctx: { base: 0n, gid: GID, misRoles: [] },
+    ligas: Array.from({ length: 12 }, (_, k) => ({ n: 'FMH ' + NOM.slice(0, 30) + k, ver: '19' + String(k).padStart(17, '0') })) }),
   'paso 4 (todo prendido)': SU.paso4({ borr: BORR, canales: CS }),
   'paso 5': SU.paso5({ nombre: NOM, borr: BORR, estado: { es: 'nuevo' }, invCanal: C0.an, invPuede: false }),
   'aplicando (con fallas)': SU.aplicando(ITEMS, true),
   'paso 6': SU.paso6({ nombre: NOM, icono: 'https://x/y.png', cfg: SU.cfgFinal(BORR), estado: { es: 'nuevo' }, aviso: C0.ge, kit: 'https://underlegends.pages.dev/freestyle-rap/kit/0123456789abcdef0123', dec: null, hecho: HECHO }),
-  'paso 7': SU.paso7({ nombre: NOM, hecho: HECHO, cfg: SU.cfgFinal(BORR), perm: PERM_MAL, estado: { es: 'socio' }, dec: { si: false, t: 1 }, borr: BORR }),
+  'paso 6 (comprobado mal)': SU.paso6({ nombre: NOM, icono: 'https://x/y.png', cfg: SU.cfgFinal(BORR), estado: { es: 'nuevo' }, aviso: C0.ge, kit: 'https://underlegends.pages.dev/freestyle-rap/kit/0123456789abcdef0123', dec: null, hecho: HECHO, comp: COMP_MAL }),
+  'comprobado (mal)': SU.pasoComprobado({ nombre: NOM, items: COMP_MAL }),
+  'comprobado (bien)': SU.pasoComprobado({ nombre: NOM, items: COMP.filter((x) => x.est === 'ok') }),
+  'paso 7': SU.paso7({ nombre: NOM, hecho: Object.assign({}, HECHO, { c: BORR.c }), cfg: SU.cfgFinal(BORR), perm: PERM_MAL, estado: { es: 'socio' }, dec: { si: false, t: 1 }, borr: BORR }),
   'DM a Dlx': SU.dmDlx({ gid: '1234567890123456789012', nombre: NOM, icono: 'https://x/y.png', miembros: 12345, perm: PERM_MAL, pl: 'basico', por: '123456789012345678', sigla: 'FNC', dec: null }),
   'DM a Dlx (decidido)': SU.dmDlx({ gid: '1234567890123456789012', nombre: NOM, miembros: 12345, perm: PERM_MAL, pl: 'leer', por: '1', sigla: 'FNC', dec: { si: true, t: Date.now() } }),
 };
@@ -240,7 +320,8 @@ if (!DatabaseSync) {
   const env = Object.assign({}, envO, { FOTOS_SAL: 'sal-de-prueba',
     AVISOS: { idFromName: () => 'liga', get: () => ({ fetch: (u, init) => { pedidos.objeto += 1; return o.fetch(new Request(u, init)); } }) } });
   const pedidos = { discord: 0, objeto: 0 };
-  const W = { patches: [], mensajes: [], invites: [], dms: [], dmMsgs: [] };
+  const W = { patches: [], mensajes: [], invites: [], dms: [], dmMsgs: [], lecturas: [], mirarInv: [] };
+  const SIN_LEER = new Set(), INV_MUERTA = new Set();
   const CAN = CANALES.map((c) => (c.id === '1700000000000000006' ? c : c));
   globalThis.fetch = async (url, init = {}) => {
     const u = String(url);
@@ -261,6 +342,11 @@ if (!DatabaseSync) {
       (msg[1] === '1900000000000000001' ? W.dmMsgs : W.mensajes).push([msg[1], JSON.parse(init.body)]);
       return new Response(JSON.stringify({ id: '1950000000000000' + String(W.mensajes.length).padStart(3, '0') }), { status: 200 });
     }
+    // 🔎 la comprobación: el último mensaje de un canal (los de `SIN_LEER`, 403) y una invitación (`INV_MUERTA`, 404)
+    const lee1 = /\/channels\/(\d+)\/messages\?limit=1$/.exec(u);
+    if (lee1 && m === 'GET') { W.lecturas.push(lee1[1]); return new Response(SIN_LEER.has(lee1[1]) ? '{"message":"Missing Access"}' : '[]', { status: SIN_LEER.has(lee1[1]) ? 403 : 200 }); }
+    const vInv = /\/invites\/([A-Za-z0-9-]+)$/.exec(u);
+    if (vInv && m === 'GET') { W.mirarInv.push(vInv[1]); return new Response(INV_MUERTA.has(vInv[1]) ? '{}' : JSON.stringify({ code: vInv[1] }), { status: INV_MUERTA.has(vInv[1]) ? 404 : 200 }); }
     const inv = /\/channels\/(\d+)\/invites$/.exec(u);
     if (inv && m === 'POST') { W.invites.push([inv[1], JSON.parse(init.body)]); return new Response(JSON.stringify({ code: 'abcDEF12' }), { status: 200 }); }
     return new Response('{}', { status: 404 });
@@ -277,7 +363,7 @@ if (!DatabaseSync) {
     const antes = { ...pedidos };
     const r = SU.componente(inter({ data: { custom_id: id, values: values || [] } , member: quien || { permissions: '32', user: { id: ADMIN } } }), env, ctx, h);
     await Promise.all(espera.splice(0));
-    return { r: await r.json(), gasto: pedidos.discord - antes.discord + pedidos.objeto - antes.objeto };
+    return { r: await r.json(), gasto: pedidos.discord - antes.discord + pedidos.objeto - antes.objeto, discord: pedidos.discord - antes.discord };
   };
   const ultima = () => W.patches[W.patches.length - 1];
   const gastos = {};
@@ -306,6 +392,15 @@ if (!DatabaseSync) {
   'paso 3: los canales encontrados solos, elegidos en cada menú');
   x = await clic('su:v1:ch:in', ['1700000000000000006']);
   ok((await op({ op: 'leer', g: G })).borr.ce.in === 'e' && /elegido/.test(textoDe(ultima())), 'corregir uno: queda «elegido»');
+  // 🔑🏟️ las llaves y las ligas van de a varios, con su tope
+  x = await clic('su:v1:ch:ll', [C0.an, 'basura', C0.in, C0.ve, C0.ge]);
+  const bLL = (await op({ op: 'leer', g: G })).borr;
+  ok(JSON.stringify(bLL.c.ll) === JSON.stringify([C0.an, C0.in, C0.ve]) && bLL.ce.ll === 'e' && /Tus llaves/.test(textoDe(ultima())),
+    'las llaves: una lista, sin lo que no es un canal y con su tope de 3', JSON.stringify(bLL.c.ll));
+  await clic('su:v1:ch:ll', ['1700000000000000007']);
+  await clic('su:v1:ch:lg', []);
+  ok(JSON.stringify((await op({ op: 'leer', g: G })).borr.c.ll) === '["1700000000000000007"]' && (await op({ op: 'leer', g: G })).borr.c.lg.length === 0
+    && /Tus ligas/.test(textoDe(ultima())), 'cambiar las llaves las reemplaza, y las ligas pueden quedar vacías');
   x = await clic('su:v1:ir:4');
   x = await clic('su:v1:tg:nick');
   gastos['un interruptor'] = x.gasto;
@@ -318,6 +413,7 @@ if (!DatabaseSync) {
   const patches0 = W.patches.length;
   x = await clic('su:v1:aplicar');
   gastos['aplicar'] = x.gasto;
+  gastos['aplicar (sólo Discord)'] = x.discord;
   const cfgG = JSON.parse(KV['cfg:' + G] || '{}');
   ok(kvPuts === 1 && cfgG.vivo === C0.ge && cfgG.nick === false && cfgG.aviso_evento === '', 'aplicar: UNA escritura de KV, con la plantilla y lo cambiado', KV['cfg:' + G]);
   ok(W.mensajes.length === 1 && W.mensajes[0][0] === C0.ge && /Prueba de la Liga Global/.test(W.mensajes[0][1].content)
@@ -331,7 +427,34 @@ if (!DatabaseSync) {
   const hechoG = (await op({ op: 'leer', g: G })).hecho;
   ok(hechoG.alta && hechoG.inv.codigo === 'abcDEF12' && hechoG.dm.ok && hechoG.sigla === 'FNC' && (await op({ op: 'leer', g: G })).borr === null,
     'lo aplicado queda en el objeto: el alta, la invitación, el DM mandado y la sigla propuesta');
+  ok(/Lo comprobé/.test(textoDe(ultima())) && /Leo tus anuncios de eventos/.test(textoDe(ultima())) && /Leo tus llaves/.test(textoDe(ultima()))
+    && W.lecturas.includes(C0.an) && W.lecturas.includes('1700000000000000007') && W.lecturas.length <= SU.LEER_TOPE
+    && /Tus ajustes están guardados/.test(textoDe(ultima())),
+  'aplicar termina comprobando: lee de verdad cada canal (las llaves también), y los ajustes se volvieron a leer de KV', JSON.stringify(W.lecturas));
   for (const p of W.patches) ok(SU.medir(p).cabe, 'cada edición del mensaje entra en los topes (' + JSON.stringify(SU.medir(p)) + ')');
+  ok((await (await o.fetch(new Request('https://avisos/ajustes'))).json()).setup_canales[G].ll[0] === '1700000000000000007',
+    'el ciclo recibe las llaves elegidas (`setup_canales`), también para un socio de antes');
+
+  // 🔎 «Comprobar»: sobre lo aplicado, sin escribir nada; un canal que el bot no lee y una invitación borrada se ven
+  SIN_LEER.add(C0.an);
+  INV_MUERTA.add('abcDEF12');
+  const msgs0 = W.mensajes.length, invs0 = W.invites.length, puts0 = kvPuts;
+  x = await clic('su:v1:comprobar');
+  gastos['comprobar'] = x.gasto;
+  ok(/para arreglar/.test(textoDe(ultima())) && /el bot no puede leer ahí/.test(textoDe(ultima())) && /ya no anda/.test(textoDe(ultima()))
+    && W.mensajes.length === msgs0 && W.invites.length === invs0 && kvPuts === puts0 && SU.medir(ultima()).cabe,
+  '«Comprobar»: dice lo que no anda (no lee un canal, la invitación se borró) sin mandar mensajes, invitaciones ni escribir KV');
+  // aplicar otra vez con la invitación borrada: la mira, ve que no está y crea otra
+  await clic('su:v1:cambiar', ['5']);
+  await clic('su:v1:aplicar');
+  ok(W.invites.length === invs0 + 1 && (await op({ op: 'leer', g: G })).hecho.inv.codigo === 'abcDEF12',
+    'aplicar con la invitación borrada: crea otra en vez de dar por buena la muerta');
+  SIN_LEER.clear();
+  INV_MUERTA.clear();
+  x = await clic('su:v1:comprobar');
+  ok(/todo anda|para mirar/.test(textoDe(ultima())) && !/para arreglar/.test(textoDe(ultima())), 'y arreglado, «Comprobar de nuevo» da todo bien',
+    textoDe(ultima()).slice(0, 300));
+  const invsFin = W.invites.length;
 
   // correrlo otra vez: el panel; cambiar algo y volver a aplicar no repite nada
   await SU.comando(inter({}), env, ctx, h);
@@ -343,7 +466,7 @@ if (!DatabaseSync) {
   await clic('su:v1:tg:nick');
   await clic('su:v1:ir:5');
   await clic('su:v1:aplicar');
-  ok(kvPuts === 2 && JSON.parse(KV['cfg:' + G]).nick === true && W.mensajes.length === 1 && W.invites.length === 1 && W.dms.length === 1,
+  ok(kvPuts === 2 && JSON.parse(KV['cfg:' + G]).nick === true && W.mensajes.length === 1 && W.invites.length === invsFin && W.dms.length === 1,
     'volver a aplicar: guarda el cambio y NO repite el mensaje de prueba, la invitación ni el DM');
   await clic('su:v1:ir:5');
   await clic('su:v1:aplicar');
@@ -353,7 +476,7 @@ if (!DatabaseSync) {
   await clic('su:v1:cambiar', ['5']);
   const [a1, a2] = [SU.componente(inter({ data: { custom_id: 'su:v1:aplicar' } }), env, ctx, h), SU.componente(inter({ data: { custom_id: 'su:v1:aplicar' } }), env, ctx, h)];
   await Promise.all(espera.splice(0));
-  ok(W.patches.some((p) => /Ya se está aplicando/.test(textoDe(p))) && W.dms.length === 1 && W.invites.length === 1, 'dos «Aplicar» a la vez: uno espera');
+  ok(W.patches.some((p) => /Ya se está aplicando/.test(textoDe(p))) && W.dms.length === 1 && W.invites.length === invsFin, 'dos «Aplicar» a la vez: uno espera');
   void a1; void a2;
 
   // los botones de Dlx: sólo él
@@ -399,7 +522,8 @@ if (!DatabaseSync) {
 
   console.log('\n  📡 pedidos por clic (Discord + el objeto; el tope del plan gratis es 50):\n'
     + Object.entries(gastos).map(([k, v]) => `     ${k.padEnd(24)} ${v}`).join('\n'));
-  ok(Object.values(gastos).every((v) => v <= 50) && gastos.aplicar <= 30, 'ningún clic se acerca a los 50 pedidos de una invocación', JSON.stringify(gastos));
+  ok(Object.values(gastos).every((v) => v <= 50) && gastos['aplicar (sólo Discord)'] <= 35 && gastos.aplicar <= 45,
+    'ningún clic se acerca a los 50 pedidos de una invocación (con la comprobación, «Aplicar» pide a Discord a lo sumo 35)', JSON.stringify(gastos));
   globalThis.fetch = f0;
 }
 

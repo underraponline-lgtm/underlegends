@@ -4999,6 +4999,20 @@ const ok = (cond, que, det) => {
   ok(A.minutosAlCiclo(en(22, 22)) === 0, 'justo a las :22, cero');
 }
 
+// 🔑 las llaves que mira el vigía cada minuto (21/11/2026): ninguna se queda sin mirar, por larga que sea la lista
+{
+  const L = Array.from({ length: 27 }, (_, k) => ({ id: 'c' + k }));
+  const vistos = new Set();
+  for (let m = 0; m < 10; m += 1) for (const c of A.llavesDelMinuto(L, new Set(), m)) vistos.add(c.id);
+  const vivo = A.llavesDelMinuto(L, new Set(['c25', 'c26']), 3);
+  ok(vistos.size === 27 && A.llavesDelMinuto(L, new Set(), 0).length === A.VIVO_TOPE
+     && vivo.length === A.VIVO_TOPE && vivo[0].id === 'c25' && vivo[1].id === 'c26'
+     && A.llavesDelMinuto(L, new Set(L.slice(0, 6).map((c) => c.id)), 5).every((c) => Number(c.id.slice(1)) < 6)
+     && A.llavesDelMinuto([], new Set(), 4).length === 0,
+  'las llaves del vigía: con 27 canales, en 7 minutos se miran todos (con el %5 de antes, del 20 en adelante nunca); las en vivo van primero',
+  [...vistos].length);
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

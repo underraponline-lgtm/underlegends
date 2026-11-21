@@ -2872,7 +2872,66 @@ def _guilds_liga():
             if d.get('confirmado') and d.get('guild_id')}
 
 
-def _canales(s, solo=None, guilds=None):
+#: 🔑 los canales de llaves que cada servidor eligió en su /setup (`llaves_del_setup()`): `llave_de_imagen()` los trata
+#: como canales de llaves aunque su nombre no lo diga
+_SETUP_LL = set()
+
+
+def llaves_del_setup(nombres=None, svs=None):
+    """🔑 `{canal_id: {servidor, guild, canal}}`: los canales de llaves que cada servidor confirmado eligió en su /setup
+    (`canales_setup.ll` de `datos/servidores.json`, que escribe `tiers.canales_del_setup()`).
+
+    Dlx, 21/11/2026, por Makma: *«cómo agrega el canal de llaves»*. El dirigido mira sólo los canales donde YA hubo una
+    llave, así que el de un servidor recién configurado se descubría recién en el barrido completo, una vez por día
+    (`HORAS_BARRIDO`). Elegido en el /setup se lee en CADA vuelta desde la primera, y en el barrido completo aunque esté
+    en una categoría que el filtro de staff saca: lo eligió su admin. `nombres`: `{guild: nombre}` de la memoria."""
+    if svs is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+                svs = (json.load(f) or {}).get('servidores') or {}
+        except (OSError, ValueError):
+            return {}
+    nombres = nombres or {}
+    out = {}
+    for sv, d in sorted(svs.items()):
+        if not isinstance(d, dict) or not d.get('confirmado') or not d.get('guild_id'):
+            continue
+        g = str(d['guild_id'])
+        for cid in ((d.get('canales_setup') or {}).get('ll') or [])[:3]:
+            if re.match(r'^\d{15,22}$', str(cid)):
+                out[str(cid)] = {'servidor': nombres.get(g) or d.get('nombre') or sv, 'guild': g, 'canal': 'llaves'}
+    return out
+
+
+def validar_llaves_setup(s, extra, antes=None):
+    """🔑 De `llaves_del_setup()`, los que de verdad existen y NO están en una categoría que su servidor declara afuera
+    (`categorias_fuera()`: sus ligas, las «heats» de FRZ…). Se saltean el filtro de STAFF —los eligió su admin—, nunca el
+    de afuera: ésa es una decisión de Dlx, y una liga leída como llave inventa eventos (lo encontró la revisión del
+    21/11/2026). Un pedido por servidor CON llaves elegidas; si Discord no contesta, ese servidor queda como estaba en
+    `antes` (la memoria: `setup_ll`), así una vuelta fallida no apaga nada ni prende algo sin mirar.
+    Devuelve `{canal_id: {servidor, guild, canal}}`, con el nombre de verdad del canal."""
+    out = {}
+    antes = antes or {}
+    for g in sorted({str(d.get('guild')) for d in (extra or {}).values()}):
+        cs = None
+        try:
+            r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g, timeout=30)
+            if r.status_code == 200:
+                cs = {str(c.get('id')): c for c in r.json()}
+        except Exception:                                # noqa: BLE001
+            cs = None
+        if cs is None:
+            out.update({k: v for k, v in antes.items() if str(v.get('guild')) == g and k in extra})
+            continue
+        fuera = categorias_fuera(g)
+        for cid, d in extra.items():
+            c = cs.get(cid)
+            if str(d.get('guild')) == g and c and c.get('type') in (0, 5) and str(c.get('parent_id') or '') not in fuera:
+                out[cid] = dict(d, canal=c.get('name') or d.get('canal') or 'llaves')
+    return out
+
+
+def _canales(s, solo=None, guilds=None, extra=None):
     """(canal_id, canal, servidor, guild) de los canales que hay que mirar.
 
     ⚠️ CON `solo` NO SE LE PREGUNTA NADA A DISCORD, y ahi esta el ahorro
@@ -2909,8 +2968,19 @@ def _canales(s, solo=None, guilds=None):
         # 🔴 NI LOS CANALES DE UNA CATEGORÍA DE STAFF: ver `categorias_staff()`,
         # ni los de las que el servidor declara afuera (`categorias_fuera()`)
         fuera = categorias_staff(cs) | categorias_fuera(g['id'])
+        dados = set()
         for c in cs:
             if c['type'] in (0, 5) and str(c.get('parent_id') or '') not in fuera:
+                dados.add(str(c['id']))
+                yield c['id'], c['name'], g['name'], g['id']
+        # 🔑 y los de llaves que eligió en su /setup (ya validados: `validar_llaves_setup()`), aunque el filtro de STAFF
+        # los saque. ⚠️ El de afuera (`categorias_fuera()`) no se saltea nunca
+        afuera = categorias_fuera(g['id'])
+        for cid, d in sorted((extra or {}).items()):
+            if str(d.get('guild')) != str(g['id']) or cid in dados:
+                continue
+            c = next((x for x in cs if str(x.get('id')) == cid and x.get('type') in (0, 5)), None)
+            if c and str(c.get('parent_id') or '') not in afuera:
                 yield c['id'], c['name'], g['name'], g['id']
 
 
@@ -2938,6 +3008,10 @@ def hondos(svs=None, hoy=None):
             and d.get('guild_id') and str(d.get('leer_hondo_hasta') or '') >= hoy}
 
 
+#: para la prueba de `validar_llaves_setup()`: `{guild: {categorías}}` en vez de `datos/servidores.json`
+_categorias_fuera_prueba = [None]
+
+
 def categorias_fuera(gid):
     """Las categorías que ese servidor declara afuera en `datos/servidores.json`.
 
@@ -2945,6 +3019,8 @@ def categorias_fuera(gid):
     de ligas»): sus ANUNCIOS y VEREDICTOS son de jornadas de liga, no de
     eventos, y leídos como tales entraban al calendario y como 5 vidas.
     """
+    if _categorias_fuera_prueba[0] is not None:
+        return set(_categorias_fuera_prueba[0].get(str(gid)) or ())
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
             svs = (json.load(f) or {}).get('servidores') or {}
@@ -3297,7 +3373,7 @@ def a_releer(cid, ms, pendientes):
                   and int((v or {}).get('vistas') or 0) < RELEER_VECES and (viejo is None or int(k) < viejo))
 
 
-def barrer(s, por_canal=25, solo=None, guilds=None, hondo=()):
+def barrer(s, por_canal=25, solo=None, guilds=None, hondo=(), extra=None):
     """Mira los ultimos mensajes de cada canal y devuelve las llaves.
 
     ⚠️ NO SE FILTRA POR NOMBRE DE CANAL. Ver el encabezado: `eventos-hoy`
@@ -3326,7 +3402,7 @@ def barrer(s, por_canal=25, solo=None, guilds=None, hondo=()):
     pendientes, releidas = releer_pendientes(), []
     guardadas = fases_guardadas()
     antes = json.dumps(guardadas, sort_keys=True)
-    for cid, canal, servidor, guild in _canales(s, solo, guilds):
+    for cid, canal, servidor, guild in _canales(s, solo, guilds, extra):
         n_ch += 1
         # 📜 un servidor recién sumado, hondo (`hondos()`): sus llaves desde el arranque de la temporada
         rr = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
@@ -3360,7 +3436,7 @@ def barrer(s, por_canal=25, solo=None, guilds=None, hondo=()):
             # 🎤 o un cypher con su podio, sin batallas (`es_cypher()`): también es una llave
             llave = es_llave(texto) or es_cypher(texto)
             if not llave:
-                t2 = llave_de_imagen(m, canal)
+                t2 = llave_de_imagen(m, canal, cid)
                 if t2 and es_llave(t2):
                     texto, imagen, llave = t2, True, True
             fp = None if llave else fase_previa(texto)
@@ -3472,7 +3548,7 @@ def juntar_rondas(t):
     return '\n'.join(out)
 
 
-def llave_de_imagen(m, canal):
+def llave_de_imagen(m, canal, cid=''):
     """El texto de la llave que es una imagen, ya traducido, o `''`. Ver arriba.
 
     🐉 TAMBIÉN POR EL NOMBRE DEL ARCHIVO (12/10/2026, Dlx: MATANZA DE DIOSES *«sí obviamente [cuenta]… tienen llave
@@ -3496,7 +3572,8 @@ def llave_de_imagen(m, canal):
                 return ''
         except ValueError:
             return ''
-    elif not canal_de_llaves(canal) or not A.pide_ocr(m):
+    # 🔑 el canal de llaves que eligió su admin en el /setup cuenta como uno, aunque no se llame así
+    elif not (canal_de_llaves(canal) or str(cid) in _SETUP_LL) or not A.pide_ocr(m):
         return ''
     if _OCR['mem'] is None:
         _OCR['mem'] = A._ocr_memoria(OCR_LLAVES)
@@ -3591,9 +3668,18 @@ def escuchar(s, forzar=None, por_canal=25):
     hon = hondos() if completo else set()
     if hon:
         print('   📜 leo hondo (%d mensajes por canal) %d servidor(es) recién sumado(s)' % (HONDO, len(hon)))
+    # 🔑 los canales de llaves elegidos en el /setup (21/11/2026): en el dirigido se suman a los conocidos (la memoria
+    # manda con su nombre), y en el completo entran aunque el filtro de staff los saque. Ver `llaves_del_setup()`
+    # ⚠️ validados contra Discord y contra `categorias_fuera()` (`validar_llaves_setup()`), y anotados en la memoria
+    # (`setup_ll`): de ahí los lee el bot en vivo (`subir_datos._canales_llaves()`)
+    extra = llaves_del_setup(mem.get('guilds') or {})
+    extra = validar_llaves_setup(s, extra, mem.get('setup_ll')) if extra else {}
+    mem['setup_ll'] = extra
+    _SETUP_LL.clear()
+    _SETUP_LL.update(extra)
     out, n_ch, n_msg = barrer(s, por_canal=por_canal,
-                              solo=None if completo else mem['canales'],
-                              guilds=guilds, hondo=hon)
+                              solo=None if completo else dict(extra, **mem['canales']),
+                              guilds=guilds, hondo=hon, extra=extra)
     # ⚠️ SE ANOTA LA LISTA DE HOY, también si se fue alguno: si el bot
     # sale de un servidor y vuelve, vuelve a ser nuevo.
     if guilds is not None:
@@ -4633,6 +4719,34 @@ def vidas(s, mem, guilds, completo):
     # 🖼️ los votos en imagen que se leyeron acá (`_voto_de_imagen()`), a la misma memoria que las llaves en imagen
     _guardar_ocr_llaves()
     return out
+
+
+def _prueba_validar_llaves():
+    """`validar_llaves_setup()` contra un Discord de mentira (ver la prueba de `_self_check()`)."""
+    class R:
+        def __init__(self, st, js):
+            self.status_code, self._js = st, js
+
+        def json(self):
+            return self._js
+
+    class S:
+        def get(self, url, timeout=0):
+            if '/guilds/9/' in url:
+                return R(200, [{'id': '50', 'type': 4, 'name': 'FMS LIGA'}, {'id': '51', 'type': 4, 'name': 'STAFF'},
+                               {'id': '101', 'type': 0, 'name': 'llaves', 'parent_id': ''},
+                               {'id': '102', 'type': 0, 'name': 'veredictos', 'parent_id': '50'},
+                               {'id': '103', 'type': 0, 'name': 'cuadros', 'parent_id': '51'}])
+            return R(500, {})
+    viejo = _categorias_fuera_prueba[0]
+    _categorias_fuera_prueba[0] = {'9': {'50'}}
+    try:
+        ex = {k: {'servidor': 'Nueve', 'guild': g, 'canal': 'llaves'} for k, g in
+              (('101', '9'), ('102', '9'), ('103', '9'), ('104', '9'), ('201', '8'))}
+        v = validar_llaves_setup(S(), ex, {'201': {'servidor': 'Ocho', 'guild': '8', 'canal': 'x'}})
+        return sorted(v) == ['101', '103', '201'] and v['103']['canal'] == 'cuadros'
+    finally:
+        _categorias_fuera_prueba[0] = viejo
 
 
 def _self_check():
@@ -5728,6 +5842,19 @@ def _check_cadencia():
                  'Z': {'confirmado': True, 'guild_id': '7'}}, hoy='2026-11-15') == {'9'}
          and hondos({'X': {'confirmado': True, 'guild_id': '9', 'leer_hondo_hasta': '2026-11-18'}}, hoy='2026-11-19') == set()
          and HONDO == 100),
+        # 🔑 los canales de llaves del /setup (21/11/2026): de los confirmados, con el nombre del servidor de la memoria
+        ('el canal de llaves elegido en el /setup se lee siempre, y de un servidor que no es de la Liga, no',
+         llaves_del_setup({'9': 'Nuevo Club'}, {
+             'X': {'confirmado': True, 'guild_id': '9', 'canales_setup': {'ll': ['1700000000000000101', 'x']}},
+             'Y': {'confirmado': False, 'guild_id': '8', 'canales_setup': {'ll': ['1700000000000000102']}},
+             'Z': {'confirmado': True, 'guild_id': '7', 'nombre': 'Zeta', 'canales_setup': {'ll': ['1700000000000000103']}}})
+         == {'1700000000000000101': {'servidor': 'Nuevo Club', 'guild': '9', 'canal': 'llaves'},
+             '1700000000000000103': {'servidor': 'Zeta', 'guild': '7', 'canal': 'llaves'}}
+         and canal_de_llaves(llaves_del_setup({}, {'X': {'confirmado': True, 'guild_id': '9',
+                                                          'canales_setup': {'ll': ['1700000000000000101']}}})['1700000000000000101']['canal'])),
+        ('y se valida: uno de una categoría afuera (una liga) no entra, uno de staff sí, uno borrado no, y si Discord no '
+         'contesta queda lo de antes',
+         _prueba_validar_llaves()),
     ]:
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))

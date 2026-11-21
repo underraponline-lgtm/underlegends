@@ -1746,6 +1746,8 @@ NUEVA_NOMBRE = re.compile(r'\b(?:LIGA|LEAGUE|FMS|FMH|SERIES|CHAMPIONS|DIVISION|C
 NUEVA_VER = re.compile(r'VEREDICT|RESULTADO', re.I)
 NUEVA_LIGA = re.compile(r'TABLA|JORNADA|LINE.?UP|ROSTER|FECHAS', re.I)
 NUEVA_NO = re.compile(r'LLAVE|INSCRIPCI', re.I)
+#: 🏟️ y, para una liga elegida en el /setup, tampoco una categoría con un canal de EVENTOS: sería la de sus torneos
+ELEGIDA_NO = re.compile(r'EVENTO', re.I)
 #: el canal de anuncios, en este orden: de ahí salen el flyer, la próxima fecha y el campeón
 NUEVA_AN = ('ANUNCIO', 'NOTICIA', 'AVISO', 'INFO', 'FECHA')
 #: cuántas batallas cerradas tiene que entender un lector para que la liga entre: con una sola puede ser casualidad
@@ -1797,9 +1799,39 @@ def cc_de(nombre, sv, conocidas=None):
     return next((L.get('cc') or '' for L in reversed(list((conocidas or LIGAS).values())) if L.get('sv') == sv), '')
 
 
-def candidatas(sv, lst, conocidas=None):
+def ligas_del_setup(svs=None):
+    """🏟️ `{sv: {lg, ev}}`: el canal de RESULTADOS de cada liga que cada servidor confirmado eligió en su /setup
+    (`canales_setup.lg` de `datos/servidores.json`, que escribe `tiers.canales_del_setup()`), y los de sus EVENTOS que
+    eligió ahí mismo (`ev`: anuncios, inscripciones, veredictos y llaves), que no pueden compartir categoría con una liga.
+    Ver `candidatas()`."""
+    if svs is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+                svs = (json.load(f) or {}).get('servidores') or {}
+        except (OSError, ValueError):
+            return {}
+    out = {}
+    for sv, d in (svs or {}).items():
+        if isinstance(d, dict) and d.get('confirmado'):
+            cs = d.get('canales_setup') or {}
+            ids = [str(i) for i in (cs.get('lg') or []) if re.match(r'^\d{15,22}$', str(i))][:5]
+            if ids:
+                ev = ([str(cs.get(k)) for k in ('an', 'in', 've') if cs.get(k)] + [str(i) for i in (cs.get('ll') or [])]
+                      + [str(i) for i in (cs.get('ev') or [])])
+                out[sv] = {'lg': ids, 'ev': [i for i in ev if re.match(r'^\d{15,22}$', i)]}
+    return out
+
+
+def candidatas(sv, lst, conocidas=None, elegidos=(), eventos=()):
     """🔎 Las categorías de un servidor con forma de liga que ninguna liga conocida usa: `[{cat, n, ver, an, tabla, cc}]`.
-    `lst`: `GET /guilds/{g}/channels`. Ver `NUEVA_NOMBRE` para la regla."""
+    `lst`: `GET /guilds/{g}/channels`. Ver `NUEVA_NOMBRE` para la regla.
+
+    🏟️ `elegidos`: los canales de resultados que el servidor eligió en su /setup (21/11/2026, Dlx por Makma: *«cómo puede
+    agregar sus ligas»*). Ésos no pasan por los nombres —su admin ya dijo que es una liga—: su categoría es la liga, y de
+    ella salen la tabla y los anuncios, como en las demás. ⚠️ Pero tiene que tener categoría: `marcar_fuera()` la saca de
+    los eventos, y sin eso sus resultados se leerían también como llaves (ya le pasó a Carimex con una «RÉPLICA FINAL»).
+    Llevan `setup: True`. Lo demás sigue igual: entra cuando un lector la entiende y se está jugando (`descubrir()`).
+    `eventos`: los canales de sus eventos elegidos en el /setup, que no pueden estar en la categoría de una liga."""
     conocidas = LIGAS if conocidas is None else conocidas
     usados = {str(L.get(q)) for L in conocidas.values() if L.get('sv') == sv for q in ('ver', 'an', 'tabla') if L.get(q)}
     cats = {str(L.get('cat')) for L in conocidas.values() if L.get('cat')}
@@ -1825,6 +1857,32 @@ def candidatas(sv, lst, conocidas=None):
         an = next((h for rx in NUEVA_AN for h, n in nom if re.search(rx, n, re.I)), None)
         out.append({'cat': cid, 'n': nombre_liga(c.get('name')), 'ver': str(ver['id']), 'an': str(an['id']) if an else '',
                     'tabla': str(tb['id']) if tb else '', 'cc': cc_de(c.get('name'), sv, conocidas)})
+    # 🏟️ las elegidas en el /setup (ver arriba): sin mirar los nombres, y el canal de resultados es el que eligieron
+    por_id = {str(c.get('id')): c for c in lst or []}
+    for vid in elegidos or ():
+        v = por_id.get(str(vid))
+        if not v or v.get('type') not in (0, 5) or str(vid) in usados:
+            continue
+        cid = str(v.get('parent_id') or '')
+        cat = por_id.get(cid)
+        if not cat or cat.get('type') != 4 or cid in cats:
+            continue
+        hs = hijos.get(cid) or []
+        # ⚠️ ni la categoría de otra liga conocida, ni la de los EVENTOS (con llaves o inscripciones, `NUEVA_NO`): pasaría
+        # entera a `categorias_fuera` y sus llaves de eventos dejarían de leerse. El /setup avisa lo mismo (`estadoCanalLiga()`)
+        ev = {str(i) for i in eventos or ()}
+        if any(str(h['id']) in usados or str(h['id']) in ev for h in hs) or                 any(NUEVA_NO.search(_plano(h.get('name'))) or ELEGIDA_NO.search(_plano(h.get('name'))) for h in hs):
+            print('   ⚠️ /setup de %s: el canal %s no está en una categoría propia de liga' % (sv, vid))
+            continue
+        ya = next((o for o in out if o['cat'] == cid), None)
+        if ya:
+            ya.update(ver=str(vid), setup=True)
+            continue
+        nom = [(h, _plano(h.get('name'))) for h in sorted(hijos.get(cid) or [], key=lambda x: x.get('position') or 0)]
+        tb = next((h for h, n in nom if re.search('TABLA', n, re.I)), None)
+        an = next((h for rx in NUEVA_AN for h, n in nom if re.search(rx, n, re.I) and str(h['id']) != str(vid)), None)
+        out.append({'cat': cid, 'n': nombre_liga(cat.get('name')), 'ver': str(vid), 'an': str(an['id']) if an else '',
+                    'tabla': str(tb['id']) if tb else '', 'cc': cc_de(cat.get('name'), sv, conocidas), 'setup': True})
     return out
 
 
@@ -1899,7 +1957,7 @@ def esperan():
             for sv, x in svs.items() if isinstance(x, dict) and x.get('ligas_esperan')}
 
 
-def descubrir(s, mapa, viejas, ahora=None, quietas=None):
+def descubrir(s, mapa, viejas, ahora=None, quietas=None, elegidas=None):
     """🆕 Las ligas nuevas: `{id: liga}` con las de antes. Una recién vista se guarda con `fam: ''` hasta que un lector la
     entienda (`elegir_lector()`) Y se esté jugando —algún resultado en las últimas `CIERRA_DIAS`—; ahí entra a `LIGAS` y
     se lee como las demás. La que no, se vuelve a probar cada `NUEVA_PROBAR_H`. `s`: la sesión de Discord (para leer sus
@@ -1918,8 +1976,11 @@ def descubrir(s, mapa, viejas, ahora=None, quietas=None):
         m = (mapa or {}).get(out[lid].get('sv'))
         if m and not out[lid].get('fam') and str(out[lid].get('ver')) not in {str(c.get('id')) for c in m.get('lst') or []}:
             del out[lid]
+    # 🏟️ los canales de resultados elegidos en el /setup (`ligas_del_setup()`)
+    elegidas = ligas_del_setup() if elegidas is None else elegidas
     for sv, m in sorted((mapa or {}).items()):
-        for c in candidatas(sv, m.get('lst'), dict(LIGAS, **out)):
+        el = elegidas.get(sv) or {}
+        for c in candidatas(sv, m.get('lst'), dict(LIGAS, **out), elegidos=el.get('lg') or (), eventos=el.get('ev') or ()):
             if c['cat'] in quietas.get(sv, ()):
                 continue
             lid = _id_nueva(sv, c['n'], set(LIGAS) | set(out))
@@ -2251,8 +2312,11 @@ def campeones(decis=None, d=None, resolver=None, ps=None, desde=None):
 
 def para_vigia(d=None):
     """🏟️ Lo que lee el vigía para ver qué se mueve en cada liga: `{lista: [{id, n, sv, g, fam, ver, vis, beat, voz}]}`.
-    Cambia sólo si una liga cambia de canales: una escritura de KV por cambio, no una por corrida."""
-    return {'lista': ((leer() if d is None else d).get('vigia') or [])}
+    Cambia sólo si una liga cambia de canales: una escritura de KV por cambio, no una por corrida.
+    🏟️ Y `todas` (21/11/2026): TODAS las que se leen, `{n, sv, g, ver, an, tabla}`, para el «ya la leo» del /setup
+    (`cx.ligas()` en bot/setup.js). El vigía lee sólo `lista`, que es de las familias que sabe seguir en vivo."""
+    d = leer() if d is None else d
+    return {'lista': (d.get('vigia') or []), 'todas': (d.get('todas') or [])}
 
 
 def _mensajes(s, canal, paginas, limite=100):
@@ -2337,6 +2401,8 @@ def correr(aplicar=False):
     _sumar_nuevas(LIGAS, {'nuevas': ligas_nuevas})
     decis = _decis()
     ubicados, vigia, anuncios_campeon = {}, [], []
+    # 🏟️ todas las ligas que se leen, con sus canales: para el «ya la leo» del /setup (el vigía sigue sólo `FAM_VIGIA`)
+    todas = []
     out = {}
     for lid, L in LIGAS.items():
         if L['sv'] in sin_ligas:
@@ -2352,6 +2418,8 @@ def correr(aplicar=False):
             if L['fam'] in FAM_VIGIA and 'ver' not in u['faltan']:
                 vigia.append({'id': lid, 'n': L['n'], 'sv': L['sv'], 'g': m_sv['g'], 'fam': L['fam'], 'ver': u['ver'], 'vis': u['vis'],
                               'beat': u['beat'], 'voz': u['voz']})
+            if 'ver' not in u['faltan']:
+                todas.append({'n': L['n'], 'sv': L['sv'], 'g': m_sv['g'], 'ver': u['ver'], 'an': u['an'] or '', 'tabla': u['tabla'] or ''})
         # 🔚 SUS CANALES YA NO ESTÁN: la temporada terminó (`cierres_de()`). Se anota la primera vez que se ve y se va si
         # vuelven. Sin la lista de canales, lo de antes
         if u is None:
@@ -2530,6 +2598,7 @@ def correr(aplicar=False):
         d['nuevas'] = ligas_nuevas
     # 🏟️ y lo del vigía de las batallas. Sin la lista de canales queda lo de antes: una lectura que falló no lo apaga
     d['vigia'] = vigia if mapa else (viejo0.get('vigia') or [])
+    d['todas'] = todas if mapa else (viejo0.get('todas') or [])
     # 🔴 los canales que ya no están: en el archivo —es la memoria de lo avisado, sobrevive al runner—, y a Logs una vez
     viejos_f = viejo0.get('faltan') or {}
     d['faltan'] = {lid: u['faltan'] for lid, u in ubicados.items() if u['faltan']} if mapa else viejos_f
@@ -3690,6 +3759,27 @@ def _self_check_temporadas(ok):
                                                                                     '101', '', 'PE')],
        'una liga nueva: veredictos, algo de liga y su nombre (en letras de fantasía); un torneo con llaves no, unos '
        '«Torneos y Eventos» no, una categoría vacía no, y la de una liga que ya está tampoco', cs)
+    # 🏟️ las que el servidor eligió en su /setup (21/11/2026): sin mirar los nombres, pero con categoría propia
+    lst2 = lst + [{'id': '600', 'type': 4, 'name': 'Los Domingos 🎤'},
+                  {'id': '601', 'type': 0, 'parent_id': '600', 'name': 'batallas', 'position': 1},
+                  {'id': '602', 'type': 0, 'parent_id': '600', 'name': 'posiciones', 'position': 2},
+                  {'id': '603', 'type': 0, 'parent_id': '600', 'name': 'avisos', 'position': 3},
+                  {'id': '700', 'type': 0, 'name': 'resultados-sueltos'},
+                  {'id': '800', 'type': 4, 'name': 'Comunidad'},
+                  {'id': '801', 'type': 0, 'parent_id': '800', 'name': 'resultados'},
+                  {'id': '802', 'type': 0, 'parent_id': '800', 'name': 'anuncios-de-eventos'}]
+    ce = candidatas('DDF', lst2, conocidas, elegidos=['601', '700', '201', '102', '501', '801', '999'], eventos=['802'])
+    cd = {c['cat']: c for c in ce}
+    ok(set(cd) == {'100', '600'} and cd['600']['ver'] == '601' and cd['600']['an'] == '603' and cd['600'].get('setup')
+       and cd['600']['n'] == nombre_liga('Los Domingos 🎤') and cd['100']['ver'] == '102' and cd['100'].get('setup'),
+       'las ligas del /setup: entra la categoría aunque no se llame «liga», con el canal elegido de resultados; no la de un '
+       'canal sin categoría, la de los eventos (con llaves, o con un canal de eventos del /setup), una que ya se lee ni un '
+       'canal que no existe', [(c['cat'], c['ver'], c['an']) for c in ce])
+    ok(ligas_del_setup({'DDF': {'confirmado': True, 'canales_setup': {'lg': ['1700000000000000102', 'x'], 'an': '1700000000000000201',
+                                                                      'll': ['1700000000000000202']}},
+                        'NO': {'confirmado': False, 'canales_setup': {'lg': ['1700000000000000103']}}})
+       == {'DDF': {'lg': ['1700000000000000102'], 'ev': ['1700000000000000201', '1700000000000000202']}},
+       'de `datos/servidores.json`: las de los confirmados, con los canales de sus eventos aparte')
     km = [{'id': str(3000 + i), 't': '2026-11-0%dT20:00:00Z' % (1 + i), 'content': x} for i, x in
           enumerate(['# ANA vs BETO', 'ANA 28 - BETO 25', 'GANADOR ANA', '# CARLA vs DANI', 'GANADOR DANI'])]
     n_k, fam = elegir_lector(km, 'K')
@@ -3700,14 +3790,14 @@ def _self_check_temporadas(ok):
        'la primera lectura de una liga nueva empieza después de su último parón de más de tres semanas')
     a4 = dt.datetime(2026, 11, 11, tzinfo=dt.timezone.utc)
     nv = descubrir(None, {'DDF': {'g': '1', 'lst': lst}}, {'vieja': {'sv': 'DDF', 'ver': '999', 'fam': ''},
-                                                          'leida': {'sv': 'DDF', 'ver': '998', 'fam': 'K'}}, a4)
+                                                          'leida': {'sv': 'DDF', 'ver': '998', 'fam': 'K'}}, a4, elegidas={})
     nueva = [v for v in nv.values() if v.get('cat') == '100']
     ok(len(nueva) == 1 and nueva[0]['fam'] == '' and nueva[0]['auto'] and nueva[0]['n'] == 'Dimension Word Series 26'
        and 'vieja' not in nv and 'leida' in nv,
        'lo que se encuentra se guarda sin lector hasta probarlo; la que nunca se leyó y ya no está, se va', sorted(nv))
     # ⏸️ la que espera su lector propio (`ligas_esperan`, 15/11/2026: FMS Ceuta) no entra, ni nueva ni guardada de antes
     nq = descubrir(None, {'DDF': {'g': '1', 'lst': lst}}, {'antes': {'sv': 'DDF', 'cat': '100', 'ver': '5', 'fam': 'K'}},
-                   a4, quietas={'DDF': {'100'}})
+                   a4, quietas={'DDF': {'100'}}, elegidas={})
     ok(not [v for v in nq.values() if v.get('cat') == '100'],
        'una liga en `ligas_esperan` no entra aunque un lector la lea, ni la que ya estaba guardada', sorted(nq))
     lg = {'x': {'n': 'X', 'sv': 'DDF', 'fam': 'K', 'ver': '1'}}

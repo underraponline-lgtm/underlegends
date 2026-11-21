@@ -331,13 +331,20 @@ def _canales_llaves():
     ⚠️ SÓLO LOS QUE SE LLAMAN «LLAVE…»: el lector del ciclo también conoce
     canales de plantillas, donde hay llaves vacías de ejemplo. Y sólo de los
     servidores confirmados: LIVONIA tiene llaves y no es de la Liga.
+
+    🔑 MÁS LOS QUE CADA SERVIDOR ELIGIÓ EN SU /setup (21/11/2026): ése lo dijo su admin, así que entra aunque no se llame
+    así y aunque todavía no haya tenido una llave. ⚠️ LOS YA VALIDADOS (`setup_ll` de la memoria, que deja
+    `escuchar.validar_llaves_setup()`), no los crudos de `servidores.json`: uno en una categoría que el servidor declara
+    afuera (una liga) no se lee como llave, tampoco en vivo.
     """
     import unicodedata
     try:
         with io.open(os.path.join(BASE, 'datos', 'canales_llaves.json'), encoding='utf-8') as f:
-            can = (json.load(f) or {}).get('canales') or {}
+            mem = json.load(f) or {}
     except (OSError, ValueError):
-        return []
+        mem = {}
+    can = mem.get('canales') or {}
+    elegidos = mem.get('setup_ll') or {}
     svs = _json_servidores().get('servidores') or {}
     por_guild = {str(v.get('guild_id')): k for k, v in svs.items() if v.get('confirmado')}
     out = []
@@ -346,6 +353,12 @@ def _canales_llaves():
         nom = unicodedata.normalize('NFKD', str(x.get('canal') or '')).lower()
         if sv and 'llave' in nom:
             out.append({'id': str(cid), 'sv': sv, 'g': str(x.get('guild') or '')})
+    ya = {c['id'] for c in out}
+    for cid, x in sorted(elegidos.items()):
+        sv = por_guild.get(str(x.get('guild') or ''))
+        if sv and re.match(r'^\d{15,22}$', str(cid)) and str(cid) not in ya:
+            out.append({'id': str(cid), 'sv': sv, 'g': str(x.get('guild') or '')})
+            ya.add(str(cid))
     return sorted(out, key=lambda c: (c['sv'], c['id']))
 
 

@@ -325,6 +325,48 @@ def altas_setup(aj, svs, ahora=None):
     return nuevas
 
 
+#: 🔑🏟️ cuántos canales de llaves (`ll`) y de resultados de liga (`lg`) se toman del /setup: los mismos topes del menú.
+#: `ev`: los de sus eventos (anuncios, inscripciones, veredictos), que `ligas.candidatas()` no deja tomar como una liga
+SETUP_TOPES = (('ll', 3), ('lg', 5), ('ev', 3))
+
+
+def canales_del_setup(aj, svs):
+    """🔑🏟️ Los canales de llaves (`ll`) y de resultados de cada liga (`lg`) que cada servidor eligió en su /setup
+    (`aj['setup_canales']`, del objeto: `{guild: {ll: [ids], lg: [ids]}}`), a `canales_setup` de su entrada.
+
+    Dlx, 21/11/2026, por Makma: *«cómo puede agregar sus ligas o cómo agrega el canal de llaves»*. TAMBIÉN para un socio
+    de antes, a diferencia del alta (`altas_setup()`): sólo dice qué canales leer, no cambia su tier ni lo que suma. Los
+    leen `escuchar.llaves_del_setup()` (las llaves en cada vuelta), `ligas.ligas_del_setup()` (`candidatas()`) y
+    `subir_datos._canales_llaves()` (el bot en vivo). Un guild que no viene no se toca: «no sé» no es «ninguno».
+    Devuelve las siglas que cambiaron."""
+    sc = (aj or {}).get('setup_canales')
+    if not isinstance(sc, dict):
+        return []
+    por_g = {str(x.get('guild_id')): sv for sv, x in svs.items()
+             if isinstance(x, dict) and x.get('confirmado') and x.get('guild_id')}
+    cambios = []
+    for g, d in sorted(sc.items()):
+        sv = por_g.get(str(g))
+        if not sv or not isinstance(d, dict):
+            continue
+        x = svs[sv]
+        antes = dict(x.get('canales_setup') or {})
+        cs = dict(antes)
+        for k, tope in SETUP_TOPES:
+            ids = [str(i) for i in (d.get(k) or []) if re.match(r'^\d{15,22}$', str(i))][:tope]
+            if ids:
+                cs[k] = ids
+            else:
+                cs.pop(k, None)
+        if cs != antes:
+            if cs:
+                x['canales_setup'] = cs
+            else:
+                x.pop('canales_setup', None)
+            cambios.append(sv)
+    return cambios
+
+
 def aprobar_setup(aj, svs, ahora=None):
     """✅ Lo que decidió Dlx (`aj['setup_suma']`, `{guild: {si, t}}`) sobre los del /setup: `suma_aprobada` (la hora)
     es un ESPEJO de `si: true`. Sin decisión, o con «Todavía no» —también un «Deshacer»—, no está aprobado. Sólo mira
@@ -1174,7 +1216,11 @@ def correr(aplicar=False, ahora=None):
             # 🧭 y los del /setup (19/11/2026), y lo que Dlx decidió de sus puntos de Temporada
             nuevas_su = altas_setup(aj, svs, ahora=ahora)
             aprobadas = aprobar_setup(aj, svs, ahora=ahora)
-            if nuevas or nuevas_su or aprobadas:
+            # 🔑🏟️ y los canales de llaves y de ligas que eligieron (21/11/2026), de todos los que corrieron /setup
+            canales_su = canales_del_setup(aj, svs)
+            if canales_su:
+                print('   🔑 /setup: canales de llaves o de ligas de %s' % ', '.join(canales_su))
+            if nuevas or nuevas_su or aprobadas or canales_su:
                 with io.open(os.path.join(BASE, 'datos', 'servidores.json'), 'w', encoding='utf-8', newline='\n') as f:
                     json.dump(todo_svs, f, ensure_ascii=False, indent=1)
                     f.write('\n')
@@ -1374,6 +1420,20 @@ def _self_check():
        and (f1.get('setup') or {}).get('aviso') == G5 and '123456789012345678' not in json.dumps(f1),
        'el del /setup entra confirmado, Tier 3, con su invitación y sus canales, y SIN quién lo corrió (el repo es público)', str(f1))
     ok(pendientes_setup(s1) == {'FNC', 'OU'} and aprobados_setup(s1) == [], 'recién entrado, espera a Dlx')
+    # 🔑🏟️ las llaves y las ligas del /setup (21/11/2026): de todos, también de un socio de antes, y sacarlas también llega
+    LL, LG = '1700000000000000101', '1700000000000000102'
+    s2 = json.loads(json.dumps(s1))
+    cam = canales_del_setup({'setup_canales': {s2['AAA']['guild_id']: {'ll': [LL, 'x', LL + '9' * 9], 'lg': [LG], 'ev': []},
+                                               s2['FNC']['guild_id']: {'ll': [], 'lg': []},
+                                               '1999999999999999999': {'ll': [LL]}}}, s2)
+    ok(cam == ['AAA'] and s2['AAA']['canales_setup'] == {'ll': [LL], 'lg': [LG]}
+       and s2['FNC']['canales_setup'] == {'an': '888888888888888888'} and {k: v for k, v in s2['AAA'].items() if k != 'canales_setup'} == s1['AAA'],
+       'los canales de llaves y de ligas del /setup: a un socio de antes también (sin tocar su tier); un id mal o de un '
+       'guild que no es de la Liga, no; listas vacías no borran lo del alta', str(cam) + str(s2['AAA'].get('canales_setup')))
+    cam2 = canales_del_setup({'setup_canales': {s2['AAA']['guild_id']: {'ll': [], 'lg': []}}}, s2)
+    ok(cam2 == ['AAA'] and 'canales_setup' not in s2['AAA'] and canales_del_setup({}, s2) == []
+       and canales_del_setup({'setup_canales': {s2['AAA']['guild_id']: {'ll': []}}}, s2) == [],
+       'sacarlas en el /setup las saca; sin la lista del objeto no se toca nada; lo que ya estaba igual no es un cambio')
     nv1 = niveles(s1, {})
     b_pend, q_pend = beneficios(nv1, {'FNC': {'suma': True}}, codigo={'AAA', 'FNC', 'OU'}, pendientes=pendientes_setup(s1))
     ok(not b_pend['FNC']['suma'] and not b_pend['OU']['suma'] and b_pend['AAA']['suma'] and q_pend.get('FNC') == list(PIDEN_CODIGO)

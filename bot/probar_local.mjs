@@ -896,10 +896,14 @@ console.log('\nLOS DOS SERVIDORES.JSON\n');
   const disco = JSON.parse(readFileSync(
     new URL('../datos/servidores.json', import.meta.url), 'utf8')).servidores;
 
-  const enDisco = Object.keys(disco).sort();
+  // 🧭 MENOS LOS QUE ENTRARON SOLOS (/setup o el alta del Dashboard, 19/11/2026): ésos el Worker no los tiene escritos,
+  // los recibe por `meta.nuevos` (`conNuevos()` de avisos.js). Sin esto la prueba se ponía roja con el primer servidor
+  // que entró con /setup de verdad (DW, 21/11/2026) aunque el Worker lo conociera
   const enWorker = SERVIDORES.map(s => s.sv).sort();
+  const solos = Object.keys(disco).filter(k => ['setup', 'dashboard'].includes(disco[k].alta) && !enWorker.includes(k));
+  const enDisco = Object.keys(disco).filter(k => !solos.includes(k)).sort();
   ok('los mismos servidores en los dos', enDisco.join() === enWorker.join(),
-     enDisco.join() === enWorker.join() ? `${enDisco.length}`
+     enDisco.join() === enWorker.join() ? `${enDisco.length}` + (solos.length ? ` · y ${solos.join(', ')} por meta.nuevos` : '')
        : `disco: ${enDisco.join()}  ·  worker: ${enWorker.join()}`);
 
   const distintos = SERVIDORES.filter(s => disco[s.sv] && (
