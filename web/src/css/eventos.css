@@ -32,6 +32,9 @@
 .evp-ley span{display:inline-flex;align-items:center;gap:5px}
 .evp-ley i{width:8px;height:8px;border-radius:50%}
 .evp-campana,.evp-cal{display:grid;gap:12px;justify-items:start}
+/* 📅 en el teléfono angosto, los botones del calendario uno debajo del otro: de a dos, «GOOGLE / CALENDAR» partía en dos
+   renglones al lado de «APPLE · OUTLOOK» en uno (21/11/2026) */
+@media (max-width: 419px){.evp-cal .evp-acc > .btn:not(:only-child){flex-basis:100%;white-space:nowrap}}
 .evp-ok{margin:0;font:700 14.5px/1.4 Archivo,sans-serif;color:var(--tinta)}
 .evp-pasos{margin:0;padding-left:20px;display:grid;gap:4px;font:400 14.5px/1.45 Archivo,sans-serif}
 .evp-yo{display:grid;gap:8px;justify-items:start;padding-top:10px;border-top:1px solid var(--suave);width:100%}
@@ -39,10 +42,14 @@
 .evp-comp{background:none;border:0;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;
   letter-spacing:0.04em;text-transform:uppercase}
 .evp-cp{display:grid;gap:6px;justify-items:start;align-content:start;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer}
-.evp-cp-ci{display:block;width:100%;height:auto}
+/* 🧱 la carta en la misma caja que la de quien no tiene (21/11/2026, la revisión visual): una de Servidor o de liga es más
+   alta que la de Temporada, bajaba su leyenda ~14 px y la fila no alineaba. Se encoge adentro, sin recortarse */
+.evp-cp-ci{display:block;width:100%;height:auto;aspect-ratio:900/1314;object-fit:contain}
 /* sin carta, su cara en una caja oscura: el recuadro punteado vacío parecía una carta que no cargó (la D, 16/11/2026) */
 .evp-cp-sin{display:grid;place-items:center;width:100%;aspect-ratio:900/1314;background:#141417;border:1px solid #2A2A2E}
 .evp-cp-cara{width:64px;height:64px;font:900 24px/1 Archivo,sans-serif}
+/* la cara grande, al 60 % de la caja: a 64 px el 85 % de la caja quedaba vacía */
+.evp-cp-sin .evp-cp-cara{width:60%;height:auto;aspect-ratio:1;font-size:clamp(24px,4vw,44px)}
 .evp-cp small{display:flex;align-items:center;gap:5px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0}
 .evp-cp small img{width:16px;height:16px;border-radius:50%}
 .evp-cp b{font:900 14px/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
@@ -91,6 +98,8 @@
 .evp-vista button.on{background:var(--inv);color:var(--inv-tinta)}
 .evp-filtro button u{margin-left:2px;text-decoration:none;font-weight:700;color:var(--gris)}
 .evp-filtro button.on u{color:inherit;opacity:.7}
+/* 🌙 en Noche, el logo sobre un círculo claro: los de tinta negra (CEU, LCW, FVS, DW) no se veían sobre el chip negro */
+.noche .evp-filtro button img{background:#F6F6F6;padding:1px;box-sizing:border-box}
 
 /* la línea de tiempo: la hora, el punto con el color del servidor y la tarjeta con su borde */
 .evp-tl{list-style:none;margin:0;padding:0;display:grid}
@@ -195,8 +204,16 @@
   .evp-mo.evp-bol{grid-template-columns:minmax(0,1fr) minmax(126px,auto)}
   .evp-bol-t .btn{padding:6px 10px;white-space:nowrap}
 }
+/* 📱 en el teléfono, el nombre más chico (21/11/2026, la revisión visual): «TORNEO CLASIFICATORI» quedaba cortado por el
+   talón, sin puntos. Una palabra larga entera entra en 390; si no entra, se parte con guion. El talón se queda en 126:
+   con 108 el «19:00» se salía del boleto */
+@media (max-width: 599.98px){
+  .evp-bol .evp-mo-n b{font-size:clamp(13px,3.7vw,18px);hyphens:auto}
+}
 .evp-bol-t .evp-bol-av{background:none;border-color:#030304;color:#030304}
 .evp-bol-cal{font:700 14px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+/* 👆 44 px para el dedo (21/11/2026): medía 80×15 */
+@media (max-width: 599.98px){.evp-bol-cal{display:inline-flex;align-items:center;min-height:44px}}
 
 /* 🔔 la campana: un interruptor por servidor */
 .evp-cam-l{list-style:none;margin:0;padding:0;display:grid;gap:4px;width:100%}
@@ -285,7 +302,7 @@
 .evp-f4 button,.evp-tiles button{display:grid;gap:4px;align-content:center;min-width:0;min-height:78px;padding:10px 12px;border:1px solid #232326;
   border-left:3px solid var(--c);background:#0B0B0D;color:#F6F6F6;text-align:left;cursor:pointer;font:inherit}
 .evp-f4 i,.evp-tiles i{font:700 13px/1.1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
-.evp-f4 b,.evp-tiles b{font:800 14.5px/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
+.evp-f4 b,.evp-tiles b{font:800 14.5px/1.2 Archivo,sans-serif;overflow-wrap:anywhere;text-wrap:balance}
 .evp-f4 small,.evp-tiles small{font:400 13px/1.3 Archivo,sans-serif;color:#A5A5A0}
 .evp-f4 button:focus-visible,.evp-tiles button:focus-visible{outline:2px solid var(--tinta);outline-offset:2px}
 @media (hover: hover) and (pointer: fine){.evp-f4 button:hover,.evp-tiles button:hover{background:#17171A}}
@@ -327,7 +344,9 @@
 .evg-cp{position:absolute;right:5px;top:50%;margin-top:-9px;display:grid;place-items:center;width:18px;height:18px;border-radius:50%;
   background:#F5C542;color:#030304;font:900 10px/1 Archivo,sans-serif;font-style:normal;box-shadow:0 0 0 1.5px #030304}
 .evg-ahora{position:absolute;top:0;bottom:0;z-index:5;width:2px;margin-left:-1px;background:#29B298;pointer-events:none}
-.evg-ahora b{position:absolute;top:3px;left:50%;transform:translateX(-50%);padding:3px 6px;background:#29B298;color:#030304;font:800 11px/1 Archivo,sans-serif;white-space:nowrap}
+/* la pastilla va en su propia franja, arriba de las horas (21/11/2026): a la altura de las horas tapaba la que marcaba */
+.evg:has(> .evg-ahora){padding-top:22px}
+.evg-ahora b{position:absolute;top:2px;left:50%;transform:translateX(-50%);padding:3px 6px;background:#29B298;color:#030304;font:800 11px/1 Archivo,sans-serif;white-space:nowrap}
 
 /* 📋 en lista: una fila corta por evento */
 .evp-grupos{display:grid;gap:14px}
@@ -386,7 +405,7 @@
 .evs-sin .evs-cara{width:58px;height:58px;font:900 22px/1 Archivo,sans-serif}
 /* la inicial de quien no tiene foto, en dorado: gris sobre blanco era 2,29:1 */
 .evs-cara.ini,.evp-cp-cara.ini{display:grid;place-items:center;border-radius:50%;background:#F5C542;color:#030304}
-.evp-cp-sin .evp-cp-cara.ini{width:72px;height:72px;font:900 30px/1 Archivo,sans-serif}
+.evp-cp-sin .evp-cp-cara.ini{width:60%;height:auto;aspect-ratio:1;font:900 clamp(28px,5vw,52px)/1 Archivo,sans-serif}
 .evs-sin .evs-cara.ini{font:900 24px/1 Archivo,sans-serif}
 .evs-tag{justify-self:start;align-self:end;padding:5px 8px;background:#E41373;color:#FFFFFF;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
 .evs-camp > b{align-self:start;font:900 16px/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}

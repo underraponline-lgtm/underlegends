@@ -249,6 +249,8 @@ a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-ld>span{display:grid;gap:3px;min-width:0}
 .lq3-ld b{font:800 12.5px/1.05 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lq3-ld small{display:block;min-width:0;font:700 11px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#A5A5A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* en dos renglones y no cortada (21/11/2026: «GENERATION…», «COLISEO · 3 P…»): la liga y sus puntos se leen enteros */
+.lq3-ld small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal}
 .lq3-ld small img{display:inline-block;width:13px;height:13px;margin-right:5px;border-radius:50%;vertical-align:-2px}
 /* ¿quién gana? los votos de verdad, de la que se decide */
 .lq3-poll{list-style:none;margin:0;padding:0;display:grid;gap:8px}
@@ -267,7 +269,9 @@ a.lq3-t:hover{border-color:#F6F6F6}
   .lq3-rey-c .lq3-carta,.lq3-rey-c .lq3-sinc{max-width:120px}
 }
 @media (min-width: 600px){
-  .app .lq3-num{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  /* `dense` (21/11/2026): la del rey va a lo ancho y dejaba a «La carrera» sola con media fila vacía al lado; así sube
+     la que sigue a ocupar ese lugar */
+  .app .lq3-num{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-auto-flow:row dense}
   .app .lq3-rey{grid-column:1 / -1;grid-template-columns:minmax(0,1fr) 190px minmax(0,1fr);gap:14px;padding:16px}
   .app .lq3-rey-c .lq3-carta,.app .lq3-rey-c .lq3-sinc{max-width:190px}
   .app .lq3-rey-c b{font-size:20px}
@@ -289,6 +293,8 @@ a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-chips button.on{background:var(--tinta);color:var(--fondo)}
 .lq3-chips button b{font-weight:700;opacity:.65}
 .lq3-chips button img{width:18px;height:18px;border-radius:50%}
+/* en la compu, los catorce en una fila (21/11/2026: «FRZ» bajaba solo al segundo renglón) */
+@media (min-width: 900px){.lq3-chips{gap:6px}.lq3-chips button{padding:0 9px}}
 /* 🖼️ cada liga con su miniatura GRANDE, como la tarjeta de antes (Dlx, 16/11/2026: «like a big thumbnail like we had
    before»): el flyer a sangre a la izquierda o el escudo de su servidor sobre su color, y al lado cómo va. Con los colores
    del tema, y el color de su servidor en la sombra al pasar */
@@ -338,6 +344,9 @@ a.lq3-t:hover{border-color:#F6F6F6}
 @media (hover: hover) and (pointer: fine){.lq3-estante a:hover .lq3-carta{transform:translateY(-4px)}}
 .lq3-placa{display:block;max-width:100%;padding:5px 8px;background:#F6F6F6;color:#030304;font:800 12px/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:break-word}
 .lq3-placa small{display:block;font:700 11px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#3A3A3E}
+/* 🧱 las placas del mismo alto (21/11/2026): con un renglón más en la leyenda, la carta de arriba quedaba ~15 px más alta
+   que la de al lado. Con dos renglones de liga y fecha entran todas */
+.lq3-estante .lq3-placa{display:grid;align-content:center;min-height:54px;box-sizing:border-box}
 @media (prefers-reduced-motion: no-preference){.lq3-estante .lq3-carta{transition:transform .2s ease}}
 @media (min-width: 600px){.app .lq3-estante{grid-auto-columns:minmax(130px,18%)}}
 @media (min-width: 1300px){.app .lq3-estante{grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:20px;overflow:visible}}

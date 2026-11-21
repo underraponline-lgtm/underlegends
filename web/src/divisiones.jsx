@@ -386,7 +386,7 @@ function Escalera({ liga, nombres, divs, sel, setSel, mia, elo, colores }) {
           <button type="button" key={i} aria-pressed={i === sel} onClick={() => setSel(i)}
             aria-label={nombres[i] + ' División: ' + (n ? n + (elo ? ' en ella' : ' jugando') : 'nadie') + (i === mia ? ', la tuya' : '')}
             className={'dv-esc-p' + (i === sel ? ' on' : '') + (i === mia ? ' mia' : '') + (n ? '' : ' vacia')}
-            style={{ '--alto': (78 + k * 12) + 'px' }} title={nombres[i] + ' División'}>
+            style={{ '--alto': (112 + k * 12) + 'px' }} title={nombres[i] + ' División'}>
             {i === mia ? <i className="dv-esc-vos" aria-hidden="true">TÚ</i> : null}
             {elo ? <b className="dv-gema" style={{ background: (colores || [])[i] }}>{nombres[i].slice(0, 1)}</b> : <b>{i + 1}ª</b>}
             <span>{nombres[i]}</span>

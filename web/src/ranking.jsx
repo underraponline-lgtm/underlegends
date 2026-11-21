@@ -323,7 +323,7 @@ function Ascensos({ liga }) {
       {A ? (
         <>
           <h3 className="rk-asc-t">{dest ? 'Ascenso a la ' + A.n : 'Ranking de ascenso de ' + A.n}</h3>
-          <Ascenso A={A} h={{ miK }} />
+          <Ascenso A={A} h={{ miK }} liga={liga} />
           {dest ? <p className="rk-asc-l"><a className="te-link" href={'#/ligas/' + encodeURIComponent(dest)}>Ver la {A.n} →</a></p> : null}
         </>
       ) : <div className="cargando">Cargando…</div>}
@@ -460,14 +460,14 @@ const SUBS = {
     baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes. <b>Esta semana</b>: lo que sumó desde el lunes, y en barritas cada semana de la temporada.</>,
     // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
     // lo dice»). El escalón lleva sólo el número
-    valor: [(f) => f.ovr || 0, 'OVR'], podio: 'temporada', final: 16,
+    valor: [(f) => f.ovr || 0, 'OVR'], podio: 'temporada', final: 16, porQue: 'por OVR',
   },
   competitivo: {
     et: 'Competitivo', filas: (L) => (L.d.tabla || []).filter((f) => f.rg), orden: 'sc',
     cols: ['i', 'n', 'rg', 'sc', 'evc', 'wr'], movil: ['i', 'n', 'rg', 'sc'],
     baj: <>Ordenado por <b>Score</b>, que mide la calidad y no la cantidad. De ahí sale el rango, el mismo en todas las cartas.</>,
     // sin `dato` tampoco: la carta Competitiva tiene el Score en grande
-    valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo', final: 16,
+    valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo', final: 16, porQue: 'por Score',
     vacio: (L) => {
       const pide = req(L, 'competitivo') || 10;
       // el más cerca, por sus eventos de Tier 1 (`evc`), no por todos: es lo que pide el Competitivo (13/11/2026)
@@ -483,13 +483,13 @@ const SUBS = {
     cols: ['i', 'n', 'g', 't', 'wrd'], movil: ['i', 'n', 'g', 't', 'wrd'],
     // la regla es de Dlx (21/09, reconfirmada el 24/09): los triples no cuentan
     baj: <>Las batallas <b>uno contra uno</b> de las llaves: los triples y las de equipos no cuentan. Se ordena por <b>ganados</b>, porque un 1 de 1 da 100&nbsp;% y no dice nada.</>,
-    valor: [(f) => f.g || 0, ['duelo', 'duelos']], dato: (f) => f.g + ' DE ' + f.t,
+    valor: [(f) => f.g || 0, ['duelo', 'duelos']], dato: (f) => f.g + ' DE ' + f.t, porQue: 'por duelos ganados',
   },
   podios: {
     et: 'Podios', filas: (L) => (L.d.tabla || []).filter((f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0), orden: medallero,
     cols: ['i', 'n', 'oro', 'seg', 'ter', 'sem', 'pts'], movil: ['i', 'n', 'oro', 'seg', 'ter'],
     baj: <>Como un medallero: primero los oros, después las platas y después los bronces. Quien no subió al podio no aparece.</>,
-    dato: (f) => (f.oro || 0) + ' · ' + (f.seg || 0) + ' · ' + (f.ter || 0),
+    dato: (f) => (f.oro || 0) + ' · ' + (f.seg || 0) + ' · ' + (f.ter || 0), porQue: 'por medallas',
   },
   // 🔥 DOS VISTAS DESDE EL 16/11/2026 (Dlx: «el ranking de rachas debería ser máxima, no? y quizás actual también»).
   // Hasta ahí se ordenaba por la que lleva AHORA (`racha`: actual × 1000 + máxima), así que Oasis, con la más larga de
@@ -503,13 +503,13 @@ const SUBS = {
           ((b.ev || 0) - (a.ev || 0)),
         cols: ['i', 'n', 'rmax', 'ract', 'ult', 'ev'], movil: ['i', 'n', 'rmax', 'ract'],
         baj: <>La <b>más larga</b> de la temporada: eventos seguidos llegando arriba de la llave —la <b>final</b> si es de menos de 16, la <b>semifinal</b> de 16 a 31 y <b>cuartos</b> de 32 a 63—. A igual racha, el que la lleva viva.</>,
-        valor: [(f) => (f.rch || [0, 0])[1], 'de racha'], dato: (f) => (f.rch || [0, 0])[1] + ' SEGUIDOS',
+        valor: [(f) => (f.rch || [0, 0])[1], 'de racha'], dato: (f) => (f.rch || [0, 0])[1] + ' SEGUIDOS', porQue: 'por la más larga',
       }],
       ['Ahora', {
         filas: (L) => (L.d.tabla || []).filter((f) => ((f.rch || [])[0] || 0) > 0), orden: 'racha',
         cols: ['i', 'n', 'ract', 'rmax', 'ult', 'ev'], movil: ['i', 'n', 'ract', 'rmax'],
         baj: <>La que llevan <b>ahora</b>: si en su próximo evento no llegan arriba de la llave, vuelve a 0. A igual racha, la más larga de la temporada.</>,
-        valor: [(f) => (f.rch || [0])[0], 'de racha'], dato: (f) => (f.rch || [0])[0] + ' SEGUIDOS',
+        valor: [(f) => (f.rch || [0])[0], 'de racha'], dato: (f) => (f.rch || [0])[0] + ' SEGUIDOS', porQue: 'por la de ahora',
       }],
     ],
   },
@@ -527,14 +527,14 @@ const SUBS = {
         orden: (a, b) => (actDe(b) - actDe(a)) || ((b.ev || 0) - (a.ev || 0)) || ((b.pts || 0) - (a.pts || 0)),
         cols: ['i', 'n', 'act', 'ev', 'lgj', 'duj', 'ult'], movil: ['i', 'n', 'act', 'ev'],
         baj: <>Quién <b>juega más</b> en toda la Liga: cada evento, cada batalla de liga y cada duelo de la temporada suman uno. A igual cantidad, el que jugó más eventos.</>,
-        valor: [actDe, ['jugada', 'jugadas']], dato: (f) => num(actDe(f)) + ' JUGADAS',
+        valor: [actDe, ['jugada', 'jugadas']], dato: (f) => num(actDe(f)) + ' JUGADAS', porQue: 'por jugadas',
       }],
       ['En eventos', {
         filas: (L) => (L.d.tabla || []).filter((f) => (f.ev || 0) > 0),
         orden: (a, b) => ((b.ev || 0) - (a.ev || 0)) || ((b.pts || 0) - (a.pts || 0)),
         cols: ['i', 'n', 'ev', 'ult', 'pts'], movil: ['i', 'n', 'ev', 'ult'],
         baj: <>Quién <b>participó más</b> en eventos: los jugados en la temporada, en todos los servidores. A igual cantidad, el que tiene más puntos.</>,
-        valor: [(f) => f.ev || 0, ['evento', 'eventos']], dato: (f) => f.ev + (f.ev === 1 ? ' EVENTO' : ' EVENTOS'),
+        valor: [(f) => f.ev || 0, ['evento', 'eventos']], dato: (f) => f.ev + (f.ev === 1 ? ' EVENTO' : ' EVENTOS'), porQue: 'por eventos',
       }],
     ],
   },
@@ -554,20 +554,20 @@ const SUBS = {
     // 📱 en el celular, el OVR SV primero (18/11/2026): el primero después del puesto es el número grande de la derecha
     cols: ['isv', 'n', 'svc', 'osv', 'ovr', 'ev', 'pts'], movil: ['isv', 'n', 'osv', 'svc'],
     baj: <>Los que mandan en <b>cada servidor</b>, por el <b>OVR de su carta de Servidor</b>: el número de ese servidor, no el de la Temporada. El <b>#</b> es su puesto adentro de su servidor. Elige uno arriba.</>,
-    valor: [(f) => f.osv || 0, 'OVR'], dato: (f) => 'OVR ' + f.osv + ' · ' + siglaDe(f.sv),
+    valor: [(f) => f.osv || 0, 'OVR'], dato: (f) => 'OVR ' + f.osv + ' · ' + siglaDe(f.sv), porQue: 'por OVR SV',
   },
   paises: {
     et: 'Países', grupo: 'pais', filas: (L) => L.d.paises || [], sinChips: 1, nombre: (f) => nombrePais(f.cc), orden: 'pts',
-    cols: ['i', 'pais', 'np', 'pts', 'prom'], movil: ['i', 'pais', 'np', 'pts'], que: ['país', 'países'],
+    cols: ['i', 'pais', 'np', 'pts', 'prom'], movil: ['i', 'pais', 'pts', 'np'], que: ['país', 'países'],
     baj: <>Por los puntos que hizo su gente en la temporada.</>,
-    valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS',
+    valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS', porQue: 'por puntos',
   },
   crews: {
     et: 'Crews', grupo: 'crew', filas: (L) => conCrewsVivas(L.d.crews || []), sinChips: 1, nombre: (f) => limpio(f.crew),
     orden: (a, b) => ((b.rk !== 0) - (a.rk !== 0)) || (b.pts - a.pts) || (b.n - a.n), sinPuesto: (f) => f.rk === 0,
-    cols: ['i', 'crew', 'tier', 'nc', 'pts', 'mejor'], movil: ['i', 'crew', 'tier', 'pts'], que: ['crew', 'crews'],
+    cols: ['i', 'crew', 'tier', 'nc', 'pts', 'mejor'], movil: ['i', 'crew', 'pts', 'tier'], que: ['crew', 'crews'],
     baj: <>Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> en la temporada: las que no llegan se ven, sin número. Y cada lunes, como en el fútbol, cada crew <b>sube, baja o se mantiene de tier</b> según lo que sumó en la semana. Para armar una o sumarte, <a className="te-link" href="#/crews">la página de crews</a>.</>,
-    valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS',
+    valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS', porQue: 'por puntos',
   },
   mw: {
     et: 'Most Wanted', filas: (L) => (L.d.mw && L.d.mw.caz) || [], orden: 'mwp',
@@ -575,7 +575,7 @@ const SUBS = {
     siNo: <><b>Most Wanted</b>: quién cazó, quién fue cazado y quién sobrevivió. Suma a tu Temporada y arranca pronto.</>,
     cols: ['i', 'n', 'mwp', 'mwc', 'mwz', 'mws'], movil: ['i', 'n', 'mwp', 'mwc'],
     baj: <>Los <b>cazadores</b>: lo que cobraron cazando buscados y sobreviviendo. Suma a los <b>Puntos</b> de la Temporada; al Competitivo, nunca.</>,
-    valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS',
+    valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS', porQue: 'por lo cobrado',
     vacio: () => <>Todavía nadie cazó a un buscado. Los de esta semana están en el <a className="te-link" href="#/">Inicio</a>.</>,
   },
   // lo que todavía no existe: arriba una línea (`corto`) y abajo qué va a ser, sin repetirlo
@@ -679,6 +679,12 @@ function Podio({ liga, cfg, top, sem }) {
         } else if (cfg.grupo === 'crew') {
           vis = <a className="rk-pvis" href={'#/crew/' + encodeURIComponent(f.clave || f.crew)}><LogoCrew c={f} cls="rk-plogo" /></a>;
           nombre = limpio(f.crew);
+        } else if (!cfg.podio) {
+          // 🪪 SIN CARTA PROPIA, LA CARA (21/11/2026, la revisión visual): Duelos, Podios, Rachas, Actividad y Most Wanted
+          // ponían la carta de Temporada, y su «#22» grabado contradecía el «2» de este escalón. Como el podio del ELO
+          const p = liga.T[f.k] || f;
+          vis = <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={p.n} cls="cara rka-pcara" grande /></a>;
+          nombre = limpio(p.n);
         } else {
           const t = liga.T[f.k];
           const cual = cfg.podio === 'competitivo' && t && (t.c || []).includes('competitivo') ? 'competitivo'
@@ -696,7 +702,7 @@ function Podio({ liga, cfg, top, sem }) {
               {cfg.dato ? <small>{cfg.dato(f)}</small> : null}
               {/* 📈 lo que sumó esta semana: lo único que la tarjeta no dice (Dlx, 20/10/2026: «no pongas información que
                   la tarjeta ya tiene»; el nombre y el OVR están en la tarjeta) */}
-              {sem && sem.g && sem.g[f.k] ? (() => { const v = sem.g[f.k][sem.g[f.k].length - 1] || 0; return <small className={'rk-psem' + (v ? '' : ' q')}>{v ? '+' + num(v) : '0'} esta semana</small>; })() : null}
+              {sem && sem.g && sem.g[f.k] ? (() => { const v = sem.g[f.k][sem.g[f.k].length - 1] || 0; return <small className={'rk-psem' + (v ? '' : ' q')}>{v ? '+' + num(v) : '0'}<span className="rk-psem-l"> esta semana</span><span className="rk-psem-c"> sem.</span></small>; })() : null}
             </div>
           </li>
         );
@@ -706,8 +712,8 @@ function Podio({ liga, cfg, top, sem }) {
 }
 
 // ¿la pantalla es de celular? (el mismo corte de 900 px que el resto de la página)
-function useMovil() {
-  const q = '(max-width: 899px)';
+// `q`: otro corte (21/11/2026: la lista de dos renglones va sólo debajo de 700 px; a 768 dejaba ~500 px vacíos en cada fila)
+function useMovil(q = '(max-width: 899px)') {
   const [m, setM] = useState(() => typeof window !== 'undefined' && window.matchMedia ? window.matchMedia(q).matches : false);
   useEffect(() => {
     if (!window.matchMedia) return undefined;
@@ -715,7 +721,7 @@ function useMovil() {
     const f = () => setM(mq.matches);
     if (mq.addEventListener) mq.addEventListener('change', f); else mq.addListener(f);
     return () => { if (mq.removeEventListener) mq.removeEventListener('change', f); else mq.removeListener(f); };
-  }, []);
+  }, [q]);
   return m;
 }
 
@@ -843,7 +849,10 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
   const { liga } = x;
   // `isv` también (18/11/2026): es el puesto de «Servidores», que ya va a la izquierda; se repetía a la derecha en grande
   // y el OVR SV, que es lo que ordena, bajaba al segundo renglón
-  const ids = (cfg.movil || cfg.cols).filter((id) => !['pos', 'i', 'isv', 'n'].includes(id));
+  // 🧩 el nombre es el de este ranking (21/11/2026): en Países y Crews la columna es `pais`/`crew`, no `n`, y se colaba
+  // como número grande mientras `COL.n` dibujaba una persona con la fila de un grupo (un «9» en un círculo, la cara de otro)
+  const nom = (cfg.movil || cfg.cols).find((id) => ['n', 'pais', 'crew'].includes(id)) || 'n';
+  const ids = (cfg.movil || cfg.cols).filter((id) => !['pos', 'i', 'isv', nom].includes(id));
   const lead = ids[0];
   const resto = ids.slice(1);
   return (
@@ -861,11 +870,12 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
             <li data-c={k} className={cl} aria-expanded={puede ? ab : undefined}
               onClick={puede ? (e) => { if (!e.target.closest('a, button')) setAbierta(ab ? null : k); } : undefined}>
               <span className="rk-fila-n">{COL[cfg.cols[0]].v(f, x)}</span>
-              <span className="rk-fila-q">{COL.n.v(f, x)}
+              <span className="rk-fila-q">{COL[nom].v(f, x)}
                 <small className="rk-fila-2">
                   {sub === 'temporada'
                     // «—» mientras /api/semanas no llegó (18/11/2026): «0» le decía a todos que no sumaron nada
-                    ? <>{num(f.pts)} pts · <em className={sem ? 'sem' : 'q'}>{sem ? '+' + num(sem) : x.sem ? '0' : '—'}</em> esta semana</>
+                    // «sem.» y no «esta semana» (21/11/2026): a 390 se cortaba en la mitad de las filas («esta sema…»)
+                    ? <>{num(f.pts)} pts · <em className={sem ? 'sem' : 'q'}>{sem ? '+' + num(sem) : x.sem ? '0' : '—'}</em> sem.</>
                     : resto.map((id) => <span key={id}>{COL[id].tc || COL[id].t} {COL[id].v(f, x)}</span>)}
                 </small>
               </span>
@@ -876,7 +886,7 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
             </li>
             {ab ? <li className="rk-fila-det"><Detalle x={x} cfg={cfg} f={f} perf={perf} /></li> : null}
             {directoK === k && sinFiltro ? <li className="rk-fila-corte directo"><a href="#/ligas/superliga"><Ico n="copa" t={14} /> Hasta acá clasifican directo a la Superliga</a></li> : null}
-            {corteK === k && sinFiltro ? <li className="rk-fila-corte"><a href={'#/ligas/' + (sub === 'competitivo' ? 'superliga' : 'clausura')}><Ico n="copa" t={14} /> Hasta acá clasifican a la {sub === 'competitivo' ? 'Superliga' : 'Clausura'} de la {liga.temp}</a></li> : null}
+            {corteK === k && sinFiltro ? <li className="rk-fila-corte"><a href={'#/ligas/' + (sub === 'competitivo' ? 'superliga' : 'clausura')}><Ico n="copa" t={14} /> Hasta acá clasifican a la {sub === 'competitivo' ? 'Superliga' : 'Clausura'}</a></li> : null}
           </Fragment>
         );
       })}
@@ -1211,6 +1221,8 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [tiraEl, tira] = useState(null);
   const [tb, setTb] = useState(0);
   const movil = useMovil();
+  // 📱 la lista de dos renglones, sólo en el teléfono: en la tablet va la tabla con las columnas del celular (`cfg.movil`)
+  const enLista = useMovil('(max-width: 699px)');
   const nav = useRef(null);
   const tabla = useRef(null);
   const tabs = useRef(null);
@@ -1533,11 +1545,11 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           {eloA ? <Divisiones liga={liga} parte="escena" sel={divSel} setSel={setDivSel} /> : dosCols ? (
             <>
               <Franja items={franja} />
-              <div className="rka-dos">
+              <div className="rka-dos rk-igual">
                 <div className="rka-izq">
                   {top.length ? (
                     <div className="rka-caja rka-pod">
-                      <h2 className="rka-h">El podio<small>{sub === 'competitivo' ? 'por Score' : 'por OVR'}</small></h2>
+                      <h2 className="rka-h">El podio<small>{cfg.porQue || ''}</small></h2>
                       <Podio liga={liga} cfg={cfg} top={top} sem={sub === 'temporada' ? sem : null} />
                     </div>
                   ) : null}
@@ -1649,8 +1661,8 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
               : !fs.length ? (
                 <p className="rk-vacio">Nadie con ese filtro. <button type="button" className="rk-lnk" onClick={() => { setQ(''); setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }}>Sacar los filtros</button></p>
               ) : (
-                <div className={'rk-tw' + (todas && movil ? ' todas' : '') + (movil && !todas ? ' lista' : '')} ref={tabla}>
-                  {movil && !todas ? (
+                <div className={'rk-tw' + (todas && movil ? ' todas' : '') + (enLista && !todas ? ' lista' : '')} ref={tabla}>
+                  {enLista && !todas ? (
                     <ListaCel x={x} cfg={cfg} vis={vis} abierta={abierta} setAbierta={setAbierta} miFila={miFila} corteK={corteK} directoK={directoK}
                       sinFiltro={!orden && !q && !sv && !cc && !soloSigo && !soloNuevos} perf={perf} sub={sub} />
                   ) : (
@@ -1713,7 +1725,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             {fcs ? (
               <p className="rk-nota">En el <b>#</b>, <b>—</b> es <b>fuera de concurso</b>: todavía no es miembro de la Liga (tiene que estar en Discord Rap Español y verificarse). Sus puntos cuentan igual; el número es de los miembros.
                 {/* 🏁 Most Wanted y Misiones ya no son columnas (18/11/2026): están en la fila abierta, y sólo si hay algo */}
-                {sub === 'temporada' ? ' Most Wanted, Misiones y Writing, al abrir cada fila.' : ''}</p>
+                {sub === 'temporada' ? ' Al abrir cada fila ves también su Most Wanted, sus Misiones y su Writing.' : ''}</p>
             ) : null}
           </>
         )}

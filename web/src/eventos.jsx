@@ -1401,7 +1401,8 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const nada = !vivos.length && !prox.length && !hechos.length && !cancelados.length;
   // 🧱 lo último que se jugó (el bloque al final de <main>): en el día, lo de antes de ese día; en la semana y el mes, lo más nuevo
   const pasPool = filtrado.filter((c) => c.ll && utc(c.t).getTime() <= ahora && (vista !== 'dia' || liga.diaClave(c.t) < dia))
-    .sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 30);
+    // hasta 45 (21/11/2026): con 30 se acababan antes que el costado y quedaban ~140 px vacíos al pie de la columna
+    .sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 45);
   poolN.current = pasPool.length;
   // atado a la vista, el día y el filtro: al cambiar cualquiera vuelve a arrancar chico. ⚠️ No con un efecto que lo
   // reinicie: el reinicio y el «crece» caían en la misma pasada, daban el mismo número de antes y React no volvía a

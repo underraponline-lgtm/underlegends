@@ -688,7 +688,9 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
   // 🔴 Y SÓLO SI ENTRA: una de octavos en espejo son siete columnas, y a 1.333 px los filtros y la otra punta quedaban
   // cortados a los costados. De izquierda a derecha es más alta pero se ve entera, y bajar es lo natural
   const anchoDe = (cols) => Math.floor((ancho + G) / cols - G);
-  const espejo = !plano && n >= 3 && rs[n - 1].b.length === 1 && fin.length === 2 && anchoDe(2 * n - 1) >= 150;
+  // ⚠️ con el mismo piso que el ancho de la carta (`W`, 156): con 150, entre 150 y 155 entraba en espejo, la pista quedaba
+  // unos px más ancha que la caja, se centraba y la primera columna perdía su borde (21/11/2026: «¡UARTOS» a 1440 con lápices)
+  const espejo = !plano && n >= 3 && rs[n - 1].b.length === 1 && fin.length === 2 && anchoDe(2 * n - 1) >= 156;
   enEspejo.current = espejo;
   const ncol = espejo ? 2 * n - 1 : n;
   const W = Math.max(156, Math.min(232, anchoDe(ncol)));

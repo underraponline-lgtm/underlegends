@@ -113,8 +113,9 @@
 .cm9-cara-ch{width:24px;height:24px;font:800 11px/1 Archivo,sans-serif}
 .cm9-tabla tr.yo .cara.ini{background:var(--magenta);color:#FFFFFF}
 .cm9-fo{display:inline-flex;gap:3px}
-.cm9-fo i{display:grid;place-items:center;width:16px;height:16px;border:1.5px solid var(--suave);font:900 10px/1 Archivo,sans-serif;font-style:normal;color:#FFFFFF}
-.cm9-fo i.g{background:var(--verde);border-color:var(--verde)}.cm9-fo i.p{background:var(--magenta);border-color:var(--magenta)}
+.cm9-fo i{display:grid;place-items:center;width:16px;height:16px;border:1.5px solid var(--suave);font:900 11px/1 Archivo,sans-serif;font-style:normal;color:#FFFFFF}
+/* la G en negro sobre el verde (21/11/2026): blanca daba 2,65:1 */
+.cm9-fo i.g{background:var(--verde);border-color:var(--verde);color:#030304}.cm9-fo i.p{background:var(--magenta);border-color:var(--magenta)}
 .cm9-ley{display:flex;gap:18px;flex-wrap:wrap;padding:12px 18px;border-top:1.6px solid var(--linea);font:600 13px/1 Archivo,sans-serif;color:var(--gris)}
 .cm9-ley span{display:inline-flex;align-items:center;gap:6px}
 .cm9-ley i{width:12px;height:12px;display:inline-block}
@@ -525,7 +526,7 @@
 /* los cuatro cuadros de arriba */
 .cmx-fila4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
 .cmx-c{display:flex;align-items:center;gap:12px;min-width:0;padding:12px 14px;border:1.5px solid color-mix(in srgb,var(--tc) 45%,#000);border-radius:4px;
-  background:radial-gradient(120% 90% at 90% 0%,color-mix(in srgb,var(--tc) 24%,transparent),transparent 60%),#0B0C0E;text-align:left;font:inherit;cursor:pointer}
+  border-top:3px solid var(--tc);background:#0B0C0E;text-align:left;font:inherit;cursor:pointer}
 .cmx-c:hover,.cmx-c:focus-visible{border-color:var(--tc)}
 .cmx-ci{width:40px;height:40px;display:grid;place-items:center;flex:none;border-radius:4px;background:#000;border:1.5px solid color-mix(in srgb,var(--tc) 45%,#000);color:var(--tc)}
 .cmx-ct{display:grid;gap:3px;min-width:0}
@@ -541,9 +542,11 @@
 .cmx-t>header{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0}
 .cmx-t h4{margin:0;font:900 19px/1.05 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
 .cmx-t h4 small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#A5A5A0}
-.cmx-violeta{border-color:#3B2A6B;background:radial-gradient(120% 80% at 85% 0%,rgba(139,92,246,.30),transparent 60%),linear-gradient(160deg,#130F1F,#0B0C0E 70%)}
-.cmx-verde{border-color:#14532D;background:radial-gradient(120% 80% at 85% 0%,rgba(92,230,165,.20),transparent 60%),linear-gradient(160deg,#0B1A12,#0B0C0E 70%)}
-.cmx-oro{border-color:#6B5414;background:radial-gradient(120% 80% at 85% 0%,rgba(232,185,35,.26),transparent 60%),linear-gradient(160deg,#17130A,#0B0C0E 70%)}
+/* 🎨 fondos planos, el color en el borde (21/11/2026, la revisión visual): la regla de la casa es sin degradés, y
+   llevaban un brillo radial más un degradé diagonal */
+.cmx-violeta{border-color:#3B2A6B;border-top:3px solid #8B5CF6;background:#130F1F}
+.cmx-verde{border-color:#14532D;border-top:3px solid #5CE6A5;background:#0B1A12}
+.cmx-oro{border-color:#6B5414;border-top:3px solid #E8B923;background:#17130A}
 .cmx-chip{display:inline-block;padding:5px 7px;border-radius:3px;background:#1A1B1F;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;
   text-transform:uppercase;white-space:nowrap}
 .cmx-chip.vio{background:#3B2A6B;color:#E9E1FF}.cmx-chip.ver{background:#0E3324;color:#5CE6A5}.cmx-chip.oro{background:#3A2E08;color:#FFD24A}
@@ -553,6 +556,8 @@
 .cmx-nota b{color:#F6F6F6}
 .cmx-nota a,.cmx-link{color:#F6F6F6;text-decoration:underline;text-underline-offset:3px}
 .cmx-link{align-self:flex-start;padding:0;border:0;background:none;font:700 13px/1.3 Archivo,sans-serif;cursor:pointer}
+/* 👆 44 px para el dedo (21/11/2026): «ver todos» medía 58×17 */
+@media (max-width: 599.98px){.cmx-link{display:inline-flex;align-items:center;min-height:44px}}
 .cmx-cara{width:26px;height:26px;font:800 11px/1 Archivo,sans-serif}
 .cmx-cara.l{width:46px;height:46px;font-size:17px}
 .cmx-big{margin:0;display:flex;align-items:baseline;gap:8px}
@@ -667,8 +672,8 @@
 .cmx-blanca .cm9-ev-ic{background:#030304;border-color:#030304}
 .cmx-negros{--magenta-tx:#E41373;--fondo:#0B0C0E;--tinta:#F6F6F6;--linea:#2A2A2E;--suave:#232326;--gris:#A5A5A0;--caja:#121214;--inv:#F6F6F6;--inv-tinta:#030304;
   display:grid;grid-template-columns:repeat(var(--n,2),minmax(0,1fr));gap:12px;color:#F6F6F6}
-.cmx-negros>.cm9-ev{border-radius:4px;background:radial-gradient(120% 80% at 85% 0%,color-mix(in srgb,var(--c) 22%,transparent),transparent 60%),#0B0C0E;
-  border-color:color-mix(in srgb,var(--c) 45%,#000)}
+.cmx-negros>.cm9-ev{border-radius:4px;background:#0B0C0E;
+  border-color:color-mix(in srgb,var(--c) 45%,#000);border-top:3px solid var(--c)}
 .cmx-minis .cm9-ev-cierra{display:none}
 .cmx-minis .cm9-ev-t{justify-content:flex-start;gap:12px}
 .cmx-minis .cm9-pronto{border-radius:4px}

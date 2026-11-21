@@ -359,10 +359,19 @@ function estadoLiga(liga, L) {
 // 14/10/2026: ForceGP es staff, no está entre los que jugaron eventos, y «le pico donde dice FORCE y no me lleva a nada»)
 function herramientas(liga, L) {
   const yo = liga.yo;
-  const kDe = (raw) => { const f = liga.quien(raw); return f ? f.k : ((L.ks || {})[raw] || ''); };
+  // 🆔 un nombre que trae pegado un ID de Discord (21/11/2026: «MOTE RA 1320135304916762695» en la tira de Lo último): el
+  // ID no se muestra nunca, y sin él (y sin el espacio del medio) se vuelve a buscar quién es
+  const sinId = (raw) => String(raw || '').replace(/\s*\b\d{17,20}\b\s*/g, ' ').trim();
+  const kDe0 = (raw) => { const f = liga.quien(raw); return f ? f.k : ((L.ks || {})[raw] || ''); };
+  const kDe = (raw) => {
+    const k = kDe0(raw);
+    const s = sinId(raw);
+    if (k || s === String(raw || '').trim() || !s) return k;
+    return kDe0(s) || kDe0(s.replace(/\s+/g, ''));
+  };
   // 🪪 el nombre que se lee: el oficial si se sabe quién es (17/11/2026, Dlx: «si alguien escribe velatzzzz, debería
   // mostrarse con su aka oficial, Velatz»); si no, como lo escribieron
-  const ak = (raw) => liga.aka(raw, kDe(raw));
+  const ak = (raw) => { const k = kDe(raw); return k ? liga.aka(raw, k) : liga.aka(sinId(raw)); };
   const miK = (window.DC && window.DC.clave) || (yo && yo.k) || '';
   const esYo = (raw) => (!!yo && liga.esDe(raw, yo.k)) || (!!miK && kDe(raw) === miK);
   const nombre = (raw, cls) => {
@@ -1133,7 +1142,10 @@ function LigasPortada({ liga, falta = '' }) {
   ld.forEach((L) => (L.tabla || []).forEach(([raw]) => gente.add(hs[L.id].kDe(raw) || limpio(raw).toLowerCase())));
   const tira = ultimas.map((L) => {
     const [a, b, g, como] = L.ult[0];
-    return <span key={L.id}><img alt="" src={liga.logo(L.sv)} />{corto(L.n)} · <b>{limpio(g)}</b> le ganó a {limpio(g === a ? b : a)} · {como === 'replica' ? 'réplica' : 'directo'} · {desde3(liga, L.ult_t)}</span>;
+    // 🪪 con el nombre que resuelve cada liga (`ak`, 21/11/2026): con `limpio` sobre el crudo salía un ID de Discord
+    // («MOTERA 1320135304916762695 LE GANÓ A…») y los nombres con letras decorativas
+    const ak = hs[L.id].ak;
+    return <span key={L.id}><img alt="" src={liga.logo(L.sv)} />{corto(L.n)} · <b>{ak(g)}</b> le ganó a {ak(g === a ? b : a)} · {como === 'replica' ? 'réplica' : 'directo'} · {desde3(liga, L.ult_t)}</span>;
   });
   return (
     <>
@@ -1416,7 +1428,9 @@ function LigaPerfil({ liga, id }) {
 // (`bot/ascenso.py`): SU tabla oficial más lo que vino después, con SUS reglas, y lo que no se sabe no suma y se dice.
 // Lo oficial lo decide su staff: la página lo aclara arriba. Los que suben y el play-off, marcados; `+N`, lo sumado
 const dm = (d) => (d ? String(d).slice(8, 10) + '/' + String(d).slice(5, 7) : '');
-export function Ascenso({ A, h, desde = '' }) {
+// 🪪 `liga` (21/11/2026, la pestaña Ascensos del Ranking): con ella, cada renglón con perfil lleva su cara y el nombre de
+// la Liga, como las demás tablas del Ranking. La tabla oficial de cada servidor trae los nombres en MAYÚSCULAS
+export function Ascenso({ A, h, desde = '', liga = null }) {
   const [todo, setTodo] = useState(false);
   const filas = A.filas || [];
   const ver = todo ? filas : filas.slice(0, 12);
@@ -1435,7 +1449,8 @@ export function Ascenso({ A, h, desde = '' }) {
         {ver.map(([n, cc, pts, suma, k], i) => (
           <li key={i + n} className={(i < suben ? 'sube' : i < suben + po ? 'po' : '') + (k && k === h.miK ? ' yo' : '')}>
             <span className="asc-i">{i + 1}</span>
-            <span className="asc-n">{cc ? <Bandera cc={cc} /> : null}{k ? <a href={'#/r/' + encodeURIComponent(k)}>{limpio(n)}</a> : <span>{limpio(n) || 'Una cuenta de Discord'}</span>}</span>
+            <span className="asc-n">{liga && k ? <Cara liga={liga} k={k} nombre={n} cls="cara asc-cara" /> : null}{cc ? <Bandera cc={cc} /> : null}
+              {k ? <a href={'#/r/' + encodeURIComponent(k)}>{liga && liga.T[k] ? limpio(liga.T[k].n) : limpio(n)}</a> : <span>{limpio(n) || 'Una cuenta de Discord'}</span>}</span>
             {suma ? <em className="asc-mas">+{num(suma)}</em> : <span />}
             <b className="asc-pts">{num(pts)}</b>
           </li>

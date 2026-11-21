@@ -5,8 +5,9 @@
 import { num } from './liga.js';
 
 const MAG = '#E41373';
-// el color de cada insignia, por su nombre (`bot/pase.py`: Pase Bronce, Plata y Oro)
-const metal = (v) => (/oro/i.test(v) ? '#F5C542' : /plata/i.test(v) ? '#C9CDD4' : '#C98A4B');
+// el color de cada insignia, por su nombre (`bot/pase.py`: Pase Bronce, Plata, Oro y Platino). ⚠️ «Platino» no lleva
+// «plata» adentro: caía al bronce (21/11/2026). Su celeste es el Platino de los emblemas (`TIER`, emblemas.jsx)
+const metal = (v) => (/platino/i.test(v) ? '#39C6E8' : /oro/i.test(v) ? '#F5C542' : /plata/i.test(v) ? '#C9CDD4' : '#C98A4B');
 
 const Svg = ({ t, children }) => <svg width={t} height={t} viewBox="0 0 40 40" aria-hidden="true">{children}</svg>;
 

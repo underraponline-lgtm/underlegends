@@ -361,7 +361,7 @@ export function Misiones({ liga }) {
                     <ol className="mt-carrera" style={{ '--filas': Math.ceil(xs.length / 2) }}>
                       {xs.map(([raw, pts], k) => <Fila key={raw} liga={liga} raw={raw} pts={pts} i={desde + k + 1} mx={mx} M={M} esYo={esYo} />)}
                     </ol>
-                    {!todas && semana.length > desde + 12 ? <button type="button" className="btn mt-ver" onClick={() => setTodas(true)}>Ver los {semana.length}</button> : null}
+                    {!todas && semana.length > desde + 12 ? <button type="button" className="btn borde2 chico mt-ver" onClick={() => setTodas(true)}>Ver los {semana.length}</button> : null}
                   </>
                 );
               })()}

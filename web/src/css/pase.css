@@ -276,8 +276,8 @@
   .app .ps-ab{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;padding:28px var(--gut) 40px}
   .app .ps-ab.uno{grid-template-columns:1fr}
   .ps-qg{grid-template-columns:repeat(4,minmax(0,1fr))}
-  .ps-ex ol{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .ps-ex.osc ol{grid-template-columns:repeat(4,minmax(0,1fr))}
+  /* de a cuatro las dos (21/11/2026): las ocho de la T1 en tres dejaban la última fila con dos y un lugar vacío */
+  .ps-ex ol,.ps-ex.osc ol{grid-template-columns:repeat(4,minmax(0,1fr))}
   .ps-pv{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}
   .ps-pv > .ps-tuyo,.ps-pv > .ps-pv-c{grid-column:1/-1}
   .ps-pv-l{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -571,7 +571,8 @@ svg.po{display:block;flex:none;overflow:visible}
 .dd2-sem li.fue{opacity:.45}
 .dd2-sem li.siete{border-color:#F5C542}
 .dd2-nota{margin:0;color:#C9D9E3;font-size:12.5px;line-height:1.4;text-align:center}
-.dd2 .btn.dd2-b{justify-content:center;background:#2C8BD6;color:#F6F6F6;border-color:#2C8BD6}
+/* #1F6FB2 y no #2C8BD6 (21/11/2026): el texto claro daba 3,37:1. El borde del panel sigue en #2C8BD6 */
+.dd2 .btn.dd2-b{justify-content:center;background:#1F6FB2;color:#F6F6F6;border-color:#1F6FB2}
 .dd2 .btn.dd2-b.blanco{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
 .dd2 .btn.dd2-b:disabled{opacity:.7;cursor:default}
 
@@ -632,6 +633,8 @@ svg.po{display:block;flex:none;overflow:visible}
 .pc-t.ok .pc-ti{color:#29B298}
 .pc-txp{padding:6px 8px;background:#1a1405;color:#F5C542;font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;white-space:nowrap}
 .pc-ir{padding:8px 11px;background:#29B298;color:#030304;text-decoration:none;font:800 11.5px/1 Archivo,sans-serif;text-transform:uppercase}
+/* 👆 44 px para el dedo (21/11/2026): «IR» medía 35×28 */
+@media (max-width: 599.98px){.pc-ir{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px}}
 .pc-ir.no{background:none;color:#8A8A85;border:1px solid #2a2a2e;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
 .pc-mas{width:100%;padding:12px;background:none;border:0;border-top:1px solid #18181b;color:#A5A5A0;cursor:pointer;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .pc-mas:hover{color:#F6F6F6}
@@ -868,3 +871,16 @@ svg.po{display:block;flex:none;overflow:visible}
 
 /* 🛠️ el aviso de Mods cuando el Pase se dibuja en otro nivel (20/11/2026) */
 .pa-mods{margin:0;padding:10px var(--gut,40px);background:#E8B923;color:#030304;font:700 14px/1.35 Archivo,sans-serif}
+
+/* 🧱 «Hoy» como una banda arriba, con sus tareas de a dos, y «La semana» y «Temporada» debajo, de a dos (21/11/2026, la
+   revisión visual): en tres columnas, «Hoy» tiene dos tareas y dejaba ~390×240 vacíos debajo, junto a las de seis.
+   Inclinada menos que las otras: a lo ancho, el mismo ángulo sube 11 px de punta a punta */
+@media (min-width: 900px){
+  .pa-setlist .pc-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pa-setlist .pc-col:first-child{grid-column:1/-1;transform:rotate(-.25deg)}
+  .pa-setlist .pc-col:first-child ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px}
+  .pa-setlist .pc-col:nth-child(2){transform:rotate(-.6deg)}
+  .pa-setlist .pc-col:nth-child(3){transform:rotate(.5deg)}
+  /* «Lo que ganarías»: los premios repartidos a lo ancho de la pieza blanca (dejaban ~240 px vacíos a la derecha) */
+  .pa-objs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+}
