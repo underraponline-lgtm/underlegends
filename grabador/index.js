@@ -318,7 +318,8 @@ async function vuelta(client) {
     const g = grabando.get(gid);
     if (g) { g.revisar(); continue; }
     const c = candidata(guild);
-    if (!c || c.n < MIN_VIVO || c.otro) { pendiente.delete(gid); continue; }
+    // el piso es el más bajo de los dos: con MIN_SIN=1 (la prueba de una persona) el de MIN_VIVO lo dejaba afuera
+    if (!c || c.n < Math.min(MIN_VIVO, MIN_SIN) || c.otro) { pendiente.delete(gid); continue; }
     const enJuego = c.n >= MIN_SIN ? false : (await llavesEnJuego()).has(gid);
     if (c.n < MIN_SIN && !enJuego) { pendiente.delete(gid); continue; }
     const p = pendiente.get(gid);
