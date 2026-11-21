@@ -11,6 +11,17 @@
   ],
   "cambios": [
     {
+        "version": "7.37",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T04:13:00-05:00",
+        "titulo": "/setup: tus llaves, tus ligas y la comprobación del final",
+        "items": [
+            "**`/setup` ahora pregunta por tus llaves y tus ligas**: eliges el canal donde publicas tus llaves (lo lee en cada vuelta del bot, cada 30 minutos, y no una vez por día) y el canal de resultados de cada liga (hasta 5), que entra a Ligas cuando el bot entiende cómo escribes los resultados.",
+            "**Al terminar, comprueba que todo ande**: lee de verdad cada canal que tiene que leer, mira la invitación de la Liga y dice qué falta arreglar y dónde. Con «Comprobar que todo anda» lo vuelves a mirar cuando quieras, sin que se escriba nada en tu servidor.",
+            "Si la invitación de la Liga se borró en Discord, volver a aplicar crea otra."
+        ]
+    },
+    {
         "version": "7.36",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T04:11:00-05:00",
