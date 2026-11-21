@@ -62,10 +62,17 @@ AFUERA = {'fms', 'fstats', 'youtube', 'urbanstreet', 'pro'}  # las de fuera de l
 FECHA_APROX = {'youtube', 'urbanstreet'}
 
 # Lo que pesa cada evento (Dlx, 20/11/2026).
+# ⚠️ LA LIGA PASÓ DE 0,3 A 0,15 Y LOS TÍTULOS CUENTAN LOS 3 MEJORES (antes 10), el 21/11/2026, por la auditoría que
+# pidió Dlx: *«asegúrate que la fórmula esté bien, luego no quiero quejas como "ese malísimo está encima de X"»*. Con
+# 0,3 y 10 títulos, 36 de la Liga quedaban arriba de algún pro que en la T1 ya le ganó a alguien en FMS o en un
+# nacional de Red Bull (Oasis #23, arriba de Gazir): diez títulos chicos de Discord sumaban más que dos victorias de
+# FMS. Con 0,15 y 3, ninguno (medido sobre la corrida del 20/11, `herramientas/global_auditar.py`). Es su regla
+# aplicada: *«nunca lo alcanzarías a menos que rapees o tengas resultados en eventos grandes»*. La Liga sigue arriba
+# de lo más bajo («bajo pero no el más bajo»).
 PESO = {'rb_internacional': 10, 'fms_internacional': 10, 'world_cup': 10,
         'fms_jornada': 5, 'rb_nacional': 5,
         'rb_regional': 2, 'plazas_final': 2, 'independiente': 2,
-        'plaza': 0.75, 'liga': 0.3, 'liga_chica': 0.125, 'resto': 0.125}
+        'plaza': 0.75, 'liga': 0.15, 'liga_chica': 0.06, 'resto': 0.06}
 PRO = {'rb_internacional', 'fms_internacional', 'world_cup', 'fms_jornada', 'rb_nacional'}
 PLAZA = {'rb_regional', 'plazas_final', 'independiente', 'plaza'}
 
@@ -75,6 +82,7 @@ FUERA_DE_ESCENA = 0.10
 TITULO_CAMINO, TITULO_POR_GANADA = 0.5, 1.25
 FINALISTA, SEMIFINALISTA = 0.4, 0.2
 MEJORES = 10
+MEJORES_TITULOS = 3
 VUELTAS = 3
 
 # La fuerza con la que arranca cada uno según dónde compite (1 a 10). Se queda la más alta.
@@ -145,8 +153,13 @@ def leer_fuentes(red=True, previo=None, solo=None):
 
 
 # ── 2. Juntar lo repetido ────────────────────────────────────────────────────────────────────────────────────────────
-def _par(b):
-    return frozenset((claves.clave(b['a']['nombre']), claves.clave(b['b']['nombre'])))
+def _lado(b, lado, de_id=None):
+    """Quién es un lado: la persona si ya se sabe (`de_id`), si no la clave del nombre escrito."""
+    return (de_id or {}).get(b[lado]['id']) or claves.clave(b[lado]['nombre'])
+
+
+def _par(b, de_id=None):
+    return frozenset((_lado(b, 'a', de_id), _lado(b, 'b', de_id)))
 
 
 def _familia(tipo):
@@ -160,10 +173,10 @@ def _familia(tipo):
     return 'calle'  # plaza, independiente, resto: lo que no es ni Red Bull, ni FMS, ni la Liga
 
 
-def _par_igual_orden(x, y):
+def _par_igual_orden(x, y, de_id=None):
     """Si las dos fuentes escriben la batalla con los mismos lados (A de una es A de la otra). Si no, el `gana`
     de una es el contrario en la otra."""
-    return claves.clave(x['a']['nombre']) == claves.clave(y['a']['nombre'])
+    return _lado(x, 'a', de_id) == _lado(y, 'a', de_id)
 
 
 def _dia(s):
@@ -173,11 +186,15 @@ def _dia(s):
         return None
 
 
-def deduplicar(batallas):
+def deduplicar(batallas, de_id=None):
     """La misma batalla en dos fuentes es UNA, con las dos como prueba. Se queda la de la fuente preferida.
 
     Mismo par de raperos, misma ronda y a un día o menos: una jornada de FMS que también lista Freestylestats no
     puede contar dos veces.
+
+    `de_id`: la segunda pasada, ya sabiendo quién es quién. ⚠️ YouTube escribe «AIRON PUNCHLINE» y Freestylestats
+    «Airon»: por el nombre son dos pares distintos, así que Airon contaba dos veces su octavos contra Hunter en Red
+    Bull Colombia (21/11/2026). Por persona es el mismo par.
     """
     orden = {n: i for i, (n, _) in enumerate(FUENTES)}
     por_par, ids = {}, set()
@@ -188,7 +205,7 @@ def deduplicar(batallas):
         b = dict(b)
         b['fuentes'] = sorted(set(b.get('fuentes') or [b.get('fuente')]))
         d = _dia(b['evento'].get('fecha'))
-        clave = _par(b)
+        clave = _par(b, de_id)
         igual = None
         for otra in por_par.get(clave, []):
             d2 = _dia(otra['evento'].get('fecha'))
@@ -208,7 +225,7 @@ def deduplicar(batallas):
             igual['fuentes'] = sorted(set(igual['fuentes']) | set(b['fuentes']))
             for campo in ('votos', 'replica', 'pts', 'gana', 'ronda'):
                 if igual.get(campo) is None and b.get(campo) is not None:
-                    igual[campo] = b[campo] if campo != 'gana' or _par_igual_orden(igual, b) else (
+                    igual[campo] = b[campo] if campo != 'gana' or _par_igual_orden(igual, b, de_id) else (
                         'b' if b['gana'] == 'a' else 'a')
             continue
         por_par.setdefault(clave, []).append(b)
@@ -428,9 +445,12 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
             c[1] += 1 if cod in ('G', 'GR') else 0
         if b.get('ronda') in ('final', 'semifinal') and b.get('gana') in ('a', 'b') and ev.get('tipo') != 'fms_jornada':
             gana, pierde = (ka, kb) if b['gana'] == 'a' else (kb, ka)
-            f = finales.setdefault(ev['id'], {'w': w, 'campeon': None, 'final': None, 'semi': []})
+            # ⚠️ Un evento puede traer MÁS DE UNA FINAL: YouTube junta dos ediciones subidas la misma semana
+            # («LA VILLURCA FREESTYLE · 1v1», 21/11/2026). Con un solo campeón por evento, el segundo le pisaba el
+            # título al primero; ahora cada final da el suyo.
+            f = finales.setdefault(ev['id'], {'w': w, 'finales': [], 'semi': []})
             if b['ronda'] == 'final':
-                f['campeon'], f['final'] = gana, pierde
+                f['finales'].append((gana, pierde))
             else:
                 f['semi'].append(pierde)
 
@@ -439,10 +459,9 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
         return TITULO_CAMINO * run + w * TITULO_POR_GANADA * ganadas
 
     for ev_id, f in finales.items():
-        if f['campeon']:
-            por[f['campeon']]['tit'].append((titulo(f['campeon'], ev_id, f['w']), ev_id, 1))
-        if f['final']:
-            por[f['final']]['tit'].append((FINALISTA * titulo(f['final'], ev_id, f['w']), ev_id, 2))
+        for campeon, finalista in f['finales']:
+            por[campeon]['tit'].append((titulo(campeon, ev_id, f['w']), ev_id, 1))
+            por[finalista]['tit'].append((FINALISTA * titulo(finalista, ev_id, f['w']), ev_id, 2))
         for k in f['semi']:
             por[k]['tit'].append((SEMIFINALISTA * titulo(k, ev_id, f['w']), ev_id, 3))
     for m in mvps:
@@ -457,9 +476,9 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
         bat = sorted(x['bat'], key=lambda t: -t[0])
         tit = sorted(x['tit'], key=lambda t: -t[0])
         pb = sum(t[0] for t in bat[:MEJORES])
-        pt = sum(t[0] for t in tit[:MEJORES])
+        pt = sum(t[0] for t in tit[:MEJORES_TITULOS])
         out[k] = {'p': pb + pt, 'pb': pb, 'pt': pt, 'nb': min(len(bat), MEJORES), 'jb': len(bat),
-                  'bat': bat[:MEJORES], 'tit': tit[:MEJORES]}
+                  'bat': bat[:MEJORES], 'tit': tit[:MEJORES_TITULOS]}
     return out
 
 
@@ -467,12 +486,24 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
 def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None, pros=None):
     batallas = deduplicar(batallas)
     de_id, personas = identidades(batallas, mvps, alias, extra=pros)
+    batallas = deduplicar(batallas, de_id)  # otra vez, por persona: dos fuentes que escriben distinto el nombre
     por_pro = {}
     for p in pros or []:
         k = de_id.get(p['id'])
         if k:
             por_pro.setdefault(k, [])
             por_pro[k] += [x for x in p['por'] if x not in por_pro[k]]
+    # Quien juega una jornada de FMS en la temporada está en una liga FMS: es pro, lo liste fms.tv o no. ⚠️ 21/11/2026:
+    # Metalingüística, Animus y Lema jugaban FMS Chile y FMS Colombia 2026/27 y salían de plaza, porque el plantel de
+    # fms.tv todavía no los traía.
+    for b in batallas:
+        if b['evento'].get('tipo') == 'fms_jornada':
+            liga = (b['evento'].get('nombre') or 'FMS').split(' · ')[0]
+            for lado in ('a', 'b'):
+                k = de_id[b[lado]['id']]
+                por_pro.setdefault(k, [])
+                if not por_pro[k]:
+                    por_pro[k].append(liga)
     s0, escena = semillas_iniciales(batallas, de_id, personas, semillas_liga, a_mano, pro_keys=por_pro)
     calc = puntos(batallas, mvps, de_id, personas, s0, escena)
     eventos, ev_i = [], {}
@@ -494,7 +525,7 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
     gente.sort(key=lambda g: (-g['p'], -g['jb'], g['n'].lower()))
     d0, d1 = temporada.FECHAS[temporada.ACTUAL]
     return {'v': 1, 't': (cuando or ahora_et()).isoformat(), 'temporada': temporada.ACTUAL, 'ventana': [d0, d1],
-            'formula': {'peso': PESO, 'ronda': RONDA, 'mejores': MEJORES}, 'fu': estado, 'ev': eventos, 'g': gente}
+            'formula': {'peso': PESO, 'ronda': RONDA, 'mejores': MEJORES, 'mejores_titulos': MEJORES_TITULOS}, 'fu': estado, 'ev': eventos, 'g': gente}
 
 
 def correr(red=False, escribir=True):
@@ -550,9 +581,29 @@ def _self_check():
     if not (g['Pro']['p'] > g['Grinder']['p']):
         mal.append('cuatro victorias de FMS tienen que pasar a 15 títulos chicos de la Liga: %s contra %s'
                    % (g['Pro']['p'], g['Grinder']['p']))
-    if g['Grinder']['nb'] != MEJORES or len(g['Grinder']['t']) != MEJORES:
-        mal.append('cuentan sólo las %d mejores batallas y títulos: %r' % (MEJORES, (g['Grinder']['nb'],
-                                                                              len(g['Grinder']['t']))))
+    if g['Grinder']['nb'] != MEJORES or len(g['Grinder']['t']) != MEJORES_TITULOS:
+        mal.append('cuentan sólo las %d mejores batallas y los %d mejores títulos: %r'
+                   % (MEJORES, MEJORES_TITULOS, (g['Grinder']['nb'], len(g['Grinder']['t']))))
+    dos = [_b('youtube', 'yt-dos', 'plaza', '2026-10-05', 'final', 'Uno', 'Dos', 'a'),
+           _b('youtube', 'yt-dos', 'plaza', '2026-10-05', 'final', 'Tres', 'Cuatro', 'b')]
+    g2 = {x['n']: x for x in armar(dos, [], {}, {}, cuando=dt.datetime(2026, 11, 23, 17, tzinfo=ET))['g']}
+    if not (any(t[1] == 1 for t in g2['Uno']['t']) and any(t[1] == 1 for t in g2['Cuatro']['t'])):
+        mal.append('un evento con dos finales da dos títulos, uno por final')
+    # YouTube escribe «AIRON PUNCHLINE» y Freestylestats «Airon» (usuario `aironpunchline`): una persona, una batalla.
+    fs = _b('fstats', 'rb-co', 'rb_nacional', '2026-10-17', 'octavos', 'Airon', 'Hunter', 'a', pa='co', pb='co')
+    fs['a']['id'] = 'fstats:aironpunchline'
+    yt = _b('youtube', 'yt-rb-co', 'rb_nacional', '2026-10-05', 'octavos', 'AIRON PUNCHLINE', 'HUNTER', 'a', pa='co',
+            pb='co')
+    g3 = {x['n']: x for x in armar([fs, yt], [], {}, {}, cuando=dt.datetime(2026, 11, 23, 17, tzinfo=ET))['g']}
+    if len(g3) != 2 or g3.get('Airon', {}).get('jb') != 1:
+        mal.append('la misma batalla con el nombre escrito distinto cuenta una vez: %r'
+                   % {n: x['jb'] for n, x in g3.items()})
+    # Quien juega una jornada de FMS es pro aunque fms.tv todavía no lo liste.
+    g4 = {x['n']: x for x in armar([_b('fms', 'FMS Chile 2026/27 · Jornada 1', 'fms_jornada', '2026-10-25', 'jornada',
+                                       'Nuevo', 'Otro', 'a')], [], {}, {},
+                                    cuando=dt.datetime(2026, 11, 23, 17, tzinfo=ET))['g']}
+    if g4['Nuevo']['esc'] != 'pro' or g4['Otro']['esc'] != 'pro' or g4['Nuevo'].get('por') != ['FMS Chile 2026/27']:
+        mal.append('quien juega una jornada de FMS es pro: %r' % {n: (x['esc'], x.get('por')) for n, x in g4.items()})
     if not any(t[1] == 'MVP' for t in g['Pro']['t']):
         mal.append('el MVP de la jornada cuenta como un título')
     # Una fuente sin ronda ni ganador se junta con la que sí los trae, y el ganador se da vuelta si los lados van al
