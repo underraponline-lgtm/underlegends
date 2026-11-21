@@ -1011,10 +1011,18 @@ function slidesDe(liga, items) {
       const ct = liga.chatTexto(it);
       if (ct) {
         // 🧑 también los de fuera de las 200 de la tabla (18/11/2026): quedaban sin cara y sin nombre
-        const fs = it.que === 'polemica' ? [] : (it.hablan || []).filter((k) => liga.quienK(k)).slice(0, 3);
+        const fs = it.que === 'polemica' ? [] : (ct.ks.length ? ct.ks : it.hablan || []).filter((k) => liga.quienK(k)).slice(0, 3);
         const hs = Array.isArray(it.hs) && it.hs.length === 24 ? it.hs : null;
         const mx = hs ? Math.max(1, ...hs) : 1;
-        out.push(Slide((it.que === 'polemica' ? 'POLÉMICA · ' : 'EL CHAT · ') + siglaDe(it.sv), <><h3 className="st-h">{ct.tit}</h3>
+        // 🗞️ tanda 3: una historia con nombre es un titular con sus caras; las de números siguen como estaban
+        if (ct.ks.length) {
+          out.push(Slide(liga.chatEtq(it) + ' · ' + siglaDe(it.sv), <><h3 className="st-h">{ct.tit}</h3>
+            <ul className="st-gente">{fs.map((k) => <li key={k}><Cara liga={liga} k={k} nombre={liga.nombreDe(k)} cls="st-mini" /><span>{liga.nombreDe(k)}</span></li>)}</ul>
+            <small className="st-s">{ct.sub}{ct.ev ? ' · la noche de ' + ct.ev : ''}</small></>,
+          c, 'Ver ' + siglaDe(it.sv), { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }, undefined, undefined,
+          { esc: it.sv, tono: it.que === 'reto' || it.que === 'cara' ? 'vivo' : 'verde' }));
+        } else
+        out.push(Slide(liga.chatEtq(it) + ' · ' + siglaDe(it.sv), <><h3 className="st-h">{ct.tit}</h3>
           <div className="hx-chat-n"><span className="hx-total"><Numero v={Number(it.msgs) || 0} f={num} /><small>MENSAJES EN UN DÍA</small></span>
             {it.x >= 2 ? <span className="hx-mv sube">{mult(it.x)} UN DÍA NORMAL</span> : null}</div>
           {hs ? <div className="hx-horas" aria-hidden="true">{hs.map((n, i) => <i key={i} className={i === it.h ? 'on' : ''} style={{ height: Math.max(4, Math.round((n / mx) * 100)) + '%' }} />)}</div> : null}

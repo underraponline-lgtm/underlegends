@@ -442,9 +442,12 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
         <section className="ed-sec"><h3 className="ed-st">En los chats</h3>
           <div className="ed-chgrid">{chats.map((it) => {
             const sv = liga.svDe(it);
+            // 🗞️ el titular de cada chat arriba (tanda 3, 21/11/2026): lo que pasó, no sólo cuánto se escribió
+            const ct = liga.chatTexto(it);
             return (
               <article key={it.id || sv} className="ed-chat"><div className="ed-ch-cab"><img className="ed-rc" alt="" src={liga.logo(sv)} loading="lazy" /><b>{(liga.svs[sv] && liga.svs[sv].nombre) || siglaDe(sv)}</b><small>{num(it.msgs)} mensajes · {it.gente} personas</small></div>
-                <Barras hs={it.hs} />
+                {ct ? <p className="ed-ch-tit"><span className="et">{liga.chatEtq(it)}</span>{ct.tit}</p> : null}
+                {ct && ct.ks.length ? <div className="ed-ch-gente">{ct.ks.filter((k) => liga.quienK(k)).map((k) => <Cara key={k} liga={liga} k={k} nombre={liga.nombreDe(k)} cls="ed-rc" />)}</div> : <Barras hs={it.hs} />}
                 {(it.hablan || []).length ? <div className="ed-ch-f"><span className="et">Habló más</span><Cara liga={liga} k={it.hablan[0]} nombre={it.hablan[0]} cls="ed-rc" /><b>{limpio((liga.T[it.hablan[0]] || {}).n || it.hablan[0])}</b></div> : null}
               </article>
             );

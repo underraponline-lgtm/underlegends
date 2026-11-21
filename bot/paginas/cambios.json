@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "7.34",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T03:40:00-05:00",
+        "titulo": "Lo que pasa en los chats, con nombre",
+        "items": [
+            "**Las historias de los chats, más directas**: además de cuando un chat explota, ahora sale lo que está pasando en cada servidor, con nombre: quién le pide batalla a quién, quiénes se cruzaron cara a cara, a quién felicita todo el chat, el favorito de la noche y quién anuncia que vuelve o que se retira.",
+            "**Los comentarios suenan más a cada servidor**: ahora aprenden también las reacciones del freestyle de cada chat, como «qué barra», «la rompió» o «qué nivel»."
+        ]
+    },
+    {
         "version": "7.33",
         "dia": "2026-11-20",
         "cuando": "2026-11-20T06:40:00-05:00",

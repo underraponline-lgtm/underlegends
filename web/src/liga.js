@@ -5,6 +5,10 @@ import { cartaPrincipalDe, versionRedibujo } from './pase.js';
 
 // 🔒 el Discord ID del dueño de la Liga (público: es un ID). Sólo muestra el atajo al Dashboard; quién entra lo decide
 // el servidor (`DUENO` de bot/avisos.js, el mismo número)
+// 🗞️ las etiquetas de las historias del chat (bot/chats.py `ORDEN_QUE`; tanda 3, 21/11/2026)
+const CHAT_ETQ = { reto: 'DESAFÍO', cara: 'CARA A CARA', retiro: '¿SE RETIRA?', regreso: 'VUELVE', elogio: 'EL CHAT SE RINDE',
+  favorito: 'FAVORITO', polemica: 'POLÉMICA', pico: 'EL CHAT', tema: 'EL CHAT' };
+
 export const DUENO = '739338101603696681';
 
 export const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
@@ -1025,7 +1029,7 @@ export class Liga {
     if (it.tipo === 'svrecord') return ['RÉCORD · ' + siglaDe(it.sv), siglaDe(it.sv) + ': ' + it.part + ' raperos en ' + nombreEv(it.ev, it.ll) + ', su récord', ['sv', it.sv], c, it.ll ? { llave: it.ll } : { ruta: '#/eventos' }];
     if (it.tipo === 'svchat') {
       const ct = this.chatTexto(it);
-      return ct ? [(it.que === 'polemica' ? 'POLÉMICA · ' : 'EL CHAT · ') + siglaDe(it.sv), ct.tit, ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }] : null;
+      return ct ? [this.chatEtq(it) + ' · ' + siglaDe(it.sv), ct.tit, ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }] : null;
     }
     if (it.tipo === 'svmeta') return ['META CUMPLIDA · ' + siglaDe(it.sv), siglaDe(it.sv) + ' cumplió su meta de la semana', ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }];
     return null;
@@ -1034,18 +1038,41 @@ export class Liga {
   // dramáticas ponerlas en las historias»): `{tit, nombres, ev}`, contado por la Liga o, con `nos`, por el servidor
   // (Publicaciones). `null` si no hay qué decir: el nombre del día de alguien que no está en la temporada.
   // ⚠️ Una polémica no trae nombres ni evento (el muro no los manda): nunca se dice de quién ni de qué
+  // 🗞️ TANDA 3 (21/11/2026, Dlx: «más directo… algo dramático como noticias sin ser noticias»): las historias con nombre
+  // (`que`: reto, cara, retiro, regreso, elogio, favorito; `ks` las claves) se escriben como titulares, y `sub` dice de
+  // dónde salió. Sin los nombres (alguien que no está en la temporada), no hay historia
   chatTexto(it, nos) {
     const sv = siglaDe(it.sv);
-    const q = (it.hablan || []).map((k) => this.quienK(k)).filter(Boolean).map((f) => limpio(f.n));
+    const de = (ks) => (ks || []).map((k) => this.quienK(k)).filter(Boolean).map((f) => limpio(f.n));
+    const q = de(it.hablan);
     const nombres = q.length > 1 ? q.slice(0, -1).join(', ') + ' y ' + q[q.length - 1] : q[0] || '';
+    const en = nos ? 'en nuestro chat' : 'en el chat de ' + sv;
+    const ev = it.que !== 'polemica' && it.ev ? limpio(it.ev) : '';
+    const p = de(it.ks);
+    const dos = ['reto', 'cara'].includes(it.que);
+    if (CHAT_ETQ[it.que] && !['polemica', 'pico', 'tema'].includes(it.que)) {
+      if (p.length < (dos ? 2 : 1)) return null;
+      const T = {
+        reto: it.mutuo ? [p[0] + ' y ' + p[1] + ' se tienen ganas', 'Los dos se pidieron batalla ' + en]
+          : [p[0] + ' le pide batalla a ' + p[1], 'Lo pidió ' + en],
+        cara: [p[0] + ' y ' + p[1] + ', cara a cara', 'No pararon de contestarse ' + en],
+        retiro: ['¿Se retira ' + p[0] + '?', 'Lo dijo ' + en],
+        regreso: [p[0] + ' anunció que vuelve', 'Lo dijo ' + en],
+        elogio: [(nos ? 'Nuestro chat se rinde ante ' : 'El chat de ' + sv + ' se rinde ante ') + p[0], (it.n || 'Muchas') + ' personas lo felicitaron'],
+        favorito: [(nos ? 'Nuestro chat ya tiene favorito: ' : 'En ' + sv + ' ya tienen favorito: ') + p[0], (it.n || 'Muchos') + ' lo dan como ganador'],
+      }[it.que];
+      return { tit: T[0], sub: T[1], nombres: p.join(' y '), ev, ks: it.ks || [] };
+    }
     let tit;
-    if (it.que === 'polemica') tit = nos ? 'Se armó la polémica en nuestro chat' : 'Polémica en el chat de ' + sv;
+    if (it.que === 'polemica') tit = nos ? 'Se armó la polémica en nuestro chat' : 'Se armó en el chat de ' + sv;
     else if (it.que === 'tema') {
       if (!nombres) return null;
-      tit = (nos ? 'En nuestro chat todos hablan de ' : 'En ' + sv + ' todos hablan de ') + nombres;
-    } else tit = nos ? 'Nuestro chat explotó' : 'Explotó el chat de ' + sv;
-    return { tit, nombres, ev: it.que !== 'polemica' && it.ev ? limpio(it.ev) : '' };
+      tit = (nos ? 'En nuestro chat todos hablan de ' : 'Todo ' + sv + ' habla de ') + nombres;
+    } else tit = (nos ? 'Nuestro chat explotó' : 'Explotó el chat de ' + sv) + (it.x >= 2 ? ': ' + String(it.x).replace('.', ',') + ' veces un día normal' : '');
+    return { tit, sub: '', nombres, ev, ks: [] };
   }
+  // la etiqueta de cada historia del chat
+  chatEtq(it) { return CHAT_ETQ[it.que] || 'EL CHAT'; }
   // 🏟️ LAS LIGAS DE LOS SERVIDORES (`ligas` del payload, bot/ligas.py `para_web()`)
   ligas() { return ((this.d.ligas || {}).ligas) || []; }
   // 🗓️ LA FECHA DE HOY DE CADA LIGA (Dlx, 14/10/2026: «Ligas en el Inicio»: la fecha de hoy, como un evento más). Hoy

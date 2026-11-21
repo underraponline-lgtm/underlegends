@@ -571,8 +571,9 @@ def id_de(x):
     elif tipo == 'svrecord':
         partes = [tipo, x.get('sv') or '', str(x.get('ll') or '')]
     elif tipo == 'svchat':
-        # 💬 uno por servidor y día: lo que cuenta puede crecer (la segunda lectura del día), y sigue siendo el mismo
-        partes = [tipo, x.get('sv') or '', x.get('dia') or '']
+        # 💬 uno por servidor, día y qué (tanda 3: un reto y un retiro el mismo día son dos): lo que cuenta puede crecer
+        # (la segunda lectura del día), y sigue siendo el mismo
+        partes = [tipo, x.get('sv') or '', x.get('dia') or '', x.get('que') or '']
     elif tipo in ('svtop', 'svnuevo', 'svtier'):
         partes = [tipo, x.get('sv') or '', x.get('t') or '', '|'.join(x.get('quien') or [])]
     elif tipo == 'podio':

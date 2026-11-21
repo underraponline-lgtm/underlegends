@@ -147,7 +147,10 @@ CUANTOS = {'campeon': (2, 4), 'ligahito': (2, 4), 'mesaward': (2, 5), 'premios':
            'caza': (1, 3), 'rango': (1, 3), 'elegido': (1, 3), 'sobrevivio': (1, 3), 'anuncio': (1, 3),
            'crewtier': (1, 3), 'pase': (1, 2), 'precio': (1, 2), 'flyer': (1, 2), 'sorteo': (1, 2),
            # 💬 el día fuerte de un chat (bot/chats.py): la polémica, con frases que no acusan a nadie
-           'svchat': (1, 3), 'svchat_pol': (1, 2)}
+           'svchat': (1, 3), 'svchat_pol': (1, 2),
+           # 🗞️ tanda 3 de los chats (21/11/2026): las historias con nombre
+           'svchat_reto': (2, 4), 'svchat_cara': (1, 3), 'svchat_retiro': (2, 4), 'svchat_regreso': (2, 4),
+           'svchat_elogio': (2, 4), 'svchat_favorito': (1, 3)}
 #: nunca más que esto en una publicación
 TOPE = 6
 #: en cuáles comenta también un personaje de la Liga, y con qué chance
@@ -226,6 +229,19 @@ GENTE = {
 GENTE['svchat'] = ['el chat de {sv} no paraba', '{m} mensajes, qué locura', 'yo estuve ahí, estuvo movidísimo',
                    '~me fui un rato y volví a 300 mensajes', 'así da gusto el chat de {sv}', '¿qué pasó que se prendió así?',
                    '~el chat más vivo que el evento', 'esto es la Liga', 'mañana otra vez', '~necesito un resumen urgente']
+# 🗞️ las historias con nombre (tanda 3). ⚠️ Nadie toma partido ni insulta: se festeja, se pide la batalla, se despide
+GENTE['svchat_reto'] = ['que se dé esa batalla', 'yo pago por ver eso', '~{q} contra {b}, ya quiero verla', 'esa la quiero en vivo',
+                        '~¿cuándo y dónde?', 'que la organicen ya', '~esto se pone bueno', '~ahora le toca responder a {b}']
+GENTE['svchat_cara'] = ['esos dos no paraban de contestarse', 'que lo arreglen en la llave', '~ya quiero verlos en una batalla',
+                        'el chat estaba que ardía', '~{q} y {b}, la batalla que todos quieren']
+GENTE['svchat_retiro'] = ['no te vayas, {q}', '~nooo, ¿en serio?', 'gracias por todo, {q}', '~seguro vuelve', 'va a hacer falta',
+                          'que sea un hasta luego']
+GENTE['svchat_regreso'] = ['volvió {q}', '~bienvenido de vuelta', 'se viene algo grande', 'la liga lo extrañaba',
+                           '~a ver si vuelve con el mismo nivel', '~{q} volvió, cuidado']
+GENTE['svchat_elogio'] = ['merecido, {q}', 'todos hablando de {q}', 'qué nivel', 'nadie lo discute', '~{q} se lo ganó',
+                          'el chat no miente']
+GENTE['svchat_favorito'] = ['yo también voy con {q}', '~no sé, yo veo a otro', 'favorito no es campeón', '~{q} tiene todo para ganarla',
+                            'veremos en la llave']
 GENTE['svchat_pol'] = ['¿qué pasó anoche en {sv}?', '~me perdí todo, alguien que me explique', 'tranquilos todos',
                        'que lo vea el staff y listo', '~yo sólo vine por las batallas', 'ojalá se arregle']
 
@@ -275,7 +291,9 @@ EMOJI = {'campeon': ['🔥', '👑', '🏆', '👏', '💪'], 'ligahito': ['👑
          'rango': ['📈', '🔥', '💪'], 'pase': ['📈', '💪', '🔥'], 'elegido': ['👀', '🎯'], 'sobrevivio': ['👀', '🔥'],
          'precio': ['💰', '🎯'], 'premios': ['🏅', '👏', '🔥'], 'resnoche': ['🌙', '🔥', '🎤'],
          'anuncio': ['🎤', '🔥', '💪', '🙌'], 'flyer': ['👀', '🔥', '🎤'], 'sorteo': ['🍀', '🎉'],
-         'crewtier': ['💪', '🔥', '🛡️'], 'mesaward': ['🏆', '👑', '👏'], 'svchat': ['🔥', '👀', '💬'], 'svchat_pol': ['👀']}
+         'crewtier': ['💪', '🔥', '🛡️'], 'mesaward': ['🏆', '👑', '👏'], 'svchat': ['🔥', '👀', '💬'], 'svchat_pol': ['👀'],
+         'svchat_reto': ['👀', '🔥', '🎤'], 'svchat_cara': ['👀', '😳'], 'svchat_retiro': ['😭', '🙏', '👏'], 'svchat_regreso': ['🔥', '👀', '💪'],
+         'svchat_elogio': ['👏', '🔥', '👑'], 'svchat_favorito': ['👀', '🎯']}
 #: cómo se ríe cada uno
 RISAS = ['jaja', 'jajaja', 'jsjs', 'jajsj', 'xd', 'JAJAJA', 'jajajaja']
 #: con qué puede arrancar cualquiera
@@ -433,6 +451,9 @@ def _relleno2(x):
     r['sv'] = _sigla(str(x.get('sv') or '').strip())
     if x.get('tipo') == 'svchat':
         r['m'] = str(x.get('msgs') or '')
+        # 🗞️ el segundo nombre de un reto o un cara a cara
+        q = _quien_a(x)
+        r['b'] = q[1].strip() if len(q) > 1 else ''
     return r
 
 
@@ -716,7 +737,9 @@ def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None, chats=
         else:
             # 🗣️ la versión 3 sólo con los chats, y sólo desde su arranque: si no, la 2 tal cual
             v3 = _voces(chats, dia, voces) if hay_chats and t0 >= v3_desde else None
-            tg = ('svchat_pol' if x.get('que') == 'polemica' else 'svchat') if tipo == 'svchat' else tipo
+            # 🗞️ cada historia del chat con sus frases (tanda 3); las que no tienen, las del día fuerte
+            tg = (('svchat_pol' if x.get('que') == 'polemica' else 'svchat_' + str(x.get('que')) if 'svchat_' + str(x.get('que')) in GENTE
+                   else 'svchat') if tipo == 'svchat' else tipo)
             cms = _cms_v2(x, tg, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises, v3, svs)
         if cms:
             nuevos[i] = cms

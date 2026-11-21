@@ -367,14 +367,15 @@ function contenido(liga, it, pub) {
     // 💬 el día fuerte del chat general (bot/chats.py, 17/11/2026), en la voz del servidor. ⚠️ Una polémica, sin nombres
     const ct = liga.chatTexto(it, true);
     if (!ct) return null;
-    c.cat = (it.que === 'polemica' ? 'Polémica' : 'El chat') + ' · ' + siglaDe(it.sv);
+    c.cat = liga.chatEtq(it).toLowerCase().replace(/\p{L}/u, (m) => m.toUpperCase()) + ' · ' + siglaDe(it.sv);
     c.vis = logoSv;
-    c.txt = <>{ct.tit}: <b>{num(it.msgs)} mensajes</b> en un día</>;
+    c.txt = ct.ks.length ? <b>{ct.tit}</b> : <>{ct.tit}: <b>{num(it.msgs)} mensajes</b> en un día</>;
     // 🕘 el pico en tu zona y tu formato (18/11/2026), como en la historia (arriba.jsx): `horaET(it.h)` escribía la hora del
     // este sin decirlo («11 PM» para quien en Argentina lo vivió a la 1 AM). `t` es h:30 ET (bot/chats.py): media hora
     // antes es el comienzo de la hora del pico
     const pico = it.t ? hora(new Date(utc(it.t).getTime() - 30 * 60000)) : horaET(it.h);
-    c.det = [it.x >= 2 ? mult(it.x) + ' un día normal' : '', num(it.gente) + ' personas', 'el pico, a las ' + pico, ct.ev ? 'la noche de ' + ct.ev : ''].filter(Boolean).join(' · ');
+    c.det = ct.ks.length ? [ct.sub, ct.ev ? 'la noche de ' + ct.ev : ''].filter(Boolean).join(' · ')
+      : [it.x >= 2 ? mult(it.x) + ' un día normal' : '', num(it.gente) + ' personas', 'el pico, a las ' + pico, ct.ev ? 'la noche de ' + ct.ev : ''].filter(Boolean).join(' · ');
     c.acc = <a className="pb-a" href={'#/sv/' + encodeURIComponent(siglaDe(it.sv))}>Ver {siglaDe(it.sv)}</a>;
   } else if (it.tipo === 'svnuevo') {
     c.cat = 'Socio nuevo';

@@ -207,3 +207,7 @@
 @media (max-width: 899px) { .ed-nota .cmh-rap { display: none; } }
 @media (prefers-reduced-motion: reduce) { .ed-pista { animation: none !important; } .ed-ticker { overflow-x: auto; } .ed-ti + .ed-ti { display: none; } }
 .app.calma .ed-pista { animation: none; }
+/* 🗞️ el titular de cada chat (tanda 3, 21/11/2026) */
+.ed-ch-tit { margin: 0; display: grid; gap: 4px; font: 800 16px/1.25 Archivo, sans-serif; color: var(--tinta); text-wrap: balance; }
+.ed-ch-tit .et { font-size: 11px; color: var(--gris); }
+.ed-ch-gente { display: flex; gap: 6px; }
