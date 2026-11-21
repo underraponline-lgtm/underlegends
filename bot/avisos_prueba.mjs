@@ -2766,6 +2766,23 @@ const ok = (cond, que, det) => {
         JSON.stringify({ t2, nombrados }));
     }
 
+    // 6 · las batallas de una grabación (`batallasGrabacion()`, 21/11/2026): quién peleó con quién, con la cuenta de
+    // cada uno, para que el grabador de Railway corte el audio por batalla
+    {
+      const { o, llave } = await nuevo();
+      llave(GANA_ANA, T);
+      const r = await o.batallasGrabacion({ g: G, desde: T - 60000, hasta: T + 60000 }, T + 60000);
+      const L = r.llaves && r.llaves[0];
+      const cu = L && L.rondas.find((R) => /cuartos/i.test(R.r));
+      const b0 = cu && cu.b[0];
+      ok(L && cu && cu.b.length === 3 && b0.lados.length === 2 && b0.lados[0][0].n === 'Ana' && b0.lados[0][0].id === ID.ana
+        && b0.lados[1][0].id === ID.bea && b0.gano && /Ana/.test(b0.gano) && cu.b[2].lados[1][0].id === ID.fio,
+      'las batallas de la llave, ronda por ronda, con la cuenta de Discord de cada lado y quién ganó', JSON.stringify(r).slice(0, 400));
+      const nada = await o.batallasGrabacion({ g: G, desde: T + 5 * 3600000, hasta: T + 6 * 3600000 }, T + 6 * 3600000);
+      ok(nada.llaves && !nada.llaves.length && (await o.batallasGrabacion({ g: 'x', desde: 1 })).error === 'datos',
+        'una llave de otro rato no entra; sin servidor, nada');
+    }
+
     // 5 · la final que espera sus micrófonos sale UNA vez (21/11/2026, DESGRACIAS EN TOKYO VOL 32 en FFA): el cruce
     // retenido no estaba en la cuenta de «la final ya va a salir», y el «🔥 La final de…» salía aparte
     {

@@ -3839,6 +3839,8 @@ const RUTAS = {
   '/avisos/voz-vivo': 'POST',
   // 👀 y el público de cada evento (`grabador/vivo.js` en Railway, con su clave): ver `publico()`
   '/avisos/publico': 'POST',
+  // ⚔️ y las batallas de las llaves de un servidor con los IDs de cada lado, para cortar la grabación (`batallasGrabacion()`)
+  '/avisos/batallas': 'GET',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
   // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (sólo con ajustes)
@@ -7975,6 +7977,14 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 60000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/voz-vivo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
+  // ⚔️ las batallas de una grabación (`grabador/batallas.js`, ver `batallasGrabacion()`): con la clave del ciclo
+  if (ruta === '/avisos/batallas') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const u = new URL(req.url);
+    return elObjeto(env).fetch('https://avisos/batallas', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ g: u.searchParams.get('g'), desde: u.searchParams.get('desde'), hasta: u.searchParams.get('hasta') }) });
+  }
   // 👀 el público de cada evento, de Railway (`grabador/vivo.js`, ver `publico()`): con la clave del ciclo y sólo al objeto
   if (ruta === '/avisos/publico') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -10006,6 +10016,7 @@ export class Avisos {
       if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
       if (ruta === '/voz-vivo') return json(this.vozVivo(d));
       if (ruta === '/publico') return json(this.publico(d));
+      if (ruta === '/batallas') return json(await this.batallasGrabacion(d));
       if (ruta === '/redibujo-listo') return json(this.redibujoListo(d));
       // 💬 lo que importó en los chats generales (`chatsCiclo()`): sólo para el Dashboard
       if (ruta === '/chats-ciclo') return json(this.chatsCiclo(d));
@@ -11509,6 +11520,45 @@ export class Avisos {
     }
     this.guardar('publico', { t: ahora, n, premiados });
     return { ok: true, n, premiados };
+  }
+
+  /**
+   * ⚔️ LAS BATALLAS DE UNA GRABACIÓN (21/11/2026; Dlx, a «un clip por batalla»: «dale»). El grabador de Railway sabe
+   * CUÁNDO habló cada cuenta; esto le dice QUIÉN peleó con quién: las llaves de ese servidor que se tocaron mientras
+   * grababa (`{g, desde, hasta}`, en ms), cada una con sus rondas y sus batallas, y cada lado con su gente
+   * (`genteChat()`: la misma búsqueda de nombres que el bot en vivo, sin el filtro de las menciones). Con eso
+   * `grabador/batallas.js` ubica cada batalla en el audio. Sólo lee.
+   */
+  async batallasGrabacion(d, ahora = Date.now()) {
+    const g = String((d && d.g) || '');
+    const desde = Number(d && d.desde) || 0, hasta = Number(d && d.hasta) || ahora;
+    if (!/^\d{5,25}$/.test(g) || !desde || hasta < desde) return { error: 'datos' };
+    const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE g = ? AND ed >= ? AND pub <= ?',
+      g, desde - 30 * MIN, hasta).toArray();
+    if (!filas.length) return { llaves: [] };
+    if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
+    const LV = globalThis.LlaveVivo;
+    if (!LV) return { llaves: [] };
+    const dc = await this.datosCruce(ahora);
+    const ids = await this.indiceNombres(ahora);
+    const quien = (this.leer('quien') || {}).svs || {};
+    const out = [];
+    for (const b of LV.unirPartidas(filas)) {
+      let L = null;
+      try { L = LV.aLlave(b); } catch (e) { L = null; }
+      if (!L) continue;
+      const qsv = quien[L.sv || b.sv] || {};
+      const buscar = (n) => {
+        const q = qsv[normPagina(n)];
+        return (q && (dc.tabla[q] || dc.perf[q]) ? q : '') || dc.buscar(n);
+      };
+      out.push({ id: L.id, sv: L.sv || b.sv || '', nombre: String(L.nombre || '').slice(0, 80),
+        rondas: (L.rondas || []).map((R) => ({ r: String(R.r || ''),
+          b: batallasDe(R).map((x) => ({ gano: String(x[1] || ''),
+            lados: (x[0] || []).filter(Boolean).map((l) => genteChat(l, buscar, dc.tabla, ids).map((y) => ({ n: y.n, id: y.id }))) })) }))
+          .filter((R) => R.b.length) });
+    }
+    return { llaves: out };
   }
 
   /** Lo de `vozVivo()` de un servidor si está al día (`{ab, en}`), o `null`. */
