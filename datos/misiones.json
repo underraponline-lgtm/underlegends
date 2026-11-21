@@ -9174,7 +9174,7 @@
     "Oasis": [
      0,
      2,
-     3,
+     2,
      0,
      0
     ],
@@ -9837,11 +9837,11 @@
     ],
     [
      "caza",
-     "Gánale un duelo a MaYeuTyK",
+     "Gánale un duelo a Lvel",
      "caza",
      1,
      800,
-     "MaYeuTyK"
+     "Lvel"
     ],
     [
      "dorado",
@@ -10551,7 +10551,7 @@
      0,
      0,
      8,
-     0,
+     1,
      0
     ]
    },
@@ -10584,7 +10584,8 @@
     "XXXX 🇻🇪": 300,
     "doble h": 300,
     "mats": 1000,
-    "rodrilp": 600
+    "rodrilp": 600,
+    "tommy": 800
    }
   }
  },
@@ -10941,6 +10942,7 @@
   "rodrilp": 1500,
   "romeo": 900,
   "setesfifi": 300,
+  "tommy": 800,
   "wei shenlong": 300,
   "yinn": 7400
  },

@@ -6914,11 +6914,11 @@
     "b": [
      [
       [
-       "Erian",
-       "PichulaMc"
+       "PichulaMc",
+       "Erian"
       ],
-      "Erian",
-      "ganador: ✅ Decidir"
+      "PichulaMc",
+      "ganador según #veredictos"
      ]
     ],
     "r": "Final"
@@ -6927,12 +6927,12 @@
   "sv": "URBF",
   "tabla": [
    [
-    "Erian",
+    "PichulaMc",
     "Campeón",
     7500
    ],
    [
-    "PichulaMc",
+    "Erian",
     "Subcampeón",
     5000
    ],
@@ -34905,7 +34905,11 @@
     "Octavos",
     1250
    ]
-  ]
+  ],
+  "ver": {
+   "min": 136,
+   "v": 1
+  }
  },
  "527": {
   "dia": "2026-10-23",
@@ -40548,7 +40552,7 @@
      [
       [
        "Carlosss",
-       "JL 🇻🇪"
+       "JL"
       ],
       "Carlosss",
       ""
@@ -40705,7 +40709,7 @@
     1250
    ],
    [
-    "JL 🇻🇪",
+    "JL",
     "Octavos",
     1250
    ],
@@ -40734,7 +40738,11 @@
     "Octavos",
     1250
    ]
-  ]
+  ],
+  "ver": {
+   "min": 209,
+   "v": 1
+  }
  },
  "558": {
   "dia": "2026-11-01",
@@ -47855,7 +47863,7 @@
      [
       [
        "Mathhias",
-       "VALLES-T",
+       "Shadow",
        "Yeyox"
       ],
       "Mathhias",
@@ -47955,12 +47963,12 @@
     2000
    ],
    [
-    "Tmax Turbo [PN]",
+    "Shadow",
     "Cuartos",
     2000
    ],
    [
-    "VALLES-T",
+    "Tmax Turbo [PN]",
     "Cuartos",
     2000
    ],
@@ -48417,7 +48425,7 @@
      [
       [
        "Lvel 🇻🇪",
-       "VALLES-T"
+       "Shadow"
       ],
       "Lvel 🇻🇪",
       ""
@@ -48477,11 +48485,11 @@
      ],
      [
       [
-       "Majiztral 🇨🇴",
-       "RICARD"
+       "Richard",
+       "Majiztral"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Richard",
+      "ganador según #veredictos"
      ]
     ],
     "r": "Cuartos"
@@ -48536,6 +48544,11 @@
     2000
    ],
    [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
     "NEXOR",
     "Cuartos",
     2000
@@ -48566,19 +48579,18 @@
     625
    ],
    [
-    "Under",
+    "Shadow",
     "Octavos",
     625
    ],
    [
-    "VALLES-T",
+    "Under",
     "Octavos",
     625
    ]
   ],
   "ver": {
    "min": 123,
-   "org": "juega",
    "v": 1
   }
  },
@@ -53760,7 +53772,7 @@
        "Molusco"
       ],
       "Chuwin, Oasis",
-      "triple (4 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷; Revivido: yinn"
+      "triple (4 bandas, pasan 2); también pasa: Park ji sunk🇰🇷; Drafteado: Chuwin 🇳🇮; Revivido: yinn"
      ],
      [
       [
@@ -53792,19 +53804,19 @@
     "b": [
      [
       [
+       "Leyenda, Monet",
+       "Oasis, Chuwin"
+      ],
+      "Leyenda, Monet",
+      "ganador según #veredictos"
+     ],
+     [
+      [
        "MaYeuTyK, Miniboy",
        "Zanti, Keider"
       ],
       "MaYeuTyK, Miniboy",
       ""
-     ],
-     [
-      [
-       "Leyenda + monet",
-       "Park ji sunk🇰🇷 + Chuwin🇪🇸"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
@@ -53829,6 +53841,16 @@
     "Zanti",
     "Campeón",
     5958
+   ],
+   [
+    "Chuwin",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Oasis",
+    "Semifinal",
+    5125
    ],
    [
     "Molusco",
@@ -53856,13 +53878,13 @@
     2625
    ],
    [
-    "Calíz",
-    "Cuartos",
-    2500
+    "Monet",
+    "Semifinal",
+    2625
    ],
    [
-    "Chuwin",
-    "Subcampeón",
+    "Calíz",
+    "Cuartos",
     2500
    ],
    [
@@ -53893,11 +53915,6 @@
    [
     "Marcos",
     "Cuartos",
-    2500
-   ],
-   [
-    "Oasis",
-    "Subcampeón",
     2500
    ]
   ],

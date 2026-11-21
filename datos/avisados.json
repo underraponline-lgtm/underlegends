@@ -24253,7 +24253,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "a081538027eafedb",
+  "firma": "0485eb2a83dcc363",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24521,7 +24521,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "483f7e62616f06d7",
+  "firma": "47ff212ab04c5b1b",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -31459,7 +31459,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "bfe791c84b37ca64",
+  "firma": "769d6a34ae2a2a4d",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32604,7 +32604,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "316340e50bb391af",
+  "firma": "1021792bc3f0a117",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,
@@ -36374,7 +36374,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "ef2550b22870cf87",
+  "firma": "0b7236070a9feb29",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -39819,7 +39819,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "1c8a15e1d1997c29",
+  "firma": "f79108683533365d",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -40429,7 +40429,7 @@
    ],
    [
     "Mathhias",
-    "VALLES-T",
+    "Shadow",
     "Mathhias"
    ],
    [
@@ -40487,7 +40487,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "6a301561045750ad",
+  "firma": "b3b04bd27d9039d3",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -40524,7 +40524,7 @@
     2000
    ],
    [
-    "VALLES-T",
+    "Shadow",
     "Cuartos",
     2000
    ],
@@ -42084,7 +42084,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "41aea612d1b2da9c",
+  "firma": "175a0cba9ef96384",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45937,7 +45937,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "bb052c7a7a798584",
+  "firma": "404cbe8f0a16ba12",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46618,6 +46618,11 @@
     "Miniboy"
    ],
    [
+    "Leyenda, Monet",
+    "Oasis, Chuwin",
+    "Leyenda, Monet"
+   ],
+   [
     "MaYeuTyK, Miniboy",
     "Zanti, Keider",
     "MaYeuTyK, Miniboy"
@@ -46646,7 +46651,7 @@
    "yinn": 35
   },
   "fecha": "13/11",
-  "firma": "571a830310a5e8fc",
+  "firma": "a66bfd707a37366b",
   "msg": "1570870557455417427",
   "nombre": "PANDILLAS DE RAP VOL.1",
   "num": 629,
@@ -46663,6 +46668,16 @@
     "Zanti",
     "Campeón",
     5958
+   ],
+   [
+    "Chuwin",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Oasis",
+    "Semifinal",
+    5125
    ],
    [
     "yinn",
@@ -46690,17 +46705,12 @@
     2625
    ],
    [
+    "Monet",
+    "Semifinal",
+    2625
+   ],
+   [
     "Leyenda",
-    "Subcampeón",
-    2500
-   ],
-   [
-    "Chuwin",
-    "Subcampeón",
-    2500
-   ],
-   [
-    "Oasis",
     "Subcampeón",
     2500
    ],
@@ -47439,7 +47449,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "61f1f81d93bcc962",
+  "firma": "091436aa1eb01f91",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,

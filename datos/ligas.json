@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»). Desde el 11/11/2026: `temps` [{t, c, n, msg, p, ult, desde}] (cada campeón que anunció su servidor: cierra esa temporada), `tn` (el número de la temporada que juega, si lo dice), `cerrada` {t} (sus canales ya no están) y, arriba, `nuevas` (las ligas que el bot encontró solo: `fam` vacío hasta que un lector entienda sus veredictos).",
- "t": "2026-11-21T07:59:54Z",
+ "t": "2026-11-21T16:36:13Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -7931,15 +7931,23 @@
     ]
    ],
    "flyer": {
-    "id": "1573231527825907762",
-    "t": "2026-11-20T07:00:25Z",
-    "tit": "RESULTADO MAIN EVENT JORNADA 1",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1573231527825907762.webp",
-    "w": 1179,
-    "h": 1390
+    "id": "1573639640345214976",
+    "t": "2026-11-21T10:02:07Z",
+    "tit": "🌟 RIVALIDAD CON HISTORIA",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1573639640345214976.webp",
+    "w": 1080,
+    "h": 1341
    },
    "ptb": {},
    "flyers": [
+    {
+     "id": "1573639640345214976",
+     "t": "2026-11-21T10:02:07Z",
+     "tit": "🌟 RIVALIDAD CON HISTORIA",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1573639640345214976.webp",
+     "w": 1080,
+     "h": 1341
+    },
     {
      "id": "1573231527825907762",
      "t": "2026-11-20T07:00:25Z",
@@ -8027,15 +8035,6 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1570180972127715389.webp",
      "w": 720,
      "h": 894
-    },
-    {
-     "id": "1570179901326364842",
-     "msg": "1570179901326364842",
-     "t": "2026-11-11T20:54:21Z",
-     "tit": "Freestyle Zone League",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1570179901326364842.webp",
-     "w": 720,
-     "h": 894
     }
    ],
    "staff": [
@@ -8044,7 +8043,7 @@
      "ajoel",
      100,
      200,
-     "2026-11-20T07:00:25Z"
+     "2026-11-21T10:02:07Z"
     ]
    ],
    "tn": 16,
@@ -12040,7 +12039,7 @@
     "K": 41,
     "FF": 48
    },
-   "probado": "2026-11-21T04:59:00Z",
+   "probado": "2026-11-21T16:36:13Z",
    "quieta": true
   },
   "ffs-ffs-league-argentina": {
@@ -12063,7 +12062,7 @@
     "K": 81,
     "FF": 78
    },
-   "probado": "2026-11-21T04:59:00Z",
+   "probado": "2026-11-21T16:36:13Z",
    "quieta": true
   },
   "ffs-ffs-league-chile": {
@@ -12086,7 +12085,7 @@
     "K": 78,
     "FF": 64
    },
-   "probado": "2026-11-21T04:59:00Z",
+   "probado": "2026-11-21T16:36:13Z",
    "quieta": true
   },
   "ffs-ffs-league-caribe": {
@@ -12109,7 +12108,7 @@
     "K": 89,
     "FF": 87
    },
-   "probado": "2026-11-21T04:59:00Z",
+   "probado": "2026-11-21T16:36:13Z",
    "quieta": true
   },
   "ffs-ffs-league-sur-america": {
@@ -12132,7 +12131,7 @@
     "K": 44,
     "FF": 42
    },
-   "probado": "2026-11-21T04:59:00Z",
+   "probado": "2026-11-21T16:36:13Z",
    "quieta": true
   },
   "lkr-fms-clasificacion-a-inter": {
@@ -12155,7 +12154,7 @@
     "K": 1,
     "FF": 0
    },
-   "probado": "2026-11-21T04:59:00Z",
+   "probado": "2026-11-21T16:36:13Z",
    "quieta": false
   },
   "lkr-fms-coliseo": {
@@ -12201,7 +12200,7 @@
     "K": 0,
     "FF": 0
    },
-   "probado": "2026-11-21T03:00:56Z",
+   "probado": "2026-11-21T16:36:13Z",
    "quieta": false
   }
  },
@@ -12337,6 +12336,152 @@
    "vis": "1571668262834536599",
    "beat": "1571707340158144732",
    "voz": "1571695074977517789"
+  }
+ ],
+ "todas": [
+  {
+   "n": "FMH Albiceleste",
+   "sv": "URBF",
+   "g": "1467763447117778989",
+   "ver": "1511968616025952347",
+   "an": "1511968150218866728",
+   "tabla": "1511968417412939897"
+  },
+  {
+   "n": "FMH Andes",
+   "sv": "URBF",
+   "g": "1467763447117778989",
+   "ver": "1511969253325017178",
+   "an": "1511969014782365846",
+   "tabla": "1511969122961850448"
+  },
+  {
+   "n": "FMH Carimex",
+   "sv": "URBF",
+   "g": "1467763447117778989",
+   "ver": "1511969585770004532",
+   "an": "1511969434531528814",
+   "tabla": "1511969454794477598"
+  },
+  {
+   "n": "FMH Tricolor",
+   "sv": "URBF",
+   "g": "1467763447117778989",
+   "ver": "1511973074973626428",
+   "an": "1511972607338221680",
+   "tabla": "1511972739215261917"
+  },
+  {
+   "n": "FMH Under",
+   "sv": "URBF",
+   "g": "1467763447117778989",
+   "ver": "1527565480003637268",
+   "an": "1527564677641404487",
+   "tabla": "1527565426622726236"
+  },
+  {
+   "n": "FMH España",
+   "sv": "URBF",
+   "g": "1467763447117778989",
+   "ver": "1511973539438399590",
+   "an": "1512167830919839844",
+   "tabla": "1511973442033946644"
+  },
+  {
+   "n": "FMS World Series",
+   "sv": "DDF",
+   "g": "1469009547971526659",
+   "ver": "1566514198584889344",
+   "an": "1566583919388795021",
+   "tabla": "1566513665081868450"
+  },
+  {
+   "n": "Snake League Generations",
+   "sv": "SR",
+   "g": "492346406976356374",
+   "ver": "1167906700452446218",
+   "an": "1117081139702665236",
+   "tabla": "1117080676416638977"
+  },
+  {
+   "n": "Snake New Chapter",
+   "sv": "SR",
+   "g": "492346406976356374",
+   "ver": "1167906700452446218",
+   "an": "1117081139702665236",
+   "tabla": "1544074821506437140"
+  },
+  {
+   "n": "FZ League",
+   "sv": "FRZ",
+   "g": "838593179187544064",
+   "ver": "961680549712396408",
+   "an": "838599987280609300",
+   "tabla": "845072946829721701"
+  },
+  {
+   "n": "FDS Perú",
+   "sv": "FDS",
+   "g": "1489848581203689535",
+   "ver": "1540179968879890452",
+   "an": "1540179843017080845",
+   "tabla": "1540180092058210414"
+  },
+  {
+   "n": "FDS México",
+   "sv": "FDS",
+   "g": "1489848581203689535",
+   "ver": "1558967211820065239",
+   "an": "1558967030777126922",
+   "tabla": "1558967354946363513"
+  },
+  {
+   "n": "Champions League LKR",
+   "sv": "LKR",
+   "g": "1558611504046153750",
+   "ver": "1560753316768653343",
+   "an": "1559772764704084128",
+   "tabla": "1559772874183540786"
+  },
+  {
+   "n": "FMS Plaza Underground",
+   "sv": "LKR",
+   "g": "1558611504046153750",
+   "ver": "1561974380341497867",
+   "an": "1561974281041092638",
+   "tabla": ""
+  },
+  {
+   "n": "FMS LATAM",
+   "sv": "LKR",
+   "g": "1558611504046153750",
+   "ver": "1566520848591093781",
+   "an": "1566520559087521832",
+   "tabla": "1566520642529001683"
+  },
+  {
+   "n": "FMS Ceuta",
+   "sv": "CEU",
+   "g": "1513624656538636459",
+   "ver": "1554210754150932520",
+   "an": "1552349616861618287",
+   "tabla": "1554210034697769021"
+  },
+  {
+   "n": "Dimension Word Series 26",
+   "sv": "DDF",
+   "g": "1469009547971526659",
+   "ver": "1570206763121119232",
+   "an": "1569179310655275148",
+   "tabla": ""
+  },
+  {
+   "n": "FMS Coliseo",
+   "sv": "LKR",
+   "g": "1558611504046153750",
+   "ver": "1571679694913282110",
+   "an": "1571664693435568128",
+   "tabla": "1571678690084134953"
   }
  ],
  "faltan": {

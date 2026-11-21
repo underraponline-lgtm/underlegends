@@ -116,19 +116,19 @@
 "temporada"
 ]
 },
-"over": {
-"rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "agus": {
 "rg": "S",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"over": {
+"rg": "S",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -238,6 +238,15 @@
 "temporada"
 ]
 },
+"majiztral": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "zignos": {
 "rg": "B",
 "c": [
@@ -282,15 +291,6 @@
 "temporada"
 ]
 },
-"majiztral": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "criszj": {
 "rg": "C",
 "c": []
@@ -301,6 +301,15 @@
 },
 "mats": {
 "rg": "A",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"bloody": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -363,15 +372,6 @@
 },
 "tenor": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"bloody": {
-"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -573,6 +573,14 @@
 "temporada"
 ]
 },
+"kyss": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "mcnadie": {
 "rg": "C",
 "c": [
@@ -595,14 +603,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"kyss": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -706,6 +706,14 @@
 "temporada"
 ]
 },
+"crk": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "player": {
 "rg": "D",
 "c": [
@@ -746,14 +754,6 @@
 },
 "dios": {
 "rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"crk": {
-"rg": "E",
 "c": [
 "competitivo",
 "servidor",
@@ -852,6 +852,10 @@
 "rg": "E",
 "c": []
 },
+"monet": {
+"rg": "",
+"c": []
+},
 "krish": {
 "rg": "E",
 "c": [
@@ -860,10 +864,6 @@
 "servidor",
 "temporada"
 ]
-},
-"monet": {
-"rg": "",
-"c": []
 },
 "fazer": {
 "rg": "",
@@ -913,6 +913,22 @@
 "servidor",
 "temporada"
 ]
+},
+"zetryko": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"under": {
+"rg": "",
+"c": []
+},
+"julix-x": {
+"rg": "",
+"c": []
 },
 "leyenda": {
 "rg": "",
@@ -977,18 +993,6 @@
 "temporada"
 ]
 },
-"zetryko": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"under": {
-"rg": "",
-"c": []
-},
 "bastyretro": {
 "rg": "",
 "c": [
@@ -1003,10 +1007,6 @@
 "servidor",
 "temporada"
 ]
-},
-"julix-x": {
-"rg": "",
-"c": []
 },
 "zekha": {
 "rg": "",
@@ -1094,11 +1094,7 @@
 },
 "agustin51k": {
 "rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "kochi": {
 "rg": "",
@@ -8207,7 +8203,7 @@
 },
 "racha": {
 "makmah": 1,
-"oasis": 4,
+"oasis": 3,
 "pichulamc": 1,
 "erian": 0,
 "praiseriza": 0,
