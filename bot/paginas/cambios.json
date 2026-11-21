@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "7.55",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T14:45:00-05:00",
+        "titulo": "Lo que quedaba de la revisión",
+        "items": [
+            "**Los nombres de eventos que no se pueden mostrar** salen ahora como «Evento #N», en todas las páginas.",
+            "**La tabla de países** ya no cuenta a Brasil ni a Emiratos, que no son países de la Liga.",
+            "**Ligas**: una imagen de un solo color ya no se toma como el afiche de una liga, y los nombres de las batallas ya no se quedan con el número de una mención.",
+            "**Tienda**: ahora dice «Camiseta»."
+        ]
+    },
+    {
         "version": "7.54",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T14:09:00-05:00",
