@@ -218,7 +218,7 @@ function Crew({ x, f }) {
       <LogoCrew c={f} cls="rk-clogo" />
       <span className="rk-qn">
         <span className="rk-qa"><a href={'#/crew/' + encodeURIComponent(f.clave || f.crew)}>{limpio(f.crew)}</a></span>
-        <small>{f.rk === 0 ? 'SIN PUESTO: LE FALTAN RAPEROS' : ''}{mia ? <em className="rk-vos">TU CREW</em> : null}</small>
+        <small>{f.rk === 0 ? 'SIN PUESTO · FALTAN RAPEROS' : ''}{mia ? <em className="rk-vos">TU CREW</em> : null}</small>
       </span>
     </span>
   );
