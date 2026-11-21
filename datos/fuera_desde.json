@@ -69,6 +69,20 @@
    "sv-ch": "2026-11-17",
    "sv-dra": "2026-11-17"
   },
+  "mats": {
+   "bloq-competitivo": "2026-11-21",
+   "bloq-pais": "2026-11-21",
+   "competitivo": "2026-11-21",
+   "pais": "2026-11-21",
+   "servidor": "2026-11-21",
+   "sv-ch": "2026-11-21",
+   "sv-ddf": "2026-11-21",
+   "sv-dra": "2026-11-21",
+   "sv-ffa": "2026-11-21",
+   "sv-ffs": "2026-11-21",
+   "sv-sr": "2026-11-21",
+   "temporada": "2026-11-21"
+  },
   "mrstillballin": {
    "bloq-competitivo": "2026-11-17",
    "bloq-pais": "2026-11-17",
@@ -122,8 +136,8 @@
    "sv-urbf": "2026-11-17"
   }
  },
- "pasaban": 437,
- "cuando": "2026-11-21T21:33:13Z",
+ "pasaban": 436,
+ "cuando": "2026-11-21T22:04:53Z",
  "borradas": [
   [
    "arez",

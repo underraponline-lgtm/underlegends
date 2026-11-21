@@ -60955,5 +60955,157 @@
    "min": 116,
    "v": 1
   }
+ },
+ "668": {
+  "dia": "2026-11-21",
+  "escala": "8-15",
+  "fecha": "21/11",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1573795087161229394"
+  ],
+  "n": 668,
+  "nombre": "RED BULL REGIONAL",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Telmex",
+       "Vilca"
+      ],
+      "Telmex",
+      ""
+     ],
+     [
+      [
+       "DARKO",
+       "MCO 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Mito🇦🇷",
+       "Miniboy🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mc arepa",
+       "Chente"
+      ],
+      "Mc arepa",
+      "Walk-in 1: mcarepa; Walk-in 1: Chente 🇻🇪"
+     ],
+     [
+      [
+       "Majiztral",
+       "Raizer"
+      ],
+      "Majiztral",
+      "Walk-in 1: Majiztral 🇨🇴; Walk-in 1: Raizer🇵🇪"
+     ],
+     [
+      [
+       "Telmex",
+       "Chaz🇵🇪"
+      ],
+      "Telmex",
+      "Walk-in 1: Chaz🇵🇪"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Dios"
+      ],
+      "Majiztral",
+      "Walk-in 2: Dios 🇲🇽"
+     ],
+     [
+      [
+       "Mc arepa",
+       "Telmex"
+      ],
+      "Mc arepa",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Mc arepa"
+      ],
+      "Majiztral",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Majiztral",
+    "Campeón",
+    3750
+   ],
+   [
+    "Telmex",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mc arepa",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Chaz🇵🇪",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Chente",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Dios",
+    "Semifinal",
+    875
+   ],
+   [
+    "Vilca",
+    "Octavos",
+    625
+   ]
+  ],
+  "ver": {
+   "min": 72,
+   "v": 1
+  }
  }
 }

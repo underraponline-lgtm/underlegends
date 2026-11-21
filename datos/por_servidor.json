@@ -2431,14 +2431,28 @@
     }
    }
   },
+  "Chaz🇵🇪": {
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Chente": {
    "FDS": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 11438,
+    "pts": 16438,
     "racha": "0/0"
    },
    "FFA": {
@@ -3456,12 +3470,12 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 5,
+    "ev": 6,
     "oro": 5,
-    "ovr": 52,
+    "ovr": 53,
     "pod": 5,
-    "pts": 76250,
-    "racha": "5/5",
+    "pts": 80625,
+    "racha": "6/6",
     "tg": {
      "fin": 5
     }
@@ -8932,6 +8946,19 @@
     "pts": 48500,
     "racha": "1/1"
    },
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 18750,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "4/8",
     "ev": 17,
@@ -9458,14 +9485,14 @@
   "Mc arepa": {
    "FDS": {
     "duelos": "",
-    "ev": 8,
+    "ev": 9,
     "oro": 0,
-    "ovr": 51,
-    "pod": 4,
-    "pts": 55437,
-    "racha": "0/3",
+    "ovr": 53,
+    "pod": 5,
+    "pts": 67937,
+    "racha": "1/3",
     "tg": {
-     "fin": 2
+     "fin": 3
     }
    },
    "FFA": {
@@ -11962,11 +11989,11 @@
   "Raizer": {
    "FDS": {
     "duelos": "",
-    "ev": 8,
+    "ev": 9,
     "oro": 0,
     "ovr": 47,
     "pod": 0,
-    "pts": 27200,
+    "pts": 32200,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -13884,6 +13911,18 @@
     "pod": 0,
     "pts": 2000,
     "racha": "0/0"
+   },
+   "FDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 17500,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Tenor": {
@@ -14749,11 +14788,11 @@
    },
    "FDS": {
     "duelos": "",
-    "ev": 11,
+    "ev": 12,
     "oro": 1,
     "ovr": 51,
     "pod": 3,
-    "pts": 36475,
+    "pts": 39600,
     "racha": "0/1",
     "tg": {
      "fin": 3,

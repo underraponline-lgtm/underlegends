@@ -225,6 +225,15 @@
 "temporada"
 ]
 },
+"majiztral": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "walker": {
 "rg": "A",
 "c": [
@@ -237,15 +246,6 @@
 "velatz": {
 "rg": "C",
 "c": []
-},
-"majiztral": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "zignos": {
 "rg": "B",
@@ -301,12 +301,7 @@
 },
 "mats": {
 "rg": "A",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "delux": {
 "rg": "C",
@@ -486,6 +481,14 @@
 "temporada"
 ]
 },
+"mcarepa": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "19fleivawack": {
 "rg": "B",
 "c": []
@@ -517,14 +520,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mcarepa": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1073,6 +1068,14 @@
 "rg": "",
 "c": []
 },
+"raizer": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "akuseru": {
 "rg": "",
 "c": [
@@ -1144,14 +1147,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"raizer": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -8143,8 +8138,8 @@
 "tipo": "resnoche",
 "t": "2026-11-22T08:00:00Z",
 "dia": "2026-11-21",
-"eventos": 1,
-"part": 25,
+"eventos": 2,
+"part": 37,
 "campeones": [
 {
 "ev": "DESGRACIAS EN TOKYO VOL 32 1v1",
@@ -8154,6 +8149,17 @@
 [
 "Abyssus",
 "abyssus"
+]
+]
+},
+{
+"ev": "RED BULL REGIONAL",
+"sv": "FDS",
+"ll": 668,
+"quien": [
+[
+"Majiztral",
+"majiztral"
 ]
 ]
 }
@@ -8186,16 +8192,16 @@
 "a": 365
 },
 {
+"n": "Telmex",
+"k": "",
+"de": 236,
+"a": 153
+},
+{
 "n": "Chente",
 "k": "",
 "de": 372,
-"a": 343
-},
-{
-"n": "Magic",
-"k": "magic",
-"de": 147,
-"a": 133
+"a": 339
 }
 ],
 "sorpresas": []
@@ -8304,7 +8310,7 @@
 "delux": 0,
 "hassan": 0,
 "sinlimites": 0,
-"majiztral": 0,
+"majiztral": 1,
 "criszj": 0,
 "bloody": 1,
 "tuca": 0,
@@ -8361,11 +8367,11 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 0,
+"dios": 1,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,
-"mcarepa": 0,
+"mcarepa": 1,
 "richard": 0,
 "1200": 0,
 "nemmiias": 0,
