@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-21T20:35:49Z",
+ "cuando": "2026-11-21T21:44:02Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 138.4,
+ "dur_s": 1387.1,
  "pasos": [
   {
    "n": "2f",
@@ -21,67 +21,67 @@
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.7
+   "s": 15.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 36.3
+   "s": 21.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": true,
-   "s": 11.6
+   "s": 1126.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 17.0
+   "s": 147.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.8
+   "s": 74.3
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "666",
-  "nombre": "CHOP COMPE NOCTURNA V.1",
-  "sv": "CH",
-  "dia": "2026-11-19"
+  "n": "667",
+  "nombre": "DESGRACIAS EN TOKYO VOL 32 1v1",
+  "sv": "FFA",
+  "dia": "2026-11-21"
  },
  "cuotas": {
   "kv": {
-   "write": 292,
-   "read": 25212
+   "write": 354,
+   "read": 27865
   },
   "objeto": {
-   "leidas": 2820974,
-   "escritas": 34302,
-   "pedidos": 18450
+   "leidas": 3342089,
+   "escritas": 42213,
+   "pedidos": 21113
   },
   "worker": {
-   "pedidos": 20012,
+   "pedidos": 22701,
    "errores": 0,
-   "sub": 21595,
+   "sub": 23646,
    "cortados": 0,
-   "p50_ms": 0.85,
-   "p99_ms": 11.28,
+   "p50_ms": 0.83,
+   "p99_ms": 11.09,
    "cpu": {
-    "total": 41527,
-    "objeto_10": 1684,
-    "worker_10": 288
+    "total": 46249,
+    "objeto_10": 1732,
+    "worker_10": 313
    }
   },
   "r2": {
