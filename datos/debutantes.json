@@ -2,7 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-11-14",
-  "CH": "2026-11-20",
+  "CH": "2026-11-21",
   "DDF": "2026-11-16",
   "DDS": "2026-11-16",
   "FDS": "2026-11-13",
@@ -2316,6 +2316,7 @@
   },
   "Nestor": {
    "avisado": "2026-11-20",
+   "chat": "2026-11-21",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-18T03:02:41+00:00",
@@ -2738,6 +2739,7 @@
   },
   "Sanito": {
    "avisado": "2026-11-20",
+   "chat": "2026-11-21",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-20T02:47:21+00:00",
@@ -3265,6 +3267,7 @@
   },
   "angelo": {
    "avisado": "2026-11-20",
+   "chat": "2026-11-21",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-20T02:47:21+00:00",
@@ -3701,6 +3704,7 @@
   },
   "tommy": {
    "avisado": "2026-11-20",
+   "chat": "2026-11-21",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-20T02:47:21+00:00",
