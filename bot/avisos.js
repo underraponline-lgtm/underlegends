@@ -447,7 +447,7 @@ export const VS_VENCE = 8 * MIN;
 //: `bot/kit.py`, prendido todo el día, dibuja en ~5 s lo que la tarea de GitHub tarda de 1 a 5 minutos. Se le pide
 //: PRIMERO (`pedirDibujo()`); si no lo toma, o lo pedido sigue esperando a los `DIBUJADOR_PLAZO`, va la tarea de GitHub
 //: como siempre (Dlx: «combinar… que eso también se quede en cualquier caso de error»). Vacío: apagado, sólo GitHub
-export const DIBUJADOR = '';
+export const DIBUJADOR = 'https://adequate-possibility-production-54452b31.up.railway.app';
 //: cada cuánto, como mucho, se le vuelve a pedir lo mismo (él junta: un pedido de vs se lleva toda la cola del servidor)
 export const DIBUJADOR_ENTRE = 10 * 1000;
 export const DIBUJADOR_PLAZO = 90 * 1000;
