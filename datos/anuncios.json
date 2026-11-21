@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T18:54:59+00:00",
+ "cuando": "2026-11-21T19:07:26+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7555,6 +7555,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Deko",
+   "quien": "dekocwp",
+   "discord_id": "1525316933786927137",
+   "msg_id": "1573774730434183310",
+   "cuando": "2026-11-21T18:58:55"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43545,15 +43554,6 @@
    "discord_id": "1241407042195816459",
    "msg_id": "1561133156797649059",
    "cuando": "2026-10-17T21:45:49"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Panchok 🇨🇱",
-   "quien": "panchok0103",
-   "discord_id": "1400508144920170577",
-   "msg_id": "1561131267095924910",
-   "cuando": "2026-10-17T21:38:18"
   }
  ]
 }
