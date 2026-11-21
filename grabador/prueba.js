@@ -189,7 +189,10 @@ const VOZ = path.join(path.dirname(new URL(import.meta.url).pathname.replace(/^\
 const faltan = FRASES.filter((k) => !fs.existsSync(path.join(VOZ, k + '.ogg')));
 ok(!faltan.length, 'están las ' + FRASES.length + ' frases' + (faltan.length ? ' (faltan: ' + faltan.join(', ') + ')' : ''));
 const textos = JSON.parse(fs.readFileSync(path.join(VOZ, 'frases.json'), 'utf8'));
-ok(FRASES.every((k) => k === 'pitido' || textos[k]), 'cada frase tiene su texto en frases.json');
+ok(FRASES.every((k) => k === 'cuenta' || textos[k]), 'cada frase tiene su texto en frases.json (la cuenta se arma aparte)');
+ok(!Object.entries(textos).some(([k, v]) => k !== '_leeme' && /beat/i.test(v)), 'en lo que dice ULAYA va «bit», no «beat» (Piper lo lee como se escribe)');
+ok(Math.abs(Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(VOZ, 'cuenta.ogg')]).toString()) - 3.4) < 0.3,
+  'la cuenta «Tres. Dos. Uno. ¡Tiempo!» dura ~3,4 s, una palabra por segundo');
 const de20 = FRASES.filter((k) => !faltan.includes(k)).every((k) => paquetesDe(path.join(VOZ, k + '.ogg')).every((p) => muestrasDe(p) === 960));
 ok(de20, 'todas en paquetes de 20 ms: Discord las recibe sin volver a codificar');
 // el mismo camino que usa @discordjs/voice al hablar: Ogg Opus -> reproductor, sin codificador de Opus instalado

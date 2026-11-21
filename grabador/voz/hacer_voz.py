@@ -16,7 +16,7 @@ grabador no habla en el momento, reproduce estos archivos.
 `@discordjs/voice` los manda tal cual (`StreamType.OggOpus`) y no hace falta instalar ningún codificador de Opus en
 Railway. A −16 LUFS, con 0,3 s de aire al principio: el primer paquete que manda un bot a veces se pierde.
 
-El pitido no es una frase: lo arma ffmpeg (880 Hz, 0,25 s).
+La cuenta («Tres. Dos. Uno. ¡Tiempo!») no es una frase: cada palabra va en su segundo (`cuenta()`).
 """
 import argparse
 import json
@@ -35,6 +35,32 @@ def a_ogg(entrada_args, salida):
                     '-ac', '2', '-c:a', 'libopus', '-b:a', '64k', '-frame_duration', '20', salida], check=True)
 
 
+#: 🥊 LA CUENTA DE BATALLA (Dlx, 21/11/2026: «el bot tendría que decir 3 2 1 como una batalla real para dar la cuenta
+#: regresiva»). Cada palabra se dice por separado y se pone en su segundo: dicha de corrido, Piper la apura y no suena
+#: a cuenta. Un poco más rápida (`length_scale` 0,85) y «¡Tiempo!» al final; el beat entra apenas termina.
+CUENTA = [('Tres.', 0.0), ('Dos.', 0.9), ('Uno.', 1.8), ('¡Tiempo!', 2.7)]
+
+
+def cuenta(a):
+    with tempfile.TemporaryDirectory() as tmp:
+        ins, filtros = [], []
+        for i, (palabra, seg) in enumerate(CUENTA):
+            wav = os.path.join(tmp, 'c%d.wav' % i)
+            subprocess.run([a.piper, '-m', 'piper', '-m', a.modelo, '--length-scale', '0.85', '-f', wav, '--', palabra],
+                           check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            ins += ['-i', wav]
+            ms = int(seg * 1000)
+            # sin el silencio que Piper deja antes y después de cada palabra, así cae justo en su segundo
+            filtros.append('[%d:a]silenceremove=start_periods=1:start_threshold=-45dB,areverse,'
+                           'silenceremove=start_periods=1:start_threshold=-45dB,areverse,adelay=%d|%d[c%d]' % (i, ms, ms, i))
+        mezcla = os.path.join(tmp, 'cuenta.wav')
+        subprocess.run(['ffmpeg', '-v', 'error', '-y', *ins, '-filter_complex',
+                        ';'.join(filtros) + ';' + ''.join('[c%d]' % i for i in range(len(CUENTA)))
+                        + 'amix=inputs=%d:normalize=0:duration=longest' % len(CUENTA), mezcla], check=True)
+        a_ogg(['-i', mezcla], os.path.join(AQUI, 'cuenta.ogg'))
+    print('  ✅ cuenta     %5.1f KB' % (os.path.getsize(os.path.join(AQUI, 'cuenta.ogg')) / 1e3))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--piper', required=True, help='el python que tiene piper-tts instalado')
@@ -50,11 +76,8 @@ def main():
                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             a_ogg(['-i', wav], os.path.join(AQUI, clave + '.ogg'))
             print('  ✅ %-9s %5.1f KB' % (clave, os.path.getsize(os.path.join(AQUI, clave + '.ogg')) / 1e3))
-    if not a.solo or a.solo == 'pitido':
-        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 'lavfi', '-i', 'sine=frequency=880:duration=0.25:sample_rate=48000',
-                        '-af', 'afade=t=in:d=0.02,afade=t=out:st=0.2:d=0.05,volume=-6dB', '-ac', '2', '-c:a', 'libopus',
-                        '-b:a', '64k', '-frame_duration', '20', os.path.join(AQUI, 'pitido.ogg')], check=True)
-        print('  ✅ pitido')
+    if not a.solo or a.solo == 'cuenta':
+        cuenta(a)
     return 0
 
 

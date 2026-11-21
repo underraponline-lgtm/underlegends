@@ -3,10 +3,11 @@
     "Lo que dice ULAYA en la prueba de micro (microfono.js). Cada clave es un .ogg de esta carpeta, hecho con hacer_voz.py.",
     "Si se cambia un texto, se vuelve a correr hacer_voz.py: el .ogg viejo seguiría diciendo lo de antes.",
     "Voz: es_AR-daniela-high de Piper (rhasspy/piper-voices), entrenada con el corpus de openslr.org/61, CC BY-SA 4.0.",
-    "Español con tú, nunca vos. Los menús se nombran como los muestra Discord en español: Ajustes, Voz y video."
+    "Español con tú, nunca vos. Los menús se nombran como los muestra Discord en español: Ajustes, Voz y video.",
+    "⚠️ En lo que se DICE va «bit», no «beat»: Piper lo lee como se escribe (Dlx, 21/11: «dice beat en vez de bit»). Escrito, en los mensajes, sigue «beat»."
   ],
-  "hola": "Hola, soy ULAYA. Voy a revisar cómo se te escucha. Después del pitido, habla o rapea unos diez segundos, como en una batalla.",
-  "hola_beat": "Hola, soy ULAYA. Voy a revisar cómo se te escucha. Después del pitido entra un beat: rapea unos diez segundos encima, como en una batalla.",
+  "hola": "Hola, soy ULAYA. Voy a revisar cómo se te escucha. Cuando termine la cuenta, habla o rapea unos diez segundos, como en una batalla.",
+  "hola_beat": "Hola, soy ULAYA. Voy a revisar cómo se te escucha. Cuando termine la cuenta entra un bit: rapea unos diez segundos encima, como en una batalla.",
   "noteoigo": "No te escuché. Revisa que tu micrófono no esté silenciado, y que en Ajustes, Voz y video, esté elegido el micrófono correcto. Después sal y vuelve a entrar.",
   "bien": "Se te escucha perfecto. Estás listo para competir.",
   "bajo": "Se te escucha bajito. Entra a Ajustes, Voz y video, y sube el volumen de entrada. O acércate más al micrófono.",

@@ -6,7 +6,8 @@
 //
 // LO QUE PASA:
 //   1. entras a un canal de `PRUEBA_MICRO` y el bot entra detrás
-//   2. «Hola, soy ULAYA… después del pitido, habla o rapea unos diez segundos» + pitido
+//   2. «Hola, soy ULAYA… cuando termine la cuenta entra un bit: rapea encima» + «Tres. Dos. Uno. ¡Tiempo!» (Dlx:
+//      «el bot tendría que decir 3 2 1 como una batalla real») y entra el beat
 //   3. te escucha hasta `VOZ_OBJETIVO_S` de voz (o `ESCUCHAR_MAX_S`); con menos de `VOZ_MIN_S`, «no te escuché»
 //   4. te mide con lo mismo que el grabador (calidad.js) y te dice el problema más grave y cómo arreglarlo, o «perfecto»
 //   5. «Así te escuchan los demás» y te pone `ECO_S` de tu propia voz, tal como llegó
@@ -37,7 +38,7 @@ export const ESCUCHAR_MAX_S = 20;     // si en este tiempo no juntó `VOZ_MIN_S`
 export const ECO_S = 5;               // cuánto de tu voz te devuelve
 const OCUPADO_CADA = 30 * 60000;      // el «estoy grabando» por escrito, como mucho una vez cada media hora por canal
 //: las frases que tiene que haber en voz/ (las revisa prueba.js)
-export const FRASES = ['hola', 'hola_beat', 'pitido', 'noteoigo', 'bien', 'bajo', 'satura', 'corta', 'telefono', 'escucha',
+export const FRASES = ['hola', 'hola_beat', 'cuenta', 'noteoigo', 'bien', 'bajo', 'satura', 'corta', 'telefono', 'escucha',
   'otravez', 'deauno'];
 
 // ── 🚦 LOS LÍMITES (Dlx, 21/11/2026: «tenemos que añadir pruebas para evitar que la gente abuse o cooldowns») ──
@@ -170,7 +171,7 @@ export class PruebaMicro {
       const credito = beat ? `\n🎵 Beat: «${beat.titulo}» de **${beat.beatmaker}**` : '';
       await frase(beat ? 'hola_beat' : 'hola');
       if (!sigue()) return;
-      await frase('pitido');
+      await frase('cuenta');
       if (beat) {
         player.play(createAudioResource(fs.createReadStream(path.join(VOZ, 'beats', beat.archivo)), { inputType: StreamType.OggOpus }));
         await entersState(player, AudioPlayerStatus.Playing, 5000).catch(() => {});
