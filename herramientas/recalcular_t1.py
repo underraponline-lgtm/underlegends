@@ -184,6 +184,14 @@ def _hijo(salida):
     if leer:
         _nums = {n.strip() for n in leer.split(',') if n.strip().isdigit()}
         L._CARGADAS[0] = [x for x in L._cargadas() if str(x.get('n')) not in _nums]
+        # 🔒 Y TAMPOCO «LO CORRIGIÓ EL RECÁLCULO» CONTRA SÍ MISMO (21/11/2026, el #517). El candado de
+        # `corregido_por_recalculo()` es para que el CICLO, con sus 25 mensajes, no pise lo que corrigió un recálculo,
+        # y frenaba también al recálculo que pide ese número: el #517 (QCYO RAPEEN 3, FFA) tiene KEIDER contra dyss sin
+        # ganador, con su veredicto de vuelta desde hoy, y la relectura decía «no se pudo volver a leer» porque un
+        # recálculo lo había corregido el 06/11. Lo que se pide por número se está corrigiendo otra vez: con
+        # `--aplicar` su fecha se renueva, y el candado vuelve a valer para el ciclo
+        _rec0 = L._recalculados
+        L._recalculados = lambda: {k: v for k, v in _rec0().items() if str(k) not in _nums}
     sys.argv = ['llaves_a_entrada.py']
     L.main()
     U = L.ULTIMA
