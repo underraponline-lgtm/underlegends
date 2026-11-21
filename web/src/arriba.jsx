@@ -910,6 +910,8 @@ const FELICITABLE = { campeon: 1, rango: 1, caza: 1 };
 // 🎧 QUÉ HISTORIAS LLEVAN BEAT (21/11/2026, Dlx: «que algunas historias tengan como instrumentales, beats, sonidos»): los
 // títulos y lo que se festeja, boom bap; lo que es pelea —desafíos, cara a cara, polémica, cazas—, drill; el chat que
 // explota, el raid y el rango, trap. Las demás (cartas, anuncios, flyers, promos con su video) van sin. Ver beats.js
+// 🔥 Y desde el 21/11/2026 (Dlx: «pon beats también en las historias de clásico y racha»): EL CLÁSICO, drill (es pelea), y
+// EN RACHA, trap. Ésas no salen de `slidesDe()`: llevan su `beat` donde se arman, en `historiasLiga()`
 const BEAT_DE = { campeon: 'boombap', caza: 'drill', rango: 'trap' };
 const BEAT_CHAT = { reto: 'drill', cara: 'drill', polemica: 'drill', raid: 'trap', pico: 'trap', tema: 'trap',
   elogio: 'boombap', favorito: 'boombap', retiro: 'boombap', regreso: 'boombap' };
@@ -1237,7 +1239,7 @@ function historiasLiga(liga, mm) {
   if (r) {
     out.push(Slide('EN RACHA', <><h3 className="st-h">{limpio(r.n)} lleva {r.r} seguidos</h3><CartaO liga={liga} k={r.k} nombre={r.n} />
       <small className="st-s">eventos seguidos llegando arriba de la llave</small></>,
-    'ahora', 'Ver las rachas', { ruta: '#/ranking/rachas' }, 'racha:' + r.k + ':' + r.r, '', { esc: svDeK(liga, r.k) }));
+    'ahora', 'Ver las rachas', { ruta: '#/ranking/rachas' }, 'racha:' + r.k + ':' + r.r, '', { esc: svDeK(liga, r.k), beat: 'trap' }));
   }
   // ⚔️ el cruce que más se repitió en la temporada
   let cl = null;
@@ -1258,7 +1260,7 @@ function historiasLiga(liga, mm) {
       <span className="hx-marcador"><Numero v={cl.ga} /><i>–</i><Numero v={cl.gb} /></span>
       {pa != null ? <span className="hx-fav" title="Por el OVR de la Temporada de cada uno"><span style={{ width: Math.max(18, Math.min(82, pa)) + '%' }}>{limpio(fa.n)} {pa}%</span><span>{100 - pa}%</span></span> : null}
       <small className="st-s">en la temporada{pa != null ? ' · el favorito para el próximo, por el OVR' : ''}</small></>,
-    'esta temporada', 'Ver a ' + limpio(fa.n), { perfil: fa.k }, 'clasico:' + cl.a + '|' + cl.b + ':' + cl.n, '', { esc: [fa.sv, fb.sv] }));
+    'esta temporada', 'Ver a ' + limpio(fa.n), { perfil: fa.k }, 'clasico:' + cl.a + '|' + cl.b + ':' + cl.n, '', { esc: [fa.sv, fb.sv], beat: 'drill' }));
   }
   // 🥇 los premios de la semana que cerró (del muro)
   const pr = (liga.muro || []).find((it) => it.tipo === 'premios' && liga.ahora - utc(it.t) < 7 * 86400000);
