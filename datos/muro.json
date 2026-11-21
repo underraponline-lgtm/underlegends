@@ -2916,14 +2916,6 @@
 "tipo": "tarjeta",
 "t": "2026-10-13T15:29:43Z",
 "quien": [
-"Bloody"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T15:29:43Z",
-"quien": [
 "MTZ"
 ],
 "carta": "temporada"
@@ -6305,6 +6297,12 @@
 "Lalox"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "svnuevo",
+"t": "2026-11-21T03:02:34Z",
+"sv": "DW",
+"tier": 3
 }
 ],
 "noche_antes": {
@@ -8164,7 +8162,8 @@
 "FVS": 2,
 "DRA": 1,
 "FFS": 3,
-"CHZ": 3
+"CHZ": 3,
+"DW": 3
 },
 "meta": [
 "2026-11-16",

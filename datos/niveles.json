@@ -8,6 +8,7 @@
   "DDF": 1,
   "DDS": 3,
   "DRA": 1,
+  "DW": 3,
   "FDS": 3,
   "FFA": 1,
   "FFS": 3,
@@ -80,6 +81,15 @@
    "suma": true,
    "competitivo": true,
    "duelos": true
+  },
+  "DW": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "competitivo": false,
+   "duelos": false
   },
   "FDS": {
    "pagina": true,
@@ -163,6 +173,7 @@
   "DDF": "2026-10-03",
   "DDS": "2026-11-06",
   "DRA": "2026-09-22",
+  "DW": "2026-11-20",
   "FDS": "2026-10-20",
   "FFA": "2026-09-22",
   "FFS": "2026-09-28",

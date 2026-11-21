@@ -857,6 +857,34 @@
      "creada": "2026-11-20"
     }
    ]
+  },
+  "DW": {
+   "nombre": "𝗗𝗔𝗡𝗚𝗘𝗥 𝗪𝗢𝗥𝗟𝗗",
+   "guild_id": "1300152346189496330",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "DW",
+   "tier": 3,
+   "alta": "setup",
+   "nota": "entró solo con /setup el 21/11/2026 (bot/tiers.py `altas_setup()`): sus puntos de Temporada esperan la aprobación de Dlx (`setup_suma`)",
+   "setup": {
+    "plantilla": "basico",
+    "aviso": "1394903620419584020",
+    "desde": "2026-11-21"
+   },
+   "invitacion": "https://discord.gg/nAZ8VvZvyJ",
+   "invitacion_liga": {
+    "codigo": "nAZ8VvZvyJ",
+    "canal": "「✅」𝗩𝗘𝗥𝗜𝗙𝗜𝗖𝗔𝗖𝗜𝗢𝗡",
+    "canal_id": "1300152346537496618",
+    "creada": "2026-11-21"
+   },
+   "canales_setup": {
+    "an": "1394905727729930241",
+    "in": "1394903813605032018",
+    "ve": "1394905666061078578",
+    "ge": "1394903620419584020"
+   }
   }
  },
  "_fuera_de_la_tabla": [
