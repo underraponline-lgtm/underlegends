@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "7.51",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T07:43:00-05:00",
+        "titulo": "Historias en el perfil, y con beat",
+        "items": [
+            "**Los momentos del perfil se abren como historia**: Mi servidor, Mi crew, Finales, Ligas, Videos, Premios y Debut ya no te llevan a otra página. Se ven como historias, con un botón para ir a cada cosa.",
+            "**Algunas historias tienen beat**: los títulos y los premios suenan a boom bap, los desafíos, las finales y las polémicas a drill, y el chat que explota y el rango a trap. Se silencia con el parlante de arriba."
+        ]
+    },
+    {
         "version": "7.50",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T07:27:00-05:00",

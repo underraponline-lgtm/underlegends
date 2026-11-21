@@ -757,6 +757,10 @@ h1,h2,h3,p{margin:0}
 .st-cara img{width:100%;height:100%;object-fit:cover}
 .st-logo{width:92px;height:92px;border-radius:50%;border:3px solid #F6F6F6}
 .st-logo.grande{width:124px;height:124px}
+/* 🛡️ el escudo de una crew en su historia (los momentos del perfil, 21/11/2026) */
+.st-escudo{width:118px;height:118px;display:grid;place-items:center}
+.st-escudo>*{width:100%;height:100%;object-fit:contain}
+.st-escudo em{display:grid;place-items:center;border-radius:50%;background:#2A2A2E;font:900 34px/1 Archivo,sans-serif;font-style:normal}
 .st-nom{font:900 22px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .st-s{font:700 15px/1.45 "Barlow Condensed",sans-serif;color:#A5A5A0}
 .st-podio{list-style:none;margin:0;padding:0;display:grid;gap:5px;font:800 15px/1.2 Archivo,sans-serif;text-align:left}

@@ -889,9 +889,16 @@ function Tit({ c, children }) {
 // cual»). `ex` trae lo nuevo de cada una: `esc`, la escena de fondo (el servidor; dos para el clásico); `tono`, el color de
 // su etiqueta; `lento`, que es de las fuertes y se queda 12 s, como en el escenario; y `pub`, su publicación del muro, para
 // reaccionar y responder desde el visor (`Visor` de abajo.jsx)
-function Slide(tag, cuerpo, cuando, cta, ir, id, t, ex) { return Object.assign({ tag, cuerpo, cuando, cta, ir, id, t: t || '' }, ex || {}); }
+export function Slide(tag, cuerpo, cuando, cta, ir, id, t, ex) { return Object.assign({ tag, cuerpo, cuando, cta, ir, id, t: t || '' }, ex || {}); }
 // los logros que se felicitan (los de `LOGROS` de publicaciones.jsx que tienen historia)
 const FELICITABLE = { campeon: 1, rango: 1, caza: 1 };
+// 🎧 QUÉ HISTORIAS LLEVAN BEAT (21/11/2026, Dlx: «que algunas historias tengan como instrumentales, beats, sonidos»): los
+// títulos y lo que se festeja, boom bap; lo que es pelea —desafíos, cara a cara, polémica, cazas—, drill; el chat que
+// explota, el raid y el rango, trap. Las demás (cartas, anuncios, flyers, promos con su video) van sin. Ver beats.js
+const BEAT_DE = { campeon: 'boombap', caza: 'drill', rango: 'trap' };
+const BEAT_CHAT = { reto: 'drill', cara: 'drill', polemica: 'drill', raid: 'trap', pico: 'trap', tema: 'trap',
+  elogio: 'boombap', favorito: 'boombap', retiro: 'boombap', regreso: 'boombap' };
+export const beatDe = (it) => (it.tipo === 'svchat' ? BEAT_CHAT[it.que] || '' : BEAT_DE[it.tipo] || '');
 // 🃏 la carta de Temporada de alguien, si la tiene; si no, su cara. La carta es lo que más llama en una historia
 function CartaO({ liga, k, nombre, cls = '' }) {
   const f = k ? liga.T[k] : null;
@@ -1051,9 +1058,11 @@ function slidesDe(liga, items) {
     // letras—, que no entraba en lo visto de la cuenta y llenaba lo del navegador. La primera y cuántas son
     const id0 = (o) => o.id || o.tipo + (o.t || '') + (o.quien || []).join(',');
     const id = 'm:' + (g.length > 1 ? id0(g[0]) + '+' + g.length : id0(g[0]));
+    const bt = beatDe(it);
     for (let i = n0; i < out.length; i++) {
       out[i].t = String(it.t || '');
       out[i].id = id;
+      if (bt && !out[i].beat) out[i].beat = bt;
       // 👏 los logros se felicitan desde la historia (Dlx, 18/10/2026: «reaccionar desde la historia y que le llegue a la
       // persona, como Felicitar»): los mismos que en Publicaciones (`LOGROS`), por el id de su publicación del muro
       if (g.length === 1 && it.id && FELICITABLE[it.tipo]) out[i].fel = { id: it.id, ks };

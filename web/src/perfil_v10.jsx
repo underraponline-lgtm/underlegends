@@ -6,12 +6,13 @@
 // Todo sale de lo que el perfil ya trae (`p.ev`, `p.du`, `p.mu`, su fila) y de los pedidos de siempre: sin dato no hay pieza.
 // ⚠️ Las clases van con `pv-`: las del prototipo son globales adentro del shadow root (`.cara`, `.esc`, `.tag` ya existen).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { diaISO, limpio, num, siglaDe, srcLogo } from './liga.js';
+import { MESES, diaISO, limpio, num, siglaDe, srcLogo } from './liga.js';
 import { Bandera, Cara, accion } from './piezas.jsx';
 import { historiasDePersona } from './arriba.jsx';
 import { escenaDe, urlFondo, useFondos } from './fondos.js';
 import { usePaseDe, usePases, usePase } from './pase.js';
-import { crewDe, useCrews } from './crews.js';
+import { ROL_NOMBRE, crewDe, useCrews } from './crews.js';
+import { Miniatura } from './video.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { pedirLigas } from './ligas_datos.js';
 import { useCompetencias } from './competencias_datos.js';
@@ -147,39 +148,143 @@ function Momentos({ liga, k, f, p, D, esYo, ligas, ir }) {
     return <em>{letra}</em>;
   };
   const cara = (n) => { const q = n && liga.quien(n); return q ? liga.avUrl(q.k, 256) : ''; };
-  const hist = (tipos) => {
+  // 📸 LOS MOMENTOS SE ABREN COMO HISTORIA (21/11/2026, Dlx: «en los perfiles me gustaría que se abra como historia la gran
+  // mayoría en vez de llevar a perfil»). Como los destacados de Instagram: cada círculo arma sus historias acá —su servidor
+  // y su carta, su crew con su gente, cada final, cada liga, cada video, el debut— y cada una trae el botón a su página.
+  // Títulos, Cazas, Premios y Rango ya abrían las del muro; si el muro no tiene, Títulos arma las suyas de sus eventos.
+  // Los ids son de la cosa (el evento, el video), no del lugar: lo visto se guarda bien aunque entre uno nuevo
+  const nom = limpio(f.n || k);
+  const tuSu = esYo ? 'TU' : 'SU';
+  const abrirH = (id, slides, sino) => () => {
+    const ss = (slides || []).filter(Boolean);
+    if (ss.length && window.lgVerHistorias) {
+      window.lgVerHistorias({ id: 'mom-' + id + '-' + k, tipo: 'gente', nombre: nom, k, cc: f.cc || '', nom, firma: 'mom-' + id,
+        slides: ss.map((x, i) => Object.assign({ id: 'mom:' + k + ':' + id + ':' + i, t: '', cuando: '' }, x)) }, '');
+      return;
+    }
+    if (sino) sino();
+  };
+  const hist = (tipos, propias) => {
     const xs = mu.filter((m) => tipos.includes(m.tipo));
     return () => {
       try { const g = historiasDePersona(liga, k, xs); if (g && g.slides && g.slides.length && window.lgVerHistorias) { window.lgVerHistorias(g, g.slides[g.slides.length - 1].id); return; } } catch (err) { /* sin visor */ }
+      if (propias && propias.length) { abrirH(tipos[0], propias)(); return; }
       ir('pubs');
     };
   };
+  // una persona en la fila de caras de la historia (la misma pieza que las historias del Inicio)
+  const persona = (kk, n) => <li key={kk || n}><Cara liga={liga} k={kk || ''} nombre={n} cls="st-mini" /><span>{n}</span></li>;
+  const rival = (n) => { const q = n ? liga.quien(n) : null; return persona(q ? q.k : '', sinB(n)); };
   const xs = [];
   const sv = liga.svs[f.sv] || {};
-  if (f.sv) xs.push(['sv', 'Mi servidor', img(liga.logo(f.sv), siglaDe(f.sv)), '', sv.color || '#29B298', 'logo', () => { location.hash = '#/sv/' + siglaDe(f.sv); }]);
+  if (f.sv) {
+    const sg = siglaDe(f.sv);
+    const enSv = D.enT.filter((x) => x.sv === f.sv);
+    const titSv = enSv.filter((x) => x.pu === 'Campeón').length;
+    const ss = [{ id: 'mom:' + k + ':sv', tag: tuSu + ' SERVIDOR', esc: f.sv, beat: 'trap', cta: 'Ver ' + sg, ir: { ruta: '#/sv/' + encodeURIComponent(sg) },
+      cuerpo: <><img className="st-logo grande" alt="" src={liga.logo(f.sv)} /><h3 className="st-h">{limpio(sv.nombre || sg)}</h3>
+        <small className="st-s">{enSv.length ? enSv.length + (enSv.length === 1 ? ' noche jugada ahí' : ' noches jugadas ahí') + ' esta temporada'
+          + (titSv ? ' · ' + titSv + (titSv === 1 ? ' título' : ' títulos') : '') : esYo ? 'Tu casa en la Liga' : 'Su casa en la Liga'}</small></> }];
+    if ((f.c || []).includes('servidor')) {
+      ss.push({ id: 'mom:' + k + ':sv-carta', tag: tuSu + ' CARTA DE ' + sg, esc: f.sv, beat: 'trap', cta: 'Ver la carta', ir: { carta: k, cual: 'servidor' },
+        cuerpo: <><h3 className="st-h">{esYo ? 'Tu carta de ' : 'Su carta de '}{sg}</h3><img className="st-carta" alt="" src={liga.cartaUrl(k, 'servidor')} /></> });
+    }
+    xs.push(['sv', 'Mi servidor', img(liga.logo(f.sv), sg), '', sv.color || '#29B298', 'logo', abrirH('sv', ss, () => { location.hash = '#/sv/' + sg; })]);
+  }
   if (cv) {
     const e0 = escudoDe(cv.c.logo, cv.c.nombre);
     const im = e0 ? <Escudo e={e0} sigla={cv.c.sigla} /> : img(srcLogo(cv.c.logo), cv.c.sigla || ini(cv.c.nombre));
-    xs.push(['crew', 'Mi crew', im, '', '#9B5CFF', 'logo', () => { location.hash = '#/crew/' + encodeURIComponent(cv.c.id); }]);
+    const gente = (cv.c.gente || []).map((x) => x[0]).filter(Boolean);
+    const ss = [{ id: 'mom:' + k + ':crew', tag: tuSu + ' CREW', beat: 'trap', cta: 'Ver la crew', ir: { ruta: '#/crew/' + encodeURIComponent(cv.c.id) },
+      cuerpo: <><span className="st-escudo">{e0 ? <Escudo e={e0} sigla={cv.c.sigla} /> : srcLogo(cv.c.logo) ? <img alt="" src={srcLogo(cv.c.logo)} /> : <em>{cv.c.sigla || ini(cv.c.nombre)}</em>}</span>
+        <h3 className="st-h">{limpio(cv.c.nombre)}</h3>
+        <small className="st-s">{gente.length} {gente.length === 1 ? 'integrante' : 'integrantes'}{ROL_NOMBRE[cv.rol] ? ' · ' + (esYo ? 'eres ' : 'es ') + ROL_NOMBRE[cv.rol].toLowerCase() : ''}</small>
+        <ul className="st-gente">{gente.slice(0, 6).map((m) => persona(m, liga.nombreDe(m)))}</ul></> }];
+    xs.push(['crew', 'Mi crew', im, '', '#9B5CFF', 'logo', abrirH('crew', ss, () => { location.hash = '#/crew/' + encodeURIComponent(cv.c.id); })]);
   }
   const tit = D.enT.filter((x) => x.pu === 'Campeón');
   const carta = (c) => (f.c || []).includes(c) ? liga.cartaUrl(k, c) : '';
-  if (tit.length) xs.push(['tit', 'Títulos', img([carta('servidor'), carta('competitivo'), carta('temporada')], '1º', '50% 40%'), tit.length, '#E5B800', 'carta', hist(['campeon'])]);
+  // 🏆 cada título, de sus eventos (por si el muro ya no lo trae)
+  const titH = tit.slice(-12).map((x) => {
+    const z = D.porEv[x.n] || { gano: [] };
+    return { id: 'mom:' + k + ':tit:' + x.n, tag: 'CAMPEÓN · ' + siglaDe(x.sv), esc: x.sv, beat: 'boombap', cuando: fecha(x.t), cta: 'Ver la llave', ir: { llave: x.n },
+      cuerpo: <><h3 className="st-h">{nomEv(x)}</h3><ul className="st-gente">{persona(k, nom)}</ul>
+        <small className="st-s">{[x.gente ? x.gente + ' raperos' : '', z.gano.length ? 'le ganó a ' + z.gano.slice(-2).map(sinB).join(' y ') : ''].filter(Boolean).join(' · ') || 'Campeón'}</small></> };
+  });
+  if (tit.length) xs.push(['tit', 'Títulos', img([carta('servidor'), carta('competitivo'), carta('temporada')], '1º', '50% 40%'), tit.length, '#E5B800', 'carta', hist(['campeon'], titH)]);
   const fin = D.enT.filter((x) => x.pu === 'Subcampeón');
-  if (fin.length) { const z = D.porEv[fin[fin.length - 1].n] || {}; xs.push(['fin', 'Finales', img([cara(z.cayo)].concat(cs), ini(z.cayo), '50% 80%'), fin.length, '#C9CDD2', '', () => ir('noches', 's')]); }
+  if (fin.length) {
+    const z0 = D.porEv[fin[fin.length - 1].n] || {};
+    // 🥈 cada final: contra quién, y la llave
+    const finH = fin.slice(-12).map((x) => {
+      const z = D.porEv[x.n] || { gano: [], cayo: '' };
+      return { id: 'mom:' + k + ':fin:' + x.n, tag: 'FINAL · ' + siglaDe(x.sv), esc: x.sv, beat: 'drill', cuando: fecha(x.t), cta: 'Ver la llave', ir: { llave: x.n },
+        cuerpo: <><h3 className="st-h">{nomEv(x)}</h3><ul className="st-gente">{persona(k, nom)}{z.cayo ? rival(z.cayo) : null}</ul>
+          <small className="st-s">{[z.cayo ? (esYo ? 'Perdiste la final con ' : 'Perdió la final con ') + sinB(z.cayo) : 'Subcampeón', x.gente ? x.gente + ' raperos' : ''].filter(Boolean).join(' · ')}</small></> };
+    });
+    xs.push(['fin', 'Finales', img([cara(z0.cayo)].concat(cs), ini(z0.cayo), '50% 80%'), fin.length, '#C9CDD2', '', abrirH('fin', finH, () => ir('noches', 's'))]);
+  }
   const cz = mu.filter((m) => m.tipo === 'caza');
   if (cz.length) xs.push(['caz', 'Cazas', img(cara(cz[0].a), ini(cz[0].a)), cz.length, '#E41373', '', hist(['caza'])]);
   const lg = (ligas || []).filter((x) => x.flyer);
-  if ((ligas || []).length) xs.push(['lig', 'Ligas', img(lg.length ? lg[0].flyer : '', 'L'), ligas.length, '#2F6FDB', '', () => { const el = document.querySelector('#inicio-nuevo') && document.querySelector('#inicio-nuevo').shadowRoot.querySelector('#pf-ligas'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }]);
+  if ((ligas || []).length) {
+    // 🏟️ cada liga: su afiche, su puesto en la tabla, y la liga
+    const ligH = ligas.map((L) => ({ id: 'mom:' + k + ':lig:' + L.id, tag: 'LIGA · ' + siglaDe(L.sv), esc: L.sv, cta: 'Ver la liga', ir: { ruta: '#/ligas/' + encodeURIComponent(L.id) },
+      cuerpo: <>{L.flyer ? <img className="st-flyer" alt="" src={L.flyer} /> : <img className="st-logo grande" alt="" src={liga.logo(L.sv)} />}<h3 className="st-h">{limpio(L.n)}</h3>
+        <small className="st-s">{[L.pos ? L.pos + 'º de ' + L.tot : '', L.pj ? L.pj + (L.pj === 1 ? ' batalla' : ' batallas') : '', L.pts != null ? num(L.pts) + ' puntos' : ''].filter(Boolean).join(' · ')}</small></> }));
+    xs.push(['lig', 'Ligas', img(lg.length ? lg[0].flyer : '', 'L'), ligas.length, '#2F6FDB', '', abrirH('lig', ligH, () => { const el = document.querySelector('#inicio-nuevo') && document.querySelector('#inicio-nuevo').shadowRoot.querySelector('#pf-ligas'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); })]);
+  }
   const vs = ((p && p.vid) || []).concat((p && p.vp) || []);
-  if (vs.length) xs.push(['vid', 'Videos', img(yt(vs[0][0]), '▶'), vs.length, '#F6F6F6', '', () => ir('videos')]);
+  if (vs.length) {
+    // 🎬 sus batallas en video: la miniatura y el reproductor de la página (sin beat: el video ya suena)
+    const deLiga = new Set(((p && p.vid) || []).map((v) => v[0]));
+    const vidH = vs.slice(0, 10).map(([vid, tit, sv2]) => ({ id: 'mom:' + k + ':vid:' + vid, tag: 'EN VIDEO' + (deLiga.has(vid) && sv2 ? ' · ' + siglaDe(sv2) : ''),
+      esc: deLiga.has(vid) && sv2 ? sv2 : f.sv, cta: 'Mirar el video', ir: { video: { vid, tit: limpio(tit || ''), link: 'https://www.youtube.com/watch?v=' + vid } },
+      cuerpo: <><Miniatura vid={vid} cls="st-promo" /><h3 className={'st-h' + (limpio(tit || '').length > 48 ? ' largo' : '')}>{limpio(tit || '')}</h3></> }));
+    xs.push(['vid', 'Videos', img(yt(vs[0][0]), '▶'), vs.length, '#F6F6F6', '', abrirH('vid', vidH, () => ir('videos'))]);
+  }
   const aw = mu.filter((m) => m.tipo === 'mesaward' || m.tipo === 'premios');
-  if (aw.length) xs.push(['prem', 'Premios', img(fondo, '★'), aw.length, '#E5B800', '', hist(['mesaward', 'premios'])]);
+  if (aw.length) {
+    // 🏆 cada premio (los MES AWARDS y los de la semana): el visor del Inicio no los arma, así que van acá
+    const CAT = { rapero: 'el Rapero', revelacion: 'la Revelación', batalla: 'la Batalla', servidor: 'el Servidor' };
+    const premH = aw.slice(0, 12).map((it, i) => {
+      if (it.tipo === 'premios') {
+        const kp = it.ks && !Array.isArray(it.ks) && typeof it.ks === 'object' ? it.ks : {};
+        const r = ['figura', 'revelacion', 'cazador'].find((x) => kp[x] === k) || '';
+        const et = { figura: 'la Figura', revelacion: 'la Revelación', cazador: 'el Cazador' }[r] || 'premiado';
+        return { id: 'mom:' + k + ':prem:' + (it.id || i), tag: 'PREMIOS DE LA SEMANA', beat: 'boombap', cuando: it.t ? fecha(Date.parse(it.t)) : '',
+          cta: 'Ver las publicaciones', ir: { ruta: '#/publicaciones' },
+          cuerpo: <><ul className="st-gente">{persona(k, nom)}</ul><h3 className="st-h">{nom} es {et} de la semana</h3>
+            {it.t ? <small className="st-s">la semana del {fecha(Date.parse(it.t) - 6 * 864e5)}</small> : null}</> };
+      }
+      const gala = !!it.gala;
+      const mes = gala ? 'la ' + String(it.mes || '').toUpperCase() : MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
+      const deSv = String(it.cat || '').startsWith('sv:');
+      // los de cada servidor y «las demás» vienen juntos en una lista: de ahí, las suyas (`[cat, nombre del premio, quién, %]`)
+      // (o un cruce suyo: «Clásico del mes: Carlosss vs Makmah»)
+      const enTxt = (t) => new RegExp('(^|[^\\p{L}\\p{N}])' + nom.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^\\p{L}\\p{N}]|$)', 'u').test(limpio(t).toLowerCase());
+      const mias = (it.lista || []).filter((y) => { const q = liga.quien(y[2]); return (q && q.k === k) || enTxt(y[2] || ''); });
+      const cruce = mias.map((y) => limpio(y[2] || '')).find((t) => t.toLowerCase() !== nom.toLowerCase()) || '';
+      const cat = mias.length ? mias.map((y) => y[1]).join(' y ') : (CAT[it.cat] || 'el ganador') + (gala ? ' de la temporada' : ' del mes');
+      return { id: 'mom:' + k + ':prem:' + (it.id || i), tag: (gala ? 'GALA · ' : 'MES AWARDS · ') + (deSv ? siglaDe(it.sv) + ' · ' : '') + mes.toUpperCase(),
+        esc: it.sv || f.sv, beat: 'boombap', cuando: it.t ? fecha(Date.parse(it.t)) : '', cta: 'El Salón de la fama', ir: { ruta: '#/salon' },
+        cuerpo: <>{it.cat === 'batalla' && it.vid ? <Miniatura vid={it.vid} cls="st-promo" /> : <ul className="st-gente">{persona(k, nom)}</ul>}
+          <h3 className="st-h">{it.cat === 'batalla' ? limpio(it.n || '') : cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+          <small className="st-s">{[cruce, deSv ? 'en ' + siglaDe(it.sv) : '', mes, it.por === 'votos' ? (it.pct ? it.pct + '% de los votos' : num(it.votos) + (it.votos === 1 ? ' voto' : ' votos'))
+            : mias.length ? '' : gala ? 'por los números de la temporada' : 'por los números del mes'].filter(Boolean).join(' · ')}</small></> };
+    });
+    xs.push(['prem', 'Premios', img(fondo, '★'), aw.length, '#E5B800', '', abrirH('prem', premH, () => ir('pubs'))]);
+  }
   if (f.rg) xs.push(['rg', 'Rango ' + f.rg, <em key="rg">{f.rg}</em>, '', liga.colorRg(f.rg), 'rango', hist(['rango'])]);
   if (D.enT[0]) {
-    const z = D.porEv[D.enT[0].n] || { gano: [] };
+    const x = D.enT[0];
+    const z = D.porEv[x.n] || { gano: [] };
     const r = z.gano[0] || z.cayo;
-    xs.push(['deb', 'Debut', img([cara(r), liga.avUrl(k, 256)].concat(cs), 'D', '50% 52%'), '', '#29B298', '', () => accion.llave(D.enT[0].n)]);
+    // 🎤 el debut: su primera noche, con quién se cruzó
+    const debH = [{ id: 'mom:' + k + ':deb:' + x.n, tag: (esYo ? 'TU' : 'SU') + ' DEBUT · ' + siglaDe(x.sv), esc: x.sv, beat: 'boombap', cuando: fecha(x.t), cta: 'Ver la llave', ir: { llave: x.n },
+      cuerpo: <><h3 className="st-h">{nomEv(x)}</h3><ul className="st-gente">{persona(k, nom)}{r ? rival(r) : null}</ul>
+        <small className="st-s">{[x.pu || '', z.gano.length ? 'le ganó a ' + sinB(z.gano[0]) : z.cayo ? 'cayó con ' + sinB(z.cayo) : ''].filter(Boolean).join(' · ') || (x.gente ? x.gente + ' raperos' : esYo ? 'Tu primera noche' : 'Su primera noche')}</small></> }];
+    xs.push(['deb', 'Debut', img([cara(r), liga.avUrl(k, 256)].concat(cs), 'D', '50% 52%'), '', '#29B298', '', abrirH('deb', debH, () => accion.llave(x.n))]);
   }
   if (!xs.length) return null;
   return (

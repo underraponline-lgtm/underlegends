@@ -8,6 +8,7 @@ import { Alguien, Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, ht
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
 import { Buscar, CaraDc, CaraH, CrewCirculo, GRUPOS, Orbe, QUE_ES, escenaDe, llaveEnVivo, momentosLlave, pubNuevas } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
+import * as BEAT from './beats.js';
 import { YoMenu } from './yomenu.jsx';
 import { usePresencia } from './anima.js';
 import { useRacha } from './racha.js';
@@ -1190,6 +1191,10 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   const P = usePase(typeof window !== 'undefined' && !!window.DC);
   useComentarios();
   const [img, setImg] = useState('');
+  // 🎧 EL BEAT (21/11/2026, Dlx: «que algunas historias tengan como instrumentales, beats, sonidos»): cada historia puede
+  // traer el suyo (`beat`, ver `slidesDe()` de arriba.jsx y los momentos del perfil) y suena mientras se ve. Hecho con
+  // WebAudio (beats.js): ningún archivo. Se silencia con el parlante de arriba y queda así en este navegador
+  const [sonido, setSonido] = useState(() => !BEAT.mudo());
   const gid = abre.gid;
   const gi = grupos.findIndex((x) => x.id === gid);
   const g = gi >= 0 ? grupos[gi] : null;
@@ -1207,6 +1212,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   }, []);
   // vista apenas se muestra
   useEffect(() => { if (idAct) onVisto(idAct); }, [idAct, onVisto]);
+  const beat = ((g && g.slides.find((x) => x.id === idAct)) || {}).beat || '';
+  useEffect(() => { if (sonido && beat) BEAT.tocar(beat); else BEAT.parar(); }, [beat, sonido]);
+  useEffect(() => () => BEAT.parar(), []);
   // si su grupo desaparece (el evento en vivo terminó), el visor se cierra en vez de quedar abierto y vacío
   useEffect(() => { if (!hay) onCerrar(); }, [hay, onCerrar]);
   // el foco entra al visor: con el teclado, Escape y las flechas ya andaban, pero el Tab seguía en la página de atrás
@@ -1327,7 +1335,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // ✋ tocar, mantener o deslizar: mantener pausa (y al soltar no pasa de historia); deslizar abajo cierra y al costado
   // cambia de círculo
   // (cada toque arranca de cero: mantener apretado «Felicitar» dejaba marcado que el próximo toque no pasara de historia)
-  const empieza = (e) => { tragar.current = false; pausa.current = true; gesto.current = { x: e.clientX, y: e.clientY, t: performance.now() }; };
+  const empieza = (e) => { BEAT.despertar(); tragar.current = false; pausa.current = true; gesto.current = { x: e.clientX, y: e.clientY, t: performance.now() }; };
   const suelta = (e) => {
     pausa.current = false;
     const g0 = gesto.current;
@@ -1403,6 +1411,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
           {/* 🔴 soltar el paso del historial ANTES de cerrar (pasada del 19/10/2026): si no, el `history.back()` del cierre
               deshacía la navegación al perfil y quedabas en el Inicio */}
           <a className="hv-quien" href={perfil} onClick={() => { soltarPaso(); onCerrar(); }} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
+          {beat ? <button type="button" className={'hv-comp hv-son' + (sonido ? ' on' : '')} aria-pressed={sonido}
+            aria-label={sonido ? 'Silenciar el beat' : 'Poner el beat'} title={sonido ? 'Silenciar el beat' : 'Poner el beat'}
+            onClick={() => { const v = !sonido; BEAT.ponerMudo(!v); setSonido(v); }}><Ico n={sonido ? 'sonido' : 'mudo'} t={22} /></button> : null}
           <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" />
           <button type="button" className={'hv-comp hv-img' + (img ? ' ' + img : '')} aria-label="Guardar como imagen para tus historias"
             title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>

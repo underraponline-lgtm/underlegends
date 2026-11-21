@@ -69,6 +69,9 @@ const TRAZOS = {
   // 🖼️ guardar una historia como imagen (18/10/2026)
   imagen: <><path d="M4 5h16v14H4z" /><path d="M4 16l5-5 4 4 3-3 4 4" /><circle cx="9" cy="9.5" r="1.5" /></>,
   auris: <><path d="M4 15v-3a8 8 0 0116 0v3" /><path d="M4 14h4v6H4zM16 14h4v6h-4z" /></>,
+  // 🎧 el beat de las historias (21/11/2026): sonando y silenciado
+  sonido: <><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" /><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" /></>,
+  mudo: <><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" /><path d="M16 9.5l5 5M21 9.5l-5 5" /></>,
   premio: <><circle cx="12" cy="9" r="5" /><path d="M9 13.2L7.5 21l4.5-2.5 4.5 2.5-1.5-7.8" /></>,
   escudo: <path d="M12 3l8 3v6c0 4.6-3.3 7.9-8 9-4.7-1.1-8-4.4-8-9V6z" />,
   // ✎ el lápiz de Mods (21/11/2026, mods_herramientas.jsx)
