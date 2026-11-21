@@ -6,7 +6,7 @@
   "Lo usa la prueba de micro (grabador/microfono.js) para el beat que pone ULAYA, y cada beat se acredita a su",
   "beatmaker en el mensaje. Si alguien pide salir, se saca de acá, de grabador/voz/beats/ y de las historias (ELEGIDOS de herramientas/beats_historias.py).",
   "`canal`: su canal de YouTube, buscado y mirado el 21/11/2026 (herramientas/beats_historias.py usa estos). `canal_nota`:",
-  "lo que hay que saber, o por qué todavía no tiene canal confirmado (Dlx pasa el link)."
+  "lo que hay que saber, o por qué todavía no tiene canal confirmado (Dlx pasa el link). `solo_uso_libre`: de ése, sólo los beats que dicen «uso libre»."
  ],
  "tambien_vale": "todo beat con «Free» o «Uso libre» en el título o la descripción, y los beats del canal de YouTube de Under Legends",
  "beatmakers": [
@@ -39,12 +39,13 @@
   {
    "nombre": "Black One",
    "nota": "",
-   "canal_nota": "«BLACK ONE» (@BLACK_ONE) hace beats electrónicos, no de freestyle: ¿es ése?"
+   "canal_nota": "casi todo son beats electrónicos [FREE]; de freestyle, los de FMS",
+   "canal": "https://www.youtube.com/@BLACK_ONE"
   },
   {
    "nombre": "ChessBeats",
    "nota": "",
-   "canal_nota": "sólo canales chicos con un video: falta el link"
+   "canal": "https://www.youtube.com/@chessbeat8106"
   },
   {
    "nombre": "Costa Uno",
@@ -84,12 +85,13 @@
   {
    "nombre": "Dominio Music",
    "nota": "",
-   "canal_nota": "sólo canales casi vacíos: falta el link"
+   "canal": "https://www.youtube.com/@DOMINIOBEATS"
   },
   {
    "nombre": "Duva Beats",
    "nota": "",
-   "canal_nota": "sólo canales casi vacíos: falta el link"
+   "canal_nota": "su canal hoy se llama Kairos Beats; casi todo son formatos de entrenamiento con voz y conteo",
+   "canal": "https://www.youtube.com/@aka_KairosBeats"
   },
   {
    "nombre": "EsenciaBeats",
@@ -109,7 +111,7 @@
   {
    "nombre": "GianBeatz",
    "nota": "",
-   "canal_nota": "sólo un canal casi vacío: falta el link"
+   "canal": "https://www.youtube.com/@ganfrancocz15"
   },
   {
    "nombre": "HB Beats",
@@ -145,7 +147,7 @@
   {
    "nombre": "Khaen",
    "nota": "",
-   "canal_nota": "no apareció un canal propio (sale como colaborador de DJ DMandado): falta el link"
+   "canal_nota": "con permiso (Dlx, 21/11/2026); no tiene canal propio de beats: sale en los de DJ DMandado"
   },
   {
    "nombre": "Klyen Beats",
@@ -185,7 +187,9 @@
   {
    "nombre": "MaxiBeats",
    "nota": "",
-   "canal_nota": "sólo canales casi vacíos: falta el link"
+   "canal_nota": "SÓLO los beats que dicen «uso libre» (Dlx, 21/11/2026)",
+   "canal": "https://www.youtube.com/@MaxiBeatzzz",
+   "solo_uso_libre": true
   },
   {
    "nombre": "MC'GS",
@@ -196,12 +200,14 @@
   {
    "nombre": "NYQST",
    "nota": "",
-   "canal_nota": "sólo «Nyquist» (@Nyquist1098, 19 suscriptores, en inglés): no seguro"
+   "canal_nota": "las «NYQST Tapes» son canciones con artistas: sólo los beats instrumentales",
+   "canal": "https://www.youtube.com/@Naicuist"
   },
   {
    "nombre": "Ortiz Studio",
    "nota": "",
-   "canal_nota": "sólo canales casi vacíos: falta el link"
+   "canal_nota": "el canal no muestra videos (21/11/2026)",
+   "canal": "https://www.youtube.com/@ortizbeatz"
   },
   {
    "nombre": "P4nteraa",
@@ -231,7 +237,7 @@
   {
    "nombre": "ShadowBeats",
    "nota": "",
-   "canal_nota": "los tres canales con ese nombre no son de rap (techno, canciones de IA, remixes lentos): falta el link"
+   "canal": "https://www.youtube.com/@ShadowBeatsEc"
   },
   {
    "nombre": "TD Prods",
@@ -252,7 +258,7 @@
   {
    "nombre": "Versey",
    "nota": "",
-   "canal_nota": "los canales con ese nombre son de Roblox y de un jugador: falta el link"
+   "canal": "https://www.youtube.com/@martin_versey"
   },
   {
    "nombre": "Viruz Beatmaker",

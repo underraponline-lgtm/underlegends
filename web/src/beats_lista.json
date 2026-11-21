@@ -39,6 +39,20 @@
    "t": "Achimega",
    "b": "DJ Bootrax",
    "u": "https://youtu.be/u2jc4sovPMQ"
+  },
+  {
+   "a": "shadowbeats-zona.m4a",
+   "t": "Zona",
+   "b": "ShadowBeats",
+   "u": "https://youtu.be/HSUKGndN7e8",
+   "libre": 1
+  },
+  {
+   "a": "maxibeats-nuncaantes.m4a",
+   "t": "Nunca antes",
+   "b": "MaxiBeats",
+   "u": "https://youtu.be/FUUxcz7Z3t4",
+   "libre": 1
   }
  ],
  "trap": [
@@ -75,6 +89,18 @@
    "b": "ZkN",
    "u": "https://youtu.be/V4czXKXrBj8",
    "libre": 1
+  },
+  {
+   "a": "versey-virus.m4a",
+   "t": "Virus",
+   "b": "Versey",
+   "u": "https://youtu.be/wUNb4HkQe3A"
+  },
+  {
+   "a": "nyqst-atlantico.m4a",
+   "t": "Atlántico",
+   "b": "NYQST",
+   "u": "https://youtu.be/cm_WEUnd7ec"
   }
  ],
  "drill": [
@@ -110,6 +136,18 @@
    "b": "Alejandre's Beats",
    "u": "https://youtu.be/7bkwA2n_8VA",
    "libre": 1
+  },
+  {
+   "a": "dominiomusic-noimporta.m4a",
+   "t": "No Importa",
+   "b": "Dominio Music",
+   "u": "https://youtu.be/Q-bNIYK7k2w"
+  },
+  {
+   "a": "chessbeats-barras.m4a",
+   "t": "Barras",
+   "b": "ChessBeats",
+   "u": "https://youtu.be/vlhkUfakt6Y"
   }
  ]
 }

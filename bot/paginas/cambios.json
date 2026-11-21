@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.56",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T14:37:00-05:00",
+        "titulo": "Más beats en las historias",
+        "items": [
+            "**Más beats en las historias**: se suman ShadowBeats, MaxiBeats, Dominio Beats, ChessBeat, Versey y NYQST. Ya son 22 instrumentales de 18 beatmakers."
+        ]
+    },
+    {
         "version": "7.55",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T14:45:00-05:00",

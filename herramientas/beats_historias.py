@@ -55,18 +55,25 @@ ELEGIDOS = [
     ('n8pcg_I3_6Y', 'boombap', 'Love and Shit', 'Viruz Beatmaker', True),
     ('AWVhgT_6U5k', 'boombap', '1938', 'Lauto Beats', True),
     ('u2jc4sovPMQ', 'boombap', 'Achimega', 'DJ Bootrax', False),
+    # (los canales que pasó Dlx el mismo 21/11: ShadowBeats es @ShadowBeatsEc; de MaxiBeats, sólo los de uso libre)
+    ('HSUKGndN7e8', 'boombap', 'Zona', 'ShadowBeats', True),
+    ('FUUxcz7Z3t4', 'boombap', 'Nunca antes', 'MaxiBeats', True),
     # ⚔️ drill: lo que es pelea (desafíos, cara a cara, polémica, cazas, finales)
     ('GlYx0rVW_2E', 'drill', 'El Abismo', 'Jd Beats', True),
     ('2jgBgHaauOw', 'drill', 'Andrómeda', '7mobeats', False),
     ('eoSW8pn3_54', 'drill', 'Hollow', 'Deejay Santy', False),
     ('Tgg0ukxgsUA', 'drill', 'Chernobyl', 'Denek Beats', True),
     ('7bkwA2n_8VA', 'drill', 'Devil Drill', "Alejandre's Beats", True),
+    ('Q-bNIYK7k2w', 'drill', 'No Importa', 'Dominio Music', False),
+    ('vlhkUfakt6Y', 'drill', 'Barras', 'ChessBeats', False),
     # 🔥 trap: el chat que explota, el raid, el rango, tu servidor y tu crew
     ('6H87vrztX8Y', 'trap', 'Surf', 'Aelat Beats', True),
     ('2-TnW6usTok', 'trap', 'Slow Wind', 'Lauto Beats', True),
     ('uxvQHo26NUg', 'trap', 'Ghost City', 'Eznar Beats', False),
     ('kdQouGTJwzc', 'trap', 'Hijōshiki', 'Jd Beats', True),
     ('V4czXKXrBj8', 'trap', 'Beat Trap #2', 'ZkN', True),
+    ('wUNb4HkQe3A', 'trap', 'Virus', 'Versey', False),
+    ('cm_WEUnd7ec', 'trap', 'Atlántico', 'NYQST', False),
 ]
 
 
@@ -84,11 +91,19 @@ def clave(n):
     return re.sub(r'[^a-z0-9]', '', n.lower())
 
 
-def con_permiso(beatmaker):
-    """El nombre como figura en datos/beatmakers.json, o None si no está."""
+def _ficha(beatmaker):
     with io.open(PERMISOS, encoding='utf-8') as f:
         lista = json.load(f)['beatmakers']
-    return next((b['nombre'] for b in lista if clave(b['nombre']) == clave(beatmaker)), None)
+    return next((b for b in lista if clave(b['nombre']) == clave(beatmaker)), None)
+
+
+def con_permiso(beatmaker, libre=True):
+    """El nombre como figura en datos/beatmakers.json, o None si no está. ⚠️ De los que tienen `solo_uso_libre` (MaxiBeats:
+    Dlx, 21/11/2026, «sólo los que dicen uso libre»), sólo con un beat de uso libre."""
+    b = _ficha(beatmaker)
+    if not b or (b.get('solo_uso_libre') and not libre):
+        return None
+    return b['nombre']
 
 
 def donde_arranca(ruta, largo):
@@ -148,7 +163,7 @@ def correr(hacer=False):
         if estilo not in ESTILOS:
             sin_permiso.append((titulo, 'estilo «%s» no existe' % estilo))
             continue
-        if not con_permiso(bm) and not libre:
+        if not con_permiso(bm, libre) and not (libre and not _ficha(bm)):
             sin_permiso.append((titulo, '%s no está en datos/beatmakers.json' % bm))
             continue
         if not os.path.exists(os.path.join(CARPETA, archivo_de(bm, titulo, clave))):
@@ -190,7 +205,10 @@ def _self_check():
         print('  %s %s' % ('✅' if c else '❌', que))
         malos += 0 if c else 1
     ok(all(e[1] in ESTILOS for e in ELEGIDOS), 'cada elegido tiene un estilo de las historias')
-    ok(all(con_permiso(e[3]) or e[4] for e in ELEGIDOS), 'todos con permiso: el beatmaker en datos/beatmakers.json o de uso libre')
+    ok(all(con_permiso(e[3], e[4]) or (e[4] and not _ficha(e[3])) for e in ELEGIDOS),
+       'todos con permiso: el beatmaker en datos/beatmakers.json (y de uso libre si lo pide) o un beat de uso libre de otro')
+    ok(con_permiso('MaxiBeats', False) is None and con_permiso('MaxiBeats', True) == 'MaxiBeats',
+       'de MaxiBeats, sólo los beats de uso libre (Dlx, 21/11/2026)')
     ok(clave("Alejandre's Beats (ex)") == 'alejandresbeats' and con_permiso('AZERBEATS') == 'Azerbeats' and con_permiso('nadie raro') is None,
        'el permiso compara nombres como la prueba de micro: sin tildes, mayúsculas ni signos')
     ok(len({e[0] for e in ELEGIDOS}) == len(ELEGIDOS), 'ningún beat dos veces')
