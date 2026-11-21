@@ -7,7 +7,7 @@
 // ⚠️ Se mueven sólo con transform y opacity (los mueve la placa de video), se frenan fuera de la pantalla o con la
 // pestaña escondida, y con «Menos animaciones» quedan quietos: los últimos tres. Tocar uno abre la publicación.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { PJ, autorDe } from './comentarios.jsx';
+import { autorDe, pjDe } from './comentarios.jsx';
 import { Cara } from './piezas.jsx';
 import { usePases } from './pase.js';
 import { esPremium } from './sello.jsx';
@@ -63,14 +63,14 @@ export function ComentariosFlotantes({ liga, it, hilo, cls = '', onAbrir, cada =
   return (
     <div className={'cfl ' + cls} ref={raiz} style={{ '--filas': M }} aria-label={n + ' comentarios'}>
       {filas.map(({ c, llave, pos }) => {
-        const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
+        const pj = c.et === 'l' ? pjDe(c.k, liga) : null;
         const prof = info.prof[c.id] || 0;
         const a = c.resp && info.por[c.resp];
         return (
           <button key={llave} type="button" className={'cfl-b' + (pos >= M ? ' sale' : '') + (prof ? ' resp' : '')}
             style={{ '--pos': Math.min(pos, M), '--prof': prof }} onClick={abrir} tabIndex={pos >= M ? -1 : 0}
             aria-label={autorDe(liga, c) + (c.et === 's' ? ' (simulado)' : c.et === 'l' ? ' (Liga)' : '') + (a ? ', responde a ' + autorDe(liga, a) : '') + ': ' + c.tx}>
-            {pj ? <span className="cfl-cara pj" style={{ background: pj[1] }}>{pj[0]}</span>
+            {pj ? <span className="cfl-cara pj" style={{ background: pj[1], color: pj[2] }}>{pj[0]}</span>
               : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cfl-cara' + (esPremium(pub, c.k) ? ' sp-prem-aro' : '')} lazy />}
             <span className="cfl-x">
               <span className="cfl-q"><b>{autorDe(liga, c)}</b>{c.et === 's' ? <i>simulado</i> : c.et === 'l' ? <i className="liga">Liga</i> : null}{a ? <small>↪ a {autorDe(liga, a)}</small> : null}</span>

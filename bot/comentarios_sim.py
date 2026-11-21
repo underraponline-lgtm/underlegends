@@ -67,6 +67,11 @@ CLAVE_KV = 'cm:permisos'
 
 #: los personajes de la Liga (llevan la pastilla «Liga»): clave, nombre
 PERSONAJES = [('eh', 'El Hype'), ('ul', 'ULAYA'), ('ej', 'El Jurado')]
+#: 📣 LAS BARRAS DE CADA SERVIDOR (21/11/2026, Dlx: «sí» a los fans de la Liga, bots a la vista): en una publicación de
+#: un servidor, la vez que habla la Liga es `P_BARRA` de las veces «La barra de <sigla>» (`b:<servidor>`, con la pastilla
+#: «Liga», como los personajes). Sólo desde `BARRAS_DESDE`: un comentario que ya se vio no cambia
+BARRAS_DESDE = '2026-11-21T11:00:00Z'
+P_BARRA = 0.5
 #: cuántas veces puede aparecer la misma persona el mismo día
 POR_DIA = 2
 #: quién cuenta como activo: jugó en los últimos días
@@ -629,7 +634,23 @@ def _elegir(lista, r, rng, usadas, del_dia):
     return f
 
 
-def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises, v3=None, svs=None):
+_SIGLAS = None
+
+
+def _barra(sv):
+    """`('b:<servidor>', 'La barra de <sigla>')`, con la sigla que la página muestra (ACAD es LCW, SR es SNK)"""
+    global _SIGLAS
+    if _SIGLAS is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+                d = json.load(f)
+            _SIGLAS = {k: (v or {}).get('sigla') or k for k, v in ((d.get('servidores') or d) if isinstance(d, dict) else {}).items()}
+        except (OSError, ValueError):
+            _SIGLAS = {}
+    return ('b:' + sv, 'La barra de ' + str(_SIGLAS.get(sv) or sv))
+
+
+def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises, v3=None, svs=None, barra=None):
     cuantos = _cuantos(x, tipo, rng)
     r = _relleno2(x)
     usadas = set()
@@ -656,7 +677,8 @@ def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, pais
                 resp = None
             if tx:
                 t = t + dt.timedelta(minutes=rng.randint(4, 40) if resp is not None else rng.randint(20, 180))
-                pk, pn = PERSONAJES[rng.randrange(len(PERSONAJES))]
+                # 📣 en una publicación de un servidor, a veces habla su barra (sólo desde `BARRAS_DESDE`: `barra`)
+                pk, pn = barra if barra and rng.random() < P_BARRA else PERSONAJES[rng.randrange(len(PERSONAJES))]
                 cms.append([len(cms), pk, pn, tx.format(**r), _iso(t), 'l', resp[0] if resp is not None else None])
                 hecho_pj = True
                 continue
@@ -687,7 +709,7 @@ def _cms_v2(x, tipo, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, pais
     return [c if c[6] is not None else c[:6] for c in cms]
 
 
-def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None, chats=None):
+def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None, chats=None, barras=True):
     """Le pone a cada publicación sus comentarios simulados (`cm`): `[[i, clave, nombre, texto, hora, etiqueta, a
     quién le contesta]]`, con la etiqueta `''` (dijo que sí), `'s'` (simulado: sin preguntar) o `'l'` (personaje de la
     Liga), y el último valor sólo si le contesta a otro (su `i`). Devuelve la lista nueva; no toca la de entrada."""
@@ -701,6 +723,7 @@ def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None, chats=
     svs = {f['k']: str(f.get('sv') or '') for f in gente}
     v2 = _de_iso(V2_DESDE)
     v3_desde = _de_iso(V3_DESDE)
+    barras_desde = _de_iso(BARRAS_DESDE) if barras else None
     hay_chats = bool(isinstance(chats, dict) and isinstance(chats.get('dias'), dict) and chats['dias'])
     voces = {}
     por_dia, frases_dia = {}, {}
@@ -743,7 +766,8 @@ def poner(items, tabla, perm=None, ahora=None, llaves=None, ocultas=None, chats=
             # 🗞️ cada historia del chat con sus frases (tanda 3); las que no tienen, las del día fuerte
             tg = (('svchat_pol' if x.get('que') == 'polemica' else 'svchat_' + str(x.get('que')) if 'svchat_' + str(x.get('que')) in GENTE
                    else 'svchat') if tipo == 'svchat' else tipo)
-            cms = _cms_v2(x, tg, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises, v3, svs)
+            cms = _cms_v2(x, tg, t0, rng, cands, pesos, perm, por_dia, dia, frases_dia, paises, v3, svs,
+                          _barra(sv) if sv and barras_desde and t0 >= barras_desde else None)
         if cms:
             nuevos[i] = cms
     for i, x in enumerate(items):
@@ -786,9 +810,17 @@ def _self_check():
     # 🔒 y la versión 2, sin los chats, también (medida con el código del 17/11/2026, antes de la versión 3)
     its30 = [dict(x, t=_iso(_de_iso(x['t']) + dt.timedelta(days=30))) for x in items]
     tb30 = [dict(f, ult=[_iso(_de_iso(f['ult'][0] + 'T00:00:00Z') + dt.timedelta(days=30))[:10]] + f['ult'][1:]) for f in tabla]
-    a30 = poner(its30, tb30, perm, ahora + dt.timedelta(days=30), llaves, ocultas=['Agus'])
+    # (sin las barras: la huella se midió antes de ellas, y estas publicaciones de prueba caen después de `BARRAS_DESDE`)
+    a30 = poner(its30, tb30, perm, ahora + dt.timedelta(days=30), llaves, ocultas=['Agus'], barras=False)
     h2 = hashlib.sha256(json.dumps([x.get('cm') for x in a30], ensure_ascii=False).encode()).hexdigest()[:16]
     ok(h2 == HUELLA_V2, 'sin los chats, la versión 2 sale igual que siempre (%s)' % h2)
+    # 📣 las barras: en publicaciones de un servidor desde `BARRAS_DESDE`, a veces habla «La barra de …», con la pastilla
+    # «Liga»; antes de esa fecha, nunca (lo que ya se vio no cambia)
+    b30 = poner(its30, tb30, perm, ahora + dt.timedelta(days=30), llaves, ocultas=['Agus'])
+    bs = [c for x in b30 for c in (x.get('cm') or []) if str(c[1]).startswith('b:')]
+    antes = [c for x in poner(items, tabla, perm, ahora, llaves, ocultas=['Agus']) for c in (x.get('cm') or []) if str(c[1]).startswith('b:')]
+    ok(bs and all(c[1] == 'b:FFA' and c[2] == 'La barra de FFA' and c[5] == 'l' for c in bs) and not antes,
+       'las barras: «La barra de FFA» habla en las de FFA desde su fecha (%d veces), con la pastilla «Liga»; antes, nunca' % len(bs))
 
     # 🗣️ la versión 3: la jerga de FFA es «papu» y «nashe», Oasis (dijo que sí) escribe «bro» y ríe «jsjs»; Snow no dijo
     # que sí y también tiene voz medida: no se usa

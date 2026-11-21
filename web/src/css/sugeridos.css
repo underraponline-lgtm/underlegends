@@ -18,7 +18,7 @@
 .sg-liga{display:inline-flex;align-items:center;gap:7px;font:700 12.5px/1.2 'Barlow Condensed',Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
 .sg-liga em{font-style:normal;padding:2px 5px;border-radius:2px;background:#E41373;color:#fff;letter-spacing:.06em}
 .sg-liga-c{display:flex}
-.sg-liga-c i{width:20px;height:20px;display:grid;place-items:center;border-radius:50%;margin-left:-5px;box-shadow:0 0 0 2px var(--fondo);
+.sg-liga-c i{min-width:20px;height:20px;padding:0 3px;display:grid;place-items:center;border-radius:10px;margin-left:-5px;box-shadow:0 0 0 2px var(--fondo);
   font:900 8.5px/1 Archivo,sans-serif;font-style:normal;color:#030304}
 .sg-liga-c i:first-child{margin-left:0}
 /* en la llave: sigue a tus rivales de esta noche */
@@ -28,3 +28,5 @@
 /* «Te siguen» en Mi cuenta: la fila con su «Seguir de vuelta» al lado */
 .cu-gente li:has(> .sg-bc){grid-column:1/-1;display:flex;align-items:center;gap:6px}
 .cu-gente li:has(> .sg-bc) > a{flex:1;min-width:0}
+/* 📣 el aplauso de la barra de su servidor (publicaciones2.jsx `Felicitar`): suma 1 y se ve como Liga */
+.pb-fel-l{margin-left:5px;padding:2px 5px;border-radius:2px;background:#E41373;color:#fff;font:700 10.5px/1 'Barlow Condensed',Archivo,sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}

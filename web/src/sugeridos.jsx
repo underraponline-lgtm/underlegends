@@ -12,7 +12,7 @@ import { limpio } from './liga.js';
 import { Cara, accion } from './piezas.jsx';
 import CSS_PAGINA from './css/sugeridos.css?inline';
 import { usarCss } from './css.js';
-import { PJ } from './comentarios.jsx';
+import { pjDe } from './comentarios.jsx';
 
 usarCss('sugeridos', CSS_PAGINA);
 const W = typeof window !== 'undefined' ? window : {};
@@ -94,24 +94,39 @@ export function GenteParaSeguir({ liga, dc, P, meSiguen, excluir }) {
   );
 }
 
-// 🤖 LA LIGA TE SIGUE: a la vista y aparte del número (no son personas). La regla sale de lo que esa fila ya dice
+// 🤖 LA LIGA TE SIGUE, A LA VISTA (21/11/2026). Los personajes de la Liga —El Jurado, ULAYA, El Hype— y LAS BARRAS de cada
+// servidor («La barra de FFA», `b:FFA`: Dlx, «sí» a los fans de la Liga) siguen a la gente y SUMAN al número de seguidores,
+// pero se ven como lo que son: con su cara de la Liga y su pastilla «Liga» al lado del número. Las reglas salen de lo que
+// la fila ya dice: El Jurado a quien hizo podio, ULAYA a quien ganó una llave, El Hype a quien recién empieza, y la barra
+// de cada servidor donde jugaste (el tuyo, `sv`, y los demás, `svc` de su perfil)
 const LIGA_SIGUE = [
   ['ej', 'El Jurado', (f) => (f.pod || 0) > 0, 'porque hiciste podio esta temporada'],
   ['ul', 'ULAYA', (f) => (f.oro || 0) > 0, 'porque ganaste una llave esta temporada'],
   ['eh', 'El Hype', (f) => (f.ev || 0) > 0 && (f.ev || 0) <= 3, 'porque recién empiezas'],
 ];
-/** Los personajes de la Liga que siguen a esa fila: `[[clave, nombre, porqué], …]` */
-export function ligaSigue(f) {
-  return f ? LIGA_SIGUE.filter((x) => x[2](f)).map((x) => [x[0], x[1], x[3]]) : [];
+/** `La barra de <sigla>` de un servidor, como la página lo nombra */
+export const barraDe = (liga, sv) => 'La barra de ' + String((liga && liga.svs && liga.svs[sv] && liga.svs[sv].sigla) || sv);
+/** Los de la Liga que siguen a esa fila (`p`: su perfil, para los servidores donde jugó): `[[clave, nombre, porqué], …]` */
+export function ligaSigue(f, p, liga) {
+  if (!f) return [];
+  const xs = LIGA_SIGUE.filter((x) => x[2](f)).map((x) => [x[0], x[1], x[3]]);
+  if ((f.ev || 0) > 0 && liga && liga.svs) {
+    for (const sv of [...new Set([f.sv, ...((p && p.svc) || []).map((x) => String(x).toUpperCase())])]) {
+      if (sv && liga.svs[sv]) xs.push(['b:' + sv, barraDe(liga, sv), 'porque jugaste en ' + String(liga.svs[sv].sigla || sv)]);
+    }
+  }
+  return xs;
 }
-export function LigaTeSigue({ f, yo = false }) {
-  const xs = ligaSigue(f);
+export function LigaTeSigue({ f, p, liga, yo = false }) {
+  const xs = ligaSigue(f, p, liga);
   if (!xs.length) return null;
   const nombres = xs.map((x) => x[1]);
-  const txt = nombres.length > 1 ? nombres.slice(0, -1).join(', ') + ' y ' + nombres[nombres.length - 1] : nombres[0];
+  const txt = nombres.length > 3 ? nombres.slice(0, 2).join(', ') + ' y ' + (nombres.length - 2) + ' más'
+    : nombres.length > 1 ? nombres.slice(0, -1).join(', ') + ' y ' + nombres[nombres.length - 1] : nombres[0];
+  const de = (x) => (yo ? x[2] : x[2].replace('hiciste', 'hizo').replace('ganaste', 'ganó').replace('empiezas', 'empieza').replace('jugaste', 'jugó'));
   return (
-    <span className="sg-liga" title={xs.map((x) => x[1] + ' ' + (yo ? x[2] : x[2].replace('hiciste', 'hizo').replace('ganaste', 'ganó').replace('empiezas', 'empieza'))).join(' · ')}>
-      <span className="sg-liga-c" aria-hidden="true">{xs.map((x) => <i key={x[0]} style={{ background: (PJ[x[0]] || [])[1] }}>{(PJ[x[0]] || ['LG'])[0]}</i>)}</span>
+    <span className="sg-liga" title={xs.map((x) => x[1] + ' ' + de(x)).join(' · ')}>
+      <span className="sg-liga-c" aria-hidden="true">{xs.slice(0, 4).map((x) => { const c = pjDe(x[0], liga); return <i key={x[0]} style={{ background: c[1], color: c[2] }}>{c[0]}</i>; })}</span>
       <span><em>Liga</em> {txt} {xs.length > 1 ? (yo ? 'te siguen' : 'lo siguen') : (yo ? 'te sigue' : 'lo sigue')}</span>
     </span>
   );

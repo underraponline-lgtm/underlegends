@@ -2,7 +2,7 @@
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, ksDe, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
-import { PJ, autorDe, delHilo, useComentarios } from './comentarios.jsx';
+import { autorDe, delHilo, pjDe, useComentarios } from './comentarios.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Algunos, Alguien, Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
@@ -315,10 +315,10 @@ export function LuNube({ liga, it, hilo, n = 1 }) {
   return (
     <a className={'lu-nube' + (n > 1 ? ' grande' : '')} href={'#/publicaciones/' + encodeURIComponent(it.id || '')} onClick={(e) => irPub(e, it.id)}>
       {cs.map((c) => {
-        const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
+        const pj = c.et === 'l' ? pjDe(c.k, liga) : null;
         return (
           <span className="lu-nube-c" key={c.id}>
-            {pj ? <span className="lu-nube-cara pj" style={{ background: pj[1] }}>{pj[0]}</span> : <Cara liga={liga} k={c.k} nombre={c.n} cls={'lu-nube-cara' + (esPremium(pub, c.k) ? ' sp-prem-aro' : '')} lazy />}
+            {pj ? <span className="lu-nube-cara pj" style={{ background: pj[1], color: pj[2] }}>{pj[0]}</span> : <Cara liga={liga} k={c.k} nombre={c.n} cls={'lu-nube-cara' + (esPremium(pub, c.k) ? ' sp-prem-aro' : '')} lazy />}
             <span className="lu-nube-x"><b>{autorDe(liga, c)}{c.et === 's' ? <i>simulado</i> : null}</b><span>{c.tx}</span></span>
           </span>
         );

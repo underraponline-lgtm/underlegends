@@ -1017,15 +1017,18 @@ function TeSiguen({ liga, dc }) {
   const est = useCuentaEst();
   // 🧑 también los de fuera de las 200 filas (18/11/2026): con `liga.T` el #250 que te sigue se contaba entre «personas
   // que no compiten». `quienK()` mira la tabla, los perfiles (por eso se piden: llegan después) y las filas ligeras
-  usePerfiles();
+  const P = usePerfiles();
   const ms = est.ME_SIGUEN;
-  // 🤖 los personajes de la Liga que te siguen, aparte del número (no son personas): `LigaTeSigue` de sugeridos.jsx
-  const liga1 = ligaSigue(liga.yo).length ? <LigaTeSigue f={liga.yo} yo /> : null;
-  if (!ms || !ms.n) return liga1 ? <Caja t="Te siguen">{liga1}</Caja> : null;
+  // 🤖 la Liga que te sigue (los personajes y las barras de tus servidores): suma al número y se ve como Liga, con su
+  // pastilla (`LigaTeSigue` de sugeridos.jsx)
+  const mio = P && P.p && liga.yo ? P.p[liga.yo.k] : null;
+  const nL = ligaSigue(liga.yo, mio, liga).length;
+  const liga1 = nL ? <LigaTeSigue f={liga.yo} p={mio} liga={liga} yo /> : null;
+  if (!ms || !ms.n) return liga1 ? <Caja t={'Te siguen ' + nL}>{liga1}</Caja> : null;
   const suyos = (ms.perfiles || []).map((k) => liga.quienK(k)).filter(Boolean);
   const otros = ms.n - suyos.length;
   return (
-    <Caja t={'Te siguen ' + ms.n} d={otros > 0 ? (suyos.length ? 'Y ' : '') + otros + (otros === 1 ? ' persona que no compite.' : ' personas que no compiten.') : ''}>
+    <Caja t={'Te siguen ' + (ms.n + nL)} d={otros > 0 ? (suyos.length ? 'Y ' : '') + otros + (otros === 1 ? ' persona que no compite.' : ' personas que no compiten.') : ''}>
       {suyos.length ? <ul className="cu-gente">{suyos.map((f) => (
         <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b></a>
           {liga.sigo(f.k) ? null : <BotonSeguir liga={liga} dc={dc} k={f.k} de chico />}</li>

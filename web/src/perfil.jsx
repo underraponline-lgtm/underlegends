@@ -11,7 +11,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Alguien, Algunos, Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
-import { LigaTeSigue } from './sugeridos.jsx';
+import { LigaTeSigue, ligaSigue } from './sugeridos.jsx';
 import { CapaPerfilT, FondoT, NombreT } from './puesto.js';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { FichaJurado } from './jurado_ficha.jsx';
@@ -435,7 +435,8 @@ function Cabeza({ liga, f, k, p, e, dc, esYo, onEmblemas, ems, numeros, ex }) {
   const n0 = useSeguidores(k);
   const [si0, setSi0] = useState(si);
   useEffect(() => { setSi0(liga.sigo(k)); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
-  const segs = n0 == null ? null : Math.max(0, n0 + (si ? 1 : 0) - (si0 ? 1 : 0));
+  // 🤖 + la Liga que lo sigue (los personajes y las barras de sus servidores): suma, y al lado se ve quiénes son (`LigaTeSigue`)
+  const segs = n0 == null ? null : Math.max(0, n0 + (si ? 1 : 0) - (si0 ? 1 : 0)) + ligaSigue(f, p, liga).length;
   const sigue = useSiguiendo(k, n0);
   // 🃏 su carta principal, primero (26/10/2026)
   const pub = usePases();
@@ -519,7 +520,7 @@ function Cabeza({ liga, f, k, p, e, dc, esYo, onEmblemas, ems, numeros, ex }) {
             {pa ? <a href="#/pase" title={'Su nivel en el Pase de rapero de la temporada' + (pa.premium ? ', con el premium' : '')}>Pase{pa.nivel ? ' ' + pa.nivel : ''}</a> : null}
             {pa && pa.premium ? <span className="sp-prem-chip-w"><a className="sp-prem-chip" href="#/pase" title="Tiene el Pase de rapero premium de la T1">PREMIUM · T1{marcoPremium(pub, k) ? ' · marco ' + marcoPremium(pub, k) : ''}</a></span> : null}
             {/* 🤖 la Liga lo sigue, a la vista y aparte del número de seguidores (sugeridos.jsx, 21/11/2026) */}
-            <LigaTeSigue f={f} yo={esYo} />
+            <LigaTeSigue f={f} p={p} liga={liga} yo={esYo} />
             {frase}
           </p>
           {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}

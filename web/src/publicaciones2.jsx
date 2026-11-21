@@ -22,6 +22,7 @@ import { Alguien, Algunos, Cara, Carta, Ico, Vacio, accion, promoAbierta, useCam
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useAplausos } from './aplausos.js';
 import { Hilo, delHilo, useComentarios } from './comentarios.jsx';
+import { barraDe } from './sugeridos.jsx';
 import { LuNube, LuSocial } from './medio.jsx';
 import { usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
@@ -77,17 +78,22 @@ const NOCHE_CAMPEONES = 4;
 export function Felicitar({ liga, it, A, chico }) {
   const id = it.id;
   if (!id) return null;
-  const n = Number(A.cu[id] || 0);
+  // 📣 LA BARRA DE SU SERVIDOR TAMBIÉN FELICITA (21/11/2026, los fans de la Liga): suma 1 y se ve como Liga, al lado
+  // (la del servidor de la publicación; si no tiene, la del servidor de la persona: una tarjeta, el Pase, un rango)
+  const k0 = ksDe(it)[0], svB = it.sv || (k0 && (liga.quienK(k0) || {}).sv) || '';
+  const barra = svB && liga.svs && liga.svs[svB] ? barraDe(liga, svB) : '';
+  const n = Number(A.cu[id] || 0) + (barra ? 1 : 0);
   const mio = !!A.mios[id];
   const yo = liga.yo;
-  if (yo && ksDe(it).includes(yo.k)) return n ? <span className="pb-fel tuyo" title="Te felicitaron">👏 {num(n)}</span> : null;
+  const lg = barra ? <i className="pb-fel-l" title={barra + ' felicitó'}>{chico ? 'Liga' : 'con ' + barra}</i> : null;
+  if (yo && ksDe(it).includes(yo.k)) return n ? <span className="pb-fel tuyo" title={'Te felicitaron' + (barra ? ', con ' + barra : '')}>👏 {num(n)}{lg}</span> : null;
   const err = A.err[id] && window.errorAplauso ? window.errorAplauso(A.err[id]) : '';
   return (
     <>
       <button type="button" className={'pb-fel' + (chico ? ' chico' : '') + (mio ? ' on' : '') + (A.va[id] ? ' va' : '')} aria-pressed={mio}
         disabled={mio || !!A.va[id]} onClick={() => { if (window.felicitar) window.felicitar(id); }}
-        aria-label={(mio ? 'Felicitaste' : 'Felicitar') + (n ? ' · ' + n : '')}>
-        <span aria-hidden="true">👏</span>{chico ? null : (mio ? 'Felicitaste' : 'Felicitar')}{n ? <em>{num(n)}</em> : null}
+        aria-label={(mio ? 'Felicitaste' : 'Felicitar') + (n ? ' · ' + n : '') + (barra ? ', con ' + barra : '')}>
+        <span aria-hidden="true">👏</span>{chico ? null : (mio ? 'Felicitaste' : 'Felicitar')}{n ? <em>{num(n)}</em> : null}{lg}
       </button>
       {err ? <small className="pb-err" role="status">{err}</small> : null}
     </>

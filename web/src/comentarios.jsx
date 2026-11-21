@@ -76,6 +76,20 @@ export async function comentar(it, tx) {
 }
 
 export const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#FFD24A'] };
+// 📣 LAS BARRAS DE CADA SERVIDOR (21/11/2026, Dlx: «sí» a los fans de la Liga, bots a la vista): «La barra de FFA» es un
+// personaje más de la Liga (`b:<servidor>`), con la sigla de su servidor sobre su color y la pastilla «Liga». Devuelve
+// [texto, fondo, color del texto]: el texto en blanco sobre un color oscuro (el de FFA es casi negro)
+export function pjDe(k, liga) {
+  if (PJ[k]) return [PJ[k][0], PJ[k][1], '#030304'];
+  if (String(k || '').startsWith('b:')) {
+    const sv = String(k).slice(2), s = liga && liga.svs && liga.svs[sv];
+    const c = (s && s.color) || '#E41373';
+    const m = /^#([0-9a-f]{6})$/i.exec(c);
+    const lum = m ? ((parseInt(m[1].slice(0, 2), 16) * 299 + parseInt(m[1].slice(2, 4), 16) * 587 + parseInt(m[1].slice(4, 6), 16) * 114) / 1000) : 0;
+    return [String((s && s.sigla) || sv).slice(0, 4), c, lum > 150 ? '#030304' : '#F6F6F6'];
+  }
+  return ['LG', '#E41373', '#F6F6F6'];
+}
 // 🪪 QUIÉN ESCRIBIÓ, CON EL NOMBRE DE HOY (17/11/2026): el comentario guarda el nombre que tenía al escribir (`c.n`), y si
 // después se lo cambió quedaba el viejo. Con su clave en la tabla, el de su perfil; los de la Liga (`et: 'l'`) son un
 // personaje y no tienen perfil
@@ -95,14 +109,14 @@ function hace(t, ahora) {
 }
 
 function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReportar, todos, pub }) {
-  const pj = c.et === 'l' ? PJ[c.k] || ['LG', '#E41373'] : null;
+  const pj = c.et === 'l' ? pjDe(c.k, liga) : null;
   const f = !pj ? liga.T[c.k] : null;
   // 💎 el sello Premium: sólo de una persona (los de la Liga son un personaje, no un perfil)
   const prem = !pj && esPremium(pub, c.k);
   const a = c.resp ? todos.find((x) => x.id === c.resp) : null;
   return (
     <li className="cmh-c">
-      {pj ? <span className="cmh-pj" style={{ background: pj[1] }}>{pj[0]}</span>
+      {pj ? <span className="cmh-pj" style={{ background: pj[1], color: pj[2] }}>{pj[0]}</span>
         : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cara cmh-cara' + (prem ? ' sp-prem-aro' : '')} lazy />}
       <div className="cmh-cu">
         <div className="cmh-q">
