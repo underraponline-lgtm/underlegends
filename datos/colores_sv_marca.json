@@ -21,7 +21,8 @@
   "CH": "#F2A900",
   "DDS": "#AD1457",
   "CEU": "#206694",
-  "CHZ": "#95B44A"
+  "CHZ": "#95B44A",
+  "DW": "#076819"
  },
  "de_donde_sale": {
   "TFC": "del logo · rojo vino",
@@ -43,7 +44,8 @@
   "CH": "a mano: falta (un gris de espera, de herramientas/sumar_servidor.py)",
   "DDS": "del rol de sus admins: su logo es blanco y negro, sin color propio. Queda a ΔE 25,5 de TWR (que no es de la Liga) y a 33 o más del resto (08/11/2026).",
   "CEU": "del rol STAFF de su Discord: su logo es blanco y negro. De sus roles con color es el que menos se parece a los de los otros socios (ΔE 29 de DDF); el de su rol «FMS CEUTA» (#11806A) quedaba a 19 del verde de la Liga (15/11/2026)",
-  "CHZ": "del logo: el verde de la gorra del peón (el promedio de sus píxeles verdes); el resto del logo es blanco y negro (19/11/2026)"
+  "CHZ": "del logo: el verde de la gorra del peón (el promedio de sus píxeles verdes); el resto del logo es blanco y negro (19/11/2026)",
+  "DW": "del rol STAFF de su Discord («STAFF DANGER LEAGUE Y COMPES», #076819), como CEU: los colores de su logo ya son de otros —el naranja (#F5AF3A) es el de URBF (ΔE 2) y el de CH (3), la lavanda queda a 13 de FFS— y los de sus otros roles también: el azul de su LIDER es el de CEU (#206694, ΔE 0), el amarillo de PARTICIPANTE el de URBF y el naranja oscuro de MIEMBRO el de EFA (5). El verde queda a 32 del verde de la Liga y de CHZ, y a 34 de FRZ (ΔE 2000, 21/11/2026)"
  },
  "_pendiente_sr": "Se acordo que Snake Rap va en VERDE, pero no hay ningun logo verde: los dos archivos que hay son dorado (Logo_Ciclo_8, el actual) y naranja (SR.png, el viejo). Tres salidas: (a) que Dlx pase la version verde, (b) usar el verde de marca #33BF5A y teñir la silueta blanca, que ya existe en comun/logos_sv/, (c) aceptar el dorado, que es el color real del logo actual. Hasta que se decida queda el dorado.",
  "marca_original_svColors": {
