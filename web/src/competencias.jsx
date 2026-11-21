@@ -43,8 +43,9 @@ const aLas = (t) => (t && !isNaN(utc(t)) && hora(t)) || '11 AM (hora del este)';
 const montos = (C) => (C && C.premios && C.premios.m) || null;
 const premioLiga = (C, nivel) => { const m = montos(C); return m && m.liga && m.liga[nivel]; };
 
-function Nombre({ liga, C, k, yo }) {
-  if (!k) return <span className="cm9-nadie">por definir</span>;
+// 🚪 `como === 'pase'`: el lugar que dejó alguien que ya juega en otra liga (21/11/2026, `al_dia()` de bot/competencias.py)
+function Nombre({ liga, C, k, yo, como }) {
+  if (!k) return <span className="cm9-nadie">{como === 'pase' ? 'pase libre' : 'por definir'}</span>;
   const n = nombreDe(liga, C, k);
   // 🧑 el link a su perfil también para quien está fuera de las 200 filas (18/11/2026): `liga.T[k]` lo dejaba en texto
   // suelto, y los de fuera de la tabla tienen su perfil igual
@@ -57,6 +58,7 @@ function Nombre({ liga, C, k, yo }) {
 function Como({ m }) {
   if (m[3] === 'real') return <span className="cm9-tag real">REAL{m[5] ? ' · #' + m[5] : ''}</span>;
   if (m[3] === 'sim') return <span className="cm9-tags"><span className="cm9-tag sim">SIMULADO</span>{m[6] ? <span className="cm9-tag rep">RÉPLICA</span> : null}</span>;
+  if (m[3] === 'pase') return <span className="cm9-tag pend">PASE LIBRE</span>;
   return <span className="cm9-tag pend">POR JUGAR</span>;
 }
 
@@ -106,9 +108,9 @@ function Cruce({ liga, C, m, yo, jurado }) {
     <li className={'cm9-cru ' + como + (!!yo && (a === yo || b === yo) ? ' tuyo' : '')}>
       <Como m={m} />
       <span className="cm9-cru-l">
-        <span className={g && g === a ? 'gana' : g ? 'pierde' : ''}>{a ? <Cara liga={liga} k={a} nombre={nombreDe(liga, C, a)} cls="cara cm9-cara-ch" lazy /> : null}<Nombre liga={liga} C={C} k={a} yo={yo} /></span>
+        <span className={g && g === a ? 'gana' : g ? 'pierde' : ''}>{a ? <Cara liga={liga} k={a} nombre={nombreDe(liga, C, a)} cls="cara cm9-cara-ch" lazy /> : null}<Nombre liga={liga} C={C} k={a} yo={yo} como={como} /></span>
         <small>vs</small>
-        <span className={g && g === b ? 'gana' : g ? 'pierde' : ''}>{b ? <Cara liga={liga} k={b} nombre={nombreDe(liga, C, b)} cls="cara cm9-cara-ch" lazy /> : null}<Nombre liga={liga} C={C} k={b} yo={yo} /></span>
+        <span className={g && g === b ? 'gana' : g ? 'pierde' : ''}>{b ? <Cara liga={liga} k={b} nombre={nombreDe(liga, C, b)} cls="cara cm9-cara-ch" lazy /> : null}<Nombre liga={liga} C={C} k={b} yo={yo} como={como} /></span>
       </span>
       {como === 'pend' && a && b ? (
         <span className="cm9-p" title={'Si no se cruzan antes del cierre, se simula: ' + nombreDe(liga, C, a) + ' gana ' + pct(p) + ' de las veces'}>
@@ -163,8 +165,8 @@ function DetalleFila({ liga, C, g, f, yo }) {
                 <li key={n}>
                   <small>J{n}</small>
                   <i className={m[2] ? (gano ? 'g' : 'p') : 'n'} aria-label={m[2] ? (gano ? 'ganó' : 'perdió') : 'por jugar'}>{m[2] ? (gano ? 'G' : 'P') : '·'}</i>
-                  <span className="cm9-det-r"><Cara liga={liga} k={rival} nombre={nombreDe(liga, C, rival)} cls="cara cm9-cara-ch" lazy /><Nombre liga={liga} C={C} k={rival} yo={yo} /></span>
-                  <em>{m[3] === 'real' ? 'REAL' + (m[5] && !Array.isArray(m[5]) ? ' · #' + m[5] : '') : m[3] === 'sim' ? ('SIM ' + marcador(m)).trim() + (m[6] ? ' · RÉPLICA' : '') : pct(mia)}</em>
+                  <span className="cm9-det-r">{rival ? <Cara liga={liga} k={rival} nombre={nombreDe(liga, C, rival)} cls="cara cm9-cara-ch" lazy /> : null}<Nombre liga={liga} C={C} k={rival} yo={yo} como={m[3]} /></span>
+                  <em>{m[3] === 'pase' ? 'PASE LIBRE' : m[3] === 'real' ? 'REAL' + (m[5] && !Array.isArray(m[5]) ? ' · #' + m[5] : '') : m[3] === 'sim' ? ('SIM ' + marcador(m)).trim() + (m[6] ? ' · RÉPLICA' : '') : pct(mia)}</em>
                 </li>
               );
             })}

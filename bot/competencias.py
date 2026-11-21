@@ -209,6 +209,37 @@ def norm(s):
     return PAD.norm(de_hoy(s))
 
 
+def _un_lugar(listas, k):
+    """🪑 `(listas, vaciados)`: cada persona en UN SOLO lugar de todas las `listas` (de claves, en el orden en que se
+    eligen: de la llave o la liga más alta a la más baja). Se queda el lugar que ya tiene su clave de hoy (`k(x) == x`);
+    si ninguno la tiene, el primero. Los demás quedan '' y van en `vaciados`, un set de posiciones por lista.
+
+    Las listas que vuelven traen cada clave ya en la de hoy y EN EL MISMO LUGAR: una liga arma su calendario por posición
+    (`calendario()`), así que no puede achicarse. Lo que no es una clave ('' o None) queda como está. Pura."""
+    elegido = {}
+    for i, xs in enumerate(listas):
+        for j, x in enumerate(xs):
+            if not (isinstance(x, str) and x):
+                continue
+            c = k(x)
+            ya = elegido.get(c)
+            if ya is None or (x == c and listas[ya[0]][ya[1]] != c):
+                elegido[c] = (i, j)
+    nuevas, vaciados = [], []
+    for i, xs in enumerate(listas):
+        ys, vac = list(xs), set()
+        for j, x in enumerate(xs):
+            if isinstance(x, str) and x:
+                if elegido[k(x)] == (i, j):
+                    ys[j] = k(x)
+                else:
+                    ys[j] = ''
+                    vac.add(j)
+        nuevas.append(ys)
+        vaciados.append(vac)
+    return nuevas, vaciados
+
+
 def al_dia(viejo, hoy=None):
     """`datos/competencias.json` con cada persona bajo su clave de hoy (`norm()`), sin repetirla en una lista.
 
@@ -241,22 +272,60 @@ def al_dia(viejo, hoy=None):
     # 🏆 UNA LLAVE YA ARMADA NO PUEDE TENER DOS VECES A LA MISMA PERSONA. Las copas y los rapid se rearman desde los
     # lugares de su primera ronda (`armadas()`), y quien entró con su nombre de hoy y con uno viejo tenía dos lugares
     # (el 17/11/2026, Shadow y «VALLES-T» en la copa I). El lugar del nombre viejo queda vacío —un pase libre para su
-    # rival, como una llave que no se llenó— y la persona sigue en el suyo
+    # rival, como una llave que no se llenó— y la persona sigue en el suyo.
+    #
+    # 🪑 Y TAMPOCO DOS LLAVES NI DOS LIGAS (Dlx, 21/11/2026, «Sí, arréglalo»). Hasta ese día esto miraba una llave por vez,
+    # y quien tenía su nombre de hoy en una Rapid y un AKA en otra quedaba en las dos: Magic seguía vivo en las semis de
+    # la R16 y de la R17 (la suya de la R17 era «soul»), y con las dos finales cobraba dos veces. Lo mismo en las ligas:
+    # Magic, Mito, Shadow y Rodas en dos grupos, y con «Park ji sunk» también Oasis (oro-1 y ascenso-20); al cierre,
+    # `mover()` lo ubicaba por el último grupo que leía —Oasis bajaba de oro a bronce— y `premios_liga()` le pagaba en
+    # los dos. Ahora es UN lugar entre todas las llaves del mismo tipo (copas por un lado, rapid por el otro) y entre
+    # todos los grupos de liga; la Élite va aparte, porque se juega a la par de tu grupo. Se queda el que tiene su clave
+    # de hoy, o el de más arriba si ya no se sabe cuál era (el AKA casi siempre jugó menos y cayó más abajo): `_un_lugar()`.
+    #
+    # 🪦 MENOS UN LUGAR QUE YA QUEDÓ AFUERA, CON SU NOMBRE DE HOY: no puede seguir, así que no cobra nada, y vaciarlo le
+    # daría el pase a quien perdió con él y volvería a jugar con otro cruce las rondas YA CERRADAS. Medido el 21/11 en la
+    # copa F: Rodas había perdido en octavos con Ruvick, y vaciando su lugar Nene (a quien Rodas le ganó en 32vos) le ganaba
+    # una simulación nueva a Ruvick, que estaba en semis. Vivo o con el nombre viejo, sí se vacía: con el nombre viejo,
+    # cambiarle el nombre volvería a simular sus rondas cerradas con la fuerza de la persona de verdad.
     viejo = dict(viejo or {})
     for que in ('copa', 'rapid'):
+        ls = viejo.get(que)
+        if not ls:
+            continue
+        primeras = [((r.get('rondas') or [{}])[0]).get('partidos') or [] for r in ls]
+        lugares = [[m.get(l) for m in ps for l in ('a', 'b')] for ps in primeras]
+        _xs, vac = _un_lugar(lugares, k)
         llaves_ = []
-        for r in viejo.get(que) or []:
-            ps = ((r.get('rondas') or [{}])[0]).get('partidos') or []
-            hay = {x for m in ps for x in (m.get('a'), m.get('b')) if isinstance(x, str) and x and k(x) == x}
-            if any(isinstance(x, str) and x and k(x) != x and k(x) in hay for m in ps for x in (m.get('a'), m.get('b'))):
+        for r, ps, xs, v in zip(ls, primeras, lugares, vac):
+            vivos_r = {k(x) for rd in r.get('rondas') or [] for m in rd.get('partidos') or []
+                       if not m.get('g') and m.get('como') != 'pase' for x in (m.get('a'), m.get('b')) if isinstance(x, str) and x}
+            if r.get('campeon'):
+                vivos_r.add(k(r['campeon']))
+            v = {p for p in v if k(xs[p]) != xs[p] or k(xs[p]) in vivos_r}
+            if v:
                 r = dict(r)
                 r['rondas'] = [dict(r['rondas'][0])] + list(r['rondas'][1:])
-                r['rondas'][0]['partidos'] = [
-                    {**m, **{l: '' for l in ('a', 'b') if isinstance(m.get(l), str) and m.get(l) and k(m[l]) != m[l]
-                             and k(m[l]) in hay}} for m in ps]
+                r['rondas'][0]['partidos'] = [dict(m, **{l: '' for s, l in enumerate(('a', 'b')) if 2 * i + s in v})
+                                              for i, m in enumerate(ps)]
             llaves_.append(r)
-        if que in viejo:
-            viejo[que] = llaves_
+        viejo[que] = llaves_
+    # 🚪 en una liga el lugar no se borra: el calendario va por posición. Queda '' y su posición va a `libres` (o a
+    # `elite_libres`), y cada rival le gana por pase libre cuando cierra esa jornada (`jugar_liga()`). Un '' que no está
+    # en `libres` —el integrante sin letras de ascenso-9— sigue como siempre: eso lo decide Dlx aparte
+    L = viejo.get('ligas')
+    if isinstance(L, dict) and (L.get('grupos') or L.get('elite')):
+        L = dict(L)
+        gs = list(L.get('grupos') or [])
+        xs, vac = _un_lugar([g.get('gente') or [] for g in gs], k)
+        L['grupos'] = [dict(g, gente=x, **({'libres': sorted(set(g.get('libres') or ()) | v)} if v or g.get('libres') else {}))
+                       for g, x, v in zip(gs, xs, vac)]
+        if L.get('elite'):
+            (xe,), (ve,) = _un_lugar([L['elite']], k)
+            L['elite'] = xe
+            if ve or L.get('elite_libres'):
+                L['elite_libres'] = sorted(set(L.get('elite_libres') or ()) | ve)
+        viejo['ligas'] = L
 
     def ir(o):
         if isinstance(o, dict):
@@ -382,10 +451,17 @@ def resolver(a, b, reales, cerrada, fz, *semilla, sim=None, t=None):
 def tabla(gente, partidos, fz, ptb=None):
     """`[[norm, pj, g, pts]]`, ordenada: puntos, ganados de verdad, fuerza. Con `ptb` (lo que reparte cada batalla, ver
     `ptb_de()`) va una quinta columna, y a igual de puntos manda él. Ganar da 3 puntos; en una réplica (`rep`), 2 al que
-    gana y 1 al que pierde."""
+    gana y 1 al que pierde. 🚪 Un pase libre (`como: 'pase'`: el lugar que dejó alguien que ya juega en otra liga, ver
+    `jugar_liga()`) cuenta como jugado y ganado para el que estaba, sin PTB y sin ser «de verdad»."""
     t = {k: [k, 0, 0, 0, 0, 0] for k in gente}
     for m in partidos:
         if not m['g']:
+            continue
+        if m.get('como') == 'pase':
+            if m['g'] in t:
+                t[m['g']][1] += 1
+                t[m['g']][2] += 1
+                t[m['g']][3] += 3
             continue
         for k in (m['a'], m['b']):
             t[k][1] += 1
@@ -504,11 +580,17 @@ def calendario(n):
     return out
 
 
-def jugar_liga(gente, desde, llaves, fz, ahora, *semilla, jurado=None, sim=None):
+def jugar_liga(gente, desde, llaves, fz, ahora, *semilla, jurado=None, sim=None, libres=()):
     """`(jornadas, tabla)` de una liga: una jornada por ventana, real si se cruzaron adentro, simulada al cerrar. `jurado`
     es `(M, temporada, liga)`: el jurado se sortea acá y no al final, porque desde `PTB_DESDE` sus votos ordenan la tabla,
-    y la tabla decide quién sube, quién baja y quién cobra. Con `sim`, cada simulada sale de `batalla_sim()`."""
+    y la tabla decide quién sube, quién baja y quién cobra. Con `sim`, cada simulada sale de `batalla_sim()`.
+
+    🚪 `libres`: los lugares (posiciones en `gente`) que dejó alguien que ya juega en otra liga (`al_dia()`, 21/11/2026).
+    Cada rival le gana ese cruce por PASE LIBRE cuando cierra su jornada —como una más: si contara antes, la tabla tendría
+    gente con más jornadas jugadas que el resto—, y el lugar no va a la tabla, así que no sube, no baja ni cobra."""
     cal = calendario(len(gente))
+    fuera = set(libres or ())
+    en_tabla = [x for i, x in enumerate(gente) if i not in fuera]
     jornadas, todos = [], []
     M, temp, gid = jurado or (None, 0, '')
     for j, (ini, fin) in enumerate(ventanas(desde)):
@@ -517,14 +599,24 @@ def jugar_liga(gente, desde, llaves, fz, ahora, *semilla, jurado=None, sim=None)
         reales = cruces(llaves, ini, fin)
         cerrada = ahora >= fin
         # 🎭 en las últimas jornadas, quién se juega algo: el que está cerca de subir, de bajar o de la punta
-        en_juego = dict(sim, juegan=se_juegan_algo(tabla(gente, todos, fz))) if sim and j >= JORNADAS - 3 else sim
-        ps = [resolver(gente[a], gente[b], reales, cerrada, fz, *semilla, j, sim=en_juego, t=min(ahora, fin)) for a, b in cal[j] if a is not None and b is not None]
+        en_juego = dict(sim, juegan=se_juegan_algo(tabla(en_tabla, todos, fz))) if sim and j >= JORNADAS - 3 else sim
+        ps = []
+        for a, b in cal[j]:
+            if a is None or b is None:
+                continue
+            if a in fuera or b in fuera:
+                if not (a in fuera and b in fuera):
+                    queda = gente[b] if a in fuera else gente[a]
+                    ps.append({'a': '' if a in fuera else gente[a], 'b': '' if b in fuera else gente[b],
+                               'g': queda if cerrada else '', 'como': 'pase', 'p': 0.0 if a in fuera else 1.0})
+                continue
+            ps.append(resolver(gente[a], gente[b], reales, cerrada, fz, *semilla, j, sim=en_juego, t=min(ahora, fin)))
         if M:
             for m in ps:
                 jurado_sim(m, M, temp, gid, j + 1)
         jornadas.append({'n': j + 1, 'fin': fin.isoformat(), 'partidos': ps})
         todos += ps
-    return jornadas, tabla(gente, todos, fz, (lambda m: ptb_de(m, M['votos'], llaves)) if M and temp >= PTB_DESDE else None)
+    return jornadas, tabla(en_tabla, todos, fz, (lambda m: ptb_de(m, M['votos'], llaves)) if M and temp >= PTB_DESDE else None)
 
 
 def se_juegan_algo(t):
@@ -602,6 +694,8 @@ def ligas(viejo, llaves, ahora, M=None, S=None):
     if v.get('desde') and v.get('grupos'):
         desde = dt.datetime.fromisoformat(v['desde'])
         grupos, elite, temp = v['grupos'], v.get('elite') or [], int(v.get('temp') or 1)
+        # 🚪 los lugares de la Élite que dejó alguien que ya estaba (`al_dia()`): como los `libres` de cada grupo
+        elite_libres = v.get('elite_libres') or []
         fz = fuerzas(llaves, desde)
     else:
         # la primera: con la semana en curso si arrancó hace menos de un día, si no con la que viene
@@ -611,37 +705,43 @@ def ligas(viejo, llaves, ahora, M=None, S=None):
         fz = fuerzas(llaves, desde)
         grupos = armar_grupos(sorted(act, key=lambda k: (-fz.get(k, SIN_ELO), k)))
         elite, temp = elite_de(act), 1
+        elite_libres = []
     cerradas = []
     while ahora >= dias_despues(desde, 7 * TEMP_SEMANAS):
         final = desde + dt.timedelta(days=99)
         sim = S if S and temp >= PTB_DESDE else None
-        jugadas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, final, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None, sim=sim) for g in grupos}
+        jugadas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, final, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None, sim=sim, libres=g.get('libres')) for g in grupos}
         tablas = {k: v[1] for k, v in jugadas.items()}
         # 💰 la tabla final de la temporada que termina y quién jugó en ella, para los premios (`premios_liga()`)
         c = {'temp': temp, 'fin': dias_despues(desde, 7 * TEMP_SEMANAS).isoformat(),
              'jugaron': sorted(jugaron(llaves, desde, dias_despues(desde, 7 * TEMP_SEMANAS))),
              'grupos': [dict(id=g['id'], nivel=g['nivel'], jornadas=jugadas[g['id']][0], tabla=tablas[g['id']]) for g in grupos]}
         if len(elite) >= 4:
-            js, t = jugar_liga(elite, desde, llaves, fz, final, 'elite', temp, jurado=(M, temp, 'elite') if M else None, sim=sim)
+            js, t = jugar_liga(elite, desde, llaves, fz, final, 'elite', temp, jurado=(M, temp, 'elite') if M else None, sim=sim,
+                               libres=elite_libres)
             c['elite'] = {'jornadas': js, 'tabla': t}
         cerradas.append(c)
         desde = dias_despues(desde, 7 * TEMP_SEMANAS)
         act = set(jugaron(llaves, desde - dt.timedelta(days=ACTIVO_DIAS), desde))
         grupos = armar_grupos(mover(grupos, tablas, act, fz))
-        elite, temp = elite_de(act), temp + 1
+        elite, temp, elite_libres = elite_de(act), temp + 1, []
         fz = fuerzas(llaves, desde)
     out = {'temp': temp, 'desde': desde.isoformat(), 'hasta': dias_despues(desde, 7 * TEMP_SEMANAS).isoformat(),
            'cierres': [c.isoformat() for c in cierres(desde)],
            'jornada': min(JORNADAS, 1 + sum(1 for c in cierres(desde) if ahora >= c)),
            'grupos': [], 'elite': elite}
+    if elite_libres:
+        out['elite_libres'] = list(elite_libres)
     if cerradas:
         out['cerradas'] = cerradas
     sim = S if S and temp >= PTB_DESDE else None
     for g in grupos:
-        js, t = jugar_liga(g['gente'], desde, llaves, fz, ahora, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None, sim=sim)
+        js, t = jugar_liga(g['gente'], desde, llaves, fz, ahora, 'liga', temp, g['id'], jurado=(M, temp, g['id']) if M else None, sim=sim,
+                           libres=g.get('libres'))
         out['grupos'].append(dict(g, jornadas=js, tabla=t))
     if len(elite) >= 4:
-        js, t = jugar_liga(elite, desde, llaves, fz, ahora, 'elite', temp, jurado=(M, temp, 'elite') if M else None, sim=sim)
+        js, t = jugar_liga(elite, desde, llaves, fz, ahora, 'elite', temp, jurado=(M, temp, 'elite') if M else None, sim=sim,
+                           libres=elite_libres)
         out['liga_elite'] = {'gente': elite, 'jornadas': js, 'tabla': t}
     return out
 
@@ -1544,6 +1644,61 @@ def _self_check():
        'quien estaba con su nombre de hoy y con uno viejo queda una vez, y su rival pasa', v_['copa'])
     ok(v_['premios'] == {'liga:1:oro-1:3': ['over', 300, 'oro', 1]} and v_['estados'] == {'over': [2]} and v_['entran'] == ['over', 'ana'],
        'el premio cambia de dueño y no de id (no se cobra dos veces), y lo de la persona manda sobre lo del nombre viejo', v_)
+
+    # 🪑 UN LUGAR ENTRE TODAS LAS LLAVES Y TODAS LAS LIGAS (21/11/2026, Dlx: «Sí, arréglalo»): Magic vivo en dos Rapid (la
+    # suya de la R17 era «soul») y Oasis en dos grupos de liga con «Park ji sunk»
+    hoy21_ = {'soul': 'magic', 'parkjisunk': 'oasis', 'otrooasis': 'oasis'}.get
+    r21_ = lambda i, *xs: {'id': i, 'rondas': [{'partidos': [{'a': xs[j], 'b': xs[j + 1]} for j in range(0, len(xs), 2)]}]}  # noqa: E731
+    v21 = al_dia({'rapid': [r21_('R16', 'nene', 'magic'), r21_('R17', 'soul', 'romeo')],
+                  'copa': [r21_('A', 'otrooasis', 'x1'), r21_('F', 'oasis', 'x2'), r21_('G', 'parkjisunk', 'x3')]},
+                 lambda x: hoy21_(x, x))
+    ok([m for r in v21['rapid'] for m in r['rondas'][0]['partidos']] == [{'a': 'nene', 'b': 'magic'}, {'a': '', 'b': 'romeo'}]
+       and armadas(dict(v21, sem='s'), 's', 'rapid') == [['nene', 'magic'], ['', 'romeo']],
+       'en dos Rapid: se queda la de su nombre de hoy, y en la otra su rival pasa', v21['rapid'])
+    ok([r['rondas'][0]['partidos'][0]['a'] for r in v21['copa']] == ['', 'oasis', ''],
+       'en tres copas: gana la de su nombre de hoy aunque esté más abajo, y las de sus dos AKAs quedan como pase', v21['copa'])
+    v21b = al_dia({'rapid': [r21_('R1', 'magic', 'a'), r21_('R2', 'b', 'magic')]}, lambda x: x)
+    ok([m for r in v21b['rapid'] for m in r['rondas'][0]['partidos']] == [{'a': 'magic', 'b': 'a'}, {'a': 'b', 'b': ''}],
+       'y si ya estaba dos veces con su nombre de hoy (un AKA unido otro día), se queda la de más arriba', v21b['rapid'])
+    muerto = {'id': 'F', 'rondas': [{'partidos': [{'a': 'nene', 'b': 'rodas', 'g': 'rodas', 'como': 'sim'},
+                                                  {'a': 'ruvick', 'b': 'x', 'g': 'ruvick', 'como': 'sim'}]},
+                                    {'partidos': [{'a': 'rodas', 'b': 'ruvick', 'g': 'ruvick', 'como': 'sim'}]}]}
+    v21m = al_dia({'copa': [r21_('D', 'rodas', 'y'), muerto]}, lambda x: x)
+    ok(v21m['copa'][1]['rondas'][0]['partidos'][0] == {'a': 'nene', 'b': 'rodas', 'g': 'rodas', 'como': 'sim'},
+       'pero un lugar repetido que ya quedó afuera, con su nombre de hoy, se deja: vaciarlo le daba el pase a Nene y volvía a '
+       'simular las rondas cerradas (Ruvick, en semis, quedaba afuera)', v21m['copa'][1]['rondas'][0])
+    v21c = al_dia({'ligas': {'grupos': [{'id': 'oro-1', 'gente': ['oasis', 'b', 'c', 'd']},
+                                        {'id': 'ascenso-20', 'gente': ['e', 'parkjisunk', 'f', ''], 'libres': []},
+                                        {'id': 'ascenso-9', 'gente': ['g', '', 'h', 'i']}],
+                             'elite': ['oasis', 'otrooasis', 'j', 'k']}}, lambda x: hoy21_(x, x))
+    g21 = v21c['ligas']['grupos']
+    ok(g21[0]['gente'] == ['oasis', 'b', 'c', 'd'] and 'libres' not in g21[0]
+       and g21[1]['gente'] == ['e', '', 'f', ''] and g21[1]['libres'] == [1]
+       and g21[2]['gente'] == ['g', '', 'h', 'i'] and 'libres' not in g21[2]
+       and v21c['ligas']['elite'] == ['oasis', '', 'j', 'k'] and v21c['ligas']['elite_libres'] == [1],
+       'en dos grupos de liga: el lugar del AKA queda vacío y en `libres`, sin achicar la lista (el calendario va por '
+       'posición); un vacío de antes, como el de ascenso-9, no entra en `libres`', v21c['ligas'])
+    # 🚪 y en la liga cada rival le gana a ese lugar por pase libre, recién cuando cierra la jornada
+    d21 = dt.datetime(2026, 11, 16, 16, tzinfo=dt.timezone.utc)
+    js21, t21 = jugar_liga(['a', 'b', '', 'd'], d21, {}, {}, d21 + dt.timedelta(days=30), 'liga', 9, 'x', libres=[2])
+    pases21 = [m for j in js21 for m in j['partidos'] if m['como'] == 'pase']
+    ok(len(pases21) == 3 and sorted(m['g'] for m in pases21) == ['a', 'b', 'd'] and '' not in [f[0] for f in t21]
+       and all(f[1] == 3 for f in t21) and sum(f[3] for f in t21) == 18,
+       'con las jornadas cerradas, los tres le ganan al lugar vacío por pase libre (3 puntos cada uno) y el lugar no va a '
+       'la tabla', t21)
+    js21b, t21b = jugar_liga(['a', 'b', '', 'd'], d21, {}, {}, d21, 'liga', 9, 'x', libres=[2])
+    ok(all(m['g'] == '' for j in js21b for m in j['partidos'] if m['como'] == 'pase') and all(f[3] == 0 for f in t21b),
+       'antes de que cierre su jornada el pase no cuenta: nadie lleva más jornadas jugadas que el resto', t21b)
+    js21c, t21c = jugar_liga(['a', 'b', '', 'd'], d21, {}, {}, d21 + dt.timedelta(days=30), 'liga', 9, 'x')
+    ok('' in [f[0] for f in t21c] and not [m for j in js21c for m in j['partidos'] if m['como'] == 'pase'],
+       'y un vacío que no está en `libres` sigue como siempre (el de ascenso-9 lo decide Dlx aparte)', t21c)
+    ok(tabla(['x', 'y'], [{'a': '', 'b': 'x', 'g': 'x', 'como': 'pase', 'p': 0.0}], {}) == [['x', 1, 1, 3], ['y', 0, 0, 0]],
+       'en la tabla, un pase libre es jugado y ganado', tabla(['x', 'y'], [{'a': '', 'b': 'x', 'g': 'x', 'como': 'pase', 'p': 0.0}], {}))
+    lg21 = ligas({'desde': d21.isoformat(), 'temp': 9, 'grupos': [{'id': 'ascenso-1', 'nivel': 'ascenso',
+                                                                    'gente': ['a', 'b', '', 'd'], 'libres': [2]}], 'elite': []},
+                 {}, d21 + dt.timedelta(days=5))
+    ok(lg21['grupos'][0].get('libres') == [2] and '' not in [f[0] for f in lg21['grupos'][0]['tabla']],
+       'y `ligas()` se lo pasa a cada grupo y lo guarda para la corrida siguiente', lg21['grupos'][0])
 
     print('\n══ LAS COMPETENCIAS ══\n')
     _self_check_premios(ok)
