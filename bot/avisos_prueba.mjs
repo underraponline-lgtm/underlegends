@@ -2121,6 +2121,108 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🎨 EL DIBUJADOR DE RAILWAY PRIMERO, GITHUB DE RESPALDO (21/11/2026, Dlx: «combinar… que eso también se quede en
+// cualquier caso de error»). `pedirDibujo()` le pide al servicio de Railway (`dibujador/servidor.py`); si no lo toma, o lo
+// que espera ya pasó los `DIBUJADOR_PLAZO`, va la tarea de GitHub (`kit.yml`) como siempre
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n🎨 el dibujador de Railway primero, la tarea de GitHub de respaldo\n');
+    const T = Date.parse('2026-11-21T20:00:00Z');
+    const DIB = 'https://dibujador.prueba';
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    let dibContesta = 202;
+    globalThis.fetch = async (u, op = {}) => {
+      const url = String(u);
+      pedidos.push({ u: url, h: op.headers || {}, b: op.body && typeof op.body === 'string' ? JSON.parse(op.body) : null });
+      if (url.startsWith(DIB)) return new Response('{}', { status: dibContesta });
+      return new Response(null, { status: 204 });
+    };
+    const nuevo = async (extra = {}) => {
+      const db = new DatabaseSync(':memory:');
+      const sql = {
+        exec(q, ...ps) {
+          const t = String(q).trim();
+          if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+          const st = db.prepare(t);
+          if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+          st.run(...ps);
+          return { toArray: () => [] };
+        },
+      };
+      const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+        blockConcurrencyWhile: async (f) => f() }, Object.assign({ DISCORD_TOKEN: 'x', GH_TOKEN: 'g', GH_REPO: 'liga/repo',
+        KV: { get: async () => null } }, extra));
+      o.state = o.state || {};
+      o.state.storage = o.state.storage || { transactionSync: (f) => f() };
+      if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
+      await new Promise((r) => setTimeout(r, 5));
+      return { o, sql };
+    };
+    const vs = { canal: '555000000000000021', msg: '', clave: 'L1:v:Cuartos:0', sv: 'FFA', ev: 'COPA', ronda: 'Cuartos',
+      a: { n: 'Ana' }, b: { n: 'Bea' } };
+    const aDib = () => pedidos.filter((p) => p.u.startsWith(DIB));
+    const aGh = () => pedidos.filter((p) => /api\.github\.com/.test(p.u));
+
+    // 1 · prendido y contesta: se lo lleva Railway, con la clave del ciclo, y GitHub no se entera
+    {
+      const { o } = await nuevo({ DIBUJADOR: DIB });
+      pedidos.length = 0;
+      dibContesta = 202;
+      o.vsEncolar(vs, T);
+      const n = await o.vsDespachar(T + 1000);
+      const p = aDib()[0];
+      ok(n === 1 && aDib().length === 1 && p.u === DIB + '/dibujar' && p.b.tipo === 'vs' && p.b.sv === 'FFA'
+        && /^[0-9a-f]{24}$/.test(p.b.id) && p.h['x-lg-ciclo'] === await A.claveCiclo('x') && !aGh().length,
+      'el vs que espera se le pide a Railway, con la clave del ciclo, y GitHub no se prende', JSON.stringify(pedidos));
+      await o.vsDespachar(T + 5000);
+      ok(aDib().length === 1, 'a los 4 s no se le vuelve a pedir (`DIBUJADOR_ENTRE`)');
+      await o.vsDespachar(T + 12000);
+      ok(aDib().length === 2 && !aGh().length, 'si sigue esperando, a los 10 s se le pide otra vez (él junta los pedidos)');
+      await o.vsDespachar(T + A.DIBUJADOR_PLAZO + 2000);
+      ok(aDib().length === 2 && aGh().length === 1 && aGh()[0].b.inputs.tipo === 'vs',
+        'si a los 90 s sigue esperando, va la tarea de GitHub', JSON.stringify(pedidos.map((x) => x.u)));
+    }
+
+    // 2 · prendido pero no lo toma: en la misma vuelta, GitHub
+    {
+      const { o } = await nuevo({ DIBUJADOR: DIB });
+      pedidos.length = 0;
+      dibContesta = 503;
+      o.vsEncolar(vs, T);
+      const n = await o.vsDespachar(T + 1000);
+      ok(n === 1 && aDib().length === 1 && aGh().length === 1, 'Railway no lo toma: GitHub en la misma vuelta',
+        JSON.stringify(pedidos.map((x) => x.u)));
+    }
+
+    // 3 · apagado (sin dirección): GitHub, como siempre
+    {
+      const { o } = await nuevo();
+      pedidos.length = 0;
+      o.vsEncolar(vs, T);
+      const n = await o.vsDespachar(T + 1000);
+      ok(n === 1 && !aDib().length && aGh().length === 1, 'sin dibujador, sólo GitHub, como antes');
+      ok(A.DIBUJADOR === '' || /^https:\/\/[\w.-]+$/.test(A.DIBUJADOR), 'la dirección del dibujador, vacía o https sin barra al final', A.DIBUJADOR);
+    }
+
+    // 4 · /perfil y /vitrina: lo mismo con la cola de las imágenes
+    {
+      const { o, sql } = await nuevo({ DIBUJADOR: DIB });
+      pedidos.length = 0;
+      dibContesta = 202;
+      sql.exec("INSERT INTO img_cola (k, tipo, estado, pedido) VALUES ('ana', 'p', 'espera', ?)", T);
+      const n1 = await o.imgDespachar(T + 1000);
+      ok(n1 === 1 && aDib().length === 1 && aDib()[0].b.tipo === 'img' && aDib()[0].b.sv === 'UL' && !aGh().length,
+        '/perfil: se le pide a Railway y GitHub no se prende', JSON.stringify(pedidos.map((x) => [x.u, x.b])));
+      await o.imgDespachar(T + A.DIBUJADOR_PLAZO + 2000);
+      ok(aGh().length === 1 && aGh()[0].b.inputs.tipo === 'img', 'y si a los 90 s sigue esperando, GitHub');
+    }
+    globalThis.fetch = antesF;
+  }
+}
+
 // 🖼️ LA IMAGEN ES DEL CRUCE, NO DEL LUGAR (19/11/2026, CHOP COMPE NOCTURNA en Cypherhood): la llave se rehízo mientras el
 // cruce esperaba su imagen, el primer lugar pasó a ser de otros, y «Lalox vs Flash» salió con la de «Julda vs LRS». La
 // clave del cruce es su lugar (`v:<ronda>:<i>`); la imagen se busca por lugar Y por quiénes (`firmaVs()`, `vsEspera()`)

@@ -443,6 +443,29 @@ export const CHAT_ENTRE_TODO = 2 * MIN;
 //: no se dibujó en `VS_VENCE` ya no va: esa batalla ya se jugó
 export const VS_ENTRE = 75 * 1000;
 export const VS_VENCE = 8 * MIN;
+//: 🎨 EL DIBUJADOR DE RAILWAY (`dibujador/servidor.py`, 21/11/2026; Dlx, a «imágenes al instante»: «dale»): el mismo
+//: `bot/kit.py`, prendido todo el día, dibuja en ~5 s lo que la tarea de GitHub tarda de 1 a 5 minutos. Se le pide
+//: PRIMERO (`pedirDibujo()`); si no lo toma, o lo pedido sigue esperando a los `DIBUJADOR_PLAZO`, va la tarea de GitHub
+//: como siempre (Dlx: «combinar… que eso también se quede en cualquier caso de error»). Vacío: apagado, sólo GitHub
+export const DIBUJADOR = '';
+//: cada cuánto, como mucho, se le vuelve a pedir lo mismo (él junta: un pedido de vs se lleva toda la cola del servidor)
+export const DIBUJADOR_ENTRE = 10 * 1000;
+export const DIBUJADOR_PLAZO = 90 * 1000;
+/** La dirección del dibujador: la de `DIBUJADOR`, o `env.DIBUJADOR` (las pruebas). '' = apagado */
+export const dibujadorDe = (env) => String((env && env.DIBUJADOR) || DIBUJADOR || '');
+
+/** 🎨 Le pide un dibujo al dibujador de Railway, con la clave del ciclo. `true` si lo tomó (202); `false` si está
+ *  apagado, no contesta en 4 s o dice que no: entonces va GitHub. */
+export async function pedirDibujo(env, tipo, sv, id) {
+  const url = dibujadorDe(env);
+  if (!url || !env || !env.DISCORD_TOKEN) return false;
+  try {
+    const r = await fetch(url + '/dibujar', { method: 'POST', signal: AbortSignal.timeout(4000),
+      headers: { 'content-type': 'application/json', 'x-lg-ciclo': await claveCiclo(env.DISCORD_TOKEN) },
+      body: JSON.stringify({ tipo, sv, id }) });
+    return r.status === 202;
+  } catch (e) { return false; }
+}
 //: 🖼️ cuánto espera el cruce a su imagen antes de salir sin ella (ver `vsEspera()`). La tarea tarda 62 s la mitad de las
 //: veces y casi 5 minutos el 10 % más lento (medido el 19/11/2026, sus últimas 100 corridas). ⏳ Eran 3 minutos y el
 //: 21/11/2026 pasaron a 6 (Dlx: «que se demore sí, pero que lleguen juntas»): de las últimas 20 tareas, 7 tardaron
@@ -13231,7 +13254,8 @@ export class Avisos {
     } catch (e) { return []; }
   }
 
-  /** Prende la tarea de los servidores con vs esperando, como mucho una vez cada `VS_ENTRE` por servidor. */
+  /** Le pide los vs que esperan al dibujador de Railway (`pedirDibujo()`) y, si no los toma o siguen esperando a los
+   *  `DIBUJADOR_PLAZO`, prende la tarea de GitHub, como mucho una vez cada `VS_ENTRE` por servidor. */
   async vsDespachar(ahora) {
     this.sql.exec("UPDATE vs_cola SET estado = 'vencido' WHERE estado IN ('espera', 'dibujando') AND t < ?", ahora - VS_VENCE);
     // 🔁 una tarea que se cayó dejaba el vs en «dibujando» hasta vencer, sin imagen y sin que nadie se enterara: a los
@@ -13239,13 +13263,24 @@ export class Avisos {
     this.sql.exec("UPDATE vs_cola SET estado = 'espera' WHERE estado = 'dibujando' AND tom > 0 AND tom < ? AND t > ?",
       ahora - 3 * MIN, ahora - VS_VENCE);
     // (lo de más de un día, y las fichas de «Ver estadísticas» de más de dos, se borran en la limpieza de cada hora)
-    const svs = this.sql.exec("SELECT DISTINCT sv FROM vs_cola WHERE estado = 'espera'").toArray().map((r) => r.sv);
-    if (!svs.length || !this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
+    // con lo más viejo que espera en cada servidor: eso decide si sigue siendo de Railway o ya es de GitHub
+    const svs = this.sql.exec("SELECT sv, MIN(t) AS t FROM vs_cola WHERE estado = 'espera' GROUP BY sv").toArray();
+    if (!svs.length) return 0;
+    const gh = !!(this.env.GH_TOKEN && this.env.GH_REPO);
     const ult = this.leer('vs_desp') || {};
+    const ultD = this.leer('vs_desp_d') || {};
     let n = 0;
-    for (const sv of svs) {
-      if (!/^[A-Z]{2,5}$/.test(sv) || ahora - (ult[sv] || 0) < VS_ENTRE) continue;
+    for (const { sv, t } of svs) {
+      if (!/^[A-Z]{2,5}$/.test(sv)) continue;
       const id = [...crypto.getRandomValues(new Uint8Array(12))].map((x) => x.toString(16).padStart(2, '0')).join('');
+      // 🎨 primero Railway, mientras lo que espera sea de hace menos de `DIBUJADOR_PLAZO`
+      if (dibujadorDe(this.env) && ahora - (Number(t) || ahora) < DIBUJADOR_PLAZO) {
+        if (ahora - (ultD[sv] || 0) < DIBUJADOR_ENTRE) continue;
+        ultD[sv] = ahora;
+        if (await pedirDibujo(this.env, 'vs', sv, id)) { n++; continue; }
+        this.guardar('vs', { t: ahora, sv, estado: 'dibujador' });
+      }
+      if (!gh || ahora - (ult[sv] || 0) < VS_ENTRE) continue;
       const r = await this.gh('/actions/workflows/kit.yml/dispatches', { method: 'POST',
         body: JSON.stringify({ ref: 'main', inputs: { tipo: 'vs', sv, id } }) });
       ult[sv] = ahora;
@@ -13253,6 +13288,7 @@ export class Avisos {
       else this.guardar('vs', { t: ahora, sv, estado: r.status });
     }
     this.guardar('vs_desp', ult);
+    if (dibujadorDe(this.env)) this.guardar('vs_desp_d', ultD);
     return n;
   }
 
@@ -20920,11 +20956,19 @@ export class Avisos {
     if (!hayCola) return 0;
     this.sql.exec("UPDATE img_cola SET estado = 'error' WHERE estado IN ('espera', 'dibujando') AND pedido < ?", ahora - 20 * MIN);
     this.sql.exec("UPDATE img_cola SET estado = 'espera' WHERE estado = 'dibujando' AND tom < ?", ahora - 4 * MIN);
-    if (!this.sql.exec("SELECT 1 FROM img_cola WHERE estado = 'espera' LIMIT 1").toArray().length) return 0;
+    const viejo = this.sql.exec("SELECT MIN(pedido) AS t FROM img_cola WHERE estado = 'espera'").toArray()[0];
+    if (!viejo || viejo.t === null || viejo.t === undefined) return 0;
+    const id = [...crypto.getRandomValues(new Uint8Array(12))].map((x) => x.toString(16).padStart(2, '0')).join('');
+    // 🎨 primero el dibujador de Railway (`pedirDibujo()`), mientras lo que espera sea de hace menos de `DIBUJADOR_PLAZO`
+    if (dibujadorDe(this.env) && ahora - (Number(viejo.t) || ahora) < DIBUJADOR_PLAZO) {
+      if (ahora - (Number(this.leer('img_desp_d')) || 0) < DIBUJADOR_ENTRE) return 0;
+      this.guardar('img_desp_d', ahora);
+      if (await pedirDibujo(this.env, 'img', 'UL', id)) return 1;
+      this.guardar('img', { t: ahora, estado: 'dibujador' });
+    }
     if (!this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
     if (ahora - (Number(this.leer('img_desp')) || 0) < IMG_ENTRE) return 0;
     this.guardar('img_desp', ahora);
-    const id = [...crypto.getRandomValues(new Uint8Array(12))].map((x) => x.toString(16).padStart(2, '0')).join('');
     const r = await this.gh('/actions/workflows/kit.yml/dispatches', { method: 'POST',
       body: JSON.stringify({ ref: 'main', inputs: { tipo: 'img', sv: 'UL', id } }) });
     if (r.status !== 204) this.guardar('img', { t: ahora, estado: r.status });

@@ -39,7 +39,7 @@
 // Cloudflare busca ahí las clases de los Durable Objects.
 import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida, quienPide } from './avisos.js';
 // 🎨 el color de cada servidor y su ícono, los mismos del bot en vivo y de `eventos-hoy` (nunca escritos acá)
-import { colorChat, visualRed, DROP_TITULOS } from './avisos.js';
+import { colorChat, visualRed, DROP_TITULOS, pedirDibujo } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, sesionDe, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
@@ -3771,6 +3771,8 @@ async function kit(i, env, ctx, tipo) {
       const gd = await g.json().catch(() => ({}));
       if (gd.error === 'espera') return editar('Ya hay una en camino en este servidor: espera un minuto y pídela de nuevo.');
       if (!gd.ok) return editar('Ahora no puedo armarla: prueba en un rato.');
+      // 🎨 primero el dibujador de Railway (21/11/2026, `pedirDibujo()`): en segundos. Si no lo toma, la tarea de GitHub
+      if (await pedirDibujo(env, tipo, sv, id)) return null;
       const r = await fetch(`https://api.github.com/repos/${env.GH_REPO}/actions/workflows/kit.yml/dispatches`, {
         method: 'POST',
         headers: { 'User-Agent': 'liga-global-bot', Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + env.GH_TOKEN,
