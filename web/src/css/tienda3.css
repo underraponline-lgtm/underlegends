@@ -369,3 +369,7 @@
 .tz-drop-sale .tz-drop-v{width:84px;height:84px;background-color:var(--r)}
 .tz-drop-sale b{font:900 22px/1.1 var(--tz-f);font-stretch:115%}
 @media (hover:hover) and (pointer:fine){.tz-cor:hover,.tz-msgs button:hover{border-color:#C9C9C4}}
+
+/* 👆 la tira «Más con tus puntos» mide 21 px de alto: 44 px de toque sin moverla (revisión visual 21/11) */
+.tz-tira button,.tz-tira a{position:relative}
+.tz-tira button::after,.tz-tira a::after{content:"";position:absolute;inset:-12px -6px}

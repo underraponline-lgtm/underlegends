@@ -185,3 +185,7 @@
 .ent-pelea > .rka-caja:first-child{display:grid;grid-template-rows:auto 1fr auto}
 .ent-pelea > .rka-caja:first-child .rka-pelea{align-self:center}
 @media (min-width: 900px){.ent-pelea{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 👆 las filas de «Se movieron» son links de 26 px: en el celular, 44 px de toque sin cambiar el dibujo (revisión visual 21/11) */
+.rka-x{position:relative}
+@media (max-width: 759.98px){.rka-x::after{content:"";position:absolute;inset:-9px 0}}
