@@ -1409,7 +1409,9 @@
    },
    "dorado": {
     "sv": "FDS",
-    "desde": "2026-11-21T05:00:00Z"
+    "desde": "2026-11-21T05:00:00Z",
+    "n": 668,
+    "nombre": "RED BULL REGIONAL"
    },
    "guerra": {
     "pares": [
@@ -1527,7 +1529,8 @@
      "DDS": 8,
      "LKR": 11,
      "FFA": 59,
-     "CH": 50
+     "CH": 50,
+     "FDS": 8
     },
     "gana": "LKR"
    },
@@ -1538,7 +1541,7 @@
     "DDF": 0,
     "DDS": 8,
     "DRA": 0,
-    "FDS": 0,
+    "FDS": 8,
     "FFA": 59,
     "FFS": 0,
     "FRZ": 0,

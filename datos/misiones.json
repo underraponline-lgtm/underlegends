@@ -9849,7 +9849,7 @@
      "dorado",
      1,
      600,
-     null,
+     668,
      "FDS"
     ]
    ],
@@ -9957,14 +9957,14 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "Chente": [
      0,
      0,
      8,
      0,
-     0
+     1
     ],
     "Choco": [
      0,
@@ -10006,7 +10006,7 @@
      0,
      4,
      0,
-     0
+     1
     ],
     "Dominic 🇲🇽": [
      0,
@@ -10202,7 +10202,7 @@
      0,
      1,
      0,
-     0
+     1
     ],
     "Mak Dok": [
      0,
@@ -10237,7 +10237,7 @@
      0,
      2,
      0,
-     0
+     1
     ],
     "Mc uchiha": [
      1,
@@ -10370,7 +10370,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "SINTEXT": [
      0,
@@ -10454,7 +10454,7 @@
      0,
      4,
      0,
-     0
+     1
     ],
     "Tenor": [
      1,
@@ -10496,7 +10496,7 @@
      0,
      8,
      0,
-     0
+     1
     ],
     "Walker": [
      0,
@@ -10644,8 +10644,11 @@
     "Abyssus": 1000,
     "BNA": 900,
     "BTRX": 1000,
+    "Chaz🇵🇪": 600,
+    "Chente": 600,
     "Colesito": 900,
     "Deko": 600,
+    "Dios": 600,
     "Drexx": 300,
     "EIDP": 600,
     "Flash": 1000,
@@ -10654,19 +10657,23 @@
     "Lalox": 600,
     "Lord Viruzz": 300,
     "MAU KC": 600,
-    "Majiztral": 1000,
+    "Majiztral": 1600,
     "MauzzitoEmeces": 300,
+    "Mc arepa": 600,
     "Mc uchiha": 300,
     "Mexicano🇲🇽": 300,
     "Mito": 300,
     "NC": 300,
     "Paria": 300,
     "Puppy": 1000,
+    "Raizer": 600,
     "Six": 300,
+    "Telmex": 600,
     "Tenor": 300,
     "Trelok": 1300,
     "Valen": 1600,
     "Vandu": 1300,
+    "Vilca": 600,
     "XXX 🇻🇪": 300,
     "XXXX 🇻🇪": 300,
     "doble h": 300,
@@ -10731,6 +10738,8 @@
   "Catarsis": 900,
   "Cazafla anti cazanova🇭🇹": 300,
   "Chase": 1600,
+  "Chaz🇵🇪": 600,
+  "Chente": 600,
   "Chop": 2800,
   "Cinexfilo": 1200,
   "Ciro": 300,
@@ -10751,7 +10760,7 @@
   "Denik": 300,
   "Desio": 600,
   "Deuxs": 900,
-  "Dios": 2300,
+  "Dios": 2900,
   "Dominick": 4700,
   "Drelain": 300,
   "Drexx": 4300,
@@ -10871,7 +10880,7 @@
   "MTZ": 3100,
   "MaYeuTyK": 4600,
   "Magic": 600,
-  "Majiztral": 5700,
+  "Majiztral": 6300,
   "Makmah": 11400,
   "Malva": 300,
   "Manolito🇨🇴": 300,
@@ -10884,7 +10893,7 @@
   "Matias": 300,
   "Mato  🇧🇴": 300,
   "MauzzitoEmeces": 300,
-  "Mc arepa": 2000,
+  "Mc arepa": 2600,
   "Mc uchiha": 300,
   "Mexicano🇲🇽": 300,
   "Millonari-O": 300,
@@ -10936,7 +10945,7 @@
   "Puppy": 1000,
   "RT": 1300,
   "Ragna": 1000,
-  "Raizer": 600,
+  "Raizer": 1200,
   "Ram": 300,
   "Rayo": 300,
   "Respawm🇭🇳": 300,
@@ -10974,6 +10983,7 @@
   "TONY  🇦🇷": 1000,
   "Tam": 8500,
   "Teito": 2100,
+  "Telmex": 600,
   "Tenor": 8200,
   "Tier": 300,
   "Trelok": 5100,
@@ -10989,7 +10999,7 @@
   "Vandu": 12400,
   "Velatz": 5800,
   "Verc": 8000,
-  "Vilca": 2800,
+  "Vilca": 3400,
   "Walker": 9000,
   "Warap": 900,
   "XXX 🇻🇪": 300,
