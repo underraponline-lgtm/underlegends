@@ -48,7 +48,7 @@
   "competencias": "dec3cc390dc25a39",
   "crews": "766d14de3d70ebd7",
   "cuenta": "1891feb30c93ebb5",
-  "eventos": "de83958f317b1afb",
+  "eventos": "5ab2a067a39ba77f",
   "guia": "b6d98b7c91aa1622",
   "inicio": "7b737e32c19598d1",
   "inventario": "8c764a950ae1f8ad",
@@ -56,41 +56,41 @@
   "ligas": "cc19405f8a9ed378",
   "pase": "ef0f89f8e517280b",
   "publicaciones": "b9dfd95d345f24ce",
-  "ranking": "1072b7d6aaeeff74",
+  "ranking": "d4bf5d6f6d9c37a3",
   "salon": "459387bd38140b82",
   "socio": "505882504df70b87",
   "socios": "c1a3429594f1ab34",
-  "tarjetas": "1551b3862b72ac2a",
+  "tarjetas": "5f226cfb9bbfa4cf",
   "tienda": "69ab0ce9f504f61d"
  },
  "pais": {
-  "ar": "bdba68ced20cfa7c",
+  "ar": "b5129c55f587d6bd",
   "bo": "d0d428793bb8a4dc",
   "cl": "bb5c7e032d00fe72",
-  "co": "1c56345b1d56ba80",
+  "co": "98fbbf441643d88b",
   "cr": "0b5c87909c723bb8",
   "cu": "ab05dc13038508c0",
   "do": "52ff6af786fbfa50",
   "ec": "f9a9645eaf5508fe",
-  "es": "452d2bb7b9a4fcca",
+  "es": "960cc4cba3b3fc87",
   "gt": "98d32face1178c07",
   "hn": "1c1cd92f1159e35a",
-  "mx": "a66d6aae6cab5154",
+  "mx": "bb6c5db48a1864c8",
   "ni": "1160fe76f87fb5a3",
-  "pa": "dba0f109ed32962a",
+  "pa": "a970469718651343",
   "pe": "af5aadea767fa399",
   "pr": "41e68cdfce1c7019",
   "py": "dec1d8e386fe131c",
   "sv": "6ede59439b973cf2",
   "us": "63864c1655cd66f8",
   "uy": "e7820823bb675adf",
-  "ve": "6e4c4cf5e0d576ba"
+  "ve": "3ed367d8f1baaab5"
  },
  "perfil": {
   "abrahamh": "2d6de3e28ccf8ece",
   "abyssus": "e21e032a6a91f822",
   "adriagner": "a61acd479c6886f8",
-  "agus": "e1076cf743c4d03b",
+  "agus": "33f2b947d95875fd",
   "agustin51k": "637e167bf47f48ce",
   "akus": "35a643e9ff63b1b3",
   "akuseru": "1c3958f4517f18aa",
@@ -99,12 +99,12 @@
   "andy": "fbd393fcedd97523",
   "araya": "6b04df36384c84a1",
   "ardean": "e3d19eb10c412e26",
-  "ariaxer": "94d24d3817fd5d18",
-  "artezzy": "43f053c144f8d787",
+  "ariaxer": "ba5b17220b830276",
+  "artezzy": "95c4c959390522fb",
   "bastyretro": "ccb4cafbdce12891",
-  "bloody": "f080f8fc474f24e7",
-  "btrx": "7f6bab7a0418165d",
-  "caliz": "d822f9e96c189df6",
+  "bloody": "aa07de38e74d67b1",
+  "btrx": "39fb2a759518f16f",
+  "caliz": "821f68ad153e6337",
   "carlosmo": "8c89b6e8aad8453d",
   "carlosss": "bc0c8fd6a3e478b6",
   "catarsis": "8dfa02f2c38c3a52",
@@ -112,15 +112,15 @@
   "cinexfilo": "57977e3aaf9c9af6",
   "colesito": "9814bad5f44a8d5e",
   "crakero": "56b433e037300e5b",
-  "crk": "2427bb59a9c76014",
+  "crk": "a07dee5aa86410cb",
   "cronox": "ed0e90c1480e12e9",
   "dantemx": "2a1fdb721fa21921",
   "deko": "f4ced79117ff32ae",
-  "delux": "e711f6d88258139f",
+  "delux": "cb4a20b1069b303f",
   "deluxe": "141e7e19a6bc1139",
   "deuxs": "d08aa3e318f0c987",
-  "dios": "480dfe726fc25e19",
-  "drexx": "7f11c6d477bfe320",
+  "dios": "e8a06b34fb89a7f1",
+  "drexx": "7c46e8530fe22ac6",
   "dxg": "b2d1c940259381d8",
   "dynoco": "ff0b780bbccefaf8",
   "dyzz": "3e0075751e1ba4ba",
@@ -129,9 +129,9 @@
   "evangeline": "8e2d5c4da7ee6765",
   "eze": "fd37e698dbd39e3b",
   "ezias": "13826018e56ca138",
-  "geoka": "a412e0b46f3ae08b",
-  "gocho": "fca206b77ba107fc",
-  "guess": "1508ac247c3efb6a",
+  "geoka": "617ccda492263424",
+  "gocho": "d3f22fa96dc8ec74",
+  "guess": "f2ad12c253e5779c",
   "gus": "8b5c9ce9407f55fa",
   "jeixder": "101e530afdf4cca2",
   "jobaking": "287a9949d5464d5a",
@@ -142,80 +142,80 @@
   "jupiter": "0912e6f1595de979",
   "keider": "fe46690539d8406f",
   "kochi": "908d477007bff7e1",
-  "kravitz": "63f0ac8bb9e77a91",
+  "kravitz": "fded0bbe50a3f4cd",
   "krish": "163886cd58080e17",
   "krtman": "4703b705e089f11b",
-  "kyss": "f5a050e95bef2f1b",
+  "kyss": "e7e86985751013d1",
   "lalox": "241b7c07dc87b2f1",
-  "last": "6c63c71a5c377049",
-  "leonart": "f4efbb674531bd7e",
+  "last": "1128048368eea517",
+  "leonart": "3ac84962a7e0ca22",
   "lewito": "a9c35d60f6f7facc",
   "liberia": "303c10b487872fe2",
   "lilnano": "5730243312bedd21",
   "lordviruzz": "81f4ecb30b0de569",
-  "lrs": "18d4b46b18af3e78",
-  "lvel": "12bde418f406019c",
-  "majiztral": "ccd488ea58e73b3b",
+  "lrs": "63a9325ccd8931d0",
+  "lvel": "12ef601b570e13c4",
+  "majiztral": "a3523e2716cbf7d9",
   "makmah": "6fe29b31b964be94",
   "marcos": "0b6366349bd07b33",
   "masino": "64c14fd2625bc007",
-  "mathhias": "16cb7cbc66069750",
+  "mathhias": "e367b975733533f1",
   "mats": "b1dd8fa7c309fc86",
   "mayeutyk": "1a0b091a2f758ca0",
   "mcarepa": "0b0ee1981ce6dea3",
-  "mcnadie": "a9d89f4f0b425bde",
+  "mcnadie": "53068e739fc180a9",
   "mco": "a9129b2c1f4bc7db",
   "melomaniaco": "f10c1351b87067d1",
-  "miniboy": "56bfc51623ab0e96",
-  "mito": "996f5dbc135186fb",
-  "molusco": "909bbad7ca1d7b0e",
-  "motera": "0a04c3f263b82f0f",
+  "miniboy": "f849eda19c625a26",
+  "mito": "4081c823bee8738c",
+  "molusco": "e99d7b151720865f",
+  "motera": "48aad79658521c10",
   "mrstillballin": "920af03c74317f8e",
   "mtz": "58adecc3d1e990fe",
   "nc": "883809a551a399e0",
   "nemmiias": "493e1ae81cd6ca24",
   "noone": "1a649bd68a70e33a",
   "number": "90b210bd93d0b83b",
-  "numberve": "af683df7f120e6f2",
+  "numberve": "6fb37ef1eda9a2e3",
   "nxuz": "5120a8ecef79f118",
   "oasis": "f8cb5b6559de8982",
   "og": "61fe39211690f68f",
   "okam": "525bdaf2cf205074",
-  "over": "401d30146f584b85",
+  "over": "b8e059bd314d542d",
   "panchok": "bc4e0d525b52156e",
-  "pichulamc": "06a8ae6b7248f50d",
-  "player": "c8fee11bebcbb22b",
+  "pichulamc": "f6873bd7b1188681",
+  "player": "14fd86b231804c10",
   "polosport": "4652439264e7507d",
   "praiseriza": "4529b88c2e4ab187",
   "presagio": "7440e727b33f74f2",
   "prosu": "9e726e66b8894902",
-  "provenza": "a6391653308f63fb",
+  "provenza": "70b697f1777e46cb",
   "raizer": "13c18a0af36e2ba2",
   "rbk": "4eaaf9427f3bf177",
-  "richard": "7ae6333ccf1c5fe3",
+  "richard": "28b7c67ad7e905db",
   "riolu": "2ca249d398bde637",
-  "rodas": "0007738f5f6731a3",
+  "rodas": "e49de9bc3b9be7f4",
   "rodrilp": "5492261c2125c9a7",
   "romeo": "1ff9f68326e5ac48",
   "rt": "47b65cadbc227b7a",
-  "shadow": "d89435d617d8820c",
-  "sinlimites": "4d7338ac5b3c631d",
+  "shadow": "476a9e08713496ab",
+  "sinlimites": "710d4e414c57d61b",
   "six": "c467704c15274291",
   "snow": "f9809f75ea138008",
   "sol": "6678707c7b5204bd",
   "soneto": "d8442ff6f37b2c86",
   "sosaatr": "3dff80210bd1d1a2",
-  "soulb": "5a1f14e99a711f1b",
+  "soulb": "702658ba0ce11715",
   "t-ki": "3f41664eae3b551e",
   "teito": "f29f0126c94b0005",
-  "tenor": "1edf81e5c7df8228",
+  "tenor": "cb74178a567efc0a",
   "tmaxturbopn": "9b469d8e0b7e69ba",
   "trelok": "6ec31d666f4d1295",
-  "trot": "aa5f5290c2d51ca7",
+  "trot": "c4ae0b15a258e436",
   "valen": "620a3522cd046e49",
   "vandu": "f39c2f9dbd9f1eb7",
   "verc": "a1622effba87c911",
-  "vilca": "1ed743e4f1d299f8",
+  "vilca": "1629745152dab6a1",
   "walker": "952676fe9ac89a3b",
   "xubaru": "6600a9f1711194e0",
   "yeyox": "d29cb7f72dfadea3",
@@ -225,7 +225,7 @@
   "zekha": "cd1a47b26be63924",
   "zeta": "7b86692e9dce8a42",
   "zetryko": "3590ab6f9903acf8",
-  "zignos": "2f7926320ec69d99"
+  "zignos": "40271c20042dc028"
  },
  "perfil-img": {
   "abrahamh": [
@@ -253,8 +253,8 @@
    "2026-11-20"
   ],
   "agus": [
-   "885c169219",
-   "2026-11-20"
+   "dcdb0b6172",
+   "2026-11-21"
   ],
   "agustin51k": [
    "57150f8643",
@@ -345,7 +345,7 @@
    "2026-11-20"
   ],
   "bloody": [
-   "0a167f7e4a",
+   "a862bc49a0",
    "2026-11-21"
   ],
   "blue": [
@@ -361,8 +361,8 @@
    "2026-11-20"
   ],
   "btrx": [
-   "fdf50d08af",
-   "2026-11-20"
+   "82269cf3e7",
+   "2026-11-21"
   ],
   "bull12r": [
    "3e2c4a592e",
@@ -377,7 +377,7 @@
    "2026-11-20"
   ],
   "carlosss": [
-   "71c3132eed",
+   "5dfd2a78a1",
    "2026-11-21"
   ],
   "catarsis": [
@@ -453,8 +453,8 @@
    "2026-11-20"
   ],
   "delux": [
-   "a92e60b94a",
-   "2026-11-20"
+   "1caa148143",
+   "2026-11-21"
   ],
   "deluxe": [
    "dabe0aa7e7",
@@ -521,7 +521,7 @@
    "2026-11-20"
   ],
   "erian": [
-   "dd7626d475",
+   "b56859d7b2",
    "2026-11-21"
   ],
   "erik": [
@@ -593,8 +593,8 @@
    "2026-11-20"
   ],
   "geoka": [
-   "638e1d6fd8",
-   "2026-11-20"
+   "2ff7440d82",
+   "2026-11-21"
   ],
   "gero": [
    "c41e19dff4",
@@ -629,8 +629,8 @@
    "2026-11-20"
   ],
   "guess": [
-   "351bd379b1",
-   "2026-11-20"
+   "c665047955",
+   "2026-11-21"
   ],
   "gus": [
    "004f575d22",
@@ -825,7 +825,7 @@
    "2026-11-21"
   ],
   "liberia": [
-   "7bb69bc956",
+   "8723a16891",
    "2026-11-21"
   ],
   "lildrako": [
@@ -881,8 +881,8 @@
    "2026-11-20"
   ],
   "majiztral": [
-   "50201ed287",
-   "2026-11-20"
+   "80ccc2f937",
+   "2026-11-21"
   ],
   "makmah": [
    "29b304544b",
@@ -905,7 +905,7 @@
    "2026-11-20"
   ],
   "mats": [
-   "c51865e5c5",
+   "42a133c795",
    "2026-11-21"
   ],
   "mayeutyk": [
@@ -953,8 +953,8 @@
    "2026-11-20"
   ],
   "mito": [
-   "922b5bd2f2",
-   "2026-11-20"
+   "d99612b281",
+   "2026-11-21"
   ],
   "mochidg": [
    "ddd0861cc0",
@@ -965,8 +965,8 @@
    "2026-11-20"
   ],
   "molusco": [
-   "a71e55cea1",
-   "2026-11-20"
+   "606c5214c2",
+   "2026-11-21"
   ],
   "motera": [
    "2beb10f444",
@@ -1045,8 +1045,8 @@
    "2026-11-20"
   ],
   "oasis": [
-   "d2c2dc3452",
-   "2026-11-20"
+   "399c356cfc",
+   "2026-11-21"
   ],
   "oep": [
    "b3cce5eeaf",
@@ -1065,8 +1065,8 @@
    "2026-11-20"
   ],
   "over": [
-   "b4a642630e",
-   "2026-11-20"
+   "1aed60bc37",
+   "2026-11-21"
   ],
   "panchok": [
    "1693e500ff",
@@ -1081,8 +1081,8 @@
    "2026-11-20"
   ],
   "pichulamc": [
-   "26626d8dff",
-   "2026-11-20"
+   "8f864356a3",
+   "2026-11-21"
   ],
   "pipe": [
    "f906f92e3c",
@@ -1205,8 +1205,8 @@
    "2026-11-20"
   ],
   "sinlimites": [
-   "df7068ea8e",
-   "2026-11-20"
+   "1da483ffc8",
+   "2026-11-21"
   ],
   "six": [
    "d3160c5d23",
@@ -1329,7 +1329,7 @@
    "2026-11-20"
   ],
   "vandu": [
-   "e4df762c2d",
+   "fa3cf7cb9d",
    "2026-11-21"
   ],
   "verc": [
@@ -1385,8 +1385,8 @@
    "2026-11-20"
   ],
   "yinn": [
-   "d2ed7a71f9",
-   "2026-11-20"
+   "db7b34a895",
+   "2026-11-21"
   ],
   "yor": [
    "a9099de547",
@@ -1417,26 +1417,26 @@
    "2026-11-20"
   ],
   "zignos": [
-   "fe66aa6523",
-   "2026-11-20"
+   "381afa438e",
+   "2026-11-21"
   ]
  },
  "ref": {
-  "dios": "099bab9e69188e22",
+  "dios": "c09a77969a6d55c3",
   "dlx": "9351bc484b1d942e",
   "krish": "7d5fd777525d2369"
  },
  "sv": {
-  "acad": "259424170e325c9c",
-  "ceu": "1b897ce2c4ffcdd8",
+  "acad": "f7545c49e25a2132",
+  "ceu": "ef5538aad072c3ba",
   "ch": "2eded6af1f0caced",
   "ddf": "2fc903e7ad08303c",
   "dds": "5e6d87a20fb5e58d",
   "fds": "adc061642a20133e",
-  "ffa": "1ada5670e27db170",
+  "ffa": "d221d7ae284f9ff9",
   "frz": "287394e71013aaab",
   "fvs": "a4dd0d8115225b7c",
-  "lkr": "cb5068ed2160c595",
+  "lkr": "15241d4ffd46dde5",
   "sr": "08cc4875724cbfec",
   "urbf": "eb194e976bf06810"
  },
@@ -1666,8 +1666,8 @@
    "2026-11-20"
   ],
   "delux": [
-   "b79386b783",
-   "2026-11-20"
+   "23fae958af",
+   "2026-11-21"
   ],
   "deluxe": [
    "316edccd7f",
@@ -1734,7 +1734,7 @@
    "2026-11-20"
   ],
   "erian": [
-   "984dc2cfa4",
+   "7b0a100a1f",
    "2026-11-21"
   ],
   "erik": [
@@ -2038,8 +2038,8 @@
    "2026-11-21"
   ],
   "liberia": [
-   "2d9b4b814f",
-   "2026-11-20"
+   "f5648722fe",
+   "2026-11-21"
   ],
   "lildrako": [
    "f1db69dd9e",
@@ -2094,8 +2094,8 @@
    "2026-11-20"
   ],
   "majiztral": [
-   "ee8e307bc1",
-   "2026-11-20"
+   "626bc0cd68",
+   "2026-11-21"
   ],
   "makmah": [
    "76de3c2a12",
@@ -2118,8 +2118,8 @@
    "2026-11-20"
   ],
   "mats": [
-   "f10c226de7",
-   "2026-11-20"
+   "da46aac9c9",
+   "2026-11-21"
   ],
   "mayeutyk": [
    "093af1a94c",
@@ -2166,7 +2166,7 @@
    "2026-11-20"
   ],
   "mito": [
-   "48ea26dccf",
+   "5b14ce6d81",
    "2026-11-21"
   ],
   "mochidg": [
@@ -2258,8 +2258,8 @@
    "2026-11-20"
   ],
   "oasis": [
-   "47491aada9",
-   "2026-11-20"
+   "81d93ee79b",
+   "2026-11-21"
   ],
   "oep": [
    "13506b0b7f",
@@ -2294,8 +2294,8 @@
    "2026-11-20"
   ],
   "pichulamc": [
-   "cbcd72932a",
-   "2026-11-20"
+   "ef7a5e1d14",
+   "2026-11-21"
   ],
   "pipe": [
    "4fc610e093",
@@ -2418,8 +2418,8 @@
    "2026-11-20"
   ],
   "sinlimites": [
-   "189e124a83",
-   "2026-11-20"
+   "a44d7c4fc6",
+   "2026-11-21"
   ],
   "six": [
    "4d7b4118a2",
@@ -2598,8 +2598,8 @@
    "2026-11-20"
   ],
   "yinn": [
-   "d0fb8f13fb",
-   "2026-11-20"
+   "b2396a93bf",
+   "2026-11-21"
   ],
   "yor": [
    "d479db99ee",
