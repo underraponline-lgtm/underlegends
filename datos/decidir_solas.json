@@ -4374,6 +4374,25 @@
    "escribio": {
     "campeon": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS · DW · 27/09"
    }
+  },
+  {
+   "id": "1450a3470f",
+   "tipo": "Nombre desconocido",
+   "sec": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS · DW · 27/09 · #670",
+   "que": "¿Quién es «Usagi 🇨🇴»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795305257216,
+   "filas": [
+    1543
+   ],
+   "variantes": [
+    "Usagi 🇨🇴"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

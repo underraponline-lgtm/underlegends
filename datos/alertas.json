@@ -37,7 +37,6 @@
   "COMPE CHOP NUEVO CEO · CH · 13/11 · octavos · astrid 🆚 Masino": "2026-11-18T01:29:15.286240+00:00",
   "COMPE CHOP NUEVO CEO · CH · 13/11 · semifinales · Rizas 🆚 OG": "2026-11-18T00:40:06.031169+00:00",
   "COMPE CHOP NUEVO CEO · CH · 13/11 · semifinales · makma 🆚 nc🇲🇿": "2026-11-18T00:40:06.031169+00:00",
-  "COMPE MAKMITA VOL2 · DW · 30/09 · cuartos · Bloody 🇨🇴 🆚 Colesito 🇨🇴": "2026-11-21T23:33:58.149256+00:00",
   "DISCORD STYLE ED. 15 · DDS · 07/10 · semifinales · Vilka 🆚 CRIZJ": "2026-11-14T20:59:33.523607+00:00",
   "ELITE FESTIVAL VOL. 1 · ACAD · 13/11 · octavos · Calíz 🇲🇽 🆚 erian 🆚 KRAVITZ 🇦🇷": "2026-11-21T20:32:45.315446+00:00",
   "LLAVES PARA LA DISCORD STYLE 19 · DDS · 01/11 · octavos · Artezzy 🇵🇪 🆚 chop": "2026-11-18T03:37:32.497287+00:00",
@@ -45,12 +44,17 @@
   "RAP SIN GROSERIAS 1 · FDS · 26/10 · octavos · Artezzy 🇵🇪 🆚 Vilca🇵🇪": "2026-11-01T18:05:06.282627+00:00",
   "RED BULL REGIONAL · FDS · 21/11 · octavos · DARKO 🆚 MCO 🇦🇷": "2026-11-21T22:05:15.613270+00:00",
   "RED BULL REGIONAL · FDS · 21/11 · octavos · Mito🇦🇷 🆚 Miniboy🇨🇱": "2026-11-21T22:05:15.613270+00:00",
+  "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS · DW · 27/09 · semifinales · Zignos 🇩🇴 🆚 Usagi 🇨🇴": "2026-11-21T23:54:39.110571+00:00",
   "VERSO ELITE VOL.1 · CH · 15/11 · octavos · vandu 🇨🇦 🆚 Soul🇲🇽": "2026-11-18T00:40:06.031169+00:00",
   "WORLD OF FREE · LKR · 23/10 · octavos · BTRECE 🆚 RICARD": "2026-11-21T16:39:19.981474+00:00"
  },
  "ciclo:cola": {
   "t": "2026-11-21T18:05:25.195666+00:00",
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (21/11 1:05 PM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/44926936741"
+ },
+ "filas": {
+  "t": "2026-11-21T23:54:39.105503+00:00",
+  "texto": "El objeto lleva 4.1 millones de filas leídas hoy, de 5 millones. Si se acaban se cae entrar con Discord, lo en vivo y los avisos hasta cerca de las 21/11 7:00 PM ET. Lo que más lee: `python herramientas/uso.py`."
  },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",

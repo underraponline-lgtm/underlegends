@@ -61149,11 +61149,11 @@
      ],
      [
       [
-       "Bloody 🇨🇴",
-       "Colesito 🇨🇴"
+       "Bloody",
+       "Colesito"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Bloody 🇨🇴; cobra: Colesito 🇨🇴; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -61216,6 +61216,16 @@
     3500
    ],
    [
+    "Bloody",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2000
+   ],
+   [
     "Denik",
     "Cuartos",
     2000
@@ -61238,6 +61248,188 @@
   ],
   "ver": {
    "min": 83,
+   "v": 1
+  }
+ },
+ "670": {
+  "dia": "2026-09-27",
+  "escala": "8-15",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/1300152346189496330/1394905025230147584/1553925043841540234"
+  ],
+  "n": 670,
+  "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mau Kc 🇨🇴",
+       "Gutan 🇲🇽",
+       "AREZ"
+      ],
+      "Mau Kc 🇨🇴, Gutan 🇲🇽",
+      "triple (3 bandas, pasan 2); también pasa: Gutan 🇲🇽"
+     ],
+     [
+      [
+       "Usagi 🇨🇴",
+       "Zignos",
+       "Bloody"
+      ],
+      "Usagi 🇨🇴, Zignos",
+      "triple (3 bandas, pasan 2); también pasa: Zignos 🇩🇴"
+     ],
+     [
+      [
+       "Volk",
+       "SOL",
+       "Aldre"
+      ],
+      "Volk, SOL",
+      "triple (3 bandas, pasan 2); también pasa: Sol 🇵🇪"
+     ],
+     [
+      [
+       "CJ",
+       "Denik",
+       "Saito"
+      ],
+      "CJ, Denik",
+      "triple (3 bandas, pasan 2); también pasa: Denik 🇵🇪"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos",
+       "SOL"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "Volk",
+       "Mau Kc 🇨🇴"
+      ],
+      "Volk",
+      ""
+     ],
+     [
+      [
+       "Usagi 🇨🇴",
+       "Denik"
+      ],
+      "Usagi 🇨🇴",
+      ""
+     ],
+     [
+      [
+       "CJ",
+       "Gutan 🇲🇽"
+      ],
+      "CJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Volk",
+       "CJ"
+      ],
+      "Volk",
+      ""
+     ],
+     [
+      [
+       "Zignos 🇩🇴",
+       "Usagi 🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mau Kc 🇨🇴, Gutan 🇲🇽",
+       "Bloody, Volk"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DW",
+  "tabla": [
+   [
+    "Bloody",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "CJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Gutan 🇲🇽",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Mau Kc 🇨🇴",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Volk",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Denik",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SOL",
+    "Cuartos",
+    2000
+   ],
+   [
+    "AREZ",
+    "R32",
+    625
+   ],
+   [
+    "Aldre",
+    "R32",
+    625
+   ],
+   [
+    "Saito",
+    "R32",
+    625
+   ]
+  ],
+  "ver": {
+   "min": 308,
    "v": 1
   }
  }

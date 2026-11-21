@@ -1363,6 +1363,15 @@
    ]
   }
  },
+ "arez": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795305263482
+   ]
+  }
+ },
  "ariaxer": {
   "competitivo": {
    "🗡️ MATAGIGANTES": [
@@ -1953,6 +1962,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795305263482
    ],
    "🥈 SIEMPRE EN LA FINAL": [
     "🥈 SIEMPRE EN LA FINAL",
@@ -3277,6 +3291,11 @@
     "🗺️ CONQUISTADOR",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795305263482
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -6099,6 +6118,15 @@
     "🧳 VIAJERO",
     "t1",
     1794453370864
+   ]
+  }
+ },
+ "gutan": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795305263482
    ]
   }
  },
@@ -15388,6 +15416,11 @@
     "t1",
     1794463224757
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795305263482
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -17601,6 +17634,11 @@
  },
  "volk": {
   "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795305263482
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",

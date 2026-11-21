@@ -299,6 +299,15 @@
 "rg": "D",
 "c": []
 },
+"bloody": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "mats": {
 "rg": "A",
 "c": []
@@ -358,15 +367,6 @@
 },
 "tenor": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"bloody": {
-"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -901,14 +901,6 @@
 "temporada"
 ]
 },
-"aldre": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "gus": {
 "rg": "E",
 "c": [
@@ -973,6 +965,14 @@
 "c": []
 },
 "catarsis": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"aldre": {
 "rg": "",
 "c": [
 "pais",
@@ -1053,6 +1053,10 @@
 "temporada"
 ]
 },
+"cj": {
+"rg": "",
+"c": []
+},
 "mosquitrap": {
 "rg": "",
 "c": []
@@ -1111,10 +1115,6 @@
 ]
 },
 "giansito": {
-"rg": "",
-"c": []
-},
-"cj": {
 "rg": "",
 "c": []
 },
@@ -8193,19 +8193,19 @@
 "n": "Status",
 "k": "",
 "de": 467,
-"a": 365
+"a": 367
 },
 {
 "n": "Telmex",
 "k": "",
 "de": 236,
-"a": 152
+"a": 153
 },
 {
 "n": "Chente",
 "k": "",
 "de": 372,
-"a": 339
+"a": 340
 }
 ],
 "sorpresas": []

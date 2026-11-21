@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "1b84d80cc4586844",
+  "firma": "74cada422aaebaa9",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "3235a7a6076e386d",
+  "firma": "614ddc87ec687ddd",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -13602,7 +13602,7 @@
    "Valdoza": 5
   },
   "fecha": "16/10",
-  "firma": "2f52af31113144d0",
+  "firma": "4a0cb5269d9a1dc1",
   "msg": "1560750305312903372",
   "nombre": "SNAKE INSIGNIA 5 8",
   "num": 478,
@@ -45656,7 +45656,7 @@
    "crakero": 7
   },
   "fecha": "12/11",
-  "firma": "5979ca16d00a2816",
+  "firma": "5ebfde321681c9ca",
   "msg": "1570578147399827479",
   "nombre": "CUPO A LA MULTIVERS",
   "num": 624,
@@ -45937,7 +45937,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "14252e0dae72659e",
+  "firma": "c6282013840ee645",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -47449,7 +47449,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "a558954e53a98b4f",
+  "firma": "882b61395ffa25e6",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -51247,7 +51247,7 @@
    "crakero": 11
   },
   "fecha": "13/11",
-  "firma": "399a701f39d5b9d3",
+  "firma": "e3e45226ba8a6b18",
   "msg": "1572055186955046984",
   "nombre": "RAP SIN GROSERIAS 6",
   "num": 653,
@@ -53691,6 +53691,173 @@
     "Volk",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "670": {
+  "antes": {
+   "AREZ": [
+    379,
+    279,
+    true
+   ],
+   "Aldre": [
+    92,
+    120,
+    false
+   ],
+   "Bloody": [
+    39,
+    46,
+    false
+   ],
+   "CJ": [
+    303,
+    154,
+    true
+   ],
+   "Denik": [
+    368,
+    261,
+    true
+   ],
+   "SOL": [
+    113,
+    159,
+    false
+   ],
+   "Saito": [
+    423,
+    342,
+    true
+   ],
+   "Volk": [
+    165,
+    284,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Mau Kc 🇨🇴",
+    "AREZ",
+    "Mau Kc 🇨🇴"
+   ],
+   [
+    "Usagi 🇨🇴",
+    "Bloody",
+    "Usagi 🇨🇴"
+   ],
+   [
+    "Volk",
+    "Aldre",
+    "Volk"
+   ],
+   [
+    "CJ",
+    "Saito",
+    "CJ"
+   ],
+   [
+    "Zignos",
+    "SOL",
+    "Zignos"
+   ],
+   [
+    "Volk",
+    "Mau Kc 🇨🇴",
+    "Volk"
+   ],
+   [
+    "Usagi 🇨🇴",
+    "Denik",
+    "Usagi 🇨🇴"
+   ],
+   [
+    "CJ",
+    "Gutan 🇲🇽",
+    "CJ"
+   ],
+   [
+    "Volk",
+    "CJ",
+    "Volk"
+   ],
+   [
+    "Mau Kc 🇨🇴, Gutan 🇲🇽",
+    "Bloody, Volk",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "AREZ": 4,
+   "Aldre": 5,
+   "Bloody": 28,
+   "CJ": 5,
+   "Denik": 5,
+   "SOL": 6,
+   "Saito": 3,
+   "Volk": 5
+  },
+  "fecha": "27/09",
+  "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
+  "num": 670,
+  "participantes": 12,
+  "sello": {},
+  "sv": "DW",
+  "t": "2026-11-21T23:46:39Z",
+  "tabla": [
+   [
+    "Mau Kc 🇨🇴",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Gutan 🇲🇽",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Bloody",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Volk",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "CJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "SOL",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Denik",
+    "Cuartos",
+    2000
+   ],
+   [
+    "AREZ",
+    "R32",
+    625
+   ],
+   [
+    "Aldre",
+    "R32",
+    625
+   ],
+   [
+    "Saito",
+    "R32",
+    625
    ]
   ],
   "v": 2

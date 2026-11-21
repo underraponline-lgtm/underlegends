@@ -1765,7 +1765,7 @@
   "din_v": 11,
   "din_t": 24,
   "crn_t": 0,
-  "cri_t": 71,
+  "cri_t": 72,
   "pos": 21,
   "total": 85,
   "rango": "B",
@@ -1792,7 +1792,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 23,
+   "evi": 24,
    "com": 0,
    "top": [
     3,
@@ -1827,7 +1827,7 @@
   "din_v": 15,
   "din_t": 25,
   "crn_t": 8,
-  "cri_t": 54,
+  "cri_t": 55,
   "pos": 22,
   "total": 85,
   "rango": "B",
@@ -1856,7 +1856,7 @@
   },
   "nac": {
    "evn": 6,
-   "evi": 22,
+   "evi": 23,
    "com": 2,
    "top": [
     2,
@@ -1908,11 +1908,11 @@
    "clasico": 1,
    "dg": 9,
    "fg": 2,
-   "riv": 11,
+   "riv": 12,
    "venc": 9
   },
   "tg_p": {
-   "paises": 5,
+   "paises": 6,
    "paisesg": 5
   },
   "nac": {
@@ -3641,10 +3641,10 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 8,
+   "dg": 10,
    "fg": 2,
-   "riv": 11,
-   "venc": 8
+   "riv": 13,
+   "venc": 10
   },
   "tg_p": {
    "paises": 7,
@@ -3652,9 +3652,9 @@
    "primer": true
   },
   "nac": {
-   "evn": 3,
+   "evn": 4,
    "evi": 5,
-   "com": 1,
+   "com": 3,
    "top": [
     1,
     "pa"
@@ -4352,7 +4352,7 @@
   "V": 0,
   "wr": "",
   "rch_act": 1,
-  "rch_max": 1,
+  "rch_max": 2,
   "duel_v": 4,
   "duel_t": 4,
   "duel_real": true,
@@ -4361,7 +4361,7 @@
   "din_v": 2,
   "din_t": 2,
   "crn_t": 2,
-  "cri_t": 5,
+  "cri_t": 7,
   "pos": 126,
   "total": 85,
   "rango": "",
@@ -4375,10 +4375,10 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 4,
+   "dg": 5,
    "fg": 1,
-   "riv": 5,
-   "venc": 4
+   "riv": 6,
+   "venc": 5
   },
   "tg_p": {
    "paises": 3,
@@ -4387,7 +4387,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 3,
+   "evi": 4,
    "com": 2,
    "top": [
     3,
@@ -5147,7 +5147,7 @@
   "din_v": 3,
   "din_t": 5,
   "crn_t": 4,
-  "cri_t": 7,
+  "cri_t": 9,
   "pos": 133,
   "total": 85,
   "rango": "",
@@ -5174,7 +5174,7 @@
   },
   "nac": {
    "evn": 5,
-   "evi": 6,
+   "evi": 7,
    "com": 2,
    "top": [
     5,
@@ -8072,7 +8072,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 2,
+   "evi": 3,
    "com": 2,
    "top": [
     6,
@@ -12188,7 +12188,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 0,
-  "cri_t": 6,
+  "cri_t": 8,
   "pos": 214,
   "total": 85,
   "rango": "",
@@ -12208,7 +12208,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 3,
+   "evi": 4,
    "com": 0,
    "top": [
     4,
@@ -13671,7 +13671,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 3,
-  "cri_t": 3,
+  "cri_t": 5,
   "pos": 234,
   "total": 85,
   "rango": "",
@@ -13686,15 +13686,15 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
-   "riv": 2,
+   "riv": 3,
    "venc": 1
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2
   },
   "nac": {
-   "evn": 2,
-   "evi": 2,
+   "evn": 3,
+   "evi": 3,
    "com": 1,
    "top": [
     10,
@@ -16265,7 +16265,7 @@
   "V": 17,
   "wr": "",
   "rch_act": 0,
-  "rch_max": 0,
+  "rch_max": 1,
   "duel_v": 0,
   "duel_t": 1,
   "duel_real": true,
@@ -16274,7 +16274,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 0,
-  "cri_t": 5,
+  "cri_t": 7,
   "pos": 282,
   "total": 85,
   "rango": "",
@@ -16294,7 +16294,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 3,
+   "evi": 4,
    "com": 0
   }
  },
@@ -17429,7 +17429,7 @@
   "din_v": 2,
   "din_t": 4,
   "crn_t": 0,
-  "cri_t": 19,
+  "cri_t": 21,
   "pos": 303,
   "total": 85,
   "rango": "",
@@ -17454,7 +17454,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 6,
+   "evi": 7,
    "com": 2,
    "top": [
     15,
@@ -18073,7 +18073,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 4,
+   "evi": 5,
    "com": 0
   }
  },
@@ -18782,13 +18782,13 @@
   "pos_crew": "9/10",
   "tg_c": {
    "clasico": 1,
-   "riv": 2
+   "riv": 3
   },
   "tg_p": {
-   "paises": 2
+   "paises": 3
   },
   "nac": {
-   "evn": 1,
+   "evn": 2,
    "evi": 4,
    "com": 0,
    "top": [
@@ -23789,7 +23789,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 2,
+   "evi": 3,
    "com": 2,
    "top": [
     6,

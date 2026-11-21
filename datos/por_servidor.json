@@ -514,6 +514,18 @@
    }
   },
   "AREZ": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 938,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 2,
@@ -946,13 +958,25 @@
    }
   },
   "Aldre": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "5/9",
     "ev": 5,
     "oro": 1,
     "ovr": 50,
     "pod": 2,
-    "pts": 64275,
+    "pts": 54000,
     "racha": "0/2",
     "tg": {
      "fin": 2
@@ -1831,6 +1855,19 @@
      "fin": 1
     }
    },
+   "DW": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5500,
+    "racha": "0/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "4/7",
     "ev": 16,
@@ -2002,12 +2039,12 @@
   "CJ": {
    "DW": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 1,
     "ovr": 45,
     "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
+    "pts": 11000,
+    "racha": "2/2",
     "tg": {
      "fin": 1,
      "fund": true
@@ -2768,6 +2805,15 @@
      "fin": 1
     }
    },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
+   },
    "FFA": {
     "duelos": "11/22",
     "ev": 36,
@@ -3330,12 +3376,12 @@
   "Denik": {
    "DW": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2000,
-    "racha": "0/0",
+    "pts": 4000,
+    "racha": "0/1",
     "tg": {
      "fund": true
     }
@@ -5511,6 +5557,21 @@
     "racha": "0/0"
    }
   },
+  "Gutan 🇲🇽": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 3500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
+    }
+   }
+  },
   "Gutty": {
    "CH": {
     "duelos": "",
@@ -6485,10 +6546,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 3500,
-    "racha": "0/0",
-    "tg": {
-     "fund": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -8526,6 +8584,19 @@
    }
   },
   "MAU KC 🇨🇴": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 3500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
+    }
+   },
    "FFA": {
     "duelos": "1/2",
     "ev": 3,
@@ -11798,8 +11869,7 @@
     "pts": 3500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "fund": true
+     "fin": 1
     }
    },
    "FFA": {
@@ -12708,6 +12778,18 @@
      "fin": 1
     }
    },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "1/1",
+    "tg": {
+     "fund": true
+    }
+   },
    "FDS": {
     "duelos": "",
     "ev": 2,
@@ -12724,9 +12806,9 @@
     "duelos": "1/2",
     "ev": 1,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 42,
     "pod": 0,
-    "pts": 5625,
+    "pts": 3750,
     "racha": "1/1"
    },
    "SR": {
@@ -12861,11 +12943,11 @@
   "Saito": {
    "DW": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2000,
+    "pts": 2625,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -12909,10 +12991,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 9000,
-    "racha": "0/0",
-    "tg": {
-     "fund": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -14928,13 +15007,14 @@
    },
    "DW": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0",
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5500,
+    "racha": "0/1",
     "tg": {
+     "fin": 1,
      "fund": true
     }
    },
@@ -15607,10 +15687,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "fund": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "6/14",
