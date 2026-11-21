@@ -35,24 +35,31 @@ def a_ogg(entrada_args, salida):
                     '-ac', '2', '-c:a', 'libopus', '-b:a', '64k', '-frame_duration', '20', salida], check=True)
 
 
-#: 🥊 LA CUENTA DE BATALLA (Dlx, 21/11/2026: «el bot tendría que decir 3 2 1 como una batalla real para dar la cuenta
-#: regresiva»). Cada palabra se dice por separado y se pone en su segundo: dicha de corrido, Piper la apura y no suena
-#: a cuenta. Un poco más rápida (`length_scale` 0,85) y «¡Tiempo!» al final; el beat entra apenas termina.
-CUENTA = [('Tres.', 0.0), ('Dos.', 0.9), ('Uno.', 1.8), ('¡Tiempo!', 2.7)]
+#: 🥊 LA CUENTA DE BATALLA. Dlx, 21/11/2026: «el bot tendría que decir 3 2 1 como una batalla real», y de las tres
+#: maneras que se probaron eligió la A: cada palabra dicha sola por Piper, a velocidad normal, con signos de
+#: exclamación. ⚠️ La primera versión (`length_scale` 0,85 y recortándoles el silencio) le comía pedazos a las
+#: palabras: *«3 2 1 no suena como 3 2 1»*. Las cuatro quedan en voz/cuenta/ y NO se regeneran si están (Piper no da
+#: dos veces el mismo audio): son las que Dlx escuchó. Las usa hacer_beat.py para meter la cuenta en cada beat.
+#: `cuenta.ogg` es la cuenta suelta, para la prueba sin beat: a 90 BPM, cada palabra con su centro sobre el golpe.
+CUENTA = [('tres', '¡Tres!'), ('dos', '¡Dos!'), ('uno', '¡Uno!'), ('tiempo', '¡Tiempo!')]
+CUENTA_BPM = 90
 
 
 def cuenta(a):
-    with tempfile.TemporaryDirectory() as tmp:
-        ins, filtros = [], []
-        for i, (palabra, seg) in enumerate(CUENTA):
-            wav = os.path.join(tmp, 'c%d.wav' % i)
-            subprocess.run([a.piper, '-m', 'piper', '-m', a.modelo, '--length-scale', '0.85', '-f', wav, '--', palabra],
+    from ritmo import pcentro
+    carpeta = os.path.join(AQUI, 'cuenta')
+    os.makedirs(carpeta, exist_ok=True)
+    ins, filtros = [], []
+    per = 60 / CUENTA_BPM
+    for i, (clave, palabra) in enumerate(CUENTA):
+        wav = os.path.join(carpeta, clave + '.wav')
+        if not os.path.exists(wav):
+            subprocess.run([a.piper, '-m', 'piper', '-m', a.modelo, '-f', wav, '--', palabra],
                            check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            ins += ['-i', wav]
-            ms = int(seg * 1000)
-            # sin el silencio que Piper deja antes y después de cada palabra, así cae justo en su segundo
-            filtros.append('[%d:a]silenceremove=start_periods=1:start_threshold=-45dB,areverse,'
-                           'silenceremove=start_periods=1:start_threshold=-45dB,areverse,adelay=%d|%d[c%d]' % (i, ms, ms, i))
+        ins += ['-i', wav]
+        ms = max(0, round((0.2 + i * per - pcentro(wav)) * 1000))
+        filtros.append('[%d:a]adelay=%d|%d[c%d]' % (i, ms, ms, i))
+    with tempfile.TemporaryDirectory() as tmp:
         mezcla = os.path.join(tmp, 'cuenta.wav')
         subprocess.run(['ffmpeg', '-v', 'error', '-y', *ins, '-filter_complex',
                         ';'.join(filtros) + ';' + ''.join('[c%d]' % i for i in range(len(CUENTA)))

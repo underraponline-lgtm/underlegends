@@ -191,8 +191,12 @@ ok(!faltan.length, 'están las ' + FRASES.length + ' frases' + (faltan.length ? 
 const textos = JSON.parse(fs.readFileSync(path.join(VOZ, 'frases.json'), 'utf8'));
 ok(FRASES.every((k) => k === 'cuenta' || textos[k]), 'cada frase tiene su texto en frases.json (la cuenta se arma aparte)');
 ok(!Object.entries(textos).some(([k, v]) => k !== '_leeme' && /beat/i.test(v)), 'en lo que dice ULAYA va «bit», no «beat» (Piper lo lee como se escribe)');
-ok(Math.abs(Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(VOZ, 'cuenta.ogg')]).toString()) - 3.4) < 0.3,
-  'la cuenta «Tres. Dos. Uno. ¡Tiempo!» dura ~3,4 s, una palabra por segundo');
+{
+  const d = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path.join(VOZ, 'cuenta.ogg')]).toString());
+  ok(d > 2.5 && d < 3.6, `la cuenta suelta (para la prueba sin beat) dura ~3 s: cuatro golpes a 90 BPM (${d.toFixed(2)} s)`);
+}
+ok(['tres', 'dos', 'uno', 'tiempo'].every((p) => fs.existsSync(path.join(VOZ, 'cuenta', p + '.wav'))),
+  'están las cuatro palabras de la cuenta que eligió Dlx (voz/cuenta/, la versión A)');
 const de20 = FRASES.filter((k) => !faltan.includes(k)).every((k) => paquetesDe(path.join(VOZ, k + '.ogg')).every((p) => muestrasDe(p) === 960));
 ok(de20, 'todas en paquetes de 20 ms: Discord las recibe sin volver a codificar');
 // el mismo camino que usa @discordjs/voice al hablar: Ogg Opus -> reproductor, sin codificador de Opus instalado
@@ -226,9 +230,31 @@ const permisos = JSON.parse(fs.readFileSync(path.join(VOZ, '..', '..', 'datos', 
 const bs = beats();
 ok(bs.every((b) => b.uso_libre || permisos.includes(b.beatmaker)),
   `los ${bs.length} beats son de beatmakers con permiso o de uso libre`);
-ok(bs.every((b) => { const ps = paquetesDe(path.join(VOZ, 'beats', b.archivo)); return ps.length > 1300 && ps.every((p) => muestrasDe(p) === 960); }),
-  'cada beat dura ~30 s y va en paquetes de 20 ms (Discord lo manda sin recodificar)');
+ok(bs.every((b) => paquetesDe(path.join(VOZ, 'beats', b.archivo)).every((p) => muestrasDe(p) === 960)),
+  'cada beat va en paquetes de 20 ms (Discord lo manda sin recodificar)');
 ok(bs.every((b) => b.titulo && b.beatmaker), 'cada beat tiene título y beatmaker para el crédito');
+
+// 🥊 la cuenta adentro de cada beat (Dlx: «3 2 1… cuando la 4.ª barra va a acabar»)
+console.log('🥊 la cuenta adentro del beat');
+for (const b of bs) {
+  const g = b.golpe_s, c = b.cuenta_s || [];
+  const dur = dura(path.join(VOZ, 'beats', b.archivo));
+  ok(c.length === 4 && c.every((t, i) => i === 0 || Math.abs(t - c[i - 1] - g) < 0.002)
+    && Math.abs(b.entra_s - c[3] - g) < 0.002,
+  `${b.titulo}: las cuatro palabras van golpe a golpe y el MC entra un golpe después de «¡Tiempo!»`);
+  ok(Math.abs(b.entra_s - 0.03 - 16 * g) < 0.01, `${b.titulo}: antes de la entrada hay justo 4 barras (${(b.entra_s / (4 * g)).toFixed(2)})`);
+  ok(dur - b.entra_s >= 20, `${b.titulo}: después de la entrada hay ${(dur - b.entra_s).toFixed(0)} s de beat (el micro escucha hasta 20)`);
+  // cada palabra, contra el mismo golpe una barra antes, medido sobre el archivo que sale
+  const pcm = execFileSync('ffmpeg', ['-v', 'error', '-i', path.join(VOZ, 'beats', b.archivo), '-ac', '1', '-ar', '8000',
+    '-f', 's16le', '-'], { maxBuffer: 1 << 28 });
+  const db = (a, z) => {
+    let s = 0, n = 0;
+    for (let i = Math.round(a * 8000); i < Math.round(z * 8000); i++) { const x = pcm.readInt16LE(2 * i); s += x * x; n++; }
+    return 10 * Math.log10(s / n + 1e-9);
+  };
+  const sobre = c.map((t) => db(t - 0.03, t + 0.3) - db(t - 4 * g - 0.03, t - 4 * g + 0.3));
+  ok(sobre.every((v) => v >= 6), `${b.titulo}: cada palabra se oye sobre el beat (${sobre.map((v) => '+' + v.toFixed(0)).join(' ')} dB)`);
+}
 
 fs.rmSync(dir, { recursive: true, force: true });
 console.log(mal ? `\n❌ ${mal} mal` : '\n✅ todo bien');

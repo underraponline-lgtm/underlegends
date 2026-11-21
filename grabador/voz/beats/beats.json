@@ -1,7 +1,9 @@
 {
  "_leeme": [
   "Los beats de la prueba de micro (grabador/microfono.js), hechos con voz/hacer_beat.py.",
-  "Sólo de beatmakers de datos/beatmakers.json o de beats «Free»/«Uso libre». Se acreditan al final de la prueba."
+  "Sólo de beatmakers de datos/beatmakers.json o de beats «Free»/«Uso libre». Se acreditan al final.",
+  "Cada uno trae la cuenta de ULAYA adentro, en la 4.ª barra: entra_s es el 1 donde entra el MC y",
+  "cuenta_s los cuatro golpes de «¡Tres! ¡Dos! ¡Uno! ¡Tiempo!» (segundos desde el principio del archivo)."
  ],
  "beats": [
   {
@@ -10,7 +12,24 @@
    "beatmaker": "DJ Bootrax",
    "uso_libre": false,
    "fuente": "https://youtu.be/qd0qqOEr9ic",
-   "desde_s": 18.8
+   "bpm": 75.05,
+   "golpe_s": 0.7995,
+   "entra_s": 12.822,
+   "cuenta_s": [
+    9.624,
+    10.423,
+    11.223,
+    12.022
+   ],
+   "desde_s": 13.184,
+   "barra_entrada": 8,
+   "detector": "beat_this",
+   "palabras_db": [
+    14.9,
+    14.9,
+    16.4,
+    16.6
+   ]
   },
   {
    "archivo": "djbootrax-cartas.ogg",
@@ -18,7 +37,24 @@
    "beatmaker": "DJ Bootrax",
    "uso_libre": false,
    "fuente": "https://youtu.be/63w2VR4vqB0",
-   "desde_s": 9.5
+   "bpm": 93.69,
+   "golpe_s": 0.6404,
+   "entra_s": 10.277,
+   "cuenta_s": [
+    7.715,
+    8.356,
+    8.996,
+    9.637
+   ],
+   "desde_s": 0.114,
+   "barra_entrada": 4,
+   "detector": "beat_this",
+   "palabras_db": [
+    16.3,
+    18.6,
+    21.9,
+    24.0
+   ]
   },
   {
    "archivo": "djbootrax-bukovosky.ogg",
@@ -26,7 +62,24 @@
    "beatmaker": "DJ Bootrax",
    "uso_libre": false,
    "fuente": "https://youtu.be/TPxf2pERVsg",
-   "desde_s": 18.8
+   "bpm": 93.97,
+   "golpe_s": 0.6385,
+   "entra_s": 10.246,
+   "cuenta_s": [
+    7.692,
+    8.331,
+    8.969,
+    9.608
+   ],
+   "desde_s": 10.517,
+   "barra_entrada": 8,
+   "detector": "beat_this",
+   "palabras_db": [
+    18.7,
+    16.7,
+    18.2,
+    18.6
+   ]
   },
   {
    "archivo": "djbootrax-achimega.ogg",
@@ -34,7 +87,24 @@
    "beatmaker": "DJ Bootrax",
    "uso_libre": false,
    "fuente": "https://youtu.be/u2jc4sovPMQ",
-   "desde_s": 19.3
+   "bpm": 93.26,
+   "golpe_s": 0.6434,
+   "entra_s": 10.324,
+   "cuenta_s": [
+    7.751,
+    8.394,
+    9.037,
+    9.681
+   ],
+   "desde_s": 10.287,
+   "barra_entrada": 8,
+   "detector": "beat_this",
+   "palabras_db": [
+    18.6,
+    20.7,
+    19.1,
+    20.4
+   ]
   },
   {
    "archivo": "djbootrax-3000km.ogg",
@@ -42,7 +112,24 @@
    "beatmaker": "DJ Bootrax",
    "uso_libre": false,
    "fuente": "https://youtu.be/_QaD_2vfpfg",
-   "desde_s": 20.5
+   "bpm": 96.07,
+   "golpe_s": 0.6246,
+   "entra_s": 10.023,
+   "cuenta_s": [
+    7.525,
+    8.149,
+    8.774,
+    9.398
+   ],
+   "desde_s": 10.119,
+   "barra_entrada": 8,
+   "detector": "beat_this",
+   "palabras_db": [
+    20.4,
+    21.8,
+    23.3,
+    23.8
+   ]
   },
   {
    "archivo": "zkn-restinpeace.ogg",
@@ -50,7 +137,24 @@
    "beatmaker": "ZkN",
    "uso_libre": false,
    "fuente": "https://youtu.be/4WB7Yt160OU",
-   "desde_s": 23.2
+   "bpm": 80.01,
+   "golpe_s": 0.7499,
+   "entra_s": 12.028,
+   "cuenta_s": [
+    9.029,
+    9.779,
+    10.529,
+    11.278
+   ],
+   "desde_s": 12.037,
+   "barra_entrada": 8,
+   "detector": "beat_this",
+   "palabras_db": [
+    17.2,
+    15.8,
+    17.1,
+    18.5
+   ]
   }
  ]
 }

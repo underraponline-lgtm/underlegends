@@ -76,12 +76,17 @@ export function textoLimite(lim, id) {
 
 // ── 🎵 EL BEAT (Dlx, 21/11/2026: «para hacerlo más real, que ULAYA reproduzca un beat para que el MC pruebe»).
 // Sólo de los beatmakers de `datos/beatmakers.json` (los que dieron permiso) o de beats «Free»/«Uso libre». Cada uno
-// es un recorte de ~30 s hecho por `voz/hacer_beat.py`, y se acredita en el mensaje del final. Sin beats, la prueba
-// es la de antes («habla o rapea»).
+// es un recorte hecho por `voz/hacer_beat.py`, y se acredita en el mensaje del final. Sin beats, la prueba es la de
+// antes («habla o rapea», con la cuenta suelta).
+//
+// 🥊 LA CUENTA VA ADENTRO DEL BEAT (Dlx, 21/11/2026: *«ULAYA tiene que decir 3 2 1 dentro del beat… cuando la 4.ª barra
+// va a acabar»*). Cada recorte son 4 barras de beat con «¡Tres! ¡Dos! ¡Uno! ¡Tiempo!» en los 4 golpes de la 4.ª, y el
+// MC entra en el 1 siguiente: `entra_s`. Se empieza a escuchar ahí, no antes: lo que alguien diga durante la intro no
+// es su rapeo. Un beat sin `entra_s` (de antes de esto) no se usa.
 export function beats() {
   try {
     const l = JSON.parse(fs.readFileSync(path.join(VOZ, 'beats', 'beats.json'), 'utf8')).beats || [];
-    return l.filter((b) => b && b.archivo && fs.existsSync(path.join(VOZ, 'beats', b.archivo)));
+    return l.filter((b) => b && b.archivo && typeof b.entra_s === 'number' && fs.existsSync(path.join(VOZ, 'beats', b.archivo)));
   } catch (e) {
     return [];
   }
@@ -171,10 +176,17 @@ export class PruebaMicro {
       const credito = beat ? `\n🎵 Beat: «${beat.titulo}» de **${beat.beatmaker}**` : '';
       await frase(beat ? 'hola_beat' : 'hola');
       if (!sigue()) return;
-      await frase('cuenta');
       if (beat) {
+        // el beat trae la cuenta adentro: se espera hasta el 1 donde entra el MC (250 ms antes, por si arranca justo)
         player.play(createAudioResource(fs.createReadStream(path.join(VOZ, 'beats', beat.archivo)), { inputType: StreamType.OggOpus }));
         await entersState(player, AudioPlayerStatus.Playing, 5000).catch(() => {});
+        const arranco = performance.now();
+        while (performance.now() - arranco < beat.entra_s * 1000 - 250) {
+          if (!sigue()) { player.stop(true); return; }
+          await new Promise((r) => setTimeout(r, 200));
+        }
+      } else {
+        await frase('cuenta');
       }
 
       // ── escuchar (con el beat sonando, si hay) ──
