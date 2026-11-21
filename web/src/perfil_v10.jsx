@@ -187,7 +187,7 @@ function Momentos({ liga, k, f, p, D, esYo, ligas, ir }) {
           + (titSv ? ' · ' + titSv + (titSv === 1 ? ' título' : ' títulos') : '') : esYo ? 'Tu casa en la Liga' : 'Su casa en la Liga'}</small></> }];
     if ((f.c || []).includes('servidor')) {
       ss.push({ id: 'mom:' + k + ':sv-carta', tag: tuSu + ' CARTA DE ' + sg, esc: f.sv, beat: 'trap', cta: 'Ver la carta', ir: { carta: k, cual: 'servidor' },
-        cuerpo: <><h3 className="st-h">{esYo ? 'Tu carta de ' : 'Su carta de '}{sg}</h3><img className="st-carta" alt="" src={liga.cartaUrl(k, 'servidor')} /></> });
+        cuerpo: <><img className="st-carta" alt="" src={liga.cartaUrl(k, 'servidor')} /></> });
     }
     xs.push(['sv', 'Mi servidor', img(liga.logo(f.sv), sg), '', sv.color || '#29B298', 'logo', abrirH('sv', ss, () => { location.hash = '#/sv/' + sg; })]);
   }

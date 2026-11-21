@@ -4,213 +4,270 @@
   "beatmakers»). Juntadas las listas que pasó y sin repetidos. Además vale TODO beat que diga «Free» o «Uso libre» en",
   "el título o la descripción, de cualquier beatmaker.",
   "Lo usa la prueba de micro (grabador/microfono.js) para el beat que pone ULAYA, y cada beat se acredita a su",
-  "beatmaker en el mensaje. Si alguien pide salir, se saca de acá y de grabador/voz/beats/."
+  "beatmaker en el mensaje. Si alguien pide salir, se saca de acá, de grabador/voz/beats/ y de las historias (ELEGIDOS de herramientas/beats_historias.py).",
+  "`canal`: su canal de YouTube, buscado y mirado el 21/11/2026 (herramientas/beats_historias.py usa estos). `canal_nota`:",
+  "lo que hay que saber, o por qué todavía no tiene canal confirmado (Dlx pasa el link)."
  ],
  "tambien_vale": "todo beat con «Free» o «Uso libre» en el título o la descripción, y los beats del canal de YouTube de Under Legends",
  "beatmakers": [
   {
    "nombre": "7mobeats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@7Mobeats"
   },
   {
    "nombre": "Aelat Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@aelat3231"
   },
   {
    "nombre": "AKA Lirika",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@akalirika",
+   "canal_nota": "casi todo son canciones, pocos beats"
   },
   {
    "nombre": "Alejandre's Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@alejandresbeats3774"
   },
   {
    "nombre": "Azerbeats",
-   "nota": "El jefe de los beatmakers"
+   "nota": "El jefe de los beatmakers",
+   "canal": "https://www.youtube.com/@AZERBEATS"
   },
   {
    "nombre": "Black One",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "«BLACK ONE» (@BLACK_ONE) hace beats electrónicos, no de freestyle: ¿es ése?"
   },
   {
    "nombre": "ChessBeats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "sólo canales chicos con un video: falta el link"
   },
   {
    "nombre": "Costa Uno",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@costauno5170"
   },
   {
    "nombre": "Crasekbeats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@Crasekbeat"
   },
   {
    "nombre": "Deejay Santy",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@DeeJaySantymp3"
   },
   {
    "nombre": "Denek Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@DENEKBEATS"
   },
   {
    "nombre": "Denzel Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@Denzelbeats05"
   },
   {
    "nombre": "DJ Bootrax",
-   "nota": "álbum ACHIMEGA 21: «para que compartan, apoyen, practiquen y usen en competencias» (playlist PLJuSY6CKY1sI)"
+   "nota": "álbum ACHIMEGA 21: «para que compartan, apoyen, practiquen y usen en competencias» (playlist PLJuSY6CKY1sI)",
+   "canal": "https://www.youtube.com/@DJBOOTRAX"
   },
   {
    "nombre": "DMandado",
-   "nota": "DJ Y Beatmaker de FMS Peru"
+   "nota": "DJ Y Beatmaker de FMS Peru",
+   "canal": "https://www.youtube.com/@DJDMANDADO"
   },
   {
    "nombre": "Dominio Music",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "sólo canales casi vacíos: falta el link"
   },
   {
    "nombre": "Duva Beats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "sólo canales casi vacíos: falta el link"
   },
   {
    "nombre": "EsenciaBeats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@ESENCIABEATSOFICIAL"
   },
   {
    "nombre": "Extremo Beats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "un canal con 3 videos en inglés: no seguro"
   },
   {
    "nombre": "Eznar Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@EznarBeats"
   },
   {
    "nombre": "GianBeatz",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "sólo un canal casi vacío: falta el link"
   },
   {
    "nombre": "HB Beats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "«Hb Beats» (@HbBeats-n4e) en inglés: ¿es ése? (sus beats dicen FREE: valen igual)"
   },
   {
    "nombre": "Ignacio BEATS",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@IgnacioBeats"
   },
   {
    "nombre": "Impavidoh",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@Impávidoh"
   },
   {
    "nombre": "Ironíazka",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@ironiazka",
+   "canal_nota": "sus videos son remixes de canciones de otros: no se usan (el permiso es suyo, no de la canción)"
   },
   {
    "nombre": "Jbeat.z",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@jbeat.z.official"
   },
   {
    "nombre": "Jd Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@JD_Beats"
   },
   {
    "nombre": "Khaen",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "no apareció un canal propio (sale como colaborador de DJ DMandado): falta el link"
   },
   {
    "nombre": "Klyen Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@KlyenBeats"
   },
   {
    "nombre": "Lauto Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@lau-tobeats6371"
   },
   {
    "nombre": "LeanBeat",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "¿«Lean Beats» (@leanbeats_, trap argentino)? no seguro"
   },
   {
    "nombre": "LethalNeedleBeats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "«LethalNeedle» (@lethalneedle, 291 mil, en inglés): ¿es ése? (sus beats dicen FREE: valen igual)"
   },
   {
    "nombre": "Louki Beats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@louki607"
   },
   {
    "nombre": "Luisdanielmpbeats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "no apareció ningún canal: falta el link"
   },
   {
    "nombre": "Mancillador",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@mancillador"
   },
   {
    "nombre": "MaxiBeats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "sólo canales casi vacíos: falta el link"
   },
   {
    "nombre": "MC'GS",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@mcgs1585",
+   "canal_nota": "el canal no tiene beats en la pestaña de videos"
   },
   {
    "nombre": "NYQST",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "sólo «Nyquist» (@Nyquist1098, 19 suscriptores, en inglés): no seguro"
   },
   {
    "nombre": "Ortiz Studio",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "sólo canales casi vacíos: falta el link"
   },
   {
    "nombre": "P4nteraa",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@p4nteraa"
   },
   {
    "nombre": "Parka Zeta",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "no apareció ningún canal: falta el link"
   },
   {
    "nombre": "ProxerBeats",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@ProxerBeats"
   },
   {
    "nombre": "RaisiM1222",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "no apareció ningún canal: falta el link"
   },
   {
    "nombre": "Saimxn",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@SAIMXN"
   },
   {
    "nombre": "ShadowBeats",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "los tres canales con ese nombre no son de rap (techno, canciones de IA, remixes lentos): falta el link"
   },
   {
    "nombre": "TD Prods",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@tdprods"
   },
   {
    "nombre": "Tower Beatz",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "hay dos: @TowerBeatz (1,09 M, en inglés) y @TowerBeatzLastboy86 (beats de freestyle): ¿cuál?"
   },
   {
    "nombre": "Undbts",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@Underbeats",
+   "canal_nota": "varios son «remake» de canciones de otros: ésos no se usan; los «Free Beat» propios sí"
   },
   {
    "nombre": "Versey",
-   "nota": ""
+   "nota": "",
+   "canal_nota": "los canales con ese nombre son de Roblox y de un jugador: falta el link"
   },
   {
    "nombre": "Viruz Beatmaker",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@viruzbeatmaker7553"
   },
   {
    "nombre": "VNCA",
-   "nota": ""
+   "nota": "",
+   "canal": "https://www.youtube.com/@VNCABEATS"
   },
   {
    "nombre": "ZkN",
-   "nota": "beats hechos para Under Legends, de uso libre, en el canal de YouTube de UL (youtube.com/@ZetaKaEne)"
+   "nota": "beats hechos para Under Legends, de uso libre, en el canal de YouTube de UL (youtube.com/@ZetaKaEne)",
+   "canal": "https://www.youtube.com/@ZetaKaEne"
   }
  ]
 }

@@ -14,6 +14,19 @@
 //
 // El reloj es el de siempre para WebAudio: un `setInterval` corto que agenda las notas de los próximos 120 ms con la hora
 // del propio audio, así el ritmo no se tropieza aunque la página esté ocupada.
+//
+// 🎚️ TANDA 2, EL MISMO DÍA: LOS BEATS DE VERDAD. Dlx: *«ahí a la sesión principal le añadí la lista de beatmakers
+// permitidos… puedes usar beats así… pero también intenta integrar bien las instrumentales en las historias»*. Los
+// recortes de los beatmakers con permiso (`datos/beatmakers.json`) viven en `bot/paginas/beats/` y su lista con el
+// crédito en `beats_lista.json` (los hace `herramientas/beats_historias.py`). Cómo se integran:
+//   · cada estilo tiene varios; el círculo elige uno (por su id: siempre el mismo para ese círculo, distinto entre
+//     círculos) y, si la historia siguiente es del MISMO estilo, el beat sigue sonando: no vuelve a arrancar
+//   · de un estilo a otro, y cuando un recorte se termina, se CRUZAN (`CRUCE` s): uno baja mientras el otro sube
+//   · mantener apretada la historia pausa el beat (como la historia); la pestaña oculta, también
+//   · lo que suena se dice en la historia, con el link a su video (`alCambiar()`): el crédito es parte del permiso
+//   · sin recortes de un estilo, o si el archivo no baja, suena el sintetizado de arriba: nunca se queda mudo por eso
+
+import LISTA from './beats_lista.json';
 
 const VOL = 0.3;
 const MUDO = 'lg:beats';
@@ -25,6 +38,8 @@ let reloj = 0;
 let actual = '';
 let paso = 0;
 let proximo = 0;
+//: el estilo que pidió la historia que se ve ('' = nada): el de verdad o el sintetizado
+let quiere = '';
 
 export const mudo = () => { try { return localStorage.getItem(MUDO) === '0'; } catch (e) { return false; } };
 export function ponerMudo(v) {
@@ -51,15 +66,18 @@ function abrir() {
   document.addEventListener('visibilitychange', () => {
     if (!ctx) return;
     if (document.hidden) ctx.suspend().catch(() => {});
-    else if (actual) ctx.resume().catch(() => {});
+    else if (quiere) ctx.resume().catch(() => {});
   });
   return ctx;
 }
 
 /** Despierta el audio desde un gesto (el iPhone lo pide adentro del toque). */
 export function despertar() {
-  if (ctx && ctx.state === 'suspended' && actual) ctx.resume().catch(() => {});
+  if (ctx && ctx.state === 'suspended' && quiere) ctx.resume().catch(() => {});
 }
+/** Mantener apretada la historia: el beat espera con ella. */
+export function pausar() { if (ctx && quiere) ctx.suspend().catch(() => {}); }
+export function seguir() { if (ctx && quiere && !document.hidden) ctx.resume().catch(() => {}); }
 
 // ── los instrumentos ──
 const env = (g, t, pico, cae) => {
@@ -231,11 +249,9 @@ function programar() {
   }
 }
 
-/** Toca ese estilo (o lo deja sonando si ya es ese). Sin estilo, o silenciado, para. */
-export function tocar(estilo) {
-  if (!estilo || !ESTILOS[estilo] || mudo()) { parar(); return; }
-  if (!abrir()) return;
-  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+/** El sintetizado: toca ese estilo (o lo deja sonando si ya es ese). */
+function sintesis(estilo) {
+  if (!ESTILOS[estilo] || !abrir()) return;
   if (actual === estilo && reloj) return;
   const t = ctx.currentTime;
   master.gain.cancelScheduledValues(t);
@@ -249,8 +265,7 @@ export function tocar(estilo) {
   if (!reloj) reloj = setInterval(programar, 25);
 }
 
-/** Baja el volumen y para. */
-export function parar() {
+function pararSintesis() {
   if (!ctx || !actual) return;
   const t = ctx.currentTime;
   master.gain.cancelScheduledValues(t);
@@ -258,5 +273,117 @@ export function parar() {
   master.gain.linearRampToValueAtTime(0.0001, t + 0.35);
   actual = '';
   const r = reloj;
-  setTimeout(() => { if (!actual) { clearInterval(r); if (reloj === r) reloj = 0; ctx.suspend().catch(() => {}); } }, 420);
+  setTimeout(() => { if (!actual) { clearInterval(r); if (reloj === r) reloj = 0; } }, 420);
+}
+
+// ── 🎚️ LOS BEATS DE VERDAD ──
+const RAIZ = '/beats/';
+//: el volumen de los recortes (vienen todos en −16 LUFS) y cuánto dura el cruce de uno a otro
+const VOL_REAL = 0.55;
+const CRUCE = 0.9;
+let real = null;               // {estilo, i, src, g, fin}
+let vigia = 0;
+let turno = 0;
+const bufs = new Map();
+const oyentes = new Set();
+let info = null;
+
+/** Quién suena (`{t, b, u}`: título, beatmaker y su video), para el crédito de la historia. Devuelve cómo dejar de oír. */
+export function alCambiar(fn) {
+  oyentes.add(fn);
+  fn(info);
+  return () => { oyentes.delete(fn); };
+}
+const avisar = (x) => {
+  if (info === x) return;
+  info = x;
+  oyentes.forEach((f) => { try { f(x); } catch (e) { /* un oyente roto no frena el beat */ } });
+};
+const lista = (estilo) => ((LISTA && LISTA[estilo]) || []);
+const hashS = (s) => { let h = 7; for (const c of String(s || '')) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+export const hayReales = (estilo) => lista(estilo).length > 0;
+
+function cargar(a) {
+  if (!bufs.has(a)) {
+    bufs.set(a, fetch(RAIZ + a).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.arrayBuffer(); })
+      .then((ab) => new Promise((res, rej) => ctx.decodeAudioData(ab, res, rej))));
+    // como mucho cuatro en memoria (uno decodificado son ~15 MB)
+    if (bufs.size > 4) bufs.delete(bufs.keys().next().value);
+    bufs.get(a).catch(() => bufs.delete(a));
+  }
+  return bufs.get(a);
+}
+
+function soltarReal(cruce) {
+  if (!real || !ctx) return;
+  const r = real;
+  real = null;
+  const t = ctx.currentTime;
+  r.g.gain.cancelScheduledValues(t);
+  r.g.gain.setValueAtTime(Math.max(0.0001, r.g.gain.value), t);
+  r.g.gain.linearRampToValueAtTime(0.0001, t + cruce);
+  try { r.src.stop(t + cruce + 0.05); } catch (e) { /* ya paró */ }
+}
+
+async function ponerReal(estilo, i) {
+  const xs = lista(estilo);
+  const p = xs[i % xs.length];
+  const yo = ++turno;
+  let buf;
+  try { buf = await cargar(p.a); } catch (e) {
+    // el archivo no bajó: el sintetizado, para que la historia no quede muda
+    if (yo === turno && quiere === estilo) { soltarReal(CRUCE); avisar(null); sintesis(estilo); }
+    return;
+  }
+  if (yo !== turno || quiere !== estilo || !ctx) return;          // mientras bajaba, se pidió otra cosa
+  pararSintesis();
+  soltarReal(CRUCE);
+  const t = ctx.currentTime;
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(VOL_REAL, t + CRUCE);
+  src.connect(g).connect(ctx.destination);
+  src.start(t);
+  real = { estilo, i, src, g, fin: t + buf.duration };
+  avisar({ t: p.t, b: p.b, u: p.u });
+  // el que sigue de este estilo, bajando de antes
+  if (xs.length > 1) cargar(xs[(i + 1) % xs.length].a).catch(() => {});
+  // ⏱️ cuando éste se termina, se cruza con el siguiente. Con la hora del audio y no con un `setTimeout`: pausado (la
+  // historia apretada, la pestaña oculta) el audio no avanza, y un reloj de pared cruzaría a destiempo
+  if (!vigia) {
+    vigia = setInterval(() => {
+      if (!real || !ctx) { clearInterval(vigia); vigia = 0; return; }
+      if (ctx.currentTime >= real.fin - CRUCE - 0.2 && quiere === real.estilo && !real.cruzando) {
+        real.cruzando = true;
+        ponerReal(real.estilo, real.i + 1);
+      }
+    }, 250);
+  }
+}
+
+/** Toca ese estilo (o lo deja sonando si ya es ese): uno de verdad si hay, el sintetizado si no. `semilla` elige cuál
+ * (el id del círculo). Sin estilo, o silenciado, para. */
+export function tocar(estilo, semilla) {
+  if (!estilo || !ESTILOS[estilo] || mudo()) { parar(); return; }
+  if (!abrir()) return;
+  quiere = estilo;
+  if (ctx.state === 'suspended' && !document.hidden) ctx.resume().catch(() => {});
+  const xs = lista(estilo);
+  if (!xs.length) { soltarReal(CRUCE); avisar(null); sintesis(estilo); return; }
+  // el mismo estilo que ya suena: sigue, no vuelve a arrancar
+  if (real && real.estilo === estilo) return;
+  ponerReal(estilo, hashS(semilla) % xs.length);
+}
+
+/** Baja el volumen y para. */
+export function parar() {
+  quiere = '';
+  turno++;
+  if (!ctx) return;
+  soltarReal(0.4);
+  pararSintesis();
+  avisar(null);
+  setTimeout(() => { if (!quiere && ctx) ctx.suspend().catch(() => {}); }, 600);
 }

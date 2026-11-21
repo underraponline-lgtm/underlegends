@@ -1198,6 +1198,10 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // traer el suyo (`beat`, ver `slidesDe()` de arriba.jsx y los momentos del perfil) y suena mientras se ve. Hecho con
   // WebAudio (beats.js): ningún archivo. Se silencia con el parlante de arriba y queda así en este navegador
   const [sonido, setSonido] = useState(() => !BEAT.mudo());
+  // 🎚️ el beat de verdad que suena, para su crédito (`{t, b, u}`), y mantener apretado lo pausa (tanda 2)
+  const [pista, setPista] = useState(null);
+  useEffect(() => BEAT.alCambiar(setPista), []);
+  const apretado = useRef(0);
   const gid = abre.gid;
   const gi = grupos.findIndex((x) => x.id === gid);
   const g = gi >= 0 ? grupos[gi] : null;
@@ -1216,7 +1220,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // vista apenas se muestra
   useEffect(() => { if (idAct) onVisto(idAct); }, [idAct, onVisto]);
   const beat = ((g && g.slides.find((x) => x.id === idAct)) || {}).beat || '';
-  useEffect(() => { if (sonido && beat) BEAT.tocar(beat); else BEAT.parar(); }, [beat, sonido]);
+  useEffect(() => { if (sonido && beat) BEAT.tocar(beat, gid); else BEAT.parar(); }, [beat, sonido, gid]);
   useEffect(() => () => BEAT.parar(), []);
   // si su grupo desaparece (el evento en vivo terminó), el visor se cierra en vez de quedar abierto y vacío
   useEffect(() => { if (!hay) onCerrar(); }, [hay, onCerrar]);
@@ -1338,8 +1342,16 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // ✋ tocar, mantener o deslizar: mantener pausa (y al soltar no pasa de historia); deslizar abajo cierra y al costado
   // cambia de círculo
   // (cada toque arranca de cero: mantener apretado «Felicitar» dejaba marcado que el próximo toque no pasara de historia)
-  const empieza = (e) => { BEAT.despertar(); tragar.current = false; pausa.current = true; gesto.current = { x: e.clientX, y: e.clientY, t: performance.now() }; };
+  const empieza = (e) => {
+    BEAT.despertar();
+    // 🎚️ mantener (no tocar): el beat espera con la historia
+    clearTimeout(apretado.current);
+    apretado.current = setTimeout(() => BEAT.pausar(), 280);
+    tragar.current = false; pausa.current = true; gesto.current = { x: e.clientX, y: e.clientY, t: performance.now() };
+  };
   const suelta = (e) => {
+    clearTimeout(apretado.current);
+    BEAT.seguir();
     pausa.current = false;
     const g0 = gesto.current;
     gesto.current = null;
@@ -1349,7 +1361,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)) { tragar.current = true; saltar(dx < 0 ? 1 : -1); return; }
     if (performance.now() - g0.t > 280) tragar.current = true;
   };
-  const corta = () => { pausa.current = false; gesto.current = null; };
+  const corta = () => { clearTimeout(apretado.current); BEAT.seguir(); pausa.current = false; gesto.current = null; };
   const zona = (f) => () => { if (tragar.current) { tragar.current = false; return; } f(); };
   // 🔗 CADA HISTORIA TIENE SU LINK (Dlx, 18/10/2026, a las ideas: «todas»): abre la página en esa misma historia
   // (`?h=<id>`, App.jsx). Si ya no está —las historias se van con los días—, abre el Inicio
@@ -1421,6 +1433,11 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
           <button type="button" className={'hv-comp hv-img' + (img ? ' ' + img : '')} aria-label="Guardar como imagen para tus historias"
             title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
+        {/* 🎧 lo que suena y de quién es, con el link a su video: el crédito es parte del permiso del beatmaker */}
+        {beat && sonido && pista ? <a className="hv-beat" href={pista.u} target="_blank" rel="noopener noreferrer"
+          onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}
+          aria-label={'Suena ' + pista.t + ', de ' + pista.b + '. Abrir en YouTube'} title="Abrir el beat en YouTube">
+          <i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span><b>{pista.t}</b> · {pista.b}</span></a> : null}
         <div className="hv-cuerpo" ref={cuerpoR} style={flot ? { paddingBottom: 16 + filasF * 52 - 6 } : undefined}><div className="st" key={s.id}><span className={'st-tag' + (s.tono ? ' ' + s.tono : '')}>{s.tag}</span>{s.cuerpo}</div></div>
         {proxima ? <div className="hv-sig" aria-hidden="true" ref={(el) => { if (el) el.setAttribute('inert', ''); }}>
           <div className="st"><span className={'st-tag' + (proxima.tono ? ' ' + proxima.tono : '')}>{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}

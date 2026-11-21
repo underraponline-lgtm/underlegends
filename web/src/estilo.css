@@ -757,6 +757,18 @@ h1,h2,h3,p{margin:0}
 .hv-cuerpo{flex:1;display:grid;place-items:center;text-align:center;overflow:hidden;padding:12px 0}
 .hv-cta{position:relative;z-index:2;width:100%}
 .hv-zona{position:absolute;top:80px;bottom:90px;background:none;border:0;cursor:pointer;z-index:1}
+/* 🎧 el beat que suena y de quién es (21/11/2026): tocarlo abre su video. Debajo de la cabecera, como la música de una
+   historia de Instagram; las barritas se mueven mientras suena (quietas con «Menos animaciones») */
+.hv-beat{position:absolute;top:64px;left:14px;z-index:3;display:inline-flex;align-items:center;gap:7px;max-width:calc(100% - 28px);padding:4px 10px 4px 8px;border-radius:4px;background:rgba(10,10,12,.64);color:#F6F6F6;text-decoration:none;font:600 14px/1.15 "Barlow Condensed",sans-serif}
+.hv-beat span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hv-beat span b{font-weight:700}
+.hv-eq{display:inline-flex;align-items:flex-end;gap:2px;height:12px;flex:none}
+.hv-eq b{width:3px;height:100%;background:#29B298;transform-origin:bottom;animation:hv-eq .9s ease-in-out infinite}
+.hv-eq b:nth-child(2){animation-delay:-.3s}
+.hv-eq b:nth-child(3){animation-delay:-.6s}
+@keyframes hv-eq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+@media (prefers-reduced-motion: reduce){.hv-eq b{animation:none;transform:scaleY(.7)}}
+.calma .hv-eq b{animation:none;transform:scaleY(.7)}
 .hv-zona.izq{left:0;width:34%}
 .hv-zona.der{right:0;width:66%}
 .st{display:grid;justify-items:center;gap:12px;max-width:340px}

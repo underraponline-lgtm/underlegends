@@ -1,0 +1,115 @@
+{
+ "boombap": [
+  {
+   "a": "azerbeats-mammamia.m4a",
+   "t": "Mamma Mia",
+   "b": "Azerbeats",
+   "u": "https://youtu.be/ldB0NsRR7FI"
+  },
+  {
+   "a": "denekbeats-ghettoboyz.m4a",
+   "t": "Ghetto Boyz",
+   "b": "Denek Beats",
+   "u": "https://youtu.be/Xj2mSVi8nuU",
+   "libre": 1
+  },
+  {
+   "a": "lethalneedlebeats-cellphones.m4a",
+   "t": "Cell Phones",
+   "b": "LethalNeedleBeats",
+   "u": "https://youtu.be/yjfmSl-zrBQ",
+   "libre": 1
+  },
+  {
+   "a": "viruzbeatmaker-loveandshit.m4a",
+   "t": "Love and Shit",
+   "b": "Viruz Beatmaker",
+   "u": "https://youtu.be/n8pcg_I3_6Y",
+   "libre": 1
+  },
+  {
+   "a": "lautobeats-1938.m4a",
+   "t": "1938",
+   "b": "Lauto Beats",
+   "u": "https://youtu.be/AWVhgT_6U5k",
+   "libre": 1
+  },
+  {
+   "a": "djbootrax-achimega.m4a",
+   "t": "Achimega",
+   "b": "DJ Bootrax",
+   "u": "https://youtu.be/u2jc4sovPMQ"
+  }
+ ],
+ "trap": [
+  {
+   "a": "aelatbeats-surf.m4a",
+   "t": "Surf",
+   "b": "Aelat Beats",
+   "u": "https://youtu.be/6H87vrztX8Y",
+   "libre": 1
+  },
+  {
+   "a": "lautobeats-slowwind.m4a",
+   "t": "Slow Wind",
+   "b": "Lauto Beats",
+   "u": "https://youtu.be/2-TnW6usTok",
+   "libre": 1
+  },
+  {
+   "a": "eznarbeats-ghostcity.m4a",
+   "t": "Ghost City",
+   "b": "Eznar Beats",
+   "u": "https://youtu.be/uxvQHo26NUg"
+  },
+  {
+   "a": "jdbeats-hijoshiki.m4a",
+   "t": "Hijōshiki",
+   "b": "Jd Beats",
+   "u": "https://youtu.be/kdQouGTJwzc",
+   "libre": 1
+  },
+  {
+   "a": "zkn-beattrap2.m4a",
+   "t": "Beat Trap #2",
+   "b": "ZkN",
+   "u": "https://youtu.be/V4czXKXrBj8",
+   "libre": 1
+  }
+ ],
+ "drill": [
+  {
+   "a": "jdbeats-elabismo.m4a",
+   "t": "El Abismo",
+   "b": "Jd Beats",
+   "u": "https://youtu.be/GlYx0rVW_2E",
+   "libre": 1
+  },
+  {
+   "a": "7mobeats-andromeda.m4a",
+   "t": "Andrómeda",
+   "b": "7mobeats",
+   "u": "https://youtu.be/2jgBgHaauOw"
+  },
+  {
+   "a": "deejaysanty-hollow.m4a",
+   "t": "Hollow",
+   "b": "Deejay Santy",
+   "u": "https://youtu.be/eoSW8pn3_54"
+  },
+  {
+   "a": "denekbeats-chernobyl.m4a",
+   "t": "Chernobyl",
+   "b": "Denek Beats",
+   "u": "https://youtu.be/Tgg0ukxgsUA",
+   "libre": 1
+  },
+  {
+   "a": "alejandresbeats-devildrill.m4a",
+   "t": "Devil Drill",
+   "b": "Alejandre's Beats",
+   "u": "https://youtu.be/7bkwA2n_8VA",
+   "libre": 1
+  }
+ ]
+}

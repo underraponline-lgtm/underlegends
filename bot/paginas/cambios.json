@@ -11,6 +11,16 @@
   ],
   "cambios": [
     {
+        "version": "7.54",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T14:09:00-05:00",
+        "titulo": "Beats de verdad en las historias",
+        "items": [
+            "**Las historias suenan con beats de verdad**: instrumentales de beatmakers de la escena que nos dieron permiso (Azerbeats, Denek, JD Beats, DJ Bootrax, Viruz y más). Cada historia dice qué beat suena y de quién es: tócalo y vas a su video.",
+            "**Un beat sigue sonando** si la historia que viene es del mismo estilo, y de un estilo a otro se cruzan. Mantener apretada la historia también pausa el beat."
+        ]
+    },
+    {
         "version": "7.53",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T11:18:00-05:00",
