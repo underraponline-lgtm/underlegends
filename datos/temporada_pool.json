@@ -6644,10 +6644,7 @@
   "o": 178,
   "pos": 126,
   "total": 262,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "19",
@@ -8891,7 +8888,6 @@
   "rango": "E",
   "tg_t": {
    "perf": 1,
-   "reciente": true,
    "svc": 1
   }
  },
@@ -11338,10 +11334,7 @@
   "pos": 407,
   "fc": true,
   "total": 262,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "JHEYSON",

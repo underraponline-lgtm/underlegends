@@ -52731,6 +52731,399 @@
   ],
   "v": 2
  },
+ "661": {
+  "antes": {
+   "23": [
+    374,
+    271,
+    true
+   ],
+   "Agente sombra": [
+    367,
+    261,
+    true
+   ],
+   "BLACKMEME": [
+    401,
+    308,
+    true
+   ],
+   "DarnBless": [
+    283,
+    109,
+    true
+   ],
+   "Flash": [
+    291,
+    124,
+    true
+   ],
+   "K1NGT0": [
+    552,
+    505,
+    true
+   ],
+   "Karma": [
+    159,
+    269,
+    false
+   ],
+   "Kyss": [
+    64,
+    75,
+    false
+   ],
+   "LRS": [
+    43,
+    49,
+    false
+   ],
+   "NC": [
+    23,
+    24,
+    false
+   ],
+   "Nestor": [
+    216,
+    510,
+    false
+   ],
+   "OG": [
+    21,
+    21,
+    false
+   ],
+   "ONZASS": [
+    276,
+    81,
+    true
+   ],
+   "Simon": [
+    183,
+    349,
+    false
+   ],
+   "Sin Limites": [
+    30,
+    32,
+    false
+   ],
+   "THO": [
+    150,
+    240,
+    false
+   ],
+   "Vandu": [
+    8,
+    8,
+    false
+   ],
+   "Vilca": [
+    67,
+    80,
+    false
+   ],
+   "Zanz": [
+    509,
+    453,
+    true
+   ],
+   "crakero": [
+    72,
+    89,
+    false
+   ],
+   "tato": [
+    559,
+    514,
+    true
+   ],
+   "tixer": [
+    560,
+    515,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Kyss",
+    "Vilca",
+    "Kyss"
+   ],
+   [
+    "Kyss",
+    "NC",
+    "Kyss"
+   ],
+   [
+    "Flash",
+    "tixer",
+    "Flash"
+   ],
+   [
+    "Flash",
+    "ONZASS",
+    "Flash"
+   ],
+   [
+    "Sin Limites",
+    "tato",
+    "Sin Limites"
+   ],
+   [
+    "Sin Limites",
+    "DarnBless",
+    "Sin Limites"
+   ],
+   [
+    "LRS",
+    "K1NGT0",
+    "LRS"
+   ],
+   [
+    "LRS",
+    "masterx🇻🇪",
+    "LRS"
+   ],
+   [
+    "LRS",
+    "crakero",
+    "LRS"
+   ],
+   [
+    "LRS",
+    "Vandu",
+    "LRS"
+   ],
+   [
+    "BLACKMEME",
+    "OG",
+    "BLACKMEME"
+   ],
+   [
+    "BLACKMEME",
+    "THO",
+    "BLACKMEME"
+   ],
+   [
+    "Agente sombra",
+    "Zanz",
+    "Agente sombra"
+   ],
+   [
+    "Agente sombra",
+    "23",
+    "Agente sombra"
+   ],
+   [
+    "Kyss",
+    "LRS",
+    "Kyss"
+   ],
+   [
+    "Flash",
+    "Karma",
+    "Flash"
+   ],
+   [
+    "Keplatoo🇪🇸",
+    "Sin Limites",
+    "Keplatoo🇪🇸"
+   ],
+   [
+    "BLACKMEME",
+    "Agente sombra",
+    "BLACKMEME"
+   ],
+   [
+    "Kyss",
+    "BLACKMEME",
+    "Kyss"
+   ],
+   [
+    "Flash",
+    "Keplatoo🇪🇸",
+    "Flash"
+   ],
+   [
+    "Flash",
+    "Kyss",
+    "Flash"
+   ],
+   [
+    "0223 🇧🇧",
+    "Simon",
+    ""
+   ],
+   [
+    "0223 🇧🇧",
+    "Nestor",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "23": 3,
+   "Agente sombra": 5,
+   "BLACKMEME": 1,
+   "DarnBless": 15,
+   "Flash": 2,
+   "K1NGT0": 1,
+   "Karma": 3,
+   "Kyss": 12,
+   "LRS": 42,
+   "NC": 62,
+   "Nestor": 1,
+   "OG": 22,
+   "ONZASS": 14,
+   "Simon": 2,
+   "Sin Limites": 51,
+   "THO": 3,
+   "Vandu": 56,
+   "Vilca": 26,
+   "Zanz": 2,
+   "crakero": 16,
+   "tato": 1,
+   "tixer": 1
+  },
+  "fecha": "17/11",
+  "nombre": "CHOP ES CEO V.4",
+  "num": 661,
+  "participantes": 25,
+  "sello": {
+   "Flash": ""
+  },
+  "sv": "CH",
+  "t": "2026-11-21T05:24:22Z",
+  "tabla": [
+   [
+    "Flash",
+    "Campeón",
+    10000
+   ],
+   [
+    "Kyss",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "BLACKMEME",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Keplatoo🇪🇸",
+    "Semifinal",
+    2625
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Karma",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vilca",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "tixer",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "tato",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "K1NGT0",
+    "Octavos",
+    1250
+   ],
+   [
+    "masterx🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "crakero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "THO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zanz",
+    "Octavos",
+    1250
+   ],
+   [
+    "23",
+    "Octavos",
+    1250
+   ],
+   [
+    "0223 🇧🇧",
+    "Octavos",
+    1250
+   ],
+   [
+    "Simon",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nestor",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
  "662": {
   "antes": {
    "Dynoco": [

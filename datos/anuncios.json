@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T04:54:47+00:00",
+ "cuando": "2026-11-21T05:25:22+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7213,6 +7213,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
+   "tit": "D'F I GENESIS",
+   "tx": "ESTELAR: JEIXDER / @jeixder 🇵🇪 VS LSD / CO-ESTELAR: SAKRO / VS XCLUSIVO / MAIN EVENT: MAKMA / @makmah_g 🇻🇪 VS 19 / @19_vz1 PRE - ELIMINARES: CARLOS / 🇪🇨 VS EVANGELINE / 🇧🇴 + ISAX / 🇪🇨 MATS / VS CRISZJ / 🇵🇪 CHOP / 🇭🇳 VS W",
+   "cuando": "2026-11-21T05:14:01",
+   "msg_id": "1573567140592885761",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573567140592885761"
+  },
+  {
    "servidor": "LKR",
    "canal": "anuncios",
    "tit": "DIGÁMOSLE HOLA A EL NUEVO LOGO",
@@ -7319,15 +7328,6 @@
    "cuando": "2026-11-18T21:14:39",
    "msg_id": "1572721726662381619",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572721726662381619"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "🇻🇪 MAKMA 🇻🇪",
-   "tx": "DESDE VENEZUELA SU NOMBRE ES MUY SONADO EN DIFERENTES SERVERS DE DISCORD",
-   "cuando": "2026-11-18T20:37:02",
-   "msg_id": "1572712261137727640",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572712261137727640"
   },
   {
    "servidor": "CHZ",
