@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T03:36:17+00:00",
+ "cuando": "2026-11-21T03:55:14+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7215,29 +7215,29 @@
   {
    "servidor": "LKR",
    "canal": "anuncios",
+   "tit": "DIGÁMOSLE HOLA A EL NUEVO LOGO",
+   "tx": "",
+   "cuando": "2026-11-21T03:42:45",
+   "msg_id": "1573544173334700233",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573544173334700233"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "VAMOS A DESPEDIR ESTE LOGO",
+   "tx": "",
+   "cuando": "2026-11-21T03:39:36",
+   "msg_id": "1573543377289351233",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573543377289351233"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "anuncios",
    "tit": "PODIO DE LA RED BULL ARGENTINA DEJA DO CAMPEÓN A @agusdcab",
    "tx": "",
    "cuando": "2026-11-21T01:16:12",
    "msg_id": "1573507289019580526",
    "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573507289019580526"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "MULTIVERSE DOOMSDAY",
-   "tx": "Un server nuevo y que va a ser grande, solo necesitamos más people",
-   "cuando": "2026-11-21T01:12:53",
-   "msg_id": "1573506454604746846",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573506454604746846"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "🐉ANUNCIOS",
-   "tit": "TERCER CLASIFICADO PAL 5 VIDAS DE CAMPEONES",
-   "tx": "",
-   "cuando": "2026-11-20T22:02:44",
-   "msg_id": "1573458605007442082",
-   "link": "https://discord.com/channels/1558611504046153750/1564463277348487219/1573458605007442082"
   },
   {
    "servidor": "ACAD",
