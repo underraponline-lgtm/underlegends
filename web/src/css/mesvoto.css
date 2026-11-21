@@ -10,6 +10,9 @@
 .sd-fr-tx b{font:900 17px/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;letter-spacing:.01em}
 .sd-fr-tx small{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#4A4A46}
 .sd-fr-sp{flex:1}
+/* «LOS NOMINADOS DE NOVIEMBRE SALEN EN» y, ~600 px más a la derecha, «10D 01H»: la frase se leía cortada (revisión 21/11).
+   En la franja que espera (la única con `role="status"`) la cuenta sigue a «EN» */
+.sd-franja[role="status"] .sd-fr-sp{display:none}
 .sd-pips{display:flex;gap:4px}
 .sd-pips i{width:22px;height:7px;background:#C9C9C5}
 .sd-pips i.sd-on{background:#030304}

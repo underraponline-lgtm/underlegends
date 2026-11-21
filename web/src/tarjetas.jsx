@@ -731,7 +731,7 @@ function Comparar({ liga, porTipo, perf, cmp, setCmp, yoK }) {
       <h2 className="rka-h">Comparar<small>{de + ' · ' + NOMBRE[t]}</small></h2>
       <div className="ta-cmp-t">
         {tipos.length > 1 ? (
-          <div className="rk-chips ta-chips" role="group" aria-label="Qué tarjeta">
+          <div className="rk-chips ta-chips" role="group" aria-label="Qué tarjeta" style={{ '--n': tipos.length }}>
             {tipos.map((c) => <button type="button" key={c} className={c === t ? 'on' : ''} aria-pressed={c === t} onClick={() => setCmp({ t: c, a: cmp.a, b: cmp.b })}>{NOMBRE[c]}</button>)}
           </div>
         ) : <span />}

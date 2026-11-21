@@ -214,7 +214,7 @@ export function Cambios({ liga, ver, antes: antes0 }) {
         <section className="cx-cab rka" id="cx-cab">
           <div className="cx-cabeza">
             <div className="cx-cab-tx">
-              <span className="tag">CHANGELOG</span>
+              <span className="tag">NOVEDADES</span>
               <h1 className="hero-ev largo">Lo nuevo de la página</h1>
               <p className="hero-p">Lo que cambió en la página y en el bot, de lo más nuevo a lo más viejo.</p>
             </div>

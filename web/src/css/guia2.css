@@ -100,6 +100,16 @@
 .gx-pista .ap-cap:hover .ap-tx b{text-decoration:underline}
 /* 🎯 Most Wanted, encuestas y Tienda en tarjetas (19/11/2026, el pulido): su cifra, el nombre, el texto y adónde ir */
 .gx-mwc{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+/* cinco tarjetas en tres columnas dejaban una celda vacía de 280×448 al lado de «Precio por cabeza» (revisión 21/11): la
+   última se estira cuando sobra un lugar, con las columnas fijas para que la cuenta sea la que se ve */
+@media (min-width: 686px) and (max-width: 899px){
+  .gx-mwc{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .gx-mwc > :last-child:nth-child(3n+2){grid-column:span 2}
+}
+@media (min-width: 480px) and (max-width: 685px){
+  .gx-mwc{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gx-mwc > :last-child:nth-child(odd){grid-column:1 / -1}
+}
 .gx-mw{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:4px;background:var(--caja)}
 .gx-mw-f{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font:900 32px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 .gx-mw-f small{font:700 13px/1.25 Archivo,sans-serif;color:var(--gris)}
@@ -225,6 +235,9 @@
   /* las seis pestañas, en dos filas de tres: deslizándose, tres quedaban escondidas sin ninguna pista */
   .gx-pes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 12px;overflow:visible}
   .gx-pes button{min-height:44px;padding:12px 0 10px;text-align:left}
+  /* «Puntos y rangos» se partía en dos renglones y desalineaba la grilla de 3×2 (revisión 21/11) */
+  .gx-pes{grid-template-columns:repeat(3,auto);justify-content:space-between}
+  .gx-pes button{white-space:nowrap;font-size:14px;gap:4px}
   .gx-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .gx-atajos button,.gx-st{min-height:44px}
   /* 📏 EL ESCENARIO, MÁS CORTO (19/11/2026, el pulido): a 390 medía 1.829 px antes de llegar a las pestañas. Las tres
@@ -272,6 +285,8 @@
   .app .gx-pista .ap-l:before{left:5%;right:5%;top:21px;bottom:auto;width:auto;height:2px}
   .app .gx-pista .ap-cap{grid-template-columns:minmax(0,1fr);grid-template-rows:44px auto;justify-items:center;text-align:center;gap:10px;padding:0 6px}
   .app .gx-pista .ap-tx em{justify-content:center}
+  /* «1 MIN» quedaba solo en el renglón de abajo en los nueve (revisión 21/11): arriba ya dice «Nueve capítulos de un minuto» */
+  .app .gx-pista .ap-min{display:none}
   .app .gx-verde{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:22px 30px;padding:24px 26px}
   .app .gx-notas{grid-column:1/-1;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 22px}
   .app .gx-carriles{grid-template-columns:repeat(3,minmax(0,1fr))}

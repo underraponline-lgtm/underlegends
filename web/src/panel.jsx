@@ -21,7 +21,7 @@ import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx
 import { FondoT } from './puesto.js';
 import { fondoEn, useFondos } from './fondos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
-import { avance, pasePost, usePase } from './pase.js';
+import { avance, pasePost, usePase, usePases } from './pase.js';
 import { cuantosNuevos } from './inv_nuevos.js';
 import { cobrarRacha } from './racha.js';
 import { dondeEstoy, enFrase, faltaTxt, nombreDe, useCompetencias } from './competencias_datos.js';
@@ -1380,7 +1380,9 @@ export function PnPase({ dc, chico = false }) {
   // ⚠️ `avance()` es null en el último nivel (no hay siguiente): con el 30 completo decía «para los miembros de DRA» (Dlx)
   const mio = !!(P && P.listo && P.miembro);
   const a = mio ? avance(P) || { falta: 0 } : null;
-  const niveles = (P && P.niveles) || 30;
+  // 🔢 sin sesión `usePase` no llega y quedaba el 30 escrito a mano, con el Pase en 50 (revisión 21/11): lo público primero
+  const pub = usePases();
+  const niveles = (P && P.niveles) || (pub && pub.cfg && pub.cfg.niveles) || 50;
   const nivel = a ? P.nivel || 0 : 0;
   const tramos = 10;
   const llenos = Math.round((nivel / niveles) * tramos);

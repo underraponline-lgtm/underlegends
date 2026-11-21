@@ -71,6 +71,12 @@
 .sl-reyes em{font:700 14px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.03em;color:var(--gris)}
 .sl-recs{display:grid;gap:22px}
 .sl-rg{display:grid;gap:10px;align-content:start;min-width:0}
+/* 📐 las cajas de récords de una misma fila terminan juntas: La temporada tiene 5 y Los duelos 3, y debajo quedaba un hueco
+   escalonado (revisión 21/11). La caja se estira hasta la base de la fila; sus renglones siguen arriba */
+.sl-rg{grid-template-rows:auto minmax(0,1fr);align-content:stretch}
+.sl-rg ul{align-content:start}
+/* 📱 a 768 cada récord ocupaba 736 px con el contenido en ~250 (revisión 21/11): dos columnas desde 640 */
+@media (min-width: 640px){.sl-recs{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}}
 .sl-rg .sl-st{margin:0}
 .sl-rg ul{display:grid;margin:0;padding:0;list-style:none;border:2px solid var(--linea);background:var(--caja)}
 .sl-rg li+li{border-top:1.5px solid var(--suave)}

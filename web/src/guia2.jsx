@@ -466,7 +466,7 @@ export function Guia({ liga, dc }) {
       <section className="sec gx-papel rka-papel" id="gx-papel">
         <div className="rka-pes gx-pes" role="tablist" aria-label="Qué ver de la Guía">
           {PESTANAS.map(([id, t]) => {
-            const n = { basico: 9, semana: SEMANA.length, tags: ntag, palabras: PALABRAS.length, preguntas: PREGUNTAS.length }[id];
+            const n = { basico: 9, puntos: rgs.length, semana: SEMANA.length, tags: ntag, palabras: PALABRAS.length, preguntas: PREGUNTAS.length }[id];
             return <button key={id} type="button" role="tab" aria-selected={tab === id} className={tab === id ? 'on' : ''} onClick={() => setTab(id)}>{t}{n ? <small>{n}</small> : null}</button>;
           })}
         </div>

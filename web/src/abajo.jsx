@@ -318,7 +318,9 @@ export function Pie({ liga }) {
 // z-index más alto y la tapaba —en el celular entera, en la compu a medias—, y no se podía tocar. No era la única: la barra
 // de la llave, el Guardar del Inventario y del perfil, y el aviso del panel del socio también se pegan abajo. En vez de
 // correr cada una, la flecha mira cuál de esas está en su columna y sube lo justo para quedar 10 px arriba (`--subir-sube`)
-const PIES = '.rk-lugar, .lk-barra, .ves-guardar, .iv9-guardar, .sp-toast-z, [data-pie-fijo]';
+// 👣 y de los links del pie (revisión 21/11: al final de la página tapaba el ícono de Kick de las redes). Cada link por
+// separado y no el pie entero, que es de lado a lado: sube sólo si alguno cae en su columna
+const PIES = '.rk-lugar, .lk-barra, .ves-guardar, .iv9-guardar, .sp-toast-z, [data-pie-fijo], .pie2-redes a, .pie nav a';
 export function Subir() {
   const [ver, setVer] = useState(false);
   const yo = useRef(null);
@@ -877,7 +879,8 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     ? <>{aviso.nivel && !aviso.cuenta ? <b>{'Nivel ' + aviso.nivel + ':'}</b> : null}
       {(aviso.nivel && !aviso.cuenta ? ' ' : '') + (aviso.suma.length === 1 ? (aviso.nivel && !aviso.cuenta ? 'se sumó' : 'Se sumó') : (aviso.nivel && !aviso.cuenta ? 'se sumaron' : 'Se sumaron')) + ' '}
       <b>{unir(aviso.suma)}</b>{aviso.suma.length === 1 ? ' a tu barra. Deslízala para verla' : ' a tu barra. Deslízala para verlas'}</>
-    : 'Desliza la barra de costado: hay más secciones';
+    // «de abajo» y no «de costado» (revisión 21/11): en el Dashboard, que tiene su menú al costado, se leía como ese menú
+    : 'Desliza la barra de abajo: hay más secciones';
 
   const casilla = (x) => {
     if (!x) {

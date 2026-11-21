@@ -683,8 +683,11 @@ export default function App() {
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
   // 🏟️ `#/ranking/ligas[/<id>]` es el link de antes del 16/10/2026 (Publicaciones, las historias, lo compartido): abre
   // la sección nueva, y la dirección pasa a ser la de ahora
-  const ligasVieja = partes[0] === 'ranking' && partes[1] === 'ligas';
-  if (ligasVieja) partes.splice(0, 2, 'ligas');
+  // 🧭 `#/misiones` no existía y caía al Inicio sin avisar (revisión 21/11): las Misiones viven en el Ranking. Mismo arreglo
+  // que el de las ligas: se abre la de verdad y se corrige la dirección
+  const ligasVieja = (partes[0] === 'ranking' && partes[1] === 'ligas') || partes[0] === 'misiones';
+  if (partes[0] === 'misiones') partes.splice(0, 1, 'ranking', 'misiones');
+  else if (ligasVieja) partes.splice(0, 2, 'ligas');
   useEffect(() => {
     if (!ligasVieja) return;
     const r = '#/' + partes.join('/');

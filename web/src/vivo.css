@@ -938,6 +938,10 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
   .app .escena.es2 .es-pc{display:none}
   /* los carteles (Se busca, la caza), al medio del alto: el hueco, repartido arriba y abajo */
   .app .escena.es2 .mo.lay-B{align-content:center}
+  /* 👆 Se busca con los que siguen libres: a 390 «VER SE BUSCA» y «SU PERFIL» caían en y≈741-789, detrás de la barra de
+     abajo (revisión 21/11). Los botones van pegados al texto y las caras de los libres debajo, así la acción entra arriba */
+  .app .escena.es2 .mo-txt:has(> .es-buscados){display:flex;flex-direction:column}
+  .app .escena.es2 .mo-txt > .es-buscados{order:1}
   .app .escena.es2 .es-prox-w{max-width:none}
   /* 🍱 dos o más en vivo: los otros en una fila que se desliza, con el nombre en un renglón. Apilados, cada uno sumaba ~100 px
      y con cuatro en vivo (las noches de semana) el escenario entero crecía, y con él el hueco de todos los demás */
@@ -1533,7 +1537,7 @@ a.lgp-nom:hover{text-decoration:underline}
 .lgf-d-tag{justify-self:start;padding:5px 7px 4px;background:#E41373;color:#FFFFFF;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
 .lgf-d.cla .lgf-d-tag{background:#29B298;color:#030304}
 .lgf-d > b{font:900 30px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
-.lgf-d > span{font:500 14px/1.45 Archivo,sans-serif;color:#D6D6D2;max-width:46ch}
+.lgf-d > span:not(.lgf-d-tag){font:500 14px/1.45 Archivo,sans-serif;color:#D6D6D2;max-width:46ch} /* sin el :not pisaba a la etiqueta: «CIERRA EN 40 DÍAS» salía gris sobre magenta, 3,11:1 (revisión 21/11) */
 .lgf-d-hoy{display:flex;align-items:center;gap:10px;margin-top:2px;min-width:0}
 .lgf-d-hoy small{font:700 14px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:#A5A5A0;min-width:0}
 .lgf-caras{display:flex;flex:none}
@@ -2003,6 +2007,13 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-subs a.on{color:#F6F6F6;border-bottom-color:#29B298;background:rgba(41,178,152,.16)}
 /* en la compu, las doce tienen que entrar sin deslizar desde ~1150 px (Dlx mira a 1180–1333): menos aire entre letras */
 @media (min-width: 900px){.rk-subs a{padding-inline:10px;letter-spacing:.03em}}
+/* 🖱️ CATORCE, NO DOCE (revisión 21/11): con «Global» la tira medía 1403 px en 1333 y «MISIONES» quedaba cortada, sin barra
+   y sin poder deslizarla con el mouse. En la compu la letra baja con el ancho para que entren las catorce en un renglón
+   (17,5 px desde ~1240, unos 16 a 1180) y, si la ventana es tan angosta que ni así entran, bajan de línea: nunca escondidas */
+@media (min-width: 900px){
+  .rk-subs-in{flex-wrap:wrap;overflow-x:visible}
+  .rk-subs a{padding-inline:7px;font-size:clamp(14px,calc((100vw - 190px) / 61),17.5px)}
+}
 .rk-subs a i{font-style:normal;font-size:12px;letter-spacing:.06em;border:1.5px solid currentColor;padding:2px 4px}
 .rk-subs a.pronto:not(.on){color:#6E6E6A}
 /* en el celular el círculo de color va abajo, detrás del podio: arriba quedaba debajo del texto gris */
@@ -2138,7 +2149,10 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
   .app .rk-cab{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:48px;padding:40px var(--gut) 36px}
 
   .app .rk-tx .hero-p{max-width:44ch;font-size:15px}
-  .app .rk-podio{grid-template-columns:168px 204px 168px;gap:14px}
+  .app .rk-podio{grid-template-columns:minmax(0,168px) minmax(0,204px) minmax(0,168px);gap:14px} /* con tope y sin piso: entre 900 y ~1100 la caja mide ~470 y el podio de 568 se salía 98 px por la derecha */
+  /* adentro de la caja del podio (~820 px a 1333) los tres puestos iban pegados a la izquierda y dejaban ~250 px vacíos a la
+     derecha (revisión 21/11): al medio */
+  .app .rka .rk-podio{justify-content:safe center}
   .app .rk-ped-n{font-size:46px}
   .app .rk-p.p1 .rk-ped-n{font-size:60px}
   .app .rk-p.p1 .rk-ped{min-height:116px}
@@ -2148,6 +2162,15 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
   .app .rk-ped small{font-size:12px}
   .app .rk-sec{padding:26px var(--gut) 6px}
   .app .rk-fil{grid-template-columns:minmax(240px,340px) minmax(0,1fr);align-items:center}
+  /* 🧹 los filtros, en su propio renglón (revisión 21/11): al lado del buscador tenían 856 px para 870 a 1.210 de chips, así
+     que «PAÍS» (o «URB · PAÍS») bajaba solo, y la tabla arrancaba a otra altura en cada pestaña. Abajo del buscador, a
+     todo el ancho y un poco más juntos, entran en una fila en todas las pestañas de hoy */
+  .app .rk-fil{grid-template-columns:minmax(0,1fr)}
+  .app .rk-fil-top{max-width:340px}
+  .app .rk-fil .rk-chips{gap:5px}
+  .app .rk-fil .rk-chips button{padding-inline:8px}
+  /* el selector de país mide lo que dice («País»), no lo que dice su opción más larga («Rep. Dominicana»): 163 px en vez de ~80 */
+  .app .rk-fil .rk-sel select{field-sizing:content;padding-left:9px}
   .app .rk-t td{padding:10px 10px}
   .app .rk-lugar{bottom:16px;margin:0 var(--gut) 16px;border:2px solid #29B298;border-top-width:3px}
 }
@@ -2335,7 +2358,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-g button.sel{background:var(--inv);color:var(--inv-tinta)}
 .evp-g button em{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:100%;font-style:normal}
 .evp-g button i{width:6px;height:6px;border-radius:50%}
-.evp-g button u{font:700 15px/1 "Barlow Condensed",sans-serif;text-decoration:none}
+.evp-g button u{font:700 15px/1 "Barlow Condensed",sans-serif;text-decoration:none;flex-basis:100%;text-align:center} /* el «+N» siempre abajo de los puntos: al lado se salía de la celda (revisión 21/11) */
 .evp-tx{margin:0;font:400 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
 .evp-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
 .evp-lnk{background:none;border:0;padding:0;color:var(--tinta);font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase;
@@ -2560,7 +2583,7 @@ a.rk-z:hover{border-color:var(--linea)}
   font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .nt-chip em{font-style:normal;color:var(--nt-tinta);margin-left:4px}
 .nt-chip.on{background:var(--nt-tinta);color:#030304;border-color:var(--nt-tinta)}
-.nt-chip.on em{color:var(--nt-mag)}
+.nt-chip.on em{color:#C0105F} /* sobre el chip blanco el magenta daba 4,19:1 a 13 px; éste da 5,6:1 (revisión 21/11) */
 .nt-cuerpo{flex:1 1 auto;min-height:0;overflow:auto}
 .nt-p ul{list-style:none;margin:0;padding:0}
 .nt-s{position:sticky;top:0;z-index:1;margin:0;padding:10px 16px 6px;background:var(--nt-panel);display:flex;justify-content:space-between;
@@ -2845,6 +2868,13 @@ li.nt-f{cursor:default}
 @media (min-width: 900px){.app .tj-tuyas-l{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}}
 .tj-grilla{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}
 .tj-grilla li{display:grid;gap:8px;align-content:start;min-width:0}
+/* 🖼️ la carta con marco del Pase (`.mk`, más abajo) es más angosta —el marco le come .6em por lado— y sus esquinas salen
+   1.2em: el nombre quedaba ~16 px más arriba que el de las vecinas y la esquina de abajo pisaba la «M» de MCO o la caja
+   «#3» del podio (revisión 21/11). La carta se apoya abajo, así todos los nombres de una fila quedan en la misma línea, y
+   las esquinas tienen su aire arriba y abajo */
+.tj-grilla li{grid-template-rows:1fr auto;align-content:stretch}
+.tj-grilla li > .sin-boton{align-self:end}
+.tj-grilla .mk-t:not(.chica),.ta-pd .mk-t:not(.chica),.ta-resto .mk-t:not(.chica),.ta-nue-l .mk-t:not(.chica){margin-block:1.3em}
 .tj-grilla .sin-boton .tj-c,.tj-tu .sin-boton .tj-c{transition:transform .2s cubic-bezier(.2,.8,.2,1)}
 @media (hover: hover) and (pointer: fine){.tj-grilla .sin-boton:hover .tj-c,.tj-tu .sin-boton:hover .tj-c{transform:translateY(-4px)}}
 @media (min-width: 600px){.tj-grilla{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -3857,6 +3887,9 @@ li.nt-f{cursor:default}
 .lb-b-ev{display:flex;align-items:center;gap:12px;min-width:0}
 .lb-b-ev img{width:54px;height:54px;border-radius:50%;flex:none;border:2px solid currentColor}
 .lb-b-ev b{font:900 28px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
+/* 📱 a 390 «CLASIFICATORIO» no entraba en 256 px y se partía en «CLASIFICATOR / IO» (revisión 21/11): la letra baja con el
+   ancho para que la palabra larga entre entera, y si aun así no entra corta en sílaba antes que en cualquier letra */
+@media (max-width:520px){.lb-b-ev b{font-size:clamp(19px,5.4vw,28px);overflow-wrap:break-word;hyphens:auto}.lb-b-ev img{width:44px;height:44px}}
 .lb-b-pr{display:grid;gap:4px}
 .lb-b-pr em{font:700 16px/1.25 "Barlow Condensed",sans-serif;font-style:normal;color:#1F7A68}
 .lb-boton.vivo .lb-b-pr em{color:#F6F6F6}
@@ -5022,7 +5055,7 @@ a.mc{color:inherit;text-decoration:none}
 .pn-saldo{text-shadow:0 0 18px rgba(79,224,193,.35)}
 /* 📅 La semana: los siete días */
 .pn-dias7{display:flex;gap:3px;margin-top:4px}
-.pn-dias7 i{width:16px;height:16px;display:grid;place-items:center;font:800 9px/1 Archivo,sans-serif;font-style:normal;background:#1f2a3a;color:#7d8da3}
+.pn-dias7 i{width:16px;height:16px;display:grid;place-items:center;font:800 9px/1 Archivo,sans-serif;font-style:normal;background:#1f2a3a;color:#9aa9bf} /* era #7d8da3: 4,28:1 a 9 px; éste da 6:1 (revisión 21/11) */
 .pn-dias7 i.si{background:#2b4a75;color:#cfe3ff}
 .pn-dias7 i.hoy{background:var(--azul);color:#000}
 @media (max-width: 760px){.pn-dias7{display:none}}
@@ -5690,6 +5723,8 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .pop-gratis .en-g{display:grid;gap:8px}
 .pop-gr-ok{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#29B298;margin-left:6px}
 @media (max-width: 760px){.pn-gratis{padding:8px 10px;gap:8px}.pn-gr-ic{width:32px;height:32px}.pn-gratis small{white-space:normal}}
+/* 📱 «5.000 Puntos de Ti…» y «DIGÁMOSLE HOL…»: el premio es el dato y se cortaba a la mitad (revisión 21/11). Dos renglones */
+@media (max-width: 760px){.pn-gratis b,.pn-anc .pn-tx b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}}
 /* de a cuatro, la racha entra: sin «tu mejor» al costado, los días más finos y el botón más chico */
 .pn-fila.cuatro .pn-rnum{display:none}
 .pn-fila.cuatro .pn-racha{gap:10px;padding:8px 10px}
@@ -6177,7 +6212,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
   font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .lu-acc{display:flex;flex-wrap:wrap;gap:8px}
 .lu-btn{display:inline-flex;align-items:center;padding:10px 14px;border:1px solid #3A3A40;border-radius:4px;background:#141417;color:#F6F6F6;
-  cursor:pointer;font:800 12.5px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none}
+  cursor:pointer;font:800 12.5px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap}
 .lu-btn.v{background:#29B298;border-color:#29B298;color:#030304}
 @media (hover: hover) and (pointer: fine){.lu-btn:not(.v):hover{border-color:#F6F6F6}}
 .lu-feat .lu-soc{margin-top:0}
@@ -6676,8 +6711,10 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .ap-cap:hover,.ap-cap:focus-visible{border-color:var(--linea);outline:none}
 /* ❓ el «¿Cómo funciona?» de cada página: arriba a la derecha, sin correr nada */
 .cf{position:relative;z-index:6;height:0;display:flex;justify-content:flex-end;padding:0 var(--gut)}
-.cf-q{position:relative;margin-top:12px;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px 0 5px;background:#0B0B0D;color:#F6F6F6;
-  border:1px solid #3a3a3f;border-radius:17px;cursor:pointer;font:700 13.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+/* radio de 4 px como todo botón de la casa (era una píldora de 17); el «?» y el punto siguen redondos. Y 4 px más arriba: en la
+   portada de la crew montaba sobre el borde del cuadro de números (revisión 21/11) */
+.cf-q{position:relative;margin-top:8px;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px 0 5px;background:#0B0B0D;color:#F6F6F6;
+  border:1px solid #3a3a3f;border-radius:4px;cursor:pointer;font:700 13.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .cf-q i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#F6F6F6;color:#030304;font:900 14px/1 Archivo,sans-serif;font-style:normal}
 .cf-q.on,.cf-q:hover,.cf-q:focus-visible{border-color:var(--magenta);outline:none}
 .cf-pt{position:absolute;left:-3px;top:-3px;width:10px;height:10px;border-radius:50%;background:var(--magenta);box-shadow:0 0 0 3px #030304}
@@ -7446,7 +7483,12 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
   .modt-flot.on i{background:#fff;color:#E41373}
   .modt-flot:focus-visible{outline:2px solid #E41373;outline-offset:3px}
   .clara .modt-flot{background:#030304;color:#F6F6F6}
+  /* 🙈 al bajar se va por la derecha y al subir vuelve (mods_herramientas.jsx, `fuera`) */
+  .modt-flot{transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .18s ease-out}
+  .modt-flot.fuera{transform:translateX(calc(100% + 22px));opacity:0;pointer-events:none}
+  .app.calma .modt-flot{transition:none}
 }
+@media (prefers-reduced-motion: reduce){.modt-flot{transition:none}}
 .modt-esconder{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 140px);z-index:96;padding:14px;background:#0B0B0D;color:#F6F6F6;
   border:1px solid #2A2A2C;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.55);font:400 14px/1.45 Archivo,sans-serif}
 .modt-esconder p{margin:0 0 10px}

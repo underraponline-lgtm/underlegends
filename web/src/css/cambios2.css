@@ -132,6 +132,9 @@
   .app .cx-cab{padding:40px var(--gut) 34px}
   .app .cx-cabeza{grid-template-columns:minmax(0,1fr) minmax(320px,460px)}
   .app .cx-dos{grid-template-columns:minmax(0,1fr) 400px}
+  /* el mapa de calor estirado a 400 px hacía casillas de ~40 px y bajaba hasta ~880 mientras la última versión terminaba
+     en ~655: un hueco de ~780×220 (revisión 21/11). Casillas de 22 px, apoyadas a la derecha */
+  .app .cx-calor{grid-auto-columns:minmax(0,22px);justify-content:end;gap:3px}
   .app .cx-papel{padding-left:var(--gut);padding-right:var(--gut)}
   /* la misma grilla para todos los días: la fecha pegada al costado de sus versiones */
   .app .cx-dia{grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:start;padding:10px 0 16px}
@@ -140,5 +143,12 @@
   .app .cx-d small{order:3;flex-basis:100%}
   .app .cx-prev{padding-top:13px}
   .app .cx-t b{font-size:18px}
+}
+/* 📱 la flecha y compartir (44 px cada uno) dejaban ~190 px al título y «/setup: tus llaves, tus ligas y la comprobación del
+   final» iba en 4 renglones (revisión 21/11): compartir sólo en la versión abierta, y el título un punto más chico */
+@media (max-width: 599px){
+  .cx-v:not(.abierta) .cx-sh{display:none}
+  .cx-v:not(.abierta) .cx-s{margin-right:6px}
+  .cx-t b{font-size:15px}
 }
 @media (prefers-reduced-motion: reduce){.cx-mh svg,.cx-d svg,.cx-s svg,.cx-s{transition:none}}

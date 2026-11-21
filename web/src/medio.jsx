@@ -562,7 +562,9 @@ export function McPersona({ liga, f, dato, cual = 'temporada', arriba = '' }) {
       {/* el puesto de ESTE ranking, arriba y aparte, cuando la carta trae el «#» de otro (ELO, Ligas) */}
       {arriba ? <span className="mc-arriba">{arriba}</span> : null}
       <Carta liga={liga} k={f.k} cual={cual} cls="ci mc-ci" />
-      {dato || vieja ? <div className="mc-pie"><small>{dato}{dato && vieja ? ' · ' : ''}{vieja ? '⏳ SE ESTÁ REDIBUJANDO' : ''}</small></div> : null}
+      {/* ⏳ corto y en un renglón (revisión 21/11): «SE ESTÁ REDIBUJANDO» iba en dos renglones abajo de cada carta del
+          celular, y al pie de la destacada (más baja) quedaba ~20 px más arriba que los de su fila */}
+      {dato || vieja ? <div className="mc-pie"><small>{dato}{dato && vieja ? ' · ' : ''}{vieja ? <span className="mc-dib" title="La carta se está redibujando: su número puede no coincidir todavía">⏳ redibujando</span> : null}</small></div> : null}
     </article>
   );
 }
@@ -1057,7 +1059,10 @@ const jugoAlgo = (a) => (a.dias || []).some(([, x]) => Object.values(x || {}).so
 function Numeros({ liga }) {
   const c = liga.d.comunidad || {};
   const a = liga.d.actividad || {};
-  const grandes = [['PERSONAS', c.personas, 'en ' + (c.servidores || 0) + ' servidores'], ['EN LA LISTA', c.lista, 'compitieron o se anotaron'],
+  // 🔢 la cuenta de personas sale de los Discords que el bot puede leer, que pueden ser menos que los socios: decía «en 15
+  // servidores» al lado de «Servidores 16» (revisión 21/11). Si faltan, se dice de cuántos
+  const nSv = c.servidores || 0, totSv = Object.keys(liga.svs || {}).length;
+  const grandes = [['PERSONAS', c.personas, 'en ' + nSv + (totSv > nSv ? ' de los ' + totSv : '') + ' servidores'], ['EN LA LISTA', c.lista, 'compitieron o se anotaron'],
     // 🪪 (18/11/2026) «con las cuatro tarjetas» era la regla de antes de la 2.41: verificarse da la Servidor, y las demás
     // piden lo suyo. `verificados` cuenta a quien pasa el portón: Miembro de DRA, con su Discord y su país
     ['CON SU DISCORD', c.con_id, 'el bot sabe quiénes son'], ['VERIFICADAS', c.verificados, 'Miembros de Discord Rap Español']].filter((x) => x[1]);
@@ -1123,5 +1128,6 @@ export function LaLiga({ liga }) {
   const a = liga.d.actividad || {};
   const hay = c.personas || c.lista || c.con_id || c.verificados || jugoAlgo(a) || (liga.d.records || []).length;
   if (!hay) return null;
-  return <Sec id="numeros" titulo="La Liga en números" enlace="Socios" href="#/socios"><Numeros liga={liga} /></Sec>;
+  // sin «Socios →»: esta sección vive en la página de Socios, y el link recargaba la misma página (revisión 21/11)
+  return <Sec id="numeros" titulo="La Liga en números"><Numeros liga={liga} /></Sec>;
 }

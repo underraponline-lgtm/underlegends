@@ -142,6 +142,13 @@ h1,h2,h3,p{margin:0}
 .pie2-redes{display:flex;flex-wrap:wrap;gap:6px}
 .pie2-redes a{width:34px;height:34px;display:grid;place-items:center;border:1.5px solid var(--suave);color:var(--tinta)}
 .pie2-redes a:hover,.pie2-redes a:focus-visible{border-color:var(--magenta);color:var(--magenta)}
+/* 👆 en el celular «GUÍA», «PUBLICACIONES»… medían ~26×15 con 8 px entre renglones, y las redes 34×34 (revisión 21/11,
+   Fitts): 44 de alto para el dedo, sin aire de más entre renglones */
+@media (max-width: 899px){
+  .pie nav{gap:0 16px}
+  .pie nav a{display:inline-flex;align-items:center;min-height:44px}
+  .pie2-redes a{width:44px;height:44px}
+}
 .tabbar{display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid var(--linea);background:var(--fondo)}
 .tabbar a{display:grid;justify-items:center;gap:4px;padding:10px 0 12px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase}
 .tabbar a.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 -4px 0 var(--verde)}
@@ -505,6 +512,11 @@ h1,h2,h3,p{margin:0}
 @media (min-width: 900px){.app .d-vis{width:196px}}
 .mcs2{grid-auto-columns:138px}
 .mc-ci{width:100%}
+/* ⏳ el aviso de carta redibujándose: un renglón, y el pie de cada carta apoyado en la base de la fila, así la destacada
+   (más baja) no deja su aviso ~20 px más arriba que el de las vecinas (revisión 21/11) */
+.mc-dib{white-space:nowrap}
+.mcs2 > .mc{display:flex;flex-direction:column;gap:8px}
+.mcs2 > .mc > .mc-pie{margin-top:auto}
 @media (min-width: 900px){.app .mcs2{grid-template-columns:repeat(5,1fr)}}
 .r2 li{grid-template-columns:40px 26px 1fr 34px 54px}
 .r-nom small{display:block;font:700 15px/1.2 "Barlow Condensed",sans-serif;color:var(--gris);margin-top:2px}

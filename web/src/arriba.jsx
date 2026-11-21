@@ -37,13 +37,19 @@ export const MENU_TODO = [...MENU, ['Tienda', '#/tienda'], ['Invita y gana', '#/
 // entraban. Seis botones entran en cualquier compu; los que llevan lista la abren al tocarlos o al pasar el mouse
 // 🎨 cada ranking con su ícono (Dlx, 12/11/2026: «que cada ícono de cada ranking en ese submenú sea diferente»): eran diez
 // iguales. El cuarto lugar es el ícono (`Ico` de piezas.jsx)
-const RK_SUBS = [['Temporada', 'temporada', 'Los puntos y el OVR de la temporada', 'ranking'], ['Competitivo', 'competitivo', 'El Score y el rango', 'escudo'],
-  ['ELO', 'divisiones', 'Las batallas uno contra uno, por divisiones', 'cruce'], ['Duelos', 'duelos', 'Quién gana más duelos', 'micro'],
+// 🧭 las catorce, en el orden y con el nombre de las pestañas del Ranking (`RANKINGS` de ranking.jsx; revisión 21/11: eran doce,
+// sin Global ni Servidores, y decía «ELO» donde la pestaña dice «Ranking ELO»)
+const RK_SUBS = [['Temporada', 'temporada', 'Los puntos y el OVR de la temporada', 'ranking'],
+  ['Ranking ELO', 'divisiones', 'Las batallas uno contra uno, por divisiones', 'cruce'],
+  ['Global', 'global', 'Los Pro, las plazas y la Liga, juntos', 'premio'],
+  ['Competitivo', 'competitivo', 'El Score y el rango', 'escudo'],
+  ['Servidores', 'servidores', 'Los que mandan en cada servidor', 'servidor'], ['Duelos', 'duelos', 'Quién gana más duelos', 'micro'],
   ['Podios', 'podios', 'Campeones y finalistas', 'copa'], ['Rachas', 'rachas', 'Eventos seguidos llegando lejos', 'fuego'],
-  ['Países', 'paises', 'Por los puntos de su gente', 'mundo'], ['Crews', 'crews', 'Por los puntos de sus miembros', 'crews'],
   // ⚡📈 Actividad (lo que era Eventos) y Ascensos (Dlx, 13/11/2026: «puedes hacer que aparezca el de ascensos y eventos
   // pero eventos renombrados actividad»): estaban en las pestañas del Ranking y no en esta lista
-  ['Actividad', 'eventos', 'Quién juega más: en general y en eventos', 'pulso'], ['Ascensos', 'ascensos', 'El ascenso de cada servidor, al día', 'subir'],
+  ['Actividad', 'eventos', 'Quién juega más: en general y en eventos', 'pulso'],
+  ['Países', 'paises', 'Por los puntos de su gente', 'mundo'], ['Crews', 'crews', 'Por los puntos de sus miembros', 'crews'],
+  ['Ascensos', 'ascensos', 'El ascenso de cada servidor, al día', 'subir'],
   ['Most Wanted', 'mw', 'Los buscados de la semana', 'mira'], ['Misiones', 'misiones', 'Las de la semana, para todos', 'ok']];
 export const GRUPOS = [
   ['Inicio', '#/'],
@@ -873,7 +879,16 @@ function PanelAvisos({ liga, B, sale, onCerrar }) {
 // un título de video de 70 letras ocupaba seis renglones del escenario: pasado de 42, un cuerpo menos
 const largo = (t) => 'hero-ev largo' + (String(t || '').length > 42 ? ' muy-largo' : '');
 // «RAP EXHIBITION 2 8» (el «/» se pierde en el dato) partía el 8 solo en el tercer renglón: los números van juntos
-const juntos = (t) => String(t || '').replace(/(\d) (\d)/g, '$1' + String.fromCharCode(160) + '$2');
+// ✍️ una FRASE con mayúscula sólo al principio (revisión 21/11): `capital()` es para nombres —inicial en cada palabra y
+// las de una o dos letras en mayúsculas—, y sobre «lo votó la gente: 1 de 3 votos» daba «LO Votó LA Gente: 1 DE 3 Votos».
+// Si viene todo en mayúsculas o todo en minúsculas se baja entera; si viene mezclada se respeta como la escribieron
+const frase = (t) => {
+  const s = String(t || '').trim();
+  const letras = s.replace(/[^\p{L}]/gu, '');
+  const b = letras && (letras === letras.toUpperCase() || letras === letras.toLowerCase()) ? s.toLowerCase() : s;
+  return b.charAt(0).toUpperCase() + b.slice(1);
+};
+const juntos = (t) =>String(t || '').replace(/(\d) (\d)/g, '$1' + String.fromCharCode(160) + '$2');
 // 🔴 EL TÍTULO DEL ESCENARIO NO PARTE PALABRAS (Dlx, 02/10/2026, con una captura: «GENERACION / ES UN DESTINO»).
 // `.mo-txt h1` tiene `overflow-wrap:anywhere`, así que una palabra más ancha que la columna se partía donde caía. Ahora
 // el tamaño lo manda la palabra más larga: `--pal` son sus letras, y `.ev-pal` (vivo.css) achica la letra hasta que
@@ -2582,7 +2597,7 @@ function momentos(liga, vivoL, ctx = {}) {
           {nuevos || ultimo ? <span className="hero-meta">{String(b.cn || '').toUpperCase()}</span> : null}</div>
         <Tit c="hero-ev largo">{num(b.v) + ' PTS POR ' + limpio(b.n).toUpperCase()}</Tit>
         <p className="hero-p">{caz ? <>Lo cazó {por || 'alguien'}{((b.c || {}).ev ? ' en ' + limpio(b.c.ev) : '') + ' y cobró ' + num(b.v) + '.'}</>
-          : (b.m ? capital(b.m) + '. ' : '') + 'Quien le gane, cobra.' + (fin ? ' Vence ' + liga.dia(fin) + '.' : '')}</p>
+          : (b.m ? frase(b.m) + '. ' : '') + 'Quien le gane, cobra.' + (fin ? ' Vence ' + liga.dia(fin) + '.' : '')}</p>
         <Libres liga={liga} libres={libres} otros={otros} />
         <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.ir('sebusca')}>{nuevos ? 'Ver los buscados' : 'Ver Se busca'}</button>
           {b.k ? <a className="btn borde" href={'#/r/' + encodeURIComponent(b.k)}>Su perfil</a> : null}</div></>,

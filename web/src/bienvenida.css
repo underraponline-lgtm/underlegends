@@ -242,6 +242,8 @@
 @media (hover:hover) and (pointer:fine){.bv-puntos-nav button:not(.on):hover i{background:rgba(246,246,246,.7)}}
 /* sólo el nombre de la página en la que estás: los seis no entran al lado del botón (medido: 620 px en 578) */
 .bv-puntos-nav button:not(.on) span{display:none}
+/* 👆 un punto solo medía 22×44 (revisión 21/11, Fitts): 44 de ancho, con el punto al medio */
+.bv-puntos-nav button{min-width:44px;justify-content:center}
 .bv-acc{display:grid;justify-items:center;gap:6px;width:100%}
 .bv-acc-2{display:grid;justify-items:center;gap:2px;text-align:center}
 .bv-si{display:inline-flex;align-items:center;justify-content:center;gap:12px;width:min(100%,420px);min-height:56px;padding:14px 22px;

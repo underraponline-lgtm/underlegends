@@ -320,6 +320,9 @@ function Talonario({ liga, R }) {
             <><span className="rf-late" /><small className="rf-cas-nom">en camino</small></>
           ) : fin ? (
             <span className="rf-marco" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L3.3 9.2l6.1-.6z" /></svg></span>
+          ) : prs ? (
+            // 🎁 la casilla que da premio lleva su ícono adentro, como la 10 lleva el marco (revisión 21/11: eran 9 cajas vacías)
+            <span className="rf-cas-pr" aria-hidden="true">{prs.map(([t], i) => <Ico key={i} n={t === 'drop' ? 'regalo' : t === 'pdt' ? 'moneda' : 'premio'} t={22} />)}</span>
           ) : null}
         </span>
         {prs ? (

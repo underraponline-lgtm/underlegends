@@ -293,13 +293,31 @@ export function BotonModsFlot({ dc, k }) {
   const [ab, setAb] = useState(false);
   const [aviso, setAviso] = useState(false);
   const largo = useRef(0);
+  // 🙈 SE VA AL BAJAR Y VUELVE AL SUBIR (revisión 21/11, G6#17): quieta abajo a la derecha tapaba el jurado de la llave, el
+  // multiplicador del Dashboard, la vitrina del perfil y la escena del Pase. Leyendo hacia abajo no estorba; para usarla
+  // alcanza con subir un poco. Arriba de todo se ve siempre. Con el panel abierto no se mueve
+  const [fuera, setFuera] = useState(false);
+  useEffect(() => {
+    let antes = window.scrollY || 0, cuadro = 0;
+    const mirar = () => {
+      cuadro = 0;
+      const y = window.scrollY || 0, d = y - antes;
+      if (y < 80) setFuera(false);
+      else if (d > 6) setFuera(true);
+      else if (d < -6) setFuera(false);
+      if (Math.abs(d) > 6 || y < 80) antes = y;
+    };
+    const pedir = () => { if (!cuadro) cuadro = requestAnimationFrame(mirar); };
+    window.addEventListener('scroll', pedir, { passive: true });
+    return () => { window.removeEventListener('scroll', pedir); if (cuadro) cancelAnimationFrame(cuadro); };
+  }, []);
   if (!hay || !visible || (!xs.length && !prendidosMods(M))) return null;
   const on = prendidosMods(M);
   const apretar = () => { largo.current = setTimeout(() => { largo.current = -1; setAviso(true); }, 650); };
   const soltar = () => { if (largo.current > 0) clearTimeout(largo.current); };
   return (
     <>
-      <button type="button" className={'modt-b modt-flot' + (on ? ' on' : '')} aria-haspopup="dialog" aria-expanded={ab}
+      <button type="button" className={'modt-b modt-flot' + (on ? ' on' : '') + (fuera && !ab ? ' fuera' : '')} aria-haspopup="dialog" aria-expanded={ab}
         aria-label={'Mods en esta página' + (xs.length ? ': ' + xs.length + (xs.length === 1 ? ' cosa' : ' cosas') : '')}
         onPointerDown={apretar} onPointerUp={soltar} onPointerLeave={soltar} onContextMenu={(e) => e.preventDefault()}
         onClick={() => { if (largo.current === -1) { largo.current = 0; return; } setAb((v) => !v); }}>

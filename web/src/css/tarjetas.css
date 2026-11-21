@@ -91,6 +91,12 @@
 .ta-cmp .rka-h{margin:0}
 .ta-cmp-t{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
 .ta-cmp-t .rk-chips{flex:1 1 auto;min-width:0}
+/* 📱 TEMPORADA, COMPETITIVA y SERVIDOR entraban en un renglón y PAÍS caía solo abajo (revisión 21/11): las cuatro en una
+   grilla pareja, a 13 px */
+@media (max-width: 520px){
+  .ta-cmp-t .ta-chips{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));flex-basis:100%;gap:6px;overflow:visible}
+  .ta-cmp-t .ta-chips button{justify-content:center;padding:0 4px;font-size:13px;min-width:0}
+}
 .ta-cmp-el{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .ta-vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px}
 .ta-vs figure{margin:0;display:grid;gap:6px;justify-items:center;min-width:0}
@@ -161,7 +167,13 @@
 }
 @media (min-width: 900px){
   .ta-cab{padding:30px var(--gut) 34px}
-  .ta-tipo{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:30px;align-items:start}
+  /* el podio va centrado contra las dos filas de la derecha: arriba dejaba ~150 px vacíos abajo (revisión 21/11) */
+  .ta-tipo{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:30px;align-items:center}
+  /* sin cuenta la columna izquierda es corta («¿Y las tuyas?» + Comparar) y seis cartas en el riel dejaban un hueco de
+     ~820×300 debajo de Comparar: cuatro, y el link «Las N en Publicaciones» lleva al resto. Con tu mano hay alto para seis */
+  .ta-dos:has(.ta-alb) .ta-nue-l li:nth-child(n+5){display:none}
+  /* el mismo link dos veces (arriba a la derecha y el botón de abajo): en la compu queda el de abajo */
+  .ta-mide .ta-lnk{display:none}
 }
 @media (max-width: 899px){
   .ta-mano{gap:16px 12px}

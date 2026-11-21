@@ -14,12 +14,21 @@ import { useEffect, useRef, useState } from 'react';
  * ⚠️ CUANDO NO EXISTE, YOUTUBE NO DA UN ERROR: contesta 404 CON UNA IMAGEN, el cuadrito gris de 120×90 con «…», y
  * Chrome la dibuja como si nada (dispara `load`, no `error`). Pasó el 12/10/2026 en el perfil de Makmah: su primer
  * video salía gris. Por eso también se cambia cuando lo que cargó mide 120 de ancho. */
+// 🧠 los videos que ya sabemos que no tienen `hq720` (revisión 21/11: el 404 quedaba en la consola en cada visita a Socios,
+// con los Shorts y los videos viejos). Se recuerdan en este navegador y la próxima vez se pide `hqdefault` de una.
+// Sólo una comodidad: si el almacenamiento no anda, se vuelve a probar como antes
+const CHICOS = 'lg:yt-chico';
+const chicos = () => { try { return JSON.parse(localStorage.getItem(CHICOS) || '[]') || []; } catch (e) { return []; } };
+const anotarChico = (vid) => {
+  try { const xs = chicos().filter((x) => x !== vid); xs.push(vid); localStorage.setItem(CHICOS, JSON.stringify(xs.slice(-200))); } catch (e) { /* sin almacenamiento */ }
+};
 export function Miniatura({ vid, cls }) {
+  const chico = chicos().includes(vid);
   const atras = (im) => {
-    if (!im.dataset.atras) { im.dataset.atras = '1'; im.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg'; }
+    if (!im.dataset.atras) { im.dataset.atras = '1'; anotarChico(vid); im.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg'; }
   };
   return (
-    <img className={cls} alt="" src={'https://i.ytimg.com/vi/' + vid + '/hq720.jpg'} loading="lazy" decoding="async"
+    <img className={cls} alt="" src={'https://i.ytimg.com/vi/' + vid + (chico ? '/hqdefault.jpg' : '/hq720.jpg')} loading="lazy" decoding="async" data-atras={chico ? '1' : undefined}
       onLoad={(e) => { if (e.currentTarget.naturalWidth <= 120) atras(e.currentTarget); }}
       onError={(e) => atras(e.currentTarget)} />
   );

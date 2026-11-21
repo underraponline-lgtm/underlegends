@@ -648,7 +648,7 @@ export function Capitulos() {
               <button type="button" className={'ap-cap' + (ok ? ' hecho' : '') + (ahora ? ' sigue' : '')} onClick={() => pedirRecorrido('cap:' + c.id)}>
                 <span className="ap-n">{j + 1}</span>
                 <span className="ap-tx"><b>{c.t}</b><small>{c.d}</small>
-                  <em>{ok ? <><Ico n="ok" t={13} /> Hecho</> : ahora ? 'Sigue acá' : 'Sin ver'} · {c.pasos.length} pasos · 1 min</em></span>
+                  <em>{ok ? <><Ico n="ok" t={13} /> Hecho</> : ahora ? 'Sigue acá' : 'Sin ver'} · {c.pasos.length} pasos<span className="ap-min">· 1 min</span></em></span>
               </button>
             </li>
           );

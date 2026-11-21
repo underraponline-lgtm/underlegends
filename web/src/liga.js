@@ -27,8 +27,11 @@ export const PAIS = {
 // partirse y encimado con «Ver la llave» (FMS Ceuta, 16/11/2026)
 // eslint-disable-next-line no-misleading-character-class
 const FUERA =/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{3164}\u{2800}\u{2070}-\u{209F}\u{B9}\u{B2}\u{B3}\u{E0020}-\u{E007F}\u{2500}-\u{259F}]/gu;
+// 🆔 y el ID de Discord pegado a un nombre: una mención que el lector de llaves guardó como nombre se leía «MOTERA
+// 1320135304916762695 le ganó a…» en la cinta de Ligas y en Publicaciones (revisión 21/11, G3#1 y G4#6). Sólo cuando va
+// DESPUÉS de otro texto: un ID solo (una clave, un `dc.id`) queda como está
 export function limpio(s) {
-  return String(s || '').replace(FUERA, '').replace(/\s+/g, ' ').replace(/^[ ·•-]+|[ ·•-]+$/g, '');
+  return String(s || '').replace(FUERA, '').replace(/\s+\d{17,20}(?=\s|$)/g, '').replace(/\s+/g, ' ').replace(/^[ ·•-]+|[ ·•-]+$/g, '');
 }
 // 🔤 EL NOMBRE CON LA INICIAL EN MAYÚSCULA (Dlx, 03/10/2026, con la llave de LA REDENCION: «que todo esté en
 // minúsculas exceptuando por la inicial»). La llave trae cada nombre como lo escribió el organizador —«MAYEUTYK»,
