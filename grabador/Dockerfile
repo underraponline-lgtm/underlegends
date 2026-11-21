@@ -8,4 +8,6 @@ RUN npm ci --omit=dev
 COPY *.js ./
 # las frases de la prueba de micro (voz/hacer_voz.py): Piper no viaja, sólo lo que hizo
 COPY voz/*.ogg ./voz/
+# los beats (voz/hacer_beat.py) y su lista, con el crédito de cada beatmaker
+COPY voz/beats/ ./voz/beats/
 CMD ["node", "index.js"]

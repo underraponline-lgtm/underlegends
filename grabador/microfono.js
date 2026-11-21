@@ -37,7 +37,54 @@ export const ESCUCHAR_MAX_S = 20;     // si en este tiempo no juntó `VOZ_MIN_S`
 export const ECO_S = 5;               // cuánto de tu voz te devuelve
 const OCUPADO_CADA = 30 * 60000;      // el «estoy grabando» por escrito, como mucho una vez cada media hora por canal
 //: las frases que tiene que haber en voz/ (las revisa prueba.js)
-export const FRASES = ['hola', 'pitido', 'noteoigo', 'bien', 'bajo', 'satura', 'corta', 'telefono', 'escucha', 'otravez', 'deauno'];
+export const FRASES = ['hola', 'hola_beat', 'pitido', 'noteoigo', 'bien', 'bajo', 'satura', 'corta', 'telefono', 'escucha',
+  'otravez', 'deauno'];
+
+// ── 🚦 LOS LÍMITES (Dlx, 21/11/2026: «tenemos que añadir pruebas para evitar que la gente abuse o cooldowns») ──
+// Por persona: `POR_PERSONA_HORA` pruebas por hora y `ENTRE_PRUEBAS_S` entre una y otra; por servidor,
+// `POR_SERVIDOR_HORA`. Pasado el límite el bot NO entra a la llamada: lo dice por escrito UNA vez por bloqueo, así
+// entrar y salir no sirve para llenar el chat. Cuenta al entrar el bot, también si te vas a la mitad. Todo se cambia
+// en Railway sin tocar código (`PRUEBAS_POR_HORA`, `PRUEBAS_ENTRE_S`, `PRUEBAS_SERVIDOR_HORA`). Vive en memoria: un
+// reinicio lo vacía, y eso está bien (un reinicio es raro y nadie lo provoca).
+const n = (v, d) => (Number.isFinite(Number(v)) && String(v ?? '').trim() !== '' ? Number(v) : d);
+export const POR_PERSONA_HORA = n(process.env.PRUEBAS_POR_HORA, 3);
+export const ENTRE_PRUEBAS_S = n(process.env.PRUEBAS_ENTRE_S, 60);
+export const POR_SERVIDOR_HORA = n(process.env.PRUEBAS_SERVIDOR_HORA, 40);
+const HORA = 3600000;
+
+/** ¿Puede probar ahora? `null` si sí; si no, `{ por: 'seguido'|'persona'|'servidor', en: ms hasta que pueda }`. */
+export function limite(mios = [], delServidor = [], ahora = Date.now()) {
+  const m = mios.filter((t) => ahora - t < HORA);
+  if (m.length && ahora - Math.max(...m) < ENTRE_PRUEBAS_S * 1000) {
+    return { por: 'seguido', en: ENTRE_PRUEBAS_S * 1000 - (ahora - Math.max(...m)) };
+  }
+  if (m.length >= POR_PERSONA_HORA) return { por: 'persona', en: HORA - (ahora - Math.min(...m)) };
+  const s = delServidor.filter((t) => ahora - t < HORA);
+  if (s.length >= POR_SERVIDOR_HORA) return { por: 'servidor', en: HORA - (ahora - Math.min(...s)) };
+  return null;
+}
+
+/** Lo que dice el bot cuando alguien llegó al límite. */
+export function textoLimite(lim, id) {
+  const min = Math.max(1, Math.ceil(lim.en / 60000));
+  if (lim.por === 'seguido') return `🎙️ <@${id}> espera un minuto entre una prueba y otra.`;
+  if (lim.por === 'persona') return `🎙️ <@${id}> ya probaste tu micro ${POR_PERSONA_HORA} veces en la última hora. `
+    + `Vuelve a probar en ${min} min.`;
+  return `🎙️ Hubo muchas pruebas de micro en este servidor en la última hora. Vuelve a probar en ${min} min.`;
+}
+
+// ── 🎵 EL BEAT (Dlx, 21/11/2026: «para hacerlo más real, que ULAYA reproduzca un beat para que el MC pruebe»).
+// Sólo de los beatmakers de `datos/beatmakers.json` (los que dieron permiso) o de beats «Free»/«Uso libre». Cada uno
+// es un recorte de ~30 s hecho por `voz/hacer_beat.py`, y se acredita en el mensaje del final. Sin beats, la prueba
+// es la de antes («habla o rapea»).
+export function beats() {
+  try {
+    const l = JSON.parse(fs.readFileSync(path.join(VOZ, 'beats', 'beats.json'), 'utf8')).beats || [];
+    return l.filter((b) => b && b.archivo && fs.existsSync(path.join(VOZ, 'beats', b.archivo)));
+  } catch (e) {
+    return [];
+  }
+}
 
 export class PruebaMicro {
   /**
@@ -52,6 +99,9 @@ export class PruebaMicro {
     Object.assign(this, { client, canales: new Set(canales), grupo, ocupado, anotar });
     this.sesiones = new Map();      // guild -> { canal, persona }
     this.avisoOcupado = new Map();  // canal -> cuándo
+    this.usos = new Map();          // persona -> [cuándo probó]
+    this.usosSv = new Map();        // guild -> [cuándo]
+    this.avisoLimite = new Map();   // persona -> hasta cuándo no se le vuelve a decir que llegó al límite
   }
 
   /** ¿Hay una prueba en curso en ese servidor? (el grabador no entra mientras tanto) */
@@ -71,6 +121,19 @@ export class PruebaMicro {
       return;
     }
     if (this.sesiones.has(gid)) return;           // ya hay una: la de quien llegó primero
+    const t = Date.now();
+    const lim = limite(this.usos.get(ahora.id), this.usosSv.get(gid), t);
+    if (lim) {
+      if (t >= (this.avisoLimite.get(ahora.id) || 0)) {
+        this.avisoLimite.set(ahora.id, t + lim.en);
+        this.anotar(`🚦 prueba de micro: límite (${lim.por})`);
+        await canal.send({ content: textoLimite(lim, ahora.id), allowedMentions: { users: [ahora.id] } }).catch(() => {});
+      }
+      return;
+    }
+    const recorta = (l) => (l || []).filter((x) => t - x < HORA).concat(t);
+    this.usos.set(ahora.id, recorta(this.usos.get(ahora.id)));
+    this.usosSv.set(gid, recorta(this.usosSv.get(gid)));
     this.sesiones.set(gid, { canal: canal.id, persona: ahora.id });
     try {
       await this.probar(canal, ahora.member);
@@ -102,11 +165,18 @@ export class PruebaMicro {
       this.anotar(`🎙️ prueba de micro en ${canal.guild.name} / ${canal.name}`);
 
       if (humanos().length > 1) { await frase('deauno'); return; }
-      await frase('hola');
+      const lista = beats();
+      const beat = lista.length ? lista[Math.floor(Math.random() * lista.length)] : null;
+      const credito = beat ? `\n🎵 Beat: «${beat.titulo}» de **${beat.beatmaker}**` : '';
+      await frase(beat ? 'hola_beat' : 'hola');
       if (!sigue()) return;
       await frase('pitido');
+      if (beat) {
+        player.play(createAudioResource(fs.createReadStream(path.join(VOZ, 'beats', beat.archivo)), { inputType: StreamType.OggOpus }));
+        await entersState(player, AudioPlayerStatus.Playing, 5000).catch(() => {});
+      }
 
-      // ── escuchar ──
+      // ── escuchar (con el beat sonando, si hay) ──
       const paquetes = [];
       const t0 = performance.now();
       let voz = 0;
@@ -123,11 +193,15 @@ export class PruebaMicro {
           if (!sigue() || performance.now() - t0 > ESCUCHAR_MAX_S * 1000) fin();
         }, 250);
       });
+      if (beat) {
+        player.stop(true);
+        await entersState(player, AudioPlayerStatus.Idle, 3000).catch(() => {});
+      }
       if (!sigue()) return;
       if (voz < VOZ_MIN_S) {
         await frase('noteoigo');
         await this.escribir(canal, `🎙️ <@${miembro.id}> no te escuché: revisa que tu micrófono no esté silenciado y que `
-          + 'en Ajustes de usuario → Voz y video esté elegido el correcto.', miembro.id);
+          + 'en Ajustes de usuario → Voz y video esté elegido el correcto.' + credito, miembro.id);
         return;
       }
 
@@ -151,8 +225,8 @@ export class PruebaMicro {
       await frase('escucha');
       await decir(eco);
       await frase('otravez');
-      await this.escribir(canal, problema ? TEXTOS[problema](miembro.id)
-        : `🎙️ <@${miembro.id}> se te escucha **perfecto**. Estás listo para competir.`, miembro.id);
+      await this.escribir(canal, (problema ? TEXTOS[problema](miembro.id)
+        : `🎙️ <@${miembro.id}> se te escucha **perfecto**. Estás listo para competir.`) + credito, miembro.id);
     } finally {
       try { con.destroy(); } catch (e) { /* ya estaba */ }
       fs.rmSync(dir, { recursive: true, force: true });

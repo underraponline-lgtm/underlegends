@@ -205,6 +205,21 @@ try {
 ok(sono, 'el reproductor de Discord pasa una frase de punta a punta');
 rep.stop();
 
+// ── 🚦 los límites de la prueba de micro ──
+console.log('🚦 los límites');
+const { limite, textoLimite, beats, POR_PERSONA_HORA, ENTRE_PRUEBAS_S, POR_SERVIDOR_HORA } = await import('./microfono.js');
+const T0 = 1_000_000_000_000, MIN = 60000;
+ok(limite([], [], T0) === null, 'la primera prueba pasa');
+ok(limite([T0 - 30000], [], T0)?.por === 'seguido', `dos pruebas en menos de ${ENTRE_PRUEBAS_S} s: «espera un minuto»`);
+const tres = Array.from({ length: POR_PERSONA_HORA }, (_, i) => T0 - (50 - i * 10) * MIN);
+const lp = limite(tres, [], T0);
+ok(lp?.por === 'persona' && Math.round(lp.en / MIN) === 10, `la ${POR_PERSONA_HORA + 1}.ª en la hora no pasa, y dice cuánto falta (${Math.round((lp?.en || 0) / MIN)} min)`);
+ok(limite(tres.map((t) => t - 61 * MIN), [], T0) === null, 'las de hace más de una hora ya no cuentan');
+const sv = Array.from({ length: POR_SERVIDOR_HORA }, (_, i) => T0 - i * MIN);
+ok(limite([], sv, T0)?.por === 'servidor', `${POR_SERVIDOR_HORA} en una hora en el servidor: no entra nadie más`);
+ok(/10 min/.test(textoLimite(lp, '123')) && textoLimite(lp, '123').includes('<@123>'), 'el aviso del límite lo menciona y dice los minutos');
+ok(Array.isArray(beats()), 'sin beats cargados, la prueba sigue sin beat (beats() da ' + beats().length + ')');
+
 fs.rmSync(dir, { recursive: true, force: true });
 console.log(mal ? `\n❌ ${mal} mal` : '\n✅ todo bien');
 process.exit(mal ? 1 : 0);
