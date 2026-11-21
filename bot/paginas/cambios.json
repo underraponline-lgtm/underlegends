@@ -11,6 +11,18 @@
   ],
   "cambios": [
     {
+        "version": "7.61",
+        "dia": "2026-11-21",
+        "cuando": "2026-11-21T16:00:00-05:00",
+        "titulo": "Gente en tus mismos servidores",
+        "items": [
+            "**Gente de la Liga en tus mismos servidores**: al entrar con Discord se pide ver tu lista de servidores, y en «Gente para seguir» aparece quién de la Liga está en los mismos. Nunca se muestra qué servidores son.",
+            "**Ligas de las Competencias**: un lugar vacío en un grupo ahora cuenta como pase libre para sus rivales.",
+            "**La tarjeta de crew** llega pronto: la crew que llegó a Diamante ya se la ganó.",
+            "Los textos viejos de esta página pasaron a «tú»."
+        ]
+    },
+    {
         "version": "7.60",
         "dia": "2026-11-21",
         "cuando": "2026-11-21T15:05:00-05:00",
