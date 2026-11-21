@@ -83,7 +83,9 @@ export async function mezclar(rutas, salida, cada = []) {
   const todas = rutas.map((_, i) => `[v${i}]`).join('');
   const filtro = prep.join(';') + ';' + todas
     + (rutas.length > 1 ? `amix=inputs=${rutas.length}:duration=longest:normalize=0,` : 'anull,')
-    + 'alimiter=limit=0.89:level=false';
+    // 🔊 −2 dBFS (21/11/2026): con 0,89 (−1 dB) la grabación de DESGRACIAS EN TOKYO VOL 32 dio +0,3 dBFS de pico verdadero
+    // y 4 muestras al tope en 2 horas: Opus pasa un poco el límite que le llega. Inaudible, pero el margen va antes del códec
+    + 'alimiter=limit=0.79:level=false';
   await ffmpeg([...ins, '-filter_complex', filtro, '-ac', '2', '-c:a', 'libopus', '-b:a', KBPS + 'k', salida]);
   return salida;
 }

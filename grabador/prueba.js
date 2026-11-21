@@ -374,6 +374,10 @@ console.log('\n⚔️ cada batalla en la grabación\n');
   await cortar(src, 3, 8, sal);
   const d = duracion(sal);
   ok(Math.abs(d - 5) < 0.3, `cortar(): de 3 a 8 s da ${d.toFixed(2)} s, sin volver a codificar`);
+  // ✂️ la espera del final: la mezcla se corta desde 0 hasta donde se vació la llamada (así lo hace `entregar()`)
+  const sin = path.join(dir, 'sin_cola.ogg');
+  await cortar(src, 0, 9, sin);
+  ok(Math.abs(duracion(sin) - 9) < 0.3, `sin la espera del final: de 12 s quedan ${duracion(sin).toFixed(2)}`);
 }
 
 fs.rmSync(dir, { recursive: true, force: true });

@@ -75,6 +75,8 @@ export const ESPERA_ENTRAR = num(E.ESPERA_ENTRAR_S, 60) * 1000;
 export const SALIR_CON = num(E.SALIR_CON, 2);
 export const ESPERA_SALIR = num(E.ESPERA_SALIR_S, 300) * 1000;
 export const MAX_H = num(E.MAX_H, 6);
+//: los segundos que se dejan después de que se vació la llamada (la espera de `ESPERA_SALIR` no va al archivo)
+export const COLA_S = num(E.COLA_S, 15);
 //: cuántos avisos de «se te escucha mal» como mucho por evento: con más, el chat de la llamada sería sólo eso
 export const AVISOS_MAX = num(E.AVISOS_MAX, 12);
 //: los canales de voz de la prueba de micro (vacío = apagada). Los crea cada servidor y se cargan en Railway
@@ -271,7 +273,12 @@ class Grabacion {
       else fs.rmSync(p.ruta, { force: true });
     }
     try {
-      await this.entregar(voces, fin / 1000, razon);
+      // ✂️ SIN LA ESPERA DEL FINAL (21/11/2026): para saber que la llamada se vació, el grabador espera `ESPERA_SALIR` (5 min)
+      // con menos de `SALIR_CON`, y esos minutos quedaban en el archivo: la grabación de DESGRACIAS EN TOKYO VOL 32 terminaba
+      // con 4 min 43 s de silencio. Se entrega hasta que se vació, con `COLA_S` de aire
+      const hasta = razon === 'se vació la llamada' && this.vacia
+        ? Math.min(fin, Math.max(0, this.vacia - this.inicio.getTime()) + COLA_S * 1000) : fin;
+      await this.entregar(voces, hasta / 1000, razon);
     } catch (e) {
       anotar('❌ no pude entregar la grabación:', String(e.message || e).slice(0, 300));
     }
@@ -297,6 +304,7 @@ class Grabacion {
       + (malos.length > 12 ? `\n… y ${malos.length - 12} más` : '');
   }
 
+  /** `seg`: hasta dónde va la grabación (puede ser menos de lo grabado: ver la espera del final en `terminar()`). */
   async entregar(voces, seg, razon) {
     const canal = await this.client.channels.fetch(ENTREGA);
     const gente = voces.filter((id) => !this.quien.get(id)?.bot);
@@ -318,6 +326,12 @@ class Grabacion {
       cada.push({ db: ganancia(await sonoridad(this.pistas.get(id).ruta), musica), musica });
     }
     await mezclar(voces.map((id) => this.pistas.get(id).ruta), mezcla, cada);
+    // ✂️ lo grabado después de `seg` (la espera del final) no va
+    if (duracion(mezcla) > seg + 2) {
+      const corta = path.join(this.dir, 'mezcla_corta.ogg');
+      await cortar(mezcla, 0, seg, corta);
+      fs.renameSync(corta, mezcla);
+    }
     const mb = fs.statSync(mezcla).size / 1e6;
     anotar(`🎚️ mezcla: ${voces.length} pistas, ${mb.toFixed(1)} MB, ${((performance.now() - t) / 1000).toFixed(0)} s`
       + ` · ganancias ${cada.map((c) => (c.db > 0 ? '+' : '') + c.db).join(' ')}`);
