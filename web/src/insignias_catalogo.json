@@ -1,0 +1,464 @@
+[
+[
+"debut",
+"🎤",
+"Debut",
+"Jugó su primer evento en la Liga"
+],
+[
+"ev10",
+"🔟",
+"Constante",
+"Jugó 10 eventos en una temporada"
+],
+[
+"ev25",
+"📅",
+"Infaltable",
+"Jugó 25 eventos en una temporada"
+],
+[
+"podio",
+"🥉",
+"Al podio",
+"Terminó en el podio de un evento"
+],
+[
+"campeon",
+"🏆",
+"Campeón",
+"Ganó un evento"
+],
+[
+"tricampeon",
+"👑",
+"Tricampeón",
+"Ganó 3 eventos en una temporada"
+],
+[
+"trotamundos",
+"🌍",
+"Trotamundos",
+"Jugó en 3 servidores distintos"
+],
+[
+"racha",
+"🔥",
+"En llamas",
+"Llegó arriba de la llave en 3 eventos seguidos"
+],
+[
+"duelista",
+"⚔️",
+"Duelista",
+"Ganó 10 duelos en una temporada"
+],
+[
+"clasico",
+"🤜",
+"Clásico",
+"Ganó un Clásico: su tercer cruce, o más, con el mismo rival"
+],
+[
+"figura",
+"🌟",
+"Figura",
+"Fue la figura de una semana: el que más puntos hizo"
+],
+[
+"revelacion",
+"✨",
+"Revelación",
+"Fue la revelación de la semana en que debutó"
+],
+[
+"cazador",
+"🎯",
+"Cazador",
+"Cazó a un buscado del Most Wanted"
+],
+[
+"regicida",
+"💀",
+"Regicida",
+"Cazó a El Rey del Most Wanted"
+],
+[
+"sobreviviente",
+"🛡️",
+"Sobreviviente",
+"Sobrevivió siendo buscado"
+],
+[
+"ascenso",
+"⬆️",
+"Ascenso",
+"Subió de división al cerrar una semana"
+],
+[
+"primera",
+"🏟️",
+"Primera División",
+"Llegó a la Primera División"
+],
+[
+"piedra_hierro",
+"⛓️",
+"Hierro",
+"Jugó el Ranking ELO de una temporada: su mejor piedra fue Hierro"
+],
+[
+"piedra_jade",
+"🟢",
+"Jade",
+"Llegó a Jade en el Ranking ELO de una temporada"
+],
+[
+"piedra_zafiro",
+"🔷",
+"Zafiro",
+"Llegó a Zafiro en el Ranking ELO de una temporada"
+],
+[
+"piedra_rubi",
+"🔴",
+"Rubí",
+"Llegó a Rubí en el Ranking ELO de una temporada"
+],
+[
+"piedra_diamante",
+"💠",
+"Diamante",
+"Llegó a Diamante en el Ranking ELO de una temporada"
+],
+[
+"piedra_mitico",
+"🟣",
+"Mítico",
+"Llegó a Mítico en el Ranking ELO de una temporada"
+],
+[
+"pluma_oro",
+"✍️",
+"Pluma de oro",
+"Ganó una fecha del Writing Challenge"
+],
+[
+"pluma",
+"🖋️",
+"Pluma",
+"Sumó en 3 fechas del Writing Challenge"
+],
+[
+"liga",
+"📋",
+"De liga",
+"Jugó una liga de los servidores"
+],
+[
+"invicto",
+"💎",
+"Invicto",
+"Llegó a 5 ganadas sin perder ninguna en una liga"
+],
+[
+"liga_podio",
+"🎖️",
+"Podio de liga",
+"Terminó entre los tres primeros de una liga"
+],
+[
+"liga_campeon",
+"🏅",
+"Campeón de liga",
+"Ganó una liga de los servidores"
+],
+[
+"mes_rapero",
+"🏆",
+"Rapero del mes",
+"Ganó el Rapero del mes de los MES AWARDS"
+],
+[
+"mes_revelacion",
+"🌠",
+"Revelación del mes",
+"Ganó la Revelación del mes de los MES AWARDS"
+],
+[
+"mes_batalla",
+"🎬",
+"Batalla del mes",
+"Su batalla ganó la Batalla del mes de los MES AWARDS"
+],
+[
+"mes_sv_rapero",
+"🏟️",
+"Rapero del mes de su servidor",
+"Ganó el Rapero del mes de un servidor en los MES AWARDS"
+],
+[
+"mes_sv_revelacion",
+"🌱",
+"Revelación del mes de su servidor",
+"Ganó la Revelación del mes de un servidor en los MES AWARDS"
+],
+[
+"mes_sv_batalla",
+"📼",
+"Batalla del mes de su servidor",
+"Su batalla ganó la Batalla del mes de un servidor en los MES AWARDS"
+],
+[
+"mes_sv_staff",
+"🎛️",
+"Staff del mes de su servidor",
+"Ganó el Staff del mes de un servidor en los MES AWARDS"
+],
+[
+"mes_organizador",
+"🎙️",
+"Organizador del mes",
+"Ganó el Organizador del mes de los MES AWARDS"
+],
+[
+"mes_staff",
+"🎧",
+"Staff del mes",
+"Ganó el Staff del mes de los MES AWARDS: jurado, host o DJ"
+],
+[
+"mes_duelista",
+"🗡️",
+"Duelista del mes",
+"Ganó el Duelista del mes de los MES AWARDS"
+],
+[
+"mes_cazador",
+"🏹",
+"Cazador del mes",
+"Ganó el Cazador del mes de los MES AWARDS"
+],
+[
+"mes_batacazo",
+"💥",
+"Batacazo del mes",
+"Su victoria fue el Batacazo del mes de los MES AWARDS"
+],
+[
+"mes_imparable",
+"⚡",
+"Imparable del mes",
+"Ganó el Imparable del mes de los MES AWARDS"
+],
+[
+"mes_evento",
+"🎪",
+"Evento del mes",
+"Organizó el Evento del mes de los MES AWARDS"
+],
+[
+"mes_promo",
+"📣",
+"Promo del mes",
+"Su promo fue la Promo del mes de los MES AWARDS"
+],
+[
+"mes_publicacion",
+"👏",
+"Publicación del mes",
+"Su publicación fue la Publicación del mes de los MES AWARDS"
+],
+[
+"mes_hincha",
+"🙌",
+"Hincha del mes",
+"Fue quien más participó en la página en un mes: el Hincha del mes"
+],
+[
+"mes_clasico",
+"🤝",
+"Clásico del mes",
+"Su rivalidad fue el Clásico del mes de los MES AWARDS"
+],
+[
+"mes_sobreviviente",
+"🪖",
+"Sobreviviente del mes",
+"Ganó el Sobreviviente del mes: el que más aguantó el Most Wanted"
+],
+[
+"mes_constante",
+"📈",
+"Constante del mes",
+"Ganó el Constante del mes: el que más podios hizo"
+],
+[
+"mes_jurado",
+"⚖️",
+"Jurado del mes",
+"Ganó el Jurado del mes de los MES AWARDS"
+],
+[
+"mes_host",
+"🎤",
+"Host del mes",
+"Ganó el Host del mes de los MES AWARDS"
+],
+[
+"mes_dj",
+"💿",
+"DJ del mes",
+"Ganó el DJ del mes de los MES AWARDS"
+],
+[
+"mes_villano",
+"😈",
+"Villano del mes",
+"Ganó el Villano del mes de los MES AWARDS"
+],
+[
+"mes_showman",
+"🎭",
+"Showman del mes",
+"Ganó el Showman del mes de los MES AWARDS"
+],
+[
+"mes_momento",
+"✨",
+"Momento del mes",
+"Su batalla fue el Momento del mes de los MES AWARDS"
+],
+[
+"gala_rapero",
+"👑",
+"Rapero de la temporada",
+"Ganó «Rapero de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_revelacion",
+"🌠",
+"Revelación de la temporada",
+"Ganó «Revelación de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_batalla",
+"🎬",
+"Batalla de la temporada",
+"Ganó «Batalla de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_organizador",
+"🎙️",
+"Organizador de la temporada",
+"Ganó «Organizador de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_staff",
+"🎧",
+"Staff de la temporada",
+"Ganó «Staff de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_duelista",
+"🗡️",
+"Duelista de la temporada",
+"Ganó «Duelista de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_cazador",
+"🏹",
+"Cazador de la temporada",
+"Ganó «Cazador de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_batacazo",
+"💥",
+"Batacazo de la temporada",
+"Ganó «Batacazo de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_imparable",
+"⚡",
+"Imparable de la temporada",
+"Ganó «Imparable de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_evento",
+"🎪",
+"Evento de la temporada",
+"Ganó «Evento de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_promo",
+"📣",
+"Promo de la temporada",
+"Ganó «Promo de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_publicacion",
+"👏",
+"Publicación de la temporada",
+"Ganó «Publicación de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_hincha",
+"🙌",
+"Hincha de la temporada",
+"Ganó «Hincha de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_clasico",
+"🤝",
+"Clásico de la temporada",
+"Ganó «Clásico de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_sobreviviente",
+"🪖",
+"Sobreviviente de la temporada",
+"Ganó «Sobreviviente de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_constante",
+"📈",
+"Constante de la temporada",
+"Ganó «Constante de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_jurado",
+"⚖️",
+"Jurado de la temporada",
+"Ganó «Jurado de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_host",
+"🎤",
+"Host de la temporada",
+"Ganó «Host de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_dj",
+"💿",
+"DJ de la temporada",
+"Ganó «DJ de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_villano",
+"😈",
+"Villano de la temporada",
+"Ganó «Villano de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_showman",
+"🎭",
+"Showman de la temporada",
+"Ganó «Showman de la temporada» en la gala de la Liga Global"
+],
+[
+"gala_momento",
+"✨",
+"Momento de la temporada",
+"Ganó «Momento de la temporada» en la gala de la Liga Global"
+]
+]

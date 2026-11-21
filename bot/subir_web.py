@@ -863,10 +863,9 @@ def armar():
         # 🔑 LA TIENDA: los números del precio por cabeza y lo último que se
         # cazó. Cuánto vale cada cabeza lo pide la página aparte. Ver `_tienda()`.
         'tienda': _tienda(),
-        # 🔑 LAS INSIGNIAS: el catálogo (las de cada uno viajan en los perfiles)
-        # y las RIVALIDADES, para marcar el Clásico en una llave en vivo. Ver
-        # `bot/insignias.py` y `multiplicadores.clasicos()`.
-        'insignias': [list(c) for c in _IN().CATALOGO],
+        # 🔑 LAS RIVALIDADES, para marcar el Clásico en una llave en vivo (`multiplicadores.clasicos()`). 📦 El catálogo de
+        # las INSIGNIAS ya no viaja acá desde el 21/11/2026: es una lista fija del código y va con la página
+        # (`web/src/insignias_catalogo.json`, `python bot/insignias.py --web`); las de cada uno siguen en los perfiles
         'rivales': _rivales(gente),
         # 🏟️ LAS DIVISIONES DE LA SEMANA (04/10/2026): las tablas de ahora y cómo cerró la anterior. Ver `_div()`
         'div': _dv[0],
@@ -5274,10 +5273,10 @@ def _self_check():
     # CI roja tapa las demás alarmas—. Ningún commit de código: entre el último verde (31d80bcb6, 3:03 PM) y el primero rojo
     # sólo entraron dos ciclos. Medido clave por clave: todo lo que pesa lo dibuja la página (`tabla` 20 KB, `llaves` 7,
     # `calendario` 6, `div` 4,6, `mw` 2,9, `rivales`, `svs`, `alias`, `insignias`…), así que no había nada que sacar sin
-    # mudar dónde lo lee la página. Se sube a 54.000 —2 KB más por visita— como tope DE PASO y la decisión queda escrita
-    # para Dlx en NOVEDADES: mudar `mw` (2,9 KB, lo leen el Ranking y la Tienda) o el catálogo de `insignias` (1,6 KB) a su
-    # ruta, o aceptar el lobby más grande. ⚠️ No volver a subirlo sin esa respuesta
-    ok(comp < 54000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
+    # mudar dónde lo lee la página. Se subió a 54.000 un rato (la 7.66) y Dlx contestó *«dale»* a mudar: ✅ el catálogo de
+    # `insignias` (1,6 KB) ya no viaja en el lobby, va con la página (`web/src/insignias_catalogo.json`), y el tope
+    # vuelve a 52.000. Lo próximo que se puede mudar así, si se vuelve a pasar: `mw` (2,9 KB, lo leen el Ranking y la Tienda)
+    ok(comp < 52000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
 

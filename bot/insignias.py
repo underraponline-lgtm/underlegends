@@ -4,6 +4,7 @@
     python bot/insignias.py            quién ganaría qué, sin escribir nada
     python bot/insignias.py --aplicar  anota las nuevas en datos/insignias.json (paso 2d0)
     python bot/insignias.py --auto     el self-check, sin red ni archivos
+    python bot/insignias.py --web      escribe el catálogo de la página (web/src/insignias_catalogo.json)
 
 Dlx, 27/09/2026, a las ideas para enganchar: *«me gustan todas»* — entre
 ellas, *«insignias en el perfil: primer podio, 10 eventos, cazó al Rey, jugó
@@ -372,6 +373,18 @@ def correr(ahora=None, aplicar=False):
 
 
 # ── self-check ───────────────────────────────────────────────────────────
+# 📦 EL CATÁLOGO VIAJA CON LA PÁGINA, NO EN EL LOBBY (21/11/2026, Dlx: «dale», a mudar algo del lobby que se pasó de su
+# tope). Es una lista fija del código: bajarla en cada visita (1,6 KB comprimidos) era pagar por algo que sólo cambia
+# cuando cambia este archivo. Ahora es un JSON que se commitea y entra al build (`web/src/liga.js` lo pone en
+# `liga.d.insignias`, así quien lo lee no cambió). ⚠️ Se regenera con `--web`; el self-check da rojo si se separan
+WEB = os.path.join(BASE, 'web', 'src', 'insignias_catalogo.json')
+
+
+def para_la_web():
+    """El catálogo tal como lo usa la página: `[[id, emoji, nombre, cómo], …]`, en el orden de `CATALOGO`."""
+    return [list(c) for c in CATALOGO]
+
+
 def _self_check():
     print('\n══ INSIGNIAS ══\n')
     mal = 0
@@ -420,6 +433,13 @@ def _self_check():
     cl = cumple(pool, ligas={'Ana': {'liga', 'invicto'}, 'Staff': {'liga', 'liga_podio', 'liga_campeon', 'ev25'}})
     ok({'liga', 'invicto'} <= cl['Ana'] and cl.get('Staff') == {'liga', 'liga_podio', 'liga_campeon'},
        'las de liga: también a quien no juega eventos (el staff), y de ahí no entra otra insignia')
+    try:
+        with io.open(WEB, encoding='utf-8') as f:
+            igual = json.load(f) == para_la_web()
+    except (OSError, ValueError):
+        igual = False
+    ok(igual, 'el catálogo de la página (`web/src/insignias_catalogo.json`) está al día — si no: '
+              '`python bot/insignias.py --web`')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 
@@ -428,6 +448,12 @@ def main():
     a = sys.argv[1:]
     if '--auto' in a:
         return 1 if _self_check() else 0
+    if '--web' in a:
+        with io.open(WEB, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(para_la_web(), f, ensure_ascii=False, indent=0)
+            f.write('\n')
+        print('   ✅ %s: %d insignias' % (os.path.relpath(WEB, BASE).replace(os.sep, '/'), len(CATALOGO)))
+        return 0
     registro, nuevas = correr(aplicar='--aplicar' in a)
     print('\n══ LAS INSIGNIAS ══\n')
     cuenta = {}

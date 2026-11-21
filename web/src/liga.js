@@ -2,6 +2,7 @@
 // Es la traducción de la clase `Liga` de docs/remake/reales.py, el prototipo que se miró con Dlx: si una regla cambia
 // allá, cambia acá.
 import { cartaPrincipalDe, versionRedibujo } from './pase.js';
+import CATALOGO_INSIGNIAS from './insignias_catalogo.json';
 
 // 🔒 el Discord ID del dueño de la Liga (público: es un ID). Sólo muestra el atajo al Dashboard; quién entra lo decide
 // el servidor (`DUENO` de bot/avisos.js, el mismo número)
@@ -224,6 +225,9 @@ function horaNum(d) {
 
 export class Liga {
   constructor(D, muro, ahora, yo, sigue, yoFila) {
+    // 📦 el catálogo de insignias viaja con la página y no en el lobby (21/11/2026, ver `WEB` en bot/insignias.py): se pone
+    // donde lo leían (`liga.d.insignias`) y nadie más cambia. Un lobby viejo que todavía lo trae, manda el suyo
+    if (D && !Array.isArray(D.insignias)) D.insignias = CATALOGO_INSIGNIAS;
     this.d = D;
     this.muro = (muro && muro.items) || [];
     // 📌 la fijada arriba con Mods (20/11/2026, `bot/muro.py`): el `id` de una del muro, o nada
