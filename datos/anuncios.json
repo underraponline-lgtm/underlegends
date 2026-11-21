@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-21T00:55:03+00:00",
+ "cuando": "2026-11-21T01:25:30+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7124,21 +7124,30 @@
  "oficiales": [
   {
    "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "PODIO DE LA RED BULL ARGENTINA DEJA DO CAMPEÓN A @agusdcab",
+   "tx": "",
+   "cuando": "2026-11-21T01:16:12",
+   "msg_id": "1573507289019580526",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573507289019580526"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "MULTIVERSE DOOMSDAY",
+   "tx": "Un server nuevo y que va a ser grande, solo necesitamos más people",
+   "cuando": "2026-11-21T01:12:53",
+   "msg_id": "1573506454604746846",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573506454604746846"
+  },
+  {
+   "servidor": "LKR",
    "canal": "🐉ANUNCIOS",
    "tit": "TERCER CLASIFICADO PAL 5 VIDAS DE CAMPEONES",
    "tx": "",
    "cuando": "2026-11-20T22:02:44",
    "msg_id": "1573458605007442082",
    "link": "https://discord.com/channels/1558611504046153750/1564463277348487219/1573458605007442082"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "PODIO DE LA RED BULL MEXCARIBE QUEDANDO CAMPEÓN",
-   "tx": "",
-   "cuando": "2026-11-20T21:38:35",
-   "msg_id": "1573452526634930206",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573452526634930206"
   },
   {
    "servidor": "ACAD",
@@ -7175,15 +7184,6 @@
    "cuando": "2026-11-19T10:57:01",
    "msg_id": "1572928684015362048",
    "link": "https://discord.com/channels/838593179187544064/850777668386291712/1572928684015362048"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "CHICOS ACERQUESEN A ESTE SERVER VAMOS MUCHACHOS A COLABORAR",
-   "tx": "",
-   "cuando": "2026-11-19T03:38:14",
-   "msg_id": "1572818259407802439",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1572818259407802439"
   },
   {
    "servidor": "FFA",
