@@ -33,6 +33,35 @@ function useCF(pagina) {
   return { C, abierto, setAbierto, caja };
 }
 
+/**
+ * 📏 DEBAJO DE LA FILA DE PESTAÑAS (21/11/2026, la revisión de todos los botones). En el Ranking y en Tarjetas la fila de
+ * pestañas (`.rk-subs`) es pegajosa y está por encima (z-index 20): tapaba este botón entero, no se veía, y tocarlo era
+ * tocar «Misiones». Si la página tiene esa fila arriba, el botón baja su alto (`--cf-baja`). Se mira al cambiar de página
+ * —la página llega después, perezosa: unas pocas veces en los primeros segundos— y la fila se sigue con un ResizeObserver,
+ * porque cambia de alto con el ancho (dos líneas a 900 px)
+ */
+function useBajoLasPestanas(caja, pagina) {
+  useEffect(() => {
+    const el = caja.current;
+    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    const raiz = el.getRootNode();
+    let ro = null, vista = null;
+    const mirar = () => {
+      const s = raiz && raiz.querySelector ? raiz.querySelector('.rk-subs') : null;
+      if (s === vista) return;
+      if (ro) ro.disconnect();
+      ro = null;
+      vista = s;
+      if (!s) { el.style.removeProperty('--cf-baja'); return; }
+      ro = new ResizeObserver(() => { el.style.setProperty('--cf-baja', s.offsetHeight + 'px'); });
+      ro.observe(s);
+    };
+    mirar();
+    const ts = [150, 600, 1500, 3500].map((ms) => setTimeout(mirar, ms));
+    return () => { ts.forEach(clearTimeout); if (ro) ro.disconnect(); };
+  }, [caja, pagina]);
+}
+
 /** La ventana chica: el capítulo en una línea, verlo, y todo el tutorial */
 function PopCF({ C, hecho, cerrar }) {
   return (
@@ -79,6 +108,7 @@ export function PreguntaCab({ pagina }) {
 export function ComoFunciona({ pagina }) {
   const { C, abierto, setAbierto, caja } = useCF(pagina);
   const [, setN] = useState(0);
+  useBajoLasPestanas(caja, pagina);
   const T = tuto();
   // 📣 el aviso, en el Inicio, a quien ya venía: una sola vez
   const aviso = pagina === '' && T && !T.nuevo && !T.aviso_tuto && Date.now() < AVISO_HASTA;

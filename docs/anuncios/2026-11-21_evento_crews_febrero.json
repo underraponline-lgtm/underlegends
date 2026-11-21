@@ -1,0 +1,75 @@
+{
+ "_leeme": "El evento de crews de febrero (21/11/2026). Dlx: «anuncia que DLX hará un evento de 100 dólares de crews en febrero, entonces que la gente se una o que creen sus crews. Mínimo necesitan 5 personas en su crew para participar… envía el link de la página y un breve resumen de cómo hacer las cosas, con everyone en DRA y FFA». Componentes V2. Se publica con herramientas/anunciar.py --servidor DRA|FFA --everyone --publicar. Publicado el 21/11/2026 a las 3:12 PM ET con su OK («Sí, mándalo así»): DRA 1498326749748924416/1573792838804578537, FFA 1531832189187264543/1573792850943148228. Para corregirlo, --editar <id> (no vuelve a sonar).",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 14947187,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🏆 Evento de crews: 100 USD en febrero\n**Dlx va a hacer un evento de crews con 100 dólares de premio en febrero.** Para entrar, tu crew necesita **5 personas como mínimo**. Arma la tuya o súmate a una desde ya."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🛠️ Arma tu crew\n1. Entra a la página con Discord. Tienes que estar verificado: en DRA, con tu país y el rol Miembro.\n2. En **Crews**, toca **Armar mi crew**: sigla, logo y descripción. Cuesta 2.500 Puntos de Tienda.\n3. Invita a tu gente desde la página de tu crew o con `/crew` acá en Discord."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🤝 Súmate a una\nBusca una crew en **Crews** y toca **Pedir entrar**, o acepta la invitación que te mande su líder. Cada crew puede tener hasta 20 personas."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "> 📅 **Febrero** · 💵 **100 USD** · 👥 **5 por crew como mínimo**\n-# La fecha exacta y las reglas del evento salen más adelante."
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Armar mi crew",
+       "url": "https://underlegends.pages.dev/freestyle-rap/crews?armar=1"
+      },
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Ver las crews",
+       "url": "https://underlegends.pages.dev/freestyle-rap/crews"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends"
+    }
+   ]
+  }
+ ]
+}
