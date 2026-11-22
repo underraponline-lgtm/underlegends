@@ -308,9 +308,9 @@
    "temporada": "a37aa7872ad0:a8d8b7335469"
   },
   "Cronox": {
-   "competitivo": "ee8c2b6f84f5:38a840be60e7",
-   "pais": "2ad14ac4b85c:f1f52e1c6d42",
-   "servidor": "2a8f4a6b4584:0bd0fbf67396:e4fbfa",
+   "competitivo": "0425202803c5:38a840be60e7",
+   "pais": "8fddd7743314:f1f52e1c6d42",
+   "servidor": "7b243dc052b7:0bd0fbf67396:e4fbfa",
    "temporada": "853cd3e21ed1:a8d8b7335469"
   },
   "Cruz": {
@@ -430,9 +430,9 @@
    "servidor": "a9e63879d519:0bd0fbf67396:055f77"
   },
   "Dios": {
-   "competitivo": "3ccf86f06e1a:38a840be60e7",
-   "pais": "bdf2ae7b1717:f1f52e1c6d42",
-   "servidor": "b5bc4aee0769:0bd0fbf67396:132451",
+   "competitivo": "c30659355307:38a840be60e7",
+   "pais": "a362e352d5d3:f1f52e1c6d42",
+   "servidor": "d59b1fc36114:0bd0fbf67396:132451",
    "temporada": "f1805c539fca:a8d8b7335469"
   },
   "Dobell": {},
@@ -1183,10 +1183,10 @@
   },
   "Malva": {},
   "Marcos": {
-   "competitivo": "0392d48f32ca:38a840be60e7",
+   "competitivo": "ae20102751bc:38a840be60e7",
    "pais": "5580e8e4ac05:f1f52e1c6d42",
    "servidor": "228542927e0f:0bd0fbf67396:bcd566",
-   "temporada": "44f49b7885b1:a8d8b7335469"
+   "temporada": "e2a381df4345:a8d8b7335469"
   },
   "Masino": {
    "competitivo": "33694d5bfa85:38a840be60e7",
@@ -1256,8 +1256,8 @@
    "temporada": "d8ec8175e178:a8d8b7335469"
   },
   "Mito": {
-   "competitivo": "0730cef6000b:38a840be60e7",
-   "pais": "44ccb265451f:f1f52e1c6d42",
+   "competitivo": "bac8ec1079de:38a840be60e7",
+   "pais": "992f9520d650:f1f52e1c6d42",
    "servidor": "48f25baa52b0:0bd0fbf67396:6203c7",
    "temporada": "a04ad77ae636:a8d8b7335469"
   },
@@ -1277,9 +1277,9 @@
    "temporada": "c9f89d92bab6:a8d8b7335469"
   },
   "Molusco": {
-   "competitivo": "bc8b9d4b75ea:38a840be60e7",
-   "pais": "baeaabaf639d:f1f52e1c6d42",
-   "servidor": "ad7ad7092c3c:0bd0fbf67396:132451",
+   "competitivo": "97861205c464:38a840be60e7",
+   "pais": "b202c8d9250c:f1f52e1c6d42",
+   "servidor": "53f2b6ac4711:0bd0fbf67396:132451",
    "temporada": "aae816824453:a8d8b7335469"
   },
   "Monet": {},
@@ -1430,9 +1430,9 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "a27f4528e2c4:38a840be60e7",
+   "competitivo": "2540f8e7fd70:38a840be60e7",
    "pais": "39af502a8a3d:f1f52e1c6d42",
-   "servidor": "1af82f30c1e9:0bd0fbf67396:40a77e",
+   "servidor": "e733f4c409dc:0bd0fbf67396:40a77e",
    "temporada": "784e010b77a7:a8d8b7335469"
   },
   "Olaf": {
@@ -1507,10 +1507,10 @@
    "temporada": "bcda451d5b77:a8d8b7335469"
   },
   "Polosport": {
-   "competitivo": "e47ace9c9f1a:38a840be60e7",
+   "competitivo": "9a3f9d60ee25:38a840be60e7",
    "pais": "5ad17c9d9189:f1f52e1c6d42",
    "servidor": "5b9967418d74:0bd0fbf67396:ff73ac",
-   "temporada": "e4a4217d12e2:a8d8b7335469"
+   "temporada": "2555924732a9:a8d8b7335469"
   },
   "Pomberito": {},
   "Presagio": {
@@ -1863,10 +1863,10 @@
    "temporada": "b683a25888f9:a8d8b7335469"
   },
   "TøKīØ🦠🧠": {
-   "competitivo": "1c38a941a4f9:38a840be60e7",
-   "pais": "7dde559ce640:f1f52e1c6d42",
-   "servidor": "ae0c5a8c15c3:0bd0fbf67396:18ae17",
-   "temporada": "7080663e86ab:a8d8b7335469"
+   "competitivo": "4f3957fcda4a:38a840be60e7",
+   "pais": "dd37398edd9f:f1f52e1c6d42",
+   "servidor": "1a0321299e0e:0bd0fbf67396:18ae17",
+   "temporada": "db2f263b7e7f:a8d8b7335469"
   },
   "UDDIZIM": {},
   "UL OFICIA": {
@@ -2194,5 +2194,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-22T19:36:32+00:00"
+ "cuando": "2026-11-22T19:49:33+00:00"
 }
