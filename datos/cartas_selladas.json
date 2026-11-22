@@ -1903,7 +1903,8 @@
    "temporada": "e4b5f5f007ae:a8d8b7335469"
   },
   "Versekiz": {
-   "servidor": "679c18f5e7e5:0bd0fbf67396:132451"
+   "servidor": "679c18f5e7e5:0bd0fbf67396:132451",
+   "temporada": "4c569e079a2f:a8d8b7335469"
   },
   "Vilca": {
    "competitivo": "ee6de238f15e:38a840be60e7",
@@ -2194,5 +2195,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-22T19:49:33+00:00"
+ "cuando": "2026-11-22T20:00:09+00:00"
 }
