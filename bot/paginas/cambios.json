@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.79", "dia": "2026-11-22", "cuando": "2026-11-22T05:31:00-05:00", "titulo": "Las promos, también en video", "items": ["Una **promo nueva** que todavía no tiene su canción lista se puede **mirar y escuchar ahí mismo**: toca ▶ en su historia y la historia espera mientras la ves.", "Las canciones de las promos nuevas se suman solas varias veces por día."]},
     {
         "version": "7.78",
         "dia": "2026-11-22",
