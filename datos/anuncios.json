@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T21:24:56+00:00",
+ "cuando": "2026-11-22T21:54:36+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4498,7 +4498,7 @@
      "DJ Bootrax D Callao"
     ]
    },
-   "autor": "Drexx",
+   "autor": "N x u z",
    "staff_cuentas": {
     "DJ Bootrax D Callao": "1122273746099638354"
    },
@@ -4536,7 +4536,7 @@
     "host": [
      "Mito",
      "Y",
-     "Drexx"
+     "N x u z"
     ],
     "dj": [
      "Lízeninn"
@@ -4545,7 +4545,7 @@
    "autor": "Mito",
    "staff_cuentas": {
     "Mito": "1493416945037611140",
-    "Drexx": "1150099153238630410",
+    "N x u z": "1150099153238630410",
     "Lízeninn": "1474585358292222015"
    },
    "categoria_id": "1469944166137073857"
@@ -7310,7 +7310,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": "Afinllpapa",
+   "autor": "Mesi",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -7694,6 +7694,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1574176965999460393",
+   "cuando": "2026-11-22T21:37:15"
+  },
   {
    "servidor": "WOF",
    "canal": "📜・vs・Inscripciónes",
@@ -43684,15 +43693,6 @@
    "discord_id": "1150044918216130636",
    "msg_id": "1561793206197297293",
    "cuando": "2026-10-19T17:28:37"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Kibak🇦🇷",
-   "quien": "valentin.ks3",
-   "discord_id": "894017160756736091",
-   "msg_id": "1561792526296551425",
-   "cuando": "2026-10-19T17:25:54"
   }
  ]
 }
