@@ -604,6 +604,21 @@ export function textoAdentro(t) {
     return out + l.slice(i);
   }).join('\n');
 }
+/**
+ * 🏷️ EL AKA ENTRE PARÉNTESIS, DETRÁS DE CADA MENCIÓN DE LA LÍNEA DE ARRIBA (Dlx, 21/11/2026: «que sea mención
+ * simplemente, quizás entre paréntesis el aka»). En el celular una mención de alguien que la app todavía no cargó se ve
+ * «@unknown-user» aunque esté en el servidor: Discord sólo manda quién es cada mención cuando la mención suena, y éstas
+ * no suenan (`allowed_mentions` vacío). Con el aka al lado se lee quién es igual, y la mención se sigue tocando. Es el
+ * nombre que la mención ya trae (`nombreChat()`), sin el «(R)» del repechaje, para no anidar paréntesis.
+ */
+export function akaMencion(t, id) {
+  for (const m of String(t == null ? '' : t).matchAll(RE_MEN)) {
+    if (m[1] !== id) continue;
+    const n = m[2].replace(/\s*\(R\)\s*$/, '').trim();
+    return n ? ' (' + n + ')' : '';
+  }
+  return '';
+}
 /** El color del recuadro: el del servidor (el mismo del vs y de «Estadísticas»), o el de la Liga. */
 export const colorChat = (sv) => (VS_SV[String(sv || '').toUpperCase()] || [0x26045B])[0];
 /**
@@ -621,7 +636,7 @@ export function cuerpoV2(texto, filas, img, color) {
   const comps = [];
   if (ids.length) {
     const emo = ((lineas[0] || '').trim().match(/^\p{Extended_Pictographic}️?/u) || [''])[0];
-    comps.push({ type: 10, content: ((emo ? emo + ' ' : '') + conY(ids.map((i) => '<@' + i + '>'))).slice(0, 1500) });
+    comps.push({ type: 10, content: ((emo ? emo + ' ' : '') + conY(ids.map((i) => '<@' + i + '>' + akaMencion(t, i)))).slice(0, 1500) });
   }
   const cab = lineas.length > 1 && lineas[0].trim() && lineas[0].length <= 140 ? '### ' + lineas[0] : lineas[0];
   const dentro = [{ type: 10, content: ([cab].concat(lineas.slice(1)).join('\n').slice(0, 2400)) || '…' }];

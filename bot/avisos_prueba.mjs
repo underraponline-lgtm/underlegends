@@ -2051,13 +2051,21 @@ const ok = (cond, que, det) => {
     ok(!JSON.stringify(pedidos.map((p) => p.b)).match(/[-]/), 'ningún mensaje sale con los caracteres internos de la mención');
     const c2 = A.cuerpoV2('🎤 Arrancó **COPA**\n✅ ' + A.nombreChat({ id: ANA, n: 'Ana' }) + ' pasa · **' + A.nombreChat({ id: '700000777', n: 'Bea' }) + ' 🇨🇱**',
       [{ type: 1, components: [{ type: 2, style: 5, label: 'Síguela', url: 'https://x' }] }], 'https://pub-a.r2.dev/vs/a.jpg', A.colorChat('FFA'));
-    ok(c2.flags === 32768 && c2.components[0].type === 10 && c2.components[0].content === '🎤 <@' + ANA + '> y <@700000777>'
+    ok(c2.flags === 32768 && c2.components[0].type === 10 && c2.components[0].content === '🎤 <@' + ANA + '> (Ana) y <@700000777> (Bea)'
       && c2.components[1].type === 17 && c2.components[1].components.length === 1
       && c2.components[1].components[0].content === '### 🎤 Arrancó **COPA**\n✅ **Ana** pasa · **Bea 🇨🇱**'
       && c2.components[2].type === 12 && c2.components[2].items[0].media.url.endsWith('/a.jpg') && c2.components[3].type === 1
       && JSON.stringify(c2.allowed_mentions) === '{"parse":[]}',
     'V2: las menciones arriba y afuera; adentro el título y los nombres en negrita (sin doble negrita); la imagen abajo, y los botones debajo de la imagen, afuera del recuadro (19/11/2026)',
     JSON.stringify(c2));
+    // 🏷️ EL AKA AL LADO DE LA MENCIÓN (21/11/2026, Dlx: «que sea mención simplemente, quizás entre paréntesis el aka»): en
+    // el celular una mención sin cargar se ve «@unknown-user»; con el aka se lee quién es. Sin el «(R)» del repechaje, una
+    // sola vez por persona aunque aparezca dos veces, y quien no tiene cuenta no va a la línea
+    const cR = A.cuerpoV2('✅ ' + A.nombreChat({ id: ANA, n: 'Ana (R)' }) + ' pasa · de un grupo con '
+      + A.nombreChat({ id: '700000777', n: 'B_ea' }) + ' y ' + A.nombreChat({ id: '', n: 'Cami' }) + '\n🔥 ' + A.nombreChat({ id: ANA, n: 'Ana (R)' }),
+    [], '', A.colorChat('FFA'));
+    ok(cR.components[0].content === '✅ <@' + ANA + '> (Ana) y <@700000777> (B\\_ea)' && A.akaMencion('sin menciones', ANA) === '',
+      'la línea de menciones lleva el aka entre paréntesis: sin «(R)», una vez por persona, y sólo de quien se menciona', JSON.stringify(cR.components[0]));
     const c3 = A.cuerpoV2('🎤 Arrancó **COPA**', [{ type: 1, components: [{ type: 2, style: 5, label: 'x', url: 'https://x' }] }], '', A.colorChat('FFA'));
     ok(c3.components.map((c) => c.type).join() === '17,1', 'sin imagen, los botones van igual afuera, debajo del recuadro', JSON.stringify(c3));
     // 👥🏷️ CON EQUIPOS (11/11/2026, Dlx: «Sí, agrégalo» y «que ahí abajo sea el nombre como aparece en el ranking»): «Perfiles»
