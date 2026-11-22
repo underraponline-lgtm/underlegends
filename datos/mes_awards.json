@@ -9865,7 +9865,7 @@
        "Kravitz",
        "la monalisa",
        "zaik0009",
-       "Mito"
+       "Lizeninn"
       ]
      },
      "orgs": [
@@ -9878,7 +9878,7 @@
      "cuentas": {
       "Kravitz": "1345962362615894027",
       "la monalisa": "1487658663148785734",
-      "Mito": "1493416945037611140"
+      "Lizeninn": "1493416945037611140"
      }
     },
     "1570253506072420355": {
@@ -10342,10 +10342,10 @@
      "mo": "2026-11-17T00:15:06Z",
      "staff": {
       "jurado": [
-       "Mito"
+       "Lizeninn"
       ],
       "host": [
-       "Mito",
+       "Lizeninn",
        "Y",
        "Drexx"
       ],
@@ -10355,13 +10355,13 @@
      },
      "orgs": [
       {
-       "n": "Mito",
+       "n": "Lizeninn",
        "id": "1493416945037611140"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Mito": "1493416945037611140",
+      "Lizeninn": "1493416945037611140",
       "Drexx": "1150099153238630410",
       "Lízeninn": "1474585358292222015"
      }
@@ -10574,6 +10574,34 @@
      },
      "orgs": [],
      "organizador": "LEWITO",
+     "cuentas": {}
+    },
+    "1573888891155644492": {
+     "sv": "FFA",
+     "nombre": "Dlx págame negro Vol.12",
+     "mo": "2026-11-22T02:32:33Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Fuentes🎸 𓆩🪽𓆪",
+       "id": "1217564137383526470"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {}
+    },
+    "1573887277527081031": {
+     "sv": "DDS",
+     "nombre": "BOOM BAP STYLE",
+     "mo": "2026-11-22T02:26:08Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Benji Price",
+       "id": "734945161158852630"
+      }
+     ],
+     "organizador": "@Benji Price",
      "cuentas": {}
     }
    },
@@ -11699,6 +11727,25 @@
       "",
       "Bocamio",
       "bocamio"
+     ]
+    },
+    "LKR|2026-11-21": {
+     "1316490165836972104": [
+      "Adriagner la cuarta barra",
+      "Adriagner",
+      "adriagner"
+     ],
+     "1548906948307451906": [
+      "",
+      "#99 |ALEXXXOL🇨🇴🔥🐉",
+      "tenacious_dragon_23394"
+     ]
+    },
+    "DDS|2026-11-21": {
+     "734945161158852630": [
+      "",
+      "Benji Price",
+      "benji_price16"
      ]
     }
    }

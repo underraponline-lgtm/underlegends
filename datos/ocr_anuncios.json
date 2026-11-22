@@ -1,10 +1,6 @@
 {
  "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Lo escribe bot/anuncios.py. Dlx, 05/10/2026. Se borra a los 30 días.",
  "msgs": {
-  "1562967428563079298": {
-   "texto": "'19 (EDICIÓN FUTCARD VOL 4)\n-COMPE GAY-\nEL EVENTO DEPORTIVO MÁS GAY DEL AÑO!\nHORA: YA\nCUPOS: 8\nINSCRIPCIONES ABIERTAS\nEL MÁS GAY GANA UNA CARTA GAY TIPO FIFA - ¡TU PROPIO GAY PERSONALIZADO!\n¡NO SE LO PIERDAN!\n@FUTCARDGAY #COMPEGAY19",
-   "t": "2026-10-22T23:24:14"
-  },
   "1563358538238009454": {
    "texto": "19 CUP FUTCARD EDICIÓN 5\nHAUNTED EDITION\n\nTOP RATING: \n?? \n?? \n??? \n\nPRIZE: \nEXCLUSIVE HALLOWEEN FCARD\n\n???? \n??? PAC    ??? DRI\n??? SHO    ??? DEF\n??? PAS    ??? PHY\n\n¡INSCRÍBETE YA! PREMIO:\nCUPOS: 8    INSCRIPCIONES YA\n\nPREMIO:\nCARTA PERSONALIZADA TIPO FIFA DE HALLOWEEN (COMO EL EJEMPLO DE ARRIBA CON ????)\n\nFECHA DE INICIO: [Fecha de Octubre]    FORMATO: ELIMINATORIA DIRECTA\n\n@[@]Organizador] | #EJFACup #HalloweenGaming #FUTCARD #FIFA19",
    "t": "2026-10-24T01:24:46"
@@ -356,6 +352,10 @@
   "1573828812733681664": {
    "texto": "DISCORD LEAGUE STYLE 2\nWORLD\nFORMATO\nDEL TORNEO\n\nOCTAVOS                                 CUARTOS\nRONDA 1                                  RONDA 1\n4 X 4 CON TEMÁTICA                  40 SEGUNDOS\n4 ENTRADAS                              IDA Y VUELTA\n\nSEMIS                                     FINAL\nRONDA 1                                  RONDA 1\n8 X 8 3 ENTRADAS                    RANDOM\nSITUACION\n\nRONDA 2                                  RONDA 2\n40 SEGUNDOS                             MINUTOS IDA Y VUELTA\nIDA Y VUELTA                            LIBRE\n\nRONDA 3                                  RONDA 3\nACAPELA 3 ENTRADAS                  ACAPELA 3 ENTRADAS\n4 X 4 5 ENTRADAS                     4 X 4 5 ENTRADAS\n\nEN CUALQUIER INSTANCIA\nLAS REPLICAS SIEMPRE SERAN\nUN 4 X 4 5 ENTRADAS",
    "t": "2026-11-21T22:55:21"
+  },
+  "1573887339179155466": {
+   "texto": "BOOM\nBAP!\nSTYLE",
+   "t": "2026-11-22T02:55:45"
   }
  }
 }
