@@ -11,6 +11,15 @@
   ],
   "cambios": [
     {
+        "version": "7.76",
+        "dia": "2026-11-22",
+        "cuando": "2026-11-22T04:37:58-05:00",
+        "titulo": "Los eventos de tu perfil, en su día",
+        "items": [
+            "Tu perfil dice **el día y la hora en que se jugó cada evento** (el arranque que anunció el servidor), no cuándo se publicó la llave: «Debutó», «Suele jugar» y «Su mejor resultado» dicen el mismo día que el Inicio."
+        ]
+    },
+    {
         "version": "7.75",
         "dia": "2026-11-22",
         "cuando": "2026-11-22T04:03:12-05:00",
