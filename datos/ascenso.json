@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-22T04:42:09Z",
+ "t": "2026-11-22T05:01:26Z",
  "sv": {
   "SR": {
    "filas": [
@@ -688,15 +688,15 @@
     [
      "Makma",
      "ve",
-     7245,
-     0,
+     7425,
+     180,
      "Makmah"
     ],
     [
      "PRAISERIZA",
      "ve",
-     6865,
-     500,
+     7165,
+     800,
      "PRAISERIZA"
     ],
     [
@@ -730,8 +730,8 @@
     [
      "Zignos",
      "do",
-     4895,
-     0,
+     5120,
+     225,
      "Zignos"
     ],
     [
@@ -791,6 +791,13 @@
      "Guess"
     ],
     [
+     "colesito",
+     "ca",
+     3555,
+     375,
+     "Colesito"
+    ],
+    [
      "nc",
      "ar",
      3380,
@@ -803,13 +810,6 @@
      3370,
      0,
      "Molusco"
-    ],
-    [
-     "colesito",
-     "ca",
-     3330,
-     150,
-     "Colesito"
     ],
     [
      "Neo",
@@ -889,6 +889,13 @@
      "Geoka"
     ],
     [
+     "Paria",
+     "ar",
+     1940,
+     180,
+     "Paria"
+    ],
+    [
      "tenor",
      "ve",
      1935,
@@ -903,11 +910,11 @@
      "Vandu"
     ],
     [
-     "Paria",
+     "MCO",
      "ar",
-     1760,
-     0,
-     "Paria"
+     1625,
+     300,
+     "MCO"
     ],
     [
      "BENJIXO",
@@ -931,13 +938,6 @@
      "OKAM"
     ],
     [
-     "MCO",
-     "ar",
-     1325,
-     0,
-     "MCO"
-    ],
-    [
      "Ax",
      "ve",
      1320,
@@ -950,6 +950,13 @@
      1275,
      375,
      "Eze"
+    ],
+    [
+     "Yo mc",
+     "cl",
+     1250,
+     300,
+     "Cronox"
     ],
     [
      "Park Sung-jong",
@@ -1013,13 +1020,6 @@
      975,
      0,
      "Drexx"
-    ],
-    [
-     "Yo mc",
-     "cl",
-     950,
-     0,
-     "Cronox"
     ],
     [
      "Kibak",
@@ -1090,6 +1090,13 @@
      800,
      0,
      "Deko"
+    ],
+    [
+     "Lrs",
+     "ar",
+     775,
+     225,
+     "LRS"
     ],
     [
      "MCNADIE",
@@ -1183,6 +1190,13 @@
      "ONZASS"
     ],
     [
+     "Nacioenmilan",
+     "it",
+     600,
+     300,
+     "Deuxs"
+    ],
+    [
      "Sin límites",
      "pe",
      590,
@@ -1202,13 +1216,6 @@
      550,
      0,
      "CJ"
-    ],
-    [
-     "Lrs",
-     "ar",
-     550,
-     0,
-     "LRS"
     ],
     [
      "Lord",
@@ -1477,13 +1484,6 @@
      ""
     ],
     [
-     "Nacioenmilan",
-     "it",
-     300,
-     0,
-     "Deuxs"
-    ],
-    [
      "kychi",
      "cl",
      300,
@@ -1531,6 +1531,13 @@
      240,
      0,
      "Teito"
+    ],
+    [
+     "Inhuman",
+     "",
+     225,
+     225,
+     ""
     ],
     [
      "Cinexfilo",
@@ -1587,6 +1594,13 @@
      200,
      0,
      "Partim"
+    ],
+    [
+     "Status",
+     "ve",
+     180,
+     180,
+     "Status"
     ],
     [
      "Alexiz",
@@ -1996,6 +2010,70 @@
       ]
      ],
      "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "Desgracias en Tokyo Vol. 33 Pandillas",
+     "dia": "2026-11-22",
+     "rango": "plata i",
+     "puntos": [
+      [
+       "PRAISERIZA",
+       "Campeón",
+       300
+      ],
+      [
+       "Deuxs",
+       "Campeón",
+       300
+      ],
+      [
+       "Cronox",
+       "Campeón",
+       300
+      ],
+      [
+       "MCO",
+       "Campeón",
+       300
+      ],
+      [
+       "Inhuman",
+       "Subcampeón",
+       225
+      ],
+      [
+       "LRS",
+       "Subcampeón",
+       225
+      ],
+      [
+       "Colesito",
+       "Subcampeón",
+       225
+      ],
+      [
+       "Zignos",
+       "Subcampeón",
+       225
+      ],
+      [
+       "Makmah",
+       "Tercero",
+       180
+      ],
+      [
+       "Status",
+       "Tercero",
+       180
+      ],
+      [
+       "Paria",
+       "Tercero",
+       180
+      ]
+     ],
+     "fuera": []
     }
    ],
    "pendiente": [],
@@ -2026,6 +2104,7 @@
   "1113438566303924244": "FrankyOne",
   "883188801411878932": "Leokirbyy2225",
   "826494792556871751": "Mateo",
-  "456226577798135808": "Cuenta borrada"
+  "456226577798135808": "Cuenta borrada",
+  "830271117129809931": "Inhuman"
  }
 }

@@ -334,6 +334,15 @@
 "rg": "A",
 "c": []
 },
+"caliz": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "drexx": {
 "rg": "C",
 "c": [
@@ -343,7 +352,7 @@
 "temporada"
 ]
 },
-"caliz": {
+"soulb": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -361,6 +370,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"adriagner": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -391,23 +408,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"soulb": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"adriagner": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -589,6 +589,15 @@
 "temporada"
 ]
 },
+"vilca": {
+"rg": "",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "leonart": {
 "rg": "D",
 "c": [
@@ -627,14 +636,6 @@
 "neo": {
 "rg": "C",
 "c": []
-},
-"vilca": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "onzass": {
 "rg": "E",
@@ -921,6 +922,10 @@
 "temporada"
 ]
 },
+"mosquitrap": {
+"rg": "",
+"c": []
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -1045,6 +1050,13 @@
 "rg": "",
 "c": []
 },
+"abrahamh": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "erik": {
 "rg": "",
 "c": [
@@ -1054,10 +1066,6 @@
 ]
 },
 "cj": {
-"rg": "",
-"c": []
-},
-"mosquitrap": {
 "rg": "",
 "c": []
 },
@@ -1103,22 +1111,15 @@
 "temporada"
 ]
 },
+"giansito": {
+"rg": "",
+"c": []
+},
 "agustin51k": {
 "rg": "",
 "c": []
 },
 "kochi": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"giansito": {
-"rg": "",
-"c": []
-},
-"abrahamh": {
 "rg": "",
 "c": [
 "servidor",
@@ -2911,15 +2912,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-13T17:02:51Z",
-"quien": [
-"Molusco"
-],
-"rg": "C",
-"primero": false
-},
 {
 "tipo": "rango",
 "t": "2026-10-13T17:02:51Z",
@@ -6306,6 +6298,14 @@
 "AbrahamH"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-22T05:02:29Z",
+"quien": [
+"Vilca"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -8142,8 +8142,8 @@
 "tipo": "resnoche",
 "t": "2026-11-22T08:00:00Z",
 "dia": "2026-11-21",
-"eventos": 3,
-"part": 48,
+"eventos": 5,
+"part": 66,
 "campeones": [
 {
 "ev": "DESGRACIAS EN TOKYO VOL 32 1v1",
@@ -8177,9 +8177,37 @@
 "mco"
 ]
 ]
+},
+{
+"ev": "(sin titulo)",
+"sv": "LKR",
+"ll": 672,
+"quien": [
+[
+"Mosquitrap 🦟",
+"mosquitrap"
+]
+]
+},
+{
+"ev": "GRISELDA STYLE",
+"sv": "DDS",
+"ll": 673,
+"quien": [
+[
+"MCO",
+"mco"
+]
+]
 }
 ],
 "suman": [
+{
+"n": "MCO",
+"k": "mco",
+"pts": 17000,
+"ev": 3
+},
 {
 "n": "Abyssus",
 "k": "abyssus",
@@ -8187,16 +8215,10 @@
 "ev": 1
 },
 {
-"n": "BNA",
-"k": "bna",
-"pts": 7500,
-"ev": 1
-},
-{
-"n": "MCO",
-"k": "mco",
-"pts": 7500,
-"ev": 1
+"n": "AbrahamH",
+"k": "abrahamh",
+"pts": 8500,
+"ev": 2
 }
 ],
 "suben": [
@@ -8204,7 +8226,7 @@
 "n": "Fecha",
 "k": "",
 "de": 710,
-"a": 410
+"a": 371
 },
 {
 "n": "Status",
@@ -8306,7 +8328,7 @@
 "colesito": 0,
 "agus": 0,
 "mrstillballin": 5,
-"mco": 2,
+"mco": 1,
 "provenza": 0,
 "yinn": 0,
 "miniboy": 0,
@@ -8350,7 +8372,7 @@
 "dyzz": 0,
 "mats": 3,
 "numberve": 0,
-"soulb": 1,
+"soulb": 2,
 "bna": 2,
 "paria": 0,
 "last": 0,
@@ -8432,12 +8454,12 @@
 "prosu": 0,
 "rt": 0,
 "juasmio": 1,
-"mosquitrap": 0,
+"mosquitrap": 1,
 "scot": 0,
 "akuseru": 0,
 "agustin51k": 1,
 "kochi": 0,
-"giansito": 3,
+"giansito": 0,
 "leopoldsedar": 0,
 "oriuz": 0,
 "berrun": 2,
@@ -8458,7 +8480,7 @@
 "lewito": 0,
 "chase": 3,
 "zeta": 0,
-"abrahamh": 2,
+"abrahamh": 0,
 "noxvell": 0,
 "betelguese": 1,
 "corvo": 2,

@@ -9360,24 +9360,24 @@
      "mo": "2026-11-03T01:08:11Z",
      "staff": {
       "jurado": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "host": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "dj": [
-       "Adriagner"
+       "1 | Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner",
+       "n": "1 | Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner": "1316490165836972104"
+      "1 | Adriagner": "1316490165836972104"
      }
     },
     "1567000630269186131": {
@@ -9480,24 +9480,24 @@
      "mo": "2026-11-05T16:24:20Z",
      "staff": {
       "jurado": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "host": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "dj": [
-       "Adriagner"
+       "1 | Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner",
+       "n": "1 | Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner": "1316490165836972104"
+      "1 | Adriagner": "1316490165836972104"
      }
     },
     "1568087602647531602": {
@@ -9575,24 +9575,24 @@
      "mo": "2026-11-06T19:32:01Z",
      "staff": {
       "jurado": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "host": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "dj": [
-       "Adriagner"
+       "1 | Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner",
+       "n": "1 | Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner": "1316490165836972104"
+      "1 | Adriagner": "1316490165836972104"
      }
     },
     "1568666341064577025": {
@@ -9662,24 +9662,24 @@
      "mo": "2026-11-08T18:38:30Z",
      "staff": {
       "jurado": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "host": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "dj": [
-       "Adriagner"
+       "1 | Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner",
+       "n": "1 | Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner": "1316490165836972104"
+      "1 | Adriagner": "1316490165836972104"
      }
     },
     "1569080698541969603": {
@@ -9887,24 +9887,24 @@
      "mo": "2026-11-12T01:46:49Z",
      "staff": {
       "jurado": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "host": [
-       "Adriagner"
+       "1 | Adriagner"
       ],
       "dj": [
-       "Adriagner"
+       "1 | Adriagner"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner",
+       "n": "1 | Adriagner",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner": "1316490165836972104"
+      "1 | Adriagner": "1316490165836972104"
      }
     },
     "1570282524330950809": {
@@ -11201,7 +11201,7 @@
     "ACAD|2026-11-11": {
      "1316490165836972104": [
       "Adriagner [GDF]",
-      "Adriagner",
+      "#1 | Adriagner",
       "adriagner"
      ]
     },
@@ -11547,7 +11547,7 @@
      ],
      "1316490165836972104": [
       "#1 | AdriagnerLess",
-      "Adriagner",
+      "#1 | Adriagner",
       "adriagner"
      ],
      "734945161158852630": [
@@ -11756,7 +11756,7 @@
     "LKR|2026-11-21": {
      "1316490165836972104": [
       "Adriagner la cuarta barra",
-      "Adriagner",
+      "#1 | Adriagner",
       "adriagner"
      ],
      "1548906948307451906": [
@@ -11770,6 +11770,13 @@
       "",
       "Benji Price",
       "benji_price16"
+     ]
+    },
+    "FFA|2026-11-21": {
+     "1086485696572817418": [
+      "",
+      "Lewito",
+      "l3wito"
      ]
     }
    }
@@ -11945,6 +11952,10 @@
     18
    ],
    [
+    "1204164715350196284",
+    18
+   ],
+   [
     "1462602972197556237",
     16
    ],
@@ -11954,10 +11965,6 @@
    ],
    [
     "894017160756736091",
-    15
-   ],
-   [
-    "1204164715350196284",
     15
    ],
    [

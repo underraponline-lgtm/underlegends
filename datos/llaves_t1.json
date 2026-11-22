@@ -61599,5 +61599,287 @@
    "min": 87,
    "v": 1
   }
+ },
+ "672": {
+  "dia": "2026-11-21",
+  "escala": "8-15",
+  "fecha": "21/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1560645507095728278/1573893815901757603"
+  ],
+  "n": 672,
+  "nombre": "(sin titulo)",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Shadow"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Mito"
+      ],
+      "LAST",
+      ""
+     ],
+     [
+      [
+       "Kusoh",
+       "Calíz"
+      ],
+      "Kusoh",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "MCO"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mosquitrap 🦟",
+       "LAST"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ],
+     [
+      [
+       "Adriagner",
+       "Kusoh"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mosquitrap 🦟",
+       "Adriagner"
+      ],
+      "Mosquitrap 🦟",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Mosquitrap 🦟",
+    "Campeón",
+    7500
+   ],
+   [
+    "Adriagner",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kusoh",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LAST",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 95,
+   "v": 1
+  }
+ },
+ "673": {
+  "dia": "2026-11-21",
+  "escala": "8-15",
+  "fecha": "21/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1573906277367550034"
+  ],
+  "n": 673,
+  "nombre": "GRISELDA STYLE",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Mark98"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Adriagner",
+       "Vilca"
+      ],
+      "NXUZ",
+      "triple (3 bandas); Revivido: Nxuz🇵🇪"
+     ],
+     [
+      [
+       "Soulb",
+       "Fecha",
+       "giansito"
+      ],
+      "Soulb",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "AbrahamH",
+       "OKAM"
+      ],
+      "AbrahamH",
+      "Revivido: Abraham"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "NXUZ"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "AbrahamH"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "AbrahamH",
+       "NXUZ"
+      ],
+      "AbrahamH",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Soulb"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Soulb",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "AbrahamH",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fecha",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mark98",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "giansito",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 69,
+   "v": 1
+  }
  }
 }

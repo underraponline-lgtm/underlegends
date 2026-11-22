@@ -9899,6 +9899,11 @@
     "t1",
     1793029252929
    ],
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1795323779536
+   ],
    "⭐ PENTACAMPEÓN": [
     "⭐ PENTACAMPEÓN",
     "t1",
@@ -9930,7 +9935,7 @@
     1794260565889
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x6",
+    "👑 CAMPEÓN x7",
     "t1",
     1793029252929
    ],
@@ -10630,7 +10635,7 @@
     1794470716773
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x3",
     "t1",
     1792953978519
    ],
@@ -10638,6 +10643,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1795323779536
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -11668,6 +11678,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1795323779536
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -15775,6 +15790,11 @@
     "t1",
     1793029252929
    ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1795323779536
+   ],
    "🦁 TEMERARIO": [
     "🦁 TEMERARIO",
     "t1",
@@ -15880,6 +15900,11 @@
     "🛫 NÓMADA",
     "t1",
     1794260565889
+   ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1795323779536
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -17586,6 +17611,28 @@
   }
  },
  "vilca": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795323779536
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795323779536
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1795323779536
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1795323779536
+   ]
+  },
   "servidor": {
    "🏅 PODIOS": [
     "🏅 PODIOS",

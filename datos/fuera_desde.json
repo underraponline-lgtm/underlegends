@@ -1,21 +1,6 @@
 {
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
-  "19fleivawack": {
-   "bloq-competitivo": "2026-11-15",
-   "bloq-pais": "2026-11-15",
-   "competitivo": "2026-11-15",
-   "pais": "2026-11-15",
-   "servidor": "2026-11-15",
-   "sv-acad": "2026-11-15",
-   "sv-ch": "2026-11-15",
-   "sv-ddf": "2026-11-15",
-   "sv-dra": "2026-11-15",
-   "sv-ffa": "2026-11-15",
-   "sv-ffs": "2026-11-15",
-   "sv-fvs": "2026-11-15",
-   "temporada": "2026-11-15"
-  },
   "agustin51k": {
    "bloq-competitivo": "2026-11-21",
    "bloq-pais": "2026-11-21",
@@ -33,17 +18,6 @@
    "sv-urbf": "2026-11-21",
    "temporada": "2026-11-21"
   },
-  "bocamio": {
-   "servidor": "2026-11-15",
-   "sv-acad": "2026-11-15",
-   "sv-ch": "2026-11-15",
-   "sv-dra": "2026-11-15",
-   "sv-ffa": "2026-11-15",
-   "sv-frz": "2026-11-15",
-   "sv-sr": "2026-11-15",
-   "sv-urbf": "2026-11-15",
-   "temporada": "2026-11-15"
-  },
   "dans": {
    "servidor": "2026-11-17",
    "sv-dra": "2026-11-17"
@@ -53,12 +27,6 @@
    "sv-ddf": "2026-11-20",
    "sv-dra": "2026-11-20",
    "sv-ffa": "2026-11-20"
-  },
-  "flex": {
-   "servidor": "2026-11-15",
-   "sv-dra": "2026-11-15",
-   "sv-ffa": "2026-11-15",
-   "sv-sr": "2026-11-15"
   },
   "kenny": {
    "bloq-competitivo": "2026-11-17",
@@ -137,20 +105,8 @@
   }
  },
  "pasaban": 436,
- "cuando": "2026-11-22T04:43:22Z",
+ "cuando": "2026-11-22T05:02:53Z",
  "borradas": [
-  [
-   "arez",
-   "2026-10-19"
-  ],
-  [
-   "badterne",
-   "2026-10-19"
-  ],
-  [
-   "baltrip",
-   "2026-10-19"
-  ],
   [
    "bastyretro",
    "2026-10-19"
@@ -938,6 +894,18 @@
   [
    "jazi",
    "2026-11-20"
+  ],
+  [
+   "19fleivawack",
+   "2026-11-22"
+  ],
+  [
+   "bocamio",
+   "2026-11-22"
+  ],
+  [
+   "flex",
+   "2026-11-22"
   ]
  ]
 }

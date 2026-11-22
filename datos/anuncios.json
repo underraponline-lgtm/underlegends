@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T04:36:50+00:00",
+ "cuando": "2026-11-22T04:55:29+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4580,7 +4580,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4595,18 +4595,18 @@
    "premios": "SALON DE LA FAMA DE GDF",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -4645,7 +4645,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4660,18 +4660,18 @@
    "premios": "SALON DE LA FAMA DE GDF",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -4686,7 +4686,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4701,18 +4701,18 @@
    "premios": "SALON DE LA FAMA DE GDF",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -4727,7 +4727,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4742,18 +4742,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1558257515525836950"
   },
@@ -4898,7 +4898,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4913,18 +4913,18 @@
    "premios": "AURA",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1309234419525222477"
   },
@@ -7662,6 +7662,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "Nexo 🇦🇷",
+   "quien": "elmataescritas",
+   "discord_id": "986765896682962987",
+   "msg_id": "1573923549423345707",
+   "cuando": "2026-11-22T04:50:16"
+  },
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
@@ -43652,15 +43661,6 @@
    "discord_id": "1493013247488430202",
    "msg_id": "1561594790632751215",
    "cuando": "2026-10-19T04:20:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "JJ 🇨🇴",
-   "quien": "a.k.a_jj",
-   "discord_id": "1097650470476070995",
-   "msg_id": "1561594277790879815",
-   "cuando": "2026-10-19T04:18:08"
   }
  ]
 }
