@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T17:55:27+00:00",
+ "cuando": "2026-11-22T18:27:12+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6098,7 +6098,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "7:00 PM 🇵🇪 Perú.",
-   "fecha": "Domingo 29 de noviembre.",
+   "fecha": "VIERNES 27 de noviembre.",
    "premios": "",
    "staff": {},
    "autor": "Benji Price",
@@ -7338,6 +7338,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "DDS",
+   "canal": "🔥〕ANUNCIOS",
+   "tit": "SERA UNA EDICION ESPECIAL PORQUE SE HARA EL DIA EN EL Q SERVIDOR CUMPLA 1 AÑO DE CREACION",
+   "tx": "",
+   "cuando": "2026-11-22T18:16:00",
+   "msg_id": "1574126318361116693",
+   "link": "https://discord.com/channels/1443770831598649528/1487338739033178132/1574126318361116693"
+  },
+  {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
    "tit": "4:30 COMENZAMOS CON LA PRIMERA BATALLA QUE ES @numbyng",
@@ -7489,15 +7498,6 @@
    "cuando": "2026-11-18T19:47:46",
    "msg_id": "1572699860694474836",
    "link": "https://discord.com/channels/1408218254803075203/1408218255537209390/1572699860694474836"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "🚨〕ANUNCIOS",
-   "tit": "YA SE PUEDEN ANOTAR AL TORNEO CLASIFICATORIO",
-   "tx": "",
-   "cuando": "2026-11-18T01:26:32",
-   "msg_id": "1572422729645424683",
-   "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572422729645424683"
   },
   {
    "servidor": "FFA",
