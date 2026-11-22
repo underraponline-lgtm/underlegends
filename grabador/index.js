@@ -70,8 +70,17 @@ export const GRABAR_TODOS = E.GRABAR_TODOS !== '0';
 /** Los servidores que se miran en esta vuelta: los de `GRABAR_EN` y, con `GRABAR_TODOS`, los que tienen una llave en juego. */
 async function servidoresAMirar() {
   if (!GRABAR_TODOS) return GRABAR_EN;
-  return [...new Set([...GRABAR_EN, ...(await llavesEnJuego())])];
+  return [...new Set([...GRABAR_EN, ...(await llavesEnJuego()), ...(await anunciados()).keys()])];
 }
+//: 📣 EL ORGANIZADOR EN LA LLAMADA (Dlx, 22/11/2026: «ulaya will join their events channel when an event is announced
+//: and the organizer joins, based on how ulaya already joins to ffa events»): en cualquier servidor de la Liga, con un
+//: evento anunciado que arranca ahora (`/avisos/anunciados-ciclo`: de 30 min antes de su hora a 4 h después), entra a la
+//: llamada donde está QUIEN LO ANUNCIÓ, en cuanto hay `MIN_ORG` personas. Con menos, entraría y saldría (`SALIR_CON`)
+export const MIN_ORG = Math.max(2, num(E.MIN_ORG, 2));
+//: 🔴 UNA LLAVE SIN TOCAR HACE 45 MIN YA NO HACE ENTRAR (22/11/2026, 2:47 AM): la de Cypherhood se tocó por última vez
+//: a las 12:15 AM y a las 2:40 ULAYA estaba grabando el cypher de después en «ReyDeLaPista» — Dlx: «not an event but it
+//: is like a cypher». `LLAVE_H` (3 h) sigue valiendo para los micrófonos; para ENTRAR, la llave tiene que estar viva
+export const LLAVE_ENTRAR_MIN = num(E.LLAVE_ENTRAR_MIN, 45);
 //: en qué llamadas de cada servidor se graba (las de competencia). `CANALES` en Railway las cambia para todos
 export const CANALES_DE = {
   '1468472442925092958': ['1519182186702438450', '1550950039159963648', '1550950286615519343'],  // FFA: competencia, competencia², Escenario
@@ -122,23 +131,66 @@ export function topeDe(guild) {
 }
 
 // ── el vigía: ¿hay una llave de este servidor en juego? ───────────────────
-let vivo = { t: 0, g: new Set() };
-async function llavesEnJuego() {
-  if (Date.now() - vivo.t < 120000) return vivo.g;
-  vivo.t = Date.now();
-  try {
-    const r = await fetch(VIGIA + '/avisos/vivo', { signal: AbortSignal.timeout(10000) });
-    const d = r.ok ? await r.json() : {};
-    const g = new Set();
-    for (const ll of d.llaves || []) {
-      const ed = ll.ed || ll.pub;
-      if (ll.g && typeof ed === 'number' && Date.now() - ed <= LLAVE_H * 3600000) g.add(String(ll.g));
+let vivo = { t: 0, g: new Set(), viva: new Set() };
+async function llavesEnJuego(paraEntrar = false) {
+  if (Date.now() - vivo.t >= 120000) {
+    vivo.t = Date.now();
+    try {
+      const r = await fetch(VIGIA + '/avisos/vivo', { signal: AbortSignal.timeout(10000) });
+      const d = r.ok ? await r.json() : {};
+      const g = new Set(), viva = new Set();
+      for (const ll of d.llaves || []) {
+        const ed = ll.ed || ll.pub;
+        if (!ll.g || typeof ed !== 'number') continue;
+        if (Date.now() - ed <= LLAVE_H * 3600000) g.add(String(ll.g));
+        if (Date.now() - ed <= LLAVE_ENTRAR_MIN * 60000) viva.add(String(ll.g));
+      }
+      vivo.g = g;
+      vivo.viva = viva;
+    } catch (e) {
+      anotar('⚠️ el vigía no contestó:', String(e.message || e).slice(0, 80));
     }
-    vivo.g = g;
-  } catch (e) {
-    anotar('⚠️ el vigía no contestó:', String(e.message || e).slice(0, 80));
   }
-  return vivo.g;
+  return paraEntrar ? vivo.viva : vivo.g;
+}
+
+// ── 📣 los eventos anunciados que arrancan ahora, y quién los anunció ─────
+let anun = { t: 0, g: new Map() };
+/** `Map(guild -> Set(autores))` de `/avisos/anunciados-ciclo` (con la clave del ciclo), cada 2 min como mucho. */
+async function anunciados() {
+  if (!GRABAR_TODOS || Date.now() - anun.t < 120000) return anun.g;
+  anun.t = Date.now();
+  try {
+    const r = await fetch(VIGIA + '/avisos/anunciados-ciclo', { headers: { 'x-lg-ciclo': claveCiclo(E.DISCORD_TOKEN) },
+      signal: AbortSignal.timeout(10000) });
+    const d = r.ok ? await r.json() : {};
+    anun.g = organizadores(d.ev);
+  } catch (e) {
+    anotar('⚠️ los anunciados no contestaron:', String(e.message || e).slice(0, 80));
+  }
+  return anun.g;
+}
+
+/** `[[guild, ini, autor]]` -> `Map(guild -> Set(autores))`, sin filas rotas. */
+export function organizadores(ev) {
+  const m = new Map();
+  for (const f of ev || []) {
+    if (!Array.isArray(f) || !/^\d{5,25}$/.test(String(f[0])) || !/^\d{5,25}$/.test(String(f[2]))) continue;
+    if (!m.has(String(f[0]))) m.set(String(f[0]), new Set());
+    m.get(String(f[0])).add(String(f[2]));
+  }
+  return m;
+}
+
+/** La llamada donde está alguien de `autores` (sin la de AFK y, si se conocen, sólo las de competencia), o `null`. */
+function conOrganizador(guild, autores) {
+  if (!autores || !autores.size) return null;
+  const solo = canalesDe(guild.id);
+  for (const c of guild.channels.cache.values()) {
+    if (!c.isVoiceBased() || c.id === guild.afkChannelId || (solo && !solo.includes(c.id))) continue;
+    if ([...c.members.keys()].some((id) => autores.has(String(id)))) return { canal: c, ...gente(c), org: true };
+  }
+  return null;
 }
 
 /** La gente de una llamada (sin bots), y si hay otro grabador adentro. */
@@ -438,14 +490,17 @@ async function vuelta(client) {
     if (g) { g.revisar(); continue; }
     // con el mismo bot haciendo una prueba de micro ahí, entrar a grabar lo sacaría de esa llamada: se espera
     if (prueba && prueba.client === client && prueba.activa(gid)) continue;
-    const c = candidata(guild);
+    // 📣 con un evento anunciado ahora, la llamada donde está quien lo anunció manda sobre la que tiene más gente
+    const org = GRABAR_TODOS ? conOrganizador(guild, (await anunciados()).get(gid)) : null;
+    const c = org && org.n >= MIN_ORG && !org.otro ? org : candidata(guild);
     // el piso es el más bajo de los dos: con MIN_SIN=1 (la prueba de una persona) el de MIN_VIVO lo dejaba afuera
-    if (!c || c.n < Math.min(MIN_VIVO, MIN_SIN) || c.otro) { pendiente.delete(gid); continue; }
-    // 🌎 fuera de `GRABAR_EN`, sólo con una llave en juego (ver `GRABAR_TODOS`)
-    // se entra POR GENTE (sólo los de `GRABAR_EN`, con `MIN_SIN`) o POR LLAVE en juego (cualquiera, con `MIN_VIVO`)
+    if (!c || c.n < Math.min(MIN_VIVO, MIN_SIN, MIN_ORG) || c.otro) { pendiente.delete(gid); continue; }
+    // 🌎 fuera de `GRABAR_EN`, sólo con una llave viva o con el organizador de un evento anunciado (ver `GRABAR_TODOS`)
+    // se entra POR GENTE (sólo los de `GRABAR_EN`, con `MIN_SIN`), POR ORGANIZADOR (`MIN_ORG`) o POR LLAVE viva (`MIN_VIVO`)
     const porGente = GRABAR_EN.includes(gid) && c.n >= MIN_SIN;
-    const enJuego = !porGente && c.n >= MIN_VIVO && (await llavesEnJuego()).has(gid);
-    if (!porGente && !enJuego) { pendiente.delete(gid); continue; }
+    const porOrg = !porGente && !!c.org;
+    const enJuego = !porGente && !porOrg && c.n >= MIN_VIVO && (await llavesEnJuego(true)).has(gid);
+    if (!porGente && !porOrg && !enJuego) { pendiente.delete(gid); continue; }
     const p = pendiente.get(gid);
     if (!p || p.canal !== c.canal.id) { pendiente.set(gid, { canal: c.canal.id, desde: Date.now() }); continue; }
     if (Date.now() - p.desde < ESPERA_ENTRAR) continue;
@@ -457,7 +512,8 @@ async function vuelta(client) {
       continue;
     }
     pendiente.delete(gid);
-    const motivo = enJuego ? `había ${c.n} personas y una llave de ${guild.name} en juego` : `había ${c.n} personas`;
+    const motivo = porOrg ? `había ${c.n} personas con quien anunció el evento de ${guild.name}`
+      : enJuego ? `había ${c.n} personas y una llave de ${guild.name} en juego` : `había ${c.n} personas`;
     const nueva = new Grabacion(client, guild, c.canal, motivo);
     grabando.set(gid, nueva);
     try {

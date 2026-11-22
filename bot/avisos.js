@@ -136,6 +136,9 @@ export const NO_VEREDICTOS = /postulaci/i;
 export const VER_TOPE = 6;
 //: un servidor está «en vivo» desde 15 min antes del arranque hasta 5 h después
 const VER_ANTES = 15 * MIN;
+//: 🎙️📣 desde cuánto antes de la hora del anuncio y hasta cuánto después el grabador entra con quien lo anunció
+const ANUNCIO_ANTES = 30 * MIN;
+const ANUNCIO_DESPUES = 4 * HORA;
 const VER_DESPUES = 5 * HORA;
 
 /**
@@ -3895,6 +3898,8 @@ const RUTAS = {
   '/avisos/vuelve-ciclo': 'GET',
   // 🪪🎙️ quién es el lado desconocido de una batalla, por su micrófono, para ✅ Decidir: con `claveCiclo()`. Ver `pistasMic()`
   '/avisos/mic-ciclo': 'GET',
+  // 🎙️📣 los eventos anunciados que arrancan ahora y quién los anunció, para el grabador: con `claveCiclo()`
+  '/avisos/anunciados-ciclo': 'GET',
   // 🗳️ los veredictos en tiempo real (`bot/en_llamada.py --seguir`, con su clave): qué canales escuchar y lo que llegó
   '/avisos/veredictos-canales': 'GET',
   // 🗳️ y lo que guardó de cada mensaje, para el ciclo (`escuchar._con_el_vigia()`): el voto que el jurado ya editó a «.»
@@ -8021,6 +8026,11 @@ export async function rutaAvisos(req, env, ruta) {
     });
   }
   // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
+  if (ruta === '/avisos/anunciados-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/anunciados-ciclo');
+  }
   if (ruta === '/avisos/mic-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
@@ -9057,6 +9067,11 @@ export class Avisos {
       // 🪪🎙️ QUIÉN ES EL LADO DESCONOCIDO, POR SU MICRÓFONO (22/11/2026): ver `pistasMic()`. Una fila por batalla
       this.sql.exec('CREATE TABLE IF NOT EXISTS mic_pista (sv TEXT NOT NULL, lado TEXT NOT NULL, did TEXT NOT NULL, ' +
         'llave TEXT NOT NULL, bat TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (sv, lado, did, llave, bat)) WITHOUT ROWID');
+      // 🎙️📣 QUIÉN ANUNCIÓ CADA EVENTO (22/11/2026, Dlx: «ulaya will join their events channel when an event is announced
+      // and the organizer joins»): el grabador entra a la llamada donde está esa persona. Aparte del cuerpo del aviso, que
+      // va a los navegadores: el ID de quien anuncia no tiene por qué viajar ahí. Ver `anunciadosCiclo()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS anuncio_autor (id TEXT PRIMARY KEY, g TEXT NOT NULL, ini INTEGER NOT NULL, ' +
+        'autor TEXT NOT NULL, t INTEGER NOT NULL) WITHOUT ROWID');
       // 🔑 UN ERROR EN UNA LLAVE (28/09/2026): ver `reportar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
@@ -10054,6 +10069,7 @@ export class Avisos {
       if (ruta === '/pedidos-ciclo') return json(this.pedidosCiclo(), 200, 0);
       // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
       if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
+      if (ruta === '/anunciados-ciclo') return json(this.anunciadosCiclo(Date.now()), 200, 0);
       if (ruta === '/mic-ciclo') {
         // las de la temporada: 120 días alcanzan y la tabla no crece sin fin
         this.sql.exec('DELETE FROM mic_pista WHERE t < ?', Date.now() - 120 * DIA_MS);
@@ -11658,6 +11674,19 @@ export class Avisos {
   }
 
   /** Lo de `vozVivo()` de un servidor si está al día (`{ab, en}`), o `null`. */
+  /**
+   * 🎙️📣 Los eventos anunciados que se están por jugar o se juegan (de `ANUNCIO_ANTES` antes de la hora que dice el
+   * anuncio hasta `ANUNCIO_DESPUES` después), sin los cancelados: `{ev: [[guild, ini, autor]]}`. Para el grabador, que
+   * entra a la llamada donde está quien lo anunció (22/11/2026). Borra lo de más de dos días.
+   */
+  anunciadosCiclo(ahora) {
+    this.sql.exec('DELETE FROM anuncio_autor WHERE t < ?', ahora - 2 * DIA_MS);
+    const ev = this.sql.exec('SELECT a.g, a.ini, a.autor FROM anuncio_autor a JOIN avisos v ON v.id = a.id ' +
+      'WHERE v.estado != 2 AND a.ini BETWEEN ? AND ?', ahora - ANUNCIO_DESPUES, ahora + ANUNCIO_ANTES).toArray()
+      .map((f) => [String(f.g), Number(f.ini), String(f.autor)]);
+    return { ev };
+  }
+
   vozDe(g, ahora = Date.now()) {
     const v = this.leer('voz_vivo');
     const x = v && v.g && v.g[String(g || '')];
@@ -12928,6 +12957,13 @@ export class Avisos {
     const hasta = ini != null ? ini + GRACIA : publicado + EDAD_SIN_HORA;
     this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) ' +
       'VALUES (?, ?, ?, ?, ?, ?)', m.id, c.sv, JSON.stringify(cuerpo), ahora, hasta, ahora);
+    // 🎙️📣 y quién lo anunció, para el grabador (`anunciadosCiclo()`)
+    try {
+      const au = String((m.author && m.author.id) || '');
+      if (ini != null && c.g && /^\d{5,25}$/.test(au)) {
+        this.sql.exec('INSERT OR IGNORE INTO anuncio_autor (id, g, ini, autor, t) VALUES (?, ?, ?, ?, ?)', m.id, String(c.g), ini, au, ahora);
+      }
+    } catch (e) { /* sin autor: el grabador entra como antes */ }
     // 📅 y a la cola de los eventos de Discord, si ese servidor lo tiene prendido (`eventosDiscord()`)
     try {
       if (ini != null && c.g && (this.ajustes().eventos_discord || {})[c.sv] === true) {
