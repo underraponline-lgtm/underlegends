@@ -36,7 +36,10 @@ DIR = os.path.join(os.environ.get('LOCALAPPDATA') or os.path.expanduser('~'), 'L
 CLON = os.path.join(DIR, 'underlegends')
 LOG = os.path.join(DIR, 'sonidos_promos.log')
 CONF = os.path.join(DIR, 'sonidos_promos.json')
-CARPETAS = ['herramientas', 'bot', 'comun', 'datos']
+#: lo que la copia trae (patrones de sparse-checkout sin «cono»): todo lo de Python que la herramienta puede importar y los
+#: datos, pero NO la página construida (`bot/paginas/`, 53 MB que cambian en cada publicación y que esto no usa). Medido al
+#: instalar: con `bot/` entera la copia pesaba 204 MB
+CARPETAS = ['/herramientas/', '/comun/', '/datos/', '/bot/', '!/bot/paginas/']
 TAREA, RUTA_TAREA = 'SonidosPromos', '\\LigaGlobal\\'
 NO_VENTANA = 0x08000000 if os.name == 'nt' else 0
 
@@ -65,13 +68,14 @@ def poner_al_dia():
         r = _git('clone', '--filter=blob:none', '--no-checkout', '--depth', '1', URL, CLON)
         if r.returncode:
             return 'no pude copiar el repo: ' + r.stderr[-200:]
-        _git('-C', CLON, 'sparse-checkout', 'set', *CARPETAS)
+        _git('-C', CLON, 'sparse-checkout', 'set', '--no-cone', *CARPETAS)
         r = _git('-C', CLON, 'checkout', 'main')
         return 'copia nueva del repo' if not r.returncode else 'no pude armar la copia: ' + r.stderr[-200:]
     r = _git('-C', CLON, 'fetch', '--depth', '1', 'origin', 'main')
     if r.returncode:
         return 'no pude traer main (sigo con lo que había): ' + r.stderr[-160:]
-    # es una copia sólo para esto: lo de main gana siempre
+    # es una copia sólo para esto: lo de main gana siempre (y los patrones, los de esta versión)
+    _git('-C', CLON, 'sparse-checkout', 'set', '--no-cone', *CARPETAS)
     _git('-C', CLON, 'reset', '--hard', 'origin/main')
     return 'al día con main (%s)' % _git('-C', CLON, 'rev-parse', '--short', 'HEAD').stdout.strip()
 
