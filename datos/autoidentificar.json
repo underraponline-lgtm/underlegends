@@ -46,17 +46,24 @@
 "como":"fila nueva",
 "por":"se anotó así 1 vez/veces + su apodo o nombre visible",
 "pais":""
+},
+"1455653897396817968":{
+"n":"LEITAN",
+"cuando":"21/11/2026 11:25 PM ET",
+"como":"fila nueva",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible",
+"pais":""
 }
 },
-"ultima":"2026-11-21T20:25-05:00",
+"ultima":"2026-11-21T23:25-05:00",
 "ultimo_conteo":{
 "nada":112,
 "no":28,
-"empate":16,
+"empate":14,
 "probable":24,
 "disfraz":51,
 "seguro":1,
-"sin_id":232,
-"auto":0
+"sin_id":230,
+"auto":1
 }
 }

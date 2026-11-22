@@ -1593,16 +1593,16 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 30,
+   "dg": 32,
    "fg": 5,
    "fp": 2,
-   "riv": 52,
-   "venc": 30,
+   "riv": 53,
+   "venc": 32,
    "vengo": 3
   },
   "tg_p": {
-   "paises": 16,
-   "paisesg": 13
+   "paises": 17,
+   "paisesg": 14
   },
   "nac": {
    "evn": 20,
@@ -8318,12 +8318,12 @@
   }
  },
  {
-  "full": "LEITAN  🇦🇷",
+  "full": "LEITAN",
   "raw": "LEITAN",
-  "cc": "ar",
+  "cc": "",
   "sv": "CH",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1455653897396817968",
   "verificado": false,
   "ev": 1,
   "score": 16.9,
@@ -16344,10 +16344,10 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 23,
+   "dg": 22,
    "fg": 6,
    "riv": 22,
-   "venc": 18
+   "venc": 17
   },
   "tg_p": {
    "paises": 7,
@@ -16358,7 +16358,7 @@
    "evi": 13,
    "com": 2,
    "top": [
-    5,
+    15,
     "ar"
    ]
   }
