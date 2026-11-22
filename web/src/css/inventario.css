@@ -237,6 +237,8 @@
   font:900 13px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none;white-space:nowrap;cursor:pointer;justify-self:start}
 .ves-btn.blanco{background:var(--v-tinta);border-color:var(--v-tinta);color:#030304;box-shadow:4px 4px 0 var(--v-verde)}
 .ves-btn:disabled{opacity:.6;cursor:progress}
+/* el toque se nota, como el de `.app .btn` (vivo.css): baja 2 px al apretar (22/11/2026, con el «Probar de nuevo» de G6#11) */
+@media (prefers-reduced-motion: no-preference){.ves-btn{transition:transform .12s var(--ease-out,ease-out)}.ves-btn:active:not(:disabled){transform:translateY(2px)}}
 .ves-lnk{justify-self:start;font:800 14px/1.2 Archivo,sans-serif;color:var(--v-verde);text-decoration:none}
 
 /* 💾 guardar, pegado abajo */
@@ -254,9 +256,18 @@
 /* el negro del vestidor llega hasta el pie: sin esto, el `margin-top:26px` del pie dejaba una franja blanca en Clara
    (como `.lk-sec.piel+.pie` de la llave, 21/11/2026, G6#15) */
 .pg-entra:has(> .ves:last-child) + .pie{margin-top:0}
+/* y con la página estirada hasta el pie (vivo.css, G6#1 del 22/11/2026), el vestidor se estira con ella: si no, debajo de
+   una caja corta (sin cuenta, el error) quedaba el blanco de Clara entre el negro y el pie. Lo de adentro, arriba */
+.app > .pg-entra:has(> .ves:last-child){display:flex;flex-direction:column}
+.app > .pg-entra > .ves:last-child{flex-grow:1;align-content:start;width:100%}
+/* la caja sola (sin cuenta, o el error) queda en el medio del negro, como un estado vacío y no como una tira suelta */
+.app > .pg-entra > .ves:last-child:has(> .ves-entrar:only-child){align-content:center}
 /* 🔒 sin cuenta (21/11/2026, la revisión visual G6#15): la tarjeta a lo ancho, con el botón a su derecha en la compu */
 .ves-sin.ves-entrar{max-width:none}
-@media (min-width: 761px){.ves-sin.ves-entrar{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px}}
+/* 📍 en la compu, un bloque compacto con el botón al lado de su texto (22/11/2026, la revisión visual G6#21): a lo ancho de
+   los 1208 px el botón quedaba a 480 px de lo que explica. Es la misma caja del error (`!yo`, G6#11) */
+@media (min-width: 761px){.ves-sin.ves-entrar{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;
+  width:100%;max-width:760px;margin:40px auto}}
 .ves-pasos{display:grid;gap:8px;margin:0;padding:0;list-style:none}
 .ves-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border:1.5px solid var(--v-borde2);background:#08080A}
 .ves-pasos i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--v-tinta);color:#030304;font:900 14px/1 Archivo,sans-serif;font-style:normal}

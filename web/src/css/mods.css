@@ -1,5 +1,6 @@
 /* 🛠️ LA PÁGINA MODS (20/11/2026, mods_pag.jsx). La A de la maqueta 2n91HAK3krNGWeK6u7zFF1, con la crítica aplicada: los
-   interruptores sólo para lo que queda prendido (lo que se dispara son botones), lo de prueba con su sello punteado, lo que
+   interruptores sólo para lo que queda prendido (lo que se dispara son botones), lo de prueba en su pestaña (el sello
+   punteado de cada caja se sacó el 22/11/2026: G6#15), lo que
    corrige en magenta (el color del lápiz), sin franjas al costado, y en el celular 44 px de toque y el Deshacer arriba */
 .md-pag{padding:28px var(--gut,40px) 48px;display:flex;flex-direction:column;gap:26px}
 .md-pag .lab{display:block;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
@@ -7,7 +8,12 @@
 .md-gris{color:var(--gris);font-size:15px;line-height:1.45;margin:10px 0 0;max-width:62ch}
 .md-chico{font-size:12.5px;margin-top:6px}
 .md-err{margin:6px 0 0;color:var(--magenta-tx);font:700 13.5px/1.35 Archivo,sans-serif}
-.md-tit{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+/* 🧭 la cabecera (22/11/2026, la revisión visual G6#13): el título con el rol al lado y, en la compu, las pestañas a la
+   derecha al pie del título; en el celular, una columna (las pestañas debajo, como antes) */
+.md-tit{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+@media (min-width: 900px){.md-tit{grid-template-columns:minmax(0,1fr) minmax(0,560px);align-items:end;column-gap:40px}}
+.md-h1-f{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px}
+.md-rol{padding:5px 8px 4px;border:1.6px solid var(--tinta);border-radius:3px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta);white-space:nowrap}
 .md-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
 .md-main{display:flex;flex-direction:column;gap:28px;min-width:0}
 .md-sec{display:flex;flex-direction:column;gap:12px}
@@ -18,6 +24,9 @@
 .md-lente{background:var(--escenario);color:var(--esc-tinta);border-radius:3px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
 .md-lente .lab{color:var(--esc-gris)}
 .md-fila{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;align-items:center}
+/* la etiqueta a la altura de su PRIMERA fila (22/11/2026, la revisión visual G6#16): «La hora» tiene dos (las opciones y
+   «Elegir») y centrada quedaba entre las dos. 12 px = el medio de un botón de 38 */
+@media (min-width: 900px){.md-fila{align-items:start}.md-fila > .lab{padding-top:12px}}
 .md-pild{display:flex;flex-wrap:wrap;gap:6px}
 .app .md-pild button{display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 13px;border:1.4px solid var(--esc-linea);border-radius:3px;background:transparent;color:var(--esc-tinta);font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .app .md-pild button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
@@ -56,8 +65,20 @@
 .md-pc-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .md-pc-h h3{margin:0;font:800 17px/1.25 Archivo,sans-serif}
 .md-pc-h p{margin:4px 0 0;font-size:13.5px;line-height:1.45;color:var(--gris)}
-.md-sello{display:inline-block;vertical-align:2px;margin-left:6px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;font-style:normal;color:var(--gris);border:1.2px dashed var(--gris);border-radius:3px;padding:3px 6px}
 .md-ver{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+/* 📱 en el celular, los botones de cada caja de dos en dos y parejos (22/11/2026, la revisión visual G6#15): salían de a
+   uno por renglón con anchos de 115 a 215 px. Lo que no es un botón (la billetera, el nivel, las rarezas) va a lo ancho,
+   y un botón que queda solo al final también */
+@media (max-width: 599.98px){
+  .md-pc .md-ver{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .md-pc .md-ver > :not(.btn){grid-column:1 / -1}
+  .md-pc .md-ver > .md-check{grid-column:auto;margin-right:0}
+  .md-pc .md-ver > .btn{width:100%;min-width:0;padding-inline:8px;white-space:normal;text-align:center;line-height:1.1}
+  .md-pc .md-ver > .btn:last-child:nth-child(odd):not(:first-child),
+  .md-pc .md-ver > :not(.btn):not(.md-check) + .btn:last-child{grid-column:1 / -1}
+  /* «Con Premium» y «Ir al Pase», juntos en su fila */
+  .md-pc .md-ver > .md-check + .btn:last-child:nth-child(n):not(:first-child){grid-column:auto}
+}
 .md-wallet{flex:1 1 100%;display:flex;align-items:center;gap:12px;background:var(--escenario);color:var(--esc-tinta);border-radius:3px;padding:10px 14px}
 .md-wallet b{font:400 34px/1 Anton,sans-serif}
 .md-wallet small{font:700 13px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
@@ -94,9 +115,11 @@
 .md-costado{display:flex;flex-direction:column;gap:18px}
 .md-caja{border:1.6px solid var(--linea);border-radius:3px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
 .md-caja h3{margin:0;font:900 16px/1.2 Archivo,sans-serif}
-.md-caja summary{list-style:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;min-height:28px}
+/* (22/11/2026, la revisión visual G6#17) 44 px de toque y la flecha como la de «Dónde aparecen» (20 px, gris): medía 28 y
+   la única pista de que se abre era un «›» de 6 px */
+.md-caja summary{list-style:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;min-height:44px}
 .md-caja summary::-webkit-details-marker{display:none}
-.md-caja summary i{font-style:normal}
+.md-caja summary i{font-style:normal;font-size:20px;line-height:1;color:var(--gris)}
 .md-caja[open] summary i{transform:rotate(90deg)}
 @media (prefers-reduced-motion: no-preference){.md-caja summary i{transition:transform .15s ease-out}}
 .md-log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}

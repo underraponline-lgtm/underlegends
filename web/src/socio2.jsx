@@ -1784,15 +1784,18 @@ function MuroStaff({ sv, rol, permisos }) {
 }
 
 // ── quien no entró, o no es dueño de ningún socio: qué trae el panel ──
-function Puerta({ texto, entrar }) {
+// 🛟 `reintentar` (22/11/2026, la revisión visual G6#11): si el panel no contesta, el botón que lo vuelve a pedir. Decía
+// «Prueba de nuevo en un rato» sin ningún botón
+function Puerta({ texto, entrar, reintentar }) {
   return (
     <>
       <div className="escena sp-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.9 }}>
         <section className="sp-puerta">
           <span className="tag">PARA LOS DUEÑOS DE LOS SERVIDORES SOCIOS</span>
           <h1 className="hero-ev largo">El panel de tu servidor</h1>
-          <p className="hero-p">{texto}</p>
+          <p className="hero-p" role={reintentar ? 'alert' : undefined}>{texto}</p>
           {entrar ? <button type="button" className="btn verde" onClick={entrar}>Entrar con Discord</button> : null}
+          {reintentar ? <button type="button" className="btn verde" onClick={reintentar}>Probar de nuevo</button> : null}
         </section>
       </div>
       <Sec id="sp-trae" titulo="Qué trae">
@@ -1808,6 +1811,7 @@ export function PanelSocio({ liga, q }) {
   useEffect(() => { W.scrollTo(0, 0); }, []);
   // 🛡️ qué abre cada rol (16/11/2026): lo manda el Worker con los roles (`SOCIO_PERMISOS`); sin eso, sólo el dueño ve todo
   const [perm, setPerm] = useState(null);
+  const [otraVez, setOtraVez] = useState(0);
   useEffect(() => {
     let vivo = true;
     pedirPanel(false).then((r) => {
@@ -1816,7 +1820,7 @@ export function PanelSocio({ liga, q }) {
       if (r && r.ok) pedirRoles().then((x) => { if (vivo) setPerm((x && x.permisos) || {}); });
     });
     return () => { vivo = false; };
-  }, []);
+  }, [otraVez]);
   if (!j) return <p className="pronto-p sp-carga" role="status">Buscando tu servidor…</p>;
   if (j.status === 401) {
     return <Puerta texto="Cómo viene tu servidor en la Liga, cuándo conviene hacer eventos y los ajustes del bot, en un solo lugar. Entra con tu cuenta de Discord: la del dueño o la de alguien de su equipo."
@@ -1825,7 +1829,8 @@ export function PanelSocio({ liga, q }) {
   const svs = (j && j.servidores) || [];
   if (!j.ok || !svs.length) {
     return <Puerta texto={j.ok ? 'Este panel es para los dueños de los servidores socios de la Liga y su equipo. Si eres admin, pídele al dueño que te sume; si eres el dueño y no lo ves, escríbele a @itsdlx.'
-      : 'No pude traer el panel ahora. Prueba de nuevo en un rato.'} />;
+      : 'No pude traer el panel ahora. Puede ser la conexión: prueba de nuevo.'}
+      reintentar={j.ok ? undefined : () => { setJ(null); setOtraVez((x) => x + 1); }} />;
   }
   const x = svs.find((s) => s.sv === sel) || svs[0];
   // 🔑 `key` (18/11/2026): sin ella, al tocar otro servidor React reusaba las mismas piezas, y la respuesta de un cambio en

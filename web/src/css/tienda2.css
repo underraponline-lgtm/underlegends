@@ -171,3 +171,8 @@
   /* seis a la vista y el resto se desliza (de a ocho, los nombres partían en tres renglones) */
   .app .tn-merch-rail{grid-auto-columns:calc((100% - 5 * 12px) / 6)}
 }
+/* 🛟 «Cargando la Tienda…» y «No pude cargar la Tienda» (22/11/2026, la revisión visual G5#6): el texto alineado con el
+   título (`.pronto-p` trae 14 px de margen a los costados) y la raya del título debajo del «¿Cómo funciona?» de arriba a la
+   derecha, que la tachaba. Lo usan tienda2.jsx (`TiendaEspera`) y el error del arte de tienda3.jsx */
+.app .tn-espera{margin-top:28px}
+.app .tn-espera .pronto-p{margin:14px 0 0}

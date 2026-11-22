@@ -437,8 +437,9 @@ function Merch({ liga }) {
 }
 
 // 🛍️ LA TIENDA NUEVA (etapa 4, 17/11/2026, tienda3.jsx): apagada hasta el lanzamiento. Se monta sólo si el objeto dice
-// que está abierta, o que quien mira es el dueño (el ensayo); si no —sin sesión, cerrada, o el objeto no contesta al
-// abrir—, sigue la de hoy, tal cual (con la nueva ya abierta, un refresco que falla no la cambia: `useTiendaNueva`). Lo que ya se pagaba (el precio por cabeza, la promo, la ropa) entra en su «Más con tus Puntos».
+// que está abierta, o que quien mira es el dueño (el ensayo); cerrada, sigue la de hoy, tal cual. Si el objeto no contesta
+// al abrir, «No pude cargar la Tienda» con «Reintentar» (`TiendaEspera`, 22/11/2026; con la nueva ya abierta, un refresco
+// que falla no la cambia: `useTiendaNueva`). Lo que ya se pagaba (el precio por cabeza, la promo, la ropa) entra en su «Más con tus Puntos».
 const TiendaNueva = lazy(() => import('./tienda3.jsx'));
 // 👀 Sin cuenta también se mira (17/11/2026, Dlx: «súbela completa para todos»): se pide `anon` y llega el catálogo sin
 // nada tuyo; la página se arma con una billetera vacía y comprar, regalar o la lista te mandan a entrar con Discord
@@ -492,6 +493,8 @@ function useTiendaNueva(dc) {
     }).catch(() => anon(falla));
   }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { pedir(); }, [pedir]);
+  // 🔁 «Reintentar» del estado de error: vuelve a «Cargando la Tienda…» mientras va el pedido, así el toque se nota
+  const reintentar = useCallback(() => { setS(null); pedir(); }, [pedir]);
   // 💰 EL SALDO NO SE QUEDA VIEJO (17/11/2026, Dlx: «acabo de apostar y perdí todo mi dinero pero la página no se
   // actualizó… y me dejó comprar»). La apuesta se cobra en Discord, en el mismo objeto, y la página seguía mostrando lo de
   // antes: se pedía una sola vez, al abrir. Ahora se vuelve a pedir AL INSTANTE al volver a la pestaña o a la ventana
@@ -508,13 +511,30 @@ function useTiendaNueva(dc) {
     window.addEventListener('focus', ver);
     return () => { clearInterval(t); document.removeEventListener('visibilitychange', ver); window.removeEventListener('focus', ver); };
   }, [pedir, dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
-  return [S, pedir];
+  return [S, pedir, reintentar];
+}
+// 🛟 SI LA TIENDA NO CONTESTA, SE DICE (22/11/2026, la revisión visual G5#6). Mientras cargaba, o si el pedido fallaba sin
+// nada bueno antes, salía la Tienda vieja diciendo «La tienda de verdad abre pronto» con la Tienda abierta para todos: una
+// página que contradice a la de verdad. Ahora «Cargando la Tienda…» mientras va, y «No pude cargar la Tienda» con
+// «Reintentar» si falla (las mismas palabras que el arte de tienda3.jsx). La vieja queda sólo para una Tienda que el objeto
+// dice cerrada (`ok: true, abierta: false`)
+function TiendaEspera({ reintentar }) {
+  return (
+    <section className="sec tn-sec tn-espera" aria-live="polite">
+      <div className="sec-t"><h2>Tienda</h2></div>
+      {reintentar
+        ? <p className="pronto-p">No pude cargar la Tienda.{' '}<button type="button" className="btn borde2 chico" onClick={reintentar}>Reintentar</button></p>
+        : <p className="pronto-p">Cargando la Tienda…</p>}
+    </section>
+  );
 }
 export function Tienda({ liga, dc }) {
-  const [S, pedir] = useTiendaNueva(dc);
-  if (S && S.ok && (S.abierta || S.ensayo) && S.yo) {
+  const [S, pedir, reintentar] = useTiendaNueva(dc);
+  if (!S) return <TiendaEspera />;
+  if (!S.ok) return <TiendaEspera reintentar={reintentar} />;
+  if ((S.abierta || S.ensayo) && S.yo) {
     const partes = { cabezas: <Cabezas liga={liga} dc={dc} />, promo: <TuPromo liga={liga} dc={dc} />, ropa: <Merch liga={liga} /> };
-    return <Suspense fallback={<TiendaVieja liga={liga} dc={dc} />}><TiendaNueva liga={liga} dc={dc} S={S} recargar={pedir} partes={partes} /></Suspense>;
+    return <Suspense fallback={<TiendaEspera />}><TiendaNueva liga={liga} dc={dc} S={S} recargar={pedir} partes={partes} /></Suspense>;
   }
   return <TiendaVieja liga={liga} dc={dc} />;
 }

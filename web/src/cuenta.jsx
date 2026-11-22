@@ -7,7 +7,7 @@
 // hace cada cosa por dentro —la foto, las redes, «tu servidor», salir— lo sigue haciendo app.js (`cuentaFotoSi()`,
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { DUENO, PAIS, hora, limpio, norm, nuevaQue, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, GrillaDias, Ico, accion, diaET, masDias, semanasEntre, useCampana, usePerfiles } from './piezas.jsx';
 import { MiCrew } from './crewpanel.jsx';
@@ -295,11 +295,13 @@ function Quien({ liga, dc }) {
       <div className="cu-q">
         <b>{limpio(yo ? yo.n : dc.n)}</b>
         {/* 🪪 la línea de estado, como en la maqueta que eligió Dlx (20/10/2026): quién sos para la Liga, en tres datos */}
+        {/* cada dato entero en su renglón (22/11/2026, la revisión visual G6#23): partía «FREESTYLE / FOR ALL»; el «·» va
+            con el dato que sigue, así no queda colgando al final */}
         <small className="cu-estado">{[
           dc && dc.rapero ? 'Verificado' : dc ? 'Con Discord' : 'Sin entrar',
           yo && yo.rg ? 'Rango ' + yo.rg : (yo ? 'Sin rango todavía' : ''),
           s ? limpio(s.nombre || yo.sv) : '',
-        ].filter(Boolean).join(' · ')}</small>
+        ].filter(Boolean).map((t, i) => <Fragment key={i}>{i ? ' ' : ''}<span>{i ? '· ' : ''}{t}</span></Fragment>)}</small>
         {yo ? <span className="cu-datos">{yo.pos ? '#' + yo.pos + ' de la ' + liga.temp : 'Sin puesto todavía'} · OVR {yo.ovr || '—'} · {yo.ev || 0} {yo.ev === 1 ? 'evento' : 'eventos'}</span>
           // 🔴 UN RAPERO QUE TODAVÍA NO JUGÓ LA TEMPORADA NO ES «SIN TARJETA»: el día del arranque es el caso de todos
           : <span className="cu-datos">{dc && dc.rapero ? 'Todavía no jugaste esta temporada.' : 'Todavía sin tarjeta.'}</span>}

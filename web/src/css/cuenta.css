@@ -114,6 +114,10 @@
 .cu .cu-quien:not(.anon) .cu-q{grid-column:auto;margin:0;gap:4px}
 .cu .cu-quien:not(.anon) .cu-q b{font-size:20px}
 .cu .cu-quien:not(.anon) .cu-estado{font:700 12px/1.25 "Barlow Condensed",sans-serif;letter-spacing:0.1em;text-transform:uppercase;color:var(--cu-c)}
+.cu .cu-quien .cu-estado > span{display:inline-block}
+/* 🌙 en Noche, el color del servidor aclarado (22/11/2026, medido en la segunda pasada): el violeta de FFA (#26045B) sobre
+   la caja negra daba 1,13:1 y «Verificado» no se leía. Se queda el tono del servidor, mezclado con la tinta */
+.noche .cu .cu-quien:not(.anon) .cu-estado{color:color-mix(in srgb,var(--cu-c) 30%,#F6F6F6)}
 .cu .cu-quien:not(.anon) .cu-datos{font:600 13px/1.35 Archivo,sans-serif;color:var(--gris)}
 .cu .cu-quien .cu-acciones{grid-column:1/-1;margin-top:12px}
 .cu .cu-g{margin:18px 16px 0}
@@ -141,7 +145,10 @@
 /* 📅 la racha como calendario, debajo del texto de la racha (20/10/2026) */
 .cu-cal{margin-top:10px}
 /* 🚪 Salir de tu cuenta (26/10/2026): una fila más de la lista, igual a las demás pero botón, y en rojo al pasar */
-.cu .cu-g .cu-salir{display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:10px;width:100%;min-height:50px;padding:8px 10px;border:1.5px solid var(--suave);background:var(--caja);color:inherit;text-align:left;cursor:pointer;font:inherit}
+.cu .cu-g .cu-salir{display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:10px;width:100%;min-height:50px;padding:8px 10px;border:1.5px solid var(--suave);background:var(--caja);color:inherit;text-align:left;cursor:pointer;font:inherit;
+  /* la regla vieja de vivo.css (`.cu-salir`) dejaba su margen de 16 px y las mayúsculas: la fila quedaba corrida y sin
+     borde a la derecha, con la bajada gritando (22/11/2026, la revisión visual G6#4) */
+  margin:0;text-transform:none}
 .cu .cu-g .cu-salir span{display:grid;gap:3px;min-width:0}
 .cu .cu-g .cu-salir b{font:700 15px/1.1 Archivo,sans-serif}
 .cu .cu-g .cu-salir small{font:500 12.5px/1.25 Archivo,sans-serif;color:var(--gris)}
@@ -204,6 +211,9 @@
 .cpc-dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:18px;align-items:start;max-width:none}
 .cpc-tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px;align-items:stretch}
 .cpc-tres>.cpc-parte{display:grid}
+/* la caja de adentro, al alto de sus vecinas (22/11/2026, la revisión visual G6#9): con `align-content:start` de
+   `.cpc-parte`, «Discord» quedaba 17 px más corta que «Tu gente» y «Ayuda». Sólo si es una: varias se repartirían el aire */
+.cpc-tres>.cpc-parte:has(> :only-child){align-content:stretch}
 .cpc-parte{display:grid;gap:12px;align-content:start;min-width:0;scroll-margin-top:calc(0px + 12px)}
 .cpc-dos>.cpc-parte{border:2px solid var(--suave);padding:16px 18px 18px}
 .cpc-dos>.cpc-parte .cu-caja{border:0;padding:0;background:none}

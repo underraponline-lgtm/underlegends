@@ -61,11 +61,13 @@ function Sw({ k, M, t }) {
 }
 
 /** Una tarjeta de «Probar sin gastar»: con interruptor si queda prendida, sin él si se dispara */
+// (22/11/2026, la revisión visual G6#15) sin el sello «de prueba» en cada una: iba en las seis y la sección ya se llama
+// «Probar sin gastar», así que no distinguía nada
 function Prueba({ t, d, k, M, children }) {
   return (
     <div className={'md-pc' + (k && M[k] ? ' on' : '')}>
       <div className="md-pc-h">
-        <span><h3>{t} <i className="md-sello">de prueba</i></h3><p>{d}</p></span>
+        <span><h3>{t}</h3><p>{d}</p></span>
         {k ? <Sw k={k} M={M} t={t} /> : null}
       </div>
       {children ? <div className="md-ver">{children}</div> : null}
@@ -294,20 +296,23 @@ export function ModsPagina({ liga, dc }) {
           ) : null);
   return (
     <div className="md-pag">
+      {/* 🧭 la cabecera (22/11/2026, la revisión visual G6#13): el rol como pastilla al lado del título —la bajada arrancaba
+          con «Owner.» como si fuera una oración— y las pestañas a la derecha en la compu, al pie del título, donde quedaban
+          640 px vacíos. En el celular siguen debajo, igual que antes */}
       <div className="md-tit">
         <div>
           <span className="lab">Tus paneles</span>
-          <h1 className="md-h1">Mods</h1>
-          <p className="md-gris">{rolMods(Q)}. Lo que prendas sirve en esta pestaña hasta que lo apagues o la cierres{n ? ' (tienes ' + (n === 1 ? '1 cosa prendida' : n + ' cosas prendidas') + ')' : ''}. Cada uno ve sólo lo de su rol.</p>
+          <div className="md-h1-f"><h1 className="md-h1">Mods</h1><span className="md-rol">{rolMods(Q)}</span></div>
+          <p className="md-gris">Lo que prendas sirve en esta pestaña hasta que lo apagues o la cierres{n ? ' (tienes ' + (n === 1 ? '1 cosa prendida' : n + ' cosas prendidas') + ')' : ''}. Cada uno ve sólo lo de su rol.</p>
         </div>
         {/* sin «Apagar todo» acá (21/11/2026, la revisión visual G6#23): con algo prendido ya está la franja magenta de
             arriba (mods.jsx), que lo tiene, y en el celular salía dos veces a 200 px */}
+        <div className="md-pes" role="tablist" aria-label="Partes de Mods">{TABS.map(([k1, t1]) => (
+          <button key={k1} type="button" role="tab" aria-selected={tab === k1} className={tab === k1 ? 'on' : ''} onClick={() => elegir(k1)}>{t1}</button>
+        ))}</div>
       </div>
       <div className={'md-grid' + (costado ? '' : ' uno')}>
         <div className="md-main">
-          <div className="md-pes" role="tablist" aria-label="Partes de Mods">{TABS.map(([k1, t1]) => (
-            <button key={k1} type="button" role="tab" aria-selected={tab === k1} className={tab === k1 ? 'on' : ''} onClick={() => elegir(k1)}>{t1}</button>
-          ))}</div>
           {tab === 'corregir' ? <>
           {Q.owner || Q.admin || deLiga ? (
             <section className="md-sec" aria-labelledby="md-corregir">
@@ -323,15 +328,18 @@ export function ModsPagina({ liga, dc }) {
                 <span><h3>El botón Mods en cada página</h3><p>Arriba en la compu (al lado de la campana) y la M abajo a la derecha en el celular: lo que puedes hacer en la página donde estás, a un toque.</p></span>
                 <button type="button" role="switch" aria-checked={boton} aria-label="El botón Mods en cada página" className={'md-sw' + (boton ? ' on' : '')} onClick={() => ponerBotonMods(!boton)} />
               </div>
+              {/* (22/11/2026, la revisión visual G6#14) un ícono por cosa: los perfiles llevaban las barras del ranking (se
+                  confundían con el del panel de un servidor), los eventos de estilo el calendario de las llaves y los
+                  comentarios el megáfono de Publicaciones */}
               <div className="md-donde"><span className="lab">Dónde aparecen</span>
                 {owner || deLiga ? <a className="md-fl" href="#/eventos"><span className="md-ic"><Ico n="eventos" t={18} /></span><span><h3>Cualquier llave</h3><p>En cada batalla: quién ganó, un nombre o «la llave no cuenta». Avisa qué cambia después en la llave.</p></span><i>›</i></a> : null}
                 {owner || deLiga ? <a className="md-fl" href="#/ligas"><span className="md-ic"><Ico n="ligas" t={18} /></span><span><h3>Las ligas</h3><p>Al final de cada liga: quién ganó, una que no cuenta, cargar una batalla, un DF, un invitado o el campeón.</p></span><i>›</i></a> : null}
                 {Q.admin ? <a className="md-fl" href="#/crews"><span className="md-ic"><Ico n="crews" t={18} /></span><span><h3>Las crews</h3><p>Sus Ajustes, rangos y pedidos, como su Líder.</p></span><i>›</i></a> : null}
                 {Q.admin ? <a className="md-fl" href="#/competencias"><span className="md-ic"><Ico n="competencias" t={18} /></span><span><h3>Competencias</h3><p>Todas las llaves de la Copa y la Rapid, también donde no juegas.</p></span><i>›</i></a> : null}
                 {owner || deLiga ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Publicaciones</h3><p>Ocultar una publicación de cualquier servidor, o fijar una arriba: sale de titular por 3 días. Las dos, en la próxima vuelta del ciclo.</p></span><i>›</i></a> : null}
-                {owner ? <a className="md-fl" href="#/ranking"><span className="md-ic"><Ico n="ranking" t={18} /></span><span><h3>Los perfiles</h3><p>Quién es quién, arriba de cada perfil: juntar a dos nombres que son la misma persona, o separarlos.</p></span><i>›</i></a> : null}
-                {owner ? <a className="md-fl" href="#/eventos"><span className="md-ic"><Ico n="eventos" t={18} /></span><span><h3>Los eventos de estilo</h3><p>En cada evento: marcarlo de un estilo, como en tu Dashboard. Jugarlo da nivel en ese estilo.</p></span><i>›</i></a> : null}
-                {owner ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="publicaciones" t={18} /></span><span><h3>Los comentarios</h3><p>Borrar cualquier comentario, desde el comentario. Siempre, sin prender nada.</p></span><i>›</i></a> : null}
+                {owner ? <a className="md-fl" href="#/ranking"><span className="md-ic"><Ico n="perfil" t={18} /></span><span><h3>Los perfiles</h3><p>Quién es quién, arriba de cada perfil: juntar a dos nombres que son la misma persona, o separarlos.</p></span><i>›</i></a> : null}
+                {owner ? <a className="md-fl" href="#/eventos"><span className="md-ic"><Ico n="micro" t={18} /></span><span><h3>Los eventos de estilo</h3><p>En cada evento: marcarlo de un estilo, como en tu Dashboard. Jugarlo da nivel en ese estilo.</p></span><i>›</i></a> : null}
+                {owner ? <a className="md-fl" href="#/publicaciones"><span className="md-ic"><Ico n="globo" t={18} /></span><span><h3>Los comentarios</h3><p>Borrar cualquier comentario, desde el comentario. Siempre, sin prender nada.</p></span><i>›</i></a> : null}
                 {owner ? <a className="md-fl" href="#/socio"><span className="md-ic"><Ico n="servidor" t={18} /></span><span><h3>El panel de cualquier servidor</h3><p>Como su dueño: sus números, el bot y su equipo.</p></span><i>›</i></a> : null}
               </div>
             </section>

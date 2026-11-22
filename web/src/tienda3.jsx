@@ -190,9 +190,11 @@ function enEtiqueta(X, S, id) {
   return esFondo(p.c) ? arteFondo(X, id) : vista(X, id);
 }
 // 👥 quién la lleva puesta: lo público del Pase (`tp`), con su cara si la página ya la muestra; si nadie, se dice así
-function llevanHtml(liga, llevan, id) {
+// 🔇 `callar`: en la pelea, si no la lleva nadie en ninguna de las dos esquinas, nada (22/11/2026, la revisión visual G5#20):
+// la misma línea salía tres veces en la misma pantalla (la vitrina y las dos esquinas)
+function llevanHtml(liga, llevan, id, callar) {
   const ks = (llevan && llevan[id]) || [];
-  if (!ks.length) return '<p class="dq-llevan"><span>Nadie la lleva todavía · <b>sé el primero</b></span></p>';
+  if (!ks.length) return callar ? '' : '<p class="dq-llevan"><span>Nadie la lleva todavía · <b>sé el primero</b></span></p>';
   const caras = ks.slice(0, 4).map((k) => { const u = liga.avUrl ? liga.avUrl(k, 64) : ''; return u ? `<img alt="" src="${esc(u)}" data-ini="${esc(inicialSvg(k))}">` : `<img alt="" src="${esc(inicialSvg(k))}">`; }).join('');
   return `<p class="dq-llevan"><span class="dq-caras">${caras}</span><span><b>${num(ks.length)}</b> ${ks.length === 1 ? 'la lleva' : 'la llevan'}</span></p>`;
 }
@@ -200,6 +202,8 @@ function pelea(X, S, liga, llevan) {
   const pe = S.cat.pelea;
   if (!pe || !pe.ids || pe.ids.length !== 2 || !pe.ids.every((id) => S.cat.piezas[id] && pe.cuenta[id])) return '';
   const [a, b] = pe.ids, s = (id) => pe.cuenta[id][0] + pe.cuenta[id][1], tot = s(a) + s(b);
+  // si ninguna de las dos la lleva nadie, ninguna esquina lo repite; si una sí, la otra lo dice (las dos quedan parejas)
+  const nadie = ![a, b].some((id) => ((llevan && llevan[id]) || []).length);
   const pa = tot ? Math.round(s(a) / tot * 100) : 50;
   const lado = (id, cual) => {
     const p = S.cat.piezas[id], [cor, com] = pe.cuenta[id], en = S.yo && S.yo.deseos.includes(id), gana = tot && pe.gana === id;
@@ -208,7 +212,7 @@ function pelea(X, S, liga, llevan) {
       <h3>${esc(p.n)}</h3><p class="dq-esq-s">${esc(subDe(S, id))}</p>
       <p class="dq-cuenta"><b>${num(cor)}</b> ♡ · <b>${num(com)}</b> ${com === 1 ? 'compra' : 'compras'}${gana ? ' · <em>va ganando</em>' : ''}</p>
       <div class="dq-esq-b"><button class="tz-b${en ? '' : ' blanco'}" data-deseo="${id}" aria-pressed="${!!en}">${en ? '♥ En tu lista' : '♡ A tu lista'}</button><button class="tz-b" data-abre="${id}">Ver</button></div>
-      ${llevanHtml(liga, llevan, id)}</div>`;
+      ${llevanHtml(liga, llevan, id, nadie)}</div>`;
   };
   const g = S.cat.piezas[pe.gana];
   const dice = tot ? `Hoy va ganando <b>${esc(g.n)}</b>.` : 'Todavía nadie las puso en su lista: tu ♡ desempata.';
@@ -794,7 +798,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   });
 
   // sin arte después de los reintentos, se dice y se deja reintentar (18/11/2026): quedaba «Cargando…» para siempre
-  if (!A) return <section className="sec"><div className="sec-t"><h2>Tienda</h2></div>{falloArte
+  if (!A) return <section className="sec tn-sec tn-espera" aria-live="polite"><div className="sec-t"><h2>Tienda</h2></div>{falloArte
     ? <p className="pronto-p">No pude cargar la Tienda.{' '}<button type="button" className="btn borde2 chico" onClick={reintentarArte}>Reintentar</button></p>
     : <p className="pronto-p">Cargando la Tienda…</p>}</section>;
   const fila = (liga.T && liga.T[k]) || (liga.X && liga.X[k]) || {};

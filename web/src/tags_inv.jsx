@@ -272,12 +272,19 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     return () => window.removeEventListener('resize', f);
   }, []);
   // 🔒 sin cuenta no se pide nada (21/11/2026, la revisión visual G6#2): salían dos 401 antes del «Entra con Discord»
+  // 🛟 y si falla, por qué (22/11/2026, la revisión visual G6#11): `yoMal` es 'sesion' (la sesión se cerró: hay que entrar
+  // de nuevo) o 'red' (cualquier otra cosa: se reintenta). `otraVez` es el «Probar de nuevo»
+  const [yoMal, setYoMal] = useState('');
+  const [otraVez, setOtraVez] = useState(0);
   useEffect(() => {
     if (!dc) return;
     setYo(undefined);
-    pasePost('tags-mios', {}).then((d) => setYo(d && d._ok ? d : null));
+    pasePost('tags-mios', {}).then((d) => {
+      setYoMal(d && d._ok ? '' : d && d.error === 'sin_sesion' ? 'sesion' : 'red');
+      setYo(d && d._ok ? d : null);
+    });
     pasePost('marcos', {}).then((d) => setMk(d && d._ok ? d : null));
-  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dc && dc.id, otraVez]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (yo) marcarVisto(yo); }, [yo]);
   const k = (dc && dc.clave) || (yo && yo.k) || '';
   // 🃏 tus cartas también desde tu perfil (quien está en la Liga sin competir), y tus insignias para la Colección
@@ -320,8 +327,19 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         <button type="button" className="ves-btn blanco" onClick={accion.entrar}>Entrar con Discord</button></section></div>
     );
   }
-  if (yo === undefined) return <div className="ves"><p className="ves-nota">Buscando tu inventario…</p></div>;
-  if (!yo) return <div className="ves"><p className="ves-nota">No pude leer tu inventario. Entra con Discord y prueba de nuevo.</p></div>;
+  if (yo === undefined) return <div className="ves"><p className="ves-nota" role="status">Buscando tu inventario…</p></div>;
+  // 🛟 el error, en la misma caja que ve quien no entró, con qué pasó y el botón que lo arregla (22/11/2026, G6#11): era una
+  // línea gris de 13 px sin botón, y con 700 px de nada debajo
+  if (!yo) {
+    const sesion = yoMal === 'sesion';
+    return (
+      <div className="ves"><section className="ves-sin ves-entrar" role="alert"><div className="ves-sin-cab"><span className="ves-sin-ic" aria-hidden="true"><Ico n="tarjetas" t={26} /></span>
+        <div><b>Tu inventario</b><p>{sesion ? 'Tu sesión se cerró. Entra con Discord otra vez para ver tus TAGs, tus marcos y tus cartas.'
+          : 'No pude leer tu inventario. Puede ser la conexión: prueba de nuevo.'}</p></div></div>
+        {sesion ? <button type="button" className="ves-btn blanco" onClick={accion.entrar}>Entrar con Discord</button>
+          : <button type="button" className="ves-btn blanco" onClick={() => setOtraVez((x) => x + 1)}>Probar de nuevo</button>}</section></div>
+    );
+  }
 
   const cartas = tienes;
   const sinCartas = !cartas.length;

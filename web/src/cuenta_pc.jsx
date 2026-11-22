@@ -132,14 +132,15 @@ function Resumen({ liga, dc }) {
   const nSigue = (liga.sigueTodos || liga.sigue).length;
   return (
     <>
-      <div className="cpc-nums">
+      {/* 🫥 sin entrar, sin tira (22/11/2026, la revisión visual G6#9): eran 90 px para cuatro «—». Sin dato no hay pieza */}
+      {dc ? <div className="cpc-nums">
         <div><b>{yo && yo.pos ? '#' + yo.pos : '—'}</b><small>{yo && yo.pos ? 'de la ' + liga.temp + ' · OVR ' + (yo.ovr || '—') : 'sin puesto todavía'}</small></div>
         {/* sin entrar, «—»: un «0 eventos» le habla a alguien que no se sabe quién es (21/11/2026, G6#14) */}
         <div><b>{yo ? num(yo.ev || 0) : dc ? '0' : '—'}</b><small>{(yo && yo.ev) === 1 ? 'evento esta temporada' : 'eventos esta temporada'}</small></div>
         <div><b>{R && R.racha && R.racha.actual ? R.racha.actual + (R.racha.actual === 1 ? ' día' : ' días') : '—'}</b><small>{R && R.racha ? 'seguidos · tu mejor: ' + (R.racha.maxima || 0) : 'tu racha'}</small></div>
         <div><b>{n ? 'Nivel ' + n.n : '—'}</b><small>{n ? (n.xp - n.base) + ' de ' + tramo + ' para el ' + (n.n + 1) : 'tu nivel'}</small>
           {n ? <i className="cpc-barra"><u style={{ width: Math.min(100, Math.round((100 * (n.xp - n.base)) / tramo)) + '%' }} /></i> : null}</div>
-      </div>
+      </div> : null}
       {C && faltan.length ? (
         <div className="cpc-completa" data-tuto="cu-pasos">
           <div><small>Completa tu cuenta · {C.length - faltan.length} de {C.length}</small>
