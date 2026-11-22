@@ -20,6 +20,7 @@ import { RED_SVG } from './redes_ico.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe, usePases } from './pase.js';
 import { SelloPremiumBoton, boostPremium, marcoPremium } from './sello.jsx';
+import { diaEv } from './perfil_datos.js';
 import { textoRol, useRoles } from './roles.js';
 import { fondoEn, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
@@ -688,7 +689,8 @@ function Datos({ liga, p, e, f }) {
   // 📅 los días, y a qué hora (la franja que junta más de la mitad)
   if (ev.length >= 3) {
     const c = [0, 0, 0, 0, 0, 0, 0];
-    conFecha.forEach(([n]) => { c[new Date(diaISO(new Date(de(n)[2])) + 'T12:00:00Z').getUTCDay()] += 1; });
+    // el día, el de la llave (`diaEv()`, como el Inicio); la franja, del instante (`franjaDe()`)
+    conFecha.forEach(([n]) => { c[new Date(diaISO(new Date(diaEv(de(n)))) + 'T12:00:00Z').getUTCDay()] += 1; });
     const tope = Math.max(2, Math.ceil(ev.length * 0.25));
     const dias = c.map((v, i) => [v, i]).filter(([v]) => v >= tope).sort((a, b) => b[0] - a[0]).slice(0, 2);
     const fr = {};
@@ -722,7 +724,7 @@ function Datos({ liga, p, e, f }) {
     const [n] = esos[0];
     const x = de(n);
     filas.push([MEDALLA[PUESTOS[mejor]] || 'premio', 'Su mejor resultado', PUESTOS[mejor],
-      limpio(x[0] || 'Evento ' + n) + (x[2] ? ' · ' + fecha(x[2]).toLowerCase() : '')
+      limpio(x[0] || 'Evento ' + n) + (x[2] ? ' · ' + fecha(diaEv(x)).toLowerCase() : '')
       + (esos.length > 1 ? ' · y ' + (esos.length - 1) + (esos.length === 2 ? ' vez más' : ' veces más') : '')]);
   }
   // 🏁 sus finales, 🏟️ su evento más grande y 🔥 su mejor racha (Dlx, a la v1: «ser más específicos con los datos»)
@@ -781,7 +783,7 @@ function Datos({ liga, p, e, f }) {
     const orden = conFecha.slice().sort((a, b) => new Date(de(a[0])[2]) - new Date(de(b[0])[2]));
     const [n0] = orden[0];
     const [n1] = orden[orden.length - 1];
-    filas.push(['brote', 'Debutó', fecha(de(n0)[2]).toLowerCase(), limpio(de(n0)[0] || 'Evento ' + n0)]);
+    filas.push(['brote', 'Debutó', fecha(diaEv(de(n0))).toLowerCase(), limpio(de(n0)[0] || 'Evento ' + n0)]);
     if (orden.length > 1) filas.push(['reloj', 'Su último evento', haceDias(de(n1)[2]), limpio(de(n1)[0] || 'Evento ' + n1)]);
   }
   if (p && textoVerificado(p.vd)) filas.push(['ok', 'Verificado', p.vd === 'pre' ? 'antes de la T1' : textoVerificado(p.vd).replace(/^Verificado /, ''), 'es Miembro de Discord Rap Español']);

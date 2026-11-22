@@ -710,7 +710,7 @@ def armar():
     _f = FECHAS.get(ACTUAL)
     # los perfiles se arman antes: de ahí sale quién debutó esta semana (el «NUEVO» del Ranking, `debutantes()`)
     # 👤 de todos los que jugaron, no sólo de la tabla (13/10/2026: «Todos los que jugaron y los del staff»)
-    _pf = _perfiles(todos, list(_comp.values()), regs)
+    _pf = _perfiles(todos, list(_comp.values()), regs, calendario)
     debutantes(tabla, _pf)
     _perfiles_extra(_pf, filas_todas[TOPE:], _staff_rol, _avs, _vd_de(), r2, _puede)
     # 🎙️ el staff en el perfil: en cuántos eventos fue jurado, host, DJ u organizador (`staff_por_persona()`)
@@ -2080,7 +2080,42 @@ def _vd_de():
         return lambda p: ''
 
 
-def _perfiles(gente, comp, regs):
+def _jugados(cal):
+    """`{número de llave: 'AAAA-MM-DDTHH:MM:SSZ'}`: cuándo se jugó cada evento, según el calendario (`_calendario()`).
+
+    🕐 Es el arranque del anuncio y, si el anuncio no decía la hora, cuándo se publicó la llave: lo mismo que muestra
+    Eventos. Ver `_cuando_ev()`."""
+    out = {}
+    for c in cal or []:
+        if c.get('ll') and c.get('jugado') and len(str(c.get('t') or '')) == 20:
+            out.setdefault(int(c['ll']), c['t'])
+    return out
+
+
+def _cuando_ev(ms, dia, jug_t):
+    """El instante de un evento para el perfil (`e[n][2]`), en `AAAA-MM-DDTHH:MM:SSZ`, o `''`.
+
+    🕐 POR CUÁNDO SE JUGÓ, NO POR CUÁNDO SE PUBLICÓ LA LLAVE (22/11/2026, la revisión visual 2, G6#10). Era el instante
+    del primer mensaje de la llave (`llaves_web.instantes()`), y una llave publicada pasada la medianoche caía en otro
+    día: CUENTAS PENDIENTES V.1 (#435) se jugó el jueves 8/10 y su llave salió a las 12:01 AM del 9, así que el perfil
+    decía «9 oct» y el Inicio «8 oct», y «Suele jugar» contaba el día y la hora de la llave. Ahora manda el calendario
+    (`jug_t`, el arranque del anuncio) si cae a un día o menos de `dia` (el día del evento en hora del este, el de la
+    llave); si no, como antes."""
+    import datetime as dt
+    if jug_t and dia:
+        try:
+            from zoneinfo import ZoneInfo
+            d_et = (dt.datetime.strptime(jug_t, '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=dt.timezone.utc)
+                    .astimezone(ZoneInfo('America/New_York')).date())
+            if abs((d_et - dt.date.fromisoformat(dia)).days) <= 1:
+                return jug_t
+        except (ValueError, TypeError):
+            pass
+    return (dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+            if ms else '')
+
+
+def _perfiles(gente, comp, regs, cal=None):
     """Lo que la página de cada rapero necesita y el lobby no trae.
 
     🔑 Dlx, 25/09/2026: *«ESTARÍA BUENÍSIMO»*, al perfil de cada uno. Es lo
@@ -2118,11 +2153,12 @@ def _perfiles(gente, comp, regs):
                    key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n)),
                    reverse=True)
     e, evs = {}, defaultdict(list)
+    jug = _jugados(cal)
     for n in orden:
         r = regs[n]
         ms = inst.get(int(n))
-        t = (dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-             if ms else '')
+        # 🕐 cuándo se jugó, no cuándo se publicó la llave (`_cuando_ev()`)
+        t = _cuando_ev(ms, r.get('dia') or '', jug.get(int(n)))
         # 🚫 el 6.º, 1 si la llave NO SUMA (18/11/2026): `regs` trae también las de `datos/llaves_sin_sumar.json` (`ns`,
         # sumadas en `armar()`), que «no cuentan para nada», y la página del servidor las contaba en «De un vistazo», en
         # el índice y en «Sus eventos» (CEU: 26 contra los 10 de la tira). Quien lee por posición lee de [0] a [4]
@@ -5147,6 +5183,21 @@ def _self_check():
     _evs = {str(e[0]) for x in (perf.get('p') or {}).values() for e in x.get('ev') or []}
     ok(_evs <= set(perf.get('e') or {}), 'cada evento del historial tiene su nombre  (%d)'
        % len(_evs))
+    # 🕐 cuándo se jugó cada evento (22/11/2026): el #435 se jugó el jueves 8/10 a las 8 PM ET y su llave salió a las
+    # 12:01 AM del 9 (04:01Z). Manda el arranque del calendario si cae a un día del de la llave; si no, la llave
+    _ms435 = 1791518498000   # 2026-10-09T04:01:38Z
+    _jg = _jugados([{'ll': 435, 'jugado': 1, 't': '2026-10-09T00:00:00Z'}, {'ll': 9, 'jugado': 0, 't': '2026-10-01T00:00:00Z'},
+                    {'ll': 7, 'jugado': 1, 't': 'mal'}])
+    ok(_jg == {435: '2026-10-09T00:00:00Z'}
+       and _cuando_ev(_ms435, '2026-10-08', _jg.get(435)) == '2026-10-09T00:00:00Z'
+       and _cuando_ev(_ms435, '2026-10-08', None) == '2026-10-09T04:01:38Z'
+       and _cuando_ev(_ms435, '2026-10-08', '2026-11-30T00:00:00Z') == '2026-10-09T04:01:38Z'
+       and _cuando_ev(None, '', None) == '',
+       'cada evento del perfil, por cuándo se jugó (el calendario) y no por cuándo se publicó la llave')
+    _cal435 = [c for c in (p.get('calendario') or []) if c.get('ll') == 435]
+    if _cal435 and '435' in (perf.get('e') or {}):
+        ok(perf['e']['435'][2] == _cal435[0]['t'], 'y el #435 del perfil dice lo mismo que el calendario (%s)'
+           % perf['e']['435'][2])
     ok('_perfiles' not in p, 'y no viajan en el lobby')
     ok(all('av' in f for f in p['tabla']) and not any(f['av'] for f in p['tabla']),
        'sin red nadie tiene avatar (la inicial)')

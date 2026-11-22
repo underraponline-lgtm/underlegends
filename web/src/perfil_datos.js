@@ -26,7 +26,11 @@ export const nomEv = (e) => (sinTit(e) ? e.sv + ' · ' + fecha(e.t) : e.nom);
 // cargó el resultado (la #435 dice «2026-10-09T04:01:38Z», pasada la medianoche) y `x[4]` el día del evento en hora del
 // este («08/10»): con `x[2]`, el perfil de Dlx decía «Debutó 9 oct» y el Inicio, de la llave, «jue 8 oct». Al mediodía
 // UTC, para que el día no cambie en ninguna zona de la Liga
-const diaEv = (x) => {
+// 🕐 (22/11/2026, 7.76) corrección: `x[2]` no era cuándo se cargó el resultado sino cuándo se publicó la llave, y desde la
+// 7.76 es el arranque del evento según el calendario (`_cuando_ev()` de bot/subir_web.py). En toda la T1 sólo la #435
+// cae en otro día que el de su llave (salió a las 12:01 AM ET): por eso el día sigue saliendo de `x[4]`. Lo usa también
+// el perfil viejo (perfil.jsx)
+export const diaEv = (x) => {
   const t = x[2] ? Date.parse(x[2]) : 0;
   const m = /^(\d{1,2})\/(\d{1,2})$/.exec(String(x[4] || ''));
   if (!t || !m) return t;
