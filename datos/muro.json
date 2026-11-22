@@ -1175,6 +1175,10 @@
 "temporada"
 ]
 },
+"0223": {
+"rg": "",
+"c": []
+},
 "zaik": {
 "rg": "E",
 "c": [
@@ -1182,10 +1186,6 @@
 "servidor",
 "temporada"
 ]
-},
-"0223": {
-"rg": "",
-"c": []
 },
 "leopoldsedar": {
 "rg": "",
@@ -8439,7 +8439,7 @@
 "deluxe": 0,
 "ikonoxx": 0,
 "efimero": 1,
-"zaik": 1,
+"zaik": 0,
 "pomberito": 0,
 "andy": 0,
 "emilioalva": 0,

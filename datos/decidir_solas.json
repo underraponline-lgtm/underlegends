@@ -4393,6 +4393,33 @@
     "Usagi 🇨🇴"
    ],
    "escribio": {}
+  },
+  {
+   "id": "b6f50f54d3",
+   "tipo": "Nombre desconocido",
+   "sec": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · #572",
+   "que": "¿Quién es «Quasimoto🇻🇪»?",
+   "r": "Es Agente sombra",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Agente sombra: la misma cuenta de Discord",
+   "t": 1795318300363,
+   "filas": [
+    1373
+   ],
+   "variantes": [
+    "Quasimoto🇻🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "Quasimoto",
+     "Agente sombra"
+    ],
+    "filas": [
+     382
+    ]
+   }
   }
  ],
  "deshechas": []

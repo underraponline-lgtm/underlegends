@@ -374,6 +374,7 @@
   "soulog": "Magic",
   "yeyoz": "Yeyox",
   "ander": "Under",
+  "quasimoto": "Agente sombra",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -1952,6 +1953,10 @@
   [
    "ANDER",
    "Under"
+  ],
+  [
+   "Quasimoto",
+   "Agente sombra"
   ],
   [
    "Zetryco",
