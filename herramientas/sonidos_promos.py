@@ -202,19 +202,51 @@ def armar_lista(fichas):
     return {'t': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'), 'promos': promos, 'beats': beats}
 
 
+def combinar(vieja, nueva, en_canales, sin_ficha):
+    """🛡️ La lista que se sube y lo que se borra, sin perder nada por una falla (22/11/2026: la primera vuelta de la tarea
+    programada corrió sin yt-dlp, no leyó ninguna ficha, subió una lista vacía y borró los 16 recortes).
+
+    `vieja`: la lista que está en R2; `nueva`: la armada con lo que salió bien esta vez; `en_canales`: las claves que siguen
+    en los canales; `sin_ficha`: las que no se pudieron mirar esta vez. Devuelve `(lista, sobra, frenado)`:
+      · lo que no se pudo mirar pero sigue en los canales y ya tenía recorte queda como estaba
+      · se borra sólo lo que ya no está en la lista: salió de los canales, lo sacó el Dashboard o ahora no entra
+      · y si eso es más de la mitad de lo que había (y más de 3), no se borra nada: es más probable una falla que una
+        limpieza, y un recorte de más no le hace daño a nadie"""
+    viejas = (vieja or {}).get('promos') or {}
+    lista = {'t': nueva['t'], 'promos': dict(nueva['promos']), 'beats': {e: list(v) for e, v in nueva['beats'].items()}}
+    for k in sin_ficha:
+        if k in viejas and k in en_canales and k not in lista['promos']:
+            lista['promos'][k] = viejas[k]
+            for e, xs in ((vieja or {}).get('beats') or {}).items():
+                lista['beats'].setdefault(e, []).extend(x for x in xs if x.get('a') == PREFIJO + k + '.m4a')
+    sobra = sorted(set(viejas) - set(lista['promos']))
+    frenado = len(sobra) > 3 and len(sobra) * 2 > len(viejas)
+    return lista, ([] if frenado else sobra), frenado
+
+
 def correr(hacer=False):
     from beats_historias import bajar, donde_arranca
+    # 🛡️ sin yt-dlp no se puede mirar ninguna: no se toca R2 (ver `combinar()`)
+    try:
+        import yt_dlp  # noqa: F401
+    except ImportError:
+        print('   ❌ falta yt-dlp (pip install yt-dlp): no toco nada en R2')
+        return 1
     items, quitar = leer_canales()
+    if not items:
+        print('   ❌ no leí ninguna promo de los canales: no toco nada en R2')
+        return 1
     vieja = r2_lista_vieja()
     hechos = set((vieja.get('promos') or {}).keys())
     print('   📣 %d promo(s) de YouTube y SoundCloud en %d días, de gente de la Lista · %d ya con sonido en R2'
           % (len(items), HISTORIA_D, len(hechos & set(items))))
-    fichas = {}
+    fichas, sin_ficha = {}, set()
     for k, x in items.items():
         try:
             f = ficha(x)
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ %s: sin ficha (%s)' % (x['url'][:50], str(e)[:80]))
+            sin_ficha.add(k)
             continue
         c, est = clase(f['titulo'])
         if not c or not (MIN_S <= (f['d'] or 0) <= MAX_S):
@@ -225,6 +257,9 @@ def correr(hacer=False):
         print('   %s %-12s %-8s %-46s %s' % ('✅' if k in hechos else '➕', c, est or '—', f['titulo'][:46], x['quien'][:16]))
     if not hacer:
         return 0
+    if len(sin_ficha) == len(items):
+        print('   ❌ no pude mirar ninguna (¿YouTube, la red, yt-dlp viejo?): no toco nada en R2')
+        return 1
     s, api = r2()
     tmp = tempfile.mkdtemp(prefix='promos_')
     try:
@@ -246,14 +281,17 @@ def correr(hacer=False):
                 print('   ⚠️ %s: %s' % (f['titulo'][:40], str(e)[:120]))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
-    lista = armar_lista({k: f for k, f in fichas.items() if k in hechos})
+    # ⚠️ con la ficha de ESTA vuelta y los recortes que hay: lo que ya tenía recorte y no se pudo mirar queda (`combinar()`)
+    nueva = armar_lista({k: f for k, f in fichas.items() if k in hechos})
+    lista, sobra, frenado = combinar(vieja, nueva, set(items), sin_ficha)
     ok = r2_subir(s, api, LISTA_R2, json.dumps(lista, ensure_ascii=False).encode('utf-8'), 'application/json')
-    # lo que ya no va (lo sacó el Dashboard o pasó de `HISTORIA_D`): se borra su recorte
-    sobra = sorted(set((vieja.get('promos') or {}).keys()) - set(lista['promos']))
-    for k in sobra:
-        s.delete('%s/objects/%s' % (api, PREFIJO + k + '.m4a'), timeout=30)
+    if ok:
+        for k in sobra:
+            s.delete('%s/objects/%s' % (api, PREFIJO + k + '.m4a'), timeout=30)
+    if frenado:
+        print('   🛑 sobraban más de la mitad de los recortes: no borré ninguno (es más probable una falla que una limpieza)')
     print('   📝 %s · %d con sonido · beats: %s · borrados %d' % ('lista en R2' if ok else '⚠️ la lista NO se subió', len(lista['promos']),
-          ', '.join('%s %d' % (e, len(v)) for e, v in lista['beats'].items()), len(sobra)))
+          ', '.join('%s %d' % (e, len(v)) for e, v in lista['beats'].items()), len(sobra) if ok else 0))
     return 0 if ok else 1
 
 
@@ -290,6 +328,17 @@ def _self_check():
                             'PARADOJAS MAL DESCRITAS | DLOSCORIA', '7PO- LA MENTE (Video Lyric)', 'Estaba Dicho.  (EP)')]
        == ['RUBIK - HIPNOSIS', 'Debe entender beat 808', 'PARADOJAS MAL DESCRITAS', '7PO- LA MENTE', 'Estaba Dicho.'],
        'el crédito sin «(Visualizer)», «audio oficial de…» ni lo de después de «|»')
+    # 🛡️ el 22/11/2026 una vuelta sin yt-dlp borró los 16: lo que no se pudo mirar no se borra, y un borrado masivo se frena
+    v = {'promos': {k: {'a': PREFIJO + k + '.m4a', 't': k, 'b': 'x', 'u': 'u'} for k in 'abcdefgh'},
+         'beats': {'drill': [{'a': PREFIJO + 'b.m4a', 't': 'b', 'b': 'x', 'u': 'u'}]}}
+    n = armar_lista({'a': {'t': 'A', 'b': 'x', 'u': 'u', 'clase': 'cancion', 'estilo': ''}})
+    l2, so, fr = combinar(v, n, set('abcdefgh'), set('bcdefgh'))
+    ok(set(l2['promos']) == set('abcdefgh') and not so and not fr and l2['beats']['drill'],
+       'lo que ya tenía recorte y no se pudo mirar esta vez queda, con su lugar en los beats')
+    l3, so, fr = combinar(v, n, set('abcdefgh') - {'h'}, set('bcdefg'))
+    ok(so == ['h'] and not fr, 'lo que salió de los canales sí se borra')
+    l4, so, fr = combinar(v, armar_lista({}), set('ab'), set())
+    ok(fr and so == [], 'y si iba a borrar más de la mitad, no borra nada')
     print('\n%s' % ('✅ los sonidos de las promos' if not malos else '❌ %d falla(s)' % malos))
     return 1 if malos else 0
 

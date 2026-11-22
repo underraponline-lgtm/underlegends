@@ -9,8 +9,8 @@ de Windows: `\\LigaGlobal\\SonidosPromos`, cada 6 horas y, si la PC estaba apaga
 
 Cada vez:
   1. pone al día SU copia del repo con lo último de `main` (los canales y la Lista de hoy, y la herramienta de hoy). Es
-     una copia aparte, en %LOCALAPPDATA%\\LigaGlobal\\tareas, con sólo herramientas/, bot/, comun/ y datos/: nunca toca
-     una carpeta donde alguien esté trabajando
+     una copia aparte, en ~\\LigaGlobal\\tareas (la carpeta del usuario: ver `DIR`), con herramientas/, comun/, datos/ y
+     bot/ menos la página construida: nunca toca una carpeta donde alguien esté trabajando
   2. corre `herramientas/sonidos_promos.py --hacer` con las claves del .env que se le dio al instalar (`LG_ENV`)
   3. deja lo que pasó en `sonidos_promos.log`, al lado de la copia (los últimos 400 renglones)
 
@@ -84,6 +84,52 @@ def poner_al_dia():
     return 'al día con main (%s)' % _git('-C', CLON, 'rev-parse', '--short', 'HEAD').stdout.strip()
 
 
+def preparar(py, env):
+    """🧰 LO QUE LA HERRAMIENTA NECESITA, EN EL PYTHON DE AFUERA DE LA APP (22/11/2026). La primera vuelta de la tarea
+    corrió sin `yt_dlp`: se había instalado desde adentro de la app de Claude, y Windows lo desvió a la carpeta del paquete
+    (como la copia: ver `DIR`). Afuera no estaba. Así que acá se arma lo que falte, para el usuario (`pip --user`):
+      · yt-dlp, y una vez por semana al día (cuando YouTube cambia, uno viejo deja de bajar)
+      · requests
+      · ffmpeg: el de winget si se ve; si no, el que trae `imageio-ffmpeg`, copiado como `bin/ffmpeg.exe`
+    Devuelve `(listo, notas)`. Si no queda listo, la herramienta no corre."""
+    notas = []
+
+    def tiene(mod):
+        return subprocess.run([py, '-c', 'import ' + mod], env=env, capture_output=True, creationflags=NO_VENTANA).returncode == 0
+
+    def pip(*paq):
+        r = subprocess.run([py, '-m', 'pip', 'install', '--user', '-U', '-q', '--disable-pip-version-check', *paq], env=env,
+                           capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=900, creationflags=NO_VENTANA)
+        return r.returncode == 0, r.stderr[-200:]
+    sello = os.path.join(DIR, 'yt_dlp_al_dia.txt')
+    import time
+    if not tiene('yt_dlp') or not os.path.exists(sello) or time.time() - os.path.getmtime(sello) > 7 * 86400:
+        ok, err = pip('yt-dlp')
+        notas.append('yt-dlp ' + ('al día' if ok else 'NO se instaló: ' + err))
+        if ok:
+            with open(sello, 'w', encoding='utf-8') as f:
+                f.write(dt.datetime.now().isoformat())
+    if not tiene('requests'):
+        ok, err = pip('requests')
+        notas.append('requests ' + ('instalado' if ok else 'NO se instaló: ' + err))
+    if not shutil.which('ffmpeg', path=env['PATH']):
+        bin_ = os.path.join(DIR, 'bin')
+        exe = os.path.join(bin_, 'ffmpeg.exe')
+        if not os.path.exists(exe):
+            ok, err = pip('imageio-ffmpeg')
+            r = subprocess.run([py, '-c', 'import imageio_ffmpeg;print(imageio_ffmpeg.get_ffmpeg_exe())'], env=env, capture_output=True,
+                               text=True, creationflags=NO_VENTANA)
+            if ok and r.returncode == 0 and os.path.exists(r.stdout.strip()):
+                os.makedirs(bin_, exist_ok=True)
+                shutil.copy2(r.stdout.strip(), exe)
+                notas.append('ffmpeg copiado de imageio-ffmpeg')
+            else:
+                notas.append('ffmpeg NO está: ' + (err or r.stderr[-200:]))
+        env['PATH'] = bin_ + os.pathsep + env['PATH']
+    listo = tiene('yt_dlp') and tiene('requests') and bool(shutil.which('ffmpeg', path=env['PATH']))
+    return listo, notas
+
+
 def correr():
     conf = {}
     if os.path.exists(CONF):
@@ -98,6 +144,12 @@ def correr():
     winget = os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Microsoft', 'WinGet', 'Links')
     env['PATH'] = winget + os.pathsep + env.get('PATH', '')
     py = sys.executable.replace('pythonw.exe', 'python.exe')
+    listo, notas = preparar(py, env)
+    if notas:
+        linea += '\n' + '\n'.join('   🧰 ' + n for n in notas)
+    if not listo:
+        anotar('%s\n❌ falta algo de lo de arriba: no corro la herramienta (R2 queda como está)' % linea)
+        return 1
     try:
         r = subprocess.run([py, os.path.join(CLON, 'herramientas', 'sonidos_promos.py'), '--hacer'], cwd=CLON, env=env,
                            capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=40 * 60, creationflags=NO_VENTANA)
