@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T01:25:35+00:00",
+ "cuando": "2026-11-22T01:55:14+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7589,6 +7589,24 @@
   {
    "servidor": "CH",
    "canal": "📜—inscripciones",
+   "texto": "Soul🇲🇽",
+   "quien": "soul011294",
+   "discord_id": "915051512575717457",
+   "msg_id": "1573874167970009183",
+   "cuando": "2026-11-22T01:34:02"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "kaled 🇦🇷",
+   "quien": "kaled7370",
+   "discord_id": "949110039426261033",
+   "msg_id": "1573873938713288755",
+   "cuando": "2026-11-22T01:33:08"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
    "texto": "The papu 🇦🇷",
    "quien": "manu06777",
    "discord_id": "1324593951377985648",
@@ -12864,7 +12882,7 @@
    "servidor": "URBF",
    "canal": "‣《🗞️》Inscripciones",
    "texto": "Shark🇦🇷",
-   "quien": "shxrk17.",
+   "quien": "goyoshecksheck.",
    "discord_id": "1571326294585511978",
    "msg_id": "1571589684528680961",
    "cuando": "2026-11-15T18:16:19"
@@ -43567,24 +43585,6 @@
    "discord_id": "1397110475594010700",
    "msg_id": "1561460411575050363",
    "cuando": "2026-10-18T19:26:12"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Ardean 🇵🇪",
-   "quien": "ardean_rap373",
-   "discord_id": "879849220352393266",
-   "msg_id": "1561460169810911374",
-   "cuando": "2026-10-18T19:25:15"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Molusco 🇦🇷",
-   "quien": "moluscoanvriento_79058",
-   "discord_id": "1363285354442133778",
-   "msg_id": "1561460076126937250",
-   "cuando": "2026-10-18T19:24:52"
   }
  ]
 }
