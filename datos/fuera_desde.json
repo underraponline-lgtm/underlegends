@@ -42,6 +42,18 @@
    "sv-dra": "2026-11-22",
    "sv-ffa": "2026-11-22"
   },
+  "magic": {
+   "bloq-competitivo": "2026-11-22",
+   "bloq-pais": "2026-11-22",
+   "competitivo": "2026-11-22",
+   "pais": "2026-11-22",
+   "servidor": "2026-11-22",
+   "sv-ch": "2026-11-22",
+   "sv-dra": "2026-11-22",
+   "sv-ffa": "2026-11-22",
+   "sv-sr": "2026-11-22",
+   "temporada": "2026-11-22"
+  },
   "mats": {
    "bloq-competitivo": "2026-11-21",
    "bloq-pais": "2026-11-21",
@@ -109,8 +121,8 @@
    "sv-urbf": "2026-11-17"
   }
  },
- "pasaban": 437,
- "cuando": "2026-11-22T17:01:37Z",
+ "pasaban": 436,
+ "cuando": "2026-11-22T17:24:54Z",
  "borradas": [
   [
    "bastyretro",
