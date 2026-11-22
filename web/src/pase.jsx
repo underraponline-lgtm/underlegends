@@ -601,7 +601,10 @@ const PESTANA_DE = { 'ps-premios': 'premios', 'ps-tareas': 'tareas', 'ps-premium
 const tabDeHash = () => { const h = String(location.hash); return /premium/.test(h) ? 'premium' : /salon/.test(h) ? 'salon' : 'tareas'; };
 
 /** 🏁 La pieza blanca: lo gratis y lo premium del nivel que sigue (o lo primero, o el Pase completo) */
-function Proximo({ miembro, nivel, N, libres, prem, tiene, a, onPista }) {
+// `sinPrimero`: la caja del costado ya muestra el premio de ese nivel en grande (cuando no va el Drop del día), así que
+// acá no se repite (22/11/2026, la 2.ª revisión · Impeccable distill: «Tu carta de Temporada» salía dos veces, una al
+// lado de la otra) y entran los especiales que vienen después
+function Proximo({ miembro, nivel, N, libres, prem, tiene, a, onPista, sinPrimero }) {
   if (miembro && nivel >= N) {
     return (
       <article className="pa-prox">
@@ -612,11 +615,11 @@ function Proximo({ miembro, nivel, N, libres, prem, tiene, a, onPista }) {
     );
   }
   const sigN = miembro ? Math.min(N, nivel + 1) : 1;
-  const g = libres[sigN - 1];
+  const g = sinPrimero ? null : libres[sigN - 1];
   const pr = prem.find((x) => x[0] === sigN);
   // sin ser de DRA: lo primero y los dos especiales que vienen después; siendo de DRA, el próximo gran premio si no es éste
   const gran = miembro ? proximoEspecial(libres, sigN) : null;
-  const extra = miembro ? (gran ? [gran] : []) : libres.filter((p) => p && p[2] && p[0] > 1).slice(0, 2);
+  const extra = miembro ? (gran ? [gran] : []) : libres.filter((p) => p && p[2] && p[0] > 1).slice(0, sinPrimero ? 3 : 2);
   return (
     <article className="pa-prox">
       <span className="pa-k">{miembro ? 'Lo próximo · nivel ' + sigN : 'Lo que ganarías'}</span>
@@ -695,7 +698,12 @@ export function Pase({ liga, dc }) {
   else if (P0 && P0.sinSesion) {
     tuyo = (<><p className="hero-p">Tu sesión venció: entra de nuevo con Discord y aparece tu nivel.</p>
       <span className="pc-acc"><button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></span></>);
-  } else if (!P0) tuyo = <p className="hero-p ps-mal">No pude leer tu Pase. Prueba de nuevo en un rato.</p>;
+  } else if (!P0) {
+    // 🔁 el error dice qué pasó y da la salida (22/11/2026, la 2.ª revisión · Impeccable harden), como «Probar de nuevo»
+    // de la Tienda: sin botón, la única salida era recargar la página
+    tuyo = (<><p className="hero-p ps-mal">No pude leer tu Pase.</p>
+      <span className="pc-acc"><button type="button" className="btn borde2 chico" onClick={() => pedirPase()}>Probar de nuevo</button></span></>);
+  }
   else if (!P0.listo) tuyo = <p className="hero-p">El Pase arranca en un rato: en la próxima vuelta del ciclo.</p>;
   else if (!miembro) {
     tuyo = (<><p className="hero-p">Es de los miembros de Discord Rap Español: verifícate y tu Pase arranca en el nivel 1, con tu carta de Temporada.</p>
@@ -766,7 +774,7 @@ export function Pase({ liga, dc }) {
           <Franja items={franja} />
           <div className="rka-dos pa-dos">
             <div className="rka-izq">
-              <Proximo miembro={miembro} nivel={nivel} N={N} libres={libres} prem={prem} tiene={tiene} a={a} onPista={() => ir('premios')} />
+              <Proximo miembro={miembro} nivel={nivel} N={N} libres={libres} prem={prem} tiene={tiene} a={a} onPista={() => ir('premios')} sinPrimero={!conDia && !!sigP} />
               {miembro ? <div className="rka-caja pa-sem"><h2 className="rka-h">Tu semana en el Pase<small>lo que más te acerca</small></h2><Cuatro P={P} ahora={ahora} tiene={tiene} onIr={ir} /></div> : null}
             </div>
             <div className="rka-rail">
@@ -799,7 +807,9 @@ export function Pase({ liga, dc }) {
             <div className="pc-todo"><Premium liga={liga} dc={dc} P={P} prem={prem} nivel={nivel} miembro={miembro} /></div>
           </> : null}
           {tt === 'salon' ? <div className="pa-muro"><SalonC liga={liga} pub={pub} nivel={nivel} temp={temp} niveles={cfg.niveles || N} /></div> : null}
-          <Exclusivos libres={libres} prem={prem} max={compu ? 8 : 6} />
+          {/* los ocho también en el celular (22/11/2026, la 2.ª revisión · posición serial): recortar por el final escondía
+              justo los dos más altos, la Insignia Platino y «Rey Dragón». En dos columnas son cuatro filas */}
+          <Exclusivos libres={libres} prem={prem} max={8} />
         </div>
       </Sec>
       <PopPase P={P} onVer={() => ir('premios')} />

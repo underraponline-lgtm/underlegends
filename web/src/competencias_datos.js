@@ -72,9 +72,10 @@ export function faltaTxt(iso, ahora = Date.now()) {
   const ms = new Date(iso).getTime() - ahora;
   if (!(ms > 0)) return 'cerrado';
   const h = Math.floor(ms / 3600000);
-  if (h < 1) return Math.max(1, Math.round(ms / 60000)) + ' min';
-  if (h < 48) return h + ' h ' + String(Math.floor((ms % 3600000) / 60000)).padStart(2, '0');
-  return Math.round(h / 24) + ' días';
+  // con espacios duros (22/11/2026): «cierra en 33 / h 20» partía el número de su unidad. /en los normaliza igual
+  if (h < 1) return Math.max(1, Math.round(ms / 60000)) + ' min';
+  if (h < 48) return h + ' h ' + String(Math.floor((ms % 3600000) / 60000)).padStart(2, '0');
+  return Math.round(h / 24) + ' días';
 }
 
 /**

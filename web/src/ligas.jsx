@@ -1449,7 +1449,10 @@ export function Ascenso({ A, h, desde = '', liga = null }) {
         {ver.map(([n, cc, pts, suma, k], i) => (
           <li key={i + n} className={(i < suben ? 'sube' : i < suben + po ? 'po' : '') + (k && k === h.miK ? ' yo' : '')}>
             <span className="asc-i">{i + 1}</span>
-            <span className="asc-n">{liga && k ? <Cara liga={liga} k={k} nombre={n} cls="cara asc-cara" /> : null}{cc ? <Bandera cc={cc} /> : null}
+            {/* sin clave, la inicial (22/11/2026, la 2.ª revisión): sin cara, la bandera y el nombre arrancaban ~36 px más a la
+                izquierda que los de arriba y abajo */}
+            <span className="asc-n">{liga ? (k ? <Cara liga={liga} k={k} nombre={n} cls="cara asc-cara" />
+              : <span className="cara asc-cara ini" aria-hidden="true">{(limpio(n) || '?').slice(0, 1).toUpperCase()}</span>) : null}{cc ? <Bandera cc={cc} /> : null}
               {k ? <a href={'#/r/' + encodeURIComponent(k)}>{liga && liga.T[k] ? limpio(liga.T[k].n) : limpio(n)}</a> : <span>{limpio(n) || 'Una cuenta de Discord'}</span>}</span>
             {suma ? <em className="asc-mas">+{num(suma)}</em> : <span />}
             <b className="asc-pts">{num(pts)}</b>

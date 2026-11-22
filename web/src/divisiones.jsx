@@ -6,11 +6,21 @@
 // se cambia acá.
 import { useEffect, useState } from 'react';
 import { MESES, hora, limpio, num } from './liga.js';
-import { Alguien, Cara } from './piezas.jsx';
+import { Alguien, Cara, Ico, accion } from './piezas.jsx';
 import { Franja } from './ranking_a.jsx';
 import { bDe } from './prueba_elo.js';
 
 const zonaDe = (n, z) => Math.min(z, Math.floor(n / 3));
+// 🔤 la letra de la piedra, negra o blanca según su color (22/11/2026, la 2.ª revisión): la «Z» negra sobre el azul de
+// Zafiro daba 4,34:1 y la «R» sobre el rojo, 4,16. El color llega del payload, así que se elige con su luminancia
+function tintaSobre(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ''));
+  if (!m) return '#030304';
+  const l = [0, 2, 4].map((i) => { const c = parseInt(m[1].slice(i, i + 2), 16) / 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; });
+  const L = 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2];
+  const negro = (L + 0.05) / (0.001 + 0.05), blanco = 1.05 / (L + 0.05);   // #030304 tiene luminancia ~0,001
+  return negro >= blanco ? '#030304' : '#FFFFFF';
+}
 // 🏁 EL RANKING ELO CON LA ESTRUCTURA DE LA LLAVE (el remake A del Ranking, tanda 2, 19/11/2026: Dlx, «SIGUE CON TODO»).
 // La escena —la franja, la cima de Mítico en su podio, la escalera y tu ELO al costado— la dibuja `Divisiones` con
 // `parte="escena"` adentro de la cabecera del Ranking; el papel —las divisiones en pestañas, la tabla y cómo funciona—,
@@ -388,7 +398,7 @@ function Escalera({ liga, nombres, divs, sel, setSel, mia, elo, colores }) {
             className={'dv-esc-p' + (i === sel ? ' on' : '') + (i === mia ? ' mia' : '') + (n ? '' : ' vacia')}
             style={{ '--alto': (112 + k * 12) + 'px' }} title={nombres[i] + ' División'}>
             {i === mia ? <i className="dv-esc-vos" aria-hidden="true">TÚ</i> : null}
-            {elo ? <b className="dv-gema" style={{ background: (colores || [])[i] }}>{nombres[i].slice(0, 1)}</b> : <b>{i + 1}ª</b>}
+            {elo ? <b className="dv-gema" style={{ background: (colores || [])[i], color: tintaSobre((colores || [])[i]) }}>{nombres[i].slice(0, 1)}</b> : <b>{i + 1}ª</b>}
             <span>{nombres[i]}</span>
             {top.length ? (
               <i className="dv-esc-caras" aria-hidden="true">{top.map(([raw]) => {
@@ -502,7 +512,7 @@ function Grupo({ liga, g, gi, gs, sel, nombres, D, esYo }) {
   );
 }
 
-export function Divisiones({ liga, parte, sel: selP, setSel: setSelP }) {
+export function Divisiones({ liga, parte, sel: selP, setSel: setSelP, dc }) {
   const D = liga.d.div;
   const yo = liga.yo;
   const nombres = (D && D.n) || [];
@@ -548,7 +558,16 @@ export function Divisiones({ liga, parte, sel: selP, setSel: setSelP }) {
             </div>
           </div>
           <div className="rka-rail">
-            <div className="rka-caja rka-dvtu"><TuSemanaElo liga={liga} D={D} nombres={nombres} divs={divs} esYo={esYo} /></div>
+            {/* 🚪 sin sesión, la misma entrada que las otras 13 pestañas (22/11/2026, la 2.ª revisión · ley de Jakob): afirmaba
+                «Hierro I · todavía no tienes ELO», que para quien tiene ELO y no entró es falso, y no ofrecía entrar */}
+            {!yo && !dc ? (
+              <div className="rka-caja rka-tu">
+                <div className="rk-tu invita">
+                  <span className="rk-tu-l"><Ico n="yo" t={22} /><b>Entra con Discord y te marcamos en cada ranking.</b></span>
+                  <button type="button" className="btn verde chico rk-tu-btn" onClick={accion.cuenta}>Entrar</button>
+                </div>
+              </div>
+            ) : <div className="rka-caja rka-dvtu"><TuSemanaElo liga={liga} D={D} nombres={nombres} divs={divs} esYo={esYo} /></div>}
             {ult ? (
               <div className="rka-caja">
                 <h2 className="rka-h">Subieron el lunes<small>{ult.sube.length} de división</small></h2>

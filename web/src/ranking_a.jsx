@@ -128,7 +128,8 @@ export function franjaDe({ sub, liga, cfg, base, clas, sem, numero, pide, nombre
         const viva = max(base, (f) => (f.rch || [0])[0] || 0);
         const n = base.filter((f) => ((f.rch || [0])[0] || 0) >= 3).length;
         return [viva && (viva.rch || [0])[0] ? { l: 'La viva más larga', cara: cara(viva), v: nom(viva), em: viva.rch[0], c: 'la lleva ahora: si no llega arriba en su próximo evento, vuelve a 0' } : null,
-          { l: 'Con racha viva de 3 o más', v: num(n), c: 'eventos seguidos llegando arriba de la llave' }];
+          // el 13 cuenta PERSONAS (22/11/2026, la 2.ª revisión): con «eventos seguidos» debajo se leía como una racha de 13
+          { l: 'Con racha viva de 3 o más', v: num(n), em: n === 1 ? 'rapero' : 'raperos', c: 'llevan 3 o más eventos seguidos llegando arriba de la llave' }];
       },
       eventos: () => {
         const lg = max(base, (f) => f.lg || 0);
@@ -173,7 +174,7 @@ export function peleaDe({ cfg, base, numero }) {
     const d = val(a) - val(b);
     // a igual distancia (el OVR empata mucho), la de menos puntos
     const d2 = (a.pts || 0) - (b.pts || 0);
-    if (!p || d < p.d || (d === p.d && d2 < p.d2)) p = { a, b, d, d2 };
+    if (!p || d < p.d || (d === p.d && d2 < p.d2)) p = { a, b, d, d2, va: val(a) };
   }
   return p;
 }
@@ -186,9 +187,12 @@ export function Pelea({ liga, p, va, vb, pie, vis, href, nombre }) {
       <b>{nombre ? nombre(f) : limpio(f.n)}</b><small>{v}</small>
     </a>
   );
+  // «pegados» sólo si lo están (22/11/2026, la 2.ª revisión: dos crews a 329.377 pts llevaban «los dos, pegados»): si
+  // los separa más del 15 % del de arriba, el título solo (otra etiqueta partía el título en dos renglones)
+  const pegados = !(p.va > 0 && p.d > 0.15 * p.va);
   return (
     <div className="rka-caja">
-      <h2 className="rka-h">La pelea más cerrada<small>los dos, pegados</small></h2>
+      <h2 className="rka-h">La pelea más cerrada{pegados ? <small>los dos, pegados</small> : null}</h2>
       <div className="rka-pelea">{lado(p.a, va)}<span className="rka-vs" aria-hidden="true">VS</span>{lado(p.b, vb)}</div>
       <p className="rka-pie">{pie}</p>
     </div>

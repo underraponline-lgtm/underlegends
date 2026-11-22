@@ -530,7 +530,8 @@
 .cmx-c:hover,.cmx-c:focus-visible{border-color:var(--tc)}
 .cmx-ci{width:40px;height:40px;display:grid;place-items:center;flex:none;border-radius:4px;background:#000;border:1.5px solid color-mix(in srgb,var(--tc) 45%,#000);color:var(--tc)}
 .cmx-ct{display:grid;gap:3px;min-width:0}
-.cmx-ct i{font:800 11px/1.1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:var(--tc)}
+/* el rótulo, con un 20 % de blanco (22/11/2026): el magenta de la Copa a 11 px sobre #0B0C0E daba 4,32:1 */
+.cmx-ct i{font:800 11px/1.1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--tc) 80%,#fff)}
 .cmx-ct b{font:800 14px/1.2 Archivo,sans-serif;text-transform:uppercase}
 .cmx-ct small{font:500 12px/1.3 Archivo,sans-serif;color:#A5A5A0}
 .cmx-anillo{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:50%;background:conic-gradient(var(--tc) calc(var(--p)*1%),#232326 0)}
@@ -726,4 +727,17 @@ dialog.cmx-pop.cmx-pop-llave{--pc:#E41373;width:min(980px,calc(100vw - 32px))}
   .cmx-blanca,.cmx-negros{grid-template-columns:minmax(0,1fr)}
   .cmx-blanca>.cm9-ev+.cm9-ev{border-left:0;border-top:2px solid #030304}
   .cmx-tb .cm9-tabla th:nth-child(4),.cmx-tb .cm9-tabla td:nth-child(4),.cmx-tb .cm9-tabla th:nth-child(6),.cmx-tb .cm9-tabla td:nth-child(6){display:none}
+}
+
+/* ✂️ lo que entra en un renglón va en uno (22/11/2026, la 2.ª revisión): «ASCENSO 22 / ligas», «… en Puntos de Tienda /
+   · ver todos», «Premio: 300 Puntos / de Tienda.». Los números con su unidad van con espacios duros en el texto */
+.cmx-niv small{white-space:nowrap}
+.cmx-nota,.cm9-ev-pide,.cm9-ev-gana{text-wrap:balance}
+/* 👆 en el celular, 44 px de toque sin mover el dibujo (Fitts): «Todos y cómo se juegan →» medía 19 de alto y los nombres
+   de «Equipo de la semana» y «Cobraron», 15–17. La fila entera lleva a su perfil */
+@media (max-width: 599.98px){
+  .cm9-ver{position:relative}
+  .cm9-ver::after{content:"";position:absolute;inset:-13px 0}
+  .cmx-eq li,.cmx-cob li{position:relative;min-height:44px}
+  .cmx-eq li > a::after,.cmx-cob li > a::after{content:"";position:absolute;inset:0}
 }

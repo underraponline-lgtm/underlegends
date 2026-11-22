@@ -642,10 +642,11 @@ function armaEntra(X, R, pts) {
   for (const g of X.G) if (g !== R && g.p > tot) puesto++;
   return { cont, fuera, entra, tot, puesto, libres: Math.max(0, X.mejores - cont.length) };
 }
-function Seg({ t, k, ops, val, pon }) {
+// `dos`: en el celular va de a dos por renglón (22/11/2026: «Pro nacional 5» quedaba solo abajo de los otros tres)
+function Seg({ t, k, ops, val, pon, dos }) {
   return (
     <div><small>{t}</small>
-      <div className="gl-seg" role="group" aria-label={t}>
+      <div className={'gl-seg' + (dos ? ' dos' : '')} role="group" aria-label={t}>
         {ops.map(([v, tx]) => <button key={String(v)} type="button" aria-pressed={String(val) === String(v)} onClick={() => pon(k, v)}>{tx}</button>)}
       </div>
     </div>
@@ -703,7 +704,7 @@ function Arma({ X, yo, movil }) {
   return (
     <div className="gl-ar">
       <div className="gl-ar-ctl"><h3>{yo ? 'Arma una batalla tuya' : 'Arma una batalla'}</h3>
-        <Seg t="Dónde (el peso)" k="ev" ops={EV.map(([v, tt, p]) => [v, tt + ' ' + n2(p)])} val={A.ev} pon={pon} />
+        <Seg t="Dónde (el peso)" k="ev" ops={EV.map(([v, tt, p]) => [v, tt + ' ' + n2(p)])} val={A.ev} pon={pon} dos={EV.length === 4} />
         <Seg t="Fuerza del rival" k="f" ops={ARMA_F.map((v) => [v, String(v)])} val={A.f} pon={pon} />
         <Seg t="Resultado" k="res" ops={ARMA_RES} val={A.res} pon={pon} />
         <Seg t="Ronda" k="ronda" ops={RON.map(([v, tt]) => [v, tt])} val={A.ronda} pon={pon} />

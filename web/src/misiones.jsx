@@ -123,7 +123,7 @@ function Pila({ liga, quienes, n }) {
   return (
     <span className="mt-pila">
       {quienes.length ? <span className="mt-cs">{quienes.slice(0, 5).map((q) => <Quien key={q} liga={liga} raw={q} cls="cara mt-c" />)}</span> : null}
-      {n ? n + (n === 1 ? ' la cumplió' : ' la cumplieron') : 'Nadie todavía'}
+      {n ? n + (n === 1 ? ' la cumplió' : ' la cumplieron') : 'Nadie todavía'}
     </span>
   );
 }
@@ -266,7 +266,9 @@ export function Misiones({ liga }) {
   const ahora = Date.now();
   const prox = (liga.proximos() || []).filter((p) => utc(p.cuando) >= ahora - 2 * 3600000).sort((a, b) => utc(a.cuando) - utc(b.cuando))[0] || null;
   const mw = (liga.d.mw && liga.d.mw.b) || [];
-  const cab = !yo ? ['Las misiones de la semana', <>Las mismas para todos, y se cumplen <b>jugando</b>: cada una suma a tu Temporada, y las tres juntas, <b>+{num(M.bono)}</b> más.</>]
+  // sólo lo que la portada no dice (22/11/2026, la 2.ª revisión · Impeccable distill): «las mismas para todos, se cumplen
+  // jugando» salía tres veces en la misma pantalla
+  const cab = !yo ? ['Las misiones de la semana', <>Las tres juntas: <b>+{num(M.bono)}</b> más.</>]
     : hechas === tres.length ? ['¡Semana perfecta!', <>Cumpliste las tres: sumaste el bono de <b>+{num(M.bono)}</b>.</>]
       : hechas === 0 ? ['Tus tres misiones', <>Ninguna todavía. La {NIVEL[lista[tres[0][1]].n].toLowerCase()} da <b>+{num(lista[tres[0][1]].p)}</b>{cumplieron(tres[0][1]) ? <> y ya la cumplieron {cumplieron(tres[0][1])} esta semana</> : null}.</>]
         : ['Llevas ' + hechas + ' de ' + tres.length, <>Te falta <b>la {NIVEL[lista[pend].n].toLowerCase()}</b>: +{num(lista[pend].p)}, y con ella el bono de <b>+{num(M.bono)}</b>.</>];
@@ -324,7 +326,7 @@ export function Misiones({ liga }) {
             </a>
           ) : null}
         </div>
-        <p className="mt-reglas">Las mismas para todos, y se cumplen <b>jugando</b>. Las de abajo y tu presa van aparte del bono.{iCaza >= 0 ? ' La de todos es la misma presa para toda la Liga.' : ''}</p>
+        <p className="mt-reglas">Las de abajo y tu presa van aparte del bono.{iCaza >= 0 ? ' La de todos es la misma presa para toda la Liga.' : ''}</p>
       </section>
 
       <section className="mt-papel" aria-label="La semana de todos">

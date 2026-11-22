@@ -35,16 +35,29 @@
 /* 📅 en el teléfono angosto, los botones del calendario uno debajo del otro: de a dos, «GOOGLE / CALENDAR» partía en dos
    renglones al lado de «APPLE · OUTLOOK» en uno (21/11/2026) */
 @media (max-width: 419px){.evp-cal .evp-acc > .btn:not(:only-child){flex-basis:100%;white-space:nowrap}}
+/* los tres botones del calendario, del mismo ancho (22/11/2026, la 2.ª revisión · alineación): apilados de 210, 190 y 172
+   px dejaban el borde derecho dentado */
+.evp-cal .evp-acc{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;width:100%}
+.evp-cal .evp-acc > .btn{justify-content:center}
 .evp-ok{margin:0;font:700 14.5px/1.4 Archivo,sans-serif;color:var(--tinta)}
 .evp-pasos{margin:0;padding-left:20px;display:grid;gap:4px;font:400 14.5px/1.45 Archivo,sans-serif}
 .evp-yo{display:grid;gap:8px;justify-items:start;padding-top:10px;border-top:1px solid var(--suave);width:100%}
 .evp-ics{font:700 15px/1.3 "Barlow Condensed",sans-serif;background:var(--caja);padding:6px 8px;overflow-wrap:anywhere;user-select:all}
 .evp-comp{background:none;border:0;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;
   letter-spacing:0.04em;text-transform:uppercase}
+/* 👆 «Compartir» medía 100×20: en el celular, 44 de alto sin mover el dibujo (22/11/2026 · Fitts) */
+@media (max-width: 599.98px){.evp-comp{position:relative}.evp-comp::after{content:"";position:absolute;inset:-12px 0}}
 .evp-cp{display:grid;gap:6px;justify-items:start;align-content:start;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer}
 /* 🧱 la carta en la misma caja que la de quien no tiene (21/11/2026, la revisión visual): una de Servidor o de liga es más
    alta que la de Temporada, bajaba su leyenda ~14 px y la fila no alineaba. Se encoge adentro, sin recortarse */
 .evp-cp-ci{display:block;width:100%;height:auto;aspect-ratio:900/1314;object-fit:contain}
+/* la caja de la imagen, del mismo tamaño para las seis (22/11/2026): la leyenda arranca a la misma altura en todas. La
+   carta con marco (`.mk`) va centrada y con aire: su marco se dibuja por fuera */
+/* y nunca de más de 196 px: el marco mide la carta ANTES de dibujarse (piezas.jsx) y desde 200 va completo, con las
+   esquinas y el brazalete de la «C», que a 768 —la carta en 236— salían de la pantalla por la izquierda. Con el relleno,
+   la caja de la imagen queda en 196 como mucho para las seis, tengan marco o no */
+.evp-cp-v{display:grid;place-items:center;justify-self:stretch;padding-inline:max(0px,calc((100% - 196px) / 2));aspect-ratio:900/1314}
+.evp-cp-v > .mk{max-width:100%}
 /* sin carta, su cara en una caja oscura: el recuadro punteado vacío parecía una carta que no cargó (la D, 16/11/2026) */
 .evp-cp-sin{display:grid;place-items:center;width:100%;aspect-ratio:900/1314;background:#141417;border:1px solid #2A2A2E}
 .evp-cp-cara{width:64px;height:64px;font:900 24px/1 Archivo,sans-serif}
@@ -288,7 +301,9 @@
 .evp-fel.tuyo{cursor:default;border-style:dashed}
 .evp-fel:disabled:not(.on){opacity:.6;cursor:default}
 @media (hover: hover) and (pointer: fine){.evp-fel:hover:not(:disabled){background:#1C1C1A}}
-.evp-cm{display:inline-grid;place-items:center;min-width:36px;min-height:36px;border:1.5px solid #4A4A47;text-decoration:none;font-size:15px}
+.evp-cmt{display:inline-grid;place-items:center;flex:none;min-width:36px;min-height:36px;border:1.5px solid #4A4A47;color:#F4F4F0;text-decoration:none}
+/* gemelos: felicitar y comentar comparten borde de arriba y de abajo; en el celular, 44 px (Fitts) */
+@media (max-width: 599.98px){.evp-fel,.evp-cmt{min-height:44px}.evp-cmt{min-width:44px}}
 .evp-sem{font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0;text-transform:uppercase}
 
 /* ══ 🕒 LA D (Dlx, 16/11/2026, a la maqueta: «una mezcla entre A y B»): la fila de cuatro, el día por hora o en lista,
@@ -328,12 +343,14 @@
 .evg-sv{position:sticky;left:0;z-index:6;display:flex;align-items:center;gap:6px;padding:0 8px;background:var(--caja);box-shadow:1px 0 0 var(--suave)}
 .evg-sv small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .evg-sv .evl-sig{margin:0}
-.evg-p{position:relative;display:grid;grid-template-columns:repeat(var(--nh),minmax(0,1fr));height:calc(var(--car) * 50px + 6px)}
+/* el bloque de 44 a 52 px y su título en dos renglones (22/11/2026, la 2.ª revisión): «TORNE…», «GRI…», «SIN TIT…»
+   cortaban el nombre a cuatro letras. Cada carril, de 50 a 58 (`top: 5 + k * 58` en eventos.jsx) */
+.evg-p{position:relative;display:grid;grid-template-columns:repeat(var(--nh),minmax(0,1fr));height:calc(var(--car) * 58px + 6px)}
 .evg-p > i{border-left:1px solid var(--suave)}
-.evg-b{position:absolute;z-index:1;display:grid;align-content:center;gap:3px;height:44px;min-width:0;padding:0 8px;border:0;border-radius:2px;background:var(--c);
+.evg-b{position:absolute;z-index:1;display:grid;align-content:center;gap:3px;height:52px;min-width:0;padding:0 8px;border:0;border-radius:2px;background:var(--c);
   color:var(--t);text-align:left;cursor:pointer;font:inherit;overflow:hidden}
 .evg-b.con-cp{padding-right:25px}
-.evg-b b{font:900 12.5px/1.1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evg-b b{font:900 11.5px/1.1 Archivo,sans-serif;text-transform:uppercase;overflow:hidden;overflow-wrap:break-word;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .evg-b small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* lo que ya pasó, apagado: el color del servidor detrás de un velo del fondo, y la letra del tema */
 /* 65 % de velo: con 58 el amarillo de CYH en Noche dejaba la letra clara en 4,4:1 (la cuenta, 16/11) */
@@ -434,8 +451,30 @@
 /* el cuadro de una llave en vivo sin rondas, sobre el fondo del tema: los nombres de las rondas eran #A5A5A0 sobre blanco (2,2:1) */
 .evs .cm-r{color:var(--gris)}
 /* felicitar, en el color del tema (en «Los últimos campeones» va sobre negro) */
-.evs .evp-fel,.evs .evp-cm{color:var(--tinta);border-color:var(--linea)}
+.evs .evp-fel,.evs .evp-cmt{color:var(--tinta);border-color:var(--linea)}
 @media (hover: hover) and (pointer: fine){.evs .evp-fel:hover:not(:disabled){background:var(--caja)}}
+/* 🎛️ LO ELEGIDO EN DOS NIVELES (22/11/2026, la 2.ª revisión · Hick y similitud): cinco acciones con cuatro pesos —un
+   verde, un borde, un link subrayado, un borde de 36 px y un emoji— no decían cuál era la principal. Ahora el verde solo
+   arriba y debajo una fila de bordes de 44 px: historias, Discord, felicitar y comentar. La fila de `Acciones` y la de
+   `Aplauso` se abren (`contents`) para que sus botones se repartan juntos; el `::before` es el salto de renglón */
+.evs-acc > .t-acc,.evs-acc > .evp-cp-soc{display:contents}
+.evs-acc > .t-acc > .btn.verde{order:-2}
+.evs-acc:has(> .t-acc > .btn.verde)::before{content:"";order:-1;flex-basis:100%;height:0}
+.evs-acc .btn,.evs-acc .evp-fel,.evs-acc .evp-cmt{min-height:44px}
+.evs-acc .evp-cmt{min-width:44px}
+.evs-acc > .t-acc > a:not(.btn){display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 14px;
+  color:var(--tinta);text-decoration:none}
+/* los de la segunda fila, todos con el borde y la letra de `.btn.borde2` (similitud: la misma acción secundaria, el mismo dibujo) */
+.evs-acc > .t-acc > a:not(.btn),.evs-acc .evp-fel,.evs-acc .evp-cmt{border:2px solid var(--linea);font:800 14px/1 Archivo,sans-serif;font-stretch:115%;
+  letter-spacing:.02em;text-transform:uppercase}
+@media (hover: hover) and (pointer: fine){.evs-acc > .t-acc > a:not(.btn):hover{background:var(--caja)}}
+@media (max-width: 599.98px){
+  .evs-acc{gap:8px}
+  .evs-acc > .t-acc > .btn.verde{flex:1 1 100%}
+  /* el que tiene el texto largo crece, el link corto mide lo suyo: «Para historias» no se parte en dos */
+  .evs-acc > .t-acc > .btn:not(.verde),.evs-acc .evp-fel{flex:1 1 auto;min-width:0}
+  .evs-acc > .t-acc > a:not(.btn){flex:0 0 auto}
+}
 @media (min-width: 700px){
   .evs-cuerpo{grid-template-columns:128px minmax(0,1fr);align-items:start}
   /* sin campeón no va la columna de su carta (18/11/2026): la llave caía en la de 128 px */

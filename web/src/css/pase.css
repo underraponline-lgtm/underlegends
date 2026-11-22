@@ -545,7 +545,9 @@ svg.po{display:block;flex:none;overflow:visible}
 .dd2 .k{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#7FD3FF}
 .dd2 .dd2-top{margin-left:auto;color:#8FB5CC;letter-spacing:.06em;font-size:12px;text-align:right}
 .dd2-ped{position:relative;display:grid;place-items:center;height:150px}
-.dd2-ped::after{content:"";position:absolute;bottom:6px;left:50%;width:150px;height:16px;transform:translateX(-50%);background:#0d2536;border:2px solid #2C8BD6}
+/* la base, una raya de luz (22/11/2026, la 2.ª revisión): el rectángulo de 150×16 con borde azul y fondo oscuro se leía
+   como un campo de texto vacío */
+.dd2-ped::after{content:"";position:absolute;bottom:10px;left:50%;width:120px;height:6px;transform:translateX(-50%);background:#2C8BD6}
 .dd2-ped > span{position:relative;z-index:1;display:block}
 .dd2-cand{position:absolute!important;z-index:2!important;left:calc(50% + 26px);bottom:30px;width:34px;height:34px;border-radius:50%;display:grid!important;place-items:center;background:#030304;border:2px solid #F5C542;color:#F5C542}
 @keyframes dd2-sacude{0%,100%{transform:rotate(0) scale(1)}20%{transform:rotate(-14deg) scale(1.04)}40%{transform:rotate(12deg) scale(1.08)}60%{transform:rotate(-10deg) scale(1.1)}80%{transform:rotate(8deg) scale(1.12)}}
@@ -715,8 +717,12 @@ svg.po{display:block;flex:none;overflow:visible}
 .pa-objs figure.luego{opacity:.85}
 @media (max-width: 899px){
   .pa-sem .pc-4{grid-template-columns:minmax(0,1fr)}
-  .pa-pes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;overflow:visible}
+  /* las tres en un renglón (22/11/2026, la 2.ª revisión): en dos columnas «El Salón 225» quedaba sola abajo */
+  .pa-pes{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0 12px;overflow:visible}
   .pa-pes button{text-align:left}
+  .pa-pes button small{display:block;margin:5px 0 0}
+  /* 👆 «Ver los 50 niveles» medía 17 px de alto (Fitts: 44 en el celular), sin mover el dibujo */
+  .pa-lnk{display:inline-flex;align-items:center;min-height:44px;margin-block:-13px}
   .pa-objs{gap:14px 18px}
   .pa-objs figure{max-width:calc(50% - 9px)}
 }

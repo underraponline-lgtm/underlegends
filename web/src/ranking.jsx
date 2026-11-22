@@ -218,7 +218,8 @@ function Crew({ x, f }) {
       <LogoCrew c={f} cls="rk-clogo" />
       <span className="rk-qn">
         <span className="rk-qa"><a href={'#/crew/' + encodeURIComponent(f.clave || f.crew)}>{limpio(f.crew)}</a></span>
-        <small>{f.rk === 0 ? 'SIN PUESTO · FALTAN RAPEROS' : ''}{mia ? <em className="rk-vos">TU CREW</em> : null}</small>
+        {/* sólo el motivo (22/11/2026): el «—» de la columna # ya dice que no tiene puesto, y a 390 se cortaba en «FALTAN RAPER» */}
+        <small>{f.rk === 0 ? 'Le faltan raperos' : ''}{mia ? <em className="rk-vos">TU CREW</em> : null}</small>
       </span>
     </span>
   );
@@ -274,7 +275,8 @@ const COL = {
   mws: { t: 'Sobrevivió', tc: 'Sobr.', tit: 'Cuántas veces sobrevivió siendo buscado', s: (f) => f.sob || 0, v: (f) => f.sob || NADA },
   g: { t: 'Ganados', tc: 'Gan.', s: (f) => f.g || 0, v: (f) => f.g || 0 },
   t: { t: 'Jugados', tc: 'Jug.', s: (f) => f.t || 0, v: (f) => f.t || 0 },
-  wrd: { t: '%', tit: 'Ganados sobre jugados', s: (f) => (f.t ? f.g / f.t : 0), v: (f) => (f.t ? Math.round((100 * f.g) / f.t) + '%' : NADA) },
+  // `tl`: su nombre en el renglón de la lista del celular (22/11/2026: «Jug. 138 · % 54%» repetía el signo)
+  wrd: { t: '%', tl: 'Ganó', tit: 'Ganados sobre jugados', s: (f) => (f.t ? f.g / f.t : 0), v: (f) => (f.t ? Math.round((100 * f.g) / f.t) + '%' : NADA) },
   oro: { t: '1.º', tit: 'Primeros puestos', s: (f) => f.oro || 0, v: (f) => f.oro || PUNTO },
   seg: { t: '2.º', tit: 'Segundos puestos', s: (f) => f.seg || 0, v: (f) => f.seg || PUNTO },
   ter: { t: '3.º', tit: 'Terceros puestos', s: (f) => f.ter || 0, v: (f) => f.ter || PUNTO },
@@ -456,7 +458,7 @@ const SUBS = {
     // 🔑 LAS COLUMNAS DEL RANKING OFICIAL (Dlx, 25/09/2026: racha, último evento, cazó, cazado, sobrevivió y misiones)
     // 🏁 DE 12 COLUMNAS A 9 (Dlx, 18/11/2026, el remake A): Cazó, Cazado, Sobrevivió, Misiones y Writing se mudaron a
     // la fila abierta (`NUMEROS.temporada.det`): se mueven, no se sacan
-    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ten', 'ev', 'racha', 'ult'], movil: ['pos', 'n', 'ovr', 'pts'],
+    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ten', 'ev', 'racha', 'ult'], movil: ['pos', 'n', 'ovr', 'pts'], tablet: ['pos', 'n', 'ovr', 'rg', 'pts', 'ten'],
     baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes. <b>Esta semana</b>: lo que sumó desde el lunes, y en barritas cada semana de la temporada.</>,
     // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
     // lo dice»). El escalón lleva sólo el número
@@ -553,7 +555,7 @@ const SUBS = {
     orden: ordenOsv, hay: (L) => (L.d.tabla || []).some((f) => f.osv),
     // 📱 en el celular, el OVR SV primero (18/11/2026): el primero después del puesto es el número grande de la derecha
     cols: ['isv', 'n', 'svc', 'osv', 'ovr', 'ev', 'pts'], movil: ['isv', 'n', 'osv', 'svc'],
-    baj: <>Los que mandan en <b>cada servidor</b>, por el <b>OVR de su carta de Servidor</b>: el número de ese servidor, no el de la Temporada. El <b>#</b> es su puesto adentro de su servidor. Elige uno arriba.</>,
+    baj: <>Los que mandan en <b>cada servidor</b>, por el <b>OVR de su carta de Servidor</b>: el número de ese servidor, no el de la Temporada. El <b>#</b> es su puesto adentro de su servidor. Elige uno en los filtros, arriba de la tabla.</>,
     valor: [(f) => f.osv || 0, 'OVR'], dato: (f) => 'OVR ' + f.osv + ' · ' + siglaDe(f.sv), porQue: 'por OVR SV',
   },
   paises: {
@@ -591,7 +593,8 @@ const SUBS = {
     et: 'Ascensos', propia: Ascensos, filas: () => [], orden: () => 0,
     hay: (L) => !!(L.d.ligas && L.d.ligas.asc && Object.keys(L.d.ligas.asc).length),
     siNo: <><b>Ascensos</b>: el ranking de ascenso de cada servidor que tiene ligas, al día.</>,
-    baj: <>El ranking de <b>ascenso</b> de cada servidor, al día: su tabla oficial más lo que se jugó después, con <b>sus</b> reglas. Lo oficial lo decide su staff.</>,
+    // corto (22/11/2026, la 2.ª revisión): el detalle ya lo dice el párrafo de arriba de la tabla, a 300 px
+    baj: <>El ranking de <b>ascenso</b> de cada servidor, al día.</>,
   },
   // 🌍 EL RANKING GLOBAL (21/11/2026): todos los que rapean en español, la Liga, las plazas y los Pro. Dibuja su página
   // entera (global.jsx) debajo de las pestañas: otra gente, otro json (`/global.json`) y otra cuenta
@@ -691,7 +694,7 @@ function Podio({ liga, cfg, top, sem }) {
             : cfg.podio === 'servidor' && t && (t.c || []).includes('servidor') ? 'servidor' : 'temporada';
           vis = <Carta liga={liga} k={f.k} cual={cual} cls="rk-ci" />;
           // ⏳ mientras la carta se redibuja, su número puede no coincidir con este orden: se dice
-          if (liga.cartaVieja(f.k, cual)) nota = <small className="rk-pnota">SE ESTÁ REDIBUJANDO</small>;
+          if (liga.cartaVieja(f.k, cual)) nota = <small className="rk-pnota"><Ico n="reloj" t={12} />redibujando</small>;
         }
         return (
           <li key={clave(f)} className={'rk-p p' + (i + 1)}>
@@ -845,7 +848,7 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
 // ── 📱 LA LISTA DEL CELULAR, EN FILAS DE DOS RENGLONES (Taste, app-screens §12: «tables become lists of two-line rows»;
 // la maqueta C v5). Línea 1: puesto, foto, nombre, bandera y servidor; línea 2: lo que importa de este ranking; a la
 // derecha, el número que ordena. Tocar la fila la abre, como en la tabla. «Todos los datos» vuelve a la tabla entera ──
-function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, sinFiltro, perf, sub }) {
+function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, sinFiltro, perf, sub, svFijo }) {
   const { liga } = x;
   // `isv` también (18/11/2026): es el puesto de «Servidores», que ya va a la izquierda; se repetía a la derecha en grande
   // y el OVR SV, que es lo que ordena, bajaba al segundo renglón
@@ -854,7 +857,12 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
   const nom = (cfg.movil || cfg.cols).find((id) => ['n', 'pais', 'crew'].includes(id)) || 'n';
   const ids = (cfg.movil || cfg.cols).filter((id) => !['pos', 'i', 'isv', nom].includes(id));
   const lead = ids[0];
-  const resto = ids.slice(1);
+  // 🏟️ con un servidor elegido, «Servidor FFA» en cada fila no dice nada que el filtro no diga (22/11/2026, la 2.ª revisión)
+  const resto = ids.slice(1).filter((id) => !(id === 'svc' && svFijo));
+  // en el renglón de la lista el servidor va como texto: un link de 43×20 adentro de una fila que se abre al tocarla
+  // llevaba al servidor en vez de abrir la fila
+  const dato = (id, f) => (id === 'svc' && f.sv
+    ? <span className="rk-svc"><img alt="" src={x.liga.logo(f.sv)} />{siglaDe(f.sv)}</span> : COL[id].v(f, x));
   return (
     <ol className="rk-lista">
       {vis.map((f) => {
@@ -876,7 +884,7 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
                     // «—» mientras /api/semanas no llegó (18/11/2026): «0» le decía a todos que no sumaron nada
                     // «sem.» y no «esta semana» (21/11/2026): a 390 se cortaba en la mitad de las filas («esta sema…»)
                     ? <>{num(f.pts)} pts · <em className={sem ? 'sem' : 'q'}>{sem ? '+' + num(sem) : x.sem ? '0' : '—'}</em> sem.</>
-                    : resto.map((id) => <span key={id}>{COL[id].tc || COL[id].t} {COL[id].v(f, x)}</span>)}
+                    : resto.map((id) => <span key={id}>{COL[id].tl || COL[id].tc || COL[id].t} {dato(id, f)}</span>)}
                 </small>
               </span>
               <span className="rk-fila-d">
@@ -885,7 +893,8 @@ function ListaCel({ x, cfg, vis, abierta, setAbierta, miFila, corteK, directoK, 
               </span>
             </li>
             {ab ? <li className="rk-fila-det"><Detalle x={x} cfg={cfg} f={f} perf={perf} /></li> : null}
-            {directoK === k && sinFiltro ? <li className="rk-fila-corte directo"><a href="#/ligas/superliga"><Ico n="copa" t={14} /> Hasta acá clasifican directo a la Superliga</a></li> : null}
+            {/* corto, para que entre en un renglón a 390 (22/11/2026: «LA SUPERLIGA» quedaba sola abajo) */}
+            {directoK === k && sinFiltro ? <li className="rk-fila-corte directo"><a href="#/ligas/superliga"><Ico n="copa" t={14} /> Hasta acá, directo a la Superliga</a></li> : null}
             {corteK === k && sinFiltro ? <li className="rk-fila-corte"><a href={'#/ligas/' + (sub === 'competitivo' ? 'superliga' : 'clausura')}><Ico n="copa" t={14} /> Hasta acá clasifican a la {sub === 'competitivo' ? 'Superliga' : 'Clausura'}</a></li> : null}
           </Fragment>
         );
@@ -1297,7 +1306,11 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   // 3 · cuántos debutaron esta semana en ESTE ranking: con alguno, su chip
   const nuevos = filtros ? base.filter((f) => (liga.T[f.k] || f).nu).length : 0;
   const vis = filtrando ? fs : fs.slice(0, ver);
-  const cols = (movil && !todas ? cfg.movil : cfg.cols) || [];
+  // 📟 en la tablet (700–899) la tabla resumida era la del celular: `# · Rapero · OVR · PTS` con ~450 px vacíos en el medio
+  // y sin el rango ni la semana, que la lista del celular sí muestra (22/11/2026, la 2.ª revisión). Ahí va `cfg.tablet`
+  // o todas menos «Último evento»
+  const resumen = movil && !enLista ? (cfg.tablet || (cfg.cols || []).filter((id) => id !== 'ult')) : cfg.movil;
+  const cols = (movil && !todas ? resumen : cfg.cols) || [];
   const act = orden ? orden.col : cols[0];
   const desc = orden ? orden.desc : false;
   const ordenar = (id) => {
@@ -1542,7 +1555,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             {!pronto && (estado || hace) ? <p className="rk-meta">{estado}{estado && hace ? <br /> : null}{hace ? 'Actualizado ' + hace : ''}</p> : null}
             {!pronto && base.length ? <div className="hero-acc"><Compartir cls="btn borde chico" url={enlace('#/ranking/' + sub)} texto={'El ranking de ' + cfg.et + ' de la Liga Global'} etiqueta="Compartir el ranking" /></div> : null}
           </div>
-          {eloA ? <Divisiones liga={liga} parte="escena" sel={divSel} setSel={setDivSel} /> : dosCols ? (
+          {eloA ? <Divisiones liga={liga} parte="escena" sel={divSel} setSel={setDivSel} dc={dc} /> : dosCols ? (
             <>
               <Franja items={franja} />
               <div className="rka-dos rk-igual">
@@ -1618,7 +1631,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
               </label>
               {/* 📱 Resumen · Todos los datos (Dlx, 20/10/2026: «en el celular agregar una opción ahí arriba para ver todos
                   los datos»): vivía abajo de todo como «Todas las columnas» */}
-              {movil && cfg.movil && cfg.cols.length > cfg.movil.length ? (
+              {movil && resumen && cfg.cols.length > resumen.length ? (
                 <div className="rk-seg" role="group" aria-label="Qué ver">
                   <button type="button" className={!todas ? 'on' : ''} aria-pressed={!todas} onClick={() => setTodas(false)}>Resumen</button>
                   <button type="button" className={todas ? 'on' : ''} aria-pressed={todas} onClick={() => setTodas(true)}>Todos los datos</button>
@@ -1664,7 +1677,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                 <div className={'rk-tw' + (todas && movil ? ' todas' : '') + (enLista && !todas ? ' lista' : '')} ref={tabla}>
                   {enLista && !todas ? (
                     <ListaCel x={x} cfg={cfg} vis={vis} abierta={abierta} setAbierta={setAbierta} miFila={miFila} corteK={corteK} directoK={directoK}
-                      sinFiltro={!orden && !q && !sv && !cc && !soloSigo && !soloNuevos} perf={perf} sub={sub} />
+                      sinFiltro={!orden && !q && !sv && !cc && !soloSigo && !soloNuevos} perf={perf} sub={sub} svFijo={!!sv} />
                   ) : (
                   <table className="rk-t">
                     <thead>

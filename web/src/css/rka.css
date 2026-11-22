@@ -14,12 +14,14 @@
 .rka-franja{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));margin:0;background:var(--rka-caja)}
 .rka-kpi{display:grid;gap:4px;align-content:start;padding:14px 16px;min-width:0}
 .rka-kpi + .rka-kpi{border-left:1px solid var(--esc-linea)}
-.rka-kpi dt{font:600 12.5px/1.2 Archivo,sans-serif;color:var(--esc-gris)}
+.rka-kpi dt{font:600 12.5px/1.2 Archivo,sans-serif;color:var(--esc-gris);text-wrap:balance}
 .rka-kpi dd{margin:0}
 .rka-v{display:flex;align-items:center;gap:8px;min-width:0;font:800 21px/1.05 Archivo,sans-serif;color:var(--esc-tinta)}
 .rka-v > span:not(.cara):not(.rg){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rka-v em{font-style:normal;font-weight:700;font-size:15px;color:var(--esc-gris);white-space:nowrap}
-.rka-c{font:500 12px/1.35 Archivo,sans-serif;color:var(--esc-gris)}
+/* `balance` (22/11/2026, G1#11): «10 eventos», «que cumples» y «esa semana» quedaban solos en el renglón de abajo, acá,
+   en la Guía, en Tarjetas y en Cambios, que usan esta misma franja */
+.rka-c{font:500 12px/1.35 Archivo,sans-serif;color:var(--esc-gris);text-wrap:balance}
 .rka-c b{color:var(--esc-tinta);font-weight:600}
 .rka-kc{width:26px;height:26px;font-size:12px}
 /* las dos columnas: el podio (y su pieza) y la de al lado */
@@ -39,12 +41,18 @@
 .app .rka-tu .rk-tu .rk-tu-btn{justify-self:start}
 .rka-tu .rk-tu.invita{grid-template-columns:minmax(0,1fr)}
 /* la pelea más cerrada */
-.rka-pelea{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center;text-align:center}
+/* arriba y no al centro (22/11/2026, la 2.ª revisión): con un nombre de dos renglones, las dos caras quedaban a distinta
+   altura. El VS va a la altura del medio de la cara (`--pc`, su lado) */
+.rka-pelea{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:start;text-align:center}
+.rka-pelea > .rka-vs{margin-top:calc(var(--pc,56px) / 2 - 8px)}
 .rka-lado{display:grid;justify-items:center;gap:6px;min-width:0;color:inherit;text-decoration:none}
 /* el nombre baja de renglón en vez de cortarse (21/11/2026: «KNOWLEDGE SO…» con aire al lado) */
 .rka-lado b{max-width:100%;overflow-wrap:break-word;text-wrap:balance;font:800 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
 .rka-lado small{color:var(--esc-gris);font:500 12.5px/1.2 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.rka-pc{width:56px;height:56px;font-size:22px}
+.rka-pc{width:var(--pc,56px);height:var(--pc,56px);font-size:22px}
+/* el logo de una crew, en su marco como en el podio (22/11/2026): el búho llenaba sus 56 px y el rombo de Metricos se
+   veía de 24; en un cuadro igual los dos miden lo mismo. `px` y no `%`: un % de padding se mide contra el ancho del lado */
+.rka-lado > .rka-pc:not(.cara):not(.rka-pflag){box-sizing:border-box;padding:6px;object-fit:contain;background:var(--rka-suave);border:1.5px solid var(--esc-linea)}
 .rka-vs{font:900 16px/1 Archivo,sans-serif;color:var(--esc-gris)}
 .rka-pie{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--esc-linea);color:var(--esc-gris);font:500 13px/1.4 Archivo,sans-serif;text-align:center}
 .rka-pie b{color:var(--esc-tinta)}
@@ -155,7 +163,7 @@
 .rk-p.p1 .rka-pcara{width:min(140px,100%)}
 .rka-pv-a{display:block}
 .rka-pflag{width:56px;height:38px;object-fit:cover;border-radius:3px}
-.rka-lado .rk-plogo,.rka-lado .rka-pc.rk-plogo{width:56px;height:56px}
+.rka-lado .rk-plogo,.rka-lado .rka-pc.rk-plogo{width:var(--pc,56px);height:var(--pc,56px)}
 /* la escalera de divisiones y tu ELO, sobre la escena: sus tokens pasan a los del escenario */
 .rka .dv-esc,.rka .dv-tu{--fondo:var(--rka-caja);--tinta:var(--esc-tinta);--gris:var(--esc-gris);--linea:var(--esc-linea);--suave:var(--esc-linea);
   --caja:var(--rka-suave);--inv:var(--esc-tinta);--inv-tinta:var(--escenario);color:var(--esc-tinta)}
@@ -163,6 +171,8 @@
 .rka .dv-tu{padding:0;border:0;background:none}
 .rka .dv-tu p b.sube,.rka .dv-ultb li.sube b{color:#3CCB9A}
 .rka .dv-tu p b.baja,.rka .dv-ultb li.baja b{color:#FF6B95}
+/* el dorado de «cierra en …» era el de fondo claro (#8A6508): sobre la escena daba 3,87:1 (22/11/2026) */
+.rka .dv-tu-chip.oro{color:#C9971A;border-color:#C9971A}
 .rka-caras{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .rka-sc{width:30px;height:30px;font-size:13px}
 .rka-caras small{color:var(--esc-gris);font:700 13px/1 Archivo,sans-serif}
@@ -175,6 +185,8 @@
 .rka-papel .dv-tabla{border:0;display:grid;gap:3px}
 .rka-papel .dv-tabla li{border-top:0;background:var(--caja)}
 .rka-papel .dv-tabla li.yo{background:var(--rk-yo)}
+/* «BAJARÍA» en rojo de fondo oscuro sobre la fila clara daba 3,52:1 (22/11/2026): en Clara, el rojo más hondo */
+.clara .rka-papel .dv-tabla li.baja .dv-z{color:#C2272D}
 /* «Todo …» de cada país: renglones con su fondo, separados */
 .ent-papel .ent-gente{border-top:0;gap:3px}
 .ent-papel .ent-gente li{border-bottom:0;background:var(--caja)}
@@ -189,3 +201,10 @@
 /* 👆 las filas de «Se movieron» son links de 26 px: en el celular, 44 px de toque sin cambiar el dibujo (revisión visual 21/11) */
 .rka-x{position:relative}
 @media (max-width: 759.98px){.rka-x::after{content:"";position:absolute;inset:-9px 0}}
+
+/* 🛍️ EL NOMBRE DE LA TIENDA SOBRE LO CLARO (22/11/2026, la 2.ª revisión): el parche por estilo del 21/11 sólo cubría el
+   rosa `ta-n1`, y con `ta-n13` (letras #F6F6F6) Majiztral quedaba a 1,03:1 en la fila clara. El efecto se diseñó sobre negro
+   y llega de un dato que no controlamos, así que en Clara lleva su placa negra: debajo de la CAPA y no del efecto (un efecto
+   puede ser un texto recortado de su fondo, y pisárselo lo borra). En la escena negra la placa no se ve */
+.clara :is(.rk-t,.rk-lista,.rka-papel,.ent-papel,.rka-camino,.rk-podio) .ta-raiz.nom-tienda{display:inline-block;max-width:100%;box-sizing:border-box;
+  vertical-align:bottom;padding:0 5px;border-radius:3px;background:#030304}

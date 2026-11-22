@@ -12,6 +12,8 @@
 .rk-asc .asc-t li.yo{background:var(--rk-yo)}
 .rk-asc .asc-n{font-weight:700}
 .rk-asc .asc-cara{width:28px;height:28px;font-size:12px;flex:none}
+/* el «+N» verde sobre el papel blanco de Clara daba 3,40:1 (22/11/2026): el mismo verde, más hondo, sólo en Clara */
+.clara .rk-asc .asc-mas{color:#17805A}
 .dv-g{display:grid;gap:8px}
 .dv-gt{margin:6px 0 0;display:flex;align-items:baseline;gap:10px;font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
 .dv-gt small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris);text-transform:none}
@@ -62,7 +64,10 @@
   .mi-reloj b{font-size:24px}
   .mi-presa{grid-template-columns:108px minmax(0,1fr);gap:10px;padding:10px}
   .mi-presa-n .dv-n{font-size:19px}}
-.rk-pnota{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0;text-align:center}
+/* ⏳ como en Tarjetas (22/11/2026, la 2.ª revisión): el reloj y en minúsculas, en un renglón. «SE ESTÁ REDIBUJANDO» en
+   mayúscula se repetía debajo de casi todas las cartas y a 390 partía en dos y empujaba los escalones */
+.rk-pnota{display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;font:600 12.5px/1.2 Archivo,sans-serif;color:#A5A5A0;text-align:center}
+.rk-pnota svg{flex:none}
 .rk-pvis{display:block;width:100%}
 .rk-pflag{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border:2px solid #F6F6F6}
 .rk-plogo{display:grid;place-items:center;width:100%;aspect-ratio:1;object-fit:cover;border:2px solid #F6F6F6;background:#121214;
@@ -86,6 +91,8 @@
 .rk-qn small{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;
   font:700 15px/1.1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris)}
 .rk-qn small:empty{display:none}
+/* la crew sin puesto dice por qué; en el celular el motivo baja de renglón antes que cortarse (22/11/2026: «FALTAN RAPER») */
+@media (max-width: 419.98px){.rk-lista .rk-fila.chica .rk-qn small{white-space:normal;flex-wrap:wrap}}
 .rk-qx{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk-qx:empty{display:none}
 .rk-rg{width:38px;height:26px}
@@ -146,7 +153,8 @@
 .rk-qe dd{margin:0;color:var(--gris)}
 /* 📈 semana a semana (19/10/2026): barritas, la última (esta semana) en magenta */
 .rk-ten-c{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}
-.rk-ten-n{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--magenta)}
+/* `--magenta-tx` y no `--magenta` (22/11/2026): sobre la fila clara el magenta de marca daba 4,07:1 */
+.rk-ten-n{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--magenta-tx,#D0106A)}
 .rk-ten{display:inline-flex;align-items:flex-end;gap:2px;height:18px;vertical-align:middle}
 /* 📈 la fila abierta: cada semana con su número arriba, su barra y su fecha abajo (20/10/2026) */
 .rk-det-sem{list-style:none;margin:0;padding:0;display:flex;align-items:flex-end;gap:8px;overflow-x:auto}
@@ -365,6 +373,14 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
    payload, en línea) y el nombre. Se desliza de costado */
 .rk-sub .sec-t h2 small{display:inline-block;white-space:nowrap;margin-left:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris);text-transform:uppercase}
 .rk-sub-l{list-style:none;margin:0;padding:4px 0 2px;display:flex;gap:14px;overflow-x:auto;scrollbar-width:none}
+/* 🖥️ en la compu, el título a la izquierda y las caras a la derecha, bajando de renglón (22/11/2026, la 2.ª revisión): en
+   una sola columna quedaban ~850×200 px vacíos al lado de cuatro caras, y con más de ~14 la fila se deslizaba sin barra,
+   que con el mouse no se mueve */
+@media (min-width: 900px){
+  .rk-sub{display:grid;grid-template-columns:minmax(260px,max-content) minmax(0,1fr);column-gap:40px;align-items:center}
+  .rk-sub > .sec-t,.rk-sub > .sec-baj{grid-column:1}
+  .rk-sub > .rk-sub-l{grid-column:2;grid-row:1 / span 2;flex-wrap:wrap;overflow:visible;align-self:center}
+}
 .rk-sub-l::-webkit-scrollbar{display:none}
 .rk-sub-l li{flex:none}
 .rk-sub-l a{display:grid;justify-items:center;gap:6px;width:76px;color:var(--tinta);text-decoration:none}
@@ -389,13 +405,17 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
   .rk-igual > .rka-izq,.rk-igual > .rka-rail{display:flex;flex-direction:column}
   .rk-igual > .rka-izq > :last-child,.rk-igual > .rka-rail > :last-child{flex:1 1 auto}
   .rk-igual .rka-pod{display:flex;flex-direction:column}
-  .rk-igual .rka-pod > .rk-podio{margin-top:auto}
+  /* al medio y más grande, no al piso (22/11/2026, la 2.ª revisión): apoyado abajo dejaba ~155 px negros arriba de las
+     caras en Podios y ~85 arriba de las cartas en el Competitivo. Llenar con lo que hay, no con aire */
+  .rk-igual .rka-pod > .rk-podio{margin-block:auto}
+  .rk-igual .rka-pcara{width:min(150px,100%)}
+  .rk-igual .rk-p.p1 .rka-pcara{width:min(176px,100%)}
   .rk-igual .rka-caja:has(> .rka-pelea){display:grid;grid-template-rows:auto 1fr auto}
-  .rk-igual .rka-caja > .rka-pelea{align-self:center}
+  .rk-igual .rka-caja > .rka-pelea{align-self:center;--pc:84px}
+  .rk-igual .rka-lado b{font-size:16px}
 }
-/* 🛍️ el nombre rosa de la Tienda (`ta-n1`, #FF4F93) sobre las filas claras de Clara daba 2,78:1 (21/11/2026): el mismo
-   tono, 30 % más oscuro, sólo en las filas del Ranking y sólo en Clara. En la escena negra y en Noche queda el suyo */
-.clara .rk-t .nom-tienda .ta-n1,.clara .rk-lista .nom-tienda .ta-n1{color:#B33767}
+/* 🛍️ el nombre de la Tienda en las filas claras: desde el 22/11/2026 lleva su placa negra (css/rka.css, al final), que
+   sirve para cualquier estilo. El parche de acá oscurecía sólo el rosa `ta-n1` y sobre la placa habría quedado apagado */
 /* el nombre del escalón parte entre palabras, no en la mitad de una (21/11/2026: «KNOWLEDG / E SOMBRÍO» a 390). Con
    `anywhere` la columna se podía achicar hasta una letra; `break-word` sólo corta una palabra que no entra sola */
 .rk-podio .rk-ped b{overflow-wrap:break-word;word-break:normal;hyphens:none;text-wrap:balance}

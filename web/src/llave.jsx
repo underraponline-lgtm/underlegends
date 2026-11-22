@@ -1263,7 +1263,9 @@ function PodioA({ ctx, L }) {
           return (
             <li key={i}><button type="button" className={ctx.sigo === id ? 'on' : ''} onClick={() => ctx.seguir(id)}>
               <span className="lk-po-p">{pos(r[1])}</span>
-              <span className="lk-caras">{partes(r[0]).map((m, k) => <CaraCtx key={k} ctx={ctx} m={m} />)}</span>
+              {/* tres caras y «+N», como la pila de Eventos (22/11/2026): con cinco, el nombre quedaba en «Deuxs …» */}
+              <span className="lk-caras">{partes(r[0]).slice(0, 3).map((m, k) => <CaraCtx key={k} ctx={ctx} m={m} />)}
+                {partes(r[0]).length > 3 ? <em className="lk-po-mas">+{partes(r[0]).length - 3}</em> : null}</span>
               <span className="lk-po-n"><b>{nombreDe(ctx, r[0])}</b><small>{r[1]}</small></span>
               {pl ? <span className="lk-po-pts">+{pl}</span> : null}
             </button></li>
@@ -1420,8 +1422,16 @@ function CaminoA({ ctx, L }) {
     rondas.forEach((R) => R.b.forEach((b) => {
       const mio = b[0].find((s) => partes(s).some((m) => ctx.idDe(m) === id));
       if (!mio) return;
-      xs.push({ r: R.r, rivales: b[0].filter((s) => s !== mio), gano: gana(b, mio), cayo: !!b[1] && !gana(b, mio) });
+      xs.push({ r: R.r, rivales: b[0].filter((s) => s !== mio), gano: gana(b, mio), cayo: !!b[1] && !gana(b, mio), mio });
     }));
+    // 🤝 cayó y en la ronda siguiente juega DEL MISMO LADO que quien le ganó: no cayó, se sumó (las Pandillas). En una doble
+    // eliminación, después de caer juega solo, y eso sigue siendo «cayó»
+    xs.forEach((p, i) => {
+      const sig = xs[i + 1];
+      if (!p.cayo || !sig) return;
+      const suyos = new Set(partes(sig.mio).map((m) => ctx.idDe(m)));
+      p.sumo = p.rivales.some((s) => partes(s).some((m) => suyos.has(ctx.idDe(m))));
+    });
     return xs;
   };
   let id = ctx.sigo || idCamp;
@@ -1441,8 +1451,10 @@ function CaminoA({ ctx, L }) {
       </div>
       <ol className="lk-ca-ps">
         {pasos.map((p, i) => (
-          <li key={i} className={p.gano ? 'g' : p.cayo ? 'x' : ''}>
-            <span className="lk-ca-r">{p.r} · {p.gano ? (p.rivales.length ? 'le ganó' : 'pasó') : p.cayo ? 'cayó' : (ctx.cerrada ? 'sin ganador' : 'por jugarse')}</span>
+          <li key={i} className={p.gano ? 'g' : p.cayo && !p.sumo ? 'x' : ''}>
+            {/* 🤝 «se sumó a» y no «cayó» cuando pasó al lado de quien le ganó (las Pandillas, 22/11/2026: «cayó» y dos pasos
+                después «campeón» se contradecían). Ver `sumo` en `pasosDe` */}
+            <span className="lk-ca-r">{p.r} · {p.gano ? (p.rivales.length ? 'le ganó' : 'pasó') : p.cayo ? (p.sumo ? 'se sumó a' : 'cayó') : (ctx.cerrada ? 'sin ganador' : 'por jugarse')}</span>
             <span className="lk-ca-x">
               {p.rivales.length > 2 ? (
                 <><span className="lk-caras">{p.rivales.slice(0, 5).map((s, j) => <CaraCtx key={j} ctx={ctx} m={partes(s)[0]} />)}</span><span>{'a ' + p.rivales.length}</span></>
@@ -1793,14 +1805,19 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
         prin = previas.concat(llenas);
       }
     }
-    // los puntos de quedar afuera en cada ronda: el mismo número para todos, o nada
+    // los puntos de quedar afuera en cada ronda: el mismo número para todos, o de cuánto a cuánto (22/11/2026, la 2.ª
+    // revisión: con equipos o con la caza no son todos iguales, y Cuartos y Semifinales iban sin nada al lado de
+    // «Octavos 1.250 pts»)
     const ptsM = {};
     (L.tabla || []).forEach((t) => miembros(t[0]).forEach((m) => { ptsM[m] = t[2]; }));
     const valeR = (R) => {
       const vs = [];
       R.b.forEach((b) => b[0].forEach((s) => { if (b[1] && gana(b, s)) return; miembros(s).forEach((m) => { if (ptsM[m] != null) vs.push(ptsM[m]); }); }));
-      return vs.length && vs.every((v) => v === vs[0]) ? vs[0] : null;
+      if (!vs.length) return null;
+      const lo = Math.min(...vs), hi = Math.max(...vs);
+      return lo === hi ? lo : [lo, hi];
     };
+    const ptsR = (v) => (v == null ? '' : Array.isArray(v) ? num(v[0]) + ' a ' + num(v[1]) + ' pts' : num(v) + ' pts');
     const ult = prin.length - 1;
     // 🔴 UNA FINAL DE VERDAD (pasada del 19/10/2026): «la última ronda tiene una batalla» también es la primera batalla de
     // una llave de vidas o una en vivo que recién arranca, y salía «CAMPEÓN» en grande con el ganador de la primera
@@ -1814,8 +1831,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       return lo === hi ? num(hi) : num(lo) + '–' + num(hi);
     })();
     const vale = prin.map((R, i) => {
-      const v = valeR(R);
-      const t = v != null ? num(v) + ' pts' : '';
+      const t = ptsR(valeR(R));
       return i === ult && final && ptsCamp ? (t ? t + ' · ' : '') + 'campeón ' + ptsCamp : t;
     });
     // 🔑 LA DOBLE: sus dos llaves y la gran final, con sus rondas y sus ramas (`partirDoble()`). La rama sale de quién
@@ -1834,7 +1850,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       const ini = (rs) => { const i = rs.findIndex((R) => R.b.some((b) => !b[1] && b[0].length >= 2)); return !cerrada && i >= 0 ? i : 0; };
       const gf = d.F[d.F.length - 1];
       const pc = gf && gf[1] ? miembros(gf[1]).map((m) => ptsM[m]).filter((v) => v != null) : [];
-      dob = { G, P, F: d.F, valeG: G.map(() => ''), valeP: P.map((R) => { const v = valeR(R); return v != null ? num(v) + ' pts' : ''; }),
+      dob = { G, P, F: d.F, valeG: G.map(() => ''), valeP: P.map((R) => ptsR(valeR(R))),
         iniG: ini(G), iniP: ini(P), campeon: (gf && gf[1]) || '', ptsF: pc.length ? num(Math.max(...pc)) : '' };
     }
     // quiénes pasaron de un grupo donde pasan varios: los que aparecen en la ronda siguiente
@@ -1953,7 +1969,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const inf = L.info || {};
   const pas = (liga.d.pasados || []).find((p) => String(p.llave) === String(n));
   const cal = (liga.d.calendario || []).find((c) => String(c.ll) === String(n));
-  const mod = inf.mod || (pas && pas.modalidad) || '';
+  // sin la puntuación del principio (22/11/2026): el anuncio la trae copiada, «: PANDILLAS», y es lo primero de la ficha
+  const mod = String(inf.mod || (pas && pas.modalidad) || '').replace(/^[\s:;·•\-–—]+/, '');
   const rgo = inf.rg || (pas && pas.rango) || '';
   // ⚖️ y la en vivo, del anuncio que le toca (`liga.anuncioDeLlave()`). Sin «Organiza:» escrito, quien lo publicó
   const evV = L.vivo && !inf.org ? liga.anuncioDeLlave(L) : null;

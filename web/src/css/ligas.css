@@ -113,7 +113,9 @@
   background:#101012 center/cover no-repeat;border:1px solid #2A2A2C;color:#F6F6F6}
 /* el flyer se ve arriba (Dlx, 16/11/2026: «me gustaba siempre ver las ligas con un thumbnail»): el velo arranca casi
    transparente y cierra recién donde va el texto */
-.lq3-t::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,4,.08),rgba(3,3,4,.38) 38%,rgba(3,3,4,.95) 74%)}
+/* 22/11/2026 (la 2.ª revisión): el velo cierra antes. El texto arranca ~60 % abajo y ahí el velo iba a medias, así que
+   «FMH ANDES · Jornada 3…» cruzaba el «ZETRYKO» blanco del flyer. Arriba sigue casi transparente: el flyer se ve */
+.lq3-t::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,4,.08),rgba(3,3,4,.6) 32%,rgba(3,3,4,.94) 52%)}
 .lq3-t>*{position:relative}
 a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-t>.lq3-tag{position:absolute;top:12px;left:12px}
@@ -262,11 +264,13 @@ a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-poll b{font:800 13px/1.1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lq3-poll em{font:400 17px/1 Anton,Archivo,sans-serif;font-style:normal;text-align:right}
 .lq3-nota{display:block;margin-top:10px;font:500 12px/1.4 Archivo,sans-serif;color:#A5A5A0}
+/* 📱 en el celular la carta arriba y las seis fichas debajo, de a dos (22/11/2026, la 2.ª revisión): en dos columnas de
+   ~90 px al lado de la carta, «GENERATIONS · …» se cortaba y «COLISEO · / 3 PTS» se partía */
 @media (max-width: 599px){
-  .lq3-ld{grid-template-columns:minmax(0,1fr);padding:6px}
-  .lq3-ld-c{display:none}
-  .lq3-ld b{font-size:11.5px}
-  .lq3-rey-c .lq3-carta,.lq3-rey-c .lq3-sinc{max-width:120px}
+  .lq3-rey{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lq3-rey-c{grid-column:1 / -1;grid-row:2}
+  .lq3-lados{align-self:start}
+  .lq3-rey-c .lq3-carta,.lq3-rey-c .lq3-sinc{max-width:150px}
 }
 @media (min-width: 600px){
   /* `dense` (21/11/2026): la del rey va a lo ancho y dejaba a «La carrera» sola con media fila vacía al lado; así sube
@@ -278,6 +282,8 @@ a.lq3-t:hover{border-color:#F6F6F6}
 }
 @media (min-width: 1300px){
   .app .lq3-num{grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr) minmax(0,.9fr)}
+  /* ⚠️ a 210 y no a 250 (probado el 22/11/2026): con la carta a 250 las fichas de los costados bajaban a ~120 px y se
+     cortaban «GIANSI…» y «NEW CHAPTER · 14…». El aire de arriba y abajo cuesta menos que un nombre cortado */
   .app .lq3-rey{grid-column:auto;grid-template-columns:minmax(0,1fr) 210px minmax(0,1fr);grid-template-rows:auto 1fr}
   .app .lq3-rey-c .lq3-carta,.app .lq3-rey-c .lq3-sinc{max-width:210px}
   .app .lq3-rey-c b{font-size:22px}
@@ -321,7 +327,7 @@ a.lq3-t:hover{border-color:#F6F6F6}
 .lq3-c-l small{font:800 14px/1 "Barlow Condensed",sans-serif;color:var(--gris);white-space:nowrap}
 .lq3-c-l b{flex:1;min-width:0;font:800 14px/1.15 Archivo,sans-serif;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lq3-c-l i{font:400 18px/1 Anton,Archivo,sans-serif;font-style:normal;white-space:nowrap}
-.lq3-c-u{font:700 12px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.lq3-c-u{font:700 12px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris);text-wrap:balance}
 @media (min-width: 600px){.app .lq3-cs{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width: 1300px){
   .app .lq3-cs{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}

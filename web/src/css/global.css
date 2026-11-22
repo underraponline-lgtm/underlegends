@@ -6,8 +6,11 @@
 .gl{--gl-d:Archivo,sans-serif;--gl-l:"Barlow Condensed",sans-serif;--mg-esc:#FF4F93;
   --esc-caja:color-mix(in srgb,var(--esc-tinta) 6%,var(--escenario));--esc-suave:color-mix(in srgb,var(--esc-tinta) 13%,var(--escenario));
   --esc-borde:color-mix(in srgb,var(--esc-tinta) 34%,var(--escenario));text-wrap:pretty}
-.gl h1,.gl h2,.gl h3,.gl p,.gl dl,.gl dd,.gl ol,.gl ul{margin:0}
-.gl ol,.gl ul{list-style:none;padding:0}
+/* el reset con UNA clase de peso (22/11/2026, la 2.ª revisión): con `.gl p` (0,1,1) le ganaba a cada clase de abajo, y
+   `.gl-ley`, `.gl-fecha`, `.gl-txt`, `.gl-rail-p`, `.gl-ev-l` y `.gl-ch` perdían su margen: la leyenda quedaba pegada a
+   «Siguiente» (0 px) y la raya de la fecha se leía como subrayado del lede. Ahora manda la clase, que viene después */
+.gl :where(h1,h2,h3,p,dl,dd,ol,ul){margin:0}
+.gl :where(ol,ul){list-style:none;padding:0}
 .gl :is(h1,h2,h3){text-wrap:balance}
 :where(.gl) button:where(:not(.btn)){font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
 .gl-esc{background:var(--escenario);color:var(--esc-tinta)}
@@ -283,7 +286,8 @@ button.gl-esq:active{transform:scale(.98)}
 .gl-f-n{display:flex;align-items:center;gap:4px 7px;min-width:0;flex-wrap:wrap}
 .gl-f-n b{font:800 15px/1.2 var(--gl-d);overflow-wrap:anywhere;min-width:0;max-width:100%}
 .gl-f-l{display:none}
-.gl-f-por{display:block;margin-top:4px;font:500 13px/1.35 var(--gl-d);color:var(--gris)}
+/* `balance` y no el `pretty` heredado (22/11/2026): «…y se llevó / el título» seguía dejando dos palabras solas */
+.gl-f-por{display:block;margin-top:4px;font:500 13px/1.35 var(--gl-d);color:var(--gris);text-wrap:balance}
 .gl-f-por b{font-weight:800;color:var(--tinta)}
 .gl-f-cel{display:flex;margin-top:6px}
 .gl-f-b10,.gl-f-ab{display:none}
@@ -327,6 +331,7 @@ button.gl-esq:active{transform:scale(.98)}
 .gl-seg{display:flex;flex-wrap:wrap;border:2px solid var(--esc-tinta);width:max-content;max-width:100%}
 .gl-seg button{min-height:44px;min-width:44px;padding:0 11px;font:700 15px/1 var(--gl-l);letter-spacing:.03em;transition:transform .12s ease-out}
 .gl-seg button:active{transform:scale(.97)}
+@media (max-width: 599.98px){.gl-seg.dos{display:grid;grid-template-columns:1fr 1fr;width:100%}}
 .gl-seg button[aria-pressed="true"]{background:var(--esc-tinta);color:var(--escenario)}
 .gl-ar-der{display:flex;flex-wrap:wrap;gap:20px 26px;align-items:flex-start;min-width:0}
 .gl-ar-real{flex:1 1 100%;display:grid;gap:8px;font:500 15px/1.5 var(--gl-d)}
@@ -477,7 +482,7 @@ dialog.gl-lado[open]{animation:gl-sube .24s cubic-bezier(.32,.72,0,1)}
   .gl-mont{grid-column:2;grid-row:1/3;height:auto;min-height:320px;margin-top:0}
   .gl-fig.p1{width:250px;left:-12px;top:-10px}
   .gl-fig.p2{width:130px;left:auto;right:-26px;top:34px}
-  .gl-fig.p3{width:136px;left:-156px;top:84px}
+  .gl-fig.p3{width:136px;left:-156px;top:100px}
   .gl-banda{gap:4px 10px;padding:8px 12px}
   .gl-fig.p1 .gl-banda{padding:10px 14px}
   .gl-banda em{font-size:26px}
@@ -580,7 +585,8 @@ dialog.gl-lado[open]{animation:gl-sube .24s cubic-bezier(.32,.72,0,1)}
   .gl-mont{min-height:360px}
   .gl-fig.p1{width:300px;left:-18px;top:-14px}
   .gl-fig.p2{width:156px;right:-52px;top:40px}
-  .gl-fig.p3{width:164px;left:-196px;top:96px}
+  /* 16 px más abajo (22/11/2026): la banda de Puppy arrancaba justo en el pie de la «L» de GLOBAL. La foto sigue atrás */
+  .gl-fig.p3{width:164px;left:-196px;top:112px}
   .gl-bnom{font-size:24px}
   .gl-fig.p2 .gl-bnom,.gl-fig.p3 .gl-bnom{font-size:16px}
   .gl-fig.p2 .gl-bq,.gl-fig.p3 .gl-bq{display:flex}

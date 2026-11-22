@@ -8,8 +8,10 @@
 .mt .btn.mt-inv{background:#F6F6F6;color:#030304;border-color:#F6F6F6;min-height:44px}
 /* la cabecera: el estado de la semana y tu lugar */
 .mt-cab{display:flex;align-items:flex-end;gap:14px 22px;flex-wrap:wrap}
-.mt-cab-tx{min-width:0;display:grid;gap:6px}
-.mt-cab h2{margin:0;font:400 clamp(38px,4.6vw,60px)/.92 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em}
+/* aire entre el rótulo, el título y la bajada (22/11/2026, la 2.ª revisión): con `.92` y 6 px, el Anton quedaba a ~3 px
+   de «SEMANA DEL…» y a ~4 del párrafo, y a 390 las dos líneas en mayúscula casi se tocaban */
+.mt-cab-tx{min-width:0;display:grid;gap:10px}
+.mt-cab h2{margin:0;font:400 clamp(38px,4.6vw,60px)/1.02 Anton,Impact,sans-serif;text-transform:uppercase;letter-spacing:.01em}
 .mt-cab p{margin:0;color:var(--eg);max-width:60ch;font:500 15px/1.45 Archivo,sans-serif}
 .mt-cab p b{color:var(--et)}
 .mt-lugar{display:flex;align-items:center;gap:10px;border:1.6px solid var(--el);border-radius:3px;padding:8px 12px;margin-bottom:4px}
@@ -34,7 +36,11 @@
 .mt-ir{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap}
 .mt-prox{font:600 13px/1.35 Archivo,sans-serif;color:var(--eg)}
 .mt-prox b{color:var(--et)}
-.mt-pila{display:flex;align-items:center;gap:8px;font:600 13px/1.2 Archivo,sans-serif;color:var(--eg)}
+.mt-pila{display:flex;align-items:center;gap:8px;font:600 13px/1.2 Archivo,sans-serif;color:var(--eg);white-space:nowrap}
+/* en el celular, tres caras y no cinco: «40 la / cumplieron» se partía al lado de la pila (22/11/2026) */
+@media (max-width: 419.98px){.mt-pila .mt-cs .cara:nth-child(n+4){display:none}}
+/* 👆 el nombre de la presa («Lvel», 30×16) es un link: en el celular, 44 de alto sin mover el dibujo (Fitts, 22/11/2026) */
+@media (max-width: 599.98px){.mt-mini h4 a{position:relative}.mt-mini h4 a::after{content:"";position:absolute;inset:-14px -6px}}
 .mt-cs{display:flex}
 .mt-cs .cara{width:24px;height:24px;margin-right:-6px;box-shadow:0 0 0 2px var(--e1);font-size:10px}
 .mt-talon{background:#F6F6F6;color:#030304;border-radius:0 4px 4px 0;border-left:2px dashed #9a9a94;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;position:relative}

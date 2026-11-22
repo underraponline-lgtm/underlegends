@@ -117,6 +117,16 @@
 .lk-mp .lk-flag{width:16px;height:11px}
 .lk-mp.eq .lk-caras{display:flex}
 .lk-mp.eq .lk-cara{width:22px;height:22px}
+/* 👥 LA FINAL POR EQUIPOS (22/11/2026, la 2.ª revisión · Von Restorff): eran dos cajas de 228×330 con una fila de caras
+   de 22 px y el nombre cortado, ~90 % vacías, y el campeón sin su dorado. Ahora las caras llenan la caja, de a dos (de a
+   tres con seis o más), el nombre va una sola vez abajo (`.lk-fa-n`) y el campeón lleva el dorado como la final 1v1 */
+.lk-fa-l .lk-mp.eq .lk-caras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:78%}
+.lk-fa-l .lk-mp.eq .lk-caras:has(> :nth-child(6)){grid-template-columns:repeat(3,minmax(0,1fr))}
+.lk-fa-l .lk-mp.eq .lk-caras:not(:has(> :nth-child(6))) > :last-child:nth-child(odd){grid-column:1 / -1;justify-self:center;width:calc(50% - 4px)}
+.lk-fa-l .lk-mp.eq .lk-cara{width:100%;height:auto;aspect-ratio:1;font-size:clamp(11px,3vw,26px);background:#2A2A2E;color:#F6F6F6;box-shadow:0 0 0 1.5px #6E6E72}
+.lk-fa-l .lk-mp.eq .lk-n{display:none}
+.lk-fa-l.w .lk-mp.eq{border:2px solid #E7B622;background:#1A1508}
+.lk-fa-l.w .lk-mp.eq .lk-cara{box-shadow:0 0 0 2px #E7B622}
 .lk-mp.x .lk-mp-img,.lk-mp.x .lk-mk,.lk-mp.x .lk-cara,.lk-mp.x .lk-n,.lk-mp.x .lk-flag,.lk-mp.x .lk-caras{filter:grayscale(.85);opacity:.55}
 /* ✨ el brillo del Pase (nivel 8): el mismo de las cartas del cuadro (.lk-fc.brilla), no una raya quieta */
 .lk-mp.brilla .lk-mp-img{filter:drop-shadow(0 0 3px rgba(229,184,0,.95));animation:lk-fc-brilla 2.6s ease-in-out infinite}
@@ -317,7 +327,15 @@
 .lk-po-p{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris)}
 .lk-po .lk-cara{width:30px;height:30px}
 .lk-po-n{display:grid;gap:2px;min-width:0}
-.lk-po-n b{font:700 14px/1.15 Archivo,sans-serif;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+/* el nombre en dos renglones antes que cortado (22/11/2026, la 2.ª revisión): «Deuxs y Cr…», «Paria y Status y Zi…» era
+   truncar lo único que dice quién ganó */
+.lk-po-n b{font:700 14px/1.15 Archivo,sans-serif;overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.lk-po-mas{align-self:center;margin-left:4px;font:800 12px/1 Archivo,sans-serif;font-style:normal;color:var(--gris)}
+/* los puntos bajan debajo del nombre, en la compu también: «+2.500 a 4.250 pts» a la derecha le comía medio renglón al
+   nombre, y en el celular «Colesito…+1.875 a 4.875 pts» iba pegado */
+.lk-po button{grid-template-columns:20px auto minmax(0,1fr);row-gap:3px}
+.lk-po button > .lk-po-p,.lk-po button > .lk-caras{grid-row:1 / span 2}
+.lk-po-pts{grid-column:3}
 .lk-po-n small{font:500 12px/1.1 Archivo,sans-serif;color:var(--gris)}
 .lk-po-pts{font:700 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris);white-space:nowrap}
 .lk-po button.on .lk-po-n b{text-decoration:underline;text-underline-offset:3px}
@@ -485,3 +503,14 @@
 .lk-rep-cambia{margin:0;padding:10px 12px;border:1.6px dashed #E41373;border-radius:3px;font:500 14px/1.45 Archivo,sans-serif}
 .lk-rep-cambia b{font-weight:800}
 .lk-rep-ok-c{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+
+/* 👆 EN EL CELULAR, LO QUE SE TOCA MIDE 44 (22/11/2026, la 2.ª revisión · Fitts): el selector de «El camino» medía 30, los
+   nombres de los rivales 22 y las caras-botón de «El resto» 18. Las caras van apiladas, así que 24, el mínimo de WCAG
+   2.5.8. Y los botones de arriba, uno por renglón y del mismo ancho: tres de 165, 245 y 330 px dejaban el borde dentado */
+@media (max-width: 599.98px){
+  .lk-ca-sel{height:44px}
+  .lk-ca-x button{min-height:44px}
+  .lk-rf{min-width:24px;min-height:24px;place-items:center}
+  .lk-a .lk-acc-b{display:grid;grid-template-columns:minmax(0,1fr)}
+  .lk-a .lk-acc-b .btn{width:100%;justify-content:center}
+}

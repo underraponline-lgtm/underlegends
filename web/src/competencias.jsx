@@ -432,7 +432,7 @@ function MiniBloqueado({ C, x, completo }) {
       </div>
       <h3>{x.nombre.toUpperCase()}</h3>
       <p className="cm9-ev-q">{ex[0]}</p>
-      <p className="cm9-ev-pide"><b>Para entrar:</b> {ex[1]}{montos(C) && x.id !== 'meta' ? ' Premio: ' + pdt(montos(C).mini) + ' Puntos de Tienda.' : ''}</p>
+      <p className="cm9-ev-pide"><b>Para entrar:</b> {ex[1]}{montos(C) && x.id !== 'meta' ? ' Premio: ' + pdt(montos(C).mini) + ' Puntos de Tienda.' : ''}</p>
     </article>
   );
 }
@@ -521,7 +521,7 @@ function Mini({ liga, C, x, yo, completo }) {
       {completo && (x.id === 'derbi' || x.id === 'paises') ? <ul className="cm9-crus">{x.p.map((m) => <Cruce key={m[0] + m[1]} liga={liga} C={C} m={m} yo={yo} jurado />)}</ul> : null}
       {completo && x.id === 'novatos' ? <Llave liga={liga} C={C} r={x} yo={yo} /> : null}
       {completo ? <dl className="cm9-ex"><div><dt>Quién juega</dt><dd>{ex[1]}</dd></div><div><dt>Cómo se gana</dt><dd>{ex[2]}{minimoTxt(C, x.id)}</dd></div></dl>
-        : <p className="cm9-ev-gana"><b>Cómo se gana:</b> {ex[2]}{minimoTxt(C, x.id)}{montos(C) && x.id !== 'meta' ? ' Premio: ' + pdt(montos(C).mini) + ' Puntos de Tienda.' : ''}</p>}
+        : <p className="cm9-ev-gana"><b>Cómo se gana:</b> {ex[2]}{minimoTxt(C, x.id)}{montos(C) && x.id !== 'meta' ? ' Premio: ' + pdt(montos(C).mini) + ' Puntos de Tienda.' : ''}</p>}
     </article>
   );
 }
@@ -905,8 +905,9 @@ function TablaCaja({ liga, C, yo, g, dl, setSel, conCuenta, tref }) {
         {cierre ? ' · ' + enFrase(cierre, 'cierra en ') : ''}{pr ? ' · premios ' + pr.map(pdt).join(' / ') + ' Puntos de Tienda' : ''} · <a href="#/competencias/ligas">Cómo funcionan las ligas</a>
       </p>
       <TablaLiga key={g.id} liga={liga} C={C} g={g} yo={yo} />
-      {!mia ? (
-        <p className="cm9-fuera">{conCuenta ? <>Todavía no estás en ninguna liga. Juega <b>1 evento</b> en las 2 semanas antes del {fechaCorta(L.hasta)} y entras en <b>Ascenso</b> con la temporada que viene.</> : <>¿Juegas? <b>Entra con Discord</b> y te marcamos tu liga, tu llave y tus cruces.</>}</p>
+      {/* sin cuenta no se repite: «¿Juegas? Entra con Discord…» ya lo dice «Tu liga», con su botón (22/11/2026) */}
+      {!mia && conCuenta ? (
+        <p className="cm9-fuera">Todavía no estás en ninguna liga. Juega <b>1 evento</b> en las 2 semanas antes del {fechaCorta(L.hasta)} y entras en <b>Ascenso</b> con la temporada que viene.</p>
       ) : null}
     </article>
   );
@@ -968,7 +969,7 @@ function CobraronCaja({ liga, C, yo, onTodos }) {
           ))}
         </ol>
       ) : null}
-      <small className="cmx-nota">{u.length} cobraron en el último cierre, en Puntos de Tienda · <button type="button" className="cmx-link" onClick={onTodos}>ver todos</button></small>
+      <small className="cmx-nota">{u.length} cobraron en el último cierre, en Puntos&nbsp;de&nbsp;Tienda · <button type="button" className="cmx-link" onClick={onTodos}>ver&nbsp;todos</button></small>
     </article>
   );
 }
@@ -978,8 +979,10 @@ function Minis({ liga, C, yo, juega, conCuenta }) {
   const xs = C.mini || [];
   if (!xs.length) return null;
   const pinta = (x) => (juega(x) ? <Mini key={x.id} liga={liga} C={C} x={x} yo={yo} /> : <MiniBloqueado key={x.id} C={C} x={x} />);
-  const blancos = xs.filter((x) => CORTOS.has(x.id));
-  const negros = xs.filter((x) => !CORTOS.has(x.id));
+  // un mini bloqueado no tiene lista que mostrar: va con los blancos (22/11/2026, la 2.ª revisión · similitud). Solo y a
+  // lo ancho en negro dejaba ~616×160 vacíos a la derecha, y bloqueados los cuatro dicen lo mismo
+  const blancos = xs.filter((x) => CORTOS.has(x.id) || !juega(x));
+  const negros = xs.filter((x) => !CORTOS.has(x.id) && juega(x));
   return (
     <section className="cmx-minis" aria-label="Mini eventos">
       <header className="cmx-regla">
@@ -1061,7 +1064,13 @@ export function Competencias({ liga, dc, sub = '' }) {
     else if (verTodo) { et = nombre; t = 'Ver las ' + (C[cual] || []).length + ' llaves'; s = 'Sólo tú las ves todas'; }
     else if (yoL && (C.entran || []).includes(yoL)) { et = nombre + ' · el lunes entras'; t = 'Te toca tu llave el lunes'; s = enFrase(C.fin, 'Faltan ', 'Ya casi'); }
     else if (conCuenta) { et = nombre + ' · bloqueada'; t = 'Juega 1 evento'; s = 'y el lunes te toca tu llave'; }
-    else { et = nombre; t = 'Entra con Discord'; s = 'y te decimos en cuál estás'; }
+    // sin cuenta, cada acceso dice lo suyo (22/11/2026, la 2.ª revisión · Hick y Von Restorff): los tres decían «Entra con
+    // Discord», y tres tarjetas iguales no ayudan a elegir. El llamado a entrar queda uno solo, en «Tu liga»
+    else {
+      const n = (C[cual] || []).length;
+      et = nombre; t = cual === 'copa' ? 'Cada lunes' : 'Una llave de 8';
+      s = n ? n + (n === 1 ? ' llave' : ' llaves') + ' esta semana' : 'Toca para ver cómo se juega';
+    }
     return <Cuadro c={c} ico={ico} et={et} t={t} s={s} onClick={() => abrir(ref)} />;
   };
   const ec = dondeL && dondeL.copa, er = dondeL && dondeL.rapid;
@@ -1086,7 +1095,8 @@ export function Competencias({ liga, dc, sub = '' }) {
       <div className="cmx-fila4" data-tuto="cm-cab">
         {dl ? <Cuadro c="#8b5cf6" ico="ligas" et={'Tu liga · ' + nombreLiga(C, dl.g)} t={'#' + dl.pos + ' · ' + ((dl.g.t[dl.pos - 1] || [])[3] || 0) + ' pts'}
           s={(zonaDe(dl.g, dl.pos) || 'Jornada ' + L.jornada + ' de 9') + (donde.liga && donde.elite ? ' · y #' + donde.elite.pos + ' en la Élite' : '')} onClick={irTabla} />
-          : <Cuadro c="#8b5cf6" ico="ligas" et="Las ligas" t={conCuenta ? 'Todavía no estás' : 'Entra con Discord'} s={conCuenta ? entrarLiga(L) : 'y te marcamos tu liga'} onClick={irTabla} />}
+          : <Cuadro c="#8b5cf6" ico="ligas" et="Las ligas" t={conCuenta ? 'Todavía no estás' : 'Élite · jornada ' + L.jornada + ' de 9'}
+            s={conCuenta ? entrarLiga(L) : (L.g || []).length + ' ligas de 10'} onClick={irTabla} />}
         {cuadroLlave('copa', '#E41373', 'copa', 'Copa', vCopa)}
         {cuadroLlave('rapid', '#29B298', 'xp', 'Rapid', vRapid)}
         <Cuadro c="#3b82f6" anillo={[Math.round((C.dia || 0) / 7 * 100), (C.dia || 0) + '/7']} et={'La semana · día ' + C.dia + ' de 7'}
