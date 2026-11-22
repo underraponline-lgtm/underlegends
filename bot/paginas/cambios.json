@@ -10,6 +10,19 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {
+        "version": "7.75",
+        "dia": "2026-11-22",
+        "cuando": "2026-11-22T04:03:12-05:00",
+        "titulo": "Todas las páginas, revisadas otra vez",
+        "items": [
+            "**Las páginas cortas ya no dejan la barra de abajo flotando a media pantalla**: el pie y la barra van siempre abajo.",
+            "**Más fácil de leer**: los nombres con efecto de la Tienda se leen también en el tema Clara, ninguna etiqueta baja de 11 px y los botones del celular miden lo que mide un dedo.",
+            "**«Se busca» del Most Wanted, en grilla en la compu**, con «Ver la semana pasada» (antes se deslizaba de costado).",
+            "**Si la Tienda no carga, te lo dice** y tiene «Reintentar», en vez de mostrar la Tienda vieja.",
+            "Arreglos en todas las páginas: la tabla de raperos de cada crew entera, menos huecos en Publicaciones, el comentario flotante del Inicio sin taparse, los números de «Los últimos campeones» que dicen qué cuentan, y textos que decían algo confuso en el Ranking."
+        ]
+    },
     {"version": "7.74", "dia": "2026-11-22", "cuando": "2026-11-22T03:50:00-05:00", "titulo": "28 beats nuevos en las historias", "items": ["**28 beats nuevos** en las historias, de 18 beatmakers de la escena: ahora son 50 entre boom bap, trap y drill. Cada uno con su crédito y el link a su video."]},
     {
         "version": "7.72",
