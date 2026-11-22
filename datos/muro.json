@@ -765,6 +765,15 @@
 "temporada"
 ]
 },
+"deuxs": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "jeixder": {
 "rg": "D",
 "c": [
@@ -811,14 +820,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"deuxs": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -2919,15 +2920,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-13T23:29:12Z",
-"quien": [
-"ONZASS"
-],
-"rg": "E",
-"primero": true
-},
 {
 "tipo": "rango",
 "t": "2026-10-13T23:29:12Z",
@@ -6321,6 +6313,14 @@
 ],
 "rk": "temporada",
 "pos": 9
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-22T05:45:32Z",
+"quien": [
+"Deuxs"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -8287,7 +8287,7 @@
 "n": "Agente sombra",
 "k": "",
 "de": 367,
-"a": 145
+"a": 144
 }
 ],
 "sorpresas": [
@@ -8430,7 +8430,7 @@
 "dyzz": 0,
 "mats": 3,
 "numberve": 0,
-"soulb": 2,
+"soulb": 1,
 "bna": 2,
 "paria": 1,
 "last": 0,

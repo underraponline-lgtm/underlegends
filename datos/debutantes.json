@@ -961,7 +961,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-22T00:47:24+00:00",
-   "did": "",
+   "did": "1514303597574361089",
    "evento": "CELEBRITY DEATH MATCH Vol. IV",
    "n": 674,
    "sv": "CH",
@@ -980,18 +980,6 @@
    "n": 543,
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
-   "vencido": false
-  },
-  "FAMILIA": {
-   "avisado": "2026-11-22",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-22T00:47:24+00:00",
-   "did": "",
-   "evento": "CELEBRITY DEATH MATCH Vol. IV",
-   "n": 674,
-   "sv": "CH",
-   "vence": "2026-11-29T00:47:24+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -1125,7 +1113,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-22T00:47:24+00:00",
-   "did": "",
+   "did": "333716770210840586",
    "evento": "CELEBRITY DEATH MATCH Vol. IV",
    "n": 674,
    "sv": "CH",
@@ -2438,19 +2426,6 @@
    "vence": "2026-11-06T20:59:18+00:00",
    "vencido": true
   },
-  "OJITOS CANABICOS": {
-   "avisado": "2026-11-22",
-   "chat": "2026-11-22",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-22T03:16:58+00:00",
-   "did": "",
-   "evento": "DESGRACIAS EN TOKYO VOL 33 PANDILLAS",
-   "n": 675,
-   "sv": "FFA",
-   "vence": "2026-11-29T03:16:58+00:00",
-   "vencido": false
-  },
   "ONDADISKO": {
    "avisado": "2026-10-13",
    "chat": "2026-10-14",
@@ -3206,7 +3181,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-22T00:47:24+00:00",
-   "did": "",
+   "did": "442904380056797195",
    "evento": "CELEBRITY DEATH MATCH Vol. IV",
    "n": 674,
    "sv": "CH",

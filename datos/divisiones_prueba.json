@@ -104,7 +104,7 @@
       ],
       [
        8,
-       "G meiker 🇨🇱"
+       "G meiker"
       ]
      ]
     ],
@@ -470,7 +470,7 @@
       ],
       [
        8,
-       "Enzinho 🇦🇷"
+       "Enzinho"
       ],
       [
        8,
@@ -757,6 +757,19 @@
      ]
     ],
     [
+     "Deuxs",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -8,
+       "Yeyox"
+      ]
+     ]
+    ],
+    [
      "Efimero",
      0,
      1,
@@ -770,7 +783,7 @@
      ]
     ],
     [
-     "Enzinho 🇦🇷",
+     "Enzinho",
      0,
      1,
      5,
@@ -783,20 +796,7 @@
      ]
     ],
     [
-     "FAMILIA 🇨🇱",
-     0,
-     1,
-     5,
-     0,
-     [
-      [
-       -8,
-       "Yeyox"
-      ]
-     ]
-    ],
-    [
-     "G meiker 🇨🇱",
+     "G meiker",
      0,
      1,
      5,
@@ -960,7 +960,7 @@
      ]
     ],
     [
-     "XMILE🇺🇸",
+     "XMILE",
      0,
      1,
      5,
@@ -1039,14 +1039,6 @@
      []
     ],
     [
-     "Deuxs",
-     0,
-     0,
-     5,
-     0,
-     []
-    ],
-    [
      "Dominick",
      0,
      0,
@@ -1080,14 +1072,6 @@
     ],
     [
      "LRS",
-     0,
-     0,
-     5,
-     0,
-     []
-    ],
-    [
-     "OJITOS CANABICOS 🇨🇱",
      0,
      0,
      5,
@@ -1283,7 +1267,7 @@
   "Deluxe": 1103,
   "Denik": 961,
   "Desio": 982,
-  "Deuxs": 982,
+  "Deuxs": 971,
   "Dev": 976,
   "Dinamight": 969,
   "Dios": 1145,
@@ -1316,7 +1300,7 @@
   "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱": 1074,
   "Emily Family": 967,
   "Enkil": 994,
-  "Enzinho 🇦🇷": 988,
+  "Enzinho": 988,
   "Erian": 1087,
   "EricRJ": 989,
   "Erik": 968,
@@ -1328,7 +1312,6 @@
   "Ezze": 1062,
   "F1THER": 991,
   "FABRI 🇵🇪": 974,
-  "FAMILIA 🇨🇱": 989,
   "FAT PENIS": 992,
   "FOTOSÍNTESIS": 946,
   "FOUNDER": 976,
@@ -1350,7 +1333,7 @@
   "Forza": 1033,
   "Foto": 970,
   "Fritz": 976,
-  "G meiker 🇨🇱": 989,
+  "G meiker": 989,
   "GATO🇨🇱": 988,
   "GHV": 987,
   "GIBA🇵🇪": 1000,
@@ -1731,14 +1714,14 @@
   "WILLY": 988,
   "Walker": 1203,
   "Warap": 985,
-  "XMILE🇺🇸": 988,
+  "XMILE": 988,
   "Xclusivo": 1042,
   "Xervoe": 1013,
   "Xowee": 980,
   "Xplicit": 981,
   "Xubaru": 1082,
   "Xxxx": 986,
-  "Yeyox": 1068,
+  "Yeyox": 1067,
   "Yio": 1000,
   "Yor": 976,
   "Yukan": 1009,
@@ -2009,7 +1992,7 @@
   ],
   "Deuxs": [
    0,
-   7500,
+   11625,
    0,
    0,
    0,
@@ -2061,7 +2044,7 @@
    0,
    0
   ],
-  "Enzinho 🇦🇷": [
+  "Enzinho": [
    0,
    4125,
    0,
@@ -2079,15 +2062,6 @@
    0,
    0
   ],
-  "FAMILIA 🇨🇱": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
   "Fecha": [
    0,
    16312,
@@ -2097,7 +2071,7 @@
    0,
    0
   ],
-  "G meiker 🇨🇱": [
+  "G meiker": [
    0,
    4125,
    0,
@@ -2322,15 +2296,6 @@
    0,
    0
   ],
-  "OJITOS CANABICOS 🇨🇱": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
   "OKAM": [
    0,
    4500,
@@ -2414,7 +2379,7 @@
   ],
   "Soulb": [
    0,
-   11250,
+   15000,
    0,
    0,
    0,
@@ -2475,7 +2440,7 @@
    0,
    0
   ],
-  "XMILE🇺🇸": [
+  "XMILE": [
    0,
    4125,
    0,
@@ -2559,17 +2524,16 @@
   "Cronox": 7500,
   "DarnBless": 6188,
   "Deko": 3750,
-  "Deuxs": 7500,
+  "Deuxs": 11625,
   "Dios": 9812,
   "Dominick": 3750,
   "Dyzz": 3750,
   "EIDP": 18000,
   "Efimero": 4125,
-  "Enzinho 🇦🇷": 4125,
+  "Enzinho": 4125,
   "Erian": 5250,
-  "FAMILIA 🇨🇱": 4125,
   "Fecha": 16312,
-  "G meiker 🇨🇱": 4125,
+  "G meiker": 4125,
   "Geoka": 7875,
   "Gus": 9750,
   "Inhuman": 18188,
@@ -2594,7 +2558,6 @@
   "Mosquitrap 🦟": 5625,
   "NXUZ": 16312,
   "OG": 11250,
-  "OJITOS CANABICOS 🇨🇱": 3750,
   "OKAM": 4500,
   "PRAISERIZA": 11250,
   "Paria": 13500,
@@ -2604,14 +2567,14 @@
   "SULTAN": 3750,
   "Shadow": 1500,
   "Snow": 3750,
-  "Soulb": 13750,
+  "Soulb": 17500,
   "Status": 16500,
   "THO": 17325,
   "Telmex": 17500,
   "Thaniel": 3750,
   "TheOg": 8250,
   "Vilca": 14625,
-  "XMILE🇺🇸": 4125,
+  "XMILE": 4125,
   "Yeyox": 17325,
   "Zignos": 14625,
   "compare": 3750,

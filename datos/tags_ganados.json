@@ -4033,6 +4033,13 @@
   }
  },
  "deuxs": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795326365320
+   ]
+  },
   "servidor": {
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
@@ -4055,6 +4062,11 @@
     "🥉 AL PODIO",
     "t1",
     1795325780440
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795326365320
    ]
   }
  },

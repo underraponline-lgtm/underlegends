@@ -1498,6 +1498,11 @@
    },
    "organizadores": [
     [
+     "LEWITO",
+     44,
+     2
+    ],
+    [
      "Erian",
      31,
      1
@@ -1506,11 +1511,6 @@
      "Benji Price",
      20,
      2
-    ],
-    [
-     "LEWITO",
-     20,
-     1
     ],
     [
      "Makmah",
@@ -1525,16 +1525,16 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 4,
+     "FFA": 5,
      "LKR": 8,
-     "CH": 17,
+     "CH": 20,
      "DDS": 2
     },
     "gente": {
      "DDS": 21,
      "LKR": 17,
-     "FFA": 59,
-     "CH": 54,
+     "FFA": 73,
+     "CH": 72,
      "FDS": 8
     },
     "gana": "LKR"
@@ -1542,12 +1542,12 @@
    "meta_va": {
     "ACAD": 0,
     "CEU": 0,
-    "CH": 54,
+    "CH": 72,
     "DDF": 0,
     "DDS": 21,
     "DRA": 0,
     "FDS": 8,
-    "FFA": 59,
+    "FFA": 73,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
