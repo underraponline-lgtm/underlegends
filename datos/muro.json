@@ -1121,7 +1121,8 @@
 "abrahamh": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "scot": {
@@ -2910,15 +2911,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-13T17:02:51Z",
-"quien": [
-"Vandu"
-],
-"rg": "D",
-"primero": false
-},
 {
 "tipo": "rango",
 "t": "2026-10-13T17:02:51Z",
@@ -6306,6 +6298,14 @@
 "prosu"
 ],
 "pts": 44580
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-22T04:47:00Z",
+"quien": [
+"AbrahamH"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
