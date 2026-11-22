@@ -585,12 +585,12 @@
     "duelos": "",
     "ev": 5,
     "oro": 0,
-    "ovr": 48,
-    "pod": 2,
-    "pts": 28250,
-    "racha": "0/2",
+    "ovr": 49,
+    "pod": 3,
+    "pts": 31625,
+    "racha": "2/2",
     "tg": {
-     "fin": 2,
+     "fin": 3,
      "fund": true
     }
    }
@@ -3527,13 +3527,13 @@
    "DDS": {
     "duelos": "",
     "ev": 4,
-    "oro": 2,
-    "ovr": 48,
-    "pod": 2,
-    "pts": 28375,
-    "racha": "2/2",
+    "oro": 1,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 15438,
+    "racha": "0/1",
     "tg": {
-     "fin": 2
+     "fin": 1
     }
    },
    "FDS": {
@@ -4873,13 +4873,10 @@
     "duelos": "",
     "ev": 2,
     "oro": 0,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 12500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1
-    }
+    "ovr": 44,
+    "pod": 0,
+    "pts": 13062,
+    "racha": "0/0"
    }
   },
   "Filozico": {
@@ -8721,13 +8718,13 @@
    "DDS": {
     "duelos": "",
     "ev": 7,
-    "oro": 1,
-    "ovr": 49,
-    "pod": 2,
-    "pts": 29500,
-    "racha": "0/3",
+    "oro": 2,
+    "ovr": 50,
+    "pod": 3,
+    "pts": 38500,
+    "racha": "4/4",
     "tg": {
-     "fin": 2
+     "fin": 3
     }
    },
    "FDS": {

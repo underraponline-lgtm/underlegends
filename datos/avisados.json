@@ -24107,7 +24107,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "26d5d922b8339e02",
+  "firma": "7195111285ca21f0",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24521,7 +24521,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "483f7e62616f06d7",
+  "firma": "51fd228634e22446",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -36935,9 +36935,9 @@
     "oriuz"
    ],
    [
-    "Chase",
+    "CHSE",
     "Chop",
-    "Chase"
+    "CHSE"
    ],
    [
     "CrisZJ",
@@ -36991,7 +36991,7 @@
    "oriuz": 7
   },
   "fecha": "07/10",
-  "firma": "1faed8c624694f44",
+  "firma": "6a2e383bc78b0fe3",
   "msg": "1569507985938714665",
   "nombre": "DISCORD STYLE ED. 15",
   "num": 578,
@@ -37222,7 +37222,7 @@
    ],
    [
     "Chase",
-    "Soulb",
+    "VIOLAGINAS",
     "Chase"
    ],
    [
@@ -37259,7 +37259,7 @@
    "oriuz": 7
   },
   "fecha": "17/10",
-  "firma": "23485b26db92d7f2",
+  "firma": "d86437959c08224a",
   "msg": "1569507995547602980",
   "nombre": "DISCORD STYLE ED. 16",
   "num": 579,
@@ -37306,7 +37306,7 @@
     2500
    ],
    [
-    "Soulb",
+    "VIOLAGINAS",
     "Cuartos",
     2500
    ],
@@ -50365,7 +50365,7 @@
    "Yor": 5
   },
   "fecha": "15/11",
-  "firma": "7ba7418877e304c2",
+  "firma": "92754c6305c70808",
   "msg": "1571735800801136702",
   "nombre": "CHOP COMPE CEO V.3",
   "num": 648,
@@ -54225,19 +54225,24 @@
     "AbrahamH"
    ],
    [
-    "Dios",
     "MCO",
-    "Dios"
+    "Dios",
+    "MCO"
    ],
    [
-    "Fecha",
     "AbrahamH",
-    "Fecha"
+    "Fecha",
+    "AbrahamH"
    ],
    [
     "Dios",
     "Fecha",
     "Dios"
+   ],
+   [
+    "MCO",
+    "AbrahamH",
+    "MCO"
    ]
   ],
   "ev_antes": {
@@ -54253,7 +54258,7 @@
    "replisan": 3
   },
   "fecha": "21/11",
-  "firma": "1fea5837c68f67b1",
+  "firma": "e8689c769b778ed8",
   "msg": "1573909518906298399",
   "nombre": "BOOM BAP STYLE",
   "num": 671,
@@ -54265,24 +54270,19 @@
   "t": "2026-11-22T03:54:30Z",
   "tabla": [
    [
-    "Dios",
+    "MCO",
     "Campeón",
     7500
    ],
    [
     "Fecha",
-    "Subcampeón",
-    5000
-   ],
-   [
-    "MCO",
     "Semifinal",
-    3500
+    5250
    ],
    [
     "AbrahamH",
-    "Semifinal",
-    3500
+    "Subcampeón",
+    5000
    ],
    [
     "replisan",
@@ -54313,6 +54313,11 @@
     "NXUZ",
     "Cuartos",
     2000
+   ],
+   [
+    "Dios",
+    "Semifinal",
+    1750
    ]
   ],
   "v": 2

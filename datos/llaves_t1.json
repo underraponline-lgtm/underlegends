@@ -44585,7 +44585,7 @@
        "Xclusivo"
       ],
       "Drexx",
-      "Walk-in 1: xclusivo"
+      "Walk-in 1: xclusivo🇧🇿"
      ]
     ],
     "r": "Semifinales"
@@ -61467,7 +61467,7 @@
        "replisan"
       ],
       "Dios",
-      "Revivido: replisan"
+      "Revivido: Dios 🇲🇽; Revivido: replisan"
      ],
      [
       [
@@ -61485,7 +61485,7 @@
        "CrisZJ"
       ],
       "Fecha",
-      "triple (3 bandas)"
+      "triple (3 bandas); Revivido: Fecha 🇦🇷"
      ],
      [
       [
@@ -61503,25 +61503,20 @@
     "b": [
      [
       [
-       "Dios",
-       "MCO"
+       "MCO",
+       "Dios"
       ],
-      "Dios",
+      "MCO",
       ""
      ],
      [
       [
-       "Fecha",
-       "AbrahamH"
+       "AbrahamH",
+       "Fecha"
       ],
-      "Fecha",
+      "AbrahamH",
       ""
-     ]
-    ],
-    "r": "Semifinales"
-   },
-   {
-    "b": [
+     ],
      [
       [
        "Dios",
@@ -61531,30 +61526,38 @@
       "ganador según #veredictos"
      ]
     ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "AbrahamH"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
     "r": "Final"
    }
   ],
   "sv": "DDS",
   "tabla": [
    [
-    "Dios",
+    "MCO",
     "Campeón",
     7500
    ],
    [
     "Fecha",
-    "Subcampeón",
-    5000
+    "Semifinal",
+    5250
    ],
    [
     "AbrahamH",
-    "Semifinal",
-    3500
-   ],
-   [
-    "MCO",
-    "Semifinal",
-    3500
+    "Subcampeón",
+    5000
    ],
    [
     "replisan",
@@ -61585,10 +61588,15 @@
     "Vilca",
     "Cuartos",
     2000
+   ],
+   [
+    "Dios",
+    "Semifinal",
+    1750
    ]
   ],
   "ver": {
-   "min": 47,
+   "min": 73,
    "v": 1
   }
  }

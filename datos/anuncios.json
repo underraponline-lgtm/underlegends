@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T03:55:33+00:00",
+ "cuando": "2026-11-22T04:06:39+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7662,6 +7662,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "okam",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1573911032597057611",
+   "cuando": "2026-11-22T04:00:32"
+  },
   {
    "servidor": "DDS",
    "canal": "📝〕INSCRIPCIONES",
@@ -43652,15 +43661,6 @@
    "discord_id": "1055474244089286706",
    "msg_id": "1561593850710204488",
    "cuando": "2026-10-19T04:16:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "MALBORO 🇦🇷",
-   "quien": "malboro_mota",
-   "discord_id": "1220200835531935784",
-   "msg_id": "1561593847677591583",
-   "cuando": "2026-10-19T04:16:26"
   }
  ]
 }
