@@ -905,6 +905,7 @@ function Tit({ c, children }) {
 // cual»). `ex` trae lo nuevo de cada una: `esc`, la escena de fondo (el servidor; dos para el clásico); `tono`, el color de
 // su etiqueta; `lento`, que es de las fuertes y se queda 12 s, como en el escenario; y `pub`, su publicación del muro, para
 // reaccionar y responder desde el visor (`Visor` de abajo.jsx)
+// 🔊 y `sonido` (22/11/2026): el id del video de una promo; si tiene su recorte en R2, la historia suena con su canción
 export function Slide(tag, cuerpo, cuando, cta, ir, id, t, ex) { return Object.assign({ tag, cuerpo, cuando, cta, ir, id, t: t || '' }, ex || {}); }
 // los logros que se felicitan (los de `LOGROS` de publicaciones.jsx que tienen historia)
 const FELICITABLE = { campeon: 1, rango: 1, caza: 1 };
@@ -1382,7 +1383,7 @@ export function gruposHistorias(liga) {
         <small className="st-s">{deLiga ? <>{qs.join(' y ')}{it.de ? ' · ' + limpio(it.de) : ''}</> : <>Lo comparte {q} · {PL[it.plat] || ''}</>}</small></>,
       liga.cuando(it.t), it.vid ? 'Mirar el video' : (it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar en ' : 'Ver en ') + (PL[it.plat] || 'su link'),
       it.vid ? { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url }, promo: it.id } : { link: it.url, promo: it.id },
-      'promo:' + (it.pid || it.url), String(it.t || ''), { esc: it.sv || 'DRA' });
+      'promo:' + (it.pid || it.url), String(it.t || ''), { esc: it.sv || 'DRA', sonido: it.vid || '' });
     });
     slides.sort(masViejo);
     // el círculo es un orbe que gira (`Orbe`), no la tapa de la más nueva: Dlx, «que el icono sea como ese círculo de
@@ -1505,7 +1506,7 @@ export function historiasDePersona(liga, k, items) {
     const tit = it.tit ? limpio(it.tit).replace(/([/|·_])/g, '$1​') : '';
     slides.push(Slide('PROMO · ' + siglaDe(it.sv), <><Miniatura vid={it.vid} cls="st-promo" /><h3 className={'st-h' + (tit.length > 48 ? ' largo' : '')}>{tit}</h3></>,
       liga.cuando(it.t), 'Mirar el video', { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url }, promo: it.id },
-      'promo:' + (it.pid || it.url), String(it.t || ''), { esc: it.sv || 'DRA' }));
+      'promo:' + (it.pid || it.url), String(it.t || ''), { esc: it.sv || 'DRA', sonido: it.vid || '' }));
   });
   if (!slides.length) return null;
   slides.sort(masViejo);

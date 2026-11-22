@@ -17,6 +17,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ksDe, limpio, nombreEv, num, siglaDe, utc } from './liga.js';
 import { escenaDe } from './arriba.jsx';
+import { SonidoChip } from './sonido_chip.jsx';
 import { Cara, Carta, accion } from './piezas.jsx';
 import { Hilo, delHilo } from './comentarios.jsx';
 import { LuSocial } from './medio.jsx';
@@ -150,6 +151,8 @@ function Nota({ liga, it, xs, A, P, H, fuerte, reto }) {
         {c.det ? <small className="ed-det">{c.det}</small> : null}
         <div className="ed-firma"><H.Autor liga={liga} it={it} pub={H.pub} />{k && !srv ? <Seguir liga={liga} k={k} /> : null}<time>{H.hace(liga, it.t)}</time></div>
         <div className="ed-acc">{logro ? <H.Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}{it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} sinCm /> : null}</div>
+        {/* 🔊 la que tiene sonido, como Instagram (22/11/2026): el logro con el beat de su estilo */}
+        {it.id ? <SonidoChip id={it.id} estilo={H.sonidoDe(it)} /> : null}
         {reto ? <Reto liga={liga} it={it} /> : null}
         {it.id ? <Hilo liga={liga} it={it} ver={chica() ? 1 : 2} rapidas /> : null}
         <OcultarMods it={it} fijo={liga.muroFijo} />
@@ -505,7 +508,7 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
           <p className="ed-sec-d">Lo que comparten los raperos en el canal de promoción de su servidor y lo que promociona la Liga. Cada una que abres te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p>
           {/* 🖼️ sin video ni imagen, la cara va sobre la escena de su servidor, como en las ligas (revisión 22/11/2026): sola en
               un 16:9 negro no decía nada */}
-          <div className="ed-vgrid">{promos.map((it) => { const c = H.contenido(liga, it, H.pub); const svP = liga.svDe(it); const esP = !c || c.media || !svP ? '' : escenaDe(svP); return c ? <article key={it.id} className="ed-v"><div className="ed-v-img">{esP ? <img className="ed-v-esc" alt="" src={esP} loading="lazy" /> : null}{c.vis}</div><div className="ed-cu"><span className="ed-lab">{c.cat}</span><h4>{c.txt}</h4><div className="ed-firma"><H.Autor liga={liga} it={it} pub={H.pub} /><time>{H.hace(liga, it.t)}</time></div></div></article> : null; })}</div>
+          <div className="ed-vgrid">{promos.map((it) => { const c = H.contenido(liga, it, H.pub); const svP = liga.svDe(it); const esP = !c || c.media || !svP ? '' : escenaDe(svP); return c ? <article key={it.id} className="ed-v"><div className="ed-v-img">{esP ? <img className="ed-v-esc" alt="" src={esP} loading="lazy" /> : null}{c.vis}</div><div className="ed-cu"><span className="ed-lab">{c.cat}</span><h4>{c.txt}</h4><div className="ed-firma"><H.Autor liga={liga} it={it} pub={H.pub} /><time>{H.hace(liga, it.t)}</time></div>{/* 🔊 la promo, con su canción */}<SonidoChip id={it.id} estilo={H.sonidoDe(it)} /></div></article> : null; })}</div>
         </section>
       ) : null}
       {ligasLobby.length ? (

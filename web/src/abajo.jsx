@@ -1148,7 +1148,7 @@ const ESPERA_BEAT = 4000;
  *   alargaban. Con éstos la media queda cerca de la de antes y lo que cambia es el reparto
  * Se mide sobre lo dibujado, así una historia nueva entra sola sin tener que darle un número
  */
-export function duracionHistoria(cu, s) {
+export function duracionHistoria(cu, s, cancion = false) {
   const st = (cu && cu.querySelector('.st')) || cu;
   if (!st) return 5000;
   const palabras = String(st.innerText || st.textContent || '').split(/\s+/).filter(Boolean).length;
@@ -1163,6 +1163,8 @@ export function duracionHistoria(cu, s) {
   if (carta) ms += 1500;
   if (caras) ms += 600 + Math.min(caras - 1, 5) * 300;
   if (s && s.beat) ms = Math.max(ms, 8000);
+  // 🔊 una promo con su canción, 12 s: que se oiga un pedazo (los recortes son de 30)
+  if (cancion) ms = Math.max(ms, 12000);
   if (s && s.lento) ms = Math.max(ms, 12000);
   return Math.round(Math.max(4500, Math.min(14000, ms)));
 }
@@ -1269,12 +1271,18 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   }, []);
   // vista apenas se muestra
   useEffect(() => { if (idAct) onVisto(idAct); }, [idAct, onVisto]);
-  const beat = ((g && g.slides.find((x) => x.id === idAct)) || {}).beat || '';
+  // 🔊 una promo suena con SU canción si tiene recorte en R2 (tanda 5 de beats.js); si no, con el beat que traiga
+  const [, setX] = useState(0);
+  useEffect(() => { BEAT.cargarExtras(); return BEAT.alExtras(() => setX((n) => n + 1)); }, []);
+  const sHoy = (g && g.slides.find((x) => x.id === idAct)) || {};
+  // (si la lista de R2 llega con la promo ya andando, la historia se vuelve a medir: dura lo de una con canción)
+  const cancionHoy = !!(sHoy.sonido && BEAT.hayPista(sHoy.sonido));
+  const beat = (sHoy.sonido && BEAT.hayPista(sHoy.sonido) ? 'p:' + sHoy.sonido : '') || sHoy.beat || '';
   useEffect(() => { if (sonido && beat) BEAT.tocar(beat, gid); else BEAT.parar(); }, [beat, sonido, gid]);
   // 🍏 al abrir, el audio queda listo para el toque que abrió (tanda 4 de beats.js), si alguna historia trae beat; al
   // cerrar se apaga (entre historias queda encendido: tanda 3)
   useEffect(() => {
-    if (grupos.some((x) => x.slides.some((y) => y.beat))) BEAT.visorAbierto();
+    if (grupos.some((x) => x.slides.some((y) => y.beat || y.sonido))) BEAT.visorAbierto();
     return () => BEAT.apagar();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1296,7 +1304,8 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
       const j = grupos.findIndex((x, n) => n > gi && pend(x).length);
       if (j >= 0) { s2 = grupos[j].slides.find((x) => !vistos[x.id]); g2 = grupos[j].id; }
     }
-    if (s2 && s2.beat) BEAT.precargar(s2.beat, g2);
+    const b2 = s2 && ((s2.sonido && BEAT.hayPista(s2.sonido) ? 'p:' + s2.sonido : '') || s2.beat);
+    if (b2) BEAT.precargar(b2, g2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idAct, sonido]);
   // si su grupo desaparece (el evento en vivo terminó), el visor se cierra en vez de quedar abierto y vacío
@@ -1344,7 +1353,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     // ⏱️ CUÁNTO DURA, SEGÚN LO QUE ES (18/10/2026 y 21/11/2026): ver `duracionHistoria()`, arriba. Las fuertes (el doble
     // campeón, la caza, la letra alta) se quedan 12 s, como en el escenario
     const sAct = g.slides.find((x) => x.id === ids[Math.min(si, ids.length - 1)]);
-    const dur = duracionHistoria(cuerpoR.current, sAct);
+    const dur = duracionHistoria(cuerpoR.current, sAct, !!(sAct && sAct.sonido && BEAT.hayPista(sAct.sonido)));
     // (para medirla desde afuera: herramientas y pruebas la leen de acá)
     if (barras.current) barras.current.dataset.dur = String(dur);
     foco.current = false;
@@ -1364,7 +1373,8 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     };
     raf = requestAnimationFrame(tick);
     return () => { cancelAnimationFrame(raf); clearTimeout(espera); if (esperabaB) setCargaB(false); };
-  }, [gid, si, hay]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gid, si, hay, cancionHoy]);
   useEffect(() => {
     if (!hay) return undefined;
     // (escribiendo una respuesta, las flechas mueven el cursor y Escape sale de la caja: no pasan de historia)
@@ -1512,7 +1522,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         {/* 🎧 lo que suena y de quién es, con el link a su video: el crédito es parte del permiso del beatmaker */}
         {/* ⏳ mientras baja: la barra quieta y esto, así se entiende por qué no arranca */}
-        {beat && sonido && cargaB ? <span className="hv-beat carga" role="status"><i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span>Cargando el beat…</span></span>
+        {beat && sonido && cargaB ? <span className="hv-beat carga" role="status"><i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span>{String(beat).startsWith('p:') ? 'Cargando la canción…' : 'Cargando el beat…'}</span></span>
           : beat && sonido && pista ? <a className="hv-beat" href={pista.u} target="_blank" rel="noopener noreferrer"
           onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}
           aria-label={'Suena ' + pista.t + ', de ' + pista.b + '. Abrir en YouTube'} title="Abrir el beat en YouTube">

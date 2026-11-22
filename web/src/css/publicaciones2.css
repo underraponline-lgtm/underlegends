@@ -562,3 +562,16 @@ a.pw-autor:hover b{text-decoration:underline}
 @media (hover: hover) and (pointer: fine){.pw-svl-mas:hover{border-color:var(--tinta)}}
 /* 📱 en el celular, el detalle de cada servidor en dos renglones (los campeones del cierre ocupaban cinco): el entero, en la hoja del 💬 */
 @media (max-width:760px){.pw-svl small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
+
+/* 🔊 la pastilla «♫» de las publicaciones con sonido (22/11/2026, sonido_chip.jsx): como el sticker de música de Instagram.
+   Dice qué suena y de quién; tocarla la prende o la apaga. Verde cuando suena */
+.son-chip{display:inline-flex;align-items:center;gap:7px;max-width:100%;margin:8px 0 2px;padding:6px 10px 6px 8px;border:0;border-radius:4px;
+  background:var(--caja,#101012);color:var(--tinta,#F6F6F6);box-shadow:inset 0 0 0 1.5px var(--suave,#2A2A2E);font:600 13px/1.2 Archivo,sans-serif;
+  cursor:pointer;text-align:left;transition:box-shadow .15s ease,transform .12s ease}
+.son-chip .son-ico{display:inline-grid;place-items:center;width:16px;flex:none;font-size:14px;line-height:1}
+.son-chip .son-tx{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.son-chip:hover{box-shadow:inset 0 0 0 1.5px var(--tinta,#F6F6F6)}
+.son-chip.on{box-shadow:inset 0 0 0 1.5px #29B298}
+.son-chip:focus-visible{outline:2px solid #29B298;outline-offset:2px}
+.son-chip:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){.son-chip{transition:none}.son-chip:active{transform:none}}

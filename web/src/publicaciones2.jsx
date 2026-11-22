@@ -16,7 +16,8 @@
 // si ya votaste en todas); Felicitar sólo en los logros; las cartas del día juntas; Promos y «A quien sigo».
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, hora, horaET, ksDe, limpio, mult, nombreEv, num, siglaDe, utc } from './liga.js';
-import { CrewCirculo, escenaDe } from './arriba.jsx';
+import { CrewCirculo, beatDe, escenaDe } from './arriba.jsx';
+import { SonidoChip, useCallarAlSalir } from './sonido_chip.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Alguien, Algunos, Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
@@ -792,6 +793,8 @@ export function Fila({ liga, it, A, P, nuevo }) {
   const logro = !!LOGROS[it.tipo];
   const tono = 'c-' + (COLOR[it.tipo] || (ANUNCIOS[it.tipo] ? 'a' : 'n'));
   const social = it.id && it.tipo !== 'flyer' ? <><LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} /><LuNube liga={liga} it={it} hilo={hilo} /></> : null;
+  // 🔊 las que tienen sonido, como Instagram (22/11/2026): la promo con su canción, el logro con el beat de su estilo
+  const son = it.id ? <SonidoChip id={it.id} estilo={sonidoDe(it)} /> : null;
   if (fuerte(it)) {
     const k = ksDe(it)[0];
     const cual = cartaDe(liga, k);
@@ -810,6 +813,7 @@ export function Fila({ liga, it, A, P, nuevo }) {
           {it.tipo === 'resnoche' ? <p className="pw-t chico">{c.txt}</p> : null}
           {c.det ? <small className="pw-det">{c.det}</small> : null}
           {logro || c.acc ? <div className="pw-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
+          {son}
           {social}
           <OcultarMods it={it} fijo={liga.muroFijo} />
         </div>
@@ -826,6 +830,7 @@ export function Fila({ liga, it, A, P, nuevo }) {
         {c.det ? <small className="pw-det">{c.det}</small> : null}
         {c.media ? <div className="pw-media">{c.vis}</div> : null}
         {c.acc || (logro && it.tipo !== 'rango') ? <div className="pw-acc">{logro ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div> : null}
+        {son}
         {social}
         <OcultarMods it={it} fijo={liga.muroFijo} />
       </div>
@@ -890,6 +895,10 @@ function Minis({ liga, todos, setFil, desliza }) {
   );
 }
 
+/** 🔊 Con qué suena una publicación ('' = sin sonido): una promo, su propia canción (si tiene recorte, ver `SonidoChip`);
+ * un logro, el beat de su estilo, el mismo que su historia */
+const sonidoDe = (it) => (it.tipo === 'promo' ? (it.vid ? 'p:' + it.vid : '') : beatDe(it));
+
 // ── la hoja de una publicación: lo suyo arriba y el hilo entero (`Hilo` se abre solo con `__pubFoco`) ──
 // `onCerrar`: abierta desde afuera de esta página (`HojaComentarios`, abajo), cerrar no toca la dirección
 function Hoja({ liga, it, A, P, onCerrar }) {
@@ -932,6 +941,7 @@ function Hoja({ liga, it, A, P, onCerrar }) {
           <div className="pw-tx"><Autor liga={liga} it={it} pub={pub} cara={false} /><p className="pw-t">{c.txt}</p>{c.det ? <small className="pw-det">{c.det}</small> : null}
             {c.media ? <div className="pw-media">{c.vis}</div> : null}
             <div className="pw-acc">{LOGROS[it.tipo] ? <Felicitar liga={liga} it={it} A={A} /> : null}{c.acc}</div>
+            {it.id ? <SonidoChip id={it.id} estilo={sonidoDe(it)} /> : null}
             {/* abierta desde afuera, sin el globito: el hilo ya está abierto justo debajo */}
             {it.id ? <LuSocial liga={liga} it={it} A={A} hilo={hilo} P={P} sinCm={!!onCerrar} /> : null}</div>
         </div>
@@ -990,6 +1000,8 @@ export function HojaComentarios({ liga, it, onCerrar }) {
 }
 
 export function Publicaciones({ liga, enc, foco = '' }) {
+  // 🔊 si sonaba una publicación, se calla al irse de la página
+  useCallarAlSalir();
   const A = useAplausos();
   useComentarios();
   const P = usePase(typeof window !== 'undefined' && !!window.DC);
@@ -1071,7 +1083,7 @@ export function Publicaciones({ liga, enc, foco = '' }) {
   const eds = useDias(liga, todos);
   const [di, setDi] = useState(0);
   const lista = enteros || !eds.length;
-  const H = { contenido, LOGROS, Felicitar, Autor, hace, Avisame, pub };
+  const H = { contenido, LOGROS, Felicitar, Autor, hace, Avisame, pub, sonidoDe };
   const fila = (it, nuevo) => (it.tipo === 'g-tarjeta' ? <CartasG liga={liga} xs={it.xs} nuevo={nuevo} />
     : it.tipo === 'g-rango' ? <RangosG liga={liga} xs={it.xs} nuevo={nuevo} />
         : it.tipo === 'g-crewtier' ? <Tiers liga={liga} xs={it.xs} visto={visto} A={A} P={P} />

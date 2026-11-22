@@ -367,15 +367,63 @@ const avisar = (x) => {
   info = x;
   oyentes.forEach((f) => { try { f(x); } catch (e) { /* un oyente roto no frena el beat */ } });
 };
-const lista = (estilo) => ((LISTA && LISTA[estilo]) || []);
+// 🔊 TANDA 5, LAS PROMOS SUENAN (22/11/2026). Dlx: *«B, que suenen en sus promos y tmb en otras historias o publicaciones
+// así como instagram que algunas tienen sonido»*. Lo que la gente de la Liga promociona en los canales de promoción vive
+// en R2 (lo deja ahí `herramientas/sonidos_promos.py`, que corre desde una PC: YouTube no deja bajar desde GitHub):
+//   · `promos`: un recorte por video. Una historia o publicación de promo pide el estilo `'p:<id del video>'` y suena con
+//     SU canción (la única de su lista); si el video no tiene recorte, no suena
+//   · `beats`: los instrumentales con estilo, que se suman a los de `beats_lista.json` para todas las historias
+// La lista se pide una vez (`cargarExtras()`, como mucho una por hora) al abrir las historias o Publicaciones; quien la
+// necesita se entera con `alExtras()`. R2 deja pedirla desde la página (CORS) y la CSP la deja en `connect-src`
+const R2 = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/';
+let extras = null;
+let pidiendoX = null;
+const oyentesX = new Set();
+const deR2 = (p) => Object.assign({}, p, { src: R2 + p.a });
+const lista = (estilo) => {
+  if (String(estilo || '').startsWith('p:')) {
+    const p = extras && extras.promos && extras.promos[estilo.slice(2)];
+    return p ? [deR2(p)] : [];
+  }
+  const xs = (LISTA && LISTA[estilo]) || [];
+  const ys = (extras && extras.beats && extras.beats[estilo]) || [];
+  return ys.length ? xs.concat(ys.map(deR2)) : xs;
+};
+/** De dónde se baja un recorte: R2 (los de las promos) o `/beats/` de la página */
+const url = (p) => p.src || RAIZ + p.a;
 const hashS = (s) => { let h = 7; for (const c of String(s || '')) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 export const hayReales = (estilo) => lista(estilo).length > 0;
+/** ¿Ese video de una promo tiene su recorte para sonar? */
+export const hayPista = (id) => !!(id && extras && extras.promos && extras.promos[id]);
+/** La ficha del recorte de una promo (`{t, b, u, i?}`), para mostrar qué suena antes de tocarlo */
+export const pistaDe = (id) => (hayPista(id) ? extras.promos[id] : null);
+/** Pide la lista de R2 (una vez; si falla, la próxima vez que alguien la pida). Devuelve la promesa */
+export function cargarExtras() {
+  if (extras) return Promise.resolve(extras);
+  if (pidiendoX) return pidiendoX;
+  const v = Math.floor(Date.now() / 3600000);
+  pidiendoX = fetch(R2 + 'sonidos/lista.json?v=' + v)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((j) => {
+      if (j && j.promos) {
+        extras = j;
+        oyentesX.forEach((f) => { try { f(); } catch (e) { /* un oyente roto no frena al resto */ } });
+      }
+      return extras;
+    })
+    .catch(() => null)
+    .finally(() => { pidiendoX = null; });
+  return pidiendoX;
+}
+/** Avisa cuando llega la lista de R2. Devuelve cómo dejar de oír */
+export function alExtras(fn) { oyentesX.add(fn); return () => { oyentesX.delete(fn); }; }
 
-// los bytes, aparte de lo decodificado: bajarlos no pide audio encendido, así que se pueden adelantar (`precargar()`)
+// los bytes, aparte de lo decodificado: bajarlos no pide audio encendido, así que se pueden adelantar (`precargar()`).
+// La clave es la dirección entera: los de la página y los de R2 conviven
 const crudos = new Map();
 function bajar(a) {
   if (!crudos.has(a)) {
-    crudos.set(a, fetch(RAIZ + a).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.arrayBuffer(); }));
+    crudos.set(a, fetch(a).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.arrayBuffer(); }));
     // ocho como mucho (son ~520 KB cada uno)
     if (crudos.size > 8) crudos.delete(crudos.keys().next().value);
     crudos.get(a).catch(() => crudos.delete(a));
@@ -400,7 +448,7 @@ export function precargar(estilo, semilla) {
   const xs = lista(estilo);
   if (!xs.length || mudo()) return;
   try { if (navigator.connection && navigator.connection.saveData) return; } catch (e) { /* sin el dato */ }
-  bajar(xs[hashS(semilla) % xs.length].a).catch(() => {});
+  bajar(url(xs[hashS(semilla) % xs.length])).catch(() => {});
 }
 
 /** ⏳ ¿La historia pidió un beat que todavía no se oye? (bajando, decodificando o con el audio sin encender). El visor
@@ -426,7 +474,7 @@ async function ponerReal(estilo, i) {
   const p = xs[i % xs.length];
   const yo = ++turno;
   let buf;
-  try { buf = await cargar(p.a); } catch (e) {
+  try { buf = await cargar(url(p)); } catch (e) {
     // el archivo no bajó: el sintetizado, para que la historia no quede muda
     if (yo === turno && quiere === estilo) { soltarReal(CRUCE); avisar(null); sintesis(estilo); }
     return;
@@ -446,7 +494,7 @@ async function ponerReal(estilo, i) {
   real = { estilo, i, src, g, fin: t + buf.duration };
   avisar({ t: p.t, b: p.b, u: p.u });
   // el que sigue de este estilo, bajando de antes
-  if (xs.length > 1) cargar(xs[(i + 1) % xs.length].a).catch(() => {});
+  if (xs.length > 1) cargar(url(xs[(i + 1) % xs.length])).catch(() => {});
   // ⏱️ cuando éste se termina, se cruza con el siguiente. Con la hora del audio y no con un `setTimeout`: pausado (la
   // historia apretada, la pestaña oculta) el audio no avanza, y un reloj de pared cruzaría a destiempo
   if (!vigia) {
@@ -463,13 +511,15 @@ async function ponerReal(estilo, i) {
 /** Toca ese estilo (o lo deja sonando si ya es ese): uno de verdad si hay, el sintetizado si no. `semilla` elige cuál
  * (el id del círculo). Sin estilo, o silenciado, para. */
 export function tocar(estilo, semilla) {
-  if (!estilo || !ESTILOS[estilo] || mudo()) { parar(); return; }
+  const promo = String(estilo || '').startsWith('p:');
+  if (!estilo || (!ESTILOS[estilo] && !promo) || mudo()) { parar(); return; }
   if (!abrir()) return;
   quiere = estilo;
   encendido = true;
   if (ctx.state !== 'running' && ctx.state !== 'closed' && !document.hidden) ctx.resume().catch(() => {});
   const xs = lista(estilo);
-  if (!xs.length) { soltarReal(CRUCE); avisar(null); sintesis(estilo); return; }
+  // (una promo sin su recorte no suena: no hay un sintetizado que la reemplace)
+  if (!xs.length) { if (promo) { parar(); return; } soltarReal(CRUCE); avisar(null); sintesis(estilo); return; }
   // el mismo estilo que ya suena: sigue, no vuelve a arrancar
   if (real && real.estilo === estilo) return;
   ponerReal(estilo, hashS(semilla) % xs.length);
@@ -489,12 +539,39 @@ export function parar() {
 /** 🍏 Al abrir el visor (tanda 4): el audio se va a usar aunque la primera historia no traiga beat. Así el MISMO toque
  * que lo abre lo prende (el oyente de `window`), y la historia con beat que llega sola después ya lo encuentra prendido:
  * antes se prendía recién ahí, sin toque, y el iPhone lo dejaba dormido */
-export function visorAbierto() { encendido = true; }
+export function visorAbierto() { encendido = true; ponerDueno(''); }
+
+// 🔊 (tanda 5) LAS PUBLICACIONES QUE SUENAN: cuál suena ahora (`dueno`, su id), para que su pastilla «♫» se vea prendida
+// y las demás no. Una sola a la vez; abrir las historias o cerrar todo la apaga
+let dueno = '';
+const oyentesD = new Set();
+function ponerDueno(x) {
+  if (dueno === x) return;
+  dueno = x;
+  oyentesD.forEach((f) => { try { f(x); } catch (e) { /* un oyente roto no frena al resto */ } });
+}
+export const duenoActual = () => dueno;
+/** Avisa cuál publicación suena ('' = ninguna). Devuelve cómo dejar de oír */
+export function alDueno(fn) { oyentesD.add(fn); return () => { oyentesD.delete(fn); }; }
+/** Que suene una publicación: adentro del toque de su pastilla (el iPhone lo pide así). Silenciado, lo desilencia: tocar
+ * «♫» es pedir sonido */
+export function sonarPublicacion(id, estilo) {
+  if (mudo()) ponerMudo(false);
+  // cada publicación con SU beat: en las historias el mismo estilo sigue sonando de una a otra; acá, cambiar de
+  // publicación es pedir otra cosa
+  if (dueno && dueno !== id) parar();
+  ponerDueno(id);
+  encendido = true;
+  prender();
+  tocar(estilo, id);
+}
+export function callarPublicacion() { if (dueno) apagar(); }
 
 /** Al cerrar el visor: para y apaga el audio, que no gaste nada con la página quieta. */
 export function apagar() {
   parar();
   encendido = false;
+  ponerDueno('');
   soltarSesion();
   setTimeout(() => { if (!quiere && ctx) ctx.suspend().catch(() => {}); }, 600);
 }
