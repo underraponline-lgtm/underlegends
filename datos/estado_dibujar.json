@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-22T03:38:03Z",
+ "cuando": "2026-11-22T04:14:59Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 317.7,
+ "dur_s": 642.0,
  "pasos": [
   {
    "n": "2f",
@@ -27,61 +27,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.5
+   "s": 10.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.7
+   "s": 37.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 20 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": true,
-   "s": 168.5
+   "s": 427.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 55.2
+   "s": 106.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.8
+   "s": 57.2
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "670",
-  "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
-  "sv": "DW",
-  "dia": "2026-09-27"
+  "n": "671",
+  "nombre": "BOOM BAP STYLE",
+  "sv": "DDS",
+  "dia": "2026-11-21"
  },
  "cuotas": {
   "kv": {
-   "write": 143,
-   "read": 7443
+   "write": 191,
+   "read": 8751
   },
   "objeto": {
-   "leidas": 671081,
-   "escritas": 18979,
-   "pedidos": 5891
+   "leidas": 909229,
+   "escritas": 25438,
+   "pedidos": 7348
   },
   "worker": {
-   "pedidos": 27693,
+   "pedidos": 28947,
    "errores": 0,
-   "sub": 28279,
+   "sub": 29478,
    "cortados": 0,
-   "p50_ms": 0.82,
-   "p99_ms": 10.13,
+   "p50_ms": 0.83,
+   "p99_ms": 10.08,
    "cpu": {
-    "total": 56052,
-    "objeto_10": 1898,
-    "worker_10": 294
+    "total": 58488,
+    "objeto_10": 1952,
+    "worker_10": 301
    }
   },
   "r2": {
