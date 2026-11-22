@@ -2099,6 +2099,13 @@
   "autor": "1364747464170668042",
   "canal": "1222379620494741604",
   "canal_pregunta": "1538678065306140684",
+  "cerrada": {
+   "como": "nadie siguió",
+   "n": 2,
+   "sin": 2,
+   "t": "2026-11-21 6:55 PM ET",
+   "tot": 15
+  },
   "cuando": "2026-11-19T19:39:40.738000+00:00",
   "donde": "staff",
   "evento": "CHOP COMPE CHILL V.1",
@@ -2122,7 +2129,20 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "48h",
+    "t": 1795305320092
+   },
+   "1": {
+    "por": "48h",
+    "t": 1795305320092
+   }
+  },
+  "respondidas": {
+   "0": "(nadie siguió)",
+   "1": "(nadie siguió)"
+  },
   "sin_permiso": false,
   "staff_probado": true,
   "sv": "CH",

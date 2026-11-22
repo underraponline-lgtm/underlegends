@@ -8292,6 +8292,15 @@
    ]
   }
  },
+ "lso": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795305912813
+   ]
+  }
+ },
  "lucho": {
   "servidor": {
    "🔑 LLAVE DE LA CASA": [
@@ -13343,6 +13352,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795305912813
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",

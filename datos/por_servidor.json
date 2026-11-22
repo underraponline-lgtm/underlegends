@@ -7760,6 +7760,18 @@
    }
   },
   "LSO": {
+   "CH": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "DDF": {
     "duelos": "0/2",
     "ev": 3,
@@ -8287,11 +8299,11 @@
   "Lucho": {
    "CH": {
     "duelos": "0/3",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
     "ovr": 44,
     "pod": 0,
-    "pts": 6250,
+    "pts": 10375,
     "racha": "0/0"
    }
   },
@@ -11703,6 +11715,18 @@
     "racha": "0/0",
     "tg": {
      "dv": true
+    }
+   },
+   "CH": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    },
    "DDF": {
@@ -16645,6 +16669,20 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "ojos melancólicos 🇨🇱": {
+   "CH": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },

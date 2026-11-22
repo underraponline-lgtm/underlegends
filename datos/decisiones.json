@@ -1406,6 +1406,20 @@
    "cuando": "2026-11-21 6:33 PM ET",
    "por": "el ciclo (R25)",
    "nota": "nadie dijo quién ganó en 52 días: cada uno cobra la ronda, como las 48 h cuando se le pudo preguntar al organizador"
+  },
+  "chopcompechillv1|CH|19/11|octavos|lso|ojosmelancolicos": {
+   "ganador": "(nadie siguió)",
+   "batalla": "CHOP COMPE CHILL V.1 · CH · 19/11 · octavos · ojos melancólicos 🇨🇱 🆚 Lso🇦🇷",
+   "cuando": "2026-11-21 6:55 PM ET",
+   "por": "bot/finales.py: nadie la marcó en 48 h",
+   "nota": "el último recurso (Dlx, 11/11/2026: «48 h»): cobran la ronda y no hay duelo"
+  },
+  "chopcompechillv1|CH|19/11|octavos|lucho|player": {
+   "ganador": "(nadie siguió)",
+   "batalla": "CHOP COMPE CHILL V.1 · CH · 19/11 · octavos · player🇻🇪 🆚 Lucho🇦🇷",
+   "cuando": "2026-11-21 6:55 PM ET",
+   "por": "bot/finales.py: nadie la marcó en 48 h",
+   "nota": "el último recurso (Dlx, 11/11/2026: «48 h»): cobran la ronda y no hay duelo"
   }
  },
  "anuncios_fuera": {

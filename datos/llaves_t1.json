@@ -60062,18 +60062,18 @@
      [
       [
        "ojos melancólicos 🇨🇱",
-       "Lso🇦🇷"
+       "LSO"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: ojos melancólicos 🇨🇱; cobra: Lso🇦🇷; nadie siguió: ✅ Decidir"
      ],
      [
       [
-       "player🇻🇪",
-       "Lucho🇦🇷"
+       "Player",
+       "Lucho"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: player🇻🇪; cobra: Lucho🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -60211,6 +60211,16 @@
     1250
    ],
    [
+    "LSO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lucho",
+    "Octavos",
+    1250
+   ],
+   [
     "Magic",
     "Cuartos",
     1250
@@ -60221,8 +60231,18 @@
     1250
    ],
    [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
     "Walker",
     "Cuartos",
+    1250
+   ],
+   [
+    "ojos melancólicos 🇨🇱",
+    "Octavos",
     1250
    ],
    [
