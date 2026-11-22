@@ -11094,6 +11094,17 @@
    "b": "ABRAHAM",
    "ganador": "ABRAHAM",
    "votos": "1–0"
+  },
+  "1573916852789448715": {
+   "id": "1573916852789448715",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1795321419666,
+   "a": "KUSOH 🇲🇽",
+   "b": "ADRIAGNER 🇳🇮",
+   "ganador": "ADRIAGNER 🇳🇮",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -15335,13 +15346,23 @@
    "g": "1558611504046153750",
    "canal": "1560645560015519834",
    "pub": 1795321051967,
-   "ed": 1795321419666,
-   "texto": "`[ SEMIFINALES ]`\n⌞KUSOH🇲🇽⌝ 🆚 ⌞ADRIAGNER🇳🇮⌝",
+   "ed": 1795322004364,
+   "texto": "`[ SEMIFINALES ]`\n⌞KUSOH🇲🇽⌝ 🆚 ⌞ADRIAGNER🇳🇮⌝\n⌞MOSQUI 🇦🇷⌝ 🆚 ⌞ADRIAGNER🇳🇮⌝",
    "batallas": [
     [
      "SEMIFINALES",
      [
       "KUSOH🇲🇽",
+      "ADRIAGNER🇳🇮"
+     ],
+     "ADRIAGNER🇳🇮",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MOSQUI 🇦🇷",
       "ADRIAGNER🇳🇮"
      ],
      null,

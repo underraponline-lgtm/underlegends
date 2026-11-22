@@ -13467,9 +13467,9 @@
   }
  },
  {
-  "full": "LEITAN  🇦🇷",
+  "full": "LEITAN",
   "raw": "LEITAN",
-  "cc": "ar",
+  "cc": "",
   "sv": "CH",
   "crew": "",
   "discord_id": "1455653897396817968",
@@ -13499,7 +13499,8 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "svc": 1
+   "svc": 1,
+   "svtag": "campeon"
   }
  },
  {

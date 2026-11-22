@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T04:25:31+00:00",
+ "cuando": "2026-11-22T04:36:50+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7662,6 +7662,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "MF DOOM 🇵🇪",
+   "quien": "facinedoso",
+   "discord_id": "1557215371050876960",
+   "msg_id": "1573918595560247408",
+   "cuando": "2026-11-22T04:30:35"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43652,15 +43661,6 @@
    "discord_id": "1097650470476070995",
    "msg_id": "1561594277790879815",
    "cuando": "2026-10-19T04:18:08"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "BLITZ 🇮🇱",
-   "quien": "nahanah",
-   "discord_id": "1023727385822122104",
-   "msg_id": "1561594176091717723",
-   "cuando": "2026-10-19T04:17:44"
   }
  ]
 }
