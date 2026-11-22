@@ -32,7 +32,11 @@ import sys
 from zoneinfo import ZoneInfo
 
 URL = 'https://github.com/underraponline-lgtm/underlegends.git'
-DIR = os.path.join(os.environ.get('LOCALAPPDATA') or os.path.expanduser('~'), 'LigaGlobal', 'tareas')
+# ⚠️ EN LA CARPETA DEL USUARIO Y NO EN %LOCALAPPDATA% (22/11/2026): instalada desde la app de Claude, que está empaquetada
+# (MSIX), Windows desvía lo que se escribe en AppData\Local a una carpeta propia del paquete
+# (`AppData\Local\Packages\Claude_…\LocalCache`). Desde adentro de la app se ve igual; la tarea programada corre afuera y no
+# encontraba nada («can't open file …\LocalCache\…\sonidos_promos_tarea.py»). La carpeta del usuario no se desvía
+DIR = os.path.join(os.path.expanduser('~'), 'LigaGlobal', 'tareas')
 CLON = os.path.join(DIR, 'underlegends')
 LOG = os.path.join(DIR, 'sonidos_promos.log')
 CONF = os.path.join(DIR, 'sonidos_promos.json')
