@@ -16,7 +16,8 @@
   "FVS": 2,
   "LKR": 3,
   "SR": 2,
-  "URBF": 1
+  "URBF": 1,
+  "WOF": 3
  },
  "beneficios": {
   "ACAD": {
@@ -162,6 +163,15 @@
    "suma": true,
    "competitivo": true,
    "duelos": true
+  },
+  "WOF": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "competitivo": false,
+   "duelos": false
   }
  },
  "beneficios_elegidos": {},
@@ -181,7 +191,8 @@
   "FVS": "2026-10-12",
   "LKR": "2026-10-21",
   "SR": "2026-09-22",
-  "URBF": "2026-09-22"
+  "URBF": "2026-09-22",
+  "WOF": "2026-11-22"
  },
  "alianza_bonus": []
 }

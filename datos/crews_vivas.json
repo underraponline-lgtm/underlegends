@@ -123,8 +123,8 @@
   {
    "id": "Desierto de Atacama",
    "nombre": "Desierto de Atacama",
-   "sigla": "CZT",
-   "entrada": "abierta",
+   "sigla": "DDA",
+   "entrada": "invitacion",
    "oficial": false,
    "creada": 1794551899202,
    "reps": [],
@@ -133,21 +133,6 @@
      "oasis",
      "lider",
      1794551899202
-    ],
-    [
-     "dios",
-     "miembro",
-     1795174507018
-    ],
-    [
-     "cronox",
-     "miembro",
-     1795374227946
-    ],
-    [
-     "molusco",
-     "miembro",
-     1795375268376
     ]
    ],
    "vence": 0,

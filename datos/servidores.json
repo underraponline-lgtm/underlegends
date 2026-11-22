@@ -892,6 +892,24 @@
    },
    "suma_aprobada": "2026-11-21T06:58Z",
    "suma_avisada": "2026-11-21"
+  },
+  "WOF": {
+   "nombre": "World Of Freestyle",
+   "guild_id": "1558593868587339868",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "WOF",
+   "tier": 3,
+   "alta": "dashboard",
+   "nota": "dado de alta desde el Dashboard el 22/11/2026 (bot/tiers.py `altas()`)",
+   "tag": "DIVERSO",
+   "invitacion": "https://discord.gg/qV7MKZM6sQ",
+   "invitacion_liga": {
+    "codigo": "qV7MKZM6sQ",
+    "canal": "⚖️〢・𝘔𝘢𝘯𝘥𝘢𝘮𝘪𝘦𝘯𝘵𝘰𝘴",
+    "canal_id": "1558622756176666624",
+    "creada": "2026-11-22"
+   }
   }
  },
  "_fuera_de_la_tabla": [
