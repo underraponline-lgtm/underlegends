@@ -8484,7 +8484,7 @@
     },
     "DDS|2026-10-28": {
      "764617398602039371": [
-      "wawa (oriuz)",
+      "oriuz",
       "",
       "oriuz"
      ],
@@ -10820,6 +10820,20 @@
      "orgs": [],
      "organizador": "LEWITO",
      "cuentas": {}
+    },
+    "1574196897353179167": {
+     "sv": "DDS",
+     "nombre": "VERSO STYLE",
+     "mo": "2026-11-22T22:56:27Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Benji Price",
+       "id": "734945161158852630"
+      }
+     ],
+     "organizador": "@Benji Price",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -11997,6 +12011,13 @@
       "",
       "Ojitos canábicos",
       "sj.2008_"
+     ]
+    },
+    "DDS|2026-11-22": {
+     "734945161158852630": [
+      "",
+      "Benji Price",
+      "benji_price16"
      ]
     }
    }

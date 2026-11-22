@@ -10346,80 +10346,53 @@
    "b": "MCO",
    "ganador": "MCO",
    "votos": "1–0"
+  },
+  "1574199077653188709": {
+   "id": "1574199077653188709",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1795388707317,
+   "a": "TEITO",
+   "b": "DIOS",
+   "ganador": "DIOS",
+   "votos": "1–0"
+  },
+  "1574199859144294502": {
+   "id": "1574199859144294502",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1795388893639,
+   "a": "ORIUZ",
+   "b": "NXUZ",
+   "ganador": "NXUZ",
+   "votos": "1–0"
+  },
+  "1574200896106012773": {
+   "id": "1574200896106012773",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1795389140870,
+   "a": "MITO",
+   "b": "DOMINICK",
+   "ganador": "MITO",
+   "votos": "1–0"
+  },
+  "1574202294919233708": {
+   "id": "1574202294919233708",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1795389474373,
+   "a": "DIOS",
+   "b": "NXUZ",
+   "ganador": "DIOS",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1566589303226896494": {
-   "id": "1566589303226896494",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560645560015519834",
-   "pub": 1793574395711,
-   "ed": 1793578258469,
-   "texto": "`[ CUARTOS ]`\n⌞MAJIZTRAL 🇨🇴⌝ 🆚 ⌞CHOP🇭🇳⌝\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞KUDE🇦🇷⌝\n⌞CHOP⌝ 🆚 ⌞LUIS⌝\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞MATTHIAS 🇻🇪⌝\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞CHOP🇭🇳⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "MAJIZTRAL 🇨🇴",
-      "CHOP🇭🇳"
-     ],
-     "CHOP🇭🇳",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MATTHIAS 🇻🇪",
-      "CARLOS🇪🇨"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MARTÍNEZ 🇺🇾",
-      "KUDE🇦🇷"
-     ],
-     "MARTÍNEZ 🇺🇾",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "CHOP",
-      "LUIS"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MARTÍNEZ 🇺🇾",
-      "MATTHIAS 🇻🇪"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MATTHIAS 🇻🇪",
-      "CHOP🇭🇳"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1566627532865011807": {
    "id": "1566627532865011807",
    "sv": "[FFA] Freestyle For All 👾",
