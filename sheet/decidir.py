@@ -889,6 +889,15 @@ def _cuenta_de_uno(p, eventos, sin_apodo=False):
             cand = _parecidos_de_lista(k, _num_evento(p), eventos, parecidos)
             if len(cand) == 1:
                 return cand, 'llamada_parecido'
+    # 🪪🎙️ EL MICRÓFONO QUE SOBRA (22/11/2026, Dlx: «Sí, constrúyelo»): UNA sola cuenta con el micrófono abierto en el
+    # lado de este nombre, en `MIC_BATALLAS` batallas distintas o más, y que no se vio en el lado de nadie más (un host
+    # que habla aparecería en varios). Antes que el apodo: es quien peleó. Ver `_en_mic()`
+    if len(ev) > 1:
+        por, solo = _de_mic(p['detalle'], ev[1])
+        if len(por) == 1:
+            did = next(iter(por))
+            if did in solo and len(por[did]) >= MIC_BATALLAS:
+                return [did], 'microfono'
     if sin_apodo:
         return [], 'Discord'
     if len(k) < 3:
@@ -1142,6 +1151,73 @@ def _en_llamada(nombre, num):
     return pista, [por_id[d] for d, _ in cuales if d in por_id]
 
 
+#: 🪪🎙️ en cuántas batallas distintas tiene que verse la misma cuenta con el micrófono abierto, en el lado de ese
+#: nombre, para darla por buena sola (`_cuenta_de_uno()`); con menos, es una pista
+MIC_BATALLAS = 2
+
+
+def _mic():
+    """`[(sv, lado, did, llave, batalla, t)]`: en cada batalla del bot en vivo con un lado sin cuenta conocida, el
+    micrófono abierto que no era de nadie de la llave (`pistasMic()` de bot/avisos.js, desde el 22/11/2026). Del objeto,
+    con la clave del ciclo; sin red o sin clave, `[]`."""
+    if 'mic' not in _DATOS:
+        _DATOS['mic'] = []
+        if not SIN_RED:
+            try:
+                sys.path.append(os.path.join(BASE, 'bot'))
+                import requests
+                import fotos as F
+                import clave_ciclo as CC
+                from alertar import WORKER
+                tok = F.env('DISCORD_TOKEN', obligatorio=False)
+                if tok:
+                    r = requests.get(WORKER + '/avisos/mic-ciclo', headers={'x-lg-ciclo': CC.clave(tok)}, timeout=25)
+                    if r.status_code == 200:
+                        _DATOS['mic'] = [tuple(f) for f in (r.json() or {}).get('filas') or [] if len(f) >= 6]
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ no pude leer los micrófonos: %s' % str(e)[:60])
+    return _DATOS['mic']
+
+
+def _de_mic(nombre, sv):
+    """`({discord_id: {batallas}}, exclusivos)`: qué cuentas tenían el micrófono abierto en el lado de ese nombre, en
+    los eventos de ese servidor, y en cuántas batallas distintas. `exclusivos`: las que no se vieron nunca en el lado de
+    OTRO nombre (un host que habla en todas las batallas aparecería en varios)."""
+    k = norm(_sin_bandera(nombre))
+    if len(k) < 2 or not sv:
+        return {}, set()
+    por, nombres = {}, {}
+    for f in _mic():
+        if str(f[0]).upper() != str(sv).upper():
+            continue
+        kn = norm(_sin_bandera(f[1]))
+        nombres.setdefault(str(f[2]), set()).add(kn)
+        if kn == k:
+            por.setdefault(str(f[2]), set()).add('%s|%s' % (f[3], f[4]))
+    return por, {d for d in por if nombres.get(d) == {k}}
+
+
+def _en_mic(nombre, num, eventos=None):
+    """`(pista, [nombres de la Lista])`: de quién era el micrófono abierto en el lado de ese nombre mientras peleaba.
+
+    🔑 Dlx, 22/11/2026: *«since now the bot is present during events can it help detecting who is who as well?»* y
+    *«Sí, constrúyelo»*. Durante una batalla sólo los que pelean tienen el micrófono abierto (medido el 19/11 en la
+    llamada de Cypherhood): si un lado tiene cuenta conocida y el otro no, el micrófono que sobra es el del otro."""
+    ev = (eventos if eventos is not None else (_DATOS.get('eventos') or {})).get(str(num or ''))
+    if not ev or len(ev) < 2:
+        return '', []
+    por, solo = _de_mic(nombre, ev[1])
+    if not por:
+        return '', []
+    por_id = _lista_por_id()
+    quienes = ['%s (%d batalla%s%s)' % (
+        ('%s, de la Lista' % por_id[d]) if d in por_id else (_dueno_de_cuenta(d) or 'una cuenta fuera de la Lista'),
+        len(b), '' if len(b) == 1 else 's', '' if d in solo else '; también en el lado de otro nombre')
+        for d, b in sorted(por.items(), key=lambda x: -len(x[1]))[:3]]
+    pista = '🎙️ Con el micrófono abierto en su batalla, en %s: %s' % (ev[1], _y(quienes))
+    return pista, [por_id[d] for d in por if d in por_id]
+
+
 #: un nombre de hasta tantas letras es «corto»: se parece a demasiada gente
 CORTO = 4
 #: cuántos se resuelven solos por corrida, como mucho
@@ -1270,6 +1346,7 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
                   'llave': 'la llave lo escribe con su mención',
                   'llamada': 'estaba en la llamada del evento con ese nombre',
                   'llamada_parecido': 'estaba en la llamada del evento con un nombre parecido',
+                  'microfono': 'tenía el micrófono abierto en su lado de la batalla, en %d batallas' % MIC_BATALLAS,
                   'Discord_servidor': 'la única cuenta con ese nombre en el servidor del evento'}.get(
                       fuente, 'la misma cuenta de Discord')
         real = por_id.get(did)
@@ -3761,6 +3838,7 @@ def _pistas(p):
                 ' y %d más' % _mas if _mas else ''))
         out.append(_posibles(p['detalle']))
         out.append(_en_llamada(p['detalle'], _num_evento(p))[0])
+        out.append(_en_mic(p['detalle'], _num_evento(p))[0])
         out.append(_termino(p['detalle'], _num_evento(p)))
         out += _peleas(p['detalle'], _num_evento(p))
     elif t == 'Batalla sin ganador':
@@ -3960,6 +4038,8 @@ def _pregunta(p):
         # 🎙️ y quien estaba en la llamada con ese nombre, si está en la Lista
         ll = [x for x in _en_llamada(det, _num_evento(p))[1]
               if norm(x) not in {norm(s) for s in dc + sug}]
+        # 🪪🎙️ y de quién era el micrófono abierto en su batalla (22/11/2026), si está en la Lista: va primero
+        ll = [x for x in _en_mic(det, _num_evento(p))[1] if norm(x) not in {norm(s) for s in dc + sug + ll}] + ll
         # 🔎 y las cuentas que se buscaron para ese nombre (Dlx, 04/10/2026, «4. Ok»): elegir una lo carga con ella
         cuentas = [_op_cuenta(c) for c in _cuentas_posibles(det) if c.get('usuario')]
         # 🔑 R17 (13/10/2026): PRIMERO LA CUENTA QUE SE ANOTÓ ASÍ PARA ESE EVENTO. «TRRR» lo escribió la cuenta de BNA y
@@ -6244,6 +6324,24 @@ def _self_check():
             # que ya está en la Lista se resuelve solo, como alias
             ok(por_discord(qs, {}, ev4, dry=True) == {qs[0]['id']},
                'la llamada resuelve sola: «MOTERA» es alias de Jult, que estaba en la llamada con ese nombre')
+            # 🪪🎙️ el micrófono que sobra (22/11/2026): Jult (cuenta «2») peleó como «PEPE» con el micrófono abierto
+            _DATOS['mic'] = [('FFA', 'PEPE 🇻🇪', '2', 'L1', 'Octavos:0', t0)]
+            qm = armar([(97, {'Tipo': nd, 'Detalle': 'PEPE 🇻🇪', 'Origen': 'evento #371'})], ev4)
+            ok(_cuenta_de(qm[0], ev4)[1] != 'microfono' and 'Con el micrófono abierto' in qm[0]['pistas']
+               and 'Es Jult' in qm[0]['opciones'],
+               '🎙️ una sola batalla con su micrófono: pista y opción, no se resuelve sola')
+            _DATOS['mic'].append(('FFA', 'PEPE', '2', 'L2', 'Cuartos:1', t0))
+            qm = armar([(98, {'Tipo': nd, 'Detalle': 'PEPE 🇻🇪', 'Origen': 'evento #371'})], ev4)
+            ok(_cuenta_de(qm[0], ev4) == (['2'], 'microfono') and por_discord(qm, {}, ev4, dry=True) == {qm[0]['id']},
+               '🎙️ en dos batallas, la misma cuenta y sólo en el lado de ese nombre: es Jult, solo')
+            _DATOS['mic'].append(('FFA', 'OTRO', '2', 'L3', 'Octavos:2', t0))
+            qm = armar([(99, {'Tipo': nd, 'Detalle': 'PEPE 🇻🇪', 'Origen': 'evento #371'})], ev4)
+            ok(_cuenta_de(qm[0], ev4)[1] != 'microfono',
+               '🎙️ si esa cuenta también se vio en el lado de otro nombre (un host), no se resuelve sola')
+            _DATOS['mic'] = [('FFA', 'PEPE', '2', 'L1', 'Octavos:0', t0), ('FFA', 'PEPE', '9', 'L2', 'Cuartos:1', t0)]
+            qm = armar([(100, {'Tipo': nd, 'Detalle': 'PEPE 🇻🇪', 'Origen': 'evento #371'})], ev4)
+            ok(_cuenta_de(qm[0], ev4)[1] != 'microfono', '🎙️ dos cuentas distintas para el mismo nombre: no elige')
+            _DATOS['mic'] = []
             _DATOS['llamada']['FFA']['5'] = {'n': ['Motera'], 'c': ['🎤'], 't': [t0 + 900000]}
             qs = armar([(91, {'Tipo': nd, 'Detalle': 'MOTERA 🇨🇴', 'Origen': 'evento #371'})], ev4)
             ok(por_discord(qs, {}, ev4, dry=True) == set(),

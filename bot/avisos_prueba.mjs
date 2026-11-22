@@ -2633,6 +2633,25 @@ const ok = (cond, que, det) => {
 }
 
 // 🎙️ EL CRUCE QUE SE JUEGA DE VERDAD, POR LOS MICRÓFONOS (19/11/2026, Dlx: «arregla lo del orden de los cruces»). Esa noche
+// 🪪🎙️ QUIÉN ES EL LADO DESCONOCIDO, POR SU MICRÓFONO (22/11/2026): `pistasMic()`
+{
+  console.log('\n🪪 el lado sin cuenta de una batalla, por el micrófono que sobra\n');
+  const g = { 'Ana': [{ id: '700000000000000001' }], 'Bea': [{ id: '' }], 'Cami + Dora': [{ id: '' }, { id: '' }] };
+  const gente = (l) => g[l] || [];
+  const deb = (lados) => ({ porVoz: 'debil', r: 'Octavos', i: 0, lados });
+  const voz = (ab) => ({ ab, en: ab });
+  const P = A.pistasMic;
+  const r1 = P(deb(['Ana', 'Bea']), voz(['700000000000000001', '700000000000000009']), gente);
+  ok(r1.length === 1 && r1[0].lado === 'Bea' && r1[0].did === '700000000000000009', 'el micrófono que sobra es el del lado sin cuenta');
+  ok(!P(deb(['Ana', 'Bea']), voz(['700000000000000001', '700000000000000009', '700000000000000008']), gente).length,
+    'con dos que sobran (el host también habla), no se dice nada');
+  ok(!P(deb(['Ana', 'Bea']), voz(['700000000000000001']), gente).length, 'sin ninguno que sobre, nada');
+  ok(!P(deb(['Ana', 'Cami + Dora']), voz(['700000000000000001', '700000000000000009']), gente).length,
+    'un equipo sin cuentas: no se sabe de cuál de los dos es');
+  ok(!P(Object.assign(deb(['Ana', 'Bea']), { porVoz: 'fuerte' }), voz(['700000000000000001', '700000000000000009']), gente).length
+    && !P(null, voz([]), gente).length, 'sólo con la batalla «débil» (un lado sin cuenta)');
+}
+
 // Cypherhood jugó los Octavos salteados: el bot anunció «Julda vs LRS» (LRS no estaba en la llamada) y «Dios vs Beneroo»
 // salió sólo con su resultado. La conexión de la llamada manda quién tiene el micrófono abierto (`vozVivo()`) y el bot
 // anuncia la batalla que se está jugando (`batallaVivo()`)

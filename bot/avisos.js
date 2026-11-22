@@ -1172,6 +1172,33 @@ export function batallaVivo(L, voz, idsDe, probada) {
     ? Object.assign({}, base, { esperaMic: true }) : base;
 }
 
+/**
+ * 🪪🎙️ QUIÉN ES EL LADO QUE NO SE CONOCE, POR SU MICRÓFONO (22/11/2026, Dlx: «since now the bot is present during
+ * events can it help detecting who is who as well?» y «Sí, constrúyelo»). Cuando `batallaVivo()` dice `'debil'` —todos
+ * los lados con el micrófono abierto menos UNO del que no se sabe la cuenta—, el micrófono abierto que no es de ningún
+ * lado conocido es el de ese lado. `[{lado, did}]`, o `[]` si no se puede decir sin adivinar:
+ * - el lado desconocido es UNA persona (un equipo no: ¿cuál de los dos?);
+ * - y sobra EXACTAMENTE un micrófono abierto (con dos, uno puede ser el host).
+ * Es una pista, no una respuesta: ✅ Decidir la usa (`sheet/decidir.py`, `_de_mic()`) y sólo la da por buena sola con
+ * dos batallas distintas y una cuenta que no se ve en el lado de nadie más.
+ * `gente(lado)` es `genteChat()` de ese lado.
+ */
+export function pistasMic(sel, voz, gente) {
+  if (!sel || sel.porVoz !== 'debil' || !voz || typeof gente !== 'function') return [];
+  const ab = new Set((voz.ab || []).map(String));
+  const conocidos = new Set();
+  const sin = [];
+  for (const l of sel.lados || []) {
+    const gs = [].concat(gente(l) || []);
+    const ids = gs.map((y) => String((y && y.id) || '')).filter((x) => /^\d{5,25}$/.test(x));
+    if (ids.length) ids.forEach((x) => conocidos.add(x));
+    else sin.push({ l, n: gs.length });
+  }
+  if (sin.length !== 1 || sin[0].n !== 1) return [];
+  const sobran = [...ab].filter((x) => /^\d{5,25}$/.test(x) && !conocidos.has(x));
+  return sobran.length === 1 ? [{ lado: String(sin[0].l), did: sobran[0] }] : [];
+}
+
 /** La batalla sin decidir que viene después de `bat` en el orden de la llave (dos lados o más), o `null`. */
 export function siguienteChat(L, bat) {
   let visto = false;
@@ -3866,6 +3893,8 @@ const RUTAS = {
   '/avisos/chats-ciclo': 'POST',
   // 🧪 y a quién se avisó y quién quedó sin aviso, para medir si sirve (con su clave)
   '/avisos/vuelve-ciclo': 'GET',
+  // 🪪🎙️ quién es el lado desconocido de una batalla, por su micrófono, para ✅ Decidir: con `claveCiclo()`. Ver `pistasMic()`
+  '/avisos/mic-ciclo': 'GET',
   // 🗳️ los veredictos en tiempo real (`bot/en_llamada.py --seguir`, con su clave): qué canales escuchar y lo que llegó
   '/avisos/veredictos-canales': 'GET',
   // 🗳️ y lo que guardó de cada mensaje, para el ciclo (`escuchar._con_el_vigia()`): el voto que el jurado ya editó a «.»
@@ -7992,6 +8021,11 @@ export async function rutaAvisos(req, env, ruta) {
     });
   }
   // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
+  if (ruta === '/avisos/mic-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/mic-ciclo');
+  }
   if (ruta === '/avisos/vuelve-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
@@ -9020,6 +9054,9 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS srv_gente (g TEXT NOT NULL, id TEXT NOT NULL, t INTEGER NOT NULL, ' +
         'PRIMARY KEY (g, id)) WITHOUT ROWID');
       this.sql.exec('CREATE INDEX IF NOT EXISTS srv_gente_id ON srv_gente (id)');
+      // 🪪🎙️ QUIÉN ES EL LADO DESCONOCIDO, POR SU MICRÓFONO (22/11/2026): ver `pistasMic()`. Una fila por batalla
+      this.sql.exec('CREATE TABLE IF NOT EXISTS mic_pista (sv TEXT NOT NULL, lado TEXT NOT NULL, did TEXT NOT NULL, ' +
+        'llave TEXT NOT NULL, bat TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (sv, lado, did, llave, bat)) WITHOUT ROWID');
       // 🔑 UN ERROR EN UNA LLAVE (28/09/2026): ver `reportar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
@@ -10017,6 +10054,12 @@ export class Avisos {
       if (ruta === '/pedidos-ciclo') return json(this.pedidosCiclo(), 200, 0);
       // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
       if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
+      if (ruta === '/mic-ciclo') {
+        // las de la temporada: 120 días alcanzan y la tabla no crece sin fin
+        this.sql.exec('DELETE FROM mic_pista WHERE t < ?', Date.now() - 120 * DIA_MS);
+        return json({ filas: this.sql.exec('SELECT sv, lado, did, llave, bat, t FROM mic_pista').toArray()
+          .map((f) => [f.sv, f.lado, f.did, f.llave, f.bat, f.t]) }, 200, 0);
+      }
       if (ruta === '/veredictos-canales') return json({ lista: (this.leer('canales') || {}).veredictos || [] }, 200, 0);
       // 🗳️ CADA VERSIÓN de cada mensaje de #veredictos de las últimas 12 h (Dlx, 26/10/2026: «pensé que ya habías
       // añadido una función para que el bot detecte esos veredictos»): la escucha en vivo las guardaba, pero el ciclo leía
@@ -11094,6 +11137,13 @@ export class Avisos {
       const voz = fresca ? this.vozDe(b.g, ahora) : null;
       const sel = fresca ? batallaVivo(L, voz, (l) => genteChat(l, buscar, dc.tabla, opc.ids).map((y) => y.id).filter(Boolean),
         !!hechos.voz) : null;
+      // 🪪 y si un lado no tiene cuenta conocida, de quién es el micrófono que sobra (`pistasMic()`): para ✅ Decidir
+      for (const x of pistasMic(sel, voz, (l) => genteChat(l, buscar, dc.tabla, opc.ids))) {
+        try {
+          this.sql.exec('INSERT OR IGNORE INTO mic_pista (sv, lado, did, llave, bat, t) VALUES (?, ?, ?, ?, ?, ?)',
+            String(b.sv || ''), x.lado.slice(0, 80), x.did, String(L.id || ''), sel.r + ':' + sel.i, ahora);
+        } catch (e) { /* una pista menos */ }
+      }
       if (sel && sel.porVoz === 'fuerte' && !hechos.voz) {
         this.sql.exec("INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, 'voz', '', '', ?)", L.id, canal, ahora);
         hechos.voz = { m: 'voz', msg: '', texto: '' };
