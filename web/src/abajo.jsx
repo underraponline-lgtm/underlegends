@@ -1263,8 +1263,13 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   useEffect(() => { if (idAct) onVisto(idAct); }, [idAct, onVisto]);
   const beat = ((g && g.slides.find((x) => x.id === idAct)) || {}).beat || '';
   useEffect(() => { if (sonido && beat) BEAT.tocar(beat, gid); else BEAT.parar(); }, [beat, sonido, gid]);
-  // al cerrar, el audio se apaga (entre historias queda encendido: ver la tanda 3 de beats.js)
-  useEffect(() => () => BEAT.apagar(), []);
+  // 🍏 al abrir, el audio queda listo para el toque que abrió (tanda 4 de beats.js), si alguna historia trae beat; al
+  // cerrar se apaga (entre historias queda encendido: tanda 3)
+  useEffect(() => {
+    if (grupos.some((x) => x.slides.some((y) => y.beat))) BEAT.visorAbierto();
+    return () => BEAT.apagar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // ⏳ el reloj lee estos dos sin volver a arrancar: silenciar a mitad de una historia no la vuelve a cero
   const sonidoR = useRef(sonido);
   sonidoR.current = sonido;

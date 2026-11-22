@@ -35,6 +35,18 @@
 //     sólo los bytes, que no piden audio encendido. Con «ahorro de datos», no se adelanta nada
 //   · entre una historia con beat y una sin, el audio se queda encendido y callado (`parar()`), y se apaga recién al cerrar
 //     el visor (`apagar()`): volver a encenderlo sin un toque es lo que el iPhone puede no dejar
+//
+// 🍏 TANDA 4, EL IPHONE (22/11/2026). Dlx: *«en mi iphone no escucho el beat o a veces no… mi iphone tiene volumen pero no
+// escucho nada»*. Dos causas, las dos sólo del iPhone:
+//   · EL INTERRUPTOR DE SILENCIO. En iOS el audio de WebAudio es de la categoría «ambiente», y el modo silencio lo calla con
+//     el volumen arriba (un video no: es «reproducción»). `prender()` pide «reproducción» mientras el visor está abierto
+//     (`navigator.audioSession`, iOS 17 en adelante), como Instagram, y al cerrar vuelve a «auto». En un iOS más viejo hace
+//     lo mismo un <audio> mudo en bucle (`/beats/silencio.wav`: de este sitio, que la CSP no deja `data:` en audio)
+//   · EL TOQUE. En un celular, APOYAR el dedo no cuenta como gesto para encender audio: cuenta SOLTARLO o el click. El visor
+//     lo despertaba al apoyar (`pointerdown`), así que con el audio dormido —al cerrar el visor se apaga, y bloquear el
+//     teléfono lo deja «interrumpido»— no volvía a encenderse: la historia esperaba sus 4 s y seguía muda. Ahora lo prende
+//     cualquier toque de la página mientras el visor está abierto, al soltar (`window`, abajo), también el que lo abre:
+//     React termina de abrir el visor antes de que ese click llegue a `window`, así que ya hay qué prender
 
 import LISTA from './beats_lista.json';
 
@@ -55,10 +67,49 @@ let sonando = '';
 //: el visor está abierto: el audio se queda encendido aunque la historia de ahora no traiga beat (lo apaga `apagar()`)
 let encendido = false;
 
+// 🍏 (tanda 4) el iPhone, y el iPad que se hace pasar por Mac
+const IOS = typeof navigator !== 'undefined' && (/iP(hone|ad|od)/.test(navigator.userAgent || '') ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
+let mudoHtml = null;
+/** La categoría del audio de la página en iOS 17+: 'playback' suena con el modo silencio; 'auto' es la de siempre */
+function sesion(tipo) {
+  try { if (typeof navigator !== 'undefined' && navigator.audioSession) navigator.audioSession.type = tipo; } catch (e) { /* sin la API */ }
+}
+/** 🍏 Prende el audio: tiene que pasar ADENTRO de un toque (al soltar el dedo o en un click). Ver la tanda 4, arriba */
+export function prender() {
+  if (mudo()) return;
+  sesion('playback');
+  if (!abrir()) return;
+  if (ctx.state !== 'running' && ctx.state !== 'closed' && !document.hidden) ctx.resume().catch(() => {});
+  if (IOS && !(typeof navigator !== 'undefined' && navigator.audioSession)) {
+    try {
+      if (!mudoHtml) {
+        mudoHtml = new Audio('/beats/silencio.wav');
+        mudoHtml.loop = true;
+        mudoHtml.preload = 'auto';
+        mudoHtml.setAttribute('x-webkit-airplay', 'deny');
+      }
+      const pr = mudoHtml.play();
+      if (pr && pr.catch) pr.catch(() => {});
+    } catch (e) { /* sin <audio> */ }
+  }
+}
+function soltarSesion() {
+  sesion('auto');
+  if (mudoHtml) { try { mudoHtml.pause(); } catch (e) { /* ya estaba */ } }
+}
+// cada toque de la página, al soltar, prende el audio si el visor lo está usando (y no hace nada si no)
+if (typeof window !== 'undefined') {
+  ['pointerup', 'touchend', 'click', 'keydown'].forEach((ev) => window.addEventListener(ev, () => { if (quiere || encendido) prender(); }, { passive: true }));
+  // (para medirlo desde afuera: en qué estado está el audio, qué pide la historia y qué categoría tiene la página)
+  window.__beat = () => ({ audio: ctx ? ctx.state : '', quiere, sonando, encendido, sesion: (navigator.audioSession || {}).type || '',
+    mudoHtml: mudoHtml ? (mudoHtml.paused ? 'quieto' : 'sonando') : '' });
+}
+
 export const mudo = () => { try { return localStorage.getItem(MUDO) === '0'; } catch (e) { return false; } };
 export function ponerMudo(v) {
   try { localStorage.setItem(MUDO, v ? '0' : '1'); } catch (e) { /* sin guardar: vale para esta visita */ }
-  if (v) parar();
+  if (v) { parar(); soltarSesion(); }
 }
 
 function abrir() {
@@ -87,13 +138,13 @@ function abrir() {
   return ctx;
 }
 
-/** Despierta el audio desde un gesto (el iPhone lo pide adentro del toque). */
+/** Despierta el audio desde un gesto (el iPhone lo pide adentro del toque). También el «interrumpido» de iOS */
 export function despertar() {
-  if (ctx && ctx.state === 'suspended' && quiere) ctx.resume().catch(() => {});
+  if (quiere || encendido) prender();
 }
 /** Mantener apretada la historia: el beat espera con ella. */
 export function pausar() { if (ctx && quiere) ctx.suspend().catch(() => {}); }
-export function seguir() { if (ctx && quiere && !document.hidden) ctx.resume().catch(() => {}); }
+export function seguir() { if (ctx && quiere && !document.hidden && ctx.state !== 'running' && ctx.state !== 'closed') ctx.resume().catch(() => {}); }
 
 // ── los instrumentos ──
 const env = (g, t, pico, cae) => {
@@ -416,7 +467,7 @@ export function tocar(estilo, semilla) {
   if (!abrir()) return;
   quiere = estilo;
   encendido = true;
-  if (ctx.state === 'suspended' && !document.hidden) ctx.resume().catch(() => {});
+  if (ctx.state !== 'running' && ctx.state !== 'closed' && !document.hidden) ctx.resume().catch(() => {});
   const xs = lista(estilo);
   if (!xs.length) { soltarReal(CRUCE); avisar(null); sintesis(estilo); return; }
   // el mismo estilo que ya suena: sigue, no vuelve a arrancar
@@ -435,9 +486,15 @@ export function parar() {
   avisar(null);
 }
 
+/** 🍏 Al abrir el visor (tanda 4): el audio se va a usar aunque la primera historia no traiga beat. Así el MISMO toque
+ * que lo abre lo prende (el oyente de `window`), y la historia con beat que llega sola después ya lo encuentra prendido:
+ * antes se prendía recién ahí, sin toque, y el iPhone lo dejaba dormido */
+export function visorAbierto() { encendido = true; }
+
 /** Al cerrar el visor: para y apaga el audio, que no gaste nada con la página quieta. */
 export function apagar() {
   parar();
   encendido = false;
+  soltarSesion();
   setTimeout(() => { if (!quiere && ctx) ctx.suspend().catch(() => {}); }, 600);
 }
