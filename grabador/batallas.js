@@ -131,7 +131,7 @@ export function ubicarTodas(llaves, habla, durS) {
         const u = ubicar(lados, habla, durS);
         if (!u) continue;
         out.push({ llave: L.id, evento: L.nombre || '', r: R.r, gano: b.gano || '', desde: u.desde, hasta: u.hasta, ids: lados.flat(),
-          nombres: (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + ')) });
+          lados, nombres: (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + ')) });
       }
     }
   }
@@ -150,6 +150,91 @@ export function ubicarTodas(llaves, habla, durS) {
     b.desde = corte;
   }
   return out;
+}
+
+// 🎭 EL GUION DE UNA BATALLA (22/11/2026; Dlx, viendo el short de siluetas: «hay que detectar quiénes realmente se están
+// enfrentando y están rapeando, para que el bot sepa quién es quién… cuándo mover las siluetas o si es el público»).
+// Una vez ubicada la batalla, cada voz de la llamada es una de tres cosas:
+//   · un TURNO: uno de los MCs de esa batalla rapeando seguido (`TURNO_MIN_S` o más, con huecos de respirar de hasta
+//     `TURNO_HUECO_S`). Es el foco: su silueta se mueve y su carta brilla;
+//   · el RIVAL que contesta, se ríe o dice «uff» en el turno del otro: está en `voz` pero no es turno, así que no le roba
+//     el foco al que rapea;
+//   · alguien que NO pelea: si son ráfagas cortas (`REACCION_MAX_S` o menos) es el PÚBLICO reaccionando, y las ráfagas a
+//     menos de `REACCION_JUNTAR_S` de la primera son una sola reacción, con cuántas personas fueron; si habla largo es el
+//     presentador (`otros`), que no mueve a nadie.
+// Todo en segundos desde el principio del clip de la batalla, con una décima.
+export const TURNO_HUECO_S = 2.5;
+export const TURNO_MIN_S = 6;
+export const TURNO_LLENO = 0.4;
+export const REACCION_MAX_S = 4;
+export const REACCION_JUNTAR_S = 1.5;
+
+const decima = (x) => Math.round(x * 10) / 10;
+
+/** Los tramos `[ms, ms]` dentro de [desde, hasta] (segundos), pasados a segundos desde `desde`. */
+function recortar(tramos, desde, hasta) {
+  return (tramos || []).map(([a, b]) => [Math.max(a / 1000, desde), Math.min(b / 1000, hasta)])
+    .filter(([a, b]) => b > a).map(([a, b]) => [a - desde, b - desde]);
+}
+
+/** Junta los tramos que están a `hueco` segundos o menos. Cada uno lleva cuánto tiene de voz de verdad (`[a, b, voz]`). */
+function unir(tramos, hueco) {
+  const out = [];
+  for (const [a, b] of [...tramos].sort((x, y) => x[0] - y[0])) {
+    const u = out[out.length - 1];
+    if (u && a - u[1] <= hueco) { u[1] = Math.max(u[1], b); u[2] += b - a; } else out.push([a, b, b - a]);
+  }
+  return out;
+}
+
+/**
+ * Quién es quién en una batalla de `ubicarTodas()`: `{dur, lados: [{n, ids}], voz, turnos: [{lado, i, f}],
+ * publico: [{t, n}], otros}`. `habla` es el `Map(id → tramos)` de toda la grabación (sólo personas: los bots no entran).
+ */
+export function guion(b, habla) {
+  const desde = b.desde, hasta = b.hasta;
+  const lados = (b.lados || []).map((l) => (l || []).map(String));
+  const enBatalla = new Set(lados.flat());
+  const voz = lados.map((ids) => unir(ids.flatMap((id) => recortar(habla.get(id), desde, hasta)), 0.3).map(([a, z]) => [a, z]));
+  // los turnos de cada lado, y si dos se pisan (uno arranca antes de que el otro termine), el foco pasa al que arranca
+  let turnos = [];
+  voz.forEach((tr, lado) => {
+    for (const [a, z, v] of unir(tr, TURNO_HUECO_S)) if (z - a >= TURNO_MIN_S && v / (z - a) >= TURNO_LLENO) turnos.push({ lado, i: a, f: z });
+  });
+  turnos.sort((x, y) => x.i - y.i);
+  for (let k = 1; k < turnos.length; k++) if (turnos[k].i < turnos[k - 1].f) turnos[k - 1].f = turnos[k].i;
+  turnos = turnos.filter((t) => t.f - t.i >= 1);
+  // los que no pelean: ráfagas cortas = público; largo = presentador
+  const rafagas = [];
+  const otros = [];
+  for (const [id, tr] of habla) {
+    if (enBatalla.has(String(id))) continue;
+    for (const [a, z] of unir(recortar(tr, desde, hasta), 1.0)) {
+      if (z - a <= REACCION_MAX_S) rafagas.push([a, id]);
+      else otros.push([a, z]);
+    }
+  }
+  rafagas.sort((x, y) => x[0] - y[0]);
+  const publico = [];
+  for (const [t, id] of rafagas) {
+    const u = publico[publico.length - 1];
+    if (u && t - u.t <= REACCION_JUNTAR_S) u.quien.add(id); else publico.push({ t, quien: new Set([id]) });
+  }
+  return {
+    v: 1, dur: decima(hasta - desde),
+    lados: lados.map((ids, k) => ({ n: (b.nombres || [])[k] || '', ids })),
+    voz: voz.map((tr) => tr.map(([a, z]) => [decima(a), decima(z)])),
+    turnos: turnos.map((t) => ({ lado: t.lado, i: decima(t.i), f: decima(t.f) })),
+    publico: publico.map((p) => ({ t: decima(p.t), n: p.quien.size })),
+    otros: otros.sort((x, y) => x[0] - y[0]).map(([a, z]) => [decima(a), decima(z)]),
+  };
+}
+
+/** Una línea para el log: quién tuvo cuántos turnos, cuántas reacciones y cuánto habló el presentador. */
+export function resumenGuion(g) {
+  const t = g.lados.map((l, k) => `${l.n || '?'} ${g.turnos.filter((x) => x.lado === k).length}`).join(' · ');
+  const pres = Math.round(g.otros.reduce((s, [a, z]) => s + z - a, 0));
+  return `turnos ${t} · ${g.publico.length} reacciones del público` + (pres ? ` · presentador ${pres} s` : '');
 }
 
 /** «1:02:05» o «12:31». */

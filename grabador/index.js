@@ -53,7 +53,7 @@ import { mezclar, partir, duracion, sonoridad, ganancia, cortar } from './mezcla
 import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 import { PruebaMicro } from './microfono.js';
 import { LlamadasVivo, claveCiclo } from './vivo.js';
-import { Habla, ubicarTodas, mmss, nombreClip } from './batallas.js';
+import { Habla, ubicarTodas, guion, resumenGuion, mmss, nombreClip } from './batallas.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
 const num = (s, d) => (Number.isFinite(Number(s)) && String(s).trim() !== '' ? Number(s) : d);
@@ -446,6 +446,12 @@ class Grabacion {
     const bs = ubicarTodas(d.llaves, this.habla.t, seg);
     anotar(`⚔️ batallas: ${bs.length} ubicadas de ${total} en la llave`);
     if (!bs.length) return;
+    // 🎭 quién es quién en cada una (el foco del short): por ahora al log, para comprobarlo en un evento de verdad
+    for (const b of bs) {
+      try { b.guion = guion(b, this.habla.t); anotar(`🎭 ${b.nombres.join(' vs ')}: ${resumenGuion(b.guion)}`); } catch (e) {
+        anotar('⚠️ guion:', String(e.message || e).slice(0, 100));
+      }
+    }
     const lineas = bs.map((b) => `\`${mmss(b.desde)}\` ${b.r} · ${b.nombres.join(' vs ')}`);
     let texto = `⚔️ **Las batallas**, en minutos desde que empezó la grabación (aprox.: salen de quién habló cuándo)`
       + ` · ${bs.length} de ${total}`;

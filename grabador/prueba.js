@@ -366,6 +366,29 @@ console.log('\n⚔️ cada batalla en la grabación\n');
   ok(dos.length === 2 && dos[0].hasta <= dos[1].desde && dos[0].hasta >= 330 && dos[0].hasta <= 370 && dos[1].desde >= 330
     && dos[1].desde <= 370 && dos[0].desde <= 100 && dos[1].hasta >= 600,
   `un MC que pelea dos seguidas: no se pisan y el corte cae entre las dos (${dos.map((b) => B.mmss(b.desde) + '–' + B.mmss(b.hasta)).join(', ')})`);
+  // 🎭 el guion: quién tiene el turno, el rival que contesta, el público y el presentador
+  const h3 = new B.Habla();
+  const habla3 = (id, a, b, respira = 0) => {
+    for (let ms = a * 1000; ms < b * 1000; ms += 20) if (!respira || (ms / 1000 - a) % 4 < 4 - respira) h3.agregar(id, ms);
+  };
+  habla3('ana', 1000, 1060, 0.6);           // Ana rapea un minuto, respirando cada 4 s
+  habla3('bea', 1020, 1021.2);              // Bea le contesta en el medio: no es su turno
+  habla3('host', 1061, 1070);               // el presentador: «¡tiempo! turno de Bea»
+  habla3('bea', 1072, 1130, 0.6);           // Bea rapea
+  habla3('cami', 1080, 1081); habla3('dora', 1080.5, 1082); habla3('eva', 1081, 1081.8);   // tres gritan juntos
+  habla3('cami', 1100, 1101);               // uno solo, más tarde
+  const g3 = B.guion({ desde: 995, hasta: 1135, lados: [['ana'], ['bea']], nombres: ['Ana', 'Bea'] }, h3.t);
+  const tu = g3.turnos.map((t) => `${t.lado}:${Math.round(t.i)}-${Math.round(t.f)}`).join(' ');
+  ok(g3.turnos.length === 2 && g3.turnos[0].lado === 0 && Math.abs(g3.turnos[0].i - 5) < 0.5 && Math.abs(g3.turnos[0].f - 65) < 0.8
+    && g3.turnos[1].lado === 1 && Math.abs(g3.turnos[1].i - 77) < 0.5 && Math.abs(g3.turnos[1].f - 135) < 0.8,
+  `dos turnos, uno por lado, con las respiraciones adentro (${tu})`);
+  ok(g3.voz[1].some(([a]) => Math.abs(a - 25) < 0.5) && !g3.turnos.some((t) => t.lado === 1 && t.i < 70),
+    'lo que el rival dice en el turno del otro queda en su voz, pero no le roba el turno');
+  ok(g3.publico.length === 2 && g3.publico[0].n === 3 && Math.abs(g3.publico[0].t - 85) < 0.2 && g3.publico[1].n === 1,
+    `el público: tres que gritan juntos son una reacción de 3, y el de después otra (${JSON.stringify(g3.publico)})`);
+  ok(g3.otros.length === 1 && Math.abs(g3.otros[0][0] - 66) < 0.2 && Math.abs(g3.otros[0][1] - 75) < 0.2,
+    'el que habla largo sin pelear es el presentador: no es turno ni reacción');
+  ok(B.resumenGuion(g3) === 'turnos Ana 1 · Bea 1 · 2 reacciones del público · presentador 9 s', 'el resumen del log: ' + B.resumenGuion(g3));
   ok(B.mmss(65) === '1:05' && B.mmss(3725) === '1:02:05' && B.nombreClip({ r: 'Cuartos', nombres: ['Ánà 🇦🇷', 'Bea + Ñoño'] })
     === 'cuartos-ana-vs-bea-nono.ogg', 'los minutos y el nombre del archivo, sin tildes ni símbolos');
   // el corte, con ffmpeg de verdad sobre 12 s de audio

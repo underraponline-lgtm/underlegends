@@ -1200,6 +1200,17 @@ def html_vs(v, d):
 #c .mf.a{left:0;width:660px;clip-path:polygon(0 0,656px 0,524px 100%%,0 100%%)}
 #c .mf.b{left:524px;right:0;clip-path:polygon(152px 0,100%% 0,100%% 100%%,20px 100%%)}
 """ % ca
+    # 🎬 QUIÉN RAPEA, EN LOS SHORTS (22/11/2026; Dlx: «que la carta tenga un glow up para identificar quién está rapeando»):
+    # con `glow` ('a' o 'b') esa carta brilla —un resplandor que sigue su forma, no una caja— y crece un poco, y la otra se
+    # apaga. Lo pide el short de cada batalla en tres versiones (sin brillo, a y b) y las va cambiando según quién habla. Sin
+    # `glow`, la imagen es la de siempre: el VS del bot en vivo no cambia
+    if v.get('glow') in ('a', 'b'):
+        g = v['glow']
+        otro = 'b' if g == 'a' else 'a'
+        col = a_col if g == 'a' else b_col
+        css += ('#c .ld.%s{filter:drop-shadow(0 0 10px %s) drop-shadow(0 0 26px %s) drop-shadow(0 0 54px %s) brightness(1.08);'
+                'transform:rotate(%s) scale(1.06);z-index:15}'
+                '#c .ld.%s{filter:brightness(.5) saturate(.6)}' % (g, col, col, col, '-3deg' if g == 'a' else '3deg', otro))
     return ("""<!doctype html><html><head><meta charset="utf-8"><style>%s%s%s</style></head><body><div id="c" class="f">
 %s%s
 %s%s%s
