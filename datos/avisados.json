@@ -56324,5 +56324,165 @@
    ]
   ],
   "v": 2
+ },
+ "676": {
+  "antes": {
+   "Choco": [
+    498,
+    438,
+    true
+   ],
+   "Dios": [
+    70,
+    85,
+    false
+   ],
+   "Dominick": [
+    47,
+    55,
+    false
+   ],
+   "Mark98": [
+    379,
+    277,
+    true
+   ],
+   "Miniboy": [
+    20,
+    20,
+    false
+   ],
+   "Mito": [
+    17,
+    17,
+    false
+   ],
+   "NXUZ": [
+    24,
+    25,
+    false
+   ],
+   "oriuz": [
+    311,
+    170,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "NXUZ",
+    "oriuz",
+    "NXUZ"
+   ],
+   [
+    "Dios",
+    "Teo",
+    "Dios"
+   ],
+   [
+    "Mito",
+    "Dominick",
+    "Mito"
+   ],
+   [
+    "Mark98",
+    "Choco",
+    "Mark98"
+   ],
+   [
+    "Mark98",
+    "Miniboy",
+    "Mark98"
+   ],
+   [
+    "Dios",
+    "NXUZ",
+    "Dios"
+   ],
+   [
+    "Mark98",
+    "Mito",
+    "Mark98"
+   ],
+   [
+    "Mark98",
+    "Dios",
+    "Mark98"
+   ],
+   [
+    "Mito",
+    "NXUZ",
+    "Mito"
+   ]
+  ],
+  "ev_antes": {
+   "Choco": 2,
+   "Dios": 15,
+   "Dominick": 48,
+   "Mark98": 5,
+   "Miniboy": 68,
+   "Mito": 49,
+   "NXUZ": 52,
+   "oriuz": 8
+  },
+  "fecha": "22/11",
+  "noche": true,
+  "nombre": "VERSO STYLE",
+  "num": 676,
+  "participantes": 9,
+  "sello": {
+   "Mark98": ""
+  },
+  "sv": "DDS",
+  "t": "2026-11-22T23:36:15Z",
+  "tabla": [
+   [
+    "Mark98",
+    "Campeón",
+    7500
+   ],
+   [
+    "Dios",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mito",
+    "Tercero",
+    4000
+   ],
+   [
+    "NXUZ",
+    "Cuarto",
+    3000
+   ],
+   [
+    "oriuz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Choco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

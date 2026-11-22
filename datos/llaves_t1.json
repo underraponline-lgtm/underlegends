@@ -27827,7 +27827,7 @@
        "Emily Family"
       ],
       "Liberia, Masino",
-      "triple (3 bandas, pasan 2); también pasa: Masino 🇨🇱"
+      "triple (3 bandas, pasan 2); también pasa: masino"
      ],
      [
       [
@@ -47543,7 +47543,7 @@
        "Under"
       ],
       "sh🇧🇿, Carlos, Lvel 🇻🇪, Tam, MCO",
-      "triple (5 bandas, pasan 4); también pasa: Lvel 🇻🇪 / tam🇻🇪 / MCO 🇦🇷"
+      "triple (5 bandas, pasan 4); también pasa: Lvel 🇻🇪 / tam🇻🇪 / Mco 🇦🇷"
      ],
      [
       [
@@ -56860,7 +56860,7 @@
        "Thaniel"
       ],
       "Gocho, PRAISERIZA",
-      "triple (3 bandas, pasan 2); también pasa: Rizas🇻🇪"
+      "triple (3 bandas, pasan 2); también pasa: rizas🇻🇪"
      ],
      [
       [
@@ -62246,7 +62246,7 @@
        "OG"
       ],
       "Erian, MCO",
-      "triple (3 bandas, pasan 2); también pasa: MCO 🇦🇷"
+      "triple (3 bandas, pasan 2); también pasa: Mco 🇦🇷"
      ],
      [
       [
@@ -62457,6 +62457,156 @@
   ],
   "ver": {
    "min": 98,
+   "v": 1
+  }
+ },
+ "676": {
+  "dia": "2026-11-22",
+  "escala": "8-15",
+  "fecha": "22/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1574197456017563830"
+  ],
+  "n": 676,
+  "nombre": "VERSO STYLE",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "oriuz"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Teo"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Dominick"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Mark98",
+       "Choco",
+       "Miniboy"
+      ],
+      "Mark98",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "NXUZ"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Mark98",
+       "Mito"
+      ],
+      "Mark98",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "NXUZ"
+      ],
+      "Mito",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mark98",
+       "Dios"
+      ],
+      "Mark98",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "Mark98",
+    "Campeón",
+    7500
+   ],
+   [
+    "Dios",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mito",
+    "Tercero",
+    4000
+   ],
+   [
+    "NXUZ",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Choco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "oriuz",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 35,
    "v": 1
   }
  }

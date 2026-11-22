@@ -125,6 +125,15 @@
 "temporada"
 ]
 },
+"mito": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "agus": {
 "rg": "S",
 "c": [
@@ -138,15 +147,6 @@
 "rg": "S",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"mito": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -430,7 +430,7 @@
 "temporada"
 ]
 },
-"lordviruzz": {
+"dominick": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -439,7 +439,7 @@
 "temporada"
 ]
 },
-"dominick": {
+"lordviruzz": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -633,6 +633,14 @@
 "rg": "C",
 "c": []
 },
+"dios": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "vilca": {
 "rg": "",
 "c": [
@@ -660,14 +668,6 @@
 },
 "mtz": {
 "rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"dios": {
-"rg": "",
 "c": [
 "competitivo",
 "servidor",
@@ -1056,16 +1056,16 @@
 "temporada"
 ]
 },
-"alexi": {
-"rg": "",
-"c": []
-},
 "abrahamh": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"alexi": {
+"rg": "",
+"c": []
 },
 "erik": {
 "rg": "",
@@ -1131,6 +1131,10 @@
 "servidor",
 "temporada"
 ]
+},
+"oriuz": {
+"rg": "",
+"c": []
 },
 "scot": {
 "rg": "",
@@ -1204,6 +1208,10 @@
 "rg": "",
 "c": []
 },
+"mark98": {
+"rg": "",
+"c": []
+},
 "pomberito": {
 "rg": "",
 "c": []
@@ -1214,10 +1222,6 @@
 "servidor",
 "temporada"
 ]
-},
-"oriuz": {
-"rg": "",
-"c": []
 },
 "andy": {
 "rg": "",
@@ -8307,6 +8311,75 @@
 "desde": 90
 }
 ]
+},
+"2026-11-22": {
+"tipo": "resnoche",
+"t": "2026-11-23T08:00:00Z",
+"dia": "2026-11-22",
+"eventos": 1,
+"part": 9,
+"campeones": [
+{
+"ev": "VERSO STYLE",
+"sv": "DDS",
+"ll": 676,
+"quien": [
+[
+"Mark98",
+"mark98"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Mark98",
+"k": "mark98",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Dios",
+"k": "dios",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "Mito",
+"k": "mito",
+"pts": 4000,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Choco",
+"k": "",
+"de": 498,
+"a": 419
+},
+{
+"n": "Mark98",
+"k": "mark98",
+"de": 379,
+"a": 311
+},
+{
+"n": "oriuz",
+"k": "oriuz",
+"de": 312,
+"a": 305
+}
+],
+"sorpresas": [
+{
+"n": "Mark98",
+"k": "mark98",
+"que": "primer",
+"ev": "VERSO STYLE",
+"desde": 379
+}
+]
 }
 },
 "extra": {
@@ -8471,7 +8544,7 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 0,
+"dios": 1,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,
@@ -8595,7 +8668,8 @@
 "beneroo": 0,
 "yeyox": 2,
 "magic": 0,
-"tho": 1
+"tho": 1,
+"mark98": 1
 },
 "sem": {
 "id": "2026-11-16",

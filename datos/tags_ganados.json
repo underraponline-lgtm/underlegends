@@ -9254,10 +9254,20 @@
  },
  "mark98": {
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795390965799
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
     1794532281126
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795390965799
    ]
   }
  },

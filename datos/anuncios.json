@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T23:25:28+00:00",
+ "cuando": "2026-11-22T23:37:02+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6930,6 +6930,35 @@
    "inscripciones_cuando": "2026-11-22T20:15:02"
   },
   {
+   "nombre": "COMPE 1V1",
+   "servidor": "DW",
+   "canal": "「🗓️」EVENTOS",
+   "msg_id": "1574206838000320566",
+   "cuando": "2026-11-22T23:35:57",
+   "canal_id": "1394905727729930241",
+   "guild_id": "1300152346189496330",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Geronimo",
+     "id": "897942226955563068"
+    }
+   ],
+   "autor_h": "9dbbad01fab207c3",
+   "cupos_texto": "8-12-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "EN LO QUE LLENEMOS 8 CUPOS",
+   "fecha": "",
+   "premios": "PUNTOS AL ASCENSO",
+   "staff": {},
+   "autor": "Geronimo",
+   "staff_cuentas": {},
+   "categoria_id": "1300152346537496623"
+  },
+  {
    "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS VOL 2",
    "servidor": "DW",
    "canal": "「🗓️」EVENTOS",
@@ -7657,6 +7686,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Dorado 🇵🇪",
+   "quien": "dorado123",
+   "discord_id": "940665101906759703",
+   "msg_id": "1574207027939516438",
+   "cuando": "2026-11-22T23:36:42"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Kourier 🇲🇽",
+   "quien": "simplee3",
+   "discord_id": "330866571297685505",
+   "msg_id": "1574207009148895294",
+   "cuando": "2026-11-22T23:36:38"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1574206962386608179",
+   "cuando": "2026-11-22T23:36:27"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Adriagner (ultima ando en la iglesia)🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1574206941704487097",
+   "cuando": "2026-11-22T23:36:22"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "revo",
+   "quien": "mcarepita",
+   "discord_id": "1528203989152174110",
+   "msg_id": "1574206935677276162",
+   "cuando": "2026-11-22T23:36:20"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Thaniel 🇻🇪",
+   "quien": "than1el__",
+   "discord_id": "1400122840606441603",
+   "msg_id": "1574206934561722559",
+   "cuando": "2026-11-22T23:36:20"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Vilca",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1574206274088996906",
+   "cuando": "2026-11-22T23:33:43"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43593,69 +43685,6 @@
    "discord_id": "1439048698142134436",
    "msg_id": "1561862492559245324",
    "cuando": "2026-10-19T22:03:56"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Sebita🇱🇷",
-   "quien": "malasiafighter",
-   "discord_id": "1357796427191029932",
-   "msg_id": "1561862469880647761",
-   "cuando": "2026-10-19T22:03:50"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1561862461785772053",
-   "cuando": "2026-10-19T22:03:48"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Ariaxer🇦🇷",
-   "quien": "ariaxer",
-   "discord_id": "659687894587277322",
-   "msg_id": "1561862445683834964",
-   "cuando": "2026-10-19T22:03:45"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Joba 🇨🇱",
-   "quien": "jobains",
-   "discord_id": "1095893775383023708",
-   "msg_id": "1561862277530132595",
-   "cuando": "2026-10-19T22:03:04"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1561862201738789016",
-   "cuando": "2026-10-19T22:02:46"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Dios 🇲🇽",
-   "quien": "dan666._",
-   "discord_id": "1204164715350196284",
-   "msg_id": "1561862134013362177",
-   "cuando": "2026-10-19T22:02:30"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Chuwin 🇳🇮",
-   "quien": "chuwin_",
-   "discord_id": "618818177073414144",
-   "msg_id": "1561862130330898504",
-   "cuando": "2026-10-19T22:02:29"
   }
  ]
 }

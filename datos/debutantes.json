@@ -2118,7 +2118,7 @@
    "n": 647,
    "sv": "FFA",
    "vence": "2026-11-22T23:33:06+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Manteca mantecosa": {
    "avisado": "2026-10-29",
@@ -2986,6 +2986,18 @@
    "vence": "2026-11-04T20:15:48+00:00",
    "vencido": true
   },
+  "Teo": {
+   "chat": "2026-11-22",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T22:58:40+00:00",
+   "did": "",
+   "evento": "VERSO STYLE",
+   "n": 676,
+   "sv": "DDS",
+   "vence": "2026-11-29T22:58:40+00:00",
+   "vencido": false
+  },
   "Terry": {
    "avisado": "2026-11-12",
    "con": null,
@@ -3826,7 +3838,7 @@
    "n": 647,
    "sv": "FFA",
    "vence": "2026-11-22T23:33:06+00:00",
-   "vencido": false
+   "vencido": true
   },
   "xx": {
    "avisado": "2026-11-11",
