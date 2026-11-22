@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-22T04:47:05Z",
+ "cuando": "2026-11-22T05:11:43Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 163.1,
+ "dur_s": 460.8,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 0.8
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.3
+   "s": 0.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.6
+   "s": 11.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 33.6
+   "s": 31.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 1 · 28 persona(s)",
    "ok": true,
-   "s": 9.7
+   "s": 240.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 53.6
+   "s": 116.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 53.7
+   "s": 58.8
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "671",
-  "nombre": "BOOM BAP STYLE",
+  "n": "673",
+  "nombre": "GRISELDA STYLE",
   "sv": "DDS",
   "dia": "2026-11-21"
  },
  "cuotas": {
   "kv": {
-   "write": 236,
-   "read": 10193
+   "write": 298,
+   "read": 12144
   },
   "objeto": {
-   "leidas": 1182029,
-   "escritas": 30342,
-   "pedidos": 8849
+   "leidas": 1414251,
+   "escritas": 34344,
+   "pedidos": 9832
   },
   "worker": {
-   "pedidos": 30068,
+   "pedidos": 30449,
    "errores": 0,
-   "sub": 30604,
+   "sub": 30930,
    "cortados": 0,
    "p50_ms": 0.82,
-   "p99_ms": 9.9,
+   "p99_ms": 9.88,
    "cpu": {
-    "total": 60750,
-    "objeto_10": 1995,
-    "worker_10": 299
+    "total": 61444,
+    "objeto_10": 2005,
+    "worker_10": 301
    }
   },
   "r2": {
