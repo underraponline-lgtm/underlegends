@@ -81,6 +81,21 @@ export const MIN_ORG = Math.max(2, num(E.MIN_ORG, 2));
 //: a las 12:15 AM y a las 2:40 ULAYA estaba grabando el cypher de después en «ReyDeLaPista» — Dlx: «not an event but it
 //: is like a cypher». `LLAVE_H` (3 h) sigue valiendo para los micrófonos; para ENTRAR, la llave tiene que estar viva
 export const LLAVE_ENTRAR_MIN = num(E.LLAVE_ENTRAR_MIN, 45);
+//: 🏁 CUÁNDO TERMINÓ EL EVENTO (Dlx, 22/11/2026: «asegúrate que el bot sepa qué es un evento, cuándo unirse, cuándo
+//: grabar, qué grabar, cuándo salirse y asegurarse la calidad»). Hasta acá salía sólo cuando la llamada se vaciaba, y
+//: después de un evento la gente se queda: el cypher de Cypherhood. Ahora, una vez que vio el evento (una llave viva o un
+//: anuncio de ahora), sale cuando su llave lleva `LLAVE_SALIR_MIN` sin tocarse y no hay otro anuncio en curso, y lo
+//: entregado corta `COLA_EVENTO_MIN` después de la última edición de la llave: lo de después es charla
+export const LLAVE_SALIR_MIN = num(E.LLAVE_SALIR_MIN, 40);
+export const COLA_EVENTO_MIN = num(E.COLA_EVENTO_MIN, 10);
+//: sin llave, quien entró por un anuncio sale a las `SIN_LLAVE_H` horas: un evento de verdad publica su llave
+export const SIN_LLAVE_H = num(E.SIN_LLAVE_H, 3);
+//: ↪️ si el evento se muda de canal (ReyDeLaPista 1 → 2), la grabación lo sigue, hasta `MUDANZAS_MAX` veces
+export const MUDANZAS_MAX = num(E.MUDANZAS_MAX, 6);
+//: 🧮 cuántas grabaciones a la vez como mucho (cada una mide sus voces con ffmpeg cada 10 s y mezcla al final)
+export const MAX_A_LA_VEZ = num(E.MAX_A_LA_VEZ, 4);
+//: ✂️ lo que dura menos que esto no se entrega (sólo se anota): una llamada que se llenó un minuto no es un evento
+export const MIN_ENTREGA_S = num(E.MIN_ENTREGA_S, 180);
 //: en qué llamadas de cada servidor se graba (las de competencia). `CANALES` en Railway las cambia para todos
 export const CANALES_DE = {
   '1468472442925092958': ['1519182186702438450', '1550950039159963648', '1550950286615519343'],  // FFA: competencia, competencia², Escenario
@@ -131,22 +146,24 @@ export function topeDe(guild) {
 }
 
 // ── el vigía: ¿hay una llave de este servidor en juego? ───────────────────
-let vivo = { t: 0, g: new Set(), viva: new Set() };
+let vivo = { t: 0, g: new Set(), viva: new Set(), ed: new Map() };
 async function llavesEnJuego(paraEntrar = false) {
   if (Date.now() - vivo.t >= 120000) {
     vivo.t = Date.now();
     try {
       const r = await fetch(VIGIA + '/avisos/vivo', { signal: AbortSignal.timeout(10000) });
       const d = r.ok ? await r.json() : {};
-      const g = new Set(), viva = new Set();
+      const g = new Set(), viva = new Set(), ultima = new Map();
       for (const ll of d.llaves || []) {
         const ed = ll.ed || ll.pub;
         if (!ll.g || typeof ed !== 'number') continue;
+        ultima.set(String(ll.g), Math.max(ultima.get(String(ll.g)) || 0, ed));
         if (Date.now() - ed <= LLAVE_H * 3600000) g.add(String(ll.g));
         if (Date.now() - ed <= LLAVE_ENTRAR_MIN * 60000) viva.add(String(ll.g));
       }
       vivo.g = g;
       vivo.viva = viva;
+      vivo.ed = ultima;
     } catch (e) {
       anotar('⚠️ el vigía no contestó:', String(e.message || e).slice(0, 80));
     }
@@ -232,6 +249,42 @@ class Grabacion {
     this.midiendo = false;
     this.vacia = null;           // desde cuándo hay menos de SALIR_CON
     this.cerrando = false;
+    this.eventoVisto = false;    // 🏁 si ya vio el evento (una llave viva o un anuncio de ahora)
+    this.llaveVista = false;     // si vio una llave de este servidor tocada después de entrar
+    this.sinEvento = null;       // desde cuándo no hay evento
+    this.mudanzas = 0;
+  }
+
+  /** 🏁 ¿Sigue el evento en este servidor? Con lo que el vigía y los anuncios dijeron en la última vuelta. */
+  eventoSigue() {
+    const g = this.guild.id;
+    const ed = vivo.ed.get(g) || 0;
+    if (ed >= this.inicio.getTime() - LLAVE_ENTRAR_MIN * 60000) this.llaveVista = true;
+    const llaveViva = ed && Date.now() - ed <= LLAVE_SALIR_MIN * 60000;
+    // un anuncio de ahora sostiene la grabación mientras no haya llave (el organizador arranca antes de publicarla)
+    const anuncio = anun.g.has(g) && !this.llaveVista && this.ms() < SIN_LLAVE_H * 3600000;
+    const sigue = !!(llaveViva || anuncio);
+    if (sigue) this.eventoVisto = true;
+    return sigue;
+  }
+
+  /** ↪️ Si la llamada se vació pero el evento sigue en otra del mismo servidor, la grabación se muda ahí. */
+  mudarse() {
+    if (this.mudanzas >= MUDANZAS_MAX) return false;
+    const org = conOrganizador(this.guild, anun.g.get(this.guild.id));
+    const c = org && org.n >= MIN_ORG ? org : candidata(this.guild);
+    if (!c || c.otro || c.canal.id === this.canal.id || c.n < Math.max(MIN_ORG, MIN_VIVO)) return false;
+    try {
+      this.con.rejoin({ channelId: c.canal.id, selfDeaf: false, selfMute: true });
+    } catch (e) {
+      anotar('⚠️ no pude mudarme de canal:', String(e.message || e).slice(0, 100));
+      return false;
+    }
+    anotar(`↪️ el evento se mudó: ${this.canal.name} → ${c.canal.name} (${c.n} personas)`);
+    this.canal = c.canal;
+    this.mudanzas++;
+    this.vacia = null;
+    return true;
   }
 
   ms() { return performance.now() - this.t0; }
@@ -313,10 +366,18 @@ class Grabacion {
     if (this.cerrando) return;
     const c = this.guild.channels.cache.get(this.canal.id);
     const n = c ? gente(c).n : 0;
+    const sigue = this.eventoSigue();
+    // ↪️ se vació, pero el evento sigue: ¿se mudó de canal?
+    if (n < SALIR_CON && (sigue || !this.eventoVisto) && this.mudarse()) return;
     if (n < SALIR_CON) {
       this.vacia ??= Date.now();
       if (Date.now() - this.vacia >= ESPERA_SALIR) this.terminar('se vació la llamada');
     } else this.vacia = null;
+    // 🏁 ya vio el evento y el evento terminó: sale aunque la llamada siga llena (lo de después es charla o un cypher)
+    if (this.eventoVisto && !sigue) {
+      this.sinEvento ??= Date.now();
+      if (Date.now() - this.sinEvento >= ESPERA_SALIR) this.terminar('terminó el evento');
+    } else this.sinEvento = null;
     if (this.ms() >= MAX_H * 3600000) this.terminar(`llegó a ${MAX_H} h`);
   }
 
@@ -339,8 +400,20 @@ class Grabacion {
       // ✂️ SIN LA ESPERA DEL FINAL (21/11/2026): para saber que la llamada se vació, el grabador espera `ESPERA_SALIR` (5 min)
       // con menos de `SALIR_CON`, y esos minutos quedaban en el archivo: la grabación de DESGRACIAS EN TOKYO VOL 32 terminaba
       // con 4 min 43 s de silencio. Se entrega hasta que se vació, con `COLA_S` de aire
-      const hasta = razon === 'se vació la llamada' && this.vacia
+      let hasta = razon === 'se vació la llamada' && this.vacia
         ? Math.min(fin, Math.max(0, this.vacia - this.inicio.getTime()) + COLA_S * 1000) : fin;
+      // 🏁 y si terminó el evento, hasta `COLA_EVENTO_MIN` después de la última edición de su llave
+      const ed = vivo.ed.get(this.guild.id) || 0;
+      if (razon === 'terminó el evento' && this.llaveVista && ed > this.inicio.getTime()) {
+        hasta = Math.min(hasta, ed - this.inicio.getTime() + COLA_EVENTO_MIN * 60000);
+      }
+      // ✂️ lo muy corto no es un evento: se anota y no se entrega
+      if (hasta / 1000 < MIN_ENTREGA_S) {
+        anotar(`✂️ ${this.guild.name}: ${largo(hasta / 1000)} no es un evento, no se entrega`);
+        grabando.delete(this.guild.id);
+        fs.rmSync(this.dir, { recursive: true, force: true });
+        return;
+      }
       await this.entregar(voces, hasta / 1000, razon);
     } catch (e) {
       anotar('❌ no pude entregar la grabación:', String(e.message || e).slice(0, 300));
@@ -510,6 +583,11 @@ async function vuelta(client) {
     const p = pendiente.get(gid);
     if (!p || p.canal !== c.canal.id) { pendiente.set(gid, { canal: c.canal.id, desde: Date.now() }); continue; }
     if (Date.now() - p.desde < ESPERA_ENTRAR) continue;
+    if (grabando.size >= MAX_A_LA_VEZ) {
+      if (!p.lleno) anotar(`🧮 ${guild.name}: ya hay ${grabando.size} grabaciones (el tope es ${MAX_A_LA_VEZ}), espera`);
+      p.lleno = true;
+      continue;
+    }
     const yo = guild.members.me;
     const puede = yo && c.canal.permissionsFor(yo)?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.Connect]);
     if (!puede) {
