@@ -429,10 +429,10 @@
    "servidor": "a9e63879d519:0bd0fbf67396:055f77"
   },
   "Dios": {
-   "competitivo": "69ded42597de:38a840be60e7",
-   "pais": "93c803dabd2f:f1f52e1c6d42",
+   "competitivo": "81785d9d2879:38a840be60e7",
+   "pais": "47ba0c0b2f9e:f1f52e1c6d42",
    "servidor": "54b04f874405:0bd0fbf67396:132451",
-   "temporada": "a9379fab898a:a8d8b7335469"
+   "temporada": "33f7d0ced29f:a8d8b7335469"
   },
   "Dobell": {},
   "Dominick": {},
@@ -1126,10 +1126,10 @@
    "temporada": "722de9a52bc1:a8d8b7335469"
   },
   "MCO": {
-   "competitivo": "12027da68c7a:38a840be60e7",
-   "pais": "2430f0b038ea:f1f52e1c6d42",
+   "competitivo": "7841c703eee0:38a840be60e7",
+   "pais": "f78b36abd7de:f1f52e1c6d42",
    "servidor": "3e812e2a1c55:0bd0fbf67396:132451",
-   "temporada": "7c451ce8045c:a8d8b7335469"
+   "temporada": "de8412256679:a8d8b7335469"
   },
   "MD": {},
   "METORITO": {},
@@ -2187,5 +2187,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-22T04:18:06+00:00"
+ "cuando": "2026-11-22T04:36:00+00:00"
 }
