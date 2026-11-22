@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-21T23:42:09Z",
+ "cuando": "2026-11-22T00:04:04Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 452.3,
+ "dur_s": 526.4,
  "pasos": [
   {
    "n": "2f",
@@ -27,61 +27,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.9
+   "s": 11.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 36.4
+   "s": 37.6
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": true,
-   "s": 220.2
+   "s": 301.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 125.7
+   "s": 107.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.9
+   "s": 66.5
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "669",
-  "nombre": "COMPE MAKMITA VOL2",
+  "n": "670",
+  "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
   "sv": "DW",
-  "dia": "2026-09-30"
+  "dia": "2026-09-27"
  },
  "cuotas": {
   "kv": {
-   "write": 462,
-   "read": 32894
+   "write": 0,
+   "read": 32
   },
   "objeto": {
-   "leidas": 3993344,
-   "escritas": 50953,
-   "pedidos": 24821
+   "leidas": 32752,
+   "escritas": 93,
+   "pedidos": 100
   },
   "worker": {
-   "pedidos": 24547,
+   "pedidos": 24501,
    "errores": 0,
-   "sub": 25504,
+   "sub": 25402,
    "cortados": 0,
-   "p50_ms": 0.83,
-   "p99_ms": 10.85,
+   "p50_ms": 0.82,
+   "p99_ms": 10.83,
    "cpu": {
-    "total": 50000,
-    "objeto_10": 1777,
-    "worker_10": 318
+    "total": 49854,
+    "objeto_10": 1775,
+    "worker_10": 317
    }
   },
   "r2": {
