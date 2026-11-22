@@ -1524,7 +1524,7 @@
   "arc_pais": 0,
   "pos_sv": "17/173",
   "arc_sv": 91,
-  "pos_crew": "1/10",
+  "pos_crew": "1/11",
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
@@ -1776,7 +1776,7 @@
   "arc_pais": 90,
   "pos_sv": "19/173",
   "arc_sv": 90,
-  "pos_crew": "2/10",
+  "pos_crew": "2/11",
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
@@ -1839,7 +1839,7 @@
   "arc_pais": 87,
   "pos_sv": "20/173",
   "arc_sv": 89,
-  "pos_crew": "3/10",
+  "pos_crew": "3/11",
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
@@ -1903,7 +1903,7 @@
   "arc_pais": 84,
   "pos_sv": "21/173",
   "arc_sv": 88,
-  "pos_crew": "4/10",
+  "pos_crew": "4/11",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -3081,7 +3081,7 @@
   "arc_pais": 81,
   "pos_sv": "34/173",
   "arc_sv": 81,
-  "pos_crew": "5/10",
+  "pos_crew": "5/11",
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
@@ -3638,7 +3638,7 @@
   "arc_pais": 74,
   "pos_sv": "1/15",
   "arc_sv": 100,
-  "pos_crew": "6/10",
+  "pos_crew": "6/11",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -7728,7 +7728,7 @@
   "arc_pais": 55,
   "pos_sv": "1/14",
   "arc_sv": 100,
-  "pos_crew": "7/10",
+  "pos_crew": "7/11",
   "nac": {
    "evn": 0,
    "evi": 0,
@@ -13886,7 +13886,7 @@
   "raw": "Julda",
   "cc": "co",
   "sv": "FFA",
-  "crew": "",
+  "crew": "Follombia",
   "discord_id": "1194813613786026136",
   "verificado": false,
   "ev": 3,
@@ -13919,6 +13919,7 @@
   "arc_pais": 52,
   "pos_sv": "93/173",
   "arc_sv": 47,
+  "pos_crew": "8/11",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -18539,7 +18540,7 @@
   "arc_pais": 42,
   "pos_sv": "116/173",
   "arc_sv": 34,
-  "pos_crew": "8/10",
+  "pos_crew": "9/11",
   "tg_c": {
    "clasico": 1,
    "riv": 2
@@ -18846,7 +18847,7 @@
   "arc_pais": 39,
   "pos_sv": "121/173",
   "arc_sv": 31,
-  "pos_crew": "9/10",
+  "pos_crew": "10/11",
   "tg_c": {
    "clasico": 1,
    "riv": 3
@@ -36707,7 +36708,7 @@
   "arc_pais": 3,
   "pos_sv": "15/15",
   "arc_sv": 7,
-  "pos_crew": "10/10",
+  "pos_crew": "11/11",
   "nac": {
    "evn": 0,
    "evi": 0,

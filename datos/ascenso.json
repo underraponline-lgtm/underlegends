@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-22T07:59:35Z",
+ "t": "2026-11-22T16:33:42Z",
  "sv": {
   "SR": {
    "filas": [
@@ -688,15 +688,15 @@
     [
      "Makma",
      "ve",
-     7425,
-     180,
+     7485,
+     240,
      "Makmah"
     ],
     [
      "PRAISERIZA",
      "ve",
-     7165,
-     800,
+     7265,
+     900,
      "PRAISERIZA"
     ],
     [
@@ -730,8 +730,8 @@
     [
      "Zignos",
      "do",
-     5120,
-     225,
+     5195,
+     300,
      "Zignos"
     ],
     [
@@ -749,18 +749,18 @@
      "Abyssus"
     ],
     [
+     "Erian",
+     "pa",
+     4410,
+     240,
+     "Erian"
+    ],
+    [
      "Za",
      "ar",
      4345,
      0,
      "Provenza"
-    ],
-    [
-     "Erian",
-     "pa",
-     4170,
-     0,
-     "Erian"
     ],
     [
      "OG",
@@ -784,18 +784,18 @@
      "Agus"
     ],
     [
+     "colesito",
+     "ca",
+     3630,
+     450,
+     "Colesito"
+    ],
+    [
      "Guess",
      "ar",
      3565,
      0,
      "Guess"
-    ],
-    [
-     "colesito",
-     "ca",
-     3555,
-     375,
-     "Colesito"
     ],
     [
      "nc",
@@ -891,8 +891,8 @@
     [
      "Paria",
      "ar",
-     1940,
-     180,
+     2000,
+     240,
      "Paria"
     ],
     [
@@ -912,8 +912,8 @@
     [
      "MCO",
      "ar",
-     1625,
-     300,
+     1725,
+     400,
      "MCO"
     ],
     [
@@ -922,6 +922,13 @@
      1370,
      0,
      "Benjixo"
+    ],
+    [
+     "Yo mc",
+     "cl",
+     1350,
+     400,
+     "Cronox"
     ],
     [
      "Gocho",
@@ -950,13 +957,6 @@
      1275,
      375,
      "Eze"
-    ],
-    [
-     "Yo mc",
-     "cl",
-     1250,
-     300,
-     "Cronox"
     ],
     [
      "Park Sung-jong",
@@ -1071,6 +1071,13 @@
      "Xclusivo"
     ],
     [
+     "Lrs",
+     "ar",
+     850,
+     300,
+     "LRS"
+    ],
+    [
      "masino",
      "cl",
      835,
@@ -1090,13 +1097,6 @@
      800,
      0,
      "Deko"
-    ],
-    [
-     "Lrs",
-     "ar",
-     775,
-     225,
-     "LRS"
     ],
     [
      "MCNADIE",
@@ -1132,6 +1132,13 @@
      700,
      0,
      "mats"
+    ],
+    [
+     "Nacioenmilan",
+     "it",
+     700,
+     400,
+     "Deuxs"
     ],
     [
      "Chop",
@@ -1188,13 +1195,6 @@
      600,
      0,
      "ONZASS"
-    ],
-    [
-     "Nacioenmilan",
-     "it",
-     600,
-     300,
-     "Deuxs"
     ],
     [
      "Sin límites",
@@ -1498,6 +1498,13 @@
      "crakero"
     ],
     [
+     "Inhuman",
+     "",
+     300,
+     300,
+     ""
+    ],
+    [
      "Bootrax Humilde",
      "pe",
      275,
@@ -1533,11 +1540,11 @@
      "Teito"
     ],
     [
-     "Inhuman",
-     "",
-     225,
-     225,
-     ""
+     "Status",
+     "ve",
+     240,
+     240,
+     "Status"
     ],
     [
      "Cinexfilo",
@@ -1594,13 +1601,6 @@
      200,
      0,
      "Partim"
-    ],
-    [
-     "Status",
-     "ve",
-     180,
-     180,
-     "Status"
     ],
     [
      "Alexiz",
@@ -2015,62 +2015,67 @@
      "n": null,
      "evento": "Desgracias en Tokyo Vol. 33 Pandillas",
      "dia": "2026-11-22",
-     "rango": "plata i",
+     "rango": "plata ii",
      "puntos": [
       [
        "PRAISERIZA",
        "Campeón",
-       300
+       400
       ],
       [
        "Deuxs",
        "Campeón",
-       300
+       400
       ],
       [
        "Cronox",
        "Campeón",
-       300
+       400
       ],
       [
        "MCO",
        "Campeón",
-       300
+       400
       ],
       [
        "Inhuman",
        "Subcampeón",
-       225
+       300
       ],
       [
        "LRS",
        "Subcampeón",
-       225
+       300
       ],
       [
        "Colesito",
        "Subcampeón",
-       225
+       300
       ],
       [
        "Zignos",
        "Subcampeón",
-       225
+       300
       ],
       [
-       "Makmah",
+       "Erian",
        "Tercero",
-       180
-      ],
-      [
-       "Status",
-       "Tercero",
-       180
+       240
       ],
       [
        "Paria",
        "Tercero",
-       180
+       240
+      ],
+      [
+       "Makmah",
+       "Tercero",
+       240
+      ],
+      [
+       "Status",
+       "Tercero",
+       240
       ]
      ],
      "fuera": []

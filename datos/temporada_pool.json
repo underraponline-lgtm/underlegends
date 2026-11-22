@@ -6969,6 +6969,7 @@
   "total": 264,
   "rango": "E",
   "tg_t": {
+   "elite": true,
    "reciente": true
   }
  },
