@@ -732,6 +732,7 @@
 "1338567692239765617": {
 "cs": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ],
@@ -1917,7 +1918,10 @@
 "rg": ""
 },
 "442904380056797195": {
-"cs": [],
+"cs": [
+"servidor",
+"temporada"
+],
 "pos": 228,
 "rg": ""
 },
