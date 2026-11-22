@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T20:25:26+00:00",
+ "cuando": "2026-11-22T20:55:15+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7689,6 +7689,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "│🔵📋┆inscripciones",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1574159606618390672",
+   "cuando": "2026-11-22T20:28:16"
+  },
   {
    "servidor": "CEU",
    "canal": "inscripciones🖊️",
@@ -43679,15 +43688,6 @@
    "discord_id": "915051512575717457",
    "msg_id": "1561792296834302144",
    "cuando": "2026-10-19T17:25:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Sosa",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1561789942730981419",
-   "cuando": "2026-10-19T17:15:39"
   }
  ]
 }
