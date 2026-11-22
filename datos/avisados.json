@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "f604c6b635125f72",
+  "firma": "1125d74565e6ad10",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -23939,7 +23939,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "4c0968cb9823f609",
+  "firma": "27e00b00a55fe0c2",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24253,7 +24253,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "fa0f977d8fc31bfb",
+  "firma": "8475a0a62280ea39",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24521,7 +24521,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "51fd228634e22446",
+  "firma": "6289353ad4b86c89",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -31459,7 +31459,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "2a7bad9daf6f324d",
+  "firma": "515f682c64263c70",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -36374,7 +36374,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "382231c4bf6ed700",
+  "firma": "1872385203f7cacb",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -36780,7 +36780,7 @@
    "Xclusivo": 23
   },
   "fecha": "07/11",
-  "firma": "f2a30022b3dbf4ca",
+  "firma": "727c671b5f2d1af9",
   "msg": "1568746606562509004",
   "nombre": "ZONA MORTAL",
   "num": 577,
@@ -37532,7 +37532,7 @@
    "oriuz": 7
   },
   "fecha": "23/10",
-  "firma": "f6d1814a56a8af3f",
+  "firma": "f030b53d24dea918",
   "msg": "1569508003776823307",
   "nombre": "LLAVES PARA LA DISCORD STYLE 17",
   "num": 580,
@@ -38547,7 +38547,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "0f15353249016396",
+  "firma": "6d5fcaff31717244",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -38708,7 +38708,7 @@
    "NXUZ": 36
   },
   "fecha": "07/11",
-  "firma": "82c979703ac4a219",
+  "firma": "6ef6763d53e89e1e",
   "msg": "1569508050510028801",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 586,
@@ -40778,7 +40778,7 @@
    "Xclusivo": 26
   },
   "fecha": "09/11",
-  "firma": "41781608a319af10",
+  "firma": "6595ccfae2e288b0",
   "msg": "1569448001989251545",
   "nombre": "__ JKWODJAKB V.1 __",
   "num": 595,
@@ -42358,7 +42358,7 @@
    "oriuz": 7
   },
   "fecha": "20/10",
-  "firma": "ae1ba7ba9689bc99",
+  "firma": "598c352cbc966426",
   "msg": "1570247714254360748",
   "nombre": "MINI COMPE LLAVES",
   "num": 606,
@@ -47444,7 +47444,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "4ef3ba18fa22cd86",
+  "firma": "c135c132cf209c9d",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -51242,7 +51242,7 @@
    "crakero": 11
   },
   "fecha": "13/11",
-  "firma": "2a924fb939373851",
+  "firma": "786901371b6be398",
   "msg": "1572055186955046984",
   "nombre": "RAP SIN GROSERIAS 6",
   "num": 653,
@@ -54258,7 +54258,7 @@
    "replisan": 3
   },
   "fecha": "21/11",
-  "firma": "0c7ef65aa13aebb6",
+  "firma": "b3f05653be0fb745",
   "msg": "1573909518906298399",
   "nombre": "BOOM BAP STYLE",
   "num": 671,
@@ -54462,6 +54462,360 @@
     "MCO",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "675": {
+  "al_dia": true,
+  "antes": {
+   "Agente sombra": [
+    149,
+    234,
+    false
+   ],
+   "Akuseru": [
+    110,
+    150,
+    false
+   ],
+   "Colesito": [
+    9,
+    9,
+    false
+   ],
+   "Cronox": [
+    43,
+    51,
+    false
+   ],
+   "Deuxs": [
+    89,
+    115,
+    false
+   ],
+   "Dominick": [
+    270,
+    55,
+    true
+   ],
+   "Dyzz": [
+    53,
+    64,
+    false
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Geoka": [
+    30,
+    32,
+    false
+   ],
+   "Izaya": [
+    370,
+    265,
+    true
+   ],
+   "LRS": [
+    46,
+    54,
+    false
+   ],
+   "MCO": [
+    15,
+    15,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "OG": [
+    21,
+    21,
+    false
+   ],
+   "PRAISERIZA": [
+    5,
+    5,
+    false
+   ],
+   "Paria": [
+    273,
+    65,
+    true
+   ],
+   "SAIDEM": [
+    360,
+    250,
+    true
+   ],
+   "SULTAN": [
+    289,
+    117,
+    true
+   ],
+   "Status": [
+    367,
+    262,
+    true
+   ],
+   "Thaniel": [
+    492,
+    431,
+    true
+   ],
+   "Zignos": [
+    28,
+    30,
+    false
+   ],
+   "yinn": [
+    18,
+    18,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Cronox",
+    "yinn",
+    "Cronox"
+   ],
+   [
+    "Status",
+    "SULTAN",
+    "Status"
+   ],
+   [
+    "SAIDEM",
+    "Dyzz",
+    "SAIDEM"
+   ],
+   [
+    "Agente sombra",
+    "Dominick",
+    "Agente sombra"
+   ],
+   [
+    "Izaya",
+    "Akuseru",
+    "Izaya"
+   ],
+   [
+    "Zignos",
+    "Geoka",
+    "Zignos"
+   ],
+   [
+    "Erian",
+    "OG",
+    "Erian"
+   ],
+   [
+    "LRS",
+    "Thaniel",
+    "LRS"
+   ],
+   [
+    "Cronox, Deuxs",
+    "Izaya, PRAISERIZA",
+    "Cronox, Deuxs"
+   ],
+   [
+    "Status, Paria",
+    "Zignos, OJITOS CANABICOS 🇨🇱",
+    "Status, Paria"
+   ],
+   [
+    "MCO, Erian",
+    "SAIDEM, Makmah",
+    "MCO, Erian"
+   ],
+   [
+    "Colesito, LRS",
+    "Inhuman, Agente sombra",
+    "Colesito, LRS"
+   ],
+   [
+    "Deuxs, Cronox, PRAISERIZA",
+    "MCO, Erian, Makmah",
+    "Deuxs, Cronox, PRAISERIZA"
+   ],
+   [
+    "Colesito, LRS, Inhuman",
+    "Paria, Status, Zignos",
+    "Colesito, LRS, Inhuman"
+   ],
+   [
+    "Deuxs, Cronox, PRAISERIZA, MCO",
+    "Colesito, Inhuman, LRS, Zignos",
+    "Deuxs, Cronox, PRAISERIZA, MCO"
+   ]
+  ],
+  "ev_antes": {
+   "Agente sombra": 6,
+   "Akuseru": 8,
+   "Colesito": 49,
+   "Cronox": 35,
+   "Deuxs": 10,
+   "Dominick": 47,
+   "Dyzz": 30,
+   "Erian": 86,
+   "Geoka": 33,
+   "Izaya": 3,
+   "LRS": 42,
+   "MCO": 47,
+   "Makmah": 123,
+   "OG": 23,
+   "PRAISERIZA": 23,
+   "Paria": 20,
+   "SAIDEM": 2,
+   "SULTAN": 13,
+   "Status": 2,
+   "Thaniel": 2,
+   "Zignos": 33,
+   "yinn": 37
+  },
+  "fecha": "21/11",
+  "firma": "626ad635739e3fb4",
+  "msg": "1573932188205056191",
+  "nombre": "__ DESGRACIAS EN TOKYO VOL 33 PANDILLAS __",
+  "num": 675,
+  "participantes": 25,
+  "sello": {
+   "Cronox": "5c2555353d96:a8d8b7335469",
+   "Deuxs": "02d825033cd5:a8d8b7335469",
+   "MCO": "8e7187286e21:a8d8b7335469",
+   "PRAISERIZA": "4a7585c36b77:a8d8b7335469"
+  },
+  "sv": "FFA",
+  "t": "2026-11-22T05:24:35Z",
+  "tabla": [
+   [
+    "Zignos",
+    "Subcampeón",
+    4875
+   ],
+   [
+    "MCO",
+    "Campeón",
+    4250
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3750
+   ],
+   [
+    "Inhuman",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Deuxs",
+    "Campeón",
+    2500
+   ],
+   [
+    "Cronox",
+    "Campeón",
+    2500
+   ],
+   [
+    "Colesito",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "LRS",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Paria",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Status",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Izaya",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OJITOS CANABICOS 🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SAIDEM",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Thaniel",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

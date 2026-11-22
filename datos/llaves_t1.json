@@ -61881,5 +61881,583 @@
    "min": 69,
    "v": 1
   }
+ },
+ "674": {
+  "dia": "2026-11-21",
+  "escala": "16+",
+  "fecha": "21/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1573862431577608293"
+  ],
+  "n": 674,
+  "nombre": "CELEBRITY DEATH MATCH Vol. IV",
+  "participantes": 26,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "JEIXDER",
+       "Jodnes"
+      ],
+      "Mito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "TheOg",
+       "Geoka",
+       "Inhuman"
+      ],
+      "TheOg",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Minis",
+       "LEWITO"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Paria",
+       "Efimero",
+       "Enzinho 🇦🇷"
+      ],
+      "Paria",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Kaled",
+       "Gus",
+       "23"
+      ],
+      "Kaled",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MCO",
+       "Jupiter",
+       "DarnBless"
+      ],
+      "MCO",
+      "triple (3 bandas); Revivido: Jupiter"
+     ],
+     [
+      [
+       "Yeyox",
+       "FAMILIA 🇨🇱",
+       "G meiker 🇨🇱",
+       "Jupiter"
+      ],
+      "Yeyox",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "THO",
+       "XMILE🇺🇸",
+       "Colesito",
+       "DarnBless"
+      ],
+      "THO",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "Kaled"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "TheOg"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Yeyox",
+       "Makmah"
+      ],
+      "Yeyox",
+      ""
+     ],
+     [
+      [
+       "THO",
+       "Paria"
+      ],
+      "THO",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "THO"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Yeyox"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Mito"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    10000
+   ],
+   [
+    "Mito",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "THO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Yeyox",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Kaled",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    2500
+   ],
+   [
+    "TheOg",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1875
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1875
+   ],
+   [
+    "23",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Enzinho 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "FAMILIA 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "G meiker 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Inhuman",
+    "Octavos",
+    1250
+   ],
+   [
+    "JEIXDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jodnes",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Minis",
+    "Octavos",
+    1250
+   ],
+   [
+    "XMILE🇺🇸",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 268,
+   "v": 1
+  }
+ },
+ "675": {
+  "dia": "2026-11-21",
+  "escala": "16+",
+  "fecha": "21/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1573900071160774677"
+  ],
+  "n": 675,
+  "nombre": "DESGRACIAS EN TOKYO VOL 33 PANDILLAS",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Cronox",
+       "Deuxs",
+       "yinn"
+      ],
+      "Cronox, Deuxs",
+      "triple (3 bandas, pasan 2); también pasa: familiafortunayexito 🇫🇷"
+     ],
+     [
+      [
+       "Status",
+       "Paria",
+       "SULTAN"
+      ],
+      "Status, Paria",
+      "triple (3 bandas, pasan 2); también pasa: Paria🇦🇷"
+     ],
+     [
+      [
+       "SAIDEM",
+       "Makmah",
+       "Dyzz"
+      ],
+      "SAIDEM, Makmah",
+      "triple (3 bandas, pasan 2); también pasa: makmah 🇻🇪"
+     ],
+     [
+      [
+       "Agente sombra",
+       "Inhuman",
+       "Dominick"
+      ],
+      "Agente sombra, Inhuman",
+      "triple (3 bandas, pasan 2); también pasa: Inhuman 🇦🇷"
+     ],
+     [
+      [
+       "Izaya",
+       "PRAISERIZA",
+       "Akuseru"
+      ],
+      "Izaya, PRAISERIZA",
+      "triple (3 bandas, pasan 2); también pasa: praiseriza"
+     ],
+     [
+      [
+       "Zignos",
+       "Ojitos canábicos 🇨🇱",
+       "Geoka"
+      ],
+      "Zignos, Ojitos canábicos 🇨🇱",
+      "triple (3 bandas, pasan 2); también pasa: Ojitos canábicos 🇨🇱; Drafteado: Zignos 🇩🇴"
+     ],
+     [
+      [
+       "Erian",
+       "MCO",
+       "OG"
+      ],
+      "Erian, MCO",
+      "triple (3 bandas, pasan 2); también pasa: MCO 🇦🇷"
+     ],
+     [
+      [
+       "LRS",
+       "Colesito",
+       "Thaniel"
+      ],
+      "LRS, Colesito",
+      "triple (3 bandas, pasan 2); también pasa: colesito🇧🇦"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Cronox, Deuxs",
+       "Izaya, PRAISERIZA"
+      ],
+      "Cronox, Deuxs",
+      "Drafteado: PRAISERIZA 🇻🇪"
+     ],
+     [
+      [
+       "Status, Paria",
+       "Zignos, OJITOS CANABICOS 🇨🇱"
+      ],
+      "Status, Paria",
+      ""
+     ],
+     [
+      [
+       "MCO, Erian",
+       "SAIDEM, Makmah"
+      ],
+      "MCO, Erian",
+      "Drafteado: MCO 🇦🇷; Drafteado: MAKMAH 🇻🇪"
+     ],
+     [
+      [
+       "Colesito, LRS",
+       "Inhuman, Agente sombra"
+      ],
+      "Colesito, LRS",
+      "Drafteado: INHUMAN 🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Deuxs, Cronox, PRAISERIZA",
+       "MCO, Erian, Makmah"
+      ],
+      "Deuxs, Cronox, PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Colesito, LRS, Inhuman",
+       "Paria, Status, Zignos"
+      ],
+      "Colesito, LRS, Inhuman",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Deuxs, Cronox, PRAISERIZA, MCO",
+       "Colesito, Inhuman, LRS, Zignos"
+      ],
+      "Deuxs, Cronox, PRAISERIZA, MCO",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Zignos",
+    "Subcampeón",
+    4875
+   ],
+   [
+    "MCO",
+    "Campeón",
+    4250
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3750
+   ],
+   [
+    "Inhuman",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Cronox",
+    "Campeón",
+    2500
+   ],
+   [
+    "Deuxs",
+    "Campeón",
+    2500
+   ],
+   [
+    "Colesito",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "LRS",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Paria",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Status",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Izaya",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "OJITOS CANABICOS 🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SAIDEM",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Thaniel",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 98,
+   "v": 1
+  }
  }
 }

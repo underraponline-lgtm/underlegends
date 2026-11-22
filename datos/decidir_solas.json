@@ -4439,6 +4439,126 @@
     "CHSE"
    ],
    "escribio": {}
+  },
+  {
+   "id": "757ae2d0e1",
+   "tipo": "Nombre desconocido",
+   "sec": "DESGRACIAS EN TOKYO VOL 33 PANDILLAS · FFA · 21/11 · #675",
+   "que": "¿Quién es «OJITOS CANABICOS 🇨🇱»?",
+   "r": "Es Soulb (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @sj.2008_ (en Discord: «#57 | Soulb», «Ojitos canábicos») · en la Lista: Soulb se anotó como «OJITOS CANABICOS» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1795325773780,
+   "filas": [
+    1551
+   ],
+   "variantes": [
+    "OJITOS CANABICOS 🇨🇱"
+   ],
+   "escribio": {
+    "quien": "DESGRACIAS EN TOKYO VOL 33 PANDILLAS · FFA · 21/11 · OJITOS CANABICOS 🇨🇱"
+   }
+  },
+  {
+   "id": "08743bcc04",
+   "tipo": "Nombre desconocido",
+   "sec": "CELEBRITY DEATH MATCH Vol. IV · CH · 21/11 · #674",
+   "que": "¿Quién es «FAMILIA 🇨🇱»?",
+   "r": "Es Deuxs",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Deuxs: estaba en la llamada del evento con un nombre parecido",
+   "t": 1795325773780,
+   "filas": [
+    1548
+   ],
+   "variantes": [
+    "FAMILIA 🇨🇱"
+   ],
+   "escribio": {
+    "alias": [
+     "FAMILIA",
+     "Deuxs"
+    ],
+    "filas": [
+     383
+    ]
+   }
+  },
+  {
+   "id": "5cc3cbd6b6",
+   "tipo": "Nombre desconocido",
+   "sec": "CELEBRITY DEATH MATCH Vol. IV · CH · 21/11 · #674",
+   "que": "¿Quién es «Enzinho 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1514303597574361089",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1514303597574361089)",
+   "t": 1795325773780,
+   "filas": [
+    1547
+   ],
+   "variantes": [
+    "Enzinho 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Enzinho",
+     "1514303597574361089"
+    ]
+   }
+  },
+  {
+   "id": "5e9de51610",
+   "tipo": "Nombre desconocido",
+   "sec": "CELEBRITY DEATH MATCH Vol. IV · CH · 21/11 · #674",
+   "que": "¿Quién es «G meiker 🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 333716770210840586",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (333716770210840586)",
+   "t": 1795325773780,
+   "filas": [
+    1549
+   ],
+   "variantes": [
+    "G meiker 🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "G meiker",
+     "333716770210840586"
+    ]
+   }
+  },
+  {
+   "id": "3469f26529",
+   "tipo": "Nombre desconocido",
+   "sec": "CELEBRITY DEATH MATCH Vol. IV · CH · 21/11 · #674",
+   "que": "¿Quién es «XMILE🇺🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 442904380056797195",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (442904380056797195)",
+   "t": 1795325773780,
+   "filas": [
+    1550
+   ],
+   "variantes": [
+    "XMILE🇺🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "XMILE",
+     "442904380056797195"
+    ]
+   }
   }
  ],
  "deshechas": []

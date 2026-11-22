@@ -6,7 +6,7 @@
   "DDF": "2026-11-16",
   "DDS": "2026-11-16",
   "FDS": "2026-11-21",
-  "FFA": "2026-11-19",
+  "FFA": "2026-11-22",
   "FRZ": "2026-11-12",
   "FVS": "2026-10-15",
   "SR": "2026-11-13",
@@ -567,6 +567,7 @@
    "vencido": true
   },
   "Chaz": {
+   "avisado": "2026-11-22",
    "chat": "2026-11-21",
    "con": null,
    "cumplido": "",
@@ -955,6 +956,18 @@
    "vence": "2026-11-19T01:52:53+00:00",
    "vencido": true
   },
+  "Enzinho": {
+   "avisado": "2026-11-22",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T00:47:24+00:00",
+   "did": "",
+   "evento": "CELEBRITY DEATH MATCH Vol. IV",
+   "n": 674,
+   "sv": "CH",
+   "vence": "2026-11-29T00:47:24+00:00",
+   "vencido": false
+  },
   "Ezze": {
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-10-30",
@@ -967,6 +980,18 @@
    "n": 543,
    "sv": "FFA",
    "vence": "2026-11-05T21:10:39+00:00",
+   "vencido": false
+  },
+  "FAMILIA": {
+   "avisado": "2026-11-22",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T00:47:24+00:00",
+   "did": "",
+   "evento": "CELEBRITY DEATH MATCH Vol. IV",
+   "n": 674,
+   "sv": "CH",
+   "vence": "2026-11-29T00:47:24+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -1094,6 +1119,18 @@
    "sv": "SR",
    "vence": "2026-11-20T22:23:00+00:00",
    "vencido": true
+  },
+  "G meiker": {
+   "avisado": "2026-11-22",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T00:47:24+00:00",
+   "did": "",
+   "evento": "CELEBRITY DEATH MATCH Vol. IV",
+   "n": 674,
+   "sv": "CH",
+   "vence": "2026-11-29T00:47:24+00:00",
+   "vencido": false
   },
   "GGWAN": {
    "avisado": "2026-10-25",
@@ -1321,6 +1358,18 @@
    "sv": "FFA",
    "vence": "2026-10-29T15:06:42+00:00",
    "vencido": true
+  },
+  "Inhuman": {
+   "avisado_cumplido": "2026-11-22",
+   "con": 675,
+   "cumplido": "2026-11-22T03:16:58+00:00",
+   "debut": "2026-11-22T00:47:24+00:00",
+   "did": "732410109967335537",
+   "evento": "CELEBRITY DEATH MATCH Vol. IV",
+   "n": 674,
+   "sv": "CH",
+   "vence": "2026-11-29T00:47:24+00:00",
+   "vencido": false
   },
   "Inko": {
    "avisado": "2026-11-06",
@@ -1579,6 +1628,18 @@
    "sv": "CH",
    "vence": "2026-11-10T03:59:09+00:00",
    "vencido": true
+  },
+  "Kaled": {
+   "avisado": "2026-11-22",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T00:47:24+00:00",
+   "did": "",
+   "evento": "CELEBRITY DEATH MATCH Vol. IV",
+   "n": 674,
+   "sv": "CH",
+   "vence": "2026-11-29T00:47:24+00:00",
+   "vencido": false
   },
   "Karumailafmasha": {
    "avisado": "2026-10-29",
@@ -2377,6 +2438,19 @@
    "vence": "2026-11-06T20:59:18+00:00",
    "vencido": true
   },
+  "OJITOS CANABICOS": {
+   "avisado": "2026-11-22",
+   "chat": "2026-11-22",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T03:16:58+00:00",
+   "did": "",
+   "evento": "DESGRACIAS EN TOKYO VOL 33 PANDILLAS",
+   "n": 675,
+   "sv": "FFA",
+   "vence": "2026-11-29T03:16:58+00:00",
+   "vencido": false
+  },
   "ONDADISKO": {
    "avisado": "2026-10-13",
    "chat": "2026-10-14",
@@ -3127,6 +3201,18 @@
    "vence": "2026-10-20T23:50:48+00:00",
    "vencido": false
   },
+  "XMILE": {
+   "avisado": "2026-11-22",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T00:47:24+00:00",
+   "did": "",
+   "evento": "CELEBRITY DEATH MATCH Vol. IV",
+   "n": 674,
+   "sv": "CH",
+   "vence": "2026-11-29T00:47:24+00:00",
+   "vencido": false
+  },
   "XXX": {
    "avisado": "2026-11-19",
    "chat": "2026-11-19",
@@ -3590,6 +3676,7 @@
    "vencido": true
   },
   "ojos melancólicos": {
+   "avisado": "2026-11-22",
    "chat": "2026-11-22",
    "con": null,
    "cumplido": "",
