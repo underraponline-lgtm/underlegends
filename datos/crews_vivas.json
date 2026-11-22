@@ -90,7 +90,7 @@
    "id": "KS",
    "nombre": "Knowledge Sombrío",
    "sigla": "KWS",
-   "entrada": "pedido",
+   "entrada": "abierta",
    "oficial": true,
    "creada": 1792404668196,
    "reps": [],
@@ -102,7 +102,7 @@
     ],
     [
      "abyssus",
-     "miembro",
+     "colider",
      1792404668196
     ],
     [
@@ -124,7 +124,7 @@
    "id": "Desierto de Atacama",
    "nombre": "Desierto de Atacama",
    "sigla": "CZT",
-   "entrada": "pedido",
+   "entrada": "abierta",
    "oficial": false,
    "creada": 1794551899202,
    "reps": [],
@@ -138,6 +138,16 @@
      "dios",
      "miembro",
      1795174507018
+    ],
+    [
+     "cronox",
+     "miembro",
+     1795374227946
+    ],
+    [
+     "molusco",
+     "miembro",
+     1795375268376
     ]
    ],
    "vence": 0,

@@ -889,7 +889,7 @@
    "n": 657,
    "sv": "CH",
    "vence": "2026-11-22T19:01:05+00:00",
-   "vencido": false
+   "vencido": true
   },
   "El felpudo 974": {
    "avisado": "2026-11-17",
@@ -3518,7 +3518,7 @@
    "n": 657,
    "sv": "CH",
    "vence": "2026-11-22T19:01:05+00:00",
-   "vencido": false
+   "vencido": true
   },
   "gary": {
    "avisado": "2026-10-26",
