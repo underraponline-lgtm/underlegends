@@ -984,7 +984,7 @@
   },
   "L": {},
   "LAST": {
-   "competitivo": "543eb8464227:38a840be60e7",
+   "competitivo": "bf1d9d78d1c5:38a840be60e7",
    "pais": "79ecc535ea28:f1f52e1c6d42",
    "servidor": "735f7364be8d:0bd0fbf67396:88f477",
    "temporada": "5297a5808edf:a8d8b7335469"
@@ -1763,10 +1763,10 @@
    "temporada": "7de1dcf3fb37:a8d8b7335469"
   },
   "Soulb": {
-   "competitivo": "2512411d92fd:38a840be60e7",
-   "pais": "1c54c0f09b4c:f1f52e1c6d42",
-   "servidor": "388afa45ba2b:0bd0fbf67396:205449",
-   "temporada": "d29718577720:a8d8b7335469"
+   "competitivo": "e3cbcd35e82f:38a840be60e7",
+   "pais": "170f1731da67:f1f52e1c6d42",
+   "servidor": "c1205db2532f:0bd0fbf67396:205449",
+   "temporada": "2990e6c68b71:a8d8b7335469"
   },
   "Steven": {},
   "Surxf": {
@@ -2195,5 +2195,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-22T20:00:09+00:00"
+ "cuando": "2026-11-22T21:32:03+00:00"
 }
