@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.74", "dia": "2026-11-22", "cuando": "2026-11-22T03:50:00-05:00", "titulo": "28 beats nuevos en las historias", "items": ["**28 beats nuevos** en las historias, de 18 beatmakers de la escena: ahora son 50 entre boom bap, trap y drill. Cada uno con su crédito y el link a su video."]},
     {
         "version": "7.72",
         "dia": "2026-11-22",
