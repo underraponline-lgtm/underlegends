@@ -90,6 +90,8 @@
 .noche .sk-ct-ev b{color:#F0559A}
 /* quién ganó, pegado a su evento y entero */
 .sk-ct-gano{margin:-4px 0 0;font:500 12.5px/1.35 Archivo,sans-serif}
+/* con el nombre de la Tienda en su placa negra (Clara), el -4px la metía 3 px en el renglón de arriba (revisión 22/11) */
+.clara .sk-ct-gano:has(.nom-tienda){margin-top:2px}
 .sk-ct-ent{display:inline-flex;align-items:center;min-height:32px;color:var(--tinta);font:800 12px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none}
 .sk-af{transition:transform 160ms cubic-bezier(.23,1,.32,1)}
 @media (hover: hover) and (pointer: fine){
