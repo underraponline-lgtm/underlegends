@@ -53405,6 +53405,284 @@
   ],
   "v": 2
  },
+ "664": {
+  "antes": {
+   "Colesito": [
+    8,
+    8,
+    false
+   ],
+   "CrisZJ": [
+    266,
+    35,
+    true
+   ],
+   "HatshepsuT": [
+    578,
+    540,
+    true
+   ],
+   "KRS": [
+    582,
+    544,
+    true
+   ],
+   "LSO": [
+    376,
+    273,
+    true
+   ],
+   "Lucho": [
+    181,
+    342,
+    false
+   ],
+   "Magic": [
+    145,
+    224,
+    false
+   ],
+   "Mak Dok": [
+    584,
+    546,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mau Kc": [
+    472,
+    406,
+    true
+   ],
+   "Player": [
+    72,
+    90,
+    false
+   ],
+   "Soulb": [
+    38,
+    44,
+    false
+   ],
+   "Status": [
+    365,
+    254,
+    true
+   ],
+   "Walker": [
+    27,
+    28,
+    false
+   ],
+   "mats": [
+    268,
+    38,
+    true
+   ],
+   "pibe": [
+    587,
+    550,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Makmah",
+    "HatshepsuT",
+    "Makmah"
+   ],
+   [
+    "mats",
+    "Mak Dok",
+    "mats"
+   ],
+   [
+    "Mau Kc",
+    "CrisZJ",
+    "Mau Kc"
+   ],
+   [
+    "Mathhias",
+    "pibe",
+    "Mathhias"
+   ],
+   [
+    "Status",
+    "KRS",
+    "Status"
+   ],
+   [
+    "Colesito",
+    "Walker",
+    "Colesito"
+   ],
+   [
+    "Soulb",
+    "Mau Kc",
+    "Soulb"
+   ],
+   [
+    "Makmah",
+    "Magic",
+    "Makmah"
+   ],
+   [
+    "mats",
+    "Status",
+    "mats"
+   ],
+   [
+    "Makmah",
+    "Colesito",
+    "Makmah"
+   ],
+   [
+    "mats",
+    "Soulb",
+    "mats"
+   ],
+   [
+    "mats",
+    "Makmah",
+    "mats"
+   ],
+   [
+    "Colesito",
+    "Soulb",
+    "Colesito"
+   ],
+   [
+    "ojos melancólicos 🇨🇱",
+    "LSO",
+    ""
+   ],
+   [
+    "Player",
+    "Lucho",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "Colesito": 51,
+   "CrisZJ": 38,
+   "HatshepsuT": 1,
+   "KRS": 1,
+   "LSO": 5,
+   "Lucho": 4,
+   "Magic": 9,
+   "Mak Dok": 1,
+   "Makmah": 125,
+   "Mau Kc": 1,
+   "Player": 17,
+   "Soulb": 35,
+   "Status": 3,
+   "Walker": 13,
+   "mats": 15,
+   "pibe": 1
+  },
+  "fecha": "19/11",
+  "noche": true,
+  "nombre": "CHOP COMPE CHILL V.1",
+  "num": 664,
+  "participantes": 18,
+  "sello": {
+   "mats": ""
+  },
+  "sv": "CH",
+  "t": "2026-11-22T07:06:53Z",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    10000
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Colesito",
+    "Tercero",
+    3000
+   ],
+   [
+    "Mau Kc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Status",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Cuarto",
+    2250
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Magic",
+    "Cuartos",
+    1250
+   ],
+   [
+    "HatshepsuT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mak Dok",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "pibe",
+    "Octavos",
+    1250
+   ],
+   [
+    "KRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "ojos melancólicos 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "LSO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lucho",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
  "665": {
   "al_dia": true,
   "antes": {
@@ -53677,6 +53955,640 @@
     "doble h",
     "Cuartos",
     2500
+   ]
+  ],
+  "v": 2
+ },
+ "666": {
+  "antes": {
+   "23": [
+    370,
+    261,
+    true
+   ],
+   "Abyssus": [
+    22,
+    22,
+    false
+   ],
+   "CNC": [
+    360,
+    248,
+    true
+   ],
+   "Colesito": [
+    8,
+    8,
+    false
+   ],
+   "Dios": [
+    69,
+    85,
+    false
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Flash": [
+    294,
+    125,
+    true
+   ],
+   "Julda": [
+    128,
+    187,
+    false
+   ],
+   "LRS": [
+    42,
+    50,
+    false
+   ],
+   "Lalox": [
+    129,
+    189,
+    false
+   ],
+   "Sanito": [
+    588,
+    551,
+    true
+   ],
+   "Yeyox": [
+    95,
+    126,
+    false
+   ],
+   "angelo": [
+    573,
+    535,
+    true
+   ],
+   "beneroo": [
+    320,
+    182,
+    true
+   ],
+   "tommy": [
+    461,
+    391,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Lalox",
+    "angelo",
+    "Lalox"
+   ],
+   [
+    "Julda",
+    "LRS",
+    "Julda"
+   ],
+   [
+    "beneroo",
+    "Dios",
+    "beneroo"
+   ],
+   [
+    "Flash",
+    "CNC",
+    "Flash"
+   ],
+   [
+    "23",
+    "Colesito",
+    "23"
+   ],
+   [
+    "tommy",
+    "Lvel 🇻🇪",
+    "tommy"
+   ],
+   [
+    "Yeyox",
+    "Sanito",
+    "Yeyox"
+   ],
+   [
+    "Yeyox",
+    "Erian",
+    "Yeyox"
+   ],
+   [
+    "Lalox",
+    "Abyssus",
+    "Lalox"
+   ],
+   [
+    "Flash",
+    "beneroo",
+    "Flash"
+   ],
+   [
+    "Julda",
+    "tommy",
+    "Julda"
+   ],
+   [
+    "Yeyox",
+    "23",
+    "Yeyox"
+   ],
+   [
+    "Lalox",
+    "Julda",
+    "Lalox"
+   ],
+   [
+    "Flash",
+    "Yeyox",
+    "Flash"
+   ],
+   [
+    "Flash",
+    "Lalox",
+    "Flash"
+   ],
+   [
+    "Julda",
+    "Yeyox",
+    "Julda"
+   ]
+  ],
+  "ev_antes": {
+   "23": 4,
+   "Abyssus": 24,
+   "CNC": 3,
+   "Colesito": 51,
+   "Dios": 15,
+   "Erian": 87,
+   "Flash": 2,
+   "Julda": 3,
+   "LRS": 43,
+   "Lalox": 2,
+   "Sanito": 1,
+   "Yeyox": 4,
+   "angelo": 1,
+   "beneroo": 2,
+   "tommy": 1
+  },
+  "fecha": "19/11",
+  "noche": true,
+  "nombre": "CHOP COMPE NOCTURNA V.1",
+  "num": 666,
+  "participantes": 17,
+  "sello": {
+   "Flash": ""
+  },
+  "sv": "CH",
+  "t": "2026-11-22T07:06:54Z",
+  "tabla": [
+   [
+    "Flash",
+    "Campeón",
+    10000
+   ],
+   [
+    "Lalox",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Julda",
+    "Tercero",
+    6000
+   ],
+   [
+    "Yeyox",
+    "Cuarto",
+    4500
+   ],
+   [
+    "beneroo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "tommy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "23",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Abyssus",
+    "Cuartos",
+    1250
+   ],
+   [
+    "angelo",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dios",
+    "Octavos",
+    1250
+   ],
+   [
+    "CNC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sanito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "667": {
+  "antes": {
+   "Abyssus": [
+    22,
+    22,
+    false
+   ],
+   "Andres": [
+    58,
+    70,
+    false
+   ],
+   "Ariaxer": [
+    79,
+    98,
+    false
+   ],
+   "BLITZ": [
+    299,
+    140,
+    true
+   ],
+   "BNA": [
+    270,
+    45,
+    true
+   ],
+   "Chente": [
+    340,
+    218,
+    true
+   ],
+   "Colesito": [
+    8,
+    8,
+    false
+   ],
+   "Deko": [
+    112,
+    152,
+    false
+   ],
+   "EIDP": [
+    276,
+    72,
+    true
+   ],
+   "Gus": [
+    92,
+    120,
+    false
+   ],
+   "Magic": [
+    145,
+    224,
+    false
+   ],
+   "Majiztral": [
+    28,
+    29,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    20,
+    20,
+    false
+   ],
+   "Mito": [
+    17,
+    17,
+    false
+   ],
+   "OG": [
+    21,
+    21,
+    false
+   ],
+   "Player": [
+    72,
+    90,
+    false
+   ],
+   "Snow": [
+    6,
+    6,
+    false
+   ],
+   "Status": [
+    365,
+    254,
+    true
+   ],
+   "compare": [
+    359,
+    247,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Abyssus",
+    "Deko",
+    "Abyssus"
+   ],
+   [
+    "BNA",
+    "Chente",
+    "BNA"
+   ],
+   [
+    "BNA",
+    "Andres",
+    "BNA"
+   ],
+   [
+    "Status",
+    "BLITZ",
+    "Status"
+   ],
+   [
+    "Status",
+    "Ariaxer",
+    "Status"
+   ],
+   [
+    "Mito",
+    "compare",
+    "Mito"
+   ],
+   [
+    "Mito",
+    "Gus",
+    "Mito"
+   ],
+   [
+    "Colesito",
+    "Magic",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "Player",
+    "Colesito"
+   ],
+   [
+    "OG",
+    "Majiztral",
+    "OG"
+   ],
+   [
+    "OG",
+    "Snow",
+    "OG"
+   ],
+   [
+    "Makmah",
+    "Andres",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Miniboy",
+    "Makmah"
+   ],
+   [
+    "EIDP",
+    "Gus",
+    "EIDP"
+   ],
+   [
+    "EIDP",
+    "Magic",
+    "EIDP"
+   ],
+   [
+    "EIDP",
+    "Majiztral",
+    "EIDP"
+   ],
+   [
+    "Abyssus",
+    "Colesito",
+    "Abyssus"
+   ],
+   [
+    "BNA",
+    "OG",
+    "BNA"
+   ],
+   [
+    "Makmah",
+    "Status",
+    "Makmah"
+   ],
+   [
+    "EIDP",
+    "Mito",
+    "EIDP"
+   ],
+   [
+    "Abyssus",
+    "Makmah",
+    "Abyssus"
+   ],
+   [
+    "BNA",
+    "EIDP",
+    "BNA"
+   ],
+   [
+    "Abyssus",
+    "BNA",
+    "Abyssus"
+   ],
+   [
+    "EIDP",
+    "Makmah",
+    "EIDP"
+   ]
+  ],
+  "ev_antes": {
+   "Abyssus": 24,
+   "Andres": 22,
+   "Ariaxer": 19,
+   "BLITZ": 12,
+   "BNA": 18,
+   "Chente": 7,
+   "Colesito": 51,
+   "Deko": 6,
+   "EIDP": 12,
+   "Gus": 15,
+   "Magic": 9,
+   "Majiztral": 38,
+   "Makmah": 125,
+   "Miniboy": 68,
+   "Mito": 49,
+   "OG": 24,
+   "Player": 17,
+   "Snow": 47,
+   "Status": 3,
+   "compare": 4
+  },
+  "fecha": "21/11",
+  "noche": true,
+  "nombre": "__ DESGRACIAS EN TOKYO VOL 32 1v1 __",
+  "num": 667,
+  "participantes": 25,
+  "sello": {
+   "Abyssus": "5bf59abc130a:a8d8b7335469"
+  },
+  "sv": "FFA",
+  "t": "2026-11-22T07:06:54Z",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    10000
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "EIDP",
+    "Tercero",
+    6000
+   ],
+   [
+    "Makmah",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OG",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Status",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1875
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1875
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1875
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1875
+   ],
+   [
+    "Deko",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chente",
+    "Octavos",
+    1250
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "compare",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2
@@ -54462,6 +55374,599 @@
     "MCO",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "673": {
+  "antes": {
+   "AbrahamH": [
+    107,
+    144,
+    false
+   ],
+   "Adriagner": [
+    40,
+    47,
+    false
+   ],
+   "Fecha": [
+    373,
+    268,
+    true
+   ],
+   "MCO": [
+    11,
+    11,
+    false
+   ],
+   "Mark98": [
+    379,
+    277,
+    true
+   ],
+   "NXUZ": [
+    24,
+    25,
+    false
+   ],
+   "OKAM": [
+    25,
+    26,
+    false
+   ],
+   "Soulb": [
+    38,
+    44,
+    false
+   ],
+   "Vilca": [
+    66,
+    80,
+    false
+   ],
+   "giansito": [
+    304,
+    153,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "MCO",
+    "Mark98",
+    "MCO"
+   ],
+   [
+    "NXUZ",
+    "Adriagner",
+    "NXUZ"
+   ],
+   [
+    "NXUZ",
+    "Vilca",
+    "NXUZ"
+   ],
+   [
+    "Soulb",
+    "Fecha",
+    "Soulb"
+   ],
+   [
+    "Soulb",
+    "giansito",
+    "Soulb"
+   ],
+   [
+    "AbrahamH",
+    "OKAM",
+    "AbrahamH"
+   ],
+   [
+    "MCO",
+    "NXUZ",
+    "MCO"
+   ],
+   [
+    "Soulb",
+    "AbrahamH",
+    "Soulb"
+   ],
+   [
+    "AbrahamH",
+    "NXUZ",
+    "AbrahamH"
+   ],
+   [
+    "MCO",
+    "Soulb",
+    "MCO"
+   ]
+  ],
+  "ev_antes": {
+   "AbrahamH": 6,
+   "Adriagner": 25,
+   "Fecha": 3,
+   "MCO": 49,
+   "Mark98": 5,
+   "NXUZ": 52,
+   "OKAM": 32,
+   "Soulb": 35,
+   "Vilca": 29,
+   "giansito": 4
+  },
+  "fecha": "21/11",
+  "noche": true,
+  "nombre": "GRISELDA STYLE",
+  "num": 673,
+  "participantes": 10,
+  "sello": {
+   "MCO": "f2f52dfa2908:a8d8b7335469"
+  },
+  "sv": "DDS",
+  "t": "2026-11-22T07:06:55Z",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Soulb",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "AbrahamH",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mark98",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fecha",
+    "Cuartos",
+    2000
+   ],
+   [
+    "giansito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "674": {
+  "antes": {
+   "23": [
+    370,
+    261,
+    true
+   ],
+   "Colesito": [
+    8,
+    8,
+    false
+   ],
+   "DarnBless": [
+    285,
+    110,
+    true
+   ],
+   "Deuxs": [
+    80,
+    99,
+    false
+   ],
+   "Efimero": [
+    289,
+    115,
+    true
+   ],
+   "Enzinho": [
+    576,
+    538,
+    true
+   ],
+   "G meiker": [
+    577,
+    539,
+    true
+   ],
+   "Geoka": [
+    29,
+    31,
+    false
+   ],
+   "Gus": [
+    92,
+    120,
+    false
+   ],
+   "Inhuman": [
+    150,
+    234,
+    false
+   ],
+   "JEIXDER": [
+    81,
+    100,
+    false
+   ],
+   "Jodnes": [
+    497,
+    435,
+    true
+   ],
+   "Jupiter": [
+    63,
+    76,
+    false
+   ],
+   "Kaled": [
+    471,
+    405,
+    true
+   ],
+   "LEWITO": [
+    114,
+    159,
+    false
+   ],
+   "MCO": [
+    11,
+    11,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Minis": [
+    207,
+    459,
+    false
+   ],
+   "Mito": [
+    17,
+    17,
+    false
+   ],
+   "Paria": [
+    275,
+    69,
+    true
+   ],
+   "THO": [
+    121,
+    169,
+    false
+   ],
+   "TheOg": [
+    429,
+    349,
+    true
+   ],
+   "XMILE": [
+    228,
+    555,
+    false
+   ],
+   "Yeyox": [
+    95,
+    126,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Mito",
+    "JEIXDER",
+    "Mito"
+   ],
+   [
+    "Mito",
+    "Jodnes",
+    "Mito"
+   ],
+   [
+    "TheOg",
+    "Geoka",
+    "TheOg"
+   ],
+   [
+    "TheOg",
+    "Inhuman",
+    "TheOg"
+   ],
+   [
+    "Makmah",
+    "Minis",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "LEWITO",
+    "Makmah"
+   ],
+   [
+    "Paria",
+    "Efimero",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "Enzinho",
+    "Paria"
+   ],
+   [
+    "Kaled",
+    "Gus",
+    "Kaled"
+   ],
+   [
+    "Kaled",
+    "23",
+    "Kaled"
+   ],
+   [
+    "MCO",
+    "Jupiter",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "DarnBless",
+    "MCO"
+   ],
+   [
+    "Yeyox",
+    "Deuxs",
+    "Yeyox"
+   ],
+   [
+    "Yeyox",
+    "G meiker",
+    "Yeyox"
+   ],
+   [
+    "Yeyox",
+    "Jupiter",
+    "Yeyox"
+   ],
+   [
+    "THO",
+    "XMILE",
+    "THO"
+   ],
+   [
+    "THO",
+    "Colesito",
+    "THO"
+   ],
+   [
+    "THO",
+    "DarnBless",
+    "THO"
+   ],
+   [
+    "Mito",
+    "Kaled",
+    "Mito"
+   ],
+   [
+    "MCO",
+    "TheOg",
+    "MCO"
+   ],
+   [
+    "Yeyox",
+    "Makmah",
+    "Yeyox"
+   ],
+   [
+    "THO",
+    "Paria",
+    "THO"
+   ],
+   [
+    "Mito",
+    "THO",
+    "Mito"
+   ],
+   [
+    "MCO",
+    "Yeyox",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Mito",
+    "MCO"
+   ]
+  ],
+  "ev_antes": {
+   "23": 4,
+   "Colesito": 51,
+   "DarnBless": 16,
+   "Deuxs": 12,
+   "Efimero": 11,
+   "Enzinho": 1,
+   "G meiker": 1,
+   "Geoka": 35,
+   "Gus": 15,
+   "Inhuman": 2,
+   "JEIXDER": 11,
+   "Jodnes": 2,
+   "Jupiter": 17,
+   "Kaled": 1,
+   "LEWITO": 9,
+   "MCO": 49,
+   "Makmah": 125,
+   "Minis": 2,
+   "Mito": 49,
+   "Paria": 22,
+   "THO": 4,
+   "TheOg": 2,
+   "XMILE": 1,
+   "Yeyox": 4
+  },
+  "fecha": "21/11",
+  "noche": true,
+  "nombre": "CELEBRITY DEATH MATCH Vol. IV",
+  "num": 674,
+  "participantes": 26,
+  "sello": {
+   "MCO": "f2f52dfa2908:a8d8b7335469"
+  },
+  "sv": "CH",
+  "t": "2026-11-22T07:06:54Z",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    10000
+   ],
+   [
+    "Mito",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "THO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Yeyox",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Kaled",
+    "Cuartos",
+    2500
+   ],
+   [
+    "TheOg",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1875
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1875
+   ],
+   [
+    "JEIXDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jodnes",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Inhuman",
+    "Octavos",
+    1250
+   ],
+   [
+    "Minis",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Enzinho",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1250
+   ],
+   [
+    "23",
+    "Octavos",
+    1250
+   ],
+   [
+    "Deuxs",
+    "Octavos",
+    1250
+   ],
+   [
+    "G meiker",
+    "Octavos",
+    1250
+   ],
+   [
+    "XMILE",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2
