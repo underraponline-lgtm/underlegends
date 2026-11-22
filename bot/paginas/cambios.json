@@ -10,6 +10,19 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {
+        "version": "7.71",
+        "dia": "2026-11-22",
+        "cuando": "2026-11-22T02:40:00-05:00",
+        "titulo": "Los comandos del bot, revisados",
+        "items": [
+            "**Todo en «tú»** en la lista del «/»: `/notify`, `/foto`, `/borrar-mis-datos`, `/agendar` y `/crew`.",
+            "**`/crew` muestra la imagen de tu crew**, con su escudo, en vez de la franja de siempre; el link para entrar es el corto, y si eres la única persona te avisa que la crew se cierra.",
+            "**`/afiche`, `/llave` y `/agendar` andan en los servidores que entraron con `/setup`**, y si algo falla te lo dice sólo a ti.",
+            "**`/versus`** te habla a ti («Todavía no desbloqueaste…») y ya no dice un ganador y un marcador que no coinciden.",
+            "**`/agendar` borra sin pedir día, hora ni país**, y `/apodo`, `/drops`, `/inventario`, `/foto`, `/vincular` y la ayuda dicen lo que pasa hoy."
+        ]
+    },
     {"version": "7.70", "dia": "2026-11-22", "cuando": "2026-11-22T02:05:00-05:00", "titulo": "El beat de las historias, también en el iPhone", "items": ["En el **iPhone** el beat de las historias suena desde el toque que las abre, y **también con el modo silencio**, como en Instagram. Si no quieres oírlo, el parlante de arriba lo apaga."]},
     {"version": "7.69", "dia": "2026-11-22", "cuando": "2026-11-22T01:50:00-05:00", "titulo": "Menos mensajes al terminar un evento", "items": ["Al terminar un evento, el bot manda **un solo mensaje** en el chat del servidor: los premios, la bienvenida a quien debutó y la imagen de la noche, todo junto.", "En la imagen de la noche, **un equipo de cuatro sale con sus cuatro tarjetas**, cada una con su corona si ganaron."]},
     {"version": "7.68", "dia": "2026-11-21", "cuando": "2026-11-21T17:44:00-05:00", "titulo": "Historias con su canción, y comentar sin salir", "items": ["Las **historias esperan a su canción**: la barra y el beat arrancan juntos, y mientras baja dice «Cargando el beat…». La canción de la historia que sigue ya se baja antes de llegar.", "**Cada historia dura según lo que muestra**: un logo, poco; un afiche o una lista de caras, más; y con beat, lo suficiente para oírlo.", "**Comentar desde el Inicio ya no te lleva a Publicaciones**: la publicación se abre encima, con sus comentarios y la caja para escribir. También en los perfiles."]},
