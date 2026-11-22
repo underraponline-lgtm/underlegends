@@ -178,6 +178,11 @@ a.rf-iv:hover{outline:2px solid var(--linea);outline-offset:-2px}
 }
 @container rf (min-width:900px){
   .rf-tal{grid-template-columns:repeat(10,minmax(0,1fr));gap:10px}
+  /* 🎁 el premio se apoya también debajo de la casilla de al lado cuando ésa no da premio (revisión 22/11/2026, G1#19): «2 Dragón
+     Drops + / 1.500 Puntos de / Tienda» eran tres renglones en 110 px con la columna del 6 vacía al lado. Proximidad: el premio
+     queda debajo de su meta, en dos renglones. En una fila de 10 el único al final es el 10, que no tiene vecina */
+  /* (un `:has()` no puede ir adentro de otro: la casilla sin premio es la que tiene un solo hijo, su caja) */
+  .rf-cas:has(+ .rf-cas > .rf-cas-c:only-child) .rf-cas-p{width:calc(200% + 10px)}
   /* a 3:4 eran cajas de 110×145 casi todas vacías: más bajas, con lugar para la cara, el nombre y el sello */
   .rf-cas-c{aspect-ratio:auto;height:112px}
   .rf-marco{width:auto;height:64%;margin-top:10px}

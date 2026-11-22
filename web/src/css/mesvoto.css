@@ -13,6 +13,16 @@
 /* «LOS NOMINADOS DE NOVIEMBRE SALEN EN» y, ~600 px más a la derecha, «10D 01H»: la frase se leía cortada (revisión 21/11).
    En la franja que espera (la única con `role="status"`) la cuenta sigue a «EN» */
 .sd-franja[role="status"] .sd-fr-sp{display:none}
+/* 📏 y esa franja mide lo que dice (revisión 22/11/2026, G5#9): a lo ancho, la cuenta ocupaba ~545 px y quedaban ~650 de blanco
+   vacío. En la página de un servidor sin ganadores todavía, la franja y su explicación van lado a lado en la compu: era
+   franja, párrafo y un hueco de ~650×230 */
+.sd-franja[role="status"]{width:fit-content;max-width:100%}
+@media (min-width: 900px){
+  .app #sv-mes:not(:has(.ma-hist)):has(> .sd-franja[role="status"]){display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:28px;align-items:center}
+  .app #sv-mes:not(:has(.ma-hist)):has(> .sd-franja[role="status"]) > :not(.sd-franja):not(.ma-como){grid-column:1/-1}
+  .app #sv-mes:not(:has(.ma-hist)):has(> .sd-franja[role="status"]) > .sd-franja{margin-bottom:6px}
+  .app #sv-mes:not(:has(.ma-hist)):has(> .sd-franja[role="status"]) > .ma-como{margin:0}
+}
 .sd-pips{display:flex;gap:4px}
 .sd-pips i{width:22px;height:7px;background:#C9C9C5}
 .sd-pips i.sd-on{background:#030304}
@@ -49,7 +59,7 @@
 .sd-cat{display:grid;gap:10px;min-width:0;padding:16px 0;border-top:1.5px solid var(--suave)}
 .sd-cats>.sd-cat:first-child{padding-top:4px;border-top:0}
 .sd-cat-t{display:grid;gap:5px;align-content:start;justify-items:start;min-width:0}
-.sd-cat-t>b{font:900 18px/1.1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;letter-spacing:.02em}
+.sd-cat-t>b{font:900 18px/1.1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;letter-spacing:.02em;text-wrap:balance} /* «REVELACIÓN DEL / MES» (G5#18) */
 .sd-cat-t>small{font:500 13.5px/1.35 Archivo,sans-serif;color:var(--gris)}
 .sd-nota{font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:#29B298}
 .sd-nota.sd-gris{color:var(--gris)}
@@ -93,6 +103,13 @@ button.sd-nom:hover .sd-votar{border-color:var(--tinta)}
 .sd-cat.sd-t-carta .sd-nom,.sd-cat.sd-t-vid .sd-nom{display:flex;flex-direction:column}
 .sd-cat.sd-t-carta .sd-votar,.sd-cat.sd-t-vid .sd-votar{margin-top:auto}
 .sd-cat.sd-t-cara .sd-votar{margin-top:2px}
+/* 🃏 LAS CARTAS SE APOYAN ABAJO, COMO EN TARJETAS (revisión 22/11/2026, P1 de la 7.53): la carta con marco del Pase es más angosta
+   —y más baja— y su nombre quedaba 14 px más arriba que el de las vecinas; y el «GANÓ» en el flujo bajaba al ganador 28 px. Con
+   el aire arriba de la carta, los nombres y los «Votar» de una fila quedan en la misma línea. Y las esquinas del marco de la
+   Temporada (salen 1,2 em) tienen su lugar arriba y abajo */
+.sd-cat.sd-t-carta .sd-nom > :not(.sd-gano):not(.sd-nt):not(.sd-votar){margin-top:auto}
+.sd-cat.sd-t-carta .sd-votar{margin-top:0}
+.sd-noms .mk-t:not(.chica){margin-block:1.3em}
 /* lo que no es una cara: el video o la imagen de una de la Liga, la bandera (cuadrados) y el escudo del servidor (redondo) */
 img.sd-cara{object-fit:cover}
 .sd-cuad{display:block;width:42px;height:42px;flex:none;border-radius:4px;object-fit:cover;background:#1A1A1D}

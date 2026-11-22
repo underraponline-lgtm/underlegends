@@ -465,9 +465,11 @@ export function Noticias({ liga, raiz, prueba = '' }) {
             }}>Su perfil</a> : null}
             {/* 💬 comentar, en la fila de los botones (Dlx, 17/11/2026: «ese comentario muévelo a otra parte»): solo, abajo,
                 ocupaba una fila entera para un botón chico */}
+            {/* 💬 y sin comentarios, sólo el globo, como en las otras piezas (revisión 22/11/2026, G1#10): con la palabra sumaban 366 px
+                en 333 y «COMENTAR» volvía a quedar solo en el renglón de abajo */}
             {feat.id ? <a className="lu-btn lu-btn-cm" href={'#/publicaciones/' + encodeURIComponent(feat.id)} onClick={comentarAca(feat)}
-              aria-label={hilo.length ? hilo.length + (hilo.length === 1 ? ' comentario' : ' comentarios') : 'Comentar'}>
-              <Ico n="globo" t={14} />{hilo.length ? num(hilo.length) : 'Comentar'}</a> : null}
+              aria-label={hilo.length ? hilo.length + (hilo.length === 1 ? ' comentario' : ' comentarios') : 'Comentar'} title={hilo.length ? undefined : 'Comentar'}>
+              <Ico n="globo" t={14} />{hilo.length ? num(hilo.length) : null}</a> : null}
           </span>
           <LuSocial liga={liga} it={feat} A={A} hilo={hilo} P={P} sinCm aca />
           {hilo.length >= 2 ? <ComentariosFlotantes liga={liga} it={feat} hilo={hilo} cls="cfl-feat" onAbrir={() => comentarAca(feat)()} /> : <LuNube liga={liga} it={feat} hilo={hilo} n={2} aca />}
@@ -558,7 +560,8 @@ export function Noticias({ liga, raiz, prueba = '' }) {
 // info». El perfil sigue a un toque: la tarjeta abre su visor, que tiene «Ver su perfil»
 export function McPersona({ liga, f, dato, cual = 'temporada', arriba = '' }) {
   // ⏳ mientras la carta se redibuja, su número puede no coincidir con el orden de acá: se dice
-  const vieja = liga.cartaVieja(f.k, cual);
+  // y sólo si hay carta: «SIN CARTA» con «⌛ redibujando» abajo se contradecían (revisión 22/11/2026, G5#10)
+  const vieja = liga.cartaVieja(f.k, cual) && !!liga.cartaUrl(f.k, cual);
   return (
     <article className="mc">
       {/* el puesto de ESTE ranking, arriba y aparte, cuando la carta trae el «#» de otro (ELO, Ligas) */}
@@ -1107,7 +1110,9 @@ function Numeros({ liga }) {
         <section className="rec">
           <div className="mis-cab"><span>LOS RÉCORDS DE LA {liga.temp}</span></div>
           <ol>{(liga.d.records || []).slice(0, 6).map((r) => (
-            <li key={r.id}><span>{r.que}</span><a href={r.k ? '#/r/' + encodeURIComponent(r.k) : undefined}><b>{liga.aka(r.n, r.k)}</b></a><em>{typeof r.v === 'number' ? num(r.v) : r.v}</em></li>
+            // 🔢 «90.5%» llega armado del payload: el decimal con coma y el % separado, como el resto de la página (revisión 22/11/2026,
+            // G5#21). Sólo el número pegado a «%»: el punto de los miles («1.500») no se toca
+            <li key={r.id}><span>{r.que}</span><a href={r.k ? '#/r/' + encodeURIComponent(r.k) : undefined}><b>{liga.aka(r.n, r.k)}</b></a><em>{typeof r.v === 'number' ? num(r.v) : String(r.v).replace(/(\d)\.(\d+)\s*%/, '$1,$2 %')}</em></li>
           ))}</ol>
         </section>
       ) : null}

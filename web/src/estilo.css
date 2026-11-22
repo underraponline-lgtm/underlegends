@@ -25,8 +25,11 @@ h1,h2,h3,p{margin:0}
 .app{--verde:#29B298;--magenta:#E41373;background:var(--fondo);color:var(--tinta);font:400 15px/1.45 Archivo,sans-serif;position:relative}
 .clara{--magenta-tx:#D0106A;--fondo:#FFFFFF;--tinta:#030304;--linea:#030304;--suave:#E2E2DE;--gris:#6E6E6A;--caja:#F3F3F0;--inv:#030304;--inv-tinta:#F6F6F6;
   --escenario:#030304;--esc-tinta:#F6F6F6;--esc-gris:#A5A5A0;--esc-linea:#2A2A2C;--oscura:#030304;--osc-tinta:#F6F6F6}
-.noche{--magenta-tx:#E41373;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#232326;--gris:#A5A5A0;--caja:#101012;--inv:#F6F6F6;--inv-tinta:#030304;
+.noche{--magenta-tx:#FF5FA2;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#232326;--gris:#A5A5A0;--caja:#101012;--inv:#F6F6F6;--inv-tinta:#030304;
   --escenario:#121214;--esc-tinta:#F6F6F6;--esc-gris:#A5A5A0;--esc-linea:#2A2A2C;--oscura:#E41373;--osc-tinta:#FFFFFF;color-scheme:dark}
+/* 🌙 en Noche el magenta de texto es el rosa de lo que va sobre negro (revisión 22/11/2026, G2#4): #E41373 sobre las filas #101012
+   daba 4,20:1 («+82.350», «▼1», «3/13»); éste, 6,7. Medido en 13 páginas: ninguna lo usa sobre una pieza clara (las claras
+   traen su propio `--magenta-tx`, como `.negra .poster` o `.cmx-blanca`) */
 .barra-ul{height:6px;background:linear-gradient(90deg,var(--verde) 50%,var(--magenta) 50%)}
 .cab{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;border-bottom:2px solid var(--linea)}
 .marca{display:flex;align-items:center;gap:10px;font:900 17px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
@@ -517,6 +520,10 @@ h1,h2,h3,p{margin:0}
 .mc-dib{white-space:nowrap}
 .mcs2 > .mc{display:flex;flex-direction:column;gap:8px}
 .mcs2 > .mc > .mc-pie{margin-top:auto}
+/* 🎌 el estandarte del marco de País cuelga 5,2 em debajo de la carta (`.mk-est`, vivo.css): se le guarda el lugar, en las em
+   del marco (revisión 22/11/2026, G5#2). Sin esto «⌛ redibujando» se escribía encima de «ARGENTINA» y las puntas pisaban la
+   carta de la fila de abajo. Es el mismo recurso que las esquinas de la Temporada en Tarjetas */
+.mcs2 > .mc .mk:has(.mk-est){margin-bottom:5.4em}
 @media (min-width: 900px){.app .mcs2{grid-template-columns:repeat(5,1fr)}}
 .r2 li{grid-template-columns:40px 26px 1fr 34px 54px}
 .r-nom small{display:block;font:700 15px/1.2 "Barlow Condensed",sans-serif;color:var(--gris);margin-top:2px}
@@ -599,6 +606,10 @@ h1,h2,h3,p{margin:0}
 .f-minis .sincarta{aspect-ratio:900/1314;padding:4px;gap:2px}
 .f-minis .sincarta b,.f-minis .sincarta small,.f-minis .sincarta .sc-flag{display:none}
 .sincarta small{white-space:nowrap;font-size:12px;letter-spacing:.08em;padding:4px 5px}
+/* 📐 la caja punteada con la proporción de la carta que falta (`SinCarta`, piezas.jsx; revisión 22/11/2026, G5#10) */
+.sincarta.sc-competitivo{aspect-ratio:300/485}
+.sincarta.sc-servidor{aspect-ratio:300/405}
+.sincarta.sc-pais{aspect-ratio:300/402}
 .gano{top:-12px;bottom:auto}
 @media (min-width: 900px){.app .hero-der .lado{width:128px}}
 @media (min-width: 900px){.app .hero-der .vs{font-size:44px}}
@@ -959,6 +970,7 @@ h1,h2,h3,p{margin:0}
 .mis-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:11px 14px;border-bottom:2px solid var(--linea);
   font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.04em}
 .mis-cab em{font-style:normal;color:var(--magenta);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.mis-cab > span{text-wrap:balance} /* «LO QUE SE JUGÓ · DOS / SEMANAS» a 390 (revisión 22/11/2026, G5#18) */
 .mis ol,.te-l,.rec ol{list-style:none;margin:0;padding:0}
 .mis li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--suave)}
 .mis li:last-child,.te-l li:last-child,.rec li:last-child{border-bottom:0}
@@ -1016,12 +1028,20 @@ h1,h2,h3,p{margin:0}
 .rec li span{grid-column:1/-1;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
 .rec li b{font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .rec li em{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;font-style:normal;color:var(--magenta)}
+/* 👆 el récord entero lleva al perfil: el link era el nombre solo, 22 px de alto en el celular (revisión 22/11/2026, G5#16) */
+.rec li{position:relative}
+.rec li a[href]::after{content:"";position:absolute;inset:0}
 .negra .poster{--magenta-tx:#D0106A;background:#F6F6F6;color:#030304;border-color:#F6F6F6}
 .negra .p-foto{border-color:#030304;background:#E2E2DE;color:#030304}
 .negra .p-cat{color:#6E6E6A}
 .negra .poster.hecho .p-precio{background:#6E6E6A}
 .negra .poster.cazadores li b{color:#030304}
 .negra .p-sello.gris{color:#C9C9C5;border-color:#C9C9C5}
+/* 🔖 EL SELLO SE LEE CONTRA SU PROPIA PLACA (revisión 22/11/2026, G2#2): el medidor lo midió contra el afiche claro (1,54:1) y
+   no ve la placa, pero la placa al 75 % sobre una foto clara queda gris (#404040), y ahí el magenta de «CAZADO» daba 2,4:1. Con la
+   placa al 90 % y el rosa de lo que va sobre negro, el peor caso (foto blanca) da 6,7:1 para CAZADO y 10:1 para SE ESCONDIÓ */
+.negra .poster .p-sello{background:rgba(3,3,4,.9)}
+.negra .poster .p-sello:not(.gris){color:#FF5FA2}
 @media (min-width: 900px){.app .svs2{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .sv2>div{min-width:0}
 .mw-rail{grid-auto-columns:max-content}
@@ -1029,12 +1049,31 @@ h1,h2,h3,p{margin:0}
 @media (min-width: 900px){.app .mw-rail{grid-auto-columns:max-content}}
 @media (min-width: 900px){.app .mw-rail .poster{width:184px}}
 .mw-div{width:34px;padding:0}
+/* 🧱 SE BUSCA EN EL RANKING, EN LA COMPU: GRILLA Y NO TIRA (revisión 22/11/2026, G2#15 y P2 de la 7.53; abajo.jsx `SeBusca`).
+   En un cartel de «se busca» manda la cara: pasa de 64 a 120 px. La semana pasada va detrás de su botón y, abierta, arranca
+   con su raya a lo ancho. En el celular sigue la tira que se desliza (ahí sí se puede) */
+.mw-ant{display:contents}
+.mw-ant>*{scroll-snap-align:start}
+.mw-ver-ant{display:none}
+@media (min-width: 900px){
+  .app .mw-rail.mw-grilla{grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:10px;overflow:visible;
+    scroll-snap-type:none;padding:0}
+  .app .mw-rail.mw-grilla .poster{width:auto}
+  .app .mw-rail.mw-grilla .p-foto{width:120px;height:120px;font-size:40px}
+  .app .mw-rail.mw-grilla:not(.ver-ant) .mw-ant{display:none}
+  .app .mw-rail.mw-grilla .mw-div{grid-column:1/-1;width:auto;place-items:center start;border-left:0;border-top:2px dashed var(--suave);padding:12px 0 2px}
+  .app .mw-rail.mw-grilla .mw-div span{writing-mode:horizontal-tb;transform:none}
+  .app #sebusca:has(.mw-grilla) .mw-fl{display:none}
+  .app .mw-ver-ant{display:inline-flex;margin-top:12px}
+}
 .tira-s{background:#030304;color:#F6F6F6;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t a" "l l" "d d";
   gap:10px 14px;padding:12px 16px 16px;border-top:1px solid #2A2A2E;scroll-margin-top:58px}
 .ts-cab{display:contents}
 .ts-t{grid-area:t;align-self:center;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.07em;color:#29B298}
 .ts-a{grid-area:a;align-self:center;display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;
   letter-spacing:0.04em;text-transform:uppercase;color:#F6F6F6;white-space:nowrap}
+/* 👆 «Lunes de la liga» medía 124×15 en el celular: 44 para el dedo sin mover el dibujo (revisión 22/11/2026, G1#7, Fitts) */
+@media (max-width: 899.98px){.ts-a{position:relative}.ts-a::after{content:"";position:absolute;inset:-15px -6px}}
 .ts-l{grid-area:l;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
 .ts-l li{display:grid;justify-items:center;gap:7px;border:1.5px solid #3A3A3E;padding:8px 4px}
 .ts-id{display:flex;align-items:center;gap:5px;min-width:0}
@@ -1072,7 +1111,7 @@ h1,h2,h3,p{margin:0}
 @media (min-width: 900px){.app .ir-b{display:none}}
 .ir-b-i{width:30px;height:30px;flex:none;display:grid;place-items:center;border-radius:50%;background:#2A2A2E;font-size:15px;line-height:1}
 .ir-b-t{flex:1;min-width:0;display:grid;gap:2px}
-.ir-b-t small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
+.ir-b-t small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
 .ir-b-t b{font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ir-b-c{flex:none;display:grid;place-items:center;color:#A5A5A0;transform:rotate(90deg);transition:transform .15s}
 .ir-a.abierto .ir-b-c{transform:rotate(-90deg)}

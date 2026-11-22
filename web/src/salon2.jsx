@@ -738,8 +738,10 @@ function Figuras({ liga, filas }) {
 }
 
 // las pestañas de «Lo demás del Salón»: [clave, nombre, el corto del índice]. Las que no tienen nada no se dibujan
-const PESTANAS = [['rec', 'Récords', 'Récords'], ['ins', 'Insignias', 'Insignias'], ['ligas', 'Campeones de las ligas', 'Ligas'],
-  ['fig', 'Figuras', 'Figuras'], ['pase', 'Salón del Pase', 'El Pase']];
+// 🏷️ un destino, un nombre (revisión 22/11/2026, G1#20): el índice decía «Ligas» y «El Pase» y las pestañas «Campeones de las
+// ligas» y «Salón del Pase», y llevaban al mismo lugar. Quedan los cortos, como las otras tres (una palabra cada una)
+const PESTANAS = [['rec', 'Récords', 'Récords'], ['ins', 'Insignias', 'Insignias'], ['ligas', 'Ligas', 'Ligas'],
+  ['fig', 'Figuras', 'Figuras'], ['pase', 'El Pase', 'El Pase']];
 function LoDemas({ liga, tabs, tab, setTab, carga }) {
   if (!tabs.length) return carga ? <p className="sec sl-carga" role="status">Cargando las insignias…</p> : null;
   const t = tabs.find((x) => x[0] === tab) || tabs[0];

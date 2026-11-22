@@ -295,17 +295,19 @@ export function BotonModsFlot({ dc, k }) {
   const largo = useRef(0);
   // 🙈 SE VA AL BAJAR Y VUELVE AL SUBIR (revisión 21/11, G6#17): quieta abajo a la derecha tapaba el jurado de la llave, el
   // multiplicador del Dashboard, la vitrina del perfil y la escena del Pase. Leyendo hacia abajo no estorba; para usarla
-  // alcanza con subir un poco. Arriba de todo se ve siempre. Con el panel abierto no se mueve
-  const [fuera, setFuera] = useState(false);
+  // alcanza con subir un poco. Con el panel abierto no se mueve.
+  // 🙈 Y ARRANCA ESCONDIDA (revisión 22/11/2026, G6#5): «arriba de todo se ve siempre» era justo la pantalla que se mira primero,
+  // y ahí tapaba «VITRI[NA]» del perfil, la 3.ª casilla del Pase y «47 se anotaron» de la llave. Es un atajo que se repite (Mods
+  // está en el menú de tu cara): aparece cuando subes, que es cuando lo buscas (Fitts y Hick)
+  const [fuera, setFuera] = useState(true);
   useEffect(() => {
     let antes = window.scrollY || 0, cuadro = 0;
     const mirar = () => {
       cuadro = 0;
       const y = window.scrollY || 0, d = y - antes;
-      if (y < 80) setFuera(false);
-      else if (d > 6) setFuera(true);
+      if (d > 6) setFuera(true);
       else if (d < -6) setFuera(false);
-      if (Math.abs(d) > 6 || y < 80) antes = y;
+      if (Math.abs(d) > 6) antes = y;
     };
     const pedir = () => { if (!cuadro) cuadro = requestAnimationFrame(mirar); };
     window.addEventListener('scroll', pedir, { passive: true });

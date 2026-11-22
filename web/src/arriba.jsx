@@ -2163,7 +2163,9 @@ function Social({ liga, it, ctx, hilo }) {
   const h = hilo || delHilo(it, liga.ahora);
   // 💬 con dos o más comentarios, flotando (17/11/2026); con uno, la nube de siempre
   // 💬 y comentar abre la hoja encima del Inicio, sin ir a Publicaciones (21/11/2026)
-  return <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={h} P={ctx.P} aca />{h.length >= 2 ? <ComentariosFlotantes liga={liga} it={it} hilo={h} cls="cfl-es" onAbrir={() => comentarAca(it)()} /> : <LuNube liga={liga} it={it} hilo={h} aca />}</div>;
+  // 💬 DE A DOS, COMO EN LAS HISTORIAS (revisión 22/11/2026, G1#1 y G6#3): el héroe mide 400 px fijos en la compu y con tres
+  // filas (150 px) la de abajo —la más nueva— quedaba 23 px debajo de la tira de momentos
+  return <div className="es-soc"><LuSocial liga={liga} it={it} A={ctx.A} hilo={h} P={ctx.P} aca />{h.length >= 2 ? <ComentariosFlotantes liga={liga} it={it} hilo={h} cls="cfl-es" max={2} onAbrir={() => comentarAca(it)()} /> : <LuNube liga={liga} it={it} hilo={h} aca />}</div>;
 }
 // ⚔️ EN VIVO, CARA A CARA (Dlx, 14/11/2026, a las mejoras: «todas»): la batalla de ahora con las dos cartas (o las caras), el
 // favorito por el OVR de la Temporada —una cuenta simple, y lo dice— y la que sigue debajo
@@ -2272,6 +2274,21 @@ function CampeonVis({ liga, k, nombre, n, sumo, x, sello, corona = true }) {
 // 🛤️ EL CAMINO DEL CAMPEÓN: una fila por ronda con la cara de cada rival (de «Knockout Bracket», una ronda por vez). Reemplaza a
 // la llave entera, que en FFA no entraba (grupos de hasta 6 por lado)
 const primero = (x) => limpio(String(x || '').split(',')[0]);
+// ✂️ el nombre corto de la ronda, para el celular (revisión 22/11/2026, G1#2): «SEMIFINALES» mide ~70 px en una columna de 58
+// y su última letra quedaba debajo de la cara del rival. Las de dos palabras se parten solas en dos renglones
+const RONDA_CORTA = { semifinales: 'Semis', clasificatorias: 'Clasif.' };
+function Ronda({ r }) {
+  const c = RONDA_CORTA[String(r || '').toLowerCase()];
+  return <span className="es-r">{c ? <><span className="es-r-l">{r}</span><span className="es-r-c">{c}</span></> : r}</span>;
+}
+// ✂️ LA FECHA CORTA DE LA TIRA DE MOMENTOS (revisión 22/11/2026, G1#16): en un botón de ~105 px de texto «EL 19 DE OCTUB…» y
+// «VENCE MAÑANA…» perdían justo la parte que informa. La fecha entera sigue en el momento al abrirlo
+function tiraCorta(h) {
+  const s = String(h || '');
+  const m = s.match(/^el (\d+) de ([a-zé]{3})[a-zé]*(?: de (\d{4}))?$/i);
+  if (m) return m[1] + ' ' + m[2] + (m[3] ? ' ' + m[3] : '');
+  return s.replace(/^(Vence (?:hoy|mañana)) .+$/i, '$1').replace(/ · .+$/, '');
+}
 // 🪪 `k`: quién es, para encontrarlo aunque la llave lo tenga escrito con su alias (17/11/2026)
 function Camino({ liga, ll, nombre, k }) {
   const yo = limpio(nombre).toLowerCase();
@@ -2292,7 +2309,7 @@ function Camino({ liga, ll, nombre, k }) {
         const fin = i === ps.length - 1 && p.gano;
         return (
           <div key={i} className={'es-paso' + (fin ? ' fin' : '')}>
-            <span className="es-r">{p.r}</span>
+            <Ronda r={p.r} />
             <span className="es-q">{p.rivales.slice(0, 3).map((x, j) => <Cara key={j} liga={liga} k={(liga.quien(x) || {}).k} nombre={x} cls="cara es-c" />)}
               <span>{p.rivales.length ? <>a <Algunos liga={liga} nombres={p.rivales} cara={false} /></> : 'sin rival'}{p.n > 2 ? ' · grupo de ' + p.n : ''}</span></span>
             <span className="es-ok">{fin ? 'CAMPEÓN' : p.gano ? 'GANÓ' : 'PASÓ'}</span>
@@ -2846,7 +2863,7 @@ export function Hero({ liga, vivoL, children, solo }) {
               <button type="button" key={idDe(m)} className={(k === j ? 'on' : '') + (m.tipo === 'vivo' ? ' vivo' : '')} onClick={() => ver(k)}
                 style={e0 ? { backgroundImage: 'url("' + e0 + '")' } : undefined} aria-current={k === j ? 'true' : undefined}>
                 <img alt="" src={m.sv ? liga.logo(m.sv) : '/ul.png'} />
-                <span><b>{m.et}</b>{m.hora ? <small>{m.hora}</small> : null}</span>
+                <span><b>{m.et}</b>{m.hora ? <small>{tiraCorta(m.hora)}</small> : null}</span>
                 {/* 🔴 SÓLO SI DE VERDAD DURÓ (16/11/2026, Trelok y Dlx: «se mueve muy rápido y sola», «pasa en algunos
                     dispositivos pero en otros no»): con «reducir movimiento» del sistema, la regla general acorta toda
                     animación a 0,01 ms y la que apagaba este reloj perdía por especificidad, así que terminaba al instante

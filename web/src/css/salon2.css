@@ -93,6 +93,8 @@
 .sl-rn{display:flex;align-items:center;gap:8px;min-width:0}
 .sl-rn b{min-width:0;font:900 16px/1.1 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sl-rt>em{font:600 13px/1.25 Archivo,sans-serif;font-style:normal;color:var(--gris);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* «… en DESGRACIAS EN T…»: el evento es lo que hace al récord, y la caja tiene alto de sobra. Dos renglones (revisión 22/11/2026, G1#18) */
+.sl-rt>em{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
 /* ── las insignias, con su rareza (los colores de las bandas de TAG de la Guía) ── */
 .sl-ins{display:grid;gap:12px;margin:0;padding:0;list-style:none}

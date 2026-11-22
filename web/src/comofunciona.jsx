@@ -52,8 +52,17 @@ function useBajoLasPestanas(caja, pagina) {
       if (ro) ro.disconnect();
       ro = null;
       vista = s;
-      if (!s) { el.style.removeProperty('--cf-baja'); return; }
-      ro = new ResizeObserver(() => { el.style.setProperty('--cf-baja', s.offsetHeight + 'px'); });
+      if (!s) { el.style.removeProperty('--cf-baja'); el.classList.remove('en-banda'); return; }
+      // 🎯 Y SI LA FILA TIENE LUGAR A LA DERECHA, ADENTRO DE ELLA (revisión 22/11/2026, G1#8): debajo, en Tarjetas caía justo sobre
+      // la raya que abre «TEMPORADA». El botón es de la página, no de la sección: va en la banda negra, que ahí está vacía desde
+      // x≈600. En el Ranking la fila llega al borde y el botón sigue debajo, como antes
+      const medir = () => {
+        el.style.setProperty('--cf-baja', s.offsetHeight + 'px');
+        const q = el.querySelector('.cf-q');
+        const fin = Math.max(0, ...[...s.querySelectorAll('a, button')].map((x) => x.getBoundingClientRect().right));
+        el.classList.toggle('en-banda', !!q && s.offsetHeight <= 70 && fin + 24 < q.getBoundingClientRect().left);
+      };
+      ro = new ResizeObserver(medir);
       ro.observe(s);
     };
     mirar();

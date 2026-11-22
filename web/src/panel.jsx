@@ -277,7 +277,9 @@ export function FilaRacha({ dc, R, liga, enc }) {
   if (an) extras.push('anuncio');
   // 🗓️ y si todavía falta uno —sin cuenta y sin sorteo quedaban tres—, el próximo evento de la Liga, con su inscripción
   const prox = liga ? liga.luego()[0] || null : null;
-  if (prox) extras.push('proximo');
+  // 🔁 salvo que el botón grande del lobby, justo debajo, ya muestre uno (revisión 22/11/2026, G1#5: el mismo «DDS — ¡DISCORD
+  // STYLE 20 ESTÁ AQUÍ!» salía dos veces a 15 px). Cada pieza un trabajo: el lugar lo toma el que sigue
+  if (prox && !eventoDelBoton(liga).e) extras.push('proximo');
   // ✖️ y el que no falta nunca: el multiplicador más alto de la semana (a las 4 AM no hay eventos anunciados)
   const mm = liga ? (liga.d.mult || {}) : {};
   const mx = Object.entries(mm.sv || {}).sort((p, q) => q[1] - p[1])[0];
@@ -553,7 +555,9 @@ function SinBatallas({ liga, yo, yoF, T, retar }) {
         <div className="pn-sb-rv">
           <Cara liga={liga} k={rv.k} nombre={rv.n} cls="pn-vs-c otro" />
           <span className="pn-sb-tx"><em>{sube ? 'El que tienes arriba' : 'El que te sigue'}</em><b>{limpio(rv.n)}</b>
-            <small>#{rv.pos} · {sube ? 'te faltan ' : 'le llevas '}{num(dif)} pts · {caraACara(liga, yo.k, rv.k)}</small></span>
+            {/* cada dato con su «·» adelante y sin partirse (revisión 22/11/2026, G6#23): a 390 el «·» quedaba colgando al final del
+                renglón y «Primer cruce» solo abajo */}
+            <small>#{rv.pos} <span className="pn-sb-dt">· {sube ? 'te faltan ' : 'le llevas '}{num(dif)} pts</span> <span className="pn-sb-dt">· {caraACara(liga, yo.k, rv.k)}</span></small></span>
           <button type="button" className="btn mag chico" onClick={() => retar(rv)}>Retar</button>
         </div>
       ) : null}
@@ -1115,7 +1119,7 @@ export function PnMiLiga({ liga }) {
         <span className="pn-ml-pos"><strong>#{m.i + 1}</strong><small>de {(m.L.tabla || []).length}</small></span>
         {/* «1 batalla» en singular y «se jugó HACE 3 h» (18/11/2026): `hace()` da sólo el lapso, y «se jugó 3 h» se leía
             como una duración */}
-        <small className="pn-ml-dato">{m.L.pend ? num(m.L.pend) + (Number(m.L.pend) === 1 ? ' batalla por jugar · ' : ' batallas por jugar · ') : ''}{m.L.ult_t ? 'se jugó hace ' + hace(utc(m.L.ult_t).getTime()) : ''}</small>
+        <small className="pn-ml-dato">{m.L.pend ? num(m.L.pend) + (Number(m.L.pend) === 1 ? ' batalla por jugar · ' : ' batallas por jugar · ') : ''}{m.L.ult_t ? <span className="pn-ml-hace">{'se jugó hace ' + hace(utc(m.L.ult_t).getTime())}</span> : ''}</small>
         <span className="pn-ml-m">
           <span><i>Puntos</i><b>{num(m.r[3] || 0)}</b></span>
           <span><i>Jugadas</i><b>{num(m.r[1] || 0)}</b></span>
@@ -1143,7 +1147,7 @@ export function PnMiLiga({ liga }) {
       <span className="pn-ml-n"><small>{yo ? 'Todavía no juegas en una liga. Te recomendamos:' : 'La que más se está jugando:'}</small><b>{limpio(rec.L.n)}</b>
         <small>{siglaDe(rec.L.sv)} · {rec.n} raperos</small></span>
       {rec.por.length ? <span className="pn-ml-por">{rec.por.slice(0, 3).map((p) => <i key={p}>{p}</i>)}</span> : null}
-      <small className="pn-ml-dato">{rec.L.pend ? num(rec.L.pend) + (Number(rec.L.pend) === 1 ? ' batalla por jugar · ' : ' batallas por jugar · ') : ''}{rec.L.ult_t ? 'se jugó hace ' + hace(utc(rec.L.ult_t).getTime()) : ''}</small>
+      <small className="pn-ml-dato">{rec.L.pend ? num(rec.L.pend) + (Number(rec.L.pend) === 1 ? ' batalla por jugar · ' : ' batallas por jugar · ') : ''}{rec.L.ult_t ? <span className="pn-ml-hace">{'se jugó hace ' + hace(utc(rec.L.ult_t).getTime())}</span> : ''}</small>
       {/* quién va arriba en esa liga: las caras de su tabla, para saber contra quién te tocaría */}
       {(rec.L.tabla || []).length ? <span className="pn-ml-top">{rec.L.tabla.slice(0, 3).map((r, i) => {
         const k = (rec.L.ks || {})[r[0]] || '';
@@ -1438,7 +1442,7 @@ export function PnTienda({ saldo, dc, cuadro = false, liga = null }) {
     return (
       <a className="pn-cu pn-ti2 pn-ti3" href="#/tienda">
         <div className="pn-ti2-cab"><h4>Tienda</h4>
-          <span className="pn-ti2-bill"><i aria-hidden="true">$</i><b>{saldo != null ? num(saldo) : '—'}</b></span></div>
+          {saldo != null ? <span className="pn-ti2-bill"><i aria-hidden="true">$</i><b>{num(saldo)}</b></span> : null}</div>
         {p ? (
           <span className="pn-ti3-f" style={{ '--r': rz[1] }}>
             <span className="pn-ti3-luz" aria-hidden="true"><i /><em>✦</em></span>
@@ -1468,7 +1472,7 @@ export function PnTienda({ saldo, dc, cuadro = false, liga = null }) {
     return (
       <a className="pn-cu pn-ti2 pn-ti3" href="#/tienda">
         <div className="pn-ti2-cab"><h4>Tienda</h4>
-          <span className="pn-ti2-bill"><i aria-hidden="true">$</i><b>{saldo != null ? num(saldo) : '—'}</b></span></div>
+          {saldo != null ? <span className="pn-ti2-bill"><i aria-hidden="true">$</i><b>{num(saldo)}</b></span> : null}</div>
         {tope ? (
           <span className="pn-ti3-f" style={{ '--r': 'var(--oro)' }}>
             <span className="pn-ti3-luz con-cara" aria-hidden="true"><i /><Cara liga={liga} k={fc ? fc.k : ''} nombre={fc ? fc.n : caraK} cls="cara pn-ti2-c" /></span>
@@ -1476,11 +1480,13 @@ export function PnTienda({ saldo, dc, cuadro = false, liga = null }) {
           </span>
         ) : null}
         <span className="pn-ti2-l">
+          {/* 💲 sin saldo no hay píldora ni marca (revisión 22/11/2026, G1#14 y G6#22): «$ —» y «desde 500 –» se leían como un dato
+              roto, y el «–» era el «no te alcanza» de alguien sin saldo. Con saldo, el precio apagado ya dice que no alcanza */}
           {items.map(([ic, t, p, desde]) => {
             const ok = saldo != null && saldo >= p;
             return (
               <span key={t} className={ok ? 'si' : ''}><Ico n={ic} t={16} /><i>{t}</i>
-                <strong>{desde ? 'desde ' : ''}{num(p)}</strong><u aria-label={ok ? 'te alcanza' : 'no te alcanza'}>{ok ? '✓' : '–'}</u></span>
+                <strong>{desde ? 'desde ' : ''}{num(p)}</strong>{saldo != null ? <u aria-label={ok ? 'te alcanza' : 'no te alcanza'}>{ok ? '✓' : ''}</u> : null}</span>
             );
           })}
         </span>

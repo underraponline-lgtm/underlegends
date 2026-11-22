@@ -313,6 +313,9 @@
   .bv-pos{font-size:24px}
   .bv-v-lista li:first-child .bv-pos{font-size:30px}
   .bv-v-lista li b{font-size:15px}
+  /* «¡DISCORD STYLE …» al lado de la fecha: el único evento que muestra «Lo que viene» quedaba cortado con la caja libre arriba.
+     En dos renglones entra (revisión 22/11/2026, G1#17) */
+  .bv-v-lista li b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
   .bv-v-lista li:first-child b{font-size:17px}
   .bv-ovr{font-size:22px}
   .bv-v-lista li:first-child .bv-ovr{font-size:26px}

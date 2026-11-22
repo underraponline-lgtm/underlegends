@@ -429,13 +429,15 @@ export function Algunos({ liga, nombres, ks = [], y = ' y ', sep = ', ', ...rest
     <Alguien liga={liga} nombre={x} k={kk} {...resto} /></Fragment>)}</>;
 }
 
-export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
+// 📐 `cual`: la caja punteada mide lo que mediría esa carta (revisión 22/11/2026, G5#10): con la proporción de la Temporada,
+// en Costa Rica «SIN CARTA» quedaba 35 px más alta que las cartas de País de al lado
+export function SinCarta({ liga, k, nombre, cc, cls = 'ci', cual = '' }) {
   const n = limpio(nombre);
   // 🔤 LA PALABRA MÁS LARGA, PORQUE UNA SOLA NO SE PARTE (16/11/2026): «LEANDROKATANA» medía 164 px en una carta de 132 y
   // la sacaba de la pantalla en Competencias. Va en `--n` y `sc-largo`; cada página decide si la usa (hoy, competencias.css)
   const w = Math.max(0, ...n.split(/\s+/).map((x) => x.length));
   return (
-    <div className={cls + ' sincarta'}>
+    <div className={cls + ' sincarta' + (cual ? ' sc-' + cual : '')}>
       <Cara liga={liga} k={k} nombre={nombre} cls="sc-cara" />
       <b className={w >= 9 ? 'sc-largo' : undefined} style={w >= 9 ? { '--n': w } : undefined}>{n}</b>
       <Bandera cc={cc} cls="sc-flag" />
@@ -473,7 +475,7 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, ma
     const w = ref.current.getBoundingClientRect().width;
     setAncho(w > 0 ? w * Math.max(1, window.devicePixelRatio || 1) : -1);
   }, [ancho, src0]);
-  if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : (liga.nombreDe ? liga.nombreDe(k, nombre) : nombre || k)} cc={f ? f.cc : ''} cls={cls} />;
+  if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : (liga.nombreDe ? liga.nombreDe(k, nombre) : nombre || k)} cc={f ? f.cc : ''} cls={cls} cual={cual} />;
   // 🔴 una carta que no carga (R2 corta a veces) mostraba el ícono de imagen rota: se reintenta una vez y, si
   // vuelve a fallar, la cara con «SIN CARTA» (revisión del 30/09/2026). Si falla la chica, entra la grande
   const grande = fallas ? src0 + (src0.indexOf('?') < 0 ? '?' : '&') + 'r=1' : src0;

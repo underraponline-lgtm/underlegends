@@ -24,6 +24,12 @@
 .cx-ult{padding:16px 18px;background:#F6F6F6;color:#030304;box-shadow:6px 6px 0 #29B298}
 .cx-ult-c{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 .cx-ult-c .cx-n{background:#030304;border-color:#030304;color:#F6F6F6;text-decoration:none}
+/* 👆 en el celular, «v7.68» (48×26) y «El resumen de la noche» (21 de alto) llegan a 44 para el dedo sin mover el dibujo
+   (revisión 22/11/2026, G1#7, Fitts) */
+@media (max-width: 899.98px){
+  .cx-ult-c .cx-n{position:relative}.cx-ult-c .cx-n::after{content:"";position:absolute;inset:-9px -2px}
+  .cx-prev{position:relative}.cx-prev::after{content:"";position:absolute;inset:-12px 0}
+}
 .cx-ult-c small{flex:1;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#4A4A4E}
 .cx-ult-c .cx-sh{margin:0;color:#030304}
 .cx-ult h2{margin:10px 0 8px;font:900 clamp(20px,2.4vw,28px)/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;text-wrap:balance}
@@ -134,7 +140,9 @@
   .app .cx-dos{grid-template-columns:minmax(0,1fr) 400px}
   /* el mapa de calor estirado a 400 px hacía casillas de ~40 px y bajaba hasta ~880 mientras la última versión terminaba
      en ~655: un hueco de ~780×220 (revisión 21/11). Casillas de 22 px, apoyadas a la derecha */
-  .app .cx-calor{grid-auto-columns:minmax(0,22px);justify-content:end;gap:3px}
+  /* a la izquierda, con su título y la leyenda «Menos / más» (revisión 22/11/2026, G1#21): pegada a la derecha dejaba ~145×200
+     vacíos debajo del título; el aire queda a la derecha, donde ya está «Versiones por día» */
+  .app .cx-calor{grid-auto-columns:minmax(0,22px);justify-content:start;gap:3px}
   .app .cx-papel{padding-left:var(--gut);padding-right:var(--gut)}
   /* la misma grilla para todos los días: la fecha pegada al costado de sus versiones */
   .app .cx-dia{grid-template-columns:220px minmax(0,1fr);gap:28px;align-items:start;padding:10px 0 16px}

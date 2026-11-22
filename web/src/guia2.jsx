@@ -360,8 +360,10 @@ export function Guia({ liga, dc }) {
   const tabla16 = (P.tablas || {})['16+'] || [];
   const primero = (e) => { const r = ((P.tablas || {})[e] || []).find((x) => x[0] === 'Campeón'); return r ? num(r[1]) : null; };
   // la franja: cuatro cifras con su porqué, todas de donde se calculan
+  // ⍽ con espacios duros en los pares (revisión 22/11/2026, G1#11): a 390 se leía «Ganar una llave de 16 / o más» y «la de 4 a /
+  // 7, 5.000», el par de números partido
   const franja = [
-    tabla16.length ? { l: 'Ganar una llave de 16 o más', v: primero('16+'), em: 'pts', c: [primero('8-15') ? 'la de 8 a 15, ' + primero('8-15') : '', primero('4-7') ? 'la de 4 a 7, ' + primero('4-7') : ''].filter(Boolean).join('; ') || 'el campeón' } : null,
+    tabla16.length ? { l: 'Ganar una llave de 16 o más', v: primero('16+'), em: 'pts', c: [primero('8-15') ? 'la de 8 a 15, ' + primero('8-15') : '', primero('4-7') ? 'la de 4 a 7, ' + primero('4-7') : ''].filter(Boolean).join('; ') || 'el campeón' } : null,
     rgs.length ? { l: 'Los rangos', v: rgs.length, em: 'de ' + rgs[0].r + ' a ' + rgs[rgs.length - 1].r, c: 'salen del Score competitivo, desde los 10 eventos' } : null,
     ntag ? { l: 'Los TAG', v: ntag, em: 'en 4 tarjetas', c: 'cada tarjeta muestra uno solo: el primero que cumples' } : null,
     { l: 'Cada lunes, 11 AM ET', v: CIFRA.Multiplicador[0], c: 'el multiplicador de cada servidor para esa semana' },

@@ -29,6 +29,7 @@ import { nombreSv } from './temas.js';
 export function SeBusca({ liga, aca }) {
   const mw = liga.d.mw || {};
   const tira = useRef(null);
+  const [verAnt, setVerAnt] = useState(false);
   if (!(mw.b || []).length) return null;
   const diario = mw.tipo === 'dia';
   const correr = (d) => { if (tira.current) tira.current.scrollBy({ left: d * tira.current.clientWidth * 0.8, behavior: 'smooth' }); };
@@ -37,18 +38,25 @@ export function SeBusca({ liga, aca }) {
       <div className="mw-cab"><span>{mw.b.length} buscados {diario ? 'hoy' : 'esta semana'} · vencen {liga.dia(mw.fin)}</span>
         <span className="mw-fl"><button type="button" className="mw-b" aria-label="Anteriores" onClick={() => correr(-1)}>←</button>
           <button type="button" className="mw-b" aria-label="Siguientes" onClick={() => correr(1)}>→</button></span></div>
-      <div className="mw-rail" ref={tira}>
+      {/* 🧱 EN EL RANKING, EN LA COMPU, EN GRILLA (revisión 22/11/2026, G2#15 y P2 de la 7.53): la tira medía 5.986 px en una
+          caja de 1.200 y con el mouse sólo se movía con ← →, que es lo que la casa no quiere. En el celular sigue siendo la
+          tira que se desliza, y en el Inicio no cambia. La de la semana pasada, detrás de su botón: eran 32 afiches */}
+      <div className={'mw-rail' + (aca ? ' mw-grilla' + (verAnt ? ' ver-ant' : '') : '')} ref={tira}>
         {/* 🔑 un buscado puede venir sin clave (`k: ''`, quien no está en `gente`: Refran, jazi…): por su nombre, o tres
             hermanos compartían la key 'a' (18/11/2026) */}
         {mw.b.map((b) => <Poster key={b.k || 'n:' + b.n} liga={liga} b={b} />)}
-        {(mw.ant || []).length ? <div className="mw-div"><span>{diario ? 'AYER' : 'LA SEMANA PASADA'}</span></div> : null}
-        {(mw.ant || []).map((b) => <Poster key={'a' + (b.k || 'n:' + b.n)} liga={liga} b={b} />)}
+        {(mw.ant || []).length ? <div className="mw-ant">
+          <div className="mw-div"><span>{diario ? 'AYER' : 'LA SEMANA PASADA'}</span></div>
+          {mw.ant.map((b) => <Poster key={'a' + (b.k || 'n:' + b.n)} liga={liga} b={b} />)}
+        </div> : null}
         {(mw.caz || []).length ? (
           <article className="poster cazadores"><span className="p-t">CAZADORES</span>
             <ol>{mw.caz.slice(0, 5).map((c) => <li key={c.k}><Cara liga={liga} k={c.k} nombre={c.n} cls="mono-c" /><b><Alguien liga={liga} nombre={c.n} k={c.k} cara={false} /></b><em>{num(c.pts)}</em></li>)}</ol>
             <small>lo cobrado en la temporada</small></article>
         ) : null}
       </div>
+      {aca && (mw.ant || []).length ? <button type="button" className="btn borde2 chico mw-ver-ant" aria-expanded={verAnt}
+        onClick={() => setVerAnt((v) => !v)}>{verAnt ? 'Ocultar ' + (diario ? 'los de ayer' : 'la semana pasada') : (diario ? 'Ver los de ayer' : 'Ver la semana pasada') + ' · ' + mw.ant.length}</button> : null}
       <p className="p-nota">Quien le gane, cobra en su Temporada y el 10 % en Puntos de Tienda.</p>
     </Sec>
   );

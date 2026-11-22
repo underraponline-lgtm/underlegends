@@ -1,8 +1,25 @@
 /* Lo que es sólo de la página de verdad, encima del CSS del prototipo (estilo.css, generado). */
 .app{min-height:100vh;overflow-x:clip}
+/* 🦶 EL PIE Y LA BARRA DE ABAJO VAN ABAJO, TAMBIÉN EN UNA PÁGINA CORTA (revisión 22/11/2026, G6#1). `.tabbar` es sticky y
+   sticky no baja más allá de su lugar en el flujo: en el Inventario o el Dashboard a 390 la barra quedaba a media pantalla,
+   pegada al pie, con 400 px negros debajo. La app en columna y la página (`.pg-entra`, siempre la que va antes del pie)
+   estirándose: el aire queda arriba del pie y el pie conserva su `margin-top`. Sin `margin-top:auto` en el pie, a propósito:
+   en una página larga lo dejaba pegado al contenido.
+   ⬛ Y si la página termina en negro (la regla de abajo la junta con el pie), el aire no puede ser una franja blanca entre dos
+   negros: ahí no crece la página sino el lugar de arriba de la barra, que ya es negro por la sombra del pie */
+.app:not(.solo-og):not(.solo-marco){display:flex;flex-direction:column}
+.app > .pg-entra{flex-grow:1}
+.app > .pg-entra:has(> :last-child:is(.sec.negra,.lq3-osc)){flex-grow:0}
+.app > .tabbar{margin-top:auto}
 /* con una página corta, la app mide la pantalla y su blanco seguía abajo del pie. El negro del pie se estira hasta el
    final con una sombra que arranca en su borde de arriba: no mueve nada ni tapa lo de arriba (Dlx, 02/10/2026) */
 .app .pie.negra{box-shadow:0 100vh 0 100vh #030304}
+/* 🛍️ EL NOMBRE DE LA TIENDA LLEVA SU PLACA NEGRA EN CLARA, EN TODA LA PÁGINA (revisión 22/11/2026, G2#1 y G5#1): el efecto se
+   diseñó sobre negro y llega de un dato que no controlamos —con `ta-n13` (letras #F6F6F6) el ganador del cartel de FDS en
+   Socios quedaba a 1,08:1—. El Ranking ya lo tenía en rka.css (sólo carga ahí); esto cubre Socios, los servidores, los países y
+   el Inicio. Va en la CAPA y no en `.ta-nom`, porque un efecto puede ser texto recortado de su fondo; y en línea, no
+   `inline-block`, así la elipsis de las filas sigue andando. Sobre negro la placa no se ve: queda como en Noche */
+.clara .ta-raiz.nom-tienda{padding:0 5px;border-radius:3px;background:#030304;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 /* ⬛ entre una página que termina en negro y el pie negro no va el blanco del margen (Dlx, 16/11/2026, con la captura del
    Merchandising: «espacios raros»). `.sec.negra+.pie.negra` ya lo hacía, pero las páginas van adentro de `.pg-entra` y el pie
    no es su hermano: quedaba una franja blanca de 26 px */
@@ -697,7 +714,7 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-tira button > *{position:relative}
 .app .escena.es2 .es-tira img{width:32px;height:32px;border-radius:50%;object-fit:cover;background:#1A1A1E}
 .app .escena.es2 .es-tira b{display:block;font:700 13.5px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.app .escena.es2 .es-tira small{display:block;margin-top:3px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;
+.app .escena.es2 .es-tira small{display:block;margin-top:3px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;
   color:#A5A5A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .app .escena.es2 .es-tira button.on{flex-grow:1.7;border-color:#F6F6F6;background-color:#0B0B0D;color:#F6F6F6}
 .app .escena.es2 .es-tira button.vivo{border-color:#E41373}
@@ -721,8 +738,10 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-soc .lu-nube{margin-top:0;max-width:440px;padding:8px 11px}
 /* 👑 el campeón: corona, carta (con su marco y su brillo) y el cuadrito de lo que sumó */
 .app .escena.es2 .es-camp{display:grid;grid-template-columns:172px minmax(0,1fr);gap:22px;align-items:center;min-width:0}
-.app .escena.es2 .es-cw{position:relative;display:grid;gap:8px;justify-items:center;padding-top:30px;min-width:0}
-.app .escena.es2 .es-corona{position:absolute;left:50%;top:-8px;width:84px;transform:translateX(-50%) rotate(-8deg);z-index:3}
+.app .escena.es2 .es-cw{position:relative;display:grid;gap:8px;justify-items:center;padding-top:40px;min-width:0}
+/* 👑 apoyada en el borde y no adentro (revisión 22/11/2026, G1#3): con 84 px en `top:-8px` entraba 17 px en la carta y tapaba
+   la letra de rango y el «#11» de la esquina. Ahora entra ~10 px, por el centro, donde la carta no tiene datos */
+.app .escena.es2 .es-corona{position:absolute;left:50%;top:-4px;width:72px;transform:translateX(-50%) rotate(-8deg);z-index:3}
 .app .escena.es2 .es-cimg{position:relative;display:block;width:100%}
 .app .escena.es2 .es-carta{display:block;width:100%;height:auto}
 .app .escena.es2 .es-cimg.brilla .es-carta,.app .escena.es2 .es-cimg.brilla img{filter:drop-shadow(0 0 2px #E5B800) drop-shadow(0 0 10px rgba(229,184,0,.75));
@@ -733,6 +752,9 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-sello{position:absolute;left:-12px;bottom:26px;z-index:2;padding:6px 10px;background:var(--magenta);color:#fff;
   font:400 18px/1 Anton,Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase;transform:rotate(-6deg);white-space:nowrap}
 .app .escena.es2 .es-sello.oro{background:#F2B705;color:#030304}
+/* 🏷️ sobre la foto y no sobre los números (revisión 22/11/2026, G1#15): en `bottom:26px` tapaba la fila «0/7 DNA · 1/2 MW», y
+   en 44 % el nombre. En 34 % cae en la parte de abajo de la foto, encima del nombre */
+.app .escena.es2 .es-cimg:has(img.es-carta) .es-sello{bottom:auto;top:34%}
 .app .escena.es2 .es-pts{display:grid;gap:4px;justify-items:center;text-align:center;width:100%;padding:8px 8px 9px;border:1px solid #F2B705;
   border-radius:4px;background:rgba(11,11,13,.92)}
 .app .escena.es2 .es-pts b{font:400 26px/1 Anton,Archivo,sans-serif;color:#F2B705;letter-spacing:.01em}
@@ -762,6 +784,7 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .app .escena.es2 .es-paso{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;
   border:1px solid #26262B;border-radius:4px;background:rgba(11,11,13,.88)}
 .app .escena.es2 .es-r{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#A5A5A0}
+.app .escena.es2 .es-r-c{display:none}
 .app .escena.es2 .es-q{display:flex;align-items:center;gap:8px;min-width:0}
 .app .escena.es2 .es-q > span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13.5px/1.2 Archivo,sans-serif}
 .app .escena.es2 .es-c{width:26px;height:26px;flex:none;margin-left:-8px;border:2px solid #030304;border-radius:50%;overflow:hidden;font-size:11px}
@@ -878,11 +901,15 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
   .app .escena.es2 .mo{gap:16px;align-content:start}
   .app .escena.es2 .es-camp{grid-template-columns:118px minmax(0,1fr);gap:14px;align-items:start}
   .app .escena.es2 .es-caminos .es-camino + .es-camino{display:none}
-  .app .escena.es2 .es-cw{padding-top:26px}
-  .app .escena.es2 .es-corona{width:64px}
+  .app .escena.es2 .es-cw{padding-top:34px}
+  .app .escena.es2 .es-corona{width:56px}
   .app .escena.es2 .es-sello{font-size:14px;left:-6px}
   .app .escena.es2 .es-pts b{font-size:20px}
   .app .escena.es2 .es-paso{grid-template-columns:58px minmax(0,1fr) auto;gap:8px;padding:6px 8px}
+  /* «Semis» en vez de «SEMIFINALES» (G1#2, `Ronda` de arriba.jsx); «TERCER / PUESTO» se parte en dos */
+  .app .escena.es2 .es-r{line-height:1.05}
+  .app .escena.es2 .es-r-l{display:none}
+  .app .escena.es2 .es-r-c{display:inline}
   .app .escena.es2 .mo.lay-B .mo-vis{order:-1;justify-self:center;margin-top:8px}
   .app .escena.es2 .es-gig{top:110px;font-size:92px}
   .app .escena.es2 .es-b-carta{width:150px}
@@ -1199,6 +1226,7 @@ button.btn{background:transparent;cursor:pointer}
 .asc-n a,.asc-n span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .asc-pts{font:900 16px/1 Archivo,sans-serif;text-align:right}
 .asc-mas{font:800 13px/1 Archivo,sans-serif;font-style:normal;color:#1F9E6E;white-space:nowrap}
+.clara .asc-mas{color:#17805A} /* sobre blanco el verde daba 3,40:1; éste 4,92 (revisión 22/11/2026, G2#11). En Noche queda el de arriba (6:1) */
 .asc-ley{margin:0;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--gris)}
 .asc-c{display:inline-flex;align-items:center;gap:6px;font-weight:800;color:var(--tinta)}
 .asc-c::before{content:'';width:12px;height:12px;border:2px solid currentColor}
@@ -1227,6 +1255,7 @@ button.btn{background:transparent;cursor:pointer}
 .dv-z{font:700 15px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:0.03em;padding:3px 5px;border:1.5px solid currentColor}
 .dv-tabla li.sube .dv-z{color:#29B298}
 .dv-tabla li.baja .dv-z{color:#E5484D}
+.clara .dv-tabla li.baja .dv-z{color:#C2272D} /* «BAJARÍA» sobre la fila clara: 3,52 → 5,22:1 (revisión 22/11/2026, G2#11) */
 .dv-ev{font:600 12px/1 Archivo,sans-serif;color:var(--gris);white-space:nowrap}
 .dv-p{font:900 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
 @media (max-width: 520px){.dv-tabla li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-ev{display:none}}
@@ -1275,6 +1304,8 @@ b.dv-gema{width:24px;height:24px;margin:4px 0 2px 4px;transform:none;color:#0303
 .dv-tu-chips{display:flex;flex-wrap:wrap;gap:6px}
 .dv-tu-chip{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.02em;padding:4px 8px;border:1.5px solid var(--linea);color:var(--tinta)}
 .dv-tu-chip.oro{border-color:#B8860B;color:#8a6508}
+/* en la caja negra del Ranking el dorado oscuro daba 3,87:1 («cierra en 33 horas»): el claro, 7,8 (revisión 22/11/2026, G2#11) */
+.rka-caja .dv-tu-chip.oro{border-color:#C9971A;color:#C9971A}
 .dv2 .dv-esc{max-width:none}
 .dv2 .dv-esc-p{position:relative;overflow:visible}
 .dv-esc-vos{position:absolute;left:-2px;right:-2px;bottom:100%;margin-bottom:4px;font:700 13px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;text-align:center;color:#17735f}
@@ -2246,6 +2277,9 @@ a.rk-z:hover{border-color:var(--linea)}
    día en grupos con su llave, el mes, la campana y los últimos campeones—. Usa las piezas del tablero que ya estaban
    (`.t-ev`, `.g-t`, `.mes-g`, `.podio2`) y agrega lo suyo con `evp-` ── */
 .evp-esc:before{top:auto;bottom:44px;right:-62px}
+/* 🎀 con una tarjeta abajo, la franja va arriba, como en la compu (revisión 22/11/2026, G3#21): a 390 cruzaba la esquina de
+   «EN VIVO AHORA» y el botón «Entrar al servidor» */
+@media (max-width: 899.98px){.app .evp-esc:has(.evp-mo):before{top:44px;bottom:auto}}
 .evp-cab{display:grid;gap:22px;padding:24px 16px 24px}
 .evp-cabtx{display:grid;gap:12px;justify-items:start;align-content:start;min-width:0}
 .evp-cabtx .hero-ev{margin:0}
@@ -2413,8 +2447,11 @@ a.rk-z:hover{border-color:var(--linea)}
      llave grande que no se juega en orden no tiene llave corta (`momentosLlave()` da `null`) y va el cuadro entero. Con
      octavos de a tres medía 1.300 px y al lado del título quedaban dos huecos de 656×544 (medido con COMPE CHOP CEO V4).
      Se queda adentro de lo negro (Dlx, 03/10/2026) y se mira bajando adentro; «Ver la llave» la abre entera. Con 250
-     la portada mide ~540 y lo que sobra al lado del título queda debajo de 160 arriba y abajo (con 320, 192 y 176) */
-  .app .evp-mo.vivo .evp-cm{max-height:250px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#E41373 transparent}
+     la portada mide ~540 y lo que sobra al lado del título queda debajo de 160 arriba y abajo (con 320, 192 y 176).
+     ↕️ 290 Y NO 250 (revisión 22/11/2026, G3#1): con 250 una ronda de cuatro cruces (28 + 2 × 4 × 31 + 14 = 290) mostraba tres
+     y medio, el último partido por el borde y sin nada que dijera que se desliza. Con 290 entra entera la ronda de casi toda
+     llave de 8; con más, se sigue bajando adentro */
+  .app .evp-mo.vivo .evp-cm{max-height:290px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#E41373 transparent}
   /* y en la compu la carta del campeón va a la izquierda de todo: la tarjeta sale ancha y baja, en vez de alta */
   .app .evp-mo.ult{grid-template-columns:120px minmax(0,1fr);grid-template-areas:"carta tag" "carta txt" "carta acc";column-gap:18px;align-content:start}
   .app .evp-mo.ult .evp-mo-carta{align-self:start}
@@ -2582,6 +2619,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .nt-chip{flex:none;border:1px solid var(--nt-linea);background:none;color:var(--nt-gris);border-radius:4px;padding:6px 9px;cursor:pointer;
   font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .nt-chip em{font-style:normal;color:var(--nt-tinta);margin-left:4px}
+/* 👆 27 px de alto en el celular: 43 para el dedo, dentro del aire de la fila y sin mover el dibujo (revisión 22/11/2026, G1#7) */
+@media (max-width: 899.98px){.nt-chip{position:relative}.nt-chip::after{content:"";position:absolute;inset:-8px -3px}}
 .nt-chip.on{background:var(--nt-tinta);color:#030304;border-color:var(--nt-tinta)}
 .nt-chip.on em{color:#C0105F} /* sobre el chip blanco el magenta daba 4,19:1 a 13 px; éste da 5,6:1 (revisión 21/11) */
 .nt-cuerpo{flex:1 1 auto;min-height:0;overflow:auto}
@@ -3601,6 +3640,8 @@ li.nt-f{cursor:default}
 .pp-t small{color:var(--gris);font-size:13.5px;line-height:1.35}
 .pp-pie{margin:0;font-size:14px;line-height:1.45;color:var(--gris)}
 .pp-pie a,.pp-rec{color:var(--tinta);text-decoration:underline}
+/* un link no se parte en dos renglones: «Ver los / eventos» (revisión 22/11/2026, G1#11) */
+.pp-pie a,.pp-rec{white-space:nowrap}
 .pp-pie a{padding-block:13px}
 .pp-rec{padding:13px 0;margin:-13px 0;background:none;border:0;font:inherit;cursor:pointer}
 @media (min-width: 900px){
@@ -4665,6 +4706,7 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .pn-sb-tx b{font:800 15px/1.1 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pn-sb-tx small{font:500 12px/1.2 Archivo,sans-serif;color:#c9cbd1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pn-sb-t{color:var(--verde);font-weight:700}
+.pn-sb-dt{white-space:nowrap} /* el «·» con su dato, nunca colgando al final del renglón (G6#23) */
 .pn-sb .btn.chico{flex:none;white-space:nowrap}
 .pn-sb .pn-vs-c{width:44px;height:44px}
 .btn.mag{background:var(--mag);color:#000;border-color:var(--mag)}
@@ -5435,7 +5477,9 @@ dialog.pn-pop.dd-pop{width:min(760px,calc(100vw - 32px));border-color:#9B5CFF}
 .pn-se2-meta s{position:absolute;inset:0 auto 0 0;background:var(--azul);text-decoration:none}
 .pn-se2-eq{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* 🏟️ Ligas: el dato y los de arriba con nombre cuando hay lugar */
-.pn-ml-dato{font:600 11px/1.2 Archivo,sans-serif;color:#D9C6FF;position:relative}
+.pn-ml-dato{font:600 11px/1.2 Archivo,sans-serif;color:#D9C6FF;position:relative;text-wrap:pretty}
+/* «se jugó hace 7 d» va junto: el «7 d» quedaba solo en el renglón de abajo (revisión 22/11/2026, G1#13) */
+.pn-ml-hace{white-space:nowrap}
 .pn-mitades .pn-ml-top{display:grid;gap:4px}
 .pn-mitades .pn-ml-top > span{display:grid;grid-template-columns:12px 20px minmax(0,1fr) auto;align-items:center;gap:6px}
 .pn-mitades .pn-ml-top em,.pn-mitades .pn-ml-top b,.pn-mitades .pn-ml-top small{display:block}
@@ -6259,8 +6303,14 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 @media (hover: hover) and (pointer: fine){.lu-panel .lu-pie:hover b{color:#29B298}}
 /* 🔥 las reacciones: lo que ya tiene, la carita y los comentarios */
 .lu-soc{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px}
-.lu-rc,.lu-car,.lu-cm{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 10px;border:1px solid #2E2E33;border-radius:15px;
+.lu-rc,.lu-car,.lu-cm{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 10px;border:1px solid #2E2E33;border-radius:4px;
   background:#141417;color:#F6F6F6;cursor:pointer;font:700 13px/1 Archivo,sans-serif;text-decoration:none}
+/* 👆 radio de 4 px como todo botón de la casa (eran píldoras de 15), y en el celular 36 px a la vista con 44 para el dedo: el
+   área de toque crece sin mover el dibujo (revisión 22/11/2026, G1#7, G1#22, G4#8, G4#20 y G5#16) */
+@media (max-width: 899.98px){
+  .lu-rc,.lu-car,.lu-cm{position:relative;height:36px}
+  .lu-rc::after,.lu-car::after,.lu-cm::after{content:"";position:absolute;inset:-4px 0}
+}
 .lu-rc span{font-size:15px;line-height:1}
 .lu-rc em,.lu-cm em{font-style:normal}
 .lu-rc.on{border-color:#E41373;background:#2A0B19}
@@ -6293,7 +6343,7 @@ dialog.pn-pop.pop-gratis{--pc:#F5C542;width:min(640px,calc(100vw - 32px))}
 .app.calma .lu-reac-e{transition:none}
 @media (prefers-reduced-motion: reduce){.lu-reac-e{transition:none}.lu-reac-e:not(:disabled):hover{transform:none}}
 /* 💬 el último comentario, a la vista, con la cara de quien lo escribió */
-.lu-nube{display:grid;gap:9px;max-width:460px;margin-top:10px;padding:9px 12px;border:1px solid #26262B;border-radius:12px 12px 12px 3px;
+.lu-nube{display:grid;gap:9px;max-width:460px;margin-top:10px;padding:9px 12px;border:1px solid #26262B;border-radius:4px 4px 4px 0;
   background:#121215;color:#F6F6F6;text-decoration:none}
 .lu-nube.grande{max-width:none}
 @media (hover: hover) and (pointer: fine){.lu-nube:hover{border-color:#3A3A40}}
@@ -6697,6 +6747,8 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
 .ap-av{display:grid;gap:5px;min-width:160px}
 .ap-av b{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
 .ap-corto{background:none;border:0;padding:6px 0;color:var(--tinta);cursor:pointer;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline}
+/* 👆 27 px de alto: 45 para el dedo sin mover el dibujo (revisión 22/11/2026, G1#7, Fitts) */
+@media (max-width: 899.98px){.ap-corto{position:relative}.ap-corto::after{content:"";position:absolute;inset:-9px 0}}
 .ap-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
 .ap-cap{width:100%;height:100%;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start;text-align:left;padding:14px;
   background:var(--caja);color:var(--tinta);border:1px solid var(--suave);border-radius:4px;cursor:pointer}
@@ -6717,6 +6769,11 @@ dialog.pn-pop.un-pop{--pc:#29B298;width:min(540px,calc(100vw - 32px));max-height
   border:1px solid #3a3a3f;border-radius:4px;cursor:pointer;font:700 13.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
 .cf-q i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#F6F6F6;color:#030304;font:900 14px/1 Archivo,sans-serif;font-style:normal}
 .cf-q.on,.cf-q:hover,.cf-q:focus-visible{border-color:var(--magenta);outline:none}
+/* 🎯 adentro de la fila de pestañas cuando a su derecha hay lugar (`useBajoLasPestanas`, comofunciona.jsx; revisión 22/11/2026,
+   G1#8): centrado en la banda y por encima de ella (la fila es pegajosa con z-index 20) */
+.cf.en-banda{z-index:21}
+.cf.en-banda .cf-q{margin-top:calc((var(--cf-baja, 0px) - 34px) / 2)}
+.cf.en-banda .cf-pop{top:calc(var(--cf-baja, 0px) + 8px)}
 .cf-pt{position:absolute;left:-3px;top:-3px;width:10px;height:10px;border-radius:50%;background:var(--magenta);box-shadow:0 0 0 3px #030304}
 .cf-pop{position:absolute;right:var(--gut);top:calc(var(--cf-baja, 0px) + 54px);width:min(360px,calc(100vw - 32px));display:grid;gap:10px;padding:16px;background:#0B0B0D;color:#F6F6F6;
   border:1px solid #2a2a2e;border-radius:4px;box-shadow:0 18px 40px rgba(0,0,0,.6)}
@@ -7103,7 +7160,7 @@ button.nvp-caja small{color:#F5C542}
    de Lo último, el escenario y las historias, que son oscuros en todos los temas ── */
 .cfl{--cf-h:46px;--cf-g:6px;position:relative;height:calc(var(--filas,3) * (var(--cf-h) + var(--cf-g)) - var(--cf-g));pointer-events:none}
 .cfl .cfl-b{position:absolute;left:0;bottom:0;display:flex;align-items:center;gap:8px;max-width:calc(100% - var(--prof,0) * 18px);height:var(--cf-h);
-  padding:5px 12px 5px 6px;border:1px solid #2A2A30;border-radius:16px 16px 16px 4px;background:rgba(11,11,13,.86);color:#F6F6F6;
+  padding:5px 12px 5px 6px;border:1px solid #2A2A30;border-radius:4px 4px 4px 0;background:rgba(11,11,13,.86);color:#F6F6F6;
   text-align:left;cursor:pointer;pointer-events:auto;font:400 13px/1.25 Archivo,sans-serif;
   transform:translate(calc(var(--prof,0) * 18px),calc(var(--pos,0) * -1 * (var(--cf-h) + var(--cf-g))));
   transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .4s ease;animation:cf-entra .5s cubic-bezier(.22,1,.36,1) .14s backwards}
@@ -7120,7 +7177,7 @@ button.nvp-caja small{color:#F5C542}
 .cfl-x{display:grid;gap:2px;min-width:0}
 .cfl-q{display:flex;align-items:baseline;gap:6px;min-width:0;white-space:nowrap}
 .cfl-q b{overflow:hidden;text-overflow:ellipsis;font:800 12.5px/1.1 Archivo,sans-serif}
-.cfl-q i{flex:none;padding:1px 5px;border:1px solid #55554F;border-radius:3px;color:#C9C9C4;font:700 10px/1.3 "Barlow Condensed",sans-serif;
+.cfl-q i{flex:none;padding:1px 5px;border:1px solid #55554F;border-radius:3px;color:#C9C9C4;font:700 11px/1.2 "Barlow Condensed",sans-serif;
   font-style:normal;letter-spacing:.06em;text-transform:uppercase}
 .cfl-q i.liga{border-color:#E41373;background:#E41373;color:#fff}
 .cfl-q small{flex:none;color:#FF7BB0;font:700 11.5px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.03em}
@@ -7129,7 +7186,9 @@ button.nvp-caja small{color:#F5C542}
 .cfl-feat{margin-top:2px}
 .cfl-es{max-width:440px}
 .cfl-hist{position:absolute;left:0;right:0;bottom:calc(100% + 12px)}
-.cfl-hist .cfl-b.cfl-b{background:rgba(3,3,4,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-color:rgba(246,246,246,.16)}
+/* 🫧 sin blur (revisión 22/11/2026, G6#12: la casa no lleva vidrio): lo que hacía el desenfoque —que la foto de la historia no
+   se meta en la letra— lo hace una placa más tapada. Y las esquinas de 4 px como el resto, con la punta de la nube abajo */
+.cfl-hist .cfl-b.cfl-b{background:rgba(3,3,4,.9);border-color:rgba(246,246,246,.16)}
 .app .escena.es2 .mo:has(.es-buscados) .es-soc .cfl{display:none}
 /* 🪪 LA FICHA AL PASAR EL MOUSE (ficha.jsx, 17/11/2026): arriba, el fondo que eligió para «Tu ficha»; abajo, quién es.
    Siempre oscura, como la ventana de la carta: no depende del tema. No se toca (`pointer-events:none`) */
@@ -7496,3 +7555,16 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 /* lo que se acaba de abrir desde el panel: un marco magenta un momento, para encontrarlo */
 .modt-brilla{outline:3px solid #E41373;outline-offset:4px;transition:outline-color 1.2s}
 @media (prefers-reduced-motion: reduce){.modt-panel,.modt-panel.abajo{animation:none}.modt-sw::after{transition:none}}
+
+/* 🔠 EL PISO DE 11 PX EN LOS PANELES DEL INICIO (revisión 22/11/2026, G1#6 y G6#6; Impeccable audit: tamaño de texto). Treinta
+   etiquetas iban a 7–10 px —los días de La semana, «SE BUSCA» de los carteles, «Premio gratis», «La cabeza más cara», y al
+   lado de tu carta «TEMPORADA», «COMPETITIVO» o «ESTADOS UNIDOS» a 8 px en el celular—. Va AL FINAL y con un `:is()` que lleva
+   el selector más pesado de la lista, así gana a los `@container` y a las variantes de cada mitad sin tocar cada una. Las
+   etiquetas de al lado de la carta ya se parten en dos renglones donde no entran (`white-space:normal` de cada contenedor) */
+.app :is(.pn-dias7 i,.pn-se2-m i,.pn-cartel em,.pn-mi.chica .pn-cartel em,.pn-mitades .pn-mi .pn-cartel em,.pn-gr-et,.pn-anc-et,.pn-ti3-t em,
+  .pn-cr-l em,.pn-cr-tu em,.pn-ml-cab em,.pn-ml-por i,.pn-ult-t em,.pn-tag-bot,.pn-chip-n,.pn-chip-pie small,.pn-se2 .pn-anillo b,.pn .pn-ml-c,
+  .pn-gr-ic em,.pn-ultc-cal i,.pn-ultc-cal small,.pn-ultc-et,.pn-dia-et,.pn-racha-et,.pn-camp-et,.pn-sb-tx em,.pn-pronto em,.pn-cr-m i,.pn-mini span,
+  .pn .pn-sv-st .pn-mini > span,.pn .pn-sv-st .pn-sv-gu > i,.pn-sv-gu small){font-size:11px}
+.app :is(.pn-chip-n,.pn-cartel em,.pn-se2-m i){letter-spacing:.02em}
+.app .pn-dias7 i{width:18px;height:18px}
+.app .h-badge{font-size:11px}

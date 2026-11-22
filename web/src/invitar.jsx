@@ -207,7 +207,8 @@ function Cerrada({ max, titulo, texto, candado, children }) {
           <b className="rf-tk-n">{candado ? <Ico n="candado" t={22} /> : null}{titulo}</b>
           {texto ? <span className="rf-tk-p">{texto}</span> : null}
         </div>
-        <div className="rf-tk-talon"><span>VALE {max}</span><b>—</b></div>
+        {/* sin la raya: «—» debajo de «VALE 10» se leía como un dato que falta (revisión 22/11/2026, G1#19: sin dato no hay pieza) */}
+        <div className="rf-tk-talon"><span>VALE {max}</span></div>
       </div>
       {children}
     </div>
