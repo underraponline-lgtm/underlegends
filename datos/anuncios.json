@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T00:25:26+00:00",
+ "cuando": "2026-11-22T00:55:22+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -3966,7 +3966,7 @@
    "organizador": "- 4 Clasificatorias 12-16 Cupos",
    "orgs": [
     {
-     "n": "JustValen",
+     "n": "boca",
      "id": "554330098812059679"
     }
    ],
@@ -3980,7 +3980,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "JustValen",
+   "autor": "boca",
    "staff_cuentas": {},
    "categoria_id": "1511964043647123527"
   },
@@ -5732,6 +5732,30 @@
    "categoria_id": "1558611505040064605"
   },
   {
+   "nombre": "COMPE 1 VS 1",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1573863589201182771",
+   "cuando": "2026-11-22T00:52:00",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@⚡ 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 ⚡",
+   "orgs": [],
+   "autor_h": "187b29f00f240696",
+   "cupos_texto": "(24)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "",
+   "fecha": "21/11/26",
+   "premios": "+ SUMA TUS PRIMEROS PUNTOS DEL NUEVO RANKING 2026 - 2027",
+   "staff": {},
+   "autor": "⚡ Maurolocrazy ⚡",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
    "nombre": "CHOP COMPE NOCTURNA V1",
    "servidor": "CH",
    "canal": "📢—anuncios",
@@ -6041,30 +6065,6 @@
    "premios": "+ CLASIFICACION A LA FINAL DE LA COMPETENCIA",
    "staff": {},
    "autor": "dante",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
-   "nombre": "JEIX CUP CLASIFICATORIO",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1541232822130581565",
-   "cuando": "2026-08-23T23:48:59",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "@†𝑱𝑬𝑰𝑿𝑫𝑬𝑹",
-   "orgs": [],
-   "autor_h": "c47c3e2e9fa31d37",
-   "cupos_texto": "(24)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1 vs 1",
-   "horario": "",
-   "fecha": "23/08/26",
-   "premios": "CUPO ALA JEIX CUP INTER 2026+FLYER PERSONALIZADO",
-   "staff": {},
-   "autor": "†JEIXDER",
    "staff_cuentas": {},
    "categoria_id": "1080379388320817233"
   },
@@ -7555,6 +7555,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Dan-Z 🇻🇪",
+   "quien": "dancito_rap",
+   "discord_id": "1496332551562858598",
+   "msg_id": "1573856936804491396",
+   "cuando": "2026-11-22T00:25:34"
+  },
   {
    "servidor": "CHZ",
    "canal": "inscripción-vc-🎙️",
@@ -43545,15 +43554,6 @@
    "discord_id": "1426686911908675628",
    "msg_id": "1561453672301469928",
    "cuando": "2026-10-18T18:59:25"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "DarkoMC 🇲🇽",
-   "quien": "alamosza_95845",
-   "discord_id": "1375578701302857738",
-   "msg_id": "1561453324027564163",
-   "cuando": "2026-10-18T18:58:02"
   }
  ]
 }
