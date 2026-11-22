@@ -441,7 +441,12 @@
 },
 "dominick": {
 "rg": "D",
-"c": []
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "xclusivo": {
 "rg": "C",
@@ -2920,40 +2925,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-13T23:29:12Z",
-"quien": [
-"Cinexfilo"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T23:29:12Z",
-"quien": [
-"Cinexfilo"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-13T23:29:12Z",
-"quien": [
-"Jult"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-13T23:29:12Z",
-"quien": [
-"Jult"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-13T23:34:02Z",
@@ -6321,6 +6292,38 @@
 "Deuxs"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-22T07:47:35Z",
+"quien": [
+"Dominick"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-22T07:47:35Z",
+"quien": [
+"Dominick"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-22T07:47:35Z",
+"quien": [
+"Dominick"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-22T07:47:35Z",
+"quien": [
+"Dominick"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
