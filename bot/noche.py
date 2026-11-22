@@ -57,6 +57,12 @@ ETQ = {'Campeón': ('🏆 Campeón', '🏆 Campeones'), 'Subcampeón': ('🥈 Su
 ESTRELLAS = ['', 'Inicial', 'Medio', 'Bueno', 'Alto', 'Élite']
 #: cuánto sube el abanico de tarjetas de un equipo, para que su esquina girada no caiga debajo del sello
 FAN_ARRIBA = 18
+#: 🃏 CUÁNTAS TARJETAS LLEVA UN EQUIPO, y cómo se abren. Eran 3 y un equipo de cuatro salía con «+1» (Dlx, 22/11/2026, con
+#: la #675 de FFA: «¿por qué no hay una cuarta tarjeta?»). De 5 para arriba siguen siendo 4 y el «+N»
+ABANICO = 4
+GIRO = {1: [0], 2: [-4, 4], 3: [-6, 0, 6], 4: [-8, -3, 3, 8]}
+#: cuánto se pisa cada tarjeta con la de al lado (parte del ancho): más tarjetas, más encimadas
+ENCIME = {1: 0, 2: 0.30, 3: 0.36, 4: 0.42}
 
 limpio = lambda n: re.sub('[\U0001F1E6-\U0001F1FF]', '', str(n or '')).strip()  # noqa: E731
 _D = {}
@@ -444,11 +450,11 @@ def html(ev):
             miles(b), 'sube' if dl > 0 else 'baja' if dl < 0 else '', sig)
 
     def cartas(u, alto, sube=False, corona=False):
-        gs = u['gente'][:3]
+        gs = u['gente'][:ABANICO]
         m = len(gs)
-        giro = {1: [0], 2: [-4, 4], 3: [-6, 0, 6]}[m]
+        giro = GIRO[m]
         # encimadas lo justo para que se lea el nombre de cada una
-        paso = int(alto * 0.72 * (0.30 if m == 2 else 0.36 if m == 3 else 0))
+        paso = int(alto * 0.72 * ENCIME[m])
         out = []
         for i, (n, cc) in enumerate(gs):
             st = 'height:%dpx;%stransform:rotate(%ddeg);z-index:%d' % (
@@ -519,8 +525,8 @@ def html(ev):
         return ' + '.join(xs) if len(xs) <= 2 else '%s y %d más' % (xs[0], len(xs) - 1)
 
     def lugar(t, u, rol):
-        m = min(3, len(u['gente']))
-        factor = 0.72 * (1 + (m - 1) * (1 - (0.30 if m == 2 else 0.36 if m == 3 else 0)))
+        m = min(ABANICO, len(u['gente']))
+        factor = 0.72 * (1 + (m - 1) * (1 - ENCIME[m]))
         # 🪭 un abanico va 18 px más arriba (`.cartas.sube`): girada, la tarjeta de la punta bajaba una esquina justo donde
         # va el sello (medido: 21 de 280 eventos, todos de equipos de tres). Y en un podio de cinco, la caja que lleva un
         # sello: es angosta y la tarjeta casi la llena (el Batacazo de .SosaATR en la #581)

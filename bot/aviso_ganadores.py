@@ -606,6 +606,20 @@ def correr(aplicar=False):
                 url = _url_noche(ev, archivo[1])
                 if url:
                     pie, archivo = pie_con_url(pie, url), None
+        # 🎤 LA BIENVENIDA DE QUIEN DEBUTÓ, ADENTRO (Dlx, 22/11/2026: «make sure we are not that spammy»): era otro
+        # mensaje en el mismo chat, al mismo tiempo. Ver `debutantes._esperar_ganadores()`
+        deb = []
+        try:
+            import debutantes as DB
+            deb = DB.del_evento(ev)
+            if deb:
+                _c, ids_d, txt_d = DB.mensaje_chat(deb, sv, DB.cuentas_inscritas(_j(os.path.join(BASE, 'datos', 'gente_eventos.json'), {}), Q))
+                comps = comps[:1] + [{'type': 10, 'content': txt_d}] + comps[1:]
+                ids = (ids + [i for i in ids_d if i not in ids])[:MENCIONES]
+                print('      🎤 + la bienvenida de %d debut(s)' % len(deb))
+        except Exception as e:                           # noqa: BLE001
+            deb = []
+            print('      ⚠️ la bienvenida del debut no entró (%r): sale sola' % e)
         con_imagen = bool(pie) and pie[0].get('type') == 12
         r = s.post('%s/channels/%s/messages' % (API, canal), **cuerpo(comps + pie, ids, archivo))
         if con_imagen and r.status_code not in (200, 201):
@@ -616,6 +630,8 @@ def correr(aplicar=False):
             avisados[ev] = {'sv': sv, 'canal': str(canal), 'msg': str((r.json() or {}).get('id') or ''), 'dia': hoy.isoformat()}
             if en_cierre:
                 avisados[ev]['noche'] = en_cierre
+            if deb:
+                DB.marcar_chat([raw for raw, _r in deb], hoy.isoformat())
             print('      ✅ mandado')
         else:
             print('      ⚠️ no salió (%s): queda para la próxima' % r.status_code)

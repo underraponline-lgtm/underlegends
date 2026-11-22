@@ -320,6 +320,16 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
             ya[num] = reg
             _guardar(ya)
             return False
+        # 🌙 SI VA «LA NOCHE DE…», ESTE AVISO NO SALE (Dlx, 22/11/2026, con la #675 de FFA: «make sure we are not that
+        # spammy… the first message is unnecessary now since we got the image with the note and card at the end»). Desde
+        # `NOCHE_DESDE` el aviso de ganadores (`bot/aviso_ganadores.py`) trae la imagen con el podio, los puntos, las notas y
+        # las tarjetas: este embed decía lo mismo media hora antes. Queda anotado como visto (`noche`), para no salir después
+        if _lo_dice_la_noche(num, ev.get('servidor') or ev.get('sv') or reg.get('sv')):
+            reg['canal'] = ''
+            reg['noche'] = True
+            ya[num] = reg
+            _guardar(ya)
+            return False
         # 🏆 UN SOLO MENSAJE POR CAMPEÓN (Dlx, 13/10/2026, con los dos uno abajo del otro en el chat de FFA: «we have to
         # avoid making duplications of the same thing… combine these two into one»). El cierre del bot en vivo —el
         # campeón, cuántas ganó, lo mejor de la noche y su tarjeta— sale al minuto de la final, y este aviso media hora
@@ -353,6 +363,24 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
         if isinstance(r, str) and ids:
             _cierre_vivo(canal, ids, msg=r)
     return _salio(r)
+
+
+def _lo_dice_la_noche(num, sv):
+    """True si el aviso de ganadores de ese evento va a llevar «La noche de…» (y entonces el embed de `evento()` sobra):
+    desde `NOCHE_DESDE`, en un socio con el bot y sin el aviso apagado en su panel. Si el panel no se puede leer se da por
+    prendido, que es como arranca. Ante cualquier duda, False: mejor un aviso de más que un evento sin ninguno."""
+    try:
+        from notas import NOCHE_DESDE
+        if not str(num).isdigit() or int(num) < NOCHE_DESDE:
+            return False
+        import chats as CH
+        gid = dict(CH.servidores()).get(str(sv or '').upper())
+        if not gid:
+            return False
+        import aviso_ganadores as AG
+        return (AG._cfg(gid) or {}).get('ganadores') is not False
+    except Exception:                                    # noqa: BLE001
+        return False
 
 
 def _evento_viejo(ev, n_res, n_duelos, dudas=(), equipos=0):
@@ -543,6 +571,7 @@ def _self_check():
             return True if editar else 'msg-nuevo'
 
         real, globals()['mandar'] = mandar, _falso
+        noche_real, globals()['_lo_dice_la_noche'] = _lo_dice_la_noche, (lambda n, s: False)
         global _CHAT
         guardo_chat, _CHAT = _CHAT, {'FFA': 'chat-ffa'}
         try:
@@ -648,9 +677,23 @@ def _self_check():
                       % ('ok' if ok else '🔴', anotados))
             finally:
                 globals().update(reales)
+            # 🌙 con «La noche de…» en camino, el aviso no sale y queda anotado como visto (22/11/2026)
+            os.remove(YA)
+            visto.clear()
+            globals().update(_lo_dice_la_noche=lambda n, s: True, mandar=_falso)
+            r6, r7 = evento(ev2, 5, 2), evento(ev2, 5, 3)
+            g = _avisados().get('999', {})
+            ok = r6 is False and r7 is False and not visto.get('n') and g.get('noche') is True and g.get('canal') == ''
+            mal += not ok
+            print('   %s con «La noche de…» en camino, el aviso del evento no sale (tampoco cuando la llave cambia)'
+                  % ('ok' if ok else '🔴'))
+            ok = _lo_dice_la_noche.__name__ == '<lambda>' and noche_real('661', 'FFA') is False and noche_real('x', 'FFA') is False
+            mal += not ok
+            print('   %s antes de NOCHE_DESDE el aviso sale como siempre' % ('ok' if ok else '🔴'))
         finally:
             _CHAT = guardo_chat
             globals()['mandar'] = real
+            globals()['_lo_dice_la_noche'] = noche_real
     finally:
         if os.path.exists(YA):
             os.remove(YA)

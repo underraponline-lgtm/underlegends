@@ -192,6 +192,55 @@ def mensaje_chat(gente, sv='', cuentas=None):
     return cuerpo, ids[:20], texto
 
 
+# 🌙 LA BIENVENIDA VA ADENTRO DEL AVISO DE GANADORES (Dlx, 22/11/2026: «make sure we are not that spammy»). Desde
+# `NOCHE_DESDE`, el evento con el que alguien debuta tiene su aviso de ganadores en el mismo chat, media hora después:
+# la bienvenida se le suma a ese mensaje (`aviso_ganadores.correr()`, con `del_evento()` y `marcar_chat()`) en vez de
+# salir sola. Si ese aviso no sale (sin campeón, apagado, sin chat) o pasa un día, sale sola como siempre
+ESPERA_GANADORES_H = 24
+
+
+def _esperar_ganadores(r, ahora, avisos=None):
+    """True si la bienvenida de este debut la va a llevar el aviso de ganadores de su evento: todavía no se mandó, es
+    desde `NOCHE_DESDE`, y el debut tiene menos de `ESPERA_GANADORES_H` horas. `avisos`: `datos/avisos_ganadores.json`."""
+    try:
+        from notas import NOCHE_DESDE
+    except Exception:                                    # noqa: BLE001
+        return False
+    if not str(r.get('n') or '').isdigit() or int(r['n']) < NOCHE_DESDE:
+        return False
+    if avisos is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'avisos_ganadores.json'), encoding='utf-8') as f:
+                avisos = (json.load(f) or {}).get('avisados') or {}
+        except (OSError, ValueError):
+            avisos = {}
+    est = avisos.get(str(r['n']))
+    if isinstance(est, str):
+        return False                    # ese aviso no sale (sin campeón, apagado, sin chat…): la bienvenida va sola
+    if isinstance(est, dict):
+        return True                     # ya salió: la llevaba él
+    try:
+        return (ahora - dt.datetime.fromisoformat(r['debut'])).total_seconds() < ESPERA_GANADORES_H * 3600
+    except (KeyError, ValueError, TypeError):
+        return False
+
+
+def del_evento(ev):
+    """`[(raw, reto)]` de quienes debutaron en ese evento y todavía no se nombraron en el chat."""
+    return [(raw, r) for raw, r in sorted((_leer().get('retos') or {}).items())
+            if str(r.get('n')) == str(ev) and not r.get('chat') and not r.get('cumplido') and not r.get('vencido')]
+
+
+def marcar_chat(raws, hoy):
+    """Anota que la bienvenida de esos ya salió (en el aviso de ganadores)."""
+    d = _leer()
+    rs = d.get('retos') or {}
+    for raw in raws:
+        if raw in rs:
+            rs[raw]['chat'] = hoy
+    _guardar({'retos': rs, 'chats': d.get('chats') or {}})
+
+
 def _leer():
     try:
         with io.open(ESTADO, encoding='utf-8') as f:
@@ -239,9 +288,15 @@ def correr(aplicar=False, ahora=None):
     hoy = _et(ahora).strftime('%Y-%m-%d')
     chats = viejo.get('chats') or {}
     por_sv = {}
+    esperan = 0
     for raw, r in nuevo.items():
         if not r.get('chat') and not r['cumplido'] and not r['vencido'] and r['sv']:
+            if _esperar_ganadores(r, ahora):
+                esperan += 1
+                continue
             por_sv.setdefault(r['sv'], []).append((raw, r))
+    if esperan:
+        print('   🌙 %d bienvenida(s) van adentro del aviso de ganadores de su evento' % esperan)
     salida = []
     import drops_merito as DM
     try:
@@ -293,7 +348,14 @@ def _self_check():
            {'n': 3, 't': t(14, 23), 'sv': 'DDF', 'nombre': 'B', 'fase': {'Beto': 'Cuartos'}},
            {'n': 4, 't': t(25), 'sv': 'FFA', 'nombre': 'C', 'fase': {'Caro': 'Cuartos'}}]
     r = retos(evs, {'Beto': '123456'}, ahora=t(26))
+    _a = dt.datetime(2026, 11, 22, 6, tzinfo=u)
+    _r = lambda n, h: {'n': n, 'debut': (_a - dt.timedelta(hours=h)).isoformat()}  # noqa: E731
     casos = [
+        ('🌙 un debut de la noche espera al aviso de ganadores', _esperar_ganadores(_r(675, 1), _a, {})),
+        ('🌙 antes de NOCHE_DESDE, la bienvenida sale sola', not _esperar_ganadores(_r(600, 1), _a, {})),
+        ('🌙 si el aviso de ganadores no sale, la bienvenida sale sola', not _esperar_ganadores(_r(675, 1), _a, {'675': 'sin_chat'})),
+        ('🌙 si ya salió, no se repite', _esperar_ganadores(_r(675, 30), _a, {'675': {'msg': '1'}})),
+        ('🌙 pasado un día sin aviso, sale sola', not _esperar_ganadores(_r(675, 30), _a, {})),
         ('quien debutó antes del reto no tiene reto', 'Ana' not in r),
         ('otro evento el mismo día cuenta: Beto cumple', r['Beto']['cumplido'] and r['Beto']['con'] == 3),
         ('pasados los 7 días no cuenta: Caro venció', not r['Caro']['cumplido'] and r['Caro']['vencido']),

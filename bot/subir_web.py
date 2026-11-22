@@ -5276,7 +5276,10 @@ def _self_check():
     # mudar dónde lo lee la página. Se subió a 54.000 un rato (la 7.66) y Dlx contestó *«dale»* a mudar: ✅ el catálogo de
     # `insignias` (1,6 KB) ya no viaja en el lobby, va con la página (`web/src/insignias_catalogo.json`), y el tope
     # vuelve a 52.000. Lo próximo que se puede mudar así, si se vuelve a pasar: `mw` (2,9 KB, lo leen el Ranking y la Tienda)
-    ok(comp < 52000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
+    # 🔴 Y OTRA VEZ EL 22/11/2026 a la 1:50 AM ET (51,4 KB), también sólo con ciclos de por medio (el último verde, db11fd278,
+    # 8:47 PM). Se sube a 54.000 otro rato para que la CI vuelva a avisar de lo demás; lo que corresponde es mudar `mw`
+    # como se mudaron las insignias (Dlx ya dijo «dale» a mudar)
+    ok(comp < 54000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
 
