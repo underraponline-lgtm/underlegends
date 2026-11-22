@@ -1555,14 +1555,22 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
           <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" />
           <button type="button" className={'hv-comp hv-img' + (img ? ' ' + img : '')} aria-label="Guardar como imagen para tus historias"
             title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>
-          <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
-        {/* 🎧 lo que suena y de quién es, con el link a su video: el crédito es parte del permiso del beatmaker */}
-        {/* ⏳ mientras baja: la barra quieta y esto, así se entiende por qué no arranca */}
-        {beat && sonido && cargaB ? <span className="hv-beat carga" role="status"><i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span>{String(beat).startsWith('p:') ? 'Cargando la canción…' : 'Cargando el beat…'}</span></span>
-          : beat && sonido && pista ? <a className="hv-beat" href={pista.u} target="_blank" rel="noopener noreferrer"
-          onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}
-          aria-label={'Suena ' + pista.t + ', de ' + pista.b + '. Abrir en YouTube'} title="Abrir el beat en YouTube">
-          <i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span><b>{pista.t}</b> · {pista.b}</span></a> : null}
+          <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button>
+          {/* 🎧 LO QUE SUENA, ADENTRO DE LA CABECERA (22/11/2026, Dlx: «acomodes bien la posición de ese label de la música, que
+              no choque con nada de la historia»). Estaba suelta a 64 px del borde y se montaba sobre el nombre y la fecha en las
+              31 historias con música medidas (y sobre los botones si el título era largo). Ahora es una fila propia de la
+              cabecera, debajo del nombre y alineada con él, como la música en Instagram: la cabecera crece y la historia baja.
+              La fila se reserva desde que hay beat, así el contenido no salta cuando la canción termina de bajar. Con el link a
+              su video: el crédito es parte del permiso del beatmaker. Mientras baja, «Cargando…» (la barra quieta) */}
+          {beat && sonido ? (
+            <div className="hv-musica">
+              {cargaB ? <span className="hv-beat carga" role="status"><i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span>{String(beat).startsWith('p:') ? 'Cargando la canción…' : 'Cargando el beat…'}</span></span>
+                : pista ? <a className="hv-beat" href={pista.u} target="_blank" rel="noopener noreferrer"
+                  onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}
+                  aria-label={'Suena ' + pista.t + ', de ' + pista.b + '. Abrir en YouTube'} title="Abrir el beat en YouTube">
+                  <i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span><b>{pista.t}</b> · {pista.b}</span></a> : null}
+            </div>
+          ) : null}</div>
         <div className="hv-cuerpo" ref={cuerpoR} style={flot ? { paddingBottom: 16 + filasF * 52 - 6 } : undefined}><div className="st" key={s.id}><span className={'st-tag' + (s.tono ? ' ' + s.tono : '')}>{s.tag}</span><HistoriaCtx.Provider value={ctxH}>{s.cuerpo}</HistoriaCtx.Provider></div></div>
         {proxima ? <div className="hv-sig" aria-hidden="true" ref={(el) => { if (el) el.setAttribute('inert', ''); }}>
           <div className="st"><span className={'st-tag' + (proxima.tono ? ' ' + proxima.tono : '')}>{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}

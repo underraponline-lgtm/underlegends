@@ -770,7 +770,15 @@ h1,h2,h3,p{margin:0}
 .hv-zona{position:absolute;top:80px;bottom:90px;background:none;border:0;cursor:pointer;z-index:1}
 /* 🎧 el beat que suena y de quién es (21/11/2026): tocarlo abre su video. Debajo de la cabecera, como la música de una
    historia de Instagram; las barritas se mueven mientras suena (quietas con «Menos animaciones») */
-.hv-beat{position:absolute;top:64px;left:14px;z-index:3;display:inline-flex;align-items:center;gap:7px;max-width:calc(100% - 28px);padding:4px 10px 4px 8px;border-radius:4px;background:rgba(10,10,12,.64);color:#F6F6F6;text-decoration:none;font:600 14px/1.15 "Barlow Condensed",sans-serif}
+/* 🎧 la música, en una fila propia de la cabecera (22/11/2026): debajo del nombre y alineada con él (cara de 38 + 10 de aire),
+   como en Instagram. Antes iba suelta a 64 px y se montaba sobre el nombre y la fecha. La fila se reserva (min-height) */
+.hv-cab{flex-wrap:wrap;row-gap:0}
+/* con wrap, la cara y el nombre cortan la fila por su ancho natural y la ✕ bajaba a otra línea en el celular: base 0 */
+.hv-cab>.hv-quien{flex:1 1 0;min-width:0}
+.hv-musica{order:9;flex:0 0 100%;display:flex;min-width:0;min-height:24px;margin-top:2px;padding-left:48px}
+.hv-beat{display:inline-flex;align-items:center;gap:7px;min-width:0;max-width:100%;padding:3px 9px 3px 7px;border-radius:4px;background:rgba(10,10,12,.55);color:#F6F6F6;text-decoration:none;font:600 14px/1.15 "Barlow Condensed",sans-serif}
+/* (la cabecera pone sus `b` en bloque, en mayúsculas y en Archivo: el título de la canción va como texto) */
+.hv-musica .hv-beat>span b{display:inline;font:inherit;font-weight:700;font-stretch:normal;text-transform:none}
 .hv-beat span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hv-beat span b{font-weight:700}
 .hv-eq{display:inline-flex;align-items:flex-end;gap:2px;height:12px;flex:none}
