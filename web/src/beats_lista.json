@@ -53,6 +53,71 @@
    "b": "MaxiBeats",
    "u": "https://youtu.be/FUUxcz7Z3t4",
    "libre": 1
+  },
+  {
+   "a": "7mobeats-parisunder.m4a",
+   "t": "Paris Under",
+   "b": "7mobeats",
+   "u": "https://youtu.be/ZnRtpt2WIjs"
+  },
+  {
+   "a": "deejaysanty-vinilo.m4a",
+   "t": "Vinilo",
+   "b": "Deejay Santy",
+   "u": "https://youtu.be/xBdlIVuLeYI"
+  },
+  {
+   "a": "denekbeats-og.m4a",
+   "t": "OG",
+   "b": "Denek Beats",
+   "u": "https://youtu.be/L4JERKgzlfI"
+  },
+  {
+   "a": "denzelbeats-tormentadepaz.m4a",
+   "t": "Tormenta de Paz",
+   "b": "Denzel Beats",
+   "u": "https://youtu.be/6IFAv6yFum0",
+   "libre": 1
+  },
+  {
+   "a": "maxibeats-jogabonito.m4a",
+   "t": "Joga Bonito",
+   "b": "MaxiBeats",
+   "u": "https://youtu.be/sL3JTJNv9LQ",
+   "libre": 1
+  },
+  {
+   "a": "shadowbeats-saxo.m4a",
+   "t": "Saxo",
+   "b": "ShadowBeats",
+   "u": "https://youtu.be/kYSvMkJAxZA",
+   "libre": 1
+  },
+  {
+   "a": "viruzbeatmaker-saturno.m4a",
+   "t": "Saturno",
+   "b": "Viruz Beatmaker",
+   "u": "https://youtu.be/sSceV-8c-_4",
+   "libre": 1
+  },
+  {
+   "a": "p4nteraa-sky.m4a",
+   "t": "Sky",
+   "b": "P4nteraa",
+   "u": "https://youtu.be/H5P_aPMRo3E"
+  },
+  {
+   "a": "djbootrax-ultimaoportunidad.m4a",
+   "t": "Última Oportunidad",
+   "b": "DJ Bootrax",
+   "u": "https://youtu.be/2ji092bQ8eo"
+  },
+  {
+   "a": "mancillador-frontera.m4a",
+   "t": "Frontera",
+   "b": "Mancillador",
+   "u": "https://youtu.be/gqWMYsK13o0",
+   "libre": 1
   }
  ],
  "trap": [
@@ -101,6 +166,68 @@
    "t": "Atlántico",
    "b": "NYQST",
    "u": "https://youtu.be/cm_WEUnd7ec"
+  },
+  {
+   "a": "deejaysanty-gitana.m4a",
+   "t": "Gitana",
+   "b": "Deejay Santy",
+   "u": "https://youtu.be/ewrN2rlzjrw"
+  },
+  {
+   "a": "denekbeats-neon.m4a",
+   "t": "Neon",
+   "b": "Denek Beats",
+   "u": "https://youtu.be/jwE7l9RrXC8"
+  },
+  {
+   "a": "denzelbeats-profundo.m4a",
+   "t": "Profundo",
+   "b": "Denzel Beats",
+   "u": "https://youtu.be/uWu97h2S5Q8"
+  },
+  {
+   "a": "dominiomusic-contrario.m4a",
+   "t": "Contrario",
+   "b": "Dominio Music",
+   "u": "https://youtu.be/m7K_9HncQHY"
+  },
+  {
+   "a": "gianbeatz-rumrum.m4a",
+   "t": "Rum Rum",
+   "b": "GianBeatz",
+   "u": "https://youtu.be/MENO49B4jlI"
+  },
+  {
+   "a": "lautobeats-barnard.m4a",
+   "t": "Barnard",
+   "b": "Lauto Beats",
+   "u": "https://youtu.be/K0cOftejzM4"
+  },
+  {
+   "a": "versey-wars.m4a",
+   "t": "Wars",
+   "b": "Versey",
+   "u": "https://youtu.be/fckn0R1VLfw"
+  },
+  {
+   "a": "viruzbeatmaker-tundra.m4a",
+   "t": "Tundra",
+   "b": "Viruz Beatmaker",
+   "u": "https://youtu.be/Jga-sqAHi6o"
+  },
+  {
+   "a": "zkn-beattrap1.m4a",
+   "t": "Beat Trap #1",
+   "b": "ZkN",
+   "u": "https://youtu.be/vSlqiuumESw",
+   "libre": 1
+  },
+  {
+   "a": "alejandresbeats-snakefury.m4a",
+   "t": "Snake Fury",
+   "b": "Alejandre's Beats",
+   "u": "https://youtu.be/0hMAlzK_FD0",
+   "libre": 1
   }
  ],
  "drill": [
@@ -148,6 +275,56 @@
    "t": "Barras",
    "b": "ChessBeats",
    "u": "https://youtu.be/vlhkUfakt6Y"
+  },
+  {
+   "a": "7mobeats-warzone.m4a",
+   "t": "Warzone",
+   "b": "7mobeats",
+   "u": "https://youtu.be/VZkfHXR2u6c"
+  },
+  {
+   "a": "gianbeatz-jyo.m4a",
+   "t": "JYO",
+   "b": "GianBeatz",
+   "u": "https://youtu.be/IrtKB8GLt-o"
+  },
+  {
+   "a": "gianbeatz-cts.m4a",
+   "t": "CTS",
+   "b": "GianBeatz",
+   "u": "https://youtu.be/s31iKWMxMNE"
+  },
+  {
+   "a": "ignaciobeats-realdrill.m4a",
+   "t": "Real Drill",
+   "b": "Ignacio BEATS",
+   "u": "https://youtu.be/-UxeX328IDQ"
+  },
+  {
+   "a": "jdbeats-gloriaeterna.m4a",
+   "t": "Gloria Eterna",
+   "b": "Jd Beats",
+   "u": "https://youtu.be/4BOEFuFzRdk",
+   "libre": 1
+  },
+  {
+   "a": "jdbeats-whitecity.m4a",
+   "t": "White City",
+   "b": "Jd Beats",
+   "u": "https://youtu.be/zgJeeSZH9WA",
+   "libre": 1
+  },
+  {
+   "a": "dominiomusic-beautydeath.m4a",
+   "t": "Beauty Death",
+   "b": "Dominio Music",
+   "u": "https://youtu.be/dLMX9gEwB_E"
+  },
+  {
+   "a": "viruzbeatmaker-sauceblack.m4a",
+   "t": "Sauce Black",
+   "b": "Viruz Beatmaker",
+   "u": "https://youtu.be/nGc8tJXATcg"
   }
  ]
 }

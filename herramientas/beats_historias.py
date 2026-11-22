@@ -74,6 +74,44 @@ ELEGIDOS = [
     ('V4czXKXrBj8', 'trap', 'Beat Trap #2', 'ZkN', True),
     ('wUNb4HkQe3A', 'trap', 'Virus', 'Versey', False),
     ('cm_WEUnd7ec', 'trap', 'Atlántico', 'NYQST', False),
+
+    # 🎚️ LA TANDA 2 (Dlx, 22/11/2026: «instales más beats de esos canales, exceptuando de los canales de ingleses»). Se
+    # miraron los últimos 40 videos de cada canal de datos/beatmakers.json en español, y entró sólo lo que dice su estilo en
+    # el título. Afuera: los canales en inglés o sin confirmar (LethalNeedle, HB Beats, Tower Beatz, Extremo, Black One), lo
+    # que samplea algo reconocible («Insert Coin / Pac-Man», «Aurora (Himno Sampleado)», los «Navidad», «Tin-Tan»), las
+    # colaboraciones con productores que no están en la lista (las nuevas de Azerbeats) y los formatos con voz. Como mucho
+    # uno por beatmaker y estilo, salvo donde había poco drill
+    # 🏆 boom bap
+    ('ZnRtpt2WIjs', 'boombap', 'Paris Under', '7mobeats', False),
+    ('xBdlIVuLeYI', 'boombap', 'Vinilo', 'Deejay Santy', False),
+    ('L4JERKgzlfI', 'boombap', 'OG', 'Denek Beats', False),
+    ('6IFAv6yFum0', 'boombap', 'Tormenta de Paz', 'Denzel Beats', True),
+    ('sL3JTJNv9LQ', 'boombap', 'Joga Bonito', 'MaxiBeats', True),
+    ('kYSvMkJAxZA', 'boombap', 'Saxo', 'ShadowBeats', True),
+    ('sSceV-8c-_4', 'boombap', 'Saturno', 'Viruz Beatmaker', True),
+    ('H5P_aPMRo3E', 'boombap', 'Sky', 'P4nteraa', False),
+    ('2ji092bQ8eo', 'boombap', 'Última Oportunidad', 'DJ Bootrax', False),
+    ('gqWMYsK13o0', 'boombap', 'Frontera', 'Mancillador', True),
+    # 🔥 trap
+    ('ewrN2rlzjrw', 'trap', 'Gitana', 'Deejay Santy', False),
+    ('jwE7l9RrXC8', 'trap', 'Neon', 'Denek Beats', False),
+    ('uWu97h2S5Q8', 'trap', 'Profundo', 'Denzel Beats', False),
+    ('m7K_9HncQHY', 'trap', 'Contrario', 'Dominio Music', False),
+    ('MENO49B4jlI', 'trap', 'Rum Rum', 'GianBeatz', False),
+    ('K0cOftejzM4', 'trap', 'Barnard', 'Lauto Beats', False),
+    ('fckn0R1VLfw', 'trap', 'Wars', 'Versey', False),
+    ('Jga-sqAHi6o', 'trap', 'Tundra', 'Viruz Beatmaker', False),
+    ('vSlqiuumESw', 'trap', 'Beat Trap #1', 'ZkN', True),
+    ('0hMAlzK_FD0', 'trap', 'Snake Fury', "Alejandre's Beats", True),
+    # ⚔️ drill
+    ('VZkfHXR2u6c', 'drill', 'Warzone', '7mobeats', False),
+    ('IrtKB8GLt-o', 'drill', 'JYO', 'GianBeatz', False),
+    ('s31iKWMxMNE', 'drill', 'CTS', 'GianBeatz', False),
+    ('-UxeX328IDQ', 'drill', 'Real Drill', 'Ignacio BEATS', False),
+    ('4BOEFuFzRdk', 'drill', 'Gloria Eterna', 'Jd Beats', True),
+    ('zgJeeSZH9WA', 'drill', 'White City', 'Jd Beats', True),
+    ('dLMX9gEwB_E', 'drill', 'Beauty Death', 'Dominio Music', False),
+    ('nGc8tJXATcg', 'drill', 'Sauce Black', 'Viruz Beatmaker', False),
 ]
 
 
