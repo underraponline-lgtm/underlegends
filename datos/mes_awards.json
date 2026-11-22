@@ -7902,7 +7902,7 @@
       "_jothaze_"
      ],
      "927662680540594236": [
-      "Make.city.great.again",
+      "",
       "d l o z c o r i a",
       "dl0scoria"
      ]
@@ -10778,6 +10778,29 @@
      ],
      "organizador": "@Cu?",
      "cuentas": {}
+    },
+    "1574156148263624836": {
+     "sv": "CEU",
+     "nombre": "SUPREMACIA CUP 2",
+     "mo": "2026-11-22T20:14:32Z",
+     "staff": {
+      "jurado": [
+       "Krish el adivino (la revolucion)"
+      ],
+      "dj": [
+       "Krish el adivino (la revolucion)"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRISH",
+       "id": ""
+      }
+     ],
+     "organizador": "KRISH",
+     "cuentas": {
+      "Krish el adivino (la revolucion)": "1513620494199558295"
+     }
     }
    },
    "ver": {
@@ -11465,7 +11488,7 @@
       "zetaenmsi"
      ],
      "927662680540594236": [
-      "Make.city.great.again",
+      "",
       "d l o z c o r i a",
       "dl0scoria"
      ]
