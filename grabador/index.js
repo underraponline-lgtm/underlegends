@@ -61,6 +61,17 @@ const E = process.env;
 
 //: FFA primero (Dlx, 21/11/2026); DRA cuando termine su remodelación, y los Tier 1 de a uno
 export const GRABAR_EN = lista(E.GRABAR_EN || '1468472442925092958');
+//: 🌎 TODOS LOS SERVIDORES DE LA LIGA (Dlx, 22/11/2026: «quiero que pruebes en todos los servidores ok? de la liga global,
+//: tier 3, tier 2 y tier 1»): además de `GRABAR_EN`, cualquier servidor donde esté el bot y que tenga una llave en juego
+//: (`/avisos/vivo`: el vigía sólo lee servidores de la Liga, así que es la lista de socios sin escribirla en ningún lado).
+//: ⚠️ En éstos SÓLO con llave: sin ella, una llamada con mucha gente en un servidor socio es charla, no un evento (el piso
+//: de `MIN_SIN` sin llave queda para los de `GRABAR_EN`). `GRABAR_TODOS=0` en Railway vuelve a sólo `GRABAR_EN`
+export const GRABAR_TODOS = E.GRABAR_TODOS !== '0';
+/** Los servidores que se miran en esta vuelta: los de `GRABAR_EN` y, con `GRABAR_TODOS`, los que tienen una llave en juego. */
+async function servidoresAMirar() {
+  if (!GRABAR_TODOS) return GRABAR_EN;
+  return [...new Set([...GRABAR_EN, ...(await llavesEnJuego())])];
+}
 //: en qué llamadas de cada servidor se graba (las de competencia). `CANALES` en Railway las cambia para todos
 export const CANALES_DE = {
   '1468472442925092958': ['1519182186702438450', '1550950039159963648', '1550950286615519343'],  // FFA: competencia, competencia², Escenario
@@ -419,7 +430,8 @@ const pendiente = new Map();  // guild -> { canal, desde }
 const avisadoSinPermiso = new Set();
 
 async function vuelta(client) {
-  for (const gid of GRABAR_EN) {
+  // los que ya se están grabando siguen en la lista aunque su llave deje de estar «en juego» (si no, nadie los cierra)
+  for (const gid of new Set([...(await servidoresAMirar()), ...grabando.keys()])) {
     const guild = client.guilds.cache.get(gid);
     if (!guild) continue;
     const g = grabando.get(gid);
@@ -429,8 +441,11 @@ async function vuelta(client) {
     const c = candidata(guild);
     // el piso es el más bajo de los dos: con MIN_SIN=1 (la prueba de una persona) el de MIN_VIVO lo dejaba afuera
     if (!c || c.n < Math.min(MIN_VIVO, MIN_SIN) || c.otro) { pendiente.delete(gid); continue; }
-    const enJuego = c.n >= MIN_SIN ? false : (await llavesEnJuego()).has(gid);
-    if (c.n < MIN_SIN && !enJuego) { pendiente.delete(gid); continue; }
+    // 🌎 fuera de `GRABAR_EN`, sólo con una llave en juego (ver `GRABAR_TODOS`)
+    // se entra POR GENTE (sólo los de `GRABAR_EN`, con `MIN_SIN`) o POR LLAVE en juego (cualquiera, con `MIN_VIVO`)
+    const porGente = GRABAR_EN.includes(gid) && c.n >= MIN_SIN;
+    const enJuego = !porGente && c.n >= MIN_VIVO && (await llavesEnJuego()).has(gid);
+    if (!porGente && !enJuego) { pendiente.delete(gid); continue; }
     const p = pendiente.get(gid);
     if (!p || p.canal !== c.canal.id) { pendiente.set(gid, { canal: c.canal.id, desde: Date.now() }); continue; }
     if (Date.now() - p.desde < ESPERA_ENTRAR) continue;
@@ -470,7 +485,9 @@ function medir() {
 async function revisarYSalir(client) {
   console.log(generateDependencyReport());
   const llaves = await llavesEnJuego();
-  for (const gid of GRABAR_EN) {
+  // 🌎 con `GRABAR_TODOS`, todos los servidores donde está el bot: para ver los permisos de cada uno antes de que juegue
+  const todos = GRABAR_TODOS ? [...new Set([...GRABAR_EN, ...client.guilds.cache.keys()])] : GRABAR_EN;
+  for (const gid of todos) {
     const guild = client.guilds.cache.get(gid);
     if (!guild) { console.log(`❌ ${gid}: el bot no está en ese servidor`); continue; }
     console.log(`\n${guild.name} (tope de archivo ${topeDe(guild) / 1e6} MB, llave en juego: ${llaves.has(gid) ? 'sí' : 'no'})`);
@@ -485,7 +502,7 @@ async function revisarYSalir(client) {
         + `${g.otro ? ' · ya hay otro grabador' : ''}${puede ? '' : ' · ⚠️ sin permiso para entrar'}`);
     }
     const c = candidata(guild);
-    const entra = c && !c.otro && (c.n >= MIN_SIN || (c.n >= MIN_VIVO && llaves.has(gid)));
+    const entra = c && !c.otro && ((GRABAR_EN.includes(gid) && c.n >= MIN_SIN) || (c.n >= MIN_VIVO && llaves.has(gid)));
     console.log(`  → ${entra ? `entraría a ${c.canal.name} en ${ESPERA_ENTRAR / 1000} s` : 'no entraría a ninguna'}`);
   }
   for (const id of PRUEBA_MICRO) {
@@ -522,7 +539,8 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
 });
 client.once(Events.ClientReady, async () => {
-  anotar(`✅ conectado como ${client.user.tag} · graba en ${GRABAR_EN.length} servidor(es) · entrega en ${ENTREGA}`);
+  anotar(`✅ conectado como ${client.user.tag} · graba en ${GRABAR_TODOS ? 'todos los servidores con una llave en juego (y '
+    + GRABAR_EN.length + ' fijo/s)' : GRABAR_EN.length + ' servidor(es)'} · entrega en ${ENTREGA}`);
   if (process.argv.includes('--revisar')) return revisarYSalir(client);
   setInterval(() => vuelta(client).catch((e) => anotar('⚠️ vuelta:', String(e.message || e).slice(0, 150))), 20000);
   arrancarPrueba(client);
