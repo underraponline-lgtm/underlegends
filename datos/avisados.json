@@ -40728,7 +40728,7 @@
    ],
    [
     "Deko",
-    "Zaik 🇪🇸, Kravitz",
+    "Kravitz",
     "Deko"
    ],
    [
@@ -40778,7 +40778,7 @@
    "Xclusivo": 26
   },
   "fecha": "09/11",
-  "firma": "11f9237a92b398d0",
+  "firma": "41781608a319af10",
   "msg": "1569448001989251545",
   "nombre": "__ JKWODJAKB V.1 __",
   "num": 595,
@@ -40810,16 +40810,6 @@
     3875
    ],
    [
-    "Zaik 🇪🇸",
-    "Semifinal",
-    2625
-   ],
-   [
-    "Kravitz",
-    "Semifinal",
-    2625
-   ],
-   [
     "Deko",
     "Campeón",
     2500
@@ -40843,6 +40833,11 @@
     "Dobell",
     "Cuartos",
     2500
+   ],
+   [
+    "Kravitz",
+    "Semifinal",
+    1312
    ],
    [
     "Keider",
@@ -53411,6 +53406,7 @@
   "v": 2
  },
  "665": {
+  "al_dia": true,
   "antes": {
    "BNA": [
     268,
@@ -54133,6 +54129,190 @@
     "Saito",
     "R32",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "671": {
+  "al_dia": true,
+  "antes": {
+   "AbrahamH": [
+    123,
+    174,
+    false
+   ],
+   "Artezzy": [
+    74,
+    92,
+    false
+   ],
+   "CrisZJ": [
+    264,
+    35,
+    true
+   ],
+   "Dios": [
+    77,
+    96,
+    false
+   ],
+   "Fecha": [
+    712,
+    698,
+    true
+   ],
+   "MCO": [
+    17,
+    17,
+    false
+   ],
+   "Mito": [
+    20,
+    20,
+    false
+   ],
+   "NXUZ": [
+    24,
+    25,
+    false
+   ],
+   "Vilca": [
+    66,
+    80,
+    false
+   ],
+   "replisan": [
+    439,
+    366,
+    true
+   ]
+  },
+  "canal": "1569842921304227950",
+  "duelos": [
+   [
+    "Dios",
+    "replisan",
+    "Dios"
+   ],
+   [
+    "MCO",
+    "Mito",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Artezzy",
+    "MCO"
+   ],
+   [
+    "Fecha",
+    "Vilca",
+    "Fecha"
+   ],
+   [
+    "Fecha",
+    "CrisZJ",
+    "Fecha"
+   ],
+   [
+    "AbrahamH",
+    "replisan",
+    "AbrahamH"
+   ],
+   [
+    "AbrahamH",
+    "NXUZ",
+    "AbrahamH"
+   ],
+   [
+    "Dios",
+    "MCO",
+    "Dios"
+   ],
+   [
+    "Fecha",
+    "AbrahamH",
+    "Fecha"
+   ],
+   [
+    "Dios",
+    "Fecha",
+    "Dios"
+   ]
+  ],
+  "ev_antes": {
+   "AbrahamH": 4,
+   "Artezzy": 16,
+   "CrisZJ": 37,
+   "Dios": 14,
+   "Fecha": 1,
+   "MCO": 44,
+   "Mito": 46,
+   "NXUZ": 50,
+   "Vilca": 27,
+   "replisan": 3
+  },
+  "fecha": "21/11",
+  "firma": "1fea5837c68f67b1",
+  "msg": "1573909518906298399",
+  "nombre": "BOOM BAP STYLE",
+  "num": 671,
+  "participantes": 11,
+  "sello": {
+   "Dios": "ff6af9b16673:a8d8b7335469"
+  },
+  "sv": "DDS",
+  "t": "2026-11-22T03:54:30Z",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Fecha",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    3500
+   ],
+   [
+    "AbrahamH",
+    "Semifinal",
+    3500
+   ],
+   [
+    "replisan",
+    "Cuartos",
+    3000
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

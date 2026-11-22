@@ -43601,7 +43601,7 @@
      [
       [
        "lil monja 🇦🇷",
-       "Quasimoto🇻🇪",
+       "Agente sombra",
        "CrisZJ"
       ],
       "lil monja 🇦🇷",
@@ -43734,6 +43734,11 @@
     2500
    ],
    [
+    "Agente sombra",
+    "Octavos",
+    1250
+   ],
+   [
     "CrisZJ",
     "Octavos",
     1250
@@ -43770,11 +43775,6 @@
    ],
    [
     "Number VE",
-    "Octavos",
-    1250
-   ],
-   [
-    "Quasimoto🇻🇪",
     "Octavos",
     1250
    ],
@@ -44728,10 +44728,10 @@
     "b": [
      [
       [
-       "Chase",
+       "CHSE",
        "Chop"
       ],
-      "Chase",
+      "CHSE",
       ""
      ],
      [
@@ -45001,7 +45001,7 @@
      [
       [
        "Chase",
-       "Soulb"
+       "VIOLAGINAS"
       ],
       "Chase",
       ""
@@ -45077,7 +45077,7 @@
     2500
    ],
    [
-    "Soulb",
+    "VIOLAGINAS",
     "Cuartos",
     2500
    ],
@@ -46215,7 +46215,7 @@
        "oriuz"
       ],
       "MCO",
-      "Walk-in 1: mco"
+      "Walk-in 1: MCO 🇦🇷"
      ]
     ],
     "r": "Semifinales"
@@ -61445,6 +61445,150 @@
   ],
   "ver": {
    "min": 308,
+   "v": 1
+  }
+ },
+ "671": {
+  "dia": "2026-11-21",
+  "escala": "8-15",
+  "fecha": "21/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1573893344948396143"
+  ],
+  "n": 671,
+  "nombre": "BOOM BAP STYLE",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "replisan"
+      ],
+      "Dios",
+      "Revivido: replisan"
+     ],
+     [
+      [
+       "MCO",
+       "Mito",
+       "Artezzy"
+      ],
+      "MCO",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Fecha",
+       "Vilca",
+       "CrisZJ"
+      ],
+      "Fecha",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "AbrahamH",
+       "replisan",
+       "NXUZ"
+      ],
+      "AbrahamH",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "MCO"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Fecha",
+       "AbrahamH"
+      ],
+      "Fecha",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "Fecha"
+      ],
+      "Dios",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "Fecha",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "AbrahamH",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    3500
+   ],
+   [
+    "replisan",
+    "Cuartos",
+    3000
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 47,
    "v": 1
   }
  }

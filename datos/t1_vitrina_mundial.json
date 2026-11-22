@@ -2,12 +2,12 @@
  "hoja": "Ranking Mundial",
  "cabecera": ["#", "País", "Raperos", "Puntos", "Eventos", "🥇", "Mejor", "Pts del mejor"],
  "filas": [
-  [1, "Argentina", 152, 6701139, 1077, 103, "PichulaMc", 481924],
-  [2, "Chile", 87, 3547940, 589, 65, "Oasis", 635725],
+  [1, "Argentina", 152, 6731514, 1081, 103, "PichulaMc", 481924],
+  [2, "Chile", 87, 3545440, 588, 65, "Oasis", 635725],
   [3, "Venezuela", 54, 3382755, 543, 48, "Makmah", 881728],
   [4, "Colombia", 67, 3076200, 530, 38, "Vandu", 428908],
-  [5, "Perú", 52, 1882783, 449, 15, "NXUZ", 242573],
-  [6, "México", 49, 1605414, 316, 18, "yinn", 231417],
+  [5, "Perú", 52, 1903033, 454, 15, "NXUZ", 247073],
+  [6, "México", 49, 1624789, 317, 19, "yinn", 231417],
   [7, "Uruguay", 18, 1036283, 159, 16, "Over", 250388],
   [8, "Panamá", 6, 817533, 117, 18, "Erian", 583221],
   [9, "España", 34, 805007, 162, 10, "Trot", 130814],
@@ -21,7 +21,7 @@
   [17, "Puerto Rico", 7, 118075, 24, 2, "Rodas", 71475],
   [18, "Bolivia", 4, 77790, 16, 1, "Evangeline", 49348],
   [19, "Cuba", 3, 44394, 4, 1, "JOSHU", 20225],
-  [20, "El Salvador", 2, 24030, 6, "", "AbrahamH", 22275],
+  [20, "El Salvador", 2, 31905, 7, "", "AbrahamH", 30150],
   [21, "Guatemala", 4, 9469, 5, "", "KATALIEN", 3125],
   [22, "Brasil", 1, 2693, 3, "", "UDDIZIM", 2693]
  ]

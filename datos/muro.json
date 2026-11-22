@@ -356,15 +356,6 @@
 "rg": "C",
 "c": []
 },
-"soulb": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "tenor": {
 "rg": "C",
 "c": [
@@ -396,6 +387,15 @@
 ]
 },
 "cronox": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"soulb": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -668,6 +668,14 @@
 "temporada"
 ]
 },
+"dios": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "sosaatr": {
 "rg": "E",
 "c": [
@@ -735,14 +743,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"dios": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1126,6 +1126,12 @@
 "rg": "",
 "c": []
 },
+"abrahamh": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "berrun": {
 "rg": "",
 "c": []
@@ -1224,12 +1230,6 @@
 "c": [
 "servidor",
 "temporada"
-]
-},
-"abrahamh": {
-"rg": "",
-"c": [
-"servidor"
 ]
 },
 "noxvell": {
@@ -8142,8 +8142,8 @@
 "tipo": "resnoche",
 "t": "2026-11-22T08:00:00Z",
 "dia": "2026-11-21",
-"eventos": 2,
-"part": 37,
+"eventos": 3,
+"part": 48,
 "campeones": [
 {
 "ev": "DESGRACIAS EN TOKYO VOL 32 1v1",
@@ -8166,6 +8166,17 @@
 "majiztral"
 ]
 ]
+},
+{
+"ev": "BOOM BAP STYLE",
+"sv": "DDS",
+"ll": 671,
+"quien": [
+[
+"Dios",
+"dios"
+]
+]
 }
 ],
 "suman": [
@@ -8176,36 +8187,36 @@
 "ev": 1
 },
 {
+"n": "Dios",
+"k": "dios",
+"pts": 8375,
+"ev": 2
+},
+{
 "n": "BNA",
 "k": "bna",
 "pts": 7500,
-"ev": 1
-},
-{
-"n": "EIDP",
-"k": "eidp",
-"pts": 6000,
 "ev": 1
 }
 ],
 "suben": [
 {
+"n": "Fecha",
+"k": "",
+"de": 710,
+"a": 361
+},
+{
 "n": "Status",
 "k": "",
 "de": 467,
-"a": 367
+"a": 368
 },
 {
 "n": "Telmex",
 "k": "",
 "de": 236,
-"a": 153
-},
-{
-"n": "Chente",
-"k": "",
-"de": 372,
-"a": 340
+"a": 154
 }
 ],
 "sorpresas": []
@@ -8295,7 +8306,7 @@
 "colesito": 0,
 "agus": 0,
 "mrstillballin": 5,
-"mco": 1,
+"mco": 0,
 "provenza": 0,
 "yinn": 0,
 "miniboy": 0,
@@ -8371,7 +8382,7 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 1,
+"dios": 2,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,
@@ -8447,7 +8458,7 @@
 "lewito": 0,
 "chase": 3,
 "zeta": 0,
-"abrahamh": 1,
+"abrahamh": 0,
 "noxvell": 0,
 "betelguese": 1,
 "corvo": 2,

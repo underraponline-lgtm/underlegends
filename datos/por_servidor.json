@@ -583,12 +583,12 @@
   "AbrahamH": {
    "DDS": {
     "duelos": "",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
     "ovr": 48,
     "pod": 2,
-    "pts": 20375,
-    "racha": "1/2",
+    "pts": 28250,
+    "racha": "0/2",
     "tg": {
      "fin": 2,
      "fund": true
@@ -771,15 +771,12 @@
   "Agente sombra": {
    "CH": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 8250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "pts": 9500,
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -1203,11 +1200,11 @@
   "Artezzy": {
    "DDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 3750,
+    "pts": 8250,
     "racha": "0/0"
    },
    "FDS": {
@@ -2889,11 +2886,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 12,
+    "ev": 13,
     "oro": 2,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 2,
-    "pts": 54825,
+    "pts": 59325,
     "racha": "0/2",
     "tg": {
      "fin": 2,
@@ -3529,14 +3526,14 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 3,
-    "oro": 1,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 11500,
-    "racha": "1/1",
+    "ev": 4,
+    "oro": 2,
+    "ovr": 48,
+    "pod": 2,
+    "pts": 28375,
+    "racha": "2/2",
     "tg": {
-     "fin": 1
+     "fin": 2
     }
    },
    "FDS": {
@@ -4874,12 +4871,15 @@
   "Fecha": {
    "DDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0"
+    "ovr": 46,
+    "pod": 1,
+    "pts": 12500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    }
   },
   "Filozico": {
@@ -8720,12 +8720,12 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 6,
+    "ev": 7,
     "oro": 1,
-    "ovr": 48,
+    "ovr": 49,
     "pod": 2,
-    "pts": 21625,
-    "racha": "3/3",
+    "pts": 29500,
+    "racha": "0/3",
     "tg": {
      "fin": 2
     }
@@ -9901,12 +9901,12 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
     "ovr": 46,
     "pod": 1,
-    "pts": 13750,
-    "racha": "1/1",
+    "pts": 18250,
+    "racha": "0/1",
     "tg": {
      "fin": 1
     }
@@ -10477,11 +10477,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 14,
+    "ev": 15,
     "oro": 3,
-    "ovr": 52,
+    "ovr": 53,
     "pod": 4,
-    "pts": 53450,
+    "pts": 57950,
     "racha": "0/2",
     "tg": {
      "fin": 4,
@@ -11970,17 +11970,6 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4062,
-    "racha": "0/0"
-   }
-  },
-  "Quasimoto🇻🇪": {
-   "CH": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
     "racha": "0/0"
    }
   },
@@ -13732,15 +13721,6 @@
     "pts": 19562,
     "racha": "0/0"
    },
-   "DDS": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0"
-   },
    "FDS": {
     "duelos": "",
     "ev": 4,
@@ -14619,6 +14599,17 @@
     "racha": "0/0"
    }
   },
+  "VIOLAGINAS": {
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "0/0"
+   }
+  },
   "VIXOVERSO": {
    "FFA": {
     "duelos": "1/1",
@@ -14951,12 +14942,12 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 9,
+    "ev": 10,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 3,
-    "pts": 40250,
-    "racha": "1/2",
+    "pts": 44750,
+    "racha": "0/2",
     "tg": {
      "fin": 2,
      "fund": true,
@@ -16774,11 +16765,11 @@
   "replisan": {
    "DDS": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 45,
     "pod": 0,
-    "pts": 5125,
+    "pts": 11875,
     "racha": "0/0"
    }
   },

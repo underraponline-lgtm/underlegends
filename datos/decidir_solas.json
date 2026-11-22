@@ -4420,6 +4420,25 @@
      382
     ]
    }
+  },
+  {
+   "id": "41e048fcb3",
+   "tipo": "Nombre desconocido",
+   "sec": "DISCORD STYLE ED. 15 · DDS · 07/10 · #578",
+   "que": "¿Quién es «CHSE»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795320185740,
+   "filas": [
+    1545
+   ],
+   "variantes": [
+    "CHSE"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

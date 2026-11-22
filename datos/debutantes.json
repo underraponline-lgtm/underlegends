@@ -2551,17 +2551,6 @@
    "vence": "2026-11-24T01:03:04+00:00",
    "vencido": false
   },
-  "Quasimoto": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T16:48:55+00:00",
-   "did": "",
-   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
-   "n": 572,
-   "sv": "CH",
-   "vence": "2026-11-02T16:48:55+00:00",
-   "vencido": true
-  },
   "RC": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -3046,6 +3035,17 @@
    "n": 479,
    "sv": "ACAD",
    "vence": "2026-10-23T20:31:59+00:00",
+   "vencido": true
+  },
+  "VIOLAGINAS": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-17T04:08:41+00:00",
+   "did": "",
+   "evento": "DISCORD STYLE ED. 16",
+   "n": 579,
+   "sv": "DDS",
+   "vence": "2026-10-24T04:08:41+00:00",
    "vencido": true
   },
   "Vacile": {
