@@ -10,6 +10,17 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {
+        "version": "7.78",
+        "dia": "2026-11-22",
+        "cuando": "2026-11-22T05:25:51-05:00",
+        "titulo": "Nombres, cartas de País y «Se busca»",
+        "items": [
+            "**Los nombres escritos con letras decorativas** (𝑨𝒔í) se ven en las letras de la página, y su inicial sale bien en el círculo.",
+            "**«Los que mandan» de cada país** ordena sus cartas por el número que muestra cada una, el OVR Nacional.",
+            "**«Se busca» en la compu**: la caja de Cazadores ocupa el resto de la última fila, sin hueco."
+        ]
+    },
     {"version": "7.77", "dia": "2026-11-22", "cuando": "2026-11-22T04:56:00-05:00", "titulo": "Las promos suenan", "items": ["Las **historias de promo suenan con su propia canción**: lo que compartes en el canal de promoción de tu servidor se escucha cuando alguien la ve, con el título y el link.", "**Publicaciones con sonido**, como en Instagram: toca la pastilla «♫» para escuchar. Las promos, con su canción; los campeones, las cazas y los rangos, con un beat."]},
     {
         "version": "7.76",
