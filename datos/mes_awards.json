@@ -9507,24 +9507,24 @@
      "mo": "2026-11-03T01:08:11Z",
      "staff": {
       "jurado": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "host": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "dj": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ]
      },
      "orgs": [
       {
-       "n": "1 | Adriagner",
+       "n": "Adriagner SANITY",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "1 | Adriagner": "1316490165836972104"
+      "Adriagner SANITY": "1316490165836972104"
      }
     },
     "1567000630269186131": {
@@ -9627,24 +9627,24 @@
      "mo": "2026-11-05T16:24:20Z",
      "staff": {
       "jurado": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "host": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "dj": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ]
      },
      "orgs": [
       {
-       "n": "1 | Adriagner",
+       "n": "Adriagner SANITY",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "1 | Adriagner": "1316490165836972104"
+      "Adriagner SANITY": "1316490165836972104"
      }
     },
     "1568087602647531602": {
@@ -9722,24 +9722,24 @@
      "mo": "2026-11-06T19:32:01Z",
      "staff": {
       "jurado": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "host": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "dj": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ]
      },
      "orgs": [
       {
-       "n": "1 | Adriagner",
+       "n": "Adriagner SANITY",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "1 | Adriagner": "1316490165836972104"
+      "Adriagner SANITY": "1316490165836972104"
      }
     },
     "1568666341064577025": {
@@ -9809,24 +9809,24 @@
      "mo": "2026-11-08T18:38:30Z",
      "staff": {
       "jurado": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "host": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "dj": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ]
      },
      "orgs": [
       {
-       "n": "1 | Adriagner",
+       "n": "Adriagner SANITY",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "1 | Adriagner": "1316490165836972104"
+      "Adriagner SANITY": "1316490165836972104"
      }
     },
     "1569080698541969603": {
@@ -10034,24 +10034,24 @@
      "mo": "2026-11-12T01:46:49Z",
      "staff": {
       "jurado": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "host": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ],
       "dj": [
-       "1 | Adriagner"
+       "Adriagner SANITY"
       ]
      },
      "orgs": [
       {
-       "n": "1 | Adriagner",
+       "n": "Adriagner SANITY",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "1 | Adriagner": "1316490165836972104"
+      "Adriagner SANITY": "1316490165836972104"
      }
     },
     "1570282524330950809": {
@@ -11362,7 +11362,7 @@
     "ACAD|2026-11-11": {
      "1316490165836972104": [
       "Adriagner [GDF]",
-      "#1 | Adriagner",
+      "Adriagner SANITY",
       "adriagner"
      ]
     },
@@ -11708,7 +11708,7 @@
      ],
      "1316490165836972104": [
       "#1 | AdriagnerLess",
-      "#1 | Adriagner",
+      "Adriagner SANITY",
       "adriagner"
      ],
      "734945161158852630": [
@@ -11917,7 +11917,7 @@
     "LKR|2026-11-21": {
      "1316490165836972104": [
       "Adriagner la cuarta barra",
-      "#1 | Adriagner",
+      "Adriagner SANITY",
       "adriagner"
      ],
      "1548906948307451906": [
