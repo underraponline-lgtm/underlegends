@@ -53410,6 +53410,281 @@
   ],
   "v": 2
  },
+ "665": {
+  "antes": {
+   "BNA": [
+    268,
+    44,
+    true
+   ],
+   "Colesito": [
+    9,
+    9,
+    false
+   ],
+   "Drexx": [
+    36,
+    42,
+    false
+   ],
+   "Kyss": [
+    63,
+    76,
+    false
+   ],
+   "Lord Viruzz": [
+    45,
+    53,
+    false
+   ],
+   "MauzzitoEmeces": [
+    375,
+    274,
+    true
+   ],
+   "Mc uchiha": [
+    473,
+    409,
+    true
+   ],
+   "Mito": [
+    20,
+    20,
+    false
+   ],
+   "NC": [
+    23,
+    24,
+    false
+   ],
+   "Paria": [
+    273,
+    65,
+    true
+   ],
+   "Six": [
+    7,
+    7,
+    false
+   ],
+   "Tenor": [
+    39,
+    46,
+    false
+   ],
+   "Trelok": [
+    86,
+    107,
+    false
+   ],
+   "Vandu": [
+    8,
+    8,
+    false
+   ],
+   "doble h": [
+    154,
+    259,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Vandu",
+    "MauzzitoEmeces",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "NC",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Mexicano🇲🇽",
+    "Vandu"
+   ],
+   [
+    "Kyss",
+    "Trelok, NC",
+    "Kyss"
+   ],
+   [
+    "Kyss",
+    "Paria",
+    "Kyss"
+   ],
+   [
+    "BNA",
+    "XXXX 🇻🇪",
+    "BNA"
+   ],
+   [
+    "BNA",
+    "Mc uchiha",
+    "BNA"
+   ],
+   [
+    "Colesito",
+    "Lord Viruzz",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "Tenor",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "Drexx",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "doble h",
+    "Colesito"
+   ],
+   [
+    "Kyss, Trelok",
+    "Vandu, Mito",
+    "Kyss, Trelok"
+   ],
+   [
+    "Six, BNA",
+    "Colesito, XXX 🇻🇪",
+    "Six, BNA"
+   ],
+   [
+    "Vandu, Trelok, Kyss",
+    "BNA, Six, Colesito",
+    "Vandu, Trelok, Kyss"
+   ]
+  ],
+  "ev_antes": {
+   "BNA": 18,
+   "Colesito": 49,
+   "Drexx": 43,
+   "Kyss": 12,
+   "Lord Viruzz": 29,
+   "MauzzitoEmeces": 5,
+   "Mc uchiha": 1,
+   "Mito": 46,
+   "NC": 62,
+   "Paria": 20,
+   "Six": 40,
+   "Tenor": 23,
+   "Trelok": 9,
+   "Vandu": 56,
+   "doble h": 4
+  },
+  "fecha": "19/11",
+  "firma": "c1ae55c536c9f63d",
+  "msg": "1573886882725757115",
+  "nombre": "GRISELDA TIME VOL. 7",
+  "num": 665,
+  "participantes": 20,
+  "sello": {
+   "Kyss": "b5518c817728:a8d8b7335469",
+   "Trelok": "02c0634dfe81:a8d8b7335469",
+   "Vandu": "255a31733728:a8d8b7335469"
+  },
+  "sv": "FFA",
+  "t": "2026-11-22T02:24:32Z",
+  "tabla": [
+   [
+    "Vandu",
+    "Campeón",
+    5958
+   ],
+   [
+    "Colesito",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Trelok",
+    "Campeón",
+    4583
+   ],
+   [
+    "Kyss",
+    "Campeón",
+    3333
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    2625
+   ],
+   [
+    "XXX 🇻🇪",
+    "Semifinal",
+    2625
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "MauzzitoEmeces",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mexicano🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    2500
+   ],
+   [
+    "XXXX 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mc uchiha",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "doble h",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
+ },
  "668": {
   "al_dia": true,
   "antes": {

@@ -9865,7 +9865,7 @@
        "Kravitz",
        "la monalisa",
        "zaik0009",
-       "sucesor del puto de makmah"
+       "Mito"
       ]
      },
      "orgs": [
@@ -9878,7 +9878,7 @@
      "cuentas": {
       "Kravitz": "1345962362615894027",
       "la monalisa": "1487658663148785734",
-      "sucesor del puto de makmah": "1493416945037611140"
+      "Mito": "1493416945037611140"
      }
     },
     "1570253506072420355": {
@@ -10342,10 +10342,10 @@
      "mo": "2026-11-17T00:15:06Z",
      "staff": {
       "jurado": [
-       "sucesor del puto de makmah"
+       "Mito"
       ],
       "host": [
-       "sucesor del puto de makmah",
+       "Mito",
        "Y",
        "Drexx"
       ],
@@ -10355,13 +10355,13 @@
      },
      "orgs": [
       {
-       "n": "sucesor del puto de makmah",
+       "n": "Mito",
        "id": "1493416945037611140"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "sucesor del puto de makmah": "1493416945037611140",
+      "Mito": "1493416945037611140",
       "Drexx": "1150099153238630410",
       "Lízeninn": "1474585358292222015"
      }
@@ -11694,6 +11694,11 @@
       "⚡ 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 ⚡",
       "⚡ 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 ⚡",
       "maurolocrazy"
+     ],
+     "472896251424276500": [
+      "",
+      "Bocamio",
+      "bocamio"
      ]
     }
    }
