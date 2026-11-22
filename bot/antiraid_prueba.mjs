@@ -91,6 +91,16 @@ const pn = AR.panel('DDF', { canal: '', oleada: false }, '0');
 const botonesPn = PZ(pn, [2, 8]);
 ok(/\*\*el dueño del servidor y Dlx\*\*/.test(TX(pn)) && botonesPn.find((b) => b.custom_id === 'ar:oleada').disabled
   && /Gestionar servidor/.test(TX(pn)), 'el panel: sin canal no se prende la alarma, y dice qué permiso le falta al bot');
+// 🔴 (22/11/2026, la revisión de comandos) sin «Gestionar servidor» el escudo y el pánico no se ofrecen, lo que falta va
+// arriba, y con el link sale «Darle los permisos»
+const pnS = AR.panel('DDF', { canal: '1' }, '0', null, AR.linkPermisos('1550026808404217926', '123456789012345678'));
+const bS = PZ(pnS, 2);
+ok(bS.find((b) => b.custom_id === 'ar:escudo').disabled && bS.find((b) => b.custom_id === 'ar:cerrar').disabled
+  && bS.find((b) => b.custom_id === 'ar:escudo').style !== 1 && bS.some((b) => b.style === 5 && /guild_id=123456789012345678/.test(b.url))
+  && /Al bot le falta/.test(TX(pnS).split('**1 ·')[0]) && MEDIR(pnS).problemas.length === 0
+  && !PZ(AR.panel('DDF', { canal: '1' }, '8', null, 'https://x'), 2).some((b) => b.disabled && b.custom_id === 'ar:escudo'),
+  'sin permisos: el escudo y «Cerrar» apagados (y no azules), lo que falta arriba con «Darle los permisos»; con Administrador, todo prendible',
+  JSON.stringify(bS.map((b) => [b.custom_id || b.label, b.style, !!b.disabled])));
 // 🧱 en V2 (20/11/2026): la franja del anti-raid, entra en los topes, el canal en una fila afuera y un solo azul
 ok((pn.flags & 32768) && (pn.flags & 64) && PZ(pn, 12).some((g) => /portada-antiraid/.test(g.items[0].media.url))
   && MEDIR(pn).problemas.length === 0 && pn.components.some((c) => c.type === 1 && c.components[0].custom_id === 'ar:canal'),

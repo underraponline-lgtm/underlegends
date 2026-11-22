@@ -726,7 +726,8 @@ console.log('\nTRES MANERAS DE PEDIR\n');
     data: { name: 'card', options: [{ name: 'quien', type: 6, value: '555000' }] } });
   const c = TX(r.json?.data) || '';
   ok('si el bot no lo conoce, dice que la tarjeta es de quien juega y ofrece el nombre',
-     /todavía no tiene tarjeta/.test(c) && c.includes('nombre:') && !/admin/.test(c), c.slice(0, 60));
+     /todavía no tiene tarjeta/.test(c) && /otro nombre, búscalo en la página/.test(c) && !c.includes('nombre:') && !/admin/.test(c)
+     && PZ(r.json?.data, 2).some((b) => /\/freestyle-rap\/ranking$/.test(b.url || '')), c.slice(0, 60));
   ok('y no le manda a ÉL la invitación, que es de otro',
      !c.includes('discord.gg/'), c.slice(0, 60));
   // 🔴 elegirse a uno mismo en `quien:` es «yo» (Adriagner, 04/10/2026): segunda persona, no «su nombre»

@@ -150,23 +150,30 @@ export function faltan(appPerms) {
 // estado y su botón al costado, el canal debajo y afuera. Un solo azul: lo primero apagado que se puede prender. El pánico
 // en rojo, que es lo único que se cierra. `notas`: lo que dijo el último botón, al pie
 const ON = (x) => (x ? '**prendido**' : 'apagado');
-export function panel(nombre, cfg, appPerms, notas) {
+/** El link para darle Administrador al bot en este servidor (el mismo de bot/setup.js `linkAdmin()`) */
+export const linkPermisos = (app, gid) => (app && gid ? `https://discord.com/oauth2/authorize?client_id=${app}&permissions=8&integration_type=0` +
+  `&scope=bot+applications.commands&guild_id=${gid}&disable_guild_select=true` : '');
+export function panel(nombre, cfg, appPerms, notas, link) {
   const c = { ...AR_BASE, ...(cfg || {}) };
   const cerrado = c.cerrado && Date.parse(c.cerrado.hasta || '') > Date.now();
   const sinCanal = !c.canal;
   const falta = faltan(appPerms);
+  // 🔴 (22/11/2026) sin «Gestionar servidor» el escudo y el pánico fallan: no se ofrecen (y el azul va a lo que sí anda)
+  const sinServidor = !tieneP(appPerms, P.ADMIN) && !tieneP(appPerms, P.SERVIDOR);
   const prendido = { escudo: !!(c.escudo && c.escudo.length), oleada: !!c.oleada, staff: !!c.staff, auto: !!c.auto };
-  const apagado = { oleada: sinCanal && !c.oleada, staff: sinCanal && !c.staff, auto: !c.auto && (sinCanal || !(c.oleada || c.staff)) };
+  const apagado = { escudo: sinServidor && !prendido.escudo, oleada: sinCanal && !c.oleada, staff: sinCanal && !c.staff,
+    auto: !c.auto && (sinCanal || !(c.oleada || c.staff)) };
   const azul = ['escudo', 'oleada', 'staff', 'auto'].find((k) => !prendido[k] && !apagado[k]) || '';
   const btn = (k, label, extra = {}) => ({ type: 2, style: k === azul ? 1 : 2, label, custom_id: 'ar:' + k, ...extra });
   const linea = (t, sub, b) => V.seccion(t + '\n-# ' + sub, b);
   const dentro = [
     V.T(`### Anti-raid de ${nombre}\n-# Sólo lo ven y lo cambian **el dueño del servidor y Dlx**. Todo es opcional y, salvo con ` +
-      'AUTOMÁTICO, **nunca actúa solo**: los avisos traen botones y decide el staff. Nada va por mensaje directo.'),
+      'AUTOMÁTICO, **nunca actúa solo**: los avisos traen botones y decide el staff. Nada va por mensaje directo.' +
+      (falta.length ? '\n⚠️ **Al bot le falta:** ' + falta.join(' · ') + '. Sin eso, lo que lo necesita queda apagado.' : '')),
     V.SEP,
     linea(`**1 · Escudo de Discord** · ${ON(prendido.escudo)}`, 'Reglas de AutoMod que corre Discord, **al instante**: menciones ' +
       'masivas (5 o más), spam, insultos de odio y links de invitación a otros servidores (los de la Liga pasan). A quien ' +
-      'menciona en masa o pega links lo aísla 10 minutos.', btn('escudo', prendido.escudo ? 'Apagar el escudo' : 'Prender el escudo')),
+      'menciona en masa o pega links lo aísla 10 minutos.', btn('escudo', prendido.escudo ? 'Apagar el escudo' : 'Prender el escudo', { disabled: apagado.escudo })),
     linea(`**2 · Alarma de oleada** · ${ON(prendido.oleada)}`, 'Si entran muchas cuentas de golpe, avisa con un botón para ' +
       'cerrar el servidor. Mira cada minuto, de día y de noche.',
     btn('oleada', c.oleada ? 'Apagar la alarma' : 'Prender la alarma', { disabled: apagado.oleada })),
@@ -177,14 +184,13 @@ export function panel(nombre, cfg, appPerms, notas) {
       `Pausa las invitaciones y los mensajes directos del servidor (hasta ${PANICO_H} h) y pone la verificación al máximo. ` +
       '**Abrir** lo deja como estaba.', cerrado
         ? { type: 2, style: 3, label: 'Abrir el servidor', custom_id: 'ar:abrir' }
-        : { type: 2, style: 4, label: 'Cerrar el servidor', custom_id: 'ar:cerrar' }),
+        : { type: 2, style: 4, label: 'Cerrar el servidor', custom_id: 'ar:cerrar', disabled: sinServidor }),
     linea(`**5 · AUTOMÁTICO** _(experimental)_ · ${ON(prendido.auto)}${c.auto && c.por === 'dlx' ? ' · lo prendió **Dlx**' : ''}`,
       `Si **nadie responde** un aviso en ${ESPERA_AUTO_MS / 60000} minutos, actúa: con una oleada cierra el servidor; si no, ` +
       'le saca los roles a la cuenta en peligro o a quien hace el daño (se devuelven con un botón). **Nunca expulsa ni banea**.',
     btn('auto', c.auto ? 'Apagar AUTOMÁTICO' : 'Prender AUTOMÁTICO', { disabled: apagado.auto })),
     V.SEP,
-    V.T(`**Canal de los avisos** · ${c.canal ? `<#${c.canal}>` : '**elige uno abajo** (sin canal, la 2 y la 3 no pueden avisar)'}` +
-      (falta.length ? '\n⚠️ Al bot le falta: ' + falta.join(' · ') + '.' : '')),
+    V.T(`**Canal de los avisos** · ${c.canal ? `<#${c.canal}>` : '**elige uno abajo** (sin canal, la 2 y la 3 no pueden avisar)'}`),
     notas && notas.length ? V.T(notas.map((x) => '> ' + x).join('\n')) : null,
   ];
   return V.mensaje({ familia: 'antiraid', efimero: true, dentro, filas: [
@@ -192,6 +198,7 @@ export function panel(nombre, cfg, appPerms, notas) {
       type: 8, custom_id: 'ar:canal', placeholder: 'El canal de los avisos (uno que vea el staff)',
       min_values: 0, max_values: 1, channel_types: [0],
     }] },
+    falta.length && link ? [V.enlace('Darle los permisos', link)] : [],
   ] });
 }
 
@@ -513,7 +520,7 @@ export function comando(i, env, ctx, h) {
       const es = await puedeConfigurar(env, gid, h.idDe(i));
       if (es === null) return editar(i, V.avisoMsg('No pude preguntarle a Discord quién es el dueño del servidor: prueba en un rato.'));
       if (!es) return editar(i, V.avisoMsg('🛡️ El anti-raid lo configuran **sólo el dueño del servidor y Dlx**.'));
-      return editar(i, panel(h.nombre, await leerCfg(env, gid), i.app_permissions));
+      return editar(i, panel(h.nombre, await leerCfg(env, gid), i.app_permissions, null, linkPermisos(i.application_id, gid)));
     } catch (e) { return editar(i, V.avisoMsg('Algo falló al abrir el anti-raid: prueba en un rato.')); }
   })());
   // 🧱 el primer mensaje ya en V2, con la franja (la regla del `/setup`: la edición sólo reemplaza piezas)
@@ -612,7 +619,7 @@ function delPanel(i, env, ctx, h, que) {
         } else nota.push('⚠️ No pude abrir: el bot necesita **Gestionar servidor**.');
       }
       const guardado = await guardarCfg(env, gid, cfg, CAMPOS[que] || []);
-      return editar(i, panel(h.nombre, guardado || cfg, ap, nota));
+      return editar(i, panel(h.nombre, guardado || cfg, ap, nota, linkPermisos(i.application_id, gid)));
     } catch (e) { return aparte(i, 'Algo falló: prueba de nuevo.'); }
   })());
   return diferir(6);

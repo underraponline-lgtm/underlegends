@@ -1529,13 +1529,15 @@ def correr(tipo, sv, id_=None):
         if tipo == 'afiche':
             a = anuncio_de(sv)
             if not a:
-                raise LookupError('No encontré un anuncio de %s de las últimas %d horas.' % (sv, HORAS))
+                raise LookupError('No encontré un anuncio de %s de las últimas %d horas: `/afiche` toma el último anuncio de tu canal '
+                                  'de anuncios. Publícalo y vuelve a pedirlo.' % (sv, HORAS))
             foto(html_afiche(a, sv, d), ruta)
             texto = '🧰 El afiche de **%s**, del anuncio de %s.' % (re.sub(r'[_*~`]+', '', a.get('nombre') or '').strip(), sv)
         else:
             ll = llave_de(sv, d['guild'])
             if not ll or not ll[1]:
-                raise LookupError('No encontré una llave de %s de las últimas %d horas.' % (sv, HORAS))
+                raise LookupError('No encontré una llave de %s de las últimas %d horas en tu canal de llaves (el que elegiste '
+                                  'en `/setup`). Publícala y vuelve a pedirla.' % (sv, HORAS))
             foto(html_llave(ll[0], ll[1], sv, d), ruta)
             texto = '🧰 La llave de **%s**, como la leyó el bot. Si algo salió mal, es que se leyó mal: avisa.' % ll[0]
     except LookupError as e:

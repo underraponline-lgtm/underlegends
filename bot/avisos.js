@@ -18960,6 +18960,14 @@ export class Avisos {
     const api = `https://discord.com/api/v10/webhooks/${k.app}/${k.token}/messages/@original`;
     // 🧱 EN V2 DESDE EL 20/11/2026 (el primer mensaje de `kit()` ya lo es): la imagen adentro del recuadro del color del
     // servidor —sin franja: la imagen ES la portada—, el texto debajo y el link a la página afuera
+    // 🔒 SIN IMAGEN, EL ERROR VA SÓLO A QUIEN LO PIDIÓ (22/11/2026): se borra el «Armando…» público y llega un aviso efímero
+    if (!url) {
+      await fetch(api, { method: 'DELETE' }).catch(() => null);
+      const r = await fetch(`https://discord.com/api/v10/webhooks/${k.app}/${k.token}`, {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(V.avisoMsg(texto)),
+      }).catch(() => null);
+      return { ok: !!(r && r.ok), estado: r ? r.status : 0 };
+    }
     const nombre = k.tipo === 'llave' ? 'llave.png' : 'afiche.png';
     const fila = k.tipo === 'llave' && url ? [V.enlace('Verla en la página', V.PAGINAS + '/freestyle-rap/eventos')] : [];
     const cuerpo = (img) => {
@@ -21283,7 +21291,8 @@ export class Avisos {
     if (f && (f.estado === 'espera' || f.estado === 'dibujando')) return esperando();
     const hoy = new Date(ahora).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
     if (f && f.dia === hoy && f.veces >= IMG_DIA) return { limite: true };
-    if (f && ahora - f.pedido < IMG_ESPERA) return { espera: f.pedido + IMG_ESPERA - ahora };
+    // `fallo` / `hecho`: lo último no salió, o salió hace un rato (22/11/2026: el Worker decía «se está armando» en los dos)
+    if (f && ahora - f.pedido < IMG_ESPERA) return { espera: f.pedido + IMG_ESPERA - ahora, fallo: f.estado === 'error', hecho: f.estado === 'hecho' };
     // (las dos cuentas van por el índice de `estado`: leen sólo lo pendiente, que son 30 filas como mucho)
     const pend = this.sql.exec("SELECT por FROM img_cola WHERE estado IN ('espera', 'dibujando')").toArray();
     if (pend.length >= IMG_COLA_MAX) return { lleno: true };

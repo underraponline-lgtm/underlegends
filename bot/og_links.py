@@ -822,6 +822,14 @@ def _self_check():
     # los mismos casos que `slugOg()` en _worker.js (medidos con node el 17/11/2026)
     ok(slug_og('La Fórmula Crew') == 'la-formula-crew' and slug_og('Ñandú_7') == 'nandu-7' and slug_og('  --  ') == ''
        and slug_og('Follombia') == 'follombia', 'el slug es el de _worker.js: sin tildes, minúsculas, «-» entre palabras')
+    # 🖼️ y el del bot (22/11/2026: /crew muestra `og/crew/<slug>.jpg`): `slugCrewOg()` en bot/worker.js es el mismo cálculo
+    def _cuerpo(ruta, patron):
+        t = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), ruta), encoding='utf-8').read()
+        m = re.search(patron, t, re.S)
+        return re.sub(r'\s+', '', m.group(1)) if m else None
+    js_pag = _cuerpo('paginas/_worker.js', r'function slugOg\(x\) \{\s*return (.+?);\s*\}')
+    js_bot = _cuerpo('worker.js', r'const slugCrewOg = \(x\) => (.+?);\n')
+    ok(js_pag and js_pag == js_bot, 'el slug de las crews en bot/worker.js (slugCrewOg) es el mismo de _worker.js (slugOg)')
     a = _huella({'n': 'X', 'g': 3})
     ok(a == _huella({'g': 3, 'n': 'X'}) and a != _huella({'n': 'X', 'g': 4}), 'la huella no depende del orden y cambia con los datos')
     f0 = {'k': 'ana', 'c': ['servidor', 'temporada'], 'cv': 'a1.b2'}

@@ -100,7 +100,7 @@ const COMANDOS = [
     // activar la notificación al celular o dispositivo». Lleva a la campana.
     name: 'notify',
     type: 1,
-    description: 'activá los avisos de eventos en tu celular o compu',
+    description: 'activa los avisos de eventos en tu celular o compu',
     ...EN_TODOS_LADOS,
   },
   // 🛍️🐉 la Tienda y los drops en Discord (Discord, tanda 1, 17/11/2026): todo lo de cada uno, sólo para él
@@ -138,7 +138,7 @@ const COMANDOS = [
     name: 'borrar-mis-datos',
     name_localizations: { 'en-US': 'delete-my-data', 'en-GB': 'delete-my-data' },
     type: 1,
-    description: 'borrá tu perfil, tus tarjetas y tu foto de la Liga',
+    description: 'borra tu perfil, tus tarjetas y tu foto de la Liga',
     description_localizations: {
       'en-US': 'delete your league profile, cards and photo',
       'en-GB': 'delete your league profile, cards and photo',
@@ -250,15 +250,15 @@ const COMANDOS = [
     options: [
       { name: 'ver', type: 1, description: 'tu crew, o la de alguien',
         options: [{ name: 'quien', type: 6, description: 'de quién (si no, la tuya)', required: false }] },
-      { name: 'invitar', type: 1, description: 'invitá a alguien a tu crew (Líder, Colíder o Veterano)',
+      { name: 'invitar', type: 1, description: 'invita a alguien a tu crew (Líder, Colíder o Veterano)',
         options: [{ name: 'quien', type: 6, description: 'a quién', required: true }] },
-      { name: 'unirme', type: 1, description: 'pedí entrar a una crew',
+      { name: 'unirme', type: 1, description: 'pide entrar a una crew',
         options: [{ name: 'nombre', type: 3, description: 'el nombre de la crew', required: true, max_length: 40 }] },
       { name: 'link', type: 1, description: 'un link para entrar directo a tu crew (Líder, Colíder o Veterano)',
         options: [{ name: 'para', type: 4, description: 'para cuántos sirve (si no, 1)', required: false,
           choices: [{ name: '1 persona', value: 1 }, { name: '5 personas', value: 5 }, { name: '10 personas', value: 10 },
             { name: 'hasta que se llene', value: 0 }] }] },
-      { name: 'salir', type: 1, description: 'salí de tu crew (después esperás 7 días para entrar a otra)' },
+      { name: 'salir', type: 1, description: 'sal de tu crew (si eres la única persona, la crew se cierra)' },
     ],
   },
   {
@@ -333,14 +333,14 @@ const COMANDOS = [
   {
     name: 'agendar',
     type: 1,
-    description: 'agendá un evento de este servidor en el calendario de la Liga (staff y organizadores)',
+    description: 'agenda un evento de este servidor en el calendario de la Liga (staff y organizadores)',
     ...SOLO_EN_SERVIDOR,
     options: [
       { name: 'nombre', type: 3, description: 'el nombre del evento', required: true, max_length: 80 },
-      { name: 'dia', type: 3, description: 'el día, como dd/mm: 18/10', required: true, max_length: 10 },
-      { name: 'hora', type: 3, description: 'la hora, de 0 a 23: 20:00', required: true, max_length: 8 },
+      { name: 'dia', type: 3, description: 'el día, como dd/mm: 18/10 (para borrar, no hace falta)', required: false, max_length: 10 },
+      { name: 'hora', type: 3, description: 'la hora, de 0 a 23: 20:00 (para borrar, no hace falta)', required: false, max_length: 8 },
       {
-        name: 'pais', type: 3, description: 'el país de esa hora', required: true,
+        name: 'pais', type: 3, description: 'el país de esa hora (para borrar, no hace falta)', required: false,
         choices: [
           { name: 'Argentina', value: 'AR' },
           { name: 'Bolivia', value: 'BO' },
@@ -422,7 +422,7 @@ const COMANDOS = [
   {
     name: 'foto',
     type: 1,
-    description: 'usá tu foto de Discord actual como la de tus cartas (una por temporada)',
+    description: 'usa tu foto de Discord actual como la de tus cartas (una por temporada)',
     // ⚠️ SIN OPCIONES A PROPOSITO. La foto que se guarda es la que tenés
     // puesta AHORA en Discord, y eso ya viene en el payload firmado — pedir
     // un adjunto o una URL sería dejar que alguien suba cualquier imagen a
@@ -466,8 +466,8 @@ const COMANDOS = [
         type: 1,
         description: 'qué tiene alguien en KV, y qué le falta',
         options: [
-          { name: 'quien', type: 6, description: 'elegilo de la lista', required: false },
-          { name: 'nombre', type: 3, description: 'o escribí su nombre de competencia', required: false },
+          { name: 'quien', type: 6, description: 'elígelo de la lista', required: false },
+          { name: 'nombre', type: 3, description: 'o escribe su nombre de competencia', required: false },
         ],
       },
     ],
