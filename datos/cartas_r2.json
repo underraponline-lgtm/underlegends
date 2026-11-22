@@ -1768,10 +1768,15 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/infecte/sv-dra.webp"
  },
  "inhuman": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/servidor.webp",
   "sv-ch": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/sv-ch.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/sv-dra.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/sv-sr.webp"
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/sv-sr.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inhuman/temporada.webp"
  },
  "isaac": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/isaac/servidor.webp",
