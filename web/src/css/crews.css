@@ -202,9 +202,12 @@
 .crw-caja{display:grid;gap:10px;padding:14px;border:2px solid var(--suave);background:var(--caja)}
 .crw-tz{display:grid;gap:6px;margin-top:10px;padding:12px;border:2px solid var(--suave);background:var(--caja)}
 .crw-tz-h{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
-.crw-tz-h small{font:700 14px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.crw-tz-h small{font:700 14px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris);text-wrap:balance}
 .crw-tz ol{margin:0;padding:0;list-style:none}
-.crw-tz li{display:grid;grid-template-columns:24px auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:9px 6px;border-top:1px solid var(--suave)}
+/* el número en una columna fija y a la derecha (revisión 22/11/2026): cada fila es su propia grilla, y con «0» la barra
+   llegaba más lejos que las de 4 cifras, así que la de 0 parecía la más larga */
+.crw-tz li{display:grid;grid-template-columns:24px auto minmax(0,1fr) 92px;align-items:center;gap:10px;padding:9px 6px;border-top:1px solid var(--suave)}
+.crw-tz .crw-pts{text-align:right}
 .crw-tz li:first-child{border-top:0}
 .crw-tz li.yo{background:#F6F6F6;color:#030304}
 .crw-tz li.yo .crw-t small{color:#55554F}
@@ -232,7 +235,9 @@
   .app .crw-cta>.btn{flex:0 1 auto;white-space:nowrap}
   .app .crw-main2{padding:0 var(--gut) 40px}
   .app .crw-busqueda{grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr)}
-  .app .crw-fila{grid-template-columns:minmax(0,1fr) auto 70px 70px 150px}
+  /* la quinta columna, `auto` (revisión 22/11/2026): sólo se llena con sesión, y en 150 px fijos vacíos «DESIERTO / DE
+     ATACAMA» se partía en dos renglones */
+  .app .crw-fila{grid-template-columns:minmax(0,1fr) auto 70px 70px auto}
   /* «11 /20» en un renglón y «gente» abajo (revisión 21/11/2026): en grilla, cada pedazo iba en su renglón */
   .app .crw-fila-d{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:baseline;gap:2px 0;white-space:nowrap;font:700 15px/1 "Barlow Condensed",sans-serif}
   .app .crw-fila-d small{flex-basis:100%;text-align:right}

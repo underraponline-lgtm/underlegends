@@ -29,4 +29,4 @@
 .cu-gente li:has(> .sg-bc){grid-column:1/-1;display:flex;align-items:center;gap:6px}
 .cu-gente li:has(> .sg-bc) > a{flex:1;min-width:0}
 /* 📣 el aplauso de la barra de su servidor (publicaciones2.jsx `Felicitar`): suma 1 y se ve como Liga */
-.pb-fel-l{margin-left:5px;padding:2px 5px;border-radius:2px;background:#E41373;color:#fff;font:700 10.5px/1 'Barlow Condensed',Archivo,sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.pb-fel-l{margin-left:5px;padding:2px 5px;border-radius:2px;background:#E41373;color:#fff;font:700 11px/1 'Barlow Condensed',Archivo,sans-serif;font-style:normal;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}

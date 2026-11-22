@@ -117,7 +117,8 @@ export function PaginaCrew({ liga, id }) {
   const nGente = viva ? viva.gente.length : c.n || gente.length;
   const miCrew = !!(mia && mia.crew && viva && mia.crew.id === viva.id);
   const total = gente.reduce((a, f) => a + (f.pts || 0), 0);
-  const aporte = (f) => (total && f.pts ? <small className="k2-aporte"><i style={{ width: Math.round((100 * f.pts) / total) + '%', background: color }} />{Math.round((100 * f.pts) / total)} % de la crew</small> : null);
+  const aporte = (f) => (total && f.pts ? <small className="k2-aporte"><i style={{ width: Math.round((100 * f.pts) / total) + '%', background: color }} />{Math.round((100 * f.pts) / total) + ' % de la crew'}</small> : null);
+  // (espacios duros: a 390, «36 % de la / crew» dejaba «crew» sola abajo; ahora, si no entra, baja entero)
   const dias = viva && viva.creada && !viva.oficial ? Math.floor((liga.ahora - viva.creada) / DIA) : null;
   const req = (viva && viva.req) || {};
   // 🎨 EN BANDAS, COMO EL PERFIL DEL RAPERO Y EL DEL SERVIDOR (17/11/2026, crew_bandas.jsx). Antes del `return` de «no
@@ -160,9 +161,12 @@ export function PaginaCrew({ liga, id }) {
               innecesarios»): en la columna de la derecha la hacía más alta que la semana, que se estira hasta terminar junto
               a ella y quedaba vacía abajo (568×344, medido a 1333). Es lo que sumó cada día de esa misma semana */}
           <div className="pf9-g pf9-g-forma k2-b1">
-            {T && viva ? <SemanaCaja liga={liga} T={T} viva={viva} fila={fila} abajo={<PorDia liga={liga} xs={(T.dia || {})[viva.id]} />} /> : null}
+            {/* ⚖️ con los tres datos de «De un vistazo», «Por día» vuelve a la derecha, debajo (revisión 22/11/2026): desde que
+                «De un vistazo» perdió los números repetidos, la semana medía 478 y la derecha 230, con 380×248 vacíos */}
+            {T && viva ? <SemanaCaja liga={liga} T={T} viva={viva} fila={fila} abajo={T && D ? null : <PorDia liga={liga} xs={(T.dia || {})[viva.id]} />} /> : null}
             <div className="pf9-pila">
               <CrewVistazo D={D} c={c} pos={pos} N={nGente} T={T && viva ? T : null} fila={fila} cid={cid} />
+              {T && viva && D ? <PorDia liga={liga} xs={(T.dia || {})[viva.id]} caja /> : null}
             </div>
           </div>
         </Banda>
@@ -209,9 +213,11 @@ export function PaginaCrew({ liga, id }) {
               <div className="pf9-pila pf9-t-lat">
                 {muro.length >= 3 ? <CrewNoches liga={liga} D={D} n={B.no} /> : null}
                 {viva ? <LoQuePaso liga={liga} T={T} viva={viva} /> : null}
-                <CrewRecords D={D} T={T} cid={cid} />
+                {B.rec ? null : <CrewRecords D={D} T={T} cid={cid} />}
               </div>
             </div>
+            {/* «Sus récords» a lo ancho, debajo, cuando el costado sobraba igual (`rec` de `useBalanceCrew`) */}
+            {B.rec ? <div className="k2-rec-ancho"><CrewRecords D={D} T={T} cid={cid} /></div> : null}
           </Banda>
         ) : null}
       </div>

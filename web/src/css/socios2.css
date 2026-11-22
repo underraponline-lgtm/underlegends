@@ -88,6 +88,8 @@
 .sk-ct-ev{margin:0;font:500 12.5px/1.35 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .sk-ct-ev b{display:block;margin-bottom:2px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--magenta-tx)}
 .noche .sk-ct-ev b{color:#F0559A}
+/* quién ganó, pegado a su evento y entero */
+.sk-ct-gano{margin:-4px 0 0;font:500 12.5px/1.35 Archivo,sans-serif}
 .sk-ct-ent{display:inline-flex;align-items:center;min-height:32px;color:var(--tinta);font:800 12px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none}
 .sk-af{transition:transform 160ms cubic-bezier(.23,1,.32,1)}
 @media (hover: hover) and (pointer: fine){
@@ -101,6 +103,8 @@
 /* en el celular, en una fila que se desliza y la que sigue asoma */
 .pf-vid.sk-vid{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
 .pf-vid.sk-vid li{flex:0 0 72%;scroll-snap-align:start}
+/* en el teléfono cada video ocupa el 72 %, no media columna: sin la letra de 10 px de la grilla de dos (vivo.css) */
+@media (max-width:600px){.app .pf-vid.sk-vid .pf-vid-b small{font-size:12px}}
 /* en el celular, un renglón por servidor (la sigla a la izquierda, sus redes a la derecha); desde 640, celdas parejas */
 .sk-redes{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin:0;padding:0;list-style:none}
 .sk-redes li{display:grid;grid-template-columns:92px minmax(0,1fr);align-items:center;gap:10px;min-width:0;padding:8px 10px;border:2px solid var(--linea);
@@ -170,3 +174,6 @@
   .app .sk-sumar-tira{grid-template-columns:minmax(0,1fr) auto;gap:28px;padding:24px 28px}
   .app .sk-bot{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 }
+/* 🛍️ el nombre de la Tienda sobre el cartel claro (revisión 22/11/2026): el efecto se diseñó sobre negro, y en Clara
+   «ganó Majiztral» (letras #F6F6F6) quedaba a 1,08:1 y se veía sólo la cara. Su placa negra, como en el Ranking (rka.css) */
+.clara .sk-ct .ta-raiz.nom-tienda{display:inline-block;max-width:100%;box-sizing:border-box;vertical-align:bottom;padding:0 5px;border-radius:3px;background:#030304}

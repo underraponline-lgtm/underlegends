@@ -155,6 +155,9 @@
 .pf8-segs{margin:0 0 0 -17px;clip-path:inset(-8px -8px -8px 17px);display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;
   font:700 12.5px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
 .pf8-segs > :not(.pf8-frase)::before{content:"·";display:inline-block;width:17px;text-align:center}
+/* «La Liga te sigue» sobre la portada negra, con el gris de la escena (revisión 22/11/2026): con el de Clara (#6E6E6A) daba
+   4,03:1 sobre el negro */
+.pf8-segs .sg-liga{color:var(--esc-gris)}
 .pf8-segs > .pf8-frase{margin-left:17px}
 .pf8-segs a{display:inline-flex;align-items:center;gap:5px;color:inherit;text-decoration:none}
 .pf8-segs .pf-flag{width:16px;height:11px}
@@ -673,7 +676,7 @@
 .pf9-fm button b{display:block;align-self:end;border-radius:2px 2px 0 0;min-height:10px}
 .pf9-fm button > span{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-align:center;padding:4px 0;border-radius:0 0 2px 2px}
 .pf9-fm-q{height:24px;display:grid;place-items:center;font-size:15px}
-.pf9-fm small{font:600 10.5px/1 Archivo,sans-serif;color:#A5A5A0;white-space:nowrap}
+.pf9-fm small{font:600 11px/1 Archivo,sans-serif;color:#A5A5A0;white-space:nowrap}
 
 /* 👀 de un vistazo */
 .pf9-kpis dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
@@ -708,7 +711,8 @@
 .pf9-otros button b,.pf9-otros button small{grid-column:2}
 .pf9-otros button:not(:has(.pf9-av)) b,.pf9-otros button:not(:has(.pf9-av)) small{grid-column:1 / -1}
 .pf9-otros b{font:800 13px/1.2 Archivo,sans-serif;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}
-.pf9-otros small{font:500 11px/1.3 Archivo,sans-serif;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* en dos renglones y no uno con «…» (revisión 22/11/2026): «17 nov · 34 raperos · ganó …» cortaba justo al ganador */
+.pf9-otros small{font:500 11px/1.3 Archivo,sans-serif;color:#A5A5A0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 
 /* ⚔️ rivalidades */
 .pf9-rcs{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
@@ -772,8 +776,9 @@
 }
 @media (max-width: 899px){
   .pf9-fm{min-height:170px;gap:4px}
-  .pf9-fm em{font-size:9px}
-  .pf9-fm small{font-size:9px}
+  /* 11 px, el piso de la casa (revisión 22/11/2026: iban a 9); en el teléfono ya son 8 barras y no 12, así que entran */
+  .pf9-fm em{font-size:11px}
+  .pf9-fm small{font-size:11px}
   .pf9-hist-b{width:70px}
   .pf9-hist-c{width:60px;height:60px}
   /* el muro va adentro de un panel, más angosto que Publicaciones en el teléfono: la carta más chica y la fecha baja */
@@ -788,4 +793,11 @@
   .app .pf9-bl{display:inline-flex;align-items:center;padding-block:14px;margin-block:-14px}
   /* y los de la línea de su país, su servidor y su Pase (16 px de alto) */
   .app .pf8-segs a{padding-block:14px;margin-block:-14px}
+  /* …salvo la pastilla «PREMIUM · T1», que tiene borde (revisión 22/11/2026): con el relleno de 14 px el borde se dibujaba
+     a 85×50, tachaba «ESTADOS UNIDOS» y cruzaba la línea de abajo. El área de toque va en un `::after`, sin mover el dibujo */
+  .app .pf8-segs a.sp-prem-chip{padding-block:1px;margin-block:0;position:relative}
+  .app .pf8-segs a.sp-prem-chip::after{content:"";position:absolute;inset:-14px -4px}
 }
+/* 🛍️ el nombre de la Tienda sobre las bandas blancas (revisión 22/11/2026): el efecto se diseñó sobre negro y llega de un
+   dato que no controlamos (`ta-n13` es blanco: 1,08:1). En Clara lleva su placa negra, como en el Ranking (rka.css) */
+.clara .pf9-banda.blanca .ta-raiz.nom-tienda{display:inline-block;max-width:100%;box-sizing:border-box;vertical-align:bottom;padding:0 5px;border-radius:3px;background:#030304}

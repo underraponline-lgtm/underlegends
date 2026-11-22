@@ -158,7 +158,8 @@ export function LigaTeSigue({ f, p, liga, yo = false }) {
   return (
     <span className="sg-liga" title={xs.map((x) => x[1] + ' ' + de(x)).join(' · ')}>
       <span className="sg-liga-c" aria-hidden="true">{xs.slice(0, 4).map((x) => { const c = pjDe(x[0], liga); return <i key={x[0]} style={{ background: c[1], color: c[2] }}>{c[0]}</i>; })}</span>
-      <span><em>Liga</em> {txt} {xs.length > 1 ? (yo ? 'te siguen' : 'lo siguen') : (yo ? 'te sigue' : 'lo sigue')}</span>
+      {/* espacios duros (revisión 22/11/2026): a 390, «… y 8 más / te siguen» dejaba el verbo solo abajo */}
+      <span><em>Liga</em> {txt}{' '}{xs.length > 1 ? (yo ? 'te siguen' : 'lo siguen') : (yo ? 'te sigue' : 'lo sigue')}</span>
     </span>
   );
 }

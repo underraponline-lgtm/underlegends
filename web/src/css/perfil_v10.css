@@ -116,6 +116,9 @@
 .pv-mas-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
 /* la que queda sola en su fila, a lo ancho (revisión 21/11/2026: «Dónde está» ocupaba media fila con 420 px vacíos al lado) */
 .pv-mas-g > :last-child:nth-child(odd){grid-column:1 / -1}
+/* …y si es una lista («Dónde está»), en dos columnas (revisión 22/11/2026): a 832 px, «Temporada» quedaba en x=83 y su
+   «#1» en x=883 */
+@media (min-width:900px){.app .pv-mas-g > .pv-cajal:last-child:nth-child(odd) .pv-dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}}
 @media (max-width:899.98px){.app .pv-mas-g{grid-template-columns:minmax(0,1fr)}}
 /* su próximo evento */
 .pv-prox{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 18px;border-radius:4px;
@@ -135,7 +138,10 @@
 .pv-lg-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
 .pv-lg-h h3{margin:0;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .pv-lg-h a{font:700 13px/1 Archivo,sans-serif;color:var(--tinta);text-decoration:underline;text-underline-offset:3px}
-.pv-lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+/* `auto-fit` (revisión 22/11/2026): con `auto-fill` las 5 ligas dejaban reservada una sexta columna vacía (~140 px) y los
+   nombres se cortaban al lado. Con una o dos, de 240 como mucho: no se estiran a media página */
+.pv-lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px}
+.pv-lg:not(:has(> :nth-child(3))){grid-template-columns:repeat(2,minmax(0,240px))}
 @media (max-width:599.98px){.app .pv-lg{grid-template-columns:repeat(2,minmax(0,1fr))}
   /* la que queda sola en su fila, a lo ancho (revisión 21/11/2026: «Ascenso a la FMH Under» sola, con media fila vacía) */
   .app .pv-lg > :last-child:nth-child(odd){grid-column:1 / -1}}
@@ -265,7 +271,9 @@
 
 /* ── el costado ── */
 .pv-cajal{padding:16px;border-radius:4px;background:var(--caja);min-width:0}
-.pv-cajal h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+/* `wrap` (revisión 22/11/2026): si el título y el link no entran, el link baja entero en vez de partir el título («LO QUE /
+   LLEVA PUESTO») */
+.pv-cajal h3{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 10px;margin:0 0 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .pv-cajal h3 a{font:700 12.5px/1 Archivo,sans-serif;text-transform:none;font-stretch:100%;color:var(--tinta);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 .pv-sem7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;align-items:end;height:64px}
 .pv-sem7 i{display:block;min-height:4px;border-radius:2px 2px 0 0;background:var(--suave)}
@@ -359,6 +367,14 @@
   --magenta-tx:#D0106A;background:#F3F3F0;color:#030304;box-shadow:none}
 .noche .pv-lado .pf9-pz,.noche .pv-mas-g .pf9-pz{background:var(--caja);box-shadow:none}
 
+/* 📱 (revisión 22/11/2026) en el teléfono, 16 px de margen como la portada y la crew, y no los 40 de la compu (`--gut` de
+   `.app` vale en todos los anchos): los paneles medían 310 px. Y en «Publicaciones», la fecha debajo del texto y no en su
+   columna: al texto le quedaban 115 px y «Makmah se / queda con K.O.M / VOL.10» iba en tres renglones */
+@media (max-width:599.98px){
+  .app .pv{--gut:16px}
+  .app .pv-lu .lu-r.nt-f{grid-template-columns:40px minmax(0,1fr)}
+  .app .pv-lu .lu-r-der{grid-column:2;grid-auto-flow:column;justify-content:start;align-items:center}
+}
 /* 👆 (revisión 21/11/2026) los enlaces de texto, de 44 px de alto para el dedo, sin mover el diseño: el relleno se come con
    el margen negativo */
 @media (max-width:759.98px){

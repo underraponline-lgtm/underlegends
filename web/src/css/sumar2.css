@@ -93,7 +93,8 @@
 .stv-div-cab{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 18px;align-items:center;padding:14px 16px;background:var(--stv-caja)}
 .stv-div-n{display:flex;align-items:baseline;gap:10px;font:900 30px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .stv-div-n i{width:14px;height:14px;background:var(--c);display:inline-block}
-.stv-div-da{font:500 14px/1.4 Archivo,sans-serif;color:color-mix(in srgb,var(--esc-tinta) 78%,var(--escenario))}
+/* hasta 72 caracteres por renglón (revisión 22/11/2026): a lo ancho de la tabla eran ~150 y costaba seguir el renglón */
+.stv-div-da{font:500 14px/1.4 Archivo,sans-serif;color:color-mix(in srgb,var(--esc-tinta) 78%,var(--escenario));max-width:72ch}
 .stv-div-da b{color:var(--esc-tinta)}
 .stv-fila,.stv-fila-cab{display:grid;grid-template-columns:40px minmax(0,1fr) 84px 84px 100px 84px;gap:12px;align-items:center;padding:0 16px}
 .stv-fila-cab{min-height:30px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris);background:color-mix(in srgb,#000 35%,var(--escenario));border-top:1px solid var(--esc-linea)}
@@ -157,7 +158,10 @@
 .stv-camp{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:baseline;border:2px solid var(--stv-oro);padding:10px 12px}
 .stv-camp small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--stv-oro)}
 .stv-camp b{font:900 22px/1 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.stv-camp span{grid-column:1/-1;font:600 13px/1.3 Archivo,sans-serif;color:var(--esc-gris)}
+.stv-camp span{grid-column:1/-1;font:600 13px/1.3 Archivo,sans-serif;color:var(--esc-gris);text-wrap:balance}
+/* el campeón en dos renglones y no cortado (revisión 22/11/2026): «CAMPEÓN DEUXS, CRON…» se comía justo a quién ganó */
+.stv-camp b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.05}
+@media (max-width: 599.98px){.stv-camp b{font-size:18px}}
 .stv-notis{display:grid;gap:8px}
 .stv-noti{display:grid;grid-template-columns:36px minmax(0,1fr);gap:10px;align-items:center;background:var(--fondo);border:1px solid var(--suave);padding:10px 12px}
 .stv-noti img{width:36px;height:36px;border-radius:8px;object-fit:cover}

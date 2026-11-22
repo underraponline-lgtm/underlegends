@@ -39,6 +39,9 @@
 .ent-num div.dest dd{color:#030304;font-size:28px}
 .ent-num div.dest.sube dd{color:#0D7A65}
 .ent-num .tier-chip{font-size:15px}
+/* el «de 21» del puesto, en chico y en el mismo renglón (revisión 22/11/2026): a 390 quedaba «#11 de» y el «21» solo abajo */
+.ent-num div.dest dd{white-space:nowrap}
+.ent-num dd .ent-de{font:700 13px/1 Archivo,sans-serif;font-stretch:100%;opacity:.72}
 
 /* la semana del servidor: dorado, guerra, meta (con su barra) */
 .ent-semana{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0 16px 20px;list-style:none}
@@ -130,6 +133,19 @@
 .ent-o-flag{width:48px;height:32px;object-fit:cover;border:1.5px solid var(--linea)}
 .ent-otros li.todos a{place-content:center;background:var(--tinta);color:var(--fondo);border-color:var(--tinta)}
 .ent-otros li.todos b{font-size:13px}
+/* «Todos los…», sola en la última fila, la ocupa entera como una barra (revisión 22/11/2026) */
+@media (max-width: 559.98px){.ent-otros li.todos:nth-child(3n+1):last-child{grid-column:1 / -1}}
+@media (min-width: 560px) and (max-width: 899.98px){.ent-otros li.todos:nth-child(4n+1):last-child{grid-column:1 / -1}}
+
+/* 🚩 «Los que mandan»: el estandarte del marco de País cuelga ~45 px debajo de la carta (revisión 22/11/2026). Se le
+   reserva su lugar, como a la Temporada en las Tarjetas (vivo.css, `.tj-grilla .mk-t`): en Argentina, «⌛ redibujando» se
+   escribía encima de «ARGENTINA» y las puntas pisaban la carta de la fila de abajo */
+:is(.ent-mandan,#ent-cartas) .mcs2 > .mc:has(.mk-est) > .mc-pie{padding-top:3.2em}
+:is(.ent-mandan,#ent-cartas) .mcs2 > .mc:has(.mk-est):not(:has(> .mc-pie)){padding-bottom:3.4em}
+/* 🃏 «SIN CARTA» mide lo que una carta de País (era la proporción de la Temporada: ~320 px contra 285) y no lleva
+   «⌛ redibujando»: no hay carta que se redibuje (acá las cartas no traen otro dato al pie) */
+.ent-mpais .mcs2 .sincarta{aspect-ratio:300/402}
+.ent-mandan .mcs2 > .mc:has(> .sincarta) > .mc-pie{display:none}
 
 .ent-notas{margin:0}
 /* «Se busca», adentro de «Los que mandan» cuando los dos son cortos (entidad2.jsx `juntos`) */
@@ -201,6 +217,18 @@
   /* una lista corta (8 o menos) mide lo que una de las dos columnas de la larga: Costa Rica, con 3 filas, ponía el nombre
      a la izquierda y los números a 950 px */
   .app .ent-gente:not(.dos),.app .ent-gh:not(.dos){max-width:calc(50% - 18px)}
+  /* 🪪 con 4 filas o menos (el País, `tarjetas` de Gente), cada fila es una tarjeta y van en un renglón a lo ancho (revisión
+     22/11/2026): la tabla de media banda dejaba otra media vacía al lado (688×272 en Costa Rica). Sin cabecera: cada
+     número lleva su nombre abajo */
+  .app .ent-gh.tarj{display:none}
+  .app .ent-gente.tarj{max-width:none;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;border-top:0}
+  .app .ent-gente.tarj li{border:1.5px solid var(--suave)}
+  .app .ent-gente.tarj .ent-f{grid-template-columns:34px 40px repeat(3,minmax(0,1fr));gap:8px 10px;padding:12px 10px}
+  .app .ent-gente.tarj .ent-pos,.app .ent-gente.tarj .ent-cara{grid-row:1 / span 2}
+  .app .ent-gente.tarj .ent-cara{width:40px;height:40px}
+  .app .ent-gente.tarj .ent-n{grid-column:3 / -1}
+  .app .ent-gente.tarj .ent-d{grid-row:2;justify-items:start}
+  .app .ent-gente.tarj .ent-d small{display:block}
   /* 🃏 tres cartas o menos: lo de abajo (la pelea, se movieron, los buscados) sube a la derecha de las cartas */
   .app .ent-mandan.pocas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,440px);gap:24px;align-items:start}
   .app .ent-mandan.pocas .ent-pelea{margin-top:0;grid-template-columns:minmax(0,1fr)}
@@ -218,4 +246,10 @@
   .app #ent-buscados .mw-rail{grid-auto-flow:row;grid-template-columns:repeat(auto-fit,minmax(184px,320px));overflow:visible}
   .app #ent-buscados .mw-rail:has(> :nth-child(3)){grid-template-columns:repeat(var(--cols,6),minmax(0,1fr))}
   .app #ent-buscados .mw-rail .poster{width:auto}
+}
+/* 🃏 desde 1200, las cartas miden lo suyo y lo de al lado toma el resto (revisión 22/11/2026): en CEU quedaban ~310 px
+   vacíos entre sus 2 cartas y sus 2 carteles. Más angosto, tres cartas de 220 no dejan lugar para lo de al lado */
+@media (min-width: 1200px){
+  .app .ent-mandan.pocas{grid-template-columns:max-content minmax(0,1fr)}
+  .app .ent-mandan.pocas .mcs2{grid-auto-flow:column;grid-auto-columns:220px;grid-template-columns:none}
 }

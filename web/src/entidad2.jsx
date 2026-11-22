@@ -85,10 +85,13 @@ export function Indice({ items }) {
 
 // ── «los otros»: celdas iguales con su emblema, su nombre y un número; la última lleva a la lista entera. En filas
 // parejas: con seis columnas fijas, veinte celdas eran 6/6/6/2 (la cuenta es la de las Ligas) ──
+// 🧮 (revisión 22/11/2026) la cuenta de columnas, de 5 a 8, que deja menos lugares vacíos en la última fila (a igual, 6): con
+// `ceil(n / ceil(n / 6))`, 16 baldosas eran 6, 6 y 4 y 21 eran 6, 6, 6 y 3. Ahora 16 son dos filas de 8 y 21, tres de 7
+const colsOtros = (n) => (n <= 8 ? n : [6, 7, 8, 5].reduce((m, c) => ((c - (n % c)) % c < (m - (n % m)) % m ? c : m)));
 export function Otros({ items, href, et }) {
   const n = items.length + 1;
   return (
-    <ul className={'ent-otros' + (n <= 3 ? ' pocos' : '')} style={{ '--cols': Math.ceil(n / Math.ceil(n / 6)) }}>
+    <ul className={'ent-otros' + (n <= 3 ? ' pocos' : '')} style={{ '--cols': colsOtros(n) }}>
       {items.map(([k, ir, img, nom, d]) => (
         <li key={k}><a href={ir}>{img}<b>{nom}</b>{d ? <small>{d}</small> : null}</a></li>
       ))}
@@ -102,12 +105,16 @@ export function Otros({ items, href, et }) {
 // 15 y «Ver todos». El número es de los miembros: quien está fuera de concurso va con «—», como en el Ranking ──
 const TOPE_CEL = 15;
 // `extra(f)`: una línea más debajo del nombre (el aporte a la crew, en la página de una crew)
-export function Gente({ liga, gente, roles, pend, conFlag, extra }) {
+// `tarjetas`: con pocas filas (Costa Rica, 3), en la compu cada fila es una tarjeta y van todas en un renglón a lo ancho (en
+// una tabla de media banda quedaba otra media vacía al lado). `colOvr`: el nombre de la columna del OVR (en el País, las
+// cartas de arriba llevan otro OVR, el Nacional)
+export function Gente({ liga, gente, roles, pend, conFlag, extra, tarjetas, colOvr = 'OVR' }) {
   const [todos, setTodos] = useState(false);
   const lista = useRef(null);
   const n = gente.length;
   const corta = n > TOPE_CEL && !todos;
   const dos = n > 8;
+  const tarj = !!tarjetas && !dos;
   let k = 0;
   const nros = gente.map((f) => (f.pos && !f.fc ? ++k : null));
   // al cerrar, de vuelta al principio de la lista: si no, quedabas 1.300 px más abajo, en «Los otros»
@@ -120,10 +127,10 @@ export function Gente({ liga, gente, roles, pend, conFlag, extra }) {
   };
   return (
     <>
-      <div className={'ent-gh' + (dos ? ' dos' : '')} aria-hidden="true">
-        {(dos ? [0, 1] : [0]).map((i) => <div key={i}><span>#</span><span /><span>Rapero</span><span>OVR</span><span>PTS</span><span>EV</span></div>)}
+      <div className={'ent-gh' + (dos ? ' dos' : '') + (tarj ? ' tarj' : '')} aria-hidden="true">
+        {(dos ? [0, 1] : [0]).map((i) => <div key={i}><span>#</span><span /><span>Rapero</span><span>{colOvr}</span><span>PTS</span><span>EV</span></div>)}
       </div>
-      <ol ref={lista} className={'ent-gente' + (dos ? ' dos' : '') + (corta ? ' corta' : '')} style={{ '--filas': Math.ceil(n / 2) }}>
+      <ol ref={lista} className={'ent-gente' + (dos ? ' dos' : '') + (tarj ? ' tarj' : '') + (corta ? ' corta' : '')} style={{ '--filas': Math.ceil(n / 2) }}>
         {gente.map((f, i) => (
           <li key={f.k} className={i >= TOPE_CEL ? 'extra' : ''}>
             <button type="button" className="sin-boton ent-f" onClick={() => accion.perfil(f.k)} aria-label={'Ver el perfil de ' + limpio(f.n)}>
@@ -133,7 +140,7 @@ export function Gente({ liga, gente, roles, pend, conFlag, extra }) {
                 <small>{f.fc ? 'fuera de concurso' : f.pos ? '#' + f.pos + ' de la Liga' : 'sin puesto en la Liga'}</small>
                 {roles && roles[f.k] && roles[f.k] !== 'miembro' ? <RolCrew rol={roles[f.k]} /> : null}
                 {pend ? <SinVerificar hasta={pend[f.k]} /> : null}{extra ? extra(f) : null}</span>
-              <span className="ent-d"><b>{f.ovr || '—'}</b><small>OVR</small></span>
+              <span className="ent-d"><b>{f.ovr || '—'}</b><small>{colOvr}</small></span>
               <span className="ent-d"><b>{num(f.pts || 0)}</b><small>PTS</small></span>
               <span className="ent-d ev"><b>{f.ev || 0}</b><small>EV</small></span>
             </button>
@@ -251,7 +258,11 @@ export function PerfilSv({ liga, sv, enc }) {
         // la celda de la semana se resalta sólo si suma: un «×0,75» o un «×1» resaltados al lado de tres ceros decían lo contrario
         // 🏷️ «QUE SUMAN» (revisión 21/11/2026): acá son los que suman para el servidor y sus llaves; «De un vistazo», justo
         // abajo, cuenta a todos los que jugaron acá. Con el mismo rótulo, FFA decía 406 y 423 raperos en la misma pantalla
-        numeros={[['ESTA SEMANA', x ? mult(x) : '×1', x > 1 ? 'dest sube' : ''], ['RAPEROS QUE SUMAN', num(s.n || 0)], ['PUNTOS', num(s.pts || 0)], ['EVENTOS QUE SUMAN', num(s.ev || 0)]]}
+        // 0️⃣ sin eventos ni puntos en la temporada (DRA, o un socio que espera su primer evento) dice lo que sí tiene
+        // (revisión 22/11/2026): «×1 · 0 · 0 · 0» presentaba a la sede de la Liga, con 2.921 miembros, como un servidor muerto
+        numeros={!s.ev && !s.pts ? [s.miembros ? ['MIEMBROS', num(s.miembros)] : null, s.tier ? ['TIER', String(s.tier)] : null,
+          x > 1 ? ['ESTA SEMANA', mult(x), 'dest sube'] : null, x > 1 ? ['EVENTOS QUE SUMAN', 'Todavía ninguno'] : null].filter(Boolean)
+          : [['ESTA SEMANA', x ? mult(x) : '×1', x > 1 ? 'dest sube' : ''], ['RAPEROS QUE SUMAN', num(s.n || 0)], ['PUNTOS', num(s.pts || 0)], ['EVENTOS QUE SUMAN', num(s.ev || 0)]]}
         extra={semana.length ? (
           <ul className="ent-semana">
             {semana.map(([t, d, pct]) => (
@@ -268,10 +279,13 @@ export function PerfilSv({ liga, sv, enc }) {
         {P === null ? <div className="cargando">Cargando…</div> : D ? (
           <>
             <Banda color="negra">
+              {/* 📐 «Cómo se juega acá» va abajo, a lo ancho (revisión 22/11/2026): en la pila de al lado sumaba un tercer panel y
+                  «Su forma» se estiraba hasta ~800 px de alto para acompañarla; «Los que mandan» quedaba en la segunda pantalla */}
               <div className="pf9-g pf9-g-forma">
                 <SvForma liga={liga} D={D} />
-                <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvComo sv={sv} D={D} P={P} /><SvVistazo D={D} sv={sv} /></div>
+                <div className="pf9-pila"><SvProximo liga={liga} sv={sv} /><SvVistazo D={D} sv={sv} /></div>
               </div>
+              <SvComo sv={sv} P={P} />
             </Banda>
             {cartas}
             <Banda color="blanca" titulo="Sus noches" link="Calendario" ir="#/eventos">
@@ -298,8 +312,12 @@ export function PerfilSv({ liga, sv, enc }) {
           <>
             <Banda color="negra">
               <div className="pf9-g sv9-dos"><SvProximo liga={liga} sv={sv} /><SvTabla liga={liga} sv={sv} /></div>
-              <SvComo sv={sv} D={null} P={P} />
-              <SvMuro liga={liga} sv={sv} />
+              {/* 📐 el muro con «Cómo se juega acá» en el riel, como los demás servidores (revisión 22/11/2026): sueltos y a lo
+                  ancho, cada post quedaba en la mitad izquierda (504×840 vacíos a su derecha) y cada dato, a ~330 px de su valor */}
+              <div className="pf9-g pf9-g-rail">
+                <SvMuro liga={liga} sv={sv} />
+                <div className="pf9-pila"><SvComo sv={sv} P={P} /></div>
+              </div>
             </Banda>
             {cartas}
           </>
@@ -485,7 +503,8 @@ export function PaginaPais({ liga, cc: cc0 }) {
       <Portada forma="bandera" color="#E41373" nombre={nom}
         emblema={<img alt={'La bandera de ' + nom} src={'/banderas/g/' + cc + '.webp'} />}
         acciones={<Compartir cls="btn borde" url={enlace('#/pais/' + cc)} texto={nom + ' en la Liga Global'} />}
-        numeros={[['PUESTO', P ? '#' + (i + 1) + ' de ' + ps.length : '—', 'dest'], ['PUNTOS', num(pts || 0)],
+        // el «de 21» en chico (revisión 22/11/2026): a 390, «#11 de» y el «21» solo en el renglón de abajo
+        numeros={[['PUESTO', P ? <>#{i + 1}<small className="ent-de"> de {ps.length}</small></> : '—', 'dest'], ['PUNTOS', num(pts || 0)],
           ['POR RAPERO', n ? num(Math.round((pts || 0) / n)) : '—'],
           ['EL MEJOR', gente[0] ? <a className="te-link ent-toque" href={'#/r/' + encodeURIComponent(gente[0].k)}>{limpio(gente[0].n)}</a> : '—']]} />
       <Indice items={items} />
@@ -494,7 +513,7 @@ export function PaginaPais({ liga, cc: cc0 }) {
           {/* 🃏 siempre la de País (revisión 21/11/2026): quien no la tiene sale con su cara y «SIN CARTA» (`Carta`), del
               mismo tamaño. Con la de Temporada de respaldo, Lalox salía con otra forma, más alta y con números de otra cosa */}
           {/* con 3 cartas o menos, lo de abajo sube a su derecha (`pocas`, entidad2.css): si no, 480 px vacíos al lado */}
-          <div className={'ent-mandan' + (cartas(gente).length <= 3 ? ' pocas' : '')}>
+          <div className={'ent-mandan ent-mpais' + (cartas(gente).length <= 3 ? ' pocas' : '')}>
             <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="pais" />)}</div>
             {pelP || movs.length ? (
               <div className={'rka ent-pelea' + (pelP && movs.length ? '' : ' solo')}>
@@ -518,7 +537,7 @@ export function PaginaPais({ liga, cc: cc0 }) {
           </div>
         ) : null}
         {gente.length && pt === 'sv' ? <PorServidor liga={liga} base={gente} numero={numP} cfg={{}} yoK={liga.yo ? liga.yo.k : ''} />
-          : gente.length ? <Gente liga={liga} gente={gente} />
+          : gente.length ? <Gente liga={liga} gente={gente} tarjetas={gente.length <= 4} colOvr={'OVR ' + String(liga.temp || 'T1').toUpperCase()} />
           : <p className="pronto-p">{n === 1 ? 'De ' + nom + ' jugó 1 rapero' : 'De ' + nom + ' jugaron ' + raperos(n)} esta temporada, y todavía nadie entra entre los {num(tope)} primeros de la Liga.</p>}
       </Sec>
       {crews.length ? (

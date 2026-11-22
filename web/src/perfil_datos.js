@@ -22,11 +22,24 @@ export const nomEv = (e) => (sinTit(e) ? e.sv + ' · ' + fecha(e.t) : e.nom);
 /** Los datos del perfil, de una vez: sus eventos (`evs`, y los que tienen fecha en orden, `enT`), sus duelos, sus rivales,
  *  el récord, la mejor noche, los títulos, el de al lado en la tabla y su mejor victoria. `e` es el mapa de eventos de
  *  /api/perfiles. Es lo que era `useV10()` de perfil_v10.jsx, sin el `useMemo` */
+// 📅 EL DÍA DEL EVENTO Y NO EL DE CUANDO SE PROCESÓ (revisión 22/11/2026). En `/api/perfiles`, `x[2]` es la hora en que se
+// cargó el resultado (la #435 dice «2026-10-09T04:01:38Z», pasada la medianoche) y `x[4]` el día del evento en hora del
+// este («08/10»): con `x[2]`, el perfil de Dlx decía «Debutó 9 oct» y el Inicio, de la llave, «jue 8 oct». Al mediodía
+// UTC, para que el día no cambie en ninguna zona de la Liga
+const diaEv = (x) => {
+  const t = x[2] ? Date.parse(x[2]) : 0;
+  const m = /^(\d{1,2})\/(\d{1,2})$/.exec(String(x[4] || ''));
+  if (!t || !m) return t;
+  const pr = new Date(t);
+  // un evento de diciembre cargado en enero es del año anterior
+  const y = pr.getUTCFullYear() - (Number(m[2]) > pr.getUTCMonth() + 1 ? 1 : 0);
+  return Date.UTC(y, Number(m[2]) - 1, Number(m[1]), 12);
+};
 export function datosV10(liga, k, f, p, e) {
   const E = e || {};
   const evs = ((p && p.ev) || []).map(([n, puesto, pts]) => {
     const x = E[n] || E[String(n)] || [];
-    return { n, pu: puesto, pts: pts || 0, nom: limpio(x[0] || 'Evento ' + n), sv: x[1] || '', t: x[2] ? Date.parse(x[2]) : 0, gente: x[3] || 0 };
+    return { n, pu: puesto, pts: pts || 0, nom: limpio(x[0] || 'Evento ' + n), sv: x[1] || '', t: diaEv(x), gente: x[3] || 0 };
   });
   const enT = evs.filter((x) => x.t).sort((a, b) => a.t - b.t);
   const du = (p && p.du) || [];
@@ -40,7 +53,7 @@ export function datosV10(liga, k, f, p, e) {
     const x = riv.get(id);
     if (w) x.g += 1; else x.p += 1;
     const ev = E[n] || E[String(n)];
-    if (ev && ev[2]) x.ult = Math.max(x.ult, Date.parse(ev[2]));
+    if (ev && ev[2]) x.ult = Math.max(x.ult, diaEv(ev));
   });
   const rivs = [...riv.values()].sort((a, b) => (b.g + b.p) - (a.g + a.p) || b.ult - a.ult);
   const g = du.filter((d) => d[2]).length;

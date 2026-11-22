@@ -180,7 +180,10 @@ function Cartel({ liga, s, x }) {
       ) : null}
       {/* ⏰ un sin_hora dice cuándo se anunció, no una hora de arranque que no tiene (revisión del 18/11/2026) */}
       {prox ? <p className="sk-ct-ev"><b>El próximo</b>{limpio(prox.nombre)} · {prox.sin_hora ? 'anunciado ' + liga.cuando(prox.cuando) : liga.dia(liga.cuandoDe(prox))}</p>
-        : ll ? <p className="sk-ct-ev"><b>El último</b>{liga.nombreLlave(ll)}{camp.length ? <> · ganó <Algunos liga={liga} nombres={camp} /></> : ''}</p> : null}
+        // 🏆 quién ganó, en su propio renglón y sin recorte (revisión 22/11/2026): al final de una línea de tres con «…»,
+        // «DESGRACIAS EN TOKYO VOL 33 PANDILLAS · ga…» se comía justo la respuesta
+        : ll ? <><p className="sk-ct-ev"><b>El último</b>{liga.nombreLlave(ll)}</p>
+          {camp.length ? <p className="sk-ct-gano">ganó <Algunos liga={liga} nombres={camp} /></p> : null}</> : null}
       {s.invita ? <a className="sk-ct-ent" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar a su Discord ↗</a> : null}
     </li>
   );
@@ -309,7 +312,8 @@ export function Socios({ liga }) {
   const maxM = Math.max(1, ...svs.map((s) => mm[s.sv] || 1));
   const conMax = svs.filter((s) => (mm[s.sv] || 1) === maxM).map((s) => siglaDe(s.sv));
   const franja = [
-    { l: 'Servidores', v: svs.length, c: porTier.length ? lista(porTier.map(([t, n]) => n + ' en Tier ' + t)) : 'cada uno con sus eventos' },
+    // (espacios duros: a 390, «…y 7 en / Tier 3» dejaba el «Tier 3» solo abajo)
+    { l: 'Servidores', v: svs.length, c: porTier.length ? lista(porTier.map(([t, n]) => n + ' en Tier ' + t)) : 'cada uno con sus eventos' },
     // «sumados»: la misma persona en dos servidores cuenta dos veces (la Liga en números, abajo, cuenta personas)
     { l: 'En sus Discord', v: num(enDiscord), em: 'miembros', c: 'sumados: la misma persona cuenta en cada uno' },
     { l: 'Jugaron la ' + liga.temp, v: num(raperos), em: 'raperos', c: 'de todos los servidores' },

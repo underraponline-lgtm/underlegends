@@ -538,18 +538,21 @@ function FilaLU({ liga, k, f, it, A, P }) {
 const FUERTES = ['campeon', 'caza', 'elegido', 'premios', 'mesaward', 'sobrevivio'];
 const GRUPOS = [['', 'Todo', null], ['campeones', 'Campeones', ['campeon', 'podio', 'resnoche']], ['mw', 'Most Wanted', ['caza', 'sobrevivio', 'elegido', 'premios']],
   ['rangos', 'Rangos', ['rango']], ['pase', 'Pase', ['pase']], ['mes', 'MES AWARDS', ['mesaward']]];
+// sus publicaciones, sin anuncios y sin el mismo rango repetido seguido. 🔢 La misma cuenta para la pestaña y para «Todo»
+// (revisión 22/11/2026): la pestaña contaba también los rangos repetidos y decía 28 al lado de un «Todo 21»
+function pubsDe(p) {
+  const mu = ((p && p.mu) || []).filter((it) => it.tipo !== 'anuncio');
+  const fuera = new Set();
+  let previo = null;
+  [...mu].reverse().forEach((m) => { if (m.tipo !== 'rango') return; if (previo === m.rg) fuera.add(m.id); previo = m.rg; });
+  return mu.filter((m) => !fuera.has(m.id));
+}
 function Publicaciones({ liga, k, f, p, D, esYo, extra, fil, setFil }) {
   const A = useAplausos();
   useComentarios();
   const P = usePase(typeof window !== 'undefined' && !!window.DC);
   const pub = usePases();
-  const xs = useMemo(() => {
-    const mu = ((p && p.mu) || []).filter((it) => it.tipo !== 'anuncio');
-    const fuera = new Set();
-    let previo = null;
-    [...mu].reverse().forEach((m) => { if (m.tipo !== 'rango') return; if (previo === m.rg) fuera.add(m.id); previo = m.rg; });
-    return mu.filter((m) => !fuera.has(m.id));
-  }, [p]);
+  const xs = useMemo(() => pubsDe(p), [p]);
   if (!xs.length && esYo) {
     return (
       <div className="pv-ej">
@@ -696,7 +699,7 @@ function EventosV({ liga, k, f, p, D, esYo, extra, fr, setFr }) {
 }
 
 function Tabs({ liga, k, f, p, D, esYo, extra, tab, setTab, filPub, setFilPub, fr, setFr, videos, logros }) {
-  const nPub = ((p && p.mu) || []).filter((m) => m.tipo !== 'anuncio').length;
+  const nPub = pubsDe(p).length;
   const nVid = ((p && p.vid) || []).length + ((p && p.vp) || []).length;
   const T = [['pubs', 'Publicaciones', nPub], ['noches', 'Eventos', D.enT.length], ['videos', 'Videos', nVid], ['logros', 'Logros', ((p && p.ins) || []).length]];
   const t = T.some((x) => x[0] === tab) ? tab : 'pubs';
@@ -748,7 +751,7 @@ function SobreEl({ liga, k, f, p, D, esYo }) {
     const [s, n] = Object.entries(sv).sort((a, b) => b[1] - a[1])[0];
     xs.push(['Juega más en', <a key="s" href={'#/sv/' + siglaDe(s)}><img alt="" src={liga.logo(s)} />{(liga.svs[s] || {}).nombre || siglaDe(s)}</a>, n + ' de ' + ev.length + ' noches' + (Object.keys(sv).length > 1 ? ' · en ' + Object.keys(sv).length + ' servidores' : '')]);
   }
-  if (ev[0]) xs.push(['Debutó', fecha(ev[0].t), sinTit(ev[0]) ? siglaDe(ev[0].sv) : ev[0].nom]);
+  if (ev[0]) xs.push([esYo ? 'Debutaste' : 'Debutó', fecha(ev[0].t), sinTit(ev[0]) ? siglaDe(ev[0].sv) : ev[0].nom]);
   if (ev.length > 1) { const u = ev[ev.length - 1]; const d = Math.round((Date.now() - u.t) / 864e5); xs.push([esYo ? 'Tu último evento' : 'Su último evento', d <= 0 ? 'hoy' : d === 1 ? 'ayer' : 'hace ' + d + ' días', sinTit(u) ? siglaDe(u.sv) : u.nom]); }
   // 🎙️ el staff (20/11/2026, el plan de los tiers): en cuántos eventos de la temporada fue jurado, host, DJ u organizador
   // (`p.st`, de `staff_por_persona()` en bot/subir_web.py)
@@ -803,20 +806,22 @@ function CaraACara({ liga, p, D, esYo }) {
   );
 }
 
-function DondeEsta({ liga, k, f, p }) {
+// 🗣️ con `esYo`, en segunda persona como el resto de tu perfil (revisión 22/11/2026): «Dónde está», «Su país» y «Cazó · lo
+// cazaron» en tu propio perfil, al lado de «Sobre ti» y «Lo que llevas puesto»
+function DondeEsta({ liga, k, f, p, esYo }) {
   const rk = (p && p.rk) || {};
   const e = eloDe(liga, k);
   const filas = [['Temporada', f.pos ? '#' + f.pos : '—']];
   if (rk.du) filas.push(['Duelos', '#' + rk.du[0] + ' de ' + rk.du[1]]);
   if (e) filas.push(['División', e.piedra + ' ' + e.sub + ' · ' + e.pos + 'º de ' + e.tot, e.c]);
   if (rk.pod) filas.push(['Podios', '#' + rk.pod[0] + ' de ' + rk.pod[1]]);
-  if (rk.pa) filas.push(['Su país', '#' + rk.pa[0] + ' de ' + rk.pa[1]]);
+  if (rk.pa) filas.push([esYo ? 'Tu país' : 'Su país', '#' + rk.pa[0] + ' de ' + rk.pa[1]]);
   if (rk.cr) filas.push([rk.cr[0], '#' + rk.cr[1] + ' de ' + rk.cr[2]]);
-  filas.push(['Cazó · lo cazaron', (f.caz || 0) + ' · ' + (f.czd || 0)]);
+  filas.push([esYo ? 'Cazaste · te cazaron' : 'Cazó · lo cazaron', (f.caz || 0) + ' · ' + (f.czd || 0)]);
   if (f.mis) filas.push(['Misiones', '+' + num(f.mis)]);
   return (
     <section className="pv-cajal">
-      <h3>Dónde está<a href="#/ranking">Ranking</a></h3>
+      <h3>{esYo ? 'Dónde estás' : 'Dónde está'}<a href="#/ranking">Ranking</a></h3>
       <ul className="pv-dl">{filas.map(([a, b, c]) => <li key={a} className={c ? 'dv' : undefined} style={c ? { '--pc': c } : undefined}><span>{a}</span><b>{c ? <i className="pv-gema" aria-hidden="true" /> : null}{b}</b></li>)}</ul>
     </section>
   );
@@ -908,7 +913,7 @@ export function PerfilV10({ liga, k, f, p, P, esYo, piezas, videos, logros, tab0
     piezas.jurado,
     piezas.records,
     piezas.precio,
-    <DondeEsta key="donde" liga={liga} k={k} f={f} p={p} />,
+    <DondeEsta key="donde" liga={liga} k={k} f={f} p={p} esYo={esYo} />,
   ].filter(Boolean);
   const corte = Math.max(3, lado.length - abajo);
   return (

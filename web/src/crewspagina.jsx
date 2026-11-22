@@ -269,7 +269,7 @@ function TablaSemana({ liga, xs, T, onComo, como }) {
         return (
           // (el tutorial señala el primer tier, no la tabla entera: 19/11/2026)
           <div key={i} className="crw-tz" data-tuto={nt === 0 ? 'crw-semana' : undefined}>
-            <div className="crw-tz-h"><TierChip n={i} T={T} chico /><small>{T.sube[i] ? 'suben con ' + num(T.sube[i]) + (T.juegan[i + 1] > 1 ? ' y ' + T.juegan[i + 1] + ' que jueguen' : '') : 'el tier más alto'}{baja ? ' · bajan con menos de ' + num(baja) : ''}</small></div>
+            <div className="crw-tz-h"><TierChip n={i} T={T} chico /><small>{T.sube[i] ? 'suben con ' + num(T.sube[i]) + (T.juegan[i + 1] > 1 ? ' y ' + T.juegan[i + 1] + ' que jueguen' : '') : 'el tier más alto'}{baja ? ' · bajan con menos de ' + num(baja) : ''}</small></div>
             <ol>{ys.map((x, k) => {
               const sube = T.sube[i] && x.semPts >= T.sube[i] && x.jugaron >= (T.juegan[i + 1] || 0);
               const cae = baja && x.semPts < baja;

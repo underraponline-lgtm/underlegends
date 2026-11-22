@@ -16,9 +16,24 @@
 /* sola en la banda (un servidor sin eventos en la temporada, como DRA): a 1200 px cada dato quedaba a 1100 px de su valor.
    En la compu, los datos en columnas (revisión 21/11/2026) */
 @media (min-width: 900px){
-  .app .pf9-bi > .sv9-como ul{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 40px}
-  .app .pf9-bi > .sv9-como li{border-top:0;padding:0}
+  .app .pf9-bi > .sv9-como ul{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 32px}
+  /* 🔢 a lo ancho, cada dato con su valor ARRIBA y no a ~330 px a la derecha (revisión 22/11/2026, ley de proximidad): el
+     valor grande, el nombre y la nota debajo, como las cifras de De un vistazo */
+  .app .pf9-bi > .sv9-como li{border-top:0;padding:0;flex-direction:column-reverse;align-items:flex-start;justify-content:flex-end;gap:6px}
+  .app .pf9-bi > .sv9-como li b{font-size:22px;white-space:normal}
 }
+/* 🗳️ MES AWARDS del servidor mientras espera a los nominados (revisión 22/11/2026): la franja blanca mide lo que dice, y en
+   la compu va al lado del párrafo (iban a lo ancho: ~650 px de blanco vacío y en DRA un hueco de ~650×230) */
+#sv-mes .sd-franja[role="status"]{width:fit-content;max-width:100%}
+@media (min-width: 900px){
+  .app #sv-mes:not(:has(.ma-hist)):has(> .sd-franja[role="status"]){display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:28px;align-items:center}
+  .app #sv-mes:not(:has(.ma-hist)):has(> .sd-franja[role="status"]) > .sec-t{grid-column:1 / -1}
+  .app #sv-mes:not(:has(.ma-hist)) > .sd-franja[role="status"]{margin:0}
+  .app #sv-mes:not(:has(.ma-hist)) > .ma-como{margin:0}
+}
+/* el riel sin nada (un servidor sin «Cómo se juega acá»): el muro ocupa la banda entera */
+.pf9-g-rail > .pf9-pila:empty{display:none}
+@media (min-width: 900px){.app .pf9-g-rail:has(> .pf9-pila:empty){grid-template-columns:minmax(0,1fr)}}
 .pf9-btn.sv9-negro{background:#030304;border-color:#030304;color:#F6F6F6;text-decoration:none}
 /* su noche más grande: el podio */
 .sv9-pod li.cop{background:#F5C542;color:#030304}
@@ -58,6 +73,9 @@
 .sv9-ev-tx{display:grid;gap:3px;min-width:0}
 .sv9-ev-tx b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-transform:uppercase}
 .sv9-ev-tx small{font:500 12px/1.3 Archivo,sans-serif;color:#A5A5A0}
+/* 📱 en dos renglones en el teléfono (revisión 22/11/2026): «DESGRACIAS EN TOKYO VO…» salía dos veces seguidas igual, y lo
+   que las distingue (VOL 33, VOL 32) quedaba afuera */
+@media (max-width: 599.98px){.sv9-ev-tx b{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}}
 /* sus campeones: el podio y los que siguen */
 .sv9-podio{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:end}
 .sv9-podio.n1{grid-template-columns:minmax(0,1fr)}.sv9-podio.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -119,7 +137,7 @@
   .sv9-b2 > .pf9-pila{display:contents}
   .sv9-b2 .pf9-noche{order:1}.sv9-b2 .pf9-muro{order:2}.sv9-b2 .sv9-duelo{order:3}.sv9-b2 .sv9-org{order:4}
   .sv9-hm-g{grid-template-columns:58px repeat(7,minmax(0,1fr))}
-  .sv9-hm-g i{height:24px;font-size:10px}
+  .sv9-hm-g i{height:24px;font-size:11px}
   .sv9-podio b{font-size:12px}
   /* su forma: en el teléfono, los últimos ocho (doce columnas no entran en 390 px). Desde el 18/11/2026 los corta
      `SvForma` (servidor_bandas.jsx): escondidos acá, el título y el pie seguían diciendo doce */

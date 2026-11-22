@@ -62,7 +62,9 @@ const Av = ({ liga, D, k, cls = '' }) => <Cara liga={liga} k={k} nombre={D ? D.n
 // (el resto, detrás de «Ver los N»), en «Su temporada» el muro muestra más o menos publicaciones y «Sus noches» más o
 // menos renglones. Sólo en la compu, una fila por vuelta y con tope de vueltas, para que nada salte ──
 export function useBalanceCrew(raiz, id, listo) {
-  const ini = { id, ge: 12, mu: 4, no: 6, v: 0 };
+  // `rec`: «Sus récords» sale del costado y va a lo ancho, debajo (revisión 22/11/2026): con un muro que no tiene más (3
+  // publicaciones) y las noches ya en su mínimo, la derecha seguía 337 px más larga y quedaba un hueco de 806 px debajo del muro
+  const ini = { id, ge: 12, mu: 4, no: 6, rec: false, v: 0 };
   const [L, setL] = useState(ini);
   const [medida, setMedida] = useState(0);
   const B = L.id === id ? L : ini;
@@ -99,8 +101,9 @@ export function useBalanceCrew(raiz, id, listo) {
     else if (dn < -hn && masNoches) n.no += 1;
     else if (dn > hn * 0.6 && n.no > 2) n.no -= 1;
     else if (!nochesIzq && d3 < -hm * 1.2 && n.mu > 2) n.mu -= 1;
-    if (n.ge !== B.ge || n.mu !== B.mu || n.no !== B.no) setL(Object.assign(n, { id, v: B.v + 1 }));
-  }, [medida, id, listo, B.ge, B.mu, B.no]); // eslint-disable-line react-hooks/exhaustive-deps
+    else if (!nochesIzq && !masMuro && !n.rec && d3 > 300 && el.querySelector('.k2-b3 .pf9-t-lat .pf9-rec')) n.rec = true;
+    if (n.ge !== B.ge || n.mu !== B.mu || n.no !== B.no || n.rec !== B.rec) setL(Object.assign(n, { id, v: B.v + 1 }));
+  }, [medida, id, listo, B.ge, B.mu, B.no, B.rec]); // eslint-disable-line react-hooks/exhaustive-deps
   return B;
 }
 
@@ -138,9 +141,10 @@ export function CrewVistazo({ D, c, pos, N, T, fila, cid }) {
   // los repetía dos veces seguidas (y el puesto ya va en su etiqueta, «#1 de las crews»). Quedan el tier, con cuántas veces
   // subió, los títulos y los eventos
   const xs = [
-    T ? ['Tier', T.nombres[tier], subidas ? 'subió ' + subidas + (subidas === 1 ? ' vez' : ' veces') + ' en la temporada' : 'cambia cada lunes'] : null,
+    T ? ['Tier', T.nombres[tier], subidas ? 'subió ' + subidas + (subidas === 1 ? ' vez' : ' veces') + ' en la temporada' : 'cambia cada lunes'] : null,
     D ? ['Títulos', String(D.titulos.length), top ? top[1] + ' de ' + D.nombre(top[0]) : D.finales.length ? D.finales.length + (D.finales.length === 1 ? ' final' : ' finales') : 'todavía ninguno'] : null,
-    D ? ['Eventos', num(D.xs.length), D.porN.size + (D.porN.size === 1 ? ' noche distinta' : ' noches distintas') + ' · ' + D.svs.size + (D.svs.size === 1 ? ' servidor' : ' servidores')] : null,
+    // (espacios duros entre el número y su palabra: «151 noches distintas · 12 / servidores» dejaba la palabra sola abajo)
+    D ? ['Eventos', num(D.xs.length), D.porN.size + (D.porN.size === 1 ? ' noche distinta' : ' noches distintas') + ' · ' + D.svs.size + (D.svs.size === 1 ? ' servidor' : ' servidores')] : null,
   ].filter(Boolean);
   if (!xs.length) return null;
   return (

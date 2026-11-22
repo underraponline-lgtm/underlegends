@@ -14,8 +14,8 @@
 // lista de siempre: la edición es la portada, no reemplaza al buscador.
 // ⚠️ Las clases van con `ed-`: en la maqueta `.letra` (la pastilla del rango) y `.ch` (la cara chica) ya existían y
 // rompieron dos portadas. Antes de nombrar una clase, buscarla en estilo.css, vivo.css y css/.
-import { useEffect, useMemo, useState } from 'react';
-import { ksDe, limpio, num, siglaDe, utc } from './liga.js';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ksDe, limpio, nombreEv, num, siglaDe, utc } from './liga.js';
 import { escenaDe } from './arriba.jsx';
 import { Cara, Carta, accion } from './piezas.jsx';
 import { Hilo, delHilo } from './comentarios.jsx';
@@ -38,6 +38,7 @@ const COPA = <svg className="ed-copa" viewBox="0 0 24 24" aria-hidden="true"><pa
 const CARTA_N = { pais: 'País', servidor: 'Servidor', temporada: 'Temporada', competitivo: 'Competitiva' };
 const RK = { temporada: 'Temporada', competitivo: 'Competitivo', elo: 'ELO' };
 const quien1 = (it) => (it.quien || [])[0] || '';
+const mayus = (s) => String(s || '').charAt(0).toUpperCase() + String(s || '').slice(1);
 // 📱 en el celular, un comentario por nota (la página entera medía 15.000 px con dos)
 const chica = () => !!(W.matchMedia && W.matchMedia('(max-width: 899px)').matches);
 const kDe = (liga, n) => { const f = n ? liga.fila(n) : null; return f ? f.k : ''; };
@@ -88,6 +89,9 @@ function Tapa({ liga, it, xs, grande = false }) {
     );
   }
   const g = GRAN_SV(it);
+  // sin dato no hay pieza (revisión 22/11/2026): un anuncio de la Liga, sin servidor ni imagen, abría su nota con un
+  // rectángulo negro de 387×242 sin nada adentro
+  if (!sv && !g) return null;
   return <div className={cls}>{fondo}{sv ? <img className="ed-prota logo" alt="" src={liga.logo(sv)} loading="lazy" /> : null}{g ? <span className="ed-gran">{g[0]}<small>{g[1]}</small></span> : null}</div>;
 }
 // la de un grupo: las caras con su letra, las cartas en abanico o los logos
@@ -155,6 +159,16 @@ function Nota({ liga, it, xs, A, P, H, fuerte, reto }) {
 }
 function NotaGrupo({ liga, tipo, xs, H, A }) {
   const nvs = [...new Set(xs.map((it) => it.nivel).filter(Boolean))];
+  // 🏷️ cada fila, con el nombre primero y sólo lo que cambia (revisión 22/11/2026): «7 llegaron al nivel 10 del Pase» tenía
+  // siete filas iguales en primera persona y sin el nombre, así que no se sabía a quién felicitaba cada botón. Lo común ya
+  // lo dice el título
+  const fila = (it, c) => {
+    const n = <b>{limpio(quien1(it))}</b>;
+    if (tipo === 'pase') return <>{n}{it.completo ? ' · completó el Pase' : nvs.length > 1 && it.nivel ? ' · nivel ' + it.nivel : ''}</>;
+    if (tipo === 'rango') return <>{n} · rango {it.rg}{it.primero ? ', su primera letra' : ''}</>;
+    if (tipo === 'tarjeta') return <>{n}{CARTA_N[it.carta] ? ' · ' + CARTA_N[it.carta] : ''}</>;
+    return <><b>{siglaDe(liga.svDe(it))}</b>{c ? <> · {c.txt}</> : null}</>;
+  };
   const lab = tipo === 'rango' ? 'Rangos' : tipo === 'tarjeta' ? 'Cartas nuevas' : tipo === 'pase' ? 'Pase de rapero' : 'Servidores';
   const tit = tipo === 'rango' ? xs.length + ' raperos suben de rango' : tipo === 'tarjeta' ? xs.length + ' cartas nuevas'
     : tipo === 'pase' ? (nvs.length === 1 ? xs.length + ' llegaron al nivel ' + nvs[0] + ' del Pase' : xs.length + ' suben de nivel en el Pase') : xs.length + ' servidores';
@@ -166,7 +180,7 @@ function NotaGrupo({ liga, tipo, xs, H, A }) {
           const c = H.contenido(liga, it, H.pub);
           return (
             <li key={it.id || i}>{tipo === 'sv' ? <img className="ed-lc" alt="" src={liga.logo(liga.svDe(it))} loading="lazy" /> : <Cara liga={liga} k={ksDe(it)[0]} nombre={quien1(it)} cls="ed-lc" />}
-              <span>{c ? c.txt : ''}</span>{H.LOGROS[it.tipo] ? <H.Felicitar liga={liga} it={it} A={A} chico /> : null}</li>
+              <span>{fila(it, c)}</span>{H.LOGROS[it.tipo] ? <H.Felicitar liga={liga} it={it} A={A} chico /> : null}</li>
           );
         })}</ul>
         {xs.length > 8 ? <p className="ed-nota-p">Y {xs.length - 8} más.</p> : null}
@@ -235,7 +249,8 @@ function Resultados({ liga, evs }) {
         const es = sv ? escenaDe(sv) : '';
         return (
           <div key={it.id} className="ed-res">{es ? <img className="ed-mini" alt="" src={es} loading="lazy" /> : <img className="ed-mini" alt="" src={liga.logo(sv)} loading="lazy" />}
-            <span><b>{limpio(it.ev || siglaDe(sv))}</b><small>{(liga.svs[sv] && liga.svs[sv].nombre) || siglaDe(sv)}{it.part ? ' · ' + it.part + ' raperos' : ''}</small></span>
+            {/* 🏷️ la llave sin nombre, con `nombreEv()` (revisión 22/11/2026): decía «(sin título)» y su nota, «la llave #672» */}
+            <span><b>{it.ev || it.ll ? mayus(nombreEv(it.ev, it.ll)) : siglaDe(sv)}</b><small>{(liga.svs[sv] && liga.svs[sv].nombre) || siglaDe(sv)}{it.part ? ' · ' + it.part + ' raperos' : ''}</small></span>
             <span className="ed-gana"><Cara liga={liga} k={ksDe(it)[0]} nombre={quien1(it)} cls="ed-rc" />{limpio(quien1(it))}</span></div>
         );
       })}
@@ -348,9 +363,62 @@ export function EdCab({ liga, todos, D, H }) {
     </header>
   );
 }
+// 🧱 «LO QUE PASÓ», EN COLUMNAS QUE TERMINAN JUNTAS (revisión 22/11/2026). Con `columns`, las notas de campeón (810–965 px)
+// no se pueden partir y la primera columna terminaba 555 px antes que las otras dos. En la compu es una grilla de filas de
+// 2 px: cada nota ocupa las filas que mide y va a la columna más corta, en orden; las últimas seis, a la combinación que
+// deja las columnas más parejas (en orden, sola, la última nota larga dejaba ~250 px de diferencia). Las notas no cambian
+// de padre (no se vuelven a montar: un comentario a medio escribir sigue ahí) y se vuelve a acomodar cuando una cambia de
+// alto (una foto que carga, un comentario que llega)
+const ED_GAP = 18;
+const ED_FINAL = 6;
+function useMamposteria(caja, clave) {
+  useLayoutEffect(() => {
+    const g = caja.current;
+    if (!g) return undefined;
+    const todas = () => {
+      const els = [...g.children];
+      // ⚠️ `offsetHeight` y no `getBoundingClientRect()`: en pantallas anchas `.app` lleva `zoom` (1,2 a 1920) y el rectángulo
+      // viene agrandado, mientras las filas de 2 px son sin zoom: cada nota tomaba un 20 % de filas de más y quedaban huecos
+      const hs = els.map((el) => Math.max(1, Math.ceil((el.offsetHeight + ED_GAP) / 2)));
+      const cs = getComputedStyle(g);
+      const n = cs.display === 'grid' ? cs.gridTemplateColumns.split(' ').filter(Boolean).length : 1;
+      if (n < 2) { els.forEach((el) => { el.style.gridColumn = ''; el.style.gridRow = ''; }); return; }
+      const col = new Array(n).fill(0);
+      const asig = [];
+      const k = Math.min(ED_FINAL, els.length);
+      for (let i = 0; i < els.length - k; i += 1) {
+        let c = 0;
+        for (let j = 1; j < n; j += 1) if (col[j] < col[c]) c = j;
+        asig.push([c, col[c]]);
+        col[c] += hs[i];
+      }
+      let mejor = null;
+      for (let m = 0; m < n ** k; m += 1) {
+        const cc = col.slice();
+        const as = [];
+        let x = m;
+        for (let i = els.length - k; i < els.length; i += 1) { const c = x % n; x = Math.floor(x / n); as.push([c, cc[c]]); cc[c] += hs[i]; }
+        const d = Math.max(...cc) - Math.min(...cc);
+        if (!mejor || d < mejor.d) mejor = { d, as };
+      }
+      asig.push(...mejor.as);
+      els.forEach((el, i) => { el.style.gridColumn = String(asig[i][0] + 1); el.style.gridRow = (asig[i][1] + 1) + ' / span ' + hs[i]; });
+    };
+    todas();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(() => todas());
+    const mirar = () => { ro.disconnect(); for (const el of g.children) ro.observe(el); };
+    mirar();
+    const mo = typeof MutationObserver !== 'undefined' ? new MutationObserver(() => { mirar(); todas(); }) : null;
+    if (mo) mo.observe(g, { childList: true });
+    return () => { ro.disconnect(); if (mo) mo.disconnect(); };
+  }, [caja, clave]);
+}
 export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
   const LG = useLigasEd(liga);
   const [todas, setTodas] = useState(false);
+  const grilla = useRef(null);
+  useMamposteria(grilla, di + ':' + todas);
   if (!dias.length) return null;
   const D = dias[Math.min(di, dias.length - 1)];
   const xs = D.xs;
@@ -426,7 +494,7 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
       </div>
       {piezas.length ? (
         <section className="ed-sec"><h3 className="ed-st">Lo que pasó</h3>
-          <div className="ed-grid">
+          <div className="ed-grid" ref={grilla}>
             {piezas.slice(0, limite)}
           </div>
           {piezas.length > limite ? <button type="button" className="btn borde2 ed-mas" onClick={() => setTodas(true)}>Ver las {piezas.length} notas de esta edición</button> : null}
@@ -435,7 +503,9 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
       {promos.length ? (
         <section className="ed-sec"><h3 className="ed-st">Las promos · las de la historia</h3>
           <p className="ed-sec-d">Lo que comparten los raperos en el canal de promoción de su servidor y lo que promociona la Liga. Cada una que abres te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p>
-          <div className="ed-vgrid">{promos.map((it) => { const c = H.contenido(liga, it, H.pub); return c ? <article key={it.id} className="ed-v"><div className="ed-v-img">{c.vis}</div><div className="ed-cu"><span className="ed-lab">{c.cat}</span><h4>{c.txt}</h4><div className="ed-firma"><H.Autor liga={liga} it={it} pub={H.pub} /><time>{H.hace(liga, it.t)}</time></div></div></article> : null; })}</div>
+          {/* 🖼️ sin video ni imagen, la cara va sobre la escena de su servidor, como en las ligas (revisión 22/11/2026): sola en
+              un 16:9 negro no decía nada */}
+          <div className="ed-vgrid">{promos.map((it) => { const c = H.contenido(liga, it, H.pub); const svP = liga.svDe(it); const esP = !c || c.media || !svP ? '' : escenaDe(svP); return c ? <article key={it.id} className="ed-v"><div className="ed-v-img">{esP ? <img className="ed-v-esc" alt="" src={esP} loading="lazy" /> : null}{c.vis}</div><div className="ed-cu"><span className="ed-lab">{c.cat}</span><h4>{c.txt}</h4><div className="ed-firma"><H.Autor liga={liga} it={it} pub={H.pub} /><time>{H.hace(liga, it.t)}</time></div></div></article> : null; })}</div>
         </section>
       ) : null}
       {ligasLobby.length ? (
@@ -479,7 +549,8 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
       ) : null}
       {dias.length > 1 ? (
         <section className="escena ed-ant"><h3 className="ed-st">Las ediciones anteriores</h3>
-          <div className="ed-eds">{dias.slice(0, 5).map((E, i) => {
+          {/* 📱 cuatro en el celular (revisión 22/11/2026): en la grilla de dos, la quinta quedaba sola en su renglón */}
+          <div className="ed-eds">{dias.slice(0, chica() ? 4 : 5).map((E, i) => {
             const T = titularDe(E.xs);
             const ct = T ? H.contenido(liga, T, H.pub) : null;
             const sv = T ? liga.svDe(T) : '';
@@ -487,7 +558,9 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
             const f = fechaEd(E.k, true);
             return (
               <button key={E.k} type="button" className="ed-ed" aria-current={i === di} onClick={() => { setDi(i); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                <span className="ed-ed-img">{es ? <img alt="" src={es} loading="lazy" /> : null}{T ? <Cara liga={liga} k={ksDe(T)[0]} nombre={quien1(T)} cls="ed-rc" /> : null}</span>
+                {/* el titular de un día puede ser el chat de un servidor, que no tiene persona: su logo y no un «?» */}
+                <span className="ed-ed-img">{es ? <img alt="" src={es} loading="lazy" /> : null}{T && quien1(T) ? <Cara liga={liga} k={ksDe(T)[0]} nombre={quien1(T)} cls="ed-rc" />
+                  : sv ? <img className="ed-rc ed-ed-logo" alt="" src={liga.logo(sv)} loading="lazy" /> : null}</span>
                 <span className="ed-ed-cab"><span>{f}</span><span>{E.xs.length}</span></span>
                 <strong>{ct ? (typeof ct.txt === 'string' ? ct.txt : ct.cat) : ''}</strong>
               </button>

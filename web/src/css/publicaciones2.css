@@ -260,6 +260,8 @@
 .cmh-q{display:flex;flex-wrap:wrap;align-items:center;gap:4px 7px;font:700 14px/1.3 Archivo,sans-serif}
 .cmh-q a{font-weight:800}
 .cmh-q a:hover{color:var(--magenta-tx)}
+/* 👆 el nombre de quien comenta, de 44 px para el dedo sin mover la línea (revisión 22/11/2026: «Teito» medía 35×18) */
+@media (max-width:759.98px){.cmh-q a{display:inline-flex;align-items:center;padding-block:13px;margin-block:-13px}}
 .cmh-q time{font:500 12px/1 Archivo,sans-serif;color:var(--gris)}
 .cmh-rg{font:900 11px/1 Archivo,sans-serif;font-style:normal;padding:3px 5px;color:#030304}
 .cmh-et{font:700 11px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.08em;text-transform:uppercase;padding:3px 6px}
@@ -374,6 +376,12 @@
 .pw-circ button.on small{color:var(--tinta)}
 @media (hover: hover) and (pointer: fine){.pw-circ button:hover .pw-aro{box-shadow:0 0 0 2px var(--tinta)}}
 @media (min-width: 900px){.app .pw-circ{padding:16px var(--gut,40px)}}
+/* 🖱️ con el mouse, en una grilla que baja de renglón (revisión 22/11/2026): los 17 sumaban 1.411 px en 1.333, FFS quedaba
+   cortado en el borde y sin barra no se podía mover. Con el dedo sigue siendo una fila que se desliza */
+@media (hover: hover) and (pointer: fine){
+  .app .pw-circ{display:grid;grid-template-columns:repeat(auto-fit,minmax(58px,1fr));gap:12px 8px;overflow:visible}
+  .app .pw-circ button{width:auto;min-width:0}
+}
 
 /* la barra pegada: el buscador y los chips de la campana */
 .pw-barra{position:sticky;top:0;z-index:4;display:grid;gap:10px;padding:10px 16px;background:rgba(3,3,4,.96);border-bottom:1px solid var(--pw-borde)}
@@ -392,6 +400,10 @@
 .pw-chips button.on{background:var(--tinta);border-color:var(--tinta);color:#030304}
 .pw-chips button.on em{color:#E41373}
 @media (min-width: 900px){.app .pw-barra{grid-template-columns:320px minmax(0,1fr);align-items:center;padding:10px var(--gut,40px)}}
+/* (revisión 22/11/2026) en la compu, los filtros en un renglón: «Anuncios» y «Promos» quedaban solos en el segundo. Y en el
+   celular, de 44 px para el dedo (medían 31) */
+@media (min-width: 900px){.app .pw-barra{grid-template-columns:290px minmax(0,1fr)}.app .pw-chips{gap:4px}.app .pw-chips button{padding:8px 6px;gap:5px}}
+@media (max-width: 899.98px){.app .pw-chips button{min-height:44px}}
 
 /* el cuerpo: el muro y el costado */
 .pw-cuerpo{display:grid;gap:20px;padding:18px 16px 34px}
@@ -528,7 +540,7 @@ dialog.pn-pop.pw-hoja{--pc:#29B298;width:min(620px,calc(100vw - 32px));max-heigh
 /* 🗣️ quién firma cada publicación (15/11/2026): su cara o el logo de su servidor, su nombre y la marca «automática» */
 .pw-autor{display:inline-flex;align-items:center;gap:6px;min-width:0;color:var(--tinta);text-decoration:none}
 .pw-autor b{font:800 13.5px/1.2 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pw-autor small{flex:none;padding:2px 5px;border:1px solid var(--pw-borde);color:var(--gris);font:700 10.5px/1 "Barlow Condensed",sans-serif;
+.pw-autor small{flex:none;padding:2px 5px;border:1px solid var(--pw-borde);color:var(--gris);font:700 11px/1 "Barlow Condensed",sans-serif;
   letter-spacing:.08em;text-transform:uppercase}
 .pw-au-c{flex:none;width:24px;height:24px;border-radius:50%;object-fit:cover;font-size:11px}
 a.pw-autor:hover b{text-decoration:underline}

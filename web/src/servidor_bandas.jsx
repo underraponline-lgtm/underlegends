@@ -269,17 +269,16 @@ export function SvProximo({ liga, sv }) {
 // se escribe a mano; no va en el lobby, que está al tope). El día y la hora fuerte ya están en «Cuándo juega» ──
 const antTxt = (h) => (h < 0.25 ? 'al empezar' : h < 1.5 ? Math.max(10, Math.round((h * 60) / 5) * 5) + ' min antes'
   : h < 36 ? Math.round(h) + ' h antes' : Math.round(h / 24) + ' días antes');
-export function SvComo({ sv, D, P }) {
+// (sin «Por evento», revisión 22/11/2026: lo dice «De un vistazo», en la misma banda, y se leía «20,9» dos veces seguidas;
+// sin eventos —DRA— no había promedio que dar)
+export function SvComo({ sv, P }) {
   const c = ((P && P.como) || {})[sv];
   if (!c) return null;
-  const ev = D ? D.evs : [];
-  const prom = ev.length ? ev.reduce((t, e) => t + e.gente, 0) / ev.length : 0;
   const mod = c.mod || [];
   const ins = c.ins || {};
   const xs = [
     mod.length ? ['Qué se juega', (mod[1] ? 'también ' + mod[1][0] + ' · ' : '') + mod[0][1] + ' de sus ' + c.n + ' anuncios', mod[0][0]] : null,
     c.cup ? ['Cupos', 'lo que suele dar cada evento', String(c.cup)] : null,
-    prom >= 2 ? ['Por evento', 'raperos de promedio en la temporada', coma(prom)] : null,
     c.ant != null ? ['Avisa', c.ant < 1.5 ? 'con la campana te enteras al minuto' : 'anuncia con tiempo', antTxt(c.ant)] : null,
     ins.canal ? ['Para anotarte', '#' + String(ins.canal).replace(/^#/, ''), 'En su canal'] : null,
   ].filter(Boolean);

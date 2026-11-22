@@ -198,6 +198,14 @@
   .app .k2-pag .ent-gh.dos{grid-template-columns:minmax(0,1fr)}
   .app .k2-pag .ent-gh.dos>div+div{display:none}
   .app .k2-pag .ent-gente.corta li.extra{display:block}
+  /* (revisión 22/11/2026) la tabla de la crew va a todo el ancho de su panel: el tope de la mitad (entidad2.css, para
+     Costa Rica) también la agarraba, porque en la compu la banda le pasa sólo las filas que la equilibran, y la dejaba en
+     262 px de 593: «RAPEROVR» encimados y cada fila de 126 px */
+  .app .k2-pag .ent-gente:not(.dos),.app .k2-pag .ent-gh:not(.dos){max-width:none}
+  /* «Sus récords» a lo ancho (revisión 22/11/2026, `rec` de useBalanceCrew): en dos columnas, debajo de la banda */
+  .app .k2-rec-ancho{margin-top:14px}
+  .app .k2-rec-ancho .pf9-rec ul{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+  .app .k2-rec-ancho .pf9-rec li:nth-child(2){border-top:0;padding-top:0}
   .app .k2-pag .pf9-g:has(> .pf9-pila:empty){grid-template-columns:minmax(0,1fr)}
   /* la semana estirada al alto de la columna de al lado: las dos terminan juntas */
   .app .k2-b1 > .k2-sem{align-content:start}

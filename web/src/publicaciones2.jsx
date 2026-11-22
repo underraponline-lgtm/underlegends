@@ -1086,7 +1086,7 @@ export function Publicaciones({ liga, enc, foco = '' }) {
       <div ref={marca} aria-hidden="true" />
       <div data-tuto="pb-fil" className="pw-barra">
         <label className="pw-busca"><Ico n="buscar" t={16} />
-          <input id="pw-busca" type="search" value={q} onChange={(e) => { setQ(e.target.value); setDias(4); }} placeholder="Busca un rapero, un servidor o un evento"
+          <input id="pw-busca" type="search" value={q} onChange={(e) => { setQ(e.target.value); setDias(4); }} placeholder="Busca un rapero, servidor o evento"
             aria-label="Buscar en las publicaciones" />
           {q ? <button type="button" className="pw-busca-x" aria-label="Borrar la búsqueda" onClick={() => setQ('')}>×</button> : null}</label>
         <div className="pw-chips" role="group" aria-label="Qué ver">

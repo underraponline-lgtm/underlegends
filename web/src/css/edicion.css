@@ -107,6 +107,10 @@
 .ed-letras::after { display: none; }
 .ed-letras > span { display: grid; justify-items: center; gap: 6px; font: 700 12px/1 'Barlow Condensed', Archivo, sans-serif; text-transform: uppercase; max-width: 68px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ed-lc { width: 56px; height: 56px; font-size: 20px; object-fit: cover; }
+/* con tres o menos, el doble de grandes (revisión 22/11/2026): tres caras de 56 px en un bloque de 387×242 dejaban más de la
+   mitad en negro */
+.ed-letras:not(:has(> span:nth-child(4))) .ed-lc { width: 104px; height: 104px; font-size: 34px; }
+.ed-letras:not(:has(> span:nth-child(4))) > span { max-width: 120px; font-size: 13px; }
 .ed-letras i { font: 900 17px/1 Archivo, sans-serif; font-style: normal; color: #030304; padding: 3px 7px; margin-top: -16px; border-radius: 3px; box-shadow: 0 0 0 2px #141416; }
 
 /* ── las notas ── */
@@ -125,12 +129,20 @@
 .ed-reto { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px 10px; align-items: center; margin-top: 12px; padding: 10px 12px; background: var(--escenario); color: var(--esc-tinta); }
 .ed-reto b { display: block; font: 800 13.5px/1.2 Archivo, sans-serif; } .ed-reto small { display: block; font-size: 12px; color: var(--esc-gris); }
 .ed-reto-b { grid-column: 1 / -1; justify-content: center; background: var(--esc-tinta); color: var(--escenario); border-color: var(--esc-tinta); }
+/* «¿Le quieres ganar a…?» en cada nota, plano (revisión 22/11/2026): era una caja negra adentro de la tarjeta, con un botón
+   blanco más, en cada nota de campeón. El del titular (`.ed-prin`) queda como está. El llamado, como link debajo del
+   texto y no como otro botón grande: en un renglón con el botón, el texto quedaba en 5 renglones de 100 px de ancho */
+.ed-grid .ed-reto { gap: 4px 10px; background: none; color: var(--tinta); padding: 10px 0 0; border-top: 1px solid var(--suave); }
+.ed-grid .ed-reto small { color: var(--gris); }
+.ed-grid .ed-reto .ed-reto-b { grid-column: 2; justify-self: start; min-height: 0; padding: 0; border: 0; background: none; color: var(--tinta);
+  font: 800 12.5px/1.2 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .06em; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 759.98px) { .ed-grid .ed-reto .ed-reto-b { padding-block: 13px; margin-block: -11px -13px; } }
 .ed-lista { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
 .ed-lista li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 6px 8px; background: var(--fondo); font-size: 13px; color: var(--tinta); }
 .ed-lista .ed-lc { width: 28px; height: 28px; font-size: 11px; }
 .ed-nota .cmh, .ed-prin .cmh { margin-top: 10px; }
 .cmh-rap { display: flex; gap: 6px; margin-top: 8px; overflow-x: auto; scrollbar-width: none; }
-.cmh-rap button { flex: none; border: 0; cursor: pointer; padding: 8px 10px; min-height: 36px; border-radius: 18px; background: var(--fondo); color: var(--tinta); font: 600 12px/1 Archivo, sans-serif; box-shadow: inset 0 0 0 1.5px var(--suave); }
+.cmh-rap button { flex: none; border: 0; cursor: pointer; padding: 8px 10px; min-height: 36px; border-radius: 3px; background: var(--fondo); color: var(--tinta); font: 600 12px/1 Archivo, sans-serif; box-shadow: inset 0 0 0 1.5px var(--suave); }
 .ed-prin .cmh-rap button { background: var(--caja); }
 .cmh-rap button:disabled { opacity: .5; }
 /* con el mouse, las respuestas rápidas bajan de renglón (revisión 21/11/2026): de costado y sin barra, «🎤 Quiero revancha»
@@ -168,6 +180,9 @@
 .ed-v-img .pb-vid-img, .ed-v-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* una promo sin video ni imagen trae la cara de quien la comparte: al medio y grande, no de 64 px en la esquina */
 .ed-v-img > .cara, .ed-v-img > .pb-cara { position: absolute; inset: 0; margin: auto; width: 96px; height: 96px; font-size: 34px; }
+/* con `.app` (revisión 22/11/2026): `.app .pb-cara{64px}` (publicaciones2.css) le ganaba y la cara seguía en 64 */
+.app .ed-v-img > .cara, .app .ed-v-img > .pb-cara { width: 96px; height: 96px; font-size: 34px; }
+.ed-v-img > .ed-v-esc { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .5; }
 .ed-v-img > .cara img, .ed-v-img > .pb-cara img { border-radius: 50%; }
 .ed-v .ed-cu h4 { font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .ed-chat { padding: 14px; display: grid; gap: 8px; align-content: start; }
@@ -193,6 +208,8 @@
 .ed-ed-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .75; }
 .ed-ed-img .ed-rc { position: absolute; left: 10px; bottom: 10px; width: 40px; height: 40px; box-shadow: 0 0 0 3px var(--ed-oro); }
 .ed-ed-img .ed-rc img { position: static; opacity: 1; }
+/* el logo del servidor cuando el titular del día no tiene persona: `.ed-ed-img img` lo estiraba a toda la caja */
+.ed-ed-img img.ed-ed-logo { inset: auto auto 10px 10px; width: 40px; height: 40px; opacity: 1; }
 .ed-ed-cab { display: flex; justify-content: space-between; gap: 8px; padding: 10px 12px 0; font: 700 11.5px/1 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
 .ed-ed strong { padding: 6px 12px 12px; font: 800 18px/.95 'Barlow Condensed', Archivo, sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
 .ed-recibe { padding: 0 var(--ed-g) 28px; }
@@ -212,7 +229,9 @@
   .ed-ti > span::before { content: '▲ '; }
   .ed-portada { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 28px; padding: 24px var(--ed-g); }
   .ed-tit { font-size: clamp(36px, 4.6vw, 72px); }
-  .ed-grid { columns: 3 300px; }
+  /* 🧱 una grilla de filas de 2 px y no `columns` (revisión 22/11/2026, `useMamposteria` en edicion.jsx): cada nota va a la
+     columna más corta y las tres terminan juntas. Como `columns: 3 300px`: hasta tres, de 300 px como mínimo */
+  .ed-grid { columns: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(max(300px, calc((100% - 40px) / 3)), 1fr)); grid-auto-rows: 2px; column-gap: 20px; align-items: start; }
   .ed-lgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; overflow: visible; margin: 0; padding: 0; }
   .ed-vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; overflow: visible; margin: 0; padding: 0; }
   .ed-chgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; overflow: visible; margin: 0; padding: 0; }
@@ -228,6 +247,10 @@
 @media (min-width: 760px) { .ed-mast-top { padding-right: 190px; } }
 /* 👆 «Avísame», de 44 px para el dedo sin mover nada */
 @media (max-width: 759.98px) { .ed-txt { display: inline-flex; align-items: center; padding-block: 15px; margin-block: -15px; } }
+/* 👆 «+ Seguir» de 44 px para el dedo sin mover la firma (revisión 22/11/2026: medía 48×24) */
+@media (max-width: 759.98px) { .ed-seguir { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 8px; margin-block: -10px; } }
+/* 📱 si quedan cinco o tres ediciones (en el celular van cuatro), la última no queda sola al lado de un hueco */
+@media (max-width: 899px) { .ed-eds > :last-child:nth-child(odd) { grid-column: 1 / -1; } }
 /* 📱 el celular, más corto: cada nota con un comentario (Nota pide `ver` 1) y las respuestas rápidas sólo en el titular */
 @media (max-width: 899px) { .ed-nota .cmh-rap { display: none; } }
 @media (prefers-reduced-motion: reduce) { .ed-pista { animation: none !important; } .ed-ticker { overflow-x: auto; } .ed-ti + .ed-ti { display: none; } }
