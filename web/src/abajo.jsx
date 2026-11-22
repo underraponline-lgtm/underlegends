@@ -3,6 +3,7 @@
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { HistoriaCtx } from './historia_ctx.js';
 import { ksDe, limpio, nuevaQue, num, quienMira, siglaDe, utc } from './liga.js';
 import { Alguien, Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, https, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { RED_NOMBRE, RED_SVG } from './redes_ico.jsx';
@@ -1233,6 +1234,8 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // escribiendo una respuesta o eligiendo una reacción: el reloj espera (como mantener apretado)
   const foco = useRef(false);
   const onFoco = useMemo(() => (x) => { foco.current = !!x; }, []);
+  // 📖 lo que lee el cuerpo de la historia que se ve (`HistoriaCtx`): que es la activa y cómo hacer esperar al reloj
+  const ctxH = useMemo(() => ({ activa: true, onFoco }), [onFoco]);
   const cerrarB = useRef(null);
   // ⚡ la barra de la historia que corre se mueve DIRECTO, sin pasar por React: antes el reloj hacía `setAvance` en
   // cada cuadro y el visor entero se redibujaba 60 veces por segundo (revisión del 18/10/2026)
@@ -1560,7 +1563,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
           onPointerDown={(e) => e.stopPropagation()} onPointerUp={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}
           aria-label={'Suena ' + pista.t + ', de ' + pista.b + '. Abrir en YouTube'} title="Abrir el beat en YouTube">
           <i className="hv-eq" aria-hidden="true"><b /><b /><b /></i><span><b>{pista.t}</b> · {pista.b}</span></a> : null}
-        <div className="hv-cuerpo" ref={cuerpoR} style={flot ? { paddingBottom: 16 + filasF * 52 - 6 } : undefined}><div className="st" key={s.id}><span className={'st-tag' + (s.tono ? ' ' + s.tono : '')}>{s.tag}</span>{s.cuerpo}</div></div>
+        <div className="hv-cuerpo" ref={cuerpoR} style={flot ? { paddingBottom: 16 + filasF * 52 - 6 } : undefined}><div className="st" key={s.id}><span className={'st-tag' + (s.tono ? ' ' + s.tono : '')}>{s.tag}</span><HistoriaCtx.Provider value={ctxH}>{s.cuerpo}</HistoriaCtx.Provider></div></div>
         {proxima ? <div className="hv-sig" aria-hidden="true" ref={(el) => { if (el) el.setAttribute('inert', ''); }}>
           <div className="st"><span className={'st-tag' + (proxima.tono ? ' ' + proxima.tono : '')}>{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}
         {img === 'armando' || img === 'bajada' || img === 'error' ? <p className="hv-est" role="status">{img === 'armando' ? 'Armando la imagen…'

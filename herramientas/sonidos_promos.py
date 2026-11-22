@@ -65,9 +65,14 @@ LISTA_R2 = 'sonidos/lista.json'
 
 
 def env(k):
-    """Del entorno o del .env del repo (una PC con el repo entero tiene su .env)."""
+    """Del entorno, del .env que diga `LG_ENV` (la tarea programada: ver sonidos_promos_tarea.py) o del .env del repo."""
     if os.environ.get(k):
         return os.environ[k]
+    p = os.environ.get('LG_ENV')
+    if p and os.path.exists(p):
+        for linea in io.open(p, encoding='utf-8'):
+            if linea.strip().startswith(k + '='):
+                return linea.split('=', 1)[1].strip().strip('"\'')
     import fotos as F
     return F.env(k)
 

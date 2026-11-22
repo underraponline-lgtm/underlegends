@@ -1666,6 +1666,22 @@ a.pub-promo-v .pub-promo-img{aspect-ratio:1}
 .promo-pago b{color:#E5B800}
 @media (min-width: 900px){.promo-pago{bottom:28px}}
 .st-promo{display:block;width:100%;max-width:300px;aspect-ratio:16/9;object-fit:cover;border:2px solid #F6F6F6;margin:0 auto 12px}
+/* 🎬 (22/11/2026) el video de una promo sin recorte, adentro de su historia: la miniatura con su ▶ y, al tocarlo, el
+   reproductor del mismo tamaño (arriba.jsx, `PromoVideo`) */
+.st-pv{position:relative;width:100%;max-width:300px;margin:0 auto 12px}
+.st-pv .st-promo{margin:0}
+.st-pv iframe{display:block;width:100%;aspect-ratio:16/9;border:2px solid #F6F6F6;background:#000}
+/* el cuerpo de la historia va ARRIBA de las zonas de «anterior/siguiente» (z-index 1) pero sin agarrar toques: los que caen
+   en el texto siguen pasando a las zonas, como siempre. Sólo el video los toma. Es un hijo de flex: el z-index vale sin
+   posicionarlo (y así lo absoluto de adentro sigue midiéndose contra la historia) */
+.hv-cuerpo{z-index:2;pointer-events:none}
+.hv-cuerpo .st-pv{pointer-events:auto}
+.st-pv-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:56px;height:56px;
+  border:2px solid #F6F6F6;border-radius:4px;background:rgba(3,3,4,.78);color:#F6F6F6;cursor:pointer;transition:background-color .15s ease}
+.st-pv-play:hover{background:#E41373}
+.st-pv-play:active{transform:translate(-50%,-50%) scale(.96)}
+.st-pv-play:focus-visible{outline:2px solid #29B298;outline-offset:3px}
+@media (prefers-reduced-motion: reduce){.st-pv-play{transition:none}.st-pv-play:active{transform:translate(-50%,-50%)}}
 @media (max-width: 520px){.app .pub.promo{grid-template-columns:110px minmax(0,1fr)}}
 /* 🏆 LOS MES AWARDS (Dlx, 16/10/2026): una tarjeta por categoría, cada nominado con su barra de votos */
 .sf-mes{--ma-oro:#E5B800}

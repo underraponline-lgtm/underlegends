@@ -1,6 +1,6 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, capital, diaISO, hora, horaET, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Alguien, Algunos, Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, diaET, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
@@ -19,7 +19,8 @@ import { LuNube, LuSocial } from './medio.jsx';
 import { ComentariosFlotantes } from './flotantes.jsx';
 import { escenaDe } from './fondos.js';
 import { PreguntaCab } from './comofunciona.jsx';
-import { precargar } from './beats.js';
+import { alExtras, cargarExtras, hayPista, precargar } from './beats.js';
+import { HistoriaCtx } from './historia_ctx.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Era el de la tira de abajo del celular hasta la barra E (19/11/2026: cinco fijos y el resto en el ☰ en
@@ -907,6 +908,46 @@ function Tit({ c, children }) {
 // reaccionar y responder desde el visor (`Visor` de abajo.jsx)
 // 🔊 y `sonido` (22/11/2026): el id del video de una promo; si tiene su recorte en R2, la historia suena con su canción
 export function Slide(tag, cuerpo, cuando, cta, ir, id, t, ex) { return Object.assign({ tag, cuerpo, cuando, cta, ir, id, t: t || '' }, ex || {}); }
+/**
+ * 🎬 EL VIDEO DE UNA PROMO, ADENTRO DE SU HISTORIA (22/11/2026, Dlx: «las 2 juntas»). Una promo que todavía no tiene su
+ * recorte —`herramientas/sonidos_promos.py` lo baja desde una PC cada 6 horas— se puede mirar y escuchar igual: ▶ abre el
+ * reproductor ahí mismo, y la historia espera mientras está abierto (`onFoco`). Con recorte, la miniatura sola: suena su
+ * canción. ⚠️ El reproductor se carga RECIÉN CON EL TOQUE: es la regla de video.jsx («nada de YouTube antes de tocar
+ * play», por la privacidad), así que no arranca solo al abrir la historia. En la historia de al lado, que se dibuja
+ * escondida (`activa` en falso), nunca
+ */
+function PromoVideo({ vid, tit }) {
+  const ctx = useContext(HistoriaCtx);
+  const [ver, setVer] = useState(false);
+  // la lista de R2 puede llegar después: el cuerpo de la historia es el mismo objeto y no se vuelve a dibujar solo
+  const [, setX] = useState(0);
+  useEffect(() => { cargarExtras(); return alExtras(() => setX((n) => n + 1)); }, []);
+  const onFoco = ctx.onFoco;
+  useEffect(() => {
+    if (!ver || !onFoco) return undefined;
+    onFoco(true);
+    return () => onFoco(false);
+  }, [ver, onFoco]);
+  if (!ctx.activa || hayPista(vid)) return <Miniatura vid={vid} cls="st-promo" />;
+  const parar = (e) => e.stopPropagation();
+  if (ver) {
+    return (
+      <div className="st-pv" onPointerDown={parar} onPointerUp={parar} onClick={parar}>
+        <iframe title={tit || 'Video de YouTube'} src={'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0&playsinline=1'}
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
+      </div>
+    );
+  }
+  return (
+    <div className="st-pv">
+      <Miniatura vid={vid} cls="st-promo" />
+      <button type="button" className="st-pv-play" aria-label={'Mirar y escuchar acá: ' + (tit || 'el video')} title="Mirar y escuchar acá"
+        onPointerDown={parar} onPointerUp={parar} onClick={(e) => { e.stopPropagation(); setVer(true); }}>
+        <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+      </button>
+    </div>
+  );
+}
 // los logros que se felicitan (los de `LOGROS` de publicaciones.jsx que tienen historia)
 const FELICITABLE = { campeon: 1, rango: 1, caza: 1 };
 // 🎧 QUÉ HISTORIAS LLEVAN BEAT (21/11/2026, Dlx: «que algunas historias tengan como instrumentales, beats, sonidos»): los
@@ -1372,7 +1413,7 @@ export function gruposHistorias(liga) {
       const qs = (it.quien || []).map((x, i) => liga.aka(x, ksDe(it)[i])).filter(Boolean);
       const q = qs[0] || '';
       // 🔎 la miniatura grande (1280×720, `Miniatura`): la historia va a pantalla completa y la de 480×360 se veía borrosa
-      const vis = it.vid ? <Miniatura vid={it.vid} cls="st-promo" />
+      const vis = it.vid ? <PromoVideo vid={it.vid} tit={limpio(it.tit || '')} />
         : it.img ? <img className="st-promo" alt="" src={it.img} /> : <Cara liga={liga} k={ksDe(it)[0] || ''} nombre={q} cls="st-cara" grande />;
       // ✋ las que agrega Dlx a mano (`o: 'mano'`) se presentan como las de la Liga
       const deLiga = it.o === 'liga' || it.o === 'mano';
@@ -1504,7 +1545,7 @@ export function historiasDePersona(liga, k, items) {
   const slides = slidesDe(liga, otras).slice(0, 12);
   xs.filter((it) => it.tipo === 'promo' && it.vid).slice(0, 4).forEach((it) => {
     const tit = it.tit ? limpio(it.tit).replace(/([/|·_])/g, '$1​') : '';
-    slides.push(Slide('PROMO · ' + siglaDe(it.sv), <><Miniatura vid={it.vid} cls="st-promo" /><h3 className={'st-h' + (tit.length > 48 ? ' largo' : '')}>{tit}</h3></>,
+    slides.push(Slide('PROMO · ' + siglaDe(it.sv), <><PromoVideo vid={it.vid} tit={limpio(it.tit || '')} /><h3 className={'st-h' + (tit.length > 48 ? ' largo' : '')}>{tit}</h3></>,
       liga.cuando(it.t), 'Mirar el video', { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url }, promo: it.id },
       'promo:' + (it.pid || it.url), String(it.t || ''), { esc: it.sv || 'DRA', sonido: it.vid || '' }));
   });
