@@ -514,7 +514,11 @@ export function PaginaPais({ liga, cc: cc0 }) {
               mismo tamaño. Con la de Temporada de respaldo, Lalox salía con otra forma, más alta y con números de otra cosa */}
           {/* con 3 cartas o menos, lo de abajo sube a su derecha (`pocas`, entidad2.css): si no, 480 px vacíos al lado */}
           <div className={'ent-mandan ent-mpais' + (cartas(gente).length <= 3 ? ' pocas' : '')}>
-            <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="pais" />)}</div>
+            {/* 🇦🇷 por el número que muestra cada carta, el OVR Nacional (`on`), de mayor a menor (22/11/2026, Dlx: «5: B»):
+                en el orden de la Temporada, Liberia, con 97 y «País #1», salía cuarta. Son las mismas diez; quien no tiene
+                número va al final, en el orden de la tabla */}
+            <div className="rail mcs2">{cartas(gente).slice().sort((a, b) => (b.on || 0) - (a.on || 0) || porLugar(a, b))
+              .map((f) => <McPersona key={f.k} liga={liga} f={f} cual="pais" />)}</div>
             {pelP || movs.length ? (
               <div className={'rka ent-pelea' + (pelP && movs.length ? '' : ' solo')}>
                 {pelP ? <Pelea liga={liga} p={pelP} va={'#' + numP(0, pelP.a) + ' · ' + num(pelP.a.pts) + ' pts'} vb={'#' + numP(0, pelP.b) + ' · ' + num(pelP.b.pts) + ' pts'}

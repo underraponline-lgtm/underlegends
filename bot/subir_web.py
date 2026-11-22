@@ -226,6 +226,17 @@ def armar():
         k = x.get('raw') or x.get('full')
         if k:
             _comp[k] = x
+    # 🇦🇷 EL OVR NACIONAL, el número grande de la carta de País (22/11/2026, Dlx: «5: B», con las capturas de «Las siete
+    # decisiones»): «Los que mandan» de cada país ordena sus cartas por el número que muestran y no por la Temporada. Sale de
+    # `comun.nacional.tabla()`, lo mismo que dibuja la carta (04_Pais/generar.py) y el /versus. Viaja como `on` sólo en quien
+    # lo tiene: el lobby tiene tope de peso
+    try:
+        from comun.nacional import tabla as _tabla_nac
+        _onac = _tabla_nac([x for x in (_json('datos', 'competitivo_pool.json') or []) if x.get('raw')],
+                           _json('datos', 'mundial.json') or {})
+    except Exception as _e:                              # noqa: BLE001
+        print('   ⚠️ el OVR Nacional: %s' % str(_e)[:80])
+        _onac = {}
     _puede = _del_porton()
     # ⚠️ ORDENADO POR PUESTO Y NO POR PUNTOS. El `pos` ya lo calculó el
     # builder con sus desempates; reordenar acá sería una segunda regla
@@ -302,6 +313,8 @@ def armar():
         'sc': (round(float(_comp.get(p.get('raw'), {}).get('score')
                            or p.get('score') or 0), 1) if _letra(p) else 0),
         'ovr': p.get('ovr') or 0,
+        # 🇦🇷 el OVR Nacional (`_onac`, arriba), para ordenar las cartas de País de cada país
+        **({'on': int(_onac[p['raw']])} if p.get('raw') and _onac.get(p['raw']) else {}),
         'wr': p.get('wr') or '',
         'pod': p.get('pod') or 0,
         # 🔴 LAS TRES MEDALLAS, NO SOLO EL ORO. El medallero de la web

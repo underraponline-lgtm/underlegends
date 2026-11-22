@@ -29,8 +29,41 @@ import { nombreSv } from './temas.js';
 export function SeBusca({ liga, aca }) {
   const mw = liga.d.mw || {};
   const tira = useRef(null);
+  const caz = useRef(null);
   const [verAnt, setVerAnt] = useState(false);
-  if (!(mw.b || []).length) return null;
+  // 🧱 CAZADORES OCUPA EL RESTO DE LA ÚLTIMA FILA de la grilla de la compu (22/11/2026, Dlx: «4: B», con las capturas de
+  // «Las siete decisiones»): con 15 buscados en 6 columnas la fila quedaba con 4 y un hueco de 2. Se mide dónde cae y se
+  // estira hasta el final de su fila; la cuenta se rehace al cambiar el ancho (la grilla es `auto-fill`) y al abrir la
+  // semana pasada. Sin CSS solo: `grid-column-end:-1` con el principio automático ocupa una sola columna. En el celular
+  // (la tira de costado, `grid-auto-flow:column`) no se toca
+  const nB = (mw.b || []).length;
+  useLayoutEffect(() => {
+    const g = tira.current;
+    const c = caz.current;
+    if (!aca || !g || !c) return undefined;
+    const medir = () => {
+      c.style.gridColumn = '';
+      const cs = getComputedStyle(g);
+      const cols = cs.gridTemplateColumns.split(' ').filter(Boolean);
+      if (cs.display !== 'grid' || !/row/.test(cs.gridAutoFlow) || cols.length < 2) return;
+      const gap = parseFloat(cs.columnGap) || 0;
+      // ⚠️ la página lleva `zoom` desde 1440 px (`.app`): el rectángulo viene escalado y las columnas no. Medido a 1920,
+      // sin esto quedaba a 242 px del borde
+      const rg = g.getBoundingClientRect();
+      const escala = g.offsetWidth ? rg.width / g.offsetWidth : 1;
+      const x = (c.getBoundingClientRect().left - rg.left) / escala - (parseFloat(cs.paddingLeft) || 0) - g.clientLeft;
+      let ini = 0;
+      let borde = 0;
+      while (ini < cols.length - 1 && x > borde + parseFloat(cols[ini]) / 2) { borde += parseFloat(cols[ini]) + gap; ini += 1; }
+      const resto = cols.length - ini;
+      if (resto > 1) c.style.gridColumn = 'span ' + resto;
+    };
+    medir();
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => medir()) : null;
+    if (ro) ro.observe(g);
+    return () => { if (ro) ro.disconnect(); c.style.gridColumn = ''; };
+  }, [aca, verAnt, nB]);
+  if (!nB) return null;
   const diario = mw.tipo === 'dia';
   const correr = (d) => { if (tira.current) tira.current.scrollBy({ left: d * tira.current.clientWidth * 0.8, behavior: 'smooth' }); };
   return (
@@ -50,7 +83,7 @@ export function SeBusca({ liga, aca }) {
           {mw.ant.map((b) => <Poster key={'a' + (b.k || 'n:' + b.n)} liga={liga} b={b} />)}
         </div> : null}
         {(mw.caz || []).length ? (
-          <article className="poster cazadores"><span className="p-t">CAZADORES</span>
+          <article className="poster cazadores" ref={caz}><span className="p-t">CAZADORES</span>
             <ol>{mw.caz.slice(0, 5).map((c) => <li key={c.k}><Cara liga={liga} k={c.k} nombre={c.n} cls="mono-c" /><b><Alguien liga={liga} nombre={c.n} k={c.k} cara={false} /></b><em>{num(c.pts)}</em></li>)}</ol>
             <small>lo cobrado en la temporada</small></article>
         ) : null}

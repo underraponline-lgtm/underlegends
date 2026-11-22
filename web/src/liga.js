@@ -39,8 +39,14 @@ const FUERA =/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{31
 // «Pornito», y su nombre es su nombre (por eso «sexo» y «xxx» ni están en la lista)
 const EXPLICITO = /(?<![\p{L}\p{N}])(?:porn\p{L}*|foll(?:a|ar|o|amos|an|ando|ad|é|ó|aron)|hentai|onlyfans|verga)(?![\p{L}\p{N}])/giu;
 export const esExplicito = (s) => { EXPLICITO.lastIndex = 0; return EXPLICITO.test(String(s || '')); };
+// 🔤 LAS LETRAS «MATEMÁTICAS» DE UNICODE, EN LETRAS COMUNES (22/11/2026, Dlx: «2: B», con las capturas de «Las siete
+// decisiones»). Quien escribe su nombre como 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 salía en otra letra que el resto de la página, y el
+// círculo de su inicial mostraba medio carácter (la primera «letra» son dos unidades de UTF-16). Sólo ese bloque
+// (U+1D400–U+1D7FF: negritas, itálicas, góticas, de doble trazo…): los adornos como ♣ o la Ÿ se quedan como se escribieron
+const MATEMATICAS = /[\u{1D400}-\u{1D7FF}]/gu;
 export function limpio(s) {
-  return String(s || '').replace(FUERA, '').replace(/\s+\d{17,20}(?=\s|$)/g, '').replace(/\s+/g, ' ').replace(/^[ ·•-]+|[ ·•-]+$/g, '');
+  return String(s || '').replace(MATEMATICAS, (c) => c.normalize('NFKC')).replace(FUERA, '')
+    .replace(/\s+\d{17,20}(?=\s|$)/g, '').replace(/\s+/g, ' ').replace(/^[ ·•-]+|[ ·•-]+$/g, '');
 }
 // 🔤 EL NOMBRE CON LA INICIAL EN MAYÚSCULA (Dlx, 03/10/2026, con la llave de LA REDENCION: «que todo esté en
 // minúsculas exceptuando por la inicial»). La llave trae cada nombre como lo escribió el organizador —«MAYEUTYK»,
