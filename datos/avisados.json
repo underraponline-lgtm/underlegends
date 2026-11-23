@@ -24253,7 +24253,7 @@
    "Vilca": 1
   },
   "fecha": "21/10",
-  "firma": "99dc2b4afa8470d1",
+  "firma": "c05cc9d1f5448d56",
   "msg": "1564147707952758815",
   "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
   "num": 523,
@@ -24521,7 +24521,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "0b3c894721603eef",
+  "firma": "6f9cf4591b8125bd",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -37532,7 +37532,7 @@
    "oriuz": 7
   },
   "fecha": "23/10",
-  "firma": "c2d0e6f9bce535d9",
+  "firma": "20b5d8b9536c1e61",
   "msg": "1569508003776823307",
   "nombre": "LLAVES PARA LA DISCORD STYLE 17",
   "num": 580,
@@ -46646,7 +46646,7 @@
    "yinn": 35
   },
   "fecha": "13/11",
-  "firma": "2e3d55cade826a56",
+  "firma": "b85fba232fe6119c",
   "msg": "1570870557455417427",
   "nombre": "PANDILLAS DE RAP VOL.1",
   "num": 629,
@@ -47444,7 +47444,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "0d5dde33b96558ee",
+  "firma": "889d3545cd12de3f",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -57945,6 +57945,155 @@
    ],
    [
     "Elbesaabuelas",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "685": {
+  "antes": {
+   "Dios": [
+    67,
+    79,
+    false
+   ],
+   "Geoka": [
+    31,
+    33,
+    false
+   ],
+   "Mito": [
+    16,
+    16,
+    false
+   ],
+   "Molt": [
+    170,
+    299,
+    false
+   ],
+   "Mr.Kude": [
+    352,
+    240,
+    true
+   ],
+   "Rbk": [
+    137,
+    209,
+    false
+   ],
+   "Sin Limites": [
+    32,
+    34,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Mr.Kude",
+    "Mito",
+    "Mr.Kude"
+   ],
+   [
+    "Dios",
+    "Molt",
+    "Dios"
+   ],
+   [
+    "Geoka",
+    "Sin Limites",
+    "Geoka"
+   ],
+   [
+    "Raezer",
+    "Rbk",
+    "Raezer"
+   ],
+   [
+    "Raezer",
+    "Daulinov🇨🇴",
+    "Raezer"
+   ],
+   [
+    "Mr.Kude",
+    "Dios",
+    "Mr.Kude"
+   ],
+   [
+    "Raezer",
+    "Geoka",
+    "Raezer"
+   ],
+   [
+    "Raezer",
+    "Mr.Kude",
+    "Raezer"
+   ]
+  ],
+  "ev_antes": {
+   "Dios": 17,
+   "Geoka": 36,
+   "Mito": 51,
+   "Molt": 6,
+   "Mr.Kude": 6,
+   "Rbk": 6,
+   "Sin Limites": 52
+  },
+  "fecha": "23/11",
+  "noche": true,
+  "nombre": "- DEM BATTLES -",
+  "num": 685,
+  "participantes": 9,
+  "sello": {
+   "Raezer": ""
+  },
+  "sv": "FRZ",
+  "t": "2026-11-23T23:37:46Z",
+  "tabla": [
+   [
+    "Raezer",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mr.Kude",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dios",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Geoka",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Molt",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rbk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Daulinov🇨🇴",
     "Cuartos",
     2000
    ]

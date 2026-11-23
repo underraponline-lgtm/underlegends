@@ -1614,6 +1614,12 @@
   [667, "21/11", "FFA", "semifinales", "BNA", "EIDP", "BNA", "EIDP"],
   [667, "21/11", "FFA", "final", "Abyssus", "BNA", "Abyssus", "BNA"],
   [681, "23/11", "FFA", "cuartos", "Soulb", "Tuca", "Soulb", "Tuca"],
-  [681, "23/11", "FFA", "cuartos", "Over", "LRS", "Over", "LRS"]
+  [681, "23/11", "FFA", "cuartos", "Over", "LRS", "Over", "LRS"],
+  [685, "23/11", "FRZ", "cuartos", "Mr.Kude", "Mito", "Mr.Kude", "Mito"],
+  [685, "23/11", "FRZ", "cuartos", "Dios", "Molt", "Dios", "Molt"],
+  [685, "23/11", "FRZ", "cuartos", "Geoka", "Sin Limites", "Geoka", "Sin Limites"],
+  [685, "23/11", "FRZ", "semifinales", "Mr.Kude", "Dios", "Mr.Kude", "Dios"],
+  [685, "23/11", "FRZ", "semifinales", "Raezer", "Geoka", "Raezer", "Geoka"],
+  [685, "23/11", "FRZ", "final", "Raezer", "Mr.Kude", "Raezer", "Mr.Kude"]
  ]
 }

@@ -3698,6 +3698,11 @@
     "t1",
     1793029252929
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795477668169
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -5944,6 +5949,16 @@
     "t1",
     1793770288705
    ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1795477668169
+   ],
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1795477668169
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x4",
     "t1",
@@ -5983,6 +5998,11 @@
     "🗺️ CONQUISTADOR",
     "t1",
     1793601241992
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795477668169
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -11043,6 +11063,11 @@
     "t1",
     1794470716773
    ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795477668169
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -14426,6 +14451,37 @@
     "🥉 AL PODIO",
     "t1",
     1794882903355
+   ]
+  }
+ },
+ "raezer": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1795477668169
+   ]
+  },
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795477668169
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795477668169
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795477668169
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795477668169
    ]
   }
  },

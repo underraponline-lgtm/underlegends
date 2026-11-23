@@ -124,8 +124,8 @@
 "temporada"
 ]
 },
-"liberia": {
-"rg": "S",
+"mito": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -133,8 +133,8 @@
 "temporada"
 ]
 },
-"mito": {
-"rg": "C",
+"liberia": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -275,7 +275,7 @@
 "c": []
 },
 "geoka": {
-"rg": "D",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -595,6 +595,14 @@
 "temporada"
 ]
 },
+"dios": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "leonart": {
 "rg": "D",
 "c": [
@@ -626,14 +634,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"dios": {
-"rg": "",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1247,6 +1247,10 @@
 ]
 },
 "emilioalva": {
+"rg": "",
+"c": []
+},
+"mrkude": {
 "rg": "",
 "c": []
 },
@@ -2933,14 +2937,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-14T23:58:43Z",
-"quien": [
-"Motera"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-15T01:00:24Z",
@@ -6350,6 +6346,15 @@
 "t": "2026-11-23T22:13:46Z",
 "sv": "UFLUC",
 "tier": 3
+},
+{
+"tipo": "rango",
+"t": "2026-11-23T23:47:04Z",
+"quien": [
+"Geoka"
+],
+"rg": "C",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -8464,8 +8469,8 @@
 "tipo": "resnoche",
 "t": "2026-11-24T08:00:00Z",
 "dia": "2026-11-23",
-"eventos": 1,
-"part": 22,
+"eventos": 2,
+"part": 31,
 "campeones": [
 {
 "ev": "qcyo rapeen 17",
@@ -8481,9 +8486,26 @@
 "over"
 ]
 ]
+},
+{
+"ev": "- DEM BATTLES -",
+"sv": "FRZ",
+"ll": 685,
+"quien": [
+[
+"Raezer",
+""
+]
+]
 }
 ],
 "suman": [
+{
+"n": "Raezer",
+"k": "",
+"pts": 7500,
+"ev": 1
+},
 {
 "n": "Soulb",
 "k": "soulb",
@@ -8495,35 +8517,36 @@
 "k": "",
 "pts": 5000,
 "ev": 1
-},
-{
-"n": "Oasis",
-"k": "oasis",
-"pts": 5000,
-"ev": 1
 }
 ],
 "suben": [
 {
+"n": "Mr.Kude",
+"k": "mrkude",
+"de": 351,
+"a": 315
+},
+{
 "n": "Marto AR",
 "k": "martoar",
 "de": 336,
-"a": 316
+"a": 318
 },
 {
 "n": "Gian",
 "k": "",
 "de": 432,
-"a": 419
-},
-{
-"n": "Andres",
-"k": "andres",
-"de": 59,
-"a": 48
+"a": 420
 }
 ],
-"sorpresas": []
+"sorpresas": [
+{
+"n": "Raezer",
+"k": "",
+"que": "debut",
+"ev": "- DEM BATTLES -"
+}
+]
 }
 },
 "extra": {
@@ -8814,7 +8837,8 @@
 "kourier": 1,
 "agentesombra": 0,
 "martoar": 0,
-"liam": 0
+"liam": 0,
+"mrkude": 1
 },
 "sem": {
 "id": "2026-11-23",

@@ -168,10 +168,22 @@
     "nivel": "C",
     "base": 5000,
     "o": 33,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 5000,
+    "caza": {
+     "n": 685,
+     "evento": "- DEM BATTLES -",
+     "sv": "FRZ",
+     "t": "2026-11-23T22:52:10Z",
+     "por": [
+      {
+       "n": "Geoka",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "Julda",

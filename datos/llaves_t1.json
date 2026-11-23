@@ -50004,7 +50004,7 @@
        "TøKīØ🦠🧠"
       ],
       "",
-      "cobra: CrisZJ; cobra: Tokio🇦🇷🇬🇩; nadie siguió: ✅ Decidir"
+      "cobra: CrisZJ; cobra: Tokio🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -61759,7 +61759,7 @@
        "Vilca"
       ],
       "NXUZ",
-      "triple (3 bandas); Revivido: Nxuz🇵🇪"
+      "triple (3 bandas); Revivido: Nxuz 🇵🇪"
      ],
      [
       [
@@ -63837,11 +63837,11 @@
      ],
      [
       [
-       "CRK🇲🇽",
+       "Crk",
        "Ritmo🇺🇾"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: CRK🇲🇽; cobra: Ritmo🇺🇾; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -63904,6 +63904,11 @@
     3500
    ],
    [
+    "Crk",
+    "Cuartos",
+    2000
+   ],
+   [
     "Elbesaabuelas",
     "Cuartos",
     2000
@@ -63912,10 +63917,152 @@
     "Micronico🇦🇷",
     "Cuartos",
     2000
+   ],
+   [
+    "Ritmo🇺🇾",
+    "Cuartos",
+    2000
    ]
   ],
   "ver": {
    "min": 37,
+   "v": 1
+  }
+ },
+ "685": {
+  "dia": "2026-11-23",
+  "escala": "8-15",
+  "fecha": "23/11",
+  "links": [
+   "https://discord.com/channels/838593179187544064/838595860275003402/1574558207664332901"
+  ],
+  "n": 685,
+  "nombre": "- DEM BATTLES -",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mr.Kude",
+       "Mito"
+      ],
+      "Mr.Kude",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Molt"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Geoka",
+       "Sin Limites"
+      ],
+      "Geoka",
+      ""
+     ],
+     [
+      [
+       "Raezer",
+       "Rbk",
+       "Daulinov🇨🇴"
+      ],
+      "Raezer",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mr.Kude",
+       "Dios"
+      ],
+      "Mr.Kude",
+      ""
+     ],
+     [
+      [
+       "Raezer",
+       "Geoka"
+      ],
+      "Raezer",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Raezer",
+       "Mr.Kude"
+      ],
+      "Raezer",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Raezer",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mr.Kude",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dios",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Geoka",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Daulinov🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Molt",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rbk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 40,
    "v": 1
   }
  }

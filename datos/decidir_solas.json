@@ -2,73 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "37b1e3084c",
-   "tipo": "Nombre desconocido",
-   "sec": "FFA DELUXE · FFA · 08/10 · #599",
-   "que": "¿Quién es «Ciro🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 759107559536984157",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con su Discord (759107559536984157)",
-   "t": 1794267595352,
-   "filas": [
-    1199
-   ],
-   "variantes": [
-    "Ciro🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Ciro",
-     "759107559536984157"
-    ]
-   }
-  },
-  {
-   "id": "ef694948dd",
-   "tipo": "Nombre desconocido",
-   "sec": "FFA DELUXE · FFA · 08/10 · #599",
-   "que": "¿Quién es «Drelain🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1507399113526739126",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con su Discord (1507399113526739126)",
-   "t": 1794267595352,
-   "filas": [
-    1200
-   ],
-   "variantes": [
-    "Drelain🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Drelain",
-     "1507399113526739126"
-    ]
-   }
-  },
-  {
-   "id": "59addfd0cc",
-   "tipo": "Nombre desconocido",
-   "sec": "DETALLES DEL EVENTO · FFA · 26/10 · #531",
-   "que": "¿Quién es «QZ🇦🇷»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794267595352,
-   "filas": [
-    898
-   ],
-   "variantes": [
-    "QZ🇦🇷"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "8b29ef4cf7",
    "tipo": "Nombre desconocido",
    "sec": "TORNEO CLANDESTINO V.1 · FFA · 09/11 · #600",
@@ -4142,6 +4075,30 @@
    ],
    "escribio": {
     "batalla": "UFL BATTLES V2 · UFLUC · 03/10 · cuartos · CRK🇲🇽 🆚 Ritmo🇺🇾"
+   }
+  },
+  {
+   "id": "92a0fdb316",
+   "tipo": "Nombre desconocido",
+   "sec": "- DEM BATTLES - · FRZ · 23/11 · #685",
+   "que": "¿Quién es «Daulinov🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1343730229721698375",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1343730229721698375)",
+   "t": 1795477659872,
+   "filas": [
+    1591
+   ],
+   "variantes": [
+    "Daulinov🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Daulinov",
+     "1343730229721698375"
+    ]
    }
   }
  ],

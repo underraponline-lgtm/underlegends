@@ -3309,6 +3309,8 @@
   [684, "03/10", "UFLUC", "8-15", "Miniboy", "cl", "Semifinal", 3500, "", 3500],
   [684, "03/10", "UFLUC", "8-15", "Micronico🇦🇷", "", "Cuartos", 2000, "", 2000],
   [684, "03/10", "UFLUC", "8-15", "Elbesaabuelas", "ar", "Cuartos", 2000, "", 2000],
+  [684, "03/10", "UFLUC", "8-15", "Crk", "mx", "Cuartos", 2000, "", 2000, "Nadie siguió"],
+  [684, "03/10", "UFLUC", "8-15", "Ritmo🇺🇾", "", "Cuartos", 2000, "", 2000, "Nadie siguió"],
   [400, "04/10", "ACAD", "16+", "Abyssus", "pa", "Campeón", 10000, "", 10000],
   [400, "04/10", "ACAD", "16+", "SGB", "co", "Subcampeón", 7500, "", 7500],
   [400, "04/10", "ACAD", "16+", "Zignos", "do", "Semifinal", 5250, "", 5250],
@@ -4780,6 +4782,15 @@
   [681, "23/11", "FFA", "16+", "Erian", "pa", "Cuartos", 833, "", 833],
   [681, "23/11", "FFA", "16+", "Geoka", "ar", "Cuartos", 833, "", 833],
   [681, "23/11", "FFA", "16+", "Agus", "ar", "Cuartos", 833, "", 833],
-  [681, "23/11", "FFA", "16+", "Gian", "ar", "Cuartos", 833, "", 833, "Ganó en equipo y no siguió"]
+  [681, "23/11", "FFA", "16+", "Gian", "ar", "Cuartos", 833, "", 833, "Ganó en equipo y no siguió"],
+  [685, "23/11", "FRZ", "8-15", "Raezer", "ve", "Campeón", 7500, "", 7500],
+  [685, "23/11", "FRZ", "8-15", "Mr.Kude", "ar", "Subcampeón", 5000, "", 5000],
+  [685, "23/11", "FRZ", "8-15", "Dios", "mx", "Semifinal", 3500, "", 3500],
+  [685, "23/11", "FRZ", "8-15", "Geoka", "ar", "Semifinal", 3500, "", 3500],
+  [685, "23/11", "FRZ", "8-15", "Mito", "ar", "Cuartos", 2000, "", 2000],
+  [685, "23/11", "FRZ", "8-15", "Molt", "cl", "Cuartos", 2000, "", 2000],
+  [685, "23/11", "FRZ", "8-15", "Sin Limites", "pe", "Cuartos", 2000, "", 2000],
+  [685, "23/11", "FRZ", "8-15", "Rbk", "ve", "Cuartos", 2000, "", 2000],
+  [685, "23/11", "FRZ", "8-15", "Daulinov🇨🇴", "", "Cuartos", 2000, "", 2000]
  ]
 }
