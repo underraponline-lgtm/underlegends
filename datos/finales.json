@@ -2174,5 +2174,45 @@
   "sv": "LKR",
   "t_pregunta": ""
  },
+ "1574217678510362707": {
+  "autor": "483070865081237505",
+  "canal": "1560645507095728278",
+  "canal_pregunta": "",
+  "cuando": "2026-11-23T00:19:02.107000+00:00",
+  "donde": "",
+  "evento": "(sin titulo)",
+  "fecha": "22/11",
+  "llave": "1574217678510362707",
+  "pregunta": "",
+  "preguntada": "2026-11-23 12:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Dominick 🇵🇪",
+     "Miniboy🇨🇱"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "XERVO 🇨🇱",
+     "onzas 🇻🇪"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "ISMEL 🇻🇪",
+     "Calíz 🇲🇽"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "LKR",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
