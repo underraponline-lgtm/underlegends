@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.89", "dia": "2026-11-23", "cuando": "2026-11-23T05:09:00-05:00", "titulo": "El bot te recuerda tus Dragón Drops", "items": ["Si tienes **Dragón Drops sin abrir**, después de usar cualquier comando del bot te aparece, sólo a ti, tu panel para abrirlos ahí mismo. Una vez por día."]},
     {"version": "7.88", "dia": "2026-11-23", "cuando": "2026-11-23T04:38:00-05:00", "titulo": "La historia de cada uno en el Ranking Global", "items": ["Toca a cualquiera del **Ranking Global** y ves **su historia**: sus títulos de toda la carrera, sus batallas y sus medallas, como los oros de Aczino en FMS Internacional o los de Chuty en FMS España.", "No suma puntos: el ranking cuenta sólo la Temporada 1."]},
     {"version": "7.87", "dia": "2026-11-23", "cuando": "2026-11-23T04:15:00-05:00", "titulo": "Lo acumulado, en el panel del staff", "items": ["El panel del staff muestra lo de toda la temporada: verificados, quién entró con su cuenta, quién jugó y quién abrió Drops."]},
     {"version": "7.86", "dia": "2026-11-23", "cuando": "2026-11-23T04:04:00-05:00", "titulo": "El staff ve qué se usa más, en la página y en Discord", "items": ["El panel del staff cuenta cuántas personas usan cada parte de la página y del bot, y cómo van los Dragón Drops. Sólo números: nunca quién."]},
