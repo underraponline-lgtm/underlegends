@@ -5695,6 +5695,11 @@
     "t1",
     1794981844562
    ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1795451950700
+   ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
     "t1",
@@ -6394,6 +6399,15 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "hedorah": {
+  "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1795451950700
    ]
   }
  },
@@ -7285,6 +7299,11 @@
     "t1",
     1794778788639
    ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1795451950700
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -7595,6 +7614,11 @@
     "📆 HABITUÉ",
     "t1",
     1792953978519
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1795451950700
    ]
   },
   "temporada": {
@@ -9840,6 +9864,15 @@
    ]
   }
  },
+ "mcglock": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795451950700
+   ]
+  }
+ },
  "mcnadie": {
   "competitivo": {
    "🗡️ MATAGIGANTES": [
@@ -10577,6 +10610,11 @@
     "t1",
     1793029252929
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795451950700
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -10626,6 +10664,11 @@
     "t1",
     1793029252929
    ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795451950700
+   ],
    "🌐 IMPERIO": [
     "🌐 IMPERIO",
     "t1",
@@ -10642,7 +10685,7 @@
     1793939867107
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
    ],
@@ -16577,6 +16620,11 @@
  },
  "tho": {
   "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1795451950700
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -17169,6 +17217,11 @@
     "💀 REGICIDA",
     "t1",
     1794980168185
+   ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1795451950700
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -18408,6 +18461,11 @@
     "🐺 LOBO SOLITARIO",
     "t1",
     1795152743599
+   ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1795451950700
    ]
   }
  },

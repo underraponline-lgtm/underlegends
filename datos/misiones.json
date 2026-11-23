@@ -1,7 +1,7 @@
 {
  "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
  "bono": 1000,
- "sem": "2026-11-16",
+ "sem": "2026-11-23",
  "semanas": {
   "2026-10-05": {
    "fin": "2026-10-12T15:00:00Z",
@@ -10182,6 +10182,13 @@
      0,
      0
     ],
+    "Hedorah": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "Inhuman": [
      1,
      0,
@@ -10252,10 +10259,24 @@
      0,
      0
     ],
+    "Keider": [
+     0,
+     0,
+     16,
+     0,
+     0
+    ],
     "Keplatoo🇪🇸": [
      0,
      1,
      4,
+     0,
+     0
+    ],
+    "King": [
+     0,
+     0,
+     8,
      0,
      0
     ],
@@ -10298,6 +10319,13 @@
      0,
      0,
      16,
+     0,
+     0
+    ],
+    "LIZE🇦🇷": [
+     0,
+     0,
+     4,
      0,
      0
     ],
@@ -10423,7 +10451,7 @@
     "Mathhias": [
      0,
      0,
-     99,
+     4,
      0,
      0
     ],
@@ -10431,6 +10459,13 @@
      1,
      0,
      8,
+     0,
+     0
+    ],
+    "Mc Glock": [
+     0,
+     0,
+     16,
      0,
      0
     ],
@@ -10479,7 +10514,7 @@
     "Molusco": [
      1,
      0,
-     2,
+     1,
      0,
      0
     ],
@@ -11029,7 +11064,7 @@
     "Mc uchiha": 300,
     "Mexicano🇲🇽": 300,
     "Mito": 300,
-    "Molusco": 300,
+    "Molusco": 1300,
     "Mosquitrap 🦟": 1000,
     "NC": 300,
     "OG": 300,
@@ -11070,6 +11105,3170 @@
     "tommy": 800,
     "yinn": 300
    }
+  },
+  "2026-11-23": {
+   "fin": "2026-11-30T16:00:00Z",
+   "lista": [
+    [
+     "multi",
+     "Juega un evento del servidor con el multiplicador más alto",
+     "facil",
+     1,
+     300
+    ],
+    [
+     "mundo3",
+     "Gánale a raperos de 3 países distintos al tuyo",
+     "media",
+     3,
+     600
+    ],
+    [
+     "duelos5",
+     "Gana 5 duelos",
+     "dificil",
+     5,
+     1000
+    ],
+    [
+     "caza",
+     "Gánale un duelo a Mito",
+     "caza",
+     1,
+     800,
+     "Mito"
+    ],
+    [
+     "dorado",
+     "Juega el evento dorado de FMS Ceuta",
+     "dorado",
+     1,
+     600,
+     null,
+     "CEU"
+    ]
+   ],
+   "pistas": {
+    "0223 🇧🇧": {
+     "d": [
+      0,
+      2
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "23": {
+     "d": [],
+     "s": [
+      "CH"
+     ]
+    },
+    "AbrahamH": {
+     "d": [
+      5
+     ],
+     "s": [
+      "DDS"
+     ]
+    },
+    "Abyssus": {
+     "d": [],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Agente sombra": {
+     "d": [],
+     "s": [
+      "CH",
+      "DW"
+     ]
+    },
+    "Akuseru": {
+     "d": [
+      0,
+      4
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Ariaxer": {
+     "d": [
+      5
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "Artezzy": {
+     "d": [],
+     "s": [
+      "FDS",
+      "DDS"
+     ]
+    },
+    "BLITZ": {
+     "d": [
+      6
+     ],
+     "s": [
+      "FFA"
+     ]
+    },
+    "BNA": {
+     "d": [
+      5
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "BTRX": {
+     "d": [
+      0,
+      4
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "CNC": {
+     "d": [],
+     "s": [
+      "CH"
+     ]
+    },
+    "Calíz": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "FFA",
+      "LKR"
+     ]
+    },
+    "Chente": {
+     "d": [
+      5
+     ],
+     "s": [
+      "FDS",
+      "FFA"
+     ]
+    },
+    "Choco": {
+     "d": [],
+     "s": [
+      "DDS"
+     ]
+    },
+    "Colesito": {
+     "d": [
+      3,
+      5
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "DarnBless": {
+     "d": [
+      0,
+      5
+     ],
+     "s": [
+      "CH",
+      "FDS"
+     ]
+    },
+    "Deko": {
+     "d": [
+      0
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Deuxs": {
+     "d": [
+      1,
+      5
+     ],
+     "s": [
+      "FFA",
+      "URBF"
+     ]
+    },
+    "Dios": {
+     "d": [
+      3,
+      5
+     ],
+     "s": [
+      "FDS",
+      "DDS"
+     ]
+    },
+    "Dominick": {
+     "d": [
+      0,
+      4
+     ],
+     "s": [
+      "DDF",
+      "FFA"
+     ]
+    },
+    "Drexx": {
+     "d": [
+      1,
+      3
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "Dyzz": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "Erian": {
+     "d": [
+      1,
+      4
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "Fecha": {
+     "d": [
+      5
+     ],
+     "s": [
+      "DDS"
+     ]
+    },
+    "Fisics": {
+     "d": [
+      4
+     ],
+     "s": [
+      "DDS",
+      "ACAD"
+     ]
+    },
+    "Flash": {
+     "d": [],
+     "s": [
+      "CH"
+     ]
+    },
+    "Geoka": {
+     "d": [
+      2,
+      5
+     ],
+     "s": [
+      "FFA",
+      "CEU"
+     ]
+    },
+    "Gus": {
+     "d": [
+      2,
+      5
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "Inhuman": {
+     "d": [
+      5
+     ],
+     "s": [
+      "CH",
+      "FFA"
+     ]
+    },
+    "Izaya": {
+     "d": [],
+     "s": [
+      "ACAD",
+      "FFA"
+     ]
+    },
+    "Julda": {
+     "d": [],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Jupiter": {
+     "d": [
+      0,
+      4
+     ],
+     "s": [
+      "CH",
+      "FFA"
+     ]
+    },
+    "Keider": {
+     "d": [
+      4,
+      6
+     ],
+     "s": [
+      "DDF",
+      "FFA"
+     ]
+    },
+    "Kourier": {
+     "d": [
+      6
+     ],
+     "s": [
+      "CEU",
+      "DW"
+     ]
+    },
+    "Kyss": {
+     "d": [
+      0
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "LAST": {
+     "d": [
+      3,
+      6
+     ],
+     "s": [
+      "CEU",
+      "LKR"
+     ]
+    },
+    "LRS": {
+     "d": [
+      1,
+      3
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Liam": {
+     "d": [],
+     "s": [
+      "DDS",
+      "LKR"
+     ]
+    },
+    "Lord Viruzz": {
+     "d": [
+      3,
+      4
+     ],
+     "s": [
+      "ACAD",
+      "FFA"
+     ]
+    },
+    "Lvel": {
+     "d": [
+      1,
+      6
+     ],
+     "s": [
+      "FFA",
+      "CEU"
+     ]
+    },
+    "MCO": {
+     "d": [
+      5,
+      6
+     ],
+     "s": [
+      "FFA",
+      "DDS"
+     ]
+    },
+    "MaYeuTyK": {
+     "d": [
+      1,
+      4
+     ],
+     "s": [
+      "LKR",
+      "ACAD"
+     ]
+    },
+    "Magic": {
+     "d": [
+      3
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Majiztral": {
+     "d": [
+      5,
+      6
+     ],
+     "s": [
+      "LKR",
+      "URBF"
+     ]
+    },
+    "Makmah": {
+     "d": [
+      0,
+      5
+     ],
+     "s": [
+      "FFA",
+      "DDF"
+     ]
+    },
+    "Mark98": {
+     "d": [],
+     "s": [
+      "DDS"
+     ]
+    },
+    "Mathhias": {
+     "d": [
+      0,
+      6
+     ],
+     "s": [
+      "LKR",
+      "URBF"
+     ]
+    },
+    "MauzzitoEmeces": {
+     "d": [
+      2
+     ],
+     "s": [
+      "FFA",
+      "DDF"
+     ]
+    },
+    "Mc arepa": {
+     "d": [
+      3,
+      4
+     ],
+     "s": [
+      "FDS",
+      "FFA"
+     ]
+    },
+    "Miniboy": {
+     "d": [
+      1,
+      6
+     ],
+     "s": [
+      "FFA",
+      "DDF"
+     ]
+    },
+    "Mito": {
+     "d": [
+      1,
+      6
+     ],
+     "s": [
+      "FFA",
+      "DDF"
+     ]
+    },
+    "Mosquitrap 🦟": {
+     "d": [],
+     "s": [
+      "FFA",
+      "LKR"
+     ]
+    },
+    "NC": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "NXUZ": {
+     "d": [
+      1,
+      6
+     ],
+     "s": [
+      "DDS",
+      "DDF"
+     ]
+    },
+    "OG": {
+     "d": [
+      1,
+      5
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "ONZASS": {
+     "d": [
+      1
+     ],
+     "s": [
+      "CH",
+      "FFA"
+     ]
+    },
+    "Oasis": {
+     "d": [
+      3,
+      4
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "PRAISERIZA": {
+     "d": [
+      0,
+      6
+     ],
+     "s": [
+      "FFA"
+     ]
+    },
+    "Paria": {
+     "d": [
+      3,
+      5
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "PichulaMc": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "FFA",
+      "DDF"
+     ]
+    },
+    "Player": {
+     "d": [
+      5,
+      6
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "Provenza": {
+     "d": [
+      1,
+      6
+     ],
+     "s": [
+      "FFA"
+     ]
+    },
+    "Puppy": {
+     "d": [],
+     "s": [
+      "LKR"
+     ]
+    },
+    "Raizer": {
+     "d": [
+      3
+     ],
+     "s": [
+      "FDS",
+      "FFA"
+     ]
+    },
+    "Shadow": {
+     "d": [
+      0,
+      6
+     ],
+     "s": [
+      "LKR",
+      "URBF"
+     ]
+    },
+    "Simon": {
+     "d": [],
+     "s": [
+      "CH"
+     ]
+    },
+    "Sin Limites": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Snow": {
+     "d": [
+      3
+     ],
+     "s": [
+      "FFA"
+     ]
+    },
+    "Soulb": {
+     "d": [
+      3,
+      6
+     ],
+     "s": [
+      "LKR",
+      "FFA"
+     ]
+    },
+    "Status": {
+     "d": [
+      5
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "THO": {
+     "d": [],
+     "s": [
+      "CH"
+     ]
+    },
+    "Tam": {
+     "d": [
+      0,
+      6
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Tenor": {
+     "d": [
+      1,
+      2
+     ],
+     "s": [
+      "FFA"
+     ]
+    },
+    "Thaniel": {
+     "d": [
+      6
+     ],
+     "s": [
+      "FFA",
+      "DW"
+     ]
+    },
+    "Valen": {
+     "d": [],
+     "s": [
+      "FFA"
+     ]
+    },
+    "Vandu": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "Walker": {
+     "d": [
+      4,
+      5
+     ],
+     "s": [
+      "DDF",
+      "CH"
+     ]
+    },
+    "Yeyox": {
+     "d": [],
+     "s": [
+      "CH",
+      "URBF"
+     ]
+    },
+    "Yor": {
+     "d": [
+      6
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "Zignos": {
+     "d": [
+      4,
+      6
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "beneroo": {
+     "d": [],
+     "s": [
+      "CH"
+     ]
+    },
+    "compare": {
+     "d": [
+      5
+     ],
+     "s": [
+      "CH",
+      "CEU"
+     ]
+    },
+    "crakero": {
+     "d": [
+      2,
+      4
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "mats": {
+     "d": [
+      0,
+      3
+     ],
+     "s": [
+      "FFA",
+      "CH"
+     ]
+    },
+    "melomaniaco": {
+     "d": [
+      1
+     ],
+     "s": [
+      "FFA"
+     ]
+    },
+    "romeo": {
+     "d": [
+      4,
+      6
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    },
+    "yinn": {
+     "d": [
+      0,
+      6
+     ],
+     "s": [
+      "FFA",
+      "ACAD"
+     ]
+    }
+   },
+   "presas": {
+    "0223 🇧🇧": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "123 🇦🇲": [
+     "Thaniel",
+     "escena",
+     null,
+     0
+    ],
+    "1469704413013737585 Lizzenin 🇦🇷": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "19 FLEIVA WACK": [
+     "Keider",
+     "escena",
+     null,
+     0
+    ],
+    "23": [
+     "Yeyox",
+     "revancha",
+     [
+      666,
+      "CH",
+      "19/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "4'C 🇲🇽": [
+     "Raizer",
+     "escena",
+     null,
+     0
+    ],
+    "ADEUXE🇨🇦": [
+     "Magic",
+     "escena",
+     null,
+     0
+    ],
+    "AGUSTÍN51K": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "ALFINPAPA": [
+     "mats",
+     "escena",
+     null,
+     0
+    ],
+    "AbrahamH": [
+     "Artezzy",
+     "escena",
+     null,
+     0
+    ],
+    "AbrahamSRRL": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "Abyssus": [
+     "Soulb",
+     "escena",
+     null,
+     0
+    ],
+    "Adriagner": [
+     "Mito",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Agente sombra": [
+     "0223 🇧🇧",
+     "escena",
+     null,
+     0
+    ],
+    "Agus": [
+     "Yor",
+     "revancha",
+     [
+      648,
+      "CH",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Akus": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "Akuseru": [
+     "melomaniaco",
+     "escena",
+     null,
+     0
+    ],
+    "Andres": [
+     "mats",
+     "revancha",
+     [
+      560,
+      "FFA",
+      "02/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Andy": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "Andy MC": [
+     "Kourier",
+     "escena",
+     null,
+     0
+    ],
+    "Antis antis": [
+     "BTRX",
+     "escena",
+     null,
+     0
+    ],
+    "Ariaxer": [
+     "Gus",
+     "escena",
+     null,
+     0
+    ],
+    "Artezzy": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Assuan": [
+     "Gus",
+     "escena",
+     null,
+     0
+    ],
+    "B.DEMON🇪🇨": [
+     "Walker",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "BABI": [
+     "LAST",
+     "escena",
+     null,
+     0
+    ],
+    "BENJI 🇵🇪": [
+     "Dios",
+     "escena",
+     null,
+     0
+    ],
+    "BLACKMEME": [
+     "Kyss",
+     "revancha",
+     [
+      661,
+      "CH",
+      "17/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "BLITZ": [
+     "Gus",
+     "escena",
+     null,
+     0
+    ],
+    "BNA": [
+     "Abyssus",
+     "revancha",
+     [
+      667,
+      "FFA",
+      "21/11",
+      "final"
+     ],
+     0
+    ],
+    "BTRX": [
+     "Calíz",
+     "escena",
+     null,
+     0
+    ],
+    "Badterne": [
+     "Oasis",
+     "revancha",
+     [
+      539,
+      "FFA",
+      "27/10",
+      "final"
+     ],
+     0
+    ],
+    "Benjixo": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "Berrun": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Bloody": [
+     "Majiztral",
+     "escena",
+     null,
+     0
+    ],
+    "CHAMAKO": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "CNC": [
+     "Flash",
+     "revancha",
+     [
+      666,
+      "CH",
+      "19/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Calíz": [
+     "Valen",
+     "revancha",
+     [
+      595,
+      "FFA",
+      "09/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Campoy": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "Carlosss": [
+     "Walker",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "final"
+     ],
+     0
+    ],
+    "Chaz🇵🇪": [
+     "Chente",
+     "escena",
+     null,
+     0
+    ],
+    "Chente": [
+     "Magic",
+     "escena",
+     null,
+     0
+    ],
+    "Choco": [
+     "Liam",
+     "escena",
+     null,
+     0
+    ],
+    "Chop": [
+     "BTRX",
+     "escena",
+     null,
+     0
+    ],
+    "Chuwin": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "Chxrzy": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "Cinexfilo": [
+     "Mathhias",
+     "escena",
+     null,
+     0
+    ],
+    "Colesito": [
+     "Abyssus",
+     "revancha",
+     [
+      667,
+      "FFA",
+      "21/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "CrisZJ": [
+     "Mito",
+     "escena",
+     null,
+     0
+    ],
+    "Crk": [
+     "Vandu",
+     "revancha",
+     [
+      645,
+      "URBF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Cronox": [
+     "PichulaMc",
+     "revancha",
+     [
+      542,
+      "FFA",
+      "28/10",
+      "cuartos"
+     ],
+     0
+    ],
+    "DarnBless": [
+     "Gus",
+     "escena",
+     null,
+     0
+    ],
+    "Deko": [
+     "Valen",
+     "revancha",
+     [
+      660,
+      "FFA",
+      "17/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Desio": [
+     "Keider",
+     "escena",
+     null,
+     0
+    ],
+    "Deuxs": [
+     "Mito",
+     "revancha",
+     [
+      564,
+      "URBF",
+      "03/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Dios": [
+     "beneroo",
+     "revancha",
+     [
+      666,
+      "CH",
+      "19/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Diz🇨🇱": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "Dobell": [
+     "Mito",
+     "revancha",
+     [
+      595,
+      "FFA",
+      "09/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Doble J": [
+     "CNC",
+     "revancha",
+     [
+      636,
+      "CH",
+      "14/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Dominic 🇲🇽": [
+     "Choco",
+     "escena",
+     null,
+     0
+    ],
+    "Dominick": [
+     "Miniboy",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Dorado": [
+     "Thaniel",
+     "escena",
+     null,
+     0
+    ],
+    "Drexx": [
+     "Tam",
+     "escena",
+     null,
+     0
+    ],
+    "Dynoco": [
+     "Zignos",
+     "revancha",
+     [
+      631,
+      "SR",
+      "13/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Dyz 🇨🇱": [
+     "CNC",
+     "escena",
+     null,
+     0
+    ],
+    "Dyzz": [
+     "Paria",
+     "escena",
+     null,
+     0
+    ],
+    "EIDP": [
+     "BNA",
+     "revancha",
+     [
+      667,
+      "FFA",
+      "21/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Eclipsito": [
+     "Dominick",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Efimero": [
+     "Geoka",
+     "revancha",
+     [
+      657,
+      "CH",
+      "15/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "El felpudo 974 🇨🇫": [
+     "Choco",
+     "escena",
+     null,
+     0
+    ],
+    "El felpudo 🇨🇳": [
+     "OG",
+     "revancha",
+     [
+      657,
+      "CH",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "El padre de tu padre 🇻🇪": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Elbesaabuelas": [
+     "Thaniel",
+     "escena",
+     null,
+     0
+    ],
+    "Elinge_TIMP": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "Emilio Alva": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
+    "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱": [
+     "0223 🇧🇧",
+     "escena",
+     null,
+     0
+    ],
+    "Enzinho": [
+     "Inhuman",
+     "escena",
+     null,
+     0
+    ],
+    "Erian": [
+     "Oasis",
+     "escena",
+     null,
+     0
+    ],
+    "Erik": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Eze": [
+     "BLITZ",
+     "escena",
+     null,
+     0
+    ],
+    "Faso": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "Fazer": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "Fecha": [
+     "Mark98",
+     "escena",
+     null,
+     0
+    ],
+    "Fisics": [
+     "Ariaxer",
+     "revancha",
+     [
+      396,
+      "FFA",
+      "04/10",
+      "cuartos"
+     ],
+     0
+    ],
+    "Flash": [
+     "ONZASS",
+     "escena",
+     null,
+     0
+    ],
+    "Fritz": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "G meiker": [
+     "Inhuman",
+     "escena",
+     null,
+     0
+    ],
+    "GARZXI": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "Gal_Mc": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "Garxzii": [
+     "Vandu",
+     "revancha",
+     [
+      595,
+      "FFA",
+      "09/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Geoka": [
+     "Deko",
+     "revancha",
+     [
+      660,
+      "FFA",
+      "17/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Gocho": [
+     "CNC",
+     "revancha",
+     [
+      636,
+      "CH",
+      "14/11",
+      "final"
+     ],
+     0
+    ],
+    "Guess": [
+     "yinn",
+     "revancha",
+     [
+      600,
+      "FFA",
+      "09/11",
+      "final"
+     ],
+     0
+    ],
+    "Gus": [
+     "DarnBless",
+     "escena",
+     null,
+     0
+    ],
+    "Hades": [
+     "BTRX",
+     "escena",
+     null,
+     0
+    ],
+    "HatshepsuT": [
+     "Makmah",
+     "revancha",
+     [
+      664,
+      "CH",
+      "19/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Hedorah": [
+     "Liam",
+     "escena",
+     null,
+     0
+    ],
+    "Hotaru Adeyemi 🏳️‍⚧️": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "Humildad": [
+     "Colesito",
+     "revancha",
+     [
+      631,
+      "SR",
+      "13/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Infecte": [
+     "PichulaMc",
+     "revancha",
+     [
+      535,
+      "ACAD",
+      "27/10",
+      "cuartos"
+     ],
+     0
+    ],
+    "Inhuman": [
+     "Status",
+     "escena",
+     null,
+     0
+    ],
+    "Izaya": [
+     "Agente sombra",
+     "escena",
+     null,
+     0
+    ],
+    "JEIXDER": [
+     "DarnBless",
+     "escena",
+     null,
+     0
+    ],
+    "Jodnes": [
+     "THO",
+     "revancha",
+     [
+      570,
+      "CH",
+      "11/10",
+      "cuartos"
+     ],
+     0
+    ],
+    "Joven shenlong": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "Juanpa": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "Julda": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "Jult": [
+     "Gus",
+     "escena",
+     null,
+     0
+    ],
+    "Jupiter": [
+     "yinn",
+     "revancha",
+     [
+      600,
+      "FFA",
+      "09/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "K1NGT0": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "KARDIOLOGO": [
+     "Izaya",
+     "escena",
+     null,
+     0
+    ],
+    "KOJIRO": [
+     "Mathhias",
+     "escena",
+     null,
+     0
+    ],
+    "KRS": [
+     "Status",
+     "revancha",
+     [
+      664,
+      "CH",
+      "19/11",
+      "octavos"
+     ],
+     0
+    ],
+    "KairoX": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
+    "Kaled": [
+     "Mito",
+     "revancha",
+     [
+      674,
+      "CH",
+      "21/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Karma": [
+     "Flash",
+     "revancha",
+     [
+      661,
+      "CH",
+      "17/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Keider": [
+     "NXUZ",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Keplatoo🇪🇸": [
+     "Flash",
+     "revancha",
+     [
+      661,
+      "CH",
+      "17/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "King": [
+     "Liam",
+     "escena",
+     null,
+     0
+    ],
+    "Kminant": [
+     "Magic",
+     "escena",
+     null,
+     0
+    ],
+    "Kourier": [
+     "LAST",
+     "escena",
+     null,
+     0
+    ],
+    "Kravitz": [
+     "Keider",
+     "escena",
+     null,
+     0
+    ],
+    "Krish": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "Kuni": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "Kusoh": [
+     "Mosquitrap 🦟",
+     "escena",
+     null,
+     0
+    ],
+    "Kyss": [
+     "Flash",
+     "revancha",
+     [
+      661,
+      "CH",
+      "17/11",
+      "final"
+     ],
+     0
+    ],
+    "LANCER L🇻🇪": [
+     "Puppy",
+     "escena",
+     null,
+     0
+    ],
+    "LAST": [
+     "Shadow",
+     "escena",
+     null,
+     0
+    ],
+    "LEWITO": [
+     "Yeyox",
+     "escena",
+     null,
+     0
+    ],
+    "LICENCIADO 🇲🇽": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "LIZE🇦🇷": [
+     "Liam",
+     "escena",
+     null,
+     0
+    ],
+    "LRS": [
+     "Julda",
+     "revancha",
+     [
+      666,
+      "CH",
+      "19/11",
+      "octavos"
+     ],
+     0
+    ],
+    "LSO": [
+     "Magic",
+     "escena",
+     null,
+     0
+    ],
+    "LVS": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Lalox": [
+     "Flash",
+     "revancha",
+     [
+      666,
+      "CH",
+      "19/11",
+      "final"
+     ],
+     0
+    ],
+    "Lambroggini": [
+     "Colesito",
+     "revancha",
+     [
+      648,
+      "CH",
+      "15/11",
+      "final"
+     ],
+     0
+    ],
+    "Leonart": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Leyenda": [
+     "Raizer",
+     "escena",
+     null,
+     0
+    ],
+    "Liam": [
+     "Fisics",
+     "escena",
+     null,
+     0
+    ],
+    "Liberia": [
+     "Makmah",
+     "revancha",
+     [
+      564,
+      "URBF",
+      "03/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "LitKunai": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "Lord Viruzz": [
+     "Lvel",
+     "escena",
+     null,
+     0
+    ],
+    "Lover": [
+     "compare",
+     "escena",
+     null,
+     0
+    ],
+    "Lucho": [
+     "Magic",
+     "escena",
+     null,
+     0
+    ],
+    "Luciano": [
+     "Tam",
+     "revancha",
+     [
+      648,
+      "CH",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Luzzano": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "Lvel": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "MAT MC": [
+     "Raizer",
+     "escena",
+     null,
+     0
+    ],
+    "MAU KC": [
+     "Soulb",
+     "revancha",
+     [
+      664,
+      "CH",
+      "19/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "MCNadie": [
+     "Mosquitrap 🦟",
+     "escena",
+     null,
+     0
+    ],
+    "MCO": [
+     "PRAISERIZA",
+     "revancha",
+     [
+      593,
+      "FFA",
+      "08/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "MTZ": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "MaYeuTyK": [
+     "Miniboy",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Magic": [
+     "Makmah",
+     "revancha",
+     [
+      664,
+      "CH",
+      "19/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Majiztral": [
+     "Geoka",
+     "revancha",
+     [
+      657,
+      "CH",
+      "15/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Mak Dok": [
+     "mats",
+     "revancha",
+     [
+      664,
+      "CH",
+      "19/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Makmah": [
+     "Yeyox",
+     "revancha",
+     [
+      674,
+      "CH",
+      "21/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Maniak🇫🇴": [
+     "Thaniel",
+     "escena",
+     null,
+     0
+    ],
+    "Marcos": [
+     "MaYeuTyK",
+     "escena",
+     null,
+     0
+    ],
+    "Mark98": [
+     "AbrahamH",
+     "escena",
+     null,
+     0
+    ],
+    "Masino": [
+     "Walker",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Mathhias": [
+     "Makmah",
+     "revancha",
+     [
+      645,
+      "URBF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "MauzzitoEmeces": [
+     "Magic",
+     "escena",
+     null,
+     0
+    ],
+    "Mc Glock": [
+     "Liam",
+     "escena",
+     null,
+     0
+    ],
+    "Mc arepa": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Mc dl": [
+     "LAST",
+     "escena",
+     null,
+     0
+    ],
+    "Mc uchiha": [
+     "MauzzitoEmeces",
+     "escena",
+     null,
+     0
+    ],
+    "Medster": [
+     "LAST",
+     "escena",
+     null,
+     0
+    ],
+    "Mexicano🇲🇽": [
+     "MauzzitoEmeces",
+     "escena",
+     null,
+     0
+    ],
+    "Miniboy": [
+     "Walker",
+     "revancha",
+     [
+      651,
+      "DDF",
+      "15/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Minis": [
+     "Inhuman",
+     "escena",
+     null,
+     0
+    ],
+    "Mito": [
+     "MCO",
+     "revancha",
+     [
+      674,
+      "CH",
+      "21/11",
+      "final"
+     ],
+     0
+    ],
+    "Molusco": [
+     "Snow",
+     "revancha",
+     [
+      633,
+      "FFA",
+      "13/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Monet": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
+    "Mosquitrap 🦟": [
+     "Ariaxer",
+     "escena",
+     null,
+     0
+    ],
+    "Motera": [
+     "LAST",
+     "escena",
+     null,
+     0
+    ],
+    "NC": [
+     "Valen",
+     "revancha",
+     [
+      660,
+      "FFA",
+      "17/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "NEXOR": [
+     "Mathhias",
+     "escena",
+     null,
+     0
+    ],
+    "NITO NANEL": [
+     "Raizer",
+     "escena",
+     null,
+     0
+    ],
+    "NITO NANEL 🇵🇪": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "NXUZ": [
+     "Vandu",
+     "escena",
+     null,
+     0
+    ],
+    "Nene": [
+     "0223 🇧🇧",
+     "escena",
+     null,
+     0
+    ],
+    "Nestor": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "Nitro🇨🇱": [
+     "Puppy",
+     "escena",
+     null,
+     0
+    ],
+    "Noone": [
+     "BLITZ",
+     "escena",
+     null,
+     0
+    ],
+    "Number VE": [
+     "Drexx",
+     "escena",
+     null,
+     0
+    ],
+    "OG": [
+     "BNA",
+     "revancha",
+     [
+      667,
+      "FFA",
+      "21/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "OKAM": [
+     "Oasis",
+     "revancha",
+     [
+      660,
+      "FFA",
+      "17/11",
+      "octavos"
+     ],
+     0
+    ],
+    "ONZASS": [
+     "DarnBless",
+     "escena",
+     null,
+     0
+    ],
+    "Oasis": [
+     "Valen",
+     "revancha",
+     [
+      660,
+      "FFA",
+      "17/11",
+      "final"
+     ],
+     0
+    ],
+    "PHOBOS 🇲🇽": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "PRAISERIZA": [
+     "Colesito",
+     "escena",
+     null,
+     0
+    ],
+    "PUNISHER": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "Papo🇦🇷": [
+     "Puppy",
+     "escena",
+     null,
+     0
+    ],
+    "Paria": [
+     "THO",
+     "revancha",
+     [
+      674,
+      "CH",
+      "21/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "PichulaMc": [
+     "Tenor",
+     "revancha",
+     [
+      551,
+      "FFA",
+      "31/10",
+      "octavos"
+     ],
+     0
+    ],
+    "Pipe": [
+     "Makmah",
+     "revancha",
+     [
+      502,
+      "DDF",
+      "23/10",
+      "cuartos"
+     ],
+     0
+    ],
+    "Player": [
+     "BNA",
+     "escena",
+     null,
+     0
+    ],
+    "Pomberito": [
+     "Oasis",
+     "revancha",
+     [
+      371,
+      "FFA",
+      "28/09",
+      "cuartos"
+     ],
+     0
+    ],
+    "Prosu": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "Provenza": [
+     "Sin Limites",
+     "escena",
+     null,
+     0
+    ],
+    "Puppy": [
+     "Player",
+     "escena",
+     null,
+     0
+    ],
+    "Raizer": [
+     "Valen",
+     "escena",
+     null,
+     0
+    ],
+    "Rbk": [
+     "Fisics",
+     "escena",
+     null,
+     0
+    ],
+    "Refran": [
+     "Deuxs",
+     "escena",
+     null,
+     0
+    ],
+    "Revo": [
+     "Agente sombra",
+     "escena",
+     null,
+     0
+    ],
+    "Richard": [
+     "Makmah",
+     "revancha",
+     [
+      623,
+      "ACAD",
+      "07/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Riolu": [
+     "melomaniaco",
+     "escena",
+     null,
+     0
+    ],
+    "Ruvick": [
+     "Izaya",
+     "escena",
+     null,
+     0
+    ],
+    "Ryuk": [
+     "Miniboy",
+     "revancha",
+     [
+      535,
+      "ACAD",
+      "27/10",
+      "cuartos"
+     ],
+     0
+    ],
+    "SAIDEM": [
+     "Izaya",
+     "escena",
+     null,
+     0
+    ],
+    "SC": [
+     "Lord Viruzz",
+     "escena",
+     null,
+     0
+    ],
+    "SINTEXT": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "SULTAN": [
+     "Makmah",
+     "revancha",
+     [
+      657,
+      "CH",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Saiko": [
+     "Majiztral",
+     "revancha",
+     [
+      645,
+      "URBF",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Sanito": [
+     "beneroo",
+     "escena",
+     null,
+     0
+    ],
+    "Scot": [
+     "Mc arepa",
+     "escena",
+     null,
+     0
+    ],
+    "Senticide": [
+     "Chente",
+     "escena",
+     null,
+     0
+    ],
+    "Sentpa": [
+     "Kourier",
+     "revancha",
+     [
+      600,
+      "FFA",
+      "09/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Shadow": [
+     "Mathhias",
+     "escena",
+     null,
+     0
+    ],
+    "Showsero🇧🇮": [
+     "Raizer",
+     "escena",
+     null,
+     0
+    ],
+    "Showsero🇬🇵": [
+     "MaYeuTyK",
+     "escena",
+     null,
+     0
+    ],
+    "Simon": [
+     "23",
+     "escena",
+     null,
+     0
+    ],
+    "Sin Limites": [
+     "Provenza",
+     "escena",
+     null,
+     0
+    ],
+    "Six": [
+     "NC",
+     "escena",
+     null,
+     0
+    ],
+    "Snow": [
+     "Oasis",
+     "revancha",
+     [
+      633,
+      "FFA",
+      "13/11",
+      "final"
+     ],
+     0
+    ],
+    "Sosa": [
+     "Colesito",
+     "revancha",
+     [
+      398,
+      "ACAD",
+      "22/09",
+      "cuartos"
+     ],
+     0
+    ],
+    "Soulb": [
+     "mats",
+     "revancha",
+     [
+      664,
+      "CH",
+      "19/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Status": [
+     "Makmah",
+     "revancha",
+     [
+      667,
+      "FFA",
+      "21/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Surya": [
+     "PRAISERIZA",
+     "revancha",
+     [
+      647,
+      "FFA",
+      "15/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "TG": [
+     "Majiztral",
+     "revancha",
+     [
+      368,
+      "URBF",
+      "28/09",
+      "octavos"
+     ],
+     0
+    ],
+    "THO": [
+     "Mito",
+     "revancha",
+     [
+      674,
+      "CH",
+      "21/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "TOKYO": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "Tam": [
+     "Oasis",
+     "revancha",
+     [
+      660,
+      "FFA",
+      "17/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Teito": [
+     "Majiztral",
+     "revancha",
+     [
+      635,
+      "URBF",
+      "14/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Telmex": [
+     "Chente",
+     "escena",
+     null,
+     0
+    ],
+    "Tenor": [
+     "Paria",
+     "escena",
+     null,
+     0
+    ],
+    "Teo": [
+     "Choco",
+     "escena",
+     null,
+     0
+    ],
+    "Thaniel": [
+     "Status",
+     "escena",
+     null,
+     0
+    ],
+    "TheOg": [
+     "MCO",
+     "revancha",
+     [
+      674,
+      "CH",
+      "21/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Tmax Turbo [PN]": [
+     "Mito",
+     "revancha",
+     [
+      635,
+      "URBF",
+      "14/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Trelok": [
+     "Mito",
+     "revancha",
+     [
+      553,
+      "SR",
+      "31/10",
+      "semifinales"
+     ],
+     0
+    ],
+    "Trot": [
+     "Majiztral",
+     "escena",
+     null,
+     0
+    ],
+    "TøKīØ🦠🧠": [
+     "Mathhias",
+     "escena",
+     null,
+     0
+    ],
+    "Under": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "VR": [
+     "Gus",
+     "escena",
+     null,
+     0
+    ],
+    "Valen": [
+     "Deko",
+     "revancha",
+     [
+      595,
+      "FFA",
+      "09/11",
+      "final"
+     ],
+     0
+    ],
+    "Vandu": [
+     "Makmah",
+     "revancha",
+     [
+      645,
+      "URBF",
+      "15/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Verc": [
+     "Dyzz",
+     "revancha",
+     [
+      600,
+      "FFA",
+      "09/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "Vilca": [
+     "LRS",
+     "escena",
+     null,
+     0
+    ],
+    "Walker": [
+     "Colesito",
+     "revancha",
+     [
+      664,
+      "CH",
+      "19/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "XMILE": [
+     "Inhuman",
+     "escena",
+     null,
+     0
+    ],
+    "XXX 🇻🇪": [
+     "MauzzitoEmeces",
+     "escena",
+     null,
+     0
+    ],
+    "XXXX": [
+     "BTRX",
+     "escena",
+     null,
+     0
+    ],
+    "XXXX 🇻🇪": [
+     "MauzzitoEmeces",
+     "escena",
+     null,
+     0
+    ],
+    "Xclusivo": [
+     "Deko",
+     "revancha",
+     [
+      657,
+      "CH",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "Xubaru": [
+     "Dios",
+     "escena",
+     null,
+     0
+    ],
+    "YOUNG VLAD": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Yahweh": [
+     "MauzzitoEmeces",
+     "escena",
+     null,
+     0
+    ],
+    "Ydimekemeamasaunqueseamentira🇧🇾": [
+     "crakero",
+     "escena",
+     null,
+     0
+    ],
+    "Yeyox": [
+     "MCO",
+     "revancha",
+     [
+      674,
+      "CH",
+      "21/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "Yor": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "Yukan": [
+     "Yor",
+     "escena",
+     null,
+     0
+    ],
+    "Zanti": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
+    "Zanz": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "Zetryko": [
+     "Player",
+     "revancha",
+     [
+      424,
+      "DDF",
+      "07/10",
+      "semifinales"
+     ],
+     0
+    ],
+    "ZiarKI": [
+     "LAST",
+     "escena",
+     null,
+     0
+    ],
+    "Zignos": [
+     "Dominick",
+     "revancha",
+     [
+      657,
+      "CH",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "_Mateo": [
+     "Thaniel",
+     "escena",
+     null,
+     0
+    ],
+    "angelo": [
+     "beneroo",
+     "escena",
+     null,
+     0
+    ],
+    "araya": [
+     "crakero",
+     "revancha",
+     [
+      593,
+      "FFA",
+      "08/11",
+      "octavos"
+     ],
+     0
+    ],
+    "astrid": [
+     "compare",
+     "escena",
+     null,
+     0
+    ],
+    "beneroo": [
+     "Flash",
+     "revancha",
+     [
+      666,
+      "CH",
+      "19/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "blackstar27": [
+     "CNC",
+     "escena",
+     null,
+     0
+    ],
+    "compare": [
+     "CNC",
+     "escena",
+     null,
+     0
+    ],
+    "crakero": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
+    "doble h": [
+     "Vandu",
+     "revancha",
+     [
+      449,
+      "FFA",
+      "11/10",
+      "octavos"
+     ],
+     0
+    ],
+    "dxg": [
+     "crakero",
+     "revancha",
+     [
+      634,
+      "FFA",
+      "13/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "finnpapá🇭🇳": [
+     "Geoka",
+     "revancha",
+     [
+      657,
+      "CH",
+      "15/11",
+      "octavos"
+     ],
+     0
+    ],
+    "francis": [
+     "Erian",
+     "revancha",
+     [
+      465,
+      "FFA",
+      "13/10",
+      "semifinales"
+     ],
+     0
+    ],
+    "giansito": [
+     "AbrahamH",
+     "escena",
+     null,
+     0
+    ],
+    "j.nibbana": [
+     "CNC",
+     "escena",
+     null,
+     0
+    ],
+    "jazi": [
+     "Colesito",
+     "revancha",
+     [
+      631,
+      "SR",
+      "13/11",
+      "tercer lugar"
+     ],
+     0
+    ],
+    "kychi": [
+     "MauzzitoEmeces",
+     "escena",
+     null,
+     0
+    ],
+    "leteletras": [
+     "Colesito",
+     "revancha",
+     [
+      648,
+      "CH",
+      "15/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "letrao": [
+     "0223 🇧🇧",
+     "escena",
+     null,
+     0
+    ],
+    "masterx🇻🇪": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "mats": [
+     "Walker",
+     "escena",
+     null,
+     0
+    ],
+    "melomaniaco": [
+     "Akuseru",
+     "escena",
+     null,
+     0
+    ],
+    "mityar": [
+     "Julda",
+     "escena",
+     null,
+     0
+    ],
+    "ojos melancólicos 🇨🇱": [
+     "Status",
+     "escena",
+     null,
+     0
+    ],
+    "oriuz": [
+     "Dios",
+     "escena",
+     null,
+     0
+    ],
+    "pibe": [
+     "Status",
+     "escena",
+     null,
+     0
+    ],
+    "replisan": [
+     "Fecha",
+     "escena",
+     null,
+     0
+    ],
+    "rodrilp": [
+     "Oasis",
+     "revancha",
+     [
+      660,
+      "FFA",
+      "17/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "romeo": [
+     "Yor",
+     "escena",
+     null,
+     0
+    ],
+    "tato": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "tixer": [
+     "Simon",
+     "escena",
+     null,
+     0
+    ],
+    "tommy": [
+     "Julda",
+     "revancha",
+     [
+      666,
+      "CH",
+      "19/11",
+      "cuartos"
+     ],
+     0
+    ],
+    "xr 🇧🇼": [
+     "Thaniel",
+     "escena",
+     null,
+     0
+    ],
+    "xx🇮🇨": [
+     "MauzzitoEmeces",
+     "escena",
+     null,
+     0
+    ],
+    "y Jahno 🇧🇧": [
+     "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "yinn": [
+     "Makmah",
+     "revancha",
+     [
+      592,
+      "FFA",
+      "08/11",
+      "semifinales"
+     ],
+     0
+    ]
+   },
+   "prog": {},
+   "pts": {}
   }
  },
  "suma": {
@@ -11294,7 +14493,7 @@
   "Miniboy": 9100,
   "Mito": 6000,
   "Mochi DG": 300,
-  "Molusco": 5700,
+  "Molusco": 6700,
   "Monet": 300,
   "Mosquitrap 🦟": 5000,
   "Motera": 3200,

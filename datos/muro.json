@@ -295,6 +295,15 @@
 "rg": "C",
 "c": []
 },
+"soulb": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "chop": {
 "rg": "D",
 "c": []
@@ -344,15 +353,6 @@
 ]
 },
 "cronox": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"soulb": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -788,10 +788,6 @@
 "temporada"
 ]
 },
-"jj": {
-"rg": "",
-"c": []
-},
 "shadow": {
 "rg": "E",
 "c": [
@@ -799,6 +795,10 @@
 "servidor",
 "temporada"
 ]
+},
+"jj": {
+"rg": "",
+"c": []
 },
 "presagio": {
 "rg": "",
@@ -8341,8 +8341,8 @@
 "tipo": "resnoche",
 "t": "2026-11-23T08:00:00Z",
 "dia": "2026-11-22",
-"eventos": 3,
-"part": 39,
+"eventos": 4,
+"part": 57,
 "campeones": [
 {
 "ev": "VERSO STYLE",
@@ -8363,6 +8363,17 @@
 [
 "Revo",
 ""
+]
+]
+},
+{
+"ev": "(sin titulo)",
+"sv": "LKR",
+"ll": 679,
+"quien": [
+[
+"Molusco",
+"molusco"
 ]
 ]
 },
@@ -8388,6 +8399,12 @@
 ],
 "suman": [
 {
+"n": "Molusco",
+"k": "molusco",
+"pts": 12500,
+"ev": 2
+},
+{
 "n": "Mark98",
 "k": "mark98",
 "pts": 7500,
@@ -8398,15 +8415,15 @@
 "k": "",
 "pts": 7500,
 "ev": 1
-},
-{
-"n": "Dios",
-"k": "dios",
-"pts": 7000,
-"ev": 2
 }
 ],
 "suben": [
+{
+"n": "King",
+"k": "",
+"de": 792,
+"a": 706
+},
 {
 "n": "Choco",
 "k": "",
@@ -8418,12 +8435,6 @@
 "k": "",
 "de": 226,
 "a": 152
-},
-{
-"n": "Mark98",
-"k": "mark98",
-"de": 379,
-"a": 310
 }
 ],
 "sorpresas": [
@@ -8474,11 +8485,8 @@
 "WOF": 3
 },
 "meta": [
-"2026-11-16",
-[
-"CH",
-"DDS"
-]
+"2026-11-23",
+[]
 ],
 "top10": {
 "temporada": [
@@ -8531,7 +8539,7 @@
 "colesito": 1,
 "agus": 0,
 "mrstillballin": 5,
-"mco": 2,
+"mco": 0,
 "provenza": 0,
 "yinn": 0,
 "miniboy": 0,
@@ -8544,7 +8552,7 @@
 "velatz": 0,
 "mito": 0,
 "zignos": 1,
-"molusco": 1,
+"molusco": 2,
 "guess": 1,
 "walker": 0,
 "delux": 0,
@@ -8569,13 +8577,13 @@
 "lordviruzz": 0,
 "caliz": 0,
 "dominick": 0,
-"mathhias": 0,
+"mathhias": 1,
 "tøkiø": 0,
 "mayeutyk": 1,
 "dyzz": 0,
 "mats": 3,
 "numberve": 0,
-"soulb": 1,
+"soulb": 2,
 "bna": 2,
 "paria": 1,
 "last": 0,

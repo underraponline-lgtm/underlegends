@@ -1443,6 +1443,29 @@
       "DRA",
       "URBF"
      ]
+    ],
+    "ppp": {
+     "FRZ": 0,
+     "CH": 2835.1,
+     "FFS": 0,
+     "DDS": 4910.0,
+     "CEU": 0,
+     "SR": 0,
+     "LKR": 4514.7,
+     "ACAD": 0,
+     "FDS": 1781.2,
+     "FVS": 0,
+     "DDF": 0,
+     "FFA": 3433.5,
+     "DRA": 0,
+     "URBF": 0
+    },
+    "gana": [
+     "CH",
+     "DDS",
+     "LKR",
+     "FDS",
+     "FFA"
     ]
    },
    "metas": {
@@ -1539,7 +1562,8 @@
      "FDS": 8,
      "DW": 8
     },
-    "gana": "LKR"
+    "gana": "LKR",
+    "final": true
    },
    "meta_va": {
     "ACAD": 0,
@@ -1556,6 +1580,156 @@
     "LKR": 17,
     "SR": 0,
     "URBF": 0
+   },
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "MCO",
+     93656
+    ],
+    "revelacion": [
+     "Flash",
+     82500
+    ],
+    "servidor": [
+     "FFA",
+     79
+    ]
+   }
+  },
+  {
+   "id": "2026-11-23",
+   "inicio": "2026-11-23T16:00:00Z",
+   "fin": "2026-11-30T16:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-11-23T16:23:02Z",
+   "sv": {
+    "CH": 3.0,
+    "FDS": 1.5,
+    "FRZ": 1.5,
+    "FFA": 3.0,
+    "DDF": 1.5,
+    "LKR": 2.25,
+    "URBF": 1,
+    "FVS": 1.5,
+    "DRA": 1,
+    "CEU": 1,
+    "SR": 2,
+    "ACAD": 1.5,
+    "DDS": 3.0,
+    "WOF": 1,
+    "CHZ": 1.5,
+    "FFS": 1.5
+   },
+   "dorado": {
+    "sv": "CEU",
+    "desde": "2026-11-25T05:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "CHZ",
+      "CEU"
+     ],
+     [
+      "FDS",
+      "FFS"
+     ],
+     [
+      "DDS",
+      "SR"
+     ],
+     [
+      "DRA",
+      "ACAD"
+     ],
+     [
+      "FVS",
+      "LKR"
+     ],
+     [
+      "CH",
+      "URBF"
+     ],
+     [
+      "FRZ",
+      "WOF"
+     ],
+     [
+      "FFA",
+      "DDF"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 42,
+    "CEU": 24,
+    "CH": 42,
+    "CHZ": 8,
+    "DDF": 39,
+    "DDS": 26,
+    "DRA": 8,
+    "FDS": 18,
+    "FFA": 108,
+    "FFS": 8,
+    "FRZ": 14,
+    "FVS": 8,
+    "LKR": 25,
+    "SR": 18,
+    "URBF": 25,
+    "WOF": 8
+   },
+   "votado": {
+    "sv": "FFA",
+    "votos": 2,
+    "de": 3
+   },
+   "premios": {
+    "FFA": [
+     "votado",
+     "guerra"
+    ],
+    "CH": [
+     "guerra"
+    ],
+    "DDS": [
+     "guerra"
+    ],
+    "LKR": [
+     "guerra",
+     "semillero"
+    ],
+    "FDS": [
+     "guerra"
+    ]
+   },
+   "copa": {
+    "org": "Erian",
+    "clave": "erian"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "CEU": 0,
+    "CH": 0,
+    "CHZ": 0,
+    "DDF": 0,
+    "DDS": 0,
+    "DRA": 0,
+    "FDS": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "FRZ": 0,
+    "FVS": 0,
+    "LKR": 0,
+    "SR": 0,
+    "URBF": 0,
+    "WOF": 0
    }
   }
  ]

@@ -46161,7 +46161,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "3647a29f1299c7e8",
+  "firma": "ca0f22a089d39127",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47444,7 +47444,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "9fde59eaa60a9767",
+  "firma": "621049ae51147592",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -47882,7 +47882,7 @@
    "romeo": 4
   },
   "fecha": "13/11",
-  "firma": "1b179e2d9327ebed",
+  "firma": "d80adccba0186ec3",
   "msg": "1571023860630028319",
   "nombre": "__ qcyo rapeen 15 __",
   "num": 634,
@@ -50104,7 +50104,7 @@
    "yinn": 36
   },
   "fecha": "15/11",
-  "firma": "b4f5ec5c3c707599",
+  "firma": "f284c1d7500f760a",
   "msg": "1571699312382054502",
   "nombre": "__ qcyo rapeen 17 __",
   "num": 647,
@@ -51242,7 +51242,7 @@
    "crakero": 11
   },
   "fecha": "13/11",
-  "firma": "83d5e7fcb62e2b0c",
+  "firma": "77cfeb4619440faa",
   "msg": "1572055186955046984",
   "nombre": "RAP SIN GROSERIAS 6",
   "num": 653,
@@ -56891,6 +56891,208 @@
     "Provenza",
     "Semifinal",
     1750
+   ]
+  ],
+  "v": 2
+ },
+ "679": {
+  "antes": {
+   "Hedorah": [
+    432,
+    353,
+    true
+   ],
+   "Keider": [
+    57,
+    67,
+    false
+   ],
+   "King": [
+    798,
+    796,
+    true
+   ],
+   "LAST": [
+    55,
+    65,
+    false
+   ],
+   "Liam": [
+    144,
+    218,
+    false
+   ],
+   "MCO": [
+    11,
+    11,
+    false
+   ],
+   "Mathhias": [
+    48,
+    57,
+    false
+   ],
+   "Mc Glock": [
+    564,
+    523,
+    true
+   ],
+   "Molusco": [
+    29,
+    31,
+    false
+   ],
+   "Shadow": [
+    83,
+    102,
+    false
+   ],
+   "Soulb": [
+    38,
+    44,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Molusco",
+    "Mc Glock",
+    "Molusco"
+   ],
+   [
+    "LIZE🇦🇷",
+    "Keider",
+    "LIZE🇦🇷"
+   ],
+   [
+    "Hedorah",
+    "Liam",
+    "Hedorah"
+   ],
+   [
+    "Soulb",
+    "Shadow",
+    "Soulb"
+   ],
+   [
+    "Molusco",
+    "MCO",
+    "Molusco"
+   ],
+   [
+    "LIZE🇦🇷",
+    "Hedorah",
+    "LIZE🇦🇷"
+   ],
+   [
+    "Mathhias",
+    "King",
+    "Mathhias"
+   ],
+   [
+    "Soulb",
+    "LAST",
+    "Soulb"
+   ],
+   [
+    "Molusco",
+    "LIZE🇦🇷",
+    "Molusco"
+   ],
+   [
+    "Soulb",
+    "Mathhias",
+    "Soulb"
+   ],
+   [
+    "Molusco",
+    "Soulb",
+    "Molusco"
+   ]
+  ],
+  "ev_antes": {
+   "Hedorah": 2,
+   "Keider": 21,
+   "King": 1,
+   "LAST": 24,
+   "Liam": 4,
+   "MCO": 49,
+   "Mathhias": 18,
+   "Mc Glock": 2,
+   "Molusco": 32,
+   "Shadow": 29,
+   "Soulb": 35
+  },
+  "fecha": "22/11",
+  "nombre": "(sin titulo)",
+  "num": 679,
+  "participantes": 18,
+  "sello": {
+   "Molusco": "dc0b79da3862:a8d8b7335469"
+  },
+  "sv": "LKR",
+  "t": "2026-11-23T16:27:50Z",
+  "tabla": [
+   [
+    "Molusco",
+    "Campeón",
+    10000
+   ],
+   [
+    "Soulb",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "LIZE🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Hedorah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "King",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mc Glock",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Liam",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

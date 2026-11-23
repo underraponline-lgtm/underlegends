@@ -21,7 +21,6 @@
   [],
   [],
   [],
-  [],
   [
    [
     [
@@ -109,6 +108,52 @@
      ]
     ],
     [
+     "Molusco",
+     76,
+     3,
+     4,
+     0,
+     [
+      [
+       21,
+       "Soulb"
+      ],
+      [
+       18,
+       "LIZE🇦🇷"
+      ],
+      [
+       15,
+       "Mc Glock"
+      ]
+     ]
+    ],
+    [
+     "Soulb",
+     71,
+     8,
+     4,
+     0,
+     [
+      [
+       -21,
+       "Molusco"
+      ],
+      [
+       16,
+       "Mathhias"
+      ],
+      [
+       15,
+       "LAST"
+      ]
+     ]
+    ]
+   ]
+  ],
+  [
+   [
+    [
      "Mito",
      56,
      12,
@@ -185,27 +230,6 @@
       [
        19,
        "OG"
-      ]
-     ]
-    ],
-    [
-     "Soulb",
-     38,
-     4,
-     5,
-     1,
-     [
-      [
-       20,
-       "AbrahamH"
-      ],
-      [
-       9,
-       "giansito"
-      ],
-      [
-       9,
-       "Fecha"
       ]
      ]
     ],
@@ -433,6 +457,27 @@
      ]
     ],
     [
+     "LIZE🇦🇷",
+     13,
+     3,
+     5,
+     0,
+     [
+      [
+       -18,
+       "Molusco"
+      ],
+      [
+       16,
+       "Hedorah"
+      ],
+      [
+       15,
+       "Keider"
+      ]
+     ]
+    ],
+    [
      "NXUZ",
      0,
      7,
@@ -555,6 +600,27 @@
       [
        8,
        "Gus"
+      ]
+     ]
+    ],
+    [
+     "LAST",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -15,
+       "Soulb"
+      ],
+      [
+       -16,
+       "Mosquitrap 🦟"
+      ],
+      [
+       15,
+       "Mito"
       ]
      ]
     ],
@@ -690,6 +756,23 @@
      ]
     ],
     [
+     "Hedorah",
+     0,
+     2,
+     5,
+     0,
+     [
+      [
+       -16,
+       "LIZE🇦🇷"
+      ],
+      [
+       15,
+       "Liam"
+      ]
+     ]
+    ],
+    [
      "Jupiter",
      0,
      2,
@@ -716,23 +799,6 @@
       [
        15,
        "Calíz"
-      ]
-     ]
-    ],
-    [
-     "LAST",
-     0,
-     2,
-     5,
-     0,
-     [
-      [
-       -16,
-       "Mosquitrap 🦟"
-      ],
-      [
-       15,
-       "Mito"
       ]
      ]
     ],
@@ -784,6 +850,23 @@
       [
        -9,
        "Makmah"
+      ]
+     ]
+    ],
+    [
+     "Shadow",
+     0,
+     2,
+     5,
+     0,
+     [
+      [
+       -13,
+       "Soulb"
+      ],
+      [
+       -15,
+       "Adriagner"
       ]
      ]
     ],
@@ -1073,6 +1156,19 @@
      ]
     ],
     [
+     "Keider",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -15,
+       "LIZE🇦🇷"
+      ]
+     ]
+    ],
+    [
      "LEWITO",
      0,
      1,
@@ -1086,6 +1182,19 @@
      ]
     ],
     [
+     "Liam",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -15,
+       "Hedorah"
+      ]
+     ]
+    ],
+    [
      "LitKunai",
      0,
      1,
@@ -1095,6 +1204,32 @@
       [
        -10,
        "PichulaMc"
+      ]
+     ]
+    ],
+    [
+     "Mathhias",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -16,
+       "Soulb"
+      ]
+     ]
+    ],
+    [
+     "Mc Glock",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -15,
+       "Molusco"
       ]
      ]
     ],
@@ -1121,19 +1256,6 @@
       [
        -9,
        "Colesito"
-      ]
-     ]
-    ],
-    [
-     "Shadow",
-     0,
-     1,
-     5,
-     0,
-     [
-      [
-       -15,
-       "Adriagner"
       ]
      ]
     ],
@@ -1340,7 +1462,7 @@
      []
     ],
     [
-     "LRS",
+     "King",
      0,
      0,
      5,
@@ -1348,7 +1470,7 @@
      []
     ],
     [
-     "Molusco",
+     "LRS",
      0,
      0,
      5,
@@ -1455,7 +1577,7 @@
   ]
  ],
  "escalera": "temporada",
- "fin": "2026-11-23T16:00:00Z",
+ "fin": "2026-11-30T16:00:00Z",
  "historico": {
   ".SosaATR": 925,
   "0223 🇧🇧": 975,
@@ -1684,7 +1806,7 @@
   "Hassan": 1197,
   "HatshepsuT": 984,
   "Heat": 976,
-  "Hedorah": 987,
+  "Hedorah": 986,
   "Henry": 962,
   "Hirex": 973,
   "Hotaru Adeyemi 🏳️‍⚧️": 1062,
@@ -1743,7 +1865,7 @@
   "Karma": 990,
   "Karumailafmasha🇹🇼": 976,
   "Kastigoz": 964,
-  "Keider": 924,
+  "Keider": 915,
   "Kenny": 965,
   "Keplatoo🇪🇸": 979,
   "Kminant": 1022,
@@ -1762,10 +1884,11 @@
   "Kyss": 1037,
   "LANCER L🇻🇪": 976,
   "LARRIX🇦🇷": 998,
-  "LAST": 998,
+  "LAST": 988,
   "LEWITO": 950,
   "LGBD": 992,
   "LICENCIADO 🇲🇽": 1026,
+  "LIZE🇦🇷": 1019,
   "LOBO ES 🇲🇽": 972,
   "LOCOLOCO🇪🇸": 988,
   "LRS": 903,
@@ -1781,7 +1904,7 @@
   "Leopold sedar 🇸🇳": 985,
   "Leyenda": 848,
   "Lhyon": 936,
-  "Liam": 973,
+  "Liam": 950,
   "Liberia": 1199,
   "Lilñaño": 1022,
   "LitKunai": 959,
@@ -1823,11 +1946,11 @@
   "Marley🇦🇷": 1033,
   "Marto AR": 991,
   "Masino": 1068,
-  "Mathhias": 991,
+  "Mathhias": 981,
   "Matias": 990,
   "Mato 🇵🇪": 908,
   "MauzzitoEmeces": 998,
-  "Mc Glock": 976,
+  "Mc Glock": 957,
   "Mc arepa": 983,
   "Mc dl": 940,
   "Medster": 988,
@@ -1840,7 +1963,7 @@
   "Mito": 1015,
   "Mochi DG": 933,
   "Molt": 933,
-  "Molusco": 1048,
+  "Molusco": 1081,
   "Monamay": 977,
   "Monet": 984,
   "Mosquitrap 🦟": 1141,
@@ -1965,7 +2088,7 @@
   "Senticide": 992,
   "Sentpa": 976,
   "Sexo": 1000,
-  "Shadow": 843,
+  "Shadow": 837,
   "Shitka": 975,
   "Showsero🇬🇵": 995,
   "SikoV": 978,
@@ -1981,7 +2104,7 @@
   "Sombra": 1002,
   "Soneto": 996,
   "Sosa": 970,
-  "Soulb": 1024,
+  "Soulb": 1040,
   "Spartan": 975,
   "Status": 1009,
   "Steven🇨🇴": 1000,
@@ -2120,9 +2243,221 @@
   "yinn": 1137,
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": 988
  },
- "mejor": {},
+ "mejor": {
+  "23": 0,
+  "AbrahamH": 1,
+  "Abyssus": 3,
+  "Adriagner": 0,
+  "Agente sombra": 0,
+  "Akuseru": 0,
+  "Andres": 0,
+  "Ariaxer": 0,
+  "Artezzy": 0,
+  "BLITZ": 0,
+  "BNA": 1,
+  "Calíz": 0,
+  "Chaz🇵🇪": 0,
+  "Chente": 0,
+  "Choco": 0,
+  "Colesito": 0,
+  "CrisZJ": 0,
+  "Cronox": 0,
+  "DarnBless": 0,
+  "Deko": 0,
+  "Deuxs": 0,
+  "Dios": 1,
+  "Dominick": 0,
+  "Dorado": 0,
+  "Dyzz": 0,
+  "EIDP": 1,
+  "Efimero": 0,
+  "Enzinho": 0,
+  "Erian": 0,
+  "Fecha": 0,
+  "G meiker": 0,
+  "GARZXI": 0,
+  "Geoka": 0,
+  "Gus": 0,
+  "Hedorah": 0,
+  "Inhuman": 0,
+  "Izaya": 0,
+  "JEIXDER": 0,
+  "Jodnes": 0,
+  "Julda": 0,
+  "Jupiter": 0,
+  "Kaled": 0,
+  "Keider": 0,
+  "King": 0,
+  "Kourier": 0,
+  "Kusoh": 0,
+  "LAST": 0,
+  "LEWITO": 0,
+  "LIZE🇦🇷": 0,
+  "LRS": 0,
+  "Liam": 0,
+  "LitKunai": 0,
+  "MCO": 3,
+  "Magic": 0,
+  "Majiztral": 1,
+  "Makmah": 0,
+  "Mark98": 3,
+  "Mathhias": 0,
+  "Mc Glock": 0,
+  "Mc arepa": 0,
+  "Miniboy": 0,
+  "Minis": 0,
+  "Mito": 2,
+  "Molusco": 3,
+  "Mosquitrap 🦟": 2,
+  "NC": 0,
+  "NXUZ": 0,
+  "OG": 0,
+  "OKAM": 0,
+  "Oasis": 0,
+  "PRAISERIZA": 0,
+  "Paria": 0,
+  "PichulaMc": 1,
+  "Player": 0,
+  "Provenza": 0,
+  "Raizer": 0,
+  "Revo": 3,
+  "SAIDEM": 0,
+  "SULTAN": 0,
+  "Shadow": 0,
+  "Sin Limites": 0,
+  "Snow": 0,
+  "Soulb": 3,
+  "Status": 0,
+  "THO": 1,
+  "TOKYO": 0,
+  "Tam": 0,
+  "Telmex": 0,
+  "Teo": 0,
+  "Thaniel": 0,
+  "TheOg": 0,
+  "Vandu": 0,
+  "Vilca": 0,
+  "XMILE": 0,
+  "Xubaru": 0,
+  "Yeyox": 2,
+  "Zignos": 0,
+  "_Mateo": 0,
+  "compare": 0,
+  "giansito": 0,
+  "mityar": 0,
+  "oriuz": 0,
+  "replisan": 0,
+  "romeo": 0,
+  "yinn": 0
+ },
  "modo": "elo",
- "nivel": {},
+ "nivel": {
+  "23": 5,
+  "AbrahamH": 5,
+  "Abyssus": 4,
+  "Adriagner": 5,
+  "Agente sombra": 5,
+  "Akuseru": 5,
+  "Andres": 5,
+  "Ariaxer": 5,
+  "Artezzy": 5,
+  "BLITZ": 5,
+  "BNA": 5,
+  "Calíz": 5,
+  "Chaz🇵🇪": 5,
+  "Chente": 5,
+  "Choco": 5,
+  "Colesito": 5,
+  "CrisZJ": 5,
+  "Cronox": 5,
+  "DarnBless": 5,
+  "Deko": 5,
+  "Deuxs": 5,
+  "Dios": 5,
+  "Dominick": 5,
+  "Dorado": 5,
+  "Dyzz": 5,
+  "EIDP": 5,
+  "Efimero": 5,
+  "Enzinho": 5,
+  "Erian": 5,
+  "Fecha": 5,
+  "G meiker": 5,
+  "GARZXI": 5,
+  "Geoka": 5,
+  "Gus": 5,
+  "Hedorah": 5,
+  "Inhuman": 5,
+  "Izaya": 5,
+  "JEIXDER": 5,
+  "Jodnes": 5,
+  "Julda": 5,
+  "Jupiter": 5,
+  "Kaled": 5,
+  "Keider": 5,
+  "King": 5,
+  "Kourier": 5,
+  "Kusoh": 5,
+  "LAST": 5,
+  "LEWITO": 5,
+  "LIZE🇦🇷": 5,
+  "LRS": 5,
+  "Liam": 5,
+  "LitKunai": 5,
+  "MCO": 4,
+  "Magic": 5,
+  "Majiztral": 5,
+  "Makmah": 5,
+  "Mark98": 4,
+  "Mathhias": 5,
+  "Mc Glock": 5,
+  "Mc arepa": 5,
+  "Miniboy": 5,
+  "Minis": 5,
+  "Mito": 5,
+  "Molusco": 4,
+  "Mosquitrap 🦟": 5,
+  "NC": 5,
+  "NXUZ": 5,
+  "OG": 5,
+  "OKAM": 5,
+  "Oasis": 5,
+  "PRAISERIZA": 5,
+  "Paria": 5,
+  "PichulaMc": 5,
+  "Player": 5,
+  "Provenza": 5,
+  "Raizer": 5,
+  "Revo": 4,
+  "SAIDEM": 5,
+  "SULTAN": 5,
+  "Shadow": 5,
+  "Sin Limites": 5,
+  "Snow": 5,
+  "Soulb": 4,
+  "Status": 5,
+  "THO": 5,
+  "TOKYO": 5,
+  "Tam": 5,
+  "Telmex": 5,
+  "Teo": 5,
+  "Thaniel": 5,
+  "TheOg": 5,
+  "Vandu": 5,
+  "Vilca": 5,
+  "XMILE": 5,
+  "Xubaru": 5,
+  "Yeyox": 5,
+  "Zignos": 5,
+  "_Mateo": 5,
+  "compare": 5,
+  "giansito": 5,
+  "mityar": 5,
+  "oriuz": 5,
+  "replisan": 5,
+  "romeo": 5,
+  "yinn": 5
+ },
  "nombres": [
   "Mítico",
   "Diamante",
@@ -2139,991 +2474,9 @@
  "premio_sub": 150,
  "prov": 0,
  "prueba": "2026-11-20",
- "pts_dia": {
-  "23": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "AbrahamH": [
-   0,
-   21038,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Abyssus": [
-   0,
-   30000,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Adriagner": [
-   0,
-   8700,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Agente sombra": [
-   0,
-   3750,
-   3000,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Akuseru": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Andres": [
-   0,
-   5625,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Ariaxer": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Artezzy": [
-   0,
-   4950,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "BLITZ": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "BNA": [
-   0,
-   22500,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Calíz": [
-   0,
-   1500,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Chaz🇵🇪": [
-   0,
-   5000,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Chente": [
-   0,
-   8750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Choco": [
-   0,
-   0,
-   4950,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Colesito": [
-   0,
-   17250,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "CrisZJ": [
-   0,
-   4950,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Cronox": [
-   0,
-   7500,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "DarnBless": [
-   0,
-   6188,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Deko": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Deuxs": [
-   0,
-   11625,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Dios": [
-   0,
-   8706,
-   15612,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Dominick": [
-   0,
-   3750,
-   4950,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Dorado": [
-   0,
-   0,
-   2000,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Dyzz": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "EIDP": [
-   0,
-   18000,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Efimero": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Enzinho": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Erian": [
-   0,
-   5250,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Fecha": [
-   0,
-   17944,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "G meiker": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "GARZXI": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Geoka": [
-   0,
-   7875,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Gus": [
-   0,
-   9750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Inhuman": [
-   0,
-   18188,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Izaya": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "JEIXDER": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Jodnes": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Julda": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Jupiter": [
-   0,
-   6188,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Kaled": [
-   0,
-   8250,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Kourier": [
-   0,
-   0,
-   5000,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Kusoh": [
-   0,
-   2625,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "LAST": [
-   0,
-   2625,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "LEWITO": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "LRS": [
-   0,
-   5625,
-   5250,
-   0,
-   0,
-   0,
-   0
-  ],
-  "LitKunai": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "MCO": [
-   0,
-   84375,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Magic": [
-   0,
-   5625,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Majiztral": [
-   0,
-   24375,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Makmah": [
-   0,
-   30750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Mark98": [
-   0,
-   4950,
-   18562,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Mc arepa": [
-   0,
-   12500,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Miniboy": [
-   0,
-   3750,
-   4950,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Minis": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Mito": [
-   0,
-   38700,
-   15150,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Molusco": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Mosquitrap 🦟": [
-   0,
-   5625,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "NC": [
-   0,
-   0,
-   5250,
-   0,
-   0,
-   0,
-   0
-  ],
-  "NXUZ": [
-   0,
-   17944,
-   7425,
-   0,
-   0,
-   0,
-   0
-  ],
-  "OG": [
-   0,
-   11250,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "OKAM": [
-   0,
-   4950,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Oasis": [
-   0,
-   0,
-   9999,
-   0,
-   0,
-   0,
-   0
-  ],
-  "PRAISERIZA": [
-   0,
-   11250,
-   9999,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Paria": [
-   0,
-   13500,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "PichulaMc": [
-   0,
-   0,
-   9999,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Player": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Provenza": [
-   0,
-   0,
-   5250,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Raizer": [
-   0,
-   5000,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Revo": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "SAIDEM": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "SULTAN": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Shadow": [
-   0,
-   1500,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Sin Limites": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Snow": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Soulb": [
-   0,
-   16125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Status": [
-   0,
-   16500,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "THO": [
-   0,
-   17325,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "TOKYO": [
-   0,
-   0,
-   5250,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Tam": [
-   0,
-   0,
-   5250,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Telmex": [
-   0,
-   17500,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Teo": [
-   0,
-   0,
-   4950,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Thaniel": [
-   0,
-   3750,
-   3500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "TheOg": [
-   0,
-   8250,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Vandu": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Vilca": [
-   0,
-   13025,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "XMILE": [
-   0,
-   4125,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Xubaru": [
-   0,
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Yeyox": [
-   0,
-   17325,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "Zignos": [
-   0,
-   14625,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "_Mateo": [
-   0,
-   0,
-   2000,
-   0,
-   0,
-   0,
-   0
-  ],
-  "compare": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "giansito": [
-   0,
-   4950,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "mityar": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "oriuz": [
-   0,
-   0,
-   4950,
-   0,
-   0,
-   0,
-   0
-  ],
-  "replisan": [
-   0,
-   7425,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "romeo": [
-   0,
-   0,
-   7500,
-   0,
-   0,
-   0,
-   0
-  ],
-  "yinn": [
-   0,
-   3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ]
- },
- "pts_sem": {
-  "23": 5125,
-  "AbrahamH": 21038,
-  "Abyssus": 30000,
-  "Adriagner": 8700,
-  "Agente sombra": 9250,
-  "Akuseru": 3750,
-  "Andres": 5625,
-  "Ariaxer": 3750,
-  "Artezzy": 4950,
-  "BLITZ": 3750,
-  "BNA": 22500,
-  "Calíz": 1500,
-  "Chaz🇵🇪": 5000,
-  "Chente": 8750,
-  "Choco": 4950,
-  "Colesito": 18250,
-  "CrisZJ": 5950,
-  "Cronox": 15000,
-  "DarnBless": 6188,
-  "Deko": 3750,
-  "Deuxs": 11625,
-  "Dios": 26819,
-  "Dominick": 8700,
-  "Dorado": 2000,
-  "Dyzz": 3750,
-  "EIDP": 18000,
-  "Efimero": 4125,
-  "Enzinho": 4125,
-  "Erian": 5250,
-  "Fecha": 17944,
-  "G meiker": 4125,
-  "GARZXI": 7500,
-  "Geoka": 7875,
-  "Gus": 9750,
-  "Inhuman": 18188,
-  "Izaya": 3750,
-  "JEIXDER": 4125,
-  "Jodnes": 4125,
-  "Julda": 8500,
-  "Jupiter": 6188,
-  "Kaled": 8250,
-  "Kourier": 5000,
-  "Kusoh": 2625,
-  "LAST": 2625,
-  "LEWITO": 4125,
-  "LRS": 11875,
-  "LitKunai": 7500,
-  "MCO": 85875,
-  "Magic": 5625,
-  "Majiztral": 24375,
-  "Makmah": 30750,
-  "Mark98": 23512,
-  "Mc arepa": 12500,
-  "Miniboy": 8700,
-  "Minis": 4125,
-  "Mito": 56350,
-  "Molusco": 7500,
-  "Mosquitrap 🦟": 5625,
-  "NC": 6250,
-  "NXUZ": 25369,
-  "OG": 11250,
-  "OKAM": 13450,
-  "Oasis": 9999,
-  "PRAISERIZA": 22249,
-  "Paria": 13500,
-  "PichulaMc": 9999,
-  "Player": 6250,
-  "Provenza": 5250,
-  "Raizer": 5000,
-  "Revo": 7500,
-  "SAIDEM": 3750,
-  "SULTAN": 3750,
-  "Shadow": 1500,
-  "Sin Limites": 7500,
-  "Snow": 3750,
-  "Soulb": 18625,
-  "Status": 16500,
-  "THO": 17325,
-  "TOKYO": 5250,
-  "Tam": 5250,
-  "Telmex": 17500,
-  "Teo": 4950,
-  "Thaniel": 8250,
-  "TheOg": 8250,
-  "Vandu": 8500,
-  "Vilca": 15525,
-  "XMILE": 4125,
-  "Xubaru": 3750,
-  "Yeyox": 17325,
-  "Zignos": 14625,
-  "_Mateo": 2000,
-  "compare": 3750,
-  "giansito": 4950,
-  "mityar": 7500,
-  "oriuz": 4950,
-  "replisan": 7425,
-  "romeo": 7500,
-  "yinn": 3750
- },
- "sem": "2026-11-16",
+ "pts_dia": {},
+ "pts_sem": {},
+ "sem": "2026-11-23",
  "subidas": [],
  "subs": [],
  "tramos": [
@@ -3133,6 +2486,17 @@
   135,
   65
  ],
- "ult": null,
+ "ult": {
+  "baja": [],
+  "sem": "2026-11-16",
+  "sube": [
+   "Abyssus",
+   "MCO",
+   "Mark98",
+   "Molusco",
+   "Revo",
+   "Soulb"
+  ]
+ },
  "zona": 5
 }

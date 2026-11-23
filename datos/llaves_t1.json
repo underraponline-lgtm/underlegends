@@ -62932,5 +62932,218 @@
    "min": 124,
    "v": 1
   }
+ },
+ "679": {
+  "dia": "2026-11-22",
+  "escala": "16+",
+  "fecha": "22/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1560645507095728278/1574217678510362707"
+  ],
+  "n": 679,
+  "nombre": "(sin titulo)",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "Mc Glock"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "LIZE🇦🇷",
+       "Keider"
+      ],
+      "LIZE🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Hedorah",
+       "Liam"
+      ],
+      "Hedorah",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Shadow"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Dominick 🇵🇪",
+       "Miniboy🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "ISMEL 🇻🇪",
+       "Calíz 🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "XERVO 🇨🇱",
+       "onzas 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "MCO"
+      ],
+      "Molusco",
+      "Walk-in 1: MCO 🇦🇷"
+     ],
+     [
+      [
+       "LIZE🇦🇷",
+       "Hedorah"
+      ],
+      "LIZE🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "King"
+      ],
+      "Mathhias",
+      "Walk-in 1: KING🇨🇴"
+     ],
+     [
+      [
+       "Soulb",
+       "LAST"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "LIZE🇦🇷"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Mathhias"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "Soulb"
+      ],
+      "Molusco",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Molusco",
+    "Campeón",
+    10000
+   ],
+   [
+    "Soulb",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "LIZE🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Hedorah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "King",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Liam",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mc Glock",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 101,
+   "org": "juega",
+   "v": 1
+  }
  }
 }
