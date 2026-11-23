@@ -96,7 +96,7 @@ export const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#F
 // 🖼️ CON SU CARA (23/11/2026, Dlx: «add a picture to the bots of the liga global… on the website when I see someone's
 // profiles that see their followers»). El 4.º lugar es la imagen y el 5.º cómo va: ULAYA con su foto de Discord (guardada
 // en la página, `/pj/ulaya.webp`: la dirección de Discord cambia si se le cambia la foto), cada barra con el logo de su
-// servidor sobre su color (`contain`). El Jurado y El Hype, con sus letras hasta que tengan su dibujo
+// servidor llenando el círculo (Dlx, 23/11: «que ocupe todo el espacio»). El Jurado y El Hype, con sus letras hasta que tengan su dibujo
 const PJ_IMG = { ul: '/pj/ulaya.webp' };
 export function pjDe(k, liga) {
   if (PJ[k]) return [PJ[k][0], PJ[k][1], '#030304', PJ_IMG[k] || '', 'cubre'];
