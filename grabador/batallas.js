@@ -167,7 +167,8 @@ export const MIN_CLIP_S = 20;
 /** La línea de la lista de la entrega: «`12:31` Cuartos · Ana vs Bea», y si no lleva audio, por qué. */
 export function lineaBatalla(b) {
   const l = `\`${mmss(b.desde)}\` ${b.r} · ${(b.nombres || []).join(' vs ')}`;
-  return b.corta ? l + ` · _sin audio: quedó de ${Math.max(0, Math.round(b.hasta - b.desde))} s_` : l;
+  if (b.corta) return l + ` · _sin audio: quedó de ${Math.max(0, Math.round(b.hasta - b.desde))} s_`;
+  return b.sinAudio ? l + ` · _sin audio: ${b.sinAudio}_` : l;
 }
 
 /**

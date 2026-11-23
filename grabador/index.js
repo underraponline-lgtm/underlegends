@@ -533,10 +533,13 @@ class Grabacion {
       await cortar(mezcla, b.desde, b.hasta, ruta);
       // ✂️ el archivo también se mide: un corte sin volver a codificar puede salir más corto que el tramo
       if (duracion(ruta) < MIN_CLIP_S) { b.corta = true; continue; }
-      clips.push({ attachment: ruta, name: nombreClip(b), peso: fs.statSync(ruta).size });
+      const pesa = fs.statSync(ruta).size;
+      // 📦 y uno que no entra en un mensaje tampoco se manda: se saltaba callado (FFA, 23/11 2:24 AM: 5 en la lista, 3 audios)
+      if (pesa > tope) { b.sinAudio = `pesa ${(pesa / 1e6).toFixed(1)} MB y el canal acepta ${(tope / 1e6).toFixed(0)}`; continue; }
+      clips.push({ attachment: ruta, name: nombreClip(b), peso: pesa });
     }
-    const sinAudio = bs.filter((b) => b.corta).length;
-    if (sinAudio) anotar(`✂️ ${sinAudio} batallas sin audio (quedaron de menos de ${MIN_CLIP_S} s)`);
+    const sinAudio = bs.filter((b) => b.corta || b.sinAudio).length;
+    if (sinAudio) anotar(`✂️ ${sinAudio} batallas sin audio (muy cortas o muy pesadas)`);
     let texto = `⚔️ **Las batallas**, en minutos desde que empezó la grabación (aprox.: salen de quién habló cuándo)`
       + ` · ${bs.length} de ${total}` + (sinAudio ? ` · ${sinAudio} sin audio` : '');
     for (const l of bs.map(lineaBatalla)) { if ((texto + '\n' + l).length > 1900) { texto += '\n…'; break; } texto += '\n' + l; }
@@ -550,7 +553,6 @@ class Grabacion {
       peso = 0;
     };
     for (const c of clips) {
-      if (c.peso > tope) continue;
       if (lote.length >= 10 || peso + c.peso > tope) await mandar();
       lote.push(c);
       peso += c.peso;

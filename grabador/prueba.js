@@ -396,7 +396,9 @@ console.log('\n⚔️ cada batalla en la grabación\n');
     'ningún tramo termina antes de empezar, y se marca «corta» justo el que dura menos de ' + B.MIN_CLIP_S + ' s');
   const vacia = { r: 'Octavos', nombres: ['Status', 'SULTAN', 'Paria'], desde: 3552, hasta: 3552, corta: true };
   ok(B.lineaBatalla(vacia) === '`59:12` Octavos · Status vs SULTAN vs Paria · _sin audio: quedó de 0 s_'
-    && B.lineaBatalla({ ...vacia, hasta: 3700, corta: false }) === '`59:12` Octavos · Status vs SULTAN vs Paria',
+    && B.lineaBatalla({ ...vacia, hasta: 3700, corta: false }) === '`59:12` Octavos · Status vs SULTAN vs Paria'
+    && B.lineaBatalla({ ...vacia, hasta: 3700, corta: false, sinAudio: 'pesa 12.0 MB y el canal acepta 10' })
+      === '`59:12` Octavos · Status vs SULTAN vs Paria · _sin audio: pesa 12.0 MB y el canal acepta 10_',
   'en la lista, la que no lleva audio dice por qué: ' + B.lineaBatalla(vacia));
   // 🎭 el guion: quién tiene el turno, el rival que contesta, el público y el presentador
   const h3 = new B.Habla();
