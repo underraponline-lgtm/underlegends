@@ -598,3 +598,14 @@ dialog.gl-lado[open]{animation:gl-sube .24s cubic-bezier(.32,.72,0,1)}
   .gl .btn,.gl-chip,.gl-gru,.gl-esq,.gl-lad,.gl-fig .gl-banda,.gl-seg button,.gl-blq,.gl-ar-diez li,.gl-ar-sale,.gl-inv-ico{transition:none}
   dialog.gl-lado[open]{animation:none}
 }
+/* 📜 su historia (23/11/2026): la carrera de antes de la T1, de Freestylestats */
+.gl-hist{display:grid;gap:10px;padding:12px 14px;border:2px solid var(--linea)}
+.gl-meds{display:flex;flex-wrap:wrap;gap:6px}
+.gl-meds span,.gl-tits em{font:800 13px/1 var(--gl-l);letter-spacing:.04em;text-transform:uppercase;padding:5px 7px;border-radius:3px;font-style:normal}
+.gl-m1{background:#E8B931;color:#030304}
+.gl-m2{background:#C9CDD2;color:#030304}
+.gl-m3{background:#B87333;color:#030304}
+.gl-tits{display:grid;gap:6px}
+.gl-tits li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:center;font:500 14px/1.35 var(--gl-d)}
+.gl-tits li em{text-align:center}
+.gl-duda{color:var(--gris);font-size:12.5px}

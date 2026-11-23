@@ -109,6 +109,56 @@ function useGlobal() {
   return [D, mal, () => { setMal(false); setD(null); pedido = null; }];
 }
 
+// ── 📜 LA HISTORIA DE CADA UNO (23/11/2026, Dlx: «crea perfiles para los pros o plazas, y ahí agrega sus historias, como
+// Gazir ganó la FMS World Series… para que todos tengan un perfil al menos»): `/global_historia.json`, que escribe
+// `bot/global_historia.py` cada lunes desde Freestylestats. Se baja recién al abrir una ficha, una vez. NO suma puntos: el
+// ranking cuenta sólo la T1; esto dice quién es quién
+let pedidoH = null;
+function useHistoria() {
+  const [H, setH] = useState(() => (pedidoH && pedidoH.listo) || null);
+  useEffect(() => {
+    if (H) return undefined;
+    let vivo = true;
+    if (!pedidoH) {
+      const este = fetch('/global_historia.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+      pedidoH = este;
+      este.then((d) => { este.listo = d || { p: {} }; if (!d && pedidoH === este) pedidoH = null; });
+    }
+    pedidoH.then((d) => { if (vivo) setH(d || { p: {} }); });
+    return () => { vivo = false; };
+  }, [H]);
+  return H;
+}
+const MEDALLA = ['', 'Oro', 'Plata', 'Bronce'];
+function Historia({ h }) {
+  const [todo, setTodo] = useState(false);
+  if (!h) {
+    return (
+      <div className="gl-hist"><span className="gl-pq-t">Su historia</span>
+        <p className="gl-fi-pie">Todavía no tenemos su historia de antes: acá abajo están sus batallas de la T1.</p></div>
+    );
+  }
+  const oros = h.t.filter((t) => t[0] === 1);
+  const ver = todo ? h.t : (oros.length ? oros : h.t).slice(0, 6);
+  const pct = h.b && h.v != null ? Math.round((100 * h.v) / h.b) : null;
+  return (
+    <div className="gl-hist">
+      <span className="gl-pq-t">Su historia</span>
+      <div className="gl-datos"><div><small>Batallas</small><b>{h.b != null ? h.b : '—'}</b></div>
+        <div><small>Ganó</small><b>{pct != null ? pct + '%' : '—'}</b></div><div><small>Jornadas</small><b>{h.j != null ? h.j : '—'}</b></div></div>
+      <p className="gl-meds"><span className="gl-m1">{h.m[0]} {h.m[0] === 1 ? 'oro' : 'oros'}</span><span className="gl-m2">{h.m[1]} {h.m[1] === 1 ? 'plata' : 'platas'}</span>
+        <span className="gl-m3">{h.m[2]} {h.m[2] === 1 ? 'bronce' : 'bronces'}</span></p>
+      {ver.length ? (
+        <ul className="gl-tits">{ver.map((t, i) => (
+          <li key={i}><em className={'gl-m' + t[0]}>{MEDALLA[t[0]]}</em><span><b>{t[1]}</b> {t[2]}{t[3] ? ' · ' + t[3] : ''}{t[4] ? <small className="gl-duda"> · en duda: la fuente se lo da a otro también</small> : null}</span></li>
+        ))}</ul>
+      ) : null}
+      {h.t.length > ver.length ? <button type="button" className="gl-lnk" onClick={() => setTodo(true)}>{'Ver los ' + h.t.length + ' podios'}</button> : null}
+      <p className="gl-fi-pie">Su carrera, de <a className="gl-lnk" href={'https://freestylestats.com/profile/' + h.s} target="_blank" rel="noopener noreferrer">Freestylestats</a>. No suma al ranking: el ranking cuenta sólo la T1.</p>
+    </div>
+  );
+}
+
 /** lo que se calcula una vez por tabla */
 function preparar(D, liga) {
   const F = D.formula || {};
@@ -845,6 +895,7 @@ function Camino({ X, g, tu }) {
 }
 function Ficha({ X, liga, g, yo, cerrar }) {
   const tu = !!yo && g === yo;
+  const H = useHistoria();
   const otro = X.G.find((x) => x !== g && norm(x.n) === norm(g.n));
   const b = g.b[0];
   return (
@@ -859,6 +910,8 @@ function Ficha({ X, liga, g, yo, cerrar }) {
       {g.esc === 'pro' && g.por && g.por.length ? (
         <div className="gl-espro"><span className="gl-pq-t">Por qué es pro</span><ul>{g.por.map((t) => <li key={t}>{porTx(t)}</li>)}</ul></div>
       ) : null}
+      {/* 📜 su carrera, de antes de la T1 (23/11/2026): a todos, aunque no tenga (lo dice) */}
+      {H ? <Historia h={(H.p || {})[g.k]} /> : null}
       <Camino X={X} g={g} tu={tu} />
       {otro ? <p className="gl-homo">Hay otro <b>{nombre(otro)}</b> en la tabla: <Bandera cc={otro.cc} cls="gl-flag" /> {otro.cc ? nombrePais(otro.cc) : 'sin país'}, {GRUPO[otro.esc]}{otro.pos ? ', #' + otro.pos : ''}. La bandera los separa.</p> : null}
       {tu ? null : g.esc === 'liga' ? (

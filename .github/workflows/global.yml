@@ -45,12 +45,18 @@ jobs:
         run: |
           python bot/global_ranking.py --auto
           for f in bot/global_fuente_*.py; do python "$f" --auto; done
+          python bot/global_historia.py --auto
       - name: la credencial de R2 (para las fotos)
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: printf '%s\n' "$ENV_FILE" > .env
       - name: leer y calcular
         run: python bot/global_ranking.py --leer
+      # 📜 la historia de cada uno (23/11/2026): títulos y batallas de toda la carrera, de Freestylestats. No suma puntos.
+      # Cada perfil se relee a los 7 días; si Freestylestats no contesta, queda lo de la semana anterior
+      - name: la historia de cada uno
+        run: |
+          python bot/global_historia.py --aplicar || echo "⚠️ la historia no se pudo leer, queda la anterior"
       - name: guardar
         env:
           GH_TOKEN: ${{ github.token }}
@@ -58,6 +64,7 @@ jobs:
           git config user.name  "liga-global-ciclo"
           git config user.email "ciclo@users.noreply.github.com"
           git add datos/global_batallas.json bot/paginas/global.json
+          [ -f bot/paginas/global_historia.json ] && git add bot/paginas/global_historia.json
           [ -f datos/global_fotos.json ] && git add datos/global_fotos.json
           if git diff --cached --quiet; then
             echo "nada cambió"
