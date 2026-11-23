@@ -815,7 +815,7 @@
    "n": 652,
    "sv": "DDS",
    "vence": "2026-11-23T18:48:34+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Dorado": {
    "avisado": "2026-11-22",
@@ -914,7 +914,7 @@
    "n": 652,
    "sv": "DDS",
    "vence": "2026-11-23T18:48:34+00:00",
-   "vencido": false
+   "vencido": true
   },
   "El novio de tu novia": {
    "avisado": "2026-11-02",
@@ -1843,6 +1843,7 @@
    "vencido": true
   },
   "LIZE": {
+   "avisado": "2026-11-23",
    "chat": "2026-11-23",
    "con": null,
    "cumplido": "",
@@ -1954,16 +1955,17 @@
   },
   "Leandro Katana": {
    "avisado": "2026-11-09",
+   "avisado_cumplido": "2026-11-23",
    "chat": "2026-11-09",
-   "con": null,
-   "cumplido": "",
+   "con": 680,
+   "cumplido": "2026-11-09T04:30:49+00:00",
    "debut": "2026-11-09T03:16:00+00:00",
    "did": "1231247210604400711",
    "evento": "QCYO RAPEEN 12",
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
-   "vencido": true
+   "vencido": false
   },
   "Leopold sedar": {
    "avisado_cumplido": "2026-11-04",
@@ -3392,16 +3394,17 @@
   },
   "akasha": {
    "avisado": "2026-11-09",
+   "avisado_cumplido": "2026-11-23",
    "chat": "2026-11-09",
-   "con": null,
-   "cumplido": "",
+   "con": 680,
+   "cumplido": "2026-11-09T04:30:49+00:00",
    "debut": "2026-11-09T03:16:00+00:00",
    "did": "",
    "evento": "QCYO RAPEEN 12",
    "n": 593,
    "sv": "FFA",
    "vence": "2026-11-16T03:16:00+00:00",
-   "vencido": true
+   "vencido": false
   },
   "angelo": {
    "avisado": "2026-11-20",

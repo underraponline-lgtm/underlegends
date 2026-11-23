@@ -45,15 +45,6 @@
 "temporada"
 ]
 },
-"snow": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "six": {
 "rg": "B",
 "c": [
@@ -63,8 +54,8 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "C",
+"snow": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -90,8 +81,26 @@
 "temporada"
 ]
 },
+"vandu": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "mco": {
 "rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -103,15 +112,6 @@
 "rg": "S",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"panchok": {
-"rg": "S",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -143,19 +143,19 @@
 "temporada"
 ]
 },
-"over": {
-"rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "provenza": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"over": {
+"rg": "S",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -516,6 +516,10 @@
 "temporada"
 ]
 },
+"paria": {
+"rg": "D",
+"c": []
+},
 "last": {
 "rg": "E",
 "c": [
@@ -550,10 +554,6 @@
 "servidor",
 "temporada"
 ]
-},
-"paria": {
-"rg": "D",
-"c": []
 },
 "andres": {
 "rg": "C",
@@ -674,14 +674,6 @@
 "temporada"
 ]
 },
-"badterne": {
-"rg": "",
-"c": []
-},
-"benjixo": {
-"rg": "C",
-"c": []
-},
 "crakero": {
 "rg": "E",
 "c": [
@@ -690,6 +682,14 @@
 "servidor",
 "temporada"
 ]
+},
+"badterne": {
+"rg": "",
+"c": []
+},
+"benjixo": {
+"rg": "C",
+"c": []
 },
 "cinexfilo": {
 "rg": "D",
@@ -8502,11 +8502,11 @@
 "erian",
 "pichulamc",
 "praiseriza",
-"snow",
 "six",
-"vandu",
+"snow",
 "colesito",
-"verc"
+"verc",
+"vandu"
 ],
 "competitivo": [
 "oasis",
@@ -8522,8 +8522,6 @@
 ]
 },
 "top10_t": {
-"temporada:carlosss": "2026-11-16T18:40:04Z",
-"temporada:panchok": "2026-11-16T19:02:43Z",
 "competitivo:walker": "2026-11-17T22:09:56Z",
 "competitivo:over": "2026-11-17T23:32:17Z",
 "temporada:vandu": "2026-11-18T00:39:14Z",
@@ -8537,7 +8535,7 @@
 "erian": 1,
 "praiseriza": 2,
 "snow": 0,
-"six": 5,
+"six": 1,
 "verc": 0,
 "vandu": 0,
 "panchok": 3,

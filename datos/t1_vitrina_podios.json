@@ -2,9 +2,9 @@
  "hoja": "Ranking Podios",
  "cabecera": ["#", "Rapero", "🥇", "🥈", "🥉", "Pts Podio", "✅", "Vs Ranking Temporada", "Vs Ranking Competitivo"],
  "filas": [
-  [1, "Oasis", 28, 8, 1, 165, "", "2º", "1º"],
+  [1, "Oasis", 29, 8, 1, 170, "", "2º", "1º"],
   [2, "Makmah", 8, 23, 1, 110, "", "1º", "16º"],
-  [3, "PRAISERIZA", 14, 6, 1, 89, "", "5º", "2º"],
+  [3, "PRAISERIZA", 14, 7, 1, 92, "", "5º", "2º"],
   [4, "Erian", 11, 11, 1, 89, "", "3º", "17º"],
   [5, "PichulaMc", 12, 9, "", 87, "", "4º", "11º"],
   [6, "Snow", 7, 12, 1, 72, "", "6º", "14º"],

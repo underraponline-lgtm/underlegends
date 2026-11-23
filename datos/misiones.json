@@ -7428,7 +7428,7 @@
      0
     ],
     "Leandro Katana": [
-     1,
+     2,
      0,
      4,
      0,
@@ -7491,14 +7491,14 @@
      0
     ],
     "Lvel": [
-     9,
+     10,
      1,
      8,
      0,
      1
     ],
     "MCO": [
-     5,
+     6,
      0,
      1,
      0,
@@ -7666,14 +7666,14 @@
      1
     ],
     "Oasis": [
-     4,
+     5,
      0,
      1,
      0,
      0
     ],
     "PRAISERIZA": [
-     3,
+     4,
      0,
      2,
      0,
@@ -7694,7 +7694,7 @@
      0
     ],
     "Paria": [
-     2,
+     3,
      0,
      2,
      0,
@@ -7715,7 +7715,7 @@
      0
     ],
     "Provenza": [
-     2,
+     3,
      0,
      4,
      0,
@@ -7792,7 +7792,7 @@
      0
     ],
     "Six": [
-     3,
+     4,
      1,
      1,
      0,
@@ -7827,7 +7827,7 @@
      0
     ],
     "Tam": [
-     4,
+     5,
      0,
      2,
      0,
@@ -7939,7 +7939,7 @@
      1
     ],
     "akasha🇦🇷": [
-     1,
+     2,
      0,
      4,
      0,
@@ -7967,7 +7967,7 @@
      0
     ],
     "crakero": [
-     2,
+     3,
      0,
      8,
      0,
@@ -8079,6 +8079,7 @@
     "Keider": 300,
     "LRS": 300,
     "LSO": 300,
+    "Leandro Katana": 300,
     "Leonart": 1500,
     "Leopold sedar 🇸🇳": 300,
     "Leyenda": 900,
@@ -8118,6 +8119,7 @@
     "Vilca": 300,
     "Xclusivo": 2900,
     "Yor": 600,
+    "akasha🇦🇷": 300,
     "crakero": 300,
     "ikonoxx": 300,
     "luisito 🏆": 300,
@@ -9836,11 +9838,11 @@
     ],
     [
      "caza",
-     "Gánale un duelo a Lvel",
+     "Gánale un duelo a Majiztral",
      "caza",
      1,
      800,
-     "Lvel"
+     "Majiztral"
     ],
     [
      "dorado",
@@ -11012,7 +11014,7 @@
      0,
      0,
      8,
-     1,
+     0,
      0
     ],
     "yinn": [
@@ -11102,7 +11104,6 @@
     "mityar": 300,
     "rodrilp": 600,
     "romeo": 300,
-    "tommy": 800,
     "yinn": 300
    }
   },
@@ -11683,7 +11684,7 @@
     "Paria": {
      "d": [
       3,
-      5
+      6
      ],
      "s": [
       "FFA",
@@ -11732,16 +11733,6 @@
      "s": [
       "FDS",
       "FFA"
-     ]
-    },
-    "Shadow": {
-     "d": [
-      0,
-      6
-     ],
-     "s": [
-      "LKR",
-      "URBF"
      ]
     },
     "Simon": {
@@ -11819,6 +11810,16 @@
      "s": [
       "FFA",
       "DW"
+     ]
+    },
+    "Trelok": {
+     "d": [
+      0,
+      2
+     ],
+     "s": [
+      "FFA",
+      "CH"
      ]
     },
     "Valen": {
@@ -12490,7 +12491,7 @@
      0
     ],
     "El padre de tu padre 🇻🇪": [
-     "crakero",
+     "Trelok",
      "escena",
      null,
      0
@@ -12532,7 +12533,7 @@
      0
     ],
     "Erik": [
-     "crakero",
+     "Trelok",
      "escena",
      null,
      0
@@ -12906,7 +12907,7 @@
      0
     ],
     "LAST": [
-     "Shadow",
+     "mats",
      "escena",
      null,
      0
@@ -13045,7 +13046,7 @@
      0
     ],
     "Lvel": [
-     "Lord Viruzz",
+     "Dios",
      "escena",
      null,
      0
@@ -13077,7 +13078,7 @@
      "PRAISERIZA",
      "revancha",
      [
-      593,
+      680,
       "FFA",
       "08/11",
       "cuartos"
@@ -13389,7 +13390,7 @@
      0
     ],
     "PHOBOS 🇲🇽": [
-     "crakero",
+     "Trelok",
      "escena",
      null,
      0
@@ -13921,7 +13922,7 @@
      0
     ],
     "YOUNG VLAD": [
-     "crakero",
+     "Trelok",
      "escena",
      null,
      0
@@ -13933,7 +13934,7 @@
      0
     ],
     "Ydimekemeamasaunqueseamentira🇧🇾": [
-     "crakero",
+     "Trelok",
      "escena",
      null,
      0
@@ -14054,7 +14055,7 @@
      0
     ],
     "crakero": [
-     "Jupiter",
+     "Artezzy",
      "escena",
      null,
      0
@@ -14156,7 +14157,7 @@
      0
     ],
     "mats": [
-     "Walker",
+     "LAST",
      "escena",
      null,
      0
@@ -14449,6 +14450,7 @@
   "Lalox": 600,
   "Launok": 300,
   "Lautaro la sinceridad 🇨🇨": 600,
+  "Leandro Katana": 300,
   "Left🇺🇾": 300,
   "Leonart": 3700,
   "Leopold sedar 🇸🇳": 300,
@@ -14613,6 +14615,7 @@
   "Zekha": 1000,
   "Zetryko": 1600,
   "Zignos": 6700,
+  "akasha🇦🇷": 300,
   "araya": 300,
   "chekialo 🇧🇯": 1300,
   "crakero": 600,
@@ -14638,7 +14641,6 @@
   "rodrilp": 1500,
   "romeo": 1200,
   "setesfifi": 300,
-  "tommy": 800,
   "wei shenlong": 300,
   "yinn": 7700
  },

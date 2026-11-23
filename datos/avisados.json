@@ -57096,5 +57096,170 @@
    ]
   ],
   "v": 2
+ },
+ "680": {
+  "antes": {
+   "Leandro Katana": [
+    466,
+    397,
+    true
+   ],
+   "MCO": [
+    11,
+    11,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    5,
+    5,
+    false
+   ],
+   "Paria": [
+    274,
+    69,
+    true
+   ],
+   "Provenza": [
+    18,
+    18,
+    false
+   ],
+   "Six": [
+    7,
+    7,
+    false
+   ],
+   "Tam": [
+    264,
+    23,
+    true
+   ],
+   "crakero": [
+    71,
+    88,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "PRAISERIZA",
+    "MCO",
+    "PRAISERIZA"
+   ],
+   [
+    "Tam, Provenza",
+    "Lvel 🇻🇪",
+    "Tam, Provenza"
+   ],
+   [
+    "Oasis",
+    "crakero",
+    "Oasis"
+   ],
+   [
+    "Leandro Katana, akasha🇦🇷",
+    "Six, Paria",
+    "Leandro Katana, akasha🇦🇷"
+   ],
+   [
+    "PRAISERIZA",
+    "Tam, Provenza",
+    "PRAISERIZA"
+   ],
+   [
+    "Oasis",
+    "Leandro Katana, akasha🇦🇷, Six",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "PRAISERIZA",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Leandro Katana": 1,
+   "MCO": 50,
+   "Oasis": 47,
+   "PRAISERIZA": 25,
+   "Paria": 22,
+   "Provenza": 45,
+   "Six": 40,
+   "Tam": 32,
+   "crakero": 16
+  },
+  "fecha": "08/11",
+  "nombre": "qcyo rapeen 12",
+  "num": 680,
+  "participantes": 11,
+  "sello": {
+   "Oasis": "e006831054fe:a8d8b7335469"
+  },
+  "sv": "FFA",
+  "t": "2026-11-23T18:54:17Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    7500
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Six",
+    "Semifinal",
+    2166
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Leandro Katana",
+    "Semifinal",
+    1166
+   ],
+   [
+    "akasha🇦🇷",
+    "Semifinal",
+    1166
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    1000
+   ]
+  ],
+  "v": 2
  }
 }

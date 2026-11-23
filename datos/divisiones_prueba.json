@@ -66,6 +66,27 @@
      ]
     ],
     [
+     "MCO",
+     81,
+     13,
+     4,
+     0,
+     [
+      [
+       20,
+       "AbrahamH"
+      ],
+      [
+       18,
+       "Dios"
+      ],
+      [
+       8,
+       "Artezzy"
+      ]
+     ]
+    ],
+    [
      "Abyssus",
      80,
      3,
@@ -83,27 +104,6 @@
       [
        19,
        "Colesito"
-      ]
-     ]
-    ],
-    [
-     "MCO",
-     76,
-     13,
-     4,
-     0,
-     [
-      [
-       20,
-       "AbrahamH"
-      ],
-      [
-       18,
-       "Dios"
-      ],
-      [
-       8,
-       "Artezzy"
       ]
      ]
     ],
@@ -1625,7 +1625,7 @@
   "Antis antis": 997,
   "Apolo": 988,
   "Ariaxer": 903,
-  "Artezzy": 950,
+  "Artezzy": 949,
   "Assuan": 1018,
   "Astral": 976,
   "Aszecas": 989,
@@ -1709,7 +1709,7 @@
   "Deuxs": 971,
   "Dev": 976,
   "Dinamight": 969,
-  "Dios": 1129,
+  "Dios": 1128,
   "Dm🇵🇪": 974,
   "Dobell": 988,
   "Doble J": 1014,
@@ -1926,7 +1926,7 @@
   "MAWS🇻🇪": 1004,
   "MAXIMILIANO CALVO": 1000,
   "MCNadie": 1066,
-  "MCO": 1165,
+  "MCO": 1160,
   "MD": 991,
   "METRA": 990,
   "METRO": 991,
@@ -1942,7 +1942,7 @@
   "Malva": 941,
   "Manolito🇨🇴": 989,
   "Marcos": 1032,
-  "Mark98": 1068,
+  "Mark98": 1067,
   "Marley🇦🇷": 1033,
   "Marto AR": 991,
   "Masino": 1068,
@@ -1960,7 +1960,7 @@
   "Miniboy": 893,
   "Minis": 969,
   "Misterioso": 1026,
-  "Mito": 1015,
+  "Mito": 1014,
   "Mochi DG": 933,
   "Molt": 933,
   "Molusco": 1081,
@@ -2004,7 +2004,7 @@
   "OMEGAX": 1024,
   "ONDADISKO": 972,
   "ONZASS": 953,
-  "Oasis": 1340,
+  "Oasis": 1350,
   "Olga de Kiev 🇩🇴": 1006,
   "Oni 🇦🇷": 994,
   "Ortiz": 1006,
@@ -2015,7 +2015,7 @@
   "PIERR🇵🇪": 979,
   "PITER": 980,
   "PLA PLA": 988,
-  "PRAISERIZA": 1243,
+  "PRAISERIZA": 1240,
   "PROMETHEUS BIB 🇨🇴": 975,
   "PRV": 995,
   "PUNISHER": 971,
@@ -2194,7 +2194,7 @@
   "botrax": 1019,
   "cardozo": 990,
   "compare": 943,
-  "crakero": 914,
+  "crakero": 918,
   "doble h": 975,
   "dxg": 921,
   "dyzzcord🇨🇱": 995,
@@ -2227,7 +2227,7 @@
   "pibe": 974,
   "publicenemy🇦🇷": 989,
   "replisan": 925,
-  "rodrilp": 1077,
+  "rodrilp": 1078,
   "romeo": 957,
   "setesfifi": 940,
   "silence papá de nexus 🇵🇪": 972,

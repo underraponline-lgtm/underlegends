@@ -63145,5 +63145,151 @@
    "org": "juega",
    "v": 1
   }
+ },
+ "680": {
+  "dia": "2026-11-08",
+  "escala": "8-15",
+  "fecha": "08/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1569207613508419615"
+  ],
+  "n": 680,
+  "nombre": "qcyo rapeen 12",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "MCO"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Tam, Provenza",
+       "Lvel 🇻🇪"
+      ],
+      "Tam, Provenza",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "crakero"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Leandro Katana, akasha🇦🇷",
+       "Six, Paria"
+      ],
+      "Leandro Katana, akasha🇦🇷",
+      "Drafteado: six🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Tam, Provenza"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Leandro Katana, akasha🇦🇷, Six"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "PRAISERIZA"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    7500
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Six",
+    "Semifinal",
+    2166
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Leandro Katana",
+    "Semifinal",
+    1166
+   ],
+   [
+    "akasha🇦🇷",
+    "Semifinal",
+    1166
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    1000
+   ]
+  ],
+  "ver": {
+   "min": 108,
+   "v": 1
+  }
  }
 }
