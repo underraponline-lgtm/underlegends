@@ -3089,16 +3089,38 @@ export function diaET(t = Date.now()) {
 // ⚡ una vez por persona, por día y por instancia: el resto de los toques del día no vuelven a preguntarle al objeto
 const USADOS = new Set();
 let usadosDia = '';
-export async function anotarUso(env, quien, por) {
+// 🧾 qué se puede anotar como acción (ver la tabla `acciones`): de dónde, dos puntos y un nombre corto
+export const ACCION_RE = /^(web|cmd|btn|mod):[a-z0-9_/-]{1,40}$/;
+/** 🧾 Lo que se anota de una interacción de Discord: `cmd:<comando>`, `btn:<prefijo del custom_id>` (botones y menús) o
+ *  `mod:<prefijo>` (un formulario). Lo de completar mientras se escribe no es una acción. Pura */
+export function accionDiscord(i) {
+  const t = i && i.type;
+  const pre = (s) => String(s || '').split(':')[0].toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40);
+  if (t === 2) return i.data && i.data.name ? 'cmd:' + pre(i.data.name) : '';
+  if (t === 3) return i.data && i.data.custom_id ? 'btn:' + pre(i.data.custom_id) : '';
+  if (t === 5) return i.data && i.data.custom_id ? 'mod:' + pre(i.data.custom_id) : '';
+  return '';
+}
+/** 🧾 Lo que se anota de un pedido de la página: `web:<ruta sin /avisos/>`. Lo del Dashboard (`dueno…`) no: es el staff */
+export function accionWeb(req) {
+  try {
+    const r = new URL(req.url).pathname.replace(/^\/(api\/)?avisos\//, '').toLowerCase();
+    return r && !/^dueno/.test(r) && ACCION_RE.test('web:' + r) ? 'web:' + r : '';
+  } catch (e) { return ''; }
+}
+export async function anotarUso(env, quien, por, que) {
   if (!env || !env.AVISOS || !/^[0-9]{5,25}$/.test(String(quien || '')) || (por !== 'bot' && por !== 'web')) return;
   const dia = diaET();
   if (dia !== usadosDia) { USADOS.clear(); usadosDia = dia; }
-  const k = quien + ':' + por;
+  const q = typeof que === 'string' && ACCION_RE.test(que) ? que : '';
+  // ⚡ una vez por persona, día, lugar y cosa (y por instancia): el resto del día no le vuelve a preguntar al objeto
+  const k = quien + ':' + por + ':' + q;
   if (USADOS.has(k)) return;
   USADOS.add(k);
   try {
     await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/uso', {
-      method: 'POST', body: JSON.stringify({ quien: String(quien), por, dia }), headers: { 'content-type': 'application/json' },
+      method: 'POST', body: JSON.stringify(Object.assign({ quien: String(quien), por, dia }, q ? { que: q } : {})),
+      headers: { 'content-type': 'application/json' },
     });
   } catch (e) { USADOS.delete(k); }
 }
@@ -6213,7 +6235,8 @@ export async function sesionFin(env, req) {
 export async function quienPide(req, env, d) {
   const t = String((d && d.token) || '');
   const q = t ? await discordDe(t) : { id: await sesionDe(env, req) };
-  if (q.id) { await anotarUso(env, q.id, 'web'); return { id: q.id }; }
+  // 🧾 con QUÉ pidió (23/11/2026): es la puerta de todo lo de la página con cuenta, así que alcanza con anotarlo acá
+  if (q.id) { await anotarUso(env, q.id, 'web', accionWeb(req)); return { id: q.id }; }
   if (q.error === 'ocupado') return { error: 'discord_ocupado', estado: 503 };
   return { error: t ? 'discord' : 'sin_sesion', estado: 401 };
 }
@@ -8972,6 +8995,13 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS uso (dia TEXT NOT NULL, quien TEXT NOT NULL, por TEXT NOT NULL, ' +
         'PRIMARY KEY (dia, quien, por)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS visitas (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
+      // 🧾 Y QUÉ HIZO CADA UNO Y DÓNDE (23/11/2026, Dlx: «make sure we have knowledge for every action»): una fila por
+      // persona, día, cosa y lugar —`por` 'web' (la página, con su cuenta) o 'bot' (Discord)—. `que` es la ruta de la
+      // página (`web:drop-abrir`) o el comando o botón de Discord (`cmd:drops`, `btn:dd`). Lo anota `anotarUso()` desde
+      // las dos puertas por donde pasa todo: `quienPide()` (la página) y la interacción del bot (worker.js). Los mismos
+      // `USO_DIAS` que `uso`. Cuántas veces no: eso lo dicen las tablas de cada cosa (`HACEN`)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS acciones (dia TEXT NOT NULL, que TEXT NOT NULL, por TEXT NOT NULL, quien TEXT NOT NULL, ' +
+        'PRIMARY KEY (dia, que, por, quien)) WITHOUT ROWID');
       // 📱 y los navegadores DISTINTOS de cada semana (23/11/2026, Dlx: «cuántas personas diferentes han accedido a la
       // página»): `visitas` suma un navegador por día, así que la semana contaba siete veces a quien entra todos los
       // días. Acá cada navegador cuenta el día de su primera visita de la semana (`sem` en `visita()`): la suma de lunes
@@ -10766,6 +10796,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM postulaciones WHERE t < ?', ahora - 90 * DIA_MS);
       // 📊 el uso: quién, `USO_DIAS` días; las visitas (sólo un número por día), 90
       this.sql.exec('DELETE FROM uso WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
+      this.sql.exec('DELETE FROM acciones WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM visitas_sem WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM llegadas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
@@ -19462,6 +19493,10 @@ export class Avisos {
     }
     // el día lo pone el objeto: uno que llega de otra zona o de otro reloj no inventa días
     this.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', diaET(), String(d.quien), d.por);
+    // 🧾 y qué hizo (ver la tabla `acciones`)
+    if (typeof d.que === 'string' && ACCION_RE.test(d.que)) {
+      this.sql.exec('INSERT OR IGNORE INTO acciones (dia, que, por, quien) VALUES (?, ?, ?, ?)', diaET(), d.que, d.por, String(d.quien));
+    }
     // 🔥 y el día cuenta para su racha
     this.diaActivo(String(d.quien), diaET());
     return json({ ok: true });
@@ -21998,6 +22033,54 @@ export class Avisos {
     return out;
   }
 
+  /** 🧾 QUÉ HACE LA GENTE Y DÓNDE, 7 días (23/11/2026, Dlx: «make sure we have knowledge for every action»): de la tabla
+   *  `acciones`, cada cosa (`que`) y lugar (`por`: 'web' la página, 'bot' Discord) con sus personas distintas (`p`), en
+   *  cuántos días pasó y las de los 7 días de antes (`antes`: null mientras no haya 14 días anotados). Sólo números:
+   *  nunca quién. Guardado 10 min, como el resto de Números */
+  accionesResumen(ahora = Date.now()) { return this.delMinuto('resumen:acciones', 600, () => this._accionesResumen(ahora)); }
+
+  _accionesResumen(ahora = Date.now()) {
+    const d7 = diaET(ahora - 7 * DIA_MS), d14 = diaET(ahora - 14 * DIA_MS);
+    const desde = (this.sql.exec('SELECT MIN(dia) AS d FROM acciones').toArray()[0] || {}).d || null;
+    const hayAntes = !!desde && desde <= d14;
+    const antes = new Map(this.sql.exec('SELECT que, por, COUNT(DISTINCT quien) AS p FROM acciones WHERE dia > ? AND dia <= ? GROUP BY que, por',
+      d14, d7).toArray().map((f) => [f.que + '|' + f.por, f.p]));
+    const tot = (por) => this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM acciones WHERE dia > ?' + (por ? ' AND por = ?' : ''),
+      ...[d7].concat(por ? [por] : [])).toArray()[0].n;
+    const filas = this.sql.exec('SELECT que, por, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT dia) AS d FROM acciones WHERE dia > ? ' +
+      'GROUP BY que, por ORDER BY p DESC LIMIT 120', d7).toArray()
+      .map((f) => ({ que: f.que, por: f.por, p: f.p, dias: f.d, antes: hayAntes ? antes.get(f.que + '|' + f.por) || 0 : null }));
+    return { desde, personas: tot(''), web: tot('web'), bot: tot('bot'), filas };
+  }
+
+  /** 🐉 LOS DRAGÓN DROPS, 7 días contra los 7 de antes (23/11/2026, Dlx: «are the drops awards working, do you know who opens
+   *  that by the buttons on discord or the website»): cuántos se dieron y se abrieron, cuánta gente abrió, de qué tipo (el
+   *  origen: `pase`, `star`, `cofre`…), qué rareza salió, los que esperan cerrados, y DÓNDE se abrieron: personas que
+   *  abrieron en la página (`web:drop-abrir`, `web:pase-dia`) y en Discord (`btn:dd`), de `acciones`. Sólo números */
+  dropsResumen(ahora = Date.now()) { return this.delMinuto('resumen:drops', 600, () => this._dropsResumen(ahora)); }
+
+  _dropsResumen(ahora = Date.now()) {
+    const t7 = ahora - 7 * DIA_MS, t14 = ahora - 14 * DIA_MS;
+    const tipo = (o) => (String(o).startsWith('star:') ? 'star' : String(o).split(':')[0]);
+    const ventana = (a, b) => {
+      const dados = this.sql.exec('SELECT origen FROM drops WHERE t >= ? AND t < ?', a, b).toArray();
+      const abiertos = this.sql.exec('SELECT quien, origen, rareza FROM drops WHERE abierto = 1 AND t_abierto >= ? AND t_abierto < ?', a, b).toArray();
+      const por = {};
+      for (const f of dados) { const k = tipo(f.origen); por[k] = por[k] || { dados: 0, abiertos: 0 }; por[k].dados += 1; }
+      for (const f of abiertos) { const k = tipo(f.origen); por[k] = por[k] || { dados: 0, abiertos: 0 }; por[k].abiertos += 1; }
+      const rarezas = [0, 0, 0, 0, 0];
+      for (const f of abiertos) if (f.rareza >= 0 && f.rareza <= 4) rarezas[f.rareza] += 1;
+      return { dados: dados.length, abiertos: abiertos.length, personas: new Set(abiertos.map((f) => f.quien)).size, por, rarezas };
+    };
+    const d7 = diaET(t7);
+    const donde = (ques) => this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM acciones WHERE dia > ? AND que IN (' +
+      ques.map(() => '?').join(',') + ')', d7, ...ques).toArray()[0].n;
+    const cerrados = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM drops WHERE abierto = 0').toArray()[0];
+    return { semana: ventana(t7, ahora + 1), antes: ventana(t14, t7), cerrados: cerrados.n, con_cerrados: cerrados.p,
+      donde: { web: donde(['web:drop-abrir', 'web:pase-dia']), discord: donde(['btn:dd']), mira_discord: donde(['cmd:drops']),
+        desde: (this.sql.exec('SELECT MIN(dia) AS d FROM acciones').toArray()[0] || {}).d || null } };
+  }
+
   /** 👆 QUIÉN HIZO ALGO EN LA PÁGINA, desde `desde` (ms): `[[id de Discord, día ET, tipo], …]` (23/11/2026, Dlx: «cuántas
    *  personas interactuaron»). Entrar con su cuenta no alcanza (eso ya es `uso` 'web'): acá cuenta lo de `HACEN` —aplaudir,
    *  comentar, votar, decir quién gana, apostar, seguir, arreglar su carta o su perfil, entrar al sorteo—. Sale de las
@@ -22034,6 +22117,8 @@ export class Avisos {
     }
     return { t: ahora, uso: this.usoResumen(), semanas: this.usoSemanas(ahora), dias, secciones: this.seccionesResumen(),
       tutorial: this.tutorialResumen(), filas: { hoy: this.leer('medidas_hoy'), ayer: this.leer('medidas_ayer') },
+      // 🧾🐉 y lo mismo que ve el Dashboard de las acciones y los drops, para `herramientas/uso.py` (sólo números)
+      acciones: this.accionesResumen(ahora), drops: this.dropsResumen(ahora),
       // 🐞 lo que se le rompió a la gente, 7 días: dónde y qué, nunca de quién (una pasada de bugs no ve esto recorriendo)
       errores: this.erroresResumen() };
   }
@@ -22252,6 +22337,8 @@ export class Avisos {
       uso: this.usoResumen(),
       // 📊 por semana, para «Comparar semanas» (Números)
       uso_semanas: this.usoSemanas(ahora),
+      // 🧾🐉 qué hace la gente y dónde, y los Dragón Drops (23/11/2026): Números → «Qué hace la gente»
+      acciones: this.accionesResumen(ahora), drops_res: this.dropsResumen(ahora),
       // 🤝 cómo viene trabajando cada servidor, para «Los tiers» (`bot/tiers.py`)
       tiers: this.leer('tiers'),
       // 🧭 los que corrieron /setup y esperan su respuesta sobre los puntos de Temporada (19/11/2026)

@@ -750,6 +750,20 @@
 .nc-hz li>.nc-d{text-align:right}
 @media (max-width:560px){.nc-hz{padding:12px}.nc-hz li{grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"t n d" "b b b" "s s s";gap:4px 10px;padding:8px 0}
   .nc-hz-t{grid-area:t}.nc-hz li>b{grid-area:n}.nc-hz li>.nc-d{grid-area:d}.nc-hz-b{grid-area:b}.nc-hz li>small{grid-area:s}}
+/* 🧾 qué hace la gente y dónde (23/11/2026): lo de la página y lo de Discord lado a lado; abajo, de a una */
+.qh{display:grid;gap:12px}
+.qh-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.qh-col{display:grid;gap:8px;align-content:start;min-width:0;padding:12px 14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--fondo)}
+.qh-col h4{margin:0}
+.qh-l{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.qh-l li{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) 40px 52px;align-items:center;gap:8px;min-height:30px;border-bottom:1px solid var(--suave)}
+.qh-l li:last-child{border-bottom:0}
+.qh-n{font:700 13.5px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.qh-l li>b{font:900 16px/1 Archivo,sans-serif;text-align:right}
+.qh-l li>.nc-d{text-align:right}
+.qh-tipos li{grid-template-columns:minmax(0,1fr) auto 40px auto}
+.qh-tipos li>small{font-size:12.5px;color:var(--gris)}
+@media (max-width:760px){.qh-cols{grid-template-columns:minmax(0,1fr)}}
 .nc-f{margin:0;padding:12px 14px;border:1.5px solid var(--suave);border-radius:4px;font-size:15px;line-height:1.45}
 .nc-mas{display:grid;gap:12px;margin-top:6px;padding-top:14px;border-top:2px solid var(--linea)}
 .nc-mas .dz-h{margin:0}

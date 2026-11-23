@@ -1367,6 +1367,32 @@ const ok = (cond, que, det) => {
       && hb.comentaron.p === 1 && hb.votaron.p === 1 && hb.siguieron.p === 1 && hb.aplaudieron.p === 0 && p.k.hacen_por.votaron.p === 1,
     'y por tipo: personas distintas y cuántas veces (2 aplaudieron 3 veces; marco, comentario, voto y seguir en su semana)', JSON.stringify([hb, hp]));
     o.sql.exec('INSERT INTO uso (dia, quien, por) VALUES (?, ?, ?)', '2026-11-10', 'a', 'web');
+    // 🧾 QUÉ HIZO CADA UNO Y DÓNDE (23/11/2026): la acción de la página por su ruta, la de Discord por comando o botón
+    ok(A.accionDiscord({ type: 2, data: { name: 'drops' } }) === 'cmd:drops' && A.accionDiscord({ type: 3, data: { custom_id: 'dd:star:x:1' } }) === 'btn:dd'
+      && A.accionDiscord({ type: 5, data: { custom_id: 'monto:abc' } }) === 'mod:monto' && A.accionDiscord({ type: 4, data: { name: 'x' } }) === ''
+      && A.accionWeb(new Request('https://x/avisos/drop-abrir')) === 'web:drop-abrir' && A.accionWeb(new Request('https://x/api/avisos/seguir')) === 'web:seguir'
+      && A.accionWeb(new Request('https://x/avisos/dueno/ajuste')) === '',
+    'la acción: `cmd:` el comando, `btn:` el prefijo del botón, `mod:` el formulario; en la página la ruta, y lo del Dashboard no');
+    const AH = Date.now(), DIA = 86400000;
+    o.usoAnotar({ quien: '1111111', por: 'web', que: 'web:drop-abrir' });
+    o.usoAnotar({ quien: '1111111', por: 'web', que: 'web:drop-abrir' });
+    o.usoAnotar({ quien: '2222222', por: 'bot', que: 'btn:dd' });
+    o.usoAnotar({ quien: '3333333', por: 'bot', que: 'cmd:drops' });
+    o.usoAnotar({ quien: '1111111', por: 'web', que: 'no vale esto' });
+    const ac = o._accionesResumen(AH);
+    const fila = (q, p) => ac.filas.find((f) => f.que === q && f.por === p);
+    ok(ac.personas === 3 && ac.web === 1 && ac.bot === 2 && fila('web:drop-abrir', 'web').p === 1 && fila('btn:dd', 'bot').p === 1
+      && ac.filas.length === 3 && fila('web:drop-abrir', 'web').antes === null,
+    'qué hace la gente: personas distintas por acción y lugar (repetir no suma, lo inválido no entra, sin 14 días no hay «antes»)', JSON.stringify(ac));
+    // 🐉 los drops: dados, abiertos, de qué tipo, cuántos esperan y dónde se abrieron
+    o.sql.exec('INSERT INTO drops (quien, origen, t, abierto, rareza, premio, t_abierto) VALUES (?, ?, ?, 1, 2, ?, ?)', '1111111', 'pdia:2026-11-20', AH - DIA, 'pts:50', AH - DIA);
+    o.sql.exec('INSERT INTO drops (quien, origen, t) VALUES (?, ?, ?)', '2222222', 'star:red:ig', AH - 2 * DIA);
+    o.sql.exec('INSERT INTO drops (quien, origen, t, abierto, rareza, premio, t_abierto) VALUES (?, ?, ?, 1, 0, ?, ?)', '2222222', 'cofre:x', AH - 10 * DIA, 'pts:10', AH - 9 * DIA);
+    const dr = o._dropsResumen(AH);
+    ok(dr.semana.dados === 2 && dr.semana.abiertos === 1 && dr.semana.personas === 1 && dr.semana.por.pdia.abiertos === 1 && dr.semana.por.star.dados === 1
+      && dr.semana.rarezas[2] === 1 && dr.antes.abiertos === 1 && dr.antes.por.cofre.abiertos === 1 && dr.cerrados === 1 && dr.con_cerrados === 1
+      && dr.donde.web === 1 && dr.donde.discord === 1 && dr.donde.mira_discord === 1,
+    'los drops: dados y abiertos por tipo, la rareza, la semana de antes, los cerrados y dónde se abrieron (página o Discord)', JSON.stringify(dr));
     const viejas = o._usoSemanas(Date.parse('2026-11-12T16:00:00Z')).filter((x) => x.hacen_por);
     ok(viejas.some((x) => x.hacen_por.aplaudieron.parcial) && !viejas[viejas.length - 1].hacen_por.aplaudieron.parcial,
       'una semana que empezó hace más de 30 días dice que sus aplausos están incompletos (se borran a los 30)', JSON.stringify(viejas.map((x) => [x.lunes, x.hacen_por.aplaudieron])));

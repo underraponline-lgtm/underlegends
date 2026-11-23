@@ -85,6 +85,85 @@ const TIPOS_HACEN = [
   ['apostaron', 'Apostaron', 'apuestas'], ['siguieron', 'Siguieron a alguien', 'seguidos'],
   ['personalizaron', 'Arreglaron su carta o perfil', 'cambios'], ['sorteo', 'Entraron al sorteo', 'entradas'],
 ];
+// 🧾 QUÉ HACE LA GENTE Y DÓNDE (23/11/2026, Dlx: «make sure we have knowledge for every action»): de la tabla `acciones`
+// del objeto (`accionesResumen()`), cada cosa que alguien hizo con su cuenta en la página y cada comando o botón de Discord,
+// con sus personas distintas en 7 días. El nombre de cada una sale de acá; una que no está en la lista se ve con su código
+const ACCION_NOMBRE = {
+  'web:drop-abrir': 'Abrir un Drop', 'web:pase-dia': 'Abrir el Drop del día', 'web:drops': 'Mirar sus Drops', 'web:billetera': 'Mirar su billetera',
+  'web:comentar': 'Comentar', 'web:felicitar': 'Aplaudir', 'web:votar': 'Votar en una encuesta', 'web:liga-votar': 'Decir quién gana una liga',
+  'web:qg-votar-web': 'Decir quién gana una batalla', 'web:seguir': 'Seguir a un rapero', 'web:seguir-sv': 'Seguir a un servidor',
+  'web:seguir-org': 'Seguir a una organización', 'web:liga-seguir': 'Seguir una liga', 'web:tienda': 'Mirar la Tienda',
+  'web:tienda-accion': 'Comprar o canjear en la Tienda', 'web:tienda-arte': 'La Tienda (arte)', 'web:perfil-mio': 'Editar su perfil',
+  'web:mi-foto': 'Cambiar su foto', 'web:mi-fondo': 'Su fondo', 'web:fondo': 'Subir un fondo', 'web:foto-carta': 'Subir la foto de una carta',
+  'web:mi-foto-carta': 'La foto de sus cartas', 'web:mi-servidor': 'Elegir su servidor', 'web:crew': 'Crear o manejar una crew', 'web:crew-mia': 'Mirar su crew',
+  'web:racha': 'Su racha', 'web:semanal': 'El premio de la semana', 'web:bandeja': 'Su bandeja', 'web:historias': 'Historias vistas',
+  'web:muro-mio': 'Sus publicaciones', 'web:nuevo': 'Misiones de nuevos', 'web:ref': 'Invita y gana', 'web:libre-crear': 'Crear una batalla libre',
+  'web:libres': 'Mirar las batallas libres', 'web:libre-resultado': 'Cargar una batalla libre', 'web:libre-cancelar': 'Cancelar una batalla libre',
+  'web:pedido': 'Hacer un pedido', 'web:mis-pedidos': 'Sus pedidos', 'web:reportar': 'Reportar', 'web:comentario-reportar': 'Reportar un comentario',
+  'web:comentario-borrar': 'Borrar un comentario', 'web:video-reportar': 'Reportar un video', 'web:vincular': 'Vincular los avisos',
+  'web:precio': 'Poner precio a una cabeza', 'web:pase-vivo': 'Mirar una llave en vivo', 'web:promo-vio': 'Ver una promo',
+  'web:promo-extender': 'Extender una promo', 'web:panel-socio': 'El panel del socio', 'web:mods': 'Mods', 'web:mis-ligas': 'Sus ligas',
+  'web:mis-servidores': 'Gente en sus servidores', 'web:calificar': 'Calificar un evento', 'web:cm-mio': 'Sus comentarios', 'web:mis-videos': 'Sus videos',
+  'btn:dd': 'Abrir un Drop', 'btn:c': 'Elegir carta en /card', 'btn:l': 'Elegir carta de liga', 'btn:s': 'El menú de /card', 'btn:qg': '¿Quién gana?',
+  'btn:ap': 'Apostar', 'mod:monto': 'Apostar (el monto)', 'btn:vx': 'Estadísticas del VS', 'btn:vp': 'Perfiles del VS', 'btn:ve': 'El VS',
+  'btn:ntf': 'Elegir sus avisos', 'btn:cfg': 'Configurar avisos del servidor', 'btn:eq': 'Equipar', 'btn:cw': 'Su crew', 'btn:apo': 'Su apodo',
+  'btn:su': '/setup del socio', 'btn:ar': 'El anti-raid', 'btn:baja': 'Borrar sus datos',
+};
+const nombreAccion = (q) => ACCION_NOMBRE[q] || (q.startsWith('cmd:') ? '/' + q.slice(4) : q);
+const DROP_TIPO = { pase: 'Del Pase', star: 'Star Drops', cofre: 'Cofres', nido: 'Nidos', pdia: 'El Drop del día', dia: 'La barra del día',
+  ref: 'Invita y gana', refj: 'Invita y gana', nuevo: 'Misiones de nuevos', nota: 'La nota', mira: 'Mirar en vivo', de: 'De regalo' };
+const RAREZA_DROP = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de Oro'];
+function ListaAcciones({ t, xs }) {
+  if (!xs.length) return <div className="qh-col"><h4 className="nc-t">{t}</h4><p className="pronto-p">Nada en 7 días.</p></div>;
+  const tope = Math.max(1, ...xs.map((x) => x.p));
+  return (
+    <div className="qh-col">
+      <h4 className="nc-t">{t}</h4>
+      <ul className="qh-l">{xs.map((x) => (
+        <li key={x.que}>
+          <span className="qh-n">{nombreAccion(x.que)}</span>
+          <span className="nc-hz-b" aria-hidden="true"><i style={{ width: (100 * x.p / tope).toFixed(1) + '%' }} /></span>
+          <b>{num(x.p)}</b>
+          <Flecha d={x.antes == null ? null : x.p - x.antes} />
+        </li>
+      ))}</ul>
+    </div>
+  );
+}
+function QueHace({ a }) {
+  if (!a) return <p className="pronto-p">Todavía no llegó: falta desplegar el Worker.</p>;
+  const web = a.filas.filter((f) => f.por === 'web'), bot = a.filas.filter((f) => f.por === 'bot');
+  return (
+    <div className="qh">
+      <p className="db-tx"><b>{num(a.personas)}</b> personas hicieron algo en 7 días: <b>{num(a.web)}</b> en la página con su cuenta y <b>{num(a.bot)}</b> en
+        Discord. Cada fila cuenta personas distintas.{a.desde ? ' Se anota desde el ' + corto(a.desde) + '.' : ''}</p>
+      <div className="qh-cols"><ListaAcciones t="En la página" xs={web} /><ListaAcciones t="En Discord" xs={bot} /></div>
+    </div>
+  );
+}
+function DropsNumeros({ r }) {
+  if (!r) return <p className="pronto-p">Todavía no llegó: falta desplegar el Worker.</p>;
+  const s = r.semana, b = r.antes;
+  const tipos = Object.entries(s.por).sort((x, y) => y[1].dados + y[1].abiertos - x[1].dados - x[1].abiertos);
+  const cajas = [['Dados', s.dados, b.dados], ['Abiertos', s.abiertos, b.abiertos], ['Personas que abrieron', s.personas, b.personas]];
+  return (
+    <div className="qh">
+      <div className="dz-nums">{cajas.map(([t, v, x]) => (
+        <div key={t} className="dz-num"><span>{t.toLowerCase()}</span><b>{num(v)}</b><Flecha d={v - x} largo=" contra los 7 de antes" /></div>
+      ))}
+        <div className="dz-num"><span>esperando, cerrados</span><b>{num(r.cerrados)}</b><small>de {num(r.con_cerrados)} personas</small></div>
+      </div>
+      <p className="db-tx"><b>Dónde se abrieron:</b> {num(r.donde.web)} personas en la página y {num(r.donde.discord)} en Discord
+        ({num(r.donde.mira_discord)} miraron <code>/drops</code>).{r.donde.desde ? ' El lugar se anota desde el ' + corto(r.donde.desde) + '.' : ''}</p>
+      <p className="db-tx"><b>Lo que salió:</b> {RAREZA_DROP.map((n, j) => n + ' ' + num(s.rarezas[j] || 0)).join(' · ')}</p>
+      {tipos.length ? (
+        <ul className="qh-l qh-tipos">{tipos.map(([k, v]) => (
+          <li key={k}><span className="qh-n">{DROP_TIPO[k] || k}</span><small>{num(v.dados)} dados</small><b>{num(v.abiertos)}</b><small>abiertos</small></li>
+        ))}</ul>
+      ) : <p className="pronto-p">Ningún drop en 7 días.</p>}
+    </div>
+  );
+}
 function HacenPor({ w, ant }) {
   const hp = w.hacen_por;
   if (!hp) return null;
@@ -5471,7 +5550,7 @@ function HistorialDeA({ hist, hacer, ocup, liga }) {
 // 🔗 en qué pestaña vive cada sección, para que un atajo (Ctrl+K, un cuadrado del Resumen) abra la pestaña correcta: antes
 // «El tutorial» llevaba a Números y no aparecía si estabas en otra pestaña (11/11/2026). `nu-uso` ya no está en ninguna:
 // son los cinco cuadros de arriba (23/11/2026)
-const TAB_DE = { 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente',
+const TAB_DE = { 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente', 'nu-acciones': 'acciones', 'nu-drops': 'acciones',
   'nu-semanas': 'semana', 'nu-clics': 'pagina', 'nu-tuto': 'pagina', 'nu-pase': 'pase', 'nu-puntos': 'puntos', 'nu-crews': 'crews' };
 // 💬 LOS CHATS GENERALES (17/11/2026, `bot/chats.py`): lo que importó en el chat general de cada socio —eventos falsos,
 // fraude, raids y estafas, quejas de la Liga— con el link al mensaje, y cuánto se habló en la última lectura. Lo demás
@@ -5978,6 +6057,11 @@ export function Dashboard({ dc, liga }) {
         d.economia !== undefined ? ['puntos', 'Los Puntos', sec('nu-puntos', 'LOS PUNTOS DE TIENDA', 'qué entra, qué sale y quién tiene cuánto', <Economia e={d.economia} liga={liga} />)] : null,
         d.crews_num ? ['crews', 'Las crews', sec('nu-crews', 'LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />)] : null,
         d.chats ? ['chats', 'Los chats', sec('nu-chats', 'LOS CHATS GENERALES', 'lo que importó · 30 días · sólo lo ve el staff', <ChatsDueno c={d.chats} />)] : null,
+        // 🧾🐉 qué hace cada uno y dónde, y los Dragón Drops (23/11/2026)
+        ['acciones', 'Qué hace la gente', <>
+          {sec('nu-acciones', 'QUÉ HACE LA GENTE Y DÓNDE · 7 DÍAS', 'personas distintas · nunca quién', <QueHace a={d.acciones} />)}
+          {sec('nu-drops', 'LOS DRAGÓN DROPS · 7 DÍAS', 'contra los 7 de antes', <DropsNumeros r={d.drops_res} />)}
+        </>],
       ]} />
       </>
     );

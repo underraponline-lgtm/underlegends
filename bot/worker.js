@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida, quienPide } from './avisos.js';
+import { anotarUso, accionDiscord, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida, quienPide } from './avisos.js';
 // 🎨 el color de cada servidor y su ícono, los mismos del bot en vivo y de `eventos-hoy` (nunca escritos acá)
 import { colorChat, visualRed, DROP_TITULOS, pedirDibujo, conNuevos } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva, guardarServidores,
@@ -5724,7 +5724,8 @@ export default {
     // 📊 cada persona que usa el bot cuenta, una vez por día (ver `anotarUso()` en avisos.js, Dlx 04/10/2026). Con
     // waitUntil: Discord da 3 segundos para contestar y esto no los espera
     const usa = idDe(i);
-    if (usa && ctx && ctx.waitUntil) ctx.waitUntil(anotarUso(env, usa, 'bot'));
+    // 🧾 y con QUÉ tocó (23/11/2026): el comando, o el botón o menú por el prefijo de su custom_id (`accionDiscord()`)
+    if (usa && ctx && ctx.waitUntil) ctx.waitUntil(anotarUso(env, usa, 'bot', accionDiscord(i)));
 
     if (i.type === RECIBE.COMANDO) {
       // ⚠️ EL FRENO VA DESPUÉS DE LA FIRMA Y ANTES DE KV. Después, porque una
