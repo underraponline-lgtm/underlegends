@@ -3778,6 +3778,54 @@
    ]
   ]
  },
+ "153388605": {
+  "dia": "2026-11-23",
+  "escala": "8-15",
+  "fecha": "23/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1574528533953388605"
+  ],
+  "n": 153388605,
+  "nombre": "FMS CONCEPCION",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Ojitos canábicos 🇨🇱"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Scot",
+       "MaYeuTyK"
+      ],
+      "Scot",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    0
+   ],
+   [
+    "Ojitos canábicos 🇨🇱",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "154151752": {
   "dia": "2026-09-29",
   "escala": "8-15",

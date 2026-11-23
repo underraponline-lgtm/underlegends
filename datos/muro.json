@@ -234,6 +234,15 @@
 "temporada"
 ]
 },
+"soulb": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "walker": {
 "rg": "A",
 "c": [
@@ -266,15 +275,6 @@
 "c": []
 },
 "geoka": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"soulb": {
 "rg": "D",
 "c": [
 "competitivo",

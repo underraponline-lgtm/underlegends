@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T20:56:21+00:00",
+ "cuando": "2026-11-23T21:25:12+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7670,6 +7670,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1574532683847962725",
+   "cuando": "2026-11-23T21:10:45"
+  },
   {
    "servidor": "WOF",
    "canal": "📜・vs・Inscripciónes",
@@ -43660,15 +43669,6 @@
    "discord_id": "1487658663148785734",
    "msg_id": "1561974291929632801",
    "cuando": "2026-10-20T05:28:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1561974166360432712",
-   "cuando": "2026-10-20T05:27:41"
   }
  ]
 }

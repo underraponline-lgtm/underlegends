@@ -2338,12 +2338,12 @@
   "arc_sv": 0,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
+   "clasico": 2,
    "dg": 14,
    "fg": 3,
    "fp": 1,
    "mata": 1,
-   "riv": 19,
+   "riv": 18,
    "venc": 14
   },
   "tg_p": {
@@ -5696,13 +5696,13 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
-   "dg": 24,
+   "dg": 25,
    "fg": 1,
    "fp": 4,
    "mata": 3,
    "riv": 40,
-   "venc": 22,
-   "vengo": 2
+   "venc": 23,
+   "vengo": 3
   },
   "tg_p": {
    "paises": 12,
