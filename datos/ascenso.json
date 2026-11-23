@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-23T18:00:48Z",
+ "t": "2026-11-23T18:28:26Z",
  "sv": {
   "SR": {
    "filas": [
@@ -714,18 +714,18 @@
      "Verc"
     ],
     [
+     "tam",
+     "ve",
+     5965,
+     240,
+     "Tam"
+    ],
+    [
      "Liberia",
      "ar",
      5945,
      0,
      "Liberia"
-    ],
-    [
-     "tam",
-     "ve",
-     5725,
-     0,
-     "Tam"
     ],
     [
      "Zignos",
@@ -749,18 +749,18 @@
      "Abyssus"
     ],
     [
+     "Za",
+     "ar",
+     4585,
+     240,
+     "Provenza"
+    ],
+    [
      "Erian",
      "pa",
      4410,
      240,
      "Erian"
-    ],
-    [
-     "Za",
-     "ar",
-     4345,
-     0,
-     "Provenza"
     ],
     [
      "OG",
@@ -1176,6 +1176,13 @@
      "JJ"
     ],
     [
+     "Lizeninn",
+     "ar",
+     650,
+     350,
+     "Mito"
+    ],
+    [
      "Jupiter",
      "mx",
      615,
@@ -1274,6 +1281,13 @@
      "Kochi"
     ],
     [
+     "nc",
+     "",
+     480,
+     480,
+     ""
+    ],
+    [
      "Majiztral",
      "co",
      460,
@@ -1309,6 +1323,13 @@
      "Kravitz"
     ],
     [
+     "TøKīØ",
+     "us",
+     440,
+     240,
+     "TøKīØ🦠🧠"
+    ],
+    [
      "Agre",
      "ar",
      410,
@@ -1342,13 +1363,6 @@
      410,
      0,
      "1200"
-    ],
-    [
-     "Lizeninn",
-     "ar",
-     410,
-     110,
-     "Mito"
     ],
     [
      "Prosu",
@@ -1554,7 +1568,7 @@
      "Status"
     ],
     [
-     "nc",
+     "Lrs la sustancia",
      "",
      240,
      240,
@@ -1573,13 +1587,6 @@
      220,
      110,
      "rodrilp"
-    ],
-    [
-     "TøKīØ",
-     "us",
-     200,
-     0,
-     "TøKīØ🦠🧠"
     ],
     [
      "Reyes",
@@ -2168,6 +2175,36 @@
        "Julda",
        "Subcampeón",
        300
+      ],
+      [
+       "Tam",
+       "Tercero",
+       240
+      ],
+      [
+       "Mito",
+       "Tercero",
+       240
+      ],
+      [
+       "nc",
+       "Tercero",
+       240
+      ],
+      [
+       "TøKīØ",
+       "Tercero",
+       240
+      ],
+      [
+       "Provenza",
+       "Tercero",
+       240
+      ],
+      [
+       "Lrs la sustancia",
+       "Tercero",
+       240
       ]
      ],
      "fuera": []
@@ -2203,6 +2240,7 @@
   "826494792556871751": "Mateo",
   "456226577798135808": "Cuenta borrada",
   "830271117129809931": "Inhuman",
-  "1574183742329852005": "nc"
+  "1574183742329852005": "nc",
+  "1271260378654969947": "Lrs la sustancia💫"
  }
 }
