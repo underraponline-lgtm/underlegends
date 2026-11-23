@@ -1132,6 +1132,18 @@
    "vence": "2026-11-29T00:47:24+00:00",
    "vencido": false
   },
+  "GARZXI": {
+   "chat": "2026-11-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-23T04:50:16+00:00",
+   "did": "",
+   "evento": "NEW GENESIS II",
+   "n": 678,
+   "sv": "FFA",
+   "vence": "2026-11-30T04:50:16+00:00",
+   "vencido": false
+  },
   "GGWAN": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -2976,6 +2988,18 @@
    "vence": "2026-11-04T15:02:45+00:00",
    "vencido": true
   },
+  "TOKYO": {
+   "chat": "2026-11-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-23T04:50:16+00:00",
+   "did": "",
+   "evento": "NEW GENESIS II",
+   "n": 678,
+   "sv": "FFA",
+   "vence": "2026-11-30T04:50:16+00:00",
+   "vencido": false
+  },
   "Tayo": {
    "con": null,
    "cumplido": "",
@@ -3659,6 +3683,18 @@
    "n": 661,
    "sv": "CH",
    "vence": "2026-11-25T03:02:41+00:00",
+   "vencido": false
+  },
+  "mityar": {
+   "chat": "2026-11-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-23T04:50:16+00:00",
+   "did": "",
+   "evento": "NEW GENESIS II",
+   "n": 678,
+   "sv": "FFA",
+   "vence": "2026-11-30T04:50:16+00:00",
    "vencido": false
   },
   "npk": {

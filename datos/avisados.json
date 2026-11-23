@@ -56629,5 +56629,270 @@
    ]
   ],
   "v": 2
+ },
+ "678": {
+  "antes": {
+   "Cronox": [
+    37,
+    43,
+    false
+   ],
+   "Julda": [
+    130,
+    189,
+    false
+   ],
+   "LRS": [
+    42,
+    50,
+    false
+   ],
+   "LitKunai": [
+    180,
+    342,
+    false
+   ],
+   "Mito": [
+    15,
+    15,
+    false
+   ],
+   "Molusco": [
+    31,
+    33,
+    false
+   ],
+   "NC": [
+    23,
+    24,
+    false
+   ],
+   "OKAM": [
+    25,
+    26,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    5,
+    5,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    4,
+    false
+   ],
+   "Provenza": [
+    18,
+    18,
+    false
+   ],
+   "Sin Limites": [
+    30,
+    32,
+    false
+   ],
+   "Tam": [
+    264,
+    23,
+    true
+   ],
+   "Vandu": [
+    10,
+    10,
+    false
+   ],
+   "romeo": [
+    126,
+    179,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "LRS, TOKYO, Mito",
+    "Cronox",
+    "LRS, TOKYO, Mito"
+   ],
+   [
+    "LRS, TOKYO, Mito",
+    "mityar🇵🇪",
+    "LRS, TOKYO, Mito"
+   ],
+   [
+    "PichulaMc",
+    "Vandu",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "LitKunai",
+    "PichulaMc"
+   ],
+   [
+    "OKAM",
+    "Sin Limites",
+    "OKAM"
+   ],
+   [
+    "OKAM",
+    "romeo",
+    "OKAM"
+   ],
+   [
+    "Oasis",
+    "GARZXI",
+    "Oasis"
+   ],
+   [
+    "OKAM, Molusco, Julda",
+    "LRS, TOKYO, Mito",
+    "OKAM, Molusco, Julda"
+   ],
+   [
+    "PichulaMc, Oasis, PRAISERIZA",
+    "NC, Tam, Provenza",
+    "PichulaMc, Oasis, PRAISERIZA"
+   ],
+   [
+    "PichulaMc, Oasis, PRAISERIZA",
+    "OKAM, Molusco, Julda",
+    "PichulaMc, Oasis, PRAISERIZA"
+   ]
+  ],
+  "ev_antes": {
+   "Cronox": 36,
+   "Julda": 3,
+   "LRS": 43,
+   "LitKunai": 2,
+   "Mito": 50,
+   "Molusco": 31,
+   "NC": 62,
+   "OKAM": 32,
+   "Oasis": 46,
+   "PRAISERIZA": 24,
+   "PichulaMc": 62,
+   "Provenza": 44,
+   "Sin Limites": 51,
+   "Tam": 31,
+   "Vandu": 56,
+   "romeo": 6
+  },
+  "fecha": "22/11",
+  "noche": true,
+  "nombre": "__ NEW GENESIS II __",
+  "num": 678,
+  "participantes": 20,
+  "sello": {
+   "Oasis": "784e010b77a7:a8d8b7335469",
+   "PRAISERIZA": "2f4801609fbc:a8d8b7335469",
+   "PichulaMc": "7ed7b38f0e7c:a8d8b7335469"
+  },
+  "sv": "FFA",
+  "t": "2026-11-23T07:03:57Z",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    3333
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    3333
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "OKAM",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Julda",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mityar🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LitKunai",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "romeo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "GARZXI",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    1750
+   ],
+   [
+    "TOKYO",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    1750
+   ],
+   [
+    "NC",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "v": 2
  }
 }

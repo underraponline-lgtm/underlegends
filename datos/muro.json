@@ -63,6 +63,15 @@
 "temporada"
 ]
 },
+"vandu": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "colesito": {
 "rg": "B",
 "c": [
@@ -74,15 +83,6 @@
 },
 "verc": {
 "rg": "A",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"vandu": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -255,6 +255,15 @@
 "rg": "C",
 "c": []
 },
+"molusco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "geoka": {
 "rg": "C",
 "c": [
@@ -266,15 +275,6 @@
 },
 "sinlimites": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"molusco": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -382,15 +382,6 @@
 "temporada"
 ]
 },
-"trot": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "tuca": {
 "rg": "B",
 "c": []
@@ -417,6 +408,15 @@
 "rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"trot": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -770,15 +770,6 @@
 "temporada"
 ]
 },
-"deuxs": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "jeixder": {
 "rg": "D",
 "c": [
@@ -819,6 +810,15 @@
 "emizor": {
 "rg": "D",
 "c": []
+},
+"deuxs": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "jult": {
 "rg": "E",
@@ -1132,6 +1132,13 @@
 "temporada"
 ]
 },
+"julda": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "oriuz": {
 "rg": "",
 "c": []
@@ -1169,6 +1176,14 @@
 ]
 },
 "rodrilp": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"romeo": {
 "rg": "",
 "c": [
 "pais",
@@ -1260,14 +1275,6 @@
 "rg": "",
 "c": []
 },
-"romeo": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "0223": {
 "rg": "",
 "c": []
@@ -1307,13 +1314,6 @@
 "c": []
 },
 "dantemx": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"julda": {
 "rg": "",
 "c": [
 "servidor",
@@ -8341,8 +8341,8 @@
 "tipo": "resnoche",
 "t": "2026-11-23T08:00:00Z",
 "dia": "2026-11-22",
-"eventos": 2,
-"part": 19,
+"eventos": 3,
+"part": 39,
 "campeones": [
 {
 "ev": "VERSO STYLE",
@@ -8363,6 +8363,25 @@
 [
 "Revo",
 ""
+]
+]
+},
+{
+"ev": "NEW GENESIS II",
+"sv": "FFA",
+"ll": 678,
+"quien": [
+[
+"Oasis",
+"oasis"
+],
+[
+"PRAISERIZA",
+"praiseriza"
+],
+[
+"PichulaMc",
+"pichulamc"
 ]
 ]
 }
@@ -8470,9 +8489,9 @@
 "praiseriza",
 "snow",
 "six",
+"vandu",
 "colesito",
-"verc",
-"vandu"
+"verc"
 ],
 "competitivo": [
 "oasis",
@@ -8498,14 +8517,14 @@
 },
 "racha": {
 "makmah": 1,
-"oasis": 3,
-"pichulamc": 1,
+"oasis": 4,
+"pichulamc": 2,
 "erian": 1,
-"praiseriza": 1,
+"praiseriza": 2,
 "snow": 0,
 "six": 5,
 "verc": 0,
-"vandu": 1,
+"vandu": 0,
 "panchok": 3,
 "carlosss": 2,
 "liberia": 1,
@@ -8521,11 +8540,11 @@
 "abyssus": 1,
 "nc": 0,
 "nxuz": 0,
-"okam": 0,
+"okam": 1,
 "velatz": 0,
 "mito": 0,
 "zignos": 1,
-"molusco": 0,
+"molusco": 1,
 "guess": 1,
 "walker": 0,
 "delux": 0,
@@ -8536,11 +8555,11 @@
 "bloody": 1,
 "tuca": 0,
 "drexx": 0,
-"cronox": 1,
+"cronox": 0,
 "chop": 1,
 "geoka": 0,
 "tenor": 0,
-"lrs": 1,
+"lrs": 0,
 "xclusivo": 0,
 "trot": 0,
 "adriagner": 0,
@@ -8707,7 +8726,7 @@
 "sintext": 0,
 "rodrilp": 3,
 "flash": 2,
-"julda": 1,
+"julda": 2,
 "lalox": 1,
 "beneroo": 0,
 "yeyox": 2,

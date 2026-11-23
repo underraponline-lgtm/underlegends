@@ -10015,7 +10015,7 @@
      0
     ],
     "Cronox": [
-     1,
+     2,
      0,
      1,
      0,
@@ -10154,6 +10154,13 @@
      0,
      0
     ],
+    "GARZXI": [
+     1,
+     0,
+     8,
+     0,
+     0
+    ],
     "Geoka": [
      1,
      0,
@@ -10204,9 +10211,9 @@
      0
     ],
     "Julda": [
+     1,
      0,
-     0,
-     4,
+     2,
      0,
      0
     ],
@@ -10295,7 +10302,7 @@
      0
     ],
     "LRS": [
-     1,
+     2,
      0,
      2,
      0,
@@ -10317,6 +10324,13 @@
     ],
     "Liam": [
      0,
+     0,
+     8,
+     0,
+     0
+    ],
+    "LitKunai": [
+     1,
      0,
      8,
      0,
@@ -10456,6 +10470,13 @@
      0
     ],
     "Mito": [
+     2,
+     0,
+     2,
+     0,
+     0
+    ],
+    "Molusco": [
      1,
      0,
      2,
@@ -10470,9 +10491,9 @@
      0
     ],
     "NC": [
-     1,
+     2,
      0,
-     8,
+     4,
      0,
      0
     ],
@@ -10505,9 +10526,9 @@
      0
     ],
     "OKAM": [
+     1,
      0,
-     0,
-     8,
+     2,
      0,
      0
     ],
@@ -10519,14 +10540,14 @@
      0
     ],
     "Oasis": [
+     1,
      0,
-     0,
-     2,
+     1,
      0,
      0
     ],
     "PRAISERIZA": [
-     1,
+     2,
      0,
      1,
      0,
@@ -10546,6 +10567,13 @@
      0,
      0
     ],
+    "PichulaMc": [
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
     "Player": [
      0,
      0,
@@ -10561,9 +10589,9 @@
      0
     ],
     "Provenza": [
+     1,
      0,
-     0,
-     16,
+     4,
      0,
      0
     ],
@@ -10631,7 +10659,7 @@
      0
     ],
     "Sin Limites": [
-     0,
+     1,
      0,
      8,
      0,
@@ -10672,10 +10700,17 @@
      0,
      0
     ],
+    "TOKYO": [
+     1,
+     0,
+     4,
+     0,
+     0
+    ],
     "Tam": [
+     1,
      0,
-     0,
-     8,
+     4,
      0,
      0
     ],
@@ -10729,7 +10764,7 @@
      0
     ],
     "Vandu": [
-     1,
+     2,
      0,
      1,
      0,
@@ -10875,6 +10910,13 @@
      0,
      0
     ],
+    "mityar🇵🇪": [
+     1,
+     0,
+     8,
+     0,
+     0
+    ],
     "ojos melancólicos 🇨🇱": [
      0,
      0,
@@ -10911,9 +10953,9 @@
      0
     ],
     "romeo": [
+     1,
      0,
-     0,
-     16,
+     8,
      0,
      0
     ],
@@ -10966,13 +11008,16 @@
     "EIDP": 600,
     "Erian": 300,
     "Flash": 1000,
+    "GARZXI": 300,
     "Geoka": 300,
     "Inhuman": 300,
     "Izaya": 300,
+    "Julda": 300,
     "Keplatoo🇪🇸": 600,
     "Kyss": 1300,
     "LRS": 300,
     "Lalox": 600,
+    "LitKunai": 300,
     "Lord Viruzz": 300,
     "MAU KC": 600,
     "MCO": 1300,
@@ -10984,20 +11029,28 @@
     "Mc uchiha": 300,
     "Mexicano🇲🇽": 300,
     "Mito": 300,
+    "Molusco": 300,
     "Mosquitrap 🦟": 1000,
     "NC": 300,
     "OG": 300,
+    "OKAM": 300,
+    "Oasis": 1300,
     "PRAISERIZA": 1300,
     "Paria": 300,
+    "PichulaMc": 1300,
+    "Provenza": 300,
     "Puppy": 1000,
     "Raizer": 600,
     "Revo": 1000,
     "SAIDEM": 300,
     "SULTAN": 300,
+    "Sin Limites": 300,
     "Six": 300,
     "Soulb": 300,
     "Status": 300,
     "THO": 600,
+    "TOKYO": 300,
+    "Tam": 300,
     "Telmex": 600,
     "Tenor": 300,
     "Thaniel": 300,
@@ -11011,7 +11064,9 @@
     "Zignos": 300,
     "doble h": 300,
     "mats": 1000,
+    "mityar🇵🇪": 300,
     "rodrilp": 600,
+    "romeo": 300,
     "tommy": 800,
     "yinn": 300
    }
@@ -11130,6 +11185,7 @@
   "Flash": 1000,
   "Forza": 600,
   "Fritz": 600,
+  "GARZXI": 300,
   "Geoka": 4700,
   "Gero": 300,
   "Global Hustler": 1000,
@@ -11164,6 +11220,7 @@
   "Joven shenlong": 300,
   "Juanpa": 600,
   "Juasmio": 1900,
+  "Julda": 300,
   "Julix": 600,
   "Julix🇧🇴": 1000,
   "Jult": 600,
@@ -11200,7 +11257,7 @@
   "Liam": 300,
   "Liberia": 8000,
   "Lilñaño": 900,
-  "LitKunai": 300,
+  "LitKunai": 600,
   "Lord Viruzz": 5000,
   "Lucky": 900,
   "Luzzano": 900,
@@ -11237,7 +11294,7 @@
   "Miniboy": 9100,
   "Mito": 6000,
   "Mochi DG": 300,
-  "Molusco": 5400,
+  "Molusco": 5700,
   "Monet": 300,
   "Mosquitrap 🦟": 5000,
   "Motera": 3200,
@@ -11257,10 +11314,10 @@
   "Number": 300,
   "Number VE": 2800,
   "OG": 8000,
-  "OKAM": 4200,
+  "OKAM": 4500,
   "ONDADISKO": 600,
   "ONZASS": 1200,
-  "Oasis": 10800,
+  "Oasis": 12100,
   "Ortiz": 600,
   "Over": 9700,
   "PIERR🇵🇪": 300,
@@ -11270,7 +11327,7 @@
   "Panchok": 8400,
   "Paria": 1800,
   "Personality": 300,
-  "PichulaMc": 9100,
+  "PichulaMc": 10400,
   "Pipe": 300,
   "Player": 3500,
   "Polosport": 3100,
@@ -11278,7 +11335,7 @@
   "Presagio": 5100,
   "Prodigy": 300,
   "Prosu": 3800,
-  "Provenza": 6000,
+  "Provenza": 6300,
   "Puppy": 1000,
   "RT": 1300,
   "Ragna": 1000,
@@ -11312,15 +11369,16 @@
   "Selek": 300,
   "Senticide": 600,
   "Shadow": 600,
-  "Sin Limites": 3700,
+  "Sin Limites": 4000,
   "Six": 8900,
   "Snow": 7100,
   "Soneto": 300,
   "Soulb": 4500,
   "Status": 300,
   "THO": 1600,
+  "TOKYO": 300,
   "TONY  🇦🇷": 1000,
-  "Tam": 8500,
+  "Tam": 8800,
   "Teito": 2100,
   "Telmex": 600,
   "Tenor": 8200,
@@ -11372,13 +11430,14 @@
   "luisito 🏆": 300,
   "mats": 6200,
   "melomaniaco": 1200,
+  "mityar🇵🇪": 300,
   "nebu": 300,
   "nemmii_as": 1200,
   "oriuz": 600,
   "publicenemy🇦🇷": 300,
   "roda mc 🇵🇦": 1000,
   "rodrilp": 1500,
-  "romeo": 900,
+  "romeo": 1200,
   "setesfifi": 300,
   "tommy": 800,
   "wei shenlong": 300,

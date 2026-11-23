@@ -62742,5 +62742,195 @@
    "min": 63,
    "v": 1
   }
+ },
+ "678": {
+  "dia": "2026-11-22",
+  "escala": "16+",
+  "fecha": "22/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1574285938895355925"
+  ],
+  "n": 678,
+  "nombre": "NEW GENESIS II",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "LRS, TOKYO, Mito",
+       "Cronox",
+       "mityar🇵🇪"
+      ],
+      "LRS, TOKYO, Mito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "PichulaMc",
+       "Vandu",
+       "LitKunai"
+      ],
+      "PichulaMc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "OKAM",
+       "Sin Limites",
+       "romeo"
+      ],
+      "OKAM",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Oasis",
+       "NC TAM",
+       "GARZXI"
+      ],
+      "Oasis, NC TAM",
+      "triple (3 bandas, pasan 2); también pasa: NC TAM"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM, Molusco, Julda",
+       "LRS, TOKYO, Mito"
+      ],
+      "OKAM, Molusco, Julda",
+      ""
+     ],
+     [
+      [
+       "PichulaMc, Oasis, PRAISERIZA",
+       "NC, Tam, Provenza"
+      ],
+      "PichulaMc, Oasis, PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc, Oasis, PRAISERIZA",
+       "OKAM, Molusco, Julda"
+      ],
+      "PichulaMc, Oasis, PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    3333
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "PichulaMc",
+    "Campeón",
+    3333
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "GARZXI",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Julda",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "LitKunai",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "OKAM",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mityar🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "romeo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    1750
+   ],
+   [
+    "NC",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "TOKYO",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "ver": {
+   "min": 124,
+   "v": 1
+  }
  }
 }
