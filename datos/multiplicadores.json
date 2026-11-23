@@ -1710,10 +1710,12 @@
    "organizadores": [],
    "semillero": {
     "nuevos": {
-     "FFA": 2
+     "FFA": 2,
+     "FRZ": 1
     },
     "gente": {
-     "FFA": 22
+     "FFA": 22,
+     "FRZ": 9
     },
     "gana": null
    },
@@ -1728,7 +1730,7 @@
     "FDS": 0,
     "FFA": 22,
     "FFS": 0,
-    "FRZ": 0,
+    "FRZ": 9,
     "FVS": 0,
     "LKR": 0,
     "SR": 0,

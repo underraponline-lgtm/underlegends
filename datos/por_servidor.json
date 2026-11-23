@@ -739,7 +739,6 @@
     "pts": 39087,
     "racha": "1/2",
     "tg": {
-     "dv": true,
      "fin": 3
     }
    }
@@ -2217,7 +2216,6 @@
     "pts": 42075,
     "racha": "0/1",
     "tg": {
-     "dv": true,
      "fin": 2
     }
    },
@@ -2407,10 +2405,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 11072,
-    "racha": "0/1",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/1"
    },
    "URBF": {
     "duelos": "0/1",
@@ -2942,10 +2937,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/0"
    }
   },
   "Crizcejotas": {
@@ -3286,7 +3278,7 @@
     "racha": "0/0"
    }
   },
-  "Daulinov🇨🇴": {
+  "Daulinov": {
    "FRZ": {
     "duelos": "",
     "ev": 1,
@@ -4632,7 +4624,6 @@
     "pts": 38981,
     "racha": "2/2",
     "tg": {
-     "dv": true,
      "fin": 2
     }
    },
@@ -9511,7 +9502,6 @@
     "pts": 21029,
     "racha": "3/3",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    },
@@ -9795,7 +9785,6 @@
     "pts": 21485,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    },
@@ -10191,7 +10180,6 @@
     "pts": 29359,
     "racha": "0/0",
     "tg": {
-     "dv": true,
      "fund": true
     }
    },
@@ -10936,10 +10924,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 7450,
-    "racha": "0/0",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/0"
    },
    "UFLUC": {
     "duelos": "",
@@ -12402,7 +12387,6 @@
     "pts": 9844,
     "racha": "2/2",
     "tg": {
-     "dv": true,
      "fin": 2,
      "nuevo": true
     }

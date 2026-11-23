@@ -234,6 +234,15 @@
 "temporada"
 ]
 },
+"geoka": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "soulb": {
 "rg": "D",
 "c": [
@@ -273,15 +282,6 @@
 "velatz": {
 "rg": "C",
 "c": []
-},
-"geoka": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "sinlimites": {
 "rg": "D",

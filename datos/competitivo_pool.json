@@ -1972,7 +1972,7 @@
    "fg": 2,
    "fp": 5,
    "mata": 1,
-   "riv": 47,
+   "riv": 48,
    "venc": 26,
    "vengo": 1
   },
@@ -1981,7 +1981,7 @@
    "paisesg": 8
   },
   "nac": {
-   "evn": 16,
+   "evn": 17,
    "evi": 36,
    "com": 8,
    "top": [
@@ -4379,12 +4379,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 14,
+   "dg": 15,
    "fg": 2,
    "fp": 1,
    "mata": 1,
-   "riv": 25,
-   "venc": 14,
+   "riv": 27,
+   "venc": 15,
    "vengo": 1
   },
   "tg_p": {
@@ -4393,7 +4393,7 @@
   },
   "nac": {
    "evn": 15,
-   "evi": 24,
+   "evi": 25,
    "com": 6,
    "top": [
     3,
@@ -6003,7 +6003,7 @@
    "fg": 1,
    "fp": 1,
    "mata": 3,
-   "riv": 39,
+   "riv": 40,
    "venc": 18,
    "vengo": 2
   },
@@ -6014,7 +6014,7 @@
   },
   "nac": {
    "evn": 7,
-   "evi": 43,
+   "evi": 44,
    "com": 1,
    "top": [
     2,
@@ -6716,7 +6716,7 @@
   "din_v": 2,
   "din_t": 2,
   "crn_t": 1,
-  "cri_t": 2,
+  "cri_t": 3,
   "pos": 146,
   "total": 86,
   "rango": "",
@@ -6728,12 +6728,25 @@
   "pos_sv": "1/3",
   "arc_sv": 0,
   "tg_c": {
-   "fg": 1
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 2,
+   "fg": 1,
+   "riv": 2,
+   "venc": 2
+  },
+  "tg_p": {
+   "paises": 1,
+   "paisesg": 1
   },
   "nac": {
    "evn": 1,
    "evi": 1,
-   "com": 1
+   "com": 1,
+   "top": [
+    6,
+    "ar"
+   ]
   }
  },
  {
@@ -10861,11 +10874,11 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 3,
-   "dg": 24,
+   "dg": 25,
    "fg": 6,
    "fp": 1,
-   "riv": 25,
-   "venc": 18
+   "riv": 27,
+   "venc": 19
   },
   "tg_p": {
    "paises": 8,
@@ -10873,7 +10886,7 @@
   },
   "nac": {
    "evn": 2,
-   "evi": 15,
+   "evi": 16,
    "com": 2,
    "top": [
     15,
@@ -12165,7 +12178,7 @@
   "din_v": 2,
   "din_t": 3,
   "crn_t": 1,
-  "cri_t": 7,
+  "cri_t": 8,
   "pos": 216,
   "total": 86,
   "rango": "",
@@ -12884,19 +12897,23 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 2,
+   "dg": 4,
    "fp": 1,
-   "riv": 6,
-   "venc": 2
+   "riv": 9,
+   "venc": 4
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 2
+   "paises": 6,
+   "paisesg": 3
   },
   "nac": {
-   "evn": 2,
-   "evi": 5,
-   "com": 0
+   "evn": 3,
+   "evi": 6,
+   "com": 1,
+   "top": [
+    8,
+    "mx"
+   ]
   }
  },
  {
@@ -15709,14 +15726,14 @@
   "arc_sv": 79,
   "tg_c": {
    "clasico": 1,
-   "riv": 1
+   "riv": 2
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2
   },
   "nac": {
    "evn": 2,
-   "evi": 6,
+   "evi": 7,
    "com": 0
   }
  },
@@ -26424,12 +26441,12 @@
   }
  },
  {
-  "full": "Daulinov🇨🇴",
+  "full": "Daulinov",
   "raw": "Daulinov",
   "cc": "co",
   "sv": "FRZ",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1343730229721698375",
   "verificado": false,
   "ev": 1,
   "score": 2.5,
@@ -26450,7 +26467,7 @@
   "din_v": 0,
   "din_t": 0,
   "crn_t": 0,
-  "cri_t": 0,
+  "cri_t": 2,
   "pos": 479,
   "total": 86,
   "rango": "",
