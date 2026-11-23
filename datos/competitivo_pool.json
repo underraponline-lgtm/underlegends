@@ -2800,7 +2800,7 @@
   "raw": "Mathhias",
   "cc": "ve",
   "sv": "ACAD",
-  "crew": "",
+  "crew": "YOUNG PROSPECTS",
   "discord_id": "1177916322122833933",
   "verificado": true,
   "ev": 14,
@@ -2833,6 +2833,7 @@
   "arc_pais": 82,
   "pos_sv": "2/18",
   "arc_sv": 94,
+  "pos_crew": "",
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
@@ -2840,7 +2841,7 @@
    "fg": 1,
    "fp": 1,
    "mata": 1,
-   "riv": 19,
+   "riv": 20,
    "venc": 11,
    "vengo": 1
   },
@@ -2850,7 +2851,7 @@
   },
   "nac": {
    "evn": 3,
-   "evi": 16,
+   "evi": 17,
    "com": 0,
    "top": [
     1,
@@ -2897,23 +2898,23 @@
   "pos_sv": "4/14",
   "arc_sv": 79,
   "tg_c": {
-   "bestia": 2,
+   "bestia": 3,
    "clasico": 5,
-   "dg": 43,
+   "dg": 47,
    "fg": 5,
    "fp": 3,
-   "riv": 54,
-   "venc": 34,
+   "riv": 58,
+   "venc": 37,
    "vengo": 5
   },
   "tg_p": {
-   "paises": 11,
+   "paises": 12,
    "paisesg": 9,
    "primer": true
   },
   "nac": {
    "evn": 28,
-   "evi": 40,
+   "evi": 42,
    "com": 10,
    "top": [
     5,
@@ -4069,21 +4070,21 @@
   "pos_sv": "1/7",
   "arc_sv": 100,
   "tg_c": {
-   "bestia": 1,
+   "bestia": 2,
    "clasico": 2,
-   "dg": 6,
+   "dg": 9,
    "fg": 2,
    "fp": 1,
-   "riv": 7,
-   "venc": 6
+   "riv": 9,
+   "venc": 8
   },
   "tg_p": {
-   "paises": 4,
-   "paisesg": 3
+   "paises": 6,
+   "paisesg": 5
   },
   "nac": {
    "evn": 2,
-   "evi": 2,
+   "evi": 3,
    "com": 5,
    "top": [
     8,
@@ -4860,20 +4861,20 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
-   "dg": 25,
+   "dg": 28,
    "fp": 5,
    "mata": 1,
-   "riv": 46,
-   "venc": 21,
+   "riv": 48,
+   "venc": 24,
    "vengo": 6
   },
   "tg_p": {
    "paises": 12,
-   "paisesg": 7
+   "paisesg": 8
   },
   "nac": {
    "evn": 12,
-   "evi": 58,
+   "evi": 60,
    "com": 0,
    "top": [
     1,
@@ -8773,7 +8774,7 @@
    "bestia": 1,
    "clasico": 3,
    "dg": 3,
-   "riv": 15,
+   "riv": 16,
    "venc": 3,
    "vengo": 1
   },
@@ -13882,15 +13883,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 2,
+   "dg": 3,
    "mata": 1,
-   "riv": 14,
-   "venc": 2,
-   "vengo": 1
+   "riv": 16,
+   "venc": 3,
+   "vengo": 2
   },
   "tg_p": {
    "paises": 8,
-   "paisesg": 2
+   "paisesg": 3
   },
   "nac": {
    "evn": 0,
@@ -15394,7 +15395,7 @@
   "raw": "Xervoe",
   "cc": "cl",
   "sv": "ACAD",
-  "crew": "",
+  "crew": "YOUNG PROSPECTS",
   "discord_id": "1413322255047594015",
   "verificado": true,
   "ev": 2,
@@ -15427,6 +15428,7 @@
   "arc_pais": 54,
   "pos_sv": "7/18",
   "arc_sv": 67,
+  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -16449,14 +16451,14 @@
   "arc_sv": 40,
   "tg_c": {
    "clasico": 1,
-   "riv": 2
+   "riv": 4
   },
   "tg_p": {
-   "paises": 2
+   "paises": 3
   },
   "nac": {
    "evn": 0,
-   "evi": 3,
+   "evi": 5,
    "com": 0
   }
  },
@@ -18229,14 +18231,14 @@
   "arc_sv": 0,
   "tg_c": {
    "clasico": 1,
-   "riv": 3
+   "riv": 4
   },
   "tg_p": {
-   "paises": 3
+   "paises": 4
   },
   "nac": {
    "evn": 1,
-   "evi": 4,
+   "evi": 5,
    "com": 0
   }
  },
@@ -22121,9 +22123,16 @@
   "arc_pais": 32,
   "pos_sv": "133/171",
   "arc_sv": 23,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  },
   "nac": {
    "evn": 0,
-   "evi": 0,
+   "evi": 1,
    "com": 0
   }
  },

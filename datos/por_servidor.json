@@ -4314,7 +4314,7 @@
     "oro": 0,
     "ovr": 44,
     "pod": 0,
-    "pts": 8500,
+    "pts": 10150,
     "racha": "0/0"
    },
    "FFA": {
@@ -4331,11 +4331,11 @@
    },
    "UFLUC": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 3000,
+    "pts": 4000,
     "racha": "0/0"
    }
   },
@@ -9879,6 +9879,17 @@
     "racha": "0/0"
    }
   },
+  "MayeutiK🇺🇾": {
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0"
+   }
+  },
   "Mc Glock": {
    "ACAD": {
     "duelos": "",
@@ -10016,11 +10027,11 @@
   "Micronico🇦🇷": {
    "UFLUC": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2000,
+    "pts": 4000,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -10153,12 +10164,12 @@
    },
    "UFLUC": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 2,
-    "pts": 10000,
-    "racha": "2/2",
+    "pts": 13500,
+    "racha": "1/1",
     "tg": {
      "fin": 2,
      "fund": true
@@ -10478,6 +10489,18 @@
     "pod": 1,
     "pts": 17325,
     "racha": "0/1",
+    "tg": {
+     "fin": 1
+    }
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 6250,
+    "racha": "1/1",
     "tg": {
      "fin": 1
     }
@@ -12076,6 +12099,20 @@
     "racha": "0/0",
     "tg": {
      "fund": true
+    }
+   }
+  },
+  "Pipelindo🇨🇴": {
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 6250,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
     }
    }
   },

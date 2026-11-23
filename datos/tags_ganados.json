@@ -2546,6 +2546,11 @@
     "EMBAJADOR",
     "t1",
     1795475239555
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1795476947957
    ]
   },
   "servidor": {
@@ -8639,6 +8644,11 @@
  },
  "lvel": {
   "competitivo": {
+   "🔁 VENGADOR": [
+    "🔁 VENGADOR",
+    "t1",
+    1795476947957
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -11809,6 +11819,11 @@
     "t1",
     1793684083679
    ],
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1795476947957
+   ],
    "🤜 CLÁSICO": [
     "🤜 CLÁSICO",
     "t1",
@@ -13611,6 +13626,15 @@
     "🧳 VIAJERO",
     "t1",
     1793079194391
+   ]
+  }
+ },
+ "pipelindo": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795476947957
    ]
   }
  },
@@ -18462,6 +18486,15 @@
     "🧳 VIAJERO",
     "t1",
     1793927666370
+   ]
+  }
+ },
+ "xervoe": {
+  "temporada": {
+   "👥 FUNDADOR DE CREW": [
+    "👥 FUNDADOR DE CREW",
+    "t1",
+    1795476947957
    ]
   }
  },

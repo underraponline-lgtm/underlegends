@@ -206,6 +206,35 @@
     "ev": 0
    },
    "fund": "makmah"
+  },
+  {
+   "id": "YOUNG PROSPECTS",
+   "nombre": "YOUNG PROSPECTS",
+   "sigla": "YPS",
+   "entrada": "invitacion",
+   "oficial": false,
+   "creada": 1795474885843,
+   "reps": [],
+   "gente": [
+    [
+     "xervoe",
+     "lider",
+     1795474885843
+    ],
+    [
+     "mathhias",
+     "miembro",
+     1795475050977
+    ]
+   ],
+   "vence": 0,
+   "logo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/logos-crews/f4ef63793bf18029290e64ff.jpg",
+   "desc": "Young Life, Wise Mind",
+   "req": {
+    "rg": "",
+    "ev": 0
+   },
+   "fund": "xervoe"
   }
  ]
 }

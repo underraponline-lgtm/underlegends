@@ -4122,6 +4122,27 @@
     "Uzi :CL:"
    ],
    "escribio": {}
+  },
+  {
+   "id": "6a56176286",
+   "tipo": "Batalla sin ganador",
+   "sec": "UFL BATTLES V2 · UFLUC · 03/10 · #684",
+   "que": "¿Quién ganó en cuartos?\nCRK🇲🇽 🆚 Ritmo🇺🇾",
+   "r": "Nadie siguió (cobran la ronda)",
+   "regla": "R25 · una batalla sin ganador de dieciseisavos, octavos o cuartos, a los 28 días: «nadie siguió»",
+   "rk": "R25",
+   "por": "el ciclo",
+   "porque": "nadie dijo quién ganó en 51 días: cada uno cobra la ronda, como las 48 h cuando se le pudo preguntar al organizador",
+   "t": 1795476940625,
+   "filas": [
+    1587
+   ],
+   "variantes": [
+    "UFL BATTLES V2 · UFLUC · 03/10 · cuartos · CRK🇲🇽 🆚 Ritmo🇺🇾"
+   ],
+   "escribio": {
+    "batalla": "UFL BATTLES V2 · UFLUC · 03/10 · cuartos · CRK🇲🇽 🆚 Ritmo🇺🇾"
+   }
   }
  ],
  "deshechas": []

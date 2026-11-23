@@ -63694,7 +63694,7 @@
        "Elbesaabuelas"
       ],
       "Teo",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -63702,7 +63702,7 @@
        "Shadow"
       ],
       "Uzi :CL:",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -63710,7 +63710,7 @@
        "Liam"
       ],
       "NXUZ",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -63718,7 +63718,7 @@
        "Mathhias"
       ],
       "Carlosmo",
-      "cuenta nueva, con su anuncio"
+      ""
      ]
     ],
     "r": "Cuartos"
@@ -63731,7 +63731,7 @@
        "Teo"
       ],
       "Miniboy",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -63739,7 +63739,7 @@
        "NXUZ"
       ],
       "Carlosmo",
-      "cuenta nueva, con su anuncio"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -63752,7 +63752,7 @@
        "Miniboy"
       ],
       "Carlosmo",
-      "cuenta nueva, con su anuncio"
+      ""
      ]
     ],
     "r": "Final"
@@ -63803,6 +63803,119 @@
   ],
   "ver": {
    "min": 247,
+   "v": 1
+  }
+ },
+ "684": {
+  "dia": "2026-10-03",
+  "escala": "8-15",
+  "fecha": "03/10",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1556107495108378625"
+  ],
+  "n": 684,
+  "nombre": "UFL BATTLES V2",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MayeutiK🇺🇾",
+       "Micronico🇦🇷"
+      ],
+      "MayeutiK🇺🇾",
+      ""
+     ],
+     [
+      [
+       "Monet",
+       "Elbesaabuelas"
+      ],
+      "Monet",
+      ""
+     ],
+     [
+      [
+       "CRK🇲🇽",
+       "Ritmo🇺🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Monet",
+       "MayeutiK🇺🇾"
+      ],
+      "Monet",
+      ""
+     ],
+     [
+      [
+       "Pipelindo🇨🇴",
+       "Miniboy"
+      ],
+      "Pipelindo🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Monet",
+       "Pipelindo🇨🇴"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Monet",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "Pipelindo🇨🇴",
+    "Subcampeón",
+    6250
+   ],
+   [
+    "MayeutiK🇺🇾",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Micronico🇦🇷",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 37,
    "v": 1
   }
  }
