@@ -1337,6 +1337,29 @@ const ok = (cond, que, det) => {
       'y con tope: 40 canales por día (urbanstreet y redgol ya estaban; los que sobran no entran)', String(L.length));
     o.visita({ de: 'urbanstreet' });
     ok(o.llegadasResumen().find((x) => x.de === 'urbanstreet').n === 3, 'un canal que ya estaba sigue sumando pasado el tope');
+    // 📱👆 LOS NAVEGADORES DISTINTOS Y QUIÉN INTERACTUÓ, POR SEMANA (23/11/2026, los cinco cuadros de Números)
+    const sem0 = () => o.sql.exec('SELECT COALESCE(SUM(n), 0) AS n FROM visitas_sem WHERE dia = ?', A.diaET()).toArray()[0].n;
+    const s0 = sem0(), w0 = vis0();
+    o.visita({ sem: 1 });
+    o.visita({ sem: 1, ya: 1 });
+    o.visita({ ya: 1 });
+    ok(sem0() - s0 === 2 && vis0() - w0 === 1,
+      'la primera visita de la semana suma un navegador distinto; con `ya` (ya contó hoy) no vuelve a sumar la del día', (sem0() - s0) + ' / ' + (vis0() - w0));
+    o.sql.exec('DELETE FROM visitas_sem');
+    for (const [d, n] of [['2026-10-13', 4], ['2026-10-14', 2]]) o.sql.exec('INSERT INTO visitas_sem (dia, n) VALUES (?, ?)', d, n);
+    const T = (d) => Date.parse(d + 'T16:00:00Z');
+    o.sql.exec('INSERT INTO aplausos (id, quien, t) VALUES (?, ?, ?)', 'p1', 'a', T('2026-10-13'));
+    o.sql.exec('INSERT INTO aplausos (id, quien, t) VALUES (?, ?, ?)', 'p2', 'a', T('2026-10-15'));
+    o.sql.exec('INSERT INTO aplausos (id, quien, t) VALUES (?, ?, ?)', 'p1', 'b', T('2026-10-14'));
+    o.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?)', 'e1', 'c', 'x', T('2026-10-07'));
+    o.sql.exec('INSERT INTO comentario (pub, quien, k, tx, t) VALUES (?, ?, ?, ?, ?)', 'p1', 'a', 'a', 'hola', T('2026-10-08'));
+    // una a las 11 PM ET del domingo 11 (las 3 AM UTC del lunes): es de la semana del 5, no de la del 12
+    o.sql.exec('INSERT INTO sigue (quien, a, t) VALUES (?, ?, ?)', 'd', 'x', Date.parse('2026-10-12T03:00:00Z'));
+    const s2 = o._usoSemanas(Date.parse('2026-10-15T16:00:00Z'));
+    const [p, q] = s2.slice(-2);
+    ok(q.lunes === '2026-10-12' && q.abrieron === 6 && q.abrieron_desde === '2026-10-13' && q.hacen === 2
+      && p.lunes === '2026-10-05' && p.abrieron === null && p.hacen === 3 && p.k.hacen === 2,
+    'por semana: navegadores distintos (con desde cuándo, y «—» antes), y quién interactuó, con el día en hora del este', JSON.stringify([p, q]));
   }
 }
 
@@ -3875,11 +3898,13 @@ const ok = (cond, que, det) => {
     const aVisita = [];
     const envVis = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, op) => {
       aVisita.push(op.body); return new Response('{"ok":true}'); } }) } };
-    for (const cuerpo of ['{"de":"urbanstreet","otro":1}', '{"de":"<b>"}', '{}', 'no es json', '{"de":"' + 'x'.repeat(300) + '"}']) {
+    for (const cuerpo of ['{"de":"urbanstreet","otro":1}', '{"de":"<b>"}', '{}', 'no es json', '{"de":"' + 'x'.repeat(300) + '"}',
+      '{"sem":1}', '{"sem":1,"ya":1}', '{"ya":1}', '{"sem":"1","de":"redgol"}']) {
       await A.rutaAvisos(new Request('https://x/avisos/visita', { method: 'POST', body: cuerpo }), envVis, '/avisos/visita');
     }
-    ok(aVisita.join('|') === '{"de":"urbanstreet"}|{}|{}|{}|{}',
-      'la visita por la puerta: pasa sólo el canal válido (sin lo demás del cuerpo); lo inválido o enorme llega como {}', aVisita.join('|'));
+    ok(aVisita.join('|') === '{"de":"urbanstreet"}|{}|{}|{}|{}|{"sem":1}|{"sem":1,"ya":1}|{}|{"de":"redgol"}',
+      'la visita por la puerta: pasa sólo el canal válido y las marcas `sem`/`ya` (23/11: `ya` sólo con `sem`, y sólo el número 1); lo demás llega como {}',
+      aVisita.join('|'));
     // 📊 el panel de los socios (19/10/2026): las visitas de cada servidor, y quién ve qué
     o.guardar('tiers', { t: '2026-10-19T23:00:00Z', semanas: 4, servidores: [
       { sv: 'FFA', nombre: 'Freestyle For All', tier: 1, dueno: '400000000000000001', puntos: 81, antes: 40, rec: 'bien', porque: 'x',

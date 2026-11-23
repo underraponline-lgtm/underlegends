@@ -51,24 +51,105 @@ async function ajustar(cual, valor, deshacer) {
 
 const avisoVigente = (aj) => (aj.aviso_web && Date.parse(aj.aviso_web.hasta) > Date.now() ? aj.aviso_web : null);
 
-function Cajas({ u }) {
-  const s = u.semana || {}, a = u.anterior || {};
-  // ▲▼ contra la semana anterior, con color (13/10/2026); sin una semana entera antes, lo que mide cada caja
-  const antes = (x, y) => ((a.dias || 0) >= 7 && y != null ? (x || 0) - y : null);
-  const cajas = [
-    ['USARON EL BOT', s.bot, antes(s.bot, a.bot) ?? 'personas distintas'],
-    ['ENTRARON CON DISCORD', s.web, antes(s.web, a.web) ?? 'a la página, con su cuenta'],
-    ['EN TOTAL', s.personas, antes(s.personas, a.personas) ?? 'en el bot o en la página'],
-    // ⚠️ «VISITAS» SOLO NO DECÍA A QUÉ (Dlx, 07/10/2026: «visitas, pero visitas a qué?»): es cuántos celulares o
-    // compus abrieron la página en el día —cada uno cuenta una vez, con o sin cuenta (`lg:visita` de App.jsx)—
-    ['ABRIERON LA PÁGINA', s.visitas_dia, antes(s.visitas_dia, a.visitas_dia) ?? 'celus o compus por día, en promedio'],
-  ];
+// ── 👥 LA SEMANA EN PERSONAS: LOS CINCO CUADROS (23/11/2026). Dlx: «¿puedes hacer más concisa la información? para ver
+// cuántas personas diferentes han accedido a la página, cuántas han usado el bot, cuántas interactuaron»; de la maqueta
+// eligió la A, «Cinco cuadros». Va arriba de Números: las personas distintas de la semana en grande y cinco cuadros, cada
+// uno con su flecha contra la semana anterior y cinco semanas en barras. Las siete pestañas de antes quedan plegadas abajo
+// («Más números»). Reemplaza a las cuatro cajas de «Esta semana», que contaban siete días corridos y sumaban las visitas
+// de cada día (quien entraba toda la semana contaba siete veces). Los números salen de `_usoSemanas()` (bot/avisos.js):
+// `abrieron` (navegadores distintos, sin robots; se cuenta desde el 23/11) y `hacen` (aplaudir, comentar, votar, apostar,
+// seguir); «Jugaron» sale de las semanas de la Liga (`datos/semanas.json`), con `medirSemana()`
+const DIA_SEM = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+const enCursoSem = (w, hoy) => masDias(w.lunes, 7) > hoy;
+function Barras5({ s, ultima }) {
+  const hay = s.filter((x) => x != null);
+  const tope = Math.max(1, ...hay);
   return (
-    <div className="dz-nums">{cajas.map(([t, v, d]) => (
-      <div key={t} className="dz-num"><span>{t.toLowerCase()}</span><b>{num(v || 0)}</b>
-        {typeof d === 'number' ? <small className={d > 0 ? 'sube' : d < 0 ? 'baja' : ''}>{d > 0 ? '▲ ' : d < 0 ? '▼ ' : '= '}{num(Math.abs(d))} contra la semana anterior</small>
-          : <small>{d}</small>}</div>
-    ))}</div>
+    <span className="nc-b" role="img" aria-label={'Cinco semanas: ' + s.map((x) => (x == null ? 'sin dato' : num(x))).join(', ')}>
+      {s.map((x, j) => <i key={j} className={(j === s.length - 1 ? ultima : '') + (x == null ? ' nada' : '')}
+        style={x == null ? undefined : { height: Math.max(10, Math.round(100 * x / tope)) + '%' }} />)}
+    </span>
+  );
+}
+function Flecha({ d, largo }) {
+  if (d == null) return null;
+  return <small className={'nc-d ' + (d > 0 ? 'sube' : d < 0 ? 'baja' : '')}>{d > 0 ? '▲ ' : d < 0 ? '▼ ' : '= '}{num(Math.abs(d))}{largo || ''}</small>;
+}
+function CincoCuadros({ uso, S }) {
+  const [i0, setI] = useState(null);
+  const us = uso || [];
+  const ss = (S && S.semanas) || [];
+  const hoy = hoyET();
+  if (!us.length) return <p className="pronto-p">Midiendo…</p>;
+  // de entrada, la última semana ENTERA: la de ahora va por la mitad (con › se ve igual, contra los mismos días)
+  const def = us.length > 1 && enCursoSem(us[us.length - 1], hoy) ? us.length - 2 : us.length - 1;
+  const i = i0 === null ? def : Math.min(Math.max(i0, 0), us.length - 1);
+  const w = us[i], wb = i > 0 ? us[i - 1] : null;
+  const curso = enCursoSem(w, hoy);
+  const dias = curso ? Math.min(7, Math.round((Date.parse(hoy + 'T12:00:00Z') - Date.parse(w.lunes + 'T12:00:00Z')) / 864e5) + 1) : 7;
+  const k = dias < 7 ? dias : 0;
+  // la anterior, entera o en sus primeros días («a igual día», como Comparar semanas)
+  const ant = wb ? (k ? wb.k || null : wb) : null;
+  const jIdx = (lunes) => ss.findIndex((x) => x.lunes === lunes);
+  const jug = jIdx(w.lunes) >= 0 ? medirSemana(ss, jIdx(w.lunes), k) : null;
+  const jugB = wb && jIdx(wb.lunes) >= 0 ? medirSemana(ss, jIdx(wb.lunes), k) : null;
+  const dif = (a, b) => (a != null && b != null ? a - b : null);
+  const cinco = us.slice(Math.max(0, i - 4), i + 1);
+  while (cinco.length < 5) cinco.unshift(null);
+  const serie = (f) => cinco.map((x) => (x ? f(x) : null));
+  const color = (d) => (d != null && d < 0 ? 'baja' : 'on');
+  const dP = dif(w.personas, ant && ant.personas);
+  const cuadros = [
+    { t: 'Abrieron la página', v: w.abrieron, d: dif(w.abrieron, ant && ant.abrieron), s: serie((x) => x.abrieron),
+      p: w.abrieron == null ? 'todavía no se contaba' : w.abrieron_desde ? 'celus o compus distintos, desde el ' + corto(w.abrieron_desde)
+        : 'celus o compus distintos, sin robots' },
+    { t: 'Entraron con su cuenta', v: w.web, d: dif(w.web, ant && ant.web), s: serie((x) => x.web) },
+    { t: 'Interactuaron', v: w.hacen, d: dif(w.hacen, ant && ant.hacen), s: serie((x) => x.hacen),
+      p: w.hacen == null ? 'ya no está guardado' : 'aplaudieron, comentaron, votaron, apostaron o siguieron' },
+    { t: 'Usaron el bot', v: w.bot, d: dif(w.bot, ant && ant.bot), s: serie((x) => x.bot) },
+    { t: 'Jugaron un evento', v: jug ? jug.raperos : null, d: dif(jug && jug.raperos, jugB && jugB.raperos),
+      s: serie((x) => { const j = jIdx(x.lunes); return j >= 0 ? ss[j].raperos : null; }),
+      p: jug && jug.debut ? num(jug.debut) + ' por primera vez' : null },
+  ];
+  // 🗣️ lo que dice la semana, sólo con hechos: cuánta gente más o menos, y los eventos que hubo
+  const contra = k ? 'los mismos días de la anterior' : 'la semana anterior';
+  const frase = [];
+  if (dP != null) frase.push(dP === 0 ? 'En el bot y la página, las mismas personas que ' + contra
+    : 'En el bot y la página, ' + num(Math.abs(dP)) + (Math.abs(dP) === 1 ? ' persona ' : ' personas ') + (dP > 0 ? 'más' : 'menos') + ' que ' + contra);
+  if (jug && jugB) {
+    const dj = jug.raperos - jugB.raperos;
+    frase.push((frase.length ? 'jugaron ' : 'Jugaron ') + (dj === 0 ? 'los mismos' : num(Math.abs(dj)) + (dj > 0 ? ' más' : ' menos'))
+      + ', con ' + num(jug.eventos) + (jug.eventos === 1 ? ' evento' : ' eventos') + ' contra ' + num(jugB.eventos));
+  }
+  return (
+    <section className="nc" id="nu-uso" aria-label="La semana en personas">
+      <div className="nc-cab">
+        <h3 className="dz-h">La semana en personas<small>cada persona cuenta una vez</small></h3>
+        <div className="nc-sem">
+          <button type="button" className="nc-fl" aria-label="Semana anterior" disabled={i === 0} onClick={() => setI(i - 1)}>‹</button>
+          <span>{rangoSem(w.lunes)}{curso ? ' · va por el ' + DIA_SEM[dias - 1] : ''}</span>
+          <button type="button" className="nc-fl" aria-label="Semana siguiente" disabled={i === us.length - 1} onClick={() => setI(i + 1)}>›</button>
+        </div>
+      </div>
+      <div className="nc-hero">
+        <div>
+          <span className="nc-t">Personas distintas en la Liga</span>
+          <p className="nc-v"><b>{w.personas == null ? '—' : num(w.personas)}</b><Flecha d={dP} largo={' contra ' + contra} /></p>
+          <small className="nc-p">{w.personas == null ? 'Esa semana ya no está guardada (35 días por persona).' : 'Usaron el bot o la página con su cuenta.'}</small>
+        </div>
+        <Barras5 s={serie((x) => x.personas)} ultima={color(dP)} />
+      </div>
+      <div className="nc-l">{cuadros.map((c) => (
+        <div key={c.t} className="nc-c">
+          <span className="nc-t">{c.t}</span>
+          <b className={c.v == null ? 'nc-nada' : ''}>{c.v == null ? '—' : num(c.v)}</b>
+          <Flecha d={c.d} />
+          {c.p ? <small className="nc-p">{c.p}</small> : null}
+          <Barras5 s={c.s} ultima={color(c.d)} />
+        </div>
+      ))}</div>
+      {frase.length ? <p className="nc-f"><b>Lo que dice la semana:</b> {frase.join('; ')}.</p> : null}
+    </section>
   );
 }
 
@@ -3966,7 +4047,7 @@ const BUSCABLES = [
   ['Los que corrieron /setup (sus puntos de Temporada)', 'servidores', 'sv-setup'],
   ['Reportes de la gente (errores en las llaves)', 'pendientes', '', 'llaves'], ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'],
   ['Fondos, fotos de carta, logos y videos', 'pendientes', '', 'imagenes'], ['Pedidos de la gente', 'pendientes', '', 'pedidos'],
-  ['Comparar semanas', 'numeros', 'nu-semanas'], ['El bot y la página, 7 días', 'numeros', 'nu-uso'], ['El tutorial', 'numeros', 'nu-tuto'],
+  ['Comparar semanas', 'numeros', 'nu-semanas'], ['La semana en personas', 'numeros', 'nu-uso'], ['El tutorial', 'numeros', 'nu-tuto'],
   ['Qué se toca en la página', 'numeros', 'nu-clics'], ['¿El lobby hace volver a la gente?', 'numeros', 'nu-lobby'], ['Las crews (números)', 'numeros', 'nu-crews'],
   ['El Pase de rapero (números)', 'numeros', 'nu-pase'], ['Correr el ciclo ahora', 'salud', 'sa-corridas'], ['Lo que gasta Cloudflare hoy', 'salud', 'sa-cuotas'],
   ['Lo que avisó Logs', 'salud', 'sa-logs'], ['Errores de la página', 'salud', 'sa-errores'], ['El mapa en vivo y los atajos', 'salud', 'sa-atajos'],
@@ -5349,10 +5430,10 @@ function HistorialDeA({ hist, hacer, ocup, liga }) {
 // ── 📊 LOS NÚMEROS, EN PESTAÑAS (25/10/2026, la maqueta: «la gente · la página · el Pase · las crews»). Eran diez
 // secciones una abajo de la otra y la que importaba quedaba al final. Cada pestaña es una pregunta; la que no tiene
 // datos no aparece (sin dato no hay pieza). La elegida se recuerda en este navegador
-const NUM_TAB = 'lg:db-num';
 // 🔗 en qué pestaña vive cada sección, para que un atajo (Ctrl+K, un cuadrado del Resumen) abra la pestaña correcta: antes
-// «El tutorial» llevaba a Números y no aparecía si estabas en otra pestaña (11/11/2026)
-const TAB_DE = { 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente', 'nu-uso': 'semana',
+// «El tutorial» llevaba a Números y no aparecía si estabas en otra pestaña (11/11/2026). `nu-uso` ya no está en ninguna:
+// son los cinco cuadros de arriba (23/11/2026)
+const TAB_DE = { 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente',
   'nu-semanas': 'semana', 'nu-clics': 'pagina', 'nu-tuto': 'pagina', 'nu-pase': 'pase', 'nu-puntos': 'puntos', 'nu-crews': 'crews' };
 // 💬 LOS CHATS GENERALES (17/11/2026, `bot/chats.py`): lo que importó en el chat general de cada socio —eventos falsos,
 // fraude, raids y estafas, quejas de la Liga— con el link al mensaje, y cuánto se habló en la última lectura. Lo demás
@@ -5386,21 +5467,25 @@ function ChatsDueno({ c }) {
   );
 }
 
+// 📁 «MÁS NÚMEROS» (23/11/2026, la A de la maqueta): las siete pestañas de antes, PLEGADAS. Arrancan cerradas —arriba
+// están los cinco cuadros— y se abre una al tocarla; tocarla otra vez la cierra. Ya no se acuerda de la última abierta
+// (`lg:db-num`): abierta de entrada, Números volvía a ser largo. Un atajo a una sección (Ctrl+K, el Resumen) la abre igual
 function NumerosTabs({ tabs, abrir, pedido }) {
-  const [t, setT0] = useState(() => { try { return localStorage.getItem(NUM_TAB) || ''; } catch (e) { return ''; } });
-  const setT = (k) => { setT0(k); try { localStorage.setItem(NUM_TAB, k); } catch (e) { /* sin guardar */ } };
+  const [t, setT] = useState('');
   // `pedido`: la misma sección pedida otra vez desde otra pestaña vuelve a abrir la suya (18/11/2026)
   useEffect(() => { if (abrir && TAB_DE[abrir]) setT(TAB_DE[abrir]); }, [abrir, pedido]);
   const xs = tabs.filter(Boolean);
-  const actual = xs.find(([k]) => k === t) || xs[0];
-  if (!actual) return <p className="pronto-p">Todavía no hay números.</p>;
+  const actual = xs.find(([k]) => k === t) || null;
+  if (!xs.length) return null;
   return (
-    <>
+    <section className="nc-mas" aria-label="Más números">
+      <h3 className="dz-h">Más números<small>{actual ? 'toca otra vez para cerrar' : 'toca uno para abrirlo'}</small></h3>
       <div className="dz-subs" role="tablist" aria-label="Qué números">{xs.map(([k, tt]) => (
-        <button key={k} type="button" role="tab" aria-selected={actual[0] === k} className={'dz-sub' + (actual[0] === k ? ' on' : '')} onClick={() => setT(k)}>{tt}</button>
+        <button key={k} type="button" role="tab" aria-selected={t === k} aria-expanded={t === k} className={'dz-sub' + (t === k ? ' on' : '')}
+          onClick={() => setT(t === k ? '' : k)}>{tt}</button>
       ))}</div>
-      {actual[2]}
-    </>
+      {actual ? actual[2] : null}
+    </section>
   );
 }
 
@@ -5825,6 +5910,9 @@ export function Dashboard({ dc, liga }) {
   } else if (areaV === 'numeros') {
     const S = d.secciones && Object.keys(d.secciones.n || {}).length ? d.secciones : null;
     vista = (
+      <>
+      {/* 👥 arriba, los cinco cuadros (23/11/2026); lo demás, plegado en «Más números» */}
+      <CincoCuadros uso={d.uso_semanas} S={semanas} />
       <NumerosTabs abrir={abrir} pedido={pedido} tabs={[
         // 👥 «La gente» tenía siete secciones (11/11/2026, Dlx: «Números en pestañas»): lo de quién vuelve y lo de la semana
         ['gente', 'Quién vuelve', <>
@@ -5834,8 +5922,7 @@ export function Dashboard({ dc, liga }) {
           {d.primerizos !== undefined ? sec('nu-primerizos', 'A QUIÉN TRAER DE VUELTA', 'con nombre: sólo lo ve el staff',
             <PrimerizosLista P={d.primerizos} vuelve={d.vuelve} liga={liga} alVuelve={(v) => cambiarD({ vuelve: v })} />) : null}
         </>],
-        ['semana', 'La semana', <>
-          {sec('nu-uso', 'ESTA SEMANA · EL BOT Y LA PÁGINA', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
+        ['semana', 'Día por día y semanas', <>
           {/* 🔑 se vuelve a montar cuando llegan las semanas (18/11/2026): sus dos `useState` arrancan con las que hay, y
               abriendo directo en esta pestaña llegaban null y quedaba comparando la primera semana contra sí misma */}
           {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas key={semanas ? 'si' : 'no'} S={semanas} uso={d.uso_semanas} liga={liga} />)}
@@ -5854,6 +5941,7 @@ export function Dashboard({ dc, liga }) {
         d.crews_num ? ['crews', 'Las crews', sec('nu-crews', 'LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />)] : null,
         d.chats ? ['chats', 'Los chats', sec('nu-chats', 'LOS CHATS GENERALES', 'lo que importó · 30 días · sólo lo ve el staff', <ChatsDueno c={d.chats} />)] : null,
       ]} />
+      </>
     );
   } else if (areaV === 'salud') {
     vista = (

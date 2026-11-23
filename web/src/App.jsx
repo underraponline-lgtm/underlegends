@@ -533,16 +533,32 @@ export default function App() {
   // no se cuenta: si no, cada recarga sería una visita
   useEffect(() => {
     try {
+      // 🤖 UN ROBOT NO ES GENTE (23/11/2026): las pruebas automáticas (Playwright: las de cada despliegue, las de cada
+      // sesión) entran con un navegador limpio cada vez y contaban como una visita nueva. La semana del 16/11 sumó 2.481
+      // contra ~525 visitas de Web Analytics. `navigator.webdriver` lo prende todo navegador manejado por un programa
+      if (navigator.webdriver) return;
       const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
-      if (localStorage.getItem('lg:visita') === hoy) return;
+      // 📱 y su primera visita de la semana (lunes a domingo, hora del este): con eso el Dashboard cuenta navegadores
+      // DISTINTOS por semana y no la suma de los días (`visitas_sem` en bot/avisos.js)
+      const d0 = Date.parse(hoy + 'T12:00:00Z');
+      const lunes = new Date(d0 - ((new Date(d0).getUTCDay() + 6) % 7) * 864e5).toISOString().slice(0, 10);
+      const sem = localStorage.getItem('lg:visita_sem') !== lunes;
+      const ya = localStorage.getItem('lg:visita') === hoy;
+      if (ya && !sem) return;
       localStorage.setItem('lg:visita', hoy);
+      if (sem) localStorage.setItem('lg:visita_sem', lunes);
+      if (ya) {
+        fetch('/api/avisos/visita', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ sem: 1, ya: 1 }),
+          keepalive: true }).catch(() => {});
+        return;
+      }
       // 🔗 y de qué link llegó (21/11/2026, el plan de alcance): `?de=<canal>` —o `utm_source`— en el link que se le pasa a
       // un medio, un aliado o un directorio. Va sólo el canal, nunca nada de quien mira; el primero queda en `lg:de` para
       // saber después de dónde llegó la gente que volvió a jugar. ⚠️ La regla del canal es `CANAL` de bot/avisos.js
       const de = canalDe(location.search);
       if (de && !localStorage.getItem('lg:de')) localStorage.setItem('lg:de', JSON.stringify({ de, dia: hoy }));
-      fetch('/api/avisos/visita', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(de ? { de } : {}),
-        keepalive: true }).catch(() => {});
+      fetch('/api/avisos/visita', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(Object.assign(de ? { de } : {}, sem ? { sem: 1 } : {})), keepalive: true }).catch(() => {});
     } catch (e) { /* sin almacenamiento, no se cuenta */ }
   }, []);
 

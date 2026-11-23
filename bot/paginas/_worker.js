@@ -362,7 +362,10 @@ async function avisos(req, url, ctx) {
     return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': 'no-store' } });
   }
-  if (url.pathname === '/api/avisos/visita' && visitaRepetida(req)) {
+  // 📱 el aviso que SÓLO dice «primera de la semana» (`ya`, 23/11/2026: pasa con la página abierta desde antes de que esto
+  // saliera) lleva su propio freno: con el de la visita, el mismo navegador que ya contó hoy no llegaba nunca
+  if (url.pathname === '/api/avisos/visita'
+    && visitaRepetida(req, /"ya"\s*:\s*1/.test(await req.clone().text().catch(() => '')) ? 'sem' : '')) {
     return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': 'no-store' } });
   }

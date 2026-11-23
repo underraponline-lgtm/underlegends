@@ -706,6 +706,41 @@
 .dz-num small{font-size:12.5px;line-height:1.35;color:var(--gris)}
 .dz-num small.sube{color:var(--verde)}
 .dz-num small.baja{color:var(--magenta-tx)}
+/* 👥 LA SEMANA EN PERSONAS (23/11/2026): los cinco cuadros arriba de Números (`CincoCuadros`) y «Más números» plegado.
+   El verde de «sube» como texto: en Clara el de la marca da 2,6:1 sobre blanco, así que ahí va uno más oscuro (5,6:1) */
+.nc{--nc-sube:var(--verde);display:grid;gap:12px;min-width:0}
+.clara .nc{--nc-sube:#13745F}
+.nc-cab{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px}
+.nc-cab .dz-h{margin:0}
+.nc-sem{display:flex;align-items:center;gap:6px}
+.nc-sem span{min-width:150px;text-align:center;font:700 16px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.nc-fl{width:44px;height:44px;border:1.5px solid var(--linea);border-radius:4px;background:var(--caja);color:var(--tinta);font:700 18px/1 Archivo,sans-serif;cursor:pointer}
+.nc-fl:disabled{opacity:.35;cursor:default}
+.nc-fl:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.nc-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:18px 20px;border:2px solid var(--linea);border-radius:4px;background:var(--caja)}
+.nc-hero>div{display:grid;gap:6px;min-width:0}
+.nc-t{font:800 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.nc-v{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:0}
+.nc-v b{font:900 56px/1 Archivo,sans-serif;font-stretch:112%}
+.nc-p{font-size:13px;line-height:1.35;color:var(--gris)}
+.nc-d{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.nc-d.sube{color:var(--nc-sube)}
+.nc-d.baja{color:var(--magenta-tx)}
+.nc-l{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.nc-c{display:flex;flex-direction:column;gap:6px;min-width:0;padding:12px 14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--fondo)}
+.nc-c>b{font:900 32px/1 Archivo,sans-serif}
+.nc-c>b.nc-nada{color:var(--gris)}
+.nc-b{display:flex;align-items:flex-end;gap:4px;height:26px;margin-top:auto}
+.nc-hero .nc-b{flex:0 0 122px;height:56px;margin-top:0}
+.nc-b i{flex:1;min-width:6px;background:var(--suave);border-radius:3px 3px 0 0}
+.nc-b i.on{background:var(--verde)}
+.nc-b i.baja{background:var(--magenta)}
+.nc-b i.nada{height:0;border-bottom:2px dotted var(--suave);border-radius:0;background:none}
+.nc-f{margin:0;padding:12px 14px;border:1.5px solid var(--suave);border-radius:4px;font-size:15px;line-height:1.45}
+.nc-mas{display:grid;gap:12px;margin-top:6px;padding-top:14px;border-top:2px solid var(--linea)}
+.nc-mas .dz-h{margin:0}
+@media (max-width:860px){.nc-l{grid-template-columns:repeat(2,minmax(0,1fr))}.nc-l .nc-c:last-child{grid-column:1 / -1}}
+@media (max-width:520px){.nc-cab .dz-h{flex-direction:column;align-items:flex-start;gap:4px}.nc-v b{font-size:44px}.nc-hero{padding:14px;gap:12px}.nc-hero .nc-b{flex-basis:84px;height:44px}.nc-sem{width:100%;justify-content:space-between}.nc-sem span{min-width:0}}
 /* la ficha del servidor y sumar uno */
 .dz-der .ti-caja{border:2px solid var(--linea);border-left-width:6px;border-radius:4px;background:var(--fondo)}
 .dz-der .ti-alta{margin:0;padding:0;border:0;background:none}

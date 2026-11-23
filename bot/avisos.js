@@ -3045,6 +3045,9 @@ const LIBRE_VENCE_MS = 7 * DIA_MS;
 // cuenta. Es su ID de Discord y el día, nada más, y se borra a los `USO_DIAS`. Las visitas sin cuenta se cuentan sin
 // guardar nada de nadie: el navegador avisa una vez por día (`lg:visita`) y acá sólo sube un número.
 export const USO_DIAS = 35;
+// 👆 dónde queda escrito que alguien HIZO algo en la página (ver `hechosDesde()`): todas con `quien` (su ID de Discord) y
+// `t` (ms). Si se suma una forma nueva de participar, va acá
+export const HACEN_TABLAS = ['aplausos', 'comentario', 'votos', 'liga_voto', 'qg_voto', 'apostado', 'sigue', 'sigue_org', 'sigue_sv'];
 /** El día en hora del este, `AAAA-MM-DD`: el de quien mira la Liga, no el de UTC */
 // 🎁 EL PREMIO DE LA SEMANA (ver `semanal()` del objeto): 50 Puntos de Tienda de base y 50 por cada día que entraste la
 // semana pasada, hasta 400
@@ -6857,9 +6860,15 @@ export async function rutaAvisos(req, env, ruta) {
   // `visita()` directo, sin pasar por acá: ahora entra por `fetch()`)
   if (ruta === '/avisos/visita') {
     const crudo = await req.text().catch(() => '');
-    let de = '';
-    try { const d = crudo.length <= 200 ? JSON.parse(crudo) : null; de = d && typeof d.de === 'string' && CANAL.test(d.de) ? d.de : ''; } catch (e) { de = ''; }
-    return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: JSON.stringify(de ? { de } : {}),
+    // 📱 y `sem` / `ya` (23/11/2026, los navegadores distintos de la semana): dos marcas, nunca nada de quien mira
+    const va = {};
+    try {
+      const d = crudo.length <= 200 ? JSON.parse(crudo) : null;
+      if (d && typeof d.de === 'string' && CANAL.test(d.de)) va.de = d.de;
+      if (d && d.sem === 1) va.sem = 1;
+      if (d && d.sem === 1 && d.ya === 1) va.ya = 1;
+    } catch (e) { /* sin nada: la visita igual cuenta */ }
+    return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: JSON.stringify(va),
       headers: { 'content-type': 'application/json' } });
   }
   // 🔑 LO QUE SE ANOTÓ, PARA EL CICLO: trae Discord IDs, así que sin la clave
@@ -8951,6 +8960,11 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS uso (dia TEXT NOT NULL, quien TEXT NOT NULL, por TEXT NOT NULL, ' +
         'PRIMARY KEY (dia, quien, por)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS visitas (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
+      // 📱 y los navegadores DISTINTOS de cada semana (23/11/2026, Dlx: «cuántas personas diferentes han accedido a la
+      // página»): `visitas` suma un navegador por día, así que la semana contaba siete veces a quien entra todos los
+      // días. Acá cada navegador cuenta el día de su primera visita de la semana (`sem` en `visita()`): la suma de lunes
+      // a domingo es cuántos distintos. Sólo un número por día, como `visitas`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS visitas_sem (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
       // 🔗 y de qué link llegó la visita nueva (21/11/2026, el plan de alcance): `?de=<canal>`. Sólo el canal y un número
       this.sql.exec('CREATE TABLE IF NOT EXISTS llegadas (dia TEXT NOT NULL, de TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, de)) WITHOUT ROWID');
@@ -10741,6 +10755,7 @@ export class Avisos {
       // 📊 el uso: quién, `USO_DIAS` días; las visitas (sólo un número por día), 90
       this.sql.exec('DELETE FROM uso WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      this.sql.exec('DELETE FROM visitas_sem WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM llegadas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM secciones WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
@@ -21672,7 +21687,14 @@ export class Avisos {
    *  empujar, y un script no tiene que poder llevarlo a cualquier lado */
   visita(d) {
     const dia = diaET();
-    this.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000', dia);
+    // `ya`: este navegador ya contó la visita de hoy y sólo avisa que es su primera de la semana (pasa el día que esto
+    // salió, con la página abierta desde antes). `sem`: su primera visita de la semana (ver `visitas_sem`)
+    if (!(d && d.ya)) {
+      this.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000', dia);
+    }
+    if (d && d.sem) {
+      this.sql.exec('INSERT INTO visitas_sem (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000', dia);
+    }
     // 🔗 DE QUÉ LINK LLEGÓ (21/11/2026, el plan de alcance; Dlx: «dale»). `?de=<canal>` en un link que se le pasa a un
     // medio, a un aliado o a un directorio: la página lo manda en la visita del día (App.jsx) y acá se suma un número por
     // canal y por día, nada de quién. Con dos topes, porque lo puede empujar cualquiera: 5.000 por canal y 40 canales
@@ -21926,12 +21948,20 @@ export class Avisos {
     const lunes0 = d0 - dow * DIA_MS;
     const ymd = (t) => new Date(t).toISOString().slice(0, 10);
     const corte = diaET(ahora - USO_DIAS * DIA_MS);
+    const hechos = this.hechosDesde(Date.parse(corte + 'T00:00:00Z') - DIA_MS);
+    // 📱 desde qué día se cuentan los navegadores distintos (`visitas_sem`, 23/11/2026): antes de eso no hay dato, y una
+    // semana sin dato es «—», no 0
+    const semDesde = (this.sql.exec('SELECT MIN(dia) AS d FROM visitas_sem').toArray()[0] || {}).d || null;
     const cuenta = (a, b) => {
       const v = this.sql.exec('SELECT COALESCE(SUM(n), 0) AS n, COUNT(*) AS d FROM visitas WHERE dia >= ? AND dia < ?', a, b).toArray()[0];
       const c = (por) => this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM uso WHERE dia >= ? AND dia < ?' + (por ? ' AND por = ?' : ''),
         ...[a, b].concat(por ? [por] : [])).toArray()[0].n;
       const entera = a >= corte;
-      return { personas: entera ? c('') : null, bot: entera ? c('bot') : null, web: entera ? c('web') : null, visitas: v.n, dias: v.d };
+      const abrieron = semDesde && semDesde < b
+        ? this.sql.exec('SELECT COALESCE(SUM(n), 0) AS n FROM visitas_sem WHERE dia >= ? AND dia < ?', a, b).toArray()[0].n : null;
+      const hacen = entera ? new Set(hechos.filter((h) => h[1] >= a && h[1] < b).map((h) => h[0])).size : null;
+      return { personas: entera ? c('') : null, bot: entera ? c('bot') : null, web: entera ? c('web') : null, visitas: v.n, dias: v.d,
+        abrieron, abrieron_desde: abrieron !== null && semDesde > a ? semDesde : null, hacen };
     };
     const out = [];
     for (let i = 11; i >= 0; i--) {
@@ -21939,6 +21969,26 @@ export class Avisos {
       const x = cuenta(ymd(ini), ymd(ini + 7 * DIA_MS));
       if (!x.dias && !x.personas) continue;
       out.push(Object.assign({ lunes: ymd(ini) }, x, { k: cuenta(ymd(ini), ymd(ini + (dow + 1) * DIA_MS)) }));
+    }
+    return out;
+  }
+
+  /** 👆 QUIÉN HIZO ALGO EN LA PÁGINA, desde `desde` (ms): `[[id de Discord, día ET], …]` (23/11/2026, Dlx: «cuántas
+   *  personas interactuaron»). Entrar con su cuenta no alcanza (eso ya es `uso` 'web'): acá cuenta aplaudir, comentar,
+   *  votar (encuestas, ligas, «¿quién gana?»), apostar y seguir a alguien, a una organización o a un servidor. Sale de las
+   *  tablas de cada cosa, que ya guardan quién y cuándo: por eso trae las semanas de antes (los aplausos, 30 días).
+   *  ⚠️ Lee esas tablas enteras desde `desde` (no tienen índice por `t`): lo llama sólo `_usoSemanas()`, guardado 10 min */
+  hechosDesde(desde) {
+    const dias = new Map();
+    // el día ET por hora: miles de filas y `diaET()` arma un formateador por llamada
+    const dia = (t) => {
+      const h = Math.floor(t / 3600000);
+      if (!dias.has(h)) dias.set(h, diaET(h * 3600000 + 1800000));
+      return dias.get(h);
+    };
+    const out = [];
+    for (const tabla of HACEN_TABLAS) {
+      for (const f of this.sql.exec('SELECT quien, t FROM ' + tabla + ' WHERE t >= ?', desde).toArray()) out.push([String(f.quien), dia(f.t)]);
     }
     return out;
   }
