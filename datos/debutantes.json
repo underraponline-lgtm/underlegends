@@ -1133,6 +1133,7 @@
    "vencido": false
   },
   "GARZXI": {
+   "avisado": "2026-11-23",
    "chat": "2026-11-23",
    "con": null,
    "cumplido": "",
@@ -2989,6 +2990,7 @@
    "vencido": true
   },
   "TOKYO": {
+   "avisado": "2026-11-23",
    "chat": "2026-11-23",
    "con": null,
    "cumplido": "",
@@ -3686,11 +3688,12 @@
    "vencido": false
   },
   "mityar": {
+   "avisado": "2026-11-23",
    "chat": "2026-11-23",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-23T04:50:16+00:00",
-   "did": "",
+   "did": "1573464003018096760",
    "evento": "NEW GENESIS II",
    "n": 678,
    "sv": "FFA",

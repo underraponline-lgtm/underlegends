@@ -1498,14 +1498,14 @@
    },
    "organizadores": [
     [
-     "LEWITO",
-     44,
+     "Erian",
+     50,
      2
     ],
     [
-     "Erian",
-     31,
-     1
+     "LEWITO",
+     44,
+     2
     ],
     [
      "Benji Price",
@@ -1525,7 +1525,7 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 5,
+     "FFA": 8,
      "LKR": 8,
      "CH": 20,
      "DDS": 2,
@@ -1534,7 +1534,7 @@
     "gente": {
      "DDS": 25,
      "LKR": 17,
-     "FFA": 73,
+     "FFA": 79,
      "CH": 72,
      "FDS": 8,
      "DW": 8
@@ -1549,7 +1549,7 @@
     "DDS": 25,
     "DRA": 0,
     "FDS": 8,
-    "FFA": 73,
+    "FFA": 79,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
