@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-23T06:43:25Z",
+ "t": "2026-11-23T06:59:21Z",
  "sv": {
   "SR": {
    "filas": [
@@ -667,9 +667,23 @@
     [
      "Park Ji Sung",
      "cl",
-     15570,
-     950,
+     15970,
+     1350,
      "Oasis"
+    ],
+    [
+     "Pichulamc",
+     "ar",
+     8040,
+     400,
+     "PichulaMc"
+    ],
+    [
+     "PRAISERIZA",
+     "ve",
+     7965,
+     1600,
+     "PRAISERIZA"
     ],
     [
      "Snow",
@@ -677,20 +691,6 @@
      7670,
      0,
      "Snow"
-    ],
-    [
-     "Pichulamc",
-     "ar",
-     7640,
-     0,
-     "PichulaMc"
-    ],
-    [
-     "PRAISERIZA",
-     "ve",
-     7565,
-     1200,
-     "PRAISERIZA"
     ],
     [
      "Makma",
@@ -784,6 +784,13 @@
      "Agus"
     ],
     [
+     "Molusco",
+     "ar",
+     3670,
+     300,
+     "Molusco"
+    ],
+    [
      "colesito",
      "ca",
      3630,
@@ -803,13 +810,6 @@
      3565,
      0,
      "Guess"
-    ],
-    [
-     "Molusco",
-     "ar",
-     3370,
-     0,
-     "Molusco"
     ],
     [
      "Neo",
@@ -917,6 +917,13 @@
      "MCO"
     ],
     [
+     "okam",
+     "cr",
+     1640,
+     300,
+     "OKAM"
+    ],
+    [
      "BENJIXO",
      "ar",
      1370,
@@ -936,13 +943,6 @@
      1350,
      750,
      "Gocho"
-    ],
-    [
-     "okam",
-     "cr",
-     1340,
-     0,
-     "OKAM"
     ],
     [
      "Ax",
@@ -1132,6 +1132,13 @@
      700,
      0,
      "mats"
+    ],
+    [
+     "Julda",
+     "co",
+     700,
+     300,
+     "Julda"
     ],
     [
      "Nacioenmilan",
@@ -1349,13 +1356,6 @@
      400,
      0,
      "Prosu"
-    ],
-    [
-     "Julda",
-     "co",
-     400,
-     0,
-     "Julda"
     ],
     [
      "Luzzano",
@@ -2129,6 +2129,45 @@
        "NC",
        "Tercero",
        240
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "New Genesis Ii",
+     "dia": "2026-11-23",
+     "rango": "plata ii",
+     "puntos": [
+      [
+       "PichulaMc",
+       "Campeón",
+       400
+      ],
+      [
+       "Oasis",
+       "Campeón",
+       400
+      ],
+      [
+       "PRAISERIZA",
+       "Campeón",
+       400
+      ],
+      [
+       "OKAM",
+       "Subcampeón",
+       300
+      ],
+      [
+       "Molusco",
+       "Subcampeón",
+       300
+      ],
+      [
+       "Julda",
+       "Subcampeón",
+       300
       ]
      ],
      "fuera": []
