@@ -1245,6 +1245,13 @@
 "rg": "",
 "c": []
 },
+"kourier": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "corvo": {
 "rg": "",
 "c": []
@@ -1307,6 +1314,13 @@
 ]
 },
 "julda": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"agentesombra": {
 "rg": "",
 "c": [
 "servidor",
@@ -1729,13 +1743,6 @@
 "rg": "",
 "c": []
 },
-"kourier": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "mhs": {
 "rg": "",
 "c": []
@@ -1771,10 +1778,6 @@
 "c": []
 },
 "camila": {
-"rg": "",
-"c": []
-},
-"agentesombra": {
 "rg": "",
 "c": []
 },
@@ -2929,23 +2932,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-14T02:30:51Z",
-"quien": [
-"Verc"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-14T02:30:51Z",
-"quien": [
-"Agus"
-],
-"rg": "A",
-"primero": false
-},
 {
 "tipo": "rango",
 "t": "2026-10-14T04:01:43Z",
@@ -6327,6 +6313,22 @@
 25,
 24
 ]
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-23T01:00:13Z",
+"quien": [
+"Agente sombra"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-23T01:00:13Z",
+"quien": [
+"Agente sombra"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {
@@ -8317,8 +8319,8 @@
 "tipo": "resnoche",
 "t": "2026-11-23T08:00:00Z",
 "dia": "2026-11-22",
-"eventos": 1,
-"part": 9,
+"eventos": 2,
+"part": 19,
 "campeones": [
 {
 "ev": "VERSO STYLE",
@@ -8328,6 +8330,17 @@
 [
 "Mark98",
 "mark98"
+]
+]
+},
+{
+"ev": "INICIO DEL FIN VOL.1",
+"sv": "DW",
+"ll": 677,
+"quien": [
+[
+"Revo",
+""
 ]
 ]
 }
@@ -8340,16 +8353,16 @@
 "ev": 1
 },
 {
-"n": "Dios",
-"k": "dios",
-"pts": 5000,
+"n": "Revo",
+"k": "",
+"pts": 7500,
 "ev": 1
 },
 {
-"n": "Mito",
-"k": "mito",
-"pts": 4000,
-"ev": 1
+"n": "Dios",
+"k": "dios",
+"pts": 7000,
+"ev": 2
 }
 ],
 "suben": [
@@ -8357,19 +8370,19 @@
 "n": "Choco",
 "k": "",
 "de": 498,
-"a": 419
+"a": 420
+},
+{
+"n": "Revo",
+"k": "",
+"de": 226,
+"a": 153
 },
 {
 "n": "Mark98",
 "k": "mark98",
 "de": 379,
 "a": 310
-},
-{
-"n": "oriuz",
-"k": "oriuz",
-"de": 312,
-"a": 305
 }
 ],
 "sorpresas": [
@@ -8379,6 +8392,13 @@
 "que": "primer",
 "ev": "VERSO STYLE",
 "desde": 379
+},
+{
+"n": "Revo",
+"k": "",
+"que": "primer",
+"ev": "INICIO DEL FIN VOL.1",
+"desde": 226
 }
 ]
 }
@@ -8546,7 +8566,7 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 1,
+"dios": 0,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,
@@ -8671,7 +8691,9 @@
 "yeyox": 2,
 "magic": 0,
 "tho": 1,
-"mark98": 1
+"mark98": 1,
+"kourier": 1,
+"agentesombra": 0
 },
 "sem": {
 "id": "2026-11-16",

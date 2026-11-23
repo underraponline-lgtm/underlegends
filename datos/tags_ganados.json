@@ -768,6 +768,13 @@
     "t1",
     1795325780440
    ]
+  },
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795395638670
+   ]
   }
  },
  "agus": {
@@ -4109,6 +4116,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1795395638670
+   ],
    "⚡ RELÁMPAGO": [
     "⚡ RELÁMPAGO",
     "t1",
@@ -7272,6 +7284,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1794778788639
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795395638670
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -14386,6 +14403,20 @@
    ]
   }
  },
+ "revo": {
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795395638670
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795395638670
+   ]
+  }
+ },
  "reyexxmc": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -18248,6 +18279,11 @@
     "t1",
     1793029252929
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795395638670
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -18286,6 +18322,11 @@
     "⚡ RELÁMPAGO",
     "t1",
     1793029252929
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795395638670
    ],
    "🎯 CAZARRECOMPENSAS": [
     "🎯 CAZARRECOMPENSAS",
@@ -18326,6 +18367,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1795395638670
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",

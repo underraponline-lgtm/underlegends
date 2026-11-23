@@ -47444,7 +47444,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "8fb7e99460f70020",
+  "firma": "42a43ba29958c763",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -51242,7 +51242,7 @@
    "crakero": 11
   },
   "fecha": "13/11",
-  "firma": "91cc3a5307b76060",
+  "firma": "f6e048897c926c1e",
   "msg": "1572055186955046984",
   "nombre": "RAP SIN GROSERIAS 6",
   "num": 653,
@@ -56479,6 +56479,151 @@
    ],
    [
     "Miniboy",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "677": {
+  "al_dia": true,
+  "antes": {
+   "Agente sombra": [
+    145,
+    224,
+    false
+   ],
+   "Dios": [
+    67,
+    80,
+    false
+   ],
+   "Kourier": [
+    151,
+    245,
+    false
+   ],
+   "Revo": [
+    225,
+    531,
+    false
+   ],
+   "Thaniel": [
+    423,
+    337,
+    true
+   ],
+   "Xubaru": [
+    45,
+    53,
+    false
+   ]
+  },
+  "canal": "1394903620419584020",
+  "duelos": [
+   [
+    "Kourier",
+    "Xubaru",
+    "Kourier"
+   ],
+   [
+    "Revo",
+    "Dios",
+    "Revo"
+   ],
+   [
+    "Thaniel",
+    "Agente sombra",
+    "Thaniel"
+   ],
+   [
+    "Xubaru",
+    "Agente sombra",
+    "Xubaru"
+   ],
+   [
+    "Xubaru",
+    "_Mateo 🇲🇽",
+    "Xubaru"
+   ],
+   [
+    "Xubaru",
+    "Dorado 🇵🇪",
+    "Xubaru"
+   ],
+   [
+    "Kourier",
+    "Thaniel",
+    "Kourier"
+   ],
+   [
+    "Revo",
+    "Xubaru",
+    "Revo"
+   ],
+   [
+    "Revo",
+    "Kourier",
+    "Revo"
+   ]
+  ],
+  "ev_antes": {
+   "Agente sombra": 7,
+   "Dios": 16,
+   "Kourier": 7,
+   "Revo": 2,
+   "Thaniel": 3,
+   "Xubaru": 14
+  },
+  "fecha": "22/11",
+  "firma": "1b12318fe02eba27",
+  "msg": "1574226556270936128",
+  "nombre": "INICIO DEL FIN VOL.1",
+  "num": 677,
+  "participantes": 10,
+  "sello": {
+   "Revo": "a628b77713b7:a8d8b7335469"
+  },
+  "sv": "DW",
+  "t": "2026-11-23T00:54:17Z",
+  "tabla": [
+   [
+    "Revo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Kourier",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Xubaru",
+    "Semifinal",
+    3750
+   ],
+   [
+    "Thaniel",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    3000
+   ],
+   [
+    "Dios",
+    "Cuartos",
+    2000
+   ],
+   [
+    "_Mateo 🇲🇽",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dorado 🇵🇪",
     "Cuartos",
     2000
    ]

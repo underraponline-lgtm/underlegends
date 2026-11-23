@@ -2756,7 +2756,7 @@
   "din_v": 8,
   "din_t": 11,
   "crn_t": 3,
-  "cri_t": 23,
+  "cri_t": 24,
   "pos": 32,
   "total": 86,
   "rango": "C",
@@ -2783,7 +2783,7 @@
   },
   "nac": {
    "evn": 2,
-   "evi": 10,
+   "evi": 11,
    "com": 0,
    "top": [
     3,
@@ -16442,7 +16442,7 @@
   "T": 0,
   "V": 45,
   "wr": "0.0%",
-  "rch_act": 1,
+  "rch_act": 0,
   "rch_max": 4,
   "duel_v": 0,
   "duel_t": 3,
@@ -16978,8 +16978,8 @@
   "T": 0,
   "V": 35,
   "wr": "",
-  "rch_act": 0,
-  "rch_max": 0,
+  "rch_act": 1,
+  "rch_max": 1,
   "duel_v": 1,
   "duel_t": 1,
   "duel_real": true,
@@ -17003,6 +17003,7 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
+   "fp": 1,
    "riv": 2,
    "venc": 1
   },
@@ -17450,7 +17451,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 2,
-  "cri_t": 11,
+  "cri_t": 12,
   "pos": 304,
   "total": 86,
   "rango": "",
@@ -17469,8 +17470,8 @@
    "paises": 1
   },
   "nac": {
-   "evn": 2,
-   "evi": 4,
+   "evn": 3,
+   "evi": 5,
    "com": 0
   }
  },
@@ -35726,8 +35727,8 @@
   "T": 0,
   "V": 0,
   "wr": "",
-  "rch_act": 0,
-  "rch_max": 0,
+  "rch_act": 1,
+  "rch_max": 1,
   "duel_v": 0,
   "duel_t": 0,
   "duel_real": false,
@@ -35747,6 +35748,9 @@
   "arc_pais": 14,
   "pos_sv": "170/172",
   "arc_sv": 2,
+  "tg_c": {
+   "fg": 1
+  },
   "nac": {
    "evn": 0,
    "evi": 0,

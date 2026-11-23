@@ -62609,5 +62609,138 @@
    "min": 35,
    "v": 1
   }
+ },
+ "677": {
+  "dia": "2026-11-22",
+  "escala": "8-15",
+  "fecha": "22/11",
+  "links": [
+   "https://discord.com/channels/1300152346189496330/1394905025230147584/1574208596323868824"
+  ],
+  "n": 677,
+  "nombre": "INICIO DEL FIN VOL.1",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Kourier",
+       "Xubaru"
+      ],
+      "Kourier",
+      "Revivido: Xubaru 🇻🇪"
+     ],
+     [
+      [
+       "Revo",
+       "Dios"
+      ],
+      "Revo",
+      ""
+     ],
+     [
+      [
+       "Thaniel",
+       "Agente sombra"
+      ],
+      "Thaniel",
+      "Revivido: MF DOOM🇺🇸"
+     ],
+     [
+      [
+       "Xubaru",
+       "Agente sombra",
+       "_Mateo 🇲🇽",
+       "Dorado 🇵🇪"
+      ],
+      "Xubaru",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kourier",
+       "Thaniel"
+      ],
+      "Kourier",
+      ""
+     ],
+     [
+      [
+       "Revo",
+       "Xubaru"
+      ],
+      "Revo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Revo",
+       "Kourier"
+      ],
+      "Revo",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DW",
+  "tabla": [
+   [
+    "Revo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Kourier",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Xubaru",
+    "Semifinal",
+    3750
+   ],
+   [
+    "Thaniel",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    3000
+   ],
+   [
+    "Dios",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dorado 🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "_Mateo 🇲🇽",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 63,
+   "v": 1
+  }
  }
 }

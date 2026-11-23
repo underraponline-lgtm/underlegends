@@ -778,6 +778,18 @@
     "pts": 9500,
     "racha": "0/0"
    },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 5,
@@ -3549,6 +3561,18 @@
      "fin": 2
     }
    },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FDS": {
     "duelos": "",
     "ev": 6,
@@ -3726,6 +3750,20 @@
     "pod": 0,
     "pts": 4400,
     "racha": "0/0"
+   }
+  },
+  "Dorado 🇵🇪": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Drelain": {
@@ -7304,6 +7342,19 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
+   },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 5000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    },
    "FFA": {
     "duelos": "1/1",
@@ -12410,6 +12461,19 @@
    }
   },
   "Revo": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 7500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 2,
@@ -14265,6 +14329,18 @@
    }
   },
   "Thaniel": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 3,
@@ -15437,6 +15513,18 @@
     "pts": 1250,
     "racha": "0/0"
    },
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "6/10",
     "ev": 12,
@@ -15883,6 +15971,20 @@
     "racha": "0/2",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "_Mateo 🇲🇽": {
+   "DW": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },

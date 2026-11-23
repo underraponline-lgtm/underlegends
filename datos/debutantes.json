@@ -817,6 +817,17 @@
    "vence": "2026-11-23T18:48:34+00:00",
    "vencido": false
   },
+  "Dorado": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T23:42:56+00:00",
+   "did": "",
+   "evento": "INICIO DEL FIN VOL.1",
+   "n": 677,
+   "sv": "DW",
+   "vence": "2026-11-29T23:42:56+00:00",
+   "vencido": false
+  },
   "Drexc": {
    "con": null,
    "cumplido": "",
@@ -3326,6 +3337,17 @@
    "sv": "FDS",
    "vence": "2026-10-28T02:04:09+00:00",
    "vencido": true
+  },
+  "_Mateo": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T23:42:56+00:00",
+   "did": "",
+   "evento": "INICIO DEL FIN VOL.1",
+   "n": 677,
+   "sv": "DW",
+   "vence": "2026-11-29T23:42:56+00:00",
+   "vencido": false
   },
   "akasha": {
    "avisado": "2026-11-09",
