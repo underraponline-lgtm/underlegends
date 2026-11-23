@@ -31,6 +31,14 @@ export function PopPase({ P, onVer }) {
     if (P.nivel > v.n) setAbierto({ de: v.n, a: P.nivel });
     else if (P.nivel < v.n) guardar({ temp: P.temp, n: P.nivel });
   }, [P && P.temp, P && P.nivel, P && P.miembro]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 📱 ya lo viste en otro dispositivo (web/src/sync_cuenta.js, 23/11/2026): no se vuelve a festejar
+  useEffect(() => {
+    if (!abierto || !P) return undefined;
+    const f = () => { const v = leer(); if (v && v.temp === P.temp && v.n >= abierto.a) setAbierto(null); };
+    f();
+    window.addEventListener('lg:ui', f);
+    return () => window.removeEventListener('lg:ui', f);
+  }, [abierto, P && P.temp]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!abierto) return null;
   const cerrar = () => { guardar({ temp: P.temp, n: abierto.a }); setAbierto(null); };
   const g = ganado(P, abierto.de, abierto.a);

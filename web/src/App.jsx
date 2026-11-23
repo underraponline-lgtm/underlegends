@@ -206,6 +206,12 @@ function avisoDe() {
 function AvisoWeb({ aviso }) {
   const id = aviso ? aviso.texto + '|' + aviso.hasta : '';
   const [cerrado, setCerrado] = useState(() => { try { return localStorage.getItem('lg:aviso-cerrado') || ''; } catch (e) { return ''; } });
+  // 📱 cerrado en otro dispositivo (web/src/sync_cuenta.js, 23/11/2026)
+  useEffect(() => {
+    const f = () => { try { setCerrado(localStorage.getItem('lg:aviso-cerrado') || ''); } catch (e) { /* igual */ } };
+    window.addEventListener('lg:ui', f);
+    return () => window.removeEventListener('lg:ui', f);
+  }, []);
   if (!aviso || cerrado === id) return null;
   const cerrar = () => { setCerrado(id); try { localStorage.setItem('lg:aviso-cerrado', id); } catch (e) { /* igual se cierra */ } };
   return (
@@ -234,6 +240,8 @@ import { escucharErrores, noEsGente, reportarError } from './errores.js';
 import { esDeVersion, recargarPorVersion } from './version.js';
 // 🎁 al cargar: el `?ref=` de un link de invitación, y mandarlo cuando haya cuenta (referidos.js)
 import './referidos.js';
+// 📱 lo visto o hecho en la página sigue a tu cuenta (23/11/2026): ver el módulo
+import './sync_cuenta.js';
 
 escucharErrores();
 
@@ -430,6 +438,9 @@ export default function App() {
   const [aviso, setAviso] = useState(avisoDe);
   const [enc, setEnc] = useState(estadoEnc);
   const [ahora, setAhora] = useState(() => new Date());
+  // 📱 llegó lo de tu cuenta de otro dispositivo (sync_cuenta.js): se dibuja de nuevo con eso (el tutorial, lo nuevo…)
+  const [, setUiN] = useState(0);
+  useEffect(() => { const f = () => setUiN((n) => n + 1); window.addEventListener('lg:ui', f); return () => window.removeEventListener('lg:ui', f); }, []);
   // 🎨 el tema de base (Clara o Noche) y los colores de un servidor encima, o ninguno (13/10/2026): ver temas.js
   const [tema, setTema] = useState(() => leerTemas().base);
   const [temaSv, setTemaSv] = useState(() => leerTemas().sv);

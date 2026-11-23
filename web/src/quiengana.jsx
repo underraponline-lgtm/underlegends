@@ -34,6 +34,8 @@ function useQG() {
   const [D, setD] = useState(null);
   const [mios, setMios] = useState(() => leer('lg:qg') || {});
   const [msg, setMsg] = useState('');
+  // 📱 lo votado en otro dispositivo llega con tu cuenta (`usarMios()` de social.js, 23/11/2026)
+  useEffect(() => { const f = () => setMios(leer('lg:qg') || {}); W.addEventListener('lg:qg', f); return () => W.removeEventListener('lg:qg', f); }, []);
   useEffect(() => {
     let vivo = true;
     const traer = () => fetch('/api/avisos/qg-finales').then((r) => (r.ok ? r.json() : null))

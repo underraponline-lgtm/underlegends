@@ -3864,6 +3864,8 @@ const RUTAS = {
   '/avisos/precios': 'GET', '/avisos/precio': 'POST', '/avisos/billetera': 'POST',
   // 🔑 seguir raperos: ver `seguir()`, `sigo()`, `seguidores()` y `seguidos()`
   '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
+  // 📱 lo visto o hecho en la página, en todos tus dispositivos (23/11/2026): ver `uiGuardar()`
+  '/avisos/ui': 'POST',
   // 🫂 gente de la Liga en tus mismos servidores (21/11/2026): ver `misServidores()`
   '/avisos/mis-servidores': 'POST',
   // 📖 las historias que viste, en tu cuenta (18/10/2026): ver `historiasVistas()` del objeto
@@ -4859,6 +4861,22 @@ export function creadaEn(id) {
  * página y `id` el Discord ID que devolvió Discord. Pura, sin red: la
  * prueba `bot/probar_local.mjs`.
  */
+// 📱 LO VISTO O HECHO DE LA PÁGINA QUE SIGUE A TU CUENTA (23/11/2026): las claves de `localStorage` que se guardan por
+// cuenta (web/src/sync_cuenta.js tiene la misma lista y cómo se junta cada una) y el tope del total
+export const UI_CLAVES = ['lg:tuto', 'lg:pase-visto', 'lg:barra-pase', 'lg:inv-visto', 'lg:pub-visto', 'lg:ref_visto',
+  'lg:racha-fest', 'lg:aviso-cerrado', 'lg:db-logs', 'lg:db-pospuesto'];
+export const UI_MAX = 16000;
+/** `{clave: texto}` con claves de `UI_CLAVES` y textos: el JSON a guardar, o null */
+export function validarUi(ui) {
+  if (!ui || typeof ui !== 'object' || Array.isArray(ui)) return null;
+  const ks = Object.keys(ui);
+  if (!ks.length || ks.length > UI_CLAVES.length || !ks.every((k) => UI_CLAVES.includes(k) && typeof ui[k] === 'string')) return null;
+  const out = {};
+  for (const k of UI_CLAVES) if (k in ui) out[k] = ui[k];
+  const v = JSON.stringify(out);
+  return v.length <= UI_MAX ? v : null;
+}
+
 export function validarVoto(defs, d, id, ahora, elegido) {
   const e = ((defs && Array.isArray(defs.lista)) ? defs.lista : []).find((x) => x && x.id === d.enc);
   if (!e) return { error: 'no_existe', estado: 404 };
@@ -7342,6 +7360,22 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, ids }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 📱 LO VISTO O HECHO EN LA PÁGINA, A TU CUENTA (23/11/2026; Dlx: «que se sincronice perfectamente con otras»). Sólo con
+  // «Entrar con Discord». Se lee con `/avisos/sigo` (`mios.ui`) y se escribe acá. Ver `uiGuardar()`
+  if (ruta === '/avisos/ui') {
+    const crudo = await req.text();
+    if (crudo.length > UI_MAX + 400) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !validarUi(d.ui) || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/ui', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, ui: d.ui }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🔑 «TU SERVIDOR». Dlx, 28/09/2026: «La idea es q la gente decida por su
   // cuenta», y dónde y cada cuánto, «1. A 2. A»: en Mi cuenta, uno por
   // temporada como la foto. Quién es lo dice Discord (o la sesión).
@@ -9026,6 +9060,13 @@ export class Avisos {
       // `cierra`: hasta cuándo va esa liga (se corre con cada voto); se borra `LIGA_VOTOS_DIAS` después. Ver `ligaVotar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS liga_voto (liga TEXT NOT NULL, quien TEXT NOT NULL, op TEXT NOT NULL, ' +
         't INTEGER NOT NULL, cierra INTEGER NOT NULL, PRIMARY KEY (liga, quien))');
+      // 📱 LO TUYO, EN TODOS TUS DISPOSITIVOS (23/11/2026): `misCosas()` pregunta por UNA persona en cada apertura de la
+      // página. Las dos claves empiezan por la encuesta o la liga: sin estos índices, cada pregunta leía la tabla entera
+      this.sql.exec('CREATE INDEX IF NOT EXISTS votos_quien ON votos (quien)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS liga_voto_quien ON liga_voto (quien)');
+      // 📱 lo que la página marca como visto o hecho (el tutorial, el «¡Subiste!» del Pase, lo nuevo del Inventario…), una
+      // fila por cuenta: ver `uiGuardar()` y web/src/sync_cuenta.js
+      this.sql.exec('CREATE TABLE IF NOT EXISTS cuenta_ui (quien TEXT PRIMARY KEY, v TEXT NOT NULL, t INTEGER NOT NULL)');
       // 🔑 EL PRECIO POR CABEZA (28/09/2026): lo que cada uno puso (`precios`)
       // y lo que cobró cazando (`tienda`). El saldo sale de las dos: ver
       // `saldo()`. Quién cazó lo resuelve el ciclo (`bot/precios.py`).
@@ -9308,6 +9349,8 @@ export class Avisos {
         "nb INTEGER NOT NULL DEFAULT 0, dicho TEXT NOT NULL DEFAULT '', abre INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'abierta')");
       this.sql.exec('CREATE TABLE IF NOT EXISTS qg_voto (id TEXT NOT NULL, quien TEXT NOT NULL, lado TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (id, quien))');
+      // 📱 para `misCosas()` (23/11/2026): la clave empieza por el cruce
+      this.sql.exec('CREATE INDEX IF NOT EXISTS qg_voto_quien ON qg_voto (quien)');
       // 🧮 los lados de más de un «todos contra todos» (C, D, E) y sus votos, en JSON (19/10/2026)
       try { this.sql.exec("ALTER TABLE qg ADD COLUMN mas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
       try { this.sql.exec("ALTER TABLE qg ADD COLUMN nmas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
@@ -10307,6 +10350,7 @@ export class Avisos {
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/historias') return this.historiasVistas(d);
       if (ruta === '/sigo') return this.sigo(d);
+      if (ruta === '/ui') return json(this.uiGuardar(d));
       if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/comentar') return await this.comentar(d);
       if (ruta === '/comentario-borrar') return json(this.comentarioBorrar(d));
@@ -14727,6 +14771,8 @@ export class Avisos {
     const v = this.sql.exec('DELETE FROM votos WHERE quien = ?', String(d.quien));
     // 🗳️ y los de «¿quién gana la liga?» (14/10/2026): también llevan su Discord ID
     this.sql.exec('DELETE FROM liga_voto WHERE quien = ?', String(d.quien));
+    // 📱 y lo que la página marcó como visto en su cuenta (23/11/2026)
+    try { this.sql.exec('DELETE FROM cuenta_ui WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
     // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
     // se borrara, al que cazó ese precio se le irían sus puntos de Temporada
     const b = this.sql.exec('DELETE FROM tienda WHERE quien = ?', String(d.quien));
@@ -16128,7 +16174,57 @@ export class Avisos {
       const perfiles = [...new Set(fs.map((r) => r.de).filter(Boolean))].slice(0, 60);
       meSiguen = { n: this.cuantos([de], Date.now())[de], todos: fs.length, perfiles };
     }
-    return json({ ok: true, sigo: this.sigoDe(quien), yo: de, me_siguen: meSiguen });
+    return json({ ok: true, sigo: this.sigoDe(quien), yo: de, me_siguen: meSiguen, mios: this.misCosas(quien) });
+  }
+
+  /**
+   * 📱 LO QUE HICISTE CON TU CUENTA, PARA QUE LO SEPA CADA DISPOSITIVO (23/11/2026). Dlx: «asegúrate que las cosas que se
+   * hagan en un dispositivo con tu cuenta se sincronicen perfectamente con otras: hice la encuesta semanal en mi PC y en mi
+   * celular me pide hacerla». El objeto guardaba cada voto y cada aplauso, pero la página sólo leía la copia de su
+   * navegador (`lg:votos`, `lg:ligavotos`, `lg:aplausos`): en el otro dispositivo, el Premio gratis volvía a pedir votar.
+   * Va dentro de `sigo()`, que la página ya pide al abrirse con tu cuenta y al entrar (`pedirSigo()` de social.js): ni un
+   * pedido más al Worker. Tres lecturas por índice de UNA persona (`votos_quien`, `liga_voto_quien`, `aplausos_quien`).
+   *   votos     las encuestas de los últimos 45 días (las de la semana y las de los MES AWARDS del mes): {encuesta: opción}
+   *   ligas     «¿quién gana la liga?» de las ligas abiertas o recién cerradas: {liga: opción}
+   *   aplausos  lo que felicitaste, las 300 más nuevas (la página guarda el mismo tope): {publicación: cuándo}, y
+   *   aplausos_e  la reacción cuando no fue 👏: {publicación: '🔥'}
+   *   qg        «¿quién gana?» de las finales (la tabla se limpia sola a la semana de cerrar): {cruce: lado}
+   *   ui        lo que la página marcó como visto o hecho en cualquiera de tus dispositivos (`uiGuardar()`)
+   */
+  misCosas(quien) {
+    const ahora = Date.now();
+    const votos = {}, ligas = {}, aplausos = {}, aplausosE = {}, qg = {};
+    let ui = null;
+    try {
+      for (const r of this.sql.exec('SELECT id, lado FROM qg_voto WHERE quien = ?', quien).toArray()) qg[r.id] = r.lado;
+      const u = this.sql.exec('SELECT v FROM cuenta_ui WHERE quien = ?', quien).toArray()[0];
+      if (u) ui = JSON.parse(u.v);
+    } catch (e) { /* lo que haya */ }
+    try {
+      for (const r of this.sql.exec('SELECT enc, op FROM votos WHERE quien = ? AND t > ?', quien, ahora - 45 * DIA_MS).toArray()) votos[r.enc] = r.op;
+      for (const r of this.sql.exec('SELECT liga, op FROM liga_voto WHERE quien = ? AND cierra > ?', quien, ahora - 7 * DIA_MS).toArray()) ligas[r.liga] = r.op;
+      for (const r of this.sql.exec('SELECT id, t, e FROM aplausos WHERE quien = ? ORDER BY t DESC LIMIT 300', quien).toArray()) {
+        aplausos[r.id] = r.t;
+        if (r.e && r.e !== '👏') aplausosE[r.id] = r.e;
+      }
+    } catch (e) { /* una tabla que todavía no existe: lo que haya */ }
+    return { votos, ligas, aplausos, aplausos_e: aplausosE, qg, ui };
+  }
+
+  /**
+   * 📱 Guarda lo visto o hecho de la página de UNA cuenta (23/11/2026): la página ya juntó lo de este dispositivo con lo
+   * que le trajo `misCosas()` y manda el resultado (ver web/src/sync_cuenta.js, que tiene las reglas de cada marca). Sólo
+   * las claves de `UI_CLAVES` y hasta `UI_MAX` letras; si no cambió, no escribe.
+   */
+  uiGuardar(d) {
+    const quien = String(d.quien || '');
+    const v = validarUi(d.ui);
+    if (!/^[0-9]{5,25}$/.test(quien) || !v) return { error: 'datos' };
+    const ya = this.sql.exec('SELECT v FROM cuenta_ui WHERE quien = ?', quien).toArray()[0];
+    if (ya && ya.v === v) return { ok: true, igual: true };
+    this.sql.exec('INSERT INTO cuenta_ui (quien, v, t) VALUES (?, ?, ?) ON CONFLICT(quien) DO UPDATE SET v = excluded.v, t = excluded.t',
+      quien, v, Date.now());
+    return { ok: true };
   }
 
   /**

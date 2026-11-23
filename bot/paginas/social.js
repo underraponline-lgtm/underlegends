@@ -274,6 +274,7 @@ function pedirSigo() {
   if (!DC) return;
   pedirConCuenta('/api/avisos/sigo', {}, false).then(function (j) {
     if (!j || j.status !== 200 || !Array.isArray(j.sigo)) return;
+    if (j.mios) usarMios(j.mios);
     var subir = SIGO_SRV ? [] : SIGO.filter(function (k) { return j.sigo.indexOf(k) < 0; }).slice(0, 60);
     ME_SIGUEN = j.me_siguen || null;
     guardarSigo(j.sigo.concat(subir));
@@ -284,6 +285,56 @@ function pedirSigo() {
       repintarSigo();
     }).catch(function () { /* se sube la próxima vez */ });
   }).catch(function () { /* sin red, queda lo de este dispositivo */ });
+}
+/* 📱 LO QUE HICISTE CON TU CUENTA, EN ESTE DISPOSITIVO TAMBIÉN (23/11/2026). Dlx: «hice la encuesta semanal en mi PC y
+   en mi celular me pide hacerla». Lo que votaste y felicitaste lo recordaba sólo el navegador donde lo hiciste; ahora
+   viene con `pedirSigo()` (`mios`, ver `misCosas()` en bot/avisos.js) y se suma a lo de acá: lo del servidor manda, y
+   lo de acá que el servidor no trae (un voto de recién, antes de que conteste) se queda. Las encuestas y los aplausos
+   se repintan solos; los votos de liga los lee ligas.jsx de `lg:ligavotos` cuando le llega `lg:ligavotos`, y los de
+   «¿quién gana?» quiengana.jsx de `lg:qg`. Lo demás que la página marca como visto (el tutorial, el Pase, el
+   Inventario…) lo junta web/src/sync_cuenta.js, que escucha `lg:ui-cuenta`. */
+function usarMios(m) {
+  var cambio = false;
+  Object.keys(m.votos || {}).forEach(function (id) {
+    if (ENC_MIO[id] !== m.votos[id]) { ENC_MIO[id] = m.votos[id]; cambio = true; }
+  });
+  if (cambio) { guardarLS('lg:votos', ENC_MIO); pintaEncuestas(); }
+  var ap = m.aplausos || {}, ape = m.aplausos_e || {}, cambioA = false;
+  Object.keys(ap).forEach(function (id) {
+    if (!APLAUSOS.mios[id]) { APLAUSOS.mios[id] = ap[id]; cambioA = true; }
+    var e = ape[id] || '';
+    if ((APLAUSOS.miE[id] || '') !== e) { if (e) APLAUSOS.miE[id] = e; else delete APLAUSOS.miE[id]; cambioA = true; }
+  });
+  if (cambioA) {
+    var mm = {};
+    Object.keys(APLAUSOS.mios).sort(function (a, b) { return APLAUSOS.mios[b] - APLAUSOS.mios[a]; })
+      .slice(0, 300).forEach(function (x) { mm[x] = APLAUSOS.mios[x]; });
+    APLAUSOS.mios = mm;
+    guardarLS('lg:aplausos', mm);
+    guardarLS('lg:aplausos-e', APLAUSOS.miE);
+    avisarAplausos();
+  }
+  var qg = m.qg || {};
+  if (Object.keys(qg).length) {
+    var mq = leerLS('lg:qg', null) || {}, cambioQ = false;
+    Object.keys(qg).forEach(function (id) { if (mq[id] !== qg[id]) { mq[id] = qg[id]; cambioQ = true; } });
+    if (cambioQ) {
+      guardarLS('lg:qg', mq);
+      try { window.dispatchEvent(new Event('lg:qg')); } catch (e) { /* navegador viejo */ }
+    }
+  }
+  // ⚠️ también en `UI_CUENTA`: la respuesta puede llegar antes de que cargue la app, y sync_cuenta.js lo lee al cargar
+  window.UI_CUENTA = m.ui || {};
+  try { window.dispatchEvent(new CustomEvent('lg:ui-cuenta', { detail: m.ui || {} })); } catch (e) { /* navegador viejo */ }
+  var lv = m.ligas || {};
+  if (Object.keys(lv).length) {
+    var mias = leerLS('lg:ligavotos', null) || {}, cambioL = false;
+    Object.keys(lv).forEach(function (id) { if (mias[id] !== lv[id]) { mias[id] = lv[id]; cambioL = true; } });
+    if (cambioL) {
+      guardarLS('lg:ligavotos', mias);
+      try { window.dispatchEvent(new Event('lg:ligavotos')); } catch (e) { /* navegador viejo */ }
+    }
+  }
 }
 /* cuántos siguen a cada uno: lo público, una vez cada cinco minutos */
 function pedirSeguidores() {

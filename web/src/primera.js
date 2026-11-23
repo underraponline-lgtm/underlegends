@@ -58,6 +58,12 @@ try {
 } catch (e) { sesion = false; }
 export const PRIMERA_VISITA = sesion;
 
+// 📱 el tutorial de tu cuenta (web/src/sync_cuenta.js, 23/11/2026): si llegó lo de otro dispositivo, `T` es eso. Sin esto,
+// el próximo `tutoPoner()` pisaba lo juntado con lo que este navegador tenía en memoria
+try {
+  window.addEventListener('lg:ui', () => { if (!T) return; const n = leer(); if (n) T = n; });
+} catch (e) { /* sin ventana */ }
+
 export const tuto = () => T;
 /** Cambia el estado y lo guarda */
 export function tutoPoner(cambios) {

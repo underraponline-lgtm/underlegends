@@ -80,6 +80,7 @@ const AVISOS = {
   // cada uno. Ver `seguir()` en bot/avisos.js: quién sigue lo dice Discord
   '/api/avisos/seguir': 'POST',
   '/api/avisos/sigo': 'POST',
+  '/api/avisos/ui': 'POST',
   '/api/avisos/seguidores': 'GET',
   // 🫂 gente de la Liga en tus mismos servidores (21/11/2026). Ver `misServidores()` en bot/avisos.js
   '/api/avisos/mis-servidores': 'POST',

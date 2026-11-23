@@ -397,6 +397,8 @@ function Torneo({ liga, L, h, sinLado = false, corta = 0 }) {
   const V = useVotos();
   const [todos, setTodos] = useState(false);
   const [mios, setMios] = useState(leerMios);
+  // 📱 lo que votaste en otro dispositivo llega con tu cuenta (`usarMios()` de social.js, 23/11/2026)
+  useEffect(() => { const f = () => setMios(leerMios()); window.addEventListener('lg:ligavotos', f); return () => window.removeEventListener('lg:ligavotos', f); }, []);
   const [va, setVa] = useState('');
   const [err, setErr] = useState('');
   useEffect(() => { setErr(''); }, [L.id]);

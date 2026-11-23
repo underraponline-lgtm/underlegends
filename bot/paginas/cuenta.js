@@ -601,6 +601,8 @@ function olvidarVotos() {
   guardarLS('lg:aplausos', null);
   guardarLS('lg:aplausos-e', null);
   guardarLS('lg:ligavotos', null);
+  guardarLS('lg:qg', null);
+  window.UI_CUENTA = null;
 }
 /* olvidar todo lo de este dispositivo: quién sos y los ajustes */
 function cuentaOlvidarTodo() {

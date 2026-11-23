@@ -4942,6 +4942,46 @@ const ok = (cond, que, det) => {
     const m1 = await (o.votar({ enc: 'mes-a', op: 'B', quien: Q, fijo: false })).json();
     const m2 = await (o.votar({ enc: 'mes-a', op: 'C', quien: Q, fijo: false })).json();
     ok(m1.ok && m2.ok && m2.cuenta.C === 1 && !m2.cuenta.B, 'los MES AWARDS se siguen cambiando hasta que cierran', JSON.stringify(m2));
+    // 📱 (23/11/2026) Dlx: «hice la encuesta semanal en mi PC y en mi celular me pide hacerla»: `sigo()`, que la página pide al
+    // abrirse con tu cuenta, trae lo tuyo (`misCosas()`): tus votos, los de las ligas y lo que felicitaste, y nada de otro
+    const ahM = Date.now();
+    o.sql.exec('INSERT INTO aplausos (id, quien, t, e) VALUES (?, ?, ?, ?)', 'aaaaaaaaaaaa', Q, ahM, '🔥');
+    o.sql.exec('INSERT INTO aplausos (id, quien, t, e) VALUES (?, ?, ?, ?)', 'bbbbbbbbbbbb', Q, ahM - 1000, '👏');
+    o.sql.exec('INSERT INTO liga_voto (liga, quien, op, t, cierra) VALUES (?, ?, ?, ?, ?)', 'fmh-espana', Q, 'ORTIZ', ahM, ahM + 86400000);
+    o.sql.exec('INSERT INTO liga_voto (liga, quien, op, t, cierra) VALUES (?, ?, ?, ?, ?)', 'vieja', Q, 'X', ahM - 40 * 86400000, ahM - 30 * 86400000);
+    o.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?)', 'x2-viejo', Q, 'FFA', ahM - 60 * 86400000);
+    const mq = (await (o.sigo({ quien: Q })).json()).mios || {};
+    const ms = (await (o.sigo({ quien: S })).json()).mios || {};
+    ok(mq.votos && mq.votos['x2-a'] === 'FFA' && mq.votos['el-a'] === 'Ana' && mq.votos['mes-a'] === 'C' && !mq.votos['x2-viejo']
+      && mq.ligas['fmh-espana'] === 'ORTIZ' && !mq.ligas.vieja
+      && mq.aplausos.aaaaaaaaaaaa === ahM && mq.aplausos.bbbbbbbbbbbb && mq.aplausos_e.aaaaaaaaaaaa === '🔥' && !mq.aplausos_e.bbbbbbbbbbbb
+      && !Object.keys(ms.votos || {}).length && !Object.keys(ms.aplausos || {}).length,
+    '📱 lo que votaste y felicitaste viaja con tu cuenta: `sigo` lo trae (sin lo de hace 45 días ni las ligas cerradas, y nada de otro)', JSON.stringify([mq, ms]));
+    // 📱 y «¿quién gana?» y lo visto o hecho en la página (`cuenta_ui`): lo que guarda un dispositivo lo trae el otro
+    o.sql.exec('INSERT INTO qg_voto (id, quien, lado, t) VALUES (?, ?, ?, ?)', 'qg1', Q, 'a', ahM);
+    const uiPc = { 'lg:tuto': JSON.stringify({ t: 1, nuevo: false, tour: 'fin' }), 'lg:pub-visto': '250' };
+    const g1 = o.uiGuardar({ quien: Q, ui: uiPc });
+    const g2 = o.uiGuardar({ quien: Q, ui: uiPc });
+    const g3 = o.uiGuardar({ quien: Q, ui: { 'lg:dc': 'x' } });
+    const g4 = o.uiGuardar({ quien: Q, ui: { 'lg:db-logs': 'x'.repeat(A.UI_MAX) } });
+    const mu = (await (o.sigo({ quien: Q })).json()).mios || {};
+    const mu2 = (await (o.sigo({ quien: S })).json()).mios || {};
+    ok(g1.ok && !g1.igual && g2.igual && g3.error && g4.error && mu.qg.qg1 === 'a' && mu.ui['lg:pub-visto'] === '250'
+      && JSON.parse(mu.ui['lg:tuto']).tour === 'fin' && mu2.ui === null && !Object.keys(mu2.qg || {}).length,
+    '📱 lo visto o hecho en la página se guarda por cuenta (sin reescribir si no cambió, sólo claves conocidas, con tope) y vuelve con `sigo`',
+    JSON.stringify([g1, g2, g3, g4, mu.ui, mu2.ui]));
+    // las reglas de cada marca (web/src/sync_cuenta.js) y la lista, la misma en los dos lados
+    const SC = await import('../web/src/sync_cuenta.js');
+    ok(Object.keys(SC.REGLAS).slice().sort().join() === A.UI_CLAVES.slice().sort().join(),
+      '📱 las claves que se juntan en la página (`REGLAS`) son las que acepta el objeto (`UI_CLAVES`)', JSON.stringify([Object.keys(SC.REGLAS), A.UI_CLAVES]));
+    const jt = SC.juntar({ 'lg:tuto': JSON.stringify({ t: 9e12, nuevo: true, tour: '', c: { a: 1 } }), 'lg:pub-visto': '100',
+      'lg:pase-visto': JSON.stringify({ temp: 'T1', n: 9 }) },
+    { 'lg:tuto': JSON.stringify({ t: 5, nuevo: false, tour: 'fin', caps: { x: 1 }, c: { b: 1 } }), 'lg:pub-visto': '250',
+      'lg:pase-visto': JSON.stringify({ temp: 'T1', n: 7 }), 'lg:inv-visto': '["k"]' });
+    const jT = JSON.parse(jt['lg:tuto']);
+    ok(jT.nuevo === false && jT.t === 5 && jT.tour === 'fin' && jT.caps.x && jT.c.a && !jT.c.b && jt['lg:pub-visto'] === '250'
+      && JSON.parse(jt['lg:pase-visto']).n === 9 && jt['lg:inv-visto'] === '["k"]',
+    '📱 juntar dos dispositivos no des-ve nada: el tutorial más avanzado y su primera visita más vieja, lo visto de los dos', JSON.stringify(jt));
     // 🎁 el Cajón de discos por votar todas las de un servidor en el mes (17/11/2026)
     const hastaM = new Date(Date.now() + 86400000).toISOString();
     const defsM = { lista: [
