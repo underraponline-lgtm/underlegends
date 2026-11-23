@@ -63,8 +63,8 @@
    "servidor": "2ccbb01b91d5:0bd0fbf67396:15af16"
   },
   "Agente sombra": {
-   "competitivo": "b04f3ce4257c:38a840be60e7",
-   "pais": "9b9081798692:f1f52e1c6d42",
+   "competitivo": "3bed2e643ee0:38a840be60e7",
+   "pais": "bf3266b81cd8:f1f52e1c6d42",
    "servidor": "0e0bd6a9c1ba:0bd0fbf67396:9554fd",
    "temporada": "be4450099cfb:a8d8b7335469"
   },
@@ -430,8 +430,8 @@
    "servidor": "a9e63879d519:0bd0fbf67396:055f77"
   },
   "Dios": {
-   "competitivo": "80a778f0d3ec:38a840be60e7",
-   "pais": "e2f4337f4da7:f1f52e1c6d42",
+   "competitivo": "8b55877877f3:38a840be60e7",
+   "pais": "b988835140d5:f1f52e1c6d42",
    "servidor": "1654f53cbb74:0bd0fbf67396:132451",
    "temporada": "4460ce94ebed:a8d8b7335469"
   },
@@ -937,8 +937,8 @@
   },
   "Korey": {},
   "Kourier": {
-   "competitivo": "31ddd59a1870:38a840be60e7",
-   "pais": "6faf2fc53219:f1f52e1c6d42",
+   "competitivo": "d6d6b840e02d:38a840be60e7",
+   "pais": "0cf19f2c1d0a:f1f52e1c6d42",
    "servidor": "2e9a6dca2b09:0bd0fbf67396:cde293",
    "temporada": "44583103ed4c:a8d8b7335469"
   },
@@ -1586,16 +1586,16 @@
   },
   "Redstonita": {},
   "Refran": {
-   "competitivo": "305677fa66d0:38a840be60e7",
+   "competitivo": "3536e45386bf:38a840be60e7",
    "pais": "d52b98097774:f1f52e1c6d42",
    "servidor": "fc086d14f819:0bd0fbf67396:2ea58b",
-   "temporada": "b4f5357bd3ac:a8d8b7335469"
+   "temporada": "c107d29c8d30:a8d8b7335469"
   },
   "Revo": {
-   "competitivo": "7a771d82f4fb:38a840be60e7",
-   "pais": "928eb756500c:f1f52e1c6d42",
+   "competitivo": "3d3480644428:38a840be60e7",
+   "pais": "bb4a50e6734d:f1f52e1c6d42",
    "servidor": "963abbba9b72:0bd0fbf67396:71cf5a",
-   "temporada": "d5428c395546:a8d8b7335469"
+   "temporada": "fcc60df45ee3:a8d8b7335469"
   },
   "Reyes": {},
   "Reyes Mc": {
@@ -1959,8 +1959,8 @@
    "servidor": "1a0f54c95501:0bd0fbf67396:cb7362"
   },
   "Xubaru": {
-   "competitivo": "0e49a11ad9e5:38a840be60e7",
-   "pais": "fae684339f4d:f1f52e1c6d42",
+   "competitivo": "73b80f0ce85d:38a840be60e7",
+   "pais": "5b6ec5791b04:f1f52e1c6d42",
    "servidor": "83635e39a379:0bd0fbf67396:0355fe",
    "temporada": "ac27c30d568d:a8d8b7335469"
   },
@@ -2195,5 +2195,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-23T01:10:03+00:00"
+ "cuando": "2026-11-23T01:33:14+00:00"
 }
