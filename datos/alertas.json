@@ -31,19 +31,8 @@
   "WORLD OF FREE · LKR · 23/10 · octavos · BTRECE 🆚 RICARD": "2026-11-21T16:39:19.981474+00:00"
  },
  "ciclo:cola": {
-  "t": "2026-11-22T06:52:29.432872+00:00",
-  "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (22/11 1:52 AM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/44991264509"
- },
- "cuenta:dibujar": {
-  "n": 1,
-  "que": [
-   "bot/subir_datos.py"
-  ],
-  "t": "2026-11-23T21:52:44.711845+00:00"
- },
- "filas": {
-  "t": "2026-11-23T22:14:29.149810+00:00",
-  "texto": "El objeto lleva 4.3 millones de filas leídas hoy, de 5 millones. Si se acaban se cae entrar con Discord, lo en vivo y los avisos hasta cerca de las 23/11 7:00 PM ET. Lo que más lee: `python herramientas/uso.py`."
+  "t": "2026-11-23T22:22:39.053017+00:00",
+  "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (23/11 5:22 PM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/45268971095"
  },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",
