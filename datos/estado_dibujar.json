@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-23T22:36:26Z",
+ "cuando": "2026-11-23T23:37:46Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 300.9,
+ "dur_s": 1764.6,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.2
+   "s": 0.8
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 17.4
+   "s": 11.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.2
+   "s": 112.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 2 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": true,
-   "s": 44.8
+   "s": 1409.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 152.6
+   "s": 155.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 60.2
+   "s": 73.4
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "681",
-  "nombre": "qcyo rapeen 17",
-  "sv": "FFA",
-  "dia": "2026-11-23"
+  "n": "683",
+  "nombre": "NOMBRE COMPETENCIA",
+  "sv": "UFLUC",
+  "dia": "2026-10-07"
  },
  "cuotas": {
   "kv": {
-   "write": 573,
-   "read": 27387
+   "write": 613,
+   "read": 28873
   },
   "objeto": {
-   "leidas": 4545274,
-   "escritas": 70872,
-   "pedidos": 24838
+   "leidas": 4853467,
+   "escritas": 77240,
+   "pedidos": 27393
   },
   "worker": {
-   "pedidos": 24303,
+   "pedidos": 25173,
    "errores": 0,
-   "sub": 27468,
+   "sub": 28491,
    "cortados": 0,
-   "p50_ms": 0.97,
-   "p99_ms": 16.2,
+   "p50_ms": 0.99,
+   "p99_ms": 16.43,
    "cpu": {
-    "total": 51526,
-    "objeto_10": 2077,
-    "worker_10": 877
+    "total": 53464,
+    "objeto_10": 2085,
+    "worker_10": 927
    }
   },
   "r2": {
