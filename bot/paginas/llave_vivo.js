@@ -1011,14 +1011,22 @@
   }
 
   /* `escuchar.unir_partidas()`: la llave que vino en dos mensajes, en uno.
-     🔴 Y EL PODIO EN SU PROPIO MENSAJE (FFA WORLD CUP, 27/09/2026): ver allá */
+     🔴 Y EL PODIO EN SU PROPIO MENSAJE (FFA WORLD CUP, 27/09/2026): ver allá
+     🔴 CADA MENSAJE SE COMPARA CON EL ÚLTIMO BLOQUE DE SU CANAL, NO CON EL ÚLTIMO DE LA LISTA (DESGRACIAS EN TOKYO VOL 34
+     2vs2, FFA, 22/11/2026). Python recibe los mensajes de UN canal; acá llegan los de todos los servidores juntos (el
+     vigía, `chatVivo()`, y la página, `nucleo.js`), ordenados por id. La llave de VERSO STYLE de otro servidor salió a
+     las 5:58 PM, entre los octavos de FFA (5:47) y su segunda mitad (6:12): la segunda mitad se comparó con ESA, no se
+     pegó y fue otra llave —sin título, así que se llamó como el renglón «[NC + ORIGI] 🆚 [ ]», después «NEO ZIGNOS» y
+     después «el evento de Freestyle For All»—, con su propio «Arrancó», sus cruces sin imagen y el podio suelto (sin
+     campeón). Se juntaron recién a las 9:33 PM, cuando VERSO STYLE salió de la ventana de 3 horas, y el bot anunció
+     como nuevo un «pasan · Octavos» de dos horas antes */
   var DOBLE_JUNTA_MS = 30 * 60000;
   function unirPartidas(ms) {
-    var bloques = [];
+    var bloques = [], ultimo = {};
     ms.slice().sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; }).forEach(function (m) {
       var t = traducir(plano(m.texto || ''));
       var rs = rondasDe(t);
-      var b = bloques[bloques.length - 1];
+      var b = Object.prototype.hasOwnProperty.call(ultimo, String(m.canal)) ? ultimo[String(m.canal)] : null;
       if (b && rs.length && b.rs.length && m.autor && m.autor === b.autor && m.canal === b.canal &&
           m.pub - b.ult <= PARTIDA_MS && rondaN(rs[0][0]) > rondaN(b.rs[b.rs.length - 1][0])) {
         b.texto += '\n' + (m.texto || '');
@@ -1044,8 +1052,10 @@
         b.podio = true;
         return;
       }
-      bloques.push({ id: m.id, canal: m.canal, sv: m.sv, g: m.g, autor: m.autor, pub: m.pub,
-        ed: m.ed || m.pub, ult: m.pub, texto: m.texto || '', rs: rs });
+      var nuevo = { id: m.id, canal: m.canal, sv: m.sv, g: m.g, autor: m.autor, pub: m.pub,
+        ed: m.ed || m.pub, ult: m.pub, texto: m.texto || '', rs: rs };
+      bloques.push(nuevo);
+      ultimo[String(m.canal)] = nuevo;
     });
     return bloques;
   }

@@ -77,6 +77,33 @@ const partes = LV.unirPartidas([
 ]);
 ok('la llave partida en dos mensajes es una', partes.length === 1 && partes[0].id === '1553600655443107882' &&
   partes[0].rs.map((r) => r[0]).join(',') === 'CUARTOS,SEMIFINALES,FINAL', js(partes.map((p) => p.rs.map((r) => r[0]))));
+// 🔴 DESGRACIAS EN TOKYO VOL 34 2vs2 (FFA, 22/11/2026): la llave de OTRO servidor, publicada entre las dos mitades, partía
+// la de FFA en dos —la segunda mitad se comparaba con ella—, y el podio, que venía después, tampoco se pegaba. El vigía y
+// la página le pasan a `unirPartidas()` los mensajes de todos los servidores juntos
+{
+  const vol34 = [
+    { id: '1574194714201292932', canal: 'ffa', sv: 'FFA', autor: 'l3wito', pub: 1000, ed: 1000,
+      texto: '**__ ↱ | DESGRACIAS EN TOKYO VOL 34 2vs2 | ↲__**\n**[•OCTAVOS DE FINAL•]**\n' +
+        '▪️ [NC + ORIGI] 🆚 [SANKABEL + AREZ]\n▪️ [OJO + CYK] 🆚 [ZIGNOS + NEO]\n' +
+        '▪️ [REVO + QUASIMOTO] 🆚 [SIX + LZZ]\n▪️ [BLITZ + GUS] 🆚 [PARK JI SUNG + RIZAS]' },
+    { id: '1574197456017563830', canal: 'otro', sv: 'CH', autor: 'benji', pub: 2000, ed: 2000,
+      texto: '# VERSO STYLE\n**CUARTOS DE FINAL**\n[ NXUZ ] 🆚 [ ORIUZ ]\n[ TEO ] 🆚 [ DIOS ]\n' +
+        '**SEMIFINALES**\n[ NXUZ ] 🆚 [ DIOS ]' },
+    { id: '1574200967283482695', canal: 'ffa', sv: 'FFA', autor: 'l3wito', pub: 3000, ed: 3000,
+      texto: '▪️**[•CUARTOS DE FINAL•]**\n▪️ [NC + ORIGI] 🆚 [NEO + ZIGNOS]\n▪️ [SIX + LZZ] 🆚 [RIZAS + PARK JI SUNG]\n' +
+        '▪️**[•FINAL•]**\n▪️ [NC + ORIGI] 🆚 [SIX + LZZ]' },
+    { id: '1574243761922379787', canal: 'ffa', sv: 'FFA', autor: 'l3wito', pub: 4000, ed: 4000,
+      texto: '𝄆 CAMPEÓN: SIX + LZZ\n𝄆 SUB-CAMPEÓN: NC + ORIGI' },
+  ];
+  const bs = LV.unirPartidas(vol34);
+  const ffa = bs.filter((b) => b.canal === 'ffa');
+  const L34 = ffa.length === 1 ? LV.aLlave(ffa[0]) : null;
+  ok('la llave de otro servidor publicada en el medio no parte la de FFA: una sola, con sus tres rondas y el campeón',
+    bs.length === 2 && ffa.length === 1 && ffa[0].rs.map((r) => r[0]).join(',') === 'OCTAVOS,CUARTOS,FINAL'
+      && L34 && L34.terminada && L34.rondas[L34.rondas.length - 1].b[0][1] === 'SIX, LZZ',
+    js(bs.map((b) => [b.canal, b.rs.map((r) => r[0])])));
+  ok('… y la del otro servidor sigue siendo la suya', bs.some((b) => b.canal === 'otro' && b.rs.length === 2));
+}
 // 🔴 FFA WORLD CUP (27/09/2026): la final con los dos en negrita y el campeón
 // en un tercer mensaje, sólo el podio. Es el mismo caso que `escuchar.py`.
 const wc = [

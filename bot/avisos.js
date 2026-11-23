@@ -766,7 +766,9 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
           // respectivos estén»): la carta del que pasó, abajo del recuadro, y sus botones (`filasResultado()`). Si su
           // cruce todavía espera su imagen, lleva ÉSA y sale con ella (`chatVivo()`)
           const chico = (y) => ({ n: y.n, k: y.k || '', carta: !!(y.k && opc.cartaDe && opc.cartaDe(y.k, opc.sv)) });
-          const imgG = gs[0].k && opc.cartaDe ? opc.cartaDe(gs[0].k, opc.sv) : '';
+          // 🧩 la de CUALQUIERA de los que pasaron (22/11/2026, DESGRACIAS EN TOKYO VOL 34 2vs2): miraba sólo al primero, y
+          // en un 2vs2 donde el primero no tiene tarjeta y el compañero sí, el resultado salía sin imagen
+          const imgG = opc.cartaDe ? gs.map((y) => (y.k ? opc.cartaDe(y.k, opc.sv) : '')).find(Boolean) || '' : '';
           out.push(Object.assign({ m: base, cab, bi: R.r + ':' + i, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto,
             // lo que se le agrega al mensaje del cruce cuando ya salió: los nombres ya están arriba, alcanza con quién
             res: '✅ ' + (gs.length > 1 ? 'Pasan' : 'Pasa') + ' **' + nombresChat(gs) + '**',

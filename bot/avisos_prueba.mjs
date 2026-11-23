@@ -349,6 +349,21 @@ const ok = (cond, que, det) => {
     'desplegado a mitad de un evento: lo dicho con las claves viejas no se repite, una sola vez, y lo nuevo sigue', mg);
     const pc = A.planChat([ci], { llave: { msg: '1' } }, 0, T, true, 'normal');
     ok(pc.length === 1 && pc[0].img === ci.img, 'la tarjeta del campeón viaja con su mensaje');
+    // 🧩 DESGRACIAS EN TOKYO VOL 34 2vs2 (FFA, 22/11/2026): el «✅ pasan» que sale solo llevaba la tarjeta del PRIMERO del
+    // equipo, y si ése no tenía, salía sin imagen aunque el compañero sí la tuviera
+    {
+      const tbE = { bna: { n: 'BNA', k: 'bna', cc: 'ar' }, eidp: { n: 'EIDP', k: 'eidp', cc: 'uy' }, santi: { n: 'Santi', k: 'santi', cc: 'ar' } };
+      const busE = (n) => ({ bna: 'bna', eidp: 'eidp', santi: 'santi' })[A.claveTurno(n)] || '';
+      const EQ = '# COPA\n`[ CUARTOS ]`\n⌞BNA 🇦🇷 + EIDP 🇺🇾⌝ 🆚 ⌞SANTI 🇦🇷 + EREMITA 🇦🇷⌝\n⌞A1⌝ 🆚 ⌞B1⌝\n'
+        + '`[ SEMIFINALES ]`\n⌞BNA 🇦🇷 + EIDP 🇺🇾⌝ 🆚 ⌞⌝\n';
+      const carta = (k) => (k === 'eidp' ? 'https://pub-a.r2.dev/eidp/temporada.webp' : '');
+      const eq = A.momentosChat(llaveDe(EQ), 'COPA', [], 'full', { buscar: busE, tabla: tbE, cartaDe: carta })
+        .find((x) => x.m.startsWith('b:Cuartos:0:'));
+      const sinNadie = A.momentosChat(llaveDe(EQ), 'COPA', [], 'full', { buscar: busE, tabla: tbE, cartaDe: () => '' })
+        .find((x) => x.m.startsWith('b:Cuartos:0:'));
+      ok(eq && /pasan · Cuartos/.test(eq.texto) && eq.img === 'https://pub-a.r2.dev/eidp/temporada.webp' && sinNadie && !sinNadie.img,
+        'el «pasan» de un equipo lleva la tarjeta de cualquiera de los que pasaron, no sólo la del primero', eq && JSON.stringify([eq.texto, eq.img]));
+    }
   }
   ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo,datos,full' && A.ajusteValido('en_vivo_nivel', { FFA: 'full' }).FFA === 'full'
     && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard acepta los cinco, y nada más');
