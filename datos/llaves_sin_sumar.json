@@ -209,6 +209,54 @@
    ]
   ]
  },
+ "107368334": {
+  "dia": "2026-11-14",
+  "escala": "8-15",
+  "fecha": "14/11",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1571237118607368334"
+  ],
+  "n": 107368334,
+  "nombre": "HOOD BATTELS",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "Leyenda"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "Matito🇧🇴",
+       "Liam"
+      ],
+      "Matito🇧🇴",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Leyenda",
+    "Cuartos",
+    0
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "108217355": {
   "dia": "2026-09-25",
   "escala": "8-15",
@@ -249,6 +297,85 @@
    ]
   ]
  },
+ "108378625": {
+  "dia": "2026-10-03",
+  "escala": "8-15",
+  "fecha": "03/10",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1556107495108378625"
+  ],
+  "n": 108378625,
+  "nombre": "UFL BATTLES V2",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MayeutiK🇺🇾",
+       "Micronico🇦🇷"
+      ],
+      "MayeutiK🇺🇾",
+      ""
+     ],
+     [
+      [
+       "Monet",
+       "Elbesaabuelas"
+      ],
+      "Monet",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Monet",
+       "MayeutiK🇺🇾"
+      ],
+      "Monet",
+      ""
+     ],
+     [
+      [
+       "Pipelindo🇨🇴",
+       "Miniboy"
+      ],
+      "Pipelindo🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "MayeutiK🇺🇾",
+    "Semifinal",
+    0
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    0
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    0
+   ],
+   [
+    "Micronico🇦🇷",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "112497667": {
   "dia": "2026-09-26",
   "escala": "4-7",
@@ -279,6 +406,47 @@
   "tabla": [
    [
     "Adrianex",
+    "Semifinal",
+    0
+   ]
+  ]
+ },
+ "114070140": {
+  "dia": "2026-09-25",
+  "escala": "4-7",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1553148654314070140"
+  ],
+  "n": 114070140,
+  "nombre": "Fat under Palooza",
+  "ns": 1,
+  "participantes": 6,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MayeutiK🇺🇾",
+       "Marcos",
+       "Teito"
+      ],
+      "MayeutiK🇺🇾",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Marcos",
+    "Semifinal",
+    0
+   ],
+   [
+    "Teito",
     "Semifinal",
     0
    ]
@@ -3070,6 +3238,134 @@
    ]
   ]
  },
+ "143929150": {
+  "dia": "2026-10-07",
+  "escala": "8-15",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1557504718643929150"
+  ],
+  "n": 143929150,
+  "nombre": "NOMBRE COMPETENCIA",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Teo",
+       "Elbesaabuelas"
+      ],
+      "Teo",
+      ""
+     ],
+     [
+      [
+       "Uzi :CL:",
+       "Shadow"
+      ],
+      "Uzi :CL:",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Liam"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Carlosmo",
+       "Mathhias"
+      ],
+      "Carlosmo",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Teo"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Carlosmo",
+       "NXUZ"
+      ],
+      "Carlosmo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosmo",
+       "Miniboy"
+      ],
+      "Carlosmo",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Carlosmo",
+    "Campeón",
+    0
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    0
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    0
+   ],
+   [
+    "Teo",
+    "Semifinal",
+    0
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    0
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    0
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    0
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "144181154": {
   "dia": "2026-10-27",
   "escala": "8-15",
@@ -4088,6 +4384,150 @@
    [
     "Telmex",
     "Cuartos",
+    0
+   ]
+  ]
+ },
+ "156463983": {
+  "dia": "2026-11-22",
+  "escala": "8-15",
+  "fecha": "22/11",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1574180204656463983"
+  ],
+  "n": 156463983,
+  "nombre": "GRAND THEFT AUTO",
+  "ns": 1,
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mc Glock",
+       "Dominick",
+       "Shadow"
+      ],
+      "Mc Glock, Dominick",
+      "triple (3 bandas, pasan 2); también pasa: Dominick 🇵🇪"
+     ],
+     [
+      [
+       "Saiko",
+       "Shaggy 🇵🇷",
+       "ONZASS"
+      ],
+      "Saiko, Shaggy 🇵🇷",
+      "triple (3 bandas, pasan 2); también pasa: Shaggy 🇵🇷"
+     ],
+     [
+      [
+       "Mathhias",
+       "Molusco",
+       "Mito"
+      ],
+      "Mathhias, Molusco",
+      "triple (3 bandas, pasan 2); también pasa: Molusco 🇦🇷"
+     ],
+     [
+      [
+       "EmiZor",
+       "Thaniel",
+       "Miniboy"
+      ],
+      "EmiZor",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mc Glock, y Dominick 🇵🇪",
+       "Saiko, y Shaggy 🇵🇷"
+      ],
+      "Mc Glock, y Dominick 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Mathhias, Molusco",
+       "EmiZor, Cinexfilo"
+      ],
+      "Mathhias, Molusco",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Cinexfilo",
+    "Semifinal",
+    0
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    0
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    0
+   ],
+   [
+    "Mc Glock",
+    "Semifinal",
+    0
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    0
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    0
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    0
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    0
+   ],
+   [
+    "Saiko",
+    "Semifinal",
+    0
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    0
+   ],
+   [
+    "Thaniel",
+    "Cuartos",
+    0
+   ],
+   [
+    "y Dominick 🇵🇪",
+    "Semifinal",
+    0
+   ],
+   [
+    "y Shaggy 🇵🇷",
+    "Semifinal",
     0
    ]
   ]
@@ -5587,6 +6027,98 @@
    ]
   ]
  },
+ "169264161": {
+  "dia": "2026-11-06",
+  "escala": "8-15",
+  "fecha": "06/11",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1568355756569264161"
+  ],
+  "n": 169264161,
+  "nombre": "UWC NACIONAL TRICOLOR",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Cinexfilo",
+       "Teo"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Rbk",
+       "Lvel 🇻🇪"
+      ],
+      "Rbk",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Shadow"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Cinexfilo",
+       "Pipe"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Rbk"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Pipe",
+    "Semifinal",
+    0
+   ],
+   [
+    "Rbk",
+    "Semifinal",
+    0
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    0
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "171238925": {
   "dia": "2026-10-19",
   "escala": "8-15",
@@ -6165,6 +6697,213 @@
    [
     "replisan🇦🇷",
     "Octavos",
+    0
+   ]
+  ]
+ },
+ "180608338": {
+  "dia": "2026-09-25",
+  "escala": "8-15",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1553237107680608338"
+  ],
+  "n": 180608338,
+  "nombre": "Flow Master",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MayeutiK🇺🇾",
+       "Micronico🇦🇷"
+      ],
+      "MayeutiK🇺🇾",
+      ""
+     ],
+     [
+      [
+       "Ritmo",
+       "Matito"
+      ],
+      "Ritmo",
+      ""
+     ],
+     [
+      [
+       "Vince🇨🇴",
+       "Matito"
+      ],
+      "Vince🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vince🇨🇴",
+       "MayeutiK🇺🇾"
+      ],
+      "Vince🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Ritmo",
+       "Richard"
+      ],
+      "Ritmo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MayeutiK🇺🇾",
+       "Richard"
+      ],
+      "MayeutiK🇺🇾",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vince🇨🇴",
+       "Ritmo"
+      ],
+      "Vince🇨🇴",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Vince🇨🇴",
+    "Campeón",
+    0
+   ],
+   [
+    "Ritmo",
+    "Subcampeón",
+    0
+   ],
+   [
+    "MayeutiK🇺🇾",
+    "Tercero",
+    0
+   ],
+   [
+    "Richard",
+    "Cuarto",
+    0
+   ],
+   [
+    "Matito",
+    "Cuartos",
+    0
+   ],
+   [
+    "Micronico🇦🇷",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "181228556": {
+  "dia": "2026-09-27",
+  "escala": "4-7",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1553868959781228556"
+  ],
+  "n": 181228556,
+  "nombre": "Distrito 4x4",
+  "ns": 1,
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mayeutik🇺🇾",
+       "Teito"
+      ],
+      "Mayeutik🇺🇾",
+      ""
+     ],
+     [
+      [
+       "Vince🇪🇨",
+       "NEXOR"
+      ],
+      "Vince🇪🇨",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "NEXOR",
+       "Teito"
+      ],
+      "NEXOR",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mayeutik🇺🇾",
+       "Vince🇪🇨"
+      ],
+      "Mayeutik🇺🇾",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Mayeutik🇺🇾",
+    "Campeón",
+    0
+   ],
+   [
+    "Vince🇪🇨",
+    "Subcampeón",
+    0
+   ],
+   [
+    "NEXOR",
+    "Tercero",
+    0
+   ],
+   [
+    "Teito",
+    "Cuarto",
     0
    ]
   ]
@@ -7810,6 +8549,90 @@
    ]
   ]
  },
+ "191189260": {
+  "dia": "2026-09-25",
+  "escala": "4-7",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1553111620891189260"
+  ],
+  "n": 191189260,
+  "nombre": "Distrito 4x4",
+  "ns": 1,
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mayeutik  🇺🇾",
+       "Calíz"
+      ],
+      "Mayeutik  🇺🇾",
+      ""
+     ],
+     [
+      [
+       "Mc Glock",
+       "Teito"
+      ],
+      "Mc Glock",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Calíz",
+       "Teito"
+      ],
+      "Calíz",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mayeutik  🇺🇾",
+       "Mc Glock"
+      ],
+      "Mayeutik  🇺🇾",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Mayeutik  🇺🇾",
+    "Campeón",
+    0
+   ],
+   [
+    "Mc Glock",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Calíz",
+    "Tercero",
+    0
+   ],
+   [
+    "Teito",
+    "Cuarto",
+    0
+   ]
+  ]
+ },
  "193760035": {
   "dia": "2026-11-15",
   "escala": "4-7",
@@ -8188,6 +9011,252 @@
    [
     "Shikamaru",
     "Octavos",
+    0
+   ]
+  ]
+ },
+ "196647299": {
+  "dia": "2026-09-26",
+  "escala": "8-15",
+  "fecha": "26/09",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1553436528896647299"
+  ],
+  "n": 196647299,
+  "nombre": "ZONA DE GUERRA",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Micronico🇦🇷"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Lvel 🇻🇪",
+       "Julio🇻🇪"
+      ],
+      "Lvel 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Guty"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "NEXOR",
+       "Liam"
+      ],
+      "NEXOR",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Lvel 🇻🇪"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "NEXOR"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "NEXOR",
+       "Lvel 🇻🇪"
+      ],
+      "NEXOR",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Miniboy"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "NXUZ",
+    "Campeón",
+    0
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    0
+   ],
+   [
+    "NEXOR",
+    "Tercero",
+    0
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuarto",
+    0
+   ],
+   [
+    "Guty",
+    "Cuartos",
+    0
+   ],
+   [
+    "Julio🇻🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    0
+   ],
+   [
+    "Micronico🇦🇷",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "197007674": {
+  "dia": "2026-11-01",
+  "escala": "8-15",
+  "fecha": "01/11",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1566575124097007674"
+  ],
+  "n": 197007674,
+  "nombre": "UWC NACIONAL ANDES",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Matito🇧🇴",
+       "Artezzy"
+      ],
+      "Matito🇧🇴",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Monet"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Evangeline"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Kochi",
+       "Dominick"
+      ],
+      "Kochi",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Matito🇧🇴",
+       "NXUZ"
+      ],
+      "Matito🇧🇴",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Koshi🇨🇱"
+      ],
+      "Miniboy",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Koshi🇨🇱",
+    "Semifinal",
+    0
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    0
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    0
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    0
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    0
+   ],
+   [
+    "Monet",
+    "Cuartos",
     0
    ]
   ]

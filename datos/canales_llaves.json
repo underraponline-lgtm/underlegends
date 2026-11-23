@@ -150,6 +150,11 @@
    "guild": "1467763447117778989",
    "servidor": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era"
   },
+  "1540440885471477832": {
+   "canal": "「🔑」ʟʟᴀᴠᴇꜱ",
+   "guild": "1538596086644736041",
+   "servidor": "🎙🪯 || Under Freestyle Legion (UFL) || Ciclo 1"
+  },
   "1543316531620876310": {
    "canal": "「🔑」𝖫𝗅𝖺𝗏𝖾𝗌",
    "guild": "1283205153624952975",
@@ -248,7 +253,13 @@
   "838593179187544064": "Freestyle Zone",
   "841017460341604382": "[DRA] Discord Rap En Español | Freestyle • Batallas Online • Cypher 24/7 • Ligas • Aprende"
  },
- "setup_ll": {},
+ "setup_ll": {
+  "1540440885471477832": {
+   "canal": "「🔑」ʟʟᴀᴠᴇꜱ",
+   "guild": "1538596086644736041",
+   "servidor": "🎙🪯 || Under Freestyle Legion (UFL) || Ciclo 1"
+  }
+ },
  "ultimo_completo": "2026-11-23T22:06:32+00:00",
  "veredictos": {
   "1309238412976590908": {

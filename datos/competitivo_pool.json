@@ -27099,7 +27099,7 @@
   "raw": "Mc arepa",
   "cc": "ve",
   "sv": "FDS",
-  "crew": "",
+  "crew": "VENECOMAFIA",
   "discord_id": "1528203989152174110",
   "verificado": true,
   "ev": 2,
@@ -27132,6 +27132,7 @@
   "arc_pais": 27,
   "pos_sv": "6/7",
   "arc_sv": 29,
+  "pos_crew": "",
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
