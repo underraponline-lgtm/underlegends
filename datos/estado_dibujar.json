@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-23T23:37:46Z",
+ "cuando": "2026-11-23T23:47:52Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1764.6,
+ "dur_s": 569.1,
  "pasos": [
   {
    "n": "2f",
@@ -21,67 +21,67 @@
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.4
+   "s": 0.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.7
+   "s": 11.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 112.3
+   "s": 247.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 4 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 11 persona(s)",
    "ok": true,
-   "s": 1409.4
+   "s": 59.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 155.4
+   "s": 143.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 73.4
+   "s": 105.3
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "683",
-  "nombre": "NOMBRE COMPETENCIA",
+  "n": "684",
+  "nombre": "UFL BATTLES V2",
   "sv": "UFLUC",
-  "dia": "2026-10-07"
+  "dia": "2026-10-03"
  },
  "cuotas": {
   "kv": {
-   "write": 613,
-   "read": 28873
+   "write": 649,
+   "read": 29539
   },
   "objeto": {
-   "leidas": 4853467,
-   "escritas": 77240,
-   "pedidos": 27393
+   "leidas": 5074200,
+   "escritas": 82072,
+   "pedidos": 27913
   },
   "worker": {
-   "pedidos": 25173,
+   "pedidos": 25323,
    "errores": 0,
-   "sub": 28491,
+   "sub": 28639,
    "cortados": 0,
    "p50_ms": 0.99,
-   "p99_ms": 16.43,
+   "p99_ms": 16.4,
    "cpu": {
-    "total": 53464,
-    "objeto_10": 2085,
-    "worker_10": 927
+    "total": 53748,
+    "objeto_10": 2090,
+    "worker_10": 929
    }
   },
   "r2": {
