@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T22:24:57+00:00",
+ "cuando": "2026-11-23T22:55:40+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7901,6 +7901,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "tit": "DEM BATTLES - EDICIÓN #4 - RANGO 4",
+   "tx": "🚨 | LAS INSCRIPCIONES SE ABRIRAN EN MUY POCO. 📑 | JURADOS OFICIALES: Ajoel 🇵🇷 ✍️ | CANAL DE",
+   "cuando": "2026-11-23T22:49:43",
+   "msg_id": "1574557591348977826",
+   "link": "https://discord.com/channels/838593179187544064/850777668386291712/1574557591348977826"
+  },
+  {
    "servidor": "DDS",
    "canal": "🚨〕ANUNCIOS",
    "tit": "YA HAY CANAL PARA REY DE LA PISTA https://discordapp.com/channels/1443770831598649528/1574",
@@ -8160,18 +8169,99 @@
    "cuando": "2026-11-15T17:39:25",
    "msg_id": "1571580396573954264",
    "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571580396573954264"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📢┇anuncios・",
-   "tit": "LAS FAT BATTLES PALOOZA T.3 LLEGARON A SU FIN!!!",
-   "tx": "Y CON ESO TENEMOS EL RANKING OFICIAL DESPUÉS DE LAS 10 FECHAS!!!! 🏆 FAT BATTLES PALOOZA — RANKING FINAL 1. MCO 🇦🇷 62 pts 👑 2. VANDU 🇨🇴 53 pts 🥈 3. PANCHOK 🇨🇱 51 pts 🥉 | 4 | MAKMA 🇻🇪 | 49 | | 5 | ERIAN 🇩🇴 | 47 | | 6 | ECL",
-   "cuando": "2026-11-13T19:22:50",
-   "msg_id": "1570881649737212041",
-   "link": "https://discord.com/channels/765045834647339038/922299202904653844/1570881649737212041"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Tokio🇺🇸🇦🇷",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1574558618928287836",
+   "cuando": "2026-11-23T22:53:48"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "player🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1574557949895122996",
+   "cuando": "2026-11-23T22:51:09"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1574557936284598333",
+   "cuando": "2026-11-23T22:51:05"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Molt 🇨🇱",
+   "quien": "inculiable",
+   "discord_id": "1355612971144839439",
+   "msg_id": "1574557896740569129",
+   "cuando": "2026-11-23T22:50:56"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Mrkude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1574557884824555641",
+   "cuando": "2026-11-23T22:50:53"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1574557834677592075",
+   "cuando": "2026-11-23T22:50:41"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "0223 🇧🇧",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1574557805392953425",
+   "cuando": "2026-11-23T22:50:34"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Daulinov🇨🇴",
+   "quien": "daulinov_cama_41079",
+   "discord_id": "1343730229721698375",
+   "msg_id": "1574557762950668441",
+   "cuando": "2026-11-23T22:50:24"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1574557751621853275",
+   "cuando": "2026-11-23T22:50:21"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Snx 🇻🇪",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1574557694344560671",
+   "cuando": "2026-11-23T22:50:08"
+  },
   {
    "servidor": "WOF",
    "canal": "📜・vs・Inscripciónes",
@@ -44081,96 +44171,6 @@
    "discord_id": "1367919102382964878",
    "msg_id": "1562216084130504715",
    "cuando": "2026-10-20T21:28:59"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Dyzz🇨🇱",
-   "quien": "dyzzmc",
-   "discord_id": "1525996330042921081",
-   "msg_id": "1562216062643081267",
-   "cuando": "2026-10-20T21:28:53"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Chuwin",
-   "quien": "chuwin_",
-   "discord_id": "618818177073414144",
-   "msg_id": "1562215687169122315",
-   "cuando": "2026-10-20T21:27:24"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "VR r🇨🇴",
-   "quien": "1mrvargas",
-   "discord_id": "1456416455405863038",
-   "msg_id": "1562215639983333479",
-   "cuando": "2026-10-20T21:27:13"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "agustin51k 🇨🇱",
-   "quien": "agustin51k",
-   "discord_id": "1114241587262783631",
-   "msg_id": "1562215505954214011",
-   "cuando": "2026-10-20T21:26:41"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "MaYeuTyK 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1562215467194523692",
-   "cuando": "2026-10-20T21:26:31"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1562215409095155886",
-   "cuando": "2026-10-20T21:26:18"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Dominick 🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1562215357245169726",
-   "cuando": "2026-10-20T21:26:05"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Teo 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1562215350253256825",
-   "cuando": "2026-10-20T21:26:04"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "reenkharnazhion 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1562215282150477936",
-   "cuando": "2026-10-20T21:25:47"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Garxzii 🇲🇽🇦🇲",
-   "quien": "sebs._.fs",
-   "discord_id": "1217564137383526470",
-   "msg_id": "1562215277247070209",
-   "cuando": "2026-10-20T21:25:46"
   }
  ]
 }

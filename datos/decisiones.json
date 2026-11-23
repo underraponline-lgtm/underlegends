@@ -412,6 +412,23 @@
    "cuando": "2026-11-21 6:33 PM ET",
    "por": "el ciclo (R24)",
    "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
+  },
+  "UFL BATTLES V2 · UFLUC · 03/10": {
+   "campeon": {
+    "ganador": "(sin campeón)",
+    "promedio": true,
+    "ronda": "final",
+    "batallas": [
+     [
+      "Monet🇲🇽",
+      "Pipelindo🇨🇴"
+     ]
+    ],
+    "pasaron": []
+   },
+   "cuando": "2026-11-23 6:07 PM ET",
+   "por": "el ciclo (R24)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
   }
  },
  "no_rankear": {

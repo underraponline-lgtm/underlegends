@@ -63530,5 +63530,280 @@
    "min": 115,
    "v": 1
   }
+ },
+ "682": {
+  "dia": "2026-09-26",
+  "escala": "8-15",
+  "fecha": "26/09",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1553436528896647299"
+  ],
+  "n": 682,
+  "nombre": "ZONA DE GUERRA",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Micronico🇦🇷"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Lvel 🇻🇪",
+       "Julio🇻🇪"
+      ],
+      "Lvel 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Guty"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "NEXOR",
+       "Liam"
+      ],
+      "NEXOR",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Lvel 🇻🇪"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "NEXOR"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "NEXOR",
+       "Lvel 🇻🇪"
+      ],
+      "NEXOR",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Miniboy"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "NXUZ",
+    "Campeón",
+    7500
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NEXOR",
+    "Tercero",
+    4000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Guty",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Julio🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Micronico🇦🇷",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 82,
+   "v": 1
+  }
+ },
+ "683": {
+  "dia": "2026-10-07",
+  "escala": "8-15",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1557504718643929150"
+  ],
+  "n": 683,
+  "nombre": "NOMBRE COMPETENCIA",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Teo",
+       "Elbesaabuelas"
+      ],
+      "Teo",
+      "cuenta nueva, con su anuncio"
+     ],
+     [
+      [
+       "Uzi :CL:",
+       "Shadow"
+      ],
+      "Uzi :CL:",
+      "cuenta nueva, con su anuncio"
+     ],
+     [
+      [
+       "NXUZ",
+       "Liam"
+      ],
+      "NXUZ",
+      "cuenta nueva, con su anuncio"
+     ],
+     [
+      [
+       "Carlosmo",
+       "Mathhias"
+      ],
+      "Carlosmo",
+      "cuenta nueva, con su anuncio"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Teo"
+      ],
+      "Miniboy",
+      "cuenta nueva, con su anuncio"
+     ],
+     [
+      [
+       "Carlosmo",
+       "NXUZ"
+      ],
+      "Carlosmo",
+      "cuenta nueva, con su anuncio"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosmo",
+       "Miniboy"
+      ],
+      "Carlosmo",
+      "cuenta nueva, con su anuncio"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "Carlosmo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Teo",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 247,
+   "v": 1
+  }
  }
 }

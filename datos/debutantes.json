@@ -1256,19 +1256,6 @@
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": true
   },
-  "Guty": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T02:35:27+00:00",
-   "did": "1173707334216859860",
-   "evento": "COMPE POR 1.5 DOLARES",
-   "n": 462,
-   "sv": "FFA",
-   "vence": "2026-10-20T02:35:27+00:00",
-   "vencido": true
-  },
   "HOTU": {
    "avisado": "2026-10-26",
    "con": null,
@@ -2352,18 +2339,6 @@
    "vence": "2026-11-13T02:03:35+00:00",
    "vencido": true
   },
-  "NEXOR": {
-   "avisado": "2026-11-09",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-09T19:49:54+00:00",
-   "did": "1458471263524753484",
-   "evento": "RED BULL COLOMBIA",
-   "n": 597,
-   "sv": "LKR",
-   "vence": "2026-11-16T19:49:54+00:00",
-   "vencido": true
-  },
   "NILS": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -3063,19 +3038,6 @@
    "sv": "CEU",
    "vence": "2026-11-04T20:15:48+00:00",
    "vencido": true
-  },
-  "Teo": {
-   "avisado": "2026-11-22",
-   "chat": "2026-11-22",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-22T22:58:40+00:00",
-   "did": "",
-   "evento": "VERSO STYLE",
-   "n": 676,
-   "sv": "DDS",
-   "vence": "2026-11-29T22:58:40+00:00",
-   "vencido": false
   },
   "Terry": {
    "avisado": "2026-11-12",

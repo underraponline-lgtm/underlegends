@@ -195,12 +195,8 @@
 "temporada"
 ]
 },
-"tam": {
-"rg": "B",
-"c": []
-},
-"nc": {
-"rg": "D",
+"nxuz": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -208,8 +204,12 @@
 "temporada"
 ]
 },
-"nxuz": {
-"rg": "C",
+"tam": {
+"rg": "B",
+"c": []
+},
+"nc": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -746,6 +746,14 @@
 "temporada"
 ]
 },
+"shadow": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "valen": {
 "rg": "",
 "c": [
@@ -785,14 +793,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"shadow": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -909,6 +909,14 @@
 "temporada"
 ]
 },
+"carlosmo": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "gus": {
 "rg": "E",
 "c": [
@@ -961,14 +969,6 @@
 "c": [
 "pais",
 "servidor"
-]
-},
-"carlosmo": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
 ]
 },
 "aldre": {
@@ -1325,6 +1325,13 @@
 "temporada"
 ]
 },
+"liam": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "agentesombra": {
 "rg": "",
 "c": [
@@ -1624,13 +1631,6 @@
 "cajita": {
 "rg": "",
 "c": []
-},
-"liam": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "joshu": {
 "rg": "",
@@ -8514,7 +8514,7 @@
 "n": "Gian",
 "k": "",
 "de": 432,
-"a": 418
+"a": 419
 },
 {
 "n": "Andres",
@@ -8721,7 +8721,7 @@
 "alexi": 0,
 "erik": 2,
 "eliot": 2,
-"carlosmo": 3,
+"carlosmo": 4,
 "hotaruadeyemi": 1,
 "catarsis": 0,
 "ezze": 0,
@@ -8813,7 +8813,8 @@
 "mark98": 1,
 "kourier": 1,
 "agentesombra": 0,
-"martoar": 0
+"martoar": 0,
+"liam": 0
 },
 "sem": {
 "id": "2026-11-23",

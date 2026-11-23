@@ -2328,6 +2328,18 @@
     "pts": 22500,
     "racha": "1/1"
    },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 7500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
+   },
    "URBF": {
     "duelos": "3/3",
     "ev": 1,
@@ -4302,7 +4314,7 @@
     "oro": 0,
     "ovr": 44,
     "pod": 0,
-    "pts": 10000,
+    "pts": 8500,
     "racha": "0/0"
    },
    "FFA": {
@@ -4316,6 +4328,15 @@
     "tg": {
      "nuevo": true
     }
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0"
    }
   },
   "Eldinoco🇦🇷": {
@@ -5695,6 +5716,18 @@
     "pod": 0,
     "pts": 3750,
     "racha": "0/0"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    }
   },
   "Gwynyth": {
@@ -6745,6 +6778,20 @@
     "racha": "0/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "Julio🇻🇪": {
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
     }
    }
   },
@@ -8311,7 +8358,7 @@
     "oro": 0,
     "ovr": 44,
     "pod": 0,
-    "pts": 18150,
+    "pts": 14850,
     "racha": "0/0"
    },
    "LKR": {
@@ -8322,6 +8369,18 @@
     "pod": 0,
     "pts": 2938,
     "racha": "0/0"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    }
   },
   "Liberia": {
@@ -8676,7 +8735,7 @@
     "oro": 0,
     "ovr": 55,
     "pod": 0,
-    "pts": 132351,
+    "pts": 132538,
     "racha": "0/1"
    },
    "LKR": {
@@ -8687,6 +8746,18 @@
     "pod": 0,
     "pts": 6825,
     "racha": "0/0"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    },
    "URBF": {
     "duelos": "0/1",
@@ -9695,6 +9766,15 @@
      "fin": 1
     }
    },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
+   },
    "URBF": {
     "duelos": "2/5",
     "ev": 3,
@@ -9933,6 +10013,20 @@
     }
    }
   },
+  "Micronico🇦🇷": {
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
+   }
+  },
   "Millonari-O": {
    "FFA": {
     "duelos": "",
@@ -10054,6 +10148,19 @@
     "racha": "0/0",
     "tg": {
      "dv": true,
+     "fund": true
+    }
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 2,
+    "pts": 10000,
+    "racha": "2/2",
+    "tg": {
+     "fin": 2,
      "fund": true
     }
    },
@@ -10645,6 +10752,18 @@
     "pod": 0,
     "pts": 4950,
     "racha": "0/0"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 4000,
+    "racha": "0/0",
+    "tg": {
+     "fund": true
+    }
    }
   },
   "NILS": {
@@ -10698,7 +10817,7 @@
     "oro": 0,
     "ovr": 44,
     "pod": 0,
-    "pts": 8719,
+    "pts": 7469,
     "racha": "0/0"
    },
    "DDF": {
@@ -10761,6 +10880,19 @@
     "racha": "0/0",
     "tg": {
      "dv": true
+    }
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 11000,
+    "racha": "0/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
     }
    }
   },
@@ -13549,6 +13681,15 @@
     "pts": 11748,
     "racha": "0/0"
    },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
+   },
    "URBF": {
     "duelos": "0/2",
     "ev": 3,
@@ -14398,6 +14539,15 @@
     "ovr": 40,
     "pod": 0,
     "pts": 0,
+    "racha": "0/0"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3500,
     "racha": "0/0"
    }
   },

@@ -827,7 +827,7 @@
     "Miniboy": [
      1,
      1,
-     4
+     2
     ],
     "Minis": [
      0,
@@ -1254,6 +1254,11 @@
      0,
      4
     ],
+    "Teo": [
+     0,
+     0,
+     4
+    ],
     "Tier": [
      1,
      1,
@@ -1630,7 +1635,7 @@
     "Marley🇦🇷": 300,
     "Marto AR": 300,
     "Mathhias": 300,
-    "Miniboy": 300,
+    "Miniboy": 1300,
     "Mito": 300,
     "Molusco": 300,
     "Monet": 300,
@@ -6536,7 +6541,7 @@
     "Vandu": [
      1,
      4,
-     0,
+     1,
      1,
      0
     ],
@@ -6846,7 +6851,7 @@
     "Trot": 900,
     "Tuca": 2900,
     "TøKīØ🦠🧠": 1600,
-    "Vandu": 1700,
+    "Vandu": 3700,
     "Velatz": 600,
     "Verc": 900,
     "Vilca": 600,
@@ -12074,7 +12079,7 @@
      0
     ],
     "Andy MC": [
-     "Kourier",
+     "compare",
      "escena",
      null,
      0
@@ -12247,7 +12252,7 @@
      0
     ],
     "Choco": [
-     "Liam",
+     "Fisics",
      "escena",
      null,
      0
@@ -12497,7 +12502,7 @@
      0
     ],
     "Elbesaabuelas": [
-     "Thaniel",
+     "Julda",
      "escena",
      null,
      0
@@ -12563,14 +12568,9 @@
      0
     ],
     "Fisics": [
-     "Ariaxer",
-     "revancha",
-     [
-      396,
-      "FFA",
-      "04/10",
-      "cuartos"
-     ],
+     "Liam",
+     "escena",
+     null,
      0
     ],
     "Flash": [
@@ -13315,7 +13315,7 @@
      0
     ],
     "NXUZ": [
-     "Vandu",
+     "MCO",
      "escena",
      null,
      0
@@ -13656,14 +13656,9 @@
      0
     ],
     "Sosa": [
-     "Colesito",
-     "revancha",
-     [
-      398,
-      "ACAD",
-      "22/09",
-      "cuartos"
-     ],
+     "Izaya",
+     "escena",
+     null,
      0
     ],
     "Soulb": [
@@ -13813,7 +13808,7 @@
      0
     ],
     "TøKīØ🦠🧠": [
-     "Mathhias",
+     "Dyzz",
      "escena",
      null,
      0
@@ -14673,7 +14668,7 @@
   "Mc uchiha": 300,
   "Mexicano🇲🇽": 300,
   "Millonari-O": 300,
-  "Miniboy": 9100,
+  "Miniboy": 10100,
   "Mito": 6000,
   "Mochi DG": 300,
   "Molusco": 6700,
@@ -14776,7 +14771,7 @@
   "Vacile🇪🇸": 600,
   "Valdoza": 600,
   "Valen": 2600,
-  "Vandu": 12400,
+  "Vandu": 14400,
   "Velatz": 5800,
   "Verc": 8000,
   "Vilca": 3400,

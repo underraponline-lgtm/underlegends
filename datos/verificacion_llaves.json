@@ -332,6 +332,10 @@
    "min": 102,
    "v": 1
   },
+  "GRAND THEFT AUTO|UFLUC|22/11": {
+   "min": 34,
+   "v": 1
+  },
   "GRISELDA STYLE|DDS|21/11": {
    "min": 69,
    "v": 1
@@ -342,6 +346,10 @@
   },
   "HALOWEEN|CEU|30/10": {
    "min": 31,
+   "v": 1
+  },
+  "HOOD BATTELS|UFLUC|14/11": {
+   "min": 49,
    "v": 1
   },
   "IDS V.2|URBF|12/10": {
@@ -431,6 +439,10 @@
   },
   "MUNDIALITO|ACAD|17/10": {
    "min": 53,
+   "v": 1
+  },
+  "NOMBRE COMPETENCIA|UFLUC|07/10": {
+   "min": 247,
    "v": 1
   },
   "NOS FOLLAMOS TODOS A KRISHI|CEU|14/10": {
@@ -667,6 +679,18 @@
    "min": 99,
    "v": 1
   },
+  "UFL BATTLES V2|UFLUC|03/10": {
+   "min": 37,
+   "v": 1
+  },
+  "UWC NACIONAL ANDES|UFLUC|01/11": {
+   "min": 88,
+   "v": 1
+  },
+  "UWC NACIONAL TRICOLOR|UFLUC|06/11": {
+   "min": 66,
+   "v": 1
+  },
   "VALHALLA VOL1|ACAD|04/10": {
    "min": 78,
    "v": 1
@@ -690,6 +714,10 @@
   "YYY891|CEU|24/09": {
    "min": 63,
    "org": "gana",
+   "v": 1
+  },
+  "ZONA DE GUERRA|UFLUC|26/09": {
+   "min": 82,
    "v": 1
   },
   "ZONA MORTAL|DDF|07/11": {

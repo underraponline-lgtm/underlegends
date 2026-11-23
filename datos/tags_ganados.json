@@ -2541,6 +2541,13 @@
   }
  },
  "carlosmo": {
+  "pais": {
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795475239555
+   ]
+  },
   "servidor": {
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
@@ -2554,8 +2561,18 @@
    ]
   },
   "temporada": {
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1795475239555
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795475239555
+   ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1793029252929
    ],
@@ -2563,6 +2580,11 @@
     "📈 EN ASCENSO",
     "t1",
     1794242313248
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1795475239555
    ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
@@ -5002,6 +5024,15 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "elbesaabuelas": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795475239555
    ]
   }
  },
@@ -7963,6 +7994,11 @@
  },
  "liam": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795475239555
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -8646,6 +8682,11 @@
     "💯 CENTENARIO",
     "t1",
     1794020823182
+   ],
+   "📅 INFALTABLE": [
+    "📅 INFALTABLE",
+    "t1",
+    1795475239555
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -9523,6 +9564,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1793029252929
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1795475239555
    ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x2",
@@ -11418,6 +11464,15 @@
    ]
   }
  },
+ "nexor": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795475239555
+   ]
+  }
+ },
  "nmb": {
   "temporada": {
    "🌱 PROMESA": [
@@ -11791,6 +11846,11 @@
     "t1",
     1794464975569
    ],
+   "PRIMER CAMPEÓN": [
+    "PRIMER CAMPEÓN",
+    "t1",
+    1795475239555
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -11835,10 +11895,20 @@
     "t1",
     1794260565889
    ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1795475239555
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
     1793029252929
+   ],
+   "🌐 IMPERIO": [
+    "🌐 IMPERIO",
+    "t1",
+    1795475239555
    ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
@@ -11851,7 +11921,7 @@
     1792953978519
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
@@ -15040,6 +15110,11 @@
     "t1",
     1794260565889
    ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1795475239555
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -17465,7 +17540,7 @@
     1793029252929
    ],
    "📋 SEMANA PERFECTA x%d": [
-    "📋 SEMANA PERFECTA x2",
+    "📋 SEMANA PERFECTA x3",
     "t1",
     1793029252929
    ],
