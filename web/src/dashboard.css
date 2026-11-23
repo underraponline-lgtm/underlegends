@@ -750,6 +750,12 @@
 .nc-hz li>.nc-d{text-align:right}
 @media (max-width:560px){.nc-hz{padding:12px}.nc-hz li{grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"t n d" "b b b" "s s s";gap:4px 10px;padding:8px 0}
   .nc-hz-t{grid-area:t}.nc-hz li>b{grid-area:n}.nc-hz li>.nc-d{grid-area:d}.nc-hz-b{grid-area:b}.nc-hz li>small{grid-area:s}}
+/* 📚 hasta hoy, acumulado (23/11/2026) */
+.nc-hh{display:grid;gap:10px;padding-top:12px;border-top:1.5px solid var(--suave)}
+.nc-hh .dz-h{margin:0}
+.nc-hh-l{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+@media (max-width:1100px){.nc-hh-l{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.nc-hh-l{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* 🧾 qué hace la gente y dónde (23/11/2026): lo de la página y lo de Discord lado a lado; abajo, de a una */
 .qh{display:grid;gap:12px}
 .qh-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}

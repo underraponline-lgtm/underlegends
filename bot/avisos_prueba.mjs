@@ -1393,6 +1393,12 @@ const ok = (cond, que, det) => {
       && dr.semana.rarezas[2] === 1 && dr.antes.abiertos === 1 && dr.antes.por.cofre.abiertos === 1 && dr.cerrados === 1 && dr.con_cerrados === 1
       && dr.donde.web === 1 && dr.donde.discord === 1 && dr.donde.mira_discord === 1,
     'los drops: dados y abiertos por tipo, la rareza, la semana de antes, los cerrados y dónde se abrieron (página o Discord)', JSON.stringify(dr));
+    // 📚 EL HISTÓRICO (23/11/2026): la primera vez de cada uno, para siempre, y lo de antes desde `uso`
+    o.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', '2026-10-20', '4444444', 'web');
+    const hi = o._historico(AH);
+    ok(hi.web.n >= 2 && hi.web.desde <= '2026-10-20' && hi.bot.n >= 2 && hi.cuenta.n >= hi.web.n && hi.drops.personas === 2 && hi.drops.abiertos === 2
+      && hi.drops.dados === 3 && hi.drops.nuevos === 1 && hi.activos.n >= 1,
+    'el histórico: entraron con su cuenta (con lo de antes desde `uso`), usaron el bot, abrieron drops (personas, abiertos, dados, nuevos)', JSON.stringify(hi));
     const viejas = o._usoSemanas(Date.parse('2026-11-12T16:00:00Z')).filter((x) => x.hacen_por);
     ok(viejas.some((x) => x.hacen_por.aplaudieron.parcial) && !viejas[viejas.length - 1].hacen_por.aplaudieron.parcial,
       'una semana que empezó hace más de 30 días dice que sus aplausos están incompletos (se borran a los 30)', JSON.stringify(viejas.map((x) => [x.lunes, x.hacen_por.aplaudieron])));

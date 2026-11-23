@@ -191,7 +191,49 @@ function HacenPor({ w, ant }) {
     </div>
   );
 }
-function CincoCuadros({ uso, S }) {
+// 📚 HASTA HOY, ACUMULADO (23/11/2026, Dlx: «un histórico con el número actual de hasta ahora: cuántos entraron con Discord
+// a su cuenta, verificados, cuántas personas diferentes abrieron drops… info acumulada e histórica»). Del objeto
+// (`historico()`): la primera vez de cada uno en la página, en el bot, interactuando y abriendo un drop. De los datos del
+// repo: los verificados (`verificados_desde.json`, Miembro de DRA) y quién jugó en la T1 (los que debutaron cada semana).
+// Cada cuadro dice desde cuándo se cuenta y cuántos se sumaron en 7 días
+let verifP = null;
+const pedirVerif = () => (verifP = verifP || fetch(RAW + 'verificados_desde.json', { cache: 'no-store' })
+  .then((r) => (r.ok ? r.json() : null)).catch(() => null));
+function HastaHoy({ h, S }) {
+  const [v, setV] = useState(null);
+  useEffect(() => { let vivo = true; pedirVerif().then((x) => { if (vivo) setV(x || false); }); return () => { vivo = false; }; }, []);
+  const hace7 = masDias(hoyET(), -7);
+  const ver = v && v.ids ? Object.values(v.ids) : null;
+  const ss = (S && S.semanas) || [];
+  const jugaron = ss.reduce((t, w) => t + ((w.debut || []).length), 0);
+  const ultima = ss.length ? ss[ss.length - 1] : null;
+  const cajas = [
+    { t: 'Verificados', v: ver ? ver.length : null, n: ver ? ver.filter((x) => x !== 'pre' && x > hace7).length : null,
+      p: v && v.pre ? 'Miembro de DRA · se cuenta desde el ' + corto(v.pre) : 'Miembro de DRA' },
+    { t: 'Entraron con su cuenta', v: h && h.web.n, n: h && h.web.nuevos, p: h && h.web.desde ? 'a la página, alguna vez · se cuenta desde el ' + corto(h.web.desde) : 'a la página, alguna vez' },
+    { t: 'Usaron el bot', v: h && h.bot.n, n: h && h.bot.nuevos, p: h && h.bot.desde ? 'alguna vez · desde el ' + corto(h.bot.desde) : 'alguna vez' },
+    { t: 'Jugaron en la T1', v: ss.length ? jugaron : null, n: ultima ? (ultima.debut || []).length : null, nTxt: ' esta semana',
+      p: 'personas distintas que jugaron al menos un evento' },
+    { t: 'Interactuaron', v: h && h.hace.n, n: h && h.hace.nuevos, p: h && h.hace.desde ? 'alguna vez · desde el ' + corto(h.hace.desde) : 'alguna vez' },
+    { t: 'Abrieron un Drop', v: h && h.drops.personas, n: h && h.drops.nuevos,
+      p: h ? num(h.drops.abiertos) + ' drops abiertos de ' + num(h.drops.dados) + ' dados' : '' },
+  ];
+  return (
+    <div className="nc-hh">
+      <h4 className="dz-h">Hasta hoy<small>acumulado · personas distintas</small></h4>
+      <div className="nc-hh-l">{cajas.map((c) => (
+        <div key={c.t} className="nc-c">
+          <span className="nc-t">{c.t}</span>
+          <b className={c.v == null ? 'nc-nada' : ''}>{c.v == null ? '—' : num(c.v)}</b>
+          {c.n ? <small className="nc-d sube">+ {num(c.n)}{c.nTxt || ' en 7 días'}</small> : null}
+          {c.p ? <small className="nc-p">{c.p}</small> : null}
+        </div>
+      ))}</div>
+      {!h ? <p className="nc-p">Lo de la página, el bot y los drops llega cuando se despliegue el Worker.</p> : null}
+    </div>
+  );
+}
+function CincoCuadros({ uso, S, h }) {
   const [i0, setI] = useState(null);
   const us = uso || [];
   const ss = (S && S.semanas) || [];
@@ -266,6 +308,7 @@ function CincoCuadros({ uso, S }) {
       ))}</div>
       <HacenPor w={w} ant={ant} />
       {frase.length ? <p className="nc-f"><b>Lo que dice la semana:</b> {frase.join('; ')}.</p> : null}
+      <HastaHoy h={h} S={S} />
     </section>
   );
 }
@@ -6029,7 +6072,7 @@ export function Dashboard({ dc, liga }) {
     vista = (
       <>
       {/* 👥 arriba, los cinco cuadros (23/11/2026); lo demás, plegado en «Más números» */}
-      <CincoCuadros uso={d.uso_semanas} S={semanas} />
+      <CincoCuadros uso={d.uso_semanas} S={semanas} h={d.historico} />
       <NumerosTabs abrir={abrir} pedido={pedido} tabs={[
         // 👥 «La gente» tenía siete secciones (11/11/2026, Dlx: «Números en pestañas»): lo de quién vuelve y lo de la semana
         ['gente', 'Quién vuelve', <>

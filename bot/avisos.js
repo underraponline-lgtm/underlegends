@@ -9002,6 +9002,12 @@ export class Avisos {
       // `USO_DIAS` que `uso`. Cuántas veces no: eso lo dicen las tablas de cada cosa (`HACEN`)
       this.sql.exec('CREATE TABLE IF NOT EXISTS acciones (dia TEXT NOT NULL, que TEXT NOT NULL, por TEXT NOT NULL, quien TEXT NOT NULL, ' +
         'PRIMARY KEY (dia, que, por, quien)) WITHOUT ROWID');
+      // 📚 EL HISTÓRICO (23/11/2026, Dlx: «un histórico con el número de hasta ahora… info acumulada e histórica»): la
+      // PRIMERA vez que cada uno hizo cada cosa, para siempre —`uso` y `acciones` se borran a los `USO_DIAS`—. `que`: 'web'
+      // (entró a la página con su cuenta), 'bot' (usó el bot), 'drop' (abrió un Dragón Drop), 'hace' (interactuó: `HACEN`).
+      // Se llena sola desde `usoAnotar()`, `dropAbrir()` y `_usoSemanas()`; la primera vez, con lo que ya había (`historiaLlenar()`)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS historia (quien TEXT NOT NULL, que TEXT NOT NULL, primera TEXT NOT NULL, ' +
+        'PRIMARY KEY (quien, que)) WITHOUT ROWID');
       // 📱 y los navegadores DISTINTOS de cada semana (23/11/2026, Dlx: «cuántas personas diferentes han accedido a la
       // página»): `visitas` suma un navegador por día, así que la semana contaba siete veces a quien entra todos los
       // días. Acá cada navegador cuenta el día de su primera visita de la semana (`sem` en `visita()`): la suma de lunes
@@ -19493,6 +19499,8 @@ export class Avisos {
     }
     // el día lo pone el objeto: uno que llega de otra zona o de otro reloj no inventa días
     this.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', diaET(), String(d.quien), d.por);
+    // 📚 y si es la primera vez, al histórico
+    this.sql.exec('INSERT OR IGNORE INTO historia (quien, que, primera) VALUES (?, ?, ?)', String(d.quien), d.por, diaET());
     // 🧾 y qué hizo (ver la tabla `acciones`)
     if (typeof d.que === 'string' && ACCION_RE.test(d.que)) {
       this.sql.exec('INSERT OR IGNORE INTO acciones (dia, que, por, quien) VALUES (?, ?, ?, ?)', diaET(), d.que, d.por, String(d.quien));
@@ -21997,6 +22005,10 @@ export class Avisos {
     const corte = diaET(ahora - USO_DIAS * DIA_MS);
     const hechos = this.hechosDesde(Date.parse(corte + 'T00:00:00Z') - DIA_MS);
     const aplausosDesde = diaET(ahora - APLAUSOS_DIAS * DIA_MS);
+    // 📚 quien interactuó, al histórico, con el primer día que se le ve (`historia` 'hace')
+    const primero = new Map();
+    for (const h of hechos) if (!primero.has(h[0]) || h[1] < primero.get(h[0])) primero.set(h[0], h[1]);
+    for (const [q, dia] of primero) this.sql.exec('INSERT OR IGNORE INTO historia (quien, que, primera) VALUES (?, ?, ?)', q, 'hace', dia);
     // 📱 desde qué día se cuentan los navegadores distintos (`visitas_sem`, 23/11/2026): antes de eso no hay dato, y una
     // semana sin dato es «—», no 0
     const semDesde = (this.sql.exec('SELECT MIN(dia) AS d FROM visitas_sem').toArray()[0] || {}).d || null;
@@ -22031,6 +22043,37 @@ export class Avisos {
       out.push(Object.assign({ lunes: ymd(ini) }, x, { k: cuenta(ymd(ini), ymd(ini + (dow + 1) * DIA_MS)) }));
     }
     return out;
+  }
+
+  /** 📚 EL HISTÓRICO, HASTA HOY (23/11/2026, Dlx: «un histórico con el número actual de hasta ahora… info acumulada»):
+   *  cuántas personas distintas entraron alguna vez a la página con su cuenta (`web`), usaron el bot (`bot`), cualquiera
+   *  de los dos (`cuenta`), interactuaron (`hace`), abrieron un Dragón Drop (y cuántos drops se dieron y abrieron en total)
+   *  y tuvieron algún día activo (`activo`: bot, página o un evento jugado). Cada uno con desde cuándo se cuenta y cuántos
+   *  son nuevos en 7 días. La primera vez llena `historia` con lo que había en `uso` (35 días): antes de eso no se guardaba.
+   *  Sólo números. Guardado 10 min */
+  historico(ahora = Date.now()) { return this.delMinuto('resumen:historico', 600, () => this._historico(ahora)); }
+
+  _historico(ahora = Date.now()) {
+    if (!this.leer('historia_llena')) {
+      this.sql.exec('INSERT OR IGNORE INTO historia (quien, que, primera) SELECT quien, por, MIN(dia) FROM uso GROUP BY quien, por');
+      this.guardar('historia_llena', { t: ahora });
+    }
+    const d7 = diaET(ahora - 7 * DIA_MS);
+    const de = (que) => {
+      const f = this.sql.exec('SELECT COUNT(*) AS n, MIN(primera) AS desde, SUM(CASE WHEN primera > ? THEN 1 ELSE 0 END) AS nuevos ' +
+        'FROM historia WHERE que = ?', d7, que).toArray()[0];
+      return { n: f.n || 0, desde: f.desde || null, nuevos: f.nuevos || 0 };
+    };
+    const c = this.sql.exec("SELECT COUNT(*) AS n, SUM(CASE WHEN p > ? THEN 1 ELSE 0 END) AS nuevos, MIN(p) AS desde FROM " +
+      "(SELECT quien, MIN(primera) AS p FROM historia WHERE que IN ('web', 'bot') GROUP BY quien)", d7).toArray()[0];
+    const dr = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, MIN(t_abierto) AS desde FROM drops WHERE abierto = 1').toArray()[0];
+    const drn = this.sql.exec('SELECT COUNT(*) AS n FROM (SELECT quien, MIN(t_abierto) AS p FROM drops WHERE abierto = 1 GROUP BY quien) WHERE p >= ?',
+      ahora - 7 * DIA_MS).toArray()[0].n;
+    const dados = this.sql.exec('SELECT COUNT(*) AS n FROM drops').toArray()[0].n;
+    const act = this.sql.exec('SELECT COUNT(DISTINCT quien) AS n, MIN(dia) AS desde FROM activo').toArray()[0];
+    return { web: de('web'), bot: de('bot'), hace: de('hace'), cuenta: { n: c.n || 0, nuevos: c.nuevos || 0, desde: c.desde || null },
+      drops: { personas: dr.p || 0, abiertos: dr.n || 0, dados, desde: dr.desde ? diaET(dr.desde) : null, nuevos: drn },
+      activos: { n: act.n || 0, desde: act.desde || null } };
   }
 
   /** 🧾 QUÉ HACE LA GENTE Y DÓNDE, 7 días (23/11/2026, Dlx: «make sure we have knowledge for every action»): de la tabla
@@ -22118,7 +22161,7 @@ export class Avisos {
     return { t: ahora, uso: this.usoResumen(), semanas: this.usoSemanas(ahora), dias, secciones: this.seccionesResumen(),
       tutorial: this.tutorialResumen(), filas: { hoy: this.leer('medidas_hoy'), ayer: this.leer('medidas_ayer') },
       // 🧾🐉 y lo mismo que ve el Dashboard de las acciones y los drops, para `herramientas/uso.py` (sólo números)
-      acciones: this.accionesResumen(ahora), drops: this.dropsResumen(ahora),
+      acciones: this.accionesResumen(ahora), drops: this.dropsResumen(ahora), historico: this.historico(ahora),
       // 🐞 lo que se le rompió a la gente, 7 días: dónde y qué, nunca de quién (una pasada de bugs no ve esto recorriendo)
       errores: this.erroresResumen() };
   }
@@ -22339,6 +22382,8 @@ export class Avisos {
       uso_semanas: this.usoSemanas(ahora),
       // 🧾🐉 qué hace la gente y dónde, y los Dragón Drops (23/11/2026): Números → «Qué hace la gente»
       acciones: this.accionesResumen(ahora), drops_res: this.dropsResumen(ahora),
+      // 📚 y lo acumulado, hasta hoy (23/11/2026)
+      historico: this.historico(ahora),
       // 🤝 cómo viene trabajando cada servidor, para «Los tiers» (`bot/tiers.py`)
       tiers: this.leer('tiers'),
       // 🧭 los que corrieron /setup y esperan su respuesta sobre los puntos de Temporada (19/11/2026)
