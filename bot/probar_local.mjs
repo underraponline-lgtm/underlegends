@@ -1628,7 +1628,7 @@ console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
     KV: { ...env.KV, put: async (k) => { kvPuestas.push(k); } },
     AVISOS: {
       idFromName: () => 'liga',
-      get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+      get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
         marcas.push(JSON.parse(opc.body).cual);
         return new Response('{"ok":true}', { status: 200 });
       } }),
@@ -2858,7 +2858,7 @@ console.log('\n/borrar-mis-datos\n');
     head: async (k) => (r2.has(k) ? { key: k } : null),
     delete: async (ks) => { for (const k of [].concat(ks)) r2.delete(k); },
   };
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     soltados.push([String(url), JSON.parse(opc.body).quien]);
     return new Response('{"ok":true,"soltados":2}', { status: 200 });
   } }) };
@@ -2932,7 +2932,7 @@ console.log('\nLAS ENCUESTAS\n');
   let info = { abierta: true, propia: false, saldo: 5000, queda: 500, ya: 0, a: 'Ana', b: 'Beto', tope: 500 };
   env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
     const ruta = new URL(String(url)).pathname;
-    if (/\/(uso|medir)$/.test(ruta)) return new Response('{"ok":true}');
+    if (/\/(uso|medir|drops-aviso)$/.test(ruta)) return new Response('{"ok":true}');
     const d = JSON.parse(opc.body);
     llamadas.push([ruta, d]);
     if (ruta === '/apuesta-info') return new Response(JSON.stringify(info));
@@ -3094,7 +3094,7 @@ console.log('\nLAS ENCUESTAS\n');
   // la ruta entera: Discord, KV y el objeto
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
     return new Response('{"ok":true,"cuenta":{"SR":1},"t":1}', { status: 200 });
   } }) };
@@ -3203,7 +3203,7 @@ console.log('\n🗳️ ¿QUIÉN GANA LA LIGA?\n');
   const SES = 'c'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }), { status: 200 })
@@ -3271,7 +3271,7 @@ console.log('\nLA SESIÓN: ENTRAR CON DISCORD UNA VEZ\n');
   const SES = 'a'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/nueva')) return new Response(JSON.stringify({ ses: SES, vence: RELOJ + 1 }), { status: 200 });
@@ -3373,7 +3373,7 @@ console.log('\nEL PRECIO POR CABEZA\n');
   // la ruta entera: Discord, KV y el objeto
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
     return new Response('{"ok":true,"saldo":3500}', { status: 200 });
   } }) };
@@ -3418,7 +3418,7 @@ console.log('\nSEGUIR RAPEROS\n');
   const SES = 'c'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
@@ -3485,7 +3485,7 @@ console.log('\n👏 FELICITAR\n');
   const SES = 'e'.repeat(43), SES_N = 'f'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) {
@@ -3620,7 +3620,7 @@ console.log('\n«TU SERVIDOR»\n');
   env.TEMPORADA = 't1';
   env.FOTO_LIBRE_HASTA = '2026-10-09T04:00:00Z';
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
@@ -3713,7 +3713,7 @@ console.log('\n«EL DASHBOARD DEL DUEÑO»\n');
   const SES_D = 'g'.repeat(43), SES_O = 'h'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) {
@@ -3788,7 +3788,7 @@ console.log('\n«LOS AJUSTES DEL DASHBOARD»\n');
   const antesF = globalThis.fetch, antesA = env.AVISOS, antesT = env.DISCORD_TOKEN;
   env.DISCORD_TOKEN = 'token-de-prueba';
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir|drops-aviso)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) {
@@ -4003,7 +4003,7 @@ console.log('\nLAS CREWS\n');
     logo: 'esc:escudo.corona.2f6fdb.f2b705' };
   env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
     const u = String(url);
-    if (/\/(uso|medir)$/.test(u)) return new Response('{"ok":true}');
+    if (/\/(uso|medir|drops-aviso)$/.test(u)) return new Response('{"ok":true}');
     if (u.endsWith('/crews')) return new Response(JSON.stringify({ max: 20, crews: [CR, CR2] }));
     if (u.includes('/persona')) return new Response('{"n":"Dora"}');
     const b = opc && opc.body ? JSON.parse(opc.body) : null;
