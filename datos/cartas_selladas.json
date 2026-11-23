@@ -430,15 +430,15 @@
    "servidor": "a9e63879d519:0bd0fbf67396:055f77"
   },
   "Dios": {
-   "competitivo": "d4dfabb41174:38a840be60e7",
-   "pais": "c84016d96218:f1f52e1c6d42",
-   "servidor": "0d9c20bf6d9a:0bd0fbf67396:132451",
-   "temporada": "aad6bcc00ec7:a8d8b7335469"
+   "competitivo": "53067374d8f7:38a840be60e7",
+   "pais": "f526fdae8cc9:f1f52e1c6d42",
+   "servidor": "5e6bb1ea6a83:0bd0fbf67396:132451",
+   "temporada": "840099b02fda:a8d8b7335469"
   },
   "Dobell": {},
   "Dominick": {
-   "competitivo": "617391b84c80:38a840be60e7",
-   "pais": "1a728fe0eeaf:f1f52e1c6d42",
+   "competitivo": "7d635c615de1:38a840be60e7",
+   "pais": "4eb7322ccc8a:f1f52e1c6d42",
    "servidor": "77d3eafd7049:0bd0fbf67396:62e67f",
    "temporada": "97966cc3e691:a8d8b7335469"
   },
@@ -1256,8 +1256,8 @@
    "temporada": "d8ec8175e178:a8d8b7335469"
   },
   "Mito": {
-   "competitivo": "e65e9d1adc2a:38a840be60e7",
-   "pais": "a06ef6443cee:f1f52e1c6d42",
+   "competitivo": "b771b0d53102:38a840be60e7",
+   "pais": "254fbd4ff494:f1f52e1c6d42",
    "servidor": "53e9547f3d58:0bd0fbf67396:6203c7",
    "temporada": "9a72ee6808be:a8d8b7335469"
   },
@@ -1332,8 +1332,8 @@
    "servidor": "e5aa6ec62f13:0bd0fbf67396:9e75da"
   },
   "NXUZ": {
-   "competitivo": "d01415ebe695:38a840be60e7",
-   "pais": "7563c1382ed5:f1f52e1c6d42",
+   "competitivo": "124ad6bd721b:38a840be60e7",
+   "pais": "8180366e5313:f1f52e1c6d42",
    "servidor": "2250dac32c25:0bd0fbf67396:132451",
    "temporada": "e42a03ae4ecf:a8d8b7335469"
   },
@@ -2195,5 +2195,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-22T23:47:29+00:00"
+ "cuando": "2026-11-23T00:04:26+00:00"
 }
