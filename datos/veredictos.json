@@ -10610,6 +10610,39 @@
    "b": "ERIAN GEOKA AGUSTIN",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
+  },
+  "1574513661773348935": {
+   "id": "1574513661773348935",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795463710016,
+   "a": "MR STILL BALIN",
+   "b": "LRS",
+   "ganador": "MR STILL BALIN",
+   "votos": "1–0"
+  },
+  "1574518996781240361": {
+   "id": "1574518996781240361",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795464981981,
+   "a": "MR STILL BALIN",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1574520141759123469": {
+   "id": "1574520141759123469",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795465254965,
+   "a": "BLITZ",
+   "b": "MR STILL BALIN",
+   "ganador": "MR STILL BALIN",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14252,8 +14285,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795459899077,
-   "ed": 1795463507684,
-   "texto": "`[ OCTAVOS ]`\n⌞TUCA⌝ 🆚 ⌞MARTO⌝ 🆚 ⌞LRS⌝ 🆚 ⌞ARITMETICO⌝\n⌞OVER⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞JULDA⌝ 🆚 ⌞SOUL B⌝\n⌞ERIAN GEOKA ALR⌝ 🆚 ⌞PLAYER⌝ 🆚 ⌞ZA⌝\n⌞YINN⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞ANDRES⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞KYSS⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞SOUL B⌝ 🆚 ⌞TUCA⌝\n⌞FUNK+FUNK+GIAN⌝ 🆚 ⌞ANDRES+SNOW⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN GEOKA AGUSTIN⌝",
+   "ed": 1795465379551,
+   "texto": "`[ OCTAVOS ]`\n⌞TUCA⌝ 🆚 ⌞MARTO⌝ 🆚 ⌞LRS⌝ 🆚 ⌞ARITMETICO⌝\n⌞OVER⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞JULDA⌝ 🆚 ⌞SOUL B⌝\n⌞ERIAN GEOKA ALR⌝ 🆚 ⌞PLAYER⌝ 🆚 ⌞ZA⌝\n⌞YINN⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞ANDRES⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞KYSS⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞SOUL B⌝ 🆚 ⌞TUCA⌝\n⌞FUNK+FUNK+GIAN⌝ 🆚 ⌞ANDRES+SNOW⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN GEOKA AGUSTIN⌝\n⌞MR STILL BALIN⌝ 🆚 ⌞LRS⌝\n`[ SEMIFINALES ]`\n⌞SOUL B⌝ 🆚 ⌞TENOR ZA BLITZ⌝\n⌞MR STILL BALIN⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`\n⌞BLITZ⌝ 🆚 ⌞MR STILL BALIN⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -14263,9 +14296,12 @@
       "LRS",
       "ARITMETICO"
      ],
-     "TUCA",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "TUCA",
+      "LRS"
+     ]
     ],
     [
      "OCTAVOS",
@@ -14332,6 +14368,46 @@
       "ERIAN GEOKA AGUSTIN"
      ],
      "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MR STILL BALIN",
+      "LRS"
+     ],
+     "MR STILL BALIN",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SOUL B",
+      "TENOR ZA BLITZ"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MR STILL BALIN",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "BLITZ",
+      "MR STILL BALIN"
+     ],
+     "MR STILL BALIN",
      "veredicto",
      []
     ]
