@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T03:25:26+00:00",
+ "cuando": "2026-11-23T03:55:37+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -3005,11 +3005,15 @@
     ],
     "host": [
      "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
+    ],
+    "dj": [
+     "Tokio on hellcita💤"
     ]
    },
    "autor": "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
    "staff_cuentas": {
-    "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧": "1344825963669749804"
+    "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧": "1344825963669749804",
+    "Tokio on hellcita💤": "1249980492951060561"
    },
    "categoria_id": "1511963280128868504"
   },
@@ -7387,6 +7391,24 @@
  ],
  "oficiales": [
   {
+   "servidor": "LKR",
+   "canal": "anuncios",
+   "tit": "EL PODIO DE LA RED BULL CHILE 🇨🇱 DEJANDO CAMPEÓN A",
+   "tx": "",
+   "cuando": "2026-11-23T03:39:44",
+   "msg_id": "1574268186478510160",
+   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1574268186478510160"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "├📣・anuncios-デ╦【",
+   "tit": "📢 CAMBIO EN LA PLANTILLA",
+   "tx": "🇦🇷 Mito se incorpora oficialmente a WOF League, ocupando el lugar de 🇻🇪 Under. Debido a cuestiones de disponibilidad y compromisos personales que dificultan su participación regular, se ha decidido priorizar la continuid",
+   "cuando": "2026-11-23T03:34:18",
+   "msg_id": "1574266821564043293",
+   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1574266821564043293"
+  },
+  {
    "servidor": "CHZ",
    "canal": "Anuncios-📢",
    "tit": "Se ha configurado este canal para que reciba anuncios oficiales de Discord para los admini",
@@ -7477,15 +7499,6 @@
    "link": "https://discord.com/channels/1489848581203689535/1489852871188152461/1573733093951676447"
   },
   {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "⛓️ ━━━━━━━━ [ BROKEN BARS ] ━━━━━━━━ ⛓️",
-   "tx": "🥀 WELCOME TO THE UNDERGROUND. NO HAY BARRERAS. SOLO BARRAS. Bienvenido a BROKEN BARS, un espacio donde el freestyle y el rap se encuentran. No importa tu nivel, tu estilo o de dónde vengas: aquí tienes un lugar para demo",
-   "cuando": "2026-11-21T15:06:41",
-   "msg_id": "1573716290579730604",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573716290579730604"
-  },
-  {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
    "tit": "D'F I GENESIS",
@@ -7493,15 +7506,6 @@
    "cuando": "2026-11-21T05:14:01",
    "msg_id": "1573567140592885761",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573567140592885761"
-  },
-  {
-   "servidor": "WOF",
-   "canal": "├📣・anuncios-デ╦【",
-   "tit": "GANA CONTRA TRAS REPLICA + 2 PTS",
-   "tx": "",
-   "cuando": "2026-11-20T21:59:03",
-   "msg_id": "1573457678099947671",
-   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1573457678099947671"
   },
   {
    "servidor": "ACAD",
