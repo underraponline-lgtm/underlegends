@@ -7243,12 +7243,15 @@
     },
     "emoji": {},
     "favoritos": {},
-    "gente": 8,
+    "gente": 12,
     "habla": {
      "chop": 22,
      "dominick": 16,
-     "julda": 2,
-     "vilca": 8
+     "julda": 11,
+     "launok": 1,
+     "litkunai": 1,
+     "mito": 5,
+     "vilca": 9
     },
     "hora": [
      0,
@@ -7265,20 +7268,21 @@
      0,
      0,
      0,
+     1,
+     5,
      0,
      0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
+     3,
+     47,
+     8,
+     2,
      0,
      0
     ],
     "jerga": {
      "bro": 1,
      "crack": 1,
+     "oe": 1,
      "uy": 1
     },
     "menciona": {
@@ -7286,25 +7290,27 @@
      "bless": 1,
      "chop": 12,
      "dominick": 7,
-     "julda": 6,
+     "julda": 14,
      "kuni": 1,
      "mats": 1,
+     "mito": 3,
      "nico": 1,
-     "vilca": 3
+     "vilca": 4
     },
     "mencionan": {
      "androide": 1,
      "bless": 1,
      "chop": 2,
      "dominick": 3,
-     "julda": 3,
+     "julda": 4,
      "kuni": 1,
      "mats": 1,
+     "mito": 1,
      "nico": 1,
      "vilca": 2
     },
     "motivos": {},
-    "msgs": 96,
+    "msgs": 162,
     "pelean": {},
     "raid": 0,
     "raiders": 0,
@@ -7347,10 +7353,18 @@
       "mi": 1,
       "r": {}
      },
+     "mito": {
+      "e": {},
+      "j": {},
+      "m": 5,
+      "ma": 0,
+      "mi": 3,
+      "r": {}
+     },
      "vilca": {
       "e": {},
       "j": {},
-      "m": 8,
+      "m": 9,
       "ma": 0,
       "mi": 0,
       "r": {}
@@ -7467,6 +7481,64 @@
      }
     }
    },
+   "DDS": {
+    "elogios": {},
+    "emoji": {},
+    "favoritos": {},
+    "gente": 3,
+    "habla": {
+     "darkangel": 4
+    },
+    "hora": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     4,
+     0,
+     3,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {
+     "bestia": 1
+    },
+    "menciona": {
+     "darkangel": 1,
+     "nxuz": 1,
+     "vilca": 2
+    },
+    "mencionan": {
+     "darkangel": 1,
+     "nxuz": 1,
+     "vilca": 1
+    },
+    "motivos": {},
+    "msgs": 8,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {},
+    "retiros": {},
+    "retos": {},
+    "risa": {}
+   },
    "DRA": {
     "elogios": {},
     "emoji": {},
@@ -7497,7 +7569,7 @@
      0,
      0,
      0,
-     0,
+     1,
      0,
      0,
      0
@@ -7510,7 +7582,7 @@
      "kip": 1
     },
     "motivos": {},
-    "msgs": 5,
+    "msgs": 6,
     "pelean": {},
     "raid": 0,
     "raiders": 0,
@@ -7556,7 +7628,7 @@
      0,
      0,
      0,
-     0,
+     2,
      0,
      0,
      0,
@@ -7566,7 +7638,7 @@
     "menciona": {},
     "mencionan": {},
     "motivos": {},
-    "msgs": 1,
+    "msgs": 3,
     "pelean": {},
     "raid": 0,
     "raiders": 0,
@@ -7578,16 +7650,32 @@
    },
    "FFA": {
     "elogios": {},
-    "emoji": {},
-    "favoritos": {},
-    "gente": 7,
+    "emoji": {
+     "😂": 1,
+     "😎": 1,
+     "🤣": 1,
+     "🤯": 1
+    },
+    "favoritos": {
+     "eze": 1
+    },
+    "gente": 46,
     "habla": {
-     "deuxs": 2,
-     "dlx": 1,
-     "lewito": 1,
-     "lrs": 1,
-     "oasis": 5,
-     "provenza": 1
+     "agentesombra": 8,
+     "bna": 14,
+     "bocamio": 11,
+     "dlx": 10,
+     "eidp": 19,
+     "erian": 15,
+     "eze": 16,
+     "geoka": 18,
+     "hatshepsut": 26,
+     "lewito": 78,
+     "mito": 14,
+     "molusco": 13,
+     "oasis": 56,
+     "six": 11,
+     "zignos": 12
     },
     "hora": [
      0,
@@ -7602,62 +7690,215 @@
      0,
      0,
      2,
-     5,
+     6,
+     3,
+     41,
+     3,
+     34,
+     202,
+     159,
+     29,
      0,
+     1,
      0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0,
-     0
+     21
     ],
-    "jerga": {},
+    "jerga": {
+     "bro": 1,
+     "compa": 1,
+     "loco": 1,
+     "pana": 1,
+     "wey": 1
+    },
     "menciona": {
-     "colesito": 1,
-     "deuxs": 1,
-     "hardcore": 1,
-     "makmah": 1
+     "arez": 9,
+     "bna": 4,
+     "bocamio": 4,
+     "dlx": 6,
+     "eidp": 8,
+     "erian": 4,
+     "eze": 10,
+     "hatshepsut": 19,
+     "lewito": 31,
+     "mito": 4,
+     "molusco": 5,
+     "oasis": 15,
+     "og": 4,
+     "six": 5,
+     "zignos": 9
     },
     "mencionan": {
-     "colesito": 1,
-     "deuxs": 1,
-     "hardcore": 1,
-     "makmah": 1
+     "arez": 2,
+     "bna": 3,
+     "bocamio": 3,
+     "dlx": 4,
+     "eidp": 3,
+     "erian": 3,
+     "eze": 5,
+     "hatshepsut": 4,
+     "lewito": 18,
+     "mito": 4,
+     "molusco": 3,
+     "oasis": 6,
+     "praiseriza": 3,
+     "six": 4,
+     "zignos": 4
     },
-    "motivos": {},
-    "msgs": 12,
+    "motivos": {
+     "seguridad": 1
+    },
+    "msgs": 506,
     "pelean": {},
     "raid": 0,
     "raiders": 0,
     "regresos": {},
     "responde": {
-     "lrs>deuxs": 1
+     "agentesombra>lewito": 1,
+     "bna>eidp": 2,
+     "bna>mco": 1,
+     "bocamio>dlx": 1,
+     "bocamio>eze": 1,
+     "bocamio>lewito": 1,
+     "erian>lewito": 3,
+     "eze>hatshepsut": 2,
+     "eze>six": 2,
+     "gus>lewito": 2,
+     "hatshepsut>eze": 3,
+     "lewito>arez": 2,
+     "lewito>erian": 2,
+     "lewito>oasis": 5,
+     "mito>lewito": 2
     },
     "retiros": {},
     "retos": {},
     "risa": {
-     "jaja": 1,
+     "JAJA": 1,
+     "jaja": 3,
+     "jajsj": 5,
+     "jsjs": 1,
      "xd": 1
     },
     "voz": {
-     "deuxs": {
-      "e": {},
-      "j": {},
-      "m": 2,
-      "ma": 0,
-      "mi": 2,
-      "r": {}
-     },
-     "lewito": {
+     "abyssus": {
       "e": {},
       "j": {},
       "m": 1,
       "ma": 0,
       "mi": 1,
+      "r": {}
+     },
+     "andres": {
+      "e": {},
+      "j": {},
+      "m": 2,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "bna": {
+      "e": {},
+      "j": {},
+      "m": 14,
+      "ma": 1,
+      "mi": 0,
+      "r": {
+       "jsjs": 1
+      }
+     },
+     "crakero": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "cronox": {
+      "e": {},
+      "j": {
+       "compa": 1
+      },
+      "m": 2,
+      "ma": 0,
+      "mi": 2,
+      "r": {}
+     },
+     "deuxs": {
+      "e": {},
+      "j": {},
+      "m": 6,
+      "ma": 0,
+      "mi": 6,
+      "r": {}
+     },
+     "dios": {
+      "e": {},
+      "j": {
+       "wey": 1
+      },
+      "m": 4,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "eidp": {
+      "e": {},
+      "j": {},
+      "m": 19,
+      "ma": 0,
+      "mi": 3,
+      "r": {}
+     },
+     "erian": {
+      "e": {},
+      "j": {},
+      "m": 15,
+      "ma": 0,
+      "mi": 14,
+      "r": {}
+     },
+     "geoka": {
+      "e": {},
+      "j": {},
+      "m": 18,
+      "ma": 0,
+      "mi": 2,
+      "r": {
+       "jajsj": 1
+      }
+     },
+     "gocho": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "gus": {
+      "e": {},
+      "j": {},
+      "m": 6,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "ikonoxx": {
+      "e": {},
+      "j": {},
+      "m": 3,
+      "ma": 0,
+      "mi": 3,
+      "r": {}
+     },
+     "lewito": {
+      "e": {
+       "🤯": 1
+      },
+      "j": {},
+      "m": 78,
+      "ma": 1,
+      "mi": 11,
       "r": {}
      },
      "lrs": {
@@ -7668,12 +7909,85 @@
       "mi": 0,
       "r": {}
      },
-     "oasis": {
+     "makmah": {
       "e": {},
       "j": {},
-      "m": 5,
+      "m": 1,
       "ma": 0,
-      "mi": 5,
+      "mi": 0,
+      "r": {}
+     },
+     "mcarepa": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "mco": {
+      "e": {
+       "😎": 1
+      },
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "mito": {
+      "e": {},
+      "j": {},
+      "m": 14,
+      "ma": 0,
+      "mi": 8,
+      "r": {}
+     },
+     "molusco": {
+      "e": {},
+      "j": {},
+      "m": 13,
+      "ma": 1,
+      "mi": 0,
+      "r": {}
+     },
+     "oasis": {
+      "e": {
+       "😂": 1,
+       "🤣": 1
+      },
+      "j": {},
+      "m": 56,
+      "ma": 1,
+      "mi": 47,
+      "r": {
+       "jaja": 1
+      }
+     },
+     "og": {
+      "e": {},
+      "j": {},
+      "m": 4,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "oriuz": {
+      "e": {},
+      "j": {},
+      "m": 8,
+      "ma": 0,
+      "mi": 7,
+      "r": {
+       "jajsj": 1
+      }
+     },
+     "praiseriza": {
+      "e": {},
+      "j": {},
+      "m": 4,
+      "ma": 0,
+      "mi": 1,
       "r": {}
      },
      "provenza": {
@@ -7685,19 +7999,101 @@
       "r": {
        "jaja": 1
       }
+     },
+     "six": {
+      "e": {},
+      "j": {},
+      "m": 11,
+      "ma": 0,
+      "mi": 8,
+      "r": {}
+     },
+     "yinn": {
+      "e": {},
+      "j": {},
+      "m": 6,
+      "ma": 1,
+      "mi": 4,
+      "r": {}
+     },
+     "zignos": {
+      "e": {},
+      "j": {
+       "pana": 1
+      },
+      "m": 12,
+      "ma": 0,
+      "mi": 6,
+      "r": {}
      }
     }
+   },
+   "FRZ": {
+    "elogios": {},
+    "emoji": {},
+    "favoritos": {},
+    "gente": 4,
+    "habla": {
+     "ajoel08": 1,
+     "terry": 1
+    },
+    "hora": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     4,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    "jerga": {},
+    "menciona": {},
+    "mencionan": {},
+    "motivos": {
+     "seguridad": 1
+    },
+    "msgs": 6,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {},
+    "retiros": {},
+    "retos": {},
+    "risa": {}
    },
    "LKR": {
     "elogios": {},
     "emoji": {},
     "favoritos": {},
-    "gente": 5,
+    "gente": 10,
     "habla": {
-     "adriagner": 2,
+     "adriagner": 8,
+     "dominick": 1,
      "emilioalva": 1,
-     "last": 1,
-     "tøkiø": 4
+     "last": 4,
+     "mathhias": 6,
+     "molusco": 1,
+     "rbk": 5,
+     "tøkiø": 4,
+     "xervoe": 4
     },
     "hora": [
      0,
@@ -7712,39 +8108,48 @@
      0,
      6,
      0,
-     4,
+     7,
      0,
      0,
      0,
      0,
-     0,
-     0,
-     0,
-     0,
-     0,
+     14,
+     1,
+     9,
+     2,
+     1,
      0,
      0
     ],
     "jerga": {},
     "menciona": {
-     "adriagner": 2,
+     "adriagner": 3,
      "btrx": 1,
      "caliz": 1,
-     "under": 1
+     "molusco": 1,
+     "rbk": 1,
+     "under": 1,
+     "xervoe": 3
     },
     "mencionan": {
      "adriagner": 1,
      "btrx": 1,
      "caliz": 1,
-     "under": 1
+     "molusco": 1,
+     "rbk": 1,
+     "under": 1,
+     "xervoe": 1
     },
     "motivos": {},
-    "msgs": 10,
+    "msgs": 40,
     "pelean": {},
     "raid": 0,
     "raiders": 0,
     "regresos": {},
-    "responde": {},
+    "responde": {
+     "mathhias>xervoe": 2,
+     "xervoe>rbk": 1
+    },
     "retiros": {},
     "retos": {},
     "risa": {},
@@ -7752,17 +8157,49 @@
      "adriagner": {
       "e": {},
       "j": {},
-      "m": 2,
+      "m": 8,
       "ma": 0,
-      "mi": 2,
+      "mi": 7,
+      "r": {}
+     },
+     "dominick": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
       "r": {}
      },
      "last": {
       "e": {},
       "j": {},
-      "m": 1,
+      "m": 4,
+      "ma": 0,
+      "mi": 3,
+      "r": {}
+     },
+     "mathhias": {
+      "e": {},
+      "j": {},
+      "m": 6,
       "ma": 0,
       "mi": 1,
+      "r": {}
+     },
+     "molusco": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "rbk": {
+      "e": {},
+      "j": {},
+      "m": 5,
+      "ma": 0,
+      "mi": 2,
       "r": {}
      },
      "tøkiø": {
@@ -7779,9 +8216,14 @@
     "elogios": {},
     "emoji": {},
     "favoritos": {},
-    "gente": 2,
+    "gente": 7,
     "habla": {
-     "dxg": 1
+     "agustin51k": 1,
+     "carlos": 3,
+     "christopher": 5,
+     "dxg": 1,
+     "hades": 14,
+     "saidem": 1
     },
     "hora": [
      0,
@@ -7797,6 +8239,232 @@
      0,
      0,
      1,
+     1,
+     3,
+     4,
+     0,
+     0,
+     0,
+     0,
+     1,
+     19,
+     6,
+     0
+    ],
+    "jerga": {
+     "bro": 1
+    },
+    "menciona": {
+     "agustin51k": 2,
+     "carlos": 1,
+     "christopher": 4,
+     "dxg": 1,
+     "forcegp": 1,
+     "hades": 4,
+     "stormed": 1
+    },
+    "mencionan": {
+     "agustin51k": 2,
+     "carlos": 1,
+     "christopher": 1,
+     "dxg": 1,
+     "forcegp": 1,
+     "hades": 1,
+     "stormed": 1
+    },
+    "motivos": {},
+    "msgs": 36,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {
+     "carlos>dxg": 1,
+     "christopher>hades": 4,
+     "dxg>carlos": 1,
+     "hades>christopher": 3
+    },
+    "retiros": {},
+    "retos": {},
+    "risa": {
+     "jaja": 1,
+     "xd": 1
+    },
+    "voz": {
+     "agustin51k": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "dxg": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     }
+    }
+   },
+   "WOF": {
+    "elogios": {},
+    "emoji": {},
+    "favoritos": {},
+    "gente": 14,
+    "habla": {
+     "bna": 1,
+     "dxg": 1,
+     "filozico": 2,
+     "fin": 1,
+     "mats": 3,
+     "minis": 1,
+     "onzass": 11,
+     "scot": 1
+    },
+    "hora": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     6,
+     4,
+     5,
+     1,
+     4,
+     3,
+     2,
+     0,
+     2,
+     5,
+     0,
+     0
+    ],
+    "jerga": {},
+    "menciona": {
+     "bna": 1,
+     "dxg": 1,
+     "filozico": 1,
+     "fin": 1,
+     "minis": 1,
+     "scot": 2,
+     "under": 1
+    },
+    "mencionan": {
+     "bna": 1,
+     "dxg": 1,
+     "filozico": 1,
+     "fin": 1,
+     "minis": 1,
+     "scot": 1,
+     "under": 1
+    },
+    "motivos": {},
+    "msgs": 32,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {
+     "onzass>bna": 1,
+     "onzass>dxg": 1,
+     "onzass>fin": 1,
+     "onzass>minis": 1,
+     "onzass>scot": 2
+    },
+    "retiros": {},
+    "retos": {},
+    "risa": {},
+    "voz": {
+     "bna": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "dxg": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "mats": {
+      "e": {},
+      "j": {},
+      "m": 3,
+      "ma": 0,
+      "mi": 2,
+      "r": {}
+     },
+     "onzass": {
+      "e": {},
+      "j": {},
+      "m": 11,
+      "ma": 0,
+      "mi": 3,
+      "r": {}
+     },
+     "scot": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     }
+    }
+   }
+  },
+  "2026-11-23": {
+   "CEU": {
+    "elogios": {
+     "marcos": 3,
+     "nobu": 1
+    },
+    "emoji": {},
+    "favoritos": {},
+    "gente": 13,
+    "habla": {
+     "1200": 1,
+     "agentesombra": 2,
+     "krish": 4,
+     "majiztral": 1,
+     "marcos": 16,
+     "medster": 9,
+     "motera": 4,
+     "teito": 4,
+     "tmaxturbopn": 3,
+     "trot": 3,
+     "ziarki": 2
+    },
+    "hora": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     5,
+     24,
+     18,
+     8,
+     0,
      0,
      0,
      0,
@@ -7811,25 +8479,795 @@
     ],
     "jerga": {},
     "menciona": {
-     "carlos": 1
+     "agentesombra": 2,
+     "krish": 5,
+     "last": 2,
+     "majiztral": 1,
+     "marcos": 12,
+     "medster": 4,
+     "motera": 1,
+     "nobu": 1,
+     "teito": 4,
+     "terry": 1,
+     "tmaxturbopn": 2,
+     "trot": 1,
+     "ziarki": 1
     },
     "mencionan": {
-     "carlos": 1
+     "agentesombra": 1,
+     "krish": 3,
+     "last": 1,
+     "majiztral": 1,
+     "marcos": 7,
+     "medster": 3,
+     "motera": 1,
+     "nobu": 1,
+     "teito": 2,
+     "terry": 1,
+     "tmaxturbopn": 1,
+     "trot": 1,
+     "ziarki": 1
     },
+    "motivos": {},
+    "msgs": 55,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {
+     "agentesombra>krish": 1,
+     "krish>agentesombra": 2,
+     "krish>marcos": 1,
+     "krish>teito": 1,
+     "majiztral>marcos": 1,
+     "marcos>krish": 2,
+     "marcos>majiztral": 1,
+     "marcos>medster": 1,
+     "marcos>tmaxturbopn": 2,
+     "marcos>trot": 1,
+     "marcos>ziarki": 1,
+     "medster>marcos": 1,
+     "medster>motera": 1,
+     "teito>medster": 2,
+     "tmaxturbopn>marcos": 2
+    },
+    "retiros": {},
+    "retos": {},
+    "risa": {
+     "jaja": 2,
+     "xd": 2
+    },
+    "voz": {
+     "1200": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "krish": {
+      "e": {},
+      "j": {},
+      "m": 4,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "majiztral": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "marcos": {
+      "e": {},
+      "j": {},
+      "m": 16,
+      "ma": 0,
+      "mi": 15,
+      "r": {
+       "xd": 1
+      }
+     },
+     "motera": {
+      "e": {},
+      "j": {},
+      "m": 4,
+      "ma": 0,
+      "mi": 3,
+      "r": {
+       "xd": 1
+      }
+     },
+     "teito": {
+      "e": {},
+      "j": {},
+      "m": 4,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "trot": {
+      "e": {},
+      "j": {},
+      "m": 3,
+      "ma": 0,
+      "mi": 2,
+      "r": {}
+     }
+    }
+   },
+   "CHZ": {
+    "elogios": {},
+    "emoji": {},
+    "favoritos": {},
+    "gente": 2,
+    "habla": {
+     "julda": 3
+    },
+    "hora": [
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     2,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {
+     "bro": 1
+    },
+    "menciona": {},
+    "mencionan": {},
+    "motivos": {},
+    "msgs": 4,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {},
+    "retiros": {},
+    "retos": {},
+    "risa": {}
+   },
+   "DDF": {
+    "elogios": {},
+    "emoji": {
+     "🔥": 2
+    },
+    "favoritos": {},
+    "gente": 4,
+    "habla": {
+     "djcalambremister": 19,
+     "dominick": 21,
+     "evangeline": 23,
+     "keider": 3
+    },
+    "hora": [
+     7,
+     0,
+     0,
+     0,
+     0,
+     51,
+     1,
+     0,
+     0,
+     0,
+     2,
+     2,
+     3,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {
+     "bro": 1
+    },
+    "menciona": {
+     "djcalambremister": 6,
+     "dominick": 10,
+     "evangeline": 10,
+     "isac": 1,
+     "keider": 2
+    },
+    "mencionan": {
+     "djcalambremister": 2,
+     "dominick": 2,
+     "evangeline": 2,
+     "isac": 1,
+     "keider": 1
+    },
+    "motivos": {},
+    "msgs": 66,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {
+     "djcalambremister>dominick": 3,
+     "djcalambremister>evangeline": 1,
+     "dominick>djcalambremister": 4,
+     "dominick>evangeline": 8,
+     "evangeline>djcalambremister": 2,
+     "evangeline>dominick": 6,
+     "evangeline>keider": 2,
+     "keider>evangeline": 1
+    },
+    "retiros": {},
+    "retos": {},
+    "risa": {
+     "JAJA": 1
+    },
+    "voz": {
+     "dominick": {
+      "e": {},
+      "j": {},
+      "m": 21,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "evangeline": {
+      "e": {},
+      "j": {},
+      "m": 23,
+      "ma": 1,
+      "mi": 0,
+      "r": {}
+     },
+     "keider": {
+      "e": {},
+      "j": {
+       "bro": 1
+      },
+      "m": 3,
+      "ma": 0,
+      "mi": 1,
+      "r": {
+       "JAJA": 1
+      }
+     }
+    }
+   },
+   "DRA": {
+    "elogios": {},
+    "emoji": {},
+    "favoritos": {},
+    "gente": 2,
+    "habla": {},
+    "hora": [
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {},
+    "menciona": {},
+    "mencionan": {},
     "motivos": {},
     "msgs": 2,
     "pelean": {},
     "raid": 0,
     "raiders": 0,
     "regresos": {},
+    "responde": {},
+    "retiros": {},
+    "retos": {},
+    "risa": {
+     "xd": 1
+    }
+   },
+   "FFA": {
+    "elogios": {},
+    "emoji": {
+     "😭": 1
+    },
+    "favoritos": {},
+    "gente": 11,
+    "habla": {
+     "abrahamh": 1,
+     "erian": 5,
+     "mito": 3,
+     "molusco": 4,
+     "oasis": 29,
+     "okam": 7,
+     "pichulamc": 10,
+     "praiseriza": 17,
+     "provenza": 43,
+     "tam": 2
+    },
+    "hora": [
+     46,
+     127,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {
+     "compa": 1,
+     "fuego": 1,
+     "hermano": 1,
+     "papu": 1
+    },
+    "menciona": {
+     "abrahamh": 1,
+     "abyssus": 1,
+     "erian": 3,
+     "gocho": 2,
+     "hassan": 1,
+     "julda": 1,
+     "mito": 1,
+     "molusco": 1,
+     "oasis": 1,
+     "okam": 1,
+     "praiseriza": 1,
+     "provenza": 9,
+     "tam": 34
+    },
+    "mencionan": {
+     "abrahamh": 1,
+     "abyssus": 1,
+     "erian": 1,
+     "gocho": 1,
+     "hassan": 1,
+     "julda": 1,
+     "mito": 1,
+     "molusco": 1,
+     "oasis": 1,
+     "okam": 1,
+     "praiseriza": 1,
+     "provenza": 2,
+     "tam": 2
+    },
+    "motivos": {},
+    "msgs": 173,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {},
+    "retiros": {},
+    "retos": {},
+    "risa": {
+     "JAJA": 2,
+     "jajsj": 2
+    },
+    "voz": {
+     "abrahamh": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "erian": {
+      "e": {},
+      "j": {
+       "compa": 1
+      },
+      "m": 5,
+      "ma": 0,
+      "mi": 5,
+      "r": {}
+     },
+     "mito": {
+      "e": {},
+      "j": {},
+      "m": 3,
+      "ma": 0,
+      "mi": 3,
+      "r": {}
+     },
+     "molusco": {
+      "e": {},
+      "j": {},
+      "m": 4,
+      "ma": 4,
+      "mi": 0,
+      "r": {}
+     },
+     "oasis": {
+      "e": {},
+      "j": {
+       "fuego": 1,
+       "papu": 1
+      },
+      "m": 29,
+      "ma": 26,
+      "mi": 1,
+      "r": {}
+     },
+     "okam": {
+      "e": {},
+      "j": {},
+      "m": 7,
+      "ma": 0,
+      "mi": 5,
+      "r": {}
+     },
+     "pichulamc": {
+      "e": {},
+      "j": {},
+      "m": 10,
+      "ma": 0,
+      "mi": 1,
+      "r": {
+       "JAJA": 1
+      }
+     },
+     "praiseriza": {
+      "e": {},
+      "j": {
+       "hermano": 1
+      },
+      "m": 17,
+      "ma": 8,
+      "mi": 8,
+      "r": {}
+     },
+     "provenza": {
+      "e": {},
+      "j": {},
+      "m": 43,
+      "ma": 26,
+      "mi": 10,
+      "r": {}
+     },
+     "tam": {
+      "e": {},
+      "j": {},
+      "m": 2,
+      "ma": 0,
+      "mi": 2,
+      "r": {}
+     }
+    }
+   },
+   "LKR": {
+    "elogios": {},
+    "emoji": {
+     "💀": 1
+    },
+    "favoritos": {},
+    "gente": 10,
+    "habla": {
+     "adriagner": 1,
+     "last": 1,
+     "mayeutyk": 21,
+     "mito": 3,
+     "rbk": 1,
+     "tøkiø": 6
+    },
+    "hora": [
+     22,
+     5,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     11,
+     1,
+     5,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {
+     "bro": 1
+    },
+    "menciona": {
+     "adriagner": 1,
+     "hedorah": 1,
+     "last": 2,
+     "mayeutyk": 1,
+     "mito": 2,
+     "rbk": 1,
+     "tøkiø": 1
+    },
+    "mencionan": {
+     "adriagner": 1,
+     "hedorah": 1,
+     "last": 1,
+     "mayeutyk": 1,
+     "mito": 1,
+     "rbk": 1,
+     "tøkiø": 1
+    },
+    "motivos": {
+     "fraude": 1,
+     "seguridad": 1
+    },
+    "msgs": 44,
+    "pelean": {
+     "mayeutyk>": 1
+    },
+    "raid": 1,
+    "raiders": 1,
+    "regresos": {},
     "responde": {
-     "dxg>carlos": 1
+     "adriagner>tøkiø": 1,
+     "mayeutyk>mito": 2,
+     "mayeutyk>rbk": 1,
+     "mito>mayeutyk": 1
+    },
+    "retiros": {},
+    "retos": {},
+    "risa": {
+     "jaja": 1
+    },
+    "voz": {
+     "adriagner": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "last": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {
+       "jaja": 1
+      }
+     },
+     "mayeutyk": {
+      "e": {
+       "💀": 1
+      },
+      "j": {
+       "bro": 1
+      },
+      "m": 21,
+      "ma": 0,
+      "mi": 3,
+      "r": {}
+     },
+     "mito": {
+      "e": {},
+      "j": {},
+      "m": 3,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "rbk": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "tøkiø": {
+      "e": {},
+      "j": {},
+      "m": 6,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     }
+    }
+   },
+   "URBF": {
+    "elogios": {},
+    "emoji": {},
+    "favoritos": {},
+    "gente": 2,
+    "habla": {
+     "agentesombra": 1,
+     "christopher": 2
+    },
+    "hora": [
+     0,
+     0,
+     1,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {},
+    "menciona": {},
+    "mencionan": {},
+    "motivos": {},
+    "msgs": 3,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {},
+    "retiros": {},
+    "retos": {},
+    "risa": {}
+   },
+   "WOF": {
+    "elogios": {},
+    "emoji": {
+     "💀": 1
+    },
+    "favoritos": {},
+    "gente": 9,
+    "habla": {
+     "1200": 1,
+     "agentesombra": 2,
+     "djcalambremister": 1,
+     "efimero": 7,
+     "marcos": 2,
+     "onzass": 1
+    },
+    "hora": [
+     0,
+     0,
+     0,
+     0,
+     2,
+     1,
+     0,
+     0,
+     1,
+     13,
+     2,
+     2,
+     2,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "jerga": {},
+    "menciona": {
+     "djcalambremister": 2,
+     "efimero": 2,
+     "marcos": 1
+    },
+    "mencionan": {
+     "djcalambremister": 2,
+     "efimero": 1,
+     "marcos": 1
+    },
+    "motivos": {},
+    "msgs": 23,
+    "pelean": {},
+    "raid": 0,
+    "raiders": 0,
+    "regresos": {},
+    "responde": {
+     "1200>djcalambremister": 1,
+     "agentesombra>efimero": 1,
+     "onzass>djcalambremister": 1
     },
     "retiros": {},
     "retos": {},
     "risa": {},
     "voz": {
-     "dxg": {
+     "1200": {
+      "e": {},
+      "j": {},
+      "m": 1,
+      "ma": 0,
+      "mi": 0,
+      "r": {}
+     },
+     "marcos": {
+      "e": {
+       "💀": 1
+      },
+      "j": {},
+      "m": 2,
+      "ma": 0,
+      "mi": 1,
+      "r": {}
+     },
+     "onzass": {
       "e": {},
       "j": {},
       "m": 1,
@@ -7841,11 +9279,10 @@
    }
   }
  },
- "leido": "2026-11-22",
+ "leido": "2026-11-23",
  "servidores": [
   "ACAD",
   "CEU",
-  "CH",
   "CHZ",
   "DDF",
   "DDS",
@@ -7856,6 +9293,7 @@
   "FRZ",
   "LKR",
   "SR",
-  "URBF"
+  "URBF",
+  "WOF"
  ]
 }

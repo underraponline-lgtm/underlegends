@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T16:55:05+00:00",
+ "cuando": "2026-11-23T17:25:34+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -591,7 +591,7 @@
    "fecha": "",
    "premios": "Rango Campeon",
    "staff": {},
-   "autor": "krdx",
+   "autor": "kvrdex",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
@@ -1016,6 +1016,76 @@
    "staff": {},
    "autor": "🔏",
    "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "qcyo rapeen 11",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1568093435422838875",
+   "cuando": "2026-11-06T02:43:28",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "1v1",
+   "horario": "en 30",
+   "fecha": "",
+   "premios": "aura",
+   "staff": {},
+   "autor": "Nc",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "LA SUPERVIVENCIA DEL MAS FUERTE la vuelta #6",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1567931721117204662",
+   "cuando": "2026-11-05T16:00:53",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "la monalisa",
+     "id": "1487658663148785734"
+    }
+   ],
+   "autor_h": "6b35a4d4e6f57111",
+   "cupos_texto": "12/14/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "plata II 🥈",
+   "modalidad": "chypher con eliminacion",
+   "horario": "aora yia",
+   "fecha": "",
+   "premios": "Rol de Campeon",
+   "staff": {
+    "jurado": [
+     "la monalisa"
+    ],
+    "host": [
+     "la monalisa"
+    ],
+    "dj": [
+     "la monalisa"
+    ]
+   },
+   "autor": "la monalisa",
+   "staff_cuentas": {
+    "la monalisa": "1487658663148785734"
+   },
    "categoria_id": "1468478330826260500"
   },
   {
