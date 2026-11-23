@@ -21,6 +21,8 @@
 .sg-liga-c i{min-width:20px;height:20px;padding:0 3px;display:grid;place-items:center;border-radius:10px;margin-left:-5px;box-shadow:0 0 0 2px var(--fondo);
   font:900 8.5px/1 Archivo,sans-serif;font-style:normal;color:#030304}
 .sg-liga-c i:first-child{margin-left:0}
+/* 🖼️ con su cara (ULAYA, el logo de una barra): un círculo justo, sin el relleno de la pastilla de letras */
+.sg-liga-c i.img{width:20px;min-width:20px;padding:0;overflow:hidden;border-radius:50%}
 /* en la llave: sigue a tus rivales de esta noche */
 .sg-rivales{display:grid;gap:8px;margin-top:10px;padding-top:10px;border-top:2px solid var(--linea)}
 .sg-rivales > b{font:800 13px/1 'Barlow Condensed',Archivo,sans-serif;letter-spacing:.08em;text-transform:uppercase}

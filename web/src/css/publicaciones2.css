@@ -255,7 +255,7 @@
 .cmh-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 .cmh-c{display:grid;grid-template-columns:32px minmax(0,1fr);gap:9px;align-items:start}
 .cmh-cara{width:32px;height:32px;font-size:13px}
-.cmh-pj{display:grid;place-items:center;width:32px;height:32px;font:900 12px/1 Archivo,sans-serif;color:#030304}
+.cmh-pj{display:grid;place-items:center;width:32px;height:32px;overflow:hidden;border-radius:50%;font:900 12px/1 Archivo,sans-serif;color:#030304}
 .cmh-cu{display:flex;flex-direction:column;gap:2px;min-width:0}
 .cmh-q{display:flex;flex-wrap:wrap;align-items:center;gap:4px 7px;font:700 14px/1.3 Archivo,sans-serif}
 .cmh-q a{font-weight:800}

@@ -12,7 +12,7 @@ import { limpio } from './liga.js';
 import { Cara, accion } from './piezas.jsx';
 import CSS_PAGINA from './css/sugeridos.css?inline';
 import { usarCss } from './css.js';
-import { pjDe } from './comentarios.jsx';
+import { PjDentro, pjDe, pjFondo } from './comentarios.jsx';
 
 usarCss('sugeridos', CSS_PAGINA);
 const W = typeof window !== 'undefined' ? window : {};
@@ -157,7 +157,7 @@ export function LigaTeSigue({ f, p, liga, yo = false }) {
   const de = (x) => (yo ? x[2] : x[2].replace('hiciste', 'hizo').replace('ganaste', 'ganó').replace('empiezas', 'empieza').replace('jugaste', 'jugó'));
   return (
     <span className="sg-liga" title={xs.map((x) => x[1] + ' ' + de(x)).join(' · ')}>
-      <span className="sg-liga-c" aria-hidden="true">{xs.slice(0, 4).map((x) => { const c = pjDe(x[0], liga); return <i key={x[0]} style={{ background: c[1], color: c[2] }}>{c[0]}</i>; })}</span>
+      <span className="sg-liga-c" aria-hidden="true">{xs.slice(0, 4).map((x) => { const c = pjDe(x[0], liga); return <i key={x[0]} className={c[3] ? 'img' : undefined} style={{ background: pjFondo(c), color: c[2] }}><PjDentro pj={c} /></i>; })}</span>
       {/* espacios duros (revisión 22/11/2026): a 390, «… y 8 más / te siguen» dejaba el verbo solo abajo */}
       <span><em>Liga</em> {txt}{' '}{xs.length > 1 ? (yo ? 'te siguen' : 'lo siguen') : (yo ? 'te sigue' : 'lo sigue')}</span>
     </span>

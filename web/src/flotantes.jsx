@@ -7,7 +7,7 @@
 // ⚠️ Se mueven sólo con transform y opacity (los mueve la placa de video), se frenan fuera de la pantalla o con la
 // pestaña escondida, y con «Menos animaciones» quedan quietos: los últimos tres. Tocar uno abre la publicación.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { autorDe, pjDe } from './comentarios.jsx';
+import { PjDentro, autorDe, pjDe, pjFondo } from './comentarios.jsx';
 import { Cara } from './piezas.jsx';
 import { usePases } from './pase.js';
 import { esPremium } from './sello.jsx';
@@ -70,7 +70,7 @@ export function ComentariosFlotantes({ liga, it, hilo, cls = '', onAbrir, cada =
           <button key={llave} type="button" className={'cfl-b' + (pos >= M ? ' sale' : '') + (prof ? ' resp' : '')}
             style={{ '--pos': Math.min(pos, M), '--prof': prof }} onClick={abrir} tabIndex={pos >= M ? -1 : 0}
             aria-label={autorDe(liga, c) + (c.et === 's' ? ' (simulado)' : c.et === 'l' ? ' (Liga)' : '') + (a ? ', responde a ' + autorDe(liga, a) : '') + ': ' + c.tx}>
-            {pj ? <span className="cfl-cara pj" style={{ background: pj[1], color: pj[2] }}>{pj[0]}</span>
+            {pj ? <span className="cfl-cara pj" style={{ background: pjFondo(pj), color: pj[2] }}><PjDentro pj={pj} /></span>
               : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cfl-cara' + (esPremium(pub, c.k) ? ' sp-prem-aro' : '')} lazy />}
             <span className="cfl-x">
               <span className="cfl-q"><b>{autorDe(liga, c)}</b>{c.et === 's' ? <i>simulado</i> : c.et === 'l' ? <i className="liga">Liga</i> : null}{a ? <small>↪ a {autorDe(liga, a)}</small> : null}</span>

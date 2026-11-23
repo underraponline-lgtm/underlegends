@@ -93,17 +93,32 @@ export const PJ = { eh: ['EH', '#E41373'], ul: ['UL', '#29B298'], ej: ['EJ', '#F
 // 📣 LAS BARRAS DE CADA SERVIDOR (21/11/2026, Dlx: «sí» a los fans de la Liga, bots a la vista): «La barra de FFA» es un
 // personaje más de la Liga (`b:<servidor>`), con la sigla de su servidor sobre su color y la pastilla «Liga». Devuelve
 // [texto, fondo, color del texto]: el texto en blanco sobre un color oscuro (el de FFA es casi negro)
+// 🖼️ CON SU CARA (23/11/2026, Dlx: «add a picture to the bots of the liga global… on the website when I see someone's
+// profiles that see their followers»). El 4.º lugar es la imagen y el 5.º cómo va: ULAYA con su foto de Discord (guardada
+// en la página, `/pj/ulaya.webp`: la dirección de Discord cambia si se le cambia la foto), cada barra con el logo de su
+// servidor sobre su color (`contain`). El Jurado y El Hype, con sus letras hasta que tengan su dibujo
+const PJ_IMG = { ul: '/pj/ulaya.webp' };
 export function pjDe(k, liga) {
-  if (PJ[k]) return [PJ[k][0], PJ[k][1], '#030304'];
+  if (PJ[k]) return [PJ[k][0], PJ[k][1], '#030304', PJ_IMG[k] || '', 'cubre'];
   if (String(k || '').startsWith('b:')) {
     const sv = String(k).slice(2), s = liga && liga.svs && liga.svs[sv];
     const c = (s && s.color) || '#E41373';
     const m = /^#([0-9a-f]{6})$/i.exec(c);
     const lum = m ? ((parseInt(m[1].slice(0, 2), 16) * 299 + parseInt(m[1].slice(2, 4), 16) * 587 + parseInt(m[1].slice(4, 6), 16) * 114) / 1000) : 0;
-    return [String((s && s.sigla) || sv).slice(0, 4), c, lum > 150 ? '#030304' : '#F6F6F6'];
+    // el logo, chico: se dibuja a 20–32 px (el de Discord viene pedido a 512)
+    const logo = s && liga && liga.logo ? String(liga.logo(sv) || '').replace(/([?&]size=)\d+/, '$164') : '';
+    return [String((s && s.sigla) || sv).slice(0, 4), c, lum > 150 ? '#030304' : '#F6F6F6', logo, 'entra'];
   }
-  return ['LG', '#E41373', '#F6F6F6'];
+  return ['LG', '#E41373', '#F6F6F6', '', ''];
 }
+/** Lo de adentro del círculo de un personaje: su imagen si tiene, sus letras si no (o si la imagen no carga) */
+export function PjDentro({ pj }) {
+  const [mal, setMal] = useState(false);
+  if (!pj[3] || mal) return pj[0];
+  return <img className={'pj-img ' + (pj[4] || '')} src={pj[3]} alt="" loading="lazy" decoding="async" onError={() => setMal(true)} />;
+}
+/** El fondo del círculo: con la foto de ULAYA, nada (su imagen ya es redonda); con un logo o con letras, su color */
+export const pjFondo = (pj) => (pj[3] && pj[4] === 'cubre' ? 'transparent' : pj[1]);
 // 🪪 QUIÉN ESCRIBIÓ, CON EL NOMBRE DE HOY (17/11/2026): el comentario guarda el nombre que tenía al escribir (`c.n`), y si
 // después se lo cambió quedaba el viejo. Con su clave en la tabla, el de su perfil; los de la Liga (`et: 'l'`) son un
 // personaje y no tienen perfil
@@ -130,7 +145,7 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReport
   const a = c.resp ? todos.find((x) => x.id === c.resp) : null;
   return (
     <li className="cmh-c">
-      {pj ? <span className="cmh-pj" style={{ background: pj[1], color: pj[2] }}>{pj[0]}</span>
+      {pj ? <span className="cmh-pj" style={{ background: pjFondo(pj), color: pj[2] }}><PjDentro pj={pj} /></span>
         : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cara cmh-cara' + (prem ? ' sp-prem-aro' : '')} lazy />}
       <div className="cmh-cu">
         <div className="cmh-q">

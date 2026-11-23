@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.92", "dia": "2026-11-23", "cuando": "2026-11-23T17:36:00-05:00", "titulo": "Los personajes de la Liga, con su cara", "items": ["**ULAYA** ya se ve con su cara cuando sigue a alguien o comenta, y **la barra de cada servidor**, con el logo de su servidor."]},
     {"version": "7.91", "dia": "2026-11-23", "cuando": "2026-11-23T05:39:00-05:00", "titulo": "Cuánto tiempo pasas en la página", "items": ["La **página de privacidad** suma dos cosas: la pestaña avisa también cuando la dejas de ver (así se sabe cuánto tiempo estuvo abierta), y la visita de cada día dice hace cuántos días fue la anterior (sólo el número). Lo ve sólo el dueño de la Liga."]},
     {"version": "7.90", "dia": "2026-11-23", "cuando": "2026-11-23T05:19:00-05:00", "titulo": "La página de privacidad, al día", "items": ["La **página de privacidad** dice ahora qué se anota cuando usas la página: si entraste con tu cuenta, quién eres, en qué sección estás y cuándo; sin cuenta, sólo que hay una pestaña abierta. Lo ve sólo el dueño de la Liga.", "**/borrar-mis-datos** borra también todo eso."]},
     {"version": "7.89", "dia": "2026-11-23", "cuando": "2026-11-23T05:09:00-05:00", "titulo": "El bot te recuerda tus Dragón Drops", "items": ["Si tienes **Dragón Drops sin abrir**, después de usar cualquier comando del bot te aparece, sólo a ti, tu panel para abrirlos ahí mismo. Una vez por día."]},
