@@ -1427,7 +1427,7 @@
   "raw": "Makmah",
   "cc": "ve",
   "sv": "FFA",
-  "crew": "Santa Trinidad",
+  "crew": "VENECOMAFIA",
   "discord_id": "897942226955563068",
   "verificado": true,
   "ev": 122,
@@ -1460,6 +1460,7 @@
   "arc_pais": 91,
   "pos_sv": "16/171",
   "arc_sv": 91,
+  "pos_crew": "",
   "tg_c": {
    "bestia": 4,
    "clasico": 8,

@@ -10577,6 +10577,39 @@
    "b": "CARLOS",
    "ganador": "CARLOS",
    "votos": "3–0"
+  },
+  "1574509127005245461": {
+   "id": "1574509127005245461",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795462628843,
+   "a": "SOUL B",
+   "b": "TUCA",
+   "ganador": "SOUL B",
+   "votos": "1–0"
+  },
+  "1574510689975013468": {
+   "id": "1574510689975013468",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795463001484,
+   "a": "FUNK+FUNK+GIAN",
+   "b": "ANDRES+SNOW",
+   "ganador": "FUNK+FUNK+GIAN",
+   "votos": "1–0"
+  },
+  "1574512780516794601": {
+   "id": "1574512780516794601",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795463499908,
+   "a": "PARK JI SUNG",
+   "b": "ERIAN GEOKA AGUSTIN",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14219,8 +14252,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795459899077,
-   "ed": 1795461679706,
-   "texto": "`[ OCTAVOS ]`\n⌞TUCA⌝ 🆚 ⌞MARTO⌝ 🆚 ⌞LRS⌝ 🆚 ⌞ARITMETICO⌝\n⌞OVER⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞JULDA⌝ 🆚 ⌞SOUL B⌝\n⌞ERIAN GEOKA ALR⌝ 🆚 ⌞PLAYER⌝ 🆚 ⌞ZA⌝\n⌞YINN⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞ANDRES⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞KYSS⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞TAM⌝",
+   "ed": 1795463507684,
+   "texto": "`[ OCTAVOS ]`\n⌞TUCA⌝ 🆚 ⌞MARTO⌝ 🆚 ⌞LRS⌝ 🆚 ⌞ARITMETICO⌝\n⌞OVER⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞JULDA⌝ 🆚 ⌞SOUL B⌝\n⌞ERIAN GEOKA ALR⌝ 🆚 ⌞PLAYER⌝ 🆚 ⌞ZA⌝\n⌞YINN⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞ANDRES⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞KYSS⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞SOUL B⌝ 🆚 ⌞TUCA⌝\n⌞FUNK+FUNK+GIAN⌝ 🆚 ⌞ANDRES+SNOW⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN GEOKA AGUSTIN⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -14230,8 +14263,8 @@
       "LRS",
       "ARITMETICO"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "TUCA",
+     "ronda siguiente",
      []
     ],
     [
@@ -14242,8 +14275,8 @@
       "JULDA",
       "SOUL B"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SOUL B",
+     "ronda siguiente",
      []
     ],
     [
@@ -14254,7 +14287,7 @@
       "ZA"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -14268,8 +14301,38 @@
       "PARK JI SUNG",
       "TAM"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARK JI SUNG",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SOUL B",
+      "TUCA"
+     ],
+     "SOUL B",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "FUNK+FUNK+GIAN",
+      "ANDRES+SNOW"
+     ],
+     "FUNK+FUNK+GIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PARK JI SUNG",
+      "ERIAN GEOKA AGUSTIN"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]
