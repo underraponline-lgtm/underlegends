@@ -75,6 +75,43 @@ function Flecha({ d, largo }) {
   if (d == null) return null;
   return <small className={'nc-d ' + (d > 0 ? 'sube' : d < 0 ? 'baja' : '')}>{d > 0 ? '▲ ' : d < 0 ? '▼ ' : '= '}{num(Math.abs(d))}{largo || ''}</small>;
 }
+// 🧩 «INTERACTUARON», POR QUÉ (23/11/2026, Dlx: «dame detalles más específicos, interactuaron divídelos en más secciones,
+// recuerda algunos están simulados»): una fila por tipo con las personas distintas, cuántas veces y la flecha contra la
+// semana anterior, de la que más gente tuvo a la que menos. Los tipos son `HACEN` de bot/avisos.js: si se suma uno allá,
+// va acá. Sólo lo de verdad: los comentarios simulados viven en el muro y nunca se guardan como de alguien
+const TIPOS_HACEN = [
+  ['aplaudieron', 'Aplaudieron', 'aplausos'], ['comentaron', 'Comentaron', 'comentarios'],
+  ['votaron', 'Votaron en encuestas', 'votos'], ['pronosticaron', 'Dijeron quién gana', 'pronósticos'],
+  ['apostaron', 'Apostaron', 'apuestas'], ['siguieron', 'Siguieron a alguien', 'seguidos'],
+  ['personalizaron', 'Arreglaron su carta o perfil', 'cambios'], ['sorteo', 'Entraron al sorteo', 'entradas'],
+];
+function HacenPor({ w, ant }) {
+  const hp = w.hacen_por;
+  if (!hp) return null;
+  const hb = ant && ant.hacen_por;
+  const filas = TIPOS_HACEN.map(([k, t, u]) => {
+    const x = hp[k] || { p: 0, n: 0 };
+    return { k, t, u, x, d: hb && hb[k] ? x.p - hb[k].p : null };
+  }).sort((a, b) => b.x.p - a.x.p || b.x.n - a.x.n);
+  const tope = Math.max(1, ...filas.map((f) => f.x.p));
+  return (
+    <div className="nc-hz">
+      <h4 className="nc-t">Interactuaron, por qué · {num(w.hacen || 0)} {w.hacen === 1 ? 'persona' : 'personas'}</h4>
+      <ul>{filas.map((f) => (
+        <li key={f.k} className={f.x.p ? '' : 'cero'}>
+          <span className="nc-hz-t">{f.t}</span>
+          <span className="nc-hz-b" aria-hidden="true"><i style={{ width: (100 * f.x.p / tope).toFixed(1) + '%' }} /></span>
+          <b>{num(f.x.p)}</b>
+          <small>{f.x.n ? num(f.x.n) + ' ' + f.u : '—'}{f.x.parcial ? ' · incompleto' : ''}</small>
+          <Flecha d={f.d} />
+        </li>
+      ))}</ul>
+      <p className="nc-p">Personas distintas en cada fila: una misma persona puede estar en varias. Sólo lo de verdad: los comentarios
+        simulados no cuentan.{hp.aplaudieron && hp.aplaudieron.parcial ? ' Los aplausos se borran a los 30 días: esta semana los tiene de menos.' : ''} De
+        lo que eligieron para su carta o su perfil cuenta el último cambio.</p>
+    </div>
+  );
+}
 function CincoCuadros({ uso, S }) {
   const [i0, setI] = useState(null);
   const us = uso || [];
@@ -105,7 +142,7 @@ function CincoCuadros({ uso, S }) {
         : 'celus o compus distintos, sin robots' },
     { t: 'Entraron con su cuenta', v: w.web, d: dif(w.web, ant && ant.web), s: serie((x) => x.web) },
     { t: 'Interactuaron', v: w.hacen, d: dif(w.hacen, ant && ant.hacen), s: serie((x) => x.hacen),
-      p: w.hacen == null ? 'ya no está guardado' : 'aplaudieron, comentaron, votaron, apostaron o siguieron' },
+      p: w.hacen == null ? 'ya no está guardado' : 'hicieron algo en la página: abajo, qué' },
     { t: 'Usaron el bot', v: w.bot, d: dif(w.bot, ant && ant.bot), s: serie((x) => x.bot) },
     { t: 'Jugaron un evento', v: jug ? jug.raperos : null, d: dif(jug && jug.raperos, jugB && jugB.raperos),
       s: serie((x) => { const j = jIdx(x.lunes); return j >= 0 ? ss[j].raperos : null; }),
@@ -148,6 +185,7 @@ function CincoCuadros({ uso, S }) {
           <Barras5 s={c.s} ultima={color(c.d)} />
         </div>
       ))}</div>
+      <HacenPor w={w} ant={ant} />
       {frase.length ? <p className="nc-f"><b>Lo que dice la semana:</b> {frase.join('; ')}.</p> : null}
     </section>
   );

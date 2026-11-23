@@ -1355,11 +1355,21 @@ const ok = (cond, que, det) => {
     o.sql.exec('INSERT INTO comentario (pub, quien, k, tx, t) VALUES (?, ?, ?, ?, ?)', 'p1', 'a', 'a', 'hola', T('2026-10-08'));
     // una a las 11 PM ET del domingo 11 (las 3 AM UTC del lunes): es de la semana del 5, no de la del 12
     o.sql.exec('INSERT INTO sigue (quien, a, t) VALUES (?, ?, ?)', 'd', 'x', Date.parse('2026-10-12T03:00:00Z'));
+    // 🧩 y por tipo (23/11/2026): una persona que sólo eligió su marco también interactuó
+    o.sql.exec('INSERT INTO marco_elige (quien, marco, t) VALUES (?, ?, ?)', 'e', 'oro', T('2026-10-14'));
     const s2 = o._usoSemanas(Date.parse('2026-10-15T16:00:00Z'));
     const [p, q] = s2.slice(-2);
-    ok(q.lunes === '2026-10-12' && q.abrieron === 6 && q.abrieron_desde === '2026-10-13' && q.hacen === 2
+    ok(q.lunes === '2026-10-12' && q.abrieron === 6 && q.abrieron_desde === '2026-10-13' && q.hacen === 3
       && p.lunes === '2026-10-05' && p.abrieron === null && p.hacen === 3 && p.k.hacen === 2,
     'por semana: navegadores distintos (con desde cuándo, y «—» antes), y quién interactuó, con el día en hora del este', JSON.stringify([p, q]));
+    const hp = q.hacen_por, hb = p.hacen_por;
+    ok(hp.aplaudieron.p === 2 && hp.aplaudieron.n === 3 && !hp.aplaudieron.parcial && hp.personalizaron.p === 1 && hp.comentaron.p === 0
+      && hb.comentaron.p === 1 && hb.votaron.p === 1 && hb.siguieron.p === 1 && hb.aplaudieron.p === 0 && p.k.hacen_por.votaron.p === 1,
+    'y por tipo: personas distintas y cuántas veces (2 aplaudieron 3 veces; marco, comentario, voto y seguir en su semana)', JSON.stringify([hb, hp]));
+    o.sql.exec('INSERT INTO uso (dia, quien, por) VALUES (?, ?, ?)', '2026-11-10', 'a', 'web');
+    const viejas = o._usoSemanas(Date.parse('2026-11-12T16:00:00Z')).filter((x) => x.hacen_por);
+    ok(viejas.some((x) => x.hacen_por.aplaudieron.parcial) && !viejas[viejas.length - 1].hacen_por.aplaudieron.parcial,
+      'una semana que empezó hace más de 30 días dice que sus aplausos están incompletos (se borran a los 30)', JSON.stringify(viejas.map((x) => [x.lunes, x.hacen_por.aplaudieron])));
   }
 }
 

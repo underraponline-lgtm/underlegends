@@ -3045,9 +3045,21 @@ const LIBRE_VENCE_MS = 7 * DIA_MS;
 // cuenta. Es su ID de Discord y el día, nada más, y se borra a los `USO_DIAS`. Las visitas sin cuenta se cuentan sin
 // guardar nada de nadie: el navegador avisa una vez por día (`lg:visita`) y acá sólo sube un número.
 export const USO_DIAS = 35;
-// 👆 dónde queda escrito que alguien HIZO algo en la página (ver `hechosDesde()`): todas con `quien` (su ID de Discord) y
-// `t` (ms). Si se suma una forma nueva de participar, va acá
-export const HACEN_TABLAS = ['aplausos', 'comentario', 'votos', 'liga_voto', 'qg_voto', 'apostado', 'sigue', 'sigue_org', 'sigue_sv'];
+// 👆 dónde queda escrito que alguien HIZO algo en la página (ver `hechosDesde()`), POR TIPO (23/11/2026, Dlx: «dame detalles
+// más específicos, interactuaron divídelos en más secciones»): todas con `quien` (su ID de Discord) y `t` (ms). Si se suma
+// una forma nueva de participar, va acá. ⚠️ SÓLO LO DE VERDAD: los comentarios simulados los arma el ciclo adentro del muro
+// (`bot/comentarios_sim.py`) y nunca se guardan en `comentario`, así que no cuentan. Las de `quien` único (lo que eligió
+// para su carta o su perfil) guardan sólo su ÚLTIMO cambio: una semana vieja cuenta de menos
+export const HACEN = [
+  ['aplaudieron', ['aplausos']],
+  ['comentaron', ['comentario']],
+  ['votaron', ['votos']],
+  ['pronosticaron', ['liga_voto', 'qg_voto']],
+  ['apostaron', ['apostado']],
+  ['siguieron', ['sigue', 'sigue_org', 'sigue_sv']],
+  ['personalizaron', ['marco_elige', 'tag_elige', 'juego_elige', 'carta_principal', 'perfil_mio', 'looks']],
+  ['sorteo', ['sorteo_part']],
+];
 /** El día en hora del este, `AAAA-MM-DD`: el de quien mira la Liga, no el de UTC */
 // 🎁 EL PREMIO DE LA SEMANA (ver `semanal()` del objeto): 50 Puntos de Tienda de base y 50 por cada día que entraste la
 // semana pasada, hasta 400
@@ -21949,6 +21961,7 @@ export class Avisos {
     const ymd = (t) => new Date(t).toISOString().slice(0, 10);
     const corte = diaET(ahora - USO_DIAS * DIA_MS);
     const hechos = this.hechosDesde(Date.parse(corte + 'T00:00:00Z') - DIA_MS);
+    const aplausosDesde = diaET(ahora - APLAUSOS_DIAS * DIA_MS);
     // 📱 desde qué día se cuentan los navegadores distintos (`visitas_sem`, 23/11/2026): antes de eso no hay dato, y una
     // semana sin dato es «—», no 0
     const semDesde = (this.sql.exec('SELECT MIN(dia) AS d FROM visitas_sem').toArray()[0] || {}).d || null;
@@ -21959,9 +21972,21 @@ export class Avisos {
       const entera = a >= corte;
       const abrieron = semDesde && semDesde < b
         ? this.sql.exec('SELECT COALESCE(SUM(n), 0) AS n FROM visitas_sem WHERE dia >= ? AND dia < ?', a, b).toArray()[0].n : null;
-      const hacen = entera ? new Set(hechos.filter((h) => h[1] >= a && h[1] < b).map((h) => h[0])).size : null;
+      const suyos = entera ? hechos.filter((h) => h[1] >= a && h[1] < b) : [];
+      const hacen = entera ? new Set(suyos.map((h) => h[0])).size : null;
+      // 🧩 y por tipo: personas distintas (`p`) y cuántas veces (`n`). `parcial`: los aplausos se borran a los
+      // `APLAUSOS_DIAS`, así que una semana que empezó antes los tiene de menos
+      let hacen_por = null;
+      if (entera) {
+        hacen_por = {};
+        for (const [tipo] of HACEN) {
+          const xs = suyos.filter((h) => h[2] === tipo);
+          hacen_por[tipo] = { p: new Set(xs.map((h) => h[0])).size, n: xs.length };
+        }
+        if (a < aplausosDesde) hacen_por.aplaudieron.parcial = true;
+      }
       return { personas: entera ? c('') : null, bot: entera ? c('bot') : null, web: entera ? c('web') : null, visitas: v.n, dias: v.d,
-        abrieron, abrieron_desde: abrieron !== null && semDesde > a ? semDesde : null, hacen };
+        abrieron, abrieron_desde: abrieron !== null && semDesde > a ? semDesde : null, hacen, hacen_por };
     };
     const out = [];
     for (let i = 11; i >= 0; i--) {
@@ -21973,9 +21998,9 @@ export class Avisos {
     return out;
   }
 
-  /** 👆 QUIÉN HIZO ALGO EN LA PÁGINA, desde `desde` (ms): `[[id de Discord, día ET], …]` (23/11/2026, Dlx: «cuántas
-   *  personas interactuaron»). Entrar con su cuenta no alcanza (eso ya es `uso` 'web'): acá cuenta aplaudir, comentar,
-   *  votar (encuestas, ligas, «¿quién gana?»), apostar y seguir a alguien, a una organización o a un servidor. Sale de las
+  /** 👆 QUIÉN HIZO ALGO EN LA PÁGINA, desde `desde` (ms): `[[id de Discord, día ET, tipo], …]` (23/11/2026, Dlx: «cuántas
+   *  personas interactuaron»). Entrar con su cuenta no alcanza (eso ya es `uso` 'web'): acá cuenta lo de `HACEN` —aplaudir,
+   *  comentar, votar, decir quién gana, apostar, seguir, arreglar su carta o su perfil, entrar al sorteo—. Sale de las
    *  tablas de cada cosa, que ya guardan quién y cuándo: por eso trae las semanas de antes (los aplausos, 30 días).
    *  ⚠️ Lee esas tablas enteras desde `desde` (no tienen índice por `t`): lo llama sólo `_usoSemanas()`, guardado 10 min */
   hechosDesde(desde) {
@@ -21987,8 +22012,10 @@ export class Avisos {
       return dias.get(h);
     };
     const out = [];
-    for (const tabla of HACEN_TABLAS) {
-      for (const f of this.sql.exec('SELECT quien, t FROM ' + tabla + ' WHERE t >= ?', desde).toArray()) out.push([String(f.quien), dia(f.t)]);
+    for (const [tipo, tablas] of HACEN) {
+      for (const tabla of tablas) {
+        for (const f of this.sql.exec('SELECT quien, t FROM ' + tabla + ' WHERE t >= ?', desde).toArray()) out.push([String(f.quien), dia(f.t), tipo]);
+      }
     }
     return out;
   }
