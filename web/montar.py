@@ -819,7 +819,30 @@ def rehacer_script(html):
     return html[:m.start()] + '<script>\n' + script() + '\n</script>\n</head>' + html[m.end():]
 
 
+#: 🍎 el «mirar atrás» de las expresiones regulares, escrito: Safari anterior al 16.4 no lee el archivo que lo trae
+MIRAR_ATRAS = re.compile(r'\(\?<[=!]')
+
+
+def sin_mirar_atras():
+    """🍎 Frena si lo construido o un script de la cañería trae un lookbehind (23/11/2026). En iOS 15 —el techo del
+    iPhone 6s, 7 y SE— y Safari hasta el 16.3 es un error de SINTAXIS: el archivo entero no corre, la página no arranca y
+    no puede avisar (el registro de errores vive adentro de la app). Pasó con `EXPLICITO` de web/src/liga.js y
+    `EV_EXPLICITO` de datos.js, del 21/11 al 23/11. ESLint lo frena en web/src; esto mira lo que de verdad se sirve,
+    también los scripts clásicos, que ESLint no lee. Si hace falta uno, se pregunta antes si el navegador lo entiende
+    (`MIRA_ATRAS` de web/src/ingles_base.js)."""
+    malos = []
+    for d in (PAG, os.path.join(PAG, 'inicio')):
+        for f in sorted(os.listdir(d)):
+            if f.endswith('.js'):
+                t = io.open(os.path.join(d, f), encoding='utf-8', errors='replace').read()
+                malos += ['%s (%d)' % (os.path.relpath(os.path.join(d, f), BASE), len(MIRAR_ATRAS.findall(t)))] if MIRAR_ATRAS.search(t) else []
+    if malos:
+        raise SystemExit('🔴 un lookbehind de expresión regular en ' + ', '.join(malos) + ': en Safari anterior al 16.4 ese '
+                         'archivo no corre entero. Ver sin_mirar_atras() en web/montar.py')
+
+
 def main():
+    sin_mirar_atras()
     idx = os.path.join(PAG, 'index.html')
     html = io.open(idx, encoding='utf-8').read()
     nuevo = rehacer_script(html) if '--script' in sys.argv else pagina(html)

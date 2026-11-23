@@ -11,6 +11,20 @@ let mandados = 0;
 /** Lo que inyectan las extensiones y los navegadores del teléfono: billeteras, Firefox y Chrome de iOS, Zalo */
 const AJENOS = /window\.ethereum|__firefox__|__gCrWeb|webkit\.messageHandlers|zaloJSV2|instantSearchSDKJSBridge/i;
 
+// 🤖 LO QUE NO ES GENTE NO SE MANDA (23/11/2026). De los cinco errores del informe de 7 días, tres (`tienda`, `mods` y
+// `cuenta`) venían de código que nunca se publicó: sus líneas y columnas no existen en ningún build commiteado. Eran
+// builds a medio hacer que una sesión miraba con Playwright SOBRE EL DOMINIO REAL (sirviendo su `index.html` y sus
+// pedazos, como `tuto_medir.py --local`), y su error caía en el registro como si fuera de alguien. Un navegador
+// automatizado dice que lo es (`navigator.webdriver`, lo mismo que ya usa og_link.jsx), y una vista previa o la PC no
+// son la página publicada. Se dice qué NO va, no cuál es la buena: un dominio nuevo de la Liga seguiría reportando
+const NO_ES_GENTE = () => {
+  try {
+    if (navigator.webdriver === true) return true;
+    const h = location.hostname;
+    return h === 'localhost' || h === '127.0.0.1' || /^[\w-]+\.underlegends\.pages\.dev$/.test(h);
+  } catch (e) { return false; }
+};
+
 /** El mensaje sin lo que no hace falta: sin el `?…` de un link y con los números largos (un ID) tapados. */
 function limpiarMsg(s) {
   return String(s || '').replace(/\s+/g, ' ').replace(/(https?:\/\/[^\s?#]+)\S*/g, '$1').replace(/\d{5,}/g, '#').trim().slice(0, 200);
@@ -26,6 +40,7 @@ function lugar(pila) {
 /** `donde`: la parte de la página (el nombre de la sección aislada, `inicio`, `global` o `promesa`). */
 export function reportarError(donde, e) {
   try {
+    if (NO_ES_GENTE()) return;
     const d = String(donde || 'otra').toLowerCase().replace(/[^a-z0-9:_-]/g, '').slice(0, 40) || 'otra';
     const m = limpiarMsg((e && (e.message || e.reason)) || e);
     if (!m) return;

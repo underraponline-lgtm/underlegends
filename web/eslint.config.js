@@ -37,6 +37,13 @@ export default [
       'react-hooks/exhaustive-deps': 'off',
       'no-unused-vars': 'off',
       'no-empty': 'off',
+      // 🍎 EL «MIRAR ATRÁS» DE LAS EXPRESIONES REGULARES TUMBA LA PÁGINA EN SAFARI ANTERIOR AL 16.4 (23/11/2026): iOS 15
+      // —el techo del iPhone 6s, 7 y SE— no lo entiende, y escrito en el código el archivo entero no se puede leer: la
+      // página no arranca y no puede avisar. Pasó con `EXPLICITO` de liga.js, del 21/11 al 23/11. Si hace falta, se
+      // pregunta antes si el navegador lo entiende (`MIRA_ATRAS` de ingles_base.js)
+      'no-restricted-syntax': ['error',
+        { selector: 'Literal[regex.pattern=/\\(\\?<[=!]/]', message: 'Sin lookbehind: Safari < 16.4 no lee el archivo entero (ver eslint.config.js)' },
+        { selector: "NewExpression[callee.name='RegExp'] Literal[value=/\\(\\?<[=!]/]", message: 'Sin lookbehind en new RegExp: Safari < 16.4 tira un error (ver ingles_base.js, MIRA_ATRAS)' }],
     },
   },
 ];

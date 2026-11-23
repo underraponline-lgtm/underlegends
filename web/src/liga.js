@@ -37,8 +37,12 @@ const FUERA =/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{31
 // ⚠️ Sólo palabras sexuales explícitas: «gay» o «lésbico» solos no se tapan. Y «foll…» con sus terminaciones, para no
 // comerse «follow». ⚠️ SÓLO EN NOMBRES DE EVENTOS, nunca en `limpio()`: hay raperos que se llaman «Sexo», «XXX» o
 // «Pornito», y su nombre es su nombre (por eso «sexo» y «xxx» ni están en la lista)
-const EXPLICITO = /(?<![\p{L}\p{N}])(?:porn\p{L}*|foll(?:a|ar|o|amos|an|ando|ad|é|ó|aron)|hentai|onlyfans|verga)(?![\p{L}\p{N}])/giu;
-export const esExplicito = (s) => { EXPLICITO.lastIndex = 0; return EXPLICITO.test(String(s || '')); };
+// 🍎 SIN «MIRAR ATRÁS» (el lookbehind de las expresiones regulares, 23/11/2026): Safari anterior al 16.4 (iOS 15, el techo del iPhone 6s, 7 y SE)
+// no lo entiende, y como esto va escrito en el archivo, el archivo ENTERO no se podía leer: la página no arrancaba y
+// tampoco podía avisar. Para `test()` da lo mismo pedir «el principio o algo que no es letra ni número» adelante.
+// `web/montar.py` frena el build si vuelve a aparecer en lo construido
+const EXPLICITO = /(?:^|[^\p{L}\p{N}])(?:porn\p{L}*|foll(?:a|ar|o|amos|an|ando|ad|é|ó|aron)|hentai|onlyfans|verga)(?![\p{L}\p{N}])/iu;
+export const esExplicito = (s) => EXPLICITO.test(String(s || ''));
 // 🔤 LAS LETRAS «MATEMÁTICAS» DE UNICODE, EN LETRAS COMUNES (22/11/2026, Dlx: «2: B», con las capturas de «Las siete
 // decisiones»). Quien escribe su nombre como 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 salía en otra letra que el resto de la página, y el
 // círculo de su inicial mostraba medio carácter (la primera «letra» son dos unidades de UTF-16). Sólo ese bloque

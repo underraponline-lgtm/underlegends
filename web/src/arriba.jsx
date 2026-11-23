@@ -626,12 +626,18 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
 // recientes, quizás algo como Instagram», y a «¿también los eventos del día?», «A». Arriba lo de hoy en la Liga (para
 // todos); después lo tuyo, «Nuevas» y «Antes» (la bandeja de app.js: `BANDEJA`, `pedirBandeja()`); abajo, la campana
 // del teléfono. Para todos desde la 2.02 (Dlx, 03/10/2026: «3. a»); `#/avisos` sigue abriendo la campana de Eventos
+// 🛟 `pedirBandeja` SÓLO CON `BANDEJA` ARMADA (23/11/2026, el registro de errores: «Cannot set properties of undefined
+// (setting 'sinCuenta')», `social.js:166`, cuatro veces). Si social.js se corta antes de su línea 157 (no bajó o no corrió
+// comun.js), su función existe —se declara al leer el archivo— y su `var BANDEJA` no: llamarla tiraba la CABECERA entera,
+// porque el primer pedido sale de un efecto. La 7.26 ya pone «No pude cargar» cuando comun.js no baja; esto es que la
+// campana no se lleve el resto de arriba con ella
+const bandejaLista = () => !!(window.pedirBandeja && window.BANDEJA);
 function useBandeja() {
   const leer = () => Object.assign({ items: [], nuevas: 0, listo: false }, window.BANDEJA || {});
   const [b, setB] = useState(leer);
   useEffect(() => {
     const f = () => setB(leer());
-    const pedir = () => { if (window.pedirBandeja && document.visibilityState === 'visible') window.pedirBandeja(false); };
+    const pedir = () => { if (bandejaLista() && document.visibilityState === 'visible') window.pedirBandeja(false); };
     window.addEventListener('lg:bandeja', f);
     window.addEventListener('lg:cuenta', pedir);
     pedir();
@@ -672,7 +678,7 @@ function Campanita({ liga }) {
     const v = !abierta;
     setAbierta(v);
     // al abrirlo, lo nuevo queda visto (el panel todavía muestra cuáles eran)
-    if (v && window.pedirBandeja) window.pedirBandeja(true);
+    if (v && bandejaLista()) window.pedirBandeja(true);
   };
   return (
     <div className="nt" ref={caja}>

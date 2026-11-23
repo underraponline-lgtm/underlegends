@@ -36,23 +36,41 @@ export function nombresDe(L) {
   return [...s];
 }
 
+// el «mirar atrás» que entiende este navegador, o '' si no. En pedazos a propósito: escrito entero, el minificador lo
+// deja como un literal y web/montar.py frena el build
+const MIRA = ['(?<', '!'].join('');
+const MIRA_ATRAS = (() => { try { new RegExp(MIRA + 'a)b', 'u'); return MIRA + '[\\p{L}\\p{N}])'; } catch (e) { return ''; } })();
 const NUM = '\\d+(?:[.,:]\\d+)*';
 /** Una sola expresión para los nombres y los números, así los huecos salen en el orden del texto */
 export function rxHuecos(nombres) {
   const esc = [...(nombres || [])].sort((a, b) => b.length - a.length).map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   // sin nombres, un grupo que nunca encaja: los números siguen siendo huecos
-  const nom = esc.length ? '(?<![\\p{L}\\p{N}])(?:' + esc.join('|') + ')(?![\\p{L}\\p{N}])' : '(?!)';
-  return new RegExp('(' + nom + ')|(' + NUM + ')', 'gu');
+  if (!esc.length) return new RegExp('((?!))|(' + NUM + ')', 'gu');
+  const nom = '(?:' + esc.join('|') + ')(?![\\p{L}\\p{N}])';
+  // 🍎 «MIRAR ATRÁS», SÓLO DONDE SE ENTIENDE (23/11/2026): Safari anterior al 16.4 (iOS 15) no lo lee y `new RegExp`
+  // tiraba un error al armar las de /en. Ahí va una sin él: el carácter de adelante se come y `normalizar()` lo
+  // devuelve (`rx.pre`). Donde se entiende, la misma de siempre
+  if (MIRA_ATRAS) return new RegExp('(' + MIRA_ATRAS + nom + ')|(' + NUM + ')', 'gu');
+  const rx = new RegExp('(?:(^|[^\\p{L}\\p{N}])(' + nom + '))|(' + NUM + ')', 'gu');
+  rx.pre = true;
+  return rx;
 }
 
 /** `{k, h}`: la clave del texto (`{p}` y `{n}` en lugar de nombres y números) y lo que había en cada hueco */
 export function normalizar(t, rx) {
   const h = { n: [], p: [] };
-  const k = String(t).replace(rx || rxHuecos([]), (m, nom, num) => {
-    if (nom) { h.p.push(m); return '{p}'; }
-    if (num) { h.n.push(m); return '{n}'; }
-    return m;
-  });
+  const r = rx || rxHuecos([]);
+  const k = String(t).replace(r, r.pre
+    ? (m, pre, nom, num) => {
+      if (nom) { h.p.push(nom); return pre + '{p}'; }
+      if (num) { h.n.push(m); return '{n}'; }
+      return m;
+    }
+    : (m, nom, num) => {
+      if (nom) { h.p.push(m); return '{p}'; }
+      if (num) { h.n.push(m); return '{n}'; }
+      return m;
+    });
   return { k, h };
 }
 

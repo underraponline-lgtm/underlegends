@@ -31,8 +31,10 @@ var D = null;
    (`e` y el muro de cada uno) y las llaves (`evTapado()`, para llave.jsx)—,
    así ninguna página tiene que acordarse. ⚠️ SÓLO NOMBRES DE EVENTOS: hay
    raperos que se llaman «Sexo», «XXX» o «Pornito», y su nombre es su nombre.
-   Y la misma lista que `EXPLICITO` de web/src/liga.js (`nombreEv()`). */
-var EV_EXPLICITO = /(?<![\p{L}\p{N}])(?:porn\p{L}*|foll(?:a|ar|o|amos|an|ando|ad|é|ó|aron)|hentai|onlyfans|verga)(?![\p{L}\p{N}])/iu;
+   Y la misma lista que `EXPLICITO` de web/src/liga.js (`nombreEv()`).
+   🍎 Sin «mirar atrás» (el lookbehind, 23/11/2026): Safari anterior al 16.4 no lo
+   lee y dejaba este archivo entero sin correr. Para `test()` es lo mismo. */
+var EV_EXPLICITO = /(?:^|[^\p{L}\p{N}])(?:porn\p{L}*|foll(?:a|ar|o|amos|an|ando|ad|é|ó|aron)|hentai|onlyfans|verga)(?![\p{L}\p{N}])/iu;
 function evTapado(s, n) {
   return EV_EXPLICITO.test(String(s || '')) ? (n ? 'Evento #' + n : 'Un evento') : s;
 }

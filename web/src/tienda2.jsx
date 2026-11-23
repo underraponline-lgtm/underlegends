@@ -477,7 +477,11 @@ function useTiendaNueva(dc) {
       if (!(j && j.ok)) { falla(); return; }
       ya.current = este;
       de.current = id;
-      setS(j.yo ? j : Object.assign({}, j, { yo: YO_VACIO, anon: true }));
+      // 🛟 LO QUE FALTE DE `yo`, CON SU VACÍO (23/11/2026, el registro: «reading 'length'» en `S.yo.regalos.length` de
+      // tienda3.jsx). La página se publica sola en cada push y el Worker a mano (`desplegar.py`): un campo nuevo de `yo`
+      // puede llegar a la página antes que al objeto, y tienda3.jsx lee `regalos`, `deseos` e `inv` sin preguntar. Lo que
+      // manda el objeto gana siempre; sólo se llena lo que no vino
+      setS(j.yo ? Object.assign({}, j, { yo: Object.assign({}, YO_VACIO, j.yo) }) : Object.assign({}, j, { yo: YO_VACIO, anon: true }));
     };
     const anon = (luego) => fetch('/api/avisos/tienda', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"anon":1}' })
       .then((r) => r.json()).then(listo).catch(luego);
