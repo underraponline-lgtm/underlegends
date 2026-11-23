@@ -9277,6 +9277,8 @@ export class Avisos {
         "origen TEXT NOT NULL, min INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL, abierto INTEGER NOT NULL DEFAULT 0, " +
         "rareza INTEGER NOT NULL DEFAULT -1, premio TEXT NOT NULL DEFAULT '', t_abierto INTEGER NOT NULL DEFAULT 0, UNIQUE (quien, origen))");
       this.sql.exec('CREATE INDEX IF NOT EXISTS drops_quien ON drops (quien, abierto)');
+      // 🐉 el último día que el bot le recordó a cada uno sus drops cerrados (`dropsAviso()`): uno por día
+      this.sql.exec('CREATE TABLE IF NOT EXISTS drops_aviso (quien TEXT PRIMARY KEY, dia TEXT NOT NULL) WITHOUT ROWID');
       // 👀 EL PÚBLICO DE CADA EVENTO (21/11/2026, ver `publico()`): los minutos de cada uno en cada llave, si ya se le dio
       // lo suyo, y las tandas que ya llegaron (una tanda repetida no suma dos veces). IDs de Discord: van al olvidar
       this.sql.exec('CREATE TABLE IF NOT EXISTS publico (llave TEXT NOT NULL, quien TEXT NOT NULL, min INTEGER NOT NULL, ' +
@@ -10241,6 +10243,8 @@ export class Avisos {
       if (ruta === '/muro-mio') return await this.muroMio(d);
       if (ruta === '/cm-permiso') return await this.cmPermiso(d);
       if (ruta === '/drops') return json(this.dropsDe(String(d.quien || '')));
+      // 🐉 ¿le recuerdo sus drops cerrados? (23/11/2026, ver `dropsAviso()`): lo pregunta el bot después de un comando
+      if (ruta === '/drops-aviso') return json(this.dropsAviso(String(d.quien || '')));
       if (ruta === '/nuevo') { const v = this.nuevoDe(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/ref') { const v = d.accion === 'llegue' ? this.refLlegue(d) : this.refMio(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/libres') return json(this.libresDe(String(d.quien || '')));
@@ -16929,6 +16933,22 @@ export class Avisos {
       sin: this.dropSin(quien), garantia: DROP_GARANTIA, rarezas: DROP_RAREZAS, que: PASOS_QUE,
       semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE },
       rarezas_nido: NIDO_RAREZAS, partes: NIDO_PARTES, cofres: COFRES, sube: COFRE_SUBE };
+  }
+
+  /** 🐉 EL RECORDATORIO DE LOS DROPS CERRADOS (23/11/2026, Dlx: «si alguien usa cualquier otro comando, que primero
+   *  chequee si ese usuario tiene drops, y si lo tiene que aparezca eso»). Medido ese día: 885 drops cerrados de 336
+   *  personas, y esa semana los abrieron 31; la mayoría no sabe que los tiene. El bot pregunta esto después de cualquier
+   *  comando: `{mostrar: true, n}` UNA VEZ POR DÍA por persona y sólo si tiene alguno cerrado (la fecha queda en
+   *  `drops_aviso`); si no, `{mostrar: false}`. Lo que se muestra lo arma el bot (`recordarDrops()` en worker.js) */
+  dropsAviso(quien) {
+    if (!/^[0-9]{5,25}$/.test(quien)) return { mostrar: false };
+    const n = this.sql.exec('SELECT COUNT(*) AS n FROM drops WHERE quien = ? AND abierto = 0', quien).toArray()[0].n;
+    if (!n) return { mostrar: false };
+    const dia = diaET();
+    const ya = this.sql.exec('SELECT dia FROM drops_aviso WHERE quien = ?', quien).toArray()[0];
+    if (ya && ya.dia === dia) return { mostrar: false };
+    this.sql.exec('INSERT INTO drops_aviso (quien, dia) VALUES (?, ?) ON CONFLICT(quien) DO UPDATE SET dia = excluded.dia', quien, dia);
+    return { mostrar: true, n };
   }
 
   /** 🐉 Abrir un drop (`/avisos/drop-abrir`): la rareza y el premio los decide el objeto, una sola vez */

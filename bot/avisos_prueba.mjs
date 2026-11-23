@@ -1393,6 +1393,10 @@ const ok = (cond, que, det) => {
       && dr.semana.rarezas[2] === 1 && dr.antes.abiertos === 1 && dr.antes.por.cofre.abiertos === 1 && dr.cerrados === 1 && dr.con_cerrados === 1
       && dr.donde.web === 1 && dr.donde.discord === 1 && dr.donde.mira_discord === 1,
     'los drops: dados y abiertos por tipo, la rareza, la semana de antes, los cerrados y dónde se abrieron (página o Discord)', JSON.stringify(dr));
+    // 🐉 el recordatorio de los drops cerrados (23/11/2026): una vez por día, y sólo a quien tiene alguno cerrado
+    const av1 = o.dropsAviso('2222222'), av2 = o.dropsAviso('2222222'), av3 = o.dropsAviso('1111111'), av4 = o.dropsAviso('x');
+    ok(av1.mostrar === true && av1.n === 1 && av2.mostrar === false && av3.mostrar === false && av4.mostrar === false,
+      'el recordatorio de drops: a quien tiene cerrados, una vez por día; a quien no tiene, nunca', JSON.stringify([av1, av2, av3]));
     // 📚 EL HISTÓRICO (23/11/2026): la primera vez de cada uno, para siempre, y lo de antes desde `uso`
     o.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', '2026-10-20', '4444444', 'web');
     const hi = o._historico(AH);

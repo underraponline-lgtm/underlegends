@@ -1496,6 +1496,21 @@ const ARTE_DROP = () => gifDrop('drop', 'entra', 0);
 
 /** 🐉 Lo de `/drops` (Dlx, 20/11/2026, la maqueta): cada tipo en su fila con su botón al costado, un solo azul (el que
  *  más tienes). El Drop y el Star se abren acá y cambian ESTE mensaje; el Nido y los cofres, en la página */
+/** 🐉 EL RECORDATORIO DE LOS DROPS CERRADOS (23/11/2026, Dlx: «si alguien usa cualquier otro comando, que primero chequee si
+ *  tiene drops, y si lo tiene que aparezca eso»). No va ANTES del comando —le taparía lo que pidió y Discord da 3 s para
+ *  contestar—: va DESPUÉS, como un mensaje aparte que sólo ve esa persona, con su panel de `/drops` (los botones para
+ *  abrirlos ahí mismo). Una vez por día por persona (lo decide el objeto: `dropsAviso()`), y nunca después de `/drops`.
+ *  La espera es para que llegue después de la respuesta del comando, también de los que tardan un poco */
+async function recordarDrops(env, i, did) {
+  try {
+    const a = await alObjeto(env, 'drops-aviso', { quien: did });
+    if (!a || !a.mostrar) return;
+    await new Promise((r) => setTimeout(r, 4000));
+    const data = await panelDrops(env, did, i);
+    if (data) await seguir(i, null, null, data);
+  } catch (e) { /* un recordatorio que no sale no frena nada */ }
+}
+
 async function panelDrops(env, did, i) {
   const [j, yo] = await Promise.all([alObjeto(env, 'drops', { quien: did }), personaDe(env, did)]);
   if (!j || !j.ok) return V.avisoMsg('No pude ver tus drops: prueba de nuevo en un minuto.');
@@ -5735,6 +5750,8 @@ export default {
       const esperar = frenado(idDe(i), 'comando');
       if (esperar) return espera(esperar);
       const fn = COMANDOS[i.data && i.data.name];
+      // 🐉 y si tiene drops sin abrir, después de la respuesta se los recuerda (en privado, una vez por día: `recordarDrops()`)
+      if (fn && usa && i.data.name !== 'drops' && ctx && ctx.waitUntil) ctx.waitUntil(recordarDrops(env, i, usa));
       return fn ? await fn(i, env, ctx) : aviso(`No conozco \`/${i.data && i.data.name}\`.`);
     }
 
