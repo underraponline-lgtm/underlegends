@@ -16,7 +16,9 @@ const AJENOS = /window\.ethereum|__firefox__|__gCrWeb|webkit\.messageHandlers|za
 // builds a medio hacer que una sesión miraba con Playwright SOBRE EL DOMINIO REAL (sirviendo su `index.html` y sus
 // pedazos, como `tuto_medir.py --local`), y su error caía en el registro como si fuera de alguien. Un navegador
 // automatizado dice que lo es (`navigator.webdriver`, lo mismo que ya usa og_link.jsx), y una vista previa o la PC no
-// son la página publicada. Se dice qué NO va, no cuál es la buena: un dominio nuevo de la Liga seguiría reportando
+// son la página publicada. Se dice qué NO va, no cuál es la buena: un dominio nuevo de la Liga seguiría reportando.
+// 👀 Lo usa también el aviso de «estoy en la página» (App.jsx, 23/11/2026)
+export const noEsGente = () => NO_ES_GENTE();
 const NO_ES_GENTE = () => {
   try {
     if (navigator.webdriver === true) return true;

@@ -96,6 +96,12 @@ if (typeof window !== 'undefined') {
   window.addEventListener('pagehide', mandarClics);
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') mandarClics(); });
 }
+/** 🙈 ¿Es el navegador de Dlx? Por su cuenta guardada (`lg:dc`) y no por `quienMira()`: la lente de Mods no lo cambia */
+function esDuenoAca() {
+  try { return String((JSON.parse(localStorage.getItem('lg:dc') || 'null') || {}).id || '') === DUENO; } catch (e) { return false; }
+}
+//: 👀 cada cuántos minutos avisa la pestaña que sigue abierta (`AQUI_MIN` de bot/avisos.js)
+const AQUI_MIN = 4;
 /** Anota una vez por día y por navegador (`lg:secc`, como las secciones). Lo que no está en `SECC` no se manda */
 function anotarUnaVez(k) {
   // 📊 y la página de cada servidor (`sv-FFA`), para el panel de su dueño (19/10/2026): el objeto sólo acepta los que existen
@@ -224,7 +230,7 @@ import { VentanaVideo } from './video.jsx';
 import { claseTema, guardarTemas, leerTemas } from './temas.js';
 import { useCalma, useTapado } from './anima.js';
 // 🐞 los errores de la página, al Dashboard (19/10/2026): los de cada sección y los que no agarra ninguna
-import { escucharErrores, reportarError } from './errores.js';
+import { escucharErrores, noEsGente, reportarError } from './errores.js';
 import { esDeVersion, recargarPorVersion } from './version.js';
 // 🎁 al cargar: el `?ref=` de un link de invitación, y mandarlo cuando haya cuenta (referidos.js)
 import './referidos.js';
@@ -537,6 +543,8 @@ export default function App() {
       // sesión) entran con un navegador limpio cada vez y contaban como una visita nueva. La semana del 16/11 sumó 2.481
       // contra ~525 visitas de Web Analytics. `navigator.webdriver` lo prende todo navegador manejado por un programa
       if (navigator.webdriver) return;
+      // 🙈 ni el navegador de Dlx (23/11/2026: «I don't want my account to be counted»; ver `FUERA_DE_NUMEROS`)
+      if (esDuenoAca()) return;
       const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
       // 📱 y su primera visita de la semana (lunes a domingo, hora del este): con eso el Dashboard cuenta navegadores
       // DISTINTOS por semana y no la suma de los días (`visitas_sem` en bot/avisos.js)
@@ -795,6 +803,37 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
   // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda
   const seccion = sv ? 'servidor' : pagina === '' ? 'inicio' : pagina === 'r' ? 'perfil' : paginaMenu;
   useEffect(() => { anotarUnaVez(seccion); if (sv) anotarUnaVez('sv-' + String(sv).toUpperCase()); }, [seccion, sv]);
+  // 👀 «ESTOY EN LA PÁGINA» (23/11/2026, Dlx: «who is on the website right now», con nombre; lo dice /privacidad). La
+  // pestaña avisa al abrir, al volver a ella, al cambiar de sección y cada `AQUI_MIN` minutos mientras se ve. Con tu cuenta,
+  // la sesión (la cookie, que la página no ve) dice quién eres; sin cuenta, va sólo un código al azar de esta pestaña
+  // (`sessionStorage`: se olvida al cerrarla). Ni los robots ni las vistas previas (`noEsGente()`), ni Dlx
+  const aqui = useRef({ s: seccion, ult: 0, k: '' });
+  aqui.current.s = seccion;
+  useEffect(() => {
+    if (noEsGente()) return undefined;
+    const A = aqui.current;
+    try {
+      A.k = sessionStorage.getItem('lg:aqui') || '';
+      if (!/^[a-z0-9]{10,24}$/.test(A.k)) {
+        A.k = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+        sessionStorage.setItem('lg:aqui', A.k);
+      }
+    } catch (e) { A.k = ''; }
+    if (!A.k) return undefined;
+    A.avisar = (freno) => {
+      if (document.visibilityState !== 'visible' || esDuenoAca() || Date.now() - A.ult < freno) return;
+      A.ult = Date.now();
+      fetch('/api/avisos/aqui', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ k: A.k, s: A.s }), keepalive: true }).catch(() => {});
+    };
+    A.avisar(0);
+    const t = setInterval(() => A.avisar(0), AQUI_MIN * 60000);
+    const vis = () => A.avisar(60000);
+    document.addEventListener('visibilitychange', vis);
+    return () => { clearInterval(t); document.removeEventListener('visibilitychange', vis); A.avisar = null; };
+  }, []);
+  // al cambiar de sección, la nueva (con freno: quien recorre la página rápido no manda un aviso por toque)
+  useEffect(() => { const A = aqui.current; const t = setTimeout(() => { if (A.avisar) A.avisar(30000); }, 3000); return () => clearTimeout(t); }, [seccion]);
   // 👆 Y TODO LO QUE SE TOCA, EN CUALQUIER SECCIÓN (16/10/2026): ver `contarClic()`
   useEffect(() => {
     const f = (e) => {

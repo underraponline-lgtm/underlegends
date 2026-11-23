@@ -107,6 +107,10 @@ def _env(clave):
     sys.exit('falta %s en .env' % clave)
 
 
+#: 🤖 los bots que vio la última lista de miembros (`_miembros()`): salen de los verificados y del acumulado
+BOTS = set()
+
+
 def _miembros(s):
     """{discord_id: [roles]} de DRA, paginado.
 
@@ -129,7 +133,14 @@ def _miembros(s):
         if not lote:
             break
         for m in lote:
-            did = (m.get('user') or {}).get('id')
+            u = m.get('user') or {}
+            did = u.get('id')
+            # 🤖 LOS BOTS NO SON GENTE (23/11/2026, Dlx: «I don't want… the bots» en los números): RoleLogic y ULAYA tienen
+            # el rol Miembro de DRA y contaban como verificados. Nunca tuvieron carta (no están en la Lista), pero
+            # sumaban en el Dashboard. Se anotan aparte para sacarlos también del acumulado (`anotar_desde()`)
+            if did and u.get('bot'):
+                BOTS.add(str(did))
+                continue
             if did:
                 out[did] = m.get('roles') or []
         after = max(((m.get('user') or {}).get('id', '0') for m in lote),
@@ -421,7 +432,7 @@ def guardar(ids, miembros=0):
     return set(ids)
 
 
-def anotar_desde(ids, hoy=None, ruta=None):
+def anotar_desde(ids, hoy=None, ruta=None, bots=None):
     """📅 Los IDs que no estaban en `verificados_desde.json` entran con el día de hoy (hora del este). Sólo agrega:
     quien pierde el rol y lo recupera conserva su primera fecha. Devuelve cuántos entraron.
 
@@ -438,8 +449,12 @@ def anotar_desde(ids, hoy=None, ruta=None):
         hoy = _dt.datetime.now(ZoneInfo('America/New_York')).strftime('%Y-%m-%d')
     m = d.setdefault('ids', {})
     nuevos = [i for i in ids if str(i) not in m]
-    if not nuevos:
+    # 🤖 y los bots que hayan quedado de antes (23/11/2026): el acumulado sólo suma, así que se sacan acá
+    fuera = [b for b in (BOTS if bots is None else bots) if b in m]
+    if not nuevos and not fuera:
         return 0
+    for b in fuera:
+        del m[b]
     for i in nuevos:
         m[str(i)] = hoy
     d['ids'] = dict(sorted(m.items()))
@@ -501,6 +516,13 @@ def _self_check():
         mal += not ok
         print('   %s la fecha de verificación: entra el nuevo con hoy, no pisa a los de antes, sin archivo no inventa'
               % ('✅' if ok else '🔴'))
+        # 🤖 un bot que había quedado en el acumulado sale, aunque no entre nadie nuevo
+        nb = anotar_desde(['1', '3'], '2026-10-15', r, bots={'2'})
+        with io.open(r, encoding='utf-8') as f:
+            m = json.load(f)['ids']
+        ok = nb == 0 and m == {'1': 'pre', '3': '2026-10-14'}
+        mal += not ok
+        print('   %s un bot sale del acumulado de verificados' % ('✅' if ok else '🔴'))
     print('\n══ EL PORTON DE IDENTIDAD ══\n')
     ver = {'111', '222'}
     casos = [

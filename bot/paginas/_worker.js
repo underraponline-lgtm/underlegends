@@ -187,6 +187,8 @@ const AVISOS = {
   '/api/avisos/pases': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js
   '/api/avisos/visita': 'POST',
+  // 👀 «estoy en la página», de cada pestaña, y lo que ve Dlx de eso (23/11/2026): ver `aqui()` en bot/avisos.js
+  '/api/avisos/aqui': 'POST', '/api/avisos/dueno-ahora': 'POST',
   // 🧭 el tutorial (12/10/2026): qué vio un navegador, sin nada de nadie. Ver `tutorial()` en bot/avisos.js
   '/api/avisos/tutorial': 'POST',
   // 📊 qué secciones se abren (12/10/2026): una por navegador y por día. Ver `seccion()` en bot/avisos.js
@@ -339,6 +341,21 @@ function visitaRepetida(req, que) {
   return false;
 }
 
+// 👀 «ESTOY EN LA PÁGINA», CON FRENO POR IP (23/11/2026). Cada pestaña avisa cada 4 minutos, así que 40 avisos en 10
+// minutos son 16 pestañas abiertas desde la misma IP (una casa, un colegio): más que eso es un script que quiere inflar
+// el número o gastar filas del objeto. Como el de la visita: en la memoria de cada instancia, un freno y no un candado
+const AQUI_IP = new Map();
+function aquiDeMas(req) {
+  const ip = req.headers.get('cf-connecting-ip') || '';
+  if (!ip) return false;
+  const ahora = Date.now();
+  if (AQUI_IP.size > 20000) AQUI_IP.clear();
+  const x = AQUI_IP.get(ip);
+  if (!x || ahora - x.t > 600000) { AQUI_IP.set(ip, { t: ahora, n: 1 }); return false; }
+  x.n++;
+  return x.n > 40;
+}
+
 // 👥 lo que cambia la lista pública de las crews: una acción de la gente y lo del dueño (ver el final de `avisos()`)
 const CREW_ACCION = { '/api/avisos/crew': 1, '/api/avisos/dueno/crew': 1 };
 
@@ -364,8 +381,8 @@ async function avisos(req, url, ctx) {
   }
   // 📱 el aviso que SÓLO dice «primera de la semana» (`ya`, 23/11/2026: pasa con la página abierta desde antes de que esto
   // saliera) lleva su propio freno: con el de la visita, el mismo navegador que ya contó hoy no llegaba nunca
-  if (url.pathname === '/api/avisos/visita'
-    && visitaRepetida(req, /"ya"\s*:\s*1/.test(await req.clone().text().catch(() => '')) ? 'sem' : '')) {
+  if ((url.pathname === '/api/avisos/aqui' && aquiDeMas(req)) || (url.pathname === '/api/avisos/visita'
+    && visitaRepetida(req, /"ya"\s*:\s*1/.test(await req.clone().text().catch(() => '')) ? 'sem' : ''))) {
     return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': 'no-store' } });
   }

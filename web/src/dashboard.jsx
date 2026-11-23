@@ -12,6 +12,7 @@ import { urlFondo } from './fondos.js';
 import { pedirCrews, useCrews } from './crews.js';
 import { AjEventosEstilo } from './dash_estilos.jsx';
 import { useNumero } from './anima.js';
+import { textoRol } from './roles.js';
 
 // 📸 la dirección de una foto de tarjeta, para el CSS: sólo del bucket de la Liga (las caras y las que esperan revisión)
 const urlFoto = (u) => (/^https:\/\/pub-[a-z0-9]+\.r2\.dev\/(fotos\/[a-z0-9-]+\/[\p{L}\p{N}_]+@[a-z]+|pendientes\/[a-f0-9]{24})\.(webp|jpg|png)$/u.test(String(u || ''))
@@ -197,19 +198,26 @@ function HacenPor({ w, ant }) {
 // repo: los verificados (`verificados_desde.json`, Miembro de DRA) y quién jugó en la T1 (los que debutaron cada semana).
 // Cada cuadro dice desde cuándo se cuenta y cuántos se sumaron en 7 días
 let verifP = null;
-const pedirVerif = () => (verifP = verifP || fetch(RAW + 'verificados_desde.json', { cache: 'no-store' })
-  .then((r) => (r.ok ? r.json() : null)).catch(() => null));
+const pedirVerif = () => (verifP = verifP || Promise.all(['verificados_desde.json', 'verificados.json'].map((f) => fetch(RAW + f, { cache: 'no-store' })
+  .then((r) => (r.ok ? r.json() : null)).catch(() => null))).then(([desde, hoy]) => (desde ? Object.assign({}, desde, { hoy }) : null)));
+// 🙈 Dlx no cuenta (23/11/2026: «I don't want my account to be counted in this or the bots»). Los bots con el rol Miembro
+// los saca bot/verificados.py desde la próxima vuelta del ciclo; acá, por las dudas, también los dos de la Liga
+const NO_CUENTAN = new Set(['739338101603696681', '1550026808404217926', '996162009412423782']);
 function HastaHoy({ h, S }) {
   const [v, setV] = useState(null);
   useEffect(() => { let vivo = true; pedirVerif().then((x) => { if (vivo) setV(x || false); }); return () => { vivo = false; }; }, []);
   const hace7 = masDias(hoyET(), -7);
-  const ver = v && v.ids ? Object.values(v.ids) : null;
+  // 🔑 «VERIFICADOS» ERA EL ACUMULADO Y SE LEÍA COMO OTRA COSA (Dlx, 23/11/2026, con 3.000: «so there are 3000 who entered
+  // with their discord account?»). Era todos los que tuvieron el rol alguna vez, también los 218 que ya no lo tienen. El
+  // número grande es el de HOY (`verificados.json`); el acumulado queda dicho abajo
+  const ver = v && v.ids ? Object.entries(v.ids).filter(([id]) => !NO_CUENTAN.has(id)).map(([, d]) => d) : null;
+  const verHoy = v && v.hoy && Array.isArray(v.hoy.ids) ? v.hoy.ids.filter((id) => !NO_CUENTAN.has(String(id))).length : null;
   const ss = (S && S.semanas) || [];
   const jugaron = ss.reduce((t, w) => t + ((w.debut || []).length), 0);
   const ultima = ss.length ? ss[ss.length - 1] : null;
   const cajas = [
-    { t: 'Verificados', v: ver ? ver.length : null, n: ver ? ver.filter((x) => x !== 'pre' && x > hace7).length : null,
-      p: v && v.pre ? 'Miembro de DRA · se cuenta desde el ' + corto(v.pre) : 'Miembro de DRA' },
+    { t: 'Verificados hoy', v: verHoy != null ? verHoy : ver ? ver.length : null, n: ver ? ver.filter((x) => x !== 'pre' && x > hace7).length : null,
+      p: 'con el rol Miembro de DRA' + (ver && verHoy != null ? ' · ' + num(ver.length) + ' lo tuvieron alguna vez' + (v.pre ? ' desde el ' + corto(v.pre) : '') : '') },
     { t: 'Entraron con su cuenta', v: h && h.web.n, n: h && h.web.nuevos, p: h && h.web.desde ? 'a la página, alguna vez · se cuenta desde el ' + corto(h.web.desde) : 'a la página, alguna vez' },
     { t: 'Usaron el bot', v: h && h.bot.n, n: h && h.bot.nuevos, p: h && h.bot.desde ? 'alguna vez · desde el ' + corto(h.bot.desde) : 'alguna vez' },
     { t: 'Jugaron en la T1', v: ss.length ? jugaron : null, n: ultima ? (ultima.debut || []).length : null, nTxt: ' esta semana',
@@ -233,6 +241,110 @@ function HastaHoy({ h, S }) {
     </div>
   );
 }
+// 👀 AHORA Y QUIÉN (23/11/2026). Dlx: «who is on the website right now, at what time there are more people, which staffs
+// are more active, who entered the website with and without their account», y a los nombres, «Names for everyone» (lo dice
+// /privacidad desde ese día). SÓLO DLX: `/avisos/dueno-ahora` contesta 403 a cualquier otro, y sin respuesta (el Worker sin
+// desplegar, otra cuenta) no se dibuja. Lo de «ahora» se pide cada minuto con la pestaña a la vista; lo demás lo guarda el
+// objeto 10 minutos (`numerosAhora()` en bot/avisos.js). Con cuenta son personas; sin cuenta, pestañas: no se sabe quién es
+const pedirAhora = () => fetch('/api/avisos/dueno-ahora', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
+  .then((r) => (r.ok ? r.json() : null)).catch(() => null);
+const SECC_AQUI = { inicio: 'el Inicio', perfil: 'un perfil', servidor: 'un servidor', ranking: 'el Ranking', tarjetas: 'Tarjetas',
+  ligas: 'Ligas', pase: 'el Pase', tienda: 'la Tienda', eventos: 'Eventos', publicaciones: 'Publicaciones', socios: 'Socios', guia: 'la Guía',
+  cuenta: 'Tu cuenta', ajustes: 'Ajustes', cambios: 'Lo nuevo', llave: 'una llave', crew: 'una crew', crews: 'Crews', pais: 'un país',
+  salon: 'el Salón', competencias: 'Competencias', inventario: 'el Inventario', invitar: 'Invita y gana', mods: 'Mods', dashboard: 'el Dashboard',
+  socio: 'el panel del socio', misiones: 'Misiones', global: 'el Ranking Global' };
+const enSecc = (s) => SECC_AQUI[s] || s || '—';
+const hh = (h) => (h % 12 || 12) + (h < 12 ? ' AM' : ' PM');
+const quienTxt = (x) => limpio(x.n || x.dn || '') || 'Cuenta sin nombre';
+function AhoraYQuien({ liga }) {
+  const [a, setA] = useState(null);
+  const [lista, setLista] = useState('entraron');
+  useEffect(() => {
+    let vivo = true;
+    const ir = () => { if (document.visibilityState === 'visible') pedirAhora().then((x) => { if (vivo) setA(x || false); }); };
+    ir();
+    const t = setInterval(ir, 60000);
+    document.addEventListener('visibilitychange', ir);
+    return () => { vivo = false; clearInterval(t); document.removeEventListener('visibilitychange', ir); };
+  }, []);
+  if (!a || !a.ok) return null;
+  const ah = a.ahora || { con: [], sin: 0, secc: {} };
+  const total = ah.con.length + (ah.sin || 0);
+  const horas = Array.from({ length: 24 }, (_, h) => (a.horas || []).find((x) => x.h === h) || { h, n: 0, nc: 0 });
+  const dias = Math.max(1, a.horas_dias || 1);
+  const tope = Math.max(1, ...horas.map((x) => x.n));
+  const pico = horas.reduce((m, x) => (x.n > m.n ? x : m), horas[0]);
+  const persona = (x) => (x.k ? <a href={'#/r/' + encodeURIComponent(x.k)}>{quienTxt(x)}</a> : <span>{quienTxt(x)}</span>);
+  const secc = Object.entries(ah.secc || {}).sort((p, q) => q[1] - p[1]).slice(0, 4);
+  return (
+    <section className="nc aq">
+      <div className="nc-cab"><h3 className="dz-h">Ahora y quién<small>con nombre · sólo lo ves tú · hora del este</small></h3></div>
+      <div className="nc-hero">
+        <div>
+          <span className="nc-t">En la página ahora</span>
+          <p className="nc-v"><b>{num(total)}</b><span className="nc-d">{num(ah.con.length)} con su cuenta · {num(ah.sin || 0)} sin cuenta</span></p>
+          <small className="nc-p">{total ? 'Avisaron en los últimos ' + (a.vivo_min || 6) + ' minutos' + (secc.length ? ' · ' + secc.map(([s, n]) => n + ' en ' + enSecc(s)).join(', ') : '') + '.'
+            : 'Nadie en los últimos ' + (a.vivo_min || 6) + ' minutos.'}</small>
+        </div>
+      </div>
+      {ah.con.length ? (
+        <ul className="aq-ya">{ah.con.map((x) => (
+          <li key={x.quien}>
+            <Cara liga={liga} k={x.k || ''} nombre={quienTxt(x)} cls="aq-av" lazy />
+            <span className="aq-q"><b>{persona(x)}</b><small>en {enSecc(x.s)} · lleva {Math.max(1, Math.round((x.t - x.ini) / 60000))} min{x.pest > 1 ? ' · ' + x.pest + ' pestañas' : ''}{x.dn && x.n && x.dn !== x.n ? ' · ' + x.dn + ' en Discord' : ''}</small></span>
+          </li>
+        ))}</ul>
+      ) : null}
+      <div className="aq-cols">
+        <div className="nc-c aq-horas">
+          <span className="nc-t">A qué hora entra la gente</span>
+          {a.horas_dias ? <>
+            <div className="aq-hb" role="img" aria-label={'Pestañas por hora; la más fuerte, de ' + hh(pico.h) + ' a ' + hh((pico.h + 1) % 24)}>{horas.map((x) => (
+              <i key={x.h} title={hh(x.h) + ': ' + (Math.round((x.n / dias) * 10) / 10) + ' pestañas por día (' + (Math.round((x.nc / dias) * 10) / 10) + ' con cuenta)'}
+                style={{ height: Math.max(2, Math.round((x.n / tope) * 100)) + '%' }} className={x.h === pico.h ? 'on' : ''}>
+                <em style={{ height: (x.n ? Math.round((x.nc / x.n) * 100) : 0) + '%' }} /></i>
+            ))}</div>
+            <div className="aq-fechas"><span>12 AM</span><span>6 AM</span><span>12 PM</span><span>6 PM</span><span>11 PM</span></div>
+            <small className="nc-p">La más fuerte, de <b>{hh(pico.h)} a {hh((pico.h + 1) % 24)}</b>: {Math.round((pico.n / dias) * 10) / 10} pestañas por día. Lo oscuro, con cuenta. {a.horas_dias} {a.horas_dias === 1 ? 'día' : 'días'} medidos.</small>
+          </> : <small className="nc-p">Se empieza a medir con el primer aviso de una pestaña.</small>}
+        </div>
+        <div className="nc-c aq-dias">
+          <span className="nc-t">Con y sin cuenta, por día</span>
+          {(a.por_dia || []).length ? (
+            <ul className="aq-dl">{a.por_dia.slice(-7).reverse().map((x) => (
+              <li key={x.dia}><span>{corto(x.dia)}</span><b>{num(x.con)}</b><small>con cuenta</small><b>{num(x.sin)}</b><small>pestañas sin cuenta</small></li>
+            ))}</ul>
+          ) : <small className="nc-p">Todavía sin días medidos.</small>}
+        </div>
+      </div>
+      <div className="aq-tabs" role="tablist" aria-label="Listas">
+        <button type="button" role="tab" aria-selected={lista === 'entraron'} onClick={() => setLista('entraron')}>Entraron con su cuenta · {num(a.entraron_n || 0)}</button>
+        <button type="button" role="tab" aria-selected={lista === 'staff'} onClick={() => setLista('staff')}>El staff · {num(a.staff_activos || 0)} de {num(a.staff_n || 0)} activos</button>
+      </div>
+      {lista === 'entraron' ? (
+        <ul className="aq-l">{(a.entraron || []).map((x) => (
+          <li key={x.quien}>
+            <span className="aq-q"><b>{persona(x)}</b><small>{x.visto ? 'visto ' + hace(x.visto) : 'último día ' + corto(x.ult)}</small></span>
+            <span className="aq-n"><b>{x.dias}</b><small>{x.dias === 1 ? 'día' : 'días'} en la página</small></span>
+            <span className="aq-n"><b>{x.bot}</b><small>en el bot</small></span>
+            <span className="aq-n"><b>{x.acc}</b><small>acciones</small></span>
+          </li>
+        ))}{!(a.entraron || []).length ? <li className="cero">Nadie en los últimos 7 días.</li> : null}</ul>
+      ) : (
+        <ul className="aq-l">{(a.staff || []).map((x) => (
+          <li key={x.quien} className={x.punt ? '' : 'cero'}>
+            <span className="aq-q"><b>{persona(x)}</b><small>{x.roles.map(textoRol).join(' · ')}{x.visto ? ' · visto ' + hace(x.visto) : ''}</small></span>
+            <span className="aq-n"><b>{x.corr}</b><small>correcciones</small></span>
+            <span className="aq-n"><b>{x.web}</b><small>días en la página</small></span>
+            <span className="aq-n"><b>{x.bot}</b><small>en el bot</small></span>
+          </li>
+        ))}</ul>
+      )}
+      <p className="nc-p">7 días. Las correcciones son lo que hizo con Mods o desde el panel de su servidor; «visto», la última vez que tuvo la página abierta. Tu cuenta y los bots no cuentan.</p>
+    </section>
+  );
+}
+
 function CincoCuadros({ uso, S, h }) {
   const [i0, setI] = useState(null);
   const us = uso || [];
@@ -6073,6 +6185,8 @@ export function Dashboard({ dc, liga }) {
       <>
       {/* 👥 arriba, los cinco cuadros (23/11/2026); lo demás, plegado en «Más números» */}
       <CincoCuadros uso={d.uso_semanas} S={semanas} h={d.historico} />
+      {/* 👀 quién está ahora, a qué hora entra la gente, con y sin cuenta, y el staff: con nombre, sólo Dlx (23/11/2026) */}
+      <AhoraYQuien liga={liga} />
       <NumerosTabs abrir={abrir} pedido={pedido} tabs={[
         // 👥 «La gente» tenía siete secciones (11/11/2026, Dlx: «Números en pestañas»): lo de quién vuelve y lo de la semana
         ['gente', 'Quién vuelve', <>

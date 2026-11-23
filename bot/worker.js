@@ -2124,7 +2124,7 @@ async function cuentaDiscord(req, env) {
   // 🔑 Y LA SESIÓN: entrar una vez alcanza para votar, poner precios y ver la
   // billetera `SESION_DIAS` días, sin volver a Discord (Dlx, 28/09/2026: «me
   // sigue preguntando y redirigiéndome»). Ver `sesionNueva()` en avisos.js.
-  const ses = await sesionNueva(env, u.id);
+  const ses = await sesionNueva(env, u.id, u.global_name || u.username || '');
   if (ses && ses.ses) h['set-cookie'] = cookieSesion(ses.ses, SESION_DIAS * 86400);
   // 🫂 Y TUS SERVIDORES, SI DISTE EL PERMISO (Dlx, 21/11/2026: «que ese permiso esté en el Discord… y nada más»): la
   // página pide `guilds` al entrar y Discord lo muestra en su pantalla. Con él, una lectura de tu lista, que va al objeto

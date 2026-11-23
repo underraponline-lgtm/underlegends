@@ -3909,6 +3909,9 @@ const RUTAS = {
   '/avisos/favoritos': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
   '/avisos/visita': 'POST',
+  // 👀 «estoy en la página», de cada pestaña cada `AQUI_MIN` minutos, y lo que ve Dlx de eso (23/11/2026). Ver `aqui()` y
+  // `numerosAhora()` del objeto
+  '/avisos/aqui': 'POST', '/avisos/dueno-ahora': 'POST',
   // 🧭 el tutorial (12/10/2026): qué vio y qué terminó un navegador, sin nada de nadie. Ver `tutorial()` del objeto
   '/avisos/tutorial': 'POST',
   // 📊 qué secciones se abren (12/10/2026): una por navegador y por día, sin nada de nadie. Ver `seccion()` del objeto
@@ -5696,6 +5699,18 @@ export const APP_ID = '1550026808404217926';
 export const DUENO = '739338101603696681';
 // 👑 y su perfil (/r/dlx, sus cartas en R2 bajo `dlx/`): no juega, así que `claveDe()` no siempre lo encuentra
 export const DUENO_K = 'dlx';
+// 🙈 QUIÉN NO CUENTA EN LOS NÚMEROS (23/11/2026, Dlx: «I don't want my account to be counted in this or the bots»): su
+// cuenta y las de los bots de la Liga —ULAYA (el de /card, `APP_ID`) y LEGENDS (el de MEE6)—. No entran a `uso`,
+// `acciones`, `historia` ni a lo de «ahora» (`aqui`); su racha sigue igual (`diaActivo()`). Lo que ya había se borra una
+// vez (`fueraLimpiar()`). Los bots que tienen el rol Miembro los saca `bot/verificados.py` (`user.bot`)
+export const FUERA_DE_NUMEROS = new Set([DUENO, APP_ID, '996162009412423782']);
+// 👀 «ESTÁ EN LA PÁGINA AHORA» (23/11/2026, Dlx: «who is on the website right now», con nombre —«Names for everyone»—): la
+// pestaña avisa al abrir y cada `AQUI_MIN` minutos mientras se ve (App.jsx); está «ahora» quien avisó en los últimos
+// `AQUI_VIVO_MIN`. Lo dice /privacidad desde ese día
+export const AQUI_MIN = 4;
+export const AQUI_VIVO_MIN = 6;
+/** la sección que dice el aviso: una palabra corta (la que la página llama `seccion` en App.jsx); lo demás, 'otra' */
+const AQUI_SECC = /^[a-z][a-z0-9-]{0,23}$/;
 /** 🎟️ lo que Dlx puede hacer con el sorteo del premium desde el Dashboard (`sorteoDueno()`) */
 export const SORTEO_ACCIONES = ['ver', 'rehacer', 'elegir', 'sacar_rol', 'reintentar_rol'];
 /** 🛍️ lo que bot/tienda.js necesita de acá (sin importar avisos.js desde allá, que daría un ciclo) */
@@ -6177,9 +6192,10 @@ async function alObjetoSesion(env, sub, cuerpo) {
 }
 
 /** Una sesión nueva para ese Discord ID: `{ses, vence}`, o `null`. */
-export async function sesionNueva(env, quien) {
+/** `nombre`: el de Discord, para «quién está en la página» del Dashboard (23/11/2026; ver `cuenta_nombre`) */
+export async function sesionNueva(env, quien, nombre = '') {
   if (!/^[0-9]{5,25}$/.test(String(quien || ''))) return null;
-  return alObjetoSesion(env, 'nueva', { quien: String(quien) });
+  return alObjetoSesion(env, 'nueva', Object.assign({ quien: String(quien) }, nombre ? { n: String(nombre).slice(0, 40) } : {}));
 }
 
 const sesDe = (req) => {
@@ -6905,6 +6921,35 @@ export async function rutaAvisos(req, env, ruta) {
     } catch (e) { /* sin nada: la visita igual cuenta */ }
     return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: JSON.stringify(va),
       headers: { 'content-type': 'application/json' } });
+  }
+  // 👀 «ESTOY EN LA PÁGINA» (23/11/2026, ver `aqui()` del objeto): el código de la pestaña, la sección y la sesión del
+  // pedido, si hay. ⚠️ NO pasa por `quienPide()`: eso sería otra llamada al objeto y anotaría el día como una acción
+  if (ruta === '/avisos/aqui') {
+    const crudo = await req.text().catch(() => '');
+    const va = {};
+    try {
+      const d = crudo.length <= 200 ? JSON.parse(crudo) : null;
+      if (d && typeof d.k === 'string' && /^[a-z0-9]{10,24}$/.test(d.k)) va.k = d.k;
+      if (d && typeof d.s === 'string' && d.s.length <= 24) va.s = d.s;
+    } catch (e) { /* sin código no cuenta */ }
+    if (!va.k) return json({ error: 'faltan datos' }, 400);
+    const ses = sesDe(req);
+    if (ses) va.ses = ses;
+    return elObjeto(env).fetch('https://avisos/aqui', { method: 'POST', body: JSON.stringify(va),
+      headers: { 'content-type': 'application/json' } });
+  }
+  // 👀 y lo que ve Dlx de eso, CON NOMBRES (Dlx, 23/11/2026: «Names for everyone»; lo dice /privacidad): sólo él
+  if (ruta === '/avisos/dueno-ahora') {
+    const crudo = await req.text().catch(() => '');
+    let d = null;
+    try { d = crudo.length <= 1024 ? JSON.parse(crudo || '{}') : null; } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (String(q.id) !== DUENO) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/dueno-ahora', { method: 'POST', body: '{}', headers: { 'content-type': 'application/json' } });
   }
   // 🔑 LO QUE SE ANOTÓ, PARA EL CICLO: trae Discord IDs, así que sin la clave
   // del ciclo contesta que no existe (ver `claveCiclo()`)
@@ -9013,6 +9058,21 @@ export class Avisos {
       // días. Acá cada navegador cuenta el día de su primera visita de la semana (`sem` en `visita()`): la suma de lunes
       // a domingo es cuántos distintos. Sólo un número por día, como `visitas`
       this.sql.exec('CREATE TABLE IF NOT EXISTS visitas_sem (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
+      // 👀 QUIÉN ESTÁ EN LA PÁGINA (23/11/2026, Dlx: «who is on the website right now… at what time there are more people…
+      // who entered the website with and without their account», y «Names for everyone»; ver `aqui()`). `aqui`: el último
+      // aviso de cada pestaña (`k`, un código al azar de la pestaña), con quién es si entró con su cuenta (`quien`, '' si no),
+      // en qué sección está y desde cuándo; se borra al día siguiente. `aqui_dia`: cada pestaña una vez por día, para «con
+      // y sin cuenta». `horas`: cuántas pestañas avisaron en cada hora del este (`nc`: con cuenta). Las dos, `USO_DIAS`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS aqui (k TEXT PRIMARY KEY, quien TEXT NOT NULL DEFAULT '', s TEXT NOT NULL DEFAULT '', " +
+        't INTEGER NOT NULL, ini INTEGER NOT NULL)');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS aqui_t ON aqui (t)');
+      this.sql.exec("CREATE TABLE IF NOT EXISTS aqui_dia (dia TEXT NOT NULL, k TEXT NOT NULL, quien TEXT NOT NULL DEFAULT '', " +
+        'PRIMARY KEY (dia, k)) WITHOUT ROWID');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS horas (dia TEXT NOT NULL, h INTEGER NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
+        'nc INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (dia, h)) WITHOUT ROWID');
+      // 🪪 y el nombre de Discord de quien entra con su cuenta (`/sesion/nueva`), para mostrarlo en esas listas: mucha gente
+      // que entra no está en la Lista, y sin esto salía un número
+      this.sql.exec('CREATE TABLE IF NOT EXISTS cuenta_nombre (quien TEXT PRIMARY KEY, n TEXT NOT NULL, t INTEGER NOT NULL)');
       // 🔗 y de qué link llegó la visita nueva (21/11/2026, el plan de alcance): `?de=<canal>`. Sólo el canal y un número
       this.sql.exec('CREATE TABLE IF NOT EXISTS llegadas (dia TEXT NOT NULL, de TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, de)) WITHOUT ROWID');
@@ -10394,6 +10454,9 @@ export class Avisos {
         return json({ ok: true });
       }
       if (ruta === '/visita') return this.visita(d);
+      // 👀 quién está en la página (23/11/2026): el aviso de cada pestaña, y lo que ve Dlx (la ruta ya comprobó que es él)
+      if (ruta === '/aqui') return await this.aqui(d);
+      if (ruta === '/dueno-ahora') return json(this.numerosAhora());
       // 🔴 CON `d`, NO CON OTRO `req.json()` (12/10/2026): el cuerpo ya se leyó arriba, así que leerlo de nuevo daba
       // null y el tutorial contestó «faltan datos» a todo desde que salió (2.78). Las pruebas llamaban a `tutorial()`
       // directo y no pasaban por acá; ahora `avisos_prueba.mjs` entra por `fetch()`, como la página
@@ -10807,6 +10870,10 @@ export class Avisos {
       // 📊 el uso: quién, `USO_DIAS` días; las visitas (sólo un número por día), 90
       this.sql.exec('DELETE FROM uso WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM acciones WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
+      // 👀 y lo de quién está en la página: el último aviso de cada pestaña, un día; por día y por hora, `USO_DIAS`
+      this.sql.exec('DELETE FROM aqui WHERE t < ?', ahora - DIA_MS);
+      this.sql.exec('DELETE FROM aqui_dia WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
+      this.sql.exec('DELETE FROM horas WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM visitas_sem WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM llegadas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
@@ -14701,6 +14768,13 @@ export class Avisos {
     this.sql.exec('DELETE FROM promo_extra WHERE quien = ?', String(d.quien));
     // 📊 y los días que usó el bot o la página (el Dashboard): guardaban su Discord ID 35 días (revisión del 05/10/2026)
     this.sql.exec('DELETE FROM uso WHERE quien = ?', String(d.quien));
+    // 🧾 y qué hizo y la primera vez de cada cosa (las dos del 23/11/2026, que se habían quedado afuera de acá), y lo de
+    // quién está en la página con su nombre de Discord (`aqui()`): /privacidad dice que se borran al pedirlo
+    this.sql.exec('DELETE FROM acciones WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM historia WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM aqui WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM aqui_dia WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM cuenta_nombre WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
     // 🖼️ y su fondo, con las imágenes (13/10/2026)
@@ -18962,6 +19036,12 @@ export class Avisos {
       // llenaba la tabla. Diez son diez dispositivos; entrar en el undécimo cierra la más vieja
       this.sql.exec('DELETE FROM sesiones WHERE quien = ? AND h NOT IN ' +
         '(SELECT h FROM sesiones WHERE quien = ? ORDER BY t DESC LIMIT 10)', String(d.quien), String(d.quien));
+      // 🪪 y su nombre de Discord, para «quién está en la página» (23/11/2026, ver `cuenta_nombre`)
+      const n = typeof d.n === 'string' ? d.n.replace(/[\u0000-\u001f]/g, '').trim().slice(0, 40) : '';
+      if (n && !FUERA_DE_NUMEROS.has(String(d.quien))) {
+        this.sql.exec('INSERT INTO cuenta_nombre (quien, n, t) VALUES (?, ?, ?) ON CONFLICT(quien) DO UPDATE SET n = excluded.n, t = excluded.t',
+          String(d.quien), n, ahora);
+      }
       return json({ ses, vence });
     }
     if (!/^[A-Za-z0-9_-]{30,100}$/.test(String(d.ses || ''))) return json({ error: 'faltan datos' }, 400);
@@ -19516,6 +19596,11 @@ export class Avisos {
   usoAnotar(d) {
     if (!/^[0-9]{5,25}$/.test(String(d.quien || '')) || (d.por !== 'bot' && d.por !== 'web')) {
       return json({ error: 'faltan datos' }, 400);
+    }
+    // 🙈 Dlx y los bots no cuentan (`FUERA_DE_NUMEROS`): su día de racha, sí
+    if (FUERA_DE_NUMEROS.has(String(d.quien))) {
+      this.diaActivo(String(d.quien), diaET());
+      return json({ ok: true });
     }
     // el día lo pone el objeto: uno que llega de otra zona o de otro reloj no inventa días
     this.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', diaET(), String(d.quien), d.por);
@@ -21783,6 +21868,152 @@ export class Avisos {
       }
     }
     return json({ ok: true });
+  }
+
+  /**
+   * 👀 EL AVISO DE «ESTOY ACÁ» (23/11/2026, ver la tabla `aqui`). `k`: el código al azar de la pestaña; `s`: la sección;
+   * `ses`: su sesión si entró con su cuenta (la del pedido, que pasa el Worker, así es UNA llamada al objeto y no dos).
+   * Escribe una fila por aviso, y una de `horas` / `aqui_dia` sólo la primera vez de esa hora / ese día. Con topes, porque
+   * lo puede mandar cualquiera: 6.000 pestañas a la vez y 20.000 por hora (además del freno por IP de _worker.js)
+   */
+  async aqui(d, ahora = Date.now()) {
+    const k = String((d && d.k) || '');
+    if (!/^[a-z0-9]{10,24}$/.test(k)) return json({ error: 'faltan datos' }, 400);
+    const s = AQUI_SECC.test(String((d && d.s) || '')) ? String(d.s) : 'otra';
+    let quien = '';
+    if (d && /^[A-Za-z0-9_-]{30,100}$/.test(String(d.ses || ''))) {
+      const h = [...new Uint8Array(await crypto.subtle.digest('SHA-256', utf8(String(d.ses))))]
+        .map((b) => b.toString(16).padStart(2, '0')).join('');
+      const f = this.sql.exec('SELECT quien FROM sesiones WHERE h = ? AND vence > ?', h, ahora).toArray()[0];
+      quien = f ? String(f.quien) : '';
+    }
+    // 🙈 Dlx y los bots no cuentan
+    if (quien && FUERA_DE_NUMEROS.has(quien)) return json({ ok: true });
+    const antes = this.sql.exec('SELECT t, quien FROM aqui WHERE k = ?', k).toArray()[0];
+    if (!antes && this.sql.exec('SELECT COUNT(*) AS n FROM aqui WHERE t > ?', ahora - AQUI_VIVO_MIN * MIN).toArray()[0].n >= 6000) {
+      return json({ ok: true });
+    }
+    this.sql.exec('INSERT INTO aqui (k, quien, s, t, ini) VALUES (?, ?, ?, ?, ?) ON CONFLICT(k) DO UPDATE SET quien = excluded.quien, ' +
+      's = excluded.s, t = excluded.t', k, quien, s, ahora, ahora);
+    const dia = diaET(ahora), hora = Number(horaET(ahora).slice(0, 2));
+    if (!antes || diaET(antes.t) !== dia || Number(horaET(antes.t).slice(0, 2)) !== hora) {
+      this.sql.exec('INSERT INTO horas (dia, h, n, nc) VALUES (?, ?, 1, ?) ON CONFLICT(dia, h) DO UPDATE SET n = n + 1, nc = nc + excluded.nc ' +
+        'WHERE n < 20000', dia, hora, quien ? 1 : 0);
+    }
+    // una vez por pestaña y por día; y si entró con su cuenta después del primer aviso, se le pone quién es
+    if (!antes || diaET(antes.t) !== dia || (quien && !antes.quien)) {
+      this.sql.exec("INSERT INTO aqui_dia (dia, k, quien) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET quien = excluded.quien " +
+        "WHERE excluded.quien != ''", dia, k, quien);
+    }
+    return json({ ok: true });
+  }
+
+  /** 🙈 Lo que Dlx y los bots dejaron en los números antes del 23/11/2026, borrado una vez (ver `FUERA_DE_NUMEROS`) */
+  fueraLimpiar() {
+    if (this.leer('fuera_limpio')) return;
+    const ids = [...FUERA_DE_NUMEROS];
+    const q = ids.map(() => '?').join(', ');
+    for (const t of ['uso', 'acciones', 'historia']) this.sql.exec('DELETE FROM ' + t + ' WHERE quien IN (' + q + ')', ...ids);
+    this.guardar('fuera_limpio', { t: Date.now() });
+  }
+
+  /** 🪪 El nombre de cada uno: el de la Lista (con su clave de perfil) y el de Discord con que entró. Nunca vacío del todo */
+  nombresDe(ids) {
+    const dir = new Map(((this.leer('roles_dir') || {}).dir || []).map((p) => [String(p.id), p]));
+    const dc = {};
+    const lista = [...new Set(ids.map(String))];
+    for (let i = 0; i < lista.length; i += 90) {
+      const lote = lista.slice(i, i + 90);
+      for (const f of this.sql.exec('SELECT quien, n FROM cuenta_nombre WHERE quien IN (' + lote.map(() => '?').join(', ') + ')', ...lote)
+        .toArray()) dc[f.quien] = f.n;
+    }
+    const out = {};
+    for (const id of lista) {
+      const p = dir.get(id);
+      out[id] = { n: (p && p.n) || dc[id] || '', dn: dc[id] || '', k: (p && p.k) || '' };
+    }
+    return out;
+  }
+
+  /**
+   * 👀 DASHBOARD → NÚMEROS → «AHORA Y QUIÉN», SÓLO PARA DLX (23/11/2026, Dlx: «who is on the website right now, at what
+   * time there are more people, which staffs are more active, who entered the website with and without their account», y
+   * a los nombres, «Names for everyone»). Lo de «ahora» se arma en cada pedido (lee sólo los avisos de los últimos
+   * `AQUI_VIVO_MIN` minutos); lo demás, guardado 10 minutos (`_numerosQuien()`). Lo pide `/avisos/dueno-ahora`, que ya
+   * comprobó que es Dlx
+   */
+  numerosAhora(ahora = Date.now()) {
+    this.fueraLimpiar();
+    const filas = this.sql.exec('SELECT k, quien, s, t, ini FROM aqui WHERE t > ? ORDER BY t DESC LIMIT 1000',
+      ahora - AQUI_VIVO_MIN * MIN).toArray();
+    const con = new Map();
+    let sin = 0;
+    const secc = {};
+    for (const f of filas) {
+      secc[f.s] = (secc[f.s] || 0) + 1;
+      if (!f.quien) { sin++; continue; }
+      const x = con.get(f.quien);
+      // la misma persona en dos pestañas: la más nueva, y desde cuándo está (la que abrió primero)
+      if (!x) con.set(f.quien, { quien: f.quien, s: f.s, t: f.t, ini: f.ini, pest: 1 });
+      else { x.ini = Math.min(x.ini, f.ini); x.pest++; }
+    }
+    const nom = this.nombresDe([...con.keys()]);
+    const lista = [...con.values()].map((x) => Object.assign({ quien: x.quien, s: x.s, t: x.t, ini: x.ini, pest: x.pest }, nom[x.quien]));
+    return Object.assign({ ok: true, t: ahora, vivo_min: AQUI_VIVO_MIN, ahora: { con: lista, sin, secc } },
+      this.delMinuto('resumen:quien', 600, () => this._numerosQuien(ahora)));
+  }
+
+  _numerosQuien(ahora = Date.now()) {
+    const d7 = diaET(ahora - 7 * DIA_MS), d14 = diaET(ahora - 14 * DIA_MS);
+    const fuera = (q) => FUERA_DE_NUMEROS.has(String(q));
+    // ⏰ a qué hora entra la gente: pestañas por hora del este, los últimos 14 días (y en cuántos días hubo datos)
+    const horas = this.sql.exec('SELECT h, SUM(n) AS n, SUM(nc) AS nc FROM horas WHERE dia > ? GROUP BY h', d14).toArray()
+      .map((f) => ({ h: f.h, n: f.n || 0, nc: f.nc || 0 }));
+    const diasHoras = this.sql.exec('SELECT COUNT(DISTINCT dia) AS n, MIN(dia) AS desde FROM horas WHERE dia > ?', d14).toArray()[0];
+    // 🔑 con y sin cuenta, por día: con cuenta son personas; sin cuenta, pestañas (no se sabe quién es)
+    const porDia = this.sql.exec("SELECT dia, COUNT(DISTINCT CASE WHEN quien != '' THEN quien END) AS con, " +
+      "SUM(CASE WHEN quien = '' THEN 1 ELSE 0 END) AS sin FROM aqui_dia WHERE dia > ? GROUP BY dia ORDER BY dia", d14).toArray()
+      .map((f) => ({ dia: f.dia, con: f.con || 0, sin: f.sin || 0 }));
+    // 🪪 quién entró con su cuenta, 7 días: los días que avisó desde la página o hizo algo en ella, y los del bot
+    const web = new Map();
+    for (const f of this.sql.exec("SELECT quien, COUNT(DISTINCT dia) AS d, MAX(dia) AS u FROM (SELECT quien, dia FROM aqui_dia " +
+      "WHERE dia > ? AND quien != '' UNION SELECT quien, dia FROM uso WHERE por = 'web' AND dia > ?) GROUP BY quien", d7, d7).toArray()) {
+      if (!fuera(f.quien)) web.set(f.quien, { dias: f.d, ult: f.u });
+    }
+    const bot = new Map(this.sql.exec("SELECT quien, COUNT(*) AS d FROM uso WHERE por = 'bot' AND dia > ? GROUP BY quien", d7).toArray()
+      .map((f) => [f.quien, f.d]));
+    const visto = new Map(this.sql.exec("SELECT quien, MAX(t) AS t FROM aqui WHERE quien != '' GROUP BY quien").toArray().map((f) => [f.quien, f.t]));
+    const acc = new Map(this.sql.exec('SELECT quien, COUNT(*) AS n FROM acciones WHERE dia > ? GROUP BY quien', d7).toArray()
+      .map((f) => [f.quien, f.n]));
+    const entraronIds = [...web.keys()].sort((a, b) => web.get(b).dias - web.get(a).dias || String(web.get(b).ult).localeCompare(String(web.get(a).ult)))
+      .slice(0, 300);
+    const nom = this.nombresDe(entraronIds);
+    const entraron = entraronIds.map((q) => Object.assign({ quien: q, dias: web.get(q).dias, ult: web.get(q).ult, bot: bot.get(q) || 0,
+      acc: acc.get(q) || 0, visto: visto.get(q) || null }, nom[q]));
+    // 🛠️ el staff, 7 días: quién tiene un rol de staff (los de la página y los de cada servidor), y qué hizo
+    let corr = new Map();
+    try {
+      corr = new Map(this.sql.exec('SELECT quien, COUNT(*) AS n, MAX(t) AS u FROM socio_log WHERE t > ? GROUP BY quien', ahora - 7 * DIA_MS)
+        .toArray().map((f) => [String(f.quien), { n: f.n, u: f.u }]));
+    } catch (e) { corr = new Map(); }
+    const man = this.rolesManual();
+    const STAFF = ['admin', 'moderador', 'asistente', 'socio', 'staff', 'organizador', 'jurado', 'host'];
+    const staff = [];
+    for (const p of (this.leer('roles_dir') || {}).dir || []) {
+      if (fuera(p.id)) continue;
+      const roles = this.rolesDe(p, man).filter((r) => STAFF.includes(r[0]));
+      if (!roles.length) continue;
+      const w = web.get(p.id);
+      const c = corr.get(p.id);
+      const x = { quien: p.id, n: p.n, k: p.k, roles, web: w ? w.dias : 0, bot: bot.get(p.id) || 0, acc: acc.get(p.id) || 0,
+        corr: c ? c.n : 0, visto: Math.max(visto.get(p.id) || 0, c ? c.u : 0) || null };
+      // lo que pesa: lo que corrigió (es trabajo de staff), después los días que estuvo
+      x.punt = x.corr * 3 + x.web + x.bot + Math.min(x.acc, 20) / 4;
+      staff.push(x);
+    }
+    staff.sort((a, b) => b.punt - a.punt || String(a.n).localeCompare(String(b.n)));
+    return { horas, horas_dias: diasHoras.n || 0, horas_desde: diasHoras.desde || null, por_dia: porDia, entraron,
+      entraron_n: web.size, staff: staff.slice(0, 80), staff_n: staff.length, staff_activos: staff.filter((x) => x.punt > 0).length };
   }
 
   /** 🔗 De qué link llegaron las visitas nuevas en los últimos 30 días: `[{de, n}]`, el que más trajo primero */

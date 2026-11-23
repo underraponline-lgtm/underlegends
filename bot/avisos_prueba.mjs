@@ -1406,6 +1406,56 @@ const ok = (cond, que, det) => {
     const viejas = o._usoSemanas(Date.parse('2026-11-12T16:00:00Z')).filter((x) => x.hacen_por);
     ok(viejas.some((x) => x.hacen_por.aplaudieron.parcial) && !viejas[viejas.length - 1].hacen_por.aplaudieron.parcial,
       'una semana que empezó hace más de 30 días dice que sus aplausos están incompletos (se borran a los 30)', JSON.stringify(viejas.map((x) => [x.lunes, x.hacen_por.aplaudieron])));
+    // 🙈 DLX Y LOS BOTS NO CUENTAN (23/11/2026, Dlx: «I don't want my account to be counted in this or the bots»)
+    o.usoAnotar({ quien: A.DUENO, por: 'web', que: 'web:seguir' });
+    o.usoAnotar({ quien: A.APP_ID, por: 'bot', que: 'cmd:card' });
+    const cuantos = (t, q) => o.sql.exec('SELECT COUNT(*) AS n FROM ' + t + ' WHERE quien = ?', q).toArray()[0].n;
+    ok(cuantos('uso', A.DUENO) === 0 && cuantos('acciones', A.DUENO) === 0 && cuantos('historia', A.DUENO) === 0 && cuantos('uso', A.APP_ID) === 0,
+      'Dlx y el bot no entran a uso, acciones ni historia');
+    // y lo que ya había, se borra una vez
+    o.guardar('fuera_limpio', null);
+    o.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', '2026-11-20', A.DUENO, 'web');
+    o.sql.exec('INSERT OR IGNORE INTO historia (quien, que, primera) VALUES (?, ?, ?)', A.DUENO, 'web', '2026-10-01');
+    o.sql.exec('INSERT OR IGNORE INTO acciones (dia, que, por, quien) VALUES (?, ?, ?, ?)', '2026-11-20', 'web:seguir', 'web', A.DUENO);
+    o.fueraLimpiar();
+    ok(cuantos('uso', A.DUENO) === 0 && cuantos('historia', A.DUENO) === 0 && cuantos('acciones', A.DUENO) === 0 && !!o.leer('fuera_limpio'),
+      'lo que Dlx dejó antes en los números se borra una vez');
+    // 👀 QUIÉN ESTÁ EN LA PÁGINA (23/11/2026): con su sesión, con su nombre de Discord; sin cuenta, una pestaña; Dlx no
+    const sesDe = async (quien, n) => (await (await o.sesion('/sesion/nueva', Object.assign({ quien }, n ? { n } : {}))).json()).ses;
+    const sP = await sesDe('5555555', 'Pepe');
+    const sD = await sesDe(A.DUENO, 'Dlx');
+    const st = async (d) => (await o.aqui(d)).status;
+    ok(await st({ k: 'pepepestana1', s: 'ranking', ses: sP }) === 200 && await st({ k: 'sincuenta001', s: 'inicio' }) === 200
+      && await st({ k: 'pepepestana1', s: 'tienda', ses: sP }) === 200 && await st({ k: 'dlxpestana01', s: 'inicio', ses: sD }) === 200
+      && await st({ k: 'MAL', s: 'x' }) === 400 && await st({ k: 'otrasincuen2', s: '<b>' }) === 200,
+    'el aviso: código válido con o sin sesión; un código malo no entra');
+    o.guardar('ruta:resumen:quien', null);
+    if (o.rutaMem) delete o.rutaMem['resumen:quien'];
+    const na = o.numerosAhora();
+    const pepe = na.ahora.con.find((x) => x.quien === '5555555');
+    const hoyHoras = na.horas.reduce((s, x) => s + x.n, 0), hoyNc = na.horas.reduce((s, x) => s + x.nc, 0);
+    const hoyD = na.por_dia[na.por_dia.length - 1] || {};
+    ok(na.ok && na.ahora.con.length === 1 && pepe && pepe.n === 'Pepe' && pepe.s === 'tienda' && na.ahora.sin === 2
+      && na.ahora.secc.otra === 1 && hoyHoras === 3 && hoyNc === 1 && hoyD.con === 1 && hoyD.sin === 2
+      && na.entraron.some((x) => x.quien === '5555555' && x.dias === 1 && x.n === 'Pepe') && !na.entraron.some((x) => x.quien === A.DUENO)
+      && cuantos('aqui', A.DUENO) === 0 && cuantos('cuenta_nombre', A.DUENO) === 0,
+    'ahora: Pepe con su nombre y su última sección, dos pestañas sin cuenta (la sección rara es «otra»), por hora y por día una vez cada pestaña; Dlx, en ningún lado',
+    JSON.stringify({ ahora: na.ahora, horas: na.horas, por_dia: na.por_dia, entraron: na.entraron }));
+    // 🛠️ el staff: quien tiene un rol de staff en el directorio, con lo que corrigió
+    o.guardar('roles_dir', { t: Date.now(), dir: [{ k: 'pepe', n: 'Pepe Rap', id: '5555555', a: { organizador: ['FFA'] } },
+      { k: 'nadie', n: 'Nadie', id: '6666666', a: { competidor: [] } }, { k: 'dlx', n: 'Dlx', id: A.DUENO, a: {} }] });
+    o.socioAnotar('FFA', '5555555', 'organizador', 'llave: corregir', '', '');
+    o.guardar('ruta:resumen:quien', null);
+    if (o.rutaMem) delete o.rutaMem['resumen:quien'];
+    const ns = o.numerosAhora();
+    ok(ns.staff.length === 1 && ns.staff[0].quien === '5555555' && ns.staff[0].n === 'Pepe Rap' && ns.staff[0].corr === 1 && ns.staff[0].web === 1
+      && ns.staff_activos === 1 && ns.ahora.con[0].n === 'Pepe Rap' && ns.ahora.con[0].dn === 'Pepe',
+    'el staff: el organizador con su corrección y sus días; el nombre de la Lista primero y el de Discord al lado; Dlx no está', JSON.stringify(ns.staff));
+    // 🗑️ y pedir que lo olviden se lo lleva todo
+    await o.olvidar({ quien: '5555555' });
+    ok(cuantos('aqui', '5555555') === 0 && cuantos('aqui_dia', '5555555') === 0 && cuantos('cuenta_nombre', '5555555') === 0
+      && cuantos('historia', '5555555') === 0 && cuantos('acciones', '5555555') === 0,
+    'olvidar a alguien borra quién estuvo en la página, su nombre, la primera vez de cada cosa y sus acciones');
   }
 }
 
@@ -3951,6 +4001,19 @@ const ok = (cond, que, det) => {
     ok(aVisita.join('|') === '{"de":"urbanstreet"}|{}|{}|{}|{}|{"sem":1}|{"sem":1,"ya":1}|{}|{"de":"redgol"}',
       'la visita por la puerta: pasa sólo el canal válido y las marcas `sem`/`ya` (23/11: `ya` sólo con `sem`, y sólo el número 1); lo demás llega como {}',
       aVisita.join('|'));
+    // 👀 «estoy en la página» por la puerta (23/11/2026): pasa el código, la sección y la sesión del pedido, nada más; y lo
+    // que ve Dlx, sin sesión, no contesta
+    const aAqui = [];
+    const envAqui = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, op) => {
+      aAqui.push(op.body); return new Response('{"ok":true}'); } }) } };
+    const ses40 = 'a'.repeat(40);
+    const pAqui = async (cuerpo, h) => (await A.rutaAvisos(new Request('https://x/avisos/aqui', { method: 'POST', body: cuerpo, headers: h || {} }),
+      envAqui, '/avisos/aqui')).status;
+    ok(await pAqui('{"k":"abcdefghij12","s":"ranking","quien":"1"}', { 'x-lg-ses': ses40 }) === 200 && await pAqui('{"k":"x"}') === 400
+      && await pAqui('no es json') === 400 && aAqui.length === 1 && aAqui[0] === JSON.stringify({ k: 'abcdefghij12', s: 'ranking', ses: ses40 }),
+    'el aviso por la puerta: sólo código, sección y la sesión del pedido (un «quien» del cuerpo no pasa)', aAqui.join('|'));
+    const dAhora = await A.rutaAvisos(new Request('https://x/avisos/dueno-ahora', { method: 'POST', body: '{}' }), envAqui, '/avisos/dueno-ahora');
+    ok(dAhora.status === 401 && aAqui.length === 1, 'lo que ve Dlx: sin sesión no contesta ni le pregunta al objeto', String(dAhora.status));
     // 📊 el panel de los socios (19/10/2026): las visitas de cada servidor, y quién ve qué
     o.guardar('tiers', { t: '2026-10-19T23:00:00Z', semanas: 4, servidores: [
       { sv: 'FFA', nombre: 'Freestyle For All', tier: 1, dueno: '400000000000000001', puntos: 81, antes: 40, rec: 'bien', porque: 'x',
