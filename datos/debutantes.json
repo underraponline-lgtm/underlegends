@@ -818,10 +818,11 @@
    "vencido": false
   },
   "Dorado": {
+   "avisado": "2026-11-22",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-22T23:42:56+00:00",
-   "did": "",
+   "did": "940665101906759703",
    "evento": "INICIO DEL FIN VOL.1",
    "n": 677,
    "sv": "DW",
@@ -2998,6 +2999,7 @@
    "vencido": true
   },
   "Teo": {
+   "avisado": "2026-11-22",
    "chat": "2026-11-22",
    "con": null,
    "cumplido": "",
@@ -3339,10 +3341,11 @@
    "vencido": true
   },
   "_Mateo": {
+   "avisado": "2026-11-22",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-22T23:42:56+00:00",
-   "did": "",
+   "did": "826494792556871751",
    "evento": "INICIO DEL FIN VOL.1",
    "n": 677,
    "sv": "DW",

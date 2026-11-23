@@ -10555,141 +10555,31 @@
    "b": "ORIUZ",
    "ganador": "MCO",
    "votos": "2–0"
+  },
+  "1574238058914644031": {
+   "id": "1574238058914644031",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1472011858025254942",
+   "pub": 1795398001174,
+   "a": "CARLOS",
+   "b": "CHASE",
+   "ganador": "CHASE",
+   "votos": "3–0"
+  },
+  "1574238748261228637": {
+   "id": "1574238748261228637",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1472011858025254942",
+   "pub": 1795398165527,
+   "a": "3 PUESTO ORIUZ",
+   "b": "CARLOS",
+   "ganador": "CARLOS",
+   "votos": "3–0"
   }
  },
  "llaves": {
-  "1566627532865011807": {
-   "id": "1566627532865011807",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793583510367,
-   "ed": 1793587670070,
-   "texto": "`[ OCTAVOS ]`\n⌞GUS⌝ 🆚 ⌞MCO⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞AFR⌝\n⌞EL NOVIO DE TU NOVIA⌝ 🆚 ⌞ESTRONCIO PY⌝ 🆚 ⌞SOUL B⌝ 🆚 ⌞AGUSTIN LA RELIQUIA⌝\n⌞AKUSERU⌝ 🆚 ⌞KEIDER⌝ 🆚 ⌞JEIXDER⌝\n⌞KEIDER⌝ 🆚 ⌞JEIXDER⌝\n⌞PARIA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞YOR⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞ZA⌝ 🆚 ⌞SULTAN⌝ 🆚 ⌞LIZEN⌝\n⌞GEOKA⌝ 🆚 ⌞GUS⌝\n⌞JEIXDER⌝ 🆚 ⌞ZA⌝\n⌞AKUSERU⌝ 🆚 ⌞PARIA⌝\n⌞VELATZ⌝ 🆚 ⌞AGUSTIN LA RELIQUIA⌝ 🆚 ⌞VANDU⌝\n⌞PARIA⌝ 🆚 ⌞VANDU⌝\n⌞ZA⌝ 🆚 ⌞GUS⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "GUS",
-      "MCO",
-      "VANDU",
-      "AFR"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "EL NOVIO DE TU NOVIA",
-      "ESTRONCIO PY",
-      "SOUL B",
-      "AGUSTIN LA RELIQUIA"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "AKUSERU",
-      "KEIDER",
-      "JEIXDER"
-     ],
-     "AKUSERU",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "KEIDER",
-      "JEIXDER"
-     ],
-     "JEIXDER",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "PARIA",
-      "LVEL",
-      "YOR",
-      "EZZE",
-      "ZA",
-      "SULTAN",
-      "LIZEN"
-     ],
-     "PARIA",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "GEOKA",
-      "GUS"
-     ],
-     "GUS",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "JEIXDER",
-      "ZA"
-     ],
-     "ZA",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "AKUSERU",
-      "PARIA"
-     ],
-     "PARIA",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "VELATZ",
-      "AGUSTIN LA RELIQUIA",
-      "VANDU"
-     ],
-     "VANDU",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "PARIA",
-      "VANDU"
-     ],
-     "VANDU",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ZA",
-      "GUS"
-     ],
-     "ZA",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1566678355477274756": {
    "id": "1566678355477274756",
    "sv": "[FFA] Freestyle For All 👾",

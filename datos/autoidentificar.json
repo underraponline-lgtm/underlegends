@@ -53,16 +53,31 @@
 "como":"fila nueva",
 "por":"se anotó así 1 vez/veces + su apodo o nombre visible",
 "pais":""
+},
+"940665101906759703":{
+"n":"Dorado",
+"cuando":"22/11/2026 08:55 PM ET",
+"como":"fila nueva",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible",
+"pais":""
+},
+"826494792556871751":{
+"n":"_Mateo",
+"cuando":"22/11/2026 08:55 PM ET",
+"como":"fila nueva",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible",
+"pais":""
 }
 },
-"ultima":"2026-11-22T17:55-05:00",
+"ultima":"2026-11-22T20:55-05:00",
 "ultimo_conteo":{
 "nada":123,
 "no":23,
 "empate":12,
-"disfraz":55,
+"disfraz":56,
 "probable":17,
-"sin_id":230,
-"auto":0
+"seguro":2,
+"sin_id":233,
+"auto":2
 }
 }
