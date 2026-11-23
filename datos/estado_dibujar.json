@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-23T17:36:58Z",
+ "cuando": "2026-11-23T17:40:34Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 949.2,
+ "dur_s": 168.2,
  "pasos": [
   {
    "n": "2f",
@@ -15,43 +15,25 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 2.2
+   "s": 1.3
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 1.6
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 15.5
-  },
-  {
-   "n": "4",
-   "que": "las caras, desde R2",
-   "ok": true,
-   "s": 24.5
-  },
-  {
-   "n": "5",
-   "que": "tanda 1 de 1 · 35 persona(s)",
-   "ok": true,
-   "s": 636.2
+   "s": 12.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 202.0
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 66.2
+   "s": 152.3
   }
  ],
  "fallas": [],
@@ -63,25 +45,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 356,
-   "read": 18415
+   "write": 365,
+   "read": 18927
   },
   "objeto": {
-   "leidas": 3097842,
-   "escritas": 50072,
-   "pedidos": 17181
+   "leidas": 3103533,
+   "escritas": 50164,
+   "pedidos": 17251
   },
   "worker": {
-   "pedidos": 23624,
+   "pedidos": 23641,
    "errores": 0,
-   "sub": 26570,
+   "sub": 26590,
    "cortados": 0,
-   "p50_ms": 0.91,
+   "p50_ms": 0.92,
    "p99_ms": 14.35,
    "cpu": {
-    "total": 50003,
-    "objeto_10": 2028,
-    "worker_10": 597
+    "total": 50053,
+    "objeto_10": 2030,
+    "worker_10": 604
    }
   },
   "r2": {
