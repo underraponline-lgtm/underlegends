@@ -3788,7 +3788,7 @@
   "n": 153388605,
   "nombre": "FMS CONCEPCION",
   "ns": 1,
-  "participantes": 8,
+  "participantes": 11,
   "rondas": [
    {
     "b": [
@@ -3807,13 +3807,75 @@
       ],
       "Scot",
       ""
+     ],
+     [
+      [
+       "Kourier",
+       "MaYeuTyK"
+      ],
+      "Kourier",
+      ""
      ]
     ],
     "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Scot",
+       "MCO"
+      ],
+      "Scot",
+      ""
+     ],
+     [
+      [
+       "Kourier",
+       "Doom🚩"
+      ],
+      "Kourier",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kourier",
+       "Scot"
+      ],
+      "Kourier",
+      ""
+     ]
+    ],
+    "r": "Final"
    }
   ],
   "sv": "WOF",
   "tabla": [
+   [
+    "Kourier",
+    "Campeón",
+    0
+   ],
+   [
+    "Scot",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Doom🚩",
+    "Semifinal",
+    0
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    0
+   ],
    [
     "MaYeuTyK",
     "Cuartos",
