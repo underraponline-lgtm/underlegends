@@ -44,7 +44,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
-import { Client, GatewayIntentBits, Events, PermissionFlagsBits } from 'discord.js';
+import { Client, GatewayIntentBits, Events, PermissionFlagsBits, Options } from 'discord.js';
 import {
   joinVoiceChannel, EndBehaviorType, VoiceConnectionStatus, entersState, generateDependencyReport,
 } from '@discordjs/voice';
@@ -54,6 +54,7 @@ import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 import { PruebaMicro } from './microfono.js';
 import { LlamadasVivo, claveCiclo } from './vivo.js';
 import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S } from './batallas.js';
+import { Menciones } from './mencion.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
 const num = (s, d) => (Number.isFinite(Number(s)) && String(s).trim() !== '' ? Number(s) : d);
@@ -681,8 +682,12 @@ if (!E.DISCORD_TOKEN) {
   console.log('❌ falta DISCORD_TOKEN (en Railway: Variables)');
   process.exit(1);
 }
+// 💬 GuildMessages (no privilegiado) para `@ULAYA card` (mencion.js): sin Message Content, sólo llega el texto de lo que
+// menciona al bot. Los mensajes NO se guardan en memoria (MessageManager: 0): no hacen falta y crecerían sin parar
+const MENCION = E.MENCION !== '0';
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates].concat(MENCION ? [GatewayIntentBits.GuildMessages] : []),
+  makeCache: Options.cacheWithLimits({ ...Options.DefaultMakeCacheSettings, MessageManager: 0 }),
 });
 client.once(Events.ClientReady, async () => {
   anotar(`✅ conectado como ${client.user.tag} · graba en ${GRABAR_TODOS ? 'todos los servidores con una llave en juego (y '
@@ -694,6 +699,11 @@ client.once(Events.ClientReady, async () => {
     llamadas = new LlamadasVivo({ client, token: E.DISCORD_TOKEN, canalesDe: (gid) => CANALES_DE[gid] || null, anotar });
     llamadas.arrancar();
     anotar('🎙️👀 micrófonos y público de las llamadas en vivo: prendido');
+  }
+  if (MENCION) {
+    const menciones = new Menciones({ client, token: E.DISCORD_TOKEN, vigia: VIGIA, clave: claveCiclo(E.DISCORD_TOKEN), anotar });
+    client.on(Events.MessageCreate, (m) => { menciones.recibir(m); });
+    anotar('💬 @ULAYA card / vs: prendido (MENCION=0 lo apaga)');
   }
   setInterval(medir, 300000);
   medir();

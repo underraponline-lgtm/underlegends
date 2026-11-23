@@ -137,6 +137,8 @@ jobs:
           # 🎞️ el Drop de Discord de punta a punta (20/11/2026): el Worker contra el objeto de verdad, de «Abrir un Drop» al
           # premio, 90 drops y stars: la rareza nunca baja, el premio es el guardado, se paga una vez y cada GIF existe
           node bot/drop_discord_prueba.mjs
+          # 💬 @ULAYA card (23/11/2026): qué lee el grabador de cada mención, qué manda al Worker y qué publica (sin red)
+          node grabador/mencion_prueba.js
           # 🏟️ la tanda B del plan de los tiers (20/11/2026): seguir a un servidor, el evento flojo, los suplentes, el padrino
           # y calificar el evento, sobre el objeto de verdad
           node bot/tanda_b_prueba.mjs

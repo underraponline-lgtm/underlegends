@@ -706,6 +706,40 @@ console.log('\nLA CACHE DE DISCORD\n');
   ok('los botones también lo llevan', u.includes('?v=202609170400'), u);
 }
 
+// ── 💬 @ULAYA card (23/11/2026): lo que manda el grabador (grabador/mencion.js) y lo que vuelve ───────────────────────
+console.log('\n💬 LA MENCIÓN: @ULAYA card / vs\n');
+{
+  const { claveCiclo } = await import('./avisos.js');
+  env.DISCORD_TOKEN = 'x';
+  const clave = await claveCiclo('x');
+  const mencion = (cuerpo, k = clave) => worker.fetch(new Request('https://x/mencion', { method: 'POST',
+    headers: { 'x-lg-ciclo': k, 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) }), env, ctx);
+  const base = { g: '123456789012345678', c: '223456789012345678', m: '323456789012345678',
+    u: { id: '777222000000000001', username: 'alguien' } };
+  RELOJ += 60000;
+  const sin = await mencion(Object.assign({ cmd: 'card' }, base), 'otra');
+  ok('sin la clave del ciclo, /mencion no contesta (nadie más hace hablar al bot en un canal)', sin.status === 403, String(sin.status));
+  KV_FALSO['d:999111000000000000'] = 'konan';
+  const j1 = await (await mencion(Object.assign({ cmd: 'card', quien: '999111000000000000' }, base,
+    { otros: [{ id: '999111000000000000', username: 'konan' }] }))).json();
+  delete KV_FALSO['d:999111000000000000'];
+  const j2 = await (await mencion({ cmd: 'card', g: 'x', c: base.c, m: base.m, u: base.u })).json();
+  ok('con un servidor que no es un id de Discord no se arma nada', j2.ok === false && j2.error === 'datos', JSON.stringify(j2));
+  const img1 = ((PZ(j1.msg || {}, 12)[0] || {}).items || [{}])[0]?.media?.url || '';
+  ok('«@ULAYA card @alguien»: la carta de esa persona, como /card (V2, pública, con su fila de botones)',
+    j1.ok && !j1.efimero && /\/konan\//.test(img1) && (j1.msg.flags & 32768) === 32768 && PZ(j1.msg, 2).length > 0,
+    JSON.stringify(j1).slice(0, 200));
+  RELOJ += 60000;
+  const j3 = await (await mencion(Object.assign({ cmd: 'versus' }, base))).json();
+  ok('«@ULAYA vs» sin rival: lo que contesta /versus, como aviso que se borra', j3.ok && j3.efimero === true && !!j3.msg, JSON.stringify(j3).slice(0, 160));
+  KV_FALSO[`cfg:${base.g}`] = JSON.stringify({ mencion: false });
+  RELOJ += 60000;
+  const j4 = await (await mencion(Object.assign({ cmd: 'card' }, base))).json();
+  ok('si el servidor lo apagó en /settings, no contesta', j4.ok && j4.apagado === true, JSON.stringify(j4));
+  delete KV_FALSO[`cfg:${base.g}`];
+  delete env.DISCORD_TOKEN;
+}
+
 // ── Las tres maneras de pedir una carta ───────────────────────────────────
 console.log('\nTRES MANERAS DE PEDIR\n');
 

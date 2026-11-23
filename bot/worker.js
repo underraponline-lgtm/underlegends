@@ -2749,6 +2749,9 @@ function panelAjustes(sv, cfg) {
       V.boton('Elegir', 'cfg:elegir:avisos', ESTILO.SECUNDARIO)),
     linea(`**El bot en vivo** · ${vivo}`, 'Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va. ' +
       'Nunca menciona a nadie.', V.boton(cfg.vivo ? 'Cambiar' : 'Prender', 'cfg:elegir:vivo', cfg.vivo ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO)),
+    linea(`**Contestar cuando lo mencionan** · ${cfg.mencion !== false ? '🟢 prendido' : '🔴 apagado'}`,
+      '`@ULAYA card`, `@ULAYA card @alguien` y `@ULAYA vs @alguien`, en los mismos canales que `/card`.',
+      V.boton(cfg.mencion !== false ? 'Apagar' : 'Prender', 'cfg:mencion', ESTILO.SECUNDARIO)),
     // 🎲 siempre, en todos los niveles (11/11/2026, ver `hayApuestas()` en avisos.js): no hay botón
     V.T('**Apuestas** · siempre\n-# Con el bot en vivo, antes de cada batalla se puede apostar con Puntos de Tienda, y el pozo ' +
       'se reparte entre los que aciertan. Desde la Liga se pueden apagar para un servidor.'),
@@ -3174,6 +3177,7 @@ const AYUDA = {
     'conserva lo suyo.',
     '· **Canales donde se puede usar `/card`** — vacío es en cualquiera.',
     '· **Avisos de cambio de rango** — a qué canal anunciarlos.',
+    '· **Contestar cuando lo mencionan** — `@ULAYA card` y `@ULAYA vs @alguien` en el chat. Prendido; se apaga acá.',
     '· **El bot en vivo** — en qué canal cuenta los eventos de la Liga en este ' +
     'servidor mientras se juegan (la llave, cada ronda, la final y el campeón). ' +
     'Vacío es apagado; no menciona a nadie.',
@@ -3849,6 +3853,54 @@ async function kit(i, env, ctx, tipo) {
     } catch (e) { return editar('Ahora no puedo armarla: prueba en un rato.'); }
   })());
   return responderV2(RESPONDE.MENSAJE, msg(armando));
+}
+
+// ── 💬 EL BOT POR MENCIÓN (23/11/2026) ────────────────────────────────────────────────────────────────────────────────
+// Dlx: «haz que el comando funcione con @ulaya, así con mención». `@ULAYA card`, `@ULAYA card @alguien`, `@ULAYA vs @alguien`
+// (y `@ULAYA vs @a @b`). Escucha el grabador de Railway con GuildMessages, que NO es privilegiado: un mensaje que menciona
+// al bot llega con su texto aunque el bot no tenga Message Content, así que esto no toca la revisión de intents del 24/12
+// (ver docs/revision_discord.md: el bot sigue sin comandos con prefijo). El grabador lee el mensaje y le manda acá QUÉ se
+// pidió; acá se arma una interacción con eso y corre el MISMO `COMANDOS.card` / `COMANDOS.versus`: la misma carta, los
+// mismos botones (que después llegan al Worker como cualquier clic) y los mismos chequeos (canales de /card, quién tiene
+// carta). El grabador publica lo que vuelve como respuesta al mensaje. Lo que en /card es efímero (un aviso, un error)
+// en un canal no puede serlo: vuelve con `efimero` y el grabador lo borra a los 20 s.
+// ⚠️ Cada servidor lo apaga en /settings (`cfg.mencion`); prendido por defecto.
+const MENCION_CMDS = { card: 'card', versus: 'versus' };
+const snow = (x) => /^\d{15,22}$/.test(String(x || ''));
+async function rutaMencion(req, env, ctx) {
+  const json = (x, st = 200) => new Response(JSON.stringify(x), { status: st, headers: { 'content-type': 'application/json; charset=utf-8' } });
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  const cmd = d && MENCION_CMDS[d.cmd];
+  const u = (d && d.u) || {};
+  if (!cmd || !snow(d.g) || !snow(d.c) || !snow(d.m) || !snow(u.id)) return json({ ok: false, error: 'datos' }, 400);
+  const cfg = await ajustes(env, d.g);
+  if (cfg.mencion === false) return json({ ok: true, apagado: true });
+  const usuario = (x) => ({ id: String(x.id), username: String(x.username || '').slice(0, 40), global_name: x.global_name ? String(x.global_name).slice(0, 40) : null,
+    avatar: /^(a_)?[0-9a-f]{32}$/.test(String(x.avatar || '')) ? x.avatar : null });
+  const users = {}, members = {};
+  for (const x of (Array.isArray(d.otros) ? d.otros : []).slice(0, 3)) {
+    if (!x || !snow(x.id)) continue;
+    users[x.id] = usuario(x);
+    members[x.id] = { nick: x.nick ? String(x.nick).slice(0, 40) : null };
+  }
+  const options = [];
+  if (cmd === 'card' && snow(d.quien)) options.push({ name: 'quien', type: 6, value: String(d.quien) });
+  if (cmd === 'versus') {
+    if (snow(d.rival)) options.push({ name: 'rival', type: 6, value: String(d.rival) });
+    if (['servidor', 'temporada', 'competitivo', 'pais'].includes(d.carta)) options.push({ name: 'carta', type: 3, value: d.carta });
+    if (snow(d.contra)) options.push({ name: 'contra', type: 6, value: String(d.contra) });
+  }
+  const i = { type: 2, id: String(d.m), application_id: APP_ID, token: '', guild_id: String(d.g), channel_id: String(d.c), mencion: true,
+    member: { user: usuario(u), nick: u.nick ? String(u.nick).slice(0, 40) : null, roles: (Array.isArray(d.roles) ? d.roles : []).filter(snow).slice(0, 100) },
+    data: { name: cmd, type: 1, options, resolved: { users, members } } };
+  const esperar = frenado(u.id, 'comando');
+  if (esperar) return json({ ok: true, efimero: true, msg: V.avisoMsg('**Para un poco** 🙂\n-# Prueba de nuevo en **' + esperar + ' s**.') });
+  let r = null;
+  try { r = await COMANDOS[cmd](i, env, ctx); } catch (e) { r = null; }
+  const j = r ? await r.json().catch(() => null) : null;
+  if (!j || !j.data || ![4, 7].includes(j.type)) return json({ ok: false, error: 'sin_respuesta' });
+  return json({ ok: true, efimero: (Number(j.data.flags) & 64) !== 0, msg: j.data });
 }
 
 // ── 📅 /agendar (Dlx, 12/10/2026, «5. D»: «casi no hay eventos futuros… la mayoría anuncian eventos instantáneos»).
@@ -5608,6 +5660,9 @@ export default {
       && await frenoIP(env0, claveIP)) return muchos();
     // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
     const env = kvMedido(env0, ctx, req.method === 'POST' && camino === '/' ? 'interaccion' : camino);
+    // 💬 @ULAYA card (23/11/2026): la mención que escucha el grabador de Railway (grabador/mencion.js). Sólo con la clave
+    // del ciclo, que es la de ese servicio: nadie más puede pedirle al Worker que conteste en un canal
+    if (camino === '/mencion' && req.method === 'POST') return esCiclo ? rutaMencion(req, env, ctx) : new Response('', { status: 403 });
     if (camino === '/avisos/numeral') return numeralPagina(req, env);
     if (camino === '/avisos/apodo') return apodoPagina(req, env);
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
@@ -6098,6 +6153,7 @@ export default {
           return responderPanel(RESPONDE.ACTUALIZAR, panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg), i);
         }
         if (quien === 'nick') cfg.nick = !cfg.nick;
+        else if (quien === 'mencion') cfg.mencion = cfg.mencion === false;
         else if (quien === 'apuestas') cfg.apuestas = cfg.apuestas !== true;
         else if (quien === 'canales') cfg.canales = vals.slice(0, 10);
         else if (quien === 'avisos') cfg.avisos = vals[0] || '';

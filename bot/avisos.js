@@ -426,7 +426,7 @@ export const CHAT_FRESCA = 30 * MIN;
 // los tiers: «la bienvenida en su servidor, apagada por defecto, la prende el dueño»). Ver `cuentaUnirse()` de bot/worker.js
 // 🗞️ `redes`: el canal donde el ciclo deja las imágenes de la semana para sus redes ('' = no se mandan: igual están en el
 // panel). Sólo Tier 1 y 2; las manda `bot/redes.py`, que lee este `cfg:<guild>`
-export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '',
+export const CFG_BASE = { nick: true, mencion: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '',
   ligas: '', ligas_por: {}, resumen: '', leer_chat: true, ganadores: true, bienvenida: '', redes: '' };
 
 export const NIVELES_CHAT = {
