@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T16:28:43+00:00",
+ "cuando": "2026-11-23T16:55:05+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7384,15 +7384,6 @@
    "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1574268186478510160"
   },
   {
-   "servidor": "WOF",
-   "canal": "├📣・anuncios-デ╦【",
-   "tit": "📢 CAMBIO EN LA PLANTILLA",
-   "tx": "🇦🇷 Mito se incorpora oficialmente a WOF League, ocupando el lugar de 🇻🇪 Under. Debido a cuestiones de disponibilidad y compromisos personales que dificultan su participación regular, se ha decidido priorizar la continuid",
-   "cuando": "2026-11-23T03:34:18",
-   "msg_id": "1574266821564043293",
-   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1574266821564043293"
-  },
-  {
    "servidor": "CHZ",
    "canal": "Anuncios-📢",
    "tit": "Se ha configurado este canal para que reciba anuncios oficiales de Discord para los admini",
@@ -7472,6 +7463,15 @@
    "cuando": "2026-11-21T05:14:01",
    "msg_id": "1573567140592885761",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573567140592885761"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "├📣・anuncios-デ╦【",
+   "tit": "GANA CONTRA TRAS REPLICA + 2 PTS",
+   "tx": "",
+   "cuando": "2026-11-20T21:59:03",
+   "msg_id": "1573457678099947671",
+   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1573457678099947671"
   },
   {
    "servidor": "ACAD",

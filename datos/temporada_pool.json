@@ -30,7 +30,7 @@
   "total": 263,
   "rango": "SSS",
   "tg_t": {
-   "busc": 6,
+   "busc": 7,
    "cab": 1,
    "dobles": 34,
    "infalt": true,
@@ -39,6 +39,7 @@
    "relampago": true,
    "rev": 1,
    "solo": 4,
+   "suelto": true,
    "svc": 4,
    "trios": 15
   }
@@ -163,7 +164,7 @@
   "total": 263,
   "rango": "SS",
   "tg_t": {
-   "busc": 7,
+   "busc": 8,
    "cab": 1,
    "dcor": true,
    "dobles": 18,
@@ -172,6 +173,7 @@
    "relampago": true,
    "rev": 1,
    "solo": 1,
+   "suelto": true,
    "svc": 2,
    "trios": 13
   }
@@ -378,13 +380,14 @@
   "total": 263,
   "rango": "S",
   "tg_t": {
-   "busc": 2,
+   "busc": 3,
    "dobles": 14,
    "elite": true,
    "perf": 1,
    "relampago": true,
    "rey": true,
    "solo": 2,
+   "suelto": true,
    "svc": 3,
    "trios": 8
   }
@@ -461,12 +464,13 @@
   "total": 263,
   "rango": "S",
   "tg_t": {
-   "busc": 2,
+   "busc": 3,
    "cab": 1,
    "dobles": 15,
    "perf": 2,
    "relampago": true,
    "sube": true,
+   "suelto": true,
    "svc": 5,
    "trios": 9
   }
@@ -502,11 +506,12 @@
   "total": 263,
   "rango": "S",
   "tg_t": {
-   "busc": 3,
+   "busc": 4,
    "cobro": 2,
    "dobles": 8,
    "perf": 1,
    "relampago": true,
+   "suelto": true,
    "svc": 3,
    "trios": 3
   }
@@ -590,7 +595,6 @@
    "dobles": 6,
    "perf": 2,
    "relampago": true,
-   "suelto": true,
    "svc": 4,
    "trios": 6
   }
@@ -672,7 +676,6 @@
    "relampago": true,
    "rev": 1,
    "solo": 1,
-   "suelto": true,
    "svc": 4,
    "trios": 7
   }
@@ -785,11 +788,13 @@
   "total": 263,
   "rango": "A",
   "tg_t": {
+   "busc": 1,
    "dobles": 10,
    "infalt": true,
    "perf": 2,
    "relampago": true,
    "rev": 1,
+   "suelto": true,
    "svc": 1,
    "trios": 2
   }
@@ -986,11 +991,12 @@
   "total": 263,
   "rango": "A",
   "tg_t": {
-   "busc": 2,
+   "busc": 3,
    "dobles": 18,
    "infalt": true,
    "perf": 1,
    "rev": 2,
+   "suelto": true,
    "svc": 1,
    "trios": 8
   }
@@ -1192,6 +1198,48 @@
   }
  },
  {
+  "full": "Molusco",
+  "raw": "Molusco",
+  "cc": "ar",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1363285354442133778",
+  "verificado": true,
+  "pts": 226099,
+  "ev": 33,
+  "wr": "50.0%",
+  "pod": 8,
+  "oro": 4,
+  "sem": 6,
+  "seg": 4,
+  "ter": 0,
+  "caz": 0,
+  "czd": 1,
+  "sob": 0,
+  "mis": 10,
+  "srv": 4,
+  "racha": 3,
+  "racha_act": 2,
+  "score": 33.3,
+  "av": "",
+  "ovr": 66,
+  "o": 30,
+  "pos": 29,
+  "total": 263,
+  "rango": "B",
+  "tg_t": {
+   "busc": 1,
+   "dobles": 7,
+   "infalt": true,
+   "perf": 1,
+   "relampago": true,
+   "rev": 1,
+   "sube": true,
+   "svc": 4,
+   "trios": 5
+  }
+ },
+ {
   "full": "Velatz",
   "raw": "Velatz",
   "cc": "cl",
@@ -1217,7 +1265,7 @@
   "score": 32.2,
   "av": "",
   "ovr": 66,
-  "o": 30,
+  "o": 31,
   "pos": 265,
   "fc": true,
   "total": 263,
@@ -1228,48 +1276,6 @@
    "perf": 1,
    "svc": 1,
    "trios": 7
-  }
- },
- {
-  "full": "Molusco",
-  "raw": "Molusco",
-  "cc": "ar",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1363285354442133778",
-  "verificado": true,
-  "pts": 225099,
-  "ev": 33,
-  "wr": "50.0%",
-  "pod": 8,
-  "oro": 4,
-  "sem": 6,
-  "seg": 4,
-  "ter": 0,
-  "caz": 0,
-  "czd": 1,
-  "sob": 0,
-  "mis": 10,
-  "srv": 4,
-  "racha": 3,
-  "racha_act": 2,
-  "score": 33.3,
-  "av": "",
-  "ovr": 66,
-  "o": 31,
-  "pos": 29,
-  "total": 263,
-  "rango": "B",
-  "tg_t": {
-   "busc": 1,
-   "dobles": 7,
-   "infalt": true,
-   "perf": 1,
-   "relampago": true,
-   "rev": 1,
-   "sube": true,
-   "svc": 4,
-   "trios": 5
   }
  },
  {
@@ -1343,10 +1349,11 @@
   "total": 263,
   "rango": "B",
   "tg_t": {
-   "busc": 2,
+   "busc": 3,
    "dobles": 16,
    "infalt": true,
    "rev": 2,
+   "suelto": true,
    "svc": 1,
    "trios": 1
   }
@@ -1437,7 +1444,7 @@
   "crew": "",
   "discord_id": "645308964141137952",
   "verificado": true,
-  "pts": 170192,
+  "pts": 170755,
   "ev": 36,
   "wr": "45.0%",
   "pod": 5,
@@ -1540,7 +1547,6 @@
    "busc": 3,
    "dobles": 7,
    "elite": true,
-   "suelto": true,
    "svc": 1
   }
  },
@@ -1632,7 +1638,7 @@
   "crew": "",
   "discord_id": "1122273746099638354",
   "verificado": true,
-  "pts": 133319,
+  "pts": 133569,
   "ev": 23,
   "wr": "53.8%",
   "pod": 6,
@@ -2041,7 +2047,9 @@
   "total": 263,
   "rango": "B",
   "tg_t": {
+   "busc": 1,
    "dobles": 5,
+   "suelto": true,
    "svc": 1,
    "trios": 1
   }
@@ -2265,8 +2273,10 @@
   "total": 263,
   "rango": "B",
   "tg_t": {
+   "busc": 1,
    "dcor": true,
    "dobles": 3,
+   "suelto": true,
    "svc": 2,
    "trios": 1
   }
@@ -2342,7 +2352,6 @@
   "tg_t": {
    "busc": 1,
    "dobles": 6,
-   "suelto": true,
    "svc": 1,
    "trios": 4
   }
@@ -3626,7 +3635,6 @@
    "busc": 2,
    "dobles": 2,
    "relampago": true,
-   "suelto": true,
    "svc": 2
   }
  },
@@ -4702,8 +4710,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "dobles": 3,
-   "suelto": true
+   "dobles": 3
   }
  },
  {
@@ -5216,7 +5223,6 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "suelto": true,
    "trios": 2
   }
  },
@@ -5397,7 +5403,9 @@
   "total": 263,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "dobles": 1,
+   "suelto": true,
    "trios": 1
   }
  },
@@ -5613,7 +5621,9 @@
   "total": 263,
   "rango": "E",
   "tg_t": {
-   "dobles": 1
+   "busc": 1,
+   "dobles": 1,
+   "suelto": true
   }
  },
  {
@@ -5863,8 +5873,10 @@
   "total": 263,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "elite": true,
-   "reciente": true
+   "reciente": true,
+   "suelto": true
   }
  },
  {
@@ -6456,7 +6468,9 @@
   "total": 263,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "sube": true,
+   "suelto": true,
    "trios": 2
   }
  },
@@ -7429,8 +7443,7 @@
   "total": 263,
   "rango": "E",
   "tg_t": {
-   "busc": 1,
-   "suelto": true
+   "busc": 1
   }
  },
  {
@@ -8630,8 +8643,10 @@
   "total": 263,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "dobles": 1,
-   "reciente": true
+   "reciente": true,
+   "suelto": true
   }
  },
  {
@@ -9264,8 +9279,7 @@
   "total": 263,
   "rango": "E",
   "tg_t": {
-   "busc": 1,
-   "suelto": true
+   "busc": 1
   }
  },
  {
