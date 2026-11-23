@@ -10580,98 +10580,6 @@
   }
  },
  "llaves": {
-  "1566890012036042857": {
-   "id": "1566890012036042857",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1793646090278,
-   "ed": 1793650036872,
-   "texto": "`[ CUARTOS ]`\n⌞DESIO⌝ 🆚 ⌞AM⌝\n⌞AM⌝ 🆚 ⌞DESIO⌝\n⌞MAKMAH⌝ 🆚 ⌞BOOTRAX⌝\n⌞XCLUSIBA⌝ 🆚 ⌞MARKITOSTOYS⌝ 🆚 ⌞PROBLEMA MIA(VOGL)⌝\n⌞EVANGELINNE⌝ 🆚 ⌞DOMINICK⌝\n⌞EVANGELINE⌝ 🆚 ⌞MAKMAH⌝\n⌞XCLUSIVO⌝ 🆚 ⌞AM⌝\n⌞XCLUSIVO⌝ 🆚 ⌞MAKMAH⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "DESIO",
-      "AM"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "AM",
-      "DESIO"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MAKMAH",
-      "BOOTRAX"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "XCLUSIBA",
-      "MARKITOSTOYS",
-      "PROBLEMA MIA(VOGL)"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "EVANGELINNE",
-      "DOMINICK"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "EVANGELINE",
-      "MAKMAH"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "XCLUSIVO",
-      "AM"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "XCLUSIVO",
-      "MAKMAH"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1567010428750536766": {
    "id": "1567010428750536766",
    "sv": "[FFA] Freestyle For All 👾",
@@ -14311,8 +14219,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795459899077,
-   "ed": 1795459926046,
-   "texto": "`[ OCTAVOS ]`\n⌞TUCA⌝ 🆚 ⌞MARTO⌝ 🆚 ⌞LRS⌝ 🆚 ⌞ARITMETICO⌝",
+   "ed": 1795461679706,
+   "texto": "`[ OCTAVOS ]`\n⌞TUCA⌝ 🆚 ⌞MARTO⌝ 🆚 ⌞LRS⌝ 🆚 ⌞ARITMETICO⌝\n⌞OVER⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞JULDA⌝ 🆚 ⌞SOUL B⌝\n⌞ERIAN GEOKA ALR⌝ 🆚 ⌞PLAYER⌝ 🆚 ⌞ZA⌝\n⌞YINN⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞ANDRES⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞KYSS⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞TAM⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -14321,6 +14229,44 @@
       "MARTO",
       "LRS",
       "ARITMETICO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "OVER",
+      "IKONOX",
+      "JULDA",
+      "SOUL B"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ERIAN GEOKA ALR",
+      "PLAYER",
+      "ZA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "YINN",
+      "VANDU",
+      "ANDRES",
+      "MAKMAH",
+      "KYSS",
+      "PARK JI SUNG",
+      "TAM"
      ],
      null,
      "última ronda y no dice campeón",

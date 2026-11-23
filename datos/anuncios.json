@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T18:55:26+00:00",
+ "cuando": "2026-11-23T19:25:29+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7734,6 +7734,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Andres 🇨🇱",
+   "quien": "andresnhp",
+   "discord_id": "1468995046161256706",
+   "msg_id": "1574503382297878620",
+   "cuando": "2026-11-23T19:14:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Funk🇦🇷 + Funk🇻🇪",
+   "quien": "provenzaaznevorp",
+   "discord_id": "711076230857752627",
+   "msg_id": "1574499746511454311",
+   "cuando": "2026-11-23T18:59:52"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -43715,24 +43733,6 @@
    "discord_id": "1089661639508377630",
    "msg_id": "1561923883794178059",
    "cuando": "2026-10-20T02:07:53"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "ANDY🇵🇪",
-   "quien": "andy._.2321",
-   "discord_id": "853130894663745549",
-   "msg_id": "1561919877705498805",
-   "cuando": "2026-10-20T01:51:57"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Richard 🇪🇨",
-   "quien": "ricardflex",
-   "discord_id": "750718442050551858",
-   "msg_id": "1561919583869210646",
-   "cuando": "2026-10-20T01:50:47"
   }
  ]
 }
