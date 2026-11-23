@@ -1,7 +1,206 @@
 {
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
  "avisado": "2026-11-16",
- "dia": {},
+ "dia": {
+  "agus": [
+   2499,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "andres": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "aritmetico": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "blitz": [
+   7500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "erian": [
+   2499,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "funk": [
+   15000,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "geoka": [
+   2499,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "gian": [
+   2499,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "ikonoxx": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "julda": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "kyss": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "lrs": [
+   7500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "makmah": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "martoar": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "oasis": [
+   15000,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "ojitoscanabicos": [
+   15750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "over": [
+   15000,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "player": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "snow": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "tam": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "tuca": [
+   7500,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "yinn": [
+   3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ },
  "elo_corregido": "2026-11-17",
  "hist": [
   [
@@ -159,7 +358,30 @@
    23625
   ]
  ],
- "pts": {},
+ "pts": {
+  "agus": 2499,
+  "andres": 3750,
+  "aritmetico": 3750,
+  "blitz": 7500,
+  "erian": 2499,
+  "funk": 15000,
+  "geoka": 2499,
+  "gian": 2499,
+  "ikonoxx": 3750,
+  "julda": 3750,
+  "kyss": 3750,
+  "lrs": 7500,
+  "makmah": 3750,
+  "martoar": 3750,
+  "oasis": 15000,
+  "ojitoscanabicos": 15750,
+  "over": 15000,
+  "player": 3750,
+  "snow": 3750,
+  "tam": 3750,
+  "tuca": 7500,
+  "yinn": 3750
+ },
  "sem": "2026-11-23",
  "tier": {
   "Desierto de Atacama": 1,

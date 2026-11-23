@@ -45,7 +45,7 @@
 "temporada"
 ]
 },
-"six": {
+"snow": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -54,7 +54,7 @@
 "temporada"
 ]
 },
-"snow": {
+"six": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -116,6 +116,14 @@
 "temporada"
 ]
 },
+"over": {
+"rg": "S",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "liberia": {
 "rg": "S",
 "c": [
@@ -135,7 +143,7 @@
 ]
 },
 "agus": {
-"rg": "S",
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -152,18 +160,11 @@
 "temporada"
 ]
 },
-"over": {
-"rg": "S",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "yinn": {
 "rg": "C",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -265,7 +266,7 @@
 "c": []
 },
 "geoka": {
-"rg": "C",
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -383,7 +384,7 @@
 ]
 },
 "tuca": {
-"rg": "B",
+"rg": "C",
 "c": []
 },
 "lrs": {
@@ -469,15 +470,6 @@
 "temporada"
 ]
 },
-"marcos": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "tøkiø": {
 "rg": "B",
 "c": [
@@ -497,6 +489,15 @@
 "19fleivawack": {
 "rg": "B",
 "c": []
+},
+"marcos": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "numberve": {
 "rg": "D",
@@ -603,19 +604,19 @@
 "temporada"
 ]
 },
+"kyss": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "jupiter": {
 "rg": "D",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"kyss": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -628,10 +629,6 @@
 "servidor",
 "temporada"
 ]
-},
-"neo": {
-"rg": "C",
-"c": []
 },
 "dios": {
 "rg": "",
@@ -674,6 +671,10 @@
 "temporada"
 ]
 },
+"neo": {
+"rg": "C",
+"c": []
+},
 "crakero": {
 "rg": "E",
 "c": [
@@ -691,19 +692,19 @@
 "rg": "C",
 "c": []
 },
-"cinexfilo": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "player": {
 "rg": "D",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"cinexfilo": {
+"rg": "D",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -829,15 +830,6 @@
 "temporada"
 ]
 },
-"nemmiias": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "trelok": {
 "rg": "",
 "c": [
@@ -861,6 +853,15 @@
 "1200": {
 "rg": "E",
 "c": []
+},
+"nemmiias": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "krish": {
 "rg": "E",
@@ -920,6 +921,10 @@
 "rg": "",
 "c": []
 },
+"blitz": {
+"rg": "E",
+"c": []
+},
 "mosquitrap": {
 "rg": "",
 "c": []
@@ -958,23 +963,7 @@
 "servidor"
 ]
 },
-"eliot": {
-"rg": "",
-"c": []
-},
 "carlosmo": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"hotaruadeyemi": {
-"rg": "",
-"c": []
-},
-"catarsis": {
 "rg": "",
 "c": [
 "pais",
@@ -1036,10 +1025,6 @@
 "rg": "",
 "c": []
 },
-"blitz": {
-"rg": "E",
-"c": []
-},
 "prosu": {
 "rg": "",
 "c": [
@@ -1075,9 +1060,21 @@
 "temporada"
 ]
 },
-"cj": {
+"eliot": {
 "rg": "",
 "c": []
+},
+"hotaruadeyemi": {
+"rg": "",
+"c": []
+},
+"catarsis": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "ezze": {
 "rg": "",
@@ -1090,19 +1087,18 @@
 "temporada"
 ]
 },
-"raizer": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "assuan": {
 "rg": "",
 "c": []
 },
 "rt": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"julda": {
 "rg": "",
 "c": [
 "servidor",
@@ -1132,12 +1128,9 @@
 "temporada"
 ]
 },
-"julda": {
+"cj": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "oriuz": {
 "rg": "",
@@ -1155,17 +1148,18 @@
 "rg": "",
 "c": []
 },
-"lewito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "sol": {
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"raizer": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
 ]
 },
 "ezias": {
@@ -1191,6 +1185,10 @@
 "temporada"
 ]
 },
+"ikonoxx": {
+"rg": "E",
+"c": []
+},
 "deluxe": {
 "rg": "",
 "c": [
@@ -1198,10 +1196,6 @@
 "servidor",
 "temporada"
 ]
-},
-"ikonoxx": {
-"rg": "",
-"c": []
 },
 "melomaniaco": {
 "rg": "",
@@ -1239,6 +1233,13 @@
 ]
 },
 "andy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"lewito": {
 "rg": "",
 "c": [
 "servidor",
@@ -2932,33 +2933,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-14T20:29:05Z",
-"quien": [
-"Agus"
-],
-"rg": "A",
-"primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-14T22:59:11Z",
-"quien": [
-"Colesito"
-],
-"rg": "B",
-"primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-14T22:59:11Z",
-"quien": [
-"Chop"
-],
-"rg": "E",
-"primero": true
-},
 {
 "tipo": "rango",
 "t": "2026-10-14T23:58:43Z",
@@ -6351,6 +6325,34 @@
 "de": 82,
 "a": 65,
 "sem": "2026-11-16"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-23T20:52:54Z",
+"quien": [
+"yinn"
+],
+"carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-23T20:52:54Z",
+"quien": [
+"ikonoxx"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "racha",
+"t": "2026-11-23T20:52:54Z",
+"quien": [
+"Oasis"
+],
+"ks": [
+"oasis"
+],
+"racha": 5
 }
 ],
 "noche_antes": {
@@ -8460,6 +8462,65 @@
 "desde": 226
 }
 ]
+},
+"2026-11-23": {
+"tipo": "resnoche",
+"t": "2026-11-24T08:00:00Z",
+"dia": "2026-11-23",
+"eventos": 1,
+"part": 22,
+"campeones": [
+{
+"ev": "qcyo rapeen 17",
+"sv": "FFA",
+"ll": 681,
+"quien": [
+[
+"Oasis",
+"oasis"
+],
+[
+"Over",
+"over"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Ojitos canábicos 🇨🇱",
+"k": "",
+"pts": 5250,
+"ev": 1
+},
+{
+"n": "Funk🇦🇷",
+"k": "",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "Oasis",
+"k": "oasis",
+"pts": 5000,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Gian",
+"k": "",
+"de": 432,
+"a": 420
+},
+{
+"n": "BLITZ",
+"k": "blitz",
+"de": 298,
+"a": 292
+}
+],
+"sorpresas": []
 }
 },
 "extra": {
@@ -8502,8 +8563,8 @@
 "erian",
 "pichulamc",
 "praiseriza",
-"six",
 "snow",
+"six",
 "colesito",
 "verc",
 "vandu"
@@ -8513,8 +8574,8 @@
 "praiseriza",
 "liberia",
 "panchok",
-"carlosss",
 "over",
+"carlosss",
 "abyssus",
 "agus",
 "hassan",
@@ -8529,10 +8590,10 @@
 "temporada:verc": "2026-11-22T05:35:55Z"
 },
 "racha": {
-"makmah": 1,
-"oasis": 4,
+"makmah": 0,
+"oasis": 5,
 "pichulamc": 2,
-"erian": 1,
+"erian": 0,
 "praiseriza": 2,
 "snow": 0,
 "six": 1,
@@ -8628,7 +8689,7 @@
 "richard": 0,
 "1200": 0,
 "nemmiias": 0,
-"kyss": 2,
+"kyss": 0,
 "19fleivawack": 0,
 "artezzy": 0,
 "vallest": 0,
@@ -8665,7 +8726,7 @@
 "zekha": 1,
 "evangeline": 0,
 "leyenda": 0,
-"blitz": 0,
+"blitz": 1,
 "assuan": 1,
 "prosu": 0,
 "rt": 0,
@@ -8734,12 +8795,12 @@
 "bootraxx": 1,
 "araya": 0,
 "senticide": 1,
-"over": 5,
+"over": 6,
 "deko": 0,
 "sintext": 0,
 "rodrilp": 3,
 "flash": 2,
-"julda": 2,
+"julda": 0,
 "lalox": 1,
 "beneroo": 0,
 "yeyox": 2,

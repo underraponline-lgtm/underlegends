@@ -12939,7 +12939,7 @@
       "19/11",
       "octavos"
      ],
-     0
+     1
     ],
     "LSO": [
      "Magic",
@@ -14268,8 +14268,186 @@
      0
     ]
    },
-   "prog": {},
-   "pts": {}
+   "prog": {
+    "Agus": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Andres": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Aritmetico 🇲🇽": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "BLITZ": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Erian": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Funk🇦🇷": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Geoka": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Gian": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Julda": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Kyss": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "LRS": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Makmah": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Marto AR": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Oasis": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Ojitos canábicos 🇨🇱": [
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
+    "Over": [
+     1,
+     1,
+     1,
+     0,
+     0
+    ],
+    "Player": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Snow": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Tam": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Tuca": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "ikonoxx": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "yinn": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   "pts": {
+    "Agus": 300,
+    "Andres": 300,
+    "Aritmetico 🇲🇽": 300,
+    "BLITZ": 300,
+    "Erian": 300,
+    "Funk🇦🇷": 300,
+    "Geoka": 300,
+    "Gian": 300,
+    "Julda": 300,
+    "Kyss": 300,
+    "LRS": 900,
+    "Makmah": 300,
+    "Marto AR": 300,
+    "Oasis": 300,
+    "Ojitos canábicos 🇨🇱": 300,
+    "Over": 300,
+    "Player": 300,
+    "Snow": 300,
+    "Tam": 300,
+    "Tuca": 300,
+    "ikonoxx": 300,
+    "yinn": 300
+   }
   }
  },
  "suma": {
@@ -14291,15 +14469,16 @@
   "Abyssus": 6500,
   "Adriagner": 4700,
   "Agente sombra": 600,
-  "Agus": 9300,
+  "Agus": 9600,
   "Akuseru": 1200,
   "Akutagawa🇹🇼": 300,
   "Aldre": 3900,
   "Alexi": 300,
   "Anderbarra": 300,
-  "Andres": 4800,
+  "Andres": 5100,
   "Andy": 300,
   "Ariaxer": 600,
+  "Aritmetico 🇲🇽": 300,
   "Artezzy": 600,
   "Assuan": 1300,
   "Aszecas": 600,
@@ -14307,7 +14486,7 @@
   "B.DEMON🇪🇨": 300,
   "BELIKKO": 300,
   "BENJI 🇵🇪": 1300,
-  "BLITZ": 900,
+  "BLITZ": 1200,
   "BNA": 6100,
   "BTRX": 2500,
   "Badterne": 4200,
@@ -14369,7 +14548,7 @@
   "Emilio Alva": 600,
   "Emily Family": 300,
   "Enkil": 300,
-  "Erian": 11900,
+  "Erian": 12200,
   "Erik": 1900,
   "Erizo": 300,
   "Evangeline": 2100,
@@ -14385,9 +14564,11 @@
   "Flash": 1000,
   "Forza": 600,
   "Fritz": 600,
+  "Funk🇦🇷": 300,
   "GARZXI": 300,
-  "Geoka": 4700,
+  "Geoka": 5000,
   "Gero": 300,
+  "Gian": 300,
   "Global Hustler": 1000,
   "Gocho": 3000,
   "Guaicurús🇰🇷": 300,
@@ -14420,7 +14601,7 @@
   "Joven shenlong": 300,
   "Juanpa": 600,
   "Juasmio": 1900,
-  "Julda": 300,
+  "Julda": 600,
   "Julix": 600,
   "Julix🇧🇴": 1000,
   "Jult": 600,
@@ -14440,12 +14621,12 @@
   "Kun Z": 300,
   "Kusoh": 600,
   "Kyron": 300,
-  "Kyss": 3200,
+  "Kyss": 3500,
   "LAST": 4500,
   "LEITAN": 1000,
   "LEWITO": 1300,
   "LKS 🇨🇱": 300,
-  "LRS": 3700,
+  "LRS": 4600,
   "LSO": 600,
   "Lalox": 600,
   "Launok": 300,
@@ -14475,14 +14656,14 @@
   "MaYeuTyK": 4600,
   "Magic": 600,
   "Majiztral": 6300,
-  "Makmah": 11700,
+  "Makmah": 12000,
   "Malva": 300,
   "Manolito🇨🇴": 300,
   "Manteca mantecosa 🇨🇾": 300,
   "Marcos": 2800,
   "Mark98": 1000,
   "Marley🇦🇷": 300,
-  "Marto AR": 300,
+  "Marto AR": 600,
   "Masino": 2800,
   "Mathhias": 3400,
   "Matias": 300,
@@ -14518,9 +14699,10 @@
   "OKAM": 4500,
   "ONDADISKO": 600,
   "ONZASS": 1200,
-  "Oasis": 12100,
+  "Oasis": 12400,
+  "Ojitos canábicos 🇨🇱": 300,
   "Ortiz": 600,
-  "Over": 9700,
+  "Over": 10000,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 6400,
   "PROMETHEUS BIB 🇨🇴": 300,
@@ -14530,7 +14712,7 @@
   "Personality": 300,
   "PichulaMc": 10400,
   "Pipe": 300,
-  "Player": 3500,
+  "Player": 3800,
   "Polosport": 3100,
   "Pomberito": 2900,
   "Presagio": 5100,
@@ -14572,14 +14754,14 @@
   "Shadow": 600,
   "Sin Limites": 4000,
   "Six": 8900,
-  "Snow": 7100,
+  "Snow": 7400,
   "Soneto": 300,
   "Soulb": 4500,
   "Status": 300,
   "THO": 1600,
   "TOKYO": 300,
   "TONY  🇦🇷": 1000,
-  "Tam": 8800,
+  "Tam": 9100,
   "Teito": 2100,
   "Telmex": 600,
   "Tenor": 8200,
@@ -14587,7 +14769,7 @@
   "Tier": 300,
   "Trelok": 5100,
   "Trot": 2100,
-  "Tuca": 5100,
+  "Tuca": 5400,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 6100,
   "Under": 600,
@@ -14624,7 +14806,7 @@
   "fleivaman": 1300,
   "francis": 1200,
   "giansito": 1000,
-  "ikonoxx": 900,
+  "ikonoxx": 1200,
   "jazi": 600,
   "kerkoide": 300,
   "kychi": 300,
@@ -14642,7 +14824,7 @@
   "romeo": 1200,
   "setesfifi": 300,
   "wei shenlong": 300,
-  "yinn": 7700
+  "yinn": 8000
  },
  "temp": "prueba"
 }

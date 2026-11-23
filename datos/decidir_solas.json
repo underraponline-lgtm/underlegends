@@ -2,25 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "a502cf1b77",
-   "tipo": "Alias posible",
-   "sec": "🪪 Identidad",
-   "que": "¿«tomyhilfiger» es crakero? La cuenta de crakero en la Lista se anotó como «tomyhilfiger», y en el ranking suman aparte. Si es la misma persona, los puntos de «tomyhilfiger» pasan a crakero.\nLa cuenta: https://discord.com/users/1374555884868337738",
-   "r": "Es la misma persona",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "la misma persona: «tomyhilfiger» ya es alias de crakero",
-   "t": 1794256340149,
-   "filas": [
-    784
-   ],
-   "variantes": [
-    "DOS NOMBRES: «tomyhilfiger» → «crakero» · cuenta 1374555884868337738"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "e9b2ec193c",
    "tipo": "Nombre desconocido",
    "sec": "Cuentas Pendientes V.1 · FFA · 08/10 · #435",
@@ -4600,6 +4581,51 @@
     "alta": [
      "mityar",
      "1573464003018096760"
+    ]
+   }
+  },
+  {
+   "id": "1b9bd3d4f1",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 17 · FFA · 23/11 · #681",
+   "que": "¿Quién es «Ojitos canábicos 🇨🇱»?",
+   "r": "Es Soulb (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @sj.2008_ (en Discord: «#57 | Soulb», «Ojitos canábicos») · en la Lista: Soulb se anotó como «Ojitos canábicos» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1795467192693,
+   "filas": [
+    1576
+   ],
+   "variantes": [
+    "Ojitos canábicos 🇨🇱"
+   ],
+   "escribio": {
+    "quien": "qcyo rapeen 17 · FFA · 23/11 · Ojitos canábicos 🇨🇱"
+   }
+  },
+  {
+   "id": "0e21d6ff06",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 17 · FFA · 23/11 · #681",
+   "que": "¿Quién es «Aritmetico 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 925564434745819208",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (925564434745819208)",
+   "t": 1795467192693,
+   "filas": [
+    1573
+   ],
+   "variantes": [
+    "Aritmetico 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Aritmetico",
+     "925564434745819208"
     ]
    }
   }

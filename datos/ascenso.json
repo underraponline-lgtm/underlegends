@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-23T20:29:45Z",
+ "t": "2026-11-23T20:51:54Z",
  "sv": {
   "SR": {
    "filas": [
@@ -667,8 +667,8 @@
     [
      "Park Ji Sung",
      "cl",
-     15970,
-     1350,
+     16470,
+     1850,
      "Oasis"
     ],
     [
@@ -735,6 +735,13 @@
      "Zignos"
     ],
     [
+     "Za",
+     "ar",
+     4960,
+     615,
+     "Provenza"
+    ],
+    [
      "yinn",
      "es",
      4890,
@@ -747,13 +754,6 @@
      4725,
      400,
      "Abyssus"
-    ],
-    [
-     "Za",
-     "ar",
-     4585,
-     240,
-     "Provenza"
     ],
     [
      "Erian",
@@ -812,6 +812,13 @@
      "Guess"
     ],
     [
+     "Mr still ballin",
+     "no",
+     3550,
+     500,
+     "Over"
+    ],
+    [
      "Neo",
      "ar",
      3325,
@@ -824,13 +831,6 @@
      3200,
      0,
      "Polosport"
-    ],
-    [
-     "Mr still ballin",
-     "no",
-     3050,
-     0,
-     "Over"
     ],
     [
      "geekto",
@@ -1085,6 +1085,13 @@
      "Masino"
     ],
     [
+     "BLITZ",
+     "il",
+     825,
+     375,
+     "BLITZ"
+    ],
+    [
      "Dyzz",
      "cl",
      820,
@@ -1300,13 +1307,6 @@
      450,
      0,
      "Pipe"
-    ],
-    [
-     "BLITZ",
-     "il",
-     450,
-     0,
-     "BLITZ"
     ],
     [
      "iguana",
@@ -2205,6 +2205,35 @@
        "Lrs la sustancia",
        "Tercero",
        240
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "qcyo rapeen 18",
+     "dia": "2026-11-23",
+     "rango": "plata iii",
+     "puntos": [
+      [
+       "Oasis",
+       "Campeón",
+       500
+      ],
+      [
+       "Over",
+       "Campeón",
+       500
+      ],
+      [
+       "Provenza",
+       "Subcampeón",
+       375
+      ],
+      [
+       "BLITZ",
+       "Subcampeón",
+       375
       ]
      ],
      "fuera": []

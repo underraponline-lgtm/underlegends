@@ -63291,5 +63291,244 @@
    "min": 108,
    "v": 1
   }
+ },
+ "681": {
+  "dia": "2026-11-23",
+  "escala": "16+",
+  "fecha": "23/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1574496144439124060"
+  ],
+  "n": 681,
+  "nombre": "qcyo rapeen 17",
+  "participantes": 22,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "LRS",
+       "Aritmetico 🇲🇽",
+       "Marto AR"
+      ],
+      "Tuca, LRS",
+      "triple (4 bandas, pasan 2); también pasa: Lrs🇦🇷"
+     ],
+     [
+      [
+       "Over",
+       "Ojitos canábicos 🇨🇱",
+       "ikonoxx",
+       "Julda"
+      ],
+      "Over, Ojitos canábicos 🇨🇱",
+      "triple (4 bandas, pasan 2); también pasa: Ojitos canábicos 🇨🇱"
+     ],
+     [
+      [
+       "Erian, Geoka, Agus",
+       "Funk🇦🇷",
+       "Player"
+      ],
+      "Erian, Geoka, Agus, Funk🇦🇷",
+      "triple (3 bandas, pasan 2); también pasa: Funk🇦🇷"
+     ],
+     [
+      [
+       "Andres",
+       "Oasis",
+       "yinn",
+       "Makmah",
+       "Kyss",
+       "Tam"
+      ],
+      "Andres, Oasis",
+      "triple (6 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ojitos canábicos 🇨🇱",
+       "Tuca"
+      ],
+      "Ojitos canábicos 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Funk🇦🇷, Funk🇦🇷, Gian",
+       "Andres, Snow"
+      ],
+      "Funk🇦🇷, Funk🇦🇷, Gian",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Erian, Geoka, Agus"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Over",
+       "LRS"
+      ],
+      "Over",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Funk🇦🇷, Funk🇦🇷, BLITZ",
+       "Ojitos canábicos 🇨🇱"
+      ],
+      "Funk🇦🇷, Funk🇦🇷, BLITZ",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Over",
+       "Funk🇦🇷, Funk🇦🇷, BLITZ"
+      ],
+      "Oasis, Over",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Ojitos canábicos 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Funk🇦🇷",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Over",
+    "Campeón",
+    5000
+   ],
+   [
+    "BLITZ",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tuca",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Aritmetico 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Julda",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kyss",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marto AR",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tam",
+    "Octavos",
+    1250
+   ],
+   [
+    "ikonoxx",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    833
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    833
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    833
+   ],
+   [
+    "Gian",
+    "Cuartos",
+    833
+   ]
+  ],
+  "ver": {
+   "min": 115,
+   "v": 1
+  }
  }
 }

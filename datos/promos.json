@@ -17,12 +17,24 @@
 "canales_t": "2026-11-22T23:38:30Z",
 "ult": {
 "1498327465251045418": "1574167316298465473",
-"937392432276992010": "1568032127608430672",
+"937392432276992010": "1574523703692230799",
 "1511963131880931338": "1540204032679743619",
 "1445948805710352514": "1530074145402912861",
 "1375099464183713823": "1560720259563130951"
 },
 "items": [
+{
+"id": "1574523703692230799-0",
+"t": "2026-11-23T20:35:04Z",
+"sv": "SR",
+"quien": "Jothaze",
+"url": "https://youtu.be/YZzjLcQI3J8?si=Qo42FKmVOMmiiO8N",
+"plat": "yt",
+"vid": "YZzjLcQI3J8",
+"tit": "DHMIS rmx - L.U Ft Sozo",
+"de": "lenguajeuniversal",
+"img": "https://i.ytimg.com/vi/YZzjLcQI3J8/hqdefault.jpg"
+},
 {
 "id": "1569179881684729950-0",
 "t": "2026-11-09T02:40:37Z",
@@ -110,6 +122,11 @@
 "tit": "Debe entender beat 808 audio official de filozico ",
 "de": "No soy filo",
 "img": "https://i.ytimg.com/vi/IwcqSwjSW0g/hqdefault.jpg"
+},
+"https://youtu.be/YZzjLcQI3J8?si=Qo42FKmVOMmiiO8N": {
+"tit": "DHMIS rmx - L.U Ft Sozo",
+"de": "lenguajeuniversal",
+"img": "https://i.ytimg.com/vi/YZzjLcQI3J8/hqdefault.jpg"
 }
 }
 }

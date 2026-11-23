@@ -1274,6 +1274,11 @@
     "t1",
     1793079194391
    ],
+   "💀 REGICIDA": [
+    "💀 REGICIDA",
+    "t1",
+    1795467199635
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -1857,6 +1862,11 @@
  },
  "blitz": {
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1795467199635
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -5758,6 +5768,20 @@
    ]
   }
  },
+ "funk": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795467199635
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795467199635
+   ]
+  }
+ },
  "garxzii": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -6495,6 +6519,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793925416194
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795467199635
    ]
   }
  },
@@ -9349,6 +9378,13 @@
   }
  },
  "martoar": {
+  "pais": {
+   "PIONERO": [
+    "PIONERO",
+    "t1",
+    1795467199635
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -12089,7 +12125,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x29",
+    "👑 CAMPEÓN x30",
     "t1",
     1793029252929
    ],
@@ -12102,6 +12138,11 @@
     "👥 FUNDADOR DE CREW",
     "t1",
     1794880971790
+   ],
+   "💀 REGICIDA": [
+    "💀 REGICIDA",
+    "t1",
+    1795467199635
    ],
    "💯 BICENTENARIO": [
     "💯 BICENTENARIO",
@@ -12765,7 +12806,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x6",
+    "👑 CAMPEÓN x7",
     "t1",
     1793029252929
    ],
@@ -16268,6 +16309,11 @@
     "t1",
     1793029252929
    ],
+   "📖 HISTORIA VIVA": [
+    "📖 HISTORIA VIVA",
+    "t1",
+    1795467199635
+   ],
    "🧱 FUNDADOR": [
     "🧱 FUNDADOR",
     "t1",
@@ -18525,6 +18571,43 @@
     "🧊 SANGRE FRÍA",
     "t1",
     1793064764072
+   ]
+  },
+  "pais": {
+   "CONQUISTA AFUERA": [
+    "CONQUISTA AFUERA",
+    "t1",
+    1795467199635
+   ],
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795467199635
+   ],
+   "GANA AFUERA": [
+    "GANA AFUERA",
+    "t1",
+    1795467199635
+   ],
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1795467199635
+   ],
+   "MEDALLERO": [
+    "MEDALLERO",
+    "t1",
+    1795467199635
+   ],
+   "PIONERO": [
+    "PIONERO",
+    "t1",
+    1795467199635
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1795467199635
    ]
   },
   "servidor": {

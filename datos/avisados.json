@@ -57261,5 +57261,327 @@
    ]
   ],
   "v": 2
+ },
+ "681": {
+  "antes": {
+   "Agus": [
+    16,
+    16,
+    false
+   ],
+   "Andres": [
+    59,
+    70,
+    false
+   ],
+   "BLITZ": [
+    298,
+    140,
+    true
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Geoka": [
+    30,
+    32,
+    false
+   ],
+   "Gian": [
+    434,
+    355,
+    true
+   ],
+   "Julda": [
+    115,
+    156,
+    false
+   ],
+   "Kyss": [
+    65,
+    77,
+    false
+   ],
+   "LRS": [
+    41,
+    49,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Marto AR": [
+    336,
+    212,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "Over": [
+    18,
+    18,
+    false
+   ],
+   "Player": [
+    73,
+    90,
+    false
+   ],
+   "Snow": [
+    7,
+    7,
+    false
+   ],
+   "Tam": [
+    264,
+    23,
+    true
+   ],
+   "Tuca": [
+    271,
+    48,
+    true
+   ],
+   "ikonoxx": [
+    309,
+    167,
+    true
+   ],
+   "yinn": [
+    19,
+    19,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Tuca",
+    "Aritmetico 🇲🇽",
+    "Tuca"
+   ],
+   [
+    "Tuca",
+    "Marto AR",
+    "Tuca"
+   ],
+   [
+    "Over",
+    "ikonoxx",
+    "Over"
+   ],
+   [
+    "Over",
+    "Julda",
+    "Over"
+   ],
+   [
+    "Erian, Geoka, Agus",
+    "Player",
+    "Erian, Geoka, Agus"
+   ],
+   [
+    "Andres",
+    "yinn",
+    "Andres"
+   ],
+   [
+    "Andres",
+    "Makmah",
+    "Andres"
+   ],
+   [
+    "Andres",
+    "Kyss",
+    "Andres"
+   ],
+   [
+    "Andres",
+    "Tam",
+    "Andres"
+   ],
+   [
+    "Ojitos canábicos 🇨🇱",
+    "Tuca",
+    "Ojitos canábicos 🇨🇱"
+   ],
+   [
+    "Funk🇦🇷, Funk🇦🇷, Gian",
+    "Andres, Snow",
+    "Funk🇦🇷, Funk🇦🇷, Gian"
+   ],
+   [
+    "Oasis",
+    "Erian, Geoka, Agus",
+    "Oasis"
+   ],
+   [
+    "Over",
+    "LRS",
+    "Over"
+   ],
+   [
+    "Funk🇦🇷, Funk🇦🇷, BLITZ",
+    "Ojitos canábicos 🇨🇱",
+    "Funk🇦🇷, Funk🇦🇷, BLITZ"
+   ],
+   [
+    "Oasis, Over",
+    "Funk🇦🇷, Funk🇦🇷, BLITZ",
+    "Oasis, Over"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 26,
+   "Andres": 22,
+   "BLITZ": 12,
+   "Erian": 87,
+   "Geoka": 35,
+   "Gian": 2,
+   "Julda": 4,
+   "Kyss": 12,
+   "LRS": 44,
+   "Makmah": 125,
+   "Marto AR": 8,
+   "Oasis": 48,
+   "Over": 11,
+   "Player": 17,
+   "Snow": 47,
+   "Tam": 33,
+   "Tuca": 13,
+   "ikonoxx": 9,
+   "yinn": 38
+  },
+  "fecha": "23/11",
+  "noche": true,
+  "nombre": "qcyo rapeen 17",
+  "num": 681,
+  "participantes": 22,
+  "sello": {
+   "Oasis": "8b0e8f9d82d3:a8d8b7335469",
+   "Over": "639d50df48e3:a8d8b7335469"
+  },
+  "sv": "FFA",
+  "t": "2026-11-23T20:42:57Z",
+  "tabla": [
+   [
+    "Ojitos canábicos 🇨🇱",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Over",
+    "Campeón",
+    5000
+   ],
+   [
+    "Funk🇦🇷",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "BLITZ",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Tuca",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Aritmetico 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marto AR",
+    "Octavos",
+    1250
+   ],
+   [
+    "ikonoxx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Julda",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kyss",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tam",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    833
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    833
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    833
+   ],
+   [
+    "Gian",
+    "Cuartos",
+    833
+   ]
+  ],
+  "v": 2
  }
 }

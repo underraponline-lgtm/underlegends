@@ -32,10 +32,26 @@
     "nivel": "A",
     "base": 9500,
     "o": 19,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9500
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 9500,
+    "caza": {
+     "n": 681,
+     "evento": "qcyo rapeen 17",
+     "sv": "FFA",
+     "t": "2026-11-23T18:45:33Z",
+     "por": [
+      {
+       "n": "Andres",
+       "cobra": 9500
+      },
+      {
+       "n": "Oasis",
+       "cobra": 4750
+      }
+     ]
+    }
    },
    {
     "n": "Makmah",
@@ -45,10 +61,26 @@
     "nivel": "A",
     "base": 12000,
     "o": 1,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 12000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 12000,
+    "caza": {
+     "n": 681,
+     "evento": "qcyo rapeen 17",
+     "sv": "FFA",
+     "t": "2026-11-23T18:45:33Z",
+     "por": [
+      {
+       "n": "Andres",
+       "cobra": 12000
+      },
+      {
+       "n": "Oasis",
+       "cobra": 6000
+      }
+     ]
+    }
    },
    {
     "n": "MaYeuTyK",
@@ -149,10 +181,26 @@
     "nivel": "C",
     "base": 5000,
     "o": 156,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 5000,
+    "caza": {
+     "n": 681,
+     "evento": "qcyo rapeen 17",
+     "sv": "FFA",
+     "t": "2026-11-23T18:45:33Z",
+     "por": [
+      {
+       "n": "Ojitos canábicos",
+       "cobra": 5000
+      },
+      {
+       "n": "Over",
+       "cobra": 2500
+      }
+     ]
+    }
    },
    {
     "n": "AbrahamH",

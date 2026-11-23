@@ -322,6 +322,18 @@
    "vence": "2026-10-25T20:57:26+00:00",
    "vencido": false
   },
+  "Aritmetico": {
+   "chat": "2026-11-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-23T18:45:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 17",
+   "n": 681,
+   "sv": "FFA",
+   "vence": "2026-11-30T18:45:33+00:00",
+   "vencido": false
+  },
   "Aszecas": {
    "avisado": "2026-11-06",
    "chat": "2026-11-06",
@@ -1119,6 +1131,18 @@
    "sv": "SR",
    "vence": "2026-11-20T22:23:00+00:00",
    "vencido": true
+  },
+  "Funk": {
+   "chat": "2026-11-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-23T18:45:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 17",
+   "n": 681,
+   "sv": "FFA",
+   "vence": "2026-11-30T18:45:33+00:00",
+   "vencido": false
   },
   "G meiker": {
    "avisado": "2026-11-22",
@@ -2477,6 +2501,18 @@
    "sv": "URBF",
    "vence": "2026-10-20T01:56:58+00:00",
    "vencido": true
+  },
+  "Ojitos canábicos": {
+   "chat": "2026-11-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-23T18:45:33+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 17",
+   "n": 681,
+   "sv": "FFA",
+   "vence": "2026-11-30T18:45:33+00:00",
+   "vencido": false
   },
   "Olga de Kiev": {
    "avisado": "2026-10-26",

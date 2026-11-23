@@ -10643,6 +10643,39 @@
    "b": "MR STILL BALIN",
    "ganador": "MR STILL BALIN",
    "votos": "1–0"
+  },
+  "1574520732497739900": {
+   "id": "1574520732497739900",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795465395808,
+   "a": "MR STILL BALIN",
+   "b": "TENOR",
+   "ganador": "TENOR",
+   "votos": "1–0"
+  },
+  "1574522033671512096": {
+   "id": "1574522033671512096",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795465706032,
+   "a": "PARK JI SUNG",
+   "b": "TENOR",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1574524569858080939": {
+   "id": "1574524569858080939",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795466310706,
+   "a": "PARK JI SUNG",
+   "b": "ZA",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14285,7 +14318,7 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795459899077,
-   "ed": 1795465379551,
+   "ed": 1795466337295,
    "texto": "`[ OCTAVOS ]`\n⌞TUCA⌝ 🆚 ⌞MARTO⌝ 🆚 ⌞LRS⌝ 🆚 ⌞ARITMETICO⌝\n⌞OVER⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞JULDA⌝ 🆚 ⌞SOUL B⌝\n⌞ERIAN GEOKA ALR⌝ 🆚 ⌞PLAYER⌝ 🆚 ⌞ZA⌝\n⌞YINN⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞ANDRES⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞KYSS⌝ 🆚 ⌞PARK JI SUNG⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞SOUL B⌝ 🆚 ⌞TUCA⌝\n⌞FUNK+FUNK+GIAN⌝ 🆚 ⌞ANDRES+SNOW⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN GEOKA AGUSTIN⌝\n⌞MR STILL BALIN⌝ 🆚 ⌞LRS⌝\n`[ SEMIFINALES ]`\n⌞SOUL B⌝ 🆚 ⌞TENOR ZA BLITZ⌝\n⌞MR STILL BALIN⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`\n⌞BLITZ⌝ 🆚 ⌞MR STILL BALIN⌝",
    "batallas": [
     [
