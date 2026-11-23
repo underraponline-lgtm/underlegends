@@ -1441,6 +1441,22 @@ const ok = (cond, que, det) => {
       && cuantos('aqui', A.DUENO) === 0 && cuantos('cuenta_nombre', A.DUENO) === 0,
     'ahora: Pepe con su nombre y su última sección, dos pestañas sin cuenta (la sección rara es «otra»), por hora y por día una vez cada pestaña; Dlx, en ningún lado',
     JSON.stringify({ ahora: na.ahora, horas: na.horas, por_dia: na.por_dia, entraron: na.entraron }));
+    // ⏱️ ¿SE QUEDAN? (23/11/2026): el tiempo de cada pestaña (con tope de 3 h), el rebote, las secciones, si vuelven y quién
+    // pasó más tiempo
+    const AHe = Date.now(), hoyE = A.diaET(AHe);
+    o.sql.exec("INSERT INTO aqui_dia (dia, k, quien, ini, t, ns) VALUES (?, 'eng0000001', '', ?, ?, 1)", hoyE, AHe - 30000, AHe);
+    o.sql.exec("INSERT INTO aqui_dia (dia, k, quien, ini, t, ns) VALUES (?, 'eng0000002', '7777777', ?, ?, 3)", hoyE, AHe - 600000, AHe);
+    o.sql.exec("INSERT INTO aqui_dia (dia, k, quien, ini, t, ns) VALUES (?, 'eng0000003', '', ?, ?, 2)", hoyE, AHe - 6 * 3600000, AHe);
+    o.sql.exec("INSERT INTO aqui_dia (dia, k, quien, ini, t, ns) VALUES (?, 'eng0000004', '', 0, ?, 1)", hoyE, AHe);
+    for (const vu of [-1, 1, 5, 5, 40]) o.visita({ vu });
+    o.visita({ vu: 3, ya: 1 });
+    const en = o._enganche(AHe);
+    const gr = Object.fromEntries(en.grupos.map((g) => [g.g, g.n]));
+    ok(gr['<1'] >= 1 && gr['5-15'] >= 1 && gr['60+'] >= 1 && en.rebote > 0 && en.vuelven.nuevo === 1 && en.vuelven['1'] === 1 && en.vuelven['2-7'] === 2
+      && en.vuelven['30+'] === 1 && en.mas_tiempo.some((x) => x.quien === '7777777' && x.ms === 600000)
+      && !en.mas_tiempo.some((x) => Number(x.ms) > 3 * 3600000) && en.pestanas >= 3,
+    'se quedan: cada pestaña en su grupo (6 h cuentan 3), las de menos de un minuto son rebote, las de antes sin `ini` no cuentan, vuelven por días (la del mismo día no suma) y quién pasó más tiempo',
+    JSON.stringify({ gr, rebote: en.rebote, vuelven: en.vuelven, mas: en.mas_tiempo }));
     // 🛠️ el staff: quien tiene un rol de staff en el directorio, con lo que corrigió
     o.guardar('roles_dir', { t: Date.now(), dir: [{ k: 'pepe', n: 'Pepe Rap', id: '5555555', a: { organizador: ['FFA'] } },
       { k: 'nadie', n: 'Nadie', id: '6666666', a: { competidor: [] } }, { k: 'dlx', n: 'Dlx', id: A.DUENO, a: {} }] });
@@ -4012,6 +4028,13 @@ const ok = (cond, que, det) => {
     ok(await pAqui('{"k":"abcdefghij12","s":"ranking","quien":"1"}', { 'x-lg-ses': ses40 }) === 200 && await pAqui('{"k":"x"}') === 400
       && await pAqui('no es json') === 400 && aAqui.length === 1 && aAqui[0] === JSON.stringify({ k: 'abcdefghij12', s: 'ranking', ses: ses40 }),
     'el aviso por la puerta: sólo código, sección y la sesión del pedido (un «quien» del cuerpo no pasa)', aAqui.join('|'));
+    // 🔁 y la visita con hace cuántos días fue la anterior: sólo un entero de -1 a 400
+    const aVu = [];
+    const envVu = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, op) => { aVu.push(op.body); return new Response('{"ok":true}'); } }) } };
+    for (const cuerpo of ['{"vu":3}', '{"vu":"3"}', '{"vu":999}', '{"vu":-1,"sem":1}', '{"vu":2.5}']) {
+      await A.rutaAvisos(new Request('https://x/avisos/visita', { method: 'POST', body: cuerpo }), envVu, '/avisos/visita');
+    }
+    ok(aVu.join('|') === '{"vu":3}|{}|{}|{"sem":1,"vu":-1}|{}', 'la visita deja pasar `vu` sólo si es un entero de -1 a 400', aVu.join('|'));
     const dAhora = await A.rutaAvisos(new Request('https://x/avisos/dueno-ahora', { method: 'POST', body: '{}' }), envAqui, '/avisos/dueno-ahora');
     ok(dAhora.status === 401 && aAqui.length === 1, 'lo que ve Dlx: sin sesión no contesta ni le pregunta al objeto', String(dAhora.status));
     // 📊 el panel de los socios (19/10/2026): las visitas de cada servidor, y quién ve qué

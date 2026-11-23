@@ -551,8 +551,12 @@ export default function App() {
       const d0 = Date.parse(hoy + 'T12:00:00Z');
       const lunes = new Date(d0 - ((new Date(d0).getUTCDay() + 6) % 7) * 864e5).toISOString().slice(0, 10);
       const sem = localStorage.getItem('lg:visita_sem') !== lunes;
-      const ya = localStorage.getItem('lg:visita') === hoy;
+      const antes = localStorage.getItem('lg:visita') || '';
+      const ya = antes === hoy;
       if (ya && !sem) return;
+      // 🔁 hace cuántos días fue la visita anterior de este navegador (23/11/2026, «si los usuarios se quedan enganchados»):
+      // va sólo ese número; -1 si es la primera. Lo que se guarda acá ya existía (`lg:visita`)
+      const vu = /^\d{4}-\d{2}-\d{2}$/.test(antes) ? Math.round((Date.parse(hoy + 'T12:00:00Z') - Date.parse(antes + 'T12:00:00Z')) / 864e5) : -1;
       localStorage.setItem('lg:visita', hoy);
       if (sem) localStorage.setItem('lg:visita_sem', lunes);
       if (ya) {
@@ -566,7 +570,7 @@ export default function App() {
       const de = canalDe(location.search);
       if (de && !localStorage.getItem('lg:de')) localStorage.setItem('lg:de', JSON.stringify({ de, dia: hoy }));
       fetch('/api/avisos/visita', { method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(Object.assign(de ? { de } : {}, sem ? { sem: 1 } : {})), keepalive: true }).catch(() => {});
+        body: JSON.stringify(Object.assign(de ? { de } : {}, sem ? { sem: 1 } : {}, vu >= -1 && vu <= 400 ? { vu } : {})), keepalive: true }).catch(() => {});
     } catch (e) { /* sin almacenamiento, no se cuenta */ }
   }, []);
 
@@ -820,15 +824,20 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       }
     } catch (e) { A.k = ''; }
     if (!A.k) return undefined;
-    A.avisar = (freno) => {
-      if (document.visibilityState !== 'visible' || esDuenoAca() || Date.now() - A.ult < freno) return;
+    // `fin`: la dejaste de ver (otra pestaña, otra app, cerrar): ⏱️ con eso se sabe cuánto tiempo estuviste (Dlx, 23/11/2026:
+    // «cuánto tiempo en la página se quedan usualmente»); sin él, quien se va a los 3 minutos parecería de 0
+    A.avisar = (freno, fin) => {
+      if ((!fin && document.visibilityState !== 'visible') || esDuenoAca() || Date.now() - A.ult < freno) return;
       A.ult = Date.now();
-      fetch('/api/avisos/aqui', { method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ k: A.k, s: A.s }), keepalive: true }).catch(() => {});
+      const cuerpo = JSON.stringify({ k: A.k, s: A.s });
+      try {
+        if (fin && navigator.sendBeacon && navigator.sendBeacon('/api/avisos/aqui', new Blob([cuerpo], { type: 'application/json' }))) return;
+      } catch (e) { /* sin beacon, con fetch */ }
+      fetch('/api/avisos/aqui', { method: 'POST', headers: { 'content-type': 'application/json' }, body: cuerpo, keepalive: true }).catch(() => {});
     };
     A.avisar(0);
     const t = setInterval(() => A.avisar(0), AQUI_MIN * 60000);
-    const vis = () => A.avisar(60000);
+    const vis = () => (document.visibilityState === 'hidden' ? A.avisar(15000, true) : A.avisar(60000));
     document.addEventListener('visibilitychange', vis);
     return () => { clearInterval(t); document.removeEventListener('visibilitychange', vis); A.avisar = null; };
   }, []);

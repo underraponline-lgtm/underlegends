@@ -256,6 +256,59 @@ const SECC_AQUI = { inicio: 'el Inicio', perfil: 'un perfil', servidor: 'un serv
 const enSecc = (s) => SECC_AQUI[s] || s || '—';
 const hh = (h) => (h % 12 || 12) + (h < 12 ? ' AM' : ' PM');
 const quienTxt = (x) => limpio(x.n || x.dn || '') || 'Cuenta sin nombre';
+// ⏱️ ¿SE QUEDAN? (23/11/2026, Dlx: «dar más estadísticas si es que los usuarios se quedan enganchados, cuánto tiempo en la
+// página se quedan usualmente»). De `_enganche()` en bot/avisos.js, 7 días: el tiempo típico de una visita (la mediana: el
+// promedio lo tiran para arriba las pestañas que quedan abiertas), cuántos se van en menos de un minuto, cuántas secciones
+// abren, si vuelven, y con cuenta cuántos días entra cada uno y quién pasó más tiempo. Sin datos todavía, no se dibuja
+const durTxt = (ms) => (ms == null ? '—' : ms < 60000 ? 'menos de 1 min' : ms < 3600000 ? Math.round(ms / 60000) + ' min'
+  : Math.floor(ms / 3600000) + ' h ' + Math.round((ms % 3600000) / 60000) + ' min');
+const GRUPO_TXT = { '<1': 'menos de 1 min', '1-5': '1 a 5 min', '5-15': '5 a 15 min', '15-30': '15 a 30 min', '30-60': '30 min a 1 h', '60+': 'más de 1 h' };
+const VUELVE_TXT = [['1', 'vinieron ayer'], ['2-7', 'hace 2 a 7 días'], ['8-30', 'hace 8 a 30 días'], ['30+', 'hace más de un mes'], ['nuevo', 'la primera vez']];
+function SeQuedan({ e, liga }) {
+  if (!e || !e.pestanas) return null;
+  const vTot = Object.values(e.vuelven || {}).reduce((s, n) => s + n, 0);
+  const vVuelven = vTot - ((e.vuelven || {}).nuevo || 0);
+  const gTope = Math.max(1, ...(e.grupos || []).map((g) => g.n));
+  const fTot = (e.frec || []).reduce((s, x) => s + x.n, 0);
+  const cuadros = [
+    { t: 'Una visita dura', v: durTxt(e.mediana), p: 'lo típico (la mitad dura menos) · con cuenta ' + durTxt(e.mediana_con) + ', sin cuenta ' + durTxt(e.mediana_sin) },
+    { t: 'Se van enseguida', v: e.rebote == null ? '—' : e.rebote + ' %', p: 'de las visitas duran menos de un minuto' },
+    { t: 'Secciones por visita', v: e.secciones == null ? '—' : String(e.secciones).replace('.', ','), p: 'cuántas partes de la página abren' },
+    { t: 'Vuelven', v: vTot ? Math.round((100 * vVuelven) / vTot) + ' %' : '—', p: vTot ? 'de los que entraron ya habían venido antes' : 'se empieza a contar con la próxima visita' },
+    { t: 'Volvieron esta semana', v: e.pasada ? Math.round((100 * e.volvieron) / e.pasada) + ' %' : '—', p: e.pasada ? num(e.volvieron) + ' de los ' + num(e.pasada) + ' que entraron con su cuenta la semana pasada' : 'con cuenta, contra la semana pasada' },
+  ];
+  return (
+    <div className="aq-sq">
+      <h4 className="dz-h">¿Se quedan?<small>7 días · {num(e.pestanas)} visitas medidas{e.desde ? ' desde el ' + corto(e.desde) : ''}</small></h4>
+      <div className="nc-l">{cuadros.map((c) => (
+        <div key={c.t} className="nc-c"><span className="nc-t">{c.t}</span><b className={c.v === '—' ? 'nc-nada' : 'aq-sq-v'}>{c.v}</b><small className="nc-p">{c.p}</small></div>
+      ))}</div>
+      <div className="aq-cols">
+        <div className="nc-c">
+          <span className="nc-t">Cuánto dura cada visita</span>
+          <ul className="aq-gr">{(e.grupos || []).map((g) => (
+            <li key={g.g}><span>{GRUPO_TXT[g.g] || g.g}</span><i><em style={{ width: Math.round((g.n / gTope) * 100) + '%' }} /></i><b>{num(g.n)}</b></li>
+          ))}</ul>
+        </div>
+        <div className="nc-c">
+          <span className="nc-t">Cada cuánto vuelven</span>
+          {vTot ? <ul className="aq-gr">{VUELVE_TXT.map(([b, t]) => (
+            <li key={b}><span>{t}</span><i><em style={{ width: Math.round((((e.vuelven || {})[b] || 0) / Math.max(1, ...Object.values(e.vuelven || {}))) * 100) + '%' }} /></i><b>{num((e.vuelven || {})[b] || 0)}</b></li>
+          ))}</ul> : <small className="nc-p">Se empieza a contar con la próxima visita de cada navegador.</small>}
+          {fTot ? <small className="nc-p">Con cuenta, días que entraron esta semana: {(e.frec || []).map((x) => num(x.n) + ' ' + (x.g === '1' ? 'un día' : x.g === '7' ? 'todos los días' : 'de ' + x.g.replace('-', ' a ') + ' días')).join(' · ')}.</small> : null}
+        </div>
+      </div>
+      {(e.mas_tiempo || []).length ? (
+        <div className="nc-c">
+          <span className="nc-t">Los que más tiempo pasaron</span>
+          <ol className="aq-top">{e.mas_tiempo.map((x) => (
+            <li key={x.quien}><b>{x.k ? <a href={'#/r/' + encodeURIComponent(x.k)}>{quienTxt(x)}</a> : quienTxt(x)}</b><span>{durTxt(x.ms)} · {x.pest} {x.pest === 1 ? 'visita' : 'visitas'}</span></li>
+          ))}</ol>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 function AhoraYQuien({ liga }) {
   const [a, setA] = useState(null);
   const [lista, setLista] = useState('entraron');
@@ -317,6 +370,7 @@ function AhoraYQuien({ liga }) {
           ) : <small className="nc-p">Todavía sin días medidos.</small>}
         </div>
       </div>
+      <SeQuedan e={a.enganche} liga={liga} />
       <div className="aq-tabs" role="tablist" aria-label="Listas">
         <button type="button" role="tab" aria-selected={lista === 'entraron'} onClick={() => setLista('entraron')}>Entraron con su cuenta · {num(a.entraron_n || 0)}</button>
         <button type="button" role="tab" aria-selected={lista === 'staff'} onClick={() => setLista('staff')}>El staff · {num(a.staff_activos || 0)} de {num(a.staff_n || 0)} activos</button>

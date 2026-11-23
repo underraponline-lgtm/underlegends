@@ -6918,6 +6918,8 @@ export async function rutaAvisos(req, env, ruta) {
       if (d && typeof d.de === 'string' && CANAL.test(d.de)) va.de = d.de;
       if (d && d.sem === 1) va.sem = 1;
       if (d && d.sem === 1 && d.ya === 1) va.ya = 1;
+      // 🔁 y cuántos días pasaron desde su visita anterior (23/11/2026; -1: la primera). Sólo un número entero
+      if (d && Number.isInteger(d.vu) && d.vu >= -1 && d.vu <= 400) va.vu = d.vu;
     } catch (e) { /* sin nada: la visita igual cuenta */ }
     return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: JSON.stringify(va),
       headers: { 'content-type': 'application/json' } });
@@ -9070,6 +9072,16 @@ export class Avisos {
         'PRIMARY KEY (dia, k)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS horas (dia TEXT NOT NULL, h INTEGER NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'nc INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (dia, h)) WITHOUT ROWID');
+      // ⏱️ ¿SE QUEDAN? (23/11/2026, Dlx: «dar más estadísticas si es que los usuarios se quedan enganchados, cuánto tiempo en
+      // la página se quedan usualmente»). Cada pestaña, por día: su primer aviso (`ini`), el último (`t`: el aviso de cada 4
+      // minutos y el de cuando la dejas de ver) y cuántas secciones abrió (`ns`). El tiempo es `t - ini`
+      try { this.sql.exec('ALTER TABLE aqui_dia ADD COLUMN ini INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* ya estaba */ }
+      try { this.sql.exec('ALTER TABLE aqui_dia ADD COLUMN t INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* ya estaba */ }
+      try { this.sql.exec('ALTER TABLE aqui_dia ADD COLUMN ns INTEGER NOT NULL DEFAULT 1'); } catch (e) { /* ya estaba */ }
+      // 🔁 y si vuelven: la visita del día dice cuántos días pasaron desde la anterior de ese navegador (`vu`, sólo el
+      // número: el navegador lo sabe, acá no se guarda nada de él). `b`: 'nuevo', '1', '2-7', '8-30' o '30+'
+      this.sql.exec('CREATE TABLE IF NOT EXISTS vuelven (dia TEXT NOT NULL, b TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
+        'PRIMARY KEY (dia, b)) WITHOUT ROWID');
       // 🪪 y el nombre de Discord de quien entra con su cuenta (`/sesion/nueva`), para mostrarlo en esas listas: mucha gente
       // que entra no está en la Lista, y sin esto salía un número
       this.sql.exec('CREATE TABLE IF NOT EXISTS cuenta_nombre (quien TEXT PRIMARY KEY, n TEXT NOT NULL, t INTEGER NOT NULL)');
@@ -10874,6 +10886,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM aqui WHERE t < ?', ahora - DIA_MS);
       this.sql.exec('DELETE FROM aqui_dia WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM horas WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
+      this.sql.exec('DELETE FROM vuelven WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM visitas_sem WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM llegadas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
@@ -21851,6 +21864,11 @@ export class Avisos {
     // salió, con la página abierta desde antes). `sem`: su primera visita de la semana (ver `visitas_sem`)
     if (!(d && d.ya)) {
       this.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000', dia);
+      // 🔁 ¿vuelve? (23/11/2026): cuántos días desde la visita anterior de ese navegador, en cinco grupos
+      if (d && Number.isInteger(d.vu) && d.vu >= -1) {
+        const b = d.vu < 1 ? 'nuevo' : d.vu === 1 ? '1' : d.vu <= 7 ? '2-7' : d.vu <= 30 ? '8-30' : '30+';
+        this.sql.exec('INSERT INTO vuelven (dia, b, n) VALUES (?, ?, 1) ON CONFLICT(dia, b) DO UPDATE SET n = n + 1 WHERE n < 20000', dia, b);
+      }
     }
     if (d && d.sem) {
       this.sql.exec('INSERT INTO visitas_sem (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000', dia);
@@ -21889,7 +21907,7 @@ export class Avisos {
     }
     // 🙈 Dlx y los bots no cuentan
     if (quien && FUERA_DE_NUMEROS.has(quien)) return json({ ok: true });
-    const antes = this.sql.exec('SELECT t, quien FROM aqui WHERE k = ?', k).toArray()[0];
+    const antes = this.sql.exec('SELECT t, quien, s FROM aqui WHERE k = ?', k).toArray()[0];
     if (!antes && this.sql.exec('SELECT COUNT(*) AS n FROM aqui WHERE t > ?', ahora - AQUI_VIVO_MIN * MIN).toArray()[0].n >= 6000) {
       return json({ ok: true });
     }
@@ -21900,10 +21918,14 @@ export class Avisos {
       this.sql.exec('INSERT INTO horas (dia, h, n, nc) VALUES (?, ?, 1, ?) ON CONFLICT(dia, h) DO UPDATE SET n = n + 1, nc = nc + excluded.nc ' +
         'WHERE n < 20000', dia, hora, quien ? 1 : 0);
     }
-    // una vez por pestaña y por día; y si entró con su cuenta después del primer aviso, se le pone quién es
-    if (!antes || diaET(antes.t) !== dia || (quien && !antes.quien)) {
-      this.sql.exec("INSERT INTO aqui_dia (dia, k, quien) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET quien = excluded.quien " +
-        "WHERE excluded.quien != ''", dia, k, quien);
+    // una fila por pestaña y por día, con desde cuándo y hasta cuándo avisó (⏱️ el tiempo en la página) y cuántas secciones
+    // abrió; si entró con su cuenta después del primer aviso, se le pone quién es
+    if (!antes || diaET(antes.t) !== dia) {
+      this.sql.exec("INSERT INTO aqui_dia (dia, k, quien, ini, t, ns) VALUES (?, ?, ?, ?, ?, 1) ON CONFLICT(dia, k) DO UPDATE SET " +
+        "quien = CASE WHEN excluded.quien != '' THEN excluded.quien ELSE aqui_dia.quien END, t = excluded.t", dia, k, quien, ahora, ahora);
+    } else {
+      this.sql.exec("UPDATE aqui_dia SET t = ?, ns = ns + ?, quien = CASE WHEN ? != '' THEN ? ELSE quien END WHERE dia = ? AND k = ?",
+        ahora, antes.s !== s ? 1 : 0, quien, quien, dia, k);
     }
     return json({ ok: true });
   }
@@ -22013,7 +22035,63 @@ export class Avisos {
     }
     staff.sort((a, b) => b.punt - a.punt || String(a.n).localeCompare(String(b.n)));
     return { horas, horas_dias: diasHoras.n || 0, horas_desde: diasHoras.desde || null, por_dia: porDia, entraron,
-      entraron_n: web.size, staff: staff.slice(0, 80), staff_n: staff.length, staff_activos: staff.filter((x) => x.punt > 0).length };
+      entraron_n: web.size, staff: staff.slice(0, 80), staff_n: staff.length, staff_activos: staff.filter((x) => x.punt > 0).length,
+      enganche: this._enganche(ahora) };
+  }
+
+  /**
+   * ⏱️ ¿SE QUEDAN? (23/11/2026, Dlx: «más estadísticas si es que los usuarios se quedan enganchados, cuánto tiempo en la
+   * página se quedan usualmente, y muchísimas cosas más»). 7 días, de `aqui_dia` (cada pestaña por día: `t - ini`, con tope
+   * de 3 h: una pestaña olvidada abierta no es atención) y de `vuelven`. Lo que sale:
+   *   · el tiempo típico (la mediana) y el promedio, con y sin cuenta, y en qué grupo cae cada pestaña
+   *   · `rebote`: las que se fueron en menos de un minuto (un solo aviso y nada más)
+   *   · secciones por visita
+   *   · `vuelven`: de las visitas del día, cuántas son de un navegador que ya había venido, y hace cuánto
+   *   · con cuenta: cuántos días de la semana entró cada uno, y de los de la semana pasada cuántos volvieron esta
+   *   · los que más tiempo pasaron, con nombre
+   */
+  _enganche(ahora = Date.now()) {
+    const d7 = diaET(ahora - 7 * DIA_MS), d14 = diaET(ahora - 14 * DIA_MS);
+    const TOPE = 3 * 3600000;
+    const filas = this.sql.exec('SELECT quien, ini, t, ns FROM aqui_dia WHERE dia > ? AND ini > 0', d7).toArray();
+    const dur = (f) => Math.min(TOPE, Math.max(0, Number(f.t) - Number(f.ini)));
+    const mediana = (xs) => { if (!xs.length) return null; const s = xs.slice().sort((a, b) => a - b); const m = s.length >> 1; return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2); };
+    const prom = (xs) => (xs.length ? Math.round(xs.reduce((a, b) => a + b, 0) / xs.length) : null);
+    const todas = filas.map(dur), con = filas.filter((f) => f.quien).map(dur), sin = filas.filter((f) => !f.quien).map(dur);
+    const GRUPOS = [['<1', 60000], ['1-5', 300000], ['5-15', 900000], ['15-30', 1800000], ['30-60', 3600000], ['60+', Infinity]];
+    const grupos = GRUPOS.map(([g, tope], i) => ({ g, n: todas.filter((x) => x < tope && (i === 0 || x >= GRUPOS[i - 1][1])).length }));
+    // 🙋 por persona con cuenta: el tiempo de la semana y los días
+    const porQ = new Map();
+    for (const f of filas) {
+      if (!f.quien || FUERA_DE_NUMEROS.has(String(f.quien))) continue;
+      const x = porQ.get(f.quien) || { ms: 0, pest: 0 };
+      x.ms += dur(f); x.pest++;
+      porQ.set(f.quien, x);
+    }
+    const masTiempoIds = [...porQ.entries()].sort((a, b) => b[1].ms - a[1].ms).slice(0, 12).map(([q]) => q);
+    const nom = this.nombresDe(masTiempoIds);
+    const masTiempo = masTiempoIds.map((q) => Object.assign({ quien: q, ms: porQ.get(q).ms, pest: porQ.get(q).pest }, nom[q]));
+    // 📆 con cuenta: días de la semana que entró (página o algo con su cuenta) y si volvió de una semana a la otra
+    const diasDe = (a, b) => {
+      const m = new Map();
+      for (const f of this.sql.exec("SELECT quien, COUNT(DISTINCT dia) AS d FROM (SELECT quien, dia FROM aqui_dia WHERE dia > ? AND dia <= ? AND quien != '' " +
+        "UNION SELECT quien, dia FROM uso WHERE por = 'web' AND dia > ? AND dia <= ?) GROUP BY quien", a, b, a, b).toArray()) {
+        if (!FUERA_DE_NUMEROS.has(String(f.quien))) m.set(f.quien, f.d);
+      }
+      return m;
+    };
+    const hoy = diaET(ahora);
+    const esta = diasDe(d7, hoy), pasada = diasDe(d14, d7);
+    const frec = [['1', 1, 1], ['2-3', 2, 3], ['4-6', 4, 6], ['7', 7, 7]].map(([g, a, b]) => ({ g, n: [...esta.values()].filter((d) => d >= a && d <= b).length }));
+    const volvieron = [...pasada.keys()].filter((q) => esta.has(q)).length;
+    const vu = this.sql.exec('SELECT b, SUM(n) AS n FROM vuelven WHERE dia > ? GROUP BY b', d7).toArray();
+    const vuelven = Object.fromEntries(['nuevo', '1', '2-7', '8-30', '30+'].map((b) => [b, (vu.find((x) => x.b === b) || {}).n || 0]));
+    const ns = filas.map((f) => Number(f.ns) || 1);
+    return { pestanas: filas.length, mediana: mediana(todas), promedio: prom(todas), mediana_con: mediana(con), mediana_sin: mediana(sin),
+      rebote: todas.length ? Math.round((100 * todas.filter((x) => x < 60000).length) / todas.length) : null,
+      secciones: ns.length ? Math.round((10 * ns.reduce((a, b) => a + b, 0)) / ns.length) / 10 : null, grupos,
+      vuelven, frec, con_cuenta: esta.size, pasada: pasada.size, volvieron, mas_tiempo: masTiempo,
+      desde: (this.sql.exec('SELECT MIN(dia) AS d FROM aqui_dia WHERE ini > 0').toArray()[0] || {}).d || null };
   }
 
   /** 🔗 De qué link llegaron las visitas nuevas en los últimos 30 días: `[{de, n}]`, el que más trajo primero */
