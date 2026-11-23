@@ -910,6 +910,46 @@
     "canal_id": "1558622756176666624",
     "creada": "2026-11-22"
    }
+  },
+  "UFLUC": {
+   "nombre": "🎙🪯 || Under Freestyle Legion (UFL) || Ciclo 1",
+   "guild_id": "1538596086644736041",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "UFLUC",
+   "tier": 3,
+   "alta": "setup",
+   "nota": "entró solo con /setup el 23/11/2026 (bot/tiers.py `altas_setup()`): sus puntos de Temporada esperan la aprobación de Dlx (`setup_suma`)",
+   "setup": {
+    "plantilla": "completa",
+    "aviso": "1538596087479406594",
+    "desde": "2026-11-23"
+   },
+   "invitacion": "https://discord.gg/WXbMDp64u6",
+   "invitacion_liga": {
+    "codigo": "WXbMDp64u6",
+    "canal": "「📏」ʀᴇɢʟᴀꜱ",
+    "canal_id": "1538598270215921724",
+    "creada": "2026-11-23"
+   },
+   "canales_setup": {
+    "an": "1540168801407078450",
+    "in": "1540440593262714911",
+    "ve": "1540440779519037520",
+    "ge": "1538596087479406594",
+    "ll": [
+     "1540440885471477832"
+    ],
+    "lg": [
+     "1540456567155982336",
+     "1540513453800816650"
+    ],
+    "ev": [
+     "1540168801407078450",
+     "1540440593262714911",
+     "1540440779519037520"
+    ]
+   }
   }
  },
  "_fuera_de_la_tabla": [

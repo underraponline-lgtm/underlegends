@@ -16,6 +16,7 @@
   "FVS": 2,
   "LKR": 3,
   "SR": 2,
+  "UFLUC": 3,
   "URBF": 1,
   "WOF": 3
  },
@@ -155,6 +156,15 @@
    "competitivo": true,
    "duelos": true
   },
+  "UFLUC": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "competitivo": false,
+   "duelos": false
+  },
   "URBF": {
    "pagina": true,
    "calendario": true,
@@ -191,6 +201,7 @@
   "FVS": "2026-10-12",
   "LKR": "2026-10-21",
   "SR": "2026-09-22",
+  "UFLUC": "2026-11-23",
   "URBF": "2026-09-22",
   "WOF": "2026-11-22"
  },

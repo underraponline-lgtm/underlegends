@@ -2934,15 +2934,6 @@
 },
 "cambios": [
 {
-"tipo": "rango",
-"t": "2026-10-14T23:58:43Z",
-"quien": [
-"Geoka"
-],
-"rg": "D",
-"primero": false
-},
-{
 "tipo": "tarjeta",
 "t": "2026-10-14T23:58:43Z",
 "quien": [
@@ -6353,6 +6344,12 @@
 "oasis"
 ],
 "racha": 5
+},
+{
+"tipo": "svnuevo",
+"t": "2026-11-23T22:13:46Z",
+"sv": "UFLUC",
+"tier": 3
 }
 ],
 "noche_antes": {
@@ -8556,7 +8553,8 @@
 "FFS": 3,
 "CHZ": 3,
 "DW": 3,
-"WOF": 3
+"WOF": 3,
+"UFLUC": 3
 },
 "meta": [
 "2026-11-23",
