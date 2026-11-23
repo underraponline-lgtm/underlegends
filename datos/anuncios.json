@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T06:19:13+00:00",
+ "cuando": "2026-11-23T06:30:00+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7392,6 +7392,15 @@
  "oficiales": [
   {
    "servidor": "LKR",
+   "canal": "fms-anuncios",
+   "tit": "VAMOS CON LA SEGUNDA LIGA ESCRIBANME AL PRIVADO LOS QUE QUIERAN ESTAR",
+   "tx": "",
+   "cuando": "2026-11-23T06:19:25",
+   "msg_id": "1574308374944682089",
+   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1574308374944682089"
+  },
+  {
+   "servidor": "LKR",
    "canal": "anuncios",
    "tit": "EL PODIO DE LA RED BULL CHILE 🇨🇱 DEJANDO CAMPEÓN A",
    "tx": "",
@@ -7461,15 +7470,6 @@
    "cuando": "2026-11-21T18:08:44",
    "msg_id": "1573762102576029938",
    "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573762102576029938"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "anuncios",
-   "tit": "𓆩⚡𓆪 𝐖𝐎𝐑𝐋𝐃 𝐎𝐅 𝐅𝐑𝐄𝐄",
-   "tx": "🎤 Donde las barras conectan comunidades. ¿𝐐𝐔𝐈𝐄́𝐍𝐄𝐒 𝐒𝐎𝐌𝐎𝐒? Somos una comunidad dedicada al freestyle, las batallas de rap y la cultura underground, donde los MCs pueden demostrar su talento, practicar y competir. 𝐋𝐎 𝐐𝐔𝐄 𝐎",
-   "cuando": "2026-11-21T18:08:33",
-   "msg_id": "1573762055352094953",
-   "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1573762055352094953"
   },
   {
    "servidor": "DW",
