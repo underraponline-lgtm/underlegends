@@ -1133,7 +1133,7 @@
   },
   "MCO": {
    "competitivo": "f0f247330683:38a840be60e7",
-   "pais": "cb0c96d84587:f1f52e1c6d42",
+   "pais": "068d2c56696d:f1f52e1c6d42",
    "servidor": "cae6e38fea43:0bd0fbf67396:132451",
    "temporada": "bf549bcf5052:a8d8b7335469"
   },
@@ -1430,8 +1430,8 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "fa22297c7513:38a840be60e7",
-   "pais": "d734fc9d33ce:f1f52e1c6d42",
+   "competitivo": "a181171d766b:38a840be60e7",
+   "pais": "d2b81ff501b7:f1f52e1c6d42",
    "servidor": "9629f3f6064d:0bd0fbf67396:40a77e",
    "temporada": "8b0e8f9d82d3:a8d8b7335469"
   },
@@ -1459,8 +1459,8 @@
    "servidor": "4994c2174e30:0bd0fbf67396:fbc56e"
   },
   "PRAISERIZA": {
-   "competitivo": "bae606c863d2:38a840be60e7",
-   "pais": "97f936036a9c:f1f52e1c6d42",
+   "competitivo": "9bd1c6767743:38a840be60e7",
+   "pais": "0e8927249951:f1f52e1c6d42",
    "servidor": "9313d4ee8f59:0bd0fbf67396:acc4a5",
    "temporada": "d0901f7681dc:a8d8b7335469"
   },
@@ -1501,10 +1501,10 @@
    "servidor": "5e2249b127d7:0bd0fbf67396:980594"
   },
   "Player": {
-   "competitivo": "0da8bc7dca05:38a840be60e7",
+   "competitivo": "037a53437aa7:38a840be60e7",
    "pais": "3b20e9488e42:f1f52e1c6d42",
    "servidor": "4187474cbcf8:0bd0fbf67396:6203c7",
-   "temporada": "690f5d919e4d:a8d8b7335469"
+   "temporada": "db5271aac11d:a8d8b7335469"
   },
   "Polosport": {
    "competitivo": "ad2da302870c:38a840be60e7",
@@ -2066,8 +2066,8 @@
    "servidor": "03cada35e488:0bd0fbf67396:43d041"
   },
   "crakero": {
-   "competitivo": "587a0bc32761:38a840be60e7",
-   "pais": "87994b6d75fd:f1f52e1c6d42",
+   "competitivo": "7719d2d1c024:38a840be60e7",
+   "pais": "5a989cedada5:f1f52e1c6d42",
    "servidor": "da00137731db:0bd0fbf67396:d6a988",
    "temporada": "3d751f931e9c:a8d8b7335469"
   },
@@ -2195,5 +2195,5 @@
    "servidor": "7f8885a35a6d:0bd0fbf67396:71cf5a"
   }
  },
- "cuando": "2026-11-23T19:15:32+00:00"
+ "cuando": "2026-11-23T19:35:22+00:00"
 }
