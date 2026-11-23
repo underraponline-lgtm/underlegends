@@ -366,6 +366,38 @@ console.log('\n⚔️ cada batalla en la grabación\n');
   ok(dos.length === 2 && dos[0].hasta <= dos[1].desde && dos[0].hasta >= 330 && dos[0].hasta <= 370 && dos[1].desde >= 330
     && dos[1].desde <= 370 && dos[0].desde <= 100 && dos[1].hasta >= 600,
   `un MC que pelea dos seguidas: no se pisan y el corte cae entre las dos (${dos.map((b) => B.mmss(b.desde) + '–' + B.mmss(b.hasta)).join(', ')})`);
+  // 🪜 las rondas en orden (FFA, 21/11/2026): LRS y Colesito, rivales en octavos (un triple con turnos cortos) y
+  // compañeros en cuartos (un 2v2 donde rapean seguidos), rapean más en cuartos: buscados por separado, los octavos
+  // «se encontraban» en los cuartos
+  const h4 = new B.Habla();
+  const habla4 = (id, a, b) => { for (let ms = a * 1000; ms < b * 1000; ms += 20) h4.agregar(id, ms); };
+  habla4('thaniel', 100, 135); habla4('lrs', 138, 173); habla4('cole', 176, 211);
+  habla4('xavi', 300, 360); habla4('yago', 365, 425);
+  habla4('inhuman', 450, 510); habla4('agente', 515, 575); habla4('cole', 580, 640); habla4('lrs', 645, 705);
+  const Y = (n, id) => ({ n, id });
+  const ffa = [{ id: '3', nombre: 'FFA', rondas: [
+    { r: 'Octavos', b: [{ lados: [[Y('Thaniel', 'thaniel')], [Y('LRS', 'lrs')], [Y('Colesito', 'cole')]] },
+      { lados: [[Y('Xavi', 'xavi')], [Y('Yago', 'yago')]] }] },
+    { r: 'Cuartos', b: [{ lados: [[Y('INHUMAN', 'inhuman'), Y('Agente sombra', 'agente')], [Y('Colesito', 'cole'), Y('LRS', 'lrs')]] }] }] }];
+  const suelta = B.ubicar([['thaniel'], ['lrs'], ['cole']], h4.t, 800), cuartos4 = B.ubicar([['inhuman', 'agente'], ['cole', 'lrs']], h4.t, 800);
+  ok(suelta && cuartos4 && suelta.desde > cuartos4.desde, `el caso se reproduce: buscados por separado, los octavos caen en `
+    + `${suelta && B.mmss(suelta.desde)}, después de los cuartos (${cuartos4 && B.mmss(cuartos4.desde)})`);
+  const orden = B.ubicarTodas(ffa, h4.t, 800);
+  const oct = orden.find((b) => b.nombres[0] === 'Thaniel'), cua = orden.find((b) => b.r === 'Cuartos');
+  ok(orden.length === 3 && oct && cua && oct.desde <= 100 && oct.hasta >= 211 && oct.hasta <= cua.desde && !oct.corta && !cua.corta,
+    `en la llave van en orden: octavos de ${oct && B.mmss(oct.desde)} a ${oct && B.mmss(oct.hasta)} y recién después los cuartos (${cua && B.mmss(cua.desde)})`);
+  ok(orden.map((b) => b.r).join() === 'Octavos,Octavos,Cuartos', 'y la lista sale en ese orden: ' + orden.map((b) => b.r + ' ' + B.mmss(b.desde)).join(', '));
+  ok(B.ordenRondas([{ r: 'Final' }, { r: 'Semifinal' }, { r: 'Cuartos de final' }]).join() === '5,4,3'
+    && B.ordenRondas([{ r: 'Ronda A' }, { r: 'Ronda B' }]).join() === '0,1',
+  'el orden de las rondas sale del nombre (aunque vengan al revés); si no se reconocen, de cómo vienen');
+  // ✂️ menos de `MIN_CLIP_S`: no se entrega, y la lista lo dice
+  const todasLasDeHoy = [todas, dos, orden].flat();
+  ok(todasLasDeHoy.every((b) => b.hasta >= b.desde && b.corta === (b.hasta - b.desde < B.MIN_CLIP_S)),
+    'ningún tramo termina antes de empezar, y se marca «corta» justo el que dura menos de ' + B.MIN_CLIP_S + ' s');
+  const vacia = { r: 'Octavos', nombres: ['Status', 'SULTAN', 'Paria'], desde: 3552, hasta: 3552, corta: true };
+  ok(B.lineaBatalla(vacia) === '`59:12` Octavos · Status vs SULTAN vs Paria · _sin audio: quedó de 0 s_'
+    && B.lineaBatalla({ ...vacia, hasta: 3700, corta: false }) === '`59:12` Octavos · Status vs SULTAN vs Paria',
+  'en la lista, la que no lleva audio dice por qué: ' + B.lineaBatalla(vacia));
   // 🎭 el guion: quién tiene el turno, el rival que contesta, el público y el presentador
   const h3 = new B.Habla();
   const habla3 = (id, a, b, respira = 0) => {

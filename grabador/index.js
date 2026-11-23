@@ -53,7 +53,7 @@ import { mezclar, partir, duracion, sonoridad, ganancia, cortar } from './mezcla
 import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 import { PruebaMicro } from './microfono.js';
 import { LlamadasVivo, claveCiclo } from './vivo.js';
-import { Habla, ubicarTodas, guion, resumenGuion, mmss, nombreClip } from './batallas.js';
+import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S } from './batallas.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
 const num = (s, d) => (Number.isFinite(Number(s)) && String(s).trim() !== '' ? Number(s) : d);
@@ -525,17 +525,21 @@ class Grabacion {
         anotar('⚠️ guion:', String(e.message || e).slice(0, 100));
       }
     }
-    const lineas = bs.map((b) => `\`${mmss(b.desde)}\` ${b.r} · ${b.nombres.join(' vs ')}`);
-    let texto = `⚔️ **Las batallas**, en minutos desde que empezó la grabación (aprox.: salen de quién habló cuándo)`
-      + ` · ${bs.length} de ${total}`;
-    for (const l of lineas) { if ((texto + '\n' + l).length > 1900) { texto += '\n…'; break; } texto += '\n' + l; }
     const tope = topeDe(this.guild?.id === canal.guildId ? this.guild : canal.guild);
     const clips = [];
     for (const [i, b] of bs.entries()) {
+      if (b.corta) continue;
       const ruta = path.join(this.dir, `batalla-${i}.ogg`);
       await cortar(mezcla, b.desde, b.hasta, ruta);
+      // ✂️ el archivo también se mide: un corte sin volver a codificar puede salir más corto que el tramo
+      if (duracion(ruta) < MIN_CLIP_S) { b.corta = true; continue; }
       clips.push({ attachment: ruta, name: nombreClip(b), peso: fs.statSync(ruta).size });
     }
+    const sinAudio = bs.filter((b) => b.corta).length;
+    if (sinAudio) anotar(`✂️ ${sinAudio} batallas sin audio (quedaron de menos de ${MIN_CLIP_S} s)`);
+    let texto = `⚔️ **Las batallas**, en minutos desde que empezó la grabación (aprox.: salen de quién habló cuándo)`
+      + ` · ${bs.length} de ${total}` + (sinAudio ? ` · ${sinAudio} sin audio` : '');
+    for (const l of bs.map(lineaBatalla)) { if ((texto + '\n' + l).length > 1900) { texto += '\n…'; break; } texto += '\n' + l; }
     let lote = [], peso = 0, primero = true;
     const mandar = async () => {
       if (!lote.length && !primero) return;

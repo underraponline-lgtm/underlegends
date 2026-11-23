@@ -65,13 +65,17 @@ export function porBalde(tramos, n, paso = PASO_S) {
 }
 
 /**
- * Dónde está una batalla: `lados` es `[[ids], [ids], …]` y `habla` un `Map(id → tramos)`. `{desde, hasta}` en segundos
- * de la grabación, o `null` si no se puede saber.
+ * Dónde está una batalla: `lados` es `[[ids], [ids], …]` y `habla` un `Map(id → tramos)`. `{desde, hasta, s}` en
+ * segundos de la grabación (`s`: cuánto habló su gente ahí), o `null` si no se puede saber. `lim` (`{desde, hasta}`,
+ * segundos) la busca sólo adentro de esa ventana: lo de afuera no cuenta ni como habla ni como «rapeó cerca».
  */
-export function ubicar(lados, habla, durS, paso = PASO_S) {
+export function ubicar(lados, habla, durS, paso = PASO_S, lim = null) {
   const n = Math.ceil(durS / paso);
   const conocidos = (lados || []).map((l) => (l || []).filter((id) => id && habla.has(id))).filter((l) => l.length);
   if (conocidos.length < 2 || n < 1) return null;
+  const kLo = lim ? Math.max(0, Math.ceil((lim.desde || 0) / paso)) : 0;
+  const kHi = lim ? Math.min(n, Math.floor((lim.hasta ?? durS) / paso)) : n;
+  if (kHi - kLo < 1) return null;
   const porLado = conocidos.map((l) => {
     const a = new Float64Array(n);
     for (const id of l) porBalde(habla.get(id), n, paso).forEach((v, k) => { a[k] += v; });
@@ -87,16 +91,16 @@ export function ubicar(lados, habla, durS, paso = PASO_S) {
   const w = Math.max(1, Math.round(RAP_VENTANA_S / paso));
   const rapea = pref.map((p) => {
     const r = new Float64Array(n + 1);
-    for (let k = 0; k < n; k++) r[k + 1] = r[k] + (p[Math.min(n, k + w)] - p[k] >= RAP_S ? 1 : 0);
+    for (let k = 0; k < n; k++) r[k + 1] = r[k] + (k >= kLo && k < kHi && p[Math.min(kHi, k + w)] - p[k] >= RAP_S ? 1 : 0);
     return r;
   });
   const v = Math.round(VECINDAD_S / paso);
   const activo = new Uint8Array(n);
-  for (let k = 0; k < n; k++) {
+  for (let k = kLo; k < kHi; k++) {
     let tot = 0;
     for (const a of porLado) tot += a[k];
     if (tot < MIN_BALDE_S) continue;
-    const lo = Math.max(0, k - v), hi = Math.min(n, k + v + 1);
+    const lo = Math.max(kLo, k - v), hi = Math.min(kHi, k + v + 1);
     if (rapea.filter((r) => r[hi] - r[lo] > 0).length >= 2) activo[k] = 1;
   }
   // los tramos activos, juntando huecos cortos; gana el que más se habló
@@ -115,7 +119,55 @@ export function ubicar(lados, habla, durS, paso = PASO_S) {
   }
   cerrar();
   if (!mejor) return null;
-  return { desde: Math.max(0, mejor.ini * paso - ANTES_S), hasta: Math.min(durS, (mejor.fin + 1) * paso + DESPUES_S) };
+  return { desde: Math.max(0, mejor.ini * paso - ANTES_S), hasta: Math.min(durS, (mejor.fin + 1) * paso + DESPUES_S),
+    s: Math.round(mejor.s * 10) / 10 };
+}
+
+// 🪜 LAS RONDAS VAN EN ORDEN (23/11/2026). En la grabación de FFA del 21/11 (9:47 PM ET) salieron «Octavos · Thaniel vs LRS
+// vs Colesito» DESPUÉS de «Cuartos · INHUMAN + Agente sombra vs Colesito + LRS», y dos clips vacíos. `ubicar()` busca cada
+// batalla por separado donde rapea su gente, y LRS y Colesito, rivales en octavos y compañeros en cuartos, rapean en las
+// dos: si en cuartos rapearon más, los octavos «se encontraban» ahí. Por eso, dentro de una llave, quien pelea una ronda
+// más tarde tiene que arrancarla al menos `MIN_LARGO_S` después de la anterior. Cuando dos se contradicen se prueban los
+// dos arreglos —la de antes, buscada antes de que arranque la de después; o la de después, buscada después de que
+// arrancó la de antes— y gana el que deja más habla de su gente adentro de las dos (`ordenarRondas()`).
+const RONDA_NOMBRE = [[/32|treinta/, 0], [/16|dieciseis/, 1], [/octav/, 2], [/cuart/, 3], [/semi/, 4], [/final|tercer|3er/, 5]];
+
+/** El orden de las rondas de una llave: por su nombre si se reconocen todas, si no por cómo vienen en la llave. */
+export function ordenRondas(rondas) {
+  const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const porNombre = (rondas || []).map((R) => { const x = RONDA_NOMBRE.find(([re]) => re.test(norm(R.r))); return x ? x[1] : null; });
+  return porNombre.every((x) => x !== null) ? porNombre : (rondas || []).map((_, i) => i);
+}
+
+/** Corrige `u` de las batallas de una llave (`[{rk, lados, ids, u, lim}]`) para que nadie pelee una ronda antes que la anterior. */
+function ordenarRondas(bs, habla, durS) {
+  for (let vuelta = 0; vuelta < 30; vuelta++) {
+    let cambio = false;
+    for (const e of bs) {
+      for (const l of bs) {
+        if (!e.u || !l.u || l.rk <= e.rk || !l.ids.some((x) => e.ids.includes(x))) continue;
+        if (e.u.desde + MIN_LARGO_S <= l.u.desde) continue;
+        const lim1 = { desde: e.lim.desde, hasta: Math.min(e.lim.hasta, l.u.desde) };
+        const lim2 = { desde: Math.max(l.lim.desde, e.u.desde + MIN_LARGO_S + ANTES_S), hasta: l.lim.hasta };
+        const u1 = ubicar(e.lados, habla, durS, PASO_S, lim1);
+        const u2 = ubicar(l.lados, habla, durS, PASO_S, lim2);
+        if ((u1 ? u1.s : 0) + l.u.s >= e.u.s + (u2 ? u2.s : 0)) { e.u = u1; e.lim = lim1; } else { l.u = u2; l.lim = lim2; }
+        cambio = true;
+      }
+    }
+    if (!cambio) break;
+  }
+}
+
+// ✂️ UN CLIP DE MENOS DE `MIN_CLIP_S` NO SE ENTREGA (23/11/2026): en FFA salieron dos de 0,0 MB. Cuando tres tramos se
+// pisaban, el segundo corte de `ubicarTodas()` podía dejar el principio de una batalla después de su final, y `cortar()`
+// sacaba un archivo de 1 s. La batalla sigue en la lista, con «sin audio», para que se vea que estaba.
+export const MIN_CLIP_S = 20;
+
+/** La línea de la lista de la entrega: «`12:31` Cuartos · Ana vs Bea», y si no lleva audio, por qué. */
+export function lineaBatalla(b) {
+  const l = `\`${mmss(b.desde)}\` ${b.r} · ${(b.nombres || []).join(' vs ')}`;
+  return b.corta ? l + ` · _sin audio: quedó de ${Math.max(0, Math.round(b.hasta - b.desde))} s_` : l;
 }
 
 /**
@@ -125,14 +177,19 @@ export function ubicar(lados, habla, durS, paso = PASO_S) {
 export function ubicarTodas(llaves, habla, durS) {
   const out = [];
   for (const L of llaves || []) {
-    for (const R of L.rondas || []) {
+    const rk = ordenRondas(L.rondas);
+    const deLlave = [];
+    (L.rondas || []).forEach((R, i) => {
       for (const b of R.b || []) {
         const lados = (b.lados || []).map((l) => (l || []).map((y) => String((y && y.id) || '')).filter(Boolean));
-        const u = ubicar(lados, habla, durS);
-        if (!u) continue;
-        out.push({ llave: L.id, evento: L.nombre || '', r: R.r, gano: b.gano || '', desde: u.desde, hasta: u.hasta, ids: lados.flat(),
-          lados, nombres: (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + ')) });
+        deLlave.push({ R, b, rk: rk[i], lados, ids: lados.flat(), u: ubicar(lados, habla, durS), lim: { desde: 0, hasta: durS } });
       }
+    });
+    ordenarRondas(deLlave, habla, durS);
+    for (const { R, b, lados, ids, u } of deLlave) {
+      if (!u) continue;
+      out.push({ llave: L.id, evento: L.nombre || '', r: R.r, gano: b.gano || '', desde: u.desde, hasta: u.hasta, ids,
+        lados, nombres: (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + ')) });
     }
   }
   out.sort((a, b) => a.desde - b.desde);
@@ -145,9 +202,13 @@ export function ubicarTodas(llaves, habla, durS) {
     const iniB = tramos(soloB).filter(([d]) => d >= b.desde).reduce((m, [d]) => Math.min(m, d), b.hasta);
     const finA = tramos(soloA).filter(([d]) => d < iniB).reduce((m, [, h]) => Math.max(m, h), -1);
     let corte = finA >= 0 ? finA + 2 : (b.desde + Math.min(a.hasta, b.hasta)) / 2;
-    corte = Math.max(b.desde, Math.min(corte, a.hasta));
+    corte = Math.max(a.desde, b.desde, Math.min(corte, a.hasta));
     a.hasta = corte;
     b.desde = corte;
+  }
+  for (const b of out) {
+    b.hasta = Math.max(b.hasta, b.desde);
+    b.corta = b.hasta - b.desde < MIN_CLIP_S;
   }
   return out;
 }
