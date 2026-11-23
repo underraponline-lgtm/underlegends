@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.87", "dia": "2026-11-23", "cuando": "2026-11-23T04:15:00-05:00", "titulo": "Lo acumulado, en el panel del staff", "items": ["El panel del staff muestra lo de toda la temporada: verificados, quién entró con su cuenta, quién jugó y quién abrió Drops."]},
     {"version": "7.86", "dia": "2026-11-23", "cuando": "2026-11-23T04:04:00-05:00", "titulo": "El staff ve qué se usa más, en la página y en Discord", "items": ["El panel del staff cuenta cuántas personas usan cada parte de la página y del bot, y cómo van los Dragón Drops. Sólo números: nunca quién."]},
     {"version": "7.85", "dia": "2026-11-23", "cuando": "2026-11-23T03:34:00-05:00", "titulo": "Menos partes de la página que se caían", "items": ["En los iPhone con **iOS 15** (y en Safari hasta el 16.3) la página vuelve a abrir: desde el 21/11 se quedaba en «La página no terminó de cargar».", "La **campana** y la parte de arriba ya no desaparecen si una parte de la página no termina de bajar.", "La **Tienda** ya no se apaga entera cuando a tu billetera le falta un dato."]},
     {"version": "7.84", "dia": "2026-11-23", "cuando": "2026-11-23T03:16:00-05:00", "titulo": "Qué hace la gente en la página, por tipo", "items": ["El panel del staff separa cuántas personas aplaudieron, comentaron, votaron, apostaron, siguieron a alguien y más, semana a semana. Sólo cuenta lo que hizo gente de verdad."]},
