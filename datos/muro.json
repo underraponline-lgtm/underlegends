@@ -108,7 +108,7 @@
 "temporada"
 ]
 },
-"carlosss": {
+"over": {
 "rg": "S",
 "c": [
 "competitivo",
@@ -116,7 +116,7 @@
 "temporada"
 ]
 },
-"over": {
+"carlosss": {
 "rg": "S",
 "c": [
 "competitivo",
@@ -274,6 +274,15 @@
 "temporada"
 ]
 },
+"soulb": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "sinlimites": {
 "rg": "D",
 "c": [
@@ -295,15 +304,6 @@
 "criszj": {
 "rg": "C",
 "c": []
-},
-"soulb": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "chop": {
 "rg": "D",
@@ -453,6 +453,15 @@
 "rg": "C",
 "c": []
 },
+"andres": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "mathhias": {
 "rg": "C",
 "c": [
@@ -549,15 +558,6 @@
 },
 "teito": {
 "rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"andres": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -1117,10 +1117,6 @@
 "rg": "",
 "c": []
 },
-"agustin51k": {
-"rg": "",
-"c": []
-},
 "kochi": {
 "rg": "",
 "c": [
@@ -1197,6 +1193,10 @@
 "temporada"
 ]
 },
+"agustin51k": {
+"rg": "",
+"c": []
+},
 "melomaniaco": {
 "rg": "",
 "c": [
@@ -1269,6 +1269,10 @@
 ]
 },
 "corvo": {
+"rg": "",
+"c": []
+},
+"martoar": {
 "rg": "",
 "c": []
 },
@@ -1491,10 +1495,6 @@
 "servidor",
 "temporada"
 ]
-},
-"martoar": {
-"rg": "",
-"c": []
 },
 "lautarolasinceridad": {
 "rg": "",
@@ -8488,8 +8488,8 @@
 ],
 "suman": [
 {
-"n": "Ojitos canábicos 🇨🇱",
-"k": "",
+"n": "Soulb",
+"k": "soulb",
 "pts": 5250,
 "ev": 1
 },
@@ -8508,16 +8508,22 @@
 ],
 "suben": [
 {
+"n": "Marto AR",
+"k": "martoar",
+"de": 336,
+"a": 316
+},
+{
 "n": "Gian",
 "k": "",
 "de": 432,
-"a": 420
+"a": 418
 },
 {
-"n": "BLITZ",
-"k": "blitz",
-"de": 298,
-"a": 292
+"n": "Andres",
+"k": "andres",
+"de": 59,
+"a": 48
 }
 ],
 "sorpresas": []
@@ -8649,7 +8655,7 @@
 "dyzz": 0,
 "mats": 3,
 "numberve": 0,
-"soulb": 2,
+"soulb": 3,
 "bna": 2,
 "paria": 1,
 "last": 0,
@@ -8808,7 +8814,8 @@
 "tho": 1,
 "mark98": 1,
 "kourier": 1,
-"agentesombra": 0
+"agentesombra": 0,
+"martoar": 0
 },
 "sem": {
 "id": "2026-11-23",

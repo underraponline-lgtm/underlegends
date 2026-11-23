@@ -1709,8 +1709,12 @@
    },
    "organizadores": [],
    "semillero": {
-    "nuevos": {},
-    "gente": {},
+    "nuevos": {
+     "FFA": 2
+    },
+    "gente": {
+     "FFA": 22
+    },
     "gana": null
    },
    "meta_va": {
@@ -1722,7 +1726,7 @@
     "DDS": 0,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 0,
+    "FFA": 22,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

@@ -4628,6 +4628,44 @@
      "925564434745819208"
     ]
    }
+  },
+  {
+   "id": "dfd151cd9d",
+   "tipo": "alta",
+   "sec": "🪪 Identidad",
+   "que": "A «NICO ONE🇨🇴» lo buscó otra persona con /card en FFA (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elígelo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1112421054770577459",
+   "r": "Ya está resuelto",
+   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
+   "rk": "R3",
+   "por": "el ciclo",
+   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
+   "t": 1795467773161,
+   "filas": [
+    1578
+   ],
+   "variantes": [
+    "NICO ONE🇨🇴 = 1112421054770577459"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "03d834bd00",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Ojitos canábicos» es Soulb? La cuenta de Soulb en la Lista se anotó como «Ojitos canábicos», y en el ranking suman aparte. Si es la misma persona, los puntos de «Ojitos canábicos» pasan a Soulb.\nLa cuenta: https://discord.com/users/645308964141137952",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Ojitos canábicos» ya no suma aparte en el ranking",
+   "t": 1795467773161,
+   "filas": [
+    1577
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Ojitos canábicos» → «Soulb» · cuenta 645308964141137952"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

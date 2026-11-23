@@ -14283,7 +14283,7 @@
      0,
      0
     ],
-    "Aritmetico 🇲🇽": [
+    "Aritmetico": [
      1,
      0,
      0,
@@ -14367,13 +14367,6 @@
      0,
      0
     ],
-    "Ojitos canábicos 🇨🇱": [
-     1,
-     0,
-     1,
-     0,
-     0
-    ],
     "Over": [
      1,
      1,
@@ -14392,6 +14385,13 @@
      1,
      0,
      0,
+     0,
+     0
+    ],
+    "Soulb": [
+     1,
+     1,
+     1,
      0,
      0
     ],
@@ -14427,7 +14427,7 @@
    "pts": {
     "Agus": 300,
     "Andres": 300,
-    "Aritmetico 🇲🇽": 300,
+    "Aritmetico": 300,
     "BLITZ": 300,
     "Erian": 300,
     "Funk🇦🇷": 300,
@@ -14439,10 +14439,10 @@
     "Makmah": 300,
     "Marto AR": 300,
     "Oasis": 300,
-    "Ojitos canábicos 🇨🇱": 300,
     "Over": 300,
     "Player": 300,
     "Snow": 300,
+    "Soulb": 300,
     "Tam": 300,
     "Tuca": 300,
     "ikonoxx": 300,
@@ -14478,7 +14478,7 @@
   "Andres": 5100,
   "Andy": 300,
   "Ariaxer": 600,
-  "Aritmetico 🇲🇽": 300,
+  "Aritmetico": 300,
   "Artezzy": 600,
   "Assuan": 1300,
   "Aszecas": 600,
@@ -14700,7 +14700,6 @@
   "ONDADISKO": 600,
   "ONZASS": 1200,
   "Oasis": 12400,
-  "Ojitos canábicos 🇨🇱": 300,
   "Ortiz": 600,
   "Over": 10000,
   "PIERR🇵🇪": 300,
@@ -14756,7 +14755,7 @@
   "Six": 8900,
   "Snow": 7400,
   "Soneto": 300,
-  "Soulb": 4500,
+  "Soulb": 4800,
   "Status": 300,
   "THO": 1600,
   "TOKYO": 300,

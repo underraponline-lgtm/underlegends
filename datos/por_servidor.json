@@ -1204,7 +1204,7 @@
     }
    }
   },
-  "Aritmetico 🇲🇽": {
+  "Aritmetico": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -11384,20 +11384,6 @@
     }
    }
   },
-  "Ojitos canábicos 🇨🇱": {
-   "FFA": {
-    "duelos": "1/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 15750,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Olga de Kiev 🇩🇴": {
    "FFA": {
     "duelos": "0/1",
@@ -14018,13 +14004,13 @@
     }
    },
    "FFA": {
-    "duelos": "0/1",
-    "ev": 13,
+    "duelos": "1/2",
+    "ev": 14,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 54,
     "pod": 0,
-    "pts": 30731,
-    "racha": "0/0"
+    "pts": 46481,
+    "racha": "1/1"
    },
    "FRZ": {
     "duelos": "1/3",

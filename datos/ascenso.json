@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-23T20:51:54Z",
+ "t": "2026-11-23T21:01:12Z",
  "sv": {
   "SR": {
    "filas": [
@@ -882,6 +882,13 @@
      "Panchok"
     ],
     [
+     "tenor",
+     "ve",
+     2310,
+     375,
+     "Tenor"
+    ],
+    [
      "Geoka",
      "ar",
      2210,
@@ -894,13 +901,6 @@
      2000,
      240,
      "Paria"
-    ],
-    [
-     "tenor",
-     "ve",
-     1935,
-     0,
-     "Tenor"
     ],
     [
      "vandu",
@@ -2226,12 +2226,17 @@
        500
       ],
       [
-       "Provenza",
+       "BLITZ",
        "Subcampeón",
        375
       ],
       [
-       "BLITZ",
+       "Tenor",
+       "Subcampeón",
+       375
+      ],
+      [
+       "Provenza",
        "Subcampeón",
        375
       ]

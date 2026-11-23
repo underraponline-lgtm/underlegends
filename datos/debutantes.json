@@ -323,11 +323,12 @@
    "vencido": false
   },
   "Aritmetico": {
+   "avisado": "2026-11-23",
    "chat": "2026-11-23",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-23T18:45:33+00:00",
-   "did": "",
+   "did": "925564434745819208",
    "evento": "qcyo rapeen 17",
    "n": 681,
    "sv": "FFA",
@@ -1133,6 +1134,7 @@
    "vencido": true
   },
   "Funk": {
+   "avisado": "2026-11-23",
    "chat": "2026-11-23",
    "con": null,
    "cumplido": "",
@@ -2501,18 +2503,6 @@
    "sv": "URBF",
    "vence": "2026-10-20T01:56:58+00:00",
    "vencido": true
-  },
-  "Ojitos canábicos": {
-   "chat": "2026-11-23",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-23T18:45:33+00:00",
-   "did": "",
-   "evento": "qcyo rapeen 17",
-   "n": 681,
-   "sv": "FFA",
-   "vence": "2026-11-30T18:45:33+00:00",
-   "vencido": false
   },
   "Olga de Kiev": {
    "avisado": "2026-10-26",

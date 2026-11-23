@@ -131,7 +131,7 @@
     [
      "Soulb",
      71,
-     8,
+     9,
      4,
      0,
      [
@@ -344,19 +344,6 @@
       [
        10,
        "DarnBless"
-      ]
-     ]
-    ],
-    [
-     "Ojitos canábicos 🇨🇱",
-     27,
-     1,
-     5,
-     1,
-     [
-      [
-       21,
-       "Tuca"
       ]
      ]
     ],
@@ -1343,12 +1330,7 @@
      1,
      5,
      0,
-     [
-      [
-       -21,
-       "Ojitos canábicos 🇨🇱"
-      ]
-     ]
+     []
     ],
     [
      "Vandu",
@@ -1458,7 +1440,7 @@
      []
     ],
     [
-     "Aritmetico 🇲🇽",
+     "Aritmetico",
      0,
      0,
      5,
@@ -2105,7 +2087,6 @@
   "ONDADISKO": 972,
   "ONZASS": 953,
   "Oasis": 1350,
-  "Ojitos canábicos 🇨🇱": 1034,
   "Olga de Kiev 🇩🇴": 1006,
   "Oni 🇦🇷": 994,
   "Ortiz": 1006,
@@ -2205,7 +2186,7 @@
   "Sombra": 1002,
   "Soneto": 996,
   "Sosa": 970,
-  "Soulb": 1040,
+  "Soulb": 1056,
   "Spartan": 975,
   "Status": 1009,
   "Steven🇨🇴": 1000,
@@ -2233,7 +2214,7 @@
   "Toretto Mexicano": 988,
   "Trelok": 1053,
   "Trot": 1014,
-  "Tuca": 1141,
+  "Tuca": 1142,
   "Tusicario": 937,
   "TøKīØ🦠🧠": 1034,
   "UDDIZIM": 988,
@@ -2594,7 +2575,7 @@
    0,
    0
   ],
-  "Aritmetico 🇲🇽": [
+  "Aritmetico": [
    3750,
    0,
    0,
@@ -2702,15 +2683,6 @@
    0,
    0
   ],
-  "Ojitos canábicos 🇨🇱": [
-   15750,
-   0,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
   "Over": [
    15000,
    0,
@@ -2731,6 +2703,15 @@
   ],
   "Snow": [
    3750,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Soulb": [
+   15750,
    0,
    0,
    0,
@@ -2778,7 +2759,7 @@
  "pts_sem": {
   "Agus": 2499,
   "Andres": 3750,
-  "Aritmetico 🇲🇽": 3750,
+  "Aritmetico": 3750,
   "BLITZ": 7500,
   "Erian": 2499,
   "Funk🇦🇷": 15000,
@@ -2790,10 +2771,10 @@
   "Makmah": 3750,
   "Marto AR": 3750,
   "Oasis": 15000,
-  "Ojitos canábicos 🇨🇱": 15750,
   "Over": 15000,
   "Player": 3750,
   "Snow": 3750,
+  "Soulb": 15750,
   "Tam": 3750,
   "Tuca": 7500,
   "ikonoxx": 3750,
