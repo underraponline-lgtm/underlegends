@@ -1,10 +1,6 @@
 {
  "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Lo escribe bot/anuncios.py. Dlx, 05/10/2026. Se borra a los 30 días.",
  "msgs": {
-  "1563358538238009454": {
-   "texto": "19 CUP FUTCARD EDICIÓN 5\nHAUNTED EDITION\n\nTOP RATING: \n?? \n?? \n??? \n\nPRIZE: \nEXCLUSIVE HALLOWEEN FCARD\n\n???? \n??? PAC    ??? DRI\n??? SHO    ??? DEF\n??? PAS    ??? PHY\n\n¡INSCRÍBETE YA! PREMIO:\nCUPOS: 8    INSCRIPCIONES YA\n\nPREMIO:\nCARTA PERSONALIZADA TIPO FIFA DE HALLOWEEN (COMO EL EJEMPLO DE ARRIBA CON ????)\n\nFECHA DE INICIO: [Fecha de Octubre]    FORMATO: ELIMINATORIA DIRECTA\n\n@[@]Organizador] | #EJFACup #HalloweenGaming #FUTCARD #FIFA19",
-   "t": "2026-10-24T01:24:46"
-  },
   "1563603667158835251": {
    "texto": "FIFA\n19 CUP\nFUTCARD\nEDICION 6\nINSCRÍBETE YA!\nPREMIOS INCREÍBLES\ninfotorneo@19cup.com\nwww.19cup.com",
    "t": "2026-10-24T21:55:26"
@@ -396,6 +392,10 @@
   "1574216437013287003": {
    "texto": "MINIBOY\nSOUL B\nORIUZ\nDREXX\nLALOX\nCRK\nMCO\nVILCA\n3° PUESTO\nFINAL\nMARK\nCARLOS\nSIN LIMITES\nARTEZZY\nLIZENIN\nIKONOX\nMAKMAH\nCHASE",
    "t": "2026-11-23T00:24:45"
+  },
+  "1574227574551355463": {
+   "texto": "MINIBOY\nSOUL B\nMINIBOY\nORIUZ\nDREXX\nORIUZ\nLALOX\nCRK\nCRK\nMCO\nVILCA\nMCO\n3° PUESTO\nDISCORD\nLEAGUE\nSTYLEZ\nWORLD\nCARLOS\nCARLOS\nSIN LIMITES\nARTEZZY\nLIZENIN\nIKONOX\nMAKMAH\nCHASE\nCHASE\nFINAL",
+   "t": "2026-11-23T01:25:15"
   }
  }
 }

@@ -1528,14 +1528,16 @@
      "FFA": 5,
      "LKR": 8,
      "CH": 20,
-     "DDS": 2
+     "DDS": 2,
+     "DW": 2
     },
     "gente": {
      "DDS": 25,
      "LKR": 17,
      "FFA": 73,
      "CH": 72,
-     "FDS": 8
+     "FDS": 8,
+     "DW": 8
     },
     "gana": "LKR"
    },
