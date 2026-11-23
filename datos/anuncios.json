@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T04:54:52+00:00",
+ "cuando": "2026-11-23T05:24:44+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7665,6 +7665,24 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1574291253468598313",
+   "cuando": "2026-11-23T05:11:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1574290957908578445",
+   "cuando": "2026-11-23T05:10:13"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
    "texto": "nc🇲🇿",
    "quien": "nc02467",
    "discord_id": "1574183742329852005",
@@ -7746,7 +7764,7 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Lrs🇦🇷+Cronox🇨🇱",
+   "texto": "Lrs🇦🇷+Cronox🇨🇱+Tokio🇦🇷",
    "quien": "lrs37895",
    "discord_id": "1271260378654969947",
    "msg_id": "1574284142215036939",
@@ -43643,24 +43661,6 @@
    "discord_id": "1503540314948898937",
    "msg_id": "1561903103001886773",
    "cuando": "2026-10-20T00:45:18"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Garxzii + La fe de Dios 🇲🇽🇦🇿",
-   "quien": "sebs._.fs",
-   "discord_id": "1217564137383526470",
-   "msg_id": "1561903099092668477",
-   "cuando": "2026-10-20T00:45:17"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nc🇮🇶+snake🇦🇷 <@1470819179509842235> <@1523082259870257315>",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1561902792749088829",
-   "cuando": "2026-10-20T00:44:04"
   }
  ]
 }
