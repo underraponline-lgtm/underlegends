@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-23T00:06:30Z",
+ "cuando": "2026-11-23T01:12:44Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 216.0,
+ "dur_s": 669.1,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.1
+   "s": 1.2
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.2
+   "s": 15.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 42.6
+   "s": 22.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 4 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 34.6
+   "s": 466.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 63.1
+   "s": 99.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 61.4
+   "s": 61.7
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "676",
-  "nombre": "VERSO STYLE",
-  "sv": "DDS",
+  "n": "677",
+  "nombre": "INICIO DEL FIN VOL.1",
+  "sv": "DW",
   "dia": "2026-11-22"
  },
  "cuotas": {
   "kv": {
-   "write": 0,
-   "read": 2
+   "write": 65,
+   "read": 1739
   },
   "objeto": {
-   "leidas": 59653,
-   "escritas": 2084,
-   "pedidos": 176
+   "leidas": 439123,
+   "escritas": 11867,
+   "pedidos": 2154
   },
   "worker": {
-   "pedidos": 30360,
+   "pedidos": 31303,
    "errores": 0,
-   "sub": 33033,
+   "sub": 34017,
    "cortados": 0,
-   "p50_ms": 0.84,
-   "p99_ms": 10.47,
+   "p50_ms": 0.85,
+   "p99_ms": 10.33,
    "cpu": {
-    "total": 63078,
-    "objeto_10": 2062,
-    "worker_10": 349
+    "total": 65016,
+    "objeto_10": 2097,
+    "worker_10": 354
    }
   },
   "r2": {
