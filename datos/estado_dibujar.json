@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-23T07:41:29Z",
+ "cuando": "2026-11-23T17:20:15Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 251.0,
+ "dur_s": 2374.5,
  "pasos": [
   {
    "n": "2f",
@@ -15,79 +15,74 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 1.0
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.3
+   "s": 0.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.3
+   "s": 11.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.2
+   "s": 115.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 9 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 27.5
+   "s": 2083.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 132.0
+   "s": 92.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 60.0
+   "s": 69.5
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "678",
-  "nombre": "NEW GENESIS II",
-  "sv": "FFA",
+  "n": "679",
+  "nombre": "(sin titulo)",
+  "sv": "LKR",
   "dia": "2026-11-22"
  },
  "cuotas": {
   "kv": {
-   "write": 283,
-   "read": 15414
+   "write": 337,
+   "read": 17709
   },
   "objeto": {
-   "leidas": 2163940,
-   "escritas": 35982,
-   "pedidos": 11249
+   "leidas": 3044955,
+   "escritas": 49758,
+   "pedidos": 16806
   },
   "worker": {
-   "pedidos": 26127,
+   "pedidos": 23558,
    "errores": 0,
-   "sub": 29182,
+   "sub": 26496,
    "cortados": 0,
-   "p50_ms": 0.88,
-   "p99_ms": 11.53,
-   "cpu": {
-    "total": 55053,
-    "objeto_10": 2038,
-    "worker_10": 398
-   }
+   "p50_ms": 0.91,
+   "p99_ms": 13.89
   },
   "r2": {
-   "objetos": 12810,
-   "gb": 1.006,
-   "ts": 1795410158
+   "objetos": 12818,
+   "gb": 1.013,
+   "ts": 1795454427
   }
  }
 }
