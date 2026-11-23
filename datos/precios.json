@@ -2,26 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 30,
-   "cabeza": "Miniboy",
-   "monto": 1000,
-   "t": "2026-10-24T00:14:40Z",
-   "fin": "2026-10-26T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "PichulaMc",
-     1000
-    ]
-   ],
-   "ev": {
-    "n": 505,
-    "nombre": "19 CUP FUTCARD EDICIÓN 5",
-    "sv": "DDF",
-    "t": "2026-10-24T01:11:48Z"
-   }
-  },
-  {
    "id": 31,
    "cabeza": "Mr Still Ballin",
    "monto": 2500,
@@ -431,7 +411,6 @@
   }
  ],
  "suma": {
-  "PichulaMc": 1000,
   "Carlosss": 3500,
   "PRAISERIZA": 500,
   "Artezzy": 2500,

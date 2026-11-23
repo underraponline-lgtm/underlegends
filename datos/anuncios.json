@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-22T23:55:38+00:00",
+ "cuando": "2026-11-23T00:25:01+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7686,6 +7686,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "sankabel",
+   "quien": "sankabelmegaremake6683",
+   "discord_id": "938525117296812052",
+   "msg_id": "1574219156696604713",
+   "cuando": "2026-11-23T00:24:54"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Yo mc 🇨🇱",
+   "quien": "curtirelmambonuncafueunaopcion",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1574218521045631107",
+   "cuando": "2026-11-23T00:22:22"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "CIRH 11 🇲🇽",
+   "quien": "cirh.11.rap",
+   "discord_id": "1561903567369936941",
+   "msg_id": "1574218515919933471",
+   "cuando": "2026-11-23T00:22:21"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1574218470923567166",
+   "cuando": "2026-11-23T00:22:11"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1574218464619397293",
+   "cuando": "2026-11-23T00:22:09"
+  },
   {
    "servidor": "DW",
    "canal": "「📜」INSCRIPCIONES",
@@ -43640,51 +43685,6 @@
    "discord_id": "578697503130779649",
    "msg_id": "1561891263169695855",
    "cuando": "2026-10-19T23:58:15"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "│🔵📋┆inscripciones",
-   "texto": "Myanmc🇲🇽",
-   "quien": "imnotmaya_yt.",
-   "discord_id": "1487886377923121243",
-   "msg_id": "1561879114929938433",
-   "cuando": "2026-10-19T23:09:59"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "delux",
-   "quien": "delux.13",
-   "discord_id": "729809358627536938",
-   "msg_id": "1561875943323345010",
-   "cuando": "2026-10-19T22:57:23"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Family 🇵🇾",
-   "quien": "plapla23",
-   "discord_id": "839707244069126174",
-   "msg_id": "1561875446759432254",
-   "cuando": "2026-10-19T22:55:24"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1561873503446368428",
-   "cuando": "2026-10-19T22:47:41"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Siberius 🇵🇪",
-   "quien": "pablito_backyardigan21",
-   "discord_id": "1408293284081831986",
-   "msg_id": "1561869091516457134",
-   "cuando": "2026-10-19T22:30:09"
   }
  ]
 }
