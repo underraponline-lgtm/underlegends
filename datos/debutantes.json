@@ -513,7 +513,7 @@
    "n": 648,
    "sv": "CH",
    "vence": "2026-11-23T02:04:55+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Cannox": {
    "avisado": "2026-10-30",
@@ -1167,7 +1167,7 @@
    "n": 648,
    "sv": "CH",
    "vence": "2026-11-23T02:04:55+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Ghost": {
    "con": null,
@@ -1977,7 +1977,7 @@
    "n": 648,
    "sv": "CH",
    "vence": "2026-11-23T02:04:55+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Lucky": {
    "con": null,
@@ -3289,7 +3289,7 @@
    "n": 648,
    "sv": "CH",
    "vence": "2026-11-23T02:04:55+00:00",
-   "vencido": false
+   "vencido": true
   },
   "ZAFK": {
    "avisado": "2026-10-26",

@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-23T02:00:01Z",
+ "t": "2026-11-23T02:29:41Z",
  "sv": {
   "SR": {
    "filas": [
@@ -667,8 +667,8 @@
     [
      "Park Ji Sung",
      "cl",
-     15270,
-     650,
+     15570,
+     950,
      "Oasis"
     ],
     [
@@ -686,6 +686,13 @@
      "PichulaMc"
     ],
     [
+     "PRAISERIZA",
+     "ve",
+     7565,
+     1200,
+     "PRAISERIZA"
+    ],
+    [
      "Makma",
      "ve",
      7485,
@@ -693,17 +700,10 @@
      "Makmah"
     ],
     [
-     "PRAISERIZA",
-     "ve",
-     7265,
-     900,
-     "PRAISERIZA"
-    ],
-    [
      "SIX",
      "ar",
-     6780,
-     150,
+     7180,
+     550,
      "Six"
     ],
     [
@@ -791,18 +791,18 @@
      "Colesito"
     ],
     [
+     "nc",
+     "ar",
+     3620,
+     240,
+     "NC"
+    ],
+    [
      "Guess",
      "ar",
      3565,
      0,
      "Guess"
-    ],
-    [
-     "nc",
-     "ar",
-     3380,
-     0,
-     "NC"
     ],
     [
      "Molusco",
@@ -1547,6 +1547,13 @@
      "Status"
     ],
     [
+     "nc",
+     "",
+     240,
+     240,
+     ""
+    ],
+    [
      "Cinexfilo",
      "ve",
      220,
@@ -2079,6 +2086,40 @@
       ]
      ],
      "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "DESGRACIAS EN TOKYO Vol. 34 2vs2",
+     "dia": "2026-11-22",
+     "rango": "plata ii",
+     "puntos": [
+      [
+       "Six",
+       "Campeón",
+       400
+      ],
+      [
+       "Oasis",
+       "Subcampeón",
+       300
+      ],
+      [
+       "PRAISERIZA",
+       "Subcampeón",
+       300
+      ],
+      [
+       "nc",
+       "Tercero",
+       240
+      ],
+      [
+       "NC",
+       "Tercero",
+       240
+      ]
+     ],
+     "fuera": []
     }
    ],
    "pendiente": [],
@@ -2110,6 +2151,7 @@
   "883188801411878932": "Leokirbyy2225",
   "826494792556871751": "Mateo",
   "456226577798135808": "Cuenta borrada",
-  "830271117129809931": "Inhuman"
+  "830271117129809931": "Inhuman",
+  "1574183742329852005": "nc"
  }
 }
