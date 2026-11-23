@@ -184,6 +184,28 @@ INVENTADOS = [
     ("… y lo que NO es una etiqueta: la sigla sin dos puntos, la bandera en shortcode, la bandera, 🆚 y un emoji solo",
      "# CUARTOS\nC4 vs D4\ntnr :Espana: vs Six\nC4:Espana: vs D1\nT3 :Espana: vs G8\n🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪\n"
      "🏴‍☠️ SYEPORUTE vs VALDOZA\n💥 CARLOS vs NOA\nFinal Boss vs Semi\n"),
+    # 🔢 EL DIALECTO DE LKR (22/11/2026): las dos llaves que avisaron «🧩 No pude leer una llave de LKR» (ver `escuchar._numeradas()`)
+    ("LKR (22/11/2026): el número suelto de cada batalla, «# Enfrentamiento» de primera ronda y la final pegada a su título",
+     "# Enfrentamiento\n1    🇲🇽 MC GLOCK 🆚 MOLUSCO🇦🇷 \n2   🇵🇪 DOMINICK 🆚  MINIBOY🇨🇱 \n3    🇻🇪 KEIDER 🆚 LIZE🇦🇷 \n"
+     "4    🇨🇱 XERVO 🆚 ONZAS🇻🇪 \n5    🇨🇱 HEDORAH 🆚 LIAM🇭🇳 \n6    🇺🇾 LAST 🆚 MATTHIAS🇻🇪 \n7    🇻🇪 ISMEL 🆚 CÁLIZ🇲🇽 \n"
+     "8    🇨🇴 SHADOW 🆚 SOUL B🇨🇱 \nCUARTOS\n1  🇦🇷 MOLUSCO VS MCO🇦🇷 \n2 🇦🇷 : LIZE VS HEDORAH🇨🇱 \n"
+     "3 🇻🇪 MATTHIAS VS KING🇨🇴 \n4 🇨🇱 SOUL B VS LAST🇺🇾 \n\nSEMIS\n1 🇦🇷  MOLUSCO VS LIZE🇦🇷 \n2 MATTHIAS🇻🇪 VS SOUL B🇨🇱 \n"
+     "FINAL MOLUSCO🇦🇷 VS SOUL B🇨🇱\nCAMPEÓN:MOLUSCO🇦🇷 \n@everyone"),
+    ("… y la misma recién sorteada: sólo «# Enfrentamiento» y sus ocho batallas, sin ninguna otra ronda (son los octavos)",
+     "# Enfrentamiento\n1    MC GLOCK 🆚 MOLUSCO\n2    DOMINICK 🆚  MINIBOY\n3    KEIDER 🆚 LIZE\n4    XERVO 🆚 ONZAS\n"
+     "5    HEDORAH 🆚 LIAM\n6    LAST 🆚 MATTHIAS\n7    ISMEL 🆚 CÁLIZ\n8    SHADOW 🆚 SOUL B\n\n@everyone"),
+    ("… y lo que NO es eso: números fuera de secuencia, tres batallas bajo «Enfrentamiento», la fase de grupos con número, "
+     "y la final con dos que no pelearon arriba",
+     "# Enfrentamiento\n3 ANA vs BEA\n19 vs CAMI\n7 DORA vs EVA\n\n### ENFRENTAMIENTO 1\nFLOR vs GIA\n"
+     "# CUARTOS\n1 HANA vs IRIS\nJUANA vs KARLA\n# SEMIS\nHANA vs JUANA\nFINAL BOSS vs SEMI\n"),
+    ("FFA: NEW GENESIS II (22/11/2026), triples de uno en cuartos y equipos de tres después",
+     "**__ ↱  |🔌 NEW GENESIS II 🔌|  ↲__**\n\n●❯────────｢🉐 ｣────────❮●\n\n▪️ **[•CUARTOS DE FINAL•]**\n\n"
+     "▪️   [CRONOX] 🆚 [LRS + TOKYO + MITO] 🆚 [MITYAR] \n▪️   [PICHULA] 🆚 [VANDU] 🆚 [LITKUNAI]\n"
+     "▪️   [SIN LIMITES] 🆚 [ROMEO] 🆚 [OKAM]\n▪️   [OASIS] 🆚 [GARZXI] 🆚 [NC TAM]\n\n●❯────────｢💥 ｣────────❮●\n\n"
+     "▪️**[•SEMI - FINAL•]**\n\n▪️   [LRS + TOKYO + MITO] 🆚 [OKAM + MOLUSCO + JULDA] \n"
+     "▪️   [PICHULA + OASIS + RIZAS] 🆚 [NC + TAM + ZA]\n\n\n●❯────────｢ 🉐  ｣────────❮●\n\n\n▪️**[• FINAL•]**\n\n"
+     "▪️ [ OKAM + MOLUSCO + JULDA ] 🆚 [ PICHULA + OASIS + RIZAS ]\n\n●❯────────｢🏆 ｣────────❮●\n\n\n"
+     "🥇 **𝄆 CAMPEÓN: OASIS + PICHULA + RIZAS\n\n🥈 𝄆 SUB-CAMPEÓN: OKAM + MOLUSCO + JULDA**\n\n\n@everyone"),
 ]
 
 

@@ -601,6 +601,125 @@ def _caja(texto):
     return '\n'.join(out)
 
 
+# 🔢 EL DIALECTO DE LKR (22/11/2026, la llave de MC GLOCK, MOLUSCO, LIZE…: dos avisos «🧩 No pude leer una llave de LKR» a
+# las 7:21 PM, y el grabador con tres eventos sin ubicar ninguna batalla). Escribe así:
+#
+#     # Enfrentamiento
+#     1    🇲🇽 MC GLOCK 🆚 MOLUSCO🇦🇷
+#     2   🇵🇪 DOMINICK 🆚  MINIBOY🇨🇱
+#     …
+#     CUARTOS
+#     1  🇦🇷 MOLUSCO VS MCO🇦🇷
+#     2 🇦🇷 : LIZE VS HEDORAH🇨🇱
+#     …
+#     FINAL MOLUSCO🇦🇷 VS SOUL B🇨🇱
+#
+# y el lector tropezaba tres veces: el número de la batalla quedaba en el nombre («1  🇦🇷 MOLUSCO» no era el MOLUSCO de
+# arriba, así que la primera ronda no se unía a la llave), «Enfrentamiento» no es una ronda (con sólo esa ronda publicada no
+# había ninguna batalla) y la final iba pegada a su título («FINAL MOLUSCO» era una persona de semis). Las tres se traducen
+# a lo que el lector ya entiende (`_numeradas()`, `_ronda_pegada()`, `_enfrentamiento()`); `rondas_de()` no cambia.
+
+#: el número suelto de la batalla adelante del primer lado, SIN punto ni paréntesis: «1    MC GLOCK 🆚 MOLUSCO». El que sí
+#: lo lleva («1. 🇨🇱 PANCHOK») ya lo saca `_sin_numeracion()`. ⚠️ Nunca un número que es un lado: «19 vs CHOP», «7 🆚 X»
+NUM_SUELTO = re.compile(r'^([ \t>*_#]*)(\d{1,2})[ \t]+(?!🆚|vs\b)(?=\S)', re.I)
+#: un renglón que trae un «contra»: lo que `_numeradas()` y `_enfrentamiento()` cuentan como batalla
+_CONTRA_T = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b|\bversus\b', re.I)
+_BANDERA_T = '[\U0001F1E6-\U0001F1FF]{2}'
+
+
+def _numeradas(t):
+    """Las batallas numeradas sin punto, sin su número: «1    🇲🇽 MC GLOCK 🆚 MOLUSCO🇦🇷» → «🇲🇽 MC GLOCK 🆚 MOLUSCO🇦🇷».
+
+    ⚠️ SÓLO EN TIRA: dos batallas o más seguidas que arrancan en 1 y suben de a uno (los renglones en blanco no cortan la
+    tira; cualquier otro renglón, sí). Un nombre que empieza con un número —«19», «7»— no va en secuencia desde el 1.
+    Y los dos puntos sueltos que quedan entre la bandera y el nombre («2 🇦🇷 : LIZE») se van con el número."""
+    ls = t.split('\n')
+    tira, esperado = [], 0
+
+    def cerrar():
+        if len(tira) >= 2:
+            for i, m in tira:
+                resto = re.sub(r'^((?:' + _BANDERA_T + r')?)[ \t]*[:：][ \t]*', r'\1 ', ls[i][m.end():]).lstrip()
+                ls[i] = m.group(1) + resto
+        del tira[:]
+
+    for i, l in enumerate(ls):
+        if not l.strip():
+            continue
+        m = NUM_SUELTO.match(l) if _CONTRA_T.search(l) else None
+        n = int(m.group(2)) if m else 0
+        if m and n == esperado + 1 and tira:
+            tira.append((i, m))
+            esperado = n
+            continue
+        cerrar()
+        tira, esperado = ([(i, m)], 1) if m and n == 1 else ([], 0)
+    cerrar()
+    return '\n'.join(ls)
+
+
+#: la ronda pegada a su batalla, sin dos puntos: «FINAL MOLUSCO🇦🇷 VS SOUL B🇨🇱». Con dos puntos («Final: A vs B») es una
+#: etiqueta, y ésa la lee `ETIQUETA_CRUCE` como siempre
+RONDA_PEGADA = re.compile(r'^([ \t>*_#]*)(GRAN[ \t]+FINAL|SEMI[ \t]*-?[ \t]*FINAL(?:ES)?|SEMIS?|CUARTOS(?:[ \t]+DE[ \t]+FINAL)?'
+                          r'|OCTAVOS|TERCER[ \t]+LUGAR|FINAL)[ \t]+(?=\S)(?![:：\-–])(.*)$', re.I)
+
+
+def _lado_n(x):
+    """Un lado para comparar: sin banderas, marcas ni espacios, en minúsculas y sin tildes."""
+    x = unicodedata.normalize('NFKD', x or '').lower()
+    return re.sub(r'[^a-z0-9]', '', ''.join(c for c in x if not unicodedata.combining(c)))
+
+
+def _ronda_pegada(t):
+    """«FINAL MOLUSCO🇦🇷 VS SOUL B🇨🇱» → «FINAL» y abajo «MOLUSCO🇦🇷 VS SOUL B🇨🇱».
+
+    ⚠️ SÓLO SI LOS DOS LADOS YA PELEARON ARRIBA: la final se juega entre los que ganaron antes. Así «Final Boss vs Semi»
+    —una persona que se llama así— sigue siendo una batalla."""
+    ls = t.split('\n')
+    vistos = set()
+    for i, l in enumerate(ls):
+        if not _CONTRA_T.search(l):
+            continue
+        m = RONDA_PEGADA.match(l)
+        lados = [_lado_n(x) for x in _CONTRA_T.split(m.group(3))] if m else []
+        if m and len(lados) >= 2 and all(x and x in vistos for x in lados):
+            ls[i] = m.group(1) + m.group(2) + '\n' + m.group(3)
+            continue
+        vistos.update(_lado_n(x) for x in _CONTRA_T.split(l))
+    return '\n'.join(ls)
+
+
+#: «# Enfrentamiento» solo en su renglón: el título de la primera ronda, sin decir cuál
+ENFRENTA_ENC = re.compile(r'^[\W_]*enfrentamientos?[\W_]*$', re.I)
+#: la ronda que es, por cuántas batallas trae
+RONDA_POR_BATALLAS = {16: 'DIECISEISAVOS', 8: 'OCTAVOS', 4: 'CUARTOS', 2: 'SEMIFINALES'}
+
+
+def _enfrentamiento(t):
+    """«# Enfrentamiento» y ocho batallas abajo, SIN NINGUNA OTRA RONDA EN LA LLAVE → «OCTAVOS» (4 → CUARTOS…).
+
+    Es la llave recién sorteada, antes de que se juegue nada: sin esto no tenía ninguna batalla, y ni el bot en vivo ni el
+    grabador la veían. ⚠️ Con otra ronda escrita no se toca: ahí la de arriba es la ronda de antes de la primera con
+    título, si comparten gente (`_rondas_crudas()`). Y un solo título, y 2, 4, 8 o 16 batallas: «ENFRENTAMIENTO 1», «2»…
+    con un grupo cada uno es la fase de grupos (`FASE_GRUPO`), y lleva número."""
+    if RONDA.search(t):
+        return t
+    ls = t.split('\n')
+    encs = [i for i, l in enumerate(ls) if ENFRENTA_ENC.match(l.strip())]
+    if len(encs) != 1:
+        return t
+    n = 0
+    for l in ls[encs[0] + 1:]:
+        if not l.strip():
+            continue
+        if not _CONTRA_T.search(l):
+            break
+        n += 1
+    if n in RONDA_POR_BATALLAS:
+        ls[encs[0]] = RONDA_POR_BATALLAS[n]
+    return '\n'.join(ls)
+
+
 def traducir(texto):
     """La llave escrita en el dialecto de otro servidor, en el que este lector lee.
 
@@ -643,6 +762,8 @@ def traducir(texto):
     if not texto:
         return texto or ''
     texto = _caja(texto)
+    # 🔢 el dialecto de LKR: ver `_numeradas()`
+    texto = _enfrentamiento(_ronda_pegada(_numeradas(texto)))
     # 🔑 el emoji entre dos `<>` de más: `『A』<<:versus_:…>> 『B』` (DIMENSIÓN DEL FREESTYLE)
     t = re.sub(r'<(<a?:\w+:\d+>)>', r'\1', texto)
     # 🔑 «MATCH 1: P vs L» (la plantilla de doble eliminación, y lo que la IA escribe de una llave en imagen): el

@@ -1259,8 +1259,9 @@ def parecido(a, b):
     return len(a & b) / float(len(a | b)) if (a or b) else 0.0
 
 
-#: el encabezado que dice qué es el mensaje y no cómo se llama el evento (`titulo()`; igual en `llave_vivo.js`)
-TITULO_GENERICO = re.compile(r'(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos|emparejamientos'
+#: el encabezado que dice qué es el mensaje y no cómo se llama el evento (`titulo()`; igual en `llave_vivo.js`). 🔢 Y «Enfrentamiento»
+#: en singular: es el título de la primera ronda de LKR (22/11/2026), no el nombre del evento, que sale del anuncio
+TITULO_GENERICO = re.compile(r'(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos?|emparejamientos'
                              # ⚽ y un grupo no es el nombre de nada («Grupo 1», el MUNDIALITO de LCW, 17/10/2026)
                              r'|(?:fase de )?grupos?(?:\s+[a-z0-9]{1,2})?)',
                              re.I)

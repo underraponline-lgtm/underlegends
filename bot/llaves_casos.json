@@ -3349,6 +3349,220 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "LKR (22/11/2026): el número suelto de cada batalla, «# Enfrentamiento» de primera ronda y la final pegada a su título",
+   "texto": "# Enfrentamiento\n1    🇲🇽 MC GLOCK 🆚 MOLUSCO🇦🇷 \n2   🇵🇪 DOMINICK 🆚  MINIBOY🇨🇱 \n3    🇻🇪 KEIDER 🆚 LIZE🇦🇷 \n4    🇨🇱 XERVO 🆚 ONZAS🇻🇪 \n5    🇨🇱 HEDORAH 🆚 LIAM🇭🇳 \n6    🇺🇾 LAST 🆚 MATTHIAS🇻🇪 \n7    🇻🇪 ISMEL 🆚 CÁLIZ🇲🇽 \n8    🇨🇴 SHADOW 🆚 SOUL B🇨🇱 \nCUARTOS\n1  🇦🇷 MOLUSCO VS MCO🇦🇷 \n2 🇦🇷 : LIZE VS HEDORAH🇨🇱 \n3 🇻🇪 MATTHIAS VS KING🇨🇴 \n4 🇨🇱 SOUL B VS LAST🇺🇾 \n\nSEMIS\n1 🇦🇷  MOLUSCO VS LIZE🇦🇷 \n2 MATTHIAS🇻🇪 VS SOUL B🇨🇱 \nFINAL MOLUSCO🇦🇷 VS SOUL B🇨🇱\nCAMPEÓN:MOLUSCO🇦🇷 \n@everyone",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "MC GLOCK 🇲🇽",
+       "MOLUSCO🇦🇷"
+      ],
+      [
+       "DOMINICK 🇵🇪",
+       "MINIBOY🇨🇱"
+      ],
+      [
+       "KEIDER 🇻🇪",
+       "LIZE🇦🇷"
+      ],
+      [
+       "XERVO 🇨🇱",
+       "ONZAS🇻🇪"
+      ],
+      [
+       "HEDORAH 🇨🇱",
+       "LIAM🇭🇳"
+      ],
+      [
+       "LAST 🇺🇾",
+       "MATTHIAS🇻🇪"
+      ],
+      [
+       "ISMEL 🇻🇪",
+       "CÁLIZ🇲🇽"
+      ],
+      [
+       "SHADOW 🇨🇴",
+       "SOUL B🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "MOLUSCO 🇦🇷",
+       "MCO🇦🇷"
+      ],
+      [
+       "LIZE 🇦🇷",
+       "HEDORAH🇨🇱"
+      ],
+      [
+       "MATTHIAS 🇻🇪",
+       "KING🇨🇴"
+      ],
+      [
+       "SOUL B 🇨🇱",
+       "LAST🇺🇾"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "MOLUSCO 🇦🇷",
+       "LIZE🇦🇷"
+      ],
+      [
+       "MATTHIAS🇻🇪",
+       "SOUL B🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "MOLUSCO🇦🇷",
+       "SOUL B🇨🇱"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… y la misma recién sorteada: sólo «# Enfrentamiento» y sus ocho batallas, sin ninguna otra ronda (son los octavos)",
+   "texto": "# Enfrentamiento\n1    MC GLOCK 🆚 MOLUSCO\n2    DOMINICK 🆚  MINIBOY\n3    KEIDER 🆚 LIZE\n4    XERVO 🆚 ONZAS\n5    HEDORAH 🆚 LIAM\n6    LAST 🆚 MATTHIAS\n7    ISMEL 🆚 CÁLIZ\n8    SHADOW 🆚 SOUL B\n\n@everyone",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "MC GLOCK",
+       "MOLUSCO"
+      ],
+      [
+       "DOMINICK",
+       "MINIBOY"
+      ],
+      [
+       "KEIDER",
+       "LIZE"
+      ],
+      [
+       "XERVO",
+       "ONZAS"
+      ],
+      [
+       "HEDORAH",
+       "LIAM"
+      ],
+      [
+       "LAST",
+       "MATTHIAS"
+      ],
+      [
+       "ISMEL",
+       "CÁLIZ"
+      ],
+      [
+       "SHADOW",
+       "SOUL B"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… y lo que NO es eso: números fuera de secuencia, tres batallas bajo «Enfrentamiento», la fase de grupos con número, y la final con dos que no pelearon arriba",
+   "texto": "# Enfrentamiento\n3 ANA vs BEA\n19 vs CAMI\n7 DORA vs EVA\n\n### ENFRENTAMIENTO 1\nFLOR vs GIA\n# CUARTOS\n1 HANA vs IRIS\nJUANA vs KARLA\n# SEMIS\nHANA vs JUANA\nFINAL BOSS vs SEMI\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "1 HANA",
+       "IRIS"
+      ],
+      [
+       "JUANA",
+       "KARLA"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "HANA",
+       "JUANA"
+      ],
+      [
+       "FINAL BOSS",
+       "SEMI"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA: NEW GENESIS II (22/11/2026), triples de uno en cuartos y equipos de tres después",
+   "texto": "**__ ↱  |🔌 NEW GENESIS II 🔌|  ↲__**\n\n●❯────────｢🉐 ｣────────❮●\n\n▪️ **[•CUARTOS DE FINAL•]**\n\n▪️   [CRONOX] 🆚 [LRS + TOKYO + MITO] 🆚 [MITYAR] \n▪️   [PICHULA] 🆚 [VANDU] 🆚 [LITKUNAI]\n▪️   [SIN LIMITES] 🆚 [ROMEO] 🆚 [OKAM]\n▪️   [OASIS] 🆚 [GARZXI] 🆚 [NC TAM]\n\n●❯────────｢💥 ｣────────❮●\n\n▪️**[•SEMI - FINAL•]**\n\n▪️   [LRS + TOKYO + MITO] 🆚 [OKAM + MOLUSCO + JULDA] \n▪️   [PICHULA + OASIS + RIZAS] 🆚 [NC + TAM + ZA]\n\n\n●❯────────｢ 🉐  ｣────────❮●\n\n\n▪️**[• FINAL•]**\n\n▪️ [ OKAM + MOLUSCO + JULDA ] 🆚 [ PICHULA + OASIS + RIZAS ]\n\n●❯────────｢🏆 ｣────────❮●\n\n\n🥇 **𝄆 CAMPEÓN: OASIS + PICHULA + RIZAS\n\n🥈 𝄆 SUB-CAMPEÓN: OKAM + MOLUSCO + JULDA**\n\n\n@everyone",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "CRONOX",
+       "LRS + TOKYO + MITO",
+       "MITYAR"
+      ],
+      [
+       "PICHULA",
+       "VANDU",
+       "LITKUNAI"
+      ],
+      [
+       "SIN LIMITES",
+       "ROMEO",
+       "OKAM"
+      ],
+      [
+       "OASIS",
+       "GARZXI",
+       "NC TAM"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "LRS + TOKYO + MITO",
+       "OKAM + MOLUSCO + JULDA"
+      ],
+      [
+       "PICHULA + OASIS + RIZAS",
+       "NC + TAM + ZA"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "OKAM + MOLUSCO + JULDA",
+       "PICHULA + OASIS + RIZAS"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

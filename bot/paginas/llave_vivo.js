@@ -301,9 +301,74 @@
     }).join('\n');
   }
 
+  /* 🔢 el dialecto de LKR (22/11/2026): `escuchar._numeradas()`, `_ronda_pegada()` y `_enfrentamiento()`, las tres
+     iguales. El número suelto de cada batalla (`1    MC GLOCK 🆚 MOLUSCO`), la final pegada a su título (`FINAL MOLUSCO🇦🇷
+     VS SOUL B🇨🇱`) y «# Enfrentamiento» de título de la primera ronda */
+  var NUM_SUELTO = /^([ \t>*_#]*)(\d{1,2})[ \t]+(?!🆚|vs\b)(?=\S)/i;
+  var CONTRA_T = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b|\bversus\b/i;
+  var DOS_PUNTOS_SUELTOS = /^((?:[\u{1F1E6}-\u{1F1FF}]{2})?)[ \t]*[:：][ \t]*/u;
+  function numeradas(t) {
+    var ls = t.split('\n'), tira = [], esperado = 0;
+    function cerrar() {
+      if (tira.length >= 2) {
+        tira.forEach(function (x) {
+          var resto = ls[x[0]].slice(x[1][0].length).replace(DOS_PUNTOS_SUELTOS, '$1 ').replace(/^\s+/, '');
+          ls[x[0]] = x[1][1] + resto;
+        });
+      }
+      tira = [];
+    }
+    for (var i = 0; i < ls.length; i++) {
+      var l = ls[i];
+      if (!l.trim()) continue;
+      var m = CONTRA_T.test(l) ? NUM_SUELTO.exec(l) : null;
+      var n = m ? parseInt(m[2], 10) : 0;
+      if (m && n === esperado + 1 && tira.length) { tira.push([i, m]); esperado = n; continue; }
+      cerrar();
+      if (m && n === 1) { tira = [[i, m]]; esperado = 1; } else { esperado = 0; }
+    }
+    cerrar();
+    return ls.join('\n');
+  }
+  var RONDA_PEGADA = /^([ \t>*_#]*)(GRAN[ \t]+FINAL|SEMI[ \t]*-?[ \t]*FINAL(?:ES)?|SEMIS?|CUARTOS(?:[ \t]+DE[ \t]+FINAL)?|OCTAVOS|TERCER[ \t]+LUGAR|FINAL)[ \t]+(?=\S)(?![:：\-–])(.*)$/i;
+  function ladoN(x) { return String(x || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]/g, ''); }
+  function rondaPegada(t) {
+    var ls = t.split('\n'), vistos = new Set();
+    for (var i = 0; i < ls.length; i++) {
+      var l = ls[i];
+      if (!CONTRA_T.test(l)) continue;
+      var m = RONDA_PEGADA.exec(l);
+      var lados = m ? m[3].split(CONTRA_T).map(ladoN) : [];
+      if (m && lados.length >= 2 && lados.every(function (x) { return x && vistos.has(x); })) {
+        ls[i] = m[1] + m[2] + '\n' + m[3];
+        continue;
+      }
+      l.split(CONTRA_T).forEach(function (x) { vistos.add(ladoN(x)); });
+    }
+    return ls.join('\n');
+  }
+  var ENFRENTA_ENC = /^[^\p{L}\p{N}]*enfrentamientos?[^\p{L}\p{N}]*$/iu;
+  var RONDA_POR_BATALLAS = { 16: 'DIECISEISAVOS', 8: 'OCTAVOS', 4: 'CUARTOS', 2: 'SEMIFINALES' };
+  function enfrentamiento(t) {
+    if (buscarRonda(t)) return t;
+    var ls = t.split('\n'), encs = [];
+    ls.forEach(function (l, i) { if (ENFRENTA_ENC.test(l.trim())) encs.push(i); });
+    if (encs.length !== 1) return t;
+    var n = 0;
+    for (var i = encs[0] + 1; i < ls.length; i++) {
+      if (!ls[i].trim()) continue;
+      if (!CONTRA_T.test(ls[i])) break;
+      n++;
+    }
+    if (RONDA_POR_BATALLAS[n]) ls[encs[0]] = RONDA_POR_BATALLAS[n];
+    return ls.join('\n');
+  }
+
   function traducir(texto) {
     if (!texto) return texto || '';
     texto = caja(texto);
+    // 🔢 el dialecto de LKR: ver `numeradas()`
+    texto = enfrentamiento(rondaPegada(numeradas(texto)));
     // el emoji entre dos `<>` de más (DIMENSIÓN DEL FREESTYLE)
     var t = texto.replace(/<(<a?:\w+:\d+>)>/g, '$1');
     // «MATCH 1: P vs L»: `escuchar.MATCH_N`
@@ -980,7 +1045,7 @@
         .replace(/[^\p{L}\p{N}_\s.\-]/gu, ' ').replace(/(^|\s)[-.]{2,}(?=\s|$)/g, '$1 ')
         .replace(/\s+/g, ' ').trim();
       if (s.length < 3 || !/\p{L}/u.test(s)) continue;
-      if (/^(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos|emparejamientos)$/i.test(s)) continue;
+      if (/^(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos?|emparejamientos)$/i.test(s)) continue;
       if (buscarRonda(s) || nombresDeLinea(l).length) continue;
       return quitarBordes(s.slice(0, 60), ['_', '*', '~', ' ']).trim();
     }
