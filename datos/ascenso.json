@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-23T03:59:29Z",
+ "t": "2026-11-23T04:28:02Z",
  "sv": {
   "SR": {
    "filas": [
@@ -1358,6 +1358,13 @@
      "Julda"
     ],
     [
+     "Luzzano",
+     "ar",
+     400,
+     400,
+     "Luzzano"
+    ],
+    [
      "Evangeline",
      "bo",
      390,
@@ -2093,6 +2100,11 @@
      "dia": "2026-11-22",
      "rango": "plata ii",
      "puntos": [
+      [
+       "Luzzano",
+       "Campeón",
+       400
+      ],
       [
        "Six",
        "Campeón",
