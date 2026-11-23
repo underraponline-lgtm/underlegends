@@ -34,6 +34,7 @@ import { CrewsParaVos, InvitarACrew, RolCrew } from './crewpanel.jsx';
 import { Banda, Rivalidades, SuCamino, SuForma, SuMejorNoche, SuMuro, SusHistorias, SusRecords, usePerfilDatos } from './perfil_bandas.jsx';
 import { EloNum, PerfilV10, PlacasVitrina } from './perfil_v10.jsx';
 import { QuienEsMods } from './mods_perfil.jsx';
+import { TeEspera } from './te_espera.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
 
@@ -524,7 +525,8 @@ function Cabeza({ liga, f, k, p, e, dc, esYo, onEmblemas, ems, numeros, ex }) {
             <LigaTeSigue f={f} p={p} liga={liga} yo={esYo} />
             {frase}
           </p>
-          {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}
+          {/* 🔒 en el perfil entero lo dice el panel «Tu carta te espera» (te_espera.jsx), debajo: acá sólo sin él */}
+          {f.nv && !numeros ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}
         </div>
         <div className="pf8-acc">
           {esYo ? <button type="button" className="btn borde pf8-seguir" onClick={() => setAj(true)}>Editar mi perfil</button>
@@ -1702,6 +1704,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     <div className="pf8-pag pf9-pag" ref={raiz}>
       <Cabeza liga={liga} f={f} k={k} p={p} e={P && P.e} dc={dc} esYo={esYo} ems={ems} ex={ex} onEmblemas={(x) => setEmb(x || '')} numeros />
       <div ref={abajo} />
+      {/* 🔒 sin verificar: su carta con candado y lo que gana al verificarse (te_espera.jsx, 23/11/2026) */}
+      <TeEspera liga={liga} f={f} k={k} esYo={esYo} dc={dc} />
       {/* 🤝 en tu perfil y sin crew: las que te aceptan, debajo de la cabecera (sale sola sólo si estás verificado y sin
           crew: ver `CrewsParaVos` de crewpanel.jsx) */}
       {esYo && !crewDe(k) ? <CrewsParaVos liga={liga} seccion="sec pf-sec" /> : null}

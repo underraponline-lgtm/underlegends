@@ -801,3 +801,53 @@
 /* 🛍️ el nombre de la Tienda sobre las bandas blancas (revisión 22/11/2026): el efecto se diseñó sobre negro y llega de un
    dato que no controlamos (`ta-n13` es blanco: 1,08:1). En Clara lleva su placa negra, como en el Ranking (rka.css) */
 .clara .pf9-banda.blanca .ta-raiz.nom-tienda{display:inline-block;max-width:100%;box-sizing:border-box;vertical-align:bottom;padding:0 5px;border-radius:3px;background:#030304}
+
+/* 🔒 «TU CARTA TE ESPERA» (te_espera.jsx, 23/11/2026; Dlx: «yes add it, and maybe other ways to remind people they are 1
+   step away»). Quien no se verificó: un panel oscuro —en Clara también, como los paneles de las bandas— con su carta de
+   Servidor con candado y lo que gana al verificarse. El borde es el magenta de la Liga, el de lo que llama a hacer algo.
+   La carta es un dibujo de la página (su cara apagada detrás de un velo, como la Bloqueada), no una de R2. Clases `tce-`:
+   `te-` ya era de los links */
+.tce-caja{--tinta:#F6F6F6;--gris:#A5A5A0;--linea:#F6F6F6;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px 20px;
+  align-items:start;padding:18px;border-radius:4px;background:#0B0B0D;color:#F6F6F6;box-shadow:inset 0 0 0 2px #E41373}
+.tce-carta{--tce-sv:#5A5A62;position:relative;width:132px;aspect-ratio:300/405;overflow:hidden;border-radius:4px;background:#16161A}
+.tce-carta::after{content:"";position:absolute;inset:0;border-radius:4px;box-shadow:inset 0 0 0 3px var(--tce-sv);pointer-events:none}
+.tce-cara{position:absolute;left:0;right:0;top:0;height:74%;display:flex;align-items:center;justify-content:center;
+  font:900 58px/1 Archivo,sans-serif;color:#34343A;background:#16161A}
+.tce-cara img{display:block;width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.6)}
+.tce-velo{position:absolute;inset:0;background:rgba(6,8,16,.42)}
+.tce-logo{position:absolute;z-index:1;top:8px;left:8px;width:26px;height:26px;border-radius:50%;object-fit:cover;
+  background:var(--tce-sv);box-shadow:0 0 0 2px #0B0B0D}
+.tce-cand{position:absolute;z-index:1;left:50%;top:37%;transform:translate(-50%,-50%);display:grid;place-items:center;width:52px;height:52px;
+  border-radius:50%;background:#030304;color:#F6F6F6;box-shadow:inset 0 0 0 2px #F6F6F6}
+.tce-n{position:absolute;z-index:1;left:0;right:0;bottom:24px;padding:0 9px;text-align:center;font:900 15px/1.1 Archivo,sans-serif;
+  text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tce-carta small{position:absolute;z-index:1;left:0;right:0;bottom:9px;text-align:center;font:800 12px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.12em;color:#FF5FA2}
+.tce-tx{display:grid;gap:10px;min-width:0}
+.tce-k{font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#FF5FA2}
+.tce-tx h2{margin:0;font:900 26px/1.02 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em}
+.tce-p{margin:0;font-size:15px;line-height:1.45;color:#D8D8D4;max-width:68ch}
+.tce-lista{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:10px 22px}
+.tce-lista li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;font-size:14px;line-height:1.4;color:#C9C9C4}
+.tce-lista li .ico{margin-top:1px;color:#29B298}
+.tce-lista b{display:block;font:800 15px/1.25 Archivo,sans-serif;color:#F6F6F6}
+.tce-btns{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:6px}
+.tce-btns .btn.borde{--tinta:#F6F6F6}
+.tce-nota{font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
+@media (min-width: 900px){.tce-lista{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* 📱 en el teléfono la carta va al lado del título y lo demás debajo, a todo el ancho */
+@media (max-width: 600px){
+  .tce-caja{grid-template-columns:92px minmax(0,1fr);gap:12px 14px;padding:14px}
+  .tce-tx{display:contents}
+  .tce-carta{width:92px;grid-column:1;grid-row:1 / span 2}
+  .tce-k,.tce-tx h2{grid-column:2}
+  .tce-k{align-self:end}
+  .tce-tx h2{font-size:22px;align-self:start}
+  .tce-p,.tce-lista,.tce-btns{grid-column:1 / -1}
+  .tce-cand{width:40px;height:40px}
+  .tce-cand .ico{width:20px;height:20px}
+  .tce-n{font-size:12px;bottom:20px;padding:0 6px}
+  .tce-carta small{font-size:10px;bottom:7px}
+  .tce-logo{width:20px;height:20px;top:6px;left:6px}
+  .tce-cara{font-size:40px}
+}

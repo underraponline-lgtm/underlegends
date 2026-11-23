@@ -76,7 +76,9 @@ export const PORTADA_V = '1';
 // repite si el mensaje ya trae un botón a la misma página (el propio `/vincular`), y `sinVincular` lo apaga donde
 // `/vincular` es sólo un nombre en una lista (el índice de la ayuda). Va a la misma página que el comando.
 export const URL_VINCULAR = PAGINAS + '/cuenta/verificar';
-export const TXT_VINCULAR = 'Haz clic aquí para vincularte · te toma menos de 1 minuto';
+// ✂️ (23/11/2026) Dlx: «el botón de vincularte no se ve completo: en vez de agregar que te toma menos de 1m, simplemente
+// pon el espacio y el signo de aproximación 1m». Discord corta las etiquetas largas en el celular: eran 57 letras.
+export const TXT_VINCULAR = 'Haz clic aquí para vincularte ≈1m';
 export const BOTON_VINCULAR = { type: 2, style: 5, label: TXT_VINCULAR, url: URL_VINCULAR, emoji: { name: '🔗' } };
 /** ¿El texto le pide a alguien que corra `/vincular`? (no cuenta la dirección `pages.dev/vincular/`) */
 export const pideVincular = (txt) => /(^|[^\w.\/-])\/vincular\b/.test(String(txt || ''));

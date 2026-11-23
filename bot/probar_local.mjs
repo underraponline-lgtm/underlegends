@@ -2113,9 +2113,9 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
      /No te encuentro/.test(TX(t3.json?.data) || '') && /vincular/.test(TX(t3.json?.data) || ''), JSON.stringify(t3.json?.data));
   // 🔗 (21/11/2026) Dlx: «si el embed te dice que corras el slash command vincular, que cree un botón… te toma menos de 1 minuto»
   const b3 = PZ(t3.json?.data, 2);
-  ok('🔗 y como te pide /vincular, trae el botón «Haz clic aquí para vincularte · te toma menos de 1 minuto» (y La llave)',
+  ok('🔗 y como te pide /vincular, trae el botón «Haz clic aquí para vincularte ≈1m» (y La llave; corto, 23/11/2026)',
      b3.some((b) => b.style === 5 && /\/cuenta\/verificar$/.test(b.url || '') && /Haz clic aquí para vincularte/.test(b.label)
-       && /menos de 1 minuto/.test(b.label) && b.label.length <= 80) && b3.length >= 2, JSON.stringify(b3));
+       && /≈1m$/.test(b.label) && b.label.length <= 40) && b3.length >= 2, JSON.stringify(b3));
   const t4 = await boton('700962', 'nn:perf:700');
   const b4 = PZ(t4.json?.data, [2, 3, 5, 6, 7, 8]);
   ok('«Perfiles»: los del podio, con un botón a cada perfil', (t4.json?.data?.flags & 64) === 64 && /Mats/.test(TX(t4.json?.data) || '')

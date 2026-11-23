@@ -22,7 +22,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
 import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.js';
-import { Cara, DosToques, Ico, Sec, diaET, masDias, usePerfiles } from './piezas.jsx';
+import { Cara, DosToques, Ico, Sec, diaET, enlace, masDias, usePerfiles } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import CSS_PAGINA from './css/socio2.css?inline';
 import CAT_EST from './estilos_juego.json';
@@ -741,6 +741,46 @@ function TusRaperos({ xs, total, ver }) {
   );
 }
 
+// 🔒 TU GENTE SIN CARTA (23/11/2026; Dlx: «other ways to remind people they are 1 step away to get cards, and more
+// awards»). Los de este servidor que juegan y no se verificaron: salen «—» en el Ranking, sin carta y fuera de las
+// nominaciones de los MES AWARDS. El socio los conoce y les puede avisar en su Discord: «Copiar el aviso» deja un mensaje
+// listo con sus nombres y el link a Verificarme. Lo manda él, no el bot (el bot no manda DMs). Sólo los de la tabla
+// (las 200 filas del lobby): los que juegan poco pueden faltar, y la bajada lo dice.
+const FALTA_NV = { id: 'vincular su Discord', pais: 'elegir su país', dra: 'el rol de Miembro de DRA' };
+const CORTE_NC = 8;
+function SinCartaSv({ liga, xs }) {
+  const [dijo, setDijo] = useState('');
+  const [todos, setTodos] = useState(false);
+  const nombres = xs.map((f) => limpio(f.n));
+  const lista = nombres.length > 1 ? nombres.slice(0, -1).join(', ') + ' y ' + nombres[nombres.length - 1] : nombres[0];
+  const texto = (nombres.length === 1
+    ? lista + ': tienes tu carta de la Liga Global esperando, y tu número en el Ranking. Sólo te falta verificarte: '
+    : lista + ': tienen su carta de la Liga Global esperando, y su número en el Ranking. Sólo falta verificarse: ') + enlace('cuenta/verificar');
+  const copiar = async () => {
+    try { await navigator.clipboard.writeText(texto); setDijo('Copiado: pégalo en tu Discord'); } catch (e) { setDijo('No pude copiarlo'); }
+    setTimeout(() => setDijo(''), 3000);
+  };
+  // los 8 que más juegan; el resto, a un toque (en FFA eran 41 el 23/11/2026: la lista entera medía 2.300 px)
+  const ver = todos ? xs : xs.slice(0, CORTE_NC);
+  return (
+    <div className="cz-nc">
+      <div className="cz-nc-b">
+        <button type="button" className="btn verde chico" onClick={copiar} aria-live="polite">{dijo || 'Copiar el aviso'}</button>
+        <span>Un mensaje con {xs.length === 1 ? 'su nombre' : 'sus ' + xs.length + ' nombres'} y el link a Verificarme, para pegar en tu servidor.</span>
+      </div>
+      <ol className="cz-nc-l">{ver.map((f) => (
+        <li key={f.k}>
+          <Cara liga={liga} k={f.k} nombre={f.n} cls="cz-nc-cara" />
+          <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a>
+          <small>{num(f.ev || 0)} ev{f.oro ? ' · ' + f.oro + (f.oro === 1 ? ' llave ganada' : ' llaves ganadas') : ''}</small>
+          <small className="cz-nc-f">Le falta {FALTA_NV[f.nv] || 'verificarse'}</small>
+        </li>
+      ))}</ol>
+      {xs.length > CORTE_NC ? <button type="button" className="cz-rap-ver" onClick={() => setTodos(!todos)}>{todos ? 'Ver menos' : 'Ver los ' + num(xs.length) + ' ›'}</button> : null}
+    </div>
+  );
+}
+
 // ── un servidor, entero: la cabina con su barra ──
 function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const p = x.panel || {};
@@ -792,6 +832,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const tabla = liga.d && liga.d.tabla;
   const delSv = useMemo(() => (tabla || []).filter((f) => f.sv === x.sv && f.k).sort((a, b) => (b.ovr || 0) - (a.ovr || 0) || (a.pos || 0) - (b.pos || 0)), [tabla, x.sv]);
   const top = delSv.slice(0, 5);
+  // 🔒 los de tu servidor sin verificar, los que más juegan primero (`SinCartaSv`)
+  const sinCarta = useMemo(() => delSv.filter((f) => f.nv).sort((a, b) => (b.ev || 0) - (a.ev || 0)), [delSv]);
   // ⭐ la nota de cada evento: `[evento, cuántos, promedio]` (`notasSv()` de bot/avisos.js)
   const notaDe = (ll) => (ll ? (x.notas || []).find((y) => String(y[0]) === String(ll)) : null);
   const ROL_TXT = { admin: 'admin', moderador: 'moderador', asistente: 'asistente' };
@@ -921,6 +963,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                   <li key={s1}><span>{String(i + 1).padStart(2, '0')}</span><p>{resaltar(s1)}</p>
                     {IR[irs[i]] && hay.has(irs[i]) && irs.indexOf(irs[i]) === i ? <button type="button" className="sp-ir" onClick={(e) => irA(e, irs[i])}>{IR[irs[i]]}</button> : null}</li>
                 ))}</ol></Sec> : null}
+              {sinCarta.length ? <Sec id="sp-sincarta" titulo={'Sin carta todavía · ' + sinCarta.length} bajada="Juegan en tu servidor y no se verificaron: salen «—» en el Ranking, no tienen tarjeta y no entran a los MES AWARDS. Es un paso: avísales.">
+                <SinCartaSv liga={liga} xs={sinCarta} /></Sec> : null}
               {v.n != null ? <Sec id="sp-vuelven" titulo="¿Vuelve tu gente?" bajada={'De quienes jugaron su primer evento de la temporada en tu servidor' + (v.desde ? ', desde el ' + fechaCorta(v.desde) : '') + '. No cuenta a quien debutó hace menos de 14 días. Volver es otro evento, otro día, en cualquier servidor de la Liga.'}>
                 <Vuelven v={v} /></Sec> : null}
               {(p.dias || []).length ? <Sec id="sp-cuando" titulo="Cuándo hay actividad" bajada="Cuánta gente juntan tus eventos cada día, y cuántos eventos tiene el resto de la Liga ese día: un día lleno compite por la misma gente.">

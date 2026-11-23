@@ -145,7 +145,9 @@ WEB = 'https://underlegends.pages.dev'
 # 🔗 (21/11/2026) Dlx: «si el embed te dice que corras el slash command vincular, que cree un botón que te diga haz clic
 # aquí para vincularte, te toma menos de 1 minuto». El mismo botón que el Worker suma solo (`BOTON_VINCULAR` de
 # bot/vista.js: el self-check revisa que digan lo mismo), al lado de «Abrir mis premios» cuando alguien no está vinculado.
-TXT_VINCULAR = 'Haz clic aquí para vincularte · te toma menos de 1 minuto'
+# ✂️ (23/11/2026) Dlx: «el botón de vincularte no se ve completo: en vez de agregar que te toma menos de 1m, simplemente
+# pon el espacio y el signo de aproximación 1m». Discord corta las etiquetas largas en el celular: eran 57 letras.
+TXT_VINCULAR = 'Haz clic aquí para vincularte ≈1m'
 BOTON_VINCULAR = {'type': 2, 'style': 5, 'label': TXT_VINCULAR, 'emoji': {'name': '🔗'}, 'url': WEB + '/cuenta/verificar'}
 
 
@@ -681,8 +683,8 @@ def _self_check():
     ok(len(comps) == 2 and len(bots) == 2 and bots[0]['custom_id'] == 'dd:mis' and bots[0]['label'] == 'Abrir mis premios',
        'UN SOLO BOTÓN de premios, «Abrir mis premios», para todos (antes eran seis, uno por ganador y por premio)')
     ok(bots[1] == BOTON_VINCULAR and bots[1]['style'] == 5 and bots[1]['url'].endswith('/cuenta/verificar')
-       and 'menos de 1 minuto' in bots[1]['label'] and len(bots[1]['label']) <= 80,
-       '🔗 quien no está vinculado: al lado, el botón para vincularte (un link a la página, ≤80 letras)')
+       and bots[1]['label'].endswith('≈1m') and len(bots[1]['label']) <= 40,
+       '🔗 quien no está vinculado: al lado, el botón para vincularte (un link a la página, corto: «≈1m», ≤40 letras)')
     vista = io.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vista.js'), encoding='utf-8').read()
     ok("TXT_VINCULAR = '%s'" % TXT_VINCULAR in vista and "PAGINAS + '/cuenta/verificar'" in vista,
        'el botón dice lo mismo y va al mismo lugar que el que el Worker suma solo (bot/vista.js)')

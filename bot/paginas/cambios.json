@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "7.95", "dia": "2026-11-23", "cuando": "2026-11-23T18:30:00-05:00", "titulo": "Tu carta te espera", "items": ["Si todavía no te verificaste, **tu perfil te muestra tu carta con candado** y lo que ganas al verificarte, con tus números: la tarjeta de Servidor, la Competitiva si ya tienes tus 10 eventos, el número que tendrías en el Ranking, los **MES AWARDS** y los drops de tus llaves.", "En el perfil de alguien que no se verificó, **«Avísale»** copia el link para mandárselo.", "Los **socios** ven en su panel quién juega en su servidor y todavía no tiene carta, con un aviso listo para pegar en su Discord.", "El botón del bot para vincularte es más corto y se ve entero: **«Haz clic aquí para vincularte ≈1m»**."]},
     {"version": "7.94", "dia": "2026-11-23", "cuando": "2026-11-23T17:45:00-05:00", "titulo": "Los logos de las barras, enteros", "items": ["El logo de la **barra de cada servidor** ahora llena todo su círculo, sin borde de color alrededor."]},
     {
         "version": "7.93",
