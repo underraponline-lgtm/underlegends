@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T21:25:40+00:00",
+ "cuando": "2026-11-24T21:56:13+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8217,6 +8217,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "UFLUC",
+   "canal": "「📋」ɪɴꜱᴄʀɪᴘᴄɪᴏɴᴇꜱ",
+   "texto": "Teito",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1574902752935682121",
+   "cuando": "2026-11-24T21:41:16"
+  },
+  {
+   "servidor": "UFLUC",
+   "canal": "「📋」ɪɴꜱᴄʀɪᴘᴄɪᴏɴᴇꜱ",
+   "texto": "onzas.s 🇻🇪",
+   "quien": "onzas.s",
+   "discord_id": "345317656288559125",
+   "msg_id": "1574899023427670108",
+   "cuando": "2026-11-24T21:26:27"
+  },
   {
    "servidor": "WOF",
    "canal": "📜・vs・Inscripciónes",
@@ -44198,24 +44216,6 @@
    "discord_id": "1512148565890306153",
    "msg_id": "1562569042726887515",
    "cuando": "2026-10-21T20:51:30"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Molt 🇨🇱(PRIMERA)",
-   "quien": "akvmolt",
-   "discord_id": "1355612971144839439",
-   "msg_id": "1562569033293893745",
-   "cuando": "2026-10-21T20:51:28"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "KRAVITZ🇨🇷",
-   "quien": "thekravitz777",
-   "discord_id": "1345962362615894027",
-   "msg_id": "1562569004113985597",
-   "cuando": "2026-10-21T20:51:21"
   }
  ]
 }
