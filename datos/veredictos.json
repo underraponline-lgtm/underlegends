@@ -10797,6 +10797,83 @@
    "b": "Sin límites 🇵🇪",
    "ganador": "Yo mc 🇨🇱",
    "votos": "1–0"
+  },
+  "1574625704795181207": {
+   "id": "1574625704795181207",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1795490423154,
+   "a": "DOMINICK",
+   "b": "NXUZ",
+   "ganador": "DOMINICK",
+   "votos": "1–0"
+  },
+  "1574626848246075393": {
+   "id": "1574626848246075393",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795490695774,
+   "a": "Agustín la reliquia 🇺🇾",
+   "b": "tomyhilfiger1312🇾🇹",
+   "ganador": "Agustín la reliquia 🇺🇾",
+   "votos": "1–0"
+  },
+  "1574628074740252825": {
+   "id": "1574628074740252825",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1795490988193,
+   "a": "SIN LIMITES",
+   "b": "ARTEZZY",
+   "ganador": "SIN LIMITES",
+   "votos": "1–0"
+  },
+  "1574629971387875391": {
+   "id": "1574629971387875391",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795491440389,
+   "a": "Roda🇳🇪",
+   "b": "gocho🇨🇱",
+   "ganador": "gocho🇨🇱",
+   "votos": "1–0"
+  },
+  "1574630788383903845": {
+   "id": "1574630788383903845",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795491635176,
+   "a": "Dyzz🇨🇱",
+   "b": "Julda 🇨🇴",
+   "ganador": "Julda 🇨🇴",
+   "votos": "1–0"
+  },
+  "1574631678930976769": {
+   "id": "1574631678930976769",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795491847499,
+   "a": "Lrs la sustancia🇦🇷",
+   "b": "okam🇨🇷",
+   "ganador": "Lrs la sustancia🇦🇷",
+   "votos": "1–0"
+  },
+  "1574633622466727937": {
+   "id": "1574633622466727937",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795492310874,
+   "a": "tierra sin atmosfera 🇦🇷",
+   "b": "Inku 🇦🇷",
+   "ganador": "Inku 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14460,7 +14537,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1795489387063,
-   "ed": 1795490374628,
+   "ed": 1795491326182,
    "texto": "`[ CUARTOS ]`\n⌞Tiemp 🇲🇽⌝ 🆚 ⌞Roda🇵🇦⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Dominick🇵🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Lrs la sustancia🇦🇷⌝ 🆚 ⌞Dios 🇲🇽⌝ 🆚 ⌞Giansito 🇵🇪⌝\n`[ SEMIFINALES ]`",
    "batallas": [
     [
@@ -14512,8 +14589,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1795489610568,
-   "ed": 1795490423154,
-   "texto": "`[ CUARTOS ]`\n⌞OKAM⌝ 🆚 ⌞GIANSITO⌝\n⌞TEMP⌝ 🆚 ⌞RODA⌝\n⌞DOMINICK⌝ 🆚 ⌞NXUZ⌝",
+   "ed": 1795491288978,
+   "texto": "`[ CUARTOS ]`\n⌞OKAM⌝ 🆚 ⌞GIANSITO⌝\n⌞TEMP⌝ 🆚 ⌞RODA⌝\n⌞DOMINICK⌝ 🆚 ⌞NXUZ⌝\n⌞SIN LIMITES⌝ 🆚 ⌞ARTEZZY⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -14541,8 +14618,18 @@
       "DOMINICK",
       "NXUZ"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "DOMINICK",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SIN LIMITES",
+      "ARTEZZY"
+     ],
+     "SIN LIMITES",
+     "veredicto",
      []
     ]
    ]

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T03:25:36+00:00",
+ "cuando": "2026-11-24T03:55:11+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,35 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "Backtime",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1574629037370777691",
+   "cuando": "2026-11-24T03:33:37",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "Julda",
+   "orgs": [
+    {
+     "n": "Julda",
+     "id": ""
+    }
+   ],
+   "autor_h": "cc48e77308129e54",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "1v1",
+   "horario": "30 Minutos",
+   "fecha": "",
+   "premios": "Aura",
+   "staff": {},
+   "autor": "Julda 💤",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "PURISTAS DEL HIP HOP",
@@ -1042,35 +1071,6 @@
    "premios": "Un beso mio",
    "staff": {},
    "autor": "Fuentes🎸 𓆩🪽𓆪",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "KISS OF SHINIGAMI",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1568821423810551849",
-   "cuando": "2026-11-08T02:56:14",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "AZILLMOYTA",
-   "orgs": [
-    {
-     "n": "> Azillmoyta",
-     "id": ""
-    }
-   ],
-   "autor_h": "8910173aff35c0bf",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "E",
-   "modalidad": "1v1",
-   "horario": "20-30 m",
-   "fecha": "",
-   "premios": "puntos",
-   "staff": {},
-   "autor": "🔏",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
@@ -4523,7 +4523,7 @@
      "Lízeninn"
     ]
    },
-   "autor": "🪆",
+   "autor": "🪔",
    "staff_cuentas": {
     "Drexx": "1150099153238630410",
     "Lízeninn": "1474585358292222015"
@@ -5111,35 +5111,6 @@
    "autor": "Leonar-T",
    "staff_cuentas": {},
    "categoria_id": "1309234419525222477"
-  },
-  {
-   "nombre": "GG SANGRERAP",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1574617937229389846",
-   "cuando": "2026-11-24T02:49:31",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Cu?",
-   "orgs": [
-    {
-     "n": "Cu?",
-     "id": "1452005860493492335"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "0/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Artezzy",
-   "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
   },
   {
    "nombre": "GG SANGRERAP",
@@ -8160,6 +8131,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Kiz 🇵🇪",
+   "quien": "kizdvd",
+   "discord_id": "733112124238332025",
+   "msg_id": "1574627331648262286",
+   "cuando": "2026-11-24T03:26:51"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44150,15 +44130,6 @@
    "discord_id": "846870712950194196",
    "msg_id": "1562269162405888102",
    "cuando": "2026-10-21T00:59:53"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Artezzy 🇵🇪",
-   "quien": "h6itam29",
-   "discord_id": "1435531540472795240",
-   "msg_id": "1562268855529775265",
-   "cuando": "2026-10-21T00:58:40"
   }
  ]
 }
