@@ -10775,6 +10775,28 @@
    "b": "Romeo🇲🇽",
    "ganador": "Romeo🇲🇽",
    "votos": "1–0"
+  },
+  "1574622853142413443": {
+   "id": "1574622853142413443",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1795489743267,
+   "a": "OKAM",
+   "b": "GIANSITO",
+   "ganador": "GIANSITO",
+   "votos": "1–0"
+  },
+  "1574625662180794449": {
+   "id": "1574625662180794449",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795490412994,
+   "a": "Yo mc 🇨🇱",
+   "b": "Sin límites 🇵🇪",
+   "ganador": "Yo mc 🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14438,8 +14460,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1795489387063,
-   "ed": 1795489387063,
-   "texto": "`[ CUARTOS ]`\n⌞Tiemp 🇲🇽⌝ 🆚 ⌞Roda🇵🇦⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Dominick🇵🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Lrs la sustancia🇦🇷⌝ 🆚 ⌞Dios 🇲🇽⌝\n`[ SEMIFINALES ]`",
+   "ed": 1795490374628,
+   "texto": "`[ CUARTOS ]`\n⌞Tiemp 🇲🇽⌝ 🆚 ⌞Roda🇵🇦⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Dominick🇵🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Lrs la sustancia🇦🇷⌝ 🆚 ⌞Dios 🇲🇽⌝ 🆚 ⌞Giansito 🇵🇪⌝\n`[ SEMIFINALES ]`",
    "batallas": [
     [
      "CUARTOS",
@@ -14475,7 +14497,49 @@
      "CUARTOS",
      [
       "Lrs la sustancia🇦🇷",
-      "Dios 🇲🇽"
+      "Dios 🇲🇽",
+      "Giansito 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1574622296562339892": {
+   "id": "1574622296562339892",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1795489610568,
+   "ed": 1795490423154,
+   "texto": "`[ CUARTOS ]`\n⌞OKAM⌝ 🆚 ⌞GIANSITO⌝\n⌞TEMP⌝ 🆚 ⌞RODA⌝\n⌞DOMINICK⌝ 🆚 ⌞NXUZ⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "OKAM",
+      "GIANSITO"
+     ],
+     "GIANSITO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "TEMP",
+      "RODA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DOMINICK",
+      "NXUZ"
      ],
      null,
      "última ronda y no dice campeón",
