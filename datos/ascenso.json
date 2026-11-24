@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-24T17:58:59Z",
+ "t": "2026-11-24T18:31:13Z",
  "sv": {
   "SR": {
    "filas": [
@@ -779,8 +779,8 @@
     [
      "agus",
      "ar",
-     3860,
-     375,
+     3920,
+     435,
      "Agus"
     ],
     [
@@ -952,6 +952,13 @@
      "Xubaru"
     ],
     [
+     "AGUSTIN LA RELIQUIA",
+     "uy",
+     1290,
+     340,
+     "EIDP"
+    ],
+    [
      "Eze",
      "ar",
      1275,
@@ -971,13 +978,6 @@
      1200,
      0,
      "Respawn"
-    ],
-    [
-     "AGUSTIN LA RELIQUIA",
-     "uy",
-     1190,
-     240,
-     "EIDP"
     ],
     [
      "Mark",
@@ -1183,6 +1183,13 @@
      "JJ"
     ],
     [
+     "Sin límites",
+     "pe",
+     650,
+     60,
+     "Sin Limites"
+    ],
+    [
      "Lizeninn",
      "ar",
      650,
@@ -1216,13 +1223,6 @@
      600,
      0,
      "ONZASS"
-    ],
-    [
-     "Sin límites",
-     "pe",
-     590,
-     0,
-     "Sin Limites"
     ],
     [
      "kyss",
@@ -1881,6 +1881,13 @@
      90,
      0,
      "DarnBless"
+    ],
+    [
+     "Konan",
+     "ar",
+     75,
+     75,
+     "Konan"
     ]
    ],
    "sumado": [
@@ -2275,6 +2282,35 @@
        "Cronox",
        "Tercero",
        110
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "Puristas del Hip Hop Vl2",
+     "dia": "2026-11-24",
+     "rango": "bronce i",
+     "puntos": [
+      [
+       "EIDP",
+       "Campeón",
+       100
+      ],
+      [
+       "Konan",
+       "Subcampeón",
+       75
+      ],
+      [
+       "Agus",
+       "Tercero",
+       60
+      ],
+      [
+       "Sin Limites",
+       "Tercero",
+       60
       ]
      ],
      "fuera": []

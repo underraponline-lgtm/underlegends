@@ -265,6 +265,15 @@
 "temporada"
 ]
 },
+"sinlimites": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -281,15 +290,6 @@
 "criszj": {
 "rg": "C",
 "c": []
-},
-"sinlimites": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "cronox": {
 "rg": "D",
@@ -474,6 +474,10 @@
 "temporada"
 ]
 },
+"eidp": {
+"rg": "C",
+"c": []
+},
 "tøkiø": {
 "rg": "B",
 "c": [
@@ -611,10 +615,6 @@
 "servidor",
 "temporada"
 ]
-},
-"eidp": {
-"rg": "D",
-"c": []
 },
 "kyss": {
 "rg": "D",
@@ -990,6 +990,13 @@
 "temporada"
 ]
 },
+"julda": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "bastyretro": {
 "rg": "",
 "c": [
@@ -1018,13 +1025,6 @@
 ]
 },
 "evangeline": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"julda": {
 "rg": "",
 "c": [
 "servidor",
@@ -1279,6 +1279,21 @@
 "rg": "",
 "c": []
 },
+"inku": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"araya": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "0223": {
 "rg": "",
 "c": []
@@ -1290,14 +1305,6 @@
 "millonario": {
 "rg": "",
 "c": []
-},
-"araya": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "yor": {
 "rg": "",
@@ -2932,14 +2939,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-15T01:57:38Z",
-"quien": [
-"Krish"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-15T02:27:18Z",
@@ -6347,6 +6346,15 @@
 "t": "2026-11-24T05:15:17Z",
 "sv": "SGR",
 "tier": 3
+},
+{
+"tipo": "rango",
+"t": "2026-11-24T18:32:22Z",
+"quien": [
+"EIDP"
+],
+"rg": "C",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -8579,6 +8587,75 @@
 "ev": "PURISTAS DEL HIP HOP"
 }
 ]
+},
+"2026-11-24": {
+"tipo": "resnoche",
+"t": "2026-11-25T08:00:00Z",
+"dia": "2026-11-24",
+"eventos": 1,
+"part": 14,
+"campeones": [
+{
+"ev": "PURISTAS DEL HIP HOP",
+"sv": "FFA",
+"ll": 689,
+"quien": [
+[
+"EIDP",
+"eidp"
+]
+]
+}
+],
+"suman": [
+{
+"n": "EIDP",
+"k": "eidp",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Konan",
+"k": "",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "Agus",
+"k": "agus",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Konan",
+"k": "",
+"de": 244,
+"a": 152
+},
+{
+"n": "Thaniel",
+"k": "",
+"de": 377,
+"a": 342
+},
+{
+"n": "Inku",
+"k": "inku",
+"de": 141,
+"a": 127
+}
+],
+"sorpresas": [
+{
+"n": "EIDP",
+"k": "eidp",
+"que": "primer",
+"ev": "PURISTAS DEL HIP HOP",
+"desde": 277
+}
+]
 }
 },
 "extra": {
@@ -8684,7 +8761,7 @@
 "delux": 0,
 "hassan": 0,
 "sinlimites": 0,
-"majiztral": 1,
+"majiztral": 0,
 "criszj": 0,
 "bloody": 1,
 "tuca": 0,
@@ -8722,7 +8799,7 @@
 "dynoco": 0,
 "marcos": 1,
 "jupiter": 0,
-"eidp": 0,
+"eidp": 1,
 "gocho": 3,
 "neo": 0,
 "onzass": 0,
@@ -8871,7 +8948,8 @@
 "agentesombra": 0,
 "martoar": 0,
 "liam": 0,
-"mrkude": 1
+"mrkude": 1,
+"inku": 0
 },
 "sem": {
 "id": "2026-11-23",

@@ -10995,6 +10995,50 @@
    "b": "Konan 🇦🇷",
    "ganador": "Konan 🇦🇷",
    "votos": "1–0"
+  },
+  "1574845619783209093": {
+   "id": "1574845619783209093",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795542854973,
+   "a": "Agus🇦🇷",
+   "b": "Araya 🇦🇸",
+   "ganador": "Agus🇦🇷",
+   "votos": "1–0"
+  },
+  "1574847491575128215": {
+   "id": "1574847491575128215",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795543301243,
+   "a": "Sin límites 🇵🇪",
+   "b": "agustin la reliquia🇦🇬",
+   "ganador": "agustin la reliquia🇦🇬",
+   "votos": "1–0"
+  },
+  "1574849287882285099": {
+   "id": "1574849287882285099",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795543729516,
+   "a": "Konan 🇦🇷",
+   "b": "Agus🇦🇷",
+   "ganador": "Konan 🇦🇷",
+   "votos": "1–0"
+  },
+  "1574850441445908582": {
+   "id": "1574850441445908582",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795544004547,
+   "a": "agustin la reliquia🇦🇬",
+   "b": "Konan 🇦🇷",
+   "ganador": "agustin la reliquia🇦🇬",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14852,8 +14896,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795541398449,
-   "ed": 1795542738264,
-   "texto": "`[ CUARTOS ]`\n⌞Thaniel 🇻🇪⌝ 🆚 ⌞Sin límites 🇵🇪⌝\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Julda 🇨🇴⌝ 🆚 ⌞Konan 🇦🇷⌝\n⌞Agus🇦🇷⌝ 🆚 ⌞Inku 🇦🇷⌝\n⌞Agus🇦🇷⌝ 🆚 ⌞Araya 🇦🇸⌝",
+   "ed": 1795544543281,
+   "texto": "`[ CUARTOS ]`\n⌞Thaniel 🇻🇪⌝ 🆚 ⌞Sin límites 🇵🇪⌝\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Julda 🇨🇴⌝ 🆚 ⌞Konan 🇦🇷⌝\n⌞Agus🇦🇷⌝ 🆚 ⌞Inku 🇦🇷⌝\n⌞Agus🇦🇷⌝ 🆚 ⌞Araya 🇦🇸⌝\n⌞Agus🇦🇷⌝ 🆚 ⌞Araya 🇦🇸⌝\n`[ SEMIFINALES ]`\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Konan 🇦🇷⌝ 🆚 ⌞Agus🇦🇷⌝\n⌞Konan 🇦🇷⌝ 🆚 ⌞Agus🇦🇷⌝\n`[ FINAL ]`\n⌞agustin la reliquia🇦🇬⌝ 🆚 ⌞Konan 🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -14871,8 +14915,8 @@
       "Majiztral 🇨🇴",
       "agustin la reliquia🇦🇬"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "agustin la reliquia🇦🇬",
+     "ronda siguiente",
      []
     ],
     [
@@ -14901,8 +14945,8 @@
       "Agus🇦🇷",
       "Inku 🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "Agus🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -14911,8 +14955,58 @@
       "Agus🇦🇷",
       "Araya 🇦🇸"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "Agus🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Agus🇦🇷",
+      "Araya 🇦🇸"
+     ],
+     "Agus🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Sin límites 🇵🇪",
+      "agustin la reliquia🇦🇬"
+     ],
+     "agustin la reliquia🇦🇬",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Konan 🇦🇷",
+      "Agus🇦🇷"
+     ],
+     "Konan 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Konan 🇦🇷",
+      "Agus🇦🇷"
+     ],
+     "Konan 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "agustin la reliquia🇦🇬",
+      "Konan 🇦🇷"
+     ],
+     "agustin la reliquia🇦🇬",
+     "veredicto",
      []
     ]
    ]

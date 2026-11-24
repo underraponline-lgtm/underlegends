@@ -62194,7 +62194,7 @@
        "Dyzz"
       ],
       "SAIDEM, Makmah",
-      "triple (3 bandas, pasan 2); también pasa: makmah 🇻🇪"
+      "triple (3 bandas, pasan 2); también pasa: Makmah 🇻🇪"
      ],
      [
       [
@@ -64565,6 +64565,150 @@
   ],
   "ver": {
    "min": 150,
+   "v": 1
+  }
+ },
+ "689": {
+  "dia": "2026-11-24",
+  "escala": "8-15",
+  "fecha": "24/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1574839510678638613"
+  ],
+  "n": 689,
+  "nombre": "PURISTAS DEL HIP HOP",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "Thaniel"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "EIDP",
+       "Majiztral"
+      ],
+      "EIDP",
+      ""
+     ],
+     [
+      [
+       "Konan",
+       "Julda"
+      ],
+      "Konan",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Inku"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "araya"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "EIDP",
+       "Sin Limites"
+      ],
+      "EIDP",
+      ""
+     ],
+     [
+      [
+       "Konan",
+       "Agus"
+      ],
+      "Konan",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "EIDP",
+       "Konan"
+      ],
+      "EIDP",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "EIDP",
+    "Campeón",
+    7500
+   ],
+   [
+    "Konan",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Inku",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Julda",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Thaniel",
+    "Cuartos",
+    2000
+   ],
+   [
+    "araya",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 52,
    "v": 1
   }
  }

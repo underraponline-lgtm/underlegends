@@ -1634,6 +1634,14 @@
   [688, "23/11", "FFA", "cuartos", "LRS", "Julda", "LRS", "Julda"],
   [688, "23/11", "FFA", "semifinales", "Gocho", "Cronox", "Gocho", "Cronox"],
   [688, "23/11", "FFA", "semifinales", "Inku", "LRS", "Inku", "LRS"],
-  [688, "23/11", "FFA", "final", "Inku", "Gocho", "Inku", "Gocho"]
+  [688, "23/11", "FFA", "final", "Inku", "Gocho", "Inku", "Gocho"],
+  [689, "24/11", "FFA", "cuartos", "Sin Limites", "Thaniel", "Sin Limites", "Thaniel"],
+  [689, "24/11", "FFA", "cuartos", "EIDP", "Majiztral", "EIDP", "Majiztral"],
+  [689, "24/11", "FFA", "cuartos", "Konan", "Julda", "Konan", "Julda"],
+  [689, "24/11", "FFA", "cuartos", "Agus", "Inku", "Agus", "Inku"],
+  [689, "24/11", "FFA", "cuartos", "Agus", "araya", "Agus", "araya"],
+  [689, "24/11", "FFA", "semifinales", "EIDP", "Sin Limites", "EIDP", "Sin Limites"],
+  [689, "24/11", "FFA", "semifinales", "Konan", "Agus", "Konan", "Agus"],
+  [689, "24/11", "FFA", "final", "EIDP", "Konan", "EIDP", "Konan"]
  ]
 }

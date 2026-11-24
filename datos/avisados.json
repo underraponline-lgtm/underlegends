@@ -58673,5 +58673,166 @@
    ]
   ],
   "v": 2
+ },
+ "689": {
+  "antes": {
+   "Agus": [
+    17,
+    17,
+    false
+   ],
+   "EIDP": [
+    277,
+    77,
+    true
+   ],
+   "Inku": [
+    141,
+    215,
+    false
+   ],
+   "Julda": [
+    105,
+    138,
+    false
+   ],
+   "Konan": [
+    244,
+    688,
+    false
+   ],
+   "Majiztral": [
+    30,
+    32,
+    false
+   ],
+   "Sin Limites": [
+    31,
+    35,
+    false
+   ],
+   "Thaniel": [
+    377,
+    271,
+    true
+   ],
+   "araya": [
+    127,
+    186,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Sin Limites",
+    "Thaniel",
+    "Sin Limites"
+   ],
+   [
+    "EIDP",
+    "Majiztral",
+    "EIDP"
+   ],
+   [
+    "Konan",
+    "Julda",
+    "Konan"
+   ],
+   [
+    "Agus",
+    "Inku",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "araya",
+    "Agus"
+   ],
+   [
+    "EIDP",
+    "Sin Limites",
+    "EIDP"
+   ],
+   [
+    "Konan",
+    "Agus",
+    "Konan"
+   ],
+   [
+    "EIDP",
+    "Konan",
+    "EIDP"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 27,
+   "EIDP": 13,
+   "Inku": 1,
+   "Julda": 6,
+   "Konan": 1,
+   "Majiztral": 38,
+   "Sin Limites": 55,
+   "Thaniel": 5,
+   "araya": 7
+  },
+  "fecha": "24/11",
+  "noche": true,
+  "nombre": "PURISTAS DEL HIP HOP",
+  "num": 689,
+  "participantes": 14,
+  "sello": {
+   "EIDP": ""
+  },
+  "sv": "FFA",
+  "t": "2026-11-24T18:24:42Z",
+  "tabla": [
+   [
+    "EIDP",
+    "Campeón",
+    7500
+   ],
+   [
+    "Konan",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Thaniel",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Julda",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Inku",
+    "Cuartos",
+    2000
+   ],
+   [
+    "araya",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

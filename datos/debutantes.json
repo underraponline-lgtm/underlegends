@@ -1426,9 +1426,10 @@
   },
   "Inku": {
    "avisado": "2026-11-24",
+   "avisado_cumplido": "2026-11-24",
    "chat": "2026-11-24",
-   "con": null,
-   "cumplido": "",
+   "con": 689,
+   "cumplido": "2026-11-24T17:29:58+00:00",
    "debut": "2026-11-24T02:57:58+00:00",
    "did": "966814191556116560",
    "evento": "PURISTAS DEL HIP HOP",
