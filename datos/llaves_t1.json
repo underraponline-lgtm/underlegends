@@ -50004,7 +50004,7 @@
        "TøKīØ🦠🧠"
       ],
       "",
-      "cobra: CrisZJ; cobra: Tokio🇦🇷; nadie siguió: ✅ Decidir"
+      "cobra: CrisZJ🇵🇪; cobra: Tokio🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -64122,10 +64122,10 @@
     "b": [
      [
       [
-       "Mc Glock, y Dominick 🇵🇪",
+       "Mc Glock, Dominick",
        "Saiko, y Shaggy 🇵🇷"
       ],
-      "Mc Glock, y Dominick 🇵🇪",
+      "Mc Glock, Dominick",
       ""
      ],
      [
@@ -64216,11 +64216,6 @@
     2000
    ],
    [
-    "y Dominick 🇵🇪",
-    "Semifinal",
-    2000
-   ],
-   [
     "y Shaggy 🇵🇷",
     "Semifinal",
     2000
@@ -64228,6 +64223,145 @@
   ],
   "ver": {
    "min": 34,
+   "v": 1
+  }
+ },
+ "687": {
+  "dia": "2026-11-23",
+  "escala": "8-15",
+  "fecha": "23/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1574563976526823437"
+  ],
+  "n": 687,
+  "nombre": "PRADOX STYLE",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Mathhias"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Sin Limites"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Xervoe",
+       "Miniboy"
+      ],
+      "Xervoe",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Noone"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "CrisZJ"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Xervoe"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Xervoe 🇨🇱",
+       "CrisZJ🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "NXUZ"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Xervoe",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Noone",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 48,
    "v": 1
   }
  }

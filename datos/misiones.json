@@ -11043,13 +11043,6 @@
      0,
      0
     ],
-    "y Dominick 🇵🇪": [
-     0,
-     0,
-     4,
-     0,
-     0
-    ],
     "y Shaggy 🇵🇷": [
      0,
      0,
@@ -14302,12 +14295,6 @@
      null,
      0
     ],
-    "y Dominick 🇵🇪": [
-     "Mc Glock",
-     "escena",
-     null,
-     0
-    ],
     "y Jahno 🇧🇧": [
      "romeo",
      "escena",
@@ -14361,6 +14348,13 @@
      0,
      0
     ],
+    "CrisZJ": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Daulinov": [
      0,
      0,
@@ -14369,7 +14363,7 @@
      0
     ],
     "Dios": [
-     0,
+     1,
      1,
      1,
      0,
@@ -14438,6 +14432,20 @@
      0,
      0
     ],
+    "Mathhias": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Miniboy": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Mito": [
      0,
      0,
@@ -14457,6 +14465,20 @@
      1,
      2,
      1,
+     0
+    ],
+    "NXUZ": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Noone": [
+     1,
+     0,
+     0,
+     0,
      0
     ],
     "Oasis": [
@@ -14495,7 +14517,7 @@
      0
     ],
     "Sin Limites": [
-     0,
+     1,
      0,
      0,
      0,
@@ -14529,6 +14551,13 @@
      0,
      0
     ],
+    "Xervoe": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "ikonoxx": [
      1,
      0,
@@ -14549,6 +14578,8 @@
     "Andres": 300,
     "Aritmetico": 300,
     "BLITZ": 300,
+    "CrisZJ": 300,
+    "Dios": 300,
     "Erian": 300,
     "Funk🇦🇷": 300,
     "Geoka": 300,
@@ -14558,14 +14589,20 @@
     "LRS": 900,
     "Makmah": 300,
     "Marto AR": 300,
+    "Mathhias": 300,
+    "Miniboy": 300,
     "Mr.Kude": 800,
+    "NXUZ": 300,
+    "Noone": 300,
     "Oasis": 300,
     "Over": 300,
     "Player": 300,
+    "Sin Limites": 300,
     "Snow": 300,
     "Soulb": 300,
     "Tam": 300,
     "Tuca": 300,
+    "Xervoe": 300,
     "ikonoxx": 300,
     "yinn": 300
    }
@@ -14634,7 +14671,7 @@
   "Ciro": 300,
   "Colesito": 7900,
   "Corvo": 1000,
-  "CrisZJ": 5100,
+  "CrisZJ": 5400,
   "Crk": 2500,
   "Cronox": 4500,
   "DAVIJUAN": 300,
@@ -14649,7 +14686,7 @@
   "Denik": 300,
   "Desio": 600,
   "Deuxs": 2200,
-  "Dios": 2900,
+  "Dios": 3200,
   "Dominick": 5000,
   "Drelain": 300,
   "Drexx": 4300,
@@ -14786,7 +14823,7 @@
   "Marley🇦🇷": 300,
   "Marto AR": 600,
   "Masino": 2800,
-  "Mathhias": 4400,
+  "Mathhias": 4700,
   "Matias": 300,
   "Mato  🇧🇴": 300,
   "MauzzitoEmeces": 300,
@@ -14794,7 +14831,7 @@
   "Mc uchiha": 300,
   "Mexicano🇲🇽": 300,
   "Millonari-O": 300,
-  "Miniboy": 10100,
+  "Miniboy": 10400,
   "Mito": 6000,
   "Mochi DG": 300,
   "Molusco": 6700,
@@ -14805,14 +14842,14 @@
   "Musicdum": 300,
   "N1k": 300,
   "NC": 6000,
-  "NXUZ": 5000,
+  "NXUZ": 5300,
   "NYCO": 300,
   "Neo": 3200,
   "Nerick": 600,
   "NewCharacter🇦🇷": 300,
   "Nmb": 1000,
   "Noa": 1000,
-  "Noone": 900,
+  "Noone": 1200,
   "Nova": 300,
   "Number": 300,
   "Number VE": 2800,
@@ -14872,7 +14909,7 @@
   "Selek": 300,
   "Senticide": 600,
   "Shadow": 600,
-  "Sin Limites": 4000,
+  "Sin Limites": 4300,
   "Six": 8900,
   "Snow": 7400,
   "Soneto": 300,
@@ -14906,6 +14943,7 @@
   "XXX 🇻🇪": 300,
   "XXXX 🇻🇪": 300,
   "Xclusivo": 6700,
+  "Xervoe": 300,
   "Xplicit": 300,
   "Xubaru": 4500,
   "YIN-SON 🇺🇸": 1000,

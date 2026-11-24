@@ -292,6 +292,10 @@
 "temporada"
 ]
 },
+"criszj": {
+"rg": "C",
+"c": []
+},
 "guess": {
 "rg": "C",
 "c": [
@@ -300,10 +304,6 @@
 "servidor",
 "temporada"
 ]
-},
-"criszj": {
-"rg": "C",
-"c": []
 },
 "chop": {
 "rg": "D",
@@ -422,6 +422,14 @@
 "temporada"
 ]
 },
+"mathhias": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "trot": {
 "rg": "D",
 "c": [
@@ -458,14 +466,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mathhias": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -547,6 +547,14 @@
 "temporada"
 ]
 },
+"dios": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "keider": {
 "rg": "D",
 "c": [
@@ -589,14 +597,6 @@
 },
 "lvel": {
 "rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"dios": {
-"rg": "",
 "c": [
 "competitivo",
 "servidor",
@@ -892,19 +892,19 @@
 "rg": "D",
 "c": []
 },
-"ardean": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "noone": {
 "rg": "",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"ardean": {
+"rg": "",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -8469,8 +8469,8 @@
 "tipo": "resnoche",
 "t": "2026-11-24T08:00:00Z",
 "dia": "2026-11-23",
-"eventos": 2,
-"part": 31,
+"eventos": 3,
+"part": 39,
 "campeones": [
 {
 "ev": "qcyo rapeen 17",
@@ -8497,9 +8497,26 @@
 ""
 ]
 ]
+},
+{
+"ev": "PRADOX STYLE",
+"sv": "DDS",
+"ll": 687,
+"quien": [
+[
+"Dios",
+"dios"
+]
+]
 }
 ],
 "suman": [
+{
+"n": "Dios",
+"k": "dios",
+"pts": 11000,
+"ev": 2
+},
 {
 "n": "Raezer",
 "k": "",
@@ -8511,15 +8528,15 @@
 "k": "soulb",
 "pts": 5250,
 "ev": 1
-},
-{
-"n": "Funk🇦🇷",
-"k": "",
-"pts": 5000,
-"ev": 1
 }
 ],
 "suben": [
+{
+"n": "Xervoe",
+"k": "",
+"de": 205,
+"a": 162
+},
 {
 "n": "Mr.Kude",
 "k": "mrkude",
@@ -8531,12 +8548,6 @@
 "k": "martoar",
 "de": 336,
 "a": 318
-},
-{
-"n": "Andres",
-"k": "andres",
-"de": 59,
-"a": 48
 }
 ],
 "sorpresas": [
@@ -8640,7 +8651,7 @@
 "og": 0,
 "abyssus": 1,
 "nc": 0,
-"nxuz": 0,
+"nxuz": 1,
 "okam": 1,
 "velatz": 0,
 "mito": 0,
@@ -8670,7 +8681,7 @@
 "lordviruzz": 0,
 "caliz": 0,
 "dominick": 0,
-"mathhias": 2,
+"mathhias": 0,
 "tøkiø": 0,
 "mayeutyk": 1,
 "dyzz": 0,
@@ -8708,7 +8719,7 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 0,
+"dios": 1,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,

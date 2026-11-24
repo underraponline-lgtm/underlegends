@@ -58304,5 +58304,150 @@
    ]
   ],
   "v": 2
+ },
+ "687": {
+  "antes": {
+   "CrisZJ": [
+    267,
+    36,
+    true
+   ],
+   "Dios": [
+    63,
+    75,
+    false
+   ],
+   "Mathhias": [
+    49,
+    58,
+    false
+   ],
+   "Miniboy": [
+    19,
+    19,
+    false
+   ],
+   "NXUZ": [
+    23,
+    23,
+    false
+   ],
+   "Noone": [
+    92,
+    119,
+    false
+   ],
+   "Sin Limites": [
+    32,
+    34,
+    false
+   ],
+   "Xervoe": [
+    206,
+    456,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "CrisZJ",
+    "Mathhias",
+    "CrisZJ"
+   ],
+   [
+    "NXUZ",
+    "Sin Limites",
+    "NXUZ"
+   ],
+   [
+    "Xervoe",
+    "Miniboy",
+    "Xervoe"
+   ],
+   [
+    "Dios",
+    "Noone",
+    "Dios"
+   ],
+   [
+    "NXUZ",
+    "CrisZJ",
+    "NXUZ"
+   ],
+   [
+    "Dios",
+    "Xervoe",
+    "Dios"
+   ],
+   [
+    "Dios",
+    "NXUZ",
+    "Dios"
+   ]
+  ],
+  "ev_antes": {
+   "CrisZJ": 38,
+   "Dios": 18,
+   "Mathhias": 21,
+   "Miniboy": 73,
+   "NXUZ": 55,
+   "Noone": 11,
+   "Sin Limites": 53,
+   "Xervoe": 2
+  },
+  "fecha": "23/11",
+  "noche": true,
+  "nombre": "PRADOX STYLE",
+  "num": 687,
+  "participantes": 8,
+  "sello": {
+   "Dios": "2c4569a1e1a7:a8d8b7335469"
+  },
+  "sv": "DDS",
+  "t": "2026-11-24T00:07:34Z",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Xervoe",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Noone",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

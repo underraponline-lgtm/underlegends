@@ -44,7 +44,7 @@
      "por": [
       {
        "n": "Andres",
-       "cobra": 8250
+       "cobra": 8500
       },
       {
        "n": "Oasis",
@@ -129,10 +129,22 @@
     "nivel": "B",
     "base": 6000,
     "o": 57,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 6000,
+    "caza": {
+     "n": 687,
+     "evento": "PRADOX STYLE",
+     "sv": "DDS",
+     "t": "2026-11-23T23:15:05Z",
+     "por": [
+      {
+       "n": "CrisZJ",
+       "cobra": 6000
+      }
+     ]
+    }
    },
    {
     "n": "PichulaMc",

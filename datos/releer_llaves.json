@@ -8,7 +8,7 @@
    "fecha": "27/09",
    "por": "R24",
    "sv": "DW",
-   "vistas": 84
+   "vistas": 85
   },
   "1557523858586599515": {
    "canal": "1451649134598557708",
@@ -17,7 +17,7 @@
    "fecha": "07/10",
    "por": "batalla",
    "sv": "DDS",
-   "vistas": 442
+   "vistas": 443
   },
   "1558965596106793002": {
    "canal": "1500675902042931280",
@@ -25,7 +25,7 @@
    "evento": "RAP SIN GROSERIAS 1",
    "fecha": "11/10",
    "sv": "FDS",
-   "vistas": 1041
+   "vistas": 1042
   },
   "1563292037246091265": {
    "canal": "1560645507095728278",
@@ -33,7 +33,7 @@
    "evento": "WORLD OF FREE",
    "fecha": "23/10",
    "sv": "LKR",
-   "vistas": 1041
+   "vistas": 1042
   },
   "1563384237233676330": {
    "canal": "1500675902042931280",
@@ -41,7 +41,7 @@
    "evento": "2v2 2",
    "fecha": "23/10",
    "sv": "FDS",
-   "vistas": 1041
+   "vistas": 1042
   },
   "1564459897188515963": {
    "canal": "1500675902042931280",
@@ -49,7 +49,7 @@
    "evento": "RAP SIN GROSERIAS 1",
    "fecha": "26/10",
    "sv": "FDS",
-   "vistas": 872
+   "vistas": 873
   },
   "1566575124097007674": {
    "canal": "1540440885471477832",
@@ -57,7 +57,7 @@
    "evento": "UWC NACIONAL ANDES",
    "fecha": "01/11",
    "sv": "UFLUC",
-   "vistas": 5
+   "vistas": 6
   },
   "1566598778679595161": {
    "canal": "1451649134598557708",
@@ -65,7 +65,7 @@
    "evento": "LLAVES PARA LA DISCORD STYLE 19",
    "fecha": "01/11",
    "sv": "DDS",
-   "vistas": 573
+   "vistas": 574
   },
   "1568355756569264161": {
    "canal": "1540440885471477832",
@@ -73,7 +73,7 @@
    "evento": "UWC NACIONAL TRICOLOR",
    "fecha": "06/11",
    "sv": "UFLUC",
-   "vistas": 5
+   "vistas": 6
   },
   "1570143117074763839": {
    "canal": "1518202754294612028",
@@ -81,7 +81,7 @@
    "evento": "RED BULL BATALLA",
    "fecha": "11/11",
    "sv": "CEU",
-   "vistas": 292
+   "vistas": 293
   },
   "1570252248234201243": {
    "canal": "1558611505040064607",
@@ -89,7 +89,7 @@
    "evento": "(sin titulo)",
    "fecha": "11/11",
    "sv": "LKR",
-   "vistas": 163
+   "vistas": 164
   },
   "1570644564551671840": {
    "canal": "1558611505040064607",
@@ -97,7 +97,7 @@
    "evento": "COMPETENCIA 1 VS 1",
    "fecha": "12/11",
    "sv": "LKR",
-   "vistas": 411
+   "vistas": 412
   },
   "1570917198128615515": {
    "canal": "1309234583023124531",
@@ -105,7 +105,7 @@
    "evento": "ELITE FESTIVAL VOL. 1",
    "fecha": "13/11",
    "sv": "ACAD",
-   "vistas": 246
+   "vistas": 247
   },
   "1571643167667916952": {
    "canal": "1571614058874933278",
@@ -113,7 +113,7 @@
    "evento": "RED BULL INTERNACIONAL",
    "fecha": "15/11",
    "sv": "DDF",
-   "vistas": 209
+   "vistas": 210
   },
   "1572429715107741818": {
    "canal": "1558611505040064607",
@@ -121,7 +121,7 @@
    "evento": "(sin titulo)",
    "fecha": "17/11",
    "sv": "LKR",
-   "vistas": 231
+   "vistas": 232
   },
   "1572443914546450443": {
    "canal": "1558611505040064607",
@@ -129,7 +129,7 @@
    "evento": "(sin titulo)",
    "fecha": "17/11",
    "sv": "LKR",
-   "vistas": 231
+   "vistas": 232
   },
   "1572765832969453710": {
    "canal": "1558611505040064607",
@@ -137,7 +137,7 @@
    "evento": "(sin titulo)",
    "fecha": "18/11",
    "sv": "LKR",
-   "vistas": 198
+   "vistas": 199
   },
   "1573428440936357919": {
    "canal": "1560645507095728278",
@@ -145,7 +145,7 @@
    "evento": "(sin titulo)",
    "fecha": "20/11",
    "sv": "LKR",
-   "vistas": 123
+   "vistas": 124
   },
   "1573795087161229394": {
    "canal": "1500675902042931280",
@@ -153,7 +153,7 @@
    "evento": "RED BULL REGIONAL",
    "fecha": "21/11",
    "sv": "FDS",
-   "vistas": 88
+   "vistas": 89
   },
   "1574217678510362707": {
    "canal": "1560645507095728278",
@@ -161,7 +161,16 @@
    "evento": "(sin titulo)",
    "fecha": "22/11",
    "sv": "LKR",
-   "vistas": 20
+   "vistas": 21
+  },
+  "1574563976526823437": {
+   "canal": "1563698791595507743",
+   "desde": "2026-11-24T00:15:32+00:00",
+   "evento": "PRADOX STYLE",
+   "fecha": "23/11",
+   "por": "batalla",
+   "sv": "DDS",
+   "vistas": 0
   }
  }
 }

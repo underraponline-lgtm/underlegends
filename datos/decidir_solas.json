@@ -4127,6 +4127,27 @@
      384
     ]
    }
+  },
+  {
+   "id": "b04cc232ce",
+   "tipo": "Batalla sin ganador",
+   "sec": "PRADOX STYLE · DDS · 23/11 · #687",
+   "que": "¿Quién ganó en semifinales?\nXervoe 🇨🇱 🆚 CrisZJ🇵🇪",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (Xervoe 🇨🇱 y CrisZJ🇵🇪 perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1795479334851,
+   "filas": [
+    1594
+   ],
+   "variantes": [
+    "PRADOX STYLE · DDS · 23/11 · semifinales · Xervoe 🇨🇱 🆚 CrisZJ🇵🇪"
+   ],
+   "escribio": {
+    "batalla": "PRADOX STYLE · DDS · 23/11 · semifinales · Xervoe 🇨🇱 🆚 CrisZJ🇵🇪"
+   }
   }
  ],
  "deshechas": []

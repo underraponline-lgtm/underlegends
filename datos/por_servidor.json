@@ -2918,11 +2918,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 13,
+    "ev": 14,
     "oro": 2,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 2,
-    "pts": 60562,
+    "pts": 71062,
     "racha": "0/2",
     "tg": {
      "fin": 2,
@@ -3593,14 +3593,14 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 5,
-    "oro": 1,
-    "ovr": 48,
-    "pod": 2,
-    "pts": 29443,
-    "racha": "1/1",
+    "ev": 6,
+    "oro": 2,
+    "ovr": 50,
+    "pod": 3,
+    "pts": 51943,
+    "racha": "2/2",
     "tg": {
-     "fin": 2
+     "fin": 3
     }
    },
    "DW": {
@@ -9795,6 +9795,18 @@
      "dv": true
     }
    },
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 2,
@@ -10199,11 +10211,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 8,
+    "ev": 9,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 23900,
+    "pts": 29900,
     "racha": "0/1"
    },
    "FDS": {
@@ -10968,14 +10980,14 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 17,
+    "ev": 18,
     "oro": 3,
-    "ovr": 54,
-    "pod": 4,
-    "pts": 78819,
-    "racha": "0/2",
+    "ovr": 55,
+    "pod": 5,
+    "pts": 93819,
+    "racha": "1/2",
     "tg": {
-     "fin": 4,
+     "fin": 5,
      "fund": true,
      "llave": true
     }
@@ -11244,11 +11256,11 @@
   "Noone": {
    "DDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 3750,
+    "pts": 9750,
     "racha": "0/0"
    },
    "FDS": {
@@ -13996,11 +14008,11 @@
    },
    "DDS": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 3250,
+    "pts": 9250,
     "racha": "0/0"
    },
    "FDS": {
@@ -15888,6 +15900,18 @@
     "pod": 0,
     "pts": 5875,
     "racha": "0/1"
+   },
+   "DDS": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 10500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Xowee": {
@@ -17711,20 +17735,6 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
-   }
-  },
-  "y Dominick 🇵🇪": {
-   "UFLUC": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "y Jahno 🇧🇧": {
