@@ -10,8 +10,11 @@
 //     va la miniatura a pantalla completa, con todo el menú encima. ▶ lo vuelve a mostrar donde quedó.
 // Nunca hay un elemento nuestro sobre el reproductor a la vista.
 //
-// 🔑 UN SOLO REPRODUCTOR PARA TODO EL FEED: se crea con el primer ▶ (antes, nada de YouTube salvo la miniatura: la
-// privacidad, como en video.jsx) y para pasar de reel se le manda `loadVideoById`. Se habla con él por postMessage
+// 🔑 UN SOLO REPRODUCTOR PARA TODO EL FEED, Y ARRANCA SOLO (8.11, Dlx: «necesito que los 5 reels primero ya estén
+// cargados, o sea si uno abre la página de reels, ésta se abre automáticamente»). Al abrir Reels el reproductor se crea
+// enseguida y el primero corre SIN SONIDO: los navegadores no dejan que un video suene solo, y mudo sí (en el iPhone,
+// además, `playsinline`). Arriba queda «Toca para el sonido». Es la excepción a «nada de YouTube antes de tocar ▶» de
+// video.jsx: acá abrir la página ES pedir el video. Para pasar de reel se le manda `loadVideoById`. Se habla con él por postMessage
 // (`enablejsapi=1`), sin el script de la API: la CSP no deja cargar scripts de youtube.com.
 //
 // 🔑 EL ORDEN SIN RECOMENDADOR (el research del 24/11): nunca dos seguidos del mismo canal ni de la misma persona, uno de
@@ -141,6 +144,7 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
   const cola = useRef([]);
   const [vid, setVid] = useState('');
   const [mudo, setMudo] = useState(false);
+  const [nacioMudo, setNacioMudo] = useState(false);
   const cb = useRef({ alTerminar, alPausar, alCorrer });
   cb.current = { alTerminar, alPausar, alCorrer };
   const manda = (func, args = []) => {
@@ -172,14 +176,16 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
     const w = marco.current && marco.current.contentWindow;
     if (w) w.postMessage(JSON.stringify({ event: 'listening', id: 'rls', channel: 'widget' }), ORIGEN_YT);
   };
-  const src = vid ? ORIGEN_YT + '/embed/' + encodeURIComponent(vid) + '?enablejsapi=1&autoplay=1&playsinline=1&rel=0&modestbranding=1&origin=' +
-    encodeURIComponent(location.origin) : '';
+  const src = vid ? ORIGEN_YT + '/embed/' + encodeURIComponent(vid) + '?enablejsapi=1&autoplay=1&playsinline=1&rel=0&modestbranding=1' +
+    (nacioMudo ? '&mute=1' : '') + '&origin=' + encodeURIComponent(location.origin) : '';
   return {
     activo: !!vid, mudo,
     marco: vid ? <iframe ref={marco} className="rls-yt" src={src} title="Reproductor de YouTube" onLoad={alCargar}
       allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen /> : null,
-    // el primer ▶ crea el reproductor; después se le cambia el video
-    poner: (v) => { if (!vid) setVid(v); else manda('loadVideoById', [v]); },
+    // la primera vez crea el reproductor (`solo`: sin que nadie tocara nada, así que mudo); después se le cambia el video
+    poner: (v, solo = false) => {
+      if (!vid) { if (solo) { setNacioMudo(true); setMudo(true); } setVid(v); } else manda('loadVideoById', [v]);
+    },
     play: () => manda('playVideo'), pausa: () => manda('pauseVideo'),
     sonido: (on) => { manda(on ? 'unMute' : 'mute'); setMudo(!on); },
   };
@@ -216,6 +222,14 @@ function useFeed(liga, inicio) {
     if (i >= cargados - 2 && cargados < lista.length) setCargados((c) => Math.min(lista.length, c + MAS));
   }, [i, cargados, lista.length]);
   const cur = lista[Math.min(i, Math.max(0, lista.length - 1))] || null;
+  // 🖼️ las miniaturas de los que siguen (hasta 5 adelante), bajadas antes de llegar: pasar de reel no espera la imagen
+  useEffect(() => {
+    for (const r of lista.slice(i, i + VER)) {
+      const im = new Image();
+      im.decoding = 'async';
+      im.src = 'https://i.ytimg.com/vi/' + r.vid + '/oar2.jpg';
+    }
+  }, [lista, i]);
   useEffect(() => {
     if (!cur) return;
     const xs = ls.json(L_VISTOS, []).filter((v) => v !== cur.vid);
@@ -306,6 +320,15 @@ function ReelsCel({ F }) {
     setCopiado(false);
     setLargo(false);
   }, [F.cur, yt.activo]); // eslint-disable-line react-hooks/exhaustive-deps
+  // ▶ solo al abrir la página (una vez): el primero corre mudo
+  const arranco = useRef(false);
+  useEffect(() => {
+    if (arranco.current || !F.cur || yt.activo) return;
+    arranco.current = true;
+    ultimo.current = F.cur.vid;
+    yt.poner(F.cur.vid, true);
+    setModo('teatro');
+  }, [F.cur]); // eslint-disable-line react-hooks/exhaustive-deps
   const reproducir = () => {
     if (!F.cur) return;
     setHoja('');
@@ -377,7 +400,8 @@ function ReelsCel({ F }) {
         <>
           <div className="rls-cab">
             <button type="button" className="rls-filtro" onClick={otroFiltro}>{filtroN}<Ico n="abajo" t={18} /></button>
-            <button type="button" className="rls-ib" aria-label={yt.mudo ? 'Activar el sonido' : 'Silenciar'} onClick={() => yt.sonido(yt.mudo)}><Ico n={yt.mudo ? 'mudo' : 'sonido'} /></button>
+            {yt.mudo ? <button type="button" className="rls-sonido" onClick={() => yt.sonido(true)}><Ico n="mudo" t={18} />Toca para el sonido</button>
+              : <button type="button" className="rls-ib" aria-label="Silenciar" onClick={() => yt.sonido(false)}><Ico n="sonido" /></button>}
           </div>
           {Lineas}
           <div className="rls-riel">
@@ -487,6 +511,14 @@ function ReelsPc({ F }) {
     setModo('teatro');
     setCopiado(false);
   }, [F.cur, yt.activo]); // eslint-disable-line react-hooks/exhaustive-deps
+  const arranco = useRef(false);
+  useEffect(() => {
+    if (arranco.current || !F.cur || yt.activo) return;
+    arranco.current = true;
+    ultimo.current = F.cur.vid;
+    yt.poner(F.cur.vid, true);
+    setModo('teatro');
+  }, [F.cur]); // eslint-disable-line react-hooks/exhaustive-deps
   const reproducir = () => {
     if (!F.cur) return;
     if (!yt.activo) { ultimo.current = F.cur.vid; yt.poner(F.cur.vid); } else yt.play();
@@ -557,7 +589,8 @@ function ReelsPc({ F }) {
           <div className="rls-pc-acc">
             <button type="button" className={'rls-ib' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} aria-label="Fuego (tecla F)" onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={26} /></button>
             <button type="button" className="rls-ib" aria-pressed={F.guardado} aria-label={F.guardado ? 'Quitar de guardados' : 'Guardar'} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}><Ico n="guardar" lleno={F.guardado} t={24} /></button>
-            <button type="button" className="rls-ib" aria-label="Sonido (tecla M)" onClick={() => yt.sonido(yt.mudo)}><Ico n={yt.mudo ? 'mudo' : 'sonido'} t={24} /></button>
+            {yt.mudo ? <button type="button" className="rls-btc rls-sonido-pc" onClick={() => yt.sonido(true)}><Ico n="mudo" t={20} />Activar el sonido</button>
+              : <button type="button" className="rls-ib" aria-label="Silenciar (tecla M)" onClick={() => yt.sonido(false)}><Ico n="sonido" t={24} /></button>}
             <button type="button" className="rls-btc" onClick={() => {
               if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = '#/global/' + r.gente[0].k;
             }}><Ico n="batalla" t={20} />{batalla ? 'Batalla completa' : 'Sus batallas'}</button>

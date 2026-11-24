@@ -24,6 +24,11 @@
 .rls-cel .rls-pie-m,.rls-cel .rls-pie-t,.rls-cel .rls-filtro,.rls-cel .rls-ib.et{text-shadow:0 1px 3px rgba(0,0,0,.85)}
 
 .rls-cab{position:absolute;z-index:3;left:0;right:0;top:0;height:52px;padding:0 4px 0 14px;display:flex;align-items:center;justify-content:space-between}
+/* arranca mudo (8.11): el aviso para el sonido va arriba, afuera del video */
+.rls-cel .rls-sonido{height:36px;padding:0 12px;border-radius:4px;border:0;background:#fff;color:#000;display:flex;align-items:center;gap:6px;
+  font:700 13px/1 Archivo,sans-serif;margin-right:8px}
+.rls-cel .rls-sonido svg{filter:none}
+.rls-sonido-pc{border-color:var(--inv);background:var(--inv);color:var(--inv-tinta)}
 .rls-filtro{height:44px;padding:0;border:0;background:transparent;display:flex;align-items:center;gap:4px;font:800 26px/1 "Barlow Condensed",sans-serif}
 .rls-ib{width:48px;height:48px;border:0;padding:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center}
 .rls-ib.ardido{color:#E41373}
