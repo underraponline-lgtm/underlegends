@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-24T03:20:00Z",
+ "cuando": "2026-11-24T05:36:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 221.4,
+ "dur_s": 1717.0,
  "pasos": [
   {
    "n": "2f",
@@ -15,79 +15,79 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.1
+   "s": 1.0
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.1
+   "s": 17.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 18.5
+   "s": 22.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 11.7
+   "s": 1455.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 109.4
+   "s": 150.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 70.0
+   "s": 67.9
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "687",
-  "nombre": "PRADOX STYLE",
-  "sv": "DDS",
+  "n": "688",
+  "nombre": "PURISTAS DEL HIP HOP",
+  "sv": "FFA",
   "dia": "2026-11-23"
  },
  "cuotas": {
   "kv": {
-   "write": 150,
-   "read": 7659
+   "write": 250,
+   "read": 12086
   },
   "objeto": {
-   "leidas": 1342538,
-   "escritas": 14148,
-   "pedidos": 6049
+   "leidas": 2344055,
+   "escritas": 29349,
+   "pedidos": 11346
   },
   "worker": {
-   "pedidos": 26090,
+   "pedidos": 28315,
    "errores": 0,
-   "sub": 29878,
+   "sub": 32664,
    "cortados": 0,
-   "p50_ms": 1.01,
-   "p99_ms": 16.91,
+   "p50_ms": 1.0,
+   "p99_ms": 16.56,
    "cpu": {
-    "total": 55716,
-    "objeto_10": 2095,
-    "worker_10": 1084
+    "total": 60698,
+    "objeto_10": 2108,
+    "worker_10": 1107
    }
   },
   "r2": {
-   "objetos": 12818,
-   "gb": 1.013,
-   "ts": 1795454427
+   "objetos": 12845,
+   "gb": 1.02,
+   "ts": 1795498594
   }
  }
 }
