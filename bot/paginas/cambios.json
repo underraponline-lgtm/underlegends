@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "8.03", "dia": "2026-11-24", "cuando": "2026-11-24T04:59:00-05:00", "titulo": "Cada ficha del Ranking global, con su miniatura", "items": ["Cuando compartes el link de alguien del **Ranking global**, en Discord sale su miniatura: su nombre, su puesto, sus puntos de la T1 y su carrera, con su foto o su bandera."]},
     {"version": "8.02", "dia": "2026-11-24", "cuando": "2026-11-24T04:39:00-05:00", "titulo": "Busca a cualquiera del Ranking global", "items": ["El buscador ahora encuentra también a los del **Ranking global**: los pros, las plazas y quien todavía no tiene perfil en la Liga.", "Cada uno abre su ficha, con su historia, y la ficha tiene su propio link para compartir."]},
     {"version": "8.01", "dia": "2026-11-24", "cuando": "2026-11-24T02:15:00-05:00", "titulo": "La carta de Temporada, con tu crew", "items": ["En la carta de **Temporada**, debajo de tu número van tu bandera, tu servidor y ahora el **logo de tu crew**.", "La letra de tu rango pasa arriba a la derecha, debajo de tu puesto."]},
     {"version": "8.00", "dia": "2026-11-24", "cuando": "2026-11-24T01:20:00-05:00", "titulo": "El bot con portada en cada servidor", "items": ["En los servidores cuyo Discord no tiene banner, el bot lleva de portada la escena de sus eventos."]},

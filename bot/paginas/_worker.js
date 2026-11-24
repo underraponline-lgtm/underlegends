@@ -805,6 +805,26 @@ async function vistaPais(req, env, cc, url) {
     img: (await hayOg('pais', cc)) || url.origin + '/og/pais/' + cc + '.png', alt: 'La bandera de ' + nombre });
 }
 
+// 🌎 LA DE CADA FICHA DEL RANKING GLOBAL (`/freestyle-rap/ranking/global/<clave>`, 24/11/2026; Dlx: «Sí, hazlas»): su
+// nombre, su puesto y su grupo, con su miniatura de cine (`og/glob/<clave>.jpg`, bot/og_links.py `_cine_global()`). Lo de cada
+// uno sale de `global_vista.json` ({clave: [nombre, país, grupo, puesto]}, de bot/global_ranking.py): `global.json` entero
+// son 300 KB y leerlo costaba 4 ms de CPU de los 10. Sin miniatura todavía, la del Ranking
+const GRUPO_VISTA = { pro: 'Pro', plaza: 'Plaza', liga: 'Liga Global' };
+async function vistaGlobal(req, env, k, url) {
+  if (!k || k.length > 80) return null;
+  const r = await env.ASSETS.fetch(new Request(url.origin + '/global_vista.json')).catch(() => null);
+  const V = r && r.ok ? await r.json().catch(() => null) : null;
+  const x = V && Object.prototype.hasOwnProperty.call(V, k) ? V[k] : null;
+  if (!Array.isArray(x) || !x[0]) return null;
+  const [n, , esc, pos] = x;
+  const nombre = String(n).trim();
+  const desc = (pos ? '#' + pos + ' del Ranking global de freestyle 2026' : 'En el Ranking global de freestyle 2026')
+    + (GRUPO_VISTA[esc] ? ' · ' + GRUPO_VISTA[esc] : '') + '. Sus batallas de la temporada, su historia y su lugar contra los pros, las plazas y la Liga.';
+  const img = (await hayOg('glob', slugOg(k))) || (await hayOg('pag', 'ranking')) || url.origin + '/og/p/ranking.png';
+  return conVista(req, env, url, { tab: nombre + ' · Ranking global de freestyle', titulo: nombre + ' · Ranking global de freestyle',
+    desc, img, alt: nombre + ' en el Ranking global de freestyle' });
+}
+
 /** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?}` sobre la página de siempre */
 async function conVista(req, env, url, v) {
   const pag = await plantilla(env, url);
@@ -994,6 +1014,9 @@ export default {
       if (id && pagina === 'ligas') v = await vistaLiga(req, env, id, url).catch(() => null);
       else if (id && mPag[1] === 'llave') v = await vistaLlave(req, env, id, url).catch(() => null);
       else if (id && mPag[1] === 'pais') v = await vistaPais(req, env, id, url).catch(() => null);
+      else if (pagina === 'ranking' && /^global\/[^/]+$/.test(id)) v = await vistaGlobal(req, env, id.slice(7), url).catch(() => null);
+      // una ficha que no está (vieja, mal escrita): la del Ranking global, no la del Ranking
+      if (!v && pagina === 'ranking' && /^global\//.test(id)) v = await vistaPagina(req, env, pagina, url, 'global').catch(() => null);
       if (!v && PAGINAS[pagina]) v = await vistaPagina(req, env, pagina, url, id).catch(() => null);
       if (v) return v;
     }

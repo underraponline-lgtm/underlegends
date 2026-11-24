@@ -2577,7 +2577,10 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     if (og && ogEtag[og[1]]) return new Response(null, { status: 200, headers: { etag: ogEtag[og[1]] } });
     return new Response('{}', { status: 404 });
   };
-  const ASSETS = { fetch: async () => new Response('<html>la de siempre</html>', { status: 200 }) };
+  // 🌎 `global_vista.json` (24/11/2026): lo que la vista previa de una ficha del Ranking global lee del sitio
+  const VISTA_GLOBAL = { gazir: ['Gazir', 'es', 'pro', 43], 'l-oasis': ['Oasis', 'cl', 'liga', 72], nadie: ['Nadie', '', 'plaza', 0] };
+  const ASSETS = { fetch: async (q) => (/\/global_vista\.json$/.test(String((q && q.url) || q))
+    ? new Response(JSON.stringify(VISTA_GLOBAL), { status: 200 }) : new Response('<html>la de siempre</html>', { status: 200 })) };
   // ⚡ un módulo nuevo en cada pedido (21/11/2026): las vistas guardan lo que leen un minuto (`jsonDelOrigen()`), y estas
   // pruebas cambian el lobby entre un pedido y otro. Con el mismo módulo verían el de antes
   let vuelta = 0;
@@ -2651,6 +2654,20 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     ok('el Ranking global: «Ranking global de freestyle 2026», con su canónica',
       r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle'
       && /href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/ranking\/global"/.test(r.j.head || ''), JSON.stringify(r.j && r.j.title));
+    // 🌎 y cada ficha del Ranking global (24/11/2026): su nombre y su puesto, con su miniatura de cine si ya está
+    ogEtag['glob/gazir'] = '"abcdef0123456789"';
+    r = await ver('/freestyle-rap/ranking/global/gazir', DISCORD);
+    ok('la ficha de Gazir: su nombre, su puesto y su miniatura (og/glob/gazir.jpg, con su versión)',
+      r.j && r.j.title === 'Gazir · Ranking global de freestyle' && /^#43 del Ranking global de freestyle 2026 · Pro\./.test(r.j['meta[property="og:description"]'] || '')
+      && r.j['meta[property="og:image"]'] === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/glob/gazir.jpg?v=abcdef012345', JSON.stringify(r.j));
+    delete ogEtag['glob/gazir'];
+    r = await ver('/freestyle-rap/ranking/global/l-oasis', DISCORD);
+    ok('sin miniatura todavía: la del Ranking, con su nombre igual', r.j && r.j.title === 'Oasis · Ranking global de freestyle'
+      && /og\/p\/ranking\.png$/.test(r.j['meta[property="og:image"]'] || ''), JSON.stringify(r.j));
+    r = await ver('/freestyle-rap/ranking/global/nadie', DISCORD);
+    ok('quien todavía no sumó: sin puesto', r.j && /^En el Ranking global de freestyle 2026 · Plaza\./.test(r.j['meta[property="og:description"]'] || ''), JSON.stringify(r.j));
+    r = await ver('/freestyle-rap/ranking/global/no-existe', DISCORD);
+    ok('una clave que no está: la del Ranking global', r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle', JSON.stringify(r.j && r.j.title));
     r = await ver('/freestyle-rap/r/lejos', 'WhatsApp/2.23');
     ok('quien no está entre los 200: de los perfiles, con la carta que tiene (Servidor) y sin repetir la bandera',
       r.j && r.j.title === 'Lejos 🇦🇷 · Liga Global de Freestyle' && /\/lejos\/servidor\.webp\?v=z$/.test(r.j['meta[property="og:image"]'])

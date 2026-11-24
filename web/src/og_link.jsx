@@ -203,11 +203,15 @@ function Ref({ liga, k }) {
 // bot/paginas/_worker.js. ESTA PIEZA NO DECIDE NINGÚN TEXTO: todo viene en la ruta, armado por `_cine()` de og_links.py —
 // `f` el fondo (R2 `og/fondos/<temporada>/<f>.webp`, herramientas/fondos_og.py), `l` el armado (`a` afiche: el título a lo
 // ancho; `c` columna: lo de la derecha), `s` el sello, `a` y `b` el título, `d` las líneas de datos (`*x*` va en magenta),
-// `o=1` el «online» chiquito, `v` lo de la derecha (`podio`, `abanico`, `escudos`, `rangos`, `bandera`, `escudo`), `c`
+// `o=1` el «online» chiquito, `v` lo de la derecha (`podio`, `abanico`, `escudos`, `rangos`, `bandera`, `escudo`, y desde el
+// 24/11/2026 `retrato` y `foto`: la de alguien del Ranking global, en `r`, con su bandera chica), `c`
 // las cartas y `e` los escudos o la bandera. Así el texto vive en un solo lugar y la huella sabe cuándo rearmar.
 //: el diseño de estas: el mismo `DISENO_CINE` de bot/og_links.py (si la página publicada dice otro, el ciclo no saca la foto)
 export const DISENO_CINE = 'cine-1';
 const CODIGO = /^[a-z]{2,5}$/;
+// 🌎 la foto de alguien del Ranking global (24/11/2026, la miniatura del link de cada ficha): las de bot/global_fotos.py, en R2
+// `global/fotos/<huella>.webp` (la de perfil) o `<huella>-r.webp` (el recorte sin fondo de fms.tv). Nada de otro lado
+const FOTO_GLOBAL = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/global\/fotos\/[0-9a-f]{8,40}(-r)?\.webp$/;
 //: dónde va cada carta: [izquierda, arriba, alto, giro, capa], en el orden en que vienen en `c`
 const LUGARES = {
   podio: [[790, 72, 470, 0, 2], [700, 150, 360, -7, 1], [920, 150, 360, 7, 1]],            // #1 al medio, #2 y #3 detrás
@@ -239,10 +243,13 @@ function Cine({ liga }) {
   const cods = String(q.get('e') || '').split(',').map((x) => x.toLowerCase()).filter((x) => CODIGO.test(x)).slice(0, 16);
   const escudos = v === 'escudos' || v === 'escudo' ? cods.slice(0, v === 'escudo' ? 1 : 16) : [];
   const bandera = v === 'bandera' && cods[0] ? cods[0] : '';
+  // 🌎 la ficha del Ranking global: el recorte (`retrato`) o la foto de perfil en un cuadro (`foto`), y su bandera chica
+  const foto = (v === 'retrato' || v === 'foto') && FOTO_GLOBAL.test(q.get('r') || '') ? q.get('r') : '';
+  const banderita = foto && cods[0] && /^[a-z]{2}$/.test(cods[0]) ? cods[0] : '';
   const rangos = v === 'rangos' ? (D.rangos || []).filter((r) => r && r.r) : [];
-  const espera = cartas.length + escudos.length + (bandera ? 1 : 0);
+  const espera = cartas.length + escudos.length + (bandera ? 1 : 0) + (foto ? 1 : 0) + (banderita ? 1 : 0);
   const una = () => setImgs((x) => x + 1);
-  const clave = [f, t1, t2, datos.join('|'), v, cartas.join(','), cods.join(',')].join('§');
+  const clave = [f, t1, t2, datos.join('|'), v, cartas.join(','), cods.join(','), foto].join('§');
   useLayoutEffect(() => {
     let vivo = true;
     const medir = () => { if (vivo) { encajarCine(txt.current); setMedido(clave); } };
@@ -266,6 +273,8 @@ function Cine({ liga }) {
       ) : null}
       {v === 'escudo' && escudos[0] ? <img className="og-c-escudo" src={'/logos/' + escudos[0] + '.webp'} alt="" onLoad={una} onError={una} /> : null}
       {bandera ? <img className="og-c-bandera" src={'/banderas/g/' + bandera + '.webp'} alt="" onLoad={una} onError={una} /> : null}
+      {foto ? <img className={v === 'retrato' ? 'og-c-retrato' : 'og-c-foto'} src={foto} alt="" onLoad={una} onError={una} /> : null}
+      {banderita ? <img className={'og-c-banderita' + (v === 'retrato' ? ' r' : '')} src={'/banderas/g/' + banderita + '.webp'} alt="" onLoad={una} onError={una} /> : null}
       {rangos.length ? (
         // ⚠️ los colores de rango vienen del lobby (comun/rangos.py), nunca del CSS
         <span className="og-c-rangos">{rangos.map((r) => <span key={r.r} style={{ color: r.color, borderColor: r.color }}>{r.r}</span>)}</span>
@@ -335,7 +344,7 @@ function Perfil({ liga, k }) {
   );
 }
 
-const CINE = new Set(['pag', 'sv', 'pais', 'llave', 'liga']);
+const CINE = new Set(['pag', 'sv', 'pais', 'llave', 'liga', 'glob']);
 // 🖼️ LAS IMÁGENES DE /perfil Y /vitrina (20/11/2026, og_img.jsx): en su propio pedazo, que se baja sólo para la foto
 const OgImagen = lazy(() => import('./og_img.jsx').then((m) => ({ default: m.OgImagen })));
 const OgSellos = lazy(() => import('./og_img.jsx').then((m) => ({ default: m.OgSellos })));

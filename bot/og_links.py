@@ -11,6 +11,13 @@ them»): una por página del menú (`og/pag/<pagina>.jpg`), servidor (`og/sv/`),
 herramientas/fondos_og.py. Se arman hasta `MAX_CINE` por corrida, primero las páginas. Mientras una no está, el Worker da
 la de antes (`hayOg()`). Los perfiles NO: su cartel lleva el fondo que cada uno eligió en Tus fondos.
 
+🌎 Y DESDE EL 24/11/2026 LA DE CADA FICHA DEL RANKING GLOBAL (`og/glob/<clave>.jpg`; Dlx, a «¿le hago a cada ficha su
+propia miniatura de link?»: «Sí, hazlas»). Las 1.270 personas del Ranking global tienen ficha con dirección
+(`/freestyle-rap/ranking/global/<clave>`): su nombre, su puesto, sus puntos de la T1 y lo de su carrera, con su foto a la
+derecha (el recorte de fms.tv o la de perfil) o su bandera. Salen de `bot/paginas/global.json` y `global_historia.json`
+del repo (`_cine_global()`); van aparte de las otras de cine, de a `MAX_GLOB` por corrida, así una semana nueva de la
+tabla —que mueve a casi todos— no frena las de las páginas. El Worker las da en `vistaGlobal()`.
+
 🖼️ Y DESDE EL 20/11/2026 LAS IMÁGENES DE `/perfil` Y `/vitrina` (la tanda 2 de los comandos del bot; Dlx aprobó «A · la
 portada» y «la combinación»): `perfil/<clave>.webp` y `vitrina/<clave>.webp` en R2, de 1200 de ancho. Las dibuja la página
 (`#/og/perfil-img/<clave>`, web/src/og_img.jsx) con las mismas cuentas que el perfil. Quién cambió lo dice el SELLO de cada
@@ -70,8 +77,12 @@ MAX_PERFIL = 40
 #: 🎬 las de cine de las páginas, los servidores, los países, las llaves y las ligas (18/11/2026): el mismo `DISENO_CINE` de
 #: web/src/og_link.jsx. La primera vez son unas 85; después, sólo las que cambiaron
 DISENO_CINE = 'cine-1'
-TIPOS_CINE = ('pag', 'sv', 'pais', 'llave', 'liga')
+TIPOS_CINE = ('pag', 'sv', 'pais', 'llave', 'liga', 'glob')
 MAX_CINE = 45
+#: 🌎 las fichas del Ranking global (24/11/2026), aparte del tope de arriba: son ~1.270 y la tabla nueva de cada lunes
+#: mueve a casi todas. ~1 s cada una: con 150 por corrida, una semana entera se pone al día en unas ocho vueltas
+MAX_GLOB = 150
+GRUPO_GLOBAL = {'pro': 'Pro', 'plaza': 'Plaza', 'liga': 'Liga'}
 #: 🖼️ /perfil y /vitrina (20/11/2026): el mismo `DISENO_IMG` de web/src/og_img.jsx (si la página publicada dice otro, la foto
 #: se saltea); cuántas por corrida (cada una ~1 s, sin recargar la página entre una y otra); y cada cuántos días se rearma
 #: una aunque su sello no haya cambiado (lo que no entra al sello: su rol de DRA y los emblemas que eligió)
@@ -320,6 +331,8 @@ def _ruta_cine(tipo, slug, d):
         q.append(('e', ','.join(d['e'])))
     if d.get('o'):
         q.append(('o', '1'))
+    if d.get('r'):
+        q.append(('r', d['r']))
     return '%s/%s?%s' % (tipo, slug, urlencode(q))
 
 
@@ -377,8 +390,75 @@ def trabajos():
     except (OSError, ValueError):
         nombres = {}
     LG = _get(avisar.WORKER + '/ligas', timeout=40) or {}
-    for tipo, slug, d in _cine(L, LG, nombres):
+    for tipo, slug, d in _cine(L, LG, nombres) + _cine_global():
         out.append((tipo, slug, _huella(dict(d, dis=DISENO_CINE)), _ruta_cine(tipo, slug, d)))
+    return out
+
+
+def _uno(x):
+    """Un número de puntos como lo escribe la página: un decimal, con coma («41,3»)"""
+    return ('%.1f' % float(x or 0)).replace('.', ',')
+
+
+def _cine_global(G=None, H=None):
+    """🌎 `[('glob', slug, datos)]` de cada ficha del Ranking global (24/11/2026), con lo que dibuja `Cine` (og_link.jsx).
+    `G` es `bot/paginas/global.json` y `H` `global_historia.json` (sin pasarlos, los del repo). El puesto es el de la
+    página (`preparar()` de web/src/global.jsx). A la derecha, el recorte sin fondo (`fr`, `retrato`), la foto de perfil
+    (`ft`, `foto`) o la bandera; sin nada de eso, el nombre a lo ancho"""
+    if G is None:
+        try:
+            with io.open(os.path.join(BASE, 'bot', 'paginas', 'global.json'), encoding='utf-8') as f:
+                G = json.load(f)
+        except (OSError, ValueError):
+            return []
+    if H is None:
+        try:
+            with io.open(os.path.join(BASE, 'bot', 'paginas', 'global_historia.json'), encoding='utf-8') as f:
+                H = json.load(f)
+        except (OSError, ValueError):
+            H = {}
+    if os.path.join(BASE, 'herramientas') not in sys.path:
+        sys.path.insert(0, os.path.join(BASE, 'herramientas'))
+    import fondos_og as FO
+    hist = (H or {}).get('p') or {}
+    # los de la Liga, con su carta de Temporada (o la de Servidor) al lado de la bandera, como la miniatura de cada país
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'cartas_r2.json'), encoding='utf-8') as f:
+            inv = json.load(f)
+    except (OSError, ValueError):
+        inv = {}
+    out = []
+    for i, g in enumerate((G or {}).get('g') or []):
+        if not isinstance(g, dict) or not g.get('k') or not g.get('n') or not slug_og(g['k']):
+            continue
+        pos = i + 1 if (g.get('p') or 0) > 0 else 0
+        jb = int(g.get('jb') or 0)
+        cc = str(g.get('cc') or '').lower()
+        cc = cc if re.match(r'^[a-z]{2}$', cc) else ''
+        datos = []
+        if jb:
+            datos.append('*%s* puntos · %d %s' % (_uno(g.get('p')), jb, 'batalla' if jb == 1 else 'batallas'))
+        elif g.get('esc') == 'pro' and g.get('por'):
+            datos.append(str(g['por'][0]).split(' (')[0])
+        h = hist.get(g['k']) or {}
+        oros = (h.get('m') or [0])[0] if isinstance(h.get('m'), list) and h.get('m') else 0
+        if oros:
+            datos.append('*%d* %s en su carrera' % (oros, 'oro' if oros == 1 else 'oros'))
+        elif h.get('b'):
+            datos.append('*%s* %s en su carrera' % (_miles(h['b']), 'batalla' if h['b'] == 1 else 'batallas'))
+        elif g.get('esc') == 'liga':
+            datos.append('Juega en la *Liga Global*')
+        fr, ft = str(g.get('fr') or ''), str(g.get('ft') or '')
+        mias = inv.get(str(g.get('lg') or '')) or {} if g.get('esc') == 'liga' else {}
+        carta = next((mias[x] for x in ('temporada', 'servidor') if isinstance(mias.get(x), str) and mias[x].startswith(PUBLICA)), '')
+        v = 'retrato' if fr else 'foto' if ft else 'bandera' if cc or carta else ''
+        out.append(('glob', slug_og(g['k']), {
+            'f': FO.fondo_de('sv', i) if v else FO.fondo_de('llave', i), 'l': 'c' if v else 'a',
+            's': 'Ranking global · %s' % GRUPO_GLOBAL.get(g.get('esc'), 'Ranking global'),
+            'a': str(g['n']).strip(),
+            'b': '#%d del mundo' % pos if pos else ('en la T1' if jb else 'todavía sin jugar'),
+            'd': datos[:2], 'v': v, 'c': [carta] if carta and v == 'bandera' else [], 'e': [cc] if cc else [], 'o': False,
+            'r': fr or ft}))
     return out
 
 
@@ -784,13 +864,20 @@ def correr(seco=False, solo=None):
         quedan = set(id(t) for t in pf[:MAX_PERFIL])
         faltan = [t for t in faltan if t[0] != 'perfil' or id(t) in quedan]
     # 🎬 las de cine, de a `MAX_CINE`: primero las que nunca se armaron, y las páginas antes que el resto
-    cn = [t for t in faltan if t[0] in TIPOS_CINE]
+    # 🌎 las fichas del Ranking global, de a `MAX_GLOB`: primero las que nunca se armaron
+    gl = [t for t in faltan if t[0] == 'glob']
+    if len(gl) > MAX_GLOB and not solo:
+        gl.sort(key=lambda t: t[1] in (est.get('glob') or {}))
+        quedan_g = set(id(t) for t in gl[:MAX_GLOB])
+        faltan = [t for t in faltan if t[0] != 'glob' or id(t) in quedan_g]
+    cn = [t for t in faltan if t[0] in TIPOS_CINE and t[0] != 'glob']
     if len(cn) > MAX_CINE and not solo:
         cn.sort(key=lambda t: (t[1] in (est.get(t[0]) or {}), TIPOS_CINE.index(t[0])))
         quedan_c = set(id(t) for t in cn[:MAX_CINE])
-        faltan = [t for t in faltan if t[0] not in TIPOS_CINE or id(t) in quedan_c]
-    print('   🎁 miniaturas de los links: %d crews, links, perfiles y de cine, %d para armar ahora (%d perfiles y %d de cine esperan)'
-          % (len(todos), len(faltan), max(0, len(pf) - MAX_PERFIL) if not solo else 0, max(0, len(cn) - MAX_CINE) if not solo else 0))
+        faltan = [t for t in faltan if t[0] not in TIPOS_CINE or t[0] == 'glob' or id(t) in quedan_c]
+    print('   🎁 miniaturas de los links: %d crews, links, perfiles y de cine, %d para armar ahora (%d perfiles, %d de cine y %d fichas '
+          'del global esperan)' % (len(todos), len(faltan), max(0, len(pf) - MAX_PERFIL) if not solo else 0,
+                                  max(0, len(cn) - MAX_CINE) if not solo else 0, max(0, len(gl) - MAX_GLOB) if not solo else 0))
     if seco or not faltan:
         for t in faltan[:20]:
             print('      · %s/%s' % (t[0], t[1]))

@@ -51,6 +51,10 @@ BATALLAS = os.path.join(BASE, 'datos', 'global_batallas.json')
 ALIAS = os.path.join(BASE, 'datos', 'global_alias.json')
 SEMILLAS = os.path.join(BASE, 'datos', 'global_semillas.json')
 SALIDA = os.path.join(BASE, 'bot', 'paginas', 'global.json')
+#: 🔗 lo poco que necesita la vista previa del link de una ficha (24/11/2026): `{clave: [nombre, país, grupo, puesto]}`.
+#: El Worker de Pages (`vistaGlobal()` en bot/paginas/_worker.js) lo lee en cada vista previa, y `global.json` entero
+#: (300 KB) le costaba 4 ms de CPU de los 10 que tiene: éste son ~40 KB
+VISTA = os.path.join(BASE, 'bot', 'paginas', 'global_vista.json')
 PROS = os.path.join(BASE, 'datos', 'global_pros.json')
 SEMILLA_PRO = 7.5  # quien es pro arranca, como mínimo, como un MC de FMS
 
@@ -561,7 +565,18 @@ def correr(red=False, escribir=True):
     flechas(out, _leer(SALIDA, {}))
     if escribir:
         _escribir(SALIDA, out, compacto=True)
+        _escribir(VISTA, vista_de(out), compacto=True)
     return out
+
+
+def vista_de(out):
+    """`{clave: [nombre, país, grupo, puesto]}` de la tabla, para la vista previa de cada ficha. El puesto es el de la
+    página (`preparar()` de web/src/global.jsx): su lugar en la tabla si tiene puntos, y 0 si todavía no."""
+    v = {}
+    for i, g in enumerate((out or {}).get('g') or []):
+        if isinstance(g, dict) and g.get('k') and g.get('n'):
+            v[g['k']] = [g['n'], g.get('cc') or '', g.get('esc') or '', i + 1 if (g.get('p') or 0) > 0 else 0]
+    return v
 
 
 def _lunes(iso):
@@ -602,6 +617,11 @@ def _b(fuente, ev, tipo, fecha, ronda, a, b, gana, replica=None, votos=None, pa=
 
 def _self_check():
     mal = []
+    # 🔗 la vista previa de cada ficha: el puesto es el de la tabla y quien no sumó va en 0
+    vv = vista_de({'g': [{'k': 'a', 'n': 'A', 'cc': 'ar', 'esc': 'pro', 'p': 9.5}, {'k': 'b', 'n': 'B', 'esc': 'plaza', 'p': 0},
+                         {'k': '', 'n': 'Sin clave', 'p': 3}]})
+    if vv != {'a': ['A', 'ar', 'pro', 1], 'b': ['B', '', 'plaza', 0]}:
+        mal.append('vista_de() no arma la vista previa como la página: %r' % vv)
     bs = []
     # Un MC de FMS que gana 4 batallas (dos jornadas) contra rivales de FMS…
     for j, (r1, r2) in enumerate((('Rival1', 'Rival2'), ('Rival3', 'Rival4'))):
