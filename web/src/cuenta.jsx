@@ -1062,10 +1062,19 @@ const PEDIDOS = [
   ['identidad', 'Ese no soy yo / mi nombre está mal', 'Una llave te puso el resultado de otro, o tu nombre en la Liga está mal escrito.'],
   ['pais', 'Mi país o mi bandera están mal', 'Tu bandera en la Liga no es la tuya.'],
   ['video', 'Un video que no es mío', 'En un perfil aparece una batalla que no es de esa persona.'],
+  // 🆘 más opciones (23/11/2026, Dlx: «agrega más opciones a soporte en ese panel de ayuda»)
+  ['hackeo', 'Me hackearon la cuenta', 'Alguien entró a tu Discord: pídelo desde tu cuenta nueva y pasamos tu perfil, tus Puntos y tu Pase.'],
+  ['premio', 'No me llegó un premio', 'Puntos de Tienda, un Drop, el Pase, un título o una recompensa que ganaste y no aparece.'],
+  ['puntos', 'Mis puntos o mi puesto están mal', 'Tus puntos, tu rango o tu lugar en un ranking no cuadran con lo que jugaste.'],
+  ['carta', 'Mi carta está mal', 'Tu carta no aparece, tiene un dato mal o la foto no es la tuya.'],
+  ['falla', 'Algo no funciona', 'Un botón, una página o un comando del bot que falla.'],
+  ['otro', 'Otra cosa', 'Lo que no entra en las de arriba.'],
 ];
 // 💡 lo que ya se puede hacer al instante, sin esperar a nadie: se dice antes de pedir (17/10/2026: la llave tiene su
 // «¿Algo está mal en esta llave?», que se corrige y se aplica solo, y los videos que subiste vos tienen «Quitar»)
 const ATAJO_PED = {
+  hackeo: 'Primero cambia la contraseña y revisa tu correo en Discord. Pídelo desde la cuenta nueva: la vieja deja de entrar a tu perfil.',
+  falla: 'Si puedes, di qué tocaste, en qué página y si fue en el celular o en la compu.',
   identidad: '¿Es el resultado de una llave? Lo más rápido es abrir esa llave y tocar «¿Algo está mal en esta llave?»: '
     + 'se corrige y se aplica solo. Acá, mejor lo que no es de una llave, como tu nombre mal escrito.',
   video: 'Si es un video que sumaste tú, en tu perfil tiene «Quitar» y se va al instante. Acá van los demás: las batallas '
@@ -1120,7 +1129,8 @@ function Pedidos({ liga, dc }) {
       else setEst({ error: (j && j.error) || 'error' });
     }).catch(() => setEst({ error: 'red' }));
   };
-  const falta = !tipo ? 'Elige qué está mal.' : (tipo === 'cuenta' || tipo === 'identidad' || tipo === 'video') && !k ? 'Busca el perfil.'
+  const conPerfil = tipo === 'cuenta' || tipo === 'hackeo' || tipo === 'identidad' || tipo === 'video';
+  const falta = !tipo ? 'Elige qué está mal.' : conPerfil && !k ? 'Busca el perfil.'
     : tipo === 'pais' && !cc ? 'Elige tu país.' : tipo === 'video' && !vid.trim() ? 'Pega el link del video.'
       : tipo !== 'pais' && texto.trim().length < 3 ? 'Cuéntanos un poco más.' : '';
   const errorTxt = { tope: 'Ya tienes tres pedidos esperando: cuando se resuelvan puedes mandar otro.', perfil: 'Elige tu perfil de la lista.',
@@ -1133,9 +1143,9 @@ function Pedidos({ liga, dc }) {
             <b>{n}</b><small>{d}</small></button>
         ))}</div>
         {ATAJO_PED[tipo] ? <p className="pd-atajo">💡 {ATAJO_PED[tipo]}</p> : null}
-        {tipo === 'cuenta' || tipo === 'identidad' || tipo === 'video' ? (
+        {conPerfil ? (
           <div className="pd-campo">
-            <label htmlFor="pd-q">{tipo === 'cuenta' ? '¿Cuál era tu perfil?' : tipo === 'video' ? '¿En qué perfil aparece?' : '¿Qué perfil está mal?'}</label>
+            <label htmlFor="pd-q">{tipo === 'cuenta' || tipo === 'hackeo' ? '¿Cuál era tu perfil?' : tipo === 'video' ? '¿En qué perfil aparece?' : '¿Qué perfil está mal?'}</label>
             {elegido ? <p className="pd-elegido"><b>{limpio(elegido.n)}</b> <button type="button" className="btn borde2 chico" onClick={() => setK('')}>Cambiar</button></p> : (
               <>
                 <input id="pd-q" type="search" className="ti-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Tu nombre en la Liga" />
@@ -1154,7 +1164,7 @@ function Pedidos({ liga, dc }) {
             <input id="pd-vid" type="url" className="ti-busca" value={vid} onChange={(e) => setVid(e.target.value)} placeholder="https://youtu.be/…" /></div>
         ) : null}
         {tipo ? (
-          <div className="pd-campo"><label htmlFor="pd-tx">{tipo === 'cuenta' ? '¿Cómo lo comprobamos? (tu cuenta vieja, quién te conoce…)' : 'Cuéntanos qué pasa'}{tipo === 'pais' ? ' (si quieres)' : ''}</label>
+          <div className="pd-campo"><label htmlFor="pd-tx">{tipo === 'cuenta' || tipo === 'hackeo' ? '¿Cómo lo comprobamos? (tu cuenta vieja, quién te conoce…)' : 'Cuéntanos qué pasa'}{tipo === 'pais' ? ' (si quieres)' : ''}</label>
             <textarea id="pd-tx" rows={3} maxLength={400} value={texto} onChange={(e) => setTexto(e.target.value)} /></div>
         ) : null}
         {tipo ? <div className="cu-btns"><button type="button" className="btn verde chico" disabled={!!falta || est.va} onClick={mandar}>{est.va ? 'Mandando…' : 'Mandar el pedido'}</button>

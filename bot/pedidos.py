@@ -56,7 +56,8 @@ def plan(pedidos, padron, clave):
     out = []
     for p in pedidos or []:
         i, nuevo = p.get('id'), str(p.get('quien') or '')
-        if p.get('tipo') == 'cuenta':
+        # 🆘 «me hackearon la cuenta» (23/11/2026) es lo mismo: la fila pasa a la cuenta nueva y se muda todo
+        if p.get('tipo') in ('cuenta', 'hackeo'):
             fs = por_clave.get(p.get('k') or '') or []
             if len(fs) != 1:
                 out.append((i, 'no_pude', 'el perfil «%s» está %d veces en la Lista' % (p.get('k'), len(fs))))

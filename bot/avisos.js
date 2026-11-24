@@ -2355,7 +2355,14 @@ export const GUILD_LOGS = '841017460341604382';
 // (`bot/pedidos.py`: la Lista, y `mudarCuenta()` acá)
 //: los tipos, como los dice la página
 export const PEDIDO_TIPOS = { cuenta: 'Perdí mi cuenta de Discord', identidad: 'Ese no soy yo / mi nombre está mal',
-  pais: 'Mi país o mi bandera están mal', video: 'Un video que no es mío' };
+  pais: 'Mi país o mi bandera están mal', video: 'Un video que no es mío',
+  // 🆘 MÁS OPCIONES DE SOPORTE (23/11/2026, Dlx: «agrega más opciones a soporte en ese panel de ayuda», el día que a NC le
+  // hackearon la cuenta). «Me hackearon» sigue el camino de «perdí mi cuenta» (el ciclo pasa todo a la nueva); los otros
+  // los resuelve Dlx o un Moderador a mano, como «ese no soy yo»
+  hackeo: 'Me hackearon la cuenta', premio: 'No me llegó un premio', puntos: 'Mis puntos o mi puesto están mal',
+  carta: 'Mi carta está mal', falla: 'Algo de la página o del bot no funciona', otro: 'Otra cosa' };
+//: los que se aplican solos al aprobarlos (el ciclo: `bot/pedidos.py`); el resto los resuelve una persona
+export const PEDIDO_CICLO = ['cuenta', 'hackeo', 'pais'];
 //: cuántos sin resolver puede tener cada uno, y cuánto se guarda lo resuelto
 export const PEDIDO_TOPE = 3;
 export const PEDIDO_DIAS = 30;
@@ -2365,7 +2372,7 @@ export function validarPedido(d) {
   if (!d || typeof d !== 'object' || !PEDIDO_TIPOS[d.tipo]) return { error: 'tipo' };
   const k = String(d.k || '');
   if (k && !claveValida(k)) return { error: 'perfil' };
-  if ((d.tipo === 'cuenta' || d.tipo === 'identidad') && !k) return { error: 'perfil' };
+  if ((d.tipo === 'cuenta' || d.tipo === 'hackeo' || d.tipo === 'identidad') && !k) return { error: 'perfil' };
   const texto = String(d.texto || '').replace(/[\u0000-\u001f]+/g, ' ').trim().slice(0, 400);
   if (texto.length < 3 && d.tipo !== 'pais') return { error: 'texto' };
   const cc = String(d.cc || '').toLowerCase();
@@ -6835,13 +6842,13 @@ export async function rutaAvisos(req, env, ruta) {
     if (v.error) return json(v, 400);
     // el de país es SOBRE quien pide (y el video, si no dijo de qué perfil): su perfil sale de KV, para que el Dashboard
     // sepa de quién es y lleve a su perfil
-    if (!v.k && (v.tipo === 'pais' || v.tipo === 'video')) {
+    if (!v.k && v.tipo !== 'cuenta' && v.tipo !== 'hackeo' && v.tipo !== 'identidad') {
       let de = '';
       try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
       if (claveValida(de)) v.k = de;
     }
     const prueba = {};
-    if (v.tipo === 'cuenta' && env.DISCORD_TOKEN) {
+    if ((v.tipo === 'cuenta' || v.tipo === 'hackeo') && env.DISCORD_TOKEN) {
       try {
         const mm = JSON.parse((await env.KV.get('meta')) || 'null');
         const P = mm && mm.porton;
@@ -16552,7 +16559,7 @@ export class Avisos {
     const p = this.sql.exec('SELECT id, tipo, quien, k, vid, estado FROM pedidos WHERE id = ?', Number(d.id)).toArray()[0];
     if (!p) return { error: 'no existe' };
     if (p.estado !== '') return { error: 'ya', estado: p.estado };
-    const manual = p.tipo === 'identidad' || p.tipo === 'video';
+    const manual = !PEDIDO_CICLO.includes(p.tipo);
     const est = !d.si ? 'no' : manual ? 'hecho' : 'si';
     const ahora = Date.now();
     // 🎬 «UN VIDEO QUE NO ES MÍO», APROBADO, SE SACA DE VERDAD (17/10/2026): va a `videos_quitados`, la misma lista del
@@ -16583,10 +16590,10 @@ export class Avisos {
 
   /** Para el ciclo: lo aprobado de cuenta y país, con quién lo pidió. */
   pedidosCiclo() {
-    const sinVieja = this.sql.exec("SELECT id, quien, k, prueba FROM pedidos WHERE estado = '' AND tipo = 'cuenta'").toArray()
+    const sinVieja = this.sql.exec("SELECT id, quien, k, prueba FROM pedidos WHERE estado = '' AND tipo IN ('cuenta', 'hackeo')").toArray()
       .filter((x) => !String(x.prueba || '').includes('"vieja"')).map((x) => ({ id: x.id, quien: x.quien, k: x.k }));
     return { t: Date.now(), pedidos: this.sql.exec("SELECT id, tipo, quien, k, cc, texto FROM pedidos WHERE estado = 'si' " +
-      "AND tipo IN ('cuenta', 'pais')").toArray(), sin_vieja: sinVieja };
+      "AND tipo IN ('cuenta', 'hackeo', 'pais')").toArray(), sin_vieja: sinVieja };
   }
 
   /** Lo que hizo el ciclo: `{estados: {id: {ok, nota}}}`. */
@@ -16615,7 +16622,7 @@ export class Avisos {
     let n = 0;
     for (const [id, x] of Object.entries((d && d.pruebas) || {})) {
       if (!/^\d{1,12}$/.test(id) || !x || typeof x !== 'object') continue;
-      const p = this.sql.exec("SELECT prueba FROM pedidos WHERE id = ? AND tipo = 'cuenta' AND estado = ''", Number(id)).toArray()[0];
+      const p = this.sql.exec("SELECT prueba FROM pedidos WHERE id = ? AND tipo IN ('cuenta', 'hackeo') AND estado = ''", Number(id)).toArray()[0];
       if (!p) continue;
       let pr = {};
       try { pr = p.prueba ? JSON.parse(p.prueba) : {}; } catch (e) { pr = {}; }

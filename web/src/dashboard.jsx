@@ -2539,11 +2539,13 @@ function Logs({ l }) {
 // ── 🙋 LOS PEDIDOS DE LA GENTE (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío. Con lo que
 // el bot vio de la cuenta que pide; «Sí» lo aprueba —el de cuenta y el de país los aplica el ciclo; los otros dos los
 // resolvés vos y quedan hechos— y «No» lo cierra. Lo pueden contestar vos y los Moderadores
-const PED_TIPO = { cuenta: 'Perdí mi cuenta de Discord', identidad: 'Ese no soy yo / mi nombre está mal', pais: 'Mi país está mal', video: 'Un video que no es mío' };
+const PED_TIPO = { cuenta: 'Perdí mi cuenta de Discord', identidad: 'Ese no soy yo / mi nombre está mal', pais: 'Mi país está mal', video: 'Un video que no es mío',
+  hackeo: 'Me hackearon la cuenta', premio: 'No me llegó un premio', puntos: 'Mis puntos o mi puesto', carta: 'Mi carta está mal', falla: 'Algo no funciona', otro: 'Otra cosa' };
 const PED_EST = { '': 'esperando', si: '✅ aprobado · lo aplica el ciclo', hecho: '✅ hecho', no: '⛔ no', no_pude: '⚠️ no se pudo aplicar' };
 // lo que hace el «Sí» de cada uno: el de cuenta y el de país los aplica el ciclo; el video se saca solo; el de identidad
 // lo arreglás vos, así que el botón es para cuando ya está hecho
-const PED_SI = { cuenta: 'Sí, es su cuenta', pais: 'Sí, cambiarlo', video: 'Sí, sacar el video', identidad: 'Ya lo arreglé' };
+const PED_SI = { cuenta: 'Sí, es su cuenta', hackeo: 'Sí, es su cuenta', pais: 'Sí, cambiarlo', video: 'Sí, sacar el video', identidad: 'Ya lo arreglé',
+  premio: 'Ya lo arreglé', puntos: 'Ya lo arreglé', carta: 'Ya lo arreglé', falla: 'Ya lo arreglé', otro: 'Ya lo arreglé' };
 // 🔎 la cuenta VIEJA (la que hoy tiene ese perfil en la Lista), que averigua el ciclo: si sigue en DRA, ojo
 function Vieja({ v }) {
   if (!v) return <p className="db-ped-pr">La cuenta vieja: la mira el ciclo en su próxima vuelta.</p>;
@@ -2579,8 +2581,8 @@ function Pedidos({ ps, liga, alCambiar }) {
               <small>{corto(diaISO(new Date(p.t)))} · {PED_EST[p.estado] || p.estado}{p.por ? ' (' + p.por + ')' : ''}{p.nota ? ' · ' + p.nota : ''}</small>
               {p.texto ? <p className="db-ped-tx">«{p.texto}»</p> : null}
               {p.k && f ? <p className="db-ped-pr"><a href={'#/r/' + p.k}>Ver el perfil de {limpio(f.n)} ↗</a></p> : null}
-              {p.tipo === 'cuenta' ? <Vieja v={pr.vieja} /> : null}
-              {p.tipo === 'cuenta' ? <p className="db-ped-pr">La cuenta que pide: <b>{pr.usuario ? '@' + pr.usuario : 'sin nombre'}</b>{pr.nombre ? ' («' + pr.nombre + '»)' : ''}
+              {p.tipo === 'cuenta' || p.tipo === 'hackeo' ? <Vieja v={pr.vieja} /> : null}
+              {p.tipo === 'cuenta' || p.tipo === 'hackeo' ? <p className="db-ped-pr">La cuenta que pide: <b>{pr.usuario ? '@' + pr.usuario : 'sin nombre'}</b>{pr.nombre ? ' («' + pr.nombre + '»)' : ''}
                 {pr.creada ? ' · creada el ' + pr.creada : ''} · en DRA: {pr.en_dra === false ? 'no está' : (pr.apodo_dra ? '«' + pr.apodo_dra + '»' : 'sin apodo') + (pr.miembro ? ', Miembro' : ', sin el rol Miembro') + (pr.en_dra_desde ? ', desde el ' + pr.en_dra_desde : '')}</p> : null}
               {p.vid ? <p className="db-ped-pr"><a href={'https://youtu.be/' + p.vid} target="_blank" rel="noopener noreferrer">El video ↗</a></p> : null}
             </div>

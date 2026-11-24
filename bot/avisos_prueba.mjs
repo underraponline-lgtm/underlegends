@@ -4455,8 +4455,11 @@ const ok = (cond, que, det) => {
     && A.validarPedido({ tipo: 'cuenta', texto: 'sin perfil' }).error === 'perfil'
     && A.validarPedido({ tipo: 'pais', cc: 'CL' }).cc === 'cl' && A.validarPedido({ tipo: 'pais', cc: 'chile' }).error === 'pais'
     && A.validarPedido({ tipo: 'video', vid: 'abcdefghijk', texto: 'no soy yo' }).vid === 'abcdefghijk'
-    && A.validarPedido({ tipo: 'otro', texto: 'x' }).error === 'tipo',
-  'los pedidos: tipo conocido, perfil para cuenta e identidad, país de dos letras, video de YouTube');
+    && A.validarPedido({ tipo: 'inventado', texto: 'xyz' }).error === 'tipo'
+    && A.validarPedido({ tipo: 'hackeo', texto: 'me hackearon' }).error === 'perfil' && A.validarPedido({ tipo: 'hackeo', k: 'nc', texto: 'me hackearon' }).tipo === 'hackeo'
+    && A.validarPedido({ tipo: 'premio', texto: 'no me llegaron los puntos' }).tipo === 'premio' && A.validarPedido({ tipo: 'otro', texto: 'x' }).error === 'texto'
+    && A.PEDIDO_CICLO.includes('hackeo') && !A.PEDIDO_CICLO.includes('premio'),
+  'los pedidos: tipo conocido, perfil para cuenta, hackeo e identidad, país de dos letras, video de YouTube; los nuevos (23/11) sin perfil');
   // 🤝 los tiers: {sigla: 1|2|3} y nada más
   ok(JSON.stringify(A.ajusteValido('tiers', { FFA: 1, FVS: 2, NUEVO: 3 })) === '{"FFA":1,"FVS":2,"NUEVO":3}'
     && A.ajusteValido('tiers', { FFA: 4 }) === undefined && A.ajusteValido('tiers', { ffa: 1 }) === undefined
