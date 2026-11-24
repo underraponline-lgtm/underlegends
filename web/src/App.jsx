@@ -26,7 +26,7 @@ import { vistaMods } from './mods.js';
 import { FichaHover } from './ficha.jsx';
 import { pedirPrueba, prevElo } from './prueba_elo.js';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
-const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
+const SECC = new Set(['inicio', 'eventos', 'ranking', 'reels', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
@@ -176,6 +176,8 @@ const VisorCarta = pag(() => import('./visor.jsx').then((m) => ({ default: m.Vis
 const Tienda = pag(() => import('./tienda2.jsx').then((m) => ({ default: m.Tienda })));
 // 🎁 Invita y gana (17/11/2026): tu link de referido, el track y quién te invitó. Ver invitar.jsx y referidos.js
 const Invitar = pag(() => import('./invitar.jsx').then((m) => ({ default: m.Invitar })));
+// 🎬 Reels (24/11/2026): los shorts de las batallas, a pantalla completa en el celular. Ver reels.jsx
+const Reels = pag(() => import('./reels.jsx').then((m) => ({ default: m.Reels })));
 // 🖼️ y la miniatura de un link corto, para la foto de bot/og_links.py (og_link.jsx): sin nada alrededor, como la del marco
 const OgLink = pag(() => import('./og_link.jsx').then((m) => ({ default: m.OgLink })));
 const Pase = pag(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
@@ -906,6 +908,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       : pagina === 'ranking' || pagina === 'duelos' ? 'Los rankings'
       : pagina === 'eventos' || pagina === 'avisos' ? 'Los eventos'
       : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda' : pagina === 'invitar' ? 'Invita y gana'
+      : pagina === 'reels' ? 'Reels'
       : pagina === 'publicaciones' ? 'Publicaciones' : pagina === 'guia' ? 'Cómo funciona'
       : pagina === 'cambios' ? 'Changelog'
       : pagina === 'kit' ? 'El kit de tu servidor' : '';
@@ -1044,6 +1047,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
         : pagina === 'llave' && partes[1] ? <Aislada reinicio={reVivo} key={'Llave' + partes.slice(1).join('/')} n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada reinicio={reinicio} key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'invitar' ? <Aislada reinicio={reinicio} key="Invitar" n="Invitar" pagina><Suspense fallback={<Cargando />}><Invitar liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'reels' ? <Aislada reinicio={reinicio} key="Reels" n="Reels" pagina><Suspense fallback={<Cargando />}><Reels liga={liga} inicio={partes[1] || ''} /></Suspense></Aislada>
         : pagina === 'pase' ? <Aislada reinicio={reinicio} key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] && crewAj !== null ? <Aislada reinicio={reinicio} key={'CrewAj' + partes[1]} n="CrewAj" pagina><Suspense fallback={<Cargando />}><AjustesCrew liga={liga} id={crewId} sec={crewAj} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] ? <Aislada reinicio={reinicio} key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>

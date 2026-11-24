@@ -685,12 +685,13 @@ function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x, boton }) {
 // tu rango: `NIVEL_SECC`. Cada vez que se suma algo, un globo lo dice y lleva «NUEVO» hasta que lo abres (dos semanas como
 // mucho). En tu navegador la barra nunca se achica (`lg:barra-max`), aunque una temporada nueva te baje el nivel. Todo
 // sigue en el ☰: crecer es lo que está a mano, no lo que existe
-const TIRA = [['inicio', 'Inicio', '#/'], ['ranking', 'Ranking', '#/ranking'], null, ['pase', 'Pase', '#/pase'],
+// 🎬 Reels va pegado a la E, del lado del Ranking (24/11/2026)
+const TIRA = [['inicio', 'Inicio', '#/'], ['ranking', 'Ranking', '#/ranking'], null, ['reels', 'Reels', '#/reels'], ['pase', 'Pase', '#/pase'],
   ['publicaciones', 'Publicaciones', '#/publicaciones'], ['competencias', 'Competencias', '#/competencias'], ['ligas', 'Ligas', '#/ligas'],
   ['crews', 'Crews', '#/crews'], ['tarjetas', 'Tarjetas', '#/tarjetas'], ['salon', 'Salón', '#/salon'], ['socios', 'Socios', '#/socios'],
   ['guia', 'Guía', '#/guia']];
-const NOVATO = [TIRA[0], TIRA[1], null, TIRA[11]];
-export const NIVEL_SECC = { publicaciones: 1, guia: 1, competencias: 2, ligas: 2, crews: 3, tarjetas: 3, salon: 5, socios: 5 };
+const NOVATO = [TIRA[0], TIRA[1], null, TIRA.find((x) => x && x[0] === 'guia')];
+export const NIVEL_SECC = { reels: 1, publicaciones: 1, guia: 1, competencias: 2, ligas: 2, crews: 3, tarjetas: 3, salon: 5, socios: 5 };
 const NOMBRE_SECC = Object.fromEntries(TIRA.filter(Boolean).map(([k, n]) => [k, n]));
 const ls = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -988,7 +989,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
 // nombre y para qué sirve. Arriba de la imagen, lo del momento: lo nuevo y lo que se juega, en magenta. Ranking y Pase sólo
 // donde no hay barra (de 900 px para arriba, `.en-barra`). El panel es oscuro en los dos temas, como la campana y tu menú
 const TEJAS = [
-  ['La temporada', [['#/publicaciones', 'Publicaciones'], ['#/eventos', 'Eventos'], ['#/competencias', 'Competencias'], ['#/ligas', 'Ligas'],
+  ['La temporada', [['#/reels', 'Reels'], ['#/publicaciones', 'Publicaciones'], ['#/eventos', 'Eventos'], ['#/competencias', 'Competencias'], ['#/ligas', 'Ligas'],
     ['#/ranking', 'Ranking', 1], ['#/pase', 'Pase rapero', 1]]],
   ['Comunidad', [['#/crews', 'Crews'], ['#/tarjetas', 'Tarjetas'], ['#/salon', 'Salón de la fama'], ['#/socios', 'Socios']]],
   ['Lo tuyo', [['#/tienda', 'Tienda'], ['#/invitar', 'Invita y gana'], ['#/guia', 'Guía']]],

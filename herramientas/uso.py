@@ -40,7 +40,7 @@ TOPE_FILAS = 5_000_000
 ANALITICA_DESDE = dt.date(2026, 10, 14)
 #: cada direccion, a que pagina pertenece
 GRUPOS = [(r'^/freestyle-rap/?$', 'Inicio'), (r'^/freestyle-rap/ranking', 'Ranking'), (r'^/freestyle-rap/r/', 'Perfiles'),
-          (r'^/freestyle-rap/competencias', 'Competencias'), (r'^/freestyle-rap/pase', 'Pase'), (r'^/freestyle-rap/ligas?', 'Ligas'),
+          (r'^/freestyle-rap/competencias', 'Competencias'), (r'^/freestyle-rap/reels', 'Reels'), (r'^/freestyle-rap/pase', 'Pase'), (r'^/freestyle-rap/ligas?', 'Ligas'),
           (r'^/freestyle-rap/eventos', 'Eventos'), (r'^/freestyle-rap/llave', 'Llaves'), (r'^/freestyle-rap/inventario', 'Inventario'),
           (r'^/freestyle-rap/sv/', 'Servidores'), (r'^/freestyle-rap/crews?', 'Crews'), (r'^/freestyle-rap/tarjetas', 'Tarjetas'),
           (r'^/freestyle-rap/publicaciones', 'Publicaciones'), (r'^/freestyle-rap/tienda', 'Tienda'), (r'^/freestyle-rap/salon', 'Salon'),

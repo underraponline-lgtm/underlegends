@@ -582,11 +582,11 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
             g = next((x for x in gente if x['k'] == k), None)
             if not g:
                 continue
-            for vid, canal, otros in xs:
+            for vid, canal, otros, *tit in xs:
                 if canal not in ci:
                     ci[canal] = len(cs)
                     cs.append(canales.get(canal, canal))
-                g.setdefault('vs', []).append([vid, ci[canal], otros])
+                g.setdefault('vs', []).append([vid, ci[canal], otros] + (tit[:1] if tit and tit[0] else []))
     except Exception as e:                               # noqa: BLE001 — sin shorts, el ranking sale igual
         print('⚠️ los shorts no se ataron: %s' % str(e)[:100])
     d0, d1 = temporada.FECHAS[temporada.ACTUAL]

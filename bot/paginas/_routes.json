@@ -52,6 +52,8 @@
     "/freestyle-rap/invitar/*",
     "/freestyle-rap/inventario",
     "/freestyle-rap/inventario/*",
+    "/freestyle-rap/reels",
+    "/freestyle-rap/reels/*",
     "/cuenta",
     "/cambios",
     "/cambios/*",

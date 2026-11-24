@@ -497,6 +497,30 @@ def _invitar():
     return html, css
 
 
+def _reels():
+    # 🎬 Reels (24/11/2026): tres pantallas paradas, la del medio con las líneas a la izquierda y los íconos a la derecha
+    lado = '<div class="rl-p lado"><u></u></div>'
+    lineas = ''.join('<i%s></i>' % (' class="on"' if j == 1 else '') for j in range(5))
+    html = '''<div class="rl">%s<div class="rl-p medio"><u></u><div class="rl-l">%s</div>
+<div class="rl-r"><b></b><b></b><b></b></div><div class="rl-pl"></div></div>%s</div>''' % (lado, lineas, lado)
+    css = '''
+.rl{display:flex;align-items:center;gap:22px}
+.rl-p{position:relative;border-radius:10px;background:#16161C;border:2px solid rgba(237,237,242,.16);overflow:hidden}
+.rl-p u{position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(237,237,242,.05) 0 10px,transparent 10px 20px)}
+.rl-p.lado{width:150px;height:266px;opacity:.55}
+.rl-p.medio{width:230px;height:408px;border-color:#EDEDF2;box-shadow:0 24px 50px rgba(0,0,0,.6)}
+.rl-l{position:absolute;left:10px;top:60px;display:grid;gap:8px}
+.rl-l i{display:block;width:5px;height:44px;border-radius:3px;background:rgba(237,237,242,.32)}
+.rl-l i.on{background:#EDEDF2}
+.rl-r{position:absolute;right:12px;bottom:70px;display:grid;gap:18px}
+.rl-r b{display:block;width:30px;height:30px;border-radius:6px;border:3px solid #EDEDF2}
+.rl-r b:first-child{border-color:#E41373;background:#E41373}
+.rl-pl{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:0;height:0;border-left:44px solid #EDEDF2;
+  border-top:27px solid transparent;border-bottom:27px solid transparent}
+'''
+    return html, css
+
+
 def _pais(cc):
     from comun import banderas
     # la del repo (1280 px) si está; si no, la grande del CDN: `banderas.src()` cae en w80, que a 420 px se ve borrosa
@@ -542,6 +566,7 @@ def html(pagina):
 SOLO_MINI = {
     'competencias': ('', '', '', '', _competencias),
     'invitar': ('', '', '', '', _invitar),
+    'reels': ('', '', '', '', _reels),
 }
 SALIDA_MINI = os.path.join(BASE, 'bot', 'paginas', 'og', 'mini')
 MINI_W, MINI_H, MINI_ESCALA = 480, 270, .6

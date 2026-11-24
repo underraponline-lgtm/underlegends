@@ -96,7 +96,7 @@ PAGINAS_MAPA = ('/freestyle-rap/', '/freestyle-rap/eventos', '/freestyle-rap/tar
                 '/freestyle-rap/ligas/superliga', '/freestyle-rap/ligas/clausura', '/freestyle-rap/pase',
                 '/freestyle-rap/tienda', '/freestyle-rap/publicaciones', '/freestyle-rap/socios',
                 '/freestyle-rap/socios/sumar', '/freestyle-rap/guia', '/freestyle-rap/salon', '/freestyle-rap/crews',
-                '/freestyle-rap/competencias', '/freestyle-rap/invitar', '/cambios')
+                '/freestyle-rap/competencias', '/freestyle-rap/invitar', '/freestyle-rap/reels', '/cambios')
 
 
 def _rankings():

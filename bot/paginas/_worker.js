@@ -724,8 +724,10 @@ const PAGINAS = {
   competencias: ['Competencias', 'La Copa de 32, la Liga de 10 y la Rapid: compite cada semana.'],
   invitar: ['Invita y gana', 'Tu link de invitación: quien entra con él recibe 500 Puntos de Tienda.'],
   inventario: ['Inventario', 'Tus marcos, TAGs, fondos y estilos: arma tu carta.'],
+  // 🎬 (24/11/2026) los shorts de las batallas: sin imagen propia todavía, va og.png
+  reels: ['Reels', 'Los mejores momentos de las batallas de freestyle, en vertical, con quién es quién.'],
 };
-const SIN_PNG = new Set(['competencias', 'invitar', 'inventario']);
+const SIN_PNG = new Set(['competencias', 'invitar', 'inventario', 'reels']);
 // los nombres viejos de algunas páginas, que siguen abriendo lo mismo: la misma vista previa
 const ALIAS = { avisos: 'eventos', mundo: 'socios', duelos: 'ranking' };
 // `/cuenta` y `/cambios` son de toda la marca y viven en la raíz (`EN_RAIZ` de web/montar.py); el resto, en /freestyle-rap

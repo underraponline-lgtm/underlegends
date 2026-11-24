@@ -135,9 +135,17 @@ def guardados():
         return []
 
 
+def titulo_web(titulo):
+    """el título para la página de Reels (24/11/2026): sin hashtags, sin emojis y sin espacios de más, hasta 100 letras"""
+    t = re.sub(r'#\S+', ' ', str(titulo or ''))
+    t = re.sub(r'[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]', '', t)
+    t = re.sub(r'\s+', ' ', t).strip(' -|·')
+    return t if len(t) <= 100 else t[:99].rstrip() + '…'
+
+
 def atar(shorts, gente):
-    """`{clave: [[id, canal, [otros que nombra]]…]}`: cada short, a quienes nombra (ver arriba). `gente`: las filas de la
-    tabla (`{k, n, esc}`)"""
+    """`{clave: [[id, canal, [otros que nombra], título]…]}`: cada short, a quienes nombra (ver arriba). `gente`: las filas
+    de la tabla (`{k, n, esc}`). El título va limpio (`titulo_web`), para la página de Reels"""
     por_nombre = {}
     for g in gente:
         n = norm(g.get('n'))
@@ -170,7 +178,7 @@ def atar(shorts, gente):
         for k in ks:
             xs = out.setdefault(k, [])
             if len(xs) < POR_PERSONA:
-                xs.append([vid, canal, [x for x in ks if x != k]])
+                xs.append([vid, canal, [x for x in ks if x != k], titulo_web(titulo)])
     return out
 
 
@@ -200,9 +208,10 @@ def _self_check():
           ['bbbbbbbbbbb', 'MECHA GAZIR FAT TONY Y TONY EN UNA NOCHE', 'redbull'],
           ['ccccccccccc', 'Stewart😎 #gazir #freestyle', 'cmf']]
     A = atar(sh, gente)
-    chk(A.get('mecha') == [['CJH793pyv7o', 'redbull', ['gazir']]] and A.get('gazir') == [['CJH793pyv7o', 'redbull', ['mecha']]],
-        'un short que nombra a dos va a los dos, cada uno con el otro')
-    chk(A.get('fattony') == [['5IgaVbXuQ7U', 'redbull', []]] and 'tony' not in A,
+    chk(A.get('mecha') == [['CJH793pyv7o', 'redbull', ['gazir'], 'MINUTAZO DE MECHA CONTRA GAZIR']]
+        and A.get('gazir') == [['CJH793pyv7o', 'redbull', ['mecha'], 'MINUTAZO DE MECHA CONTRA GAZIR']],
+        'un short que nombra a dos va a los dos, cada uno con el otro, y con su título sin emojis ni hashtags')
+    chk(A.get('fattony') == [['5IgaVbXuQ7U', 'redbull', [], 'FAT TONY ES BICAMPEÓN DE RED BULL']] and 'tony' not in A,
         '«FAT TONY» es Fat Tony y no también Tony')
     chk('once' not in A and 'abel' not in A and 'abel-ec' not in A and 'l' not in A,
         'en la duda, a nadie: una palabra común, un nombre con dos dueños o una sola letra')
