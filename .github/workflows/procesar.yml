@@ -39,12 +39,18 @@ jobs:
             ~/.cache/huggingface
             ~/.cache/torch
           key: m-modelos-v1
+      # 🌐 el Chromium guardado, la misma clave que el ciclo: piezas_auto.py dibuja las piezas del VS con Playwright
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
       - name: preparar la máquina
         run: |
           sudo apt-get update -qq > /dev/null 2>&1
           sudo apt-get install -y -qq ffmpeg > /dev/null 2>&1
           ffmpeg -version > /dev/null && echo "ffmpeg listo"
           pip install -q -r m/requirements.txt > /dev/null 2>&1 && echo "librerías listas"
+          python -c "import sys; sys.path.insert(0, 'bot'); import navegador; navegador.hace_falta()" > /dev/null 2>&1 && echo "navegador listo"
       - name: procesar
         env:
           DESDE: ${{ inputs.desde }}
