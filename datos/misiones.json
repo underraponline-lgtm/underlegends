@@ -7180,6 +7180,13 @@
      0,
      0
     ],
+    "Dominick el disonantico🇵🇪": [
+     1,
+     0,
+     8,
+     0,
+     0
+    ],
     "Drexx": [
      4,
      1,
@@ -7580,7 +7587,7 @@
      0
     ],
     "Miniboy": [
-     4,
+     5,
      0,
      8,
      0,
@@ -11327,6 +11334,16 @@
       "CH"
      ]
     },
+    "Deuxs": {
+     "d": [
+      1,
+      5
+     ],
+     "s": [
+      "FFA",
+      "URBF"
+     ]
+    },
     "Dios": {
      "d": [
       3,
@@ -11611,6 +11628,16 @@
       "UFLUC"
      ]
     },
+    "Mc arepa": {
+     "d": [
+      3,
+      4
+     ],
+     "s": [
+      "FDS",
+      "FFA"
+     ]
+    },
     "Miniboy": {
      "d": [
       1,
@@ -11666,15 +11693,6 @@
      "s": [
       "FFA",
       "CH"
-     ]
-    },
-    "ONZASS": {
-     "d": [
-      1
-     ],
-     "s": [
-      "CH",
-      "FFA"
      ]
     },
     "Oasis": {
@@ -12340,7 +12358,7 @@
      0
     ],
     "DarnBless": [
-     "ONZASS",
+     "Deuxs",
      "escena",
      null,
      0
@@ -12747,7 +12765,7 @@
      0
     ],
     "JEIXDER": [
-     "DarnBless",
+     "Deuxs",
      "escena",
      null,
      0
@@ -13616,7 +13634,7 @@
      0
     ],
     "Scot": [
-     "Raizer",
+     "Mc arepa",
      "escena",
      null,
      0
@@ -13837,7 +13855,7 @@
      0
     ],
     "Trot": [
-     "Majiztral",
+     "Lvel",
      "escena",
      null,
      0

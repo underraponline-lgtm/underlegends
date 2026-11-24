@@ -33636,6 +33636,16 @@
     "Deuxs"
    ],
    [
+    "Mito",
+    "Miniboy",
+    "Mito"
+   ],
+   [
+    "Mito",
+    "Dominick el disonantico🇵🇪",
+    "Mito"
+   ],
+   [
     "Makmah",
     "Liberia",
     "Makmah"
@@ -33660,11 +33670,11 @@
    "OEP": 2
   },
   "fecha": "03/11",
-  "firma": "bfb2c5afa4fcedd4",
+  "firma": "c5df9a29d9c2e994",
   "msg": "1567309579967144037",
   "nombre": "Rayos y Centellas",
   "num": 564,
-  "participantes": 7,
+  "participantes": 9,
   "sello": {
    "Makmah": "02863b4c3758:ccd09f762e04"
   },
@@ -33674,37 +33684,47 @@
    [
     "Makmah",
     "Campeón",
+    7500
+   ],
+   [
+    "Mito",
+    "Subcampeón",
     5000
    ],
    [
     "Liberia",
     "Semifinal",
-    2625
+    3500
    ],
    [
     "Deuxs",
     "Semifinal",
-    2625
-   ],
-   [
-    "Mito",
-    "Subcampeón",
-    1875
+    3500
    ],
    [
     "OEP",
     "Cuartos",
-    1250
+    2000
    ],
    [
     "Agus",
     "Cuartos",
-    1250
+    2000
    ],
    [
     "Lvel 🇻🇪",
     "Cuartos",
-    1250
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick el disonantico🇵🇪",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

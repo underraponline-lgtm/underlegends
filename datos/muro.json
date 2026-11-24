@@ -125,7 +125,7 @@
 ]
 },
 "mito": {
-"rg": "C",
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -151,7 +151,7 @@
 "temporada"
 ]
 },
-"provenza": {
+"miniboy": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -160,7 +160,7 @@
 "temporada"
 ]
 },
-"miniboy": {
+"provenza": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -171,15 +171,6 @@
 },
 "yinn": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"og": {
-"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -207,6 +198,15 @@
 "tam": {
 "rg": "B",
 "c": []
+},
+"og": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "nc": {
 "rg": "D",
@@ -265,15 +265,6 @@
 "temporada"
 ]
 },
-"sinlimites": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -290,6 +281,15 @@
 "criszj": {
 "rg": "C",
 "c": []
+},
+"sinlimites": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "cronox": {
 "rg": "D",
@@ -769,6 +769,15 @@
 "rg": "D",
 "c": []
 },
+"deuxs": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "ariaxer": {
 "rg": "E",
 "c": [
@@ -803,15 +812,6 @@
 "presagio": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"deuxs": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -1241,10 +1241,6 @@
 "temporada"
 ]
 },
-"emilioalva": {
-"rg": "",
-"c": []
-},
 "mrkude": {
 "rg": "",
 "c": []
@@ -1354,7 +1350,7 @@
 "temporada"
 ]
 },
-"sintext": {
+"emilioalva": {
 "rg": "",
 "c": []
 },
@@ -1383,6 +1379,10 @@
 "servidor",
 "temporada"
 ]
+},
+"sintext": {
+"rg": "",
+"c": []
 },
 "matuk": {
 "rg": "",
@@ -2940,15 +2940,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-15T05:27:44Z",
-"quien": [
-"MCO"
-],
-"rg": "C",
-"primero": false
-},
 {
 "tipo": "rango",
 "t": "2026-10-15T05:39:01Z",
@@ -6356,6 +6347,15 @@
 "Agente sombra"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-24T22:31:51Z",
+"quien": [
+"Mito"
+],
+"rg": "B",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -8721,7 +8721,6 @@
 ]
 },
 "top10_t": {
-"competitivo:walker": "2026-11-17T22:09:56Z",
 "competitivo:over": "2026-11-17T23:32:17Z",
 "temporada:vandu": "2026-11-18T00:39:14Z",
 "temporada:colesito": "2026-11-20T01:32:55Z",

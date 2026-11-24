@@ -4153,6 +4153,27 @@
      385
     ]
    }
+  },
+  {
+   "id": "23ffc9bcff",
+   "tipo": "Nombre desconocido",
+   "sec": "Rayos y Centellas · URBF · 03/11 · #564",
+   "que": "¿Quién es «Dominick el disonantico🇵🇪»?",
+   "r": "Es Dominick (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @equisde_xd23 (en Discord: «#62 | 𝙳𝙾𝙼𝙸𝙽𝙸𝙲𝙺») · en la Lista: Dominick se anotó como «Dominick el disonantico» para ese evento, no es staff de URBF y esa noche no jugó con su nombre",
+   "t": 1795559535088,
+   "filas": [
+    1600
+   ],
+   "variantes": [
+    "Dominick el disonantico🇵🇪"
+   ],
+   "escribio": {
+    "quien": "Rayos y Centellas · URBF · 03/11 · Dominick el disonantico🇵🇪"
+   }
   }
  ],
  "deshechas": []

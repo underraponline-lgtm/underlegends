@@ -41777,14 +41777,14 @@
  },
  "564": {
   "dia": "2026-11-03",
-  "escala": "4-7",
+  "escala": "8-15",
   "fecha": "03/11",
   "links": [
-   "https://discord.com/channels/1467763447117778989/1540223675146707045/1567300049640235149"
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1567298297012420751"
   ],
   "n": 564,
   "nombre": "Rayos y Centellas",
-  "participantes": 7,
+  "participantes": 9,
   "rondas": [
    {
     "b": [
@@ -41811,6 +41811,15 @@
       ],
       "Deuxs",
       ""
+     ],
+     [
+      [
+       "Mito",
+       "Miniboy",
+       "Dominick el disonantico🇵🇪"
+      ],
+      "Mito",
+      "triple (3 bandas)"
      ]
     ],
     "r": "Cuartos"
@@ -41831,7 +41840,7 @@
        "Deuxs"
       ],
       "Mito",
-      "Walk-in 1: Lizeninn 🇦🇷"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -41855,41 +41864,51 @@
    [
     "Makmah",
     "Campeón",
+    7500
+   ],
+   [
+    "Mito",
+    "Subcampeón",
     5000
    ],
    [
     "Deuxs",
     "Semifinal",
-    2625
+    3500
    ],
    [
     "Liberia",
     "Semifinal",
-    2625
-   ],
-   [
-    "Mito",
-    "Subcampeón",
-    1875
+    3500
    ],
    [
     "Agus",
     "Cuartos",
-    1250
+    2000
+   ],
+   [
+    "Dominick el disonantico🇵🇪",
+    "Cuartos",
+    2000
    ],
    [
     "Lvel 🇻🇪",
     "Cuartos",
-    1250
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
    ],
    [
     "OEP",
     "Cuartos",
-    1250
+    2000
    ]
   ],
   "ver": {
-   "min": 36,
+   "min": 44,
    "v": 1
   }
  },
