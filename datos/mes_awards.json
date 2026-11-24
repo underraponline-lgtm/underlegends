@@ -10216,7 +10216,8 @@
       "dj": [
        "Kravitz",
        "la monalisa",
-       "zaik0009"
+       "zaik0009",
+       "L1z3nN1n"
       ]
      },
      "orgs": [
@@ -10228,7 +10229,8 @@
      "organizador": "KRAVITZ",
      "cuentas": {
       "Kravitz": "1345962362615894027",
-      "la monalisa": "1487658663148785734"
+      "la monalisa": "1487658663148785734",
+      "L1z3nN1n": "1493416945037611140"
      }
     },
     "1570253506072420355": {
@@ -10691,7 +10693,11 @@
      "nombre": "COMPE PANDILLAS",
      "mo": "2026-11-17T00:15:06Z",
      "staff": {
+      "jurado": [
+       "L1z3nN1n"
+      ],
       "host": [
+       "L1z3nN1n",
        "Y",
        "Drexx"
       ],
@@ -10699,9 +10705,15 @@
        "Lízeninn"
       ]
      },
-     "orgs": [],
+     "orgs": [
+      {
+       "n": "L1z3nN1n",
+       "id": "1493416945037611140"
+      }
+     ],
      "organizador": "",
      "cuentas": {
+      "L1z3nN1n": "1493416945037611140",
       "Drexx": "1150099153238630410",
       "Lízeninn": "1474585358292222015"
      }

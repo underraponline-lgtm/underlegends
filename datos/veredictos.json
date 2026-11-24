@@ -10874,6 +10874,39 @@
    "b": "Inku 🇦🇷",
    "ganador": "Inku 🇦🇷",
    "votos": "1–0"
+  },
+  "1574634672787292332": {
+   "id": "1574634672787292332",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795492561290,
+   "a": "Thaniel 🇻🇪",
+   "b": "Araya🇦🇸",
+   "ganador": "Araya🇦🇸",
+   "votos": "1–0"
+  },
+  "1574638255763234958": {
+   "id": "1574638255763234958",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795493415538,
+   "a": "Romeo🇲🇽",
+   "b": "Yo mc 🇨🇱",
+   "ganador": "Yo mc 🇨🇱",
+   "votos": "1–0"
+  },
+  "1574639843915464776": {
+   "id": "1574639843915464776",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795493794183,
+   "a": "tomyhilfiger1312🇾🇹",
+   "b": "gocho🇨🇱",
+   "ganador": "gocho🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14629,6 +14662,47 @@
       "ARTEZZY"
      ],
      "SIN LIMITES",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1574638255763234958": {
+   "id": "1574638255763234958",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795493415538,
+   "ed": 1795494009094,
+   "texto": "`[ CUARTOS ]`\n⌞Romeo🇲🇽⌝ 🆚 ⌞Yo mc 🇨🇱⌝\n⌞Agustín la reliquia 🇺🇾⌝ 🆚 ⌞gocho 🇨🇴⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞gocho 🇨🇴⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Romeo🇲🇽",
+      "Yo mc 🇨🇱"
+     ],
+     "Yo mc 🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Agustín la reliquia 🇺🇾",
+      "gocho 🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "tomyhilfiger1312🇾🇹",
+      "gocho 🇨🇴"
+     ],
+     "gocho 🇨🇴",
      "veredicto",
      []
     ]

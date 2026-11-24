@@ -182,10 +182,13 @@
    "id": "VENECOMAFIA",
    "nombre": "VENECOMAFIA",
    "sigla": "VEN",
-   "entrada": "abierta",
+   "entrada": "pedido",
    "oficial": false,
    "creada": 1795462104399,
-   "reps": [],
+   "reps": [
+    "makmah",
+    "mcarepa"
+   ],
    "gente": [
     [
      "makmah",

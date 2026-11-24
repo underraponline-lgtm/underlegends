@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T03:55:11+00:00",
+ "cuando": "2026-11-24T04:25:33+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -948,13 +948,15 @@
     "dj": [
      "Kravitz",
      "la monalisa",
-     "zaik0009"
+     "zaik0009",
+     "L1z3nN1n"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
     "Kravitz": "1345962362615894027",
-    "la monalisa": "1487658663148785734"
+    "la monalisa": "1487658663148785734",
+    "L1z3nN1n": "1493416945037611140"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -4504,7 +4506,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "",
-   "orgs": [],
+   "orgs": [
+    {
+     "n": "L1z3nN1n",
+     "id": "1493416945037611140"
+    }
+   ],
    "autor_h": "62528949becb0707",
    "cupos_texto": "INDEFINIDOS",
    "inscriptos": null,
@@ -4515,7 +4522,11 @@
    "fecha": "H O Y",
    "premios": "RESPETO Y PUNTOS RANKING",
    "staff": {
+    "jurado": [
+     "L1z3nN1n"
+    ],
     "host": [
+     "L1z3nN1n",
      "Y",
      "Drexx"
     ],
@@ -4523,8 +4534,9 @@
      "Lízeninn"
     ]
    },
-   "autor": "🪔",
+   "autor": "L1z3nN1n",
    "staff_cuentas": {
+    "L1z3nN1n": "1493416945037611140",
     "Drexx": "1150099153238630410",
     "Lízeninn": "1474585358292222015"
    },
