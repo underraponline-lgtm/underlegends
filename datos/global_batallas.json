@@ -14087,33 +14087,6 @@
   },
   {
    "a": {
-    "id": "yt:apolo",
-    "nombre": "APOLO",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:skyrc",
-    "nombre": "SKY RC",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-11-22",
-    "id": "yt-untalrap-fecha-sera-que-me-extranaste-oye-untalrap",
-    "nombre": "FECHA ¿ SERÁ QUE ME EXTRAÑASTE OYE? · UNTALRAP",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:UEqmF0MJm6s",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=UEqmF0MJm6s",
-   "votos": null
-  },
-  {
-   "a": {
     "id": "yt:drleo",
     "nombre": "DR. LEO",
     "pais": "pe"
@@ -80507,8 +80480,6 @@
   },
   "youtube": {
    "av": [
-    "Hypnotic Palace: no pude leerlo (RuntimeError: la pestaña de videos no trajo nada (HTTP 200))",
-    "Parke Viejo Freestyle: no pude leerlo (RuntimeError: la pestaña de videos no trajo nada (HTTP 200))",
     "mismo nombre con dos países, van como dos personas: abel, ander, ayala, draco, erreka, horus, lazaro, nano, poeta, reyes",
     "Red Bull Batalla: 53 batalla(s) en 5 evento(s), 49 con ganador · saltadas: fuera de la ventana 39, no son batallas (clips, compilados, shorts) 14, batallón/muerte súbita/exhibición 10",
     "Red Bull Batalla: fecha aproximada (sólo la de la pestaña, sin la exacta): Red Bull Batalla 2026 · Regional Coquimbo (~2026-11-07, de «hace 2 sem.»); Red Bull Batalla 2026 · Regional Concepción (~2026-10-24, de «hace 4 semanas»); Red Bull Batalla Colombia 2026 (~2026-10-09, de «hace 1 mes»); Red Bull Batalla Argentina 2026 (~2026-10-09, de «hace 1 mes»)",
@@ -80521,6 +80492,7 @@
     "DEM Argentina: fecha aproximada (sólo la de la pestaña, sin la exacta): DEM SANTA CRUZ 2026 (~2026-10-09, de «hace 1 m»)",
     "Liga Inmortal: 11 batalla(s) en 2 evento(s), 9 con ganador · saltadas: fuera de la ventana 62, de equipos 19, de a tres o más 17, batallón/muerte súbita/exhibición 11",
     "Liga Inmortal: fecha aproximada (sólo la de la pestaña, sin la exacta): Liga Inmortal Cupo a esurbanofree (~2026-11-10, de «hace 13 días»); Liga Inmortal X Galpon Free (~2026-10-09, de «hace 1 mes»)",
+    "Hypnotic Palace: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 30",
     "Raptablo: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 60",
     "Funko Battles: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 30",
     "Bienvenido al Underground: 15 batalla(s) en 1 evento(s), 14 con ganador · saltadas: fuera de la ventana 15",
@@ -80541,14 +80513,15 @@
     "Iraki Battles: fecha aproximada (sólo la de la pestaña, sin la exacta): IRAKI BATTLES PLAZA HOSPITAL (~2026-11-07, de «hace 2 sem.»); IRAKIDS (~2026-11-07, de «hace 2 sem.»)",
     "Kinta Dimensión: 11 batalla(s) en 1 evento(s), 9 con ganador · saltadas: fuera de la ventana 44, de equipos 24, batallón/muerte súbita/exhibición 9, no son batallas (clips, compilados, shorts) 1",
     "Kinta Dimensión: fecha aproximada (sólo la de la pestaña, sin la exacta): KD 2026 · Fecha VIII · 1vs1 (~2026-10-09, de «hace 1 m»)",
+    "Parke Viejo Freestyle: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 74, de equipos 15, de a tres o más 1",
     "LZ (Límite Zero): 8 batalla(s) en 2 evento(s), 6 con ganador · saltadas: fuera de la ventana 69, de a tres o más 11, no son batallas (clips, compilados, shorts) 1, batallón/muerte súbita/exhibición 1",
     "LZ (Límite Zero): fecha aproximada (sólo la de la pestaña, sin la exacta): LZ DESPEDIDA DE TYLER (ft. GINO, MOTO, ZAPRO, LUISITO PC Y MÁS) (~2026-10-09, de «hace 1 m»)",
-    "UNT al Rap: 86 batalla(s) en 7 evento(s), 74 con ganador · saltadas: fuera de la ventana 100, de equipos 26, sin ronda 21, de a tres o más 7",
+    "UNT al Rap: 85 batalla(s) en 7 evento(s), 73 con ganador · saltadas: fuera de la ventana 100, de equipos 27, sin ronda 21, de a tres o más 7",
     "UNT al Rap: fecha aproximada (sólo la de la pestaña, sin la exacta): FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP (~2026-11-14, de «hace 9 días»); FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP (~2026-11-07, de «hace 2 semanas»); FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP (~2026-10-31, de «hace 3 semanas»); FECHA TOMA TU LECHE EN TARRO · UNTALRAP (~2026-10-09, de «hace 1 mes»); FECHA PONTE LA CASACA · UNTALRAP (~2026-10-09, de «hace 1 mes»); FECHA RELÁMPAGO · UNTALRAP (~2026-10-09, de «hace 1 mes»)",
     "Línea 404: 11 batalla(s) en 1 evento(s), 8 con ganador · saltadas: fuera de la ventana 40, de a tres o más 3, batallón/muerte súbita/exhibición 3, no son batallas (clips, compilados, shorts) 2, sin ronda 1",
     "La Villurca Freestyle: 16 batalla(s) en 1 evento(s), 12 con ganador · saltadas: de a tres o más 15, fuera de la ventana 15"
    ],
-   "n": 877,
+   "n": 876,
    "ok": true
   }
  },
@@ -81592,5 +81565,5 @@
   "liga:zetryko": 1126,
   "liga:zignos": 1019
  },
- "t": "2026-11-24T11:29:21-05:00"
+ "t": "2026-11-24T12:09:01-05:00"
 }
