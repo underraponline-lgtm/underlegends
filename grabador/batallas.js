@@ -190,7 +190,9 @@ export function ubicarTodas(llaves, habla, durS) {
     for (const { R, b, lados, ids, u } of deLlave) {
       if (!u) continue;
       out.push({ llave: L.id, evento: L.nombre || '', r: R.r, gano: b.gano || '', desde: u.desde, hasta: u.hasta, ids,
-        lados, nombres: (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + ')) });
+        lados, nombres: (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + ')),
+        // 👥 el nombre de cada uno por separado: en un 2vs2 el short tiene que saber CUÁL de la pareja rapea
+        personas: (b.lados || []).map((l) => (l || []).filter((y) => y && y.id).map((y) => ({ n: y.n || '', id: String(y.id) }))) });
     }
   }
   out.sort((a, b) => a.desde - b.desde);
@@ -282,11 +284,22 @@ export function guion(b, habla) {
     const u = publico[publico.length - 1];
     if (u && t - u.t <= REACCION_JUNTAR_S) u.quien.add(id); else publico.push({ t, quien: new Set([id]) });
   }
+  // 👥 en un equipo, cada uno por separado: su voz, y en cada turno quién de la pareja habló más (el que brilla en el short)
+  const vozDe = (id) => unir(recortar(habla.get(id), desde, hasta), 0.3).map(([a, z]) => [a, z]);
+  const personas = lados.map((ids, k) => ids.map((id) => ({
+    id, n: (((b.personas || [])[k] || []).find((p) => p.id === id) || {}).n || '', voz: vozDe(id) })));
+  const cubre = (tr, a, z) => tr.reduce((s, [x, y]) => s + Math.max(0, Math.min(y, z) - Math.max(x, a)), 0);
   return {
-    v: 1, dur: decima(hasta - desde),
+    v: 2, dur: decima(hasta - desde),
     lados: lados.map((ids, k) => ({ n: (b.nombres || [])[k] || '', ids })),
+    personas: personas.map((ps) => ps.map((p) => ({ id: p.id, n: p.n, voz: p.voz.map(([a, z]) => [decima(a), decima(z)]) }))),
     voz: voz.map((tr) => tr.map(([a, z]) => [decima(a), decima(z)])),
-    turnos: turnos.map((t) => ({ lado: t.lado, i: decima(t.i), f: decima(t.f) })),
+    turnos: turnos.map((t) => {
+      const ps = personas[t.lado] || [];
+      let quien = 0, mejor = -1;
+      ps.forEach((p, j) => { const c = cubre(p.voz, t.i, t.f); if (c > mejor) { mejor = c; quien = j; } });
+      return { lado: t.lado, quien, i: decima(t.i), f: decima(t.f) };
+    }),
     publico: publico.map((p) => ({ t: decima(p.t), n: p.quien.size })),
     otros: otros.sort((x, y) => x[0] - y[0]).map(([a, z]) => [decima(a), decima(z)]),
   };

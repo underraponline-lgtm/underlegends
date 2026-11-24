@@ -544,17 +544,28 @@ class Grabacion {
     let texto = `⚔️ **Las batallas**, en minutos desde que empezó la grabación (aprox.: salen de quién habló cuándo)`
       + ` · ${bs.length} de ${total}` + (sinAudio ? ` · ${sinAudio} sin audio` : '');
     for (const l of bs.map(lineaBatalla)) { if ((texto + '\n' + l).length > 1900) { texto += '\n…'; break; } texto += '\n' + l; }
+    // 🎭 EL GUION DE CADA BATALLA, ADJUNTO (Dlx, 23/11/2026: «haz eso y mejóralo»): quién rapea cuándo —y en un 2vs2, cuál de la
+    // pareja—, el público y el presentador, en segundos desde el principio de SU clip. Lo lee el armador de shorts en GitHub
+    // Actions: sin esto no sabe qué carta hacer brillar ni dónde cambia de rival la letra. Va en el primer mensaje, con la lista
+    const guiones = path.join(this.dir, 'batallas.json');
+    fs.writeFileSync(guiones, JSON.stringify({
+      v: 1, servidor: this.guild?.id || '', inicio: this.inicio.toISOString(),
+      batallas: bs.map((b) => ({ clip: (b.corta || b.sinAudio) ? null : nombreClip(b), r: b.r, llave: b.llave, evento: b.evento,
+        nombres: b.nombres, gano: b.gano, desde: Math.round(b.desde * 10) / 10, hasta: Math.round(b.hasta * 10) / 10, guion: b.guion || null })),
+    }));
     let lote = [], peso = 0, primero = true;
     const mandar = async () => {
       if (!lote.length && !primero) return;
-      await canal.send({ content: primero ? texto : undefined, files: lote.map(({ attachment, name }) => ({ attachment, name })),
-        allowedMentions: { parse: [] } });
+      const files = lote.map(({ attachment, name }) => ({ attachment, name }));
+      if (primero) files.unshift({ attachment: guiones, name: 'batallas.json' });
+      await canal.send({ content: primero ? texto : undefined, files, allowedMentions: { parse: [] } });
       primero = false;
       lote = [];
       peso = 0;
     };
     for (const c of clips) {
-      if (lote.length >= 10 || peso + c.peso > tope) await mandar();
+      // el primer mensaje lleva además el guion: 9 clips, no 10
+      if (lote.length >= (primero ? 9 : 10) || peso + c.peso > tope - (primero ? fs.statSync(guiones).size : 0)) await mandar();
       lote.push(c);
       peso += c.peso;
     }

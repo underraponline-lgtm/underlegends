@@ -423,6 +423,15 @@ console.log('\n⚔️ cada batalla en la grabación\n');
   ok(g3.otros.length === 1 && Math.abs(g3.otros[0][0] - 66) < 0.2 && Math.abs(g3.otros[0][1] - 75) < 0.2,
     'el que habla largo sin pelear es el presentador: no es turno ni reacción');
   ok(B.resumenGuion(g3) === 'turnos Ana 1 · Bea 1 · 2 reacciones del público · presentador 9 s', 'el resumen del log: ' + B.resumenGuion(g3));
+  // 👥 un 2vs2: cada turno dice quién de la pareja rapeó (el short hace brillar a ese, no al equipo entero)
+  const h2v2 = new B.Habla();
+  const habla2v2 = (id, a, b) => { for (let ms = a * 1000; ms < b * 1000; ms += 20) h2v2.agregar(id, ms); };
+  habla2v2('ana', 2000, 2012); habla2v2('cami', 2013, 2025); habla2v2('bea', 2026, 2038); habla2v2('dora', 2039, 2051);
+  const g4 = B.guion({ desde: 1995, hasta: 2055, lados: [['ana', 'bea'], ['cami', 'dora']], nombres: ['Ana + Bea', 'Cami + Dora'],
+    personas: [[{ n: 'Ana', id: 'ana' }, { n: 'Bea', id: 'bea' }], [{ n: 'Cami', id: 'cami' }, { n: 'Dora', id: 'dora' }]] }, h2v2.t);
+  const quien = g4.turnos.map((t) => g4.personas[t.lado][t.quien].n).join(' ');
+  ok(g4.v === 2 && quien === 'Ana Cami Bea Dora' && g4.personas[0][1].voz.length === 1,
+    `2vs2: el turno sabe quién de la pareja rapeó (${quien})`);
   ok(B.mmss(65) === '1:05' && B.mmss(3725) === '1:02:05' && B.nombreClip({ r: 'Cuartos', nombres: ['Ánà 🇦🇷', 'Bea + Ñoño'] })
     === 'cuartos-ana-vs-bea-nono.ogg', 'los minutos y el nombre del archivo, sin tildes ni símbolos');
   // el corte, con ffmpeg de verdad sobre 12 s de audio
