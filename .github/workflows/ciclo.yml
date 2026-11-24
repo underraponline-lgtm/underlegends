@@ -263,7 +263,7 @@ jobs:
           cambio = None
           if ultima:
               for ruta in ('bot/global_ranking.py', 'bot/global_fuente_fms.py', 'bot/global_fuente_fstats.py',
-                           'bot/global_fuente_youtube.py', 'bot/global_fuente_urbanstreet.py', 'bot/global_fuente_liga.py',
+                           'bot/global_fuente_youtube.py', 'bot/global_fuente_shorts.py', 'bot/global_fuente_urbanstreet.py', 'bot/global_fuente_liga.py',
                            'bot/global_fotos.py', 'datos/global_pros.json',
                            'datos/global_canales.json', 'datos/global_semillas.json', 'datos/global_alias.json'):
                   r = subprocess.run(['gh', 'api', 'repos/%s/commits?path=%s&per_page=1' % (os.environ['GH_REPO'], ruta)],

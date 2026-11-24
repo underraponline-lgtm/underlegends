@@ -396,9 +396,10 @@ function T1Gl({ g, X }) {
 // sus batallas… aquí sí lo podemos hacer»). Los cuadrados del perfil de la Liga (`.pf-vid`): la miniatura de YouTube, con
 // quién y dónde, y se abre en el reproductor de la página. Los `/shorts/` van verticales. Salen de `v` de global.json
 // (`[id, evento, rival, ganó, vertical]`, bot/global_ranking.py): sólo el id del video, de las batallas que leímos
-function VideosGl({ X, xs, sujeto }) {
+function VideosGl({ X, xs, sujeto, shorts = [], cs = [] }) {
   const [todos, setTodos] = useState(false);
-  if (!xs.length) return <p className="pv-nada">Todavía no tenemos videos de {sujeto}. Aparecen cuando leemos una batalla suya con su video en YouTube.</p>;
+  const [todosS, setTodosS] = useState(false);
+  if (!xs.length && !shorts.length) return <p className="pv-nada">Todavía no tenemos videos de {sujeto}. Aparecen cuando leemos una batalla suya con su video en YouTube.</p>;
   const ver = todos ? xs : xs.slice(0, VER);
   const fila = (v) => {
     const e = X.ev[v[1]] || [];
@@ -415,11 +416,33 @@ function VideosGl({ X, xs, sujeto }) {
       </li>
     );
   };
+  // 📱 los shorts (24/11/2026, Dlx: «suma una fuente de shorts para los verticales»): de las pestañas «Shorts» de los mismos
+  // canales (bot/global_fuente_shorts.py), los que lo nombran. En fila, verticales, como se ven en el teléfono
+  const verS = todosS ? shorts : shorts.slice(0, 8);
   return (
     <>
-      <p className="pv-nada">De los canales de YouTube de las competencias. Toca uno para verlo acá.</p>
-      <ul className="pf-vid">{ver.map(fila)}</ul>
+      {xs.length ? <p className="pv-nada">De los canales de YouTube de las competencias. Toca uno para verlo acá.</p> : null}
+      {xs.length ? <ul className="pf-vid">{ver.map(fila)}</ul> : null}
       {!todos && xs.length > VER ? <button type="button" className="pv-pie" onClick={() => setTodos(true)}><span>{plural(xs.length, 'video', 'videos')}</span><b>Ver todos</b></button> : null}
+      {shorts.length ? (
+        <>
+          <h3 className="pf-vid-t glpv-sh-t">Shorts</h3>
+          <p className="pv-nada">Los momentos que suben los canales: {plural(shorts.length, 'short', 'shorts')} que lo nombran.</p>
+          <ul className="pf-vid glpv-shorts">{verS.map((s) => {
+            const otros = (s[2] || []).map((k) => X.porK.get(k)).filter(Boolean);
+            return (
+              <li key={s[0]} className="glpv-vert">
+                <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: s[0], tit: cs[s[1]] || 'Short', link: 'https://www.youtube.com/shorts/' + s[0] })}>
+                  <span className="pf-vid-m"><Miniatura vid={s[0]} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
+                  <b>{otros.length ? 'Con ' + otros.map(nombre).join(' y ') : cs[s[1]] || 'Short'}</b>
+                  {otros.length && cs[s[1]] ? <small>{cs[s[1]]}</small> : null}
+                </button>
+              </li>
+            );
+          })}</ul>
+          {!todosS && shorts.length > 8 ? <button type="button" className="pv-pie" onClick={() => setTodosS(true)}><span>{plural(shorts.length, 'short', 'shorts')}</span><b>Ver todos</b></button> : null}
+        </>
+      ) : null}
     </>
   );
 }
@@ -508,7 +531,7 @@ export function PerfilGlobal({ liga, k: k0 }) {
     const el = raiz && raiz.shadowRoot && raiz.shadowRoot.querySelector('.pv-tabs');
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
   };
-  const T = [['podios', 'Sus títulos', h ? h.t.length : 0], ['t1', 'Su T1', g.jb || 0], ['videos', 'Videos', (g.v || []).length]].filter((x) => x[0] !== 'videos' || x[2]);
+  const T = [['podios', 'Sus títulos', h ? h.t.length : 0], ['t1', 'Su T1', g.jb || 0], ['videos', 'Videos', (g.v || []).length + (g.vs || []).length]].filter((x) => x[0] !== 'videos' || x[2]);
   // sin elegir: sus títulos si tiene; si no, su T1
   const tabV = tab || (h && h.t.length ? 'podios' : 't1');
   return (
@@ -533,7 +556,7 @@ export function PerfilGlobal({ liga, k: k0 }) {
                 ))}
               </div>
               {tabV === 'podios' ? <PodiosGl h={h} H={H} comps={comps} fil={fil} setFil={setFil} />
-                : tabV === 'videos' ? <VideosGl X={X} xs={g.v || []} sujeto={nombre(g)} /> : <T1Gl g={g} X={X} />}
+                : tabV === 'videos' ? <VideosGl X={X} xs={g.v || []} sujeto={nombre(g)} shorts={g.vs || []} cs={(D && D.cs) || []} /> : <T1Gl g={g} X={X} />}
             </div>
             <aside className="pv-lado">
               <SobreGl g={g} h={h} />

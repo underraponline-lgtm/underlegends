@@ -65,6 +65,7 @@ jobs:
           git config user.email "ciclo@users.noreply.github.com"
           git add datos/global_batallas.json bot/paginas/global.json
           [ -f bot/paginas/global_vista.json ] && git add bot/paginas/global_vista.json
+          [ -f datos/global_shorts.json ] && git add datos/global_shorts.json
           [ -f bot/paginas/global_historia.json ] && git add bot/paginas/global_historia.json
           [ -f datos/global_fotos.json ] && git add datos/global_fotos.json
           if git diff --cached --quiet; then

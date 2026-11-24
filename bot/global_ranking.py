@@ -569,9 +569,30 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
         if videos.get(k):
             gente[-1]['v'] = videos[k][:VIDEOS_MAX]
     gente.sort(key=lambda g: (-g['p'], -g['jb'], g['n'].lower()))
+    # 📱 los shorts de los canales (24/11/2026, Dlx: «suma una fuente de shorts para los verticales»): no suman puntos, van
+    # a la pestaña «Videos» de quien nombran (`atar()` de bot/global_fuente_shorts.py). `vs`: [id, canal, [otros]], y el
+    # canal es su lugar en `cs`
+    cs = []
+    try:
+        import global_fuente_shorts as GS
+        canales = {c['slug']: c['nombre'] for c in (json.load(io.open(os.path.join(BASE, 'datos', 'global_canales.json'),
+                                                                        encoding='utf-8')).get('canales') or [])}
+        ci = {}
+        for k, xs in GS.atar(GS.guardados(), gente).items():
+            g = next((x for x in gente if x['k'] == k), None)
+            if not g:
+                continue
+            for vid, canal, otros in xs:
+                if canal not in ci:
+                    ci[canal] = len(cs)
+                    cs.append(canales.get(canal, canal))
+                g.setdefault('vs', []).append([vid, ci[canal], otros])
+    except Exception as e:                               # noqa: BLE001 — sin shorts, el ranking sale igual
+        print('⚠️ los shorts no se ataron: %s' % str(e)[:100])
     d0, d1 = temporada.FECHAS[temporada.ACTUAL]
     out = {'v': 1, 't': (cuando or ahora_et()).isoformat(), 'temporada': temporada.ACTUAL, 'ventana': [d0, d1],
-           'formula': {'peso': PESO, 'ronda': RONDA, 'mejores': MEJORES, 'mejores_titulos': MEJORES_TITULOS}, 'fu': estado, 'ev': eventos, 'g': gente}
+           'formula': {'peso': PESO, 'ronda': RONDA, 'mejores': MEJORES, 'mejores_titulos': MEJORES_TITULOS}, 'fu': estado, 'ev': eventos, 'g': gente,
+           'cs': cs}
     # 📸 las fotos, con lo que ya está subido (datos/global_fotos.json). Bajar y subir las nuevas es de `correr()`
     import global_fotos
     global_fotos.aplicar(out, fotos_de, subir=subir_fotos)
@@ -580,6 +601,13 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
 
 def correr(red=False, escribir=True):
     previo = _leer(BATALLAS, {}) or {}
+    if red:
+        try:
+            import global_fuente_shorts as GS
+            sh, av = GS.actualizar(aplicar=escribir)
+            print('📱 shorts: %d guardados%s' % (len(sh), (' · ' + '; '.join(av[:3])) if av else ''))
+        except Exception as e:                           # noqa: BLE001 — sin shorts nuevos quedan los guardados
+            print('⚠️ los shorts no se leyeron: %s' % str(e)[:100])
     if red:
         batallas, mvps, semillas, estado, plantel = leer_fuentes(True, previo)
         if escribir:

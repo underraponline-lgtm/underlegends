@@ -633,3 +633,7 @@ img.glpv-lg{object-fit:contain;background:#F6F6F6;padding:6px}
 /* 🎬 un /shorts/ en la grilla de videos del perfil global: vertical (perfil_global.jsx) */
 .pf-vid li.glpv-vert{grid-row:span 2}
 .pf-vid li.glpv-vert .pf-vid-m{aspect-ratio:9/16}
+/* 📱 los shorts del perfil global: en fila, verticales (perfil_global.jsx, 24/11/2026) */
+.pf-vid.glpv-shorts{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.pf-vid.glpv-shorts li.glpv-vert{grid-row:auto}
+.glpv-sh-t{margin-top:22px}

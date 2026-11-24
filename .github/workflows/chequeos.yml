@@ -171,7 +171,7 @@ jobs:
                    herramientas/simular_score.py herramientas/unir_sellos.py herramientas/sin_dm.py \
                    herramientas/sincronizar_puesto.py bot/apodo.py herramientas/uso.py herramientas/espacio.py herramientas/emojis_vs.py herramientas/que_pide_cada_carta.py \
                    herramientas/banners_eventos.py herramientas/banners_bot.py herramientas/dra_remake.py herramientas/tuto_marcas.py herramientas/fondos_og.py bot/og_links.py herramientas/textos_ingles.py herramientas/gif_drops.py \
-                   bot/global_ranking.py bot/global_fuente_liga.py bot/global_fuente_fms.py bot/global_fuente_fstats.py bot/global_fuente_youtube.py bot/global_fuente_urbanstreet.py bot/global_fotos.py herramientas/global_auditar.py herramientas/beats_historias.py; do
+                   bot/global_ranking.py bot/global_fuente_liga.py bot/global_fuente_fms.py bot/global_fuente_fstats.py bot/global_fuente_youtube.py bot/global_fuente_shorts.py bot/global_fuente_urbanstreet.py bot/global_fotos.py herramientas/global_auditar.py herramientas/beats_historias.py; do
             echo "::group::$f"
             if ! python "$f" --auto; then
               echo "::error::$f falló su self-check"
