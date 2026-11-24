@@ -37,10 +37,16 @@ MEDIR = r"""() => [...document.querySelectorAll('.card')].map((c) => {
   const rg = document.createRange(); rg.selectNodeContents(nm);
   const t = rg.getBoundingClientRect();
   const choca = t.left < der && t.right > izqx;
-  const num = R(c.querySelector('.c-pos .c-num')), rk = R(c.querySelector('.c-pos .c-rank'));
+  // las CIFRAS del puesto, sin el «#» (que cuelga a la izquierda): el texto que queda suelto en `.c-num`
+  const cn = c.querySelector('.c-pos .c-num');
+  const txt = cn ? [...cn.childNodes].find((x) => x.nodeType === 3 && x.textContent.trim()) : null;
+  let num = null;
+  if (txt) { const r2 = document.createRange(); r2.selectNodeContents(txt); num = r2.getBoundingClientRect(); }
+  const rk = R(c.querySelector('.c-pos .c-rank'));
   return { n: nm.textContent.trim(), aire: choca ? Math.round((t.top - fondo) * 10) / 10 : null,
     hasta: Math.round((fondo - cr.top) * 10) / 10,
     centro: num && rk ? Math.round(((rk.left + rk.right) / 2 - (num.left + num.right) / 2) * 10) / 10 : null,
+    margen: rk ? Math.round((cr.right - Math.max(rk.right, num ? num.right : 0)) * 10) / 10 : null, pos: cn ? cn.textContent : '',
     afuera: izq.some((r) => r.left < cr.left || r.right > cr.right),
     piezas: izq.length };
 })"""
@@ -97,6 +103,13 @@ def main(args):
         if not ok:
             mal.append('centro')
     fuera = [x['n'] for x in xs if x['afuera']]
+    mg = [x for x in xs if x.get('margen') is not None]
+    if mg:
+        pm = min(mg, key=lambda x: x['margen'])
+        ok = pm['margen'] >= 16
+        print('   %s el puesto y la letra, a %.1f px del borde como mínimo (%s, %s)' % ('✅' if ok else '🔴', pm['margen'], pm['n'], pm['pos']))
+        if not ok:
+            mal.append('margen')
     print('   %s nada de la columna se sale de la carta%s' % ('🔴' if fuera else '✅', ': ' + ', '.join(fuera[:5]) if fuera else ''))
     if fuera:
         mal.append('afuera')

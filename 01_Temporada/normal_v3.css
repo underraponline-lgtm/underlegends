@@ -341,3 +341,7 @@ h1{font-size:1.15rem;font-weight:800}
 .c-crew{ width:36px; height:36px; margin-top:9px; object-fit:contain; }
 .c-crew.foto{ border-radius:50%; object-fit:cover; box-shadow:0 2px 7px rgba(0,0,0,0.5); background:rgba(0,0,0,0.25); }
 .c-crew.escudo{ filter:drop-shadow(0 2px 5px rgba(0,0,0,0.6)); }
+/* 🎯 la letra, centrada con las CIFRAS del puesto (24/11/2026): el «#» cuelga a la izquierda, fuera de la caja que
+   centra la letra. Medido con herramientas/temporada_columna.py: de «#1» a «#999», con B, SS y SSS */
+.c-pos .c-num{ position:relative; }
+.c-pos .c-hash{ position:absolute; right:100%; top:0; font-style:normal; }

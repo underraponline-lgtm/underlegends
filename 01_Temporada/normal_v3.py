@@ -419,6 +419,11 @@ def card(c):
     # logo de la crew pisaba el nombre de quien tiene las tres piezas: Makmah, el #1.
     # Sin letra (menos de 10 eventos) o sin jugar, debajo del puesto no va nada: sin dato no hay pieza
     rk = '' if c.get('sinjugar') or not rg else '<span class="c-rank">%s</span>' % rg
+    # 🎯 LA LETRA SE CENTRA CON LAS CIFRAS, NO CON «#» (Dlx, 24/11/2026: «asegúrate que la letra esté bien posicionada
+    # basado en la cantidad de caracteres del #»). Centrada con «#1» entero caía debajo del «#»; el «#» va colgado a la
+    # izquierda de las cifras (`.c-hash`, fuera de la caja), así la letra queda en el medio de «1», «14» o «145»
+    ps = puesto(c)
+    ps = '<i class="c-hash">#</i>' + ps[1:] if ps.startswith('#') else ps
     return """  <div>
   <div class="card%s %s %s" style="--grad:%s">
     <div class="c-bg"></div>
@@ -446,7 +451,7 @@ def card(c):
   <div class="tag">Rango %s · %s</div>
   %s
   </div>
-""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), rk, TEMPORADA, pieza_tag(tg), UL,
+""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, ps, rk, TEMPORADA, pieza_tag(tg), UL,
        '—' if c.get('sinjugar') else c['ovr'],
        chip_bandera(c['cc']), chip_servidor(c['raw']), chip_crew(c.get('raw') or ''), c['raw'].upper(), filas, rg,
        _SE.de(c['raw']) or '—', piezas)
