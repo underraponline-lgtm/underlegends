@@ -14,7 +14,13 @@
    "entrada": "pedido",
    "oficial": true,
    "creada": 1792404668196,
-   "reps": [],
+   "reps": [
+    "colesito",
+    "erian",
+    "bloody",
+    "vandu",
+    "juasmio"
+   ],
    "gente": [
     [
      "colesito",
@@ -70,11 +76,6 @@
      "nfk",
      "miembro",
      1792404668196
-    ],
-    [
-     "julda",
-     "miembro",
-     1795344261503
     ]
    ],
    "vence": 0,
