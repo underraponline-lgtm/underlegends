@@ -76,7 +76,7 @@
    "temporada": "ca058252c2b2:0b98cb3023ec"
   },
   "Aktybo": {
-   "competitivo": "a88540094ae7:baafccf84bc7",
+   "competitivo": "d18b873d31b1:baafccf84bc7",
    "pais": "72dc0913bcfd:84d29bb63c59",
    "servidor": "3963aa417b57:ca27345eed9e:aa8232"
   },
@@ -380,7 +380,7 @@
    "servidor": "5326ca7e9e57:ca27345eed9e:ce9c52"
   },
   "David": {
-   "competitivo": "a7610b5757e0:baafccf84bc7",
+   "competitivo": "38e5655c83fb:baafccf84bc7",
    "pais": "1315af3e7529:84d29bb63c59",
    "servidor": "2977cb4f06b6:ca27345eed9e:1f00d0"
   },
@@ -1162,8 +1162,8 @@
    "servidor": "5b3bd52b9c02:ca27345eed9e:980594"
   },
   "MaYeuTyK": {
-   "competitivo": "a30d4f0cd0a7:baafccf84bc7",
-   "pais": "72bc3a54dab3:84d29bb63c59",
+   "competitivo": "a4f2df15ad6c:baafccf84bc7",
+   "pais": "c1ed5d036067:84d29bb63c59",
    "servidor": "cead9db2af58:ca27345eed9e:d6a988",
    "temporada": "b5726434f3e2:0b98cb3023ec"
   },
@@ -1647,16 +1647,16 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "76adae57f9c2:baafccf84bc7",
+   "competitivo": "1dfa43e6044d:baafccf84bc7",
    "pais": "88508a57d501:84d29bb63c59",
    "servidor": "6c1d4957a6e6:ca27345eed9e:afbca9"
   },
   "SMAFF": {},
   "SNE": {
-   "competitivo": "6dfe192588dc:baafccf84bc7",
+   "competitivo": "b6cb17c583d8:baafccf84bc7",
    "pais": "eab3dcdaed2d:84d29bb63c59",
    "servidor": "b29d92a4acfa:ca27345eed9e:3eef23",
-   "temporada": "49831852cb04:0b98cb3023ec"
+   "temporada": "9e33fb2734da:0b98cb3023ec"
   },
   "SOL": {
    "competitivo": "b54f76564912:baafccf84bc7",
@@ -2140,7 +2140,7 @@
    "temporada": "2726e3a5e28a:0b98cb3023ec"
   },
   "nueve7": {
-   "competitivo": "693a666ecdcd:baafccf84bc7",
+   "competitivo": "5f1afc8d2564:baafccf84bc7",
    "pais": "4148136756ba:84d29bb63c59",
    "servidor": "4a7af4deb10b:ca27345eed9e:62e67f"
   },
@@ -2202,5 +2202,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-24T21:05:27+00:00"
+ "cuando": "2026-11-24T21:34:26+00:00"
 }
