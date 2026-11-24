@@ -177,6 +177,17 @@ def chip_servidor(nombre):
     return '<img class="%s" src="%s">' % (clase, src) if src else ''
 
 
+def chip_crew(nombre):
+    """🛡️ El <img> del logo de su crew, o nada (Dlx, 24/11/2026: «debajo del servidor ahora estará el logo de la crew»).
+    Sale de `comun/logo_crew.py`, igual que en la página: la imagen que subió su crew, su escudo armado, el oficial o el
+    de su nombre. Un escudo va con su forma (`escudo`); una imagen, en círculo como el servidor (`foto`)."""
+    from comun import logo_crew as _LC
+    s = _LC.de(_K(nombre))
+    if not s:
+        return ''
+    return '<img class="c-crew %s" src="%s">' % ('escudo' if s.startswith('data:image/svg') else 'foto', s)
+
+
 def chip_bandera(cc):
     """El <img> de la bandera, o nada si no hay país.
 
@@ -400,13 +411,21 @@ def card(c):
     filas = ''.join('<div class="c-stat" style="grid-column:%d"><span class="c-val">%s</span>'
                     '<span class="c-lbl">%s</span></div>' % (1 if i%2==0 else 3, v, l)
                     for i,(v,l) in enumerate(st))
+    # 🔀 LA COLUMNA DE LA IZQUIERDA ES QUIÉN ERES Y LA DE LA DERECHA DÓNDE ESTÁS (Dlx, 24/11/2026, a la maqueta de dos
+    # planes: «Plan A, pero acomoda bien las cosas»). Abajo del número van la bandera, el servidor y la CREW (nueva:
+    # `comun/logo_crew.py`); la letra se muda abajo del puesto. Es la regla de `CLAUDE.md` —«la bandera es identidad,
+    # el número es ranking»— y de paso separa el OVR de la letra, que salen de cosas distintas (Temporada y Competitivo)
+    # y juntos se leían «93 B» como si fueran una sola. En el plan B (la crew abajo del servidor, sin mover la letra) el
+    # logo de la crew pisaba el nombre de quien tiene las tres piezas: Makmah, el #1.
+    # Sin letra (menos de 10 eventos) o sin jugar, debajo del puesto no va nada: sin dato no hay pieza
+    rk = '' if c.get('sinjugar') or not rg else '<span class="c-rank">%s</span>' % rg
     return """  <div>
   <div class="card%s %s %s" style="--grad:%s">
     <div class="c-bg"></div>
     <div class="c-tex"></div><div class="c-shine"></div><div class="c-vig"></div>
     <div class="c-photo">%s</div>
     <div class="c-edge"></div>
-    <div class="c-pos">%s</div>
+    <div class="c-pos"><span class="c-num">%s</span>%s</div>
     <div class="c-fila">
       <div class="c-season">%s</div>
       %s
@@ -414,8 +433,8 @@ def card(c):
     </div>
     <div class="c-left">
       <div class="c-ovr">%s</div>
-      <div class="c-rank">%s</div>
       <div class="c-sep"></div>
+      %s
       %s
       %s
     </div>
@@ -427,9 +446,10 @@ def card(c):
   <div class="tag">Rango %s · %s</div>
   %s
   </div>
-""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, pieza_tag(tg), UL,
-       '—' if c.get('sinjugar') else c['ovr'], rg,
-       chip_bandera(c['cc']), chip_servidor(c['raw']), c['raw'].upper(), filas, rg, _SE.de(c['raw']) or '—', piezas)
+""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), rk, TEMPORADA, pieza_tag(tg), UL,
+       '—' if c.get('sinjugar') else c['ovr'],
+       chip_bandera(c['cc']), chip_servidor(c['raw']), chip_crew(c.get('raw') or ''), c['raw'].upper(), filas, rg,
+       _SE.de(c['raw']) or '—', piezas)
 
 
 

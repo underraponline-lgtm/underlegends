@@ -325,3 +325,19 @@ h1{font-size:1.15rem;font-weight:800}
 /* la temporada, blanco puro: mismo peso que el logo UL, que tambien es
    blanco pleno. Los dos son la marca de la carta. */
 .c-season{ color:#fff; opacity:1 }
+
+/* ── el plan A (Dlx, 24/11/2026): la columna de la izquierda es QUIÉN ERES y la de la derecha DÓNDE ESTÁS ─────
+   Izquierda: el número, la bandera, el servidor y la crew. Derecha: el puesto y, debajo, la letra (normal_v3.card()).
+   Los valores salen de medir con Playwright (`herramientas/temporada_columna.py`): la crew de quien tiene las tres
+   piezas termina con aire antes del nombre, y la letra queda centrada con el puesto aunque sea «SSS» o «#145». */
+.c-pos{ display:flex; flex-direction:column; align-items:center; }
+.c-pos .c-num{ line-height:0.8; }
+/* la letra, un escalón debajo del puesto: más chica que él (35.2px) y más grande que antes (22.7px). El
+   letter-spacing deja un hueco al final de la palabra y la corría a la izquierda: el padding lo devuelve */
+.c-pos .c-rank{ font-size:1.62rem; letter-spacing:2px; padding-left:2px; line-height:0.8; margin-top:9px; }
+.c-sep{ margin:10px 0 9px; }
+.c-flag{ width:42px; height:28px; }
+.c-logo{ width:36px; height:36px; margin-top:10px; }
+.c-crew{ width:36px; height:36px; margin-top:9px; object-fit:contain; }
+.c-crew.foto{ border-radius:50%; object-fit:cover; box-shadow:0 2px 7px rgba(0,0,0,0.5); background:rgba(0,0,0,0.25); }
+.c-crew.escudo{ filter:drop-shadow(0 2px 5px rgba(0,0,0,0.6)); }
