@@ -53,7 +53,8 @@ const SVG = {
   mira: <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="10" cy="10" r="2.2" fill="currentColor" /><path d="M10 0v5M10 15v5M0 10h5M15 10h5" stroke="currentColor" strokeWidth="2" /></svg>,
   copa: (c) => <svg viewBox="0 0 20 26" aria-hidden="true"><path d="M3 2h14l-1 8q-1 6-6 6t-6-6z" fill={c} /><path d="M3 4H1q0 5 3 6M17 4h2q0 5-3 6" fill="none" stroke={c} strokeWidth="1.6" /><rect x="8.5" y="16" width="3" height="5" fill={c} /><rect x="5" y="21" width="10" height="3" rx="1" fill={c} /></svg>,
 };
-const ICO = {
+// (exportado: lo usan también las pestañas del perfil global, perfil_global.jsx)
+export const ICO = {
   pubs: <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2h12v9H6l-4 3z" fill="none" stroke="currentColor" strokeWidth="1.6" /></svg>,
   noches: <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 1h6v6H1zM9 1h6v6H9zM1 9h6v6H1zM9 9h6v6H9z" fill="currentColor" /></svg>,
   videos: <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 3h14v10H1z" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M6.5 5.5l4 2.5-4 2.5z" fill="currentColor" /></svg>,

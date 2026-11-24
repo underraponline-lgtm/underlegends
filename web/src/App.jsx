@@ -167,8 +167,8 @@ const SumaTuServidor = pag(() => import('./sumar2.jsx').then((m) => ({ default: 
 const Guia = pag(() => import('./guia2.jsx').then((m) => ({ default: m.Guia })));
 const Tarjetas = pag(() => import('./tarjetas.jsx').then((m) => ({ default: m.Tarjetas })));
 const Perfil = pag(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
-// 🪪 el perfil de cada uno del Ranking global (24/11/2026, `#/global/<clave>`): vive en global.jsx, con sus piezas
-const PerfilGlobal = pag(() => import('./global.jsx').then((m) => ({ default: m.PerfilGlobal })));
+// 🪪 el perfil de cada uno del Ranking global (24/11/2026, `#/global/<clave>`): la interfaz del perfil de la Liga (perfil_global.jsx)
+const PerfilGlobal = pag(() => import('./perfil_global.jsx').then((m) => ({ default: m.PerfilGlobal })));
 const Llave = pag(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
 const VisorCarta = pag(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
 const Tienda = pag(() => import('./tienda2.jsx').then((m) => ({ default: m.Tienda })));
