@@ -168,6 +168,9 @@ BENEFICIOS = (
 #: 🥈 Y EL TIER 2, TODO LO DEL 1 (Dlx, 19/11/2026: «Tier 2 que cuenten sus eventos para competitivo»): lo que los separa
 #: no es un beneficio de esta lista sino el botón «Unirme a los Tier 1», que pregunta por el tier y no por `competitivo`
 #: (Worker y web/src/unirse.jsx)
+#: 🏠 y el perfil del bot NO va de entrada en DRA, la casa de la Liga y de ULAYA (23/11/2026): ahí «DRA Bot» sería renombrar
+#: al bot en su propio hogar. Lo prende Dlx en el Dashboard si quiere. El mismo corte vive en `PERFIL_FUERA` de bot/avisos.js
+PERFIL_FUERA = {'DRA'}
 PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos', 'perfil'},
           2: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
           3: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'}}
@@ -251,6 +254,8 @@ def beneficios(nivel, elegidos=None, codigo=None, pendientes=None):
     out, bloq = {}, {}
     for sv, t in nivel.items():
         b = {k: k in PRESET.get(t, PRESET[3]) for k, _t in BENEFICIOS}
+        if sv in PERFIL_FUERA:
+            b['perfil'] = False
         for k, v in ((elegidos or {}).get(sv) or {}).items():
             if k in b and isinstance(v, bool):
                 b[k] = v

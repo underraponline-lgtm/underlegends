@@ -5852,7 +5852,9 @@ export function socioPaginaValida(cual, valor) {
  * Es el beneficio `perfil` (bot/tiers.py), del Tier 1.
  * · `nick`: hasta 32 (el tope de Discord), sin menciones ni invitaciones; vacío = el de siempre («FFA Bot»).
  * · `bio`: hasta `PERFIL_BOT_BIO`, sin menciones ni invitaciones a otro Discord; vacía = la de siempre.
- * · `img`: la foto o el banner, `servidor` (la de su Discord, la de siempre) o `liga` (la del bot de la Liga).
+ * · `img`: la foto o el banner, `servidor` (la de su Discord, la de siempre), `liga` (la de Under Legends: el logo y el
+ *   cartel de la página) o `ulaya` (la de siempre del bot, ULAYA: Dlx, «al costado de underlegends pon la de ulaya, o sea
+ *   la default»).
  * Pura (`bot/avisos_prueba.mjs`): `undefined` si no vale.
  */
 export const PERFIL_BOT_BIO = 190;
@@ -5865,21 +5867,65 @@ export function perfilBotValido(cual, valor) {
     if (t.length > (cual === 'nick' ? 32 : PERFIL_BOT_BIO) || /<@|<#|@everyone|@here|discord\.gg|discord(app)?\.com\/invite/i.test(t)) return undefined;
     return t;
   }
-  if (cual === 'img') return ['servidor', 'liga'].includes(valor) ? valor : undefined;
+  if (cual === 'img') return ['servidor', 'liga', 'ulaya'].includes(valor) ? valor : undefined;
   return undefined;
 }
-/** 🤖 El perfil de siempre de un servidor: «<SIGLA> Bot» y una bio con su nombre. Pura */
-export function perfilBotDefecto(sv, nombre) {
-  const n = String(nombre || sv).replace(/\s+/g, ' ').trim().slice(0, 60);
-  return { nick: (String(sv) + ' Bot').slice(0, 32), bio: ('El bot de ' + n + ' en Under Legends: sus eventos, su ranking y tu carta. ' + HUB).slice(0, PERFIL_BOT_BIO) };
+//: 🏠 los servidores donde el bot NO toma el perfil de entrada: DRA es la casa de la Liga y de ULAYA, y ahí «DRA Bot»
+//: sería renombrar al bot en su propio hogar. Lo prende Dlx en el Dashboard si lo quiere (lo elegido manda). El mismo
+//: corte vive en `PERFIL_FUERA` de bot/tiers.py: si se cambia uno, se cambia el otro
+export const PERFIL_FUERA = ['DRA'];
+//: 🖼️ las imágenes de Under Legends para el bot (la opción `liga`): el logo, y el cartel de la página recortado a 17:6
+export const PERFIL_LIGA = { avatar: HUB + '/ul.png', banner: HUB + '/ul-banner.png' };
+/**
+ * 🤖 LA BIO DE SIEMPRE, ARMADA CON EL SERVIDOR (Dlx, 23/11/2026: «que generes una descripción basada en el servidor»):
+ * lo que dice su página en Socios (lo escribió su equipo) o, si no, la descripción de su Discord; su nombre y su tier; lo
+ * que hizo en las últimas `semanas` (las de `SEMANAS` en bot/tiers.py: eventos, raperos por evento, ligas); y el link a
+ * su página. Hasta `PERFIL_BOT_BIO`: lo primero que se cae son los números, después se acorta la descripción. Sin links
+ * ni invitaciones de la descripción (la de Discord puede traerlas). Pura
+ */
+export function perfilBotBio(o) {
+  const x = o || {}, m = x.m || {};
+  const sigla = String(x.sigla || x.sv || '');
+  const link = HUB + '/freestyle-rap/sv/' + encodeURIComponent(sigla);
+  const nombre = String(x.nombre || sigla).replace(/\s+/g, ' ').trim().slice(0, 60);
+  const desc = String(x.desc || '').replace(/https?:\/\/\S+|discord\.gg\/\S+|<[@#][^>]*>|@everyone|@here/gi, '')
+    .replace(/[\u0000-\u001F\u007F]/g, ' ').replace(/\s+/g, ' ').trim();
+  const sem = x.semanas || 4;
+  const d = [];
+  if (m.eventos > 0) d.push(m.eventos + (m.eventos === 1 ? ' evento' : ' eventos') + ' en ' + sem + ' semanas');
+  if (m.eventos > 0 && m.por_evento >= 2) d.push(Math.round(m.por_evento) + ' raperos por evento');
+  if (m.ligas > 0) d.push(m.ligas + (m.ligas === 1 ? ' liga en juego' : ' ligas en juego'));
+  const cab = nombre + ' en Under Legends' + ([1, 2, 3].includes(x.tier) ? ' · Tier ' + x.tier : '') + '.';
+  const hechosDe = (xs) => (xs.length ? ' ' + xs.join(', ').replace(/^./, (c) => c.toUpperCase()) + '.' : '');
+  const pie = '\nSu página: ' + link;
+  const armar = (ds, h) => (ds ? ds + '\n' : '') + cab + h + pie;
+  const T = PERFIL_BOT_BIO;
+  // los números que entren: los tres, los dos primeros, el primero
+  let hechos = '';
+  for (let n = d.length; n >= 0; n--) { hechos = hechosDe(d.slice(0, n)); if (armar('', hechos).length <= T) break; }
+  if (armar(desc, hechos).length <= T) return armar(desc, hechos);
+  // la descripción acortada en una palabra, con «…»; si no entra ni un poco, sin ella; y los números, lo primero que se cae
+  const cortar = (n) => { const c = desc.slice(0, n).replace(/\s+\S*$/, ''); return c.length >= 20 ? c + '…' : ''; };
+  const lugar = T - armar('', hechos).length - 2, lugar2 = T - armar('', '').length - 2;
+  if (desc && lugar >= 40) { const c = cortar(lugar); if (c) return armar(c, hechos); }
+  if (desc && lugar2 >= 20) { const c = cortar(lugar2); if (c) return armar(c, ''); }
+  return armar('', hechos).length <= T ? armar('', hechos) : armar('', '').slice(0, T);
+}
+/** 🤖 El perfil de siempre de un servidor: «<SIGLA> Bot» y la bio armada con sus datos (`perfilBotBio()`; `info`:
+ *  `{sigla, nombre, tier, m, desc, semanas}`). Pura */
+export function perfilBotDefecto(sv, nombre, info) {
+  const i = info || {};
+  const sigla = String(i.sigla || sv);
+  return { nick: (sigla + ' Bot').slice(0, 32), bio: perfilBotBio(Object.assign({ sv }, i, { sigla, nombre: nombre || i.nombre || sv })) };
 }
 /** 🤖 Lo que el bot tiene que ser en ese servidor: lo que eligió su equipo (`p`) sobre lo de siempre. `G`, lo que dice
  *  Discord del servidor (`name`, `icon`, `banner`). Las imágenes son URLs: las de su Discord en PNG, las propias en R2;
  *  `null` es la del bot de la Liga. Pura */
-export function perfilBotQuiere(sv, g, G, p) {
-  const P = p || {}, def = perfilBotDefecto(sv, (G && G.name) || sv);
+export function perfilBotQuiere(sv, g, G, p, info) {
+  const P = p || {}, I = info || {};
+  const def = perfilBotDefecto(sv, I.nombre || (G && G.name) || sv, Object.assign({}, I, { desc: I.desc || (G && G.description) || '' }));
   const cdn = (base, h, tam) => (/^(a_)?[0-9a-f]{16,40}$/.test(String(h || '')) ? 'https://cdn.discordapp.com/' + base + '/' + g + '/' + h + '.png?size=' + tam : null);
-  const img = (k, base, h, tam) => (P[k] === 'liga' ? null : (P[k] ? P[k] : cdn(base, h, tam)));
+  const img = (k, base, h, tam) => (P[k] === 'ulaya' ? null : P[k] === 'liga' ? PERFIL_LIGA[k] : (P[k] ? P[k] : cdn(base, h, tam)));
   return { nick: P.nick || def.nick, bio: P.bio || def.bio, avatar: img('avatar', 'icons', G && G.icon, 512), banner: img('banner', 'banners', G && G.banner, 1024) };
 }
 
@@ -18396,8 +18442,17 @@ export class Avisos {
     const tiers = (aj.tiers && typeof aj.tiers === 'object') ? aj.tiers : {};
     const ben = (aj.beneficios && typeof aj.beneficios === 'object') ? aj.beneficios : {};
     const tier = tiers[sv] || x.tier || 1;
-    const v = (ben[sv] || {}).perfil ?? (x.ben || {}).perfil;
+    // 🏠 DRA no lo toma de entrada (`PERFIL_FUERA`): sólo si Dlx lo prende en el Dashboard
+    const v = (ben[sv] || {}).perfil ?? (PERFIL_FUERA.includes(sv) ? false : (x.ben || {}).perfil);
     return { x, tier, on: v === undefined ? tier === 1 : v === true };
+  }
+
+  /** 🤖 Lo que la bio de siempre sabe del servidor: su sigla, su nombre, su tier, sus números del ciclo y lo que dice su
+   *  página en Socios (`perfilBotBio()`) */
+  perfilBotInfo(sv, f) {
+    const x = f.x || {};
+    return { sigla: x.sigla || sv, nombre: x.nombre || '', tier: f.tier, m: x.m || {}, semanas: (this.leer('tiers') || {}).semanas || 4,
+      desc: ((this.leer('socio_paginas') || {})[sv] || {}).desc || '' };
   }
 
   /** 🤖 Una imagen del perfil, lista para Discord (`data:` en base64): de R2 si es propia, del CDN si es la del servidor.
@@ -18408,7 +18463,7 @@ export class Avisos {
       if (url.startsWith(R2_PUB + '/')) {
         const o = await this.env.CARTAS.get(url.slice(R2_PUB.length + 1));
         if (o) b = new Uint8Array(await o.arrayBuffer());
-      } else if (url.startsWith('https://cdn.discordapp.com/')) {
+      } else if (url.startsWith('https://cdn.discordapp.com/') || url.startsWith(HUB + '/')) {
         const r = await fetch(url, { headers: { 'User-Agent': UA } });
         if (r.status === 200) b = new Uint8Array(await r.arrayBuffer());
       }
@@ -18427,7 +18482,7 @@ export class Avisos {
       const rg = await fetch(`${DC}/guilds/${g}`, { headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA } });
       if (rg.status !== 200) return null;
       const G = await rg.json();
-      return { name: String(G.name || '').slice(0, 100), icon: String(G.icon || ''), banner: String(G.banner || '') };
+      return { name: String(G.name || '').slice(0, 100), icon: String(G.icon || ''), banner: String(G.banner || ''), description: String(G.description || '').slice(0, 300) };
     } catch (e) { return null; }
   }
 
@@ -18472,7 +18527,7 @@ export class Avisos {
     }
     const G = await this.perfilGuild(g);
     if (!G) return fallo({ st: 0, ok: false, txt: '' }, null);
-    const q = perfilBotQuiere(sv, g, G, (this.leer('bot_perfil') || {})[sv]);
+    const q = perfilBotQuiere(sv, g, G, (this.leer('bot_perfil') || {})[sv], this.perfilBotInfo(sv, f));
     const h = JSON.stringify(q);
     if (!o.forzar && e && e.h === h && !e.err) {
       if (JSON.stringify(e.G) !== JSON.stringify(G)) { E[sv] = { ...e, G }; this.guardar('bot_perfil_hecho', E); }
@@ -18514,9 +18569,11 @@ export class Avisos {
   perfilBotVista(sv, f) {
     const P = (this.leer('bot_perfil') || {})[sv] || {}, e = (this.leer('bot_perfil_hecho') || {})[sv] || {};
     const G = e.G || {}, g = this.guildDe(sv);
-    const def = perfilBotDefecto(sv, G.name || f.x.nombre || sv), dq = perfilBotQuiere(sv, g, G, {});
+    const dq = perfilBotQuiere(sv, g, G, {}, this.perfilBotInfo(sv, f));
+    const yo = this.leer('bot_yo') || {};
     return { ok: true, on: f.on, tier: f.tier, nick: P.nick || '', bio: P.bio || '', avatar: P.avatar || 'servidor', banner: P.banner || 'servidor',
-      def: { nick: def.nick, bio: def.bio, avatar: dq.avatar || '', banner: dq.banner || '' }, tope_bio: PERFIL_BOT_BIO,
+      def: { nick: dq.nick, bio: dq.bio, avatar: dq.avatar || '', banner: dq.banner || '' }, tope_bio: PERFIL_BOT_BIO,
+      liga: PERFIL_LIGA, ulaya: { nick: yo.n || 'ULAYA', avatar: yo.avatar || '', banner: yo.banner || '' },
       t: e.t || 0, err: e.err || '', reintento: e.err ? (e.reintento || 0) : 0 };
   }
 
@@ -18601,6 +18658,18 @@ export class Avisos {
     } else {
       // 👀 la primera vez que se abre, lo que dice Discord del servidor: así la vista previa muestra su foto y su banner
       const E = this.leer('bot_perfil_hecho') || {}, g = this.guildDe(sv);
+      // y cómo es el bot de siempre (ULAYA), para la vista previa de esa opción: un día de memoria
+      const yo = this.leer('bot_yo');
+      if (!yo || Date.now() - (yo.t || 0) > DIA_MS) {
+        try {
+          const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA } });
+          if (r.status === 200) {
+            const u = await r.json();
+            const c = (base, h) => (/^(a_)?[0-9a-f]{16,40}$/.test(String(h || '')) ? 'https://cdn.discordapp.com/' + base + '/' + u.id + '/' + h + '.png?size=512' : '');
+            this.guardar('bot_yo', { t: Date.now(), n: String(u.global_name || u.username || 'ULAYA').slice(0, 40), avatar: c('avatars', u.avatar), banner: c('banners', u.banner) });
+          }
+        } catch (er) { /* la vista previa usa la inicial */ }
+      }
       if (g && !(E[sv] && E[sv].G)) {
         const G = await this.perfilGuild(g);
         if (G) { E[sv] = { ...(E[sv] || {}), G }; this.guardar('bot_perfil_hecho', E); }
@@ -22425,24 +22494,53 @@ export class Avisos {
       corr = new Map(this.sql.exec('SELECT quien, COUNT(*) AS n, MAX(t) AS u FROM socio_log WHERE t > ? GROUP BY quien', ahora - 7 * DIA_MS)
         .toArray().map((f) => [String(f.quien), { n: f.n, u: f.u }]));
     } catch (e) { corr = new Map(); }
+    // 👥 DOS LISTAS DESDE EL 23/11/2026 (Dlx: «el staff de todos, pero mi equipo de la página también en otro apartado»):
+    // TU EQUIPO son los roles de la página que pone Dlx (Admin, Moderador, Asistente); EL STAFF, los de cada servidor —sus
+    // dueños (socio), su staff, organizadores, jurados y hosts— más los que cada dueño sumó a su panel (`socio_equipo`), que
+    // no estaban: entran con su servidor. Quien es las dos cosas sale en las dos, con lo de cada una. Antes era una sola
+    // lista cortada en 80, con el equipo mezclado
     const man = this.rolesManual();
-    const STAFF = ['admin', 'moderador', 'asistente', 'socio', 'staff', 'organizador', 'jurado', 'host'];
-    const staff = [];
-    for (const p of (this.leer('roles_dir') || {}).dir || []) {
-      if (fuera(p.id)) continue;
-      const roles = this.rolesDe(p, man).filter((r) => STAFF.includes(r[0]));
-      if (!roles.length) continue;
-      const w = web.get(p.id);
-      const c = corr.get(p.id);
-      const x = { quien: p.id, n: p.n, k: p.k, roles, web: w ? w.dias : 0, bot: bot.get(p.id) || 0, acc: acc.get(p.id) || 0,
-        corr: c ? c.n : 0, visto: Math.max(visto.get(p.id) || 0, c ? c.u : 0) || null };
+    const EQUIPO = ['admin', 'moderador', 'asistente'], STAFF = ['socio', 'staff', 'organizador', 'jurado', 'host'];
+    const fila = (id, n, k, roles) => {
+      const w = web.get(id), c = corr.get(id);
+      const x = { quien: id, n, k, roles, web: w ? w.dias : 0, bot: bot.get(id) || 0, acc: acc.get(id) || 0,
+        corr: c ? c.n : 0, visto: Math.max(visto.get(id) || 0, c ? c.u : 0) || null };
       // lo que pesa: lo que corrigió (es trabajo de staff), después los días que estuvo
       x.punt = x.corr * 3 + x.web + x.bot + Math.min(x.acc, 20) / 4;
-      staff.push(x);
+      return x;
+    };
+    const equipo = [], staffM = new Map();
+    for (const p of (this.leer('roles_dir') || {}).dir || []) {
+      if (fuera(p.id)) continue;
+      const rs = this.rolesDe(p, man);
+      const eq = rs.filter((r) => EQUIPO.includes(r[0])).map((r) => [r[0]]);
+      if (eq.length) equipo.push(fila(p.id, p.n, p.k, eq));
+      const st = rs.filter((r) => STAFF.includes(r[0]));
+      if (st.length) staffM.set(String(p.id), { n: p.n, k: p.k, roles: st.map((r) => [r[0], [...(r[1] || [])]]) });
     }
-    staff.sort((a, b) => b.punt - a.punt || String(a.n).localeCompare(String(b.n)));
+    // los equipos de los paneles: su rol en el panel es staff de ese servidor
+    const quitarBandera = (s) => String(s || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim();
+    for (const [sv, gente] of Object.entries(this.leer('socio_equipo') || {})) {
+      for (const a of Array.isArray(gente) ? gente : []) {
+        const id = String((a && a.id) || '');
+        if (!/^\d{5,25}$/.test(id) || fuera(id)) continue;
+        if (!staffM.has(id)) staffM.set(id, { n: quitarBandera(a.n), k: '', roles: [] });
+        const s = staffM.get(id);
+        const r = s.roles.find((x) => x[0] === 'staff');
+        if (r) { if (!r[1].includes(sv)) r[1].push(sv); } else s.roles.push(['staff', [sv]]);
+      }
+    }
+    const nomSt = this.nombresDe([...staffM.keys()].filter((id) => !staffM.get(id).k));
+    const staff = [...staffM.entries()].map(([id, s]) => {
+      const nn = nomSt[id] || {};
+      return fila(id, s.k ? s.n : (nn.n || s.n), s.k || nn.k || '', s.roles);
+    });
+    const orden = (a, b) => b.punt - a.punt || String(a.n).localeCompare(String(b.n));
+    staff.sort(orden);
+    equipo.sort(orden);
     return { horas, horas_dias: diasHoras.n || 0, horas_desde: diasHoras.desde || null, por_dia: porDia, entraron,
-      entraron_n: web.size, staff: staff.slice(0, 80), staff_n: staff.length, staff_activos: staff.filter((x) => x.punt > 0).length,
+      entraron_n: web.size, staff: staff.slice(0, 400), staff_n: staff.length, staff_activos: staff.filter((x) => x.punt > 0).length,
+      equipo, equipo_n: equipo.length, equipo_activos: equipo.filter((x) => x.punt > 0).length,
       enganche: this._enganche(ahora) };
   }
 

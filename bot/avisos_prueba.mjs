@@ -1467,6 +1467,20 @@ const ok = (cond, que, det) => {
     ok(ns.staff.length === 1 && ns.staff[0].quien === '5555555' && ns.staff[0].n === 'Pepe Rap' && ns.staff[0].corr === 1 && ns.staff[0].web === 1
       && ns.staff_activos === 1 && ns.ahora.con[0].n === 'Pepe Rap' && ns.ahora.con[0].dn === 'Pepe',
     'el staff: el organizador con su corrección y sus días; el nombre de la Lista primero y el de Discord al lado; Dlx no está', JSON.stringify(ns.staff));
+    // 👥 tu equipo de la página, aparte (23/11/2026): los roles que pone Dlx; y el staff suma a los equipos de los paneles
+    o.guardar('roles_dir', { t: Date.now(), dir: [{ k: 'pepe', n: 'Pepe Rap', id: '5555555', a: { organizador: ['FFA'] } },
+      { k: 'mod', n: 'La Mod', id: '8888888', a: { moderador: [], jurado: ['CH'] } }, { k: 'dlx', n: 'Dlx', id: A.DUENO, a: {} }] });
+    o.guardar('socio_equipo', { FFA: [{ id: '9999999', n: 'Admin 🇦🇷', rol: 'admin' }, { id: '5555555', n: 'Pepe', rol: 'moderador' }], CH: [{ id: A.DUENO, n: 'Dlx' }] });
+    o.guardar('ruta:resumen:quien', null);
+    if (o.rutaMem) delete o.rutaMem['resumen:quien'];
+    const ne = o.numerosAhora();
+    const deS = (id) => ne.staff.find((x) => x.quien === id);
+    ok(ne.equipo_n === 1 && ne.equipo[0].quien === '8888888' && JSON.stringify(ne.equipo[0].roles) === '[["moderador"]]'
+      && ne.staff_n === 3 && JSON.stringify(deS('8888888').roles) === '[["jurado",["CH"]]]' && deS('9999999').n === 'Admin'
+      && JSON.stringify(deS('9999999').roles) === '[["staff",["FFA"]]]' && JSON.stringify(deS('5555555').roles) === '[["organizador",["FFA"]],["staff",["FFA"]]]'
+      && !deS(A.DUENO),
+    'tu equipo: sólo los roles de la página; el staff: los de cada servidor más los equipos de los paneles (sin bandera en el nombre); la Mod que también es jurado, en las dos; Dlx en ninguna',
+    JSON.stringify({ equipo: ne.equipo, staff: ne.staff }));
     // 🗑️ y pedir que lo olviden se lo lleva todo
     await o.olvidar({ quien: '5555555' });
     ok(cuantos('aqui', '5555555') === 0 && cuantos('aqui_dia', '5555555') === 0 && cuantos('cuenta_nombre', '5555555') === 0
@@ -5812,17 +5826,28 @@ const ok = (cond, que, det) => {
   ok(A.perfilBotValido('bio', 'Eventos los viernes.\n\n\n\nVen.') === 'Eventos los viernes.\n\nVen.' && A.perfilBotValido('bio', 'x'.repeat(A.PERFIL_BOT_BIO + 1)) === undefined
     && A.perfilBotValido('bio', 'entra a discord.gg/abc') === undefined && A.perfilBotValido('bio', 'https://underlegends.pages.dev') === 'https://underlegends.pages.dev',
   'la bio: hasta 190, sin invitaciones a otro Discord, con links a la web');
-  ok(A.perfilBotValido('img', 'servidor') === 'servidor' && A.perfilBotValido('img', 'liga') === 'liga' && A.perfilBotValido('img', 'https://x') === undefined,
-    'la foto y el banner: la del servidor o la de la Liga (una propia entra subiéndola)');
-  const d0 = A.perfilBotDefecto('FFA', 'Freestyle Fight Arena');
-  ok(d0.nick === 'FFA Bot' && d0.bio.startsWith('El bot de Freestyle Fight Arena en Under Legends') && d0.bio.length <= A.PERFIL_BOT_BIO,
-    'por defecto, «FFA Bot» y una bio con su nombre', JSON.stringify(d0));
+  ok(A.perfilBotValido('img', 'servidor') === 'servidor' && A.perfilBotValido('img', 'liga') === 'liga' && A.perfilBotValido('img', 'ulaya') === 'ulaya'
+    && A.perfilBotValido('img', 'https://x') === undefined,
+  'la foto y el banner: la del servidor, la de Under Legends o la de ULAYA (una propia entra subiéndola)');
+  const d0 = A.perfilBotDefecto('FFA', 'Freestyle Fight Arena', { tier: 1, m: { eventos: 9, por_evento: 11.6, ligas: 1 } });
+  ok(d0.nick === 'FFA Bot' && d0.bio.startsWith('Freestyle Fight Arena en Under Legends · Tier 1. 9 eventos en 4 semanas, 12 raperos por evento, 1 liga en juego.')
+    && d0.bio.endsWith('/freestyle-rap/sv/FFA') && d0.bio.length <= A.PERFIL_BOT_BIO,
+  'por defecto, «FFA Bot» y la bio armada con sus números y su página', JSON.stringify(d0));
+  const b1 = A.perfilBotBio({ sv: 'FFA', nombre: 'Freestyle Fight Arena', tier: 1, m: { eventos: 9, por_evento: 11.6 },
+    desc: 'La arena de batallas de los viernes: 2vs2, minutos y torneos mensuales. Entra en discord.gg/xyz y en https://x.com/ffa. ' + 'Mucho más texto. '.repeat(10) });
+  ok(b1.length <= A.PERFIL_BOT_BIO && b1.startsWith('La arena de batallas de los viernes') && b1.includes('…') && !/discord\.gg|x\.com/.test(b1) && b1.includes('Tier 1'),
+    'con descripción larga: se acorta en una palabra, sin links ni invitaciones, y siguen el nombre, el tier y la página', b1);
+  ok(A.perfilBotBio({ sv: 'CH', nombre: 'Club', tier: 1, m: {} }) === 'Club en Under Legends · Tier 1.\nSu página: https://underlegends.pages.dev/freestyle-rap/sv/CH',
+    'sin eventos ni descripción, sólo el nombre, el tier y la página');
   const HX = 'abcdef0123456789abcdef0123456789';
   const q0 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, banner: '' }, {});
   ok(q0.avatar === 'https://cdn.discordapp.com/icons/42/' + HX + '.png?size=512' && q0.banner === null,
     'la foto de su Discord; sin banner en su Discord, el del bot', JSON.stringify(q0));
-  const q1 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX }, { nick: 'Arena', avatar: 'liga', banner: 'https://pub-x.r2.dev/botsv/a.png' });
-  ok(q1.nick === 'Arena' && q1.avatar === null && q1.banner === 'https://pub-x.r2.dev/botsv/a.png', 'lo que eligió su equipo manda');
+  const q1 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX }, { nick: 'Arena', avatar: 'ulaya', banner: 'https://pub-x.r2.dev/botsv/a.png' });
+  ok(q1.nick === 'Arena' && q1.avatar === null && q1.banner === 'https://pub-x.r2.dev/botsv/a.png', 'lo que eligió su equipo manda; ULAYA es la de siempre del bot (null)');
+  const q2 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, description: 'Batallas cada viernes' }, { avatar: 'liga', banner: 'liga' }, { tier: 1 });
+  ok(q2.avatar === A.PERFIL_LIGA.avatar && q2.banner === A.PERFIL_LIGA.banner && q2.bio.startsWith('Batallas cada viernes\n'),
+    'Under Legends: el logo y el cartel; sin página en Socios, la descripción de su Discord', JSON.stringify(q2));
 
   let DatabaseSync = null;
   try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
@@ -5845,8 +5870,9 @@ const ok = (cond, que, det) => {
     if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
     await new Promise((r) => setTimeout(r, 5));
     const DUE = '700000000000000201';
-    o.guardar('tiers', { servidores: [{ sv: 'FFA', nombre: 'Freestyle Fight Arena', tier: 1, dueno: DUE }, { sv: 'CEU', nombre: 'Ceuta', tier: 3, dueno: DUE }] });
-    o.guardar('guilds', { FFA: '42', CEU: '43' });
+    o.guardar('tiers', { servidores: [{ sv: 'FFA', nombre: 'Freestyle Fight Arena', tier: 1, dueno: DUE, m: { eventos: 3, por_evento: 8 } },
+      { sv: 'CEU', nombre: 'Ceuta', tier: 3, dueno: DUE }, { sv: 'DRA', nombre: 'Discord Rap Español', tier: 1, dueno: DUE }] });
+    o.guardar('guilds', { FFA: '42', CEU: '43', DRA: '44' });
     const antes = globalThis.fetch;
     const pedidos = [];
     const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1, 2, 3, 4]);
@@ -5863,13 +5889,13 @@ const ok = (cond, que, det) => {
     const n1 = await o.perfilesBot(Date.now());
     const p1 = patches()[0];
     ok(n1 === 1 && patches().length === 1 && /\/guilds\/42\/members\/@me$/.test(p1.m) && p1.body.nick === 'FFA Bot'
-      && p1.body.avatar.startsWith('data:image/png;base64,') && p1.body.banner === null && /Freestyle Fight Arena/.test(p1.body.bio),
-    'el vigía: el Tier 1 sale «FFA Bot» con la foto de su Discord; el Tier 3, nada', JSON.stringify({ n1, p: patches().map((p) => p.m) }));
+      && p1.body.avatar.startsWith('data:image/png;base64,') && p1.body.banner === null && /3 eventos en 4 semanas/.test(p1.body.bio),
+    'el vigía: el Tier 1 sale «FFA Bot» con la foto de su Discord y su bio; el Tier 3 y DRA (la casa de ULAYA), nada', JSON.stringify({ n1, p: patches().map((p) => p.m) }));
     await o.perfilesBot(Date.now());
     ok(patches().length === 1, 'la vuelta siguiente, sin cambios, no le pide nada a Discord');
     const v0 = await o.socioPerfil({ quien: DUE, sv: 'FFA' });
     ok(v0.ok && v0.on && v0.def.nick === 'FFA Bot' && v0.nick === '' && v0.avatar === 'servidor' && v0.t > 0, 'el panel lo ve', JSON.stringify(v0));
-    const v1 = await o.socioPerfil({ quien: DUE, sv: 'FFA', nick: 'Arena Bot', banner: 'liga' });
+    const v1 = await o.socioPerfil({ quien: DUE, sv: 'FFA', nick: 'Arena Bot', banner: 'ulaya' });
     const p2 = patches()[1];
     ok(v1.ok && v1.nick === 'Arena Bot' && v1.aplicado && v1.aplicado.ok && p2 && p2.body.nick === 'Arena Bot' && !('avatar' in p2.body),
       'cambiar el nombre lo aplica en el momento y no vuelve a mandar la foto', JSON.stringify({ v1, p2 }));

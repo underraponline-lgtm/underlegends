@@ -373,7 +373,10 @@ function AhoraYQuien({ liga }) {
       <SeQuedan e={a.enganche} liga={liga} />
       <div className="aq-tabs" role="tablist" aria-label="Listas">
         <button type="button" role="tab" aria-selected={lista === 'entraron'} onClick={() => setLista('entraron')}>Entraron con su cuenta · {num(a.entraron_n || 0)}</button>
-        <button type="button" role="tab" aria-selected={lista === 'staff'} onClick={() => setLista('staff')}>El staff · {num(a.staff_activos || 0)} de {num(a.staff_n || 0)} activos</button>
+        <button type="button" role="tab" aria-selected={lista === 'staff'} onClick={() => setLista('staff')}>El staff de los servidores · {num(a.staff_activos || 0)} de {num(a.staff_n || 0)} activos</button>
+        {/* 👥 tu equipo de la página, aparte (23/11/2026, Dlx: «mi equipo de la página también en otro apartado»). Sin el
+            Worker nuevo no viene: la pestaña no se dibuja */}
+        {a.equipo ? <button type="button" role="tab" aria-selected={lista === 'equipo'} onClick={() => setLista('equipo')}>Tu equipo de la página · {num(a.equipo_activos || 0)} de {num(a.equipo_n || 0)} activos</button> : null}
       </div>
       {lista === 'entraron' ? (
         <ul className="aq-l">{(a.entraron || []).map((x) => (
@@ -385,16 +388,16 @@ function AhoraYQuien({ liga }) {
           </li>
         ))}{!(a.entraron || []).length ? <li className="cero">Nadie en los últimos 7 días.</li> : null}</ul>
       ) : (
-        <ul className="aq-l">{(a.staff || []).map((x) => (
+        <ul className="aq-l">{((lista === 'equipo' ? a.equipo : a.staff) || []).map((x) => (
           <li key={x.quien} className={x.punt ? '' : 'cero'}>
             <span className="aq-q"><b>{persona(x)}</b><small>{x.roles.map(textoRol).join(' · ')}{x.visto ? ' · visto ' + hace(x.visto) : ''}</small></span>
             <span className="aq-n"><b>{x.corr}</b><small>correcciones</small></span>
             <span className="aq-n"><b>{x.web}</b><small>días en la página</small></span>
             <span className="aq-n"><b>{x.bot}</b><small>en el bot</small></span>
           </li>
-        ))}</ul>
+        ))}{!((lista === 'equipo' ? a.equipo : a.staff) || []).length ? <li className="cero">{lista === 'equipo' ? 'Todavía no le diste un rol de la página a nadie.' : 'Nadie con un rol de staff.'}</li> : null}</ul>
       )}
-      <p className="nc-p">7 días. Las correcciones son lo que hizo con Mods o desde el panel de su servidor; «visto», la última vez que tuvo la página abierta. Tu cuenta y los bots no cuentan.</p>
+      <p className="nc-p">7 días. Las correcciones son lo que hizo con Mods o desde el panel de su servidor; «visto», la última vez que tuvo la página abierta. {lista === 'staff' ? 'El staff de cada servidor incluye a los que su dueño sumó a su panel. ' : ''}Tu cuenta y los bots no cuentan.</p>
     </section>
   );
 }

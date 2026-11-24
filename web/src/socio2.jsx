@@ -1079,7 +1079,9 @@ const BOT_ERR = { nick: 'El nombre va hasta 32 letras, sin menciones ni invitaci
   filtro: 'Esa imagen no pasa el filtro de la Liga: prueba con otra.', metadatos: 'Esa imagen trae datos escondidos: prueba con otra.', tope: 'Llegaste al tope de cambios de hoy.',
   'no es una imagen': 'Eso no es una imagen PNG o JPG.', 'demasiado grande': 'La imagen quedó muy pesada.', no: 'Este servidor no es tuyo.', no_rol: 'Tu rol no puede cambiar el bot.',
   apagado: 'Tu servidor no tiene el perfil del bot.' };
-const BOT_IMG = [['servidor', 'La de tu servidor'], ['propia', 'Una propia'], ['liga', 'La de Under Legends']];
+// 🖼️ «La de ULAYA» es la de siempre del bot (Dlx, 23/11/2026: «al costado de underlegends pon la de ulaya, o sea la default»)
+const BOT_IMG = [['servidor', 'La de tu servidor'], ['propia', 'Una propia'], ['liga', 'La de Under Legends'], ['ulaya', 'La de ULAYA']];
+const BOT_MODOS = ['servidor', 'liga', 'ulaya'];
 function PerfilBot({ sv, puedeCambiar }) {
   const [j, setJ] = useState(null);
   const [nick, setNick] = useState('');
@@ -1125,8 +1127,8 @@ function PerfilBot({ sv, puedeCambiar }) {
   if (!j.ok) return j.error === 'red' || j.error === 'no' ? null : <Sec id="sp-bot" titulo="El bot en tu servidor"><p className="pronto-p">{BOT_ERR[j.error] || 'No pude traer el perfil del bot.'}</p></Sec>;
   // lo que se ve: lo que está escrito (aunque no esté guardado) sobre lo de siempre
   const verNick = nick.trim() || j.def.nick, verBio = bio.trim() || j.def.bio;
-  const img = (k) => (j[k] === 'servidor' ? j.def[k] : j[k] === 'liga' ? '' : j[k]);
-  const modo = (k) => (j[k] === 'servidor' || j[k] === 'liga' ? j[k] : 'propia');
+  const img = (k) => (j[k] === 'servidor' ? j.def[k] : j[k] === 'liga' ? (j.liga || {})[k] || '' : j[k] === 'ulaya' ? (j.ulaya || {})[k] || '' : j[k]);
+  const modo = (k) => (BOT_MODOS.includes(j[k]) ? j[k] : 'propia');
   const av = img('avatar'), ban = img('banner');
   const cambiado = nick.trim() !== (j.nick || '') || bio.trim() !== (j.bio || '');
   const imagen = (k, t) => (
@@ -1137,7 +1139,7 @@ function PerfilBot({ sv, puedeCambiar }) {
           {modo(k) === v ? 'Cambiar la propia' : n}</label>
         : <button key={v} type="button" className={'sp-bot-op' + (modo(k) === v ? ' si' : '')} aria-pressed={modo(k) === v}
           onClick={() => { if (modo(k) !== v) mandar({ [k]: v }, 'Listo: ' + (k === 'avatar' ? 'la foto' : 'el banner') + ' del bot cambió.', false); }}>{n}</button>))}</div>
-      {k === 'avatar' && modo(k) === 'servidor' && !j.def.avatar ? <small>Tu servidor no tiene ícono en Discord: el bot usa la de Under Legends.</small> : null}
+      {k === 'avatar' && modo(k) === 'servidor' && !j.def.avatar ? <small>Tu servidor no tiene ícono en Discord: el bot usa la de ULAYA.</small> : null}
       {k === 'banner' && modo(k) === 'servidor' && !j.def.banner ? <small>Tu servidor no tiene banner en Discord (lo da el nivel 2 de boosts): el bot no lleva banner.</small> : null}
     </fieldset>
   );
@@ -1157,7 +1159,7 @@ function PerfilBot({ sv, puedeCambiar }) {
         <div className="sp-bot-form">
           <label className="sp-eq-q"><span>El nombre <small>{(nick.trim() || '').length} de 32</small></span>
             <input type="text" value={nick} maxLength={32} placeholder={j.def.nick} disabled={!puedeCambiar} onChange={(e) => setNick(e.target.value)} /></label>
-          <label className="sp-eq-q"><span>La bio <small>{bio.length} de {j.tope_bio}</small></span>
+          <label className="sp-eq-q"><span>La bio <small>{bio.length} de {j.tope_bio} · vacía, se arma sola con lo de tu servidor</small></span>
             <textarea value={bio} maxLength={j.tope_bio} rows={3} placeholder={j.def.bio} disabled={!puedeCambiar} onChange={(e) => setBio(e.target.value)} /></label>
           {puedeCambiar ? <div className="sp-pag-acc">
             <button type="button" className="btn verde" disabled={ocup || !cambiado} onClick={() => mandar({ nick, bio }, 'Guardado: el bot ya se llama ' + verNick + '.')}>Guardar el nombre y la bio</button>
