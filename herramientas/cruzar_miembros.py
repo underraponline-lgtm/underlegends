@@ -96,12 +96,25 @@ def _guilds():
          ('DDS', '1443770831598649528'),
          ('CEU', '1513624656538636459'),
          ('CHZ', '1408218254803075203')]
+    # 🔴 Y LOS QUE SE SUMARON DESPUÉS, SOLOS (23/11/2026). Dlx: «hay 24 servidores, quiero que hagas recolector de ids y
+    # autoverificación si es que aplica». Esta lista se escribía a mano y paró en Chezztyle (19/11): DANGER WORLD, World
+    # Of Freestyle y Under Freestyle Legion —confirmados en `servidores.json`— no estaban, y de WOF (20 roles de país) y
+    # UFL (16) autoverificar no leía el país. Es la forma de «un default que no es la decisión»: el socio estaba sumado
+    # en un lugar y esto leía otro. Ahora entra todo servidor `confirmado` con `guild_id` que no esté arriba, en el orden
+    # del archivo, y todos los de `solo_identidad`. Los de arriba quedan en su orden: DRA sigue siendo el primero
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:
-            extra = (json.load(f).get('solo_identidad') or {})
+            d = json.load(f)
+        ya = {k for k, _ in g} | {v for _, v in g}
+        for k, v in (d.get('servidores') or {}).items():
+            gid = str((v or {}).get('guild_id') or '')
+            if v.get('confirmado') and gid and k not in ya and gid not in ya:
+                g.append((k, gid))
+                ya |= {k, gid}
+        extra = (d.get('solo_identidad') or {})
         g += [(k, v['guild_id']) for k, v in sorted(extra.items())
-              if v.get('guild_id')]
+              if v.get('guild_id') and k not in ya and v['guild_id'] not in ya]
     except Exception as e:
         print('  ⚠️ no pude leer los servidores de identidad (%s)' % str(e)[:50])
     return tuple(g)

@@ -639,6 +639,15 @@ def _self_check():
     import verificados as VER
     import cruzar_miembros as CM
     ok(CM.GUILDS[0] == ('DRA', VER.GUILD_DRA), 'DRA es el primero: ahí se dan los roles')
+    # 🔴 (23/11/2026) la lista se escribía a mano y paró en Chezztyle: WOF, UFL y DW no estaban y tres personas con su rol
+    # de país ahí no lo recibían. Ahora la arma `servidores.json`: ningún socio confirmado ni servidor de identidad afuera
+    _sj = _json('datos', 'servidores.json') or {}
+    _gs = {str(g) for _, g in CM.GUILDS}
+    _faltan = [k for k, v in (_sj.get('servidores') or {}).items() if v.get('confirmado') and v.get('guild_id') and str(v['guild_id']) not in _gs]
+    _faltan += [k for k, v in (_sj.get('solo_identidad') or {}).items() if v.get('guild_id') and str(v['guild_id']) not in _gs]
+    ok(not _faltan and len(_gs) == len(CM.GUILDS),
+       'los servidores donde se mira el país son todos los confirmados y los de identidad, sin repetir  (%d)%s'
+       % (len(CM.GUILDS), (' · faltan ' + ', '.join(_faltan)) if _faltan else ''))
     ok(CM._roles_dra()[0] == VER.ROL_MIEMBRO,
        'el rol que se da es el Miembro de DRA, el mismo del portón')
     ok(set(_iso_de_nombre().values()) >= {'ar', 'cl', 'us', 've', 'co'},

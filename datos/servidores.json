@@ -1031,6 +1031,13 @@
    "miembros_aprox": 316,
    "desde": "2026-10-12",
    "para": "sacar Discord ID, nada mas (Dlx, 12/10/2026: «el bot entró a un servidor llamado tekkers. Úsalo como reconocimiento de ids»)"
+  },
+  "PLAZA": {
+   "nombre": "Plaza Underground",
+   "guild_id": "1556371751817183292",
+   "miembros_aprox": 97,
+   "desde": "2026-11-23",
+   "para": "sacar Discord ID y el país de sus 11 roles, nada mas (Dlx, 23/11/2026: «hay 24 servidores, quiero que hagas recolector de ids y autoverificación si es que aplica»)"
   }
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
