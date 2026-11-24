@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-24T00:28:13Z",
+ "t": "2026-11-24T00:58:59Z",
  "sv": {
   "SR": {
    "filas": [
@@ -545,7 +545,7 @@
      ""
     ],
     [
-     "NC",
+     "Nc",
      "ar",
      1000,
      0,
@@ -799,10 +799,10 @@
     ],
     [
      "nc",
-     "ar",
+     "",
      3620,
      240,
-     "NC"
+     ""
     ],
     [
      "Guess",
@@ -1075,7 +1075,7 @@
      "ar",
      850,
      300,
-     "LRS"
+     ""
     ],
     [
      "masino",
@@ -1288,11 +1288,11 @@
      "Kochi"
     ],
     [
-     "nc",
-     "",
+     "NC",
+     "ar",
      480,
      480,
-     ""
+     "NC"
     ],
     [
      "Majiztral",
@@ -1568,11 +1568,11 @@
      "Status"
     ],
     [
-     "Lrs la sustancia",
-     "",
+     "LRS",
+     "ar",
      240,
      240,
-     ""
+     "LRS"
     ],
     [
      "Cinexfilo",
@@ -2064,7 +2064,7 @@
        300
       ],
       [
-       "LRS",
+       "Lrs",
        "Subcampeón",
        300
       ],
@@ -2128,12 +2128,12 @@
        300
       ],
       [
-       "nc",
+       "NC",
        "Tercero",
        240
       ],
       [
-       "NC",
+       "nc",
        "Tercero",
        240
       ]
@@ -2187,7 +2187,7 @@
        240
       ],
       [
-       "nc",
+       "NC",
        "Tercero",
        240
       ],
@@ -2202,7 +2202,7 @@
        240
       ],
       [
-       "Lrs la sustancia",
+       "LRS",
        "Tercero",
        240
       ]
@@ -2275,6 +2275,7 @@
   "456226577798135808": "Cuenta borrada",
   "830271117129809931": "Inhuman",
   "1574183742329852005": "nc",
-  "1271260378654969947": "Lrs la sustancia💫"
+  "1271260378654969947": "Lrs la sustancia💫",
+  "1523082259870257315": "Nc"
  }
 }

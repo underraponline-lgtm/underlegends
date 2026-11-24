@@ -210,12 +210,7 @@
 },
 "nc": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "okam": {
 "rg": "C",
@@ -8535,7 +8530,7 @@
 "n": "Xervoe",
 "k": "",
 "de": 205,
-"a": 162
+"a": 161
 },
 {
 "n": "Mr.Kude",
