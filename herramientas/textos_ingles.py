@@ -36,7 +36,7 @@ RUTAS = ['/freestyle-rap', '/freestyle-rap/ranking', '/freestyle-rap/ranking/com
          '/freestyle-rap/sv/URBF', '/freestyle-rap/pais/co', '/freestyle-rap/pais/cl', '/freestyle-rap/ligas/snake-generations',
          '/freestyle-rap/llave/652', '/freestyle-rap/crew/Follombia', '/freestyle-rap/ranking/mw', '/freestyle-rap/ranking/actividad',
          '/freestyle-rap/ranking/misiones', '/freestyle-rap/ranking/ligas',
-         '/freestyle-rap/ranking/global']
+         '/freestyle-rap/ranking/global', '/freestyle-rap/reels']
 
 JUNTAR = r"""async () => {
   const L = await fetch('/api/lobby', { headers: { accept: 'application/json' } }).then((r) => r.json()).catch(() => null);

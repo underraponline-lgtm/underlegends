@@ -637,3 +637,7 @@ img.glpv-lg{object-fit:contain;background:#F6F6F6;padding:6px}
 .pf-vid.glpv-shorts{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 .pf-vid.glpv-shorts li.glpv-vert{grid-row:auto}
 .glpv-sh-t{margin-top:22px}
+/* 🎬 «Ver en Reels» en los shorts del perfil (24/11/2026): abre Reels empezando por ese */
+.glpv-reels{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--tinta);text-decoration:underline;
+  text-underline-offset:3px;white-space:nowrap}
+.glpv-reels.chico{display:inline-flex;align-items:center;min-height:32px;font-size:14px}

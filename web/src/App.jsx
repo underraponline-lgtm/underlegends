@@ -28,7 +28,7 @@ import { pedirPrueba, prevElo } from './prueba_elo.js';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'reels', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'invitar', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
-  'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
+  'i-historias', 'i-reels', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
 // 👆 qué bloque del Inicio es cada toque: la puerta por su dirección, lo demás por el bloque que lo contiene
 const PUERTA = { '#/eventos': 'p-eventos', '#/ranking': 'p-ranking', '#/ranking/mw': 'p-mw', '#/tarjetas': 'p-tarjetas',
@@ -40,7 +40,7 @@ function queToco(el) {
   if (el.closest('.historias')) return 'i-historias';
   if (el.closest('.ir-a')) return 'i-ira';
   if (el.closest('#semana')) return 'i-semana';
-  const s = el.closest('#envivo, #fechas, #sebusca, #noticias, #encuestas, #raperos, #panel, #merch, #numeros');
+  const s = el.closest('#envivo, #reels, #fechas, #sebusca, #noticias, #encuestas, #raperos, #panel, #merch, #numeros');
   if (s) return 'i-' + s.id;
   return el.closest('.escena') ? 'i-envivo' : '';
 }
@@ -178,6 +178,8 @@ const Tienda = pag(() => import('./tienda2.jsx').then((m) => ({ default: m.Tiend
 const Invitar = pag(() => import('./invitar.jsx').then((m) => ({ default: m.Invitar })));
 // 🎬 Reels (24/11/2026): los shorts de las batallas, a pantalla completa en el celular. Ver reels.jsx
 const Reels = pag(() => import('./reels.jsx').then((m) => ({ default: m.Reels })));
+// y su fila en el Inicio, «Reels de la semana» (reels_fila.jsx): aparte, para que el Inicio no baje la página entera
+const ReelsFila = pag(() => import('./reels_fila.jsx').then((m) => ({ default: m.ReelsFila })));
 // 🖼️ y la miniatura de un link corto, para la foto de bot/og_links.py (og_link.jsx): sin nada alrededor, como la del marco
 const OgLink = pag(() => import('./og_link.jsx').then((m) => ({ default: m.OgLink })));
 const Pase = pag(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
@@ -1096,6 +1098,8 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
         <Aislada reinicio={reinicio} n="IrA"><IrA raiz={raiz} /></Aislada>
         <Aislada reinicio={reinicio} n="Lobby"><Lobby liga={liga} dc={yo.dc} enc={enc} /></Aislada>
         <Aislada reinicio={reinicio} n="Instalar"><Instalar /></Aislada>
+        {/* 🎬 Reels de la semana (24/11/2026): una fila más, sin sacar nada (reels_fila.jsx) */}
+        <Aislada reinicio={reinicio} n="ReelsFila"><Suspense fallback={null}><ReelsFila /></Suspense></Aislada>
         {/* 🎮 con el lobby, cada dato una vez (Dlx, 13/10/2026, «3. A» y «4. A»): tu próximo evento va en el botón y la
             semana en la puerta de Eventos, y Se busca es el destacado amarillo; el tablero entero sigue en el Ranking.
             Por eso Fechas y el panel de Se busca ya no van acá. Y tampoco el panel de Misiones y el Pase (Dlx, 13/10/2026:

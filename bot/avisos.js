@@ -2441,7 +2441,7 @@ export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'reels', 'compet
   // 👆 y QUÉ SE TOCA EN EL INICIO (Dlx, 13/10/2026: «añadir eso de saber qué clickea la gente, y después tomar
   // decisiones así de drásticas»): `i-` cada bloque, `p-` cada puerta. Mismo trato: una vez por navegador y por día
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
-  'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
+  'i-panel', 'i-merch', 'i-numeros', 'i-reels', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
 
 /**
  * 👆 QUÉ SE TOCA EN TODA LA PÁGINA (Dlx, 16/10/2026: «asegurate que todo esté trackeado, así vemos qué cosas se
@@ -2455,6 +2455,47 @@ export function claveClic(k) {
 }
 /** cuántas etiquetas distintas por día, como mucho: más que eso es ruido o alguien jugando con la ruta */
 export const CLICS_MAX_K = 1500;
+
+/**
+ * 🎬 LOS REELS (24/11/2026), dos cosas de la página nueva de Reels:
+ * - «¿QUIÉN GANÓ?»: con tu cuenta, un voto por video; votar a otro lo cambia y `k: ''` lo saca. El reparto se muestra
+ *   recién con `REELS_MIN_VOTOS` votos (la regla de Dlx: con pocos, el resultado dice quién votó primero y no quién
+ *   ganó); antes, sólo cuántos. Nunca quién votó a quién.
+ * - CUÁNTO SE MIRA CADA UNO: segundos, si se fue antes de 3 s y si llegó al final; sin cuenta y de a tandas, como los
+ *   toques. ⚠️ SON CONTADORES PROPIOS DE LA PÁGINA, NO DATOS DE YOUTUBE: sus Políticas para Desarrolladores (III.E.4.h)
+ *   no dejan guardar ni derivar métricas de su API, y acá no se le pregunta nada; se cuenta lo que se vio en la página.
+ *   Y mirar nunca da nada: ni XP, ni puntos, ni Tareas.
+ */
+export const REEL_ID = /^[A-Za-z0-9_-]{11}$/;
+export const REELS_MIN_VOTOS = 20;
+/** cuántas personas distintas se pueden votar en un video: una batalla son dos, un triangular tres, un 2 vs 2 cuatro */
+export const REELS_MAX_K = 4;
+/** cuántos videos entran en una tanda de `/reels-vistos`, y cuántos distintos por día (más es ruido o alguien jugando) */
+export const REELS_LOTE = 30;
+export const REELS_DIA_MAX = 3000;
+
+/** Un voto de `/reels-voto` con forma: `{v, k}`, o `null`. `k: ''` es «sacar mi voto» */
+export function reelVotoValido(d) {
+  if (!d || typeof d !== 'object') return null;
+  const v = String(d.v || '');
+  const k = typeof d.k === 'string' ? d.k : null;
+  if (!REEL_ID.test(v) || k === null || (k !== '' && !(k.length <= 40 && claveValida(k)))) return null;
+  return { v, k };
+}
+
+/** Una tanda de `/reels-vistos` (`{v: {id: [segundos 0-600, salto 0|1, fin 0|1]}}`): lo que tiene forma, hasta
+ *  `REELS_LOTE` videos, o `null` si no queda nada */
+export function reelsVistosValidos(d) {
+  const v = d && typeof d === 'object' && d.v && typeof d.v === 'object' && !Array.isArray(d.v) ? d.v : {};
+  const out = {};
+  for (const [id, x] of Object.entries(v).slice(0, REELS_LOTE)) {
+    if (!REEL_ID.test(id) || !Array.isArray(x) || x.length !== 3) continue;
+    const [seg, salt, fin] = x;
+    if (!Number.isInteger(seg) || seg < 0 || seg > 600 || (salt !== 0 && salt !== 1) || (fin !== 0 && fin !== 1)) continue;
+    out[id] = [seg, salt, fin];
+  }
+  return Object.keys(out).length ? out : null;
+}
 
 /**
  * 🐞 UN ERROR DE LA PÁGINA (Dlx, 19/10/2026: «ok», a que los errores de la página lleguen al Dashboard). Lo manda
@@ -3982,6 +4023,9 @@ const RUTAS = {
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
+  // 🎬 los Reels (24/11/2026): «¿quién ganó?» con cuenta, cuántos votos lleva cada video, y cuánto se mira cada uno sin
+  // nada de nadie. Ver `reelVotoValido()`, `reelsVoto()` y `reelsVistos()`
+  '/avisos/reels-voto': 'POST', '/avisos/reels-votos': 'GET', '/avisos/reels-vistos': 'POST', '/avisos/reels-stats': 'GET',
   // 💬 los comentarios de Publicaciones: escribir (verificado), leerlos, borrar el tuyo, y quién deja usar su cara
   // (Mi cuenta y el Dashboard). Ver `validarComentario()` y `comentar()`
   '/avisos/comentar': 'POST', '/avisos/comentarios': 'GET', '/avisos/comentario-borrar': 'POST', '/avisos/comentario-reportar': 'POST',
@@ -7588,6 +7632,37 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🎬 «¿QUIÉN GANÓ?» EN UN REEL (24/11/2026): quién lo dice Discord (o la sesión), como felicitar; qué video y a quién,
+  // la forma (`reelVotoValido()`); el tope de personas por video, el objeto. ⚠️ Necesita su rama, como felicitar
+  if (ruta === '/avisos/reels-voto') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const x = reelVotoValido(d);
+    if (!x || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/reels-voto', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, v: x.v, k: x.k }), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🎬 cuántos votos lleva un reel: el video va en la dirección (`?v=`), que el reenvío de abajo no pasa
+  if (ruta === '/avisos/reels-votos') {
+    const v = String(new URL(req.url).searchParams.get('v') || '');
+    if (!REEL_ID.test(v)) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/reels-votos?v=' + v);
+  }
+  // 🎬 cuánto se miró cada reel en un rato de un navegador, de a tandas: sólo números (`reelsVistosValidos()`)
+  if (ruta === '/avisos/reels-vistos') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 4000 ? JSON.parse(crudo) : null; } catch (e) { d = null; }
+    const v = reelsVistosValidos(d);
+    if (!v) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/reels-vistos', { method: 'POST', body: JSON.stringify({ v }),
+      headers: { 'content-type': 'application/json' } });
+  }
   // 💬 COMENTAR: quién lo dice Discord (o la sesión), con su perfil VERIFICADO (`d:`); qué publicación, el muro
   // (`validarComentario()`). ⚠️ Necesita su rama, como felicitar
   if (ruta === '/avisos/comentar') {
@@ -9279,6 +9354,14 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS errores_avisados (k TEXT PRIMARY KEY, t INTEGER NOT NULL) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS clics (dia TEXT NOT NULL, k TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, k)) WITHOUT ROWID');
+      // 🎬 LOS REELS (24/11/2026): el voto de «¿quién ganó?» de cada cuenta en cada video (`reelsVoto()`) y cuánto se mira
+      // cada video por día, sin nada de nadie (`reelsVistos()`). El índice `(v, k)` cuenta un video sin leer sus filas
+      this.sql.exec('CREATE TABLE IF NOT EXISTS reels_voto (v TEXT NOT NULL, quien TEXT NOT NULL, k TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (v, quien)) WITHOUT ROWID');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS reels_voto_v ON reels_voto (v, k)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS reels_dia (dia TEXT NOT NULL, v TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
+        'seg INTEGER NOT NULL DEFAULT 0, salt INTEGER NOT NULL DEFAULT 0, fin INTEGER NOT NULL DEFAULT 0, ' +
+        'PRIMARY KEY (dia, v)) WITHOUT ROWID');
       // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
       // cuenta o un evento jugado; el día, nunca la hora) y, de los que jugaron, su perfil y cuántos eventos
       // (`jugo_temp`, por temporada, que manda el ciclo). Ver `diaActivo()`, `rachaDe()` y `bot/racha.py`
@@ -10274,6 +10357,7 @@ export class Avisos {
   quietoVolcar() {
     try { this.clicsVolcar(); } catch (e) { this.medir('filas', 'clics-error', 1); }
     try { this.errVolcar(); } catch (e) { this.medir('filas', 'errores-error', 1); }
+    try { this.reelsVolcar(); } catch (e) { this.medir('filas', 'reels-error', 1); }
     try { this.medidasGuardar(Date.now(), true); } catch (e) { /* medir nunca frena nada */ }
   }
 
@@ -10324,6 +10408,12 @@ export class Avisos {
       if (ruta === '/crew-link') return json(this.crewDeLink(new URL(req.url).searchParams.get('x')), 200, 60);
       if (ruta === '/ref-links') return json({ ok: true, ks: this.refLinksCiclo() }, 200, 0);
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
+      // 🎬 los votos de un reel (cuántos, y el reparto sólo con 20) y cuánto se mira cada uno, de 7 días. Nunca quién
+      if (ruta === '/reels-votos') {
+        const v = new URL(req.url).searchParams.get('v') || '';
+        return REEL_ID.test(v) ? json(this.reelsCuenta(v), 200, 30) : json({ error: 'faltan datos' }, 400);
+      }
+      if (ruta === '/reels-stats') return json(this.reelsStats(), 200, 600);
       // 💬 los comentarios de verdad de cada publicación: perfil, nombre y texto, nunca el Discord ID
       if (ruta === '/comentarios') return json(this.comentarios(), 200, 20);
       if (ruta === '/qg-finales') return json(this.qgFinalesLista(), 200, 20);
@@ -10487,6 +10577,8 @@ export class Avisos {
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/ui') return json(this.uiGuardar(d));
       if (ruta === '/aplaudir') return this.aplaudir(d);
+      if (ruta === '/reels-voto') return this.reelsVoto(d);
+      if (ruta === '/reels-vistos') return this.reelsVistos(d);
       if (ruta === '/comentar') return await this.comentar(d);
       if (ruta === '/comentario-borrar') return json(this.comentarioBorrar(d));
       if (ruta === '/comentario-reportar') return json(this.comentarioReportar(d));
@@ -10876,6 +10968,7 @@ export class Avisos {
     // 👆 los toques juntados en memoria, a la base: una vez por minuto, también de madrugada
     try { this.clicsVolcar(); } catch (e) { this.medir('filas', 'clics-error', 1); }
     try { this.errVolcar(); } catch (e) { this.medir('filas', 'errores-error', 1); }
+    try { this.reelsVolcar(); } catch (e) { this.medir('filas', 'reels-error', 1); }
     // ⚡ los redibujos a pedido, TAMBIÉN DE MADRUGADA (Dlx, 26/10/2026: «si cualquiera quiere personalizar su tarjeta…
     // debe ser al o casi al instante… sin importar del vigía»). No avisan a nadie: es la carta que cada uno pidió.
     // Guardar en el Inventario ya lo larga en el momento (`/tag-elige`, `/marco-elige`); esto recoge lo que quedó
@@ -11073,6 +11166,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM secciones WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM clics WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      this.sql.exec('DELETE FROM reels_dia WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       // 🐞 los errores de la página: 30 días
       this.sql.exec('DELETE FROM errores_pag WHERE dia < ?', diaET(ahora - 30 * DIA_MS));
       this.sql.exec('DELETE FROM errores_avisados WHERE t < ?', ahora - 30 * DIA_MS);
@@ -14909,6 +15003,8 @@ export class Avisos {
     const v = this.sql.exec('DELETE FROM votos WHERE quien = ?', String(d.quien));
     // 🗳️ y los de «¿quién gana la liga?» (14/10/2026): también llevan su Discord ID
     this.sql.exec('DELETE FROM liga_voto WHERE quien = ?', String(d.quien));
+    // 🎬 y los de «¿quién ganó?» de los Reels (24/11/2026)
+    this.sql.exec('DELETE FROM reels_voto WHERE quien = ?', String(d.quien));
     // 📱 y lo que la página marcó como visto en su cuenta (23/11/2026)
     try { this.sql.exec('DELETE FROM cuenta_ui WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
     // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
@@ -16767,6 +16863,8 @@ export class Avisos {
       'reportes', 'aplausos', 'pase_hecho', 'pase_vivo', 'pase_log', 'pase_hito', 'xp_log', 'promo_visto', 'promo_extra',
       'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'sigue_sv', 'org_cola', 'videos_pedidos',
       'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue', 'publico',
+      // 🎬 su voto de «¿quién ganó?» en cada reel (24/11/2026)
+      'reels_voto',
       // 💎🖼️ lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
       'pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part',
       // 🏷️ y el TAG que eligió para cada carta
@@ -22792,6 +22890,85 @@ export class Avisos {
           'WHERE n < 1000000', dia, kk, Math.min(v, 1000000));
       }
     }
+  }
+
+  /**
+   * 🎬 «¿QUIÉN GANÓ?» EN UN REEL (24/11/2026): un voto por cuenta y por video; votar a otro lo cambia y `k: ''` lo saca.
+   * Como mucho `REELS_MAX_K` personas distintas por video, contando las de los demás (quien cambia su voto no se cuenta
+   * a sí mismo). De vuelta, la cuenta del video (`reelsCuenta()`) y tu voto, así la página no vuelve a preguntar
+   */
+  reelsVoto(d) {
+    const x = reelVotoValido(d);
+    const quien = String((d && d.quien) || '');
+    if (!x || !/^[0-9]{5,25}$/.test(quien)) return json({ error: 'faltan datos' }, 400);
+    if (x.k === '') this.sql.exec('DELETE FROM reels_voto WHERE v = ? AND quien = ?', x.v, quien);
+    else {
+      const otros = this.sql.exec('SELECT DISTINCT k FROM reels_voto WHERE v = ? AND quien != ?', x.v, quien).toArray().map((f) => f.k);
+      if (!otros.includes(x.k) && otros.length >= REELS_MAX_K) return json({ error: 'ese video ya tiene ' + REELS_MAX_K + ' para elegir' }, 400);
+      this.sql.exec('INSERT INTO reels_voto (v, quien, k, t) VALUES (?, ?, ?, ?) ON CONFLICT(v, quien) DO UPDATE SET k = excluded.k, ' +
+        't = excluded.t', x.v, quien, x.k, Date.now());
+    }
+    return json({ ok: true, ...this.reelsCuenta(x.v), mio: x.k });
+  }
+
+  /** 🎬 Cuántos votos lleva un reel: `{n, r}`, con `r` = `{clave: votos}` sólo desde `REELS_MIN_VOTOS` (si no, `null`).
+   *  ⚠️ Nunca quién: ni la cuenta ni el perfil de quien votó */
+  reelsCuenta(v) {
+    const filas = this.sql.exec('SELECT k, COUNT(*) AS n FROM reels_voto WHERE v = ? GROUP BY k', String(v)).toArray();
+    const n = filas.reduce((s, f) => s + f.n, 0);
+    return { n, r: n >= REELS_MIN_VOTOS ? Object.fromEntries(filas.map((f) => [f.k, f.n])) : null };
+  }
+
+  /**
+   * 🎬 Cuánto se miró cada reel en un rato de un navegador (`reelsVistosValidos()`). Como los toques: se junta en memoria
+   * y va a la base por tanda (`reelsVolcar()`, al quedar quieto el objeto y con el vigía), así cien personas mirando el
+   * mismo video en un minuto son UNA escritura. Cada entrada es una vista: `[vistas, segundos, saltos, finales]`
+   */
+  reelsVistos(d) {
+    const x = reelsVistosValidos(d);
+    if (!x) return json({ error: 'faltan datos' }, 400);
+    const dia = diaET();
+    const buf = (this.reelsBuf = this.reelsBuf || new Map());
+    const hoy = buf.get(dia) || new Map();
+    buf.set(dia, hoy);
+    for (const [id, [seg, salt, fin]] of Object.entries(x)) {
+      const a = hoy.get(id);
+      if (a) { a[0]++; a[1] += seg; a[2] += salt; a[3] += fin; }
+      else if (hoy.size < REELS_DIA_MAX) hoy.set(id, [1, seg, salt, fin]);
+    }
+    return json({ ok: true });
+  }
+
+  /** 🎬 Lo juntado de los reels, a la base, con el tope de videos distintos por día (como `clicsVolcar()`) */
+  reelsVolcar() {
+    const buf = this.reelsBuf;
+    if (!buf || !buf.size) return;
+    this.reelsBuf = new Map();
+    for (const [dia, hoy] of buf) {
+      let distintos = null;   // como en `clicsVolcar()`: se cuentan sólo si hay uno nuevo
+      for (const [id, [n, seg, salt, fin]] of hoy) {
+        const ya = this.sql.exec('SELECT n FROM reels_dia WHERE dia = ? AND v = ?', dia, id).toArray()[0];
+        if (!ya && distintos === null) {
+          distintos = (this.sql.exec('SELECT COUNT(*) AS n FROM reels_dia WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+        }
+        if (!ya && distintos >= REELS_DIA_MAX) continue;
+        if (!ya) distintos++;
+        this.sql.exec('INSERT INTO reels_dia (dia, v, n, seg, salt, fin) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(dia, v) DO UPDATE SET ' +
+          'n = n + excluded.n, seg = seg + excluded.seg, salt = salt + excluded.salt, fin = fin + excluded.fin WHERE n < 10000000',
+        dia, id, n, seg, salt, fin);
+      }
+    }
+  }
+
+  /** 🎬 Cuánto se miró cada reel en los últimos 7 días: `{d: 7, v: {id: [vistas, segundos, saltos, finales]}}`. Sólo
+   *  números, y guardado 10 minutos en `estado` (`delMinuto()`), como los toques: el borde de Pages también los guarda 10 */
+  reelsStats() { this.reelsVolcar(); return this.delMinuto('resumen:reels', 600, () => this._reelsStats()); }
+
+  _reelsStats() {
+    const v = {};
+    for (const f of this.sql.exec('SELECT v, SUM(n) AS n, SUM(seg) AS seg, SUM(salt) AS salt, SUM(fin) AS fin FROM reels_dia ' +
+      'WHERE dia > ? GROUP BY v', diaET(Date.now() - 7 * DIA_MS)).toArray()) v[f.v] = [f.n, f.seg, f.salt, f.fin];
+    return { d: 7, v };
   }
 
   /** 👆 Lo más tocado de los últimos 7 días, con los 7 anteriores al lado: `{k: [estos7, anteriores7]}` (las 80 más) */

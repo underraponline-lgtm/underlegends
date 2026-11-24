@@ -1402,6 +1402,13 @@ def _lo_barato(correr):
         # 🎬 y los que sumó cada uno, con sus restricciones (`bot/videos_propios.py`, 12/10/2026)
         if not corre(['bot/videos_propios.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
             print('      ⚠️ los videos de cada uno fallaron: queda lo de la corrida anterior')
+        # 📱 y los shorts de los socios, atados a quien nombran, para la página de Reels (`bot/liga_shorts.py`,
+        # 24/11/2026). Lee YouTube una vez por día (hora del este: lo decide el script con `visto`) y en las demás
+        # corridas rehace `bot/paginas/liga_shorts.json` sin red, desde `datos/liga_shorts_fuente.json`: la salida no
+        # se commitea (guardar.sh guarda sólo `datos/`), así que sale de la fuente en cada corrida, ANTES del hash de
+        # `bot/paginas/` del paso 2c. Nunca frena el ciclo
+        if not corre(['bot/liga_shorts.py', '--aplicar'], callado=True, mostrar=('📱', '⚠️')):
+            print('      ⚠️ los shorts de la Liga fallaron: queda lo de la corrida anterior')
     # ── 2b8b · 💬 los chats generales de cada socio (`bot/chats.py`, Dlx 17/11/2026): una vez por día, desde las 12 PM ET.
     # Sólo números al repo; lo que importa, al Dashboard. Cada servidor lo apaga en su panel. Nunca frena el ciclo
     if correr:

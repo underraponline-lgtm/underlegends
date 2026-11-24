@@ -24,7 +24,8 @@
 // ⚠️ VER REELS NO DA NADA: ni Puntos de Tienda ni misiones (Developer Policies de YouTube, III.F.3.c). El Fuego y Guardar
 // viven en este navegador.
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Bandera, nombrePais } from './piezas.jsx';
+import { Bandera, Cara as CaraLiga, nombrePais } from './piezas.jsx';
+import { aQuienSigo } from './liga.js';
 import { abrirVideo } from './video.jsx';
 import { GRUPO, nombre, preparar, useGlobal } from './global.jsx';
 import CSS from './css/reels.css?inline';
@@ -43,23 +44,43 @@ const L_VISTOS = 'lg:reels-vistos';
 const L_MENOS = 'lg:reels-menos';
 const L_GUARDO = 'lg:reels-guardados';
 const L_FUEGO = 'lg:reels-fuego';
+// ⭐ a quién sigues del Ranking global (los Pro no tienen perfil en la Liga: se siguen en este navegador). Los de la Liga se
+// siguen con el «Seguir» de siempre (`alternarSigo()` de social.js: el navegador y, si entraste, tu cuenta)
+const L_SIGO_G = 'lg:reels-sigo';
 const limpio2 = (s) => String(s || '').replace(/[^\p{L}\p{N}\s]/gu, '').trim();
 const inicial = (g) => ([...limpio2(g.n)][0] || '?').toUpperCase();
-const puestoDe = (g) => (g.pos ? '#' + g.pos + ' ' : '') + (GRUPO[g.esc] || '');
+const puestoDe = (g) => (g.liga ? 'Liga' + (g.sv ? ' · ' + g.sv : '') : (g.pos ? '#' + g.pos + ' ' : '') + (GRUPO[g.esc] || ''));
+// adónde lleva su nombre: su perfil de la Liga o su ficha del Ranking global
+const perfilDe = (g) => (g.liga ? '#/r/' + g.lk : '#/global/' + g.k);
+// la clave con la que se lo sigue en la Liga (los de la Liga, y los del global que también juegan acá: `hk`)
+const claveLiga = (g) => (g.liga ? g.lk : g.hk || '');
 const linkDe = (vid) => 'https://underlegends.pages.dev/freestyle-rap/reels/' + vid;
 
-/** todos los shorts del Ranking global, uno por video, con todos los que nombra */
-function armar(X, D) {
+/** todos los shorts, uno por video, con todos los que nombra: los del Ranking global (`/global.json`) y los de los canales de
+ *  los socios (`/liga_shorts.json`, bot/liga_shorts.py: la mejora 3, «que la gente se vea entre los pros») */
+function armar(X, D, L) {
   const cs = (D && D.cs) || [];
   const m = new Map();
+  if (L && Array.isArray(L.g)) {
+    const csl = L.cs || [];
+    const porL = new Map(L.g.map((g) => [g.k, { k: 'liga:' + g.k, lk: g.k, n: g.n, cc: g.cc || '', sv: g.sv || '', esc: 'liga', liga: true, pos: 0 }]));
+    for (const g of L.g) {
+      for (const s of g.vs || []) {
+        if (m.has(s[0])) continue;
+        const ks = [g.k, ...(s[2] || [])].filter((k, j, a) => porL.has(k) && a.indexOf(k) === j);
+        m.set(s[0], { vid: s[0], canal: csl[s[1]] || '', t: s[3] || '', ks: ks.map((k) => 'liga:' + k), gente0: ks.map((k) => porL.get(k)), orden: m.size, deLiga: true });
+      }
+    }
+  }
   for (const g of X.G) {
     for (const s of g.vs || []) {
       let r = m.get(s[0]);
       if (!r) { r = { vid: s[0], canal: cs[s[1]] || '', t: s[3] || '', ks: [], orden: m.size }; m.set(s[0], r); }
+      if (r.deLiga) continue;
       for (const k of [g.k, ...(s[2] || [])]) if (k && !r.ks.includes(k) && X.porK.has(k)) r.ks.push(k);
     }
   }
-  const xs = [...m.values()].map((r) => ({ ...r, gente: r.ks.map((k) => X.porK.get(k)).filter(Boolean) })).filter((r) => r.gente.length);
+  const xs = [...m.values()].map((r) => ({ ...r, gente: r.gente0 || r.ks.map((k) => X.porK.get(k)).filter(Boolean) })).filter((r) => r.gente.length);
   // 🔁 POR RONDAS: uno de cada persona y después el segundo de cada una. En el orden de la tabla, los de Mecha salían uno
   // de cada dos (medido: 3 de los primeros 5)
   const vueltas = new Map();
@@ -73,14 +94,19 @@ function armar(X, D) {
   xs.forEach((r, j) => { r.orden = j; });
   return xs;
 }
+const deLaLiga = (r) => r.gente.some((g) => g.liga);
 const dePlaza = (r) => r.gente.some((g) => g.esc !== 'pro');
 
 /** el feed en orden: lo no visto primero, sin repetir canal ni persona seguidos, y uno de cada cuatro de las plazas */
-function ordenar(xs, vistos, menos) {
+function ordenar(xs, vistos, menos, notas) {
   const v = new Set(vistos);
   const mn = new Set(menos);
   const peso = (r) => (v.has(r.vid) ? 2 : 0) + (mn.has(r.canal) ? 1 : 0);
-  const resto = xs.slice().sort((a, b) => peso(a) - peso(b) || a.orden - b.orden);
+  // 📊 la nota de cada reel, de lo que mira la gente en la página (`/api/avisos/reels-stats`, los últimos 7 días): los que se
+  // ven enteros suben y los que se pasan en los primeros 3 segundos bajan, DENTRO de su ronda (no le gana a la variedad).
+  // Con menos de 5 vistas no hay nota: no se sabe
+  const nota = (r) => { const x = notas && notas[r.vid]; return x && x[0] >= 5 ? (x[3] - x[2]) / x[0] : 0; };
+  const resto = xs.slice().sort((a, b) => peso(a) - peso(b) || a.ronda - b.ronda || nota(b) - nota(a) || a.orden - b.orden);
   const out = [];
   while (resto.length) {
     const ant = out[out.length - 1];
@@ -103,8 +129,10 @@ function Poster({ vid, cls, alt = '' }) {
       onError={(e) => { if (!e.currentTarget.dataset.atras) { e.currentTarget.dataset.atras = '1'; e.currentTarget.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg'; } }} />
   );
 }
-function Cara({ g, cls }) {
+function Cara({ g, cls, liga }) {
   const [mal, setMal] = useState('');
+  // los de la Liga, con su cara de la Liga (`Cara` de piezas.jsx: su foto o su inicial)
+  if (g.liga && liga) return <span className={cls + ' lg'}><CaraLiga liga={liga} k={g.lk} nombre={g.n} cls="rls-cara-lg" /></span>;
   const src = [g.ft, g.fr].find((u) => u && u !== mal) || '';
   if (src) return <img className={cls} alt="" src={src} onError={() => setMal(src)} />;
   return <span className={cls + ' ini'}>{inicial(g)}</span>;
@@ -137,6 +165,37 @@ function Ico({ n, lleno = false, t = 24 }) {
   );
 }
 
+// ── lo que se mira (la mejora 5): cuántos segundos de cada reel, si se pasó en los primeros 3 y si llegó al final. Se junta en
+// el navegador y sale de a tandas (cada 20 s y al irse), como los toques (`contarClic` de App.jsx): un reel no es un pedido.
+// Son números de esta página, no de YouTube, y no dan nada a nadie ──
+const MIRA = {};
+let miraReloj = 0;
+function soltarMira() {
+  const ks = Object.keys(MIRA);
+  if (!ks.length) return;
+  const v = {};
+  for (const k of ks.slice(0, 30)) { v[k] = MIRA[k]; delete MIRA[k]; }
+  const cuerpo = JSON.stringify({ v });
+  try {
+    if (navigator.sendBeacon && navigator.sendBeacon('/api/avisos/reels-vistos', new Blob([cuerpo], { type: 'application/json' }))) return;
+  } catch (e) { /* y por fetch */ }
+  fetch('/api/avisos/reels-vistos', { method: 'POST', headers: { 'content-type': 'application/json' }, body: cuerpo, keepalive: true }).catch(() => {});
+}
+function anotarMira(vid, seg, fin) {
+  if (!vid) return;
+  const x = MIRA[vid] || [0, 0, 0];
+  x[0] = Math.min(600, x[0] + Math.round(seg));
+  x[1] = !fin && seg < 3 ? 1 : x[1];
+  x[2] = fin ? 1 : x[2];
+  MIRA[vid] = x;
+  clearTimeout(miraReloj);
+  miraReloj = setTimeout(soltarMira, 20000);
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('pagehide', soltarMira);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') soltarMira(); });
+}
+
 // ── el reproductor: uno solo, por postMessage ──
 function useReproductor({ alTerminar, alPausar, alCorrer }) {
   const marco = useRef(null);
@@ -147,6 +206,16 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
   const [nacioMudo, setNacioMudo] = useState(false);
   const cb = useRef({ alTerminar, alPausar, alCorrer });
   cb.current = { alTerminar, alPausar, alCorrer };
+  // 📊 el reel que está puesto, desde cuándo corre y cuánto lleva
+  const mira = useRef({ vid: '', desde: 0, seg: 0, fin: false });
+  const cerrarMira = () => {
+    const m = mira.current;
+    if (!m.vid) return;
+    const seg = m.seg + (m.desde ? (Date.now() - m.desde) / 1000 : 0);
+    if (seg > 0 || m.fin) anotarMira(m.vid, seg, m.fin);
+    mira.current = { vid: '', desde: 0, seg: 0, fin: false };
+  };
+  useEffect(() => () => cerrarMira(), []); // eslint-disable-line react-hooks/exhaustive-deps
   const manda = (func, args = []) => {
     const w = marco.current && marco.current.contentWindow;
     if (!w || !listo.current) { cola.current.push([func, args]); return; }
@@ -164,6 +233,10 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
         for (const [f, a] of xs) manda(f, a);
       }
       const st = d.event === 'onStateChange' ? d.info : (d.event === 'infoDelivery' && d.info && typeof d.info.playerState === 'number' ? d.info.playerState : null);
+      const m = mira.current;
+      if (st === 1 && !m.desde) m.desde = Date.now();
+      if ((st === 0 || st === 2) && m.desde) { m.seg += (Date.now() - m.desde) / 1000; m.desde = 0; }
+      if (st === 0) m.fin = true;
       if (st === 0) cb.current.alTerminar();
       else if (st === 2) cb.current.alPausar();
       else if (st === 1) cb.current.alCorrer();
@@ -184,6 +257,8 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
       allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen /> : null,
     // la primera vez crea el reproductor (`solo`: sin que nadie tocara nada, así que mudo); después se le cambia el video
     poner: (v, solo = false) => {
+      cerrarMira();
+      mira.current = { vid: v, desde: 0, seg: 0, fin: false };
       if (!vid) { if (solo) { setNacioMudo(true); setMudo(true); } setVid(v); } else manda('loadVideoById', [v]);
     },
     play: () => manda('playVideo'), pausa: () => manda('pauseVideo'),
@@ -192,28 +267,61 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
 }
 
 // ── el estado del feed, para los dos ──
+let pedidoL = null;
+const bajarLiga = () => (pedidoL = pedidoL || fetch('/liga_shorts.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+let pedidoN = null;
+const bajarNotas = () => (pedidoN = pedidoN || fetch('/api/avisos/reels-stats').then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.v) || null).catch(() => null));
+
 function useFeed(liga, inicio) {
   const [D, mal, reintentar] = useGlobal();
+  const [L, setL] = useState(null);
+  const [notas, setNotas] = useState(null);
+  const [listoL, setListoL] = useState(false);
+  useEffect(() => {
+    let vivo = true;
+    bajarLiga().then((d) => { if (vivo) { setL(d); setListoL(true); } });
+    bajarNotas().then((n) => { if (vivo) setNotas(n); });
+    return () => { vivo = false; };
+  }, []);
   const X = useMemo(() => (D ? preparar(D, liga) : null), [D, liga]);
-  const todos = useMemo(() => (X ? armar(X, D) : []), [X, D]);
+  // se espera a la Liga (es un archivo chico): si llegara después, el feed se reordenaría mientras lo miras
+  const todos = useMemo(() => (X && listoL ? armar(X, D, L) : []), [X, D, L, listoL]);
+  // ⭐ a quién sigues: los de la Liga (`lg:sigo`, el de siempre) y los del global (en este navegador)
+  const [sigo, setSigo] = useState(() => aQuienSigo());
+  const [sigoG, setSigoG] = useState(() => ls.json(L_SIGO_G, []));
+  useEffect(() => {
+    const f = () => setSigo(aQuienSigo());
+    window.addEventListener('lg:sigo', f);
+    return () => window.removeEventListener('lg:sigo', f);
+  }, []);
+  const loSigo = (g) => { const kl = claveLiga(g); return kl ? sigo.includes(kl) : sigoG.includes(g.k); };
+  const seguir = (g) => {
+    const kl = claveLiga(g);
+    if (kl && typeof window.alternarSigo === 'function') { window.alternarSigo(kl); setTimeout(() => setSigo(aQuienSigo()), 50); return; }
+    const nx = sigoG.includes(g.k) ? sigoG.filter((x) => x !== g.k) : [...sigoG, g.k].slice(-200);
+    setSigoG(nx);
+    ls.set(L_SIGO_G, nx);
+  };
   const [filtro, setFiltro] = useState('todo');
   const [menos, setMenos] = useState(() => ls.json(L_MENOS, []));
   const [guardo, setGuardo] = useState(() => ls.json(L_GUARDO, []));
   const [fuego, setFuego] = useState(() => ls.json(L_FUEGO, []));
   // los vistos se leen una vez: si no, el feed se reordenaría mientras lo miras
   const vistos0 = useRef(ls.json(L_VISTOS, []));
-  const claveG = filtro === 'guardados' ? guardo.join(',') : '';
+  const claveG = filtro === 'guardados' ? guardo.join(',') : filtro === 'siguiendo' ? sigo.join(',') + '|' + sigoG.join(',') : '';
   const lista = useMemo(() => {
-    const base = filtro === 'pro' ? todos.filter((r) => !dePlaza(r)) : filtro === 'plaza' ? todos.filter(dePlaza)
+    const base = filtro === 'pro' ? todos.filter((r) => !dePlaza(r)) : filtro === 'plaza' ? todos.filter((r) => dePlaza(r) && !deLaLiga(r))
+      : filtro === 'liga' ? todos.filter(deLaLiga)
+      : filtro === 'siguiendo' ? todos.filter((r) => r.gente.some(loSigo))
       : filtro === 'guardados' ? todos.filter((r) => guardo.includes(r.vid)) : todos;
-    const o = ordenar(base, vistos0.current, menos);
+    const o = ordenar(base, vistos0.current, menos, notas);
     // un link a un reel (`#/reels/<id>`) empieza por ese
     const j = inicio ? o.findIndex((r) => r.vid === inicio) : -1;
     if (j > 0) o.unshift(o.splice(j, 1)[0]);
     return o;
     // `menos` cambia el orden sólo al cambiar de filtro: marcar «no me interesa» no te mueve el reel que estás viendo
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todos, filtro, inicio, claveG]);
+  }, [todos, filtro, inicio, claveG, notas ? 1 : 0]);
   const [i, setI] = useState(0);
   const [cargados, setCargados] = useState(VER);
   const [fin, setFin] = useState(false);
@@ -239,8 +347,11 @@ function useFeed(liga, inicio) {
   const ir = (j) => { setFin(false); setI(Math.max(0, Math.min(lista.length - 1, j))); };
   const siguiente = () => { if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
   const conmuta = (xs, set, k, v) => { const nx = xs.includes(v) ? xs.filter((x) => x !== v) : [...xs, v]; set(nx); ls.set(k, nx); return nx; };
+  const hayLiga = todos.some(deLaLiga);
+  const filtros = FILTROS.filter(([k]) => (k !== 'liga' || hayLiga) && (k !== 'guardados' || guardo.length || filtro === 'guardados'));
   return {
-    D, X, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
+    D, X: X && listoL ? X : null, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
+    liga, filtros, loSigo, seguir,
     anterior: () => (fin ? setFin(false) : ir(i - 1)),
     deNuevo: () => ir(0),
     guardado: !!(cur && guardo.includes(cur.vid)), hayGuardados: guardo.length > 0,
@@ -261,7 +372,59 @@ function batallaDe(r) {
   return v ? v[0] : null;
 }
 
-const FILTROS = [['todo', 'Para ti'], ['pro', 'Pros'], ['plaza', 'Plazas'], ['guardados', 'Guardados']];
+/** el voto de una batalla: quién ganó. Hace falta entrar con Discord (uno por cuenta). El resultado se ve recién con 20
+ *  votos (Dlx, en las maquetas: «el resultado se muestra cuando haya 20 votos»), y nunca quién votó */
+function Voto({ r, clase = '' }) {
+  const [V, setV] = useState(null);
+  const [mio, setMio] = useState('');
+  const [msg, setMsg] = useState('');
+  const vid = r.vid;
+  useEffect(() => {
+    let vivo = true;
+    setV(null); setMio(''); setMsg('');
+    fetch('/api/avisos/reels-votos?v=' + encodeURIComponent(vid)).then((x) => (x.ok ? x.json() : null)).then((j) => { if (vivo && j) setV(j); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [vid]);
+  const votar = async (k) => {
+    if (typeof window.conCuenta !== 'function') return;
+    setMsg('');
+    const j = await window.conCuenta('/api/avisos/reels-voto', { v: vid, k: mio === k ? '' : k });
+    if (!j) return;
+    if (j.status === 401) { setMsg('cuenta'); return; }
+    if (!j.ok) { setMsg('mal'); return; }
+    setMio(j.mio || '');
+    setV({ n: j.n, r: j.r });
+  };
+  const n = (V && V.n) || 0;
+  const res = V && V.r;
+  return (
+    <div className={'rls-voto ' + clase}>
+      <b className="rls-voto-t">¿Quién ganó?</b>
+      <div className="rls-voto-bs">
+        {r.gente.slice(0, 2).map((g) => {
+          const pct = res && n ? Math.round(((res[g.k] || 0) * 100) / n) : null;
+          return (
+            <button key={g.k} type="button" aria-pressed={mio === g.k} className={mio === g.k ? 'on' : ''} onClick={() => votar(g.k)}>
+              <span>{nombre(g)}</span>{pct != null ? <em>{pct} %</em> : null}
+              {pct != null ? <i style={{ width: pct + '%' }} aria-hidden="true" /> : null}
+            </button>
+          );
+        })}
+      </div>
+      <small>{msg === 'cuenta' ? <>Para votar, <a href="#/cuenta">entra con Discord</a>.</> : msg === 'mal' ? 'No pude guardar tu voto. Prueba de nuevo.'
+        : res ? n + ' votos' : n >= 1 ? 'El resultado se ve con 20 votos: van ' + n + '.' : 'El resultado se ve con 20 votos.'}</small>
+    </div>
+  );
+}
+
+// lo que dice cada filtro cuando no tiene nada
+const VACIO = { siguiendo: 'Todavía no sigues a nadie con reels', guardados: 'Todavía no guardaste ningún reel', liga: 'Todavía no hay reels de la Liga' };
+const VACIO_P = {
+  siguiendo: 'Toca la cara de alguien en un reel y «Seguir»: sus reels salen acá.',
+  guardados: 'Toca el marcador en un reel y lo encuentras acá.',
+  liga: 'Salen de los canales de YouTube de los servidores socios.',
+};
+const FILTROS = [['todo', 'Para ti'], ['siguiendo', 'Siguiendo'], ['liga', 'La Liga'], ['pro', 'Pros'], ['plaza', 'Plazas'], ['guardados', 'Guardados']];
 
 async function compartir(r, setCopiado) {
   const url = linkDe(r.vid);
@@ -351,7 +514,18 @@ function ReelsCel({ F }) {
   };
   const avisa = (txt, deshacer) => { setAviso({ txt, deshacer }); clearTimeout(reloj.current); reloj.current = setTimeout(() => setAviso(null), 5000); };
   const r = F.cur;
-  if (!r) return <div className="rls rls-cel" ref={caja} style={{ bottom: medida.abajo }}><p className="rls-nada">Todavía no hay reels{F.filtro === 'guardados' ? ' guardados' : ''}.</p></div>;
+  if (!r) {
+    return (
+      <div className="rls rls-cel menu" ref={caja} style={{ bottom: medida.abajo }}>
+        <div className="rls-fin">
+          <span className="tag">REELS</span>
+          <b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b>
+          <p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
+          <button type="button" className="rls-bt prim" onClick={() => F.setFiltro('todo')}>Ver Para ti</button>
+        </div>
+      </div>
+    );
+  }
   // el video en modo teatro: 9:16, entre las líneas (28 px) y los íconos (56 px), dejando lugar arriba y abajo
   const arriba = 52;
   const pie = 132;
@@ -362,7 +536,7 @@ function ReelsCel({ F }) {
   const vx = 28 + (wMax - vw) / 2;
   const filtroN = (FILTROS.find((f) => f[0] === F.filtro) || FILTROS[0])[1];
   const otroFiltro = () => {
-    const fs = FILTROS.filter((f) => f[0] !== 'guardados' || F.hayGuardados);
+    const fs = F.filtros;
     const j = fs.findIndex((f) => f[0] === F.filtro);
     F.setFiltro(fs[(j + 1) % fs.length][0]);
   };
@@ -370,7 +544,7 @@ function ReelsCel({ F }) {
   const verBatalla = () => {
     pausarMenu();
     if (batalla) abrirVideo({ vid: batalla, tit: r.gente.map(nombre).join(' vs '), link: 'https://www.youtube.com/watch?v=' + batalla });
-    else location.hash = '#/global/' + r.gente[0].k;
+    else location.hash = perfilDe(r.gente[0]);
   };
   const lineas = Array.from({ length: Math.min(F.cargados, F.lista.length) }, (_, j) => j);
   const Lineas = (
@@ -406,7 +580,7 @@ function ReelsCel({ F }) {
           </div>
           {Lineas}
           <div className="rls-riel">
-            <button type="button" className="rls-cara-b" aria-label={'La ficha de ' + nombres} onClick={() => { pausarMenu(); setHoja('ficha'); }}><Cara g={r.gente[0]} cls="rls-cara" /></button>
+            <button type="button" className="rls-cara-b" aria-label={'La ficha de ' + nombres} onClick={() => { pausarMenu(); setHoja('ficha'); }}><Cara liga={F.liga} g={r.gente[0]} cls="rls-cara" /></button>
             <button type="button" className={'rls-ib' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} aria-label="Fuego" onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={28} /></button>
             <button type="button" className="rls-ib" aria-pressed={F.guardado} aria-label={F.guardado ? 'Quitar de guardados' : 'Guardar'} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}><Ico n="guardar" lleno={F.guardado} t={26} /></button>
             <button type="button" className="rls-ib" aria-label="Enviar" onClick={() => compartir(r, (c) => { setCopiado(c); if (c) avisa('Link copiado'); })}><Ico n="enviar" t={26} /></button>
@@ -428,6 +602,7 @@ function ReelsCel({ F }) {
           <button type="button" className="rls-play" aria-label={yt.activo ? 'Seguir viendo' : 'Ver el reel'} onClick={reproducir}><Ico n="play" t={40} /></button>
           <div className="rls-riel sobre">
             <button type="button" className={'rls-ib et' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={30} />Fuego</button>
+            {r.gente.length >= 2 ? <button type="button" className="rls-ib et" onClick={() => setHoja('voto')}><span className="rls-vs" aria-hidden="true">VS</span>¿Quién?</button> : null}
             <button type="button" className="rls-ib et" onClick={verBatalla}><Ico n="batalla" t={30} />{batalla ? 'Batalla' : 'Perfil'}</button>
             <button type="button" className="rls-ib et" onClick={() => compartir(r, (c) => { setCopiado(c); if (c) avisa('Link copiado'); })}><Ico n="enviar" t={28} />Enviar</button>
             <button type="button" className="rls-ib" aria-pressed={F.guardado} aria-label={F.guardado ? 'Quitar de guardados' : 'Guardar'} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}><Ico n="guardar" lleno={F.guardado} t={28} /></button>
@@ -436,15 +611,16 @@ function ReelsCel({ F }) {
           <div className="rls-pie-m">
             <div className="rls-quien">
               <button type="button" className="rls-caras" aria-label={'La ficha de ' + nombres} onClick={() => setHoja('ficha')}>
-                {r.gente.slice(0, 3).map((g) => <Cara key={g.k} g={g} cls="rls-cara" />)}
+                {r.gente.slice(0, 3).map((g) => <Cara liga={F.liga} key={g.k} g={g} cls="rls-cara" />)}
                 <b>{nombres}</b>
               </button>
-              <a className="rls-perfil" href={'#/global/' + r.gente[0].k}>Perfil</a>
+              <button type="button" className={'rls-perfil' + (F.loSigo(r.gente[0]) ? ' on' : '')} aria-pressed={F.loSigo(r.gente[0])}
+                onClick={() => F.seguir(r.gente[0])}>{F.loSigo(r.gente[0]) ? 'Siguiendo' : 'Seguir'}</button>
             </div>
             <button type="button" className={'rls-t' + (largo ? ' largo' : '')} onClick={() => setLargo(!largo)}>
               {r.t || nombres} <span>· {r.gente.map(puestoDe).join(' · ')}</span>
             </button>
-            <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{dePlaza(r) ? <em>De las plazas</em> : null}</span>
+            <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</span>
           </div>
         </>
       )}
@@ -456,19 +632,22 @@ function ReelsCel({ F }) {
 
       {hoja ? (
         <div className="rls-velo" onClick={(e) => { if (e.target === e.currentTarget) setHoja(''); }}>
-          <div className="rls-hoja" role="dialog" aria-label={hoja === 'ficha' ? 'La ficha' : 'Más opciones'}>
+          <div className="rls-hoja" role="dialog" aria-label={hoja === 'ficha' ? 'La ficha' : hoja === 'voto' ? '¿Quién ganó?' : 'Más opciones'}>
             <span className="rls-asa" aria-hidden="true" />
-            {hoja === 'ficha' ? (
+            {hoja === 'voto' ? <Voto r={r} clase="cel" /> : hoja === 'ficha' ? (
               <>
                 {r.gente.map((g) => (
-                  <a key={g.k} className="rls-fila" href={'#/global/' + g.k}>
-                    <Cara g={g} cls="rls-cara g" />
-                    <span><b>{nombre(g)} <Bandera cc={g.cc} cls="rls-flag" /></b>
-                      <small>{[g.cc ? nombrePais(g.cc) : '', puestoDe(g) + (g.pos ? ' del Ranking global' : '')].filter(Boolean).join(' · ')}</small></span>
-                    <Ico n="arriba" t={18} />
-                  </a>
+                  <div key={g.k} className="rls-fila-c">
+                    <a className="rls-fila" href={perfilDe(g)}>
+                      <Cara liga={F.liga} g={g} cls="rls-cara g" />
+                      <span><b>{nombre(g)} <Bandera cc={g.cc} cls="rls-flag" /></b>
+                        <small>{[g.cc ? nombrePais(g.cc) : '', puestoDe(g) + (g.pos ? ' del Ranking global' : '')].filter(Boolean).join(' · ')}</small></span>
+                    </a>
+                    <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
+                      {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button>
+                  </div>
                 ))}
-                <a className="rls-bt prim" href={'#/global/' + r.gente[0].k}>Ver su perfil entero</a>
+                <a className="rls-bt prim" href={perfilDe(r.gente[0])}>Ver su perfil entero</a>
               </>
             ) : (
               <>
@@ -540,7 +719,7 @@ function ReelsPc({ F }) {
   }, []);
   const avisa = (txt, deshacer) => { setAviso({ txt, deshacer }); clearTimeout(reloj.current); reloj.current = setTimeout(() => setAviso(null), 5000); };
   const r = F.cur;
-  const fs = FILTROS.filter((f) => f[0] !== 'guardados' || F.hayGuardados || F.filtro === 'guardados');
+  const fs = F.filtros;
   // 🎨 COMO LAS OTRAS PÁGINAS (8.12, Dlx: «acuérdate el estilo de la página tiene que ser como los otros»): la franja negra
   // con la etiqueta magenta (`.tag`), el título grande (`.hero-ev`) y su bajada (`.hero-p`), como Invita y gana
   const cab = (
@@ -557,7 +736,14 @@ function ReelsPc({ F }) {
       </div>
     </div>
   );
-  if (!r) return <section className="rls-pc">{cab}<div className="rls-pc-in"><p className="rls-nada">Todavía no hay reels{F.filtro === 'guardados' ? ' guardados' : ''}.</p></div></section>;
+  if (!r) {
+    return (
+      <section className="rls-pc">{cab}
+        <div className="rls-pc-in"><div className="rls-vacio"><b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b><p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
+          <button type="button" className="rls-btc" onClick={() => F.setFiltro('todo')}>Ver Para ti</button></div></div>
+      </section>
+    );
+  }
   const nombres = r.gente.map(nombre).join(' vs ');
   const batalla = batallaDe(r);
   const masReels = [1, 2, 3].map((j) => F.lista[F.i + j]).filter(Boolean);
@@ -587,22 +773,27 @@ function ReelsPc({ F }) {
 
         <aside className="rls-pc-panel">
           <div className="rls-pc-quien">
-            <span className="rls-caras">{r.gente.slice(0, 3).map((g) => <Cara key={g.k} g={g} cls="rls-cara" />)}</span>
+            <span className="rls-caras">{r.gente.slice(0, 3).map((g) => <Cara liga={F.liga} key={g.k} g={g} cls="rls-cara" />)}</span>
             <div>
               {r.gente.map((g) => (
-                <a key={g.k} className="rls-pc-n" href={'#/global/' + g.k}><b>{nombre(g)}</b><Bandera cc={g.cc} cls="rls-flag" /><small>{puestoDe(g)}</small></a>
+                <span key={g.k} className="rls-pc-fila">
+                  <a className="rls-pc-n" href={perfilDe(g)}><b>{nombre(g)}</b><Bandera cc={g.cc} cls="rls-flag" /><small>{puestoDe(g)}</small></a>
+                  <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
+                    {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button>
+                </span>
               ))}
             </div>
           </div>
           {r.t ? <p className="rls-pc-t">{r.t}</p> : null}
-          <p className="rls-canal">{r.canal}{dePlaza(r) ? <em>De las plazas</em> : null}</p>
+          <p className="rls-canal">{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</p>
+          {r.gente.length >= 2 ? <Voto r={r} clase="pc" /> : null}
           <div className="rls-pc-acc">
             <button type="button" className={'rls-ib' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} aria-label="Fuego (tecla F)" onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={26} /></button>
             <button type="button" className="rls-ib" aria-pressed={F.guardado} aria-label={F.guardado ? 'Quitar de guardados' : 'Guardar'} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}><Ico n="guardar" lleno={F.guardado} t={24} /></button>
             {yt.mudo ? <button type="button" className="rls-btc rls-sonido-pc" onClick={() => yt.sonido(true)}><Ico n="mudo" t={20} />Activar el sonido</button>
               : <button type="button" className="rls-ib" aria-label="Silenciar (tecla M)" onClick={() => yt.sonido(false)}><Ico n="sonido" t={24} /></button>}
             <button type="button" className="rls-btc" onClick={() => {
-              if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = '#/global/' + r.gente[0].k;
+              if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = perfilDe(r.gente[0]);
             }}><Ico n="batalla" t={20} />{batalla ? 'Batalla completa' : 'Sus batallas'}</button>
           </div>
           <div className="rls-pc-acc">

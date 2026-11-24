@@ -151,6 +151,10 @@ const AVISOS = {
   '/api/avisos/mis-pedidos': 'POST',
   '/api/avisos/dueno-pedido': 'POST',
   '/api/avisos/aplausos': 'GET',
+  // 🎬 LOS REELS (24/11/2026): «¿quién ganó?» con tu cuenta y cuántos votos lleva cada video (el reparto, sólo con 20), y
+  // cuánto se mira cada uno, sin nada de nadie. Ver `reelsVoto()` y `reelsVistos()` en bot/avisos.js
+  '/api/avisos/reels-voto': 'POST', '/api/avisos/reels-votos': 'GET',
+  '/api/avisos/reels-vistos': 'POST', '/api/avisos/reels-stats': 'GET',
   // 🔔 el panel de la campana (02/10/2026): lo que se te avisó, con tu sesión. Ver `bandeja()` en bot/avisos.js
   '/api/avisos/bandeja': 'POST',
   // 🔥 la racha diaria y los niveles (04/10/2026): la tuya con tu sesión, y la de cada perfil. Ver `rachaDe()` y
@@ -423,6 +427,12 @@ async function avisos(req, url, ctx) {
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto
     ttl = 30;
+  } else if (url.pathname === '/api/avisos/reels-votos') {
+    // 🎬 los votos de un reel (24/11/2026): como los de las encuestas, 30 s; quien vota recibe su cuenta en la respuesta
+    ttl = 30;
+  } else if (url.pathname === '/api/avisos/reels-stats') {
+    // 🎬 cuánto se mira cada reel, sumado de 7 días (24/11/2026): el objeto lo arma cada 10 minutos, y el borde igual
+    ttl = 600;
   } else if (url.pathname.endsWith('/tienda-uso')) {
     // 🛍️ el arte de lo que se pone (~100 KB, el mismo para todos): cambia cuando se sube arte nuevo. La página lo guarda
     // por versión y pide `?r=` sólo si el borde le dio una vieja
@@ -443,6 +453,18 @@ async function avisos(req, url, ctx) {
     'cache-control': metodo === 'GET' ? 'public, max-age=20' : 'no-store' };
   // ⚡ por el borde de verdad (ver `delBorde()`); `?r=` es «lo de ahora»: después de elegir un marco (`refrescarPases()`)
   if (metodo === 'GET' && ttl) {
+    // 🎬 LA ÚNICA GET CON UN DATO EN LA DIRECCIÓN (24/11/2026): el video de `/reels-votos?v=`. El resto de este proxy no
+    // reenvía la `?…` y el borde guarda por la ruta, así que acá el video va validado al Worker y dentro de la clave del
+    // borde (una copia por video, no la del primero para todos). Uno que no es un id de YouTube no se guarda: lo rechaza
+    // el Worker (`rutaAvisos()`), sin borde
+    if (url.pathname === '/api/avisos/reels-votos') {
+      const v = url.searchParams.get('v') || '';
+      if (!REEL_ID.test(v)) {
+        const r = await fetch(ORIGEN + '/avisos/reels-votos', init);
+        return new Response(r.body, { status: r.status, headers: { ...cab, 'cache-control': 'no-store' } });
+      }
+      return delBorde(ctx, new URL(url.origin + url.pathname + '/' + v), ttl, () => fetch(ORIGEN + '/avisos/reels-votos?v=' + v, init), cab, false);
+    }
     return delBorde(ctx, url, ttl, () => fetch(ORIGEN + url.pathname.slice('/api'.length), init), cab,
       url.searchParams.has('r') && frescoPermitido(url.pathname));
   }
@@ -851,7 +873,28 @@ async function vistaCompetencia(req, env, id, url) {
   return conVista(req, env, url, { tab: nombre + ' · Ranking global de freestyle', titulo: nombre + ' · Ranking global de freestyle', desc, img, alt: nombre });
 }
 
-/** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?}` sobre la página de siempre */
+// 🎬 LA DE CADA REEL (`/freestyle-rap/reels/<id>`, 24/11/2026): quiénes se enfrentan, de qué batalla y de qué canal, con
+// la miniatura del video en YouTube. Sale de `reels_vista.json` ({o: [ids en el orden del feed], r: {id: [título, canal,
+// «A vs B»]}}), chico a propósito: nada de `global.json`, que costaba 4 ms de CPU de los 10. ⚠️ La miniatura de YouTube
+// (`hqdefault`) mide 480×360 y no 1200×630: van sus medidas de verdad, si no Discord la recorta como si fuera el cartel
+const REEL_ID = /^[A-Za-z0-9_-]{11}$/;
+async function vistaReel(req, env, id, url) {
+  if (!REEL_ID.test(String(id || ''))) return null;
+  const r = await env.ASSETS.fetch(new Request(url.origin + '/reels_vista.json')).catch(() => null);
+  const V = r && r.ok ? await r.json().catch(() => null) : null;
+  const x = V && V.r && Object.prototype.hasOwnProperty.call(V.r, id) ? V.r[id] : null;
+  if (!Array.isArray(x)) return null;
+  const limpio = (s) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+  const [titulo, canal, nombres] = [limpio(x[0]), limpio(x[1]), limpio(x[2])];
+  if (!titulo && !nombres) return null;
+  const tab = (nombres || titulo) + ' · Reels';
+  const desc = [titulo, canal].filter(Boolean).join(' · ');
+  return conVista(req, env, url, { tab, titulo: tab, desc, img: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg',
+    ancho: 480, alto: 360, alt: nombres || titulo, can: WEB + '/freestyle-rap/reels/' + id });
+}
+
+/** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?, can?}` sobre la página de siempre.
+ *  `vertical` saca las medidas del cartel; `ancho` y `alto`, las de una imagen que no es el cartel (la de un reel) */
 async function conVista(req, env, url, v) {
   const pag = await plantilla(env, url);
   const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
@@ -869,6 +912,9 @@ async function conVista(req, env, url, v) {
   if (v.vertical) {
     const sacar = { element(el) { el.remove(); } };
     rw.on('meta[property="og:image:width"]', sacar).on('meta[property="og:image:height"]', sacar);
+  } else if (v.ancho && v.alto) {
+    rw.on('meta[property="og:image:width"]', poner('content', String(v.ancho)))
+      .on('meta[property="og:image:height"]', poner('content', String(v.alto)));
   }
   const out = rw.transform(pag);
   const h = new Headers(out.headers);
@@ -1040,6 +1086,8 @@ export default {
       if (id && pagina === 'ligas') v = await vistaLiga(req, env, id, url).catch(() => null);
       else if (id && mPag[1] === 'llave') v = await vistaLlave(req, env, id, url).catch(() => null);
       else if (id && mPag[1] === 'pais') v = await vistaPais(req, env, id, url).catch(() => null);
+      // 🎬 un reel (24/11/2026): si no está en `reels_vista.json`, la de la página de Reels (abajo)
+      else if (id && pagina === 'reels') v = await vistaReel(req, env, id, url).catch(() => null);
       else if (pagina === 'ranking' && /^global\/[^/]+$/.test(id)) v = await vistaGlobal(req, env, id.slice(7), url).catch(() => null);
       // una ficha que no está (vieja, mal escrita): la del Ranking global, no la del Ranking
       if (!v && pagina === 'ranking' && /^global\//.test(id)) v = await vistaPagina(req, env, pagina, url, 'global').catch(() => null);

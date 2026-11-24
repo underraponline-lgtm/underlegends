@@ -165,3 +165,34 @@
 .rls-teclas{font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris);margin-top:6px}
 .rls-pc-video .rls-fin{padding:0 28px}
 @media (max-width: 1180px){.rls-pc-flechas{flex-direction:row;align-self:flex-start}.rls-pc-cuerpo{flex-wrap:wrap}.rls-teclas{display:none}}
+
+/* ── 8.13: Seguir, el voto, las caras de la Liga y los vacíos ── */
+/* ⚠️ con `.rls-cel` adelante: `.rls-cel button{font:inherit;color:inherit}` les ganaba la letra y el color */
+.rls-cel .rls-perfil{background:transparent;color:#fff;cursor:pointer;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
+.rls-cel .rls-perfil.on{background:#F6F6F6;color:#030304}
+.rls-fila-c{display:flex;align-items:center;gap:10px}
+.rls-fila-c .rls-fila{flex:1;min-width:0}
+.rls-cel .rls-seguir,.rls-pc .rls-seguir{min-height:40px;padding:0 14px;border:2px solid #F6F6F6;background:#F6F6F6;color:#030304;font:700 15px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;flex:none}
+.rls-cel .rls-seguir.on,.rls-pc .rls-seguir.on{background:transparent;color:#F6F6F6}
+.rls-pc-fila{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rls-pc .rls-pc-fila .rls-seguir{min-height:34px;padding:0 10px;font-size:14px}
+.rls-vs{height:28px;padding:0 5px;border:2px solid currentColor;font:800 16px/24px "Barlow Condensed",sans-serif;filter:drop-shadow(0 1px 2px rgba(0,0,0,.75))}
+.rls-cara.lg{padding:0;overflow:hidden;background:#2a2a2a}
+.rls-cara.lg .rls-cara-lg,.rls-cara.lg img{width:100%;height:100%;object-fit:cover;display:flex;align-items:center;justify-content:center;border-radius:0}
+.rls-voto{display:flex;flex-direction:column;gap:10px}
+.rls-voto-t{font:900 20px/1 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase}
+.rls-voto-bs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.rls-voto-bs button{position:relative;min-height:52px;padding:0 12px;border:2px solid #2A2A2E;background:#16161A;color:#F6F6F6;display:flex;align-items:center;
+  justify-content:space-between;gap:8px;overflow:hidden;font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;cursor:pointer;text-align:left}
+.rls-voto-bs button span,.rls-voto-bs button em{position:relative;z-index:1}
+.rls-voto-bs button em{font:700 16px/1 "Barlow Condensed",sans-serif;font-style:normal}
+.rls-voto-bs button i{position:absolute;left:0;top:0;bottom:0;background:rgba(41,178,152,.28)}
+.rls-voto-bs button.on{border-color:#29B298}
+.rls-voto small{font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:#A5A5A0}
+.rls-voto small a{color:#F6F6F6}
+.rls-voto.pc{padding-top:12px;border-top:2px solid #2A2A2E}
+.rls-vacio{max-width:520px;margin:30px auto;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.rls-vacio b{font:900 28px/1 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase}
+.rls-vacio p{margin:0;color:var(--gris)}
+.rls-pc .rls-vacio .rls-btc{color:var(--tinta);border-color:var(--linea)}

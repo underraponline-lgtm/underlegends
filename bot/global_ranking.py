@@ -55,6 +55,8 @@ SALIDA = os.path.join(BASE, 'bot', 'paginas', 'global.json')
 #: El Worker de Pages (`vistaGlobal()` en bot/paginas/_worker.js) lo lee en cada vista previa, y `global.json` entero
 #: (300 KB) le costaba 4 ms de CPU de los 10 que tiene: éste son ~40 KB
 VISTA = os.path.join(BASE, 'bot', 'paginas', 'global_vista.json')
+# 🎬 el índice chico de Reels (24/11/2026): la vista previa de cada link (`vistaReel` de _worker.js) y la fila del Inicio
+REELS_VISTA = os.path.join(BASE, 'bot', 'paginas', 'reels_vista.json')
 PROS = os.path.join(BASE, 'datos', 'global_pros.json')
 SEMILLA_PRO = 7.5  # quien es pro arranca, como mínimo, como un MC de FMS
 
@@ -627,6 +629,7 @@ def correr(red=False, escribir=True):
     if escribir:
         _escribir(SALIDA, out, compacto=True)
         _escribir(VISTA, vista_de(out), compacto=True)
+        _escribir(REELS_VISTA, reels_vista(out), compacto=True)
     return out
 
 
@@ -638,6 +641,40 @@ def vista_de(out):
         if isinstance(g, dict) and g.get('k') and g.get('n'):
             v[g['k']] = [g['n'], g.get('cc') or '', g.get('esc') or '', i + 1 if (g.get('p') or 0) > 0 else 0]
     return v
+
+
+def reels_vista(out, n_inicio=12):
+    """`{o: [ids], r: {id: [título, canal, «Nombre vs Nombre»]}}`: cada short una vez, con todos los que nombra, en el
+    orden del feed de web/src/reels.jsx (`armar()`): por RONDAS —uno de cada persona en el orden de la tabla, después el
+    segundo de cada una—. `o` son los primeros `n_inicio`, para la fila «Reels de la semana» del Inicio; `r` los tiene
+    a todos, para la vista previa de cualquier link"""
+    out = out or {}
+    cs = out.get('cs') or []
+    G = [g for g in (out.get('g') or []) if isinstance(g, dict) and g.get('k')]
+    nom = {g['k']: g.get('n') or g['k'] for g in G}
+    vistos, filas = {}, []
+    for g in G:
+        for s in g.get('vs') or []:
+            vid = s[0]
+            if vid not in vistos:
+                ks = [g['k']] + [k for k in (s[2] if len(s) > 2 else []) if k in nom and k != g['k']]
+                vistos[vid] = len(filas)
+                filas.append({'vid': vid, 'ks': ks, 'canal': cs[s[1]] if isinstance(s[1], int) and s[1] < len(cs) else '',
+                              't': s[3] if len(s) > 3 else ''})
+    ronda = {}
+    for f in filas:
+        k = f['ks'][0]
+        f['ronda'] = ronda.get(k, 0)
+        ronda[k] = f['ronda'] + 1
+    orden = sorted(range(len(filas)), key=lambda i: (filas[i]['ronda'], i))
+    # nunca dos seguidos del mismo canal ni de la misma persona, como el feed
+    o, resto = [], [filas[i] for i in orden]
+    while resto and len(o) < n_inicio:
+        ant = o[-1] if o else None
+        j = next((j for j, f in enumerate(resto) if not ant or (f['canal'] != ant['canal'] and not set(f['ks']) & set(ant['ks']))), 0)
+        o.append(resto.pop(j))
+    return {'o': [f['vid'] for f in o],
+            'r': {f['vid']: [f['t'], f['canal'], ' vs '.join(nom[k] for k in f['ks'][:3])] for f in filas}}
 
 
 def _lunes(iso):

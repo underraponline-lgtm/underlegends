@@ -1489,6 +1489,118 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🎬 LOS REELS SOBRE EL OBJETO DE VERDAD (24/11/2026): «¿quién ganó?» —un voto por cuenta y por video, que se cambia y
+// se saca; el reparto recién con 20 votos; cuatro personas por video como mucho— y cuánto se mira cada uno, de a tandas
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 0));
+    const V = 'dQw4w9WgXcQ', V2 = 'abc_DEF-123';
+    const votar = async (d) => { const r = o.reelsVoto(d); return { s: r.status, j: await r.json() }; };
+    const id = (i) => String(100000000000 + i);
+    let r = null;
+    for (let i = 1; i <= 19; i++) r = await votar({ quien: id(i), v: V, k: i % 3 ? 'konan' : 'axinu' });
+    ok(r.s === 200 && r.j.ok && r.j.n === 19 && r.j.r === null && r.j.mio === 'konan',
+      'reels: con 19 votos se dice cuántos y no el reparto', JSON.stringify(r.j));
+    r = await votar({ quien: id(20), v: V, k: 'konan' });
+    ok(r.j.n === 20 && r.j.r && r.j.r.konan === 14 && r.j.r.axinu === 6, 'reels: con 20, el reparto', JSON.stringify(r.j));
+    r = await votar({ quien: id(20), v: V, k: 'axinu' });
+    ok(r.j.n === 20 && r.j.r.konan === 13 && r.j.r.axinu === 7 && r.j.mio === 'axinu', 'reels: votar a otro cambia el voto, no suma', JSON.stringify(r.j));
+    r = await votar({ quien: id(20), v: V, k: '' });
+    ok(r.j.n === 19 && r.j.r === null && r.j.mio === '', 'reels: k vacío saca el voto (y con 19 se vuelve a esconder el reparto)', JSON.stringify(r.j));
+    // cuatro personas por video, contando las de los demás
+    await votar({ quien: id(30), v: V2, k: 'a1' });
+    await votar({ quien: id(31), v: V2, k: 'a2' });
+    await votar({ quien: id(32), v: V2, k: 'a3' });
+    const r4 = await votar({ quien: id(33), v: V2, k: 'a4' });
+    const r5 = await votar({ quien: id(34), v: V2, k: 'a5' });
+    const r6 = await votar({ quien: id(33), v: V2, k: 'a6' });
+    const r7 = await votar({ quien: id(34), v: V2, k: 'a1' });
+    ok(r4.s === 200 && r5.s === 400 && r6.s === 200 && r7.s === 200 && r7.j.n === 5,
+      'reels: una quinta persona en el mismo video no entra; quien era la única de la suya la puede cambiar', [r4.s, r5.s, r6.s, r7.s, r7.j.n].join());
+    const malos = [{ quien: id(1), v: 'corto', k: 'x' }, { quien: id(1), v: V, k: 'x'.repeat(41) }, { quien: id(1), v: V, k: '<b>' },
+      { quien: id(1), v: V }, { quien: 'nadie', v: V, k: 'konan' }];
+    const sMalos = [];
+    for (const d of malos) sMalos.push((await votar(d)).s);
+    ok(sMalos.every((s) => s === 400), 'reels: un video, una clave o una cuenta sin forma no votan', sMalos.join());
+    // la GET del objeto: cuántos y el reparto, nunca quién
+    const g = await o.fetch(new Request('https://avisos/reels-votos?v=' + V));
+    const gt = await g.text();
+    ok(g.status === 200 && JSON.parse(gt).n === 19 && !gt.includes(id(1)) && /max-age=30/.test(g.headers.get('cache-control') || ''),
+      'reels: /reels-votos dice cuántos, sin ningún Discord ID, 30 s', gt);
+    const gMal = await o.fetch(new Request('https://avisos/reels-votos?v=x'));
+    ok(gMal.status === 400, 'reels: /reels-votos sin un video de verdad, 400', String(gMal.status));
+    // cuánto se mira: de a tandas, en memoria y a la base al quedar quieto
+    o.reelsVistos({ v: { [V]: [12, 0, 1], [V2]: [2, 1, 0], malo: [1, 0, 0], ['x'.repeat(11)]: [601, 0, 0] } });
+    const pv = await o.fetch(new Request('https://avisos/reels-vistos', { method: 'POST', body: JSON.stringify({ v: { [V]: [30, 0, 0] } }) }));
+    ok(pv.status === 200 && db.prepare('SELECT COUNT(*) AS n FROM reels_dia').get().n === 0, 'reels: lo visto espera en memoria', String(pv.status));
+    o.quietoVolcar();
+    const fila = db.prepare('SELECT n, seg, salt, fin FROM reels_dia WHERE v = ?').get(V);
+    ok(fila && fila.n === 2 && fila.seg === 42 && fila.salt === 0 && fila.fin === 1 && db.prepare('SELECT COUNT(*) AS n FROM reels_dia').get().n === 2,
+      'reels: al quedar quieto, a la base: dos vistas de 42 s, una al final; lo que no tiene forma no entra', JSON.stringify(fila));
+    const muchos = {};
+    for (let i = 0; i < 40; i++) muchos['v' + String(i).padStart(10, '0')] = [1, 0, 0];
+    ok(Object.keys(A.reelsVistosValidos({ v: muchos })).length === A.REELS_LOTE && A.reelsVistosValidos({ v: { [V]: [1, 2, 0] } }) === null
+      && A.reelsVistosValidos({ v: { [V]: [1.5, 0, 0] } }) === null && A.reelsVistosValidos(null) === null,
+    'reels: una tanda trae 30 videos como mucho, y segundos enteros con saltos y finales de 0 o 1');
+    o.reelsVistos({ v: { [V2]: [5, 0, 1] } });
+    const st = await o.fetch(new Request('https://avisos/reels-stats'));
+    const sj = await st.json();
+    ok(st.status === 200 && sj.d === 7 && JSON.stringify(sj.v[V]) === '[2,42,0,1]' && JSON.stringify(sj.v[V2]) === '[2,7,1,1]'
+      && /max-age=600/.test(st.headers.get('cache-control') || ''),
+    'reels: /reels-stats suma 7 días por video (lo que estaba en memoria también), 10 minutos', JSON.stringify(sj));
+    // olvidar a alguien se lleva sus votos
+    await o.olvidar({ quien: id(2) });
+    ok(o.reelsCuenta(V).n === 18, 'reels: olvidar a alguien borra su voto', JSON.stringify(o.reelsCuenta(V)));
+  }
+}
+
+// 🎬 Y LOS REELS POR LA PUERTA (24/11/2026): el voto pide cuenta y el «quien» del cuerpo no pasa; los votos van con el
+// video en la dirección; lo visto pasa limpio
+{
+  const llego = [];
+  const envR = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, op) => {
+    const s = String(u);
+    if (s.endsWith('/sesion/quien')) return new Response(JSON.stringify({ quien: '100000000000000777' }));
+    if (s.endsWith('/uso')) return new Response('{"ok":true}');
+    llego.push([s, op && op.body]);
+    return new Response('{"ok":true}');
+  } }) } };
+  const ses = 'b'.repeat(40);
+  const pedir = (ruta, metodo, cuerpo, h) => A.rutaAvisos(new Request('https://x' + ruta, { method: metodo, body: cuerpo, headers: h || {} }),
+    envR, ruta.split('?')[0]);
+  const sin = await pedir('/avisos/reels-voto', 'POST', '{"v":"dQw4w9WgXcQ","k":"konan"}');
+  const con = await pedir('/avisos/reels-voto', 'POST', '{"v":"dQw4w9WgXcQ","k":"konan","quien":"1"}', { 'x-lg-ses': ses });
+  const mal = await pedir('/avisos/reels-voto', 'POST', '{"v":"dQw4w9WgXcQ","k":"<b>"}', { 'x-lg-ses': ses });
+  ok(sin.status === 401 && con.status === 200 && mal.status === 400 && llego.length === 1 && llego[0][0] === 'https://avisos/reels-voto'
+    && llego[0][1] === JSON.stringify({ quien: '100000000000000777', v: 'dQw4w9WgXcQ', k: 'konan' }),
+  'reels por la puerta: sin cuenta no se vota, y al objeto llega quién lo dice la sesión', JSON.stringify(llego));
+  llego.length = 0;
+  const g1 = await pedir('/avisos/reels-votos?v=dQw4w9WgXcQ', 'GET');
+  const g2 = await pedir('/avisos/reels-votos?v=../estado', 'GET');
+  const v1 = await pedir('/avisos/reels-vistos', 'POST', JSON.stringify({ v: { dQw4w9WgXcQ: [9, 0, 1], otro: [1, 0, 0] }, quien: '1' }));
+  const v2 = await pedir('/avisos/reels-vistos', 'POST', '{"v":{"x":[1,0,0]}}');
+  const st = await pedir('/avisos/reels-stats', 'GET');
+  ok(g1.status === 200 && g2.status === 400 && v1.status === 200 && v2.status === 400 && st.status === 200
+    && llego.map((x) => x[0]).join() === 'https://avisos/reels-votos?v=dQw4w9WgXcQ,https://avisos/reels-vistos,https://avisos/reels-stats'
+    && llego[1][1] === '{"v":{"dQw4w9WgXcQ":[9,0,1]}}',
+  'reels por la puerta: el video va en la dirección validado, y de lo visto pasa sólo lo que tiene forma', JSON.stringify(llego));
+}
+
 // 🗳️ «¿QUIÉN GANA?» SOBRE EL OBJETO DE VERDAD (13/10/2026): un voto por persona, que se cambia, y cerrado no se vota
 {
   let DatabaseSync = null;

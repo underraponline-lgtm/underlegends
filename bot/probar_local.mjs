@@ -2582,10 +2582,14 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
   // 🏆 y `global_historia.json`, para la de cada competencia
   const HIST = { p: { gazir: { s: 'gazir', t: [[1, 'FMS España', '2023/2024', 'Finals'], [2, 'FMS España', '2024/2025', 'Jornada 5']] },
     bnet: { s: 'bnet', t: [[1, 'FMS España', '2020/2021', 'Final']] } } };
+  // 🎬 y `reels_vista.json` (24/11/2026), para la de cada reel: {o: [ids del feed], r: {id: [título, canal, «A vs B»]}}
+  const REELS = { o: ['dQw4w9WgXcQ', 'abc_DEF-123'], r: { dQw4w9WgXcQ: ['Konan vs Axinu | Octavos FFA', 'Freestyle For All', 'Konan vs Axinu'],
+    'abc_DEF-123': ['Una batalla sin nombres', 'DRA', ''] } };
   const ASSETS = { fetch: async (q) => {
     const u = String((q && q.url) || q);
     if (/\/global_vista\.json$/.test(u)) return new Response(JSON.stringify(VISTA_GLOBAL), { status: 200 });
     if (/\/global_historia\.json$/.test(u)) return new Response(JSON.stringify(HIST), { status: 200 });
+    if (/\/reels_vista\.json$/.test(u)) return new Response(JSON.stringify(REELS), { status: 200 });
     return new Response('<html>la de siempre</html>', { status: 200 });
   } };
   // ⚡ un módulo nuevo en cada pedido (21/11/2026): las vistas guardan lo que leen un minuto (`jsonDelOrigen()`), y estas
@@ -2685,6 +2689,22 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
       && /^2 títulos de 2 campeones y 3 podios/.test(r.j['meta[property="og:description"]'] || ''), JSON.stringify(r.j && [r.j.title, r.j['meta[property="og:description"]']]));
     r = await ver('/freestyle-rap/competencia/no-existe', DISCORD);
     ok('una competencia que no conocemos: la del Ranking global', r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle', JSON.stringify(r.j && r.j.title));
+    // 🎬 la de un reel (24/11/2026): quiénes, de qué batalla y de qué canal, con la miniatura de YouTube y SUS medidas
+    r = await ver('/freestyle-rap/reels/dQw4w9WgXcQ', DISCORD);
+    ok('un reel: quiénes se enfrentan, la batalla y el canal, la miniatura de YouTube con 480×360 y su canónica',
+      r.j && r.j.title === 'Konan vs Axinu · Reels' && r.j['meta[property="og:description"]'] === 'Konan vs Axinu | Octavos FFA · Freestyle For All'
+      && r.j['meta[property="og:image"]'] === 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg'
+      && r.j['meta[property="og:image:width"]'] === '480' && r.j['meta[property="og:image:height"]'] === '360'
+      && /rel="canonical" href="https:\/\/underlegends\.pages\.dev\/freestyle-rap\/reels\/dQw4w9WgXcQ"/.test(r.j.head || '')
+      && !r.pedidos.some((u) => /global/.test(u)), JSON.stringify(r.j && [r.j.title, r.j['meta[property="og:image:width"]'], r.pedidos]));
+    r = await ver('/freestyle-rap/reels/abc_DEF-123', DISCORD);
+    ok('un reel sin nombres: su título', r.j && r.j.title === 'Una batalla sin nombres · Reels'
+      && r.j['meta[property="og:description"]'] === 'Una batalla sin nombres · DRA', JSON.stringify(r.j && r.j.title));
+    r = await ver('/freestyle-rap/reels/zzzzzzzzzzz', DISCORD);
+    const r2 = await ver('/freestyle-rap/reels/no-es-un-id', DISCORD);
+    ok('un reel que no está, o que no es un video: la de la página de Reels, con las medidas del cartel',
+      r.j && r.j.title === 'Reels · Liga Global de Freestyle' && r2.j && r2.j.title === 'Reels · Liga Global de Freestyle'
+      && !r.j['meta[property="og:image:width"]'], JSON.stringify([r.j && r.j.title, r2.j && r2.j.title]));
     r = await ver('/freestyle-rap/ranking/global/no-existe', DISCORD);
     ok('una clave que no está: la del Ranking global', r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle', JSON.stringify(r.j && r.j.title));
     r = await ver('/freestyle-rap/r/lejos', 'WhatsApp/2.23');
