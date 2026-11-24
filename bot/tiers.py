@@ -262,24 +262,51 @@ def sigla_libre(propuesta, nombre, usadas):
     import unicodedata
     usadas = {str(x).upper() for x in usadas}
     p = str(propuesta or '').upper()
-    if re.match(r'^[A-Z]{2,6}$', p) and p not in usadas:
+    # 🔤 SIEMPRE 3 LETRAS (23/11/2026, Dlx: «DW should be 3 letters always»): igual que `siglaPropuesta()` de bot/setup.js
+    if re.match(r'^[A-Z]{3}$', p) and p not in usadas:
         return p
     t = unicodedata.normalize('NFKD', str(nombre or ''))
     t = ''.join(c for c in t if not unicodedata.combining(c)).upper()
     palabras = [re.sub(r'[^A-Z]', '', w) for w in re.split(r'[^A-Z0-9]+', t)]
     palabras = [w for w in palabras if w]
     ini, todo = ''.join(w[0] for w in palabras), ''.join(palabras)
-    cands = ([ini[:6]] if len(ini) >= 2 else []) + [todo[:n] for n in (3, 4, 5, 6) if len(todo) >= n]
+    cands = ([ini[:3]] if len(ini) >= 3 else []) + ([todo[:3]] if len(todo) >= 3 else [])
     if len(ini) >= 2:
-        cands += [ini[:5] + x for x in todo]
+        cands += [ini[:2] + x for x in todo[1:]]
+    if ini:
+        cands += [ini[0] + todo[k] + todo[k + 1] for k in range(1, len(todo) - 1)]
     for c in cands:
-        if re.match(r'^[A-Z]{2,6}$', c) and c not in usadas:
+        if re.match(r'^[A-Z]{3}$', c) and c not in usadas:
             return c
     for a in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
         for b in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
-            if 'SV' + a + b not in usadas:
-                return 'SV' + a + b
+            if 'S' + a + b not in usadas:
+                return 'S' + a + b
     return ''
+
+
+def aplicar_siglas(aj, svs):
+    """🔤 LAS SIGLAS QUE FIJA DLX EN EL DASHBOARD (23/11/2026, Dlx: «I need to edit the SIGLAS, the 3 letters… DW should be 3
+    letters always»): `aj['siglas']` = `{código: 'ABC'}`. Cambia sólo la sigla que se LEE (`sigla` de servidores.json); el
+    código sigue siendo la clave de todo (R2, KV, cartas). Una que ya usa otro servidor —como sigla o como código— no
+    entra. Devuelve los códigos que cambiaron."""
+    pedido = (aj or {}).get('siglas') or {}
+    if not isinstance(pedido, dict):
+        return []
+    cambiaron = []
+    for sv, s in sorted(pedido.items()):
+        s = str(s or '').upper()
+        x = svs.get(sv)
+        if not isinstance(x, dict) or not re.match(r'^[A-Z0-9]{3}$', s) or x.get('sigla') == s:
+            continue
+        otros = {str(k).upper() for k in svs if k != sv} | {str(v.get('sigla') or '').upper() for k, v in svs.items()
+                                                           if k != sv and isinstance(v, dict)}
+        if s in otros:
+            print('   ⚠️ la sigla %s para %s ya la usa otro servidor: no la cambié' % (s, sv))
+            continue
+        x['sigla'] = s
+        cambiaron.append(sv)
+    return cambiaron
 
 
 def altas_setup(aj, svs, ahora=None):
@@ -1218,9 +1245,13 @@ def correr(aplicar=False, ahora=None):
             aprobadas = aprobar_setup(aj, svs, ahora=ahora)
             # 🔑🏟️ y los canales de llaves y de ligas que eligieron (21/11/2026), de todos los que corrieron /setup
             canales_su = canales_del_setup(aj, svs)
+            # 🔤 y las siglas que fijó Dlx (23/11/2026)
+            siglas = aplicar_siglas(aj, svs)
+            if siglas:
+                print('   🔤 siglas nuevas: %s' % ', '.join('%s → %s' % (sv, svs[sv]['sigla']) for sv in siglas))
             if canales_su:
                 print('   🔑 /setup: canales de llaves o de ligas de %s' % ', '.join(canales_su))
-            if nuevas or nuevas_su or aprobadas or canales_su:
+            if nuevas or nuevas_su or aprobadas or canales_su or siglas:
                 with io.open(os.path.join(BASE, 'datos', 'servidores.json'), 'w', encoding='utf-8', newline='\n') as f:
                     json.dump(todo_svs, f, ensure_ascii=False, indent=1)
                     f.write('\n')
@@ -1412,14 +1443,14 @@ def _self_check():
     ah = dt.datetime(2026, 11, 19, 22, 0, tzinfo=dt.timezone.utc)
     nv_su = altas_setup(aj_su, s1, ahora=ah)
     f1 = s1.get('FNC') or {}
-    ok(nv_su == ['FNC', 'OU'] and s1['AAA'] == base_su['AAA'] and s1['FUE'] == base_su['FUE'],
+    ok(nv_su == ['FNC', 'OTR'] and s1['AAA'] == base_su['AAA'] and s1['FUE'] == base_su['FUE'],
        'el /setup: entran los nuevos; un guild que ya es de la Liga o que está registrado afuera no se toca; una sigla '
        'ocupada se cambia por otra libre', str(nv_su))
     ok(f1.get('confirmado') and f1.get('tier') == 3 and f1.get('alta') == 'setup' and f1.get('sigla') == 'FNC'
        and (f1.get('invitacion_liga') or {}).get('codigo') == 'abcDEF12' and f1.get('canales_setup') == {'an': '888888888888888888'}
        and (f1.get('setup') or {}).get('aviso') == G5 and '123456789012345678' not in json.dumps(f1),
        'el del /setup entra confirmado, Tier 3, con su invitación y sus canales, y SIN quién lo corrió (el repo es público)', str(f1))
-    ok(pendientes_setup(s1) == {'FNC', 'OU'} and aprobados_setup(s1) == [], 'recién entrado, espera a Dlx')
+    ok(pendientes_setup(s1) == {'FNC', 'OTR'} and aprobados_setup(s1) == [], 'recién entrado, espera a Dlx')
     # 🔑🏟️ las llaves y las ligas del /setup (21/11/2026): de todos, también de un socio de antes, y sacarlas también llega
     LL, LG = '1700000000000000101', '1700000000000000102'
     s2 = json.loads(json.dumps(s1))
@@ -1435,8 +1466,8 @@ def _self_check():
        and canales_del_setup({'setup_canales': {s2['AAA']['guild_id']: {'ll': []}}}, s2) == [],
        'sacarlas en el /setup las saca; sin la lista del objeto no se toca nada; lo que ya estaba igual no es un cambio')
     nv1 = niveles(s1, {})
-    b_pend, q_pend = beneficios(nv1, {'FNC': {'suma': True}}, codigo={'AAA', 'FNC', 'OU'}, pendientes=pendientes_setup(s1))
-    ok(not b_pend['FNC']['suma'] and not b_pend['OU']['suma'] and b_pend['AAA']['suma'] and q_pend.get('FNC') == list(PIDEN_CODIGO)
+    b_pend, q_pend = beneficios(nv1, {'FNC': {'suma': True}}, codigo={'AAA', 'FNC', 'OTR'}, pendientes=pendientes_setup(s1))
+    ok(not b_pend['FNC']['suma'] and not b_pend['OTR']['suma'] and b_pend['AAA']['suma'] and q_pend.get('FNC') == list(PIDEN_CODIGO)
        and b_pend['FNC']['pagina'] and b_pend['FNC']['calendario'],
        'sin aprobar NO suma: ni estando en el código ni con el interruptor prendido; su página y sus eventos, sí')
     gs = guilds_sin('suma', s1, {'beneficios': {'AAA': {'suma': True}}})
@@ -1463,8 +1494,13 @@ def _self_check():
           'AB': {'confirmado': True, 'alta': 'setup', 'guild_id': G4, 'suma_aprobada': '2026-11-21T10:00Z'}}
     ok(aprobados_setup(s3) == ['XA', 'AB'], 'en el orden en que se aprobaron, no por sigla: la vitrina crece sólo al final')
     ok(sigla_libre('XYZ', 'algo', {'AAA'}) == 'XYZ' and sigla_libre('AAA', 'Freestyle Zona Ártica', {'AAA'}) == 'FZA'
-       and sigla_libre('', 'Freestyle Zona Ártica', {'FZA'}) == 'FRE' and sigla_libre('x', '', {'AAA'}) == 'SVAA',
+       and sigla_libre('', 'Freestyle Zona Ártica', {'FZA'}) == 'FRE' and sigla_libre('x', '', {'AAA'}) == 'SAA'
+       and sigla_libre('', 'Danger World', set()) == 'DAN' and sigla_libre('UFLUC', 'Under Freestyle League', set()) == 'UFL',
        'la sigla: la propuesta si está libre; si no, las iniciales (sin tildes), y si no, otra')
+    S = {'DW': {'sigla': 'DW'}, 'FFA': {}, 'UFLUC': {'sigla': 'UFLUC'}, 'SR': {'sigla': 'SNK'}}
+    cam = aplicar_siglas({'siglas': {'DW': 'dwo', 'UFLUC': 'SNK', 'NOHAY': 'ABC', 'FFA': 'FFAA'}}, S)
+    ok(cam == ['DW'] and S['DW']['sigla'] == 'DWO' and S['UFLUC']['sigla'] == 'UFLUC' and 'NOHAY' not in S and 'sigla' not in S['FFA'],
+       'las siglas de Dlx: 3 letras, en mayúsculas; la que ya usa otro, la de un servidor que no existe o de 4 letras no entran')
     # y lo de verdad: para todo servidor que NO entró con /setup, los beneficios y los «no suman» son los de antes
     rs, rn = _j('datos', 'servidores.json') or {}, _j('datos', 'niveles.json') or {}
     rsv = rs.get('servidores') or {}

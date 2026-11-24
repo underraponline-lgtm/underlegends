@@ -139,7 +139,8 @@ ok(SU.canalInvitacion(gInv, CANALES).id === '1700000000000000006'
   && SU.canalInvitacion(gInv, CANALES.filter((c) => !/bienv/.test(c.name || ''))).id === C0.an
   && SU.canalInvitacion(gInv, [oculto]) === null, 'la invitación: a la bienvenida; si no, a las reglas; nunca a un canal que no ve todo el mundo');
 ok(SU.siglaPropuesta('Freestyle Zona Ártica', ['FRZ']) === 'FZA' && SU.siglaPropuesta('Freestyle Zona Ártica', ['FZA']) === 'FRE'
-  && SU.siglaPropuesta('', ['X']) === 'SVAA' && SU.siglaPropuesta('🔥', []) === 'SVAA',
+  && SU.siglaPropuesta('', ['X']) === 'SAA' && SU.siglaPropuesta('🔥', []) === 'SAA'
+  && SU.siglaPropuesta('Under Freestyle League', []) === 'UFL' && SU.siglaPropuesta('Danger World', []) === 'DAN',
 'la sigla propuesta: las iniciales sin tildes (igual que `sigla_libre()` de bot/tiers.py)');
 
 ok(SU.leerSu(SU.idSu('ch', 'an')).a === 'ch' && SU.leerSu(SU.idSu('ch', 'an')).x === 'an' && SU.leerSu('su:v0:ir:1') === null

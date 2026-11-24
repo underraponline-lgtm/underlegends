@@ -1263,3 +1263,8 @@ button.dz-cu-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
   .dzt-at li{grid-template-columns:minmax(0,1fr) auto}
   .dzt-at li>em{grid-column:1 / -1}
 }
+/* 🔤 la sigla editable (23/11/2026) */
+.dz-sigla{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.dz-sigla input{width:64px;min-height:40px;padding:0 8px;border:1.5px solid var(--linea);border-radius:4px;background:var(--fondo);color:var(--tinta);font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.dz-sigla small{flex-basis:100%;font-size:12px;color:var(--gris)}
+.dz-svt-fi .dz-lnk{display:block}.dz-svt-fi .dz-lnk+.dz-lnk{margin-top:8px}

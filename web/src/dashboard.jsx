@@ -2712,7 +2712,7 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
 
 // ── 🕓 LOS ÚLTIMOS CAMBIOS, CON «DESHACER» (13/10/2026): lo anota el objeto en cada ajuste (`ajuste()` en avisos.js), con
 // lo que había antes. «Deshacer» sólo en el último cambio de cada ajuste: deshacer uno más viejo pisaría los de después
-const NOMBRE_AJ = { campana_pausada: 'La campana', pase_sorteo: 'El sorteo del premium', multiplicadores: 'El multiplicador de la semana', aviso_web: 'El aviso en la página',
+const NOMBRE_AJ = { siglas: 'Las siglas de los servidores', campana_pausada: 'La campana', pase_sorteo: 'El sorteo del premium', multiplicadores: 'El multiplicador de la semana', aviso_web: 'El aviso en la página',
   en_vivo: 'El bot en vivo', en_vivo_nivel: 'Cuánto habla el bot en vivo', ritmo: 'El ritmo del bot en vivo', silencio: 'El horario de silencio',
   apuestas: 'Las apuestas', aviso_evento: 'Dónde va el aviso de cada evento', avisos_nivel: 'Cuánto dice el aviso de cada evento',
   // 🏷️ y los que salían con el código crudo (25/10/2026)
@@ -5198,6 +5198,8 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
   const cambiarTier = (sv, t) => hacer('tiers', Object.assign({}, elegidos, { [sv]: t }),
     siglaDe(sv) + ' pasa a Tier ' + t + (t === 1 ? ': vuelve a sumar al ranking.' : ': sus llaves dejan de sumar.'));
   const xFicha = tiersT.find((y) => y.sv === ficha);
+  // 🔤 las siglas que ya se usan (como sigla o como código), para que no se repita una
+  const usadasSig = new Set(svs.flatMap((x) => [x, siglaDe(x)]).map((x) => String(x).toUpperCase()));
   return (
     <div className="dz-svt">
       {m.id ? (
@@ -5210,7 +5212,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
       <div className="dz-tabla">
         <table>
           <thead><tr>
-            <th scope="col">Servidor</th><th scope="col">Tier</th>{m.id ? <th scope="col">Multiplicador</th> : null}<th scope="col">Bot en vivo</th>
+            <th scope="col">Servidor</th><th scope="col">Sigla</th><th scope="col">Tier</th>{m.id ? <th scope="col">Multiplicador</th> : null}<th scope="col">Bot en vivo</th>
             <th scope="col">Cuánto habla</th><th scope="col">Aviso de evento</th><th scope="col">Eventos Discord</th><th scope="col" title="De los que debutaron ahí, cuántos volvieron a jugar en 14 días">Vuelven</th><th scope="col"><span className="rk-sr">Ficha</span></th>
           </tr></thead>
           <tbody>{svs.map((sv) => {
@@ -5225,6 +5227,8 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
                   <th scope="row"><span className="dz-svt-n"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><i className={prendido(sv) ? 'ok' : ''} title={prendido(sv) ? 'el bot habla ahí' : 'el bot no habla ahí'} />
                     {/* 📋 lo que recomienda el ciclo, en la fila: «Revisar» si no llega a lo que pide su tier, «Puede subir» si llega al de arriba */}
                     {xT && (xT.rec === 'revisar' || xT.rec === 'subir') ? <em className={'dz-svt-rec rec-' + xT.rec} title={xT.porque}>{xT.rec === 'revisar' ? 'Revisar' : 'Puede subir'}</em> : null}</span></th>
+                  <td data-t="Sigla"><SiglaEdit sv={sv} pedida={(aj.siglas || {})[sv]} usadas={usadasSig} ocup={ocup}
+                    guardar={(s) => hacer('siglas', Object.assign({}, aj.siglas || {}, { [sv]: s }), siglaDe(sv) + ' se va a leer ' + s + ': entra en la próxima vuelta del ciclo.')} /></td>
                   <td data-t="Tier"><select aria-label={'El tier de ' + siglaDe(sv)} value={bajar && bajar[0] === sv ? String(bajar[1]) : t ? String(t) : ''} disabled={ocup}
                     onChange={(e) => { const n = Number(e.target.value); if (t !== 3 && n === 3) setBajar([sv, n]); else { setBajar(null); cambiarTier(sv, n); } }}>
                     {!t ? <option value="">—</option> : null}{[1, 2, 3].map((n) => <option key={n} value={String(n)}>Tier {n}</option>)}</select></td>
@@ -5249,7 +5253,9 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
                     onClick={() => {
                       setFicha(ficha === sv ? '' : sv);
                       if (ficha !== sv) setTimeout(() => { if (fichaRef.current) fichaRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 60);
-                    }}>{ficha === sv ? 'Cerrar' : 'Ficha'}</button></td>
+                    }}>{ficha === sv ? 'Cerrar' : 'Ficha'}</button>
+                    {/* 🛠️ su panel, como lo ve su dueño (23/11/2026, Dlx: «configurar las páginas de los servidores yo mismo»): Dlx entra a todos */}
+                    <a className="dz-lnk" href={'#/socio?sv=' + sv}>Panel</a></td>
                 </tr>
               </Fragment>
             );
@@ -5796,6 +5802,28 @@ function ChatsDueno({ c }) {
 // 📁 «MÁS NÚMEROS» (23/11/2026, la A de la maqueta): las siete pestañas de antes, PLEGADAS. Arrancan cerradas —arriba
 // están los cinco cuadros— y se abre una al tocarla; tocarla otra vez la cierra. Ya no se acuerda de la última abierta
 // (`lg:db-num`): abierta de entrada, Números volvía a ser largo. Un atajo a una sección (Ctrl+K, el Resumen) la abre igual
+// 🔤 LA SIGLA DE UN SERVIDOR, EDITABLE (23/11/2026, Dlx: «I need to edit the SIGLAS, the 3 letters… DW should be 3 letters
+// always»). Siempre 3 letras o números; una que ya usa otro no se puede. Se guarda en el ajuste `siglas` y el ciclo la escribe
+// en datos/servidores.json (`aplicar_siglas()`), así que se ve en la próxima vuelta. La que no tiene 3 se marca
+function SiglaEdit({ sv, pedida, usadas, ocup, guardar }) {
+  const actual = siglaDe(sv);
+  const [v, setV] = useState(pedida || actual);
+  useEffect(() => { setV(pedida || actual); }, [pedida, actual]);
+  const mal = !/^[A-Z0-9]{3}$/.test(v) ? 'tienen que ser 3' : v !== actual && v !== pedida && usadas.has(v) ? 'ya la usa otro' : '';
+  const cambia = v !== (pedida || actual);
+  return (
+    <span className="dz-sigla">
+      <input aria-label={'La sigla de ' + actual} value={v} maxLength={3} disabled={ocup} spellCheck={false}
+        onChange={(e) => setV(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 3))}
+        onKeyDown={(e) => { if (e.key === 'Enter' && cambia && !mal) guardar(v); }} />
+      {cambia && !mal ? <button type="button" className="btn chico" disabled={ocup} onClick={() => guardar(v)}>Guardar</button> : null}
+      {cambia && mal ? <small className="db-mal">{mal}</small>
+        : pedida && pedida !== actual ? <small>pasa a {pedida} en la próxima vuelta</small>
+          : actual.length !== 3 ? <small className="db-mal">tiene {actual.length} letras</small> : null}
+    </span>
+  );
+}
+
 function NumerosTabs({ tabs, abrir, pedido }) {
   const [t, setT] = useState('');
   // `pedido`: la misma sección pedida otra vez desde otra pestaña vuelve a abrir la suya (18/11/2026)

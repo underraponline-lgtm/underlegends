@@ -5957,6 +5957,21 @@ export function ajusteValido(cual, valor) {
     }
     return out;
   }
+  // 🔤 LA SIGLA QUE SE LEE DE CADA SERVIDOR (23/11/2026, Dlx: «I need to edit the SIGLAS, the 3 letters… DW should be 3 letters
+  // always»): `{código: 'ABC'}`, tres letras o números en mayúsculas y ninguna repetida. El ciclo la escribe en
+  // datos/servidores.json (`aplicar_siglas()` de bot/tiers.py), que además revisa que no la use otro servidor
+  if (cual === 'siglas') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 60) return undefined;
+    const out = {}, vistas = new Set();
+    for (const [k, v] of Object.entries(valor)) {
+      const s = String(v || '').toUpperCase();
+      if (!/^[A-Z]{2,6}$/.test(k) || !/^[A-Z0-9]{3}$/.test(s) || vistas.has(s)) return undefined;
+      vistas.add(s);
+      out[k] = s;
+    }
+    return out;
+  }
   if (cual === 'tiers') {
     if (valor === null) return null;
     if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 60) return undefined;

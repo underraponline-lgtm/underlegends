@@ -344,7 +344,7 @@ export function canalInvitacion(guild, cs) {
   return texto[0] || null;
 }
 
-/** Una sigla de 2 a 6 letras que nadie use, de las iniciales del nombre. El ciclo la vuelve a mirar (`sigla_libre()` de
+/** Una sigla de 3 letras que nadie use, de las iniciales del nombre. El ciclo la vuelve a mirar (`sigla_libre()` de
  *  bot/tiers.py) antes de escribirla: ésta es una propuesta, para que Dlx la vea en el DM. */
 export function siglaPropuesta(nombre, usadas) {
   const usad = new Set([...(usadas || [])].map((x) => String(x).toUpperCase()));
@@ -352,13 +352,15 @@ export function siglaPropuesta(nombre, usadas) {
   const palabras = limpio.split(/[^A-Z0-9]+/).map((p) => p.replace(/[^A-Z]/g, '')).filter(Boolean);
   const ini = palabras.map((p) => p[0]).join('');
   const todo = palabras.join('');
+  // 🔤 SIEMPRE 3 LETRAS (23/11/2026, Dlx: «DW should be 3 letters always»; el /setup proponía de 2 a 6 y entraron DW y UFLUC)
   const cands = [];
-  if (ini.length >= 2) cands.push(ini.slice(0, 6));
-  for (const n of [3, 4, 5, 6]) if (todo.length >= n) cands.push(todo.slice(0, n));
-  if (ini.length >= 2) for (const x of todo) cands.push(ini.slice(0, 5) + x);
-  for (const c of cands) if (/^[A-Z]{2,6}$/.test(c) && !usad.has(c)) return c;
+  if (ini.length >= 3) cands.push(ini.slice(0, 3));
+  if (todo.length >= 3) cands.push(todo.slice(0, 3));
+  if (ini.length >= 2) for (const x of todo.slice(1)) cands.push(ini.slice(0, 2) + x);
+  if (ini.length >= 1) for (let k = 1; k < todo.length - 1; k++) cands.push(ini[0] + todo[k] + todo[k + 1]);
+  for (const c of cands) if (/^[A-Z]{3}$/.test(c) && !usad.has(c)) return c;
   const AZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  for (const a of AZ) for (const b of AZ) if (!usad.has('SV' + a + b)) return 'SV' + a + b;
+  for (const a of AZ) for (const b of AZ) if (!usad.has('S' + a + b)) return 'S' + a + b;
   return '';
 }
 
