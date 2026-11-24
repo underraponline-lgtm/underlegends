@@ -240,7 +240,7 @@ function useFeed(liga, inicio) {
   const siguiente = () => { if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
   const conmuta = (xs, set, k, v) => { const nx = xs.includes(v) ? xs.filter((x) => x !== v) : [...xs, v]; set(nx); ls.set(k, nx); return nx; };
   return {
-    D, X, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente,
+    D, X, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
     anterior: () => (fin ? setFin(false) : ir(i - 1)),
     deNuevo: () => ir(0),
     guardado: !!(cur && guardo.includes(cur.vid)), hayGuardados: guardo.length > 0,
@@ -390,6 +390,7 @@ function ReelsCel({ F }) {
 
       {F.fin ? (
         <div className="rls-fin">
+          <span className="tag">REELS</span>
           <b>Viste todo lo nuevo</b>
           <p>Llegan más cada lunes. Mientras, mira quién está arriba o lo que viene en la Liga.</p>
           <a className="rls-bt prim" href="#/ranking/global">Ver el Ranking global</a>
@@ -540,28 +541,37 @@ function ReelsPc({ F }) {
   const avisa = (txt, deshacer) => { setAviso({ txt, deshacer }); clearTimeout(reloj.current); reloj.current = setTimeout(() => setAviso(null), 5000); };
   const r = F.cur;
   const fs = FILTROS.filter((f) => f[0] !== 'guardados' || F.hayGuardados || F.filtro === 'guardados');
+  // 🎨 COMO LAS OTRAS PÁGINAS (8.12, Dlx: «acuérdate el estilo de la página tiene que ser como los otros»): la franja negra
+  // con la etiqueta magenta (`.tag`), el título grande (`.hero-ev`) y su bajada (`.hero-p`), como Invita y gana
   const cab = (
-    <div className="rls-pc-cab">
-      <h1>Reels</h1>
-      <div className="rls-chips" role="group" aria-label="Qué ver">
-        {fs.map(([k, n]) => <button key={k} type="button" aria-pressed={F.filtro === k} className={F.filtro === k ? 'on' : ''} onClick={() => F.setFiltro(k)}>{n}</button>)}
+    <div className="escena rls-esc">
+      <div className="rls-esc-in">
+        <div className="rls-esc-tx">
+          <span className="tag">REELS{F.temp ? ' · ' + F.temp : ''}</span>
+          <h1 className="hero-ev rls-h1">Los momentos de las batallas</h1>
+          <p className="hero-p">Los shorts de las competencias, con quién es quién y su puesto en el Ranking global.</p>
+        </div>
+        <div className="rls-chips" role="group" aria-label="Qué ver">
+          {fs.map(([k, n]) => <button key={k} type="button" aria-pressed={F.filtro === k} className={F.filtro === k ? 'on' : ''} onClick={() => F.setFiltro(k)}>{n}</button>)}
+        </div>
       </div>
-      <span className="rls-teclas">↑ ↓ para pasar · M sonido · F fuego</span>
     </div>
   );
-  if (!r) return <section className="rls-pc">{cab}<p className="rls-nada">Todavía no hay reels{F.filtro === 'guardados' ? ' guardados' : ''}.</p></section>;
+  if (!r) return <section className="rls-pc">{cab}<div className="rls-pc-in"><p className="rls-nada">Todavía no hay reels{F.filtro === 'guardados' ? ' guardados' : ''}.</p></div></section>;
   const nombres = r.gente.map(nombre).join(' vs ');
   const batalla = batallaDe(r);
   const masReels = [1, 2, 3].map((j) => F.lista[F.i + j]).filter(Boolean);
   return (
     <section className="rls-pc">
       {cab}
+      <div className="rls-pc-in">
       <div className="rls-pc-cuerpo">
         <div className="rls-pc-video">
           <div className={'rls-ytcaja' + (modo === 'teatro' && !F.fin ? '' : ' oculto')}>{yt.marco}</div>
           {F.fin ? (
             <div className="rls-fin">
-              <b>Viste todo lo nuevo</b>
+              <span className="tag">REELS</span>
+          <b>Viste todo lo nuevo</b>
               <p>Llegan más cada lunes. Mientras, mira quién está arriba o lo que viene en la Liga.</p>
               <a className="rls-bt prim" href="#/ranking/global">Ver el Ranking global</a>
               <a className="rls-bt" href="#/eventos">Los próximos eventos de la Liga</a>
@@ -607,7 +617,7 @@ function ReelsPc({ F }) {
           </div>
           {masReels.length ? (
             <div className="rls-pc-mas">
-              <h2>Lo que sigue</h2>
+              <div className="sec-t"><h2>Lo que sigue</h2></div>
               <div>
                 {masReels.map((x, j) => (
                   <button key={x.vid} type="button" onClick={() => F.ir(F.i + j + 1)} aria-label={x.gente.map(nombre).join(' vs ')}>
@@ -622,7 +632,9 @@ function ReelsPc({ F }) {
         <div className="rls-pc-flechas">
           <button type="button" className="rls-ib caja" aria-label="Anterior (flecha arriba)" onClick={F.anterior}><Ico n="arriba" /></button>
           <button type="button" className="rls-ib caja prim" aria-label="Siguiente (flecha abajo)" onClick={F.siguiente}><Ico n="abajo" /></button>
+          <span className="rls-teclas">↑ ↓ pasar<br />M sonido<br />F fuego</span>
         </div>
+      </div>
       </div>
       {aviso ? (
         <div className="rls-aviso pc" role="status"><span>{aviso.txt}</span>
