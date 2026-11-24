@@ -39,8 +39,10 @@ jobs:
           key: m-modelos-v1
       - name: preparar la máquina
         run: |
-          sudo apt-get install -y -qq ffmpeg > /dev/null 2>&1 || true
-          pip install -q -r m/requirements.txt > /dev/null 2>&1
+          sudo apt-get update -qq > /dev/null 2>&1
+          sudo apt-get install -y -qq ffmpeg > /dev/null 2>&1
+          ffmpeg -version > /dev/null && echo "ffmpeg listo"
+          pip install -q -r m/requirements.txt > /dev/null 2>&1 && echo "librerías listas"
       - name: procesar
         env:
           DESDE: ${{ inputs.desde }}
