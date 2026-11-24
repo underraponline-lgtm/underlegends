@@ -1120,10 +1120,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Andy MC": {
@@ -3689,10 +3686,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 8662,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Dominick": {
@@ -4307,10 +4301,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4950,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "El felpudo 🇨🇳": {
@@ -8427,10 +8418,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4950,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -12317,8 +12305,7 @@
     "pts": 3750,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "URBF": {
@@ -12512,8 +12499,7 @@
     "pts": 9844,
     "racha": "2/2",
     "tg": {
-     "fin": 2,
-     "nuevo": true
+     "fin": 2
     }
    }
   },
@@ -15678,10 +15664,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Vlade": {

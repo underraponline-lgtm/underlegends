@@ -952,6 +952,24 @@
    },
    "suma_aprobada": "2026-11-23T22:27Z",
    "suma_avisada": "2026-11-23"
+  },
+  "SGR": {
+   "nombre": "Salgado Records",
+   "guild_id": "1343820906358771798",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "SGR",
+   "tier": 3,
+   "alta": "dashboard",
+   "nota": "dado de alta desde el Dashboard el 24/11/2026 (bot/tiers.py `altas()`)",
+   "tag": "EXITOS",
+   "invitacion": "https://discord.gg/7ECfEuYumQ",
+   "invitacion_liga": {
+    "codigo": "7ECfEuYumQ",
+    "canal": "【👋🏻】𝘽𝙞𝙚𝙣𝙫𝙚𝙣𝙞𝙙𝙖",
+    "canal_id": "1343821617306013723",
+    "creada": "2026-11-24"
+   }
   }
  },
  "_fuera_de_la_tabla": [

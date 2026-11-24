@@ -15,6 +15,7 @@
   "FRZ": 2,
   "FVS": 2,
   "LKR": 3,
+  "SGR": 3,
   "SR": 2,
   "UFLUC": 3,
   "URBF": 1,
@@ -89,7 +90,7 @@
    "suma": true,
    "competitivo": true,
    "duelos": true,
-   "perfil": true
+   "perfil": false
   },
   "DW": {
    "pagina": true,
@@ -161,6 +162,16 @@
    "duelos": true,
    "perfil": false
   },
+  "SGR": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "competitivo": false,
+   "duelos": false,
+   "perfil": false
+  },
   "SR": {
    "pagina": true,
    "calendario": true,
@@ -218,6 +229,7 @@
   "FRZ": "2026-10-14",
   "FVS": "2026-10-12",
   "LKR": "2026-10-21",
+  "SGR": "2026-11-24",
   "SR": "2026-09-22",
   "UFLUC": "2026-11-23",
   "URBF": "2026-09-22",

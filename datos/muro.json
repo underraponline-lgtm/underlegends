@@ -966,6 +966,14 @@
 "servidor"
 ]
 },
+"romeo": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "aldre": {
 "rg": "",
 "c": [
@@ -1143,14 +1151,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"romeo": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
 ]
 },
 "raizer": {
@@ -2932,15 +2932,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-15T01:00:24Z",
-"quien": [
-"Krish"
-],
-"rg": "E",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-15T01:57:38Z",
@@ -6350,6 +6341,12 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "svnuevo",
+"t": "2026-11-24T05:15:17Z",
+"sv": "SGR",
+"tier": 3
 }
 ],
 "noche_antes": {
@@ -8541,19 +8538,19 @@
 "n": "Xervoe",
 "k": "",
 "de": 205,
-"a": 161
+"a": 162
 },
 {
 "n": "Mr.Kude",
 "k": "mrkude",
 "de": 351,
-"a": 315
+"a": 316
 },
 {
-"n": "Marto AR",
-"k": "martoar",
-"de": 336,
-"a": 318
+"n": "romeo",
+"k": "romeo",
+"de": 120,
+"a": 98
 }
 ],
 "sorpresas": [
@@ -8600,7 +8597,8 @@
 "CHZ": 3,
 "DW": 3,
 "WOF": 3,
-"UFLUC": 3
+"UFLUC": 3,
+"SGR": 3
 },
 "meta": [
 "2026-11-23",

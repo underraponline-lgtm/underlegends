@@ -1709,6 +1709,11 @@
    },
    "organizadores": [
     [
+     "crakero",
+     14,
+     1
+    ],
+    [
      "DARK ANGEL",
      8,
      1
@@ -1716,15 +1721,15 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 2,
+     "FFA": 3,
      "FRZ": 1
     },
     "gente": {
-     "FFA": 22,
+     "FFA": 34,
      "FRZ": 9,
      "DDS": 8
     },
-    "gana": null
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
@@ -1735,7 +1740,7 @@
     "DDS": 8,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 22,
+    "FFA": 34,
     "FFS": 0,
     "FRZ": 9,
     "FVS": 0,
