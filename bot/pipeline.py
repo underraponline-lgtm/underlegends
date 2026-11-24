@@ -1476,6 +1476,13 @@ def _lo_barato(correr):
         paso('2b8i', 'las competencias de la semana')
         if not corre(['bot/competencias.py'], callado=True, mostrar=('🏆', '⚠️')):
             print('      ⚠️ las competencias fallaron: quedan las de antes')
+    # ── 2b8j · 🎬 los shorts de los eventos grabados (`bot/shorts_eventos.py`, Dlx 24/11/2026: «conéctalo al ciclo»):
+    # cuando ULAYA terminó de entregar la grabación de un evento, lanza `procesar` (el código vive en un repo privado).
+    # Uno por vez. Nunca frena el ciclo
+    if correr:
+        paso('2b8j', 'los shorts de los eventos grabados')
+        if not corre(['bot/shorts_eventos.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
+            print('      ⚠️ los shorts no se pudieron pedir: se mira en la próxima corrida')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo

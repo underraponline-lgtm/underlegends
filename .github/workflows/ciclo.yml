@@ -333,6 +333,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: write
+      actions: write    # 🎬 el paso 2b8j lanza `procesar` (bot/shorts_eventos.py)
     outputs:
       dibujar: ${{ steps.p.outputs.dibujar }}
       personas: ${{ steps.p.outputs.personas }}
@@ -364,6 +365,8 @@ jobs:
       - name: escuchar
         id: p
         env:
+          # 🎬 con nombre propio a propósito: un GH_TOKEN suelto en el entorno lo tomaría desplegar.py para el Worker
+          GH_PROCESAR: ${{ github.token }}
           BARRIDO_COMPLETO: ${{ inputs.completo }}
           REDIBUJAR_YA: ${{ inputs.redibujar_ya }}
         run: |
