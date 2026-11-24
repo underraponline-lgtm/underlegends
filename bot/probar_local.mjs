@@ -2666,6 +2666,12 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
       && /og\/p\/ranking\.png$/.test(r.j['meta[property="og:image"]'] || ''), JSON.stringify(r.j));
     r = await ver('/freestyle-rap/ranking/global/nadie', DISCORD);
     ok('quien todavía no sumó: sin puesto', r.j && /^En el Ranking global de freestyle 2026 · Plaza\./.test(r.j['meta[property="og:description"]'] || ''), JSON.stringify(r.j));
+    // 🪪 y su perfil (`/freestyle-rap/global/<clave>`): la misma vista previa
+    ogEtag['glob/gazir'] = '"abcdef0123456789"';
+    r = await ver('/freestyle-rap/global/gazir', DISCORD);
+    ok('el perfil global de Gazir: la misma vista previa que su ficha', r.j && r.j.title === 'Gazir · Ranking global de freestyle'
+      && /og\/glob\/gazir\.jpg\?v=abcdef012345$/.test(r.j['meta[property="og:image"]'] || ''), JSON.stringify(r.j && r.j.title));
+    delete ogEtag['glob/gazir'];
     r = await ver('/freestyle-rap/ranking/global/no-existe', DISCORD);
     ok('una clave que no está: la del Ranking global', r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle', JSON.stringify(r.j && r.j.title));
     r = await ver('/freestyle-rap/r/lejos', 'WhatsApp/2.23');

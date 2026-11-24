@@ -242,8 +242,8 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     return () => { vivo = false; };
   }, [q, todos]);
   // 🌎 Y LA GENTE DEL RANKING GLOBAL (24/11/2026, Dlx: «asegúrate que todos tengan perfiles buscables, incluso los del
-  // ranking global»): los pros, las plazas y los de la Liga que no tienen perfil acá. Cada uno abre su ficha
-  // (`#/ranking/global/<k>`, global.jsx). `/global.json` se pide la primera vez que se escribe, como `todos`, y es el
+  // ranking global»): los pros, las plazas y los de la Liga que no tienen perfil acá. Cada uno abre su perfil
+  // (`#/global/<k>`, `PerfilGlobal` de global.jsx; Dlx: «que todos ellos tengan un perfil como …/r/dlx»). `/global.json` se pide la primera vez que se escribe, como `todos`, y es el
   // mismo pedido que usa la página del Ranking global (global_datos.js). Los de la Liga con perfil no se repiten: ya salen
   // como raperos, con su perfil de la Liga
   const [glob, setGlob] = useState(globalListo);
@@ -260,7 +260,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
       if (!g || !g.k || !g.n) return;
       if (g.esc === 'liga' && liga.quien && liga.quien(g.n, g.lg)) return;
       const pos = g.p > 0 ? i + 1 : 0;
-      out.push({ tipo: 'global', id: 'g' + g.k, n: limpio(g.n), href: '#/ranking/global/' + encodeURIComponent(g.k), cc: g.cc || '',
+      out.push({ tipo: 'global', id: 'g' + g.k, n: limpio(g.n), href: '#/global/' + encodeURIComponent(g.k), cc: g.cc || '',
         ft: g.ft || '', sub: [GRUPO_GLOBAL[g.esc] || '', pos ? '#' + pos + ' del Ranking global' : 'Ranking global'].filter(Boolean).join(' · ') });
     });
     return out;

@@ -37,6 +37,7 @@ import { QuienEsMods } from './mods_perfil.jsx';
 import { TeEspera } from './te_espera.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
+import { bajarGlobal } from './global_datos.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/perfil.css)
 usarCss('perfil', CSS_PAGINA);
@@ -1527,6 +1528,34 @@ function PerfilesFallaron() {
   );
 }
 
+// 🌎 QUIEN NO ESTÁ EN LA LIGA PERO SÍ EN EL RANKING GLOBAL (24/11/2026, Dlx: «que todos ellos tengan un perfil como …/r/dlx»):
+// `#/r/gazir` lleva a su perfil global (`#/global/gazir`, global.jsx). Sólo si la Liga no tiene a nadie con esa clave: 39 de
+// las del global son también de la Liga, y ahí manda la Liga. Mientras se baja el global, el mismo «Cargando…»
+function HaciaGlobal({ k }) {
+  const [G, setG] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    bajarGlobal().then((d) => { if (vivo) setG(d || { g: [] }); }, () => { if (vivo) setG({ g: [] }); });
+    return () => { vivo = false; };
+  }, []);
+  const g = G && (G.g || []).find((x) => x && x.esc !== 'liga' && String(x.k).toLowerCase() === String(k).toLowerCase());
+  // sin recargar y sin dejar `#/r/…` en el historial («atrás» no vuelve a un perfil que no existe): la dirección nueva y el
+  // aviso de siempre (`lg:dir`), que el enrutador escucha
+  useEffect(() => {
+    if (!g) return;
+    const r = '#/global/' + encodeURIComponent(g.k);
+    try { history.replaceState(history.state, '', window.urlLG ? window.urlLG(r) : r); } catch (e) { location.hash = r; return; }
+    window.dispatchEvent(new Event('lg:dir'));
+  }, [g]);
+  if (!G || g) return <div className="cargando">Cargando…</div>;
+  return (
+    <section className="sec pf-sec">
+      <div className="sec-t"><h2>Todavía no jugó esta temporada</h2></div>
+      <p className="pronto-p">Búscalo en el <a className="te-link" href="#/ranking">Ranking</a> o en el <a className="te-link" href="#/ranking/global">Ranking global</a>.</p>
+    </section>
+  );
+}
+
 export function Perfil({ liga, dc, k: k0, tab }) {
   let k = k0;
   try { k = decodeURIComponent(k0); } catch (e) { /* tal cual */ }
@@ -1656,12 +1685,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     // ⚠️ `false` es que fallaron (`usePerfiles()`), no que tardan: «Cargando…» para siempre no deja hacer nada
     if (P === false) return <PerfilesFallaron />;
     if (!P) return <div className="cargando">Cargando…</div>;
-    return (
-      <section className="sec pf-sec">
-        <div className="sec-t"><h2>Todavía no jugó esta temporada</h2></div>
-        <p className="pronto-p">Búscalo en el <a className="te-link" href="#/ranking">Ranking</a>.</p>
-      </section>
-    );
+    return <HaciaGlobal k={k} />;
   }
   // 👁️ en tu perfil, elegir cuáles se ven al lado de tu nombre: devuelve el error para el panel, o nada
   const elegir = esYo ? (ids) => guardarPerfilMio({ emb: ids }).then((j) => (j.error ? errorPerfilTx(j.error) : '')) : null;

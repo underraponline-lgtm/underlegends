@@ -1020,6 +1020,14 @@ export default {
       if (!v && PAGINAS[pagina]) v = await vistaPagina(req, env, pagina, url, id).catch(() => null);
       if (v) return v;
     }
+    // 🪪 y la del perfil de cada uno del Ranking global (24/11/2026, `#/global/<clave>`): la misma que su ficha
+    const mGlob = req.method === 'GET' && /^\/freestyle-rap\/global\/([^/?#]{1,80})\/?$/.exec(url.pathname);
+    if (mGlob && BOTS_VISTA.test(ua)) {
+      let id = mGlob[1];
+      try { id = decodeURIComponent(id); } catch (e) { /* tal cual */ }
+      const v = (await vistaGlobal(req, env, id, url).catch(() => null)) || (await vistaPagina(req, env, 'ranking', url, 'global').catch(() => null));
+      if (v) return v;
+    }
     // 👥 y la de cada crew (ver `vistaCrew()`)
     const mCrew = req.method === 'GET' && /^\/freestyle-rap\/crew\/([^/?#]{1,60})\/?$/.exec(url.pathname);
     if (mCrew && BOTS_VISTA.test(ua)) {
