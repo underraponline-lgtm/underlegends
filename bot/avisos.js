@@ -18463,7 +18463,9 @@ export class Avisos {
    *  `?v=` para que una portada redibujada se vuelva a mandar. Sin archivo, vacío: el bot va sin portada */
   async perfilPortada(sv, ahora = Date.now()) {
     const B = this.leer('bot_portadas') || {};
-    if (B[sv] && ahora - (B[sv].t || 0) < 6 * HORA) return B[sv].u || '';
+    // ⏱️ «no hay» se recuerda 30 minutos, no 6 horas (24/11/2026): URBF se quedó sin portada porque el vigía preguntó
+    // justo antes de que la página publicara su archivo, y ese «no hay» valía 6 horas. Discord la aceptó al mandarla a mano
+    if (B[sv] && ahora - (B[sv].t || 0) < (B[sv].u ? 6 * HORA : 30 * MIN)) return B[sv].u || '';
     let u = '';
     try {
       const url = HUB + '/banners/bot/' + String(sv).toLowerCase() + '.jpg';
