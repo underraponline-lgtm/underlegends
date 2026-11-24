@@ -1,7 +1,8 @@
 // ── 📅 LA TEMPORADA ENTERA DEL CALENDARIO, APARTE DEL LOBBY (29/10/2026). El lobby viaja en cada visita y el calendario
 // era la única clave que crecía sin techo (toda la temporada, ~1,6 KB comprimidos por semana): ahora trae sólo desde
-// `cal_desde` (4 semanas, `CAL_DIAS` de bot/subir_web.py), que es lo más atrás que mira la página fuera de Eventos. La
-// temporada entera vive en `/api/calendario` (la KV `web:calendario`) y se pide al abrir Eventos o una llave, una vez
+// `cal_desde` (2 semanas desde el 24/11/2026, `CAL_DIAS` de bot/subir_web.py). La temporada entera vive en `/api/calendario`
+// (la KV `web:calendario`) y se pide al abrir Eventos, una llave, el panel del socio o el Dashboard (`pideCal` de App.jsx),
+// una vez
 // por cada lobby nuevo (`sello`). App.jsx la junta con la del lobby (`juntarCalendario()`), así quien lo lee no cambia
 let pedido = null, de = null;
 // ⏳ CON PLAZO (21/11/2026, revisión de robustez): colgado, el pedido quedaba guardado para ese lobby sin contestar nunca,

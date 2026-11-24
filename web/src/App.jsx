@@ -689,7 +689,8 @@ export default function App() {
   // 📅 Y LA TEMPORADA ENTERA DEL CALENDARIO (29/10/2026, ver web/src/calendario_datos.js): el lobby trae 4 semanas, y al
   // abrir Eventos o una llave se pide el resto y se junta en `liga.d.calendario`. Una vez pedida, queda para toda la visita
   const [calE, setCalE] = useState(null);
-  const pideCal = /^#\/(eventos|avisos|llave)(\/|\?|$)/.test(hash || '');
+  // (24/11/2026: el lobby trae 2 semanas; el panel del socio —«cuándo juega tu gente»— y el Dashboard miran 4)
+  const pideCal = /^#\/(eventos|avisos|llave|socio|dashboard)(\/|\?|$)/.test(hash || '');
   useEffect(() => {
     if (!D || !D.cal_desde || (!pideCal && !calE)) return undefined;
     let vivo = true;

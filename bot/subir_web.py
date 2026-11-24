@@ -98,10 +98,13 @@ VENTANA_VIVO = 90
 #: lobby pasaba los 120 KB que se bajan en cada visita.
 LLAVES_WEB = 12
 
-#: 📅 cuántos días de calendario viajan en el lobby (29/10/2026). Lo más atrás que mira la página fuera de Eventos es
-#: «suele organizar a esta hora» del Inicio (28 días, `sueleHoy()` de web/src/medio.jsx). La temporada entera va a
-#: `CLAVE_CALENDARIO` (`/api/calendario`) y la piden Eventos y la llave. Si alguien mira más atrás, se sube esto
-CAL_DIAS = 28
+#: 📅 cuántos días de calendario viajan en el lobby (29/10/2026). La temporada entera va a `CLAVE_CALENDARIO`
+#: (`/api/calendario`) y la piden Eventos, la llave, el panel del socio y el Dashboard (`pideCal` de web/src/App.jsx).
+#: 🗓️ 14 DESDE EL 24/11/2026 (eran 28), con el lobby pasado de su tope por cuarta vez: lo que miraba 4 semanas era
+#: `sueleHoy()` del Inicio (web/src/medio.jsx), que ya no se dibuja en ningún lado (`Fechas` quedó afuera de la página),
+#: y el panel del socio y el Dashboard, que ahora piden la temporada entera. «Cuándo suele jugar» de Eventos usa la
+#: temporada entera (Dlx, 24/11: «calcula desde 0 hasta hoy»). Si alguien más mira más atrás, va en `pideCal`
+CAL_DIAS = 14
 CLAVE_CALENDARIO = 'web:calendario'
 #: ⚔️ las últimas batallas de cada uno en el Ranking ELO (`/api/divisiones`), aparte del lobby desde el 09/11/2026: las
 #: pide Ranking → Divisiones para «Tus últimas batallas». Ver `divisiones.para_web()` y `batallas_web()`
