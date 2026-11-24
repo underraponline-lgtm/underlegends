@@ -1472,6 +1472,27 @@
    "cuando": "2026-11-24 12:53 AM ET",
    "por": "el organizador, con el botón (<@1374555884868337738>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "compechopnuevoceo|CH|13/11|final|makmah|og": {
+   "ganador": "OG",
+   "batalla": "COMPE CHOP NUEVO CEO · CH · 13/11 · final · OG 🆚 Makmah",
+   "cuando": "2026-11-24 11:23 AM ET",
+   "por": "el organizador, con el menú (<@597257327464284163>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "compechopnuevoceo|CH|13/11|semifinales|og|rizas": {
+   "ganador": "OG",
+   "batalla": "COMPE CHOP NUEVO CEO · CH · 13/11 · semifinales · Rizas 🆚 OG",
+   "cuando": "2026-11-24 11:23 AM ET",
+   "por": "el organizador, con el menú (<@597257327464284163>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "compechopnuevoceo|CH|13/11|semifinales|makma|nc": {
+   "ganador": "makma",
+   "batalla": "COMPE CHOP NUEVO CEO · CH · 13/11 · semifinales · makma 🆚 nc🇲🇿",
+   "cuando": "2026-11-24 11:23 AM ET",
+   "por": "el organizador, con el menú (<@597257327464284163>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

@@ -1,5 +1,7 @@
 {
  "_leeme": "🎭 Los eventos de estilo que marcó Dlx en el Dashboard (`marcados`, por número o por `a:<id del anuncio>`) y lo mismo resuelto a número de evento (`eventos`). Lo escribe bot/eventos_estilo.py desde bot/subir_web.py; lo lee bot/juegos.py para los niveles",
- "marcados": {},
+ "marcados": {
+  "a:1568855292710756353": "flow"
+ },
  "eventos": {}
 }

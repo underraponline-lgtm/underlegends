@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T07:55:21+00:00",
+ "cuando": "2026-11-24T16:26:20+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4466,38 +4466,6 @@
    "categoria_id": "1373343272482902127"
   },
   {
-   "nombre": "D'F I",
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "msg_id": "1573729105231347933",
-   "cuando": "2026-11-21T15:57:37",
-   "canal_id": "1469943663332425738",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "e0acf3adfb0d85f0",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "21DE NOVIEMBRE • 17 HS PE • VC : D'F SACRED",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "dj": [
-     "BOOTRAX",
-     "DJ Bootrax D Callao"
-    ]
-   },
-   "autor": "Drexx",
-   "staff_cuentas": {
-    "DJ Bootrax D Callao": "1122273746099638354"
-   },
-   "de_imagen": true,
-   "categoria_id": "1469943266022785115"
-  },
-  {
    "nombre": "COMPE PANDILLAS",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -7977,6 +7945,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "WOF",
+   "canal": "📢〢・Anuncios",
+   "tit": "🎤 WORLD OF FREE × UNDER LEGENDS",
+   "tx": "El freestyle en español tiene su propia liga, y ahora puedes seguirla desde un solo lugar. Under Legends es la casa de la Liga Global de Freestyle: más de 500 raperos de más de 20 países ya compitieron en más de 200 even",
+   "cuando": "2026-11-24T14:01:48",
+   "msg_id": "1574787122911780945",
+   "link": "https://discord.com/channels/1558593868587339868/1566961462872899694/1574787122911780945"
+  },
+  {
    "servidor": "SGR",
    "canal": "【📌】Anuncios",
    "tit": "_Ya se subieron los Octavos de Final de la última compe !!! Vayan a darles apoyo a esas ba",
@@ -8105,20 +8082,20 @@
   {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
+   "tit": "ENCARGADOS DE QUE TODA LA COMPE SALGA BIEN",
+   "tx": "DJ🎧 : BOOTRAX | HOSTS🎙️: BENJI | + DREXX |",
+   "cuando": "2026-11-21T15:57:37",
+   "msg_id": "1573729105231347933",
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573729105231347933"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
    "tit": "D'F I GENESIS",
    "tx": "ESTELAR: JEIXDER / @jeixder 🇵🇪 VS LSD / CO-ESTELAR: SAKRO / VS XCLUSIVO / MAIN EVENT: MAKMA / @makmah_g 🇻🇪 VS 19 / @19_vz1 PRE - ELIMINARES: CARLOS / 🇪🇨 VS EVANGELINE / 🇧🇴 + ISAX / 🇪🇨 MATS / VS CRISZJ / 🇵🇪 CHOP / 🇭🇳 VS W",
    "cuando": "2026-11-21T05:14:01",
    "msg_id": "1573567140592885761",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573567140592885761"
-  },
-  {
-   "servidor": "WOF",
-   "canal": "├📣・anuncios-デ╦【",
-   "tit": "GANA CONTRA TRAS REPLICA + 2 PTS",
-   "tx": "",
-   "cuando": "2026-11-20T21:59:03",
-   "msg_id": "1573457678099947671",
-   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1573457678099947671"
   },
   {
    "servidor": "ACAD",
@@ -8173,15 +8150,6 @@
    "cuando": "2026-11-18T21:44:17",
    "msg_id": "1572729183807864927",
    "link": "https://discord.com/channels/1443770831598649528/1443789190012604436/1572729183807864927"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "tit": "NUEVO ALBUM DE BEATS DE DJ BOOTRAX - ACHIMEGA 21",
-   "tx": "PARA QUE COMPARTAN , APOYEN, PRACTIQUEN Y USEN EN COMPETENCIAS DJ BOOTRAX",
-   "cuando": "2026-11-18T21:15:54",
-   "msg_id": "1572722042409852968",
-   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1572722042409852968"
   },
   {
    "servidor": "CHZ",
@@ -8248,6 +8216,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "TMAX 🇪🇸",
+   "quien": "arowey0719_09614",
+   "discord_id": "1345623878474403901",
+   "msg_id": "1574787323541852361",
+   "cuando": "2026-11-24T14:02:36"
+  },
   {
    "servidor": "FDS",
    "canal": "│🔵📋┆inscripciones",
@@ -44238,15 +44215,6 @@
    "discord_id": "645308964141137952",
    "msg_id": "1562284001312374897",
    "cuando": "2026-10-21T01:58:51"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "vandu",
-   "quien": "dfelipetor",
-   "discord_id": "613552853302378527",
-   "msg_id": "1562283941665316905",
-   "cuando": "2026-10-21T01:58:37"
   }
  ]
 }

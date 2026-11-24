@@ -1855,7 +1855,30 @@
     "ronda": "SEMIFINALES"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "otro",
+    "t": 1795510870978
+   },
+   "1": {
+    "por": "otro",
+    "t": 1795510865157
+   },
+   "2": {
+    "por": "otro",
+    "t": 1795510883396
+   },
+   "3": {
+    "por": "otro",
+    "t": 1795510885041
+   }
+  },
+  "respondidas": {
+   "0": "OG",
+   "1": "OG",
+   "2": "OG",
+   "3": "makma"
+  },
   "sin_permiso": true,
   "staff_probado": true,
   "sv": "CH",

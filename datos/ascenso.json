@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-24T07:58:58Z",
+ "t": "2026-11-24T16:36:41Z",
  "sv": {
   "SR": {
    "filas": [
@@ -931,18 +931,18 @@
      "Gocho"
     ],
     [
+     "Yo mc",
+     "cl",
+     1460,
+     510,
+     "Cronox"
+    ],
+    [
      "BENJIXO",
      "ar",
      1370,
      0,
      "Benjixo"
-    ],
-    [
-     "Yo mc",
-     "cl",
-     1350,
-     400,
-     "Cronox"
     ],
     [
      "Ax",
@@ -1449,6 +1449,13 @@
      "Marto AR"
     ],
     [
+     "LRS",
+     "ar",
+     350,
+     350,
+     "LRS"
+    ],
+    [
      "Last",
      "gq",
      335,
@@ -1566,13 +1573,6 @@
      240,
      240,
      "Status"
-    ],
-    [
-     "LRS",
-     "ar",
-     240,
-     240,
-     "LRS"
     ],
     [
      "Cinexfilo",
@@ -2265,6 +2265,16 @@
        "Gocho",
        "Subcampeón",
        150
+      ],
+      [
+       "LRS",
+       "Tercero",
+       110
+      ],
+      [
+       "Cronox",
+       "Tercero",
+       110
       ]
      ],
      "fuera": []
