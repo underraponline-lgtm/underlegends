@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-24T01:01:32Z",
+ "cuando": "2026-11-24T02:02:08Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 509.7,
+ "dur_s": 540.0,
  "pasos": [
   {
    "n": "0a",
    "que": "los nombres de Discord de la Lista, de KV",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "0a2",
@@ -21,37 +21,37 @@
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 1.8
+   "s": 1.7
   },
   {
    "n": "1",
    "que": "las llaves cargadas, al buzón (datos/entrada_buzon.json)",
    "ok": true,
-   "s": 77.8
+   "s": 76.1
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 54.9
+   "s": 68.5
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "1a1",
    "que": "quién es quién, solo: el Discord de quien juega sin ID",
    "ok": true,
-   "s": 0.1
+   "s": 42.2
   },
   {
    "n": "1a2",
@@ -63,19 +63,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": false,
-   "s": 27.4
+   "s": 32.0
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.4
+   "s": 1.8
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.7
+   "s": 1.1
   },
   {
    "n": "2b0",
@@ -87,25 +87,25 @@
    "n": "2b",
    "que": "Most Wanted",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.8
+   "s": 0.5
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.3
+   "s": 0.2
   },
   {
    "n": "2b3b",
@@ -117,25 +117,25 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 2.1
+   "s": 1.9
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.4
+   "s": 0.9
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 1.7
+   "s": 0.9
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 4.1
+   "s": 8.6
   },
   {
    "n": "2b5b",
@@ -147,19 +147,19 @@
    "n": "2b6",
    "que": "los apodos (/apodo)",
    "ok": false,
-   "s": 32.4
+   "s": 33.7
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.7
+   "s": 3.7
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 1.5
+   "s": 2.0
   },
   {
    "n": "2b8b",
@@ -171,13 +171,13 @@
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.6
+   "s": 4.3
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 70.5
+   "s": 75.1
   },
   {
    "n": "2b8e",
@@ -189,61 +189,61 @@
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 9.9
+   "s": 11.8
   },
   {
    "n": "2b8g",
    "que": "los primerizos",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b8h",
    "que": "las notas y el MVP",
    "ok": true,
-   "s": 0.4
+   "s": 0.2
   },
   {
    "n": "2b8h2",
    "que": "la gente de cada evento",
    "ok": true,
-   "s": 2.4
+   "s": 1.4
   },
   {
    "n": "2b4c",
    "que": "el aviso de los ganadores",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2b4d",
    "que": "las imágenes de la semana para redes",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2b8i",
    "que": "las competencias de la semana",
    "ok": true,
-   "s": 2.8
+   "s": 1.7
   },
   {
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 41.0
+   "s": 56.1
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 2.7
+   "s": 2.9
   },
   {
    "n": "2b9c",
    "que": "las cartas de liga",
    "ok": true,
-   "s": 30.4
+   "s": 0.5
   },
   {
    "n": "2b10",
@@ -255,13 +255,13 @@
    "n": "2b11",
    "que": "el kit de cada servidor",
    "ok": true,
-   "s": 9.1
+   "s": 10.8
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 69.7
+   "s": 62.7
   },
   {
    "n": "2c2",
@@ -273,13 +273,13 @@
    "n": "2c3",
    "que": "el anuncio que sale solo a su hora",
    "ok": true,
-   "s": 2.8
+   "s": 1.7
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 12.5
+   "s": 9.5
   },
   {
    "n": "2e",
@@ -297,25 +297,25 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 4.6
+   "s": 4.0
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 1.0
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 19.2
+   "s": 12.3
   }
  ],
  "fallas": [
@@ -337,7 +337,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-11-24T00:55:52Z",
+  "cuando": "2026-11-24T01:54:30Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 838,
   "un_evento": 427,
@@ -407,25 +407,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 94,
-   "read": 3762
+   "write": 113,
+   "read": 5102
   },
   "objeto": {
-   "leidas": 816751,
-   "escritas": 8650,
-   "pedidos": 3314
+   "leidas": 980035,
+   "escritas": 10560,
+   "pedidos": 4214
   },
   "worker": {
-   "pedidos": 26571,
+   "pedidos": 25676,
    "errores": 0,
-   "sub": 30305,
+   "sub": 29354,
    "cortados": 0,
-   "p50_ms": 1.0,
-   "p99_ms": 16.59,
+   "p50_ms": 1.01,
+   "p99_ms": 16.9,
    "cpu": {
-    "total": 56601,
-    "objeto_10": 2117,
-    "worker_10": 1009
+    "total": 54782,
+    "objeto_10": 2098,
+    "worker_10": 1044
    }
   },
   "r2": {
