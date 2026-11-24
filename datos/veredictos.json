@@ -10973,6 +10973,28 @@
    "b": "Sin límites 🇵🇪",
    "ganador": "Sin límites 🇵🇪",
    "votos": "1–0"
+  },
+  "1574841863062556723": {
+   "id": "1574841863062556723",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795541959301,
+   "a": "Majiztral 🇨🇴",
+   "b": "agustin la reliquia🇦🇬",
+   "ganador": "agustin la reliquia🇦🇬",
+   "votos": "1–0"
+  },
+  "1574843217759707207": {
+   "id": "1574843217759707207",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795542282286,
+   "a": "Julda 🇨🇴",
+   "b": "Konan 🇦🇷",
+   "ganador": "Konan 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14830,8 +14852,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795541398449,
-   "ed": 1795541555811,
-   "texto": "`[ CUARTOS ]`\n⌞Thaniel 🇻🇪⌝ 🆚 ⌞Sin límites 🇵🇪⌝",
+   "ed": 1795542738264,
+   "texto": "`[ CUARTOS ]`\n⌞Thaniel 🇻🇪⌝ 🆚 ⌞Sin límites 🇵🇪⌝\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Majiztral 🇨🇴⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Julda 🇨🇴⌝ 🆚 ⌞Konan 🇦🇷⌝\n⌞Agus🇦🇷⌝ 🆚 ⌞Inku 🇦🇷⌝\n⌞Agus🇦🇷⌝ 🆚 ⌞Araya 🇦🇸⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -14841,6 +14863,56 @@
      ],
      "Sin límites 🇵🇪",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Majiztral 🇨🇴",
+      "agustin la reliquia🇦🇬"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Majiztral 🇨🇴",
+      "agustin la reliquia🇦🇬"
+     ],
+     "agustin la reliquia🇦🇬",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Julda 🇨🇴",
+      "Konan 🇦🇷"
+     ],
+     "Konan 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Agus🇦🇷",
+      "Inku 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Agus🇦🇷",
+      "Araya 🇦🇸"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

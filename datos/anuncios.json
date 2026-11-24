@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T17:37:22+00:00",
+ "cuando": "2026-11-24T17:55:18+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7015,7 +7015,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "ROC MARCIANO",
+   "autor": "La gran wea",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "cerradas",
@@ -8216,6 +8216,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ElPapu🇦🇷",
+   "quien": "quieromc_ahora",
+   "discord_id": "1549098811538939975",
+   "msg_id": "1574842617819299861",
+   "cuando": "2026-11-24T17:42:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Inku 🇦🇷",
+   "quien": "fr4nki33",
+   "discord_id": "966814191556116560",
+   "msg_id": "1574842601818030141",
+   "cuando": "2026-11-24T17:42:15"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Deko 🇦🇷",
+   "quien": "dekocwp",
+   "discord_id": "1525316933786927137",
+   "msg_id": "1574842423023108248",
+   "cuando": "2026-11-24T17:41:32"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44188,33 +44215,6 @@
    "discord_id": "1515482513106272366",
    "msg_id": "1562537686474952775",
    "cuando": "2026-10-21T18:46:55"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1562537662924066928",
-   "cuando": "2026-10-21T18:46:49"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teo 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1562537659937853451",
-   "cuando": "2026-10-21T18:46:48"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "Silence la lujuria 🇵🇪",
-   "quien": "s1l3nc3_bv",
-   "discord_id": "1276644368693858356",
-   "msg_id": "1562535449073950762",
-   "cuando": "2026-10-21T18:38:01"
   }
  ]
 }
