@@ -2275,145 +2275,6 @@
   },
   {
    "a": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/11/RIFE-1.png",
-    "id": "fms:12045",
-    "nombre": "Rife",
-    "pais": null
-   },
-   "b": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/06/DYBBUK-2.png",
-    "id": "fms:5052",
-    "nombre": "Dybbuk",
-    "pais": "ar"
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "fms-ar-t8-j2",
-    "nombre": "FMS Argentina 2026/27 · Jornada 2",
-    "pais": "ar",
-    "tipo": "fms_jornada"
-   },
-   "fuente": "fms",
-   "gana": "a",
-   "id": "fms:ar-t8-j2:12045+5052",
-   "pts": [
-    151,
-    140
-   ],
-   "replica": false,
-   "ronda": "jornada",
-   "url": "https://fms.tv/resultados/",
-   "votos": [
-    5,
-    0
-   ]
-  },
-  {
-   "a": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/REPLIK-1.png",
-    "id": "fms:1462",
-    "nombre": "Replik",
-    "pais": "ar"
-   },
-   "b": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/02/ABEL-2.png",
-    "id": "fms:9499",
-    "nombre": "Abel",
-    "pais": "ar"
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "fms-ar-t8-j2",
-    "nombre": "FMS Argentina 2026/27 · Jornada 2",
-    "pais": "ar",
-    "tipo": "fms_jornada"
-   },
-   "fuente": "fms",
-   "gana": "a",
-   "id": "fms:ar-t8-j2:1462+9499",
-   "pts": [
-    151,
-    147
-   ],
-   "replica": false,
-   "ronda": "jornada",
-   "url": "https://fms.tv/resultados/",
-   "votos": [
-    4,
-    1
-   ]
-  },
-  {
-   "a": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/06/LARRIX-4.png",
-    "id": "fms:5146",
-    "nombre": "Larrix",
-    "pais": "ar"
-   },
-   "b": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2026/02/TOBI-2.png",
-    "id": "fms:12603",
-    "nombre": "TOBI",
-    "pais": "ar"
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "fms-ar-t8-j2",
-    "nombre": "FMS Argentina 2026/27 · Jornada 2",
-    "pais": "ar",
-    "tipo": "fms_jornada"
-   },
-   "fuente": "fms",
-   "gana": "a",
-   "id": "fms:ar-t8-j2:12603+5146",
-   "pts": [
-    149,
-    141
-   ],
-   "replica": false,
-   "ronda": "jornada",
-   "url": "https://fms.tv/resultados/",
-   "votos": [
-    4,
-    0
-   ]
-  },
-  {
-   "a": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/11/RIFE-1.png",
-    "id": "fms:12045",
-    "nombre": "Rife",
-    "pais": null
-   },
-   "b": {
-    "id": "fms:nombre:harry",
-    "nombre": "HARRY",
-    "pais": null
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "fms-ar-t8-j2",
-    "nombre": "FMS Argentina 2026/27 · Jornada 2",
-    "pais": "ar",
-    "tipo": "fms_jornada"
-   },
-   "fuente": "fms",
-   "gana": "b",
-   "id": "fms:ar-t8-j2:12045+nombre:harry",
-   "pts": [
-    142,
-    151
-   ],
-   "replica": false,
-   "ronda": "jornada",
-   "url": "https://fms.tv/resultados/",
-   "votos": [
-    0,
-    5
-   ]
-  },
-  {
-   "a": {
     "foto": "https://cdn.fms.tv/wp-content/uploads/2025/08/SOPHIA-1.png",
     "id": "fms:11361",
     "nombre": "Sophia",
@@ -2647,6 +2508,145 @@
    "pts": [
     133,
     150
+   ],
+   "replica": false,
+   "ronda": "jornada",
+   "url": "https://fms.tv/resultados/",
+   "votos": [
+    0,
+    5
+   ]
+  },
+  {
+   "a": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/11/RIFE-1.png",
+    "id": "fms:12045",
+    "nombre": "Rife",
+    "pais": null
+   },
+   "b": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/06/DYBBUK-2.png",
+    "id": "fms:5052",
+    "nombre": "Dybbuk",
+    "pais": "ar"
+   },
+   "evento": {
+    "fecha": "2026-11-21",
+    "id": "fms-ar-t8-j2",
+    "nombre": "FMS Argentina 2026/27 · Jornada 2",
+    "pais": "ar",
+    "tipo": "fms_jornada"
+   },
+   "fuente": "fms",
+   "gana": "a",
+   "id": "fms:ar-t8-j2:12045+5052",
+   "pts": [
+    151,
+    140
+   ],
+   "replica": false,
+   "ronda": "jornada",
+   "url": "https://fms.tv/resultados/",
+   "votos": [
+    5,
+    0
+   ]
+  },
+  {
+   "a": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/REPLIK-1.png",
+    "id": "fms:1462",
+    "nombre": "Replik",
+    "pais": "ar"
+   },
+   "b": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/02/ABEL-2.png",
+    "id": "fms:9499",
+    "nombre": "Abel",
+    "pais": "ar"
+   },
+   "evento": {
+    "fecha": "2026-11-21",
+    "id": "fms-ar-t8-j2",
+    "nombre": "FMS Argentina 2026/27 · Jornada 2",
+    "pais": "ar",
+    "tipo": "fms_jornada"
+   },
+   "fuente": "fms",
+   "gana": "a",
+   "id": "fms:ar-t8-j2:1462+9499",
+   "pts": [
+    151,
+    147
+   ],
+   "replica": false,
+   "ronda": "jornada",
+   "url": "https://fms.tv/resultados/",
+   "votos": [
+    4,
+    1
+   ]
+  },
+  {
+   "a": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/06/LARRIX-4.png",
+    "id": "fms:5146",
+    "nombre": "Larrix",
+    "pais": "ar"
+   },
+   "b": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2026/02/TOBI-2.png",
+    "id": "fms:12603",
+    "nombre": "TOBI",
+    "pais": "ar"
+   },
+   "evento": {
+    "fecha": "2026-11-21",
+    "id": "fms-ar-t8-j2",
+    "nombre": "FMS Argentina 2026/27 · Jornada 2",
+    "pais": "ar",
+    "tipo": "fms_jornada"
+   },
+   "fuente": "fms",
+   "gana": "a",
+   "id": "fms:ar-t8-j2:12603+5146",
+   "pts": [
+    149,
+    141
+   ],
+   "replica": false,
+   "ronda": "jornada",
+   "url": "https://fms.tv/resultados/",
+   "votos": [
+    4,
+    0
+   ]
+  },
+  {
+   "a": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/11/RIFE-1.png",
+    "id": "fms:12045",
+    "nombre": "Rife",
+    "pais": null
+   },
+   "b": {
+    "id": "fms:nombre:harry",
+    "nombre": "HARRY",
+    "pais": null
+   },
+   "evento": {
+    "fecha": "2026-11-21",
+    "id": "fms-ar-t8-j2",
+    "nombre": "FMS Argentina 2026/27 · Jornada 2",
+    "pais": "ar",
+    "tipo": "fms_jornada"
+   },
+   "fuente": "fms",
+   "gana": "b",
+   "id": "fms:ar-t8-j2:12045+nombre:harry",
+   "pts": [
+    142,
+    151
    ],
    "replica": false,
    "ronda": "jornada",
@@ -8633,6 +8633,33 @@
   },
   {
    "a": {
+    "id": "yt:mzeta",
+    "nombre": "MZETA",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:stereo",
+    "nombre": "STEREO",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-11-10",
+    "id": "yt-inmortal-liga-inmortal-cupo-a-esurbanofree",
+    "nombre": "Liga Inmortal Cupo a esurbanofree",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:UbZj9NBgtZA",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=UbZj9NBgtZA",
+   "votos": null
+  },
+  {
+   "a": {
     "id": "yt:citovy",
     "nombre": "CITOVY",
     "pais": "cl"
@@ -8683,33 +8710,6 @@
    "replica": null,
    "ronda": "cuartos",
    "url": "https://www.youtube.com/watch?v=x1UZih4DP_c",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:mzeta",
-    "nombre": "MZETA",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:stereo",
-    "nombre": "STEREO",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-10",
-    "id": "yt-inmortal-liga-inmortal-cupo-a-esurbanofree",
-    "nombre": "Liga Inmortal Cupo a esurbanofree",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:UbZj9NBgtZA",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=UbZj9NBgtZA",
    "votos": null
   },
   {
@@ -10145,600 +10145,6 @@
   },
   {
    "a": {
-    "id": "yt:teorema",
-    "nombre": "TEOREMA",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:kaitos",
-    "nombre": "KAITOS",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "yt-reyes-del-parque-la-mejor-batalla-de-teo-del-ano-los-reyes-del-parque-fecha-4",
-    "nombre": "LA MEJOR BATALLA DE TEO DEL AÑO · Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:EqEtQr7CJw0",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=EqEtQr7CJw0",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:kmc",
-    "nombre": "KMC",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:jotaka",
-    "nombre": "JOTAKA",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "yt-reyes-del-parque-jotaka-no-tiene-piedad-con-kmc-los-reyes-del-parque-fecha-4",
-    "nombre": "JOTAKA NO TIENE PIEDAD CON KMC · Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:cLML2CZzeZw",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=cLML2CZzeZw",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:fusok",
-    "nombre": "FUSOK",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:elbarto",
-    "nombre": "EL BARTO",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-20",
-    "id": "yt-reyes-del-parque-el-clasico-del-parque-los-reyes-del-parque-fecha-4",
-    "nombre": "EL CLÁSICO DEL PARQUE · Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:8M0yZy02Azw",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=8M0yZy02Azw",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:zample",
-    "nombre": "ZAMPLE",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:sador",
-    "nombre": "SADOR",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-20",
-    "id": "yt-reyes-del-parque-la-nueva-contra-la-vieja-escuela-los-reyes-del-parque-fecha-",
-    "nombre": "LA NUEVA CONTRA LA VIEJA ESCUELA · Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:bljEdHarPpI",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=bljEdHarPpI",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:jotaka",
-    "nombre": "JOTAKA",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:benjixx",
-    "nombre": "BENJIXX",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-10",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-4",
-    "nombre": "Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:IVo2NI0QS3w",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=IVo2NI0QS3w",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:zample",
-    "nombre": "ZAMPLE",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:99",
-    "nombre": "99",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-10",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-4",
-    "nombre": "Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:evvDjNNuhtY",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=evvDjNNuhtY",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:teorema",
-    "nombre": "TEOREMA",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:psyduck",
-    "nombre": "PSYDUCK",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-10",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-4",
-    "nombre": "Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:VVKB__6SZc0",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=VVKB__6SZc0",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:kmc",
-    "nombre": "KMC",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:satim",
-    "nombre": "SATIM",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-10",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-4",
-    "nombre": "Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:ohiJERkwZTk",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=ohiJERkwZTk",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:sador",
-    "nombre": "SADOR",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:citovy",
-    "nombre": "CITOVY",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-10",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-4",
-    "nombre": "Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:QUf_ZSS0Ak8",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=QUf_ZSS0Ak8",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:fusok",
-    "nombre": "FUSOK",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:mcma",
-    "nombre": "MCMA",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-11-10",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-4",
-    "nombre": "Los Reyes del Parque Fecha 4",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:MWWF0gkVLmg",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=MWWF0gkVLmg",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:psyduck",
-    "nombre": "PSYDUCK",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:osany",
-    "nombre": "OSANY",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:C2oR-l_7EFM",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=C2oR-l_7EFM",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:titobruno",
-    "nombre": "TITO BRUNO",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:nare",
-    "nombre": "NARE",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:IPZBW8rdi9E",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=IPZBW8rdi9E",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:stigma",
-    "nombre": "STIGMA",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:thodal",
-    "nombre": "THODAL",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:SVbAQBsqqRw",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=SVbAQBsqqRw",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:fusok",
-    "nombre": "FUSOK",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:aries",
-    "nombre": "ARIES",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:IxRfwsNIWzk",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=IxRfwsNIWzk",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:pepegrillo",
-    "nombre": "PEPE GRILLO",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:krayzi",
-    "nombre": "KRAYZI",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:sXHJGw8wBy4",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=sXHJGw8wBy4",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:kmc",
-    "nombre": "KMC",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:bellota",
-    "nombre": "BELLOTA",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:LBOgNbLU4Wk",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=LBOgNbLU4Wk",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:nitro",
-    "nombre": "NITRO",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:jotaka",
-    "nombre": "JOTAKA",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:uLHCY_qZjiA",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=uLHCY_qZjiA",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:elbarto",
-    "nombre": "EL BARTO",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:zample",
-    "nombre": "ZAMPLE",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "b",
-   "id": "yt:fbVSPjM6jLQ",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=fbVSPjM6jLQ",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:kmc",
-    "nombre": "KMC",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:titobruno",
-    "nombre": "TITO BRUNO",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:qgh5ia1_s_o",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=qgh5ia1_s_o",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:fusok",
-    "nombre": "FUSOK",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:psyduck",
-    "nombre": "PSYDUCK",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:l7NeeBZF-ks",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=l7NeeBZF-ks",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:zample",
-    "nombre": "ZAMPLE",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:stigma",
-    "nombre": "STIGMA",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:EXt3x68Smjs",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=EXt3x68Smjs",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:nitro",
-    "nombre": "NITRO",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:pepe",
-    "nombre": "PEPE",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-09",
-    "id": "yt-reyes-del-parque-los-reyes-del-parque-fecha-3",
-    "nombre": "Los Reyes del Parque Fecha 3",
-    "pais": "cl",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:B4ekWmuwScI",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=B4ekWmuwScI",
-   "votos": null
-  },
-  {
-   "a": {
     "id": "yt:krayer",
     "nombre": "KRAYER",
     "pais": "cl"
@@ -11667,7 +11073,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11694,7 +11100,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11721,7 +11127,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11748,7 +11154,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11775,7 +11181,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11802,7 +11208,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11829,7 +11235,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11856,7 +11262,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11883,7 +11289,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11910,7 +11316,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11937,7 +11343,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11964,7 +11370,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -11991,7 +11397,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -12018,7 +11424,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -12045,7 +11451,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-14",
     "id": "yt-gdp-gdp-ultima-oportunidad-al-cupo-de-plazas-red-bull-batalla-20",
     "nombre": "GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026",
     "pais": "cl",
@@ -80407,6 +79813,238 @@
    "ronda": "final",
    "url": null,
    "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:sinlimites",
+    "nombre": "Sin Limites",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "liga:thaniel",
+    "nombre": "Thaniel",
+    "pais": "ve"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:cuartos:sinlimites|thaniel",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": null,
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:eidp",
+    "nombre": "EIDP",
+    "pais": "uy"
+   },
+   "b": {
+    "id": "liga:majiztral",
+    "nombre": "Majiztral",
+    "pais": "co"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:cuartos:eidp|majiztral",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": null,
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:konan",
+    "nombre": "Konan",
+    "pais": "ar"
+   },
+   "b": {
+    "id": "liga:julda",
+    "nombre": "Julda",
+    "pais": "co"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:cuartos:konan|julda",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": null,
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:agus",
+    "nombre": "Agus",
+    "pais": "ar"
+   },
+   "b": {
+    "id": "liga:inku",
+    "nombre": "Inku",
+    "pais": "ar"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:cuartos:agus|inku",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": null,
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:agus",
+    "nombre": "Agus",
+    "pais": "ar"
+   },
+   "b": {
+    "id": "liga:araya",
+    "nombre": "araya",
+    "pais": "ar"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:cuartos:agus|araya",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": null,
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:eidp",
+    "nombre": "EIDP",
+    "pais": "uy"
+   },
+   "b": {
+    "id": "liga:sinlimites",
+    "nombre": "Sin Limites",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:semifinal:eidp|sinlimites",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": null,
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:konan",
+    "nombre": "Konan",
+    "pais": "ar"
+   },
+   "b": {
+    "id": "liga:agus",
+    "nombre": "Agus",
+    "pais": "ar"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:semifinal:konan|agus",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": null,
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "liga:eidp",
+    "nombre": "EIDP",
+    "pais": "uy"
+   },
+   "b": {
+    "id": "liga:konan",
+    "nombre": "Konan",
+    "pais": "ar"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "liga-689",
+    "n": 689,
+    "nombre": "PURISTAS DEL HIP HOP",
+    "pais": null,
+    "sv": "FFA",
+    "tipo": "liga"
+   },
+   "fuente": "liga",
+   "gana": "a",
+   "id": "liga:689:final:eidp|konan",
+   "pts": null,
+   "replica": null,
+   "ronda": "final",
+   "url": null,
+   "votos": null
   }
  ],
  "fu": {
@@ -80434,7 +80072,7 @@
   },
   "liga": {
    "av": [],
-   "n": 1633,
+   "n": 1641,
    "ok": true
   },
   "urbanstreet": {
@@ -80480,6 +80118,7 @@
   },
   "youtube": {
    "av": [
+    "Los Reyes del Parque: no pude leerlo (RuntimeError: la pestaña de videos no trajo nada (HTTP 200))",
     "mismo nombre con dos países, van como dos personas: abel, ander, ayala, draco, erreka, horus, lazaro, nano, poeta, reyes",
     "Red Bull Batalla: 53 batalla(s) en 5 evento(s), 49 con ganador · saltadas: fuera de la ventana 39, no son batallas (clips, compilados, shorts) 14, batallón/muerte súbita/exhibición 10",
     "Red Bull Batalla: fecha aproximada (sólo la de la pestaña, sin la exacta): Red Bull Batalla 2026 · Regional Coquimbo (~2026-11-07, de «hace 2 sem.»); Red Bull Batalla 2026 · Regional Concepción (~2026-10-24, de «hace 4 semanas»); Red Bull Batalla Colombia 2026 (~2026-10-09, de «hace 1 mes»); Red Bull Batalla Argentina 2026 (~2026-10-09, de «hace 1 mes»)",
@@ -80501,12 +80140,10 @@
     "Combate Mortal Freestyle: 15 batalla(s) en 1 evento(s), 14 con ganador · saltadas: fuera de la ventana 9, no son batallas (clips, compilados, shorts) 5, sin ronda 1",
     "Combate Mortal Freestyle: fecha aproximada (sólo la de la pestaña, sin la exacta): Combate Mortal Freestyle Internacional 2026 (~2026-10-31, de «hace 3 sem.»)",
     "Verso Final: 15 batalla(s) en 1 evento(s), 14 con ganador · saltadas: fuera de la ventana 11, sin ronda 2, no son batallas (clips, compilados, shorts) 1, de equipos 1",
-    "Los Reyes del Parque: 22 batalla(s) en 6 evento(s), 7 con ganador · saltadas: fuera de la ventana 48, no son batallas (clips, compilados, shorts) 3, de equipos 3, batallón/muerte súbita/exhibición 3, sin ronda 1",
-    "Los Reyes del Parque: fecha aproximada (sólo la de la pestaña, sin la exacta): Los Reyes del Parque Fecha 3 (~2026-10-09, de «hace 1 m»)",
     "Son Raperos Natos: 20 batalla(s) en 2 evento(s), 18 con ganador · saltadas: fuera de la ventana 39, de a tres o más 1",
     "Son Raperos Natos: fecha aproximada (sólo la de la pestaña, sin la exacta): SRN X 7MAAURA (~2026-10-09, de «hace 1 m»)",
     "Gladiadores del Puerto: 43 batalla(s) en 4 evento(s), 40 con ganador · saltadas: fuera de la ventana 69, de a tres o más 14, no son batallas (clips, compilados, shorts) 7, de equipos 7, batallón/muerte súbita/exhibición 6, sin ronda 1",
-    "Gladiadores del Puerto: fecha aproximada (sólo la de la pestaña, sin la exacta): GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026 (~2026-11-15, de «hace 8 días»); GDP FECHA 11 REGIONAL COQUIMBO A CUPO DE PLAZAS 2026 (~2026-11-07, de «hace 2 semanas»); GDP FECHA 9 2026 x TITANES LIRICISTAS (~2026-10-09, de «hace 1 mes»)",
+    "Gladiadores del Puerto: fecha aproximada (sólo la de la pestaña, sin la exacta): GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026 (~2026-11-14, de «hace 9 días»); GDP FECHA 11 REGIONAL COQUIMBO A CUPO DE PLAZAS 2026 (~2026-11-07, de «hace 2 semanas»); GDP FECHA 9 2026 x TITANES LIRICISTAS (~2026-10-09, de «hace 1 mes»)",
     "Titanes Liricistas: 15 batalla(s) en 2 evento(s), 13 con ganador · saltadas: fuera de la ventana 59, de a tres o más 8, de equipos 5, batallón/muerte súbita/exhibición 3",
     "Titanes Liricistas: fecha aproximada (sólo la de la pestaña, sin la exacta): Titanes Antofagasta 4 (~2026-10-09, de «hace 1 mes»)",
     "Iraki Battles: 22 batalla(s) en 2 evento(s), 20 con ganador · saltadas: fuera de la ventana 30, de a tres o más 8",
@@ -80516,12 +80153,13 @@
     "Parke Viejo Freestyle: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 74, de equipos 15, de a tres o más 1",
     "LZ (Límite Zero): 8 batalla(s) en 2 evento(s), 6 con ganador · saltadas: fuera de la ventana 69, de a tres o más 11, no son batallas (clips, compilados, shorts) 1, batallón/muerte súbita/exhibición 1",
     "LZ (Límite Zero): fecha aproximada (sólo la de la pestaña, sin la exacta): LZ DESPEDIDA DE TYLER (ft. GINO, MOTO, ZAPRO, LUISITO PC Y MÁS) (~2026-10-09, de «hace 1 m»)",
-    "UNT al Rap: 85 batalla(s) en 7 evento(s), 73 con ganador · saltadas: fuera de la ventana 100, de equipos 27, sin ronda 21, de a tres o más 7",
+    "UNT al Rap: 85 batalla(s) en 7 evento(s), 73 con ganador · saltadas: fuera de la ventana 106, de equipos 27, sin ronda 15, de a tres o más 7",
     "UNT al Rap: fecha aproximada (sólo la de la pestaña, sin la exacta): FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP (~2026-11-14, de «hace 9 días»); FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP (~2026-11-07, de «hace 2 semanas»); FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP (~2026-10-31, de «hace 3 semanas»); FECHA TOMA TU LECHE EN TARRO · UNTALRAP (~2026-10-09, de «hace 1 mes»); FECHA PONTE LA CASACA · UNTALRAP (~2026-10-09, de «hace 1 mes»); FECHA RELÁMPAGO · UNTALRAP (~2026-10-09, de «hace 1 mes»)",
     "Línea 404: 11 batalla(s) en 1 evento(s), 8 con ganador · saltadas: fuera de la ventana 40, de a tres o más 3, batallón/muerte súbita/exhibición 3, no son batallas (clips, compilados, shorts) 2, sin ronda 1",
-    "La Villurca Freestyle: 16 batalla(s) en 1 evento(s), 12 con ganador · saltadas: de a tres o más 15, fuera de la ventana 15"
+    "La Villurca Freestyle: 16 batalla(s) en 1 evento(s), 12 con ganador · saltadas: de a tres o más 15, fuera de la ventana 15",
+    "La Villurca Freestyle: fecha aproximada (sólo la de la pestaña, sin la exacta): LA VILLURCA FREESTYLE · 1v1 (~2026-10-09, de «hace 1 m»)"
    ],
-   "n": 876,
+   "n": 854,
    "ok": true
   }
  },
@@ -80638,9 +80276,9 @@
    },
    "fuente": "fms",
    "quien": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/REPLIK-1.png",
-    "id": "fms:1462",
-    "nombre": "Replik",
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/MECHA-3.png",
+    "id": "fms:521",
+    "nombre": "Mecha",
     "pais": "ar"
    },
    "url": "https://fms.tv/resultados/"
@@ -80655,9 +80293,9 @@
    },
    "fuente": "fms",
    "quien": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/MECHA-3.png",
-    "id": "fms:521",
-    "nombre": "Mecha",
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/REPLIK-1.png",
+    "id": "fms:1462",
+    "nombre": "Replik",
     "pais": "ar"
    },
    "url": "https://fms.tv/resultados/"
@@ -81123,7 +80761,7 @@
   "liga:adriagner": 1026,
   "liga:agentesombra": 969,
   "liga:agre": 989,
-  "liga:agus": 1186,
+  "liga:agus": 1178,
   "liga:agustin51k": 1011,
   "liga:akuseru": 970,
   "liga:aldre": 1006,
@@ -81134,7 +80772,7 @@
   "liga:andresito": 1012,
   "liga:andy": 997,
   "liga:angelo": 983,
-  "liga:araya": 952,
+  "liga:araya": 945,
   "liga:ardean": 954,
   "liga:arez": 969,
   "liga:ariaxer": 954,
@@ -81213,7 +80851,7 @@
   "liga:dyzz": 938,
   "liga:eclipsito": 984,
   "liga:efimero": 945,
-  "liga:eidp": 997,
+  "liga:eidp": 1044,
   "liga:elbesaabuelas": 926,
   "liga:elcuicho": 983,
   "liga:eldinoco": 1017,
@@ -81283,7 +80921,7 @@
   "liga:indigena": 983,
   "liga:infecte": 979,
   "liga:inge": 1016,
-  "liga:inku": 1046,
+  "liga:inku": 1036,
   "liga:isabella": 987,
   "liga:isac": 996,
   "liga:isaias": 984,
@@ -81308,7 +80946,7 @@
   "liga:juanpa": 1078,
   "liga:juasmio": 1084,
   "liga:jukan": 1016,
-  "liga:julda": 1004,
+  "liga:julda": 988,
   "liga:julia": 1017,
   "liga:julix": 1006,
   "liga:jult": 971,
@@ -81328,6 +80966,7 @@
   "liga:kochi": 1058,
   "liga:kochi2011": 991,
   "liga:koffi": 982,
+  "liga:konan": 1023,
   "liga:korey": 984,
   "liga:kourier": 1024,
   "liga:kravitz": 963,
@@ -81366,7 +81005,7 @@
   "liga:lvel": 864,
   "liga:magma": 1016,
   "liga:mailo": 985,
-  "liga:majiztral": 1062,
+  "liga:majiztral": 1043,
   "liga:makdok": 990,
   "liga:makmah": 1102,
   "liga:malboro": 1013,
@@ -81490,7 +81129,7 @@
   "liga:shadow": 842,
   "liga:shuliot": 1000,
   "liga:simon": 983,
-  "liga:sinlimites": 885,
+  "liga:sinlimites": 895,
   "liga:six": 1087,
   "liga:skiller": 966,
   "liga:skratch": 984,
@@ -81515,6 +81154,7 @@
   "liga:tenor": 1037,
   "liga:teo": 1000,
   "liga:tg": 983,
+  "liga:thaniel": 979,
   "liga:theog": 1002,
   "liga:tho": 1000,
   "liga:tiagocontext": 980,
@@ -81565,5 +81205,5 @@
   "liga:zetryko": 1126,
   "liga:zignos": 1019
  },
- "t": "2026-11-24T12:09:01-05:00"
+ "t": "2026-11-24T14:29:17-05:00"
 }
