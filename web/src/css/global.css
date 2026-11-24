@@ -617,3 +617,19 @@ dialog.gl-lado[open]{animation:gl-sube .24s cubic-bezier(.32,.72,0,1)}
 .cara.glpv-comp{font-size:clamp(34px,5vw,56px);letter-spacing:.02em;background:#E5B800;color:#030304}
 /* «26/27» en el círculo de una edición: más chico, que no se corte en el borde */
 .pv-ci em.glpv-largo{font-size:clamp(15px,1.6vw,19px);letter-spacing:-.02em}
+/* 🎨 los dibujos y los logos del perfil global y de las competencias (perfil_global.jsx, 24/11/2026: «agrega logos y
+   avatares y dibujos»). La copa, la medalla y el micrófono son SVG; los logos de las competencias vienen cuadrados de
+   Freestylestats y se ven enteros (contain) sobre un fondo claro, como un escudo */
+.glpv-d{display:block;width:62%;height:62%}
+.pv-np-img > .glpv-d{width:56px;height:56px}
+.pv-np-ic .glpv-d{width:100%;height:100%}
+.st-escudo .glpv-d{width:100%;height:100%}
+.glpv .pv-ci img{object-fit:contain}
+.glpv .pv-mom button .pv-ci > span:has(> img:not([src*="/banderas/"])){background:#F6F6F6}
+img.glpv-lg{object-fit:contain;background:#F6F6F6;padding:6px}
+.cara.glpv-comp.lg{background:#F6F6F6}
+.cara.glpv-comp.lg img{object-fit:contain;padding:12%}
+.st-escudo img{object-fit:contain;background:#F6F6F6;border-radius:50%;padding:12%}
+/* 🎬 un /shorts/ en la grilla de videos del perfil global: vertical (perfil_global.jsx) */
+.pf-vid li.glpv-vert{grid-row:span 2}
+.pf-vid li.glpv-vert .pf-vid-m{aspect-ratio:9/16}

@@ -14,11 +14,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { Bandera, nombrePais } from './piezas.jsx';
 import { pu } from './perfil_datos.js';
 import { ICO } from './perfil_v10.jsx';
+import { Miniatura, abrirVideo } from './video.jsx';
 import CSS_PF from './css/perfil.css?inline';
 import CSS_V10 from './css/perfil_v10.css?inline';
 import { usarCss } from './css.js';
 import { GRUPO, MEDALLA, PUESTO, TIPO, fechaEv, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria } from './global.jsx';
-import { indiceCompetencias, slugComp } from './global_datos.js';
+import { indiceCompetencias, slugComp, urlLogo } from './global_datos.js';
 
 // los mismos ids que perfil.jsx y perfil_v10.jsx: si ya están, no se duplican
 usarCss('perfil', CSS_PF);
@@ -53,6 +54,77 @@ function CaraGl({ g, cls }) {
   const src = [g.ft, g.fr].find((u) => u && u !== mal) || '';
   if (src) return <span className={cls}><img alt="" src={src} className={src === g.fr ? 'glpv-rto' : undefined} onError={() => setMal(src)} /></span>;
   return <span className={cls + ' ini'}>{([...limpio2(g.n)][0] || '?').toUpperCase()}</span>;
+}
+// 🎨 LOS DIBUJOS (24/11/2026, Dlx: «agrega logos y avatares y dibujos»): una copa, la medalla de cada puesto y un micrófono,
+// en SVG y en los colores de las medallas de la Liga, en vez de letras sueltas. Y el logo de cada competencia (de
+// Freestylestats, espejado en R2: `urlLogo()`), con la copa cuando no tiene
+const MED_C = { 1: '#E5B800', 2: '#C9CDD2', 3: '#C8702A' };
+function CopaD({ c = '#E5B800' }) {
+  return (
+    <svg className="glpv-d" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M14 6h20v9c0 7-4.5 12-10 12S14 22 14 15z" fill={c} />
+      <path d="M14 9H7v3c0 5 3.5 8 8 8.5M34 9h7v3c0 5-3.5 8-8 8.5" fill="none" stroke={c} strokeWidth="3" />
+      <path d="M21 27h6v7h-6z" fill={c} />
+      <path d="M15 36h18v6H15z" fill={c} />
+      <path d="M19 11l2.2 4.4 4.8.7-3.5 3.4.8 4.8-4.3-2.3" fill="rgba(3,3,4,.28)" />
+    </svg>
+  );
+}
+function MedallaD({ p }) {
+  const c = MED_C[p] || MED_C[3];
+  return (
+    <svg className="glpv-d" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M13 3h9l5 14h-9zM35 3h-9l-5 14h9z" fill={p === 1 ? '#E41373' : p === 2 ? '#29B298' : '#4A4A52'} />
+      <circle cx="24" cy="30" r="14" fill={c} />
+      <circle cx="24" cy="30" r="10" fill="none" stroke="rgba(3,3,4,.25)" strokeWidth="2" />
+      <text x="24" y="35.5" textAnchor="middle" fontFamily="Archivo,sans-serif" fontWeight="900" fontSize="15" fill="#030304">{p}</text>
+    </svg>
+  );
+}
+function MicroD() {
+  return (
+    <svg className="glpv-d" viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="17" y="4" width="14" height="24" rx="7" fill="#F6F6F6" />
+      <path d="M17 13h14M17 18h14" stroke="rgba(3,3,4,.35)" strokeWidth="2" />
+      <path d="M11 21c0 7.5 5.8 13 13 13s13-5.5 13-13" fill="none" stroke="#E41373" strokeWidth="3.5" />
+      <path d="M24 34v8M16 43h16" stroke="#E41373" strokeWidth="3.5" />
+    </svg>
+  );
+}
+/** el logo de una competencia (o la copa): `cls` va en la imagen */
+function LogoComp({ H, n, cls = '', copa = '#E5B800' }) {
+  const [mal, setMal] = useState(false);
+  const u = urlLogo(H, n);
+  if (u && !mal) return <img className={cls} alt="" src={u} loading="lazy" onError={() => setMal(true)} />;
+  return <CopaD c={copa} />;
+}
+// 🏅 QUÉ PESA MÁS, para ordenar las historias destacadas (Dlx: «ordena las historias destacadas de mejor manera»): lo que
+// más vale primero. Cada competencia suma por sus medallas (un oro 3, una plata o un bronce 1) por lo que pesa: ×3 lo
+// internacional (las finales internacionales, God Level, los mundiales), ×2 las ligas y finales nacionales de FMS y Red
+// Bull, ×1 el resto. Así cuatro oros de Red Bull Argentina van antes que un oro suelto de un internacional chico, y un
+// título internacional antes que un podio nacional
+function pesoComp(n) {
+  const s = String(n || '');
+  if (/Internacional|World|Mundial|God Level|Grand Slam/i.test(s)) return 3;
+  if (/^(FMS|Red Bull)/i.test(s)) return 2;
+  return 1;
+}
+const valorComp = (x) => (x.oros * 3 + (x.n - x.oros)) * pesoComp(x.c);
+/** abre una historia destacada con el visor de las historias (el mismo del perfil de la Liga, `window.lgVerHistorias`) */
+function abrirHist(id, cab, slides, sino) {
+  return () => {
+    const ss = (slides || []).filter(Boolean);
+    if (ss.length && window.lgVerHistorias) {
+      window.lgVerHistorias({ id: 'glob-' + id, tipo: 'gente', nombre: cab.nom, k: '', cc: cab.cc || '', nom: cab.nom, firma: 'glob-' + id,
+        slides: ss.map((x, i) => Object.assign({ id: 'glob:' + id + ':' + i, t: '', cuando: '' }, x)) }, '');
+      return;
+    }
+    if (sino) sino();
+  };
+}
+/** una cara en la fila de caras de una historia */
+function PersonaSt({ g }) {
+  return <li key={g.k}><CaraGl g={g} cls="st-mini" /><span>{nombre(g)}</span></li>;
 }
 const limpio2 = (s) => String(s || '').replace(/[^\p{L}\p{N}\s]/gu, '').trim();
 const irA = (g) => () => { location.hash = g.esc === 'liga' && g.hk ? '#/r/' + encodeURIComponent(g.hk) : '#/global/' + encodeURIComponent(g.k); };
@@ -102,15 +174,42 @@ function CabezaGl({ liga, g, h }) {
 }
 
 // ════════ ARRIBA, EN NEGRO: lo de `PerfilV10` ════════
-function MomentosGl({ g, h, comps, ir }) {
+function MomentosGl({ g, h, H, comps, X, ir }) {
+  const cab = { nom: nombre(g), cc: g.cc };
+  const k = g.k;
+  const slideTit = (tt) => ({
+    tag: (MEDALLA[tt[0]] || '').toUpperCase() + ' · ' + tt[2], beat: 'boombap', cta: 'Ver la competencia', ir: { ruta: hrefComp(tt[1]) },
+    cuerpo: <><span className="st-escudo"><LogoComp H={H} n={tt[1]} copa={MED_C[tt[0]]} /></span><h3 className="st-h">{tt[1]}</h3>
+      <small className="st-s">{[tt[3], tt[2]].filter(Boolean).join(' · ')}</small></>,
+  });
   const xs = [];
+  // 1 · sus títulos, todos juntos
+  if (h && h.m[0]) {
+    const oros = h.t.filter((tt) => tt[0] === 1);
+    xs.push(['tit', 'Títulos', <CopaD key="c" />, h.m[0], '#E5B800', abrirHist(k + '-tit', cab, oros.map(slideTit), () => ir('podios', 'oro'))]);
+  }
+  // 2 · sus competencias, la que más vale primero (`valorComp`)
+  comps.slice().sort((a, b) => (valorComp(b) - valorComp(a)) || (b.oros - a.oros) || (b.n - a.n)).slice(0, 6).forEach((x) => {
+    const pods = x.xs.slice().sort((a, b) => (anio(b[1]) - anio(a[1])) || (a[0] - b[0])).map((y) => slideTit([y[0], x.c, y[1], y[2]]));
+    xs.push(['c' + x.c, x.c, <LogoComp key="l" H={H} n={x.c} copa={x.oros ? '#E5B800' : '#C9CDD2'} />, x.oros || x.n, x.oros ? '#E5B800' : '#C9CDD2',
+      abrirHist(k + '-' + slugComp(x.c), cab, pods, () => ir('podios', x.c))]);
+  });
+  // 3 · su T1: un evento por historia, con a quién le ganó
+  if (g.jb) {
+    const evs = porEvento(g).slice(0, 8).map((x) => {
+      const e = X.ev[x.e] || [];
+      const riv = x.bat.map((b) => X.porK.get(b[2])).filter(Boolean).slice(0, 4);
+      return { tag: 'LA T1 · ' + fechaEv(e[3]), beat: 'trap', cta: 'Ver en el Ranking global', ir: { ruta: '#/ranking/global/' + encodeURIComponent(k) },
+        cuerpo: <><h3 className="st-h">{limpioEv(e[1])}</h3>{riv.length ? <ul className="st-gente">{riv.map((r) => <PersonaSt key={r.k} g={r} />)}</ul> : null}
+          <small className="st-s">{(x.tit ? (PUESTO[x.tit[1]] || '') + ' · ' : '') + (x.bat.length ? 'le ganó a ' + x.bat.length + (x.bat.length === 1 ? ' rival' : ' rivales') + ' · ' : '') + '+' + n1(x.pts) + ' pts'}</small></> };
+    });
+    xs.push(['t1', 'Su T1', <MicroD key="m" />, g.jb, '#E41373', abrirHist(k + '-t1', cab, evs, () => ir('t1'))]);
+  }
+  // 4 · su país, al final
   if (g.cc) xs.push(['pais', nombrePais(g.cc), <img key="b" alt="" src={'/banderas/g/' + g.cc + '.webp'} />, '', '#29B298', () => { location.hash = '#/pais/' + g.cc; }]);
-  if (h && h.m[0]) xs.push(['tit', 'Títulos', <em key="t">★</em>, h.m[0], '#E5B800', () => ir('podios', 'oro')]);
-  comps.slice(0, 5).forEach((x) => xs.push(['c' + x.c, x.c, <em key="c">{sigla(x.c)}</em>, x.oros || x.n, x.oros ? '#E5B800' : '#C9CDD2', () => ir('podios', x.c)]));
-  if (g.jb) xs.push(['t1', 'Su T1', <em key="t1">T1</em>, g.jb, '#E41373', () => ir('t1')]);
   if (!xs.length) return null;
   return (
-    <div className="pv-mom" role="list" aria-label="Sus momentos">
+    <div className="pv-mom" role="list" aria-label="Sus historias destacadas">
       {xs.map(([id, n, im, c, rc, fn]) => (
         <button key={id} type="button" role="listitem" style={{ '--rc': rc }} onClick={fn}>
           <span className="pv-ci"><span>{im}</span>{c ? <i>{c}</i> : null}</span><b>{n}</b>
@@ -225,7 +324,7 @@ function RivalesGl({ g, X }) {
 
 // ════════ ABAJO, EN EL PAPEL: las pestañas y el costado ════════
 const VER = 12;
-function PodiosGl({ h, comps, fil, setFil }) {
+function PodiosGl({ h, H, comps, fil, setFil }) {
   const [todos, setTodos] = useState(false);
   useEffect(() => { setTodos(false); }, [fil]);
   if (!h || !h.t.length) return <p className="pv-nada">Todavía no tenemos sus podios de antes de la T1. Los leemos de Freestylestats cada semana.</p>;
@@ -249,7 +348,7 @@ function PodiosGl({ h, comps, fil, setFil }) {
           const r = pu(PU_MED[t[0]]);
           return (
             <div key={i} className={'pv-np ' + r[1]} style={{ '--svc': '#2A2A2E' }}>
-              <span className="pv-np-img"><span className="pv-np-ronda"><b>{MEDALLA[t[0]]}</b><span>{sigla(t[1])}</span></span></span>
+              <span className="pv-np-img"><LogoComp H={H} n={t[1]} cls="pv-np-lgc glpv-lg" copa={MED_C[t[0]]} /><span className="pv-np-ic"><MedallaD p={t[0]} /></span><span className="pv-np-chip">{edCorta(t[2])}</span></span>
               <span className="pv-np-tx">
                 <span className="pv-np-f1"><span className={'pv-res ' + r[1]}>{r[0]}</span><span>{t[2]}</span></span>
                 <b className="pv-np-h"><LinkComp n={t[1]} /></b>
@@ -277,7 +376,8 @@ function T1Gl({ g, X }) {
           const r = pu(x.tit ? PU_MED[x.tit[1]] || 'Campeón' : 'Cuartos');
           return (
             <div key={x.e} className={'pv-np ' + (x.tit ? r[1] : '')} style={{ '--svc': '#2A2A2E' }}>
-              <span className="pv-np-img"><span className="pv-np-ronda"><b>+{n1(x.pts)}</b><span>{x.bat.length ? plural(x.bat.length, 'ganada', 'ganadas') : 'sin ganar'}</span></span></span>
+              <span className="pv-np-img">{x.bat.length ? <span className="pv-np-pila">{x.bat.map((b) => X.porK.get(b[2])).filter(Boolean).slice(0, 3).map((r) => <CaraGl key={r.k} g={r} cls="cara pv-cara" />)}</span>
+                : <MicroD />}<span className="pv-np-ic">{x.tit ? <MedallaD p={x.tit[1] === 'MVP' ? 1 : x.tit[1]} /> : <MicroD />}</span><span className="pv-np-chip">+{n1(x.pts)}</span></span>
               <span className="pv-np-tx">
                 <span className="pv-np-f1">{x.tit ? <span className={'pv-res ' + r[1]}>{PUESTO[x.tit[1]] || r[0]}</span> : null}<span>{String(ev[3] || '').slice(8, 10) + '/' + String(ev[3] || '').slice(5, 7)}</span></span>
                 <b className="pv-np-h">{limpioEv(ev[1])}</b>
@@ -292,6 +392,38 @@ function T1Gl({ g, X }) {
     </>
   );
 }
+// 🎬 SUS BATALLAS EN VIDEO (24/11/2026, Dlx: «subir como cuadrados de videos tanto horizontales y verticales al perfil de
+// sus batallas… aquí sí lo podemos hacer»). Los cuadrados del perfil de la Liga (`.pf-vid`): la miniatura de YouTube, con
+// quién y dónde, y se abre en el reproductor de la página. Los `/shorts/` van verticales. Salen de `v` de global.json
+// (`[id, evento, rival, ganó, vertical]`, bot/global_ranking.py): sólo el id del video, de las batallas que leímos
+function VideosGl({ X, xs, sujeto }) {
+  const [todos, setTodos] = useState(false);
+  if (!xs.length) return <p className="pv-nada">Todavía no tenemos videos de {sujeto}. Aparecen cuando leemos una batalla suya con su video en YouTube.</p>;
+  const ver = todos ? xs : xs.slice(0, VER);
+  const fila = (v) => {
+    const e = X.ev[v[1]] || [];
+    const riv = X.porK.get(v[2]);
+    const a = v[5] ? X.porK.get(v[5]) : null;
+    const tit = (a ? nombre(a) : '') + (riv ? (a ? ' vs ' : 'vs ') + nombre(riv) : '');
+    return (
+      <li key={v[0]} className={v[4] ? 'glpv-vert' : undefined}>
+        <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: v[0], tit: tit + ' · ' + limpioEv(e[1]), link: 'https://www.youtube.com/' + (v[4] ? 'shorts/' : 'watch?v=') + v[0] })}>
+          <span className="pf-vid-m"><Miniatura vid={v[0]} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
+          <b>{tit || limpioEv(e[1])}</b>
+          <small>{[a ? '' : v[3] ? 'Ganó' : 'Perdió', limpioEv(e[1]), fechaEv(e[3])].filter(Boolean).join(' · ')}</small>
+        </button>
+      </li>
+    );
+  };
+  return (
+    <>
+      <p className="pv-nada">De los canales de YouTube de las competencias. Toca uno para verlo acá.</p>
+      <ul className="pf-vid">{ver.map(fila)}</ul>
+      {!todos && xs.length > VER ? <button type="button" className="pv-pie" onClick={() => setTodos(true)}><span>{plural(xs.length, 'video', 'videos')}</span><b>Ver todos</b></button> : null}
+    </>
+  );
+}
+
 function SobreGl({ g, h }) {
   const xs = [];
   if (g.cc) xs.push(['País', <a key="cc" href={'#/pais/' + g.cc}><Bandera cc={g.cc} cls="pv-flag" />{nombrePais(g.cc)}</a>, '']);
@@ -376,7 +508,7 @@ export function PerfilGlobal({ liga, k: k0 }) {
     const el = raiz && raiz.shadowRoot && raiz.shadowRoot.querySelector('.pv-tabs');
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
   };
-  const T = [['podios', 'Sus títulos', h ? h.t.length : 0], ['t1', 'Su T1', g.jb || 0]];
+  const T = [['podios', 'Sus títulos', h ? h.t.length : 0], ['t1', 'Su T1', g.jb || 0], ['videos', 'Videos', (g.v || []).length]].filter((x) => x[0] !== 'videos' || x[2]);
   // sin elegir: sus títulos si tiene; si no, su T1
   const tabV = tab || (h && h.t.length ? 'podios' : 't1');
   return (
@@ -384,7 +516,7 @@ export function PerfilGlobal({ liga, k: k0 }) {
       <CabezaGl liga={liga} g={g} h={h} />
       <div className="pv">
         <section className="pv-esc" aria-label="Su récord">
-          <MomentosGl g={g} h={h} comps={comps} ir={ir} />
+          <MomentosGl g={g} h={h} H={H} comps={comps} X={X} ir={ir} />
           <div className="pv-ag">
             <RecordGl g={g} h={h} />
             <GrandeGl g={g} h={h} X={X} />
@@ -397,10 +529,11 @@ export function PerfilGlobal({ liga, k: k0 }) {
             <div className="pv-izq">
               <div className="pv-tabs" role="tablist" aria-label="Lo suyo">
                 {T.map(([id, n, c]) => (
-                  <button key={id} type="button" role="tab" aria-selected={tabV === id} className={tabV === id ? 'on' : ''} onClick={() => setTab(id)}>{ICO[id === 'podios' ? 'logros' : 'noches']}<span className="pv-tab-t">{n}</span>{c ? <small>{c}</small> : null}</button>
+                  <button key={id} type="button" role="tab" aria-selected={tabV === id} className={tabV === id ? 'on' : ''} onClick={() => setTab(id)}>{ICO[id === 'podios' ? 'logros' : id === 'videos' ? 'videos' : 'noches']}<span className="pv-tab-t">{n}</span>{c ? <small>{c}</small> : null}</button>
                 ))}
               </div>
-              {tabV === 'podios' ? <PodiosGl h={h} comps={comps} fil={fil} setFil={setFil} /> : <T1Gl g={g} X={X} />}
+              {tabV === 'podios' ? <PodiosGl h={h} H={H} comps={comps} fil={fil} setFil={setFil} />
+                : tabV === 'videos' ? <VideosGl X={X} xs={g.v || []} sujeto={nombre(g)} /> : <T1Gl g={g} X={X} />}
             </div>
             <aside className="pv-lado">
               <SobreGl g={g} h={h} />
@@ -474,17 +607,25 @@ function armarComp(c, X) {
   const cc = Object.entries(paises).sort((a, b) => b[1] - a[1]).map((x) => x[0])[0] || '';
   const o = c.tit.filter((t) => t[1] === 1).length;
   const pl = c.tit.filter((t) => t[1] === 2).length;
-  return { eds, top, ult, t1, cc, o, pl, br: c.tit.length - o - pl, campeones: top.filter((x) => x.o).length };
+  const evs = new Set(c.ev);
+  const vids = new Map();
+  for (const g of X.G) {
+    for (const v of g.v || []) {
+      if (evs.has(v[1]) && !vids.has(v[0])) vids.set(v[0], [v[0], v[1], v[2], v[3], v[4], g.k]);
+    }
+  }
+  const videos = [...vids.values()].sort((a, b) => String((X.ev[b[1]] || [])[3] || '').localeCompare(String((X.ev[a[1]] || [])[3] || '')));
+  return { eds, top, ult, t1, cc, o, pl, br: c.tit.length - o - pl, campeones: top.filter((x) => x.o).length, porK: X.porK, videos };
 }
 
-function CabezaComp({ liga, c, A }) {
+function CabezaComp({ liga, c, A, H }) {
   const [fam, tipo] = familia(c.n);
   const desde = A.eds.length ? anio(A.eds[A.eds.length - 1].ed) : 0;
   return (
     <div className="escena pf8" style={{ '--mo-c': '#E5B800', '--mo-o': 0.85, '--mo-c2': '#E41373' }}>
       <div className="pf8-cover" />
       <section className="pf8-cab">
-        <div className="pf8-carta"><span className="cara pf8-cara ini glpv-comp">{sigla(c.n)}</span></div>
+        <div className="pf8-carta">{urlLogo(H, c.n) ? <span className="cara pf8-cara glpv-comp lg"><img alt="" src={urlLogo(H, c.n)} /></span> : <span className="cara pf8-cara ini glpv-comp">{sigla(c.n)}</span>}</div>
         <div className="pf8-tx">
           <span className="tag">COMPETENCIA · RANKING GLOBAL · {liga.temp}</span>
           <div className="pf8-nom">
@@ -517,12 +658,38 @@ function CabezaComp({ liga, c, A }) {
     </div>
   );
 }
-function MomentosComp({ A, ir }) {
-  const xs = A.eds.slice(0, 9).map((e) => ({ id: e.ed, n: e.ed, im: <em className={edCorta(e.ed).length > 4 ? 'glpv-largo' : undefined}>{edCorta(e.ed)}</em>, c: e.n, rc: '#E5B800', fn: () => ir('eds', e.ed) }));
-  if (A.t1.length) xs.push({ id: 't1', n: 'En la T1', im: <em>T1</em>, c: A.t1.length, rc: '#E41373', fn: () => ir('t1') });
+function MomentosComp({ c, A, H, ir }) {
+  const cab = { nom: c.n, cc: A.cc };
+  const xs = [];
+  // 1 · sus campeones: una historia por cada uno, el que más ganó primero
+  const camps = A.top.filter((x) => x.o);
+  if (camps.length) {
+    xs.push({ id: 'camp', n: 'Campeones', im: <CopaD />, c: camps.length, rc: '#E5B800', fn: abrirHist(c.id + '-camp', cab, camps.slice(0, 12).map((x) => ({
+      tag: 'CAMPEÓN DE ' + c.n.toUpperCase(), beat: 'boombap', cta: 'Ver su perfil', ir: { ruta: '#/global/' + encodeURIComponent(x.g.k) },
+      cuerpo: <><CaraGl g={x.g} cls="st-cara" /><h3 className="st-h">{nombre(x.g)}</h3>
+        <small className="st-s">{plural(x.o, 'título', 'títulos') + (x.p ? ' · ' + plural(x.p, 'final', 'finales') : '') + (x.b ? ' · ' + plural(x.b, 'podio', 'podios') + ' más' : '')}</small></> }))) });
+  }
+  // 2 · sus ediciones, de la más nueva a la más vieja: cada fase con su podio
+  A.eds.slice(0, 8).forEach((e) => {
+    const ss = [...e.fases].map(([fase, gs]) => {
+      const pod = gs.slice().sort((a, b) => a[1] - b[1]).map((y) => [A.porK.get(y[0]), y[1]]).filter((y) => y[0]);
+      return { tag: c.n.toUpperCase() + ' · ' + e.ed, beat: 'boombap', cta: 'Ver la competencia', ir: { ruta: '#/competencia/' + c.id },
+        cuerpo: <><span className="st-escudo"><LogoComp H={H} n={c.n} /></span><h3 className="st-h">{fase}</h3>
+          {pod.length ? <ul className="st-gente">{pod.map(([g, p]) => <li key={g.k + p}><CaraGl g={g} cls="st-mini" /><span>{MEDALLA[p]} · {nombre(g)}</span></li>)}</ul> : null}</> };
+    });
+    xs.push({ id: e.ed, n: e.ed, im: <em className={edCorta(e.ed).length > 4 ? 'glpv-largo' : undefined}>{edCorta(e.ed)}</em>, c: e.n, rc: '#E5B800',
+      fn: abrirHist(c.id + '-' + e.ed, cab, ss, () => ir('eds', e.ed)) });
+  });
+  // 3 · lo de la T1
+  if (A.t1.length) {
+    xs.push({ id: 't1', n: 'En la T1', im: <MicroD />, c: A.t1.length, rc: '#E41373', fn: abrirHist(c.id + '-t1', cab, A.t1.slice(0, 8).map((x) => ({
+      tag: 'LA T1 · ' + fechaEv(x.e[3]), beat: 'trap', cta: 'Ver la competencia', ir: { ruta: '#/competencia/' + c.id },
+      cuerpo: <><h3 className="st-h">{limpioEv(x.e[1])}</h3>{x.camp || x.fin ? <ul className="st-gente">{[x.camp, x.fin].filter(Boolean).map((g) => <PersonaSt key={g.k} g={g} />)}</ul> : null}
+        <small className="st-s">{(x.camp ? 'Campeón: ' + nombre(x.camp) + ' · ' : '') + plural(x.bat, 'batalla', 'batallas')}</small></> })), () => ir('t1')) });
+  }
   if (!xs.length) return null;
   return (
-    <div className="pv-mom" role="list" aria-label="Sus ediciones">
+    <div className="pv-mom" role="list" aria-label="Sus historias destacadas">
       {xs.map((x) => (
         <button key={x.id} type="button" role="listitem" style={{ '--rc': x.rc }} onClick={x.fn}>
           <span className="pv-ci"><span>{x.im}</span>{x.c ? <i>{x.c}</i> : null}</span><b>{x.n}</b>
@@ -613,7 +780,7 @@ function ReyesComp({ A }) {
     </div>
   );
 }
-function EdicionesComp({ A, X, fil, setFil }) {
+function EdicionesComp({ A, X, H, cNom, fil, setFil }) {
   const [todos, setTodos] = useState(false);
   useEffect(() => { setTodos(false); }, [fil]);
   const filas = [];
@@ -632,12 +799,14 @@ function EdicionesComp({ A, X, fil, setFil }) {
       ) : null}
       <div className="pv-np-g">
         {(todos ? ver : ver.slice(0, VER)).map((f) => {
+          const orden = f.xs.slice().sort((a, b) => a[1] - b[1]);
           const camp = f.xs.filter((x) => x[1] === 1);
           const r = pu(camp.length ? 'Campeón' : f.xs.some((x) => x[1] === 2) ? 'Subcampeón' : 'Tercero');
-          const orden = f.xs.slice().sort((a, b) => a[1] - b[1]);
           return (
             <div key={f.ed + '|' + f.fase} className={'pv-np ' + r[1]} style={{ '--svc': '#2A2A2E' }}>
-              <span className="pv-np-img"><span className="pv-np-ronda"><b>{edCorta(f.ed)}</b><span>{plural(f.xs.length, 'podio', 'podios')}</span></span></span>
+              <span className="pv-np-img"><span className="pv-np-sv">{urlLogo(H, cNom) ? <img alt="" src={urlLogo(H, cNom)} /> : null}{edCorta(f.ed)}</span>
+                <span className="pv-np-pila">{orden.map((y) => g(y[0])).filter(Boolean).slice(0, 3).map((gg) => <CaraGl key={gg.k} g={gg} cls="cara pv-cara" />)}</span>
+                <span className="pv-np-ic"><MedallaD p={camp.length ? 1 : f.xs.some((x) => x[1] === 2) ? 2 : 3} /></span></span>
               <span className="pv-np-tx">
                 <span className="pv-np-f1"><span className={'pv-res ' + r[1]}>{camp.length ? 'Campeón' : r[0]}</span><span>{f.ed}</span></span>
                 <b className="pv-np-h">{f.fase}</b>
@@ -659,7 +828,8 @@ function T1Comp({ A }) {
     <div className="pv-np-g">
       {A.t1.map((t) => (
         <div key={t.i} className={'pv-np ' + (t.camp ? 'c' : '')} style={{ '--svc': '#2A2A2E' }}>
-          <span className="pv-np-img"><span className="pv-np-ronda"><b>{fechaEv(t.e[3])}</b><span>{plural(t.bat, 'batalla', 'batallas')}</span></span></span>
+          <span className="pv-np-img">{t.camp || t.fin ? <span className="pv-np-pila">{[t.camp, t.fin].filter(Boolean).map((gg) => <CaraGl key={gg.k} g={gg} cls="cara pv-cara" />)}</span> : <MicroD />}
+            <span className="pv-np-ic">{t.camp ? <MedallaD p={1} /> : <MicroD />}</span><span className="pv-np-chip">{fechaEv(t.e[3])}</span></span>
           <span className="pv-np-tx">
             <span className="pv-np-f1">{t.camp ? <span className="pv-res c">Campeón</span> : null}<span>{TIPO[t.e[2]] || t.e[2]}</span></span>
             <b className="pv-np-h">{limpioEv(t.e[1])}</b>
@@ -730,14 +900,14 @@ export function PaginaCompetencia({ liga, id }) {
     if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
   };
   const nFases = A.eds.reduce((s, e) => s + e.fases.size, 0);
-  const T = [['eds', 'Ediciones', nFases], ['t1', 'En la T1', A.t1.length]];
+  const T = [['eds', 'Ediciones', nFases], ['t1', 'En la T1', A.t1.length], ['videos', 'Videos', A.videos.length]].filter((x) => x[0] !== 'videos' || x[2]);
   const tabV = tab || (nFases ? 'eds' : 't1');
   return (
     <div className="pf8-pag pf9-pag glpv">
-      <CabezaComp liga={liga} c={c} A={A} />
+      <CabezaComp liga={liga} c={c} A={A} H={H} />
       <div className="pv">
         <section className="pv-esc" aria-label="Su historia">
-          <MomentosComp A={A} ir={ir} />
+          <MomentosComp c={c} A={A} H={H} ir={ir} />
           <div className="pv-ag">
             <ReyComp A={A} />
             <UltimoComp c={c} A={A} />
@@ -750,10 +920,11 @@ export function PaginaCompetencia({ liga, id }) {
             <div className="pv-izq">
               <div className="pv-tabs" role="tablist" aria-label="La competencia">
                 {T.map(([tid, n, cnt]) => (
-                  <button key={tid} type="button" role="tab" aria-selected={tabV === tid} className={tabV === tid ? 'on' : ''} onClick={() => setTab(tid)}>{ICO[tid === 'eds' ? 'logros' : 'noches']}<span className="pv-tab-t">{n}</span>{cnt ? <small>{cnt}</small> : null}</button>
+                  <button key={tid} type="button" role="tab" aria-selected={tabV === tid} className={tabV === tid ? 'on' : ''} onClick={() => setTab(tid)}>{ICO[tid === 'eds' ? 'logros' : tid === 'videos' ? 'videos' : 'noches']}<span className="pv-tab-t">{n}</span>{cnt ? <small>{cnt}</small> : null}</button>
                 ))}
               </div>
-              {tabV === 'eds' ? <EdicionesComp A={A} X={X} fil={fil} setFil={setFil} /> : <T1Comp A={A} />}
+              {tabV === 'eds' ? <EdicionesComp A={A} X={X} H={H} cNom={c.n} fil={fil} setFil={setFil} />
+                : tabV === 'videos' ? <VideosGl X={X} xs={A.videos} sujeto={c.n} /> : <T1Comp A={A} />}
             </div>
             <aside className="pv-lado"><SobreComp c={c} A={A} H={H} /></aside>
           </div>

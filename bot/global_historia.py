@@ -17,6 +17,11 @@ A QUIÉN: a todos los de `bot/paginas/global.json` que tienen perfil allá. El u
 `global_fuente_fstats.py` (`fstats:<usuario>` en `datos/global_batallas.json`) o (2) del nombre, y en ese caso SÓLO si
 el perfil se llama igual: un nombre adivinado que cae en otra persona se descarta (unir de más es el error caro).
 
+🏆 Y EL LOGO DE CADA COMPETENCIA (24/11/2026, Dlx: «agrega logos y avatares y dibujos»): cada título trae su competencia
+con su logo (`competition.logo`, o el de su madre: el de Red Bull Batalla para Red Bull Batalla España). Se guarda uno
+por competencia en `logos` ({competencia: id}) y se espeja en R2 (`global/logos/<id>.webp`, `subir_logos()`), porque la
+página no puede cargar imágenes de Freestylestats (su CSP sólo deja Discord, YouTube y nuestro R2). Se sube una vez.
+
 ⚠️ SÓLO LOS RESULTADOS. El perfil trae nombre real, fecha y lugar de nacimiento: no se guardan. Y con calma: una pausa de
 `PAUSA` segundos entre pedido y pedido, y cada perfil se vuelve a leer recién a los `VIEJO` días.
 """
@@ -90,6 +95,18 @@ def _titulo(x):
     return [int(x.get('position') or 0), comp, temp, md.get('name') or '']
 
 
+ID_LOGO = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+
+
+def _logo(x):
+    """`(competencia, id del logo)` de un título: el de la competencia o, si no tiene, el de su madre. '' si ninguno"""
+    md = x.get('matchday') or {}
+    se = md.get('season') or x.get('season') or {}
+    co = se.get('competition') or {}
+    lid = ((co.get('logo') or {}).get('id') or ((co.get('parent') or {}).get('logo') or {}).get('id') or '')
+    return _titulo(x)[1], (lid if ID_LOGO.match(str(lid)) else '')
+
+
 def leer_perfil(html):
     """Lo que se guarda de un perfil: `{n, s, j, b, v, m: [oro, plata, bronce], t: [[puesto, comp, temp, jornada]…]}`, o None
     si la página es la de «no existe». Nunca el nombre real ni el nacimiento."""
@@ -117,18 +134,24 @@ def leer_perfil(html):
     j, b, v = tras_f('jornadas'), tras_f('batallas'), tras_f('victorias')
     med = [tras('Medalla de oro'), tras('Medalla de plata'), tras('Medalla de bronce')]
     titulos = []
+    logos = {}
     s = _flight(html)
     i = s.find('"titles":[')
     if i >= 0:
         arr = _array(s, i + len('"titles":'))
         try:
-            titulos = [_titulo(x) for x in json.loads(arr or '[]') if isinstance(x, dict)]
+            crudos = [x for x in json.loads(arr or '[]') if isinstance(x, dict)]
         except ValueError:
-            titulos = []
+            crudos = []
+        titulos = [_titulo(x) for x in crudos]
+        for x in crudos:
+            c, lid = _logo(x)
+            if c and lid:
+                logos.setdefault(c, lid)
     titulos = [t for t in titulos if t[0] in (1, 2, 3) and t[1]]
     # el mejor primero; a igual puesto, lo más nuevo primero (la temporada «2025/2026» ordena como texto)
     titulos.sort(key=lambda t: (t[0], [-int(x) for x in re.findall(r'\d{4}', t[2])[:1]] or [0]))
-    return {'n': nombre, 's': slug, 'j': j, 'b': b, 'v': v, 'm': [x or 0 for x in med], 't': titulos}
+    return {'n': nombre, 's': slug, 'j': j, 'b': b, 'v': v, 'm': [x or 0 for x in med], 't': titulos, 'lg': logos}
 
 
 def candidatos(G, batallas):
@@ -198,6 +221,7 @@ def correr(aplicar, pocos=0):
     except (OSError, ValueError):
         viejo = {}
     P = dict(viejo.get('p') or {})
+    logos = dict(viejo.get('logos') or {})
     nombres = {g['k']: g.get('n') for g in G if g.get('k')}
     hoy = dt.date.today()
     cand = candidatos(G, bat)
@@ -232,6 +256,8 @@ def correr(aplicar, pocos=0):
             break
         if hallado:
             hallado.pop('n', None)
+            for c, lid in (hallado.pop('lg', None) or {}).items():
+                logos[c] = lid
             hallado['u'] = hoy.isoformat()
             nuevos += 1 if k not in P else 0
             P[k] = hallado
@@ -243,8 +269,10 @@ def correr(aplicar, pocos=0):
                      '(m: oro, plata, bronce), de Freestylestats. No suma puntos: el ranking cuenta sólo la T1. Sin nombre '
                      'real ni nacimiento, a propósito.',
            't': dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds'), 'fuente': 'https://freestylestats.com',
-           'p': {k: P[k] for k in sorted(P)}}
-    print('📜 historia: %d perfiles (%d nuevos), %d pedidos, %d sin perfil allá' % (len(P), nuevos, leidos, len(sin)))
+           'p': {k: P[k] for k in sorted(P)},
+           'logos': subir_logos(logos) if aplicar else logos}
+    print('📜 historia: %d perfiles (%d nuevos), %d pedidos, %d sin perfil allá · %d logos de competencias'
+          % (len(P), nuevos, leidos, len(sin), len(out['logos'])))
     if aplicar:
         with open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
@@ -254,6 +282,63 @@ def correr(aplicar, pocos=0):
             x = P[k]
             print('  ', k, '·', x.get('b'), 'batallas ·', x.get('m'), '·', [' '.join(map(str, t)) for t in x['t'][:3]])
     return out
+
+
+#: el espejo en R2 de los logos de las competencias, y cómo se le piden a Freestylestats (cuadrados, sin recortar)
+R2_LOGOS = 'global/logos/'
+PUBLICA = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev'
+LOGO_LADO = 256
+
+
+def subir_logos(logos, subir_a=None, bajar=None):
+    """Espeja en R2 los logos que todavía no están (HEAD al público), y devuelve `{competencia: id}` sólo con los que están.
+    Sin credencial de R2 (fuera de la corrida de los lunes) devuelve los que ya estaban. `subir_a` y `bajar`, para el
+    self-check"""
+    import requests
+    hay = {}
+    r2 = subir_a
+    if r2 is None:
+        try:
+            import global_fotos as GF
+            r2 = GF._sesion_r2()
+        except Exception:                                # noqa: BLE001
+            r2 = None
+    vistos = {}
+    for c, lid in sorted(logos.items()):
+        if lid in vistos:
+            if vistos[lid]:
+                hay[c] = lid
+            continue
+        clave = R2_LOGOS + lid + '.webp'
+        ok = False
+        try:
+            ok = bajar is None and requests.head(PUBLICA + '/' + clave, timeout=15).status_code == 200
+        except requests.RequestException:
+            ok = False
+        if not ok and r2:
+            try:
+                if bajar is not None:
+                    datos = bajar(lid)
+                else:
+                    rr = requests.get('https://assets.freestylestats.com/assets/%s?width=%d&height=%d&fit=contain&format=webp'
+                                      % (lid, LOGO_LADO, LOGO_LADO), headers={'User-Agent': 'UnderLegends-ranking/1.0'}, timeout=30)
+                    rr.raise_for_status()
+                    if not rr.headers.get('content-type', '').startswith('image/'):
+                        raise ValueError('no es una imagen')
+                    datos = rr.content
+                    time.sleep(PAUSA / 3)
+                if callable(r2):
+                    r2(clave, datos)
+                    ok = True
+                else:
+                    import fotos as F
+                    ok = F.subir(r2, clave, datos) is None
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ el logo de %s no subió: %s' % (c, str(e)[:80]))
+        vistos[lid] = ok
+        if ok:
+            hay[c] = lid
+    return hay
 
 
 def auto():
@@ -279,6 +364,20 @@ def auto():
         and p['t'][-1][0] == 2, 'los títulos: competencia con su madre, temporada, jornada; oros primero y lo más nuevo arriba')
     chk('Alguien Real' not in json.dumps(p, ensure_ascii=False), 'el nombre real no se guarda')
     chk(leer_perfil('<title>Error 404 | Freestyle Stats</title>') is None, 'la página de «no existe» es None')
+    # 🏆 el logo: el de la competencia o el de su madre
+    x1 = {'position': 1, 'season': {'name': '2024', 'competition': {'name': 'Colombia', 'logo': {'id': '0d62a719-6379-463d-afb7-4b4946205c7c'},
+          'parent': {'name': 'FMS', 'logo': {'id': 'deef6042-d672-4118-a9be-a1e88345e16d'}}}}}
+    x2 = {'position': 1, 'season': {'name': '2024', 'competition': {'name': 'España', 'logo': None,
+          'parent': {'name': 'Red Bull Batalla', 'logo': {'id': 'a0350199-f8d4-4956-8828-cc0540614608'}}}}}
+    chk(_logo(x1) == ('FMS Colombia', '0d62a719-6379-463d-afb7-4b4946205c7c') and _logo(x2) == ('Red Bull Batalla España', 'a0350199-f8d4-4956-8828-cc0540614608')
+        and _logo({'position': 1, 'season': {'competition': {'name': 'X', 'logo': {'id': '../../etc'}}}})[1] == '',
+        'el logo: el de la competencia, si no el de su madre, y sólo un id que parece id')
+    sub = []
+    hay = subir_logos({'FMS Colombia': '0d62a719-6379-463d-afb7-4b4946205c7c', 'FMS México': '0d62a719-6379-463d-afb7-4b4946205c7c',
+                       'Mala': 'deef6042-d672-4118-a9be-a1e88345e16d'},
+                      subir_a=lambda clave, d: sub.append(clave), bajar=lambda lid: (b'x' if lid.startswith('0d') else 1 / 0))
+    chk(sub == ['global/logos/0d62a719-6379-463d-afb7-4b4946205c7c.webp'] and set(hay) == {'FMS Colombia', 'FMS México'},
+        'los logos a R2: uno por id aunque dos competencias lo compartan, y el que no bajó no queda')
     P = {'a': {'t': [[1, 'RB Internacional', '2024', 'Final'], [1, 'FMS España', '2020/2021', '']]}, 'b': {'t': [[1, 'RB Internacional', '2024', 'Final']]}}
     P['c'] = {'t': [[1, 'God Level 2vs2', '2019', 'Perú']]}
     P['d'] = {'t': [[1, 'God Level 2vs2', '2019', 'Perú']]}

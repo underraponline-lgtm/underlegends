@@ -190,6 +190,22 @@ def _dia(s):
         return None
 
 
+#: 🎬 el video de cada batalla (24/11/2026, Dlx: «subir como cuadrados de videos tanto horizontales y verticales al perfil de
+#: sus batallas… aquí sí lo podemos hacer»): el id de YouTube de su dirección (`watch?v=`, `youtu.be/` o `/shorts/`, que es
+#: vertical). Sólo el id: la política de YouTube no deja guardar más que eso de sus videos (ver el research del 20/11)
+import re as _re
+_YT = _re.compile(r'(?:youtube\.com/(?:watch\?(?:.*&)?v=|shorts/|embed/)|youtu\.be/)([A-Za-z0-9_-]{11})')
+#: cuántos videos por persona viajan en `global.json` (los más nuevos)
+VIDEOS_MAX = 24
+
+
+def video_de(b):
+    """`(id, vertical)` del video de YouTube de una batalla, o None"""
+    u = str(b.get('url') or '')
+    m = _YT.search(u)
+    return (m.group(1), '/shorts/' in u) if m else None
+
+
 def deduplicar(batallas, de_id=None):
     """La misma batalla en dos fuentes es UNA, con las dos como prueba. Se queda la de la fuente preferida.
 
@@ -227,6 +243,9 @@ def deduplicar(batallas, de_id=None):
                 break
         if igual:
             igual['fuentes'] = sorted(set(igual['fuentes']) | set(b['fuentes']))
+            # 🎬 la batalla de FMS se queda con su video de YouTube si otra fuente lo trae
+            if not video_de(igual) and video_de(b):
+                igual['url_video'] = b.get('url')
             for campo in ('votos', 'replica', 'pts', 'gana', 'ronda'):
                 if igual.get(campo) is None and b.get(campo) is not None:
                     igual[campo] = b[campo] if campo != 'gana' or _par_igual_orden(igual, b, de_id) else (
@@ -523,6 +542,18 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
         if e['id'] not in ev_i:
             ev_i[e['id']] = len(eventos)
             eventos.append([e['id'], e.get('nombre'), e.get('tipo'), e.get('fecha'), e.get('pais')])
+    # 🎬 los videos de cada uno: `[id, evento, rival, ganó (1/0), vertical (1/0)]`, del más nuevo al más viejo
+    videos = {}
+    for b in sorted(batallas, key=lambda x: x['evento'].get('fecha') or '', reverse=True):
+        vv = video_de(b) or video_de({'url': b.get('url_video')})
+        if not vv:
+            continue
+        ka, kb = de_id.get(b['a']['id']), de_id.get(b['b']['id'])
+        for yo, el, lado in ((ka, kb, 'a'), (kb, ka, 'b')):
+            if yo and el:
+                xs = videos.setdefault(yo, [])
+                if not any(x[0] == vv[0] for x in xs):
+                    xs.append([vv[0], ev_i[b['evento']['id']], el, 1 if b.get('gana') == lado else 0, 1 if vv[1] else 0])
     gente, fotos_de = [], {}
     for k, c in calc.items():
         p = personas[k]
@@ -535,6 +566,8 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
                       't': [[ev_i[e], puesto, round(pts, 1)] for pts, e, puesto in c['tit'] if pts > 0]})
         if por_pro.get(k):
             gente[-1]['por'] = por_pro[k][:3]  # por qué es pro: «FMS Chile», «FMS Internacional 2026»…
+        if videos.get(k):
+            gente[-1]['v'] = videos[k][:VIDEOS_MAX]
     gente.sort(key=lambda g: (-g['p'], -g['jb'], g['n'].lower()))
     d0, d1 = temporada.FECHAS[temporada.ACTUAL]
     out = {'v': 1, 't': (cuando or ahora_et()).isoformat(), 'temporada': temporada.ACTUAL, 'ventana': [d0, d1],
@@ -617,6 +650,12 @@ def _b(fuente, ev, tipo, fecha, ronda, a, b, gana, replica=None, votos=None, pa=
 
 def _self_check():
     mal = []
+    # 🎬 el video: sólo un id de YouTube, y el de /shorts/ es vertical
+    if (video_de({'url': 'https://www.youtube.com/watch?v=-ilbryedj5U'}) != ('-ilbryedj5U', False)
+            or video_de({'url': 'https://youtube.com/shorts/abcdefghijk'}) != ('abcdefghijk', True)
+            or video_de({'url': 'https://youtu.be/abcdefghijk?t=3'}) != ('abcdefghijk', False)
+            or video_de({'url': 'https://fms.tv/batalla/1'}) is not None):
+        mal.append('video_de() no lee bien las direcciones de YouTube')
     # 🔗 la vista previa de cada ficha: el puesto es el de la tabla y quien no sumó va en 0
     vv = vista_de({'g': [{'k': 'a', 'n': 'A', 'cc': 'ar', 'esc': 'pro', 'p': 9.5}, {'k': 'b', 'n': 'B', 'esc': 'plaza', 'p': 0},
                          {'k': '', 'n': 'Sin clave', 'p': 3}]})

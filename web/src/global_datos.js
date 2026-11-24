@@ -75,3 +75,11 @@ export function indiceCompetencias(H, D) {
   });
   return C;
 }
+
+// 🏆 EL LOGO DE UNA COMPETENCIA (24/11/2026, Dlx: «agrega logos»): el de Freestylestats, espejado en nuestro R2 por
+// bot/global_historia.py (`logos` de global_historia.json, {competencia: id}). '' si no lo tenemos: va un dibujo
+const R2_PUB = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
+export function urlLogo(H, n) {
+  const id = H && H.logos && H.logos[n];
+  return id && /^[0-9a-f-]{36}$/.test(id) ? R2_PUB + '/global/logos/' + id + '.webp' : '';
+}
