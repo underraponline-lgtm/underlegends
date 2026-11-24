@@ -2248,5 +2248,31 @@
   "sv": "LKR",
   "t_pregunta": ""
  },
+ "1574620066245513267": {
+  "autor": "1374555884868337738",
+  "canal": "1487207377601040516",
+  "canal_pregunta": "1487207377601040516",
+  "cuando": "2026-11-24T02:57:58.819000+00:00",
+  "donde": "llave",
+  "evento": "PURISTAS DEL HIP HOP",
+  "fecha": "23/11",
+  "llave": "1574620066245513267",
+  "pregunta": "1574657557312700458",
+  "preguntada": "2026-11-24 12:26 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Roda 🇵🇦",
+     "Dios 🇲🇽"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": false,
+  "sv": "FFA",
+  "t_pregunta": "2026-11-24T05:26:58+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

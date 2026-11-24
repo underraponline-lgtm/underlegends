@@ -556,11 +556,11 @@
   "Abraham": {
    "FDS": {
     "duelos": "",
-    "ev": 4,
+    "ev": 3,
     "oro": 0,
     "ovr": 46,
     "pod": 1,
-    "pts": 16625,
+    "pts": 10625,
     "racha": "0/1",
     "tg": {
      "dv": true,
@@ -5834,11 +5834,11 @@
   "Habraham 🇭🇳": {
    "FDS": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 1750,
+    "pts": 7000,
     "racha": "0/0",
     "tg": {
      "fund": true
