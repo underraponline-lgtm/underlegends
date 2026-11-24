@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T02:55:09+00:00",
+ "cuando": "2026-11-24T03:09:40+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8172,6 +8172,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1574620786109579295",
+   "cuando": "2026-11-24T03:00:50"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "okam🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1574620161686900767",
+   "cuando": "2026-11-24T02:58:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Inku 🇦🇷",
+   "quien": "fr4nki33",
+   "discord_id": "966814191556116560",
+   "msg_id": "1574619213686112267",
+   "cuando": "2026-11-24T02:54:35"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44144,33 +44171,6 @@
    "discord_id": "1508623564285149357",
    "msg_id": "1562268221283901533",
    "cuando": "2026-10-21T00:56:09"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "xclusivo🇻🇪",
-   "quien": "wackmc1",
-   "discord_id": "1493013247488430202",
-   "msg_id": "1562267213925191732",
-   "cuando": "2026-10-21T00:52:09"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "╰➤-inscripciones-🏆",
-   "texto": "Calíz 🇲🇽",
-   "quien": "caliz123_",
-   "discord_id": "1546111597343146044",
-   "msg_id": "1562267136414715968",
-   "cuando": "2026-10-21T00:51:50"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Sin límites 🇵🇪",
-   "quien": "sinlimites2026",
-   "discord_id": "1508623564285149357",
-   "msg_id": "1562266845203922967",
-   "cuando": "2026-10-21T00:50:41"
   }
  ]
 }

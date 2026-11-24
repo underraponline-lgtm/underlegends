@@ -10764,122 +10764,20 @@
    "b": "DARNBLESS",
    "ganador": "MATS",
    "votos": "1–0"
-  }
- },
- "llaves": {
-  "1567010428750536766": {
-   "id": "1567010428750536766",
+  },
+  "1574622278552002653": {
+   "id": "1574622278552002653",
    "sv": "[FFA] Freestyle For All 👾",
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
-   "pub": 1793674799860,
-   "ed": 1793681764426,
-   "texto": "`[ OCTAVOS ]`\n⌞JOBA⌝ 🆚 ⌞LRS⌝ 🆚 ⌞AKUSERU⌝ 🆚 ⌞DOMINIC⌝ 🆚 ⌞MCO⌝ 🆚 ⌞TOMY HILFIGHER⌝\n⌞MATS⌝ 🆚 ⌞PELOTA⌝ 🆚 ⌞OJOS DE TAILANDIA PICHULA⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞LVEL⌝\n⌞O223⌝ 🆚 ⌞IKONOX⌝ 🆚 ⌞71 TNOR TAM⌝ 🆚 ⌞DEUXS⌝\n⌞CALIZ⌝ 🆚 ⌞JOVEN SEXLONG⌝ 🆚 ⌞MAKMAH⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞PRAISERIZA⌝\n`[ CUARTOS ]`\n⌞CALIZ LRS⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n⌞71 TENOR TAM⌝ 🆚 ⌞MAKMAH⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝\n⌞TENOR 71 TAM⌝ 🆚 ⌞OJOS DE TAILANDIA⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞MAKMAH⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "JOBA",
-      "LRS",
-      "AKUSERU",
-      "DOMINIC",
-      "MCO",
-      "TOMY HILFIGHER"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "MATS",
-      "PELOTA",
-      "OJOS DE TAILANDIA PICHULA",
-      "VANDU",
-      "LVEL"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "O223",
-      "IKONOX",
-      "71 TNOR TAM",
-      "DEUXS"
-     ],
-     "DEUXS",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "CALIZ",
-      "JOVEN SEXLONG",
-      "MAKMAH",
-      "EZZE",
-      "PRAISERIZA"
-     ],
-     "MAKMAH",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "CALIZ LRS",
-      "OJOS DE TAILANDIA"
-     ],
-     "OJOS DE TAILANDIA",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "71 TENOR TAM",
-      "MAKMAH"
-     ],
-     "71 TENOR TAM",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "PRAISERIZAS",
-      "MAKMAH"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "TENOR 71 TAM",
-      "OJOS DE TAILANDIA"
-     ],
-     "OJOS DE TAILANDIA",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRAISERIZAS",
-      "MAKMAH"
-     ],
-     "PRAISERIZAS",
-     "veredicto",
-     []
-    ]
-   ]
-  },
+   "pub": 1795489606274,
+   "a": "nc🇰🇷",
+   "b": "Romeo🇲🇽",
+   "ganador": "Romeo🇲🇽",
+   "votos": "1–0"
+  }
+ },
+ "llaves": {
   "1567300049640235149": {
    "id": "1567300049640235149",
    "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
@@ -14530,6 +14428,57 @@
      ],
      "MR STILL BALIN",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1574621359114289224": {
+   "id": "1574621359114289224",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1795489387063,
+   "ed": 1795489387063,
+   "texto": "`[ CUARTOS ]`\n⌞Tiemp 🇲🇽⌝ 🆚 ⌞Roda🇵🇦⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Dominick🇵🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Lrs la sustancia🇦🇷⌝ 🆚 ⌞Dios 🇲🇽⌝\n`[ SEMIFINALES ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Tiemp 🇲🇽",
+      "Roda🇵🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Nxuz 🇵🇪",
+      "Dominick🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Sin límites 🇵🇪",
+      "Artezzy 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Lrs la sustancia🇦🇷",
+      "Dios 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
