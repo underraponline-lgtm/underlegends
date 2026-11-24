@@ -5925,7 +5925,10 @@ export function perfilBotQuiere(sv, g, G, p, info) {
   const P = p || {}, I = info || {};
   const def = perfilBotDefecto(sv, I.nombre || (G && G.name) || sv, Object.assign({}, I, { desc: I.desc || (G && G.description) || '' }));
   const cdn = (base, h, tam) => (/^(a_)?[0-9a-f]{16,40}$/.test(String(h || '')) ? 'https://cdn.discordapp.com/' + base + '/' + g + '/' + h + '.png?size=' + tam : null);
-  const img = (k, base, h, tam) => (P[k] === 'ulaya' ? null : P[k] === 'liga' ? PERFIL_LIGA[k] : (P[k] ? P[k] : cdn(base, h, tam)));
+  // 🌆 sin banner en su Discord (lo da el nivel 2 de boosts), la portada generada de su escena (`info.portada`,
+  // herramientas/banners_bot.py): Dlx, 24/11/2026, «asegúrate de poner la foto de portada… usa sus generadas»
+  const deSiempre = (k, base, h, tam) => cdn(base, h, tam) || (k === 'banner' && I.portada ? I.portada : null);
+  const img = (k, base, h, tam) => (P[k] === 'ulaya' ? null : P[k] === 'liga' ? PERFIL_LIGA[k] : (P[k] ? P[k] : deSiempre(k, base, h, tam)));
   return { nick: P.nick || def.nick, bio: P.bio || def.bio, avatar: img('avatar', 'icons', G && G.icon, 512), banner: img('banner', 'banners', G && G.banner, 1024) };
 }
 
@@ -18452,7 +18455,28 @@ export class Avisos {
   perfilBotInfo(sv, f) {
     const x = f.x || {};
     return { sigla: x.sigla || sv, nombre: x.nombre || '', tier: f.tier, m: x.m || {}, semanas: (this.leer('tiers') || {}).semanas || 4,
-      desc: ((this.leer('socio_paginas') || {})[sv] || {}).desc || '' };
+      desc: ((this.leer('socio_paginas') || {})[sv] || {}).desc || '', portada: ((this.leer('bot_portadas') || {})[sv] || {}).u || '' };
+  }
+
+  /** 🌆 La portada generada de ese servidor (`bot/paginas/banners/bot/<sv>.jpg`, de herramientas/banners_bot.py), si
+   *  existe: se le pregunta a la página con un HEAD y se guarda 6 horas en `bot_portadas`, con la huella del archivo en
+   *  `?v=` para que una portada redibujada se vuelva a mandar. Sin archivo, vacío: el bot va sin portada */
+  async perfilPortada(sv, ahora = Date.now()) {
+    const B = this.leer('bot_portadas') || {};
+    if (B[sv] && ahora - (B[sv].t || 0) < 6 * HORA) return B[sv].u || '';
+    let u = '';
+    try {
+      const url = HUB + '/banners/bot/' + String(sv).toLowerCase() + '.jpg';
+      const r = await fetch(url, { method: 'HEAD', headers: { 'User-Agent': UA } });
+      const tipo = String(r.headers.get('content-type') || '');
+      if (r.ok && /image\/jpe?g/.test(tipo)) {
+        const v = String(r.headers.get('etag') || '').replace(/[^0-9a-f]/gi, '').slice(0, 12);
+        u = v ? url + '?v=' + v : url;
+      } else if (r.status !== 404 && !(r.ok && /html/.test(tipo)) && B[sv]) return B[sv].u || '';
+    } catch (e) { return (B[sv] && B[sv].u) || ''; }
+    B[sv] = { u, t: ahora };
+    this.guardar('bot_portadas', B);
+    return u;
   }
 
   /** 🤖 Una imagen del perfil, lista para Discord (`data:` en base64): de R2 si es propia, del CDN si es la del servidor.
@@ -18527,6 +18551,7 @@ export class Avisos {
     }
     const G = await this.perfilGuild(g);
     if (!G) return fallo({ st: 0, ok: false, txt: '' }, null);
+    await this.perfilPortada(sv, ahora);
     const q = perfilBotQuiere(sv, g, G, (this.leer('bot_perfil') || {})[sv], this.perfilBotInfo(sv, f));
     const h = JSON.stringify(q);
     if (!o.forzar && e && e.h === h && !e.err) {
@@ -18670,6 +18695,7 @@ export class Avisos {
           }
         } catch (er) { /* la vista previa usa la inicial */ }
       }
+      try { await this.perfilPortada(sv); } catch (er) { /* sin portada en la vista previa */ }
       if (g && !(E[sv] && E[sv].G)) {
         const G = await this.perfilGuild(g);
         if (G) { E[sv] = { ...(E[sv] || {}), G }; this.guardar('bot_perfil_hecho', E); }

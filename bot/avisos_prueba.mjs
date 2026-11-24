@@ -5842,7 +5842,12 @@ const ok = (cond, que, det) => {
   const HX = 'abcdef0123456789abcdef0123456789';
   const q0 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, banner: '' }, {});
   ok(q0.avatar === 'https://cdn.discordapp.com/icons/42/' + HX + '.png?size=512' && q0.banner === null,
-    'la foto de su Discord; sin banner en su Discord, el del bot', JSON.stringify(q0));
+    'la foto de su Discord; sin banner en su Discord ni portada generada, el bot va sin portada', JSON.stringify(q0));
+  const POR = 'https://underlegends.pages.dev/banners/bot/ffa.jpg?v=abc';
+  ok(A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, banner: '' }, {}, { portada: POR }).banner === POR
+    && A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, banner: HX }, {}, { portada: POR }).banner === 'https://cdn.discordapp.com/banners/42/' + HX + '.png?size=1024'
+    && A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX }, { banner: 'ulaya' }, { portada: POR }).banner === null,
+  'la portada: la de su Discord si tiene; si no, la generada de su escena; ULAYA, ninguna');
   const q1 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX }, { nick: 'Arena', avatar: 'ulaya', banner: 'https://pub-x.r2.dev/botsv/a.png' });
   ok(q1.nick === 'Arena' && q1.avatar === null && q1.banner === 'https://pub-x.r2.dev/botsv/a.png', 'lo que eligió su equipo manda; ULAYA es la de siempre del bot (null)');
   const q2 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, description: 'Batallas cada viernes' }, { avatar: 'liga', banner: 'liga' }, { tier: 1 });
@@ -5883,14 +5888,16 @@ const ok = (cond, que, det) => {
       if (/\/guilds\/42$/.test(url)) return new Response(JSON.stringify({ name: 'Freestyle Fight Arena', icon: HX, banner: null }), { status: 200 });
       if (/cdn\.discordapp\.com\/icons\//.test(url)) return new Response(PNG, { status: 200 });
       if (/members\/@me$/.test(url)) return new Response(estadoPatch === 200 ? '{}' : JSON.stringify({ message: 'Rate limited', retry_after: 30 }), { status: estadoPatch });
+      if (/\/banners\/bot\/ffa\.jpg$/.test(url)) return new Response(null, { status: 200, headers: { 'content-type': 'image/jpeg', etag: '"abc123"' } });
+      if (/\/banners\/bot\/ffa\.jpg\?v=/.test(url)) return new Response(new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3]), { status: 200 });
       return new Response('{}', { status: 404 });
     };
     const patches = () => pedidos.filter((p) => p.m.startsWith('PATCH'));
     const n1 = await o.perfilesBot(Date.now());
     const p1 = patches()[0];
     ok(n1 === 1 && patches().length === 1 && /\/guilds\/42\/members\/@me$/.test(p1.m) && p1.body.nick === 'FFA Bot'
-      && p1.body.avatar.startsWith('data:image/png;base64,') && p1.body.banner === null && /3 eventos en 4 semanas/.test(p1.body.bio),
-    'el vigía: el Tier 1 sale «FFA Bot» con la foto de su Discord y su bio; el Tier 3 y DRA (la casa de ULAYA), nada', JSON.stringify({ n1, p: patches().map((p) => p.m) }));
+      && p1.body.avatar.startsWith('data:image/png;base64,') && p1.body.banner.startsWith('data:image/jpeg;base64,') && /3 eventos en 4 semanas/.test(p1.body.bio),
+    'el vigía: el Tier 1 sale «FFA Bot» con la foto de su Discord, la portada de su escena y su bio; el Tier 3 y DRA (la casa de ULAYA), nada', JSON.stringify({ n1, p: patches().map((p) => p.m) }));
     await o.perfilesBot(Date.now());
     ok(patches().length === 1, 'la vuelta siguiente, sin cambios, no le pide nada a Discord');
     const v0 = await o.socioPerfil({ quien: DUE, sv: 'FFA' });

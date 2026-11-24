@@ -1141,6 +1141,7 @@ function PerfilBot({ sv, puedeCambiar }) {
           onClick={() => { if (modo(k) !== v) mandar({ [k]: v }, 'Listo: ' + (k === 'avatar' ? 'la foto' : 'el banner') + ' del bot cambió.', false); }}>{n}</button>))}</div>
       {k === 'avatar' && modo(k) === 'servidor' && !j.def.avatar ? <small>Tu servidor no tiene ícono en Discord: el bot usa la de ULAYA.</small> : null}
       {k === 'banner' && modo(k) === 'servidor' && !j.def.banner ? <small>Tu servidor no tiene banner en Discord (lo da el nivel 2 de boosts): el bot no lleva banner.</small> : null}
+      {k === 'banner' && modo(k) === 'servidor' && j.def.banner && /\/banners\/bot\//.test(j.def.banner) ? <small>Tu servidor no tiene banner en Discord (lo da el nivel 2 de boosts): el bot lleva la escena de tus eventos.</small> : null}
     </fieldset>
   );
   return (
