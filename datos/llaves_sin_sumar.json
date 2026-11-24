@@ -427,27 +427,40 @@
     "b": [
      [
       [
-       "MayeutiK🇺🇾",
+       "MaYeuTyK",
        "Marcos",
        "Teito"
       ],
-      "MayeutiK🇺🇾",
+      "MaYeuTyK",
       "triple (3 bandas)"
      ]
     ],
     "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Teito",
+       "Marcos"
+      ],
+      "Teito",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
    }
   ],
   "sv": "UFLUC",
   "tabla": [
    [
-    "Marcos",
-    "Semifinal",
+    "Teito",
+    "Tercero",
     0
    ],
    [
-    "Teito",
-    "Semifinal",
+    "Marcos",
+    "Cuarto",
     0
    ]
   ]

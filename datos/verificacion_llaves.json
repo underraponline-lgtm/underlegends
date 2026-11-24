@@ -103,7 +103,6 @@
    "v": 1
   },
   "- LIGA INMORTAL -|FRZ|12/11": {
-   "copia": 625,
    "min": 2,
    "v": 1
   },
@@ -770,6 +769,10 @@
   },
   "__ DESGRACIAS EN TOKYO VOL 34 2vs2 __|FFA|22/11": {
    "min": 201,
+   "v": 1
+  },
+  "__ DESGRACIAS EN TOKYO VOL 35 1vs1 __|FFA|24/11": {
+   "min": 34,
    "v": 1
   },
   "__ GENESIS BATTLES __|SR|25/09": {
