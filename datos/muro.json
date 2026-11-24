@@ -434,14 +434,6 @@
 "temporada"
 ]
 },
-"tøkiø": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "xubaru": {
 "rg": "C",
 "c": [
@@ -469,6 +461,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"tøkiø": {
+"rg": "B",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1189,10 +1189,6 @@
 "temporada"
 ]
 },
-"joshu": {
-"rg": "",
-"c": []
-},
 "deluxe": {
 "rg": "",
 "c": [
@@ -1642,6 +1638,10 @@
 "c": []
 },
 "cajita": {
+"rg": "",
+"c": []
+},
+"joshu": {
 "rg": "",
 "c": []
 },
@@ -8644,8 +8644,8 @@
 "ev": 1
 },
 {
-"n": "JOSHU",
-"k": "joshu",
+"n": "Nagarjuna 🇨🇺",
+"k": "",
 "pts": 7500,
 "ev": 1
 }
@@ -8655,7 +8655,7 @@
 "n": "METRO",
 "k": "",
 "de": 818,
-"a": 541
+"a": 561
 },
 {
 "n": "Konan",
@@ -8667,7 +8667,7 @@
 "n": "Thaniel",
 "k": "",
 "de": 377,
-"a": 340
+"a": 339
 }
 ],
 "sorpresas": [
@@ -8971,8 +8971,7 @@
 "martoar": 0,
 "liam": 0,
 "mrkude": 1,
-"inku": 0,
-"joshu": 2
+"inku": 0
 },
 "sem": {
 "id": "2026-11-23",
