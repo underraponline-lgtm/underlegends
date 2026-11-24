@@ -2,49 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "8b29ef4cf7",
-   "tipo": "Nombre desconocido",
-   "sec": "TORNEO CLANDESTINO V.1 · FFA · 09/11 · #600",
-   "que": "¿Quién es «dyz🇨🇱»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794283653405,
-   "filas": [
-    1208
-   ],
-   "variantes": [
-    "dyz🇨🇱"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "4d0d4ee886",
-   "tipo": "Nombre desconocido",
-   "sec": "TORNEO CLANDESTINO V.1 · FFA · 09/11 · #600",
-   "que": "¿Quién es «Sentpa 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 429348374379233280",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (429348374379233280)",
-   "t": 1794290453845,
-   "filas": [
-    1211
-   ],
-   "variantes": [
-    "Sentpa 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Sentpa",
-     "429348374379233280"
-    ]
-   }
-  },
-  {
    "id": "d8f50aa68a",
    "tipo": "Nombre desconocido",
    "sec": "MINI COMPE LLAVES · DDS · 20/10 · #606",
@@ -4168,6 +4125,33 @@
    ],
    "escribio": {
     "batalla": "DISCORD STYLE ED. 15 · DDS · 07/10 · semifinales · VILKA 🆚 CRIZJ"
+   }
+  },
+  {
+   "id": "3fbf1054c5",
+   "tipo": "Nombre desconocido",
+   "sec": "UFL BATTLES V2 · UFLUC · 03/10 · #684",
+   "que": "¿Quién es «MayeutiK🇺🇾»?",
+   "r": "Es MaYeuTyK",
+   "regla": "tipeo · el nombre de alguien de la Lista con una letra de diferencia",
+   "rk": "tipeo",
+   "por": "el ciclo (una letra de diferencia)",
+   "porque": "alias de MaYeuTyK: «MayeutiK» con una letra de diferencia, del mismo país, y MaYeuTyK juega en UFLUC",
+   "t": 1795554128984,
+   "filas": [
+    1588
+   ],
+   "variantes": [
+    "MayeutiK🇺🇾"
+   ],
+   "escribio": {
+    "alias": [
+     "MayeutiK",
+     "MaYeuTyK"
+    ],
+    "filas": [
+     385
+    ]
    }
   }
  ],

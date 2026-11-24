@@ -9282,7 +9282,7 @@
     "oro": 1,
     "ovr": 48,
     "pod": 1,
-    "pts": 32825,
+    "pts": 32512,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -9340,6 +9340,15 @@
      "fin": 2,
      "fund": true
     }
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5250,
+    "racha": "0/0"
    }
   },
   "Magic": {
@@ -9964,17 +9973,6 @@
     "ovr": 44,
     "pod": 0,
     "pts": 12500,
-    "racha": "0/0"
-   }
-  },
-  "MayeutiK🇺🇾": {
-   "UFLUC": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 3500,
     "racha": "0/0"
    }
   },
