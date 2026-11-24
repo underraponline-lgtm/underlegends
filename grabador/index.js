@@ -122,6 +122,7 @@ let prueba = null;
 let llamadas = null;
 //: una llave publicada hace más que esto ya no cuenta como «en juego» (lo mismo que `LLAVE_H` de en_llamada.py)
 const LLAVE_H = 3;
+const APODO_GRABANDO = '🔴 GRABANDO · ULAYA';       // el apodo mientras graba (ponerApodo)
 const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
 //: otros grabadores con los que NO se entra (vacío: ver arriba). El de Drako es «Freestyle for All», 1557056218164629535
 const OTROS = new Set(lista(E.NO_SI_ESTA));
@@ -290,6 +291,26 @@ class Grabacion {
 
   ms() { return performance.now() - this.t0; }
 
+  /**
+   * 🔴 EL APODO MIENTRAS GRABA, COMO CRAIG (Dlx, 23/11/2026: «cuando se una que se ponga como Craig… que su apodo se cambie a
+   * Grabando Ulaya»). Al entrar, «🔴 GRABANDO · ULAYA»; al salir, el apodo que tenía antes. Sin permiso de cambiar su apodo
+   * en ese servidor, graba igual y lo anota UNA vez: el apodo es un aviso, no una condición (Craig sí se niega a grabar).
+   */
+  async ponerApodo(grabando) {
+    try {
+      const me = this.guild.members.me ?? await this.guild.members.fetchMe();
+      if (grabando) {
+        this.apodoAntes = me.nickname ?? null;
+        if (!String(me.nickname || '').startsWith(APODO_GRABANDO)) await me.setNickname(APODO_GRABANDO, 'grabando el evento');
+      } else if (String(me.nickname || '').startsWith(APODO_GRABANDO)) {
+        await me.setNickname(this.apodoAntes && !this.apodoAntes.startsWith(APODO_GRABANDO) ? this.apodoAntes : null, 'terminó la grabación');
+      }
+    } catch (e) {
+      if (!this.avisoApodo) anotar(`⚠️ apodo en ${this.guild.name}: ${String(e.message || e).slice(0, 80)}`);
+      this.avisoApodo = true;
+    }
+  }
+
   async empezar() {
     fs.mkdirSync(this.dir, { recursive: true });
     this.con = joinVoiceChannel({
@@ -297,6 +318,7 @@ class Grabacion {
       selfDeaf: false, selfMute: true,
     });
     await entersState(this.con, VoiceConnectionStatus.Ready, 30000);
+    await this.ponerApodo(true);
     this.t0 = performance.now();
     this.inicio = new Date();
     this.con.receiver.speaking.on('start', (id) => this.escuchar(id));
@@ -390,6 +412,7 @@ class Grabacion {
     clearInterval(this.reloj);
     for (const st of this.subs.values()) st.destroy();
     try { this.con.destroy(); } catch (e) { /* ya estaba cerrada */ }
+    this.ponerApodo(false);
     const voces = [];
     for (const [id, p] of this.pistas) {
       p.silencioHasta(fin);
@@ -704,6 +727,13 @@ client.once(Events.ClientReady, async () => {
   anotar(`✅ conectado como ${client.user.tag} · graba en ${GRABAR_TODOS ? 'todos los servidores con una llave en juego (y '
     + GRABAR_EN.length + ' fijo/s)' : GRABAR_EN.length + ' servidor(es)'} · entrega en ${ENTREGA}`);
   if (process.argv.includes('--revisar')) return revisarYSalir(client);
+  // 🔴 un reinicio en medio de una grabación deja el apodo «GRABANDO» colgado: al arrancar no graba nada, así que se limpia
+  for (const g of client.guilds.cache.values()) {
+    const me = g.members.me;
+    if (me && String(me.nickname || '').startsWith(APODO_GRABANDO)) {
+      me.setNickname(null, 'reinicio: no está grabando').catch(() => {});
+    }
+  }
   setInterval(() => vuelta(client).catch((e) => anotar('⚠️ vuelta:', String(e.message || e).slice(0, 150))), 20000);
   arrancarPrueba(client);
   if (E.VIVO !== '0') {
