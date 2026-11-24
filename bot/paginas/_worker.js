@@ -825,6 +825,30 @@ async function vistaGlobal(req, env, k, url) {
     desc, img, alt: nombre + ' en el Ranking global de freestyle' });
 }
 
+// 🏆 LA DE CADA COMPETENCIA (`/freestyle-rap/competencia/<clave>`, 24/11/2026): su nombre y cuántos podios y campeones
+// conocemos, de `global_historia.json` (50 KB: se lee entero, ~1 ms). La clave es `slugComp()` de web/src/global_datos.js
+const slugComp = (n) => String(n || '').normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+async function vistaCompetencia(req, env, id, url) {
+  const r = await env.ASSETS.fetch(new Request(url.origin + '/global_historia.json')).catch(() => null);
+  const H = r && r.ok ? await r.json().catch(() => null) : null;
+  let nombre = '';
+  let pod = 0, tit = 0;
+  const camp = new Set();
+  for (const h of Object.values((H && H.p) || {})) {
+    for (const t of (h && h.t) || []) {
+      if (slugComp(t[1]) !== id) continue;
+      nombre = nombre || String(t[1]);
+      pod++;
+      if (t[0] === 1) { tit++; camp.add(h.s || ''); }
+    }
+  }
+  if (!nombre) return null;
+  const desc = (tit ? tit + (tit === 1 ? ' título' : ' títulos') + ' de ' + camp.size + (camp.size === 1 ? ' campeón' : ' campeones') + ' y ' : '')
+    + pod + (pod === 1 ? ' podio' : ' podios') + ' en el Ranking global de freestyle: sus ediciones, quién más ganó y sus batallas de la temporada.';
+  const img = (await hayOg('pag', 'ranking')) || url.origin + '/og/p/ranking.png';
+  return conVista(req, env, url, { tab: nombre + ' · Ranking global de freestyle', titulo: nombre + ' · Ranking global de freestyle', desc, img, alt: nombre });
+}
+
 /** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?}` sobre la página de siempre */
 async function conVista(req, env, url, v) {
   const pag = await plantilla(env, url);
@@ -1026,6 +1050,12 @@ export default {
       let id = mGlob[1];
       try { id = decodeURIComponent(id); } catch (e) { /* tal cual */ }
       const v = (await vistaGlobal(req, env, id, url).catch(() => null)) || (await vistaPagina(req, env, 'ranking', url, 'global').catch(() => null));
+      if (v) return v;
+    }
+    // 🏆 y la de cada competencia (24/11/2026, `#/competencia/<clave>`): ver `vistaCompetencia()`
+    const mComp = req.method === 'GET' && /^\/freestyle-rap\/competencia\/([a-z0-9-]{1,80})\/?$/.exec(url.pathname);
+    if (mComp && BOTS_VISTA.test(ua)) {
+      const v = (await vistaCompetencia(req, env, mComp[1], url).catch(() => null)) || (await vistaPagina(req, env, 'ranking', url, 'global').catch(() => null));
       if (v) return v;
     }
     // 👥 y la de cada crew (ver `vistaCrew()`)

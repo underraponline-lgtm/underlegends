@@ -17,7 +17,8 @@ import { ICO } from './perfil_v10.jsx';
 import CSS_PF from './css/perfil.css?inline';
 import CSS_V10 from './css/perfil_v10.css?inline';
 import { usarCss } from './css.js';
-import { GRUPO, MEDALLA, PUESTO, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria } from './global.jsx';
+import { GRUPO, MEDALLA, PUESTO, TIPO, fechaEv, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria } from './global.jsx';
+import { indiceCompetencias, slugComp } from './global_datos.js';
 
 // los mismos ids que perfil.jsx y perfil_v10.jsx: si ya están, no se duplican
 usarCss('perfil', CSS_PF);
@@ -154,7 +155,7 @@ function GrandeGl({ g, h, X }) {
       <div className="pv-mn">
         <p className="pv-et"><b>{t[0] === 1 ? 'Su último título' : 'Su último podio'}</b> · {t[2]}</p>
         <span className={'pv-res ' + r[1]}>{r[0]}</span>
-        <h3>{t[1]}</h3>
+        <h3><LinkComp n={t[1]} /></h3>
         {t[3] ? <p className="pv-sub">{t[3]}{t[4] ? ' · en duda: la fuente se lo da a otro también' : ''}</p> : null}
         <div className="pv-mn-num">
           <div><b>{miles(h.b || 0)}</b><small>batallas</small></div>
@@ -193,7 +194,7 @@ function CompetenciasGl({ comps }) {
     <div className="pv-caja pv-tape">
       <p className="pv-et"><b>Dónde ganó</b> · sus podios por competencia</p>
       <ul>{comps.slice(0, 6).map((x) => (
-        <li key={x.c}><span className="l">{x.c}</span><span className="t"><i style={{ width: Math.round((100 * x.n) / mx) + '%' }} /></span><span className="v">{x.n}</span></li>
+        <li key={x.c}><span className="l"><LinkComp n={x.c} /></span><span className="t"><i style={{ width: Math.round((100 * x.n) / mx) + '%' }} /></span><span className="v">{x.n}</span></li>
       ))}</ul>
       <div className="pv-tape-ley"><span><i />podios</span><span>{plural(comps.reduce((s, x) => s + x.oros, 0), 'título', 'títulos')} en {plural(comps.length, 'competencia', 'competencias')}</span></div>
     </div>
@@ -251,7 +252,7 @@ function PodiosGl({ h, comps, fil, setFil }) {
               <span className="pv-np-img"><span className="pv-np-ronda"><b>{MEDALLA[t[0]]}</b><span>{sigla(t[1])}</span></span></span>
               <span className="pv-np-tx">
                 <span className="pv-np-f1"><span className={'pv-res ' + r[1]}>{r[0]}</span><span>{t[2]}</span></span>
-                <b className="pv-np-h">{t[1]}</b>
+                <b className="pv-np-h"><LinkComp n={t[1]} /></b>
                 {t[3] || t[4] ? <span className="pv-np-tags">{t[3] ? <span>{t[3]}</span> : null}{t[4] ? <span>en duda: la fuente se lo da a otro también</span> : null}</span> : null}
               </span>
             </div>
@@ -406,6 +407,355 @@ export function PerfilGlobal({ liga, k: k0 }) {
               <DondeGl g={g} X={X} />
               <InvitaGl g={g} />
             </aside>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+// ════════ 🏆 LA PÁGINA DE CADA COMPETENCIA (24/11/2026) ════════
+// Dlx: «agregar a las ligas de FMS, competencias así fuertes, como historias o perfiles también»; y a «¿Armo ahora las
+// páginas de las competencias?»: «Sí, ármalas». `#/competencia/<clave>`, con la MISMA interfaz que el perfil: la cabecera,
+// la banda negra (sus ediciones en círculos, quién más ganó, el último campeón, los más ganadores y sus cuatro reyes) y el
+// papel con las pestañas «Ediciones» y «En la T1». Sale de `indiceCompetencias()` (global_datos.js): los podios de la
+// carrera de cada uno y los eventos de la T1. ⚠️ No es la competencia entera: es lo que sabemos de los que están en el
+// Ranking global, y la página lo dice
+const anio = (ed) => { const m = /(\d{4})/.exec(String(ed || '')); return m ? Number(m[1]) : 0; };
+const edCorta = (ed) => { const m = /^(\d{4})\/(\d{2})(\d{2})?$/.exec(String(ed || '')); return m ? m[1].slice(2) + '/' + (m[3] || m[2]) : String(ed || '').slice(0, 7); };
+function familia(n) {
+  if (/^FMS/i.test(n)) return ['FMS', 'Liga por jornadas'];
+  if (/^Red Bull/i.test(n)) return ['RED BULL', 'Torneo por eliminación'];
+  if (/^God Level/i.test(n)) return ['GOD LEVEL', 'Torneo internacional'];
+  if (/^BDM/i.test(n)) return ['BDM', 'Torneo por eliminación'];
+  return ['TORNEO', 'Competencia de freestyle'];
+}
+const hrefComp = (n) => '#/competencia/' + slugComp(n);
+function LinkComp({ n }) { return <a href={hrefComp(n)} onClick={(e) => e.stopPropagation()}>{n}</a>; }
+/** lo que se calcula una vez por competencia: ediciones, gente con sus medallas, el último campeón y sus eventos de la T1 */
+function armarComp(c, X) {
+  const porEd = new Map();
+  const gente = new Map();
+  for (const [k, p, ed, fase, duda] of c.tit) {
+    const e = porEd.get(ed) || { ed, fases: new Map(), n: 0 };
+    const f = fase || 'Final';
+    const xs = e.fases.get(f) || [];
+    xs.push([k, p, duda]);
+    e.fases.set(f, xs);
+    e.n++;
+    porEd.set(ed, e);
+    const g = X.porK.get(k);
+    if (!g) continue;
+    const x = gente.get(k) || { g, o: 0, p: 0, b: 0 };
+    if (p === 1) x.o++; else if (p === 2) x.p++; else x.b++;
+    gente.set(k, x);
+  }
+  const eds = [...porEd.values()].sort((a, b) => (anio(b.ed) - anio(a.ed)) || String(b.ed).localeCompare(String(a.ed)));
+  const top = [...gente.values()].sort((a, b) => (b.o - a.o) || (b.p - a.p) || (b.b - a.b) || nombre(a.g).localeCompare(nombre(b.g)));
+  let ult = null;
+  for (const e of eds) {
+    for (const [fase, xs] of e.fases) {
+      const camp = xs.filter((x) => x[1] === 1).map((x) => X.porK.get(x[0])).filter(Boolean);
+      if (camp.length) { ult = { ed: e.ed, fase, camp, n: xs.length }; break; }
+    }
+    if (ult) break;
+  }
+  const t1 = c.ev.map((i) => {
+    const e = X.ev[i] || [];
+    const camp = X.G.find((g) => g.t.some((t) => t[0] === i && t[1] === 1)) || null;
+    const fin = X.G.find((g) => g.t.some((t) => t[0] === i && t[1] === 2)) || null;
+    let bat = 0;
+    for (const g of X.G) for (const b of g.b) if (b[0] === i) bat++;
+    return { i, e, camp, fin, bat };
+  }).sort((a, b) => String(b.e[3] || '').localeCompare(String(a.e[3] || '')));
+  const paises = {};
+  top.forEach((x) => { if (x.g.cc) paises[x.g.cc] = (paises[x.g.cc] || 0) + 1; });
+  c.ev.forEach((i) => { const cc = (X.ev[i] || [])[4]; if (cc) paises[cc] = (paises[cc] || 0) + 3; });
+  const cc = Object.entries(paises).sort((a, b) => b[1] - a[1]).map((x) => x[0])[0] || '';
+  const o = c.tit.filter((t) => t[1] === 1).length;
+  const pl = c.tit.filter((t) => t[1] === 2).length;
+  return { eds, top, ult, t1, cc, o, pl, br: c.tit.length - o - pl, campeones: top.filter((x) => x.o).length };
+}
+
+function CabezaComp({ liga, c, A }) {
+  const [fam, tipo] = familia(c.n);
+  const desde = A.eds.length ? anio(A.eds[A.eds.length - 1].ed) : 0;
+  return (
+    <div className="escena pf8" style={{ '--mo-c': '#E5B800', '--mo-o': 0.85, '--mo-c2': '#E41373' }}>
+      <div className="pf8-cover" />
+      <section className="pf8-cab">
+        <div className="pf8-carta"><span className="cara pf8-cara ini glpv-comp">{sigla(c.n)}</span></div>
+        <div className="pf8-tx">
+          <span className="tag">COMPETENCIA · RANKING GLOBAL · {liga.temp}</span>
+          <div className="pf8-nom">
+            <h1 className="hero-ev largo">{c.n}</h1>
+            <div className="pf8-pills"><span className="pf8-crew"><b>{fam}</b><span>{tipo}</span></span></div>
+          </div>
+          <p className="pf8-segs">
+            {A.cc ? <a href={'#/pais/' + A.cc}><Bandera cc={A.cc} cls="pf-flag" />{nombrePais(A.cc)}</a> : null}
+            {desde ? <span>Desde {desde}</span> : null}
+            {A.eds.length ? <span>{plural(A.eds.length, 'edición', 'ediciones')}</span> : null}
+            {c.ev.length ? <span>{plural(c.ev.length, 'evento', 'eventos')} en la T1</span> : null}
+          </p>
+        </div>
+        <div className="pf8-acc"><a className="btn pf8-seguir verde" href="#/ranking/global">Ranking global</a></div>
+        <div className="pf8-bar">
+          <div className="pf8-num">
+            <div className="pf8-yo" style={{ '--rc': '#E5B800' }}><b>{A.eds.length || '—'}</b><small>{A.eds.length === 1 ? 'EDICIÓN' : 'EDICIONES'}</small></div>
+            <div className="pf8-tres">
+              <div><b>{A.campeones}</b><small>CAMPEONES</small></div>
+              <div><b>{A.top.length}</b><small>CON PODIO</small></div>
+              <div><b>{c.tit.length}</b><small>PODIOS</small></div>
+            </div>
+          </div>
+          <div className="pf8-soc">
+            <div><b>{A.o}</b><small>{A.o === 1 ? 'título' : 'títulos'}</small></div>
+            <div><b>{c.ev.length}</b><small>en la T1</small></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+function MomentosComp({ A, ir }) {
+  const xs = A.eds.slice(0, 9).map((e) => ({ id: e.ed, n: e.ed, im: <em>{edCorta(e.ed)}</em>, c: e.n, rc: '#E5B800', fn: () => ir('eds', e.ed) }));
+  if (A.t1.length) xs.push({ id: 't1', n: 'En la T1', im: <em>T1</em>, c: A.t1.length, rc: '#E41373', fn: () => ir('t1') });
+  if (!xs.length) return null;
+  return (
+    <div className="pv-mom" role="list" aria-label="Sus ediciones">
+      {xs.map((x) => (
+        <button key={x.id} type="button" role="listitem" style={{ '--rc': x.rc }} onClick={x.fn}>
+          <span className="pv-ci"><span>{x.im}</span>{x.c ? <i>{x.c}</i> : null}</span><b>{x.n}</b>
+        </button>
+      ))}
+    </div>
+  );
+}
+function ReyComp({ A }) {
+  const r = A.top[0];
+  const tot = A.o || 0;
+  return (
+    <div className="pv-rec">
+      <p className="pv-et"><b>Quién más ganó</b> · de lo que sabemos</p>
+      {r && r.o ? (
+        <>
+          <div className="pv-rec-n"><span>{r.o}</span><i>/</i><span className="p">{tot}</span></div>
+          <p className="pv-sub">{r.o === 1 ? 'título' : 'títulos'} de <a href={'#/global/' + encodeURIComponent(r.g.k)}>{nombre(r.g)}</a>{r.p ? ' · y ' + plural(r.p, 'final', 'finales') : ''}</p>
+          <div className="pv-rec-bar" role="img" aria-label={r.o + ' de ' + tot + ' títulos'}><i style={{ width: ((100 * r.o) / Math.max(1, tot)).toFixed(1) + '%' }} /></div>
+        </>
+      ) : <div className="pv-vac"><b>Sin campeones todavía</b><span>Cuando sepamos de un campeón de esta competencia, va acá.</span></div>}
+      <div className="pv-cint">
+        <div><b><span className="pv-med o" />{A.o}</b><small>títulos</small></div>
+        <div><b><span className="pv-med p" />{A.pl}</b><small>finales</small></div>
+        <div><b><span className="pv-med b" />{A.br}</b><small>terceros</small></div>
+      </div>
+    </div>
+  );
+}
+function UltimoComp({ c, A }) {
+  const u = A.ult;
+  if (!u) {
+    const t = A.t1[0];
+    if (!t) return <div className="pv-mn vac"><p className="pv-et"><b>Su último campeón</b></p><p className="pv-sub">Todavía no sabemos quién ganó.</p></div>;
+    return (
+      <div className="pv-mn">
+        <p className="pv-et"><b>Lo último que leímos</b> · {fechaEv(t.e[3])}</p>
+        {t.camp ? <span className="pv-res c">Campeón</span> : null}
+        <h3>{t.camp ? <a href={'#/global/' + encodeURIComponent(t.camp.k)}>{nombre(t.camp)}</a> : limpioEv(t.e[1])}</h3>
+        <p className="pv-sub">{limpioEv(t.e[1])}</p>
+        <div className="pv-mn-num">
+          <div><b>{t.bat}</b><small>{t.bat === 1 ? 'batalla' : 'batallas'}</small></div>
+          <div><b>{A.t1.length}</b><small>en la T1</small></div>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="pv-mn">
+      <p className="pv-et"><b>Su último campeón</b> · {u.ed}</p>
+      <span className="pv-res c">Campeón</span>
+      <h3>{u.camp.map((g, i) => <span key={g.k}>{i ? ' y ' : ''}<a href={'#/global/' + encodeURIComponent(g.k)}>{nombre(g)}</a></span>)}</h3>
+      <p className="pv-sub">{u.fase}</p>
+      <div className="pv-mn-num">
+        <div><b>{A.eds.length}</b><small>{A.eds.length === 1 ? 'edición' : 'ediciones'}</small></div>
+        <div><b>{A.campeones}</b><small>campeones</small></div>
+        <div><b>{c.tit.length}</b><small>podios</small></div>
+        <div><b>{c.ev.length}</b><small>en la T1</small></div>
+      </div>
+    </div>
+  );
+}
+function GanadoresComp({ A }) {
+  const xs = A.top.slice(0, 6);
+  if (xs.length < 2) return null;
+  const mx = Math.max(...xs.map((x) => x.o + x.p + x.b));
+  return (
+    <div className="pv-caja pv-tape">
+      <p className="pv-et"><b>Los más ganadores</b> · sus podios acá</p>
+      <ul>{xs.map((x) => (
+        <li key={x.g.k}><span className="l"><a href={'#/global/' + encodeURIComponent(x.g.k)}>{nombre(x.g)}</a></span><span className="t"><i style={{ width: Math.round((100 * (x.o + x.p + x.b)) / mx) + '%' }} /></span><span className="v">{x.o + x.p + x.b}</span></li>
+      ))}</ul>
+      <div className="pv-tape-ley"><span><i />podios</span><span>{plural(A.top.length, 'freestyler', 'freestylers')} con podio</span></div>
+    </div>
+  );
+}
+function ReyesComp({ A }) {
+  const xs = A.top.filter((x) => x.o).slice(0, 4);
+  if (!xs.length) return null;
+  return (
+    <div className="pv-rivs">
+      {xs.map((x, i) => (
+        <button key={x.g.k} type="button" className={'pv-rv' + (i ? '' : ' vic')} onClick={irA(x.g)}>
+          <CaraGl g={x.g} cls="cara pv-rv-c" />
+          <span><span className="pv-et"><b>{i ? 'Campeón' : 'El que más ganó'}</b></span><b>{nombre(x.g)}</b><small><em>{plural(x.o, 'título', 'títulos')}</em>{x.p ? ' · ' + plural(x.p, 'final', 'finales') : ''}</small></span>
+        </button>
+      ))}
+    </div>
+  );
+}
+function EdicionesComp({ A, X, fil, setFil }) {
+  const [todos, setTodos] = useState(false);
+  useEffect(() => { setTodos(false); }, [fil]);
+  const filas = [];
+  A.eds.forEach((e) => { for (const [fase, xs] of e.fases) filas.push({ ed: e.ed, fase, xs }); });
+  const ver = fil && fil !== 'todos' ? filas.filter((f) => f.ed === fil) : filas;
+  if (!filas.length) return <p className="pv-nada">Todavía no sabemos de podios de esta competencia: los vamos sumando cuando sus campeones entran al Ranking global.</p>;
+  const g = (k) => X.porK.get(k);
+  return (
+    <>
+      {A.eds.length > 1 ? (
+        <div className="pv-filas-f">
+          <div className="pv-chips" role="group" aria-label="La edición">{[['todos', 'Todas', filas.length]].concat(A.eds.slice(0, 12).map((e) => [e.ed, e.ed, e.n])).map(([v, t, n]) => (
+            <button key={v} type="button" className={(fil || 'todos') === v ? 'on' : ''} aria-pressed={(fil || 'todos') === v} onClick={() => setFil(v)}>{t} <em>{n}</em></button>
+          ))}</div>
+        </div>
+      ) : null}
+      <div className="pv-np-g">
+        {(todos ? ver : ver.slice(0, VER)).map((f) => {
+          const camp = f.xs.filter((x) => x[1] === 1);
+          const r = pu(camp.length ? 'Campeón' : f.xs.some((x) => x[1] === 2) ? 'Subcampeón' : 'Tercero');
+          const orden = f.xs.slice().sort((a, b) => a[1] - b[1]);
+          return (
+            <div key={f.ed + '|' + f.fase} className={'pv-np ' + r[1]} style={{ '--svc': '#2A2A2E' }}>
+              <span className="pv-np-img"><span className="pv-np-ronda"><b>{edCorta(f.ed)}</b><span>{plural(f.xs.length, 'podio', 'podios')}</span></span></span>
+              <span className="pv-np-tx">
+                <span className="pv-np-f1"><span className={'pv-res ' + r[1]}>{camp.length ? 'Campeón' : r[0]}</span><span>{f.ed}</span></span>
+                <b className="pv-np-h">{f.fase}</b>
+                <span className="pv-np-tags">{orden.map(([k, p, duda]) => (
+                  <span key={k + p}>{MEDALLA[p]}: {g(k) ? <a href={'#/global/' + encodeURIComponent(k)}>{nombre(g(k))}</a> : k}{duda ? ' ?' : ''}</span>
+                ))}</span>
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      {!todos && ver.length > VER ? <button type="button" className="pv-pie" onClick={() => setTodos(true)}><span>{plural(ver.length, 'fase', 'fases')}</span><b>Ver todas</b></button> : null}
+    </>
+  );
+}
+function T1Comp({ A }) {
+  if (!A.t1.length) return <p className="pv-nada">Todavía no leímos un evento de esta competencia en la T1.</p>;
+  return (
+    <div className="pv-np-g">
+      {A.t1.map((t) => (
+        <div key={t.i} className={'pv-np ' + (t.camp ? 'c' : '')} style={{ '--svc': '#2A2A2E' }}>
+          <span className="pv-np-img"><span className="pv-np-ronda"><b>{fechaEv(t.e[3])}</b><span>{plural(t.bat, 'batalla', 'batallas')}</span></span></span>
+          <span className="pv-np-tx">
+            <span className="pv-np-f1">{t.camp ? <span className="pv-res c">Campeón</span> : null}<span>{TIPO[t.e[2]] || t.e[2]}</span></span>
+            <b className="pv-np-h">{limpioEv(t.e[1])}</b>
+            <span className="pv-np-tags">
+              {t.camp ? <span>Oro: <a href={'#/global/' + encodeURIComponent(t.camp.k)}>{nombre(t.camp)}</a></span> : null}
+              {t.fin ? <span>Plata: <a href={'#/global/' + encodeURIComponent(t.fin.k)}>{nombre(t.fin)}</a></span> : null}
+            </span>
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+function SobreComp({ c, A, H }) {
+  const [fam, tipo] = familia(c.n);
+  const xs = [['Tipo', tipo, fam === 'TORNEO' ? '' : fam]];
+  if (A.cc) xs.push(['País', <span key="p"><Bandera cc={A.cc} cls="pv-flag" />{nombrePais(A.cc)}</span>, '']);
+  if (A.eds.length) xs.push(['Ediciones', A.eds[A.eds.length - 1].ed + ' a ' + A.eds[0].ed, plural(A.eds.length, 'edición', 'ediciones') + ' con podios que conocemos']);
+  if (A.ult) xs.push(['Último campeón', A.ult.camp.map(nombre).join(' y '), A.ult.ed]);
+  return (
+    <>
+      <section className="pv-cajal">
+        <h3>Sobre la competencia</h3>
+        <ul className="pv-sob">{xs.map(([a, b, cc]) => <li key={a}><span>{a}</span><span><b>{b}</b>{cc ? <small>{cc}</small> : null}</span></li>)}</ul>
+      </section>
+      <section className="pv-cajal">
+        <h3>De dónde sale</h3>
+        <p className="pv-sub">{'Los podios salen de la carrera de ' + plural(Object.keys((H && H.p) || {}).length, 'freestyler', 'freestylers') + ' del Ranking global, de Freestylestats. Si alguien que ganó no está en el Ranking global, su título todavía no aparece acá.'}</p>
+      </section>
+    </>
+  );
+}
+
+export function PaginaCompetencia({ liga, id }) {
+  const [D, mal, reintentar] = useGlobal();
+  const X = useMemo(() => (D ? preparar(D, liga) : null), [D, liga]);
+  const H = useHistoria();
+  const C = useMemo(() => (D && H ? indiceCompetencias(H, D) : null), [D, H]);
+  let cid = id;
+  try { cid = decodeURIComponent(id); } catch (e) { /* tal cual */ }
+  const c = C ? C[cid] || C[slugComp(cid)] || null : null;
+  const A = useMemo(() => (c && X ? armarComp(c, X) : null), [c, X]);
+  const [tab, setTab] = useState('');
+  const [fil, setFil] = useState('todos');
+  useEffect(() => { window.scrollTo(0, 0); setTab(''); setFil('todos'); }, [cid]);
+  useEffect(() => {
+    if (!c) return undefined;
+    const poner = () => { document.title = c.n + ' · Ranking global de freestyle'; };
+    poner();
+    const r = setTimeout(poner, 0);
+    return () => clearTimeout(r);
+  }, [c]);
+  if (mal) return <section className="sec pf-sec"><p className="pronto-p">No pude cargar el Ranking global. <button type="button" className="te-link" onClick={reintentar}>Reintentar</button></p></section>;
+  if (!X || !H) return <div className="cargando">Cargando…</div>;
+  if (!c || !A) {
+    return (
+      <section className="sec pf-sec">
+        <div className="sec-t"><h2>No conocemos esa competencia</h2></div>
+        <p className="pronto-p">Búscala en el buscador de arriba o mira el <a className="te-link" href="#/ranking/global">Ranking global</a>.</p>
+      </section>
+    );
+  }
+  const ir = (t, f) => {
+    setTab(t);
+    if (f) setFil(f);
+    const raiz = document.querySelector('#inicio-nuevo');
+    const el = raiz && raiz.shadowRoot && raiz.shadowRoot.querySelector('.pv-tabs');
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 30);
+  };
+  const nFases = A.eds.reduce((s, e) => s + e.fases.size, 0);
+  const T = [['eds', 'Ediciones', nFases], ['t1', 'En la T1', A.t1.length]];
+  const tabV = tab || (nFases ? 'eds' : 't1');
+  return (
+    <div className="pf8-pag pf9-pag glpv">
+      <CabezaComp liga={liga} c={c} A={A} />
+      <div className="pv">
+        <section className="pv-esc" aria-label="Su historia">
+          <MomentosComp A={A} ir={ir} />
+          <div className="pv-ag">
+            <ReyComp A={A} />
+            <UltimoComp c={c} A={A} />
+            <div className="pv-pila"><GanadoresComp A={A} /></div>
+          </div>
+          <ReyesComp A={A} />
+        </section>
+        <section className="pv-papel">
+          <div className="pv-g">
+            <div className="pv-izq">
+              <div className="pv-tabs" role="tablist" aria-label="La competencia">
+                {T.map(([tid, n, cnt]) => (
+                  <button key={tid} type="button" role="tab" aria-selected={tabV === tid} className={tabV === tid ? 'on' : ''} onClick={() => setTab(tid)}>{ICO[tid === 'eds' ? 'logros' : 'noches']}<span className="pv-tab-t">{n}</span>{cnt ? <small>{cnt}</small> : null}</button>
+                ))}
+              </div>
+              {tabV === 'eds' ? <EdicionesComp A={A} X={X} fil={fil} setFil={setFil} /> : <T1Comp A={A} />}
+            </div>
+            <aside className="pv-lado"><SobreComp c={c} A={A} H={H} /></aside>
           </div>
         </section>
       </div>

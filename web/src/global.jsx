@@ -20,7 +20,7 @@ import { PopCab } from './pop.jsx';
 import { capital, limpio, norm } from './liga.js';
 import CSS from './css/global.css?inline';
 import { usarCss } from './css.js';
-import { bajarGlobal, globalListo, olvidarGlobal } from './global_datos.js';
+import { bajarGlobal, bajarHistoria, globalListo, historiaLista, olvidarGlobal, slugComp } from './global_datos.js';
 
 usarCss('global', CSS);
 
@@ -102,18 +102,13 @@ function useGlobal() {
 // Gazir ganó la FMS World Series… para que todos tengan un perfil al menos»): `/global_historia.json`, que escribe
 // `bot/global_historia.py` cada lunes desde Freestylestats. Se baja recién al abrir una ficha, una vez. NO suma puntos: el
 // ranking cuenta sólo la T1; esto dice quién es quién
-let pedidoH = null;
+// (el pedido vive en global_datos.js desde el 24/11/2026: lo piden también el buscador y las páginas de competencias)
 function useHistoria() {
-  const [H, setH] = useState(() => (pedidoH && pedidoH.listo) || null);
+  const [H, setH] = useState(historiaLista);
   useEffect(() => {
     if (H) return undefined;
     let vivo = true;
-    if (!pedidoH) {
-      const este = fetch('/global_historia.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-      pedidoH = este;
-      este.then((d) => { este.listo = d || { p: {} }; if (!d && pedidoH === este) pedidoH = null; });
-    }
-    pedidoH.then((d) => { if (vivo) setH(d || { p: {} }); });
+    bajarHistoria().then((d) => { if (vivo) setH(d); });
     return () => { vivo = false; };
   }, [H]);
   return H;
@@ -139,7 +134,7 @@ function Historia({ h }) {
         <span className="gl-m3">{h.m[2]} {h.m[2] === 1 ? 'bronce' : 'bronces'}</span></p>
       {ver.length ? (
         <ul className="gl-tits">{ver.map((t, i) => (
-          <li key={i}><em className={'gl-m' + t[0]}>{MEDALLA[t[0]]}</em><span><b>{t[1]}</b> {t[2]}{t[3] ? ' · ' + t[3] : ''}{t[4] ? <small className="gl-duda"> · en duda: la fuente se lo da a otro también</small> : null}</span></li>
+          <li key={i}><em className={'gl-m' + t[0]}>{MEDALLA[t[0]]}</em><span><b><a className="gl-lnk" href={'#/competencia/' + slugComp(t[1])}>{t[1]}</a></b> {t[2]}{t[3] ? ' · ' + t[3] : ''}{t[4] ? <small className="gl-duda"> · en duda: la fuente se lo da a otro también</small> : null}</span></li>
         ))}</ul>
       ) : null}
       {h.t.length > ver.length ? <button type="button" className="gl-lnk" onClick={() => setTodo(true)}>{'Ver los ' + h.t.length + ' podios'}</button> : null}
@@ -1085,4 +1080,4 @@ export function RankingGlobal({ liga, dc, movil }) {
 }
 
 // 🪪 las piezas que usa el perfil de cada uno (perfil_global.jsx, con la interfaz del perfil de la Liga)
-export { GRUPO, MEDALLA, PUESTO, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria };
+export { GRUPO, MEDALLA, PUESTO, TIPO, fechaEv, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria };

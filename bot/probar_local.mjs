@@ -2579,8 +2579,15 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
   };
   // 🌎 `global_vista.json` (24/11/2026): lo que la vista previa de una ficha del Ranking global lee del sitio
   const VISTA_GLOBAL = { gazir: ['Gazir', 'es', 'pro', 43], 'l-oasis': ['Oasis', 'cl', 'liga', 72], nadie: ['Nadie', '', 'plaza', 0] };
-  const ASSETS = { fetch: async (q) => (/\/global_vista\.json$/.test(String((q && q.url) || q))
-    ? new Response(JSON.stringify(VISTA_GLOBAL), { status: 200 }) : new Response('<html>la de siempre</html>', { status: 200 })) };
+  // 🏆 y `global_historia.json`, para la de cada competencia
+  const HIST = { p: { gazir: { s: 'gazir', t: [[1, 'FMS España', '2023/2024', 'Finals'], [2, 'FMS España', '2024/2025', 'Jornada 5']] },
+    bnet: { s: 'bnet', t: [[1, 'FMS España', '2020/2021', 'Final']] } } };
+  const ASSETS = { fetch: async (q) => {
+    const u = String((q && q.url) || q);
+    if (/\/global_vista\.json$/.test(u)) return new Response(JSON.stringify(VISTA_GLOBAL), { status: 200 });
+    if (/\/global_historia\.json$/.test(u)) return new Response(JSON.stringify(HIST), { status: 200 });
+    return new Response('<html>la de siempre</html>', { status: 200 });
+  } };
   // ⚡ un módulo nuevo en cada pedido (21/11/2026): las vistas guardan lo que leen un minuto (`jsonDelOrigen()`), y estas
   // pruebas cambian el lobby entre un pedido y otro. Con el mismo módulo verían el de antes
   let vuelta = 0;
@@ -2672,6 +2679,12 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     ok('el perfil global de Gazir: la misma vista previa que su ficha', r.j && r.j.title === 'Gazir · Ranking global de freestyle'
       && /og\/glob\/gazir\.jpg\?v=abcdef012345$/.test(r.j['meta[property="og:image"]'] || ''), JSON.stringify(r.j && r.j.title));
     delete ogEtag['glob/gazir'];
+    // 🏆 la de una competencia: su nombre y lo que sabemos de ella
+    r = await ver('/freestyle-rap/competencia/fms-espana', DISCORD);
+    ok('la competencia FMS España: su nombre, 2 títulos de 2 campeones y 3 podios', r.j && r.j.title === 'FMS España · Ranking global de freestyle'
+      && /^2 títulos de 2 campeones y 3 podios/.test(r.j['meta[property="og:description"]'] || ''), JSON.stringify(r.j && [r.j.title, r.j['meta[property="og:description"]']]));
+    r = await ver('/freestyle-rap/competencia/no-existe', DISCORD);
+    ok('una competencia que no conocemos: la del Ranking global', r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle', JSON.stringify(r.j && r.j.title));
     r = await ver('/freestyle-rap/ranking/global/no-existe', DISCORD);
     ok('una clave que no está: la del Ranking global', r.j && r.j.title === 'Ranking global de freestyle 2026 · Liga Global de Freestyle', JSON.stringify(r.j && r.j.title));
     r = await ver('/freestyle-rap/r/lejos', 'WhatsApp/2.23');

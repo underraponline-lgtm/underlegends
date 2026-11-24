@@ -21,7 +21,7 @@ import { escenaDe } from './fondos.js';
 import { PreguntaCab } from './comofunciona.jsx';
 import { alExtras, cargarExtras, hayPista, precargar } from './beats.js';
 import { HistoriaCtx } from './historia_ctx.js';
-import { bajarGlobal, globalListo } from './global_datos.js';
+import { bajarGlobal, bajarHistoria, globalListo, historiaLista, indiceCompetencias } from './global_datos.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Era el de la tira de abajo del celular hasta la barra E (19/11/2026: cinco fijos y el resto en el ☰ en
@@ -179,8 +179,8 @@ function Marca({ liga }) {
 // ── el buscador: raperos, y también servidores, países y crews (Dlx, 01/10/2026: «sí», la E). Primero lo que es
 // exactamente lo buscado, después lo que empieza así y al final lo que lo contiene; a igual coincidencia, raperos
 // primero. Vive arriba en la computadora y en el menú ☰ en el celular, donde arriba no entra
-const TIPOS = { rapero: 0, global: 0.5, servidor: 1, pais: 2, crew: 3, pagina: 4, evento: 5 };
-const ETIQUETA_TIPO = { rapero: 'rapero', global: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', pagina: 'página', evento: 'evento' };
+const TIPOS = { rapero: 0, global: 0.5, servidor: 1, pais: 2, crew: 3, competencia: 3.5, pagina: 4, evento: 5 };
+const ETIQUETA_TIPO = { rapero: 'rapero', global: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', competencia: 'competencia', pagina: 'página', evento: 'evento' };
 // 🌎 el grupo de cada uno en el Ranking global (los mismos nombres que global.jsx)
 const GRUPO_GLOBAL = { pro: 'Pro', plaza: 'Plaza', liga: 'Liga' };
 // 🔎 «QUE TE DEJE BUSCAR CUALQUIER COSA» (Dlx, 13/11/2026): también las páginas (las del menú, cada ranking y lo de tu
@@ -253,6 +253,21 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     bajarGlobal().then((d) => { if (vivo && d && Array.isArray(d.g)) setGlob(d); }, () => {});
     return () => { vivo = false; };
   }, [q, glob]);
+  // 🏆 y las competencias (24/11/2026): FMS España, Red Bull Batalla Chile… de la carrera de cada uno (global_datos.js)
+  const [hist, setHist] = useState(historiaLista);
+  useEffect(() => {
+    if (hist || q.trim().length < 2) return undefined;
+    let vivo = true;
+    bajarHistoria().then((d) => { if (vivo && d && d.p && Object.keys(d.p).length) setHist(d); });
+    return () => { vivo = false; };
+  }, [q, hist]);
+  const comps = useMemo(() => {
+    if (!glob || !hist) return [];
+    return Object.values(indiceCompetencias(hist, glob)).filter((c) => c.tit.length || c.ev.length).map((c) => ({
+      tipo: 'competencia', id: 'm' + c.id, n: c.n, href: '#/competencia/' + c.id,
+      sub: 'Competencia' + (c.tit.length ? ' · ' + c.tit.length + (c.tit.length === 1 ? ' podio' : ' podios') : '') + (c.ev.length ? ' · en la T1' : ''),
+    }));
+  }, [glob, hist]);
   const deGlobal = useMemo(() => {
     if (!glob || !Array.isArray(glob.g)) return [];
     const out = [];
@@ -310,6 +325,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
       });
     }
     deGlobal.forEach((r) => { const x = nota(r.n); if (x < 9) todo.push({ ...r, x }); });
+    comps.forEach((r) => { const x = nota(r.n); if (x < 9) todo.push({ ...r, x }); });
     Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || siglaDe(s.sv)), sub: siglaDe(s.sv), href: '#/sv/' + siglaDe(s.sv), logo: liga.logo(s.sv),
       x: nota(s.sv, siglaDe(s.sv), s.nombre || '') }));
     (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
@@ -337,7 +353,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
         todo.push({ tipo: 'evento', id: 'e' + id, n, sub: siglaDe(e.sv), href: '#/eventos', logo: e.sv ? liga.logo(e.sv) : '', x: nota(n) + 0.5 });
       });
     return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, sugerencias ? 40 : 8);
-  }, [q, liga, todos, deGlobal, sugerencias]);
+  }, [q, liga, todos, deGlobal, comps, sugerencias]);
   const ir = (r) => { if (r && r.href) guardarRec(r); setQ(''); if (onIr) onIr(); };
   // 🔔 en la barra de arriba, los resultados con el estilo de la campana: filtros por tipo y una fila por resultado
   const [cat, setCat] = useState('todo');
@@ -359,6 +375,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     if (r.tipo === 'rapero') return <Cara liga={liga} k={r.k} nombre={r.n} cls={'cara' + (esPremium(pub, r.k) ? ' sp-prem-aro' : '')} />;
     if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
     if (r.tipo === 'pais') return <span className="cara"><img alt="" src={'/banderas/g/' + r.cc + '.webp'} /></span>;
+    if (r.tipo === 'competencia') return <span className="cara br-ico"><Ico n="copa" t={16} /></span>;
     if (r.tipo === 'global') return r.ft ? <span className="cara"><img alt="" src={r.ft} loading="lazy" /></span> : <span className="cara ini">{(r.n.slice(0, 1) || '?').toUpperCase()}</span>;
     if (r.tipo === 'pagina') return <span className="cara br-ico"><Ico n={r.ico || 'flecha'} t={16} /></span>;
     if (r.tipo === 'evento') return r.logo ? <span className="cara"><img alt="" src={r.logo} /></span> : <span className="cara br-ico"><Ico n="eventos" t={16} /></span>;
@@ -410,6 +427,7 @@ function subBusca(liga, r) {
   if (r.tipo === 'evento') return 'Evento' + (r.sub ? ' · ' + r.sub : '');
   if (r.tipo === 'pais') return 'País';
   if (r.tipo === 'global') return r.sub || 'Ranking global';
+  if (r.tipo === 'competencia') return r.sub || 'Competencia';
   return r.sub ? r.sub : 'Página';
 }
 function FilaBusca({ liga, r, icono, ir, pub }) {

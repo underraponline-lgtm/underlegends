@@ -169,6 +169,8 @@ const Tarjetas = pag(() => import('./tarjetas.jsx').then((m) => ({ default: m.Ta
 const Perfil = pag(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
 // 🪪 el perfil de cada uno del Ranking global (24/11/2026, `#/global/<clave>`): la interfaz del perfil de la Liga (perfil_global.jsx)
 const PerfilGlobal = pag(() => import('./perfil_global.jsx').then((m) => ({ default: m.PerfilGlobal })));
+// 🏆 y la de cada competencia (24/11/2026, `#/competencia/<clave>`): FMS, Red Bull, God Level… con la misma interfaz
+const PaginaCompetencia = pag(() => import('./perfil_global.jsx').then((m) => ({ default: m.PaginaCompetencia })));
 const Llave = pag(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
 const VisorCarta = pag(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
 const Tienda = pag(() => import('./tienda2.jsx').then((m) => ({ default: m.Tienda })));
@@ -819,7 +821,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
   // 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: medir antes de mover la tira). Cada
   // sección cuenta UNA vez por día y por navegador (`lg:secc`, en hora del este como la visita) y el vigía sólo suma un
   // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda
-  const seccion = sv ? 'servidor' : pagina === '' ? 'inicio' : pagina === 'r' || pagina === 'global' ? 'perfil' : paginaMenu;
+  const seccion = sv ? 'servidor' : pagina === '' ? 'inicio' : pagina === 'r' || pagina === 'global' || pagina === 'competencia' ? 'perfil' : paginaMenu;
   useEffect(() => { anotarUnaVez(seccion); if (sv) anotarUnaVez('sv-' + String(sv).toUpperCase()); }, [seccion, sv]);
   // 👀 «ESTOY EN LA PÁGINA» (23/11/2026, Dlx: «who is on the website right now», con nombre; lo dice /privacidad). La
   // pestaña avisa al abrir, al volver a ella, al cambiar de sección y cada `AQUI_MIN` minutos mientras se ve. Con tu cuenta,
@@ -907,7 +909,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       : pagina === 'publicaciones' ? 'Publicaciones' : pagina === 'guia' ? 'Cómo funciona'
       : pagina === 'cambios' ? 'Changelog'
       : pagina === 'kit' ? 'El kit de tu servidor' : '';
-    if (!sv && (pagina === 'r' || pagina === 'global' || pagina === 'llave')) return undefined;
+    if (!sv && (pagina === 'r' || pagina === 'global' || pagina === 'competencia' || pagina === 'llave')) return undefined;
     // 🔎 LA PORTADA DICE LO QUE SE BUSCA (21/11/2026, el plan de alcance; Dlx: «dale»). «Liga Global de Freestyle» no lo
     // escribe nadie en Google y «Under Legends» se mezcla con un manhwa; «batallas de rap online» sí. La marca no cambia:
     // va como nombre del sitio en los datos estructurados (`seo()` de bot/paginas/_worker.js). El mismo título que index.html
@@ -1047,6 +1049,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
         : pagina === 'crew' && partes[1] ? <Aislada reinicio={reinicio} key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>
         : pagina === 'pais' && partes[1] ? <Aislada reinicio={reinicio} key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada reinicio={reinicio} key={'Perfil' + partes[1]} n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
+        : pagina === 'competencia' && partes[1] ? <Aislada reinicio={reinicio} key={'Competencia' + partes[1]} n="Competencia" pagina><Suspense fallback={<Cargando />}><PaginaCompetencia liga={liga} id={partes[1]} /></Suspense></Aislada>
         : pagina === 'global' && partes[1] ? <Aislada reinicio={reinicio} key={'PerfilGlobal' + partes[1]} n="PerfilGlobal" pagina><Suspense fallback={<Cargando />}><PerfilGlobal liga={liga} k={partes[1]} /></Suspense></Aislada>
         : pagina === 'salon' ? <Aislada reinicio={reinicio} key="Salon" n="Salon" pagina><Suspense fallback={<Cargando />}><SalonFama liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'competencias' ? <Aislada reinicio={reinicio} key="Competencias" n="Competencias" pagina><Suspense fallback={<Cargando />}><Competencias liga={liga} dc={yo.dc} sub={partes[1] || ''} /></Suspense></Aislada>
