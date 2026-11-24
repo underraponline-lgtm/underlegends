@@ -31,7 +31,9 @@ jobs:
           repository: underraponline-lgtm/motor
           ssh-key: ${{ secrets.MOTOR_KEY }}
           path: m
-      - uses: actions/cache@v4
+      # los modelos se guardan aunque la corrida se caiga (actions/cache sólo guarda si todo salió bien)
+      - uses: actions/cache/restore@v4
+        id: modelos
         with:
           path: |
             ~/.cache/huggingface
@@ -47,3 +49,10 @@ jobs:
         env:
           DESDE: ${{ inputs.desde }}
         run: UL_RAIZ="$GITHUB_WORKSPACE" bash m/nube.sh "$DESDE"
+      - uses: actions/cache/save@v4
+        if: always() && steps.modelos.outputs.cache-hit != 'true'
+        with:
+          path: |
+            ~/.cache/huggingface
+            ~/.cache/torch
+          key: m-modelos-v1
