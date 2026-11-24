@@ -4227,6 +4227,11 @@
     "t1",
     1794260565889
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1795561480429
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x7",
     "t1",
@@ -11338,6 +11343,25 @@
    ]
   }
  },
+ "nagarjuna": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795561480429
+   ],
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1795561480429
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795561480429
+   ]
+  }
+ },
  "naw": {
   "servidor": {
    "🧱 FUNDADOR": [
@@ -16038,7 +16062,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x7",
+    "👑 CAMPEÓN x8",
     "t1",
     1793029252929
    ],
@@ -17527,8 +17551,13 @@
     "t1",
     1793029252929
    ],
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1795561480429
+   ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1793055626497
    ],
@@ -17556,6 +17585,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793491575234
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1795561480429
    ],
    "🛫 NÓMADA": [
     "🛫 NÓMADA",
@@ -18798,6 +18832,11 @@
     "👥 FUNDADOR DE CREW",
     "t1",
     1795476947957
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795561480429
    ]
   }
  },
@@ -19014,6 +19053,11 @@
     "INTERNACIONAL",
     "t1",
     1795467199635
+   ],
+   "KILÓMETROS": [
+    "KILÓMETROS",
+    "t1",
+    1795561480429
    ],
    "MEDALLERO": [
     "MEDALLERO",

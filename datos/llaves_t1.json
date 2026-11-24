@@ -41816,7 +41816,7 @@
       [
        "Mito",
        "Miniboy",
-       "Dominick el disonantico🇵🇪"
+       "Dominick"
       ],
       "Mito",
       "triple (3 bandas)"
@@ -41887,7 +41887,7 @@
     2000
    ],
    [
-    "Dominick el disonantico🇵🇪",
+    "Dominick",
     "Cuartos",
     2000
    ],
@@ -64728,6 +64728,438 @@
   ],
   "ver": {
    "min": 52,
+   "v": 1
+  }
+ },
+ "690": {
+  "dia": "2026-11-24",
+  "escala": "16+",
+  "fecha": "24/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1574888214970507387"
+  ],
+  "n": 690,
+  "nombre": "DESGRACIAS EN TOKYO VOL 35 1vs1",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Xervoe",
+       "Miniboy",
+       "Inku"
+      ],
+      "Xervoe",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Snow",
+       "Keider",
+       "SULTAN"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Nagarjuna 🇨🇺",
+       "MCO",
+       "Erian"
+      ],
+      "Nagarjuna 🇨🇺",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "OKAM",
+       "Makmah",
+       "METRO"
+      ],
+      "OKAM",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Over",
+       "Deuxs",
+       "Paria"
+      ],
+      "Over",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Deko",
+       "Julda",
+       "Vandu"
+      ],
+      "Deko",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "tommyhilfiger1312🇾🇹",
+       "Sankabel",
+       "Ruvick"
+      ],
+      "tommyhilfiger1312🇾🇹",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "yinn",
+       "Zignos",
+       "Oasis"
+      ],
+      "yinn",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Over",
+       "Xervoe"
+      ],
+      "Over",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "Deko"
+      ],
+      "Snow",
+      ""
+     ],
+     [
+      [
+       "Nagarjuna 🇨🇺",
+       "tommyhilfiger1312🇾🇹"
+      ],
+      "Nagarjuna 🇨🇺",
+      ""
+     ],
+     [
+      [
+       "yinn",
+       "OKAM"
+      ],
+      "yinn",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Nagarjuna 🇨🇺",
+       "Over"
+      ],
+      "Nagarjuna 🇨🇺",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "yinn"
+      ],
+      "Snow",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Over"
+      ],
+      "yinn",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Snow",
+       "Nagarjuna 🇨🇺"
+      ],
+      "Snow",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Snow",
+    "Campeón",
+    10000
+   ],
+   [
+    "Nagarjuna 🇨🇺",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "yinn",
+    "Tercero",
+    6000
+   ],
+   [
+    "Over",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Deko",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xervoe",
+    "Cuartos",
+    2500
+   ],
+   [
+    "tommyhilfiger1312🇾🇹",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Deuxs",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Inku",
+    "Octavos",
+    1250
+   ],
+   [
+    "Julda",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "METRO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Oasis",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvick",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sankabel",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 112,
+   "v": 1
+  }
+ },
+ "691": {
+  "dia": "2026-11-24",
+  "escala": "8-15",
+  "fecha": "24/11",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1574894168688435203"
+  ],
+  "n": 691,
+  "nombre": "UFL BATTLES V3",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "Makmah"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Dominick"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "NXUZ"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Mito"
+      ],
+      "Miniboy",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "TøKīØ🦠🧠",
+       "MaYeuTyK"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Miniboy"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Dios"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "TøKīØ🦠🧠",
+    "Campeón",
+    7500
+   ],
+   [
+    "Dios",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 82,
    "v": 1
   }
  }

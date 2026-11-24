@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-24T22:30:37Z",
+ "t": "2026-11-24T23:02:37Z",
  "sv": {
   "SR": {
    "filas": [
@@ -735,18 +735,18 @@
      "Zignos"
     ],
     [
+     "yinn",
+     "es",
+     5070,
+     180,
+     "yinn"
+    ],
+    [
      "Za",
      "ar",
      4960,
      615,
      "Provenza"
-    ],
-    [
-     "yinn",
-     "es",
-     4890,
-     0,
-     "yinn"
     ],
     [
      "Abyssus",
@@ -1169,6 +1169,13 @@
      "Ezze"
     ],
     [
+     "seko boy",
+     "co",
+     675,
+     300,
+     ""
+    ],
+    [
      "Pcyka",
      "ar",
      650,
@@ -1435,13 +1442,6 @@
      "Tuca"
     ],
     [
-     "seko boy",
-     "co",
-     375,
-     0,
-     ""
-    ],
-    [
      "marto",
      "ar",
      350,
@@ -1573,6 +1573,13 @@
      240,
      240,
      "Status"
+    ],
+    [
+     "JOSHU",
+     "cu",
+     225,
+     225,
+     "JOSHU"
     ],
     [
      "Cinexfilo",
@@ -2311,6 +2318,30 @@
        "Sin Limites",
        "Tercero",
        60
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "Desgracias en Tokyo Vol. 34 1 Vs 1",
+     "dia": "2026-11-24",
+     "rango": "plata i",
+     "puntos": [
+      [
+       "seko boy",
+       "Campeón",
+       300
+      ],
+      [
+       "JOSHU",
+       "Subcampeón",
+       225
+      ],
+      [
+       "yinn",
+       "Tercero",
+       180
       ]
      ],
      "fuera": []

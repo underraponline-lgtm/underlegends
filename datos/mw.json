@@ -90,10 +90,22 @@
     "nivel": "B",
     "base": 6000,
     "o": 51,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 6000,
+    "caza": {
+     "n": 691,
+     "evento": "UFL BATTLES V3",
+     "sv": "UFLUC",
+     "t": "2026-11-24T21:07:09Z",
+     "por": [
+      {
+       "n": "TøKīØ🦠🧠",
+       "cobra": 7000
+      }
+     ]
+    }
    },
    {
     "n": "Carlosss",
@@ -116,10 +128,22 @@
     "nivel": "B",
     "base": 7250,
     "o": 11,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 7250,
+    "caza": {
+     "n": 690,
+     "evento": "DESGRACIAS EN TOKYO VOL 35 1vs1",
+     "sv": "FFA",
+     "t": "2026-11-24T20:43:30Z",
+     "por": [
+      {
+       "n": "Nagarjuna",
+       "cobra": 14500
+      }
+     ]
+    }
    },
    {
     "n": "Mathhias",

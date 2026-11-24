@@ -7174,14 +7174,7 @@
      0
     ],
     "Dominick": [
-     3,
-     0,
-     8,
-     0,
-     0
-    ],
-    "Dominick el disonantico🇵🇪": [
-     1,
+     4,
      0,
      8,
      0,
@@ -13418,7 +13411,7 @@
       "17/11",
       "octavos"
      ],
-     0
+     1
     ],
     "ONZASS": [
      "DarnBless",
@@ -13701,7 +13694,7 @@
       "13/11",
       "final"
      ],
-     0
+     1
     ],
     "Sosa": [
      "Colesito",
@@ -14324,7 +14317,7 @@
       "08/11",
       "semifinales"
      ],
-     0
+     1
     ]
    },
    "prog": {
@@ -14377,10 +14370,31 @@
      0,
      0
     ],
+    "Deko": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Deuxs": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Dios": [
      1,
      1,
      1,
+     0,
+     0
+    ],
+    "Dominick": [
+     0,
+     0,
+     0,
      0,
      0
     ],
@@ -14447,6 +14461,13 @@
      0,
      0
     ],
+    "Keider": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Konan": [
      1,
      1,
@@ -14465,6 +14486,27 @@
      1,
      2,
      2,
+     0,
+     0
+    ],
+    "MCO": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "METRO": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "MaYeuTyK": [
+     0,
+     0,
+     0,
      0,
      0
     ],
@@ -14538,6 +14580,13 @@
      0,
      0
     ],
+    "Nagarjuna 🇨🇺": [
+     1,
+     0,
+     2,
+     0,
+     0
+    ],
     "Noone": [
      1,
      0,
@@ -14561,8 +14610,15 @@
     ],
     "Over": [
      1,
+     2,
+     2,
+     0,
+     0
+    ],
+    "Paria": [
      1,
-     1,
+     0,
+     0,
      0,
      0
     ],
@@ -14594,6 +14650,27 @@
      0,
      0
     ],
+    "Ruvick": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "SULTAN": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Sankabel": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Sin Limites": [
      1,
      1,
@@ -14603,8 +14680,8 @@
     ],
     "Snow": [
      1,
-     0,
-     0,
+     2,
+     3,
      0,
      0
     ],
@@ -14636,7 +14713,28 @@
      0,
      0
     ],
+    "TøKīØ🦠🧠": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Vandu": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Xervoe": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Zignos": [
      1,
      0,
      0,
@@ -14678,10 +14776,17 @@
      0,
      0
     ],
-    "yinn": [
+    "tommyhilfiger1312🇾🇹": [
      1,
      0,
      0,
+     0,
+     0
+    ],
+    "yinn": [
+     1,
+     1,
+     1,
      0,
      0
     ]
@@ -14693,6 +14798,8 @@
     "BLITZ": 300,
     "CrisZJ": 300,
     "Cronox": 300,
+    "Deko": 300,
+    "Deuxs": 300,
     "Dios": 300,
     "Dyzz": 300,
     "EIDP": 900,
@@ -14703,9 +14810,12 @@
     "Gocho": 900,
     "Inku": 300,
     "Julda": 300,
+    "Keider": 300,
     "Konan": 300,
     "Kyss": 300,
     "LRS": 900,
+    "MCO": 300,
+    "METRO": 300,
     "Majiztral": 300,
     "Makmah": 300,
     "Marto AR": 300,
@@ -14714,25 +14824,33 @@
     "Mr.Kude": 800,
     "NC": 300,
     "NXUZ": 300,
+    "Nagarjuna 🇨🇺": 300,
     "Noone": 300,
-    "OKAM": 300,
+    "OKAM": 900,
     "Oasis": 300,
     "Over": 300,
+    "Paria": 300,
     "Player": 300,
     "Rodas": 300,
+    "Ruvick": 300,
+    "SULTAN": 300,
+    "Sankabel": 300,
     "Sin Limites": 300,
-    "Snow": 300,
+    "Snow": 900,
     "Soulb": 300,
     "Tam": 300,
     "Thaniel": 300,
     "Tuca": 300,
+    "Vandu": 300,
     "Xervoe": 300,
+    "Zignos": 300,
     "araya": 300,
     "crakero": 300,
     "ikonoxx": 300,
     "romeo": 300,
     "tierra sin atmosfera 🇦🇷": 300,
-    "yinn": 300
+    "tommyhilfiger1312🇾🇹": 300,
+    "yinn": 900
    }
   }
  },
@@ -14809,11 +14927,11 @@
   "Dantemx": 900,
   "DarkoMC": 300,
   "DarnBless": 900,
-  "Deko": 600,
+  "Deko": 900,
   "Delux": 3400,
   "Denik": 300,
   "Desio": 600,
-  "Deuxs": 2200,
+  "Deuxs": 2500,
   "Dios": 3200,
   "Dominick": 5000,
   "Drelain": 300,
@@ -14895,7 +15013,7 @@
   "Jupiter": 2200,
   "KIRITO": 300,
   "Karumailafmasha🇹🇼": 300,
-  "Keider": 2400,
+  "Keider": 2700,
   "Keplatoo🇪🇸": 600,
   "Khalil": 300,
   "Kminant": 300,
@@ -14938,7 +15056,8 @@
   "MAU KC": 600,
   "MAU KC 🇨🇴": 300,
   "MCNadie": 2400,
-  "MCO": 10300,
+  "MCO": 10600,
+  "METRO": 300,
   "MHS": 300,
   "MTZ": 3100,
   "MaYeuTyK": 4600,
@@ -14974,6 +15093,7 @@
   "NC": 6300,
   "NXUZ": 5300,
   "NYCO": 300,
+  "Nagarjuna 🇨🇺": 300,
   "Neo": 3200,
   "Nerick": 600,
   "NewCharacter🇦🇷": 300,
@@ -14984,7 +15104,7 @@
   "Number": 300,
   "Number VE": 2800,
   "OG": 8000,
-  "OKAM": 4800,
+  "OKAM": 5400,
   "ONDADISKO": 600,
   "ONZASS": 1200,
   "Oasis": 12400,
@@ -14995,7 +15115,7 @@
   "PROMETHEUS BIB 🇨🇴": 300,
   "PUNISHER": 600,
   "Panchok": 8400,
-  "Paria": 1800,
+  "Paria": 2100,
   "Personality": 300,
   "PichulaMc": 10400,
   "Pipe": 300,
@@ -15021,16 +15141,17 @@
   "Risa": 300,
   "Rodas": 1200,
   "Rosmel 🇻🇪": 300,
-  "Ruvick": 300,
+  "Ruvick": 600,
   "SAEVA": 300,
   "SAIDEM": 3200,
   "SC": 600,
   "SINTEXT": 600,
   "SOL": 1000,
-  "SULTAN": 1600,
+  "SULTAN": 1900,
   "Sadik": 2600,
   "Saiko": 300,
   "Sami": 300,
+  "Sankabel": 300,
   "Santi": 1300,
   "Santo Trinidad 🇨🇴": 300,
   "Saz": 300,
@@ -15041,7 +15162,7 @@
   "Shadow": 600,
   "Sin Limites": 4300,
   "Six": 8900,
-  "Snow": 7400,
+  "Snow": 8000,
   "Soneto": 300,
   "Soulb": 4800,
   "Status": 300,
@@ -15064,7 +15185,7 @@
   "Vacile🇪🇸": 600,
   "Valdoza": 600,
   "Valen": 2600,
-  "Vandu": 14400,
+  "Vandu": 14700,
   "Velatz": 5800,
   "Verc": 8000,
   "Vilca": 3400,
@@ -15084,7 +15205,7 @@
   "Zaza": 300,
   "Zekha": 1000,
   "Zetryko": 1600,
-  "Zignos": 6700,
+  "Zignos": 7000,
   "akasha🇦🇷": 300,
   "araya": 600,
   "chekialo 🇧🇯": 1300,
@@ -15112,8 +15233,9 @@
   "romeo": 1500,
   "setesfifi": 300,
   "tierra sin atmosfera 🇦🇷": 300,
+  "tommyhilfiger1312🇾🇹": 300,
   "wei shenlong": 300,
-  "yinn": 8000
+  "yinn": 8600
  },
  "temp": "prueba"
 }

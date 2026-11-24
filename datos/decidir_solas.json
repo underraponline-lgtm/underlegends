@@ -4174,6 +4174,46 @@
    "escribio": {
     "quien": "Rayos y Centellas · URBF · 03/11 · Dominick el disonantico🇵🇪"
    }
+  },
+  {
+   "id": "bda49324fe",
+   "tipo": "Nombre desconocido",
+   "sec": "DESGRACIAS EN TOKYO VOL 35 1vs1 · FFA · 24/11 · #690",
+   "que": "¿Quién es «Nagarjuna 🇨🇺»?",
+   "r": "Es JOSHU (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @tupadre05499 (en Discord: «Nagarjuna») · en la Lista: JOSHU se anotó como «Nagarjuna» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1795561472643,
+   "filas": [
+    1602
+   ],
+   "variantes": [
+    "Nagarjuna 🇨🇺"
+   ],
+   "escribio": {
+    "quien": "DESGRACIAS EN TOKYO VOL 35 1vs1 · FFA · 24/11 · Nagarjuna 🇨🇺"
+   }
+  },
+  {
+   "id": "392ee8df74",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Dominick el disonantico» es Dominick? La cuenta de Dominick en la Lista se anotó como «Dominick el disonantico», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dominick el disonantico» pasan a Dominick.\nLa cuenta: https://discord.com/users/1439048698142134436",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Dominick el disonantico» ya no suma aparte en el ranking",
+   "t": 1795561472643,
+   "filas": [
+    1601
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Dominick el disonantico» → «Dominick» · cuenta 1439048698142134436"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

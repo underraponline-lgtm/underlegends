@@ -843,17 +843,6 @@
    "vence": "2026-11-23T18:48:34+00:00",
    "vencido": true
   },
-  "Dominick el disonantico": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-03T22:03:53+00:00",
-   "did": "",
-   "evento": "Rayos y Centellas",
-   "n": 564,
-   "sv": "URBF",
-   "vence": "2026-11-10T22:03:53+00:00",
-   "vencido": true
-  },
   "Dorado": {
    "avisado": "2026-11-22",
    "con": null,
@@ -2403,6 +2392,18 @@
    "vence": "2026-11-19T22:38:21+00:00",
    "vencido": true
   },
+  "Nagarjuna": {
+   "chat": "2026-11-24",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T20:43:30+00:00",
+   "did": "",
+   "evento": "DESGRACIAS EN TOKYO VOL 35 1vs1",
+   "n": 690,
+   "sv": "FFA",
+   "vence": "2026-12-01T20:43:30+00:00",
+   "vencido": false
+  },
   "Nain sdp": {
    "avisado": "2026-10-30",
    "chat": "2026-10-31",
@@ -2878,6 +2879,18 @@
    "n": 666,
    "sv": "CH",
    "vence": "2026-11-27T02:47:21+00:00",
+   "vencido": false
+  },
+  "Sankabel": {
+   "chat": "2026-11-24",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T20:43:30+00:00",
+   "did": "",
+   "evento": "DESGRACIAS EN TOKYO VOL 35 1vs1",
+   "n": 690,
+   "sv": "FFA",
+   "vence": "2026-12-01T20:43:30+00:00",
    "vencido": false
   },
   "Scritura": {
@@ -3932,6 +3945,18 @@
    "n": 666,
    "sv": "CH",
    "vence": "2026-11-27T02:47:21+00:00",
+   "vencido": false
+  },
+  "tommyhilfiger1312": {
+   "chat": "2026-11-24",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T20:43:30+00:00",
+   "did": "",
+   "evento": "DESGRACIAS EN TOKYO VOL 35 1vs1",
+   "n": 690,
+   "sv": "FFA",
+   "vence": "2026-12-01T20:43:30+00:00",
    "vencido": false
   },
   "wosito": {
