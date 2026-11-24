@@ -2761,7 +2761,7 @@
   "din_v": 8,
   "din_t": 11,
   "crn_t": 3,
-  "cri_t": 25,
+  "cri_t": 26,
   "pos": 32,
   "total": 85,
   "rango": "C",
@@ -17898,7 +17898,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "crn_t": 2,
+  "crn_t": 3,
   "cri_t": 13,
   "pos": 313,
   "total": 85,
@@ -17918,7 +17918,7 @@
    "paises": 2
   },
   "nac": {
-   "evn": 2,
+   "evn": 3,
    "evi": 5,
    "com": 0
   }
