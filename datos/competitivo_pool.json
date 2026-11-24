@@ -1664,7 +1664,7 @@
    "venc": 12
   },
   "tg_p": {
-   "paises": 9,
+   "paises": 10,
    "paisesg": 7
   },
   "nac": {
@@ -3970,6 +3970,66 @@
   }
  },
  {
+  "full": "Gocho",
+  "raw": "Gocho",
+  "cc": "co",
+  "sv": "FFA",
+  "crew": "Santa Trinidad",
+  "discord_id": "1324178951119175711",
+  "verificado": true,
+  "ev": 16,
+  "score": 29.1,
+  "conf": 0.93,
+  "E": 50,
+  "C": 51,
+  "Dm": 0,
+  "T": 31,
+  "V": 17,
+  "wr": "52.6%",
+  "rch_act": 3,
+  "rch_max": 3,
+  "duel_v": 8,
+  "duel_t": 16,
+  "duel_real": true,
+  "dna_v": 0,
+  "dna_t": 1,
+  "din_v": 7,
+  "din_t": 14,
+  "crn_t": 4,
+  "cri_t": 25,
+  "pos": 42,
+  "total": 85,
+  "rango": "C",
+  "subrango": "C-",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "11/31",
+  "arc_pais": 68,
+  "pos_sv": "39/171",
+  "arc_sv": 78,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 7,
+   "fp": 3,
+   "riv": 15,
+   "venc": 7
+  },
+  "tg_p": {
+   "paises": 5,
+   "paisesg": 4
+  },
+  "nac": {
+   "evn": 3,
+   "evi": 9,
+   "com": 2,
+   "top": [
+    8,
+    "cl"
+   ]
+  }
+ },
+ {
   "full": "OKAM",
   "raw": "OKAM",
   "cc": "cr",
@@ -3997,7 +4057,7 @@
   "din_t": 18,
   "crn_t": 5,
   "cri_t": 58,
-  "pos": 42,
+  "pos": 43,
   "total": 85,
   "rango": "C",
   "subrango": "C-",
@@ -4005,8 +4065,8 @@
   "av": "",
   "pos_pais": "1/4",
   "arc_pais": 0,
-  "pos_sv": "39/171",
-  "arc_sv": 78,
+  "pos_sv": "40/171",
+  "arc_sv": 77,
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
@@ -4028,66 +4088,6 @@
    "top": [
     5,
     "ar"
-   ]
-  }
- },
- {
-  "full": "Gocho",
-  "raw": "Gocho",
-  "cc": "co",
-  "sv": "FFA",
-  "crew": "Santa Trinidad",
-  "discord_id": "1324178951119175711",
-  "verificado": true,
-  "ev": 16,
-  "score": 28.3,
-  "conf": 0.93,
-  "E": 46,
-  "C": 51,
-  "Dm": 0,
-  "T": 31,
-  "V": 18,
-  "wr": "50.0%",
-  "rch_act": 3,
-  "rch_max": 3,
-  "duel_v": 7,
-  "duel_t": 15,
-  "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 1,
-  "din_v": 6,
-  "din_t": 13,
-  "crn_t": 4,
-  "cri_t": 24,
-  "pos": 43,
-  "total": 85,
-  "rango": "C",
-  "subrango": "C-",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "11/31",
-  "arc_pais": 68,
-  "pos_sv": "40/171",
-  "arc_sv": 77,
-  "tg_c": {
-   "bestia": 1,
-   "clasico": 1,
-   "dg": 7,
-   "fp": 3,
-   "riv": 15,
-   "venc": 7
-  },
-  "tg_p": {
-   "paises": 5,
-   "paisesg": 4
-  },
-  "nac": {
-   "evn": 3,
-   "evi": 9,
-   "com": 2,
-   "top": [
-    8,
-    "cl"
    ]
   }
  },
@@ -5999,12 +5999,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 18,
+   "dg": 17,
    "fg": 1,
    "fp": 1,
    "mata": 3,
-   "riv": 41,
-   "venc": 18,
+   "riv": 40,
+   "venc": 17,
    "vengo": 2
   },
   "tg_p": {
@@ -8153,26 +8153,26 @@
   "crew": "",
   "discord_id": "1428556720510079168",
   "verificado": true,
-  "ev": 15,
+  "ev": 16,
   "score": 17.5,
-  "conf": 0.92,
+  "conf": 0.93,
   "E": 32,
-  "C": 16,
+  "C": 15,
   "Dm": 0,
   "T": 8,
   "V": 32,
-  "wr": "27.3%",
+  "wr": "25.0%",
   "rch_act": 0,
   "rch_max": 1,
   "duel_v": 2,
-  "duel_t": 9,
+  "duel_t": 10,
   "duel_real": true,
   "dna_v": 0,
   "dna_t": 0,
   "din_v": 2,
-  "din_t": 9,
+  "din_t": 10,
   "crn_t": 0,
-  "cri_t": 27,
+  "cri_t": 28,
   "pos": 66,
   "total": 85,
   "rango": "E",
@@ -16972,7 +16972,7 @@
    "vengo": 1
   },
   "tg_p": {
-   "paises": 11,
+   "paises": 12,
    "paisesg": 8
   },
   "nac": {
@@ -26354,21 +26354,21 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 4,
-   "riv": 9,
-   "venc": 4
+   "dg": 3,
+   "riv": 6,
+   "venc": 3
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 3
+   "paises": 4,
+   "paisesg": 2
   },
   "nac": {
    "evn": 0,
-   "evi": 5,
+   "evi": 4,
    "com": 0,
    "top": [
-    1,
-    "us"
+    9,
+    "pe"
    ]
   }
  },

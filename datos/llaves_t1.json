@@ -64350,7 +64350,7 @@
   ],
   "n": 688,
   "nombre": "PURISTAS DEL HIP HOP",
-  "participantes": 17,
+  "participantes": 16,
   "rondas": [
    {
     "b": [
@@ -64360,6 +64360,14 @@
        "NC"
       ],
       "romeo",
+      ""
+     ],
+     [
+      [
+       "Gocho",
+       "Rodas"
+      ],
+      "Gocho",
       ""
      ],
      [
@@ -64401,14 +64409,6 @@
       ],
       "Inku",
       ""
-     ],
-     [
-      [
-       "Roda 🇵🇦",
-       "Dios 🇲🇽"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -64429,7 +64429,7 @@
        "crakero"
       ],
       "Gocho",
-      "Walk-in 1: Gocho🇹🇼"
+      ""
      ],
      [
       [
@@ -64493,6 +64493,11 @@
     10000
    ],
    [
+    "Gocho",
+    "Subcampeón",
+    7500
+   ],
+   [
     "Cronox",
     "Semifinal",
     5250
@@ -64501,11 +64506,6 @@
     "LRS",
     "Semifinal",
     5250
-   ],
-   [
-    "Gocho",
-    "Subcampeón",
-    3750
    ],
    [
     "Julda",
@@ -64543,6 +64543,11 @@
     1250
    ],
    [
+    "Rodas",
+    "Octavos",
+    1250
+   ],
+   [
     "Sin Limites",
     "Octavos",
     1250
@@ -64559,7 +64564,7 @@
    ]
   ],
   "ver": {
-   "min": 119,
+   "min": 150,
    "v": 1
   }
  }

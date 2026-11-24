@@ -2268,7 +2268,15 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "org",
+    "t": 1795498115653
+   }
+  },
+  "respondidas": {
+   "0": "Roda 🇵🇦"
+  },
   "sin_permiso": false,
   "staff_probado": false,
   "sv": "FFA",

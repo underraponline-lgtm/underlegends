@@ -1465,6 +1465,13 @@
    "cuando": "2026-11-23 10:15 PM ET",
    "por": "el ciclo (R23)",
    "nota": "es el tercer puesto (VILKA y CRIZJ perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º"
+  },
+  "puristasdelhiphop|FFA|23/11|octavos|dios|roda": {
+   "ganador": "Roda 🇵🇦",
+   "batalla": "PURISTAS DEL HIP HOP · FFA · 23/11 · octavos · Roda 🇵🇦 🆚 Dios 🇲🇽",
+   "cuando": "2026-11-24 12:53 AM ET",
+   "por": "el organizador, con el botón (<@1374555884868337738>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

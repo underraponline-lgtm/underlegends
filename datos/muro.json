@@ -534,6 +534,15 @@
 "temporada"
 ]
 },
+"gocho": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "masino": {
 "rg": "B",
 "c": [
@@ -578,15 +587,6 @@
 ]
 },
 "mcnadie": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"gocho": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -8462,7 +8462,7 @@
 "t": "2026-11-24T08:00:00Z",
 "dia": "2026-11-23",
 "eventos": 4,
-"part": 56,
+"part": 55,
 "campeones": [
 {
 "ev": "qcyo rapeen 17",

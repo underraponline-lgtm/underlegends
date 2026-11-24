@@ -14420,8 +14420,8 @@
     ],
     "Gocho": [
      1,
-     2,
-     2,
+     3,
+     3,
      0,
      0
     ],
@@ -14565,6 +14565,13 @@
      0,
      0
     ],
+    "Rodas": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Sin Limites": [
      1,
      0,
@@ -14664,7 +14671,7 @@
     "Funk🇦🇷": 300,
     "Geoka": 300,
     "Gian": 300,
-    "Gocho": 300,
+    "Gocho": 900,
     "Inku": 300,
     "Julda": 300,
     "Kyss": 300,
@@ -14681,6 +14688,7 @@
     "Oasis": 300,
     "Over": 300,
     "Player": 300,
+    "Rodas": 300,
     "Sin Limites": 300,
     "Snow": 300,
     "Soulb": 300,
@@ -14816,7 +14824,7 @@
   "Gero": 300,
   "Gian": 300,
   "Global Hustler": 1000,
-  "Gocho": 3300,
+  "Gocho": 3900,
   "Guaicurús🇰🇷": 300,
   "Guess": 4500,
   "Gus": 900,
@@ -14978,7 +14986,7 @@
   "Richard": 2500,
   "Riolu": 300,
   "Risa": 300,
-  "Rodas": 900,
+  "Rodas": 1200,
   "Rosmel 🇻🇪": 300,
   "Ruvick": 300,
   "SAEVA": 300,
