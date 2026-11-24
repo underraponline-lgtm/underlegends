@@ -70,8 +70,8 @@
   },
   "Agre": {},
   "Agus": {
-   "competitivo": "b53c226e0f95:baafccf84bc7",
-   "pais": "de0594b6d815:84d29bb63c59",
+   "competitivo": "ad3c3e5702db:baafccf84bc7",
+   "pais": "b8b6dbf8e9af:84d29bb63c59",
    "servidor": "0490d531c497:ca27345eed9e:35630e",
    "temporada": "ca058252c2b2:0b98cb3023ec"
   },
@@ -663,7 +663,7 @@
    "temporada": "3a7527787b8a:0b98cb3023ec"
   },
   "Gocho": {
-   "competitivo": "2c271fd376a2:baafccf84bc7",
+   "competitivo": "55c85fc0ca8f:baafccf84bc7",
    "pais": "b05449cdf2ae:84d29bb63c59",
    "servidor": "69432a3e7866:ca27345eed9e:acc4a5",
    "temporada": "79f6cf010559:0b98cb3023ec"
@@ -759,8 +759,8 @@
    "temporada": "b1e871d2490f:0b98cb3023ec"
   },
   "Inku": {
-   "competitivo": "ea1e17095bc6:baafccf84bc7",
-   "pais": "f3e464c1d74c:84d29bb63c59",
+   "competitivo": "dc8fde71910c:baafccf84bc7",
+   "pais": "cacf7a070de8:84d29bb63c59",
    "servidor": "d9f72191292f:ca27345eed9e:f79f40",
    "temporada": "30206ce98836:0b98cb3023ec"
   },
@@ -859,8 +859,8 @@
    "temporada": "77eaca650407:0b98cb3023ec"
   },
   "Julda": {
-   "competitivo": "951d7b57754e:baafccf84bc7",
-   "pais": "8fb74da0dd5b:84d29bb63c59",
+   "competitivo": "055af268360e:baafccf84bc7",
+   "pais": "1e951a1e5d33:84d29bb63c59",
    "servidor": "611c8dcfd70c:ca27345eed9e:e4fbfa",
    "temporada": "86c43cbc2df0:0b98cb3023ec"
   },
@@ -933,10 +933,10 @@
    "temporada": "8ed0802b18ca:0b98cb3023ec"
   },
   "Konan": {
-   "competitivo": "7eaf857c4345:baafccf84bc7",
-   "pais": "8ed394dcf438:84d29bb63c59",
+   "competitivo": "91493ce5362e:baafccf84bc7",
+   "pais": "8fd9196e8d4e:84d29bb63c59",
    "servidor": "9513ad6be18f:ca27345eed9e:132451",
-   "temporada": "37fb6c4f566f:0b98cb3023ec"
+   "temporada": "7c1d0a21aef1:0b98cb3023ec"
   },
   "Koppakidd": {
    "servidor": "2d7457ff5a3d:ca27345eed9e:35fbe9"
@@ -1170,10 +1170,10 @@
   "Magic": {},
   "Mail O": {},
   "Majiztral": {
-   "competitivo": "54912e8970fb:baafccf84bc7",
-   "pais": "8ae83740b5fb:84d29bb63c59",
+   "competitivo": "55fdac0f1470:baafccf84bc7",
+   "pais": "e878d247164d:84d29bb63c59",
    "servidor": "f8c42a68ef4b:ca27345eed9e:132451",
-   "temporada": "5fa55097faa3:0b98cb3023ec"
+   "temporada": "287fd3095670:0b98cb3023ec"
   },
   "Maki": {
    "servidor": "70fbb8574a0b:ca27345eed9e:74d3ce"
@@ -1719,8 +1719,8 @@
    "temporada": "8ef9456eaad2:0b98cb3023ec"
   },
   "Sin Limites": {
-   "competitivo": "22751829a5ac:baafccf84bc7",
-   "pais": "f1af0deff04c:84d29bb63c59",
+   "competitivo": "8aefb8be16db:baafccf84bc7",
+   "pais": "ce90d0f84341:84d29bb63c59",
    "servidor": "d430ddc90800:ca27345eed9e:c82496",
    "temporada": "37dfd15d58e1:0b98cb3023ec"
   },
@@ -2048,8 +2048,8 @@
    "servidor": "d83342c293c7:ca27345eed9e:055f77"
   },
   "araya": {
-   "competitivo": "928c9f8805b0:baafccf84bc7",
-   "pais": "6f54aee39e74:84d29bb63c59",
+   "competitivo": "d01739934432:baafccf84bc7",
+   "pais": "93d3740336a0:84d29bb63c59",
    "servidor": "fa6cd9becc7a:ca27345eed9e:e4fbfa",
    "temporada": "5917a4f46238:0b98cb3023ec"
   },
@@ -2202,5 +2202,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-24T18:59:22+00:00"
+ "cuando": "2026-11-24T19:05:22+00:00"
 }
