@@ -10962,6 +10962,17 @@
    "b": "gocho🇨🇱",
    "ganador": "Inku 🇦🇷",
    "votos": "1–0"
+  },
+  "1574839510678638613": {
+   "id": "1574839510678638613",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795541398449,
+   "a": "Thaniel 🇻🇪",
+   "b": "Sin límites 🇵🇪",
+   "ganador": "Sin límites 🇵🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14808,6 +14819,27 @@
       "gocho 🇨🇴"
      ],
      "Inku 🇦🇷",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1574839510678638613": {
+   "id": "1574839510678638613",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795541398449,
+   "ed": 1795541555811,
+   "texto": "`[ CUARTOS ]`\n⌞Thaniel 🇻🇪⌝ 🆚 ⌞Sin límites 🇵🇪⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Thaniel 🇻🇪",
+      "Sin límites 🇵🇪"
+     ],
+     "Sin límites 🇵🇪",
      "veredicto",
      []
     ]
