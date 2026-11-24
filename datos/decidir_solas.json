@@ -4100,6 +4100,33 @@
      "1343730229721698375"
     ]
    }
+  },
+  {
+   "id": "f59a582310",
+   "tipo": "Nombre desconocido",
+   "sec": "GRAND THEFT AUTO · UFLUC · 22/11 · #686",
+   "que": "¿Quién es «y Dominick 🇵🇪»?",
+   "r": "Es Dominick",
+   "regla": "tipeo · el nombre de alguien de la Lista con una letra de diferencia",
+   "rk": "tipeo",
+   "por": "el ciclo (una letra de diferencia)",
+   "porque": "alias de Dominick: «y Dominick» con una letra de diferencia, del mismo país, y Dominick juega en UFLUC",
+   "t": 1795478721213,
+   "filas": [
+    1592
+   ],
+   "variantes": [
+    "y Dominick 🇵🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "y Dominick",
+     "Dominick"
+    ],
+    "filas": [
+     384
+    ]
+   }
   }
  ],
  "deshechas": []

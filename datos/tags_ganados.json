@@ -4391,6 +4391,11 @@
     "t1",
     1793029252929
    ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1795478728510
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -5201,6 +5206,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793131412781
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795478728510
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -9590,10 +9600,20 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1795478728510
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
     1793029252929
+   ],
+   "🌐 IMPERIO": [
+    "🌐 IMPERIO",
+    "t1",
+    1795478728510
    ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
@@ -9601,7 +9621,7 @@
     1795475239555
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x3",
     "t1",
     1793029252929
    ],
@@ -9998,6 +10018,16 @@
  },
  "mcglock": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795478728510
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795478728510
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -10796,6 +10826,11 @@
     "t1",
     1793029252929
    ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1795478728510
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -10817,7 +10852,7 @@
     1793939867107
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
@@ -12710,6 +12745,11 @@
     "DA LA CARA",
     "t1",
     1793029252929
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795478728510
    ]
   },
   "servidor": {
@@ -12720,6 +12760,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795478728510
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -14998,6 +15043,11 @@
  },
  "saiko": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795478728510
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -16846,6 +16896,15 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "thaniel": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795478728510
    ]
   }
  },

@@ -51242,7 +51242,7 @@
    "crakero": 11
   },
   "fecha": "13/11",
-  "firma": "8c39aca117a48330",
+  "firma": "4ed8a3c0c036ad2b",
   "msg": "1572055186955046984",
   "nombre": "RAP SIN GROSERIAS 6",
   "num": 653,
@@ -54680,7 +54680,7 @@
    "Vilca": 26
   },
   "fecha": "21/11",
-  "firma": "9989b4c31252118f",
+  "firma": "01863f4943600c18",
   "msg": "1573818856223539201",
   "nombre": "RED BULL REGIONAL",
   "num": 668,
@@ -58095,6 +58095,211 @@
    [
     "Daulinov🇨🇴",
     "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "686": {
+  "antes": {
+   "Cinexfilo": [
+    73,
+    90,
+    false
+   ],
+   "Dominick": [
+    46,
+    54,
+    false
+   ],
+   "EmiZor": [
+    284,
+    104,
+    true
+   ],
+   "Mathhias": [
+    49,
+    58,
+    false
+   ],
+   "Mc Glock": [
+    560,
+    516,
+    true
+   ],
+   "Miniboy": [
+    19,
+    19,
+    false
+   ],
+   "Mito": [
+    15,
+    15,
+    false
+   ],
+   "Molusco": [
+    31,
+    32,
+    false
+   ],
+   "ONZASS": [
+    277,
+    81,
+    true
+   ],
+   "Saiko": [
+    139,
+    213,
+    false
+   ],
+   "Shadow": [
+    78,
+    96,
+    false
+   ],
+   "Thaniel": [
+    381,
+    279,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Mc Glock",
+    "Shadow",
+    "Mc Glock"
+   ],
+   [
+    "Saiko",
+    "ONZASS",
+    "Saiko"
+   ],
+   [
+    "Mathhias",
+    "Mito",
+    "Mathhias"
+   ],
+   [
+    "EmiZor",
+    "Thaniel",
+    "EmiZor"
+   ],
+   [
+    "EmiZor",
+    "Miniboy",
+    "EmiZor"
+   ],
+   [
+    "Mc Glock, y Dominick 🇵🇪",
+    "Saiko, y Shaggy 🇵🇷",
+    "Mc Glock, y Dominick 🇵🇪"
+   ],
+   [
+    "Mathhias, Molusco",
+    "EmiZor, Cinexfilo",
+    "Mathhias, Molusco"
+   ],
+   [
+    "Mathhias, Molusco, EmiZor",
+    "Mc Glock, Dominick, Cinexfilo",
+    "Mathhias, Molusco, EmiZor"
+   ]
+  ],
+  "ev_antes": {
+   "Cinexfilo": 22,
+   "Dominick": 49,
+   "EmiZor": 14,
+   "Mathhias": 20,
+   "Mc Glock": 3,
+   "Miniboy": 72,
+   "Mito": 52,
+   "Molusco": 33,
+   "ONZASS": 14,
+   "Saiko": 5,
+   "Shadow": 31,
+   "Thaniel": 4
+  },
+  "fecha": "22/11",
+  "noche": true,
+  "nombre": "GRAND THEFT AUTO",
+  "num": 686,
+  "participantes": 15,
+  "sello": {
+   "Mathhias": "eca8c6b77b33:a8d8b7335469",
+   "Molusco": "b0851f07d34e:a8d8b7335469"
+  },
+  "sv": "UFLUC",
+  "t": "2026-11-23T23:58:43Z",
+  "tabla": [
+   [
+    "EmiZor",
+    "Semifinal",
+    4250
+   ],
+   [
+    "Cinexfilo",
+    "Semifinal",
+    3416
+   ],
+   [
+    "Mathhias",
+    "Campeón",
+    2500
+   ],
+   [
+    "Molusco",
+    "Campeón",
+    2500
+   ],
+   [
+    "Mc Glock",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Dominick",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Saiko",
+    "Semifinal",
+    2000
+   ],
+   [
+    "y Shaggy 🇵🇷",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Thaniel",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "y Dominick 🇵🇪",
+    "Semifinal",
     2000
    ]
   ],

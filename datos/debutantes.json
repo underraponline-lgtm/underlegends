@@ -3946,6 +3946,17 @@
    "vence": "2026-11-19T01:06:26+00:00",
    "vencido": true
   },
+  "y Dominick": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T21:50:07+00:00",
+   "did": "",
+   "evento": "GRAND THEFT AUTO",
+   "n": 686,
+   "sv": "UFLUC",
+   "vence": "2026-11-29T21:50:07+00:00",
+   "vencido": false
+  },
   "y Jahno": {
    "avisado": "2026-11-13",
    "chat": "2026-11-13",
@@ -3958,6 +3969,17 @@
    "sv": "FFA",
    "vence": "2026-11-20T01:52:37+00:00",
    "vencido": true
+  },
+  "y Shaggy": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-22T21:50:07+00:00",
+   "did": "",
+   "evento": "GRAND THEFT AUTO",
+   "n": 686,
+   "sv": "UFLUC",
+   "vence": "2026-11-29T21:50:07+00:00",
+   "vencido": false
   },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {
    "con": null,

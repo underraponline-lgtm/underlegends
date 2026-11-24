@@ -6771,6 +6771,10 @@
 "liga_podio": [
 "2026-11-12T09:08:00Z",
 "prueba"
+],
+"tricampeon": [
+"2026-11-24T00:00:16Z",
+"prueba"
 ]
 },
 "Matias": {
@@ -6810,6 +6814,10 @@
 ],
 "trotamundos": [
 "2026-11-23T16:31:50Z",
+"prueba"
+],
+"podio": [
+"2026-11-24T00:00:16Z",
 "prueba"
 ]
 },
@@ -10065,6 +10073,10 @@
 "debut": [
 "2026-11-16T01:57:33Z",
 "prueba"
+],
+"trotamundos": [
+"2026-11-24T00:00:16Z",
+"prueba"
 ]
 },
 "TheOg": {
@@ -12101,9 +12113,21 @@
 "prueba"
 ]
 },
+"y Dominick": {
+"debut": [
+"2026-11-24T00:00:16Z",
+"prueba"
+]
+},
 "y Jahno": {
 "debut": [
 "2026-11-13T03:56:08Z",
+"prueba"
+]
+},
+"y Shaggy": {
+"debut": [
+"2026-11-24T00:00:16Z",
 "prueba"
 ]
 },

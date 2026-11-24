@@ -2194,7 +2194,15 @@
     "ronda": "FINAL"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "org",
+    "t": 1795477825295
+   }
+  },
+  "respondidas": {
+   "0": "Mathias 🇻🇪 + Molusco 🇦🇷 + Emi 🇲🇽"
+  },
   "sin_permiso": false,
   "staff_probado": false,
   "sv": "UFLUC",

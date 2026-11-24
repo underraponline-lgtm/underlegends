@@ -226,6 +226,15 @@
 "temporada"
 ]
 },
+"molusco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "zignos": {
 "rg": "B",
 "c": [
@@ -262,15 +271,6 @@
 ]
 },
 "majiztral": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"molusco": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -396,6 +396,15 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "drexx": {
 "rg": "C",
 "c": [
@@ -424,15 +433,6 @@
 },
 "xubaru": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"dominick": {
-"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -651,6 +651,14 @@
 "rg": "E",
 "c": []
 },
+"cinexfilo": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "richard": {
 "rg": "E",
 "c": [
@@ -697,14 +705,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"cinexfilo": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -770,6 +770,10 @@
 "temporada"
 ]
 },
+"emizor": {
+"rg": "D",
+"c": []
+},
 "ariaxer": {
 "rg": "E",
 "c": [
@@ -807,10 +811,6 @@
 "servidor",
 "temporada"
 ]
-},
-"emizor": {
-"rg": "D",
-"c": []
 },
 "deuxs": {
 "rg": "D",
@@ -8533,10 +8533,10 @@
 "a": 318
 },
 {
-"n": "Gian",
-"k": "",
-"de": 432,
-"a": 420
+"n": "Andres",
+"k": "andres",
+"de": 59,
+"a": 48
 }
 ],
 "sorpresas": [
@@ -8645,7 +8645,7 @@
 "velatz": 0,
 "mito": 0,
 "zignos": 1,
-"molusco": 2,
+"molusco": 3,
 "guess": 1,
 "walker": 0,
 "delux": 0,
@@ -8670,7 +8670,7 @@
 "lordviruzz": 0,
 "caliz": 0,
 "dominick": 0,
-"mathhias": 1,
+"mathhias": 2,
 "tøkiø": 0,
 "mayeutyk": 1,
 "dyzz": 0,

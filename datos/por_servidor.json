@@ -2734,6 +2734,18 @@
     "pts": 1547,
     "racha": "0/0"
    },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3416,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "3/6",
     "ev": 3,
@@ -3769,6 +3781,19 @@
      "fund": true
     }
    },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 2000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "0/1",
     "ev": 1,
@@ -4350,7 +4375,10 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4000,
-    "racha": "0/0"
+    "racha": "0/0",
+    "tg": {
+     "llave": true
+    }
    }
   },
   "Eldinoco🇦🇷": {
@@ -4474,6 +4502,18 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 4250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Emilio Alva": {
@@ -8404,7 +8444,8 @@
     "pts": 4000,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -9790,12 +9831,16 @@
    },
    "UFLUC": {
     "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0"
+    "ev": 2,
+    "oro": 1,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 4500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "llave": true
+    }
    },
    "URBF": {
     "duelos": "2/5",
@@ -9942,6 +9987,19 @@
     "tg": {
      "nuevo": true
     }
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 2000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    }
   },
   "Mc arepa": {
@@ -10056,7 +10114,8 @@
     "pts": 4000,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -10185,15 +10244,16 @@
    },
    "UFLUC": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
     "ovr": 47,
     "pod": 2,
-    "pts": 13500,
-    "racha": "1/1",
+    "pts": 15500,
+    "racha": "0/1",
     "tg": {
      "fin": 2,
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    },
    "URBF": {
@@ -10328,6 +10388,18 @@
      "fin": 1
     }
    },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "4/8",
     "ev": 4,
@@ -10438,6 +10510,19 @@
     "ovr": 44,
     "pod": 1,
     "pts": 7500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 2500,
     "racha": "1/1",
     "tg": {
      "fin": 1,
@@ -10936,7 +11021,8 @@
     "racha": "0/1",
     "tg": {
      "fin": 1,
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -11535,6 +11621,18 @@
     "pod": 1,
     "pts": 74013,
     "racha": "0/2"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Oasis": {
@@ -13407,6 +13505,18 @@
     "pts": 3687,
     "racha": "0/0"
    },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "0/1",
     "ev": 1,
@@ -13766,12 +13876,15 @@
    },
    "UFLUC": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2000,
-    "racha": "0/0"
+    "pts": 4000,
+    "racha": "0/0",
+    "tg": {
+     "llave": true
+    }
    },
    "URBF": {
     "duelos": "0/2",
@@ -14669,6 +14782,18 @@
     "pod": 0,
     "pts": 10625,
     "racha": "0/0"
+   },
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "TheOg": {
@@ -17588,6 +17713,20 @@
     "racha": "0/0"
    }
   },
+  "y Dominick 🇵🇪": {
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "y Jahno 🇧🇧": {
    "FFA": {
     "duelos": "",
@@ -17597,6 +17736,20 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
+   }
+  },
+  "y Shaggy 🇵🇷": {
+   "UFLUC": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "yinn": {

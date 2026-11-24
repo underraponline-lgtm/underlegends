@@ -10007,6 +10007,13 @@
      0,
      0
     ],
+    "Cinexfilo": [
+     0,
+     0,
+     4,
+     0,
+     0
+    ],
     "Colesito": [
      2,
      1,
@@ -10066,7 +10073,7 @@
     "Dominick": [
      1,
      0,
-     8,
+     2,
      0,
      0
     ],
@@ -10116,6 +10123,13 @@
      0,
      0,
      16,
+     0,
+     0
+    ],
+    "EmiZor": [
+     0,
+     0,
+     4,
      0,
      0
     ],
@@ -10458,7 +10472,7 @@
     "Mathhias": [
      0,
      0,
-     4,
+     1,
      0,
      0
     ],
@@ -10472,7 +10486,7 @@
     "Mc Glock": [
      0,
      0,
-     16,
+     2,
      0,
      0
     ],
@@ -10577,7 +10591,7 @@
     "ONZASS": [
      0,
      0,
-     16,
+     8,
      0,
      0
     ],
@@ -10676,6 +10690,13 @@
      1,
      0,
      16,
+     0,
+     0
+    ],
+    "Saiko": [
+     0,
+     0,
+     4,
      0,
      0
     ],
@@ -11022,6 +11043,20 @@
      0,
      0
     ],
+    "y Dominick 🇵🇪": [
+     0,
+     0,
+     4,
+     0,
+     0
+    ],
+    "y Shaggy 🇵🇷": [
+     0,
+     0,
+     4,
+     0,
+     0
+    ],
     "yinn": [
      1,
      0,
@@ -11066,6 +11101,7 @@
     "Majiztral": 1600,
     "Makmah": 300,
     "Mark98": 1000,
+    "Mathhias": 1000,
     "MauzzitoEmeces": 300,
     "Mc arepa": 600,
     "Mc uchiha": 300,
@@ -11186,13 +11222,6 @@
       "CH"
      ]
     },
-    "Agente sombra": {
-     "d": [],
-     "s": [
-      "CH",
-      "DW"
-     ]
-    },
     "Akuseru": {
      "d": [
       0,
@@ -11277,6 +11306,15 @@
       "DDS"
      ]
     },
+    "Cinexfilo": {
+     "d": [
+      6
+     ],
+     "s": [
+      "ACAD",
+      "FDS"
+     ]
+    },
     "Colesito": {
      "d": [
       3,
@@ -11306,16 +11344,6 @@
       "CH"
      ]
     },
-    "Deuxs": {
-     "d": [
-      1,
-      5
-     ],
-     "s": [
-      "FFA",
-      "URBF"
-     ]
-    },
     "Dios": {
      "d": [
       3,
@@ -11329,7 +11357,7 @@
     "Dominick": {
      "d": [
       0,
-      4
+      6
      ],
      "s": [
       "DDF",
@@ -11591,14 +11619,13 @@
       "DDF"
      ]
     },
-    "Mc arepa": {
+    "Mc Glock": {
      "d": [
-      3,
-      4
+      6
      ],
      "s": [
-      "FDS",
-      "FFA"
+      "LKR",
+      "UFLUC"
      ]
     },
     "Miniboy": {
@@ -11738,6 +11765,15 @@
      "s": [
       "FDS",
       "FFA"
+     ]
+    },
+    "Saiko": {
+     "d": [
+      6
+     ],
+     "s": [
+      "UFLUC",
+      "URBF"
      ]
     },
     "Simon": {
@@ -11945,7 +11981,7 @@
    },
    "presas": {
     "0223 🇧🇧": [
-     "romeo",
+     "melomaniaco",
      "escena",
      null,
      0
@@ -12016,7 +12052,7 @@
      0
     ],
     "Abyssus": [
-     "Soulb",
+     "Zignos",
      "escena",
      null,
      0
@@ -12079,7 +12115,7 @@
      0
     ],
     "Andy MC": [
-     "compare",
+     "Kourier",
      "escena",
      null,
      0
@@ -12223,7 +12259,7 @@
      0
     ],
     "Campoy": [
-     "Player",
+     "Saiko",
      "escena",
      null,
      0
@@ -12264,7 +12300,7 @@
      0
     ],
     "Chuwin": [
-     "Player",
+     "Saiko",
      "escena",
      null,
      0
@@ -12321,7 +12357,7 @@
      0
     ],
     "DarnBless": [
-     "Gus",
+     "ONZASS",
      "escena",
      null,
      0
@@ -12513,6 +12549,12 @@
      null,
      0
     ],
+    "EmiZor": [
+     "Cinexfilo",
+     "escena",
+     null,
+     0
+    ],
     "Emilio Alva": [
      "Jupiter",
      "escena",
@@ -12550,7 +12592,7 @@
      0
     ],
     "Faso": [
-     "Player",
+     "Saiko",
      "escena",
      null,
      0
@@ -12574,7 +12616,7 @@
      0
     ],
     "Flash": [
-     "ONZASS",
+     "DarnBless",
      "escena",
      null,
      0
@@ -12648,15 +12690,20 @@
      0
     ],
     "Gus": [
-     "DarnBless",
+     "Ariaxer",
      "escena",
      null,
      0
     ],
     "Hades": [
-     "BTRX",
-     "escena",
-     null,
+     "Cinexfilo",
+     "revancha",
+     [
+      590,
+      "URBF",
+      "08/11",
+      "octavos"
+     ],
      0
     ],
     "HatshepsuT": [
@@ -12711,7 +12758,7 @@
      0
     ],
     "Izaya": [
-     "Agente sombra",
+     "Thaniel",
      "escena",
      null,
      0
@@ -12781,7 +12828,7 @@
      0
     ],
     "KOJIRO": [
-     "Mathhias",
+     "Cinexfilo",
      "escena",
      null,
      0
@@ -12848,7 +12895,7 @@
      0
     ],
     "King": [
-     "Liam",
+     "Mc Glock",
      "escena",
      null,
      0
@@ -12925,7 +12972,7 @@
      0
     ],
     "LIZE🇦🇷": [
-     "Liam",
+     "Mc Glock",
      "escena",
      null,
      0
@@ -13023,7 +13070,7 @@
      0
     ],
     "Lucho": [
-     "Magic",
+     "Status",
      "escena",
      null,
      0
@@ -13193,7 +13240,7 @@
      0
     ],
     "Mc Glock": [
-     "Liam",
+     "Thaniel",
      "escena",
      null,
      0
@@ -13297,7 +13344,7 @@
      0
     ],
     "NEXOR": [
-     "Mathhias",
+     "Cinexfilo",
      "escena",
      null,
      0
@@ -13494,13 +13541,13 @@
      0
     ],
     "Refran": [
-     "Deuxs",
+     "Saiko",
      "escena",
      null,
      0
     ],
     "Revo": [
-     "Agente sombra",
+     "Thaniel",
      "escena",
      null,
      0
@@ -13552,7 +13599,7 @@
      0
     ],
     "SINTEXT": [
-     "Julda",
+     "Thaniel",
      "escena",
      null,
      0
@@ -13586,7 +13633,7 @@
      0
     ],
     "Scot": [
-     "Mc arepa",
+     "Raizer",
      "escena",
      null,
      0
@@ -13656,9 +13703,14 @@
      0
     ],
     "Sosa": [
-     "Izaya",
-     "escena",
-     null,
+     "Colesito",
+     "revancha",
+     [
+      398,
+      "ACAD",
+      "22/09",
+      "cuartos"
+     ],
      0
     ],
     "Soulb": [
@@ -13763,7 +13815,7 @@
      0
     ],
     "Thaniel": [
-     "Status",
+     "Izaya",
      "escena",
      null,
      0
@@ -13814,9 +13866,14 @@
      0
     ],
     "Under": [
-     "crakero",
-     "escena",
-     null,
+     "Oasis",
+     "revancha",
+     [
+      476,
+      "FFA",
+      "15/10",
+      "octavos"
+     ],
      0
     ],
     "VR": [
@@ -14245,8 +14302,20 @@
      null,
      0
     ],
+    "y Dominick 🇵🇪": [
+     "Mc Glock",
+     "escena",
+     null,
+     0
+    ],
     "y Jahno 🇧🇧": [
      "romeo",
+     "escena",
+     null,
+     0
+    ],
+    "y Shaggy 🇵🇷": [
+     "Mc Glock",
      "escena",
      null,
      0
@@ -14717,7 +14786,7 @@
   "Marley🇦🇷": 300,
   "Marto AR": 600,
   "Masino": 2800,
-  "Mathhias": 3400,
+  "Mathhias": 4400,
   "Matias": 300,
   "Mato  🇧🇴": 300,
   "MauzzitoEmeces": 300,

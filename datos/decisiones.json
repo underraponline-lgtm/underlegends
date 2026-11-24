@@ -1444,6 +1444,13 @@
    "cuando": "2026-11-23 6:35 PM ET",
    "por": "el ciclo (R25)",
    "nota": "nadie dijo quién ganó en 51 días: cada uno cobra la ronda, como las 48 h cuando se le pudo preguntar al organizador"
+  },
+  "grandtheftauto|UFLUC|22/11|final|mathiasmoluscoemi|mcglockdominickcinexfilo": {
+   "ganador": "Mathias 🇻🇪 + Molusco 🇦🇷 + Emi 🇲🇽",
+   "batalla": "GRAND THEFT AUTO · UFLUC · 22/11 · final · MC Glock 🇲🇽 + Dominick 🇵🇪 + Cinexfilo 🇻🇪 🆚 Mathias 🇻🇪 + Molusco 🇦🇷 + Emi 🇲🇽",
+   "cuando": "2026-11-23 6:57 PM ET",
+   "por": "el organizador, con el botón (<@1413322255047594015>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

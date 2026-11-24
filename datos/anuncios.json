@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-23T23:51:15+00:00",
+ "cuando": "2026-11-23T23:59:39+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8172,6 +8172,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Lrs la sustancia🇦🇷",
+   "quien": "lrs37895",
+   "discord_id": "1271260378654969947",
+   "msg_id": "1574573779206672505",
+   "cuando": "2026-11-23T23:54:03"
+  },
   {
    "servidor": "DDS",
    "canal": "📝〕INSCRIPCIONES",
@@ -44162,15 +44171,6 @@
    "discord_id": "1048744067313451050",
    "msg_id": "1562244581729243208",
    "cuando": "2026-10-20T23:22:13"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "╰➤-inscripciones-🏆",
-   "texto": "CrisZJ",
-   "quien": "criszjono",
-   "discord_id": "1462237816829513971",
-   "msg_id": "1562239927033528391",
-   "cuando": "2026-10-20T23:03:43"
   }
  ]
 }

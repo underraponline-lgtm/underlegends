@@ -491,6 +491,23 @@
      ]
     ],
     [
+     "EmiZor",
+     14,
+     2,
+     5,
+     0,
+     [
+      [
+       7,
+       "Miniboy"
+      ],
+      [
+       7,
+       "Thaniel"
+      ]
+     ]
+    ],
+    [
      "Adriagner",
      13,
      4,
@@ -701,6 +718,27 @@
      ]
     ],
     [
+     "Miniboy",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -7,
+       "EmiZor"
+      ],
+      [
+       -8,
+       "Mark98"
+      ],
+      [
+       -9,
+       "Makmah"
+      ]
+     ]
+    ],
+    [
      "OG",
      0,
      3,
@@ -760,6 +798,27 @@
       [
        9,
        "BLITZ"
+      ]
+     ]
+    ],
+    [
+     "Thaniel",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -7,
+       "EmiZor"
+      ],
+      [
+       -19,
+       "Kourier"
+      ],
+      [
+       17,
+       "Agente sombra"
       ]
      ]
     ],
@@ -913,23 +972,6 @@
      ]
     ],
     [
-     "Miniboy",
-     0,
-     2,
-     5,
-     0,
-     [
-      [
-       -8,
-       "Mark98"
-      ],
-      [
-       -9,
-       "Makmah"
-      ]
-     ]
-    ],
-    [
      "Shadow",
      0,
      2,
@@ -977,23 +1019,6 @@
       [
        14,
        "Vilca"
-      ]
-     ]
-    ],
-    [
-     "Thaniel",
-     0,
-     2,
-     5,
-     0,
-     [
-      [
-       -19,
-       "Kourier"
-      ],
-      [
-       17,
-       "Agente sombra"
       ]
      ]
     ],
@@ -1549,6 +1574,14 @@
      []
     ],
     [
+     "Cinexfilo",
+     0,
+     0,
+     5,
+     0,
+     []
+    ],
+    [
      "Cronox",
      0,
      0,
@@ -1653,6 +1686,14 @@
      []
     ],
     [
+     "ONZASS",
+     0,
+     0,
+     5,
+     0,
+     []
+    ],
+    [
      "Oasis",
      0,
      0,
@@ -1701,6 +1742,14 @@
      []
     ],
     [
+     "Saiko",
+     0,
+     0,
+     5,
+     0,
+     []
+    ],
+    [
      "TOKYO",
      0,
      0,
@@ -1734,6 +1783,22 @@
     ],
     [
      "mityar",
+     0,
+     0,
+     5,
+     0,
+     []
+    ],
+    [
+     "y Dominick 🇵🇪",
+     0,
+     0,
+     5,
+     0,
+     []
+    ],
+    [
+     "y Shaggy 🇵🇷",
      0,
      0,
      5,
@@ -1911,7 +1976,7 @@
   "Elinge_TIMP": 935,
   "Eliot": 1103,
   "Elsoolar": 969,
-  "EmiZor": 888,
+  "EmiZor": 902,
   "Emilio Alva": 972,
   "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱": 1074,
   "Emily Family": 967,
@@ -2136,7 +2201,7 @@
   "Micronico🇦🇷": 950,
   "Millonari-O": 967,
   "Milo": 1064,
-  "Miniboy": 899,
+  "Miniboy": 892,
   "Minis": 969,
   "Misterioso": 1026,
   "Mito": 1001,
@@ -2303,7 +2368,7 @@
   "Tenor": 1071,
   "Teo": 997,
   "Terry": 1047,
-  "Thaniel": 990,
+  "Thaniel": 975,
   "TheOg": 1025,
   "Tiago Context 🇦🇷": 968,
   "Tiagoms": 991,
@@ -2440,6 +2505,7 @@
   "Chaz🇵🇪": 0,
   "Chente": 0,
   "Choco": 0,
+  "Cinexfilo": 0,
   "Colesito": 0,
   "CrisZJ": 0,
   "Cronox": 0,
@@ -2452,6 +2518,7 @@
   "Dyzz": 0,
   "EIDP": 1,
   "Efimero": 0,
+  "EmiZor": 0,
   "Enzinho": 0,
   "Erian": 0,
   "Fecha": 0,
@@ -2494,6 +2561,7 @@
   "NXUZ": 0,
   "OG": 0,
   "OKAM": 0,
+  "ONZASS": 0,
   "Oasis": 0,
   "PRAISERIZA": 0,
   "Paria": 0,
@@ -2504,6 +2572,7 @@
   "Revo": 4,
   "SAIDEM": 0,
   "SULTAN": 0,
+  "Saiko": 0,
   "Shadow": 0,
   "Sin Limites": 0,
   "Snow": 0,
@@ -2529,6 +2598,8 @@
   "oriuz": 0,
   "replisan": 0,
   "romeo": 0,
+  "y Dominick 🇵🇪": 0,
+  "y Shaggy 🇵🇷": 0,
   "yinn": 0
  },
  "modo": "elo",
@@ -2548,6 +2619,7 @@
   "Chaz🇵🇪": 5,
   "Chente": 5,
   "Choco": 5,
+  "Cinexfilo": 5,
   "Colesito": 5,
   "CrisZJ": 5,
   "Cronox": 5,
@@ -2560,6 +2632,7 @@
   "Dyzz": 5,
   "EIDP": 5,
   "Efimero": 5,
+  "EmiZor": 5,
   "Enzinho": 5,
   "Erian": 5,
   "Fecha": 5,
@@ -2602,6 +2675,7 @@
   "NXUZ": 5,
   "OG": 5,
   "OKAM": 5,
+  "ONZASS": 5,
   "Oasis": 5,
   "PRAISERIZA": 5,
   "Paria": 5,
@@ -2612,6 +2686,7 @@
   "Revo": 4,
   "SAIDEM": 5,
   "SULTAN": 5,
+  "Saiko": 5,
   "Shadow": 5,
   "Sin Limites": 5,
   "Snow": 5,
@@ -2637,6 +2712,8 @@
   "oriuz": 5,
   "replisan": 5,
   "romeo": 5,
+  "y Dominick 🇵🇪": 5,
+  "y Shaggy 🇵🇷": 5,
   "yinn": 5
  },
  "nombres": [

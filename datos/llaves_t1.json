@@ -64065,5 +64065,170 @@
    "min": 40,
    "v": 1
   }
+ },
+ "686": {
+  "dia": "2026-11-22",
+  "escala": "8-15",
+  "fecha": "22/11",
+  "links": [
+   "https://discord.com/channels/1538596086644736041/1540440885471477832/1574180204656463983"
+  ],
+  "n": 686,
+  "nombre": "GRAND THEFT AUTO",
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mc Glock",
+       "Dominick",
+       "Shadow"
+      ],
+      "Mc Glock, Dominick",
+      "triple (3 bandas, pasan 2); también pasa: Dominick 🇵🇪"
+     ],
+     [
+      [
+       "Saiko",
+       "Shaggy 🇵🇷",
+       "ONZASS"
+      ],
+      "Saiko, Shaggy 🇵🇷",
+      "triple (3 bandas, pasan 2); también pasa: Shaggy 🇵🇷"
+     ],
+     [
+      [
+       "Mathhias",
+       "Molusco",
+       "Mito"
+      ],
+      "Mathhias, Molusco",
+      "triple (3 bandas, pasan 2); también pasa: Molusco 🇦🇷"
+     ],
+     [
+      [
+       "EmiZor",
+       "Thaniel",
+       "Miniboy"
+      ],
+      "EmiZor",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mc Glock, y Dominick 🇵🇪",
+       "Saiko, y Shaggy 🇵🇷"
+      ],
+      "Mc Glock, y Dominick 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Mathhias, Molusco",
+       "EmiZor, Cinexfilo"
+      ],
+      "Mathhias, Molusco",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mathhias, Molusco, EmiZor",
+       "Mc Glock, Dominick, Cinexfilo"
+      ],
+      "Mathhias, Molusco, EmiZor",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "UFLUC",
+  "tabla": [
+   [
+    "EmiZor",
+    "Semifinal",
+    4250
+   ],
+   [
+    "Cinexfilo",
+    "Semifinal",
+    3416
+   ],
+   [
+    "Mathhias",
+    "Campeón",
+    2500
+   ],
+   [
+    "Molusco",
+    "Campeón",
+    2500
+   ],
+   [
+    "Dominick",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Mc Glock",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Saiko",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Thaniel",
+    "Cuartos",
+    2000
+   ],
+   [
+    "y Dominick 🇵🇪",
+    "Semifinal",
+    2000
+   ],
+   [
+    "y Shaggy 🇵🇷",
+    "Semifinal",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 34,
+   "v": 1
+  }
  }
 }

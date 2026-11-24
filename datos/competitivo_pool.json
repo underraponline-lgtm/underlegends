@@ -1953,8 +1953,8 @@
   "dna_t": 13,
   "din_v": 14,
   "din_t": 24,
-  "crn_t": 29,
-  "cri_t": 62,
+  "crn_t": 30,
+  "cri_t": 63,
   "pos": 23,
   "total": 86,
   "rango": "C",
@@ -1981,8 +1981,8 @@
    "paisesg": 8
   },
   "nac": {
-   "evn": 17,
-   "evi": 36,
+   "evn": 18,
+   "evi": 37,
    "com": 8,
    "top": [
     3,
@@ -2623,7 +2623,7 @@
   "T": 23,
   "V": 21,
   "wr": "50.0%",
-  "rch_act": 2,
+  "rch_act": 3,
   "rch_max": 3,
   "duel_v": 14,
   "duel_t": 28,
@@ -2632,8 +2632,8 @@
   "dna_t": 7,
   "din_v": 11,
   "din_t": 21,
-  "crn_t": 18,
-  "cri_t": 64,
+  "crn_t": 19,
+  "cri_t": 65,
   "pos": 31,
   "total": 86,
   "rango": "C",
@@ -2660,8 +2660,8 @@
    "paisesg": 7
   },
   "nac": {
-   "evn": 14,
-   "evi": 25,
+   "evn": 15,
+   "evi": 26,
    "com": 8,
    "top": [
     2,
@@ -2812,8 +2812,8 @@
   "T": 15,
   "V": 49,
   "wr": "61.3%",
-  "rch_act": 1,
-  "rch_max": 1,
+  "rch_act": 2,
+  "rch_max": 2,
   "duel_v": 7,
   "duel_t": 14,
   "duel_real": true,
@@ -2822,7 +2822,7 @@
   "din_v": 7,
   "din_t": 12,
   "crn_t": 2,
-  "cri_t": 31,
+  "cri_t": 33,
   "pos": 33,
   "total": 86,
   "rango": "C",
@@ -2851,7 +2851,7 @@
   },
   "nac": {
    "evn": 3,
-   "evi": 17,
+   "evi": 18,
    "com": 0,
    "top": [
     1,
@@ -4910,7 +4910,7 @@
   "din_v": 14,
   "din_t": 34,
   "crn_t": 10,
-  "cri_t": 91,
+  "cri_t": 93,
   "pos": 47,
   "total": 86,
   "rango": "C",
@@ -4937,7 +4937,7 @@
   },
   "nac": {
    "evn": 12,
-   "evi": 61,
+   "evi": 62,
    "com": 0,
    "top": [
     1,
@@ -7420,7 +7420,7 @@
   "din_v": 1,
   "din_t": 7,
   "crn_t": 1,
-  "cri_t": 20,
+  "cri_t": 22,
   "pos": 103,
   "total": 86,
   "rango": "D",
@@ -7444,11 +7444,11 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 16,
+   "evi": 17,
    "com": 0,
    "top": [
-    11,
-    "co"
+    8,
+    "cl"
    ]
   }
  },
@@ -7479,7 +7479,7 @@
   "din_v": 4,
   "din_t": 20,
   "crn_t": 10,
-  "cri_t": 64,
+  "cri_t": 66,
   "pos": 63,
   "total": 86,
   "rango": "D",
@@ -7506,7 +7506,7 @@
   },
   "nac": {
    "evn": 11,
-   "evi": 39,
+   "evi": 40,
    "com": 4,
    "top": [
     1,
@@ -8819,7 +8819,7 @@
   "din_v": 1,
   "din_t": 6,
   "crn_t": 1,
-  "cri_t": 17,
+  "cri_t": 19,
   "pos": 72,
   "total": 86,
   "rango": "E",
@@ -8844,7 +8844,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 18,
+   "evi": 19,
    "com": 0,
    "top": [
     10,
@@ -10627,7 +10627,7 @@
   "din_v": 1,
   "din_t": 3,
   "crn_t": 5,
-  "cri_t": 34,
+  "cri_t": 35,
   "pos": 105,
   "total": 86,
   "rango": "E",
@@ -10651,7 +10651,7 @@
   },
   "nac": {
    "evn": 3,
-   "evi": 12,
+   "evi": 13,
    "com": 1,
    "top": [
     11,
@@ -13114,7 +13114,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 3,
-  "cri_t": 1,
+  "cri_t": 2,
   "pos": 227,
   "total": 86,
   "rango": "",
@@ -13139,7 +13139,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 1,
+   "evi": 2,
    "com": 3
   }
  },
@@ -26815,7 +26815,7 @@
   "din_v": 0,
   "din_t": 0,
   "crn_t": 1,
-  "cri_t": 6,
+  "cri_t": 8,
   "pos": 486,
   "total": 86,
   "rango": "",
@@ -26839,7 +26839,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 4,
+   "evi": 5,
    "com": 0,
    "top": [
     13,
@@ -35905,7 +35905,7 @@
   "V": 0,
   "wr": "",
   "rch_act": 0,
-  "rch_max": 0,
+  "rch_max": 1,
   "duel_v": 0,
   "duel_t": 0,
   "duel_real": false,
@@ -35914,7 +35914,7 @@
   "din_v": 0,
   "din_t": 0,
   "crn_t": 0,
-  "cri_t": 0,
+  "cri_t": 2,
   "pos": 682,
   "total": 86,
   "rango": "",
@@ -35934,7 +35934,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 2,
+   "evi": 3,
    "com": 0
   }
  },
