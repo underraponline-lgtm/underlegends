@@ -14454,6 +14454,13 @@
      0,
      0
     ],
+    "JOSHU": [
+     1,
+     1,
+     2,
+     0,
+     0
+    ],
     "Julda": [
      1,
      1,
@@ -14580,13 +14587,6 @@
      0,
      0
     ],
-    "Nagarjuna 🇨🇺": [
-     1,
-     0,
-     2,
-     0,
-     0
-    ],
     "Noone": [
      1,
      0,
@@ -14680,7 +14680,7 @@
     ],
     "Snow": [
      1,
-     2,
+     3,
      3,
      0,
      0
@@ -14809,6 +14809,7 @@
     "Gian": 300,
     "Gocho": 900,
     "Inku": 300,
+    "JOSHU": 300,
     "Julda": 300,
     "Keider": 300,
     "Konan": 300,
@@ -14824,7 +14825,6 @@
     "Mr.Kude": 800,
     "NC": 300,
     "NXUZ": 300,
-    "Nagarjuna 🇨🇺": 300,
     "Noone": 300,
     "OKAM": 900,
     "Oasis": 300,
@@ -14836,7 +14836,7 @@
     "SULTAN": 300,
     "Sankabel": 300,
     "Sin Limites": 300,
-    "Snow": 900,
+    "Snow": 1500,
     "Soulb": 300,
     "Tam": 300,
     "Thaniel": 300,
@@ -15000,7 +15000,7 @@
   "JEIXDER": 600,
   "JHEYSON": 300,
   "JJ": 4500,
-  "JOSHU": 2900,
+  "JOSHU": 3200,
   "Jobaking": 1200,
   "Joshema": 300,
   "Joven shenlong": 300,
@@ -15093,7 +15093,6 @@
   "NC": 6300,
   "NXUZ": 5300,
   "NYCO": 300,
-  "Nagarjuna 🇨🇺": 300,
   "Neo": 3200,
   "Nerick": 600,
   "NewCharacter🇦🇷": 300,
@@ -15162,7 +15161,7 @@
   "Shadow": 600,
   "Sin Limites": 4300,
   "Six": 8900,
-  "Snow": 8000,
+  "Snow": 8600,
   "Soneto": 300,
   "Soulb": 4800,
   "Status": 300,

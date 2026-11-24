@@ -1714,6 +1714,11 @@
      2
     ],
     [
+     "LEWITO",
+     24,
+     1
+    ],
+    [
      "DARK ANGEL",
      8,
      1
@@ -1721,13 +1726,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 3,
+     "FFA": 5,
      "FRZ": 1
     },
     "gente": {
-     "FFA": 38,
+     "FFA": 53,
      "FRZ": 9,
-     "DDS": 8
+     "DDS": 8,
+     "UFLUC": 8
     },
     "gana": "FFA"
    },
@@ -1740,7 +1746,7 @@
     "DDS": 8,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 38,
+    "FFA": 53,
     "FFS": 0,
     "FRZ": 9,
     "FVS": 0,

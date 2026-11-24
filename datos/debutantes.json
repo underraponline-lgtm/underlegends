@@ -2392,18 +2392,6 @@
    "vence": "2026-11-19T22:38:21+00:00",
    "vencido": true
   },
-  "Nagarjuna": {
-   "chat": "2026-11-24",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-24T20:43:30+00:00",
-   "did": "",
-   "evento": "DESGRACIAS EN TOKYO VOL 35 1vs1",
-   "n": 690,
-   "sv": "FFA",
-   "vence": "2026-12-01T20:43:30+00:00",
-   "vencido": false
-  },
   "Nain sdp": {
    "avisado": "2026-10-30",
    "chat": "2026-10-31",
@@ -2882,11 +2870,12 @@
    "vencido": false
   },
   "Sankabel": {
+   "avisado": "2026-11-24",
    "chat": "2026-11-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-24T20:43:30+00:00",
-   "did": "",
+   "did": "938525117296812052",
    "evento": "DESGRACIAS EN TOKYO VOL 35 1vs1",
    "n": 690,
    "sv": "FFA",
@@ -3948,6 +3937,7 @@
    "vencido": false
   },
   "tommyhilfiger1312": {
+   "avisado": "2026-11-24",
    "chat": "2026-11-24",
    "con": null,
    "cumplido": "",
