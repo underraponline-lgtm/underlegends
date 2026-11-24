@@ -1,0 +1,47 @@
+# Procesa un evento grabado. El código vive en un repo privado y se baja con una clave de sólo lectura; este trabajo
+# sólo pone la máquina. El registro dice pasos y cuentas, nada más.
+name: procesar
+
+on:
+  workflow_dispatch:
+    inputs:
+      desde:
+        description: desde cuándo (UTC, 2026-11-23T21:00)
+        required: true
+        type: string
+
+concurrency:
+  group: procesar
+  cancel-in-progress: false
+
+jobs:
+  procesar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 340
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+      - uses: actions/checkout@v4
+        with:
+          repository: underraponline-lgtm/motor
+          ssh-key: ${{ secrets.MOTOR_KEY }}
+          path: m
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/huggingface
+            ~/.cache/torch
+          key: m-modelos-v1
+      - name: preparar la máquina
+        run: |
+          sudo apt-get install -y -qq ffmpeg > /dev/null 2>&1 || true
+          pip install -q -r m/requirements.txt > /dev/null 2>&1
+      - name: procesar
+        env:
+          DESDE: ${{ inputs.desde }}
+        run: UL_RAIZ="$GITHUB_WORKSPACE" bash m/nube.sh "$DESDE"
