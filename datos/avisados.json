@@ -58449,5 +58449,234 @@
    ]
   ],
   "v": 2
+ },
+ "688": {
+  "antes": {
+   "Cronox": [
+    37,
+    44,
+    false
+   ],
+   "Dyzz": [
+    54,
+    65,
+    false
+   ],
+   "EIDP": [
+    276,
+    73,
+    true
+   ],
+   "Gocho": [
+    66,
+    79,
+    false
+   ],
+   "Julda": [
+    111,
+    150,
+    false
+   ],
+   "LRS": [
+    40,
+    49,
+    false
+   ],
+   "NC": [
+    265,
+    25,
+    true
+   ],
+   "OKAM": [
+    24,
+    26,
+    false
+   ],
+   "Sin Limites": [
+    31,
+    35,
+    false
+   ],
+   "araya": [
+    140,
+    216,
+    false
+   ],
+   "crakero": [
+    71,
+    87,
+    false
+   ],
+   "romeo": [
+    118,
+    163,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "romeo",
+    "NC",
+    "romeo"
+   ],
+   [
+    "Cronox",
+    "Sin Limites",
+    "Cronox"
+   ],
+   [
+    "crakero",
+    "EIDP",
+    "crakero"
+   ],
+   [
+    "Julda",
+    "Dyzz",
+    "Julda"
+   ],
+   [
+    "LRS",
+    "OKAM",
+    "LRS"
+   ],
+   [
+    "Inku",
+    "tierra sin atmosfera 🇦🇷",
+    "Inku"
+   ],
+   [
+    "Cronox",
+    "romeo",
+    "Cronox"
+   ],
+   [
+    "Gocho",
+    "crakero",
+    "Gocho"
+   ],
+   [
+    "Inku",
+    "araya",
+    "Inku"
+   ],
+   [
+    "LRS",
+    "Julda",
+    "LRS"
+   ],
+   [
+    "Gocho",
+    "Cronox",
+    "Gocho"
+   ],
+   [
+    "Inku",
+    "LRS",
+    "Inku"
+   ],
+   [
+    "Inku",
+    "Gocho",
+    "Inku"
+   ]
+  ],
+  "ev_antes": {
+   "Cronox": 37,
+   "Dyzz": 31,
+   "EIDP": 12,
+   "Gocho": 15,
+   "Julda": 5,
+   "LRS": 45,
+   "NC": 63,
+   "OKAM": 33,
+   "Sin Limites": 54,
+   "araya": 6,
+   "crakero": 17,
+   "romeo": 7
+  },
+  "fecha": "23/11",
+  "noche": true,
+  "nombre": "PURISTAS DEL HIP HOP",
+  "num": 688,
+  "participantes": 17,
+  "sello": {
+   "Inku": ""
+  },
+  "sv": "FFA",
+  "t": "2026-11-24T04:58:12Z",
+  "tabla": [
+   [
+    "Inku",
+    "Campeón",
+    10000
+   ],
+   [
+    "Cronox",
+    "Semifinal",
+    5250
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Gocho",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "romeo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Julda",
+    "Cuartos",
+    2500
+   ],
+   [
+    "araya",
+    "Cuartos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "EIDP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "tierra sin atmosfera 🇦🇷",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

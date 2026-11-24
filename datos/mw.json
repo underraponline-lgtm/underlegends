@@ -167,10 +167,22 @@
     "nivel": "C",
     "base": 6000,
     "o": 24,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 6000,
+    "caza": {
+     "n": 688,
+     "evento": "PURISTAS DEL HIP HOP",
+     "sv": "FFA",
+     "t": "2026-11-24T02:57:58Z",
+     "por": [
+      {
+       "n": "romeo",
+       "cobra": 12000
+      }
+     ]
+    }
    },
    {
     "n": "Sin Limites",

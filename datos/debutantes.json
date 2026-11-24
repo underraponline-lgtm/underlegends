@@ -1424,6 +1424,19 @@
    "vence": "2026-11-13T03:10:32+00:00",
    "vencido": false
   },
+  "Inku": {
+   "avisado": "2026-11-24",
+   "chat": "2026-11-24",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T02:57:58+00:00",
+   "did": "966814191556116560",
+   "evento": "PURISTAS DEL HIP HOP",
+   "n": 688,
+   "sv": "FFA",
+   "vence": "2026-12-01T02:57:58+00:00",
+   "vencido": false
+  },
   "Isabella": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -3870,6 +3883,19 @@
    "vence": "2026-11-25T03:02:41+00:00",
    "vencido": false
   },
+  "tierra sin atmosfera": {
+   "avisado": "2026-11-24",
+   "chat": "2026-11-24",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T02:57:58+00:00",
+   "did": "",
+   "evento": "PURISTAS DEL HIP HOP",
+   "n": 688,
+   "sv": "FFA",
+   "vence": "2026-12-01T02:57:58+00:00",
+   "vencido": false
+  },
   "tixer": {
    "avisado": "2026-11-18",
    "chat": "2026-11-19",
@@ -3960,6 +3986,7 @@
    "vencido": true
   },
   "y Shaggy": {
+   "avisado": "2026-11-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-22T21:50:07+00:00",

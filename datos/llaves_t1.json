@@ -64348,5 +64348,227 @@
    "min": 48,
    "v": 1
   }
+ },
+ "688": {
+  "dia": "2026-11-23",
+  "escala": "16+",
+  "fecha": "23/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1574620066245513267"
+  ],
+  "n": 688,
+  "nombre": "PURISTAS DEL HIP HOP",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "romeo",
+       "NC"
+      ],
+      "romeo",
+      ""
+     ],
+     [
+      [
+       "Cronox",
+       "Sin Limites"
+      ],
+      "Cronox",
+      ""
+     ],
+     [
+      [
+       "crakero",
+       "EIDP"
+      ],
+      "crakero",
+      ""
+     ],
+     [
+      [
+       "Julda",
+       "Dyzz"
+      ],
+      "Julda",
+      ""
+     ],
+     [
+      [
+       "LRS",
+       "OKAM"
+      ],
+      "LRS",
+      ""
+     ],
+     [
+      [
+       "Inku",
+       "tierra sin atmosfera 🇦🇷"
+      ],
+      "Inku",
+      ""
+     ],
+     [
+      [
+       "Roda 🇵🇦",
+       "Dios 🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Cronox",
+       "romeo"
+      ],
+      "Cronox",
+      ""
+     ],
+     [
+      [
+       "Gocho",
+       "crakero"
+      ],
+      "Gocho",
+      "Walk-in 1: Gocho🇹🇼"
+     ],
+     [
+      [
+       "Inku",
+       "araya"
+      ],
+      "Inku",
+      "Walk-in 1: araya🇦🇸"
+     ],
+     [
+      [
+       "LRS",
+       "Julda"
+      ],
+      "LRS",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Gocho",
+       "Cronox"
+      ],
+      "Gocho",
+      ""
+     ],
+     [
+      [
+       "Inku",
+       "LRS"
+      ],
+      "Inku",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Inku",
+       "Gocho"
+      ],
+      "Inku",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Inku",
+    "Campeón",
+    10000
+   ],
+   [
+    "Cronox",
+    "Semifinal",
+    5250
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Gocho",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Julda",
+    "Cuartos",
+    2500
+   ],
+   [
+    "crakero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "romeo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "EIDP",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "araya",
+    "Cuartos",
+    1250
+   ],
+   [
+    "tierra sin atmosfera 🇦🇷",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 117,
+   "v": 1
+  }
  }
 }

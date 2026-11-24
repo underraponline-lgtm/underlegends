@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-24T04:29:43Z",
+ "t": "2026-11-24T05:04:49Z",
  "sv": {
   "SR": {
    "filas": [
@@ -924,6 +924,13 @@
      "OKAM"
     ],
     [
+     "Gocho",
+     "ve",
+     1500,
+     900,
+     "Gocho"
+    ],
+    [
      "BENJIXO",
      "ar",
      1370,
@@ -936,13 +943,6 @@
      1350,
      400,
      "Cronox"
-    ],
-    [
-     "Gocho",
-     "ve",
-     1350,
-     750,
-     "Gocho"
     ],
     [
      "Ax",
@@ -1624,6 +1624,13 @@
      "Partim"
     ],
     [
+     "Inku",
+     "ar",
+     200,
+     200,
+     "Inku"
+    ],
+    [
      "Alexiz",
      "ar",
      150,
@@ -2239,6 +2246,25 @@
        "Provenza",
        "Subcampeón",
        375
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "Puristas del Hip Hop",
+     "dia": "2026-11-24",
+     "rango": "bronce iii",
+     "puntos": [
+      [
+       "Inku",
+       "Campeón",
+       200
+      ],
+      [
+       "Gocho",
+       "Subcampeón",
+       150
       ]
      ],
      "fuera": []

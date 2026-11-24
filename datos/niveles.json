@@ -28,7 +28,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "CEU": {
    "pagina": true,
@@ -37,7 +38,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "CH": {
    "pagina": true,
@@ -46,7 +48,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": true
   },
   "CHZ": {
    "pagina": true,
@@ -55,7 +58,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "DDF": {
    "pagina": true,
@@ -64,7 +68,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": true
   },
   "DDS": {
    "pagina": true,
@@ -73,7 +78,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "DRA": {
    "pagina": true,
@@ -82,7 +88,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": true
   },
   "DW": {
    "pagina": true,
@@ -91,7 +98,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "FDS": {
    "pagina": true,
@@ -100,7 +108,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "FFA": {
    "pagina": true,
@@ -109,7 +118,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": true
   },
   "FFS": {
    "pagina": true,
@@ -118,7 +128,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "FRZ": {
    "pagina": true,
@@ -127,7 +138,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "FVS": {
    "pagina": true,
@@ -136,7 +148,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "LKR": {
    "pagina": true,
@@ -145,7 +158,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "SR": {
    "pagina": true,
@@ -154,7 +168,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "UFLUC": {
    "pagina": true,
@@ -163,7 +178,8 @@
    "panel": true,
    "suma": true,
    "competitivo": false,
-   "duelos": true
+   "duelos": true,
+   "perfil": false
   },
   "URBF": {
    "pagina": true,
@@ -172,7 +188,8 @@
    "panel": true,
    "suma": true,
    "competitivo": true,
-   "duelos": true
+   "duelos": true,
+   "perfil": true
   },
   "WOF": {
    "pagina": true,
@@ -181,7 +198,8 @@
    "panel": true,
    "suma": false,
    "competitivo": false,
-   "duelos": false
+   "duelos": false,
+   "perfil": false
   }
  },
  "beneficios_elegidos": {},

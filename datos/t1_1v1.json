@@ -1620,6 +1620,19 @@
   [685, "23/11", "FRZ", "cuartos", "Geoka", "Sin Limites", "Geoka", "Sin Limites"],
   [685, "23/11", "FRZ", "semifinales", "Mr.Kude", "Dios", "Mr.Kude", "Dios"],
   [685, "23/11", "FRZ", "semifinales", "Raezer", "Geoka", "Raezer", "Geoka"],
-  [685, "23/11", "FRZ", "final", "Raezer", "Mr.Kude", "Raezer", "Mr.Kude"]
+  [685, "23/11", "FRZ", "final", "Raezer", "Mr.Kude", "Raezer", "Mr.Kude"],
+  [688, "23/11", "FFA", "octavos", "romeo", "NC", "romeo", "NC"],
+  [688, "23/11", "FFA", "octavos", "Cronox", "Sin Limites", "Cronox", "Sin Limites"],
+  [688, "23/11", "FFA", "octavos", "crakero", "EIDP", "crakero", "EIDP"],
+  [688, "23/11", "FFA", "octavos", "Julda", "Dyzz", "Julda", "Dyzz"],
+  [688, "23/11", "FFA", "octavos", "LRS", "OKAM", "LRS", "OKAM"],
+  [688, "23/11", "FFA", "octavos", "Inku", "tierra sin atmosfera 🇦🇷", "Inku", "tierra sin atmosfera 🇦🇷"],
+  [688, "23/11", "FFA", "cuartos", "Cronox", "romeo", "Cronox", "romeo"],
+  [688, "23/11", "FFA", "cuartos", "Gocho", "crakero", "Gocho", "crakero", "Walk-in 1: Gocho🇹🇼"],
+  [688, "23/11", "FFA", "cuartos", "Inku", "araya", "Inku", "araya", "Walk-in 1: araya🇦🇸"],
+  [688, "23/11", "FFA", "cuartos", "LRS", "Julda", "LRS", "Julda"],
+  [688, "23/11", "FFA", "semifinales", "Gocho", "Cronox", "Gocho", "Cronox"],
+  [688, "23/11", "FFA", "semifinales", "Inku", "LRS", "Inku", "LRS"],
+  [688, "23/11", "FFA", "final", "Inku", "Gocho", "Inku", "Gocho"]
  ]
 }

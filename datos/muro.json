@@ -291,6 +291,15 @@
 "temporada"
 ]
 },
+"cronox": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "guess": {
 "rg": "C",
 "c": [
@@ -339,7 +348,7 @@
 "rg": "A",
 "c": []
 },
-"caliz": {
+"lrs": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -348,7 +357,7 @@
 "temporada"
 ]
 },
-"cronox": {
+"caliz": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -381,15 +390,6 @@
 "tuca": {
 "rg": "C",
 "c": []
-},
-"lrs": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "dominick": {
 "rg": "D",
@@ -577,11 +577,16 @@
 "temporada"
 ]
 },
-"eidp": {
-"rg": "D",
-"c": []
-},
 "mcnadie": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"gocho": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -607,6 +612,10 @@
 "temporada"
 ]
 },
+"eidp": {
+"rg": "D",
+"c": []
+},
 "kyss": {
 "rg": "D",
 "c": [
@@ -624,8 +633,8 @@
 "temporada"
 ]
 },
-"gocho": {
-"rg": "C",
+"vilca": {
+"rg": "",
 "c": [
 "competitivo",
 "pais",
@@ -633,8 +642,8 @@
 "temporada"
 ]
 },
-"vilca": {
-"rg": "",
+"crakero": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -677,15 +686,6 @@
 "neo": {
 "rg": "C",
 "c": []
-},
-"crakero": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "badterne": {
 "rg": "",
@@ -1016,6 +1016,13 @@
 "temporada"
 ]
 },
+"julda": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "leyenda": {
 "rg": "",
 "c": []
@@ -1093,13 +1100,6 @@
 "temporada"
 ]
 },
-"julda": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "deko": {
 "rg": "",
 "c": [
@@ -1145,6 +1145,14 @@
 "servidor"
 ]
 },
+"romeo": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "raizer": {
 "rg": "",
 "c": [
@@ -1161,14 +1169,6 @@
 ]
 },
 "rodrilp": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"romeo": {
 "rg": "",
 "c": [
 "pais",
@@ -1290,6 +1290,14 @@
 "millonario": {
 "rg": "",
 "c": []
+},
+"araya": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "yor": {
 "rg": "",
@@ -1462,14 +1470,6 @@
 "betelguese": {
 "rg": "",
 "c": []
-},
-"araya": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "mrstillballin": {
 "rg": "",
@@ -8464,8 +8464,8 @@
 "tipo": "resnoche",
 "t": "2026-11-24T08:00:00Z",
 "dia": "2026-11-23",
-"eventos": 3,
-"part": 39,
+"eventos": 4,
+"part": 56,
 "campeones": [
 {
 "ev": "qcyo rapeen 17",
@@ -8503,6 +8503,17 @@
 "dios"
 ]
 ]
+},
+{
+"ev": "PURISTAS DEL HIP HOP",
+"sv": "FFA",
+"ll": 688,
+"quien": [
+[
+"Inku",
+""
+]
+]
 }
 ],
 "suman": [
@@ -8513,16 +8524,16 @@
 "ev": 2
 },
 {
-"n": "Raezer",
+"n": "Inku",
 "k": "",
-"pts": 7500,
+"pts": 10000,
 "ev": 1
 },
 {
-"n": "Soulb",
-"k": "soulb",
-"pts": 5250,
-"ev": 1
+"n": "LRS",
+"k": "lrs",
+"pts": 7750,
+"ev": 2
 }
 ],
 "suben": [
@@ -8551,6 +8562,12 @@
 "k": "",
 "que": "debut",
 "ev": "- DEM BATTLES -"
+},
+{
+"n": "Inku",
+"k": "",
+"que": "debut",
+"ev": "PURISTAS DEL HIP HOP"
 }
 ]
 }
@@ -8647,7 +8664,7 @@
 "abyssus": 1,
 "nc": 0,
 "nxuz": 1,
-"okam": 1,
+"okam": 0,
 "velatz": 0,
 "mito": 0,
 "zignos": 1,
@@ -8662,11 +8679,11 @@
 "bloody": 1,
 "tuca": 0,
 "drexx": 0,
-"cronox": 0,
+"cronox": 1,
 "chop": 1,
 "geoka": 0,
 "tenor": 0,
-"lrs": 0,
+"lrs": 1,
 "xclusivo": 0,
 "trot": 0,
 "adriagner": 0,
@@ -8695,8 +8712,8 @@
 "dynoco": 0,
 "marcos": 1,
 "jupiter": 0,
-"eidp": 1,
-"gocho": 2,
+"eidp": 0,
+"gocho": 3,
 "neo": 0,
 "onzass": 0,
 "eclipsito": 0,

@@ -1363,6 +1363,15 @@
    ]
   }
  },
+ "araya": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1795496802808
+   ]
+  }
+ },
  "ardean": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -6084,6 +6093,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1794697338807
+   ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1795496802808
    ]
   },
   "pais": {
@@ -6098,6 +6112,11 @@
     "🏅 PODIOS",
     "t1",
     1794634040612
+   ],
+   "🏟️ FINALISTA DE CASA": [
+    "🏟️ FINALISTA DE CASA",
+    "t1",
+    1795496802808
    ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -6648,6 +6667,37 @@
    ]
   }
  },
+ "inku": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1795496802808
+   ]
+  },
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795496802808
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795496802808
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795496802808
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795496802808
+   ]
+  }
+ },
  "j19": {
   "temporada": {
    "🌱 PROMESA": [
@@ -6997,6 +7047,13 @@
   }
  },
  "julda": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1795496802808
+   ]
+  },
   "temporada": {
    "🌱 PROMESA": [
     "🌱 PROMESA",
@@ -8499,6 +8556,11 @@
     "📆 HABITUÉ",
     "t1",
     1793029252929
+   ],
+   "📖 HISTORIA VIVA": [
+    "📖 HISTORIA VIVA",
+    "t1",
+    1795496802808
    ]
   },
   "temporada": {
@@ -8522,6 +8584,11 @@
     "t1",
     1794473112962
    ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1795496802808
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -8536,6 +8603,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1795496802808
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -14977,6 +15049,13 @@
     "📆 HABITUÉ",
     "t1",
     1794980168185
+   ]
+  },
+  "temporada": {
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1795496802808
    ]
   }
  },

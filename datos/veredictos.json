@@ -10907,6 +10907,61 @@
    "b": "gocho🇨🇱",
    "ganador": "gocho🇨🇱",
    "votos": "1–0"
+  },
+  "1574641960453410949": {
+   "id": "1574641960453410949",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795494298805,
+   "a": "Araya🇦🇸",
+   "b": "Inku 🇦🇷",
+   "ganador": "Inku 🇦🇷",
+   "votos": "1–0"
+  },
+  "1574643088935100579": {
+   "id": "1574643088935100579",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795494567856,
+   "a": "Julda 🇨🇴",
+   "b": "Lrs la sustancia🇦🇷",
+   "ganador": "Lrs la sustancia🇦🇷",
+   "votos": "1–0"
+  },
+  "1574644636067176570": {
+   "id": "1574644636067176570",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795494936721,
+   "a": "Yo mc 🇨🇱",
+   "b": "gocho🇨🇱",
+   "ganador": "gocho🇨🇱",
+   "votos": "1–0"
+  },
+  "1574645324482617385": {
+   "id": "1574645324482617385",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795495100852,
+   "a": "Inku 🇦🇷",
+   "b": "Lrs la sustancia🇦🇷",
+   "ganador": "Inku 🇦🇷",
+   "votos": "1–0"
+  },
+  "1574649157451255913": {
+   "id": "1574649157451255913",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795496014703,
+   "a": "Inku 🇦🇷",
+   "b": "gocho🇨🇱",
+   "ganador": "Inku 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14673,8 +14728,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795493415538,
-   "ed": 1795494009094,
-   "texto": "`[ CUARTOS ]`\n⌞Romeo🇲🇽⌝ 🆚 ⌞Yo mc 🇨🇱⌝\n⌞Agustín la reliquia 🇺🇾⌝ 🆚 ⌞gocho 🇨🇴⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞gocho 🇨🇴⌝",
+   "ed": 1795496074554,
+   "texto": "`[ CUARTOS ]`\n⌞Romeo🇲🇽⌝ 🆚 ⌞Yo mc 🇨🇱⌝\n⌞Agustín la reliquia 🇺🇾⌝ 🆚 ⌞gocho 🇨🇴⌝\n⌞tomyhilfiger1312🇾🇹⌝ 🆚 ⌞gocho 🇨🇴⌝\n⌞Araya🇦🇸⌝ 🆚 ⌞Inku 🇦🇷⌝\n⌞Julda 🇨🇴⌝ 🆚 ⌞Lrs la sustancia🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞Yo mc 🇨🇱⌝ 🆚 ⌞gocho 🇨🇴⌝\n⌞Inku 🇦🇷⌝ 🆚 ⌞Lrs la sustancia🇦🇷⌝\n`[ FINAL ]`\n⌞Inku 🇦🇷⌝ 🆚 ⌞gocho 🇨🇴⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -14692,8 +14747,8 @@
       "Agustín la reliquia 🇺🇾",
       "gocho 🇨🇴"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "gocho 🇨🇴",
+     "ronda siguiente",
      []
     ],
     [
@@ -14703,6 +14758,56 @@
       "gocho 🇨🇴"
      ],
      "gocho 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Araya🇦🇸",
+      "Inku 🇦🇷"
+     ],
+     "Inku 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Julda 🇨🇴",
+      "Lrs la sustancia🇦🇷"
+     ],
+     "Lrs la sustancia🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Yo mc 🇨🇱",
+      "gocho 🇨🇴"
+     ],
+     "gocho 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Inku 🇦🇷",
+      "Lrs la sustancia🇦🇷"
+     ],
+     "Inku 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Inku 🇦🇷",
+      "gocho 🇨🇴"
+     ],
+     "Inku 🇦🇷",
      "veredicto",
      []
     ]

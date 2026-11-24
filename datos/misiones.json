@@ -14355,6 +14355,13 @@
      0,
      0
     ],
+    "Cronox": [
+     1,
+     2,
+     2,
+     0,
+     0
+    ],
     "Daulinov": [
      0,
      0,
@@ -14366,6 +14373,20 @@
      1,
      1,
      1,
+     0,
+     0
+    ],
+    "Dyzz": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "EIDP": [
+     1,
+     0,
+     0,
      0,
      0
     ],
@@ -14397,10 +14418,24 @@
      0,
      0
     ],
+    "Gocho": [
+     1,
+     2,
+     2,
+     0,
+     0
+    ],
+    "Inku": [
+     1,
+     1,
+     4,
+     0,
+     0
+    ],
     "Julda": [
      1,
-     0,
-     0,
+     1,
+     1,
      0,
      0
     ],
@@ -14413,8 +14448,8 @@
     ],
     "LRS": [
      1,
-     0,
-     0,
+     2,
+     2,
      0,
      0
     ],
@@ -14467,6 +14502,13 @@
      1,
      0
     ],
+    "NC": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "NXUZ": [
      1,
      0,
@@ -14475,6 +14517,13 @@
      0
     ],
     "Noone": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "OKAM": [
      1,
      0,
      0,
@@ -14558,7 +14607,35 @@
      0,
      0
     ],
+    "araya": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "crakero": [
+     1,
+     1,
+     1,
+     0,
+     0
+    ],
     "ikonoxx": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "romeo": [
+     1,
+     1,
+     1,
+     0,
+     0
+    ],
+    "tierra sin atmosfera 🇦🇷": [
      1,
      0,
      0,
@@ -14579,11 +14656,16 @@
     "Aritmetico": 300,
     "BLITZ": 300,
     "CrisZJ": 300,
+    "Cronox": 300,
     "Dios": 300,
+    "Dyzz": 300,
+    "EIDP": 300,
     "Erian": 300,
     "Funk🇦🇷": 300,
     "Geoka": 300,
     "Gian": 300,
+    "Gocho": 300,
+    "Inku": 300,
     "Julda": 300,
     "Kyss": 300,
     "LRS": 900,
@@ -14592,8 +14674,10 @@
     "Mathhias": 300,
     "Miniboy": 300,
     "Mr.Kude": 800,
+    "NC": 300,
     "NXUZ": 300,
     "Noone": 300,
+    "OKAM": 300,
     "Oasis": 300,
     "Over": 300,
     "Player": 300,
@@ -14603,7 +14687,11 @@
     "Tam": 300,
     "Tuca": 300,
     "Xervoe": 300,
+    "araya": 300,
+    "crakero": 300,
     "ikonoxx": 300,
+    "romeo": 300,
+    "tierra sin atmosfera 🇦🇷": 300,
     "yinn": 300
    }
   }
@@ -14673,7 +14761,7 @@
   "Corvo": 1000,
   "CrisZJ": 5400,
   "Crk": 2500,
-  "Cronox": 4500,
+  "Cronox": 4800,
   "DAVIJUAN": 300,
   "DLX": 300,
   "DNK": 300,
@@ -14693,9 +14781,9 @@
   "Drezz🇵🇪": 300,
   "Dynoco": 2800,
   "Dyz 🇨🇱": 800,
-  "Dyzz": 2400,
+  "Dyzz": 2700,
   "EGI": 300,
-  "EIDP": 4100,
+  "EIDP": 4400,
   "EL PIBE 🇦🇷": 600,
   "Eclipsito": 4200,
   "Efimero": 300,
@@ -14728,7 +14816,7 @@
   "Gero": 300,
   "Gian": 300,
   "Global Hustler": 1000,
-  "Gocho": 3000,
+  "Gocho": 3300,
   "Guaicurús🇰🇷": 300,
   "Guess": 4500,
   "Gus": 900,
@@ -14746,6 +14834,7 @@
   "Imagy": 300,
   "Inhuman": 300,
   "Inko": 300,
+  "Inku": 300,
   "Izaya": 300,
   "J.r": 600,
   "J19": 1000,
@@ -14841,7 +14930,7 @@
   "Mr.Kude": 1400,
   "Musicdum": 300,
   "N1k": 300,
-  "NC": 6000,
+  "NC": 6300,
   "NXUZ": 5300,
   "NYCO": 300,
   "Neo": 3200,
@@ -14854,7 +14943,7 @@
   "Number": 300,
   "Number VE": 2800,
   "OG": 8000,
-  "OKAM": 4500,
+  "OKAM": 4800,
   "ONDADISKO": 600,
   "ONZASS": 1200,
   "Oasis": 12400,
@@ -14956,9 +15045,9 @@
   "Zetryko": 1600,
   "Zignos": 6700,
   "akasha🇦🇷": 300,
-  "araya": 300,
+  "araya": 600,
   "chekialo 🇧🇯": 1300,
-  "crakero": 600,
+  "crakero": 900,
   "doble h": 600,
   "dxg": 300,
   "fleivaman": 1300,
@@ -14979,8 +15068,9 @@
   "publicenemy🇦🇷": 300,
   "roda mc 🇵🇦": 1000,
   "rodrilp": 1500,
-  "romeo": 1200,
+  "romeo": 1500,
   "setesfifi": 300,
+  "tierra sin atmosfera 🇦🇷": 300,
   "wei shenlong": 300,
   "yinn": 8000
  },
