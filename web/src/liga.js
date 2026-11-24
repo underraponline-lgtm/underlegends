@@ -256,6 +256,16 @@ export class Liga {
       if (this.N[n]) this.dobles.add(n);
       this.T[r.k] = r; this.N[n] = r; this.E[limpio(r.n)] = r;
     });
+    // 🎯 los cazadores de Most Wanted que están en la tabla viajan `[clave, cobrado]` (23/11/2026, `_caz_compacto()` de
+    // bot/subir_web.py: el lobby se pasaba de su tope): se completan acá con su fila, y todo lo que lee `mw.caz` (el Inicio,
+    // el Ranking) los ve como siempre
+    if (D.mw && Array.isArray(D.mw.caz)) {
+      D.mw.caz = D.mw.caz.map((c) => {
+        if (!Array.isArray(c)) return c;
+        const f = this.T[c[0]];
+        return f ? { n: f.n, k: f.k, cc: f.cc, sv: f.sv, pts: c[1] || 0, caz: f.caz || 0, czd: f.czd || 0, sob: f.sob || 0 } : null;
+      }).filter(Boolean);
+    }
     // 🧑 las caras de quienes jugaron y quedan fuera de la tabla (`avs` del payload, ver `subir_web.py`): por nombre
     this.A = {};
     (D.avs || []).forEach(([n, av]) => { if (n && av) this.A[limpio(n).toLowerCase()] = av; });

@@ -795,7 +795,7 @@ def armar():
     # la página lo pide aparte (web/src/ligas_datos.js) y lo vuelve a poner en `liga.d.ligas`
     if _lg_det is not None and _lg_lobby is not None:
         _lg_det['lobby'] = _lg_lobby
-    return {
+    _lobby = {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
         'gente': len(pool),
@@ -943,6 +943,35 @@ def armar():
         # saber de cuándo es lo que está leyendo, no cuándo se copió.
         'leido': _an.get('cuando') or '',
     }
+    # 🎯 LA CAZA DE CADA LLAVE, EN SU LLAVE (23/11/2026). `mw.ce` —quién cazó a quién en cada evento— viajaba entero en el
+    # lobby y crecía con cada evento (49 llaves, 0,8 KB comprimidos): el lobby se pasó de su tope por tercera vez (52,9 KB
+    # contra 52,7; Dlx, al «¿mudo `mw`?»: «Yes, move it»). Lo lee sólo la vista de la llave (llave.jsx, `L.mw`), así que va
+    # adentro de cada llave: las que viajan en el lobby lo llevan ahí y todas en `CLAVE_LLAVES`. El resto de `mw` lo dibuja
+    # el Inicio (el tablero, los cazados, el top de cazadores) y se queda
+    _ce = (_lobby.get('mw') or {}).pop('ce', None) or {}
+    for _n, _cz in _ce.items():
+        for _dic in (_lobby.get('llaves') or {}, _lobby.get('_llaves') or {}):
+            for _k in (_n, str(_n), int(_n) if str(_n).isdigit() else None):
+                if _k is not None and _k in _dic:
+                    _dic[_k] = dict(_dic[_k], mw=_cz)
+                    break
+    # 🎯 Y LOS CAZADORES QUE ESTÁN EN LA TABLA, SÓLO CON LO QUE LA TABLA NO TIENE (23/11/2026): `mw.caz` repetía de cada
+    # uno su nombre, bandera, servidor y cuántos cazó, la cazaron y sobrevivió —lo mismo que su fila de la tabla, a 20 KB
+    # de distancia, donde gzip ya no lo ve repetido—. Quien está en la tabla con exactamente eso viaja `[clave, cobrado]`
+    # y la página lo completa con su fila (`Liga` de web/src/liga.js); quien no, entero. 72 de 77: 0,5 KB
+    _filas = {f.get('k'): f for f in (_lobby.get('tabla') or []) if f.get('k')}
+    _mwl = _lobby.get('mw') or {}
+    if isinstance(_mwl.get('caz'), list):
+        _mwl['caz'] = [_caz_compacto(c, _filas.get(c.get('k'))) for c in _mwl['caz']]
+    return _lobby
+
+
+def _caz_compacto(c, f):
+    """Un cazador de `mw.caz` como `[clave, cobrado]` si su fila de la tabla dice lo mismo de él; si no, entero."""
+    if f and all(f.get(x) == c.get(x) for x in ('n', 'cc', 'sv')) and \
+            all((f.get(x) or 0) == (c.get(x) or 0) for x in ('caz', 'czd', 'sob')):
+        return [c.get('k'), c.get('pts') or 0]
+    return c
 
 
 def _staff(x):
@@ -5343,6 +5372,21 @@ def _self_check():
     # 🔴 Y OTRA VEZ EL 22/11/2026 a la 1:50 AM ET (51,4 KB), también sólo con ciclos de por medio (el último verde, db11fd278,
     # 8:47 PM). Se sube a 54.000 otro rato para que la CI vuelva a avisar de lo demás; lo que corresponde es mudar `mw`
     # como se mudaron las insignias (Dlx ya dijo «dale» a mudar)
+    # 🎯 Y SE PASÓ POR TERCERA VEZ EL 23/11/2026 a las 6:50 PM ET (52,9 KB), otra vez sólo con ciclos de por medio. Medido:
+    # `mw` lo lee el Inicio en ~12 lugares, así que no se muda entero; lo que crecía con cada evento era `mw.ce` (quién
+    # cazó a quién en cada llave, 49 llaves, 0,75 KB) y sólo lo lee la vista de la llave: ✅ va adentro de cada llave
+    # (ver el final de `armar()`). El tope se queda en 54.000; lo próximo, si vuelve a pasarse: `mw.caz` entero sólo para
+    # el Ranking (el Inicio dibuja 5)
+    ok('ce' not in (p.get('mw') or {}) and all(isinstance(L.get('mw', []), list) for L in (todas or {}).values()),
+       'la caza de cada llave viaja en su llave (`mw`), no en el `mw` del lobby  (%d llaves con caza)'
+       % sum(1 for L in (todas or {}).values() if L.get('mw')))
+    _cz = (p.get('mw') or {}).get('caz') or []
+    # (los enteros pueden no tener clave: quien cazó sin perfil en la Liga, «tambaggio»)
+    ok(all((isinstance(c, list) and len(c) == 2 and c[0]) or (isinstance(c, dict) and c.get('n')) for c in _cz)
+       and _caz_compacto({'k': 'a', 'n': 'A', 'cc': 'ar', 'sv': 'FFA', 'pts': 9, 'caz': 1}, {'k': 'a', 'n': 'A', 'cc': 'ar', 'sv': 'FFA', 'caz': 1}) == ['a', 9]
+       and isinstance(_caz_compacto({'k': 'a', 'n': 'A', 'pts': 9, 'caz': 2}, {'k': 'a', 'n': 'A', 'caz': 1}), dict),
+       'los cazadores de la tabla viajan [clave, cobrado] y los demás enteros  (%d de %d compactos)'
+       % (sum(1 for c in _cz if isinstance(c, list)), len(_cz)))
     ok(comp < 54000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')

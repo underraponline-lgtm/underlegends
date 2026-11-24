@@ -1754,7 +1754,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     // 🔑 MOST WANTED EN LA LLAVE (Dlx, 27/09/2026): el que cazaron ACÁ lleva 🎯 en la batalla que perdió; en una en
     // vivo, el buscado suelto lleva 🎯 y su recompensa
     const mw = liga.d.mw || {};
-    const cazas = (mw.ce && mw.ce[String(n)]) || [];
+    // 🎯 la caza de esta llave viaja EN la llave (`L.mw`, 23/11/2026: el lobby se pasaba de su tope); `mw.ce`, un lobby de antes
+    const cazas = L.mw || (mw.ce && mw.ce[String(n)]) || [];
     const cazado = {};
     cazas.forEach((c) => { const f = fila(c[0]); cazado[f ? f.k : c[0]] = c; });
     const mwDe = (x) => { const f = fila(x); return (mw.b || []).find((y) => y.n === x || (f && y.k === f.k)) || null; };
