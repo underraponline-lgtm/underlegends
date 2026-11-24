@@ -34,7 +34,8 @@ export function Miniatura({ vid, cls }) {
   );
 }
 
-/** Abre el reproductor desde cualquier lado: `abrirVideo({vid, tit, link})`. */
+/** Abre el reproductor desde cualquier lado: `abrirVideo({vid, tit, link, vertical})`. `vertical` (o un link de `/shorts/`)
+ *  lo abre parado, 9:16 (24/11/2026, Dlx: «que se adapte y se ponga vertical en vez de quedarse cuadrado») */
 export function abrirVideo(v) {
   window.dispatchEvent(new CustomEvent('lg:video', { detail: v }));
 }
@@ -61,9 +62,11 @@ export function VentanaVideo() {
   }, [v]);
   if (!v || !v.vid) return null;
   const src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.vid) + '?autoplay=1&rel=0&playsinline=1';
+  // 📱 un short se ve parado: la caja toma el ancho que le deja el alto de la pantalla, en 9:16
+  const vert = !!(v.vertical || /\/shorts\//.test(String(v.link || '')));
   return (
     <div className="vid-fondo" role="dialog" aria-modal="true" aria-label={v.tit || 'Video'} onClick={(e) => { if (e.target === e.currentTarget) setV(null); }}>
-      <div className="vid-caja">
+      <div className={'vid-caja' + (vert ? ' vert' : '')}>
         <div className="vid-cab">
           <b className="vid-t">{v.tit}</b>
           {v.link ? <a className="vid-yt" href={v.link} target="_blank" rel="noopener noreferrer">En YouTube ↗</a> : null}

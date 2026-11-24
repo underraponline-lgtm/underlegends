@@ -408,7 +408,7 @@ function VideosGl({ X, xs, sujeto, shorts = [], cs = [] }) {
     const tit = (a ? nombre(a) : '') + (riv ? (a ? ' vs ' : 'vs ') + nombre(riv) : '');
     return (
       <li key={v[0]} className={v[4] ? 'glpv-vert' : undefined}>
-        <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: v[0], tit: tit + ' · ' + limpioEv(e[1]), link: 'https://www.youtube.com/' + (v[4] ? 'shorts/' : 'watch?v=') + v[0] })}>
+        <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: v[0], tit: tit + ' · ' + limpioEv(e[1]), link: 'https://www.youtube.com/' + (v[4] ? 'shorts/' : 'watch?v=') + v[0], vertical: !!v[4] })}>
           <span className="pf-vid-m"><Miniatura vid={v[0]} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
           <b>{tit || limpioEv(e[1])}</b>
           <small>{[a ? '' : v[3] ? 'Ganó' : 'Perdió', limpioEv(e[1]), fechaEv(e[3])].filter(Boolean).join(' · ')}</small>
@@ -432,7 +432,7 @@ function VideosGl({ X, xs, sujeto, shorts = [], cs = [] }) {
             const otros = (s[2] || []).map((k) => X.porK.get(k)).filter(Boolean);
             return (
               <li key={s[0]} className="glpv-vert">
-                <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: s[0], tit: cs[s[1]] || 'Short', link: 'https://www.youtube.com/shorts/' + s[0] })}>
+                <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: s[0], tit: cs[s[1]] || 'Short', link: 'https://www.youtube.com/shorts/' + s[0], vertical: true })}>
                   <span className="pf-vid-m"><Miniatura vid={s[0]} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
                   <b>{otros.length ? 'Con ' + otros.map(nombre).join(' y ') : cs[s[1]] || 'Short'}</b>
                   {otros.length && cs[s[1]] ? <small>{cs[s[1]]}</small> : null}
