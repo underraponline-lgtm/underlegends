@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-24T16:42:55Z",
+ "cuando": "2026-11-24T19:02:14Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 187.8,
+ "dur_s": 1700.7,
  "pasos": [
   {
    "n": "2f",
@@ -15,79 +15,79 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.1
+   "s": 1.0
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.4
+   "s": 11.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 35.5
+   "s": 39.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 2 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 12.2
+   "s": 1475.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 63.9
+   "s": 108.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 61.9
+   "s": 62.7
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "688",
+  "n": "689",
   "nombre": "PURISTAS DEL HIP HOP",
   "sv": "FFA",
-  "dia": "2026-11-23"
+  "dia": "2026-11-24"
  },
  "cuotas": {
   "kv": {
-   "write": 346,
-   "read": 18109
+   "write": 414,
+   "read": 22207
   },
   "objeto": {
-   "leidas": 4254788,
-   "escritas": 46094,
-   "pedidos": 22181
+   "leidas": 4790488,
+   "escritas": 55218,
+   "pedidos": 26167
   },
   "worker": {
-   "pedidos": 30019,
+   "pedidos": 31873,
    "errores": 0,
-   "sub": 34958,
+   "sub": 36892,
    "cortados": 0,
-   "p50_ms": 1.0,
-   "p99_ms": 16.42,
+   "p50_ms": 0.99,
+   "p99_ms": 16.3,
    "cpu": {
-    "total": 64560,
-    "objeto_10": 2360,
+    "total": 68351,
+    "objeto_10": 2420,
     "worker_10": 1120
    }
   },
   "r2": {
-   "objetos": 12845,
-   "gb": 1.02,
-   "ts": 1795498594
+   "objetos": 14247,
+   "gb": 1.192,
+   "ts": 1795546951
   }
  }
 }
