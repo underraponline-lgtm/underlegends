@@ -1707,7 +1707,13 @@
     "org": "Erian",
     "clave": "erian"
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "DARK ANGEL",
+     8,
+     1
+    ]
+   ],
    "semillero": {
     "nuevos": {
      "FFA": 2,
@@ -1715,7 +1721,8 @@
     },
     "gente": {
      "FFA": 22,
-     "FRZ": 9
+     "FRZ": 9,
+     "DDS": 8
     },
     "gana": null
    },
@@ -1725,7 +1732,7 @@
     "CH": 0,
     "CHZ": 0,
     "DDF": 0,
-    "DDS": 0,
+    "DDS": 8,
     "DRA": 0,
     "FDS": 0,
     "FFA": 22,
