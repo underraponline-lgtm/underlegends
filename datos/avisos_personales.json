@@ -555,7 +555,12 @@
 "rg": ""
 },
 "1271260378654969947": {
-"cs": [],
+"cs": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+],
 "pos": 40,
 "rg": "D"
 },
