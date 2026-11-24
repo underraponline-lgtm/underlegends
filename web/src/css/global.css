@@ -615,3 +615,5 @@ dialog.gl-lado[open]{animation:gl-sube .24s cubic-bezier(.32,.72,0,1)}
 .cara img.glpv-rto{object-fit:cover;object-position:50% 8%;background:#1A1A1F}
 /* la sigla de una competencia en el círculo del perfil (perfil_global.jsx) */
 .cara.glpv-comp{font-size:clamp(34px,5vw,56px);letter-spacing:.02em;background:#E5B800;color:#030304}
+/* «26/27» en el círculo de una edición: más chico, que no se corte en el borde */
+.pv-ci em.glpv-largo{font-size:clamp(15px,1.6vw,19px);letter-spacing:-.02em}

@@ -518,7 +518,7 @@ function CabezaComp({ liga, c, A }) {
   );
 }
 function MomentosComp({ A, ir }) {
-  const xs = A.eds.slice(0, 9).map((e) => ({ id: e.ed, n: e.ed, im: <em>{edCorta(e.ed)}</em>, c: e.n, rc: '#E5B800', fn: () => ir('eds', e.ed) }));
+  const xs = A.eds.slice(0, 9).map((e) => ({ id: e.ed, n: e.ed, im: <em className={edCorta(e.ed).length > 4 ? 'glpv-largo' : undefined}>{edCorta(e.ed)}</em>, c: e.n, rc: '#E5B800', fn: () => ir('eds', e.ed) }));
   if (A.t1.length) xs.push({ id: 't1', n: 'En la T1', im: <em>T1</em>, c: A.t1.length, rc: '#E41373', fn: () => ir('t1') });
   if (!xs.length) return null;
   return (
