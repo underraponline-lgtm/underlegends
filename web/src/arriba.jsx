@@ -21,6 +21,7 @@ import { escenaDe } from './fondos.js';
 import { PreguntaCab } from './comofunciona.jsx';
 import { alExtras, cargarExtras, hayPista, precargar } from './beats.js';
 import { HistoriaCtx } from './historia_ctx.js';
+import { bajarGlobal, globalListo } from './global_datos.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Era el de la tira de abajo del celular hasta la barra E (19/11/2026: cinco fijos y el resto en el ☰ en
@@ -178,8 +179,10 @@ function Marca({ liga }) {
 // ── el buscador: raperos, y también servidores, países y crews (Dlx, 01/10/2026: «sí», la E). Primero lo que es
 // exactamente lo buscado, después lo que empieza así y al final lo que lo contiene; a igual coincidencia, raperos
 // primero. Vive arriba en la computadora y en el menú ☰ en el celular, donde arriba no entra
-const TIPOS = { rapero: 0, servidor: 1, pais: 2, crew: 3, pagina: 4, evento: 5 };
-const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', pagina: 'página', evento: 'evento' };
+const TIPOS = { rapero: 0, global: 0.5, servidor: 1, pais: 2, crew: 3, pagina: 4, evento: 5 };
+const ETIQUETA_TIPO = { rapero: 'rapero', global: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', pagina: 'página', evento: 'evento' };
+// 🌎 el grupo de cada uno en el Ranking global (los mismos nombres que global.jsx)
+const GRUPO_GLOBAL = { pro: 'Pro', plaza: 'Plaza', liga: 'Liga' };
 // 🔎 «QUE TE DEJE BUSCAR CUALQUIER COSA» (Dlx, 13/11/2026): también las páginas (las del menú, cada ranking y lo de tu
 // cuenta) y los eventos (los que vienen y los de las últimas semanas)
 // ⚙️ «Ajustes» abre «La app» (18/11/2026): `#/ajustes` caía en el resumen de Tu cuenta, igual que el resultado de al lado.
@@ -214,7 +217,7 @@ function useEjemplo(activo) {
 const REC_K = 'lg:busca-rec';
 const leerRec = () => { try { const v = JSON.parse(localStorage.getItem(REC_K) || '[]'); return Array.isArray(v) ? v.slice(0, 5) : []; } catch (e) { return []; } };
 const guardarRec = (r) => {
-  const x = { tipo: r.tipo, id: r.id, n: r.n, href: r.href, k: r.k, cc: r.cc, logo: r.logo, ico: r.ico, sub: r.sub,
+  const x = { tipo: r.tipo, id: r.id, n: r.n, href: r.href, k: r.k, cc: r.cc, logo: r.logo, ico: r.ico, sub: r.sub, ft: r.ft,
     crew: r.crew ? { crew: r.crew.crew, clave: r.crew.clave, logo: r.crew.logo } : undefined };
   try { localStorage.setItem(REC_K, JSON.stringify([x].concat(leerRec().filter((y) => y.id !== x.id)).slice(0, 5))); } catch (e) { /* sin guardar */ }
 };
@@ -238,6 +241,30 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     Promise.resolve(window.perfiles()).then((d) => { if (vivo && d && d.p) setTodos(d.p); }).catch(() => {});
     return () => { vivo = false; };
   }, [q, todos]);
+  // 🌎 Y LA GENTE DEL RANKING GLOBAL (24/11/2026, Dlx: «asegúrate que todos tengan perfiles buscables, incluso los del
+  // ranking global»): los pros, las plazas y los de la Liga que no tienen perfil acá. Cada uno abre su ficha
+  // (`#/ranking/global/<k>`, global.jsx). `/global.json` se pide la primera vez que se escribe, como `todos`, y es el
+  // mismo pedido que usa la página del Ranking global (global_datos.js). Los de la Liga con perfil no se repiten: ya salen
+  // como raperos, con su perfil de la Liga
+  const [glob, setGlob] = useState(globalListo);
+  useEffect(() => {
+    if (glob || q.trim().length < 2) return undefined;
+    let vivo = true;
+    bajarGlobal().then((d) => { if (vivo && d && Array.isArray(d.g)) setGlob(d); }, () => {});
+    return () => { vivo = false; };
+  }, [q, glob]);
+  const deGlobal = useMemo(() => {
+    if (!glob || !Array.isArray(glob.g)) return [];
+    const out = [];
+    glob.g.forEach((g, i) => {
+      if (!g || !g.k || !g.n) return;
+      if (g.esc === 'liga' && liga.quien && liga.quien(g.n, g.lg)) return;
+      const pos = g.p > 0 ? i + 1 : 0;
+      out.push({ tipo: 'global', id: 'g' + g.k, n: limpio(g.n), href: '#/ranking/global/' + encodeURIComponent(g.k), cc: g.cc || '',
+        ft: g.ft || '', sub: [GRUPO_GLOBAL[g.esc] || '', pos ? '#' + pos + ' del Ranking global' : 'Ranking global'].filter(Boolean).join(' · ') });
+    });
+    return out;
+  }, [glob, liga]);
   const akas = useMemo(() => {
     const m = {};
     Object.entries(liga.d.alias || {}).forEach(([a, k]) => { (m[k] = m[k] || []).push(a); });
@@ -282,6 +309,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
         todo.push({ tipo: 'rapero', id: 'r' + k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(k), k, x: Math.min(x, xa), aka: xa < x ? a : '' });
       });
     }
+    deGlobal.forEach((r) => { const x = nota(r.n); if (x < 9) todo.push({ ...r, x }); });
     Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || siglaDe(s.sv)), sub: siglaDe(s.sv), href: '#/sv/' + siglaDe(s.sv), logo: liga.logo(s.sv),
       x: nota(s.sv, siglaDe(s.sv), s.nombre || '') }));
     (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
@@ -309,11 +337,11 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
         todo.push({ tipo: 'evento', id: 'e' + id, n, sub: siglaDe(e.sv), href: '#/eventos', logo: e.sv ? liga.logo(e.sv) : '', x: nota(n) + 0.5 });
       });
     return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, sugerencias ? 40 : 8);
-  }, [q, liga, todos, sugerencias]);
+  }, [q, liga, todos, deGlobal, sugerencias]);
   const ir = (r) => { if (r && r.href) guardarRec(r); setQ(''); if (onIr) onIr(); };
   // 🔔 en la barra de arriba, los resultados con el estilo de la campana: filtros por tipo y una fila por resultado
   const [cat, setCat] = useState('todo');
-  const catR = (r) => (r.tipo === 'rapero' || r.tipo === 'servidor' || r.tipo === 'crew' ? r.tipo : 'mas');
+  const catR = (r) => (r.tipo === 'global' ? 'rapero' : r.tipo === 'rapero' || r.tipo === 'servidor' || r.tipo === 'crew' ? r.tipo : 'mas');
   const cuentaR = { todo: res.length };
   res.forEach((r) => { cuentaR[catR(r)] = (cuentaR[catR(r)] || 0) + 1; });
   const resVer = sugerencias ? res.filter((r) => cat === 'todo' || catR(r) === cat).slice(0, 10) : res;
@@ -331,6 +359,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     if (r.tipo === 'rapero') return <Cara liga={liga} k={r.k} nombre={r.n} cls={'cara' + (esPremium(pub, r.k) ? ' sp-prem-aro' : '')} />;
     if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
     if (r.tipo === 'pais') return <span className="cara"><img alt="" src={'/banderas/g/' + r.cc + '.webp'} /></span>;
+    if (r.tipo === 'global') return r.ft ? <span className="cara"><img alt="" src={r.ft} loading="lazy" /></span> : <span className="cara ini">{(r.n.slice(0, 1) || '?').toUpperCase()}</span>;
     if (r.tipo === 'pagina') return <span className="cara br-ico"><Ico n={r.ico || 'flecha'} t={16} /></span>;
     if (r.tipo === 'evento') return r.logo ? <span className="cara"><img alt="" src={r.logo} /></span> : <span className="cara br-ico"><Ico n="eventos" t={16} /></span>;
     return <CrewCirculo c={r.crew} cls="cara" />;
@@ -380,6 +409,7 @@ function subBusca(liga, r) {
   if (r.tipo === 'crew') return 'Crew' + (r.crew && r.crew.n ? ' · ' + r.crew.n + (r.crew.n === 1 ? ' rapero' : ' raperos') : '');
   if (r.tipo === 'evento') return 'Evento' + (r.sub ? ' · ' + r.sub : '');
   if (r.tipo === 'pais') return 'País';
+  if (r.tipo === 'global') return r.sub || 'Ranking global';
   return r.sub ? r.sub : 'Página';
 }
 function FilaBusca({ liga, r, icono, ir, pub }) {
@@ -435,7 +465,7 @@ function Sugerencias({ liga, rec, icono, ir, borrar, pub }) {
         <p className="nt-s">Ir a</p>
         <div className="nt-chips bs-atajos">{ATAJOS_BUSCA.map(([n, h]) => <a key={h} className="nt-chip" href={h} onClick={() => ir()}>{n}</a>)}</div>
       </section>
-      <p className="nt-pie bs-pie"><span>Raperos (también por su aka), servidores, países, crews, páginas y eventos</span><span className="bs-esc">Ctrl K · Esc</span></p>
+      <p className="nt-pie bs-pie"><span>Raperos (también por su aka y los del Ranking global), servidores, países, crews, páginas y eventos</span><span className="bs-esc">Ctrl K · Esc</span></p>
     </div>
   );
 }

@@ -20,6 +20,7 @@ import { PopCab } from './pop.jsx';
 import { capital, limpio, norm } from './liga.js';
 import CSS from './css/global.css?inline';
 import { usarCss } from './css.js';
+import { bajarGlobal, globalListo, olvidarGlobal } from './global_datos.js';
 
 usarCss('global', CSS);
 
@@ -84,29 +85,17 @@ function proximoLunes(iso) {
 const fechaEv = (iso) => (iso ? iso.slice(8, 10) + '/' + iso.slice(5, 7) : '');
 
 // ── bajar /global.json, una vez ──
-let pedido = null;
+// `/global.json` vive en global_datos.js (24/11/2026): el buscador de arriba también lo pide, y así es un solo pedido
 function useGlobal() {
-  const [D, setD] = useState(() => (pedido && pedido.listo) || null);
+  const [D, setD] = useState(globalListo);
   const [mal, setMal] = useState(false);
   useEffect(() => {
     if (D) return undefined;
     let vivo = true;
-    if (!pedido) {
-      // ⏳ CON PLAZO (21/11/2026, revisión de robustez): colgado, el pedido no fallaba nunca y la página no llegaba a decir
-      // que no pudo (`mal`) ni a dejar reintentar. A los 20 s se corta (`AbortController` + `setTimeout`, no
-      // `AbortSignal.timeout`: Safari viejo) y es un fallo más: se suelta, y el próximo intento vuelve a pedir
-      const ctl = typeof AbortController === 'function' ? new AbortController() : null;
-      const plazo = setTimeout(() => { if (ctl) ctl.abort(); }, 20000);
-      const este = fetch('/global.json', { cache: 'no-cache', signal: ctl ? ctl.signal : undefined })
-        .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-        .finally(() => clearTimeout(plazo));
-      pedido = este;
-      este.then((d) => { este.listo = d; }, () => { if (pedido === este) pedido = null; });
-    }
-    pedido.then((d) => { if (vivo) setD(d); }, () => { if (vivo) setMal(true); });
+    bajarGlobal().then((d) => { if (vivo) setD(d); }, () => { if (vivo) setMal(true); });
     return () => { vivo = false; };
   }, [D]);
-  return [D, mal, () => { setMal(false); setD(null); pedido = null; }];
+  return [D, mal, () => { setMal(false); setD(null); olvidarGlobal(); }];
 }
 
 // ── 📜 LA HISTORIA DE CADA UNO (23/11/2026, Dlx: «crea perfiles para los pros o plazas, y ahí agrega sus historias, como
@@ -1006,10 +995,41 @@ function Dialogo({ cls, etiqueta, onCerrar, children }) {
 }
 
 // ── LA PÁGINA ──
+/** la `k` de la ficha que pide la dirección (`ranking/global/<k>`), o '' */
+function fichaDeRuta() {
+  const r = window.rutaLG ? window.rutaLG() : (location.hash || '').replace(/^#\/?/, '');
+  const m = /^ranking\/global\/([^/?#]+)/.exec(r || '');
+  if (!m) return '';
+  try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; }
+}
+const urlGlobal = (k) => {
+  const r = '#/ranking/global' + (k ? '/' + encodeURIComponent(k) : '');
+  return window.urlLG ? window.urlLG(r) : r;
+};
+
 export function RankingGlobal({ liga, dc, movil }) {
   const [D, mal, reintentar] = useGlobal();
   const X = useMemo(() => (D ? preparar(D, liga) : null), [D, liga]);
-  const [ficha, setFicha] = useState(null);
+  const [ficha, ponerFicha] = useState(null);
+  // 🔗 CADA FICHA TIENE SU DIRECCIÓN (24/11/2026, Dlx: «asegúrate que todos tengan perfiles buscables, incluso los del
+  // ranking global»): `#/ranking/global/<k>` abre la de `k`, también desde el buscador de arriba. Abrir y cerrar cambian la
+  // dirección con `replaceState` (es la misma vista, «atrás» no recorre fichas) y se lee de la dirección al llegar y en
+  // cada `lg:dir`: la `ver` del Ranking se queda con la de la primera vez si se vuelve a pedir la misma
+  const setFicha = (g) => {
+    ponerFicha(g);
+    try { history.replaceState(history.state, '', urlGlobal(g ? g.k : '')); } catch (e) { /* queda la dirección */ }
+  };
+  useEffect(() => {
+    if (!X) return undefined;
+    const leer = () => {
+      const k = fichaDeRuta();
+      const g = k ? X.G.find((x) => x.k === k) : null;
+      if (g) ponerFicha(g);
+    };
+    leer();
+    window.addEventListener('lg:dir', leer);
+    return () => window.removeEventListener('lg:dir', leer);
+  }, [X]);
   const [pq, setPq] = useState(false);
   const [filtro, setFiltro] = useState({ g: 'todos', pais: 'todos', sinProv: false, q: '', pag: 0 });
   const papel = useRef(null);
