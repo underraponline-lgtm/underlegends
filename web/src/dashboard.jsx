@@ -1167,7 +1167,7 @@ function CompararSemanas({ S, uso, liga }) {
 // ── 🤝 LOS TIERS (Dlx, 18/10/2026: «3 tier levels of association… el sistema recomienda y muestra qué tan bien los
 // servidores han hecho su trabajo»). Cada servidor con su nivel —que se elige acá: ajuste `tiers`, el ciclo lo copia a
 // datos/niveles.json—, su puntaje de las últimas 4 semanas y lo que recomienda `bot/tiers.py`. El puntaje no sale de acá
-const TIER_QUE = { 1: 'Temporada y Competitivo, todo', 2: 'todo menos «Unirme a los Tier 1»', 3: 'su página, sus ligas (como duelos) y la Temporada' };
+const TIER_QUE = { 1: 'Temporada y Competitivo, todo', 2: 'todo menos «Unirme a los Tier 1» y el perfil del bot', 3: 'su página, sus ligas (como duelos) y la Temporada' };
 // 👥 los miembros que se recomiendan en cada tier: una copia de `RECOMENDADO` de bot/tiers.py (19/11/2026). No es requisito
 const MIEMBROS_REC = { 1: 1000, 2: 500, 3: 100 };
 // 🎛️ los beneficios de cada servidor (Dlx, 20/10/2026: «qué beneficio dar que no, qué tier, a cada servidor nuevo»). El

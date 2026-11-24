@@ -58,11 +58,13 @@ const DA = {
   redes5: ['tiene', () => '5 imágenes por semana para tus redes'],
   consejo: ['tiene', () => 'tu voto en el consejo de socios'],
   bienvenida: ['tiene', () => 'la bienvenida del bot a quien llega a tu Discord'],
+  // 🤖 el bot con el perfil de tu servidor (23/11/2026): «FFA Bot», con su foto y su banner
+  perfil: ['tiene', () => 'el bot con el nombre, la foto y el banner de tu servidor'],
   lo_nuevo: ['tiene', () => 'lo nuevo antes que nadie'],
   prendas: ['tiene', () => 'la posibilidad de camisetas y prendas de tu servidor, hechas por la Liga'],
 };
 const ORDEN_DA = ['suma', 'competitivo', 'duelos', 'estilos', 'unirse', 'pases_t1', 'tarea_t1', 'carta', 'mes_awards', 'redes2', 'redes5',
-  'consejo', 'bienvenida', 'lo_nuevo', 'prendas', 'pagina', 'calendario', 'ligas', 'panel'];
+  'consejo', 'bienvenida', 'perfil', 'lo_nuevo', 'prendas', 'pagina', 'calendario', 'ligas', 'panel'];
 const lista = (xs) => (xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : xs[0] || '');
 const mayus = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 // los puntos de un servidor, cortos (como los carteles de Socios)

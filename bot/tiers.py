@@ -19,6 +19,9 @@ QUÉ ES CADA UNO
     competitivo y tener su tarjeta de servidor aun así. No tendrían ese de que el bot les agregue a todos los servidores»*,
     *«1. A»* (sus MES AWARDS también) y *«2. se queda para tier 2»* (sus ligas cuentan como duelos). Pasaron SR, FRZ,
     ACAD y FVS (*«SNK, FRZ, LCW a tier 2»*, *«FVS pásalo a tier 2»*); los Tier 3 se quedan donde están por ahora.
+    🤖 Y DESDE EL 23/11/2026, TAMBIÉN MENOS EL PERFIL DEL BOT (`perfil`): Dlx, *«para los tier 1… que tengan su propio
+    perfil el bot»*. Es el único beneficio de `PRESET` que separa al 1 del 2; lo demás que es sólo del 1 (los Pases, las
+    prendas, la bienvenida…) no se prende ni se apaga y vive en `reglas()`.
     ⚠️ Hasta ese día el Tier 2 era «sólo calendario y campana, sin sumar» y después lo mismo que el Tier 3 (`PRESET`):
     no lo tenía nadie.
   · TIER 3: su página de servidor y sus ligas en Ligas (sin contar como duelos); sin carta de Servidor ni puntos.
@@ -89,7 +92,7 @@ def reglas():
     # el Tier 1 recibe 5, regala Pases, saluda a quien llega, tiene su Tarea del Pase, lo nuevo primero y, desde el mismo
     # 20/11 (Dlx: «otro beneficio de TIER 1 es la posibilidad de nosotros hacer camisetas y prendas de los tier 1»), prendas
     da = {3: sorted(PRESET[3]), 2: sorted((PRESET[2] - PRESET[3]) | {'carta', 'mes_awards'}) + ['estilos', 'redes2', 'consejo'],
-          1: sorted(PRESET[1] - PRESET[2]) + ['unirse', 'redes5', 'pases_t1', 'tarea_t1', 'bienvenida', 'lo_nuevo', 'prendas']}
+          1: ['unirse'] + sorted(PRESET[1] - PRESET[2]) + ['redes5', 'pases_t1', 'tarea_t1', 'bienvenida', 'lo_nuevo', 'prendas']}
     sube = {2: '%d eventos en 8 semanas, con %d raperos por evento de promedio' % (SUBE[2]['eventos'], SUBE[2]['por_evento']),
             1: '%d eventos en 8 semanas, %d raperos por evento de promedio y %d puntos; después, un mes de prueba' % (
                 SUBE[1]['eventos'], SUBE[1]['por_evento'], SUBE[1]['puntos'])}
@@ -1405,11 +1408,12 @@ def _self_check():
     ok(niveles(svs, {'BBB': 2, 'CCC': 9}) == {'AAA': 1, 'BBB': 2, 'CCC': 1} and bajados(svs, {'BBB': 3}) == {'BBB'}
        and bajados(svs, {'BBB': 2}) == set() and guilds_bajados(svs, {'BBB': 2, 'CCC': 3}) == {'3'},
        'lo elegido manda; un número que no es tier no vale; sólo el Tier 3 es «bajado» (el 2 cuenta todo desde el 19/11)')
-    # 🥈 el Tier 2 prende lo mismo que el 1 (Dlx, 19/11/2026): lo que los separa es el botón de unirse, no un beneficio
-    ok(PRESET[2] == PRESET[1] and PRESET[3] < PRESET[1] and 'competitivo' not in PRESET[3] and 'duelos' in PRESET[3]
+    # 🥈 el Tier 2 prende lo mismo que el 1 (Dlx, 19/11/2026): lo que los separa es el botón de unirse, no un beneficio;
+    # 🤖 y desde el 23/11/2026, el perfil del bot, que es sólo del 1 (Dlx: «para los tier 1»)
+    ok(PRESET[2] == PRESET[1] - {'perfil'} and 'perfil' in PRESET[1] and PRESET[3] < PRESET[1] and 'competitivo' not in PRESET[3] and 'duelos' in PRESET[3]
        and globals()['sin']('duelos', {'niveles': {'X': 3}}) == set()
        and globals()['sin']('competitivo', {'niveles': {'X': 3}}) == {'X'},
-       'el Tier 2 prende lo mismo que el 1, y el 3 todo menos el Competitivo: sus ligas también son duelos (19/11/2026)')
+       'el Tier 2 prende lo mismo que el 1 menos el perfil del bot, y el 3 todo menos el Competitivo: sus ligas también son duelos')
     # 🎛️ los beneficios y el alta
     bn, bq = beneficios({'AAA': 1, 'BBB': 3, 'CCC': 1}, {'BBB': {'ligas': False}, 'CCC': {'suma': True}}, codigo={'AAA', 'BBB'})
     ok(bn['AAA']['suma'] and bn['AAA']['competitivo'] and bn['BBB']['suma'] and not bn['BBB']['competitivo']
@@ -1601,7 +1605,7 @@ def _self_check():
        and como_subir(3, 0, {'anuncios': 2})['rec'] is None and como_subir(1, 90, {}) is None,
        'los miembros van en «rec», aparte de lo que se pide, y no frenan «N de M»', str(cs))
     rg = reglas()
-    ok(rg['rec'] == {'1': 1000, '2': 500, '3': 100} and rg['da']['1'][0] == 'unirse' and {'redes5', 'prendas', 'pases_t1'} <= set(rg['da']['1'])
+    ok(rg['rec'] == {'1': 1000, '2': 500, '3': 100} and rg['da']['1'][0] == 'unirse' and {'redes5', 'prendas', 'pases_t1', 'perfil'} <= set(rg['da']['1'])
        and {'competitivo', 'carta', 'mes_awards', 'estilos', 'redes2', 'consejo'} == set(rg['da']['2']) and 'competitivo' not in rg['da']['3']
        and 'duelos' in rg['da']['3']
        and '8 semanas' in rg['sube']['2'] and str(SUBE[1]['puntos']) in rg['sube']['1'] and 'prueba' in rg['sube']['1']
