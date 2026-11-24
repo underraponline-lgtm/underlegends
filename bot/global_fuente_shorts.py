@@ -16,7 +16,8 @@ va a la pestaña «Videos» de quien nombra, nada más. Lo ata `atar()` desde `b
 ⚠️ EN LA DUDA, A NADIE (la regla de siempre: unir de más es el error caro). Un short va a una persona sólo si su nombre
 entero aparece en el título como palabra suelta, ese nombre lo tiene UNA sola persona de la tabla, tiene 4 letras o más
 —o es de un pro— y no es una palabra común («ONCE» es un rapero y también un número: se queda afuera). Si el título nombra
-a más de tres, es un compilado y no va a nadie.
+a más de tres, es un compilado y no va a nadie. Y los hashtags no cuentan: los canales etiquetan nombres famosos que no
+salen en el video.
 
 ⚠️ YOUTUBE NO DEJA SACAR MÉTRICAS DE SUS DATOS: sólo el id del video, su título (para atarlo) y de qué canal es.
 """
@@ -155,7 +156,9 @@ def atar(shorts, gente):
     pats = [(n, re.compile(r'(?:^| )' + re.escape(n) + r'(?: |$)')) for n in orden]
     out = {}
     for vid, titulo, canal, *_ in shorts:
-        t = ' ' + norm(titulo) + ' '
+        # ⚠️ SIN LOS HASHTAGS (24/11/2026): los canales etiquetan nombres famosos para que los encuentren —«Stewart😎
+        # #chuty», «MOMENTOS YELL vs MILA #rapder #chuty»— y el short le aparecía a quien no sale. Cuenta sólo el título
+        t = ' ' + norm(re.sub(r'#\S+', ' ', str(titulo or ''))) + ' '
         ks = []
         for n, p in pats:
             if p.search(t):
@@ -194,7 +197,8 @@ def _self_check():
           ['5IgaVbXuQ7U', 'FAT TONY ES BICAMPEÓN DE RED BULL', 'redbull'],
           ['Fnw0G7ZyoM8', 'AZUKY Y ONCE DIERON UNA BATALLA INCREÍBLE', 'redbull'],
           ['aaaaaaaaaaa', 'ABEL L HACE HISTORIA', 'redbull'],
-          ['bbbbbbbbbbb', 'MECHA GAZIR FAT TONY Y TONY EN UNA NOCHE', 'redbull']]
+          ['bbbbbbbbbbb', 'MECHA GAZIR FAT TONY Y TONY EN UNA NOCHE', 'redbull'],
+          ['ccccccccccc', 'Stewart😎 #gazir #freestyle', 'cmf']]
     A = atar(sh, gente)
     chk(A.get('mecha') == [['CJH793pyv7o', 'redbull', ['gazir']]] and A.get('gazir') == [['CJH793pyv7o', 'redbull', ['mecha']]],
         'un short que nombra a dos va a los dos, cada uno con el otro')
@@ -203,6 +207,7 @@ def _self_check():
     chk('once' not in A and 'abel' not in A and 'abel-ec' not in A and 'l' not in A,
         'en la duda, a nadie: una palabra común, un nombre con dos dueños o una sola letra')
     chk(not any(x[0] == 'bbbbbbbbbbb' for xs in A.values() for x in xs), 'un título que nombra a más de tres es un compilado')
+    chk(not any(x[0] == 'ccccccccccc' for xs in A.values() for x in xs), 'un nombre que sólo está en un hashtag no cuenta')
     print('✅ todo bien' if ok else '❌ algo falló')
     return ok
 
