@@ -139,6 +139,8 @@ const AVISOS = {
   '/api/avisos/socio-liga': 'POST',
   '/api/avisos/socio-staff': 'POST',
   '/api/avisos/socio-pagina': 'POST',
+  // 🤖 el perfil del bot en ese servidor (23/11/2026): `socioPerfil()` de bot/avisos.js; con la foto, grande
+  '/api/avisos/socio-perfil': 'POST',
   '/api/avisos/dueno-socios': 'POST',
   '/api/avisos/promo-vio': 'POST',
   '/api/avisos/promo-extender': 'POST',
@@ -394,7 +396,7 @@ async function avisos(req, url, ctx) {
     // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir). Y el
     // logo de una crew (19/10/2026): viaja en el mismo pedido que la crea
     const grande = url.pathname === '/api/avisos/fondo' || url.pathname === '/api/avisos/foto-carta' || url.pathname === '/api/avisos/crew'
-      || url.pathname === '/api/avisos/socio-pagina';
+      || url.pathname === '/api/avisos/socio-pagina' || url.pathname === '/api/avisos/socio-perfil';
     // 🌆 el fondo del VS del Dashboard (11/11/2026): una foto de 1.600 px, más grande que las otras. Sin esto la página la
     // cortaba en 4 KB y «Subir» daba 413 siempre (la revisión del 11/11). El Worker la vuelve a medir (1,6 MB)
     const vsf = url.pathname === '/api/avisos/dueno/vs-fondo';

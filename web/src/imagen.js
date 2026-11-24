@@ -4,8 +4,10 @@
 /**
  * Recorta al centro a `AN`×`AL` («cover») y la pasa a webp por debajo de `TOPE` bytes; sin webp (Safari viejo), jpeg.
  * 🛡️ El canvas no copia los metadatos: la ubicación de una foto del celular no viaja (ver `tieneMetadatos()` en avisos.js).
+ * 🤖 `sinWebp` (23/11/2026): PNG, y si no entra, JPG. Es para lo que va a Discord —la foto y el banner del bot en cada
+ * servidor—, que sólo acepta esos dos; el PNG primero porque un logo con transparencia en JPG queda sobre negro.
  */
-export async function achicar(archivo, AN, AL, TOPE) {
+export async function achicar(archivo, AN, AL, TOPE, sinWebp = false) {
   const url = URL.createObjectURL(archivo);
   try {
     // ⚠️ con un Error con texto (18/11/2026): `onerror` rechazaba con el Event del <img>, que no trae `.message`, y con una
@@ -32,7 +34,11 @@ export async function achicar(archivo, AN, AL, TOPE) {
       const w = img.naturalWidth * e, h = img.naturalHeight * e;
       x.drawImage(img, (w0 - w) / 2, (h0 - h) / 2, w, h);
       // la calidad más alta que entre en el tope: arrancaba en 0.82, y un fondo quedaba en 97 KB con un tope de 600
-      for (const q of [0.92, 0.86, 0.8, 0.72, 0.62, 0.5]) {
+      if (sinWebp) {
+        const pn = await new Promise((ok) => c.toBlob(ok, 'image/png'));
+        if (pn && pn.size <= TOPE && pn.type === 'image/png') { pn.origen = origen; return pn; }
+      }
+      for (const q of (sinWebp ? [] : [0.92, 0.86, 0.8, 0.72, 0.62, 0.5])) {
         const b = await new Promise((ok) => c.toBlob(ok, 'image/webp', q));
         if (b && b.size <= TOPE && b.type === 'image/webp') { b.origen = origen; return b; }
         if (b && b.type !== 'image/webp') break;

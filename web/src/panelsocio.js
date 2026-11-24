@@ -44,6 +44,13 @@ export function pedirPagina(sv, cambio) {
   return W.conCuenta('/api/avisos/socio-pagina', Object.assign({ sv }, cambio || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
 }
 
+/** 🤖 (23/11/2026) El perfil del bot en ese servidor: sin `cambio` lo lee; con `{nick, bio, avatar, banner}`, `{img, img_de}`
+ *  o `{reaplicar: true}` lo cambia y lo aplica en Discord en el momento. Ver `socioPerfil()` en bot/avisos.js */
+export function pedirPerfil(sv, cambio) {
+  if (!W.conCuenta) return Promise.resolve({ error: 'red' });
+  return W.conCuenta('/api/avisos/socio-perfil', Object.assign({ sv }, cambio || {})).then((j) => j || { error: 'red' }).catch(() => ({ error: 'red' }));
+}
+
 /** 🛡️ (16/11/2026) Los servidores donde quien mira es del staff y su rol en cada uno: `{roles: {SV: rol}}`. En silencio:
  *  sin cuenta no pregunta nada (la llave lo usa para mostrar «Corregir» sólo a quien puede). Una vez por sesión */
 let rolesP = null;

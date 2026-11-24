@@ -1174,10 +1174,12 @@ const MIEMBROS_REC = { 1: 1000, 2: 500, 3: 100 };
 // tier los prende en grupo (`PRESET` de bot/tiers.py); cada interruptor manda sobre el preset
 const BENEF = [['pagina', 'Su página en Socios'], ['calendario', 'Sus eventos (calendario, campana, Publicaciones)'],
   ['ligas', 'Sus ligas en Ligas'], ['panel', 'El panel de su dueño'], ['suma', 'Sus llaves suman a la Temporada (con 8 o más)'],
-  ['competitivo', 'Cuentan para el Competitivo y los duelos'], ['duelos', 'Sus ligas cuentan como duelos']];
+  ['competitivo', 'Cuentan para el Competitivo y los duelos'], ['duelos', 'Sus ligas cuentan como duelos'],
+  // 🤖 «FFA Bot» con la foto y el banner de su Discord (23/11/2026): sólo el Tier 1 de entrada (`aplicarPerfilBot()` del Worker)
+  ['perfil', 'El bot con el perfil de su servidor']];
 // 🏆 todos los socios suman a la Temporada desde el 26/10/2026; el Competitivo, el Tier 1 y desde el 19/11/2026 también el 2
 // (bot/tiers.py `PRESET`: si se cambia uno, se cambia el otro)
-const PRESET = { 1: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'],
+const PRESET = { 1: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos', 'perfil'],
   2: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'], 3: ['pagina', 'calendario', 'ligas', 'panel', 'suma'] };
 
 function Beneficios({ x, tier, aj, hacer, ocup }) {

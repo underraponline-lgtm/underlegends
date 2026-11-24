@@ -3910,6 +3910,8 @@ const RUTAS = {
   // 🏠 la página de un socio, a su gusto: el texto, las redes y el banner (11/11/2026). Ver `socioPagina()` del objeto;
   // lo publicado, para el ciclo (`bot/subir_web.py`): público, como la página
   '/avisos/socio-pagina': 'POST', '/avisos/socio-paginas': 'GET',
+  // 🤖 el perfil del bot en ese servidor: nombre, foto, banner y bio (23/11/2026). Ver `socioPerfil()` del objeto
+  '/avisos/socio-perfil': 'POST',
   // 🗂️ lo que tocaron los socios en sus paneles, para el Dashboard (11/11/2026). Ver `socioRegistro()` del objeto
   '/avisos/dueno-socios': 'POST',
   // 📊 lo que espera respuesta de cada organizador, para el panel del socio (`bot/finales.py`, con la clave del ciclo)
@@ -5842,6 +5844,46 @@ export function socioPaginaValida(cual, valor) {
 }
 
 /**
+ * 🤖 EL PERFIL DEL BOT EN CADA SERVIDOR (Dlx, 23/11/2026: «para los tier 1… que tengan su propio perfil el bot», y «que
+ * cada servidor pueda configurar eso desde su dashboard… pero que por default se convierta en el perfil del servidor y
+ * si mi servidor es FFA que se llame FFA Bot»). Discord deja que un bot tenga, en cada servidor, su nombre, su foto, su
+ * banner y su bio (PATCH /guilds/{g}/members/@me: `nick`, `avatar`, `banner`, `bio`), sin Nitro. Lo guarda y lo aplica el
+ * objeto (`socioPerfil()`, `aplicarPerfilBot()`); el vigía lo repasa cada hora, así sigue al ícono del servidor si cambia.
+ * Es el beneficio `perfil` (bot/tiers.py), del Tier 1.
+ * · `nick`: hasta 32 (el tope de Discord), sin menciones ni invitaciones; vacío = el de siempre («FFA Bot»).
+ * · `bio`: hasta `PERFIL_BOT_BIO`, sin menciones ni invitaciones a otro Discord; vacía = la de siempre.
+ * · `img`: la foto o el banner, `servidor` (la de su Discord, la de siempre) o `liga` (la del bot de la Liga).
+ * Pura (`bot/avisos_prueba.mjs`): `undefined` si no vale.
+ */
+export const PERFIL_BOT_BIO = 190;
+export function perfilBotValido(cual, valor) {
+  if (cual === 'nick' || cual === 'bio') {
+    if (valor === '' || valor === null) return '';
+    if (typeof valor !== 'string') return undefined;
+    let t = valor.replace(/[\u0000-\u0009\u000B-\u001F\u007F​-‏‪-‮⁦-⁩]/g, '').replace(/[ \t]+/g, ' ');
+    t = cual === 'nick' ? t.replace(/\n/g, ' ').trim() : t.replace(/\n{3,}/g, '\n\n').trim();
+    if (t.length > (cual === 'nick' ? 32 : PERFIL_BOT_BIO) || /<@|<#|@everyone|@here|discord\.gg|discord(app)?\.com\/invite/i.test(t)) return undefined;
+    return t;
+  }
+  if (cual === 'img') return ['servidor', 'liga'].includes(valor) ? valor : undefined;
+  return undefined;
+}
+/** 🤖 El perfil de siempre de un servidor: «<SIGLA> Bot» y una bio con su nombre. Pura */
+export function perfilBotDefecto(sv, nombre) {
+  const n = String(nombre || sv).replace(/\s+/g, ' ').trim().slice(0, 60);
+  return { nick: (String(sv) + ' Bot').slice(0, 32), bio: ('El bot de ' + n + ' en Under Legends: sus eventos, su ranking y tu carta. ' + HUB).slice(0, PERFIL_BOT_BIO) };
+}
+/** 🤖 Lo que el bot tiene que ser en ese servidor: lo que eligió su equipo (`p`) sobre lo de siempre. `G`, lo que dice
+ *  Discord del servidor (`name`, `icon`, `banner`). Las imágenes son URLs: las de su Discord en PNG, las propias en R2;
+ *  `null` es la del bot de la Liga. Pura */
+export function perfilBotQuiere(sv, g, G, p) {
+  const P = p || {}, def = perfilBotDefecto(sv, (G && G.name) || sv);
+  const cdn = (base, h, tam) => (/^(a_)?[0-9a-f]{16,40}$/.test(String(h || '')) ? 'https://cdn.discordapp.com/' + base + '/' + g + '/' + h + '.png?size=' + tam : null);
+  const img = (k, base, h, tam) => (P[k] === 'liga' ? null : (P[k] ? P[k] : cdn(base, h, tam)));
+  return { nick: P.nick || def.nick, bio: P.bio || def.bio, avatar: img('avatar', 'icons', G && G.icon, 512), banner: img('banner', 'banners', G && G.banner, 1024) };
+}
+
+/**
  * 📅 El texto del resumen de la semana de un socio (`resumenesSemana()`): `x` es su fila de `tiers` (la del panel). La
  * semana que cerró es la anterior a la del lunes `lunes` (`semanas` del panel: `[lunes, eventos, gente, nuevos]`). Sin
  * eventos esa semana y sin gente en la temporada, `''`: no se manda un resumen vacío. ⚠️ Nunca menciona a nadie.
@@ -5869,7 +5911,7 @@ export function resumenTexto(x, lunes) {
 }
 
 /** 🎛️ los beneficios que se prenden y apagan por servidor (los mismos de `BENEFICIOS` en bot/tiers.py) */
-export const BENEFICIOS_SV = ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'];
+export const BENEFICIOS_SV = ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos', 'perfil'];
 
 export function ajusteValido(cual, valor) {
   // ↩️ `null` vale en todos (25/10/2026): «Deshacer» del historial vuelve a poner lo de antes, y antes de tocarlo por
@@ -8477,6 +8519,28 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🗂️ LO QUE TOCARON LOS SOCIOS, PARA EL DASHBOARD (Dlx, 11/11/2026: «que haya un registro para nosotros, no para ellos,
   // de las cosas que cambian… así si pasa algo tenemos prueba»). Sólo quien puede los ajustes del Dashboard
+  // 🤖 EL PERFIL DEL BOT EN ESE SERVIDOR (Dlx, 23/11/2026: «que cada servidor pueda configurar eso desde su dashboard»):
+  // quién pide lo dice Discord; si es de su equipo y qué vale, el objeto (`socioPerfil()`). El cuerpo:
+  // `{sv, nick?, bio?, avatar?, banner?, img?, img_de?, reaplicar?}`; sin nada, sólo lee. Una imagen por pedido
+  if (ruta === '/avisos/socio-perfil') {
+    const crudo = await req.text();
+    if (crudo.length > 900000) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const txt = (v, n) => v === undefined || v === null || (typeof v === 'string' && v.length <= n);
+    if (!d || typeof d !== 'object' || !/^[A-Z0-9]{2,6}$/.test(String(d.sv || '')) || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || !txt(d.nick, 100) || !txt(d.bio, 600) || !txt(d.avatar, 20) || !txt(d.banner, 20)
+        || (d.img !== undefined && (typeof d.img !== 'string' || !/^[A-Za-z0-9+/=]+$/.test(d.img) || !['avatar', 'banner'].includes(d.img_de)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/socio-perfil', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, sv: String(d.sv), nick: d.nick, bio: d.bio, avatar: d.avatar, banner: d.banner,
+        img: d.img, img_de: d.img_de, reaplicar: d.reaplicar === true }),
+    });
+  }
   if (ruta === '/avisos/dueno-socios') {
     const crudo = await req.text();
     let d = null;
@@ -10556,6 +10620,7 @@ export class Avisos {
       if (ruta === '/socio-equipo') return this.socioEquipo(d);
       if (ruta === '/dueno-socios') { if (d && d.accion) await this.socioPaginaDlx(d); return json(this.socioRegistro()); }
       if (ruta === '/socio-pagina') return json(await this.socioPagina(d));
+      if (ruta === '/socio-perfil') return json(await this.socioPerfil(d));
       if (ruta === '/clics') return this.clics(d);
       if (ruta === '/error-pagina') return this.errorPagina(d);
       if (ruta === '/dueno') {
@@ -10986,6 +11051,8 @@ export class Avisos {
       await this.vaciarBasuraCrews();
       // 📅 y los lunes, el resumen de la semana de cada socio que lo pidió (`resumenesSemana()`)
       try { await this.resumenesSemana(ahora); } catch (e) { /* el próximo intento, en una hora */ }
+      // 🤖 y el perfil del bot en cada servidor que lo tiene (`perfilesBot()`): sigue al ícono y al banner de su Discord
+      try { await this.perfilesBot(ahora); } catch (e) { /* el próximo intento, en una hora */ }
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -18318,6 +18385,228 @@ export class Avisos {
     }
     const q = P[sv] || {};
     return { ok: true, desc: q.desc || '', redes: q.redes || [], banner: q.banner || '', pend: q.pend || '', filtro };
+  }
+
+  /** 🤖 ¿Ese servidor tiene el perfil del bot? `{x, tier, on}` o `null` si no es socio. El beneficio `perfil`: lo que eligió
+   *  Dlx en el Dashboard, si no lo que trajo el ciclo, y si el ciclo todavía no lo conoce, el Tier 1 */
+  perfilBotFila(sv) {
+    const x = (((this.leer('tiers') || {}).servidores) || []).find((s) => s.sv === sv);
+    if (!x) return null;
+    const aj = this.ajustes();
+    const tiers = (aj.tiers && typeof aj.tiers === 'object') ? aj.tiers : {};
+    const ben = (aj.beneficios && typeof aj.beneficios === 'object') ? aj.beneficios : {};
+    const tier = tiers[sv] || x.tier || 1;
+    const v = (ben[sv] || {}).perfil ?? (x.ben || {}).perfil;
+    return { x, tier, on: v === undefined ? tier === 1 : v === true };
+  }
+
+  /** 🤖 Una imagen del perfil, lista para Discord (`data:` en base64): de R2 si es propia, del CDN si es la del servidor.
+   *  Sólo PNG y JPG, que son las que la API dice aceptar. `null` si no se pudo */
+  async perfilImg(url) {
+    let b = null;
+    try {
+      if (url.startsWith(R2_PUB + '/')) {
+        const o = await this.env.CARTAS.get(url.slice(R2_PUB.length + 1));
+        if (o) b = new Uint8Array(await o.arrayBuffer());
+      } else if (url.startsWith('https://cdn.discordapp.com/')) {
+        const r = await fetch(url, { headers: { 'User-Agent': UA } });
+        if (r.status === 200) b = new Uint8Array(await r.arrayBuffer());
+      }
+    } catch (e) { b = null; }
+    if (!b || b.length > 4 * 1024 * 1024) return null;
+    const tipo = tipoImagen(b);
+    if (tipo !== 'image/png' && tipo !== 'image/jpeg') return null;
+    let s = '';
+    for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+    return 'data:' + tipo + ';base64,' + btoa(s);
+  }
+
+  /** 🤖 Lo que Discord dice del servidor (`name`, `icon`, `banner`), o `null` si no contestó o el bot no está ahí */
+  async perfilGuild(g) {
+    try {
+      const rg = await fetch(`${DC}/guilds/${g}`, { headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA } });
+      if (rg.status !== 200) return null;
+      const G = await rg.json();
+      return { name: String(G.name || '').slice(0, 100), icon: String(G.icon || ''), banner: String(G.banner || '') };
+    } catch (e) { return null; }
+  }
+
+  /**
+   * 🤖 APLICA EL PERFIL DEL BOT EN ESE SERVIDOR (ver `perfilBotValido()`). Lo de siempre —«<SIGLA> Bot», la foto y el
+   * banner de su Discord, una bio con su nombre— con lo que eligió su equipo encima. Sólo le pide a Discord cuando algo
+   * cambió (`bot_perfil_hecho`: lo último que se aplicó, sin las imágenes), y las imágenes sólo si cambiaron: Discord no
+   * dice cuántos cambios de foto aguanta. Con el beneficio apagado, el bot vuelve a su perfil de siempre (todo `null`).
+   * `o.forzar` salta la comparación (lo guardó recién su equipo); `o.todo` manda también las imágenes («Aplicar de nuevo»).
+   */
+  async aplicarPerfilBot(sv, ahora = Date.now(), o = {}) {
+    const f = this.perfilBotFila(sv), g = this.guildDe(sv);
+    if (!f || !g) return { error: 'sin_guild' };
+    const E = this.leer('bot_perfil_hecho') || {}, e = E[sv] || null;
+    if (!o.forzar && e && e.reintento && ahora < e.reintento) return { espera: e.reintento };
+    const H = { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json',
+      'X-Audit-Log-Reason': encodeURIComponent('El perfil del bot, desde Under Legends') };
+    const patch = async (body) => {
+      try {
+        const r = await fetch(`${DC}/guilds/${g}/members/@me`, { method: 'PATCH', headers: H, body: JSON.stringify(body) });
+        return { st: r.status, ok: r.ok, txt: r.ok ? '' : (await r.text()).slice(0, 400) };
+      } catch (er) { return { st: 0, ok: false, txt: String((er && er.message) || er).slice(0, 200) }; }
+    };
+    const fallo = (r, G) => {
+      let espera = HORA;
+      if (r.st === 429) { try { espera = Math.max(60000, Number(JSON.parse(r.txt).retry_after || 3600) * 1000); } catch (er) { espera = HORA; } }
+      let msj = '';
+      try { msj = String((JSON.parse(r.txt) || {}).message || '').slice(0, 160); } catch (er) { msj = ''; }
+      const err = r.st === 429 ? 'Discord pidió esperar un rato: lo vuelvo a intentar solo.'
+        : r.st === 403 ? 'Discord no deja que el bot se cambie el perfil en tu servidor: dale el permiso «Cambiar apodo».'
+          : r.st === 400 ? 'Discord no aceptó el perfil' + (msj ? ': ' + msj : '.')
+            : 'Discord no contestó: lo vuelvo a intentar en una hora.';
+      E[sv] = { ...(e || {}), ...(G ? { G } : {}), err, terr: ahora, reintento: ahora + espera };
+      this.guardar('bot_perfil_hecho', E);
+      return { error: 'discord', texto: err };
+    };
+    if (!f.on) {
+      if (!e || !e.q) return { apagado: true };
+      const r = await patch({ nick: null, bio: null, avatar: null, banner: null });
+      if (r.ok || r.st === 403 || r.st === 404) { delete E[sv]; this.guardar('bot_perfil_hecho', E); return { apagado: true }; }
+      return fallo(r, null);
+    }
+    const G = await this.perfilGuild(g);
+    if (!G) return fallo({ st: 0, ok: false, txt: '' }, null);
+    const q = perfilBotQuiere(sv, g, G, (this.leer('bot_perfil') || {})[sv]);
+    const h = JSON.stringify(q);
+    if (!o.forzar && e && e.h === h && !e.err) {
+      if (JSON.stringify(e.G) !== JSON.stringify(G)) { E[sv] = { ...e, G }; this.guardar('bot_perfil_hecho', E); }
+      return { igual: true };
+    }
+    const body = { nick: q.nick, bio: q.bio };
+    const faltan = [];
+    for (const k of ['avatar', 'banner']) {
+      if (!o.todo && e && !e.err && e.q && k in e.q && e.q[k] === q[k]) continue;
+      if (!q[k]) { body[k] = null; continue; }
+      const u = await this.perfilImg(q[k]);
+      if (u) body[k] = u; else faltan.push(k);
+    }
+    const r = await patch(body);
+    if (!r.ok) return fallo(r, G);
+    const hecho = { ...q };
+    for (const k of faltan) { if (e && e.q && k in e.q) hecho[k] = e.q[k]; else delete hecho[k]; }
+    E[sv] = { h: faltan.length ? '' : h, q: hecho, G, t: ahora };
+    this.guardar('bot_perfil_hecho', E);
+    return { ok: true, t: ahora, faltan };
+  }
+
+  /** 🤖 Cada hora, el perfil del bot en cada servidor que lo tiene, o que lo tuvo y se apagó. Hasta 8 cambios por vuelta */
+  async perfilesBot(ahora = Date.now()) {
+    if (this.pausada()) return 0;
+    const E = this.leer('bot_perfil_hecho') || {};
+    let n = 0;
+    for (const x of (((this.leer('tiers') || {}).servidores) || [])) {
+      if (n >= 8) break;
+      const f = this.perfilBotFila(x.sv);
+      if (!f || (!f.on && !(E[x.sv] && E[x.sv].q))) continue;
+      const r = await this.aplicarPerfilBot(x.sv, ahora);
+      if (r && (r.ok || r.error)) n++;
+    }
+    return n;
+  }
+
+  /** 🤖 Lo que ve el panel del perfil del bot: lo que eligió su equipo, lo de siempre y cómo salió lo último */
+  perfilBotVista(sv, f) {
+    const P = (this.leer('bot_perfil') || {})[sv] || {}, e = (this.leer('bot_perfil_hecho') || {})[sv] || {};
+    const G = e.G || {}, g = this.guildDe(sv);
+    const def = perfilBotDefecto(sv, G.name || f.x.nombre || sv), dq = perfilBotQuiere(sv, g, G, {});
+    return { ok: true, on: f.on, tier: f.tier, nick: P.nick || '', bio: P.bio || '', avatar: P.avatar || 'servidor', banner: P.banner || 'servidor',
+      def: { nick: def.nick, bio: def.bio, avatar: dq.avatar || '', banner: dq.banner || '' }, tope_bio: PERFIL_BOT_BIO,
+      t: e.t || 0, err: e.err || '', reintento: e.err ? (e.reintento || 0) : 0 };
+  }
+
+  /**
+   * 🤖 EL PERFIL DEL BOT, DESDE EL PANEL DEL SOCIO (Dlx, 23/11/2026: «que cada servidor pueda configurar eso desde su
+   * dashboard»). El dueño y sus admins (`ajustes`) cambian el nombre, la bio, la foto y el banner; cada uno puede volver a
+   * «el de tu servidor». Se aplica en el momento. Una foto propia pasa por el filtro de los fondos y, a diferencia del
+   * banner de la página, sólo entra si el filtro la aprueba: el bot habla en nombre de la Liga. Todo va al registro.
+   */
+  async socioPerfil(d) {
+    const quien = String((d && d.quien) || ''), sv = String((d && d.sv) || '').toUpperCase();
+    const x = this.sociosDe(quien).lista.find((s) => s.sv === sv);
+    const f = x ? this.perfilBotFila(sv) : null;
+    if (!x || !f) return { error: 'no' };
+    const cambia = d && (d.nick !== undefined || d.bio !== undefined || (d.avatar !== undefined && d.avatar !== null)
+      || (d.banner !== undefined && d.banner !== null) || d.img || d.reaplicar);
+    if (cambia && !f.on) return { error: 'apagado' };
+    if (cambia && !socioPuede(x.rol, 'ajustes')) return { error: 'no_rol' };
+    if (cambia && !this.cuentaCambio(quien, 'bot_perfil', 20)) return { error: 'tope' };
+    const P = this.leer('bot_perfil') || {};
+    const p = { ...(P[sv] || {}) };
+    const n = this.nombreEquipo(sv, quien), ahora = Date.now();
+    const borrarR2 = async (u) => {
+      const k = String(u || '').split('.r2.dev/')[1];
+      if (k && k.startsWith('botsv/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+    };
+    const QUE = { nick: 'el nombre', bio: 'la bio', avatar: 'la foto', banner: 'el banner' };
+    for (const k of ['nick', 'bio']) {
+      if (!d || d[k] === undefined) continue;
+      const v = perfilBotValido(k, d[k]);
+      if (v === undefined) return { error: k };
+      if (v !== (p[k] || '')) {
+        this.socioAnotar(sv, quien, x.rol, 'bot: ' + QUE[k], p[k] || '', v, n);
+        if (v) p[k] = v; else delete p[k];
+      }
+    }
+    for (const k of ['avatar', 'banner']) {
+      if (!d || d[k] === undefined || d[k] === null) continue;
+      const v = perfilBotValido('img', d[k]);
+      if (v === undefined) return { error: k };
+      const ya = p[k] || 'servidor';
+      if (v !== ya) {
+        this.socioAnotar(sv, quien, x.rol, 'bot: ' + QUE[k], ya, v, n);
+        await borrarR2(p[k]);
+        if (v === 'servidor') delete p[k]; else p[k] = v;
+      }
+    }
+    if (d && d.img) {
+      const k = d.img_de === 'banner' ? 'banner' : 'avatar';
+      let b = null;
+      try { b = Uint8Array.from(atob(d.img), (c) => c.charCodeAt(0)); } catch (e) { b = null; }
+      const tipo = b ? tipoImagen(b) : '';
+      if (tipo !== 'image/png' && tipo !== 'image/jpeg') return { error: 'no es una imagen' };
+      if (b.length > FONDO_TOPE) return { error: 'demasiado grande' };
+      b = limpiarMetadatos(b);
+      if (!b || tieneMetadatos(b)) return { error: 'metadatos' };
+      if (!this.cuentaCambio(quien, 'bot_filtro', 6)) return { error: 'tope' };
+      let fv = { v: 'revisar', si: [], quizas: [], crudo: '', error: 'sin IA' };
+      if (this.env.AI) {
+        try { fv = await filtrarImagen(this.env, d.img, tipo); } catch (e) { fv = { v: 'revisar', si: [], quizas: [], crudo: '', error: String((e && e.message) || e).slice(0, 100) }; }
+      }
+      this.anotarFiltro(quien, 'bot:' + sv, fv, ahora);
+      if (fv.v !== 'ok') {
+        const cats = (fv.si || []).filter((c) => FILTRO_NO.includes(c));
+        return { error: 'filtro', texto: cats.map((c) => FILTRO_TEXTO[c]).join(', ') };
+      }
+      const azar = Array.from(crypto.getRandomValues(new Uint8Array(12)), (y) => y.toString(16).padStart(2, '0')).join('');
+      const clave = 'botsv/' + azar + (tipo === 'image/png' ? '.png' : '.jpg');
+      try {
+        await this.env.CARTAS.put(clave, b, { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=31536000' } });
+      } catch (e) { return { error: 'no pude guardarla' }; }
+      await borrarR2(p[k]);
+      p[k] = R2_PUB + '/' + clave;
+      this.socioAnotar(sv, quien, x.rol, 'bot: ' + QUE[k] + ' nueva', '', p[k], n);
+    }
+    let aplicado = null;
+    if (cambia) {
+      p.t = ahora;
+      if (Object.keys(p).some((k) => k !== 't')) P[sv] = p; else delete P[sv];
+      this.guardar('bot_perfil', P);
+      aplicado = await this.aplicarPerfilBot(sv, ahora, { forzar: true, todo: d.reaplicar === true });
+    } else {
+      // 👀 la primera vez que se abre, lo que dice Discord del servidor: así la vista previa muestra su foto y su banner
+      const E = this.leer('bot_perfil_hecho') || {}, g = this.guildDe(sv);
+      if (g && !(E[sv] && E[sv].G)) {
+        const G = await this.perfilGuild(g);
+        if (G) { E[sv] = { ...(E[sv] || {}), G }; this.guardar('bot_perfil_hecho', E); }
+      }
+    }
+    return { ...this.perfilBotVista(sv, f), aplicado };
   }
 
   /** 🛠️ Lo que hace Dlx con las páginas desde el Dashboard: aprobar o no un banner que espera, y quitar lo que haga falta */

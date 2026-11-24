@@ -19,7 +19,7 @@
 // aprieta «Entrar con Discord».
 // ⚠️ SIN EMOJIS (13/10/2026: cada celular los dibuja distinto): los títulos de cada rapero llevan el ícono de la copa.
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
+import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirPerfil, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
 import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.js';
 import { Cara, DosToques, Ico, Sec, diaET, enlace, masDias, usePerfiles } from './piezas.jsx';
@@ -991,6 +991,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
               {/* ⚠️ «el aviso de cada evento» y «Eventos de Discord» NO están en /settings (bot/worker.js): son sólo de acá y del Dashboard */}
               {p_('ajustes') ? <Sec id="sp-ajustes" titulo="Los ajustes del bot" bajada="Los de /settings en tu Discord —lo último que cambies, acá o allá, es lo que vale— y los que sólo están acá: el aviso de cada evento, las batallas de tus ligas y los eventos de Discord.">
                 <Ajustes sv={x.sv} tier={x.tier} /></Sec> : null}
+              {/* 🤖 el bot con el perfil de tu servidor (23/11/2026): se dibuja sólo si el servidor lo tiene */}
+              <PerfilBot sv={x.sv} puedeCambiar={p_('ajustes')} />
               {/* 👥 TU EQUIPO (Dlx, 11/11/2026): sólo el dueño lo ve y lo maneja; cada uno entra con su propia cuenta y con su rol */}
               {dueno ? <Sec id="sp-equipo" titulo="Tu equipo" bajada="Los de tu servidor que pueden usar este panel, cada uno con su rol. Entran con su propia cuenta de Discord."><Equipo sv={x.sv} /></Sec> : null}
             </> : null}
@@ -1065,6 +1067,112 @@ function TuPagina({ sv }) {
       </div>
       {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
     </div>
+  );
+}
+
+// 🤖 EL PERFIL DEL BOT EN TU SERVIDOR (Dlx, 23/11/2026: «que cada servidor pueda configurar eso desde su dashboard… pero
+// que por default se convierta en el perfil del servidor y… que se llame FFA Bot»). Discord deja que el bot tenga en cada
+// servidor su nombre, su foto, su banner y su bio. Arriba, cómo lo ve tu gente; abajo, qué cambiar. Lo aplica el objeto en
+// el momento (`socioPerfil()`); la foto y el banner, en PNG o JPG, que es lo que Discord acepta. Sin el beneficio
+// `perfil` (Tier 1 de entrada), la sección no se dibuja
+const BOT_ERR = { nick: 'El nombre va hasta 32 letras, sin menciones ni invitaciones.', bio: 'La bio va hasta 190 letras, sin menciones ni invitaciones a otro Discord.',
+  filtro: 'Esa imagen no pasa el filtro de la Liga: prueba con otra.', metadatos: 'Esa imagen trae datos escondidos: prueba con otra.', tope: 'Llegaste al tope de cambios de hoy.',
+  'no es una imagen': 'Eso no es una imagen PNG o JPG.', 'demasiado grande': 'La imagen quedó muy pesada.', no: 'Este servidor no es tuyo.', no_rol: 'Tu rol no puede cambiar el bot.',
+  apagado: 'Tu servidor no tiene el perfil del bot.' };
+const BOT_IMG = [['servidor', 'La de tu servidor'], ['propia', 'Una propia'], ['liga', 'La de Under Legends']];
+function PerfilBot({ sv, puedeCambiar }) {
+  const [j, setJ] = useState(null);
+  const [nick, setNick] = useState('');
+  const [bio, setBio] = useState('');
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const cargar = (r, todo = true) => {
+    setJ(r || { error: 'red' });
+    if (r && r.ok && todo) { setNick(r.nick || ''); setBio(r.bio || ''); }
+  };
+  useEffect(() => {
+    let vivo = true;
+    setJ(null); setMsg('');
+    pedirPerfil(sv).then((r) => { if (vivo) cargar(r); });
+    return () => { vivo = false; };
+  }, [sv]);
+  const dicho = (r, listo) => {
+    if (r && r.aplicado && r.aplicado.error) return r.err || 'Guardado, pero Discord no lo tomó todavía: lo vuelvo a intentar solo.';
+    if (r && r.aplicado && (r.aplicado.faltan || []).length) return 'Guardado, pero Discord no recibió la imagen: lo vuelvo a intentar en una hora.';
+    return listo;
+  };
+  // `todo` (como en «Tu página»): subir una imagen contesta con el nombre y la bio GUARDADOS, y no pisa lo que estás escribiendo
+  const mandar = (cambio, listo, todo = true) => {
+    setOcup(true); setMsg('');
+    pedirPerfil(sv, cambio).then((r) => {
+      setOcup(false);
+      if (r && r.ok) { cargar(r, todo); setMsg(dicho(r, listo)); }
+      else setMsg((r && r.error === 'filtro' && r.texto ? 'Esa imagen no pasa el filtro de la Liga (' + r.texto + ').' : BOT_ERR[r && r.error]) || 'No se pudo guardar: prueba de nuevo en un rato.');
+    });
+  };
+  const subir = (k) => async (e) => {
+    const a = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!a) return;
+    // 🔎 la foto a 512 y el banner a 1360×480 (el doble de lo que Discord dibuja: 680×240), en PNG o JPG
+    try {
+      const b = k === 'avatar' ? await achicar(a, 512, 512, 550 * 1024, true) : await achicar(a, 1360, 480, 550 * 1024, true);
+      mandar({ img: await aBase64(b), img_de: k }, k === 'avatar' ? 'Listo: el bot ya tiene tu foto.' : 'Listo: el bot ya tiene tu banner.', false);
+    } catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
+  };
+  if (!j) return <Sec id="sp-bot" titulo="El bot en tu servidor"><p className="pronto-p">Buscando el perfil del bot…</p></Sec>;
+  if (j.ok && !j.on) return null;
+  if (!j.ok) return j.error === 'red' || j.error === 'no' ? null : <Sec id="sp-bot" titulo="El bot en tu servidor"><p className="pronto-p">{BOT_ERR[j.error] || 'No pude traer el perfil del bot.'}</p></Sec>;
+  // lo que se ve: lo que está escrito (aunque no esté guardado) sobre lo de siempre
+  const verNick = nick.trim() || j.def.nick, verBio = bio.trim() || j.def.bio;
+  const img = (k) => (j[k] === 'servidor' ? j.def[k] : j[k] === 'liga' ? '' : j[k]);
+  const modo = (k) => (j[k] === 'servidor' || j[k] === 'liga' ? j[k] : 'propia');
+  const av = img('avatar'), ban = img('banner');
+  const cambiado = nick.trim() !== (j.nick || '') || bio.trim() !== (j.bio || '');
+  const imagen = (k, t) => (
+    <fieldset className="sp-bot-img" disabled={ocup || !puedeCambiar}>
+      <legend>{t}</legend>
+      <div className="sp-bot-ops">{BOT_IMG.map(([v, n]) => (v === 'propia'
+        ? <label key={v} className={'sp-bot-op' + (modo(k) === v ? ' si' : '')}><input type="file" accept="image/*" hidden onChange={subir(k)} />
+          {modo(k) === v ? 'Cambiar la propia' : n}</label>
+        : <button key={v} type="button" className={'sp-bot-op' + (modo(k) === v ? ' si' : '')} aria-pressed={modo(k) === v}
+          onClick={() => { if (modo(k) !== v) mandar({ [k]: v }, 'Listo: ' + (k === 'avatar' ? 'la foto' : 'el banner') + ' del bot cambió.', false); }}>{n}</button>))}</div>
+      {k === 'avatar' && modo(k) === 'servidor' && !j.def.avatar ? <small>Tu servidor no tiene ícono en Discord: el bot usa la de Under Legends.</small> : null}
+      {k === 'banner' && modo(k) === 'servidor' && !j.def.banner ? <small>Tu servidor no tiene banner en Discord (lo da el nivel 2 de boosts): el bot no lleva banner.</small> : null}
+    </fieldset>
+  );
+  return (
+    <Sec id="sp-bot" titulo="El bot en tu servidor" bajada="Así se ve el bot de la Liga en tu Discord: su nombre, su foto, su banner y su bio. De entrada lleva los de tu servidor; cámbialos cuando quieras y se aplican en el momento.">
+      <div className="sp-bot">
+        <div className="sp-bot-prev" aria-label="Así lo ve tu gente en Discord">
+          <div className={'sp-bot-ban' + (ban ? '' : ' sin')} style={ban ? { backgroundImage: 'url("' + ban + '")' } : undefined} />
+          <div className="sp-bot-cab">
+            {av ? <img className="sp-bot-av" alt="" src={av} /> : <span className="sp-bot-av ul" aria-hidden="true">UL</span>}
+          </div>
+          <div className="sp-bot-txt">
+            <b>{verNick}</b> <span className="sp-bot-app">APP</span>
+            <p>{verBio}</p>
+          </div>
+        </div>
+        <div className="sp-bot-form">
+          <label className="sp-eq-q"><span>El nombre <small>{(nick.trim() || '').length} de 32</small></span>
+            <input type="text" value={nick} maxLength={32} placeholder={j.def.nick} disabled={!puedeCambiar} onChange={(e) => setNick(e.target.value)} /></label>
+          <label className="sp-eq-q"><span>La bio <small>{bio.length} de {j.tope_bio}</small></span>
+            <textarea value={bio} maxLength={j.tope_bio} rows={3} placeholder={j.def.bio} disabled={!puedeCambiar} onChange={(e) => setBio(e.target.value)} /></label>
+          {puedeCambiar ? <div className="sp-pag-acc">
+            <button type="button" className="btn verde" disabled={ocup || !cambiado} onClick={() => mandar({ nick, bio }, 'Guardado: el bot ya se llama ' + verNick + '.')}>Guardar el nombre y la bio</button>
+            {j.nick || j.bio ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ nick: '', bio: '' }, 'Listo: vuelve al nombre y la bio de siempre.')}>Volver a los de siempre</button> : null}
+          </div> : <p className="sp-vacio">Tu rol puede verlo; lo cambian el dueño y los admins.</p>}
+          {imagen('avatar', 'La foto')}
+          {imagen('banner', 'El banner')}
+          {j.err ? <p className="sp-bot-err" role="status">{j.err}{puedeCambiar ? <> <button type="button" className="btn borde2 chico" disabled={ocup}
+            onClick={() => mandar({ reaplicar: true }, 'Listo: Discord ya tiene el perfil.', false)}>Probar de nuevo</button></> : null}</p>
+            : j.t ? <p className="sp-bot-ok">En Discord desde el {new Date(j.t).toLocaleString('es', { timeZone: 'America/New_York', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })} (hora del este).</p>
+              : <p className="sp-bot-ok">Se aplica en Discord en la próxima hora.</p>}
+          {msg ? <p className="sp-preg-msg" role="status">{msg}</p> : null}
+        </div>
+      </div>
+    </Sec>
   );
 }
 

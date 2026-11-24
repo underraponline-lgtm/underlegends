@@ -705,3 +705,36 @@
 .cz-nc-b{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
 .cz-nc-b span{font-size:14px;line-height:1.4;color:var(--gris)}
 @media (hover: hover) and (pointer: fine){.cz-nc-l a:hover{text-decoration:underline;text-underline-offset:3px}}
+
+/* 🤖 el bot en tu servidor (23/11/2026): la vista previa imita la tarjeta de perfil de Discord (banner 680×240, la foto
+   encima del borde) sin copiar sus colores: los de la página. Al lado del formulario en la compu, arriba en el celular */
+.sp-bot{display:grid;gap:16px;align-items:start}
+@media (min-width:900px){.sp-bot{grid-template-columns:minmax(0,340px) minmax(0,1fr)}}
+.sp-bot-prev{border:2px solid var(--suave);background:var(--fondo);max-width:340px}
+.sp-bot-ban{aspect-ratio:17/6;background:var(--suave) center/cover no-repeat}
+/* sin banner, Discord dibuja una banda corta de color, no el alto entero */
+.sp-bot-ban.sin{aspect-ratio:auto;height:64px}
+.sp-bot-cab{height:44px;padding:0 14px;position:relative}
+.sp-bot-av{position:absolute;left:14px;top:-40px;width:80px;height:80px;border-radius:50%;border:5px solid var(--fondo);object-fit:cover;background:var(--suave)}
+.sp-bot-av.ul{display:grid;place-items:center;font:900 22px/1 Archivo,sans-serif;font-stretch:115%;color:var(--tinta)}
+.sp-bot-txt{padding:4px 14px 16px;overflow-wrap:anywhere;min-width:0}
+.sp-bot-txt b{font:900 20px/1.15 Archivo,sans-serif}
+.sp-bot-app{display:inline-block;margin-left:6px;padding:2px 5px;border-radius:3px;background:var(--verde);color:#06110E;font:800 11px/1 Archivo,sans-serif;vertical-align:3px}
+.sp-bot-txt p{margin:10px 0 0;font:500 14px/1.45 Archivo,sans-serif;color:var(--tinta);white-space:pre-line}
+.sp-bot-form{display:grid;gap:12px;min-width:0}
+.sp-bot-form textarea{min-height:88px;padding:10px 12px;border:2px solid var(--linea);border-radius:0;background:var(--fondo);color:var(--tinta);font:500 16px/1.45 Archivo,sans-serif;text-transform:none;letter-spacing:0;resize:vertical}
+.sp-bot-form textarea:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.sp-bot-img{margin:0;padding:0;border:0;display:grid;gap:6px;min-width:0}
+.sp-bot-img legend{padding:0;margin-bottom:6px;font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+.sp-bot-img small{font:500 13px/1.4 Archivo,sans-serif;color:var(--gris)}
+.sp-bot-ops{display:flex;flex-wrap:wrap;gap:6px}
+.sp-bot-op{min-height:44px;padding:0 14px;display:inline-flex;align-items:center;border:2px solid var(--linea);border-radius:0;background:transparent;color:var(--tinta);font:700 14px/1 Archivo,sans-serif;cursor:pointer;transition:border-color .15s ease,background-color .15s ease}
+.sp-bot-op.si{border-color:var(--verde);background:var(--verde);color:#06110E}
+.sp-bot-op:focus-visible,.sp-bot-op:focus-within{outline:2px solid var(--verde);outline-offset:2px}
+.sp-bot-op:active{transform:scale(.97)}
+.sp-bot-img:disabled .sp-bot-op{opacity:.55;cursor:default}
+.sp-bot-ok,.sp-bot-err{margin:0;font:500 13px/1.45 Archivo,sans-serif;color:var(--gris)}
+.sp-bot-err{color:#F2B24B;font-weight:700}
+.clara .sp-bot-err{color:#8A5A00}
+.clara .sp-bot .sp-preg-msg{color:#0B6B58}
+@media (prefers-reduced-motion:reduce){.sp-bot-op{transition:none}.sp-bot-op:active{transform:none}}

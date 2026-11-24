@@ -5803,6 +5803,92 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🤖 EL PERFIL DEL BOT EN CADA SERVIDOR (23/11/2026): qué vale, «FFA Bot» por defecto, y que se aplica sólo cuando cambia
+{
+  console.log('\n🤖 el perfil del bot en cada servidor\n');
+  ok(A.perfilBotValido('nick', '  FFA   Oficial ') === 'FFA Oficial' && A.perfilBotValido('nick', '') === '' && A.perfilBotValido('nick', 'x'.repeat(33)) === undefined
+    && A.perfilBotValido('nick', '@everyone') === undefined && A.perfilBotValido('nick', 5) === undefined,
+  'el nombre: hasta 32, sin menciones; vacío es el de siempre');
+  ok(A.perfilBotValido('bio', 'Eventos los viernes.\n\n\n\nVen.') === 'Eventos los viernes.\n\nVen.' && A.perfilBotValido('bio', 'x'.repeat(A.PERFIL_BOT_BIO + 1)) === undefined
+    && A.perfilBotValido('bio', 'entra a discord.gg/abc') === undefined && A.perfilBotValido('bio', 'https://underlegends.pages.dev') === 'https://underlegends.pages.dev',
+  'la bio: hasta 190, sin invitaciones a otro Discord, con links a la web');
+  ok(A.perfilBotValido('img', 'servidor') === 'servidor' && A.perfilBotValido('img', 'liga') === 'liga' && A.perfilBotValido('img', 'https://x') === undefined,
+    'la foto y el banner: la del servidor o la de la Liga (una propia entra subiéndola)');
+  const d0 = A.perfilBotDefecto('FFA', 'Freestyle Fight Arena');
+  ok(d0.nick === 'FFA Bot' && d0.bio.startsWith('El bot de Freestyle Fight Arena en Under Legends') && d0.bio.length <= A.PERFIL_BOT_BIO,
+    'por defecto, «FFA Bot» y una bio con su nombre', JSON.stringify(d0));
+  const HX = 'abcdef0123456789abcdef0123456789';
+  const q0 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, banner: '' }, {});
+  ok(q0.avatar === 'https://cdn.discordapp.com/icons/42/' + HX + '.png?size=512' && q0.banner === null,
+    'la foto de su Discord; sin banner en su Discord, el del bot', JSON.stringify(q0));
+  const q1 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX }, { nick: 'Arena', avatar: 'liga', banner: 'https://pub-x.r2.dev/botsv/a.png' });
+  ok(q1.nick === 'Arena' && q1.avatar === null && q1.banner === 'https://pub-x.r2.dev/botsv/a.png', 'lo que eligió su equipo manda');
+
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    o.state = o.state || {};
+    o.state.storage = o.state.storage || { transactionSync: (f) => f() };
+    if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
+    await new Promise((r) => setTimeout(r, 5));
+    const DUE = '700000000000000201';
+    o.guardar('tiers', { servidores: [{ sv: 'FFA', nombre: 'Freestyle Fight Arena', tier: 1, dueno: DUE }, { sv: 'CEU', nombre: 'Ceuta', tier: 3, dueno: DUE }] });
+    o.guardar('guilds', { FFA: '42', CEU: '43' });
+    const antes = globalThis.fetch;
+    const pedidos = [];
+    const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1, 2, 3, 4]);
+    let estadoPatch = 200;
+    globalThis.fetch = async (url, op = {}) => {
+      const m = (op.method || 'GET') + ' ' + String(url);
+      pedidos.push({ m, body: op.body ? JSON.parse(op.body) : null });
+      if (/\/guilds\/42$/.test(url)) return new Response(JSON.stringify({ name: 'Freestyle Fight Arena', icon: HX, banner: null }), { status: 200 });
+      if (/cdn\.discordapp\.com\/icons\//.test(url)) return new Response(PNG, { status: 200 });
+      if (/members\/@me$/.test(url)) return new Response(estadoPatch === 200 ? '{}' : JSON.stringify({ message: 'Rate limited', retry_after: 30 }), { status: estadoPatch });
+      return new Response('{}', { status: 404 });
+    };
+    const patches = () => pedidos.filter((p) => p.m.startsWith('PATCH'));
+    const n1 = await o.perfilesBot(Date.now());
+    const p1 = patches()[0];
+    ok(n1 === 1 && patches().length === 1 && /\/guilds\/42\/members\/@me$/.test(p1.m) && p1.body.nick === 'FFA Bot'
+      && p1.body.avatar.startsWith('data:image/png;base64,') && p1.body.banner === null && /Freestyle Fight Arena/.test(p1.body.bio),
+    'el vigía: el Tier 1 sale «FFA Bot» con la foto de su Discord; el Tier 3, nada', JSON.stringify({ n1, p: patches().map((p) => p.m) }));
+    await o.perfilesBot(Date.now());
+    ok(patches().length === 1, 'la vuelta siguiente, sin cambios, no le pide nada a Discord');
+    const v0 = await o.socioPerfil({ quien: DUE, sv: 'FFA' });
+    ok(v0.ok && v0.on && v0.def.nick === 'FFA Bot' && v0.nick === '' && v0.avatar === 'servidor' && v0.t > 0, 'el panel lo ve', JSON.stringify(v0));
+    const v1 = await o.socioPerfil({ quien: DUE, sv: 'FFA', nick: 'Arena Bot', banner: 'liga' });
+    const p2 = patches()[1];
+    ok(v1.ok && v1.nick === 'Arena Bot' && v1.aplicado && v1.aplicado.ok && p2 && p2.body.nick === 'Arena Bot' && !('avatar' in p2.body),
+      'cambiar el nombre lo aplica en el momento y no vuelve a mandar la foto', JSON.stringify({ v1, p2 }));
+    ok((await o.socioPerfil({ quien: '700000000000000999', sv: 'FFA', nick: 'x' })).error === 'no', 'alguien de afuera no puede');
+    ok((await o.socioPerfil({ quien: DUE, sv: 'CEU', nick: 'x' })).error === 'apagado', 'un Tier 3 no lo tiene');
+    estadoPatch = 429;
+    const v2 = await o.socioPerfil({ quien: DUE, sv: 'FFA', bio: 'Los viernes, batallas.' });
+    ok(v2.aplicado && v2.aplicado.error === 'discord' && /esperar/.test(v2.err) && v2.reintento > Date.now(), 'si Discord pide esperar, queda dicho y se reintenta solo',
+      JSON.stringify(v2));
+    estadoPatch = 200;
+    o.guardar('ajustes_dueno', { beneficios: { FFA: { perfil: false } } });
+    await o.perfilesBot(Date.now() + 2 * 3600000);
+    const p3 = patches()[patches().length - 1];
+    ok(p3.body.nick === null && p3.body.avatar === null && p3.body.bio === null && !(o.leer('bot_perfil_hecho') || {}).FFA,
+      'apagado desde el Dashboard: el bot vuelve a su perfil de siempre', JSON.stringify(p3));
+    globalThis.fetch = antes;
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

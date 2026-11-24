@@ -153,6 +153,9 @@ BENEFICIOS = (
     ('suma', 'Sus llaves suman a la Temporada'),
     ('competitivo', 'Sus llaves cuentan para el Competitivo y los duelos'),
     ('duelos', 'Sus ligas cuentan como duelos'),
+    # 🤖 el bot con el perfil de ese servidor (Dlx, 23/11/2026: «FFA Bot», su foto y su banner): lo aplica el Worker
+    # (`aplicarPerfilBot()` de bot/avisos.js) y su equipo lo cambia desde el panel
+    ('perfil', 'El bot con el perfil de su servidor'),
 )
 #: lo que prende cada tier. Los eventos y la página son de todos (Dlx, 20/10: «a general benefit»).
 #: 🏆 SUMAR A LA TEMPORADA, TODOS LOS SOCIOS (Dlx, 26/10/2026: «cada servidor que sea socio nuestro, automáticamente sus
@@ -162,7 +165,7 @@ BENEFICIOS = (
 #: 🥈 Y EL TIER 2, TODO LO DEL 1 (Dlx, 19/11/2026: «Tier 2 que cuenten sus eventos para competitivo»): lo que los separa
 #: no es un beneficio de esta lista sino el botón «Unirme a los Tier 1», que pregunta por el tier y no por `competitivo`
 #: (Worker y web/src/unirse.jsx)
-PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
+PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos', 'perfil'},
           2: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
           3: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'}}
 #: 🏟️ Y LAS LIGAS DEL TIER 3 CUENTAN COMO DUELOS, desde el 19/11/2026 (Dlx: «que sus ligas sí cuenten si son tier 3»; a
