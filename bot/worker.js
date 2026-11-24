@@ -1435,7 +1435,7 @@ function actualizarLuego(i, ctx, trabajo, familia = null) {
 // son cuatro dígitos (si sube o no en cada toque). Un toque contesta al instante (tipo 7) sin preguntarle nada a nadie;
 // «Abrir» le vuelve a pedir el drop al objeto, que lo devuelve tal cual porque ya está abierto (`ya`): el premio nunca
 // sale del botón.
-const DROP_GIF = R2 + '/drops/gif/v1/';
+const DROP_GIF = R2 + '/drops/gif/v2/';
 //: el color de cada rareza, el de la página (`RZ` en drops_show.js)
 const DROP_COLOR = [0x9AA4B2, 0x29B298, 0x9B5CFF, 0xFF4F93, 0xF5C542];
 const DROP_TOQUES = 4;

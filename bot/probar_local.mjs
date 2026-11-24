@@ -2025,8 +2025,8 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
        pl.length === 4 && pl.reduce((a, b) => a + b, 0) === 3 && pl.every((x) => x <= 1)
        && D.planDrop(0, Math.random).join('') === '0000' && D.planDrop(4, Math.random).join('') === '1111', JSON.stringify(pl));
     ok('🎞️ el nombre de cada GIF es el que graba herramientas/gif_drops.py',
-       /\/drops\/gif\/v1\/drop-sube-3\.gif$/.test(D.gifDrop('drop', 'sube', 3))
-       && /\/drops\/gif\/v1\/star-titulo-aliento-de-dragon\.gif$/.test(D.gifDrop('star', 'titulo', 3, 'Aliento de Dragón')));
+       /\/drops\/gif\/v\d+\/drop-sube-3\.gif$/.test(D.gifDrop('drop', 'sube', 3))
+       && /\/drops\/gif\/v\d+\/star-titulo-aliento-de-dragon\.gif$/.test(D.gifDrop('star', 'titulo', 3, 'Aliento de Dragón')));
     ok('🎞️ un botón `dt:` que no se entiende no abre nada (ni toques fuera de 1–5, ni una base más alta que lo que salió)',
        D.leerDt('dt:d:12:0.0.1.1000') === null && D.leerDt('dt:d:12:6.0.1.1000') === null && D.leerDt('dt:d:12:1.3.1.0000') === null
        && D.leerDt('dt:x:12:1.0.1.1000') === null && D.leerDt('dt:d:12:1.0.1.1000')?.anim === 'drop');

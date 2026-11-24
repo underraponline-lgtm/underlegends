@@ -92,7 +92,8 @@ const RZ = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de Oro']
 //: la rareza que dice la pantalla: «### Dragón Drop · Mixtape»
 const rzDe = (m) => RZ.findIndex((n) => txt(m).includes('· ' + n + '\n'));
 const gifs = new Set();
-const nombreGif = (u) => (/\/drops\/gif\/v1\/([a-z0-9-]+)\.gif(\?|$)/.exec(String(u || '')) || [])[1] || '';
+//: cualquier versión de la carpeta (v1, v2…): la que pide el Worker la cuida `gif_drops.py --auto`
+const nombreGif = (u) => (/\/drops\/gif\/v\d+\/([a-z0-9-]+)\.gif(\?|$)/.exec(String(u || '')) || [])[1] || '';
 const NOMBRES = new Set();
 for (const [anim, rs] of [['drop', [0, 1, 2, 3, 4]], ['star', [2, 3, 4]]]) {
   for (const r of rs) {

@@ -8,8 +8,8 @@ consigues la recompensa»*.
 
 Un Worker no dibuja, así que los GIF se graban una vez y viven en R2. **Son la animación de la página, no una copia**:
 `gif_drops/escena.js` monta `mostrarDrops()` de `web/src/drops_show.js` tal cual, con un drop de mentira cuyo
-resultado se elige, y acá se toca como lo haría una persona mientras se graba (CDP, ~30 cuadros por segundo). Si la
-animación de la página cambia, se vuelven a grabar y se sube la `VERSION`.
+resultado se elige, y acá se toca como lo haría una persona mientras se graba (CDP, en cámara lenta ×`LENTA`: ver
+`FPS`). Si la animación de la página cambia, se vuelven a grabar y se sube la `VERSION`.
 
     python herramientas/gif_drops.py               graba y arma todos en salida_gif_drops/ (no sube nada)
     python herramientas/gif_drops.py --solo drop:2 sólo los de esa animación y rareza, para mirar
@@ -45,10 +45,26 @@ WEB = os.path.join(BASE, 'web')
 SALIDA = os.path.join(BASE, 'salida_gif_drops')
 CRUDO = os.path.join(SALIDA, '_armado')
 #: la carpeta de R2. Se sube cuando cambian los GIF: Discord guarda la imagen por su dirección
-VERSION = 'v1'
+VERSION = 'v2'
 CLAVE = 'drops/gif/%s/' % VERSION
 LADO = 360          # px del GIF (cuadrado)
-FPS = 15
+#: 🎞️ 24/11/2026, Dlx: *«¿puedes hacer que sus animaciones sean más smooth?»*. Eran 15 cuadros por segundo armados de
+#: capturas en tiempo real, y Chrome no saca más de ~28 por segundo (medido): cada cuadro caía a destiempo y el GIF
+#: saltaba. Ahora la escena corre `LENTA` veces más despacio mientras se graba —las animaciones con
+#: `Animation.setPlaybackRate`, los relojes de la página (`setTimeout`, `performance.now`, `requestAnimationFrame`) con
+#: `RELOJ_LENTO`— y cada captura se pone en su hora de verdad: sobran cuadros para 25 por segundo parejos.
+#: 25 y no 30: el GIF cuenta en centésimas, y 4 cs exactas no alternan 3 y 4 como 30
+FPS = 25
+LENTA = 4
+RELOJ_LENTO = """(() => {
+  const K = %d, pn = performance.now.bind(performance), dn = Date.now, p0 = pn(), d0 = dn();
+  performance.now = () => p0 + (pn() - p0) / K;
+  Date.now = () => Math.round(d0 + (dn() - d0) / K);
+  const st = window.setTimeout, si = window.setInterval, raf = window.requestAnimationFrame.bind(window);
+  window.setTimeout = (f, ms, ...a) => st(f, (Number(ms) || 0) * K, ...a);
+  window.setInterval = (f, ms, ...a) => si(f, (Number(ms) || 0) * K, ...a);
+  window.requestAnimationFrame = (cb) => raf(() => cb(performance.now()));
+})();""" % LENTA
 #: las rarezas de cada animación (bot/avisos.js `DROP_RAREZAS`; un Star arranca en Vinilo)
 RAREZAS = {'drop': [0, 1, 2, 3, 4], 'star': [2, 3, 4]}
 NOMBRE_RZ = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de Oro']
@@ -122,6 +138,8 @@ def servidor(build):
 class Grabadora:
     def __init__(self, pg, cdp):
         self.pg, self.cdp = pg, cdp
+        #: capturas por segundo de escena en cada toma: tiene que sobrar contra FPS, o hay cuadros repetidos
+        self.ritmo = []
 
     def estado(self):
         return self.pg.evaluate('estado()') or {}
@@ -132,14 +150,17 @@ class Grabadora:
         cuadros, t0, fin, k, st = [], time.time(), None, 0, {}
         while True:
             d = self.cdp.send('Page.captureScreenshot', {'format': 'jpeg', 'quality': 95, 'optimizeForSpeed': True})
-            cuadros.append((time.time(), base64.b64decode(d['data'])))
+            ahora = time.time()
+            # la hora de la escena, no la del reloj: corre LENTA veces más despacio
+            cuadros.append((t0 + (ahora - t0) / LENTA, base64.b64decode(d['data'])))
             k += 1
             if fin is None and k % 3 == 0:
                 st = self.estado()
-                if time.time() - t0 > 0.25 and listo(st):
-                    fin = time.time() + extra
-            if (fin and time.time() >= fin) or time.time() - t0 > maximo:
+                if ahora - t0 > 0.25 * LENTA and listo(st):
+                    fin = ahora + extra * LENTA
+            if (fin and ahora >= fin) or ahora - t0 > maximo * LENTA:
                 break
+        self.ritmo.append(len(cuadros) / max(1e-6, cuadros[-1][0] - cuadros[0][0]))
         return cuadros, st or self.estado()
 
     def escena(self, anim, r_min, r_fin, titulo=''):
@@ -196,6 +217,7 @@ def grabar_todo(solo=None):
         b = pw.chromium.launch()
         ctx = b.new_context(viewport={'width': 480, 'height': 480}, device_scale_factor=1, reduced_motion='no-preference')
         ctx.route('**/*', servidor(build))
+        ctx.add_init_script(RELOJ_LENTO)
         pg = ctx.new_page()
         errores = []
         pg.on('pageerror', lambda e: errores.append(str(e)[:200]))
@@ -206,6 +228,9 @@ def grabar_todo(solo=None):
             pg.goto('http://gif.test/', wait_until='load')
             pg.wait_for_function('!!window.escena')
             pg.evaluate('document.fonts.ready.then(() => true)')
+            # el documento es nuevo en cada `goto`: el ritmo de sus animaciones se vuelve a poner
+            cdp.send('Animation.enable')
+            cdp.send('Animation.setPlaybackRate', {'playbackRate': 1.0 / LENTA})
 
         def guardar(nombre, cuadros, repetir=False):
             if nombre not in queda:
@@ -264,6 +289,13 @@ def grabar_todo(solo=None):
     if faltan:
         print('🔴 faltan: %s' % ', '.join(faltan))
     total = sum(v[1] for v in hechos.values())
+    if G.ritmo:
+        flojo = min(G.ritmo)
+        print('\ncapturas por segundo de escena: la peor toma %.0f, la mediana %.0f (hacen falta %d)' % (
+            flojo, sorted(G.ritmo)[len(G.ritmo) // 2], FPS))
+        if flojo < FPS:
+            print('🔴 una toma tuvo %.0f capturas por segundo y el GIF va a %d: subir LENTA' % (flojo, FPS))
+            mal.append('ritmo')
     print('\n%d GIF, %.1f MB en %s' % (len(hechos), total / 1048576, SALIDA))
     return 1 if (faltan or mal or errores) else 0
 
