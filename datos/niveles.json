@@ -3,7 +3,6 @@
  "niveles": {
   "ACAD": 2,
   "CEU": 3,
-  "CH": 1,
   "CHZ": 3,
   "DDF": 1,
   "DDS": 3,
@@ -41,16 +40,6 @@
    "competitivo": false,
    "duelos": true,
    "perfil": false
-  },
-  "CH": {
-   "pagina": true,
-   "calendario": true,
-   "ligas": true,
-   "panel": true,
-   "suma": true,
-   "competitivo": true,
-   "duelos": true,
-   "perfil": true
   },
   "CHZ": {
    "pagina": true,
@@ -217,7 +206,6 @@
  "desde": {
   "ACAD": "2026-10-04",
   "CEU": "2026-11-15",
-  "CH": "2026-11-05",
   "CHZ": "2026-11-19",
   "DDF": "2026-10-03",
   "DDS": "2026-11-06",
