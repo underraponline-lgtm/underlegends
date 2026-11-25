@@ -491,6 +491,15 @@
 "temporada"
 ]
 },
+"dyzz": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "eidp": {
 "rg": "C",
 "c": []
@@ -517,15 +526,6 @@
 },
 "numberve": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"dyzz": {
-"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -2942,14 +2942,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-15T15:42:04Z",
-"quien": [
-"Medster"
-],
-"carta": "servidor"
-},
 {
 "tipo": "rango",
 "t": "2026-10-15T15:59:25Z",
@@ -6359,6 +6351,15 @@
 16,
 14
 ]
+},
+{
+"tipo": "rango",
+"t": "2026-11-25T06:02:15Z",
+"quien": [
+"Dyzz"
+],
+"rg": "D",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -8669,7 +8670,7 @@
 "n": "METRO",
 "k": "",
 "de": 818,
-"a": 543
+"a": 542
 },
 {
 "n": "Konan",

@@ -3,7 +3,7 @@
  "cabecera": ["#", "País", "Raperos", "Puntos", "Eventos", "🥇", "Mejor", "Pts del mejor"],
  "filas": [
   [1, "Argentina", 155, 7250502, 1146, 112, "PichulaMc", 492223],
-  [2, "Chile", 88, 3852890, 627, 70, "Oasis", 714324],
+  [2, "Chile", 88, 3866090, 628, 70, "Oasis", 714324],
   [3, "Venezuela", 55, 3592233, 575, 53, "Makmah", 917328],
   [4, "Colombia", 70, 3268788, 559, 39, "Vandu", 443458],
   [5, "Perú", 55, 2089646, 481, 17, "NXUZ", 297992],

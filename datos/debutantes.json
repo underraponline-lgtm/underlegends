@@ -877,19 +877,6 @@
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
-  "Dyz": {
-   "avisado": "2026-11-14",
-   "chat": "2026-11-14",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-14T20:22:29+00:00",
-   "did": "",
-   "evento": "CHOP COMPE CEO V.2",
-   "n": 636,
-   "sv": "CH",
-   "vence": "2026-11-21T20:22:29+00:00",
-   "vencido": true
-  },
   "EL PIBE": {
    "avisado": "2026-11-05",
    "chat": "2026-11-06",
@@ -3927,7 +3914,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-24T02:57:58+00:00",
-   "did": "",
+   "did": "957751910096597065",
    "evento": "PURISTAS DEL HIP HOP",
    "n": 688,
    "sv": "FFA",

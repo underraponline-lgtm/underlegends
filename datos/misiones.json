@@ -8554,18 +8554,11 @@
      0,
      1
     ],
-    "Dyz 🇨🇱": [
-     0,
-     0,
-     1,
-     1,
-     0
-    ],
     "Dyzz": [
      0,
      0,
-     0,
-     0,
+     1,
+     1,
      0
     ],
     "Eclipsito": [
@@ -9784,7 +9777,7 @@
     "Dios": 1000,
     "Dominick": 300,
     "Dynoco": 600,
-    "Dyz 🇨🇱": 800,
+    "Dyzz": 800,
     "Eclipsito": 300,
     "Erian": 1600,
     "Ezze": 800,
@@ -11308,6 +11301,15 @@
       "CH"
      ]
     },
+    "Cronox": {
+     "d": [
+      2
+     ],
+     "s": [
+      "FFA",
+      "DDF"
+     ]
+    },
     "DarnBless": {
      "d": [
       0,
@@ -12463,14 +12465,8 @@
      ],
      0
     ],
-    "Dyz 🇨🇱": [
-     "CNC",
-     "escena",
-     null,
-     0
-    ],
     "Dyzz": [
-     "Paria",
+     "Cronox",
      "escena",
      null,
      0
@@ -13854,7 +13850,7 @@
      0
     ],
     "TøKīØ🦠🧠": [
-     "Dyzz",
+     "Paria",
      "escena",
      null,
      0
@@ -14804,7 +14800,7 @@
      0,
      0
     ],
-    "tierra sin atmosfera 🇦🇷": [
+    "tierra sin atmosfera": [
      1,
      0,
      0,
@@ -14883,7 +14879,7 @@
     "crakero": 300,
     "ikonoxx": 300,
     "romeo": 300,
-    "tierra sin atmosfera 🇦🇷": 300,
+    "tierra sin atmosfera": 300,
     "tommyhilfiger1312🇾🇹": 300,
     "yinn": 900
    }
@@ -14973,8 +14969,7 @@
   "Drexx": 4300,
   "Drezz🇵🇪": 300,
   "Dynoco": 2800,
-  "Dyz 🇨🇱": 800,
-  "Dyzz": 2700,
+  "Dyzz": 3500,
   "EGI": 300,
   "EIDP": 5000,
   "EL PIBE 🇦🇷": 600,
@@ -15266,7 +15261,7 @@
   "rodrilp": 1500,
   "romeo": 1500,
   "setesfifi": 300,
-  "tierra sin atmosfera 🇦🇷": 300,
+  "tierra sin atmosfera": 300,
   "tommyhilfiger1312🇾🇹": 300,
   "wei shenlong": 300,
   "yinn": 8600
