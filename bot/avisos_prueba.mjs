@@ -5123,7 +5123,7 @@ const ok = (cond, que, det) => {
     // ⚠️ LO QUE PROTEGE ES QUE LA PÁGINA NO MANDE UNA CLAVE QUE EL OBJETO NO ACEPTA (`validarUi()` rechaza el envío ENTERO).
     // Por eso una clave nueva entra primero al objeto (`UI_CLAVES`, con su despliegue) y recién después a la página: mientras
     // tanto espera en `ESPERAN` (25/11/2026: `lg:tuvideo-visto`, hasta que se despliegue el Worker)
-    const ESPERAN = ['lg:tuvideo-visto'];
+    const ESPERAN = [];
     ok(Object.keys(SC.REGLAS).every((k) => A.UI_CLAVES.includes(k))
       && A.UI_CLAVES.filter((k) => !(k in SC.REGLAS)).every((k) => ESPERAN.includes(k)),
       '📱 las claves que se juntan en la página (`REGLAS`) son las que acepta el objeto (`UI_CLAVES`), salvo las que esperan su despliegue',

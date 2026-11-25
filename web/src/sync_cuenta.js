@@ -92,6 +92,8 @@ export const REGLAS = {
   'lg:aviso-cerrado': (a, b) => (hastaDe(a) >= hastaDe(b) ? a : b),
   'lg:inv-visto': unionLista(1500),
   'lg:db-pospuesto': unionObj,
+  // 🎬 los «tu batalla ya tiene video» que ya te mostramos (web/src/tu_video.jsx, 25/11/2026): no te salen en otro dispositivo
+  'lg:tuvideo-visto': unionReciente(300),
   // 🎬 los reels y videos vistos (25/11/2026, Dlx: «lo visto, que no me aparezca», y a «¿que siga a tu cuenta?»: «Sí,
   // hazlo»). La última: si no entra todo en `UI_MAX`, es la primera que se recorta (ver `RECORTABLE`)
   'lg:reels-vistos': unionReciente(1500),

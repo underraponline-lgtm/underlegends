@@ -6,9 +6,9 @@
 // ⚠️ DE DÓNDE: los shorts del muro (`/api/muro`, que App.jsx ya pide), tipo `short`, con las claves de quienes salen (`ks`,
 // `con_claves()` de bot/muro.py). Por clave y no por nombre: a dos «Sol» los separa la clave.
 // ⚠️ SÓLO CON «ENTRAR CON DISCORD» (`yo.dc`): con un «quién soy» elegido a mano no se sabe si de verdad sos vos.
-// ⚠️ LO YA MOSTRADO se guarda en `lg:tuvideo-visto`. ⏳ VA A SEGUIR A TU CUENTA (`UI_CLAVES` de bot/avisos.js ya la tiene)
-// cuando se despliegue el Worker: recién ahí se suma a `REGLAS` de web/src/sync_cuenta.js (`unionReciente(300)`) y se saca de
-// `ESPERAN` en bot/avisos_prueba.mjs. Antes no: el objeto de hoy rechazaría el envío entero y nadie sincronizaría nada.
+// ⚠️ LO YA MOSTRADO se guarda en `lg:tuvideo-visto` y sigue a tu cuenta (web/src/sync_cuenta.js `REGLAS`, y `UI_CLAVES` de
+// bot/avisos.js): lo que viste en el celular no te sale en la compu. Entró a `REGLAS` DESPUÉS de desplegar el Worker (25/11):
+// el objeto de antes rechazaba el envío entero si llegaba una clave que no conocía (`validarUi()`).
 // ⚠️ NUNCA ENCIMA DE OTRA COSA: ni con la pantalla de carga, ni con la bienvenida, ni con otra ventana abierta (el
 // tutorial, el «¡Subiste!» del Pase, una historia o una carta: lo mismo que mira el tutorial), ni en la página de Videos
 // (ya estás ahí). Espera y vuelve a mirar.
