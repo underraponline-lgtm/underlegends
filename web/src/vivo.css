@@ -7667,3 +7667,14 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .volver-b:active{transform:scale(.96)}
 @media (hover:hover) and (pointer:fine){.volver-b:hover{border-color:#E41373;transform:translateX(-2px)}}
 @media (prefers-reduced-motion:reduce){.volver-b{transition:none}}
+
+/* ✨ MÁS MOVIMIENTO EN TODA LA PÁGINA (25/11/2026, Dlx: «más animaciones en general»). Dos cosas chicas y parejas:
+   apretar cualquier botón lo hunde un poco (con `scale`, que se suma al `transform` que el botón ya tenga), y cada sección
+   que está abajo sube al llegar (aparecer.js). Las dos se apagan con «Menos animaciones» y con el movimiento reducido */
+.app :is(button,.btn,[role="button"]):not(:disabled){transition:scale .12s cubic-bezier(.23,1,.32,1)}
+.app :is(button,.btn,[role="button"]):not(:disabled):active{scale:.97}
+.app section.sec.ap{opacity:0;translate:0 18px}
+.app section.sec.ap.ap-in{opacity:1;translate:0 0;transition:opacity .5s ease-out,translate .55s cubic-bezier(.2,.7,.2,1)}
+.app.calma :is(button,.btn,[role="button"]):active{scale:none}
+.app.calma section.sec.ap{opacity:1;translate:none}
+@media (prefers-reduced-motion:reduce){.app :is(button,.btn,[role="button"]):active{scale:none}.app section.sec.ap{opacity:1;translate:none}}

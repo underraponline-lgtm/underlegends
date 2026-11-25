@@ -19,6 +19,7 @@ import { usarCss } from './css.js';
 import { refrescarPases, usePases } from './pase.js';
 import { abrirConEscenario, dropQuietoSvg, pedirDrops } from './drops.jsx';
 import { useIndice } from './indice.js';
+import { sonar } from './sonidos.js';
 
 usarCss('tienda3', CSS_PAGINA);
 
@@ -764,6 +765,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     E.va = false;
     if (!j || !j.ok) {
       E.error = (j && j.error) || 'error';
+      sonar('error');
       // 🐉 el de hoy ya estaba abierto (18/11/2026): al volver a la Tienda `drop` arranca vacío y se ofrecía «Abrir» otra vez
       if (d.accion === 'drop' && E.error === 'ya') E.drop = { ya: true };
       // ⚠️ sin ficha abierta, el error abre su hoja (18/11/2026): si no, el toque no hacía nada visible (ver `errorPop`)
@@ -773,6 +775,9 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
       pinta(); return null;
     }
     E.res = j;
+    // 🔊 lo que se pagó suena a caja registradora; lo que se puso o se guardó, a «listo»
+    if (/^(comprar|regalo-comprar|reclamar)/.test(d.accion) || (d.accion === 'comprar' && d.poner)) sonar('compra');
+    else if (d.accion !== 'regalo-abrir' && d.accion !== 'drop') sonar('ok');
     // se espera (18/11/2026): el de «Comprar todo» pone lo que ya era tuyo antes de recargar
     if (despues) await despues(j);
     // 🛍️ lo que te pusiste se ve en toda la página (tanda 3): `/pases` lo trae, y se pide de nuevo ya mismo
@@ -786,10 +791,15 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   function abrirRegalo(i) {
     if (E.rgAbriendo || E.va) return;
     E.rgAbriendo = { i, t: Date.now() }; E.rgConfirma = null; pinta();
+    // 🔊 la caja suena mientras tiembla, y al abrirse, el pop y lo que salió
+    sonar('sacude');
+    const sacude = setInterval(() => sonar('sacude'), 380);
     if (window.innerWidth < 900) { const v = raiz.current && raiz.current.querySelector('.dq-vis'); if (v && v.getBoundingClientRect().top < 60) v.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     const tiembla = new Promise((r) => setTimeout(r, RG_TIEMBLA));
     accion({ accion: 'regalo-abrir', i }, async (j) => {
       await tiembla;
+      clearInterval(sacude);
+      if (!j.ya) { sonar('pop'); setTimeout(() => sonar('premio', j.oferta.k), 260); }
       const dia = (S.yo.regalos_dia || {}).dia || '';
       E.rgLocal = E.rgLocal || {};
       (E.rgLocal[dia] = E.rgLocal[dia] || {})[i] = j.oferta;
@@ -799,7 +809,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
       if (!j.ya && navigator.vibrate) { try { navigator.vibrate(j.oferta.k === 'gratis' ? [40, 60, 90] : 25); } catch (e) { /* sin vibrar */ } }
       pinta();
       if (E.rgRecien) setTimeout(() => { if (E.rgRecien && E.rgRecien.t === t) { E.rgRecien = null; pinta(); } }, RG_DURA);
-    }).then((r) => { if (!r && E.rgAbriendo) { E.rgAbriendo = null; pinta(); } });
+    }).then((r) => { clearInterval(sacude); if (!r && E.rgAbriendo) { E.rgAbriendo = null; pinta(); } });
   }
   // 🐉 el drop del día se cobra y se abre en el mismo pedido (`drop` contesta como `drop-abrir`), y el escenario de
   // siempre anima hasta lo que salió. Dlx, 25/11/2026: «que sea el estilo de los drops que siempre tenemos y con sus

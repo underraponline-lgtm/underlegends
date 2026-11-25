@@ -108,6 +108,17 @@ function ParteCalma() {
   );
 }
 
+// 🔊 los sonidos de la página (sonidos.js, 25/11/2026): prendidos salvo que los apagues acá, en este navegador
+function ParteSonido() {
+  const [mudoV, setMudo] = useState(() => !!((W.AJ || leer('lg:ajustes', {}) || {}).mudo));
+  return (
+    <Caja t="Sonido" d="Un toque bajito al apretar botones, y los sonidos de abrir los artículos de la Tienda y de comprar.">
+      <label className="cu-sw"><span><b>Sonidos</b></span>
+        <input type="checkbox" checked={!mudoV} onChange={(e) => { setMudo(!e.target.checked); guardarAjustes({ mudo: e.target.checked ? undefined : true }); }} /><i aria-hidden="true" /></label>
+    </Caja>
+  );
+}
+
 // paso a paso y con un dibujo por paso: ver web/src/instalar.jsx (Dlx, 01/10/2026: «sé más específico»)
 function ParteInstalar() {
   return (
@@ -1397,7 +1408,7 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
     );
   }
   if (id === 'hora') return <ParteHora />;
-  if (id === 'accesibilidad') return <ParteCalma />;
+  if (id === 'accesibilidad') return <><ParteCalma /><ParteSonido /></>;
   if (id === 'instalar') return <ParteInstalar />;
   if (id === 'verificar') return <Verificar liga={liga} dc={dc} />;
   if (id === 'novedades') {

@@ -248,6 +248,8 @@ import { useCalma, useTapado } from './anima.js';
 import { escucharErrores, noEsGente, reportarError } from './errores.js';
 import { esDeVersion, recargarPorVersion } from './version.js';
 import Volver, { notarRuta } from './volver.jsx';
+import { sonarTap } from './sonidos.js';
+import { useAparecer } from './aparecer.js';
 // 🎁 al cargar: el `?ref=` de un link de invitación, y mandarlo cuando haya cuenta (referidos.js)
 import './referidos.js';
 // 📱 lo visto o hecho en la página sigue a tu cuenta (23/11/2026): ver el módulo
@@ -482,6 +484,16 @@ export default function App() {
   const [hash, setHash] = useState(rutaHash);
   // ← la pila de «Volver» (volver.jsx): se anota antes de dibujar, así el botón ya sabe de dónde se vino
   notarRuta(hash);
+  // ✨ las secciones suben al llegar, y 🔊 un toque bajito en cada botón o link (25/11/2026: aparecer.js y sonidos.js)
+  useAparecer();
+  useEffect(() => {
+    const host = document.getElementById('inicio-nuevo');
+    const raiz = host && host.shadowRoot;
+    if (!raiz) return undefined;
+    const f = (e) => { const t = e.target && e.target.closest && e.target.closest('button, a[href], [role="button"], summary, label'); if (t && !t.disabled) sonarTap(); };
+    raiz.addEventListener('pointerdown', f, true);
+    return () => raiz.removeEventListener('pointerdown', f, true);
+  }, []);
   const [sigoV, setSigoV] = useState(0);
   // 🧭 pedir el tutorial (la Guía, el «¿Cómo funciona?», la pista de nuevos) avisa `lg:tour` con qué: cada pedido es un
   // número nuevo (ver `pedirRecorrido()` de primera.js)
