@@ -877,7 +877,7 @@ async function vistaCompetencia(req, env, id, url) {
 // la miniatura del video en YouTube. Sale de `reels_vista.json` ({o: [ids en el orden del feed], r: {id: [título, canal,
 // «A vs B»]}}), chico a propósito: nada de `global.json`, que costaba 4 ms de CPU de los 10. ⚠️ La miniatura de YouTube
 // (`hqdefault`) mide 480×360 y no 1200×630: van sus medidas de verdad, si no Discord la recorta como si fuera el cartel
-const REEL_ID = /^[A-Za-z0-9_-]{11}$/;
+const REEL_ID = /^(?:[A-Za-z0-9_-]{11}|ul-[a-z0-9-]{3,60})$/;   // como el de bot/avisos.js: también los shorts de la Liga (`ul-…`)
 async function vistaReel(req, env, id, url) {
   if (!REEL_ID.test(String(id || ''))) return null;
   const r = await env.ASSETS.fetch(new Request(url.origin + '/reels_vista.json')).catch(() => null);
