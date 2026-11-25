@@ -42,10 +42,6 @@
   ],
   "t": "2026-11-24T23:51:19.603880+00:00"
  },
- "filas": {
-  "t": "2026-11-24T23:05:20.193790+00:00",
-  "texto": "El objeto lleva 5.1 millones de filas leídas hoy, de 5 millones. Si se acaban se cae entrar con Discord, lo en vivo y los avisos hasta cerca de las 24/11 7:00 PM ET. Lo que más lee: `python herramientas/uso.py`."
- },
  "objeto": {
   "t": "2026-11-24T20:38:23.107645+00:00",
   "texto": "El objeto de la página no contesta (Expecting value: line 1 column 1 (char 0)). Sin él no funciona entrar con Discord, lo en vivo ni los avisos. Si se acabó la cuota de filas, vuelve solo cerca de las 24/11 7:00 PM ET. (24/11 3:38 PM ET)"

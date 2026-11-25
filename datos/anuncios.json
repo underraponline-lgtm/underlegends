@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T23:26:31+00:00",
+ "cuando": "2026-11-24T23:56:38+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -3775,6 +3775,30 @@
     "Carlos": "734172184737480745"
    },
    "categoria_id": "1511963280128868504"
+  },
+  {
+   "nombre": "FINAL NACIONAL ANDES RED BULL CABRANA",
+   "servidor": "URBF",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
+   "msg_id": "1574936288090529923",
+   "cuando": "2026-11-24T23:54:31",
+   "canal_id": "1511968314992365729",
+   "guild_id": "1467763447117778989",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "d78e14906a1810bb",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "<t:1795896000:s>",
+   "fecha": "SABADO 28 de NOVIEMBRE.",
+   "premios": "",
+   "staff": {},
+   "autor": "dxg",
+   "staff_cuentas": {},
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "FINAL NACIONAL PLAZAS RED BULL CABRANA",
