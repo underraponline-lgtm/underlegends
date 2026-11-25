@@ -1431,9 +1431,9 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "3fa17a452462:baafccf84bc7",
+   "competitivo": "5c6f74e20d93:baafccf84bc7",
    "pais": "1910c6cf78f0:84d29bb63c59",
-   "servidor": "f0080bbef875:ca27345eed9e:40a77e",
+   "servidor": "577d433e4f1d:ca27345eed9e:40a77e",
    "temporada": "b4c515e14f74:0b98cb3023ec"
   },
   "Olaf": {
@@ -2196,9 +2196,9 @@
   },
   "xz": {},
   "yinn": {
-   "competitivo": "0cff5415525a:baafccf84bc7",
-   "pais": "3659bae4bb11:84d29bb63c59",
-   "servidor": "c0b47229aea6:ca27345eed9e:bcd566",
+   "competitivo": "3891533f9319:baafccf84bc7",
+   "pais": "0adb92ed5828:84d29bb63c59",
+   "servidor": "462c7d7dccdd:ca27345eed9e:bcd566",
    "temporada": "c2757679a20f:0b98cb3023ec"
   },
   "zta": {
@@ -2208,5 +2208,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-25T01:21:51+00:00"
+ "cuando": "2026-11-25T01:36:37+00:00"
 }
