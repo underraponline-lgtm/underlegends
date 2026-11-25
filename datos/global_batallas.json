@@ -2345,74 +2345,6 @@
   },
   {
    "a": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/11/RIFE-1.png",
-    "id": "fms:12045",
-    "nombre": "Rife",
-    "pais": null
-   },
-   "b": {
-    "id": "fms:nombre:harry",
-    "nombre": "HARRY",
-    "pais": null
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "fms-ar-t8-j2",
-    "nombre": "FMS Argentina 2026/27 · Jornada 2",
-    "pais": "ar",
-    "tipo": "fms_jornada"
-   },
-   "fuente": "fms",
-   "gana": "b",
-   "id": "fms:ar-t8-j2:12045+nombre:harry",
-   "pts": [
-    142,
-    151
-   ],
-   "replica": false,
-   "ronda": "jornada",
-   "url": "https://fms.tv/resultados/",
-   "votos": [
-    0,
-    5
-   ]
-  },
-  {
-   "a": {
-    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/08/SOPHIA-1.png",
-    "id": "fms:11361",
-    "nombre": "Sophia",
-    "pais": "ar"
-   },
-   "b": {
-    "id": "fms:nombre:hammer",
-    "nombre": "HAMMER",
-    "pais": null
-   },
-   "evento": {
-    "fecha": "2026-11-21",
-    "id": "fms-ar-t8-j2",
-    "nombre": "FMS Argentina 2026/27 · Jornada 2",
-    "pais": "ar",
-    "tipo": "fms_jornada"
-   },
-   "fuente": "fms",
-   "gana": "b",
-   "id": "fms:ar-t8-j2:11361+nombre:hammer",
-   "pts": [
-    131,
-    132
-   ],
-   "replica": false,
-   "ronda": "jornada",
-   "url": "https://fms.tv/resultados/",
-   "votos": [
-    2,
-    3
-   ]
-  },
-  {
-   "a": {
     "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/MECHA-3.png",
     "id": "fms:521",
     "nombre": "Mecha",
@@ -8255,222 +8187,6 @@
   },
   {
    "a": {
-    "id": "yt:formula",
-    "nombre": "FÓRMULA",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:rodrix",
-    "nombre": "RODRIX",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-11-24",
-    "id": "yt-dem-peru-dem-peru-sub-21-2026",
-    "nombre": "DEM Perú Sub 21 2026",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:5XDRr1tJb6I",
-   "pts": null,
-   "replica": null,
-   "ronda": "final",
-   "url": "https://www.youtube.com/watch?v=5XDRr1tJb6I",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:ctz",
-    "nombre": "CTZ",
-    "pais": "ar"
-   },
-   "b": {
-    "id": "yt:jcsnake",
-    "nombre": "JC SNAKE",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
-    "nombre": "DEM Perú x LZ · Fecha 8",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:aT7yqDNi9EQ",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=aT7yqDNi9EQ",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:gino",
-    "nombre": "GINO",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:nre",
-    "nombre": "NRE",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
-    "nombre": "DEM Perú x LZ · Fecha 8",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:4eQGDJw1TWw",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=4eQGDJw1TWw",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:piercdh",
-    "nombre": "PIER CDH",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:vokabulario",
-    "nombre": "VOKABULARIO",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
-    "nombre": "DEM Perú x LZ · Fecha 8",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:q20zjoyMb5k",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=q20zjoyMb5k",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:erreka-cl",
-    "nombre": "ERREKA",
-    "pais": "cl"
-   },
-   "b": {
-    "id": "yt:yared",
-    "nombre": "YARED",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
-    "nombre": "DEM Perú x LZ · Fecha 8",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:wWmH1Z0LvN8",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=wWmH1Z0LvN8",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:gino",
-    "nombre": "GINO",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:piercdh",
-    "nombre": "PIER CDH",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
-    "nombre": "DEM Perú x LZ · Fecha 8",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:9tebZyelr0Y",
-   "pts": null,
-   "replica": null,
-   "ronda": "semifinal",
-   "url": "https://www.youtube.com/watch?v=9tebZyelr0Y",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:ctz",
-    "nombre": "CTZ",
-    "pais": "ar"
-   },
-   "b": {
-    "id": "yt:erreka-cl",
-    "nombre": "ERREKA",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
-    "nombre": "DEM Perú x LZ · Fecha 8",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "b",
-   "id": "yt:o1SEnRc0xOM",
-   "pts": null,
-   "replica": null,
-   "ronda": "semifinal",
-   "url": "https://www.youtube.com/watch?v=o1SEnRc0xOM",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:gino",
-    "nombre": "GINO",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:erreka-cl",
-    "nombre": "ERREKA",
-    "pais": "cl"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
-    "nombre": "DEM Perú x LZ · Fecha 8",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:RFLXn7rKd6E",
-   "pts": null,
-   "replica": null,
-   "ronda": "final",
-   "url": "https://www.youtube.com/watch?v=RFLXn7rKd6E",
-   "votos": null
-  },
-  {
-   "a": {
     "id": "yt:abel-ar",
     "nombre": "ABEL",
     "pais": "ar"
@@ -14195,6 +13911,33 @@
   },
   {
    "a": {
+    "id": "yt:ander-pe",
+    "nombre": "ANDER",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:santiago",
+    "nombre": "SANTIAGO",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-11-15",
+    "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
+    "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:CuNG4PJP7d4",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=CuNG4PJP7d4",
+   "votos": null
+  },
+  {
+   "a": {
     "id": "yt:vcclario",
     "nombre": "VCCLARIO",
     "pais": "pe"
@@ -14276,13 +14019,13 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
-    "nombre": "ANDER",
+    "id": "yt:lupo",
+    "nombre": "LUPO",
     "pais": "pe"
    },
    "b": {
-    "id": "yt:santiago",
-    "nombre": "SANTIAGO",
+    "id": "yt:salva",
+    "nombre": "SALVA",
     "pais": "pe"
    },
    "evento": {
@@ -14294,11 +14037,11 @@
    },
    "fuente": "youtube",
    "gana": "a",
-   "id": "yt:CuNG4PJP7d4",
+   "id": "yt:n-ljXj_6PS4",
    "pts": null,
    "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=CuNG4PJP7d4",
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=n-ljXj_6PS4",
    "votos": null
   },
   {
@@ -14326,33 +14069,6 @@
    "replica": null,
    "ronda": "semifinal",
    "url": "https://www.youtube.com/watch?v=570L_GalnXI",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:lupo",
-    "nombre": "LUPO",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:salva",
-    "nombre": "SALVA",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-11-15",
-    "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
-    "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:n-ljXj_6PS4",
-   "pts": null,
-   "replica": null,
-   "ronda": "semifinal",
-   "url": "https://www.youtube.com/watch?v=n-ljXj_6PS4",
    "votos": null
   },
   {
@@ -26048,33 +25764,6 @@
   },
   {
    "a": {
-    "id": "yt:alkimista",
-    "nombre": "ALKIMISTA",
-    "pais": "mx"
-   },
-   "b": {
-    "id": "yt:chisky",
-    "nombre": "CHISKY",
-    "pais": "mx"
-   },
-   "evento": {
-    "fecha": "2026-10-25",
-    "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
-    "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
-    "pais": "mx",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:uZFPigSq68c",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=uZFPigSq68c",
-   "votos": null
-  },
-  {
-   "a": {
     "id": "yt:kruxxty",
     "nombre": "KRUXXTY",
     "pais": "mx"
@@ -26206,6 +25895,33 @@
    "replica": null,
    "ronda": "octavos",
    "url": "https://www.youtube.com/watch?v=1AGAjty1c_I",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:alkimista",
+    "nombre": "ALKIMISTA",
+    "pais": "mx"
+   },
+   "b": {
+    "id": "yt:chisky",
+    "nombre": "CHISKY",
+    "pais": "mx"
+   },
+   "evento": {
+    "fecha": "2026-10-25",
+    "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
+    "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
+    "pais": "mx",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:uZFPigSq68c",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=uZFPigSq68c",
    "votos": null
   },
   {
@@ -80918,10 +80634,12 @@
     "Freestyle World Cup: 3 cruces país contra país (0 con resultado) no van: una selección no es una persona",
     "FMS Colombia 2026/27 · Jornada 2: salto «Filósofo vs La Rabia 24 y Felpa Divo» (2 contra 1: «La Rabia 24 y Felpa Divo» son dos personas)",
     "FMS Argentina 2026/27 · Jornada 2: salto «? vs ?» (el MC 13446 no tiene perfil ni nombre en urbanroosters)",
+    "FMS Argentina 2026/27 · Jornada 2: salto «RIFE vs ?» (Extra Player sin nombre todavía (sale de urbanroosters))",
+    "FMS Argentina 2026/27 · Jornada 2: salto «SOPHIA vs ?» (Extra Player sin nombre todavía (sale de urbanroosters))",
     "en 3 batallas fms.tv da ganador a quien sumó menos puntos (decide la mayoría de jueces, no los puntos): URKO 2–3 Visionario (143–139 pts); TOBI 3–1 Dyse (144–146 pts); Dybbuk 3–2 CTZ (143–146 pts)",
     "sin país (la API no dice dónde nacieron): Bélico, Rife, Vens, Visionario"
    ],
-   "n": 76,
+   "n": 74,
    "ok": true
   },
   "fstats": {
@@ -80983,13 +80701,12 @@
   },
   "youtube": {
    "av": [
+    "DEM Perú: no pude leerlo (RuntimeError: la pestaña de videos no trajo nada (HTTP 200))",
     "mismo nombre con dos países, van como dos personas: abel, ander, ayala, draco, erreka, horus, lazaro, nano, poeta, reyes",
     "Red Bull Batalla: 53 batalla(s) en 5 evento(s), 49 con ganador · saltadas: fuera de la ventana 39, no son batallas (clips, compilados, shorts) 14, batallón/muerte súbita/exhibición 10",
     "Red Bull Batalla: fecha aproximada (sólo la de la pestaña, sin la exacta): Red Bull Batalla 2026 · Regional Coquimbo (~2026-11-08, de «hace 2 sem.»); Red Bull Batalla 2026 · Regional Concepción (~2026-10-25, de «hace 4 semanas»); Red Bull Batalla Colombia 2026 (~2026-10-10, de «hace 1 mes»); Red Bull Batalla Argentina 2026 (~2026-10-10, de «hace 1 mes»)",
     "Supremacía MC: 15 batalla(s) en 1 evento(s), 14 con ganador · saltadas: fuera de la ventana 25, sin ronda 12, batallón/muerte súbita/exhibición 8",
     "DEM Battles: 1 batalla(s) en 1 evento(s), 0 con ganador · saltadas: fuera de la ventana 34, no son batallas (clips, compilados, shorts) 9, de equipos 8",
-    "DEM Perú: 8 batalla(s) en 2 evento(s), 6 con ganador · saltadas: fuera de la ventana 29, de a tres o más 16, de equipos 7",
-    "DEM Perú: fecha aproximada (sólo la de la pestaña, sin la exacta): DEM Perú x LZ · Fecha 8 (~2026-10-10, de «hace 1 m»)",
     "DEM Argentina: 7 batalla(s) en 1 evento(s), 6 con ganador · saltadas: fuera de la ventana 16, de equipos 15, no son batallas (clips, compilados, shorts) 10, de a tres o más 8",
     "DEM Argentina: fecha aproximada (sólo la de la pestaña, sin la exacta): DEM SANTA CRUZ 2026 (~2026-10-10, de «hace 1 m»)",
     "Liga Inmortal: 11 batalla(s) en 2 evento(s), 9 con ganador · saltadas: fuera de la ventana 62, de equipos 19, de a tres o más 17, batallón/muerte súbita/exhibición 11",
@@ -81022,9 +80739,10 @@
     "UNT al Rap: 82 batalla(s) en 6 evento(s), 71 con ganador · saltadas: fuera de la ventana 115, de equipos 27, sin ronda 10, de a tres o más 6",
     "UNT al Rap: fecha aproximada (sólo la de la pestaña, sin la exacta): FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP (~2026-11-15, de «hace 9 días»); FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP (~2026-11-08, de «hace 2 semanas»); FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP (~2026-11-01, de «hace 3 semanas»); FECHA TOMA TU LECHE EN TARRO · UNTALRAP (~2026-10-10, de «hace 1 mes»); FECHA PONTE LA CASACA · UNTALRAP (~2026-10-10, de «hace 1 mes»)",
     "Línea 404: 11 batalla(s) en 1 evento(s), 8 con ganador · saltadas: fuera de la ventana 40, de a tres o más 3, batallón/muerte súbita/exhibición 3, no son batallas (clips, compilados, shorts) 2, sin ronda 1",
-    "La Villurca Freestyle: 16 batalla(s) en 1 evento(s), 12 con ganador · saltadas: de a tres o más 15, fuera de la ventana 15"
+    "La Villurca Freestyle: 16 batalla(s) en 1 evento(s), 12 con ganador · saltadas: de a tres o más 15, fuera de la ventana 15",
+    "La Villurca Freestyle: fecha aproximada (sólo la de la pestaña, sin la exacta): LA VILLURCA FREESTYLE · 1v1 (~2026-10-10, de «hace 1 m»)"
    ],
-   "n": 871,
+   "n": 863,
    "ok": true
   }
  },
@@ -82072,5 +81790,5 @@
   "liga:zetryko": 1126,
   "liga:zignos": 1018
  },
- "t": "2026-11-25T01:49:22-05:00"
+ "t": "2026-11-25T02:29:30-05:00"
 }
