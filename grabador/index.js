@@ -445,6 +445,26 @@ class Grabacion {
     grabando.delete(this.guild.id);
   }
 
+  /** ⏳ Las batallas que no salieron: lo dice en Logs y vuelve a probar a los `esperas` minutos (sigue después de
+   * terminar la grabación: la carpeta se borra al final). Si se reinicia el servicio en el medio, se pierde: queda habla.json */
+  reintentarBatallas(canal, mezcla, seg, motivo, esperas) {
+    const dir = this.dir;
+    const quedan = [...esperas];
+    canal.send({ content: `⚔️ No pude separar las batallas de esta grabación: ${motivo}.`
+      + (quedan.length ? ` Vuelvo a probar en ${quedan[0]} min.` : ''), allowedMentions: { parse: [] } }).catch(() => {});
+    if (!quedan.length) { fs.rmSync(dir, { recursive: true, force: true }); return; }
+    setTimeout(async () => {
+      let res = null;
+      try { res = await this.entregarBatallas(canal, mezcla, seg); } catch (e) {
+        res = { ubicadas: 0, motivo: String(e.message || e).slice(0, 120) };
+      }
+      if (res && res.ubicadas) {
+        anotar(`⚔️ al reintentar: ${res.ubicadas} batallas`);
+        fs.rmSync(dir, { recursive: true, force: true });
+      } else this.reintentarBatallas(canal, mezcla, seg, res?.motivo || 'sin motivo', quedan.slice(1));
+    }, quedan[0] * 60000).unref?.();
+  }
+
   /** 🩺 Cómo se escuchó cada uno: el conteo por color y, de los que no dieron 🟢, quién y por qué. */
   informe(gente) {
     const filas = gente.map((id) => ({ id, r: this.medidores.get(id)?.resumen() })).filter((x) => x.r && x.r.color !== '⚪');
@@ -512,9 +532,24 @@ class Grabacion {
             allowedMentions: { parse: [] },
           });
         }
+        // 🗣️ QUIÉN HABLÓ CUÁNDO, SIEMPRE (24/11/2026): sin esto, si las batallas no salen acá nadie las puede separar
+        // después (vive sólo en la memoria de esta grabación). Son IDs y milisegundos desde el inicio, sin audio
+        try {
+          const hj = path.join(this.dir, 'habla.json');
+          fs.writeFileSync(hj, JSON.stringify({ v: 1, servidor: this.guild?.id || '', inicio: this.inicio.toISOString(),
+            seg: Math.round(seg), habla: Object.fromEntries(this.habla.t) }));
+          await canal.send({ files: [{ attachment: hj, name: 'habla.json' }], allowedMentions: { parse: [] } });
+        } catch (e) { anotar('⚠️ habla.json:', String(e.message || e).slice(0, 120)); }
         // ⚔️ y cada batalla por separado, si se puede: nunca frena la entrega de la grabación entera
-        try { await this.entregarBatallas(canal, mezcla, seg); } catch (e) {
+        let res = null;
+        try { res = await this.entregarBatallas(canal, mezcla, seg); } catch (e) {
           anotar('⚠️ no pude armar las batallas:', String(e.message || e).slice(0, 200));
+          res = { ubicadas: 0, motivo: String(e.message || e).slice(0, 120) };
+        }
+        if (res && !res.ubicadas) {
+          // la llave puede terminar de cargarse después de que se vació la llamada: se vuelve a probar dos veces
+          this.reintentarBatallas(canal, mezcla, seg, res.motivo, [15, 30]);
+          return;
         }
         fs.rmSync(this.dir, { recursive: true, force: true });
         return;
@@ -542,7 +577,9 @@ class Grabacion {
     const total = (d.llaves || []).reduce((s, L) => s + (L.rondas || []).reduce((t, R) => t + (R.b || []).length, 0), 0);
     const bs = ubicarTodas(d.llaves, this.habla.t, seg);
     anotar(`⚔️ batallas: ${bs.length} ubicadas de ${total} en la llave`);
-    if (!bs.length) return;
+    // 🔇 SE CALLABA (24/11/2026, DESGRACIAS EN TOKYO VOL 35: 1 h 44 entregada sin batallas y sin decir por qué; el armador
+    // de shorts se quedó esperando). Ahora devuelve cuántas y por qué no, y `entregar()` lo dice en Logs y reintenta
+    if (!bs.length) return { ubicadas: 0, total, motivo: !r.ok ? `el Worker contestó ${r.status}` : !total ? 'no hay llave tocada mientras grababa' : `0 de ${total} batallas de la llave ubicadas por quién habló` };
     // 🎭 quién es quién en cada una (el foco del short): por ahora al log, para comprobarlo en un evento de verdad
     for (const b of bs) {
       try { b.guion = guion(b, this.habla.t); anotar(`🎭 ${b.nombres.join(' vs ')}: ${resumenGuion(b.guion)}`); } catch (e) {
@@ -593,6 +630,7 @@ class Grabacion {
       peso += c.peso;
     }
     await mandar();
+    return { ubicadas: bs.length, total };
   }
 }
 
