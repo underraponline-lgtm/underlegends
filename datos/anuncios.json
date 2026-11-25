@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T23:05:12+00:00",
+ "cuando": "2026-11-25T23:25:54+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8243,6 +8243,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "doble h 🇨🇱",
+   "quien": "doble_h.free",
+   "discord_id": "1521997918389665986",
+   "msg_id": "1575289367331606711",
+   "cuando": "2026-11-25T23:17:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1575288727985455218",
+   "cuando": "2026-11-25T23:15:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "kyss 🇲🇽",
+   "quien": "ominouspoetry",
+   "discord_id": "1190746928774922311",
+   "msg_id": "1575287508852543679",
+   "cuando": "2026-11-25T23:10:09"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "snow🇨🇴",
+   "quien": "akasnowwgz",
+   "discord_id": "1428530147526578277",
+   "msg_id": "1575286124413329593",
+   "cuando": "2026-11-25T23:04:39"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44206,42 +44242,6 @@
    "discord_id": "664288438563897354",
    "msg_id": "1562669542348562495",
    "cuando": "2026-10-22T03:30:51"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "OKAM🇨🇷",
-   "quien": "okam77_25976",
-   "discord_id": "1512148565890306153",
-   "msg_id": "1562668681899679808",
-   "cuando": "2026-10-22T03:27:26"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "vandu 🇨🇦",
-   "quien": "dfelipetor",
-   "discord_id": "613552853302378527",
-   "msg_id": "1562668483743850540",
-   "cuando": "2026-10-22T03:26:39"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Artezzy 🇵🇪",
-   "quien": "h6itam29",
-   "discord_id": "1435531540472795240",
-   "msg_id": "1562668440039460904",
-   "cuando": "2026-10-22T03:26:29"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Sosa",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1562668426969751625",
-   "cuando": "2026-10-22T03:26:25"
   }
  ]
 }
