@@ -125,9 +125,39 @@
   font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .rls-chips button:hover{border-color:var(--esc-tinta)}
 .rls-chips button.on{background:var(--esc-tinta);color:var(--escenario);border-color:var(--esc-tinta)}
-.rls-pc-in{padding-top:24px}
-.rls-pc-cuerpo{display:flex;gap:20px;align-items:flex-start;justify-content:center}
-.rls-pc-video{position:relative;flex:none;height:max(480px,min(calc(100vh - 300px),780px));aspect-ratio:9/16;overflow:hidden;background:#000;border:2px solid var(--linea)}
+/* 🎭 EL ESCENARIO (8.14): debajo de la franja, negro de borde a borde en Clara y en Noche (es un cine: no cambia con el tema),
+   con la luz del reel desenfocada atrás, como el modo ambiente de YouTube. ⚠️ Es el segundo lugar con desenfoque y es el
+   mismo efecto del celular, que Dlx pidió. La grilla va centrada: la gente, el video, el panel y las flechas */
+.rls-pc-teatro{position:relative;isolation:isolate;overflow:hidden;background:#050507;color:#F6F6F6;padding:24px 0 48px}
+.rls-pc-luz{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.rls-pc-luz .rls-luz{filter:blur(64px) saturate(1.4) brightness(.42);opacity:.75;animation:rls-luz 420ms ease}
+@keyframes rls-luz{from{opacity:0}to{opacity:.75}}
+.rls-pc-teatro .rls-pc-in{max-width:1480px}
+/* ⚠️ EL ALTO SE DIVIDE POR EL ZOOM DE LA PÁGINA (`.app{zoom}` de vivo.css, desde 1440 px): `100vh` no se achica adentro de un
+   elemento con zoom, así que a 1920 × 1080 el video medía 936 px y se cortaba abajo. Mismos cortes que vivo.css */
+.rls-pc-cuerpo{--rls-z:1;--rls-alto:max(480px,min(calc(100vh / var(--rls-z) - 380px),780px));display:grid;grid-template-columns:240px auto minmax(300px,420px) 52px;
+  gap:20px;align-items:start;justify-content:center}
+@media (min-width: 1440px){.rls-pc-cuerpo{--rls-z:1.1}}
+@media (min-width: 1680px){.rls-pc-cuerpo{--rls-z:1.2}}
+@media (min-width: 2200px){.rls-pc-cuerpo{--rls-z:1.35}}
+.rls-pc-video{position:relative;height:var(--rls-alto);aspect-ratio:9/16;overflow:hidden;background:#000;border:2px solid #2A2A2E}
+/* 👤 la gente, como los canales de Twitch: oscura y opaca como el panel de la derecha, del alto del video */
+.rls-rl{max-height:var(--rls-alto);box-sizing:border-box;overflow-y:auto;scrollbar-width:thin;display:flex;flex-direction:column;gap:6px;padding:14px 10px;
+  background:#0B0C0E;border:2px solid #2A2A2E;color:#F6F6F6}
+.rls-rl .sec-t{border-top-color:#2A2A2E;margin:2px 0 0}
+.rls-rl .sec-t:first-child{border-top:0}
+.rls-rl .sec-t h2{font-size:16px}
+.rls-rl ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rls-rl p{margin:0 4px 6px;font-size:14px;line-height:1.4;color:#A5A5A0}
+.rls-rl-f{width:100%;min-height:48px;display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:10px;padding:4px 8px 4px 6px;
+  border:0;border-left:3px solid transparent;background:transparent;color:#F6F6F6;text-align:left;transition:background-color 140ms ease}
+.rls-rl-f:hover{background:#16161A}
+.rls-rl-f.on{background:#16161A;border-left-color:#E41373}
+.rls-pc .rls-cara.rls-rl-c{width:36px;height:36px;box-shadow:none;border-radius:0;font-size:16px}
+.rls-rl-f span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.rls-rl-f b{font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rls-rl-f small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#A5A5A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rls-rl-f em{font:700 15px/1 "Barlow Condensed",sans-serif;font-style:normal;color:#A5A5A0}
 .rls-pc-video .rls-ytcaja{position:absolute;inset:0;border-radius:0;box-shadow:none}
 .rls-pc-poster{position:absolute;inset:0;border:0;padding:0;background:#000;display:block}
 .rls-pc-poster .rls-play{top:50%}
@@ -159,12 +189,15 @@
 .rls-mini{width:100%;aspect-ratio:9/16;object-fit:cover;background:#000;display:block;border:2px solid transparent}
 .rls-pc-mas button:hover .rls-mini{border-color:#F6F6F6}
 .rls-pc-flechas{display:flex;flex-direction:column;gap:8px;align-self:center}
-.rls-pc .rls-pc-flechas .rls-ib{color:var(--tinta);border-color:var(--linea)}
+/* sobre el escenario las flechas son claras, en los dos temas */
+.rls-pc .rls-pc-flechas .rls-ib{color:#F6F6F6;border-color:#3A3A40;background:#0B0C0E}
+.rls-pc .rls-pc-flechas .rls-ib:hover{border-color:#F6F6F6}
 .rls-pc .rls-ib.caja{width:52px;height:52px}
-.rls-pc .rls-pc-flechas .rls-ib.prim{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
-.rls-teclas{font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--gris);margin-top:6px}
+.rls-pc .rls-pc-flechas .rls-ib.prim{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
+.rls-teclas{font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:#A5A5A0;margin-top:6px}
 .rls-pc-video .rls-fin{padding:0 28px}
-@media (max-width: 1180px){.rls-pc-flechas{flex-direction:row;align-self:flex-start}.rls-pc-cuerpo{flex-wrap:wrap}.rls-teclas{display:none}}
+/* sin lugar para la gente, el video y el panel siguen centrados */
+@media (max-width: 1080px){.rls-pc-cuerpo{grid-template-columns:auto minmax(300px,420px) 52px}.rls-rl{display:none}.rls-teclas{display:none}}
 
 /* ── 8.13: Seguir, el voto, las caras de la Liga y los vacíos ── */
 /* ⚠️ con `.rls-cel` adelante: `.rls-cel button{font:inherit;color:inherit}` les ganaba la letra y el color */
@@ -194,5 +227,8 @@
 .rls-voto.pc{padding-top:12px;border-top:2px solid #2A2A2E}
 .rls-vacio{max-width:520px;margin:30px auto;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 .rls-vacio b{font:900 28px/1 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase}
-.rls-vacio p{margin:0;color:var(--gris)}
-.rls-pc .rls-vacio .rls-btc{color:var(--tinta);border-color:var(--linea)}
+.rls-vacio p{margin:0;color:#A5A5A0}
+.rls-pc .rls-vacio .rls-btc{color:#F6F6F6;border-color:#3A3A40}
+/* el vacío de la compu, en el lugar del video y el panel (8.14) */
+.rls-pc-cuerpo > .rls-vacio{grid-column:2 / -1;margin:30px 0}
+@media (max-width: 1080px){.rls-pc-cuerpo > .rls-vacio{grid-column:1 / -1}}

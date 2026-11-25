@@ -54,6 +54,8 @@ const puestoDe = (g) => (g.liga ? 'Liga' + (g.sv ? ' · ' + g.sv : '') : (g.pos 
 const perfilDe = (g) => (g.liga ? '#/r/' + g.lk : '#/global/' + g.k);
 // la clave con la que se lo sigue en la Liga (los de la Liga, y los del global que también juegan acá: `hk`)
 const claveLiga = (g) => (g.liga ? g.lk : g.hk || '');
+// quién es, para juntar sus reels (los de la Liga y los del global tienen claves de lugares distintos)
+const idDe = (g) => (g.liga ? 'l:' + g.lk : g.k);
 const linkDe = (vid) => 'https://underlegends.pages.dev/freestyle-rap/reels/' + vid;
 
 /** todos los shorts, uno por video, con todos los que nombra: los del Ranking global (`/global.json`) y los de los canales de
@@ -325,7 +327,14 @@ function useFeed(liga, inicio) {
   const [i, setI] = useState(0);
   const [cargados, setCargados] = useState(VER);
   const [fin, setFin] = useState(false);
-  useEffect(() => { setI(0); setFin(false); setCargados(VER); }, [filtro]);
+  // 👤 a quién se pidió desde la columna de la izquierda cuando el filtro de ahora no lo tenía (ver `irA`)
+  const pend = useRef(null);
+  useEffect(() => {
+    const id = pend.current;
+    pend.current = null;
+    const j = id ? lista.findIndex((r) => r.gente.some((g) => idDe(g) === id)) : -1;
+    setI(Math.max(0, j)); setFin(false); setCargados(VER);
+  }, [filtro]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (i >= cargados - 2 && cargados < lista.length) setCargados((c) => Math.min(lista.length, c + MAS));
   }, [i, cargados, lista.length]);
@@ -346,12 +355,24 @@ function useFeed(liga, inicio) {
   }, [cur]);
   const ir = (j) => { setFin(false); setI(Math.max(0, Math.min(lista.length - 1, j))); };
   const siguiente = () => { if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
+  // 👤 su próximo reel (el de la columna de la izquierda en la compu, como los canales de Twitch): el siguiente en la lista
+  // de ahora; si ya pasaron todos, el primero; si este filtro no lo tiene, «Para ti», que tiene a todos
+  const irA = (g) => {
+    const id = idDe(g);
+    const tiene = (r) => r.gente.some((x) => idDe(x) === id);
+    let j = lista.findIndex((r, k) => k > i && tiene(r));
+    if (j < 0) j = lista.findIndex(tiene);
+    if (j >= 0) { ir(j); return; }
+    if (filtro === 'todo') return;
+    pend.current = id;
+    setFiltro('todo');
+  };
   const conmuta = (xs, set, k, v) => { const nx = xs.includes(v) ? xs.filter((x) => x !== v) : [...xs, v]; set(nx); ls.set(k, nx); return nx; };
   const hayLiga = todos.some(deLaLiga);
   const filtros = FILTROS.filter(([k]) => (k !== 'liga' || hayLiga) && (k !== 'guardados' || guardo.length || filtro === 'guardados'));
   return {
     D, X: X && listoL ? X : null, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
-    liga, filtros, loSigo, seguir,
+    liga, filtros, loSigo, seguir, todos, irA,
     anterior: () => (fin ? setFin(false) : ir(i - 1)),
     deNuevo: () => ir(0),
     guardado: !!(cur && guardo.includes(cur.vid)), hayGuardados: guardo.length > 0,
@@ -670,6 +691,47 @@ function ReelsCel({ F }) {
 }
 
 // ═══════════════════════════════ LA COMPU (la D) ═══════════════════════════════
+/**
+ * 👤 LA COLUMNA DE LA GENTE (8.14, como los canales de Twitch): a quién sigues y a quién recomendamos, cada uno con cuántos
+ * reels tiene. Tocar a alguien lleva a su próximo reel (`F.irA`). Recomendados: los que más reels tienen y no sigues, y a
+ * igual cantidad el mejor del Ranking global. El que está en el reel de ahora queda marcado
+ */
+function RielGente({ F }) {
+  const gente = useMemo(() => {
+    const m = new Map();
+    for (const r of F.todos) {
+      for (const g of r.gente) {
+        const id = idDe(g);
+        const x = m.get(id) || { g, n: 0 };
+        x.n++;
+        m.set(id, x);
+      }
+    }
+    return [...m.values()];
+  }, [F.todos]);
+  const sigo = gente.filter((x) => F.loSigo(x.g)).sort((a, b) => b.n - a.n).slice(0, 12);
+  const rec = gente.filter((x) => !F.loSigo(x.g))
+    .sort((a, b) => b.n - a.n || (a.g.pos || 9999) - (b.g.pos || 9999)).slice(0, 8);
+  const ahora = new Set(F.cur ? F.cur.gente.map(idDe) : []);
+  const fila = (x) => (
+    <li key={idDe(x.g)}>
+      <button type="button" className={'rls-rl-f' + (ahora.has(idDe(x.g)) ? ' on' : '')} aria-current={ahora.has(idDe(x.g)) || undefined}
+        aria-label={nombre(x.g) + ', ' + x.n + (x.n === 1 ? ' reel' : ' reels')} onClick={() => F.irA(x.g)}>
+        <Cara liga={F.liga} g={x.g} cls="rls-cara rls-rl-c" />
+        <span><b>{nombre(x.g)}</b><small>{puestoDe(x.g)}</small></span>
+        <em>{x.n}</em>
+      </button>
+    </li>
+  );
+  return (
+    <nav className="rls-rl" aria-label="Gente con reels">
+      <div className="sec-t"><h2>Siguiendo</h2></div>
+      {sigo.length ? <ul>{sigo.map(fila)}</ul> : <p>Toca «Seguir» en un reel y esa persona sale acá.</p>}
+      {rec.length ? <><div className="sec-t"><h2>Recomendados</h2></div><ul>{rec.map(fila)}</ul></> : null}
+    </nav>
+  );
+}
+
 function ReelsPc({ F }) {
   const [modo, setModo] = useState('menu');
   const [copiado, setCopiado] = useState(false);
@@ -677,9 +739,13 @@ function ReelsPc({ F }) {
   const cambiando = useRef(false);
   const reloj = useRef(0);
   useEffect(() => () => clearTimeout(reloj.current), []);
+  // ▶ EN LA COMPU EL REPRODUCTOR NO SE ESCONDE AL PAUSAR (8.14, Dlx: «¿no se puede autoreproducir para así evitamos dar click
+  // en el medio?»). Esconderlo es cosa del celular, donde el menú va ENCIMA del video; acá todo lo nuestro está al costado,
+  // así que una pausa deja el de YouTube a la vista con su propio ▶, y pasar de reel lo arranca solo. La miniatura queda
+  // sólo para el instante antes de que el reproductor exista
   const yt = useReproductor({
     alTerminar: () => { cambiando.current = true; F.siguiente(); },
-    alPausar: () => { if (!cambiando.current) setModo('menu'); },
+    alPausar: () => {},
     alCorrer: () => { cambiando.current = false; setModo('teatro'); },
   });
   const ultimo = useRef('');
@@ -739,21 +805,33 @@ function ReelsPc({ F }) {
   if (!r) {
     return (
       <section className="rls-pc">{cab}
-        <div className="rls-pc-in"><div className="rls-vacio"><b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b><p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
-          <button type="button" className="rls-btc" onClick={() => F.setFiltro('todo')}>Ver Para ti</button></div></div>
+        <div className="rls-pc-teatro">
+          <div className="rls-pc-in"><div className="rls-pc-cuerpo">
+            <RielGente F={F} />
+            <div className="rls-vacio"><b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b><p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
+              <button type="button" className="rls-btc" onClick={() => F.setFiltro('todo')}>Ver Para ti</button></div>
+          </div></div>
+        </div>
       </section>
     );
   }
   const nombres = r.gente.map(nombre).join(' vs ');
   const batalla = batallaDe(r);
   const masReels = [1, 2, 3].map((j) => F.lista[F.i + j]).filter(Boolean);
+  // 🎭 EL ESCENARIO (8.14, Dlx: «en vez de blanco que sea como teatro como YouTube, y también cine, como el estilo que
+  // tenemos… a la izquierda la lista de seguidos y recomendados, como Twitch»): debajo de la franja, todo sobre negro de
+  // borde a borde, con la luz del reel desenfocada atrás (el modo ambiente de YouTube, el mismo `.rls-luz` del celular) y la
+  // gente a la izquierda
   return (
     <section className="rls-pc">
       {cab}
+      <div className="rls-pc-teatro">
+      <div className="rls-pc-luz" aria-hidden="true"><Poster key={r.vid} vid={r.vid} cls="rls-luz" /></div>
       <div className="rls-pc-in">
       <div className="rls-pc-cuerpo">
+        <RielGente F={F} />
         <div className="rls-pc-video">
-          <div className={'rls-ytcaja' + (modo === 'teatro' && !F.fin ? '' : ' oculto')}>{yt.marco}</div>
+          <div className={'rls-ytcaja' + ((modo === 'teatro' || yt.activo) && !F.fin ? '' : ' oculto')}>{yt.marco}</div>
           {F.fin ? (
             <div className="rls-fin">
               <span className="tag">REELS</span>
@@ -763,7 +841,7 @@ function ReelsPc({ F }) {
               <a className="rls-bt" href="#/eventos">Los próximos eventos de la Liga</a>
               <button type="button" className="rls-bt sin" onClick={F.deNuevo}>Volver al primero</button>
             </div>
-          ) : modo !== 'teatro' ? (
+          ) : modo !== 'teatro' && !yt.activo ? (
             <button type="button" className="rls-pc-poster" onClick={reproducir} aria-label={yt.activo ? 'Seguir viendo' : 'Ver el reel'}>
               <Poster vid={r.vid} cls="rls-poster" alt={r.t || nombres} />
               <span className="rls-play"><Ico n="play" t={44} /></span>
@@ -825,6 +903,7 @@ function ReelsPc({ F }) {
           <button type="button" className="rls-ib caja prim" aria-label="Siguiente (flecha abajo)" onClick={F.siguiente}><Ico n="abajo" /></button>
           <span className="rls-teclas">↑ ↓ pasar<br />M sonido<br />F fuego</span>
         </div>
+      </div>
       </div>
       </div>
       {aviso ? (
