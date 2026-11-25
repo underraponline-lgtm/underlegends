@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-24T23:56:38+00:00",
+ "cuando": "2026-11-25T00:25:37+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7934,6 +7934,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "SGR",
+   "canal": "【📌】Anuncios",
+   "tit": "_Ya se subieron los Cuartos de Final de la última compe !!! Vayan a ver esos batallonesss!",
+   "tx": "",
+   "cuando": "2026-11-25T00:04:50",
+   "msg_id": "1574938884243067021",
+   "link": "https://discord.com/channels/1343820906358771798/1344845104052965406/1574938884243067021"
+  },
+  {
    "servidor": "WOF",
    "canal": "📢〢・Anuncios",
    "tit": "🎤 WORLD OF FREE × UNDER LEGENDS",
@@ -8193,15 +8202,6 @@
    "cuando": "2026-11-15T23:47:06",
    "msg_id": "1571672927508766790",
    "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1571672927508766790"
-  },
-  {
-   "servidor": "FRZ",
-   "canal": "➣「📩」anuncios",
-   "tit": "MICRO DE ORO 2026",
-   "tx": "Estamos llegando a la recta final del 2026 y les traemos la categoría de quienes han sido los mejores por cada mes. Los únicos que han podido ganar esta categoría más de una vez son 🇦🇷 y 🇨🇴 @jmiopa, quienes son los dos q",
-   "cuando": "2026-11-15T21:04:56",
-   "msg_id": "1571632116679184444",
-   "link": "https://discord.com/channels/838593179187544064/850777668386291712/1571632116679184444"
   }
  ],
  "inscripciones": [
