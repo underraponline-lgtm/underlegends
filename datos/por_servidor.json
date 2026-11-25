@@ -16846,11 +16846,11 @@
    },
    "FFA": {
     "duelos": "4/10",
-    "ev": 10,
+    "ev": 9,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 49,
     "pod": 0,
-    "pts": 73813,
+    "pts": 70063,
     "racha": "0/1"
    },
    "FRZ": {
@@ -17804,15 +17804,12 @@
   "tommyhilfiger1312🇾🇹": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "pts": 15000,
+    "racha": "0/0"
    }
   },
   "tormen": {

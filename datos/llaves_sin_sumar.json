@@ -1071,6 +1071,189 @@
    ]
   ]
  },
+ "121712159": {
+  "dia": "2026-11-25",
+  "escala": "16+",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575277187521712159"
+  ],
+  "n": 121712159,
+  "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪",
+  "ns": 1,
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "black live"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "R-Flow 🇪🇸"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Marto",
+       "CrisZJ"
+      ],
+      "Marto",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Tmax Turbo [PN]"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "ONZASS"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Molusco",
+       "Kochi"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Kuni",
+       "Efimero"
+      ],
+      "Kuni",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MTZ",
+       "MaYeuTyK"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "1200"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Marto",
+       "Kuni"
+      ],
+      "Marto",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MTZ",
+       "Dios"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Marto",
+       "ONZASS"
+      ],
+      "Marto",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Dios",
+    "Semifinal",
+    0
+   ],
+   [
+    "ONZASS",
+    "Semifinal",
+    0
+   ],
+   [
+    "1200",
+    "Cuartos",
+    0
+   ],
+   [
+    "Kuni",
+    "Cuartos",
+    0
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    0
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    0
+   ],
+   [
+    "Kochi",
+    "Octavos",
+    0
+   ],
+   [
+    "R-Flow 🇪🇸",
+    "Octavos",
+    0
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Octavos",
+    0
+   ],
+   [
+    "black live",
+    "Octavos",
+    0
+   ]
+  ]
+ },
  "121713059": {
   "dia": "2026-11-02",
   "escala": "16+",
