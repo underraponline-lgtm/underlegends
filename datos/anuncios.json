@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T04:11:51+00:00",
+ "cuando": "2026-11-25T04:25:27+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6847,6 +6847,37 @@
    "nombre": "COMPE 1V1",
    "servidor": "DW",
    "canal": "「🗓️」EVENTOS",
+   "msg_id": "1575001008164315281",
+   "cuando": "2026-11-25T04:11:42",
+   "canal_id": "1394905727729930241",
+   "guild_id": "1300152346189496330",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Geronimo",
+     "id": "897942226955563068"
+    }
+   ],
+   "autor_h": "9dbbad01fab207c3",
+   "cupos_texto": "8-12-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "EN LO QUE LLENEMOS 8 CUPOS",
+   "fecha": "",
+   "premios": "PUNTOS AL ASCENSO",
+   "staff": {},
+   "autor": "Geronimo",
+   "staff_cuentas": {},
+   "categoria_id": "1300152346537496623",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-25T04:12:03"
+  },
+  {
+   "nombre": "COMPE 1V1",
+   "servidor": "DW",
+   "canal": "「🗓️」EVENTOS",
    "msg_id": "1574206838000320566",
    "cuando": "2026-11-22T23:35:57",
    "canal_id": "1394905727729930241",
@@ -6870,7 +6901,9 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623"
+   "categoria_id": "1300152346537496623",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-25T04:12:03"
   },
   {
    "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS VOL 2",
@@ -6899,7 +6932,9 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623"
+   "categoria_id": "1300152346537496623",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-25T04:12:03"
   },
   {
    "nombre": "DANGER WORLD CUP",
@@ -6923,7 +6958,9 @@
    "staff": {},
    "autor": "DANGER WORLD",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623"
+   "categoria_id": "1300152346537496623",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-25T04:12:03"
   },
   {
    "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
@@ -6960,7 +6997,9 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623"
+   "categoria_id": "1300152346537496623",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-25T04:12:03"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -8205,6 +8244,105 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Lizeninn🇸🇪",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1575004157390233631",
+   "cuando": "2026-11-25T04:24:13"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Black dmon 🇪🇨🇺🇸",
+   "quien": "bidi8812",
+   "discord_id": "698611862031433779",
+   "msg_id": "1575003799477686328",
+   "cuando": "2026-11-25T04:22:47"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Skala 🇲🇽",
+   "quien": "skala_mc",
+   "discord_id": "610840969579069461",
+   "msg_id": "1575003346753028167",
+   "cuando": "2026-11-25T04:21:00"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Julda🇨🇴",
+   "quien": "juldaaaa",
+   "discord_id": "1194813613786026136",
+   "msg_id": "1575001834433806537",
+   "cuando": "2026-11-25T04:14:59"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Colesito",
+   "quien": "prosufk",
+   "discord_id": "1177668622227886112",
+   "msg_id": "1575001668905336964",
+   "cuando": "2026-11-25T04:14:19"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Juanpa",
+   "quien": "prosufk",
+   "discord_id": "1177668622227886112",
+   "msg_id": "1575001632880722112",
+   "cuando": "2026-11-25T04:14:11"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Chop🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1575001446850629713",
+   "cuando": "2026-11-25T04:13:27"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "DENIK🇵🇪",
+   "quien": "dnk.x",
+   "discord_id": "393418014135156737",
+   "msg_id": "1575001161868644453",
+   "cuando": "2026-11-25T04:12:19"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Prosu",
+   "quien": "prosufk",
+   "discord_id": "1177668622227886112",
+   "msg_id": "1575001136795095113",
+   "cuando": "2026-11-25T04:12:13"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "OG🇻🇪",
+   "quien": "the0g.",
+   "discord_id": "425356695309516810",
+   "msg_id": "1575001122337329184",
+   "cuando": "2026-11-25T04:12:09"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Bloody 🇨🇴\nVolk 🇲🇽\nCj 🇻🇪",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1575001115353677916",
+   "cuando": "2026-11-25T04:12:08"
+  },
   {
    "servidor": "FRZ",
    "canal": "➣「📝」inscripciones",
@@ -44105,105 +44243,6 @@
    "discord_id": "1439048698142134436",
    "msg_id": "1562608067441590395",
    "cuando": "2026-10-21T23:26:35"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Soul B 🇨🇱",
-   "quien": "sj.2008_",
-   "discord_id": "645308964141137952",
-   "msg_id": "1562606351400566785",
-   "cuando": "2026-10-21T23:19:45"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Stan🇨🇱",
-   "quien": "algoritmokrt",
-   "discord_id": "1359316127901024357",
-   "msg_id": "1562606329988644867",
-   "cuando": "2026-10-21T23:19:40"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1562606264574414940",
-   "cuando": "2026-10-21T23:19:25"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Pichulamc 🇦🇷",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1562606226800513065",
-   "cuando": "2026-10-21T23:19:16"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Teo 🇨🇴(último xfa)",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1562606205891780671",
-   "cuando": "2026-10-21T23:19:11"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "reenkharnazhion 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1562578732982730863",
-   "cuando": "2026-10-21T21:30:01"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Garxzii 🇦🇿",
-   "quien": "sebs._.fs",
-   "discord_id": "1217564137383526470",
-   "msg_id": "1562578696458473618",
-   "cuando": "2026-10-21T21:29:52"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "reenkharnazhion 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1562578086493683713",
-   "cuando": "2026-10-21T21:27:27"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Fazer",
-   "quien": "ignac.07",
-   "discord_id": "936079604207202365",
-   "msg_id": "1562576367109939235",
-   "cuando": "2026-10-21T21:20:37"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "six",
-   "quien": "ivanjajaa",
-   "discord_id": "639232575461654538",
-   "msg_id": "1562575589473263762",
-   "cuando": "2026-10-21T21:17:31"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Benzema 🇨🇵",
-   "quien": "benja.ki00",
-   "discord_id": "1512105727047499836",
-   "msg_id": "1562574513584083146",
-   "cuando": "2026-10-21T21:13:15"
   }
  ]
 }
