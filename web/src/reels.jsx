@@ -26,6 +26,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Bandera, Cara as CaraLiga, nombrePais } from './piezas.jsx';
 import { aQuienSigo } from './liga.js';
+import { PREFIJO, migrarReels } from './sigo_global.js';
+import { siluetaDe } from './sin_foto.js';
 import { abrirVideo } from './video.jsx';
 import { GRUPO, nombre, preparar, useGlobal } from './global.jsx';
 import CSS from './css/reels.css?inline';
@@ -44,16 +46,16 @@ const L_VISTOS = 'lg:reels-vistos';
 const L_MENOS = 'lg:reels-menos';
 const L_GUARDO = 'lg:reels-guardados';
 const L_FUEGO = 'lg:reels-fuego';
-// ⭐ a quién sigues del Ranking global (los Pro no tienen perfil en la Liga: se siguen en este navegador). Los de la Liga se
-// siguen con el «Seguir» de siempre (`alternarSigo()` de social.js: el navegador y, si entraste, tu cuenta)
-const L_SIGO_G = 'lg:reels-sigo';
+// ⭐ a quién sigues: TODOS con el «Seguir» de siempre (`alternarSigo()` de social.js: el navegador y, si entraste, tu
+// cuenta). Los de afuera de la Liga, con su clave `g--` (sigo_global.js, 25/11/2026); hasta ahí iban sólo en este
+// navegador (`lg:reels-sigo`), y `migrarReels()` los pasa a la lista una vez
 const limpio2 = (s) => String(s || '').replace(/[^\p{L}\p{N}\s]/gu, '').trim();
-const inicial = (g) => ([...limpio2(g.n)][0] || '?').toUpperCase();
 const puestoDe = (g) => (g.liga ? 'Liga' + (g.sv ? ' · ' + g.sv : '') : (g.pos ? '#' + g.pos + ' ' : '') + (GRUPO[g.esc] || ''));
 // adónde lleva su nombre: su perfil de la Liga o su ficha del Ranking global
 const perfilDe = (g) => (g.liga ? '#/r/' + g.lk : '#/global/' + g.k);
 // la clave con la que se lo sigue en la Liga (los de la Liga, y los del global que también juegan acá: `hk`)
 const claveLiga = (g) => (g.liga ? g.lk : g.hk || '');
+const claveDe = (g) => claveLiga(g) || (g.k ? PREFIJO + g.k : '');
 // quién es, para juntar sus reels (los de la Liga y los del global tienen claves de lugares distintos)
 const idDe = (g) => (g.liga ? 'l:' + g.lk : g.k);
 const linkDe = (vid) => 'https://underlegends.pages.dev/freestyle-rap/reels/' + vid;
@@ -137,7 +139,8 @@ function Cara({ g, cls, liga }) {
   if (g.liga && liga) return <span className={cls + ' lg'}><CaraLiga liga={liga} k={g.lk} nombre={g.n} cls="rls-cara-lg" /></span>;
   const src = [g.ft, g.fr].find((u) => u && u !== mal) || '';
   if (src) return <img className={cls} alt="" src={src} onError={() => setMal(src)} />;
-  return <span className={cls + ' ini'}>{inicial(g)}</span>;
+  // 🎤 sin foto, la silueta de rapero de las cartas (sin_foto.js, 25/11/2026), como en el Ranking global
+  return <img className={cls + ' sil'} alt="" src={siluetaDe(g.n)} />;
 }
 
 // ── los íconos, en trazo ──
@@ -290,19 +293,16 @@ function useFeed(liga, inicio) {
   const todos = useMemo(() => (X && listoL ? armar(X, D, L) : []), [X, D, L, listoL]);
   // ⭐ a quién sigues: los de la Liga (`lg:sigo`, el de siempre) y los del global (en este navegador)
   const [sigo, setSigo] = useState(() => aQuienSigo());
-  const [sigoG, setSigoG] = useState(() => ls.json(L_SIGO_G, []));
   useEffect(() => {
     const f = () => setSigo(aQuienSigo());
+    migrarReels();
     window.addEventListener('lg:sigo', f);
     return () => window.removeEventListener('lg:sigo', f);
   }, []);
-  const loSigo = (g) => { const kl = claveLiga(g); return kl ? sigo.includes(kl) : sigoG.includes(g.k); };
+  const loSigo = (g) => { const k = claveDe(g); return !!k && sigo.includes(k); };
   const seguir = (g) => {
-    const kl = claveLiga(g);
-    if (kl && typeof window.alternarSigo === 'function') { window.alternarSigo(kl); setTimeout(() => setSigo(aQuienSigo()), 50); return; }
-    const nx = sigoG.includes(g.k) ? sigoG.filter((x) => x !== g.k) : [...sigoG, g.k].slice(-200);
-    setSigoG(nx);
-    ls.set(L_SIGO_G, nx);
+    const k = claveDe(g);
+    if (k && typeof window.alternarSigo === 'function') { window.alternarSigo(k); setTimeout(() => setSigo(aQuienSigo()), 50); }
   };
   const [filtro, setFiltro] = useState('todo');
   const [menos, setMenos] = useState(() => ls.json(L_MENOS, []));
@@ -310,7 +310,7 @@ function useFeed(liga, inicio) {
   const [fuego, setFuego] = useState(() => ls.json(L_FUEGO, []));
   // los vistos se leen una vez: si no, el feed se reordenaría mientras lo miras
   const vistos0 = useRef(ls.json(L_VISTOS, []));
-  const claveG = filtro === 'guardados' ? guardo.join(',') : filtro === 'siguiendo' ? sigo.join(',') + '|' + sigoG.join(',') : '';
+  const claveG = filtro === 'guardados' ? guardo.join(',') : filtro === 'siguiendo' ? sigo.join(',') : '';
   const lista = useMemo(() => {
     const base = filtro === 'pro' ? todos.filter((r) => !dePlaza(r)) : filtro === 'plaza' ? todos.filter((r) => dePlaza(r) && !deLaLiga(r))
       : filtro === 'liga' ? todos.filter(deLaLiga)
@@ -447,7 +447,7 @@ const VACIO_P = {
   guardados: 'Toca el marcador en un reel y lo encuentras acá.',
   liga: 'Salen de los canales de YouTube de los servidores socios.',
 };
-const FILTROS = [['todo', 'Para ti'], ['siguiendo', 'Siguiendo'], ['liga', 'La Liga'], ['pro', 'Pros'], ['plaza', 'Plazas'], ['guardados', 'Guardados']];
+const FILTROS = [['todo', 'Para ti'], ['siguiendo', 'Siguiendo'], ['liga', 'La Liga'], ['pro', 'Pros'], ['plaza', 'Under'], ['guardados', 'Guardados']];
 
 async function compartir(r, setCopiado) {
   const url = linkDe(r.vid);
@@ -725,7 +725,7 @@ function ReelsCel({ F }) {
                 onClick={() => F.seguir(r.gente[0])}>{F.loSigo(r.gente[0]) ? 'Siguiendo' : 'Seguir'}</button>
             </div>
             <span className="rls-t2">{r.t || nombres}</span>
-            <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</span>
+            <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</span>
           </div>
           {Acciones}
           {G.modo === 'lado' && G.vx >= CEL.col + CEL.gap + CEL.borde ? (
@@ -1044,7 +1044,7 @@ function ReelsPc({ F }) {
                   </div>
                 </div>
                 <p className="rls-pc-t">{r.t || nombres}</p>
-                <p className="rls-canal">{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</p>
+                <p className="rls-canal">{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</p>
                 <div className="rls-pc-acc">
                   <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} title="Tecla F" onClick={F.darFuego}>
                     <Ico n="fuego" lleno={F.ardido} t={24} /><span>Fuego</span></button>

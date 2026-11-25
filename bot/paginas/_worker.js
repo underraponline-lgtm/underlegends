@@ -833,7 +833,7 @@ async function vistaPais(req, env, cc, url) {
 // nombre, su puesto y su grupo, con su miniatura de cine (`og/glob/<clave>.jpg`, bot/og_links.py `_cine_global()`). Lo de cada
 // uno sale de `global_vista.json` ({clave: [nombre, país, grupo, puesto]}, de bot/global_ranking.py): `global.json` entero
 // son 300 KB y leerlo costaba 4 ms de CPU de los 10. Sin miniatura todavía, la del Ranking
-const GRUPO_VISTA = { pro: 'Pro', plaza: 'Plaza', liga: 'Liga Global' };
+const GRUPO_VISTA = { pro: 'Pro', plaza: 'Under', liga: 'Liga Global' };  // «Under» (Dlx, 25/11/2026)
 async function vistaGlobal(req, env, k, url) {
   if (!k || k.length > 80) return null;
   const r = await env.ASSETS.fetch(new Request(url.origin + '/global_vista.json')).catch(() => null);
@@ -843,7 +843,7 @@ async function vistaGlobal(req, env, k, url) {
   const [n, , esc, pos] = x;
   const nombre = String(n).trim();
   const desc = (pos ? '#' + pos + ' del Ranking global de freestyle 2026' : 'En el Ranking global de freestyle 2026')
-    + (GRUPO_VISTA[esc] ? ' · ' + GRUPO_VISTA[esc] : '') + '. Sus batallas de la temporada, su historia y su lugar contra los pros, las plazas y la Liga.';
+    + (GRUPO_VISTA[esc] ? ' · ' + GRUPO_VISTA[esc] : '') + '. Sus batallas de la temporada, su historia y su lugar contra los pros, el under y la Liga.';
   const img = (await hayOg('glob', slugOg(k))) || (await hayOg('pag', 'ranking')) || url.origin + '/og/p/ranking.png';
   return conVista(req, env, url, { tab: nombre + ' · Ranking global de freestyle', titulo: nombre + ' · Ranking global de freestyle',
     desc, img, alt: nombre + ' en el Ranking global de freestyle' });

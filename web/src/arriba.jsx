@@ -22,6 +22,7 @@ import { PreguntaCab } from './comofunciona.jsx';
 import { alExtras, cargarExtras, hayPista, precargar } from './beats.js';
 import { HistoriaCtx } from './historia_ctx.js';
 import { bajarGlobal, bajarHistoria, globalListo, historiaLista, indiceCompetencias } from './global_datos.js';
+import { siluetaDe } from './sin_foto.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Era el de la tira de abajo del celular hasta la barra E (19/11/2026: cinco fijos y el resto en el ☰ en
@@ -184,7 +185,7 @@ function Marca({ liga }) {
 const TIPOS = { rapero: 0, global: 0.5, servidor: 1, pais: 2, crew: 3, competencia: 3.5, pagina: 4, evento: 5 };
 const ETIQUETA_TIPO = { rapero: 'rapero', global: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', competencia: 'competencia', pagina: 'página', evento: 'evento' };
 // 🌎 el grupo de cada uno en el Ranking global (los mismos nombres que global.jsx)
-const GRUPO_GLOBAL = { pro: 'Pro', plaza: 'Plaza', liga: 'Liga' };
+const GRUPO_GLOBAL = { pro: 'Pro', plaza: 'Under', liga: 'Liga' };  // «Under» (Dlx, 25/11/2026), como GRUPO de global.jsx
 // 🔎 «QUE TE DEJE BUSCAR CUALQUIER COSA» (Dlx, 13/11/2026): también las páginas (las del menú, cada ranking y lo de tu
 // cuenta) y los eventos (los que vienen y los de las últimas semanas)
 // ⚙️ «Ajustes» abre «La app» (18/11/2026): `#/ajustes` caía en el resumen de Tu cuenta, igual que el resultado de al lado.
@@ -275,7 +276,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     const out = [];
     glob.g.forEach((g, i) => {
       if (!g || !g.k || !g.n) return;
-      if (g.esc === 'liga' && liga.quien && liga.quien(g.n, g.lg)) return;
+      if ((g.lg || g.esc === 'liga') && liga.quien && liga.quien(g.n, g.lg)) return;
       const pos = g.p > 0 ? i + 1 : 0;
       out.push({ tipo: 'global', id: 'g' + g.k, n: limpio(g.n), href: '#/global/' + encodeURIComponent(g.k), cc: g.cc || '',
         ft: g.ft || '', sub: [GRUPO_GLOBAL[g.esc] || '', pos ? '#' + pos + ' del Ranking global' : 'Ranking global'].filter(Boolean).join(' · ') });
@@ -378,7 +379,8 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
     if (r.tipo === 'pais') return <span className="cara"><img alt="" src={'/banderas/g/' + r.cc + '.webp'} /></span>;
     if (r.tipo === 'competencia') return <span className="cara br-ico"><Ico n="copa" t={16} /></span>;
-    if (r.tipo === 'global') return r.ft ? <span className="cara"><img alt="" src={r.ft} loading="lazy" /></span> : <span className="cara ini">{(r.n.slice(0, 1) || '?').toUpperCase()}</span>;
+    // 🎤 los del Ranking global sin foto, con la silueta de rapero de las cartas (sin_foto.js, 25/11/2026)
+    if (r.tipo === 'global') return <span className={'cara' + (r.ft ? '' : ' sil')}><img alt="" src={r.ft || siluetaDe(r.n)} loading="lazy" /></span>;
     if (r.tipo === 'pagina') return <span className="cara br-ico"><Ico n={r.ico || 'flecha'} t={16} /></span>;
     if (r.tipo === 'evento') return r.logo ? <span className="cara"><img alt="" src={r.logo} /></span> : <span className="cara br-ico"><Ico n="eventos" t={16} /></span>;
     return <CrewCirculo c={r.crew} cls="cara" />;

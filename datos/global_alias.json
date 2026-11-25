@@ -1,5 +1,15 @@
 {
  "_leeme": "Quién es quién en el ranking global, a mano. «une»: {id de una fuente: id al que se une} (por ejemplo «fstats:1tobi»: «fms:tobi», o un pro con su perfil de la Liga: «fms:x»: «liga:x»). «separa»: pares de ids que el sistema uniría por el nombre y son dos personas. Por defecto, en la duda, dos perfiles: unir de más mezcla dos historiales.",
- "une": {},
- "separa": []
+ "une": {
+  "yt:heat": "liga:heat",
+  "yt:sombra": "liga:sombra",
+  "yt:makma": "liga:makmah"
+ },
+ "separa": [],
+ "_por_que": {
+  "yt:heat": "Dlx, 25/11/2026, con los videos de la pantalla de carga («si esos son ellos, dale»): «HEAT vs KAIN · Torneo de Plazas Red Bull Puerto Rico · BVS Freestyle» (B2OyIluaMF8). El Heat de la Liga es de Puerto Rico y el de afuera juega BVS",
+  "yt:sombra": "Dlx, 25/11/2026, idem: «SOMBRA vs JAHN ALENO · BVS FREESTYLE – FECHA 1 SEASON 5» (kommY3DfdJQ). El Sombra de la Liga es de Puerto Rico y el de afuera juega BVS",
+  "yt:makma": "Dlx, 25/11/2026, idem: «CRATER VS MAKMA · CLUB BOITCOT EDICIÓN 1» (NWO5AIKRzHw) es justo la batalla de afuera, y Dlx lo pasó como el Makmah de la Liga",
+  "pendiente": "Kourier: el de la Liga (us) y el de afuera (mx, Freestyle GYM TJ) pueden ser el mismo, pero el video de Dlx es de KO Liga de Batallas, otra liga: no lo prueba. Los demás de los 19 con el mismo nombre (Snow, Jupiter, Am, Deuxs, Pipe, Baltrip, Flash, Flama, Berrun, DOBLE J, Tony, LETRAO, NEBU, XPLICIT, Kaiser, Punisher) esperan a Dlx"
+ }
 }

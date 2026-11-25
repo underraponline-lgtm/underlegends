@@ -300,3 +300,5 @@
 .rls-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;margin:0}
 @media (prefers-reduced-motion: reduce){.rls-pc-luz .rls-luz,.rls-cel .rls-luz,.rls-ac[aria-pressed="true"] svg,.rls-pc .rls-ac[aria-pressed="true"] svg{animation:none}
   .rls-prog i,.rls-pc-prog i{transition:none}.rls-prog .on i,.rls-pc-prog .on i{transform:none}}
+/* 🎤 sin foto: la silueta de rapero de las cartas sobre gris claro (sin_foto.js, 25/11/2026) */
+.rls-cara.sil{object-fit:contain;object-position:50% 100%;background:#C9CBD1}

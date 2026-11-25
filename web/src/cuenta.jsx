@@ -26,6 +26,9 @@ import CSS_PAGINA from './css/cuenta.css?inline';
 import { usarCss } from './css.js';
 import { CuentaPC, EntrarError } from './cuenta_pc.jsx';
 import { achicar as achicarImagen, aBase64 } from './imagen.js';
+import { bajarGlobal, globalListo } from './global_datos.js';
+import { deAfuera, esDeAfuera } from './sigo_global.js';
+import { siluetaDe } from './sin_foto.js';
 import { BotonSeguir, GenteParaSeguir, LigaTeSigue, ligaSigue, sugeridos, useComparten } from './sugeridos.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
@@ -1002,13 +1005,31 @@ function PublicarSolo({ dc }) {
 // (`quienK()` los lee cuando llegan) sólo en esta parte
 function Sigues({ liga, dc }) {
   usePerfiles();
-  const fs = (liga.sigueTodos || liga.sigue).map((k) => liga.quienK(k)).filter(Boolean);
+  const ks = liga.sigueTodos || liga.sigue;
+  const fs = ks.map((k) => liga.quienK(k)).filter(Boolean);
+  // ⭐ y los pros y los de plaza del Ranking global (`g--<clave>`, sigo_global.js, 25/11/2026): su nombre y su cara salen de
+  // /global.json, que se baja sólo si sigues a alguien de afuera
+  const fuera = ks.filter(esDeAfuera);
+  const [G, setG] = useState(() => globalListo());
+  useEffect(() => {
+    if (!fuera.length || G) return undefined;
+    let vivo = true;
+    bajarGlobal().then((d) => { if (vivo) setG(d); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [fuera.length, G]);
+  const porK = G && G.g ? new Map(G.g.map((x, i) => [x.k, { ...x, pos: x.p > 0 ? i + 1 : 0 }])) : null;
+  const gs = porK ? fuera.map((k) => porK.get(deAfuera(k))).filter(Boolean) : [];
+  const n = fs.length + (porK ? gs.length : fuera.length);
   return (
-    <Caja t={'Sigues a ' + fs.length} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
+    <Caja t={'Sigues a ' + n} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
       : 'Entra con Discord y te avisamos cuando ganen o suban de rango.'}>
-      {fs.length ? <ul className="cu-gente">{fs.map((f) => (
+      {fs.length || gs.length ? <ul className="cu-gente">{fs.map((f) => (
         <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
           <small>{f.pos ? '#' + f.pos : ''}</small></a></li>
+      ))}{gs.map((g) => (
+        <li key={'g' + g.k}><a href={'#/global/' + encodeURIComponent(g.k)}>
+          <span className={'cu-av chica' + (g.ft ? '' : ' sil')}><img alt="" src={g.ft || siluetaDe(g.n)} loading="lazy" /></span>
+          <b>{limpio(g.n)}</b><small>{g.pos ? '#' + g.pos + ' global' : 'global'}</small></a></li>
       ))}</ul> : <a className="btn borde2 chico" href="#/ranking">Buscar a quién seguir</a>}
     </Caja>
   );

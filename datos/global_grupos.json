@@ -1,0 +1,24 @@
+{
+ "_leeme": "Los grupos del Ranking global que no salen solos de los datos (bot/global_ranking.py, grupos_de()). Dlx, 25/11/2026: «asegurate q uno pueda tener los 3 tags al mismo tiempo o 2 tmb, x ejemplo oasis va a plazas, es plazas y liga». «suma»: {clave del Ranking global: [grupos que se le suman]}; «saca»: {clave: [grupos que se le sacan]}. Los grupos son pro, plaza y liga. La clave es la de global.json (los de la Liga llevan «l-»). Sólo cambia lo que se muestra y por lo que se filtra: la fuerza con la que arranca cada uno sigue saliendo de una sola escena. Si dos perfiles son la misma persona (uno de afuera y su perfil de la Liga), eso no va acá sino en global_alias.json («une»): unidos, los dos grupos salen solos.",
+ "suma": {
+  "l-oasis": [
+   "plaza"
+  ],
+  "l-kain": [
+   "plaza"
+  ],
+  "l-sol": [
+   "plaza"
+  ],
+  "l-liberia": [
+   "plaza"
+  ]
+ },
+ "saca": {},
+ "_por_que": {
+  "l-oasis": "Dlx, 25/11/2026: «oasis va a plazas, es plazas y liga». Sus plazas no están en ninguna fuente que leamos",
+  "l-kain": "Dlx, 25/11/2026: su video de la pantalla de carga es «HEAT vs KAIN · Torneo de Plazas Red Bull Puerto Rico» (B2OyIluaMF8)",
+  "l-sol": "Dlx, 25/11/2026: «Da Vincy vs Sol · Estrellas del Flow Perú» (dMamevsP5ZQ), un batallón de plaza",
+  "l-liberia": "Dlx, 25/11/2026: «BUITRES MEDUSA vs EL COMBO LOCO · 5vs5 · El Potrero» (hR4EH1DvwKA)"
+ }
+}

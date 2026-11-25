@@ -10,7 +10,7 @@
 // gratis. Se baja sólo al abrir esta pestaña. La página no calcula puntos: los lee, y explica con los mismos números
 // (`formula` viaja en el json: si cambia un peso, la explicación y el bloque que armas cambian solos).
 // ⚠️ La gente de afuera NO es de la Liga: sus claves (`k`) no son las de la tabla de la Liga. Sólo los de la Liga (`esc`
-// 'liga') tienen cara y perfil acá (`hk`, por `liga.quien()`); a los demás, su foto (`ft`) o la inicial. Nunca
+// 'liga') tienen cara y perfil acá (`hk`, por `liga.quien()`); a los demás, su foto (`ft`) o la silueta. Nunca
 // `avNombre()` por nombre: un «Snow» de plaza heredaría la cara del «Snow» de la Liga.
 // ⚠️ `b` trae sólo las batallas que suman (`pts > 0`, global_ranking.py): las que faltan para llegar a `nb` son perdidas
 // que cuentan 0. Por eso un talón roto es «perdida» y nunca «otra sin detalle».
@@ -18,6 +18,8 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Bandera, Cara, Ico, accion, nombrePais } from './piezas.jsx';
 import { PopCab } from './pop.jsx';
 import { capital, limpio, norm } from './liga.js';
+import { siluetaDe } from './sin_foto.js';
+import { useSigoGlobal } from './sigo_global.js';
 import CSS from './css/global.css?inline';
 import { usarCss } from './css.js';
 import { bajarGlobal, bajarHistoria, globalListo, historiaLista, olvidarGlobal, slugComp } from './global_datos.js';
@@ -33,7 +35,18 @@ const cap1 = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
 const min1 = (s) => (/^(Jornada|Final|Regional|Internacional|Plaza|Otro)\b/.test(s || '') ? s[0].toLowerCase() + s.slice(1) : s);
 const quieto = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-const GRUPO = { pro: 'Pro', plaza: 'Plaza', liga: 'Liga' };
+// 🏷️ «UNDER» Y NO «PLAZA» (Dlx, 25/11/2026, a «¿otro nombre para los de plazas?»: «Under»). Sólo cambia lo que se lee: la
+// clave sigue siendo `plaza` (global.json, filtros, CSS), y la PLAZA como tipo de evento (`TIPO`, abajo) sigue siendo «Plaza»
+const GRUPO = { pro: 'Pro', plaza: 'Under', liga: 'Liga' };
+// 🏷️ TODOS SUS GRUPOS, NO UNO (25/11/2026, Dlx: «asegurate q uno pueda tener los 3 tags al mismo tiempo o 2 tmb, x ejemplo
+// oasis va a plazas, es plazas y liga»): `gs` de global.json (`grupos_de()` de bot/global_ranking.py), que viaja sólo
+// cuando dice más que `esc`. `esc` sigue siendo uno: es la escena con la que arranca su fuerza, y la que decide a qué
+// perfil lleva (los de la Liga, al suyo)
+const gruposDe = (g) => (g && Array.isArray(g.gs) && g.gs.length ? g.gs : g ? [g.esc] : []);
+const tiene = (g, x) => gruposDe(g).includes(x);
+// ¿es alguien de la Liga? Por su id de la Liga (`lg`) y no por `esc`: uno de afuera unido a su perfil de la Liga
+// (global_alias.json: Heat, Sombra, Makmah) tiene escena «plaza» y sigue siendo de la Liga, con su perfil de allá
+const esLiga = (g) => !!(g && (g.lg || g.esc === 'liga'));
 const TIPO = {
   rb_internacional: 'Red Bull internacional', fms_internacional: 'FMS internacional', world_cup: 'World Cup', fms_jornada: 'Jornada FMS',
   rb_nacional: 'Final nacional de Red Bull', rb_regional: 'Regional de Red Bull', plazas_final: 'Final de plazas', independiente: 'Internacional independiente',
@@ -152,11 +165,12 @@ function preparar(D, liga) {
   const cnt = { pro: 0, plaza: 0, liga: 0 };
   const cp = {};
   for (const g of G) {
-    cnt[g.esc] = (cnt[g.esc] || 0) + 1;
+    for (const x of gruposDe(g)) cnt[x] = (cnt[x] || 0) + 1;
     const c = g.cc || '';
     cp[c] = (cp[c] || 0) + 1;
-    // la cara y el perfil de los de la Liga: su fila de la tabla de la Liga
-    if (g.esc === 'liga' && liga && liga.quien) {
+    // la cara y el perfil de los de la Liga: su fila de la tabla de la Liga. Por `lg` (su id de la Liga) y no por `esc`:
+    // un pro unido a su perfil de la Liga (global_alias.json) también tiene el suyo
+    if (esLiga(g) && liga && liga.quien) {
       const f = liga.quien(g.n, g.lg);
       g.hk = (f && f.k) || '';
     }
@@ -167,7 +181,7 @@ function preparar(D, liga) {
   const noJugo = G.filter((g) => !g.jb);
   const sinPts = G.length - conPts - noJugo.length;
   const prov = G.filter((g) => g.jb > 0 && g.nb < 3).length;
-  const liga1 = G.find((g) => g.esc === 'liga' && g.p > 0) || null;
+  const liga1 = G.find((g) => esLiga(g) && g.p > 0) || null;
   // 🏔️ los gigantes para comparar: el #1 y los mejores de las finales internacionales de FMS y Red Bull (lo dice su `por`)
   const gig = [];
   const uno = G.find((g) => g.esc === 'pro' && g.p > 0);
@@ -190,15 +204,16 @@ function bloques(g, mejores) {
 const best = (g) => (g.b[0] ? g.b[0][4] : 0);
 
 // ── piezas ──
-// 📸 la cara: los de la Liga, la de Discord (su perfil); los de afuera, la que subió global_fotos.py a R2 (`ft`), y si la
-// imagen no carga, la inicial
+// 📸 la cara: los de la Liga, la de Discord (su perfil); los de afuera, la que subió global_fotos.py a R2 (`ft`). Sin foto
+// (o si no carga), la SILUETA de rapero de las cartas, la misma figura que su carta (`sin_foto.js`, 25/11/2026: Dlx,
+// «asegurate que en el ranking global hayan imagenes de todos»). Antes, la inicial: 1.102 de 1.261 iban así
 function CaraG({ liga, g, cls = '', grande = false }) {
   const [mal, setMal] = useState(false);
-  if (g.esc === 'liga' && g.hk) return <Cara liga={liga} k={g.hk} nombre={g.n} cls={'gl-cara liga ' + cls} lazy grande={grande} />;
+  if (g.hk) return <Cara liga={liga} k={g.hk} nombre={g.n} cls={'gl-cara liga ' + cls} lazy grande={grande} sinFoto={siluetaDe(g.n)} />;
   if (g.ft && !mal) {
     return <span className={'gl-cara foto ' + (g.esc === 'pro' ? 'pro ' : '') + cls}><img alt="" src={g.ft} loading="lazy" decoding="async" onError={() => setMal(true)} /></span>;
   }
-  return <span className={'gl-cara ini ' + (g.esc === 'pro' ? 'pro ' : '') + cls} aria-hidden="true">{inicial(g)}</span>;
+  return <span className={'gl-cara sil ' + (g.esc === 'pro' ? 'pro ' : '') + cls} aria-hidden="true"><img alt="" src={siluetaDe(g.n)} loading="lazy" decoding="async" /></span>;
 }
 // 🎭 el retrato de fms.tv (396×520, fondo transparente) recortado arriba: abajo trae el nombre pintado, y ese lo dice la
 // banda. Sin retrato, la cara grande
@@ -208,9 +223,12 @@ function Rto({ liga, g, gris = false }) {
   return <span className="gl-rto sin"><CaraG liga={liga} g={g} cls="gl-cxl" grande /></span>;
 }
 function Etiq({ g }) {
-  if (g.esc === 'pro') return <span className="gl-ec pro" title={'Es pro porque: ' + (g.por || []).map(porTx).join('. ')}>Pro</span>;
-  return <span className={'gl-ec ' + g.esc}>{GRUPO[g.esc]}</span>;
+  return <>{gruposDe(g).map((x, i) => (x === 'pro'
+    ? <span key={x} className={'gl-ec pro' + (i ? ' mas' : '')} title={'Es pro porque: ' + (g.por || []).map(porTx).join('. ')}>Pro</span>
+    : <span key={x} className={'gl-ec ' + x + (i ? ' mas' : '')}>{GRUPO[x]}</span>))}</>;
 }
+/** «Pro y Under»: los grupos en una frase */
+const gruposTx = (g) => { const xs = gruposDe(g).map((x) => GRUPO[x]); return xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : xs[0] || ''; };
 function Marca({ g }) {
   if (!g.jb) return <span className="gl-nojugo">Todavía no jugó en la T1</span>;
   if (g.nb < 3) return <span className="gl-prov" title="Menos de 3 batallas contadas: su puesto todavía se mueve mucho">Provisional</span>;
@@ -379,7 +397,7 @@ function Talones({ X, g }) {
 function TuPelea({ X, liga, yo, sesion, movil, abrir, verPq }) {
   if (!yo) {
     const o = X.liga1;
-    const top = X.G.filter((g) => g.esc === 'liga' && g.pos).slice(0, movil ? 4 : 8);
+    const top = X.G.filter((g) => tiene(g, 'liga') && g.pos).slice(0, movil ? 4 : 8);
     const txt = !sesion
       ? ['Tu esquina está vacía', 'Entra con Discord y te mostramos tu pelea: tú contra el que está justo arriba, entre los ' + miles(X.G.length) + '.']
       : ['Todavía no tienes pelea', 'Entras con tu primera batalla de la T1 en la Liga, una plaza, Red Bull o FMS.'];
@@ -530,7 +548,7 @@ function Fila({ X, liga, g, yo, movil, abrir }) {
 function Tabla({ X, liga, yo, sesion, movil, abrir, filtro, setFiltro }) {
   const tam = movil ? 10 : 14;
   const q = norm(filtro.q.trim());
-  const L = useMemo(() => X.G.filter((g) => (filtro.g === 'todos' || g.esc === filtro.g)
+  const L = useMemo(() => X.G.filter((g) => (filtro.g === 'todos' || tiene(g, filtro.g))
     && (filtro.pais === 'todos' || (g.cc || '') === filtro.pais)
     && (!filtro.sinProv || g.nb >= 3)
     && (!q || norm(g.n).includes(q))), [X, filtro.g, filtro.pais, filtro.sinProv, q]);
@@ -565,7 +583,7 @@ function Tabla({ X, liga, yo, sesion, movil, abrir, filtro, setFiltro }) {
         </div>
       </div>
       <ul className="gl-ley" aria-label="Qué significa cada marca">
-        <li><span className="gl-ley-g"><span className="gl-ec pro">Pro</span><span className="gl-ec plaza">Plaza</span><span className="gl-ec liga">Liga</span></span><span>su grupo</span></li>
+        <li><span className="gl-ley-g"><span className="gl-ec pro">Pro</span><span className="gl-ec plaza">{GRUPO.plaza}</span><span className="gl-ec liga">Liga</span></span><span>su grupo</span></li>
         {X.liga1 ? <li><Diez g={X.liga1} solo mejores={X.mejores} /><span>{'sus ' + X.mejores + ' batallas: suma, perdida, libre'}</span></li> : null}
         {X.prov ? <li><span className="gl-prov">Provisional</span><span>menos de 3 batallas</span></li> : null}
         {X.flechas ? <li><span className="gl-mov sube">▲3</span><span className="gl-mov baja">▼2</span><span>puestos desde el lunes anterior</span></li> : null}
@@ -587,7 +605,7 @@ function Herramientas({ X, yo, filtro, setFiltro }) {
         <input type="search" value={filtro.q} onChange={(e) => pon({ q: e.target.value })} placeholder="Buscar rapero" aria-label="Buscar rapero" enterKeyHint="search" />
       </label>
       <div className="gl-grupos" role="group" aria-label="Grupo">
-        {gru('todos', 'Todos', X.G.length)}{gru('pro', 'Pro', X.cnt.pro)}{gru('plaza', 'Plaza', X.cnt.plaza)}{gru('liga', 'Liga', X.cnt.liga)}
+        {gru('todos', 'Todos', X.G.length)}{gru('pro', 'Pro', X.cnt.pro)}{gru('plaza', GRUPO.plaza, X.cnt.plaza)}{gru('liga', 'Liga', X.cnt.liga)}
       </div>
       <select className="gl-sel" value={filtro.pais} onChange={(e) => pon({ pais: e.target.value })} aria-label="País">
         <option value="todos">Todos los países</option>
@@ -601,7 +619,7 @@ function Herramientas({ X, yo, filtro, setFiltro }) {
 function QueEs({ X }) {
   const C = [
     ['#', X.flechas ? 'Su puesto en la T1 y, debajo, cuántos puestos subió o bajó desde el lunes anterior. Con 0 pts va «—».' : 'Su puesto en la T1. Con 0 pts va «—».'],
-    ['Rapero', 'Su grupo (Pro, Plaza o Liga), su país y su mejor victoria.'],
+    ['Rapero', 'Su grupo (Pro, Under o Liga: puede tener más de uno), su país y su mejor victoria.'],
     ['Batallas', 'Cuántas de sus ' + X.mejores + ' mejores ya llenó. Con menos de 3 es «provisional»: su puesto todavía se mueve mucho.'],
     ['Puntos', 'Sus ' + X.mejores + ' mejores batallas más sus ' + X.mejoresTit + ' mejores títulos.'],
   ];
@@ -619,7 +637,7 @@ function Mini({ liga, g, sub, der, abrir }) {
 }
 function Rail({ X, liga, yo, abrir, setFiltro }) {
   const sub = X.flechas ? X.G.filter((g) => typeof g.mv === 'number' && g.mv > 0).sort((a, b) => b.mv - a.mv || a.i - b.i).slice(0, 4) : [];
-  const plz = X.G.filter((g) => g.esc === 'plaza' && g.pos).slice(0, 6);
+  const plz = X.G.filter((g) => tiene(g, 'plaza') && g.pos).slice(0, 6);
   const paisR = (yo && yo.cc) || (X.paises[0] && X.paises[0][0]) || '';
   const paisL = paisR ? X.G.filter((g) => g.cc === paisR && g.pos).slice(0, 5) : [];
   const nPais = (X.paises.find((x) => x[0] === paisR) || [0, 0])[1];
@@ -632,7 +650,7 @@ function Rail({ X, liga, yo, abrir, setFiltro }) {
         </section>
       ) : null}
       {plz.length ? (
-        <section><div className="gl-sec-t"><h3>Lo mejor de plaza</h3><small>Fuera de la Liga</small></div>
+        <section><div className="gl-sec-t"><h3>Lo mejor del under</h3><small>Las plazas y lo de afuera</small></div>
           {plz.map((g) => <Mini key={g.k} liga={liga} g={g} sub={lugar(g)} abrir={abrir}
             der={<a className="gl-inv-ico" href="#/invitar" aria-label="Invitar a la Liga" title="Invitar a la Liga"><Ico n="seguir" t={16} /></a>} />)}
           <p className="gl-rail-p">¿Conoces a alguno? Mándale tu link de <a className="gl-lnk-i" href="#/invitar">Invita y gana</a>.</p>
@@ -787,7 +805,7 @@ function Como({ X, D, yo, movil, verGrupo }) {
   const lunes = proximoLunes(D.t);
   const REGLA = {
     pro: <>Juega una liga <b>FMS</b> 2026/27, jugó las finales internacionales de <b>FMS o Red Bull 2026</b>, o es <b>campeón nacional de Red Bull</b> 2026/27.</>,
-    plaza: <>Todo lo de <b>afuera de la Liga</b> que no es Pro: plazas, torneos independientes, regionales y nacionales de Red Bull sin título.</>,
+    plaza: <>Todo lo de <b>afuera de la Liga</b> que no es Pro: plazas, torneos independientes, regionales y nacionales de Red Bull sin título. Un Pro o alguien de la Liga que <b>también juega plazas</b> lleva los dos.</>,
     liga: <>Juega en los <b>eventos de Discord de la Liga</b> y sus socios, verificado con su perfil.</>,
   };
   return (
@@ -879,6 +897,7 @@ function Camino({ X, g, tu }) {
 }
 function Ficha({ X, liga, g, yo, cerrar }) {
   const tu = !!yo && g === yo;
+  const [loSigo, seguir] = useSigoGlobal();
   const H = useHistoria();
   const otro = X.G.find((x) => x !== g && norm(x.n) === norm(g.n));
   const b = g.b[0];
@@ -888,6 +907,7 @@ function Ficha({ X, liga, g, yo, cerrar }) {
         <div className="gl-fi-n"><h2>{nombre(g)}</h2><p><Bandera cc={g.cc} cls="gl-flag" />{g.cc ? nombrePais(g.cc) : 'Sin país'} <Etiq g={g} />{g.jb ? <> <Marca g={g} /></> : null}</p></div>
         <button type="button" className="gl-cerrar" onClick={cerrar} aria-label="Cerrar la ficha"><Ico n="cerrar" t={16} /></button>
       </div>
+      {tu ? null : <BotonSeguirG liga={liga} g={g} si={loSigo(g)} seguir={seguir} />}
       <div className="gl-datos"><div><small>Puesto</small><b>{g.pos ? '#' + g.pos : '—'}</b></div><div><small>Puntos</small><b>{g.jb ? n1(g.p) : '—'}</b></div><div><small>Jugadas</small><b>{g.jb || 0}</b></div></div>
       {g.jb && g.nb ? <Record g={g} /> : null}
       {b ? <p className="gl-mejor"><span>{tu ? 'Tu mejor victoria' : 'Su mejor victoria'}</span><PorQue X={X} g={g} tu={tu} min />. <b>+{n1(b[4])}</b></p> : null}
@@ -897,15 +917,44 @@ function Ficha({ X, liga, g, yo, cerrar }) {
       {/* 📜 su carrera, de antes de la T1 (23/11/2026): a todos, aunque no tenga (lo dice) */}
       {H ? <Historia h={(H.p || {})[g.k]} /> : null}
       <Camino X={X} g={g} tu={tu} />
-      {otro ? <p className="gl-homo">Hay otro <b>{nombre(otro)}</b> en la tabla: <Bandera cc={otro.cc} cls="gl-flag" /> {otro.cc ? nombrePais(otro.cc) : 'sin país'}, {GRUPO[otro.esc]}{otro.pos ? ', #' + otro.pos : ''}. La bandera los separa.</p> : null}
-      {tu ? null : g.esc === 'liga' ? (
+      {otro ? <p className="gl-homo">Hay otro <b>{nombre(otro)}</b> en la tabla: <Bandera cc={otro.cc} cls="gl-flag" /> {otro.cc ? nombrePais(otro.cc) : 'sin país'}, {gruposTx(otro)}{otro.pos ? ', #' + otro.pos : ''}. La bandera los separa.</p> : null}
+      {tu ? null : esLiga(g) ? (
         g.hk ? <div className="gl-homo"><b>Está en la Liga.</b> <a className="gl-lnk" href={'#/r/' + g.hk}>Ver su perfil</a></div> : null
       ) : (
         <div className="gl-invita"><h3>No está en la Liga</h3><p>Invítalo: si se une, sus batallas en la Liga también suman acá y puede pelear el Ranking de la T1.</p>
           <a className="btn" href="#/invitar"><Ico n="seguir" t={16} />Invitar a la Liga</a><small>Con tu link de Invita y gana: si entra, cuenta para ti.</small></div>
       )}
       {/* 🪪 su perfil entero (24/11/2026): la carrera por competencia, el récord y sus batallas */}
-      {g.esc !== 'liga' ? <a className="btn gl-fi-perfil" href={'#/global/' + encodeURIComponent(g.k)}>Ver su perfil</a> : null}
+      {!esLiga(g) ? <a className="btn gl-fi-perfil" href={'#/global/' + encodeURIComponent(g.k)}>Ver su perfil</a> : null}
+    </div>
+  );
+}
+
+// ⭐ seguir a cualquiera de la tabla: pro, plaza o de la Liga (sigo_global.js), con la regla del botón de la Liga
+// (`BotonSeguir` de sugeridos.jsx: entrar con Discord y estar verificado; Dlx, 21/10/2026). Que el otro también esté
+// verificado se pide sólo a los de la Liga: un pro o uno de plaza no tiene cómo. Lo que dice abajo depende de quién es: a
+// los de la Liga se les avisa cuando ganan (el vigía lee el muro); de los de afuera todavía no hay de dónde
+function BotonSeguirG({ liga, g, si, seguir, cls = '', perfil = false }) {
+  const [msg, setMsg] = useState('');
+  const deLiga = !!(g.hk || g.lg);
+  const tocar = () => {
+    const dc = typeof window !== 'undefined' ? window.DC || null : null;
+    if (!si) {
+      if (!dc) { accion.entrar(); return; }
+      if (!dc.rapero) { setMsg('Verifícate para seguir'); return; }
+      const f = deLiga && liga && liga.quienK ? liga.quienK(g.hk) : null;
+      if (f && f.nv) { setMsg('Todavía no está verificado'); return; }
+    }
+    setMsg('');
+    seguir(g);
+  };
+  return (
+    <div className={'gl-seguir ' + cls}>
+      {/* en su perfil, el botón del perfil de la Liga (`pf8-seguir`, perfil.jsx); en la ficha, uno chico */}
+      <button type="button" className={perfil ? 'btn pf8-seguir ' + (si ? 'borde on' : 'verde') : 'btn chico' + (si ? ' borde2 on' : '')}
+        aria-pressed={si} onClick={tocar}>{perfil ? null : <Ico n="seguir" t={16} />}{si ? 'Siguiendo' : 'Seguir'}</button>
+      <small role={msg ? 'status' : undefined}>{msg || (deLiga ? (si ? 'Te avisamos cuando gane.' : 'Te avisa cuando gane.')
+        : si ? 'Lo tienes en Mi cuenta y en «Siguiendo» de Reels.' : 'Para tenerlo en Mi cuenta y en «Siguiendo» de Reels.')}</small>
     </div>
   );
 }
@@ -1031,7 +1080,7 @@ export function RankingGlobal({ liga, dc, movil }) {
   const [filtro, setFiltro] = useState({ g: 'todos', pais: 'todos', sinProv: false, q: '', pag: 0 });
   const papel = useRef(null);
   const yoL = liga && liga.yo;
-  const yo = X && yoL ? X.G.find((g) => g.esc === 'liga' && g.hk && g.hk === yoL.k && g.pos) || null : null;
+  const yo = X && yoL ? X.G.find((g) => esLiga(g) && g.hk && g.hk === yoL.k && g.pos) || null : null;
   const sesion = !!(dc || yoL);
   if (mal) {
     return (
@@ -1080,4 +1129,4 @@ export function RankingGlobal({ liga, dc, movil }) {
 }
 
 // 🪪 las piezas que usa el perfil de cada uno (perfil_global.jsx, con la interfaz del perfil de la Liga)
-export { GRUPO, MEDALLA, PUESTO, TIPO, fechaEv, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria };
+export { BotonSeguirG, GRUPO, esLiga, gruposDe, gruposTx, tiene, MEDALLA, PUESTO, TIPO, fechaEv, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria };

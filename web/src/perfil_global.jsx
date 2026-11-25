@@ -18,7 +18,9 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import CSS_PF from './css/perfil.css?inline';
 import CSS_V10 from './css/perfil_v10.css?inline';
 import { usarCss } from './css.js';
-import { GRUPO, MEDALLA, PUESTO, TIPO, fechaEv, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria } from './global.jsx';
+import { siluetaDe } from './sin_foto.js';
+import { useSigoGlobal } from './sigo_global.js';
+import { BotonSeguirG, GRUPO, esLiga, gruposDe, gruposTx, MEDALLA, PUESTO, TIPO, fechaEv, limpioEv, miles, n1, nombre, plural, porEvento, porTx, preparar, rivalDe, useGlobal, useHistoria } from './global.jsx';
 import { indiceCompetencias, slugComp, urlLogo } from './global_datos.js';
 
 // los mismos ids que perfil.jsx y perfil_v10.jsx: si ya están, no se duplican
@@ -48,12 +50,13 @@ function sigla(c) {
   if (/^BDM/i.test(t)) return 'BDM';
   return t.split(/\s+/).filter((w) => /^\p{Lu}/u.test(w)).map((w) => w[0]).join('').slice(0, 3) || t.slice(0, 2).toUpperCase();
 }
-/** la cara: la foto de perfil (`ft`), el recorte de fms.tv (`fr`) o la inicial, en el círculo de la Liga */
+/** la cara: la foto de perfil (`ft`), el recorte de fms.tv (`fr`) o la silueta de rapero de las cartas (sin_foto.js,
+ * 25/11/2026: Dlx, «asegurate que en el ranking global hayan imagenes de todos»), en el círculo de la Liga */
 function CaraGl({ g, cls }) {
   const [mal, setMal] = useState('');
   const src = [g.ft, g.fr].find((u) => u && u !== mal) || '';
   if (src) return <span className={cls}><img alt="" src={src} className={src === g.fr ? 'glpv-rto' : undefined} onError={() => setMal(src)} /></span>;
-  return <span className={cls + ' ini'}>{([...limpio2(g.n)][0] || '?').toUpperCase()}</span>;
+  return <span className={cls + ' sil'}><img alt="" src={siluetaDe(g.n)} className="glpv-sil" /></span>;
 }
 // 🎨 LOS DIBUJOS (24/11/2026, Dlx: «agrega logos y avatares y dibujos»): una copa, la medalla de cada puesto y un micrófono,
 // en SVG y en los colores de las medallas de la Liga, en vez de letras sueltas. Y el logo de cada competencia (de
@@ -127,10 +130,11 @@ function PersonaSt({ g }) {
   return <li key={g.k}><CaraGl g={g} cls="st-mini" /><span>{nombre(g)}</span></li>;
 }
 const limpio2 = (s) => String(s || '').replace(/[^\p{L}\p{N}\s]/gu, '').trim();
-const irA = (g) => () => { location.hash = g.esc === 'liga' && g.hk ? '#/r/' + encodeURIComponent(g.hk) : '#/global/' + encodeURIComponent(g.k); };
+const irA = (g) => () => { location.hash = esLiga(g) && g.hk ? '#/r/' + encodeURIComponent(g.hk) : '#/global/' + encodeURIComponent(g.k); };
 
 // ════════ LA CABECERA: la de `Cabeza` (perfil.jsx) ════════
 function CabezaGl({ liga, g, h }) {
+  const [loSigo, seguir] = useSigoGlobal();
   const pct = h && h.b && h.v != null ? Math.round((100 * h.v) / h.b) + ' %' : '—';
   const por = (g.por || []).map(porTx);
   return (
@@ -142,17 +146,22 @@ function CabezaGl({ liga, g, h }) {
           <span className="tag">{g.pos ? '#' + g.pos + ' DEL RANKING GLOBAL' : 'RANKING GLOBAL'} · {liga.temp}</span>
           <div className="pf8-nom">
             <h1 className="hero-ev largo">{nombre(g)}</h1>
-            <div className="pf8-pills"><span className="pf8-crew" title={por.join('. ') || GRUPO[g.esc]}><b>{(GRUPO[g.esc] || '').toUpperCase()}</b><span>{por[0] || 'Ranking global'}</span></span></div>
+            {/* 🏷️ una pastilla por grupo (25/11/2026: puede ser Pro y Under, o Under y Liga); la de Pro dice por qué */}
+            <div className="pf8-pills">{gruposDe(g).map((x) => (
+              <span key={x} className="pf8-crew" title={x === 'pro' ? por.join('. ') : GRUPO[x]}><b>{(GRUPO[x] || '').toUpperCase()}</b>
+                <span>{x === 'pro' ? por[0] || 'Ranking global' : x === 'liga' ? 'La Liga' : 'Ranking global'}</span></span>))}</div>
           </div>
           <p className="pf8-segs">
             {g.cc ? <a href={'#/pais/' + g.cc}><Bandera cc={g.cc} cls="pf-flag" />{nombrePais(g.cc)}</a> : null}
             {por.slice(1, 3).map((t) => <span key={t}>{t}</span>)}
-            {g.esc !== 'liga' ? <span>No está en la Liga</span> : null}
+            {!esLiga(g) ? <span>No está en la Liga</span> : null}
             {g.jb && g.nb < 3 ? <span title="Menos de 3 batallas contadas: su puesto todavía se mueve mucho">Provisional</span> : null}
           </p>
         </div>
         <div className="pf8-acc">
-          {g.esc !== 'liga' ? <a className="btn pf8-seguir verde" href="#/invitar">Invitar a la Liga</a> : null}
+          {/* ⭐ seguirlo (sigo_global.js): a los pros y a los de plaza también */}
+          <BotonSeguirG liga={liga} g={g} si={loSigo(g)} seguir={seguir} cls="glpv-seg" perfil />
+          {!esLiga(g) ? <a className="btn borde pf8-seguir" href="#/invitar">Invitar a la Liga</a> : null}
         </div>
         <div className="pf8-bar">
           <div className="pf8-num">
@@ -453,7 +462,7 @@ function VideosGl({ X, xs, sujeto, shorts = [], cs = [] }) {
 function SobreGl({ g, h }) {
   const xs = [];
   if (g.cc) xs.push(['País', <a key="cc" href={'#/pais/' + g.cc}><Bandera cc={g.cc} cls="pv-flag" />{nombrePais(g.cc)}</a>, '']);
-  xs.push(['Grupo', GRUPO[g.esc] || g.esc, g.esc === 'pro' ? 'en el Ranking global' : '']);
+  xs.push([gruposDe(g).length > 1 ? 'Grupos' : 'Grupo', gruposTx(g) || g.esc, 'en el Ranking global']);
   (g.por || []).forEach((t, i) => xs.push([i ? '' : 'Por qué es pro', porTx(t), '']));
   if (h && h.j) xs.push(['Jornadas', String(h.j), 'en toda su carrera']);
   if (h && h.t.length) {
@@ -486,7 +495,7 @@ function DondeGl({ g, X }) {
   );
 }
 function InvitaGl({ g }) {
-  if (g.esc === 'liga') return null;
+  if (esLiga(g)) return null;
   return (
     <section className="pv-cajal">
       <h3>No está en la Liga</h3>
@@ -514,7 +523,7 @@ export function PerfilGlobal({ liga, k: k0 }) {
     return () => clearTimeout(r);
   }, [g]);
   // los de la Liga: su perfil es el de la Liga, que ya tiene todo
-  useEffect(() => { if (g && g.esc === 'liga' && g.hk) location.hash = '#/r/' + encodeURIComponent(g.hk); }, [g]);
+  useEffect(() => { if (g && esLiga(g) && g.hk) location.hash = '#/r/' + encodeURIComponent(g.hk); }, [g]);
   const h = H && g ? (H.p || {})[g.k] || null : null;
   const comps = useMemo(() => porCompetencia(h), [h]);
   if (mal) return <section className="sec pf-sec"><p className="pronto-p">No pude cargar el Ranking global. <button type="button" className="te-link" onClick={reintentar}>Reintentar</button></p></section>;

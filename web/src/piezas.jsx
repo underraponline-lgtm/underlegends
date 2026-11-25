@@ -363,7 +363,8 @@ export function Bandera({ cc, cls = 'r-flag' }) {
 
 // ⚠️ lo que falló se recuerda POR DIRECCIÓN, no como un sí/no: el mismo lugar de una lista pasa a mostrar a otra
 // persona y, con un sí/no, heredaba la inicial aunque su foto anduviera (revisión del 01/10/2026)
-export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = false }) {
+// `sinFoto`: la imagen para quien no tiene foto (la silueta del Ranking global, sin_foto.js); sin eso, la inicial como siempre
+export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = false, sinFoto = '' }) {
   const [mal, setMal] = useState(null);
   // 🛍️ el aro y la decoración que se puso en la Tienda (tanda 3, puesto.js): una capa más grande que la cara, encima
   const P = usePuesto(k);
@@ -378,6 +379,7 @@ export function Cara({ liga, k, nombre, cls = 'cara', lazy = false, grande = fal
   const cl = capaT ? cls + ' con-tienda' + (tieneAro(P) ? ' con-aro' : '') : cls;
   const envuelve = (x) => (capaT ? <span className="ct-in">{x}{capaT}</span> : x);
   if (src && mal !== src) return <span className={cl} data-fk={k || undefined}>{envuelve(<img alt="" src={src} loading={lazy ? 'lazy' : undefined} decoding={lazy ? 'async' : undefined} onError={() => setMal(src)} />)}</span>;
+  if (sinFoto) return <span className={cl + ' sil'} data-fk={k || undefined}>{envuelve(<img alt="" src={sinFoto} loading={lazy ? 'lazy' : undefined} decoding="async" />)}</span>;
   return <span className={cl + ' ini'} data-fk={k || undefined}>{envuelve((limpio(nombre).slice(0, 1) || '?').toUpperCase())}</span>;
 }
 

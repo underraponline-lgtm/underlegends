@@ -58,6 +58,8 @@ VISTA = os.path.join(BASE, 'bot', 'paginas', 'global_vista.json')
 # 🎬 el índice chico de Reels (24/11/2026): la vista previa de cada link (`vistaReel` de _worker.js) y la fila del Inicio
 REELS_VISTA = os.path.join(BASE, 'bot', 'paginas', 'reels_vista.json')
 PROS = os.path.join(BASE, 'datos', 'global_pros.json')
+#: 🏷️ los grupos a mano (25/11/2026): `{"suma": {clave: [grupo…]}, "saca": {clave: [grupo…]}}`. Ver `grupos_de()`
+GRUPOS = os.path.join(BASE, 'datos', 'global_grupos.json')
 SEMILLA_PRO = 7.5  # quien es pro arranca, como mínimo, como un MC de FMS
 
 # Las fuentes, en orden de preferencia cuando dos traen la misma batalla.
@@ -385,6 +387,41 @@ def identidades(batallas, mvps, alias=None, extra=None):
     return de_id, {p['k']: p for p in personas.values()}
 
 
+# ── 3b. Los grupos de cada uno: puede ser más de uno ─────────────────────────────────────────────────────────────────
+ORDEN_GRUPOS = ('pro', 'plaza', 'liga')
+#: lo que cuenta como «jugó plazas»: la plaza y el Torneo de Plazas de Red Bull. ⚠️ NO `PLAZA` entero: ahí están también
+#: las internacionales independientes (Combate Mortal, Verso Final, Supremacía) y los regionales de Red Bull, que pesan
+#: como una plaza grande pero no son una plaza. Con `PLAZA`, Mecha salía «Pro · Plaza» por Combate Mortal
+JUGO_PLAZA = {'plaza', 'plazas_final'}
+
+
+def grupos_de(k, p, escena, tipos, a_mano=None):
+    """🏷️ LOS GRUPOS DE ALGUIEN, TODOS LOS QUE TIENE (25/11/2026). Dlx: *«asegurate q uno pueda tener los 3 tags al mismo
+    tiempo o 2 tmb, x ejemplo oasis va a plazas, es plazas y liga»*.
+
+    `escena` (pro, plaza o liga) sigue siendo UNA: es la que decide con qué fuerza arranca y el castigo de jugar fuera
+    de tu escena (`FUERA_DE_ESCENA`), y eso no cambia. Esto es lo que se MUESTRA y por lo que se filtra:
+      · pro: si su escena es pro
+      · plaza: si su escena es plaza o jugó una plaza (`JUGO_PLAZA`): Rife es pro y jugó DEM Santa Cruz
+      · liga: si es alguien de la Liga (`lg`): un pro o uno de plaza unidos a su perfil de la Liga (global_alias.json)
+      · y lo de `datos/global_grupos.json` a mano (`suma` / `saca`): Oasis juega plazas, pero sus plazas no están en
+        ninguna fuente que leamos
+    `tipos`: los tipos de evento de sus batallas."""
+    gs = set()
+    if escena == 'pro':
+        gs.add('pro')
+    if escena == 'plaza' or (set(tipos or ()) & JUGO_PLAZA):
+        gs.add('plaza')
+    if p.get('lg') or escena == 'liga':
+        gs.add('liga')
+    a_mano = a_mano or {}
+    gs |= {x for x in (a_mano.get('suma') or {}).get(k, []) if x in ORDEN_GRUPOS}
+    gs -= set((a_mano.get('saca') or {}).get(k, []))
+    if not gs:
+        gs.add(escena)
+    return [x for x in ORDEN_GRUPOS if x in gs]
+
+
 # ── 4. La fuerza con la que arranca cada uno ─────────────────────────────────────────────────────────────────────────
 def semillas_iniciales(batallas, de_id, personas, elo_liga=None, a_mano=None, pro_keys=None):
     """`(s0, escena)`. La escena NO sale de dónde jugó en la ventana sino de quién es: pro si está en `pros_de()`,
@@ -515,7 +552,8 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
 
 
 # ── 6. Armar la salida ───────────────────────────────────────────────────────────────────────────────────────────────
-def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None, pros=None, subir_fotos=False):
+def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None, pros=None, subir_fotos=False,
+          grupos=None):
     batallas = deduplicar(batallas)
     de_id, personas = identidades(batallas, mvps, alias, extra=pros)
     batallas = deduplicar(batallas, de_id)  # otra vez, por persona: dos fuentes que escriben distinto el nombre
@@ -556,6 +594,11 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
                 xs = videos.setdefault(yo, [])
                 if not any(x[0] == vv[0] for x in xs):
                     xs.append([vv[0], ev_i[b['evento']['id']], el, 1 if b.get('gana') == lado else 0, 1 if vv[1] else 0])
+    # 🏷️ los tipos de evento de cada uno, para sus grupos (`grupos_de()`)
+    tipos = {}
+    for b in batallas:
+        for lado in ('a', 'b'):
+            tipos.setdefault(de_id[b[lado]['id']], set()).add(b['evento'].get('tipo'))
     gente, fotos_de = [], {}
     for k, c in calc.items():
         p = personas[k]
@@ -566,6 +609,10 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
                       'nb': c['nb'], 'jb': c['jb'], 'f': c['f'],
                       'b': [[ev_i[e], r, el, cod, round(pts, 1), nf] for pts, e, r, el, cod, nf in c['bat'] if pts > 0],
                       't': [[ev_i[e], puesto, round(pts, 1)] for pts, e, puesto in c['tit'] if pts > 0]})
+        # `gs` sólo si dice más que `esc` (la página lee `g.gs || [g.esc]`): son 1.261 filas en un archivo que se baja entero
+        gs = grupos_de(k, p, gente[-1]['esc'], tipos.get(k), grupos)
+        if gs != [gente[-1]['esc']]:
+            gente[-1]['gs'] = gs
         if por_pro.get(k):
             gente[-1]['por'] = por_pro[k][:3]  # por qué es pro: «FMS Chile», «FMS Internacional 2026»…
         if videos.get(k):
@@ -624,7 +671,7 @@ def correr(red=False, escribir=True):
             # casos de prueba: una foto vieja que no puede llegar al ranking de verdad.
             batallas, mvps, semillas, estado, plantel = leer_fuentes(False, previo, solo={'liga'})
     out = armar(batallas, mvps, semillas, estado, _leer(ALIAS, {}), _leer(SEMILLAS, {}),
-                pros=pros_de(plantel, _leer(PROS, {})), subir_fotos=red and escribir)
+                pros=pros_de(plantel, _leer(PROS, {})), subir_fotos=red and escribir, grupos=_leer(GRUPOS, {}))
     flechas(out, _leer(SALIDA, {}))
     if escribir:
         _escribir(SALIDA, out, compacto=True)
@@ -726,6 +773,18 @@ def _self_check():
                          {'k': '', 'n': 'Sin clave', 'p': 3}]})
     if vv != {'a': ['A', 'ar', 'pro', 1], 'b': ['B', '', 'plaza', 0]}:
         mal.append('vista_de() no arma la vista previa como la página: %r' % vv)
+    # 🏷️ los grupos: puede tener los tres; la escena sigue siendo una
+    G = grupos_de
+    casos = [(G('a', {}, 'plaza', {'plaza'}), ['plaza']),
+             (G('rife', {}, 'pro', {'fms_jornada', 'plaza'}), ['pro', 'plaza']),
+             (G('mecha', {}, 'pro', {'fms_jornada', 'independiente', 'rb_regional'}), ['pro']),
+             (G('l-oasis', {'lg': 'oasis'}, 'liga', {'liga'}, {'suma': {'l-oasis': ['plaza']}}), ['plaza', 'liga']),
+             (G('x', {'lg': 'x'}, 'pro', {'fms_jornada', 'plazas_final'}), ['pro', 'plaza', 'liga']),
+             (G('l-y', {'lg': 'y'}, 'liga', {'liga'}), ['liga']),
+             (G('z', {}, 'plaza', {'plaza'}, {'saca': {'z': ['plaza']}, 'suma': {'z': ['inventado']}}), ['plaza'])]
+    for i, (vino, quiero) in enumerate(casos):
+        if vino != quiero:
+            mal.append('grupos_de() caso %d: %r, tenía que dar %r' % (i, vino, quiero))
     bs = []
     # Un MC de FMS que gana 4 batallas (dos jornadas) contra rivales de FMS…
     for j, (r1, r2) in enumerate((('Rival1', 'Rival2'), ('Rival3', 'Rival4'))):
