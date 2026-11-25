@@ -1409,6 +1409,11 @@ def _lo_barato(correr):
         # `bot/paginas/` del paso 2c. Nunca frena el ciclo
         if not corre(['bot/liga_shorts.py', '--aplicar'], callado=True, mostrar=('📱', '⚠️')):
             print('      ⚠️ los shorts de la Liga fallaron: queda lo de la corrida anterior')
+        # 🎞️ y los videos de los canales del Ranking global, cortos y largos (`bot/global_fuente_clips.py`, 25/11/2026, Dlx:
+        # «videos nuevos cada día»): lee una vez por día y en todas las corridas rearma `bot/paginas/global_clips.json`
+        # desde `datos/`, como los shorts de arriba. Lo recién aparecido va al muro para la campana (`muro.py`)
+        if not corre(['bot/global_fuente_clips.py', '--ciclo'], callado=True, mostrar=('🎞️', '⚠️')):
+            print('      ⚠️ los videos de los canales fallaron: queda lo de la corrida anterior')
     # ── 2b8b · 💬 los chats generales de cada socio (`bot/chats.py`, Dlx 17/11/2026): una vez por día, desde las 12 PM ET.
     # Sólo números al repo; lo que importa, al Dashboard. Cada servidor lo apaga en su panel. Nunca frena el ciclo
     if correr:

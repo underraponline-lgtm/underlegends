@@ -696,14 +696,8 @@ def correr(red=False, escribir=True):
             print('📱 shorts: %d guardados%s' % (len(sh), (' · ' + '; '.join(av[:3])) if av else ''))
         except Exception as e:                           # noqa: BLE001 — sin shorts nuevos quedan los guardados
             print('⚠️ los shorts no se leyeron: %s' % str(e)[:100])
-        # 🎞️ los videos horizontales cortos (25/11/2026, Dlx: «videos horizontales… que no duren bastante», hasta 5 min): la
-        # columna izquierda de Reels en la compu. Tampoco suman puntos
-        try:
-            import global_fuente_clips as GC
-            cl, av = GC.actualizar(aplicar=escribir)
-            print('🎞️ clips: %d guardados%s' % (len(cl), (' · ' + '; '.join(av[:3])) if av else ''))
-        except Exception as e:                           # noqa: BLE001 — sin clips nuevos quedan los guardados
-            print('⚠️ los clips no se leyeron: %s' % str(e)[:100])
+        # 🎞️ los videos de los canales (cortos y largos) los lee el CICLO una vez por día (`global_fuente_clips.py --ciclo`,
+        # paso 2b8): un solo escritor de datos/global_clips.json. Acá sólo se rearma el archivo de la página, más abajo
     if red:
         batallas, mvps, semillas, estado, plantel = leer_fuentes(True, previo)
         if escribir:

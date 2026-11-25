@@ -4305,6 +4305,8 @@ export function tituloSeguido(x, n, rol) {
                     : x.que === 'punta' ? `🔝 ${n} tomó la punta de ${String(x.ln || '').slice(0, 50)}` : '')
                 // 🎬 un short de la Liga donde aparece (bot/muro.py `shorts_muro()`, 25/11/2026)
                 : x.tipo === 'short' ? `🎬 Salió un short de ${n}${ev ? ' en ' + ev : ''}`
+                // 🎞️ un video nuevo de un canal donde sale (`videos` del muro, bot/global_fuente_clips.py `para_avisar()`, 25/11/2026)
+                : x.tipo === 'video' ? `🎞️ Nuevo video de ${n}${ev ? ' en ' + ev : ''}`
                 // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026)
                 : x.tipo === 'podio' ? `🥈 ${n} subió a su primer podio${ev ? ' en ' + ev : ''}`
                 : x.tipo === 'top10' ? `🔝 ${n} entró al top 10 del Ranking ${x.rk === 'competitivo' ? 'Competitivo' : 'Temporada'}`
@@ -4340,8 +4342,11 @@ export function paraSeguidores(items, ahora) {
       const titulo = tituloSeguido(x, n, rol);
       if (!titulo) continue;
       // 🎬 un short abre el short (su link de Reels); lo demás, el perfil
-      const corto = x.tipo === 'short' && /^ul-[a-z0-9-]{3,60}$/.test(String(x.rid || ''));
-      out.push({ pub, k, t, titulo, cuerpo: (corto ? `Sigues a ${n} en la Liga · toca para verlo` : `Sigues a ${n} en la Liga · toca para ver su perfil`).slice(0, 240),
+      const corto = (x.tipo === 'short' && /^ul-[a-z0-9-]{3,60}$/.test(String(x.rid || '')))
+        || (x.tipo === 'video' && /^[A-Za-z0-9_-]{11}$/.test(String(x.rid || '')));
+      // un video de un canal puede ser de alguien de afuera de la Liga (`g--…`): no se le dice «en la Liga»
+      const enLiga = x.tipo === 'video' && String(k).startsWith('g--') ? '' : ' en la Liga';
+      out.push({ pub, k, t, titulo, cuerpo: (corto ? `Sigues a ${n}${enLiga} · toca para verlo` : `Sigues a ${n}${enLiga} · toca para ver su perfil`).slice(0, 240),
         url: corto ? 'https://underlegends.pages.dev/freestyle-rap/videos/' + x.rid : 'https://underlegends.pages.dev/freestyle-rap/r/' + encodeURIComponent(k) });
     }
   }
@@ -16519,7 +16524,8 @@ export class Avisos {
     const previo = this.leer('seguidos') || {};
     if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
     let items = [];
-    try { items = (JSON.parse((await this.env.KV.get('web:muro')) || '{}').items) || []; } catch (e) { items = []; }
+    // 🎞️ y los videos nuevos de los canales (`videos` del mismo muro: no son publicaciones, ver bot/muro.py)
+    try { const m = JSON.parse((await this.env.KV.get('web:muro')) || '{}'); items = (m.items || []).concat(Array.isArray(m.videos) ? m.videos : []); } catch (e) { items = []; }
     const cands = paraSeguidores(items, ahora);
     let pedidos = 0, enviados = 0, quedan = 0, sinVinculo = 0;
     // ⚡ UNA PUBLICACIÓN YA AVISADA A TODOS NO SE VUELVE A RECORRER (10/11/2026). Cada 5 minutos se preguntaba `hechos`

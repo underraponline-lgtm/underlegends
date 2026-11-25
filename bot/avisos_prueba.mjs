@@ -903,6 +903,11 @@ const ok = (cond, que, det) => {
     A.tituloSeguido({ tipo: 'anuncio' }, 'Ana') === '', 'la tarjeta con su nombre; lo que no es de nadie, nada');
   ok(!A.paraSeguidores(null, ahora).length && !A.paraSeguidores([{ tipo: 'rango', t: 'x', ks: ['a'] }], ahora).length,
     'sin muro, o con una fecha rota, nada');
+  // 🎞️ un video nuevo de un canal (25/11/2026): abre Videos con ese video, y a alguien de afuera no se le dice «en la Liga»
+  const v = A.paraSeguidores([{ tipo: 'video', t: '2026-10-14T13:00:00Z', rid: 'abcDEF12345', ev: 'FMS', ks: ['l-mecha', 'g--gazir'], quien: ['Mecha', 'Gazir'] }], ahora);
+  ok(v.length === 2 && v[0].titulo === '🎞️ Nuevo video de Mecha en FMS' && v[0].url === 'https://underlegends.pages.dev/freestyle-rap/videos/abcDEF12345'
+    && v[0].cuerpo.includes('en la Liga') && !v[1].cuerpo.includes('en la Liga') && v[0].pub === v[1].pub,
+  'el video nuevo de un canal: su título, abre ese video, una sola publicación para los dos  ' + JSON.stringify(v.map((x) => [x.titulo, x.cuerpo, x.url])));
 }
 
 // ── 👏 felicitar: cuándo suena y qué dice (02/10/2026) ──

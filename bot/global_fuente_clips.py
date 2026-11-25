@@ -3,6 +3,8 @@
 
     python bot/global_fuente_clips.py --ver       lee los canales en vivo y dice cuántos clips trae cada uno, sin escribir
     python bot/global_fuente_clips.py --aplicar   lee y guarda datos/global_clips.json
+    python bot/global_fuente_clips.py --ciclo     lo del ciclo: lee si toca (una vez por día, en hora del este) y rearma
+                                                  bot/paginas/global_clips.json desde lo guardado
     python bot/global_fuente_clips.py --auto      self-check sin red
 
 Dlx, 25/11/2026, mirando Reels en la compu (la columna izquierda era una lista larga de gente y se veía vacía): *«podríamos
@@ -201,14 +203,23 @@ def actualizar(aplicar=True):
     for x in nuevos:
         if x[0] in ya:
             x[4] = ya[x[0]][4] if len(ya[x[0]]) > 4 else x[4]
+    # 🔔 la hora en que apareció (6.º lugar): sólo los que no estaban. Es lo que avisa la campana a quien sigue a alguien
+    # (`para_avisar()`); los de antes no la tienen y nunca avisan, así la primera lectura no manda 2.000 avisos
+    ahora = dt.datetime.now(ET).replace(microsecond=0).isoformat()
+    for x in nuevos:
+        if x[0] in ya:
+            if len(ya[x[0]]) > 5:
+                x.append(ya[x[0]][5])
+        elif viejo:
+            x.append(ahora)
     nids = {x[0] for x in nuevos}
     todo = sorted(nuevos, key=lambda x: x[4], reverse=True) + [x for x in viejo if x[0] not in nids]
     todo = todo[:GUARDAR]
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
-            json.dump({'_leeme': 'Los videos horizontales de 20 s a 5 min de los canales del Ranking global '
-                       '(bot/global_fuente_clips.py): [id, título, canal, segundos, el día que lo vimos]. No suman puntos: '
-                       'van a la columna izquierda de Reels, atados a quien nombran.', 'c': todo},
+            json.dump({'_leeme': 'Los videos horizontales de 20 s a 1 h de los canales del Ranking global '
+                       '(bot/global_fuente_clips.py): [id, título, canal, segundos, el día que lo vimos, la hora en que '
+                       'apareció]. No suman puntos: van a Reels, atados a quien nombran.', 'visto': ahora, 'c': todo},
                       f, ensure_ascii=False, separators=(',', ':'))
     return todo, avisos
 
@@ -218,6 +229,76 @@ def guardados():
         return json.load(io.open(SALIDA, encoding='utf-8')).get('c') or []
     except (OSError, ValueError):
         return []
+
+
+def toca(d=None):
+    """¿Toca leer los canales? Una vez por día, en hora del este (25/11/2026, Dlx: «videos nuevos cada día»): si la última
+    lectura (`visto`) fue otro día"""
+    if d is None:
+        try:
+            d = json.load(io.open(SALIDA, encoding='utf-8'))
+        except (OSError, ValueError):
+            d = {}
+    try:
+        v = dt.datetime.fromisoformat(d.get('visto') or '')
+    except ValueError:
+        return True
+    return v.astimezone(ET).date() != dt.datetime.now(ET).date()
+
+
+def _gente_web():
+    """(filas de la tabla del Ranking global, {slug: nombre del canal}) de lo publicado"""
+    g = json.load(io.open(os.path.join(BASE, 'bot', 'paginas', 'global.json'), encoding='utf-8'))
+    # con los de los socios (`canales_todos()`): sin ellos, el nombre de su canal salía como su slug
+    canales = {c['slug']: c['nombre'] for c in canales_todos() if c.get('slug')}
+    return g.get('g') or [], canales
+
+
+AVISAR_HORAS = 26   # el vigía avisa lo de las últimas 24 h (`SIGUE_HORAS` de bot/avisos.js); un poco más por las dudas
+AVISAR_TOPE = 40
+
+
+def para_avisar(clips, gente, canales, ahora=None, horas=AVISAR_HORAS, tope=AVISAR_TOPE):
+    """🔔 los videos que aparecieron hace poco, para la campana de quien sigue a quien sale (25/11/2026, Dlx: «aviso en la
+    campana cuando un canal sube un video de alguien que sigues»). Viajan en el muro (`videos` de `web:muro`, bot/muro.py)
+    y los lee `seguidos()` de bot/avisos.js con la misma regla de siempre: a quien seguía desde ANTES, una vez. Cada uno con
+    la clave con la que se lo sigue: la de la Liga si juega acá (`lg`), y si no `g--<clave>` (web/src/sigo_global.js)"""
+    ahora = ahora or dt.datetime.now(ET)
+    desde = ahora - dt.timedelta(hours=horas)
+    recientes = []
+    for x in clips:
+        try:
+            t = dt.datetime.fromisoformat(x[5]) if len(x) > 5 and x[5] else None
+        except ValueError:
+            t = None
+        if t and desde <= t <= ahora + dt.timedelta(hours=1):
+            recientes.append(x)
+    if not recientes:
+        return []
+    W = para_la_web(recientes, gente, canales, n=tope, n_largos=tope)
+    fila = {g['k']: g for g in gente if g.get('k')}
+    cuando = {x[0]: x[5] for x in recientes}
+    out = []
+    for vid, ci, ks, t, seg in W['c'][:tope]:
+        gs = [fila[k] for k in ks if k in fila]
+        if not gs:
+            continue
+        out.append({'tipo': 'video', 't': cuando[vid], 'rid': vid, 'ev': W['cs'][ci] if ci < len(W['cs']) else '',
+                    'ks': [g.get('lg') or 'g--' + g['k'] for g in gs], 'quien': [g.get('n') or g['k'] for g in gs]})
+    return out
+
+
+def ciclo():
+    """Lo del ciclo (paso 2b8 de bot/pipeline.py): lee los canales si toca y rearma el archivo de la página desde lo
+    guardado, con la tabla publicada. Nunca revienta: sin red queda lo de la última lectura"""
+    if toca():
+        try:
+            cl, av = actualizar(aplicar=True)
+            print('🎞️ videos de los canales: %d guardados%s' % (len(cl), (' · ' + '; '.join(av[:3])) if av else ''))
+        except Exception as e:                           # noqa: BLE001
+            print('⚠️ los videos de los canales no se leyeron: %s' % str(e)[:100])
+    gente, canales = _gente_web()
+    escribir_web(para_la_web(guardados(), gente, canales))
 
 
 def para_la_web(clips, gente, canales, n=EN_LA_WEB, n_largos=LARGOS_WEB):
@@ -314,6 +395,19 @@ def _self_check():
     chk(W['c'][0][2] == ['cabrera', 'garces'] and W['c'][1][2] == ['mecha', 'gazir'] and W['c'][0][4] == 291,
         'cada clip con todos los que nombra y sus segundos')
     chk('🔥' not in W['c'][0][3], 'el título va limpio (sin emojis), como el de los shorts')
+    hace = (dt.datetime(2026, 11, 25, 10, 0, tzinfo=ET) - dt.timedelta(hours=3)).isoformat()
+    viejo_ = (dt.datetime(2026, 11, 25, 10, 0, tzinfo=ET) - dt.timedelta(hours=40)).isoformat()
+    gente2 = gente + [{'k': 'cabrera', 'n': 'Cabrera', 'esc': 'pro', 'lg': None}]
+    gente2 = [dict(g, lg='l-mecha' if g['k'] == 'mecha' else g.get('lg')) for g in gente2]
+    A = para_avisar([['ccccccccccc', 'MECHA vs GAZIR', 'fms', 190, '2026-11-25', hace],
+                     ['It3bmWEXZHY', 'CABRERA vs GARCES - Semifinal', 'redbull', 291, '2026-11-23', viejo_],
+                     ['ddddddddddd', 'MECHA vs CABRERA', 'fms', 200, '2026-11-20']], gente2, {'fms': 'FMS'},
+                    ahora=dt.datetime(2026, 11, 25, 10, 0, tzinfo=ET))
+    chk([a['rid'] for a in A] == ['ccccccccccc'] and A[0]['ks'] == ['l-mecha', 'g--gazir'] and A[0]['quien'] == ['Mecha', 'Gazir']
+        and A[0]['ev'] == 'FMS' and A[0]['tipo'] == 'video',
+        'la campana: sólo lo aparecido en las últimas horas (lo de antes, sin hora, nunca), con la clave de seguir de cada uno')
+    chk(toca({'visto': '2026-01-01T10:00:00-05:00'}) and not toca({'visto': dt.datetime.now(ET).isoformat()}),
+        'una lectura por día: ayer toca, hoy no')
     W2 = para_la_web(clips + [['hhhhhhhhhhh', 'MECHA vs GAZIR - Final', 'fms', 600, '2026-11-24'],
                               ['iiiiiiiiiii', 'GAZIR vs MECHA - Semifinal', 'fms', 700, '2026-11-24']], gente, {}, n=1, n_largos=1)
     chk([c[0] for c in W2['c']] == ['It3bmWEXZHY', 'hhhhhhhhhhh'] and W2['corte'] == MAX_SEG,
@@ -329,6 +423,9 @@ def _self_check():
 if __name__ == '__main__':
     if '--auto' in sys.argv:
         sys.exit(0 if _self_check() else 1)
+    if '--ciclo' in sys.argv:
+        ciclo()
+        sys.exit(0)
     cl, av = actualizar(aplicar='--aplicar' in sys.argv)
     for a in av:
         print('⚠️', a)

@@ -958,6 +958,16 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
     muro = {'_leeme': 'El muro de Publicaciones: lo arma bot/muro.py desde bot/subir_web.py (paso 2c).',
             # 📣 y las promos que siguen viajan aunque pasen de `VIAJAN`: una alargada en la Tienda es vieja y pagó
             'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x) or del_sv(x)], p.get('tabla'), _tabla_entera(p, perfiles))}
+    # 🔔 los videos recién aparecidos en los canales del Ranking global (25/11/2026): NO son publicaciones —la página no
+    # los dibuja— sino lo que lee `seguidos()` de bot/avisos.js para avisarle a quien sigue a quien sale
+    try:
+        import global_fuente_clips as GC
+        gente_, canales_ = GC._gente_web()
+        vids_ = GC.para_avisar(GC.guardados(), gente_, canales_, ahora=ahora)
+        if vids_:
+            muro['videos'] = vids_
+    except Exception as e:                               # noqa: BLE001 — sin videos, el muro sale igual
+        print('   ⚠️ los videos para la campana: %s' % str(e)[:80])
     # 🙈 quien apagó sus publicaciones en Tu cuenta (bot/muro_solos.py): sin `apagados`, la copia de la última lectura
     import muro_solos as MS
     no_ = MS.apagados(None) if apagados is None else apagados

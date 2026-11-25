@@ -45,6 +45,20 @@ const ls = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* sin guardar: vale para esta visita */ } },
 };
 const L_VISTOS = 'lg:reels-vistos';
+// ⏯️ dónde dejaste cada video largo (25/11/2026, Dlx: «sí, hazlo todo», a «seguir viendo en los largos»): {id: segundo}
+const L_POS = 'lg:reels-pos';
+/** el segundo donde quedó un video largo, o 0 */
+export const posDe = (vid) => { const m = ls.json(L_POS, {}); return (m && Number(m[vid])) || 0; };
+function guardarPos(vid, seg, dur, fin) {
+  if (!vid) return;
+  const m = ls.json(L_POS, {});
+  // sólo los largos (más de 5 min), pasado el primer medio minuto y sin llegar al final; terminado, se olvida
+  if (fin || !(dur > 300) || seg < 30 || seg > dur - 20) { if (m[vid]) { delete m[vid]; ls.set(L_POS, m); } return; }
+  m[vid] = Math.floor(seg);
+  const ks = Object.keys(m);
+  if (ks.length > 60) delete m[ks[0]];
+  ls.set(L_POS, m);
+}
 const L_MENOS = 'lg:reels-menos';
 const L_GUARDO = 'lg:reels-guardados';
 const L_FUEGO = 'lg:reels-fuego';
@@ -286,6 +300,8 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
   cb.current = { alTerminar, alPausar, alCorrer };
   // 📊 el reel que está puesto, desde cuándo corre y cuánto lleva
   const mira = useRef({ vid: '', desde: 0, seg: 0, fin: false });
+  // ⏯️ el segundo y la duración que dice YouTube (`infoDelivery`), para «seguir viendo» los largos
+  const pos = useRef({ vid: '', t: 0, dur: 0 });
   // 👁️ a los 3 s de correr el mismo video, visto (ver `marcarVisto`)
   const reloj3 = useRef(0);
   const visto3 = () => {
@@ -297,6 +313,7 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
   const cerrarMira = () => {
     const m = mira.current;
     if (!m.vid) return;
+    if (pos.current.vid === m.vid) guardarPos(m.vid, pos.current.t, pos.current.dur, m.fin);
     const seg = m.seg + (m.desde ? (Date.now() - m.desde) / 1000 : 0);
     if (seg > 0 || m.fin) anotarMira(m.vid, seg, m.fin);
     mira.current = { vid: '', desde: 0, seg: 0, fin: false };
@@ -329,6 +346,9 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
       else if (st === 2) cb.current.alPausar();
       else if (st === 1) cb.current.alCorrer();
       if (d.info && typeof d.info.muted === 'boolean') setMudo(d.info.muted);
+      if (d.info && typeof d.info.currentTime === 'number' && m.vid) {
+        pos.current = { vid: m.vid, t: d.info.currentTime, dur: typeof d.info.duration === 'number' && d.info.duration ? d.info.duration : pos.current.dur };
+      }
     };
     window.addEventListener('message', oye);
     return () => window.removeEventListener('message', oye);
@@ -339,8 +359,10 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
   };
   // 🎬 un short NUESTRO (`HOY`): un <video> en el mismo lugar, con los mismos avisos (terminó, pausa, corre) y la misma medida
   const vidRef = useRef(null);
+  const inicioSeg = useRef(0);
   const propio = !!(vid && HOY.has(vid));
   const src = vid && !propio ? ORIGEN_YT + '/embed/' + encodeURIComponent(vid) + '?enablejsapi=1&autoplay=1&playsinline=1&rel=0&modestbranding=1' +
+    (inicioSeg.current && pos.current.vid === vid ? '&start=' + inicioSeg.current : '') +
     (nacioMudo ? '&mute=1' : '') + '&origin=' + encodeURIComponent(location.origin) : '';
   const corre = () => { const m = mira.current; if (!m.desde) { m.desde = Date.now(); visto3(); } cb.current.alCorrer(); };
   const para = (fin) => {
@@ -362,6 +384,11 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
       mira.current = { vid: v, desde: 0, seg: 0, fin: false };
       if (!vid && solo) { setNacioMudo(true); setMudo(true); }
       if (HOY.has(v)) { setVid(v); return; }
+      // ⏯️ un largo que dejaste a la mitad sigue desde ahí
+      const desde = posDe(v);
+      pos.current = { vid: v, t: desde, dur: 0 };
+      if (desde && vid && !propio) { manda('loadVideoById', [v, desde]); return; }
+      if (desde) inicioSeg.current = desde;
       // de uno nuestro (o de nada) a uno de YouTube: el iframe nace de nuevo y hay que esperar su «listo»
       if (!vid || propio) { listo.current = false; cola.current = []; setVid(v); return; }
       manda('loadVideoById', [v]);
@@ -453,6 +480,10 @@ function useFeed(liga, inicio) {
     if (k && typeof window.alternarSigo === 'function') { window.alternarSigo(k); setTimeout(() => setSigo(aQuienSigo()), 50); }
   };
   const [filtro, setFiltro] = useState('todo');
+  // 👤 SÓLO ESA PERSONA (25/11/2026, Dlx: «sí, hazlo todo», a «tocar una cara abre una lista de esa persona»): tocar una cara de
+  // «Tu gente» deja el feed con sus shorts y la lista con sus videos (cortos y largos), los que no viste primero.
+  // Otra vez, o «Ver todos», vuelve a todo
+  const [persona, setPersona] = useState(null);
   const [menos, setMenos] = useState(() => ls.json(L_MENOS, []));
   const [guardo, setGuardo] = useState(() => ls.json(L_GUARDO, []));
   const [fuego, setFuego] = useState(() => ls.json(L_FUEGO, []));
@@ -488,6 +519,11 @@ function useFeed(liga, inicio) {
       : filtro === 'liga' ? todos.filter(deLaLiga)
       : filtro === 'siguiendo' ? todos.filter((r) => r.gente.some(loSigo))
       : filtro === 'guardados' ? todos.filter((r) => guardo.includes(r.vid)) : todos;
+    // 👤 sólo esa persona: todos sus shorts (los vistos al final, por `ordenar`). Sin shorts suyos, el feed queda como está
+    if (persona) {
+      const suyos = todos.filter((r) => r.gente.some((g) => idDe(g) === persona.id));
+      if (suyos.length) return ordenar(suyos, vistos0.current, menos, notas);
+    }
     // 👁️ lo visto no vuelve a salir (salvo que lo pidas por link, en Guardados o en «Vistos», del más reciente al más viejo)
     const v0 = new Set(vistos0.current);
     if (filtro === 'vistos') {
@@ -511,7 +547,7 @@ function useFeed(liga, inicio) {
     return o;
     // `menos` cambia el orden sólo al cambiar de filtro: marcar «no me interesa» no te mueve el reel que estás viendo
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todos, filtro, inicio, claveG, notas ? 1 : 0, vistosVer]);
+  }, [todos, filtro, inicio, claveG, notas ? 1 : 0, vistosVer, persona]);
   const [i, setI] = useState(0);
   const [cargados, setCargados] = useState(VER);
   const [fin, setFin] = useState(false);
@@ -522,7 +558,7 @@ function useFeed(liga, inicio) {
     pend.current = null;
     const j = id ? lista.findIndex((r) => r.gente.some((g) => idDe(g) === id)) : -1;
     setI(Math.max(0, j)); setFin(false); setCargados(VER);
-  }, [filtro]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filtro, persona]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (i >= cargados - 2 && cargados < lista.length) setCargados((c) => Math.min(lista.length, c + MAS));
   }, [i, cargados, lista.length]);
@@ -557,13 +593,18 @@ function useFeed(liga, inicio) {
   const [modoClips, setModoClips] = useState('cortos');
   const largos = modoClips === 'largos';
   const clips = useMemo(() => {
+    if (persona) {
+      const v0 = new Set(vistos0.current);
+      const suyos = todosClips.filter((c) => c.gente.some((g) => idDe(g) === persona.id));
+      return suyos.filter((c) => !v0.has(c.vid)).concat(suyos.filter((c) => v0.has(c.vid)));
+    }
     if (modoClips === 'vistos') {
       const pos = new Map(vistos0.current.map((v, j) => [v, j]));
       return todosClips.filter((c) => pos.has(c.vid)).sort((a, b) => pos.get(b.vid) - pos.get(a.vid));
     }
     const v0 = new Set(vistos0.current);
     return todosClips.filter((c) => (c.seg > corte) === largos && !v0.has(c.vid));
-  }, [todosClips, modoClips, corte, vistosVer]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [todosClips, modoClips, corte, vistosVer, persona]); // eslint-disable-line react-hooks/exhaustive-deps
   const hayLargos = todosClips.some((c) => c.seg > corte);
   const hayVistosC = todosClips.some((c) => vistos0.current.includes(c.vid));
   const [clip, setClip] = useState(null);
@@ -610,6 +651,8 @@ function useFeed(liga, inicio) {
     liga, filtros, loSigo, seguir, todos, irA, dir,
     // 🎞️ los horizontales: la lista, el que corre (`clip`) y lo que se ve ahora (`ahora`: el horizontal o el short)
     clips, clip, ahora: clip || cur, modoClips, setModoClips, hayLargos, hayVistosC, yaVisto,
+    persona, verPersona: (g) => { quieto.current = false; setClip(null); setPersona((p) => (p && p.id === idDe(g) ? null : { id: idDe(g), n: nombre(g) })); },
+    todaLaGente: () => setPersona(null),
     verClip: (c) => { quieto.current = false; setFin(false); setDir(1); setClip(c); },
     soltarClip: () => setClip(null),
     anterior: () => (clip ? setClip(null) : fin ? setFin(false) : ir(i - 1)),
@@ -1166,7 +1209,8 @@ function FilaClip({ F, c, on }) {
         {on ? <span className="rls-cl-son"><i aria-hidden="true"><u /><u /><u /></i>Sonando</span> : null}
         <b>{titulo}</b>
         <small>{[k.r, c.canal].filter(Boolean).join(' · ')}</small>
-        {!on && F.modoClips !== 'vistos' && F.yaVisto(c.vid) ? <small className="visto">Visto</small> : tuyo && !on ? <small className="tuyo">De tu gente</small> : null}
+        {!on && posDe(c.vid) ? <small className="sigue">Sigue en {mmss(posDe(c.vid))}</small>
+          : !on && F.modoClips !== 'vistos' && F.yaVisto(c.vid) ? <small className="visto">Visto</small> : tuyo && !on ? <small className="tuyo">De tu gente</small> : null}
       </span>
     </button>
   );
@@ -1197,19 +1241,25 @@ function FilaGente({ F, n, cara = 56 }) {
       <div className="rls-gf-caras" style={{ gridTemplateColumns: 'repeat(' + n + ',minmax(0,1fr))', '--rls-gf-cara': cara + 'px' }}>
         {todos.slice(p * n, p * n + n).map(([x, sigue]) => (
           <button key={idDe(x.g)} type="button" className={'rls-gf-c' + (sigue ? ' sigue' : '') + (ahora.has(idDe(x.g)) ? ' on' : '')}
-            aria-current={ahora.has(idDe(x.g)) || undefined} aria-label={nombre(x.g) + (sigue ? ', la sigues' : '') + ', ' + x.n + (x.n === 1 ? ' reel' : ' reels')}
-            onClick={() => F.irA(x.g)}>
+            aria-current={ahora.has(idDe(x.g)) || undefined} aria-pressed={!!F.persona && F.persona.id === idDe(x.g)}
+            aria-label={'Sólo ' + nombre(x.g) + (sigue ? ', la sigues' : '') + ', ' + x.n + (x.n === 1 ? ' video' : ' videos')}
+            onClick={() => F.verPersona(x.g)}>
             <Cara liga={F.liga} g={x.g} cls="rls-cara" /><span>{nombre(x.g)}</span>
           </button>
         ))}
       </div>
-      <p className="rls-gf-ley">{sigo.length ? 'Aro verde: la sigues. Magenta: sale en lo que suena' : 'Toca «Seguir» en un video y esa persona va primero'}</p>
+      {F.persona ? (
+        <p className="rls-gf-ley rls-gf-solo">Sólo {F.persona.n}<button type="button" onClick={F.todaLaGente}>Ver todos</button></p>
+      ) : (
+        <p className="rls-gf-ley">{sigo.length ? 'Aro verde: la sigues. Magenta: sale en lo que suena. Toca una cara: sólo esa persona' : 'Toca una cara para ver sólo a esa persona'}</p>
+      )}
     </div>
   );
 }
 
 /** ⏱️ «Cortos | Largos» (Dlx, 25/11/2026): hasta 5 min o más largos (batallas enteras, hasta una hora). Sin largos, no se dibuja */
 function CortosLargos({ F }) {
+  if (F.persona) return null;
   const ops = [['cortos', 'Cortos', 'Hasta 5 minutos'], ['largos', 'Largos', 'Más de 5 minutos'], ['vistos', 'Vistos', 'Los que ya viste']]
     .filter(([k]) => (k !== 'largos' || F.hayLargos) && (k !== 'vistos' || F.hayVistosC || F.modoClips === 'vistos'));
   if (ops.length < 2) return null;

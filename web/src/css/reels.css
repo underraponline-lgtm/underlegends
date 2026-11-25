@@ -399,3 +399,10 @@
 
 /* 🤝 un servidor socio en lugar de una persona (25/11/2026): su logo entero, sobre oscuro */
 [class*="rls-cara"].sv{object-fit:contain;background:#0B0B0C;padding:2px;box-sizing:border-box}
+/* ⏯️ «Sigue en 4:12» y 👤 «Sólo Mecha · Ver todos» */
+.rls-cl-tx small.sigue{color:#29B298}
+.rls-gf-c[aria-pressed="true"] .rls-cara{box-shadow:0 0 0 2px #0B0C0E,0 0 0 5px #F6F6F6}
+.rls-gf-c[aria-pressed="true"] span{color:#F6F6F6;text-decoration:underline;text-underline-offset:3px}
+.rls-gf-solo{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#F6F6F6}
+.rls-gf-solo button{min-height:32px;padding:0 10px;border:2px solid #F6F6F6;background:#F6F6F6;color:#030304;font:700 14px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
