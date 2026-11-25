@@ -35,7 +35,7 @@ export const LUGARES = [
   ['vs', 'El VS del Inicio', 'Tu mitad del cara a cara de arriba, en el Inicio de cada uno.', ['auto', 'mia', 'bandera', 'servidor'], 'Tu imagen; sin ella, tu bandera'],
   ['esc', 'El escenario de tu carta', 'Detrás de tu carta cuando alguien la abre.', ['auto', 'mia', 'bandera', 'servidor'], 'La luz del color de tu rango'],
   ['vivo', 'El VS en vivo de Discord', 'Tu mitad de la imagen del VS que el bot pone en el chat del evento.', ['auto', 'mia', 'bandera'], 'El fondo del servidor del evento'],
-  ['ficha', 'Tu ficha', 'La que sale al pasar el mouse por tu cara, en la compu.', ['auto', 'mia', 'bandera', 'servidor'], 'Tu imagen; sin ella, tu bandera'],
+  ['ficha', 'Tu ficha', 'Detrás de tu fila en el Ranking, y en la que sale al pasar el mouse por tu cara.', ['auto', 'mia', 'bandera', 'servidor'], 'Tu imagen; sin ella, tu bandera'],
 ];
 export const NOMBRE_OPCION = { auto: 'Automático', mia: 'Tu imagen', bandera: 'Tu bandera', servidor: 'Tu servidor' };
 /** Qué eligió para `lugar` (`auto` si nada). */

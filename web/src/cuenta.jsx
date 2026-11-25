@@ -532,7 +532,7 @@ export function FondoCaja({ dc, liga }) {
 function FichaVista({ liga, yo, bg, prueba }) {
   return (
     <div className="tf-vista">
-      <small className="tf-vista-t">{prueba ? 'Así te verían con «' + NOMBRE_OPCION[prueba] + '»' : 'Así te ven en la compu, al pasar el mouse por tu cara'}</small>
+      <small className="tf-vista-t">{prueba ? 'Así te verían con «' + NOMBRE_OPCION[prueba] + '»' : 'Así te ven: este fondo va detrás de tu fila del Ranking y en tu ficha'}</small>
       <div className="fh fh-quieto" aria-label="Vista previa de tu ficha" role="img"><FichaCuerpo liga={liga} f={yo} bg={bg} /></div>
     </div>
   );

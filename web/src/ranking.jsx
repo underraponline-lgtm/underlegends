@@ -20,7 +20,8 @@ import { PopCab } from './pop.jsx';
 import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Alguien, Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
-import { FondoT, NombreT } from './puesto.js';
+import { FondoT, NombreT, fondoTienda, usePuesto } from './puesto.js';
+import { fondoEn, useFondos } from './fondos.js';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
@@ -169,8 +170,16 @@ function Quien({ x, f }) {
   // listas de gente: en Duelos la fila es otra, así que se mira la de la tabla
   const nuevo = !!((t || f).nu);
   const nombre = limpio(f.n);
+  // 🖼️ TU FONDO DETRÁS DE TU FILA (25/11/2026, Dlx, con una captura del Ranking: «estos rectángulos que te muestran a ti…
+  // no sólo cuando el mouse pasa por ahí sino de por sí, en vez de ese rectángulo negro»). Es el de «Tu ficha» en Tus
+  // fondos (tu imagen, tu bandera o tu servidor; en Automático, tu imagen y sin ella tu bandera), apagado y desvaneciéndose
+  // hacia los números. El de la Tienda, si lo tiene puesto, manda
+  const fondos = useFondos();
+  const P = usePuesto(f.k);
+  const bgF = f.k && !fondoTienda(P, 'fila') ? fondoEn((fondos || {})[f.k], 'ficha', { cc: f.cc || (t && t.cc), sv: (t || f).sv }) : '';
   return (
     <span className="rk-q">
+      {bgF ? <span className="rk-fondo" style={{ backgroundImage: bgF }} aria-hidden="true" /> : null}
       {/* 🛍️ el fondo de tu fila, de la Tienda (tanda 3): detrás de la cara y el nombre, apagándose hacia los números */}
       {f.k ? <FondoT k={f.k} lugar="fila" /> : null}
       <Cara liga={liga} k={f.k} nombre={f.n} cls="cara rk-cara" lazy />

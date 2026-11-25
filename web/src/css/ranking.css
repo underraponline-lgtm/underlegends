@@ -420,3 +420,12 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
    `anywhere` la columna se podía achicar hasta una letra; `break-word` sólo corta una palabra que no entra sola */
 .rk-podio .rk-ped b{overflow-wrap:break-word;word-break:normal;hyphens:none;text-wrap:balance}
 @media (max-width: 419px){.rk-podio .rk-ped b{font-size:12px}}
+/* 🖼️ el fondo de cada uno detrás de su fila (25/11/2026): el de «Tu ficha», apagado (.38: el blanco de una bandera queda
+   en ~5:1 contra el texto claro de Noche, y el azul más oscuro en ~9:1 contra el texto de Clara) y desvaneciéndose antes de
+   los números. En la lista del celular llena la tarjeta; en la tabla, detrás de la cara y el nombre, como el de la Tienda */
+.rk-fondo{position:absolute;inset:-6px -8px;z-index:-1;pointer-events:none;background:left center/cover no-repeat;opacity:.38;
+  -webkit-mask-image:linear-gradient(90deg,#000 25%,transparent 92%);mask-image:linear-gradient(90deg,#000 25%,transparent 92%)}
+.rk-q:has(>.rk-fondo){position:relative;isolation:isolate}
+.rk-lista .rk-fila:has(.rk-fondo){position:relative;isolation:isolate}
+.rk-lista .rk-q:has(>.rk-fondo){position:static;isolation:auto}
+.rk-lista .rk-fondo{inset:0;-webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 80%);mask-image:linear-gradient(90deg,#000 30%,transparent 80%)}
