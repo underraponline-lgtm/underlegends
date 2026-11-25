@@ -15,7 +15,7 @@
 //
 // Lo que agrega el remake (estructura, no pintura): el podio con las cartas de verdad, «tu lugar» siempre a la vista
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
-import { Fragment, Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, Suspense, lazy, startTransition, useEffect, useMemo, useRef, useState } from 'react';
 import { PopCab } from './pop.jsx';
 import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Escudo, escudoDe } from './escudo.jsx';
@@ -1196,6 +1196,12 @@ const VER = 50;
 export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const ruta = subRuta === 'elo' ? 'divisiones' : subRuta === 'actividad' ? 'eventos' : subRuta;
   const [sub, setSub] = useState(SUBS[ruta] ? ruta : 'temporada');
+  // ⚡ LA PESTAÑA SE ENCIENDE AL TOQUE Y LA TABLA LLEGA DESPUÉS (25/11/2026, Dlx: «improve it»): en el celular cambiar de
+  // ranking tardaba en pintar (Cloudflare, INP p75: 432 ms en el Competitivo, 272 en la Temporada; medido acá con la CPU
+  // ×4: 1.016 ms). Dibujar la tabla nueva entera iba en el mismo cuadro que el toque. Ahora `tocada` enciende la pestaña
+  // en ese cuadro y la tabla se arma en una transición de React, que no traba el toque
+  const [tocada, setTocada] = useState(sub);
+  useEffect(() => { setTocada(sub); }, [sub]);
   const deslizaRk = useDesliza(sub, RANKINGS);
   useEffect(() => { setSub(SUBS[ruta] ? ruta : 'temporada'); }, [ruta]);
   const [orden, setOrden] = useState(null);
@@ -1325,7 +1331,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const desc = orden ? orden.desc : false;
   const ordenar = (id) => {
     const c = COL[id];
-    setOrden((o) => (o && o.col === id ? { col: id, desc: !o.desc } : { col: id, desc: !c.txt && id !== 'pos' && id !== 'i' }));
+    startTransition(() => setOrden((o) => (o && o.col === id ? { col: id, desc: !o.desc } : { col: id, desc: !c.txt && id !== 'pos' && id !== 'i' })));
   };
 
   // el podio: los tres primeros con número (la Temporada, por su puesto oficial)
@@ -1490,9 +1496,12 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   // el ranking de entrada, y una flecha o el «Ranking» del menú que volvía a ése cambiaba la dirección y no la página
   // (la prop `sub` salía igual y el efecto de `ruta` no corría)
   const elegir = (id) => {
-    setSub(id);
+    setTocada(id);
+    startTransition(() => setSub(id));
     try { history.replaceState(history.state, '', window.urlLG ? window.urlLG('#/ranking/' + id) : '#/ranking/' + id); } catch (e) { /* queda la dirección */ }
-    try { window.dispatchEvent(new Event('lg:ruta')); } catch (e) { /* nada */ }
+    // el aviso también va en la transición: App.jsx vuelve a armar la página con lo que escucha (`setYo`, `setHash`), y
+    // adentro del toque eso era otra pasada entera antes de pintar
+    startTransition(() => { try { window.dispatchEvent(new Event('lg:ruta')); } catch (e) { /* nada */ } });
     const n = nav.current;
     if (n && n.getBoundingClientRect().top <= 1 && window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'auto' });
   };
@@ -1541,7 +1550,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
             const s = subDe(liga, id);
             const pr = s.pronto || (s.hay && !s.hay(liga));
             return (
-              <a key={id} href={'#/ranking/' + id} className={(id === sub ? 'on' : '') + (pr ? ' pronto' : '')} aria-current={id === sub ? 'page' : undefined}
+              <a key={id} href={'#/ranking/' + id} className={(id === tocada ? 'on' : '') + (pr ? ' pronto' : '')} aria-current={id === tocada ? 'page' : undefined}
                 onClick={(e) => { e.preventDefault(); elegir(id); }}>
                 {s.et}{pr ? <i>{s.cuando || 'PRONTO'}</i> : s.nuevo && +new Date(liga.ahora) < Date.parse(s.nuevo) ? <i>NUEVO</i> : null}
               </a>
