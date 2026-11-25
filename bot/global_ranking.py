@@ -696,6 +696,14 @@ def correr(red=False, escribir=True):
             print('📱 shorts: %d guardados%s' % (len(sh), (' · ' + '; '.join(av[:3])) if av else ''))
         except Exception as e:                           # noqa: BLE001 — sin shorts nuevos quedan los guardados
             print('⚠️ los shorts no se leyeron: %s' % str(e)[:100])
+        # 🎞️ los videos horizontales cortos (25/11/2026, Dlx: «videos horizontales… que no duren bastante», hasta 5 min): la
+        # columna izquierda de Reels en la compu. Tampoco suman puntos
+        try:
+            import global_fuente_clips as GC
+            cl, av = GC.actualizar(aplicar=escribir)
+            print('🎞️ clips: %d guardados%s' % (len(cl), (' · ' + '; '.join(av[:3])) if av else ''))
+        except Exception as e:                           # noqa: BLE001 — sin clips nuevos quedan los guardados
+            print('⚠️ los clips no se leyeron: %s' % str(e)[:100])
     if red:
         batallas, mvps, semillas, estado, plantel = leer_fuentes(True, previo)
         if escribir:
@@ -717,6 +725,13 @@ def correr(red=False, escribir=True):
         _escribir(SALIDA, out, compacto=True)
         _escribir(VISTA, vista_de(out), compacto=True)
         _escribir(REELS_VISTA, reels_vista(out), compacto=True)
+        try:
+            import global_fuente_clips as GC
+            canales = {c['slug']: c['nombre'] for c in (_leer(os.path.join(BASE, 'datos', 'global_canales.json'), {})
+                                                         .get('canales') or [])}
+            GC.escribir_web(GC.para_la_web(GC.guardados(), out.get('g') or [], canales))
+        except Exception as e:                           # noqa: BLE001 — sin clips, Reels sale igual
+            print('⚠️ los clips no se ataron: %s' % str(e)[:100])
     return out
 
 

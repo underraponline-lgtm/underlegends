@@ -67,6 +67,8 @@ jobs:
           [ -f bot/paginas/global_vista.json ] && git add bot/paginas/global_vista.json
           [ -f bot/paginas/reels_vista.json ] && git add bot/paginas/reels_vista.json
           [ -f datos/global_shorts.json ] && git add datos/global_shorts.json
+          [ -f datos/global_clips.json ] && git add datos/global_clips.json
+          [ -f bot/paginas/global_clips.json ] && git add bot/paginas/global_clips.json
           [ -f bot/paginas/global_historia.json ] && git add bot/paginas/global_historia.json
           [ -f datos/global_fotos.json ] && git add datos/global_fotos.json
           if git diff --cached --quiet; then

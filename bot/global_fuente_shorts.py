@@ -48,7 +48,10 @@ COMUNES = {'once', 'todos', 'todo', 'rimas', 'rima', 'historia', 'mejor', 'mejor
            'flow', 'free', 'freestyle', 'shorts', 'short', 'mundo', 'mundial', 'nacional', 'internacional', 'fecha',
            'jornada', 'liga', 'red', 'bull', 'fms', 'god', 'level', 'contra', 'vuelta', 'fuego', 'humor', 'tiempo', 'rap',
            'barras', 'barra', 'punch', 'punchline', 'replica', 'minuto', 'minutazo', 'temas', 'tema', 'calle', 'plaza',
-           'piezas', 'flash', 'reyes', 'sombra', 'dios', 'diablo', 'luna', 'sol'}
+           'piezas', 'flash', 'reyes', 'sombra', 'dios', 'diablo', 'luna', 'sol',
+           # 25/11/2026: «Algunos vuelven al under», «El Sur es Hardcore»: los dos son raperos de la Liga y los cinco
+           # shorts que tenían atados no eran de ellos
+           'under', 'underground', 'hardcore'}
 
 
 def norm(s):
@@ -200,13 +203,15 @@ def _self_check():
     gente = [{'k': 'mecha', 'n': 'Mecha', 'esc': 'pro'}, {'k': 'gazir', 'n': 'Gazir', 'esc': 'pro'},
              {'k': 'fattony', 'n': 'Fat Tony', 'esc': 'pro'}, {'k': 'tony', 'n': 'Tony', 'esc': 'plaza'},
              {'k': 'once', 'n': 'Once', 'esc': 'plaza'}, {'k': 'abel', 'n': 'Abel', 'esc': 'pro'},
-             {'k': 'abel-ec', 'n': 'Abel', 'esc': 'plaza'}, {'k': 'l', 'n': 'L', 'esc': 'plaza'}]
+             {'k': 'abel-ec', 'n': 'Abel', 'esc': 'plaza'}, {'k': 'l', 'n': 'L', 'esc': 'plaza'},
+             {'k': 'l-under', 'n': 'Under', 'esc': 'liga'}]
     sh = [['CJH793pyv7o', 'MINUTAZO DE MECHA CONTRA GAZIR 🔥 #shorts', 'redbull'],
           ['5IgaVbXuQ7U', 'FAT TONY ES BICAMPEÓN DE RED BULL', 'redbull'],
           ['Fnw0G7ZyoM8', 'AZUKY Y ONCE DIERON UNA BATALLA INCREÍBLE', 'redbull'],
           ['aaaaaaaaaaa', 'ABEL L HACE HISTORIA', 'redbull'],
           ['bbbbbbbbbbb', 'MECHA GAZIR FAT TONY Y TONY EN UNA NOCHE', 'redbull'],
-          ['ccccccccccc', 'Stewart😎 #gazir #freestyle', 'cmf']]
+          ['ccccccccccc', 'Stewart😎 #gazir #freestyle', 'cmf'],
+          ['ddddddddddd', 'Algunos vuelven al under', 'bau']]
     A = atar(sh, gente)
     chk(A.get('mecha') == [['CJH793pyv7o', 'redbull', ['gazir'], 'MINUTAZO DE MECHA CONTRA GAZIR']]
         and A.get('gazir') == [['CJH793pyv7o', 'redbull', ['mecha'], 'MINUTAZO DE MECHA CONTRA GAZIR']],
@@ -217,6 +222,7 @@ def _self_check():
         'en la duda, a nadie: una palabra común, un nombre con dos dueños o una sola letra')
     chk(not any(x[0] == 'bbbbbbbbbbb' for xs in A.values() for x in xs), 'un título que nombra a más de tres es un compilado')
     chk(not any(x[0] == 'ccccccccccc' for xs in A.values() for x in xs), 'un nombre que sólo está en un hashtag no cuenta')
+    chk('l-under' not in A, '«el under» es la escena, no Under de la Liga')
     print('✅ todo bien' if ok else '❌ algo falló')
     return ok
 

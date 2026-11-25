@@ -120,3 +120,18 @@ búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos pa
 - No aplica: medidores en anillo y radar (el puntaje son cuatro pesos, no ejes), sparklines en los números, la barra de
   «cambios sin guardar» (choca con el guardado solo), el selector de país con un globo (WebGL, y adivinar el país del
   navegador es adivinar la identidad), un mapa de calor de 7×5 (el payload no trae día por hora).
+
+## Reels: la columna izquierda (25/11/2026, sólo búsquedas, cero código)
+
+Dlx: *«podríamos poner otras cosas a la izquierda, como videos horizontales»*; la gente, *«quizás arriba como Instagram,
+o no sé, mira 21st cómo hace»*. 15 búsquedas en 21st y 2 en Magic UI, una por pieza: la fila de caras, el riel cerrado,
+la lista de videos con duración, «A continuación», lo que suena, la grilla, las flechas en vez de deslizar, el paso de
+vertical a horizontal, los filtros por canal, el vacío.
+- Mirados: Stories Carousel (haydenbleasel), Avatar Status Ring (dhxwhy), Avatar Stack (arihantcodes_1f7b8c4d), Avatar
+  Group (bysages), Presence Avatars (ddoemonn), Scroller con flechas (diceui), Video Thumbnail Aspect Ratio
+  (shadcnspace), Sortable Music Queue con «now playing» (shadcnspace), Vertical Thumbnail Autostart Slider (uilayout),
+  HoverPlayCard (ruixen.ui), YouTube Video Player (cult-ui), Chat Sidebar con riel cerrado (aadixc0de), Animated
+  Sidebar (unlumen), Format Morph (framecn), Aspect Ratio Switcher (shadcnspace), Chip Group con «+N» (kuratlielia),
+  Empty State Kit (laziekiki); Magic UI: Avatar Circles, Hero Video Dialog, Backlight.
+- Maqueta privada A «La cartelera» (caras arriba + lista tipo «A continuación») / B «El estante» (riel de caras + uno
+  grande y grilla), con datos reales de `bot/paginas/global_clips.json`.
