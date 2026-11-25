@@ -1218,6 +1218,11 @@ function BotonHistoria({ liga, cfg, f, n }) {
 }
 
 const VER = 50;
+// 📱 EN EL TELÉFONO, DE A POCAS (25/11/2026, Dlx: «all of them», el #2): cada tarjeta de la lista lleva cara, fondo (8.31) y
+// sus números, y las 50 de una se armaban de entrada aunque en la pantalla entran 6. Ahora salen `CEL_PRIMERO` y se suman
+// `CEL_PASO` antes de que llegues al final (un observador con margen, `crece`): el «Ver todos» de abajo sigue igual
+const CEL_PRIMERO = 20;
+const CEL_PASO = 20;
 
 // `ver`: lo que va después del ranking en la dirección: qué abre su vista propia (lo usaban las Ligas, que desde el
 // 16/10/2026 son su propia sección: `#/ranking/ligas` lleva a `#/ligas`, en App.jsx)
@@ -1260,6 +1265,8 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [abierta, setAbierta] = useState(null);
   const [perf, setPerf] = useState(() => (typeof window !== 'undefined' && window.PERF) || null);
   const [ver, setVer] = useState(VER);
+  const [crece, setCrece] = useState(CEL_PRIMERO);
+  const [centinela, setCentinela] = useState(null);
   const [todas, setTodas] = useState(false);
   // 🏁 la pestaña del papel de la Temporada: «La tabla», «Esta semana» o «Por servidor» (el remake A, 18/11/2026)
   const [pap, setPap] = useState('tabla');
@@ -1319,9 +1326,18 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // al cambiar de ranking: orden, búsqueda y «ver más» vuelven a cero (los filtros de servidor y país se quedan:
   // quien mira «sólo FFA» quiere seguir viendo FFA en Duelos)
-  useEffect(() => { setOrden(null); setVer(VER); setTodas(false); setAbierta(null); setModo(0); setPap('tabla'); }, [sub]);
+  useEffect(() => { setOrden(null); setVer(VER); setCrece(CEL_PRIMERO); setTodas(false); setAbierta(null); setModo(0); setPap('tabla'); }, [sub]);
   // al cambiar de vista, el orden vuelve al de esa vista
-  useEffect(() => { setOrden(null); setVer(VER); setAbierta(null); }, [modo]);
+  useEffect(() => { setOrden(null); setVer(VER); setCrece(CEL_PRIMERO); setAbierta(null); }, [modo]);
+  // 📱 la próxima tanda, antes de llegar al final de la lista (800 px de margen: no se llega a ver el corte)
+  useEffect(() => {
+    if (!centinela || typeof IntersectionObserver === 'undefined') return undefined;
+    const io = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) startTransition(() => setCrece((n) => n + CEL_PASO));
+    }, { rootMargin: '800px 0px' });
+    io.observe(centinela);
+    return () => io.disconnect();
+  }, [centinela]);
   // el historial de cada uno (`/api/perfiles`), la primera vez que se abre una fila: lo pide app.js y lo guarda
   useEffect(() => {
     if (!abierta || perf || typeof window.perfiles !== 'function') return undefined;
@@ -1503,6 +1519,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
     if (visible < 0) { setQ(''); setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }
     const idx = (visible < 0 ? (orden ? ordenadas(base, orden.col, orden.desc) : base) : fs).findIndex((f) => clave(f) === miFila);
     setVer((v) => Math.max(v, idx + 10));
+    setCrece((n) => Math.max(n, idx + 10));
     setIrA(miFila + ':' + Date.now());
   };
   useEffect(() => {
@@ -1723,8 +1740,11 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
               ) : (
                 <div className={'rk-tw' + (todas && movil ? ' todas' : '') + (enLista && !todas ? ' lista' : '')} ref={tabla}>
                   {enLista && !todas ? (
-                    <ListaCel x={x} cfg={cfg} vis={vis} abierta={abierta} setAbierta={setAbierta} miFila={miFila} corteK={corteK} directoK={directoK}
+                    <>
+                    <ListaCel x={x} cfg={cfg} vis={vis.slice(0, crece)} abierta={abierta} setAbierta={setAbierta} miFila={miFila} corteK={corteK} directoK={directoK}
                       sinFiltro={!orden && !q && !sv && !cc && !soloSigo && !soloNuevos} perf={perf} sub={sub} svFijo={!!sv} />
+                    {vis.length > crece ? <div ref={setCentinela} className="rk-mas-cel" style={{ height: 1 }} aria-hidden="true" /> : null}
+                    </>
                   ) : (
                   <table className="rk-t">
                     <thead>

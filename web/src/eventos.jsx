@@ -6,7 +6,7 @@
 //
 // ⚠️ TODO SALE DEL PAYLOAD (`calendario`, `proximos`, `llaves`, `actividad`, `orgs`) y de lo que app.js ya sabe en vivo
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, startTransition, useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, esSinTitulo, hora, limpio, minutosDelDia, norm, num, quienMira, recorte, resultado, siglaDe, utc } from './liga.js';
 import { claveOrg, seguirOrg, useOrgs } from './orgs.js';
 import { Alguien, Algunos, Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
@@ -1185,6 +1185,12 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const setVista = (v) => { setVistaS(v); try { localStorage.setItem('lg:ev-vista', v); } catch (e) { /* sin guardar */ } };
   // el evento que se tocó en la semana: se abre y se baja hasta él
   const [foco, setFoco] = useState('');
+  // ⚡ TOCAR UN EVENTO YA NO TRABA LA PANTALLA (25/11/2026, Dlx: «all of them», el #1): en el celular tardaba en pintar
+  // (Cloudflare, INP p75 de `/eventos/<día>`: 408 ms; medido acá con la CPU ×4: 584). Partido en tres, era casi todo
+  // JavaScript adentro del toque (359 ms contra 24 de pintar): no el panel del elegido sino la página entera que se vuelve a
+  // calcular —el calendario, la semana, los campeones— con cada cambio. Encender la fila antes no servía (esa pasada ya es
+  // la página entera), así que `foco` va todo en una transición de React (`ver()`) y la fila dice «la tocaste» con su
+  // propio `:active` (css/eventos.css), que no pasa por React
   // 🕒 el día por hora o en lista (la D, 16/11/2026): por hora en la compu y en lista en el teléfono, y se recuerda
   const [forma, setFormaS] = useState(() => {
     try { const v = localStorage.getItem('lg:ev-forma'); if (v === 'hora' || v === 'lista') return v; } catch (e) { /* sin guardar */ }
@@ -1234,7 +1240,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
     const el = selRef.current;
     const r = el && el.getBoundingClientRect();
     bajarSel.current = !r || r.top > window.innerHeight - 140 || r.bottom < 90;
-    setFoco(id);
+    startTransition(() => setFoco(id));
   };
   useEffect(() => {
     if (!foco || vista !== 'dia' || !bajarSel.current) return undefined;
@@ -1300,6 +1306,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const selIt = itemsDia.find((it) => it.id === foco) || itemsDia.find((it) => it.est === 'vivo')
     || itemsDia.find((it) => it.est === 'hecho' && it.c.ll) || itemsDia.find((it) => it.est === 'prox') || itemsDia[0] || null;
   const de = (est) => itemsDia.filter((it) => it.est === est);
+  const selVis = selIt ? selIt.id : '';
   // un evento de otro día (lo que viene, lo último): tocarlo abre su día con él elegido
   const filaOtra = (c, est) => { const it = { c, est, id: idEv(c) }; return <Fila key={it.id} liga={liga} it={it} conDia ultimo={est === 'hecho'} onSel={() => abrirDia(liga.diaClave(c.t), c)} />; };
 
@@ -1470,6 +1477,14 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const cuantos = (n) => n + (n === 1 ? ' evento' : ' eventos');
   const svT = (n) => n + (n === 1 ? ' servidor' : ' servidores');
   const hoyNom = (() => { const [y, m, d] = hoyK.split('-').map(Number); return DIAS[new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay()] + ' ' + d; })();
+  // ⚡ el panel del elegido, el MISMO elemento mientras no cambie lo que muestra: lo demás de la página que se vuelve a
+  // calcular (un voto, la hora) no lo arma de nuevo, y React lo saltea entero. `selIt` es un objeto nuevo en cada pasada
+  // (`itemsDia` se arma de cero), así que se mira lo que lleva adentro
+  const sigSel = selIt && selIt.est === 'hecho' ? sigDe(selIt.c, prox.length + vivos.length) : null;
+  const pubSel = selIt && selIt.c.ll != null ? pubs[String(selIt.c.ll)] : null;
+  const panel = useMemo(() => (selIt ? <Elegido key={selIt.id} liga={liga} it={selIt} sig={sigSel} pub={pubSel} Ap={Ap} /> : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [selIt && selIt.id, selIt && selIt.est, selIt && selIt.c, liga, sigSel, pubSel, Ap]);
 
   return (
     <>
@@ -1581,12 +1596,12 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
                 </div>
               ) : null}
             </div>
-            {itemsDia.length && forma === 'hora' ? <Guia liga={liga} items={itemsDia} sel={selIt ? selIt.id : ''} onSel={ver} esHoy={dia === hoyK} /> : null}
+            {itemsDia.length && forma === 'hora' ? <Guia liga={liga} items={itemsDia} sel={selVis} onSel={ver} esHoy={dia === hoyK} /> : null}
             {itemsDia.length && forma === 'lista' ? (
               <div className="evp-grupos">
                 {[['vivo', '● En vivo'], ['pausa', '⏸ En pausa'], ['prox', dia === hoyK ? 'Más tarde' : 'Por jugarse'], ['hecho', 'Terminados'], ['cancelado', 'Cancelados']].map(([est, t]) => (de(est).length ? (
                   <section key={est} className="grupo"><h3 className={'g-t' + (est === 'vivo' ? ' vivo' : '')}>{t}</h3>
-                    <ol className="evl">{de(est).map((it) => <Fila key={it.id} liga={liga} it={it} sel={!!selIt && selIt.id === it.id} onSel={() => ver(it.id)} />)}</ol></section>
+                    <ol className="evl">{de(est).map((it) => <Fila key={it.id} liga={liga} it={it} sel={selVis === it.id} onSel={() => ver(it.id)} />)}</ol></section>
                 ) : null))}
               </div>
             ) : null}
@@ -1606,8 +1621,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           {/* 👆 el elegido, con su llave de a una ronda */}
           {vista === 'dia' && selIt ? (
             <div className="evs-w" ref={selRef}>
-              <Elegido key={selIt.id} liga={liga} it={selIt} sig={selIt.est === 'hecho' ? sigDe(selIt.c, prox.length + vivos.length) : null}
-                pub={selIt.c.ll != null ? pubs[String(selIt.c.ll)] : null} Ap={Ap} />
+              {panel}
             </div>
           ) : null}
           {/* 🧱 debajo de la semana y del mes, lo que viene y lo último que se jugó: en la compu la columna de al lado es más

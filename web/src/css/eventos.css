@@ -391,6 +391,8 @@
 .evl-f.sel{background:var(--caja);box-shadow:inset 3px 0 0 var(--tinta)}
 .evl-f.dorado .evl-c{box-shadow:0 0 0 2px #E7B622}
 .evl-f:focus-visible{outline:2px solid var(--tinta);outline-offset:-3px}
+/* ⚡ «la tocaste», sin esperar a React: el panel llega en una transición (`ver()` de eventos.jsx, 25/11/2026) */
+.evl-f:active{background:var(--caja)}
 @media (hover: hover) and (pointer: fine){.evl-f:hover{background:var(--caja)}}
 @media (min-width: 600px){
   .evl-f{grid-template-columns:52px 4px minmax(0,1fr) auto}
