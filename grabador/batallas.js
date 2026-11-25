@@ -48,6 +48,78 @@ export class Habla {
   }
 }
 
+// 🔎 EL LADO SIN CUENTA, BUSCADO ENTRE QUIENES HABLARON (25/11/2026, Dlx: «que el bot grabe bien cuando deba y con calidad
+// para que luego lo demás salga con calidad»). Del 22 al 24/11 se ubicaron 75 de 108 batallas (69 %): un lado cuyo nombre de
+// la llave no se encontró entre la gente de la Liga llega sin cuenta (`id: ''`), y con un solo lado conocido la batalla no
+// sale —ni su audio, ni su short—. Pero el grabador sabe quién estuvo EN LA LLAMADA, con sus nombres de Discord: buscar ahí
+// es buscar entre 20 personas y no entre 800. Se da por esa cuenta sólo si UNA de las que hablaron coincide (dos dudosas:
+// ninguna) y no es ya alguien más de esa llave con otro nombre
+const PEQUENAS = { 'ᴀ': 'a', 'ʙ': 'b', 'ᴄ': 'c', 'ᴅ': 'd', 'ᴇ': 'e', 'ꜰ': 'f', 'ɢ': 'g', 'ʜ': 'h', 'ɪ': 'i', 'ᴊ': 'j', 'ᴋ': 'k',
+  'ʟ': 'l', 'ᴍ': 'm', 'ɴ': 'n', 'ᴏ': 'o', 'ᴘ': 'p', 'ǫ': 'q', 'ʀ': 'r', 'ꜱ': 's', 'ᴛ': 't', 'ᴜ': 'u', 'ᴠ': 'v', 'ᴡ': 'w', 'ʏ': 'y', 'ᴢ': 'z' };
+
+/** Un nombre de la llave o de Discord, comparable: sin el puesto de adelante («#81 | Gus»), sin letras de adorno
+ *  (𝗕𝗢𝗟𝗗, ᴠᴇʀꜱᴀʟɪᴛᴀꜱ), tildes, banderas ni signos */
+export function normVoz(s) {
+  let x = String(s || '');
+  if (x.includes('|')) x = x.split('|').filter((p) => p.trim()).pop() || '';
+  return [...x.normalize('NFKD')].map((ch) => PEQUENAS[ch] || ch).join('').toLowerCase()
+    .replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+}
+
+const parecido = (a, b) => {
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const [c, l] = a.length <= b.length ? [a, b] : [b, a];
+  return c.length >= 4 && c.length / l.length >= 0.5 && l.includes(c);
+};
+
+/** Completa los `id` vacíos de los lados de `llaves` con las cuentas de `voces` (`Map(id → [nombres])`, de quienes
+ *  hablaron). Cambia `llaves` y devuelve `[[nombre de la llave, id]]` de lo que completó. */
+export function completarIds(llaves, voces) {
+  const hechos = [];
+  if (!voces || !voces.size) return hechos;
+  const de = [...voces].map(([id, ns]) => [String(id), [...new Set((ns || []).map(normVoz).filter(Boolean))]]);
+  for (const L of llaves || []) {
+    // quién es quién ya en esta llave: una cuenta que la llave ya le dio a OTRO nombre no se reusa
+    const usada = new Map();
+    for (const R of L.rondas || []) for (const b of R.b || []) for (const l of b.lados || []) for (const y of l || []) {
+      if (y && y.id) usada.set(String(y.id), normVoz(y.n));
+    }
+    for (const R of L.rondas || []) for (const b of R.b || []) {
+      const enEsta = new Set((b.lados || []).flat().filter((y) => y && y.id).map((y) => String(y.id)));
+      for (const l of b.lados || []) for (const y of l || []) {
+        if (!y || y.id) continue;
+        const n = normVoz(y.n);
+        if (n.length < 2) continue;
+        const ok = de.filter(([id, ns]) => !enEsta.has(id) && (!usada.has(id) || usada.get(id) === n) && ns.some((x) => parecido(n, x)));
+        if (ok.length !== 1) continue;
+        y.id = ok[0][0];
+        enEsta.add(y.id);
+        usada.set(y.id, n);
+        hechos.push([y.n, y.id]);
+      }
+    }
+  }
+  return hechos;
+}
+
+/** Las batallas de `llaves` que `ubicarTodas()` no ubicó, con por qué: `[{r, nombres, por}]` */
+export function sinUbicar(llaves, ubicadas, habla) {
+  const ya = new Set((ubicadas || []).map((b) => b.llave + '|' + b.r + '|' + b.nombres.join(' vs ')));
+  const out = [];
+  for (const L of llaves || []) for (const R of L.rondas || []) for (const b of R.b || []) {
+    const nombres = (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + '));
+    if (ya.has(L.id + '|' + R.r + '|' + nombres.join(' vs '))) continue;
+    const sinCuenta = (b.lados || []).flat().filter((y) => y && !y.id).map((y) => y.n);
+    const callados = (b.lados || []).flat().filter((y) => y && y.id && !habla.has(String(y.id))).map((y) => y.n);
+    const por = sinCuenta.length ? 'no encontré en la llamada a ' + sinCuenta.join(', ')
+      : callados.length ? 'no habló en la grabación: ' + callados.join(', ')
+        : 'no se los escuchó rapear turnándose (o se pisa con otra)';
+    out.push({ r: R.r, nombres, por });
+  }
+  return out;
+}
+
 /** Los segundos de habla de unos tramos (ms), repartidos en baldes de `paso` segundos. */
 export function porBalde(tramos, n, paso = PASO_S) {
   const a = new Float64Array(n);

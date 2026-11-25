@@ -393,6 +393,22 @@ console.log('\n⚔️ cada batalla en la grabación\n');
     { gano: 'Cami', lados: [[{ n: 'Cami', id: 'cami' }], [{ n: 'Dora', id: 'dora' }]] },
     { gano: 'Ana', lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Bea', id: 'bea' }]] },
     { gano: '', lados: [[{ n: 'Fio', id: '' }], [{ n: 'Gus', id: '' }]] }] }] }];
+  // 🔎 el lado sin cuenta, de la llamada: Fio y Gus no tenían id; en la llamada hablaron «𝗙𝗶𝗼 🇦🇷» y «#12 | ɢᴜꜱ» (25/11/2026)
+  ok(B.normVoz('#81 | 𝗙𝗶𝗼 🇦🇷') === 'fio' && B.normVoz('ɢᴜꜱᴛᴀᴠᴏ') === 'gustavo' && B.normVoz('Sankabel HყDɾA') !== '',
+    'los nombres se comparan sin el puesto, las letras de adorno, las banderas ni las tildes');
+  const conVoz = JSON.parse(JSON.stringify(llaves));
+  const vz = new Map([['fio1', ['𝗙𝗶𝗼 🇦🇷']], ['gus1', ['#12 | ɢᴜꜱ']], ['ana', ['Ana']]]);
+  const hechos = B.completarIds(conVoz, vz);
+  ok(hechos.length === 2 && conVoz[0].rondas[0].b[2].lados[0][0].id === 'fio1' && conVoz[0].rondas[0].b[2].lados[1][0].id === 'gus1',
+    'un lado sin cuenta se completa con quien habló en la llamada con ese nombre  ' + JSON.stringify(hechos));
+  const dudosa = JSON.parse(JSON.stringify(llaves));
+  ok(!B.completarIds(dudosa, new Map([['f1', ['Fio']], ['f2', ['Fio 🇨🇱']]])).length,
+    'si dos de la llamada podrían ser, no se elige ninguno');
+  const ajena = [{ id: '9', rondas: [{ r: 'Final', b: [{ lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Anabel', id: '' }]] }] }] }];
+  ok(!B.completarIds(ajena, new Map([['ana', ['Ana']]])).length, 'una cuenta que ya es otro de la llave no se reusa con otro nombre');
+  const sinU = B.sinUbicar(llaves, B.ubicarTodas(llaves, h.t, 700), h.t);
+  ok(sinU.length === 1 && sinU[0].nombres.join(' vs ') === 'Fio vs Gus' && sinU[0].por.includes('Fio') && sinU[0].por.includes('Gus'),
+    'lo que no se ubicó dice por qué: ' + JSON.stringify(sinU));
   const todas = B.ubicarTodas(llaves, h.t, 700);
   ok(todas.length === 2 && todas[0].nombres.join() === 'Ana,Bea' && todas[1].nombres.join() === 'Cami,Dora',
     'todas las de la llave que se pueden ubicar, en el orden en que se jugaron (no el de la llave)');

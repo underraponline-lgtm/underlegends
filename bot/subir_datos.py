@@ -359,7 +359,44 @@ def _canales_llaves():
         if sv and re.match(r'^\d{15,22}$', str(cid)) and str(cid) not in ya:
             out.append({'id': str(cid), 'sv': sv, 'g': str(x.get('guild') or '')})
             ya.add(str(cid))
+    # 🎙️ Y DONDE YA HUBO UNA LLAVE DE VERDAD (25/11/2026, Dlx: «que el bot grabe bien cuando deba»). DANGER WORLD publica sus
+    # llaves en «「🥊」𝗕𝗥𝗔𝗖𝗞𝗘𝗧𝗦»: no dice «llave», así que el bot en vivo no lo leía, ninguna llave de DW figuraba «en
+    # juego» y ULAYA no entró a sus dos eventos (22/11 y 24/11), aunque el ciclo después las cargó bien. Un canal de donde
+    # salió una llave cargada (`datos/llaves_t1.json`, sus `links`) en los últimos `VIVO_LLAVE_DIAS` es un canal de llaves,
+    # se llame como se llame. Sólo de servidores confirmados y del mismo guild que dice el link
+    for cid, g in _canales_de_llaves_cargadas():
+        sv = por_guild.get(g)
+        if sv and cid not in ya:
+            out.append({'id': cid, 'sv': sv, 'g': g})
+            ya.add(cid)
     return sorted(out, key=lambda c: (c['sv'], c['id']))
+
+
+#: cuántos días atrás mira `_canales_de_llaves_cargadas()`: un canal que dejó de usarse sale solo
+VIVO_LLAVE_DIAS = 45
+
+
+def _canales_de_llaves_cargadas(hoy=None, llaves=None):
+    """`[(canal, guild)]` de donde salieron las llaves cargadas de los últimos `VIVO_LLAVE_DIAS` (por sus `links`)."""
+    if llaves is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
+                llaves = json.load(f) or {}
+        except (OSError, ValueError):
+            llaves = {}
+    import datetime as dt
+    hoy = hoy or dt.date.today()
+    desde = (hoy - dt.timedelta(days=VIVO_LLAVE_DIAS)).isoformat()
+    out = []
+    for x in (llaves.values() if isinstance(llaves, dict) else []):
+        if not isinstance(x, dict) or str(x.get('dia') or '') < desde:
+            continue
+        ls = x.get('links') or []
+        for l in (ls if isinstance(ls, list) else [ls]):
+            m = re.search(r'/channels/(\d{15,22})/(\d{15,22})/\d{15,22}', str(l))
+            if m and (m.group(2), m.group(1)) not in out:
+                out.append((m.group(2), m.group(1)))
+    return out
 
 
 def _porton(padron):
@@ -1754,6 +1791,14 @@ def _self_check():
         nonlocal mal
         mal += not c
         print('   %s %s' % ('✅' if c else '🔴', q))
+
+    # 🎙️ el canal de donde salió una llave cargada se lee en vivo, se llame como se llame (DW: «𝗕𝗥𝗔𝗖𝗞𝗘𝗧𝗦», 25/11/2026)
+    import datetime as _dt
+    _ll = {'1': {'dia': '2026-11-22', 'links': ['https://discord.com/channels/111111111111111111/222222222222222222/333333333333333333']},
+           '2': {'dia': '2026-08-01', 'links': ['https://discord.com/channels/111111111111111111/444444444444444444/555555555555555555']},
+           '3': {'dia': '2026-11-24', 'links': 'https://discord.com/channels/111111111111111111/222222222222222222/666666666666666666'}}
+    ok(_canales_de_llaves_cargadas(_dt.date(2026, 11, 25), _ll) == [('222222222222222222', '111111111111111111')],
+       'el canal de una llave cargada entra al bot en vivo (una vez), y uno de hace más de %d días no' % VIVO_LLAVE_DIAS)
     viejo = {'n': 'Ana', 'ev': 3, 'vs': {'t': {'ovr': 70, 'pts': 900, 'ev': 3}, 's': {'pos': '4/20', 'arc': 80},
                                           'p': {'pos': '2/9', 'arc': 70, 'ovr': 71}, 'c': {'sc': 40, 'n': 12}}}
     corrido = json.loads(json.dumps(viejo))

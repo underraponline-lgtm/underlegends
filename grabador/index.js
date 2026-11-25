@@ -53,7 +53,7 @@ import { mezclar, partir, duracion, sonoridad, ganancia, cortar } from './mezcla
 import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 import { PruebaMicro } from './microfono.js';
 import { LlamadasVivo, claveCiclo } from './vivo.js';
-import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S } from './batallas.js';
+import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S, completarIds, sinUbicar } from './batallas.js';
 import { Menciones } from './mencion.js';
 import { Fallas, motivoDe, textoFalla } from './entrada.js';
 
@@ -596,7 +596,16 @@ class Grabacion {
       signal: AbortSignal.timeout(20000) });
     const d = r.ok ? await r.json() : {};
     const total = (d.llaves || []).reduce((s, L) => s + (L.rondas || []).reduce((t, R) => t + (R.b || []).length, 0), 0);
+    // 🔎 el lado que la llave no supo de quién era, buscado entre quienes hablaron en ESTA llamada (batallas.js `completarIds()`)
+    const voces = new Map();
+    for (const id of this.habla.t.keys()) {
+      const m = this.guild?.members?.cache?.get(id);
+      voces.set(id, [m?.displayName, m?.nickname, m?.user?.globalName, m?.user?.username].filter(Boolean));
+    }
+    const completos = completarIds(d.llaves, voces);
+    if (completos.length) anotar(`🔎 de la llamada: ${completos.map(([n]) => n).join(', ')}`);
     const bs = ubicarTodas(d.llaves, this.habla.t, seg);
+    const faltan = sinUbicar(d.llaves, bs, this.habla.t);
     anotar(`⚔️ batallas: ${bs.length} ubicadas de ${total} en la llave`);
     // 🔇 SE CALLABA (24/11/2026, DESGRACIAS EN TOKYO VOL 35: 1 h 44 entregada sin batallas y sin decir por qué; el armador
     // de shorts se quedó esperando). Ahora devuelve cuántas y por qué no, y `entregar()` lo dice en Logs y reintenta
@@ -625,6 +634,13 @@ class Grabacion {
     let texto = `⚔️ **Las batallas**, en minutos desde que empezó la grabación (aprox.: salen de quién habló cuándo)`
       + ` · ${bs.length} de ${total}` + (sinAudio ? ` · ${sinAudio} sin audio` : '');
     for (const l of bs.map(lineaBatalla)) { if ((texto + '\n' + l).length > 1900) { texto += '\n…'; break; } texto += '\n' + l; }
+    // ❔ LAS QUE NO SALIERON Y POR QUÉ (25/11/2026): del 22 al 24/11 faltó una de cada tres y la entrega no decía cuáles, así
+    // que no se podía saber qué arreglar. Van también en batallas.json (`sin_ubicar`)
+    for (const f of faltan) {
+      const l = `❔ ${f.r} · ${f.nombres.join(' vs ')} — ${f.por}`;
+      if ((texto + '\n' + l).length > 1950) { texto += '\n…'; break; }
+      texto += '\n' + l;
+    }
     // 🎭 EL GUION DE CADA BATALLA, ADJUNTO (Dlx, 23/11/2026: «haz eso y mejóralo»): quién rapea cuándo —y en un 2vs2, cuál de la
     // pareja—, el público y el presentador, en segundos desde el principio de SU clip. Lo lee el armador de shorts en GitHub
     // Actions: sin esto no sabe qué carta hacer brillar ni dónde cambia de rival la letra. Va en el primer mensaje, con la lista
@@ -633,6 +649,7 @@ class Grabacion {
       v: 1, servidor: this.guild?.id || '', inicio: this.inicio.toISOString(),
       batallas: bs.map((b) => ({ clip: (b.corta || b.sinAudio) ? null : nombreClip(b), r: b.r, llave: b.llave, evento: b.evento,
         nombres: b.nombres, gano: b.gano, desde: Math.round(b.desde * 10) / 10, hasta: Math.round(b.hasta * 10) / 10, guion: b.guion || null })),
+      sin_ubicar: faltan, de_la_llamada: completos.length,
     }));
     let lote = [], peso = 0, primero = true;
     const mandar = async () => {
