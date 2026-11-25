@@ -441,6 +441,9 @@ function Ajustes({ sv, tier }) {
           {/* 🗞️ las imágenes de la semana (20/11/2026): además de en «Tu servidor», en un canal suyo si lo elige */}
           {tier === 1 || tier === 2 ? <Fila label t="Tus imágenes de la semana" sello={sello === 'redes'} ayuda="Cada lunes, las imágenes para tus redes también llegan a ese canal. Siempre están en «Tu servidor».">
             <Canal {...sel} cual="redes" vacio="No mandar" /></Fila> : null}
+          {/* 🎤 las mejores rimas (25/11/2026): los shorts de cada evento grabado, como archivo del canal de mejores rimas */}
+          <Fila label t="Las mejores rimas de cada evento" sello={sello === 'rimas'} ayuda="Después de cada evento tuyo que grabe el bot, los videos cortos de sus mejores rimas quedan en ese canal. Sin mencionar a nadie.">
+            <Canal {...sel} cual="rimas" vacio="No mandar" /><Probar cual="rimas" /></Fila>
         </fieldset>
         {/* 🏟️ LAS BATALLAS DE SUS LIGAS (Dlx, 11/11/2026: «uno, y cambiar por liga»): un canal para todas y, si quiere, otro
             para alguna. Sin elegir, donde habla el bot en vivo, como hasta hoy */}

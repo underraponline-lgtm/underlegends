@@ -428,8 +428,11 @@ export const CHAT_FRESCA = 30 * MIN;
 // los tiers: «la bienvenida en su servidor, apagada por defecto, la prende el dueño»). Ver `cuentaUnirse()` de bot/worker.js
 // 🗞️ `redes`: el canal donde el ciclo deja las imágenes de la semana para sus redes ('' = no se mandan: igual están en el
 // panel). Sólo Tier 1 y 2; las manda `bot/redes.py`, que lee este `cfg:<guild>`
+// 🎤 `rimas`: el canal donde quedan los shorts de las mejores rimas de cada evento de ese servidor ('' = no se mandan; Dlx,
+// 25/11/2026: «la idea es que publiques ahí esos shorts como archivo de las mejores rimas del evento, pero se activa en el
+// dashboard de ellos»). Los manda el armador de shorts (motor, `publicar_rimas.py`), que lee este `cfg:<guild>`
 export const CFG_BASE = { nick: true, mencion: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '',
-  ligas: '', ligas_por: {}, resumen: '', leer_chat: true, ganadores: true, bienvenida: '', redes: '' };
+  ligas: '', ligas_por: {}, resumen: '', leer_chat: true, ganadores: true, bienvenida: '', redes: '', rimas: '' };
 
 export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
@@ -5824,7 +5827,7 @@ export function socioAjusteValido(cual, valor, canales, ligas) {
     if (valor === 'no') return 'no';
     return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
   }
-  if (cual === 'resumen' || cual === 'bienvenida' || cual === 'redes') {
+  if (cual === 'resumen' || cual === 'bienvenida' || cual === 'redes' || cual === 'rimas') {
     if (valor === '' || valor === null) return '';
     return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
   }
@@ -7493,7 +7496,7 @@ export async function rutaAvisos(req, env, ruta) {
     if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || ''))
         || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
         || (d.cambio !== undefined && (!cambio || typeof cambio.cual !== 'string' || cambio.cual.length > 50 || !valorOk(cambio.valor)))
-        || (d.probar !== undefined && !['vivo', 'avisos', 'ascenso', 'resumen', 'ligas'].includes(d.probar))) {
+        || (d.probar !== undefined && !['vivo', 'avisos', 'ascenso', 'resumen', 'ligas', 'rimas'].includes(d.probar))) {
       return json({ error: 'faltan datos' }, 400);
     }
     const q = await quienPide(req, env, d);
@@ -19433,7 +19436,7 @@ export class Avisos {
     if (d && d.probar) {
       if (!socioPuede(x.rol, 'ajustes')) return json({ error: 'no_rol' }, 403);
       const cual = String(d.probar);
-      const canal = ['vivo', 'avisos', 'ascenso', 'resumen', 'ligas'].includes(cual) ? String(cfg[cual] || '') : '';
+      const canal = ['vivo', 'avisos', 'ascenso', 'resumen', 'ligas', 'rimas'].includes(cual) ? String(cfg[cual] || '') : '';
       // el canal tiene que ser uno de los de ESE servidor (`canalesDe()`), como al elegirlo
       if (!canal || !canales.some((c) => String(c.id) === canal)) return json({ error: 'sin_canal' }, 400);
       if (!this._probarT) this._probarT = new Map();
@@ -19495,7 +19498,8 @@ export class Avisos {
         aviso_evento: (cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no') ? cfg.aviso_evento : '',
         ligas: String(cfg.ligas || ''), ligas_por: (cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {},
         resumen: String(cfg.resumen || ''), silencio: cfg.silencio && typeof cfg.silencio === 'object' ? cfg.silencio : '',
-        leer_chat: cfg.leer_chat !== false, ganadores: cfg.ganadores !== false, bienvenida: String(cfg.bienvenida || ''), redes: String(cfg.redes || '') },
+        leer_chat: cfg.leer_chat !== false, ganadores: cfg.ganadores !== false, bienvenida: String(cfg.bienvenida || ''), redes: String(cfg.redes || ''),
+        rimas: String(cfg.rimas || '') },
       ligas, rol: x.rol,
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',
