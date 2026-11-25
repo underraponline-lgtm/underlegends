@@ -54,7 +54,7 @@ function Felicitar({ liga, it, A }) {
 /** 🗂️ lo que `Pub` sabe dibujar (más `tarjeta`, que va con `Cartas`): quien liste publicaciones filtra con esto */
 export const PUB_TIPOS = Object.fromEntries(['campeon', 'rango', 'caza', 'sobrevivio', 'crewtier', 'pase', 'sorteo', 'precio', 'premios',
   'elegido', 'mesaward', 'promo', 'ligahito', 'podio', 'top10', 'subio', 'racha', 'crewunion', 'crewnueva', 'svtop', 'anuncio', 'flyer', 'liga',
-  'tarjeta'].map((x) => [x, 1]));
+  'tarjeta', 'short'].map((x) => [x, 1]));
 
 export function Pub({ liga, it, A }) {
   // 🪪 con su nombre oficial, su cara y su perfil, y la clave aunque el muro no la traiga (17/11/2026, Dlx: «si alguien

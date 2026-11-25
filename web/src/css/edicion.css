@@ -103,6 +103,9 @@
 .ed-flyer::after { display: none; }
 .ed-flyer img, .ed-flyer .pb-vid-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .ed-flyer img.cuad { object-position: 50% 40%; }
+.ed-short .ed-short-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.ed-short-play { position: absolute; left: 12px; bottom: 12px; width: 48px; height: 48px; display: grid; place-items: center; padding: 0 0 0 3px; border: 0; border-radius: 2px; background: #E41373; color: #fff; font: 700 18px/1 Archivo, sans-serif; cursor: pointer; z-index: 2; }
+.ed-short-play:focus-visible { outline: 2px solid #F6F6F6; outline-offset: 2px; }
 .ed-letras { display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 12px; padding: 12px; background: #141416; }
 .ed-letras::after { display: none; }
 .ed-letras > span { display: grid; justify-items: center; gap: 6px; font: 700 12px/1 'Barlow Condensed', Archivo, sans-serif; text-transform: uppercase; max-width: 68px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

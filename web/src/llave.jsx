@@ -22,7 +22,7 @@ import CSS_PAGINA from './css/llave.css?inline';
 import Calificar from './calificar.jsx';
 import { usarCss } from './css.js';
 import { pedirLlave, pedirRoles, puede } from './panelsocio.js';
-import { deBatalla, tituloDe, useArchivo } from './archivo_ul.js';
+import { deBatalla, normN, ridDe, tituloDe, useArchivo } from './archivo_ul.js';
 import { abrirVideo } from './video.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/llave.css)
@@ -494,21 +494,53 @@ function etiquetas(ctx, b, est, copa) {
 // `StaffLlave` con esa batalla elegida; quién puede de verdad lo decide el Worker (`socioLlave()`)
 // 🎬 EL SHORT DE ESA BATALLA (25/11/2026, Dlx: «could put into MCs profile, bracket and everything»): si el robot hizo uno,
 // un ▶ en la esquina de la batalla lo abre acá. Quedan 30 días (`archivo_ul.js`); sin short, nada
+// 🗳️ EL PÚBLICO CONTRA EL JURADO (25/11/2026, Dlx: «all of them»): en Reels se vota «¿Quién ganó?» en cada short; con
+// `REELS_MIN_VOTOS` (20) o más el Worker da el reparto, y acá va al lado del short: a quién eligió la gente y con cuánto. Si no es
+// quien pasó, se marca. Con menos de 20, nada (con pocos, dice quién votó primero y no quién ganó)
+function usePublico(ctx, x, ls, gano) {
+  const [r, setR] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    if (x) {
+      fetch('/api/avisos/reels-votos?v=' + encodeURIComponent(ridDe(x))).then((q) => (q.ok ? q.json() : null))
+        .then((j) => { if (vivo && j && j.r) setR(j); }).catch(() => {});
+    }
+    return () => { vivo = false; };
+  }, [x && x.ev, x && x.k]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!x || !r || !r.r) return null;
+  const [kk, n] = Object.entries(r.r).sort((a, b) => b[1] - a[1])[0] || [];
+  if (!kk) return null;
+  const k = String(kk).replace(/^liga:/, '');
+  const lado = ls.find((s) => ctx.idDe(sinBanderas(s).txt) === k || normN(sinBanderas(s).txt) === k);
+  if (!lado) return null;
+  const contra = !!gano && normN(sinBanderas(gano).txt) !== normN(sinBanderas(lado).txt);
+  return { lado, pct: Math.round((100 * n) / Math.max(1, r.n)), n: r.n, contra };
+}
+
 // 🎧 Y LA BATALLA ENTERA EN AUDIO (25/11/2026, Dlx: «A»): lo que ULAYA grabó de esa batalla, 15 días. Los dos juntos en la
-// misma esquina; sin ninguno, nada
-function ShortB({ ctx, ls }) {
+// misma esquina; sin ninguno, nada. Con el voto del público y fuera de la final (la batalla es angosta), los dos quedan en ícono
+function ShortB({ ctx, ls, gano, fin }) {
   const ns = ls.length >= 2 ? ls.map((s) => sinBanderas(s).txt) : null;
   const x = ns && ctx.shortDe ? ctx.shortDe(ns) : null;
   const au = ns && ctx.audioDe ? ctx.audioDe(ns) : null;
+  const P = usePublico(ctx, x, ls, gano);
   if (!x && !au) return null;
   const vs = ls.map(limpio).join(' vs ');
+  const chico = !!P && !fin;
+  const pub = P ? <span className={'lk-short lk-pub' + (P.contra ? ' contra' : '')} title={'El público: ' + limpio(P.lado) + ' ' + P.pct + ' % de ' + P.n + ' votos en Reels' + (P.contra ? '. El jurado eligió a otro' : '')}>
+    {fin ? 'PÚBLICO ' : <svg className="lk-pub-ico" viewBox="0 0 16 16" width="11" height="11" aria-label="El público"><circle cx="5" cy="5" r="2.6" fill="currentColor" /><circle cx="11.5" cy="5.5" r="2.2" fill="currentColor" /><path d="M0 14c0-3 2.3-5 5-5s5 2 5 5zM9.5 14c0-1.6-.5-3-1.4-4 .9-.6 2-.9 3.1-.7 2.2.3 3.8 2.2 3.8 4.7z" fill="currentColor" /></svg>}{P.pct} % · {limpio(P.lado)}</span> : null;
   return (
+    <>
+    {pub && !fin ? <span className="lk-pubsolo">{pub}</span> : null}
     <span className="lk-media">
-      {x ? <button type="button" className="lk-short" aria-label={'Ver el short de ' + vs} title="Ver el short de esta batalla"
-        onClick={(e) => { e.stopPropagation(); abrirVideo({ mp4: x.url, portada: x.portada, tit: (x.nombres || []).join(' vs ') + ' · ' + tituloDe(x) }); }}><span aria-hidden="true">▶</span>SHORT</button> : null}
-      {au ? <button type="button" className="lk-short" aria-label={'Escuchar la batalla entera: ' + vs} title="Escuchar la batalla entera"
-        onClick={(e) => { e.stopPropagation(); abrirVideo({ audio: au.url, tit: vs + ' · ' + tituloDe(au) }); }}><span aria-hidden="true">♫</span>AUDIO</button> : null}
+      {x ? <button type="button" className={'lk-short' + (chico ? ' ico' : '')} aria-label={'Ver el short de ' + vs} title="Ver el short de esta batalla"
+        onClick={(e) => { e.stopPropagation(); abrirVideo({ mp4: x.url, portada: x.portada, tit: (x.nombres || []).join(' vs ') + ' · ' + tituloDe(x) }); }}><span aria-hidden="true">▶</span>{chico ? null : 'SHORT'}</button> : null}
+      {au ? <button type="button" className={'lk-short' + (chico ? ' ico' : '')} aria-label={'Escuchar la batalla entera: ' + vs} title="Escuchar la batalla entera"
+        onClick={(e) => { e.stopPropagation(); abrirVideo({ audio: au.url, det: au.det || '', tit: vs + ' · ' + tituloDe(au),
+          lados: ls.slice(0, 2).map((s) => ({ n: limpio(s), cara: <Cara liga={ctx.liga} k={ctx.idDe(sinBanderas(s).txt) || ''} nombre={limpio(s)} cls="cara vau-cara" grande /> })) }); }}><span aria-hidden="true">♫</span>{chico ? null : 'AUDIO'}</button> : null}
+      {pub && fin ? pub : null}
     </span>
+    </>
   );
 }
 
@@ -530,7 +562,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
     return (
       <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '') + (recien ? ' recien' : '')} style={style} title={b[2] || undefined}>
         <Lapiz ctx={ctx} ronda={ronda} ls={ls} />
-        <ShortB ctx={ctx} ls={ls} />
+        <ShortB ctx={ctx} ls={ls} gano={b[1]} fin={!!copa} />
         {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
         <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' lk-vs3' : '')}>
           {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} llega={!!an && an.s.has(pos + ':' + clave(s))} j={jv} li={i} />)}
@@ -543,7 +575,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
     <div className={'lk-b' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (ls.length ? '' : ' vacio') + (copa ? ' fin' : '') + (recien ? ' recien' : '')}
       style={style} title={b[2] || undefined}>
       <Lapiz ctx={ctx} ronda={ronda} ls={ls} />
-      <ShortB ctx={ctx} ls={ls} />
+      <ShortB ctx={ctx} ls={ls} gano={b[1]} fin={!!copa} />
       {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
       {cp ? <>{cp.g.map((s, i) => <Lado key={i} ctx={ctx} b={b} s={s} copa={copa} alto={altos ? altos[i] : 0} pasa li={ls.indexOf(s)} ronda={ronda} />)}
         <Resto ctx={ctx} b={b} xs={cp.x} ronda={ronda} alto={altos ? altos[altos.length - 1] : 0} /></>

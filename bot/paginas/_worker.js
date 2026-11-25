@@ -877,9 +877,26 @@ async function vistaCompetencia(req, env, id, url) {
 // la miniatura del video en YouTube. Sale de `reels_vista.json` ({o: [ids en el orden del feed], r: {id: [título, canal,
 // «A vs B»]}}), chico a propósito: nada de `global.json`, que costaba 4 ms de CPU de los 10. ⚠️ La miniatura de YouTube
 // (`hqdefault`) mide 480×360 y no 1200×630: van sus medidas de verdad, si no Discord la recorta como si fuera el cartel
+const R2_PUBLICO = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
 const REEL_ID = /^(?:[A-Za-z0-9_-]{11}|ul-[a-z0-9-]{3,60})$/;   // como el de bot/avisos.js: también los shorts de la Liga (`ul-…`)
 async function vistaReel(req, env, id, url) {
   if (!REEL_ID.test(String(id || ''))) return null;
+  // 🎬 UN SHORT DE LA LIGA (`ul-<evento>-<n>`, 25/11/2026): sale del archivo de R2 que deja el robot (30 días), con su portada
+  // parada. El id se arma igual que en web/src/reels.jsx (`armarHoy()`)
+  if (String(id).startsWith('ul-')) {
+    const ra = await fetch(R2_PUBLICO + '/reels/archivo.json', { cf: { cacheTtl: 300 } }).catch(() => null);
+    const A = ra && ra.ok ? await ra.json().catch(() => null) : null;
+    const nn = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const x = (Array.isArray(A) ? A : []).find((y) => y && 'ul-' + nn(y.ev).slice(0, 40) + '-' + y.k === id);
+    if (!x) return null;
+    const lim = (s) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+    const vs = (x.nombres || []).map(lim).join(' vs ');
+    const RON = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
+    const de = [RON[String(x.ronda || '').toLowerCase()] || lim(x.ronda), lim(x.evento)].filter(Boolean).join(' de ');
+    const tab = (vs || 'Short de la Liga') + ' · Reels';
+    return conVista(req, env, url, { tab, titulo: tab, desc: ['Las mejores rimas de la batalla', de].filter(Boolean).join(' · '),
+      img: x.portada || WEB + '/og.png', vertical: !!x.portada, alt: vs || 'Short de la Liga', can: WEB + '/freestyle-rap/reels/' + id });
+  }
   const r = await env.ASSETS.fetch(new Request(url.origin + '/reels_vista.json')).catch(() => null);
   const V = r && r.ok ? await r.json().catch(() => null) : null;
   const x = V && V.r && Object.prototype.hasOwnProperty.call(V.r, id) ? V.r[id] : null;

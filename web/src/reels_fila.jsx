@@ -8,6 +8,14 @@ import { usarCss } from './css.js';
 
 usarCss('reels_fila', CSS);
 
+// 🏆 Y EL SHORT DE LA SEMANA, PRIMERO (25/11/2026, Dlx: «all of them»): el de la Liga que más gente miró hasta el final
+// (`reels/semana.json`, lo elige el robot: privado/motor/senales.py `publicar_semana()`). Sin él, la fila de siempre
+const SEMANA = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reels/semana.json';
+let pedidoS = null;
+const bajarSemana = () => (pedidoS = pedidoS || fetch(SEMANA, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+  .then((s) => (s && s.rid && (s.hasta || '') > new Date().toISOString().slice(0, 16) ? s : null)));
+const RON = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
+
 let pedido = null;
 function bajar() {
   if (!pedido) {
@@ -18,9 +26,11 @@ function bajar() {
 
 export function ReelsFila() {
   const [V, setV] = useState(null);
+  const [S, setS] = useState(null);
   useEffect(() => {
     let vivo = true;
     bajar().then((d) => { if (vivo) setV(d); });
+    bajarSemana().then((s) => { if (vivo) setS(s); });
     return () => { vivo = false; };
   }, []);
   const xs = ((V && V.o) || []).map((v) => [v, (V.r || {})[v] || []]).filter((x) => x[1].length);
@@ -30,6 +40,17 @@ export function ReelsFila() {
     <section id="reels" className="rlf" aria-label="Reels de la semana">
       <div className="sec-t"><h2>Reels de la semana</h2><a href="#/reels">Ver todos</a></div>
       <div className="rlf-rail">
+        {S ? (
+          <a className="rlf-r rlf-top" href={'#/reels/' + S.rid} aria-label={'El short de la semana: ' + (S.nombres || []).join(' vs ')}>
+            <span className="rlf-img">
+              {S.portada ? <img alt="" loading="lazy" decoding="async" src={S.portada} /> : null}
+              <em className="rlf-sello">Short de la semana</em>
+              <i aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg></i>
+            </span>
+            <b>{(S.nombres || []).join(' vs ')}</b>
+            <small>{S.por === 'vistas' && S.fin ? Math.round(S.fin * 100) + ' % lo vio entero' : [RON[String(S.ronda || '').toLowerCase()] || S.ronda, S.evento].filter(Boolean).join(' · ')}</small>
+          </a>
+        ) : null}
         {xs.map(([v, [t, canal, quien]]) => (
           <a key={v} className="rlf-r" href={'#/reels/' + v} aria-label={(quien || 'Reel') + (t ? ': ' + t : '')}>
             <span className="rlf-img">

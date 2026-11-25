@@ -88,7 +88,10 @@ def _gh(*a):
 
 
 def resultado(run):
-    """('corriendo', None) · ('bien', n listos) · ('mal', n listos o None)"""
+    """('corriendo', None) · ('bien', n listos) · ('mal', n listos o None). Deja en `ULTIMO_AUDIOS` cuántas batallas
+    subió en audio (`archivo_reels.audios()` lo imprime), o None si la corrida no lo dijo"""
+    global ULTIMO_AUDIOS
+    ULTIMO_AUDIOS = None
     j = _gh('run', 'view', str(run), '-R', REPO, '--json', 'status,conclusion')
     if not j:
         return 'corriendo', None
@@ -99,6 +102,8 @@ def resultado(run):
     import re
     n = [int(x) for x in re.findall(r'(\d+) listos', log)]
     n = n[-1] if n else None
+    au = [int(x) for x in re.findall(r'(\d+) batallas en audio', log)]
+    ULTIMO_AUDIOS = au[-1] if au else None
     return ('bien' if j.get('conclusion') == 'success' and n else 'mal'), n
 
 
@@ -125,6 +130,20 @@ def ocupado():
         return True
 
 
+def _hora_et(t):
+    """«24/11 10:01 PM» de la hora de la entrega (UTC)"""
+    import datetime as dt, zoneinfo
+    try:
+        x = dt.datetime.fromisoformat(str(t).replace('Z', '+00:00'))
+        x = x if x.tzinfo else x.replace(tzinfo=dt.timezone.utc)
+        return x.astimezone(zoneinfo.ZoneInfo('America/New_York')).strftime('%d/%m %I:%M %p').replace(' 0', ' ')
+    except Exception:
+        return str(t)
+
+
+ULTIMO_AUDIOS = None
+
+
 def main():
     hay = os.path.exists(ESTADO)
     E = json.load(open(ESTADO, encoding='utf-8')) if hay else {'vistos': {}}
@@ -143,9 +162,24 @@ def main():
             if est == 'corriendo':
                 continue
             v['res'], v['listos'] = est, n
+            if ULTIMO_AUDIOS is not None:
+                v['audios'] = ULTIMO_AUDIOS
             if est == 'mal' and v['como'] == 'pedido':
                 rehacer.append((i, v['t']))
             print('🎬 la corrida de una grabación terminó: %s (%s shorts)' % (est, n if n is not None else '?'))
+            # 🚨 EL ROBOT NO FALLA CALLADO (Dlx, 25/11: «all of them»): si la segunda vuelta también salió mal, o salieron
+            # shorts pero ninguna batalla en audio, UN DM a Dlx con la corrida. Por pantalla, sólo que se avisó
+            falla = ('salió mal dos veces: %s shorts' % (n if n is not None else 0)) if est == 'mal' and v['como'] == 'reintento' \
+                else ('salieron %d shorts pero ninguna batalla en audio' % n) if est == 'bien' and ULTIMO_AUDIOS == 0 else ''
+            if falla and APLICAR and not v.get('avisado'):
+                try:
+                    import alertar
+                    alertar.dm('🚨 Una grabación de ULAYA (%s ET) %s.\nLa corrida: https://github.com/%s/actions/runs/%s'
+                               % (_hora_et(v['t']), falla, REPO, v['run']))
+                    v['avisado'] = True
+                    print('🚨 aviso a Dlx: una grabación no salió bien')
+                except Exception as e:
+                    print('🚨 sin aviso:', type(e).__name__)
         nuevas = [(i, t) for i, t, lista in xs if lista and i not in E['vistos']]
         esperando = sum(1 for i, t, lista in xs if not lista and i not in E['vistos'])
         fila = [(i, t, 'reintento') for i, t in rehacer] + [(i, t, 'pedido') for i, t in nuevas]

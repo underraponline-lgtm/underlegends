@@ -495,7 +495,7 @@
 /* ✎ EL LÁPIZ DE MODS EN CADA BATALLA (20/11/2026, «Lápices para corregir»): magenta, arriba a la derecha, y su área de
    toque de 44 px (el dibujo mide 24) */
 .lk-lapiz{position:absolute;z-index:3;top:-11px;right:-11px;width:24px;height:24px;padding:0;border:2px solid var(--fondo);border-radius:50%;background:#E41373;color:#fff;font:700 13px/1 Archivo,sans-serif;display:grid;place-items:center;cursor:pointer}
-.lk-media{position:absolute;z-index:3;top:-11px;right:18px;display:flex;gap:4px}
+.lk-media{position:absolute;z-index:3;top:-11px;right:18px;display:flex;gap:4px;white-space:nowrap}
 .lk-short{position:relative;height:22px;padding:0 8px;border:2px solid var(--fondo);border-radius:2px;background:#0B0B0C;color:#F6F6F6;font:800 10px/1 Archivo,sans-serif;letter-spacing:.06em;display:flex;align-items:center;gap:5px;cursor:pointer}
 .lk-short:hover{background:#E41373}
 .lk-short:focus-visible{outline:2px solid #E41373;outline-offset:2px}
@@ -520,4 +520,9 @@
 }
 
 .lk-grab{margin-top:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}.lk-grab-p{display:flex;flex-wrap:wrap;align-items:center;gap:8px;width:100%}.lk-grab-p audio{flex:1 1 260px;max-width:100%}
-.lk-b.fin .lk-media{top:auto;bottom:-11px}
+.lk-b.fin .lk-media{top:calc(100% - 11px);bottom:auto;left:0;right:0;justify-content:flex-end;flex-wrap:wrap;row-gap:4px}
+.lk-pub{cursor:default;white-space:nowrap;background:#F6F6F6;color:#0B0B0C;border-color:var(--fondo)}.lk-pub.contra{background:#E41373;color:#fff}
+.lk-pubsolo{position:absolute;z-index:3;top:-11px;left:8px;right:76px;display:flex}
+.lk-pubsolo .lk-pub{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;line-height:18px}
+.lk-short.ico{width:26px;padding:0;justify-content:center}
+.lk-pub-ico{flex:0 0 auto;margin-right:4px;vertical-align:-1px}.lk-pubsolo .lk-pub{letter-spacing:.02em}

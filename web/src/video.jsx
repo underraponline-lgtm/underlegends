@@ -43,6 +43,80 @@ export function abrirVideo(v) {
   window.dispatchEvent(new CustomEvent('lg:video', { detail: v }));
 }
 
+// ── 🎧 UNA BATALLA ENTERA EN AUDIO, CON SUS TURNOS, DÓNDE REACCIONÓ LA LLAMADA Y LA LETRA (25/11/2026, Dlx: «all of them»).
+// `det` es el json que deja el robot (`archivo_reels.detalle()`): {turnos: [[t, nombre]], letra: [[t, texto]], calor: [0–9
+// cada 5 s]}. Sin él, sólo el reproductor. La letra se desplaza adentro de su caja (nunca la página) y marca el renglón que suena
+const mmss = (t) => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
+const nrm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+// 🎤 EL ESCENARIO (25/11/2026, Dlx: «que sea un video horizontal y de imagen el VS y ahí mismo las letras… pero va a ocupar
+// espacio, ¿no?»). No: no es un video guardado, la página lo dibuja en vivo sobre el audio. Los dos frente a frente (`v.lados`,
+// `[{n, cara}]` de quien abre: la llave), el que rapea encendido según los turnos, y el renglón que suena, grande
+function Escenario({ v, D, t, cur }) {
+  const lados = (v.lados || []).slice(0, 2);
+  if (lados.length < 2) return null;
+  let quien = '';
+  for (const [s, n] of (D && D.turnos) || []) if (s <= t + 0.2) quien = nrm(n);
+  const on = (l) => !!quien && nrm(l.n) === quien;
+  const linea = cur >= 0 ? D.letra[cur][1] : '';
+  return (
+    <div className={'vau-esc' + (quien ? ' turnos' : '')}>
+      {lados.map((l, i) => (
+        <div key={i} className={'vau-lado' + (i ? ' der' : '') + (on(l) ? ' on' : '')}>
+          {l.cara}<b>{l.n}</b>{on(l) ? <small>al micrófono</small> : null}
+        </div>
+      ))}
+      <span className="vau-vs" aria-hidden="true">VS</span>
+      {linea ? <p className="vau-linea" aria-live="off">{linea}</p> : null}
+    </div>
+  );
+}
+function AudioBatalla({ v }) {
+  const au = useRef(null);
+  const caja = useRef(null);
+  const [D, setD] = useState(null);
+  const [t, setT] = useState(0);
+  useEffect(() => {
+    let vivo = true;
+    if (v.det) fetch(v.det).then((r) => (r.ok ? r.json() : null)).then((j) => { if (vivo) setD(j); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [v.det]);
+  const ir = (s) => { const a = au.current; if (a) { a.currentTime = s; a.play().catch(() => {}); } };
+  const letra = (D && D.letra) || [];
+  let cur = -1;
+  for (let i = 0; i < letra.length && letra[i][0] <= t + 0.2; i++) cur = i;
+  useEffect(() => {
+    const c = caja.current;
+    const el = c && cur >= 0 ? c.children[cur] : null;
+    if (el) c.scrollTop = el.offsetTop - c.clientHeight / 2 + el.clientHeight / 2;
+  }, [cur]);
+  const calor = (D && D.calor) || [];
+  return (
+    <div className="vid-audio">
+      <Escenario v={v} D={D} t={t} cur={cur} />
+      <audio ref={au} src={v.audio} title={v.tit || 'Audio'} controls autoPlay onTimeUpdate={(e) => setT(e.currentTarget.currentTime)} />
+      {calor.length > 2 ? (
+        <div className="vau-calor" role="group" aria-label="Dónde reaccionó la llamada: toca para ir ahí">
+          {calor.map((c, i) => <button key={i} type="button" style={{ height: 4 + c * 3 }} className={t >= i * 5 && t < i * 5 + 5 ? 'on' : ''}
+            aria-label={'Ir a ' + mmss(i * 5)} onClick={() => ir(i * 5)} />)}
+        </div>
+      ) : null}
+      {D && (D.turnos || []).length ? (
+        <div className="vau-turnos" role="group" aria-label="Los turnos">
+          {D.turnos.map(([s, n], i) => <button key={i} type="button" onClick={() => ir(s)}><b>{n}</b> {mmss(s)}</button>)}
+        </div>
+      ) : null}
+      {letra.length ? (
+        <>
+          <div className="vau-letra" ref={caja}>
+            {letra.map(([s, x], i) => <p key={i} className={i === cur ? 'on' : ''} onClick={() => ir(s)}>{x}</p>)}
+          </div>
+          <small className="vau-nota">Letra automática: puede tener errores.</small>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
 export function VentanaVideo() {
   const [v, setV] = useState(null);
   const cerrarB = useRef(null);
@@ -75,7 +149,7 @@ export function VentanaVideo() {
           {v.link ? <a className="vid-yt" href={v.link} target="_blank" rel="noopener noreferrer">En YouTube ↗</a> : null}
           <button type="button" ref={cerrarB} className="vid-x" onClick={() => setV(null)} aria-label="Cerrar el video">✕</button>
         </div>
-        {v.audio ? <div className="vid-audio"><audio src={v.audio} title={v.tit || 'Audio'} controls autoPlay /></div> : <div className="vid-marco">
+        {v.audio ? <AudioBatalla v={v} /> : <div className="vid-marco">
           {v.mp4 ? <video src={v.mp4} poster={v.portada || undefined} title={v.tit || 'Video'} controls autoPlay playsInline />
             : <iframe src={src} title={v.tit || 'Video de YouTube'} allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
               allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}

@@ -106,6 +106,7 @@
 .pb-post.media .pb-v{justify-items:stretch}
 .pb-vid{position:relative;display:block;width:100%;max-width:560px;aspect-ratio:16/9;padding:0;border:2px solid var(--linea);background:#030304;cursor:pointer;overflow:hidden}
 .pb-vid-img{display:block;width:100%;height:100%;object-fit:cover}
+.pb-vid.pb-short{aspect-ratio:9/16;max-width:240px}
 .pb-play{position:absolute;left:50%;top:50%;display:grid;place-items:center;width:54px;height:54px;margin:-27px 0 0 -27px;
   background:#030304;color:#F6F6F6;font-size:20px;border:2px solid #F6F6F6}
 .pb-plat{position:absolute;left:0;bottom:0;padding:5px 8px;background:#030304;color:#F6F6F6;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}

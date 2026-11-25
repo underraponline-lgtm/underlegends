@@ -287,6 +287,19 @@ function contenido(liga, it, pub) {
     c.det = it.que === 'campeon' && (it.podio || []).length > 1
       ? <>Podio: {it.podio.map((x, i) => <Fragment key={i}>{i ? ' · ' : ''}<Alguien liga={liga} nombre={x} /></Fragment>)}</> : '';
     c.acc = <a className="pb-a" href={ir}>Ver la liga</a>;
+  } else if (it.tipo === 'short') {
+    // 🎬 UN SHORT DE LA LIGA (25/11/2026, bot/muro.py `shorts_muro()`): la portada, y se mira acá mismo
+    const RON = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
+    const ron = RON[String(it.ronda || '').toLowerCase()] || it.ronda || '';
+    c.cat = 'Short de la Liga' + (it.sv ? ' · ' + siglaDe(it.sv) : '');
+    c.media = true;
+    c.vis = (
+      <button type="button" className="pb-vid pb-short" onClick={() => abrirVideo({ mp4: it.mp4, portada: it.portada, tit: q.join(' vs ') + (ron ? ' · ' + ron : '') })}
+        aria-label={'Mirar el short de ' + q.join(' vs ')}>{it.portada ? <img className="pb-vid-img" alt="" src={it.portada} loading="lazy" /> : null}<span className="pb-play" aria-hidden="true">▶</span></button>
+    );
+    c.txt = <>{nombres}{ron || it.ev ? <> · <b>{[ron, limpio(it.ev || '')].filter(Boolean).join(' de ')}</b></> : null}</>;
+    c.det = 'Las mejores rimas de la batalla, en corto';
+    c.acc = it.ll ? <a className="pb-a" href={'#/llave/' + encodeURIComponent(it.ll)}>Ver la llave</a> : null;
   } else if (it.tipo === 'flyer') {
     const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
     c.cat = 'Liga · ' + siglaDe(it.sv);
@@ -843,7 +856,7 @@ export function Fila({ liga, it, A, P, nuevo }) {
 
 // ── un día de antes, cerrado: sus campeones y cazas en miniatura y cuántas hubo de cada cosa ──
 const NOMBRE_T = { campeon: ['campeón', 'campeones'], rango: ['rango', 'rangos'], tarjeta: ['carta', 'cartas'], pase: ['del Pase', 'del Pase'],
-  anuncio: ['anuncio', 'anuncios'], caza: ['caza', 'cazas'], precio: ['precio', 'precios'], promo: ['promo', 'promos'], flyer: ['de ligas', 'de ligas'],
+  short: ['short', 'shorts'], anuncio: ['anuncio', 'anuncios'], caza: ['caza', 'cazas'], precio: ['precio', 'precios'], promo: ['promo', 'promos'], flyer: ['de ligas', 'de ligas'],
   ligahito: ['de ligas', 'de ligas'], mesaward: ['MES AWARDS', 'MES AWARDS'], crewtier: ['crew', 'crews'], resnoche: ['resumen', 'resúmenes'],
   podio: ['primer podio', 'primeros podios'], top10: ['top 10', 'top 10'], subio: ['subida', 'subidas'], racha: ['racha', 'rachas'],
   crewunion: ['de crews', 'de crews'], crewnueva: ['crew nueva', 'crews nuevas'], svlunes: ['de servidores', 'de servidores'],

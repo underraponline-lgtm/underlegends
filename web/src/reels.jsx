@@ -29,6 +29,7 @@ import { aQuienSigo } from './liga.js';
 import { PREFIJO, migrarReels } from './sigo_global.js';
 import { siluetaDe } from './sin_foto.js';
 import { abrirVideo } from './video.jsx';
+import { bajarArchivo } from './archivo_ul.js';
 import { GRUPO, nombre, preparar, useGlobal } from './global.jsx';
 import CSS from './css/reels.css?inline';
 import { usarCss } from './css.js';
@@ -74,11 +75,11 @@ const bajarHoy = () => (pedidoH = pedidoH || fetch(R2 + '/reels/indice.json', { 
 const RONDA = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
 const normN = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
 /** los de hoy como reels del feed: la gente de la Liga si está en el archivo de la Liga, si no una ficha con su nombre */
-function armarHoy(evs, L) {
+function armarHoy(evs, L) {   // `arch`: un short del archivo (pasó su día): se mira igual, sin la etiqueta de hoy
   const ahora = new Date().toISOString().slice(0, 16);
   const porN = new Map(((L && L.g) || []).map((g) => [normN(g.n), g]));
   const out = [];
-  for (const { ev, xs } of evs) {
+  for (const { ev, xs, arch } of evs) {
     (xs || []).forEach((x, j) => {
       if (!x || !x.url || !(x.vence > ahora)) return;
       const vid = 'ul-' + normN(ev).slice(0, 40) + '-' + (j + 1);
@@ -90,7 +91,7 @@ function armarHoy(evs, L) {
       });
       if (!gente.length) return;
       const t = (RONDA[x.ronda] || x.ronda || '') + ' · ' + (x.evento || '') + ((x.porque || []).length ? ' — ' + x.porque.join(' · ') : '');
-      out.push({ vid, canal: 'Under Legends', t, ks: gente.map((g) => g.k), gente, orden: -1, ronda: -1, deLiga: true, hoy: true, vence: x.vence });
+      out.push({ vid, canal: 'Under Legends', t, ks: gente.map((g) => g.k), gente, orden: -1, ronda: -1, deLiga: true, hoy: !arch, propio: true, vence: x.vence });
     });
   }
   return out;
@@ -381,11 +382,25 @@ function useFeed(liga, inicio) {
   useEffect(() => {
     let vivo = true;
     // se espera también a los de hoy (dos archivos chicos de R2): si llegaran después, el feed se reordenaría
-    Promise.all([bajarLiga(), bajarHoy()]).then(([d, h]) => { if (vivo) { setL(d); setH(h); setListoL(true); } });
+    // 🔗 y un link a un short de la Liga que ya pasó su día (`/freestyle-rap/reels/ul-…`, 25/11/2026): sale del archivo de 30
+    // días (`archivo_ul.js`), así el link sigue andando después de que deja el feed
+    const delLink = /^ul-/.test(inicio) ? bajarArchivo() : Promise.resolve([]);
+    Promise.all([bajarLiga(), bajarHoy(), delLink]).then(([d, h, a]) => {
+      if (!vivo) return;
+      const hs = h || [];
+      const ya = hs.some(({ ev, xs }) => (xs || []).some((x, j) => 'ul-' + normN(ev).slice(0, 40) + '-' + (j + 1) === inicio));
+      const x = ya ? null : (a || []).find((y) => 'ul-' + normN(y.ev).slice(0, 40) + '-' + y.k === inicio);
+      if (x) {
+        const xs = Array(Math.max(0, x.k - 1)).fill(null);
+        xs.push({ url: x.url, portada: x.portada, vence: x.hasta, nombres: x.nombres, ronda: x.ronda, evento: x.evento, sv: x.sv, porque: [] });
+        hs.push({ ev: x.ev, xs, arch: true });
+      }
+      setL(d); setH(hs); setListoL(true);
+    });
     bajarNotas().then((n) => { if (vivo) setNotas(n); });
     bajarClips().then((c) => { if (vivo) setC(c); });
     return () => { vivo = false; };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const X = useMemo(() => (D ? preparar(D, liga) : null), [D, liga]);
   // se espera a la Liga (es un archivo chico): si llegara después, el feed se reordenaría mientras lo miras
   const todos = useMemo(() => (X && listoL ? [...armarHoy(H || [], L), ...armar(X, D, L)] : []), [X, D, L, H, listoL]);
@@ -966,7 +981,7 @@ function ReelsCel({ F }) {
                   avisa('Vas a ver menos de ' + canal, () => { F.nomenos(canal); F.ir(desde); });
                 }}><Ico n="no" t={20} />No me interesa: menos de {r.canal}</button>
                 <a className="rls-op" href="#/ranking/global"><Ico n="persona" t={20} />Ver dónde están en el Ranking global</a>
-                {r.hoy ? null : <a className="rls-op" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={20} />Verlo en YouTube</a>}
+                {r.propio ? null : <a className="rls-op" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={20} />Verlo en YouTube</a>}
               </>
             )}
           </div>
@@ -1356,7 +1371,7 @@ function ReelsPc({ F }) {
                   <button type="button" className="rls-btc" onClick={() => {
                     if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = perfilDe(r.gente[0]);
                   }}><Ico n="batalla" t={18} />{batalla ? 'Batalla' : esClip ? 'Su perfil' : 'Batallas'}</button>
-                  {r.hoy ? null : <a className="rls-btc" href={esClip ? link : 'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>}
+                  {r.propio ? null : <a className="rls-btc" href={esClip ? link : 'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>}
                   {esClip ? null : (
                     <button type="button" className="rls-btc" onClick={() => {
                       const canal = r.canal; const desdeI = F.i;

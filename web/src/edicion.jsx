@@ -25,6 +25,7 @@ import { pedirLigas } from './ligas_datos.js';
 import CSS_ED from './css/edicion.css?inline';
 import { usarCss } from './css.js';
 import { OcultarMods } from './mods_ocultar.jsx';
+import { abrirVideo } from './video.jsx';
 
 usarCss('edicion', CSS_ED);
 const W = typeof window !== 'undefined' ? window : {};
@@ -79,6 +80,14 @@ function Tapa({ liga, it, xs, grande = false }) {
   if (t === 'top10') return <div className={cls}>{prota}<span className="ed-gran">#{it.pos}<small>top 10 · {RK[it.rk] || it.rk}</small></span></div>;
   if (t === 'racha') return <div className={cls}>{prota}<span className="ed-gran">{it.racha}<small>eventos seguidos</small></span></div>;
   if (t === 'podio') return <div className={cls}>{fondo}{sello}{prota}<span className="ed-gran">{it.puesto === 'Subcampeón' ? '2.º' : '3.º'}<small>{limpio(it.ev || '')}</small></span></div>;
+  // 🎬 un short de la Liga (25/11/2026): su portada, y ▶ lo abre acá
+  if (t === 'short' && it.mp4) {
+    return (
+      <div className={cls + ' ed-short'}>{it.portada ? <img className="ed-short-img" alt="" src={it.portada} loading="lazy" /> : fondo}
+        <button type="button" className="ed-short-play" aria-label={'Mirar el short de ' + (it.quien || []).map(limpio).join(' vs ')}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); abrirVideo({ mp4: it.mp4, portada: it.portada, tit: (it.quien || []).map(limpio).join(' vs ') }); }}>▶</button></div>
+    );
+  }
   if ((t === 'flyer' || t === 'promo') && it.img) return <div className={cls + ' ed-flyer'}><img alt="" src={it.img} loading="lazy" /></div>;
   if (t === 'resnoche') {
     const cs = (it.campeones || []).slice(0, 3);

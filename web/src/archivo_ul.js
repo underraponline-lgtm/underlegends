@@ -16,6 +16,9 @@ let pedidoA = null;
 /** el nombre sin tildes, signos ni mayúsculas: como `normN` de reels.jsx */
 export const normN = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
+/** el archivo entero, vigente (una vez por visita) */
+export function bajarArchivo() { return bajar(); }
+
 function bajar() {
   if (!pedido) {
     pedido = fetch(URL_ARCHIVO, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : [])).catch(() => []).then((xs) => {
@@ -64,6 +67,9 @@ export function deBatalla(xs, ll, lados) {
   if (!ls) return null;
   return xs.find((x) => String(x.ll) === String(ll) && genteDe(x).sort().join('|') === ls) || null;
 }
+
+/** el id de Reels de un short del archivo (como `armarHoy()` de reels.jsx): `ul-<evento>-<n>` */
+export const ridDe = (x) => 'ul-' + normN(x.ev).slice(0, 40) + '-' + x.k;
 
 const RONDA = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
 /** «Final · PURISTAS DEL HIP HOP» */

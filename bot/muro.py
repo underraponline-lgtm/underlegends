@@ -51,6 +51,7 @@ cien «desbloqueó» que no pasaron hoy.
 no se muestra (Dlx, 25/09/2026: lo jugado en la prueba *«se borra»*).
 """
 import datetime as dt
+import re
 import hashlib
 import io
 import json
@@ -716,7 +717,53 @@ def _fuentes():
             # 💬 los chats generales (bot/chats.py): sus días fuertes (`chats_muro()`) y la jerga de los comentarios
             'chats': _j('datos', 'chats_dia.json'),
             # 🗨️ y sus frases (tanda 4, 21/11/2026): viven en KV y no en el repo (`chats.citas_kv()`); sin Cloudflare, ninguna
-            'citas': _citas_chat()}
+            'citas': _citas_chat(),
+            # 🎬 los shorts de la Liga (`shorts_muro()`)
+            'shorts': _shorts_r2()}
+
+
+R2_PUBLICO = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev'
+SHORT_DIAS = 30
+
+
+def _shorts_r2():
+    """🎬 el archivo de los shorts de la Liga (`reels/archivo.json`, lo deja el robot): público y chico. Sin red, ninguno."""
+    try:
+        import requests
+        r = requests.get(R2_PUBLICO + '/reels/archivo.json', timeout=15)
+        return r.json() if r.status_code == 200 else []
+    except Exception:                                    # noqa: BLE001
+        return []
+
+
+def _normN(s):
+    """como `normN` de web/src/reels.jsx: sin tildes, signos ni mayúsculas"""
+    import unicodedata
+    s = unicodedata.normalize('NFD', str(s or ''))
+    return re.sub(r'[^a-z0-9]', '', ''.join(c for c in s if not ('̀' <= c <= 'ͯ')).lower())
+
+
+def shorts_muro(arch):
+    """🎬 UN SHORT NUEVO, AL MURO (Dlx, 25/11/2026: «all of them»): uno por short, con los dos que se enfrentan. Así le llega
+    a quien los sigue por la campana (`tituloSeguido()` en bot/avisos.js, tipo `short`) y sale en Publicaciones y en sus
+    perfiles. La hora es la de cuando se subió (el archivo guarda hasta cuándo queda: 30 días después)."""
+    out = []
+    for x in arch or []:
+        if not isinstance(x, dict) or not x.get('url'):
+            continue
+        hasta = _de_iso(x.get('hasta'))
+        quien = [n for m in x.get('nombres') or [] for n in str(m).split(' + ') if n.strip()]
+        if not hasta or not quien:
+            continue
+        y = {'tipo': 'short', 't': _iso(hasta - dt.timedelta(days=SHORT_DIAS)), 'quien': quien, 'ev': x.get('evento') or '',
+             'ronda': x.get('ronda') or '', 'sv': x.get('sv') or '', 'mp4': x['url'], 'portada': x.get('portada') or ''}
+        if x.get('ll'):
+            y['ll'] = x['ll']
+        # 🔗 su link propio (`/freestyle-rap/reels/<rid>`): el id que arma la página (web/src/reels.jsx `armarHoy()`)
+        if x.get('ev') and x.get('k'):
+            y['rid'] = 'ul-%s-%d' % (_normN(x['ev'])[:40], int(x['k']))
+        out.append(y)
+    return out
 
 
 def _citas_chat():
@@ -812,7 +859,8 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
             + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
             + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro()
             + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas'))
-            + chats_muro(fuentes.get('chats'), camps, fuentes.get('citas')))
+            + chats_muro(fuentes.get('chats'), camps, fuentes.get('citas'))
+            + shorts_muro(fuentes.get('shorts')))
     return todo, estado, anotados, extra
 
 

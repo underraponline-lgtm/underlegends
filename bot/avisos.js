@@ -4303,6 +4303,8 @@ export function tituloSeguido(x, n, rol) {
                 : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `🏅 ${n} es campeón de ${String(x.ln || '').slice(0, 50)}`
                   : x.que === 'invicto' ? `💎 ${n} lleva ${x.pg || 5} ganadas sin perder en ${String(x.ln || '').slice(0, 50)}`
                     : x.que === 'punta' ? `🔝 ${n} tomó la punta de ${String(x.ln || '').slice(0, 50)}` : '')
+                // 🎬 un short de la Liga donde aparece (bot/muro.py `shorts_muro()`, 25/11/2026)
+                : x.tipo === 'short' ? `🎬 Salió un short de ${n}${ev ? ' en ' + ev : ''}`
                 // 🔄 lo que publica sola la gente (bot/muro_solos.py, 15/11/2026)
                 : x.tipo === 'podio' ? `🥈 ${n} subió a su primer podio${ev ? ' en ' + ev : ''}`
                 : x.tipo === 'top10' ? `🔝 ${n} entró al top 10 del Ranking ${x.rk === 'competitivo' ? 'Competitivo' : 'Temporada'}`
@@ -4337,8 +4339,10 @@ export function paraSeguidores(items, ahora) {
       if (!claveValida(k) || typeof n !== 'string' || !n) continue;
       const titulo = tituloSeguido(x, n, rol);
       if (!titulo) continue;
-      out.push({ pub, k, t, titulo, cuerpo: `Sigues a ${n} en la Liga · toca para ver su perfil`.slice(0, 240),
-        url: 'https://underlegends.pages.dev/freestyle-rap/r/' + encodeURIComponent(k) });
+      // 🎬 un short abre el short (su link de Reels); lo demás, el perfil
+      const corto = x.tipo === 'short' && /^ul-[a-z0-9-]{3,60}$/.test(String(x.rid || ''));
+      out.push({ pub, k, t, titulo, cuerpo: (corto ? `Sigues a ${n} en la Liga · toca para verlo` : `Sigues a ${n} en la Liga · toca para ver su perfil`).slice(0, 240),
+        url: corto ? 'https://underlegends.pages.dev/freestyle-rap/reels/' + x.rid : 'https://underlegends.pages.dev/freestyle-rap/r/' + encodeURIComponent(k) });
     }
   }
   return out;
