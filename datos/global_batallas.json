@@ -2345,6 +2345,74 @@
   },
   {
    "a": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/11/RIFE-1.png",
+    "id": "fms:12045",
+    "nombre": "Rife",
+    "pais": null
+   },
+   "b": {
+    "id": "fms:nombre:harry",
+    "nombre": "HARRY",
+    "pais": null
+   },
+   "evento": {
+    "fecha": "2026-11-21",
+    "id": "fms-ar-t8-j2",
+    "nombre": "FMS Argentina 2026/27 · Jornada 2",
+    "pais": "ar",
+    "tipo": "fms_jornada"
+   },
+   "fuente": "fms",
+   "gana": "b",
+   "id": "fms:ar-t8-j2:12045+nombre:harry",
+   "pts": [
+    142,
+    151
+   ],
+   "replica": false,
+   "ronda": "jornada",
+   "url": "https://fms.tv/resultados/",
+   "votos": [
+    0,
+    5
+   ]
+  },
+  {
+   "a": {
+    "foto": "https://cdn.fms.tv/wp-content/uploads/2025/08/SOPHIA-1.png",
+    "id": "fms:11361",
+    "nombre": "Sophia",
+    "pais": "ar"
+   },
+   "b": {
+    "id": "fms:nombre:hammer",
+    "nombre": "HAMMER",
+    "pais": null
+   },
+   "evento": {
+    "fecha": "2026-11-21",
+    "id": "fms-ar-t8-j2",
+    "nombre": "FMS Argentina 2026/27 · Jornada 2",
+    "pais": "ar",
+    "tipo": "fms_jornada"
+   },
+   "fuente": "fms",
+   "gana": "b",
+   "id": "fms:ar-t8-j2:11361+nombre:hammer",
+   "pts": [
+    131,
+    132
+   ],
+   "replica": false,
+   "ronda": "jornada",
+   "url": "https://fms.tv/resultados/",
+   "votos": [
+    2,
+    3
+   ]
+  },
+  {
+   "a": {
     "foto": "https://cdn.fms.tv/wp-content/uploads/2023/04/MECHA-3.png",
     "id": "fms:521",
     "nombre": "Mecha",
@@ -8187,6 +8255,222 @@
   },
   {
    "a": {
+    "id": "yt:formula",
+    "nombre": "FÓRMULA",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:rodrix",
+    "nombre": "RODRIX",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-11-24",
+    "id": "yt-dem-peru-dem-peru-sub-21-2026",
+    "nombre": "DEM Perú Sub 21 2026",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": null,
+   "id": "yt:5XDRr1tJb6I",
+   "pts": null,
+   "replica": null,
+   "ronda": "final",
+   "url": "https://www.youtube.com/watch?v=5XDRr1tJb6I",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:ctz",
+    "nombre": "CTZ",
+    "pais": "ar"
+   },
+   "b": {
+    "id": "yt:jcsnake",
+    "nombre": "JC SNAKE",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-10-10",
+    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
+    "nombre": "DEM Perú x LZ · Fecha 8",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:aT7yqDNi9EQ",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=aT7yqDNi9EQ",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:gino",
+    "nombre": "GINO",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:nre",
+    "nombre": "NRE",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-10-10",
+    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
+    "nombre": "DEM Perú x LZ · Fecha 8",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:4eQGDJw1TWw",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=4eQGDJw1TWw",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:piercdh",
+    "nombre": "PIER CDH",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:vokabulario",
+    "nombre": "VOKABULARIO",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-10-10",
+    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
+    "nombre": "DEM Perú x LZ · Fecha 8",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:q20zjoyMb5k",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=q20zjoyMb5k",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:erreka-cl",
+    "nombre": "ERREKA",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:yared",
+    "nombre": "YARED",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-10-10",
+    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
+    "nombre": "DEM Perú x LZ · Fecha 8",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:wWmH1Z0LvN8",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=wWmH1Z0LvN8",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:gino",
+    "nombre": "GINO",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:piercdh",
+    "nombre": "PIER CDH",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-10-10",
+    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
+    "nombre": "DEM Perú x LZ · Fecha 8",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:9tebZyelr0Y",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=9tebZyelr0Y",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:ctz",
+    "nombre": "CTZ",
+    "pais": "ar"
+   },
+   "b": {
+    "id": "yt:erreka-cl",
+    "nombre": "ERREKA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-10-10",
+    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
+    "nombre": "DEM Perú x LZ · Fecha 8",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:o1SEnRc0xOM",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=o1SEnRc0xOM",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:gino",
+    "nombre": "GINO",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:erreka-cl",
+    "nombre": "ERREKA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-10-10",
+    "id": "yt-dem-peru-dem-peru-x-lz-fecha-8",
+    "nombre": "DEM Perú x LZ · Fecha 8",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": null,
+   "id": "yt:RFLXn7rKd6E",
+   "pts": null,
+   "replica": null,
+   "ronda": "final",
+   "url": "https://www.youtube.com/watch?v=RFLXn7rKd6E",
+   "votos": null
+  },
+  {
+   "a": {
     "id": "yt:abel-ar",
     "nombre": "ABEL",
     "pais": "ar"
@@ -11680,7 +11964,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-08",
     "id": "yt-gdp-gdp-fecha-9-2026-x-titanes-liricistas",
     "nombre": "GDP FECHA 9 2026 x TITANES LIRICISTAS",
     "pais": "cl",
@@ -11707,7 +11991,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-08",
     "id": "yt-gdp-gdp-fecha-9-2026-x-titanes-liricistas",
     "nombre": "GDP FECHA 9 2026 x TITANES LIRICISTAS",
     "pais": "cl",
@@ -11734,7 +12018,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-08",
     "id": "yt-gdp-gdp-fecha-9-2026-x-titanes-liricistas",
     "nombre": "GDP FECHA 9 2026 x TITANES LIRICISTAS",
     "pais": "cl",
@@ -11761,7 +12045,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-08",
     "id": "yt-gdp-gdp-fecha-9-2026-x-titanes-liricistas",
     "nombre": "GDP FECHA 9 2026 x TITANES LIRICISTAS",
     "pais": "cl",
@@ -11788,7 +12072,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-08",
     "id": "yt-gdp-gdp-fecha-9-2026-x-titanes-liricistas",
     "nombre": "GDP FECHA 9 2026 x TITANES LIRICISTAS",
     "pais": "cl",
@@ -11815,7 +12099,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-08",
     "id": "yt-gdp-gdp-fecha-9-2026-x-titanes-liricistas",
     "nombre": "GDP FECHA 9 2026 x TITANES LIRICISTAS",
     "pais": "cl",
@@ -11842,7 +12126,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-08",
     "id": "yt-gdp-gdp-fecha-9-2026-x-titanes-liricistas",
     "nombre": "GDP FECHA 9 2026 x TITANES LIRICISTAS",
     "pais": "cl",
@@ -12247,7 +12531,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-titanes-titanes-antofagasta-4",
     "nombre": "Titanes Antofagasta 4",
     "pais": "cl",
@@ -12260,6 +12544,168 @@
    "replica": null,
    "ronda": "final",
    "url": "https://www.youtube.com/watch?v=UMxkAWKBJPY",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:sietepo",
+    "nombre": "SIETE PO",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:ebaseidan",
+    "nombre": "EBASEIDAN",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-titanes-titanes-mid-season-antofagasta",
+    "nombre": "Titanes MID Season Antofagasta",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:0xDmGLotCQA",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=0xDmGLotCQA",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:aries",
+    "nombre": "ARIES",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:capablanca",
+    "nombre": "CAPABLANCA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-titanes-titanes-mid-season-antofagasta",
+    "nombre": "Titanes MID Season Antofagasta",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:fJ0Vg-cQuQc",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=fJ0Vg-cQuQc",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:naico",
+    "nombre": "NAICO",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:krow",
+    "nombre": "KROW",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-titanes-titanes-mid-season-antofagasta",
+    "nombre": "Titanes MID Season Antofagasta",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:ltDsn42fYO0",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=ltDsn42fYO0",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:stema",
+    "nombre": "STEMA",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:crimenengrecia",
+    "nombre": "CRIMEN EN GRECIA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-titanes-titanes-mid-season-antofagasta",
+    "nombre": "Titanes MID Season Antofagasta",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:HdyZ28c9j8Y",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=HdyZ28c9j8Y",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:capablanca",
+    "nombre": "CAPABLANCA",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:crimenengrecia",
+    "nombre": "CRIMEN EN GRECIA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-titanes-titanes-mid-season-antofagasta",
+    "nombre": "Titanes MID Season Antofagasta",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": null,
+   "id": "yt:iDg4Wx6XOnY",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=iDg4Wx6XOnY",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:krow",
+    "nombre": "KROW",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:sietepo",
+    "nombre": "SIETE PO",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-titanes-titanes-mid-season-antofagasta",
+    "nombre": "Titanes MID Season Antofagasta",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": null,
+   "id": "yt:PYtzoqJqees",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=PYtzoqJqees",
    "votos": null
   },
   {
@@ -12868,7 +13314,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -12895,7 +13341,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -12922,7 +13368,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -12949,7 +13395,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -12976,7 +13422,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -13003,7 +13449,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -13030,7 +13476,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -13057,7 +13503,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -13084,7 +13530,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -13111,7 +13557,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -13138,7 +13584,7 @@
     "pais": "cl"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-21",
     "id": "yt-kinta-kd-2026-fecha-viii-1vs1",
     "nombre": "KD 2026 · Fecha VIII · 1vs1",
     "pais": "cl",
@@ -13151,6 +13597,384 @@
    "replica": null,
    "ronda": "cuartos",
    "url": "https://www.youtube.com/watch?v=kwY82Q8Iumk",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:bala",
+    "nombre": "BALA",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:nebu",
+    "nombre": "NEBU",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:B0iLheyNJvc",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=B0iLheyNJvc",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:basti",
+    "nombre": "BASTI",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:ovver12",
+    "nombre": "OVVER12",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:K4_l1GLH2pM",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=K4_l1GLH2pM",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:gra",
+    "nombre": "G.R.A",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:kenzotenma",
+    "nombre": "KENZO TENMA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:jQ5EvmRuo5g",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=jQ5EvmRuo5g",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:kaiden",
+    "nombre": "KAIDEN",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:fortyn",
+    "nombre": "FORTYN",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:QPOsprniNlI",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=QPOsprniNlI",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:kastro",
+    "nombre": "KASTRO",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:reiluxito",
+    "nombre": "REILUXITO",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:Vc3dyIeCaPM",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=Vc3dyIeCaPM",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:keyfranco",
+    "nombre": "KEYFRANCO",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:liloda",
+    "nombre": "LIL ODA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:RX1D0iRipYs",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=RX1D0iRipYs",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:nitan",
+    "nombre": "NITAN",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:juanka",
+    "nombre": "JUANKA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:UnCR2_NuT94",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=UnCR2_NuT94",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:nizobe",
+    "nombre": "NIZOBE",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:fozz",
+    "nombre": "FOZZ",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:__tIvOs-zQw",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=__tIvOs-zQw",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:nizobe",
+    "nombre": "NIZOBE",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:bala",
+    "nombre": "BALA",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:sJ2RiMAzwAU",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=sJ2RiMAzwAU",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:keyfranco",
+    "nombre": "KEY FRANCO",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:kaiden",
+    "nombre": "KAIDEN",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:1Lzin3-d-a0",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=1Lzin3-d-a0",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:gra",
+    "nombre": "G.R.A",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:nitan",
+    "nombre": "NITAN",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:NGq54fA5RmY",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=NGq54fA5RmY",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:basti",
+    "nombre": "BASTI",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:kastro",
+    "nombre": "KASTRO",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": null,
+   "id": "yt:vc4ieGm3ZTs",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=vc4ieGm3ZTs",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:nizobe",
+    "nombre": "NIZOBE",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:keyfranco",
+    "nombre": "KEYFRANCO",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:dXNeOT7AdtI",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=dXNeOT7AdtI",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:nizobe",
+    "nombre": "NIZOBE",
+    "pais": "cl"
+   },
+   "b": {
+    "id": "yt:gra",
+    "nombre": "G.R.A",
+    "pais": "cl"
+   },
+   "evento": {
+    "fecha": "2026-09-23",
+    "id": "yt-parke-viejo-parke-viejo-freestyle-fecha-4-temporada-2026",
+    "nombre": "PARKE VIEJO FREESTYLE FECHA 4 TEMPORADA 2026",
+    "pais": "cl",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": null,
+   "id": "yt:x8SndslzBhY",
+   "pts": null,
+   "replica": null,
+   "ronda": "final",
+   "url": "https://www.youtube.com/watch?v=x8SndslzBhY",
    "votos": null
   },
   {
@@ -13354,7 +14178,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-04",
     "id": "yt-lz-lz-despedida-de-tyler-ft-gino-moto-zapro-luisito-pc-y-mas",
     "nombre": "LZ DESPEDIDA DE TYLER (ft. GINO, MOTO, ZAPRO, LUISITO PC Y MÁS)",
     "pais": "pe",
@@ -13533,7 +14357,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -13749,7 +14573,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -13759,7 +14583,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13786,7 +14610,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13813,7 +14637,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13840,7 +14664,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13867,7 +14691,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13894,7 +14718,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13911,7 +14735,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -13921,7 +14745,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13948,7 +14772,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -13975,7 +14799,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -14002,7 +14826,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -14019,34 +14843,7 @@
   },
   {
    "a": {
-    "id": "yt:lupo",
-    "nombre": "LUPO",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:salva",
-    "nombre": "SALVA",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-11-15",
-    "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
-    "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:n-ljXj_6PS4",
-   "pts": null,
-   "replica": null,
-   "ronda": "semifinal",
-   "url": "https://www.youtube.com/watch?v=n-ljXj_6PS4",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -14056,7 +14853,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -14073,7 +14870,34 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:lupo",
+    "nombre": "LUPO",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:salva",
+    "nombre": "SALVA",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-11-16",
+    "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
+    "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:n-ljXj_6PS4",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=n-ljXj_6PS4",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -14083,7 +14907,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-15",
+    "fecha": "2026-11-16",
     "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
     "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
     "pais": "pe",
@@ -14110,7 +14934,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14137,7 +14961,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14164,7 +14988,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14191,7 +15015,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14218,7 +15042,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14235,7 +15059,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -14245,7 +15069,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14272,7 +15096,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14299,7 +15123,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14316,7 +15140,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -14326,7 +15150,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14353,7 +15177,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14380,7 +15204,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14407,7 +15231,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14434,7 +15258,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14461,7 +15285,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-05",
     "id": "yt-untalrap-fecha-interna-el-resurgimiento-de-la-esencia-untalrap",
     "nombre": "FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP",
     "pais": "pe",
@@ -14488,7 +15312,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14515,7 +15339,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14542,7 +15366,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14569,7 +15393,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14586,7 +15410,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -14596,7 +15420,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14623,7 +15447,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14650,7 +15474,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14677,7 +15501,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14704,7 +15528,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14721,7 +15545,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -14731,7 +15555,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14758,7 +15582,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-30",
     "id": "yt-untalrap-fecha-dulce-o-te-saco-la-mrd-untalrap",
     "nombre": "FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP",
     "pais": "pe",
@@ -14785,7 +15609,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -14802,7 +15626,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -14812,7 +15636,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -14839,7 +15663,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -14866,7 +15690,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -14893,7 +15717,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -14920,7 +15744,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -14947,7 +15771,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -14974,7 +15798,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15001,7 +15825,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15028,7 +15852,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15055,7 +15879,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15082,7 +15906,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15109,7 +15933,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15136,7 +15960,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15163,7 +15987,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-22",
     "id": "yt-untalrap-fecha-toma-tu-leche-en-tarro-untalrap",
     "nombre": "FECHA TOMA TU LECHE EN TARRO · UNTALRAP",
     "pais": "pe",
@@ -15190,7 +16014,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15217,7 +16041,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15244,7 +16068,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15271,7 +16095,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15298,7 +16122,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15325,7 +16149,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15342,7 +16166,7 @@
   },
   {
    "a": {
-    "id": "yt:ander-pe",
+    "id": "yt:ander",
     "nombre": "ANDER",
     "pais": "pe"
    },
@@ -15352,7 +16176,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15379,7 +16203,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15406,7 +16230,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15433,7 +16257,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15460,7 +16284,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15487,7 +16311,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15514,7 +16338,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15541,7 +16365,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15568,7 +16392,7 @@
     "pais": "pe"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-17",
     "id": "yt-untalrap-fecha-ponte-la-casaca-untalrap",
     "nombre": "FECHA PONTE LA CASACA · UNTALRAP",
     "pais": "pe",
@@ -15892,7 +16716,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -15919,7 +16743,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -15946,7 +16770,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -15973,7 +16797,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16000,7 +16824,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16027,7 +16851,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16054,7 +16878,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16081,7 +16905,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16108,7 +16932,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16135,7 +16959,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16162,7 +16986,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16189,7 +17013,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16216,7 +17040,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16243,7 +17067,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16270,7 +17094,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16297,7 +17121,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-15",
     "id": "yt-villurca-la-villurca-freestyle-1v1",
     "nombre": "LA VILLURCA FREESTYLE · 1v1",
     "pais": "ar",
@@ -16459,7 +17283,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-09-27",
     "id": "yt-dem-uruguay-dem-fecha-i-2026",
     "nombre": "DEM Fecha I 2026",
     "pais": "uy",
@@ -16486,7 +17310,7 @@
     "pais": "uy"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-09-27",
     "id": "yt-dem-uruguay-dem-fecha-i-2026",
     "nombre": "DEM Fecha I 2026",
     "pais": "uy",
@@ -16513,7 +17337,7 @@
     "pais": "uy"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-09-27",
     "id": "yt-dem-uruguay-dem-fecha-i-2026",
     "nombre": "DEM Fecha I 2026",
     "pais": "uy",
@@ -16540,7 +17364,7 @@
     "pais": "uy"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-09-27",
     "id": "yt-dem-uruguay-dem-fecha-i-2026",
     "nombre": "DEM Fecha I 2026",
     "pais": "uy",
@@ -16567,7 +17391,7 @@
     "pais": "uy"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-09-27",
     "id": "yt-dem-uruguay-dem-fecha-i-2026",
     "nombre": "DEM Fecha I 2026",
     "pais": "uy",
@@ -16594,7 +17418,7 @@
     "pais": "uy"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-09-27",
     "id": "yt-dem-uruguay-dem-fecha-i-2026",
     "nombre": "DEM Fecha I 2026",
     "pais": "uy",
@@ -16621,7 +17445,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-09-27",
     "id": "yt-dem-uruguay-dem-fecha-i-2026",
     "nombre": "DEM Fecha I 2026",
     "pais": "uy",
@@ -17296,7 +18120,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17323,7 +18147,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17350,7 +18174,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17377,7 +18201,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17404,7 +18228,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17431,7 +18255,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17458,7 +18282,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17485,7 +18309,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17512,7 +18336,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17539,7 +18363,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17566,7 +18390,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17593,7 +18417,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -17620,7 +18444,7 @@
     "pais": "co"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-10",
     "id": "yt-gambito-fecha-1-pretemporada-2026-gambito-freestyle",
     "nombre": "Fecha 1 · Pretemporada 2026 · Gambito Freestyle",
     "pais": "co",
@@ -18727,7 +19551,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18754,7 +19578,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18781,7 +19605,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18808,7 +19632,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18835,7 +19659,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18862,7 +19686,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18889,7 +19713,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18916,7 +19740,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18943,7 +19767,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18970,7 +19794,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -18997,7 +19821,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -19024,7 +19848,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -19051,7 +19875,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -19078,7 +19902,7 @@
     "pais": "ve"
    },
    "evento": {
-    "fecha": "2026-10-25",
+    "fecha": "2026-10-27",
     "id": "yt-sueltale-regional-barquisimeto-el-ascenso",
     "nombre": "Regional Barquisimeto (El Ascenso)",
     "pais": "ve",
@@ -19510,7 +20334,7 @@
     "pais": "ar"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19537,7 +20361,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19564,7 +20388,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19591,7 +20415,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19618,7 +20442,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19645,7 +20469,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19672,7 +20496,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19699,7 +20523,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19726,7 +20550,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19753,7 +20577,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19780,7 +20604,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19807,7 +20631,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19834,7 +20658,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -19861,7 +20685,7 @@
     "pais": "do"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-11-03",
     "id": "yt-pila-de-ra-fecha-4-pila-de-ra",
     "nombre": "FECHA 4 · PILA DE RA",
     "pais": "do",
@@ -20212,7 +21036,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20239,7 +21063,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20266,7 +21090,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20293,7 +21117,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20320,7 +21144,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20347,7 +21171,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20374,7 +21198,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20401,7 +21225,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20428,7 +21252,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20455,7 +21279,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20482,7 +21306,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20509,7 +21333,7 @@
     "pais": "pr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-23",
     "id": "yt-bvs-bvs-freestyle-fecha-4-season-5",
     "nombre": "BVS FREESTYLE · FECHA 4 SEASON 5",
     "pais": "pr",
@@ -20522,6 +21346,384 @@
    "replica": null,
    "ronda": "cuartos",
    "url": "https://www.youtube.com/watch?v=0-IzvxRAiFw",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:zatur",
+    "nombre": "ZATUR",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:jere",
+    "nombre": "JERE",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:wm8q0nw8bVE",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=wm8q0nw8bVE",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:noface",
+    "nombre": "NOFACE",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:xela",
+    "nombre": "XELA",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:nXvrv06NO8A",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=nXvrv06NO8A",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:taino",
+    "nombre": "TAINO",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:rec",
+    "nombre": "REC",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:kmdP6IiublE",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=kmdP6IiublE",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:reesett",
+    "nombre": "REESETT",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:bjsoto",
+    "nombre": "BJ SOTO",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:cOiitQYvQs0",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=cOiitQYvQs0",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:broly",
+    "nombre": "BROLY",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:jcastri",
+    "nombre": "J CASTRI",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:OZm1tHxutIM",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=OZm1tHxutIM",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:arkane",
+    "nombre": "ARKANE",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:kain",
+    "nombre": "KAIN",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:E3g5Ac84WrU",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=E3g5Ac84WrU",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:gabirey",
+    "nombre": "GABIREY",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:heat",
+    "nombre": "HEAT",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:D1D6eK0-3c4",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=D1D6eK0-3c4",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:jere",
+    "nombre": "JERE",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:noface",
+    "nombre": "NOFACE",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:2oDep_PrnFk",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=2oDep_PrnFk",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:broly",
+    "nombre": "BROLY",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:taino",
+    "nombre": "TAINO",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:s4U1bn5mpfk",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=s4U1bn5mpfk",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:adrian",
+    "nombre": "ADRIAN",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:kain",
+    "nombre": "KAIN",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:iNTfgU118-4",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=iNTfgU118-4",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:reesett",
+    "nombre": "REESETT",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:heat",
+    "nombre": "HEAT",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:GpuVqCD0d7o",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=GpuVqCD0d7o",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:taino",
+    "nombre": "TAINO",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:noface",
+    "nombre": "NOFACE",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:UAtpq3Kdm3k",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=UAtpq3Kdm3k",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:reesett",
+    "nombre": "REESETT",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:kain",
+    "nombre": "KAIN",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:XQkfCuoH2QU",
+   "pts": null,
+   "replica": null,
+   "ronda": "semifinal",
+   "url": "https://www.youtube.com/watch?v=XQkfCuoH2QU",
+   "votos": null
+  },
+  {
+   "a": {
+    "id": "yt:reesett",
+    "nombre": "REESETT",
+    "pais": "pr"
+   },
+   "b": {
+    "id": "yt:taino",
+    "nombre": "TAINO",
+    "pais": "pr"
+   },
+   "evento": {
+    "fecha": "2026-09-25",
+    "id": "yt-bvs-bvs-freestyle-fecha-3-season-5",
+    "nombre": "BVS FREESTYLE · FECHA 3 SEASON 5",
+    "pais": "pr",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": null,
+   "id": "yt:e_r0PlXuwHU",
+   "pts": null,
+   "replica": null,
+   "ronda": "final",
+   "url": "https://www.youtube.com/watch?v=e_r0PlXuwHU",
    "votos": null
   },
   {
@@ -21211,7 +22413,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21238,7 +22440,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21265,7 +22467,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21292,7 +22494,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21319,7 +22521,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21346,7 +22548,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21373,7 +22575,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21400,7 +22602,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21427,7 +22629,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21454,7 +22656,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21481,7 +22683,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21508,7 +22710,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21535,7 +22737,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21562,7 +22764,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21589,7 +22791,7 @@
     "pais": "cr"
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-25",
     "id": "yt-perros-de-traba-fecha-10-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA 10 · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": "cr",
@@ -21616,7 +22818,7 @@
     "pais": null
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-12",
     "id": "yt-perros-de-traba-fecha-especial-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA ESPECIAL · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": null,
@@ -21643,7 +22845,7 @@
     "pais": null
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-12",
     "id": "yt-perros-de-traba-fecha-especial-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA ESPECIAL · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": null,
@@ -21670,7 +22872,7 @@
     "pais": null
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-12",
     "id": "yt-perros-de-traba-fecha-especial-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA ESPECIAL · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": null,
@@ -21697,7 +22899,7 @@
     "pais": null
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-12",
     "id": "yt-perros-de-traba-fecha-especial-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA ESPECIAL · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": null,
@@ -21724,7 +22926,7 @@
     "pais": null
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-12",
     "id": "yt-perros-de-traba-fecha-especial-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA ESPECIAL · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": null,
@@ -21751,7 +22953,7 @@
     "pais": null
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-12",
     "id": "yt-perros-de-traba-fecha-especial-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA ESPECIAL · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": null,
@@ -21778,7 +22980,7 @@
     "pais": null
    },
    "evento": {
-    "fecha": "2026-10-10",
+    "fecha": "2026-10-12",
     "id": "yt-perros-de-traba-fecha-especial-perros-de-traba-freestyle-rap-2026",
     "nombre": "FECHA ESPECIAL · PERROS DE TRABA FREESTYLE-RAP · 2026",
     "pais": null,
@@ -21791,168 +22993,6 @@
    "replica": null,
    "ronda": "final",
    "url": "https://www.youtube.com/watch?v=q2AC6DU7AOs",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:juana",
-    "nombre": "JUANA",
-    "pais": "gt"
-   },
-   "b": {
-    "id": "yt:efgi",
-    "nombre": "EFGI",
-    "pais": "gt"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-aqua-aqua-express-ruleta-rusa-rumbo-a-pache-ring",
-    "nombre": "AQUA Express Ruleta Rusa Rumbo a Pache Ring",
-    "pais": "gt",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:MiwcD2DhRdk",
-   "pts": null,
-   "replica": null,
-   "ronda": "semifinal",
-   "url": "https://www.youtube.com/watch?v=MiwcD2DhRdk",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:dosmildiez",
-    "nombre": "DOSMILDIEZ",
-    "pais": "gt"
-   },
-   "b": {
-    "id": "yt:tatoone",
-    "nombre": "TATO ONE",
-    "pais": "gt"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-aqua-aqua-express-ruleta-rusa-rumbo-a-pache-ring",
-    "nombre": "AQUA Express Ruleta Rusa Rumbo a Pache Ring",
-    "pais": "gt",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:OQYXmYnuMzQ",
-   "pts": null,
-   "replica": null,
-   "ronda": "semifinal",
-   "url": "https://www.youtube.com/watch?v=OQYXmYnuMzQ",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:juana",
-    "nombre": "JUANA",
-    "pais": "gt"
-   },
-   "b": {
-    "id": "yt:dosmildiez",
-    "nombre": "DOSMILDIEZ",
-    "pais": "gt"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-aqua-aqua-express-ruleta-rusa-rumbo-a-pache-ring",
-    "nombre": "AQUA Express Ruleta Rusa Rumbo a Pache Ring",
-    "pais": "gt",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:vd0Lssh57xs",
-   "pts": null,
-   "replica": null,
-   "ronda": "final",
-   "url": "https://www.youtube.com/watch?v=vd0Lssh57xs",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:dake",
-    "nombre": "DAKE",
-    "pais": "gt"
-   },
-   "b": {
-    "id": "yt:dosmildiez",
-    "nombre": "DOSMILDIEZ",
-    "pais": "gt"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-aqua-aqua-express-ruleta-rusa-rumbo-a-pache-ring-peru",
-    "nombre": "AQUA Express Ruleta Rusa Rumbo a Pache Ring Perú",
-    "pais": "gt",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:05E6h4rLcFU",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=05E6h4rLcFU",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:am",
-    "nombre": "AM",
-    "pais": "gt"
-   },
-   "b": {
-    "id": "yt:efgi",
-    "nombre": "EFGI",
-    "pais": "gt"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-aqua-aqua-express-ruleta-rumbo-a-pache-ring-xela",
-    "nombre": "AQUA Express Ruleta Rumbo a Pache Ring Xela",
-    "pais": "gt",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:oRzxrr6E8EI",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=oRzxrr6E8EI",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:juana",
-    "nombre": "JUANA",
-    "pais": "gt"
-   },
-   "b": {
-    "id": "yt:ander-gt",
-    "nombre": "ANDER",
-    "pais": "gt"
-   },
-   "evento": {
-    "fecha": "2026-10-10",
-    "id": "yt-aqua-aqua-express-ruleta-rumbo-a-pache-ring-xela",
-    "nombre": "AQUA Express Ruleta Rumbo a Pache Ring Xela",
-    "pais": "gt",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": null,
-   "id": "yt:9IzjkvkMzSQ",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=9IzjkvkMzSQ",
    "votos": null
   },
   {
@@ -22750,7 +23790,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22777,7 +23817,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22804,7 +23844,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22831,7 +23871,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22858,7 +23898,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22885,7 +23925,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22912,7 +23952,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22939,7 +23979,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22966,7 +24006,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -22993,7 +24033,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -23020,7 +24060,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -23047,7 +24087,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -23074,7 +24114,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -23101,7 +24141,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -23128,7 +24168,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-gym-tj-fecha-1-noviembre-2026",
     "nombre": "Fecha 1 · Noviembre 2026",
     "pais": "mx",
@@ -25369,7 +26409,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25396,7 +26436,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25423,7 +26463,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25450,7 +26490,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25477,7 +26517,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25504,7 +26544,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25531,7 +26571,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25558,7 +26598,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25585,7 +26625,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25612,7 +26652,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25639,7 +26679,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25666,7 +26706,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25693,7 +26733,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25720,7 +26760,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -25747,7 +26787,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-08",
+    "fecha": "2026-11-09",
     "id": "yt-rest-in-beats-fecha-7-rest-in-beats",
     "nombre": "FECHA 7 / REST IN BEATS",
     "pais": "mx",
@@ -80634,12 +81674,10 @@
     "Freestyle World Cup: 3 cruces país contra país (0 con resultado) no van: una selección no es una persona",
     "FMS Colombia 2026/27 · Jornada 2: salto «Filósofo vs La Rabia 24 y Felpa Divo» (2 contra 1: «La Rabia 24 y Felpa Divo» son dos personas)",
     "FMS Argentina 2026/27 · Jornada 2: salto «? vs ?» (el MC 13446 no tiene perfil ni nombre en urbanroosters)",
-    "FMS Argentina 2026/27 · Jornada 2: salto «RIFE vs ?» (Extra Player sin nombre todavía (sale de urbanroosters))",
-    "FMS Argentina 2026/27 · Jornada 2: salto «SOPHIA vs ?» (Extra Player sin nombre todavía (sale de urbanroosters))",
     "en 3 batallas fms.tv da ganador a quien sumó menos puntos (decide la mayoría de jueces, no los puntos): URKO 2–3 Visionario (143–139 pts); TOBI 3–1 Dyse (144–146 pts); Dybbuk 3–2 CTZ (143–146 pts)",
     "sin país (la API no dice dónde nacieron): Bélico, Rife, Vens, Visionario"
    ],
-   "n": 74,
+   "n": 76,
    "ok": true
   },
   "fstats": {
@@ -80701,19 +81739,21 @@
   },
   "youtube": {
    "av": [
-    "DEM Perú: no pude leerlo (RuntimeError: la pestaña de videos no trajo nada (HTTP 200))",
-    "mismo nombre con dos países, van como dos personas: abel, ander, ayala, draco, erreka, horus, lazaro, nano, poeta, reyes",
+    "Funko Battles: no pude leerlo (RuntimeError: la pestaña de videos no trajo nada (HTTP 200))",
+    "AQUA Freestyle: no pude leerlo (RuntimeError: la pestaña de videos no trajo nada (HTTP 200))",
+    "mismo nombre con dos países, van como dos personas: abel, ayala, draco, erreka, horus, lazaro, nano, poeta, reyes",
     "Red Bull Batalla: 53 batalla(s) en 5 evento(s), 49 con ganador · saltadas: fuera de la ventana 39, no son batallas (clips, compilados, shorts) 14, batallón/muerte súbita/exhibición 10",
     "Red Bull Batalla: fecha aproximada (sólo la de la pestaña, sin la exacta): Red Bull Batalla 2026 · Regional Coquimbo (~2026-11-08, de «hace 2 sem.»); Red Bull Batalla 2026 · Regional Concepción (~2026-10-25, de «hace 4 semanas»); Red Bull Batalla Colombia 2026 (~2026-10-10, de «hace 1 mes»); Red Bull Batalla Argentina 2026 (~2026-10-10, de «hace 1 mes»)",
     "Supremacía MC: 15 batalla(s) en 1 evento(s), 14 con ganador · saltadas: fuera de la ventana 25, sin ronda 12, batallón/muerte súbita/exhibición 8",
     "DEM Battles: 1 batalla(s) en 1 evento(s), 0 con ganador · saltadas: fuera de la ventana 34, no son batallas (clips, compilados, shorts) 9, de equipos 8",
+    "DEM Perú: 8 batalla(s) en 2 evento(s), 6 con ganador · saltadas: fuera de la ventana 29, de a tres o más 16, de equipos 7",
+    "DEM Perú: fecha aproximada (sólo la de la pestaña, sin la exacta): DEM Perú x LZ · Fecha 8 (~2026-10-10, de «hace 1 m»)",
     "DEM Argentina: 7 batalla(s) en 1 evento(s), 6 con ganador · saltadas: fuera de la ventana 16, de equipos 15, no son batallas (clips, compilados, shorts) 10, de a tres o más 8",
     "DEM Argentina: fecha aproximada (sólo la de la pestaña, sin la exacta): DEM SANTA CRUZ 2026 (~2026-10-10, de «hace 1 m»)",
     "Liga Inmortal: 11 batalla(s) en 2 evento(s), 9 con ganador · saltadas: fuera de la ventana 62, de equipos 19, de a tres o más 17, batallón/muerte súbita/exhibición 11",
     "Liga Inmortal: fecha aproximada (sólo la de la pestaña, sin la exacta): Liga Inmortal Cupo a esurbanofree (~2026-11-08, de «hace 2 sem.»); Liga Inmortal X Galpon Free (~2026-10-10, de «hace 1 mes»)",
     "Hypnotic Palace: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 30",
     "Raptablo: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 60",
-    "Funko Battles: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 30",
     "Bienvenido al Underground: 15 batalla(s) en 1 evento(s), 14 con ganador · saltadas: fuera de la ventana 15",
     "Colombia Tiene Buena Rima: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 30",
     "Golden Age Battles: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 16",
@@ -80726,23 +81766,21 @@
     "Son Raperos Natos: 20 batalla(s) en 2 evento(s), 18 con ganador · saltadas: fuera de la ventana 39, de a tres o más 1",
     "Son Raperos Natos: fecha aproximada (sólo la de la pestaña, sin la exacta): SRN X 7MAAURA (~2026-10-10, de «hace 1 m»)",
     "Gladiadores del Puerto: 43 batalla(s) en 4 evento(s), 40 con ganador · saltadas: fuera de la ventana 69, de a tres o más 14, no son batallas (clips, compilados, shorts) 7, de equipos 7, batallón/muerte súbita/exhibición 6, sin ronda 1",
-    "Gladiadores del Puerto: fecha aproximada (sólo la de la pestaña, sin la exacta): GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026 (~2026-11-15, de «hace 9 días»); GDP FECHA 11 REGIONAL COQUIMBO A CUPO DE PLAZAS 2026 (~2026-11-08, de «hace 2 semanas»); GDP FECHA 9 2026 x TITANES LIRICISTAS (~2026-10-10, de «hace 1 mes»)",
-    "Titanes Liricistas: 15 batalla(s) en 2 evento(s), 13 con ganador · saltadas: fuera de la ventana 59, de a tres o más 8, de equipos 5, batallón/muerte súbita/exhibición 3",
-    "Titanes Liricistas: fecha aproximada (sólo la de la pestaña, sin la exacta): Titanes Antofagasta 4 (~2026-10-10, de «hace 1 mes»)",
+    "Gladiadores del Puerto: fecha aproximada (sólo la de la pestaña, sin la exacta): GDP ÚLTIMA OPORTUNIDAD AL CUPO DE PLAZAS RED BULL BATALLA 2026 (~2026-11-15, de «hace 9 días»); GDP FECHA 11 REGIONAL COQUIMBO A CUPO DE PLAZAS 2026 (~2026-11-08, de «hace 2 semanas»)",
+    "Titanes Liricistas: 21 batalla(s) en 3 evento(s), 17 con ganador · saltadas: fuera de la ventana 45, de a tres o más 14, batallón/muerte súbita/exhibición 5, de equipos 5",
     "Iraki Battles: 22 batalla(s) en 2 evento(s), 20 con ganador · saltadas: fuera de la ventana 29, de a tres o más 8, no son batallas (clips, compilados, shorts) 1",
-    "Iraki Battles: fecha aproximada (sólo la de la pestaña, sin la exacta): IRAKI BATTLES PLAZA HOSPITAL (~2026-11-08, de «hace 2 sem.»); IRAKIDS (~2026-11-08, de «hace 2 sem.»)",
+    "Iraki Battles: fecha aproximada (sólo la de la pestaña, sin la exacta): IRAKI BATTLES PLAZA HOSPITAL (~2026-11-08, de «hace 2 sem.»)",
     "Kinta Dimensión: 11 batalla(s) en 1 evento(s), 9 con ganador · saltadas: fuera de la ventana 44, de equipos 24, batallón/muerte súbita/exhibición 9, no son batallas (clips, compilados, shorts) 1",
-    "Kinta Dimensión: fecha aproximada (sólo la de la pestaña, sin la exacta): KD 2026 · Fecha VIII · 1vs1 (~2026-10-10, de «hace 1 m»)",
-    "Parke Viejo Freestyle: 0 batalla(s) en 0 evento(s), 0 con ganador · saltadas: fuera de la ventana 74, de equipos 15, de a tres o más 1",
-    "LZ (Límite Zero): 8 batalla(s) en 2 evento(s), 6 con ganador · saltadas: fuera de la ventana 69, de a tres o más 11, no son batallas (clips, compilados, shorts) 1, batallón/muerte súbita/exhibición 1",
-    "LZ (Límite Zero): fecha aproximada (sólo la de la pestaña, sin la exacta): LZ DESPEDIDA DE TYLER (ft. GINO, MOTO, ZAPRO, LUISITO PC Y MÁS) (~2026-10-10, de «hace 1 m»)",
+    "Parke Viejo Freestyle: 14 batalla(s) en 1 evento(s), 12 con ganador · saltadas: fuera de la ventana 60, de equipos 15, de a tres o más 1",
+    "LZ (Límite Zero): 8 batalla(s) en 2 evento(s), 6 con ganador · saltadas: fuera de la ventana 69, de a tres o más 11, no son batallas (clips, compilados, shorts) 1, sin ronda 1",
     "UNT al Rap: 82 batalla(s) en 6 evento(s), 71 con ganador · saltadas: fuera de la ventana 115, de equipos 27, sin ronda 10, de a tres o más 6",
-    "UNT al Rap: fecha aproximada (sólo la de la pestaña, sin la exacta): FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP (~2026-11-15, de «hace 9 días»); FECHA INTERNA EL RESURGIMIENTO DE LA ESENCIA · UNTALRAP (~2026-11-08, de «hace 2 semanas»); FECHA ¿DULCE O TE SACO LA MRD? · UNTALRAP (~2026-11-01, de «hace 3 semanas»); FECHA TOMA TU LECHE EN TARRO · UNTALRAP (~2026-10-10, de «hace 1 mes»); FECHA PONTE LA CASACA · UNTALRAP (~2026-10-10, de «hace 1 mes»)",
+    "UNT al Rap: fecha aproximada (sólo la de la pestaña, sin la exacta): FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP (~2026-11-16, de «hace 8 días»)",
     "Línea 404: 11 batalla(s) en 1 evento(s), 8 con ganador · saltadas: fuera de la ventana 40, de a tres o más 3, batallón/muerte súbita/exhibición 3, no son batallas (clips, compilados, shorts) 2, sin ronda 1",
     "La Villurca Freestyle: 16 batalla(s) en 1 evento(s), 12 con ganador · saltadas: de a tres o más 15, fuera de la ventana 15",
-    "La Villurca Freestyle: fecha aproximada (sólo la de la pestaña, sin la exacta): LA VILLURCA FREESTYLE · 1v1 (~2026-10-10, de «hace 1 m»)"
+    "Corrientes Free: 5 batalla(s) en 1 evento(s), 4 con ganador · saltadas: fuera de la ventana 21, de a tres o más 2",
+    "DEM Uruguay: 7 batalla(s) en 1 evento(s), 6 con ganador · saltadas: de equipos 30, fuera de la ventana 15, de a tres o más 8"
    ],
-   "n": 863,
+   "n": 899,
    "ok": true
   }
  },
@@ -81790,5 +82828,5 @@
   "liga:zetryko": 1126,
   "liga:zignos": 1018
  },
- "t": "2026-11-25T02:29:30-05:00"
+ "t": "2026-11-25T03:00:59-05:00"
 }
