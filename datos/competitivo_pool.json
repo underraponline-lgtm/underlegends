@@ -2800,7 +2800,7 @@
   "raw": "yinn",
   "cc": "mx",
   "sv": "FFA",
-  "crew": "",
+  "crew": "Desierto de Atacama",
   "discord_id": "1538896358679908437",
   "verificado": false,
   "ev": 40,
@@ -2833,6 +2833,7 @@
   "arc_pais": 96,
   "pos_sv": "32/172",
   "arc_sv": 82,
+  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
