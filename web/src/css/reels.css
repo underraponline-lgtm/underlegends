@@ -57,7 +57,16 @@
 .rls-acc{position:absolute;z-index:3;display:flex}
 .rls-acc.abajo{height:62px;align-items:center;justify-content:space-between}
 .rls-acc.abajo .rls-ac{flex:1 1 0;max-width:72px}
-.rls-acc.lado{width:58px;flex-direction:column;justify-content:flex-end;gap:4px}
+/* al costado, del alto del video y repartidas de borde a borde (8.17): la primera alineada con su borde de arriba, la última con el de abajo */
+.rls-acc.lado{width:58px;flex-direction:column;justify-content:space-between}
+/* 👤 la gente en caras, a la izquierda del video cuando sobra lugar (8.17): espejo de la columna de acciones */
+.rls-caras-cel{position:absolute;z-index:3;width:58px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.rls-caras-cel .rls-ac{height:62px}
+.rls-caras-cel .rls-ac span{max-width:58px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.rls-caras-cel .rls-cara{width:36px;height:36px;box-shadow:0 0 0 2px rgba(255,255,255,.35);transition:box-shadow 200ms ease}
+.rls-caras-cel .sigue .rls-cara{box-shadow:0 0 0 2px #29B298}
+.rls-caras-cel .on .rls-cara{box-shadow:0 0 0 3px #E41373}
+.rls-ac .rls-vs{height:26px;display:inline-flex;align-items:center;font-size:15px;line-height:1}
 .rls-ac{height:58px;min-width:0;border:0;padding:0;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:5px;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .rls-cel .rls-ac{font:700 12px/1 "Barlow Condensed",sans-serif}
@@ -194,6 +203,9 @@
    canal y las dos filas de acciones tienen alto fijo arriba; el voto (si hay) y «Lo que sigue» se reparten lo que queda */
 .rls-pc-panel{height:var(--rls-alto);box-sizing:border-box;overflow:hidden;padding:18px;background:#0B0C0E;color:#F6F6F6;border:2px solid #2A2A2E;
   border-top:3px solid #E41373}
+/* en un panel angosto (tablet acostada) el puesto chico se va y quedan la cara, el nombre, la bandera y «Seguir» */
+.rls-pc-panel{container-type:inline-size}
+@container (max-width: 360px){.rls-pc-n small{display:none}.rls-pc-quien .rls-cara{width:44px;height:44px}.rls-pc-n b{font-size:18px}}
 .rls-pc-panel-in{height:100%;display:flex;flex-direction:column;gap:12px;min-height:0}
 .rls-pc-panel-in > *{flex:none}
 .rls-pc-quien{display:flex;align-items:center;gap:14px;height:92px;overflow:hidden}
@@ -227,6 +239,9 @@
 .rls-btc.ok{color:#29B298;border-color:#29B298}
 .rls-pc .rls-voto.pc{padding-top:12px;border-top:2px solid #2A2A2E}
 .rls-pc-panel-in > .rls-pc-mas{flex:1 1 0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+/* sin lugar para las miniaturas (alto justo y con voto), «Lo que sigue» no se dibuja: un título sin nada abajo no es pieza */
+.rls-pc-panel-in > .rls-pc-mas{container-type:size}
+@container (max-height: 120px){.rls-pc-mas > *{display:none}}
 .rls-pc-mas .sec-t{border-top-color:#2A2A2E;margin-bottom:10px;flex:none}
 .rls-pc-mas .sec-t h2{font-size:16px}
 .rls-pc-mas > div:last-child{flex:1 1 0;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -240,8 +255,8 @@
 .rls-atajos kbd{min-width:22px;height:22px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border:1px solid #3A3A40;
   border-bottom-width:2px;border-radius:3px;font:700 13px/1 "Barlow Condensed",sans-serif;color:#F6F6F6}
 .rls-atajos kbd + kbd{margin-left:-2px}
-/* sin lugar para la gente: progreso · video · flechas · panel, centrados juntos */
-@media (max-width: 1240px){.rls-pc-cuerpo{grid-template-columns:44px auto 44px minmax(280px,340px)}.rls-rl{display:none}}
+/* ⚖️ las columnas de verdad las pone reels.jsx (`columnas()`), con el ancho medido: esto es sólo lo de antes de medir */
+.rls-pc-teatro .rls-pc-in{max-width:none}
 
 /* ── 8.13: Seguir, el voto, las caras de la Liga y los vacíos ── */
 /* ⚠️ con `.rls-cel` adelante: `.rls-cel button{font:inherit;color:inherit}` les ganaba la letra y el color */
@@ -276,7 +291,7 @@
 /* el vacío de la compu, en el lugar del video y el panel (8.14) */
 .rls-pc-cuerpo.vacio{grid-template-columns:minmax(0,320px) minmax(0,640px);height:auto;min-height:var(--rls-alto)}
 .rls-pc-cuerpo > .rls-vacio{margin:30px 0}
-@media (max-width: 1240px){.rls-pc-cuerpo.vacio{grid-template-columns:minmax(0,640px)}}
+.rls-pc-cuerpo.vacio:not(:has(.rls-rl)){grid-template-columns:minmax(0,640px)}
 /* las hojas del celular: el título de «Qué ver» y el texto entero del reel en la ficha (8.16) */
 .rls-hoja-t{font:900 20px/1 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase;padding:4px 4px 2px}
 .rls-hoja-p{margin:0 4px;font-size:15px;line-height:1.45;color:#e6e6e6}

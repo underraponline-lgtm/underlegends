@@ -462,9 +462,38 @@ async function compartir(r, setCopiado) {
 // un solo lugar, y si puedes animaciones y simetría». Medido antes: el video ocupaba el 51–53 % del celular y el 43 % de la
 // tablet, corrido a la izquierda (28 px de un lado y 56 del otro) y con la ficha lejos de sus bordes.
 
-/** la compu: el aire arriba y abajo del escenario y el alto mínimo del video (por debajo, se baja con la página) */
+/** la compu: el aire arriba y abajo del escenario, el de los costados, y el alto mínimo del video (por debajo, se baja con
+ *  la página) */
 const PC_AIRE = 16;
+const PC_LADO = 24;
 const PC_MIN = 400;
+/** las columnas de la grilla de la compu: las angostas (progreso y flechas), el hueco entre columnas y los anchos de afuera */
+// ⚠️ `minLado` 300 y no 240: con 240 el panel no tenía lugar para las dos caras y los dos nombres (tablet acostada, 1024 px:
+// «GAZIR» salía «G…» y el «Seguir» se montaba encima)
+const PC_COL = { fina: 44, hueco: 16, minLado: 300, maxLado: 560, minPanel: 300, maxPanel: 460 };
+
+/**
+ * ⚖️ LAS COLUMNAS DE LA COMPU SALEN DEL ANCHO QUE HAY (8.17, Dlx: «en mi PC es grande y hay gran espacio vacío… en la
+ * tableta la tabla de la izquierda desaparece cuando hay espacio»). Antes eran 320 px fijos y la gente se escondía por un
+ * corte fijo (1240 px) aunque entrara. Ahora: si a los dos lados del video entran al menos `minLado`, va la gente y las dos de
+ * afuera crecen parejas hasta `maxLado` (el video sigue exactamente en el medio); si no, progreso · video · flechas · panel,
+ * con el panel llenando lo que queda. Si ni el panel mínimo entra, el video se achica para que entre (nunca se sale de lado).
+ * `ancho` en px de adentro del zoom de la página
+ */
+export function columnas(ancho, alto) {
+  const C = PC_COL;
+  const vw = (a) => Math.round((a * 9) / 16) + 4;
+  const lado = Math.floor((ancho - (2 * C.fina + vw(alto) + 4 * C.hueco)) / 2);
+  if (lado >= C.minLado) {
+    const l = Math.min(lado, C.maxLado);
+    return { alto, gente: true, cols: l + 'px ' + C.fina + 'px auto ' + C.fina + 'px ' + l + 'px' };
+  }
+  let a = alto;
+  const sobra = (x) => ancho - (2 * C.fina + vw(x) + 3 * C.hueco);
+  if (sobra(a) < C.minPanel) a = Math.max(300, Math.floor(((ancho - 2 * C.fina - 3 * C.hueco - C.minPanel - 4) * 16) / 9));
+  const panel = Math.max(C.minPanel, Math.min(C.maxPanel, sobra(a)));
+  return { alto: a, gente: false, cols: C.fina + 'px auto ' + C.fina + 'px ' + panel + 'px' };
+}
 
 /** las medidas fijas del celular: la barra de arriba, el progreso, la ficha, la fila o la columna de acciones */
 const CEL = { arriba: 48, prog: 14, ficha: 66, fila: 62, col: 58, gap: 8, borde: 8 };
@@ -630,13 +659,21 @@ function ReelsCel({ F }) {
   const rect = { left: G.vx, top: G.vy, width: G.vw, height: G.vh };
   // el progreso: un segmento por reel cargado, del ancho del video (como las historias); el blanco es el que ves
   const lineas = Array.from({ length: Math.min(F.cargados, F.lista.length) }, (_, j) => j);
-  // las cinco acciones, iguales corriendo y en pausa: al costado o en una fila, según `G.modo`
+  // las acciones, iguales corriendo y en pausa: al costado o en una fila, según `G.modo`. AL COSTADO la columna es del alto
+  // del video y las reparte de borde a borde (8.17, Dlx al verlo en su celular: «lo veo algo vacío»: los cinco quedaban
+  // abajo y arriba sobraba una franja del alto del video). Ahí suma las dos que en la fila viven en «Más» —¿Quién ganó? y
+  // la batalla—, si entran
+  const extras = G.modo === 'lado' && G.vh >= 7 * 62;
   const Acciones = (
     <div className={'rls-acc ' + G.modo} style={G.modo === 'abajo' ? { left: G.vx, top: G.filaY, width: G.vw } : { left: G.colX, top: G.vy, height: G.vh }}>
       <button type="button" className="rls-ac" aria-label={'La ficha de ' + nombres} onClick={() => { pausarMenu(); setHoja('ficha'); }}>
         <Cara liga={F.liga} g={r.gente[0]} cls="rls-cara" /><span>Ficha</span></button>
       <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} onClick={F.darFuego}>
         <Ico n="fuego" lleno={F.ardido} t={26} /><span>Fuego</span></button>
+      {extras && r.gente.length >= 2 ? (
+        <button type="button" className="rls-ac" onClick={() => { pausarMenu(); setHoja('voto'); }}><span className="rls-vs" aria-hidden="true">VS</span><span>¿Quién?</span></button>
+      ) : null}
+      {extras ? <button type="button" className="rls-ac" onClick={verBatalla}><Ico n="batalla" t={24} /><span>{batalla ? 'Batalla' : 'Perfil'}</span></button> : null}
       <button type="button" className="rls-ac" aria-pressed={F.guardado} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}>
         <Ico n="guardar" lleno={F.guardado} t={24} /><span>{F.guardado ? 'Guardado' : 'Guardar'}</span></button>
       <button type="button" className="rls-ac" onClick={enviar}><Ico n="enviar" t={24} /><span>Enviar</span></button>
@@ -691,6 +728,9 @@ function ReelsCel({ F }) {
             <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</span>
           </div>
           {Acciones}
+          {G.modo === 'lado' && G.vx >= CEL.col + CEL.gap + CEL.borde ? (
+            <CarasGente F={F} cuantas={Math.floor(G.vh / 66)} style={{ left: G.vx - CEL.gap - CEL.col, top: G.vy, height: G.vh }} />
+          ) : null}
         </>
       )}
 
@@ -756,7 +796,9 @@ function ReelsCel({ F }) {
  * reels tiene. Tocar a alguien lleva a su próximo reel (`F.irA`). Recomendados: los que más reels tienen y no sigues, y a
  * igual cantidad el mejor del Ranking global. El que está en el reel de ahora queda marcado
  */
-function RielGente({ F }) {
+/** 👤 quién tiene reels, con cuántos: los que sigues (`sigo`) y los recomendados (`rec`: los que más tienen y no sigues, y a
+ *  igual cantidad el mejor del Ranking global). Para la columna de la compu y la de caras del celular */
+function useGente(F, nSigo = 12, nRec = 8) {
   const gente = useMemo(() => {
     const m = new Map();
     for (const r of F.todos) {
@@ -769,10 +811,39 @@ function RielGente({ F }) {
     }
     return [...m.values()];
   }, [F.todos]);
-  const sigo = gente.filter((x) => F.loSigo(x.g)).sort((a, b) => b.n - a.n).slice(0, 12);
+  const sigo = gente.filter((x) => F.loSigo(x.g)).sort((a, b) => b.n - a.n).slice(0, nSigo);
   const rec = gente.filter((x) => !F.loSigo(x.g))
-    .sort((a, b) => b.n - a.n || (a.g.pos || 9999) - (b.g.pos || 9999)).slice(0, 8);
+    .sort((a, b) => b.n - a.n || (a.g.pos || 9999) - (b.g.pos || 9999)).slice(0, nRec);
   const ahora = new Set(F.cur ? F.cur.gente.map(idDe) : []);
+  return { sigo, rec, ahora };
+}
+
+/**
+ * 👤 LA GENTE EN CARAS (8.17), a la izquierda del video en el celular y la tablet cuando sobra lugar a ese lado (tablet
+ * parada: 155 px vacíos). Es la columna de Twitch cerrada: sólo caras con el nombre corto, primero a quien sigues; en espejo
+ * con la de acciones de la derecha, del mismo ancho y del alto del video. Tocar una cara lleva a su próximo reel
+ */
+function CarasGente({ F, style, cuantas }) {
+  const { sigo, rec, ahora } = useGente(F, cuantas, cuantas);
+  const xs = [...sigo.map((x) => [x, true]), ...rec.map((x) => [x, false])].slice(0, cuantas);
+  if (!xs.length) return null;
+  return (
+    <nav className="rls-caras-cel" style={style} aria-label="Gente con reels">
+      {xs.map(([x, sigue]) => (
+        <button key={idDe(x.g)} type="button" className={'rls-ac' + (ahora.has(idDe(x.g)) ? ' on' : '') + (sigue ? ' sigue' : '')}
+          aria-current={ahora.has(idDe(x.g)) || undefined} aria-label={nombre(x.g) + (sigue ? ', la sigues' : '') + ', ' + x.n + ' reels'}
+          onClick={() => F.irA(x.g)}>
+          <Cara liga={F.liga} g={x.g} cls="rls-cara" /><span>{nombre(x.g)}</span>
+        </button>
+      ))}
+    </nav>
+  );
+}
+
+function RielGente({ F, alto = 560 }) {
+  // tantas como entren en el alto (cada fila ~50 px, más los dos títulos): a 2560 px sobraba media columna vacía
+  const caben = Math.max(8, Math.floor((alto - 150) / 50));
+  const { sigo, rec, ahora } = useGente(F, Math.min(12, caben), caben);
   const fila = (x) => (
     <li key={idDe(x.g)}>
       <button type="button" className={'rls-rl-f' + (ahora.has(idDe(x.g)) ? ' on' : '')} aria-current={ahora.has(idDe(x.g)) || undefined}
@@ -851,16 +922,18 @@ function ReelsPc({ F }) {
   // ganar lugar: la primera versión lo hacía y, con el margen de desplazamiento de la página, el video quedaba cortado igual
   // (y moverle la página a alguien no es «quieto»)
   const teatro = useRef(null);
-  const [alto, setAlto] = useState(560);
+  const [medida, setMedida] = useState({ alto: 560, cols: '', gente: true });
   useLayoutEffect(() => {
     const el = teatro.current;
     if (!el) return undefined;
     const app = el.closest ? el.closest('.app') : null;
     const mide = () => {
       const z = (app && parseFloat(getComputedStyle(app).zoom)) || 1;
-      const top = el.getBoundingClientRect().top + window.scrollY;
+      const caja = el.getBoundingClientRect();
+      const top = caja.top + window.scrollY;
       const libre = (window.innerHeight - top) / z - 2 * PC_AIRE;
-      setAlto(Math.round(Math.max(PC_MIN, Math.min(libre, 980))));
+      const x = columnas(caja.width / z - 2 * PC_LADO, Math.round(Math.max(PC_MIN, Math.min(libre, 1100))));
+      setMedida((m) => (m.alto === x.alto && m.cols === x.cols ? m : x));
     };
     mide();
     const ro = typeof ResizeObserver !== 'undefined' && app ? new ResizeObserver(mide) : null;
@@ -894,13 +967,14 @@ function ReelsPc({ F }) {
       </div>
     </div>
   );
-  const estilo = { '--rls-alto': alto + 'px' };
+  const estilo = { '--rls-alto': medida.alto + 'px' };
+  const grilla = medida.cols ? { gridTemplateColumns: medida.cols } : undefined;
   if (!r) {
     return (
       <section className="rls-pc">{cab}
         <div className="rls-pc-teatro" ref={teatro} style={estilo}>
           <div className="rls-pc-in"><div className="rls-pc-cuerpo vacio">
-            <RielGente F={F} />
+            {medida.gente ? <RielGente F={F} alto={medida.alto} /> : null}
             <div className="rls-vacio"><b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b><p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
               <button type="button" className="rls-btc" onClick={() => F.setFiltro('todo')}>Ver Para ti</button></div>
           </div></div>
@@ -924,8 +998,8 @@ function ReelsPc({ F }) {
       <div className="rls-pc-teatro" ref={teatro} style={estilo}>
         <div className="rls-pc-luz" aria-hidden="true"><Poster key={r.vid} vid={r.vid} cls="rls-luz" /></div>
         <div className="rls-pc-in">
-          <div className="rls-pc-cuerpo">
-            <RielGente F={F} />
+          <div className="rls-pc-cuerpo" style={grilla}>
+            {medida.gente ? <RielGente F={F} alto={medida.alto} /> : null}
             <nav className="rls-pc-prog" aria-label="Ir a otro reel">
               {lineas.map((j) => (
                 <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')}
