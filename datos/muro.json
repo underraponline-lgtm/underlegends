@@ -916,7 +916,8 @@
 "rg": "",
 "c": [
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "gus": {
@@ -2949,15 +2950,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-15T15:59:25Z",
-"quien": [
-"CrisZJ"
-],
-"rg": "C",
-"primero": true
-},
 {
 "tipo": "rango",
 "t": "2026-10-15T15:59:25Z",
@@ -6367,6 +6359,14 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-25T07:02:51Z",
+"quien": [
+"Juanpa"
+],
+"carta": "temporada"
 }
 ],
 "noche_antes": {

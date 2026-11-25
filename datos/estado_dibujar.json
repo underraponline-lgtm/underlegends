@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-25T06:48:39Z",
+ "cuando": "2026-11-25T07:02:57Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1434.8,
+ "dur_s": 816.3,
  "pasos": [
   {
    "n": "2f",
@@ -15,79 +15,79 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.0
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.2
+   "s": 16.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 43.7
+   "s": 21.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": true,
-   "s": 1161.2
+   "s": 534.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 152.7
+   "s": 180.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 63.0
+   "s": 61.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "692",
-  "nombre": "- DEM BATTLES -",
-  "sv": "FRZ",
+  "n": "693",
+  "nombre": "INICIO DEL FIN VOL.2",
+  "sv": "DW",
   "dia": "2026-11-24"
  },
  "cuotas": {
   "kv": {
-   "write": 274,
-   "read": 12820
+   "write": 292,
+   "read": 13692
   },
   "objeto": {
-   "leidas": 1768814,
-   "escritas": 42541,
-   "pedidos": 11017
+   "leidas": 1821556,
+   "escritas": 43212,
+   "pedidos": 11695
   },
   "worker": {
-   "pedidos": 31350,
+   "pedidos": 31576,
    "errores": 8215,
-   "sub": 34677,
+   "sub": 34886,
    "cortados": 8215,
    "p50_ms": 0.96,
    "p99_ms": 15.64,
    "cpu": {
-    "total": 91257,
-    "objeto_10": 1762,
-    "worker_10": 941
+    "total": 91701,
+    "objeto_10": 1761,
+    "worker_10": 943
    }
   },
   "r2": {
-   "objetos": 14247,
-   "gb": 1.192,
-   "ts": 1795546951
+   "objetos": 14659,
+   "gb": 1.42,
+   "ts": 1795590193
   }
  }
 }
