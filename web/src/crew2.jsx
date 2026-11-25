@@ -13,6 +13,7 @@
 // Temporada de la semana, de bot/crews_tiers.py (`T.dia` por crew y `T.gente` por persona). Sin nadie que sumó, no salen
 import { limpio, num } from './liga.js';
 import { Cara, Compartir, enlace, usePerfiles } from './piezas.jsx';
+import { FondoPropio } from './fondo_propio.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { ROL_NOMBRE, cierreCrews, crewViva, faltaCierre, pedirCrews, pedirMia, ponerModCrew, useCrews } from './crews.js';
@@ -267,6 +268,7 @@ function Piramide({ liga, viva }) {
               const f = liga.persona(k);
               return (
                 <li key={k}><a href={'#/r/' + encodeURIComponent(k)}>
+                  <FondoPropio liga={liga} k={k} />
                   {r === 'lider' ? <span className="k2-corona">♛ LÍDER</span> : null}
                   <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara k2-pc" lazy />
                   <b>{nombreDe(liga, k)}</b><small>{f && f.pos ? '#' + f.pos : r !== 'miembro' ? ROL_NOMBRE[r] : '—'}</small>
@@ -376,6 +378,7 @@ function Estrellas({ liga, T, viva }) {
       <ol className="k2-podio">{orden.map(([k, p]) => (
         <li key={k} className={'k2-pp l' + lugar(k)}>
           <a href={'#/r/' + encodeURIComponent(k)}>
+            <FondoPropio liga={liga} k={k} />
             <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls={'cara k2-pc'} lazy />
             <b>{nombreDe(liga, k)}</b><small>{num(p)} pts</small>
           </a>
@@ -411,7 +414,7 @@ function Representantes({ liga, viva, gente }) {
       <div className="k2-tit"><h2>Los representantes</h2><small>{modo === 'todos' ? 'hoy el ranking de crews suma a todos' : 'los que cuentan en el ranking de crews'}</small></div>
       <p className="k2-nota">{nota}</p>
       {ks.length ? <ul className="k2-reps">{ks.map((k) => (
-        <li key={k}><a href={'#/r/' + encodeURIComponent(k)}><Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara k2-c" lazy /><b>{nombreDe(liga, k)}</b></a></li>
+        <li key={k}><a href={'#/r/' + encodeURIComponent(k)}><FondoPropio liga={liga} k={k} /><Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara k2-c" lazy /><b>{nombreDe(liga, k)}</b></a></li>
       ))}</ul> : null}
     </div>
   );

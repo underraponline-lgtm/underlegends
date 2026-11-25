@@ -7620,3 +7620,9 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .app :is(.pn-chip-n,.pn-cartel em,.pn-se2-m i){letter-spacing:.02em}
 .app .pn-dias7 i{width:18px;height:18px}
 .app .h-badge{font-size:11px}
+/* 🖤 EL FONDO PROPIO DETRÁS DE UNA FILA DE GENTE (25/11/2026, fondo_propio.jsx): sólo de quien tiene algo suyo. Apagado (.38,
+   lo medido para la fila del Ranking) y desvaneciéndose hacia la derecha, donde van los números. La fila se vuelve su caja
+   con :where (sin peso): si ya tenía posición o una capa propia, manda la suya */
+.fp-capa{position:absolute;inset:0;z-index:-1;pointer-events:none;background:left center/cover no-repeat;opacity:.38;border-radius:inherit;
+  -webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 88%);mask-image:linear-gradient(90deg,#000 30%,transparent 88%)}
+:where(:has(>.fp-capa)){position:relative;isolation:isolate}

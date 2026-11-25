@@ -9,6 +9,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { limpio, num, siglaDe } from './liga.js';
 import { Cara } from './piezas.jsx';
+import { FondoPropio } from './fondo_propio.jsx';
 import { Miniatura } from './video.jsx';
 
 const SAL = { d: null, pedido: 0, oyentes: new Set() };
@@ -67,7 +68,7 @@ export function Nominado({ liga, cat, x }) {
       : cat === 'servidor' ? <img className="ma-cara" alt="" src={liga.logo(x.op)} />
         : <Cara liga={liga} k={t.k} nombre={x.n} cls="ma-cara" />;
   // 🪪 y su perfil, si es una persona (17/11/2026, Dlx: «hazlo más bonito con su foto y su cuenta»)
-  return <>{vis}<span className="ma-t"><b>{t.k ? <a href={'#/r/' + encodeURIComponent(t.k)}>{t.n}</a> : t.n}</b><small>{t.d}</small></span></>;
+  return <>{t.k && cat !== 'batalla' && cat !== 'servidor' ? <FondoPropio liga={liga} k={t.k} /> : null}{vis}<span className="ma-t"><b>{t.k ? <a href={'#/r/' + encodeURIComponent(t.k)}>{t.n}</a> : t.n}</b><small>{t.d}</small></span></>;
 }
 
 // (la `Categoria` que se votaba acá se fue el 17/11/2026: el Salón y la página de cada servidor votan con las tarjetas

@@ -18,6 +18,7 @@ import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
 import { useRoles } from './roles.js';
 import { LUGARES, NOMBRE_OPCION, eleccion, escenaDe, fondoEn, fondoOpcion, fondoPropio, urlFondo } from './fondos.js';
 import { FichaCuerpo } from './ficha.jsx';
+import { FondoPropio } from './fondo_propio.jsx';
 import { useSocio } from './panelsocio.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
@@ -1056,7 +1057,7 @@ function Sigues({ liga, dc }) {
     <Caja t={'Sigues a ' + n} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
       : 'Entra con Discord y te avisamos cuando ganen o suban de rango.'}>
       {fs.length || gs.length ? <ul className="cu-gente">{fs.map((f) => (
-        <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
+        <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><FondoPropio liga={liga} k={f.k} /><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
           <small>{f.pos ? '#' + f.pos : ''}</small></a></li>
       ))}{gs.map((g) => (
         <li key={'g' + g.k}><a href={'#/global/' + encodeURIComponent(g.k)}>
@@ -1085,7 +1086,7 @@ function TeSiguen({ liga, dc }) {
   return (
     <Caja t={'Te siguen ' + (ms.n + nL)} d={otros > 0 ? (suyos.length ? 'Y ' : '') + otros + (otros === 1 ? ' persona que no compite.' : ' personas que no compiten.') : ''}>
       {suyos.length ? <ul className="cu-gente">{suyos.map((f) => (
-        <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b></a>
+        <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><FondoPropio liga={liga} k={f.k} /><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b></a>
           {liga.sigo(f.k) ? null : <BotonSeguir liga={liga} dc={dc} k={f.k} de chico />}</li>
       ))}</ul> : null}
       {liga1}

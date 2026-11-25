@@ -5,6 +5,7 @@ import { miReaccion, reaccionesDe, useAplausos } from './aplausos.js';
 import { PjDentro, autorDe, comentarAca, delHilo, pjDe, pjFondo, useComentarios } from './comentarios.jsx';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Algunos, Alguien, Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
+import { FondoPropio } from './fondo_propio.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
 import { useEffect, useRef, useState } from 'react';
@@ -648,6 +649,7 @@ function Mandan({ liga, c, xs, yoFila, pub }) {
       <div className="mn-uno">{uno.grande}</div>
       <div className="mn-lado">
         <a className="mn-top" href={uno.href}>
+          {uno.pk ? <FondoPropio liga={liga} k={uno.pk} /> : null}
           <span className="mn-n1">#1</span>
           <span className="mn-top-t">
             <small>{QUIEN_MANDA[c] || ''}</small>
@@ -666,6 +668,7 @@ function Mandan({ liga, c, xs, yoFila, pub }) {
           {xs.slice(1).map((x, i) => (
             <li key={x.key} className={i === 0 ? 'p2' : i === 1 ? 'p3' : ''}>
               <a className="mn-f" href={x.href}>
+                {x.pk ? <FondoPropio liga={liga} k={x.pk} /> : null}
                 <span className="mn-n">{i + 2}</span>
                 <span className="mn-mini">{x.mini}</span>
                 <span className="mn-t">

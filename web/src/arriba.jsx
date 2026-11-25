@@ -23,6 +23,7 @@ import { alExtras, cargarExtras, hayPista, precargar } from './beats.js';
 import { HistoriaCtx } from './historia_ctx.js';
 import { bajarClips, bajarGlobal, bajarHistoria, clipsListos, globalListo, historiaLista, indiceCompetencias } from './global_datos.js';
 import { siluetaDe } from './sin_foto.js';
+import { FondoPropio } from './fondo_propio.jsx';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
 // de cada grupo. Era el de la tira de abajo del celular hasta la barra E (19/11/2026: cinco fijos y el resto en el ☰ en
@@ -483,7 +484,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
         </div>
       ) : res.length ? (
         <ul className="busca-res">
-          {res.map((r) => <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{icono(r)}<span>{r.n}{r.tipo === 'rapero' && esPremium(pub, r.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
+          {res.map((r) => <li key={r.id}><a href={r.href} onClick={() => ir(r)}>{r.tipo === 'rapero' && r.k ? <FondoPropio liga={liga} k={r.k} /> : null}{icono(r)}<span>{r.n}{r.tipo === 'rapero' && esPremium(pub, r.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
         </ul>
       ) : sugerencias && !q.trim() ? <Sugerencias liga={liga} rec={rec} icono={icono} ir={ir} pub={pub} borrar={() => { try { localStorage.removeItem(REC_K); } catch (e) { /* nada */ } setRec([]); }} />
         : sugerencias && q.trim() ? <div className="nt-p bs-panel"><p className="bs-nada">Nada con «{q.trim()}». Prueba con otro nombre o un aka.</p></div> : null}
@@ -516,6 +517,7 @@ function subBusca(liga, r) {
 function FilaBusca({ liga, r, icono, ir, pub }) {
   return (
     <a className="nt-f bs-f" href={r.href} onClick={() => ir(r)}>
+      {r.tipo === 'rapero' && r.k ? <FondoPropio liga={liga} k={r.k} /> : null}
       <span className="nt-cara bs-c">{icono(r)}{ICO_TIPO[r.tipo] ? <i className="nt-badge"><Ico n={ICO_TIPO[r.tipo]} t={10} /></i> : null}</span>
       <span className="nt-t"><b>{r.n}{r.tipo === 'rapero' && esPremium(pub, r.k) ? <SelloPremium t={13} cls="sp-prem-in" /> : null}</b><small>{subBusca(liga, r)}</small></span>
       <span className="nt-hora">{ETIQUETA_TIPO[r.tipo]}</span>

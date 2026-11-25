@@ -22,6 +22,7 @@ import { Escudo, escudoDe } from './escudo.jsx';
 import { Alguien, Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { FondoT, NombreT, fondoTienda, usePuesto } from './puesto.js';
 import { fondoPropio, useFondos } from './fondos.js';
+import { FondoPropio } from './fondo_propio.jsx';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
@@ -834,6 +835,7 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
   );
   return (
     <div className="rk-tu" ref={tira}>
+      {!cfg.grupo && (f || yo) ? <FondoPropio liga={liga} k={(f || yo).k} /> : null}
       <div className="rk-tu-l">
         {lugar.cara}
         <span className="rk-tu-n"><Num n={n} fc={f && f.fc} /></span>

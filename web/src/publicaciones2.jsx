@@ -20,6 +20,7 @@ import { CrewCirculo, beatDe, escenaDe } from './arriba.jsx';
 import { SonidoChip, useCallarAlSalir } from './sonido_chip.jsx';
 import { TierChip } from './crewpanel.jsx';
 import { Alguien, Algunos, Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
+import { FondoPropio } from './fondo_propio.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useAplausos } from './aplausos.js';
 import { Hilo, delHilo, useComentarios } from './comentarios.jsx';
@@ -133,7 +134,7 @@ function Autor({ liga, it, pub, cara = true }) {
     );
   }
   const prem = esPremium(pub, a.k);
-  const cuerpo = <>{cara ? <Cara liga={liga} k={a.k} nombre={a.n} cls={'cara pw-au-c' + (prem ? ' sp-prem-aro' : '')} /> : null}<b><NombreT k={a.k} n={a.n} /></b>
+  const cuerpo = <>{a.k ? <FondoPropio liga={liga} k={a.k} /> : null}{cara ? <Cara liga={liga} k={a.k} nombre={a.n} cls={'cara pw-au-c' + (prem ? ' sp-prem-aro' : '')} /> : null}<b><NombreT k={a.k} n={a.n} /></b>
     {prem ? <SelloPremium t={12} cls="sp-prem-in" /> : null}<small title={AUTO}>automática</small></>;
   // 18/11/2026: con liga.T[a.k] el autor de fuera de las 200 filas salía sin link, y también tiene perfil
   return a.k && liga.existe(a.k) ? <a className="pw-autor" href={'#/r/' + encodeURIComponent(a.k)}>{cuerpo}</a> : <span className="pw-autor">{cuerpo}</span>;
