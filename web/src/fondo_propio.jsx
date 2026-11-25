@@ -9,6 +9,6 @@ export function FondoPropio({ liga, k }) {
   const fondos = useFondos();
   if (!k || !liga) return null;
   const f = (liga.T && liga.T[k]) || (liga.X && liga.X[k]) || {};
-  const bg = fondoPropio((fondos || {})[k], 'ficha', { cc: f.cc, sv: f.sv });
+  const bg = fondoPropio((fondos || {})[k], 'fila', { cc: f.cc, sv: f.sv });
   return bg ? <span className="fp-capa" style={{ backgroundImage: bg }} aria-hidden="true" /> : null;
 }

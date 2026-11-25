@@ -7626,3 +7626,11 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .fp-capa{position:absolute;inset:0;z-index:-1;pointer-events:none;background:left center/cover no-repeat;opacity:.38;border-radius:inherit;
   -webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 88%);mask-image:linear-gradient(90deg,#000 30%,transparent 88%)}
 :where(:has(>.fp-capa)){position:relative;isolation:isolate}
+/* 🔎 EL TEXTO SOBRE UN FONDO PROPIO SE LEE CON CUALQUIER IMAGEN (25/11/2026). Medido con el peor caso —una imagen blanca
+   entera en Noche y una negra en Clara—: el nombre quedaba en 4,9:1 y 7,0:1, pero el renglón chico gris bajaba a 2,2 y 1,7, y
+   pasaba lo mismo con las franjas blancas de las banderas. Con fondo, el renglón chico usa el color del texto y todo lleva
+   un halo del color de la tarjeta, que le pone contraste alrededor de cada letra pase lo que pase atrás */
+.app :has(>.fp-capa) :is(b,small,strong),
+.app .rk-fila:has(.rk-fondo) :is(.rk-qa a,.rk-qa b,small,.rk-fila-n),
+.app .rk-q:has(>.rk-fondo) :is(.rk-qa a,.rk-qa b,small){text-shadow:0 0 2px var(--caja),0 0 6px var(--caja),0 0 12px var(--caja)}
+.app :has(>.fp-capa) small,.app .rk-fila:has(.rk-fondo) small,.app .rk-q:has(>.rk-fondo) small{color:var(--tinta)}

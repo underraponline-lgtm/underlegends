@@ -21,7 +21,7 @@ import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './li
 import { Escudo, escudoDe } from './escudo.jsx';
 import { Alguien, Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { FondoT, NombreT, fondoTienda, usePuesto } from './puesto.js';
-import { fondoPropio, useFondos } from './fondos.js';
+import { fondoPropio, ponerFondoLugar, useFondos } from './fondos.js';
 import { FondoPropio } from './fondo_propio.jsx';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
@@ -178,7 +178,7 @@ function Quien({ x, f }) {
   // El de la Tienda, si lo tiene puesto, manda
   const fondos = useFondos();
   const P = usePuesto(f.k);
-  const bgF = f.k && !fondoTienda(P, 'fila') ? fondoPropio((fondos || {})[f.k], 'ficha', { cc: f.cc || (t && t.cc), sv: (t || f).sv }) : '';
+  const bgF = f.k && !fondoTienda(P, 'fila') ? fondoPropio((fondos || {})[f.k], 'fila', { cc: f.cc || (t && t.cc), sv: (t || f).sv }) : '';
   return (
     <span className="rk-q">
       {bgF ? <span className="rk-fondo" style={{ backgroundImage: bgF }} aria-hidden="true" /> : null}
@@ -752,6 +752,31 @@ function distancia(cfg, a, b) {
 // el Verme en la lista podría estar mucho mejor… un botón mejorado ahí mismo»): tu foto, tu puesto, a cuánto estás del
 // de arriba, quién tienes arriba y abajo en chips, y el botón «Ver mi fila». Reemplaza a «Los que tenés cerca» (que
 // vivía debajo de los filtros) y a la invitación a entrar con Discord. En tú, no en vos (Dlx: «nada argentino») ──────
+// 🖤 «PONLE TU BANDERA A TU FILA» (25/11/2026, Dlx: «Todo», a invitar a ponerse un fondo: sólo 10 lo tenían). En tu tarjeta
+// de «Tu lugar», si tu fila no tiene fondo y tienes país: un toque la deja puesta (`ponerFondoLugar()`, sin ir a Tus
+// fondos) y la fila cambia al toque. «Ahora no» la esconde en este navegador
+const L_INVITA = 'lg:fila-invita-no';
+function InvitaFondo({ liga, f }) {
+  const fondos = useFondos();
+  const [no, setNo] = useState(() => { try { return !!localStorage.getItem(L_INVITA); } catch (e) { return false; } });
+  const [est, setEst] = useState('');
+  if (!f || !f.k || !f.cc || !fondos || no) return null;
+  const t = (liga.T && liga.T[f.k]) || f;
+  if (est !== 'listo' && fondoPropio(fondos[f.k], 'fila', { cc: f.cc, sv: t.sv })) return null;
+  if (est === 'listo') return <p className="rk-tu-fondo listo" role="status">Listo: tu fila ya lleva tu bandera. Se cambia en <a href="#/cuenta/fondos">Tus fondos</a>.</p>;
+  const poner = async () => {
+    setEst('va');
+    try { await ponerFondoLugar(f.k, 'fila', 'bandera'); setEst('listo'); } catch (e) { setEst('mal'); }
+  };
+  return (
+    <p className="rk-tu-fondo">
+      <button type="button" className="btn borde2 chico" disabled={est === 'va'} onClick={poner}>{est === 'va' ? 'Poniendo…' : 'Ponle tu bandera a tu fila'}</button>
+      {est === 'mal' ? <span>No se pudo: prueba en <a href="#/cuenta/fondos">Tus fondos</a>.</span> : null}
+      <button type="button" className="rk-tu-no" onClick={() => { try { localStorage.setItem(L_INVITA, '1'); } catch (e) { /* nada */ } setNo(true); }}>Ahora no</button>
+    </p>
+  );
+}
+
 function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, miraEst }) {
   const { liga } = x;
   const nombreDe = (g) => (cfg.grupo === 'pais' ? nombrePais(g.cc) : cfg.grupo === 'crew' ? limpio(g.crew) : limpio(g.n));
@@ -844,6 +869,7 @@ function TuTira({ x, cfg, sub, base, iYo, lugar, yo, dc, encontrarme, tira, mira
             nadie midió, y a quien debutó esta semana (`nu`) no hay lunes con qué comparar */}
         <span className="rk-tu-t"><small>{lugar.quien}{lugar.mov ? <> · <Mov mv={lugar.mov} largo /></> : n && sub === 'temporada' && !(f || yo).nu ? ' · igual que el lunes' : ''}</small><b>{frase}</b></span>
       </div>
+      {!cfg.grupo && dc && (f || yo) ? <InvitaFondo liga={liga} f={f || yo} /> : null}
       {arriba || abajo ? (
         <div className="rk-tu-chips">
           {arriba ? chip(arriba, dA, 'up', dA ? 'a ' + dA : null) : null}

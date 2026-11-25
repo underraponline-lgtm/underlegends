@@ -474,6 +474,7 @@ export function FondoCaja({ dc, liga }) {
   const poner = (l, op) => mandar({ lugares: Object.assign({}, L, { [l]: op }) }, true);
   const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Puedes subir otra.' : f.url ? 'Ya se ve.' : '';
   const hayMia = !!(f && urlFondo(f.url));
+  const pf = prueba.startsWith('ficha:') ? prueba.slice(6) : '', pl = prueba.startsWith('fila:') ? prueba.slice(5) : '';
   return (
     <>
       <Caja t="Tu imagen" cls="cu-img" d={pu.si ?'Tu propia imagen de fondo, para los lugares de abajo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.'
@@ -500,9 +501,10 @@ export function FondoCaja({ dc, liga }) {
                 <div className="tf-lt"><b>{n}</b><small>{d}</small></div>
                 <div className="tf-ops" role="radiogroup" aria-label={n}>
                   {ops.map((op) => {
-                    const bg = op === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], l, yo) : fondoOpcion(fo, op, yo);
+                    // 🖤 «Tu fila» en Automático: lo de tu ficha si elegiste algo, tu imagen o negra (`fondoPropio()`): la vista dice eso
+                    const bg = op === 'auto' ? (l === 'fila' ? fondoPropio([fo[0], fo[1], 0, { ficha: L.ficha }], 'fila', yo) : fondoEn([fo[0], fo[1], 0, {}], l, yo)) : fondoOpcion(fo, op, yo);
                     const va = !bg && op === 'auto' ? vistaAuto(l, yo, liga) : null;
-                    const probar = l === 'ficha' ? { onMouseEnter: () => setPrueba(op), onMouseLeave: () => setPrueba(''), onFocus: () => setPrueba(op), onBlur: () => setPrueba('') } : null;
+                    const probar = l === 'ficha' || l === 'fila' ? { onMouseEnter: () => setPrueba(l + ':' + op), onMouseLeave: () => setPrueba(''), onFocus: () => setPrueba(l + ':' + op), onBlur: () => setPrueba('') } : null;
                     const cerrada = (op === 'mia' && !hayMia) || (op === 'bandera' && !yo.cc) || (op === 'servidor' && !bg);
                     const on = e === op || (op === 'auto' && e === 'mia' && !hayMia);
                     return (
@@ -516,8 +518,8 @@ export function FondoCaja({ dc, liga }) {
                     );
                   })}
                 </div>
-                {l === 'ficha' && yo.k ? <FichaVista liga={liga} yo={yo} bg={prueba ? (prueba === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, prueba, yo)) : fondoEn(fo, 'ficha', yo)} prueba={prueba}
-                  enFila={!!(prueba ? (prueba === 'auto' ? fondoPropio([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, prueba, yo)) : fondoPropio(fo, 'ficha', yo))} /> : null}
+                {l === 'ficha' && yo.k ? <FichaVista liga={liga} yo={yo} bg={pf ? (pf === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, pf, yo)) : fondoEn(fo, 'ficha', yo)} prueba={pf} /> : null}
+                {l === 'fila' && yo.k ? <FilaVista liga={liga} yo={yo} bg={pl ? (pl === 'auto' ? fondoPropio([fo[0], fo[1], 0, { ficha: L.ficha }], 'fila', yo) : fondoOpcion(fo, pl, yo)) : fondoPropio(fo, 'fila', yo)} prueba={pl} /> : null}
               </div>
             );
           })}
@@ -531,13 +533,29 @@ export function FondoCaja({ dc, liga }) {
 // 🪪 ASÍ TE VEN (25/11/2026, Dlx: «como te ves en el rectángulo… así como Discord tiene cómo te ves tu perfil, sin ir a tu
 // perfil»). La ficha de verdad (`FichaCuerpo`, la misma que sale al pasar el mouse por tu cara), quieta, con lo que
 // elegiste; al pasar por una opción, con esa
-function FichaVista({ liga, yo, bg, prueba, enFila }) {
+function FichaVista({ liga, yo, bg, prueba }) {
   return (
     <div className="tf-vista">
       <small className="tf-vista-t">{prueba ? 'Así te verían con «' + NOMBRE_OPCION[prueba] + '»' : 'Así te ven en tu ficha'}</small>
       <div className="fh fh-quieto" aria-label="Vista previa de tu ficha" role="img"><FichaCuerpo liga={liga} f={yo} bg={bg} /></div>
-      <small className="tf-vista-p">{enFila ? 'Y va detrás de tu fila en el Ranking.'
-        : 'En el Ranking tu fila queda negra, como la de todos: elige tu bandera o tu servidor (o sube tu imagen) para que se vea ahí.'}</small>
+    </div>
+  );
+}
+// 🖤 Y TU FILA, COMO SALE EN EL RANKING (25/11/2026, Dlx: «Todo»): tu puesto, tu cara, tu nombre, tus puntos y tu OVR, con
+// el mismo fondo (`.fp-capa`) que la fila de verdad. Sin nada tuyo, negra: lo dice
+function FilaVista({ liga, yo, bg, prueba }) {
+  const rgc = /^#[0-9a-f]{3,8}$/i.test(yo.rgc || '') ? yo.rgc : '';
+  return (
+    <div className="tf-vista">
+      <small className="tf-vista-t">{prueba ? 'Así se vería tu fila con «' + NOMBRE_OPCION[prueba] + '»' : 'Así te ven en el Ranking'}</small>
+      <div className="tf-fila" aria-label="Vista previa de tu fila del Ranking" role="img">
+        {bg ? <span className="fp-capa" style={{ backgroundImage: bg }} /> : null}
+        <span className="tf-fila-n">{yo.pos || '—'}</span>
+        <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cara tf-fila-c" />
+        <span className="tf-fila-t"><b>{limpio(yo.n)}</b>{yo.cc ? <Bandera cc={yo.cc} cls="tf-fila-flag" /> : null}<small>{num(yo.pts || 0)} pts</small></span>
+        <span className="tf-fila-v"><b>{yo.ovr || '—'}</b>{yo.rg ? <i style={rgc ? { background: rgc } : undefined}>{yo.rg}</i> : null}</span>
+      </div>
+      {!bg && !prueba ? <small className="tf-vista-p">Negra, como la de todos: elige tu bandera o tu servidor (o sube tu imagen) para que se vea tu fondo.</small> : null}
     </div>
   );
 }

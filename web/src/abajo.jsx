@@ -690,8 +690,12 @@ const TIRA = [['inicio', 'Inicio', '#/'], ['ranking', 'Ranking', '#/ranking'], n
   ['publicaciones', 'Publicaciones', '#/publicaciones'], ['competencias', 'Competencias', '#/competencias'], ['ligas', 'Ligas', '#/ligas'],
   ['crews', 'Crews', '#/crews'], ['tarjetas', 'Tarjetas', '#/tarjetas'], ['salon', 'Salón', '#/salon'], ['socios', 'Socios', '#/socios'],
   ['guia', 'Guía', '#/guia']];
-const NOVATO = [TIRA[0], TIRA[1], null, TIRA.find((x) => x && x[0] === 'guia')];
-export const NIVEL_SECC = { reels: 1, publicaciones: 1, guia: 1, competencias: 2, ligas: 2, crews: 3, tarjetas: 3, salon: 5, socios: 5 };
+// 🎬 VIDEOS, PARA TODOS DESDE EL PRINCIPIO (25/11/2026, Dlx: «que los videos todos los puedan ver, no que seas nivel 7 para
+// verlo»): sin cuenta la barra no los traía, y con cuenta llegaban con el nivel. Ahora van en las dos, sin nivel. Sin cuenta
+// ocupan el lugar de la Guía: con seis, la Guía quedaba debajo de «Entrar» y no se podía tocar (medido a 360, 390 y 430). La
+// Guía sigue en el ☰ y con cuenta vuelve a la barra
+const NOVATO = [TIRA[0], TIRA[1], null, TIRA.find((x) => x && x[0] === 'reels')];
+export const NIVEL_SECC = { publicaciones: 1, guia: 1, competencias: 2, ligas: 2, crews: 3, tarjetas: 3, salon: 5, socios: 5 };
 const NOMBRE_SECC = Object.fromEntries(TIRA.filter(Boolean).map(([k, n]) => [k, n]));
 const ls = {
   get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },

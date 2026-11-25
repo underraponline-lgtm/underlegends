@@ -5402,7 +5402,9 @@ export const FONDO_NIVEL = 5;
 // `mia` (tu imagen), `bandera` (la de tu país) o `servidor` (la escena de tu servidor). En el VS en vivo no hay
 // `servidor`: ahí el fondo de la imagen ya es el del servidor del evento
 export const LUGARES_FONDO = { perfil: ['auto', 'mia', 'bandera', 'servidor'], vs: ['auto', 'mia', 'bandera', 'servidor'],
-  esc: ['auto', 'mia', 'bandera', 'servidor'], vivo: ['auto', 'mia', 'bandera'], ficha: ['auto', 'mia', 'bandera', 'servidor'] };
+  esc: ['auto', 'mia', 'bandera', 'servidor'], vivo: ['auto', 'mia', 'bandera'], ficha: ['auto', 'mia', 'bandera', 'servidor'],
+  // 🖤 tu fila del Ranking y de las listas de gente, aparte de la ficha (25/11/2026, Dlx: «Todo»): ver `fondoPropio()` de web/src/fondos.js
+  fila: ['auto', 'mia', 'bandera', 'servidor'] };
 /** Lo que mandó la página, sólo con lugares y opciones que existen. `auto` no se guarda (es lo que hay sin elegir). */
 export function lugaresFondo(x) {
   const o = {};
