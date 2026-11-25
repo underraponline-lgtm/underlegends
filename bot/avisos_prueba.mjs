@@ -5728,6 +5728,9 @@ const ok = (cond, que, det) => {
       ok(v && !v.error && v.piezas.XP1.g === 'X1' && !v.piezas.X1.g, 'una variante guarda de qué pieza es', JSON.stringify(v && v.piezas.XP1));
       ok(conG('ZZ9').error === 'pieza' && conG('X3').error === 'pieza' && conG('x-1').error === 'pieza',
         'y no se guarda si su cabeza no existe, es de otra ranura o no es un id');
+      const inc = (g) => TI.catalogoValido(Object.assign({}, cat, { piezas: Object.assign({}, cat.piezas, { XV1: { c: 'aro', r: 3, n: 'X', t: ['inc'], g } }) }));
+      ok(!inc('X2').error && inc('X1').error === 'pieza' && TI.vendible(inc('X2'), 'XV1') === 'incluida',
+        'una versión incluida es de una Premium o una edición, y no se vende sola');
     }
     const ens = mia(A.DUENO, 'dlx');
     ok(!mia(ANA, 'ana').abierta && ens.ensayo && ens.cat && ens.cat.piezas.X1,
@@ -5924,6 +5927,19 @@ const ok = (cond, que, det) => {
       r = acc(QT, 'qt', { accion: 'regalo-abrir', i: 0 });
       ok(QT && r.ok && r.oferta.k === 'pdt' && saldo(QT) === t0 + r.oferta.n && acc(QT, 'qt', { accion: 'regalo-abrir', i: 0 }).ya
         && saldo(QT) === t0 + r.oferta.n, 'los Puntos se suman al abrir, una vez', JSON.stringify(r));
+      // 👑 una versión incluida (25/11/2026): se la pone quien tiene su pieza, y sola no se compra
+      const conV = JSON.parse(JSON.stringify(Object.assign({}, baja, { abierta: true })));
+      conV.piezas.XV1 = { c: 'aro', r: 3, n: 'X · versión', t: ['inc'], g: 'X2' };
+      ok(TI.catalogoGuardar(o, { catalogo: conV }).ok, 'un catálogo con una versión incluida se guarda');
+      const QV = '500000000000099999';
+      const sin = acc(QV, 'qv', { accion: 'poner', ranura: 'aro', pieza: 'XV1' });
+      sql.exec("INSERT INTO tienda_inv (quien, pieza, origen, pagado, t, grupo) VALUES (?, 'X2', 'compra', 1, ?, '')", QV, Date.now());
+      const con = acc(QV, 'qv', { accion: 'poner', ranura: 'aro', pieza: 'XV1' });
+      ok(sin.error === 'no_la_tienes' && con.ok && acc(QV, 'qv', { accion: 'comprar', pieza: 'XV1' }).error === 'incluida',
+        'la versión se la pone quien tiene la pieza, y sola no se vende', JSON.stringify([sin, con]));
+      const invV = TI.tiendaMia(o, { quien: QV, de: 'qv', inicial: INI, desde: 0 }, H).yo.inv.find((x) => x.p === 'XV1');
+      ok(invV && invV.o === 'incluida' && !invV.deshacer && invV.pagado === 0, 'y en su inventario aparece como incluida', JSON.stringify(invV));
+      TI.catalogoGuardar(o, { catalogo: Object.assign({}, baja, { abierta: true }) });
     }
 
     // el arte: cerrada, sólo el dueño; con la misma versión no se manda de nuevo

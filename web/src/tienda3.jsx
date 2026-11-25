@@ -45,7 +45,7 @@ const DONDE = {
 // la rehace `bot/con_marco.py`, con el freno del marco) y el fondo de Discord y el efecto en el VS en vivo (`bot/kit.py`)
 const EN_DISCORD = { carta: 'En /card se ve unos minutos después de ponértela.' };
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
-const ERRORES = { regalo: 'Ese artículo ya no está: recarga la Tienda.', vencido: 'Esa oferta era de ayer: hoy tienes artículos nuevos.', modo: 'En esta vista de Mods no se compra ni se guarda nada: apágala en la franja de arriba o en la página Mods.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
+const ERRORES = { incluida: 'Esta versión viene gratis con su pieza: no se compra sola.', no_la_tienes: 'Todavía no la tienes.', regalo: 'Ese artículo ya no está: recarga la Tienda.', vencido: 'Esa oferta era de ayer: hoy tienes artículos nuevos.', modo: 'En esta vista de Mods no se compra ni se guarda nada: apágala en la franja de arriba o en la página Mods.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',
   no_jugaste: 'Es para quien jugó en la temporada.', usada: 'Ya te la pusiste: no se puede deshacer.', tarde: 'Pasaron las 24 horas.',
   ya_deshecha: 'Ya la deshiciste una vez.', no_se_puede: 'No se puede deshacer.', tope: 'Ya mandaste tus regalos de esta semana.',
@@ -405,7 +405,7 @@ function coleccionT(X, S, tengo, cid) {
 const cabezaDe = (S, id) => { const p = S.cat.piezas[id]; return (p && p.g && S.cat.piezas[p.g]) ? p.g : id; };
 const variantesDe = (S, id) => { const g = cabezaDe(S, id); return [g, ...Object.keys(S.cat.piezas).filter((x) => S.cat.piezas[x].g === g)]; };
 const esGrupo = (S, id) => variantesDe(S, id).length > 1;
-const nombreVar = (S, id) => { const n = S.cat.piezas[id].n || ''; const i = n.indexOf(' · '); return i > 0 ? n.slice(i + 3) : n; };
+const nombreVar = (S, id) => { const n = S.cat.piezas[id].n || ''; const i = n.indexOf(' · '); return i > 0 ? n.slice(i + 3) : 'Original'; };
 const nombreGrupo = (S, id) => { const n = S.cat.piezas[cabezaDe(S, id)].n || ''; const i = n.indexOf(' · '); return i > 0 ? n.slice(0, i) : n; };
 function selectorVar(X, S, tengo, id) {
   const ids = variantesDe(S, id);
@@ -539,6 +539,8 @@ function fichaPieza(X, S, st, tengo, liga, id) {
   if (st.error) acc += `<p class="tz-conf falta">${esc(ERRORES[st.error] || 'No se pudo: ' + st.error)}</p>`;
   if (paso === 'ver') {
     if (mio) acc += `<div class="tz-tuyo">✓ Lo tienes${S.yo.numeros[id] ? ' · el tuyo es el #' + S.yo.numeros[id] + ' de ' + (ed ? ed.copias : 10) : ''}</div>${sePone(p) ? '<button class="tz-b prim" data-acc="poner">Usar ahora</button>' : ''}${inv && inv.deshacer ? '<button class="tz-b" data-acc="deshacer">Deshacer</button>' : ''}`;
+    // 👑 una versión incluida (25/11/2026): viene gratis con su pieza; sola no se compra
+    else if (tiene(p, 'inc')) acc += `<p class="tz-nota tz-ancho">Viene <b>gratis</b> con <b>${esc((S.cat.piezas[p.g] || {}).n || '')}</b>: quien la tiene, tiene todas sus versiones.</p><button class="tz-b prim" data-abre="${p.g}">Ver ${esc((S.cat.piezas[p.g] || {}).n || '')}</button><button class="tz-b" data-acc="probar">Probar</button>`;
     else if (tiene(p, 'pronto')) acc += `<p class="tz-fecha tz-ancho">Sale pronto</p><p class="tz-nota tz-ancho">Todavía no se vende: falta terminar lo que hace. Ponla en tu lista y la campana te avisa.</p>${cor}`;
     else if (tiene(p, 'num')) {
       const abre = ed && Date.now() >= ed.venta;

@@ -34,7 +34,9 @@ export const CATEGORIAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'serv', 'fp'
 export const RANURAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
 // `pronto`: se ve en la Tienda y no se vende todavía (lo que necesita algo que no está hecho: el cambio de nombre, la
 // pancarta con tu texto). Se saca la marca del catálogo privado el día que funcione
-export const MARCAS = ['prem', 'num', 'nav', 'rot', 'col', 'gratis', 'pronto'];
+// `inc` (25/11/2026): una versión que viene GRATIS con su pieza (`g`), como las de la Corona de Diamante; no se vende ni se
+// regala sola, y se la pone quien tiene la pieza. Dlx: «gratis con la pieza»
+export const MARCAS = ['prem', 'num', 'nav', 'rot', 'col', 'gratis', 'pronto', 'inc'];
 /** las tablas con `quien`: se mudan con la cuenta (`mudarCuenta()`) y se borran con «olvidarme» */
 export const TABLAS_QUIEN = ['tienda_inv', 'tienda_deshecha', 'tienda_deseo', 'tienda_pref', 'tienda_puesto', 'tienda_col', 'tienda_num', 'tienda_dia'];
 const DIA_MS = 24 * 3600 * 1000;
@@ -103,6 +105,8 @@ export function catalogoValido(c) {
   const colecciones = {};
   // la cabeza de cada grupo existe y es de la misma ranura
   for (const [id, p] of Object.entries(piezas)) if (p.g && (!piezas[p.g] || piezas[p.g].c !== p.c || piezas[p.g].g)) return mal('pieza', 400, { id });
+  // y una incluida es de una pieza que existe (una edición o una Premium: lo que vale la pena traer con versiones)
+  for (const [id, p] of Object.entries(piezas)) if (p.t.includes('inc') && (!p.g || !piezas[p.g].t.some((x) => ['num', 'prem'].includes(x)))) return mal('pieza', 400, { id });
   for (const [id, j] of Object.entries(c.colecciones || {})) {
     if (!ID.test(id) || !j || !ids(j.piezas) || j.piezas.length < 2 || j.piezas.length > 12) return mal('coleccion', 400, { id });
     if (j.premio && (!piezas[j.premio] || !piezas[j.premio].t.includes('col'))) return mal('premio', 400, { id });
@@ -156,6 +160,7 @@ export function vendible(cat, id, ahora = Date.now()) {
   const p = cat.piezas[id];
   if (!p) return 'no_existe';
   if (p.t.includes('pronto')) return 'pronto';
+  if (p.t.includes('inc')) return 'incluida';
   if (p.t.includes('col')) return 'premio';
   if (p.t.includes('rot') && !cat.vitrina.ids.includes(id)) return 'no_esta';
   if (p.t.includes('nav') && cat.navidad && !(ahora >= cat.navidad.desde && ahora < cat.navidad.hasta)) return 'fuera_de_fecha';
@@ -173,7 +178,7 @@ export function vendible(cat, id, ahora = Date.now()) {
 }
 const noSeRegala = (cat, id) => {
   const p = cat.piezas[id];
-  return !p || p.c === 'serv' || p.t.some((x) => ['num', 'prem', 'col', 'gratis'].includes(x)) || !!cat.gratis[id];
+  return !p || p.c === 'serv' || p.t.some((x) => ['num', 'prem', 'col', 'gratis', 'inc'].includes(x)) || !!cat.gratis[id];
 };
 
 // ── LO DE CADA UNO ──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -250,7 +255,10 @@ export function tiendaMia(o, d, H) {
   out.yo = {
     saldo: saldoDe(o, d), prem, jugo: jugo(o, quien, cat), verificado: !!d.de,
     inv: inv.map((r) => ({ p: r.pieza, o: r.origen, pagado: r.pagado, t: r.t, usada: !!r.usada,
-      deshacer: r.origen === 'compra' && !r.usada && !desh.has(r.pieza) && r.pagado > 0 && ahora - r.t < cat.deshacer_h * 3600000 })),
+      deshacer: r.origen === 'compra' && !r.usada && !desh.has(r.pieza) && r.pagado > 0 && ahora - r.t < cat.deshacer_h * 3600000 }))
+      // 👑 las versiones incluidas de lo que tienes, como tuyas (origen `incluida`): así la Tienda y el vestidor las muestran
+      .concat(Object.entries(cat.piezas).filter(([id, p]) => p.t.includes('inc') && p.g && tiene.has(p.g) && !tiene.has(id))
+        .map(([id, p]) => ({ p: id, o: 'incluida', pagado: 0, t: (inv.find((r) => r.pieza === p.g) || {}).t || 0, usada: false, deshacer: false }))),
     puesto: Object.fromEntries(filas(o, 'SELECT ranura, pieza FROM tienda_puesto WHERE quien = ?', quien).map((r) => [r.ranura, r.pieza])),
     deseos: filas(o, 'SELECT pieza FROM tienda_deseo WHERE quien = ? ORDER BY t', quien).map((r) => r.pieza),
     deseo_publico: !!(pref && pref.deseo_publico),
@@ -435,8 +443,11 @@ export function tiendaAccion(o, d, H) {
       if (ranura === 'carta' && o.pedirRedibujo) o.pedirRedibujo(quien);
       return { ok: true };
     }
-    if (!tiene.has(id)) return mal('no_la_tienes');
-    if (cat.piezas[id].c !== ranura) return mal('ranura');
+    // 👑 una versión incluida se la pone quien tiene su pieza
+    const pz = cat.piezas[id];
+    if (!pz) return mal('no_existe');
+    if (!tiene.has(id) && !(pz.t.includes('inc') && pz.g && tiene.has(pz.g))) return mal('no_la_tienes');
+    if (pz.c !== ranura) return mal('ranura');
     o.state.storage.transactionSync(() => ponerUna(o, quien, cat, id, ahora));
     return { ok: true };
   }
@@ -527,7 +538,7 @@ const porPeso = (azar, xs) => { const tot = xs.reduce((a, x) => a + x[1], 0); le
 function regalable(cat, id, tiene, prem, ahora) {
   const p = cat.piezas[id];
   if (!p || tiene.has(id) || vendible(cat, id, ahora)) return false;
-  if (p.c === 'serv' || cat.gratis[id] || p.t.some((x) => ['num', 'gratis', 'col', 'nav', 'pronto'].includes(x))) return false;
+  if (p.c === 'serv' || cat.gratis[id] || p.t.some((x) => ['num', 'gratis', 'col', 'nav', 'pronto', 'inc'].includes(x))) return false;
   return !p.t.includes('prem') || prem;
 }
 /**
