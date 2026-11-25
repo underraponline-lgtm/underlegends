@@ -494,7 +494,7 @@ export function tiendaAccion(o, d, H) {
 // ofertas de diferentes cosas… pueden ser gratis pero la probabilidad es baja, así como lo hace brawl stars». Decidido con
 // AskUserQuestion el mismo día: «Pieza + otras cosas», «Cada día», «2 % por regalo». Como el Night Market de VALORANT
 // (cartas tapadas, una tirada por persona que no se vuelve a tirar) y el «Tap to Reveal» de Brawl Stars.
-//   · uno por pieza de la vitrina (hasta `REGALOS_MAX`), y se renuevan a la medianoche, hora del este
+//   · uno por pieza de la vitrina (las primeras `REGALOS_MAX`), y se renuevan a la medianoche, hora del este
 //   · lo que sale se decide AL ABRIR y se guarda: volver a entrar no vuelve a tirar
 //   · las chances (`REGALO_CHANCES`): la pieza GRATIS 2 %, un Dragón Drop 4 % (los Miembros de DRA, como el del día; si no,
 //     Puntos), Puntos de Tienda 6 %, y si no la pieza con un descuento (`REGALO_DESC`: los chicos salen más). La pieza es
@@ -502,7 +502,9 @@ export function tiendaAccion(o, d, H) {
 //     tuya o no se pueda vender
 //   · comprar una oferta es una compra como las otras (se deshace igual, devuelve lo que pagaste), sólo hasta la medianoche
 // ⚠️ La XP del Pase quedó afuera: sale de las Tareas, que calcula el ciclo; un regalo no tiene cómo sumarle sin tocar el Pase
-export const REGALOS_MAX = 8;
+// Dlx, 25/11/2026, al ver la 8.38 con ocho: «que hayan menos, son demasiados, quizás unos 5». Las otras piezas de la
+// vitrina se ven como siempre
+export const REGALOS_MAX = 5;
 export const REGALO_CHANCES = { gratis: 0.02, drop: 0.04, pdt: 0.06 };
 export const REGALO_DESC = [[10, 18], [15, 16], [20, 14], [25, 12], [30, 10], [35, 9], [40, 8], [45, 7], [50, 6]];
 export const REGALO_PDT = [[200, 30], [300, 25], [500, 22], [800, 15], [1200, 8]];

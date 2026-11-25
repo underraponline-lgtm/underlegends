@@ -7413,8 +7413,11 @@ export async function rutaAvisos(req, env, ruta) {
     // la billetera: con cuánto arrancó la temporada, como `/avisos/crew`
     let cfg = null;
     try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
+    // ⚠️ SÓLO PASA LO QUE ESTÁ ACÁ (25/11/2026, 8.38 → 8.42): los regalos de la vitrina leen `i` y `dia`, que no estaban,
+    // y abrir uno contestaba «Ese regalo ya no está» a todos. Las pruebas llamaban a la Tienda directo y no lo vieron:
+    // ahora `bot/avisos_prueba.mjs` compara lo que lee bot/tienda.js con esta lista
     const c = { accion: d.accion, pieza: d.pieza, col: d.col, piezas: d.piezas, ranura: d.ranura, para: d.para, msg: d.msg,
-      id: d.id, si: d.si, poner: d.poner, v: d.v };
+      id: d.id, si: d.si, poner: d.poner, v: d.v, i: d.i, dia: d.dia };
     for (const x of Object.keys(c)) if (c[x] === undefined) delete c[x];
     const cuerpo = Object.assign(c, { quien: q.id, de: claveValida(de) ? de : '' });
     if (cfg && Number.isInteger(cfg.inicial)) { cuerpo.inicial = cfg.inicial; cuerpo.desde = Date.parse(cfg.desde || '') || 0; }

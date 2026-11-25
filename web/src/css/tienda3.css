@@ -519,3 +519,12 @@
 }
 @keyframes rg-calma{0%{opacity:0}20%,70%{opacity:1}100%{opacity:0}}
 .app.calma .rg-caja,.app.calma .rg-caja .rg-ta,.app.calma .rg-caja .rg-mo,.app.calma .rg-luz{animation:none}
+
+/* 🐉 el drop del día, el de siempre (25/11/2026, 8.42): el dibujo de los drops (`dropQuietoSvg()`), no un huevo */
+.tz-drop-real{flex:none;display:block;width:84px;line-height:0}
+.tz-drop-real svg{display:block;width:100%;height:auto}
+.tz-drop-real.gris{filter:grayscale(1);opacity:.45}
+.tz-drop-real.an{animation:tz-drop-flota 2.6s ease-in-out infinite}
+@keyframes tz-drop-flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media (prefers-reduced-motion:reduce){.tz-drop-real.an{animation:none}}
+.app.calma .tz-drop-real.an{animation:none}

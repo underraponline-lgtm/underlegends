@@ -17,6 +17,7 @@ import { useModsEstado } from './mods.js';
 import CSS_PAGINA from './css/tienda3.css?inline';
 import { usarCss } from './css.js';
 import { refrescarPases, usePases } from './pase.js';
+import { abrirConEscenario, dropQuietoSvg, pedirDrops } from './drops.jsx';
 
 usarCss('tienda3', CSS_PAGINA);
 
@@ -40,7 +41,7 @@ const DONDE = {
 // la rehace `bot/con_marco.py`, con el freno del marco) y el fondo de Discord y el efecto en el VS en vivo (`bot/kit.py`)
 const EN_DISCORD = { carta: 'En /card se ve unos minutos después de ponértela.' };
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
-const ERRORES = { regalo: 'Ese regalo ya no está: recarga la Tienda.', vencido: 'Esa oferta era de ayer: hoy tienes regalos nuevos.', modo: 'En esta vista de Mods no se compra ni se guarda nada: apágala en la franja de arriba o en la página Mods.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
+const ERRORES = { regalo: 'Ese artículo ya no está: recarga la Tienda.', vencido: 'Esa oferta era de ayer: hoy tienes artículos nuevos.', modo: 'En esta vista de Mods no se compra ni se guarda nada: apágala en la franja de arriba o en la página Mods.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',
   no_jugaste: 'Es para quien jugó en la temporada.', usada: 'Ya te la pusiste: no se puede deshacer.', tarde: 'Pasaron las 24 horas.',
   ya_deshecha: 'Ya la deshiciste una vez.', no_se_puede: 'No se puede deshacer.', tope: 'Ya mandaste tus regalos de esta semana.',
@@ -198,30 +199,8 @@ function llevanHtml(liga, llevan, id, callar) {
   const caras = ks.slice(0, 4).map((k) => { const u = liga.avUrl ? liga.avUrl(k, 64) : ''; return u ? `<img alt="" src="${esc(u)}" data-ini="${esc(inicialSvg(k))}">` : `<img alt="" src="${esc(inicialSvg(k))}">`; }).join('');
   return `<p class="dq-llevan"><span class="dq-caras">${caras}</span><span><b>${num(ks.length)}</b> ${ks.length === 1 ? 'la lleva' : 'la llevan'}</span></p>`;
 }
-function pelea(X, S, liga, llevan) {
-  const pe = S.cat.pelea;
-  if (!pe || !pe.ids || pe.ids.length !== 2 || !pe.ids.every((id) => S.cat.piezas[id] && pe.cuenta[id])) return '';
-  const [a, b] = pe.ids, s = (id) => pe.cuenta[id][0] + pe.cuenta[id][1], tot = s(a) + s(b);
-  // si ninguna de las dos la lleva nadie, ninguna esquina lo repite; si una sí, la otra lo dice (las dos quedan parejas)
-  const nadie = ![a, b].some((id) => ((llevan && llevan[id]) || []).length);
-  const pa = tot ? Math.round(s(a) / tot * 100) : 50;
-  const lado = (id, cual) => {
-    const p = S.cat.piezas[id], [cor, com] = pe.cuenta[id], en = S.yo && S.yo.deseos.includes(id), gana = tot && pe.gana === id;
-    return `<div class="dq-esq" style="--r:${RZ[p.r][1]}"><p class="tz-rz"><i></i>${cual} · ${RZ[p.r][0]}</p>
-      <div class="dq-esq-v">${enEtiqueta(X, S, id)}</div>
-      <h3>${esc(p.n)}</h3><p class="dq-esq-s">${esc(subDe(S, id))}</p>
-      <p class="dq-cuenta"><b>${num(cor)}</b> ♡ · <b>${num(com)}</b> ${com === 1 ? 'compra' : 'compras'}${gana ? ' · <em>va ganando</em>' : ''}</p>
-      <div class="dq-esq-b"><button class="tz-b${en ? '' : ' blanco'}" data-deseo="${id}" aria-pressed="${!!en}">${en ? '♥ En tu lista' : '♡ A tu lista'}</button><button class="tz-b" data-abre="${id}">Ver</button></div>
-      ${llevanHtml(liga, llevan, id, nadie)}</div>`;
-  };
-  const g = S.cat.piezas[pe.gana];
-  const dice = tot ? `Hoy va ganando <b>${esc(g.n)}</b>.` : 'Todavía nadie las puso en su lista: tu ♡ desempata.';
-  return `<section class="dq-pelea" aria-label="La pelea de la vitrina">
-    <div class="dq-pelea-t"><h2>La pelea de la vitrina</h2><p>Vuelve en la próxima vitrina la que junte más ♡ y compras hasta el ${S.cat.vitrina.hasta ? 'lunes ' + diaCorto(S.cat.vitrina.hasta) : 'lunes'}; la otra, dentro de dos meses. ${dice}</p></div>
-    <div class="dq-ring">${lado(a, 'Esquina roja')}<div class="dq-vs" aria-hidden="true"><b>VS</b></div>${lado(b, 'Esquina azul')}</div>
-    <div class="dq-barra" role="img" aria-label="${esc(S.cat.piezas[a].n)} ${pa} %, ${esc(S.cat.piezas[b].n)} ${100 - pa} %" style="--v:${pa / 100};--r:${RZ[S.cat.piezas[a].r][1]};--r2:${RZ[S.cat.piezas[b].r][1]}"><i></i></div>
-  </section>`;
-}
+// ⚔️ la pelea de la vitrina se sacó de la página el 25/11/2026 (8.42), Dlx: «o culta los corazones y la cantidad de
+// compras. La pelea de la vitrina quita eso». El objeto la sigue calculando (`peleaVitrina()`) para elegir qué vuelve
 
 // 🎁 LOS REGALOS DE LA VITRINA (25/11/2026). Dlx: «haz q las piezas de las vitrinas estén como tapados por regalos y al
 // hacer click se desbloquea ofertas de diferentes cosas… pueden ser gratis pero la probabilidad es baja, así como lo hace
@@ -273,7 +252,7 @@ function rgCarta(X, S, st, tengo, rg) {
     txt = `<b>${esc(P.n)}</b><span><s>${num(of.base)}</s> <em>${num(of.precio)}</em> · sólo hoy</span>`;
     bot = of.usado || tengo.has(of.p) ? '<span class="tz-hecho">✓ Tuya</span>' : rgBoton(S, st, rg);
   }
-  return `<div class="rg-of${st.rgRecien && st.rgRecien.i === rg.i ? ' rg-entra' : ''}" style="--rgc:${rgColor(S, of)}${st.rgRecien && st.rgRecien.i === rg.i ? ';--t0:-' + Math.max(0, Date.now() - st.rgRecien.t) + 'ms' : ''}">${v}<span class="rg-of-t"><small>Tu regalo · ${rgEtq(of)}</small>${txt}</span>${bot}</div>`;
+  return `<div class="rg-of${st.rgRecien && st.rgRecien.i === rg.i ? ' rg-entra' : ''}" style="--rgc:${rgColor(S, of)}${st.rgRecien && st.rgRecien.i === rg.i ? ';--t0:-' + Math.max(0, Date.now() - st.rgRecien.t) + 'ms' : ''}">${v}<span class="rg-of-t"><small>Tu oferta · ${rgEtq(of)}</small>${txt}</span>${bot}</div>`;
 }
 // comprar la oferta, en dos toques (el primero muestra el precio y el saldo; como «Comprar» de la ficha)
 function rgBoton(S, st, rg) {
@@ -294,7 +273,6 @@ function hero(X, S, st, tengo, liga, llevan) {
   const mio = tengo.has(s.id), enLista = S.yo.deseos.includes(s.id);
   const rg = rgDe(S, st, s);
   const ofMia = rg && rg.of && rg.of.k === 'pieza' && rg.of.p === s.id && !rg.of.usado && !mio ? rg.of : null;
-  const cor = `<button class="tz-b tz-cor-b" data-deseo="${s.id}" aria-pressed="${enLista}" aria-label="${enLista ? 'Sacar de tu lista' : 'A tu lista'}">${enLista ? '♥' : '♡'}</button>`;
   let bot;
   if (s.t === 'nav') bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : `<button class="tz-b blanco" data-reclamar="${s.id}">Reclamar gratis</button>`) + '<button class="tz-b" data-tab="nav">Ver Navidad</button>';
   else if (s.t === 'num') {
@@ -304,7 +282,7 @@ function hero(X, S, st, tengo, liga, llevan) {
     bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : abre ? `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`
       : cerro ? '' : `<button class="tz-b blanco" data-deseo="${s.id}">${enLista ? '♥ Te avisamos ese día' : '♡ Avísame'}</button>`) + '<button class="tz-b" data-tab="num">Ver las ediciones</button>';
   }
-  else bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : ofMia ? rgBoton(S, st, rg) : `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`) + (seProbar(it) && !(ofMia && st.rgConfirma === rg.i) ? `<button class="tz-b" data-probar-ir="${s.id}">Probártelo</button>` : '') + (mio ? '' : cor);
+  else bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : ofMia ? rgBoton(S, st, rg) : `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`) + (seProbar(it) && !(ofMia && st.rgConfirma === rg.i) ? `<button class="tz-b" data-probar-ir="${s.id}">Probártelo</button>` : '');
   // el cajón: todas las fundas de la vitrina, paradas
   // 🏷️ (21/11/2026, la revisión visual G5#19) el tipo antes del precio: había dos «Ecualizador» y dos «Dragón» sin decir
   // cuál era el aro y cuál la carta. Y un nombre se muestra escrito como «Tú»: el arte de muestra de algunos trae un nombre
@@ -316,7 +294,7 @@ function hero(X, S, st, tengo, liga, llevan) {
     // 🎁 cerrada: la caja, sin decir qué hay (un toque la abre); abierta: la pieza con la etiqueta de lo que salió
     if (g && !g.of) {
       const abre = st.rgAbriendo && st.rgAbriendo.i === g.i;
-      return `<button class="dq-fu rg-fu" data-slide="${i}" data-rg-abrir="${g.i}" aria-pressed="${i === st.slide}" style="--r:${rgCinta(g.i)}" aria-label="Regalo ${g.i + 1} de ${g.n}, cerrado: ${S.anon ? 'entra para abrirlo' : 'tócalo para abrirlo'}"><span class="dq-fu-v">${cajaRg(g.i, abre ? 'agita' : '')}</span><span class="dq-fu-t">Regalo ${g.i + 1}</span><span class="dq-fu-s">${abre ? 'Abriendo…' : S.anon ? 'Entra y ábrelo' : 'Toca y ábrelo'}</span></button>`;
+      return `<button class="dq-fu rg-fu" data-slide="${i}" data-rg-abrir="${g.i}" aria-pressed="${i === st.slide}" style="--r:${rgCinta(g.i)}" aria-label="Artículo ${g.i + 1} de ${g.n}, tapado: ${S.anon ? 'entra para destaparlo' : 'tócalo para destaparlo'}"><span class="dq-fu-v">${cajaRg(g.i, abre ? 'agita' : '')}</span><span class="dq-fu-t">Artículo ${g.i + 1}</span><span class="dq-fu-s">${abre ? 'Destapando…' : S.anon ? 'Entra y destápalo' : 'Toca y destápalo'}</span></button>`;
     }
     const tipo = esFondo(y.c) ? 'Fondo' : RANURA[y.c] || '';
     const ofM = g && g.of && g.of.k === 'pieza' && g.of.p === x.id && !g.of.usado && !tengo.has(x.id);
@@ -324,10 +302,10 @@ function hero(X, S, st, tengo, liga, llevan) {
     const arte = esFondo(y.c) ? arteFondo(X, x.id) : y.c === 'nom' ? nombre(muestra, x.id) : vista(X, x.id);
     const nuevo = g && st.rgRecien && st.rgRecien.i === g.i;
     const etq = g && g.of ? `<span class="rg-badge rg-${g.of.k}${g.of.usado && g.of.k === 'pieza' ? ' usado' : ''}" style="--rgc:${rgColor(S, g.of)}">${g.of.usado && g.of.k === 'pieza' ? '✓' : rgEtq(g.of)}</span>` : '';
-    return `<button class="dq-fu${nuevo ? ' rg-nuevo' : ''}" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}${nuevo ? ';--t0:-' + Math.max(0, Date.now() - st.rgRecien.t) + 'ms' : ''}" aria-label="${esc(y.n)}, ${esc(tipo)}, ${RZ[y.r][0]}${g && g.of ? ', tu regalo: ' + esc(rgEtq(g.of)) : ''}"><span class="dq-fu-v">${arte}${etq}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
+    return `<button class="dq-fu${nuevo ? ' rg-nuevo' : ''}" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}${nuevo ? ';--t0:-' + Math.max(0, Date.now() - st.rgRecien.t) + 'ms' : ''}" aria-label="${esc(y.n)}, ${esc(tipo)}, ${RZ[y.r][0]}${g && g.of ? ', tu oferta: ' + esc(rgEtq(g.of)) : ''}"><span class="dq-fu-v">${arte}${etq}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
   }).join('');
   // (18/11/2026) «a la venta el …» sólo antes de la venta; una edición de 10 no lleva descuento Premium
-  const precio = s.t === 'nav' || mio ? '' : ofMia ? `<p class="tz-precio rg-precio"><s>${num(precioIt(S, s.id))}</s> <b>${num(ofMia.precio)}</b> <small>Tu regalo · −${ofMia.desc} % · sólo hoy</small></p>` : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' ? (ed && Date.now() < ed.venta ? ' · a la venta el ' + diaCorto(ed.venta) : '') : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;
+  const precio = s.t === 'nav' || mio ? '' : ofMia ? `<p class="tz-precio rg-precio"><s>${num(precioIt(S, s.id))}</s> <b>${num(ofMia.precio)}</b> <small>Tu oferta · −${ofMia.desc} % · sólo hoy</small></p>` : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' ? (ed && Date.now() < ed.venta ? ' · a la venta el ' + diaCorto(ed.venta) : '') : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;
   // la etiqueta redonda de la funda: la rareza y el precio, como el sticker de un disco
   const sticker = `<span class="dq-st"><span>${RZ[it.r][0]}<b>${s.t === 'nav' ? 'Gratis' : mio ? 'Tuyo' : num(ofMia ? ofMia.precio : precioIt(S, s.id))}</b></span></span>`;
   const bill = S.anon ? '' : `<button class="dq-bill" data-abre="__bill">Tienes <b>${S.modo === 'dinero' ? '∞' : num(S.yo.saldo || 0)}</b></button>`;
@@ -337,17 +315,17 @@ function hero(X, S, st, tengo, liga, llevan) {
     const abre = st.rgAbriendo && st.rgAbriendo.i === rg.i;
     return `<section class="tz-hero dq rg-hero" aria-label="La vitrina" style="--r:${rgCinta(rg.i)}">${cab}
     <div class="dq-main">
-      <div class="dq-vis rg-vis" data-slide-id="rg:${rg.i}"><button class="rg-grande${abre ? ' abriendo' : ''}" data-rg-abrir="${rg.i}" aria-label="Abrir el regalo ${rg.i + 1}"${abre ? ' disabled' : ''}><i class="rg-luz"></i>${cajaRg(rg.i, abre ? 'agita' : '')}</button></div>
+      <div class="dq-vis rg-vis" data-slide-id="rg:${rg.i}"><button class="rg-grande${abre ? ' abriendo' : ''}" data-rg-abrir="${rg.i}" aria-label="Destapar el artículo ${rg.i + 1}"${abre ? ' disabled' : ''}><i class="rg-luz"></i>${cajaRg(rg.i, abre ? 'agita' : '')}</button></div>
       <div class="dq-info" data-tuto="tz-vitrina">
-        <p class="tz-rz"><i></i>Regalo ${rg.i + 1} de ${rg.n} · <span>Se renuevan a la medianoche (hora del este)</span></p>
-        <h2>Un regalo para ti</h2>
-        <p class="tz-hero-p">Cada pieza de la vitrina llega envuelta. Adentro hay algo sólo para ti y sólo por hoy: la pieza con descuento, Puntos de Tienda, un Dragón Drop o, con suerte, la pieza gratis.</p>
+        <p class="tz-rz"><i></i>Artículo ${rg.i + 1} de ${rg.n} · <span>Se renuevan a la medianoche (hora del este)</span></p>
+        <h2>Un artículo tapado</h2>
+        <p class="tz-hero-p">Las primeras piezas de la vitrina llegan tapadas. Destápala y sale algo sólo para ti y sólo por hoy: la pieza con descuento, Puntos de Tienda, un Dragón Drop o, con suerte, la pieza gratis.</p>
         <p class="rg-chances"><span><b>2 %</b> gratis</span><span><b>4 %</b> Dragón Drop<small> (Miembros de DRA)</small></span><span><b>6 %</b> Puntos</span><span><b>88 %</b> de 10 a 50 % menos</span></p>
-        <div class="tz-bots"><button class="tz-b blanco" data-rg-abrir="${rg.i}"${abre ? ' disabled' : ''}>${abre ? 'Abriendo…' : S.anon ? 'Entra para abrirlo' : 'Abrir el regalo'}</button></div>
+        <div class="tz-bots"><button class="tz-b blanco" data-rg-abrir="${rg.i}"${abre ? ' disabled' : ''}>${abre ? 'Destapando…' : S.anon ? 'Entra para destaparlo' : 'Destapar'}</button></div>
       </div>
     </div>
     ${cajon}
-  </section>${pelea(X, S, liga, llevan)}`;
+  </section>`;
   }
   const recien = rg && rg.of && st.rgRecien && st.rgRecien.i === rg.i;
   return `<section class="tz-hero dq" aria-label="La vitrina" style="--r:${RZ[it.r][1]}">
@@ -368,7 +346,7 @@ function hero(X, S, st, tengo, liga, llevan) {
       </div>
     </div>
     ${cajon}
-  </section>${pelea(X, S, liga, llevan)}`;
+  </section>`;
 }
 
 function escenario(X, S, st) {
@@ -448,15 +426,15 @@ function regalosRecibidos(X, S, liga) {
     <span><b>${r.de ? esc(liga.nombreDe(r.de, r.dn)) + ' te regaló ' : 'Te regalaron '}${r.que.startsWith('col:') ? 'la colección «' + esc((S.cat.colecciones[r.que.slice(4)] || {}).n || '') + '»' : esc((S.cat.piezas[r.piezas[0]] || {}).n || '')}</b>${r.msg ? '<small>«' + esc(r.msg) + '»</small>' : ''}<small>Tienes hasta el ${diaCorto(r.fin)} para contestar.</small></span>
     <span class="tz-regalo-b"><button class="tz-b negro" data-regalo="${r.id}" data-si="1">Aceptar</button><button class="tz-b l" data-regalo="${r.id}" data-si="0">Rechazar</button></span></div>`).join('')}</section>`;
 }
-function dropDia(st) {
+function dropDia(st, svg) {
   // `{ya: true}` (18/11/2026): el objeto dijo que el de hoy ya se abrió —al volver a la Tienda `drop` arranca vacío y
   // ofrecía «Abrir» otra vez—, pero no qué salió: sin «Ver lo que salió»
   const r = st.drop;
   return `<section class="tz-sec tz-sec-drop"><div class="tz-drop${r ? ' abierto' : ''}">
-    <span class="tz-drop-v" aria-hidden="true"></span>
+    <span class="tz-drop-real${r ? ' gris' : ' an'}" aria-hidden="true">${svg || ''}</span>
     <div class="tz-drop-t"><span class="tz-cambia">Gratis · uno por día</span><b>Tu Dragón Drop del día</b>
       <span>${r ? 'Ya lo abriste: el próximo, mañana desde la medianoche (hora del este).' : 'Se renueva todos los días a la medianoche (hora del este). Sale con las mismas chances que los Dragón Drops.'}</span></div>
-    ${r && !r.ya ? '<button class="tz-b" data-abre="__drop">Ver lo que salió</button>' : r ? '' : '<button class="tz-b blanco" data-drop>Abrir</button>'}
+    ${r ? '' : '<button class="tz-b blanco" data-drop>Abrir</button>'}
   </div></section>`;
 }
 function barraCelu(S, st, tengo) {
@@ -619,7 +597,7 @@ const modoPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Vista de
 // ⚠️ EL ERROR DE UN TOQUE SIN FICHA ABIERTA (18/11/2026): el drop del día, el ♡ de la grilla, «Tu lista» o aceptar un
 // regalo guardaban el error y sólo las fichas lo dibujan, así que el toque no hacía nada visible («Ya abriste el de
 // hoy.», «El drop del día es de los Miembros de DRA.» y «Primero verifícate.» no salían nunca)
-const ERR_DE = { 'regalo-abrir': 'Tu regalo de la vitrina', 'regalo-comprar': 'Tu regalo de la vitrina', drop: 'Tu Dragón Drop del día', deseo: 'Tu lista', 'deseo-publico': 'Tu lista', regalo: 'Un regalo' };
+const ERR_DE = { 'regalo-abrir': 'Tu artículo de la vitrina', 'regalo-comprar': 'Tu artículo de la vitrina', drop: 'Tu Dragón Drop del día', deseo: 'Tu lista', 'deseo-publico': 'Tu lista', regalo: 'Un regalo' };
 const errorPop = (st) => `<div class="tz-ficha" role="dialog" aria-label="No se pudo">${popCab('No se pudo', ERR_DE[st.errDe] || '', '#E8B923')}<div class="tz-f-inf"><p>${esc(ERRORES[st.error] || 'No se pudo: ' + st.error)}</p><button class="tz-b" data-acc="cerrar">Entendido</button></div></div>`;
 const billPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Tu billetera">${popCab('Tu billetera', 'Puntos de Tienda', '#29B298')}<div class="tz-f-inf"><p class="tz-bill-g"><b>${num(S.yo.saldo || 0)}</b> Puntos de Tienda${S.yo.prem ? ' · con Premium' : ''}</p><p class="tz-nota">Se ganan jugando, entrando cada día, con tus Tareas del Pase, cazando y con los Dragón Drops.</p></div></div>`;
 const dropPop = (st) => { const r = st.drop || {}; const c = RZ[r.rareza || 0] || RZ[0]; return `<div class="tz-ficha" role="dialog" aria-label="Tu Dragón Drop">${popCab('Tu Dragón Drop del día', 'Salió ' + (r.nombre || c[0]), c[1])}<div class="tz-f-inf"><div class="tz-drop-sale" style="--r:${c[1]}"><span class="tz-drop-v" aria-hidden="true"></span><b>${r.titulo ? 'Título «' + esc(r.titulo) + '»' : ''}${r.titulo && r.puntos ? ' + ' : ''}${r.puntos ? num(r.puntos) + ' Puntos' : ''}</b></div><p class="tz-nota">El próximo, mañana desde la medianoche (hora del este).</p><button class="tz-b prim" data-acc="cerrar">Listo</button></div></div>`; };
@@ -717,6 +695,9 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     return m;
   }, [pub]);
   const pedir = useCallback((d) => window.conCuenta('/api/avisos/tienda-accion', d), []);
+  // el Dragón Drop de verdad, quieto (el mismo dibujo del escenario de los drops)
+  const [dropSvg, setDropSvg] = useState('');
+  useEffect(() => { let vivo = true; dropQuietoSvg('drop', 0).then((x) => { if (vivo) setDropSvg(x || ''); }).catch(() => {}); return () => { vivo = false; }; }, []);
 
   async function accion(d, despues) {
     // 🧪 en una vista de MODS no sale nada al objeto: en la prueba, ponerse algo es local (para verlo puesto)
@@ -784,6 +765,18 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
       if (E.rgRecien) setTimeout(() => { if (E.rgRecien && E.rgRecien.t === t) { E.rgRecien = null; pinta(); } }, RG_DURA);
     }).then((r) => { if (!r && E.rgAbriendo) { E.rgAbriendo = null; pinta(); } });
   }
+  // 🐉 el drop del día se cobra y se abre en el mismo pedido (`drop` contesta como `drop-abrir`), y el escenario de
+  // siempre anima hasta lo que salió. Dlx, 25/11/2026: «que sea el estilo de los drops que siempre tenemos y con sus
+  // animaciones, no un huevo así de gallina». Se monta en la raíz de la Tienda (el botón ya no existe después de pintar)
+  function abrirDropDia() {
+    if (E.va) return;
+    accion({ accion: 'drop' }, (j) => {
+      E.drop = j;
+      const item = { id: 'tdia', tipo: 'drop', min: 0, origen: 'tdia' };
+      abrirConEscenario(raiz.current, item, () => Promise.resolve(j), () => { try { pedirDrops(); } catch (e) { /* se pone al día sola */ } })
+        .catch(() => { E.abierta = '__drop'; pinta(); });
+    });
+  }
   function comprarRegalo(i) {
     const dia = (S.yo.regalos_dia || {}).dia || '';
     accion({ accion: 'regalo-comprar', i, dia, poner: false }, () => {
@@ -816,7 +809,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     if (d.deseo) { const si = !S.yo.deseos.includes(d.deseo); accion({ accion: 'deseo', pieza: d.deseo, si }); return; }
     if (d.publico !== undefined) { accion({ accion: 'deseo-publico', si: !S.yo.deseo_publico }); return; }
     if (d.regalo) { accion({ accion: 'regalo', id: d.regalo, si: d.si === '1' }); return; }
-    if (d.drop !== undefined) { accion({ accion: 'drop' }, (j) => { E.drop = j; E.abierta = '__drop'; }); return; }
+    if (d.drop !== undefined) { abrirDropDia(); return; }
     if (d.rgAbrir !== undefined) { if (d.slide !== undefined) E.slide = +d.slide; abrirRegalo(+d.rgAbrir); return; }
     if (d.rgComprar !== undefined) { E.rgConfirma = +d.rgComprar; pinta(); return; }
     if (d.rgNo !== undefined) { E.rgConfirma = null; pinta(); return; }
@@ -945,7 +938,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     <section class="tz-sec tz-sec-mas" data-tuto="tz-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>
       <button data-mas="cabezas" aria-pressed="${E.mas === 'cabezas'}">Precio por cabeza ›</button><button data-mas="promo" aria-pressed="${E.mas === 'promo'}">Tu promo ›</button><a href="#/crews">Tu crew ›</a><button data-mas="ropa" aria-pressed="${E.mas === 'ropa'}">Ropa de UL · pronto</button>
       <button class="tz-tira-r" data-abre="__reglas">¿Cómo funciona la Tienda?</button></div></section>`;
-  const abajo = `${dropDia(E)}${barraCelu(S, E, tengo)}`;
+  const abajo = `${dropDia(E, dropSvg)}${barraCelu(S, E, tengo)}`;
   return (
     <div className="tz" ref={raiz}>
       <div onClick={clic} onInput={cambio} onChange={cambio} dangerouslySetInnerHTML={{ __html: arriba }} />

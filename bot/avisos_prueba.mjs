@@ -5790,6 +5790,19 @@ const ok = (cond, que, det) => {
 
     // 🎁 los regalos de la vitrina (25/11/2026): uno por pieza, se abren gratis, lo que sale queda guardado y se compra
     {
+      // 🚪 lo que la Tienda lee de cada pedido tiene que pasar por la puerta del Worker (8.38: `i` y `dia` no pasaban, y
+      // abrir un regalo de verdad contestaba «ya no está» aunque estas pruebas, que llaman a la Tienda directo, dieran bien)
+      {
+        const fs = await import('node:fs');
+        const src = (f) => fs.readFileSync(new URL(f, import.meta.url), 'utf8');
+        const lee = new Set([...src('./tienda.js').matchAll(/\bd\.([a-z_]+)/g)].map((m) => m[1]));
+        // los que llegan por otra puerta (el catálogo y el arte, con la clave del ciclo) o los pone el Worker mismo
+        for (const x of ['catalogo', 'arte', 'forzar', 'prem', 'col_prem', 'quien', 'de', 'inicial', 'desde']) lee.delete(x);
+        const m = /const c = \{ (accion: d\.accion[^}]*)\};/.exec(src('./avisos.js'));
+        const pasa = new Set(m ? [...m[1].matchAll(/([a-z_]+): d\./g)].map((x) => x[1]) : []);
+        const faltan = [...lee].filter((x) => !pasa.has(x));
+        ok(m && !faltan.length, 'todo lo que la Tienda lee de un pedido pasa por la puerta del Worker', faltan.join(', '));
+      }
       const cv = TI.catalogoValido(Object.assign({}, baja, { abierta: true }));
       const dia = A.diaET(Date.now());
       const tirar = (q, i, miembro) => TI.tiradaRegalo(cv, 'fija', q, dia, i, new Set(), false, miembro);
