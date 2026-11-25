@@ -111,6 +111,15 @@ export const MIN_SIN = num(E.MIN_SIN, 8);
 export const ESPERA_ENTRAR = num(E.ESPERA_ENTRAR_S, 60) * 1000;
 export const SALIR_CON = num(E.SALIR_CON, 2);
 export const ESPERA_SALIR = num(E.ESPERA_SALIR_S, 300) * 1000;
+//: ⏸️ SI LA SACAN, PAUSA EN VEZ DE TERMINAR (25/11/2026, Dlx a «si la sacan y vuelve al mismo evento, juntar todo en una sola
+//: entrega»: «sí, hazlo»). Del 21 al 24/11, 4 grabaciones terminaron en «me sacaron de la llamada» y LKR del 22/11 salió en 3
+//: pedazos: cada vuelta era una grabación nueva, con sus batallas partidas entre dos entregas. Ahora, con el evento en
+//: juego, la grabación se PAUSA: las pistas quedan abiertas y el reloj se congela (`ms()` descuenta lo de afuera, así que al
+//: volver sigue sin hueco). Vuelve cuando hay una llamada del evento (como para entrar, después de `ESPERA_VOLVER`); si
+//: pasan `PAUSA_MAX_MIN` afuera, el evento termina o la sacan `PAUSAS_MAX` veces, se entrega lo que hay, como antes
+export const PAUSA_MAX_MIN = num(E.PAUSA_MAX_MIN, 20);
+export const PAUSAS_MAX = num(E.PAUSAS_MAX, 3);
+export const ESPERA_VOLVER = num(E.ESPERA_VOLVER_S, 60) * 1000;
 export const MAX_H = num(E.MAX_H, 6);
 //: los segundos que se dejan después de que se vació la llamada (la espera de `ESPERA_SALIR` no va al archivo)
 export const COLA_S = num(E.COLA_S, 15);
@@ -261,6 +270,10 @@ class Grabacion {
     this.llaveVista = false;     // si vio una llave de este servidor tocada después de entrar
     this.sinEvento = null;       // desde cuándo no hay evento
     this.mudanzas = 0;
+    this.pausa = null;           // ⏸️ afuera: { t (performance.now), d (Date.now), ms (lo grabado), razon }
+    this.afuera = 0;             // ⏸️ los ms que estuvo afuera, que `ms()` descuenta
+    this.pausas = 0;
+    this.volviendo = false;
   }
 
   /** 🏁 ¿Sigue el evento en este servidor? Con lo que el vigía y los anuncios dijeron en la última vuelta. */
@@ -296,7 +309,13 @@ class Grabacion {
   }
 
   /** Los ms grabados. 0 mientras entra: `t0` se pone recién con la conexión lista (antes daba NaN: «0 pistas, NaN min»). */
-  ms() { return this.t0 === undefined ? 0 : performance.now() - this.t0; }
+  ms() {
+    if (this.t0 === undefined) return 0;
+    if (this.pausa) return this.pausa.ms;
+    return performance.now() - this.t0 - this.afuera;
+  }
+  /** Un instante de reloj (`Date.now()`) en ms de la grabación: sin lo que estuvo afuera antes de ese instante. */
+  enGrabacion(ts) { return Math.max(0, ts - this.inicio.getTime() - this.afuera); }
 
   /**
    * 🔴 EL APODO MIENTRAS GRABA, COMO CRAIG (Dlx, 23/11/2026: «cuando se una que se ponga como Craig… que su apodo se cambie a
@@ -322,34 +341,102 @@ class Grabacion {
 
   async empezar() {
     fs.mkdirSync(this.dir, { recursive: true });
-    this.con = joinVoiceChannel({
+    await this.conectar();
+    this.t0 = performance.now();
+    this.inicio = new Date();
+    anotar(`🔴 grabando en ${this.guild.name} / ${this.canal.name} (${this.motivo})`);
+  }
+
+  /** Entra a `this.canal` y engancha lo que escucha. La usan `empezar()` y `reanudar()`. */
+  async conectar() {
+    const con = joinVoiceChannel({
       channelId: this.canal.id, guildId: this.guild.id, adapterCreator: this.guild.voiceAdapterCreator,
       selfDeaf: false, selfMute: true,
     });
-    await entersState(this.con, VoiceConnectionStatus.Ready, 30000);
+    this.con = con;
+    await entersState(con, VoiceConnectionStatus.Ready, 30000);
     await this.ponerApodo(true);
-    this.t0 = performance.now();
-    this.inicio = new Date();
-    this.con.receiver.speaking.on('start', (id) => this.escuchar(id));
+    con.receiver.speaking.on('start', (id) => this.escuchar(id));
+    clearInterval(this.reloj);
     this.reloj = setInterval(() => this.medirVoces().catch((e) => anotar('⚠️ medir:', String(e.message || e).slice(0, 100))),
       VENTANA_S * 1000);
-    this.con.on(VoiceConnectionStatus.Disconnected, async () => {
+    con.on(VoiceConnectionStatus.Disconnected, async () => {
+      if (this.con !== con || this.pausa) return;   // una conexión vieja (de antes de una pausa) ya no manda
       try {
-        await Promise.race([entersState(this.con, VoiceConnectionStatus.Signalling, 5000),
-          entersState(this.con, VoiceConnectionStatus.Connecting, 5000)]);
+        await Promise.race([entersState(con, VoiceConnectionStatus.Signalling, 5000),
+          entersState(con, VoiceConnectionStatus.Connecting, 5000)]);
       } catch (e) {
         // 🔇 ¿la aislaron? Un timeout la saca de la llamada y no la deja volver: se dice en Logs, con hasta cuándo
         const ais = await aisladaHasta(this.guild);
         if (ais) reportarFalla(this.client, this.guild, this.canal, gente(this.canal).n, this.motivo, 'me aislaron', ais);
-        this.terminar(ais ? 'me aislaron (timeout) en ese servidor' : 'me sacaron de la llamada');
+        if (ais) this.terminar('me aislaron (timeout) en ese servidor');
+        else if (this.puedePausar()) this.pausar('me sacaron de la llamada');
+        else this.terminar('me sacaron de la llamada');
       }
     });
-    this.con.on('error', (e) => anotar('⚠️ la conexión de voz:', String(e.message || e).slice(0, 120)));
-    anotar(`🔴 grabando en ${this.guild.name} / ${this.canal.name} (${this.motivo})`);
+    con.on('error', (e) => anotar('⚠️ la conexión de voz:', String(e.message || e).slice(0, 120)));
+  }
+
+  /** ⏸️ ¿Se pausa en vez de terminar? Con el evento en juego (o en un servidor que se graba por gente) y sin pasar el tope. */
+  puedePausar() {
+    return !this.cerrando && this.pausas < PAUSAS_MAX && this.t0 !== undefined
+      && (this.eventoSigue() || GRABAR_EN.includes(this.guild.id));
+  }
+
+  /** ⏸️ La sacaron: suelta la llamada, deja las pistas abiertas y congela el reloj (ver `PAUSA_MAX_MIN`). */
+  pausar(razon) {
+    if (this.pausa || this.cerrando) return;
+    this.pausa = { t: performance.now(), d: Date.now(), ms: this.ms(), razon };
+    this.pausas++;
+    clearInterval(this.reloj);
+    for (const st of this.subs.values()) st.destroy();
+    this.subs.clear();
+    try { this.con.destroy(); } catch (e) { /* ya estaba cerrada */ }
+    this.ponerApodo(false);
+    anotar(`⏸️ ${this.guild.name}: ${razon} a los ${largo(this.pausa.ms / 1000)}; espera hasta ${PAUSA_MAX_MIN} min para volver al evento`);
+  }
+
+  /** ⏸️→🔴 Vuelve a una llamada del evento y sigue en la MISMA grabación: lo de afuera no queda en el audio. */
+  async reanudar(canal) {
+    if (!this.pausa || this.volviendo) return;
+    this.volviendo = true;
+    const antes = this.canal;
+    this.canal = canal;
+    try {
+      await this.conectar();
+      this.afuera += performance.now() - this.pausa.t;
+      anotar(`↩️ ${this.guild.name}: volvió a ${canal.name} después de ${largo((Date.now() - this.pausa.d) / 1000)} afuera; sigue la misma grabación`);
+      this.pausa = null;
+      this.vacia = null;
+      this.volvio = Date.now();
+    } catch (e) {
+      try { this.con?.destroy(); } catch (x) { /* nada */ }
+      this.canal = antes;
+      anotar(`⚠️ ${this.guild.name}: no pude volver (${String(e.message || e).slice(0, 100)}); sigue en pausa`);
+    } finally {
+      this.volviendo = false;
+    }
+  }
+
+  /** ⏸️ Cada vuelta, en pausa: ¿vuelve, sigue esperando o se entrega? */
+  revisarPausa() {
+    const fuera = Date.now() - this.pausa.d;
+    const sigue = this.eventoSigue() || GRABAR_EN.includes(this.guild.id);
+    if (!sigue) { this.terminar(this.pausa.razon + ' y el evento terminó'); return; }
+    if (fuera >= PAUSA_MAX_MIN * 60000) { this.terminar(this.pausa.razon + ` y no pudo volver en ${PAUSA_MAX_MIN} min`); return; }
+    if (fuera < ESPERA_VOLVER || this.volviendo) return;
+    const yo = this.guild.members.me;
+    if (yo?.communicationDisabledUntilTimestamp > Date.now()) { this.terminar('me aislaron (timeout) en ese servidor'); return; }
+    const org = conOrganizador(this.guild, anun.g.get(this.guild.id));
+    const c = org && org.n >= MIN_ORG && !org.otro ? org : candidata(this.guild);
+    if (!c || c.otro || c.n < Math.min(MIN_VIVO, MIN_SIN, MIN_ORG)) return;
+    if (!(yo && c.canal.permissionsFor(yo)?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.Connect]))) return;
+    this.reanudar(c.canal);
   }
 
   escuchar(id) {
-    if (this.cerrando || this.subs.has(id)) return;
+    // (sin reloj todavía —entrando— no se escucha: el próximo «empezó a hablar» lo abre, ya con su tiempo de verdad)
+    if (this.cerrando || this.pausa || this.t0 === undefined || this.subs.has(id)) return;
     const m = this.guild.members.cache.get(id);
     if (!this.quien.has(id)) this.quien.set(id, { nombre: m?.displayName || m?.user?.username || id, bot: !!m?.user?.bot });
     let pista = this.pistas.get(id);
@@ -399,6 +486,7 @@ class Grabacion {
   /** Cada vuelta: ¿sigue habiendo gente? */
   revisar() {
     if (this.cerrando) return;
+    if (this.pausa) { this.revisarPausa(); return; }
     const c = this.guild.channels.cache.get(this.canal.id);
     const n = c ? gente(c).n : 0;
     const sigue = this.eventoSigue();
@@ -446,11 +534,12 @@ class Grabacion {
       // con menos de `SALIR_CON`, y esos minutos quedaban en el archivo: la grabación de DESGRACIAS EN TOKYO VOL 32 terminaba
       // con 4 min 43 s de silencio. Se entrega hasta que se vació, con `COLA_S` de aire
       let hasta = razon === 'se vació la llamada' && this.vacia
-        ? Math.min(fin, Math.max(0, this.vacia - this.inicio.getTime()) + COLA_S * 1000) : fin;
+        ? Math.min(fin, this.enGrabacion(this.vacia) + COLA_S * 1000) : fin;
       // 🏁 y si terminó el evento, hasta `COLA_EVENTO_MIN` después de la última edición de su llave
       const ed = vivo.ed.get(this.guild.id) || 0;
-      if (razon === 'terminó el evento' && this.llaveVista && ed > this.inicio.getTime()) {
-        hasta = Math.min(hasta, ed - this.inicio.getTime() + COLA_EVENTO_MIN * 60000);
+      // (una edición de antes de la última vuelta no recorta: descontarle lo de afuera cortaría audio de verdad)
+      if (razon === 'terminó el evento' && this.llaveVista && ed > this.inicio.getTime() && ed >= (this.volvio || 0)) {
+        hasta = Math.min(hasta, this.enGrabacion(ed) + COLA_EVENTO_MIN * 60000);
       }
       // ✂️ lo muy corto no es un evento: se anota y no se entrega
       if (hasta / 1000 < MIN_ENTREGA_S) {
@@ -513,7 +602,9 @@ class Grabacion {
     const cab = `🎙️ **Grabación** · ${this.guild.name} · <#${this.canal.id}>\n`
       + `${horaET(this.inicio)} · ${largo(seg)} · ${gente.length} voces`
       + (voces.length > gente.length ? ' + la música' : '')
-      + `\nEntró porque ${this.motivo}; salió porque ${razon}.`;
+      + `\nEntró porque ${this.motivo}; salió porque ${razon}.`
+      + (this.pausas && this.afuera > 0 ? `\n↩️ La sacaron de la llamada ${this.pausas === 1 ? '1 vez' : this.pausas + ' veces'} y volvió:`
+        + ` va todo junto, sin los ${largo(this.afuera / 1000)} de afuera.` : '');
     if (!voces.length) {
       await canal.send({ content: cab + '\nNo habló nadie: no hay audio.', allowedMentions: { parse: [] } });
       return;
