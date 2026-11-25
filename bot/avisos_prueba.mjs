@@ -5766,6 +5766,69 @@ const ok = (cond, que, det) => {
     r = acc(A.DUENO, 'dlx', { accion: 'drop' });
     ok(r.ok && acc(A.DUENO, 'dlx', { accion: 'drop' }).error === 'ya', 'uno por día', JSON.stringify(r));
 
+    // 🎁 los regalos de la vitrina (25/11/2026): uno por pieza, se abren gratis, lo que sale queda guardado y se compra
+    {
+      const cv = TI.catalogoValido(Object.assign({}, baja, { abierta: true }));
+      const dia = A.diaET(Date.now());
+      const tirar = (q, i, miembro) => TI.tiradaRegalo(cv, 'fija', q, dia, i, new Set(), false, miembro);
+      const N = 6000, cuenta = { gratis: 0, drop: 0, pdt: 0, pieza: 0 };
+      let precioMal = 0, descMal = 0, otra = 0;
+      for (let n = 0; n < N; n++) {
+        const t = tirar('q' + n, n % 2, true);
+        cuenta[t.k]++;
+        if (t.k === 'pieza') {
+          if (t.precio % 50 || t.precio >= t.base || t.precio < 50) precioMal++;
+          if (t.desc < 10 || t.desc > 50 || t.desc % 5) descMal++;
+          if (t.p !== cv.vitrina.ids[n % 2]) otra++;
+        }
+      }
+      ok(cuenta.gratis / N > 0.012 && cuenta.gratis / N < 0.03 && cuenta.drop / N > 0.03 && cuenta.drop / N < 0.05
+        && cuenta.pdt / N > 0.045 && cuenta.pdt / N < 0.075 && cuenta.pieza / N > 0.85,
+        'las chances: gratis ~2 %, Drop ~4 %, Puntos ~6 %, el resto la pieza con descuento', JSON.stringify(cuenta));
+      ok(!precioMal && !descMal && otra / cuenta.pieza > 0.2 && otra / cuenta.pieza < 0.4,
+        'con descuento: de 10 a 50 %, de a 50 Puntos y más barata; casi siempre la de ese lugar', JSON.stringify({ precioMal, descMal, otra }));
+      let dropSin = 0;
+      for (let n = 0; n < 3000; n++) if (tirar('q' + n, 0, false).k === 'drop') dropSin++;
+      ok(!dropSin, 'quien no es Miembro de DRA nunca recibe un Drop (le salen Puntos)');
+      ok(JSON.stringify(tirar('igual', 1, true)) === JSON.stringify(tirar('igual', 1, true))
+        && TI.tiradaRegalo(cv, 'otra', 'igual', dia, 1, new Set(), false, true).k !== undefined, 'la misma tirada da lo mismo');
+
+      o.guardar('tienda_sal', 'fija');
+      const busca = (k, i) => { for (let n = 0; n < 4000; n++) { const q = '5000000000000' + String(n).padStart(5, '0'); if (tirar(q, i, false).k === k) return q; } return ''; };
+      const QP = busca('pieza', 0), QG = busca('gratis', 1), QT = busca('pdt', 0);
+      const yo = TI.tiendaMia(o, { quien: QP, de: 'qp', inicial: INI, desde: 0 }, H).yo;
+      ok(yo && yo.regalos_dia && yo.regalos_dia.n === 2 && !Object.keys(yo.regalos_dia.ab).length,
+        'dos piezas en la vitrina, dos regalos cerrados (lo que tienen adentro no sale)', JSON.stringify(yo && yo.regalos_dia));
+      ok(acc(QP, 'qp', { accion: 'regalo-abrir', i: 2 }).error === 'regalo' && acc(QP, '', { accion: 'regalo-abrir', i: 0 }).error === 'verificate',
+        'sólo los regalos que hay, y con perfil verificado');
+      const s0 = saldo(QP);
+      r = acc(QP, 'qp', { accion: 'regalo-abrir', i: 0 });
+      const r2 = acc(QP, 'qp', { accion: 'regalo-abrir', i: 0 });
+      ok(r.ok && r.oferta.k === 'pieza' && r2.ya && JSON.stringify(r2.oferta) === JSON.stringify(r.oferta) && saldo(QP) === s0,
+        'abrir es gratis y abrir de nuevo no vuelve a tirar', JSON.stringify([r, r2]));
+      const of = r.oferta;
+      ok(acc(QP, 'qp', { accion: 'regalo-comprar', i: 0, dia: '2020-01-01' }).error === 'vencido', 'la oferta de otro día ya no vale');
+      r = acc(QP, 'qp', { accion: 'regalo-comprar', i: 0, dia });
+      const inv = sql.exec('SELECT origen, pagado FROM tienda_inv WHERE quien = ? AND pieza = ?', QP, of.p).toArray()[0];
+      ok(r.ok && r.total === of.precio && saldo(QP) === s0 - of.precio && inv && inv.origen === 'compra' && inv.pagado === of.precio
+        && acc(QP, 'qp', { accion: 'regalo-comprar', i: 0 }).error === 'ya_la_tienes',
+        'comprar la oferta cobra el precio con descuento, una sola vez', JSON.stringify([r, of, inv]));
+      const ab = TI.tiendaMia(o, { quien: QP, de: 'qp', inicial: INI, desde: 0 }, H).yo.regalos_dia.ab;
+      ok(ab[0] && ab[0].usado && !ab[1], 'y queda abierto y usado; el otro, cerrado');
+      r = acc(QP, 'qp', { accion: 'deshacer', pieza: of.p });
+      ok(r.ok && saldo(QP) === s0, 'se deshace como cualquier compra y vuelve lo que pagaste', JSON.stringify(r));
+
+      r = acc(QG, 'qg', { accion: 'regalo-abrir', i: 1 });
+      const ig = r.oferta && sql.exec('SELECT origen, pagado FROM tienda_inv WHERE quien = ? AND pieza = ?', QG, r.oferta.p).toArray()[0];
+      ok(QG && r.ok && r.oferta.k === 'gratis' && r.oferta.usado && ig && ig.origen === 'regalo-dia' && ig.pagado === 0
+        && acc(QG, 'qg', { accion: 'deshacer', pieza: r.oferta.p }).error === 'no_se_puede',
+        'la gratis queda tuya al abrir, sin cobrar y sin deshacer', JSON.stringify([QG, r, ig]));
+      const t0 = saldo(QT);
+      r = acc(QT, 'qt', { accion: 'regalo-abrir', i: 0 });
+      ok(QT && r.ok && r.oferta.k === 'pdt' && saldo(QT) === t0 + r.oferta.n && acc(QT, 'qt', { accion: 'regalo-abrir', i: 0 }).ya
+        && saldo(QT) === t0 + r.oferta.n, 'los Puntos se suman al abrir, una vez', JSON.stringify(r));
+    }
+
     // el arte: cerrada, sólo el dueño; con la misma versión no se manda de nuevo
     TI.catalogoGuardar(o, { catalogo: Object.assign({}, baja, { abierta: false }) });
     ok(TI.arteGuardar(o, { arte: { v: 'abc123', css: '.ta-raiz{}', p: { X1: { v: '<span class="ta-x"></span>' } } } }).ok

@@ -40,7 +40,7 @@ const DONDE = {
 // la rehace `bot/con_marco.py`, con el freno del marco) y el fondo de Discord y el efecto en el VS en vivo (`bot/kit.py`)
 const EN_DISCORD = { carta: 'En /card se ve unos minutos después de ponértela.' };
 const MENSAJES = ['Sin mensaje', '¡Felicitaciones!', 'Para tu próxima batalla', 'Te lo ganaste'];
-const ERRORES = { modo: 'En esta vista de Mods no se compra ni se guarda nada: apágala en la franja de arriba o en la página Mods.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
+const ERRORES = { regalo: 'Ese regalo ya no está: recarga la Tienda.', vencido: 'Esa oferta era de ayer: hoy tienes regalos nuevos.', modo: 'En esta vista de Mods no se compra ni se guarda nada: apágala en la franja de arriba o en la página Mods.', pronto: 'Todavía no se vende: sale pronto.', saldo: 'No te alcanzan los Puntos.', ya_la_tienes: 'Ya la tienes.', premium: 'Es sólo para Premium.', no_esta: 'Ya no está en la vitrina.',
   fuera_de_fecha: 'Ya no se vende.', todavia_no: 'Todavía no está a la venta.', cerrada: 'La venta ya cerró.', agotada: 'Se agotaron.',
   no_jugaste: 'Es para quien jugó en la temporada.', usada: 'Ya te la pusiste: no se puede deshacer.', tarde: 'Pasaron las 24 horas.',
   ya_deshecha: 'Ya la deshiciste una vez.', no_se_puede: 'No se puede deshacer.', tope: 'Ya mandaste tus regalos de esta semana.',
@@ -223,6 +223,66 @@ function pelea(X, S, liga, llevan) {
   </section>`;
 }
 
+// 🎁 LOS REGALOS DE LA VITRINA (25/11/2026). Dlx: «haz q las piezas de las vitrinas estén como tapados por regalos y al
+// hacer click se desbloquea ofertas de diferentes cosas… pueden ser gratis pero la probabilidad es baja, así como lo hace
+// brawl stars»; y «asegúrate q tenga una animación chila». Cada pieza de la vitrina llega envuelta; abrirla es gratis y lo
+// que sale lo decide el objeto (`tiradaRegalo()` de bot/tienda.js) y lo guarda: volver a entrar no vuelve a tirar. Como
+// el Night Market de VALORANT y el «Tap to Reveal» de Brawl Stars: se tiembla un momento, se abre, y sale con su color.
+// ⚠️ El HTML se rehace entero en cada pedido, así que la animación no puede ser una transición: cada capa lleva
+// `animation-delay: calc(var(--t0) + …)` y `--t0` es lo que ya pasó desde que se abrió (negativo). Si la página se
+// repinta en el medio, sigue desde donde iba en vez de volver a empezar
+const RG_CINTA = ['#E41373', '#F2C14E', '#36C5F0', '#8BE04E', '#B57BFF', '#FF7A3D', '#29B298', '#F6F6F6'];
+const RG_COLOR = { gratis: '#FFD34D', drop: '#FF5A36', pdt: '#36E0C8' };
+// las chispas: ángulo, distancia y tamaño fijos (no `Math.random`: el HTML tiene que salir igual en cada repintada)
+const RG_CHISPAS = Array.from({ length: 18 }, (_, n) => [Math.round(n * 20 + (n % 3) * 7), 90 + ((n * 37) % 80), 5 + (n % 4) * 2]);
+function regalosHoy(S, st) {
+  const v = S.cat.vitrina.ids || [];
+  const R = S.yo && S.yo.regalos_dia;
+  const loc = (st.rgLocal && R && st.rgLocal[R.dia]) || {};
+  return { n: R ? R.n : Math.min(8, v.length), ab: Object.assign({}, R ? R.ab : {}, loc), dia: R ? R.dia : '', v };
+}
+/** El regalo de un lugar de la slides: su número en la vitrina y lo que salió (`of`, null si sigue cerrado). Lo demás no lleva */
+function rgDe(S, st, x) {
+  if (x.t !== 'solo' && x.t !== 'cat') return null;
+  const G = regalosHoy(S, st), i = G.v.indexOf(x.id);
+  if (i < 0 || i >= G.n) return null;
+  return { i, of: G.ab[i] || null, n: G.n, dia: G.dia };
+}
+const rgCinta = (i) => RG_CINTA[i % RG_CINTA.length];
+const rgColor = (S, of) => RG_COLOR[of.k] || (S.cat.piezas[of.p] ? RZ[S.cat.piezas[of.p].r][1] : '#F6F6F6');
+const rgEtq = (of) => (of.k === 'gratis' ? 'Gratis' : of.k === 'drop' ? 'Drop' : of.k === 'pdt' ? '+' + num(of.n) : '−' + of.desc + ' %');
+const cajaRg = (i, cls) => `<span class="rg-caja${cls ? ' ' + cls : ''}" style="--cin:${rgCinta(i)};--rg-d:${(i * 0.9).toFixed(1)}s" aria-hidden="true"><i class="rg-cu"></i><i class="rg-ta"></i><i class="rg-mo"></i></span>`;
+/** La estrella de la etiqueta (la del sello que queda y la grande que salta al abrir) */
+const rgSello = (S, of, cls) => `<span class="rg-sello rg-${of.k}${cls ? ' ' + cls : ''}" style="--rgc:${rgColor(S, of)}"><span>${of.k === 'pdt' ? '<b>+' + num(of.n) + '</b>Puntos' : of.k === 'drop' ? 'Dragón<b>Drop</b>' : of.k === 'gratis' ? '<b>¡Gratis!</b>' : '<b>−' + of.desc + '%</b>Tu precio'}</span></span>`;
+/** Lo que sale de la caja al abrirla: flash, rayos, la tapa que vuela, las chispas y la etiqueta grande */
+function rgFx(S, st, i, of) {
+  const ya = Math.max(0, Date.now() - st.rgRecien.t);
+  return `<span class="rg-fx" style="--t0:-${ya}ms;--rgc:${rgColor(S, of)}" aria-hidden="true"><i class="rg-rayos"></i><i class="rg-rayos dos"></i><i class="rg-flash"></i>
+    <span class="rg-chispas">${RG_CHISPAS.map(([a, d, w]) => `<i style="--a:${a}deg;--d:${d};--w:${w}px"></i>`).join('')}</span>
+    <span class="rg-vuela">${cajaRg(i)}</span>${rgSello(S, of, 'grande')}</span>`;
+}
+/** Lo que salió, al lado de la pieza: la otra pieza con su precio, los Puntos, el Drop o la gratis */
+function rgCarta(X, S, st, tengo, rg) {
+  const of = rg.of, P = of.p && S.cat.piezas[of.p];
+  const v = P ? `<span class="rg-of-v">${esFondo(P.c) ? arteFondo(X, of.p) : vista(X, of.p)}</span>` : `<span class="rg-of-v rg-of-ico">${of.k === 'drop' ? '🐉' : '✦'}</span>`;
+  let txt, bot = '';
+  if (of.k === 'pdt') txt = `<b>+${num(of.n)} Puntos de Tienda</b><span>Ya están en tu billetera.</span>`;
+  else if (of.k === 'drop') txt = '<b>Un Dragón Drop</b><span>Ábrelo en el <a href="#/pase">Pase</a>, con tus Dragón Drops.</span>';
+  else if (of.k === 'gratis') { txt = `<b>${esc(P.n)}, gratis</b><span>Ya es tuya: está en tu inventario.</span>`; if (seProbar(P)) bot = `<button class="tz-b" data-probar-ir="${of.p}">Probártela</button>`; }
+  else {
+    txt = `<b>${esc(P.n)}</b><span><s>${num(of.base)}</s> <em>${num(of.precio)}</em> · sólo hoy</span>`;
+    bot = of.usado || tengo.has(of.p) ? '<span class="tz-hecho">✓ Tuya</span>' : rgBoton(S, st, rg);
+  }
+  return `<div class="rg-of${st.rgRecien && st.rgRecien.i === rg.i ? ' rg-entra' : ''}" style="--rgc:${rgColor(S, of)}${st.rgRecien && st.rgRecien.i === rg.i ? ';--t0:-' + Math.max(0, Date.now() - st.rgRecien.t) + 'ms' : ''}">${v}<span class="rg-of-t"><small>Tu regalo · ${rgEtq(of)}</small>${txt}</span>${bot}</div>`;
+}
+// comprar la oferta, en dos toques (el primero muestra el precio y el saldo; como «Comprar» de la ficha)
+function rgBoton(S, st, rg) {
+  const of = rg.of;
+  if (st.rgConfirma !== rg.i) return `<button class="tz-b blanco" data-rg-comprar="${rg.i}">Comprar · ${num(of.precio)}</button>`;
+  if (!S.anon && S.yo.saldo < of.precio) return `<span class="rg-falta">Te faltan <b>${num(of.precio - S.yo.saldo)}</b></span><button class="tz-b" data-rg-no>Cancelar</button>`;
+  return `<button class="tz-b" data-rg-no>Cancelar</button><button class="tz-b prim" data-rg-si="${rg.i}"${st.va ? ' disabled' : ''}>${st.va ? 'Comprando…' : 'Sí, por ' + num(of.precio)}</button>`;
+}
+
 function hero(X, S, st, tengo, liga, llevan) {
   const L = slides(S);
   if (!L.length) return '';
@@ -232,6 +292,8 @@ function hero(X, S, st, tengo, liga, llevan) {
   const baja = s.t === 'solo' ? 'No está en el catálogo. Vuelve al menos cada 2 meses.' : s.t === 'cat' ? 'También está siempre en el catálogo.'
     : s.t === 'nav' ? 'Para todos los que entren hasta el 1/1.' : 'Una por persona, para quien jugó en la temporada. La #1 es del campeón.';
   const mio = tengo.has(s.id), enLista = S.yo.deseos.includes(s.id);
+  const rg = rgDe(S, st, s);
+  const ofMia = rg && rg.of && rg.of.k === 'pieza' && rg.of.p === s.id && !rg.of.usado && !mio ? rg.of : null;
   const cor = `<button class="tz-b tz-cor-b" data-deseo="${s.id}" aria-pressed="${enLista}" aria-label="${enLista ? 'Sacar de tu lista' : 'A tu lista'}">${enLista ? '♥' : '♡'}</button>`;
   let bot;
   if (s.t === 'nav') bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : `<button class="tz-b blanco" data-reclamar="${s.id}">Reclamar gratis</button>`) + '<button class="tz-b" data-tab="nav">Ver Navidad</button>';
@@ -242,7 +304,7 @@ function hero(X, S, st, tengo, liga, llevan) {
     bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : abre ? `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`
       : cerro ? '' : `<button class="tz-b blanco" data-deseo="${s.id}">${enLista ? '♥ Te avisamos ese día' : '♡ Avísame'}</button>`) + '<button class="tz-b" data-tab="num">Ver las ediciones</button>';
   }
-  else bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`) + (seProbar(it) ? `<button class="tz-b" data-probar-ir="${s.id}">Probártelo</button>` : '') + (mio ? '' : cor);
+  else bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : ofMia ? rgBoton(S, st, rg) : `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`) + (seProbar(it) && !(ofMia && st.rgConfirma === rg.i) ? `<button class="tz-b" data-probar-ir="${s.id}">Probártelo</button>` : '') + (mio ? '' : cor);
   // el cajón: todas las fundas de la vitrina, paradas
   // 🏷️ (21/11/2026, la revisión visual G5#19) el tipo antes del precio: había dos «Ecualizador» y dos «Dragón» sin decir
   // cuál era el aro y cuál la carta. Y un nombre se muestra escrito como «Tú»: el arte de muestra de algunos trae un nombre
@@ -250,32 +312,62 @@ function hero(X, S, st, tengo, liga, llevan) {
   const muestra = Object.assign({}, X, { n: 'Tú', crudo: 'Tú' });
   const fundas = L.map((x, i) => {
     const y = S.cat.piezas[x.id];
+    const g = rgDe(S, st, x);
+    // 🎁 cerrada: la caja, sin decir qué hay (un toque la abre); abierta: la pieza con la etiqueta de lo que salió
+    if (g && !g.of) {
+      const abre = st.rgAbriendo && st.rgAbriendo.i === g.i;
+      return `<button class="dq-fu rg-fu" data-slide="${i}" data-rg-abrir="${g.i}" aria-pressed="${i === st.slide}" style="--r:${rgCinta(g.i)}" aria-label="Regalo ${g.i + 1} de ${g.n}, cerrado: ${S.anon ? 'entra para abrirlo' : 'tócalo para abrirlo'}"><span class="dq-fu-v">${cajaRg(g.i, abre ? 'agita' : '')}</span><span class="dq-fu-t">Regalo ${g.i + 1}</span><span class="dq-fu-s">${abre ? 'Abriendo…' : S.anon ? 'Entra y ábrelo' : 'Toca y ábrelo'}</span></button>`;
+    }
     const tipo = esFondo(y.c) ? 'Fondo' : RANURA[y.c] || '';
-    const sub = (tipo ? tipo + ' · ' : '') + (x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de 10' : tengo.has(x.id) ? 'Tuyo' : num(precioIt(S, x.id)));
+    const ofM = g && g.of && g.of.k === 'pieza' && g.of.p === x.id && !g.of.usado && !tengo.has(x.id);
+    const sub = (tipo ? tipo + ' · ' : '') + (x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de 10' : tengo.has(x.id) ? 'Tuyo' : ofM ? '<em>' + num(g.of.precio) + '</em>' : num(precioIt(S, x.id)));
     const arte = esFondo(y.c) ? arteFondo(X, x.id) : y.c === 'nom' ? nombre(muestra, x.id) : vista(X, x.id);
-    return `<button class="dq-fu" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}" aria-label="${esc(y.n)}, ${esc(tipo)}, ${RZ[y.r][0]}"><span class="dq-fu-v">${arte}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
+    const nuevo = g && st.rgRecien && st.rgRecien.i === g.i;
+    const etq = g && g.of ? `<span class="rg-badge rg-${g.of.k}${g.of.usado && g.of.k === 'pieza' ? ' usado' : ''}" style="--rgc:${rgColor(S, g.of)}">${g.of.usado && g.of.k === 'pieza' ? '✓' : rgEtq(g.of)}</span>` : '';
+    return `<button class="dq-fu${nuevo ? ' rg-nuevo' : ''}" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}${nuevo ? ';--t0:-' + Math.max(0, Date.now() - st.rgRecien.t) + 'ms' : ''}" aria-label="${esc(y.n)}, ${esc(tipo)}, ${RZ[y.r][0]}${g && g.of ? ', tu regalo: ' + esc(rgEtq(g.of)) : ''}"><span class="dq-fu-v">${arte}${etq}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
   }).join('');
   // (18/11/2026) «a la venta el …» sólo antes de la venta; una edición de 10 no lleva descuento Premium
-  const precio = s.t === 'nav' || mio ? '' : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' ? (ed && Date.now() < ed.venta ? ' · a la venta el ' + diaCorto(ed.venta) : '') : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;
+  const precio = s.t === 'nav' || mio ? '' : ofMia ? `<p class="tz-precio rg-precio"><s>${num(precioIt(S, s.id))}</s> <b>${num(ofMia.precio)}</b> <small>Tu regalo · −${ofMia.desc} % · sólo hoy</small></p>` : `<p class="tz-precio"><b>${num(precioIt(S, s.id))}</b> <small>Puntos de Tienda${s.t === 'num' ? (ed && Date.now() < ed.venta ? ' · a la venta el ' + diaCorto(ed.venta) : '') : S.yo.prem ? ' · con tu Premium' : tiene(it, 'num') ? '' : ' · Premium ' + num(Math.round(S.cat.precios[it.r] * S.cat.desc.prem))}</small></p>`;
   // la etiqueta redonda de la funda: la rareza y el precio, como el sticker de un disco
-  const sticker = `<span class="dq-st"><span>${RZ[it.r][0]}<b>${s.t === 'nav' ? 'Gratis' : mio ? 'Tuyo' : num(precioIt(S, s.id))}</b></span></span>`;
+  const sticker = `<span class="dq-st"><span>${RZ[it.r][0]}<b>${s.t === 'nav' ? 'Gratis' : mio ? 'Tuyo' : num(ofMia ? ofMia.precio : precioIt(S, s.id))}</b></span></span>`;
   const bill = S.anon ? '' : `<button class="dq-bill" data-abre="__bill">Tienes <b>${S.modo === 'dinero' ? '∞' : num(S.yo.saldo || 0)}</b></button>`;
-  return `<section class="tz-hero dq" aria-label="La vitrina" style="--r:${RZ[it.r][1]}">
-    <div class="dq-cab"><span class="tz-etq">La vitrina · ${esc(String(S.cat.temp || '').toUpperCase())}</span><span class="tz-cambia">${cambiaTxt(S)}</span>${bill}</div>
+  const cajon = `<div class="dq-cajon"><div class="dq-cajon-f" role="group" aria-label="Las piezas de la vitrina">${fundas}</div></div>`;
+  const cab = `<div class="dq-cab"><span class="tz-etq">La vitrina · ${esc(String(S.cat.temp || '').toUpperCase())}</span><span class="tz-cambia">${cambiaTxt(S)}</span>${bill}</div>`;
+  if (rg && !rg.of) {
+    const abre = st.rgAbriendo && st.rgAbriendo.i === rg.i;
+    return `<section class="tz-hero dq rg-hero" aria-label="La vitrina" style="--r:${rgCinta(rg.i)}">${cab}
     <div class="dq-main">
-      <div class="dq-vis" data-slide-id="${esc(s.id)}">
+      <div class="dq-vis rg-vis" data-slide-id="rg:${rg.i}"><button class="rg-grande${abre ? ' abriendo' : ''}" data-rg-abrir="${rg.i}" aria-label="Abrir el regalo ${rg.i + 1}"${abre ? ' disabled' : ''}><i class="rg-luz"></i>${cajaRg(rg.i, abre ? 'agita' : '')}</button></div>
+      <div class="dq-info" data-tuto="tz-vitrina">
+        <p class="tz-rz"><i></i>Regalo ${rg.i + 1} de ${rg.n} · <span>Se renuevan a la medianoche (hora del este)</span></p>
+        <h2>Un regalo para ti</h2>
+        <p class="tz-hero-p">Cada pieza de la vitrina llega envuelta. Adentro hay algo sólo para ti y sólo por hoy: la pieza con descuento, Puntos de Tienda, un Dragón Drop o, con suerte, la pieza gratis.</p>
+        <p class="rg-chances"><span><b>2 %</b> gratis</span><span><b>4 %</b> Dragón Drop<small> (Miembros de DRA)</small></span><span><b>6 %</b> Puntos</span><span><b>88 %</b> de 10 a 50 % menos</span></p>
+        <div class="tz-bots"><button class="tz-b blanco" data-rg-abrir="${rg.i}"${abre ? ' disabled' : ''}>${abre ? 'Abriendo…' : S.anon ? 'Entra para abrirlo' : 'Abrir el regalo'}</button></div>
+      </div>
+    </div>
+    ${cajon}
+  </section>${pelea(X, S, liga, llevan)}`;
+  }
+  const recien = rg && rg.of && st.rgRecien && st.rgRecien.i === rg.i;
+  return `<section class="tz-hero dq" aria-label="La vitrina" style="--r:${RZ[it.r][1]}">
+    ${cab}
+    <div class="dq-main">
+      <div class="dq-vis${recien ? ' rg-revela rg-k-' + rg.of.k : ''}" data-slide-id="${esc(s.id)}"${recien ? ` style="--t0:-${Math.max(0, Date.now() - st.rgRecien.t)}ms"` : ''}>
         <div class="dq-disco">${SURCOS}<div class="dq-etq"><div class="dq-etq-in">${enEtiqueta(X, S, s.id)}</div></div></div>
         <div class="dq-funda"><div class="dq-arte">${esFondo(it.c) ? arteFondo(X, s.id) : vista(X, s.id)}</div><div class="dq-pie"><b>${esc(it.n)}</b><small>${esc(subDe(S, s.id))}</small></div>${sticker}</div>
+        ${rg && rg.of ? rgSello(S, rg.of, 'queda') : ''}${recien ? rgFx(S, st, rg.i, rg.of) : ''}
       </div>
       <div class="dq-info" data-tuto="tz-vitrina">
         <p class="tz-rz"><i></i>${subDe(S, s.id)} · <span>${eti}</span></p>
         <h2>${esc(it.n)}</h2>
         <p class="tz-hero-p">${esc(it.d)} ${baja}</p>${precio}
+        ${rg && rg.of && !(rg.of.k === 'pieza' && rg.of.p === s.id) ? rgCarta(X, S, st, tengo, rg) : ''}
         <div class="tz-bots">${bot}</div>
         ${s.t === 'nav' || s.t === 'num' ? '' : llevanHtml(liga, llevan, s.id)}
       </div>
     </div>
-    <div class="dq-cajon"><div class="dq-cajon-f" role="group" aria-label="Las piezas de la vitrina">${fundas}</div></div>
+    ${cajon}
   </section>${pelea(X, S, liga, llevan)}`;
 }
 
@@ -527,7 +619,7 @@ const modoPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Vista de
 // ⚠️ EL ERROR DE UN TOQUE SIN FICHA ABIERTA (18/11/2026): el drop del día, el ♡ de la grilla, «Tu lista» o aceptar un
 // regalo guardaban el error y sólo las fichas lo dibujan, así que el toque no hacía nada visible («Ya abriste el de
 // hoy.», «El drop del día es de los Miembros de DRA.» y «Primero verifícate.» no salían nunca)
-const ERR_DE = { drop: 'Tu Dragón Drop del día', deseo: 'Tu lista', 'deseo-publico': 'Tu lista', regalo: 'Un regalo' };
+const ERR_DE = { 'regalo-abrir': 'Tu regalo de la vitrina', 'regalo-comprar': 'Tu regalo de la vitrina', drop: 'Tu Dragón Drop del día', deseo: 'Tu lista', 'deseo-publico': 'Tu lista', regalo: 'Un regalo' };
 const errorPop = (st) => `<div class="tz-ficha" role="dialog" aria-label="No se pudo">${popCab('No se pudo', ERR_DE[st.errDe] || '', '#E8B923')}<div class="tz-f-inf"><p>${esc(ERRORES[st.error] || 'No se pudo: ' + st.error)}</p><button class="tz-b" data-acc="cerrar">Entendido</button></div></div>`;
 const billPop = (S) => `<div class="tz-ficha" role="dialog" aria-label="Tu billetera">${popCab('Tu billetera', 'Puntos de Tienda', '#29B298')}<div class="tz-f-inf"><p class="tz-bill-g"><b>${num(S.yo.saldo || 0)}</b> Puntos de Tienda${S.yo.prem ? ' · con Premium' : ''}</p><p class="tz-nota">Se ganan jugando, entrando cada día, con tus Tareas del Pase, cazando y con los Dragón Drops.</p></div></div>`;
 const dropPop = (st) => { const r = st.drop || {}; const c = RZ[r.rareza || 0] || RZ[0]; return `<div class="tz-ficha" role="dialog" aria-label="Tu Dragón Drop">${popCab('Tu Dragón Drop del día', 'Salió ' + (r.nombre || c[0]), c[1])}<div class="tz-f-inf"><div class="tz-drop-sale" style="--r:${c[1]}"><span class="tz-drop-v" aria-hidden="true"></span><b>${r.titulo ? 'Título «' + esc(r.titulo) + '»' : ''}${r.titulo && r.puntos ? ' + ' : ''}${r.puntos ? num(r.puntos) + ' Puntos' : ''}</b></div><p class="tz-nota">El próximo, mañana desde la medianoche (hora del este).</p><button class="tz-b prim" data-acc="cerrar">Listo</button></div></div>`; };
@@ -596,6 +688,7 @@ function verComo(S, prueba, usuario, dinero) {
   return Object.assign({}, S, { yo, ensayo: false, modo: prueba ? 'prueba' : dinero ? 'dinero' : 'usuario' });
 }
 
+const RG_TIEMBLA = 850, RG_DURA = 2700;
 export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   const M = useModsEstado();
   const yoDueno = !!dc && String(dc.id) === DUENO;
@@ -671,6 +764,34 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     pinta();
     return j;
   }
+  // 🎁 abrir: la caja tiembla al menos `RG_TIEMBLA` ms (aunque el objeto conteste antes: si no, no se ve), y al llegar
+  // lo que salió se guarda acá mismo (`rgLocal`) para no esperar a la recarga, que trae lo mismo
+  function abrirRegalo(i) {
+    if (E.rgAbriendo || E.va) return;
+    E.rgAbriendo = { i, t: Date.now() }; E.rgConfirma = null; pinta();
+    if (window.innerWidth < 900) { const v = raiz.current && raiz.current.querySelector('.dq-vis'); if (v && v.getBoundingClientRect().top < 60) v.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    const tiembla = new Promise((r) => setTimeout(r, RG_TIEMBLA));
+    accion({ accion: 'regalo-abrir', i }, async (j) => {
+      await tiembla;
+      const dia = (S.yo.regalos_dia || {}).dia || '';
+      E.rgLocal = E.rgLocal || {};
+      (E.rgLocal[dia] = E.rgLocal[dia] || {})[i] = j.oferta;
+      E.rgAbriendo = null;
+      const t = Date.now();
+      E.rgRecien = j.ya ? null : { i, t, k: j.oferta.k };
+      if (!j.ya && navigator.vibrate) { try { navigator.vibrate(j.oferta.k === 'gratis' ? [40, 60, 90] : 25); } catch (e) { /* sin vibrar */ } }
+      pinta();
+      if (E.rgRecien) setTimeout(() => { if (E.rgRecien && E.rgRecien.t === t) { E.rgRecien = null; pinta(); } }, RG_DURA);
+    }).then((r) => { if (!r && E.rgAbriendo) { E.rgAbriendo = null; pinta(); } });
+  }
+  function comprarRegalo(i) {
+    const dia = (S.yo.regalos_dia || {}).dia || '';
+    accion({ accion: 'regalo-comprar', i, dia, poner: false }, () => {
+      const of = regalosHoy(S, E).ab[i];
+      if (of) { E.rgLocal = E.rgLocal || {}; (E.rgLocal[dia] = E.rgLocal[dia] || {})[i] = Object.assign({}, of, { usado: true }); }
+      E.rgConfirma = null;
+    });
+  }
   function probar(id, fijo) {
     const p = S.cat.piezas[id];
     if (!p) return;
@@ -684,18 +805,22 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   const tabDe = (p) => (esFondo(p.c) ? 'fondo' : p.c === 'serv' ? 'nom' : p.c);
 
   function clic(e) {
-    const t = e.target.closest('[data-abre],[data-acc],[data-tab],[data-lugar],[data-prueba],[data-saca],[data-elige],[data-msg],[data-deseo],[data-publico],[data-slide],[data-comprar],[data-reclamar],[data-probar-ir],[data-cmp],[data-drop],[data-regalo],[data-mas]');
+    const t = e.target.closest('[data-rg-abrir],[data-rg-comprar],[data-rg-si],[data-rg-no],[data-abre],[data-acc],[data-tab],[data-lugar],[data-prueba],[data-saca],[data-elige],[data-msg],[data-deseo],[data-publico],[data-slide],[data-comprar],[data-reclamar],[data-probar-ir],[data-cmp],[data-drop],[data-regalo],[data-mas]');
     if (!t || t.disabled) return;
     const d = t.dataset;
     // sin cuenta se mira y se prueba todo; lo que mueve Puntos o guarda algo tuyo pasa por Discord (y vuelve a la Tienda)
     // (18/11/2026) también «Comprar todo» (`__puesto`): sin cuenta abría la hoja con «tienes 0: te faltan…»
-    const pideCuenta = d.acc === 'entrar' || (S.anon && (d.deseo || d.publico !== undefined || d.regalo || d.drop !== undefined || d.comprar ||
+    const pideCuenta = d.acc === 'entrar' || (S.anon && (d.deseo || d.publico !== undefined || d.regalo || d.drop !== undefined || d.comprar || d.rgAbrir !== undefined || d.rgComprar !== undefined ||
       d.reclamar || d.abre === '__bill' || d.abre === '__puesto' || ['comprar', 'regalar', 'poner', 'deseo', 'deshacer', 'confirmar', 'confirmar-puesto', 'confirmar-regalo'].includes(d.acc)));
     if (pideCuenta) { if (window.urlLogin) location.href = window.urlLogin('t'); return; }
     if (d.deseo) { const si = !S.yo.deseos.includes(d.deseo); accion({ accion: 'deseo', pieza: d.deseo, si }); return; }
     if (d.publico !== undefined) { accion({ accion: 'deseo-publico', si: !S.yo.deseo_publico }); return; }
     if (d.regalo) { accion({ accion: 'regalo', id: d.regalo, si: d.si === '1' }); return; }
     if (d.drop !== undefined) { accion({ accion: 'drop' }, (j) => { E.drop = j; E.abierta = '__drop'; }); return; }
+    if (d.rgAbrir !== undefined) { if (d.slide !== undefined) E.slide = +d.slide; abrirRegalo(+d.rgAbrir); return; }
+    if (d.rgComprar !== undefined) { E.rgConfirma = +d.rgComprar; pinta(); return; }
+    if (d.rgNo !== undefined) { E.rgConfirma = null; pinta(); return; }
+    if (d.rgSi !== undefined) { comprarRegalo(+d.rgSi); return; }
     if (d.mas !== undefined) { E.mas = E.mas === d.mas ? '' : d.mas; pinta(); return; }
     // ☑️ «Ponérmela al comprar» se desmarca en cada ficha nueva y al cerrar (18/11/2026): quedaba marcada para la compra
     // siguiente, también en piezas donde la casilla no se ve (te las ponía sin pedirlo y perdías el Deshacer)

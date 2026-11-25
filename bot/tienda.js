@@ -21,6 +21,8 @@
 //     edición se cierra con las vendidas, y no se reedita nunca
 //   · LA VITRINA: lo que sólo pasa por ella se vende mientras está ahí
 //   · TU LISTA: privada, con la opción de mostrarla en tu perfil; avisa cuando entra en la vitrina o baja de precio
+//   · LOS REGALOS DE LA VITRINA (25/11/2026): cada pieza de la vitrina está tapada por un regalo; abrirlo es gratis y al
+//     azar, lo que compras después NO: ves la oferta antes de pagar (ver `tiradaRegalo()`)
 //
 // 🔑 Quién actúa lo dice el Worker (`quien`, su Discord ID; `de`, su perfil verificado), nunca la página. La plata es la
 // misma billetera de Puntos de Tienda (tabla `tienda` del objeto): cada movimiento lleva el ID adentro (`mudarCuenta()`).
@@ -34,7 +36,7 @@ export const RANURAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'fp', 'fv', 'fe
 // pancarta con tu texto). Se saca la marca del catálogo privado el día que funcione
 export const MARCAS = ['prem', 'num', 'nav', 'rot', 'col', 'gratis', 'pronto'];
 /** las tablas con `quien`: se mudan con la cuenta (`mudarCuenta()`) y se borran con «olvidarme» */
-export const TABLAS_QUIEN = ['tienda_inv', 'tienda_deshecha', 'tienda_deseo', 'tienda_pref', 'tienda_puesto', 'tienda_col', 'tienda_num'];
+export const TABLAS_QUIEN = ['tienda_inv', 'tienda_deshecha', 'tienda_deseo', 'tienda_pref', 'tienda_puesto', 'tienda_col', 'tienda_num', 'tienda_dia'];
 const DIA_MS = 24 * 3600 * 1000;
 const ID = /^[A-Z]{1,3}[0-9]{1,3}$/;
 const QUIEN = /^[0-9]{5,25}$/;
@@ -74,6 +76,9 @@ export function tiendaTablas(sql) {
   // ⚔️ la pelea de la vitrina cuenta ♡ y compras de dos piezas en cada pedido: por pieza, así lee sólo esas filas
   sql.exec('CREATE INDEX IF NOT EXISTS tienda_deseo_pieza ON tienda_deseo (pieza)');
   sql.exec('CREATE INDEX IF NOT EXISTS tienda_inv_pieza ON tienda_inv (pieza, origen, t)');
+  // 🎁 los regalos de la vitrina que abrió cada uno, por día: qué salió (`oferta`, JSON) y si ya lo usó (comprado o dado)
+  sql.exec('CREATE TABLE IF NOT EXISTS tienda_dia (quien TEXT NOT NULL, dia TEXT NOT NULL, i INTEGER NOT NULL, ' +
+    'oferta TEXT NOT NULL, t INTEGER NOT NULL, usado INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (quien, dia, i)) WITHOUT ROWID');
 }
 
 // ── EL CATÁLOGO ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -252,6 +257,8 @@ export function tiendaMia(o, d, H) {
     // 🐉 si el drop del día ya se abrió (18/11/2026): la página ofrecía «Abrir» al volver y se enteraba recién con el 409
     // 'ya'. Una fila por el índice único (quien, origen): se pide cada 15 s
     drop_hoy: (() => { const dh = fila(o, 'SELECT abierto FROM drops WHERE quien = ? AND origen = ?', quien, 'tdia:' + H.diaET(ahora)); return dh && dh.abierto ? { ya: true } : null; })(),
+    // 🎁 los regalos de la vitrina de hoy: cuántos hay y lo que salió en los que ya abriste (los cerrados no se dicen)
+    regalos_dia: regalosDeHoy(o, quien, cat, H.diaET(ahora)),
   };
   return out;
 }
@@ -448,6 +455,9 @@ export function tiendaAccion(o, d, H) {
     return { ok: true };
   }
 
+  if (a === 'regalo-abrir') return abrirRegalo(o, d, cat, quien, tiene, prem, dueno, ahora, H);
+  if (a === 'regalo-comprar') return comprarRegalo(o, d, cat, quien, tiene, ahora, H);
+
   // 🐉 el drop del día: gratis, uno por día (a la medianoche, hora del este), con las chances de los Dragón Drops. Como
   // el del Pase, para los Miembros de DRA. No se compra: la Tienda sigue sin azar en lo que vende
   if (a === 'drop') {
@@ -477,6 +487,121 @@ export function tiendaAccion(o, d, H) {
     return { ok: true };
   }
   return mal('accion');
+}
+
+// ── 🎁 LOS REGALOS DE LA VITRINA ─────────────────────────────────────────────────────────────────────────────────────
+// Dlx, 25/11/2026: «haz q las piezas de las vitrinas estén como tapados por regalos y al hacer click se desbloquea
+// ofertas de diferentes cosas… pueden ser gratis pero la probabilidad es baja, así como lo hace brawl stars». Decidido con
+// AskUserQuestion el mismo día: «Pieza + otras cosas», «Cada día», «2 % por regalo». Como el Night Market de VALORANT
+// (cartas tapadas, una tirada por persona que no se vuelve a tirar) y el «Tap to Reveal» de Brawl Stars.
+//   · uno por pieza de la vitrina (hasta `REGALOS_MAX`), y se renuevan a la medianoche, hora del este
+//   · lo que sale se decide AL ABRIR y se guarda: volver a entrar no vuelve a tirar
+//   · las chances (`REGALO_CHANCES`): la pieza GRATIS 2 %, un Dragón Drop 4 % (los Miembros de DRA, como el del día; si no,
+//     Puntos), Puntos de Tienda 6 %, y si no la pieza con un descuento (`REGALO_DESC`: los chicos salen más). La pieza es
+//     casi siempre la de ese lugar de la vitrina; a veces otra del catálogo (`REGALO_OTRA`), y otra siempre que ésa ya sea
+//     tuya o no se pueda vender
+//   · comprar una oferta es una compra como las otras (se deshace igual, devuelve lo que pagaste), sólo hasta la medianoche
+// ⚠️ La XP del Pase quedó afuera: sale de las Tareas, que calcula el ciclo; un regalo no tiene cómo sumarle sin tocar el Pase
+export const REGALOS_MAX = 8;
+export const REGALO_CHANCES = { gratis: 0.02, drop: 0.04, pdt: 0.06 };
+export const REGALO_DESC = [[10, 18], [15, 16], [20, 14], [25, 12], [30, 10], [35, 9], [40, 8], [45, 7], [50, 6]];
+export const REGALO_PDT = [[200, 30], [300, 25], [500, 22], [800, 15], [1200, 8]];
+export const REGALO_OTRA = 0.3;
+const DIA_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/** Un número de 32 bits estable para un texto (FNV-1a), y de ahí una secuencia (mulberry32): la tirada de un regalo */
+function semilla(txt) {
+  let h = 0x811c9dc5;
+  for (const ch of String(txt)) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  return () => { h = (h + 0x6D2B79F5) >>> 0; let t = h; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const porPeso = (azar, xs) => { const tot = xs.reduce((a, x) => a + x[1], 0); let r = azar() * tot; for (const x of xs) { r -= x[1]; if (r < 0) return x[0]; } return xs[xs.length - 1][0]; };
+/** ¿Puede salir esta pieza en un regalo para alguien? Lo que se vende ahora, que no es tuyo, y nada especial */
+function regalable(cat, id, tiene, prem, ahora) {
+  const p = cat.piezas[id];
+  if (!p || tiene.has(id) || vendible(cat, id, ahora)) return false;
+  if (p.c === 'serv' || cat.gratis[id] || p.t.some((x) => ['num', 'gratis', 'col', 'nav', 'pronto'].includes(x))) return false;
+  return !p.t.includes('prem') || prem;
+}
+/**
+ * 🎲 Lo que sale en el regalo `i` de hoy para `quien`. Determinístico con la sal del objeto (que la página no conoce), así
+ * que dos aperturas del mismo regalo dan lo mismo aunque la primera no se haya guardado. `miembro`: si puede recibir un Drop.
+ */
+export function tiradaRegalo(cat, sal, quien, dia, i, tiene, prem, miembro, ahora = Date.now()) {
+  const azar = semilla(sal + '|' + quien + '|' + dia + '|' + i);
+  const r = azar();
+  const ids = cat.vitrina.ids || [];
+  const propia = ids[i];
+  const otras = Object.keys(cat.piezas).filter((x) => x !== propia && regalable(cat, x, tiene, prem, ahora)).sort();
+  const elegir = () => {
+    if (regalable(cat, propia, tiene, prem, ahora) && !(azar() < REGALO_OTRA && otras.length)) return propia;
+    return otras.length ? otras[Math.floor(azar() * otras.length)] : null;
+  };
+  const C = REGALO_CHANCES;
+  if (r < C.gratis) { const p = elegir(); if (p) return { k: 'gratis', p }; }
+  if (r < C.gratis + C.drop && miembro) return { k: 'drop' };
+  if (r < C.gratis + C.drop + C.pdt || (r < C.gratis + C.drop && !miembro)) return { k: 'pdt', n: porPeso(azar, REGALO_PDT) };
+  const p = elegir();
+  if (!p) return { k: 'pdt', n: porPeso(azar, REGALO_PDT) };
+  const desc = porPeso(azar, REGALO_DESC);
+  const base = precioPieza(cat, p, prem, ahora);
+  return { k: 'pieza', p, desc, base, precio: Math.max(50, Math.round(base * (100 - desc) / 100 / 50) * 50) };
+}
+const salDe = (o) => { let x = o.leer('tienda_sal'); if (!x) { x = crypto.randomUUID(); o.guardar('tienda_sal', x); } return x; };
+/** `{dia, n, ab: {i: oferta + usado}}`: los regalos de hoy de alguien (lo de los cerrados no sale del objeto) */
+function regalosDeHoy(o, quien, cat, dia) {
+  const n = Math.min(REGALOS_MAX, (cat.vitrina.ids || []).length);
+  const ab = {};
+  for (const r of filas(o, 'SELECT i, oferta, usado FROM tienda_dia WHERE quien = ? AND dia = ?', quien, dia)) {
+    try { ab[r.i] = Object.assign(JSON.parse(r.oferta), { usado: !!r.usado }); } catch (e) { /* una fila rota no se muestra */ }
+  }
+  return { dia, n, ab };
+}
+function abrirRegalo(o, d, cat, quien, tiene, prem, dueno, ahora, H) {
+  const dia = H.diaET(ahora), i = Number(d.i);
+  const n = Math.min(REGALOS_MAX, (cat.vitrina.ids || []).length);
+  if (!Number.isInteger(i) || i < 0 || i >= n) return mal('regalo');
+  const ya = fila(o, 'SELECT oferta, usado FROM tienda_dia WHERE quien = ? AND dia = ? AND i = ?', quien, dia, i);
+  if (ya) return { ok: true, i, oferta: Object.assign(JSON.parse(ya.oferta), { usado: !!ya.usado }), ya: true };
+  let miembro = dueno;
+  try { miembro = miembro || o.paseDatos().miembros.has(quien); } catch (e) { /* sin datos del Pase: sin Drop */ }
+  const of = tiradaRegalo(cat, salDe(o), quien, dia, i, tiene, prem, miembro, ahora);
+  const usado = of.k !== 'pieza' ? 1 : 0;
+  let hechas = [];
+  o.state.storage.transactionSync(() => {
+    o.sql.exec('INSERT INTO tienda_dia (quien, dia, i, oferta, t, usado) VALUES (?, ?, ?, ?, ?, ?)', quien, dia, i, JSON.stringify(of), ahora, usado);
+    if (of.k === 'gratis') {
+      dar(o, quien, of.p, 'regalo-dia', 0, ahora);
+      o.sql.exec('DELETE FROM tienda_deseo WHERE quien = ? AND pieza = ?', quien, of.p);
+      hechas = revisarColecciones(o, quien, cat, ahora);
+    } else if (of.k === 'pdt') mover(o, 'tregdia:' + quien + ':' + dia + ':' + i, quien, of.n, ahora);
+    else if (of.k === 'drop') o.dropDar(quien, 'treg:' + dia + ':' + i, 0, ahora);
+  });
+  return { ok: true, i, oferta: Object.assign({}, of, { usado: !!usado }), colecciones: hechas };
+}
+function comprarRegalo(o, d, cat, quien, tiene, ahora, H) {
+  const dia = H.diaET(ahora), i = Number(d.i);
+  if (d.dia && (!DIA_RE.test(String(d.dia)) || String(d.dia) !== dia)) return mal('vencido', 409);
+  const r = Number.isInteger(i) ? fila(o, 'SELECT oferta, usado FROM tienda_dia WHERE quien = ? AND dia = ? AND i = ?', quien, dia, i) : null;
+  if (!r) return mal('regalo');
+  const of = JSON.parse(r.oferta);
+  if (of.k !== 'pieza') return mal('regalo');
+  if (r.usado || tiene.has(of.p)) return mal('ya_la_tienes');
+  const no = vendible(cat, of.p, ahora);
+  if (no) return mal(no);
+  const saldo = saldoDe(o, d);
+  if (saldo === null) return mal('todavia', 503);
+  if (of.precio > saldo) return mal('saldo', 409, { saldo, precio: of.precio });
+  let hechas = [];
+  o.state.storage.transactionSync(() => {
+    dar(o, quien, of.p, 'compra', of.precio, ahora);
+    mover(o, 'tcompra:' + quien + ':' + of.p + ':' + ahora, quien, -of.precio, ahora);
+    o.sql.exec('UPDATE tienda_dia SET usado = 1 WHERE quien = ? AND dia = ? AND i = ?', quien, dia, i);
+    o.sql.exec('DELETE FROM tienda_deseo WHERE quien = ? AND pieza = ?', quien, of.p);
+    if (d.poner === true) ponerUna(o, quien, cat, of.p, ahora);
+    hechas = revisarColecciones(o, quien, cat, ahora);
+  });
+  return { ok: true, piezas: [of.p], total: of.precio, saldo: saldo - of.precio, colecciones: hechas };
 }
 
 /** Reparte el precio de una compra junta entre sus piezas (para deshacer y para la diferencia), sumando justo. */
