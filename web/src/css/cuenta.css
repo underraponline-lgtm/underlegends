@@ -309,3 +309,4 @@
 .cpc .tf-vista{grid-column:2}
 .tf-vista-t{font:700 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
 .fh.fh-quieto{position:relative;left:auto;top:auto;z-index:auto;width:280px;max-width:100%;animation:none;transform:none}
+.tf-vista-p{max-width:420px;font:500 12.5px/1.35 Archivo,sans-serif;color:var(--gris)}

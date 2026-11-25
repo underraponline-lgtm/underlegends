@@ -16,7 +16,7 @@ import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
 import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
 import { useRoles } from './roles.js';
-import { LUGARES, NOMBRE_OPCION, eleccion, escenaDe, fondoEn, fondoOpcion, urlFondo } from './fondos.js';
+import { LUGARES, NOMBRE_OPCION, eleccion, escenaDe, fondoEn, fondoOpcion, fondoPropio, urlFondo } from './fondos.js';
 import { FichaCuerpo } from './ficha.jsx';
 import { useSocio } from './panelsocio.js';
 import { seguirOrg, useOrgs } from './orgs.js';
@@ -515,7 +515,8 @@ export function FondoCaja({ dc, liga }) {
                     );
                   })}
                 </div>
-                {l === 'ficha' && yo.k ? <FichaVista liga={liga} yo={yo} bg={prueba ? (prueba === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, prueba, yo)) : fondoEn(fo, 'ficha', yo)} prueba={prueba} /> : null}
+                {l === 'ficha' && yo.k ? <FichaVista liga={liga} yo={yo} bg={prueba ? (prueba === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, prueba, yo)) : fondoEn(fo, 'ficha', yo)} prueba={prueba}
+                  enFila={!!(prueba ? (prueba === 'auto' ? fondoPropio([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, prueba, yo)) : fondoPropio(fo, 'ficha', yo))} /> : null}
               </div>
             );
           })}
@@ -529,11 +530,13 @@ export function FondoCaja({ dc, liga }) {
 // 🪪 ASÍ TE VEN (25/11/2026, Dlx: «como te ves en el rectángulo… así como Discord tiene cómo te ves tu perfil, sin ir a tu
 // perfil»). La ficha de verdad (`FichaCuerpo`, la misma que sale al pasar el mouse por tu cara), quieta, con lo que
 // elegiste; al pasar por una opción, con esa
-function FichaVista({ liga, yo, bg, prueba }) {
+function FichaVista({ liga, yo, bg, prueba, enFila }) {
   return (
     <div className="tf-vista">
-      <small className="tf-vista-t">{prueba ? 'Así te verían con «' + NOMBRE_OPCION[prueba] + '»' : 'Así te ven: este fondo va detrás de tu fila del Ranking y en tu ficha'}</small>
+      <small className="tf-vista-t">{prueba ? 'Así te verían con «' + NOMBRE_OPCION[prueba] + '»' : 'Así te ven en tu ficha'}</small>
       <div className="fh fh-quieto" aria-label="Vista previa de tu ficha" role="img"><FichaCuerpo liga={liga} f={yo} bg={bg} /></div>
+      <small className="tf-vista-p">{enFila ? 'Y va detrás de tu fila en el Ranking.'
+        : 'En el Ranking tu fila queda negra, como la de todos: elige tu bandera o tu servidor (o sube tu imagen) para que se vea ahí.'}</small>
     </div>
   );
 }

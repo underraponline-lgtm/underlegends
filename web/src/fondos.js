@@ -35,7 +35,7 @@ export const LUGARES = [
   ['vs', 'El VS del Inicio', 'Tu mitad del cara a cara de arriba, en el Inicio de cada uno.', ['auto', 'mia', 'bandera', 'servidor'], 'Tu imagen; sin ella, tu bandera'],
   ['esc', 'El escenario de tu carta', 'Detrás de tu carta cuando alguien la abre.', ['auto', 'mia', 'bandera', 'servidor'], 'La luz del color de tu rango'],
   ['vivo', 'El VS en vivo de Discord', 'Tu mitad de la imagen del VS que el bot pone en el chat del evento.', ['auto', 'mia', 'bandera'], 'El fondo del servidor del evento'],
-  ['ficha', 'Tu ficha', 'Detrás de tu fila en el Ranking, y en la que sale al pasar el mouse por tu cara.', ['auto', 'mia', 'bandera', 'servidor'], 'Tu imagen; sin ella, tu bandera'],
+  ['ficha', 'Tu ficha', 'La que sale al pasar el mouse por tu cara. Si eliges algo (o tienes tu imagen), va también detrás de tu fila en el Ranking.', ['auto', 'mia', 'bandera', 'servidor'], 'Tu imagen; sin ella, tu bandera'],
 ];
 export const NOMBRE_OPCION = { auto: 'Automático', mia: 'Tu imagen', bandera: 'Tu bandera', servidor: 'Tu servidor' };
 /** Qué eligió para `lugar` (`auto` si nada). */
@@ -59,4 +59,14 @@ export function fondoEn(fo, lugar, quien) {
   if (lugar === 'perfil') return suya;
   if (lugar === 'vs' || lugar === 'ficha') return suya || fondoOpcion(fo, 'bandera', quien);
   return '';
+}
+/** 🖤 SÓLO LO QUE ES SUYO (25/11/2026, Dlx: «que por default sea el negro y que sólo los que tengan algo, que el
+ *  automático ponga algo que tengan»): lo que eligió a propósito para `lugar`, o su imagen si la tiene; en Automático y sin
+ *  imagen, nada ('') —el lugar queda como siempre—. Para los lugares donde, si todos tuvieran fondo, el fondo no diría
+ *  nada: la fila del Ranking y las listas de gente */
+export function fondoPropio(fo, lugar, quien) {
+  const e = eleccion(fo, lugar);
+  const mia = fo ? urlFondo(fo[0]) : '';
+  if (e !== 'auto' && !(e === 'mia' && !mia)) return fondoOpcion(fo, e, quien);
+  return mia && fo[1] ? mia : '';
 }
