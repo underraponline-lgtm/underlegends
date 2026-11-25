@@ -11204,6 +11204,26 @@
      "orgs": [],
      "organizador": "LEWITO",
      "cuentas": {}
+    },
+    "1574995014633656493": {
+     "sv": "FRZ",
+     "nombre": "DEM BATTLES",
+     "mo": "2026-11-25T03:47:53Z",
+     "staff": {
+      "jurado": [
+       "ajoel"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "ajoel",
+       "id": "563072268830244864"
+      }
+     ],
+     "organizador": "@ajoel",
+     "cuentas": {
+      "ajoel": "563072268830244864"
+     }
     }
    },
    "ver": {

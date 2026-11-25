@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T03:25:08+00:00",
+ "cuando": "2026-11-25T03:55:22+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -2029,6 +2029,41 @@
    "categoria_id": "1076324234588082206"
   },
   {
+   "nombre": "DEM BATTLES",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1574995014633656493",
+   "cuando": "2026-11-25T03:47:53",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@ajoel",
+   "orgs": [
+    {
+     "n": "ajoel",
+     "id": "563072268830244864"
+    }
+   ],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "ajoel"
+    ]
+   },
+   "autor": "ajoel",
+   "staff_cuentas": {
+    "ajoel": "563072268830244864"
+   },
+   "categoria_id": "867553625508282369"
+  },
+  {
    "nombre": "LIGA INMORTAL",
    "servidor": "FRZ",
    "canal": "➣「🏆」eventos",
@@ -2728,41 +2763,6 @@
    "canal": "➣「🏆」eventos",
    "msg_id": "1499190503403552869",
    "cuando": "2026-04-29T23:27:49",
-   "canal_id": "1466158091279007754",
-   "guild_id": "838593179187544064",
-   "organizador": "@za0r7",
-   "orgs": [
-    {
-     "n": "za0r7",
-     "id": "1398483999680237628"
-    }
-   ],
-   "autor_h": "dba44aa1a7b59e8e",
-   "cupos_texto": "8/12/16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "za0r7"
-    ]
-   },
-   "autor": "za0r7",
-   "staff_cuentas": {
-    "za0r7": "1398483999680237628"
-   },
-   "categoria_id": "867553625508282369"
-  },
-  {
-   "nombre": "RAP SIN GROSERIAS",
-   "servidor": "FRZ",
-   "canal": "➣「🏆」eventos",
-   "msg_id": "1499174353722671144",
-   "cuando": "2026-04-29T22:23:39",
    "canal_id": "1466158091279007754",
    "guild_id": "838593179187544064",
    "organizador": "@za0r7",
@@ -8205,6 +8205,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "LMG 🇩🇴",
+   "quien": "ajoel.pax",
+   "discord_id": "563072268830244864",
+   "msg_id": "1574996712714543217",
+   "cuando": "2026-11-25T03:54:38"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "SHADOW 🇨🇴 ÚLTIMA",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1574995445913223239",
+   "cuando": "2026-11-25T03:49:36"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "okam🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1574995348307451937",
+   "cuando": "2026-11-25T03:49:13"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Ito 🇦🇹",
+   "quien": "itohimo",
+   "discord_id": "737528677771771925",
+   "msg_id": "1574995330280194119",
+   "cuando": "2026-11-25T03:49:08"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Ojitos canábicos🇨🇱 última",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1574995248386670643",
+   "cuando": "2026-11-25T03:48:49"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1574995170355576864",
+   "cuando": "2026-11-25T03:48:30"
+  },
   {
    "servidor": "CHZ",
    "canal": "inscripción-vc-🎙️",
@@ -44150,60 +44204,6 @@
    "discord_id": "756958777126682674",
    "msg_id": "1562573388097257553",
    "cuando": "2026-10-21T21:08:46"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "GHV🇨🇷",
-   "quien": "jeffrywoods20088161",
-   "discord_id": "848995686098927677",
-   "msg_id": "1562573067123695657",
-   "cuando": "2026-10-21T21:07:30"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Caliz 🇲🇽",
-   "quien": "caliz123_",
-   "discord_id": "1546111597343146044",
-   "msg_id": "1562572827041857619",
-   "cuando": "2026-10-21T21:06:33"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "nueve7🇨🇴",
-   "quien": "97rap",
-   "discord_id": "1529613468850716719",
-   "msg_id": "1562572732015714315",
-   "cuando": "2026-10-21T21:06:10"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Mco 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1562572565598183480",
-   "cuando": "2026-10-21T21:05:30"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "gus 🇺🇾",
-   "quien": "agusdema",
-   "discord_id": "989640104765177956",
-   "msg_id": "1562572159358996502",
-   "cuando": "2026-10-21T21:03:53"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Drexx🇲🇳",
-   "quien": "manuxxx0789_78781",
-   "discord_id": "1150099153238630410",
-   "msg_id": "1562572125238329436",
-   "cuando": "2026-10-21T21:03:45"
   }
  ]
 }
