@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T00:25:37+00:00",
+ "cuando": "2026-11-25T00:34:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6116,7 +6116,7 @@
    "fecha": "HOY YAYAYA",
    "premios": "ROL DE GANADOR DE ESTE TORNEO",
    "staff": {},
-   "autor": "oriuz",
+   "autor": "PASTEL DE PAPA",
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393"
   },
@@ -8098,15 +8098,6 @@
   {
    "servidor": "ACAD",
    "canal": "📢┇anuncios・",
-   "tit": "GG , you just advanced to level 1!",
-   "tx": "",
-   "cuando": "2026-11-20T18:14:16",
-   "msg_id": "1573401109102465065",
-   "link": "https://discord.com/channels/765045834647339038/922299202904653844/1573401109102465065"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📢┇anuncios・",
    "tit": "OPENING ESPECIAL PASHION",
    "tx": "Mi gente de LA CREW Le damos el inicio de una de las competencias que revolucionara el Servidor en general y esta será la O.E.P Cup QUE ES LA O.E.P CUP ⁉️ La O.E.P Cup es una creación de su servidor en donde quiero junta",
    "cuando": "2026-11-20T18:14:15",
@@ -8202,9 +8193,27 @@
    "cuando": "2026-11-15T23:47:06",
    "msg_id": "1571672927508766790",
    "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1571672927508766790"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "tit": "MICRO DE ORO 2026",
+   "tx": "Estamos llegando a la recta final del 2026 y les traemos la categoría de quienes han sido los mejores por cada mes. Los únicos que han podido ganar esta categoría más de una vez son 🇦🇷 y 🇨🇴 @jmiopa, quienes son los dos q",
+   "cuando": "2026-11-15T21:04:56",
+   "msg_id": "1571632116679184444",
+   "link": "https://discord.com/channels/838593179187544064/850777668386291712/1571632116679184444"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "sankabel",
+   "quien": "sankabelmegaremake6683",
+   "discord_id": "938525117296812052",
+   "msg_id": "1574945848746311712",
+   "cuando": "2026-11-25T00:32:31"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -44195,15 +44204,6 @@
    "discord_id": "897942226955563068",
    "msg_id": "1562569433296277587",
    "cuando": "2026-10-21T20:53:04"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "Alejozz",
-   "quien": "zzzdeil",
-   "discord_id": "988931536080486420",
-   "msg_id": "1562569413172134010",
-   "cuando": "2026-10-21T20:52:59"
   }
  ]
 }
