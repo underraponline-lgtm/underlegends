@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T00:34:51+00:00",
+ "cuando": "2026-11-25T00:55:39+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8205,6 +8205,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "CIRH 11 🇲🇽",
+   "quien": "cirh.11.rap",
+   "discord_id": "1561903567369936941",
+   "msg_id": "1574951020134408345",
+   "cuando": "2026-11-25T00:53:04"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Fusok🇨🇱",
+   "quien": "bwbebeeddhdhdhr",
+   "discord_id": "883763515750506517",
+   "msg_id": "1574950120229830687",
+   "cuando": "2026-11-25T00:49:29"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Dan-Z 🇻🇪",
+   "quien": "dancito_rap",
+   "discord_id": "1496332551562858598",
+   "msg_id": "1574950091213639851",
+   "cuando": "2026-11-25T00:49:22"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "silence",
+   "quien": "sankabelmegaremake6683",
+   "discord_id": "938525117296812052",
+   "msg_id": "1574948292142440519",
+   "cuando": "2026-11-25T00:42:13"
+  },
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Silence la pornografia 🇵🇪",
+   "quien": "s1l3nc3_bv",
+   "discord_id": "1276644368693858356",
+   "msg_id": "1574948079130644501",
+   "cuando": "2026-11-25T00:41:23"
+  },
   {
    "servidor": "CHZ",
    "canal": "inscripción-vc-🎙️",
@@ -44159,51 +44204,6 @@
    "discord_id": "1439048698142134436",
    "msg_id": "1562572105315524699",
    "cuando": "2026-10-21T21:03:41"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Carlos",
-   "quien": "carlosss.mc23",
-   "discord_id": "958103803616444528",
-   "msg_id": "1562572107781775431",
-   "cuando": "2026-10-21T21:03:41"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Uzi",
-   "quien": "min_g16m",
-   "discord_id": "950011515434573824",
-   "msg_id": "1562572091830702081",
-   "cuando": "2026-10-21T21:03:37"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "GP 🇻🇪",
-   "quien": "gxbrielalejandro",
-   "discord_id": "847124099243180042",
-   "msg_id": "1562570550759391323",
-   "cuando": "2026-10-21T20:57:30"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "rubik",
-   "quien": "rubik2703",
-   "discord_id": "1070553144964173906",
-   "msg_id": "1562570493540835359",
-   "cuando": "2026-10-21T20:57:16"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1562569433296277587",
-   "cuando": "2026-10-21T20:53:04"
   }
  ]
 }

@@ -42,10 +42,6 @@
   ],
   "t": "2026-11-24T23:51:19.603880+00:00"
  },
- "disparador": {
-  "t": "2026-11-25T00:31:40.116203+00:00",
-  "texto": "El disparador del ciclo no anda: su último intento fue 24/11 2:52 PM ET (ok). El ciclo queda sólo con el cron de GitHub, que dispara 1 de cada 9 veces."
- },
  "objeto_personas": {
   "t": "2026-11-24T20:37:54.054941+00:00",
   "texto": "Los datos de cada persona no se subieron al objeto: /card muestra los de la corrida anterior hasta que la próxima lo logre. El motivo, en el log del ciclo (subir_datos)."
