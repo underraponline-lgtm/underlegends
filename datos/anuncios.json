@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T19:25:30+00:00",
+ "cuando": "2026-11-25T19:55:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6000,7 +6000,7 @@
    "fecha": "AHORA",
    "premios": "HONOR Y UN RECONOCIMIENTO EN EL APARTADO VITRINA (SI QUIERES PON EL Q QUIERAS)",
    "staff": {},
-   "autor": "Exhalacion de hello kitti😽",
+   "autor": "QUASIMOTO",
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393"
   },
@@ -7944,6 +7944,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "CEU",
+   "canal": "anuncios",
+   "tit": "empiezan el reclutamiento de participantes :",
+   "tx": "España 🇪🇸 Colombia 🇨🇴 Venezuela 🇻🇪 Caribe Argentina 🇦🇷 y Uruguay 🇺🇾 Chile🇨🇱",
+   "cuando": "2026-11-25T19:44:01",
+   "msg_id": "1575235634258382879",
+   "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1575235634258382879"
+  },
+  {
    "servidor": "CHZ",
    "canal": "Anuncios-📢",
    "tit": "Yo no sé mucho de eso así q el encargado será",
@@ -8203,15 +8212,6 @@
    "cuando": "2026-11-16T03:04:33",
    "msg_id": "1571722616862023943",
    "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571722616862023943"
-  },
-  {
-   "servidor": "DW",
-   "canal": "「🔔」ANUNCIOS",
-   "tit": "ASI CIERRA LA TEMPORADA DE DANGER WORLD.",
-   "tx": "",
-   "cuando": "2026-11-15T23:47:06",
-   "msg_id": "1571672927508766790",
-   "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1571672927508766790"
   }
  ],
  "inscripciones": [
