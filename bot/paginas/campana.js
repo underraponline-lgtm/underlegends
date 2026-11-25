@@ -204,6 +204,9 @@
     }
     await alta(true);
     MSG = '';
+    // 🔗 con tu cuenta adentro, el dispositivo recién anotado ya es tuyo: sin esto la campanita pedía «Vincular Discord»
+    // a quien había entrado con Discord (24/11/2026, ver `vincularSola()`)
+    await vincularSola();
     await probar(true);
   }
 
@@ -289,15 +292,47 @@
   // sólo en este navegador (`campana:yo`) y únicamente a la vuelta de Discord: quien entró con su cuenta y activó la
   // campana por otro camino quedaba «sin vincular». La sesión (`lg_ses`) ya dice quién eres: el Worker la acepta
   // igual que el permiso de Discord (`quienPide()`)
-  async function vincularConSesion() {
+  // (`token`: el permiso recién traído de Discord, para cuando la sesión todavía no está o venció; ver `vincularSola()`)
+  async function vincularConSesion(token) {
     if (!SUB || !window.DC || !window.DC.id) return false;
     try {
+      var cuerpo = { endpoint: SUB.endpoint };
+      if (token) cuerpo.token = token;
       var r = await fetch('/api/avisos/vincular', { method: 'POST', credentials: 'same-origin',
-        headers: { 'content-type': 'application/json' }, body: JSON.stringify({ endpoint: SUB.endpoint }) });
+        headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
       if (!r.ok) return false;
       guardar('campana:yo', { id: window.DC.id, n: window.DC.rapero || window.DC.n || '' });
       return true;
     } catch (e) { return false; }
+  }
+  // 🔗 SE VINCULA SOLA CADA VEZ QUE PUEDE (24/11/2026, Dlx: «en mi celular me aparece todo que estoy vinculado en
+  // Discord, pero en una parte me aparece vincular con Discord… asegúrate que si uno vincula con Discord, que no le pida
+  // vincularse de nuevo»). Sólo lo intentaba `arrancar()`, una vez por carga: quien entraba con Discord con la campana
+  // ya activa, o la activaba después de entrar, seguía viendo «Vincular Discord» en la campanita hasta recargar (y si en
+  // esa carga la sesión no contestaba, hasta la siguiente). Ahora también al volver de Discord (con el permiso que trajo,
+  // que no depende de la sesión: `cuenta.js`), al activar y al volver a la pestaña. Y cuenta como vinculado sólo si es
+  // TU cuenta: con otra persona entrada en este dispositivo, se vincula a la de ahora.
+  // ⚠️ Nunca a quien tocó «Desvincular» (`{ no: 1 }`, lo eligió) y nunca manda a Discord: eso es sólo del botón
+  var VINC_INTENTO = 0;
+  function faltaVincular() {
+    var yo = leer('campana:yo', null);
+    if (yo && yo.no) return false;
+    if (!SUB || !window.DC || !window.DC.id) return false;
+    return !(yo && yo.id && String(yo.id) === String(window.DC.id));
+  }
+  var VINC_VA = null;
+  async function vincularSola(token) {
+    // uno a la vez: al volver de Discord llegan dos seguidos (el de `quienSoy()` y el del permiso)
+    if (VINC_VA) { try { await VINC_VA; } catch (e) { /* igual */ } }
+    if (!faltaVincular()) return false;
+    // sin permiso nuevo, una vez por minuto como mucho: volver a la pestaña no puede ser un pedido cada vez
+    if (!token && Date.now() - VINC_INTENTO < 60000) return false;
+    VINC_INTENTO = Date.now();
+    VINC_VA = vincularConSesion(token);
+    var ok = false;
+    try { ok = await VINC_VA; } finally { VINC_VA = null; }
+    if (ok) pinta();
+    return ok;
   }
   async function vincular() {
     if (await vincularConSesion()) { window.dispatchEvent(new Event('lg:vinculado')); return; }
@@ -532,7 +567,8 @@
     aplicarPedido();
     // 🔑 con la campana activa y tu cuenta adentro, se vincula sola (una vez: después queda en `campana:yo`; tras
     // «Desvincular» queda `{ no: 1 }` y no se vuelve a vincular sola, ver `desvincular()`)
-    if (!leer('campana:yo', null) && window.DC && window.DC.id) { if (await vincularConSesion()) pinta(); }
+    // (y también al entrar, al activar y al volver a la pestaña: ver `vincularSola()`)
+    await vincularSola();
     try {
       // 🔴 SI LA CLAVE DEL WORKER CAMBIO, LA SUSCRIPCION VIEJA NO SIRVE: se
       // rehace sola acá, sin preguntar de nuevo —el permiso ya está—. Es
@@ -598,8 +634,13 @@
     desactivar: function () { return correr(desactivar); },
     vincular: function () { return correr(vincular); },
     desvincular: function () { return correr(desvincular); },
+    // 🔗 la llama `cuenta.js` al volver de Discord, con el permiso; callada: si no sale, queda el botón de siempre
+    vincularSola: function (token) { return vincularSola(token).catch(function () { return false; }); },
     elegir: function (sv) { elegir(sv); },
   };
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) vincularSola().catch(function () { /* queda el botón */ });
+  });
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
   else arrancar();

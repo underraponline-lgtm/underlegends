@@ -290,6 +290,10 @@ def ranking():
     return out
 
 
+class SinServidor(Exception):
+    """Discord no deja listar ese servidor: el bot ya no está (404) o no tiene permiso (403)."""
+
+
 def bajar(s, gid):
     out, after = {}, '0'
     while True:
@@ -298,6 +302,12 @@ def bajar(s, gid):
         if r.status_code == 429:
             time.sleep(float(r.json().get('retry_after', 1)) + .3)
             continue
+        # 🔴 UN SERVIDOR SIN EL BOT NO FRENA A LOS DEMÁS (24/11/2026). Era `sys.exit()`: el 22/11 a las ~2 PM ET el bot
+        # dejó de estar en Cypherhood (404, «Unknown Guild»), y desde ahí el paso entero salía con 1 en cada vuelta y no
+        # se cambió ningún apodo de la Liga. Lo vio Dlx: Makmah eligió «1º | VEN | Makmah» y seguía con «#16 | Makmah».
+        # Ahora ese servidor se saltea y se dice; los otros siguen
+        if r.status_code in (403, 404):
+            raise SinServidor('Discord dijo %s' % r.status_code)
         if r.status_code != 200:
             sys.exit('no pude listar %s: %s' % (gid, r.status_code))
         lote = r.json()
@@ -578,7 +588,12 @@ def main():
     miembros, duenos = {}, {}
     for sv, gid in GUILDS:
         print('\nbajando miembros de %s...' % sv)
-        miembros[sv] = bajar(s, gid)
+        try:
+            miembros[sv] = bajar(s, gid)
+        except SinServidor as e:
+            # sin `miembros[sv]`: a nadie de ahí se le toca el apodo en esta vuelta
+            print('   🔴 no puedo listar %s (%s): ¿el bot sigue en ese servidor? Lo salteo y sigo con los demás' % (sv, e))
+            continue
         print('   %d miembros' % len(miembros[sv]))
         try:
             duenos[gid] = str(s.get('%s/guilds/%s' % (API, gid), timeout=20).json().get('owner_id') or '')
@@ -604,7 +619,7 @@ def main():
     plan, viejos, ocultos = [], [], 0
     poder = {}                       # los servidores donde el bot no puede tocar apodos
     for sv, gid in GUILDS:
-        for did, m in miembros[sv].items():
+        for did, m in miembros.get(sv, {}).items():
             actual = m.get('nick') or ''
             p = PZ.get(did)
             if not p and not (actual and AP.solo_nuestras(actual, siglas)):

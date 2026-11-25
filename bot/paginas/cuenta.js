@@ -280,6 +280,8 @@ function quienSoy(c) {
   guardarLS('lg:yo', YO || null);
   // ★ a quién seguís, del servidor (y lo de este dispositivo sube)
   try { pedirSigo(); } catch (e) { console.error('[pedirSigo]', e); }
+  // 🔗 y la campana, si ya estaba activa en este dispositivo, pasa a ser tuya (con la sesión; ver `vincularSola()`)
+  try { if (window.Campana && window.Campana.vincularSola) window.Campana.vincularSola(); } catch (e) { /* queda el botón */ }
   pintaCuenta();
   pintaPaneles();
   pintaPopCuenta();
@@ -489,6 +491,11 @@ function volverDeDiscord() {
       // con Mi cuenta nueva no hay ventana: ya se volvió a `#/cuenta` (ver `aCuenta`)
       if (porAvisos) {
         vincularAvisos(q.access_token);
+      } else if (window.Campana && window.Campana.vincularSola) {
+        // 🔗 entraste con Discord por cualquier otra puerta y la campana ya estaba activa: el dispositivo queda tuyo sin
+        // pedirte «Vincular Discord» aparte (24/11/2026, ver `vincularSola()` en campana.js). Callado: si no sale, queda
+        // el botón de siempre
+        window.Campana.vincularSola(q.access_token);
       }
       // quien vino a votar se queda donde votó; ahora se sabe quién es («el tuyo»)
       if (porVoto) {

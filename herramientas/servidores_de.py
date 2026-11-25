@@ -198,6 +198,14 @@ def miembros(s, gid):
         if r.status_code == 429:
             time.sleep(float(r.json().get('retry_after', 1)) + .3)
             continue
+        # 🔴 UN SERVIDOR SIN EL BOT NO FRENA A LOS DEMÁS (24/11/2026). Era `sys.exit()`: el 22/11 a las ~2 PM ET el bot
+        # dejó de estar en Cypherhood (404, «Unknown Guild») y este paso salía con 1 en cada vuelta: el mapa de quién está
+        # dónde se quedó en el del 22/11, y `datos/bot_en.json` —que se arma acá, con los servidores donde el bot está de
+        # verdad— nunca sacó a Cypherhood, así que `sincronizar_puesto.py` también se caía por el mismo 404 y no se
+        # cambió ningún apodo. Ahora ese servidor queda vacío, se dice, y sale solo de `bot_en.json`
+        if r.status_code in (403, 404):
+            print('   🔴 no puedo listar %s (Discord dijo %s): ¿el bot sigue en ese servidor? Lo salteo' % (gid, r.status_code))
+            return out
         if r.status_code != 200:
             sys.exit('no pude listar %s: %s %s' % (gid, r.status_code, r.text[:120]))
         lote = r.json()
