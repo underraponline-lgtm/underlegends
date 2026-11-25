@@ -59,6 +59,48 @@ export const CRON_VIGIA = '* * * * *';
 const HUB = 'https://underlegends.pages.dev';
 //: 🖼️ el bucket público de R2 (el de las cartas): ahí van los fondos (13/10/2026)
 const R2_PUB = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
+// 🎨 lo que devuelve un modelo de imagen de Workers AI, en bytes: FLUX manda `{image: base64}` y Leonardo una secuencia
+async function imagenBytes(sal) {
+  if (sal && typeof sal.image === 'string') {
+    const t = atob(sal.image);
+    const b = new Uint8Array(t.length);
+    for (let i = 0; i < t.length; i++) b[i] = t.charCodeAt(i);
+    return b;
+  }
+  if (sal instanceof ReadableStream || sal instanceof ArrayBuffer || ArrayBuffer.isView(sal)) return new Uint8Array(await new Response(sal).arrayBuffer());
+  return null;
+}
+// 🎨 DOS FONDOS POR DÍA CON LA IA (25/11/2026, Dlx: «Phoenix 2 a day» y «para la próxima genera chicas animes algo así»).
+// El vigía los hace a las 23:25 UTC (6:25 PM ET en invierno): al final del día de la cuota, que se renueva a las 00:00 UTC,
+// así usan sólo lo que el OCR de los afiches no gastó; si no alcanza, ese día falla y no pasa nada más. Van a R2
+// `fondos_ia/` y a Logs, para que Dlx elija cuáles entran a la Tienda. Phoenix a 1536×896 ≈ 3.400 neuronas cada una
+export const FIA_MODELO = '@cf/leonardo/phoenix-1.0';
+export const FIA_POR_DIA = 2;
+export const FIA_MINUTO = 25;
+const FIA_ESTILO = ', anime illustration, one young adult woman, stylish streetwear, fully clothed, tasteful, cel-shaded, cinematic lighting, ' +
+  'highly detailed background, vibrant magenta and teal neon accents against deep blacks, wide 16:9 composition with the woman on the right third ' +
+  'and open space on the left, no text, no watermark';
+const FIA_NEG = 'text, letters, words, watermark, logo, signature, child, kid, nsfw, nudity, cleavage, revealing clothes, extra fingers, ' +
+  'deformed hands, extra limbs, blurry, lowres, jpeg artifacts';
+export const FIA_ESCENAS = [
+  ['azotea-auriculares', 'A woman rapper with headphones around her neck standing on a rooftop at night, neon city skyline behind her, confident smile'],
+  ['escenario-microfono', 'A woman holding a microphone on a battle stage under magenta spotlights and haze, fierce focused expression'],
+  ['metro-libreta', 'A woman sitting on a subway bench writing lyrics in a notebook, graffiti tiles, teal fluorescent light'],
+  ['dj-bandejas', 'A woman DJ scratching vinyl on turntables in a dark club, laser beams and smoke behind her'],
+  ['callejon-aerosol', 'A woman spray painting a colorful graffiti mural in an alley at dusk, paint mist in the air'],
+  ['dragon-dorado', 'A woman with a golden eastern dragon coiling in the stormy sky behind her above a night city'],
+  ['lluvia-neon', 'A woman in a cap and chain walking down a rainy neon street with a clear umbrella, reflections on the asphalt'],
+  ['plaza-cypher', 'A woman freestyling in a city plaza at night under warm streetlights, chalk circle on the ground'],
+  ['tren-ventana', 'A woman looking out the window of a night train, city lights streaking past, earbuds in'],
+  ['estudio-grabando', 'A woman recording in a small home studio, condenser microphone with pop filter, LED strips on the wall'],
+  ['puente-atardecer', 'A woman leaning on a bridge railing at sunset over a river city, wind in her hair, hoodie'],
+  ['karaoke-cabina', 'A woman singing into a microphone in a karaoke booth full of colorful lights, joyful'],
+  ['techo-luna', 'A woman sitting on the edge of a rooftop under a huge full moon, boombox beside her, calm night'],
+  ['mercado-noche', 'A woman walking through a busy night market with paper lanterns and food stalls, holding a drink'],
+  ['skate-parque', 'A woman with a skateboard at a skatepark at night, floodlights and graffiti ramps'],
+  ['trofeo-final', 'A woman holding a golden trophy on stage after winning a final, confetti falling, triumphant'],
+];
+
 const DC = 'https://discord.com/api/v10';
 // Discord pide este formato de User-Agent; sin él puede contestar 400.
 const UA = 'DiscordBot (https://underlegends.pages.dev, 1)';
@@ -7493,13 +7535,8 @@ export async function rutaAvisos(req, env, ruta) {
     const t0 = Date.now();
     let sal;
     try { sal = await env.AI.run(m, ent); } catch (e) { return json({ error: 'ia', detalle: String(e).slice(0, 300) }, 502); }
-    let bytes;
-    if (sal && typeof sal.image === 'string') {
-      const t = atob(sal.image);
-      bytes = new Uint8Array(t.length);
-      for (let i = 0; i < t.length; i++) bytes[i] = t.charCodeAt(i);
-    } else if (sal instanceof ReadableStream || sal instanceof ArrayBuffer || ArrayBuffer.isView(sal)) bytes = new Uint8Array(await new Response(sal).arrayBuffer());
-    else return json({ error: 'salida', tipo: typeof sal, claves: sal && typeof sal === 'object' ? Object.keys(sal).slice(0, 8) : [] }, 502);
+    const bytes = await imagenBytes(sal);
+    if (!bytes) return json({ error: 'salida', tipo: typeof sal, claves: sal && typeof sal === 'object' ? Object.keys(sal).slice(0, 8) : [] }, 502);
     const png = bytes[0] === 0x89 && bytes[1] === 0x50;
     const clave = 'pruebas/fondos/' + nombre + (png ? '.png' : '.jpg');
     await env.CARTAS.put(clave, bytes, { httpMetadata: { contentType: png ? 'image/png' : 'image/jpeg', cacheControl: 'no-store' } });
@@ -11113,6 +11150,49 @@ export class Avisos {
     }
   }
 
+  /** 🎨 Los fondos del día (ver `FIA_ESCENAS`): a las 23:25 UTC, dos escenas que van rotando, a R2 y a Logs. Se marca el día
+   *  ANTES de pedirlas: un vigía que se repite no las hace dos veces, y si fallan (sin cuota) se prueba mañana */
+  async fondosIA(ahora) {
+    if (!this.env.AI || !this.env.CARTAS) return null;
+    const d = new Date(ahora);
+    if (d.getUTCHours() !== 23 || d.getUTCMinutes() < FIA_MINUTO) return null;
+    const dia = d.toISOString().slice(0, 10);
+    const st = this.leer('fondos_ia') || {};
+    if (st.dia === dia) return null;
+    const i0 = Number(st.i) || 0;
+    this.guardar('fondos_ia', Object.assign({}, st, { dia, i: i0 + FIA_POR_DIA, t: ahora, enCurso: true }));
+    const hechas = [];
+    for (let n = 0; n < FIA_POR_DIA; n++) {
+      const [nombre, escena] = FIA_ESCENAS[(i0 + n) % FIA_ESCENAS.length];
+      try {
+        const sal = await this.env.AI.run(FIA_MODELO, { prompt: escena + FIA_ESTILO, negative_prompt: FIA_NEG, width: 1536, height: 896, num_steps: 25 });
+        const bytes = await imagenBytes(sal);
+        if (!bytes) throw new Error('salida ' + typeof sal);
+        const clave = 'fondos_ia/' + dia + '-' + nombre + '.jpg';
+        await this.env.CARTAS.put(clave, bytes, { httpMetadata: { contentType: 'image/jpeg', cacheControl: 'public, max-age=31536000' } });
+        hechas.push({ dia, nombre, url: R2_PUB + '/' + clave });
+      } catch (e) { hechas.push({ dia, nombre, error: String(e).slice(0, 160) }); }
+    }
+    const lista = (Array.isArray(st.lista) ? st.lista : []).concat(hechas.filter((h) => h.url)).slice(-60);
+    this.guardar('fondos_ia', { dia, i: i0 + FIA_POR_DIA, t: ahora, lista, ultimas: hechas });
+    const ok = hechas.filter((h) => h.url);
+    if (ok.length && this.env.DISCORD_TOKEN) {
+      try {
+        await fetch(`${DC}/channels/${CANAL_LOGS}/messages`, {
+          method: 'POST',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+          body: JSON.stringify({
+            content: `🎨 **Los fondos de hoy, hechos con IA** (${ok.length} de ${FIA_POR_DIA}). Todavía no están en la Tienda: dile a Claude cuáles entran.` +
+              (hechas.length > ok.length ? `\n⚠️ ${hechas.length - ok.length} no salió (seguramente sin cuota de IA hoy).` : ''),
+            embeds: ok.map((h) => ({ title: h.nombre, url: h.url, image: { url: h.url }, color: 0xE41373 })),
+            allowed_mentions: { parse: [] },
+          }),
+        });
+      } catch (e) { /* las imágenes quedan en R2 y en `fondos_ia` igual */ }
+    }
+    return hechas;
+  }
+
   async vueltaVigia(d) {
     const ahora = Date.now();
     if (!this.env.DISCORD_TOKEN) {
@@ -11146,6 +11226,8 @@ export class Avisos {
     // 🖼️ y las imágenes de /perfil y /vitrina que alguien pidió, también de madrugada (son suyas, como el redibujo): recoge
     // lo que quedó esperando el freno de `IMG_ENTRE` o una tarea que se cayó. Ver `imgDespachar()`
     try { await this.imgDespachar(ahora); } catch (e) { this.guardar('img', { t: ahora, error: String(e).slice(0, 160) }); }
+    // 🎨 los dos fondos del día con la IA (ver `FIA_ESCENAS`): una vez, al final del día de la cuota
+    try { await this.fondosIA(ahora); } catch (e) { this.guardar('fondos_ia_error', { t: ahora, error: String(e).slice(0, 160) }); }
     // 🃏 el ciclo que pidió alguien (su primera tarjeta por el Pase): sólo despierto, con el tope de `cicloAMano()`
     const cp = this.leer('ciclo_pedir');
     if (cp && cp.t && !(d && d.dormido)) {

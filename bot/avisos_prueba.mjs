@@ -5940,6 +5940,30 @@ const ok = (cond, que, det) => {
       const invV = TI.tiendaMia(o, { quien: QV, de: 'qv', inicial: INI, desde: 0 }, H).yo.inv.find((x) => x.p === 'XV1');
       ok(invV && invV.o === 'incluida' && !invV.deshacer && invV.pagado === 0, 'y en su inventario aparece como incluida', JSON.stringify(invV));
       TI.catalogoGuardar(o, { catalogo: Object.assign({}, baja, { abierta: true }) });
+      // 🎨 los dos fondos del día con la IA (25/11/2026): a las 23:25 UTC, una vez, rotando escenas; sin cuota, no rompe nada
+      {
+        const pedidos = [], puestos = [], fetch0 = globalThis.fetch;
+        let falla = false;
+        o.env.AI = { run: async (m, ent) => { pedidos.push([m, ent]); if (falla) throw new Error('5016: sin cuota'); return new Blob([new Uint8Array([0xff, 0xd8, 1, 2])]).stream(); } };
+        o.env.CARTAS = { put: async (k, b) => { puestos.push([k, b.length]); } };
+        globalThis.fetch = async () => new Response('{}', { status: 200 });
+        try {
+          o.guardar('fondos_ia', null);
+          const t = (h, m) => Date.UTC(2026, 10, 25, h, m);
+          const antes = await o.fondosIA(t(23, 10));
+          const r1 = await o.fondosIA(t(23, 30));
+          const r2 = await o.fondosIA(t(23, 45));
+          const st = o.leer('fondos_ia');
+          ok(antes === null && r1 && r1.length === A.FIA_POR_DIA && r1.every((h) => h.url && h.url.includes('fondos_ia/2026-11-25-')) && r2 === null
+            && pedidos.length === A.FIA_POR_DIA && pedidos[0][0] === A.FIA_MODELO && pedidos[0][1].negative_prompt.includes('child') && puestos.length === A.FIA_POR_DIA
+            && st.i === A.FIA_POR_DIA && st.lista.length === A.FIA_POR_DIA,
+            'los fondos del día: a las 23:25 UTC, dos, una sola vez por día', JSON.stringify({ antes, r1, r2, st }));
+          falla = true;
+          const r3 = await o.fondosIA(Date.UTC(2026, 10, 26, 23, 30));
+          ok(r3 && r3.every((h) => h.error) && o.leer('fondos_ia').i === 2 * A.FIA_POR_DIA && r3[0].nombre === A.FIA_ESCENAS[A.FIA_POR_DIA][0],
+            'al día siguiente siguen las escenas que tocan, y sin cuota queda el error sin romper nada', JSON.stringify(r3));
+        } finally { globalThis.fetch = fetch0; delete o.env.AI; delete o.env.CARTAS; }
+      }
     }
 
     // el arte: cerrada, sólo el dueño; con la misma versión no se manda de nuevo
