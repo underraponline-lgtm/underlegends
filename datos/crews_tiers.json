@@ -2,9 +2,27 @@
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
  "avisado": "2026-11-16",
  "dia": {
+  "agentesombra": [
+   0,
+   2500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
   "agus": [
    2499,
    10500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "aldre": [
+   0,
+   2500,
    0,
    0,
    0,
@@ -41,6 +59,33 @@
   "blitz": [
    7500,
    0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "bloody": [
+   0,
+   2625,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "chop": [
+   0,
+   2500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "cj": [
+   0,
+   3333,
    0,
    0,
    0,
@@ -86,6 +131,15 @@
   "deko": [
    0,
    7500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "denik": [
+   0,
+   2625,
    0,
    0,
    0,
@@ -227,9 +281,18 @@
    0,
    0
   ],
+  "juanpa": [
+   0,
+   2500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
   "julda": [
    11250,
-   9750,
+   12250,
    0,
    0,
    0,
@@ -254,9 +317,36 @@
    0,
    0
   ],
+  "kourier": [
+   0,
+   3333,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
   "kyss": [
    3750,
    0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "last": [
+   0,
+   2500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "lilnano": [
+   0,
+   2500,
    0,
    0,
    0,
@@ -302,6 +392,15 @@
   "martoar": [
    3750,
    0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "mateo": [
+   0,
+   3750,
    0,
    0,
    0,
@@ -355,7 +454,7 @@
   ],
   "mito": [
    3300,
-   2000,
+   4500,
    0,
    0,
    0,
@@ -434,9 +533,18 @@
    0,
    0
   ],
+  "og": [
+   0,
+   2500,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
   "okam": [
    3750,
-   10800,
+   13300,
    0,
    0,
    0,
@@ -464,6 +572,15 @@
   "player": [
    3750,
    0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "prosu": [
+   0,
+   5125,
    0,
    0,
    0,
@@ -617,6 +734,15 @@
   "vandu": [
    0,
    3750,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "volk": [
+   0,
+   5958,
    0,
    0,
    0,
@@ -809,16 +935,22 @@
   ]
  ],
  "pts": {
+  "agentesombra": 2500,
   "agus": 12999,
+  "aldre": 2500,
   "andres": 3750,
   "araya": 9750,
   "aritmetico": 3750,
   "blitz": 7500,
+  "bloody": 2625,
+  "chop": 2500,
+  "cj": 3333,
   "crakero": 7500,
   "criszj": 10500,
   "cronox": 15750,
   "daulinov": 3300,
   "deko": 7500,
+  "denik": 2625,
   "deuxs": 3750,
   "dios": 37525,
   "dominick": 2000,
@@ -834,21 +966,26 @@
   "inku": 42750,
   "itohimo": 12375,
   "joshu": 22500,
-  "julda": 21000,
+  "juanpa": 2500,
+  "julda": 23500,
   "keider": 3750,
   "konan": 15000,
+  "kourier": 3333,
   "kyss": 3750,
+  "last": 2500,
+  "lilnano": 2500,
   "lmg": 3300,
   "lrs": 23250,
   "majiztral": 6000,
   "makmah": 9500,
   "martoar": 3750,
+  "mateo": 3750,
   "mathhias": 6000,
   "mayeutyk": 3850,
   "mco": 3750,
   "metro": 3750,
   "miniboy": 14750,
-  "mito": 5300,
+  "mito": 9300,
   "molt": 3300,
   "molusco": 5775,
   "mrkude": 11550,
@@ -857,10 +994,12 @@
   "noone": 6000,
   "nxuz": 18500,
   "oasis": 18750,
-  "okam": 14550,
+  "og": 2500,
+  "okam": 18550,
   "over": 28500,
   "paria": 3750,
   "player": 3750,
+  "prosu": 5125,
   "raezer": 12375,
   "rbk": 3300,
   "rodas": 3750,
@@ -878,6 +1017,7 @@
   "tuca": 7500,
   "tøkiø": 7500,
   "vandu": 3750,
+  "volk": 5958,
   "xervoe": 18000,
   "yinn": 21750,
   "zignos": 3750

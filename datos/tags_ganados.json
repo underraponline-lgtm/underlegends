@@ -3091,7 +3091,7 @@
   },
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
    ],
@@ -4734,20 +4734,6 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
-   ]
-  }
- },
- "dyz": {
-  "temporada": {
-   "🌱 PROMESA": [
-    "🌱 PROMESA",
-    "t1",
-    1795585246517
-   ],
-   "🥉 AL PODIO": [
-    "🥉 AL PODIO",
-    "t1",
-    1795585246517
    ]
   }
  },
@@ -7175,6 +7161,11 @@
     "🥉 AL PODIO",
     "t1",
     1795151460346
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795588313720
    ]
   }
  },
@@ -7595,6 +7586,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1794778788639
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795588313720
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -12683,6 +12679,16 @@
     "t1",
     1793029252929
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795588313720
+   ],
+   "GANA AFUERA": [
+    "GANA AFUERA",
+    "t1",
+    1795588313720
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -12756,6 +12762,11 @@
     "⭐ PENTACAMPEÓN",
     "t1",
     1793317391221
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795588313720
    ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
@@ -18544,6 +18555,11 @@
  },
  "volk": {
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795588313720
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",

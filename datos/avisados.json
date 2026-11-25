@@ -45947,7 +45947,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "56d7c9329a5b8e9f",
+  "firma": "4934f858923ab6f9",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46176,7 +46176,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "a502e92de99476e1",
+  "firma": "50c8f1a149557f31",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -47459,7 +47459,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "4f765a22ebd0c9e6",
+  "firma": "df1b25a5176659fd",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -59523,6 +59523,279 @@
     "Soulb",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "693": {
+  "al_dia": true,
+  "antes": {
+   "Agente sombra": [
+    132,
+    193,
+    false
+   ],
+   "Aldre": [
+    99,
+    130,
+    false
+   ],
+   "Bloody": [
+    34,
+    39,
+    false
+   ],
+   "CJ": [
+    308,
+    156,
+    true
+   ],
+   "Chop": [
+    271,
+    38,
+    true
+   ],
+   "Denik": [
+    349,
+    231,
+    true
+   ],
+   "Juanpa": [
+    97,
+    128,
+    false
+   ],
+   "Julda": [
+    100,
+    131,
+    false
+   ],
+   "Kourier": [
+    126,
+    179,
+    false
+   ],
+   "LAST": [
+    56,
+    69,
+    false
+   ],
+   "Lilñaño": [
+    111,
+    150,
+    false
+   ],
+   "Mito": [
+    17,
+    17,
+    false
+   ],
+   "OG": [
+    21,
+    21,
+    false
+   ],
+   "OKAM": [
+    24,
+    26,
+    false
+   ],
+   "Prosu": [
+    106,
+    141,
+    false
+   ],
+   "Volk": [
+    139,
+    211,
+    false
+   ],
+   "_Mateo": [
+    688,
+    664,
+    true
+   ]
+  },
+  "canal": "1394903620419584020",
+  "duelos": [
+   [
+    "Bloody",
+    "Lilñaño",
+    "Bloody"
+   ],
+   [
+    "Bloody",
+    "Mito",
+    "Bloody"
+   ],
+   [
+    "CJ",
+    "Aldre",
+    "CJ"
+   ],
+   [
+    "CJ",
+    "OKAM",
+    "CJ"
+   ],
+   [
+    "OG",
+    "Agente sombra",
+    "OG"
+   ],
+   [
+    "OG",
+    "LAST",
+    "OG"
+   ],
+   [
+    "Volk",
+    "Chop",
+    "Volk"
+   ],
+   [
+    "Volk",
+    "Julda",
+    "Volk"
+   ],
+   [
+    "Volk",
+    "_Mateo",
+    "Volk"
+   ],
+   [
+    "OG, Juanpa",
+    "Bloody, Prosu",
+    "OG, Juanpa"
+   ],
+   [
+    "CJ, Kourier",
+    "Volk, Denik",
+    "CJ, Kourier"
+   ],
+   [
+    "CJ, Kourier, Volk",
+    "OG, Juanpa, Prosu",
+    "CJ, Kourier, Volk"
+   ]
+  ],
+  "ev_antes": {
+   "Agente sombra": 8,
+   "Aldre": 6,
+   "Bloody": 30,
+   "CJ": 6,
+   "Chop": 28,
+   "Denik": 6,
+   "Juanpa": 4,
+   "Julda": 8,
+   "Kourier": 8,
+   "LAST": 25,
+   "Lilñaño": 7,
+   "Mito": 54,
+   "OG": 24,
+   "OKAM": 36,
+   "Prosu": 8,
+   "Volk": 6,
+   "_Mateo": 1
+  },
+  "fecha": "24/11",
+  "firma": "3f7c0dae5a149ec5",
+  "msg": "1575034442836082780",
+  "nombre": "INICIO DEL FIN VOL.2",
+  "num": 693,
+  "participantes": 17,
+  "sello": {
+   "CJ": "",
+   "Kourier": "47b0a29ef64f:0b98cb3023ec",
+   "Volk": "10065b055c6a:0b98cb3023ec"
+  },
+  "sv": "DW",
+  "t": "2026-11-25T06:24:32Z",
+  "tabla": [
+   [
+    "Volk",
+    "Campeón",
+    5958
+   ],
+   [
+    "Prosu",
+    "Semifinal",
+    5125
+   ],
+   [
+    "CJ",
+    "Campeón",
+    3333
+   ],
+   [
+    "Kourier",
+    "Campeón",
+    3333
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Denik",
+    "Semifinal",
+    2625
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Juanpa",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Lilñaño",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Aldre",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Julda",
+    "Cuartos",
+    2500
+   ],
+   [
+    "_Mateo",
+    "Cuartos",
+    2500
    ]
   ],
   "v": 2

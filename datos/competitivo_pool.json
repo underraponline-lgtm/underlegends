@@ -883,7 +883,7 @@
   "T": 31,
   "V": 23,
   "wr": "70.4%",
-  "rch_act": 0,
+  "rch_act": 1,
   "rch_max": 4,
   "duel_v": 19,
   "duel_t": 27,
@@ -893,7 +893,7 @@
   "din_v": 14,
   "din_t": 21,
   "crn_t": 9,
-  "cri_t": 53,
+  "cri_t": 56,
   "pos": 12,
   "total": 85,
   "rango": "B",
@@ -922,7 +922,7 @@
   },
   "nac": {
    "evn": 6,
-   "evi": 21,
+   "evi": 22,
    "com": 3,
    "top": [
     1,
@@ -1881,7 +1881,7 @@
   "T": 31,
   "V": 47,
   "wr": "64.5%",
-  "rch_act": 1,
+  "rch_act": 0,
   "rch_max": 4,
   "duel_v": 17,
   "duel_t": 27,
@@ -1890,8 +1890,8 @@
   "dna_t": 2,
   "din_v": 15,
   "din_t": 25,
-  "crn_t": 8,
-  "cri_t": 55,
+  "crn_t": 9,
+  "cri_t": 57,
   "pos": 23,
   "total": 85,
   "rango": "B",
@@ -1919,8 +1919,8 @@
    "paisesg": 8
   },
   "nac": {
-   "evn": 6,
-   "evi": 23,
+   "evn": 7,
+   "evi": 24,
    "com": 2,
    "top": [
     2,
@@ -2016,7 +2016,7 @@
   "din_v": 14,
   "din_t": 24,
   "crn_t": 30,
-  "cri_t": 65,
+  "cri_t": 68,
   "pos": 24,
   "total": 85,
   "rango": "B",
@@ -2043,7 +2043,7 @@
   },
   "nac": {
    "evn": 18,
-   "evi": 38,
+   "evi": 39,
    "com": 8,
    "top": [
     3,
@@ -3630,8 +3630,8 @@
   "dna_t": 3,
   "din_v": 7,
   "din_t": 8,
-  "crn_t": 3,
-  "cri_t": 13,
+  "crn_t": 4,
+  "cri_t": 15,
   "pos": 118,
   "total": 85,
   "rango": "",
@@ -3658,8 +3658,8 @@
    "primer": true
   },
   "nac": {
-   "evn": 4,
-   "evi": 6,
+   "evn": 5,
+   "evi": 7,
    "com": 3,
    "top": [
     1,
@@ -3745,8 +3745,8 @@
   "T": 15,
   "V": 0,
   "wr": "",
-  "rch_act": 3,
-  "rch_max": 3,
+  "rch_act": 4,
+  "rch_max": 4,
   "duel_v": 8,
   "duel_t": 12,
   "duel_real": true,
@@ -3755,7 +3755,7 @@
   "din_v": 5,
   "din_t": 8,
   "crn_t": 6,
-  "cri_t": 11,
+  "cri_t": 14,
   "pos": 120,
   "total": 85,
   "rango": "",
@@ -3781,7 +3781,7 @@
   },
   "nac": {
    "evn": 3,
-   "evi": 4,
+   "evi": 5,
    "com": 4,
    "top": [
     5,
@@ -4058,7 +4058,7 @@
   "din_v": 10,
   "din_t": 20,
   "crn_t": 5,
-  "cri_t": 62,
+  "cri_t": 65,
   "pos": 43,
   "total": 85,
   "rango": "C",
@@ -4085,7 +4085,7 @@
   },
   "nac": {
    "evn": 4,
-   "evi": 31,
+   "evi": 32,
    "com": 2,
    "top": [
     5,
@@ -4543,7 +4543,7 @@
   "T": 8,
   "V": 0,
   "wr": "",
-  "rch_act": 1,
+  "rch_act": 2,
   "rch_max": 2,
   "duel_v": 4,
   "duel_t": 4,
@@ -4553,7 +4553,7 @@
   "din_v": 2,
   "din_t": 2,
   "crn_t": 2,
-  "cri_t": 7,
+  "cri_t": 10,
   "pos": 127,
   "total": 85,
   "rango": "",
@@ -4579,7 +4579,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 4,
+   "evi": 5,
    "com": 2,
    "top": [
     3,
@@ -5279,7 +5279,7 @@
   "din_v": 3,
   "din_t": 5,
   "crn_t": 4,
-  "cri_t": 9,
+  "cri_t": 12,
   "pos": 135,
   "total": 85,
   "rango": "",
@@ -5306,7 +5306,7 @@
   },
   "nac": {
    "evn": 5,
-   "evi": 7,
+   "evi": 8,
    "com": 2,
    "top": [
     5,
@@ -5390,7 +5390,7 @@
   "T": 8,
   "V": 39,
   "wr": "63.6%",
-  "rch_act": 1,
+  "rch_act": 0,
   "rch_max": 2,
   "duel_v": 7,
   "duel_t": 14,
@@ -5400,7 +5400,7 @@
   "din_v": 7,
   "din_t": 14,
   "crn_t": 0,
-  "cri_t": 38,
+  "cri_t": 42,
   "pos": 99,
   "total": 85,
   "rango": "D",
@@ -5430,7 +5430,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 25,
+   "evi": 26,
    "com": 0,
    "top": [
     2,
@@ -8240,7 +8240,7 @@
   "din_v": 3,
   "din_t": 6,
   "crn_t": 3,
-  "cri_t": 17,
+  "cri_t": 21,
   "pos": 163,
   "total": 85,
   "rango": "",
@@ -8264,7 +8264,7 @@
   },
   "nac": {
    "evn": 3,
-   "evi": 7,
+   "evi": 8,
    "com": 0,
    "top": [
     15,
@@ -8942,7 +8942,7 @@
   "din_v": 2,
   "din_t": 5,
   "crn_t": 3,
-  "cri_t": 19,
+  "cri_t": 22,
   "pos": 70,
   "total": 85,
   "rango": "E",
@@ -8971,7 +8971,7 @@
   },
   "nac": {
    "evn": 2,
-   "evi": 19,
+   "evi": 20,
    "com": 0,
    "top": [
     7,
@@ -11631,7 +11631,7 @@
   "din_v": 3,
   "din_t": 7,
   "crn_t": 0,
-  "cri_t": 17,
+  "cri_t": 20,
   "pos": 207,
   "total": 85,
   "rango": "",
@@ -11657,7 +11657,7 @@
   },
   "nac": {
    "evn": 1,
-   "evi": 6,
+   "evi": 7,
    "com": 0,
    "top": [
     1,
@@ -12844,7 +12844,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 0,
-  "cri_t": 8,
+  "cri_t": 12,
   "pos": 224,
   "total": 85,
   "rango": "",
@@ -12864,7 +12864,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 4,
+   "evi": 5,
    "com": 0,
    "top": [
     4,
@@ -16902,7 +16902,7 @@
   "T": 8,
   "V": 16,
   "wr": "",
-  "rch_act": 0,
+  "rch_act": 1,
   "rch_max": 1,
   "duel_v": 0,
   "duel_t": 1,
@@ -16911,8 +16911,8 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "crn_t": 0,
-  "cri_t": 7,
+  "crn_t": 1,
+  "cri_t": 10,
   "pos": 294,
   "total": 85,
   "rango": "",
@@ -16935,8 +16935,8 @@
    "paisesg": 2
   },
   "nac": {
-   "evn": 0,
-   "evi": 4,
+   "evn": 1,
+   "evi": 5,
    "com": 0
   }
  },
@@ -17381,8 +17381,8 @@
   "T": 0,
   "V": 34,
   "wr": "",
-  "rch_act": 1,
-  "rch_max": 1,
+  "rch_act": 2,
+  "rch_max": 2,
   "duel_v": 1,
   "duel_t": 1,
   "duel_real": true,
@@ -17391,7 +17391,7 @@
   "din_v": 1,
   "din_t": 1,
   "crn_t": 0,
-  "cri_t": 11,
+  "cri_t": 14,
   "pos": 303,
   "total": 85,
   "rango": "",
@@ -17416,7 +17416,7 @@
   },
   "nac": {
    "evn": 0,
-   "evi": 7,
+   "evi": 8,
    "com": 0,
    "top": [
     3,
@@ -17913,7 +17913,7 @@
   "din_v": 0,
   "din_t": 1,
   "crn_t": 3,
-  "cri_t": 13,
+  "cri_t": 16,
   "pos": 313,
   "total": 85,
   "rango": "",
@@ -17933,7 +17933,7 @@
   },
   "nac": {
    "evn": 3,
-   "evi": 5,
+   "evi": 6,
    "com": 0
   }
  },

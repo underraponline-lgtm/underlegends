@@ -65293,5 +65293,190 @@
    "min": 32,
    "v": 1
   }
+ },
+ "693": {
+  "dia": "2026-11-24",
+  "escala": "16+",
+  "fecha": "24/11",
+  "links": [
+   "https://discord.com/channels/1300152346189496330/1394905025230147584/1575009267331637330"
+  ],
+  "n": 693,
+  "nombre": "INICIO DEL FIN VOL.2",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Bloody",
+       "Prosu",
+       "Lilñaño",
+       "Mito"
+      ],
+      "Bloody, Prosu",
+      "triple (4 bandas, pasan 2); también pasa: Prosu"
+     ],
+     [
+      [
+       "CJ",
+       "Kourier",
+       "Aldre",
+       "OKAM"
+      ],
+      "CJ, Kourier",
+      "triple (4 bandas, pasan 2); también pasa: Kourier 🇲🇽"
+     ],
+     [
+      [
+       "OG",
+       "Juanpa",
+       "Agente sombra",
+       "LAST"
+      ],
+      "OG, Juanpa",
+      "triple (4 bandas, pasan 2); también pasa: Juanpa"
+     ],
+     [
+      [
+       "Volk",
+       "Denik",
+       "Chop",
+       "Julda",
+       "_Mateo"
+      ],
+      "Volk, Denik",
+      "triple (5 bandas, pasan 2); también pasa: DENIK🇵🇪; Drafteado: _ Volk 🇲🇽"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG, Juanpa",
+       "Bloody, Prosu"
+      ],
+      "OG, Juanpa",
+      ""
+     ],
+     [
+      [
+       "CJ, Kourier",
+       "Volk, Denik"
+      ],
+      "CJ, Kourier",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "CJ, Kourier, Volk",
+       "OG, Juanpa, Prosu"
+      ],
+      "CJ, Kourier, Volk",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DW",
+  "tabla": [
+   [
+    "Volk",
+    "Campeón",
+    5958
+   ],
+   [
+    "Prosu",
+    "Semifinal",
+    5125
+   ],
+   [
+    "CJ",
+    "Campeón",
+    3333
+   ],
+   [
+    "Kourier",
+    "Campeón",
+    3333
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Denik",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Aldre",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Juanpa",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Julda",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lilñaño",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "_Mateo",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "ver": {
+   "min": 85,
+   "v": 1
+  }
  }
 }

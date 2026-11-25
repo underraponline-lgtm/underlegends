@@ -912,6 +912,13 @@
 "temporada"
 ]
 },
+"juanpa": {
+"rg": "",
+"c": [
+"pais",
+"servidor"
+]
+},
 "gus": {
 "rg": "E",
 "c": [
@@ -920,9 +927,25 @@
 "temporada"
 ]
 },
+"julda": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "blitz": {
 "rg": "E",
 "c": []
+},
+"prosu": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "mosquitrap": {
 "rg": "",
@@ -955,13 +978,6 @@
 "temporada"
 ]
 },
-"juanpa": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
-]
-},
 "romeo": {
 "rg": "",
 "c": [
@@ -971,14 +987,6 @@
 ]
 },
 "aldre": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"julda": {
 "rg": "",
 "c": [
 "pais",
@@ -998,6 +1006,13 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"lilnano": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -1040,14 +1055,6 @@
 "rg": "",
 "c": []
 },
-"prosu": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "juasmio": {
 "rg": "",
 "c": [
@@ -1075,6 +1082,10 @@
 "temporada"
 ]
 },
+"cj": {
+"rg": "",
+"c": []
+},
 "eliot": {
 "rg": "",
 "c": []
@@ -1094,13 +1105,6 @@
 "ezze": {
 "rg": "",
 "c": []
-},
-"lilnano": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "deko": {
 "rg": "",
@@ -1132,10 +1136,6 @@
 "temporada"
 ]
 },
-"cj": {
-"rg": "",
-"c": []
-},
 "oriuz": {
 "rg": "",
 "c": []
@@ -1156,6 +1156,13 @@
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"kourier": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "raizer": {
@@ -1261,7 +1268,7 @@
 "rg": "",
 "c": []
 },
-"kourier": {
+"volk": {
 "rg": "",
 "c": [
 "servidor",
@@ -1315,6 +1322,14 @@
 "rg": "",
 "c": []
 },
+"agentesombra": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "riolu": {
 "rg": "",
 "c": [
@@ -1333,14 +1348,6 @@
 "dantemx": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"agentesombra": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -8597,8 +8604,8 @@
 "tipo": "resnoche",
 "t": "2026-11-25T08:00:00Z",
 "dia": "2026-11-24",
-"eventos": 4,
-"part": 55,
+"eventos": 5,
+"part": 72,
 "campeones": [
 {
 "ev": "PURISTAS DEL HIP HOP",
@@ -8643,6 +8650,25 @@
 ""
 ]
 ]
+},
+{
+"ev": "INICIO DEL FIN VOL.2",
+"sv": "DW",
+"ll": 693,
+"quien": [
+[
+"Volk",
+"volk"
+],
+[
+"CJ",
+"cj"
+],
+[
+"Kourier",
+"kourier"
+]
+]
 }
 ],
 "suman": [
@@ -8670,19 +8696,19 @@
 "n": "METRO",
 "k": "",
 "de": 818,
-"a": 542
+"a": 543
+},
+{
+"n": "_Mateo",
+"k": "",
+"de": 685,
+"a": 522
 },
 {
 "n": "Konan",
 "k": "",
 "de": 244,
 "a": 153
-},
-{
-"n": "JOSHU",
-"k": "joshu",
-"de": 347,
-"a": 299
 }
 ],
 "sorpresas": [
@@ -8698,6 +8724,13 @@
 "k": "",
 "que": "debut",
 "ev": "- DEM BATTLES -"
+},
+{
+"n": "Volk",
+"k": "volk",
+"que": "primer",
+"ev": "INICIO DEL FIN VOL.2",
+"desde": 139
 }
 ]
 }
@@ -8791,7 +8824,7 @@
 "yinn": 1,
 "miniboy": 0,
 "tam": 0,
-"og": 0,
+"og": 1,
 "abyssus": 1,
 "nc": 0,
 "nxuz": 0,
@@ -8807,11 +8840,11 @@
 "sinlimites": 0,
 "majiztral": 0,
 "criszj": 0,
-"bloody": 1,
+"bloody": 0,
 "tuca": 0,
 "drexx": 0,
 "cronox": 1,
-"chop": 1,
+"chop": 0,
 "geoka": 0,
 "tenor": 0,
 "lrs": 1,
@@ -8888,7 +8921,7 @@
 "noone": 0,
 "soneto": 0,
 "dxg": 0,
-"juanpa": 3,
+"juanpa": 4,
 "aldre": 0,
 "lucky": 0,
 "gus": 0,
@@ -8934,7 +8967,7 @@
 "pomberito": 0,
 "andy": 0,
 "emilioalva": 0,
-"cj": 1,
+"cj": 2,
 "lewito": 0,
 "chase": 3,
 "zeta": 0,
@@ -8988,13 +9021,14 @@
 "magic": 0,
 "tho": 1,
 "mark98": 1,
-"kourier": 1,
+"kourier": 2,
 "agentesombra": 0,
 "martoar": 0,
 "liam": 0,
 "mrkude": 0,
 "inku": 0,
-"joshu": 2
+"joshu": 2,
+"volk": 1
 },
 "sem": {
 "id": "2026-11-23",
