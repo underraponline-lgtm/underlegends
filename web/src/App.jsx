@@ -247,6 +247,7 @@ import { useCalma, useTapado } from './anima.js';
 // 🐞 los errores de la página, al Dashboard (19/10/2026): los de cada sección y los que no agarra ninguna
 import { escucharErrores, noEsGente, reportarError } from './errores.js';
 import { esDeVersion, recargarPorVersion } from './version.js';
+import Volver, { notarRuta } from './volver.jsx';
 // 🎁 al cargar: el `?ref=` de un link de invitación, y mandarlo cuando haya cuenta (referidos.js)
 import './referidos.js';
 // 📱 lo visto o hecho en la página sigue a tu cuenta (23/11/2026): ver el módulo
@@ -479,6 +480,8 @@ export default function App() {
   const yoRef = useRef(null);
   yoRef.current = yo && yo.dc && yo.dc.id ? String(yo.dc.id) : null;
   const [hash, setHash] = useState(rutaHash);
+  // ← la pila de «Volver» (volver.jsx): se anota antes de dibujar, así el botón ya sabe de dónde se vino
+  notarRuta(hash);
   const [sigoV, setSigoV] = useState(0);
   // 🧭 pedir el tutorial (la Guía, el «¿Cómo funciona?», la pista de nuevos) avisa `lg:tour` con qué: cada pedido es un
   // número nuevo (ver `pedirRecorrido()` de primera.js)
@@ -1051,6 +1054,8 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       {quiereTutorial() || repite.n ? <Aislada reinicio={reinicio} n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} pedido={repite} /></Suspense></Aislada> : null}
       {/* ❓ el «¿Cómo funciona?» de cada página con capítulo, y el aviso de que el tutorial es nuevo (comofunciona.jsx) */}
       <Aislada reinicio={reinicio} n="ComoFunciona"><ComoFunciona pagina={paginaMenu} /></Aislada>
+      {/* ← volver a la página anterior de esta pestaña (25/11/2026, volver.jsx) */}
+      <Aislada reinicio={reinicio} n="Volver"><Volver hash={hash} /></Aislada>
       <span id="contenido" tabIndex={-1} />
       {/* 🔑 UNA POR SERVIDOR, UNA POR LLAVE Y UNA POR PERSONA (18/11/2026), como las crews y los países: con la `key` fija,
           pasar de FFA a CEU dejaba puesto el filtro de «Su muro» (CEU sin esas publicaciones y sin chips: vacío), y de

@@ -7655,3 +7655,15 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .app .rk-fila:has(.rk-fondo) :is(.rk-qa a,.rk-qa b,small,.rk-fila-n),
 .app .rk-q:has(>.rk-fondo) :is(.rk-qa a,.rk-qa b,small){text-shadow:0 0 2px var(--caja),0 0 6px var(--caja),0 0 12px var(--caja)}
 .app :has(>.fp-capa) small,.app .rk-fila:has(.rk-fondo) small,.app .rk-q:has(>.rk-fondo) small{color:var(--tinta)}
+
+/* ← VOLVER A LA PÁGINA ANTERIOR (25/11/2026, volver.jsx): su propia fila arriba a la izquierda del contenido. Encima de
+   la página (alto 0) pisaba el «EVENTOS · T1» de Eventos en el celular: cada página arranca a otra altura (medido) */
+.volver{position:relative;align-self:stretch;width:100%;max-width:calc(1200px + 2 * var(--gut, 16px));margin:0 auto;padding:10px var(--gut, 16px) 0;z-index:5;box-sizing:border-box}
+.volver-b{display:inline-flex;align-items:center;gap:4px;min-height:30px;padding:0 12px 0 8px;
+  background:#0B0C0E;color:#F6F6F6;border:1.5px solid #2A2C31;border-radius:3px;cursor:pointer;
+  font:700 13px/1 "Barlow Condensed","Arial Narrow",sans-serif;letter-spacing:.08em;text-transform:uppercase;
+  transition:transform .16s cubic-bezier(.23,1,.32,1),border-color .16s}
+.volver-b span{max-width:46vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.volver-b:active{transform:scale(.96)}
+@media (hover:hover) and (pointer:fine){.volver-b:hover{border-color:#E41373;transform:translateX(-2px)}}
+@media (prefers-reduced-motion:reduce){.volver-b{transition:none}}
