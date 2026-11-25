@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T01:55:08+00:00",
+ "cuando": "2026-11-25T02:25:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8205,6 +8205,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "Julda",
+   "quien": "dancito_rap",
+   "discord_id": "1496332551562858598",
+   "msg_id": "1574967942083387434",
+   "cuando": "2026-11-25T02:00:18"
+  },
   {
    "servidor": "CHZ",
    "canal": "inscripción-vc-🎙️",
@@ -44195,15 +44204,6 @@
    "discord_id": "1150099153238630410",
    "msg_id": "1562572125238329436",
    "cuando": "2026-10-21T21:03:45"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Desio 🇨🇴",
-   "quien": "desio_3",
-   "discord_id": "1179906216567250950",
-   "msg_id": "1562572117109776487",
-   "cuando": "2026-10-21T21:03:43"
   }
  ]
 }
