@@ -123,7 +123,12 @@ let prueba = null;
 let llamadas = null;
 //: una llave publicada hace más que esto ya no cuenta como «en juego» (lo mismo que `LLAVE_H` de en_llamada.py)
 const LLAVE_H = 3;
-const APODO_GRABANDO = '🔴 GRABANDO · ULAYA';       // el apodo mientras graba (ponerApodo)
+//: 🔴 EL APODO MIENTRAS GRABA (ponerApodo). Dlx, 25/11/2026: *«en vez q diga grabando simplemente pon el emoji rojo al
+//: costado de Ulaya asi: Emoji / la linea vertical ULAYA»*. Antes era «🔴 GRABANDO · ULAYA», que en FRZ quedó colgado
+//: (aislada no se lo pudo sacar): `APODOS_VIEJOS` hace que se lo reconozca igual y se lo saque
+const APODO_GRABANDO = '🔴 | ULAYA';
+const APODOS_VIEJOS = ['🔴 GRABANDO · ULAYA'];
+const esApodoGrabando = (nick) => [APODO_GRABANDO, ...APODOS_VIEJOS].some((a) => String(nick || '').startsWith(a));
 const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
 //: otros grabadores con los que NO se entra (vacío: ver arriba). El de Drako es «Freestyle for All», 1557056218164629535
 const OTROS = new Set(lista(E.NO_SI_ESTA));
@@ -295,7 +300,7 @@ class Grabacion {
 
   /**
    * 🔴 EL APODO MIENTRAS GRABA, COMO CRAIG (Dlx, 23/11/2026: «cuando se una que se ponga como Craig… que su apodo se cambie a
-   * Grabando Ulaya»). Al entrar, «🔴 GRABANDO · ULAYA»; al salir, el apodo que tenía antes. Sin permiso de cambiar su apodo
+   * Grabando Ulaya»). Al entrar, «🔴 | ULAYA» (era «🔴 GRABANDO · ULAYA» hasta el 25/11); al salir, el apodo que tenía antes. Sin permiso de cambiar su apodo
    * en ese servidor, graba igual y lo anota UNA vez: el apodo es un aviso, no una condición (Craig sí se niega a grabar).
    */
   async ponerApodo(grabando) {
@@ -303,9 +308,9 @@ class Grabacion {
       const me = this.guild.members.me ?? await this.guild.members.fetchMe();
       if (grabando) {
         this.apodoAntes = me.nickname ?? null;
-        if (!String(me.nickname || '').startsWith(APODO_GRABANDO)) await me.setNickname(APODO_GRABANDO, 'grabando el evento');
-      } else if (String(me.nickname || '').startsWith(APODO_GRABANDO)) {
-        await me.setNickname(this.apodoAntes && !this.apodoAntes.startsWith(APODO_GRABANDO) ? this.apodoAntes : null, 'terminó la grabación');
+        if (me.nickname !== APODO_GRABANDO) await me.setNickname(APODO_GRABANDO, 'grabando el evento');
+      } else if (esApodoGrabando(me.nickname)) {
+        await me.setNickname(this.apodoAntes && !esApodoGrabando(this.apodoAntes) ? this.apodoAntes : null, 'terminó la grabación');
       }
     } catch (e) {
       if (!this.avisoApodo) anotar(`⚠️ apodo en ${this.guild.name}: ${String(e.message || e).slice(0, 80)}`);
@@ -777,7 +782,7 @@ function limpiarApodos(client) {
   for (const gid of [...apodosColgados]) {
     if (grabando.has(gid)) continue;
     const me = client.guilds.cache.get(gid)?.members.me;
-    if (!me || !String(me.nickname || '').startsWith(APODO_GRABANDO)) { apodosColgados.delete(gid); continue; }
+    if (!me || !esApodoGrabando(me.nickname)) { apodosColgados.delete(gid); continue; }
     me.setNickname(null, 'terminó la grabación').then(() => apodosColgados.delete(gid)).catch(() => {});
   }
 }
@@ -864,7 +869,7 @@ client.once(Events.ClientReady, async () => {
   // 🔴 un reinicio en medio de una grabación deja el apodo «GRABANDO» colgado: al arrancar no graba nada, así que se limpia
   for (const g of client.guilds.cache.values()) {
     const me = g.members.me;
-    if (me && String(me.nickname || '').startsWith(APODO_GRABANDO)) {
+    if (me && esApodoGrabando(me.nickname)) {
       me.setNickname(null, 'reinicio: no está grabando').catch(() => { apodosColgados.add(g.id); });
     }
   }
