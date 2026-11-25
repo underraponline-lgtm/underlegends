@@ -70,7 +70,9 @@ function Escenario({ v, D, t, cur }) {
     </div>
   );
 }
-function AudioBatalla({ v }) {
+/** `alTerminar` y `auto` (25/11/2026): el evento entero de la llave (`EventoCompleto` de llave.jsx) la reusa batalla tras
+ *  batalla; en la ventana, suena sola al abrirse como siempre */
+export function AudioBatalla({ v, alTerminar = null, auto = true, alEmpezar = null }) {
   const au = useRef(null);
   const caja = useRef(null);
   const [D, setD] = useState(null);
@@ -93,7 +95,8 @@ function AudioBatalla({ v }) {
   return (
     <div className="vid-audio">
       <Escenario v={v} D={D} t={t} cur={cur} />
-      <audio ref={au} src={v.audio} title={v.tit || 'Audio'} controls autoPlay onTimeUpdate={(e) => setT(e.currentTarget.currentTime)} />
+      <audio ref={au} src={v.audio} title={v.tit || 'Audio'} controls autoPlay={auto} onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
+        onEnded={alTerminar || undefined} onPlay={alEmpezar || undefined} />
       {calor.length > 2 ? (
         <div className="vau-calor" role="group" aria-label="Dónde reaccionó la llamada: toca para ir ahí">
           {calor.map((c, i) => <button key={i} type="button" style={{ height: 4 + c * 3 }} className={t >= i * 5 && t < i * 5 + 5 ? 'on' : ''}

@@ -23,7 +23,7 @@ import Calificar from './calificar.jsx';
 import { usarCss } from './css.js';
 import { pedirLlave, pedirRoles, puede } from './panelsocio.js';
 import { deBatalla, normN, ridDe, tituloDe, useArchivo } from './archivo_ul.js';
-import { abrirVideo } from './video.jsx';
+import { AudioBatalla, abrirVideo } from './video.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/llave.css)
 usarCss('llave', CSS_PAGINA);
@@ -541,6 +541,44 @@ function ShortB({ ctx, ls, gano, fin }) {
       {pub && fin ? pub : null}
     </span>
     </>
+  );
+}
+
+// 🎬 EL EVENTO ENTERO (25/11/2026, Dlx: «la competencia completa con todas las rondas, skipeando los vacíos y momentos nada
+// que ver… arriba lo que aparece arriba, abajo el video del evento y abajo las llaves»). Las batallas de la llave en orden
+// —octavos, cuartos, semis, final—, una tras otra: cada audio es una batalla cortada de punta a punta por ULAYA, así que las
+// esperas y lo que se habla entre batalla y batalla no está. Es el mismo reproductor de la batalla (el escenario VS, la letra
+// y los turnos: `AudioBatalla` de video.jsx) y no se guarda nada aparte: son los audios de `reels/audios.json`, 15 días
+const ORDEN_RONDA = { dieciseisavos: 0, octavos: 1, cuartos: 2, semifinales: 3, semifinal: 3, tercer: 4, final: 5 };
+const RONDA_TXT = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', semifinal: 'Semifinal', final: 'Final' };
+function EventoCompleto({ ctx, xs }) {
+  const [i, setI] = useState(0);
+  const [va, setVa] = useState(false);
+  const x = xs[Math.min(i, xs.length - 1)];
+  if (!x) return null;
+  const total = xs.reduce((s, y) => s + (y.dur || 0), 0);
+  const ronda = (y) => RONDA_TXT[String(y.ronda || '').toLowerCase()] || y.ronda || '';
+  const vs = (y) => (y.nombres || []).map((nm) => limpio(nm)).join(' vs ');
+  const lados = (x.nombres || []).slice(0, 2).map((nm) => ({ n: limpio(nm),
+    cara: <Cara liga={ctx.liga} k={ctx.idDe(sinBanderas(nm).txt) || ''} nombre={limpio(nm)} cls="cara vau-cara" grande /> }));
+  const ir = (j) => { setVa(true); setI(j); };
+  return (
+    <section className="sec lk-sec lk-ev" aria-label="El evento entero">
+      <div className="sec-t"><h2>El evento entero</h2><span className="tj-n">{xs.length} {xs.length === 1 ? 'batalla' : 'batallas'} · {Math.max(1, Math.round(total / 60))} min</span></div>
+      <p className="lk-ev-baj">Batalla tras batalla, de la primera a la final, sin las esperas del medio.</p>
+      <div className="lk-ev-ahora"><b>{ronda(x)}</b> · {vs(x)}<small>{i + 1} de {xs.length}</small></div>
+      <AudioBatalla key={x.ev + '-' + x.k} v={{ audio: x.url, det: x.det || '', lados, tit: vs(x) + ' · ' + ronda(x) }} auto={va}
+        alEmpezar={() => setVa(true)} alTerminar={() => { if (i + 1 < xs.length) ir(i + 1); }} />
+      <ol className="lk-ev-caps">
+        {xs.map((y, j) => (
+          <li key={y.ev + '-' + y.k}>
+            <button type="button" className={j === i ? 'on' : ''} aria-current={j === i ? 'true' : undefined} onClick={() => ir(j)}>
+              <small>{ronda(y)}</small><span>{vs(y)}</span><em>{Math.floor((y.dur || 0) / 60)}:{String(Math.round((y.dur || 0) % 60)).padStart(2, '0')}</em>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </section>
   );
 }
 
@@ -1753,6 +1791,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const Mm = useModsEstado();
   const arch = useArchivo();   // 🎬 los shorts de la Liga (`ShortB`); una llave en vivo no tiene, su número es `v:…`
   const auds = useArchivo(true, true);   // 🎧 y sus batallas enteras en audio
+  // 🎬 las de ESTA llave, en el orden en que se jugaron: por ronda y, adentro, como las dejó el guion de ULAYA
+  const evAud = useMemo(() => auds.filter((x) => String(x.ll) === String(n0)).sort((a, b) =>
+    ((ORDEN_RONDA[String(a.ronda || '').toLowerCase()] ?? 9) - (ORDEN_RONDA[String(b.ronda || '').toLowerCase()] ?? 9)) || a.k - b.k), [auds, n0]);
   // ✎ ¿los lápices de Mods valen acá? Dlx, o Admin y Moderador de la página (`liga` de `socio-roles`, 20/11/2026)
   const [puedeLapiz, setPuedeLapiz] = useState(false);
   useEffect(() => {
@@ -2238,6 +2279,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
         ) : null}
         {!conVs ? <div className="lk-dos-m"><CazasA ctx={ctx} /></div> : null}
       </div>
+
+      {/* 🎬 el evento entero, entre lo de arriba y las llaves (Dlx, 25/11/2026). Sin sus audios (más de 15 días, o no se grabó), nada */}
+      {!enVivo && evAud.length ? <EventoCompleto ctx={ctx} xs={evAud} /> : null}
 
       {/* 🎨 LAS PESTAÑAS, SOBRE LA PIEL (Dlx, 03/10/2026: el escenario negro arriba y el cuadro sobre la piel, con las
           casillas encima; «ni toda blanca ni toda negra»). Su fondo, el de su servidor si quien mira no eligió un tema
