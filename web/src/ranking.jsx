@@ -178,7 +178,7 @@ function Quien({ x, f }) {
   // El de la Tienda, si lo tiene puesto, manda
   const fondos = useFondos();
   const P = usePuesto(f.k);
-  const bgF = f.k && !fondoTienda(P, 'fila') ? fondoPropio((fondos || {})[f.k], 'fila', { cc: f.cc || (t && t.cc), sv: (t || f).sv }) : '';
+  const bgF = f.k && !fondoTienda(P, 'fila') ? fondoPropio((fondos || {})[f.k], 'fila', { cc: f.cc || (t && t.cc), sv: (t || f).sv, cw: liga.crewDe ? liga.crewDe(t || f) : null }) : '';
   return (
     <span className="rk-q">
       {bgF ? <span className="rk-fondo" style={{ backgroundImage: bgF }} aria-hidden="true" /> : null}
@@ -762,7 +762,7 @@ function InvitaFondo({ liga, f }) {
   const [est, setEst] = useState('');
   if (!f || !f.k || !f.cc || !fondos || no) return null;
   const t = (liga.T && liga.T[f.k]) || f;
-  if (est !== 'listo' && fondoPropio(fondos[f.k], 'fila', { cc: f.cc, sv: t.sv })) return null;
+  if (est !== 'listo' && fondoPropio(fondos[f.k], 'fila', { cc: f.cc, sv: t.sv, cw: liga.crewDe ? liga.crewDe(t) : null })) return null;
   if (est === 'listo') return <p className="rk-tu-fondo listo" role="status">Listo: tu fila ya lleva tu bandera. Se cambia en <a href="#/cuenta/fondos">Tus fondos</a>.</p>;
   const poner = async () => {
     setEst('va');

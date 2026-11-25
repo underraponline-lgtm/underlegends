@@ -3,6 +3,7 @@
 // y el Perfil. Los de la fila gratis en verde agua, blanco o dorado; los de la premium, en magenta. Lo usan la página
 // del Pase y el pop-up de «¡Subiste!» (pase_pop.jsx), que se baja también con el Inicio: por eso viven aparte.
 import { num } from './liga.js';
+import { NIVEL_FONDO_CREW } from './pase.js';
 
 const MAG = '#E41373';
 // el color de cada insignia, por su nombre (`bot/pase.py`: Pase Bronce, Plata, Oro y Platino). ⚠️ «Platino» no lleva
@@ -74,6 +75,8 @@ export function premioCorto(p, prem = false, largo = false) {
 
 /** El premio en una frase: «Tu nombre en dorado», «Marco de carta Oro» */
 export function premioLargo(p, prem = false) {
+  // 🛡️ el nivel del fondo de tu crew lo dice junto a lo suyo (25/11/2026)
+  if (!prem && p[0] === NIVEL_FONDO_CREW) return premioLargo([0].concat(p.slice(1)), false) + ' y el fondo de tu crew para tu fila';
   const [, tienda, tipo, valor] = p;
   if (prem) {
     if (tipo === 'marco') return valor === 'Premium' ? 'Marco de carta «Premium»' : 'Marco de carta ' + String(valor || '').toLowerCase();

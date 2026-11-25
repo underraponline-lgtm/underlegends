@@ -135,6 +135,10 @@ export function vivoPendiente() {
   return xs.find((t) => /^vivo/.test(String(t.id || '')) && !t.hecha) || null;
 }
 
+// 🛡️ el fondo de tu crew para tu fila se abre en este nivel del Pase (25/11/2026, Dlx: «Crew, nivel 10»). Es el mismo número
+// que `FONDO_CREW_NIVEL` de bot/avisos.js, que es el que valida (la prueba revisa que coincidan)
+export const NIVEL_FONDO_CREW = 10;
+const CON_CREW = ' y el fondo de tu crew para tu fila';
 const TIPO = { tarjeta: 'Tu tarjeta de', insignia: 'Insignia', titulo: 'Título', color: 'Color de nombre', llave: '', drop: '', caja: '' };
 
 /** Lo que da un nivel, en palabras cortas: «+200» o «+500 · Insignia Pase Bronce» */
@@ -143,8 +147,9 @@ export function premioTexto(p, largo) {
   const extra = p[2] === 'color' ? 'tu nombre en dorado' : p[2] === 'llave' ? 'tu carta brilla en las llaves'
     : p[2] === 'drop' ? 'un Dragón Drop' : p[2] === 'caja' ? 'la Caja del Campeón'
     : p[2] ? TIPO[p[2]] + ' ' + (p[2] === 'titulo' ? '«' + p[3] + '»' : p[3]) : '';
-  if (!largo) return extra || '+' + num(p[1]);
-  return '+' + num(p[1]) + ' Puntos de Tienda' + (extra ? ' y ' + (['color', 'llave', 'drop', 'caja'].includes(p[2]) ? extra : extra.charAt(0).toLowerCase() + extra.slice(1)) : '');
+  if (!largo) return (extra || '+' + num(p[1])) + (p[0] === NIVEL_FONDO_CREW ? ' + fondo de tu crew' : '');
+  return '+' + num(p[1]) + ' Puntos de Tienda' + (extra ? ' y ' + (['color', 'llave', 'drop', 'caja'].includes(p[2]) ? extra : extra.charAt(0).toLowerCase() + extra.slice(1)) : '')
+    + (p[0] === NIVEL_FONDO_CREW ? CON_CREW : '');
 }
 
 /**

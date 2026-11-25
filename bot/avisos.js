@@ -5428,6 +5428,10 @@ export const puedeRol = (roles, que, tabla) => (roles || []).includes('owner')
 // el nivel `FONDO_NIVEL` del Pase de rapero; se ve recién cuando lo aprueba Dlx (hay menores en la Liga); y cada uno elige
 // si va en su perfil, de fondo de su propia página, o los dos
 export const FONDO_NIVEL = 5;
+// 🛡️ «TU CREW» DE FONDO DE TU FILA, DESDE EL NIVEL 10 DEL PASE (25/11/2026, Dlx: «Crew, nivel 10»): el nivel del Pase de la
+// temporada (el gratis: lo alcanza cualquiera). Lo que se ganó se queda: quien ya la tenía puesta no la pierde cuando una
+// temporada nueva le baja el nivel. Copiado en `NIVEL_FONDO_CREW` de web/src/pase.js (la prueba revisa que coincidan)
+export const FONDO_CREW_NIVEL = 10;
 // 🖼️ TUS FONDOS POR LUGAR (17/11/2026, la tanda 2 del remake de Tu cuenta). Dlx: «Tus fondos debería tener más
 // significado… el del VS, el de escenario donde aparece la tarjeta, el fondo de mi perfil», y de los lugares nuevos, «el
 // #1 y el #4» (el VS en vivo de Discord y la ficha al pasar el mouse). Cada lugar elige qué va: `auto` (lo de siempre),
@@ -5436,7 +5440,7 @@ export const FONDO_NIVEL = 5;
 export const LUGARES_FONDO = { perfil: ['auto', 'mia', 'bandera', 'servidor'], vs: ['auto', 'mia', 'bandera', 'servidor'],
   esc: ['auto', 'mia', 'bandera', 'servidor'], vivo: ['auto', 'mia', 'bandera'], ficha: ['auto', 'mia', 'bandera', 'servidor'],
   // 🖤 tu fila del Ranking y de las listas de gente, aparte de la ficha (25/11/2026, Dlx: «Todo»): ver `fondoPropio()` de web/src/fondos.js
-  fila: ['auto', 'mia', 'bandera', 'servidor'] };
+  fila: ['auto', 'mia', 'bandera', 'servidor', 'crew'] };
 /** Lo que mandó la página, sólo con lugares y opciones que existen. `auto` no se guarda (es lo que hay sin elegir). */
 export function lugaresFondo(x) {
   const o = {};
@@ -15544,7 +15548,7 @@ export class Avisos {
   // ── 🖼️ tu fondo (13/10/2026) ──────────────────────────────────────────
   /** ¿Puede subir un fondo? Con el Pase premium (desde su nivel de fondo); Dlx siempre (para probarlo). */
   puedeFondo(quien) {
-    if (quien === DUENO) return { si: true, nivel: null, falta: FONDO_NIVEL, prem: true };
+    if (quien === DUENO) return { si: true, nivel: null, falta: FONDO_NIVEL, prem: true, crew: true, crewFalta: FONDO_CREW_NIVEL };
     // 🖼️ DESDE EL 25/10/2026 (Dlx: «hazlo como te dije del pase premium… pero un nivel de experiencia en general en tu
     // perfil»): el NIVEL `FONDO_NIVEL` DE TU PERFIL (el general, no el del Pase), o el premium desde su nivel 5. Quien ya
     // tenía su fondo aprobado lo conserva
@@ -15557,7 +15561,7 @@ export class Avisos {
     // imagen, analizada con el filtro»). Lo demás de «Tus fondos» (la bandera, tu servidor, dónde va cada uno) es de
     // todos. Quien ya tenía la suya aprobada la conserva y la puede cambiar: no se le saca lo que eligió antes
     const esPrem = !!(P.cfg && this.pasePremium(quien, P.cfg.temp));
-    return { si: !!prem || tenia, nivel, falta: FONDO_NIVEL, prem: esPrem, pNivel,
+    return { si: !!prem || tenia, nivel, falta: FONDO_NIVEL, prem: esPrem, pNivel, crew: pNivel >= FONDO_CREW_NIVEL, crewFalta: FONDO_CREW_NIVEL,
       pFalta: (((P.cfg && P.cfg.premium) || []).find((p) => p[2] === 'fondo') || [5])[0] };
   }
 
@@ -15595,7 +15599,15 @@ export class Avisos {
     // 🖼️ dónde va cada uno (sin imagen nueva): cualquiera que entre, con o sin imagen propia. `mia` sin imagen se guarda
     // igual y se ve como `auto` hasta que tenga una
     if (d.lugares && typeof d.lugares === 'object' && !d.img) {
-      const L = JSON.stringify(lugaresFondo(d.lugares));
+      const LL = lugaresFondo(d.lugares);
+      // 🛡️ «Tu crew» en tu fila pide el nivel `FONDO_CREW_NIVEL` del Pase (o haberla tenido ya puesta)
+      if (LL.fila === 'crew' && quien !== DUENO) {
+        let antes = {};
+        try { antes = JSON.parse((r && r.lugares) || '{}') || {}; } catch (e) { antes = {}; }
+        const pn = this.puedeFondo(quien).pNivel || 0;
+        if (antes.fila !== 'crew' && pn < FONDO_CREW_NIVEL) return { error: 'crew', falta: FONDO_CREW_NIVEL, pNivel: pn };
+      }
+      const L = JSON.stringify(LL);
       const de = String(d.de || '');
       if (r) {
         this.sql.exec("UPDATE fondos SET lugares = ?, k = CASE WHEN ? != '' THEN ? ELSE k END WHERE quien = ?", L, de, de, quien);

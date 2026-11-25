@@ -1974,6 +1974,11 @@ const ok = (cond, que, det) => {
     const webF = readFileSync(join(aqui, '..', 'web', 'src', 'fondos.js'), 'utf8');
     const enWeb = {};
     for (const m of webF.matchAll(/\['(\w+)', '[^']*', '[^']*', \[([^\]]*)\]/g)) enWeb[m[1]] = m[2].split(',').map((x) => x.trim().replace(/'/g, ''));
+    // 🛡️ el nivel de «Tu crew» (25/11/2026) también está en web/src/pase.js
+    const webP = readFileSync(join(aqui, '..', 'web', 'src', 'pase.js'), 'utf8');
+    const nCrew = Number((/NIVEL_FONDO_CREW = (\d+)/.exec(webP) || [])[1]);
+    ok(nCrew === A.FONDO_CREW_NIVEL && A.LUGARES_FONDO.fila.includes('crew'), 'tus fondos: «Tu crew» se abre en el mismo nivel del Pase en el objeto y en la página',
+      JSON.stringify([nCrew, A.FONDO_CREW_NIVEL]));
     ok(JSON.stringify(enWeb) === JSON.stringify(A.LUGARES_FONDO), 'tus fondos: los lugares y sus opciones son los mismos en el objeto y en la página',
       JSON.stringify([enWeb, A.LUGARES_FONDO]));
     // 💬 LOS CHATS GENERALES (17/11/2026, bot/chats.py): lo que importa se suma sin repetir, queda lo de 30 días, lo inventado

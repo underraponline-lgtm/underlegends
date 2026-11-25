@@ -394,6 +394,7 @@ export async function pedirFondo(ruta, cuerpo) {
   const j = await r.json().catch(() => ({}));
   if (!r.ok || j.error) {
     const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', premium: 'Subir tu propia imagen es del Pase premium.', tope: 'Ya subiste varias hoy: prueba mañana.',
+      crew: 'El fondo de tu crew se abre en el nivel ' + (j.falta || 10) + ' del Pase de rapero.',
       'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.',
       metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elígela de nuevo desde acá y se limpian solos.',
       // 🛡️ el filtro automático (13/10/2026): no entra, y se dice por qué
@@ -438,7 +439,9 @@ export function FondoCaja({ dc, liga }) {
   const f = st.fondo, pu = st.puede || {}, L = st.lugares || {};
   const perfil = f ? f.perfil : true, pagina = f ? f.pagina : false;
   // quién eres, para la bandera y tu servidor: la fila de la tabla, o la de los perfiles si vas más allá de los 200
-  const yo = (liga && (liga.yo || (dc.clave && ((liga.T && liga.T[dc.clave]) || (liga.X && liga.X[dc.clave]))))) || {};
+  const yo0 = (liga && (liga.yo || (dc.clave && ((liga.T && liga.T[dc.clave]) || (liga.X && liga.X[dc.clave]))))) || {};
+  // 🛡️ y tu crew, para «Tu crew» de tu fila (`cw`, `fondoCrew()`)
+  const yo = yo0.k && liga.crewDe ? Object.assign({}, yo0, { cw: liga.crewDe(yo0) }) : yo0;
   // lo que se ve con lo de ahora, con la misma cuenta que usa cada lugar (`fondoEn()`)
   const fo = [f && f.url ? f.url : '', perfil ? 1 : 0, 0, L];
   const elegir = async (e) => {
@@ -505,15 +508,17 @@ export function FondoCaja({ dc, liga }) {
                     const bg = op === 'auto' ? (l === 'fila' ? fondoPropio([fo[0], fo[1], 0, { ficha: L.ficha }], 'fila', yo) : fondoEn([fo[0], fo[1], 0, {}], l, yo)) : fondoOpcion(fo, op, yo);
                     const va = !bg && op === 'auto' ? vistaAuto(l, yo, liga) : null;
                     const probar = l === 'ficha' || l === 'fila' ? { onMouseEnter: () => setPrueba(l + ':' + op), onMouseLeave: () => setPrueba(''), onFocus: () => setPrueba(l + ':' + op), onBlur: () => setPrueba('') } : null;
-                    const cerrada = (op === 'mia' && !hayMia) || (op === 'bandera' && !yo.cc) || (op === 'servidor' && !bg);
+                    const cerrada = (op === 'mia' && !hayMia) || (op === 'bandera' && !yo.cc) || (op === 'servidor' && !bg)
+                      || (op === 'crew' && (!(pu.crew || e === 'crew') || !bg));
                     const on = e === op || (op === 'auto' && e === 'mia' && !hayMia);
                     return (
                       <button type="button" key={op} role="radio" aria-checked={on} className={'tf-op' + (on ? ' on' : '') + (cerrada ? ' cerrada' : '')}
                         disabled={ocup || cerrada} onClick={() => poner(l, op)} {...probar}
-                        title={op === 'auto' ? auto : cerrada ? (op === 'mia' ? 'Sube tu imagen arriba' : op === 'bandera' ? 'Todavía no tienes país' : 'Tu servidor no tiene escena todavía') : NOMBRE_OPCION[op]}>
+                        title={op === 'auto' ? auto : cerrada ? (op === 'mia' ? 'Sube tu imagen arriba' : op === 'bandera' ? 'Todavía no tienes país'
+                          : op === 'crew' ? (!yo.cw ? 'Todavía no estás en una crew' : 'Se abre en el nivel ' + (pu.crewFalta || 10) + ' del Pase') : 'Tu servidor no tiene escena todavía') : NOMBRE_OPCION[op]}>
                         <span className={'tf-mini' + (bg || va ? '' : ' liso')} style={bg ? { backgroundImage: bg } : va || undefined} aria-hidden="true" />
                         <span className="tf-on">{NOMBRE_OPCION[op]}</span>
-                        {op === 'auto' ? <small>{auto}</small> : cerrada ? <small>{op === 'mia' ? 'Sin imagen' : 'No disponible'}</small> : null}
+                        {op === 'auto' ? <small>{auto}</small> : cerrada ? <small>{op === 'mia' ? 'Sin imagen' : op === 'crew' ? (!yo.cw ? 'Sin crew' : 'Nivel ' + (pu.crewFalta || 10) + ' del Pase') : 'No disponible'}</small> : null}
                       </button>
                     );
                   })}

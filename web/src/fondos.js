@@ -2,6 +2,8 @@
 // bot/avisos.js). Una vez por visita y con cinco minutos de borde, como los roles. Lo usan el perfil (la cabecera de cada
 // uno) y la app (tu propia página, si lo elegiste). Ver `FondoCaja` en cuenta.jsx
 import { useEffect, useState } from 'react';
+import { escudoDe } from './escudo.jsx';
+import { limpio, srcLogo } from './liga.js';
 
 let fondos = null, fondosT = 0, fondosP = null;
 // quien cambia su fondo desde otra parte de la página (`ponerFondoLugar()`) lo ve al toque en todas las filas
@@ -62,9 +64,18 @@ export const LUGARES = [
   ['vivo', 'El VS en vivo de Discord', 'Tu mitad de la imagen del VS que el bot pone en el chat del evento.', ['auto', 'mia', 'bandera'], 'El fondo del servidor del evento'],
   ['ficha', 'Tu ficha', 'La que sale al pasar el mouse por tu cara, en la compu.', ['auto', 'mia', 'bandera', 'servidor'], 'Tu imagen; sin ella, tu bandera'],
   // 🖤 aparte de la ficha (25/11/2026, Dlx: «Todo», a «un fondo para la fila distinto del de la ficha»)
-  ['fila', 'Tu fila', 'Detrás de tu fila en el Ranking, en el buscador, en Siguiendo, en tu crew y en Los que mandan.', ['auto', 'mia', 'bandera', 'servidor'], 'Lo de tu ficha si elegiste algo; si no, tu imagen, o negra'],
+  ['fila', 'Tu fila', 'Detrás de tu fila en el Ranking, en el buscador, en Siguiendo, en tu crew y en Los que mandan.', ['auto', 'mia', 'bandera', 'servidor', 'crew'], 'Lo de tu ficha si elegiste algo; si no, tu imagen, o negra'],
 ];
-export const NOMBRE_OPCION = { auto: 'Automático', mia: 'Tu imagen', bandera: 'Tu bandera', servidor: 'Tu servidor' };
+export const NOMBRE_OPCION = { auto: 'Automático', mia: 'Tu imagen', bandera: 'Tu bandera', servidor: 'Tu servidor', crew: 'Tu crew' };
+/** 🛡️ el fondo de una crew (25/11/2026): su logo si subió una imagen; si es un escudo armado (o el de su nombre), sus dos
+ *  colores en diagonal. `c` es la de `liga.crewDe()`; sin crew, nada */
+export function fondoCrew(c) {
+  if (!c || !c.crew) return '';
+  const e = escudoDe(c.logo, limpio(c.crew));
+  if (e) return 'linear-gradient(135deg, #' + e.a + ' 0 50%, #' + (e.c || e.b) + ' 50% 100%)';
+  const u = srcLogo(c.logo);
+  return u ? 'url("' + u.replace(/"/g, '') + '")' : '';
+}
 /** Qué eligió para `lugar` (`auto` si nada). */
 export const eleccion = (fo, lugar) => (fo && fo[3] && fo[3][lugar]) || 'auto';
 const banderaFondo = (cc) => (cc ? 'url("/banderas/xl/' + cc + '.webp"), url("/banderas/g/' + cc + '.webp")' : '');
@@ -74,6 +85,7 @@ export function fondoOpcion(fo, op, quien) {
   if (op === 'mia') return fo ? urlFondo(fo[0]) : '';
   if (op === 'bandera') return banderaFondo(String(q.cc || '').toLowerCase());
   if (op === 'servidor') { const e = escenaDe(q.sv); return e ? 'url("' + e + '")' : ''; }
+  if (op === 'crew') return fondoCrew(q.cw);
   return '';
 }
 /** Lo que va detrás en `lugar`. En `auto`, lo de siempre de ese lugar; `mia` sin imagen es `auto`. */
