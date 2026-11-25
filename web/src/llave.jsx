@@ -494,11 +494,22 @@ function etiquetas(ctx, b, est, copa) {
 // `StaffLlave` con esa batalla elegida; quién puede de verdad lo decide el Worker (`socioLlave()`)
 // 🎬 EL SHORT DE ESA BATALLA (25/11/2026, Dlx: «could put into MCs profile, bracket and everything»): si el robot hizo uno,
 // un ▶ en la esquina de la batalla lo abre acá. Quedan 30 días (`archivo_ul.js`); sin short, nada
+// 🎧 Y LA BATALLA ENTERA EN AUDIO (25/11/2026, Dlx: «A»): lo que ULAYA grabó de esa batalla, 15 días. Los dos juntos en la
+// misma esquina; sin ninguno, nada
 function ShortB({ ctx, ls }) {
-  const x = ctx.shortDe && ls.length >= 2 ? ctx.shortDe(ls.map((s) => sinBanderas(s).txt)) : null;
-  if (!x) return null;
-  return <button type="button" className="lk-short" aria-label={'Ver el short de ' + ls.map(limpio).join(' vs ')} title="Ver el short de esta batalla"
-    onClick={(e) => { e.stopPropagation(); abrirVideo({ mp4: x.url, portada: x.portada, tit: (x.nombres || []).join(' vs ') + ' · ' + tituloDe(x) }); }}><span aria-hidden="true">▶</span>SHORT</button>;
+  const ns = ls.length >= 2 ? ls.map((s) => sinBanderas(s).txt) : null;
+  const x = ns && ctx.shortDe ? ctx.shortDe(ns) : null;
+  const au = ns && ctx.audioDe ? ctx.audioDe(ns) : null;
+  if (!x && !au) return null;
+  const vs = ls.map(limpio).join(' vs ');
+  return (
+    <span className="lk-media">
+      {x ? <button type="button" className="lk-short" aria-label={'Ver el short de ' + vs} title="Ver el short de esta batalla"
+        onClick={(e) => { e.stopPropagation(); abrirVideo({ mp4: x.url, portada: x.portada, tit: (x.nombres || []).join(' vs ') + ' · ' + tituloDe(x) }); }}><span aria-hidden="true">▶</span>SHORT</button> : null}
+      {au ? <button type="button" className="lk-short" aria-label={'Escuchar la batalla entera: ' + vs} title="Escuchar la batalla entera"
+        onClick={(e) => { e.stopPropagation(); abrirVideo({ audio: au.url, tit: vs + ' · ' + tituloDe(au) }); }}><span aria-hidden="true">♫</span>AUDIO</button> : null}
+    </span>
+  );
 }
 
 function Lapiz({ ctx, ronda, ls }) {
@@ -1028,6 +1039,46 @@ function despuesDe(L, ronda, quien) {
   rs.slice(i + 1).forEach((R) => (R.b || []).forEach((b) => { if ((b[0] || []).some(es)) xs.push({ ronda: R.r, lados: b[0] }); }));
   return xs;
 }
+// 🎙️ LA GRABACIÓN COMPLETA, SÓLO PARA EL STAFF DE ESE SERVIDOR (25/11/2026, Dlx: «D»): para escuchar lo que pasó cuando
+// alguien discute un resultado. Quién es staff lo dice el Worker; los links los saca de Discord en ese momento (`socioLlave()`,
+// `grabacion`). Sin grabación, lo dice
+function GrabacionStaff({ n, L }) {
+  const [rol, setRol] = useState('');
+  const [est, setEst] = useState('');
+  const [ps, setPs] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    if (!L || !L.sv || !/^\d+$/.test(String(n))) return undefined;
+    pedirRoles().then((r) => { if (vivo) setRol(((r && r.roles) || {})[L.sv] || (r && (r.dlx ? 'dlx' : r.liga ? 'liga' : '')) || ''); });
+    return () => { vivo = false; };
+  }, [n, L && L.sv]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!rol) return null;
+  const pedir = () => {
+    setEst('Buscando la grabación…');
+    pedirLlave(L.sv, 'grabacion', { id: Number(n) }).then((j) => {
+      if (j && j.ok) { setPs(j.partes || []); setEst((j.partes || []).length ? '' : 'Este evento no se grabó.'); return; }
+      setEst(j && j.error === 'no_es_tuya' ? 'Esta llave no es de tu servidor.' : 'No se pudo: prueba de nuevo en un rato.');
+    }).catch(() => setEst('No se pudo: prueba de nuevo en un rato.'));
+  };
+  return (
+    <div className="lk-grab">
+      {ps && ps.length ? (
+        <>
+          <p className="lk-rep-t">La grabación completa del evento{ps.length > 1 ? ', en ' + ps.length + ' partes' : ''}. Sólo la ve el staff.</p>
+          {ps.map((x, i) => (
+            <div key={i} className="lk-grab-p">
+              {ps.length > 1 ? <small>Parte {i + 1}</small> : null}
+              <audio src={x.url} controls preload="none" />
+              <a className="pf-lnk" href={x.url} download={x.n} target="_blank" rel="noopener noreferrer">Bajarla ({x.mb} MB)</a>
+            </div>
+          ))}
+        </>
+      ) : <button type="button" className="btn borde2 chico" onClick={pedir}>Escuchar la grabación completa (staff)</button>}
+      <span aria-live="polite">{est}</span>
+    </div>
+  );
+}
+
 function StaffLlave({ n, L }) {
   const M = useModsEstado();
   const [rol, setRol] = useState('');
@@ -1669,6 +1720,7 @@ function PuntosA({ ctx, L, orden, grupos }) {
 export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const Mm = useModsEstado();
   const arch = useArchivo();   // 🎬 los shorts de la Liga (`ShortB`); una llave en vivo no tiene, su número es `v:…`
+  const auds = useArchivo(true, true);   // 🎧 y sus batallas enteras en audio
   // ✎ ¿los lápices de Mods valen acá? Dlx, o Admin y Moderador de la página (`liga` de `socio-roles`, 20/11/2026)
   const [puedeLapiz, setPuedeLapiz] = useState(false);
   useEffect(() => {
@@ -1971,6 +2023,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const ctx = Object.assign({}, base, {
     liga, L, n, sigo, seguir, anim, compu,
     shortDe: arch.length ? (ls) => deBatalla(arch, n, ls) : null,
+    audioDe: auds.length ? (ls) => deBatalla(auds, n, ls) : null,
     lapiz: lapices ? (ronda, lados) => window.dispatchEvent(new CustomEvent('lg:llave-lapiz', { detail: { n: String(n), ronda, lados } })) : null,
     // 🅰️ el remake A (18/11/2026): las filas de la llave con caras, nota y votos (`Lado`, `compacta()`)
     caras: true, elegir: (id) => setSigo(id || ''),
@@ -2114,6 +2167,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
                 {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
                 {reportable ? <Reporte n={n} nombres={nombresDe(L)} /> : null}
                 {!enVivo && reportable ? <StaffLlave n={n} L={L} /> : null}
+                {!enVivo && reportable ? <GrabacionStaff n={n} L={L} /> : null}
               </div>
             ) : null}
           </div>

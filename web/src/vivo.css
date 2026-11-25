@@ -2037,6 +2037,7 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .vid-marco{position:relative;aspect-ratio:16/9;background:#000;border:2px solid #2A2A2E}
 .vid-marco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .vid-marco video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;object-fit:contain}
+.vid-audio{background:#0B0B0C;border:2px solid #2A2A2E;padding:16px}.vid-audio audio{display:block;width:100%}
 /* 📱 un short (24/11/2026, Dlx: «que se adapte y se ponga vertical en vez de quedarse cuadrado»): parado, 9:16, con el ancho
    que deja el alto de la pantalla (el título y los bordes, ~110 px) y nunca más de 460 */
 .vid-caja.vert{width:min(460px,100%,calc((100dvh - 110px) * 9 / 16))}

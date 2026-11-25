@@ -37,7 +37,8 @@ export function Miniatura({ vid, cls }) {
 /** Abre el reproductor desde cualquier lado: `abrirVideo({vid, tit, link, vertical})`. `vertical` (o un link de `/shorts/`)
  *  lo abre parado, 9:16 (24/11/2026, Dlx: «que se adapte y se ponga vertical en vez de quedarse cuadrado»).
  *  🎬 Y `abrirVideo({mp4, portada, tit})`: un short nuestro de R2 (los de la Liga, `web/src/archivo_ul.js`), con el
- *  reproductor del navegador y parado. Nada de YouTube en ese caso */
+ *  reproductor del navegador y parado. Nada de YouTube en ese caso.
+ *  🎧 Y `abrirVideo({audio, tit})`: una batalla entera en audio (la llave), en una caja baja */
 export function abrirVideo(v) {
   window.dispatchEvent(new CustomEvent('lg:video', { detail: v }));
 }
@@ -62,7 +63,7 @@ export function VentanaVideo() {
       window.dispatchEvent(new CustomEvent('lg:video-abierto', { detail: false }));
     };
   }, [v]);
-  if (!v || (!v.vid && !v.mp4)) return null;
+  if (!v || (!v.vid && !v.mp4 && !v.audio)) return null;
   const src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.vid) + '?autoplay=1&rel=0&playsinline=1';
   // 📱 un short se ve parado: la caja toma el ancho que le deja el alto de la pantalla, en 9:16
   const vert = !!(v.mp4 || v.vertical || /\/shorts\//.test(String(v.link || '')));
@@ -74,11 +75,11 @@ export function VentanaVideo() {
           {v.link ? <a className="vid-yt" href={v.link} target="_blank" rel="noopener noreferrer">En YouTube ↗</a> : null}
           <button type="button" ref={cerrarB} className="vid-x" onClick={() => setV(null)} aria-label="Cerrar el video">✕</button>
         </div>
-        <div className="vid-marco">
+        {v.audio ? <div className="vid-audio"><audio src={v.audio} title={v.tit || 'Audio'} controls autoPlay /></div> : <div className="vid-marco">
           {v.mp4 ? <video src={v.mp4} poster={v.portada || undefined} title={v.tit || 'Video'} controls autoPlay playsInline />
             : <iframe src={src} title={v.tit || 'Video de YouTube'} allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
               allowFullScreen referrerPolicy="strict-origin-when-cross-origin" />}
-        </div>
+        </div>}
       </div>
     </div>
   );

@@ -6,8 +6,12 @@
 // ⚠️ Lo vencido lo saca el robot del archivo, y la página lo vuelve a filtrar por si el archivo llegó tarde
 import { useEffect, useState } from 'react';
 
-const URL_ARCHIVO = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reels/archivo.json';
+const R2 = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
+const URL_ARCHIVO = R2 + '/reels/archivo.json';
+// 🎧 y cada batalla entera, en audio, 15 días (Dlx, 25/11: «A»): `reels/audios.json`, con la misma forma
+const URL_AUDIOS = R2 + '/reels/audios.json';
 let pedido = null;
+let pedidoA = null;
 
 /** el nombre sin tildes, signos ni mayúsculas: como `normN` de reels.jsx */
 export const normN = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -22,15 +26,25 @@ function bajar() {
   return pedido;
 }
 
-/** los shorts vigentes (`[]` mientras llegan o si no hay) */
-export function useArchivo(activo = true) {
+function bajarAudios() {
+  if (!pedidoA) {
+    pedidoA = fetch(URL_AUDIOS, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : [])).catch(() => []).then((xs) => {
+      const ahora = new Date().toISOString().slice(0, 16);
+      return (Array.isArray(xs) ? xs : []).filter((x) => x && x.url && (x.hasta || '') > ahora);
+    });
+  }
+  return pedidoA;
+}
+
+/** los shorts vigentes (`[]` mientras llegan o si no hay); con `audios`, las batallas enteras en audio */
+export function useArchivo(activo = true, audios = false) {
   const [xs, setXs] = useState([]);
   useEffect(() => {
     if (!activo) return undefined;
     let vivo = true;
-    bajar().then((a) => { if (vivo) setXs(a); });
+    (audios ? bajarAudios() : bajar()).then((a) => { if (vivo) setXs(a); });
     return () => { vivo = false; };
-  }, [activo]);
+  }, [activo, audios]);
   return xs;
 }
 
@@ -53,4 +67,4 @@ export function deBatalla(xs, ll, lados) {
 
 const RONDA = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
 /** «Final · PURISTAS DEL HIP HOP» */
-export const tituloDe = (x) => [RONDA[x.ronda] || x.ronda, x.evento].filter(Boolean).join(' · ');
+export const tituloDe = (x) => [RONDA[String(x.ronda || '').toLowerCase()] || x.ronda, x.evento].filter(Boolean).join(' · ');

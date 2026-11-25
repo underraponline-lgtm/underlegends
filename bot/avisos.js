@@ -19094,6 +19094,32 @@ export class Avisos {
       this.socioAnotar(sv, quien, rol, 'llave #' + r.llave + ': cierra el reporte ' + id, '', 'listo', nombre);
       return { ok: true, rol, reportes: lista() };
     }
+    // 🎙️ LA GRABACIÓN COMPLETA DEL EVENTO, PARA SU STAFF (25/11/2026, Dlx: «A, D»: escucharla cuando alguien discute un
+    // resultado). No se guarda en ningún lado nuevo: ULAYA ya la deja en Logs de DRA y Discord la conserva. El robot anota en
+    // KV `grab:<llave>` el canal y los mensajes (`motor`), y acá se le piden a Discord recién cuando alguien del staff de
+    // ESE servidor toca «Escuchar»: los links de los adjuntos vencen en un día, así que siempre salen frescos. `id` es la llave
+    if (accion === 'grabacion') {
+      const n = String((d && d.id) || '');
+      if (!/^\d{1,9}$/.test(n)) return { error: 'datos' };
+      if (!deSv(n)) return { error: 'no_es_tuya' };
+      let g = null;
+      try { g = JSON.parse((await this.env.KV.get('grab:' + n)) || 'null'); } catch (e) { g = null; }
+      if (!g || !/^\d{5,25}$/.test(String(g.c || '')) || !Array.isArray(g.m) || !this.env.DISCORD_TOKEN) return { ok: true, rol, partes: [] };
+      const partes = [];
+      for (const m of g.m.slice(0, 8)) {
+        if (!/^\d{5,25}$/.test(String(m))) continue;
+        try {
+          const r = await fetch('https://discord.com/api/v10/channels/' + g.c + '/messages/' + m,
+            { headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA } });
+          if (!r.ok) continue;
+          const j = await r.json();
+          for (const a of j.attachments || []) {
+            if (/^grabacion-[\w-]+\.ogg$/.test(String(a.filename || ''))) partes.push({ url: a.url, n: a.filename, mb: Math.round((a.size || 0) / 1e5) / 10 });
+          }
+        } catch (e) { /* esa parte no */ }
+      }
+      return { ok: true, rol, partes, dur: g.d || 0 };
+    }
     if (accion !== 'corregir' && accion !== 'sugerir') return { error: 'datos' };
     if (!socioPuede(rol, accion === 'corregir' ? 'llaves' : 'sugerir')) return { error: 'no_rol' };
     let id = Number((d && d.id) || 0) || 0;
