@@ -3570,6 +3570,27 @@ li.nt-f{cursor:default}
 @keyframes ps-pop-li{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .app.calma .ps-pop,.app.calma .ps-pop-n i,.app.calma .ps-pop-l li{animation:none}
 @media (prefers-reduced-motion: reduce){.ps-pop,.ps-pop-n i,.ps-pop-l li{animation:none}}
+/* 🎬 «Tu batalla ya tiene video» (web/src/tu_video.jsx, 25/11/2026): la misma familia que el «¡Subiste!» del Pase, con la
+   portada del short a la izquierda (vertical, como en Videos) y el rosa de los videos (#E41373, el de `.lk-short`) en vez del verde */
+.tv-velo{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.72)}
+.tv-pop{width:min(400px,100%);display:grid;grid-template-columns:108px minmax(0,1fr);gap:14px;align-items:center;padding:14px;background:#030304;
+  color:#F6F6F6;border:2px solid #E41373;animation:ps-pop-in .45s cubic-bezier(.2,.9,.3,1.2) both}
+.tv-portada{position:relative;display:block;width:108px;aspect-ratio:9/16;background:#101012;border:1.5px solid #2A2A2E;overflow:hidden}
+.tv-portada img{width:100%;height:100%;object-fit:cover;display:block}
+.tv-play{position:absolute;inset:auto 0 0 0;margin:auto;top:0;width:40px;height:40px;display:grid;place-items:center;font-style:normal;
+  font-size:16px;color:#030304;background:#E41373;padding-left:3px}
+.tv-tx{display:grid;gap:6px;min-width:0}
+.tv-tag{font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:#E41373}
+.tv-pop h2{margin:0;font:900 21px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.tv-de{margin:0;font:700 15px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:#F6F6F6;overflow-wrap:anywhere}
+.tv-mas{margin:0;font-size:14px;line-height:1.3;color:#A5A5A0}
+.tv-bts{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px}
+/* ⚠️ la ventana es negra en Clara y en Noche: el borde2 toma `--tinta`, que en Clara es oscura, y el botón no se veía */
+.tv-pop .tv-comp{border-color:#3A3A40;color:#F6F6F6;background:transparent}
+.tv-luego{border:0;background:none;cursor:pointer;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0;padding:10px 4px}
+@media (max-width: 360px){.tv-pop{grid-template-columns:84px minmax(0,1fr);gap:10px}.tv-portada{width:84px}}
+.app.calma .tv-pop{animation:none}
+@media (prefers-reduced-motion: reduce){.tv-pop{animation:none}}
 /* las Misiones y el Pase del Inicio (medio.jsx), vivos desde el 05/10/2026: el pie de las misiones y el texto del Pase */
 .mis-pie{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border-top:2px solid var(--linea)}
 .mis-pie small{font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}

@@ -903,6 +903,17 @@ const ok = (cond, que, det) => {
     A.tituloSeguido({ tipo: 'anuncio' }, 'Ana') === '', 'la tarjeta con su nombre; lo que no es de nadie, nada');
   ok(!A.paraSeguidores(null, ahora).length && !A.paraSeguidores([{ tipo: 'rango', t: 'x', ks: ['a'] }], ahora).length,
     'sin muro, o con una fecha rota, nada');
+  // 🎬 «tu batalla ya tiene video» (25/11/2026): a cada uno de los que salen, con su rival y la ronda; sin rid o viejo, nada
+  const tv = A.paraProtagonistas([
+    { tipo: 'short', t: '2026-10-14T13:00:00Z', rid: 'ul-puristas-3', ev: 'PURISTAS', ronda: 'cuartos', quien: ['Ana', 'Bea'], ks: ['ana', 'bea'] },
+    { tipo: 'short', t: '2026-10-14T13:00:00Z', ev: 'SIN RID', quien: ['Cid'], ks: ['cid'] },
+    { tipo: 'short', t: '2026-10-12T13:00:00Z', rid: 'ul-vieja-1', quien: ['Eva'], ks: ['eva'] },
+    { tipo: 'campeon', t: '2026-10-14T13:00:00Z', rid: 'ul-x-1', quien: ['Dan'], ks: ['dan'] }], ahora);
+  ok(tv.length === 2 && tv[0].k === 'ana' && tv[1].k === 'bea' && tv[0].pub === tv[1].pub
+    && tv[0].titulo === '🎬 Tu batalla en PURISTAS ya tiene video' && tv[0].cuerpo === 'Cuartos, contra Bea · toca para verlo y compartirlo'
+    && tv[1].cuerpo.startsWith('Cuartos, contra Ana') && tv[0].url === 'https://underlegends.pages.dev/freestyle-rap/videos/ul-puristas-3',
+  'tu batalla ya tiene video: a los dos que salen, cada uno con su rival; sin link, de hace dos días o que no es un short, nada  '
+    + JSON.stringify(tv.map((x) => [x.k, x.titulo, x.cuerpo])));
   // 🎞️ un video nuevo de un canal (25/11/2026): abre Videos con ese video, y a alguien de afuera no se le dice «en la Liga»
   const v = A.paraSeguidores([{ tipo: 'video', t: '2026-10-14T13:00:00Z', rid: 'abcDEF12345', ev: 'FMS', ks: ['l-mecha', 'g--gazir'], quien: ['Mecha', 'Gazir'] }], ahora);
   ok(v.length === 2 && v[0].titulo === '🎞️ Nuevo video de Mecha en FMS' && v[0].url === 'https://underlegends.pages.dev/freestyle-rap/videos/abcDEF12345'
@@ -5109,8 +5120,14 @@ const ok = (cond, que, det) => {
     JSON.stringify([g1, g2, g3, g4, mu.ui, mu2.ui]));
     // las reglas de cada marca (web/src/sync_cuenta.js) y la lista, la misma en los dos lados
     const SC = await import('../web/src/sync_cuenta.js');
-    ok(Object.keys(SC.REGLAS).slice().sort().join() === A.UI_CLAVES.slice().sort().join(),
-      '📱 las claves que se juntan en la página (`REGLAS`) son las que acepta el objeto (`UI_CLAVES`)', JSON.stringify([Object.keys(SC.REGLAS), A.UI_CLAVES]));
+    // ⚠️ LO QUE PROTEGE ES QUE LA PÁGINA NO MANDE UNA CLAVE QUE EL OBJETO NO ACEPTA (`validarUi()` rechaza el envío ENTERO).
+    // Por eso una clave nueva entra primero al objeto (`UI_CLAVES`, con su despliegue) y recién después a la página: mientras
+    // tanto espera en `ESPERAN` (25/11/2026: `lg:tuvideo-visto`, hasta que se despliegue el Worker)
+    const ESPERAN = ['lg:tuvideo-visto'];
+    ok(Object.keys(SC.REGLAS).every((k) => A.UI_CLAVES.includes(k))
+      && A.UI_CLAVES.filter((k) => !(k in SC.REGLAS)).every((k) => ESPERAN.includes(k)),
+      '📱 las claves que se juntan en la página (`REGLAS`) son las que acepta el objeto (`UI_CLAVES`), salvo las que esperan su despliegue',
+      JSON.stringify([Object.keys(SC.REGLAS), A.UI_CLAVES]));
     const jt = SC.juntar({ 'lg:tuto': JSON.stringify({ t: 9e12, nuevo: true, tour: '', c: { a: 1 } }), 'lg:pub-visto': '100',
       'lg:pase-visto': JSON.stringify({ temp: 'T1', n: 9 }) },
     { 'lg:tuto': JSON.stringify({ t: 5, nuevo: false, tour: 'fin', caps: { x: 1 }, c: { b: 1 } }), 'lg:pub-visto': '250',

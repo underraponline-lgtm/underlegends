@@ -20,6 +20,7 @@ import { MarcoSolo } from './marco_solo.jsx';
 import { irSinHistoria, pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { ComoFunciona } from './comofunciona.jsx';
 import { AvisoVersion } from './novedad.jsx';
+import { PopTuVideo } from './tu_video.jsx';
 import { FranjaMods } from './mods.jsx';
 import { BotonModsFlot } from './mods_herramientas.jsx';
 import { vistaMods } from './mods.js';
@@ -1042,6 +1043,10 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       <Aislada reinicio={reinicio + (aviso ? '|' + aviso.texto + '|' + aviso.hasta : '')} n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada reinicio={reinicio} n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
+      {/* 🎬 «tu batalla ya tiene video» (25/11/2026): ver web/src/tu_video.jsx. Con la bienvenida, no; el tutorial abierto lo
+          ve ella misma (espera a que no haya otra ventana). ⚠️ NO con `quiereTutorial()`: es «verdad» toda la primera semana,
+          y justo los nuevos —el 42 % que juega una vez— no la verían nunca */}
+      <Aislada reinicio={reinicio} n="TuVideo"><PopTuVideo muro={muro} yo={yo} pagina={pagina} ocupado={pagina === 'bienvenida'} /></Aislada>
       {pagina === 'bienvenida' ? <Aislada reinicio={reinicio} n="Bienvenida"><Suspense fallback={null}><Bienvenida liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
       {quiereTutorial() || repite.n ? <Aislada reinicio={reinicio} n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} pedido={repite} /></Suspense></Aislada> : null}
       {/* ❓ el «¿Cómo funciona?» de cada página con capítulo, y el aviso de que el tutorial es nuevo (comofunciona.jsx) */}

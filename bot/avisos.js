@@ -4353,6 +4353,38 @@ export function paraSeguidores(items, ahora) {
   return out;
 }
 
+// 🎬 «TU BATALLA YA TIENE VIDEO» (25/11/2026, Dlx: «All of them and specially for #4 you could do a pop up in the website as
+// well»). El 42 % juega una sola vez: que tu batalla salió en video es una razón directa para volver. Los shorts del muro
+// (`shorts_muro()` de bot/muro.py, tipo `short`, con `ks` y `rid`) le avisan a quien SALE en la batalla, además de a quien
+// lo sigue (`paraSeguidores()`): a su bandeja y a sus dispositivos vinculados (`tusVideos()`), nunca por DM. En la página,
+// la ventana `PopTuVideo` (web/src/tu_video.jsx) lo dice al entrar
+const RONDA_AVISO = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', semifinal: 'Semifinal', final: 'la Final' };
+
+/** De los shorts del muro de las últimas `SIGUE_HORAS`, uno por persona que sale (con perfil):
+ *  `{pub, k, t, titulo, cuerpo, url}`. Pura, sin red: la prueba `bot/avisos_prueba.mjs`. */
+export function paraProtagonistas(items, ahora) {
+  const out = [];
+  const desde = ahora - SIGUE_HORAS * HORA;
+  for (const x of Array.isArray(items) ? items : []) {
+    if (!x || x.tipo !== 'short' || !Array.isArray(x.ks) || !/^ul-[a-z0-9-]{3,60}$/.test(String(x.rid || ''))) continue;
+    const t = Date.parse(x.t || '');
+    if (!(t >= desde && t <= ahora + HORA)) continue;
+    const pub = huella(['tv', x.rid].join('|'));
+    const ev = String(x.ev || '').slice(0, 60);
+    const ronda = RONDA_AVISO[String(x.ronda || '').toLowerCase()] || '';
+    x.ks.forEach((k, i) => {
+      if (!claveValida(k)) return;
+      const rival = (x.quien || []).filter((_, j) => j !== i).filter(Boolean).join(' y ').slice(0, 60);
+      out.push({ pub, k, t,
+        titulo: ('🎬 Tu batalla' + (ev ? ' en ' + ev : '') + ' ya tiene video').slice(0, 120),
+        cuerpo: ([ronda, rival ? 'contra ' + rival : ''].filter(Boolean).join(', ') + (ronda || rival ? ' · ' : '') +
+          'toca para verlo y compartirlo').slice(0, 240),
+        url: 'https://underlegends.pages.dev/freestyle-rap/videos/' + x.rid });
+    });
+  }
+  return out;
+}
+
 // ── 👏 felicitar ───────────────────────────────────────────────────────
 // 🔑 Dlx, 02/10/2026, a Publicaciones: «quizás algo más para que enganche a
 // las personas o interactivo», y con el plan, «Dale, me gusta como lo tienes
@@ -4933,7 +4965,7 @@ export function creadaEn(id) {
 // 📱 LO VISTO O HECHO DE LA PÁGINA QUE SIGUE A TU CUENTA (23/11/2026): las claves de `localStorage` que se guardan por
 // cuenta (web/src/sync_cuenta.js tiene la misma lista y cómo se junta cada una) y el tope del total
 export const UI_CLAVES = ['lg:tuto', 'lg:pase-visto', 'lg:barra-pase', 'lg:inv-visto', 'lg:pub-visto', 'lg:ref_visto',
-  'lg:racha-fest', 'lg:aviso-cerrado', 'lg:db-logs', 'lg:db-pospuesto', 'lg:reels-vistos'];
+  'lg:racha-fest', 'lg:aviso-cerrado', 'lg:db-logs', 'lg:db-pospuesto', 'lg:reels-vistos', 'lg:tuvideo-visto'];
 export const UI_MAX = 16000;
 /** `{clave: texto}` con claves de `UI_CLAVES` y textos: el JSON a guardar, o null */
 export function validarUi(ui) {
@@ -16529,12 +16561,14 @@ export class Avisos {
    */
   async seguidos(ahora) {
     if (this.pausada()) return 0;  // 🔔 la campana pausada desde el Dashboard: esperan
-    if (!this.sql.exec('SELECT 1 AS x FROM sigue LIMIT 1').toArray()[0]) return 0;
     const previo = this.leer('seguidos') || {};
     if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
     let items = [];
     // 🎞️ y los videos nuevos de los canales (`videos` del mismo muro: no son publicaciones, ver bot/muro.py)
     try { const m = JSON.parse((await this.env.KV.get('web:muro')) || '{}'); items = (m.items || []).concat(Array.isArray(m.videos) ? m.videos : []); } catch (e) { items = []; }
+    // 🎬 a quien sale en un short nuevo, aunque nadie siga a nadie (por eso el muro se lee antes de mirar `sigue`)
+    try { await this.tusVideos(items, ahora); } catch (e) { this.guardar('tus_videos', { t: ahora, error: String(e).slice(0, 120) }); }
+    if (!this.sql.exec('SELECT 1 AS x FROM sigue LIMIT 1').toArray()[0]) return 0;
     const cands = paraSeguidores(items, ahora);
     let pedidos = 0, enviados = 0, quedan = 0, sinVinculo = 0;
     // ⚡ UNA PUBLICACIÓN YA AVISADA A TODOS NO SE VUELVE A RECORRER (10/11/2026). Cada 5 minutos se preguntaba `hechos`
@@ -16571,6 +16605,34 @@ export class Avisos {
       if (todos) this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', entera, ahora);
     }
     this.guardar('seguidos', { t: ahora, publicaciones: cands.length, enviados, sin_vinculo: sinVinculo, quedan });
+    return enviados;
+  }
+
+  /**
+   * 🎬 «Tu batalla ya tiene video», a quien sale en el short (`paraProtagonistas()`): a la bandeja de cada cuenta de ese
+   * perfil (`quienesDeClave()`) y a sus dispositivos vinculados. Una vez por short y perfil (`hechos`, `tv:`), también si
+   * ese perfil no tiene cuenta: así no se lo vuelve a buscar cada 5 minutos durante las 24 h del short.
+   */
+  async tusVideos(items, ahora) {
+    let enviados = 0, bandeja = 0;
+    for (const c of paraProtagonistas(items, ahora)) {
+      const id = 'tv:' + c.pub + ':' + c.k;
+      if (this.yaHecho(id)) continue;
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+      for (const q of this.quienesDeClave(c.k)) {
+        this.aBandeja(q, 'tv:' + c.pub, 'tuvideo', c.titulo, c.cuerpo, c.url, c.k, c.t || ahora);
+        bandeja++;
+        const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', q).toArray();
+        if (!subs.length) continue;
+        const cuerpo = cuerpoPersonal({ id: 'tv' + c.pub, titulo: c.titulo, cuerpo: c.cuerpo, url: c.url });
+        const estados = await Promise.all(subs.map((s) => empujar(s, cuerpo, { ttl: 24 * 3600, topic: ('tv' + c.pub).slice(0, 32) }, this.env, new Map())));
+        estados.forEach((e, i) => {
+          if (e >= 200 && e < 300) enviados++;
+          else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+        });
+      }
+    }
+    if (bandeja) this.guardar('tus_videos', { t: ahora, bandeja, enviados });
     return enviados;
   }
 
