@@ -155,6 +155,8 @@ const AVISOS = {
   // cuánto se mira cada uno, sin nada de nadie. Ver `reelsVoto()` y `reelsVistos()` en bot/avisos.js
   '/api/avisos/reels-voto': 'POST', '/api/avisos/reels-votos': 'GET',
   '/api/avisos/reels-vistos': 'POST', '/api/avisos/reels-stats': 'GET',
+  // 🌆 qué fondo de VS usa cada servidor (25/11/2026): el que subió o eligió en su panel, para el escenario de la batalla
+  '/api/avisos/vs-fondos': 'GET',
   // 🔔 el panel de la campana (02/10/2026): lo que se te avisó, con tu sesión. Ver `bandeja()` en bot/avisos.js
   '/api/avisos/bandeja': 'POST',
   // 🔥 la racha diaria y los niveles (04/10/2026): la tuya con tu sesión, y la de cada perfil. Ver `rachaDe()` y
@@ -430,6 +432,9 @@ async function avisos(req, url, ctx) {
   } else if (url.pathname === '/api/avisos/reels-votos') {
     // 🎬 los votos de un reel (24/11/2026): como los de las encuestas, 30 s; quien vota recibe su cuenta en la respuesta
     ttl = 30;
+  } else if (url.pathname === '/api/avisos/vs-fondos') {
+    // 🌆 el fondo de VS de cada servidor (25/11/2026): cambia cuando un socio elige otro en su panel; 10 minutos alcanza
+    ttl = 600;
   } else if (url.pathname === '/api/avisos/reels-stats') {
     // 🎬 cuánto se mira cada reel, sumado de 7 días (24/11/2026): el objeto lo arma cada 10 minutos, y el borde igual
     ttl = 600;

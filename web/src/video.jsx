@@ -43,40 +43,128 @@ export function abrirVideo(v) {
   window.dispatchEvent(new CustomEvent('lg:video', { detail: v }));
 }
 
-// ── 🎧 UNA BATALLA ENTERA EN AUDIO, CON SUS TURNOS, DÓNDE REACCIONÓ LA LLAMADA Y LA LETRA (25/11/2026, Dlx: «all of them»).
-// `det` es el json que deja el robot (`archivo_reels.detalle()`): {turnos: [[t, nombre]], letra: [[t, texto]], calor: [0–9
-// cada 5 s]}. Sin él, sólo el reproductor. La letra se desplaza adentro de su caja (nunca la página) y marca el renglón que suena
+// ── 🎧 UNA BATALLA ENTERA EN AUDIO, SOBRE SU ESCENARIO (25/11/2026, Dlx: «all of them» y, al verla: «el VS de nuestros fondos,
+// dependiendo del servidor… los timestamps de cada ronda en vez de cada turno… lo de las letras abajo quítalo y agrega la
+// opción para quitar subtítulos, prendida por defecto» y «que la tarjeta reaccione, así como planeábamos para los shorts,
+// cuando uno hable»). `det` es el json del robot (`archivo_reels.detalle()`): {turnos: [[t, nombre]], letra: [[t, texto]],
+// calor: [0–9 cada 5 s]}. Sin él, sólo el reproductor
 const mmss = (t) => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
 const nrm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
-// 🎤 EL ESCENARIO (25/11/2026, Dlx: «que sea un video horizontal y de imagen el VS y ahí mismo las letras… pero va a ocupar
-// espacio, ¿no?»). No: no es un video guardado, la página lo dibuja en vivo sobre el audio. Los dos frente a frente (`v.lados`,
-// `[{n, cara}]` de quien abre: la llave), el que rapea encendido según los turnos, y el renglón que suena, grande
-function Escenario({ v, D, t, cur }) {
+
+// 🌆 EL FONDO DEL VS DE CADA SERVIDOR, como el VS del bot (`_fondo_vs()` de bot/kit.py): el que subió el servidor (una url),
+// el aprobado que eligió en su panel (`repo:vs:<x>` / `repo:ev:<x>`) o el suyo. Los grandes viven en /vsfondos/hd/
+// (herramientas/vsfondos_hd.py); `/api/avisos/vs-fondos` se pide una vez por visita
+let pedidoVs = null;
+const bajarVs = () => (pedidoVs = pedidoVs || fetch('/api/avisos/vs-fondos').then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+function useFondoVs(sv) {
+  const [m, setM] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    if (sv) bajarVs().then((x) => { if (vivo) setM(x || {}); });
+    return () => { vivo = false; };
+  }, [sv]);
+  if (!sv) return '';
+  const u = (m || {})[String(sv).toUpperCase()] || '';
+  if (/^repo:(vs|ev):[a-z0-9-]+$/.test(u)) { const [, c, x] = u.split(':'); return '/vsfondos/hd/' + c + '-' + x + '.webp'; }
+  if (/^https:\/\//.test(u)) return u;
+  return '/vsfondos/hd/vs-' + String(sv).toLowerCase() + '.webp';
+}
+
+// 🔊 LA TARJETA DE QUIEN RAPEA REACCIONA A SU VOZ: el volumen del audio (un analizador del navegador) va a `--vol` (0–1) del
+// escenario en cada cuadro, sin pasar por React; el CSS lo usa sólo en el lado encendido. Necesita el audio con CORS (R2 lo
+// da a la página: `crossOrigin`). Si el navegador no deja, la tarjeta queda quieta y el audio suena igual
+function useVolumen(au, esc) {
+  const r = useRef(null);
+  const arrancar = () => {
+    const a = au.current;
+    if (!a || r.current === false) return;
+    try {
+      if (!r.current) {
+        const C = window.AudioContext || window.webkitAudioContext;
+        if (!C) { r.current = false; return; }
+        const ctx = new C();
+        const src = ctx.createMediaElementSource(a);
+        const an = ctx.createAnalyser();
+        an.fftSize = 512;
+        src.connect(an); an.connect(ctx.destination);
+        r.current = { ctx, an, buf: new Uint8Array(an.fftSize), v: 0, raf: 0 };
+      }
+      const x = r.current;
+      if (x.ctx.state === 'suspended') x.ctx.resume().catch(() => {});
+      cancelAnimationFrame(x.raf);
+      const paso = () => {
+        x.an.getByteTimeDomainData(x.buf);
+        let s = 0;
+        for (let i = 0; i < x.buf.length; i++) { const d = (x.buf[i] - 128) / 128; s += d * d; }
+        const rms = Math.min(1, Math.sqrt(s / x.buf.length) * 4);
+        x.v = rms > x.v ? rms : x.v * 0.86 + rms * 0.14;
+        if (esc.current) esc.current.style.setProperty('--vol', x.v.toFixed(3));
+        x.raf = requestAnimationFrame(paso);
+      };
+      x.raf = requestAnimationFrame(paso);
+    } catch (e) { r.current = false; }
+  };
+  const parar = () => { const x = r.current; if (x) { cancelAnimationFrame(x.raf); x.v = 0; } if (esc.current) esc.current.style.setProperty('--vol', '0'); };
+  useEffect(() => () => { const x = r.current; if (x) { cancelAnimationFrame(x.raf); x.ctx.close().catch(() => {}); } }, []);
+  return { arrancar, parar };
+}
+
+// 💬 los subtítulos, prendidos por defecto y recordados en este navegador
+const L_SUBS = 'lg:subtitulos';
+const subsGuardados = () => { try { return localStorage.getItem(L_SUBS) !== '0'; } catch (e) { return true; } };
+
+// 🎤 EL ESCENARIO: lo dibuja la página en vivo sobre el audio (no hay video guardado). Las dos tarjetas frente a frente
+// (`v.lados`, `[{n, cara}]` de quien abre: la llave), el que rapea encendido según los turnos y su tarjeta latiendo con su voz,
+// el fondo del VS de su servidor y el renglón que suena como subtítulo
+function Escenario({ v, D, t, cur, subs, setSubs, escRef }) {
+  const fondo = useFondoVs(v.sv);
   const lados = (v.lados || []).slice(0, 2);
   if (lados.length < 2) return null;
   let quien = '';
   for (const [s, n] of (D && D.turnos) || []) if (s <= t + 0.2) quien = nrm(n);
   const on = (l) => !!quien && nrm(l.n) === quien;
-  const linea = cur >= 0 ? D.letra[cur][1] : '';
+  const linea = subs && cur >= 0 ? D.letra[cur][1] : '';
+  const hayLetra = !!(D && (D.letra || []).length);
   return (
-    <div className={'vau-esc' + (quien ? ' turnos' : '')}>
+    <div ref={escRef} className={'vau-esc' + (quien ? ' turnos' : '') + (fondo ? ' con-fondo' : '')}
+      style={fondo ? { backgroundImage: 'linear-gradient(rgba(5,5,6,.45), rgba(5,5,6,.65)), url("' + fondo + '")' } : undefined}>
       {lados.map((l, i) => (
         <div key={i} className={'vau-lado' + (i ? ' der' : '') + (on(l) ? ' on' : '')}>
-          {l.cara}<b>{l.n}</b>{on(l) ? <small>al micrófono</small> : null}
+          <span className="vau-carta">{l.cara}</span><b>{l.n}</b>{on(l) ? <small>al micrófono</small> : null}
         </div>
       ))}
       <span className="vau-vs" aria-hidden="true">VS</span>
       {linea ? <p className="vau-linea" aria-live="off">{linea}</p> : null}
+      {hayLetra ? (
+        <button type="button" className={'vau-cc' + (subs ? ' on' : '')} aria-pressed={subs} onClick={() => setSubs(!subs)}
+          title={subs ? 'Quitar los subtítulos (son automáticos: pueden tener errores)' : 'Poner los subtítulos'}>CC</button>
+      ) : null}
     </div>
   );
 }
+
+// 🥊 LAS RONDAS: una ronda es una vuelta entera (el que abrió y la respuesta del otro), así que empieza cada vez que vuelve a
+// hablar quien abrió la batalla. Antes eran los turnos de cada uno, uno por uno (Dlx: «los timestamps de cada ronda en vez de
+// cada turno del rival»)
+function rondasDe(turnos) {
+  const xs = turnos || [];
+  if (!xs.length) return [];
+  const primero = nrm(xs[0][1]);
+  const out = [];
+  for (const [s, n] of xs) if (nrm(n) === primero) out.push(s);
+  return out;
+}
+
 /** `alTerminar` y `auto` (25/11/2026): el evento entero de la llave (`EventoCompleto` de llave.jsx) la reusa batalla tras
- *  batalla; en la ventana, suena sola al abrirse como siempre */
+ *  batalla; en la ventana, suena sola al abrirse como siempre. `v.sv` es el servidor (su fondo del VS) */
 export function AudioBatalla({ v, alTerminar = null, auto = true, alEmpezar = null }) {
   const au = useRef(null);
-  const caja = useRef(null);
+  const esc = useRef(null);
   const [D, setD] = useState(null);
   const [t, setT] = useState(0);
+  const [subs, setSubs0] = useState(subsGuardados);
+  const setSubs = (x) => { setSubs0(x); try { localStorage.setItem(L_SUBS, x ? '1' : '0'); } catch (e) { /* sin almacenamiento */ } };
+  const vol = useVolumen(au, esc);
   useEffect(() => {
     let vivo = true;
     if (v.det) fetch(v.det).then((r) => (r.ok ? r.json() : null)).then((j) => { if (vivo) setD(j); }).catch(() => {});
@@ -86,35 +174,27 @@ export function AudioBatalla({ v, alTerminar = null, auto = true, alEmpezar = nu
   const letra = (D && D.letra) || [];
   let cur = -1;
   for (let i = 0; i < letra.length && letra[i][0] <= t + 0.2; i++) cur = i;
-  useEffect(() => {
-    const c = caja.current;
-    const el = c && cur >= 0 ? c.children[cur] : null;
-    if (el) c.scrollTop = el.offsetTop - c.clientHeight / 2 + el.clientHeight / 2;
-  }, [cur]);
   const calor = (D && D.calor) || [];
+  const rondas = rondasDe(D && D.turnos);
+  const rondaAhora = rondas.filter((s) => s <= t + 0.2).length - 1;
   return (
     <div className="vid-audio">
-      <Escenario v={v} D={D} t={t} cur={cur} />
-      <audio ref={au} src={v.audio} title={v.tit || 'Audio'} controls autoPlay={auto} onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
-        onEnded={alTerminar || undefined} onPlay={alEmpezar || undefined} />
+      <Escenario v={v} D={D} t={t} cur={cur} subs={subs} setSubs={setSubs} escRef={esc} />
+      <audio ref={au} src={v.audio} title={v.tit || 'Audio'} controls autoPlay={auto} crossOrigin="anonymous"
+        onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
+        onPlay={() => { vol.arrancar(); if (alEmpezar) alEmpezar(); }} onPause={vol.parar}
+        onEnded={() => { vol.parar(); if (alTerminar) alTerminar(); }} />
       {calor.length > 2 ? (
         <div className="vau-calor" role="group" aria-label="Dónde reaccionó la llamada: toca para ir ahí">
           {calor.map((c, i) => <button key={i} type="button" style={{ height: 4 + c * 3 }} className={t >= i * 5 && t < i * 5 + 5 ? 'on' : ''}
             aria-label={'Ir a ' + mmss(i * 5)} onClick={() => ir(i * 5)} />)}
         </div>
       ) : null}
-      {D && (D.turnos || []).length ? (
-        <div className="vau-turnos" role="group" aria-label="Los turnos">
-          {D.turnos.map(([s, n], i) => <button key={i} type="button" onClick={() => ir(s)}><b>{n}</b> {mmss(s)}</button>)}
+      {rondas.length > 1 ? (
+        <div className="vau-turnos" role="group" aria-label="Las rondas">
+          {rondas.map((s, i) => <button key={i} type="button" className={i === rondaAhora ? 'on' : ''} aria-current={i === rondaAhora ? 'true' : undefined}
+            onClick={() => ir(s)}><b>Ronda {i + 1}</b> {mmss(s)}</button>)}
         </div>
-      ) : null}
-      {letra.length ? (
-        <>
-          <div className="vau-letra" ref={caja}>
-            {letra.map(([s, x], i) => <p key={i} className={i === cur ? 'on' : ''} onClick={() => ir(s)}>{x}</p>)}
-          </div>
-          <small className="vau-nota">Letra automática: puede tener errores.</small>
-        </>
       ) : null}
     </div>
   );

@@ -519,6 +519,14 @@ function usePublico(ctx, x, ls, gano) {
 
 // 🎧 Y LA BATALLA ENTERA EN AUDIO (25/11/2026, Dlx: «A»): lo que ULAYA grabó de esa batalla, 15 días. Los dos juntos en la
 // misma esquina; sin ninguno, nada. Con el voto del público y fuera de la final (la batalla es angosta), los dos quedan en ícono
+// 🃏 la tarjeta de cada uno para el escenario de la batalla (25/11/2026, Dlx: «que la tarjeta reaccione… cuando uno hable»): su
+// carta de la Liga (con su marco del Pase, como en la llave) y, si no tiene, su cara
+function caraEscenario(ctx, nm) {
+  const f = ctx.fila(nm);
+  if (f && urlCarta(ctx, f)) return <ImgCarta ctx={ctx} f={f} cls="vau-carta-img" grande />;
+  return <Cara liga={ctx.liga} k={ctx.idDe(sinBanderas(nm).txt) || ''} nombre={limpio(nm)} cls="cara vau-cara" grande />;
+}
+
 function ShortB({ ctx, ls, gano, fin }) {
   const ns = ls.length >= 2 ? ls.map((s) => sinBanderas(s).txt) : null;
   const x = ns && ctx.shortDe ? ctx.shortDe(ns) : null;
@@ -537,7 +545,7 @@ function ShortB({ ctx, ls, gano, fin }) {
         onClick={(e) => { e.stopPropagation(); abrirVideo({ mp4: x.url, portada: x.portada, tit: (x.nombres || []).join(' vs ') + ' · ' + tituloDe(x) }); }}><span aria-hidden="true">▶</span>{chico ? null : 'SHORT'}</button> : null}
       {au ? <button type="button" className={'lk-short' + (chico ? ' ico' : '')} aria-label={'Escuchar la batalla entera: ' + vs} title="Escuchar la batalla entera"
         onClick={(e) => { e.stopPropagation(); abrirVideo({ audio: au.url, det: au.det || '', tit: vs + ' · ' + tituloDe(au),
-          lados: ls.slice(0, 2).map((s) => ({ n: limpio(s), cara: <Cara liga={ctx.liga} k={ctx.idDe(sinBanderas(s).txt) || ''} nombre={limpio(s)} cls="cara vau-cara" grande /> })) }); }}><span aria-hidden="true">♫</span>{chico ? null : 'AUDIO'}</button> : null}
+          sv: ctx.L && ctx.L.sv, lados: ls.slice(0, 2).map((s) => ({ n: limpio(s), cara: caraEscenario(ctx, s) })) }); }}><span aria-hidden="true">♫</span>{chico ? null : 'AUDIO'}</button> : null}
       {pub && fin ? pub : null}
     </span>
     </>
@@ -560,14 +568,14 @@ function EventoCompleto({ ctx, xs }) {
   const ronda = (y) => RONDA_TXT[String(y.ronda || '').toLowerCase()] || y.ronda || '';
   const vs = (y) => (y.nombres || []).map((nm) => limpio(nm)).join(' vs ');
   const lados = (x.nombres || []).slice(0, 2).map((nm) => ({ n: limpio(nm),
-    cara: <Cara liga={ctx.liga} k={ctx.idDe(sinBanderas(nm).txt) || ''} nombre={limpio(nm)} cls="cara vau-cara" grande /> }));
+    cara: caraEscenario(ctx, nm) }));
   const ir = (j) => { setVa(true); setI(j); };
   return (
     <section className="sec lk-sec lk-ev" aria-label="El evento entero">
       <div className="sec-t"><h2>El evento entero</h2><span className="tj-n">{xs.length} {xs.length === 1 ? 'batalla' : 'batallas'} · {Math.max(1, Math.round(total / 60))} min</span></div>
       <p className="lk-ev-baj">Batalla tras batalla, de la primera a la final, sin las esperas del medio.</p>
       <div className="lk-ev-ahora"><b>{ronda(x)}</b> · {vs(x)}<small>{i + 1} de {xs.length}</small></div>
-      <AudioBatalla key={x.ev + '-' + x.k} v={{ audio: x.url, det: x.det || '', lados, tit: vs(x) + ' · ' + ronda(x) }} auto={va}
+      <AudioBatalla key={x.ev + '-' + x.k} v={{ audio: x.url, det: x.det || '', lados, sv: (ctx.L && ctx.L.sv) || x.sv, tit: vs(x) + ' · ' + ronda(x) }} auto={va}
         alEmpezar={() => setVa(true)} alTerminar={() => { if (i + 1 < xs.length) ir(i + 1); }} />
       <ol className="lk-ev-caps">
         {xs.map((y, j) => (
