@@ -353,7 +353,9 @@ function useFeed(liga, inicio) {
     xs.push(cur.vid);
     ls.set(L_VISTOS, xs.slice(-600));
   }, [cur]);
-  const ir = (j) => { setFin(false); setI(Math.max(0, Math.min(lista.length - 1, j))); };
+  // ↕ hacia dónde se pasó (1 = el siguiente, −1 = el anterior): las animaciones entran desde ese lado (8.16)
+  const [dir, setDir] = useState(1);
+  const ir = (j) => { const k = Math.max(0, Math.min(lista.length - 1, j)); setDir(k >= i ? 1 : -1); setFin(false); setI(k); };
   const siguiente = () => { if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
   // 👤 su próximo reel (el de la columna de la izquierda en la compu, como los canales de Twitch): el siguiente en la lista
   // de ahora; si ya pasaron todos, el primero; si este filtro no lo tiene, «Para ti», que tiene a todos
@@ -372,7 +374,7 @@ function useFeed(liga, inicio) {
   const filtros = FILTROS.filter(([k]) => (k !== 'liga' || hayLiga) && (k !== 'guardados' || guardo.length || filtro === 'guardados'));
   return {
     D, X: X && listoL ? X : null, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
-    liga, filtros, loSigo, seguir, todos, irA,
+    liga, filtros, loSigo, seguir, todos, irA, dir,
     anterior: () => (fin ? setFin(false) : ir(i - 1)),
     deNuevo: () => ir(0),
     guardado: !!(cur && guardo.includes(cur.vid)), hayGuardados: guardo.length > 0,
@@ -455,6 +457,59 @@ async function compartir(r, setCopiado) {
   try { await navigator.clipboard.writeText(url); setCopiado(true); } catch (e) { /* sin portapapeles */ }
 }
 
+// ═══════════════════════════════ LA GEOMETRÍA Y EL MOVIMIENTO (8.16) ═══════════════════════════════
+// Dlx, 25/11/2026: «la ventana del short lo más vertical y grande posible, en todos los dispositivos… que todo esté quieto en
+// un solo lugar, y si puedes animaciones y simetría». Medido antes: el video ocupaba el 51–53 % del celular y el 43 % de la
+// tablet, corrido a la izquierda (28 px de un lado y 56 del otro) y con la ficha lejos de sus bordes.
+
+/** la compu: el aire arriba y abajo del escenario y el alto mínimo del video (por debajo, se baja con la página) */
+const PC_AIRE = 16;
+const PC_MIN = 400;
+
+/** las medidas fijas del celular: la barra de arriba, el progreso, la ficha, la fila o la columna de acciones */
+const CEL = { arriba: 48, prog: 14, ficha: 66, fila: 62, col: 58, gap: 8, borde: 8 };
+
+/**
+ * 📐 Dónde va el video en el celular: dos maneras de acomodar las cinco acciones y se queda la que deja el video MÁS GRANDE.
+ * AL COSTADO (una columna a la derecha del video) gana en pantallas anchas o cortas —tablet, 360×640—; ABAJO (una fila del
+ * ancho del video) en las largas y angostas, que son casi todos los celulares: a 390×844 el video pasa de 306 a ~330 de ancho.
+ * Centrado siempre que haya lugar: con la columna, si no entra a los dos lados, se centra en lo que queda a su izquierda.
+ */
+export function geometria(W, H) {
+  const top = CEL.arriba + CEL.prog;
+  const alto = H - top - CEL.gap - CEL.ficha - CEL.borde;
+  const ancho = (hMax, wMax) => Math.max(150, Math.min(wMax, (hMax * 9) / 16));
+  const lado = ancho(alto, W - 2 * CEL.borde - CEL.col - CEL.gap);
+  const abajo = ancho(alto - CEL.fila, W - 2 * CEL.borde);
+  const modo = abajo >= lado ? 'abajo' : 'lado';
+  const vw = Math.floor(modo === 'abajo' ? abajo : lado);
+  const vh = Math.floor((vw * 16) / 9);
+  const lateral = CEL.col + CEL.gap;
+  let vx = Math.round((W - vw) / 2);
+  if (modo === 'lado' && vx < lateral + CEL.borde) vx = Math.max(CEL.borde, Math.round((W - lateral - vw) / 2));
+  const fichaY = top + vh + CEL.gap;
+  return { modo, vx, vy: top, vw, vh, fichaY, filaY: fichaY + CEL.ficha, colX: vx + vw + CEL.gap };
+}
+
+/**
+ * ↕ La entrada al pasar de reel: desde el lado al que se fue (el siguiente sube, el anterior baja), sólo `transform` y
+ * `opacity`, 280 ms con una salida fuerte (Emil: lo que entra, ease-out). Por la API de animaciones y no por una clase: se
+ * puede interrumpir si pasas rápido, y no hace falta volver a montar el reproductor. Con «reducir movimiento», sólo se funde
+ */
+function useEntrada(ref, k, dir, px) {
+  const antes = useRef(k);
+  useEffect(() => {
+    if (antes.current === k) return;
+    antes.current = k;
+    const el = ref.current;
+    if (!el || !el.animate) return;
+    const quieto = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    const desde = quieto ? { opacity: 0.5 } : { opacity: 0.25, transform: 'translateY(' + dir * px + 'px)' };
+    const hasta = quieto ? { opacity: 1 } : { opacity: 1, transform: 'translateY(0)' };
+    el.animate([desde, hasta], { duration: quieto ? 140 : 280, easing: 'cubic-bezier(.23,1,.32,1)' });
+  }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
+}
+
 // ═══════════════════════════════ EL CELULAR (la E) ═══════════════════════════════
 function ReelsCel({ F }) {
   const caja = useRef(null);
@@ -463,7 +518,6 @@ function ReelsCel({ F }) {
   const [hoja, setHoja] = useState('');
   const [aviso, setAviso] = useState(null);
   const [copiado, setCopiado] = useState(false);
-  const [largo, setLargo] = useState(false);
   const cambiando = useRef(false);
   const reloj = useRef(0);
   useEffect(() => () => clearTimeout(reloj.current), []);
@@ -502,7 +556,6 @@ function ReelsCel({ F }) {
     yt.poner(F.cur.vid);
     setModo('teatro');
     setCopiado(false);
-    setLargo(false);
   }, [F.cur, yt.activo]); // eslint-disable-line react-hooks/exhaustive-deps
   // ▶ solo al abrir la página (una vez): el primero corre mudo
   const arranco = useRef(false);
@@ -534,6 +587,19 @@ function ReelsCel({ F }) {
     },
   };
   const avisa = (txt, deshacer) => { setAviso({ txt, deshacer }); clearTimeout(reloj.current); reloj.current = setTimeout(() => setAviso(null), 5000); };
+  // ↕ al pasar de reel, el video y su ficha entran desde el lado al que se fue (ver `useEntrada`)
+  const cajaVideo = useRef(null);
+  const fichaRef = useRef(null);
+  const vidAhora = F.cur ? F.cur.vid : '';
+  useEntrada(cajaVideo, vidAhora, F.dir, 28);
+  useEntrada(fichaRef, vidAhora, F.dir, 10);
+  // Esc cierra la hoja abierta
+  useEffect(() => {
+    if (!hoja) return undefined;
+    const k = (e) => { if (e.key === 'Escape') setHoja(''); };
+    window.addEventListener('keydown', k);
+    return () => window.removeEventListener('keydown', k);
+  }, [hoja]);
   const r = F.cur;
   if (!r) {
     return (
@@ -547,41 +613,41 @@ function ReelsCel({ F }) {
       </div>
     );
   }
-  // el video en modo teatro: 9:16, entre las líneas (28 px) y los íconos (56 px), dejando lugar arriba y abajo
-  const arriba = 52;
-  const pie = 132;
-  const hMax = Math.max(240, medida.h - arriba - pie);
-  const wMax = Math.max(180, medida.w - 28 - 56);
-  const vh = Math.min(hMax, (wMax * 16) / 9);
-  const vw = (vh * 9) / 16;
-  const vx = 28 + (wMax - vw) / 2;
+  // 📐 EL VIDEO LO MÁS GRANDE QUE ENTRE (8.16, ver `geometria()`): el mismo rectángulo para el reproductor y para su póster,
+  // así que pausar no mueve nada; lo demás se alinea a sus bordes
+  const G = geometria(medida.w, medida.h);
   const filtroN = (FILTROS.find((f) => f[0] === F.filtro) || FILTROS[0])[1];
-  const otroFiltro = () => {
-    const fs = F.filtros;
-    const j = fs.findIndex((f) => f[0] === F.filtro);
-    F.setFiltro(fs[(j + 1) % fs.length][0]);
-  };
   const batalla = batallaDe(r);
   const verBatalla = () => {
     pausarMenu();
+    setHoja('');
     if (batalla) abrirVideo({ vid: batalla, tit: r.gente.map(nombre).join(' vs '), link: 'https://www.youtube.com/watch?v=' + batalla });
     else location.hash = perfilDe(r.gente[0]);
   };
-  const lineas = Array.from({ length: Math.min(F.cargados, F.lista.length) }, (_, j) => j);
-  const Lineas = (
-    <nav className="rls-lineas" aria-label="Ir a otro reel">
-      {lineas.map((j) => (
-        <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')} aria-current={j === F.i && !F.fin ? 'true' : undefined}
-          className={j === F.i && !F.fin ? 'on' : j < F.i ? 'visto' : ''} onClick={() => F.ir(j)}><i /></button>
-      ))}
-    </nav>
-  );
   const nombres = r.gente.map(nombre).join(' vs ');
+  const enviar = () => compartir(r, (c) => { setCopiado(c); if (c) avisa('Link copiado'); });
+  const corriendo = modo === 'teatro' && !F.fin;
+  const rect = { left: G.vx, top: G.vy, width: G.vw, height: G.vh };
+  // el progreso: un segmento por reel cargado, del ancho del video (como las historias); el blanco es el que ves
+  const lineas = Array.from({ length: Math.min(F.cargados, F.lista.length) }, (_, j) => j);
+  // las cinco acciones, iguales corriendo y en pausa: al costado o en una fila, según `G.modo`
+  const Acciones = (
+    <div className={'rls-acc ' + G.modo} style={G.modo === 'abajo' ? { left: G.vx, top: G.filaY, width: G.vw } : { left: G.colX, top: G.vy, height: G.vh }}>
+      <button type="button" className="rls-ac" aria-label={'La ficha de ' + nombres} onClick={() => { pausarMenu(); setHoja('ficha'); }}>
+        <Cara liga={F.liga} g={r.gente[0]} cls="rls-cara" /><span>Ficha</span></button>
+      <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} onClick={F.darFuego}>
+        <Ico n="fuego" lleno={F.ardido} t={26} /><span>Fuego</span></button>
+      <button type="button" className="rls-ac" aria-pressed={F.guardado} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}>
+        <Ico n="guardar" lleno={F.guardado} t={24} /><span>{F.guardado ? 'Guardado' : 'Guardar'}</span></button>
+      <button type="button" className="rls-ac" onClick={enviar}><Ico n="enviar" t={24} /><span>Enviar</span></button>
+      <button type="button" className="rls-ac" onClick={() => { pausarMenu(); setCopiado(false); setHoja('mas'); }}><Ico n="mas" t={24} /><span>Más</span></button>
+    </div>
+  );
   return (
-    <div className={'rls rls-cel ' + (modo === 'teatro' && !F.fin ? 'teatro' : 'menu')} ref={caja} style={{ bottom: medida.abajo }} {...toca}>
-      {/* la luz del teatro: la misma miniatura, desenfocada, detrás de todo */}
-      <Poster vid={r.vid} cls="rls-luz" />
-      <div className={'rls-ytcaja' + (modo === 'teatro' && !F.fin ? '' : ' oculto')} style={{ left: vx, top: arriba, width: vw, height: vh }}>{yt.marco}</div>
+    <div className={'rls rls-cel ' + (corriendo ? 'teatro' : 'menu')} ref={caja} style={{ bottom: medida.abajo }} {...toca}>
+      {/* la luz del teatro: la misma miniatura, desenfocada, detrás de todo; entra fundiéndose con cada reel */}
+      <Poster key={r.vid} vid={r.vid} cls="rls-luz" />
+      <p className="rls-sr" aria-live="polite">{F.fin ? 'Viste todo lo nuevo' : 'Reel ' + (F.i + 1) + ' de ' + F.lista.length + ': ' + nombres}</p>
 
       {F.fin ? (
         <div className="rls-fin">
@@ -592,57 +658,39 @@ function ReelsCel({ F }) {
           <a className="rls-bt" href="#/eventos">Los próximos eventos de la Liga</a>
           <button type="button" className="rls-bt sin" onClick={F.deNuevo}>Volver al primero</button>
         </div>
-      ) : modo === 'teatro' ? (
+      ) : (
         <>
-          <div className="rls-cab">
-            <button type="button" className="rls-filtro" onClick={otroFiltro}>{filtroN}<Ico n="abajo" t={18} /></button>
+          <div className="rls-cab" style={{ left: G.vx, right: medida.w - G.vx - G.vw }}>
+            <button type="button" className="rls-filtro" aria-haspopup="dialog" onClick={() => { pausarMenu(); setHoja('filtros'); }}>{filtroN}<Ico n="abajo" t={18} /></button>
             {yt.mudo ? <button type="button" className="rls-sonido" onClick={() => yt.sonido(true)}><Ico n="mudo" t={18} />Toca para el sonido</button>
               : <button type="button" className="rls-ib" aria-label="Silenciar" onClick={() => yt.sonido(false)}><Ico n="sonido" /></button>}
           </div>
-          {Lineas}
-          <div className="rls-riel">
-            <button type="button" className="rls-cara-b" aria-label={'La ficha de ' + nombres} onClick={() => { pausarMenu(); setHoja('ficha'); }}><Cara liga={F.liga} g={r.gente[0]} cls="rls-cara" /></button>
-            <button type="button" className={'rls-ib' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} aria-label="Fuego" onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={28} /></button>
-            <button type="button" className="rls-ib" aria-pressed={F.guardado} aria-label={F.guardado ? 'Quitar de guardados' : 'Guardar'} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}><Ico n="guardar" lleno={F.guardado} t={26} /></button>
-            <button type="button" className="rls-ib" aria-label="Enviar" onClick={() => compartir(r, (c) => { setCopiado(c); if (c) avisa('Link copiado'); })}><Ico n="enviar" t={26} /></button>
-            <button type="button" className="rls-ib" aria-label="Pausar y abrir el menú" onClick={pausarMenu}><Ico n="mas" t={24} /></button>
-          </div>
-          <div className="rls-pie-t" style={{ top: arriba + vh + 10 }}>
-            <b>{nombres} <span>· {r.gente.map(puestoDe).join(' · ')}</span></b>
-            {r.t ? <span className="rls-t2">{r.t}</span> : null}
-            <span className="rls-canal">{r.canal}</span>
-          </div>
-        </>
-      ) : (
-        <>
-          <Poster vid={r.vid} cls="rls-poster" alt={r.t || nombres} />
-          <div className="rls-cab sobre">
-            <button type="button" className="rls-filtro" onClick={otroFiltro}>{filtroN}<Ico n="abajo" t={18} /></button>
-          </div>
-          {Lineas}
-          <button type="button" className="rls-play" aria-label={yt.activo ? 'Seguir viendo' : 'Ver el reel'} onClick={reproducir}><Ico n="play" t={40} /></button>
-          <div className="rls-riel sobre">
-            <button type="button" className={'rls-ib et' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={30} />Fuego</button>
-            {r.gente.length >= 2 ? <button type="button" className="rls-ib et" onClick={() => setHoja('voto')}><span className="rls-vs" aria-hidden="true">VS</span>¿Quién?</button> : null}
-            <button type="button" className="rls-ib et" onClick={verBatalla}><Ico n="batalla" t={30} />{batalla ? 'Batalla' : 'Perfil'}</button>
-            <button type="button" className="rls-ib et" onClick={() => compartir(r, (c) => { setCopiado(c); if (c) avisa('Link copiado'); })}><Ico n="enviar" t={28} />Enviar</button>
-            <button type="button" className="rls-ib" aria-pressed={F.guardado} aria-label={F.guardado ? 'Quitar de guardados' : 'Guardar'} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}><Ico n="guardar" lleno={F.guardado} t={28} /></button>
-            <button type="button" className="rls-ib" aria-label="Más opciones" onClick={() => { setCopiado(false); setHoja('mas'); }}><Ico n="mas" t={26} /></button>
-          </div>
-          <div className="rls-pie-m">
-            <div className="rls-quien">
-              <button type="button" className="rls-caras" aria-label={'La ficha de ' + nombres} onClick={() => setHoja('ficha')}>
-                {r.gente.slice(0, 3).map((g) => <Cara liga={F.liga} key={g.k} g={g} cls="rls-cara" />)}
-                <b>{nombres}</b>
+          <nav className="rls-prog" aria-label="Ir a otro reel" style={{ left: G.vx, width: G.vw, top: CEL.arriba }}>
+            {lineas.map((j) => (
+              <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')} aria-current={j === F.i ? 'true' : undefined}
+                className={j === F.i ? 'on' : j < F.i ? 'visto' : ''} onClick={() => F.ir(j)}><i /></button>
+            ))}
+          </nav>
+          <div className="rls-vid" ref={cajaVideo} style={rect}>
+            <div className={'rls-ytcaja' + (corriendo ? '' : ' oculto')}>{yt.marco}</div>
+            {corriendo ? null : (
+              <button type="button" className="rls-vid-poster" onClick={reproducir} aria-label={yt.activo ? 'Seguir viendo' : 'Ver el reel'}>
+                <Poster vid={r.vid} cls="rls-poster" alt={r.t || nombres} />
+                <span className="rls-play"><Ico n="play" t={40} /></span>
               </button>
+            )}
+          </div>
+          <div className="rls-ficha" ref={fichaRef} style={{ left: G.vx, top: G.fichaY, width: G.modo === 'lado' ? G.vw + CEL.gap + CEL.col : G.vw }}>
+            <div className="rls-ficha-1">
+              <button type="button" className="rls-ficha-n" onClick={() => { pausarMenu(); setHoja('ficha'); }}>
+                <b>{nombres}</b><span>{r.gente.map(puestoDe).join(' · ')}</span></button>
               <button type="button" className={'rls-perfil' + (F.loSigo(r.gente[0]) ? ' on' : '')} aria-pressed={F.loSigo(r.gente[0])}
                 onClick={() => F.seguir(r.gente[0])}>{F.loSigo(r.gente[0]) ? 'Siguiendo' : 'Seguir'}</button>
             </div>
-            <button type="button" className={'rls-t' + (largo ? ' largo' : '')} onClick={() => setLargo(!largo)}>
-              {r.t || nombres} <span>· {r.gente.map(puestoDe).join(' · ')}</span>
-            </button>
+            <span className="rls-t2">{r.t || nombres}</span>
             <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</span>
           </div>
+          {Acciones}
         </>
       )}
 
@@ -653,10 +701,20 @@ function ReelsCel({ F }) {
 
       {hoja ? (
         <div className="rls-velo" onClick={(e) => { if (e.target === e.currentTarget) setHoja(''); }}>
-          <div className="rls-hoja" role="dialog" aria-label={hoja === 'ficha' ? 'La ficha' : hoja === 'voto' ? '¿Quién ganó?' : 'Más opciones'}>
+          <div className="rls-hoja" role="dialog" aria-modal="true"
+            aria-label={hoja === 'ficha' ? 'La ficha' : hoja === 'voto' ? '¿Quién ganó?' : hoja === 'filtros' ? 'Qué ver' : 'Más opciones'}>
             <span className="rls-asa" aria-hidden="true" />
-            {hoja === 'voto' ? <Voto r={r} clase="cel" /> : hoja === 'ficha' ? (
+            {hoja === 'voto' ? <Voto r={r} clase="cel" /> : hoja === 'filtros' ? (
               <>
+                <b className="rls-hoja-t">Qué ver</b>
+                {F.filtros.map(([k, n]) => (
+                  <button key={k} type="button" className={'rls-op' + (F.filtro === k ? ' ok' : '')} aria-pressed={F.filtro === k}
+                    onClick={() => { F.setFiltro(k); setHoja(''); }}>{F.filtro === k ? <Ico n="listo" t={20} /> : <span className="rls-op-h" />}{n}</button>
+                ))}
+              </>
+            ) : hoja === 'ficha' ? (
+              <>
+                {r.t ? <p className="rls-hoja-p">{r.t}</p> : null}
                 {r.gente.map((g) => (
                   <div key={g.k} className="rls-fila-c">
                     <a className="rls-fila" href={perfilDe(g)}>
@@ -672,6 +730,8 @@ function ReelsCel({ F }) {
               </>
             ) : (
               <>
+                {r.gente.length >= 2 ? <button type="button" className="rls-op" onClick={() => setHoja('voto')}><span className="rls-vs" aria-hidden="true">VS</span>¿Quién ganó? Vota</button> : null}
+                <button type="button" className="rls-op" onClick={verBatalla}><Ico n="batalla" t={20} />{batalla ? 'Ver la batalla completa' : 'Sus batallas'}</button>
                 <button type="button" className={'rls-op' + (copiado ? ' ok' : '')} onClick={async () => { try { await navigator.clipboard.writeText(linkDe(r.vid)); setCopiado(true); } catch (e) { /* sin portapapeles */ } }}>
                   <Ico n={copiado ? 'listo' : 'copiar'} t={20} />{copiado ? 'Copiado' : 'Copiar el link'}</button>
                 <button type="button" className="rls-op" onClick={() => {
@@ -784,17 +844,49 @@ function ReelsPc({ F }) {
     return () => window.removeEventListener('keydown', k);
   }, []);
   const avisa = (txt, deshacer) => { setAviso({ txt, deshacer }); clearTimeout(reloj.current); reloj.current = setTimeout(() => setAviso(null), 5000); };
+  // 📐 EL ALTO DEL VIDEO SE MIDE, NO SE ADIVINA (8.16). Medido antes: con los avisos de arriba el video arrancaba en y≈430–510
+  // y salía cortado abajo en los cuatro tamaños de compu (`100vh/z − 380` no los contaba). Ahora: desde donde empieza el
+  // escenario hasta el borde de abajo de la pantalla, en px de adentro del zoom de la página (`.app{zoom}`), y se vuelve a
+  // medir cuando algo de arriba cambia de alto: cerrar un aviso agranda el video. ⚠️ No se desplaza la página sola para
+  // ganar lugar: la primera versión lo hacía y, con el margen de desplazamiento de la página, el video quedaba cortado igual
+  // (y moverle la página a alguien no es «quieto»)
+  const teatro = useRef(null);
+  const [alto, setAlto] = useState(560);
+  useLayoutEffect(() => {
+    const el = teatro.current;
+    if (!el) return undefined;
+    const app = el.closest ? el.closest('.app') : null;
+    const mide = () => {
+      const z = (app && parseFloat(getComputedStyle(app).zoom)) || 1;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const libre = (window.innerHeight - top) / z - 2 * PC_AIRE;
+      setAlto(Math.round(Math.max(PC_MIN, Math.min(libre, 980))));
+    };
+    mide();
+    const ro = typeof ResizeObserver !== 'undefined' && app ? new ResizeObserver(mide) : null;
+    if (ro) ro.observe(app);
+    window.addEventListener('resize', mide);
+    // y una mirada por segundo: cerrar un aviso de arriba no siempre le cambia el tamaño a `.app` (medido a 1920: el video se
+    // quedaba con 176 px libres abajo). Sólo lee una posición; si no cambió, React no vuelve a dibujar nada
+    const reloj = setInterval(mide, 1000);
+    return () => { if (ro) ro.disconnect(); window.removeEventListener('resize', mide); clearInterval(reloj); };
+  }, []);
+  // ↕ al pasar de reel, el video y el contenido del panel entran desde el lado al que se fue; las cajas no se mueven
+  const cajaVideo = useRef(null);
+  const panelIn = useRef(null);
+  const vidAhora = F.cur ? F.cur.vid : '';
+  useEntrada(cajaVideo, vidAhora, F.dir, 22);
+  useEntrada(panelIn, vidAhora, F.dir, 12);
   const r = F.cur;
   const fs = F.filtros;
-  // 🎨 COMO LAS OTRAS PÁGINAS (8.12, Dlx: «acuérdate el estilo de la página tiene que ser como los otros»): la franja negra
-  // con la etiqueta magenta (`.tag`), el título grande (`.hero-ev`) y su bajada (`.hero-p`), como Invita y gana
+  // 🎨 LA FRANJA, EN UNA SOLA FILA (8.16): la etiqueta y el título a la izquierda, los filtros a la derecha. Con el título de
+  // 42 px, su bajada y las pestañas abajo se comía ~270 px del primer pliegue, que ahora son del video
   const cab = (
     <div className="escena rls-esc">
       <div className="rls-esc-in">
         <div className="rls-esc-tx">
           <span className="tag">REELS{F.temp ? ' · ' + F.temp : ''}</span>
           <h1 className="hero-ev rls-h1">Los momentos de las batallas</h1>
-          <p className="hero-p">Los shorts de las competencias, con quién es quién y su puesto en el Ranking global.</p>
         </div>
         <div className="rls-chips" role="group" aria-label="Qué ver">
           {fs.map(([k, n]) => <button key={k} type="button" aria-pressed={F.filtro === k} className={F.filtro === k ? 'on' : ''} onClick={() => F.setFiltro(k)}>{n}</button>)}
@@ -802,11 +894,12 @@ function ReelsPc({ F }) {
       </div>
     </div>
   );
+  const estilo = { '--rls-alto': alto + 'px' };
   if (!r) {
     return (
       <section className="rls-pc">{cab}
-        <div className="rls-pc-teatro">
-          <div className="rls-pc-in"><div className="rls-pc-cuerpo">
+        <div className="rls-pc-teatro" ref={teatro} style={estilo}>
+          <div className="rls-pc-in"><div className="rls-pc-cuerpo vacio">
             <RielGente F={F} />
             <div className="rls-vacio"><b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b><p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
               <button type="button" className="rls-btc" onClick={() => F.setFiltro('todo')}>Ver Para ti</button></div>
@@ -818,94 +911,105 @@ function ReelsPc({ F }) {
   const nombres = r.gente.map(nombre).join(' vs ');
   const batalla = batallaDe(r);
   const masReels = [1, 2, 3].map((j) => F.lista[F.i + j]).filter(Boolean);
-  // 🎭 EL ESCENARIO (8.14, Dlx: «en vez de blanco que sea como teatro como YouTube, y también cine, como el estilo que
-  // tenemos… a la izquierda la lista de seguidos y recomendados, como Twitch»): debajo de la franja, todo sobre negro de
-  // borde a borde, con la luz del reel desenfocada atrás (el modo ambiente de YouTube, el mismo `.rls-luz` del celular) y la
-  // gente a la izquierda
+  // el progreso, en vertical al lado del video (espejo de las flechas): hasta 9 segmentos alrededor del que ves
+  const nCarg = Math.min(F.cargados, F.lista.length);
+  const desde = Math.max(0, Math.min(F.i - 4, nCarg - 9));
+  const lineas = Array.from({ length: Math.min(9, nCarg) }, (_, j) => desde + j).filter((j) => j < nCarg);
+  // 🎭 EL ESCENARIO (8.14) y LA SIMETRÍA (8.16): gente · progreso · video · flechas · panel, con las dos columnas de afuera
+  // del mismo ancho y las dos de adentro también, así el video queda exactamente en el medio. Las cinco del mismo alto que el
+  // video, y adentro del panel cada cosa tiene su lugar fijo: pasar de reel no mueve ninguna caja
   return (
     <section className="rls-pc">
       {cab}
-      <div className="rls-pc-teatro">
-      <div className="rls-pc-luz" aria-hidden="true"><Poster key={r.vid} vid={r.vid} cls="rls-luz" /></div>
-      <div className="rls-pc-in">
-      <div className="rls-pc-cuerpo">
-        <RielGente F={F} />
-        <div className="rls-pc-video">
-          <div className={'rls-ytcaja' + ((modo === 'teatro' || yt.activo) && !F.fin ? '' : ' oculto')}>{yt.marco}</div>
-          {F.fin ? (
-            <div className="rls-fin">
-              <span className="tag">REELS</span>
-          <b>Viste todo lo nuevo</b>
-              <p>Llegan más cada lunes. Mientras, mira quién está arriba o lo que viene en la Liga.</p>
-              <a className="rls-bt prim" href="#/ranking/global">Ver el Ranking global</a>
-              <a className="rls-bt" href="#/eventos">Los próximos eventos de la Liga</a>
-              <button type="button" className="rls-bt sin" onClick={F.deNuevo}>Volver al primero</button>
-            </div>
-          ) : modo !== 'teatro' && !yt.activo ? (
-            <button type="button" className="rls-pc-poster" onClick={reproducir} aria-label={yt.activo ? 'Seguir viendo' : 'Ver el reel'}>
-              <Poster vid={r.vid} cls="rls-poster" alt={r.t || nombres} />
-              <span className="rls-play"><Ico n="play" t={44} /></span>
-            </button>
-          ) : null}
-        </div>
-
-        <aside className="rls-pc-panel">
-          <div className="rls-pc-quien">
-            <span className="rls-caras">{r.gente.slice(0, 3).map((g) => <Cara liga={F.liga} key={g.k} g={g} cls="rls-cara" />)}</span>
-            <div>
-              {r.gente.map((g) => (
-                <span key={g.k} className="rls-pc-fila">
-                  <a className="rls-pc-n" href={perfilDe(g)}><b>{nombre(g)}</b><Bandera cc={g.cc} cls="rls-flag" /><small>{puestoDe(g)}</small></a>
-                  <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
-                    {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button>
-                </span>
+      <div className="rls-pc-teatro" ref={teatro} style={estilo}>
+        <div className="rls-pc-luz" aria-hidden="true"><Poster key={r.vid} vid={r.vid} cls="rls-luz" /></div>
+        <div className="rls-pc-in">
+          <div className="rls-pc-cuerpo">
+            <RielGente F={F} />
+            <nav className="rls-pc-prog" aria-label="Ir a otro reel">
+              {lineas.map((j) => (
+                <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')}
+                  aria-current={j === F.i && !F.fin ? 'true' : undefined} className={j === F.i && !F.fin ? 'on' : j < F.i ? 'visto' : ''}
+                  onClick={() => F.ir(j)}><i /></button>
               ))}
+            </nav>
+            <div className="rls-pc-video" ref={cajaVideo}>
+              <div className={'rls-ytcaja' + ((modo === 'teatro' || yt.activo) && !F.fin ? '' : ' oculto')}>{yt.marco}</div>
+              {F.fin ? (
+                <div className="rls-fin">
+                  <span className="tag">REELS</span>
+                  <b>Viste todo lo nuevo</b>
+                  <p>Llegan más cada lunes. Mientras, mira quién está arriba o lo que viene en la Liga.</p>
+                  <a className="rls-bt prim" href="#/ranking/global">Ver el Ranking global</a>
+                  <a className="rls-bt" href="#/eventos">Los próximos eventos de la Liga</a>
+                  <button type="button" className="rls-bt sin" onClick={F.deNuevo}>Volver al primero</button>
+                </div>
+              ) : modo !== 'teatro' && !yt.activo ? (
+                <button type="button" className="rls-pc-poster" onClick={reproducir} aria-label="Ver el reel">
+                  <Poster vid={r.vid} cls="rls-poster" alt={r.t || nombres} />
+                  <span className="rls-play"><Ico n="play" t={44} /></span>
+                </button>
+              ) : null}
             </div>
-          </div>
-          {r.t ? <p className="rls-pc-t">{r.t}</p> : null}
-          <p className="rls-canal">{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</p>
-          {r.gente.length >= 2 ? <Voto r={r} clase="pc" /> : null}
-          <div className="rls-pc-acc">
-            <button type="button" className={'rls-ib' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} aria-label="Fuego (tecla F)" onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={26} /></button>
-            <button type="button" className="rls-ib" aria-pressed={F.guardado} aria-label={F.guardado ? 'Quitar de guardados' : 'Guardar'} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}><Ico n="guardar" lleno={F.guardado} t={24} /></button>
-            {yt.mudo ? <button type="button" className="rls-btc rls-sonido-pc" onClick={() => yt.sonido(true)}><Ico n="mudo" t={20} />Activar el sonido</button>
-              : <button type="button" className="rls-ib" aria-label="Silenciar (tecla M)" onClick={() => yt.sonido(false)}><Ico n="sonido" t={24} /></button>}
-            <button type="button" className="rls-btc" onClick={() => {
-              if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = perfilDe(r.gente[0]);
-            }}><Ico n="batalla" t={20} />{batalla ? 'Batalla completa' : 'Sus batallas'}</button>
-          </div>
-          <div className="rls-pc-acc">
-            <button type="button" className={'rls-btc' + (copiado ? ' ok' : '')} onClick={async () => { try { await navigator.clipboard.writeText(linkDe(r.vid)); setCopiado(true); } catch (e) { /* sin portapapeles */ } }}>
-              <Ico n={copiado ? 'listo' : 'copiar'} t={18} />{copiado ? 'Copiado' : 'Copiar link'}</button>
-            <button type="button" className="rls-btc" onClick={() => {
-              const canal = r.canal; const desde = F.i;
-              F.menos(canal); F.siguiente();
-              avisa('Vas a ver menos de ' + canal, () => { F.nomenos(canal); F.ir(desde); });
-            }}><Ico n="no" t={18} />No me interesa</button>
-            <a className="rls-btc" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>
-          </div>
-          {masReels.length ? (
-            <div className="rls-pc-mas">
-              <div className="sec-t"><h2>Lo que sigue</h2></div>
-              <div>
-                {masReels.map((x, j) => (
-                  <button key={x.vid} type="button" onClick={() => F.ir(F.i + j + 1)} aria-label={x.gente.map(nombre).join(' vs ')}>
-                    <Poster vid={x.vid} cls="rls-mini" /><span>{x.gente.map(nombre).join(' vs ')}</span>
-                  </button>
-                ))}
+            <div className="rls-pc-flechas">
+              <button type="button" className="rls-ib caja" aria-label="Anterior (flecha arriba)" onClick={F.anterior}><Ico n="arriba" /></button>
+              <button type="button" className="rls-ib caja prim" aria-label="Siguiente (flecha abajo)" onClick={F.siguiente}><Ico n="abajo" /></button>
+            </div>
+            <aside className="rls-pc-panel" aria-label="Este reel">
+              <div className="rls-pc-panel-in" ref={panelIn}>
+                <div className="rls-pc-quien">
+                  <span className="rls-caras">{r.gente.slice(0, 3).map((g) => <Cara liga={F.liga} key={g.k} g={g} cls="rls-cara" />)}</span>
+                  <div>
+                    {r.gente.slice(0, 2).map((g) => (
+                      <span key={g.k} className="rls-pc-fila">
+                        <a className="rls-pc-n" href={perfilDe(g)}><b>{nombre(g)}</b><Bandera cc={g.cc} cls="rls-flag" /><small>{puestoDe(g)}</small></a>
+                        <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
+                          {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <p className="rls-pc-t">{r.t || nombres}</p>
+                <p className="rls-canal">{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>De las plazas</em> : null}</p>
+                <div className="rls-pc-acc">
+                  <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} title="Tecla F" onClick={F.darFuego}>
+                    <Ico n="fuego" lleno={F.ardido} t={24} /><span>Fuego</span></button>
+                  <button type="button" className="rls-ac" aria-pressed={F.guardado} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}>
+                    <Ico n="guardar" lleno={F.guardado} t={22} /><span>{F.guardado ? 'Guardado' : 'Guardar'}</span></button>
+                  <button type="button" className={'rls-ac' + (yt.mudo ? ' sonar' : '')} title="Tecla M" onClick={() => yt.sonido(yt.mudo)}>
+                    <Ico n={yt.mudo ? 'mudo' : 'sonido'} t={22} /><span>{yt.mudo ? 'Sonido' : 'Silenciar'}</span></button>
+                  <button type="button" className={'rls-ac' + (copiado ? ' ok' : '')} onClick={async () => { try { await navigator.clipboard.writeText(linkDe(r.vid)); setCopiado(true); } catch (e) { /* sin portapapeles */ } }}>
+                    <Ico n={copiado ? 'listo' : 'copiar'} t={20} /><span>{copiado ? 'Copiado' : 'Link'}</span></button>
+                </div>
+                <div className="rls-pc-acc2">
+                  <button type="button" className="rls-btc" onClick={() => {
+                    if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = perfilDe(r.gente[0]);
+                  }}><Ico n="batalla" t={18} />{batalla ? 'Batalla' : 'Batallas'}</button>
+                  <a className="rls-btc" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>
+                  <button type="button" className="rls-btc" onClick={() => {
+                    const canal = r.canal; const desdeI = F.i;
+                    F.menos(canal); F.siguiente();
+                    avisa('Vas a ver menos de ' + canal, () => { F.nomenos(canal); F.ir(desdeI); });
+                  }}><Ico n="no" t={18} />Menos</button>
+                </div>
+                {r.gente.length >= 2 ? <Voto r={r} clase="pc" /> : null}
+                <div className="rls-pc-mas">
+                  <div className="sec-t"><h2>Lo que sigue</h2></div>
+                  <div>
+                    {masReels.map((x, j) => (
+                      <button key={x.vid} type="button" onClick={() => F.ir(F.i + j + 1)} aria-label={x.gente.map(nombre).join(' vs ')}>
+                        <Poster vid={x.vid} cls="rls-mini" /><span>{x.gente.map(nombre).join(' vs ')}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <p className="rls-atajos" aria-hidden="true"><kbd><Ico n="arriba" t={14} /></kbd><kbd><Ico n="abajo" t={14} /></kbd> pasar <kbd>M</kbd> sonido <kbd>F</kbd> fuego</p>
               </div>
-            </div>
-          ) : null}
-        </aside>
-
-        <div className="rls-pc-flechas">
-          <button type="button" className="rls-ib caja" aria-label="Anterior (flecha arriba)" onClick={F.anterior}><Ico n="arriba" /></button>
-          <button type="button" className="rls-ib caja prim" aria-label="Siguiente (flecha abajo)" onClick={F.siguiente}><Ico n="abajo" /></button>
-          <span className="rls-teclas">↑ ↓ pasar<br />M sonido<br />F fuego</span>
+            </aside>
+          </div>
         </div>
       </div>
-      </div>
-      </div>
+      <p className="rls-sr" aria-live="polite">{F.fin ? 'Viste todo lo nuevo' : 'Reel ' + (F.i + 1) + ' de ' + F.lista.length + ': ' + nombres}</p>
       {aviso ? (
         <div className="rls-aviso pc" role="status"><span>{aviso.txt}</span>
           {aviso.deshacer ? <button type="button" onClick={() => { aviso.deshacer(); setAviso(null); }}>Deshacer</button> : null}</div>
