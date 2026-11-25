@@ -1193,10 +1193,33 @@
      ]
     ],
     "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marto",
+       "MTZ"
+      ],
+      "Marto",
+      ""
+     ]
+    ],
+    "r": "Final"
    }
   ],
   "sv": "WOF",
   "tabla": [
+   [
+    "Marto",
+    "Campeón",
+    0
+   ],
+   [
+    "MTZ",
+    "Subcampeón",
+    0
+   ],
    [
     "Dios",
     "Semifinal",
