@@ -4989,5 +4989,12 @@
 "Después": "Later",
 "Compártelo: es tu batalla.": "Share it: it’s your battle.",
 "Y tienes 1 video más en Videos.": "And you have 1 more video in Videos.",
-"Y tienes {n} videos más en Videos.": "And you have {n} more videos in Videos."
+"Y tienes {n} videos más en Videos.": "And you have {n} more videos in Videos.",
+"Grabación de tus eventos": "Recording your events",
+"ULAYA no puede grabar tus eventos: está aislada (timeout) en tu servidor hasta las": "ULAYA can’t record your events: she’s timed out in your server until",
+"ULAYA no puede grabar tus eventos: está aislada (timeout) en tu servidor hasta el": "ULAYA can’t record your events: she’s timed out in your server until",
+"Quítale el timeout para que grabe el próximo.": "Remove the timeout so she records the next one.",
+"ULAYA no puede entrar a": "ULAYA can’t join",
+"para grabar: dale a su rol «Ver canal» y «Conectar» en ese canal.": "to record: give her role «View Channel» and «Connect» in that channel.",
+"tu canal de voz": "your voice channel"
 }

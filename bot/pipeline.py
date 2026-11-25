@@ -1495,6 +1495,14 @@ def _lo_barato(correr):
         paso('2b8j', 'los shorts de los eventos grabados')
         if not corre(['bot/shorts_eventos.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
             print('      ⚠️ los shorts no se pudieron pedir: se mira en la próxima corrida')
+    # ── 2b8k · 🎙️ ¿ULAYA grabó cada evento? (`bot/auditar_grabaciones.py`, Dlx 25/11/2026, el #1 de la tanda): una vez por
+    # día, desde las 12 PM ET, cruza las llaves del día anterior con las entregas de Logs y, si faltó alguna, UN resumen al
+    # canal de Logs con la causa si se sabe; el mismo servidor 2 veces en 3 días, DM a Dlx. Del 22 al 24/11 se perdió casi
+    # la mitad afuera de FFA y se vio a mano dos eventos después. Su recuerdo va en guardar.sh. Nunca frena el ciclo
+    if correr:
+        paso('2b8k', 'la auditoría de las grabaciones')
+        if not corre(['bot/auditar_grabaciones.py', '--aplicar'], callado=True, mostrar=('🎙️', '⚠️', '📨')):
+            print('      ⚠️ la auditoría de las grabaciones falló: se intenta en la próxima corrida')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo

@@ -945,6 +945,7 @@ async function entrar(client, nueva, n) {
   const gid = nueva.guild.id;
   try {
     await nueva.empezar();
+    alPanel({ g: gid, tipo: 'ok' });
     const f = fallas.entro(gid);
     if (f?.aviso) {
       editarAviso(client, f, textoFalla({ servidor: nueva.guild.name, canal: nueva.canal.id, porque: nueva.motivo, f,
@@ -973,10 +974,24 @@ async function aisladaHasta(guild) {
 }
 
 /** Anota la falla y la dice en Logs de DRA: un mensaje por evento, que se edita con cada intento. Devuelve la fila. */
+/**
+ * 🏟️ AL PANEL DEL SOCIO (25/11/2026, Dlx: «me gustan todos»): aislada o sin permiso, también se le dice al servidor —en su
+ * panel de la página y a la campana de su equipo, nunca por DM— con qué tocar para arreglarlo (`grabadorFalla()` de
+ * bot/avisos.js). Hasta acá iba sólo a Logs de DRA, y FRZ la tuvo aislada dos eventos sin enterarse. Al entrar bien se borra
+ */
+function alPanel(cuerpo) {
+  fetch(VIGIA + '/avisos/grabador-falla', { method: 'POST', signal: AbortSignal.timeout(10000),
+    headers: { 'content-type': 'application/json', 'x-lg-ciclo': claveCiclo(E.DISCORD_TOKEN) }, body: JSON.stringify(cuerpo) })
+    .catch((e) => anotar('⚠️ al panel del socio:', String(e.message || e).slice(0, 80)));
+}
+
 async function reportarFalla(client, guild, canal, n, porque, error, aislada = null) {
   const gid = guild.id;
   // la misma falla repetida dentro de la espera (aislada, sin permiso) no cuenta como otro intento
   if (!fallas.puede(gid)) return fallas.m.get(gid);
+  // (después del freno: una vez por intento, no en cada vuelta)
+  if (aislada) alPanel({ g: gid, tipo: 'aislada', hasta: Number(aislada) });
+  else if (/^no tiene permiso/.test(String(error || ''))) alPanel({ g: gid, tipo: 'permiso', canal: String(canal.id), n: String(canal.name || '') });
   const f = fallas.fallo(gid, motivoDe(error, aislada, horaET), Date.now(), aislada);
   const texto = textoFalla({ servidor: guild.name, canal: canal.id, porque, f, horaET, sacada: error === 'me aislaron' });
   await editarAviso(client, f, texto);

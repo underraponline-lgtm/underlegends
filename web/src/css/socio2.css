@@ -629,6 +629,14 @@
 .cz-nuevo{display:grid;gap:4px;margin:12px 0 0;padding:10px 12px;border:2px solid var(--verde);color:var(--esc-tinta)}
 .cz-nuevo b{font:900 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:var(--verde)}
 .cz-nuevo span{font:500 14.5px/1.4 Archivo,sans-serif}
+/* 🎙️ ULAYA no puede grabar acá (25/11/2026): la misma caja que lo nuevo, en el magenta de lo que falta (`.cz-falta`).
+   La etiqueta va en el magenta claro de Noche: el escenario es oscuro en los dos temas y #E41373 en letra chica no llega */
+.cz-grab{display:grid;gap:5px;margin:12px 0 0;padding:10px 12px;border:2px solid var(--magenta,#E41373);color:var(--esc-tinta)}
+.cz-grab>b{display:flex;align-items:center;gap:6px;font:900 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:#FF5FA2}
+.cz-grab>b .ico{flex:none}
+.cz-grab>span{font:500 14.5px/1.4 Archivo,sans-serif}
+.cz-grab>span b{font-weight:800}
+.cz-grab a{color:var(--esc-tinta);font-weight:800;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
 /* 🗞️ las imágenes de la semana para sus redes (20/11/2026) */
 .sp-redes{display:flex;flex-direction:column;gap:12px}
 .sp-redes-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;align-items:start}

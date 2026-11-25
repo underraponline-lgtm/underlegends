@@ -21,7 +21,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { contestarFinal, pedirAjustes, pedirEquipo, pedirLiga, pedirLlave, pedirPagina, pedirPanel, pedirPerfil, pedirRoles, pedirStaff, probarCanal, puede } from './panelsocio.js';
 import { aBase64, achicar } from './imagen.js';
-import { claveDe, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.js';
+import { claveDe, diaISO, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from './liga.js';
 import { Cara, DosToques, Ico, Sec, diaET, enlace, masDias, usePerfiles } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import CSS_PAGINA from './css/socio2.css?inline';
@@ -785,6 +785,36 @@ function SinCartaSv({ liga, xs }) {
 }
 
 // ── un servidor, entero: la cabina con su barra ──
+// 🎙️ ULAYA NO PUEDE GRABAR TUS EVENTOS (25/11/2026, la #2 que aprobó Dlx). Hasta hoy lo veía sólo la Liga, en Logs de DRA,
+// y quien lo arregla es tu staff: lo manda el robot de las grabaciones (`grabadorFalla()` de bot/avisos.js) y llega en el
+// panel (`grabador`) sólo mientras vale. Va arriba de la cabina, con lo que hay que tocar en Discord, y se va solo cuando
+// se arregla (o pasa el timeout). Sin emoji, como todo el panel: el micrófono es el ícono. La hora, en la zona de quien mira
+function AvisoUlaya({ a }) {
+  if (!a || (a.tipo !== 'aislada' && a.tipo !== 'permiso')) return null;
+  let cuerpo = null;
+  if (a.tipo === 'aislada') {
+    const d = new Date(a.hasta);
+    const hoy = diaISO(d) === diaISO(new Date());
+    const h = W.fmtHora ? W.fmtHora(d) : '';
+    // ⚠️ cada pedazo es su propio texto (la vista en inglés traduce texto por texto): la hora y el día van aparte
+    cuerpo = <>{hoy ? 'ULAYA no puede grabar tus eventos: está aislada (timeout) en tu servidor hasta las '
+      : 'ULAYA no puede grabar tus eventos: está aislada (timeout) en tu servidor hasta el '}
+      {hoy ? <b>{h}</b> : <><b>{W.fmtFecha ? W.fmtFecha(d, { weekday: 'long', day: 'numeric', month: 'numeric' }) : ''}</b>{' a las '}<b>{h}</b></>}
+      {/* «11:06 p. m.» ya trae su punto: no se le pone otro */}
+      {h.endsWith('.') ? null : '.'}{' Quítale el timeout para que grabe el próximo.'}</>;
+  } else {
+    const url = 'https://discord.com/channels/' + encodeURIComponent(a.g) + '/' + encodeURIComponent(a.canal);
+    cuerpo = <>{'ULAYA no puede entrar a '}<a href={url} target="_blank" rel="noopener noreferrer">{a.n ? '#' + a.n : 'tu canal de voz'}</a>
+      {' para grabar: dale a su rol «Ver canal» y «Conectar» en ese canal.'}</>;
+  }
+  return (
+    <div className="cz-grab" role="status">
+      <b><Ico n="micro" t={16} />Grabación de tus eventos</b>
+      <span>{cuerpo}</span>
+    </div>
+  );
+}
+
 function Servidor({ liga, x, svs, onSel, t, permisos }) {
   const p = x.panel || {};
   const m = x.m || {};
@@ -878,6 +908,8 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                 <span className="tag">Tu panel</span>
                 <h1 className="cz-h1">{limpio(x.nombre || siglaDe(x.sv))}</h1>
                 <p className="cz-d">Tu cabina: <b>lo que te pide tu tier</b>, lo que el bot necesita de ti y cómo suena tu servidor.</p>
+                {/* 🎙️ si ULAYA no puede grabar acá (25/11/2026): antes que lo nuevo, porque lo arregla tu staff */}
+                <AvisoUlaya a={x.grabador} />
                 {/* 🆕 lo nuevo que prueban primero los Tier 1 (20/11/2026, `lo_nuevo_t1` del Dashboard) */}
                 {(x.lo_nuevo || []).map((y) => <p key={y.texto} className="cz-nuevo"><b>Lo nuevo, primero para ti</b><span>{y.texto}</span></p>)}
                 <div className="cz-meta">

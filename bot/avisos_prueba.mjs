@@ -903,6 +903,15 @@ const ok = (cond, que, det) => {
     A.tituloSeguido({ tipo: 'anuncio' }, 'Ana') === '', 'la tarjeta con su nombre; lo que no es de nadie, nada');
   ok(!A.paraSeguidores(null, ahora).length && !A.paraSeguidores([{ tipo: 'rango', t: 'x', ks: ['a'] }], ahora).length,
     'sin muro, o con una fecha rota, nada');
+  // ⚓ las anclas de cada batalla para el grabador, y 🔁 el micrófono del lado sin cuenta (25/11/2026)
+  const anc = A.anclasDe([{ m: 'v:Cuartos:2', t: 500 }, { m: 'b:Cuartos:2:ana', t: 900 }, { m: 'b:Cuartos:2:bea', t: 950 },
+    { m: 'v:Semifinal:0', t: 1200 }, { m: 'llave', t: 1 }, { m: 'u:Cuartos:2:ana', t: 5 }, { m: 'campeon', t: 3 }]);
+  ok(JSON.stringify(anc) === JSON.stringify({ 'Cuartos:2': { ini: 500, fin: 900 }, 'Semifinal:0': { ini: 1200 } }),
+    'las anclas: el cruce (v:) es el arranque y el primer resultado (b:) el final; lo demás del chat no cuenta  ' + JSON.stringify(anc));
+  const mic = A.micDeLados([{ lado: 'Cata', did: '111111111111111111' }, { lado: 'Dan', did: '222222222222222222' },
+    { lado: 'Dan', did: '333333333333333333' }, { lado: 'Eva', did: 'x' }]);
+  ok(JSON.stringify(mic) === JSON.stringify({ Cata: '111111111111111111' }),
+    'el micrófono de un lado sin cuenta, sólo si es uno (con dos, no se sabe cuál)  ' + JSON.stringify(mic));
   // 🎬 «tu batalla ya tiene video» (25/11/2026): a cada uno de los que salen, con su rival y la ronda; sin rid o viejo, nada
   const tv = A.paraProtagonistas([
     { tipo: 'short', t: '2026-10-14T13:00:00Z', rid: 'ul-puristas-3', ev: 'PURISTAS', ronda: 'cuartos', quien: ['Ana', 'Bea'], ks: ['ana', 'bea'] },
@@ -4248,6 +4257,51 @@ const ok = (cond, que, det) => {
       && (await ps('400000000000000001')).servidores[0].rol === 'dueno' && (await ps(A.DUENO)).servidores[0].rol === 'dlx',
     'el admin del equipo ve el panel de ese servidor y nada más; cada uno sabe si es dueño, admin o Dlx');
     o.guardar('guilds', { FFA: '111111111111111111' });
+    // 🎙️🚫 ULAYA NO PUEDE GRABAR (25/11/2026): el robot lo manda con la clave del ciclo y el staff de ESE servidor lo ve en su
+    // panel, con qué hacer; se va solo (el timeout a su hora, el permiso a los 7 días) o con un `ok`
+    {
+      const G = '111111111111111111', T0 = Date.now();
+      const grab = async (q) => (await ps(q)).servidores.find((y) => y.sv === 'FFA').grabador;
+      ok(!(await grab('400000000000000001')), 'sin aviso de ULAYA, el panel no trae `grabador`');
+      const r1 = await o.grabadorFalla({ g: G, tipo: 'aislada', hasta: T0 + 3 * 3600000 }, T0);
+      const g1 = await grab('400000000000000001');
+      ok(r1.ok && r1.sv === 'FFA' && r1.avisos >= 1 && g1 && g1.tipo === 'aislada' && g1.hasta === T0 + 3 * 3600000 && g1.g === G
+        && enBandeja('400000000000000001').some((k) => k === 'se:grab:a:' + G + ':' + (T0 + 3 * 3600000))
+        && (await grab('400000000000000005')).tipo === 'aislada',
+      'aislada: se guarda, sale en el panel del dueño y de su admin con hasta cuándo, y una vez a su campana', JSON.stringify([r1, g1]));
+      const r1b = await o.grabadorFalla({ g: G, tipo: 'aislada', hasta: T0 + 3 * 3600000 }, T0 + 60000);
+      ok(r1b.ok && r1b.avisos === 0, 'el mismo timeout otra vez no vuelve a sonar en la campana', JSON.stringify(r1b));
+      ok(o.grabadorDe(G, T0 + 3 * 3600000 + 1) === null, 'aislada: pasada la hora del timeout, el aviso ya no se muestra');
+      ok(!(await ps('400000000000000002')).servidores.some((y) => y.grabador), 'el aviso de FFA no le sale al panel de otro servidor');
+      const r2 = await o.grabadorFalla({ g: G, tipo: 'permiso', canal: '222222222222222222', n: 'Escenario <b>`' }, T0);
+      const g2 = await grab('400000000000000001');
+      ok(r2.ok && g2 && g2.tipo === 'permiso' && g2.canal === '222222222222222222' && g2.n === 'Escenario b' && !('hasta' in g2)
+        && o.grabadorDe(G, T0 + 6 * 86400000) && o.grabadorDe(G, T0 + 7 * 86400000 + 1) === null,
+      'permiso: reemplaza al de antes (una fila por servidor), con el canal y su nombre limpio, y se va solo a los 7 días', JSON.stringify(g2));
+      const r3 = await o.grabadorFalla({ g: G, tipo: 'ok' }, T0);
+      ok(r3.ok && r3.borrado && !(await grab('400000000000000001')), 'ok: entró bien y el aviso se borra');
+      const r4 = await o.grabadorFalla({ g: G, tipo: 'aislada', hasta: T0 - 1000 }, T0);
+      ok(r4.ok && r4.vencido && !o.grabadorDe(G, T0), 'un timeout que ya terminó no deja aviso');
+      const malos = [{}, { g: G }, { g: '123', tipo: 'ok' }, { g: G + 'x', tipo: 'ok' }, { g: G, tipo: 'otro' },
+        { g: G, tipo: 'aislada' }, { g: G, tipo: 'aislada', hasta: 'mañana' }, { g: G, tipo: 'aislada', hasta: T0 + 40 * 86400000 },
+        { g: G, tipo: 'permiso' }, { g: G, tipo: 'permiso', canal: '12' }, { g: G, tipo: 'permiso', canal: '<#222222222222222222>' },
+        { g: [G], tipo: 'ok' }, null];
+      const rs = [];
+      for (const m of malos) rs.push((await o.grabadorFalla(m, T0)).error);
+      ok(rs.every((e) => e === 'datos') && !o.grabadorDe(G, T0), 'lo que no es un guild, un tipo o un canal de verdad se rechaza sin guardar nada', rs.join());
+      // 🚪 por la puerta del Worker: sin la clave del ciclo no llega al objeto, con ella pasa el cuerpo tal cual
+      const aGrab = [];
+      const envGrab = { DISCORD_TOKEN: 'tk', AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, op) => {
+        aGrab.push([String(u), op.body]); return new Response('{"ok":true}'); } }) } };
+      const pGrab = async (cuerpo, h, metodo = 'POST') => (await A.rutaAvisos(new Request('https://x/avisos/grabador-falla',
+        { method: metodo, body: metodo === 'POST' ? cuerpo : undefined, headers: h || {} }), envGrab, '/avisos/grabador-falla')).status;
+      const kG = await A.claveCiclo('tk');
+      const cG = JSON.stringify({ g: G, tipo: 'ok' });
+      ok(await pGrab(cG) === 404 && await pGrab(cG, { 'x-lg-ciclo': 'otra' }) === 404 && await pGrab('', { 'x-lg-ciclo': kG }, 'GET') === 405
+        && await pGrab('x'.repeat(2000), { 'x-lg-ciclo': kG }) === 413 && !aGrab.length
+        && await pGrab(cG, { 'x-lg-ciclo': kG }) === 200 && aGrab.length === 1 && aGrab[0][0] === 'https://avisos/grabador-falla' && aGrab[0][1] === cG,
+      'la ruta del robot: sólo POST, sólo con la clave del ciclo, chica, y el cuerpo llega al objeto sin tocar', JSON.stringify(aGrab));
+    }
     const fetch0 = globalThis.fetch;
     const env0 = o.env;
     const kvMem = new Map();

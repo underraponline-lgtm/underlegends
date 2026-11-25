@@ -503,6 +503,34 @@ const WEB_EVENTOS = 'https://underlegends.pages.dev/freestyle-rap/eventos';
 /** Un nombre tal cual, sin que Discord lo lea como formato (`__X__`, `*`, `~`). */
 export const escMd = (s) => String(s || '').replace(/([\\*_~|`>])/g, '\\$1');
 const batallasDe = (R) => ((R && R.b) || []).filter((b) => (b[0] || []).filter(Boolean).length >= 2);
+
+/** ⚓ De las filas `{m, t}` de `chat_vivo` de una llave: `{'<ronda>:<n>': {ini, fin}}` (el primer cruce y el primer
+ *  resultado de cada batalla). Ver `batallasGrabacion()`. */
+export function anclasDe(filas) {
+  const out = {};
+  for (const f of filas || []) {
+    const m = String((f && f.m) || ''), t = Number(f && f.t) || 0;
+    const x = /^([vb]):(.+):(\d+)(?::.*)?$/.exec(m);
+    if (!x || !t) continue;
+    const k = x[2] + ':' + x[3], q = x[1] === 'v' ? 'ini' : 'fin';
+    out[k] = out[k] || {};
+    if (!out[k][q] || t < out[k][q]) out[k][q] = t;
+  }
+  return out;
+}
+
+/** 🔁 De las filas `{lado, did}` de `mic_pista` de una llave: `{lado: did}` sólo de los lados con UN micrófono. */
+export function micDeLados(filas) {
+  const por = {};
+  for (const f of filas || []) {
+    const l = String((f && f.lado) || ''), d = String((f && f.did) || '');
+    if (!l || !/^\d{5,25}$/.test(d)) continue;
+    (por[l] = por[l] || new Set()).add(d);
+  }
+  const out = {};
+  for (const [l, s] of Object.entries(por)) if (s.size === 1) out[l] = [...s][0];
+  return out;
+}
 const jugadaChat = (b) => !!b[1] || /^pasan \d/.test(String(b[2] || ''));
 
 /**
@@ -3090,6 +3118,8 @@ const HH_RE = /(?<![\d/:])(\d{1,2})\s*(?:(hs|hrs|h)\b|([ap])\.?\s*m\b\.?)/i;
 // el día de la semana, con domingo en 0 como `getDay()`
 const DIAS_JS = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
 const DIA_MS = 24 * HORA;
+// 🎙️🚫 cuánto dura el aviso de «ULAYA no puede entrar a tu canal» desde el último intento (25/11/2026, `grabadorFalla()`)
+const GRAB_PERMISO_DIAS = 7;
 // ⚔️ una batalla libre 'pend' vence a los 7 días de su hora (18/11/2026): deja de contar para «ya» y «muchas» y sale
 // como 'vencida'. Ver `libreCrear()` y `libresDe()`
 const LIBRE_VENCE_MS = 7 * DIA_MS;
@@ -4014,6 +4044,8 @@ const RUTAS = {
   '/avisos/publico': 'POST',
   // ⚔️ y las batallas de las llaves de un servidor con los IDs de cada lado, para cortar la grabación (`batallasGrabacion()`)
   '/avisos/batallas': 'GET',
+  // 🎙️🚫 y cuándo ULAYA no puede grabar en un servidor —aislada o sin permiso en el canal— (25/11/2026): ver `grabadorFalla()`
+  '/avisos/grabador-falla': 'POST',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
   // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (sólo con ajustes)
@@ -8401,7 +8433,10 @@ export async function rutaAvisos(req, env, ruta) {
   if (ruta === '/avisos/anunciados-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
-    return elObjeto(env).fetch('https://avisos/anunciados-ciclo');
+    // 🛟 `horas` (25/11/2026): el grabador pide también los anuncios de las próximas horas, de reserva por si el objeto se
+    // cae (grabador/reserva.js); la ventana de cada uno la calcula él con su hora
+    const h = Math.min(24, Math.max(0, Number(new URL(req.url).searchParams.get('horas')) || 0));
+    return elObjeto(env).fetch('https://avisos/anunciados-ciclo' + (h ? '?horas=' + h : ''));
   }
   if (ruta === '/avisos/mic-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -8446,6 +8481,15 @@ export async function rutaAvisos(req, env, ruta) {
     const u = new URL(req.url);
     return elObjeto(env).fetch('https://avisos/batallas', { method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ g: u.searchParams.get('g'), desde: u.searchParams.get('desde'), hasta: u.searchParams.get('hasta') }) });
+  }
+  // 🎙️🚫 ULAYA NO PUEDE GRABAR EN UN SERVIDOR (25/11/2026), de Railway: con la clave del ciclo y sólo al objeto, que valida
+  // (`grabadorFalla()`). Un cuerpo chico: `{g, tipo, canal?, hasta?, n?}`
+  if (ruta === '/avisos/grabador-falla') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/grabador-falla', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
   // 👀 el público de cada evento, de Railway (`grabador/vivo.js`, ver `publico()`): con la clave del ciclo y sólo al objeto
   if (ruta === '/avisos/publico') {
@@ -9592,6 +9636,10 @@ export class Avisos {
       this.sql.exec("CREATE TABLE IF NOT EXISTS liga_cambios (id INTEGER PRIMARY KEY AUTOINCREMENT, liga TEXT NOT NULL, sv TEXT NOT NULL, " +
         "tipo TEXT NOT NULL, dato TEXT NOT NULL, quien TEXT NOT NULL, rol TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, " +
         "estado TEXT NOT NULL DEFAULT 'activo')");
+      // 🎙️🚫 CUÁNDO ULAYA NO PUEDE GRABAR EN UN SERVIDOR (25/11/2026): una fila por guild, con hasta cuándo vale el aviso. Se
+      // lee por su clave (`grabadorDe()`), así el panel del socio paga una fila por servidor. Ver `grabadorFalla()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS grabador_falla (g TEXT PRIMARY KEY, sv TEXT NOT NULL DEFAULT '', tipo TEXT NOT NULL, " +
+        "canal TEXT NOT NULL DEFAULT '', n TEXT NOT NULL DEFAULT '', hasta INTEGER NOT NULL, t INTEGER NOT NULL) WITHOUT ROWID");
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
       // 📅 LOS EVENTOS DE DISCORD (19/10/2026, `eventosDiscord()`): cada anuncio de un servidor que lo tiene prendido,
       // con el evento que se le creó allá y en qué quedó (0 por crear · 1 creado · 2 en vivo · 3 terminado ·
@@ -10553,7 +10601,9 @@ export class Avisos {
       if (ruta === '/pedidos-ciclo') return json(this.pedidosCiclo(), 200, 0);
       // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
       if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
-      if (ruta === '/anunciados-ciclo') return json(this.anunciadosCiclo(Date.now()), 200, 0);
+      if (ruta === '/anunciados-ciclo') {
+        return json(this.anunciadosCiclo(Date.now(), Number(new URL(req.url).searchParams.get('horas')) || 0), 200, 0);
+      }
       if (ruta === '/mic-ciclo') {
         // las de la temporada: 120 días alcanzan y la tabla no crece sin fin
         this.sql.exec('DELETE FROM mic_pista WHERE t < ?', Date.now() - 120 * DIA_MS);
@@ -10606,6 +10656,7 @@ export class Avisos {
       if (ruta === '/voz-vivo') return json(this.vozVivo(d));
       if (ruta === '/publico') return json(this.publico(d));
       if (ruta === '/batallas') return json(await this.batallasGrabacion(d));
+      if (ruta === '/grabador-falla') return json(await this.grabadorFalla(d));
       if (ruta === '/redibujo-listo') return json(this.redibujoListo(d));
       // 💬 lo que importó en los chats generales (`chatsCiclo()`): sólo para el Dashboard
       if (ruta === '/chats-ciclo') return json(this.chatsCiclo(d));
@@ -12169,10 +12220,27 @@ export class Avisos {
         const q = qsv[normPagina(n)];
         return (q && (dc.tabla[q] || dc.perf[q]) ? q : '') || dc.buscar(n);
       };
+      // ⚓ LAS ANCLAS (25/11/2026, Dlx: «puedes ver el canal de veredictos o resultados, llaves, etc.»): cuándo el bot en vivo
+      // publicó el cruce de cada batalla (`v:<ronda>:<n>`, ≈ arranca) y quién pasó (`b:<ronda>:<n>:…`, después de que
+      // terminó). El grabador busca cada batalla sólo en esa ventana (grabador/batallas.js `ventanaAncla()`). ⚠️ `<n>` es
+      // su lugar en la ronda TAL CUAL (`R.b`), no el de `batallasDe()`, que filtra: por eso se recorre con el índice original
+      const anc = anclasDe(this.sql.exec('SELECT m, t FROM chat_vivo WHERE llave = ?', String(L.id)).toArray());
+      // 🔁 Y EL MICRÓFONO DEL LADO SIN CUENTA (`mic_pista`, de `pistasMic()` en vivo): quién rapeó de verdad por ese lado —el
+      // suplente, o alguien sin su cuenta en la Liga—. Sólo si es UNO para ese lado en esta llave
+      const mic = micDeLados(this.sql.exec('SELECT lado, did FROM mic_pista WHERE sv = ? AND llave = ?',
+        String(L.sv || b.sv || ''), String(L.id)).toArray());
       out.push({ id: L.id, sv: L.sv || b.sv || '', nombre: String(L.nombre || '').slice(0, 80),
         rondas: (L.rondas || []).map((R) => ({ r: String(R.r || ''),
-          b: batallasDe(R).map((x) => ({ gano: String(x[1] || ''),
-            lados: (x[0] || []).filter(Boolean).map((l) => genteChat(l, buscar, dc.tabla, ids).map((y) => ({ n: y.n, id: y.id }))) })) }))
+          b: (R.b || []).map((x, i) => [x, i]).filter(([x]) => (x[0] || []).filter(Boolean).length >= 2).map(([x, i]) => {
+            const ancla = anc[String(R.r || '') + ':' + i];
+            return Object.assign({ gano: String(x[1] || ''),
+              lados: (x[0] || []).filter(Boolean).map((l) => {
+                const gs = genteChat(l, buscar, dc.tabla, ids).map((y) => ({ n: y.n, id: y.id }));
+                const did = mic[String(l).slice(0, 80)];
+                if (did && gs.length === 1 && !gs[0].id) return [{ n: gs[0].n, id: did, mic: true }];
+                return gs;
+              }) }, ancla ? { ancla } : {});
+          }) }))
           .filter((R) => R.b.length) });
     }
     return { llaves: out };
@@ -12184,10 +12252,12 @@ export class Avisos {
    * anuncio hasta `ANUNCIO_DESPUES` después), sin los cancelados: `{ev: [[guild, ini, autor]]}`. Para el grabador, que
    * entra a la llamada donde está quien lo anunció (22/11/2026). Borra lo de más de dos días.
    */
-  anunciadosCiclo(ahora) {
+  anunciadosCiclo(ahora, horas = 0) {
     this.sql.exec('DELETE FROM anuncio_autor WHERE t < ?', ahora - 2 * DIA_MS);
+    // 🛟 con `horas`, también los que arrancan en las próximas horas (hasta 24): el grabador los guarda de reserva
+    const adelante = Math.max(ANUNCIO_ANTES, Math.min(24, Math.max(0, Number(horas) || 0)) * HORA);
     const ev = this.sql.exec('SELECT a.g, a.ini, a.autor FROM anuncio_autor a JOIN avisos v ON v.id = a.id ' +
-      'WHERE v.estado != 2 AND a.ini BETWEEN ? AND ?', ahora - ANUNCIO_DESPUES, ahora + ANUNCIO_ANTES).toArray()
+      'WHERE v.estado != 2 AND a.ini BETWEEN ? AND ?', ahora - ANUNCIO_DESPUES, ahora + adelante).toArray()
       .map((f) => [String(f.g), Number(f.ini), String(f.autor)]);
     return { ev };
   }
@@ -19019,6 +19089,8 @@ export class Avisos {
       sin_jugar: x.sin_jugar, panel: x.panel || null, preguntas: this.preguntasDe(x.sv), rol: x.rol,
       // 🏟️ cuántos lo siguen en la página (nunca quién: 20/11/2026)
       seguidores: this.seguidoresSv(x.sv),
+      // 🎙️🚫 si ULAYA no puede grabar ahí (25/11/2026): sólo con un aviso vigente, ver `grabadorDe()`
+      ...((gf) => (gf ? { grabador: gf } : {}))(this.grabadorDe(this.guildDe(x.sv))),
       // ⭐ cómo calificaron sus eventos los que jugaron, los últimos 30 días (nunca quién)
       notas: this.notasSv(x.sv),
       // 🎟️🤝🆕 lo del Tier 1 (20/11/2026): sus Pases de este mes, su Alianza, sus bonos y lo nuevo que prueba primero
@@ -19037,6 +19109,70 @@ export class Avisos {
       } catch (e) { /* es un conteo */ }
     }
     return json({ ok: true, t: T.t || '', semanas: T.semanas || 4, todos: esDlx, servidores });
+  }
+
+  /**
+   * 🎙️🚫 ULAYA NO PUEDE GRABAR EN UN SERVIDOR (25/11/2026, la #2 que aprobó Dlx). Hasta hoy el robot de las grabaciones
+   * (`grabador/`, en Railway) lo decía sólo en Logs de DRA, y quien lo arregla es el staff de ESE servidor: FRZ la tenía
+   * aislada y WOF y LKR, cada uno con un canal de voz que ella no ve. Ahora lo manda acá y le sale en su panel, con qué
+   * hacer; y una vez a su campana (`avisarEquipo()`, nunca por DM). El cuerpo, con la clave del ciclo:
+   * · `{g, tipo: 'aislada', hasta}`: en timeout hasta `hasta` (ms); el aviso se va solo a esa hora.
+   * · `{g, tipo: 'permiso', canal, n?}`: no ve o no puede entrar al canal de voz `canal` (`n`, su nombre, si lo sabe);
+   *   se va solo a los `GRAB_PERMISO_DIAS` del último intento: si nadie lo arregla, el próximo evento lo vuelve a poner.
+   * · `{g, tipo: 'ok'}`: entró bien, se borra el aviso de ese servidor.
+   * ⚡ Una fila por guild y todo por su clave: el robot lo manda al intentar entrar, no cada minuto.
+   */
+  async grabadorFalla(d, ahora = Date.now()) {
+    // ⚠️ los IDs, como texto y nada más: `String([id])` también daría un ID
+    const id = (x) => typeof x === 'string' && /^\d{15,22}$/.test(x);
+    const g = d && id(d.g) ? d.g : '', tipo = String((d && d.tipo) || '');
+    if (!g || !['aislada', 'permiso', 'ok'].includes(tipo)) return { error: 'datos' };
+    if (tipo === 'ok') {
+      this.sql.exec('DELETE FROM grabador_falla WHERE g = ?', g);
+      return { ok: true, borrado: true };
+    }
+    let canal = '', n = '', hasta = 0;
+    if (tipo === 'aislada') {
+      hasta = typeof d.hasta === 'number' ? d.hasta : NaN;
+      // un timeout de Discord dura 28 días como mucho: lo que pasa de ahí no es un timeout
+      if (!Number.isFinite(hasta) || hasta > ahora + 29 * DIA_MS) return { error: 'datos' };
+      hasta = Math.round(hasta);
+      // ya terminó: no hay nada que mostrar (y lo de antes de ese servidor tampoco vale)
+      if (hasta <= ahora) { this.sql.exec('DELETE FROM grabador_falla WHERE g = ?', g); return { ok: true, vencido: true }; }
+    } else {
+      if (!id(d.canal)) return { error: 'datos' };
+      canal = String(d.canal);
+      // el nombre lo muestra una página: sin saltos ni marcas, corto
+      n = typeof d.n === 'string' ? d.n.replace(/[\u0000-\u001f<>`*_~|\\]/g, '').trim().slice(0, 60) : '';
+      hasta = ahora + GRAB_PERMISO_DIAS * DIA_MS;
+    }
+    const gs = this.leer('guilds') || {};
+    const sv = Object.keys(gs).find((s) => String(gs[s]) === g) || '';
+    this.sql.exec('INSERT OR REPLACE INTO grabador_falla (g, sv, tipo, canal, n, hasta, t) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      g, sv, tipo, canal, n, hasta, ahora);
+    // lo vencido de otros servidores se va de paso: es una fila por guild, nunca más de unas pocas
+    this.sql.exec('DELETE FROM grabador_falla WHERE hasta <= ?', ahora);
+    // 📲 a su equipo, una vez por cosa: el mismo timeout (o uno nuevo, otro `hasta`) o el mismo canal
+    let avisos = 0;
+    if (sv) {
+      try {
+        avisos = tipo === 'aislada'
+          ? await this.avisarEquipo(sv, 'grab:a:' + g + ':' + hasta, 'ULAYA no puede grabar tus eventos',
+            'Está aislada (timeout) en tu servidor. Quítale el timeout para que grabe el próximo. Míralo en tu panel.', ahora)
+          : await this.avisarEquipo(sv, 'grab:p:' + g + ':' + canal, 'ULAYA no puede entrar a ' + (n ? '#' + n : 'un canal de voz'),
+            'Dale a su rol «Ver canal» y «Conectar» en ese canal para que grabe tus eventos. Míralo en tu panel.', ahora);
+      } catch (e) { /* el aviso no frena lo guardado */ }
+    }
+    return { ok: true, sv, avisos };
+  }
+
+  /** 🎙️🚫 El aviso vigente de ULAYA en un guild, para el panel: `{tipo, g, hasta}` o `{tipo, g, canal, n}`, o `null` */
+  grabadorDe(g, ahora = Date.now()) {
+    if (!g) return null;
+    const r = this.sql.exec('SELECT tipo, canal, n, hasta FROM grabador_falla WHERE g = ?', String(g)).toArray()[0];
+    if (!r || Number(r.hasta) <= ahora) return null;
+    return r.tipo === 'aislada' ? { tipo: 'aislada', g: String(g), hasta: Number(r.hasta) }
+      : { tipo: 'permiso', g: String(g), canal: String(r.canal), n: String(r.n || '') };
   }
 
   /**
