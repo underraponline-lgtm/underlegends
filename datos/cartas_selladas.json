@@ -771,7 +771,8 @@
    "servidor": "83df33eb5efc:ca27345eed9e:15af16"
   },
   "Itohimo": {
-   "servidor": "15507acbec5d:ca27345eed9e:afbca9"
+   "servidor": "15507acbec5d:ca27345eed9e:afbca9",
+   "temporada": "7c5dcddf4caf:0b98cb3023ec"
   },
   "Ivaynex": {},
   "Ixed": {
@@ -1174,9 +1175,6 @@
    "pais": "f2ae3a359be6:84d29bb63c59",
    "servidor": "2713b56e7e29:ca27345eed9e:132451",
    "temporada": "98daa489e055:0b98cb3023ec"
-  },
-  "Maki": {
-   "servidor": "70fbb8574a0b:ca27345eed9e:74d3ce"
   },
   "Makmah": {
    "competitivo": "df157f6d6f4d:baafccf84bc7",
@@ -2208,5 +2206,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-25T01:36:37+00:00"
+ "cuando": "2026-11-25T04:19:37+00:00"
 }
