@@ -6604,6 +6604,186 @@
    ]
   ]
  },
+ "176971405": {
+  "dia": "2026-11-25",
+  "escala": "8-15",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575272649976971405",
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575272386834731159"
+  ],
+  "n": 176971405,
+  "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪",
+  "ns": 1,
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "black live"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "R-Flow 🇪🇸"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Marto",
+       "CrisZJ"
+      ],
+      "Marto",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Tmax Turbo [PN]"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "ONZASS"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Kuni",
+       "Efimero"
+      ],
+      "Kuni",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "black live"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "R-Flow 🇪🇸"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Marto",
+       "CrisZJ"
+      ],
+      "Marto",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Tmax Turbo [PN]"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "ONZASS"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Kuni",
+       "Efimero"
+      ],
+      "Kuni",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MTZ",
+       "MaYeuTyK"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "1200"
+      ],
+      "Dios",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "1200",
+    "Cuartos",
+    0
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    0
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    0
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    0
+   ],
+   [
+    "R-Flow 🇪🇸",
+    "Octavos",
+    0
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Octavos",
+    0
+   ],
+   [
+    "black live",
+    "Octavos",
+    0
+   ]
+  ]
+ },
  "179595161": {
   "dia": "2026-11-01",
   "escala": "16+",
