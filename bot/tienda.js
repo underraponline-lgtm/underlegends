@@ -93,11 +93,16 @@ export function catalogoValido(c) {
     if (!ID.test(id) || !p || !CATEGORIAS.includes(p.c) || !Number.isInteger(p.r) || p.r < 0 || p.r > 5) return mal('pieza', 400, { id });
     const t = Array.isArray(p.t) ? p.t.filter((x) => MARCAS.includes(x)) : [];
     piezas[id] = { c: p.c, r: p.r, t, n: String(p.n || id).slice(0, 40), d: String(p.d || '').slice(0, 200) };
+    // 🌎 `g`: de qué pieza es variante (25/11/2026: las banderas de País y los colores de Servidor, una pieza por país y por
+    // socio). La página las junta en una ficha con selector; para comprar, cada variante es una pieza más
+    if (p.g !== undefined && p.g !== '') { if (!ID.test(String(p.g)) || p.g === id) return mal('pieza', 400, { id }); piezas[id].g = String(p.g); }
   }
   const ids = (a) => Array.isArray(a) && a.every((x) => piezas[x]);
   const v = c.vitrina || {};
   if (!ids(v.ids) || v.ids.length > 12) return mal('vitrina');
   const colecciones = {};
+  // la cabeza de cada grupo existe y es de la misma ranura
+  for (const [id, p] of Object.entries(piezas)) if (p.g && (!piezas[p.g] || piezas[p.g].c !== p.c || piezas[p.g].g)) return mal('pieza', 400, { id });
   for (const [id, j] of Object.entries(c.colecciones || {})) {
     if (!ID.test(id) || !j || !ids(j.piezas) || j.piezas.length < 2 || j.piezas.length > 12) return mal('coleccion', 400, { id });
     if (j.premio && (!piezas[j.premio] || !piezas[j.premio].t.includes('col'))) return mal('premio', 400, { id });

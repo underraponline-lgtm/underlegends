@@ -18,6 +18,7 @@ import CSS_PAGINA from './css/tienda3.css?inline';
 import { usarCss } from './css.js';
 import { refrescarPases, usePases } from './pase.js';
 import { abrirConEscenario, dropQuietoSvg, pedirDrops } from './drops.jsx';
+import { useIndice } from './indice.js';
 
 usarCss('tienda3', CSS_PAGINA);
 
@@ -27,6 +28,8 @@ const LUGARES_F = [['fp', 'Perfil'], ['fv', 'VS'], ['fe', 'Escenario'], ['fd', '
 const LUGAR_DE = Object.fromEntries(LUGARES_F);
 const RANURA = { aro: 'Aro', deco: 'Deco', nom: 'Nombre', carta: 'Carta', perfil: 'Perfil', serv: 'Nombre' };
 const TABS = [['aro', 'Aros'], ['deco', 'Decoraciones'], ['nom', 'Nombre'], ['perfil', 'Perfil'], ['carta', 'Carta'], ['fondo', 'Fondos'], ['juego', 'Colecciones'], ['prem', 'Premium']];
+// las categorías del índice de arriba: las pestañas del cajón con su nombre corto
+const CATS = [['aro', 'Aros'], ['deco', 'Decos'], ['nom', 'Nombres'], ['carta', 'Cartas'], ['perfil', 'Perfil'], ['fondo', 'Fondos'], ['juego', 'Colecciones'], ['prem', 'Premium']];
 const EXTRA = { nav: 'Navidad', num: 'Ediciones de 10', deseo: '♥ Tu lista' };
 const DONDE = {
   aro: 'tu foto en toda la página: el ranking, los comentarios, Publicaciones, tu perfil y tu ficha',
@@ -313,7 +316,7 @@ function hero(X, S, st, tengo, liga, llevan) {
   const cab = `<div class="dq-cab"><span class="tz-etq">La vitrina · ${esc(String(S.cat.temp || '').toUpperCase())}</span><span class="tz-cambia">${cambiaTxt(S)}</span>${bill}</div>`;
   if (rg && !rg.of) {
     const abre = st.rgAbriendo && st.rgAbriendo.i === rg.i;
-    return `<section class="tz-hero dq rg-hero" aria-label="La vitrina" style="--r:${rgCinta(rg.i)}">${cab}
+    return `<section class="tz-hero dq rg-hero" id="tz-vitrina" aria-label="La vitrina" style="--r:${rgCinta(rg.i)}">${cab}
     <div class="dq-main">
       <div class="dq-vis rg-vis" data-slide-id="rg:${rg.i}"><button class="rg-grande${abre ? ' abriendo' : ''}" data-rg-abrir="${rg.i}" aria-label="Destapar el artículo ${rg.i + 1}"${abre ? ' disabled' : ''}><i class="rg-luz"></i>${cajaRg(rg.i, abre ? 'agita' : '')}</button></div>
       <div class="dq-info" data-tuto="tz-vitrina">
@@ -328,7 +331,7 @@ function hero(X, S, st, tengo, liga, llevan) {
   </section>`;
   }
   const recien = rg && rg.of && st.rgRecien && st.rgRecien.i === rg.i;
-  return `<section class="tz-hero dq" aria-label="La vitrina" style="--r:${RZ[it.r][1]}">
+  return `<section class="tz-hero dq" id="tz-vitrina" aria-label="La vitrina" style="--r:${RZ[it.r][1]}">
     ${cab}
     <div class="dq-main">
       <div class="dq-vis${recien ? ' rg-revela rg-k-' + rg.of.k : ''}" data-slide-id="${esc(s.id)}"${recien ? ` style="--t0:-${Math.max(0, Date.now() - st.rgRecien.t)}ms"` : ''}>
@@ -384,16 +387,48 @@ function tile(X, S, st, tengo, id) {
   return `<article class="tz-q${prob ? ' prob' : ''}${on && mio ? ' on' : ''}" style="--r:${RZ[p.r][1]}" title="${esc(p.n)} · ${RZ[p.r][0]}">
     <button class="tz-q-v" ${puede ? `data-prueba="${id}" aria-pressed="${on}" aria-label="Probarte ${esc(p.n)}"` : `data-abre="${id}" aria-label="Ver ${esc(p.n)}"`}>${esFondo(p.c) ? arteFondo(X, id) : vista(X, id)}${eti}</button>
     ${mio || !pr ? '' : corazon(S, id)}
-    <div class="tz-q-i"><i aria-label="${RZ[p.r][0]}"></i><b>${esc(p.n)}</b><span class="tz-q-p">${precio}</span><button class="tz-q-ver" data-abre="${id}">Ver</button></div></article>`;
+    <div class="tz-q-i"><i aria-label="${RZ[p.r][0]}"></i><b>${esGrupo(S, id) ? esc(nombreGrupo(S, id)) + ' <small>· ' + variantesDe(S, id).length + (cabezaDe(S, id) === 'A10' ? ' países' : cabezaDe(S, id) === 'A11' ? ' servidores' : ' versiones') + '</small>' : esc(p.n)}</b><span class="tz-q-p">${precio}</span><button class="tz-q-ver" data-abre="${id}">Ver</button></div></article>`;
 }
 function coleccionT(X, S, tengo, cid) {
   const j = S.cat.colecciones[cid], r = precioCol(S, cid, tengo), ya = j.piezas.length - r.falta.length;
   return `<article class="tz-q tz-jg" style="--r:#29B298"><button class="tz-q-v" data-abre="${cid}" aria-label="Ver la colección ${esc(j.n)}"><span class="tz-jg-m">${j.piezas.map((id) => `<span class="tz-j${tengo.has(id) ? ' mio' : ''}">${arteFondo(X, id)}</span>`).join('')}</span></button>
     <div class="tz-q-i"><i></i><b>«${esc(j.n)}» <small>${ya === j.piezas.length ? 'Completa · premio tuyo' : ya + ' de ' + j.piezas.length + ' · premio al completarla'}</small></b><span class="tz-colbar mini" style="--p:${Math.round(ya / j.piezas.length * 100)}%"><i></i></span><span class="tz-q-p">${r.falta.length ? num(r.p) : '<span class="tz-ok">✓ Tuya</span>'}</span><button class="tz-q-ver" data-abre="${cid}">Ver</button></div></article>`;
 }
+// 🔎 LOS FILTROS DEL CAJÓN (25/11/2026, Dlx: «en la tienda quizás poner filtros»): cuáles (todas, las que te faltan, las
+// tuyas) y en qué orden (por rareza, que es como venían; la más barata o la más cara primero). Sólo en las ranuras: en
+// Colecciones, Premium, Navidad, las ediciones y tu lista el orden ya dice algo
+// 🌎🏟️ LAS VARIANTES (25/11/2026, Dlx: «eso de país y servidores que se pueda comprar de todos los países y de todos los
+// servidores»). Cada bandera y cada socio es una pieza (`AP…`, `AS…`) con `g`: de cuál es variante (A10 País, A11 Servidor).
+// En el cajón va UNA ficha por grupo (la cabeza, con cuántas hay); adentro, un selector con todas. Hasta el 25/11 «País»
+// dibujaba la bandera de Estados Unidos para todos y «Servidor» la de FFA: eran el arte de muestra
+const cabezaDe = (S, id) => { const p = S.cat.piezas[id]; return (p && p.g && S.cat.piezas[p.g]) ? p.g : id; };
+const variantesDe = (S, id) => { const g = cabezaDe(S, id); return [g, ...Object.keys(S.cat.piezas).filter((x) => S.cat.piezas[x].g === g)]; };
+const esGrupo = (S, id) => variantesDe(S, id).length > 1;
+const nombreVar = (S, id) => { const n = S.cat.piezas[id].n || ''; const i = n.indexOf(' · '); return i > 0 ? n.slice(i + 3) : n; };
+const nombreGrupo = (S, id) => { const n = S.cat.piezas[cabezaDe(S, id)].n || ''; const i = n.indexOf(' · '); return i > 0 ? n.slice(0, i) : n; };
+function selectorVar(X, S, tengo, id) {
+  const ids = variantesDe(S, id);
+  if (ids.length < 2) return '';
+  const g = cabezaDe(S, id), quien = g === 'A10' ? 'país' : g === 'A11' ? 'servidor' : 'versión';
+  return `<div class="tz-var"><b>Elige tu ${quien} · ${ids.length}</b><div class="tz-var-l" role="group" aria-label="Las variantes">${ids.map((v) =>
+    `<button data-abre="${v}" aria-pressed="${v === id}" title="${esc(nombreVar(S, v))}"><span class="tz-var-v">${S.cat.piezas[v].c === 'aro' ? avatar(X, v, null) : vista(X, v)}</span><span class="tz-var-n">${esc(nombreVar(S, v))}${tengo.has(v) ? ' ✓' : ''}</span></button>`).join('')}</div></div>`;
+}
+const FILTROS = [['todas', 'Todas'], ['faltan', 'Te faltan'], ['tuyas', 'Tuyas']];
+const ORDENES = [['rareza', 'Rareza'], ['barato', 'Más baratas'], ['caro', 'Más caras']];
+function filtrar(S, st, tengo, ids) {
+  const f = st.filtro || 'todas', o = st.orden || 'rareza';
+  const tieneAlgo = (id) => variantesDe(S, id).some((v) => tengo.has(v));
+  const todas = (id) => variantesDe(S, id).every((v) => tengo.has(v));
+  let out = ids.filter((id) => !S.cat.piezas[id].g).filter((id) => (f === 'faltan' ? !todas(id) : f === 'tuyas' ? tieneAlgo(id) : true));
+  if (o !== 'rareza') out = out.slice().sort((a, b) => (precioIt(S, a) - precioIt(S, b)) * (o === 'caro' ? -1 : 1));
+  return out;
+}
+const barraFiltros = (st) => `<div class="tz-filtros" role="group" aria-label="Filtrar las piezas"><span class="tz-filtros-g">${FILTROS.map(([k, n]) => `<button data-filtro="${k}" aria-pressed="${(st.filtro || 'todas') === k}">${n}</button>`).join('')}</span><span class="tz-filtros-g">${ORDENES.map(([k, n]) => `<button data-orden="${k}" aria-pressed="${(st.orden || 'rareza') === k}">${n}</button>`).join('')}</span></div>`;
 function piezas(X, S, st, tengo) {
   const c = S.cat, t = st.tab, especial = (p) => tiene(p, 'nav') || tiene(p, 'num');
-  const grilla = (ids) => `<div class="tz-grid">${ids.map((id) => tile(X, S, st, tengo, id)).join('') || '<p class="tz-vacio">Todavía no hay piezas acá.</p>'}</div>`;
+  const vacio = (st.filtro || 'todas') === 'todas' ? 'Todavía no hay piezas acá.' : st.filtro === 'tuyas' ? 'Todavía no tienes ninguna de acá.' : 'Ya las tienes todas.';
+  const grilla = (ids) => `<div class="tz-grid">${ids.map((id) => tile(X, S, st, tengo, id)).join('') || '<p class="tz-vacio">' + vacio + '</p>'}</div>`;
+  const conFiltros = (ids) => barraFiltros(st) + grilla(filtrar(S, st, tengo, ids));
   const de = (f) => Object.keys(c.piezas).filter((id) => f(c.piezas[id], id));
   const vende = (p, id) => !tiene(p, 'col') && (!tiene(p, 'rot') || c.vitrina.ids.includes(id));
   // (18/11/2026) `tz-cols` y no `jg`: `.jg` es la página de Estilo de juego (inventario.css) y le cambiaba el gap
@@ -407,10 +442,10 @@ function piezas(X, S, st, tengo) {
     return `<div class="tz-boleto"><div><b>Ediciones de 10${e.nombre ? ' · ' + esc(e.nombre) : ''}</b><span>${e.venta ? 'A la venta el ' + diaCorto(e.venta) + '. ' : ''}Una por persona, para quien jugó en la temporada. No se reeditan nunca.</span></div><span class="tz-talon">#1<small>del campeón</small></span></div>${grilla(ids)}`;
   }
   if (t === 'deseo') return `<div class="tz-aviso"><b>Tu lista · ${S.yo.deseos.length}</b><span>La campana te avisa cuando algo de acá entra en la vitrina, baja de precio o sale a la venta.</span><button class="tz-sw" role="switch" aria-checked="${S.yo.deseo_publico}" data-publico>${S.yo.deseo_publico ? 'Se ve en tu perfil' : 'Sólo la ves tú'}</button></div>${grilla(S.yo.deseos)}`;
-  if (t === 'fondo') return grilla(de((p, id) => p.c === st.lugar && vende(p, id) && !especial(p)));
+  if (t === 'fondo') return conFiltros(de((p, id) => p.c === st.lugar && vende(p, id) && !especial(p)));
   const ids = de((p, id) => p.c === t && vende(p, id) && !especial(p) && !tiene(p, 'prem'));
   if (t === 'nom') ids.push(...de((p) => p.c === 'serv'));
-  return grilla(ids);
+  return conFiltros(ids);
 }
 function tabs(S, st) {
   const base = TABS.slice();
@@ -430,7 +465,7 @@ function dropDia(st, svg) {
   // `{ya: true}` (18/11/2026): el objeto dijo que el de hoy ya se abrió —al volver a la Tienda `drop` arranca vacío y
   // ofrecía «Abrir» otra vez—, pero no qué salió: sin «Ver lo que salió»
   const r = st.drop;
-  return `<section class="tz-sec tz-sec-drop"><div class="tz-drop${r ? ' abierto' : ''}">
+  return `<section class="tz-sec tz-sec-drop" id="tz-drop"><div class="tz-drop${r ? ' abierto' : ''}">
     <span class="tz-drop-real${r ? ' gris' : ' an'}" aria-hidden="true">${svg || ''}</span>
     <div class="tz-drop-t"><span class="tz-cambia">Gratis · uno por día</span><b>Tu Dragón Drop del día</b>
       <span>${r ? 'Ya lo abriste: el próximo, mañana desde la medianoche (hora del este).' : 'Se renueva todos los días a la medianoche (hora del este). Sale con las mismas chances que los Dragón Drops.'}</span></div>
@@ -540,7 +575,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
   })() : '';
   return `<div class="tz-ficha" role="dialog" aria-label="${esc(p.n)}">${popCab(esc(p.n), subDe(S, id), RZ[p.r][1])}
     <div class="tz-f-vis">${vistaGrande(X, S, id)}</div>
-    <div class="tz-f-inf">${unaEtiqueta(S, tengo, id) ? `<div class="tz-fila">${unaEtiqueta(S, tengo, id)}</div>` : ''}
+    <div class="tz-f-inf">${selectorVar(X, S, tengo, id)}${unaEtiqueta(S, tengo, id) ? `<div class="tz-fila">${unaEtiqueta(S, tengo, id)}</div>` : ''}
       <p>${esc(p.d)}</p><p class="tz-donde"><b>Se ve en:</b> ${DONDE[p.c] || ''}.${EN_DISCORD[p.c] ? ' ' + EN_DISCORD[p.c] : ''}</p>
       ${paso === 'ver' && !mio ? `<div class="tz-f-precio">${precio}</div>` : ''}
       <div class="tz-acc">${acc}</div>${duenos}</div></div>`;
@@ -695,6 +730,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     return m;
   }, [pub]);
   const pedir = useCallback((d) => window.conCuenta('/api/avisos/tienda-accion', d), []);
+  const ix = useIndice(['tz-vitrina', 'tz-prob', 'tz-drop', 'tz-x-cabezas', 'tz-x-promo', 'tz-x-crew', 'tz-x-ropa'], 70);
   // el Dragón Drop de verdad, quieto (el mismo dibujo del escenario de los drops)
   const [dropSvg, setDropSvg] = useState('');
   useEffect(() => { let vivo = true; dropQuietoSvg('drop', 0).then((x) => { if (vivo) setDropSvg(x || ''); }).catch(() => {}); return () => { vivo = false; }; }, []);
@@ -798,7 +834,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   const tabDe = (p) => (esFondo(p.c) ? 'fondo' : p.c === 'serv' ? 'nom' : p.c);
 
   function clic(e) {
-    const t = e.target.closest('[data-rg-abrir],[data-rg-comprar],[data-rg-si],[data-rg-no],[data-abre],[data-acc],[data-tab],[data-lugar],[data-prueba],[data-saca],[data-elige],[data-msg],[data-deseo],[data-publico],[data-slide],[data-comprar],[data-reclamar],[data-probar-ir],[data-cmp],[data-drop],[data-regalo],[data-mas]');
+    const t = e.target.closest('[data-rg-abrir],[data-rg-comprar],[data-rg-si],[data-rg-no],[data-filtro],[data-orden],[data-abre],[data-acc],[data-tab],[data-lugar],[data-prueba],[data-saca],[data-elige],[data-msg],[data-deseo],[data-publico],[data-slide],[data-comprar],[data-reclamar],[data-probar-ir],[data-cmp],[data-drop],[data-regalo],[data-mas]');
     if (!t || t.disabled) return;
     const d = t.dataset;
     // sin cuenta se mira y se prueba todo; lo que mueve Puntos o guarda algo tuyo pasa por Discord (y vuelve a la Tienda)
@@ -810,6 +846,8 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     if (d.publico !== undefined) { accion({ accion: 'deseo-publico', si: !S.yo.deseo_publico }); return; }
     if (d.regalo) { accion({ accion: 'regalo', id: d.regalo, si: d.si === '1' }); return; }
     if (d.drop !== undefined) { abrirDropDia(); return; }
+    if (d.filtro) { E.filtro = d.filtro; pinta(); return; }
+    if (d.orden) { E.orden = d.orden; pinta(); return; }
     if (d.rgAbrir !== undefined) { if (d.slide !== undefined) E.slide = +d.slide; abrirRegalo(+d.rgAbrir); return; }
     if (d.rgComprar !== undefined) { E.rgConfirma = +d.rgComprar; pinta(); return; }
     if (d.rgNo !== undefined) { E.rgConfirma = null; pinta(); return; }
@@ -934,16 +972,43 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   }
   const arriba = `${S.modo ? '<p class="tz-ensayo">' + (S.modo === 'prueba' ? 'Modo prueba (Mods): tienes todo de mentira. Te lo puedes poner para verlo; no se compra ni se guarda nada.' : S.modo === 'dinero' ? 'Dinero de prueba (Mods): Puntos que no se terminan. Lo que compras es de mentira: lo ves puesto mientras esté prendido, y no se guarda nada.' : 'Viendo la Tienda como un usuario (Mods): sin tu Premium y sin el ensayo. En esta vista no se compra nada.') + '</p>' : ''}${S.ensayo ? '<p class="tz-ensayo">Ensayo: la Tienda está cerrada y sólo la ves tú. Lo que compres es de verdad.</p>' : ''}${regalosRecibidos(X, S, liga)}${hero(X, S, E, tengo, liga, llevan)}
     <section class="tz-sec" id="tz-prob" data-tuto="tz-probador"><div class="tz-sec-t"><h2>El probador</h2>${pildora(S, E)}</div>
-      <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat" data-tuto="tz-piezas">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>
-    <section class="tz-sec tz-sec-mas" data-tuto="tz-mas"><div class="tz-tira"><span class="tz-tira-et">Más con tus Puntos</span>
-      <button data-mas="cabezas" aria-pressed="${E.mas === 'cabezas'}">Precio por cabeza ›</button><button data-mas="promo" aria-pressed="${E.mas === 'promo'}">Tu promo ›</button><a href="#/crews">Tu crew ›</a><button data-mas="ropa" aria-pressed="${E.mas === 'ropa'}">Ropa de UL · pronto</button>
-      <button class="tz-tira-r" data-abre="__reglas">¿Cómo funciona la Tienda?</button></div></section>`;
-  const abajo = `${dropDia(E, dropSvg)}${barraCelu(S, E, tengo)}`;
+      <div class="tz-prob"><div class="tz-col-esc">${escenario(X, S, E)}${probando(S, E, tengo)}</div><div class="tz-col-cat" data-tuto="tz-piezas">${tabs(S, E)}${piezas(X, S, E, tengo)}</div></div></section>`;
+  const drop = dropDia(E, dropSvg);
+  const barra = barraCelu(S, E, tengo);
+  // 🧭 EL ÍNDICE DE LA TIENDA (25/11/2026, Dlx: «expande la tienda con esas cosas que ocultaste, precio por cabeza, tu promo,
+  // tu crew, ropa UL, al último, pero que puedas ir por categorías así como el Inicio»): el índice pegado de las páginas
+  // largas (`useIndice`, indice.js). Las ranuras son chips que abren su pestaña del cajón; lo demás baja a su sección
+  const chips = [['tz-vitrina', 'Vitrina'], ...CATS.map(([k, n]) => ['tz-prob', n, k]), ['tz-drop', 'Drop del día'],
+    ...(partes ? [['tz-x-cabezas', 'Precio por cabeza'], ['tz-x-promo', 'Tu promo'], ['tz-x-crew', 'Tu crew'], ['tz-x-ropa', 'Ropa UL']] : [])]
+    .filter(([id]) => ix.hay.includes(id));
+  const indice = chips.length > 2 ? (
+    <nav className="tz-ix" aria-label="Qué hay en la Tienda">
+      <ol ref={ix.tira}>{chips.map(([id, t, tab]) => {
+        const on = ix.act === id && (!tab || E.tab === tab);
+        return <li key={id + (tab || '')}><button type="button" className={on ? 'on' : ''} aria-current={on ? 'true' : undefined}
+          onClick={() => { if (tab) { E.tab = tab; if (tab === 'fondo' && !E.lugar) E.lugar = 'fp'; E.comparar = false; pinta(); } ix.ir(id); }}>{t}</button></li>;
+      })}
+      <li><button type="button" className="tz-ix-r" onClick={() => { E.abierta = '__reglas'; pinta(); }}>¿Cómo funciona?</button></li></ol>
+    </nav>
+  ) : null;
   return (
     <div className="tz" ref={raiz}>
+      {indice}
       <div onClick={clic} onInput={cambio} onChange={cambio} dangerouslySetInnerHTML={{ __html: arriba }} />
-      {E.mas && partes && partes[E.mas] ? <div className="tz-mas-vista">{partes[E.mas]}</div> : null}
-      <div onClick={clic} dangerouslySetInnerHTML={{ __html: abajo }} />
+      <div onClick={clic} dangerouslySetInnerHTML={{ __html: drop }} />
+      {partes ? (
+        <div className="tz-mas" data-tuto="tz-mas">
+          <div id="tz-x-cabezas">{partes.cabezas}</div>
+          <div id="tz-x-promo">{partes.promo}</div>
+          <section className="sec tn-sec tz-crew" id="tz-x-crew" aria-labelledby="tz-crew-t">
+            <div className="sec-t"><h2 id="tz-crew-t">Tu crew</h2></div>
+            <p className="tz-crew-p">Arma la tuya con tus Puntos de Tienda (2.500): su nombre, su sigla, su logo y hasta 20 personas. Sube de tier con lo que juegan sus miembros.</p>
+            <a className="tz-b blanco tz-crew-b" href="#/crews">Ir a Crews</a>
+          </section>
+          <div id="tz-x-ropa">{partes.ropa}</div>
+        </div>
+      ) : null}
+      <div onClick={clic} dangerouslySetInnerHTML={{ __html: barra }} />
       {hoja ? <div className="tz-capa" onClick={clic} onInput={cambio} onChange={cambio} dangerouslySetInnerHTML={{ __html: `<div class="tz-velo" data-acc="cerrar"></div><div class="tz-hoja">${hoja}</div>` }} /> : null}
     </div>
   );

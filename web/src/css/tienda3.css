@@ -528,3 +528,35 @@
 @keyframes tz-drop-flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @media (prefers-reduced-motion:reduce){.tz-drop-real.an{animation:none}}
 .app.calma .tz-drop-real.an{animation:none}
+
+/* 🧭 el índice de la Tienda (25/11/2026), como el de las páginas largas (.sl-ix de salon2.css) */
+.tz-ix{position:sticky;top:0;z-index:20;background:#030304;border-bottom:2px solid #2A2A2C}
+.tz-ix ol{display:flex;gap:5px;margin:0;padding:8px 16px;list-style:none;overflow-x:auto;scrollbar-width:none}
+.tz-ix ol::-webkit-scrollbar{display:none}
+.tz-ix button{display:inline-flex;align-items:center;min-height:36px;padding:0 10px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;white-space:nowrap;cursor:pointer;
+  font:700 14px/1 var(--tz-e);letter-spacing:.08em;text-transform:uppercase;border-radius:2px;transition:background .15s,color .15s,border-color .15s}
+.tz-ix button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
+.tz-ix .tz-ix-r{border-style:dashed;color:#A5A5A0}
+@media (hover:hover) and (pointer:fine){.tz-ix button:not(.on):hover{border-color:#E41373}}
+@media (min-width:900px){.tz-ix ol{flex-wrap:wrap;padding:10px var(--gut)}}
+/* 🔎 los filtros del cajón */
+.tz-filtros{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 14px;margin:0 0 12px}
+.tz-filtros-g{display:inline-flex;flex-wrap:wrap;gap:6px}
+.tz-filtros button{min-height:34px;padding:0 11px;border:1.5px solid var(--suave,#2A2C31);background:transparent;color:var(--tinta,#F6F6F6);cursor:pointer;border-radius:2px;
+  font:700 13px/1 var(--tz-e);letter-spacing:.07em;text-transform:uppercase}
+.tz-filtros button[aria-pressed="true"]{background:var(--tinta,#F6F6F6);color:var(--fondo,#030304);border-color:var(--tinta,#F6F6F6)}
+/* las cuatro de «Más con tus Puntos», al final y a la vista */
+.tz-mas{display:grid}
+.tz-crew-p{max-width:60ch;margin:0 0 14px}
+.tz-crew-b{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;text-decoration:none;width:max-content}
+
+/* 🌎🏟️ el selector de variantes de la ficha (País y Servidor, 25/11/2026) */
+.tz-var{display:grid;gap:8px;margin:0 0 12px}
+.tz-var>b{font:700 13px/1 var(--tz-e);letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-2,#A5A5A0)}
+.tz-var-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px;max-height:236px;overflow-y:auto;padding:2px}
+.tz-var-l button{display:grid;justify-items:center;gap:3px;padding:6px 2px 5px;background:#0B0C0E;border:1.5px solid #2A2C31;border-radius:3px;color:#F6F6F6;cursor:pointer}
+.tz-var-l button[aria-pressed="true"]{border-color:#F6F6F6;box-shadow:0 0 0 2px #E41373}
+.tz-var-v{width:44px;height:44px;display:grid;place-items:center;overflow:hidden}
+.tz-var-v .ta-av{width:42px;height:42px}.tz-var-v .ta-sv-tag{font-size:7px;padding:1px 3px}
+.tz-var-n{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 11px/1.1 var(--tz-e);letter-spacing:.04em}
+@media (hover:hover) and (pointer:fine){.tz-var-l button:not([aria-pressed="true"]):hover{border-color:#E41373}}

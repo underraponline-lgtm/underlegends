@@ -5721,6 +5721,14 @@ const ok = (cond, que, det) => {
     ok(TI.catalogoGuardar(o, { catalogo: Object.assign({}, cat, { piezas: { BAD: { c: 'aro', r: 9 } } }) }).error === 'pieza',
       'un catálogo con una pieza rota no se guarda');
     ok(TI.catalogoGuardar(o, { catalogo: cat }).ok, 'el catálogo se guarda');
+    // 🌎 las variantes (`g`): la cabeza tiene que existir, ser de la misma ranura y no ser variante de otra
+    {
+      const conG = (g, c = 'aro') => TI.catalogoValido(Object.assign({}, cat, { piezas: Object.assign({}, cat.piezas, { XP1: { c, r: 1, n: 'X', g } }) }));
+      const v = conG('X1');
+      ok(v && !v.error && v.piezas.XP1.g === 'X1' && !v.piezas.X1.g, 'una variante guarda de qué pieza es', JSON.stringify(v && v.piezas.XP1));
+      ok(conG('ZZ9').error === 'pieza' && conG('X3').error === 'pieza' && conG('x-1').error === 'pieza',
+        'y no se guarda si su cabeza no existe, es de otra ranura o no es un id');
+    }
     const ens = mia(A.DUENO, 'dlx');
     ok(!mia(ANA, 'ana').abierta && ens.ensayo && ens.cat && ens.cat.piezas.X1,
       'cerrada: la gente no la ve y el dueño la ensaya', JSON.stringify(mia(ANA, 'ana')));
