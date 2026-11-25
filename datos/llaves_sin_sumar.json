@@ -1554,6 +1554,113 @@
    ]
   ]
  },
+ "125819739": {
+  "dia": "2026-11-25",
+  "escala": "16+",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575268783025819739",
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575266708279525517"
+  ],
+  "n": 125819739,
+  "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪",
+  "ns": 1,
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "black live"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "R-Flow 🇪🇸"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Marto",
+       "CrisZJ"
+      ],
+      "Marto",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Tmax Turbo [PN]"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "black live"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "R-Flow 🇪🇸"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Marto",
+       "CrisZJ"
+      ],
+      "Marto",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Tmax Turbo [PN]"
+      ],
+      "1200",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "CrisZJ",
+    "Octavos",
+    0
+   ],
+   [
+    "R-Flow 🇪🇸",
+    "Octavos",
+    0
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Octavos",
+    0
+   ],
+   [
+    "black live",
+    "Octavos",
+    0
+   ]
+  ]
+ },
  "126047346": {
   "dia": "2026-11-16",
   "escala": "4-7",
