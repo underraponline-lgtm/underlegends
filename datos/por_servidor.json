@@ -1622,6 +1622,20 @@
     "racha": "0/0"
    }
   },
+  "Barranca 🇵🇪": {
+   "FRZ": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5775,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "BastyRetro": {
    "ACAD": {
     "duelos": "1/2",
@@ -3293,7 +3307,7 @@
     "oro": 0,
     "ovr": 42,
     "pod": 0,
-    "pts": 3000,
+    "pts": 3300,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -3627,9 +3641,9 @@
     "duelos": "1/3",
     "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 8250,
+    "pts": 8775,
     "racha": "0/0"
    },
    "UFLUC": {
@@ -5482,7 +5496,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 5250,
+    "pts": 5775,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -6304,6 +6318,21 @@
     "pod": 0,
     "pts": 3850,
     "racha": "0/0"
+   }
+  },
+  "Itohimo": {
+   "FRZ": {
+    "duelos": "3/3",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 12375,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    }
   },
   "Ivan": {
@@ -7991,6 +8020,20 @@
     "racha": "0/0"
    }
   },
+  "LMG 🇩🇴": {
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3300,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "LOBO ES 🇲🇽": {
    "LKR": {
     "duelos": "",
@@ -9252,15 +9295,16 @@
     }
    },
    "FRZ": {
-    "duelos": "6/8",
-    "ev": 3,
+    "duelos": "8/11",
+    "ev": 4,
     "oro": 1,
-    "ovr": 47,
-    "pod": 2,
-    "pts": 20600,
-    "racha": "2/2",
+    "ovr": 48,
+    "pod": 3,
+    "pts": 28850,
+    "racha": "3/3",
     "tg": {
-     "fin": 2
+     "fin": 3,
+     "llave": true
     }
    },
    "URBF": {
@@ -10399,7 +10443,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 6850,
+    "pts": 7150,
     "racha": "0/0"
    },
    "LKR": {
@@ -10490,7 +10534,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 5200,
+    "pts": 5500,
     "racha": "0/0"
    },
    "SR": {
@@ -10526,6 +10570,18 @@
     "racha": "1/3",
     "tg": {
      "fin": 5
+    }
+   },
+   "FRZ": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5775,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    },
    "FVS": {
@@ -10751,15 +10807,16 @@
     "racha": "0/1"
    },
    "FRZ": {
-    "duelos": "2/4",
-    "ev": 3,
+    "duelos": "2/5",
+    "ev": 4,
     "oro": 0,
     "ovr": 46,
     "pod": 1,
-    "pts": 11900,
-    "racha": "1/1",
+    "pts": 15950,
+    "racha": "0/1",
     "tg": {
-     "fin": 1
+     "fin": 1,
+     "llave": true
     }
    },
    "LKR": {
@@ -11577,12 +11634,12 @@
     }
    },
    "FRZ": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "0/2",
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 3000,
+    "pts": 6300,
     "racha": "0/0"
    },
    "LKR": {
@@ -12455,7 +12512,7 @@
     "oro": 0,
     "ovr": 44,
     "pod": 1,
-    "pts": 3500,
+    "pts": 5000,
     "racha": "1/1",
     "tg": {
      "fin": 1
@@ -12664,7 +12721,7 @@
     "oro": 1,
     "ovr": 45,
     "pod": 1,
-    "pts": 11250,
+    "pts": 12375,
     "racha": "1/1",
     "tg": {
      "fin": 1,
@@ -12800,7 +12857,7 @@
     "oro": 0,
     "ovr": 45,
     "pod": 1,
-    "pts": 9000,
+    "pts": 9300,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -13624,7 +13681,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 9000,
+    "pts": 5250,
     "racha": "0/0"
    },
    "FFA": {
@@ -14080,7 +14137,7 @@
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 5000,
+    "pts": 5300,
     "racha": "0/0"
    },
    "FVS": {
@@ -14397,12 +14454,12 @@
     "racha": "1/1"
    },
    "FRZ": {
-    "duelos": "1/3",
-    "ev": 2,
+    "duelos": "1/4",
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 5500,
+    "pts": 8800,
     "racha": "0/0",
     "tg": {
      "fund": true

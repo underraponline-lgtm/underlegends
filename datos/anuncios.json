@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T04:25:27+00:00",
+ "cuando": "2026-11-25T04:55:48+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6844,7 +6844,7 @@
    "categoria_id": "1518542367907647498"
   },
   {
-   "nombre": "COMPE 1V1",
+   "nombre": "COMPE PANDILLAS",
    "servidor": "DW",
    "canal": "「🗓️」EVENTOS",
    "msg_id": "1575001008164315281",
@@ -6863,7 +6863,7 @@
    "inscriptos": null,
    "cupo_total": null,
    "rango": "",
-   "modalidad": "1V1",
+   "modalidad": "PANDILLAS",
    "horario": "EN LO QUE LLENEMOS 8 CUPOS",
    "fecha": "",
    "premios": "PUNTOS AL ASCENSO",
@@ -6871,8 +6871,8 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1300152346537496623",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T04:12:03"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-11-25T04:27:11"
   },
   {
    "nombre": "COMPE 1V1",
@@ -6902,8 +6902,8 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1300152346537496623",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T04:12:03"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-11-25T04:27:11"
   },
   {
    "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS VOL 2",
@@ -6933,8 +6933,8 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1300152346537496623",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T04:12:03"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-11-25T04:27:11"
   },
   {
    "nombre": "DANGER WORLD CUP",
@@ -6959,8 +6959,8 @@
    "autor": "DANGER WORLD",
    "staff_cuentas": {},
    "categoria_id": "1300152346537496623",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T04:12:03"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-11-25T04:27:11"
   },
   {
    "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
@@ -6998,8 +6998,8 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1300152346537496623",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T04:12:03"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-11-25T04:27:11"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -8244,6 +8244,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "okam",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1575005863444484318",
+   "cuando": "2026-11-25T04:31:00"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Aldre",
+   "quien": "aldrebxjd",
+   "discord_id": "515712116381188097",
+   "msg_id": "1575004973287084113",
+   "cuando": "2026-11-25T04:27:27"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Last",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1575004804575404126",
+   "cuando": "2026-11-25T04:26:47"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Kourier 🇲🇽",
+   "quien": "simplee3",
+   "discord_id": "330866571297685505",
+   "msg_id": "1575004795465629778",
+   "cuando": "2026-11-25T04:26:45"
+  },
   {
    "servidor": "DW",
    "canal": "「📜」INSCRIPCIONES",
@@ -44207,42 +44243,6 @@
    "discord_id": "897942226955563068",
    "msg_id": "1562613803936649227",
    "cuando": "2026-10-21T23:49:22"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Last🇬🇶",
-   "quien": "last5724",
-   "discord_id": "483070865081237505",
-   "msg_id": "1562611520674734194",
-   "cuando": "2026-10-21T23:40:18"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Mathias",
-   "quien": "elthiasmathias",
-   "discord_id": "1177916322122833933",
-   "msg_id": "1562611435589206207",
-   "cuando": "2026-10-21T23:39:58"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Caliz 🇲🇽",
-   "quien": "caliz123_",
-   "discord_id": "1546111597343146044",
-   "msg_id": "1562608147749933117",
-   "cuando": "2026-10-21T23:26:54"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Dominick 🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1562608067441590395",
-   "cuando": "2026-10-21T23:26:35"
   }
  ]
 }

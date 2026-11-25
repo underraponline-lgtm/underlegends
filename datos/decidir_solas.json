@@ -4214,6 +4214,33 @@
     "DOS NOMBRES: «Dominick el disonantico» → «Dominick» · cuenta 1439048698142134436"
    ],
    "escribio": {}
+  },
+  {
+   "id": "39b27ab312",
+   "tipo": "Nombre desconocido",
+   "sec": "- DEM BATTLES - · FRZ · 24/11 · #692",
+   "que": "¿Quién es «Barranca 🇵🇪»?",
+   "r": "Es EmiZor",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de EmiZor: estaba en la llamada del evento con ese nombre",
+   "t": 1795582980395,
+   "filas": [
+    1606
+   ],
+   "variantes": [
+    "Barranca 🇵🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "Barranca",
+     "EmiZor"
+    ],
+    "filas": [
+     386
+    ]
+   }
   }
  ],
  "deshechas": []

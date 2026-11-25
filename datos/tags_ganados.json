@@ -6758,6 +6758,37 @@
    ]
   }
  },
+ "itohimo": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1795582987626
+   ]
+  },
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795582987626
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795582987626
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795582987626
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795582987626
+   ]
+  }
+ },
  "j19": {
   "temporada": {
    "🌱 PROMESA": [
@@ -11072,6 +11103,11 @@
     "t1",
     1792953978519
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795582987626
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -11268,6 +11304,13 @@
   }
  },
  "mrkude": {
+  "servidor": {
+   "🔑 LLAVE DE LA CASA": [
+    "🔑 LLAVE DE LA CASA",
+    "t1",
+    1795582987626
+   ]
+  },
   "temporada": {
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -11311,6 +11354,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1795129672620
+   ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1795582987626
    ]
   },
   "servidor": {
@@ -11345,6 +11393,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1795129672620
+   ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1795582987626
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -12903,6 +12956,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1795582987626
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",

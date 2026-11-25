@@ -16192,7 +16192,7 @@
        "Eclipsito"
       ],
       "Makmah, Fazer",
-      "triple (4 bandas, pasan 2); también pasa: Fazer"
+      "triple (4 bandas, pasan 2); también pasa: Fazer🇦🇷"
      ],
      [
       [
@@ -61171,7 +61171,7 @@
        "Colesito"
       ],
       "",
-      "cobra: Bloody 🇨🇴; cobra: Colesito 🇨🇴; nadie siguió: ✅ Decidir"
+      "cobra: Bloody 🇨🇴; cobra: Colesito; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -61202,7 +61202,7 @@
      [
       [
        "CJ",
-       "Prosu, Sami"
+       "Prosu"
       ],
       "CJ",
       ""
@@ -61219,9 +61219,9 @@
     7500
    ],
    [
-    "Sami",
-    "Semifinal",
-    6000
+    "Prosu",
+    "Subcampeón",
+    5000
    ],
    [
     "Juasmio",
@@ -61229,8 +61229,8 @@
     3500
    ],
    [
-    "Prosu",
-    "Subcampeón",
+    "Sami",
+    "Semifinal",
     3500
    ],
    [
@@ -61316,7 +61316,7 @@
        "Saito"
       ],
       "CJ, Denik",
-      "triple (3 bandas, pasan 2); también pasa: Denik 🇵🇪"
+      "triple (3 bandas, pasan 2); también pasa: DENIK🇵🇪"
      ]
     ],
     "r": "Filtros"
@@ -65160,6 +65160,137 @@
   ],
   "ver": {
    "min": 82,
+   "v": 1
+  }
+ },
+ "692": {
+  "dia": "2026-11-24",
+  "escala": "8-15",
+  "fecha": "24/11",
+  "links": [
+   "https://discord.com/channels/838593179187544064/838595860275003402/1574997314786037871"
+  ],
+  "n": 692,
+  "nombre": "- DEM BATTLES -",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Itohimo",
+       "LMG 🇩🇴"
+      ],
+      "Itohimo",
+      ""
+     ],
+     [
+      [
+       "Molusco",
+       "OKAM"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "Mr.Kude"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Barranca 🇵🇪",
+       "Soulb"
+      ],
+      "Barranca 🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Itohimo",
+       "Molusco"
+      ],
+      "Itohimo",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "Barranca 🇵🇪"
+      ],
+      "MTZ",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Itohimo",
+       "MTZ"
+      ],
+      "Itohimo",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Itohimo",
+    "Campeón",
+    7500
+   ],
+   [
+    "MTZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Barranca 🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LMG 🇩🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 32,
    "v": 1
   }
  }

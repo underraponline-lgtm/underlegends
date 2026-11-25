@@ -38,7 +38,7 @@
    "n": 660,
    "sv": "FFA",
    "vence": "2026-11-25T04:56:25+00:00",
-   "vencido": false
+   "vencido": true
   },
   "1469704413013737585 Lizzenin": {
    "avisado": "2026-11-17",
@@ -437,6 +437,18 @@
    "sv": "DDS",
    "vence": "2026-11-06T22:52:29+00:00",
    "vencido": true
+  },
+  "Barranca": {
+   "avisado": "2026-11-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-25T03:57:01+00:00",
+   "did": "",
+   "evento": "- DEM BATTLES -",
+   "n": 692,
+   "sv": "FRZ",
+   "vence": "2026-12-02T03:57:01+00:00",
+   "vencido": false
   },
   "Bau": {
    "avisado": "2026-10-31",
@@ -1462,6 +1474,18 @@
    "vence": "2026-10-31T01:11:48+00:00",
    "vencido": true
   },
+  "Itohimo": {
+   "avisado": "2026-11-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-25T03:57:01+00:00",
+   "did": "737528677771771925",
+   "evento": "- DEM BATTLES -",
+   "n": 692,
+   "sv": "FRZ",
+   "vence": "2026-12-02T03:57:01+00:00",
+   "vencido": false
+  },
   "J.r": {
    "avisado": "2026-10-19",
    "chat": "2026-10-20",
@@ -1893,6 +1917,18 @@
    "n": 679,
    "sv": "LKR",
    "vence": "2026-11-30T00:19:02+00:00",
+   "vencido": false
+  },
+  "LMG": {
+   "avisado": "2026-11-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-25T03:57:01+00:00",
+   "did": "",
+   "evento": "- DEM BATTLES -",
+   "n": 692,
+   "sv": "FRZ",
+   "vence": "2026-12-02T03:57:01+00:00",
    "vencido": false
   },
   "LOBO ES": {

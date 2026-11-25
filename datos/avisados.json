@@ -59399,5 +59399,132 @@
    ]
   ],
   "v": 2
+ },
+ "692": {
+  "antes": {
+   "MTZ": [
+    71,
+    87,
+    false
+   ],
+   "Molusco": [
+    25,
+    27,
+    false
+   ],
+   "Mr.Kude": [
+    317,
+    176,
+    true
+   ],
+   "OKAM": [
+    24,
+    26,
+    false
+   ],
+   "Soulb": [
+    28,
+    30,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Itohimo",
+    "LMG 🇩🇴",
+    "Itohimo"
+   ],
+   [
+    "Molusco",
+    "OKAM",
+    "Molusco"
+   ],
+   [
+    "MTZ",
+    "Mr.Kude",
+    "MTZ"
+   ],
+   [
+    "Barranca 🇵🇪",
+    "Soulb",
+    "Barranca 🇵🇪"
+   ],
+   [
+    "Itohimo",
+    "Molusco",
+    "Itohimo"
+   ],
+   [
+    "MTZ",
+    "Barranca 🇵🇪",
+    "MTZ"
+   ],
+   [
+    "Itohimo",
+    "MTZ",
+    "Itohimo"
+   ]
+  ],
+  "ev_antes": {
+   "MTZ": 10,
+   "Molusco": 34,
+   "Mr.Kude": 7,
+   "OKAM": 35,
+   "Soulb": 37
+  },
+  "fecha": "24/11",
+  "noche": true,
+  "nombre": "- DEM BATTLES -",
+  "num": 692,
+  "participantes": 8,
+  "sello": {
+   "Itohimo": "7c5dcddf4caf:0b98cb3023ec"
+  },
+  "sv": "FRZ",
+  "t": "2026-11-25T04:54:36Z",
+  "tabla": [
+   [
+    "Itohimo",
+    "Campeón",
+    7500
+   ],
+   [
+    "MTZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Barranca 🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LMG 🇩🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

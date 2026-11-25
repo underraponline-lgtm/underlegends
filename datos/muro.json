@@ -633,6 +633,14 @@
 "temporada"
 ]
 },
+"mtz": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "neo": {
 "rg": "C",
 "c": []
@@ -678,14 +686,6 @@
 "eclipsito": {
 "rg": "C",
 "c": []
-},
-"mtz": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "badterne": {
 "rg": "",
@@ -1232,6 +1232,10 @@
 "temporada"
 ]
 },
+"mrkude": {
+"rg": "",
+"c": []
+},
 "andy": {
 "rg": "",
 "c": [
@@ -1245,10 +1249,6 @@
 "servidor",
 "temporada"
 ]
-},
-"mrkude": {
-"rg": "",
-"c": []
 },
 "zeta": {
 "rg": "",
@@ -2942,14 +2942,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-15T05:39:01Z",
-"quien": [
-"Soulb"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-15T05:57:25Z",
@@ -6356,6 +6348,15 @@
 "Inku"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-11-25T05:02:35Z",
+"quien": [
+"MTZ"
+],
+"rg": "B",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -8593,8 +8594,8 @@
 "tipo": "resnoche",
 "t": "2026-11-25T08:00:00Z",
 "dia": "2026-11-24",
-"eventos": 3,
-"part": 47,
+"eventos": 4,
+"part": 55,
 "campeones": [
 {
 "ev": "PURISTAS DEL HIP HOP",
@@ -8628,6 +8629,17 @@
 "tøkiø"
 ]
 ]
+},
+{
+"ev": "- DEM BATTLES -",
+"sv": "FRZ",
+"ll": 692,
+"quien": [
+[
+"Itohimo",
+""
+]
+]
 }
 ],
 "suman": [
@@ -8644,8 +8656,8 @@
 "ev": 1
 },
 {
-"n": "JOSHU",
-"k": "joshu",
+"n": "Itohimo",
+"k": "",
 "pts": 7500,
 "ev": 1
 }
@@ -8655,7 +8667,7 @@
 "n": "METRO",
 "k": "",
 "de": 818,
-"a": 542
+"a": 544
 },
 {
 "n": "Konan",
@@ -8667,7 +8679,7 @@
 "n": "JOSHU",
 "k": "joshu",
 "de": 347,
-"a": 298
+"a": 299
 }
 ],
 "sorpresas": [
@@ -8677,6 +8689,12 @@
 "que": "primer",
 "ev": "PURISTAS DEL HIP HOP",
 "desde": 277
+},
+{
+"n": "Itohimo",
+"k": "",
+"que": "debut",
+"ev": "- DEM BATTLES -"
 }
 ]
 }
@@ -8776,7 +8794,7 @@
 "velatz": 0,
 "mito": 0,
 "zignos": 0,
-"molusco": 3,
+"molusco": 0,
 "guess": 1,
 "walker": 0,
 "delux": 0,
@@ -8807,7 +8825,7 @@
 "dyzz": 0,
 "mats": 3,
 "numberve": 0,
-"soulb": 3,
+"soulb": 0,
 "bna": 2,
 "paria": 0,
 "last": 0,
@@ -8870,7 +8888,7 @@
 "lucky": 0,
 "gus": 0,
 "zetryko": 2,
-"mtz": 2,
+"mtz": 3,
 "julix-x": 1,
 "alexi": 0,
 "erik": 2,
@@ -8969,7 +8987,7 @@
 "agentesombra": 0,
 "martoar": 0,
 "liam": 0,
-"mrkude": 1,
+"mrkude": 0,
 "inku": 0,
 "joshu": 2
 },
