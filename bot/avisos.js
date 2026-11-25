@@ -3963,7 +3963,7 @@ const RUTAS = {
   '/avisos/crews-sembrar': 'POST', '/avisos/crews-siglas': 'POST',
   // 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): lo tuyo, una acción, y el catálogo con la clave del ciclo
   '/avisos/tienda': 'POST', '/avisos/tienda-accion': 'POST', '/avisos/tienda-catalogo': 'POST',
-  '/avisos/tienda-arte': 'POST', '/avisos/tienda-arte-subir': 'POST', '/avisos/tienda-uso': 'GET',
+  '/avisos/tienda-arte': 'POST', '/avisos/tienda-arte-subir': 'POST', '/avisos/imagen-prueba': 'POST', '/avisos/tienda-uso': 'GET',
   // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
   // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
   '/avisos/crews-cerrar': 'POST',
@@ -7464,6 +7464,46 @@ export async function rutaAvisos(req, env, ruta) {
     const crudo = await req.text();
     if (crudo.length > 1500000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/tienda-arte-subir', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
+  // 🎨 IMÁGENES CON LA IA DE CLOUDFLARE, PARA PROBAR FONDOS (25/11/2026, Dlx: «but you also cloudflare ai image right» →
+  // «Yes, try 6 now»). Sólo con la clave del ciclo: el token de Cloudflare de la PC no llega a Workers AI (401), así que la
+  // IA se usa por el binding del Worker. ⚠️ Gasta las 10.000 neuronas gratis del DÍA de toda la cuenta, que también usa
+  // el OCR de los afiches: Phoenix ~2.400 por imagen de 1024×576, FLUX schnell ~60. Guarda en R2 `pruebas/fondos/`
+  if (ruta === '/avisos/imagen-prueba') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (!env.AI || !env.CARTAS) return json({ error: 'sin IA' }, 503);
+    let d = null;
+    try { d = await req.json(); } catch (e) { d = null; }
+    const MOD = { schnell: '@cf/black-forest-labs/flux-1-schnell', phoenix: '@cf/leonardo/phoenix-1.0', lucid: '@cf/leonardo/lucid-origin' };
+    const m = d && MOD[d.modelo];
+    const nombre = String((d && d.nombre) || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 40);
+    if (!m || !nombre || typeof d.prompt !== 'string' || !d.prompt || d.prompt.length > 2000) return json({ error: 'faltan datos' }, 400);
+    const lado = (v, def, max) => Math.max(256, Math.min(max, Math.round((Number(v) || def) / 64) * 64));
+    const ent = { prompt: d.prompt };
+    // (FLUX schnell no acepta `seed`: «Additional or unevaluated properties '/seed'»)
+    if (Number.isInteger(d.semilla) && d.modelo !== 'schnell') ent.seed = d.semilla;
+    if (d.modelo === 'schnell') ent.steps = Math.min(8, Number(d.pasos) || 8);
+    else {
+      ent.width = lado(d.ancho, 1024, d.modelo === 'lucid' ? 2496 : 2048);
+      ent.height = lado(d.alto, 576, d.modelo === 'lucid' ? 2496 : 2048);
+      if (d.modelo === 'phoenix') { ent.num_steps = Math.min(50, Number(d.pasos) || 25); if (d.negativo) ent.negative_prompt = String(d.negativo).slice(0, 1000); }
+      else ent.steps = Math.min(40, Number(d.pasos) || 25);
+    }
+    const t0 = Date.now();
+    let sal;
+    try { sal = await env.AI.run(m, ent); } catch (e) { return json({ error: 'ia', detalle: String(e).slice(0, 300) }, 502); }
+    let bytes;
+    if (sal && typeof sal.image === 'string') {
+      const t = atob(sal.image);
+      bytes = new Uint8Array(t.length);
+      for (let i = 0; i < t.length; i++) bytes[i] = t.charCodeAt(i);
+    } else if (sal instanceof ReadableStream || sal instanceof ArrayBuffer || ArrayBuffer.isView(sal)) bytes = new Uint8Array(await new Response(sal).arrayBuffer());
+    else return json({ error: 'salida', tipo: typeof sal, claves: sal && typeof sal === 'object' ? Object.keys(sal).slice(0, 8) : [] }, 502);
+    const png = bytes[0] === 0x89 && bytes[1] === 0x50;
+    const clave = 'pruebas/fondos/' + nombre + (png ? '.png' : '.jpg');
+    await env.CARTAS.put(clave, bytes, { httpMetadata: { contentType: png ? 'image/png' : 'image/jpeg', cacheControl: 'no-store' } });
+    return json({ ok: true, url: R2_PUB + '/' + clave, bytes: bytes.length, ms: Date.now() - t0, modelo: m, ent: Object.assign({}, ent, { prompt: undefined }) });
   }
   // 👥 lo del dueño (y Admin) con las crews: el líder de las de antes, el nombre, cerrarla. La puerta del Dashboard
   if (ruta === '/avisos/dueno/crew') {
