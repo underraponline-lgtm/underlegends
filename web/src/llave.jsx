@@ -552,40 +552,234 @@ function ShortB({ ctx, ls, gano, fin }) {
   );
 }
 
+const ORDEN_RONDA = { dieciseisavos: 0, octavos: 1, cuartos: 2, semifinales: 3, semifinal: 3, tercer: 4, final: 5 };
+const RONDA_TXT = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', semifinal: 'Semifinal', final: 'Final' };
+const mmssE = (t) => Math.floor((t || 0) / 60) + ':' + String(Math.floor((t || 0) % 60)).padStart(2, '0');
+const rondaTxt = (r) => RONDA_TXT[String(r || '').toLowerCase()] || r || '';
+// ✨ «LO MEJOR DE LA NOCHE» (25/11/2026, Dlx: «Todas», el #5): el robot deja en `reels/audios.json` UNA entrada más por evento,
+// con `mejor: true` y `k: 'mejor'`. No es una batalla: no entra en la lista ni en el paso de una a otra
+const esMejor = (x) => !!x && (x.mejor === true || x.k === 'mejor');
+
+// 🏁 EL RESULTADO DE CADA BATALLA DEL EVENTO ENTERO (25/11/2026, Dlx: «Todas», el #6). Sale de la llave que la página ya
+// tiene: la batalla con los mismos lados (por su nombre limpio o por quién es, `idDe`) y, si hay dos iguales —una revancha
+// en la doble—, la de la misma ronda. Quién pasó es `b[1]`; el voto de cada juez, `L.gente.jur` (`votoDe`, bot/gente_evento.py).
+// Sin ganador en la llave, nada (sin dato no hay pieza)
+const rondaK = (r) => normN(r).slice(0, 4);
+function resultadoDe(ctx, x) {
+  const nom = (ls) => ls.flatMap((s) => partes(texto(s))).map((m) => normN(sinBanderas(m).txt)).filter(Boolean).sort().join('|');
+  const ids = (ls) => ls.flatMap((s) => partes(texto(s))).map((m) => ctx.idDe(m)).sort().join('|');
+  const a = nom(x.nombres || []);
+  if (!a || !ctx.prin) return null;
+  const ak = ids(x.nombres || []);
+  let hit = null;
+  for (const R of ctx.prin.concat(ctx.ter ? [ctx.ter] : [])) {
+    for (const b of R.b) {
+      if (nom(b[0]) !== a && ids(b[0]) !== ak) continue;
+      if (rondaK(R.r) === rondaK(x.ronda)) { hit = { b, r: R.r }; break; }
+      if (!hit) hit = { b, r: R.r };
+    }
+    if (hit && rondaK(hit.r) === rondaK(x.ronda)) break;
+  }
+  if (!hit || !hit.b[1]) return null;
+  const { b, r } = hit;
+  const gi = b[0].findIndex((s) => gana(b, s));
+  const j = ctx.votoDe ? ctx.votoDe(r, b) : null;
+  const vs = j && (j.v || []).length ? b[0].map((_, li) => j.v.filter((v) => v[1] === li).map((v) => v[0])) : null;
+  let jur = '';
+  let jurT = '';
+  if (vs && gi >= 0) {
+    const n = j.v.length;
+    jur = b[0].length === 2 ? vs[gi].length + '–' + vs[1 - gi].length : vs[gi].length + '/' + n;
+    jurT = j.v.map((v) => limpio(v[0]) + ' votó a ' + nombreDe(ctx, b[0][v[1]] || '')).join(' · ');
+  }
+  return { gano: nombreDe(ctx, b[1]), copa: ctx.final === b, jur, jurT };
+}
+/** el resultado, en un renglón: «✓ Pasa Inku · Jurado 1–0». Las palabras van en su propio texto (el traductor de /en) */
+function ResultadoEv({ res, cls = 'lk-ev-res', sep = true }) {
+  if (!res) return null;
+  return (
+    <i className={cls}>
+      <b aria-hidden="true">{res.copa ? '🏆' : '✓'}</b>{res.copa ? 'Campeón' : 'Pasa'}{' '}<strong>{res.gano}</strong>
+      {res.jur ? <small title={res.jurT}>{sep ? ' · ' : null}{'Jurado'}{' '}{res.jur}</small> : null}
+    </i>
+  );
+}
+
+// 🙈 los resultados, ocultos por defecto (sin spoilers): «Mostrar resultados» se recuerda en este navegador
+const L_RES = 'lg:ev-resultados';
+const resGuardado = () => { try { return localStorage.getItem(L_RES) === '1'; } catch (e) { return false; } };
+
+// 🔗 EL MOMENTO PEDIDO POR EL LINK (25/11/2026, Dlx: «Todas», el #7): `/freestyle-rap/llave/<n>?t=<k>-<segundo>` (o el
+// `#/llave/<n>?t=…` de siempre: el script del principio lo pasa a la dirección de verdad). `k` es el número de la batalla en
+// `reels/audios.json` (el de ULAYA), no su lugar en la lista: un audio que se suma después no corre los links que circulan
+const momentoPedido = () => {
+  try {
+    const r = window.rutaLG ? window.rutaLG() : String(location.hash || '').replace(/^#\/?/, '');
+    const m = /^(\d{1,4})-(\d{1,5})$/.exec(new URLSearchParams(r.split('?')[1] || '').get('t') || '');
+    return m ? { k: m[1], s: +m[2] } : null;
+  } catch (e) { return null; }
+};
+
+// ✨ el reproductor de «Lo mejor de la noche», chico: el audio y sus partes (de qué batalla sale cada una, con su ronda y los
+// dos), y desde cada parte, la batalla entera en el escenario de abajo, en ese segundo (`origen_desde`). `det` es mejor.json:
+// {v:1, ev, dur, partes:[{k, r, nombres, desde, hasta, origen_desde}]}. Sin partes, sólo el audio
+function MejorNoche({ m, xs, saltar }) {
+  const au = useRef(null);
+  const [P, setP] = useState(null);
+  const [t, setT] = useState(0);
+  useEffect(() => {
+    let vivo = true;
+    if (m.det) fetch(m.det).then((r) => (r.ok ? r.json() : null)).then((j) => { if (vivo && j && Array.isArray(j.partes)) setP(j); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [m.det]);
+  const ps = (P && P.partes) || [];
+  const dur = m.dur || (P && P.dur) || 0;
+  const cur = ps.findIndex((p) => t >= (p.desde || 0) && t < (p.hasta || 0));
+  const ir = (s) => { const a = au.current; if (a) { a.currentTime = s || 0; a.play().catch(() => {}); } };
+  return (
+    <div className="lk-ev-mj" role="group" aria-label="Lo mejor de la noche">
+      <div className="lk-ev-mj-t"><b>Lo mejor de la noche</b>{dur ? <small>{' · '}{Math.max(1, Math.round(dur / 60))}{' min'}</small> : null}</div>
+      <audio ref={au} src={m.url} controls preload="metadata" onTimeUpdate={(e) => setT(e.currentTarget.currentTime)} />
+      {ps.length ? (
+        <ol className="lk-ev-mj-p">
+          {ps.map((p, j) => {
+            const k = xs.findIndex((y) => String(y.k) === String(p.k));
+            const vs = (p.nombres || []).map((nm) => limpio(nm)).join(' vs ');
+            return (
+              <li key={j} className={j === cur ? 'on' : ''}>
+                <button type="button" className="lk-ev-mj-a" aria-current={j === cur ? 'true' : undefined} onClick={() => ir(p.desde)}
+                  title={'Escuchar esta parte (' + mmssE(p.desde) + ')'}>
+                  <small>{rondaTxt(p.r)}</small><span>{vs}</span><em>{mmssE(p.desde)}</em>
+                </button>
+                {k >= 0 ? <button type="button" className="lk-ev-mj-ir" onClick={() => { if (au.current) au.current.pause(); saltar(k, p.origen_desde || 0); }}
+                  aria-label={'La batalla entera: ' + vs + ', desde ' + mmssE(p.origen_desde)} title="Escuchar la batalla entera, desde esta parte">{'Entera ›'}</button> : null}
+              </li>
+            );
+          })}
+        </ol>
+      ) : null}
+    </div>
+  );
+}
+
 // 🎬 EL EVENTO ENTERO (25/11/2026, Dlx: «la competencia completa con todas las rondas, skipeando los vacíos y momentos nada
 // que ver… arriba lo que aparece arriba, abajo el video del evento y abajo las llaves»). Las batallas de la llave en orden
 // —octavos, cuartos, semis, final—, una tras otra: cada audio es una batalla cortada de punta a punta por ULAYA, así que las
 // esperas y lo que se habla entre batalla y batalla no está. Es el mismo reproductor de la batalla (el escenario VS, la letra
 // y los turnos: `AudioBatalla` de video.jsx) y no se guarda nada aparte: son los audios de `reels/audios.json`, 15 días
-const ORDEN_RONDA = { dieciseisavos: 0, octavos: 1, cuartos: 2, semifinales: 3, semifinal: 3, tercer: 4, final: 5 };
-const RONDA_TXT = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', semifinal: 'Semifinal', final: 'Final' };
-function EventoCompleto({ ctx, xs }) {
-  const [i, setI] = useState(0);
-  const [va, setVa] = useState(false);
+// 🏁 Y CON SU RESULTADO (25/11/2026, el #6): oculto por defecto —el evento se escucha como se vivió—, con «Mostrar resultados»
+// recordado en este navegador. Oculto, el de cada batalla aparece solo cuando su audio terminó: en la lista y, al terminar,
+// sobre el escenario (unos segundos, y sigue la próxima)
+const PAUSA_FIN = 6000;
+function EventoCompleto({ ctx, xs, mejor = null }) {
+  const raizR = useRef(null);
+  const escR = useRef(null);
+  const auR = useRef(null);
+  const pedido = useMemo(momentoPedido, []);
+  const i0 = pedido ? xs.findIndex((y) => String(y.k) === pedido.k) : -1;
+  const [i, setI] = useState(i0 >= 0 ? i0 : 0);
+  const [va, setVa] = useState(i0 >= 0);
+  const [desde, setDesde] = useState(i0 >= 0 ? pedido.s : null);
+  const [salto, setSalto] = useState(0);
+  const [ver, setVer0] = useState(resGuardado);
+  const [oidas, setOidas] = useState(() => new Set());
+  const [fin, setFin] = useState(-1);
+  const [dijo, setDijo] = useState('');
+  const setVer = (x) => { setVer0(x); try { localStorage.setItem(L_RES, x ? '1' : '0'); } catch (e) { /* sin almacenamiento */ } };
+  const res = useMemo(() => xs.map((y) => resultadoDe(ctx, y)), [xs, ctx.prin, ctx.votoDe]); // eslint-disable-line react-hooks/exhaustive-deps
+  const clave = (y) => y.ev + '-' + y.k;
+  // 🔗 el link de un momento: baja hasta el escenario (no hasta el título: con «Lo mejor de la noche» arriba, el ▶ quedaba
+  // fuera de la pantalla en el celular)
+  useEffect(() => {
+    if (i0 < 0) return undefined;
+    const t = setTimeout(() => { const e = escR.current || raizR.current; if (e) e.scrollIntoView({ block: 'start' }); }, 250);
+    return () => clearTimeout(t);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // 🔇 un audio a la vez: el de «Lo mejor de la noche» y el del escenario no suenan juntos
+  useEffect(() => {
+    const r = raizR.current;
+    if (!r) return undefined;
+    const uno = (e) => r.querySelectorAll('audio').forEach((a) => { if (a !== e.target && !a.paused) a.pause(); });
+    r.addEventListener('play', uno, true);
+    return () => r.removeEventListener('play', uno, true);
+  }, []);
+  // terminada una batalla con resultado, el cartel queda unos segundos y sigue la próxima
+  useEffect(() => {
+    if (fin < 0 || fin !== i || i + 1 >= xs.length) return undefined;
+    const t = setTimeout(() => { setFin(-1); setDesde(null); setVa(true); setI(i + 1); }, PAUSA_FIN);
+    return () => clearTimeout(t);
+  }, [fin, i, xs.length]);
+  useEffect(() => {
+    if (!dijo) return undefined;
+    const t = setTimeout(() => setDijo(''), 2500);
+    return () => clearTimeout(t);
+  }, [dijo]);
   const x = xs[Math.min(i, xs.length - 1)];
-  if (!x) return null;
+  if (!x && !mejor) return null;
   const total = xs.reduce((s, y) => s + (y.dur || 0), 0);
-  const ronda = (y) => RONDA_TXT[String(y.ronda || '').toLowerCase()] || y.ronda || '';
+  const ronda = (y) => rondaTxt(y.ronda);
   const vs = (y) => (y.nombres || []).map((nm) => limpio(nm)).join(' vs ');
-  const lados = (x.nombres || []).slice(0, 2).map((nm) => ({ n: limpio(nm),
-    cara: caraEscenario(ctx, nm) }));
-  const ir = (j) => { setVa(true); setI(j); };
+  const lados = x ? (x.nombres || []).slice(0, 2).map((nm) => ({ n: limpio(nm), cara: caraEscenario(ctx, nm) })) : [];
+  const ir = (j) => { setFin(-1); setDesde(null); setVa(true); setI(j); };
+  const saltar = (j, s) => {
+    setFin(-1); setDesde(Math.max(0, Math.floor(s || 0))); setVa(true); setI(j); setSalto((z) => z + 1);
+    if (escR.current) escR.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  };
+  const visto = (j) => ver || oidas.has(clave(xs[j]));
+  const terminar = () => {
+    setOidas((o) => new Set(o).add(clave(x)));
+    if (res[i]) setFin(i);
+    else if (i + 1 < xs.length) ir(i + 1);
+  };
+  const hayRes = res.some(Boolean);
+  // 🔗 «Compartir este momento»: esta batalla y este segundo. Como `Compartir` de piezas.jsx: en el celular, el menú de
+  // compartir del teléfono; en la compu, copiado
+  const compartir = async () => {
+    const s = Math.floor((auR.current && auR.current.currentTime) || 0);
+    const url = enlace('#/llave/' + encodeURIComponent(ctx.n) + '?t=' + x.k + '-' + s);
+    const texto = vs(x) + ' · ' + ronda(x) + ', desde el ' + mmssE(s);
+    const tactil = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+    if (navigator.share && tactil) {
+      try { await navigator.share({ title: 'Liga Global', text: texto, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText(url); setDijo('Link copiado'); } catch (e) { setDijo('No pude copiarlo'); }
+  };
+  const cartel = x && fin === i && res[i] ? (
+    <div className="vau-cartel" role="status">
+      <small>{ronda(x) + ' · terminó'}</small>
+      <ResultadoEv res={res[i]} cls="vau-cartel-r" sep={false} />
+      {i + 1 < xs.length ? <button type="button" onClick={() => ir(i + 1)}>{'Siguiente batalla ›'}</button> : null}
+    </div>
+  ) : null;
   return (
-    <section className="sec lk-sec lk-ev" aria-label="El evento entero">
-      <div className="sec-t"><h2>El evento entero</h2><span className="tj-n">{xs.length} {xs.length === 1 ? 'batalla' : 'batallas'} · {Math.max(1, Math.round(total / 60))} min</span></div>
+    <section ref={raizR} className="sec lk-sec lk-ev" aria-label="El evento entero">
+      <div className="sec-t"><h2>El evento entero</h2>{xs.length ? <span className="tj-n">{xs.length} {xs.length === 1 ? 'batalla' : 'batallas'} · {Math.max(1, Math.round(total / 60))} min</span> : null}</div>
       <p className="lk-ev-baj">Batalla tras batalla, de la primera a la final, sin las esperas del medio.</p>
-      <div className="lk-ev-ahora"><b>{ronda(x)}</b> · {vs(x)}<small>{i + 1} de {xs.length}</small></div>
-      <AudioBatalla key={x.ev + '-' + x.k} v={{ audio: x.url, det: x.det || '', lados, sv: (ctx.L && ctx.L.sv) || x.sv, tit: vs(x) + ' · ' + ronda(x) }} auto={va}
-        alEmpezar={() => setVa(true)} alTerminar={() => { if (i + 1 < xs.length) ir(i + 1); }} />
-      <ol className="lk-ev-caps">
-        {xs.map((y, j) => (
-          <li key={y.ev + '-' + y.k}>
-            <button type="button" className={j === i ? 'on' : ''} aria-current={j === i ? 'true' : undefined} onClick={() => ir(j)}>
-              <small>{ronda(y)}</small><span>{vs(y)}</span><em>{Math.floor((y.dur || 0) / 60)}:{String(Math.round((y.dur || 0) % 60)).padStart(2, '0')}</em>
-            </button>
-          </li>
-        ))}
-      </ol>
+      {mejor ? <MejorNoche m={mejor} xs={xs} saltar={saltar} /> : null}
+      {x ? (
+        <>
+          <div className="lk-ev-ahora" ref={escR}><b>{ronda(x)}</b> · {vs(x)}<small>{i + 1} de {xs.length}</small></div>
+          <AudioBatalla key={clave(x) + '-' + salto} v={{ audio: x.url, det: x.det || '', lados, sv: (ctx.L && ctx.L.sv) || x.sv, tit: vs(x) + ' · ' + ronda(x) }} auto={va}
+            desde={desde} auRef={auR} encima={cartel} alEmpezar={() => setVa(true)} alTerminar={terminar} />
+          <div className="lk-ev-bar">
+            {hayRes ? <button type="button" className={'btn borde2 chico lk-ev-sp' + (ver ? ' on' : '')} aria-pressed={ver} onClick={() => setVer(!ver)}>
+              {ver ? 'Ocultar resultados' : 'Mostrar resultados'}</button> : null}
+            <button type="button" className="btn borde2 chico" onClick={compartir}><Ico n="compartir" t={18} /><span>{'Compartir este momento'}</span></button>
+            {dijo ? <span className="lk-ev-dijo" role="status">{dijo}</span> : null}
+          </div>
+          {hayRes && !ver ? <p className="lk-ev-nota">Sin spoilers: el resultado de cada batalla aparece cuando termina de sonar.</p> : null}
+          <ol className="lk-ev-caps">
+            {xs.map((y, j) => (
+              <li key={clave(y)}>
+                <button type="button" className={j === i ? 'on' : ''} aria-current={j === i ? 'true' : undefined} onClick={() => ir(j)}>
+                  <small>{ronda(y)}</small><span>{vs(y)}</span><em>{mmssE(y.dur)}</em>
+                  {res[j] && visto(j) ? <ResultadoEv res={res[j]} /> : null}
+                </button>
+              </li>
+            ))}
+          </ol>
+        </>
+      ) : null}
     </section>
   );
 }
@@ -1799,9 +1993,13 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const Mm = useModsEstado();
   const arch = useArchivo();   // 🎬 los shorts de la Liga (`ShortB`); una llave en vivo no tiene, su número es `v:…`
   const auds = useArchivo(true, true);   // 🎧 y sus batallas enteras en audio
+  // ✨ «Lo mejor de la noche» (25/11/2026, el #5) no es una batalla: afuera de la lista, del ▶ de cada batalla y del paso
+  // de una a otra; va aparte, arriba del evento entero
+  const audsB = useMemo(() => auds.filter((x) => !esMejor(x)), [auds]);
+  const evMejor = useMemo(() => auds.find((x) => esMejor(x) && String(x.ll) === String(n0) && x.url) || null, [auds, n0]);
   // 🎬 las de ESTA llave, en el orden en que se jugaron: por ronda y, adentro, como las dejó el guion de ULAYA
-  const evAud = useMemo(() => auds.filter((x) => String(x.ll) === String(n0)).sort((a, b) =>
-    ((ORDEN_RONDA[String(a.ronda || '').toLowerCase()] ?? 9) - (ORDEN_RONDA[String(b.ronda || '').toLowerCase()] ?? 9)) || a.k - b.k), [auds, n0]);
+  const evAud = useMemo(() => audsB.filter((x) => String(x.ll) === String(n0)).sort((a, b) =>
+    ((ORDEN_RONDA[String(a.ronda || '').toLowerCase()] ?? 9) - (ORDEN_RONDA[String(b.ronda || '').toLowerCase()] ?? 9)) || a.k - b.k), [audsB, n0]);
   // ✎ ¿los lápices de Mods valen acá? Dlx, o Admin y Moderador de la página (`liga` de `socio-roles`, 20/11/2026)
   const [puedeLapiz, setPuedeLapiz] = useState(false);
   useEffect(() => {
@@ -2104,7 +2302,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const ctx = Object.assign({}, base, {
     liga, L, n, sigo, seguir, anim, compu,
     shortDe: arch.length ? (ls) => deBatalla(arch, n, ls) : null,
-    audioDe: auds.length ? (ls) => deBatalla(auds, n, ls) : null,
+    audioDe: audsB.length ? (ls) => deBatalla(audsB, n, ls) : null,
     lapiz: lapices ? (ronda, lados) => window.dispatchEvent(new CustomEvent('lg:llave-lapiz', { detail: { n: String(n), ronda, lados } })) : null,
     // 🅰️ el remake A (18/11/2026): las filas de la llave con caras, nota y votos (`Lado`, `compacta()`)
     caras: true, elegir: (id) => setSigo(id || ''),
@@ -2289,7 +2487,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       </div>
 
       {/* 🎬 el evento entero, entre lo de arriba y las llaves (Dlx, 25/11/2026). Sin sus audios (más de 15 días, o no se grabó), nada */}
-      {!enVivo && evAud.length ? <EventoCompleto ctx={ctx} xs={evAud} /> : null}
+      {!enVivo && (evAud.length || evMejor) ? <EventoCompleto ctx={ctx} xs={evAud} mejor={evMejor} /> : null}
 
       {/* 🎨 LAS PESTAÑAS, SOBRE LA PIEL (Dlx, 03/10/2026: el escenario negro arriba y el cuadro sobre la piel, con las
           casillas encima; «ni toda blanca ni toda negra»). Su fondo, el de su servidor si quien mira no eligió un tema

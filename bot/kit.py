@@ -1087,6 +1087,44 @@ def _mitades_html(v):
     return out
 
 
+_INV_CARTAS = []
+_ES_DE_SV = re.compile(r'/(servidor|sv-[a-z0-9]+)\.webp')
+
+
+def _inventario_cartas():
+    """`datos/cartas_r2.json` (qué cartas tiene cada uno en R2), leído una vez."""
+    if not _INV_CARTAS:
+        try:
+            _INV_CARTAS.append(json.load(io.open(os.path.join(BASE, 'datos', 'cartas_r2.json'), encoding='utf-8')))
+        except (OSError, ValueError):
+            _INV_CARTAS.append({})
+    return _INV_CARTAS[0]
+
+
+def igualar_cartas(v, inv=None):
+    """🃏 EN UN VS, TODOS CON LA MISMA CLASE DE CARTA (Dlx, 23/11/2026: «si el servidor no tiene tarjetas de servidor, que
+    muestre las competitivas, pero si no todos tienen la competitiva, la de temporada para todos»; «para todos los fondos en
+    general de los tier 3»). `cartaDe()` de avisos.js elige persona por persona, así que un VS podía juntar la carta de
+    servidor de uno con la de temporada del otro: dos cartas que miden cosas distintas, una al lado de la otra.
+
+    · si TODOS traen la de ese servidor (`servidor.webp` o `sv-<sv>.webp`), se quedan así;
+    · si no —el servidor no tiene cartas, como los tier 3, o a alguno le falta—, la competitiva si TODOS la tienen;
+    · si no, la de temporada para todos (quien no la tenga sale con la silueta, como siempre).
+    Devuelve una copia: lo que guardó el objeto no se toca."""
+    v = json.loads(json.dumps(v))
+    gente = [y for g in v['grupos'] for y in g] if v.get('grupos') else [v.get('a'), v.get('b')]
+    gente = [y for y in gente if isinstance(y, dict)]
+    if not gente or all(_ES_DE_SV.search(str(y.get('carta') or '')) for y in gente):
+        return v
+    inv = _inventario_cartas() if inv is None else inv
+    clase = 'competitivo' if all(y.get('k') and 'competitivo' in (inv.get(y['k']) or {}) for y in gente) else 'temporada'
+    for y in gente:
+        u = (inv.get(y.get('k')) or {}).get(clase, '') if y.get('k') else ''
+        # el inventario se arma en el ciclo: si todavía no la tiene pero el objeto ya mandó esa misma clase, vale
+        y['carta'] = u or (y.get('carta') if '/%s.webp' % clase in str(y.get('carta') or '') else '')
+    return v
+
+
 def html_vs(v, d):
     """🖼️ EL VS (Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a
     las dos formas, «B»: una imagen armada). `v` es lo que guardó el objeto (`vsEncolar()` en avisos.js): `{ev, ronda,
@@ -1103,6 +1141,9 @@ def html_vs(v, d):
 
     🏁 CON `gano` ('a' o 'b') ES LA IMAGEN DEL RESULTADO (`vsResultado()`): arriba «X PASA», el que perdió en gris y el
     cara a cara ya sumado. Reemplaza a la de antes en el mismo mensaje."""
+    # 🃏 la misma clase de carta para todos (ver `igualar_cartas()`); la de liga (`html_vs_liga()`, sin `sv`) va aparte
+    if d.get('sv'):
+        v = igualar_cartas(v)
     # 🧩 los otros formatos (2v2, 1v3, 1v1v1…): su propio armado, con todas las tarjetas
     if v.get('grupos'):
         return html_vs_grupos(v, d)
@@ -1631,6 +1672,19 @@ def _self_check():
          and prob_vs({'ovr': 92}, {'ovr': 0}) is None and prob_vs({'ovr': 99, 'sc': 95}, {'ovr': 40, 'sc': 5})[0] == 97
          and '??' in vs and 'Sin datos de uno' in vs
          and 'width:64%' in html_vs({'a': {'n': 'A', 'ovr': 92}, 'b': {'n': 'B', 'ovr': 82}}, d)),
+        ('en un VS todos llevan la MISMA clase de carta (Dlx, 23/11): la de servidor si todos la traen; si no, la competitiva '
+         'si todos la tienen; si no, la de temporada para todos. La de liga no se toca',
+         (lambda inv: (
+             igualar_cartas({'a': {'k': 'a', 'carta': 'r/a/servidor.webp'}, 'b': {'k': 'b', 'carta': 'r/b/sv-frz.webp'}}, inv)
+             ['b']['carta'] == 'r/b/sv-frz.webp'
+             and igualar_cartas({'a': {'k': 'a', 'carta': 'r/a/servidor.webp'}, 'b': {'k': 'b', 'carta': 'r/b/temporada.webp'}}, inv)
+             ['a']['carta'] == 'C/a' == igualar_cartas({'a': {'k': 'a', 'carta': 'r/a/servidor.webp'},
+                                                        'b': {'k': 'b', 'carta': 'r/b/temporada.webp'}}, inv)['a']['carta']
+             and igualar_cartas({'grupos': [[{'k': 'a', 'carta': 'r/a/temporada.webp'}], [{'k': 'c', 'carta': 'r/c/servidor.webp'}]]},
+                                inv)['grupos'][1][0]['carta'] == 'T/c'
+             and igualar_cartas({'a': {'k': 'a'}, 'b': {'k': 'z', 'carta': 'r/z/temporada.webp'}}, inv)['b']['carta'] == 'r/z/temporada.webp'))(
+             {'a': {'competitivo': 'C/a', 'temporada': 'T/a'}, 'b': {'competitivo': 'C/b', 'temporada': 'T/b'},
+              'c': {'temporada': 'T/c', 'servidor': 'S/c'}})),
         ('los otros formatos (2v2, 1v3, 8v1, todos contra todos): cada lado con sus tarjetas, un VS entre lados (uno grande '
          'con dos, uno chico entre cada uno con más), la silueta para quien no tiene, y su pronóstico debajo',
          html_vs({'grupos': [[{'n': 'A', 'carta': 'https://pub-x.r2.dev/a.webp'}], [{'n': 'B', 'ovr': 70}, {'n': 'C'}, {'n': 'D'}]]}, d)

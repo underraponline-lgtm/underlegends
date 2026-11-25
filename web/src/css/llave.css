@@ -541,3 +541,35 @@
 .lk-ev-caps button em{font-style:normal;color:var(--gris);font-size:12px}
 .lk-ev-caps button.on{border-color:#E41373;box-shadow:inset 3px 0 0 #E41373}
 .lk-ev-caps button:hover{border-color:currentColor}
+/* 🏁 el resultado de cada batalla, sin spoilers por defecto, y el link de un momento (25/11/2026, Dlx: «Todas», el #6 y el #7) */
+.lk-ev-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.lk-ev-sp.on{border-color:var(--tinta)}
+.lk-ev-dijo{font:800 13px/1 Archivo,sans-serif;color:var(--verde)}
+.lk-ev-nota{margin:0;color:var(--gris);font-size:13px}
+.lk-ev-caps .lk-ev-res{grid-column:1/-1;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px;padding-top:6px;border-top:1px solid var(--suave);
+  font:600 12px/1.3 Archivo,sans-serif;font-style:normal;color:var(--tinta);animation:lk-ev-res 220ms cubic-bezier(.23,1,.32,1)}
+.lk-ev-res b{font-weight:900;color:var(--verde)}
+.lk-ev-res strong{font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+.lk-ev-caps .lk-ev-res small{font:600 12px/1.3 Archivo,sans-serif;letter-spacing:0;text-transform:none;color:var(--gris)}
+@keyframes lk-ev-res{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.lk-ev-caps .lk-ev-res{animation:none}}
+/* ✨ «Lo mejor de la noche» (25/11/2026, el #5): chico, arriba del escenario; cada parte lleva a su batalla entera */
+.lk-ev-mj{display:flex;flex-direction:column;gap:10px;padding:12px;border:2px solid var(--linea);border-radius:2px}
+.lk-ev-mj-t{font:600 15px/1.2 Archivo,sans-serif}
+.lk-ev-mj-t b{font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.lk-ev-mj-t small{color:var(--gris);font-size:13px}
+.lk-ev-mj audio{display:block;width:100%}
+.lk-ev-mj-p{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:6px}
+.lk-ev-mj-p li{display:flex;gap:6px;min-width:0}
+.lk-ev-mj-a,.lk-ev-mj-ir{min-height:44px;background:transparent;border:1px solid var(--linea);border-radius:2px;color:inherit;cursor:pointer}
+.lk-ev-mj-a{flex:1 1 auto;min-width:0;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 10px;
+  text-align:left;font:500 13px/1.25 Archivo,sans-serif}
+.lk-ev-mj-a small{font:800 10px/1 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.lk-ev-mj-a span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-ev-mj-a em{font-style:normal;color:var(--gris);font-size:12px;font-variant-numeric:tabular-nums}
+.lk-ev-mj-p li.on .lk-ev-mj-a{border-color:#E41373;box-shadow:inset 3px 0 0 #E41373}
+.lk-ev-mj-ir{flex:none;padding:0 10px;font:800 11px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;color:var(--gris)}
+@media (hover: hover) and (pointer: fine){.lk-ev-mj-a:hover,.lk-ev-mj-ir:hover{border-color:currentColor}}
+.lk-ev-mj-a:focus-visible,.lk-ev-mj-ir:focus-visible{outline:2px solid #E41373;outline-offset:2px}
+/* 📱 chico de verdad: las partes, en una caja de ~4 filas que se desliza (la lista entera empujaba el escenario una pantalla) */
+@media (max-width: 599.98px){.lk-ev-mj-p{grid-template-columns:minmax(0,1fr);max-height:206px;overflow-y:auto;overscroll-behavior:contain}}

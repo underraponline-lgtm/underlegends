@@ -116,7 +116,7 @@ const subsGuardados = () => { try { return localStorage.getItem(L_SUBS) !== '0';
 // 🎤 EL ESCENARIO: lo dibuja la página en vivo sobre el audio (no hay video guardado). Las dos tarjetas frente a frente
 // (`v.lados`, `[{n, cara}]` de quien abre: la llave), el que rapea encendido según los turnos y su tarjeta latiendo con su voz,
 // el fondo del VS de su servidor y el renglón que suena como subtítulo
-function Escenario({ v, D, t, cur, subs, setSubs, escRef }) {
+function Escenario({ v, D, t, cur, subs, setSubs, escRef, encima = null }) {
   const fondo = useFondoVs(v.sv);
   const lados = (v.lados || []).slice(0, 2);
   if (lados.length < 2) return null;
@@ -139,6 +139,7 @@ function Escenario({ v, D, t, cur, subs, setSubs, escRef }) {
         <button type="button" className={'vau-cc' + (subs ? ' on' : '')} aria-pressed={subs} onClick={() => setSubs(!subs)}
           title={subs ? 'Quitar los subtítulos (son automáticos: pueden tener errores)' : 'Poner los subtítulos'}>CC</button>
       ) : null}
+      {encima}
     </div>
   );
 }
@@ -156,9 +157,22 @@ function rondasDe(turnos) {
 }
 
 /** `alTerminar` y `auto` (25/11/2026): el evento entero de la llave (`EventoCompleto` de llave.jsx) la reusa batalla tras
- *  batalla; en la ventana, suena sola al abrirse como siempre. `v.sv` es el servidor (su fondo del VS) */
-export function AudioBatalla({ v, alTerminar = null, auto = true, alEmpezar = null }) {
+ *  batalla; en la ventana, suena sola al abrirse como siempre. `v.sv` es el servidor (su fondo del VS)
+ *  🔗 `desde` (25/11/2026, Dlx: «Todas», el #7 «compartir este momento»): arranca en ese segundo. Un link que abre otro
+ *  navegador no tiene un toque de quien mira, así que el navegador puede no dejarlo sonar solo: entonces un ▶ grande sobre
+ *  el escenario, «Escuchar desde 1:23», en vez de un reproductor quieto que no dice nada. `auRef` deja leer el segundo que
+ *  suena (para el link) y `encima` es lo que se dibuja sobre el escenario (el resultado al terminar, el #6) */
+export function AudioBatalla({ v, alTerminar = null, auto = true, alEmpezar = null, desde = null, auRef = null, encima = null }) {
   const au = useRef(null);
+  const [bloq, setBloq] = useState(false);
+  useEffect(() => { if (auRef) auRef.current = au.current; });
+  const conDesde = desde != null && desde >= 0;
+  const alCargar = () => {
+    const a = au.current;
+    if (!a || !conDesde) return;
+    if (desde > 0 && (!a.duration || desde < a.duration)) a.currentTime = desde;
+    if (auto) a.play().catch(() => setBloq(true));
+  };
   const esc = useRef(null);
   const [D, setD] = useState(null);
   const [t, setT] = useState(0);
@@ -177,12 +191,21 @@ export function AudioBatalla({ v, alTerminar = null, auto = true, alEmpezar = nu
   const calor = (D && D.calor) || [];
   const rondas = rondasDe(D && D.turnos);
   const rondaAhora = rondas.filter((s) => s <= t + 0.2).length - 1;
+  const play = bloq ? (
+    <button type="button" className="vau-play" onClick={() => { const a = au.current; if (a) a.play().catch(() => {}); }}>
+      <span aria-hidden="true">▶</span>{'Escuchar desde '}{mmss(desde || 0)}
+    </button>
+  ) : null;
+  const sobre = play || encima ? <>{encima}{play}</> : null;
+  const conEsc = (v.lados || []).length >= 2;
   return (
     <div className="vid-audio">
-      <Escenario v={v} D={D} t={t} cur={cur} subs={subs} setSubs={setSubs} escRef={esc} />
-      <audio ref={au} src={v.audio} title={v.tit || 'Audio'} controls autoPlay={auto} crossOrigin="anonymous"
+      <Escenario v={v} D={D} t={t} cur={cur} subs={subs} setSubs={setSubs} escRef={esc} encima={sobre} />
+      {!conEsc && sobre ? <div className="vau-sobre">{sobre}</div> : null}
+      <audio ref={au} src={v.audio} title={v.tit || 'Audio'} controls autoPlay={auto && !conDesde} crossOrigin="anonymous"
+        onLoadedMetadata={alCargar}
         onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
-        onPlay={() => { vol.arrancar(); if (alEmpezar) alEmpezar(); }} onPause={vol.parar}
+        onPlay={() => { setBloq(false); vol.arrancar(); if (alEmpezar) alEmpezar(); }} onPause={vol.parar}
         onEnded={() => { vol.parar(); if (alTerminar) alTerminar(); }} />
       {calor.length > 2 ? (
         <div className="vau-calor" role="group" aria-label="Dónde reaccionó la llamada: toca para ir ahí">
