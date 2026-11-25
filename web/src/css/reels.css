@@ -389,3 +389,10 @@
 .rls-cv-l.cel .rls-gf-t{margin-bottom:6px}
 .rls-cel .rls-cl{padding:4px 0}
 @media (prefers-reduced-motion: reduce){.rls-cl,.rls-pc-vuelve{transition:none}.rls-cl:active,.rls-pc-vuelve:active{transform:none}}
+
+/* ⏱️ «Cortos | Largos» en la cabecera de la lista: el mismo selector, chico, y el total a la derecha */
+.rls-gf-t .rls-sv.chico{margin-left:auto;border-width:2px;border-color:#3A3A40}
+.rls-gf-t .rls-sv.chico button{min-height:30px;padding:0 9px;font-size:14px;color:#F6F6F6;text-shadow:none}
+.rls-gf-t .rls-sv.chico button.on{background:#F6F6F6;color:#030304}
+.rls-gf-t .rls-sv.chico + small{margin-left:8px}
+.rls-cl-tx small.visto{color:#A5A5A0;font-style:italic}

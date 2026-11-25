@@ -39,6 +39,18 @@ export function bajarHistoria() {
 }
 export const historiaLista = () => (pedidoH && pedidoH.listo) || null;
 
+// 🎞️ los videos de los canales del Ranking global (25/11/2026, bot/global_fuente_clips.py): cortos (hasta `corte`
+// segundos) y largos, [id, canal, [claves que nombra], título, segundos]. Lo piden Reels y el buscador: un solo pedido
+let pedidoC = null;
+export function bajarClips() {
+  if (!pedidoC) {
+    pedidoC = fetch('/global_clips.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+      .then((d) => { pedidoC.listo = d; return d; });
+  }
+  return pedidoC;
+}
+export const clipsListos = () => (pedidoC && pedidoC.listo) || null;
+
 // 🏆 LAS COMPETENCIAS (24/11/2026, Dlx: «agregar a las ligas de FMS, competencias así fuertes, como historias o perfiles
 // también»): FMS España, Red Bull Batalla Chile, God Level… Cada una sale de juntar los podios de la carrera de cada uno
 // (`global_historia.json`: [puesto, competencia, edición, fase, en duda]) y los eventos de la T1 del Ranking global cuyo

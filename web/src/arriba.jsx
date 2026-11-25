@@ -21,7 +21,7 @@ import { escenaDe } from './fondos.js';
 import { PreguntaCab } from './comofunciona.jsx';
 import { alExtras, cargarExtras, hayPista, precargar } from './beats.js';
 import { HistoriaCtx } from './historia_ctx.js';
-import { bajarGlobal, bajarHistoria, globalListo, historiaLista, indiceCompetencias } from './global_datos.js';
+import { bajarClips, bajarGlobal, bajarHistoria, clipsListos, globalListo, historiaLista, indiceCompetencias } from './global_datos.js';
 import { siluetaDe } from './sin_foto.js';
 
 // 🧭 EL ORDEN, EL DEL MENÚ DE ARRIBA AGRUPADO (12/11/2026, ver `GRUPOS`): lo que va suelto arriba, primero, y después lo
@@ -182,8 +182,15 @@ function Marca({ liga }) {
 // ── el buscador: raperos, y también servidores, países y crews (Dlx, 01/10/2026: «sí», la E). Primero lo que es
 // exactamente lo buscado, después lo que empieza así y al final lo que lo contiene; a igual coincidencia, raperos
 // primero. Vive arriba en la computadora y en el menú ☰ en el celular, donde arriba no entra
-const TIPOS = { rapero: 0, global: 0.5, servidor: 1, pais: 2, crew: 3, competencia: 3.5, pagina: 4, evento: 5 };
-const ETIQUETA_TIPO = { rapero: 'rapero', global: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', competencia: 'competencia', pagina: 'página', evento: 'evento' };
+const TIPOS = { rapero: 0, global: 0.5, servidor: 1, pais: 2, crew: 3, competencia: 3.5, pagina: 4, evento: 5, video: 6, pub: 7 };
+const ETIQUETA_TIPO = { rapero: 'rapero', global: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew', competencia: 'competencia', pagina: 'página', evento: 'evento', video: 'video', pub: 'publicación' };
+// 📰 EL TÍTULO DE CADA PUBLICACIÓN DEL MURO, para buscarla (25/11/2026, Dlx: «que me deje buscar videos que estén ahí, publicaciones
+// etc»). Lo que dice la tarjeta en Publicaciones, corto: qué pasó; quién y dónde van en el texto que se busca
+const PUB_TIT = { campeon: 'Campeón', podio: (it) => it.puesto || 'Podio', rango: (it) => 'Rango ' + (it.rg || ''), tarjeta: (it) => 'Tarjeta de ' + (it.carta || ''),
+  caza: 'Cacería', pase: (it) => 'Pase · nivel ' + (it.nivel || ''), racha: (it) => 'Racha de ' + (it.racha || ''), crewnueva: 'Crew nueva', crewunion: 'Se unió a una crew',
+  anuncio: 'Anuncio', promo: 'Promo', liga: 'La Liga', svnuevo: 'Servidor nuevo', svtier: 'Sube de tier', svrecord: 'Récord del servidor', svtop: 'El mejor del servidor',
+  svsemana: 'La semana del servidor', svlunes: 'El lunes del servidor', svmeta: 'La meta del servidor', svchat: 'El chat del servidor', resnoche: 'La noche' };
+const nombresPub = (it) => (Array.isArray(it.quien) ? it.quien : []).map((q) => limpio(Array.isArray(q) ? q[0] : q)).filter(Boolean);
 // 🌎 el grupo de cada uno en el Ranking global (los mismos nombres que global.jsx)
 const GRUPO_GLOBAL = { pro: 'Pro', plaza: 'Under', liga: 'Liga' };  // «Under» (Dlx, 25/11/2026), como GRUPO de global.jsx
 // 🔎 «QUE TE DEJE BUSCAR CUALQUIER COSA» (Dlx, 13/11/2026): también las páginas (las del menú, cada ranking y lo de tu
@@ -201,7 +208,7 @@ const normAka = (s) => norm(s).replace(/[^\p{L}\p{N}]/gu, '');
 // 🔎 EL BUSCADOR CON EJEMPLOS (Dlx, 19/10/2026, «me gustan todas», a «Command Search» de 21st): mientras está vacío, el
 // placeholder va mostrando qué se puede buscar, uno por vez. Sin tipeo letra por letra: en el celular cansa, y con
 // «Menos animaciones» se queda en el primero
-const EJEMPLOS = ['Busca un rapero…', 'Busca un servidor…', 'Busca una crew…', 'Busca un país…', 'Buscar en la Liga'];
+const EJEMPLOS = ['Busca un rapero…', 'Busca un servidor…', 'Busca una crew…', 'Busca un video…', 'Busca una publicación…', 'Buscar en la Liga'];
 function useEjemplo(activo) {
   const [i, setI] = useState(0);
   useEffect(() => {
@@ -256,6 +263,62 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     bajarGlobal().then((d) => { if (vivo && d && Array.isArray(d.g)) setGlob(d); }, () => {});
     return () => { vivo = false; };
   }, [q, glob]);
+  // 🎞️ los videos de los canales (cortos y largos), la primera vez que se escribe: el mismo pedido que usa Reels
+  const [clips, setClips] = useState(clipsListos);
+  useEffect(() => {
+    if (clips || q.trim().length < 2) return undefined;
+    let vivo = true;
+    bajarClips().then((d) => { if (vivo && d && Array.isArray(d.c)) setClips(d); });
+    return () => { vivo = false; };
+  }, [q, clips]);
+  // 🎬 TODOS LOS VIDEOS, PARA BUSCARLOS (25/11/2026): los shorts de cada uno (`vs` de /global.json), los videos de los canales
+  // (/global_clips.json) y las batallas enteras del Ranking global (`v`). Cada uno abre Reels con ese video
+  // (`#/reels/<id>`): un short, en su lugar del feed; lo demás, en el centro en horizontal
+  const videos = useMemo(() => {
+    const out = [];
+    const ya = new Set();
+    const nom = new Map();
+    const pone = (vid, n, sub, extra) => {
+      if (!vid || ya.has(vid) || !n) return;
+      ya.add(vid);
+      out.push({ tipo: 'video', id: 'v' + vid, vid, n: limpio(n), sub, href: '#/reels/' + vid, busca: extra });
+    };
+    if (glob && Array.isArray(glob.g)) {
+      const cs = glob.cs || [];
+      glob.g.forEach((g) => { if (g && g.k) nom.set(g.k, limpio(g.n)); });
+      glob.g.forEach((g) => {
+        (g.vs || []).forEach((v) => pone(v[0], v[3] || nom.get(g.k), 'Short · ' + (cs[v[1]] || ''), [nom.get(g.k), ...(v[2] || []).map((k) => nom.get(k))].join(' ')));
+      });
+    }
+    if (clips && Array.isArray(clips.c)) {
+      const cs = clips.cs || [];
+      const corte = clips.corte || 300;
+      clips.c.forEach(([vid, ci, ks, t, seg]) => {
+        const m = Math.floor(seg / 60) + ':' + String(seg % 60).padStart(2, '0');
+        pone(vid, t, (seg > corte ? 'Video largo' : 'Video') + ' · ' + m + ' · ' + (cs[ci] || ''), (ks || []).map((k) => nom.get(k)).join(' ') + ' ' + (cs[ci] || ''));
+      });
+    }
+    if (glob && Array.isArray(glob.g)) {
+      const ev = glob.ev || [];
+      glob.g.forEach((g) => {
+        (g.v || []).forEach((v) => {
+          if (v[4]) return;
+          const e = ev[v[1]] || [];
+          pone(v[0], nom.get(g.k) + ' vs ' + String(v[2] || '').toUpperCase(), 'Batalla · ' + limpio(e[1] || ''), limpio(e[1] || ''));
+        });
+      });
+    }
+    return out;
+  }, [glob, clips]);
+  // 📰 las publicaciones del muro (las mismas de la página Publicaciones), cada una con su link
+  const pubs = useMemo(() => (liga.muro || []).filter((it) => it && it.id && PUB_TIT[it.tipo] !== undefined).map((it) => {
+    const tit = typeof PUB_TIT[it.tipo] === 'function' ? PUB_TIT[it.tipo](it) : PUB_TIT[it.tipo];
+    const ns = nombresPub(it);
+    const donde = limpio(it.ev || it.nombre || it.tit || it.de || '');
+    const n = ns.length ? tit + ': ' + ns.slice(0, 3).join(', ') : (it.tipo === 'liga' || it.tipo === 'promo' ? limpio(it.tit || tit) : tit);
+    return { tipo: 'pub', id: 'b' + it.id, n, sub: [donde !== n ? donde : '', it.sv ? siglaDe(it.sv) : ''].filter(Boolean).join(' · ') || 'Publicación',
+      href: '#/publicaciones/' + it.id, busca: [ns.join(' '), donde, it.sv || '', it.sv ? siglaDe(it.sv) : '', it.crew || '', it.a || ''].join(' ') };
+  }), [liga]);
   // 🏆 y las competencias (24/11/2026): FMS España, Red Bull Batalla Chile… de la carrera de cada uno (global_datos.js)
   const [hist, setHist] = useState(historiaLista);
   useEffect(() => {
@@ -329,6 +392,12 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     }
     deGlobal.forEach((r) => { const x = nota(r.n); if (x < 9) todo.push({ ...r, x }); });
     comps.forEach((r) => { const x = nota(r.n); if (x < 9) todo.push({ ...r, x }); });
+    // los videos y las publicaciones: después de la gente y los lugares con la misma coincidencia (+0.5), y por lo que dice
+    // su título o por quién sale
+    if (t.length >= 2) {
+      videos.forEach((r) => { const x = nota(r.n, r.busca || ''); if (x < 9) todo.push({ ...r, x: x + 0.5 }); });
+      pubs.forEach((r) => { const x = nota(r.n, r.busca || ''); if (x < 9) todo.push({ ...r, x: x + 0.5 }); });
+    }
     Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || siglaDe(s.sv)), sub: siglaDe(s.sv), href: '#/sv/' + siglaDe(s.sv), logo: liga.logo(s.sv),
       x: nota(s.sv, siglaDe(s.sv), s.nombre || '') }));
     (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
@@ -355,15 +424,23 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
         evVistos.add(id);
         todo.push({ tipo: 'evento', id: 'e' + id, n, sub: siglaDe(e.sv), href: '#/eventos', logo: e.sv ? liga.logo(e.sv) : '', x: nota(n) + 0.5 });
       });
-    return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, sugerencias ? 40 : 8);
-  }, [q, liga, todos, deGlobal, comps, sugerencias]);
+    // ⚠️ el tope va POR TIPO de los videos y publicaciones: «mecha» trae decenas de videos, y con un tope común se comían
+    // los cupos de los servidores, crews y páginas
+    const orden = todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n));
+    const tope = sugerencias ? 40 : 8;
+    const resto = orden.filter((r) => r.tipo !== 'video' && r.tipo !== 'pub');
+    const extra = sugerencias ? orden.filter((r) => r.tipo === 'video').slice(0, 30).concat(orden.filter((r) => r.tipo === 'pub').slice(0, 20))
+      : orden.filter((r) => r.tipo === 'video' || r.tipo === 'pub').slice(0, Math.max(2, tope - resto.length));
+    return resto.slice(0, tope).concat(extra).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, sugerencias ? 90 : tope);
+  }, [q, liga, todos, deGlobal, comps, videos, pubs, sugerencias]);
   const ir = (r) => { if (r && r.href) guardarRec(r); setQ(''); if (onIr) onIr(); };
   // 🔔 en la barra de arriba, los resultados con el estilo de la campana: filtros por tipo y una fila por resultado
   const [cat, setCat] = useState('todo');
-  const catR = (r) => (r.tipo === 'global' ? 'rapero' : r.tipo === 'rapero' || r.tipo === 'servidor' || r.tipo === 'crew' ? r.tipo : 'mas');
+  const catR = (r) => (r.tipo === 'global' ? 'rapero' : r.tipo === 'rapero' || r.tipo === 'servidor' || r.tipo === 'crew' || r.tipo === 'video' || r.tipo === 'pub' ? r.tipo : 'mas');
   const cuentaR = { todo: res.length };
   res.forEach((r) => { cuentaR[catR(r)] = (cuentaR[catR(r)] || 0) + 1; });
-  const resVer = sugerencias ? res.filter((r) => cat === 'todo' || catR(r) === cat).slice(0, 10) : res;
+  // en «Todo», diez; en un filtro, todo lo de ese tipo (hasta 30 videos y 20 publicaciones)
+  const resVer = sugerencias ? res.filter((r) => cat === 'todo' || catR(r) === cat).slice(0, cat === 'todo' ? 10 : 30) : res;
   // ⚠️ se cierra al tocar afuera y al cambiar de página: quedaba abierto encima de la siguiente (revisión del 03/10/2026)
   const caja = useRef(null);
   useEffect(() => {
@@ -379,6 +456,8 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
     if (r.tipo === 'pais') return <span className="cara"><img alt="" src={'/banderas/g/' + r.cc + '.webp'} /></span>;
     if (r.tipo === 'competencia') return <span className="cara br-ico"><Ico n="copa" t={16} /></span>;
+    if (r.tipo === 'video') return <span className="cara bs-vid"><img alt="" loading="lazy" src={'https://i.ytimg.com/vi/' + r.vid + '/mqdefault.jpg'} /></span>;
+    if (r.tipo === 'pub') return <span className="cara br-ico"><Ico n="novedades" t={16} /></span>;
     // 🎤 los del Ranking global sin foto, con la silueta de rapero de las cartas (sin_foto.js, 25/11/2026)
     if (r.tipo === 'global') return <span className={'cara' + (r.ft ? '' : ' sil')}><img alt="" src={r.ft || siluetaDe(r.n)} loading="lazy" /></span>;
     if (r.tipo === 'pagina') return <span className="cara br-ico"><Ico n={r.ico || 'flecha'} t={16} /></span>;
@@ -389,7 +468,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     <div className="buscar-w" ref={caja}>
       <label className="buscar">
         <Ico n="buscar" t={18} />
-        <input type="search" placeholder={ejemplo} aria-label="Buscar raperos, servidores, países, crews, páginas y eventos" value={q} onChange={(e) => setQ(e.target.value)}
+        <input type="search" placeholder={ejemplo} aria-label="Buscar raperos, servidores, países, crews, páginas, eventos, videos y publicaciones" value={q} onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && resVer[0]) { location.hash = resVer[0].href; ir(resVer[0]); } if (e.key === 'Escape') setQ(''); }} />
       </label>
       {res.length && sugerencias ? (
@@ -418,7 +497,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
 // 🔔 CON EL ESTILO DE LA CAMPANA (13/11/2026, Dlx: «me gusta bastante el estilo de notificaciones, ¿podrías hacer que eso
 // tenga la barra de búsqueda algo así?»): las mismas piezas `.nt-*` —la tira de lo de hoy, los títulos de sección y una
 // fila por resultado con su cara, la esquinita de qué es y lo que dice al costado—
-const FILTROS_BUSCA = [['todo', 'Todo'], ['rapero', 'Raperos'], ['servidor', 'Servidores'], ['crew', 'Crews'], ['mas', 'Más']];
+const FILTROS_BUSCA = [['todo', 'Todo'], ['rapero', 'Raperos'], ['video', 'Videos'], ['pub', 'Publicaciones'], ['servidor', 'Servidores'], ['crew', 'Crews'], ['mas', 'Más']];
 const ICO_TIPO = { servidor: 'servidor', pais: 'mundo', crew: 'crews', pagina: 'flecha', evento: 'eventos' };
 function subBusca(liga, r) {
   if (r.tipo === 'rapero') {

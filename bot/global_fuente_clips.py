@@ -49,9 +49,13 @@ ET = zoneinfo.ZoneInfo('America/New_York')
 PAUSA = 1.0          # ~1 pedido por segundo, como global_fuente_youtube.py
 PAGINAS = 2          # la primera y una continuación: ~60 videos por canal
 MIN_SEG = 20         # menos es un corte suelto o un anuncio
-MAX_SEG = 5 * 60     # Dlx, 25/11/2026: «5 minutos»
+MAX_SEG = 5 * 60     # Dlx, 25/11/2026: «5 minutos» (los «cortos»)
+#: los «largos» (Dlx, 25/11/2026, a la 8.21: «déjame cambiar entre videos cortos y videos largos»): hasta una hora. Más es
+#: una jornada entera de FMS o un directo de tres horas, que no es «un video» para ver en Reels
+MAX_LARGO = 60 * 60
 GUARDAR = 3000       # cuántos se guardan como mucho (los más nuevos)
-EN_LA_WEB = 400      # cuántos viajan a la página (los más nuevos que nombran a alguien)
+EN_LA_WEB = 400      # cuántos cortos viajan a la página (los más nuevos que nombran a alguien)
+LARGOS_WEB = 300     # y cuántos largos
 _HORA = re.compile(r'^(?:(\d{1,2}):)?(\d{1,2}):(\d{2})$')
 #: «JUASMIO X ZIGNOS VS RIDOR X ZOO»: la x suelta junta a dos del mismo lado
 _JUNTA = re.compile(r'(?:^| )x(?: |$)')
@@ -121,6 +125,11 @@ def cortos(xs):
     return [x for x in xs if x[2] is not None and MIN_SEG <= x[2] <= MAX_SEG]
 
 
+def validos(xs):
+    """los que se guardan: cortos y largos, de `MIN_SEG` a `MAX_LARGO`"""
+    return [x for x in xs if x[2] is not None and MIN_SEG <= x[2] <= MAX_LARGO]
+
+
 def leer_canal(cid):
     """`[(id, título, segundos)]` de la pestaña «Videos» de un canal: la primera página y `PAGINAS - 1` continuaciones"""
     import requests
@@ -161,7 +170,7 @@ def actualizar(aplicar=True):
     nuevos, avisos = [], []
     for c in cfg.get('canales') or []:
         try:
-            xs = cortos(leer_canal(c['id']))
+            xs = validos(leer_canal(c['id']))
         except Exception as e:                           # noqa: BLE001
             avisos.append('%s: no pude leer sus videos (%s)' % (c['nombre'], str(e)[:80]))
             continue
@@ -191,7 +200,7 @@ def guardados():
         return []
 
 
-def para_la_web(clips, gente, canales, n=EN_LA_WEB):
+def para_la_web(clips, gente, canales, n=EN_LA_WEB, n_largos=LARGOS_WEB):
     """`{cs: [nombres de canal], c: [[id, i del canal, [claves que nombra], título, segundos]]}` para
     `bot/paginas/global_clips.json`, con los más nuevos que nombran a alguien de la tabla (`atar()` de los shorts, la misma
     regla). `gente`: las filas de la tabla (`{k, n, esc}`); `canales`: `{slug: nombre}`"""
@@ -201,21 +210,28 @@ def para_la_web(clips, gente, canales, n=EN_LA_WEB):
     # fueran dos personas sueltas. La regla del lector de batallas: el título dice dupla o equipo, o junta con « x »
     clips = [x for x in clips if not _EQUIPOS.search(_plano(x[1])) and not _JUNTA.search(_plano(x[1]))]
     quien = {}
-    for k, xs in GS.atar([[x[0], x[1], x[2]] for x in clips], gente).items():
+    # sin el tope de 12 por persona de los shorts: acá cada clip tiene que saber a quién nombra, tenga los que tenga
+    tope, GS.POR_PERSONA = GS.POR_PERSONA, 10 ** 6
+    try:
+        atados = GS.atar([[x[0], x[1], x[2]] for x in clips], gente)
+    finally:
+        GS.POR_PERSONA = tope
+    for k, xs in atados.items():
         for vid, _canal, otros, *_ in xs:
             quien.setdefault(vid, [k] + [o for o in otros if o != k])
     cs, ci, out = [], {}, []
+    cuantos = {False: 0, True: 0}
     for vid, t, canal, seg, *_ in clips:
         ks = quien.get(vid)
-        if not ks:
+        largo = (seg or 0) > MAX_SEG
+        if not ks or cuantos[largo] >= (n_largos if largo else n):
             continue
+        cuantos[largo] += 1
         if canal not in ci:
             ci[canal] = len(cs)
             cs.append(canales.get(canal, canal))
         out.append([vid, ci[canal], ks, GS.titulo_web(t), seg])
-        if len(out) >= n:
-            break
-    return {'v': 1, 'cs': cs, 'c': out}
+    return {'v': 1, 'corte': MAX_SEG, 'cs': cs, 'c': out}
 
 
 def escribir_web(datos):
@@ -258,7 +274,9 @@ def _self_check():
                                            'ccccccccccc': 190, 'ddddddddddd': 12},
         'la duración del sello nuevo y del `lengthText` viejo; un directo no tiene')
     chk([x[0] for x in cortos(xs)] == ['pubVQ23XOAg', 'ccccccccccc'],
-        'entran de 20 s a 5:00: la final de 9:56, el directo y el corte de 12 s se quedan afuera')
+        'los cortos, de 20 s a 5:00: la final de 9:56, el directo y el corte de 12 s se quedan afuera')
+    chk([x[0] for x in validos(xs)] == ['pubVQ23XOAg', 'U13rprGAuN0', 'ccccccccccc'],
+        'se guardan también los largos (hasta una hora): la final de 9:56 entra, el directo y el corte no')
     gente = [{'k': 'cabrera', 'n': 'Cabrera', 'esc': 'pro'}, {'k': 'garces', 'n': 'Garces', 'esc': 'pro'},
              {'k': 'mecha', 'n': 'Mecha', 'esc': 'pro'}, {'k': 'gazir', 'n': 'Gazir', 'esc': 'pro'}]
     clips = [['It3bmWEXZHY', 'CABRERA vs GARCES - Semifinal | Red Bull Batalla México 2026 🔥', 'redbull', 291, '2026-11-25'],
@@ -272,6 +290,10 @@ def _self_check():
     chk(W['c'][0][2] == ['cabrera', 'garces'] and W['c'][1][2] == ['mecha', 'gazir'] and W['c'][0][4] == 291,
         'cada clip con todos los que nombra y sus segundos')
     chk('🔥' not in W['c'][0][3], 'el título va limpio (sin emojis), como el de los shorts')
+    W2 = para_la_web(clips + [['hhhhhhhhhhh', 'MECHA vs GAZIR - Final', 'fms', 600, '2026-11-24'],
+                              ['iiiiiiiiiii', 'GAZIR vs MECHA - Semifinal', 'fms', 700, '2026-11-24']], gente, {}, n=1, n_largos=1)
+    chk([c[0] for c in W2['c']] == ['It3bmWEXZHY', 'hhhhhhhhhhh'] and W2['corte'] == MAX_SEG,
+        'cortos y largos con su propio tope, y la página sabe dónde se cortan (`corte`)')
     chk(not any(c[0] in ('fffffffffff', 'ggggggggggg') for c in W['c']),
         'las duplas y los equipos no van: «duplas» o « x » en el título')
     chk(not any(isinstance(v, str) and re.search(r'vistas|views', v, re.I) for c in W['c'] for v in c),

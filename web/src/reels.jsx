@@ -31,6 +31,7 @@ import { siluetaDe } from './sin_foto.js';
 import { abrirVideo } from './video.jsx';
 import { bajarArchivo } from './archivo_ul.js';
 import { GRUPO, nombre, preparar, useGlobal } from './global.jsx';
+import { bajarClips } from './global_datos.js';
 import CSS from './css/reels.css?inline';
 import { usarCss } from './css.js';
 
@@ -233,6 +234,17 @@ function soltarMira() {
   } catch (e) { /* y por fetch */ }
   fetch('/api/avisos/reels-vistos', { method: 'POST', headers: { 'content-type': 'application/json' }, body: cuerpo, keepalive: true }).catch(() => {});
 }
+// 👁️ LO VISTO (25/11/2026, Dlx: «cuando ya he visto un reel o video, que aparezca como ya visto en otra sección y que no me
+// aparezca»): un video es «visto» cuando corrió 3 segundos o llegó al final, no cuando apareció (pasarlo de largo en un
+// segundo no lo esconde). Vale para los shorts, los propios de la Liga y los horizontales: el mismo reproductor. Vive en
+// este navegador (`lg:reels-vistos`, los últimos 1500), como Fuego y Guardar; `lg:reels-visto` avisa a la página
+export function marcarVisto(vid) {
+  if (!vid) return;
+  const xs = ls.json(L_VISTOS, []);
+  if (xs[xs.length - 1] === vid) return;
+  ls.set(L_VISTOS, xs.filter((v) => v !== vid).concat(vid).slice(-1500));
+  try { window.dispatchEvent(new CustomEvent('lg:reels-visto', { detail: vid })); } catch (e) { /* sin aviso */ }
+}
 function anotarMira(vid, seg, fin) {
   if (!vid) return;
   const x = MIRA[vid] || [0, 0, 0];
@@ -260,6 +272,14 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
   cb.current = { alTerminar, alPausar, alCorrer };
   // 📊 el reel que está puesto, desde cuándo corre y cuánto lleva
   const mira = useRef({ vid: '', desde: 0, seg: 0, fin: false });
+  // 👁️ a los 3 s de correr el mismo video, visto (ver `marcarVisto`)
+  const reloj3 = useRef(0);
+  const visto3 = () => {
+    clearTimeout(reloj3.current);
+    const v = mira.current.vid;
+    reloj3.current = setTimeout(() => { if (mira.current.vid === v) marcarVisto(v); }, 3000);
+  };
+  useEffect(() => () => clearTimeout(reloj3.current), []);
   const cerrarMira = () => {
     const m = mira.current;
     if (!m.vid) return;
@@ -286,7 +306,9 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
       }
       const st = d.event === 'onStateChange' ? d.info : (d.event === 'infoDelivery' && d.info && typeof d.info.playerState === 'number' ? d.info.playerState : null);
       const m = mira.current;
-      if (st === 1 && !m.desde) m.desde = Date.now();
+      if (st === 1 && !m.desde) { m.desde = Date.now(); visto3(); }
+      if (st === 2) clearTimeout(reloj3.current);
+      if (st === 0) marcarVisto(m.vid);
       if ((st === 0 || st === 2) && m.desde) { m.seg += (Date.now() - m.desde) / 1000; m.desde = 0; }
       if (st === 0) m.fin = true;
       if (st === 0) cb.current.alTerminar();
@@ -306,11 +328,11 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
   const propio = !!(vid && HOY.has(vid));
   const src = vid && !propio ? ORIGEN_YT + '/embed/' + encodeURIComponent(vid) + '?enablejsapi=1&autoplay=1&playsinline=1&rel=0&modestbranding=1' +
     (nacioMudo ? '&mute=1' : '') + '&origin=' + encodeURIComponent(location.origin) : '';
-  const corre = () => { const m = mira.current; if (!m.desde) m.desde = Date.now(); cb.current.alCorrer(); };
+  const corre = () => { const m = mira.current; if (!m.desde) { m.desde = Date.now(); visto3(); } cb.current.alCorrer(); };
   const para = (fin) => {
     const m = mira.current;
     if (m.desde) { m.seg += (Date.now() - m.desde) / 1000; m.desde = 0; }
-    if (fin) { m.fin = true; cb.current.alTerminar(); } else cb.current.alPausar();
+    if (fin) { m.fin = true; marcarVisto(m.vid); cb.current.alTerminar(); } else { clearTimeout(reloj3.current); cb.current.alPausar(); }
   };
   return {
     activo: !!vid, mudo,
@@ -341,12 +363,10 @@ let pedidoL = null;
 const bajarLiga = () => (pedidoL = pedidoL || fetch('/liga_shorts.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
 let pedidoN = null;
 const bajarNotas = () => (pedidoN = pedidoN || fetch('/api/avisos/reels-stats').then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.v) || null).catch(() => null));
-// 🎞️ los videos horizontales cortos (25/11/2026, bot/global_fuente_clips.py): [id, canal, [claves que nombra], título, segundos]
-let pedidoC = null;
-const bajarClips = () => (pedidoC = pedidoC || fetch('/global_clips.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
 
 /** «6:44» */
-export const mmss = (s) => Math.floor((s || 0) / 60) + ':' + String(Math.round(s || 0) % 60).padStart(2, '0');
+// sin duración (una batalla entera del Ranking global abierta por link) no dice nada: «0:00» sería mentira
+export const mmss = (s) => (s ? Math.floor(s / 60) + ':' + String(Math.round(s) % 60).padStart(2, '0') : '');
 /** el título de un video sin el evento: «CABRERA vs RC - Octavos | Red Bull Batalla México 2026» → «CABRERA vs RC» y «Octavos».
  *  Lo que dice el título y no las claves atadas: «RC» tiene dos letras y no se ata a nadie, pero el video es contra él */
 export function corto(t) {
@@ -421,15 +441,33 @@ function useFeed(liga, inicio) {
   const [menos, setMenos] = useState(() => ls.json(L_MENOS, []));
   const [guardo, setGuardo] = useState(() => ls.json(L_GUARDO, []));
   const [fuego, setFuego] = useState(() => ls.json(L_FUEGO, []));
-  // los vistos se leen una vez: si no, el feed se reordenaría mientras lo miras
+  // los vistos se leen una vez: si no, el feed se reordenaría mientras lo miras. Lo que veas ahora sale la próxima vez que
+  // entres; mientras tanto, la lista lo marca «Visto» (`vistosAhora`)
   const vistos0 = useRef(ls.json(L_VISTOS, []));
+  const [vistosAhora, setVistosAhora] = useState([]);
+  useEffect(() => {
+    const f = (e) => setVistosAhora((xs) => (xs.includes(e.detail) ? xs : xs.concat(e.detail)));
+    window.addEventListener('lg:reels-visto', f);
+    return () => window.removeEventListener('lg:reels-visto', f);
+  }, []);
+  const yaVisto = (vid) => vistos0.current.includes(vid) || vistosAhora.includes(vid);
   const claveG = filtro === 'guardados' ? guardo.join(',') : filtro === 'siguiendo' ? sigo.join(',') : '';
   const lista = useMemo(() => {
     const base = filtro === 'pro' ? todos.filter((r) => !dePlaza(r)) : filtro === 'plaza' ? todos.filter((r) => dePlaza(r) && !deLaLiga(r))
       : filtro === 'liga' ? todos.filter(deLaLiga)
       : filtro === 'siguiendo' ? todos.filter((r) => r.gente.some(loSigo))
       : filtro === 'guardados' ? todos.filter((r) => guardo.includes(r.vid)) : todos;
-    const o = ordenar(base, vistos0.current, menos, notas);
+    // 👁️ lo visto no vuelve a salir (salvo que lo pidas por link, en Guardados o en «Vistos», del más reciente al más viejo)
+    const v0 = new Set(vistos0.current);
+    if (filtro === 'vistos') {
+      const pos = new Map(vistos0.current.map((v, j) => [v, j]));
+      const xs = todos.filter((r) => v0.has(r.vid)).sort((a, b) => pos.get(b.vid) - pos.get(a.vid));
+      const j = inicio ? xs.findIndex((r) => r.vid === inicio) : -1;
+      if (j > 0) xs.unshift(xs.splice(j, 1)[0]);
+      return xs;
+    }
+    const sinVer = filtro === 'guardados' ? base : base.filter((r) => !v0.has(r.vid) || r.vid === inicio);
+    const o = ordenar(sinVer, vistos0.current, menos, notas);
     // 🎬 los de la Liga de HOY, primero en «Para ti» y en «La Liga» (los no vistos; los vistos quedan donde caen)
     if (filtro === 'todo' || filtro === 'liga') {
       const vistosH = new Set(vistos0.current);
@@ -468,26 +506,56 @@ function useFeed(liga, inicio) {
       im.src = h ? h.portada : 'https://i.ytimg.com/vi/' + r.vid + '/oar2.jpg';
     }
   }, [lista, i]);
-  useEffect(() => {
-    if (!cur) return;
-    const xs = ls.json(L_VISTOS, []).filter((v) => v !== cur.vid);
-    xs.push(cur.vid);
-    ls.set(L_VISTOS, xs.slice(-600));
-  }, [cur]);
   // ↕ hacia dónde se pasó (1 = el siguiente, −1 = el anterior): las animaciones entran desde ese lado (8.16)
   const [dir, setDir] = useState(1);
   // 🎞️ EL VIDEO HORIZONTAL QUE CORRE (25/11/2026, Dlx eligió la A: «La cartelera»). Corre EN EL CENTRO, en el mismo
   // reproductor: mientras hay uno, el centro va en 16:9; ↓, ↑ o que termine lo sueltan y vuelve el vertical (↓ y el final,
   // con el short siguiente; ↑, con el que estabas viendo)
   const sigoClave = sigo.join(',');
-  const clips = useMemo(() => {
+  const todosClips = useMemo(() => {
     if (!X || !C || !Array.isArray(C.c)) return [];
     const cs = C.cs || [];
     const xs = C.c.map(([vid, ci, ks, t, seg]) => ({ vid, canal: cs[ci] || '', t: t || '', seg: seg || 0, clip: true,
       ks: ks || [], gente: (ks || []).map((k) => X.porK.get(k)).filter(Boolean) })).filter((c) => c.gente.length);
     return ordenarClips(xs, loSigo);
   }, [X, C, sigoClave]); // eslint-disable-line react-hooks/exhaustive-deps
+  // ⏱️ «CORTOS | LARGOS» (Dlx, 25/11/2026, a la 8.21: «déjame cambiar entre videos cortos y videos largos»): hasta `corte`
+  // segundos (5 min) son cortos; los largos llegan hasta una hora (casi todos, batallas enteras de ~10 min)
+  const corte = (C && C.corte) || 300;
+  // 👁️ y «Vistos»: los que ya viste (cortos y largos), del más reciente al más viejo; en las otras dos no salen
+  const [modoClips, setModoClips] = useState('cortos');
+  const largos = modoClips === 'largos';
+  const clips = useMemo(() => {
+    if (modoClips === 'vistos') {
+      const pos = new Map(vistos0.current.map((v, j) => [v, j]));
+      return todosClips.filter((c) => pos.has(c.vid)).sort((a, b) => pos.get(b.vid) - pos.get(a.vid));
+    }
+    const v0 = new Set(vistos0.current);
+    return todosClips.filter((c) => (c.seg > corte) === largos && !v0.has(c.vid));
+  }, [todosClips, modoClips, corte]); // eslint-disable-line react-hooks/exhaustive-deps
+  const hayLargos = todosClips.some((c) => c.seg > corte);
+  const hayVistosC = todosClips.some((c) => vistos0.current.includes(c.vid));
   const [clip, setClip] = useState(null);
+  // 🔗 UN LINK A UN VIDEO QUE NO ES UN SHORT (`#/reels/<id>`, el buscador de arriba lleva así): si no está entre los shorts, se
+  // busca entre los videos de los canales y, si no, entre las batallas enteras del Ranking global (`g.v`), y corre en el centro
+  const abierto = useRef('');
+  useEffect(() => {
+    if (!inicio || abierto.current === inicio || !X || !C || !listoL) return;
+    abierto.current = inicio;
+    if (todos.some((r) => r.vid === inicio)) { setClip(null); return; }
+    let c = todosClips.find((x) => x.vid === inicio);
+    if (!c) {
+      for (const g of X.G) {
+        const v = (g.v || []).find((x) => x[0] === inicio);
+        if (v) {
+          const ev = (D && D.ev && D.ev[v[1]]) || [];
+          c = { vid: v[0], canal: limpio2(ev[1] || ''), t: nombre(g) + ' vs ' + String(v[2] || '').toUpperCase(), seg: 0, clip: true, ks: [g.k], gente: [g] };
+          break;
+        }
+      }
+    }
+    if (c) { if (c.seg && modoClips !== 'vistos') setModoClips(c.seg > corte ? 'largos' : 'cortos'); setClip(c); }
+  }, [inicio, X, C, listoL, todos, todosClips]); // eslint-disable-line react-hooks/exhaustive-deps
   const ir = (j) => { const k = Math.max(0, Math.min(lista.length - 1, j)); setClip(null); setDir(k >= i ? 1 : -1); setFin(false); setI(k); };
   const siguiente = () => { setClip(null); if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
   // 👤 su próximo reel (el de la columna de la izquierda en la compu, como los canales de Twitch): el siguiente en la lista
@@ -504,12 +572,13 @@ function useFeed(liga, inicio) {
   };
   const conmuta = (xs, set, k, v) => { const nx = xs.includes(v) ? xs.filter((x) => x !== v) : [...xs, v]; set(nx); ls.set(k, nx); return nx; };
   const hayLiga = todos.some(deLaLiga);
-  const filtros = FILTROS.filter(([k]) => (k !== 'liga' || hayLiga) && (k !== 'guardados' || guardo.length || filtro === 'guardados'));
+  const filtros = FILTROS.filter(([k]) => (k !== 'liga' || hayLiga) && (k !== 'guardados' || guardo.length || filtro === 'guardados')
+    && (k !== 'vistos' || vistos0.current.length || filtro === 'vistos'));
   return {
     D, X: X && listoL ? X : null, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
     liga, filtros, loSigo, seguir, todos, irA, dir,
     // 🎞️ los horizontales: la lista, el que corre (`clip`) y lo que se ve ahora (`ahora`: el horizontal o el short)
-    clips, clip, ahora: clip || cur,
+    clips, clip, ahora: clip || cur, modoClips, setModoClips, hayLargos, hayVistosC, yaVisto,
     verClip: (c) => { setFin(false); setDir(1); setClip(c); },
     soltarClip: () => setClip(null),
     anterior: () => (clip ? setClip(null) : fin ? setFin(false) : ir(i - 1)),
@@ -578,13 +647,16 @@ function Voto({ r, clase = '' }) {
 }
 
 // lo que dice cada filtro cuando no tiene nada
-const VACIO = { siguiendo: 'Todavía no sigues a nadie con reels', guardados: 'Todavía no guardaste ningún reel', liga: 'Todavía no hay reels de la Liga' };
+const VACIO = { siguiendo: 'Todavía no sigues a nadie con reels', guardados: 'Todavía no guardaste ningún reel', liga: 'Todavía no hay reels de la Liga',
+  todo: 'Ya viste todos los reels', vistos: 'Todavía no viste ningún reel' };
 const VACIO_P = {
+  todo: 'Llegan más cada lunes. Los que viste están en «Vistos».',
+  vistos: 'Un reel pasa a «Vistos» cuando lo miras 3 segundos.',
   siguiendo: 'Toca la cara de alguien en un reel y «Seguir»: sus reels salen acá.',
   guardados: 'Toca el marcador en un reel y lo encuentras acá.',
   liga: 'Salen de los canales de YouTube de los servidores socios.',
 };
-const FILTROS = [['todo', 'Para ti'], ['siguiendo', 'Siguiendo'], ['liga', 'La Liga'], ['pro', 'Pros'], ['plaza', 'Under'], ['guardados', 'Guardados']];
+const FILTROS = [['todo', 'Para ti'], ['siguiendo', 'Siguiendo'], ['liga', 'La Liga'], ['pro', 'Pros'], ['plaza', 'Under'], ['guardados', 'Guardados'], ['vistos', 'Vistos']];
 
 async function compartir(r, setCopiado) {
   const url = linkDe(r.vid);
@@ -798,7 +870,7 @@ function ReelsCel({ F }) {
           <span className="tag">REELS</span>
           <b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b>
           <p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
-          <button type="button" className="rls-bt prim" onClick={() => F.setFiltro('todo')}>Ver Para ti</button>
+          <button type="button" className="rls-bt prim" onClick={() => F.setFiltro(F.filtro === 'todo' ? 'vistos' : 'todo')}>{F.filtro === 'todo' ? 'Ver los vistos' : 'Ver Para ti'}</button>
         </div>
       </div>
     );
@@ -911,7 +983,7 @@ function ReelsCel({ F }) {
               </div>
               <FilaGente F={F} n={5} cara={48} />
               <div className="rls-cv-l cel" style={{ '--rls-cl-th': Math.min(170, Math.round((medida.w - 16) * 0.4)) + 'px' }}>
-                <div className="sec-t rls-gf-t"><h2>Videos cortos</h2><small>{F.clips.length}</small></div>
+                <div className="sec-t rls-gf-t"><h2>Videos</h2><CortosLargos F={F} /><small>{F.clips.length}</small></div>
                 {F.clips.map((x) => <FilaClip key={x.vid} F={F} c={x} on={x.vid === c.vid} />)}
               </div>
             </div>
@@ -1062,7 +1134,7 @@ function FilaClip({ F, c, on }) {
         {on ? <span className="rls-cl-son"><i aria-hidden="true"><u /><u /><u /></i>Sonando</span> : null}
         <b>{titulo}</b>
         <small>{[k.r, c.canal].filter(Boolean).join(' · ')}</small>
-        {tuyo && !on ? <small className="tuyo">De tu gente</small> : null}
+        {!on && F.modoClips !== 'vistos' && F.yaVisto(c.vid) ? <small className="visto">Visto</small> : tuyo && !on ? <small className="tuyo">De tu gente</small> : null}
       </span>
     </button>
   );
@@ -1104,6 +1176,20 @@ function FilaGente({ F, n, cara = 56 }) {
   );
 }
 
+/** ⏱️ «Cortos | Largos» (Dlx, 25/11/2026): hasta 5 min o más largos (batallas enteras, hasta una hora). Sin largos, no se dibuja */
+function CortosLargos({ F }) {
+  const ops = [['cortos', 'Cortos', 'Hasta 5 minutos'], ['largos', 'Largos', 'Más de 5 minutos'], ['vistos', 'Vistos', 'Los que ya viste']]
+    .filter(([k]) => (k !== 'largos' || F.hayLargos) && (k !== 'vistos' || F.hayVistosC || F.modoClips === 'vistos'));
+  if (ops.length < 2) return null;
+  return (
+    <span className="rls-sv chico" role="group" aria-label="Qué videos">
+      {ops.map(([k, n, t]) => (
+        <button key={k} type="button" aria-pressed={F.modoClips === k} className={F.modoClips === k ? 'on' : ''} onClick={() => F.setModoClips(k)} title={t}>{n}</button>
+      ))}
+    </span>
+  );
+}
+
 /** 🎞️ LA COLUMNA IZQUIERDA DE LA COMPU (la A, «La cartelera», 25/11/2026): tu gente arriba y los videos horizontales abajo.
  *  La lista baja con la rueda (vertical sí se puede con el mouse) y el total va en su cabecera */
 function ColVideos({ F, ancho }) {
@@ -1113,7 +1199,7 @@ function ColVideos({ F, ancho }) {
       <FilaGente F={F} n={n} cara={ancho >= 380 ? 56 : 48} />
       {F.clips.length ? (
         <div className="rls-cv-l">
-          <div className="sec-t rls-gf-t"><h2>Videos cortos</h2><small>{F.clips.length}{ancho > 320 ? ' de hasta 5 min' : ''}</small></div>
+          <div className="sec-t rls-gf-t"><h2>Videos</h2><CortosLargos F={F} /><small>{F.clips.length}</small></div>
           <div className="rls-cv-filas">
             {F.clips.map((c) => <FilaClip key={c.vid} F={F} c={c} on={!!F.clip && F.clip.vid === c.vid} />)}
           </div>
@@ -1252,7 +1338,7 @@ function ReelsPc({ F }) {
           <div className="rls-pc-in"><div className="rls-pc-cuerpo vacio">
             {medida.gente ? <ColVideos F={F} ancho={320} /> : null}
             <div className="rls-vacio"><b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b><p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
-              <button type="button" className="rls-btc" onClick={() => F.setFiltro('todo')}>Ver Para ti</button></div>
+              <button type="button" className="rls-btc" onClick={() => F.setFiltro(F.filtro === 'todo' ? 'vistos' : 'todo')}>{F.filtro === 'todo' ? 'Ver los vistos' : 'Ver Para ti'}</button></div>
           </div></div>
         </div>
       </section>
@@ -1352,7 +1438,7 @@ function ReelsPc({ F }) {
                   </div>
                 </div>
                 <p className="rls-pc-t">{r.t || nombres}</p>
-                <p className="rls-canal">{r.canal}{esClip ? ' · ' + mmss(r.seg) : null}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</p>
+                <p className="rls-canal">{r.canal}{esClip && r.seg ? ' · ' + mmss(r.seg) : null}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</p>
                 <div className="rls-pc-acc">
                   <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} title="Tecla F" onClick={F.darFuego}>
                     <Ico n="fuego" lleno={F.ardido} t={24} /><span>Fuego</span></button>
