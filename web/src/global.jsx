@@ -23,6 +23,7 @@ import { useSigoGlobal } from './sigo_global.js';
 import CSS from './css/global.css?inline';
 import { usarCss } from './css.js';
 import { bajarGlobal, bajarHistoria, globalListo, historiaLista, olvidarGlobal, slugComp } from './global_datos.js';
+import { NombreT } from './puesto.js';
 
 usarCss('global', CSS);
 
@@ -374,7 +375,7 @@ function Cerca({ liga, g, yo, el, abrir, verPq }) {
     <button type="button" className={'gl-pre' + (mia ? ' yo' : '') + (el && g === el ? ' gl-arriba' : '')} onClick={() => (mia ? verPq() : abrir(g))}>
       <span className="gl-pre-n"><Pos g={g} /></span>
       <CaraG liga={liga} g={g} />
-      <span className="gl-pre-q"><b>{nombre(g)}</b><Bandera cc={g.cc} cls="gl-flag" /><Etiq g={g} />{mia ? <span className="gl-tu">Tú</span> : <Marca g={g} />}</span>
+      <span className="gl-pre-q"><b>{g.hk ? <NombreT k={g.hk} n={nombre(g)} /> : nombre(g)}</b><Bandera cc={g.cc} cls="gl-flag" /><Etiq g={g} />{mia ? <span className="gl-tu">Tú</span> : <Marca g={g} />}</span>
       <span className="gl-pre-l" aria-hidden="true" />
       <span className="gl-pre-p">{n1(g.p)}</span>
       {yo ? <span className="gl-pre-d">{mia ? '' : Math.abs(d) < 0.05 ? '=' : (d > 0 ? '+' : '−') + n1(Math.abs(d))}</span> : null}

@@ -10,6 +10,7 @@ import { SelloPremium, esPremium } from './sello.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { ComentariosFlotantes } from './flotantes.jsx';
 import { pedirLigas } from './ligas_datos.js';
+import { NombreT } from './puesto.js';
 
 // 🗓️ HOY SUELE HABER (Dlx, 12/10/2026, «5. B»: casi todos anuncian a último momento, así que lo que no se ve con
 // tiempo se adivina por costumbre). Un servidor que jugó este mismo día de la semana dos veces o más en las últimas
@@ -668,7 +669,7 @@ function Mandan({ liga, c, xs, yoFila, pub }) {
                 <span className="mn-n">{i + 2}</span>
                 <span className="mn-mini">{x.mini}</span>
                 <span className="mn-t">
-                  <b>{x.cc ? <Bandera cc={x.cc} cls="mn-flag" /> : null}<span className="mn-nom">{x.nom}</span>{esPremium(pub, x.pk) ? <SelloPremium t={13} /> : null}{x.rg ? <Rango liga={liga} rg={x.rg} /> : null}</b>
+                  <b>{x.cc ? <Bandera cc={x.cc} cls="mn-flag" /> : null}<span className="mn-nom">{x.pk ? <NombreT k={x.pk} n={x.nom} /> : x.nom}</span>{esPremium(pub, x.pk) ? <SelloPremium t={13} /> : null}{x.rg ? <Rango liga={liga} rg={x.rg} /> : null}</b>
                   <small>{x.sub}</small>
                 </span>
                 <span className="mn-barra" aria-hidden="true"><i style={{ width: Math.max(3, Math.min(100, Math.round((100 * (Number(x.v) || 0)) / tope))) + '%' }} /></span>

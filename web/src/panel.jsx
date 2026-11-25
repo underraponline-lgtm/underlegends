@@ -18,7 +18,7 @@ import { RZ } from './tienda_rz.js';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { diaISO, hora, limpio, num, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Ico, accion, nombrePais, useCampana } from './piezas.jsx';
-import { FondoT } from './puesto.js';
+import { CartaFx, FondoT, NombreT } from './puesto.js';
 import { fondoEn, useFondos } from './fondos.js';
 import { Escudo, escudoDe } from './escudo.jsx';
 import { avance, pasePost, usePase, usePases } from './pase.js';
@@ -932,7 +932,7 @@ export function Vestuario({ liga, dc }) {
       <div className="pn-cu pn-yo sin con-esc-yo">
       <span className="pn-ti3" aria-hidden="true" style={{ backgroundImage: 'url(' + escenaDe('dra') + ')' }} />
       <div className="pn-sin-in">
-        <div className="pn-abre">{top.map((f, j) => <img key={f.k} alt="" data-o={j === 0 ? 0 : j === 1 ? 2 : 1} src={liga.cartaUrl(f.k, 'temporada')} />)}</div>
+        <div className="pn-abre">{top.map((f, j) => <CartaFx key={f.k} k={f.k} data={{ 'data-o': j === 0 ? 0 : j === 1 ? 2 : 1 }} src={liga.cartaUrl(f.k, 'temporada')} />)}</div>
         <div className="pn-sin-tx"><b>Tus tarjetas</b>
           <small>{dc ? 'Juega tu primer evento y entras al ranking: tu carta sale con el nivel 1 del Pase.' : 'Entra con Discord: acá van tus tarjetas, tus rankings y lo que te dicen.'}</small>
           {dc ? <a className="btn verde chico" href="#/eventos">Ver los próximos eventos</a> : <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>}</div>
@@ -990,7 +990,7 @@ export function Vestuario({ liga, dc }) {
         <div className="pn-car">
           <div className="pn-abre" role="button" tabIndex={0} aria-label="Ver la siguiente carta" onClick={() => setElegida((i + 1) % Math.max(1, nC))}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setElegida((i + 1) % Math.max(1, nC)); } }}>
-            {srcs.map((src, j) => <img key={src} alt={'Tu carta ' + noms[j]} data-o={Math.min(3, (j - i + nC) % nC)} src={src} />)}
+            {srcs.map((src, j) => <CartaFx key={src} k={yo.k} alt={'Tu carta ' + noms[j]} data={{ 'data-o': Math.min(3, (j - i + nC) % nC) }} src={src} />)}
           </div>
           {nC > 1 ? (
             <div className="pn-nav"><button type="button" aria-label="Carta anterior" onClick={() => setElegida((i - 1 + nC) % nC)}>‹</button>
@@ -1476,7 +1476,7 @@ export function PnTienda({ saldo, dc, cuadro = false, liga = null }) {
         {tope ? (
           <span className="pn-ti3-f" style={{ '--r': 'var(--oro)' }}>
             <span className="pn-ti3-luz con-cara" aria-hidden="true"><i /><Cara liga={liga} k={fc ? fc.k : ''} nombre={fc ? fc.n : caraK} cls="cara pn-ti2-c" /></span>
-            <span className="pn-ti3-t"><em>La cabeza más cara</em><b>{limpio(fc ? fc.n : caraK)}</b><small>{num(tope)} si lo cazas</small></span>
+            <span className="pn-ti3-t"><em>La cabeza más cara</em><b>{fc ? <NombreT k={fc.k} n={limpio(fc.n)} /> : limpio(caraK)}</b><small>{num(tope)} si lo cazas</small></span>
           </span>
         ) : null}
         <span className="pn-ti2-l">

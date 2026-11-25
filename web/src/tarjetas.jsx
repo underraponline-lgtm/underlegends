@@ -25,6 +25,7 @@ import { usarCss } from './css.js';
 import { pedirLigas } from './ligas_datos.js';
 import { ConMarco } from './marcos.jsx';
 import { usePases } from './pase.js';
+import { NombreT } from './puesto.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/tarjetas.css)
 usarCss('tarjetas', CSS_PAGINA);
@@ -497,7 +498,7 @@ function Vitrina({ liga, x, porTipo, nuevas, onAbrir, yoK }) {
               {it.nueva ? <em className="ta-nueva">NUEVA</em> : null}
               <div className="ta-ped">
                 {it.k === yoK ? <span className="ta-yo">TÚ</span> : null}
-                <b className={it.gr ? 'gr' : ''}>{etq(it, n)}</b><span>{it.gr ? '#1 · ' : ''}{it.n}</span><small>{it.pie}</small>
+                <b className={it.gr ? 'gr' : ''}>{etq(it, n)}</b><span>{it.gr ? '#1 · ' : ''}<NombreT k={it.k} n={it.n} /></span><small>{it.pie}</small>
               </div>
             </div>
           ))}

@@ -28,6 +28,7 @@ import { usarCss } from './css.js';
 // (og_img.jsx) lo usa tal cual, sin bajar esta página
 import { CORTO, MES, datosV10, eloDe, fecha, ini, nomEv, pu, sinB, sinTit } from './perfil_datos.js';
 import { delPerfil, useArchivo } from './archivo_ul.js';
+import { CartaFx } from './puesto.js';
 
 usarCss('perfil_v10', CSS_V10);
 
@@ -787,7 +788,7 @@ function LoQueLleva({ liga, k, f, esYo }) {
   return (
     <section className="pv-cajal" id="pf-puesto">
       <h3>{esYo ? 'Lo que llevas puesto' : 'Lo que lleva puesto'}<a href={esYo ? '#/inventario' : '#/r/' + encodeURIComponent(k)} onClick={esYo ? undefined : (ev) => { ev.preventDefault(); accion.carta(k); }}>{esYo ? 'Abrir mi inventario' : 'Ver sus cartas'}</a></h3>
-      <div className="pv-puesto">{fondo ? <img className="f" alt="" src={fondo} loading="lazy" /> : null}{cp ? <span className="ca"><img alt="" src={liga.cartaUrl(k, cp)} loading="lazy" /></span> : null}</div>
+      <div className="pv-puesto">{fondo ? <img className="f" alt="" src={fondo} loading="lazy" /> : null}{cp ? <span className="ca"><CartaFx k={k} src={liga.cartaUrl(k, cp)} loading="lazy" /></span> : null}</div>
       {chips.length ? <div className="pv-tags">{chips.map(([c, t]) => <span key={t}><i style={{ '--tc': c }} />{t}</span>)}</div> : null}
     </section>
   );

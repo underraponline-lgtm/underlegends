@@ -26,6 +26,7 @@ import CSS_ED from './css/edicion.css?inline';
 import { usarCss } from './css.js';
 import { OcultarMods } from './mods_ocultar.jsx';
 import { abrirVideo } from './video.jsx';
+import { NombreT } from './puesto.js';
 
 usarCss('edicion', CSS_ED);
 const W = typeof window !== 'undefined' ? window : {};
@@ -114,7 +115,7 @@ function TapaGrupo({ liga, tipo, xs }) {
     <div className="ed-tapa ed-letras">{xs.slice(0, 8).map((it, i) => (
       <span key={it.id || i}>{tipo === 'rango' || tipo === 'pase' ? <Cara liga={liga} k={ksDe(it)[0]} nombre={quien1(it)} cls="ed-lc" /> : <img className="ed-lc" alt="" src={liga.logo(liga.svDe(it))} loading="lazy" />}
         {tipo === 'rango' ? <i style={{ background: liga.colorRg(it.rg) }}>{it.rg}</i> : tipo === 'pase' && it.nivel ? <i style={{ background: 'var(--ed-pase)' }}>{it.nivel}</i> : null}
-        {tipo === 'rango' || tipo === 'pase' ? limpio(quien1(it)) : siglaDe(liga.svDe(it))}</span>
+        {tipo === 'rango' || tipo === 'pase' ? <NombreT k={ksDe(it)[0] || ''} n={limpio(quien1(it))} /> : siglaDe(liga.svDe(it))}</span>
     ))}</div>
   );
 }
@@ -175,7 +176,7 @@ function NotaGrupo({ liga, tipo, xs, H, A }) {
   // siete filas iguales en primera persona y sin el nombre, así que no se sabía a quién felicitaba cada botón. Lo común ya
   // lo dice el título
   const fila = (it, c) => {
-    const n = <b>{limpio(quien1(it))}</b>;
+    const n = <b><NombreT k={ksDe(it)[0] || ''} n={limpio(quien1(it))} /></b>;
     if (tipo === 'pase') return <>{n}{it.completo ? ' · completó el Pase' : nvs.length > 1 && it.nivel ? ' · nivel ' + it.nivel : ''}</>;
     if (tipo === 'rango') return <>{n} · rango {it.rg}{it.primero ? ', su primera letra' : ''}</>;
     if (tipo === 'tarjeta') return <>{n}{CARTA_N[it.carta] ? ' · ' + CARTA_N[it.carta] : ''}</>;
@@ -206,14 +207,17 @@ const COMO = { directa: 'directa', replica: 'por réplica' };
 // (revisión 21/11/2026) el nombre va en su `<i>` para cortarse con «…» (suelto se cortaba sin puntos, y el de la derecha
 // perdía el comienzo: «artim»), y sin una mención de Discord pegada: el lector de llaves guardó «MOTE RA 1320135304916762695»
 const nomBat = (x) => limpio(x || '').replace(/\s*\b\d{17,20}\b/g, '');
+// la clave de alguien de una batalla: la que trae la llave (`ks`) y, si no, la de la Liga por su nombre: su cara y su
+// nombre con lo que lleva puesto de la Tienda (25/11/2026: Mito salía sin aro ni nombre cuando la llave no traía su clave)
+const kBat = (liga, ks, x) => (ks || {})[x] || ((liga && liga.quien && liga.quien(nomBat(x))) || {}).k || '';
 function Batalla({ liga, b, ks }) {
   const pts = typeof b[4] === 'number' && typeof b[5] === 'number';
   return (
     <div className="ed-bat">
-      <span className={b[2] === b[0] ? 'ed-gano' : ''}><Cara liga={liga} k={(ks || {})[b[0]] || ''} nombre={b[0]} cls="ed-bc2" /><i className="ed-bn">{nomBat(b[0])}</i></span>
+      <span className={b[2] === b[0] ? 'ed-gano' : ''}><Cara liga={liga} k={kBat(liga, ks, b[0])} nombre={b[0]} cls="ed-bc2" /><i className="ed-bn"><NombreT k={kBat(liga, ks, b[0])} n={nomBat(b[0])} /></i></span>
       <em>{pts ? String(b[4]).replace('.', ',') + ' · ' + String(b[5]).replace('.', ',') : 'vs'}</em>
-      <span className={b[2] === b[1] ? 'ed-gano' : ''}><i className="ed-bn">{nomBat(b[1])}</i><Cara liga={liga} k={(ks || {})[b[1]] || ''} nombre={b[1]} cls="ed-bc2" /></span>
-      <small>{nomBat(b[2])} {COMO[b[3]] || b[3] || ''}</small>
+      <span className={b[2] === b[1] ? 'ed-gano' : ''}><i className="ed-bn"><NombreT k={kBat(liga, ks, b[1])} n={nomBat(b[1])} /></i><Cara liga={liga} k={kBat(liga, ks, b[1])} nombre={b[1]} cls="ed-bc2" /></span>
+      <small><NombreT k={kBat(liga, ks, b[2])} n={nomBat(b[2])} /> {COMO[b[3]] || b[3] || ''}</small>
     </div>
   );
 }
@@ -528,7 +532,7 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
               <article key={L.id} className="ed-lg"><PortadaLiga liga={liga} L={L} fl={(((ligasFull[L.id] || {}).flyer) || {}).u} />
                 <div className="ed-cu"><span className="ed-lab">{(liga.svs[L.sv] && liga.svs[L.sv].nombre) || siglaDe(L.sv)} · {L.bat || 0} batallas</span><h4>{limpio(L.n)}</h4>
                   <ol className="ed-tabla">{(L.tabla || []).slice(0, 5).map((r, i) => (
-                    <li key={r[0]} className={i === 0 ? 'lider' : ''}><span className="pos">{i + 1}</span><Cara liga={liga} k={(L.ks || {})[r[0]] || ''} nombre={r[0]} cls="ed-bc2" /><b>{nomBat(r[0])}</b><span className="pj">{r[1]} PJ</span>
+                    <li key={r[0]} className={i === 0 ? 'lider' : ''}><span className="pos">{i + 1}</span><Cara liga={liga} k={kBat(liga, L.ks, r[0])} nombre={r[0]} cls="ed-bc2" /><b><NombreT k={kBat(liga, L.ks, r[0])} n={nomBat(r[0])} /></b><span className="pj">{r[1]} PJ</span>
                       <span className="ed-bp"><i style={{ width: (fin ? Math.round(r[3] * 100 / fin) : 0) + '%' }} /></span><span className="pts">{r[3]}</span></li>
                   ))}</ol>
                   {(L.ult || []).length ? <><p className="ed-mini-t">Lo último</p><div className="ed-bats">{L.ult.slice(0, 2).map((b, i) => <Batalla key={i} liga={liga} b={b} ks={L.ks} />)}</div></> : null}

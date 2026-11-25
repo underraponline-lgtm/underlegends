@@ -11,6 +11,7 @@ import { DUENO, limpio, quienMira, utc } from './liga.js';
 import { Cara, accion } from './piezas.jsx';
 import { usePases } from './pase.js';
 import { SelloPremium, esPremium } from './sello.jsx';
+import { NombreT } from './puesto.js';
 
 const W = typeof window !== 'undefined' ? window : {};
 const E = { por: null, pidiendo: false, t: 0, oyentes: new Set(), mios: {} };
@@ -149,13 +150,13 @@ function Comentario({ liga, c, ahora, yo, dueno, onResponder, onBorrar, onReport
         : <Cara liga={liga} k={c.k} nombre={c.n} cls={'cara cmh-cara' + (prem ? ' sp-prem-aro' : '')} lazy />}
       <div className="cmh-cu">
         <div className="cmh-q">
-          {f ? <a href={'#/r/' + encodeURIComponent(c.k)}>{autorDe(liga, c)}</a> : <b>{autorDe(liga, c)}</b>}
+          {f ? <a href={'#/r/' + encodeURIComponent(c.k)}><NombreT k={c.k} n={autorDe(liga, c)} /></a> : <b>{autorDe(liga, c)}</b>}
           {prem ? <SelloPremium t={13} /> : null}
           {f && f.rg ? <i className="cmh-rg" style={{ background: f.rgc || liga.colorRg(f.rg) }}>{f.rg}</i> : null}
           {c.et === 's' ? <i className="cmh-et sim">simulado</i> : c.et === 'l' ? <i className="cmh-et liga">Liga</i> : null}
           <time>{hace(c.t, ahora)}</time>
         </div>
-        {a ? <small className="cmh-a">↪ a {autorDe(liga, a)}</small> : null}
+        {a ? <small className="cmh-a">↪ a {a.et !== 'l' && a.k ? <NombreT k={a.k} n={autorDe(liga, a)} /> : autorDe(liga, a)}</small> : null}
         <p>{c.tx}</p>
         <div className="cmh-acc">
           <button type="button" onClick={() => onResponder(c)}>Responder</button>

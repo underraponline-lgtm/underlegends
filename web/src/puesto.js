@@ -126,10 +126,25 @@ export function nombreTienda(P, n) {
 
 /** 🃏 el efecto de carta encima de la imagen de una carta (`hijo`); sin efecto, `hijo` tal cual */
 // `sinImg`: encima de algo que ya es la carta (la armable, en su iframe), sólo el efecto: la imagen del molde no se ve
-export function ConEfecto({ P, src, sinImg, children }) {
+// `host`: atributos para el contenedor (su clase y, p. ej., `data-o`), cuando el lugar ubica la carta por ellos
+export function ConEfecto({ P, src, sinImg, host, children }) {
   const h = molde(P, 'carta', 'carta');
   if (!h || !src) return children;
-  return createElement('span', { className: 'ct-host' }, children, capa('ct-fx' + (sinImg ? ' sin-img' : ''), llenar(h, { carta: src }), null, src));
+  const hp = Object.assign({}, host || {}, { className: 'ct-host' + (host && host.className ? ' ' + host.className : '') });
+  return createElement('span', hp, children, capa('ct-fx' + (sinImg ? ' sin-img' : ''), llenar(h, { carta: src }), null, src));
+}
+
+/**
+ * 🃏 UNA <img> DE CARTA SUELTA CON EL EFECTO DE QUIEN ES (25/11/2026, Dlx: «the effects should appear wherever they show
+ * the cards»). El Inicio, la carta junto a tu puesto y las tarjetitas del perfil dibujaban la imagen sola y el efecto no
+ * salía. Sin efecto puesto, la MISMA <img> de antes (nada cambia para los demás); con efecto, la clase y los `data-*` que
+ * la ubican pasan al contenedor, y la imagen lo llena: el CSS de esos lugares los toma con `>:is(img,.ct-host)`.
+ */
+export function CartaFx({ k, src, className, data, ...img }) {
+  const P = usePuesto(k);
+  const d = data || {};
+  if (!src || !molde(P, 'carta', 'carta')) return createElement('img', Object.assign({ alt: '', src, className }, d, img));
+  return createElement(ConEfecto, { P, src, host: Object.assign({ className }, d) }, createElement('img', Object.assign({ alt: '', src }, img)));
 }
 
 /** 🖼️ el fondo de la Tienda para un lugar (`perfil` · `vs` · `esc` · `ficha` · `fila`), como capa: `null` si no tiene */

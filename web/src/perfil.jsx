@@ -12,7 +12,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Alguien, Algunos, Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, reintentarPerfiles, usePerfiles } from './piezas.jsx';
 import { LigaTeSigue, ligaSigue } from './sugeridos.jsx';
-import { CapaPerfilT, FondoT, NombreT } from './puesto.js';
+import { CapaPerfilT, CartaFx, FondoT, NombreT } from './puesto.js';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { FichaJurado } from './jurado_ficha.jsx';
 import { REDES } from './servidor.jsx';
@@ -106,7 +106,7 @@ function Precio({ liga, f, esYo, dc }) {
     <section className="sec pf-sec pf8-pr">
       <div className="sec-t"><h2>Precio por su cabeza</h2><a href="#/tienda">Cómo funciona <Ico n="flecha" t={16} /></a></div>
       <p className="pf-bajada">El primero que le gane en un evento de la Liga se lleva lo que vale, en Puntos de Tienda y en su Temporada.</p>
-      <p className="pf-pr"><b>{limpio(f.n)}</b> vale <span className="pf-pr-v">{num(v)}</span>
+      <p className="pf-pr"><b><NombreT k={f.k} n={limpio(f.n)} /></b> vale <span className="pf-pr-v">{num(v)}</span>
         {v < T.tope ? <> · se le pueden poner {num(queda)} más</> : <> · ya vale lo máximo</>}</p>
       {esYo ? <p className="pf-bajada">Eres tú: no te puedes poner precio.</p> : (
         <>
@@ -389,14 +389,14 @@ function Puertas({ liga, f, k, cs, svc, p, e, esYo }) {
   return (
     <div className="pf8-puertas tres">
       <button type="button" className="pf8-pu" onClick={() => accion.carta(k)} disabled={!cs.length} aria-label={'Ver las tarjetas de ' + limpio(f.n)}>
-        <span className="pf8-pu-tj" aria-hidden="true">{prev.map((c) => <img key={c} alt="" src={liga.cartaUrl(k, c)} loading="lazy" />)}</span>
+        <span className="pf8-pu-tj" aria-hidden="true">{prev.map((c) => <CartaFx key={c} k={k} src={liga.cartaUrl(k, c)} loading="lazy" />)}</span>
         <span className="pf8-pu-tx"><b>Tarjetas</b><small>{!total ? 'todavía ninguna' : total + (total === 1 ? ' tarjeta' : ' tarjetas')}</small></span>
         <em aria-hidden="true">›</em>
       </button>
       {/* 🎒 EL INVENTARIO, ENTRE TARJETAS Y VITRINA (Dlx: «entre tarjetas y vitrina agrega la opción de inventario»): el tuyo
           abre tu Inventario; el de otro, lo que lleva puesto */}
       <button type="button" className="pf8-pu" onClick={() => { if (esYo) { location.hash = '#/inventario'; return; } const r = document.querySelector('#inicio-nuevo'); const el = r && r.shadowRoot && r.shadowRoot.querySelector('#pf-puesto'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }}>
-        <span className="pf8-pu-tj pv-inv" aria-hidden="true">{cs.slice(0, 1).map((c) => <img key={c} alt="" src={liga.cartaUrl(k, c)} loading="lazy" />)}<i>TAG</i></span>
+        <span className="pf8-pu-tj pv-inv" aria-hidden="true">{cs.slice(0, 1).map((c) => <CartaFx key={c} k={k} src={liga.cartaUrl(k, c)} loading="lazy" />)}<i>TAG</i></span>
         <span className="pf8-pu-tx"><b>Inventario</b><small>{esYo ? 'tus TAGs, marcos y fondos' : 'lo que lleva puesto'}</small></span>
         <em aria-hidden="true">›</em>
       </button>

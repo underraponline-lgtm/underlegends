@@ -34,6 +34,7 @@ import { PLATAFORMA } from './publicaciones.jsx';
 import CSS_PAGINA from './css/publicaciones2.css?inline';
 import { usarCss } from './css.js';
 import { OcultarMods } from './mods_ocultar.jsx';
+import { NombreT } from './puesto.js';
 
 usarCss('publicaciones2', CSS_PAGINA);
 
@@ -132,7 +133,7 @@ function Autor({ liga, it, pub, cara = true }) {
     );
   }
   const prem = esPremium(pub, a.k);
-  const cuerpo = <>{cara ? <Cara liga={liga} k={a.k} nombre={a.n} cls={'cara pw-au-c' + (prem ? ' sp-prem-aro' : '')} /> : null}<b>{a.n}</b>
+  const cuerpo = <>{cara ? <Cara liga={liga} k={a.k} nombre={a.n} cls={'cara pw-au-c' + (prem ? ' sp-prem-aro' : '')} /> : null}<b><NombreT k={a.k} n={a.n} /></b>
     {prem ? <SelloPremium t={12} cls="sp-prem-in" /> : null}<small title={AUTO}>automática</small></>;
   // 18/11/2026: con liga.T[a.k] el autor de fuera de las 200 filas salía sin link, y también tiene perfil
   return a.k && liga.existe(a.k) ? <a className="pw-autor" href={'#/r/' + encodeURIComponent(a.k)}>{cuerpo}</a> : <span className="pw-autor">{cuerpo}</span>;

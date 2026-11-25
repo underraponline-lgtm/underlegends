@@ -17,6 +17,7 @@ import CSS_PAGINA from './css/eventos.css?inline';
 import { usarCss } from './css.js';
 import { useAplausos } from './aplausos.js';
 import { EstiloMods } from './mods_estilo.jsx';
+import { NombreT } from './puesto.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/eventos.css)
 usarCss('eventos', CSS_PAGINA);
@@ -903,7 +904,7 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
                   const { f } = liga.orgsDe({ org: o })[0] || {};
                   return (
                     <span key={o} className="evp-cj-o">{j ? ' · ' : ''}
-                      {f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara evp-oc" />{limpio(f.n)}</a>
+                      {f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara evp-oc" /><NombreT k={f.k} n={limpio(f.n)} /></a>
                         : <span><Cara liga={liga} nombre={o} cls="cara evp-oc" />{limpio(o)}</span>}
                       {dc ? (
                         <button type="button" className={'evp-org' + (sigo.has(claveOrg(o)) ? ' si' : '')} onClick={() => alternar(o)}
@@ -962,7 +963,7 @@ function ComoSeJuega({ liga, cal, color, parte }) {
           {os.map(([kk, [n, c]]) => {
             const f = !kk.startsWith('n:') ? liga.T[kk] : null;
             return (
-              <li key={kk}>{f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara evp-oc" />{limpio(f.n)}</a> : <span><Cara liga={liga} nombre={n} cls="cara evp-oc" />{limpio(n)}</span>}<em>{c}</em></li>
+              <li key={kk}>{f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara evp-oc" /><NombreT k={f.k} n={limpio(f.n)} /></a> : <span><Cara liga={liga} nombre={n} cls="cara evp-oc" />{limpio(n)}</span>}<em>{c}</em></li>
             );
           })}
         </ul>
