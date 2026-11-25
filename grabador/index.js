@@ -55,6 +55,7 @@ import { PruebaMicro } from './microfono.js';
 import { LlamadasVivo, claveCiclo } from './vivo.js';
 import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S } from './batallas.js';
 import { Menciones } from './mencion.js';
+import { Fallas, motivoDe, textoFalla } from './entrada.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
 const num = (s, d) => (Number.isFinite(Number(s)) && String(s).trim() !== '' ? Number(s) : d);
@@ -289,7 +290,8 @@ class Grabacion {
     return true;
   }
 
-  ms() { return performance.now() - this.t0; }
+  /** Los ms grabados. 0 mientras entra: `t0` se pone recién con la conexión lista (antes daba NaN: «0 pistas, NaN min»). */
+  ms() { return this.t0 === undefined ? 0 : performance.now() - this.t0; }
 
   /**
    * 🔴 EL APODO MIENTRAS GRABA, COMO CRAIG (Dlx, 23/11/2026: «cuando se una que se ponga como Craig… que su apodo se cambie a
@@ -308,6 +310,8 @@ class Grabacion {
     } catch (e) {
       if (!this.avisoApodo) anotar(`⚠️ apodo en ${this.guild.name}: ${String(e.message || e).slice(0, 80)}`);
       this.avisoApodo = true;
+      // 🔴 aislada (timeout) no se puede cambiar el apodo, y quedaba «GRABANDO» colgado (FRZ, 24/11): `vuelta()` reintenta
+      if (!grabando) apodosColgados.add(this.guild.id);
     }
   }
 
@@ -329,7 +333,10 @@ class Grabacion {
         await Promise.race([entersState(this.con, VoiceConnectionStatus.Signalling, 5000),
           entersState(this.con, VoiceConnectionStatus.Connecting, 5000)]);
       } catch (e) {
-        this.terminar('me sacaron de la llamada');
+        // 🔇 ¿la aislaron? Un timeout la saca de la llamada y no la deja volver: se dice en Logs, con hasta cuándo
+        const ais = await aisladaHasta(this.guild);
+        if (ais) reportarFalla(this.client, this.guild, this.canal, gente(this.canal).n, this.motivo, 'me aislaron', ais);
+        this.terminar(ais ? 'me aislaron (timeout) en ese servidor' : 'me sacaron de la llamada');
       }
     });
     this.con.on('error', (e) => anotar('⚠️ la conexión de voz:', String(e.message || e).slice(0, 120)));
@@ -407,6 +414,15 @@ class Grabacion {
   async terminar(razon) {
     if (this.cerrando) return;
     this.cerrando = true;
+    // 🚪 NUNCA TERMINÓ DE ENTRAR: no hay nada que entregar. Antes mandaba igual «NaN min · 0 voces» a Logs (FRZ, 24/11
+    // 11:17 PM ET: Railway la apagó mientras probaba entrar) y el `grabando` de ese servidor lo cerraba el catch de `entrar()`
+    if (this.t0 === undefined) {
+      anotar(`⏹️ ${this.guild.name}: ${razon} antes de terminar de entrar, no hay nada que entregar`);
+      try { this.con?.destroy(); } catch (e) { /* ya estaba cerrada */ }
+      if (grabando.get(this.guild.id) === this) grabando.delete(this.guild.id);
+      fs.rmSync(this.dir, { recursive: true, force: true });
+      return;
+    }
     const fin = this.ms();
     anotar(`⏹️ termina (${razon}) a los ${largo(fin / 1000)}`);
     clearInterval(this.reloj);
@@ -641,11 +657,13 @@ const avisadoSinPermiso = new Set();
 
 async function vuelta(client) {
   // los que ya se están grabando siguen en la lista aunque su llave deje de estar «en juego» (si no, nadie los cierra)
+  limpiarApodos(client);
   for (const gid of new Set([...(await servidoresAMirar()), ...grabando.keys()])) {
     const guild = client.guilds.cache.get(gid);
     if (!guild) continue;
     const g = grabando.get(gid);
-    if (g) { g.revisar(); continue; }
+    // la que todavía está entrando (`entrar()` no se espera) no se revisa: mudarla o cerrarla a medio conectar la rompe
+    if (g) { if (g.t0 !== undefined) g.revisar(); continue; }
     // con el mismo bot haciendo una prueba de micro ahí, entrar a grabar lo sacaría de esa llamada: se espera
     if (prueba && prueba.client === client && prueba.activa(gid)) continue;
     // 📣 con un evento anunciado ahora, la llamada donde está quien lo anunció manda sobre la que tiene más gente
@@ -667,25 +685,100 @@ async function vuelta(client) {
       p.lleno = true;
       continue;
     }
+    // 🚪 después de una falla al entrar, espera (`REINTENTO_MIN` de entrada.js; aislada, hasta que se le termine)
+    if (!fallas.puede(gid)) continue;
+    const motivo = porOrg ? `había ${c.n} personas con quien anunció el evento de ${guild.name}`
+      : enJuego ? `había ${c.n} personas y una llave de ${guild.name} en juego` : `había ${c.n} personas`;
     const yo = guild.members.me;
+    // 🔇 AISLADA (timeout): no hay nada que probar hasta que se le termine. Se dice en Logs, una vez por evento
+    const ais = yo?.communicationDisabledUntilTimestamp > Date.now() ? yo.communicationDisabledUntilTimestamp : null;
+    if (ais) { reportarFalla(client, guild, c.canal, c.n, motivo, 'aislada', ais); continue; }
     const puede = yo && c.canal.permissionsFor(yo)?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.Connect]);
     if (!puede) {
       if (!avisadoSinPermiso.has(c.canal.id)) anotar(`⚠️ sin permiso para entrar a ${guild.name} / ${c.canal.name}`);
       avisadoSinPermiso.add(c.canal.id);
+      reportarFalla(client, guild, c.canal, c.n, motivo, `no tiene permiso de ver o entrar a <#${c.canal.id}>`);
       continue;
     }
     pendiente.delete(gid);
-    const motivo = porOrg ? `había ${c.n} personas con quien anunció el evento de ${guild.name}`
-      : enJuego ? `había ${c.n} personas y una llave de ${guild.name} en juego` : `había ${c.n} personas`;
     const nueva = new Grabacion(client, guild, c.canal, motivo);
     grabando.set(gid, nueva);
-    try {
-      await nueva.empezar();
-    } catch (e) {
-      anotar('❌ no pude entrar a la llamada:', String(e.message || e).slice(0, 200));
-      try { nueva.con?.destroy(); } catch (x) { /* nada */ }
-      grabando.delete(gid);
+    // 🚪 SIN `await`: entrar puede tardar los 30 s de `entersState` y, esperándolo, la vuelta frenaba a los demás servidores
+    entrar(client, nueva, c.n);
+  }
+}
+
+// ── 🚪 cuando no puede entrar (entrada.js) ────────────────────────────────
+const fallas = new Fallas();
+const apodosColgados = new Set();   // servidores donde quedó «🔴 GRABANDO» y no se lo pudo sacar (ver `ponerApodo`)
+let apodosT = 0;
+
+async function entrar(client, nueva, n) {
+  const gid = nueva.guild.id;
+  try {
+    await nueva.empezar();
+    const f = fallas.entro(gid);
+    if (f?.aviso) {
+      editarAviso(client, f, textoFalla({ servidor: nueva.guild.name, canal: nueva.canal.id, porque: nueva.motivo, f,
+        horaET, entro: Date.now() }));
     }
+  } catch (e) {
+    try { nueva.con?.destroy(); } catch (x) { /* nada */ }
+    if (grabando.get(gid) === nueva) grabando.delete(gid);
+    if (nueva.cerrando) return;     // la cerró el apagado mientras entraba: no es una falla para avisar
+    const ais = await aisladaHasta(nueva.guild);
+    const f = await reportarFalla(client, nueva.guild, nueva.canal, n, nueva.motivo, String(e.message || e), ais);
+    anotar(`❌ no pude entrar a la llamada de ${nueva.guild.name} (intento ${f?.n ?? '?'}):`, String(e.message || e).slice(0, 200)
+      + (ais ? ` · está aislada hasta las ${horaET(new Date(ais))}` : ''));
+  }
+}
+
+/** Hasta cuándo está aislada (timeout) en ese servidor, preguntándole a Discord y no a la memoria; o `null`. */
+async function aisladaHasta(guild) {
+  try {
+    const me = await guild.members.fetchMe({ force: true });
+    const t = me.communicationDisabledUntilTimestamp;
+    return t && t > Date.now() ? t : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+/** Anota la falla y la dice en Logs de DRA: un mensaje por evento, que se edita con cada intento. Devuelve la fila. */
+async function reportarFalla(client, guild, canal, n, porque, error, aislada = null) {
+  const gid = guild.id;
+  // la misma falla repetida dentro de la espera (aislada, sin permiso) no cuenta como otro intento
+  if (!fallas.puede(gid)) return fallas.m.get(gid);
+  const f = fallas.fallo(gid, motivoDe(error, aislada, horaET), Date.now(), aislada);
+  const texto = textoFalla({ servidor: guild.name, canal: canal.id, porque, f, horaET, sacada: error === 'me aislaron' });
+  await editarAviso(client, f, texto);
+  return f;
+}
+
+async function editarAviso(client, f, texto) {
+  try {
+    const logs = await client.channels.fetch(ENTREGA);
+    if (f.aviso) {
+      try { await logs.messages.edit(f.aviso, { content: texto, allowedMentions: { parse: [] } }); return; } catch (e) {
+        /* lo borraron: va uno nuevo */
+      }
+    }
+    const m = await logs.send({ content: texto, allowedMentions: { parse: [] } });
+    f.aviso = m.id;
+  } catch (e) {
+    anotar('⚠️ no pude avisar en Logs que no entré:', String(e.message || e).slice(0, 100));
+  }
+}
+
+/** 🔴 El apodo «GRABANDO» que quedó colgado (aislada no se lo pudo sacar): cada 10 min, donde no está grabando. */
+function limpiarApodos(client) {
+  if (!apodosColgados.size || Date.now() - apodosT < 600000) return;
+  apodosT = Date.now();
+  for (const gid of [...apodosColgados]) {
+    if (grabando.has(gid)) continue;
+    const me = client.guilds.cache.get(gid)?.members.me;
+    if (!me || !String(me.nickname || '').startsWith(APODO_GRABANDO)) { apodosColgados.delete(gid); continue; }
+    me.setNickname(null, 'terminó la grabación').then(() => apodosColgados.delete(gid)).catch(() => {});
   }
 }
 
@@ -695,7 +788,8 @@ function medir() {
   const cpu = process.cpuUsage(cpuAntes), dt = performance.now() - tAntes;
   cpuAntes = process.cpuUsage(); tAntes = performance.now();
   const pct = ((cpu.user + cpu.system) / 1000 / dt) * 100;
-  const g = [...grabando.values()].map((x) => `${x.guild.name}: ${x.pistas.size} pistas, ${largo(x.ms() / 1000)}`);
+  const g = [...grabando.values()].map((x) => (x.t0 === undefined ? `${x.guild.name}: entrando…`
+    : `${x.guild.name}: ${x.pistas.size} pistas, ${largo(x.ms() / 1000)}`));
   anotar(`📊 ${(process.memoryUsage().rss / 1e6).toFixed(0)} MB · CPU ${pct.toFixed(1)} %`
     + (g.length ? ' · grabando ' + g.join('; ') : ''));
 }
@@ -710,6 +804,8 @@ async function revisarYSalir(client) {
     const guild = client.guilds.cache.get(gid);
     if (!guild) { console.log(`❌ ${gid}: el bot no está en ese servidor`); continue; }
     console.log(`\n${guild.name} (tope de archivo ${topeDe(guild) / 1e6} MB, llave en juego: ${llaves.has(gid) ? 'sí' : 'no'})`);
+    const ais = guild.members.me?.communicationDisabledUntilTimestamp;
+    if (ais > Date.now()) console.log(`  🔇 AISLADA (timeout) hasta las ${horaET(new Date(ais))}: no puede entrar a ninguna llamada`);
     const solo = canalesDe(gid);
     for (const c of guild.channels.cache.values()) {
       if (!c.isVoiceBased()) continue;
@@ -769,7 +865,7 @@ client.once(Events.ClientReady, async () => {
   for (const g of client.guilds.cache.values()) {
     const me = g.members.me;
     if (me && String(me.nickname || '').startsWith(APODO_GRABANDO)) {
-      me.setNickname(null, 'reinicio: no está grabando').catch(() => {});
+      me.setNickname(null, 'reinicio: no está grabando').catch(() => { apodosColgados.add(g.id); });
     }
   }
   setInterval(() => vuelta(client).catch((e) => anotar('⚠️ vuelta:', String(e.message || e).slice(0, 150))), 20000);

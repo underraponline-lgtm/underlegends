@@ -262,6 +262,46 @@ for (const b of bs) {
   ok(sobre.every((v) => v >= 6), `${b.titulo}: cada palabra se oye sobre el beat (${sobre.map((v) => '+' + v.toFixed(0)).join(' ')} dB)`);
 }
 
+// ── 🚪 cuando no puede entrar (entrada.js, 25/11/2026: aislada en FRZ, reintentaba cada 2 min toda la noche) ──
+console.log('\n🚪 cuando no puede entrar\n');
+{
+  const N = await import('./entrada.js');
+  const hora = (d) => `${d.getUTCHours()}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+  const F = new N.Fallas();
+  const t = Date.UTC(2026, 10, 25, 4, 20);   // 11:20 PM ET
+  ok(F.puede('frz', t), 'sin fallas, se puede probar');
+  const f1 = F.fallo('frz', 'aborted', t);
+  ok(!F.puede('frz', t + 60000) && F.puede('frz', t + 2 * 60000), 'después de la 1.ª espera 2 min, no 20 s');
+  F.fallo('frz', 'aborted', t + 2 * 60000);
+  const f3 = F.fallo('frz', 'aborted', t + 7 * 60000);
+  ok(f3 === f1 && f3.n === 3 && f3.hasta === t + 17 * 60000, `la 3.ª espera 10 min, y es la misma fila (${f3.n} intentos)`);
+  for (let i = 0; i < 6; i++) F.fallo('frz', 'aborted', F.m.get('frz').hasta);
+  const f9 = F.m.get('frz');
+  ok(f9.hasta - f9.ultima === 30 * 60000, 'la espera no pasa de 30 min');
+  // aislada un día: no se prueba hasta que se le termine
+  const fin = t + 23 * 3600000;
+  const G = new N.Fallas();
+  const fa = G.fallo('frz', 'aislada', t, fin);
+  ok(!G.puede('frz', fin - 1000) && G.puede('frz', fin + 20000) && fa.aislada === fin, 'aislada: espera hasta que se le termine el timeout');
+  ok(N.motivoDe('aislada', fin, hora).includes('aislada (timeout)') && N.motivoDe('aislada', fin, hora).includes(hora(new Date(fin))),
+    'el por qué dice «aislada» y hasta qué hora');
+  ok(/30 s/.test(N.motivoDe('The operation was aborted', null, hora)), 'sin timeout, un «aborted» se explica como que no terminó de conectar');
+  // otro evento: una falla mucho después de la anterior arranca de cero (mensaje nuevo)
+  fa.aviso = '123';
+  const otra = G.fallo('frz', 'aborted', fin + N.OTRO_EVENTO_MIN * 60000 + 1);
+  ok(otra !== fa && otra.n === 1 && otra.aviso === null, 'una falla de otro evento es una fila nueva, sin el mensaje del anterior');
+  // entró: se olvida la racha y devuelve lo que había, para decir en Logs que al final entró
+  const ya = G.entro('frz');
+  ok(ya === otra && G.puede('frz', fin) && !G.m.has('frz'), 'al entrar se olvida la racha');
+  const txt = N.textoFalla({ servidor: 'Freestyle Zone', canal: '1493753925185310831', porque: 'había 7 personas', f: f3, horaET: hora });
+  ok(txt.includes('No pude entrar a grabar') && txt.includes(`${f3.n} intentos`) && txt.includes('Vuelvo a probar a las'),
+    'el mensaje de Logs: título, intentos y cuándo vuelve a probar');
+  const txt2 = N.textoFalla({ servidor: 'FRZ', canal: '1', porque: 'x', f: f3, horaET: hora, entro: t + 20 * 60000 });
+  ok(txt2.includes('Al final entré') && !txt2.includes('Vuelvo a probar'), 'si al final entró, lo dice en el mismo mensaje');
+  ok(N.textoFalla({ servidor: 'FRZ', canal: '1', porque: 'x', f: fa, horaET: hora, sacada: true }).includes('Me sacaron'),
+    'si la aislaron adentro, dice que la sacaron');
+}
+
 // ── 🎙️👀 los micrófonos y el público de las llamadas en vivo (vivo.js, 21/11/2026) ──
 console.log('\n🎙️👀 las llamadas en vivo: micrófonos y público\n');
 {
