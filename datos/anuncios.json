@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T04:55:48+00:00",
+ "cuando": "2026-11-25T05:25:47+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8244,6 +8244,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "KYSS",
+   "quien": "ominouspoetry",
+   "discord_id": "1190746928774922311",
+   "msg_id": "1575016966375215317",
+   "cuando": "2026-11-25T05:15:07"
+  },
+  {
+   "servidor": "DW",
+   "canal": "「📜」INSCRIPCIONES",
+   "texto": "Lord viruzz🇵🇪",
+   "quien": "facinedoso",
+   "discord_id": "1557215371050876960",
+   "msg_id": "1575013119564980285",
+   "cuando": "2026-11-25T04:59:50"
+  },
   {
    "servidor": "DW",
    "canal": "「📜」INSCRIPCIONES",
@@ -44225,24 +44243,6 @@
    "discord_id": "1462237816829513971",
    "msg_id": "1562616153350611035",
    "cuando": "2026-10-21T23:58:42"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "│🔵📋┆inscripciones",
-   "texto": "noone🇵🇪",
-   "quien": "limitz2702",
-   "discord_id": "754749179410251847",
-   "msg_id": "1562616054419816461",
-   "cuando": "2026-10-21T23:58:19"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1562613803936649227",
-   "cuando": "2026-10-21T23:49:22"
   }
  ]
 }

@@ -49,11 +49,6 @@
    "usos": null,
    "por_que": "el bot no puede ver sus invitaciones"
   },
-  "CH": {
-   "codigo": "GxKa9EBqEY",
-   "usos": null,
-   "por_que": "el bot no puede ver sus invitaciones"
-  },
   "DDS": {
    "codigo": "HTERZJAcYR",
    "usos": 1
@@ -66,19 +61,6 @@
   "CHZ": {
    "codigo": "35kjKdthJf",
    "usos": 1
-  },
-  "WOF": {
-   "codigo": "qV7MKZM6sQ",
-   "usos": null,
-   "por_que": "el bot no puede ver sus invitaciones"
-  },
-  "UFLUC": {
-   "codigo": "WXbMDp64u6",
-   "usos": 1
-  },
-  "SGR": {
-   "codigo": "7ECfEuYumQ",
-   "usos": 0
   }
  }
 }

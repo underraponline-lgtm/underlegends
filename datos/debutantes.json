@@ -438,18 +438,6 @@
    "vence": "2026-11-06T22:52:29+00:00",
    "vencido": true
   },
-  "Barranca": {
-   "avisado": "2026-11-25",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-25T03:57:01+00:00",
-   "did": "",
-   "evento": "- DEM BATTLES -",
-   "n": 692,
-   "sv": "FRZ",
-   "vence": "2026-12-02T03:57:01+00:00",
-   "vencido": false
-  },
   "Bau": {
    "avisado": "2026-10-31",
    "chat": "2026-10-31",

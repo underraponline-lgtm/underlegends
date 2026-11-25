@@ -1719,6 +1719,11 @@
      1
     ],
     [
+     "ajoel08",
+     8,
+     1
+    ],
+    [
      "DARK ANGEL",
      8,
      1
@@ -1727,15 +1732,15 @@
    "semillero": {
     "nuevos": {
      "FFA": 5,
-     "FRZ": 1
+     "FRZ": 3
     },
     "gente": {
      "FFA": 53,
-     "FRZ": 9,
+     "FRZ": 16,
      "DDS": 8,
      "UFLUC": 8
     },
-    "gana": "FFA"
+    "gana": "FRZ"
    },
    "meta_va": {
     "ACAD": 0,
@@ -1748,7 +1753,7 @@
     "FDS": 0,
     "FFA": 53,
     "FFS": 0,
-    "FRZ": 9,
+    "FRZ": 16,
     "FVS": 0,
     "LKR": 0,
     "SR": 0,

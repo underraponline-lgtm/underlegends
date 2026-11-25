@@ -4241,6 +4241,84 @@
      386
     ]
    }
+  },
+  {
+   "id": "5f01f83495",
+   "tipo": "Nombre desconocido",
+   "sec": "PURISTAS DEL HIP HOP · FFA · 23/11 · #688",
+   "que": "¿Quién es «tierra sin atmosfera 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 957751910096597065",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (957751910096597065)",
+   "t": 1795584948826,
+   "filas": [
+    1597
+   ],
+   "variantes": [
+    "tierra sin atmosfera 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "tierra sin atmosfera",
+     "957751910096597065"
+    ]
+   }
+  },
+  {
+   "id": "58818b7da9",
+   "tipo": "Nombre desconocido",
+   "sec": "CHOP COMPE CEO V.2 · CH · 14/11 · #636",
+   "que": "¿Quién es «Dyz 🇨🇱»?",
+   "r": "Es Dyzz",
+   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
+   "rk": "R2",
+   "por": "el ciclo",
+   "porque": "«Dyz» se anotó 4 vez/veces sola desde la cuenta de Dyzz («Dyz», «dyz», en CH, FFA) y Dyzz no jugó esos eventos con su nombre; nadie más usa ese nombre y Dyzz no es organizador, staff, host ni socio ahí",
+   "t": 1795584948826,
+   "filas": [
+    1389
+   ],
+   "variantes": [
+    "Dyz 🇨🇱"
+   ],
+   "escribio": {
+    "alias": [
+     "Dyz",
+     "Dyzz"
+    ],
+    "filas": [
+     387
+    ]
+   }
+  },
+  {
+   "id": "c497f81b26",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Dyz» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «Dyz», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dyz» pasan a Dyzz.\nLa cuenta: https://discord.com/users/1525996330042921081",
+   "r": "Es la misma persona",
+   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
+   "rk": "R2",
+   "por": "el ciclo",
+   "porque": "«Dyz» se anotó 4 vez/veces sola desde la cuenta de Dyzz («Dyz», «dyz», en CH, FFA) y Dyzz no jugó esos eventos con su nombre; nadie más usa ese nombre y Dyzz no es organizador, staff, host ni socio ahí",
+   "t": 1795584948826,
+   "filas": [
+    1392
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Dyz» → «Dyzz» · cuenta 1525996330042921081"
+   ],
+   "escribio": {
+    "alias": [
+     "Dyz",
+     "Dyzz"
+    ],
+    "filas": [
+     387
+    ]
+   }
   }
  ],
  "deshechas": []
