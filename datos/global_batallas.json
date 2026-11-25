@@ -14195,6 +14195,33 @@
   },
   {
    "a": {
+    "id": "yt:vcclario",
+    "nombre": "VCCLARIO",
+    "pais": "pe"
+   },
+   "b": {
+    "id": "yt:zaith",
+    "nombre": "ZAITH",
+    "pais": "pe"
+   },
+   "evento": {
+    "fecha": "2026-11-15",
+    "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
+    "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
+    "pais": "pe",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "b",
+   "id": "yt:kaRUqMq48ks",
+   "pts": null,
+   "replica": null,
+   "ronda": "cuartos",
+   "url": "https://www.youtube.com/watch?v=kaRUqMq48ks",
+   "votos": null
+  },
+  {
+   "a": {
     "id": "yt:salva",
     "nombre": "SALVA",
     "pais": "pe"
@@ -14272,33 +14299,6 @@
    "replica": null,
    "ronda": "cuartos",
    "url": "https://www.youtube.com/watch?v=CuNG4PJP7d4",
-   "votos": null
-  },
-  {
-   "a": {
-    "id": "yt:vcclario",
-    "nombre": "VCCLARIO",
-    "pais": "pe"
-   },
-   "b": {
-    "id": "yt:zaith",
-    "nombre": "ZAITH",
-    "pais": "pe"
-   },
-   "evento": {
-    "fecha": "2026-11-15",
-    "id": "yt-untalrap-fecha-interna-los-5-elegidos-untalrap",
-    "nombre": "FECHA INTERNA LOS 5 ELEGIDOS · UNTALRAP",
-    "pais": "pe",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "b",
-   "id": "yt:kaRUqMq48ks",
-   "pts": null,
-   "replica": null,
-   "ronda": "cuartos",
-   "url": "https://www.youtube.com/watch?v=kaRUqMq48ks",
    "votos": null
   },
   {
@@ -26048,6 +26048,33 @@
   },
   {
    "a": {
+    "id": "yt:alkimista",
+    "nombre": "ALKIMISTA",
+    "pais": "mx"
+   },
+   "b": {
+    "id": "yt:chisky",
+    "nombre": "CHISKY",
+    "pais": "mx"
+   },
+   "evento": {
+    "fecha": "2026-10-25",
+    "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
+    "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
+    "pais": "mx",
+    "tipo": "plaza"
+   },
+   "fuente": "youtube",
+   "gana": "a",
+   "id": "yt:uZFPigSq68c",
+   "pts": null,
+   "replica": null,
+   "ronda": "octavos",
+   "url": "https://www.youtube.com/watch?v=uZFPigSq68c",
+   "votos": null
+  },
+  {
+   "a": {
     "id": "yt:kruxxty",
     "nombre": "KRUXXTY",
     "pais": "mx"
@@ -26058,7 +26085,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26085,7 +26112,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26112,7 +26139,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26139,7 +26166,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26166,7 +26193,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26183,33 +26210,6 @@
   },
   {
    "a": {
-    "id": "yt:alkimista",
-    "nombre": "ALKIMISTA",
-    "pais": "mx"
-   },
-   "b": {
-    "id": "yt:chisky",
-    "nombre": "CHISKY",
-    "pais": "mx"
-   },
-   "evento": {
-    "fecha": "2026-11-01",
-    "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
-    "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
-    "pais": "mx",
-    "tipo": "plaza"
-   },
-   "fuente": "youtube",
-   "gana": "a",
-   "id": "yt:uZFPigSq68c",
-   "pts": null,
-   "replica": null,
-   "ronda": "octavos",
-   "url": "https://www.youtube.com/watch?v=uZFPigSq68c",
-   "votos": null
-  },
-  {
-   "a": {
     "id": "yt:triangulo",
     "nombre": "TRIANGULO",
     "pais": "mx"
@@ -26220,7 +26220,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26247,7 +26247,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26274,7 +26274,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26301,7 +26301,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26328,7 +26328,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26355,7 +26355,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -26382,7 +26382,7 @@
     "pais": "mx"
    },
    "evento": {
-    "fecha": "2026-11-01",
+    "fecha": "2026-10-25",
     "id": "yt-rest-in-beats-fecha-6-rest-in-beats-x-jaula-sultana",
     "nombre": "FECHA 6 / REST IN BEATS x JAULA SULTANA",
     "pais": "mx",
@@ -82072,5 +82072,5 @@
   "liga:zetryko": 1126,
   "liga:zignos": 1018
  },
- "t": "2026-11-25T01:38:34-05:00"
+ "t": "2026-11-25T01:49:22-05:00"
 }
