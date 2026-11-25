@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-24T23:51:14Z",
+ "cuando": "2026-11-25T00:29:57Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 2714.0,
+ "dur_s": 2279.1,
  "pasos": [
   {
    "n": "2f",
@@ -15,51 +15,46 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.2
+   "s": 1.0
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.9
+   "s": 16.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 25.5
+   "s": 22.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 1044.0
+   "s": 693.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
-   "ok": false,
-   "s": 1516.4
+   "ok": true,
+   "s": 1480.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 112.1
+   "s": 62.9
   }
  ],
- "fallas": [
-  {
-   "paso": "5b",
-   "que": "bot/og_links.py --subir"
-  }
- ],
+ "fallas": [],
  "ultimo_evento": {
   "n": "691",
   "nombre": "UFL BATTLES V3",
@@ -68,25 +63,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 596,
-   "read": 28126
+   "write": 20,
+   "read": 152
   },
   "objeto": {
-   "leidas": 5081659,
-   "escritas": 60308,
-   "pedidos": 36459
+   "leidas": 113003,
+   "escritas": 1798,
+   "pedidos": 706
   },
   "worker": {
-   "pedidos": 33088,
-   "errores": 7547,
-   "sub": 37199,
-   "cortados": 7547,
+   "pedidos": 31816,
+   "errores": 8215,
+   "sub": 35534,
+   "cortados": 8215,
    "p50_ms": 0.97,
-   "p99_ms": 15.89,
+   "p99_ms": 15.87,
    "cpu": {
-    "total": 93441,
-    "objeto_10": 1898,
-    "worker_10": 1017
+    "total": 92555,
+    "objeto_10": 1799,
+    "worker_10": 974
    }
   },
   "r2": {
