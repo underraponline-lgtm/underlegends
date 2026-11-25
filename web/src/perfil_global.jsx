@@ -438,7 +438,7 @@ function VideosGl({ X, xs, sujeto, shorts = [], cs = [] }) {
           <h3 className="pf-vid-t glpv-sh-t">Shorts</h3>
           <p className="pv-nada">Los momentos que suben los canales: {plural(shorts.length, 'short', 'shorts')} que lo nombran.{' '}
             {/* 🎬 y uno tras otro en Reels, empezando por el primero (24/11/2026) */}
-            <a className="glpv-reels" href={'#/reels/' + shorts[0][0]}>Verlos en Reels</a></p>
+            <a className="glpv-reels" href={'#/videos/' + shorts[0][0]}>Verlos en Videos</a></p>
           <ul className="pf-vid glpv-shorts">{verS.map((s) => {
             const otros = (s[2] || []).map((k) => X.porK.get(k)).filter(Boolean);
             return (
@@ -448,7 +448,7 @@ function VideosGl({ X, xs, sujeto, shorts = [], cs = [] }) {
                   <b>{otros.length ? 'Con ' + otros.map(nombre).join(' y ') : cs[s[1]] || 'Short'}</b>
                   {otros.length && cs[s[1]] ? <small>{cs[s[1]]}</small> : null}
                 </button>
-                <a className="glpv-reels chico" href={'#/reels/' + s[0]}>Ver en Reels</a>
+                <a className="glpv-reels chico" href={'#/videos/' + s[0]}>Ver en Videos</a>
               </li>
             );
           })}</ul>

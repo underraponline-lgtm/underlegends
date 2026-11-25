@@ -686,7 +686,7 @@ function HojaEventos({ liga, j, cara, pagina, sale, onCerrar, x, boton }) {
 // mucho). En tu navegador la barra nunca se achica (`lg:barra-max`), aunque una temporada nueva te baje el nivel. Todo
 // sigue en el ☰: crecer es lo que está a mano, no lo que existe
 // 🎬 Reels va pegado a la E, del lado del Ranking (24/11/2026)
-const TIRA = [['inicio', 'Inicio', '#/'], ['ranking', 'Ranking', '#/ranking'], null, ['reels', 'Reels', '#/reels'], ['pase', 'Pase', '#/pase'],
+const TIRA = [['inicio', 'Inicio', '#/'], ['ranking', 'Ranking', '#/ranking'], null, ['reels', 'Videos', '#/videos'], ['pase', 'Pase', '#/pase'],
   ['publicaciones', 'Publicaciones', '#/publicaciones'], ['competencias', 'Competencias', '#/competencias'], ['ligas', 'Ligas', '#/ligas'],
   ['crews', 'Crews', '#/crews'], ['tarjetas', 'Tarjetas', '#/tarjetas'], ['salon', 'Salón', '#/salon'], ['socios', 'Socios', '#/socios'],
   ['guia', 'Guía', '#/guia']];
@@ -989,7 +989,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
 // nombre y para qué sirve. Arriba de la imagen, lo del momento: lo nuevo y lo que se juega, en magenta. Ranking y Pase sólo
 // donde no hay barra (de 900 px para arriba, `.en-barra`). El panel es oscuro en los dos temas, como la campana y tu menú
 const TEJAS = [
-  ['La temporada', [['#/reels', 'Reels'], ['#/publicaciones', 'Publicaciones'], ['#/eventos', 'Eventos'], ['#/competencias', 'Competencias'], ['#/ligas', 'Ligas'],
+  ['La temporada', [['#/videos', 'Videos'], ['#/publicaciones', 'Publicaciones'], ['#/eventos', 'Eventos'], ['#/competencias', 'Competencias'], ['#/ligas', 'Ligas'],
     ['#/ranking', 'Ranking', 1], ['#/pase', 'Pase rapero', 1]]],
   ['Comunidad', [['#/crews', 'Crews'], ['#/tarjetas', 'Tarjetas'], ['#/salon', 'Salón de la fama'], ['#/socios', 'Socios']]],
   ['Lo tuyo', [['#/tienda', 'Tienda'], ['#/invitar', 'Invita y gana'], ['#/guia', 'Guía']]],

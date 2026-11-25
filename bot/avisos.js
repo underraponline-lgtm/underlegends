@@ -4342,7 +4342,7 @@ export function paraSeguidores(items, ahora) {
       // 🎬 un short abre el short (su link de Reels); lo demás, el perfil
       const corto = x.tipo === 'short' && /^ul-[a-z0-9-]{3,60}$/.test(String(x.rid || ''));
       out.push({ pub, k, t, titulo, cuerpo: (corto ? `Sigues a ${n} en la Liga · toca para verlo` : `Sigues a ${n} en la Liga · toca para ver su perfil`).slice(0, 240),
-        url: corto ? 'https://underlegends.pages.dev/freestyle-rap/reels/' + x.rid : 'https://underlegends.pages.dev/freestyle-rap/r/' + encodeURIComponent(k) });
+        url: corto ? 'https://underlegends.pages.dev/freestyle-rap/videos/' + x.rid : 'https://underlegends.pages.dev/freestyle-rap/r/' + encodeURIComponent(k) });
     }
   }
   return out;

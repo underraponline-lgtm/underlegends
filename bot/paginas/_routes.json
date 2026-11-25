@@ -54,6 +54,8 @@
     "/freestyle-rap/inventario/*",
     "/freestyle-rap/reels",
     "/freestyle-rap/reels/*",
+    "/freestyle-rap/videos",
+    "/freestyle-rap/videos/*",
     "/cuenta",
     "/cambios",
     "/cambios/*",

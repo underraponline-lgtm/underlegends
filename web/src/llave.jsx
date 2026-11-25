@@ -527,7 +527,7 @@ function ShortB({ ctx, ls, gano, fin }) {
   if (!x && !au) return null;
   const vs = ls.map(limpio).join(' vs ');
   const chico = !!P && !fin;
-  const pub = P ? <span className={'lk-short lk-pub' + (P.contra ? ' contra' : '')} title={'El público: ' + limpio(P.lado) + ' ' + P.pct + ' % de ' + P.n + ' votos en Reels' + (P.contra ? '. El jurado eligió a otro' : '')}>
+  const pub = P ? <span className={'lk-short lk-pub' + (P.contra ? ' contra' : '')} title={'El público: ' + limpio(P.lado) + ' ' + P.pct + ' % de ' + P.n + ' votos en Videos' + (P.contra ? '. El jurado eligió a otro' : '')}>
     {fin ? 'PÚBLICO ' : <svg className="lk-pub-ico" viewBox="0 0 16 16" width="11" height="11" aria-label="El público"><circle cx="5" cy="5" r="2.6" fill="currentColor" /><circle cx="11.5" cy="5.5" r="2.2" fill="currentColor" /><path d="M0 14c0-3 2.3-5 5-5s5 2 5 5zM9.5 14c0-1.6-.5-3-1.4-4 .9-.6 2-.9 3.1-.7 2.2.3 3.8 2.2 3.8 4.7z" fill="currentColor" /></svg>}{P.pct} % · {limpio(P.lado)}</span> : null;
   return (
     <>

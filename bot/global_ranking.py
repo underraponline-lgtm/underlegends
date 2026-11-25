@@ -727,8 +727,7 @@ def correr(red=False, escribir=True):
         _escribir(REELS_VISTA, reels_vista(out), compacto=True)
         try:
             import global_fuente_clips as GC
-            canales = {c['slug']: c['nombre'] for c in (_leer(os.path.join(BASE, 'datos', 'global_canales.json'), {})
-                                                         .get('canales') or [])}
+            canales = {c['slug']: c['nombre'] for c in GC.canales_todos()}   # 🤝 con los de los socios
             GC.escribir_web(GC.para_la_web(GC.guardados(), out.get('g') or [], canales))
         except Exception as e:                           # noqa: BLE001 — sin clips, Reels sale igual
             print('⚠️ los clips no se ataron: %s' % str(e)[:100])

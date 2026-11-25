@@ -29,7 +29,7 @@ import { siluetaDe } from './sin_foto.js';
 // cuadrados, ver `Tabbar` y `TEJAS` en abajo.jsx); sigue siendo el del buscador y el de la compu. La Tienda ya no está: vive en «Tu
 // cuenta» (Dlx: «Tienda me gusta en tu cuenta… ahí nos ahorramos un espacio»), en el panel del Inicio y en el ☰
 export const MENU = [
-  ['Inicio', '#/'], ['Ranking', '#/ranking'], ['Reels', '#/reels'], ['Eventos', '#/eventos'], ['Pase rapero', '#/pase'], ['Publicaciones', '#/publicaciones'],
+  ['Inicio', '#/'], ['Ranking', '#/ranking'], ['Videos', '#/videos'], ['Eventos', '#/eventos'], ['Pase rapero', '#/pase'], ['Publicaciones', '#/publicaciones'],
   ['Competencias', '#/competencias'], ['Ligas', '#/ligas'], ['Crews', '#/crews'], ['Tarjetas', '#/tarjetas'], ['Salón de la fama', '#/salon'],
   ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
@@ -59,7 +59,7 @@ export const GRUPOS = [
   ['Inicio', '#/'],
   ['Ranking', '#/ranking', RK_SUBS.map(([n, s, d, i]) => [n, '#/ranking/' + s, d, i])],
   // 🎬 Reels, al lado del Ranking (24/11/2026, Dlx: «ahí al costado de rankings»)
-  ['Reels', '#/reels'],
+  ['Videos', '#/videos'],
   ['Eventos', '#/eventos', [['Calendario', '#/eventos', 'Todos los torneos y la campana', 'eventos'], ['Competencias', '#/competencias', 'La Copa, la Liga de 10 y la Rapid', 'competencias'],
     ['Ligas', '#/ligas', 'Las ligas de cada servidor', 'ligas']]],
   ['Pase rapero', '#/pase'],
@@ -161,7 +161,7 @@ function MenuArriba({ pagina, nuevas }) {
 // el menú ☰ debajo del nombre, y arriba en la compu al pasar el mouse
 export const QUE_ES = {
   '#/': 'Lo que pasa ahora en la Liga', '#/eventos': 'Cuándo se juega, y la campana para enterarte',
-  '#/ranking': 'Las tablas de la temporada', '#/reels': 'Los momentos de las batallas, en vertical', '#/competencias': 'La Copa, la Liga de 10 y la Rapid de la semana', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
+  '#/ranking': 'Las tablas de la temporada', '#/videos': 'Los momentos de las batallas, cortos y largos', '#/competencias': 'La Copa, la Liga de 10 y la Rapid de la semana', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
   '#/tarjetas': 'Las tarjetas de cada rapero', '#/ligas': 'Las ligas de los servidores, con su tabla',
   '#/crews': 'Arma tu crew o súmate a una, con su tier',
   '#/salon': 'Los campeones, los récords y lo más difícil de la Liga',
@@ -281,7 +281,7 @@ export function Buscar({ liga, onIr, sugerencias = false }) {
     const pone = (vid, n, sub, extra) => {
       if (!vid || ya.has(vid) || !n) return;
       ya.add(vid);
-      out.push({ tipo: 'video', id: 'v' + vid, vid, n: limpio(n), sub, href: '#/reels/' + vid, busca: extra });
+      out.push({ tipo: 'video', id: 'v' + vid, vid, n: limpio(n), sub, href: '#/videos/' + vid, busca: extra });
     };
     if (glob && Array.isArray(glob.g)) {
       const cs = glob.cs || [];

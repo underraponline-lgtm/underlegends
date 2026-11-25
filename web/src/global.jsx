@@ -954,7 +954,7 @@ function BotonSeguirG({ liga, g, si, seguir, cls = '', perfil = false }) {
       <button type="button" className={perfil ? 'btn pf8-seguir ' + (si ? 'borde on' : 'verde') : 'btn chico' + (si ? ' borde2 on' : '')}
         aria-pressed={si} onClick={tocar}>{perfil ? null : <Ico n="seguir" t={16} />}{si ? 'Siguiendo' : 'Seguir'}</button>
       <small role={msg ? 'status' : undefined}>{msg || (deLiga ? (si ? 'Te avisamos cuando gane.' : 'Te avisa cuando gane.')
-        : si ? 'Lo tienes en Mi cuenta y en «Siguiendo» de Reels.' : 'Para tenerlo en Mi cuenta y en «Siguiendo» de Reels.')}</small>
+        : si ? 'Lo tienes en Mi cuenta y en «Siguiendo» de Videos.' : 'Para tenerlo en Mi cuenta y en «Siguiendo» de Videos.')}</small>
     </div>
   );
 }

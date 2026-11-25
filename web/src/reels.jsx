@@ -102,7 +102,7 @@ const quedan = (vence) => {
   const h = Math.max(0, Math.round((new Date(vence + ':00Z').getTime() - Date.now()) / 3600000));
   return h <= 1 ? 'queda menos de 1 h' : 'quedan ' + h + ' h';
 };
-const linkDe = (vid) => 'https://underlegends.pages.dev/freestyle-rap/reels/' + vid;
+const linkDe = (vid) => 'https://underlegends.pages.dev/freestyle-rap/videos/' + vid;
 
 /** todos los shorts, uno por video, con todos los que nombra: los del Ranking global (`/global.json`) y los de los canales de
  *  los socios (`/liga_shorts.json`, bot/liga_shorts.py: la mejora 3, «que la gente se vea entre los pros») */
@@ -677,7 +677,7 @@ const FILTROS = [['todo', 'Para ti'], ['siguiendo', 'Siguiendo'], ['liga', 'La L
 async function compartir(r, setCopiado) {
   const url = linkDe(r.vid);
   try {
-    if (navigator.share) { await navigator.share({ title: r.t || 'Reels', url }); return; }
+    if (navigator.share) { await navigator.share({ title: r.t || 'Videos', url }); return; }
   } catch (e) { if (e && e.name === 'AbortError') return; }
   try { await navigator.clipboard.writeText(url); setCopiado(true); } catch (e) { /* sin portapapeles */ }
 }
@@ -883,7 +883,7 @@ function ReelsCel({ F }) {
     return (
       <div className="rls rls-cel menu" ref={caja} style={{ bottom: medida.abajo }}>
         <div className="rls-fin">
-          <span className="tag">REELS</span>
+          <span className="tag">VIDEOS</span>
           <b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b>
           <p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
           <button type="button" className="rls-bt prim" onClick={() => F.setFiltro(F.filtro === 'todo' ? 'vistos' : 'todo')}>{F.filtro === 'todo' ? 'Ver los vistos' : 'Ver Para ti'}</button>
@@ -944,7 +944,7 @@ function ReelsCel({ F }) {
 
       {F.fin && !c ? (
         <div className="rls-fin">
-          <span className="tag">REELS</span>
+          <span className="tag">VIDEOS</span>
           <b>Viste todo lo nuevo</b>
           <p>Llegan más cada lunes. Mientras, mira quién está arriba o lo que viene en la Liga.</p>
           <a className="rls-bt prim" href="#/ranking/global">Ver el Ranking global</a>
@@ -1327,7 +1327,7 @@ function ReelsPc({ F }) {
     <div className="escena rls-esc">
       <div className="rls-esc-in">
         <div className="rls-esc-tx">
-          <span className="tag">REELS{F.temp ? ' · ' + F.temp : ''}</span>
+          <span className="tag">VIDEOS{F.temp ? ' · ' + F.temp : ''}</span>
           <h1 className="hero-ev rls-h1">Los momentos de las batallas</h1>
         </div>
         <div className="rls-esc-der">
@@ -1421,7 +1421,7 @@ function ReelsPc({ F }) {
                 </div>
               ) : F.fin ? (
                 <div className="rls-fin">
-                  <span className="tag">REELS</span>
+                  <span className="tag">VIDEOS</span>
                   <b>Viste todo lo nuevo</b>
                   <p>Llegan más cada lunes. Mientras, mira quién está arriba o lo que viene en la Liga.</p>
                   <a className="rls-bt prim" href="#/ranking/global">Ver el Ranking global</a>

@@ -37,11 +37,11 @@ export function ReelsFila() {
   // sin dato no hay pieza
   if (xs.length < 4) return null;
   return (
-    <section id="reels" className="rlf" aria-label="Reels de la semana">
-      <div className="sec-t"><h2>Reels de la semana</h2><a href="#/reels">Ver todos</a></div>
+    <section id="reels" className="rlf" aria-label="Videos de la semana">
+      <div className="sec-t"><h2>Videos de la semana</h2><a href="#/videos">Ver todos</a></div>
       <div className="rlf-rail">
         {S ? (
-          <a className="rlf-r rlf-top" href={'#/reels/' + S.rid} aria-label={'El short de la semana: ' + (S.nombres || []).join(' vs ')}>
+          <a className="rlf-r rlf-top" href={'#/videos/' + S.rid} aria-label={'El short de la semana: ' + (S.nombres || []).join(' vs ')}>
             <span className="rlf-img">
               {S.portada ? <img alt="" loading="lazy" decoding="async" src={S.portada} /> : null}
               <em className="rlf-sello">Short de la semana</em>
@@ -52,7 +52,7 @@ export function ReelsFila() {
           </a>
         ) : null}
         {xs.map(([v, [t, canal, quien]]) => (
-          <a key={v} className="rlf-r" href={'#/reels/' + v} aria-label={(quien || 'Reel') + (t ? ': ' + t : '')}>
+          <a key={v} className="rlf-r" href={'#/videos/' + v} aria-label={(quien || 'Reel') + (t ? ': ' + t : '')}>
             <span className="rlf-img">
               <img alt="" loading="lazy" decoding="async" src={'https://i.ytimg.com/vi/' + v + '/oar2.jpg'}
                 onError={(e) => { if (!e.currentTarget.dataset.atras) { e.currentTarget.dataset.atras = '1'; e.currentTarget.src = 'https://i.ytimg.com/vi/' + v + '/hqdefault.jpg'; } }} />

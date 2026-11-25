@@ -43,6 +43,26 @@ for _p in (SCR, BASE):
         sys.path.insert(0, _p)
 
 CANALES = os.path.join(BASE, 'datos', 'global_canales.json')
+# 🤝 Y LOS DE NUESTROS SOCIOS (Dlx, 25/11/2026: «make sure to include videos of the social media of our socios»): los
+# canales de YouTube de `datos/videos_canales.json` (los mismos de bot/videos.py y bot/liga_shorts.py). Sólo para mostrar:
+# NO entran a `global_canales.json`, que es de donde salen los puntos del Ranking global
+SOCIOS = os.path.join(BASE, 'datos', 'videos_canales.json')
+
+
+def canales_todos():
+    """Los canales del Ranking global y los de los socios, cada uno con `slug` y `nombre` (el slug de un socio: `socio-<id>`)."""
+    try:
+        cs = list(json.load(io.open(CANALES, encoding='utf-8')).get('canales') or [])
+    except (OSError, ValueError):
+        cs = []
+    ya = {c.get('id') for c in cs}
+    try:
+        for c in json.load(io.open(SOCIOS, encoding='utf-8')).get('canales') or []:
+            if c.get('id') and c['id'] not in ya:
+                cs.append({'id': c['id'], 'slug': 'socio-' + c['id'][-8:].lower(), 'nombre': c.get('nombre') or c['id'], 'sv': c.get('sv')})
+    except (OSError, ValueError):
+        pass
+    return cs
 SALIDA = os.path.join(BASE, 'datos', 'global_clips.json')
 WEB = os.path.join(BASE, 'bot', 'paginas', 'global_clips.json')
 ET = zoneinfo.ZoneInfo('America/New_York')
@@ -164,7 +184,7 @@ def leer_canal(cid):
 def actualizar(aplicar=True):
     """Lee todos los canales y junta lo nuevo con lo guardado (lo nuevo arriba). Un canal que falla no tumba a los demás:
     sus clips guardados quedan. Devuelve `(clips, avisos)`; cada clip es `[id, título, canal, segundos, visto]`"""
-    cfg = json.load(io.open(CANALES, encoding='utf-8'))
+    cfg = {'canales': canales_todos()}
     viejo = guardados()
     hoy = dt.datetime.now(ET).date().isoformat()
     nuevos, avisos = [], []
@@ -221,6 +241,10 @@ def para_la_web(clips, gente, canales, n=EN_LA_WEB, n_largos=LARGOS_WEB):
             quien.setdefault(vid, [k] + [o for o in otros if o != k])
     cs, ci, out = [], {}, []
     cuantos = {False: 0, True: 0}
+    # 🤝 los de los socios primero (sus clips atados entran siempre): con los 42 canales grandes, los más nuevos los dejaban
+    # afuera del tope (y, leídos el mismo día, empatan en fecha). Después, el orden de siempre
+    socio = lambda c: str(c).startswith('socio-')  # noqa: E731
+    clips = [x for x in clips if socio(x[2])] + [x for x in clips if not socio(x[2])]
     for vid, t, canal, seg, *_ in clips:
         ks = quien.get(vid)
         largo = (seg or 0) > MAX_SEG

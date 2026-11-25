@@ -747,11 +747,11 @@ const PAGINAS = {
   invitar: ['Invita y gana', 'Tu link de invitación: quien entra con él recibe 500 Puntos de Tienda.'],
   inventario: ['Inventario', 'Tus marcos, TAGs, fondos y estilos: arma tu carta.'],
   // 🎬 (24/11/2026) los shorts de las batallas: sin imagen propia todavía, va og.png
-  reels: ['Reels', 'Los mejores momentos de las batallas de freestyle, en vertical, con quién es quién.'],
+  reels: ['Videos', 'Los mejores momentos de las batallas de freestyle, con quién es quién.'],
 };
 const SIN_PNG = new Set(['competencias', 'invitar', 'inventario', 'reels']);
 // los nombres viejos de algunas páginas, que siguen abriendo lo mismo: la misma vista previa
-const ALIAS = { avisos: 'eventos', mundo: 'socios', duelos: 'ranking' };
+const ALIAS = { avisos: 'eventos', mundo: 'socios', duelos: 'ranking', videos: 'reels' };
 // `/cuenta` y `/cambios` son de toda la marca y viven en la raíz (`EN_RAIZ` de web/montar.py); el resto, en /freestyle-rap
 const RUTA_PAGINA = new RegExp('^/(?:freestyle-rap/)?(' + Object.keys(PAGINAS).concat(Object.keys(ALIAS), ['llave', 'pais']).join('|') + ')(?:/|$)');
 const R2_CREWS = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/crews\/[\w.-]+$/;
@@ -893,9 +893,9 @@ async function vistaReel(req, env, id, url) {
     const vs = (x.nombres || []).map(lim).join(' vs ');
     const RON = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
     const de = [RON[String(x.ronda || '').toLowerCase()] || lim(x.ronda), lim(x.evento)].filter(Boolean).join(' de ');
-    const tab = (vs || 'Short de la Liga') + ' · Reels';
+    const tab = (vs || 'Short de la Liga') + ' · Videos';
     return conVista(req, env, url, { tab, titulo: tab, desc: ['Las mejores rimas de la batalla', de].filter(Boolean).join(' · '),
-      img: x.portada || WEB + '/og.png', vertical: !!x.portada, alt: vs || 'Short de la Liga', can: WEB + '/freestyle-rap/reels/' + id });
+      img: x.portada || WEB + '/og.png', vertical: !!x.portada, alt: vs || 'Short de la Liga', can: WEB + '/freestyle-rap/videos/' + id });
   }
   const r = await env.ASSETS.fetch(new Request(url.origin + '/reels_vista.json')).catch(() => null);
   const V = r && r.ok ? await r.json().catch(() => null) : null;
@@ -904,10 +904,10 @@ async function vistaReel(req, env, id, url) {
   const limpio = (s) => String(s || '').replace(/\s+/g, ' ').trim().slice(0, 160);
   const [titulo, canal, nombres] = [limpio(x[0]), limpio(x[1]), limpio(x[2])];
   if (!titulo && !nombres) return null;
-  const tab = (nombres || titulo) + ' · Reels';
+  const tab = (nombres || titulo) + ' · Videos';
   const desc = [titulo, canal].filter(Boolean).join(' · ');
   return conVista(req, env, url, { tab, titulo: tab, desc, img: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg',
-    ancho: 480, alto: 360, alt: nombres || titulo, can: WEB + '/freestyle-rap/reels/' + id });
+    ancho: 480, alto: 360, alt: nombres || titulo, can: WEB + '/freestyle-rap/videos/' + id });
 }
 
 /** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?, can?}` sobre la página de siempre.

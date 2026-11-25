@@ -773,6 +773,16 @@ export default function App() {
   // la sección nueva, y la dirección pasa a ser la de ahora
   // 🧭 `#/misiones` no existía y caía al Inicio sin avisar (revisión 21/11): las Misiones viven en el Ranking. Mismo arreglo
   // que el de las ligas: se abre la de verdad y se corrige la dirección
+  // 🎬 «VIDEOS» (25/11/2026, Dlx: «reels must be changed to videos»): la página se llama Videos y vive en `#/videos`; por
+  // dentro sigue siendo `reels` (la sección que se cuenta, reels.jsx). Un link viejo `#/reels/…` abre lo mismo y la
+  // dirección pasa a la de ahora
+  const reelsViejo = partes[0] === 'reels';
+  if (partes[0] === 'videos') partes[0] = 'reels';
+  useEffect(() => {
+    if (!reelsViejo) return;
+    const r = '#/videos' + (partes.length > 1 ? '/' + partes.slice(1).join('/') : '');
+    try { history.replaceState(history.state, '', window.urlLG ? window.urlLG(r) : r); } catch (e) { /* queda la dirección */ }
+  }, [reelsViejo]); // eslint-disable-line react-hooks/exhaustive-deps
   const ligasVieja = (partes[0] === 'ranking' && partes[1] === 'ligas') || partes[0] === 'misiones';
   if (partes[0] === 'misiones') partes.splice(0, 1, 'ranking', 'misiones');
   else if (ligasVieja) partes.splice(0, 2, 'ligas');
@@ -910,7 +920,7 @@ const lugar = sv ? 'sv/' + sv : pagina === 'crew' || pagina === 'pais' || (pagin
       : pagina === 'ranking' || pagina === 'duelos' ? 'Los rankings'
       : pagina === 'eventos' || pagina === 'avisos' ? 'Los eventos'
       : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda' : pagina === 'invitar' ? 'Invita y gana'
-      : pagina === 'reels' ? 'Reels'
+      : pagina === 'reels' ? 'Videos'
       : pagina === 'publicaciones' ? 'Publicaciones' : pagina === 'guia' ? 'Cómo funciona'
       : pagina === 'cambios' ? 'Changelog'
       : pagina === 'kit' ? 'El kit de tu servidor' : '';

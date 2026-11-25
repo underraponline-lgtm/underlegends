@@ -5,7 +5,7 @@
 // vivo.css. La primera versión (del mismo día) guardaba 'sv:FFA' en `lg:tema`: se lee como Noche + FFA.
 export const TEMAS_SV = [['DRA', 'Discord Rap Español'], ['FFA', 'FFA'], ['SR', 'Snake Rap'], ['URBF', 'Urban Freestyle'],
   ['FFS', 'FFS'], ['DDF', 'DDF'], ['ACAD', 'La Academia'], ['FVS', 'Freestyle Versus'],
-  ['FRZ', 'Freestyle Zone'], ['CH', 'Cypherhood']];
+  ['FRZ', 'Freestyle Zone']];
 
 const esSv = (s) => TEMAS_SV.some(([x]) => x === s);
 
