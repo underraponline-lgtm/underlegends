@@ -96,7 +96,7 @@ PAGINAS_MAPA = ('/freestyle-rap/', '/freestyle-rap/eventos', '/freestyle-rap/tar
                 '/freestyle-rap/ligas/superliga', '/freestyle-rap/ligas/clausura', '/freestyle-rap/pase',
                 '/freestyle-rap/tienda', '/freestyle-rap/publicaciones', '/freestyle-rap/socios',
                 '/freestyle-rap/socios/sumar', '/freestyle-rap/guia', '/freestyle-rap/salon', '/freestyle-rap/crews',
-                '/freestyle-rap/competencias', '/freestyle-rap/invitar', '/freestyle-rap/reels', '/cambios')
+                '/freestyle-rap/competencias', '/freestyle-rap/invitar', '/freestyle-rap/videos', '/cambios')
 
 
 def _rankings():
@@ -108,6 +108,18 @@ def _rankings():
         return re.findall(r"'([a-z]+)'", m.group(1)) if m else []
     except OSError:
         return []
+
+
+#: el bucket público (los videos del archivo)
+R2 = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev'
+
+
+def _norm_n(s):
+    """como `normN` de web/src/archivo_ul.js: sin tildes, signos ni mayúsculas (el id del video, `ridDe()`)"""
+    import re
+    import unicodedata
+    s = unicodedata.normalize('NFD', str(s or ''))
+    return re.sub(r'[^a-z0-9]', '', ''.join(ch for ch in s if not unicodedata.combining(ch)).lower())
 
 
 def sitemap(requests):
@@ -150,6 +162,21 @@ def sitemap(requests):
         # sin las claves que son un ID de Discord (un nombre que la llave trajo pegado a su número): no son un perfil
         import re
         rutas += ['/freestyle-rap/r/' + quote(k, safe='') for k in sorted(claves) if not re.search(r'\d{15,}', k)]
+        # 🏆🎬 LAS LLAVES Y LOS VIDEOS (25/11/2026, Dlx: «all of them», el #6): el mapa tenía perfiles, servidores y países, y
+        # ni un evento ni un video, que son lo que se busca («batalla de freestyle <nombre>»). Las llaves que viajan en el
+        # lobby y las de los videos del archivo de 30 días (`reels/archivo.json`, el de la página); cada video, con su
+        # dirección propia (`/videos/ul-…`, que el proxy arma con su portada). Un video vencido sale solo del mapa
+        rutas += ['/freestyle-rap/llave/' + quote(str(n), safe='') for n in sorted(L.get('llaves') or {}, key=str)]
+        try:
+            ar = requests.get(R2 + '/reels/archivo.json', timeout=40)
+            ar = ar.json() if ar.status_code == 200 else []
+        except Exception:                                    # noqa: BLE001
+            ar = []
+        for x in ar if isinstance(ar, list) else []:
+            if x and x.get('ev') and x.get('k') is not None:
+                if x.get('ll'):
+                    rutas.append('/freestyle-rap/llave/' + quote(str(x['ll']), safe=''))
+                rutas.append('/freestyle-rap/videos/ul-%s-%d' % (_norm_n(x['ev'])[:40], int(x['k'])))
     else:
         try:
             r = requests.get(WEB + '/sitemap.xml', timeout=60)

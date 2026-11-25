@@ -47,6 +47,22 @@ KV_AVISO = 900
 #: las filas que puede leer el objeto son 5 millones por día de Cloudflare (`cuotas.LIM`). Si se acaban se cae todo lo
 #: que lo usa: entrar con Discord, lo en vivo y los avisos (27/10/2026, de 5:35 a 8:35 PM ET, y no avisó nadie)
 FILAS_AVISO = 4_000_000
+#: ⏱️ Y POR RITMO (25/11/2026, Dlx: «all of them»): el 24/11 el aviso de arriba llegó a las 11:38 AM ET con 4,2 millones y
+#: la página se cayó a las 3 PM: tres horas y media, con poco margen para hacer algo. Si al ritmo del día las filas se
+#: acaban antes del corte, avisa desde que van `FILAS_RITMO_DESDE` (antes de eso, una hora fuerte sola dispara el ritmo)
+FILAS_RITMO_DESDE = 2_000_000
+
+
+def ritmo_filas(leidas, ahora, tope=5_000_000):
+    """Si al ritmo de hoy las filas se acaban antes del fin del día de Cloudflare (medianoche UTC): el instante en que se
+    acaban; si no, None. `ahora` en UTC, con zona."""
+    inicio = ahora.replace(hour=0, minute=0, second=0, microsecond=0)
+    horas = (ahora - inicio).total_seconds() / 3600
+    if leidas < FILAS_RITMO_DESDE or horas < 1 or leidas >= tope:
+        return None
+    por_hora = leidas / horas
+    agota = ahora + datetime.timedelta(hours=(tope - leidas) / por_hora)
+    return agota if agota < inicio + datetime.timedelta(days=1) else None
 
 
 def _ahora():
@@ -304,6 +320,11 @@ def salud():
                 alertar('filas', 'El objeto lleva %.1f millones de filas leídas hoy, de %d millones. Si se acaban se cae '
                         'entrar con Discord, lo en vivo y los avisos hasta cerca de las %s. Lo que más lee: '
                         '`python herramientas/uso.py`.' % (leidas / 1e6, C.LIM['do_filas_leidas_dia'] // 1000000, _corte()))
+            elif leidas is not None and ritmo_filas(leidas, _ahora()):
+                alertar('filas', 'El objeto lleva %.1f millones de filas leídas hoy, de %d millones, y a este ritmo se acaban '
+                        'cerca de las %s (el día de Cloudflare se renueva a las %s). Si se acaban se cae entrar con Discord, lo '
+                        'en vivo y los avisos. Lo que más lee: `python herramientas/uso.py`.'
+                        % (leidas / 1e6, C.LIM['do_filas_leidas_dia'] // 1000000, _et(ritmo_filas(leidas, _ahora())), _corte()))
             elif leidas is not None:
                 resuelto('filas', 'Las filas del objeto volvieron a tener margen (%.1f millones hoy).' % (leidas / 1e6))
     except Exception as e:                               # noqa: BLE001
@@ -588,8 +609,16 @@ def dibujar_seguidas(fallas):
 
 def _self_check():
     """Lo que tiene que valer siempre, sin red: que se sepa a quién mandarle el DM."""
+    # ⏱️ el aviso por ritmo: con los números del 24/11 (4,2 millones a las 16:38 UTC) avisa; a medio ritmo, no
+    U = datetime.timezone.utc
+    r1 = ritmo_filas(2_600_000, datetime.datetime(2026, 11, 25, 11, 0, tzinfo=U))
+    r2 = ritmo_filas(1_500_000, datetime.datetime(2026, 11, 25, 11, 0, tzinfo=U))
+    r3 = ritmo_filas(2_100_000, datetime.datetime(2026, 11, 25, 20, 0, tzinfo=U))
+    rok = r1 is not None and r1.hour == 21 and r2 is None and r3 is None
+    print('  %s el aviso por ritmo de las filas del objeto (2,6 M a las 11 UTC se acaban a las %s UTC)'
+          % ('✅' if rok else '❌', r1.strftime('%H:%M') if r1 else '—'))
     d = dueno()
-    ok = d.isdigit() and 15 <= len(d) <= 22
+    ok = rok and d.isdigit() and 15 <= len(d) <= 22
     print('  %s el Discord ID de Dlx sale del Worker (%s)' % ('✅' if ok else '❌', d or 'vacío'))
     # 🧩 y el canal de Logs del vigía (`CANAL_LOGS` de avisos.js, las llaves que no se leen) es el de acá
     try:

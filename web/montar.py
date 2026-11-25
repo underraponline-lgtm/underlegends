@@ -234,6 +234,43 @@ def conf_carga():
                        'fo': fo, 'p3': p3}, ensure_ascii=False, separators=(',', ':')), conf['temporada'].upper()
 
 
+def dueno():
+    """El Discord ID de Dlx, de su lugar en la página (`DUENO` de web/src/liga.js, el mismo de bot/avisos.js)."""
+    m = re.search(r"export const DUENO = '(\d+)'", io.open(os.path.join(WEB, 'src', 'liga.js'), encoding='utf-8').read())
+    if not m:
+        raise SystemExit('🔴 no encuentro DUENO en web/src/liga.js: las visitas de Dlx volverían a contarse')
+    return m.group(1)
+
+
+#: 📊 LAS VISITAS QUE NO SON GENTE NO SE LE MANDAN A CLOUDFLARE (25/11/2026, Dlx: «all of them», el #5). Medido en Web
+#: Analytics, 7 días: ~15.100 visitas de «ChromeHeadless» (los chequeos de GitHub en Linux y las pruebas de la PC en
+#: Windows) contra un puñado de gente de verdad, que además se muestrea más grueso cuanto más tráfico hay. El contador lo
+#: pega Cloudflare solo en cada página, así que no se puede sacar: lo que no sale es lo que manda. Con un navegador
+#: manejado por un programa (`navigator.webdriver`, lo mismo que errores.js y App.jsx) o con la cuenta de Dlx (`lg:dc`),
+#: lo que va a Cloudflare (`cdn-cgi/rum`, por sendBeacon, XHR o fetch) se contesta acá sin salir; lo demás pasa igual
+SIN_RUM = """(function () {
+  var dlx = false;
+  try { var dc = JSON.parse(localStorage.getItem('lg:dc') || 'null'); dlx = !!dc && String(dc.id) === '@DUENO@'; } catch (e) { /* sin almacenamiento */ }
+  if (navigator.webdriver !== true && !dlx) return;
+  var rum = /cloudflareinsights|cdn-cgi.rum/;
+  window.__sinRum = true;
+  try {
+    var sb = navigator.sendBeacon && navigator.sendBeacon.bind(navigator);
+    if (sb) navigator.sendBeacon = function (u, d) { return rum.test(String(u)) ? true : sb(u, d); };
+  } catch (e) { /* sigue */ }
+  try {
+    var op = XMLHttpRequest.prototype.open, se = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.open = function (m, u) { this.__sinRum = rum.test(String(u)); return op.apply(this, arguments); };
+    XMLHttpRequest.prototype.send = function () { if (this.__sinRum) return; return se.apply(this, arguments); };
+  } catch (e) { /* sigue */ }
+  try {
+    var f = window.fetch;
+    if (f) window.fetch = function (u) { return rum.test(String((u && u.url) || u)) ? Promise.resolve(new Response(null, { status: 204 })) : f.apply(this, arguments); };
+  } catch (e) { /* sigue */ }
+})();
+"""
+
+
 def cabeza_carga():
     """🚀 LO PRIMERO DE LA PANTALLA DE CARGA, EN EL <head> Y ANTES DE LA HOJA DE ESTILOS (13/11/2026). Un <script> que
     viene después de una hoja de estilos espera a que baje; acá no espera nada, así que el fondo sale a pedirse a los
@@ -247,7 +284,7 @@ def cabeza_carga():
     c, _ = conf_carga()
     letras = ''.join('<link rel="preload" href="/inicio/f/%s" as="font" type="font/woff2" crossorigin>\n' % f
                      for f in FUENTES_CARGA)
-    return (letras + '<link rel="modulepreload" href="/inicio/inicio.js">\n<script>\n' + """(function () {
+    return (letras + '<link rel="modulepreload" href="/inicio/inicio.js">\n<script>\n' + SIN_RUM.replace('@DUENO@', dueno()) + """(function () {
   // 🎲 EL FONDO, ELEGIDO YA: cada uno con la misma chance; en «La batalla», cada video con la suya (Dlx, 12/11/2026)
   var C = window.__lgC = @CONF@;
   // 🎬 LA RECARGA DE UNA VERSIÓN NUEVA (`lg:estreno`, web/src/novedad.jsx, 20/11/2026): se lee y se borra ACÁ, lo primero
