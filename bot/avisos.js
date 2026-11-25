@@ -78,6 +78,8 @@ const RUTA_TABLAS = {
   // 🛍️ `tienda_puesto` (tanda 3): lo que alguien se pone en la Tienda viaja en `/pases` (`tp`), y ponérselo tira la copia
   '/pases': ['marcos', 'marco_elige', 'carta_principal', 'marco_img', 'redibujo', 'pase_premium', 'tienda_puesto'],
   '/fondos': ['fondos'], '/servidores': ['servidor'], '/roles': ['roles_manual'],
+  // 🗳️ (24/11/2026) el conteo de las encuestas pasó a 60 s: un voto tiene que verse en la próxima
+  '/encuestas': ['votos'],
 };
 
 //: un anuncio SIN hora se avisa sólo si es de hace menos de esto. Pasado
@@ -9834,7 +9836,16 @@ export class Avisos {
         ['qg_estado', 'qg', 'estado, abre'], ['vs_cola_estado', 'vs_cola', 'estado, t'], ['vs_cola_msg', 'vs_cola', 'canal, msg, t'],
         // ⏳ y el del cruce que espera a su imagen (19/11/2026, `vsEspera()`): lo pregunta cada vuelta mientras espera
         ['vs_cola_clave', 'vs_cola', 'canal, clave'],
-        ['veredictos_hist_ed', 'veredictos_hist', 'ed']]) {
+        ['veredictos_hist_ed', 'veredictos_hist', 'ed'],
+        // ⚡ y los del 24/11/2026: el objeto se pasó de los 5 millones de filas a las 3 PM ET y no anduvo nada hasta las 7.
+        // Medido el día entero (`medidas_ayer`), cinco consultas recorrían más de lo que devolvían: las apuestas de cada
+        // uno en una Tarea del Pase (la tabla entera, 238.000 por día), las apuestas vivas de cada minuto del vigía (la
+        // tabla entera), las visitas de una sección (todo el rango de días, de todas las secciones), las Tareas de la
+        // semana del Dashboard y los conteos del Pase con fecha. Comparado el plan de las 316 consultas medidas y de las
+        // 13 de estas tablas que el medidor corta: cambian sólo esas, y las demás leen lo mismo
+        ['apostado_quien', 'apostado', 'quien, t'], ['apuestas_estado', 'apuestas', 'estado, abre'],
+        ['secciones_s', 'secciones', 's, dia'], ['pase_hecho_sem', 'pase_hecho', 'temp, sem, tarea'],
+        ['pase_log_t', 'pase_log', 'quien, temp, que, t']]) {
         this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
       }
     });
@@ -10396,7 +10407,10 @@ export class Avisos {
         try { const lg = this.ligasAhora(); if (lg.length) r.ligas = lg; } catch (e) { /* sin ellas */ }
         return json(r, 200, 20);
       }
-      if (ruta === '/encuestas') return json(this.delMinuto('/encuestas', 20, () => this.encuestas()), 200, 20);
+      // ⚡ 60 s y no 20 (24/11/2026): debajo de un minuto la copia vive sólo en memoria, y el objeto se duerme a los ~10 s,
+      // así que casi cada pedido contaba la tabla de votos entera (136.000 filas el día del corte). Votar la tira
+      // (`RUTA_TABLAS`): quien vota ve su voto en la próxima
+      if (ruta === '/encuestas') return json(this.delMinuto('/encuestas', 60, () => this.encuestas()), 200, 20);
       if (ruta === '/ligas-votos') return json(this.ligasVotos(), 200, 20);
       if (ruta === '/precios') return json(this.delMinuto('/precios', 20, () => this.precios()), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
@@ -10422,7 +10436,11 @@ export class Avisos {
       if (ruta === '/favoritos') return json(this.favoritos(), 200, 300);
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
       if (ruta === '/promos-vistas') return json(this.promosVistas(), 200, 60);
-      if (ruta === '/niveles') return json(this.delMinuto('/niveles', 300, () => this.niveles()), 200, 300);
+      // ⚡ 30 MINUTOS Y NO 5 (24/11/2026): `niveles()` arma la racha de CADA persona que jugó (sus días, su XP, sus
+      // Tareas), y era lo que más leía el día del corte: ~850.000 filas, el 17 % de las 5 millones. Es el nivel que se ve
+      // en el perfil de OTRO; el tuyo, en tu racha, va con tu sesión y al instante. El borde sigue en 5 minutos: lo
+      // que pide de más se contesta con la copia de `estado` (una fila)
+      if (ruta === '/niveles') return json(this.delMinuto('/niveles', 1800, () => this.niveles()), 200, 300);
       if (ruta === '/socio-paginas') return json(this.paginasPublicas(), 200, 60);
       if (ruta === '/pases') return json(this.delMinuto('/pases', 300, () => this.pases()), 200, 300);
       // 🛍️ el arte liviano de la Tienda, para dibujar lo que cada uno tiene puesto (tanda 3): diez minutos en el borde
