@@ -1052,7 +1052,8 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv, pagina = '
             <span className="x-aj-t">{g.toUpperCase()}</span>
             <div className="x-tejas">
               {xs.map(([r, n, enBarra]) => {
-                const k = r.slice(2);
+                // la página de Videos se llama `reels` adentro (su imagen es /og/mini/reels.webp): con `videos` la teja salía rota
+                const k = r.slice(2) === 'videos' ? 'reels' : r.slice(2);
                 return (
                   <a key={r} href={r} className={'x-teja' + (enBarra ? ' en-barra' : '') + (pagina === k ? ' on' : '')} aria-current={pagina === k ? 'page' : undefined} onClick={onCerrar}>
                     <span className="x-teja-img"><img alt="" src={'/og/mini/' + k + '.webp'} width="480" height="270" loading="lazy" />{tag(r)}</span>

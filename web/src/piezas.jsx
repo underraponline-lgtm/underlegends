@@ -14,6 +14,9 @@ const TRAZOS = {
   inicio: <path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" />,
   eventos: <><rect x="3.5" y="5" width="17" height="15" rx="1" /><path d="M3.5 10h17M8 3v4M16 3v4" /></>,
   ranking: <path d="M5 20V10M12 20V4M19 20v-7" />,
+  // 🎬 Videos (25/11/2026, Dlx: «asegúrate que videos tenga su ícono»): la barra del celular lo pedía como `reels` y no existía,
+  // así que salía el nombre solo. Una pantalla con el triángulo de reproducir
+  reels: <><rect x="3" y="5" width="18" height="14" rx="1" /><path d="M10 9.2v5.6l4.8-2.8z" /></>,
   campana: <><path d="M6 16V11a6 6 0 1112 0v5l2 2H4z" /><path d="M10 20a2 2 0 004 0" /></>,
   buscar: <><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></>,
   flecha: <path d="M5 12h14M13 6l6 6-6 6" />,

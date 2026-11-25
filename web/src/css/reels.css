@@ -406,3 +406,17 @@
 .rls-gf-solo{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#F6F6F6}
 .rls-gf-solo button{min-height:32px;padding:0 10px;border:2px solid #F6F6F6;background:#F6F6F6;color:#030304;font:700 14px/1 "Barlow Condensed",sans-serif;
   letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+/* 🔎 el buscador de videos (25/11/2026) */
+.rls-bv-in{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 10px;border:1.5px solid #2A2A2E;background:#0E0E11;color:#B9B9B4}
+.rls-bv-in:focus-within{border-color:#F6F6F6;color:#F6F6F6}
+.rls-bv-in input{flex:1;min-width:0;height:42px;border:0;background:none;color:#F6F6F6;font:600 16px/1.2 Archivo,sans-serif;outline:none}
+.rls-bv-in input::placeholder{color:#8A8A85}
+.rls-bv-in input::-webkit-search-cancel-button{display:none}
+.rls-bv-in button{display:grid;place-items:center;width:36px;height:36px;border:0;background:none;color:#F6F6F6;cursor:pointer}
+.rls-cv>.rls-bv-in{margin-bottom:10px}
+.rls-bv-res{display:grid;gap:8px}
+.rls-bv-n{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#B9B9B4}
+.rls-bv-nada{margin:12px 0;font:500 14px/1.4 Archivo,sans-serif;color:#B9B9B4}
+.rls-bv-sh .rls-cl-th{background:#0E0E11}
+.rls-bv-sh .rls-bv-po{width:100%;height:100%;object-fit:cover;display:block}
+.rls-bv.cel{display:grid;gap:12px;max-height:min(78dvh,640px);overflow:auto;--rls-cl-th:130px}

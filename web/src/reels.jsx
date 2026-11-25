@@ -237,6 +237,8 @@ const I = {
   yt: <><rect x="2" y="5" width="20" height="14" rx="3" /><path d="m10 9 5 3-5 3z" /></>,
   persona: <><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></>,
   x: <path d="M6 6l12 12M18 6 6 18" />,
+  // 🔎 el buscador (25/11/2026): esta página tiene sus propios íconos y no tenía lupa
+  buscar: <><circle cx="11" cy="11" r="6.5" /><path d="M16 16l4.5 4.5" /></>,
 };
 function Ico({ n, lleno = false, t = 24 }) {
   const relleno = lleno || n === 'mas' || n === 'play';
@@ -484,6 +486,9 @@ function useFeed(liga, inicio) {
   // «Tu gente» deja el feed con sus shorts y la lista con sus videos (cortos y largos), los que no viste primero.
   // Otra vez, o «Ver todos», vuelve a todo
   const [persona, setPersona] = useState(null);
+  // 🔎 el short que pidió el buscador (25/11/2026): va primero en la lista, como uno que llega por link (`inicio`), aunque
+  // ya lo hayas visto o el filtro de ahora no lo tenga
+  const [traer, setTraer] = useState('');
   const [menos, setMenos] = useState(() => ls.json(L_MENOS, []));
   const [guardo, setGuardo] = useState(() => ls.json(L_GUARDO, []));
   const [fuego, setFuego] = useState(() => ls.json(L_FUEGO, []));
@@ -533,7 +538,8 @@ function useFeed(liga, inicio) {
       if (j > 0) xs.unshift(xs.splice(j, 1)[0]);
       return xs;
     }
-    const sinVer = filtro === 'guardados' ? base : base.filter((r) => !v0.has(r.vid) || r.vid === inicio);
+    const primero = traer || inicio;
+    const sinVer = filtro === 'guardados' ? base : base.filter((r) => !v0.has(r.vid) || r.vid === primero);
     const o = ordenar(sinVer, vistos0.current, menos, notas);
     // 🎬 los de la Liga de HOY, primero en «Para ti» y en «La Liga» (los no vistos; los vistos quedan donde caen)
     if (filtro === 'todo' || filtro === 'liga') {
@@ -542,12 +548,12 @@ function useFeed(liga, inicio) {
       if (hoy.length) { const resto = o.filter((r) => !hoy.includes(r)); o.length = 0; o.push(...hoy, ...resto); }
     }
     // un link a un reel (`#/reels/<id>`) empieza por ese
-    const j = inicio ? o.findIndex((r) => r.vid === inicio) : -1;
+    const j = primero ? o.findIndex((r) => r.vid === primero) : -1;
     if (j > 0) o.unshift(o.splice(j, 1)[0]);
     return o;
     // `menos` cambia el orden sólo al cambiar de filtro: marcar «no me interesa» no te mueve el reel que estás viendo
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todos, filtro, inicio, claveG, notas ? 1 : 0, vistosVer, persona]);
+  }, [todos, filtro, inicio, claveG, notas ? 1 : 0, vistosVer, persona, traer]);
   const [i, setI] = useState(0);
   const [cargados, setCargados] = useState(VER);
   const [fin, setFin] = useState(false);
@@ -628,6 +634,15 @@ function useFeed(liga, inicio) {
     }
     if (c) { if (c.seg && modoClips !== 'vistos') setModoClips(c.seg > corte ? 'largos' : 'cortos'); setClip(c); }
   }, [inicio, X, C, listoL, todos, todosClips]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 🔎 lo que pidió el buscador: si está en la lista de ahora, salta ahí; si no, lo trae primero (en «Para ti», sin persona)
+  useEffect(() => { if (traer) { setI(0); setFin(false); } }, [traer]);
+  const irVid = (vid) => {
+    const j = lista.findIndex((r) => r.vid === vid);
+    if (j >= 0) { ir(j); return; }
+    setClip(null); setPersona(null);
+    if (filtro !== 'todo' && filtro !== 'guardados') setFiltro('todo');
+    setTraer(vid);
+  };
   const ir = (j) => { quieto.current = false; const k = Math.max(0, Math.min(lista.length - 1, j)); setClip(null); setDir(k >= i ? 1 : -1); setFin(false); setI(k); };
   const siguiente = () => { setClip(null); if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
   // 👤 su próximo reel (el de la columna de la izquierda en la compu, como los canales de Twitch): el siguiente en la lista
@@ -650,7 +665,7 @@ function useFeed(liga, inicio) {
     D, X: X && listoL ? X : null, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
     liga, filtros, loSigo, seguir, todos, irA, dir,
     // 🎞️ los horizontales: la lista, el que corre (`clip`) y lo que se ve ahora (`ahora`: el horizontal o el short)
-    clips, clip, ahora: clip || cur, modoClips, setModoClips, hayLargos, hayVistosC, yaVisto,
+    clips, clip, ahora: clip || cur, modoClips, setModoClips, hayLargos, hayVistosC, yaVisto, todosClips, irVid,
     persona, verPersona: (g) => { quieto.current = false; setClip(null); setPersona((p) => (p && p.id === idDe(g) ? null : { id: idDe(g), n: nombre(g) })); },
     todaLaGente: () => setPersona(null),
     verClip: (c) => { quieto.current = false; setFin(false); setDir(1); setClip(c); },
@@ -843,6 +858,17 @@ function useEntrada(ref, k, dir, px) {
 }
 
 // ═══════════════════════════════ EL CELULAR (la E) ═══════════════════════════════
+function HojaBusca({ F, cerrar }) {
+  const [q, setQ] = useState('');
+  return (
+    <div className="rls-bv cel">
+      <b className="rls-hoja-t">Buscar videos</b>
+      <CajaBusca q={q} setQ={setQ} auto />
+      <Resultados F={F} q={q} alTocar={cerrar} />
+    </div>
+  );
+}
+
 function ReelsCel({ F }) {
   const caja = useRef(null);
   const [medida, setMedida] = useState({ w: 390, h: 760, abajo: 64 });
@@ -1021,6 +1047,7 @@ function ReelsCel({ F }) {
             ) : (
               <button type="button" className="rls-filtro" aria-haspopup="dialog" onClick={() => { pausarMenu(); setHoja('filtros'); }}>{filtroN}<Ico n="abajo" t={18} /></button>
             )}
+            <button type="button" className="rls-ib rls-lupa" aria-label="Buscar videos" aria-haspopup="dialog" onClick={() => { pausarMenu(); setHoja('buscar'); }}><Ico n="buscar" /></button>
             {yt.mudo ? <button type="button" className="rls-sonido" onClick={() => yt.sonido(true)}><Ico n="mudo" t={18} />{medida.w < 400 && F.clips.length ? 'Sonido' : 'Toca para el sonido'}</button>
               : <button type="button" className="rls-ib" aria-label="Silenciar" onClick={() => yt.sonido(false)}><Ico n="sonido" /></button>}
           </div>
@@ -1087,9 +1114,9 @@ function ReelsCel({ F }) {
       {hoja ? (
         <div className="rls-velo" onClick={(e) => { if (e.target === e.currentTarget) setHoja(''); }}>
           <div className="rls-hoja" role="dialog" aria-modal="true"
-            aria-label={hoja === 'ficha' ? 'La ficha' : hoja === 'voto' ? '¿Quién ganó?' : hoja === 'filtros' ? 'Qué ver' : 'Más opciones'}>
+            aria-label={hoja === 'ficha' ? 'La ficha' : hoja === 'voto' ? '¿Quién ganó?' : hoja === 'filtros' ? 'Qué ver' : hoja === 'buscar' ? 'Buscar videos' : 'Más opciones'}>
             <span className="rls-asa" aria-hidden="true" />
-            {hoja === 'voto' ? <Voto r={r} clase="cel" /> : hoja === 'filtros' ? (
+            {hoja === 'buscar' ? <HojaBusca F={F} cerrar={() => setHoja('')} /> : hoja === 'voto' ? <Voto r={r} clase="cel" /> : hoja === 'filtros' ? (
               <>
                 <b className="rls-hoja-t">Qué ver</b>
                 {F.filtros.map(([k, n]) => (
@@ -1193,13 +1220,13 @@ function CarasGente({ F, style, cuantas }) {
  * con su duración, el título sin el evento y la ronda con el canal. El que corre dice «Sonando»; el de alguien que sigues,
  * «De tu gente». Para la columna de la compu y para la lista del celular
  */
-function FilaClip({ F, c, on }) {
+function FilaClip({ F, c, on, alTocar }) {
   const k = corto(c.t);
   const titulo = k.t || c.gente.map(nombre).join(' vs ');
   const tuyo = c.gente.some(F.loSigo);
   return (
     <button type="button" className={'rls-cl' + (on ? ' on' : '')} aria-current={on || undefined}
-      aria-label={titulo + ', ' + c.canal + ', ' + mmss(c.seg)} onClick={() => F.verClip(c)}>
+      aria-label={titulo + ', ' + c.canal + ', ' + mmss(c.seg)} onClick={() => { F.verClip(c); if (alTocar) alTocar(); }}>
       <span className="rls-cl-th">
         <img alt="" loading="lazy" decoding="async" src={'https://i.ytimg.com/vi/' + c.vid + '/hq720.jpg'}
           onError={(e) => { if (!e.currentTarget.dataset.mq) { e.currentTarget.dataset.mq = '1'; e.currentTarget.src = 'https://i.ytimg.com/vi/' + c.vid + '/mqdefault.jpg'; } }} />
@@ -1257,6 +1284,57 @@ function FilaGente({ F, n, cara = 56 }) {
   );
 }
 
+// 🔎 EL BUSCADOR DE VIDEOS (25/11/2026, Dlx: «necesitamos un buscador en lo de videos»). Busca en los shorts y en los videos
+// de los canales por el título, el canal y la gente que sale, palabra por palabra y sin tildes («mecha fms» encuentra «Mecha
+// en FMS Argentina»). Los shorts se abren en el feed (`irVid`); los videos, en el centro, como siempre
+const SHORTS_MAX = 20, VIDEOS_MAX = 40;
+const textoVideo = (x) => normN([x.t, x.canal, ...(x.gente || []).map(nombre)].join(' '));
+function buscarVideos(F, q) {
+  const ps = String(q || '').split(/\s+/).map(normN).filter(Boolean);
+  if (!ps.length || ps.join('').length < 2) return null;
+  const vale = (x) => { const t = textoVideo(x); return ps.every((w) => t.includes(w)); };
+  const vistos = new Set();
+  const shorts = [];
+  for (const x of F.todos || []) {
+    if (shorts.length >= SHORTS_MAX) break;
+    if (!vistos.has(x.vid) && vale(x)) { vistos.add(x.vid); shorts.push(x); }
+  }
+  const clips = (F.todosClips || []).filter(vale).slice(0, VIDEOS_MAX);
+  return { shorts, clips, n: shorts.length + clips.length };
+}
+function FilaShort({ F, r, alTocar }) {
+  const titulo = r.t || r.gente.map(nombre).join(' vs ');
+  return (
+    <button type="button" className="rls-cl rls-bv-sh" aria-label={'Short: ' + titulo + ', ' + r.canal}
+      onClick={() => { F.irVid(r.vid); if (alTocar) alTocar(); }}>
+      <span className="rls-cl-th"><Poster vid={r.vid} cls="rls-bv-po" alt="" /><em>Short</em></span>
+      <span className="rls-cl-tx"><b>{titulo}</b><small>{[r.gente.map(nombre).join(' vs '), r.canal].filter(Boolean).join(' · ')}</small></span>
+    </button>
+  );
+}
+function CajaBusca({ q, setQ, auto }) {
+  return (
+    <label className="rls-bv-in">
+      <Ico n="buscar" t={18} />
+      <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca un rapero, un evento o un canal"
+        aria-label="Buscar videos" autoFocus={auto} enterKeyHint="search" />
+      {q ? <button type="button" aria-label="Borrar la búsqueda" onClick={() => setQ('')}><Ico n="x" t={16} /></button> : null}
+    </label>
+  );
+}
+function Resultados({ F, q, alTocar }) {
+  const res = useMemo(() => buscarVideos(F, q), [q, F.todos, F.todosClips]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!res) return null;
+  if (!res.n) return <p className="rls-bv-nada">Nada con «{q.trim()}». Prueba con otro nombre, un evento o un canal.</p>;
+  return (
+    <div className="rls-bv-res">
+      <small className="rls-bv-n">{res.n === 1 ? '1 video' : res.n + ' videos'}{res.shorts.length && res.clips.length ? ' · ' + res.shorts.length + ' shorts y ' + res.clips.length + ' horizontales' : ''}</small>
+      {res.shorts.map((x) => <FilaShort key={'s' + x.vid} F={F} r={x} alTocar={alTocar} />)}
+      {res.clips.map((c) => <FilaClip key={'c' + c.vid} F={F} c={c} on={!!F.clip && F.clip.vid === c.vid} alTocar={alTocar} />)}
+    </div>
+  );
+}
+
 /** ⏱️ «Cortos | Largos» (Dlx, 25/11/2026): hasta 5 min o más largos (batallas enteras, hasta una hora). Sin largos, no se dibuja */
 function CortosLargos({ F }) {
   if (F.persona) return null;
@@ -1276,8 +1354,12 @@ function CortosLargos({ F }) {
  *  La lista baja con la rueda (vertical sí se puede con el mouse) y el total va en su cabecera */
 function ColVideos({ F, ancho }) {
   const n = ancho >= 520 ? 6 : ancho >= 380 ? 5 : 4;
+  const [q, setQ] = useState('');
+  const buscando = !!buscarVideos(F, q);
   return (
     <section className="rls-cv" aria-label="Tu gente y los videos horizontales" style={{ '--rls-cl-th': (ancho >= 520 ? 190 : ancho >= 380 ? 150 : 116) + 'px' }}>
+      <CajaBusca q={q} setQ={setQ} />
+      {buscando ? <div className="rls-cv-l"><div className="rls-cv-filas"><Resultados F={F} q={q} /></div></div> : <>
       <FilaGente F={F} n={n} cara={ancho >= 380 ? 56 : 48} />
       {F.clips.length ? (
         <div className="rls-cv-l">
@@ -1287,6 +1369,7 @@ function ColVideos({ F, ancho }) {
           </div>
         </div>
       ) : null}
+      </>}
     </section>
   );
 }
