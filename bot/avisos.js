@@ -9683,6 +9683,10 @@ export class Avisos {
         'ref TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, que, ref)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_hito (quien TEXT NOT NULL, temp TEXT NOT NULL, ' +
         'nivel INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, nivel))');
+      // ⚡ EL NIVEL Y LA RACHA DE CADA UNO, YA CALCULADOS (25/11/2026: el objeto se pasó de sus 5 millones de filas el 24/11 y
+      // la página falló de 3 a 7 PM ET). `niveles()` los armaba de cero para todos los que jugaron cada 30 minutos; ahora
+      // vale la fila del día, y se borra (`nivSucio()`) cuando a esa persona le cambia algo que los mueve
+      this.sql.exec('CREATE TABLE IF NOT EXISTS niv (quien TEXT PRIMARY KEY, n INTEGER NOT NULL, racha INTEGER NOT NULL, dia TEXT NOT NULL)');
       // 📊 EL TABLERO DEL PASE (25/10/2026, el informe «Pase de rapero enganche», cambio 1; Dlx: «dale»): una foto de
       // cuántos hay en cada nivel por semana, la primera vez que se mira esa semana. Para comparar antes y después de
       // tocar el Pase (la curva, la gracia…): sin la foto del antes no se puede decir si algo sirvió
@@ -10424,7 +10428,8 @@ export class Avisos {
       // ⚡ 60 s y no 20 (24/11/2026): debajo de un minuto la copia vive sólo en memoria, y el objeto se duerme a los ~10 s,
       // así que casi cada pedido contaba la tabla de votos entera (136.000 filas el día del corte). Votar la tira
       // (`RUTA_TABLAS`): quien vota ve su voto en la próxima
-      if (ruta === '/encuestas') return json(this.delMinuto('/encuestas', 60, () => this.encuestas()), 200, 20);
+      // ⚡ 5 MINUTOS (25/11/2026): con 60 s eran hasta 1.440 recuentos de `votos` por día
+      if (ruta === '/encuestas') return json(this.delMinuto('/encuestas', 300, () => this.encuestas()), 200, 20);
       if (ruta === '/ligas-votos') return json(this.ligasVotos(), 200, 20);
       if (ruta === '/precios') return json(this.delMinuto('/precios', 20, () => this.precios()), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
@@ -11198,6 +11203,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM secciones WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM clics WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      this.sql.exec("DELETE FROM estado WHERE k LIKE 'clicsk:%' AND k < ?", 'clicsk:' + diaET(ahora - 3 * DIA_MS));
       this.sql.exec('DELETE FROM reels_dia WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       // 🐞 los errores de la página: 30 días
       this.sql.exec('DELETE FROM errores_pag WHERE dia < ?', diaET(ahora - 30 * DIA_MS));
@@ -15052,6 +15058,7 @@ export class Avisos {
     // 🔥 y los días de su racha y lo que jugó: también van con su Discord ID
     this.sql.exec('DELETE FROM activo WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM jugo_temp WHERE quien = ?', String(d.quien));
+    this.nivSucio(d.quien);
     // 🙈 y si había ocultado su foto: también es un dato suyo (y la lista del ciclo se rehace sin él)
     if (this.sql.exec('DELETE FROM foto_oculta WHERE quien = ?', String(d.quien)).rowsWritten) await this.espejarOcultas();
     // 🔑 Y SUS REPORTES, y la cola de KV sin ellos: van con su Discord ID
@@ -17792,6 +17799,7 @@ export class Avisos {
     if (P.miembros.has(de)) {
       try {
         this.sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)', de, P.cfg.temp, 'ref', 'ref' + n, ahora);
+        this.nivSucio(de);
         this.pxpOlvidar();
         this.premiarPase(de);
       } catch (e) { /* la XP no frena lo demás */ }
@@ -18937,8 +18945,9 @@ export class Avisos {
       // 🎟️🤝🆕 lo del Tier 1 (20/11/2026): sus Pases de este mes, su Alianza, sus bonos y lo nuevo que prueba primero
       ...(x.tier === 1 ? { pases: (this.ajustes().pases_t1 || {})[x.sv] || null, alianza: (this.ajustes().alianzas || {})[x.sv] || [],
         alianza_bonus: x.alianza_bonus || [], lo_nuevo: (this.ajustes().lo_nuevo_t1 || []).filter((y) => y.hasta >= diaET()) } : {}),
-      visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
-        .map((r) => [r.dia, Number(r.n) || 0]),
+      // ⚡ (25/11/2026) el panel se pide cada 2 minutos mientras está abierto, con 28 días de cada servidor: 30 minutos
+      visitas: this.delMinuto('vis:' + x.sv + ':' + desde, 1800, () => this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia',
+        'sv-' + x.sv, desde).toArray().map((r) => [r.dia, Number(r.n) || 0])),
     }));
     // 📊 para saber si lo usan: un día por dueño (sin Dlx). Se borra a los 30 días con lo demás del vigía
     if (servidores.length && !esDlx) {
@@ -19973,25 +19982,43 @@ export class Avisos {
     if (r.rcfg && typeof r.rcfg === 'object') this.guardar('racha_cfg', r.rcfg);
     if (r.jugo && typeof r.jugo === 'object') {
       const temp = String((r.rcfg && r.rcfg.temp) || 'prueba').slice(0, 20);
-      this.sql.exec('DELETE FROM jugo_temp WHERE temp = ?', temp);
+      // ⚡ SÓLO QUIEN CAMBIÓ (25/11/2026). Esto llega entero cada vez que cambia CUALQUIER cosa del paquete (una división,
+      // los MES, Competencias…), y por cada uno de los ~800 que jugaron se recalculaban su racha (`rachaDe()`, en
+      // `premiarRacha()`) y todas las semanas de sus Tareas del Pase (`paseRevisar()`), cambiara algo suyo o no: era la
+      // mayor parte de las 5 millones de filas del día. Ahora se compara con lo que ya estaba (sus eventos, su clave y si
+      // trae un día nuevo) y lo de quien no cambió no se toca
+      const antes = new Map(this.sql.exec('SELECT quien, k, eventos FROM jugo_temp WHERE temp = ?', temp).toArray()
+        .map((y) => [y.quien, y]));
+      const llegan = new Set();
       for (const [quien, x] of Object.entries(r.jugo)) {
         if (!/^[0-9]{5,25}$/.test(quien) || !Array.isArray(x)) continue;
+        llegan.add(quien);
         const ev = Number.isInteger(x[1]) && x[1] > 0 ? x[1] : 0;
-        this.sql.exec('INSERT OR REPLACE INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', quien, temp,
-          String(x[0] || '').slice(0, 60), ev);
-        // 🥇 su primer evento: el premio de quien lo invitó (`refJugo()`)
-        try { this.refJugo(quien, ev, ahora); } catch (e) { /* sigue */ }
+        const kk = String(x[0] || '').slice(0, 60);
+        const a = antes.get(quien);
+        const cambio = !a || a.k !== kk || Number(a.eventos) !== ev;
+        if (cambio) this.sql.exec('INSERT OR REPLACE INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', quien, temp, kk, ev);
+        let nuevos = 0;
         for (const dia of Array.isArray(x[2]) ? x[2].slice(0, 400) : []) {
           if (/^\d{4}-\d{2}-\d{2}$/.test(String(dia))) {
-            this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, String(dia));
+            nuevos += this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, String(dia)).rowsWritten || 0;
           }
         }
+        if (!cambio && !nuevos) continue;
+        this.nivSucio(quien);
+        // 🥇 su primer evento: el premio de quien lo invitó (`refJugo()`)
+        try { this.refJugo(quien, ev, ahora); } catch (e) { /* sigue */ }
         // 🐉 jugó hoy: un paso de la barra del día
         if (Array.isArray(x[2]) && x[2].includes(diaET())) this.pasoDia(quien, 'jugo');
         this.premiarRacha(quien);
         // 🎟️ jugar también cuenta días para la Tarea del Pase
         this.paseRevisar(quien);
         cambios++;
+      }
+      for (const q of antes.keys()) {
+        if (llegan.has(q)) continue;
+        this.sql.exec('DELETE FROM jugo_temp WHERE quien = ? AND temp = ?', q, temp);
+        this.nivSucio(q);
       }
     }
     this.guardar('precios_v', r.v);
@@ -20293,6 +20320,7 @@ export class Avisos {
   /** 🔥 Un día que contó para alguien. Si es nuevo, mira si su racha llegó a un premio */
   diaActivo(quien, dia) {
     if (this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, dia).rowsWritten) {
+      this.nivSucio(quien);
       this.premiarRacha(quien);
       // 🎟️ y las Tareas del Pase de entrar
       this.paseRevisar(quien);
@@ -20364,8 +20392,10 @@ export class Avisos {
   /** ⭐ Anota algo que sube el nivel (`que` de `XP_FUENTES`), una vez por cosa. Devuelve si era nuevo */
   xpVio(quien, que, ref, t = Date.now()) {
     if (!/^[0-9]{5,25}$/.test(String(quien || '')) || !XP_FUENTES[que]) return false;
-    return !!this.sql.exec('INSERT OR IGNORE INTO xp_log (quien, que, ref, t) VALUES (?, ?, ?, ?)', String(quien), que,
+    const nuevo = !!this.sql.exec('INSERT OR IGNORE INTO xp_log (quien, que, ref, t) VALUES (?, ?, ?, ?)', String(quien), que,
       String(ref).slice(0, 80), t).rowsWritten;
+    if (nuevo) this.nivSucio(quien);
+    return nuevo;
   }
 
   /**
@@ -20505,23 +20535,76 @@ export class Avisos {
     }
   }
 
-  /** 🔥 Para la página: `{k: [nivel, racha]}` de los que jugaron. La clave es la del perfil: nunca el Discord ID */
+  /** 🔥 Para la página: `{k: [nivel, racha]}` de los que jugaron. La clave es la del perfil: nunca el Discord ID.
+   *  ⚡ (25/11/2026) Con lo ya calculado (`niv`): se recalcula sólo quien no tiene la fila de hoy —porque le cambió algo
+   *  (`nivSucio()`) o porque cambió el día, que puede cortar una racha—, y con `nivelRacha()`, sin lo que la página no usa
+   *  acá (la semana, los premios). Si cambian los números de la racha (`rachaCfg()`), se recalcula todo */
   niveles() {
     const out = {};
+    const hoy = diaET();
+    const firma = JSON.stringify(this.rachaCfg());
+    if (this.leer('niv_cfg') !== firma) { this.sql.exec('DELETE FROM niv'); this.guardar('niv_cfg', firma); }
     // la clave de su perfil: la de la temporada más nueva en que jugó
-    for (const { quien, k } of this.sql.exec('SELECT quien, k FROM jugo_temp j1 WHERE temp = ' +
-      '(SELECT MAX(temp) FROM jugo_temp j2 WHERE j2.quien = j1.quien)').toArray()) {
-      if (!k) continue;
-      const x = this.rachaDe(quien);
-      out[k] = [x.nivel.n, x.racha.actual];
+    for (const f of this.sql.exec('SELECT j1.quien, j1.k, v.n, v.racha, v.dia FROM jugo_temp j1 LEFT JOIN niv v ON v.quien = j1.quien ' +
+      'WHERE j1.temp = (SELECT MAX(temp) FROM jugo_temp j2 WHERE j2.quien = j1.quien)').toArray()) {
+      if (!f.k) continue;
+      if (f.dia === hoy) { out[f.k] = [f.n, f.racha]; continue; }
+      const x = this.nivelRacha(f.quien);
+      this.sql.exec('INSERT OR REPLACE INTO niv (quien, n, racha, dia) VALUES (?, ?, ?, ?)', f.quien, x.n, x.racha, hoy);
+      out[f.k] = [x.n, x.racha];
     }
     return { t: Date.now(), n: out };
+  }
+
+  /** ⚡ Sólo el nivel y la racha de ahora: lo mismo que da `rachaDe()` en `nivel.n` y `racha.actual`, sin la semana, los
+   *  premios de cada día ni el desglose (siete lecturas de `tienda` y más, que `niveles()` tiraba) */
+  nivelRacha(quien) {
+    const c = this.rachaCfg();
+    const desde = c.desde ? diaET(c.desde) : '';
+    const dias = this.sql.exec('SELECT dia FROM activo WHERE quien = ? AND dia >= ? ORDER BY dia', quien, desde)
+      .toArray().map((x) => x.dia);
+    const r = rachaDeDias(dias, diaET());
+    const j = this.sql.exec("SELECT COALESCE(SUM(eventos), 0) AS n FROM jugo_temp WHERE quien = ? AND (temp != 'prueba' OR ? = 0)",
+      quien, Number(c.desde) || 0).toArray()[0];
+    const eventos = j ? j.n : 0;
+    const extra = this.xpDe(quien);
+    return { n: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia + extra.xp, c.paso).n, racha: r.actual };
+  }
+
+  /** ⚡ A esta persona le cambió algo que mueve su nivel o su racha: `niveles()` la recalcula la próxima vez */
+  nivSucio(quien) {
+    try { this.sql.exec('DELETE FROM niv WHERE quien = ?', String(quien)); } catch (e) { /* la tabla, en el arranque */ }
   }
 
   // ── 🧠 LOS DATOS DE CADA PERSONA PARA /card (06/10/2026) ─────────────────────────────────────────────────────────────
   // Eran claves `p:<clave>` de KV y se gastaban su cupo; ahora son filas de `persona`. El ciclo manda todas en cada
   // corrida y acá se escribe sólo lo que cambió; el Worker las lee de a una (`leerP()` en worker.js), y si el objeto
   // no contesta, de KV, donde quedan las de antes.
+
+  /** ⚡ 👏 Las felicitaciones que recibió cada perfil, `{clave: n}`: lo mismo que contaba el perfil uno por uno (la mayor
+   *  entre lo guardado y lo de ahora de cada publicación, más las que todavía no se guardaron), para todos de una vez y
+   *  guardado una hora (25/11/2026) */
+  aplPorK() {
+    return this.delMinuto('apl_k', 3600, () => {
+      const vivo = new Map(this.sql.exec('SELECT id, COUNT(*) AS c FROM aplausos GROUP BY id').toArray().map((x) => [x.id, x.c]));
+      const tot = {};
+      const sumar = (ks, n) => {
+        let xs = [];
+        try { xs = JSON.parse(ks || '[]'); } catch (e) { xs = []; }
+        for (const kk of Array.isArray(xs) ? xs : []) if (kk) tot[kk] = (tot[kk] || 0) + n;
+      };
+      const rec = new Set();
+      for (const r of this.sql.exec('SELECT id, ks, n FROM aplausos_rec').toArray()) {
+        rec.add(r.id);
+        sumar(r.ks, Math.max(Number(r.n) || 0, vivo.get(r.id) || 0));
+      }
+      for (const p of this.sql.exec('SELECT id, ks FROM aplaudidas').toArray()) {
+        if (rec.has(p.id) || !vivo.get(p.id)) continue;
+        sumar(p.ks, vivo.get(p.id));
+      }
+      return tot;
+    });
+  }
 
   /** El valor de una persona (`p:<clave>`), o `null` */
   persona(k) {
@@ -21051,8 +21134,10 @@ export class Avisos {
         if (!x.hecha) continue;
         this.pxpSuave = true;
         try {
-          nuevas += this.sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)',
+          const w = this.sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)',
             quien, cfg.temp, sem, x.id, ahora).rowsWritten || 0;
+          if (w) this.nivSucio(quien);
+          nuevas += w;
         } finally { this.pxpSuave = false; }
       }
     };
@@ -21902,12 +21987,9 @@ export class Avisos {
     }
     // 👏 las felicitaciones que recibió: las guardadas y las de ahora, la mayor de las dos por publicación
     try {
-      const like = '%"' + k + '"%';
-      const r = this.sql.exec('SELECT SUM(n) AS n FROM (SELECT r.id, MAX(r.n, COALESCE(l.c, 0)) AS n FROM aplausos_rec r ' +
-        'LEFT JOIN (SELECT id, COUNT(*) AS c FROM aplausos GROUP BY id) l ON l.id = r.id WHERE r.ks LIKE ? ' +
-        'UNION ALL SELECT p.id, COUNT(*) AS n FROM aplausos a JOIN aplaudidas p ON p.id = a.id WHERE p.ks LIKE ? ' +
-        'AND p.id NOT IN (SELECT id FROM aplausos_rec) GROUP BY p.id)', like, like).toArray()[0];
-      out.apl = (r && r.n) || 0;
+      // ⚡ (25/11/2026) Era una pasada entera por `aplausos_rec` y `aplausos` en CADA perfil que se abría (el 7 % de las
+      // filas del día); ahora un mapa de todos, armado como mucho una vez por hora (`aplPorK()`)
+      out.apl = this.aplPorK()[k] || 0;
     } catch (e) { out.apl = 0; }
     if (this._pex.m.size > 300) this._pex.m.clear();
     this._pex.m.set(k, out);
@@ -22941,11 +23023,14 @@ export class Avisos {
       let distintas = null;
       for (const [kk, v] of hoy) {
         const ya = this.sql.exec('SELECT n FROM clics WHERE dia = ? AND k = ?', dia, kk).toArray()[0];
+        // ⚡ (25/11/2026) el conteo del día vive en una fila de `estado` (`clicsk:<día>`): contarlas eran hasta 1.500 filas
+        // cada vez que aparecía una etiqueta nueva (~100.000 por día)
         if (!ya && distintas === null) {
-          distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM clics WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+          const g = this.leer('clicsk:' + dia);
+          distintas = typeof g === 'number' ? g : ((this.sql.exec('SELECT COUNT(*) AS n FROM clics WHERE dia = ?', dia).toArray()[0] || {}).n || 0);
         }
         if (!ya && distintas >= CLICS_MAX_K) continue;
-        if (!ya) distintas++;
+        if (!ya) { distintas++; this.guardar('clicsk:' + dia, distintas); }
         this.sql.exec('INSERT INTO clics (dia, k, n) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET n = n + excluded.n ' +
           'WHERE n < 1000000', dia, kk, Math.min(v, 1000000));
       }

@@ -118,6 +118,8 @@ jobs:
           node bot/llave_vivo_prueba.mjs
           # 🎟️ el Pase del 25/10: gracia, bienvenida, especiales, XP doble, crew, premium y sorteo
           node bot/pase_prueba.mjs
+          # ⚡ las filas del objeto (25/11/2026): sólo se recalcula quien cambió, niveles() guardado y las felicitaciones en un mapa
+          node bot/filas_prueba.mjs
           # 🫂 gente de la Liga en tus mismos servidores: huellas sin ID ni nombre, reemplazar, el tope y sin permiso
           node bot/servidores_prueba.mjs
           # 🎭 el estilo de juego: la primera vez libre, un cambio por temporada, los viejos desbloqueados y lo del ciclo

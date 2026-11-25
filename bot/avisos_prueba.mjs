@@ -4875,10 +4875,12 @@ const ok = (cond, que, det) => {
       const dia = A.diaET ? A.diaET() : null;
       if (dia) {
         for (let i = 0; i < A.CLICS_MAX_K; i += 1) o.sql.exec('INSERT OR IGNORE INTO clics (dia, k, n) VALUES (?, ?, 1)', dia, 'relleno:' + i);
+        // ⚡ y el conteo del día, como lo deja `clicsVolcar()` al llenarse (desde el 25/11/2026 vive en `estado`)
+        o.guardar('clicsk:' + dia, A.CLICS_MAX_K + 1);
         o.clics({ c: { 'inicio:la siesta': 3, 'inicio:no entra': 1 } });
         o.clicsVolcar();
         ok((filasClic()[0] || {}).n === 5 && !o.sql.exec("SELECT n FROM clics WHERE k = 'inicio:no entra'").toArray().length,
-          'con el día lleno se sigue sumando lo que ya estaba y lo nuevo no entra (el COUNT sólo se hace si hay una nueva)',
+          'con el día lleno se sigue sumando lo que ya estaba y lo nuevo no entra (el conteo del día, en una fila de estado)',
           JSON.stringify(filasClic()));
       }
     }
