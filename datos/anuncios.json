@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T03:55:22+00:00",
+ "cuando": "2026-11-25T04:11:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8205,6 +8205,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Barranca 🇵🇪",
+   "quien": "ventu._.x",
+   "discord_id": "913850096062439456",
+   "msg_id": "1574997862469599283",
+   "cuando": "2026-11-25T03:59:12"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Mrkude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1574997209664069683",
+   "cuando": "2026-11-25T03:56:36"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1574997197274095697",
+   "cuando": "2026-11-25T03:56:33"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "MTZ 🇲🇽",
+   "quien": "diego__mtz",
+   "discord_id": "794733304729436212",
+   "msg_id": "1574997172783423523",
+   "cuando": "2026-11-25T03:56:28"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "LMG 🇩🇴",
+   "quien": ".godamv",
+   "discord_id": "846586922989649931",
+   "msg_id": "1574996809728790579",
+   "cuando": "2026-11-25T03:55:01"
+  },
   {
    "servidor": "FRZ",
    "canal": "➣「📝」inscripciones",
@@ -44159,51 +44204,6 @@
    "discord_id": "1512105727047499836",
    "msg_id": "1562574513584083146",
    "cuando": "2026-10-21T21:13:15"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "kyss",
-   "quien": "ominouspoetry",
-   "discord_id": "1190746928774922311",
-   "msg_id": "1562574490486050857",
-   "cuando": "2026-10-21T21:13:09"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "riolu",
-   "quien": "alvaroriolu03",
-   "discord_id": "522777983921029162",
-   "msg_id": "1562574480289832963",
-   "cuando": "2026-10-21T21:13:07"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1562574374874120264",
-   "cuando": "2026-10-21T21:12:42"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "karma 🇦🇷",
-   "quien": "chispz.",
-   "discord_id": "1340425162587246685",
-   "msg_id": "1562574276857700463",
-   "cuando": "2026-10-21T21:12:18"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "MaYeuTyK 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1562573388097257553",
-   "cuando": "2026-10-21T21:08:46"
   }
  ]
 }
