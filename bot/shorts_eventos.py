@@ -9,6 +9,14 @@ esperaba. Así que si ya hay uno corriendo o en cola no se pide otro: queda para
 🔑 EL PRIMER DÍA NO PROCESA EL PASADO. Sin `datos/shorts_eventos.json`, todo lo que ya está en Logs se anota como visto y
 no se lanza nada: los shorts son de lo que se juegue desde ahora.
 
+🔁 SI ULAYA NO SEPARÓ LAS BATALLAS (25/11/2026), igual se procesa: con su habla.json, el trabajo las separa después
+(bot/rearmar_batallas.mjs). Se espera a que ULAYA deje de reintentar (su último «No pude separar…» sin «Vuelvo a probar») o
+dos horas.
+
+♻️ UNA SEGUNDA VUELTA SI SALIÓ MAL (25/11/2026): se anota qué corrida se lanzó; cuando termina, si falló o no sacó ningún
+short, se lanza UNA vez más con el código de ese momento (Puristas del 24/11 salió vacío por un arreglo que llegó tarde y
+se relanzó a mano). Dos veces mal: queda anotado y no se insiste.
+
 🔇 El registro del repo público se ve desde afuera: acá sólo salen cuentas.
 Uso: python bot/shorts_eventos.py [--aplicar]   (sin --aplicar dice qué haría)"""
 import json
@@ -46,16 +54,65 @@ def mensajes():
 
 
 def entregas(ms):
-    """[(id del encabezado, hora UTC 'AAAA-MM-DDTHH:MM', completa)] en orden: completa = ya llegó su batallas.json"""
+    """[(id del encabezado, hora UTC 'AAAA-MM-DDTHH:MM', lista)] en orden. Lista: llegó su batallas.json, o llegó su
+    habla.json y ULAYA ya no va a reintentar (o pasaron dos horas)."""
+    import datetime as dt
     xs = []
     for m in ms:
         if m['author']['id'] != ULAYA:
             continue
-        if (m.get('content') or '').startswith(ENCABEZADO):
-            xs.append([m['id'], m['timestamp'][:16], False])
-        elif xs and any(a['filename'] == 'batallas.json' for a in m.get('attachments', [])):
-            xs[-1][2] = True
-    return xs
+        txt = m.get('content') or ''
+        if txt.startswith(ENCABEZADO):
+            xs.append({'id': m['id'], 't': m['timestamp'][:16], 'guion': False, 'habla': False, 'reintenta': False})
+            continue
+        if not xs:
+            continue
+        nombres = [a['filename'] for a in m.get('attachments', [])]
+        if 'batallas.json' in nombres:
+            xs[-1]['guion'] = True
+        if 'habla.json' in nombres:
+            xs[-1]['habla'] = True
+        if txt.startswith('⚔️ No pude separar'):
+            xs[-1]['reintenta'] = 'Vuelvo a probar' in txt
+    ahora = dt.datetime.now(dt.timezone.utc)
+    out = []
+    for x in xs:
+        viejo = (ahora - dt.datetime.fromisoformat(x['t'] + ':00+00:00')).total_seconds() > 7200
+        out.append([x['id'], x['t'], x['guion'] or (x['habla'] and (not x['reintenta'] or viejo))])
+    return out
+
+
+def _gh(*a):
+    r = subprocess.run(['gh'] + list(a), capture_output=True, text=True, timeout=120, env=GH, encoding='utf-8', errors='replace')
+    return r.stdout if r.returncode == 0 else None
+
+
+def resultado(run):
+    """('corriendo', None) · ('bien', n listos) · ('mal', n listos o None)"""
+    j = _gh('run', 'view', str(run), '-R', REPO, '--json', 'status,conclusion')
+    if not j:
+        return 'corriendo', None
+    j = json.loads(j)
+    if j.get('status') != 'completed':
+        return 'corriendo', None
+    log = _gh('run', 'view', str(run), '-R', REPO, '--log') or ''
+    import re
+    n = [int(x) for x in re.findall(r'(\d+) listos', log)]
+    n = n[-1] if n else None
+    return ('bien' if j.get('conclusion') == 'success' and n else 'mal'), n
+
+
+def lanzar(t):
+    """Lanza procesar para la hora t; devuelve el id de la corrida (o None si no se pudo)."""
+    import time
+    if _gh('workflow', 'run', 'procesar.yml', '-R', REPO, '-f', 'desde=' + t) is None:
+        return None
+    time.sleep(6)
+    j = _gh('run', 'list', '-R', REPO, '-w', 'procesar.yml', '-L', '1', '--json', 'databaseId')
+    try:
+        return json.loads(j)[0]['databaseId']
+    except Exception:
+        return 0
 
 
 def ocupado():
@@ -77,24 +134,36 @@ def main():
             E['vistos'][i] = {'t': t, 'como': 'semilla'}
         print('🎬 primera vez: %d grabaciones ya en Logs, anotadas sin procesar' % len(xs))
     else:
+        # ♻️ cómo salieron las que se lanzaron
+        rehacer = []
+        for i, v in E['vistos'].items():
+            if v.get('como') not in ('pedido', 'reintento') or not v.get('run') or v.get('res'):
+                continue
+            est, n = resultado(v['run'])
+            if est == 'corriendo':
+                continue
+            v['res'], v['listos'] = est, n
+            if est == 'mal' and v['como'] == 'pedido':
+                rehacer.append((i, v['t']))
+            print('🎬 la corrida de una grabación terminó: %s (%s shorts)' % (est, n if n is not None else '?'))
         nuevas = [(i, t) for i, t, lista in xs if lista and i not in E['vistos']]
         esperando = sum(1 for i, t, lista in xs if not lista and i not in E['vistos'])
-        if not nuevas:
+        fila = [(i, t, 'reintento') for i, t in rehacer] + [(i, t, 'pedido') for i, t in nuevas]
+        if not fila:
             print('🎬 ninguna grabación nueva' + (' (%d llegando)' % esperando if esperando else ''))
-            return
-        if ocupado():
-            print('🎬 %d grabaciones nuevas; hay un procesar en marcha: queda para la próxima corrida' % len(nuevas))
-            return
-        i, t = nuevas[0]
-        if APLICAR:
-            r = subprocess.run(['gh', 'workflow', 'run', 'procesar.yml', '-R', REPO, '-f', 'desde=' + t],
-                               capture_output=True, text=True, timeout=60, env=GH)
-            if r.returncode:
-                print('⚠️ no se pudo lanzar procesar: queda para la próxima corrida')
-                return
-            E['vistos'][i] = {'t': t, 'como': 'pedido'}
-        print('🎬 procesar lanzado para 1 grabación' + (' (sin --aplicar: no se lanzó)' if not APLICAR else '')
-              + (' · %d más en la fila' % (len(nuevas) - 1) if len(nuevas) > 1 else ''))
+        elif ocupado():
+            print('🎬 %d grabaciones para procesar; hay un procesar en marcha: queda para la próxima corrida' % len(fila))
+        else:
+            i, t, como = fila[0]
+            if APLICAR:
+                run = lanzar(t)
+                if run is None:
+                    print('⚠️ no se pudo lanzar procesar: queda para la próxima corrida')
+                    return
+                E['vistos'][i] = {'t': t, 'como': como, 'run': run}
+            print('🎬 procesar lanzado para 1 grabación' + (' (segunda vuelta)' if como == 'reintento' else '')
+                  + (' (sin --aplicar: no se lanzó)' if not APLICAR else '')
+                  + (' · %d más en la fila' % (len(fila) - 1) if len(fila) > 1 else ''))
     if APLICAR:
         json.dump(E, open(ESTADO, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
