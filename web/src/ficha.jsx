@@ -58,25 +58,35 @@ export function FichaHover({ liga }) {
   const f = v && liga ? (liga.T[v.k] || (liga.X && liga.X[v.k]) || null) : null;
   if (!f) return <span ref={ref} hidden />;
   const bg = fondoEn((fondos || {})[v.k], 'ficha', { cc: f.cc, sv: f.sv });
-  const sv = f.sv && liga.svs && liga.svs[f.sv];
-  const rgc = /^#[0-9a-f]{3,8}$/i.test(f.rgc || '') ? f.rgc : '';
   return (
     <>
       <span ref={ref} hidden />
       <div className={'fh' + (v.abajo ? '' : ' arriba')} role="tooltip" style={{ left: v.x + 'px', top: v.y + 'px', width: ANCHO + 'px' }}>
-        <div className={'fh-f' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined}><FondoT k={f.k} lugar="ficha" /></div>
-        <div className="fh-b">
-          <Cara liga={liga} k={f.k} nombre={f.n} cls="fh-cara" />
-          <div className="fh-t">
-            <b><NombreT k={f.k} n={limpio(f.n)} />{f.cc ? <Bandera cc={f.cc} cls="fh-flag" /> : null}</b>
-            <small>{[f.pos ? '#' + f.pos + ' de la Temporada' : 'Sin puesto todavía', f.ovr ? 'OVR ' + f.ovr : ''].filter(Boolean).join(' · ')}</small>
-            <span className="fh-chips">
-              {f.rg ? <i className="fh-rg" style={rgc ? { background: rgc } : undefined}>{f.rg}</i> : <i className="fh-rg sin">Sin rango</i>}
-              {sv ? <i className="fh-sv">{limpio(sv.nombre || f.sv)}</i> : null}
-              {f.cc ? <i className="fh-sv">{nombrePais(f.cc)}</i> : null}
-              {f.ev ? <i className="fh-sv">{num(f.ev)} {f.ev === 1 ? 'evento' : 'eventos'}</i> : null}
-            </span>
-          </div>
+        <FichaCuerpo liga={liga} f={f} bg={bg} />
+      </div>
+    </>
+  );
+}
+
+/** 🪪 lo de adentro de la ficha: el fondo `bg` (un `background-image`, '' = liso), la cara, el nombre y los chips. Lo usa
+ *  también «Tus fondos» (cuenta.jsx), para mostrarte cómo te ven sin ir a otra página */
+export function FichaCuerpo({ liga, f, bg }) {
+  const sv = f.sv && liga.svs && liga.svs[f.sv];
+  const rgc = /^#[0-9a-f]{3,8}$/i.test(f.rgc || '') ? f.rgc : '';
+  return (
+    <>
+      <div className={'fh-f' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined}><FondoT k={f.k} lugar="ficha" /></div>
+      <div className="fh-b">
+        <Cara liga={liga} k={f.k} nombre={f.n} cls="fh-cara" />
+        <div className="fh-t">
+          <b><NombreT k={f.k} n={limpio(f.n)} />{f.cc ? <Bandera cc={f.cc} cls="fh-flag" /> : null}</b>
+          <small>{[f.pos ? '#' + f.pos + ' de la Temporada' : 'Sin puesto todavía', f.ovr ? 'OVR ' + f.ovr : ''].filter(Boolean).join(' · ')}</small>
+          <span className="fh-chips">
+            {f.rg ? <i className="fh-rg" style={rgc ? { background: rgc } : undefined}>{f.rg}</i> : <i className="fh-rg sin">Sin rango</i>}
+            {sv ? <i className="fh-sv">{limpio(sv.nombre || f.sv)}</i> : null}
+            {f.cc ? <i className="fh-sv">{nombrePais(f.cc)}</i> : null}
+            {f.ev ? <i className="fh-sv">{num(f.ev)} {f.ev === 1 ? 'evento' : 'eventos'}</i> : null}
+          </span>
         </div>
       </div>
     </>

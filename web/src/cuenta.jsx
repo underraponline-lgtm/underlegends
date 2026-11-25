@@ -16,7 +16,8 @@ import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
 import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
 import { useRoles } from './roles.js';
-import { LUGARES, NOMBRE_OPCION, eleccion, fondoEn, fondoOpcion, urlFondo } from './fondos.js';
+import { LUGARES, NOMBRE_OPCION, eleccion, escenaDe, fondoEn, fondoOpcion, urlFondo } from './fondos.js';
+import { FichaCuerpo } from './ficha.jsx';
 import { useSocio } from './panelsocio.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
@@ -405,8 +406,21 @@ export async function pedirFondo(ruta, cuerpo) {
 // premium; Dlx: «PREMIUM lo que te dejaría hacer es subir tu propia imagen, analizada con el filtro») y DÓNDE VA CADA
 // UNO, para todos: los cinco lugares de `LUGARES` (fondos.js), cada uno con sus opciones y una vista chica de cada una.
 // Elegir guarda al toque (`lugares` en `fondo()` de avisos.js) ═══
+// 🎨 CÓMO SE VE «AUTOMÁTICO» DONDE NO ES UNA IMAGEN (25/11/2026, Dlx: «encontré un error»): en el escenario y en el VS en
+// vivo la vista salía negra, como si no hubiera nada. Ahí lo automático es una luz o el fondo de otro: se dibuja eso
+// —la luz de tu rango, la escena de tu servidor de ejemplo, el color de tu servidor en el perfil—
+function vistaAuto(l, yo, liga) {
+  const rgc = /^#[0-9a-f]{3,8}$/i.test(yo.rgc || '') ? yo.rgc : '#29B298';
+  if (l === 'esc') return { background: 'radial-gradient(closest-side, color-mix(in srgb, ' + rgc + ' 55%, transparent), transparent), #0b0b0d' };
+  if (l === 'vivo') { const e = escenaDe(yo.sv); return e ? { backgroundImage: 'url("' + e + '")' } : null; }
+  if (l === 'perfil') { const c = yo.sv && liga && liga.svs && (liga.svs[yo.sv] || {}).color; return c ? { background: c } : null; }
+  return null;
+}
+
 export function FondoCaja({ dc, liga }) {
   const [st, setSt] = useState(null);
+  // 🪪 la opción de «Tu ficha» que estás mirando con el mouse o el teclado: la vista de abajo la prueba antes de elegirla
+  const [prueba, setPrueba] = useState('');
   const [vista, setVista] = useState('');
   const [archivo, setArchivo] = useState(null);
   const [ocup, setOcup] = useState(false);
@@ -486,19 +500,22 @@ export function FondoCaja({ dc, liga }) {
                 <div className="tf-ops" role="radiogroup" aria-label={n}>
                   {ops.map((op) => {
                     const bg = op === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], l, yo) : fondoOpcion(fo, op, yo);
+                    const va = !bg && op === 'auto' ? vistaAuto(l, yo, liga) : null;
+                    const probar = l === 'ficha' ? { onMouseEnter: () => setPrueba(op), onMouseLeave: () => setPrueba(''), onFocus: () => setPrueba(op), onBlur: () => setPrueba('') } : null;
                     const cerrada = (op === 'mia' && !hayMia) || (op === 'bandera' && !yo.cc) || (op === 'servidor' && !bg);
                     const on = e === op || (op === 'auto' && e === 'mia' && !hayMia);
                     return (
                       <button type="button" key={op} role="radio" aria-checked={on} className={'tf-op' + (on ? ' on' : '') + (cerrada ? ' cerrada' : '')}
-                        disabled={ocup || cerrada} onClick={() => poner(l, op)}
+                        disabled={ocup || cerrada} onClick={() => poner(l, op)} {...probar}
                         title={op === 'auto' ? auto : cerrada ? (op === 'mia' ? 'Sube tu imagen arriba' : op === 'bandera' ? 'Todavía no tienes país' : 'Tu servidor no tiene escena todavía') : NOMBRE_OPCION[op]}>
-                        <span className={'tf-mini' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined} aria-hidden="true" />
+                        <span className={'tf-mini' + (bg || va ? '' : ' liso')} style={bg ? { backgroundImage: bg } : va || undefined} aria-hidden="true" />
                         <span className="tf-on">{NOMBRE_OPCION[op]}</span>
                         {op === 'auto' ? <small>{auto}</small> : cerrada ? <small>{op === 'mia' ? 'Sin imagen' : 'No disponible'}</small> : null}
                       </button>
                     );
                   })}
                 </div>
+                {l === 'ficha' && yo.k ? <FichaVista liga={liga} yo={yo} bg={prueba ? (prueba === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, prueba, yo)) : fondoEn(fo, 'ficha', yo)} prueba={prueba} /> : null}
               </div>
             );
           })}
@@ -506,6 +523,18 @@ export function FondoCaja({ dc, liga }) {
         {msgL ? <p className="cu-d" role="status">{msgL}</p> : null}
       </Caja>
     </>
+  );
+}
+
+// 🪪 ASÍ TE VEN (25/11/2026, Dlx: «como te ves en el rectángulo… así como Discord tiene cómo te ves tu perfil, sin ir a tu
+// perfil»). La ficha de verdad (`FichaCuerpo`, la misma que sale al pasar el mouse por tu cara), quieta, con lo que
+// elegiste; al pasar por una opción, con esa
+function FichaVista({ liga, yo, bg, prueba }) {
+  return (
+    <div className="tf-vista">
+      <small className="tf-vista-t">{prueba ? 'Así te verían con «' + NOMBRE_OPCION[prueba] + '»' : 'Así te ven en la compu, al pasar el mouse por tu cara'}</small>
+      <div className="fh fh-quieto" aria-label="Vista previa de tu ficha" role="img"><FichaCuerpo liga={liga} f={yo} bg={bg} /></div>
+    </div>
   );
 }
 

@@ -304,3 +304,8 @@
 .cpc-una[data-parte="apariencia"]>.cu-caja>h3,.cpc-una[data-parte="apariencia"]>.cu-caja>h3+.cu-d{grid-column:1}
 .cpc-una[data-parte="apariencia"]>.cu-caja>.cu-temas:not(.sv){grid-column:1;grid-row:3/-1;grid-template-columns:minmax(0,1fr);max-width:none}
 .cpc-una[data-parte="apariencia"] .cu-temas-t{margin:0}
+/* 🪪 «Así te ven»: la ficha de verdad, quieta, debajo de las opciones de «Tu ficha» (25/11/2026) */
+.tf-vista{display:grid;gap:6px;justify-items:start}
+.cpc .tf-vista{grid-column:2}
+.tf-vista-t{font:700 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.fh.fh-quieto{position:relative;left:auto;top:auto;z-index:auto;width:280px;max-width:100%;animation:none;transform:none}

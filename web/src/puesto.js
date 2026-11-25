@@ -23,6 +23,9 @@ const CSS_PAGINA = `
 .con-tienda{overflow:visible!important}
 .con-tienda>.ct-in{position:relative;display:block;width:100%;height:100%;border-radius:inherit}
 .con-tienda>.ct-in>img{border-radius:inherit}
+/* 🛡️ la cara llena su caja aunque su página no lo diga: con el aro, overflow:visible dejaba una foto sin regla a su
+   tamaño real (25/11/2026, «Ahora y quién» del Dashboard). :where = sin peso: cualquier regla de la página le gana */
+:where(.con-tienda>.ct-in)>img{width:100%;height:100%;object-fit:cover;display:block}
 .ini>.ct-in{display:grid;place-items:center}
 .cara-tienda{position:absolute;inset:-33.4%;pointer-events:none;z-index:1}
 .app .con-aro.sp-prem-aro,.app .con-aro.sp-prem-aro-g,.app .con-aro.pc-oro{box-shadow:none}
