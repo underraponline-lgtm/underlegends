@@ -151,7 +151,13 @@ def leer_perfil(html):
     titulos = [t for t in titulos if t[0] in (1, 2, 3) and t[1]]
     # el mejor primero; a igual puesto, lo más nuevo primero (la temporada «2025/2026» ordena como texto)
     titulos.sort(key=lambda t: (t[0], [-int(x) for x in re.findall(r'\d{4}', t[2])[:1]] or [0]))
-    return {'n': nombre, 's': slug, 'j': j, 'b': b, 'v': v, 'm': [x or 0 for x in med], 't': titulos, 'lg': logos}
+    # 📸 LA FOTO DEL PERFIL (25/11/2026, Dlx: «como no tienes fotos de bnet, nekroos, almendrades? si yo busco en google me
+    # salen fotos de ellos»). La de las batallas sólo llega a quien jugó en la T1, y Bnet, Nekroos o Almendrades son pros que
+    # todavía no: su perfil sí la tiene (la primera imagen de 256 de la cabecera; las de 96 son los logos de sus títulos).
+    # `fo`: el id del archivo en assets.freestylestats.com, '' si no tiene. global_ranking.py la usa para quien no tiene otra
+    mf = re.search(r'"src":"https://assets\.freestylestats\.com/assets/([0-9a-f-]{20,})\?width=256', s)
+    return {'n': nombre, 's': slug, 'j': j, 'b': b, 'v': v, 'm': [x or 0 for x in med], 't': titulos, 'lg': logos,
+            'fo': mf.group(1) if mf else ''}
 
 
 def candidatos(G, batallas):
@@ -209,7 +215,7 @@ def marcar_dudas(P):
     return n
 
 
-def correr(aplicar, pocos=0):
+def correr(aplicar, pocos=0, solo=None):
     import requests
     G = json.load(open(GLOBAL, encoding='utf-8'))['g']
     try:
@@ -232,7 +238,10 @@ def correr(aplicar, pocos=0):
     leidos, nuevos, sin = 0, 0, []
     for k in orden:
         x = P.get(k)
-        if x and x.get('u') and (hoy - dt.date.fromisoformat(x['u'])).days < VIEJO:
+        # un perfil leído antes de que se guardara la foto (`fo`, 25/11/2026) se vuelve a leer una vez
+        if solo and k not in solo:
+            continue
+        if x and x.get('u') and 'fo' in x and (hoy - dt.date.fromisoformat(x['u'])).days < VIEJO:
             continue
         if leidos >= (pocos or TOPE):
             break
@@ -398,4 +407,6 @@ def auto():
 if __name__ == '__main__':
     if '--auto' in sys.argv:
         sys.exit(0 if auto() else 1)
-    correr('--aplicar' in sys.argv, pocos=0 if '--aplicar' in sys.argv else 6)
+    # `--solo a,b`: sólo esas claves (para traer la foto de unos pocos sin esperar al lunes)
+    _solo = set(sys.argv[sys.argv.index('--solo') + 1].split(',')) if '--solo' in sys.argv else None
+    correr('--aplicar' in sys.argv, pocos=0 if '--aplicar' in sys.argv else 6, solo=_solo)

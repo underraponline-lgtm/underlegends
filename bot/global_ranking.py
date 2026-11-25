@@ -58,6 +58,9 @@ VISTA = os.path.join(BASE, 'bot', 'paginas', 'global_vista.json')
 # 🎬 el índice chico de Reels (24/11/2026): la vista previa de cada link (`vistaReel` de _worker.js) y la fila del Inicio
 REELS_VISTA = os.path.join(BASE, 'bot', 'paginas', 'reels_vista.json')
 PROS = os.path.join(BASE, 'datos', 'global_pros.json')
+#: 📜 la carrera de cada uno (bot/global_historia.py, de Freestylestats): sus podios y la foto de su perfil
+HISTORIA = os.path.join(BASE, 'bot', 'paginas', 'global_historia.json')
+FOTO_FS = 'https://assets.freestylestats.com/assets/'
 #: 🏷️ los grupos a mano (25/11/2026): `{"suma": {clave: [grupo…]}, "saca": {clave: [grupo…]}}`. Ver `grupos_de()`
 GRUPOS = os.path.join(BASE, 'datos', 'global_grupos.json')
 SEMILLA_PRO = 7.5  # quien es pro arranca, como mínimo, como un MC de FMS
@@ -395,22 +398,51 @@ ORDEN_GRUPOS = ('pro', 'plaza', 'liga')
 JUGO_PLAZA = {'plaza', 'plazas_final'}
 
 
-def grupos_de(k, p, escena, tipos, a_mano=None):
+def pro_por_carrera(h):
+    """🏆 ¿ES PRO POR LO QUE HIZO, NO SÓLO POR ESTA TEMPORADA? (25/11/2026, Dlx: *«que los tags q tenga uno no se defina en
+    la temporada actual sino en su histórica, por ejemplo RODAMIENTO es pro no es plazas, mira su historial»*). Rodamiento
+    fue 3.º de FMS Chile 2024/25 y 2.º de la final nacional de Red Bull Chile 2020, y en la T1 sólo jugó plazas.
+
+    De sus podios (`t` de global_historia.json: [puesto, competencia, temporada, jornada]), los que hacen pro:
+      · un podio en una liga FMS (no FMS Under, que es la de ascenso), la FMS Internacional o la FMS World Series
+      · un podio en la FINAL NACIONAL de Red Bull, o en la Red Bull Internacional
+      · un podio en God Level
+    ⚠️ Sólo cambia el grupo que se muestra: la fuerza con la que arranca sigue saliendo de la escena de la T1.
+    Devuelve las razones («3.º en FMS Chile 2024/2025»), en el orden de la historia (el mejor puesto primero); [] si no."""
+    out = []
+    for t in (h or {}).get('t') or []:
+        if not isinstance(t, list) or len(t) < 3 or t[0] not in (1, 2, 3):
+            continue
+        puesto, comp, temp = t[0], str(t[1] or ''), str(t[2] or '')
+        jor = str(t[3] or '') if len(t) > 3 else ''
+        fms = comp.startswith('FMS ') and not comp.startswith('FMS Under')
+        rb = comp.startswith('Red Bull Batalla') and ('Internacional' in comp or jor.lower().startswith('final nacional'))
+        gl = comp.startswith('God Level')
+        if not (fms or rb or gl):
+            continue
+        que = comp + (' ' + temp if temp else '') + (' (final nacional)' if rb and 'Internacional' not in comp else '')
+        out.append('Campeón de ' + que if puesto == 1 else '%d.º en %s' % (puesto, que))
+    return out
+
+
+def grupos_de(k, p, escena, tipos, a_mano=None, pro_hist=False):
     """🏷️ LOS GRUPOS DE ALGUIEN, TODOS LOS QUE TIENE (25/11/2026). Dlx: *«asegurate q uno pueda tener los 3 tags al mismo
     tiempo o 2 tmb, x ejemplo oasis va a plazas, es plazas y liga»*.
 
     `escena` (pro, plaza o liga) sigue siendo UNA: es la que decide con qué fuerza arranca y el castigo de jugar fuera
     de tu escena (`FUERA_DE_ESCENA`), y eso no cambia. Esto es lo que se MUESTRA y por lo que se filtra:
-      · pro: si su escena es pro
-      · plaza: si su escena es plaza o jugó una plaza (`JUGO_PLAZA`): Rife es pro y jugó DEM Santa Cruz
+      · pro: si su escena es pro o es pro por su carrera (`pro_por_carrera()`, `pro_hist`)
+      · plaza («Under» en la página): si NO es pro y su escena es plaza o jugó una plaza (`JUGO_PLAZA`). Un pro que juega
+        plazas sigue siendo sólo pro (Dlx, 25/11/2026: *«RODAMIENTO es pro no es plazas»*)
       · liga: si es alguien de la Liga (`lg`): un pro o uno de plaza unidos a su perfil de la Liga (global_alias.json)
       · y lo de `datos/global_grupos.json` a mano (`suma` / `saca`): Oasis juega plazas, pero sus plazas no están en
         ninguna fuente que leamos
     `tipos`: los tipos de evento de sus batallas."""
     gs = set()
-    if escena == 'pro':
+    # pro por esta temporada o por su carrera (`pro_por_carrera()`), y un pro NO es también under: «es pro, no es plazas»
+    if escena == 'pro' or pro_hist:
         gs.add('pro')
-    if escena == 'plaza' or (set(tipos or ()) & JUGO_PLAZA):
+    elif escena == 'plaza' or (set(tipos or ()) & JUGO_PLAZA):
         gs.add('plaza')
     if p.get('lg') or escena == 'liga':
         gs.add('liga')
@@ -553,7 +585,7 @@ def _una_vuelta(batallas, mvps, de_id, personas, fuerza, escena):
 
 # ── 6. Armar la salida ───────────────────────────────────────────────────────────────────────────────────────────────
 def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando=None, pros=None, subir_fotos=False,
-          grupos=None):
+          grupos=None, historia=None):
     batallas = deduplicar(batallas)
     de_id, personas = identidades(batallas, mvps, alias, extra=pros)
     batallas = deduplicar(batallas, de_id)  # otra vez, por persona: dos fuentes que escriben distinto el nombre
@@ -600,21 +632,28 @@ def armar(batallas, mvps, semillas_liga, estado, alias=None, a_mano=None, cuando
         for lado in ('a', 'b'):
             tipos.setdefault(de_id[b[lado]['id']], set()).add(b['evento'].get('tipo'))
     gente, fotos_de = [], {}
+    H = (historia or {}).get('p') or {}
     for k, c in calc.items():
         p = personas[k]
         if p.get('fo') and not p.get('lg'):
             fotos_de[k] = p['fo']
+        elif not p.get('lg') and (H.get(k) or {}).get('fo'):
+            # 📸 sin foto de sus batallas, la de su perfil de Freestylestats (Bnet, Nekroos, Almendrades: pros sin T1)
+            fotos_de[k] = FOTO_FS + H[k]['fo']
         gente.append({'k': k, 'n': p['n'], 'cc': p.get('cc'), 'esc': escena.get(k, 'liga'), 'lg': p.get('lg'),
                       'p': round(c['p'], 1), 'pb': round(c['pb'], 1), 'pt': round(c['pt'], 1),
                       'nb': c['nb'], 'jb': c['jb'], 'f': c['f'],
                       'b': [[ev_i[e], r, el, cod, round(pts, 1), nf] for pts, e, r, el, cod, nf in c['bat'] if pts > 0],
                       't': [[ev_i[e], puesto, round(pts, 1)] for pts, e, puesto in c['tit'] if pts > 0]})
         # `gs` sólo si dice más que `esc` (la página lee `g.gs || [g.esc]`): son 1.261 filas en un archivo que se baja entero
-        gs = grupos_de(k, p, gente[-1]['esc'], tipos.get(k), grupos)
+        ph = pro_por_carrera(H.get(k)) if gente[-1]['esc'] != 'pro' else []
+        gs = grupos_de(k, p, gente[-1]['esc'], tipos.get(k), grupos, pro_hist=bool(ph))
         if gs != [gente[-1]['esc']]:
             gente[-1]['gs'] = gs
         if por_pro.get(k):
-            gente[-1]['por'] = por_pro[k][:3]  # por qué es pro: «FMS Chile», «FMS Internacional 2026»…
+            gente[-1]['por'] = por_pro[k][:3]
+        elif ph:
+            gente[-1]['por'] = ph[:3]  # por qué es pro, si lo es por su carrera: «3.º en FMS Chile 2024/2025»  # por qué es pro: «FMS Chile», «FMS Internacional 2026»…
         if videos.get(k):
             gente[-1]['v'] = videos[k][:VIDEOS_MAX]
     gente.sort(key=lambda g: (-g['p'], -g['jb'], g['n'].lower()))
@@ -671,7 +710,8 @@ def correr(red=False, escribir=True):
             # casos de prueba: una foto vieja que no puede llegar al ranking de verdad.
             batallas, mvps, semillas, estado, plantel = leer_fuentes(False, previo, solo={'liga'})
     out = armar(batallas, mvps, semillas, estado, _leer(ALIAS, {}), _leer(SEMILLAS, {}),
-                pros=pros_de(plantel, _leer(PROS, {})), subir_fotos=red and escribir, grupos=_leer(GRUPOS, {}))
+                pros=pros_de(plantel, _leer(PROS, {})), subir_fotos=red and escribir, grupos=_leer(GRUPOS, {}),
+                historia=_leer(HISTORIA, {}))
     flechas(out, _leer(SALIDA, {}))
     if escribir:
         _escribir(SALIDA, out, compacto=True)
@@ -776,12 +816,21 @@ def _self_check():
     # 🏷️ los grupos: puede tener los tres; la escena sigue siendo una
     G = grupos_de
     casos = [(G('a', {}, 'plaza', {'plaza'}), ['plaza']),
-             (G('rife', {}, 'pro', {'fms_jornada', 'plaza'}), ['pro', 'plaza']),
+             (G('rife', {}, 'pro', {'fms_jornada', 'plaza'}), ['pro']),
+             (G('rodamiento', {}, 'plaza', {'plaza'}, pro_hist=True), ['pro']),
              (G('mecha', {}, 'pro', {'fms_jornada', 'independiente', 'rb_regional'}), ['pro']),
              (G('l-oasis', {'lg': 'oasis'}, 'liga', {'liga'}, {'suma': {'l-oasis': ['plaza']}}), ['plaza', 'liga']),
-             (G('x', {'lg': 'x'}, 'pro', {'fms_jornada', 'plazas_final'}), ['pro', 'plaza', 'liga']),
+             (G('x', {'lg': 'x'}, 'pro', {'fms_jornada', 'plazas_final'}), ['pro', 'liga']),
              (G('l-y', {'lg': 'y'}, 'liga', {'liga'}), ['liga']),
              (G('z', {}, 'plaza', {'plaza'}, {'saca': {'z': ['plaza']}, 'suma': {'z': ['inventado']}}), ['plaza'])]
+    rod = {'t': [[1, 'Combate Freestyle Internacional', '2021/2022', 'Final'], [2, 'Red Bull Batalla Chile', '2026/2027', 'Regional Centro'],
+                 [2, 'Red Bull Batalla Chile', '2020', 'Final nacional'], [3, 'FMS Chile', '2024/2025', 'Jornada 5 (Finals)'],
+                 [1, 'FMS Under', '2023', 'Jornada 1'], [3, 'Red Bull Batalla Chile', '2019', 'Semifinal Santiago']]}
+    casos.append((pro_por_carrera(rod), ['2.º en Red Bull Batalla Chile 2020 (final nacional)', '3.º en FMS Chile 2024/2025']))
+    casos.append((pro_por_carrera({'t': [[1, 'Copa Federación Chile', '2020/2021', 'Final'], [1, 'FMS Under', '2023', 'J1'],
+                                         [2, 'Red Bull Batalla Chile', '2026/2027', 'Regional Centro']]}), []))
+    casos.append((pro_por_carrera({'t': [[1, 'God Level Fest', '2019', 'Final'], [2, 'Red Bull Batalla Internacional', '2025/2026', 'Final']]}),
+                  ['Campeón de God Level Fest 2019', '2.º en Red Bull Batalla Internacional 2025/2026']))
     for i, (vino, quiero) in enumerate(casos):
         if vino != quiero:
             mal.append('grupos_de() caso %d: %r, tenía que dar %r' % (i, vino, quiero))

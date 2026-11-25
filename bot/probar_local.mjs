@@ -2676,7 +2676,7 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     ok('sin miniatura todavía: la del Ranking, con su nombre igual', r.j && r.j.title === 'Oasis · Ranking global de freestyle'
       && /og\/p\/ranking\.png$/.test(r.j['meta[property="og:image"]'] || ''), JSON.stringify(r.j));
     r = await ver('/freestyle-rap/ranking/global/nadie', DISCORD);
-    ok('quien todavía no sumó: sin puesto', r.j && /^En el Ranking global de freestyle 2026 · Plaza\./.test(r.j['meta[property="og:description"]'] || ''), JSON.stringify(r.j));
+    ok('quien todavía no sumó: sin puesto', r.j && /^En el Ranking global de freestyle 2026 · Under\./.test(r.j['meta[property="og:description"]'] || ''), JSON.stringify(r.j));
     // 🪪 y su perfil (`/freestyle-rap/global/<clave>`): la misma vista previa
     ogEtag['glob/gazir'] = '"abcdef0123456789"';
     r = await ver('/freestyle-rap/global/gazir', DISCORD);

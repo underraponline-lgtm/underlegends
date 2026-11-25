@@ -211,9 +211,9 @@ function CaraG({ liga, g, cls = '', grande = false }) {
   const [mal, setMal] = useState(false);
   if (g.hk) return <Cara liga={liga} k={g.hk} nombre={g.n} cls={'gl-cara liga ' + cls} lazy grande={grande} sinFoto={siluetaDe(g.n)} />;
   if (g.ft && !mal) {
-    return <span className={'gl-cara foto ' + (g.esc === 'pro' ? 'pro ' : '') + cls}><img alt="" src={g.ft} loading="lazy" decoding="async" onError={() => setMal(true)} /></span>;
+    return <span className={'gl-cara foto ' + (tiene(g, 'pro') ? 'pro ' : '') + cls}><img alt="" src={g.ft} loading="lazy" decoding="async" onError={() => setMal(true)} /></span>;
   }
-  return <span className={'gl-cara sil ' + (g.esc === 'pro' ? 'pro ' : '') + cls} aria-hidden="true"><img alt="" src={siluetaDe(g.n)} loading="lazy" decoding="async" /></span>;
+  return <span className={'gl-cara sil ' + (tiene(g, 'pro') ? 'pro ' : '') + cls} aria-hidden="true"><img alt="" src={siluetaDe(g.n)} loading="lazy" decoding="async" /></span>;
 }
 // 🎭 el retrato de fms.tv (396×520, fondo transparente) recortado arriba: abajo trae el nombre pintado, y ese lo dice la
 // banda. Sin retrato, la cara grande
@@ -911,7 +911,7 @@ function Ficha({ X, liga, g, yo, cerrar }) {
       <div className="gl-datos"><div><small>Puesto</small><b>{g.pos ? '#' + g.pos : '—'}</b></div><div><small>Puntos</small><b>{g.jb ? n1(g.p) : '—'}</b></div><div><small>Jugadas</small><b>{g.jb || 0}</b></div></div>
       {g.jb && g.nb ? <Record g={g} /> : null}
       {b ? <p className="gl-mejor"><span>{tu ? 'Tu mejor victoria' : 'Su mejor victoria'}</span><PorQue X={X} g={g} tu={tu} min />. <b>+{n1(b[4])}</b></p> : null}
-      {g.esc === 'pro' && g.por && g.por.length ? (
+      {tiene(g, 'pro') && g.por && g.por.length ? (
         <div className="gl-espro"><span className="gl-pq-t">Por qué es pro</span><ul>{g.por.map((t) => <li key={t}>{porTx(t)}</li>)}</ul></div>
       ) : null}
       {/* 📜 su carrera, de antes de la T1 (23/11/2026): a todos, aunque no tenga (lo dice) */}
