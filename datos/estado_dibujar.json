@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-25T23:43:50Z",
+ "cuando": "2026-11-25T23:46:43Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 2447.3,
+ "dur_s": 120.0,
  "pasos": [
   {
    "n": "2f",
@@ -15,7 +15,7 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.2
+   "s": 0.9
   },
   {
    "n": "2f3",
@@ -27,31 +27,13 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 11.8
-  },
-  {
-   "n": "4",
-   "que": "las caras, desde R2",
-   "ok": true,
-   "s": 29.4
-  },
-  {
-   "n": "5",
-   "que": "tanda 1 de 7 · 40 persona(s)",
-   "ok": true,
-   "s": 2274.8
+   "s": 11.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 64.7
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 63.5
+   "s": 106.4
   }
  ],
  "fallas": [],
@@ -63,25 +45,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 499,
-   "read": 32869
+   "write": 505,
+   "read": 33389
   },
   "objeto": {
-   "leidas": 3713402,
-   "escritas": 78276,
-   "pedidos": 33842
+   "leidas": 3716610,
+   "escritas": 78407,
+   "pedidos": 33926
   },
   "worker": {
-   "pedidos": 30638,
-   "errores": 742,
-   "sub": 34588,
-   "cortados": 742,
+   "pedidos": 30683,
+   "errores": 711,
+   "sub": 34632,
+   "cortados": 711,
    "p50_ms": 0.99,
-   "p99_ms": 15.3,
+   "p99_ms": 15.29,
    "cpu": {
-    "total": 67268,
-    "objeto_10": 2154,
-    "worker_10": 964
+    "total": 67281,
+    "objeto_10": 2159,
+    "worker_10": 965
    }
   },
   "r2": {
