@@ -27,6 +27,7 @@ import { usarCss } from './css.js';
 // 🧮 lo que se calcula de los datos vive en perfil_datos.js desde el 20/11/2026: la imagen de /perfil y /vitrina
 // (og_img.jsx) lo usa tal cual, sin bajar esta página
 import { CORTO, MES, datosV10, eloDe, fecha, ini, nomEv, pu, sinB, sinTit } from './perfil_datos.js';
+import { delPerfil, useArchivo } from './archivo_ul.js';
 
 usarCss('perfil_v10', CSS_V10);
 
@@ -701,7 +702,7 @@ function EventosV({ liga, k, f, p, D, esYo, extra, fr, setFr }) {
 
 function Tabs({ liga, k, f, p, D, esYo, extra, tab, setTab, filPub, setFilPub, fr, setFr, videos, logros }) {
   const nPub = pubsDe(p).length;
-  const nVid = ((p && p.vid) || []).length + ((p && p.vp) || []).length;
+  const nVid = ((p && p.vid) || []).length + ((p && p.vp) || []).length + delPerfil(useArchivo(), f && f.n).length;
   const T = [['pubs', 'Publicaciones', nPub], ['noches', 'Eventos', D.enT.length], ['videos', 'Videos', nVid], ['logros', 'Logros', ((p && p.ins) || []).length]];
   const t = T.some((x) => x[0] === tab) ? tab : 'pubs';
   return (

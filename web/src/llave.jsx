@@ -22,6 +22,8 @@ import CSS_PAGINA from './css/llave.css?inline';
 import Calificar from './calificar.jsx';
 import { usarCss } from './css.js';
 import { pedirLlave, pedirRoles, puede } from './panelsocio.js';
+import { deBatalla, tituloDe, useArchivo } from './archivo_ul.js';
+import { abrirVideo } from './video.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/llave.css)
 usarCss('llave', CSS_PAGINA);
@@ -490,6 +492,15 @@ function etiquetas(ctx, b, est, copa) {
 // lo que cambió en la última vuelta: la batalla que se decidió (`recien`) y quien acaba de llegar a otra (`llega`)
 // ✎ EL LÁPIZ DE MODS EN CADA BATALLA (20/11/2026, la página Mods: «Lápices para corregir»). Abre «Corregir» de
 // `StaffLlave` con esa batalla elegida; quién puede de verdad lo decide el Worker (`socioLlave()`)
+// 🎬 EL SHORT DE ESA BATALLA (25/11/2026, Dlx: «could put into MCs profile, bracket and everything»): si el robot hizo uno,
+// un ▶ en la esquina de la batalla lo abre acá. Quedan 30 días (`archivo_ul.js`); sin short, nada
+function ShortB({ ctx, ls }) {
+  const x = ctx.shortDe && ls.length >= 2 ? ctx.shortDe(ls.map((s) => sinBanderas(s).txt)) : null;
+  if (!x) return null;
+  return <button type="button" className="lk-short" aria-label={'Ver el short de ' + ls.map(limpio).join(' vs ')} title="Ver el short de esta batalla"
+    onClick={(e) => { e.stopPropagation(); abrirVideo({ mp4: x.url, portada: x.portada, tit: (x.nombres || []).join(' vs ') + ' · ' + tituloDe(x) }); }}><span aria-hidden="true">▶</span>SHORT</button>;
+}
+
 function Lapiz({ ctx, ronda, ls }) {
   if (!ctx.lapiz || ronda == null || ls.length < 2) return null;
   return <button type="button" className="lk-lapiz" aria-label={'Corregir ' + ls.map(limpio).join(' vs ')} title="Corregir esta batalla"
@@ -508,6 +519,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
     return (
       <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '') + (recien ? ' recien' : '')} style={style} title={b[2] || undefined}>
         <Lapiz ctx={ctx} ronda={ronda} ls={ls} />
+        <ShortB ctx={ctx} ls={ls} />
         {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
         <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' lk-vs3' : '')}>
           {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} llega={!!an && an.s.has(pos + ':' + clave(s))} j={jv} li={i} />)}
@@ -520,6 +532,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan, pos, ronda }) {
     <div className={'lk-b' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (ls.length ? '' : ' vacio') + (copa ? ' fin' : '') + (recien ? ' recien' : '')}
       style={style} title={b[2] || undefined}>
       <Lapiz ctx={ctx} ronda={ronda} ls={ls} />
+      <ShortB ctx={ctx} ls={ls} />
       {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
       {cp ? <>{cp.g.map((s, i) => <Lado key={i} ctx={ctx} b={b} s={s} copa={copa} alto={altos ? altos[i] : 0} pasa li={ls.indexOf(s)} ronda={ronda} />)}
         <Resto ctx={ctx} b={b} xs={cp.x} ronda={ronda} alto={altos ? altos[altos.length - 1] : 0} /></>
@@ -1655,6 +1668,7 @@ function PuntosA({ ctx, L, orden, grupos }) {
 
 export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const Mm = useModsEstado();
+  const arch = useArchivo();   // 🎬 los shorts de la Liga (`ShortB`); una llave en vivo no tiene, su número es `v:…`
   // ✎ ¿los lápices de Mods valen acá? Dlx, o Admin y Moderador de la página (`liga` de `socio-roles`, 20/11/2026)
   const [puedeLapiz, setPuedeLapiz] = useState(false);
   useEffect(() => {
@@ -1956,6 +1970,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const lapices = !!Mm.lapices && puedeLapiz && !L.vivo && /^\d+$/.test(String(n));
   const ctx = Object.assign({}, base, {
     liga, L, n, sigo, seguir, anim, compu,
+    shortDe: arch.length ? (ls) => deBatalla(arch, n, ls) : null,
     lapiz: lapices ? (ronda, lados) => window.dispatchEvent(new CustomEvent('lg:llave-lapiz', { detail: { n: String(n), ronda, lados } })) : null,
     // 🅰️ el remake A (18/11/2026): las filas de la llave con caras, nota y votos (`Lado`, `compacta()`)
     caras: true, elegir: (id) => setSigo(id || ''),

@@ -27,6 +27,7 @@ import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Cartas, PUB_TIPOS, Pub, useAplausos } from './publicaciones.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
+import { delPerfil, tituloDe, useArchivo } from './archivo_ul.js';
 import { crewDe, useCrews } from './crews.js';
 import { errorPerfilTx, guardarPerfilMio, usePerfilExtra } from './perfil_extra.js';
 import { FraseEditor } from './frase.jsx';
@@ -1219,12 +1220,14 @@ function VideoPropio({ v: [vid, tit, cn], k, esYo, dc }) {
 const VIDEOS_FILTRO = 4;
 // y los primeros cuatro, el resto a un toque: con los de Makmah el bloque medía 2.531 px en la compu (21/10/2026)
 const VIDEOS_VER = 4;
-function Videos({ liga, p, k, esYo, dc }) {
+// 🎬 Y LOS SHORTS DE LA LIGA (25/11/2026): un día en Reels y después 30 acá, arriba de todo (`archivo_ul.js`)
+function Videos({ liga, p, k, n, esYo, dc }) {
   const [fil, setFil] = useState('');
   const [todos, setTodos] = useState(false);
+  const ul = delPerfil(useArchivo(), n);
   const vs0 = (p && p.vid) || [];
   const vp0 = (p && p.vp) || [];
-  if (!vs0.length && !vp0.length) return null;
+  if (!vs0.length && !vp0.length && !ul.length) return null;
   const con = vs0.length && vp0.length && vs0.length + vp0.length > VIDEOS_FILTRO;
   const vs1 = fil === 'otras' ? [] : vs0;
   const vp1 = fil === 'liga' ? [] : vp0;
@@ -1233,7 +1236,24 @@ function Videos({ liga, p, k, esYo, dc }) {
   const vp = todos ? vp1 : vp1.slice(0, Math.max(0, VIDEOS_VER - vs.length));
   return (
     <section className="sec pf-sec pf8-vid">
-      <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs0.length + vp0.length === 1 ? 'una' : vs0.length + vp0.length}</span></div>
+      <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{ul.length + vs0.length + vp0.length === 1 ? 'una' : ul.length + vs0.length + vp0.length}</span></div>
+      {ul.length && fil !== 'otras' ? (
+        <>
+          <h3 className="pf-vid-t">Sus mejores rimas, en corto</h3>
+          <p className="pf-bajada">Los shorts de Under Legends de sus batallas. Quedan 30 días.</p>
+          <ul className="pf-vid ul-cortos">
+            {ul.map((x) => (
+              <li key={x.ev + '-' + x.k}>
+                <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ mp4: x.url, portada: x.portada, tit: tituloDe(x) })}>
+                  <span className="pf-vid-m">{x.portada ? <img className="pf-vid-img" alt="" src={x.portada} loading="lazy" decoding="async" /> : null}<i aria-hidden="true">▶</i></span>
+                  <b>{(x.nombres || []).join(' vs ')}</b>
+                  <small>{tituloDe(x)}</small>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
       {con ? (
         <div className="pf8-chips" role="group" aria-label="Filtrar sus videos">
           {[['', 'Todos', vs0.length + vp0.length], ['liga', 'De la Liga', vs0.length], ['otras', 'Plazas y otras ligas', vp0.length]].map(([id, t, c]) => (
@@ -1749,7 +1769,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
             records: <SusRecords key="records" f={f} p={p} D={D} esYo={esYo} />,
             precio: esYo ? null : <Precio key="precio" liga={liga} f={f} esYo={esYo} dc={dc} />,
           }}
-          videos={<Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} />}
+          videos={<Videos liga={liga} p={p} k={k} n={f.n} esYo={esYo} dc={dc} />}
           logros={<Logros liga={liga} p={p} esYo={esYo} dc={dc} />} />
       )}
       {panel}

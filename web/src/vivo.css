@@ -2036,6 +2036,7 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .vid-x:hover,.vid-x:focus-visible{background:var(--magenta);border-color:var(--magenta)}
 .vid-marco{position:relative;aspect-ratio:16/9;background:#000;border:2px solid #2A2A2E}
 .vid-marco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-marco video{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;object-fit:contain}
 /* 📱 un short (24/11/2026, Dlx: «que se adapte y se ponga vertical en vez de quedarse cuadrado»): parado, 9:16, con el ancho
    que deja el alto de la pantalla (el título y los bordes, ~110 px) y nunca más de 460 */
 .vid-caja.vert{width:min(460px,100%,calc((100dvh - 110px) * 9 / 16))}
@@ -3065,6 +3066,7 @@ li.nt-f{cursor:default}
 .pf-vid-b{display:grid;gap:6px;width:100%;padding:0;border:0;background:none;color:var(--tinta);text-align:left;cursor:pointer}
 .pf-vid-m{position:relative;display:block;aspect-ratio:16/9;max-width:100%;overflow:hidden;background:var(--caja);border:2px solid var(--suave)}
 .pf-vid-img{width:100%;height:100%;object-fit:cover;display:block}
+.pf-vid.ul-cortos{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}.pf-vid.ul-cortos .pf-vid-m{aspect-ratio:9/16}
 .pf-vid-m i{position:absolute;left:8px;bottom:8px;width:34px;height:34px;display:grid;place-items:center;background:var(--magenta);color:#fff;font-style:normal;font-size:14px}
 .pf-vid-b:hover .pf-vid-m,.pf-vid-b:focus-visible .pf-vid-m{border-color:var(--linea)}
 .pf-vid-b b{font:700 13px/1.3 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
