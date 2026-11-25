@@ -53,6 +53,7 @@ import { mezclar, partir, duracion, sonoridad, ganancia, cortar } from './mezcla
 import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 import { PruebaMicro } from './microfono.js';
 import { LlamadasVivo, claveCiclo } from './vivo.js';
+import { VIGIA_CAIDO_MIN, ANUNCIO_HORAS, FOTO_S, caidoDesde, anunciosDeAhora, largoRecuperada } from './reserva.js';
 import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S, completarIds, sinUbicar } from './batallas.js';
 import { Menciones } from './mencion.js';
 import { Fallas, motivoDe, textoFalla } from './entrada.js';
@@ -142,6 +143,8 @@ const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
 //: otros grabadores con los que NO se entra (vacío: ver arriba). El de Drako es «Freestyle for All», 1557056218164629535
 const OTROS = new Set(lista(E.NO_SI_ESTA));
 const BASE = E.CARPETA || path.join(os.tmpdir(), 'grabaciones');
+//: 💾 cuántas veces se intenta entregar una recuperada antes de dejarla (una que rompe siempre no traba cada arranque)
+export const RECUPERAR_MAX = 2;
 
 //: el log va en hora del este, como todo el proyecto (Railway muestra su propia hora al costado, en la del navegador)
 const RELOJ = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -163,6 +166,24 @@ export function topeDe(guild) {
 }
 
 // ── el vigía: ¿hay una llave de este servidor en juego? ───────────────────
+// 🛟 EL PLAN B SI EL VIGÍA NO CONTESTA (25/11/2026, Dlx: «me gustan todos»). El 24/11 de 3 a 7 PM ET el objeto se pasó de su
+// cupo de filas y no contestaba: ULAYA no supo que UFL BATTLES V3 (UFLUC) estaba en juego y no entró. Desde que no contesta
+// hace `VIGIA_CAIDO_MIN`: los anuncios se calculan acá con su hora (`anun.ev`, guardados de la última vez que contestó, que
+// pide las próximas `ANUNCIO_HORAS`), una llave vista en las últimas `LLAVE_H` cuenta como en juego, y una grabación no se
+// corta por «terminó el evento» (no hay con qué saberlo: termina cuando se vacía la llamada)
+const vigia = { ok: Date.now(), avisado: false };
+const vigiaCaido = (ahora = Date.now()) => caidoDesde(vigia.ok, ahora, VIGIA_CAIDO_MIN);
+function vigiaContesto() {
+  if (vigia.avisado) anotar('🛟 el vigía volvió a contestar');
+  vigia.ok = Date.now();
+  vigia.avisado = false;
+}
+function vigiaNoContesto() {
+  if (vigiaCaido() && !vigia.avisado) {
+    anotar(`🛟 el vigía no contesta hace más de ${VIGIA_CAIDO_MIN} min: sigo con lo último que vi (plan B)`);
+    vigia.avisado = true;
+  }
+}
 let vivo = { t: 0, g: new Set(), viva: new Set(), ed: new Map() };
 async function llavesEnJuego(paraEntrar = false) {
   if (Date.now() - vivo.t >= 120000) {
@@ -178,30 +199,39 @@ async function llavesEnJuego(paraEntrar = false) {
         if (Date.now() - ed <= LLAVE_H * 3600000) g.add(String(ll.g));
         if (Date.now() - ed <= LLAVE_ENTRAR_MIN * 60000) viva.add(String(ll.g));
       }
+      if (!r.ok) throw new Error('contestó ' + r.status);
       vivo.g = g;
       vivo.viva = viva;
       vivo.ed = ultima;
+      vigiaContesto();
     } catch (e) {
       anotar('⚠️ el vigía no contestó:', String(e.message || e).slice(0, 80));
+      vigiaNoContesto();
     }
   }
-  return paraEntrar ? vivo.viva : vivo.g;
+  // 🛟 sin vigía no se ve si una llave se sigue editando: la que se vio en las últimas `LLAVE_H` cuenta como en juego
+  return paraEntrar && !vigiaCaido() ? vivo.viva : vivo.g;
 }
 
 // ── 📣 los eventos anunciados que arrancan ahora, y quién los anunció ─────
-let anun = { t: 0, g: new Map() };
+let anun = { t: 0, g: new Map(), ev: [] };
 /** `Map(guild -> Set(autores))` de `/avisos/anunciados-ciclo` (con la clave del ciclo), cada 2 min como mucho. */
 async function anunciados() {
   if (!GRABAR_TODOS || Date.now() - anun.t < 120000) return anun.g;
   anun.t = Date.now();
   try {
-    const r = await fetch(VIGIA + '/avisos/anunciados-ciclo', { headers: { 'x-lg-ciclo': claveCiclo(E.DISCORD_TOKEN) },
+    const r = await fetch(VIGIA + '/avisos/anunciados-ciclo?horas=' + ANUNCIO_HORAS, { headers: { 'x-lg-ciclo': claveCiclo(E.DISCORD_TOKEN) },
       signal: AbortSignal.timeout(10000) });
-    const d = r.ok ? await r.json() : {};
-    anun.g = organizadores(d.ev);
+    if (!r.ok) throw new Error('contestó ' + r.status);
+    const d = await r.json();
+    anun.ev = Array.isArray(d.ev) ? d.ev : [];
+    vigiaContesto();
   } catch (e) {
     anotar('⚠️ los anunciados no contestaron:', String(e.message || e).slice(0, 80));
+    vigiaNoContesto();
   }
+  // 🛟 la ventana se calcula acá con la hora de cada anuncio: así lo guardado sirve también si el vigía se cae
+  anun.g = organizadores(anunciosDeAhora(anun.ev));
   return anun.g;
 }
 
@@ -274,10 +304,43 @@ class Grabacion {
     this.afuera = 0;             // ⏸️ los ms que estuvo afuera, que `ms()` descuenta
     this.pausas = 0;
     this.volviendo = false;
+    this.finReloj = null;        // 💾 en una recuperada: el instante (reloj) en que terminó lo grabado
+  }
+
+  /**
+   * 💾 LO QUE HACE FALTA PARA ENTREGARLA DESPUÉS, EN SU CARPETA (25/11/2026, Dlx: «me gustan todos»). Un reinicio de Railway
+   * —un push a `grabador/`, una caída— perdía la grabación entera: al apagarse da 180 s y mezclar 2 h lleva ~20 min. Ahora,
+   * cada `FOTO_S` y al apagarse, `estado.json` guarda quién habló cuándo y desde dónde; las pistas ya se escriben a disco
+   * a medida que llegan. Al volver a arrancar, `recuperar()` entrega lo que quedó. ⚠️ Para sobrevivir a un redeploy la
+   * carpeta (`CARPETA`) tiene que estar en un VOLUMEN de Railway: sin eso el disco se va con el contenedor
+   */
+  foto(extra = {}) {
+    try {
+      fs.writeFileSync(path.join(this.dir, 'estado.json'), JSON.stringify({ v: 1, g: this.guild.id, canal: this.canal.id,
+        motivo: this.motivo, inicio: this.inicio.toISOString(), seg: this.ms() / 1000, afuera: this.afuera, pausas: this.pausas,
+        quien: Object.fromEntries(this.quien), voces: [...this.pistas.keys()], habla: Object.fromEntries(this.habla.t), ...extra }));
+    } catch (e) { /* una foto menos */ }
+  }
+
+  /** 💾 Railway la apaga: cierra las pistas y deja `estado.json` para el próximo arranque, sin mezclar (no le da el tiempo). */
+  dejarParaDespues() {
+    if (this.cerrando) return;
+    this.cerrando = true;
+    clearInterval(this.reloj);
+    clearInterval(this.fotos);
+    for (const st of this.subs.values()) st.destroy();
+    try { this.con?.destroy(); } catch (e) { /* ya estaba cerrada */ }
+    const fin = this.ms();
+    for (const p of this.pistas.values()) { p.silencioHasta(fin); p.cerrar(); }
+    this.foto({ cortada: true, seg: fin / 1000 });
+    anotar(`💾 ${this.guild.name}: ${largo(fin / 1000)} guardados para entregar al volver a arrancar`);
+    return this.ponerApodo(false);
   }
 
   /** 🏁 ¿Sigue el evento en este servidor? Con lo que el vigía y los anuncios dijeron en la última vuelta. */
   eventoSigue() {
+    // 🛟 sin vigía no hay con qué saber que terminó: sigue, y termina cuando se vacía la llamada
+    if (vigiaCaido()) { this.eventoVisto = true; return true; }
     const g = this.guild.id;
     const ed = vivo.ed.get(g) || 0;
     if (ed >= this.inicio.getTime() - LLAVE_ENTRAR_MIN * 60000) this.llaveVista = true;
@@ -344,6 +407,8 @@ class Grabacion {
     await this.conectar();
     this.t0 = performance.now();
     this.inicio = new Date();
+    this.foto();
+    this.fotos = setInterval(() => this.foto(), FOTO_S * 1000);
     anotar(`🔴 grabando en ${this.guild.name} / ${this.canal.name} (${this.motivo})`);
   }
 
@@ -519,6 +584,7 @@ class Grabacion {
     const fin = this.ms();
     anotar(`⏹️ termina (${razon}) a los ${largo(fin / 1000)}`);
     clearInterval(this.reloj);
+    clearInterval(this.fotos);
     for (const st of this.subs.values()) st.destroy();
     try { this.con.destroy(); } catch (e) { /* ya estaba cerrada */ }
     this.ponerApodo(false);
@@ -682,7 +748,7 @@ class Grabacion {
    * y un audio de cada una, en mensajes de hasta 10 archivos.
    */
   async entregarBatallas(canal, mezcla, seg) {
-    const q = new URLSearchParams({ g: this.guild.id, desde: String(this.inicio.getTime()), hasta: String(Date.now()) });
+    const q = new URLSearchParams({ g: this.guild.id, desde: String(this.inicio.getTime()), hasta: String(this.finReloj || Date.now()) });
     const r = await fetch(VIGIA + '/avisos/batallas?' + q, { headers: { 'x-lg-ciclo': claveCiclo(E.DISCORD_TOKEN) },
       signal: AbortSignal.timeout(20000) });
     const d = r.ok ? await r.json() : {};
@@ -695,7 +761,16 @@ class Grabacion {
     }
     const completos = completarIds(d.llaves, voces);
     if (completos.length) anotar(`🔎 de la llamada: ${completos.map(([n]) => n).join(', ')}`);
-    const bs = ubicarTodas(d.llaves, this.habla.t, seg);
+    // ⚓ las anclas del evento (`ancla` de cada batalla, ms de reloj) pasadas a segundos de esta grabación (sin lo de afuera)
+    const bs = ubicarTodas(d.llaves, this.habla.t, seg, (ts) => this.enGrabacion(ts) / 1000);
+    // 🔁 el suplente, con el nombre que tenía en la llamada
+    for (const b of bs) {
+      if (!b.suplente) continue;
+      const n = (voces.get(b.suplente.id) || [])[0] || 'alguien de la llamada';
+      const p = (b.personas[b.suplente.lado] || [])[0];
+      if (p) p.n = n;
+      b.nota = `entró ${n} por ${b.nombres[b.suplente.lado] || 'el de la llave'}`;
+    }
     const faltan = sinUbicar(d.llaves, bs, this.habla.t);
     anotar(`⚔️ batallas: ${bs.length} ubicadas de ${total} en la llave`);
     // 🔇 SE CALLABA (24/11/2026, DESGRACIAS EN TOKYO VOL 35: 1 h 44 entregada sin batallas y sin decir por qué; el armador
@@ -739,7 +814,8 @@ class Grabacion {
     fs.writeFileSync(guiones, JSON.stringify({
       v: 1, servidor: this.guild?.id || '', inicio: this.inicio.toISOString(),
       batallas: bs.map((b) => ({ clip: (b.corta || b.sinAudio) ? null : nombreClip(b), r: b.r, llave: b.llave, evento: b.evento,
-        nombres: b.nombres, gano: b.gano, desde: Math.round(b.desde * 10) / 10, hasta: Math.round(b.hasta * 10) / 10, guion: b.guion || null })),
+        nombres: b.nombres, gano: b.gano, desde: Math.round(b.desde * 10) / 10, hasta: Math.round(b.hasta * 10) / 10, guion: b.guion || null,
+        personas: b.personas, ...(b.nota ? { nota: b.nota } : {}), ...(b.anclada ? { anclada: true } : {}) })),
       sin_ubicar: faltan, de_la_llamada: completos.length,
     }));
     let lote = [], peso = 0, primero = true;
@@ -818,6 +894,45 @@ async function vuelta(client) {
     grabando.set(gid, nueva);
     // 🚪 SIN `await`: entrar puede tardar los 30 s de `entersState` y, esperándolo, la vuelta frenaba a los demás servidores
     entrar(client, nueva, c.n);
+  }
+}
+
+// ── 💾 lo que quedó de antes de un reinicio ───────────────────────────────
+async function recuperar(client) {
+  if (!fs.existsSync(BASE)) return;
+  for (const d of fs.readdirSync(BASE)) {
+    const dir = path.join(BASE, d), ej = path.join(dir, 'estado.json');
+    if (!fs.existsSync(ej) || [...grabando.values()].some((g) => g.dir === dir)) continue;
+    let e;
+    try { e = JSON.parse(fs.readFileSync(ej, 'utf8')); } catch (x) { continue; }
+    if ((e.intentos || 0) >= RECUPERAR_MAX) continue;
+    e.intentos = (e.intentos || 0) + 1;
+    fs.writeFileSync(ej, JSON.stringify(e));
+    const guild = client.guilds.cache.get(String(e.g));
+    if (!guild) continue;
+    const canal = guild.channels.cache.get(String(e.canal)) || { id: String(e.canal), name: '?' };
+    const r = new Grabacion(client, guild, canal, e.motivo || 'había un evento');
+    r.dir = dir;
+    r.inicio = new Date(e.inicio);
+    r.afuera = Number(e.afuera) || 0;
+    r.pausas = Number(e.pausas) || 0;
+    r.cerrando = true;
+    r.quien = new Map(Object.entries(e.quien || {}));
+    for (const [id, l] of Object.entries(e.habla || {})) r.habla.t.set(id, l);
+    for (const id of e.voces || []) {
+      const ruta = path.join(dir, id + '.ogg');
+      if (fs.existsSync(ruta) && fs.statSync(ruta).size > 0) r.pistas.set(id, { ruta });
+    }
+    const voces = [...r.pistas.keys()];
+    const seg = largoRecuperada(e, voces.map((id) => duracion(r.pistas.get(id).ruta)));
+    r.finReloj = r.inicio.getTime() + seg * 1000 + r.afuera;
+    if (seg < MIN_ENTREGA_S) { fs.rmSync(dir, { recursive: true, force: true }); continue; }
+    anotar(`💾 ${guild.name}: entrego lo que quedó de antes del reinicio (${largo(seg)})`);
+    try {
+      await r.entregar(voces, seg, (e.cortada ? 'se reinició el grabador' : 'se cayó el grabador') + ' (lo grabado hasta ahí, entregado al volver)');
+    } catch (x) {
+      anotar('❌ no pude entregar la recuperada:', String(x.message || x).slice(0, 200));
+    }
   }
 }
 
@@ -955,7 +1070,10 @@ process.on('SIGTERM', async () => {
   anotar('🛑 Railway me apaga: cierro lo que haya');
   // 👀 la tanda del público que estaba juntando, antes de irse (si no, se pierden esos minutos)
   if (llamadas) await llamadas.mandarPublico(Date.now(), true).catch(() => {});
-  await Promise.allSettled([...grabando.values()].map((g) => g.terminar('se reinició el grabador')));
+  // 💾 con una carpeta propia (`CARPETA`, un volumen de Railway) se deja para el próximo arranque: mezclar no entra en los
+  // 180 s que da Railway. Sin ella se intenta como siempre (una grabación corta sí llega)
+  await Promise.allSettled([...grabando.values()].map((g) => (E.CARPETA && g.t0 !== undefined
+    ? g.dejarParaDespues() : g.terminar('se reinició el grabador'))));
   process.exit(0);
 });
 
@@ -974,6 +1092,8 @@ client.once(Events.ClientReady, async () => {
   anotar(`✅ conectado como ${client.user.tag} · graba en ${GRABAR_TODOS ? 'todos los servidores con una llave en juego (y '
     + GRABAR_EN.length + ' fijo/s)' : GRABAR_EN.length + ' servidor(es)'} · entrega en ${ENTREGA}`);
   if (process.argv.includes('--revisar')) return revisarYSalir(client);
+  // 💾 lo que quedó de antes de un reinicio, a Logs (sin esperar: no frena el arranque)
+  recuperar(client).catch((e) => anotar('⚠️ recuperar:', String(e.message || e).slice(0, 150)));
   // 🔴 un reinicio en medio de una grabación deja el apodo «GRABANDO» colgado: al arrancar no graba nada, así que se limpia
   for (const g of client.guilds.cache.values()) {
     const me = g.members.me;

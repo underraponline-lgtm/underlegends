@@ -195,6 +195,80 @@ export function ubicar(lados, habla, durS, paso = PASO_S, lim = null) {
     s: Math.round(mejor.s * 10) / 10 };
 }
 
+// ⚓ LAS ANCLAS DEL EVENTO (25/11/2026, Dlx: «basado en lo que están hablando en la llamada y quiénes, o puedes ver el canal
+// de veredictos o resultados, llaves, etc.»). El bot en vivo publica el cruce de cada batalla cuando le toca (`v:<ronda>:<n>`
+// de `chat_vivo`) y quién pasó cuando el organizador lo marca en la llave (`b:<ronda>:<n>:…`). El Worker los manda como
+// `ancla: {ini, fin}` (ms de reloj) y cada batalla se busca SÓLO adentro de esa ventana: no se puede marcar un ganador
+// antes de que termine la batalla (`fin` + lo que tarda el bot), y el cruce sale cerca de que arranque (con margen: a veces
+// el organizador marca tarde la anterior). Sin anclas, como siempre: por quién habló cuándo en toda la grabación
+export const ANCLA_ANTES_S = 600;
+export const ANCLA_DESPUES_S = 150;
+//: sin el cruce, la batalla se busca desde esto antes de que se publicara quién pasó
+export const ANCLA_SOLO_FIN_S = 1500;
+
+/** La ventana (segundos de la grabación) de una batalla con `ancla`; `aSeg(ms de reloj)` da su segundo en la grabación.
+ *  `null` si no hay ancla o la ventana queda más corta que una batalla. */
+export function ventanaAncla(ancla, aSeg, durS) {
+  if (!ancla || typeof aSeg !== 'function') return null;
+  const ini = Number(ancla.ini) || 0, fin = Number(ancla.fin) || 0;
+  if (!ini && !fin) return null;
+  const desde = Math.max(0, ini ? aSeg(ini) - ANCLA_ANTES_S : aSeg(fin) - ANCLA_SOLO_FIN_S);
+  const hasta = Math.min(durS, fin ? aSeg(fin) + ANCLA_DESPUES_S : aSeg(ini) + ANCLA_SOLO_FIN_S);
+  return hasta - desde >= MIN_LARGO_S ? { desde, hasta } : null;
+}
+
+// 🔁 EL SUPLENTE (25/11/2026, Dlx: «tener cuidado… hay usualmente muchos suplentes que al final reemplazan a los que ya
+// estaban en la llave»). La llave dice Bea, pero rapeó Juan: Bea no rapea ahí y la batalla no se encontraba. Adentro de su
+// ventana de anclas, si un lado no rapeó ahí y alguien que NO está en esa batalla rapea turnándose con el otro lado, es
+// el suplente. Sin ventana no se busca (en toda la noche, cualquiera que rapee con Ana sería «su rival»), y nunca quien
+// habla en la mayoría de las batallas del evento: el presentador o un jurado (`fijos`). Y sólo si hay UNO claro
+const segEn = (tramos, lim) => (tramos || []).reduce((s, [d, h]) => s + Math.max(0, Math.min(h / 1000, lim.hasta) - Math.max(d / 1000, lim.desde)), 0);
+/** ¿Rapea adentro de `lim`? `RAP_S` de habla en alguna ventana de `RAP_VENTANA_S`. */
+function rapeaEn(tramos, lim) {
+  const n = Math.ceil(lim.hasta / PASO_S);
+  const a = porBalde(tramos, n);
+  const w = Math.max(1, Math.round(RAP_VENTANA_S / PASO_S));
+  for (let k = Math.floor(lim.desde / PASO_S); k + w <= n; k++) {
+    let s = 0;
+    for (let j = k; j < k + w; j++) s += a[j];
+    if (s >= RAP_S) return true;
+  }
+  return false;
+}
+
+/** Quién habla en la mayoría (60 %) de las ventanas con ancla —con 3 o más—: el presentador, los jurados. */
+export function fijosDe(ventanas, habla) {
+  const out = new Set();
+  if ((ventanas || []).length < 3) return out;
+  for (const [id, tr] of habla) {
+    const en = ventanas.filter((lim) => segEn(tr, lim) >= 5).length;
+    if (en / ventanas.length >= 0.6) out.add(id);
+  }
+  return out;
+}
+
+/** `{lado, id}` del suplente de una batalla (ver arriba), o `null`. `lados` son ids (`''` sin cuenta). */
+export function suplente(lados, habla, lim, fijos = new Set()) {
+  if (!lim || (lados || []).length < 2) return null;
+  // ⚠️ «no rapeó ACÁ», no «no habló nunca»: el suplente suele reemplazar a alguien que ya estaba en la llave y rapeó antes
+  const callados = lados.map((l, i) => ((l || []).some((id) => id && habla.has(id) && rapeaEn(habla.get(id), lim)) ? -1 : i))
+    .filter((i) => i >= 0);
+  if (callados.length !== 1) return null;
+  const deEsta = new Set(lados.flat().filter(Boolean));
+  const cand = [];
+  for (const [id, tr] of habla) {
+    if (deEsta.has(id) || fijos.has(id)) continue;
+    const s = segEn(tr, lim);
+    if (s >= 2 * RAP_S && rapeaEn(tr, lim)) cand.push([id, s]);
+  }
+  cand.sort((a, b) => b[1] - a[1]);
+  if (!cand.length || (cand[1] && cand[1][1] * 1.5 > cand[0][1])) return null;
+  const lado = callados[0];
+  // y con él tiene que armarse la batalla de verdad (turnándose con el otro lado), no sólo hablar ahí
+  const prueba = lados.map((l, i) => (i === lado ? [cand[0][0]] : l));
+  return ubicar(prueba, habla, lim.hasta + 1, PASO_S, lim) ? { lado, id: cand[0][0] } : null;
+}
+
 // 🪜 LAS RONDAS VAN EN ORDEN (23/11/2026). En la grabación de FFA del 21/11 (9:47 PM ET) salieron «Octavos · Thaniel vs LRS
 // vs Colesito» DESPUÉS de «Cuartos · INHUMAN + Agente sombra vs Colesito + LRS», y dos clips vacíos. `ubicar()` busca cada
 // batalla por separado donde rapea su gente, y LRS y Colesito, rivales en octavos y compañeros en cuartos, rapean en las
@@ -238,7 +312,8 @@ export const MIN_CLIP_S = 20;
 
 /** La línea de la lista de la entrega: «`12:31` Cuartos · Ana vs Bea», y si no lleva audio, por qué. */
 export function lineaBatalla(b) {
-  const l = `\`${mmss(b.desde)}\` ${b.r} · ${(b.nombres || []).join(' vs ')}`;
+  // 🔁 con suplente, quién entró por quién (`b.nota`, lo pone index.js con el nombre de la llamada)
+  const l = `\`${mmss(b.desde)}\` ${b.r} · ${(b.nombres || []).join(' vs ')}` + (b.nota ? ` · _${b.nota}_` : '');
   if (b.corta) return l + ` · _sin audio: quedó de ${Math.max(0, Math.round(b.hasta - b.desde))} s_`;
   return b.sinAudio ? l + ` · _sin audio: ${b.sinAudio}_` : l;
 }
@@ -247,24 +322,39 @@ export function lineaBatalla(b) {
  * Todas las batallas de las llaves (`/avisos/batallas`) que se pueden ubicar, en el orden en que se jugaron:
  * `[{llave, evento, r, nombres, gano, desde, hasta}]`.
  */
-export function ubicarTodas(llaves, habla, durS) {
+export function ubicarTodas(llaves, habla, durS, aSeg = null) {
   const out = [];
+  // ⚓ las ventanas de todas las batallas con ancla, para saber quién habla en casi todas (el presentador, los jurados)
+  const ventanas = [];
+  for (const L of llaves || []) for (const R of L.rondas || []) for (const b of R.b || []) {
+    const v = ventanaAncla(b.ancla, aSeg, durS);
+    if (v) ventanas.push(v);
+  }
+  const fijos = fijosDe(ventanas, habla);
   for (const L of llaves || []) {
     const rk = ordenRondas(L.rondas);
     const deLlave = [];
     (L.rondas || []).forEach((R, i) => {
       for (const b of R.b || []) {
         const lados = (b.lados || []).map((l) => (l || []).map((y) => String((y && y.id) || '')).filter(Boolean));
-        deLlave.push({ R, b, rk: rk[i], lados, ids: lados.flat(), u: ubicar(lados, habla, durS), lim: { desde: 0, hasta: durS } });
+        const v = ventanaAncla(b.ancla, aSeg, durS);
+        // 🔁 un lado que no habló, con ancla: ¿rapeó un suplente en su lugar?
+        const sup = v ? suplente((b.lados || []).map((l) => (l || []).map((y) => String((y && y.id) || ''))), habla, v, fijos) : null;
+        if (sup) lados[sup.lado] = [sup.id];
+        const lim = v || { desde: 0, hasta: durS };
+        deLlave.push({ R, b, rk: rk[i], lados, ids: lados.flat(), sup, u: ubicar(lados, habla, durS, PASO_S, v), lim });
       }
     });
     ordenarRondas(deLlave, habla, durS);
-    for (const { R, b, lados, ids, u } of deLlave) {
+    for (const { R, b, lados, ids, u, sup } of deLlave) {
       if (!u) continue;
+      const personas = (b.lados || []).map((l) => (l || []).filter((y) => y && y.id).map((y) => ({ n: y.n || '', id: String(y.id) })));
+      // 🔁 quien rapeó de verdad: el suplente en lugar del de la llave (su nombre lo pone index.js, que conoce la llamada)
+      if (sup) personas[sup.lado] = [{ n: '', id: sup.id, suplente: true }];
       out.push({ llave: L.id, evento: L.nombre || '', r: R.r, gano: b.gano || '', desde: u.desde, hasta: u.hasta, ids,
         lados, nombres: (b.lados || []).map((l) => (l || []).map((y) => y.n).filter(Boolean).join(' + ')),
         // 👥 el nombre de cada uno por separado: en un 2vs2 el short tiene que saber CUÁL de la pareja rapea
-        personas: (b.lados || []).map((l) => (l || []).filter((y) => y && y.id).map((y) => ({ n: y.n || '', id: String(y.id) }))) });
+        personas, ...(sup ? { suplente: sup } : {}), ...(b.ancla ? { anclada: !!ventanaAncla(b.ancla, aSeg, durS) } : {}) });
     }
   }
   out.sort((a, b) => a.desde - b.desde);

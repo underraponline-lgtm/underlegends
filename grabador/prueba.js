@@ -367,6 +367,18 @@ console.log('\n🎙️👀 las llamadas en vivo: micrófonos y público\n');
 // ── ⚔️ cada batalla en la grabación (batallas.js, 21/11/2026) ──
 console.log('\n⚔️ cada batalla en la grabación\n');
 {
+  // 🛟💾 lo de reserva (reserva.js, 25/11/2026): el plan B sin vigía y el largo de una grabación recuperada
+  const RS = await import('./reserva.js');
+  const H0 = Date.parse('2026-11-24T20:00:00Z');
+  ok(!RS.caidoDesde(H0 - 9 * 60000, H0) && RS.caidoDesde(H0 - 11 * 60000, H0), 'el vigía se da por caído recién a los 10 min sin contestar');
+  const evs = [['111111111111111111', H0 + 20 * 60000, '9'], ['222222222222222222', H0 + 3 * 3600000, '9'], ['333333333333333333', H0 - 5 * 3600000, '9']];
+  const ya = RS.anunciosDeAhora(evs, H0).map((f) => f[0]);
+  ok(ya.length === 1 && ya[0] === '111111111111111111', 'de los anuncios guardados, los de ahora: el que arranca en 20 min sí; el de dentro de 3 h y el de hace 5 h, no');
+  ok(RS.anunciosDeAhora(evs, H0 + 3 * 3600000).map((f) => f[0]).join() === '111111111111111111,222222222222222222',
+    'y 3 h después, con el vigía caído, entra el que se había guardado para más tarde');
+  ok(RS.largoRecuperada({ seg: 3600, cortada: true }, [3700]) === 3600 && RS.largoRecuperada({ seg: 3600 }, [3640]) === 3640
+    && RS.largoRecuperada({ seg: 3600 }, [9000]) === 3600 + RS.FOTO_S + 10 && RS.largoRecuperada({ seg: 3600 }, [100]) === 3600,
+  'una recuperada: apagada por Railway, lo de la foto; caída sin avisar, lo que se alcanzó a escribir (sin pasarse de la foto + 70 s)');
   const B = await import('./batallas.js');
   const { cortar, duracion } = await import('./mezcla.js');
   // una noche de mentira (en segundos): Ana y Bea pelean de 100 a 340, turnos de 60 s; el host habla entre turnos;
@@ -406,6 +418,37 @@ console.log('\n⚔️ cada batalla en la grabación\n');
     'si dos de la llamada podrían ser, no se elige ninguno');
   const ajena = [{ id: '9', rondas: [{ r: 'Final', b: [{ lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Anabel', id: '' }]] }] }] }];
   ok(!B.completarIds(ajena, new Map([['ana', ['Ana']]])).length, 'una cuenta que ya es otro de la llave no se reusa con otro nombre');
+  // ⚓ las anclas del evento y 🔁 el suplente (25/11/2026)
+  const T0 = Date.parse('2026-11-24T20:00:00Z');
+  const aS = (ts) => (ts - T0) / 1000;
+  const va = B.ventanaAncla({ ini: T0 + 700e3, fin: T0 + 1000e3 }, aS, 3000);
+  ok(va && va.desde === 100 && va.hasta === 1150, 'la ventana de una batalla: desde 10 min antes del cruce hasta 2,5 min después de quién pasó');
+  ok(B.ventanaAncla({ fin: T0 + 2000e3 }, aS, 3000).desde === 500 && B.ventanaAncla(null, aS, 3000) === null
+    && B.ventanaAncla({ ini: T0 + 10e3, fin: T0 + 20e3 }, aS, 3000) !== null, 'sin el cruce, 25 min antes del resultado; sin ancla, nada');
+  // Ana le gana a Bea de 100 a 340 (h, arriba). La revancha: Ana vs Bea otra vez a las 1600, pero Bea no vino y rapeó Juli
+  const hs = new B.Habla();
+  const hb = (id, a, b) => { for (let ms = a * 1000; ms < b * 1000; ms += 20) hs.agregar(id, ms); };
+  hb('ana', 100, 160); hb('bea', 165, 225); hb('ana', 228, 285); hb('bea', 288, 340);
+  hb('ana', 1600, 1660); hb('juli', 1665, 1725); hb('ana', 1728, 1785); hb('juli', 1788, 1840);
+  for (const [a, z] of [[90, 100], [350, 360], [1590, 1600], [1850, 1860], [2500, 2510]]) hb('host', a, z);
+  const rev = [{ id: '7', nombre: 'COPA', rondas: [{ r: 'Final', b: [{ ancla: { ini: T0 + 1650e3, fin: T0 + 1870e3 },
+    lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Bea', id: 'bea' }]] }] }] }];
+  const ur = B.ubicarTodas(rev, hs.t, 2600, aS);
+  ok(ur.length === 1 && ur[0].desde >= 1580 && ur[0].hasta <= 1900 && ur[0].suplente && ur[0].suplente.id === 'juli',
+    `con ancla, la final se busca en su ventana (no donde Ana y Bea pelearon antes), y Bea —que sí estaba en la llave y rapeó esa noche— la jugó un suplente: ${ur[0] && B.mmss(ur[0].desde)}–${ur[0] && B.mmss(ur[0].hasta)} ${JSON.stringify(ur[0] && ur[0].suplente)}`);
+  const rev2 = [{ id: '8', rondas: [{ r: 'Final', b: [{ ancla: { ini: T0 + 1650e3, fin: T0 + 1870e3 },
+    lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Cata', id: '' }]] }] }] }];
+  const us = B.ubicarTodas(rev2, hs.t, 2600, aS);
+  ok(us.length === 1 && us[0].suplente && us[0].suplente.id === 'juli' && us[0].personas[1][0].suplente,
+    'el suplente: Cata (de la llave) no habló y Juli rapeó turnándose con Ana adentro de la ventana: entró Juli  ' + JSON.stringify(us[0] && us[0].suplente));
+  const norm = B.ubicarTodas([{ id: '10', rondas: [{ r: 'Cuartos', b: [{ ancla: { ini: T0 + 150e3, fin: T0 + 360e3 },
+    lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Bea', id: 'bea' }]] }] }] }], hs.t, 2600, aS);
+  ok(norm.length === 1 && !norm[0].suplente && norm[0].desde < 120, 'una batalla normal con ancla (rapearon los dos de la llave) no inventa suplente');
+  ok(!B.ubicarTodas([{ id: '9', rondas: [{ r: 'Final', b: [{ lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Cata', id: '' }]] }] }] }], hs.t, 2600, aS).length,
+    'sin ancla no se busca suplente (en toda la noche cualquiera que rapee con Ana sería «su rival»)');
+  ok(B.fijosDe([{ desde: 80, hasta: 370 }, { desde: 1580, hasta: 1870 }, { desde: 2490, hasta: 2520 }], hs.t).has('host')
+    && !B.fijosDe([{ desde: 80, hasta: 370 }, { desde: 1580, hasta: 1870 }, { desde: 2490, hasta: 2520 }], hs.t).has('juli'),
+  'quien habla en casi todas las batallas (el presentador) nunca es suplente');
   const sinU = B.sinUbicar(llaves, B.ubicarTodas(llaves, h.t, 700), h.t);
   ok(sinU.length === 1 && sinU[0].nombres.join(' vs ') === 'Fio vs Gus' && sinU[0].por.includes('Fio') && sinU[0].por.includes('Gus'),
     'lo que no se ubicó dice por qué: ' + JSON.stringify(sinU));
