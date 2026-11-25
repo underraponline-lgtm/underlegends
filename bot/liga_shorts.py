@@ -167,7 +167,21 @@ def atar(shorts, formas, idx, svs, k_de):
     return atados, dudas
 
 
-def salida(atados, canales, gente, visto):
+#: 🤝 los shorts de un socio que no nombran a nadie de la Liga, por servidor (los más nuevos)
+POR_SERVIDOR = 30
+
+
+def _nombres_sv():
+    """`{sigla: nombre}` de los servidores CONFIRMADOS de la Liga (datos/servidores.json): un ex socio no presta su nombre"""
+    try:
+        S = json.load(io.open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'datos', 'servidores.json'),
+                              encoding='utf-8')).get('servidores') or {}
+    except (OSError, ValueError):
+        return {}
+    return {k: v.get('nombre') or k for k, v in S.items() if isinstance(v, dict) and v.get('confirmado')}
+
+
+def salida(atados, canales, gente, visto, shorts=None, nombres_sv=None):
     """El json de la página: `{t, cs, g: [{k, n, cc, sv, vs: [[vid, canal, [otros], título]…]}]}`. `gente[k]` = la fila
     del pool; `canales` = la lista de `videos_canales.json`."""
     import global_fuente_shorts as GS
@@ -183,7 +197,24 @@ def salida(atados, canales, gente, visto):
         p = gente.get(k) or {}
         g.append({'k': k, 'n': p.get('raw') or k, 'cc': (p.get('cc') or '').lower(), 'sv': p.get('sv') or '', 'vs': vs})
     g.sort(key=lambda x: (-len(x['vs']), x['n'].lower()))
-    return {'t': visto, 'cs': [c.get('nombre') or c['id'] for c in canales], 'g': g}
+    out = {'t': visto, 'cs': [c.get('nombre') or c['id'] for c in canales], 'g': g}
+    # 🤝 LOS QUE NO NOMBRAN A NADIE, A NOMBRE DE SU SERVIDOR (Dlx, 25/11/2026: «Yes», a mostrar los shorts de los socios que no
+    # nombran a nadie de la Liga con el logo y el nombre del servidor). `s`: [[vid, canal, sigla, título]]; `svn`: {sigla: nombre}.
+    # Sólo de servidores confirmados (un ex socio, no), hasta `POR_SERVIDOR` por servidor, lo nuevo primero
+    if shorts:
+        nsv = _nombres_sv() if nombres_sv is None else nombres_sv
+        ya = {sh[0] for sh, _ks in atados}
+        s, cuantos = [], {}
+        for sh in shorts:
+            sv = sh[2] if len(sh) > 2 else ''
+            if sh[0] in ya or sv not in nsv or cuantos.get(sv, 0) >= POR_SERVIDOR:
+                continue
+            cuantos[sv] = cuantos.get(sv, 0) + 1
+            s.append([sh[0], ci.get(sh[3], -1) if len(sh) > 3 else -1, sv, GS.titulo_web(sh[1])])
+        if s:
+            out['s'] = s
+            out['svn'] = {k: nsv[k] for k in cuantos}
+    return out
 
 
 # ── leer los canales ─────────────────────────────────────────────────────────────────────────────────────────────────
@@ -309,8 +340,9 @@ def correr(aplicar=False, red=True, ya=False):
         print('   📱 los shorts de la Liga: hoy ya se leyeron, armo con lo guardado (%d)' % len(shorts))
     formas, idx, svs, k_de, gente = _contexto()
     atados, dudas = atar(shorts, formas, idx, svs, k_de)
-    out = salida(atados, canales, gente, visto)
-    print('   📱 %d shorts guardados · %d atados a alguien · %d persona(s)' % (len(shorts), len(atados), len(out['g'])))
+    out = salida(atados, canales, gente, visto, shorts)
+    print('   📱 %d shorts guardados · %d atados a alguien · %d persona(s) · %d a nombre de su servidor'
+          % (len(shorts), len(atados), len(out['g']), len(out.get('s') or [])))
     nom = {k: (gente.get(k) or {}).get('raw') or k for k in gente}
     if not aplicar:
         for sh, ks in atados[:10]:
@@ -382,6 +414,14 @@ def _self_check():
     casos.append(('la salida: la forma de global.json, con el otro y el título limpio',
                   out['cs'] == ['Canal 1', 'Canal 2'] and o.get('cc') == 'cl' and o.get('n') == 'Oasis'
                   and o.get('vs') == [['v1', 0, ['snow'], 'OASIS LE RESPONDE A SNOW']]))
+    # 🤝 los que no nombran a nadie, a nombre de su servidor: sólo de un socio confirmado (CH ya no lo es)
+    sh2 = sh + [['v10', 'QUÉ NOCHE EN LA FINAL', 'FFA', 'c1'], ['v11', 'LO MEJOR DE LA SEMANA', 'CH', 'c2']]
+    o2 = salida(at, [{'id': 'c1', 'nombre': 'Canal 1'}, {'id': 'c2', 'nombre': 'Canal 2'}], gente, '2026-11-24T12:00:00-05:00',
+                sh2, {'FFA': 'Free for All', 'FVS': 'Freestyle Versus'})
+    s2 = {x[0]: x for x in o2.get('s') or []}
+    casos.append(('los que no nombran a nadie van a nombre de su servidor (confirmado), sin repetir los atados',
+                  'v10' in s2 and s2['v10'][2] == 'FFA' and 'v11' not in s2 and 'v1' not in s2
+                  and o2.get('svn', {}).get('FFA') == 'Free for All'))
     viejo = {'visto': (_ahora_et() - dt.timedelta(days=1)).isoformat()}
     casos.append(('una vez por día: ayer toca, hoy no', toca(viejo) and not toca({'visto': _ahora_et().isoformat()})))
     for que, ok in casos:

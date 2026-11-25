@@ -52,14 +52,19 @@ const L_FUEGO = 'lg:reels-fuego';
 // cuenta). Los de afuera de la Liga, con su clave `g--` (sigo_global.js, 25/11/2026); hasta ahí iban sólo en este
 // navegador (`lg:reels-sigo`), y `migrarReels()` los pasa a la lista una vez
 const limpio2 = (s) => String(s || '').replace(/[^\p{L}\p{N}\s]/gu, '').trim();
-const puestoDe = (g) => (g.liga ? 'Liga' + (g.sv ? ' · ' + g.sv : '') : (g.pos ? '#' + g.pos + ' ' : '') + (GRUPO[g.esc] || ''));
+// 🤝 UN SERVIDOR SOCIO TAMBIÉN PUEDE SER «LA GENTE» DE UN VIDEO (Dlx, 25/11/2026: «Yes», a mostrar los shorts de los socios que
+// no nombran a nadie de la Liga a nombre de su servidor): `{socio: true, sv, n, k: 'sv:<sigla>'}`. Lleva su logo, su página
+// (`#/sv/<sigla>`) y no se sigue (`claveDe()` vacía): seguir es de personas
+const puestoDe = (g) => (g.socio ? 'Servidor socio' : g.liga ? 'Liga' + (g.sv ? ' · ' + g.sv : '') : (g.pos ? '#' + g.pos + ' ' : '') + (GRUPO[g.esc] || ''));
 // adónde lleva su nombre: su perfil de la Liga o su ficha del Ranking global
-const perfilDe = (g) => (g.liga ? '#/r/' + g.lk : '#/global/' + g.k);
+const perfilDe = (g) => (g.socio ? '#/sv/' + encodeURIComponent(g.sv) : g.liga ? '#/r/' + g.lk : '#/global/' + g.k);
 // la clave con la que se lo sigue en la Liga (los de la Liga, y los del global que también juegan acá: `hk`)
-const claveLiga = (g) => (g.liga ? g.lk : g.hk || '');
-const claveDe = (g) => claveLiga(g) || (g.k ? PREFIJO + g.k : '');
+const claveLiga = (g) => (g.socio ? '' : g.liga ? g.lk : g.hk || '');
+const claveDe = (g) => (g.socio ? '' : claveLiga(g) || (g.k ? PREFIJO + g.k : ''));
+/** si se puede seguir (las personas sí; un servidor socio, no) */
+const sigueble = (g) => !!g && !!claveDe(g);
 // quién es, para juntar sus reels (los de la Liga y los del global tienen claves de lugares distintos)
-const idDe = (g) => (g.liga ? 'l:' + g.lk : g.k);
+const idDe = (g) => (g.socio ? g.k : g.liga ? 'l:' + g.lk : g.k);
 
 // 🎬 LOS SHORTS DE LA LIGA, SU DÍA (Dlx, 24/11/2026: «cada short queda 1 día en la página»). Los arma solo el armador de
 // shorts después de cada evento grabado y los deja en R2: `reels/indice.json` (los eventos vigentes) y la `lista.json` de
@@ -119,6 +124,13 @@ function armar(X, D, L) {
         m.set(s[0], { vid: s[0], canal: csl[s[1]] || '', t: s[3] || '', ks: ks.map((k) => 'liga:' + k), gente0: ks.map((k) => porL.get(k)), orden: m.size, deLiga: true });
       }
     }
+    // 🤝 los de los socios que no nombran a nadie: a nombre del canal (su red) y con el logo y la página de su servidor
+    const svn = L.svn || {};
+    for (const s of Array.isArray(L.s) ? L.s : []) {
+      if (!s || m.has(s[0]) || !s[2]) continue;
+      const g = { k: 'sv:' + s[2], sv: s[2], n: csl[s[1]] || svn[s[2]] || s[2], cc: '', esc: 'socio', socio: true, pos: 0 };
+      m.set(s[0], { vid: s[0], canal: csl[s[1]] || svn[s[2]] || '', t: s[3] || '', ks: [g.k], gente0: [g], orden: m.size, deLiga: true });
+    }
   }
   for (const g of X.G) {
     for (const s of g.vs || []) {
@@ -142,7 +154,7 @@ function armar(X, D, L) {
   xs.forEach((r, j) => { r.orden = j; });
   return xs;
 }
-const deLaLiga = (r) => r.gente.some((g) => g.liga);
+const deLaLiga = (r) => r.gente.some((g) => g.liga || g.socio);
 const dePlaza = (r) => r.gente.some((g) => g.esc !== 'pro');
 
 /** el feed en orden: lo no visto primero, sin repetir canal ni persona seguidos, y uno de cada cuatro de las plazas */
@@ -181,6 +193,8 @@ function Poster({ vid, cls, alt = '' }) {
 }
 function Cara({ g, cls, liga }) {
   const [mal, setMal] = useState('');
+  // 🤝 un servidor socio: su logo
+  if (g.socio) return <img className={cls + ' sv'} alt="" src={liga && liga.logo ? liga.logo(g.sv) : ''} />;
   // los de la Liga, con su cara de la Liga (`Cara` de piezas.jsx: su foto o su inicial)
   if (g.liga && liga) return <span className={cls + ' lg'}><CaraLiga liga={liga} k={g.lk} nombre={g.n} cls="rls-cara-lg" /></span>;
   const src = [g.ft, g.fr].find((u) => u && u !== mal) || '';
@@ -434,6 +448,7 @@ function useFeed(liga, inicio) {
   }, []);
   const loSigo = (g) => { const k = claveDe(g); return !!k && sigo.includes(k); };
   const seguir = (g) => {
+    if (!sigueble(g)) return;
     const k = claveDe(g);
     if (k && typeof window.alternarSigo === 'function') { window.alternarSigo(k); setTimeout(() => setSigo(aQuienSigo()), 50); }
   };
@@ -663,13 +678,13 @@ function Voto({ r, clase = '' }) {
 }
 
 // lo que dice cada filtro cuando no tiene nada
-const VACIO = { siguiendo: 'Todavía no sigues a nadie con reels', guardados: 'Todavía no guardaste ningún reel', liga: 'Todavía no hay reels de la Liga',
-  todo: 'Ya viste todos los reels', vistos: 'Todavía no viste ningún reel' };
+const VACIO = { siguiendo: 'Todavía no sigues a nadie con videos', guardados: 'Todavía no guardaste ningún video', liga: 'Todavía no hay videos de la Liga',
+  todo: 'Ya viste todos los videos', vistos: 'Todavía no viste ningún video' };
 const VACIO_P = {
   todo: 'Llegan más cada lunes. Los que viste están en «Vistos».',
-  vistos: 'Un reel pasa a «Vistos» cuando lo miras 3 segundos.',
-  siguiendo: 'Toca la cara de alguien en un reel y «Seguir»: sus reels salen acá.',
-  guardados: 'Toca el marcador en un reel y lo encuentras acá.',
+  vistos: 'Un video pasa a «Vistos» cuando lo miras 3 segundos.',
+  siguiendo: 'Toca la cara de alguien en un video y «Seguir»: sus videos salen acá.',
+  guardados: 'Toca el marcador en un video y lo encuentras acá.',
   liga: 'Salen de los canales de YouTube de los servidores socios.',
 };
 const FILTROS = [['todo', 'Para ti'], ['siguiendo', 'Siguiendo'], ['liga', 'La Liga'], ['pro', 'Pros'], ['plaza', 'Under'], ['guardados', 'Guardados'], ['vistos', 'Vistos']];
@@ -977,7 +992,7 @@ function ReelsCel({ F }) {
           <div className={'rls-vid' + (c ? ' hz' : '')} ref={cajaVideo} style={rect}>
             <div className={'rls-ytcaja' + (corriendo ? '' : ' oculto')}>{yt.marco}</div>
             {corriendo ? null : (
-              <button type="button" className="rls-vid-poster" onClick={reproducir} aria-label={yt.activo ? 'Seguir viendo' : 'Ver el reel'}>
+              <button type="button" className="rls-vid-poster" onClick={reproducir} aria-label={yt.activo ? 'Seguir viendo' : 'Ver el video'}>
                 <Poster vid={r.vid} cls="rls-poster" alt={r.t || nombres} />
                 <span className="rls-play"><Ico n="play" t={40} /></span>
               </button>
@@ -1008,8 +1023,8 @@ function ReelsCel({ F }) {
             <div className="rls-ficha-1">
               <button type="button" className="rls-ficha-n" onClick={() => { pausarMenu(); setHoja('ficha'); }}>
                 <b>{nombres}</b><span>{r.gente.map(puestoDe).join(' · ')}</span></button>
-              <button type="button" className={'rls-perfil' + (F.loSigo(r.gente[0]) ? ' on' : '')} aria-pressed={F.loSigo(r.gente[0])}
-                onClick={() => F.seguir(r.gente[0])}>{F.loSigo(r.gente[0]) ? 'Siguiendo' : 'Seguir'}</button>
+              {sigueble(r.gente[0]) ? <button type="button" className={'rls-perfil' + (F.loSigo(r.gente[0]) ? ' on' : '')} aria-pressed={F.loSigo(r.gente[0])}
+                onClick={() => F.seguir(r.gente[0])}>{F.loSigo(r.gente[0]) ? 'Siguiendo' : 'Seguir'}</button> : null}
             </div>
             <span className="rls-t2">{r.t || nombres}</span>
             <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</span>
@@ -1049,8 +1064,8 @@ function ReelsCel({ F }) {
                       <span><b>{nombre(g)} <Bandera cc={g.cc} cls="rls-flag" /></b>
                         <small>{[g.cc ? nombrePais(g.cc) : '', puestoDe(g) + (g.pos ? ' del Ranking global' : '')].filter(Boolean).join(' · ')}</small></span>
                     </a>
-                    <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
-                      {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button>
+                    {sigueble(g) ? <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
+                      {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button> : null}
                   </div>
                 ))}
                 <a className="rls-bt prim" href={perfilDe(r.gente[0])}>Ver su perfil entero</a>
@@ -1092,6 +1107,7 @@ function useGente(F, nSigo = 12, nRec = 8) {
     const m = new Map();
     for (const r of F.todos) {
       for (const g of r.gente) {
+        if (g.socio) continue;
         const id = idDe(g);
         const x = m.get(id) || { g, n: 0 };
         x.n++;
@@ -1117,7 +1133,7 @@ function CarasGente({ F, style, cuantas }) {
   const xs = [...sigo.map((x) => [x, true]), ...rec.map((x) => [x, false])].slice(0, cuantas);
   if (!xs.length) return null;
   return (
-    <nav className="rls-caras-cel" style={style} aria-label="Gente con reels">
+    <nav className="rls-caras-cel" style={style} aria-label="Gente con videos">
       {xs.map(([x, sigue]) => (
         <button key={idDe(x.g)} type="button" className={'rls-ac' + (ahora.has(idDe(x.g)) ? ' on' : '') + (sigue ? ' sigue' : '')}
           aria-current={ahora.has(idDe(x.g)) || undefined} aria-label={nombre(x.g) + (sigue ? ', la sigues' : '') + ', ' + x.n + ' reels'}
@@ -1170,7 +1186,7 @@ function FilaGente({ F, n, cara = 56 }) {
   if (!todos.length) return null;
   return (
     <div className="rls-gf">
-      <div className="sec-t rls-gf-t"><h2>{sigo.length ? 'Tu gente' : 'Gente con reels'}</h2>
+      <div className="sec-t rls-gf-t"><h2>{sigo.length ? 'Tu gente' : 'Gente con videos'}</h2>
         {pags > 1 ? (
           <span className="rls-gf-fl">
             <button type="button" className="rls-ib" aria-label="Gente anterior" disabled={p === 0} onClick={() => setPag(p - 1)}><Ico n="izq" t={18} /></button>
@@ -1187,7 +1203,7 @@ function FilaGente({ F, n, cara = 56 }) {
           </button>
         ))}
       </div>
-      <p className="rls-gf-ley">{sigo.length ? 'Aro verde: la sigues. Magenta: sale en lo que suena' : 'Toca «Seguir» en un reel y esa persona va primero'}</p>
+      <p className="rls-gf-ley">{sigo.length ? 'Aro verde: la sigues. Magenta: sale en lo que suena' : 'Toca «Seguir» en un video y esa persona va primero'}</p>
     </div>
   );
 }
@@ -1429,7 +1445,7 @@ function ReelsPc({ F }) {
                   <button type="button" className="rls-bt sin" onClick={F.deNuevo}>Volver al primero</button>
                 </div>
               ) : modo !== 'teatro' && !yt.activo ? (
-                <button type="button" className="rls-pc-poster" onClick={reproducir} aria-label="Ver el reel">
+                <button type="button" className="rls-pc-poster" onClick={reproducir} aria-label="Ver el video">
                   <Poster vid={r.vid} cls="rls-poster" alt={r.t || nombres} />
                   <span className="rls-play"><Ico n="play" t={44} /></span>
                 </button>
@@ -1439,7 +1455,7 @@ function ReelsPc({ F }) {
               <button type="button" className="rls-ib caja" aria-label="Anterior (flecha arriba)" onClick={F.anterior}><Ico n="arriba" /></button>
               <button type="button" className="rls-ib caja prim" aria-label="Siguiente (flecha abajo)" onClick={F.siguiente}><Ico n="abajo" /></button>
             </div>
-            {esClip && !M.panel ? null : <aside className="rls-pc-panel" aria-label={esClip ? 'Este video' : 'Este reel'}>
+            {esClip && !M.panel ? null : <aside className="rls-pc-panel" aria-label={esClip ? 'Este video' : 'Este video'}>
               <div className="rls-pc-panel-in" ref={panelIn}>
                 <div className="rls-pc-quien">
                   <span className="rls-caras">{r.gente.slice(0, 3).map((g) => <Cara liga={F.liga} key={g.k} g={g} cls="rls-cara" />)}</span>
@@ -1447,8 +1463,8 @@ function ReelsPc({ F }) {
                     {r.gente.slice(0, 2).map((g) => (
                       <span key={g.k} className="rls-pc-fila">
                         <a className="rls-pc-n" href={perfilDe(g)}><b>{nombre(g)}</b><Bandera cc={g.cc} cls="rls-flag" /><small>{puestoDe(g)}</small></a>
-                        <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
-                          {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button>
+                        {sigueble(g) ? <button type="button" className={'rls-seguir' + (F.loSigo(g) ? ' on' : '')} aria-pressed={F.loSigo(g)} onClick={() => F.seguir(g)}>
+                          {F.loSigo(g) ? 'Siguiendo' : 'Seguir'}</button> : null}
                       </span>
                     ))}
                   </div>

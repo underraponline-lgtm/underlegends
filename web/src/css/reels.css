@@ -396,3 +396,6 @@
 .rls-gf-t .rls-sv.chico button.on{background:#F6F6F6;color:#030304}
 .rls-gf-t .rls-sv.chico + small{margin-left:8px}
 .rls-cl-tx small.visto{color:#A5A5A0;font-style:italic}
+
+/* 🤝 un servidor socio en lugar de una persona (25/11/2026): su logo entero, sobre oscuro */
+[class*="rls-cara"].sv{object-fit:contain;background:#0B0B0C;padding:2px;box-sizing:border-box}
