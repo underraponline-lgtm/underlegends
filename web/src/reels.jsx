@@ -58,6 +58,48 @@ const claveLiga = (g) => (g.liga ? g.lk : g.hk || '');
 const claveDe = (g) => claveLiga(g) || (g.k ? PREFIJO + g.k : '');
 // quién es, para juntar sus reels (los de la Liga y los del global tienen claves de lugares distintos)
 const idDe = (g) => (g.liga ? 'l:' + g.lk : g.k);
+
+// 🎬 LOS SHORTS DE LA LIGA, SU DÍA (Dlx, 24/11/2026: «cada short queda 1 día en la página»). Los arma solo el armador de
+// shorts después de cada evento grabado y los deja en R2: `reels/indice.json` (los eventos vigentes) y la `lista.json` de
+// cada uno (url del mp4, portada, ronda, quiénes, por qué entró, vence = subido + 24 h). Son NUESTROS archivos, no de
+// YouTube: se reproducen con un <video> propio (`useReproductor`) y van primero en «Para ti» y «La Liga» mientras duran.
+// Su id es `ul-<evento>-<n>` (bot/avisos.js REEL_ID lo acepta para medir y votar)
+const R2 = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
+const HOY = new Map();      // id → {mp4, portada, vence}
+let pedidoH = null;
+const bajarHoy = () => (pedidoH = pedidoH || fetch(R2 + '/reels/indice.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : []))
+  .then((ix) => Promise.all((Array.isArray(ix) ? ix : []).filter((e) => e && e.vence > new Date().toISOString().slice(0, 16))
+    .map((e) => fetch(e.lista, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : [])).then((xs) => ({ ev: e.ev, xs })).catch(() => null))))
+  .then((evs) => evs.filter(Boolean)).catch(() => []));
+const RONDA = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', final: 'Final' };
+const normN = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+/** los de hoy como reels del feed: la gente de la Liga si está en el archivo de la Liga, si no una ficha con su nombre */
+function armarHoy(evs, L) {
+  const ahora = new Date().toISOString().slice(0, 16);
+  const porN = new Map(((L && L.g) || []).map((g) => [normN(g.n), g]));
+  const out = [];
+  for (const { ev, xs } of evs) {
+    (xs || []).forEach((x, j) => {
+      if (!x || !x.url || !(x.vence > ahora)) return;
+      const vid = 'ul-' + normN(ev).slice(0, 40) + '-' + (j + 1);
+      HOY.set(vid, { mp4: x.url, portada: x.portada || '', vence: x.vence });
+      const gente = (x.nombres || []).flatMap((n) => String(n).split(' + ')).map((n) => {
+        const g = porN.get(normN(n));
+        return g ? { k: 'liga:' + g.k, lk: g.k, n: g.n, cc: g.cc || '', sv: g.sv || '', esc: 'liga', liga: true, pos: 0 }
+          : { k: 'liga:' + normN(n), lk: normN(n), n, cc: '', sv: x.sv || '', esc: 'liga', liga: true, pos: 0 };
+      });
+      if (!gente.length) return;
+      const t = (RONDA[x.ronda] || x.ronda || '') + ' · ' + (x.evento || '') + ((x.porque || []).length ? ' — ' + x.porque.join(' · ') : '');
+      out.push({ vid, canal: 'Under Legends', t, ks: gente.map((g) => g.k), gente, orden: -1, ronda: -1, deLiga: true, hoy: true, vence: x.vence });
+    });
+  }
+  return out;
+}
+/** «quedan 7 h» hasta que vence (en la hora de quien mira) */
+const quedan = (vence) => {
+  const h = Math.max(0, Math.round((new Date(vence + ':00Z').getTime() - Date.now()) / 3600000));
+  return h <= 1 ? 'queda menos de 1 h' : 'quedan ' + h + ' h';
+};
 const linkDe = (vid) => 'https://underlegends.pages.dev/freestyle-rap/reels/' + vid;
 
 /** todos los shorts, uno por video, con todos los que nombra: los del Ranking global (`/global.json`) y los de los canales de
@@ -127,6 +169,8 @@ function ordenar(xs, vistos, menos, notas) {
 
 /** la miniatura parada (oar2, 1080×1920); si no existe, la ancha */
 function Poster({ vid, cls, alt = '' }) {
+  const h = HOY.get(vid);
+  if (h) return h.portada ? <img className={cls} alt={alt} src={h.portada} decoding="async" /> : <span className={cls} />;
   return (
     <img className={cls} alt={alt} src={'https://i.ytimg.com/vi/' + vid + '/oar2.jpg'} decoding="async"
       onLoad={(e) => { if (e.currentTarget.naturalWidth <= 120 && !e.currentTarget.dataset.atras) { e.currentTarget.dataset.atras = '1'; e.currentTarget.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg'; } }}
@@ -254,20 +298,38 @@ function useReproductor({ alTerminar, alPausar, alCorrer }) {
     const w = marco.current && marco.current.contentWindow;
     if (w) w.postMessage(JSON.stringify({ event: 'listening', id: 'rls', channel: 'widget' }), ORIGEN_YT);
   };
-  const src = vid ? ORIGEN_YT + '/embed/' + encodeURIComponent(vid) + '?enablejsapi=1&autoplay=1&playsinline=1&rel=0&modestbranding=1' +
+  // 🎬 un short NUESTRO (`HOY`): un <video> en el mismo lugar, con los mismos avisos (terminó, pausa, corre) y la misma medida
+  const vidRef = useRef(null);
+  const propio = !!(vid && HOY.has(vid));
+  const src = vid && !propio ? ORIGEN_YT + '/embed/' + encodeURIComponent(vid) + '?enablejsapi=1&autoplay=1&playsinline=1&rel=0&modestbranding=1' +
     (nacioMudo ? '&mute=1' : '') + '&origin=' + encodeURIComponent(location.origin) : '';
+  const corre = () => { const m = mira.current; if (!m.desde) m.desde = Date.now(); cb.current.alCorrer(); };
+  const para = (fin) => {
+    const m = mira.current;
+    if (m.desde) { m.seg += (Date.now() - m.desde) / 1000; m.desde = 0; }
+    if (fin) { m.fin = true; cb.current.alTerminar(); } else cb.current.alPausar();
+  };
   return {
     activo: !!vid, mudo,
-    marco: vid ? <iframe ref={marco} className="rls-yt" src={src} title="Reproductor de YouTube" onLoad={alCargar}
-      allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen /> : null,
+    marco: !vid ? null : propio
+      ? <video ref={vidRef} key={vid} className="rls-yt rls-propio" src={HOY.get(vid).mp4} poster={HOY.get(vid).portada || undefined}
+          autoPlay playsInline muted={mudo} onPlay={corre} onPause={(e) => { if (!e.currentTarget.ended) para(false); }}
+          onEnded={() => para(true)} />
+      : <iframe ref={marco} className="rls-yt" src={src} title="Reproductor de YouTube" onLoad={alCargar}
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />,
     // la primera vez crea el reproductor (`solo`: sin que nadie tocara nada, así que mudo); después se le cambia el video
     poner: (v, solo = false) => {
       cerrarMira();
       mira.current = { vid: v, desde: 0, seg: 0, fin: false };
-      if (!vid) { if (solo) { setNacioMudo(true); setMudo(true); } setVid(v); } else manda('loadVideoById', [v]);
+      if (!vid && solo) { setNacioMudo(true); setMudo(true); }
+      if (HOY.has(v)) { setVid(v); return; }
+      // de uno nuestro (o de nada) a uno de YouTube: el iframe nace de nuevo y hay que esperar su «listo»
+      if (!vid || propio) { listo.current = false; cola.current = []; setVid(v); return; }
+      manda('loadVideoById', [v]);
     },
-    play: () => manda('playVideo'), pausa: () => manda('pauseVideo'),
-    sonido: (on) => { manda(on ? 'unMute' : 'mute'); setMudo(!on); },
+    play: () => (propio ? vidRef.current && vidRef.current.play().catch(() => {}) : manda('playVideo')),
+    pausa: () => (propio ? vidRef.current && vidRef.current.pause() : manda('pauseVideo')),
+    sonido: (on) => { if (propio) { if (vidRef.current) vidRef.current.muted = !on; } else manda(on ? 'unMute' : 'mute'); setMudo(!on); },
   };
 }
 
@@ -282,15 +344,17 @@ function useFeed(liga, inicio) {
   const [L, setL] = useState(null);
   const [notas, setNotas] = useState(null);
   const [listoL, setListoL] = useState(false);
+  const [H, setH] = useState(null);
   useEffect(() => {
     let vivo = true;
-    bajarLiga().then((d) => { if (vivo) { setL(d); setListoL(true); } });
+    // se espera también a los de hoy (dos archivos chicos de R2): si llegaran después, el feed se reordenaría
+    Promise.all([bajarLiga(), bajarHoy()]).then(([d, h]) => { if (vivo) { setL(d); setH(h); setListoL(true); } });
     bajarNotas().then((n) => { if (vivo) setNotas(n); });
     return () => { vivo = false; };
   }, []);
   const X = useMemo(() => (D ? preparar(D, liga) : null), [D, liga]);
   // se espera a la Liga (es un archivo chico): si llegara después, el feed se reordenaría mientras lo miras
-  const todos = useMemo(() => (X && listoL ? armar(X, D, L) : []), [X, D, L, listoL]);
+  const todos = useMemo(() => (X && listoL ? [...armarHoy(H || [], L), ...armar(X, D, L)] : []), [X, D, L, H, listoL]);
   // ⭐ a quién sigues: los de la Liga (`lg:sigo`, el de siempre) y los del global (en este navegador)
   const [sigo, setSigo] = useState(() => aQuienSigo());
   useEffect(() => {
@@ -317,6 +381,12 @@ function useFeed(liga, inicio) {
       : filtro === 'siguiendo' ? todos.filter((r) => r.gente.some(loSigo))
       : filtro === 'guardados' ? todos.filter((r) => guardo.includes(r.vid)) : todos;
     const o = ordenar(base, vistos0.current, menos, notas);
+    // 🎬 los de la Liga de HOY, primero en «Para ti» y en «La Liga» (los no vistos; los vistos quedan donde caen)
+    if (filtro === 'todo' || filtro === 'liga') {
+      const vistosH = new Set(vistos0.current);
+      const hoy = o.filter((r) => r.hoy && !vistosH.has(r.vid));
+      if (hoy.length) { const resto = o.filter((r) => !hoy.includes(r)); o.length = 0; o.push(...hoy, ...resto); }
+    }
     // un link a un reel (`#/reels/<id>`) empieza por ese
     const j = inicio ? o.findIndex((r) => r.vid === inicio) : -1;
     if (j > 0) o.unshift(o.splice(j, 1)[0]);
@@ -342,9 +412,11 @@ function useFeed(liga, inicio) {
   // 🖼️ las miniaturas de los que siguen (hasta 5 adelante), bajadas antes de llegar: pasar de reel no espera la imagen
   useEffect(() => {
     for (const r of lista.slice(i, i + VER)) {
+      const h = HOY.get(r.vid);
+      if (h && !h.portada) continue;
       const im = new Image();
       im.decoding = 'async';
-      im.src = 'https://i.ytimg.com/vi/' + r.vid + '/oar2.jpg';
+      im.src = h ? h.portada : 'https://i.ytimg.com/vi/' + r.vid + '/oar2.jpg';
     }
   }, [lista, i]);
   useEffect(() => {
@@ -725,7 +797,7 @@ function ReelsCel({ F }) {
                 onClick={() => F.seguir(r.gente[0])}>{F.loSigo(r.gente[0]) ? 'Siguiendo' : 'Seguir'}</button>
             </div>
             <span className="rls-t2">{r.t || nombres}</span>
-            <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</span>
+            <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</span>
           </div>
           {Acciones}
           {G.modo === 'lado' && G.vx >= CEL.col + CEL.gap + CEL.borde ? (
@@ -780,7 +852,7 @@ function ReelsCel({ F }) {
                   avisa('Vas a ver menos de ' + canal, () => { F.nomenos(canal); F.ir(desde); });
                 }}><Ico n="no" t={20} />No me interesa: menos de {r.canal}</button>
                 <a className="rls-op" href="#/ranking/global"><Ico n="persona" t={20} />Ver dónde están en el Ranking global</a>
-                <a className="rls-op" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={20} />Verlo en YouTube</a>
+                {r.hoy ? null : <a className="rls-op" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={20} />Verlo en YouTube</a>}
               </>
             )}
           </div>
@@ -1044,7 +1116,7 @@ function ReelsPc({ F }) {
                   </div>
                 </div>
                 <p className="rls-pc-t">{r.t || nombres}</p>
-                <p className="rls-canal">{r.canal}{deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</p>
+                <p className="rls-canal">{r.canal}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</p>
                 <div className="rls-pc-acc">
                   <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} title="Tecla F" onClick={F.darFuego}>
                     <Ico n="fuego" lleno={F.ardido} t={24} /><span>Fuego</span></button>
@@ -1059,7 +1131,7 @@ function ReelsPc({ F }) {
                   <button type="button" className="rls-btc" onClick={() => {
                     if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = perfilDe(r.gente[0]);
                   }}><Ico n="batalla" t={18} />{batalla ? 'Batalla' : 'Batallas'}</button>
-                  <a className="rls-btc" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>
+                  {r.hoy ? null : <a className="rls-btc" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>}
                   <button type="button" className="rls-btc" onClick={() => {
                     const canal = r.canal; const desdeI = F.i;
                     F.menos(canal); F.siguiente();

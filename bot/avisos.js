@@ -2471,7 +2471,9 @@ export const CLICS_MAX_K = 1500;
  *   no dejan guardar ni derivar métricas de su API, y acá no se le pregunta nada; se cuenta lo que se vio en la página.
  *   Y mirar nunca da nada: ni XP, ni puntos, ni Tareas.
  */
-export const REEL_ID = /^[A-Za-z0-9_-]{11}$/;
+// 🎬 un id de YouTube (11) o uno de los shorts de la Liga que arma el armador de shorts (`ul-<evento>-<n>`, 25/11/2026: su día
+// en Reels, con su Fuego, su voto y su medida como los de YouTube)
+export const REEL_ID = /^(?:[A-Za-z0-9_-]{11}|ul-[a-z0-9-]{3,60})$/;
 export const REELS_MIN_VOTOS = 20;
 /** cuántas personas distintas se pueden votar en un video: una batalla son dos, un triangular tres, un 2 vs 2 cuatro */
 export const REELS_MAX_K = 4;
