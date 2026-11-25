@@ -1830,7 +1830,7 @@
    "n": 659,
    "sv": "LKR",
    "vence": "2026-11-25T02:50:43+00:00",
-   "vencido": false
+   "vencido": true
   },
   "LARRIX": {
    "avisado": "2026-11-12",
@@ -2627,7 +2627,7 @@
    "n": 659,
    "sv": "LKR",
    "vence": "2026-11-25T02:50:43+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Pipe": {
    "avisado": "2026-10-23",
