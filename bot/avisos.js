@@ -4928,7 +4928,7 @@ export function creadaEn(id) {
 // 📱 LO VISTO O HECHO DE LA PÁGINA QUE SIGUE A TU CUENTA (23/11/2026): las claves de `localStorage` que se guardan por
 // cuenta (web/src/sync_cuenta.js tiene la misma lista y cómo se junta cada una) y el tope del total
 export const UI_CLAVES = ['lg:tuto', 'lg:pase-visto', 'lg:barra-pase', 'lg:inv-visto', 'lg:pub-visto', 'lg:ref_visto',
-  'lg:racha-fest', 'lg:aviso-cerrado', 'lg:db-logs', 'lg:db-pospuesto'];
+  'lg:racha-fest', 'lg:aviso-cerrado', 'lg:db-logs', 'lg:db-pospuesto', 'lg:reels-vistos'];
 export const UI_MAX = 16000;
 /** `{clave: texto}` con claves de `UI_CLAVES` y textos: el JSON a guardar, o null */
 export function validarUi(ui) {

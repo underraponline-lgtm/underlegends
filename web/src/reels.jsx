@@ -451,6 +451,22 @@ function useFeed(liga, inicio) {
     return () => window.removeEventListener('lg:reels-visto', f);
   }, []);
   const yaVisto = (vid) => vistos0.current.includes(vid) || vistosAhora.includes(vid);
+  // 📱 lo visto en tus otros dispositivos (`lg:ui`, sync_cuenta.js): llega unos segundos después de abrir. Si todavía no
+  // pasaste del primero (ni pusiste un video), se vuelve a leer y el feed se arma sin lo que viste allá; si ya empezaste,
+  // vale desde la próxima vez (no se reordena lo que estás mirando)
+  const [vistosVer, setVistosVer] = useState(0);
+  const quieto = useRef(true);
+  useEffect(() => {
+    const f = () => {
+      if (!quieto.current) return;
+      const xs = ls.json(L_VISTOS, []);
+      if (xs.length === vistos0.current.length && xs.every((v, j) => v === vistos0.current[j])) return;
+      vistos0.current = xs;
+      setVistosVer((n) => n + 1);
+    };
+    window.addEventListener('lg:ui', f);
+    return () => window.removeEventListener('lg:ui', f);
+  }, []);
   const claveG = filtro === 'guardados' ? guardo.join(',') : filtro === 'siguiendo' ? sigo.join(',') : '';
   const lista = useMemo(() => {
     const base = filtro === 'pro' ? todos.filter((r) => !dePlaza(r)) : filtro === 'plaza' ? todos.filter((r) => dePlaza(r) && !deLaLiga(r))
@@ -480,7 +496,7 @@ function useFeed(liga, inicio) {
     return o;
     // `menos` cambia el orden sólo al cambiar de filtro: marcar «no me interesa» no te mueve el reel que estás viendo
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todos, filtro, inicio, claveG, notas ? 1 : 0]);
+  }, [todos, filtro, inicio, claveG, notas ? 1 : 0, vistosVer]);
   const [i, setI] = useState(0);
   const [cargados, setCargados] = useState(VER);
   const [fin, setFin] = useState(false);
@@ -532,7 +548,7 @@ function useFeed(liga, inicio) {
     }
     const v0 = new Set(vistos0.current);
     return todosClips.filter((c) => (c.seg > corte) === largos && !v0.has(c.vid));
-  }, [todosClips, modoClips, corte]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [todosClips, modoClips, corte, vistosVer]); // eslint-disable-line react-hooks/exhaustive-deps
   const hayLargos = todosClips.some((c) => c.seg > corte);
   const hayVistosC = todosClips.some((c) => vistos0.current.includes(c.vid));
   const [clip, setClip] = useState(null);
@@ -556,7 +572,7 @@ function useFeed(liga, inicio) {
     }
     if (c) { if (c.seg && modoClips !== 'vistos') setModoClips(c.seg > corte ? 'largos' : 'cortos'); setClip(c); }
   }, [inicio, X, C, listoL, todos, todosClips]); // eslint-disable-line react-hooks/exhaustive-deps
-  const ir = (j) => { const k = Math.max(0, Math.min(lista.length - 1, j)); setClip(null); setDir(k >= i ? 1 : -1); setFin(false); setI(k); };
+  const ir = (j) => { quieto.current = false; const k = Math.max(0, Math.min(lista.length - 1, j)); setClip(null); setDir(k >= i ? 1 : -1); setFin(false); setI(k); };
   const siguiente = () => { setClip(null); if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
   // 👤 su próximo reel (el de la columna de la izquierda en la compu, como los canales de Twitch): el siguiente en la lista
   // de ahora; si ya pasaron todos, el primero; si este filtro no lo tiene, «Para ti», que tiene a todos
@@ -579,7 +595,7 @@ function useFeed(liga, inicio) {
     liga, filtros, loSigo, seguir, todos, irA, dir,
     // 🎞️ los horizontales: la lista, el que corre (`clip`) y lo que se ve ahora (`ahora`: el horizontal o el short)
     clips, clip, ahora: clip || cur, modoClips, setModoClips, hayLargos, hayVistosC, yaVisto,
-    verClip: (c) => { setFin(false); setDir(1); setClip(c); },
+    verClip: (c) => { quieto.current = false; setFin(false); setDir(1); setClip(c); },
     soltarClip: () => setClip(null),
     anterior: () => (clip ? setClip(null) : fin ? setFin(false) : ir(i - 1)),
     deNuevo: () => ir(0),

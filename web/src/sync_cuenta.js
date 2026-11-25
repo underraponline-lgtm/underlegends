@@ -37,6 +37,17 @@ const unionLista = (tope) => (a, b) => {
   if (!Array.isArray(B)) return a;
   return JSON.stringify([...new Set(A.concat(B))].slice(0, tope));
 };
+// 👁️ una lista EN ORDEN DE CUÁNDO (lo más nuevo al final, como `lg:reels-vistos`): las dos juntas, sin repetir, con lo de este
+// navegador como lo más reciente, y el tope cortando lo más viejo
+const unionReciente = (tope) => (a, b) => {
+  const A = js(a), B = js(b);
+  if (!Array.isArray(A)) return b;
+  if (!Array.isArray(B)) return a;
+  const vistos = new Set();
+  const out = [];
+  for (const x of B.concat(A).reverse()) if (!vistos.has(x)) { vistos.add(x); out.push(x); }
+  return JSON.stringify(out.reverse().slice(-tope));
+};
 // {clave: algo}: las dos juntas; si las dos la tienen, la de este navegador
 function unionObj(a, b) {
   const A = js(a), B = js(b);
@@ -81,9 +92,15 @@ export const REGLAS = {
   'lg:aviso-cerrado': (a, b) => (hastaDe(a) >= hastaDe(b) ? a : b),
   'lg:inv-visto': unionLista(1500),
   'lg:db-pospuesto': unionObj,
+  // 🎬 los reels y videos vistos (25/11/2026, Dlx: «lo visto, que no me aparezca», y a «¿que siga a tu cuenta?»: «Sí,
+  // hazlo»). La última: si no entra todo en `UI_MAX`, es la primera que se recorta (ver `RECORTABLE`)
+  'lg:reels-vistos': unionReciente(1500),
   'lg:db-logs': unionLista(400),
 };
 const UI_MAX = 15500;
+// 🎬 las listas que, para entrar, suben sólo lo más nuevo (están en orden: lo más nuevo al final). Los vistos de Reels pueden
+// ser 1500 en el navegador (~21 mil letras) y no entrarían nunca enteros: suben los últimos que entren, hasta este tope
+const RECORTABLE = { 'lg:reels-vistos': 400 };
 
 /** Lo de este navegador y lo de la cuenta, juntos: `{clave: texto}` (el texto tal cual va en localStorage) */
 export function juntar(local, cuenta) {
@@ -109,9 +126,20 @@ function paraSubir(ui) {
   let largo = 2;
   for (const k of Object.keys(REGLAS)) {
     if (ui[k] == null) continue;
-    const n = JSON.stringify(k).length + JSON.stringify(ui[k]).length + 2;
+    let v = ui[k];
+    const tam = (x) => JSON.stringify(k).length + JSON.stringify(x).length + 2;
+    if (RECORTABLE[k]) {
+      const xs = js(v);
+      if (Array.isArray(xs)) {
+        let ys = xs.slice(-RECORTABLE[k]);
+        while (ys.length && largo + tam(JSON.stringify(ys)) > UI_MAX) ys = ys.slice(Math.ceil(ys.length / 4));
+        if (!ys.length) continue;
+        v = JSON.stringify(ys);
+      }
+    }
+    const n = tam(v);
     if (largo + n > UI_MAX) continue;
-    out[k] = ui[k];
+    out[k] = v;
     largo += n;
   }
   return out;
