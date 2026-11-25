@@ -5960,8 +5960,8 @@ const ok = (cond, que, det) => {
             'los fondos del día: a las 23:25 UTC, dos, una sola vez por día', JSON.stringify({ antes, r1, r2, st }));
           falla = true;
           const r3 = await o.fondosIA(Date.UTC(2026, 10, 26, 23, 30));
-          ok(r3 && r3.every((h) => h.error) && o.leer('fondos_ia').i === 2 * A.FIA_POR_DIA && r3[0].nombre === A.FIA_ESCENAS[A.FIA_POR_DIA][0],
-            'al día siguiente siguen las escenas que tocan, y sin cuota queda el error sin romper nada', JSON.stringify(r3));
+          ok(r3 && r3.every((h) => h.error) && o.leer('fondos_ia').i === A.FIA_POR_DIA && r3[0].nombre === A.FIA_ESCENAS[A.FIA_POR_DIA][0],
+            'al día siguiente siguen las escenas que tocan, y sin cuota queda el error sin romper nada ni comerse esas escenas', JSON.stringify(r3));
         } finally { globalThis.fetch = fetch0; delete o.env.AI; delete o.env.CARTAS; }
       }
     }

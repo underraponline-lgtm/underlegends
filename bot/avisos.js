@@ -11174,7 +11174,8 @@ export class Avisos {
       } catch (e) { hechas.push({ dia, nombre, error: String(e).slice(0, 160) }); }
     }
     const lista = (Array.isArray(st.lista) ? st.lista : []).concat(hechas.filter((h) => h.url)).slice(-60);
-    this.guardar('fondos_ia', { dia, i: i0 + FIA_POR_DIA, t: ahora, lista, ultimas: hechas });
+    // la rueda avanza sólo con las que salieron: un día sin cuota no se come esas escenas (25/11, el primero, sin cuota)
+    this.guardar('fondos_ia', { dia, i: i0 + hechas.filter((h) => h.url).length, t: ahora, lista, ultimas: hechas });
     const ok = hechas.filter((h) => h.url);
     if (ok.length && this.env.DISCORD_TOKEN) {
       try {
