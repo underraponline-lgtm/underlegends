@@ -153,7 +153,9 @@ export function AvisoVersion({ pagina }) {
     const t = setInterval(() => setK((x) => (x + 1) % items.length), PASO);
     return () => clearInterval(t);
   }, [c && c.version, items.length]); // eslint-disable-line react-hooks/exhaustive-deps
-  if (!c || pagina === 'cambios' || quiereTutorial()) return null;
+  // 🎬 en Reels espera: cae encima del reproductor de YouTube, y sus reglas no dejan poner nada nuestro encima (medido a
+  // 1024 × 768, 25/11/2026: tapaba la mitad del video). No se marca como visto: sale en la página siguiente
+  if (!c || pagina === 'cambios' || pagina === 'reels' || quiereTutorial()) return null;
   const visto = leerVista();
   if (cerrado === c.version || (visto && !nuevaQue(c.version, visto))) return null;
   const recargar = alAbrir && nuevaQue(c.version, alAbrir);

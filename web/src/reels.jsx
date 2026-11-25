@@ -197,6 +197,8 @@ const I = {
   play: <path d="M8 5v14l11-7z" />,
   arriba: <path d="m18 15-6-6-6 6" />,
   abajo: <path d="m6 9 6 6 6-6" />,
+  izq: <path d="m15 6-6 6 6 6" />,
+  der: <path d="m9 6 6 6-6 6" />,
   sonido: <><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12" /></>,
   mudo: <><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M23 9l-6 6M17 9l6 6" /></>,
   copiar: <path d="M9 9h11v11H9zM5 15V4h11" />,
@@ -338,6 +340,36 @@ let pedidoL = null;
 const bajarLiga = () => (pedidoL = pedidoL || fetch('/liga_shorts.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
 let pedidoN = null;
 const bajarNotas = () => (pedidoN = pedidoN || fetch('/api/avisos/reels-stats').then((r) => (r.ok ? r.json() : null)).then((j) => (j && j.v) || null).catch(() => null));
+// 🎞️ los videos horizontales cortos (25/11/2026, bot/global_fuente_clips.py): [id, canal, [claves que nombra], título, segundos]
+let pedidoC = null;
+const bajarClips = () => (pedidoC = pedidoC || fetch('/global_clips.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+
+/** «6:44» */
+export const mmss = (s) => Math.floor((s || 0) / 60) + ':' + String(Math.round(s || 0) % 60).padStart(2, '0');
+/** el título de un video sin el evento: «CABRERA vs RC - Octavos | Red Bull Batalla México 2026» → «CABRERA vs RC» y «Octavos».
+ *  Lo que dice el título y no las claves atadas: «RC» tiene dos letras y no se ata a nadie, pero el video es contra él */
+export function corto(t) {
+  const pz = String(t || '').split(/\s+[-–|:]\s+|\s*\|\s*|:\s+/).map((x) => x.trim()).filter(Boolean);
+  return { t: pz[0] || '', r: pz[1] && pz[1].length < 28 && pz[1] !== pz[0] ? pz[1] : '' };
+}
+
+/**
+ * 🎞️ EL ORDEN DE LOS VIDEOS HORIZONTALES: primero los de la gente que sigues, después todos, y nunca dos seguidos del mismo
+ * canal (vienen del más nuevo al más viejo, y en la primera lectura los 18 de Red Bull iban juntos). Se calcula UNA vez por
+ * lista y por a quién sigues: la columna no se reacomoda mientras miras (la crítica de la maqueta: en la B la grilla se
+ * reordenaba bajo el cursor)
+ */
+export function ordenarClips(xs, loSigo) {
+  const mio = xs.filter((c) => c.gente.some(loSigo));
+  const ya = new Set(mio.map((c) => c.vid));
+  const resto = xs.filter((c) => !ya.has(c.vid));
+  const canales = new Map();
+  for (const c of resto) { if (!canales.has(c.canal)) canales.set(c.canal, []); canales.get(c.canal).push(c); }
+  const vueltas = [];
+  const colas = [...canales.values()];
+  while (colas.some((q) => q.length)) for (const q of colas) if (q.length) vueltas.push(q.shift());
+  return mio.concat(vueltas);
+}
 
 function useFeed(liga, inicio) {
   const [D, mal, reintentar] = useGlobal();
@@ -345,11 +377,13 @@ function useFeed(liga, inicio) {
   const [notas, setNotas] = useState(null);
   const [listoL, setListoL] = useState(false);
   const [H, setH] = useState(null);
+  const [C, setC] = useState(null);
   useEffect(() => {
     let vivo = true;
     // se espera también a los de hoy (dos archivos chicos de R2): si llegaran después, el feed se reordenaría
     Promise.all([bajarLiga(), bajarHoy()]).then(([d, h]) => { if (vivo) { setL(d); setH(h); setListoL(true); } });
     bajarNotas().then((n) => { if (vivo) setNotas(n); });
+    bajarClips().then((c) => { if (vivo) setC(c); });
     return () => { vivo = false; };
   }, []);
   const X = useMemo(() => (D ? preparar(D, liga) : null), [D, liga]);
@@ -427,8 +461,20 @@ function useFeed(liga, inicio) {
   }, [cur]);
   // ↕ hacia dónde se pasó (1 = el siguiente, −1 = el anterior): las animaciones entran desde ese lado (8.16)
   const [dir, setDir] = useState(1);
-  const ir = (j) => { const k = Math.max(0, Math.min(lista.length - 1, j)); setDir(k >= i ? 1 : -1); setFin(false); setI(k); };
-  const siguiente = () => { if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
+  // 🎞️ EL VIDEO HORIZONTAL QUE CORRE (25/11/2026, Dlx eligió la A: «La cartelera»). Corre EN EL CENTRO, en el mismo
+  // reproductor: mientras hay uno, el centro va en 16:9; ↓, ↑ o que termine lo sueltan y vuelve el vertical (↓ y el final,
+  // con el short siguiente; ↑, con el que estabas viendo)
+  const sigoClave = sigo.join(',');
+  const clips = useMemo(() => {
+    if (!X || !C || !Array.isArray(C.c)) return [];
+    const cs = C.cs || [];
+    const xs = C.c.map(([vid, ci, ks, t, seg]) => ({ vid, canal: cs[ci] || '', t: t || '', seg: seg || 0, clip: true,
+      ks: ks || [], gente: (ks || []).map((k) => X.porK.get(k)).filter(Boolean) })).filter((c) => c.gente.length);
+    return ordenarClips(xs, loSigo);
+  }, [X, C, sigoClave]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [clip, setClip] = useState(null);
+  const ir = (j) => { const k = Math.max(0, Math.min(lista.length - 1, j)); setClip(null); setDir(k >= i ? 1 : -1); setFin(false); setI(k); };
+  const siguiente = () => { setClip(null); if (i + 1 >= lista.length) setFin(true); else ir(i + 1); };
   // 👤 su próximo reel (el de la columna de la izquierda en la compu, como los canales de Twitch): el siguiente en la lista
   // de ahora; si ya pasaron todos, el primero; si este filtro no lo tiene, «Para ti», que tiene a todos
   const irA = (g) => {
@@ -447,12 +493,16 @@ function useFeed(liga, inicio) {
   return {
     D, X: X && listoL ? X : null, mal, reintentar, lista, i, cur, fin, cargados, filtro, setFiltro, ir, siguiente, temp: String((liga && liga.temp) || '').toUpperCase(),
     liga, filtros, loSigo, seguir, todos, irA, dir,
-    anterior: () => (fin ? setFin(false) : ir(i - 1)),
+    // 🎞️ los horizontales: la lista, el que corre (`clip`) y lo que se ve ahora (`ahora`: el horizontal o el short)
+    clips, clip, ahora: clip || cur,
+    verClip: (c) => { setFin(false); setDir(1); setClip(c); },
+    soltarClip: () => setClip(null),
+    anterior: () => (clip ? setClip(null) : fin ? setFin(false) : ir(i - 1)),
     deNuevo: () => ir(0),
-    guardado: !!(cur && guardo.includes(cur.vid)), hayGuardados: guardo.length > 0,
-    guardar: () => cur && conmuta(guardo, setGuardo, L_GUARDO, cur.vid).includes(cur.vid),
-    ardido: !!(cur && fuego.includes(cur.vid)),
-    darFuego: () => cur && conmuta(fuego, setFuego, L_FUEGO, cur.vid),
+    guardado: !!(cur && !clip && guardo.includes(cur.vid)), hayGuardados: guardo.length > 0,
+    guardar: () => cur && !clip && conmuta(guardo, setGuardo, L_GUARDO, cur.vid).includes(cur.vid),
+    ardido: !!((clip || cur) && fuego.includes((clip || cur).vid)),
+    darFuego: () => (clip || cur) && conmuta(fuego, setFuego, L_FUEGO, (clip || cur).vid),
     menos: (canal) => { const nx = [...menos.filter((x) => x !== canal), canal]; setMenos(nx); ls.set(L_MENOS, nx); },
     nomenos: (canal) => { const nx = menos.filter((x) => x !== canal); setMenos(nx); ls.set(L_MENOS, nx); },
   };
@@ -558,13 +608,33 @@ export function columnas(ancho, alto) {
   const lado = Math.floor((ancho - (2 * C.fina + vw(alto) + 4 * C.hueco)) / 2);
   if (lado >= C.minLado) {
     const l = Math.min(lado, C.maxLado);
-    return { alto, gente: true, cols: l + 'px ' + C.fina + 'px auto ' + C.fina + 'px ' + l + 'px' };
+    return { alto, gente: true, panel: true, lado: l, cols: l + 'px ' + C.fina + 'px auto ' + C.fina + 'px ' + l + 'px' };
   }
   let a = alto;
   const sobra = (x) => ancho - (2 * C.fina + vw(x) + 3 * C.hueco);
   if (sobra(a) < C.minPanel) a = Math.max(300, Math.floor(((ancho - 2 * C.fina - 3 * C.hueco - C.minPanel - 4) * 16) / 9));
   const panel = Math.max(C.minPanel, Math.min(C.maxPanel, sobra(a)));
-  return { alto: a, gente: false, cols: C.fina + 'px auto ' + C.fina + 'px ' + panel + 'px' };
+  return { alto: a, gente: false, panel: true, lado: 0, cols: C.fina + 'px auto ' + C.fina + 'px ' + panel + 'px' };
+}
+
+/** lo que va debajo del video horizontal: el título (dos renglones), la ronda y el canal, y «Después vuelven los shorts» */
+const PC_FICHA_H = 190;
+/**
+ * 🎞️ LAS COLUMNAS CON UN VIDEO HORIZONTAL CORRIENDO (25/11/2026, la A). El centro pasa a 16:9 y, para que el video no quede
+ * del ancho de un short, los dos costados bajan a su mínimo (300) y el centro toma lo demás, sin pasarse del alto (debajo va
+ * su ficha). Si así el video quedara de menos de 480 de ancho (tablet acostada, ~1024–1180), se va el panel: lista · video ·
+ * flechas, y las acciones van debajo del video. Las dos de afuera siguen iguales, así el video queda en el medio
+ */
+export function columnasH(ancho, alto) {
+  const C = PC_COL;
+  const max16 = Math.max(320, Math.floor(((alto - PC_FICHA_H) * 16) / 9));
+  let centro = Math.min(ancho - 2 * C.minPanel - 2 * C.fina - 4 * C.hueco, max16);
+  if (centro >= 480) {
+    const lado = Math.min(C.maxLado, Math.floor((ancho - centro - 2 * C.fina - 4 * C.hueco) / 2));
+    return { alto, gente: true, panel: true, lado, centro, cols: lado + 'px ' + C.fina + 'px ' + centro + 'px ' + C.fina + 'px ' + lado + 'px' };
+  }
+  centro = Math.max(320, Math.min(ancho - C.minPanel - C.fina - 2 * C.hueco, max16));
+  return { alto, gente: true, panel: false, lado: C.minPanel, centro, cols: C.minPanel + 'px ' + centro + 'px ' + C.fina + 'px' };
 }
 
 /** las medidas fijas del celular: la barra de arriba, el progreso, la ficha, la fila o la columna de acciones */
@@ -622,9 +692,12 @@ function ReelsCel({ F }) {
   const cambiando = useRef(false);
   const reloj = useRef(0);
   useEffect(() => () => clearTimeout(reloj.current), []);
+  // 🎞️ con un horizontal («Videos») el reproductor NO se esconde al pausar: todo lo nuestro va debajo, nada encima
+  const enClip = useRef(false);
+  enClip.current = !!F.clip;
   const yt = useReproductor({
     alTerminar: () => { cambiando.current = true; F.siguiente(); },
-    alPausar: () => { if (!cambiando.current) setModo('menu'); },
+    alPausar: () => { if (!cambiando.current && !enClip.current) setModo('menu'); },
     alCorrer: () => { cambiando.current = false; setModo('teatro'); },
   });
   // la barra de abajo de la página queda a la vista: el escenario termina donde ella empieza
@@ -651,26 +724,26 @@ function ReelsCel({ F }) {
   // al cambiar de reel con el reproductor creado, se carga ahí mismo
   const ultimo = useRef('');
   useEffect(() => {
-    if (!F.cur || !yt.activo || F.cur.vid === ultimo.current) return;
-    ultimo.current = F.cur.vid;
+    if (!F.ahora || !yt.activo || F.ahora.vid === ultimo.current) return;
+    ultimo.current = F.ahora.vid;
     cambiando.current = true;
-    yt.poner(F.cur.vid);
+    yt.poner(F.ahora.vid);
     setModo('teatro');
     setCopiado(false);
-  }, [F.cur, yt.activo]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [F.ahora, yt.activo]); // eslint-disable-line react-hooks/exhaustive-deps
   // ▶ solo al abrir la página (una vez): el primero corre mudo
   const arranco = useRef(false);
   useEffect(() => {
-    if (arranco.current || !F.cur || yt.activo) return;
+    if (arranco.current || !F.ahora || yt.activo) return;
     arranco.current = true;
-    ultimo.current = F.cur.vid;
-    yt.poner(F.cur.vid, true);
+    ultimo.current = F.ahora.vid;
+    yt.poner(F.ahora.vid, !F.clip);
     setModo('teatro');
-  }, [F.cur]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [F.ahora]); // eslint-disable-line react-hooks/exhaustive-deps
   const reproducir = () => {
-    if (!F.cur) return;
+    if (!F.ahora) return;
     setHoja('');
-    if (!yt.activo) { ultimo.current = F.cur.vid; yt.poner(F.cur.vid); } else yt.play();
+    if (!yt.activo) { ultimo.current = F.ahora.vid; yt.poner(F.ahora.vid); } else yt.play();
     setModo('teatro');
   };
   const pausarMenu = () => { if (yt.activo) yt.pausa(); setModo('menu'); };
@@ -680,7 +753,8 @@ function ReelsCel({ F }) {
     onTouchStart: (e) => { const p = e.touches[0]; t0.current = { x: p.clientX, y: p.clientY, t: Date.now() }; },
     onTouchEnd: (e) => {
       const a = t0.current; t0.current = null;
-      if (!a || hoja) return;
+      // en «Videos» el dedo baja la lista: deslizar no pasa de reel
+      if (!a || hoja || F.clip) return;
       const p = e.changedTouches[0];
       const dy = p.clientY - a.y; const dx = p.clientX - a.x;
       const rapido = Math.abs(dy) / Math.max(1, Date.now() - a.t) > 0.5;
@@ -727,8 +801,15 @@ function ReelsCel({ F }) {
   };
   const nombres = r.gente.map(nombre).join(' vs ');
   const enviar = () => compartir(r, (c) => { setCopiado(c); if (c) avisa('Link copiado'); });
-  const corriendo = modo === 'teatro' && !F.fin;
-  const rect = { left: G.vx, top: G.vy, width: G.vw, height: G.vh };
+  // 🎞️ «VIDEOS» (la A en el celular, 25/11/2026): el horizontal arriba a todo el ancho, como YouTube en el celular, y debajo su
+  // ficha, las acciones, tu gente y la lista. Es el MISMO `.rls-vid` con otro rectángulo: el reproductor no se vuelve a crear
+  const c = F.clip;
+  const corriendo = (modo === 'teatro' && !F.fin) || !!c;
+  const v16 = Math.round(((medida.w - 2 * CEL.borde) * 9) / 16);
+  const rect = c ? { left: CEL.borde, top: CEL.arriba, width: medida.w - 2 * CEL.borde, height: v16 } : { left: G.vx, top: G.vy, width: G.vw, height: G.vh };
+  const cabX = c ? { left: CEL.borde, right: CEL.borde } : { left: G.vx, right: medida.w - G.vx - G.vw };
+  const linkC = c ? 'https://www.youtube.com/watch?v=' + c.vid : '';
+  const kc = c ? corto(c.t) : null;
   // el progreso: un segmento por reel cargado, del ancho del video (como las historias); el blanco es el que ves
   const lineas = Array.from({ length: Math.min(F.cargados, F.lista.length) }, (_, j) => j);
   // las acciones, iguales corriendo y en pausa: al costado o en una fila, según `G.modo`. AL COSTADO la columna es del alto
@@ -755,10 +836,10 @@ function ReelsCel({ F }) {
   return (
     <div className={'rls rls-cel ' + (corriendo ? 'teatro' : 'menu')} ref={caja} style={{ bottom: medida.abajo }} {...toca}>
       {/* la luz del teatro: la misma miniatura, desenfocada, detrás de todo; entra fundiéndose con cada reel */}
-      <Poster key={r.vid} vid={r.vid} cls="rls-luz" />
-      <p className="rls-sr" aria-live="polite">{F.fin ? 'Viste todo lo nuevo' : 'Reel ' + (F.i + 1) + ' de ' + F.lista.length + ': ' + nombres}</p>
+      {c ? <img key={c.vid} className="rls-luz" alt="" src={'https://i.ytimg.com/vi/' + c.vid + '/mqdefault.jpg'} /> : <Poster key={r.vid} vid={r.vid} cls="rls-luz" />}
+      <p className="rls-sr" aria-live="polite">{c ? 'Video: ' + (kc.t || c.gente.map(nombre).join(' vs ')) + ', ' + mmss(c.seg) : F.fin ? 'Viste todo lo nuevo' : 'Reel ' + (F.i + 1) + ' de ' + F.lista.length + ': ' + nombres}</p>
 
-      {F.fin ? (
+      {F.fin && !c ? (
         <div className="rls-fin">
           <span className="tag">REELS</span>
           <b>Viste todo lo nuevo</b>
@@ -769,18 +850,28 @@ function ReelsCel({ F }) {
         </div>
       ) : (
         <>
-          <div className="rls-cab" style={{ left: G.vx, right: medida.w - G.vx - G.vw }}>
-            <button type="button" className="rls-filtro" aria-haspopup="dialog" onClick={() => { pausarMenu(); setHoja('filtros'); }}>{filtroN}<Ico n="abajo" t={18} /></button>
-            {yt.mudo ? <button type="button" className="rls-sonido" onClick={() => yt.sonido(true)}><Ico n="mudo" t={18} />Toca para el sonido</button>
+          <div className="rls-cab" style={cabX}>
+            {/* 🎞️ «Shorts | Videos» a la vista (la crítica de la maqueta: dentro de «Para ti ▾» no se encontraba); el filtro pasa a «Más» */}
+            {F.clips.length ? (
+              <div className="rls-sv" role="group" aria-label="Shorts o videos">
+                <button type="button" aria-pressed={!c} className={c ? '' : 'on'} onClick={F.soltarClip}>Shorts</button>
+                <button type="button" aria-pressed={!!c} className={c ? 'on' : ''} onClick={() => { if (!c) { setHoja(''); F.verClip(F.clips[0]); } }}>Videos</button>
+              </div>
+            ) : (
+              <button type="button" className="rls-filtro" aria-haspopup="dialog" onClick={() => { pausarMenu(); setHoja('filtros'); }}>{filtroN}<Ico n="abajo" t={18} /></button>
+            )}
+            {yt.mudo ? <button type="button" className="rls-sonido" onClick={() => yt.sonido(true)}><Ico n="mudo" t={18} />{medida.w < 400 && F.clips.length ? 'Sonido' : 'Toca para el sonido'}</button>
               : <button type="button" className="rls-ib" aria-label="Silenciar" onClick={() => yt.sonido(false)}><Ico n="sonido" /></button>}
           </div>
-          <nav className="rls-prog" aria-label="Ir a otro reel" style={{ left: G.vx, width: G.vw, top: CEL.arriba }}>
-            {lineas.map((j) => (
-              <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')} aria-current={j === F.i ? 'true' : undefined}
-                className={j === F.i ? 'on' : j < F.i ? 'visto' : ''} onClick={() => F.ir(j)}><i /></button>
-            ))}
-          </nav>
-          <div className="rls-vid" ref={cajaVideo} style={rect}>
+          {c ? null : (
+            <nav className="rls-prog" aria-label="Ir a otro reel" style={{ left: G.vx, width: G.vw, top: CEL.arriba }}>
+              {lineas.map((j) => (
+                <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')} aria-current={j === F.i ? 'true' : undefined}
+                  className={j === F.i ? 'on' : j < F.i ? 'visto' : ''} onClick={() => F.ir(j)}><i /></button>
+              ))}
+            </nav>
+          )}
+          <div className={'rls-vid' + (c ? ' hz' : '')} ref={cajaVideo} style={rect}>
             <div className={'rls-ytcaja' + (corriendo ? '' : ' oculto')}>{yt.marco}</div>
             {corriendo ? null : (
               <button type="button" className="rls-vid-poster" onClick={reproducir} aria-label={yt.activo ? 'Seguir viendo' : 'Ver el reel'}>
@@ -789,7 +880,28 @@ function ReelsCel({ F }) {
               </button>
             )}
           </div>
-          <div className="rls-ficha" ref={fichaRef} style={{ left: G.vx, top: G.fichaY, width: G.modo === 'lado' ? G.vw + CEL.gap + CEL.col : G.vw }}>
+          {c ? (
+            <div className="rls-cel-v" style={{ top: CEL.arriba + v16 + CEL.gap }}>
+              <div className="rls-cel-vf">
+                <b>{kc.t || c.gente.map(nombre).join(' vs ')}</b>
+                <small>{[kc.r, c.canal, mmss(c.seg)].filter(Boolean).join(' · ')}</small>
+              </div>
+              <div className="rls-cel-vacc">
+                <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} t={24} /><span>Fuego</span></button>
+                <button type="button" className={'rls-ac' + (copiado ? ' ok' : '')} onClick={async () => { try { await navigator.clipboard.writeText(linkC); setCopiado(true); avisa('Link copiado'); } catch (e) { /* sin portapapeles */ } }}>
+                  <Ico n={copiado ? 'listo' : 'copiar'} t={22} /><span>{copiado ? 'Copiado' : 'Link'}</span></button>
+                <a className="rls-ac" href={linkC} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={22} /><span>YouTube</span></a>
+                <a className="rls-ac" href={perfilDe(c.gente[0])}><Ico n="persona" t={22} /><span>Perfil</span></a>
+                <button type="button" className="rls-ac" onClick={F.soltarClip}><Ico n="arriba" t={22} /><span>Shorts</span></button>
+              </div>
+              <FilaGente F={F} n={5} cara={48} />
+              <div className="rls-cv-l cel" style={{ '--rls-cl-th': Math.min(170, Math.round((medida.w - 16) * 0.4)) + 'px' }}>
+                <div className="sec-t rls-gf-t"><h2>Videos cortos</h2><small>{F.clips.length}</small></div>
+                {F.clips.map((x) => <FilaClip key={x.vid} F={F} c={x} on={x.vid === c.vid} />)}
+              </div>
+            </div>
+          ) : null}
+          {c ? null : <div className="rls-ficha" ref={fichaRef} style={{ left: G.vx, top: G.fichaY, width: G.modo === 'lado' ? G.vw + CEL.gap + CEL.col : G.vw }}>
             <div className="rls-ficha-1">
               <button type="button" className="rls-ficha-n" onClick={() => { pausarMenu(); setHoja('ficha'); }}>
                 <b>{nombres}</b><span>{r.gente.map(puestoDe).join(' · ')}</span></button>
@@ -798,9 +910,9 @@ function ReelsCel({ F }) {
             </div>
             <span className="rls-t2">{r.t || nombres}</span>
             <span className="rls-canal">{r.gente.map((g) => g.cc).filter(Boolean).slice(0, 2).map((cc, j) => <Bandera key={cc + j} cc={cc} cls="rls-flag" />)}{r.canal}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</span>
-          </div>
-          {Acciones}
-          {G.modo === 'lado' && G.vx >= CEL.col + CEL.gap + CEL.borde ? (
+          </div>}
+          {c ? null : Acciones}
+          {!c && G.modo === 'lado' && G.vx >= CEL.col + CEL.gap + CEL.borde ? (
             <CarasGente F={F} cuantas={Math.floor(G.vh / 66)} style={{ left: G.vx - CEL.gap - CEL.col, top: G.vy, height: G.vh }} />
           ) : null}
         </>
@@ -842,6 +954,8 @@ function ReelsCel({ F }) {
               </>
             ) : (
               <>
+                {/* el filtro vive acá desde que arriba va «Shorts | Videos» */}
+                {F.clips.length ? <button type="button" className="rls-op" onClick={() => setHoja('filtros')}><Ico n="abajo" t={20} />Qué ver: {filtroN}</button> : null}
                 {r.gente.length >= 2 ? <button type="button" className="rls-op" onClick={() => setHoja('voto')}><span className="rls-vs" aria-hidden="true">VS</span>¿Quién ganó? Vota</button> : null}
                 <button type="button" className="rls-op" onClick={verBatalla}><Ico n="batalla" t={20} />{batalla ? 'Ver la batalla completa' : 'Sus batallas'}</button>
                 <button type="button" className={'rls-op' + (copiado ? ' ok' : '')} onClick={async () => { try { await navigator.clipboard.writeText(linkDe(r.vid)); setCopiado(true); } catch (e) { /* sin portapapeles */ } }}>
@@ -886,7 +1000,7 @@ function useGente(F, nSigo = 12, nRec = 8) {
   const sigo = gente.filter((x) => F.loSigo(x.g)).sort((a, b) => b.n - a.n).slice(0, nSigo);
   const rec = gente.filter((x) => !F.loSigo(x.g))
     .sort((a, b) => b.n - a.n || (a.g.pos || 9999) - (b.g.pos || 9999)).slice(0, nRec);
-  const ahora = new Set(F.cur ? F.cur.gente.map(idDe) : []);
+  const ahora = new Set(F.ahora ? F.ahora.gente.map(idDe) : []);
   return { sigo, rec, ahora };
 }
 
@@ -912,26 +1026,85 @@ function CarasGente({ F, style, cuantas }) {
   );
 }
 
-function RielGente({ F, alto = 560 }) {
-  // tantas como entren en el alto (cada fila ~50 px, más los dos títulos): a 2560 px sobraba media columna vacía
-  const caben = Math.max(8, Math.floor((alto - 150) / 50));
-  const { sigo, rec, ahora } = useGente(F, Math.min(12, caben), caben);
-  const fila = (x) => (
-    <li key={idDe(x.g)}>
-      <button type="button" className={'rls-rl-f' + (ahora.has(idDe(x.g)) ? ' on' : '')} aria-current={ahora.has(idDe(x.g)) || undefined}
-        aria-label={nombre(x.g) + ', ' + x.n + (x.n === 1 ? ' reel' : ' reels')} onClick={() => F.irA(x.g)}>
-        <Cara liga={F.liga} g={x.g} cls="rls-cara rls-rl-c" />
-        <span><b>{nombre(x.g)}</b><small>{puestoDe(x.g)}</small></span>
-        <em>{x.n}</em>
-      </button>
-    </li>
-  );
+/**
+ * 🎞️ UNA FILA DE LA LISTA DE VIDEOS HORIZONTALES (la A, «La cartelera», como «A continuación» de YouTube): la miniatura 16:9
+ * con su duración, el título sin el evento y la ronda con el canal. El que corre dice «Sonando»; el de alguien que sigues,
+ * «De tu gente». Para la columna de la compu y para la lista del celular
+ */
+function FilaClip({ F, c, on }) {
+  const k = corto(c.t);
+  const titulo = k.t || c.gente.map(nombre).join(' vs ');
+  const tuyo = c.gente.some(F.loSigo);
   return (
-    <nav className="rls-rl" aria-label="Gente con reels">
-      <div className="sec-t"><h2>Siguiendo</h2></div>
-      {sigo.length ? <ul>{sigo.map(fila)}</ul> : <p>Toca «Seguir» en un reel y esa persona sale acá.</p>}
-      {rec.length ? <><div className="sec-t"><h2>Recomendados</h2></div><ul>{rec.map(fila)}</ul></> : null}
-    </nav>
+    <button type="button" className={'rls-cl' + (on ? ' on' : '')} aria-current={on || undefined}
+      aria-label={titulo + ', ' + c.canal + ', ' + mmss(c.seg)} onClick={() => F.verClip(c)}>
+      <span className="rls-cl-th">
+        <img alt="" loading="lazy" decoding="async" src={'https://i.ytimg.com/vi/' + c.vid + '/hq720.jpg'}
+          onError={(e) => { if (!e.currentTarget.dataset.mq) { e.currentTarget.dataset.mq = '1'; e.currentTarget.src = 'https://i.ytimg.com/vi/' + c.vid + '/mqdefault.jpg'; } }} />
+        <em>{mmss(c.seg)}</em>
+      </span>
+      <span className="rls-cl-tx">
+        {on ? <span className="rls-cl-son"><i aria-hidden="true"><u /><u /><u /></i>Sonando</span> : null}
+        <b>{titulo}</b>
+        <small>{[k.r, c.canal].filter(Boolean).join(' · ')}</small>
+        {tuyo && !on ? <small className="tuyo">De tu gente</small> : null}
+      </span>
+    </button>
+  );
+}
+
+/**
+ * 👤 TU GENTE EN UNA FILA (la A): caras con su nombre, como las historias de Instagram, primero a quien sigues y después los
+ * que más reels tienen. Aro verde = la sigues; magenta = sale en lo que suena. En la compu NADA SE DESLIZA DE COSTADO (con el
+ * mouse no se puede: ver la memoria «pc-sin-filas-de-costado»): ‹ › pasa de a una tanda, flechas de 44 px (Fitts)
+ */
+function FilaGente({ F, n, cara = 56 }) {
+  const { sigo, rec, ahora } = useGente(F, 12, 30);
+  const todos = [...sigo.map((x) => [x, true]), ...rec.map((x) => [x, false])];
+  const [pag, setPag] = useState(0);
+  const pags = Math.max(1, Math.ceil(todos.length / n));
+  const p = Math.min(pag, pags - 1);
+  if (!todos.length) return null;
+  return (
+    <div className="rls-gf">
+      <div className="sec-t rls-gf-t"><h2>{sigo.length ? 'Tu gente' : 'Gente con reels'}</h2>
+        {pags > 1 ? (
+          <span className="rls-gf-fl">
+            <button type="button" className="rls-ib" aria-label="Gente anterior" disabled={p === 0} onClick={() => setPag(p - 1)}><Ico n="izq" t={18} /></button>
+            <button type="button" className="rls-ib" aria-label="Ver más gente" disabled={p >= pags - 1} onClick={() => setPag(p + 1)}><Ico n="der" t={18} /></button>
+          </span>
+        ) : null}
+      </div>
+      <div className="rls-gf-caras" style={{ gridTemplateColumns: 'repeat(' + n + ',minmax(0,1fr))', '--rls-gf-cara': cara + 'px' }}>
+        {todos.slice(p * n, p * n + n).map(([x, sigue]) => (
+          <button key={idDe(x.g)} type="button" className={'rls-gf-c' + (sigue ? ' sigue' : '') + (ahora.has(idDe(x.g)) ? ' on' : '')}
+            aria-current={ahora.has(idDe(x.g)) || undefined} aria-label={nombre(x.g) + (sigue ? ', la sigues' : '') + ', ' + x.n + (x.n === 1 ? ' reel' : ' reels')}
+            onClick={() => F.irA(x.g)}>
+            <Cara liga={F.liga} g={x.g} cls="rls-cara" /><span>{nombre(x.g)}</span>
+          </button>
+        ))}
+      </div>
+      <p className="rls-gf-ley">{sigo.length ? 'Aro verde: la sigues. Magenta: sale en lo que suena' : 'Toca «Seguir» en un reel y esa persona va primero'}</p>
+    </div>
+  );
+}
+
+/** 🎞️ LA COLUMNA IZQUIERDA DE LA COMPU (la A, «La cartelera», 25/11/2026): tu gente arriba y los videos horizontales abajo.
+ *  La lista baja con la rueda (vertical sí se puede con el mouse) y el total va en su cabecera */
+function ColVideos({ F, ancho }) {
+  const n = ancho >= 520 ? 6 : ancho >= 380 ? 5 : 4;
+  return (
+    <section className="rls-cv" aria-label="Tu gente y los videos horizontales" style={{ '--rls-cl-th': (ancho >= 520 ? 190 : ancho >= 380 ? 150 : 116) + 'px' }}>
+      <FilaGente F={F} n={n} cara={ancho >= 380 ? 56 : 48} />
+      {F.clips.length ? (
+        <div className="rls-cv-l">
+          <div className="sec-t rls-gf-t"><h2>Videos cortos</h2><small>{F.clips.length}{ancho > 320 ? ' de hasta 5 min' : ''}</small></div>
+          <div className="rls-cv-filas">
+            {F.clips.map((c) => <FilaClip key={c.vid} F={F} c={c} on={!!F.clip && F.clip.vid === c.vid} />)}
+          </div>
+        </div>
+      ) : null}
+    </section>
   );
 }
 
@@ -951,26 +1124,27 @@ function ReelsPc({ F }) {
     alPausar: () => {},
     alCorrer: () => { cambiando.current = false; setModo('teatro'); },
   });
+  // lo que corre: el short o, si elegiste uno, el video horizontal (los dos en el MISMO reproductor, con `loadVideoById`)
   const ultimo = useRef('');
   useEffect(() => {
-    if (!F.cur || !yt.activo || F.cur.vid === ultimo.current) return;
-    ultimo.current = F.cur.vid;
+    if (!F.ahora || !yt.activo || F.ahora.vid === ultimo.current) return;
+    ultimo.current = F.ahora.vid;
     cambiando.current = true;
-    yt.poner(F.cur.vid);
+    yt.poner(F.ahora.vid);
     setModo('teatro');
     setCopiado(false);
-  }, [F.cur, yt.activo]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [F.ahora, yt.activo]); // eslint-disable-line react-hooks/exhaustive-deps
   const arranco = useRef(false);
   useEffect(() => {
-    if (arranco.current || !F.cur || yt.activo) return;
+    if (arranco.current || !F.ahora || yt.activo) return;
     arranco.current = true;
-    ultimo.current = F.cur.vid;
-    yt.poner(F.cur.vid, true);
+    ultimo.current = F.ahora.vid;
+    yt.poner(F.ahora.vid, !F.clip);
     setModo('teatro');
-  }, [F.cur]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [F.ahora]); // eslint-disable-line react-hooks/exhaustive-deps
   const reproducir = () => {
-    if (!F.cur) return;
-    if (!yt.activo) { ultimo.current = F.cur.vid; yt.poner(F.cur.vid); } else yt.play();
+    if (!F.ahora) return;
+    if (!yt.activo) { ultimo.current = F.ahora.vid; yt.poner(F.ahora.vid); } else yt.play();
     setModo('teatro');
   };
   // ↑ ↓ para pasar, M para el sonido, F para el fuego (no mientras escribes)
@@ -994,7 +1168,7 @@ function ReelsPc({ F }) {
   // ganar lugar: la primera versión lo hacía y, con el margen de desplazamiento de la página, el video quedaba cortado igual
   // (y moverle la página a alguien no es «quieto»)
   const teatro = useRef(null);
-  const [medida, setMedida] = useState({ alto: 560, cols: '', gente: true });
+  const [medida, setMedida] = useState({ alto: 560, cols: '', gente: true, panel: true, lado: 320, ancho: 1285, libre: 560 });
   useLayoutEffect(() => {
     const el = teatro.current;
     if (!el) return undefined;
@@ -1004,8 +1178,10 @@ function ReelsPc({ F }) {
       const caja = el.getBoundingClientRect();
       const top = caja.top + window.scrollY;
       const libre = (window.innerHeight - top) / z - 2 * PC_AIRE;
-      const x = columnas(caja.width / z - 2 * PC_LADO, Math.round(Math.max(PC_MIN, Math.min(libre, 1100))));
-      setMedida((m) => (m.alto === x.alto && m.cols === x.cols ? m : x));
+      const ancho = caja.width / z - 2 * PC_LADO;
+      const alto = Math.round(Math.max(PC_MIN, Math.min(libre, 1100)));
+      const x = { ...columnas(ancho, alto), ancho, libre: alto };
+      setMedida((m) => (m.alto === x.alto && m.cols === x.cols && m.libre === x.libre && Math.abs(m.ancho - x.ancho) < 1 ? m : x));
     };
     mide();
     const ro = typeof ResizeObserver !== 'undefined' && app ? new ResizeObserver(mide) : null;
@@ -1019,10 +1195,14 @@ function ReelsPc({ F }) {
   // ↕ al pasar de reel, el video y el contenido del panel entran desde el lado al que se fue; las cajas no se mueven
   const cajaVideo = useRef(null);
   const panelIn = useRef(null);
-  const vidAhora = F.cur ? F.cur.vid : '';
+  const vidAhora = F.ahora ? F.ahora.vid : '';
   useEntrada(cajaVideo, vidAhora, F.dir, 22);
   useEntrada(panelIn, vidAhora, F.dir, 12);
-  const r = F.cur;
+  const r = F.ahora;
+  const esClip = !!F.clip;
+  // 🎞️ con un horizontal corriendo, las columnas de `columnasH()`; si no, las de siempre
+  const M = esClip ? columnasH(medida.ancho, medida.libre) : medida;
+  const conColumna = esClip || medida.gente;
   const fs = F.filtros;
   // 🎨 LA FRANJA, EN UNA SOLA FILA (8.16): la etiqueta y el título a la izquierda, los filtros a la derecha. Con el título de
   // 42 px, su bajada y las pestañas abajo se comía ~270 px del primer pliegue, que ahora son del video
@@ -1033,20 +1213,29 @@ function ReelsPc({ F }) {
           <span className="tag">REELS{F.temp ? ' · ' + F.temp : ''}</span>
           <h1 className="hero-ev rls-h1">Los momentos de las batallas</h1>
         </div>
-        <div className="rls-chips" role="group" aria-label="Qué ver">
-          {fs.map(([k, n]) => <button key={k} type="button" aria-pressed={F.filtro === k} className={F.filtro === k ? 'on' : ''} onClick={() => F.setFiltro(k)}>{n}</button>)}
+        <div className="rls-esc-der">
+          {/* 🎞️ donde la columna de los videos no entra al lado de un short (tablet acostada), se llega a ellos desde acá */}
+          {!medida.gente && F.clips.length ? (
+            <div className="rls-sv" role="group" aria-label="Shorts o videos">
+              <button type="button" aria-pressed={!esClip} className={esClip ? '' : 'on'} onClick={F.soltarClip}>Shorts</button>
+              <button type="button" aria-pressed={esClip} className={esClip ? 'on' : ''} onClick={() => { if (!esClip) F.verClip(F.clips[0]); }}>Videos</button>
+            </div>
+          ) : null}
+          <div className="rls-chips" role="group" aria-label="Qué ver">
+            {fs.map(([k, n]) => <button key={k} type="button" aria-pressed={F.filtro === k} className={F.filtro === k ? 'on' : ''} onClick={() => F.setFiltro(k)}>{n}</button>)}
+          </div>
         </div>
       </div>
     </div>
   );
-  const estilo = { '--rls-alto': medida.alto + 'px' };
-  const grilla = medida.cols ? { gridTemplateColumns: medida.cols } : undefined;
+  const estilo = { '--rls-alto': M.alto + 'px' };
+  const grilla = M.cols ? { gridTemplateColumns: M.cols } : undefined;
   if (!r) {
     return (
       <section className="rls-pc">{cab}
         <div className="rls-pc-teatro" ref={teatro} style={estilo}>
           <div className="rls-pc-in"><div className="rls-pc-cuerpo vacio">
-            {medida.gente ? <RielGente F={F} alto={medida.alto} /> : null}
+            {medida.gente ? <ColVideos F={F} ancho={320} /> : null}
             <div className="rls-vacio"><b>{VACIO[F.filtro] || 'Todavía no hay reels'}</b><p>{VACIO_P[F.filtro] || 'Llegan más cada lunes.'}</p>
               <button type="button" className="rls-btc" onClick={() => F.setFiltro('todo')}>Ver Para ti</button></div>
           </div></div>
@@ -1055,8 +1244,14 @@ function ReelsPc({ F }) {
     );
   }
   const nombres = r.gente.map(nombre).join(' vs ');
-  const batalla = batallaDe(r);
+  const batalla = esClip ? null : batallaDe(r);
+  const k = corto(r.t);
+  // el link: el de Reels para un short; para un horizontal, el de YouTube (Reels no abre un horizontal por su id)
+  const link = esClip ? 'https://www.youtube.com/watch?v=' + r.vid : linkDe(r.vid);
+  // «Lo que sigue» son los shorts desde el siguiente al que estabas viendo, también con un horizontal corriendo: al terminar
+  // (o con ↓) vuelve el vertical con el siguiente
   const masReels = [1, 2, 3].map((j) => F.lista[F.i + j]).filter(Boolean);
+  const vuelve = esClip ? F.lista[F.i + 1] || null : null;
   // el progreso, en vertical al lado del video (espejo de las flechas): hasta 9 segmentos alrededor del que ves
   const nCarg = Math.min(F.cargados, F.lista.length);
   const desde = Math.max(0, Math.min(F.i - 4, nCarg - 9));
@@ -1068,20 +1263,46 @@ function ReelsPc({ F }) {
     <section className="rls-pc">
       {cab}
       <div className="rls-pc-teatro" ref={teatro} style={estilo}>
-        <div className="rls-pc-luz" aria-hidden="true"><Poster key={r.vid} vid={r.vid} cls="rls-luz" /></div>
+        <div className="rls-pc-luz" aria-hidden="true">{esClip ? <img key={r.vid} className="rls-luz" alt="" src={'https://i.ytimg.com/vi/' + r.vid + '/mqdefault.jpg'} /> : <Poster key={r.vid} vid={r.vid} cls="rls-luz" />}</div>
         <div className="rls-pc-in">
+          {/* ⚠️ sin una clase «h» acá: hay una global con ese nombre que centra los hijos (el panel quedaba de 40 px) */}
           <div className="rls-pc-cuerpo" style={grilla}>
-            {medida.gente ? <RielGente F={F} alto={medida.alto} /> : null}
-            <nav className="rls-pc-prog" aria-label="Ir a otro reel">
-              {lineas.map((j) => (
-                <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')}
-                  aria-current={j === F.i && !F.fin ? 'true' : undefined} className={j === F.i && !F.fin ? 'on' : j < F.i ? 'visto' : ''}
-                  onClick={() => F.ir(j)}><i /></button>
-              ))}
-            </nav>
-            <div className="rls-pc-video" ref={cajaVideo}>
-              <div className={'rls-ytcaja' + ((modo === 'teatro' || yt.activo) && !F.fin ? '' : ' oculto')}>{yt.marco}</div>
-              {F.fin ? (
+            {conColumna ? <ColVideos F={F} ancho={M.lado || 320} /> : null}
+            {esClip && !M.panel ? null : (
+              <nav className="rls-pc-prog" aria-label="Ir a otro reel">
+                {esClip ? null : lineas.map((j) => (
+                  <button key={j} type="button" aria-label={'Reel ' + (j + 1) + ': ' + F.lista[j].gente.map(nombre).join(' vs ')}
+                    aria-current={j === F.i && !F.fin ? 'true' : undefined} className={j === F.i && !F.fin ? 'on' : j < F.i ? 'visto' : ''}
+                    onClick={() => F.ir(j)}><i /></button>
+                ))}
+              </nav>
+            )}
+            {/* ⚠️ el reproductor es SIEMPRE el primer hijo de `.rls-pc-video`: con un horizontal sólo cambia de forma (16:9) y su
+                ficha va como hermano debajo. Si cambiara de padre, React lo volvería a crear y se perdería lo que estaba corriendo */}
+            <div className={'rls-pc-video' + (esClip ? ' hz' : '')} ref={cajaVideo} style={esClip ? { width: M.centro } : undefined}>
+              <div className={'rls-ytcaja' + ((modo === 'teatro' || yt.activo) && (!F.fin || esClip) ? '' : ' oculto')}>{yt.marco}</div>
+              {esClip ? (
+                <div className="rls-pc-hf">
+                  <b>{k.t || nombres}</b>
+                  <small>{[k.r, r.canal, mmss(r.seg)].filter(Boolean).join(' · ')}</small>
+                  <div className="rls-pc-hf-fila">
+                    {vuelve ? (
+                      <button type="button" className="rls-pc-vuelve" onClick={F.siguiente}>
+                        <span className="rls-ib caja prim" aria-hidden="true"><Ico n="abajo" /></span>
+                        <Poster vid={vuelve.vid} cls="rls-pc-vuelve-p" />
+                        <span>Después vuelven los shorts<em>Sigue {vuelve.gente.map(nombre).join(' vs ')}, en vertical</em></span>
+                      </button>
+                    ) : null}
+                    {M.panel ? null : (
+                      <span className="rls-pc-hf-acc">
+                        <button type="button" className={'rls-ib caja' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} aria-label="Fuego (tecla F)" onClick={F.darFuego}><Ico n="fuego" lleno={F.ardido} /></button>
+                        <button type="button" className={'rls-ib caja' + (yt.mudo ? ' sonar' : '')} aria-label={yt.mudo ? 'Activar el sonido (tecla M)' : 'Silenciar (tecla M)'} onClick={() => yt.sonido(yt.mudo)}><Ico n={yt.mudo ? 'mudo' : 'sonido'} /></button>
+                        <a className="rls-ib caja" href={link} target="_blank" rel="noopener noreferrer" aria-label="Verlo en YouTube"><Ico n="yt" /></a>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ) : F.fin ? (
                 <div className="rls-fin">
                   <span className="tag">REELS</span>
                   <b>Viste todo lo nuevo</b>
@@ -1101,7 +1322,7 @@ function ReelsPc({ F }) {
               <button type="button" className="rls-ib caja" aria-label="Anterior (flecha arriba)" onClick={F.anterior}><Ico n="arriba" /></button>
               <button type="button" className="rls-ib caja prim" aria-label="Siguiente (flecha abajo)" onClick={F.siguiente}><Ico n="abajo" /></button>
             </div>
-            <aside className="rls-pc-panel" aria-label="Este reel">
+            {esClip && !M.panel ? null : <aside className="rls-pc-panel" aria-label={esClip ? 'Este video' : 'Este reel'}>
               <div className="rls-pc-panel-in" ref={panelIn}>
                 <div className="rls-pc-quien">
                   <span className="rls-caras">{r.gente.slice(0, 3).map((g) => <Cara liga={F.liga} key={g.k} g={g} cls="rls-cara" />)}</span>
@@ -1116,29 +1337,35 @@ function ReelsPc({ F }) {
                   </div>
                 </div>
                 <p className="rls-pc-t">{r.t || nombres}</p>
-                <p className="rls-canal">{r.canal}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</p>
+                <p className="rls-canal">{r.canal}{esClip ? ' · ' + mmss(r.seg) : null}{r.hoy ? <em className="rls-hoy">La Liga · hoy · {quedan(r.vence)}</em> : deLaLiga(r) ? <em>De la Liga</em> : dePlaza(r) ? <em>Del under</em> : null}</p>
                 <div className="rls-pc-acc">
                   <button type="button" className={'rls-ac' + (F.ardido ? ' ardido' : '')} aria-pressed={F.ardido} title="Tecla F" onClick={F.darFuego}>
                     <Ico n="fuego" lleno={F.ardido} t={24} /><span>Fuego</span></button>
-                  <button type="button" className="rls-ac" aria-pressed={F.guardado} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}>
-                    <Ico n="guardar" lleno={F.guardado} t={22} /><span>{F.guardado ? 'Guardado' : 'Guardar'}</span></button>
+                  {esClip ? (
+                    <button type="button" className="rls-ac" onClick={F.soltarClip}><Ico n="arriba" t={22} /><span>Al short</span></button>
+                  ) : (
+                    <button type="button" className="rls-ac" aria-pressed={F.guardado} onClick={() => { if (F.guardar()) avisa('Guardado: lo encuentras en «Guardados»'); }}>
+                      <Ico n="guardar" lleno={F.guardado} t={22} /><span>{F.guardado ? 'Guardado' : 'Guardar'}</span></button>
+                  )}
                   <button type="button" className={'rls-ac' + (yt.mudo ? ' sonar' : '')} title="Tecla M" onClick={() => yt.sonido(yt.mudo)}>
                     <Ico n={yt.mudo ? 'mudo' : 'sonido'} t={22} /><span>{yt.mudo ? 'Sonido' : 'Silenciar'}</span></button>
-                  <button type="button" className={'rls-ac' + (copiado ? ' ok' : '')} onClick={async () => { try { await navigator.clipboard.writeText(linkDe(r.vid)); setCopiado(true); } catch (e) { /* sin portapapeles */ } }}>
+                  <button type="button" className={'rls-ac' + (copiado ? ' ok' : '')} onClick={async () => { try { await navigator.clipboard.writeText(link); setCopiado(true); } catch (e) { /* sin portapapeles */ } }}>
                     <Ico n={copiado ? 'listo' : 'copiar'} t={20} /><span>{copiado ? 'Copiado' : 'Link'}</span></button>
                 </div>
-                <div className="rls-pc-acc2">
+                <div className={'rls-pc-acc2' + (esClip ? ' dos' : '')}>
                   <button type="button" className="rls-btc" onClick={() => {
                     if (batalla) { if (yt.activo) yt.pausa(); abrirVideo({ vid: batalla, tit: nombres, link: 'https://www.youtube.com/watch?v=' + batalla }); } else location.hash = perfilDe(r.gente[0]);
-                  }}><Ico n="batalla" t={18} />{batalla ? 'Batalla' : 'Batallas'}</button>
-                  {r.hoy ? null : <a className="rls-btc" href={'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>}
-                  <button type="button" className="rls-btc" onClick={() => {
-                    const canal = r.canal; const desdeI = F.i;
-                    F.menos(canal); F.siguiente();
-                    avisa('Vas a ver menos de ' + canal, () => { F.nomenos(canal); F.ir(desdeI); });
-                  }}><Ico n="no" t={18} />Menos</button>
+                  }}><Ico n="batalla" t={18} />{batalla ? 'Batalla' : esClip ? 'Su perfil' : 'Batallas'}</button>
+                  {r.hoy ? null : <a className="rls-btc" href={esClip ? link : 'https://www.youtube.com/shorts/' + r.vid} target="_blank" rel="noopener noreferrer"><Ico n="yt" t={18} />YouTube</a>}
+                  {esClip ? null : (
+                    <button type="button" className="rls-btc" onClick={() => {
+                      const canal = r.canal; const desdeI = F.i;
+                      F.menos(canal); F.siguiente();
+                      avisa('Vas a ver menos de ' + canal, () => { F.nomenos(canal); F.ir(desdeI); });
+                    }}><Ico n="no" t={18} />Menos</button>
+                  )}
                 </div>
-                {r.gente.length >= 2 ? <Voto r={r} clase="pc" /> : null}
+                {!esClip && r.gente.length >= 2 ? <Voto r={r} clase="pc" /> : null}
                 <div className="rls-pc-mas">
                   <div className="sec-t"><h2>Lo que sigue</h2></div>
                   <div>
@@ -1151,11 +1378,11 @@ function ReelsPc({ F }) {
                 </div>
                 <p className="rls-atajos" aria-hidden="true"><kbd><Ico n="arriba" t={14} /></kbd><kbd><Ico n="abajo" t={14} /></kbd> pasar <kbd>M</kbd> sonido <kbd>F</kbd> fuego</p>
               </div>
-            </aside>
+            </aside>}
           </div>
         </div>
       </div>
-      <p className="rls-sr" aria-live="polite">{F.fin ? 'Viste todo lo nuevo' : 'Reel ' + (F.i + 1) + ' de ' + F.lista.length + ': ' + nombres}</p>
+      <p className="rls-sr" aria-live="polite">{esClip ? 'Video: ' + (k.t || nombres) + ', ' + mmss(r.seg) : F.fin ? 'Viste todo lo nuevo' : 'Reel ' + (F.i + 1) + ' de ' + F.lista.length + ': ' + nombres}</p>
       {aviso ? (
         <div className="rls-aviso pc" role="status"><span>{aviso.txt}</span>
           {aviso.deshacer ? <button type="button" onClick={() => { aviso.deshacer(); setAviso(null); }}>Deshacer</button> : null}</div>
