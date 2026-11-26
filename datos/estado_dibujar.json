@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-26T03:46:26Z",
+ "cuando": "2026-11-26T04:56:30Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 3383.1,
+ "dur_s": 4163.9,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 0.9
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.9
+   "s": 15.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 42.8
+   "s": 24.9
   },
   {
    "n": "5",
    "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 3112.0
+   "s": 3852.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 145.4
+   "s": 208.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 67.2
+   "s": 60.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "694",
-  "nombre": "- SHAOLIN BATTLES -",
-  "sv": "FRZ",
-  "dia": "2026-11-25"
+  "n": "695",
+  "nombre": "(sin titulo)",
+  "sv": "DDS",
+  "dia": "2026-10-05"
  },
  "cuotas": {
   "kv": {
-   "write": 201,
-   "read": 9083
+   "write": 266,
+   "read": 11095
   },
   "objeto": {
-   "leidas": 1107278,
-   "escritas": 18950,
-   "pedidos": 9352
+   "leidas": 1343994,
+   "escritas": 22815,
+   "pedidos": 11245
   },
   "worker": {
-   "pedidos": 35223,
+   "pedidos": 34818,
    "errores": 0,
-   "sub": 40233,
+   "sub": 39782,
    "cortados": 0,
-   "p50_ms": 1.0,
+   "p50_ms": 1.01,
    "p99_ms": 14.65,
    "cpu": {
-    "total": 75185,
-    "objeto_10": 2518,
-    "worker_10": 954
+    "total": 74318,
+    "objeto_10": 2579,
+    "worker_10": 929
    }
   },
   "r2": {
