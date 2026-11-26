@@ -124,6 +124,15 @@
 "temporada"
 ]
 },
+"mito": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "liberia": {
 "rg": "S",
 "c": [
@@ -135,15 +144,6 @@
 },
 "agus": {
 "rg": "A",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"mito": {
-"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -319,15 +319,19 @@
 ]
 },
 "dios": {
-"rg": "C",
+"rg": "B",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
 ]
 },
-"bloody": {
-"rg": "B",
+"chop": {
+"rg": "C",
+"c": []
+},
+"mats": {
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -335,7 +339,7 @@
 "temporada"
 ]
 },
-"mats": {
+"bloody": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -366,6 +370,14 @@
 "temporada"
 ]
 },
+"mayeutyk": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "caliz": {
 "rg": "D",
 "c": [
@@ -374,10 +386,6 @@
 "servidor",
 "temporada"
 ]
-},
-"chop": {
-"rg": "C",
-"c": []
 },
 "bna": {
 "rg": "C",
@@ -404,19 +412,19 @@
 "rg": "C",
 "c": []
 },
+"tøkiø": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "dominick": {
 "rg": "D",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -443,14 +451,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"tøkiø": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -904,6 +904,13 @@
 "temporada"
 ]
 },
+"lilnano": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "carlosmo": {
 "rg": "",
 "c": [
@@ -935,6 +942,10 @@
 "servidor",
 "temporada"
 ]
+},
+"julix-x": {
+"rg": "",
+"c": []
 },
 "blitz": {
 "rg": "E",
@@ -1028,13 +1039,6 @@
 "temporada"
 ]
 },
-"lilnano": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "bastyretro": {
 "rg": "",
 "c": [
@@ -1042,10 +1046,6 @@
 "servidor",
 "temporada"
 ]
-},
-"julix-x": {
-"rg": "",
-"c": []
 },
 "zekha": {
 "rg": "",
@@ -2960,31 +2960,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-18T00:59:54Z",
-"quien": [
-"Ariaxer"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-18T00:59:54Z",
-"quien": [
-"Ariaxer"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-18T05:04:45Z",
-"quien": [
-"Catarsis"
-],
-"carta": "pais"
-},
 {
 "tipo": "rango",
 "t": "2026-10-18T22:04:59Z",
@@ -6366,8 +6341,26 @@
 "carta": "temporada"
 },
 {
+"tipo": "rango",
+"t": "2026-11-26T05:28:10Z",
+"quien": [
+"Dios"
+],
+"rg": "B",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-26T05:28:10Z",
+"quien": [
+"mats"
+],
+"rg": "A",
+"primero": false
+},
+{
 "tipo": "tarjeta",
-"t": "2026-11-26T05:27:11Z",
+"t": "2026-11-26T05:28:10Z",
 "quien": [
 "DarnBless"
 ],
@@ -6375,7 +6368,7 @@
 },
 {
 "tipo": "tarjeta",
-"t": "2026-11-26T05:27:11Z",
+"t": "2026-11-26T05:28:10Z",
 "quien": [
 "DarnBless"
 ],
@@ -6383,11 +6376,23 @@
 },
 {
 "tipo": "tarjeta",
-"t": "2026-11-26T05:27:11Z",
+"t": "2026-11-26T05:28:10Z",
 "quien": [
 "DarnBless"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "svtop",
+"t": "2026-11-26T05:28:10Z",
+"sv": "FDS",
+"quien": [
+"TøKīØ🦠🧠"
+],
+"ks": [
+"tøkiø"
+],
+"pts": 131234
 }
 ],
 "noche_antes": {
@@ -8663,8 +8668,8 @@
 "tipo": "resnoche",
 "t": "2026-11-26T08:00:00Z",
 "dia": "2026-11-25",
-"eventos": 1,
-"part": 8,
+"eventos": 2,
+"part": 20,
 "campeones": [
 {
 "ev": "- SHAOLIN BATTLES -",
@@ -8676,9 +8681,26 @@
 "senticide"
 ]
 ]
+},
+{
+"ev": "NOCTURNA STYLE",
+"sv": "DDS",
+"ll": 696,
+"quien": [
+[
+"Lilñaño",
+"lilnano"
+]
+]
 }
 ],
 "suman": [
+{
+"n": "Lilñaño",
+"k": "lilnano",
+"pts": 7500,
+"ev": 1
+},
 {
 "n": "Senticide",
 "k": "senticide",
@@ -8686,19 +8708,19 @@
 "ev": 1
 },
 {
-"n": "Monet",
-"k": "monet",
-"pts": 5000,
-"ev": 1
-},
-{
-"n": "EmiZor",
-"k": "emizor",
-"pts": 3500,
-"ev": 1
+"n": "MaYeuTyK",
+"k": "mayeutyk",
+"pts": 5500,
+"ev": 2
 }
 ],
 "suben": [
+{
+"n": "mats",
+"k": "mats",
+"de": 272,
+"a": 36
+},
 {
 "n": "Senticide",
 "k": "senticide",
@@ -8706,10 +8728,10 @@
 "a": 310
 },
 {
-"n": "Monet",
-"k": "monet",
-"de": 289,
-"a": 282
+"n": "Dios",
+"k": "dios",
+"de": 54,
+"a": 35
 }
 ],
 "sorpresas": [
@@ -8719,6 +8741,13 @@
 "que": "primer",
 "ev": "- SHAOLIN BATTLES -",
 "desde": 334
+},
+{
+"n": "Lilñaño",
+"k": "lilnano",
+"que": "primer",
+"ev": "NOCTURNA STYLE",
+"desde": 103
 }
 ]
 }
@@ -8728,7 +8757,7 @@
 "FFA": "makmah",
 "DDF": "carlosss",
 "ACAD": "mathhias",
-"FDS": "dios",
+"FDS": "tøkiø",
 "URBF": "carlosmo",
 "SR": "juanpa",
 "CEU": "marcos",
@@ -8847,10 +8876,10 @@
 "caliz": 0,
 "dominick": 0,
 "mathhias": 0,
-"tøkiø": 1,
+"tøkiø": 0,
 "mayeutyk": 0,
 "dyzz": 0,
-"mats": 3,
+"mats": 4,
 "numberve": 0,
 "soulb": 0,
 "bna": 2,
@@ -8884,7 +8913,7 @@
 "jult": 0,
 "jeixder": 0,
 "jobaking": 0,
-"dios": 2,
+"dios": 0,
 "presagio": 4,
 "benjixo": 0,
 "mcnadie": 0,
@@ -8916,7 +8945,7 @@
 "gus": 0,
 "zetryko": 2,
 "mtz": 3,
-"julix-x": 1,
+"julix-x": 0,
 "alexi": 0,
 "erik": 2,
 "eliot": 2,
@@ -8925,7 +8954,7 @@
 "catarsis": 0,
 "ezze": 0,
 "bastyretro": 0,
-"lilnano": 0,
+"lilnano": 1,
 "zekha": 1,
 "evangeline": 0,
 "leyenda": 0,

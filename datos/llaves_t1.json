@@ -65682,5 +65682,163 @@
    "min": 62,
    "v": 1
   }
+ },
+ "696": {
+  "dia": "2026-11-25",
+  "escala": "8-15",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1575364174823817349"
+  ],
+  "n": 696,
+  "nombre": "NOCTURNA STYLE",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "JULIX",
+       "TøKīØ🦠🧠"
+      ],
+      "mats",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "NXUZ",
+       "Kuni"
+      ],
+      "MaYeuTyK",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Dios",
+       "Mito",
+       "replisan"
+      ],
+      "Dios",
+      "triple (3 bandas); Revivido: Mito🇦🇷"
+     ],
+     [
+      [
+       "Lilñaño",
+       "Mito",
+       "Chop"
+      ],
+      "Lilñaño",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "MaYeuTyK"
+      ],
+      "mats",
+      ""
+     ],
+     [
+      [
+       "Lilñaño",
+       "Dios"
+      ],
+      "Lilñaño",
+      ""
+     ],
+     [
+      [
+       "Dios 🇲🇽",
+       "MARTINEZ"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Lilñaño",
+       "mats"
+      ],
+      "Lilñaño",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "Lilñaño",
+    "Campeón",
+    7500
+   ],
+   [
+    "mats",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dios",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    3000
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "JULIX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kuni",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2000
+   ],
+   [
+    "replisan",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 57,
+   "v": 1
+  }
  }
 }

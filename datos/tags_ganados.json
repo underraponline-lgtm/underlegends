@@ -4314,6 +4314,11 @@
    ]
   },
   "servidor": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1795670921980
+   ],
    "🏅 PODIOS": [
     "🏅 PODIOS",
     "t1",
@@ -7968,6 +7973,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795670921980
    ]
   }
  },
@@ -8720,6 +8730,11 @@
     "🌱 PROMESA",
     "t1",
     1793390603259
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795670921980
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -15308,6 +15323,13 @@
   }
  },
  "replisan": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1795670921980
+   ]
+  },
   "temporada": {
    "🧟 RESUCITADO": [
     "🧟 RESUCITADO",
