@@ -15023,6 +15023,57 @@
     ]
    ]
   },
+  "1574847491575128215": {
+   "id": "1574847491575128215",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795543301243,
+   "ed": 1795544543281,
+   "texto": "`[ SEMIFINALES ]`\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞agustin la reliquia🇦🇬⌝\n⌞Konan 🇦🇷⌝ 🆚 ⌞Agus🇦🇷⌝\n⌞Konan 🇦🇷⌝ 🆚 ⌞Agus🇦🇷⌝\n`[ FINAL ]`\n⌞agustin la reliquia🇦🇬⌝ 🆚 ⌞Konan 🇦🇷⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "Sin límites 🇵🇪",
+      "agustin la reliquia🇦🇬"
+     ],
+     "agustin la reliquia🇦🇬",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Konan 🇦🇷",
+      "Agus🇦🇷"
+     ],
+     "Konan 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Konan 🇦🇷",
+      "Agus🇦🇷"
+     ],
+     "Konan 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "agustin la reliquia🇦🇬",
+      "Konan 🇦🇷"
+     ],
+     "agustin la reliquia🇦🇬",
+     "veredicto",
+     []
+    ]
+   ]
+  },
   "1575336547685761067": {
    "id": "1575336547685761067",
    "sv": "[FFA] Freestyle For All 👾",
