@@ -54,7 +54,11 @@ jobs:
       - name: procesar
         env:
           DESDE: ${{ inputs.desde }}
-        run: UL_RAIZ="$GITHUB_WORKSPACE" bash m/nube.sh "$DESDE"
+          # 📺 el permiso para subir el evento completo al canal (privado): se escribe en un archivo de la máquina y nunca se imprime
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          if [ -n "$YOUTUBE_TOKEN" ]; then printf '%s' "$YOUTUBE_TOKEN" > "$RUNNER_TEMP/yt.json"; export YT_TOKEN="$RUNNER_TEMP/yt.json"; fi
+          UL_RAIZ="$GITHUB_WORKSPACE" bash m/nube.sh "$DESDE"
       - uses: actions/cache/save@v4
         if: always() && steps.modelos.outputs.cache-hit != 'true'
         with:

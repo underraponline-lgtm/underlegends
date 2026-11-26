@@ -1,0 +1,61 @@
+# 📺 El evento completo de UN evento, al canal de YouTube (privado). El de siempre lo hace `procesar` al terminar cada evento
+# (m/nube.sh, paso «youtube»); éste es para hacerlo a mano —un evento que se procesó antes de que existiera esto, o uno que
+# falló—. El audio de cada batalla queda 15 días en R2: después de eso no hay con qué armarlo. El registro dice pasos, nada más.
+name: youtube_evento
+
+on:
+  workflow_dispatch:
+    inputs:
+      ev:
+        description: el evento (ffa-2026-11-23)
+        required: true
+        type: string
+
+concurrency:
+  group: youtube-evento
+  cancel-in-progress: false
+
+jobs:
+  youtube:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+      - uses: actions/checkout@v4
+        with:
+          repository: underraponline-lgtm/motor
+          ssh-key: ${{ secrets.MOTOR_KEY }}
+          path: m
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
+      - name: preparar la máquina
+        run: |
+          sudo apt-get update -qq > /dev/null 2>&1
+          sudo apt-get install -y -qq ffmpeg > /dev/null 2>&1
+          ffmpeg -version > /dev/null && echo "ffmpeg listo"
+          pip install -q -r m/requirements.txt > /dev/null 2>&1 && echo "librerías listas"
+          python -c "import sys; sys.path.insert(0, 'bot'); import navegador; navegador.hace_falta()" > /dev/null 2>&1 && echo "navegador listo"
+      - name: armar y subir
+        env:
+          EV: ${{ inputs.ev }}
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+        run: |
+          case "$EV" in *[!a-z0-9-]*|"") echo "✗ el evento tiene que ser como ffa-2026-11-23"; exit 1;; esac
+          [ -n "$YOUTUBE_TOKEN" ] || { echo "✗ falta el secreto YOUTUBE_TOKEN"; exit 1; }
+          printf '%s' "$YOUTUBE_TOKEN" > "$RUNNER_TEMP/yt.json"
+          export YT_TOKEN="$RUNNER_TEMP/yt.json" UL_RAIZ="$GITHUB_WORKSPACE" PYTHONIOENCODING=utf-8
+          cd m
+          R="$RUNNER_TEMP/registro.txt"
+          echo "· armar ($(date -u +%H:%M) UTC)"
+          python evento_youtube.py --local "$EV" --sal "$RUNNER_TEMP/yt" >> "$R" 2>&1 || { echo "✗ el video no se armó: $(grep -oE '^[A-Za-z_.]*(Error|Exception)' "$R" | tail -1)"; exit 1; }
+          echo "· subir ($(date -u +%H:%M) UTC)"
+          python subir_youtube.py "$RUNNER_TEMP/yt/$EV.json" >> "$R" 2>&1 || { echo "✗ no se subió: $(grep -oE '^[A-Za-z_.]*(Error|Exception)|[0-9]{3} [A-Za-z ]{3,40}' "$R" | tail -1)"; exit 1; }
+          echo "  youtube: $(tail -1 "$R" | grep -oE '^(subido PRIVADO|ya estaba en el canal)' || echo 'no subido')"
