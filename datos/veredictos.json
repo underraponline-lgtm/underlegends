@@ -11135,8 +11135,52 @@
    "canal": "1487206164864438513",
    "pub": 1795663148526,
    "a": "black demon",
-   "b": "Tenor",
-   "ganador": "Tenor",
+   "b": "Monet",
+   "ganador": "Monet",
+   "votos": "1–0"
+  },
+  "1575351559599030284": {
+   "id": "1575351559599030284",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795663480425,
+   "a": "gus",
+   "b": "Dios",
+   "ganador": "Dios",
+   "votos": "1–0"
+  },
+  "1575354147941650547": {
+   "id": "1575354147941650547",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795664097534,
+   "a": "Drex",
+   "b": "Raxo",
+   "ganador": "Drex",
+   "votos": "1–0"
+  },
+  "1575354450670002239": {
+   "id": "1575354450670002239",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795664169710,
+   "a": "Raxo",
+   "b": "Drakm",
+   "ganador": "Raxo",
+   "votos": "1–0"
+  },
+  "1575357880721350718": {
+   "id": "1575357880721350718",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795664987498,
+   "a": "Drex",
+   "b": "Monet",
+   "ganador": "Monet",
    "votos": "1–0"
   }
  },
@@ -14930,8 +14974,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795659901306,
-   "ed": 1795663389712,
-   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝\n⌞Sebita⌝ 🆚 ⌞lrs la sustancia⌝\n⌞Abraham⌝ 🆚 ⌞black demon⌝\n⌞Drakm⌝ 🆚 ⌞makmah⌝\n⌞Drex⌝ 🆚 ⌞sultán⌝\n⌞Lrs⌝ 🆚 ⌞apolo⌝\n⌞Dios⌝ 🆚 ⌞mito⌝\n⌞Black demon⌝ 🆚 ⌞Tenor⌝",
+   "ed": 1795665004329,
+   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝\n⌞Sebita⌝ 🆚 ⌞lrs la sustancia⌝\n⌞Abraham⌝ 🆚 ⌞black demon⌝\n⌞Drakm⌝ 🆚 ⌞makmah⌝\n⌞Drex⌝ 🆚 ⌞sultán⌝\n⌞Lrs⌝ 🆚 ⌞apolo⌝\n⌞Dios⌝ 🆚 ⌞mito⌝\n⌞Black demon⌝ 🆚 ⌞Monet⌝\n⌞Gus⌝ 🆚 ⌞Dios⌝\n⌞Drex⌝ 🆚 ⌞Raxo⌝\n⌞Raxo⌝ 🆚 ⌞Drakm⌝\n⌞Drex⌝ 🆚 ⌞Monet⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -15017,9 +15061,49 @@
      "OCTAVOS",
      [
       "Black demon",
-      "Tenor"
+      "Monet"
      ],
-     "Tenor",
+     "Monet",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Gus",
+      "Dios"
+     ],
+     "Dios",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Drex",
+      "Raxo"
+     ],
+     "Drex",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Raxo",
+      "Drakm"
+     ],
+     "Raxo",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Drex",
+      "Monet"
+     ],
+     "Monet",
      "veredicto",
      []
     ]

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T03:25:36+00:00",
+ "cuando": "2026-11-26T03:55:37+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8295,6 +8295,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "🇦🇷",
+   "quien": "raxo14",
+   "discord_id": "234703794041126922",
+   "msg_id": "1575353556704174112",
+   "cuando": "2026-11-26T03:32:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "raxo",
+   "quien": "raxo14",
+   "discord_id": "234703794041126922",
+   "msg_id": "1575353262524203019",
+   "cuando": "2026-11-26T03:31:26"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44276,24 +44294,6 @@
    "discord_id": "817387658656874536",
    "msg_id": "1562974479871770655",
    "cuando": "2026-10-22T23:42:34"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones-2",
-   "texto": "makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1562973969471119391",
-   "cuando": "2026-10-22T23:40:32"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones-2",
-   "texto": "Pichula mc 🇦🇷 + abyssus 🇵🇦",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1562973873039868016",
-   "cuando": "2026-10-22T23:40:09"
   }
  ]
 }
