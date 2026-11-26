@@ -1668,12 +1668,14 @@ console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
       } }),
     },
   };
-  let disparos = 0;
-  globalThis.fetch = async () => { disparos++; return new Response(null, { status: 204 }); };
+  // 🎬 el latido también dispara shorts.yml (26/11/2026), a toda hora: ése se cuenta aparte
+  let disparos = 0, shorts = 0;
+  globalThis.fetch = async (u) => { if (/shorts\.yml/.test(String(u))) shorts++; else disparos++; return new Response(null, { status: 204 }); };
   // 2:22 PM ET: fuera de la madrugada, así que toca ciclo
   await worker.scheduled({ cron: '22,52 * * * *', scheduledTime: Date.parse('2026-09-25T18:22:00Z') },
     envD, ctx);
-  ok('dispara el ciclo', disparos === 1);
+  ok('dispara el ciclo', disparos === 1, disparos);
+  ok('y los shorts', shorts === 1, shorts);
   ok('las dos marcas van al objeto', marcas.join(',') === 'arranco,ultimo', marcas.join(','));
   ok('y KV no gasta ni una escritura', kvPuestas.length === 0, kvPuestas.join(','));
   envD.AVISOS = { idFromName: () => 'liga',
@@ -1683,10 +1685,11 @@ console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
   ok('si el objeto no contesta, las marcas caen en KV', kvPuestas.join(',') === 'cron:arranco,cron:ultimo',
      kvPuestas.join(','));
   // 🌙 5:22 AM ET es madrugada: no dispara y no marca nada
-  marcas.length = 0; kvPuestas.length = 0; disparos = 0;
+  marcas.length = 0; kvPuestas.length = 0; disparos = 0; shorts = 0;
   await worker.scheduled({ cron: '22,52 * * * *', scheduledTime: Date.parse('2026-09-25T09:22:00Z') },
     envD, ctx);
-  ok('de madrugada no dispara ni gasta', disparos === 0 && !marcas.length && !kvPuestas.length);
+  ok('de madrugada no dispara ni gasta', disparos === 0 && !marcas.length && !kvPuestas.length, disparos + ' ' + marcas + ' ' + kvPuestas);
+  ok('pero los shorts sí (no tocan el ciclo)', shorts === 1, shorts);
   globalThis.fetch = antesFetch;
 }
 
