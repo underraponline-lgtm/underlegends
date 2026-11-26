@@ -53,7 +53,7 @@ import { mezclar, partir, duracion, sonoridad, ganancia, cortar } from './mezcla
 import { MedidorVoz, VENTANA_S, TEXTOS, NOMBRE_PROBLEMA } from './calidad.js';
 import { PruebaMicro } from './microfono.js';
 import { LlamadasVivo, claveCiclo } from './vivo.js';
-import { VIGIA_CAIDO_MIN, ANUNCIO_HORAS, FOTO_S, caidoDesde, anunciosDeAhora, largoRecuperada } from './reserva.js';
+import { VIGIA_CAIDO_MIN, ANUNCIO_HORAS, FOTO_S, caidoDesde, anunciosDeAhora, largoRecuperada, decidirFin, CAMPEON } from './reserva.js';
 import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S, completarIds, sinUbicar } from './batallas.js';
 import { Menciones } from './mencion.js';
 import { Fallas, motivoDe, textoFalla } from './entrada.js';
@@ -206,7 +206,7 @@ function vigiaNoContesto() {
     vigia.avisado = true;
   }
 }
-let vivo = { t: 0, g: new Set(), viva: new Set(), ed: new Map() };
+let vivo = { t: 0, g: new Set(), viva: new Set(), ed: new Map(), aviso: new Map(), cerrada: new Map() };
 async function llavesEnJuego(paraEntrar = false) {
   if (Date.now() - vivo.t >= 120000) {
     vivo.t = Date.now();
@@ -222,6 +222,23 @@ async function llavesEnJuego(paraEntrar = false) {
         if (Date.now() - ed <= LLAVE_ENTRAR_MIN * 60000) viva.add(String(ll.g));
       }
       if (!r.ok) throw new Error('contestó ' + r.status);
+      // ✂️⏸️ lo último que avisó el organizador de cada servidor (`estados`, por sigla: se pasa a guild con las llaves) y si
+      // la llave más nueva de cada servidor ya tiene campeón (ver `decidirFin()` en reserva.js)
+      const svG = new Map();
+      const ult = new Map();
+      for (const ll of d.llaves || []) {
+        if (ll.sv && ll.g) svG.set(String(ll.sv), String(ll.g));
+        const ed = ll.ed || ll.pub;
+        if (ll.g && (!ult.has(String(ll.g)) || ed > ult.get(String(ll.g)).ed)) ult.set(String(ll.g), { ed, texto: String(ll.texto || '') });
+      }
+      const aviso = new Map();
+      for (const e of d.estados || []) {
+        const gg = svG.get(String(e.sv || ''));
+        if (!gg || !e.tipo) continue;
+        if (!aviso.has(gg) || Number(e.pub) > aviso.get(gg).pub) aviso.set(gg, { tipo: String(e.tipo), pub: Number(e.pub) || 0, nueva: Number(e.nueva) || 0 });
+      }
+      vivo.aviso = aviso;
+      vivo.cerrada = new Map([...ult].map(([gg, x]) => [gg, CAMPEON.test(x.texto)]));
       vivo.g = g;
       vivo.viva = viva;
       vivo.ed = ultima;
@@ -470,6 +487,12 @@ class Grabacion {
     con.on('error', (e) => anotar('⚠️ la conexión de voz:', String(e.message || e).slice(0, 120)));
   }
 
+  /** ✂️ lo que avisó el organizador desde que empezó esta grabación (con 30 min de margen), o null */
+  avisoOrg() {
+    const a = vivo.aviso && vivo.aviso.get(this.guild.id);
+    return a && a.pub >= this.inicio.getTime() - 30 * 60000 ? a : null;
+  }
+
   /** ⏸️ ¿Se pausa en vez de terminar? Con el evento en juego (o en un servidor que se graba por gente) y sin pasar el tope. */
   puedePausar() {
     return !this.cerrando && this.pausas < PAUSAS_MAX && this.t0 !== undefined
@@ -477,16 +500,17 @@ class Grabacion {
   }
 
   /** ⏸️ La sacaron: suelta la llamada, deja las pistas abiertas y congela el reloj (ver `PAUSA_MAX_MIN`). */
-  pausar(razon) {
+  pausar(razon, { hasta = 0, retoma = false } = {}) {
     if (this.pausa || this.cerrando) return;
-    this.pausa = { t: performance.now(), d: Date.now(), ms: this.ms(), razon };
+    this.pausa = { t: performance.now(), d: Date.now(), ms: this.ms(), razon, hasta, retoma };
     this.pausas++;
     clearInterval(this.reloj);
     for (const st of this.subs.values()) st.destroy();
     this.subs.clear();
     try { this.con.destroy(); } catch (e) { /* ya estaba cerrada */ }
     this.ponerApodo(false);
-    anotar(`⏸️ ${this.guild.name}: ${razon} a los ${largo(this.pausa.ms / 1000)}; espera hasta ${PAUSA_MAX_MIN} min para volver al evento`);
+    this.razonesPausa = (this.razonesPausa || []).concat([razon]);
+    anotar(`⏸️ ${this.guild.name}: ${razon} a los ${largo(this.pausa.ms / 1000)}; espera ${largo(((hasta || Date.now() + PAUSA_MAX_MIN * 60000) - Date.now()) / 1000)} para volver`);
   }
 
   /** ⏸️→🔴 Vuelve a una llamada del evento y sigue en la MISMA grabación: lo de afuera no queda en el audio. */
@@ -514,9 +538,17 @@ class Grabacion {
   /** ⏸️ Cada vuelta, en pausa: ¿vuelve, sigue esperando o se entrega? */
   revisarPausa() {
     const fuera = Date.now() - this.pausa.d;
-    const sigue = this.eventoSigue() || GRABAR_EN.includes(this.guild.id);
-    if (!sigue) { this.terminar(this.pausa.razon + ' y el evento terminó'); return; }
-    if (fuera >= PAUSA_MAX_MIN * 60000) { this.terminar(this.pausa.razon + ` y no pudo volver en ${PAUSA_MAX_MIN} min`); return; }
+    const av = this.avisoOrg();
+    if (av && av.tipo === 'cancelado' && av.pub >= this.pausa.d - 60000) { this.terminar('el organizador avisó que se canceló'); return; }
+    const tope = this.pausa.hasta || this.pausa.d + PAUSA_MAX_MIN * 60000;
+    if (Date.now() >= tope) { this.terminar(this.pausa.razon + ` y no se retomó en ${largo((tope - this.pausa.d) / 1000)}`); return; }
+    if (this.pausa.retoma) {
+      // ✂️ esperando que se retome: vuelve sólo si la llave se movió después de salir
+      if ((vivo.ed.get(this.guild.id) || 0) <= this.pausa.d) return;
+    } else if (!(av && av.tipo === 'pausado')) {
+      const sigue = this.eventoSigue() || GRABAR_EN.includes(this.guild.id);
+      if (!sigue) { this.terminar(this.pausa.razon + ' y el evento terminó'); return; }
+    }
     if (fuera < ESPERA_VOLVER || this.volviendo) return;
     const yo = this.guild.members.me;
     if (yo?.communicationDisabledUntilTimestamp > Date.now()) { this.terminar('me aislaron (timeout) en ese servidor'); return; }
@@ -585,16 +617,23 @@ class Grabacion {
     const sigue = this.eventoSigue();
     // ↪️ se vació, pero el evento sigue: ¿se mudó de canal?
     if (n < SALIR_CON && (sigue || !this.eventoVisto) && this.mudarse()) return;
-    if (n < SALIR_CON) {
-      this.vacia ??= Date.now();
-      if (Date.now() - this.vacia >= ESPERA_SALIR) this.terminar('se vació la llamada');
-    } else this.vacia = null;
+    if (n < SALIR_CON) this.vacia ??= Date.now();
+    else this.vacia = null;
     // 🏁 ya vio el evento y el evento terminó: sale aunque la llamada siga llena (lo de después es charla o un cypher)
-    if (this.eventoVisto && !sigue) {
-      this.sinEvento ??= Date.now();
-      if (Date.now() - this.sinEvento >= ESPERA_SALIR) this.terminar('terminó el evento');
-    } else this.sinEvento = null;
-    if (this.ms() >= MAX_H * 3600000) this.terminar(`llegó a ${MAX_H} h`);
+    if (this.eventoVisto && !sigue) this.sinEvento ??= Date.now();
+    else this.sinEvento = null;
+    if (this.ms() >= MAX_H * 3600000) { this.terminar(`llegó a ${MAX_H} h`); return; }
+    // ✂️⏸️ qué hacer: lo decide `decidirFin()` (reserva.js) con lo que avisó el organizador y si la llave tiene campeón
+    const d = decidirFin({
+      vacia: !!this.vacia && Date.now() - this.vacia >= ESPERA_SALIR,
+      quieta: !!this.sinEvento && Date.now() - this.sinEvento >= ESPERA_SALIR,
+      aviso: this.avisoOrg(), cerrada: !!(vivo.cerrada && vivo.cerrada.get(this.guild.id)), llaveVista: this.llaveVista,
+    });
+    if (d.que === 'terminar') this.terminar(d.razon);
+    else if (d.que === 'pausar') {
+      if (this.pausas >= PAUSAS_MAX + 2) this.terminar(d.razon);
+      else this.pausar(d.razon, { hasta: d.hasta, retoma: d.retoma });
+    }
   }
 
   async terminar(razon) {
@@ -696,8 +735,8 @@ class Grabacion {
       + `${horaET(this.inicio)} · ${largo(seg)} · ${gente.length} voces`
       + (voces.length > gente.length ? ' + la música' : '')
       + `\nEntró porque ${this.motivo}; salió porque ${razon}.`
-      + (this.pausas && this.afuera > 0 ? `\n↩️ La sacaron de la llamada ${this.pausas === 1 ? '1 vez' : this.pausas + ' veces'} y volvió:`
-        + ` va todo junto, sin los ${largo(this.afuera / 1000)} de afuera.` : '');
+      + (this.pausas && this.afuera > 0 ? `\n↩️ Se cortó ${this.pausas === 1 ? '1 vez' : this.pausas + ' veces'} y siguió`
+        + ` (${[...new Set(this.razonesPausa || ['me sacaron de la llamada'])].join('; ')}): va todo junto, sin los ${largo(this.afuera / 1000)} del medio.` : '');
     if (!voces.length) {
       await canal.send({ content: cab + '\nNo habló nadie: no hay audio.', allowedMentions: { parse: [] } });
       return;

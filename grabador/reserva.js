@@ -31,3 +31,42 @@ export function largoRecuperada(e, durPistas) {
   if (e && e.cortada) return s;
   return Math.max(s, Math.min(Math.max(0, ...(durPistas || [0])), s + FOTO_S + 10));
 }
+
+// ✂️⏸️ EL EVENTO QUE SE CORTA A MEDIAS (25/11/2026; Dlx: «en un evento que ULAYA estaba grabando la competencia terminó a
+// medias, el organizador se fue… ¿sabe ULAYA cuando se cancela un evento, si alguien la va a retomar o si salirse?», y a
+// las dos mejoras, «dale»). Hasta acá sólo miraba la llamada y la llave: salía a los 5 min de vaciarse o a los 40 de la
+// llave quieta, y si después lo retomaban, era OTRA grabación. Ahora también lee lo que el organizador AVISA (`estados` de
+// `/avisos/vivo`, lo mismo que la página: cancelado, pausado, atrasado) y si la llave ya tiene campeón:
+//   · «se cancela»                  → termina YA y entrega (no espera los 40 min)
+//   · «pausa» (con o sin hora)       → no sale porque la llave esté quieta; si la llamada se vacía, se PAUSA hasta la hora
+//                                     que dijo + `PAUSA_ORG_COLA_MIN` (o `PAUSA_ORG_MAX_MIN` sin hora) y sigue la misma
+//   · la llave SIN campeón y se vacía la llamada o la llave se queda quieta → sale y ESPERA `RETOMA_MAX_MIN` a que la llave
+//                                     se vuelva a mover: si se mueve, vuelve y sigue la MISMA grabación; si no, entrega
+//   · la llave con campeón          → como siempre
+export const RETOMA_MAX_MIN = num(E.RETOMA_MAX_MIN, 90);
+export const PAUSA_ORG_MAX_MIN = num(E.PAUSA_ORG_MAX_MIN, 90);
+export const PAUSA_ORG_COLA_MIN = 30;
+//: lo que dice que una llave terminó: su campeón, en palabras (🏆 y 👑 van de adorno en títulos y canales: no cuentan)
+export const CAMPEON = /campe[oó]n|campeona|ganador(?:a)?\s+del\s+torneo|\b1\s*(?:er|ro|°|º)\s*(?:lugar|puesto)|primer\s+(?:lugar|puesto)/i;
+
+/**
+ * Qué hacer en esta vuelta, con: `vacia` (la llamada se vació hace ESPERA_SALIR o más), `quieta` (el evento se dio por
+ * terminado: la llave sin tocar `LLAVE_SALIR_MIN`), `aviso` (lo último que avisó el organizador desde que empezó a grabar:
+ * `{tipo, pub, nueva}` o null), `cerrada` (la llave tiene campeón), `llaveVista`, `ahora`. Devuelve
+ * `{que: 'seguir' | 'terminar' | 'pausar', razon, hasta, retoma}`.
+ */
+export function decidirFin({ vacia = false, quieta = false, aviso = null, cerrada = false, llaveVista = false, ahora = Date.now() } = {}) {
+  if (aviso && aviso.tipo === 'cancelado') return { que: 'terminar', razon: 'el organizador avisó que se canceló' };
+  const pausaOrg = aviso && aviso.tipo === 'pausado';
+  if (pausaOrg) {
+    if (!vacia) return { que: 'seguir' };
+    const hasta = Number(aviso.nueva) > ahora ? Number(aviso.nueva) + PAUSA_ORG_COLA_MIN * 60000 : ahora + PAUSA_ORG_MAX_MIN * 60000;
+    return { que: 'pausar', razon: 'el organizador avisó una pausa', hasta, retoma: false };
+  }
+  if (!vacia && !quieta) return { que: 'seguir' };
+  if (llaveVista && !cerrada) {
+    return { que: 'pausar', razon: vacia ? 'la llamada se vació con la llave sin terminar' : 'la llave quedó quieta sin campeón',
+      hasta: ahora + RETOMA_MAX_MIN * 60000, retoma: true };
+  }
+  return { que: 'terminar', razon: vacia ? 'se vació la llamada' : 'terminó el evento' };
+}

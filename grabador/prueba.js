@@ -376,6 +376,26 @@ console.log('\n⚔️ cada batalla en la grabación\n');
   ok(ya.length === 1 && ya[0] === '111111111111111111', 'de los anuncios guardados, los de ahora: el que arranca en 20 min sí; el de dentro de 3 h y el de hace 5 h, no');
   ok(RS.anunciosDeAhora(evs, H0 + 3 * 3600000).map((f) => f[0]).join() === '111111111111111111,222222222222222222',
     'y 3 h después, con el vigía caído, entra el que se había guardado para más tarde');
+  // ✂️⏸️ el evento que se corta a medias (25/11/2026)
+  const AH = Date.parse('2026-11-25T23:00:00Z');
+  const D = (o) => RS.decidirFin(Object.assign({ ahora: AH }, o));
+  ok(D({}).que === 'seguir' && D({ vacia: true }).que === 'terminar' && D({ quieta: true, llaveVista: true, cerrada: true }).que === 'terminar',
+    'sin avisos y con la llave terminada, como siempre: se vació o terminó → entrega');
+  ok(D({ aviso: { tipo: 'cancelado', pub: AH } }).que === 'terminar' && D({ aviso: { tipo: 'cancelado' } }).razon.includes('cancel'),
+    '«se cancela»: entrega YA, aunque la llamada siga llena');
+  const p1 = D({ vacia: true, aviso: { tipo: 'pausado', pub: AH, nueva: AH + 20 * 60000 } });
+  const p2 = D({ vacia: true, aviso: { tipo: 'pausado', pub: AH } });
+  ok(D({ quieta: true, aviso: { tipo: 'pausado' } }).que === 'seguir' && p1.que === 'pausar' && p1.hasta === AH + 50 * 60000
+    && p2.que === 'pausar' && p2.hasta === AH + RS.PAUSA_ORG_MAX_MIN * 60000 && !p1.retoma,
+  '«pausa»: no sale por la llave quieta; vacía, espera hasta la hora que dijo + 30 min (o 90 sin hora)');
+  const r1 = D({ vacia: true, llaveVista: true, cerrada: false });
+  const r2 = D({ quieta: true, llaveVista: true, cerrada: false });
+  ok(r1.que === 'pausar' && r1.retoma && r1.hasta === AH + RS.RETOMA_MAX_MIN * 60000 && r2.que === 'pausar' && r2.retoma
+    && D({ vacia: true, llaveVista: false }).que === 'terminar',
+  'la llave sin campeón: sale y espera 90 min a que se retome; sin llave vista, entrega como siempre');
+  ok(RS.CAMPEON.test('🏆 CAMPEÓN: Inku') && RS.CAMPEON.test('1er lugar Konan') && RS.CAMPEON.test('Campeon - X')
+    && !RS.CAMPEON.test('CUARTOS\nA vs B\nSEMIFINAL\nC vs D') && !RS.CAMPEON.test('『👑』REY DE LA PISTA 🏆\nA vs B'),
+  'la llave con campeón se reconoce; una sin terminar no, aunque lleve 👑 o 🏆 de adorno');
   ok(RS.largoRecuperada({ seg: 3600, cortada: true }, [3700]) === 3600 && RS.largoRecuperada({ seg: 3600 }, [3640]) === 3640
     && RS.largoRecuperada({ seg: 3600 }, [9000]) === 3600 + RS.FOTO_S + 10 && RS.largoRecuperada({ seg: 3600 }, [100]) === 3600,
   'una recuperada: apagada por Railway, lo de la foto; caída sin avisar, lo que se alcanzó a escribir (sin pasarse de la foto + 70 s)');
