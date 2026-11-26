@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-26T18:38:53Z",
+ "cuando": "2026-11-26T19:02:40Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 949.5,
+ "dur_s": 576.9,
  "pasos": [
   {
    "n": "0a",
@@ -15,31 +15,31 @@
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.5
+   "s": 1.2
   },
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 1.1
+   "s": 1.0
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.0
+   "s": 1.9
   },
   {
    "n": "1",
    "que": "las llaves cargadas, al buzón (datos/entrada_buzon.json)",
    "ok": true,
-   "s": 332.9
+   "s": 70.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 66.0
+   "s": 73.1
   },
   {
    "n": "1a",
@@ -63,7 +63,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 61.5
+   "s": 48.5
   },
   {
    "n": "1b2",
@@ -81,7 +81,7 @@
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.7
+   "s": 0.5
   },
   {
    "n": "2b",
@@ -123,19 +123,19 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 1.1
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.8
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 4.7
+   "s": 4.5
   },
   {
    "n": "2b5b",
@@ -147,19 +147,19 @@
    "n": "2b6",
    "que": "los apodos (/apodo)",
    "ok": true,
-   "s": 59.6
+   "s": 49.2
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 42.4
+   "s": 7.0
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 5.0
+   "s": 5.3
   },
   {
    "n": "2b8b",
@@ -177,7 +177,7 @@
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 83.0
+   "s": 64.7
   },
   {
    "n": "2b8e",
@@ -189,7 +189,7 @@
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 13.5
+   "s": 9.4
   },
   {
    "n": "2b8g",
@@ -207,7 +207,7 @@
    "n": "2b8h2",
    "que": "la gente de cada evento",
    "ok": true,
-   "s": 2.4
+   "s": 2.5
   },
   {
    "n": "2b4c",
@@ -225,7 +225,7 @@
    "n": "2b8i",
    "que": "las competencias de la semana",
    "ok": true,
-   "s": 2.9
+   "s": 3.0
   },
   {
    "n": "2b8k",
@@ -237,13 +237,13 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 48.2
+   "s": 47.3
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 2.3
+   "s": 1.9
   },
   {
    "n": "2b9c",
@@ -261,13 +261,13 @@
    "n": "2b11",
    "que": "el kit de cada servidor",
    "ok": true,
-   "s": 15.2
+   "s": 8.8
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 55.6
+   "s": 58.6
   },
   {
    "n": "2c2",
@@ -279,13 +279,13 @@
    "n": "2c3",
    "que": "el anuncio que sale solo a su hora",
    "ok": true,
-   "s": 1.8
+   "s": 0.1
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 12.7
+   "s": 13.5
   },
   {
    "n": "2e",
@@ -303,7 +303,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.9
+   "s": 4.3
   },
   {
    "n": "2f2",
@@ -315,19 +315,19 @@
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 17.8
+   "s": 17.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 92.9
+   "s": 64.6
   }
  ],
  "fallas": [],
@@ -340,7 +340,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-11-26T18:28:44Z",
+  "cuando": "2026-11-26T18:54:21Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 845,
   "un_evento": 427,
@@ -410,25 +410,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 454,
-   "read": 24367
+   "write": 460,
+   "read": 25187
   },
   "objeto": {
-   "leidas": 2620271,
-   "escritas": 42276,
-   "pedidos": 22349
+   "leidas": 2643491,
+   "escritas": 42830,
+   "pedidos": 22628
   },
   "worker": {
    "pedidos": 26230,
    "errores": 0,
-   "sub": 31537,
+   "sub": 31553,
    "cortados": 0,
    "p50_ms": 1.06,
-   "p99_ms": 14.73,
+   "p99_ms": 14.67,
    "cpu": {
-    "total": 57477,
-    "objeto_10": 2605,
-    "worker_10": 775
+    "total": 57510,
+    "objeto_10": 2607,
+    "worker_10": 771
    }
   },
   "r2": {
