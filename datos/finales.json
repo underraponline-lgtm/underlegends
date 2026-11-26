@@ -2319,5 +2319,38 @@
   "sv": "FFA",
   "t_pregunta": "2026-11-24T05:26:58+00:00"
  },
+ "1575355385399873650": {
+  "autor": "1194813613786026136",
+  "canal": "1487207377601040516",
+  "canal_pregunta": "1487207377601040516",
+  "cuando": "2026-11-26T03:39:52.567000+00:00",
+  "donde": "llave",
+  "evento": "Backtime",
+  "fecha": "25/11",
+  "llave": "1575355385399873650",
+  "pregunta": "1575389202999419004",
+  "preguntada": "2026-11-26 12:54 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Dios 🇲🇽",
+     "Monet 🇲🇽"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "raxo",
+     "Dios 🇲🇽"
+    ],
+    "ronda": "SEMIFINALES"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": false,
+  "sv": "FFA",
+  "t_pregunta": "2026-11-26T05:54:16+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
