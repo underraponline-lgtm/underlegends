@@ -5,7 +5,7 @@
   "CEU": 3,
   "CHZ": 3,
   "DDF": 1,
-  "DDS": 3,
+  "DDS": 2,
   "DRA": 1,
   "DW": 3,
   "FDS": 3,
@@ -67,7 +67,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
-   "competitivo": false,
+   "competitivo": true,
    "duelos": true,
    "perfil": false
   },

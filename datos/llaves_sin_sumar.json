@@ -590,7 +590,7 @@
   "n": 116624515,
   "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪",
   "ns": 1,
-  "participantes": 13,
+  "participantes": 14,
   "rondas": [
    {
     "b": [
@@ -646,13 +646,52 @@
       ],
       "mats",
       ""
+     ],
+     [
+      [
+       "Tmax Turbo [PN]",
+       "Gus"
+      ],
+      "Tmax Turbo [PN]",
+      ""
      ]
     ],
     "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Masino",
+       "MaYeuTyK"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Tmax Turbo [PN]"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
    }
   ],
   "sv": "WOF",
   "tabla": [
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    0
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Semifinal",
+    0
+   ],
    [
     "Cajita",
     "Cuartos",
@@ -660,6 +699,11 @@
    ],
    [
     "CrisZJ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Gus",
     "Cuartos",
     0
    ],

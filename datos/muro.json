@@ -2952,15 +2952,6 @@
 },
 "cambios": [
 {
-"tipo": "rango",
-"t": "2026-10-16T04:29:17Z",
-"quien": [
-"Gocho"
-],
-"rg": "E",
-"primero": true
-},
-{
 "tipo": "tarjeta",
 "t": "2026-10-16T04:29:17Z",
 "quien": [
@@ -6367,6 +6358,13 @@
 "dxg"
 ],
 "carta": "pais"
+},
+{
+"tipo": "svtier",
+"t": "2026-11-26T02:30:51Z",
+"sv": "DDS",
+"de": 3,
+"a": 2
 }
 ],
 "noche_antes": {
@@ -8714,7 +8712,7 @@
 "FDS": 3,
 "SR": 2,
 "URBF": 1,
-"DDS": 3,
+"DDS": 2,
 "CH": 0,
 "CEU": 3,
 "LKR": 3,
