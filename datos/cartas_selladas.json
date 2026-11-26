@@ -76,7 +76,7 @@
    "temporada": "c1dcc46f5a90:0b98cb3023ec"
   },
   "Aktybo": {
-   "competitivo": "ee5b94a3eadf:baafccf84bc7",
+   "competitivo": "7054f52cf334:baafccf84bc7",
    "pais": "0512650d3713:84d29bb63c59",
    "servidor": "6178368352ff:ca27345eed9e:15af16"
   },
@@ -361,8 +361,8 @@
    "servidor": "3091ea473e7f:ca27345eed9e:a672ab"
   },
   "Dantemx": {
-   "competitivo": "22d43baa6223:baafccf84bc7",
-   "pais": "37ec0885e210:84d29bb63c59",
+   "competitivo": "98255fae5f6d:baafccf84bc7",
+   "pais": "d4662e59306f:84d29bb63c59",
    "servidor": "debfa7f1bec5:ca27345eed9e:18ae17",
    "temporada": "d87f7cf578df:0b98cb3023ec"
   },
@@ -380,7 +380,7 @@
    "servidor": "5326ca7e9e57:ca27345eed9e:ce9c52"
   },
   "David": {
-   "competitivo": "0a73e85577ce:baafccf84bc7",
+   "competitivo": "637bee7248b7:baafccf84bc7",
    "pais": "1315af3e7529:84d29bb63c59",
    "servidor": "2977cb4f06b6:ca27345eed9e:1f00d0"
   },
@@ -701,10 +701,10 @@
    "servidor": "5e85d15ed979:ca27345eed9e:055f77"
   },
   "Hades": {
-   "competitivo": "0101dd77bffb:baafccf84bc7",
+   "competitivo": "a648bd5fc248:baafccf84bc7",
    "pais": "546704f0b0ad:84d29bb63c59",
    "servidor": "4ad10d2855b2:ca27345eed9e:980594",
-   "temporada": "bfed3a6290e7:0b98cb3023ec"
+   "temporada": "9dda34dc4ff1:0b98cb3023ec"
   },
   "Hardcore": {
    "competitivo": "88d35a69e42a:baafccf84bc7",
@@ -1044,8 +1044,8 @@
    "servidor": "c54e687722a2:ca27345eed9e:15af16"
   },
   "Leonart": {
-   "competitivo": "49c2bc3b7fe5:baafccf84bc7",
-   "pais": "ba4bc5119c42:84d29bb63c59",
+   "competitivo": "642d05d0f83c:baafccf84bc7",
+   "pais": "31ffa19ae3a5:84d29bb63c59",
    "servidor": "87b04869da36:ca27345eed9e:12faed",
    "temporada": "70bb139070a0:0b98cb3023ec"
   },
@@ -1161,8 +1161,8 @@
    "servidor": "03a768199698:ca27345eed9e:980594"
   },
   "MaYeuTyK": {
-   "competitivo": "bd44d82b948f:baafccf84bc7",
-   "pais": "09ce50f1a445:84d29bb63c59",
+   "competitivo": "efb9cbb85e8e:baafccf84bc7",
+   "pais": "22272aaf4676:84d29bb63c59",
    "servidor": "fdc953ccdf01:ca27345eed9e:18ae17",
    "temporada": "1335e699e253:0b98cb3023ec"
   },
@@ -1197,8 +1197,8 @@
    "temporada": "1c01da6d63ee:0b98cb3023ec"
   },
   "Mathhias": {
-   "competitivo": "c169185a0a6f:baafccf84bc7",
-   "pais": "b4b9297abb32:84d29bb63c59",
+   "competitivo": "fcb116f2ceda:baafccf84bc7",
+   "pais": "f847e50dea05:84d29bb63c59",
    "servidor": "c1a8ff755293:ca27345eed9e:552866",
    "temporada": "9f96a2187047:0b98cb3023ec"
   },
@@ -1267,10 +1267,10 @@
    "servidor": "0995b01c57e5:ca27345eed9e:b9a938"
   },
   "Mochi DG": {
-   "competitivo": "ae0ed90161c7:baafccf84bc7",
+   "competitivo": "22f71cc4b051:baafccf84bc7",
    "pais": "f2dd94701cb8:84d29bb63c59",
    "servidor": "701f9c69e300:ca27345eed9e:e6613e",
-   "temporada": "156184d2c6df:0b98cb3023ec"
+   "temporada": "30d62f992401:0b98cb3023ec"
   },
   "Molt": {
    "competitivo": "1e1e81ef86dd:baafccf84bc7",
@@ -1643,16 +1643,16 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "fbca30655704:baafccf84bc7",
+   "competitivo": "139331637e26:baafccf84bc7",
    "pais": "88508a57d501:84d29bb63c59",
    "servidor": "6c1d4957a6e6:ca27345eed9e:972ec9"
   },
   "SMAFF": {},
   "SNE": {
-   "competitivo": "417d8f66d280:baafccf84bc7",
+   "competitivo": "45ddbd68208a:baafccf84bc7",
    "pais": "eab3dcdaed2d:84d29bb63c59",
    "servidor": "b29d92a4acfa:ca27345eed9e:3eef23",
-   "temporada": "ae4cd929903b:0b98cb3023ec"
+   "temporada": "62a3892cd3b5:0b98cb3023ec"
   },
   "SOL": {
    "competitivo": "10c6ef9c7f99:baafccf84bc7",
@@ -2087,8 +2087,8 @@
    "temporada": "cd784db1e3bd:0b98cb3023ec"
   },
   "dxg": {
-   "competitivo": "123b9c6b6c2f:baafccf84bc7",
-   "pais": "4f4d13b0ef31:84d29bb63c59",
+   "competitivo": "d1d3c060c112:baafccf84bc7",
+   "pais": "76f481880331:84d29bb63c59",
    "servidor": "49b85dfdffca:ca27345eed9e:18ae17",
    "temporada": "1faef25ce101:0b98cb3023ec"
   },
@@ -2142,7 +2142,7 @@
    "temporada": "2549b27bb80c:0b98cb3023ec"
   },
   "nueve7": {
-   "competitivo": "5133abde1c7f:baafccf84bc7",
+   "competitivo": "e3a24bf81fb7:baafccf84bc7",
    "pais": "2ae4872dac9f:84d29bb63c59",
    "servidor": "6f8d76b0ca09:ca27345eed9e:324686"
   },
@@ -2204,5 +2204,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-26T02:40:29+00:00"
+ "cuando": "2026-11-26T02:45:33+00:00"
 }
