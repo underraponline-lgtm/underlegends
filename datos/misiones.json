@@ -819,11 +819,6 @@
      0,
      8
     ],
-    "Mato  🇧🇴": [
-     0,
-     0,
-     16
-    ],
     "Medster": [
      0,
      1,
@@ -2444,7 +2439,7 @@
      2,
      0
     ],
-    "Mato  🇧🇴": [
+    "Mato 🇧🇴": [
      2,
      16,
      16,
@@ -3082,7 +3077,7 @@
     "Makmah": 900,
     "Marcos": 900,
     "Masino": 900,
-    "Mato  🇧🇴": 300,
+    "Mato 🇧🇴": 300,
     "Miniboy": 900,
     "Molusco": 2900,
     "Mosquitrap 🦟": 1600,
@@ -14305,7 +14300,7 @@
      0
     ],
     "mats": [
-     "LAST",
+     "Walker",
      "escena",
      null,
      0
@@ -15362,7 +15357,7 @@
   "Masino": 2800,
   "Mathhias": 4700,
   "Matias": 300,
-  "Mato  🇧🇴": 300,
+  "Mato 🇧🇴": 300,
   "MauzzitoEmeces": 300,
   "Mc arepa": 2600,
   "Mc uchiha": 300,

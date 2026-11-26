@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T04:25:43+00:00",
+ "cuando": "2026-11-26T04:55:33+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6903,9 +6903,7 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-25T04:27:11"
+   "categoria_id": "1300152346537496623"
   },
   {
    "nombre": "COMPE 1V1",
@@ -6934,9 +6932,7 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-25T04:27:11"
+   "categoria_id": "1300152346537496623"
   },
   {
    "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS VOL 2",
@@ -6965,9 +6961,7 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-25T04:27:11"
+   "categoria_id": "1300152346537496623"
   },
   {
    "nombre": "DANGER WORLD CUP",
@@ -6991,9 +6985,7 @@
    "staff": {},
    "autor": "DANGER WORLD",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-25T04:27:11"
+   "categoria_id": "1300152346537496623"
   },
   {
    "nombre": "VENEZUELA CAMPEON DEL MUNDIAL DE COMIDAS",
@@ -7030,9 +7022,7 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1300152346537496623",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-11-25T04:27:11"
+   "categoria_id": "1300152346537496623"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -8331,6 +8321,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "black Dmon 🇪🇨🇺🇸",
+   "quien": "bidi8812",
+   "discord_id": "698611862031433779",
+   "msg_id": "1575369798047760425",
+   "cuando": "2026-11-26T04:37:08"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "okam",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1575368599604957345",
+   "cuando": "2026-11-26T04:32:23"
+  },
   {
    "servidor": "DDS",
    "canal": "📝〕INSCRIPCIONES",
@@ -44312,24 +44320,6 @@
    "discord_id": "1493013247488430202",
    "msg_id": "1563005074773377126",
    "cuando": "2026-10-23T01:44:09"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Pichulamc 🇦🇷",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1563005075423756329",
-   "cuando": "2026-10-23T01:44:09"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Stan🇨🇱",
-   "quien": "algoritmokrt",
-   "discord_id": "1359316127901024357",
-   "msg_id": "1563005070805704786",
-   "cuando": "2026-10-23T01:44:08"
   }
  ]
 }
