@@ -2964,14 +2964,6 @@
 },
 "cambios": [
 {
-"tipo": "tarjeta",
-"t": "2026-10-18T23:33:09Z",
-"quien": [
-"Polosport"
-],
-"carta": "competitivo"
-},
-{
 "tipo": "rango",
 "t": "2026-10-18T23:33:09Z",
 "quien": [
@@ -6398,6 +6390,12 @@
 ],
 "rk": "temporada",
 "pos": 9
+},
+{
+"tipo": "svnuevo",
+"t": "2026-11-26T23:31:04Z",
+"sv": "CYH",
+"tier": 1
 }
 ],
 "noche_antes": {
@@ -8801,7 +8799,8 @@
 "DW": 3,
 "WOF": 3,
 "UFLUC": 3,
-"SGR": 3
+"SGR": 3,
+"CYH": 1
 },
 "meta": [
 "2026-11-23",

@@ -446,6 +446,11 @@
    "cuando": "2026-11-25 9:48 PM ET",
    "por": "el ciclo (R24)",
    "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
+  },
+  "(sin titulo) · LKR · 17/11": {
+   "decision": "no cuenta",
+   "cuando": "2026-11-26 6:31 PM ET",
+   "por": "Dlx (✅ Decidir)"
   }
  },
  "no_rankear": {
@@ -575,6 +580,16 @@
    "pregunta": "Julio🇻🇪",
    "nota": "lo contestó El dueño, de UFLUC, en su panel · lo contestó Xervoe 🇨🇱",
    "cuando": "2026-11-26 5:13 PM ET"
+  },
+  "63be539fbd": {
+   "pregunta": "(sin titulo) · LKR · 17/11 · cuartos · Caquiña🇵🇪 🆚 Alek🇪🇸",
+   "nota": "lo contestó Lil Drako 🇪🇨",
+   "cuando": "2026-11-26 6:31 PM ET"
+  },
+  "c3d1e5f55e": {
+   "pregunta": "(sin titulo) · LKR · 17/11",
+   "nota": "el bot leyo mal lallave puesto a que losusuarios no aparecen como participantes · lo contestó Lil Drako 🇪🇨",
+   "cuando": "2026-11-26 6:31 PM ET"
   }
  },
  "batallas": {
@@ -1534,6 +1549,12 @@
    "cuando": "2026-11-26 1:23 AM ET",
    "por": "el organizador, con el menú (<@1194813613786026136>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "sintitulo|LKR|17/11|cuartos|alek|caquina": {
+   "ganador": "",
+   "batalla": "(sin titulo) · LKR · 17/11 · cuartos · Caquiña🇵🇪 🆚 Alek🇪🇸",
+   "cuando": "2026-11-26 6:31 PM ET",
+   "por": "Dlx (✅ Decidir)"
   }
  },
  "anuncios_fuera": {

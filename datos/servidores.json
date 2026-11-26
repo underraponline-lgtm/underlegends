@@ -988,6 +988,16 @@
     "canal_id": "1343821617306013723",
     "creada": "2026-11-24"
    }
+  },
+  "CYH": {
+   "nombre": "Cypherhood",
+   "guild_id": "1550026808404217926",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "CYH",
+   "tier": 1,
+   "alta": "dashboard",
+   "nota": "dado de alta desde el Dashboard el 26/11/2026 (bot/tiers.py `altas()`)"
   }
  },
  "_fuera_de_la_tabla": [

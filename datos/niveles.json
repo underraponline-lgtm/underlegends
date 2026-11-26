@@ -4,6 +4,7 @@
   "ACAD": 2,
   "CEU": 3,
   "CHZ": 3,
+  "CYH": 1,
   "DDF": 1,
   "DDS": 2,
   "DRA": 1,
@@ -50,6 +51,16 @@
    "competitivo": false,
    "duelos": true,
    "perfil": false
+  },
+  "CYH": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "competitivo": false,
+   "duelos": false,
+   "perfil": true
   },
   "DDF": {
    "pagina": true,
@@ -207,6 +218,7 @@
   "ACAD": "2026-10-04",
   "CEU": "2026-11-15",
   "CHZ": "2026-11-19",
+  "CYH": "2026-11-26",
   "DDF": "2026-10-03",
   "DDS": "2026-11-06",
   "DRA": "2026-09-22",

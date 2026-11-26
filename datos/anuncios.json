@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T22:55:05+00:00",
+ "cuando": "2026-11-26T23:25:01+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -1264,7 +1264,7 @@
      "id": "927662680540594236"
     },
     {
-     "n": "El Pibe  | Los Culeanizadores",
+     "n": "ZetaMc",
      "id": "535579351710957568"
     },
     {
@@ -1462,7 +1462,7 @@
     "jurado": [
      "Rubik",
      "LunaticoYG",
-     "El Pibe  | Los Culeanizadores"
+     "ZetaMc"
     ],
     "host": [
      "Rubik"
@@ -1475,7 +1475,7 @@
    "staff_cuentas": {
     "Rubik": "1070553144964173906",
     "LunaticoYG": "1459764124979433654",
-    "El Pibe  | Los Culeanizadores": "535579351710957568"
+    "ZetaMc": "535579351710957568"
    },
    "categoria_id": "863207988739309600"
   },
