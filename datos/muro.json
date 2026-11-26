@@ -861,7 +861,11 @@
 },
 "darnbless": {
 "rg": "E",
-"c": []
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "1200": {
 "rg": "E",
@@ -2956,31 +2960,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-17T04:28:38Z",
-"quien": [
-"Miniboy"
-],
-"carta": "temporada"
-},
-{
-"tipo": "rango",
-"t": "2026-10-17T23:31:15Z",
-"quien": [
-"Jupiter"
-],
-"rg": "D",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-17T23:31:15Z",
-"quien": [
-"Jupiter"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "rango",
 "t": "2026-10-18T00:59:54Z",
@@ -6383,6 +6362,30 @@
 "t": "2026-11-26T03:00:07Z",
 "quien": [
 "mats"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-26T05:27:11Z",
+"quien": [
+"DarnBless"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-26T05:27:11Z",
+"quien": [
+"DarnBless"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-26T05:27:11Z",
+"quien": [
+"DarnBless"
 ],
 "carta": "temporada"
 }
