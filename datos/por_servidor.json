@@ -580,7 +580,6 @@
     "pts": 47662,
     "racha": "0/3",
     "tg": {
-     "dv": true,
      "fin": 4,
      "fund": true
     }
@@ -713,10 +712,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 11450,
-    "racha": "0/0",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -1568,7 +1564,6 @@
     "pts": 22919,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    },
@@ -2413,7 +2408,6 @@
     "pts": 16500,
     "racha": "2/2",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    },
@@ -2964,7 +2958,6 @@
     "pts": 71062,
     "racha": "0/2",
     "tg": {
-     "dv": true,
      "fin": 2,
      "llave": true
     }
@@ -3652,7 +3645,6 @@
     "pts": 64693,
     "racha": "0/2",
     "tg": {
-     "dv": true,
      "fin": 3
     }
    },
@@ -3822,10 +3814,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 10325,
-    "racha": "0/0",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -3954,10 +3943,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2500,
-    "racha": "0/0",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/4",
@@ -7490,10 +7476,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 5000,
-    "racha": "0/0",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -8684,6 +8667,7 @@
     "pts": 26000,
     "racha": "1/1",
     "tg": {
+     "dv": true,
      "fin": 1
     }
    },
@@ -9852,6 +9836,7 @@
     "pts": 33762,
     "racha": "1/1",
     "tg": {
+     "dv": true,
      "fin": 1
     }
    }
@@ -13609,7 +13594,6 @@
     "pts": 5000,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    },
@@ -14269,10 +14253,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 9250,
-    "racha": "0/0",
-    "tg": {
-     "dv": true
-    }
+    "racha": "0/0"
    },
    "FDS": {
     "duelos": "",
@@ -15361,7 +15342,10 @@
     "ovr": 43,
     "pod": 0,
     "pts": 8000,
-    "racha": "0/0"
+    "racha": "0/0",
+    "tg": {
+     "dv": true
+    }
    },
    "FDS": {
     "duelos": "",
@@ -15888,7 +15872,6 @@
     "pts": 50150,
     "racha": "0/2",
     "tg": {
-     "dv": true,
      "fin": 2,
      "llave": true
     }
@@ -17229,7 +17212,6 @@
     "pts": 4950,
     "racha": "0/0",
     "tg": {
-     "dv": true,
      "nuevo": true
     }
    },
