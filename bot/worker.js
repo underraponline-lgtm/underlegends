@@ -5546,6 +5546,18 @@ export default {
         DUENO, enMadrugada(new Date(evento.scheduledTime || Date.now())));
       return;
     }
+    // 🎬 LOS SHORTS, EN CADA LATIDO Y A TODA HORA (26/11/2026, Dlx: «que lo de la madrugada no lo interrumpa»).
+    // `.github/workflows/shorts.yml` tiene su cron de GitHub, y ese cron casi no dispara (el del ciclo, 1 de cada 9):
+    // en su primera noche corrió UNA vez, la que se lanzó a mano. Va ANTES de `tocaCiclo()` a propósito: de madrugada
+    // el ciclo duerme y los shorts no. Nunca frena lo de abajo.
+    if (env.GH_TOKEN && env.GH_REPO) {
+      try {
+        await fetch(`https://api.github.com/repos/${env.GH_REPO}/actions/workflows/shorts.yml/dispatches`, {
+          method: 'POST', body: JSON.stringify({ ref: 'main' }),
+          headers: { 'User-Agent': 'liga-global-bot', 'Accept': 'application/vnd.github+json',
+            'Authorization': `Bearer ${env.GH_TOKEN}`, 'Content-Type': 'application/json' } });
+      } catch (e) { /* el próximo latido lo vuelve a pedir */ }
+    }
     // 🌙 DE MADRUGADA, DOS CORRIDAS Y NO DIECISÉIS. Ver `tocaCiclo()`. Se va
     // antes de las marcas de KV: una madrugada quieta no gasta escrituras.
     if (!tocaCiclo(new Date(evento.scheduledTime || Date.now()))) return;
