@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-25T23:25:54+00:00",
+ "cuando": "2026-11-25T23:55:31+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8116,24 +8116,6 @@
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573807199174533182"
   },
   {
-   "servidor": "WOF",
-   "canal": "├📣・anuncios-デ╦【",
-   "tit": "GANA CONTRA DIRECTA + 3 PTS",
-   "tx": "",
-   "cuando": "2026-11-21T18:46:30",
-   "msg_id": "1573771608345149460",
-   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1573771608345149460"
-  },
-  {
-   "servidor": "WOF",
-   "canal": "├📣・anuncios-デ╦【",
-   "tit": "GANA CONTRA DIRECTA + 3 PTS",
-   "tx": "",
-   "cuando": "2026-11-21T18:45:15",
-   "msg_id": "1573771292203819179",
-   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1573771292203819179"
-  },
-  {
    "servidor": "DW",
    "canal": "「🔔」ANUNCIOS",
    "tit": "TABLA DE LA JORNADA 1",
@@ -8168,6 +8150,15 @@
    "cuando": "2026-11-21T15:57:37",
    "msg_id": "1573729105231347933",
    "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1573729105231347933"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "├📣・anuncios-デ╦【",
+   "tit": "🏆 WORLD OF FREESTYLE LEAGUE | TEMPORADA 1",
+   "tx": "¡La primera temporada de WOF LEAGUE comienza a tomar forma! 🔥 Ya tenemos a nuestros 8 participantes oficiales, que buscarán hacerse con el título de esta primera edición. Pero todavía quedan 2 lugares por ocupar, que se ",
+   "cuando": "2026-11-20T19:53:37",
+   "msg_id": "1573426109540999251",
+   "link": "https://discord.com/channels/1558593868587339868/1573396976878489610/1573426109540999251"
   },
   {
    "servidor": "ACAD",
@@ -8224,6 +8215,15 @@
    "link": "https://discord.com/channels/1343820906358771798/1344845104052965406/1571976238124237001"
   },
   {
+   "servidor": "WOF",
+   "canal": "📢〢・Anuncios",
+   "tit": "MAÑANA: MCO VS TODOS (formato de prueba)",
+   "tx": "",
+   "cuando": "2026-11-16T18:53:28",
+   "msg_id": "1571961419564458055",
+   "link": "https://discord.com/channels/1558593868587339868/1566961462872899694/1571961419564458055"
+  },
+  {
    "servidor": "DW",
    "canal": "「🔔」ANUNCIOS",
    "tit": "LINE UP OFICIAL DANGER LEAGUE T5 🏆",
@@ -8243,6 +8243,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "dante🇦🇷",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1575298510058946722",
+   "cuando": "2026-11-25T23:53:52"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Skalaboy 🇲🇽",
+   "quien": "skala_mc",
+   "discord_id": "610840969579069461",
+   "msg_id": "1575297928984002581",
+   "cuando": "2026-11-25T23:51:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Miniboy🇨🇱",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1575295077738090699",
+   "cuando": "2026-11-25T23:40:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nxuz 🇵🇪",
+   "quien": "n_x_u_z_",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1575295062848446617",
+   "cuando": "2026-11-25T23:40:10"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1575291660240158801",
+   "cuando": "2026-11-25T23:26:39"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Suplente Dragón 🇲🇽",
+   "quien": "nsdragon9629",
+   "discord_id": "671537713857429505",
+   "msg_id": "1575291549544218696",
+   "cuando": "2026-11-25T23:26:12"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44188,60 +44242,6 @@
    "discord_id": "1468995046161256706",
    "msg_id": "1562708495999172619",
    "cuando": "2026-10-22T06:05:39"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Kibak",
-   "quien": "valentin.ks3",
-   "discord_id": "894017160756736091",
-   "msg_id": "1562708471911289033",
-   "cuando": "2026-10-22T06:05:33"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "SIN LIMITES 🇵🇪",
-   "quien": "sinlimites2026",
-   "discord_id": "1508623564285149357",
-   "msg_id": "1562708461098237983",
-   "cuando": "2026-10-22T06:05:30"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1562673734224183518",
-   "cuando": "2026-10-22T03:47:31"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Nerick 🇵🇪",
-   "quien": "erickrdz12",
-   "discord_id": "1129597963421888593",
-   "msg_id": "1562670430530183189",
-   "cuando": "2026-10-22T03:34:23"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Vilca🇵🇪",
-   "quien": "vilca_16",
-   "discord_id": "846870712950194196",
-   "msg_id": "1562670360455807108",
-   "cuando": "2026-10-22T03:34:06"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "giansito🇵🇪",
-   "quien": "gian_075",
-   "discord_id": "664288438563897354",
-   "msg_id": "1562669542348562495",
-   "cuando": "2026-10-22T03:30:51"
   }
  ]
 }
