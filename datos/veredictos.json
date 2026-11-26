@@ -11083,6 +11083,28 @@
    "b": "lrs la sustancia",
    "ganador": "Sebita",
    "votos": "1–0"
+  },
+  "1575342341814886411": {
+   "id": "1575342341814886411",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795661282734,
+   "a": "Drakm",
+   "b": "makmah",
+   "ganador": "Drakm",
+   "votos": "1–0"
+  },
+  "1575345504215375944": {
+   "id": "1575345504215375944",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795662036709,
+   "a": "Drex",
+   "b": "sultán",
+   "ganador": "Drex",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14875,8 +14897,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795659901306,
-   "ed": 1795661385630,
-   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝\n⌞Sebita⌝ 🆚 ⌞lrs la sustancia⌝\n⌞Abraham⌝ 🆚 ⌞black demon⌝\n⌞Drakm⌝ 🆚 ⌞makmah⌝",
+   "ed": 1795662041511,
+   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝\n⌞Sebita⌝ 🆚 ⌞lrs la sustancia⌝\n⌞Abraham⌝ 🆚 ⌞black demon⌝\n⌞Drakm⌝ 🆚 ⌞makmah⌝\n⌞Drex⌝ 🆚 ⌞sultán⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -14924,8 +14946,18 @@
       "Drakm",
       "makmah"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "Drakm",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Drex",
+      "sultán"
+     ],
+     "Drex",
+     "veredicto",
      []
     ]
    ]

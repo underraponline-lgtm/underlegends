@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T02:52:07+00:00",
+ "cuando": "2026-11-26T03:04:11+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7044,7 +7044,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": "Tungtungsahur",
+   "autor": "Chimpanzinibabannini",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -7304,7 +7304,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": "Tungtungsahur",
+   "autor": "Chimpanzinibabannini",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -8295,6 +8295,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "apolo🇦🇷",
+   "quien": "apoloaru",
+   "discord_id": "460481053061283842",
+   "msg_id": "1575345484397019248",
+   "cuando": "2026-11-26T03:00:31"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44285,15 +44294,6 @@
    "discord_id": "1502679833665208444",
    "msg_id": "1562973834318053475",
    "cuando": "2026-10-22T23:40:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones-2",
-   "texto": "gus 🇺🇾",
-   "quien": "agusdema",
-   "discord_id": "989640104765177956",
-   "msg_id": "1562973774062813227",
-   "cuando": "2026-10-22T23:39:46"
   }
  ]
 }
