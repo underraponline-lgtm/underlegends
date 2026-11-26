@@ -59799,5 +59799,150 @@
    ]
   ],
   "v": 2
+ },
+ "694": {
+  "antes": {
+   "Dantemx": [
+    133,
+    194,
+    false
+   ],
+   "EmiZor": [
+    285,
+    99,
+    true
+   ],
+   "Leonart": [
+    65,
+    78,
+    false
+   ],
+   "MaYeuTyK": [
+    43,
+    52,
+    false
+   ],
+   "Mathhias": [
+    44,
+    53,
+    false
+   ],
+   "Monet": [
+    288,
+    111,
+    true
+   ],
+   "Senticide": [
+    333,
+    205,
+    true
+   ],
+   "dxg": [
+    98,
+    128,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "EmiZor",
+    "dxg",
+    "EmiZor"
+   ],
+   [
+    "Senticide",
+    "MaYeuTyK",
+    "Senticide"
+   ],
+   [
+    "Mathhias",
+    "Dantemx",
+    "Mathhias"
+   ],
+   [
+    "Monet",
+    "Leonart",
+    "Monet"
+   ],
+   [
+    "Senticide",
+    "EmiZor",
+    "Senticide"
+   ],
+   [
+    "Monet",
+    "Mathhias",
+    "Monet"
+   ],
+   [
+    "Senticide",
+    "Monet",
+    "Senticide"
+   ]
+  ],
+  "ev_antes": {
+   "Dantemx": 4,
+   "EmiZor": 16,
+   "Leonart": 17,
+   "MaYeuTyK": 27,
+   "Mathhias": 22,
+   "Monet": 12,
+   "Senticide": 3,
+   "dxg": 13
+  },
+  "fecha": "25/11",
+  "noche": true,
+  "nombre": "- SHAOLIN BATTLES -",
+  "num": 694,
+  "participantes": 8,
+  "sello": {
+   "Senticide": ""
+  },
+  "sv": "FRZ",
+  "t": "2026-11-26T02:05:18Z",
+  "tabla": [
+   [
+    "Senticide",
+    "Campeón",
+    7500
+   ],
+   [
+    "Monet",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    3500
+   ],
+   [
+    "dxg",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dantemx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Leonart",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

@@ -238,6 +238,27 @@
      ]
     ],
     [
+     "Senticide",
+     66,
+     3,
+     4,
+     0,
+     [
+      [
+       16,
+       "Monet"
+      ],
+      [
+       15,
+       "EmiZor"
+      ],
+      [
+       13,
+       "MaYeuTyK"
+      ]
+     ]
+    ],
+    [
      "Inku",
      64,
      5,
@@ -560,21 +581,21 @@
     [
      "EmiZor",
      20,
-     4,
+     6,
      5,
      0,
      [
       [
+       -15,
+       "Senticide"
+      ],
+      [
+       13,
+       "dxg"
+      ],
+      [
        -17,
        "MTZ"
-      ],
-      [
-       7,
-       "Miniboy"
-      ],
-      [
-       7,
-       "Thaniel"
       ]
      ]
     ],
@@ -827,6 +848,27 @@
      ]
     ],
     [
+     "Monet",
+     12,
+     3,
+     5,
+     0,
+     [
+      [
+       -16,
+       "Senticide"
+      ],
+      [
+       15,
+       "Mathhias"
+      ],
+      [
+       13,
+       "Leonart"
+      ]
+     ]
+    ],
+    [
      "Cronox",
      11,
      3,
@@ -970,6 +1012,27 @@
       [
        -14,
        "LRS"
+      ]
+     ]
+    ],
+    [
+     "Mathhias",
+     0,
+     4,
+     5,
+     0,
+     [
+      [
+       -15,
+       "Monet"
+      ],
+      [
+       13,
+       "Dantemx"
+      ],
+      [
+       -14,
+       "CrisZJ"
       ]
      ]
     ],
@@ -1138,6 +1201,27 @@
       [
        15,
        "Mito"
+      ]
+     ]
+    ],
+    [
+     "MaYeuTyK",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -13,
+       "Senticide"
+      ],
+      [
+       -17,
+       "TøKīØ🦠🧠"
+      ],
+      [
+       17,
+       "Makmah"
       ]
      ]
     ],
@@ -1392,23 +1476,6 @@
      ]
     ],
     [
-     "MaYeuTyK",
-     0,
-     2,
-     5,
-     0,
-     [
-      [
-       -17,
-       "TøKīØ🦠🧠"
-      ],
-      [
-       17,
-       "Makmah"
-      ]
-     ]
-    ],
-    [
      "Magic",
      0,
      2,
@@ -1422,23 +1489,6 @@
       [
        -9,
        "Colesito"
-      ]
-     ]
-    ],
-    [
-     "Mathhias",
-     0,
-     2,
-     5,
-     0,
-     [
-      [
-       -14,
-       "CrisZJ"
-      ],
-      [
-       -16,
-       "Soulb"
       ]
      ]
     ],
@@ -1636,6 +1686,19 @@
      ]
     ],
     [
+     "Dantemx",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -13,
+       "Mathhias"
+      ]
+     ]
+    ],
+    [
      "Daulinov",
      0,
      1,
@@ -1788,6 +1851,19 @@
       [
        -15,
        "Itohimo"
+      ]
+     ]
+    ],
+    [
+     "Leonart",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -13,
+       "Monet"
       ]
      ]
     ],
@@ -2069,6 +2145,19 @@
       [
        -9,
        "Mito"
+      ]
+     ]
+    ],
+    [
+     "dxg",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -13,
+       "EmiZor"
       ]
      ]
     ],
@@ -2481,7 +2570,7 @@
   "DNK": 988,
   "DO-C": 918,
   "DOMINICK DE CHOP": 982,
-  "Dantemx": 959,
+  "Dantemx": 936,
   "DarkoMC": 977,
   "DarnBless": 892,
   "Daulinov": 988,
@@ -2521,7 +2610,7 @@
   "Elinge_TIMP": 935,
   "Eliot": 1103,
   "Elsoolar": 969,
-  "EmiZor": 912,
+  "EmiZor": 915,
   "Emilio Alva": 972,
   "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱": 1074,
   "Emily Family": 967,
@@ -2691,7 +2780,7 @@
   "Lambroggini": 1047,
   "Lautaro la sinceridad 🇨🇨": 1014,
   "Left🇺🇾": 990,
-  "Leonart": 1044,
+  "Leonart": 1031,
   "Leopold sedar 🇸🇳": 985,
   "Leyenda": 851,
   "Lhyon": 936,
@@ -2724,7 +2813,7 @@
   "MHS": 919,
   "MTZ": 1055,
   "MZK": 994,
-  "MaYeuTyK": 999,
+  "MaYeuTyK": 986,
   "Magic": 940,
   "Mail O": 969,
   "Majiztral": 1021,
@@ -2737,7 +2826,7 @@
   "Marley🇦🇷": 1033,
   "Marto AR": 991,
   "Masino": 1068,
-  "Mathhias": 966,
+  "Mathhias": 967,
   "Matias": 990,
   "Mato 🇵🇪": 908,
   "MauzzitoEmeces": 998,
@@ -2757,7 +2846,7 @@
   "Molt": 921,
   "Molusco": 1075,
   "Monamay": 977,
-  "Monet": 1014,
+  "Monet": 1026,
   "Mosquitrap 🦟": 1141,
   "Motera": 1192,
   "Mr Still Billin 🇧🇻": 987,
@@ -2880,7 +2969,7 @@
   "Santi": 985,
   "Scot": 872,
   "Scritura": 938,
-  "Senticide": 992,
+  "Senticide": 1058,
   "Sentpa": 976,
   "Sexo": 1000,
   "Shadow": 819,
@@ -2991,7 +3080,7 @@
   "compare": 943,
   "crakero": 928,
   "doble h": 975,
-  "dxg": 921,
+  "dxg": 909,
   "dyzzcord🇨🇱": 995,
   "el familiar": 987,
   "el hnito de leitan 🇦🇷": 986,
@@ -3381,6 +3470,15 @@
    0,
    0
   ],
+  "Dantemx": [
+   0,
+   0,
+   3300,
+   0,
+   0,
+   0,
+   0
+  ],
   "Daulinov": [
    3300,
    0,
@@ -3456,7 +3554,7 @@
   "EmiZor": [
    0,
    5775,
-   0,
+   5775,
    0,
    0,
    0,
@@ -3615,6 +3713,15 @@
    0,
    0
   ],
+  "Leonart": [
+   0,
+   0,
+   3300,
+   0,
+   0,
+   0,
+   0
+  ],
   "Lilñaño": [
    0,
    2500,
@@ -3654,7 +3761,7 @@
   "MaYeuTyK": [
    0,
    3850,
-   0,
+   3300,
    0,
    0,
    0,
@@ -3690,7 +3797,7 @@
   "Mathhias": [
    6000,
    0,
-   0,
+   5775,
    0,
    0,
    0,
@@ -3727,6 +3834,15 @@
    0,
    5775,
    0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Monet": [
+   0,
+   0,
+   8250,
    0,
    0,
    0,
@@ -3885,6 +4001,15 @@
    0,
    0
   ],
+  "Senticide": [
+   0,
+   0,
+   12375,
+   0,
+   0,
+   0,
+   0
+  ],
   "Sin Limites": [
    13050,
    10500,
@@ -4011,6 +4136,15 @@
    0,
    0
   ],
+  "dxg": [
+   0,
+   0,
+   3300,
+   0,
+   0,
+   0,
+   0
+  ],
   "ikonoxx": [
    3750,
    0,
@@ -4069,6 +4203,7 @@
   "Chop": 2500,
   "CrisZJ": 10500,
   "Cronox": 15750,
+  "Dantemx": 3300,
   "Daulinov": 3300,
   "Deko": 7500,
   "Denik": 2625,
@@ -4077,7 +4212,7 @@
   "Dominick": 2000,
   "Dyzz": 3750,
   "EIDP": 26250,
-  "EmiZor": 5775,
+  "EmiZor": 11550,
   "Erian": 6249,
   "Funk🇦🇷": 15000,
   "Geoka": 8274,
@@ -4095,19 +4230,21 @@
   "LAST": 2500,
   "LMG 🇩🇴": 3300,
   "LRS": 23250,
+  "Leonart": 3300,
   "Lilñaño": 2500,
   "MCO": 3750,
   "METRO": 3750,
   "MTZ": 8250,
-  "MaYeuTyK": 3850,
+  "MaYeuTyK": 7150,
   "Majiztral": 6000,
   "Makmah": 9500,
   "Marto AR": 3750,
-  "Mathhias": 6000,
+  "Mathhias": 11775,
   "Miniboy": 14750,
   "Mito": 9300,
   "Molt": 3300,
   "Molusco": 5775,
+  "Monet": 8250,
   "Mr.Kude": 11550,
   "NC": 3750,
   "NXUZ": 18500,
@@ -4125,6 +4262,7 @@
   "Ruvick": 3750,
   "SULTAN": 3750,
   "Sankabel": 3750,
+  "Senticide": 12375,
   "Sin Limites": 25050,
   "Snow": 33750,
   "Soulb": 19050,
@@ -4139,6 +4277,7 @@
   "_Mateo": 3750,
   "araya": 9750,
   "crakero": 7500,
+  "dxg": 3300,
   "ikonoxx": 3750,
   "romeo": 7500,
   "tierra sin atmosfera": 3750,

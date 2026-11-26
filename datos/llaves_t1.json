@@ -62213,7 +62213,7 @@
        "Dyzz"
       ],
       "SAIDEM, Makmah",
-      "triple (3 bandas, pasan 2); también pasa: Makmah 🇻🇪"
+      "triple (3 bandas, pasan 2); también pasa: makmah 🇻🇪"
      ],
      [
       [
@@ -65476,6 +65476,136 @@
   ],
   "ver": {
    "min": 85,
+   "v": 1
+  }
+ },
+ "694": {
+  "dia": "2026-11-25",
+  "escala": "8-15",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/838593179187544064/838595860275003402/1575328776147959962"
+  ],
+  "n": 694,
+  "nombre": "- SHAOLIN BATTLES -",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "EmiZor",
+       "dxg"
+      ],
+      "EmiZor",
+      ""
+     ],
+     [
+      [
+       "Senticide",
+       "MaYeuTyK"
+      ],
+      "Senticide",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "Dantemx"
+      ],
+      "Mathhias",
+      ""
+     ],
+     [
+      [
+       "Monet",
+       "Leonart"
+      ],
+      "Monet",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Senticide",
+       "EmiZor"
+      ],
+      "Senticide",
+      ""
+     ],
+     [
+      [
+       "Monet",
+       "Mathhias"
+      ],
+      "Monet",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Senticide",
+       "Monet"
+      ],
+      "Senticide",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Senticide",
+    "Campeón",
+    7500
+   ],
+   [
+    "Monet",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mathhias",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dantemx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Leonart",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "dxg",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
    "v": 1
   }
  }

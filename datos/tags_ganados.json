@@ -3870,6 +3870,11 @@
  },
  "dantemx": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795659244429
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
@@ -4597,6 +4602,23 @@
   }
  },
  "dxg": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795659244429
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795659244429
+   ],
+   "PIONERO": [
+    "PIONERO",
+    "t1",
+    1795659244429
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -4610,6 +4632,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795659244429
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -5244,6 +5271,23 @@
   }
  },
  "emizor": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795659244429
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795659244429
+   ],
+   "SIN FRONTERAS": [
+    "SIN FRONTERAS",
+    "t1",
+    1795659244429
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -8060,6 +8104,11 @@
     "t1",
     1793029252929
    ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1795659244429
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -8074,6 +8123,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795659244429
    ],
    "🥈 SIEMPRE EN LA FINAL": [
     "🥈 SIEMPRE EN LA FINAL",
@@ -9828,6 +9882,11 @@
     "t1",
     1795475239555
    ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1795659244429
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x3",
     "t1",
@@ -11137,6 +11196,18 @@
   }
  },
  "monet": {
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795659244429
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795659244429
+   ]
+  },
   "temporada": {
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
@@ -11152,6 +11223,11 @@
     "🛫 NÓMADA",
     "t1",
     1794764146474
+   ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1795659244429
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -15475,10 +15551,20 @@
  },
  "senticide": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795659244429
+   ],
    "🌱 PROMESA": [
     "🌱 PROMESA",
     "t1",
     1792953978519
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795659244429
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",

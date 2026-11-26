@@ -400,19 +400,19 @@
 "temporada"
 ]
 },
+"mayeutyk": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "drexx": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -695,6 +695,10 @@
 "rg": "C",
 "c": []
 },
+"emizor": {
+"rg": "C",
+"c": []
+},
 "player": {
 "rg": "D",
 "c": [
@@ -703,6 +707,10 @@
 "servidor",
 "temporada"
 ]
+},
+"monet": {
+"rg": "",
+"c": []
 },
 "artezzy": {
 "rg": "",
@@ -764,10 +772,6 @@
 "servidor",
 "temporada"
 ]
-},
-"emizor": {
-"rg": "D",
-"c": []
 },
 "deuxs": {
 "rg": "D",
@@ -852,10 +856,6 @@
 },
 "darnbless": {
 "rg": "E",
-"c": []
-},
-"monet": {
-"rg": "",
 "c": []
 },
 "1200": {
@@ -964,6 +964,7 @@
 "rg": "E",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1145,6 +1146,10 @@
 "rg": "",
 "c": []
 },
+"senticide": {
+"rg": "",
+"c": []
+},
 "berrun": {
 "rg": "",
 "c": []
@@ -1312,6 +1317,13 @@
 "rg": "",
 "c": []
 },
+"dantemx": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "yor": {
 "rg": "",
 "c": [
@@ -1345,13 +1357,6 @@
 "ortiz": {
 "rg": "",
 "c": []
-},
-"dantemx": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "emilioalva": {
 "rg": "",
@@ -1423,10 +1428,6 @@
 "servidor",
 "temporada"
 ]
-},
-"senticide": {
-"rg": "",
-"c": []
 },
 "youngvlad": {
 "rg": "",
@@ -2950,24 +2951,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-15T15:59:25Z",
-"quien": [
-"Dominick"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "rango",
-"t": "2026-10-15T15:59:25Z",
-"quien": [
-"Zaik"
-],
-"rg": "E",
-"primero": true
-},
 {
 "tipo": "rango",
 "t": "2026-10-16T04:29:17Z",
@@ -6367,6 +6350,23 @@
 "Juanpa"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-11-26T02:13:30Z",
+"quien": [
+"EmiZor"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-26T02:13:30Z",
+"quien": [
+"dxg"
+],
+"carta": "pais"
 }
 ],
 "noche_antes": {
@@ -7207,104 +7207,6 @@
 }
 },
 "noches": {
-"2026-11-09": {
-"tipo": "resnoche",
-"t": "2026-11-10T08:00:00Z",
-"dia": "2026-11-09",
-"eventos": 3,
-"part": 55,
-"campeones": [
-{
-"ev": "JKWODJAKB V.1",
-"sv": "FFA",
-"ll": 595,
-"quien": [
-[
-"Deko",
-""
-]
-]
-},
-{
-"ev": "RED BULL COLOMBIA",
-"sv": "LKR",
-"ll": 597,
-"quien": [
-[
-"Richard",
-"richard"
-]
-]
-},
-{
-"ev": "TORNEO CLANDESTINO V.1",
-"sv": "FFA",
-"ll": 600,
-"quien": [
-[
-"yinn",
-"yinn"
-]
-]
-}
-],
-"suman": [
-{
-"n": "Vandu",
-"k": "vandu",
-"pts": 10250,
-"ev": 2
-},
-{
-"n": "yinn",
-"k": "yinn",
-"pts": 10000,
-"ev": 1
-},
-{
-"n": "Verc",
-"k": "verc",
-"pts": 7750,
-"ev": 2
-}
-],
-"suben": [
-{
-"n": "Magic",
-"k": "",
-"de": 176,
-"a": 149
-},
-{
-"n": "Valen",
-"k": "valen",
-"de": 294,
-"a": 273
-},
-{
-"n": "0223 🇧🇧",
-"k": "",
-"de": 333,
-"a": 322
-}
-],
-"sorpresas": [
-{
-"n": "Deko",
-"k": "",
-"que": "primer",
-"ev": "JKWODJAKB V.1",
-"desde": 325
-},
-{
-"n": "Richard",
-"k": "richard",
-"que": "primer",
-"ev": "RED BULL COLOMBIA",
-"desde": 91
-}
-]
-},
 "2026-11-10": {
 "tipo": "resnoche",
 "t": "2026-11-11T08:00:00Z",
@@ -8735,6 +8637,63 @@
 "desde": 139
 }
 ]
+},
+"2026-11-25": {
+"tipo": "resnoche",
+"t": "2026-11-26T08:00:00Z",
+"dia": "2026-11-25",
+"eventos": 1,
+"part": 8,
+"campeones": [
+{
+"ev": "- SHAOLIN BATTLES -",
+"sv": "FRZ",
+"ll": 694,
+"quien": [
+[
+"Senticide",
+"senticide"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Senticide",
+"k": "senticide",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "Monet",
+"k": "monet",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "EmiZor",
+"k": "emizor",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "Senticide",
+"k": "senticide",
+"de": 334,
+"a": 310
+}
+],
+"sorpresas": [
+{
+"n": "Senticide",
+"k": "senticide",
+"que": "primer",
+"ev": "- SHAOLIN BATTLES -",
+"desde": 334
+}
+]
 }
 },
 "extra": {
@@ -8961,7 +8920,7 @@
 "sol": 3,
 "ezias": 0,
 "raizer": 0,
-"monet": 0,
+"monet": 1,
 "deluxe": 0,
 "ikonoxx": 0,
 "efimero": 0,
@@ -9010,7 +8969,7 @@
 "simonhenriksson": 1,
 "bootraxx": 1,
 "araya": 0,
-"senticide": 1,
+"senticide": 2,
 "over": 7,
 "deko": 0,
 "sintext": 0,

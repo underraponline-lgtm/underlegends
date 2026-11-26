@@ -1656,6 +1656,13 @@
   [692, "24/11", "FRZ", "cuartos", "EmiZor", "Soulb", "EmiZor", "Soulb"],
   [692, "24/11", "FRZ", "semifinales", "Itohimo", "Molusco", "Itohimo", "Molusco"],
   [692, "24/11", "FRZ", "semifinales", "MTZ", "EmiZor", "MTZ", "EmiZor"],
-  [692, "24/11", "FRZ", "final", "Itohimo", "MTZ", "Itohimo", "MTZ"]
+  [692, "24/11", "FRZ", "final", "Itohimo", "MTZ", "Itohimo", "MTZ"],
+  [694, "25/11", "FRZ", "cuartos", "EmiZor", "dxg", "EmiZor", "dxg"],
+  [694, "25/11", "FRZ", "cuartos", "Senticide", "MaYeuTyK", "Senticide", "MaYeuTyK"],
+  [694, "25/11", "FRZ", "cuartos", "Mathhias", "Dantemx", "Mathhias", "Dantemx"],
+  [694, "25/11", "FRZ", "cuartos", "Monet", "Leonart", "Monet", "Leonart"],
+  [694, "25/11", "FRZ", "semifinales", "Senticide", "EmiZor", "Senticide", "EmiZor"],
+  [694, "25/11", "FRZ", "semifinales", "Monet", "Mathhias", "Monet", "Mathhias"],
+  [694, "25/11", "FRZ", "final", "Senticide", "Monet", "Senticide", "Monet"]
  ]
 }

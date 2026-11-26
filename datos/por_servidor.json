@@ -3233,6 +3233,18 @@
     "pod": 0,
     "pts": 11625,
     "racha": "0/0"
+   },
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3300,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "DarkoMC": {
@@ -4474,12 +4486,12 @@
     "racha": "0/1"
    },
    "FRZ": {
-    "duelos": "1/3",
-    "ev": 2,
+    "duelos": "2/5",
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 7975,
+    "pts": 13750,
     "racha": "0/0"
    },
    "LKR": {
@@ -4639,8 +4651,7 @@
     "pts": 16550,
     "racha": "0/2",
     "tg": {
-     "fin": 2,
-     "llave": true
+     "fin": 2
     }
    },
    "LKR": {
@@ -8378,6 +8389,18 @@
     "pts": 3937,
     "racha": "0/0"
    },
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3300,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "LKR": {
     "duelos": "",
     "ev": 3,
@@ -9313,8 +9336,7 @@
     "pts": 28850,
     "racha": "3/3",
     "tg": {
-     "fin": 3,
-     "llave": true
+     "fin": 3
     }
    },
    "URBF": {
@@ -9382,12 +9404,12 @@
     "racha": "0/0"
    },
    "FRZ": {
-    "duelos": "1/2",
-    "ev": 1,
+    "duelos": "1/3",
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 5250,
+    "pts": 8550,
     "racha": "0/0"
    },
    "LKR": {
@@ -9908,6 +9930,18 @@
     "pod": 0,
     "pts": 6187,
     "racha": "0/0"
+   },
+   "FRZ": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 5775,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    },
    "FVS": {
     "duelos": "3/3",
@@ -10703,6 +10737,19 @@
     "pts": 8668,
     "racha": "0/0"
    },
+   "FRZ": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 8250,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "LKR": {
     "duelos": "",
     "ev": 2,
@@ -10837,8 +10884,7 @@
     "pts": 15950,
     "racha": "0/1",
     "tg": {
-     "fin": 1,
-     "llave": true
+     "fin": 1
     }
    },
    "LKR": {
@@ -13924,6 +13970,19 @@
     "pod": 1,
     "pts": 6000,
     "racha": "0/0"
+   },
+   "FRZ": {
+    "duelos": "3/3",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 12375,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    }
   },
   "Sentpa": {
@@ -16914,6 +16973,18 @@
     "racha": "0/2",
     "tg": {
      "fund": true
+    }
+   },
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 3300,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    },
    "FVS": {
