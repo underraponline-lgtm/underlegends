@@ -11084,6 +11084,17 @@
    "ganador": "Sebita",
    "votos": "1–0"
   },
+  "1575341702246441133": {
+   "id": "1575341702246441133",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795661130249,
+   "a": "Abraham",
+   "b": "black demon",
+   "ganador": "black demon",
+   "votos": "1–0"
+  },
   "1575342341814886411": {
    "id": "1575342341814886411",
    "sv": "[FFA] Freestyle For All 👾",
@@ -15119,8 +15130,8 @@
       "Abraham",
       "black demon"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "black demon",
+     "veredicto",
      []
     ],
     [

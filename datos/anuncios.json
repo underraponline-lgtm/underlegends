@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T07:54:46+00:00",
+ "cuando": "2026-11-26T16:25:26+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -1051,6 +1051,31 @@
     "Lizeninn 7 de oro": "1493416945037611140"
    },
    "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "underlegendsoficial",
+   "servidor": "FFA",
+   "canal": "✦⚡—novedades",
+   "msg_id": "1575473099032371260",
+   "cuando": "2026-11-26T11:27:37",
+   "canal_id": "1575472914764140554",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "797ecd0ceee716c6",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "B TC UNDERGROUND",
+   "modalidad": "",
+   "horario": "SÁB. 26 ABR | 18:00 HS",
+   "fecha": "",
+   "premios": "3 V.L.P",
+   "staff": {},
+   "autor": "Dlxmouche",
+   "staff_cuentas": {},
+   "de_imagen": true,
+   "categoria_id": "1468472443843776657"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -3950,7 +3975,7 @@
    "organizador": "- 4 Clasificatorias 12-16 Cupos",
    "orgs": [
     {
-     "n": "MetanfetaminaLegal",
+     "n": "Daitaku Helios ft. La Matanza",
      "id": "554330098812059679"
     }
    ],
@@ -3964,7 +3989,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "MetanfetaminaLegal",
+   "autor": "Daitaku Helios ft. La Matanza",
    "staff_cuentas": {},
    "categoria_id": "1511964043647123527"
   },
@@ -4745,6 +4770,44 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
    "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
+  },
+  {
+   "nombre": "COMPETENCIA #1 DE LA O.E.P CUP",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1575540092292960297",
+   "cuando": "2026-11-26T15:53:50",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "d7f9df6c0dfb479b",
+   "cupos_texto": "8 MAX",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "15:40 🇨🇴",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "꧁EL O.E.P ꧂|  MILICA"
+    ],
+    "host": [
+     "꧁EL O.E.P ꧂|  MILICA"
+    ],
+    "dj": [
+     "꧁EL O.E.P ꧂|  MILICA"
+    ]
+   },
+   "autor": "꧁EL O.E.P ꧂|  MILICA",
+   "staff_cuentas": {
+    "꧁EL O.E.P ꧂|  MILICA": "817432890807156756"
+   },
+   "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-11-26T00:38:48"
   },
@@ -7070,7 +7133,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": "Chimpanzinibabannini",
+   "autor": "Pichulinibananini",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -7330,7 +7393,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": "Chimpanzinibabannini",
+   "autor": "Pichulinibananini",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -8050,6 +8113,33 @@
  ],
  "oficiales": [
   {
+   "servidor": "DW",
+   "canal": "「🔔」ANUNCIOS",
+   "tit": "TABLA DE LA JORNADA 2",
+   "tx": "¡NO OLVIDEN SEGUIRNOS EN INSTAGRAM!",
+   "cuando": "2026-11-26T16:17:39",
+   "msg_id": "1575546088809693344",
+   "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1575546088809693344"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📢〢・Anuncios",
+   "tit": "WORLD OF FREE",
+   "tx": "BUSCAMOS MODERADORES Estamos buscando personas que quieran formar parte del equipo de organización de World of Free. Buscamos gente con iniciativa, que quiera organizar competencias, mantener activa la comunidad y traer ",
+   "cuando": "2026-11-26T14:53:08",
+   "msg_id": "1575524818038689825",
+   "link": "https://discord.com/channels/1558593868587339868/1566961462872899694/1575524818038689825"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦⚡—novedades",
+   "tit": "https://www.instagram.com/underlegendsoficial_/ sigan nuestra cuenta oficial de under lege",
+   "tx": "",
+   "cuando": "2026-11-26T11:27:13",
+   "msg_id": "1575472996032847962",
+   "link": "https://discord.com/channels/1468472442925092958/1575472914764140554/1575472996032847962"
+  },
+  {
    "servidor": "FRZ",
    "canal": "➣「📩」anuncios",
    "tit": "RED BULL BATALLA 2026",
@@ -8062,7 +8152,7 @@
    "servidor": "CEU",
    "canal": "anuncios",
    "tit": "empiezan el reclutamiento de participantes :",
-   "tx": "España 🇪🇸 Colombia 🇨🇴 Venezuela 🇻🇪 Caribe Argentina 🇦🇷 y Uruguay 🇺🇾 Chile🇨🇱",
+   "tx": "España 🇪🇸 Colombia 🇨🇴 Venezuela 🇻🇪 Caribe Argentina 🇦🇷 y Uruguay 🇺🇾 Chile🇨🇱 Mexico🇲🇽 Peru🇵🇪",
    "cuando": "2026-11-25T19:44:01",
    "msg_id": "1575235634258382879",
    "link": "https://discord.com/channels/1513624656538636459/1517230575369584821/1575235634258382879"
@@ -8266,15 +8356,6 @@
    "link": "https://discord.com/channels/838593179187544064/850777668386291712/1572928684015362048"
   },
   {
-   "servidor": "FFA",
-   "canal": "✦⚡—novedades",
-   "tit": "ya pueden personalizar su tarjeta en la tienda de la liga",
-   "tx": "Poco a poco se añadiran cosas, y cosas que se imaginan 👀",
-   "cuando": "2026-11-18T22:30:59",
-   "msg_id": "1572740937610952724",
-   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1572740937610952724"
-  },
-  {
    "servidor": "DDS",
    "canal": "🚨〕ANUNCIOS",
    "tit": "apoyemos gente algunos de los beats estaran en la discord style 20 y edicion campeones",
@@ -8300,24 +8381,6 @@
    "cuando": "2026-11-16T19:52:21",
    "msg_id": "1571976238124237001",
    "link": "https://discord.com/channels/1343820906358771798/1344845104052965406/1571976238124237001"
-  },
-  {
-   "servidor": "WOF",
-   "canal": "📢〢・Anuncios",
-   "tit": "MAÑANA: MCO VS TODOS (formato de prueba)",
-   "tx": "",
-   "cuando": "2026-11-16T18:53:28",
-   "msg_id": "1571961419564458055",
-   "link": "https://discord.com/channels/1558593868587339868/1566961462872899694/1571961419564458055"
-  },
-  {
-   "servidor": "DW",
-   "canal": "「🔔」ANUNCIOS",
-   "tit": "LINE UP OFICIAL DANGER LEAGUE T5 🏆",
-   "tx": "CJ 🇻🇪 VOLK 🇲🇽 MAU KC 🇨🇴 BLOODY 🇨🇴 USAGI 🇨🇴 DENIK 🇵🇪 MAKI 🇲🇽 GUTAN 🇲🇽 VAYEYA 🇨🇴 MAKMA 🇻🇪 ALDRE 🇦🇷 DIEGUITO MOMAZOS 🇲🇽",
-   "cuando": "2026-11-16T16:08:38",
-   "msg_id": "1571919939453853797",
-   "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1571919939453853797"
   }
  ],
  "inscripciones": [
