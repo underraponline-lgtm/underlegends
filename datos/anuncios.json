@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T17:24:46+00:00",
+ "cuando": "2026-11-26T17:54:53+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8113,6 +8113,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "WOF",
+   "canal": "📢〢・Anuncios",
+   "tit": "WORLD OF FREE",
+   "tx": "BUSCAMOS MODERADORES Estamos buscando personas que quieran formar parte del equipo de organización de World of Free. Buscamos gente con iniciativa, que quiera organizar competencias, mantener activa la comunidad y traer ",
+   "cuando": "2026-11-26T17:37:18",
+   "msg_id": "1575566133468336161",
+   "link": "https://discord.com/channels/1558593868587339868/1566961462872899694/1575566133468336161"
+  },
+  {
    "servidor": "DW",
    "canal": "「🔔」ANUNCIOS",
    "tit": "TABLA DE LA JORNADA 2",
@@ -8120,15 +8129,6 @@
    "cuando": "2026-11-26T16:17:39",
    "msg_id": "1575546088809693344",
    "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1575546088809693344"
-  },
-  {
-   "servidor": "WOF",
-   "canal": "📢〢・Anuncios",
-   "tit": "WORLD OF FREE",
-   "tx": "BUSCAMOS MODERADORES Estamos buscando personas que quieran formar parte del equipo de organización de World of Free. Buscamos gente con iniciativa, que quiera organizar competencias, mantener activa la comunidad y traer ",
-   "cuando": "2026-11-26T14:53:08",
-   "msg_id": "1575524818038689825",
-   "link": "https://discord.com/channels/1558593868587339868/1566961462872899694/1575524818038689825"
   },
   {
    "servidor": "FFA",
