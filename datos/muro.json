@@ -684,6 +684,14 @@
 "rg": "E",
 "c": []
 },
+"lilnano": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "cinexfilo": {
 "rg": "D",
 "c": [
@@ -900,13 +908,6 @@
 "rg": "",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"lilnano": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -2960,15 +2961,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-18T22:04:59Z",
-"quien": [
-"Player"
-],
-"rg": "D",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-18T22:04:59Z",
@@ -6393,6 +6385,14 @@
 ],
 "rg": "C",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-26T21:04:37Z",
+"quien": [
+"Lilñaño"
+],
+"carta": "competitivo"
 }
 ],
 "noche_antes": {

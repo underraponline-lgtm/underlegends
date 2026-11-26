@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T20:24:51+00:00",
+ "cuando": "2026-11-26T20:58:49+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8383,6 +8383,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "el papu🇦🇷",
+   "quien": "manu06777",
+   "discord_id": "1324593951377985648",
+   "msg_id": "1575614205112098847",
+   "cuando": "2026-11-26T20:48:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Pacheco",
+   "quien": "koppakidd",
+   "discord_id": "737476296946221096",
+   "msg_id": "1575609041273622560",
+   "cuando": "2026-11-26T20:27:48"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -44364,24 +44382,6 @@
    "discord_id": "1471153954254622774",
    "msg_id": "1563012711200202846",
    "cuando": "2026-10-23T02:14:29"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "delux🇦🇷",
-   "quien": "delux.13",
-   "discord_id": "729809358627536938",
-   "msg_id": "1563010832668037174",
-   "cuando": "2026-10-23T02:07:01"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1563010425061122059",
-   "cuando": "2026-10-23T02:05:24"
   }
  ]
 }
