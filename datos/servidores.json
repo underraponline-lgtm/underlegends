@@ -324,7 +324,17 @@
      "creada": "2026-11-15"
     }
    ],
-   "tier": 2
+   "tier": 2,
+   "redes": [
+    [
+     "instagram",
+     "https://www.instagram.com/fzdiscord/"
+    ],
+    [
+     "youtube",
+     "https://www.youtube.com/@freestylezonediscord"
+    ]
+   ]
   },
   "URBF": {
    "nombre": "Urban Freestyle",
@@ -691,8 +701,8 @@
    "guild_id": "1074328197400887388",
    "en_el_sheet": false,
    "confirmado": false,
-      "baja": "2026-11-25",
-      "baja_por": "Dlx, 25/11/2026: «remove CYPHERHOOD from the socios, is confirmed they wont be back». Sacaron al bot el 22/11. Lo jugado ahí sigue contando: sólo deja de ser socio (no se lee, no sale en Socios, sin invitación ni kit)",
+   "baja": "2026-11-25",
+   "baja_por": "Dlx, 25/11/2026: «remove CYPHERHOOD from the socios, is confirmed they wont be back». Sacaron al bot el 22/11. Lo jugado ahí sigue contando: sólo deja de ser socio (no se lee, no sale en Socios, sin invitación ni kit)",
    "sigla": "CYH",
    "nota": "05/11/2026: el bot entró (6:29 PM) y Dlx: «activa el servidor y asegurate que este integrado completamente en la liga global», «son tier 1 x cierto». En Discord «CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical» (11.437 miembros, se presentan como «LIGA DE FREESTYLE DIGITAL»). A cambio del bot promocionan la página: lo publicaron en 📢︱anuncios a las 6:33 PM. El bot NO es admin: lee sus canales públicos, escribe y crea invitaciones; no puede @everyone ni ver lo del staff. Sus torneos van en «¡COMPITE AHORA!»: 📢︱anuncios, 📜︱inscripciones, 🔑︱llaves y 📥︱veredictos (vacío). Las llaves llevan banderas como emoji animado, `[NOMBRE] <vs> [NOMBRE]`, tríos en octavos y «CAMPEÓN» abajo. Lo jugado desde el 22/09 cuenta, como en todos (`comun/temporada.py`): 6 eventos. Su logo: la «CH» en un aro de oro; su carta, el trueno de oro sobre la gente (`ch_trueno()`). Etiqueta: CULTURA (Dlx, 05/11/2026: «cultura», entre PRODUCCIÓN, CULTURA y HIP-HOP). Sigla CYH (Dlx, 11/11/2026: «Cambiar las 3 letras de chd a CYH»; antes CHD, 05/11): es lo que se lee; el código sigue siendo CH, como SR/SNK y ACAD/LCW, porque es la clave de sus cartas, sus logos y sus links.",
    "tier": 1,
@@ -818,7 +828,13 @@
      "1554209799221157888"
     ]
    },
-   "leer_hondo_hasta": "2026-11-18"
+   "leer_hondo_hasta": "2026-11-18",
+   "redes": [
+    [
+     "youtube",
+     "https://www.youtube.com/@discordfmsceuta"
+    ]
+   ]
   },
   "CHZ": {
    "nombre": "Chezztyle",
