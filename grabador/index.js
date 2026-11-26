@@ -143,6 +143,28 @@ const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
 //: otros grabadores con los que NO se entra (vacío: ver arriba). El de Drako es «Freestyle for All», 1557056218164629535
 const OTROS = new Set(lista(E.NO_SI_ESTA));
 const BASE = E.CARPETA || path.join(os.tmpdir(), 'grabaciones');
+//: 💽 EL DISCO PROPIO SE LLENÓ (25/11/2026, 7:44 PM ET: «ENOSPC: no space left on device» al entrar a WOF). El volumen de
+//: Railway del plan de prueba es chico, y la grabación de FFA de esa tarde lo llenó y además no pudo mezclarse ahí: quedó
+//: trabada ocupando todo. Ahora (1) se graba en el volumen sólo si le quedan `LIBRE_MIN` bytes; si no, en el disco del
+//: contenedor (grabado igual, pero sin sobrevivir a un reinicio); (2) la mezcla y los cortes van SIEMPRE al disco del
+//: contenedor (`trabajo`); y (3) al arrancar se limpia lo que no se pudo entregar
+export const LIBRE_MIN = num(E.LIBRE_MIN, 400e6);
+const TEMPORAL = path.join(os.tmpdir(), 'grabaciones');
+function libreEn(dir) {
+  try { fs.mkdirSync(dir, { recursive: true }); const s = fs.statfsSync(dir); return Number(s.bavail) * Number(s.bsize); } catch (e) { return 0; }
+}
+let avisoDisco = 0;
+/** La carpeta donde arranca una grabación: la propia si tiene lugar, si no la temporal (y lo dice en el log, una vez por hora). */
+function carpetaParaGrabar() {
+  if (!E.CARPETA) return BASE;
+  const libre = libreEn(BASE);
+  if (libre >= LIBRE_MIN) return BASE;
+  if (Date.now() - avisoDisco > 3600000) {
+    anotar(`💽 al disco propio le quedan ${(libre / 1e6).toFixed(0)} MB: grabo en el del contenedor (no sobrevive a un reinicio)`);
+    avisoDisco = Date.now();
+  }
+  return TEMPORAL;
+}
 //: 💾 cuántas veces se intenta entregar una recuperada antes de dejarla (una que rompe siempre no traba cada arranque)
 export const RECUPERAR_MAX = 2;
 
@@ -286,7 +308,8 @@ class Grabacion {
     this.canal = canal;
     this.motivo = motivo;
     this.inicio = new Date();
-    this.dir = path.join(BASE, `${guild.id}-${this.inicio.toISOString().replace(/[:.]/g, '-')}`);
+    this.dir = path.join(carpetaParaGrabar(), `${guild.id}-${this.inicio.toISOString().replace(/[:.]/g, '-')}`);
+    this.trabajo = null;         // 💽 la mezcla y los cortes, en el disco del contenedor (ver `LIBRE_MIN`)
     this.pistas = new Map();     // id -> PistaOpus
     this.subs = new Map();       // id -> AudioReceiveStream
     this.quien = new Map();      // id -> { nombre, bot }
@@ -320,6 +343,11 @@ class Grabacion {
         motivo: this.motivo, inicio: this.inicio.toISOString(), seg: this.ms() / 1000, afuera: this.afuera, pausas: this.pausas,
         quien: Object.fromEntries(this.quien), voces: [...this.pistas.keys()], habla: Object.fromEntries(this.habla.t), ...extra }));
     } catch (e) { /* una foto menos */ }
+  }
+
+  /** 💽 Borra la carpeta de la grabación y la de trabajo (después de entregar) */
+  limpiar() {
+    for (const d of [this.dir, this.trabajo]) if (d) fs.rmSync(d, { recursive: true, force: true });
   }
 
   /** 💾 Railway la apaga: cierra las pistas y deja `estado.json` para el próximo arranque, sin mezclar (no le da el tiempo). */
@@ -624,11 +652,10 @@ class Grabacion {
   /** ⏳ Las batallas que no salieron: lo dice en Logs y vuelve a probar a los `esperas` minutos (sigue después de
    * terminar la grabación: la carpeta se borra al final). Si se reinicia el servicio en el medio, se pierde: queda habla.json */
   reintentarBatallas(canal, mezcla, seg, motivo, esperas) {
-    const dir = this.dir;
     const quedan = [...esperas];
     canal.send({ content: `⚔️ No pude separar las batallas de esta grabación: ${motivo}.`
       + (quedan.length ? ` Vuelvo a probar en ${quedan[0]} min.` : ''), allowedMentions: { parse: [] } }).catch(() => {});
-    if (!quedan.length) { fs.rmSync(dir, { recursive: true, force: true }); return; }
+    if (!quedan.length) { this.limpiar(); return; }
     setTimeout(async () => {
       let res = null;
       try { res = await this.entregarBatallas(canal, mezcla, seg); } catch (e) {
@@ -636,7 +663,7 @@ class Grabacion {
       }
       if (res && res.ubicadas) {
         anotar(`⚔️ al reintentar: ${res.ubicadas} batallas`);
-        fs.rmSync(dir, { recursive: true, force: true });
+        this.limpiar();
       } else this.reintentarBatallas(canal, mezcla, seg, res?.motivo || 'sin motivo', quedan.slice(1));
     }, quedan[0] * 60000).unref?.();
   }
@@ -676,7 +703,8 @@ class Grabacion {
       return;
     }
     const t = performance.now();
-    const mezcla = path.join(this.dir, 'mezcla.ogg');
+    this.trabajo = this.trabajo || fs.mkdtempSync(path.join(os.tmpdir(), 'ulaya-'));
+    const mezcla = path.join(this.trabajo, 'mezcla.ogg');
     // cada voz al mismo volumen (mezcla.js): se mide de a una, y la música de los bots queda debajo
     const cada = [];
     for (const id of voces) {
@@ -686,7 +714,7 @@ class Grabacion {
     await mezclar(voces.map((id) => this.pistas.get(id).ruta), mezcla, cada);
     // ✂️ lo grabado después de `seg` (la espera del final) no va
     if (duracion(mezcla) > seg + 2) {
-      const corta = path.join(this.dir, 'mezcla_corta.ogg');
+      const corta = path.join(this.trabajo, 'mezcla_corta.ogg');
       await cortar(mezcla, 0, seg, corta);
       fs.renameSync(corta, mezcla);
     }
@@ -713,7 +741,7 @@ class Grabacion {
         // 🗣️ QUIÉN HABLÓ CUÁNDO, SIEMPRE (24/11/2026): sin esto, si las batallas no salen acá nadie las puede separar
         // después (vive sólo en la memoria de esta grabación). Son IDs y milisegundos desde el inicio, sin audio
         try {
-          const hj = path.join(this.dir, 'habla.json');
+          const hj = path.join(this.trabajo, 'habla.json');
           fs.writeFileSync(hj, JSON.stringify({ v: 1, servidor: this.guild?.id || '', inicio: this.inicio.toISOString(),
             seg: Math.round(seg), habla: Object.fromEntries(this.habla.t) }));
           await canal.send({ files: [{ attachment: hj, name: 'habla.json' }], allowedMentions: { parse: [] } });
@@ -729,14 +757,14 @@ class Grabacion {
           this.reintentarBatallas(canal, mezcla, seg, res.motivo, [15, 30]);
           return;
         }
-        fs.rmSync(this.dir, { recursive: true, force: true });
+        this.limpiar();
         return;
       } catch (e) {
         // 40005: el archivo es más grande de lo que acepta ese canal. Se parte más chico y se vuelve a mandar
         if (e?.code !== 40005 && e?.status !== 413) throw e;
         tope = Math.floor(tope / 2);
         anotar('↩️ Discord no aceptó ese tamaño; parto en pedazos de', (tope / 1e6).toFixed(1), 'MB');
-        for (const f of fs.readdirSync(this.dir)) if (f.startsWith('mezcla_parte')) fs.rmSync(path.join(this.dir, f));
+        for (const f of fs.readdirSync(this.trabajo)) if (f.startsWith('mezcla_parte')) fs.rmSync(path.join(this.trabajo, f));
       }
     }
     throw new Error('Discord no aceptó ni partido en cuatro');
@@ -786,7 +814,7 @@ class Grabacion {
     const clips = [];
     for (const [i, b] of bs.entries()) {
       if (b.corta) continue;
-      const ruta = path.join(this.dir, `batalla-${i}.ogg`);
+      const ruta = path.join(this.trabajo || this.dir, `batalla-${i}.ogg`);
       await cortar(mezcla, b.desde, b.hasta, ruta);
       // ✂️ el archivo también se mide: un corte sin volver a codificar puede salir más corto que el tramo
       if (duracion(ruta) < MIN_CLIP_S) { b.corta = true; continue; }
@@ -810,7 +838,7 @@ class Grabacion {
     // 🎭 EL GUION DE CADA BATALLA, ADJUNTO (Dlx, 23/11/2026: «haz eso y mejóralo»): quién rapea cuándo —y en un 2vs2, cuál de la
     // pareja—, el público y el presentador, en segundos desde el principio de SU clip. Lo lee el armador de shorts en GitHub
     // Actions: sin esto no sabe qué carta hacer brillar ni dónde cambia de rival la letra. Va en el primer mensaje, con la lista
-    const guiones = path.join(this.dir, 'batallas.json');
+    const guiones = path.join(this.trabajo || this.dir, 'batallas.json');
     fs.writeFileSync(guiones, JSON.stringify({
       v: 1, servidor: this.guild?.id || '', inicio: this.inicio.toISOString(),
       batallas: bs.map((b) => ({ clip: (b.corta || b.sinAudio) ? null : nombreClip(b), r: b.r, llave: b.llave, evento: b.evento,
@@ -898,14 +926,26 @@ async function vuelta(client) {
 }
 
 // ── 💾 lo que quedó de antes de un reinicio ───────────────────────────────
+//: 💽 una carpeta de más de esto se borra al arrancar, entregada o no (nunca una que se está grabando)
+export const VIEJA_DIAS = 7;
+
 async function recuperar(client) {
   if (!fs.existsSync(BASE)) return;
   for (const d of fs.readdirSync(BASE)) {
     const dir = path.join(BASE, d), ej = path.join(dir, 'estado.json');
-    if (!fs.existsSync(ej) || [...grabando.values()].some((g) => g.dir === dir)) continue;
-    let e;
-    try { e = JSON.parse(fs.readFileSync(ej, 'utf8')); } catch (x) { continue; }
-    if ((e.intentos || 0) >= RECUPERAR_MAX) continue;
+    if ([...grabando.values()].some((g) => g.dir === dir)) continue;
+    // 💽 lo trabado no ocupa el disco para siempre: más de `VIEJA_DIAS`, sin estado.json pasado un día, o ya intentado
+    // `RECUPERAR_MAX` veces sin poder entregarlo
+    let edad = 0;
+    try { edad = Date.now() - fs.statSync(dir).mtimeMs; } catch (x) { continue; }
+    let e = null;
+    try { e = JSON.parse(fs.readFileSync(ej, 'utf8')); } catch (x) { e = null; }
+    if (edad > VIEJA_DIAS * 86400000 || (!e && edad > 86400000) || (e && (e.intentos || 0) >= RECUPERAR_MAX)) {
+      anotar(`💽 borro ${d}: ${!e ? 'sin estado' : (e.intentos || 0) >= RECUPERAR_MAX ? 'no se pudo entregar' : 'vieja'}`);
+      fs.rmSync(dir, { recursive: true, force: true });
+      continue;
+    }
+    if (!e) continue;
     e.intentos = (e.intentos || 0) + 1;
     fs.writeFileSync(ej, JSON.stringify(e));
     const guild = client.guilds.cache.get(String(e.g));
