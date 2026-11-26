@@ -20,6 +20,26 @@ export const PASO_S = 5;
 export const VECINDAD_S = 75;
 export const RAP_VENTANA_S = 20;
 export const RAP_S = 12;
+// 🔁 EL 4x4 (25/11/2026, WOF: «0 de 10»). Con turnos de 10 s que se alternan, ningún lado junta `RAP_S` en `RAP_VENTANA_S`
+// (10 de 20, siempre): la batalla de CrisZJ y Masino —2 min 20 s de turnos limpios— no se veía. Un turno así es habla casi
+// sin cortes: `DENSO_S` de habla en `TURNO_DENSO` baldes seguidos (8 s de 10) también es rapear. Una charla corta de a
+// ratos; un turno, no. ⚠️ Sumados y no «4 en cada uno»: un turno de 9 s cae partido entre dos baldes como 5,0 + 3,5
+export const TURNO_DENSO = 2;
+export const DENSO_S = 8;
+/** `a` (habla por balde): ¿rapea en la ventana que arranca en el balde `k` y termina antes de `hi`? */
+function rapeaDesde(a, k, w, hi) {
+  const fin = Math.min(hi, k + w);
+  let s = 0, denso = false;
+  for (let j = k; j < fin; j++) {
+    s += a[j];
+    if (j + TURNO_DENSO <= fin) {
+      let d = 0;
+      for (let x = j; x < j + TURNO_DENSO; x++) d += a[x];
+      if (d >= DENSO_S) denso = true;
+    }
+  }
+  return s >= RAP_S || denso;
+}
 export const MIN_BALDE_S = 2;
 export const JUNTAR_S = 40;
 export const MIN_LARGO_S = 60;
@@ -73,10 +93,53 @@ const parecido = (a, b) => {
   return c.length >= 4 && c.length / l.length >= 0.5 && l.includes(c);
 };
 
+// 🔤 LA MISMA PERSONA, ESCRITA DE DOS MANERAS EN LA MISMA LLAVE (25/11/2026, WOF: «0 de 10»). En octavos «Masino» (con
+// cuenta) y en cuartos «Massino» (sin cuenta): el organizador escribe el nombre a mano en cada ronda. Un lado sin cuenta
+// toma la de otro nombre de ESA llave que es casi igual —igual sin letras repetidas, o una letra de diferencia con 5 o
+// más—, si hay uno solo así y no está ya en esa batalla
+const sinRepetir = (s) => s.replace(/(.)\1+/g, '$1');
+function unaLetra(a, b) {
+  if (Math.abs(a.length - b.length) > 1 || Math.min(a.length, b.length) < 5) return false;
+  let i = 0, j = 0, dif = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) { i++; j++; continue; }
+    if (++dif > 1) return false;
+    if (a.length > b.length) i++; else if (b.length > a.length) j++; else { i++; j++; }
+  }
+  return dif + (a.length - i) + (b.length - j) <= 1;
+}
+const casiIgual = (a, b) => a.length >= 3 && b.length >= 3 && (sinRepetir(a) === sinRepetir(b) || unaLetra(a, b));
+
+/** Completa los `id` vacíos con el de un nombre casi igual de la misma llave (ver arriba). Devuelve `[[nombre, id]]`. */
+export function completarDeLlave(llaves) {
+  const hechos = [];
+  for (const L of llaves || []) {
+    const conId = new Map();   // nombre normalizado → id (sólo si ese nombre tiene un solo id en la llave)
+    for (const R of L.rondas || []) for (const b of R.b || []) for (const l of b.lados || []) for (const y of l || []) {
+      if (!y || !y.id) continue;
+      const n = normVoz(y.n);
+      if (n) conId.set(n, conId.has(n) && conId.get(n) !== String(y.id) ? null : String(y.id));
+    }
+    for (const R of L.rondas || []) for (const b of R.b || []) {
+      const enEsta = new Set((b.lados || []).flat().filter((y) => y && y.id).map((y) => String(y.id)));
+      for (const l of b.lados || []) for (const y of l || []) {
+        if (!y || y.id) continue;
+        const n = normVoz(y.n);
+        const ids = [...new Set([...conId].filter(([m, id]) => id && m !== n && casiIgual(n, m)).map(([, id]) => id))];
+        if (ids.length !== 1 || enEsta.has(ids[0])) continue;
+        y.id = ids[0];
+        enEsta.add(y.id);
+        hechos.push([y.n, y.id]);
+      }
+    }
+  }
+  return hechos;
+}
+
 /** Completa los `id` vacíos de los lados de `llaves` con las cuentas de `voces` (`Map(id → [nombres])`, de quienes
  *  hablaron). Cambia `llaves` y devuelve `[[nombre de la llave, id]]` de lo que completó. */
 export function completarIds(llaves, voces) {
-  const hechos = [];
+  const hechos = completarDeLlave(llaves);
   if (!voces || !voces.size) return hechos;
   const de = [...voces].map(([id, ns]) => [String(id), [...new Set((ns || []).map(normVoz).filter(Boolean))]]);
   for (const L of llaves || []) {
@@ -161,9 +224,9 @@ export function ubicar(lados, habla, durS, paso = PASO_S, lim = null) {
   // ¿rapea en el balde k? `RAP_S` de habla en los `RAP_VENTANA_S` que arrancan ahí; y su suma acumulada, para preguntar
   // «¿rapeó en algún momento de esta vecindad?» sin recorrerla
   const w = Math.max(1, Math.round(RAP_VENTANA_S / paso));
-  const rapea = pref.map((p) => {
+  const rapea = porLado.map((a) => {
     const r = new Float64Array(n + 1);
-    for (let k = 0; k < n; k++) r[k + 1] = r[k] + (k >= kLo && k < kHi && p[Math.min(kHi, k + w)] - p[k] >= RAP_S ? 1 : 0);
+    for (let k = 0; k < n; k++) r[k + 1] = r[k] + (k >= kLo && k < kHi && rapeaDesde(a, k, w, kHi) ? 1 : 0);
     return r;
   });
   const v = Math.round(VECINDAD_S / paso);
@@ -223,26 +286,39 @@ export function ventanaAncla(ancla, aSeg, durS) {
 // el suplente. Sin ventana no se busca (en toda la noche, cualquiera que rapee con Ana sería «su rival»), y nunca quien
 // habla en la mayoría de las batallas del evento: el presentador o un jurado (`fijos`). Y sólo si hay UNO claro
 const segEn = (tramos, lim) => (tramos || []).reduce((s, [d, h]) => s + Math.max(0, Math.min(h / 1000, lim.hasta) - Math.max(d / 1000, lim.desde)), 0);
-/** ¿Rapea adentro de `lim`? `RAP_S` de habla en alguna ventana de `RAP_VENTANA_S`. */
+/** ¿Rapea adentro de `lim`? `RAP_S` de habla en alguna ventana de `RAP_VENTANA_S`, o un turno denso (`rapeaDesde()`). */
 function rapeaEn(tramos, lim) {
   const n = Math.ceil(lim.hasta / PASO_S);
   const a = porBalde(tramos, n);
   const w = Math.max(1, Math.round(RAP_VENTANA_S / PASO_S));
-  for (let k = Math.floor(lim.desde / PASO_S); k + w <= n; k++) {
-    let s = 0;
-    for (let j = k; j < k + w; j++) s += a[j];
-    if (s >= RAP_S) return true;
-  }
+  for (let k = Math.floor(lim.desde / PASO_S); k + w <= n; k++) if (rapeaDesde(a, k, w, n)) return true;
   return false;
 }
 
-/** Quién habla en la mayoría (60 %) de las ventanas con ancla —con 3 o más—: el presentador, los jurados. */
-export function fijosDe(ventanas, habla) {
+// 🎤 EL PRESENTADOR, EN UN EVENTO CORTO (25/11/2026, WOF: 28 min). Las ventanas de las anclas duran de 10 a 25 min, así que
+// en una grabación corta cubren casi toda la grabación y TODOS hablaban en el 60 % de ellas: los diez quedaban «fijos» y
+// nunca había suplente. Ahora cuentan sólo las ventanas de menos de la mitad de la grabación, y además es fijo quien habla
+// en casi todos los minutos de la grabación (`FIJO_MINUTOS`, con 10 min o más): un MC pelea un rato; el presentador, todo
+export const FIJO_MINUTOS = 0.7;
+
+/** Quién habla en la mayoría (60 %) de las ventanas con ancla —con 3 o más, de las cortas— o en casi todos los minutos de
+ *  la grabación (`durS`): el presentador, los jurados. */
+export function fijosDe(ventanas, habla, durS = 0) {
   const out = new Set();
-  if ((ventanas || []).length < 3) return out;
-  for (const [id, tr] of habla) {
-    const en = ventanas.filter((lim) => segEn(tr, lim) >= 5).length;
-    if (en / ventanas.length >= 0.6) out.add(id);
+  const cortas = (ventanas || []).filter((v) => !durS || v.hasta - v.desde <= durS / 2);
+  if (cortas.length >= 3) {
+    for (const [id, tr] of habla) {
+      const en = cortas.filter((lim) => segEn(tr, lim) >= 5).length;
+      if (en / cortas.length >= 0.6) out.add(id);
+    }
+  }
+  const mins = Math.floor((durS || 0) / 60);
+  if (mins >= 10) {
+    for (const [id, tr] of habla) {
+      let en = 0;
+      for (let m = 0; m < mins; m++) if (segEn(tr, { desde: m * 60, hasta: m * 60 + 60 }) >= 5) en++;
+      if (en / mins >= FIJO_MINUTOS) out.add(id);
+    }
   }
   return out;
 }
@@ -255,18 +331,19 @@ export function suplente(lados, habla, lim, fijos = new Set()) {
     .filter((i) => i >= 0);
   if (callados.length !== 1) return null;
   const deEsta = new Set(lados.flat().filter(Boolean));
+  const lado = callados[0];
+  // con él tiene que armarse la batalla de verdad (turnándose con el otro lado), y gana el que más se turnó —no el que
+  // más habló: el presentador habla mucho y entre turnos, pero no pelea—
   const cand = [];
   for (const [id, tr] of habla) {
     if (deEsta.has(id) || fijos.has(id)) continue;
-    const s = segEn(tr, lim);
-    if (s >= 2 * RAP_S && rapeaEn(tr, lim)) cand.push([id, s]);
+    if (segEn(tr, lim) < 2 * RAP_S || !rapeaEn(tr, lim)) continue;
+    const u = ubicar(lados.map((l, i) => (i === lado ? [id] : l)), habla, lim.hasta + 1, PASO_S, lim);
+    if (u) cand.push([id, u.s]);
   }
   cand.sort((a, b) => b[1] - a[1]);
   if (!cand.length || (cand[1] && cand[1][1] * 1.5 > cand[0][1])) return null;
-  const lado = callados[0];
-  // y con él tiene que armarse la batalla de verdad (turnándose con el otro lado), no sólo hablar ahí
-  const prueba = lados.map((l, i) => (i === lado ? [cand[0][0]] : l));
-  return ubicar(prueba, habla, lim.hasta + 1, PASO_S, lim) ? { lado, id: cand[0][0] } : null;
+  return { lado, id: cand[0][0] };
 }
 
 // 🪜 LAS RONDAS VAN EN ORDEN (23/11/2026). En la grabación de FFA del 21/11 (9:47 PM ET) salieron «Octavos · Thaniel vs LRS
@@ -330,7 +407,36 @@ export function ubicarTodas(llaves, habla, durS, aSeg = null) {
     const v = ventanaAncla(b.ancla, aSeg, durS);
     if (v) ventanas.push(v);
   }
-  const fijos = fijosDe(ventanas, habla);
+  const fijos = fijosDe(ventanas, habla, durS);
+  // 🔤 UN LADO SIN CUENTA que el suplente resolvió en una batalla con ancla (Mayeuti, 25/11 en WOF: su nombre de Discord no
+  // se parece al de la llave). No se sabe si es esa persona con otra cuenta o un suplente —se sigue diciendo «entró X por
+  // Mayeuti»—, pero sí que en ESA llave el nombre «Mayeuti» rapea con esa voz: va también a sus otras batallas, así sale
+  // la que no tiene ancla (sus octavos)
+  const porVoz = [], deNombre = new Map();
+  for (const L of llaves || []) {
+    const dado = new Map();
+    for (const R of L.rondas || []) for (const b of R.b || []) {
+      const v = ventanaAncla(b.ancla, aSeg, durS);
+      const ls = (b.lados || []).map((l) => (l || []).map((y) => String((y && y.id) || '')));
+      const sup = v ? suplente(ls, habla, v, fijos) : null;
+      const lado = sup && (b.lados || [])[sup.lado];
+      if (!lado || lado.length !== 1 || lado[0].id) continue;
+      const n = normVoz(lado[0].n);
+      if (n.length < 2) continue;
+      dado.set(n, dado.has(n) && dado.get(n) !== sup.id ? null : sup.id);
+    }
+    for (const [n, id] of dado) if (id) { deNombre.set(L.id + '|' + n, id); porVoz.push([n, id]); }
+  }
+  /** El suplente de una batalla por su nombre sin cuenta ya resuelto en la llave (ver arriba), o `null`. */
+  const porNombre = (L, b) => {
+    const enEsta = new Set((b.lados || []).flat().filter((y) => y && y.id).map((y) => String(y.id)));
+    for (const [i, l] of (b.lados || []).entries()) {
+      if ((l || []).length !== 1 || l[0].id) continue;
+      const id = deNombre.get(L.id + '|' + normVoz(l[0].n));
+      if (id && !enEsta.has(id)) return { lado: i, id };
+    }
+    return null;
+  };
   for (const L of llaves || []) {
     const rk = ordenRondas(L.rondas);
     const deLlave = [];
@@ -339,7 +445,8 @@ export function ubicarTodas(llaves, habla, durS, aSeg = null) {
         const lados = (b.lados || []).map((l) => (l || []).map((y) => String((y && y.id) || '')).filter(Boolean));
         const v = ventanaAncla(b.ancla, aSeg, durS);
         // 🔁 un lado que no habló, con ancla: ¿rapeó un suplente en su lugar?
-        const sup = v ? suplente((b.lados || []).map((l) => (l || []).map((y) => String((y && y.id) || ''))), habla, v, fijos) : null;
+        const sup = (v ? suplente((b.lados || []).map((l) => (l || []).map((y) => String((y && y.id) || ''))), habla, v, fijos) : null)
+          || porNombre(L, b);
         if (sup) lados[sup.lado] = [sup.id];
         const lim = v || { desde: 0, hasta: durS };
         deLlave.push({ R, b, rk: rk[i], lados, ids: lados.flat(), sup, u: ubicar(lados, habla, durS, PASO_S, v), lim });
@@ -375,6 +482,7 @@ export function ubicarTodas(llaves, habla, durS, aSeg = null) {
     b.hasta = Math.max(b.hasta, b.desde);
     b.corta = b.hasta - b.desde < MIN_CLIP_S;
   }
+  out.porVoz = porVoz;
   return out;
 }
 

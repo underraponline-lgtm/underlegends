@@ -461,6 +461,35 @@ console.log('\n⚔️ cada batalla en la grabación\n');
   const us = B.ubicarTodas(rev2, hs.t, 2600, aS);
   ok(us.length === 1 && us[0].suplente && us[0].suplente.id === 'juli' && us[0].personas[1][0].suplente,
     'el suplente: Cata (de la llave) no habló y Juli rapeó turnándose con Ana adentro de la ventana: entró Juli  ' + JSON.stringify(us[0] && us[0].suplente));
+  // 🔁🔤 WOF, 25/11/2026 («0 de 10»): un 4x4, el mismo nombre escrito dos veces, y el presentador de un evento corto
+  const h5 = new B.Habla();
+  const h5b = (id, a, b) => { for (let ms = a * 1000; ms < b * 1000; ms += 20) h5.agregar(id, ms); };
+  for (let t = 100; t < 240; t += 20) { h5b('cris', t, t + 9); h5b('masi', t + 10, t + 19); }
+  ok(!!B.ubicar([['cris'], ['masi']], h5.t, 1200), 'un 4x4 (turnos de 10 s que se alternan) es una batalla, aunque nadie junte 12 s en 20');
+  for (let t = 400; t < 520; t += 8) { h5b('ana', t, t + 3); h5b('bea', t + 4, t + 7); }
+  ok(B.ubicar([['ana'], ['bea']], h5.t, 1200) === null, 'una charla de a frases cortas no lo es');
+  const dosNombres = [{ id: '5', rondas: [{ r: 'Octavos', b: [{ lados: [[{ n: 'Masino', id: 'masi' }], [{ n: 'Gus', id: 'gus' }]] }] },
+    { r: 'Cuartos', b: [{ lados: [[{ n: 'CrisZJ', id: 'cris' }], [{ n: 'Massino', id: '' }]] }] }] }];
+  const hd = B.completarIds(dosNombres, new Map());
+  ok(hd.length === 1 && dosNombres[0].rondas[1].b[0].lados[1][0].id === 'masi'
+    && !B.completarDeLlave([{ id: '6', rondas: [{ r: 'F', b: [{ lados: [[{ n: 'Masino', id: 'masi' }], [{ n: 'Marino', id: '' }]] }] }] }]).length,
+    'en la misma llave, «Massino» sin cuenta es «Masino» (con cuenta en octavos); en la misma batalla, no');
+  // un evento de 20 min: las ventanas de las anclas lo cubren entero, pero el que habla en todos los minutos es el presentador
+  for (let m = 0; m < 20; m++) h5b('host', m * 60 + 50, m * 60 + 58);
+  const largas = [{ desde: 0, hasta: 1200 }, { desde: 60, hasta: 1200 }, { desde: 100, hasta: 1150 }];
+  const fj = B.fijosDe(largas, h5.t, 1200);
+  ok(fj.has('host') && !fj.has('cris') && !fj.has('masi'), `en un evento corto, fijo es sólo el presentador (${[...fj].join(', ')})`);
+  // Mayeuti no tiene cuenta: en cuartos (con ancla) rapea «may» con Player; en octavos (sin ancla), la misma voz con Tmax
+  const h6 = new B.Habla();
+  const h6b = (id, a, b) => { for (let ms = a * 1000; ms < b * 1000; ms += 20) h6.agregar(id, ms); };
+  h6b('tmax', 30, 90); h6b('may', 95, 155); h6b('tmax', 158, 215); h6b('may', 218, 270);
+  h6b('pla', 700, 760); h6b('may', 765, 825); h6b('pla', 828, 885); h6b('may', 888, 940);
+  for (let m = 0; m < 20; m++) h6b('host', m * 60 + 50, m * 60 + 58);
+  const wof = [{ id: '4', rondas: [{ r: 'Octavos', b: [{ lados: [[{ n: 'Tmax', id: 'tmax' }], [{ n: 'Mayeuti', id: '' }]] }] },
+    { r: 'Cuartos', b: [{ ancla: { ini: T0 + 690e3 }, lados: [[{ n: 'Mayeuti', id: '' }], [{ n: 'Player', id: 'pla' }]] }] }] }];
+  const uw = B.ubicarTodas(wof, h6.t, 1200, aS);
+  ok(uw.length === 2 && uw.every((b) => b.suplente && b.suplente.id === 'may') && uw[0].r === 'Octavos' && uw.porVoz.length === 1,
+    `un nombre sin cuenta resuelto en su batalla con ancla rapea con esa voz en toda la llave: ${uw.map((b) => b.r + ' ' + B.mmss(b.desde)).join(', ')}`);
   const norm = B.ubicarTodas([{ id: '10', rondas: [{ r: 'Cuartos', b: [{ ancla: { ini: T0 + 150e3, fin: T0 + 360e3 },
     lados: [[{ n: 'Ana', id: 'ana' }], [{ n: 'Bea', id: 'bea' }]] }] }] }], hs.t, 2600, aS);
   ok(norm.length === 1 && !norm[0].suplente && norm[0].desde < 120, 'una batalla normal con ancla (rapearon los dos de la llave) no inventa suplente');
