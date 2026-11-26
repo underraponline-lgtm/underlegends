@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T00:24:52+00:00",
+ "cuando": "2026-11-26T00:55:42+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4744,7 +4744,9 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "868218509975498805"
+   "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "ELITE FESTIVAL VOL. 1",
@@ -4768,7 +4770,9 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "COMPE PASA Y LLEVATE A 1",
@@ -4809,7 +4813,9 @@
    "staff_cuentas": {
     "Krish el adivino (la revolucion)": "1513620494199558295"
    },
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.1",
@@ -4850,7 +4856,9 @@
    "staff_cuentas": {
     "Mosquitrap 🦟🇦🇷": "1494178897908990136"
    },
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.1",
@@ -4891,7 +4899,9 @@
    "staff_cuentas": {
     "adriagner": "1316490165836972104"
    },
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "RBCW LATAM 2026",
@@ -4915,7 +4925,9 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "RBCW: LATAM",
@@ -4939,7 +4951,9 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "HOY ES LA NACIONAL DE VENEC",
@@ -4963,7 +4977,9 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "FAT BATTLES PALOOZA FECHA 10 T.3 FINALS",
@@ -4987,7 +5003,9 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
@@ -5011,7 +5029,9 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "NUEVO DESTINO DE RED BULL CREW!!!",
@@ -5035,7 +5055,9 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "PRADERAP VOL.2",
@@ -5066,7 +5088,9 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 8",
@@ -5090,7 +5114,9 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:38:48"
   },
   {
    "nombre": "GG SANGRERAP",
@@ -6976,6 +7002,32 @@
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
    "servidor": "WOF",
    "canal": "🔔・vs・Anuncios-de-eventos",
+   "msg_id": "1575308089807347763",
+   "cuando": "2026-11-26T00:31:56",
+   "canal_id": "1558598645874430013",
+   "guild_id": "1558593868587339868",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "c7d1a247493edb00",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "Batallas donde cada MC tendrá 4 entradas individuales 1 vs 1 para demostrar su nivel, ingenio y capacidad de respuesta.",
+   "horario": "",
+   "fecha": "",
+   "premios": "ROL",
+   "staff": {},
+   "autor": "onzas.s",
+   "staff_cuentas": {},
+   "categoria_id": "1558603971046940712",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-26T00:32:46"
+  },
+  {
+   "nombre": "𓆩⚡𓆪 WORLD OF FREE",
+   "servidor": "WOF",
+   "canal": "🔔・vs・Anuncios-de-eventos",
    "msg_id": "1575252773677699113",
    "cuando": "2026-11-25T20:52:08",
    "canal_id": "1558598645874430013",
@@ -6996,7 +7048,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -7022,7 +7074,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 GRISELDA VOL 1",
@@ -7048,7 +7100,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "ROBO DE IMAGEN",
@@ -7074,7 +7126,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 HUEVOVERSE YUPILAND 3",
@@ -7100,7 +7152,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 HUEVOVERSE YUPILAND 2",
@@ -7126,7 +7178,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 HUEVOVERSE YUPILAND WORLD",
@@ -7152,7 +7204,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩𓆪 EL TALON DE AQUILES",
@@ -7178,7 +7230,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 DUPLAZOS",
@@ -7204,7 +7256,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 OLIMTRICA",
@@ -7230,7 +7282,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -7256,7 +7308,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -7282,7 +7334,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -7308,7 +7360,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "𓆩⚡𓆪 WORLD OF FREE",
@@ -7334,7 +7386,7 @@
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-25T20:54:49"
+   "inscripciones_cuando": "2026-11-26T00:32:46"
   },
   {
    "nombre": "UFL BATTLES V3",
@@ -8243,6 +8295,114 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "yo 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1575311262169043019",
+   "cuando": "2026-11-26T00:44:32"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "CrisZJ",
+   "quien": "criszjono",
+   "discord_id": "1462237816829513971",
+   "msg_id": "1575310739865079880",
+   "cuando": "2026-11-26T00:42:28"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "mats 🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1575309425894494221",
+   "cuando": "2026-11-26T00:37:14"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1575309310504992779",
+   "cuando": "2026-11-26T00:36:47"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "Mathias 🇻🇪",
+   "quien": "elthiasmathias",
+   "discord_id": "1177916322122833933",
+   "msg_id": "1575309222743375992",
+   "cuando": "2026-11-26T00:36:26"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "Skalaboy 🇲🇽",
+   "quien": "skala_mc",
+   "discord_id": "610840969579069461",
+   "msg_id": "1575308552619429982",
+   "cuando": "2026-11-26T00:33:46"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "gus 🇺🇾",
+   "quien": "agusdema",
+   "discord_id": "989640104765177956",
+   "msg_id": "1575308439700381891",
+   "cuando": "2026-11-26T00:33:19"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "player🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1575308386319212656",
+   "cuando": "2026-11-26T00:33:07"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "BastyRetro🇨🇱",
+   "quien": "bastyretro",
+   "discord_id": "596924970429448202",
+   "msg_id": "1575308367595966585",
+   "cuando": "2026-11-26T00:33:02"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "tmax🇪🇸",
+   "quien": "arowey0719_09614",
+   "discord_id": "1345623878474403901",
+   "msg_id": "1575308340702216243",
+   "cuando": "2026-11-26T00:32:56"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "masino🇨🇱",
+   "quien": "martinv444",
+   "discord_id": "1237192883535216715",
+   "msg_id": "1575308314005479516",
+   "cuando": "2026-11-26T00:32:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "McK 🇨🇴",
+   "quien": "mckurai_",
+   "discord_id": "740307349809397841",
+   "msg_id": "1575308221533655133",
+   "cuando": "2026-11-26T00:32:27"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44134,114 +44294,6 @@
    "discord_id": "1508623564285149357",
    "msg_id": "1562940702994866187",
    "cuando": "2026-10-22T21:28:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Doce 🇵🇾",
-   "quien": "arielbernal.",
-   "discord_id": "793946509099270156",
-   "msg_id": "1562940695151378433",
-   "cuando": "2026-10-22T21:28:19"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Kravitz 🇨🇷 🆚 Okam 🇨🇷",
-   "quien": "thekravitz777",
-   "discord_id": "1345962362615894027",
-   "msg_id": "1562940632300003369",
-   "cuando": "2026-10-22T21:28:04"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Mutilando fourbars 🇰🇷",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1562940613471502369",
-   "cuando": "2026-10-22T21:28:00"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "📜〕INSCRIPCIONES",
-   "texto": "Dominick 🇵🇪 + Miniboy 🇨🇱",
-   "quien": "dominick_fnf777",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1562921138512986125",
-   "cuando": "2026-10-22T20:10:37"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "LIL DRAKO 🇪🇨",
-   "quien": "thekravitz777",
-   "discord_id": "1345962362615894027",
-   "msg_id": "1562849132438102129",
-   "cuando": "2026-10-22T15:24:29"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "<@1462602972197556237> 🇪🇨",
-   "quien": "thekravitz777",
-   "discord_id": "1345962362615894027",
-   "msg_id": "1562848848643227649",
-   "cuando": "2026-10-22T15:23:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "mats🇺🇾",
-   "quien": "matttt.15",
-   "discord_id": "597240876573392946",
-   "msg_id": "1562721101891772519",
-   "cuando": "2026-10-22T06:55:44"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "reenkharnazhion 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1562710256906280991",
-   "cuando": "2026-10-22T06:12:38"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "okam🇨🇷",
-   "quien": "okam77_25976",
-   "discord_id": "1512148565890306153",
-   "msg_id": "1562708860744245300",
-   "cuando": "2026-10-22T06:07:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Ineedrubbers🇮🇱",
-   "quien": "provenzaaznevorp",
-   "discord_id": "711076230857752627",
-   "msg_id": "1562708820520607745",
-   "cuando": "2026-10-22T06:06:56"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Aldre 🇦🇷",
-   "quien": "aldrebxjd",
-   "discord_id": "515712116381188097",
-   "msg_id": "1562708556426387547",
-   "cuando": "2026-10-22T06:05:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "tam🇻🇪",
-   "quien": "tuabuelamuerta12",
-   "discord_id": "505444041719021569",
-   "msg_id": "1562708533445791855",
-   "cuando": "2026-10-22T06:05:48"
   }
  ]
 }
