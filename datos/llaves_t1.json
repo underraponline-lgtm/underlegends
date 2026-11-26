@@ -65608,5 +65608,79 @@
   "ver": {
    "v": 1
   }
+ },
+ "695": {
+  "dia": "2026-10-05",
+  "escala": "4-7",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1556751961431220266/1556788158979379231"
+  ],
+  "n": 695,
+  "nombre": "(sin titulo)",
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "alejoz",
+       "xeus"
+      ],
+      "alejoz",
+      ""
+     ],
+     [
+      [
+       "AbrahamH",
+       "Chop"
+      ],
+      "AbrahamH",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "AbrahamH",
+       "alejoz"
+      ],
+      "",
+      "sin campeón: ✅ Decidir (los dos finalistas cobran el promedio de 1.º y 2.º)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "AbrahamH",
+    "Subcampeón",
+    4375
+   ],
+   [
+    "alejoz",
+    "Subcampeón",
+    4375
+   ],
+   [
+    "Chop",
+    "Semifinal",
+    2625
+   ],
+   [
+    "xeus",
+    "Semifinal",
+    2625
+   ]
+  ],
+  "ver": {
+   "min": 62,
+   "v": 1
+  }
  }
 }

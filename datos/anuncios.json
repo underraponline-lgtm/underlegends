@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T02:38:11+00:00",
+ "cuando": "2026-11-26T02:52:07+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7044,7 +7044,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": "Afínnpapá☁️",
+   "autor": "Tungtungsahur",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -7252,7 +7252,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": ".",
+   "autor": "Elitejobw",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -7304,7 +7304,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": "Afínnpapá☁️",
+   "autor": "Tungtungsahur",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -7356,7 +7356,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": ".",
+   "autor": "Elitejobw",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -7382,7 +7382,7 @@
    "fecha": "",
    "premios": "ROL",
    "staff": {},
-   "autor": ".",
+   "autor": "Elitejobw",
    "staff_cuentas": {},
    "categoria_id": "1558603971046940712",
    "inscripciones": "abiertas",
@@ -8024,6 +8024,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "tit": "RED BULL BATALLA 2026",
+   "tx": "🚨 RECORDATORIO 🚨 📆 Esta temporada de Red Bull abrirá con la Final Nacional de Chile el 5 de diciembre. 📍 Calendario completo: 5 de Diciembre | 🇨🇱 Final Nacional Chile 6 de Diciembre | 🇲🇽 Final Nacional México 11 de Dicie",
+   "cuando": "2026-11-26T02:43:50",
+   "msg_id": "1575341284883824702",
+   "link": "https://discord.com/channels/838593179187544064/850777668386291712/1575341284883824702"
+  },
+  {
    "servidor": "CEU",
    "canal": "anuncios",
    "tit": "empiezan el reclutamiento de participantes :",
@@ -8283,18 +8292,27 @@
    "cuando": "2026-11-16T16:08:38",
    "msg_id": "1571919939453853797",
    "link": "https://discord.com/channels/1300152346189496330/1394902437990629437/1571919939453853797"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "⋆📢│🐔⋅Anuncios⋅📢",
-   "tit": "🇪🇸 CAMPOY CAMPEON RED BULL NACIONAL DE PLAZAS TEMPORADA 5 🇪🇸",
-   "tx": "EL DIA DE HOY, VIVIMOS LA NACIONAL DE RED BULL DE PLAZAS, LA CUAL TUVO INSCRIPCION TOTALMENTE LIBRE ROMPIENDO EL RECORD DE INSCRITOS EN UNA RED BULL, CON UN TOTAL DE 34 INSCRITOS A PESAR QUE UNICAMENTE SE TOMARON EN CUEN",
-   "cuando": "2026-11-16T03:04:33",
-   "msg_id": "1571722616862023943",
-   "link": "https://discord.com/channels/1467763447117778989/1553080521096044584/1571722616862023943"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1575340863138299966",
+   "cuando": "2026-11-26T02:42:10"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sultán 🇧🇴",
+   "quien": "svlt4n.",
+   "discord_id": "1560477107598008355",
+   "msg_id": "1575340016823967868",
+   "cuando": "2026-11-26T02:38:48"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44276,24 +44294,6 @@
    "discord_id": "989640104765177956",
    "msg_id": "1562973774062813227",
    "cuando": "2026-10-22T23:39:46"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones-2",
-   "texto": "delux🇦🇷",
-   "quien": "delux.13",
-   "discord_id": "729809358627536938",
-   "msg_id": "1562973698405695560",
-   "cuando": "2026-10-22T23:39:28"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones-2",
-   "texto": "Sin límites 🇵🇪",
-   "quien": "sinlimites2026",
-   "discord_id": "1508623564285149357",
-   "msg_id": "1562973668961812532",
-   "cuando": "2026-10-22T23:39:21"
   }
  ]
 }

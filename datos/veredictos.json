@@ -11072,6 +11072,17 @@
    "b": "gus",
    "ganador": "gus",
    "votos": "1–0"
+  },
+  "1575340360215961752": {
+   "id": "1575340360215961752",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795660810284,
+   "a": "Sebita",
+   "b": "lrs la sustancia",
+   "ganador": "Sebita",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14864,8 +14875,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795659901306,
-   "ed": 1795660472942,
-   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝",
+   "ed": 1795661385630,
+   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝\n⌞Sebita⌝ 🆚 ⌞lrs la sustancia⌝\n⌞Abraham⌝ 🆚 ⌞black demon⌝\n⌞Drakm⌝ 🆚 ⌞makmah⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -14885,6 +14896,36 @@
      ],
      "gus",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Sebita",
+      "lrs la sustancia"
+     ],
+     "Sebita",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Abraham",
+      "black demon"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Drakm",
+      "makmah"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

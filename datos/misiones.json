@@ -81,7 +81,7 @@
     ],
     "AbrahamH": [
      0,
-     3,
+     4,
      2
     ],
     "Abyssus": [
@@ -1399,6 +1399,11 @@
      4,
      1
     ],
+    "alejoz": [
+     0,
+     1,
+     2
+    ],
     "alejozz": [
      0,
      0,
@@ -1508,6 +1513,11 @@
      0,
      0,
      16
+    ],
+    "xeus": [
+     0,
+     0,
+     4
     ],
     "yinn": [
      1,
@@ -1726,6 +1736,7 @@
     "Zaza": 300,
     "Zetryko": 1600,
     "Zignos": 2900,
+    "alejoz": 1000,
     "araya": 300,
     "chekialo 🇧🇯": 1300,
     "crakero": 300,
@@ -12330,7 +12341,7 @@
      0
     ],
     "Chop": [
-     "MaYeuTyK",
+     "Drexx",
      "escena",
      null,
      0
@@ -12958,9 +12969,14 @@
      1
     ],
     "Kravitz": [
-     "Keider",
-     "escena",
-     null,
+     "Erian",
+     "revancha",
+     [
+      551,
+      "FFA",
+      "31/10",
+      "semifinales"
+     ],
      0
     ],
     "Krish": [
@@ -15478,6 +15494,7 @@
   "Zetryko": 1600,
   "Zignos": 7000,
   "akasha🇦🇷": 300,
+  "alejoz": 1000,
   "araya": 600,
   "chekialo 🇧🇯": 1300,
   "crakero": 900,

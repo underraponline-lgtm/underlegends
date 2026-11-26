@@ -1229,6 +1229,22 @@
    ]
   }
  },
+ "alejoz": {
+  "servidor": {
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1795662037824
+   ]
+  },
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795662037824
+   ]
+  }
+ },
  "alexi": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -3013,6 +3029,11 @@
     "🎖️ CURTIDO",
     "t1",
     1793606483424
+   ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1795662037824
    ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
@@ -19328,6 +19349,15 @@
     "🧳 VIAJERO",
     "t1",
     1795561480429
+   ]
+  }
+ },
+ "xeus": {
+  "servidor": {
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1795662037824
    ]
   }
  },

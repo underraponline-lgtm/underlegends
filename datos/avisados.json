@@ -39834,7 +39834,7 @@
    "Vilca": 15
   },
   "fecha": "08/11",
-  "firma": "e7b49d63b4abca7f",
+  "firma": "d0eb74916c9f36e2",
   "msg": "1569508065508593856",
   "nombre": "RAP SIN GROSERIAS 4",
   "num": 591,
@@ -42094,7 +42094,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "4caa3e0400bc45c8",
+  "firma": "9bd33ec8ed523b18",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45947,7 +45947,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "5c02f8718a8c9af4",
+  "firma": "36b84ebab40bf034",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46176,7 +46176,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "035382e3c24974ac",
+  "firma": "6db557c95e731da1",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -59941,6 +59941,72 @@
     "Leonart",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "695": {
+  "antes": {
+   "AbrahamH": [
+    109,
+    144,
+    false
+   ],
+   "Chop": [
+    272,
+    46,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "alejoz",
+    "xeus",
+    "alejoz"
+   ],
+   [
+    "AbrahamH",
+    "Chop",
+    "AbrahamH"
+   ],
+   [
+    "AbrahamH",
+    "alejoz",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "AbrahamH": 6,
+   "Chop": 29
+  },
+  "fecha": "05/10",
+  "nombre": "(sin titulo)",
+  "num": 695,
+  "participantes": 4,
+  "sello": {},
+  "sv": "DDS",
+  "t": "2026-11-26T02:51:09Z",
+  "tabla": [
+   [
+    "AbrahamH",
+    "Subcampeón",
+    4375
+   ],
+   [
+    "alejoz",
+    "Subcampeón",
+    4375
+   ],
+   [
+    "xeus",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Chop",
+    "Semifinal",
+    2625
    ]
   ],
   "v": 2
