@@ -8,7 +8,7 @@
    "fecha": "27/09",
    "por": "R24",
    "sv": "DW",
-   "vistas": 190
+   "vistas": 191
   },
   "1558965596106793002": {
    "canal": "1500675902042931280",
@@ -16,7 +16,7 @@
    "evento": "RAP SIN GROSERIAS 1",
    "fecha": "11/10",
    "sv": "FDS",
-   "vistas": 1147
+   "vistas": 1148
   },
   "1563292037246091265": {
    "canal": "1560645507095728278",
@@ -24,7 +24,7 @@
    "evento": "WORLD OF FREE",
    "fecha": "23/10",
    "sv": "LKR",
-   "vistas": 1147
+   "vistas": 1148
   },
   "1563384237233676330": {
    "canal": "1500675902042931280",
@@ -32,7 +32,15 @@
    "evento": "2v2 2",
    "fecha": "23/10",
    "sv": "FDS",
-   "vistas": 1147
+   "vistas": 1148
+  },
+  "1564319932315860993": {
+   "canal": "1222379620494741604",
+   "desde": "2026-11-26T21:24:12+00:00",
+   "evento": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3",
+   "fecha": "26/10",
+   "sv": "CH",
+   "vistas": 1
   },
   "1564459897188515963": {
    "canal": "1500675902042931280",
@@ -40,7 +48,7 @@
    "evento": "RAP SIN GROSERIAS 1",
    "fecha": "26/10",
    "sv": "FDS",
-   "vistas": 978
+   "vistas": 979
   },
   "1566575124097007674": {
    "canal": "1540440885471477832",
@@ -48,7 +56,7 @@
    "evento": "UWC NACIONAL ANDES",
    "fecha": "01/11",
    "sv": "UFLUC",
-   "vistas": 111
+   "vistas": 112
   },
   "1566598778679595161": {
    "canal": "1451649134598557708",
@@ -56,7 +64,7 @@
    "evento": "LLAVES PARA LA DISCORD STYLE 19",
    "fecha": "01/11",
    "sv": "DDS",
-   "vistas": 679
+   "vistas": 680
   },
   "1568355756569264161": {
    "canal": "1540440885471477832",
@@ -64,7 +72,7 @@
    "evento": "UWC NACIONAL TRICOLOR",
    "fecha": "06/11",
    "sv": "UFLUC",
-   "vistas": 111
+   "vistas": 112
   },
   "1570143117074763839": {
    "canal": "1518202754294612028",
@@ -72,7 +80,7 @@
    "evento": "RED BULL BATALLA",
    "fecha": "11/11",
    "sv": "CEU",
-   "vistas": 398
+   "vistas": 399
   },
   "1570252248234201243": {
    "canal": "1558611505040064607",
@@ -80,7 +88,7 @@
    "evento": "(sin titulo)",
    "fecha": "11/11",
    "sv": "LKR",
-   "vistas": 269
+   "vistas": 270
   },
   "1570644564551671840": {
    "canal": "1558611505040064607",
@@ -88,7 +96,7 @@
    "evento": "COMPETENCIA 1 VS 1",
    "fecha": "12/11",
    "sv": "LKR",
-   "vistas": 517
+   "vistas": 518
   },
   "1570917198128615515": {
    "canal": "1309234583023124531",
@@ -96,7 +104,23 @@
    "evento": "ELITE FESTIVAL VOL. 1",
    "fecha": "13/11",
    "sv": "ACAD",
-   "vistas": 352
+   "vistas": 353
+  },
+  "1571020068995866745": {
+   "canal": "1222379620494741604",
+   "desde": "2026-11-26T21:24:11+00:00",
+   "evento": "COMPE CHOP NUEVO CEO",
+   "fecha": "13/11",
+   "sv": "CH",
+   "vistas": 1
+  },
+  "1571600949678702675": {
+   "canal": "1222379620494741604",
+   "desde": "2026-11-26T21:24:11+00:00",
+   "evento": "VERSO ELITE VOL.1",
+   "fecha": "15/11",
+   "sv": "CH",
+   "vistas": 1
   },
   "1571643167667916952": {
    "canal": "1571614058874933278",
@@ -104,7 +128,15 @@
    "evento": "RED BULL INTERNACIONAL",
    "fecha": "15/11",
    "sv": "DDF",
-   "vistas": 315
+   "vistas": 316
+  },
+  "1571707612137783390": {
+   "canal": "1222379620494741604",
+   "desde": "2026-11-26T21:24:11+00:00",
+   "evento": "CHOP COMPE CEO V.3",
+   "fecha": "15/11",
+   "sv": "CH",
+   "vistas": 1
   },
   "1572429715107741818": {
    "canal": "1558611505040064607",
@@ -112,7 +144,7 @@
    "evento": "(sin titulo)",
    "fecha": "17/11",
    "sv": "LKR",
-   "vistas": 337
+   "vistas": 338
   },
   "1572443914546450443": {
    "canal": "1558611505040064607",
@@ -120,7 +152,7 @@
    "evento": "(sin titulo)",
    "fecha": "17/11",
    "sv": "LKR",
-   "vistas": 337
+   "vistas": 338
   },
   "1572765832969453710": {
    "canal": "1558611505040064607",
@@ -128,7 +160,7 @@
    "evento": "(sin titulo)",
    "fecha": "18/11",
    "sv": "LKR",
-   "vistas": 304
+   "vistas": 305
   },
   "1573428440936357919": {
    "canal": "1560645507095728278",
@@ -136,7 +168,7 @@
    "evento": "(sin titulo)",
    "fecha": "20/11",
    "sv": "LKR",
-   "vistas": 229
+   "vistas": 230
   },
   "1573795087161229394": {
    "canal": "1500675902042931280",
@@ -144,7 +176,7 @@
    "evento": "RED BULL REGIONAL",
    "fecha": "21/11",
    "sv": "FDS",
-   "vistas": 194
+   "vistas": 195
   },
   "1574217678510362707": {
    "canal": "1560645507095728278",
@@ -152,7 +184,7 @@
    "evento": "(sin titulo)",
    "fecha": "22/11",
    "sv": "LKR",
-   "vistas": 126
+   "vistas": 127
   },
   "1575364174823817349": {
    "canal": "1563698791595507743",
@@ -160,7 +192,7 @@
    "evento": "NOCTURNA STYLE",
    "fecha": "25/11",
    "sv": "DDS",
-   "vistas": 17
+   "vistas": 18
   }
  }
 }

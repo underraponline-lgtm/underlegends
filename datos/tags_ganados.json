@@ -1174,6 +1174,11 @@
     "t1",
     1793637214887
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795728873263
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -4026,6 +4031,20 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "deathrow": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795728873263
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795728873263
    ]
   }
  },
@@ -7393,6 +7412,11 @@
     "t1",
     1795151460346
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795728873263
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -9982,6 +10006,11 @@
    ]
   },
   "temporada": {
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795728873263
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -11705,6 +11734,30 @@
    ]
   }
  },
+ "mrstillbalin": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795728873263
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795728873263
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795728873263
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795728873263
+   ]
+  }
+ },
  "mtz": {
   "competitivo": {
    "⚔️ DUELISTA": [
@@ -13087,6 +13140,11 @@
     "t1",
     1794962387538
    ],
+   "REY DEL DERBI": [
+    "REY DEL DERBI",
+    "t1",
+    1795728873263
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -13141,6 +13199,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1795728873263
+   ],
    "⚡ RELÁMPAGO": [
     "⚡ RELÁMPAGO",
     "t1",

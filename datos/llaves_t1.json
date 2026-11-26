@@ -58468,7 +58468,7 @@
      [
       [
        "K1NGT0",
-       "NC"
+       "Nc🇲🇿"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -58541,19 +58541,19 @@
     "b": [
      [
       [
-       "Rizas",
-       "OG"
+       "OG",
+       "PRAISERIZA"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "OG",
+      "ganador: ✅ Decidir"
      ],
      [
       [
-       "makma",
-       "nc🇲🇿"
+       "Makmah",
+       "NC"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Makmah",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
@@ -58583,6 +58583,16 @@
     "Makmah",
     "Subcampeón",
     7500
+   ],
+   [
+    "NC",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PRAISERIZA",
+    "Semifinal",
+    5250
    ],
    [
     "Gocho",
@@ -65912,6 +65922,258 @@
   ],
   "ver": {
    "min": 8,
+   "v": 1
+  }
+ },
+ "698": {
+  "dia": "2026-11-24",
+  "escala": "16+",
+  "fecha": "24/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1574858065772150875"
+  ],
+  "n": 698,
+  "nombre": "REY DEL INGENIO VOL 7",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "mr still balin 🇳🇴",
+       "asuuan 🇨🇱"
+      ],
+      "mr still balin 🇳🇴",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "SULTAN"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Julda",
+       "Akuseru"
+      ],
+      "Julda",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Makmah"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Kaizz",
+       "Vandu"
+      ],
+      "Kaizz",
+      ""
+     ],
+     [
+      [
+       "DEATHROW 🇵🇦",
+       "Skala 🇲🇽"
+      ],
+      "DEATHROW 🇵🇦",
+      ""
+     ],
+     [
+      [
+       "Marto AR",
+       "LRS"
+      ],
+      "Marto AR",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "tato",
+       "DELIRANTE 🇨🇱",
+       "Deuxs"
+      ],
+      "PRAISERIZA",
+      "triple (5 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "mr still balin 🇳🇴",
+       "OG"
+      ],
+      "mr still balin 🇳🇴",
+      ""
+     ],
+     [
+      [
+       "Julda",
+       "Mito"
+      ],
+      "Julda",
+      ""
+     ],
+     [
+      [
+       "DEATHROW 🇵🇦",
+       "Kaizz"
+      ],
+      "DEATHROW 🇵🇦",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Marto AR"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "DEATHROW 🇵🇦",
+       "Julda"
+      ],
+      "DEATHROW 🇵🇦",
+      ""
+     ],
+     [
+      [
+       "mr still balin 🇳🇴",
+       "PRAISERIZA"
+      ],
+      "mr still balin 🇳🇴",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "mr still balin 🇳🇴",
+       "DEATHROW 🇵🇦"
+      ],
+      "mr still balin 🇳🇴",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "mr still balin 🇳🇴",
+    "Campeón",
+    10000
+   ],
+   [
+    "DEATHROW 🇵🇦",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Julda",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PRAISERIZA",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Kaizz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Marto AR",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OG",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "DELIRANTE 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Deuxs",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Skala 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "asuuan 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "tato",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 238,
    "v": 1
   }
  }

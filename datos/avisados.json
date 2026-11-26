@@ -50380,7 +50380,7 @@
    "Yor": 5
   },
   "fecha": "15/11",
-  "firma": "5d9fa977a6472b4b",
+  "firma": "1aafecf1c98201c9",
   "msg": "1571735800801136702",
   "nombre": "CHOP COMPE CEO V.3",
   "num": 648,
@@ -60280,6 +60280,285 @@
     "Raxo",
     "Semifinal",
     2625
+   ]
+  ],
+  "v": 2
+ },
+ "698": {
+  "antes": {
+   "Akuseru": [
+    109,
+    141,
+    false
+   ],
+   "Deuxs": [
+    82,
+    102,
+    false
+   ],
+   "Julda": [
+    97,
+    123,
+    false
+   ],
+   "Kaizz": [
+    662,
+    637,
+    true
+   ],
+   "LRS": [
+    39,
+    45,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Marto AR": [
+    337,
+    210,
+    true
+   ],
+   "Mito": [
+    15,
+    15,
+    false
+   ],
+   "OG": [
+    22,
+    22,
+    false
+   ],
+   "PRAISERIZA": [
+    5,
+    5,
+    false
+   ],
+   "SULTAN": [
+    290,
+    114,
+    true
+   ],
+   "Vandu": [
+    8,
+    8,
+    false
+   ],
+   "tato": [
+    602,
+    568,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "mr still balin 🇳🇴",
+    "asuuan 🇨🇱",
+    "mr still balin 🇳🇴"
+   ],
+   [
+    "OG",
+    "SULTAN",
+    "OG"
+   ],
+   [
+    "Julda",
+    "Akuseru",
+    "Julda"
+   ],
+   [
+    "Mito",
+    "Makmah",
+    "Mito"
+   ],
+   [
+    "Kaizz",
+    "Vandu",
+    "Kaizz"
+   ],
+   [
+    "DEATHROW 🇵🇦",
+    "Skala 🇲🇽",
+    "DEATHROW 🇵🇦"
+   ],
+   [
+    "Marto AR",
+    "LRS",
+    "Marto AR"
+   ],
+   [
+    "PRAISERIZA",
+    "tato",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "DELIRANTE 🇨🇱",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Deuxs",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "tato",
+    "PRAISERIZA"
+   ],
+   [
+    "mr still balin 🇳🇴",
+    "OG",
+    "mr still balin 🇳🇴"
+   ],
+   [
+    "Julda",
+    "Mito",
+    "Julda"
+   ],
+   [
+    "DEATHROW 🇵🇦",
+    "Kaizz",
+    "DEATHROW 🇵🇦"
+   ],
+   [
+    "PRAISERIZA",
+    "Marto AR",
+    "PRAISERIZA"
+   ],
+   [
+    "DEATHROW 🇵🇦",
+    "Julda",
+    "DEATHROW 🇵🇦"
+   ],
+   [
+    "mr still balin 🇳🇴",
+    "PRAISERIZA",
+    "mr still balin 🇳🇴"
+   ],
+   [
+    "mr still balin 🇳🇴",
+    "DEATHROW 🇵🇦",
+    "mr still balin 🇳🇴"
+   ]
+  ],
+  "ev_antes": {
+   "Akuseru": 9,
+   "Deuxs": 13,
+   "Julda": 9,
+   "Kaizz": 1,
+   "LRS": 46,
+   "Makmah": 128,
+   "Marto AR": 9,
+   "Mito": 56,
+   "OG": 25,
+   "PRAISERIZA": 26,
+   "SULTAN": 15,
+   "Vandu": 58,
+   "tato": 1
+  },
+  "fecha": "24/11",
+  "nombre": "REY DEL INGENIO VOL 7",
+  "num": 698,
+  "participantes": 19,
+  "sello": {
+   "mr still balin 🇳🇴": ""
+  },
+  "sv": "CH",
+  "t": "2026-11-26T21:24:43Z",
+  "tabla": [
+   [
+    "mr still balin 🇳🇴",
+    "Campeón",
+    10000
+   ],
+   [
+    "DEATHROW 🇵🇦",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Julda",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PRAISERIZA",
+    "Semifinal",
+    5250
+   ],
+   [
+    "OG",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kaizz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Marto AR",
+    "Cuartos",
+    2500
+   ],
+   [
+    "asuuan 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Skala 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "tato",
+    "Octavos",
+    1250
+   ],
+   [
+    "DELIRANTE 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Deuxs",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

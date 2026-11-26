@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T20:58:49+00:00",
+ "cuando": "2026-11-26T21:25:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -374,35 +374,6 @@
    "premios": "Aura",
    "staff": {},
    "autor": "Julda 💤",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "NEW GENESIS III",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1575273339990048779",
-   "cuando": "2026-11-25T22:13:51",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@deslanofthemind",
-   "orgs": [
-    {
-     "n": "deslanofthemind",
-     "id": ""
-    }
-   ],
-   "autor_h": "78a9632c77e88d80",
-   "cupos_texto": "12-16",
-   "inscriptos": 12,
-   "cupo_total": 16,
-   "rango": "PLATA",
-   "modalidad": "PANDILLAS",
-   "horario": "YA",
-   "fecha": "",
-   "premios": "PUNTOS DE RANKING",
-   "staff": {},
-   "autor": "Erian 恵理久",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
@@ -1050,6 +1021,35 @@
     "la monalisa": "1487658663148785734",
     "Lizeninn 7 de oro": "1493416945037611140"
    },
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "TORNEO CLANDESTINO V.1",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1569525815551590563",
+   "cuando": "2026-11-10T01:35:14",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@Zaik",
+   "orgs": [
+    {
+     "n": "Zaik",
+     "id": ""
+    }
+   ],
+   "autor_h": "5a4d0d8e394a841a",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 VS 1",
+   "horario": "CUANDO LLENEN CUPOS",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Zaik",
+   "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
   {
@@ -8383,6 +8383,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1575620892182970613",
+   "cuando": "2026-11-26T21:14:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "1200 🇨🇷",
+   "quien": "dreamero",
+   "discord_id": "1395903355909570633",
+   "msg_id": "1575619691735421002",
+   "cuando": "2026-11-26T21:10:08"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Ruvick 🇨🇴",
+   "quien": "soy_rubick_96712",
+   "discord_id": "1399489326701871164",
+   "msg_id": "1575617710514249732",
+   "cuando": "2026-11-26T21:02:15"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -44355,33 +44382,6 @@
    "discord_id": "1548906948307451906",
    "msg_id": "1563019192465358929",
    "cuando": "2026-10-23T02:40:14"
-  },
-  {
-   "servidor": "LKR",
-   "canal": "⟡・INSCRIPCIONES",
-   "texto": "Calíz 🇲🇽}",
-   "quien": "caliz123_",
-   "discord_id": "1546111597343146044",
-   "msg_id": "1563019170923151382",
-   "cuando": "2026-10-23T02:40:09"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Mosquitrap 🦟🇦🇷",
-   "quien": "3decopas.",
-   "discord_id": "1494178897908990136",
-   "msg_id": "1563014651787091989",
-   "cuando": "2026-10-23T02:22:12"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "sosa🇺🇾",
-   "quien": "sosaatrz",
-   "discord_id": "1471153954254622774",
-   "msg_id": "1563012711200202846",
-   "cuando": "2026-10-23T02:14:29"
   }
  ]
 }

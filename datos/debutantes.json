@@ -683,6 +683,30 @@
    "vence": "2026-10-30T20:26:11+00:00",
    "vencido": true
   },
+  "DEATHROW": {
+   "avisado": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T18:43:42+00:00",
+   "did": "",
+   "evento": "REY DEL INGENIO VOL 7",
+   "n": 698,
+   "sv": "CH",
+   "vence": "2026-12-01T18:43:42+00:00",
+   "vencido": false
+  },
+  "DELIRANTE": {
+   "avisado": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T18:43:42+00:00",
+   "did": "",
+   "evento": "REY DEL INGENIO VOL 7",
+   "n": 698,
+   "sv": "CH",
+   "vence": "2026-12-01T18:43:42+00:00",
+   "vencido": false
+  },
   "Dantemx": {
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-11-12",
@@ -2977,6 +3001,18 @@
    "vence": "2026-11-23T02:04:55+00:00",
    "vencido": false
   },
+  "Skala": {
+   "avisado": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T18:43:42+00:00",
+   "did": "",
+   "evento": "REY DEL INGENIO VOL 7",
+   "n": 698,
+   "sv": "CH",
+   "vence": "2026-12-01T18:43:42+00:00",
+   "vencido": false
+  },
   "Skiller": {
    "avisado": "2026-10-30",
    "avisado_cumplido": "2026-11-05",
@@ -3500,6 +3536,18 @@
    "vence": "2026-11-21T04:32:52+00:00",
    "vencido": true
   },
+  "asuuan": {
+   "avisado": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T18:43:42+00:00",
+   "did": "",
+   "evento": "REY DEL INGENIO VOL 7",
+   "n": 698,
+   "sv": "CH",
+   "vence": "2026-12-01T18:43:42+00:00",
+   "vencido": false
+  },
   "atari": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -3770,6 +3818,18 @@
    "vence": "2026-11-30T04:50:16+00:00",
    "vencido": false
   },
+  "mr still balin": {
+   "avisado": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-24T18:43:42+00:00",
+   "did": "",
+   "evento": "REY DEL INGENIO VOL 7",
+   "n": 698,
+   "sv": "CH",
+   "vence": "2026-12-01T18:43:42+00:00",
+   "vencido": false
+  },
   "npk": {
    "avisado": "2026-10-21",
    "chat": "2026-10-22",
@@ -3900,16 +3960,17 @@
   },
   "tato": {
    "avisado": "2026-11-18",
+   "avisado_cumplido": "2026-11-26",
    "chat": "2026-11-19",
-   "con": null,
-   "cumplido": "",
+   "con": 698,
+   "cumplido": "2026-11-24T18:43:42+00:00",
    "debut": "2026-11-18T03:02:41+00:00",
    "did": "1451439942256562256",
    "evento": "CHOP ES CEO V.4",
    "n": 661,
    "sv": "CH",
    "vence": "2026-11-25T03:02:41+00:00",
-   "vencido": true
+   "vencido": false
   },
   "tierra sin atmosfera": {
    "avisado": "2026-11-24",

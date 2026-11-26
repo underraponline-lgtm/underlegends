@@ -9018,7 +9018,7 @@
     ],
     "Makmah": [
      1,
-     2,
+     3,
      1,
      0,
      1
@@ -9804,7 +9804,7 @@
     "Lord Viruzz": 600,
     "MTZ": 600,
     "MaYeuTyK": 2100,
-    "Makmah": 900,
+    "Makmah": 1500,
     "Marcos": 1000,
     "Masino": 300,
     "Mc arepa": 1000,
@@ -11720,7 +11720,8 @@
       6
      ],
      "s": [
-      "FFA"
+      "FFA",
+      "CH"
      ]
     },
     "Paria": {
@@ -11939,15 +11940,6 @@
      "d": [],
      "s": [
       "CH"
-     ]
-    },
-    "compare": {
-     "d": [
-      5
-     ],
-     "s": [
-      "CH",
-      "CEU"
      ]
     },
     "crakero": {
@@ -13123,9 +13115,14 @@
      0
     ],
     "Lover": [
-     "compare",
-     "escena",
-     null,
+     "PRAISERIZA",
+     "revancha",
+     [
+      656,
+      "CH",
+      "13/11",
+      "cuartos"
+     ],
      0
     ],
     "Lucho": [
@@ -14162,9 +14159,14 @@
      0
     ],
     "astrid": [
-     "compare",
-     "escena",
-     null,
+     "NC",
+     "revancha",
+     [
+      656,
+      "CH",
+      "13/11",
+      "cuartos"
+     ],
      0
     ],
     "beneroo": [
@@ -14441,6 +14443,13 @@
      0,
      0
     ],
+    "Akuseru": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Aldre": [
      0,
      0,
@@ -14501,6 +14510,20 @@
      1,
      2,
      2,
+     0,
+     0
+    ],
+    "DEATHROW 🇵🇦": [
+     1,
+     0,
+     3,
+     0,
+     0
+    ],
+    "DELIRANTE 🇨🇱": [
+     1,
+     0,
+     0,
      0,
      0
     ],
@@ -14646,15 +14669,22 @@
     ],
     "Julda": [
      1,
+     2,
+     3,
      1,
-     1,
-     0,
      0
     ],
     "Julix": [
      1,
      0,
      0,
+     0,
+     0
+    ],
+    "Kaizz": [
+     1,
+     1,
+     1,
      0,
      0
     ],
@@ -14773,7 +14803,7 @@
     "Marto AR": [
      1,
      0,
-     0,
+     1,
      0,
      0
     ],
@@ -14793,8 +14823,8 @@
     ],
     "Mito": [
      1,
-     0,
-     0,
+     1,
+     1,
      0,
      0
     ],
@@ -14848,9 +14878,9 @@
      0
     ],
     "OG": [
-     0,
-     0,
-     0,
+     1,
+     1,
+     1,
      0,
      0
     ],
@@ -14872,6 +14902,13 @@
      1,
      2,
      2,
+     0,
+     0
+    ],
+    "PRAISERIZA": [
+     1,
+     1,
+     1,
      0,
      0
     ],
@@ -14959,6 +14996,13 @@
      0,
      0
     ],
+    "Skala 🇲🇽": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Snow": [
      1,
      3,
@@ -15043,6 +15087,13 @@
      0,
      0
     ],
+    "asuuan 🇨🇱": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "crakero": [
      1,
      1,
@@ -15071,6 +15122,13 @@
      0,
      0
     ],
+    "mr still balin 🇳🇴": [
+     1,
+     0,
+     4,
+     0,
+     0
+    ],
     "replisan": [
      1,
      0,
@@ -15082,6 +15140,13 @@
      1,
      1,
      1,
+     0,
+     0
+    ],
+    "tato": [
+     1,
+     0,
+     0,
      0,
      0
     ],
@@ -15109,12 +15174,15 @@
    },
    "pts": {
     "Agus": 300,
+    "Akuseru": 300,
     "Andres": 300,
     "Aritmetico": 300,
     "BLITZ": 300,
     "Chop": 300,
     "CrisZJ": 300,
     "Cronox": 300,
+    "DEATHROW 🇵🇦": 300,
+    "DELIRANTE 🇨🇱": 300,
     "Deko": 300,
     "Deuxs": 300,
     "Dios": 2900,
@@ -15128,8 +15196,9 @@
     "Gocho": 900,
     "Inku": 300,
     "JOSHU": 300,
-    "Julda": 300,
+    "Julda": 1100,
     "Julix": 300,
+    "Kaizz": 300,
     "Keider": 300,
     "Konan": 300,
     "Kourier": 600,
@@ -15151,9 +15220,11 @@
     "NC": 300,
     "NXUZ": 300,
     "Noone": 300,
+    "OG": 300,
     "OKAM": 300,
     "Oasis": 300,
     "Over": 300,
+    "PRAISERIZA": 300,
     "Paria": 300,
     "Player": 300,
     "Raxo": 300,
@@ -15162,6 +15233,7 @@
     "SULTAN": 300,
     "Sankabel": 300,
     "Sin Limites": 300,
+    "Skala 🇲🇽": 300,
     "Snow": 1500,
     "Soulb": 300,
     "Tam": 300,
@@ -15172,11 +15244,14 @@
     "Xervoe": 300,
     "Zignos": 300,
     "araya": 300,
+    "asuuan 🇨🇱": 300,
     "crakero": 300,
     "ikonoxx": 300,
     "mats": 300,
+    "mr still balin 🇳🇴": 300,
     "replisan": 300,
     "romeo": 300,
+    "tato": 300,
     "tierra sin atmosfera": 300,
     "tommyhilfiger1312🇾🇹": 300,
     "yinn": 900
@@ -15203,7 +15278,7 @@
   "Adriagner": 4700,
   "Agente sombra": 600,
   "Agus": 9600,
-  "Akuseru": 1200,
+  "Akuseru": 1500,
   "Akutagawa🇹🇼": 300,
   "Aldre": 3900,
   "Alexi": 300,
@@ -15249,6 +15324,8 @@
   "Crk": 2500,
   "Cronox": 4800,
   "DAVIJUAN": 300,
+  "DEATHROW 🇵🇦": 300,
+  "DELIRANTE 🇨🇱": 300,
   "DLX": 300,
   "DNK": 300,
   "DO-C": 600,
@@ -15334,12 +15411,13 @@
   "Joven shenlong": 300,
   "Juanpa": 600,
   "Juasmio": 1900,
-  "Julda": 600,
+  "Julda": 1400,
   "Julix": 900,
   "Julix🇧🇴": 1000,
   "Jult": 600,
   "Jupiter": 2200,
   "KIRITO": 300,
+  "Kaizz": 300,
   "Karumailafmasha🇹🇼": 300,
   "Keider": 2700,
   "Keplatoo🇪🇸": 600,
@@ -15393,7 +15471,7 @@
   "MaYeuTyK": 4900,
   "Magic": 600,
   "Majiztral": 6600,
-  "Makmah": 12000,
+  "Makmah": 12600,
   "Malva": 300,
   "Manolito🇨🇴": 300,
   "Manteca mantecosa 🇨🇾": 300,
@@ -15432,7 +15510,7 @@
   "Nova": 300,
   "Number": 300,
   "Number VE": 2800,
-  "OG": 8000,
+  "OG": 8300,
   "OKAM": 4800,
   "ONDADISKO": 600,
   "ONZASS": 1200,
@@ -15440,7 +15518,7 @@
   "Ortiz": 600,
   "Over": 10000,
   "PIERR🇵🇪": 300,
-  "PRAISERIZA": 6400,
+  "PRAISERIZA": 6700,
   "PROMETHEUS BIB 🇨🇴": 300,
   "PUNISHER": 600,
   "Panchok": 8400,
@@ -15492,6 +15570,7 @@
   "Shadow": 600,
   "Sin Limites": 4300,
   "Six": 8900,
+  "Skala 🇲🇽": 300,
   "Snow": 8600,
   "Soneto": 300,
   "Soulb": 4800,
@@ -15539,6 +15618,7 @@
   "akasha🇦🇷": 300,
   "alejoz": 1000,
   "araya": 600,
+  "asuuan 🇨🇱": 300,
   "chekialo 🇧🇯": 1300,
   "crakero": 900,
   "doble h": 600,
@@ -15555,6 +15635,7 @@
   "mats": 6500,
   "melomaniaco": 1200,
   "mityar": 300,
+  "mr still balin 🇳🇴": 300,
   "nebu": 300,
   "nemmii_as": 1200,
   "oriuz": 1200,
@@ -15564,6 +15645,7 @@
   "rodrilp": 1500,
   "romeo": 1500,
   "setesfifi": 300,
+  "tato": 300,
   "tierra sin atmosfera": 300,
   "tommyhilfiger1312🇾🇹": 300,
   "wei shenlong": 300,

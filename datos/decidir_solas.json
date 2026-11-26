@@ -2,27 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "35de72756c",
-   "tipo": "Batalla sin ganador",
-   "sec": "Red Bull Crew VENEC · ACAD · 07/11 · #623",
-   "que": "¿Quién ganó en semifinales?\nmakmah 🇻🇪 🆚 19🇻🇪",
-   "r": "No se jugó",
-   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
-   "rk": "R23",
-   "por": "el ciclo",
-   "porque": "es el tercer puesto (makmah 🇻🇪 y 19🇻🇪 perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
-   "t": 1794517684381,
-   "filas": [
-    1323
-   ],
-   "variantes": [
-    "Red Bull Crew VENEC · ACAD · 07/11 · semifinales · makmah 🇻🇪 🆚 19🇻🇪"
-   ],
-   "escribio": {
-    "batalla": "Red Bull Crew VENEC · ACAD · 07/11 · semifinales · makmah 🇻🇪 🆚 19🇻🇪"
-   }
-  },
-  {
    "id": "6c4f789585",
    "tipo": "alta",
    "sec": "🪪 Identidad",
@@ -2742,6 +2721,136 @@
     "Black Demon🇪🇨"
    ],
    "escribio": {}
+  },
+  {
+   "id": "ba57d576ba",
+   "tipo": "Nombre desconocido",
+   "sec": "REY DEL INGENIO VOL 7 · CH · 24/11 · #698",
+   "que": "¿Quién es «MR STILL BALIN 🇳🇴»? (también escrito «mr still balin 🇳🇴»)",
+   "r": "Es Over",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Over: el podio de la llave lo menciona",
+   "t": 1795728865918,
+   "filas": [
+    1618,
+    1621
+   ],
+   "variantes": [
+    "MR STILL BALIN 🇳🇴",
+    "mr still balin 🇳🇴"
+   ],
+   "escribio": {
+    "alias": [
+     "MR STILL BALIN",
+     "Over"
+    ],
+    "filas": [
+     388
+    ]
+   }
+  },
+  {
+   "id": "b85f45297f",
+   "tipo": "Nombre desconocido",
+   "sec": "REY DEL INGENIO VOL 7 · CH · 24/11 · #698",
+   "que": "¿Quién es «DEATH ROW 🇵🇦»? (también escrito «DEATHROW 🇵🇦»)",
+   "r": "Es alguien nuevo: alta con su cuenta 1480746396675211334",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que menciona el podio (1480746396675211334)",
+   "t": 1795728865918,
+   "filas": [
+    1615,
+    1616
+   ],
+   "variantes": [
+    "DEATH ROW 🇵🇦",
+    "DEATHROW 🇵🇦"
+   ],
+   "escribio": {
+    "alta": [
+     "DEATH ROW",
+     "1480746396675211334"
+    ]
+   }
+  },
+  {
+   "id": "afbcaa95cc",
+   "tipo": "Nombre desconocido",
+   "sec": "REY DEL INGENIO VOL 7 · CH · 24/11 · #698",
+   "que": "¿Quién es «DELIRANTE 🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 798401233710612531",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (798401233710612531)",
+   "t": 1795728865918,
+   "filas": [
+    1617
+   ],
+   "variantes": [
+    "DELIRANTE 🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "DELIRANTE",
+     "798401233710612531"
+    ]
+   }
+  },
+  {
+   "id": "3dbf9a1d94",
+   "tipo": "Nombre desconocido",
+   "sec": "REY DEL INGENIO VOL 7 · CH · 24/11 · #698",
+   "que": "¿Quién es «Skala 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 610840969579069461",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (610840969579069461)",
+   "t": 1795728865918,
+   "filas": [
+    1619
+   ],
+   "variantes": [
+    "Skala 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Skala",
+     "610840969579069461"
+    ]
+   }
+  },
+  {
+   "id": "ad20563a29",
+   "tipo": "Nombre desconocido",
+   "sec": "REY DEL INGENIO VOL 7 · CH · 24/11 · #698",
+   "que": "¿Quién es «asuuan 🇨🇱»?",
+   "r": "Es Assuan",
+   "regla": "tipeo · el nombre de alguien de la Lista con una letra de diferencia",
+   "rk": "tipeo",
+   "por": "el ciclo (una letra de diferencia)",
+   "porque": "alias de Assuan: «asuuan» con una letra de diferencia, del mismo país, y Assuan juega en CH",
+   "t": 1795728865918,
+   "filas": [
+    1620
+   ],
+   "variantes": [
+    "asuuan 🇨🇱"
+   ],
+   "escribio": {
+    "alias": [
+     "asuuan",
+     "Assuan"
+    ],
+    "filas": [
+     389
+    ]
+   }
   }
  ],
  "deshechas": []
