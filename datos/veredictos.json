@@ -11105,6 +11105,39 @@
    "b": "sultán",
    "ganador": "Drex",
    "votos": "1–0"
+  },
+  "1575346129552416809": {
+   "id": "1575346129552416809",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795662185801,
+   "a": "Lrs",
+   "b": "apolo",
+   "ganador": "apolo",
+   "votos": "1–0"
+  },
+  "1575348440316121129": {
+   "id": "1575348440316121129",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795662736730,
+   "a": "Dios",
+   "b": "mito",
+   "ganador": "Dios",
+   "votos": "1–0"
+  },
+  "1575350167513727058": {
+   "id": "1575350167513727058",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795663148526,
+   "a": "black demon",
+   "b": "Tenor",
+   "ganador": "Tenor",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14897,8 +14930,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795659901306,
-   "ed": 1795662041511,
-   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝\n⌞Sebita⌝ 🆚 ⌞lrs la sustancia⌝\n⌞Abraham⌝ 🆚 ⌞black demon⌝\n⌞Drakm⌝ 🆚 ⌞makmah⌝\n⌞Drex⌝ 🆚 ⌞sultán⌝",
+   "ed": 1795663389712,
+   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝\n⌞Sebita⌝ 🆚 ⌞lrs la sustancia⌝\n⌞Abraham⌝ 🆚 ⌞black demon⌝\n⌞Drakm⌝ 🆚 ⌞makmah⌝\n⌞Drex⌝ 🆚 ⌞sultán⌝\n⌞Lrs⌝ 🆚 ⌞apolo⌝\n⌞Dios⌝ 🆚 ⌞mito⌝\n⌞Black demon⌝ 🆚 ⌞Tenor⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -14957,6 +14990,36 @@
       "sultán"
      ],
      "Drex",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Lrs",
+      "apolo"
+     ],
+     "apolo",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Dios",
+      "mito"
+     ],
+     "Dios",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Black demon",
+      "Tenor"
+     ],
+     "Tenor",
      "veredicto",
      []
     ]

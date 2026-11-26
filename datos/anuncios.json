@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T03:04:11+00:00",
+ "cuando": "2026-11-26T03:25:36+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8295,6 +8295,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Mito🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1575347564256043129",
+   "cuando": "2026-11-26T03:08:47"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44285,15 +44294,6 @@
    "discord_id": "578697503130779649",
    "msg_id": "1562973873039868016",
    "cuando": "2026-10-22T23:40:09"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones-2",
-   "texto": "Nitrox 🇦🇷",
-   "quien": "zzzl_0o",
-   "discord_id": "1502679833665208444",
-   "msg_id": "1562973834318053475",
-   "cuando": "2026-10-22T23:40:00"
   }
  ]
 }
