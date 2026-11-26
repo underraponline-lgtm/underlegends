@@ -46,3 +46,21 @@ jobs:
             sleep 7
           done
           echo "✗ no se pudo guardar"; exit 1
+      # 📱 Y UN SHORT A YOUTUBE POR VUELTA (Dlx, 26/11: «ponles diferentes horas de subida»): de los que ya están en la
+      # página, el más nuevo que falte (m/shorts_youtube.py, con la cuota del día contada en R2). Privado mientras Google
+      # no audite la app. Nunca hace fallar el trabajo; el registro dice sólo cuentas
+      - uses: actions/checkout@v4
+        with:
+          repository: underraponline-lgtm/motor
+          ssh-key: ${{ secrets.MOTOR_KEY }}
+          path: m
+      - name: un short a YouTube
+        env:
+          YOUTUBE_TOKEN: ${{ secrets.YOUTUBE_TOKEN }}
+          PYTHONIOENCODING: utf-8
+        run: |
+          [ -n "$YOUTUBE_TOKEN" ] || { echo "youtube: sin permiso"; exit 0; }
+          printf '%s' "$YOUTUBE_TOKEN" > "$RUNNER_TEMP/yt.json"
+          pip install -q google-auth > /dev/null 2>&1
+          export YT_TOKEN="$RUNNER_TEMP/yt.json" UL_RAIZ="$GITHUB_WORKSPACE"
+          cd m && python shorts_youtube.py --uno 2>/dev/null | grep -E '^youtube:' || echo "youtube: no subió"
