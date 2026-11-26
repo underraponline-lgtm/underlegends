@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-26T06:19:29Z",
+ "cuando": "2026-11-26T07:07:16Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 558.0,
+ "dur_s": 1951.2,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.4
+   "s": 0.9
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 0.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 18.7
+   "s": 12.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 25.1
+   "s": 51.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 8 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 289.0
+   "s": 1688.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 157.5
+   "s": 138.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 63.8
+   "s": 59.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "696",
-  "nombre": "NOCTURNA STYLE",
-  "sv": "DDS",
+  "n": "697",
+  "nombre": "Backtime",
+  "sv": "FFA",
   "dia": "2026-11-25"
  },
  "cuotas": {
   "kv": {
-   "write": 371,
-   "read": 15313
+   "write": 406,
+   "read": 17048
   },
   "objeto": {
-   "leidas": 1749111,
-   "escritas": 28099,
-   "pedidos": 13644
+   "leidas": 1995630,
+   "escritas": 30804,
+   "pedidos": 15714
   },
   "worker": {
-   "pedidos": 33744,
+   "pedidos": 33429,
    "errores": 0,
-   "sub": 38570,
+   "sub": 38644,
    "cortados": 0,
-   "p50_ms": 1.02,
-   "p99_ms": 14.71,
+   "p50_ms": 1.04,
+   "p99_ms": 14.65,
    "cpu": {
-    "total": 72850,
-    "objeto_10": 2609,
-    "worker_10": 925
+    "total": 72430,
+    "objeto_10": 2627,
+    "worker_10": 913
    }
   },
   "r2": {
