@@ -7665,8 +7665,8 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 /* 🖤 EL FONDO PROPIO DETRÁS DE UNA FILA DE GENTE (25/11/2026, fondo_propio.jsx): sólo de quien tiene algo suyo. Apagado (.38,
    lo medido para la fila del Ranking) y desvaneciéndose hacia la derecha, donde van los números. La fila se vuelve su caja
    con :where (sin peso): si ya tenía posición o una capa propia, manda la suya */
-.fp-capa{position:absolute;inset:0;z-index:-1;pointer-events:none;background:left center/cover no-repeat;opacity:.38;border-radius:inherit;
-  -webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 88%);mask-image:linear-gradient(90deg,#000 30%,transparent 88%)}
+.fp-capa{position:absolute;inset:0;z-index:-1;pointer-events:none;background:left center/cover no-repeat;border-radius:inherit;
+  -webkit-mask-image:linear-gradient(90deg,#000 55%,transparent 100%);mask-image:linear-gradient(90deg,#000 55%,transparent 100%)}
 :where(:has(>.fp-capa)){position:relative;isolation:isolate}
 /* 🔎 EL TEXTO SOBRE UN FONDO PROPIO SE LEE CON CUALQUIER IMAGEN (25/11/2026). Medido con el peor caso —una imagen blanca
    entera en Noche y una negra en Clara—: el nombre quedaba en 4,9:1 y 7,0:1, pero el renglón chico gris bajaba a 2,2 y 1,7, y
@@ -7674,10 +7674,13 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
    un halo del color de la tarjeta, que le pone contraste alrededor de cada letra pase lo que pase atrás */
 .app :has(>.fp-capa) :is(b,small,strong),
 .app .rk-fila:has(.rk-fondo) :is(.rk-qa a,.rk-qa b,small,.rk-fila-n),
-.app .rk-q:has(>.rk-fondo) :is(.rk-qa a,.rk-qa b,small){text-shadow:0 0 2px var(--caja),0 0 6px var(--caja),0 0 12px var(--caja)}
-.app :has(>.fp-capa) small,.app .rk-fila:has(.rk-fondo) small,.app .rk-q:has(>.rk-fondo) small{color:var(--tinta)}
-/* ↩️ 25/11/2026 (8.49 → 8.50): se probó la imagen al 100 % con el texto blanco y sombra negra, y Dlx pidió volver: «estaba
-   bien antes… regrésalo a como se veía antes». Queda el 38 % y el halo del color de la tarjeta, como desde la 8.36 */
+.app .rk-q:has(>.rk-fondo) :is(.rk-qa a,.rk-qa b,small){color:#FFFFFF;text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 5px rgba(0,0,0,.8),0 0 12px rgba(0,0,0,.55)}
+.app :has(>.fp-capa) small,.app .rk-fila:has(.rk-fondo) small,.app .rk-q:has(>.rk-fondo) small{color:#FFFFFF}
+.app .rk-q:has(>.rk-fondo) small :is(em,span),.app .rk-fila:has(.rk-fondo) small :is(em,span){color:#FFFFFF;border-color:rgba(255,255,255,.85)}
+/* 🖼️ EL FONDO ENTERO (25/11/2026, Dlx: «los fondos están blanqueados, debería mostrar el fondo 100 %»; y después de una vuelta
+   atrás por un malentendido, la 8.50: «lo sigo viendo blanco como estaba antes, ponlo te he dicho»). Iban al 38 % y con un
+   halo del color de la tarjeta (en Clara, blanco: la imagen lavada). Ahora la imagen va al 100 % y llena casi toda la fila
+   antes de apagarse (55–60 % entero), y el texto que cae encima va blanco con sombra negra, en Clara y en Noche */
 
 /* ← VOLVER A LA PÁGINA ANTERIOR (25/11/2026, volver.jsx): su propia fila arriba a la izquierda del contenido. Encima de
    la página (alto 0) pisaba el «EVENTOS · T1» de Eventos en el celular: cada página arranca a otra altura (medido) */

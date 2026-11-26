@@ -423,12 +423,12 @@ dialog.pn-pop.rk-dims-pop{--pc:#E41373;width:min(760px,calc(100vw - 32px))}
 /* 🖼️ el fondo de cada uno detrás de su fila (25/11/2026): el de «Tu ficha», apagado (.38: el blanco de una bandera queda
    en ~5:1 contra el texto claro de Noche, y el azul más oscuro en ~9:1 contra el texto de Clara) y desvaneciéndose antes de
    los números. En la lista del celular llena la tarjeta; en la tabla, detrás de la cara y el nombre, como el de la Tienda */
-.rk-fondo{position:absolute;inset:-6px -8px;z-index:-1;pointer-events:none;background:left center/cover no-repeat;opacity:.38;
-  -webkit-mask-image:linear-gradient(90deg,#000 25%,transparent 92%);mask-image:linear-gradient(90deg,#000 25%,transparent 92%)}
+.rk-fondo{position:absolute;inset:-6px -8px;z-index:-1;pointer-events:none;background:left center/cover no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,#000 60%,transparent 100%);mask-image:linear-gradient(90deg,#000 60%,transparent 100%)}
 .rk-q:has(>.rk-fondo){position:relative;isolation:isolate}
 .rk-lista .rk-fila:has(.rk-fondo){position:relative;isolation:isolate}
 .rk-lista .rk-q:has(>.rk-fondo){position:static;isolation:auto}
-.rk-lista .rk-fondo{inset:0;-webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 80%);mask-image:linear-gradient(90deg,#000 30%,transparent 80%)}
+.rk-lista .rk-fondo{inset:0;-webkit-mask-image:linear-gradient(90deg,#000 55%,transparent 100%);mask-image:linear-gradient(90deg,#000 55%,transparent 100%)}
 /* 🖤 «Ponle tu bandera a tu fila», en tu tarjeta de «Tu lugar» (25/11/2026) */
 .rk-tu-fondo{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:8px 0 0;font:600 13.5px/1.3 Archivo,sans-serif}
 .rk-tu-fondo.listo{color:var(--verde)}
