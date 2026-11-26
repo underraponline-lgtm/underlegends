@@ -221,7 +221,10 @@ def main():
                     except Exception as e:
                         print('🚨 sin aviso:', type(e).__name__)
         nuevas = [(i, t) for i, t, lista in xs if lista and i not in E['vistos']]
-        esperando = sum(1 for i, t, lista in xs if not lista and i not in E['vistos'])
+        # «llegando»: sólo las de menos de dos horas (una entrega vieja sin batallas.json ni habla.json no llega nunca)
+        import datetime as dt
+        hace2h = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=2)).isoformat()[:16]
+        esperando = sum(1 for i, t, lista in xs if not lista and i not in E['vistos'] and t >= hace2h)
         fila = [(i, t, 'reintento') for i, t in rehacer] + [(i, t, 'pedido') for i, t in nuevas]
         if not fila:
             print('🎬 ninguna grabación nueva' + (' (%d llegando)' % esperando if esperando else ''))
