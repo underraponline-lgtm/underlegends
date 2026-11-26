@@ -208,3 +208,24 @@
    puede ser un texto recortado de su fondo, y pisárselo lo borra). En la escena negra la placa no se ve */
 .clara :is(.rk-t,.rk-lista,.rka-papel,.ent-papel,.rka-camino,.rk-podio) .ta-raiz.nom-tienda{display:inline-block;max-width:100%;box-sizing:border-box;
   vertical-align:bottom;padding:0 5px;border-radius:3px;background:#030304}
+
+/* 🏆 el podio al lado del título (25/11/2026, `.con-podio` de ranking.jsx): en la compu, el texto a la izquierda y el podio a
+   la derecha en la misma fila; todo lo demás (la franja, las dos columnas) va a lo ancho debajo. Desde 1200 px: a 1024 la carta #2
+   pisaba la «A» de TEMPORADA y la tira de pestañas (en dos líneas) tapaba la #1; más angosto, debajo del título, como en el celular */
+.rka-pod-cab{min-width:0}
+.rka-pod-cab .rk-podio{margin:0}
+@media (min-width:1200px){
+  /* la columna del texto, nunca más angosta que el título: a 1200 px «COMPETITIVO» entraba 16 px en el podio */
+  .app .rk-cab.rka.con-podio{grid-template-columns:minmax(min-content,.9fr) minmax(0,1.1fr);column-gap:32px}
+  .app .rk-cab.rka.con-podio > *{grid-column:1/-1}
+  .app .rk-cab.rka.con-podio > .rk-tx{grid-column:1;grid-row:1;align-self:center}
+  /* el #1 va más alto que los otros dos: sin aire arriba, su carta se metía debajo de la tira de pestañas */
+  .app .rk-cab.rka.con-podio > .rka-pod-cab{grid-column:2;grid-row:1;align-self:end;padding-top:56px}
+}
+/* 🖤 «Tu lugar» con tu fondo (25/11/2026, Dlx: «posiciónalo bien y pon como un fondo transparente negrito para que todo lo demás
+   se vea bien»): su propio margen (la imagen no toca el texto ni el aro de la cara) y un velo negro encima de la imagen, más
+   oscuro a la izquierda, donde va el texto */
+.app .rka-tu .rk-tu:has(>.fp-capa){padding:14px;border-radius:6px;overflow:hidden}
+.app .rk-tu:has(>.fp-capa)::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(90deg,rgba(3,3,4,.78) 0%,rgba(3,3,4,.6) 55%,rgba(3,3,4,.42) 100%)}
+.app .rk-tu:has(>.fp-capa) .rk-tu-l{align-items:center}

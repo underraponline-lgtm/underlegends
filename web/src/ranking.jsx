@@ -1611,7 +1611,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           <a className="mo-fl izq rk-flecha" href={'#/ranking/' + antes} aria-label={'Ranking anterior: ' + subDe(liga, antes).et} title={subDe(liga, antes).et}><Chevron /></a>
           <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + subDe(liga, despues).et} title={subDe(liga, despues).et}><Chevron /></a>
         </> : null}
-        <section className={'rk-cab' + (dosCols || eloA ? ' rka' : '')} id="rk-cab" ref={deslizaRk}>
+        <section className={'rk-cab' + (dosCols || eloA ? ' rka' : '') + (dosCols && !eloA && top.length ? ' con-podio' : '')} id="rk-cab" ref={deslizaRk}>
           <div className="rk-tx" data-tuto="rk-cab">
             <span className="tag">RANKING · {liga.temp}</span>
             <h1 className="hero-ev largo">{cfg.et}</h1>
@@ -1621,15 +1621,14 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           </div>
           {eloA ? <Divisiones liga={liga} parte="escena" sel={divSel} setSel={setDivSel} dc={dc} /> : dosCols ? (
             <>
+              {/* 🏆 EL PODIO, AL LADO DEL TÍTULO OTRA VEZ (25/11/2026, Dlx: «el podio vuelve a ponerlo donde estaba hace tiempo,
+                  al costado de donde dice Temporada, para que no esté vacío»). Desde el remake A vivía en una caja debajo de
+                  la franja y el costado del título quedaba vacío; vuelve como antes, sin caja (`.con-podio` en rka.css) */}
+              {top.length ? <div className="rka-pod-cab"><Podio liga={liga} cfg={cfg} top={top} sem={sub === 'temporada' ? sem : null} /></div> : null}
               <Franja items={franja} />
-              <div className="rka-dos rk-igual">
+              {/* sin `rk-igual` desde que el podio subió al lado del título: la pelea sola, estirada al alto de la columna de al lado, quedaba una caja vacía */}
+              <div className="rka-dos">
                 <div className="rka-izq">
-                  {top.length ? (
-                    <div className="rka-caja rka-pod">
-                      <h2 className="rka-h">El podio<small>{cfg.porQue || ''}</small></h2>
-                      <Podio liga={liga} cfg={cfg} top={top} sem={sub === 'temporada' ? sem : null} />
-                    </div>
-                  ) : null}
                   {sub === 'temporada' && pel ? (
                     <Pelea liga={liga} p={pel} va={'#' + numero(cfg, pel.a) + ' · ' + num(pel.a.pts) + ' pts'} vb={'#' + numero(cfg, pel.b) + ' · ' + num(pel.b.pts) + ' pts'}
                       pie={pel.d ? <>Separados por <b>{pel.d} de OVR</b>.</> : <>Los dos con <b>{pel.a.ovr} de OVR</b>; los separan <b>{num(pel.d2)} pts</b>.</>} />
