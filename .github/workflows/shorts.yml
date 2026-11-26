@@ -1,0 +1,48 @@
+# 🎬 Los shorts de cada evento grabado, a cualquier hora (Dlx, 26/11/2026: «que GitHub haga todo eso cuando sea, pero que
+# lo de la madrugada no lo interrumpa»). Hasta ese día lo hacía el paso 2b8j del ciclo, y el ciclo duerme de 3 a 11 AM
+# ET: lo que ULAYA entregaba a esa hora esperaba hasta las 11. Este trabajo no duerme: cada media hora mira Logs y, si
+# hay una grabación entregada y ningún `procesar` en marcha, lo lanza (bot/shorts_eventos.py, uno por vez).
+#
+# ⚠️ datos/shorts_eventos.json lo escribe SÓLO este trabajo: salió del ARCHIVOS de guardar.sh, que es «gana el mío» y lo
+# pisaría. Repo público: los minutos de Actions no se cobran.
+name: shorts
+
+on:
+  schedule:
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: shorts-lanzar
+  cancel-in-progress: false
+
+jobs:
+  lanzar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write     # commitea datos/shorts_eventos.json
+      actions: write      # lanza procesar.yml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+      - name: mirar y lanzar
+        env:
+          GH_PROCESAR: ${{ github.token }}
+          PYTHONIOENCODING: utf-8
+        run: python bot/shorts_eventos.py --aplicar
+      - name: guardar
+        run: |
+          git config user.name  "liga-global-ciclo"
+          git config user.email "ciclo@users.noreply.github.com"
+          git add datos/shorts_eventos.json
+          git diff --cached --quiet && { echo "nada que guardar"; exit 0; }
+          git commit -q -m "shorts: $(python -c "import datetime as d, zoneinfo as z; print(d.datetime.now(z.ZoneInfo('America/New_York')).strftime('%Y-%m-%d %I:%M %p').replace(' 0', ' '))") ET"
+          for i in 1 2 3 4 5; do
+            git pull -q --rebase origin main && git push -q origin "HEAD:main" && exit 0
+            sleep 7
+          done
+          echo "✗ no se pudo guardar"; exit 1

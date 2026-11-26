@@ -1488,13 +1488,9 @@ def _lo_barato(correr):
         paso('2b8i', 'las competencias de la semana')
         if not corre(['bot/competencias.py'], callado=True, mostrar=('🏆', '⚠️')):
             print('      ⚠️ las competencias fallaron: quedan las de antes')
-    # ── 2b8j · 🎬 los shorts de los eventos grabados (`bot/shorts_eventos.py`, Dlx 24/11/2026: «conéctalo al ciclo»):
-    # cuando ULAYA terminó de entregar la grabación de un evento, lanza `procesar` (el código vive en un repo privado).
-    # Uno por vez. Nunca frena el ciclo
-    if correr:
-        paso('2b8j', 'los shorts de los eventos grabados')
-        if not corre(['bot/shorts_eventos.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
-            print('      ⚠️ los shorts no se pudieron pedir: se mira en la próxima corrida')
+    # ── 2b8j · 🎬 los shorts de los eventos grabados: YA NO ESTÁN EN EL CICLO (Dlx, 26/11/2026: «que lo de la madrugada no
+    # lo interrumpa»). Los lanza `.github/workflows/shorts.yml` (bot/shorts_eventos.py) cada media hora, a toda hora:
+    # el ciclo duerme de 3 a 11 AM ET. Y `datos/shorts_eventos.json` salió de guardar.sh: lo escribe ese trabajo solo
     # ── 2b8k · 🎙️ ¿ULAYA grabó cada evento? (`bot/auditar_grabaciones.py`, Dlx 25/11/2026, el #1 de la tanda): una vez por
     # día, desde las 12 PM ET, cruza las llaves del día anterior con las entregas de Logs y, si faltó alguna, UN resumen al
     # canal de Logs con la causa si se sabe; el mismo servidor 2 veces en 3 días, DM a Dlx. Del 22 al 24/11 se perdió casi

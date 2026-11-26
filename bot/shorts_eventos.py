@@ -17,6 +17,12 @@ dos horas.
 short, se lanza UNA vez más con el código de ese momento (Puristas del 24/11 salió vacío por un arreglo que llegó tarde y
 se relanzó a mano). Dos veces mal: queda anotado y no se insiste.
 
+🌙 A CUALQUIER HORA, TAMBIÉN DE MADRUGADA (Dlx, 26/11/2026: «que GitHub haga todo eso cuando sea, pero que lo de la
+madrugada no lo interrumpa»). Lo corría el ciclo, que duerme de 3 a 11 AM ET: lo que ULAYA entregaba a esa hora quedaba
+trabado hasta las 11. Ahora lo corre `.github/workflows/shorts.yml` cada media hora, todo el día, y lanza en cuanto
+puede. Lo único que espera a la mañana es el DM a Dlx por una que salió mal (de madrugada no se manda nada a Discord).
+⚠️ Se leen las entregas de las últimas `HORAS_ATRAS` y no los últimos 100 mensajes de Logs: en una noche cargada, una
+grabación que esperó su turno ya quedó muy atrás.
 🔇 El registro del repo público se ve desde afuera: acá sólo salen cuentas.
 Uso: python bot/shorts_eventos.py [--aplicar]   (sin --aplicar dice qué haría)"""
 import json
@@ -47,10 +53,25 @@ def _token():
     return t
 
 
+HORAS_ATRAS = 40        # cuánto de Logs se lee: de la grabación de la tarde a la madrugada siguiente, y una noche de más
+
+
 def mensajes():
-    r = urllib.request.Request('https://discord.com/api/v10/channels/%s/messages?limit=100' % LOGS,
-                               headers={'Authorization': 'Bot ' + _token(), 'User-Agent': 'DiscordBot (liga, 1)'})
-    return list(reversed(json.loads(urllib.request.urlopen(r, timeout=20).read().decode('utf-8'))))
+    """Los mensajes de Logs de las últimas `HORAS_ATRAS`, del más viejo al más nuevo (de a 100, hasta 15 páginas)."""
+    import datetime as dt
+    corte = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=HORAS_ATRAS)).isoformat()[:19]
+    out, antes = [], None
+    for _ in range(15):
+        u = 'https://discord.com/api/v10/channels/%s/messages?limit=100' % LOGS + ('&before=%s' % antes if antes else '')
+        r = urllib.request.Request(u, headers={'Authorization': 'Bot ' + _token(), 'User-Agent': 'DiscordBot (liga, 1)'})
+        ms = json.loads(urllib.request.urlopen(r, timeout=20).read().decode('utf-8'))
+        if not ms:
+            break
+        out += ms
+        antes = ms[-1]['id']
+        if ms[-1]['timestamp'][:19] < corte:
+            break
+    return list(reversed(out))
 
 
 def entregas(ms):
@@ -130,6 +151,11 @@ def ocupado():
         return True
 
 
+def _madrugada():
+    import madrugada
+    return madrugada.en_ventana()
+
+
 def _hora_et(t):
     """«24/11 10:01 PM» de la hora de la entrega (UTC)"""
     import datetime as dt, zoneinfo
@@ -165,13 +191,15 @@ def main():
             if ULTIMO_AUDIOS is not None:
                 v['audios'] = ULTIMO_AUDIOS
             if est == 'mal' and v['como'] == 'pedido':
-                rehacer.append((i, v['t']))
+                v['rehacer'] = True            # queda anotada: si hay otra corriendo, la segunda vuelta espera su turno
             print('🎬 la corrida de una grabación terminó: %s (%s shorts)' % (est, n if n is not None else '?'))
             # 🚨 EL ROBOT NO FALLA CALLADO (Dlx, 25/11: «all of them»): si la segunda vuelta también salió mal, o salieron
             # shorts pero ninguna batalla en audio, UN DM a Dlx con la corrida. Por pantalla, sólo que se avisó
             falla = ('salió mal dos veces: %s shorts' % (n if n is not None else 0)) if est == 'mal' and v['como'] == 'reintento' \
                 else ('salieron %d shorts pero ninguna batalla en audio' % n) if est == 'bien' and ULTIMO_AUDIOS == 0 else ''
-            if falla and APLICAR and not v.get('avisado'):
+            if falla:
+                v['falla'] = falla             # de madrugada no se avisa: se avisa de día (abajo)
+            if falla and APLICAR and not v.get('avisado') and not _madrugada():
                 try:
                     import alertar
                     alertar.dm('🚨 Una grabación de ULAYA (%s ET) %s.\nLa corrida: https://github.com/%s/actions/runs/%s'
@@ -180,6 +208,18 @@ def main():
                     print('🚨 aviso a Dlx: una grabación no salió bien')
                 except Exception as e:
                     print('🚨 sin aviso:', type(e).__name__)
+        rehacer = [(i, v['t']) for i, v in E['vistos'].items() if v.get('rehacer')]
+        # 📨 el DM de una que salió mal de madrugada, ya de día (ver arriba)
+        if APLICAR and not _madrugada():
+            for v in E['vistos'].values():
+                if v.get('falla') and not v.get('avisado'):
+                    try:
+                        import alertar
+                        alertar.dm('🚨 Una grabación de ULAYA (%s ET) %s.\nLa corrida: https://github.com/%s/actions/runs/%s'
+                                   % (_hora_et(v['t']), v['falla'], REPO, v['run']))
+                        v['avisado'] = True
+                    except Exception as e:
+                        print('🚨 sin aviso:', type(e).__name__)
         nuevas = [(i, t) for i, t, lista in xs if lista and i not in E['vistos']]
         esperando = sum(1 for i, t, lista in xs if not lista and i not in E['vistos'])
         fila = [(i, t, 'reintento') for i, t in rehacer] + [(i, t, 'pedido') for i, t in nuevas]

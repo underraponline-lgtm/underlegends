@@ -333,7 +333,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: write
-      actions: write    # 🎬 el paso 2b8j lanza `procesar` (bot/shorts_eventos.py)
+      actions: write    # 🎬 lanzaba `procesar` (2b8j); desde el 26/11 lo hace shorts.yml, a toda hora
     outputs:
       dibujar: ${{ steps.p.outputs.dibujar }}
       personas: ${{ steps.p.outputs.personas }}
