@@ -1,4 +1,14 @@
 {
  "_leeme": "Lo agendado con /agendar (bot/agenda.py): cada evento con su hora en ms UTC (`ini`) y cuándo se agendó (`t`). Se vuelve un anuncio más con `como_anuncios()`.",
- "agenda": []
+ "agenda": [
+  {
+   "id": 1,
+   "sv": "UFLUC",
+   "g": "1538596086644736041",
+   "nombre": "UFL World Challenge Supranacional T1",
+   "ini": 1796504400000,
+   "formato": "1v1",
+   "t": 1795730718919
+  }
+ ]
 }
