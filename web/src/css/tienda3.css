@@ -2,7 +2,9 @@
    --fondo/--tinta/--linea/--caja/--inv, paneles oscuros #0B0C0E, el blanco con sombra dura teal en lo que importa; sin
    degradés ni blur, radios ≤ 4 px. Prefijo tz- (tag, ok, fila y varias t- ya existen en la página). El arte de cada pieza
    trae su propio CSS, debajo de .ta-raiz (lo inyecta tienda3.jsx al bajarlo). */
-.tz{--tz-ok:#0E7563;--tz-f:"Archivo",system-ui,sans-serif;--tz-e:"Barlow Condensed","Arial Narrow",sans-serif;display:grid}
+.tz{--tz-ok:#0E7563;--tz-f:"Archivo",system-ui,sans-serif;--tz-e:"Barlow Condensed","Arial Narrow",sans-serif;display:grid;grid-template-columns:minmax(0,1fr)}
+/* ↔️ la columna nunca más ancha que la pantalla (26/11/2026): la fila de la Ropa UL la estiraba a 1478 px en el celular y
+   el Drop, que va abajo de todo, salía cortado a la derecha */
 .app.noche .tz{--tz-ok:#29B298}
 .tz-w{display:contents}
 .tz .tz-ok{color:var(--tz-ok)}
@@ -272,6 +274,9 @@
 
 /* el Dragón Drop del día */
 .tz-sec-drop{padding-top:6px;padding-bottom:26px}
+/* 🐉 abajo de todo (26/11/2026, Dlx: «el drop diario de la tienda abajo de todo»): la banda negra de la Ropa UL baja 26 px
+   (`.tn-merch{margin-bottom:-26px}`, tienda2.css) y se metía debajo del Drop; 26 más de aire para que se lea suelto */
+.tz-mas + div > .tz-sec-drop{margin-top:52px}
 .tz-drop{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;padding:14px 16px;background:#0B0C0E;color:#F6F6F6;border:1.5px solid #2A2C31;border-top:3px solid #9B5CFF;border-radius:4px}
 .tz-drop-v{flex:none;width:64px;height:64px;border-radius:50% 50% 46% 46% / 58% 58% 42% 42%;background:#9B5CFF url('/ul-blanco.png') center 56%/62% no-repeat;box-shadow:inset 0 -8px 0 rgba(0,0,0,.28)}
 .tz-drop:not(.abierto) .tz-drop-v{animation:tz-late 2.6s ease-in-out infinite}
@@ -546,7 +551,7 @@
   font:700 13px/1 var(--tz-e);letter-spacing:.07em;text-transform:uppercase}
 .tz-filtros button[aria-pressed="true"]{background:var(--tinta,#F6F6F6);color:var(--fondo,#030304);border-color:var(--tinta,#F6F6F6)}
 /* las cuatro de «Más con tus Puntos», al final y a la vista */
-.tz-mas{display:grid}
+.tz-mas{display:grid;grid-template-columns:minmax(0,1fr)} /* la fila de la ropa se desliza adentro (overflow-x) en vez de estirar la página a 1478 px en el celular */
 .tz-crew-p{max-width:60ch;margin:0 0 14px}
 .tz-crew-b{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;text-decoration:none;width:max-content}
 

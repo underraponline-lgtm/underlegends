@@ -733,7 +733,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     return m;
   }, [pub]);
   const pedir = useCallback((d) => window.conCuenta('/api/avisos/tienda-accion', d), []);
-  const ix = useIndice(['tz-vitrina', 'tz-prob', 'tz-drop', 'tz-x-cabezas', 'tz-x-promo', 'tz-x-crew', 'tz-x-ropa'], 70);
+  const ix = useIndice(['tz-vitrina', 'tz-prob', 'tz-x-cabezas', 'tz-x-promo', 'tz-x-crew', 'tz-x-ropa', 'tz-drop'], 70);
   // el Dragón Drop de verdad, quieto (el mismo dibujo del escenario de los drops)
   const [dropSvg, setDropSvg] = useState('');
   useEffect(() => { let vivo = true; dropQuietoSvg('drop', 0).then((x) => { if (vivo) setDropSvg(x || ''); }).catch(() => {}); return () => { vivo = false; }; }, []);
@@ -990,8 +990,9 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   // 🧭 EL ÍNDICE DE LA TIENDA (25/11/2026, Dlx: «expande la tienda con esas cosas que ocultaste, precio por cabeza, tu promo,
   // tu crew, ropa UL, al último, pero que puedas ir por categorías así como el Inicio»): el índice pegado de las páginas
   // largas (`useIndice`, indice.js). Las ranuras son chips que abren su pestaña del cajón; lo demás baja a su sección
-  const chips = [['tz-vitrina', 'Vitrina'], ...CATS.map(([k, n]) => ['tz-prob', n, k]), ['tz-drop', 'Drop del día'],
-    ...(partes ? [['tz-x-cabezas', 'Precio por cabeza'], ['tz-x-promo', 'Tu promo'], ['tz-x-crew', 'Tu crew'], ['tz-x-ropa', 'Ropa UL']] : [])]
+  const chips = [['tz-vitrina', 'Vitrina'], ...CATS.map(([k, n]) => ['tz-prob', n, k]),
+    ...(partes ? [['tz-x-cabezas', 'Precio por cabeza'], ['tz-x-promo', 'Tu promo'], ['tz-x-crew', 'Tu crew'], ['tz-x-ropa', 'Ropa UL']] : []),
+    ['tz-drop', 'Drop del día']]
     .filter(([id]) => ix.hay.includes(id));
   const indice = chips.length > 2 ? (
     <nav className="tz-ix" aria-label="Qué hay en la Tienda">
@@ -1007,7 +1008,6 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     <div className="tz" ref={raiz}>
       {indice}
       <div onClick={clic} onInput={cambio} onChange={cambio} dangerouslySetInnerHTML={{ __html: arriba }} />
-      <div onClick={clic} dangerouslySetInnerHTML={{ __html: drop }} />
       {partes ? (
         <div className="tz-mas" data-tuto="tz-mas">
           <div id="tz-x-cabezas">{partes.cabezas}</div>
@@ -1020,6 +1020,9 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
           <div id="tz-x-ropa">{partes.ropa}</div>
         </div>
       ) : null}
+      {/* 🐉 el Dragón Drop del día, ABAJO DE TODO (26/11/2026, Dlx: «asegúrate de poner el drop diario de la tienda abajo de
+          todo»): iba entre el probador y Precio por cabeza */}
+      <div onClick={clic} dangerouslySetInnerHTML={{ __html: drop }} />
       <div onClick={clic} dangerouslySetInnerHTML={{ __html: barra }} />
       {hoja ? <div className="tz-capa" onClick={clic} onInput={cambio} onChange={cambio} dangerouslySetInnerHTML={{ __html: `<div class="tz-velo" data-acc="cerrar"></div><div class="tz-hoja">${hoja}</div>` }} /> : null}
     </div>
