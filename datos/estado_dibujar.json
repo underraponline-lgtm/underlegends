@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-26T21:30:15Z",
+ "cuando": "2026-11-26T22:26:14Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1455.9,
+ "dur_s": 3042.7,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.2
+   "s": 1.3
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 18.0
+   "s": 17.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 34.5
+   "s": 22.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 1201.5
+   "s": 2774.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 135.9
+   "s": 156.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 62.4
+   "s": 67.4
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "697",
-  "nombre": "Backtime",
-  "sv": "FFA",
-  "dia": "2026-11-25"
+  "n": "698",
+  "nombre": "REY DEL INGENIO VOL 7",
+  "sv": "CH",
+  "dia": "2026-11-24"
  },
  "cuotas": {
   "kv": {
-   "write": 511,
-   "read": 29173
+   "write": 565,
+   "read": 30905
   },
   "objeto": {
-   "leidas": 2903051,
-   "escritas": 49296,
-   "pedidos": 25884
+   "leidas": 3050436,
+   "escritas": 52196,
+   "pedidos": 27401
   },
   "worker": {
-   "pedidos": 26882,
+   "pedidos": 26572,
    "errores": 0,
-   "sub": 32482,
+   "sub": 31971,
    "cortados": 0,
    "p50_ms": 1.06,
-   "p99_ms": 14.29,
+   "p99_ms": 14.38,
    "cpu": {
-    "total": 59079,
-    "objeto_10": 2636,
-    "worker_10": 709
+    "total": 58248,
+    "objeto_10": 2621,
+    "worker_10": 707
    }
   },
   "r2": {

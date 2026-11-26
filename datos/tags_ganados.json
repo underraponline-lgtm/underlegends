@@ -1587,19 +1587,7 @@
   }
  },
  "assuan": {
-  "pais": {
-   "EMBAJADOR": [
-    "EMBAJADOR",
-    "t1",
-    1795730559819
-   ]
-  },
   "temporada": {
-   "🌍 TROTAMUNDOS": [
-    "🌍 TROTAMUNDOS",
-    "t1",
-    1795730559819
-   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -11108,11 +11096,6 @@
     "t1",
     1794261790120
    ],
-   "🔁 VENGADOR": [
-    "🔁 VENGADOR",
-    "t1",
-    1795730559819
-   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -11748,6 +11731,30 @@
     "🥉 AL PODIO",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "mrstillbalin": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795728934455
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795728934455
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795728934455
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795728934455
    ]
   }
  },
@@ -13688,11 +13695,6 @@
     "t1",
     1793143003505
    ],
-   "🌐 IMPERIO": [
-    "🌐 IMPERIO",
-    "t1",
-    1795730559819
-   ],
    "🌱 PROMESA": [
     "🌱 PROMESA",
     "t1",
@@ -13719,7 +13721,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x8",
+    "👑 CAMPEÓN x7",
     "t1",
     1793029252929
    ],
@@ -13749,7 +13751,7 @@
     1793029252929
    ],
    "📋 SEMANA PERFECTA x%d": [
-    "📋 SEMANA PERFECTA x4",
+    "📋 SEMANA PERFECTA x3",
     "t1",
     1793029252929
    ],
