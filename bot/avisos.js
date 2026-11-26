@@ -4088,6 +4088,8 @@ const RUTAS = {
   '/avisos/batallas': 'GET',
   // 🎙️🚫 y cuándo ULAYA no puede grabar en un servidor —aislada o sin permiso en el canal— (25/11/2026): ver `grabadorFalla()`
   '/avisos/grabador-falla': 'POST',
+  // 📣 y un aviso de Dlx a la campana del equipo de TODOS los socios (26/11/2026): ver `avisoSocios()`
+  '/avisos/socios-aviso': 'POST',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
   // 🎟️ el sorteo del premium para el Dashboard: quién entró, los anteriores y volver a sortear (sólo con ajustes)
@@ -8568,6 +8570,14 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/grabador-falla', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
+  // 📣 UN AVISO A TODOS LOS SOCIOS (herramientas/avisar_socios.py): con la clave del ciclo y sólo al objeto
+  if (ruta === '/avisos/socios-aviso') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/socios-aviso', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
   // 👀 el público de cada evento, de Railway (`grabador/vivo.js`, ver `publico()`): con la clave del ciclo y sólo al objeto
   if (ruta === '/avisos/publico') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -10734,6 +10744,7 @@ export class Avisos {
       if (ruta === '/publico') return json(this.publico(d));
       if (ruta === '/batallas') return json(await this.batallasGrabacion(d));
       if (ruta === '/grabador-falla') return json(await this.grabadorFalla(d));
+      if (ruta === '/socios-aviso') return json(await this.avisoSocios(d));
       if (ruta === '/redibujo-listo') return json(this.redibujoListo(d));
       // 💬 lo que importó en los chats generales (`chatsCiclo()`): sólo para el Dashboard
       if (ruta === '/chats-ciclo') return json(this.chatsCiclo(d));
@@ -18748,6 +18759,24 @@ export class Avisos {
       estados.forEach((e, i) => { if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id); });
     }
     return n;
+  }
+
+  /**
+   * 📣 UN AVISO DE DLX AL EQUIPO DE CADA SOCIO (26/11/2026, Dlx: «send partners a message asking them to load their socials
+   * in Tu página»): a la campana de su panel (`avisarEquipo()`), nunca por DM. `{clave, titulo, cuerpo, svs?}`: la clave hace
+   * que repetirlo no vuelva a sonar; `svs`, si viene, lo limita a esos servidores. Ni DRA (es la casa) ni quien dejó de ser socio.
+   */
+  async avisoSocios(d, ahora = Date.now()) {
+    const clave = String((d && d.clave) || '').replace(/[^A-Za-z0-9_:-]/g, '').slice(0, 40);
+    const titulo = String((d && d.titulo) || '').trim(), cuerpo = String((d && d.cuerpo) || '').trim();
+    if (!clave || !titulo || !cuerpo) return { error: 'datos' };
+    const solo = Array.isArray(d.svs) ? new Set(d.svs.map(String)) : null;
+    const por = {};
+    for (const x of (((this.leer('tiers') || {}).servidores) || [])) {
+      if (!x || !x.sv || x.sv === 'DRA' || (solo && !solo.has(x.sv))) continue;
+      try { por[x.sv] = await this.avisarEquipo(x.sv, 'dlx:' + clave, titulo, cuerpo, ahora); } catch (e) { por[x.sv] = -1; }
+    }
+    return { ok: true, por };
   }
 
   /** 🏠 Lo publicado de cada página de socio, para el ciclo: `{sv: {desc, redes, banner}}`. Sin lo que espera revisión */
