@@ -173,6 +173,9 @@ comun/fotos/
 # permiso.
 oauth_client.json
 oauth_token.json
+# 🎬 el permiso para subir al canal de YouTube (herramientas/youtube_autorizar.py, 25/11/2026)
+youtube_token.json
+youtube_client.json
 
 # ── EL INVENTARIO DE ACCESOS ────────────────────────────────────────────
 # ACCESOS.md junta TODAS las credenciales en un solo lugar. Es el archivo

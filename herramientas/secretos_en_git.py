@@ -101,6 +101,19 @@ def de_los_json():
         for k in ('refresh_token', 'client_secret', 'token'):
             if d.get(k) and len(str(d[k])) >= MINIMO:
                 out['oauth_token.json · %s' % k] = str(d[k])
+    # 🎬 el permiso para subir al canal de YouTube (herramientas/youtube_autorizar.py, 25/11/2026)
+    p = os.path.join(BASE, 'youtube_token.json')
+    if os.path.exists(p):
+        d = json.load(io.open(p, encoding='utf-8'))
+        for k in ('refresh_token', 'token'):
+            if d.get(k) and len(str(d[k])) >= MINIMO:
+                out['youtube_token.json · %s' % k] = str(d[k])
+    p = os.path.join(BASE, 'youtube_client.json')
+    if os.path.exists(p):
+        d = json.load(io.open(p, encoding='utf-8'))
+        ins = d.get('installed') or d.get('web') or {}
+        if ins.get('client_secret'):
+            out['youtube_client.json · client_secret'] = ins['client_secret']
     p = os.path.join(BASE, 'oauth_client.json')
     if os.path.exists(p):
         d = json.load(io.open(p, encoding='utf-8'))
@@ -124,6 +137,7 @@ def de_los_json():
 #: a no leerlo. Medido el 24/09/2026: era el único «sin anotar» de 14.
 DERIVADOS = {
     'oauth_token.json · token': 'dura una hora; sale del refresh_token',
+    'youtube_token.json · token': 'dura una hora; sale del refresh_token',
     'derivada · clave del ciclo': 'sha256 de «lg-ciclo:» + el token del bot; abre las rutas del Worker que usa el ciclo',
 }
 
@@ -182,7 +196,7 @@ def main():
     #
     # ⚠️ CLAUDE.md tambien dice «los cuatro archivos». Queda corregido
     # ahi; el numero vive aca.
-    for f in ('.env', 'creds.json', 'oauth_token.json', 'oauth_client.json',
+    for f in ('.env', 'creds.json', 'oauth_token.json', 'oauth_client.json', 'youtube_token.json', 'youtube_client.json',
               'ACCESOS.md'):
         r = subprocess.run(['git', 'check-ignore', '-q', f], cwd=BASE)
         existe = os.path.exists(os.path.join(BASE, f))
