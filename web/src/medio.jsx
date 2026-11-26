@@ -1070,7 +1070,8 @@ function Numeros({ liga }) {
   const a = liga.d.actividad || {};
   // 🔢 la cuenta de personas sale de los Discords que el bot puede leer, que pueden ser menos que los socios: decía «en 15
   // servidores» al lado de «Servidores 16» (revisión 21/11). Si faltan, se dice de cuántos
-  const nSv = c.servidores || 0, totSv = Object.keys(liga.svs || {}).length;
+  // los socios son los que tienen tier (25/11/2026): Cypherhood sigue en `liga.svs` por lo jugado y no es socio
+  const nSv = c.servidores || 0, totSv = Object.values(liga.svs || {}).filter((s) => s && s.tier).length;
   const grandes = [['PERSONAS', c.personas, 'en ' + nSv + (totSv > nSv ? ' de los ' + totSv : '') + ' servidores'], ['EN LA LISTA', c.lista, 'compitieron o se anotaron'],
     // 🪪 (18/11/2026) «con las cuatro tarjetas» era la regla de antes de la 2.41: verificarse da la Servidor, y las demás
     // piden lo suyo. `verificados` cuenta a quien pasa el portón: Miembro de DRA, con su Discord y su país

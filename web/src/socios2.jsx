@@ -289,7 +289,10 @@ function Publican({ liga, svs }) {
 }
 
 export function Socios({ liga }) {
-  const svs = Object.values(liga.svs).sort((a, b) => (b.pts || 0) - (a.pts || 0));
+  // 🔢 SÓLO LOS SOCIOS: los que tienen tier (25/11/2026, Dlx: «asegúrate de contar bien cuántos tier 1, tier 2 y tier 3
+  // tenemos»). `liga.svs` trae también a Cypherhood (CH), que dejó de ser socio y sigue ahí porque lo jugado cuenta: decía
+  // «Servidores 19: 4 en Tier 1, 4 en Tier 2 y 10 en Tier 3», que suman 18. Lo mismo que «El ascenso» (sumar2.jsx)
+  const svs = Object.values(liga.svs).filter((s) => s && s.tier).sort((a, b) => (b.pts || 0) - (a.pts || 0));
   const enDiscord = svs.reduce((t, s) => t + (s.miembros || 0), 0);
   // ⚠️ la gente del pool (`gente`), no las filas de la tabla, que viajan hasta 200 (revisión del 03/10/2026)
   const raperos = liga.d.gente || (liga.d.tabla || []).length;

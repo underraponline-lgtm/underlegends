@@ -10,6 +10,7 @@
     "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
   ],
   "cambios": [
+    {"version": "8.53", "dia": "2026-11-25", "cuando": "2026-11-25T20:56:00-05:00", "titulo": "Los socios, bien contados", "items": ["**Socios** cuenta **18** servidores: **4 en Tier 1, 4 en Tier 2 y 10 en Tier 3**. Decía 19 porque contaba a uno que ya no es socio."]},
     {"version": "8.52", "dia": "2026-11-25", "cuando": "2026-11-25T20:26:00-05:00", "titulo": "El podio, al lado del título", "items": ["En el **Ranking**, el podio vuelve a estar **al costado del título** (Temporada, Competitivo, Servidores y los demás), y la pelea más cerrada ya no deja una caja vacía.", "**Tu lugar** con tu fondo lleva un velo negro: la imagen se ve entera y el texto se lee encima."]},
     {"version": "8.51", "dia": "2026-11-25", "cuando": "2026-11-25T19:51:00-05:00", "titulo": "Tu fondo, entero y sin velo", "items": ["El **fondo de tu fila** y de las tarjetas se ve **entero, sin el velo blanco**, y llena casi toda la fila antes de apagarse.", "El texto encima va blanco con sombra, para que se lea con cualquier imagen."]},
     {"version": "8.50", "dia": "2026-11-25", "cuando": "2026-11-25T19:43:00-05:00", "titulo": "Los fondos de las filas, como estaban", "items": ["El fondo de tu fila y de las tarjetas vuelve a verse como antes de la última versión."]},

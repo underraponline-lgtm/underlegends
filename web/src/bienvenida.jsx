@@ -254,7 +254,8 @@ function Paso1({ liga, unirme, cerrar, tit, cofre }) {
   }, [auto]);
 
   const top = liga.oficiales().filter((f) => f.k && liga.cartaDe(f.k)).slice(0, 3);
-  const svs = (liga.d.svs || []).map((s) => (typeof s === 'string' ? s : s && s.sv)).filter(Boolean);
+  // 🔢 sólo los socios, los que tienen tier (25/11/2026): Cypherhood viaja en `svs` por lo que se jugó ahí y no es socio
+  const svs = (liga.d.svs || []).filter((s) => s && typeof s === 'object' && s.tier).map((s) => s.sv).filter(Boolean);
   // 👥 los miembros de los servidores de la Liga, sumados (Dlx: «la cantidad de usuarios totales… para sorprender»).
   // Es una suma de membresías: quien está en dos servidores cuenta dos veces, y por eso dice «miembros» y no «personas»
   const miembros = (liga.d.svs || []).reduce((s, x) => s + ((x && x.miembros) || 0), 0);
