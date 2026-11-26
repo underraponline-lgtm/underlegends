@@ -112,7 +112,7 @@ function ParteCalma() {
 function ParteSonido() {
   const [mudoV, setMudo] = useState(() => !!((W.AJ || leer('lg:ajustes', {}) || {}).mudo));
   return (
-    <Caja t="Sonido" d="Un toque bajito al apretar botones, y los sonidos de abrir los artículos de la Tienda y de comprar.">
+    <Caja t="Sonido" d="Los momentos importantes: destapar un artículo de la Tienda y comprar.">
       <label className="cu-sw"><span><b>Sonidos</b></span>
         <input type="checkbox" checked={!mudoV} onChange={(e) => { setMudo(!e.target.checked); guardarAjustes({ mudo: e.target.checked ? undefined : true }); }} /><i aria-hidden="true" /></label>
     </Caja>

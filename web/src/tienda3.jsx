@@ -767,7 +767,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     E.va = false;
     if (!j || !j.ok) {
       E.error = (j && j.error) || 'error';
-      sonar('error');
+      if (/^(comprar|regalo-)/.test(d.accion)) sonar('error');
       // 🐉 el de hoy ya estaba abierto (18/11/2026): al volver a la Tienda `drop` arranca vacío y se ofrecía «Abrir» otra vez
       if (d.accion === 'drop' && E.error === 'ya') E.drop = { ya: true };
       // ⚠️ sin ficha abierta, el error abre su hoja (18/11/2026): si no, el toque no hacía nada visible (ver `errorPop`)
@@ -778,8 +778,8 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     }
     E.res = j;
     // 🔊 lo que se pagó suena a caja registradora; lo que se puso o se guardó, a «listo»
-    if (/^(comprar|regalo-comprar|reclamar)/.test(d.accion) || (d.accion === 'comprar' && d.poner)) sonar('compra');
-    else if (d.accion !== 'regalo-abrir' && d.accion !== 'drop') sonar('ok');
+    // (sólo lo importante, Dlx: «muy pocos, los importantes»: comprar; ponerse algo o la lista ya no suenan)
+    if (/^(comprar|regalo-comprar)/.test(d.accion)) sonar('compra');
     // se espera (18/11/2026): el de «Comprar todo» pone lo que ya era tuyo antes de recargar
     if (despues) await despues(j);
     // 🛍️ lo que te pusiste se ve en toda la página (tanda 3): `/pases` lo trae, y se pide de nuevo ya mismo
