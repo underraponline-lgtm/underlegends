@@ -1737,21 +1737,23 @@
    "semillero": {
     "nuevos": {
      "FFA": 4,
-     "FRZ": 3
+     "FRZ": 3,
+     "CH": 3
     },
     "gente": {
      "FFA": 57,
      "FRZ": 23,
      "DDS": 17,
      "UFLUC": 8,
-     "DW": 17
+     "DW": 17,
+     "CH": 18
     },
-    "gana": "FRZ"
+    "gana": "CH"
    },
    "meta_va": {
     "ACAD": 0,
     "CEU": 0,
-    "CH": 0,
+    "CH": 18,
     "CHZ": 0,
     "DDF": 0,
     "DDS": 17,

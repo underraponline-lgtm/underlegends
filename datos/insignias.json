@@ -2365,7 +2365,7 @@
 "prueba"
 ]
 },
-"DEATHROW": {
+"DEATH ROW": {
 "debut": [
 "2026-11-26T21:27:10Z",
 "prueba"
@@ -7141,6 +7141,10 @@
 "cazador": [
 "2026-11-16T16:33:28Z",
 "prueba"
+],
+"clasico": [
+"2026-11-26T21:56:52Z",
+"prueba"
 ]
 },
 "Mochi DG": {
@@ -11459,12 +11463,6 @@
 "prueba"
 ]
 },
-"asuuan": {
-"debut": [
-"2026-11-26T21:27:10Z",
-"prueba"
-]
-},
 "atari": {
 "debut": [
 "2026-10-31T15:31:10Z",
@@ -11974,20 +11972,6 @@
 "mityar": {
 "debut": [
 "2026-11-23T07:05:30Z",
-"prueba"
-]
-},
-"mr still balin": {
-"campeon": [
-"2026-11-26T21:27:10Z",
-"prueba"
-],
-"debut": [
-"2026-11-26T21:27:10Z",
-"prueba"
-],
-"podio": [
-"2026-11-26T21:27:10Z",
 "prueba"
 ]
 },

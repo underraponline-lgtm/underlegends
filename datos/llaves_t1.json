@@ -63002,7 +63002,7 @@
      [
       [
        "ISMEL 🇻🇪",
-       "Calíz 🇲🇽}"
+       "Calíz 🇲🇽"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -65940,10 +65940,10 @@
     "b": [
      [
       [
-       "mr still balin 🇳🇴",
-       "asuuan 🇨🇱"
+       "Over",
+       "Assuan"
       ],
-      "mr still balin 🇳🇴",
+      "Over",
       ""
      ],
      [
@@ -65980,10 +65980,10 @@
      ],
      [
       [
-       "DEATHROW 🇵🇦",
-       "Skala 🇲🇽"
+       "DEATH ROW",
+       "Skala"
       ],
-      "DEATHROW 🇵🇦",
+      "DEATH ROW",
       ""
      ],
      [
@@ -65998,7 +65998,7 @@
       [
        "PRAISERIZA",
        "tato",
-       "DELIRANTE 🇨🇱",
+       "DELIRANTE",
        "Deuxs"
       ],
       "PRAISERIZA",
@@ -66011,10 +66011,10 @@
     "b": [
      [
       [
-       "mr still balin 🇳🇴",
+       "Over",
        "OG"
       ],
-      "mr still balin 🇳🇴",
+      "Over",
       ""
      ],
      [
@@ -66027,10 +66027,10 @@
      ],
      [
       [
-       "DEATHROW 🇵🇦",
+       "DEATH ROW",
        "Kaizz"
       ],
-      "DEATHROW 🇵🇦",
+      "DEATH ROW",
       ""
      ],
      [
@@ -66048,18 +66048,18 @@
     "b": [
      [
       [
-       "DEATHROW 🇵🇦",
+       "DEATH ROW",
        "Julda"
       ],
-      "DEATHROW 🇵🇦",
+      "DEATH ROW",
       ""
      ],
      [
       [
-       "mr still balin 🇳🇴",
+       "Over",
        "PRAISERIZA"
       ],
-      "mr still balin 🇳🇴",
+      "Over",
       ""
      ]
     ],
@@ -66069,10 +66069,10 @@
     "b": [
      [
       [
-       "mr still balin 🇳🇴",
-       "DEATHROW 🇵🇦"
+       "Over",
+       "DEATH ROW"
       ],
-      "mr still balin 🇳🇴",
+      "Over",
       ""
      ]
     ],
@@ -66082,12 +66082,12 @@
   "sv": "CH",
   "tabla": [
    [
-    "mr still balin 🇳🇴",
+    "Over",
     "Campeón",
     10000
    ],
    [
-    "DEATHROW 🇵🇦",
+    "DEATH ROW",
     "Subcampeón",
     7500
    ],
@@ -66127,7 +66127,12 @@
     1250
    ],
    [
-    "DELIRANTE 🇨🇱",
+    "Assuan",
+    "Octavos",
+    1250
+   ],
+   [
+    "DELIRANTE",
     "Octavos",
     1250
    ],
@@ -66152,17 +66157,12 @@
     1250
    ],
    [
-    "Skala 🇲🇽",
+    "Skala",
     "Octavos",
     1250
    ],
    [
     "Vandu",
-    "Octavos",
-    1250
-   ],
-   [
-    "asuuan 🇨🇱",
     "Octavos",
     1250
    ],
