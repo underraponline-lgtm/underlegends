@@ -1,0 +1,44 @@
+# 📸 Los shorts a Instagram, como reels (m/shorts_instagram.py del motor). A MANO por ahora: Instagram publica PÚBLICO en el
+# acto, así que el primero sale con el OK de Dlx y recién después se conecta a shorts.yml. «ver» sólo comprueba que el token
+# entra a la cuenta y cuántos hay por publicar; «uno» publica el más nuevo que falte. El registro dice sólo cuentas.
+name: instagram
+
+on:
+  workflow_dispatch:
+    inputs:
+      que:
+        description: ver (no publica) o uno (publica el más nuevo que falte)
+        required: true
+        default: ver
+        type: choice
+        options: [ver, uno]
+
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+
+jobs:
+  instagram:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+      - uses: actions/checkout@v4
+        with:
+          repository: underraponline-lgtm/motor
+          ssh-key: ${{ secrets.MOTOR_KEY }}
+          path: m
+      - name: instagram
+        env:
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          QUE: ${{ inputs.que }}
+          PYTHONIOENCODING: utf-8
+        run: |
+          export UL_RAIZ="$GITHUB_WORKSPACE"
+          cd m && python shorts_instagram.py "--$QUE" 2>/dev/null | grep -E '^instagram:' || echo "instagram: no anduvo"
