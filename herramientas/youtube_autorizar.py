@@ -3,6 +3,9 @@
 
     python herramientas/youtube_autorizar.py          abre el navegador, entras con la cuenta DUEÑA del canal y aceptas
     python herramientas/youtube_autorizar.py --ver    dice a qué canal sube el permiso guardado, sin pedir nada
+    python herramientas/youtube_autorizar.py --solo-mirar   abre la pantalla de consentimiento para sacarle captura (la
+                                                     auditoría de YouTube la pide, 26/11/2026) y NO guarda nada: el
+                                                     token que ya anda —el del secreto YOUTUBE_TOKEN— no se toca
 
 Es el mismo camino que `sheet/autorizar.py` (el del Apps Script): OAuth de aplicación instalada con el cliente de escritorio
 del proyecto `liga-global` (`oauth_client.json`, ya en disco). Se autoriza UNA vez en el navegador y queda un refresh
@@ -53,7 +56,7 @@ def credencial(interactivo=False):
     from google.oauth2.credentials import Credentials
     from google.auth.transport.requests import Request
     cred = None
-    if os.path.exists(TOKEN):
+    if os.path.exists(TOKEN) and '--solo-mirar' not in sys.argv:     # mirar: siempre la pantalla, sin leer el guardado
         cred = Credentials.from_authorized_user_file(TOKEN, SCOPES)
         # (como en sheet/autorizar.py: los permisos se leen del archivo, no de lo que se pide)
         dados = set(json.load(io.open(TOKEN, encoding='utf-8')).get('scopes') or ())
@@ -81,6 +84,9 @@ def credencial(interactivo=False):
                                  'te pregunta, elige el canal Under Legends.\n   Si dice «Google hasn\'t verified this app»: '
                                  'Advanced → Go to liga-global (unsafe).\n',
                                  success_message='Listo: ya puedes cerrar esta pestaña.')
+    if '--solo-mirar' in sys.argv:
+        print('   📸 listo: el permiso de prueba NO se guardó; el de siempre sigue igual')
+        sys.exit(0)
     _guardar(cred)
     return cred
 
