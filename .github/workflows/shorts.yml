@@ -64,13 +64,14 @@ jobs:
           pip install -q google-auth > /dev/null 2>&1
           export YT_TOKEN="$RUNNER_TEMP/yt.json" UL_RAIZ="$GITHUB_WORKSPACE"
           cd m && python shorts_youtube.py --uno 2>/dev/null | grep -E '^youtube:' || echo "youtube: no subió"
-      # 📸 Y A INSTAGRAM, EN TURNOS (Dlx, 26/11: «que se publiquen en diferentes horarios»): 11 AM, 1, 3, 6, 8 y 10 PM ET, uno
-      # por turno (m/shorts_instagram.py --turno). Público en el acto. Nunca hace fallar el trabajo
-      - name: un reel a Instagram si es su turno
+      # 📸 Y A INSTAGRAM, CON SU CALENDARIO (Dlx, 26/11: «que se publiquen en diferentes horarios» y «generes ahí un
+      # schedule»): reels a la 1 y las 9 PM ET (y a las 4 si hay cola), y a las 6 el carrusel del día —el lunes la semana
+      # en la Liga, el resto las noches de ayer— (m/instagram_calendario.py). Público en el acto. Nunca hace fallar el trabajo
+      - name: Instagram, si es su turno
         env:
           INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
           PYTHONIOENCODING: utf-8
         run: |
           [ -n "$INSTAGRAM_TOKEN" ] || { echo "instagram: sin permiso"; exit 0; }
           export UL_RAIZ="$GITHUB_WORKSPACE"
-          cd m && python shorts_instagram.py --turno 2>/dev/null | grep -E '^instagram:' || echo "instagram: no anduvo"
+          cd m && python instagram_calendario.py --turno 2>/dev/null | grep -E '^instagram:' || echo "instagram: no anduvo"

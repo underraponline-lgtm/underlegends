@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       que:
-        description: ver (no publica) o uno (publica el más nuevo que falte)
+        description: ver (no publica) · reel · semana · noches (publica eso ya)
         required: true
         default: ver
         type: choice
-        options: [ver, uno]
+        options: [ver, reel, semana, noches]
 
 concurrency:
   group: instagram
@@ -41,4 +41,5 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: |
           export UL_RAIZ="$GITHUB_WORKSPACE"
-          cd m && python shorts_instagram.py "--$QUE" 2>/dev/null | grep -E '^instagram:' || echo "instagram: no anduvo"
+          if [ "$QUE" = ver ]; then A="--ver"; else A="--ya $QUE"; fi
+          cd m && python instagram_calendario.py $A 2>/dev/null | grep -E '^instagram:' || echo "instagram: no anduvo"
