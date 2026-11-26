@@ -11050,6 +11050,28 @@
    "b": "charzy",
    "ganador": "SILENCE",
    "votos": "1–0"
+  },
+  "1575336738035867759": {
+   "id": "1575336738035867759",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795659946689,
+   "a": "Monet",
+   "b": "geremy",
+   "ganador": "Monet",
+   "votos": "1–0"
+  },
+  "1575338800786317346": {
+   "id": "1575338800786317346",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795660438487,
+   "a": "Gocho",
+   "b": "gus",
+   "ganador": "gus",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -14831,6 +14853,37 @@
       "Konan 🇦🇷"
      ],
      "agustin la reliquia🇦🇬",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1575336547685761067": {
+   "id": "1575336547685761067",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795659901306,
+   "ed": 1795660472942,
+   "texto": "`[ OCTAVOS ]`\n⌞Monet⌝ 🆚 ⌞geremy⌝\n⌞Gocho⌝ 🆚 ⌞gus⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Monet",
+      "geremy"
+     ],
+     "Monet",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Gocho",
+      "gus"
+     ],
+     "gus",
      "veredicto",
      []
     ]

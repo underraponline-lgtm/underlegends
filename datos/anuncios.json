@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-26T02:25:16+00:00",
+ "cuando": "2026-11-26T02:38:11+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8295,6 +8295,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs la sustancia🇦🇷",
+   "quien": "lrs37895",
+   "discord_id": "1271260378654969947",
+   "msg_id": "1575338049724747880",
+   "cuando": "2026-11-26T02:30:59"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44285,15 +44294,6 @@
    "discord_id": "1508623564285149357",
    "msg_id": "1562973668961812532",
    "cuando": "2026-10-22T23:39:21"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones-2",
-   "texto": "🇺🇸",
-   "quien": "provenzaaznevorp",
-   "discord_id": "711076230857752627",
-   "msg_id": "1562973639413071964",
-   "cuando": "2026-10-22T23:39:14"
   }
  ]
 }

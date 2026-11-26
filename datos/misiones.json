@@ -81,7 +81,7 @@
     ],
     "AbrahamH": [
      0,
-     0,
+     3,
      2
     ],
     "Abyssus": [
@@ -199,6 +199,11 @@
      0,
      8
     ],
+    "CHSE": [
+     0,
+     1,
+     99
+    ],
     "CJ": [
      1,
      0,
@@ -236,12 +241,12 @@
     ],
     "Chase": [
      0,
-     0,
+     3,
      1
     ],
     "Chop": [
      1,
-     2,
+     3,
      2
     ],
     "Ciro": [
@@ -256,7 +261,7 @@
     ],
     "CrisZJ": [
      0,
-     8,
+     9,
      1
     ],
     "Crk": [
@@ -556,7 +561,7 @@
     ],
     "Infecte": [
      0,
-     0,
+     1,
      8
     ],
     "JEIXDER": [
@@ -1336,7 +1341,7 @@
     ],
     "Vilca": [
      0,
-     0,
+     2,
      4
     ],
     "Walker": [
@@ -1476,7 +1481,7 @@
     ],
     "oriuz": [
      0,
-     0,
+     1,
      8
     ],
     "rodrilp": [
@@ -1519,7 +1524,7 @@
     "ANTONIO🇵🇾": 300,
     "ANTORCHA": 300,
     "ARDEAN": 300,
-    "AbrahamH": 1000,
+    "AbrahamH": 1600,
     "Abyssus": 1300,
     "Agus": 2900,
     "Akutagawa🇹🇼": 300,
@@ -1544,8 +1549,8 @@
     "Cajita": 300,
     "Carlosmo": 1600,
     "Carlosss": 1600,
-    "Chase": 1000,
-    "Chop": 1300,
+    "Chase": 1600,
+    "Chop": 2900,
     "Ciro": 300,
     "Colesito": 900,
     "CrisZJ": 1600,
@@ -3410,7 +3415,7 @@
     ],
     "Carlosss": [
      0,
-     4,
+     6,
      1,
      0,
      0
@@ -4152,7 +4157,7 @@
     ],
     "MaYeuTyK": [
      0,
-     1,
+     2,
      2,
      0,
      0
@@ -4243,7 +4248,7 @@
     ],
     "Miniboy": [
      0,
-     2,
+     3,
      2,
      0,
      0
@@ -4313,7 +4318,7 @@
     ],
     "NXUZ": [
      0,
-     1,
+     3,
      1,
      0,
      0
@@ -4334,7 +4339,7 @@
     ],
     "Nitrox": [
      0,
-     0,
+     1,
      8,
      0,
      0
@@ -4747,7 +4752,7 @@
     ],
     "Vilca": [
      0,
-     0,
+     1,
      1,
      0,
      0
@@ -4908,7 +4913,7 @@
     ],
     "oriuz": [
      0,
-     0,
+     1,
      4,
      0,
      0
@@ -4974,11 +4979,11 @@
     "Mathhias": 1000,
     "Mc arepa": 1000,
     "Millonari-O": 300,
-    "Miniboy": 1000,
+    "Miniboy": 1600,
     "Molusco": 1000,
     "Mosquitrap 🦟": 2400,
     "NC": 1000,
-    "NXUZ": 1000,
+    "NXUZ": 1600,
     "Neo": 1000,
     "Nmb": 1000,
     "OG": 1000,
@@ -5218,13 +5223,20 @@
     "BENJI 🇵🇪": [
      0,
      1,
-     0,
+     1,
      0,
      0
     ],
     "BLITZ": [
      0,
      2,
+     0,
+     0,
+     0
+    ],
+    "BOTRAXX": [
+     0,
+     0,
      0,
      0,
      0
@@ -5253,7 +5265,7 @@
     "BastyRetro": [
      0,
      2,
-     0,
+     1,
      0,
      0
     ],
@@ -5561,7 +5573,7 @@
     "Fisics": [
      0,
      1,
-     0,
+     1,
      0,
      0
     ],
@@ -5743,7 +5755,7 @@
     "Kochi2011": [
      1,
      2,
-     0,
+     1,
      0,
      0
     ],
@@ -6100,7 +6112,7 @@
     "NC": [
      1,
      9,
-     0,
+     1,
      0,
      0
     ],
@@ -6759,9 +6771,10 @@
     "Andres": 900,
     "Artezzy": 600,
     "BELIKKO": 300,
+    "BENJI 🇵🇪": 1000,
     "BLITZ": 600,
     "Badterne": 2900,
-    "BastyRetro": 600,
+    "BastyRetro": 1600,
     "Bau": 1000,
     "Calíz": 900,
     "Carlosmo": 600,
@@ -6782,6 +6795,7 @@
     "Erian": 900,
     "Evangeline": 300,
     "Ezze": 1600,
+    "Fisics": 1000,
     "Geoka": 2900,
     "Guaicurús🇰🇷": 300,
     "Gus": 900,
@@ -6793,7 +6807,7 @@
     "Karumailafmasha🇹🇼": 300,
     "Keider": 600,
     "Khalil": 300,
-    "Kochi2011": 900,
+    "Kochi2011": 2900,
     "Kyss": 600,
     "LAST": 600,
     "LRS": 900,
@@ -6821,7 +6835,7 @@
     "Molusco": 900,
     "Motera": 600,
     "Mr.Kude": 600,
-    "NC": 900,
+    "NC": 2900,
     "NXUZ": 900,
     "Nerick": 600,
     "Number VE": 900,
@@ -7021,14 +7035,14 @@
     ],
     "BENJI 🇵🇪": [
      3,
-     0,
+     1,
      4,
      0,
      0
     ],
     "BTRX": [
      3,
-     0,
+     1,
      2,
      0,
      0
@@ -8015,7 +8029,7 @@
     ],
     "oriuz": [
      1,
-     0,
+     1,
      4,
      0,
      0
@@ -8057,8 +8071,8 @@
     "Agus": 1300,
     "Akuseru": 300,
     "Aszecas": 600,
-    "BENJI 🇵🇪": 300,
-    "BTRX": 300,
+    "BENJI 🇵🇪": 900,
+    "BTRX": 900,
     "Berrun": 600,
     "Black Demon🇪🇨": 600,
     "Calíz": 2900,
@@ -8129,6 +8143,7 @@
     "ikonoxx": 300,
     "luisito 🏆": 300,
     "mats": 1300,
+    "oriuz": 600,
     "romeo": 900,
     "yinn": 300
    }
@@ -8451,7 +8466,7 @@
     ],
     "CrisZJ": [
      0,
-     0,
+     1,
      0,
      0,
      0
@@ -8507,7 +8522,7 @@
     ],
     "Dios": [
      0,
-     0,
+     2,
      5,
      0,
      0
@@ -9088,7 +9103,7 @@
     ],
     "Monet": [
      0,
-     0,
+     1,
      1,
      0,
      0
@@ -9529,7 +9544,7 @@
     ],
     "Vilca": [
      0,
-     0,
+     1,
      1,
      0,
      0
@@ -9876,7 +9891,7 @@
     ],
     "AbrahamH": [
      0,
-     0,
+     2,
      2,
      0,
      0
@@ -9960,7 +9975,7 @@
     ],
     "BTRX": [
      0,
-     0,
+     1,
      1,
      0,
      0
@@ -10051,7 +10066,7 @@
     ],
     "Dios": [
      0,
-     0,
+     1,
      2,
      0,
      1
@@ -10457,7 +10472,7 @@
     ],
     "Mark98": [
      0,
-     0,
+     1,
      1,
      0,
      0
@@ -11060,18 +11075,19 @@
    },
    "pts": {
     "23": 600,
+    "AbrahamH": 600,
     "Abyssus": 1000,
     "Agente sombra": 300,
     "Akuseru": 300,
     "BNA": 900,
-    "BTRX": 1000,
+    "BTRX": 1600,
     "Chaz🇵🇪": 600,
     "Chente": 600,
     "Colesito": 900,
     "Cronox": 1300,
     "Deko": 600,
     "Deuxs": 1300,
-    "Dios": 600,
+    "Dios": 1200,
     "Dominick": 300,
     "Drexx": 300,
     "Dyzz": 300,
@@ -11093,7 +11109,7 @@
     "MCO": 1300,
     "Majiztral": 1600,
     "Makmah": 300,
-    "Mark98": 1000,
+    "Mark98": 1600,
     "Mathhias": 1000,
     "MauzzitoEmeces": 300,
     "Mc arepa": 600,
@@ -11308,6 +11324,16 @@
       "CH"
      ]
     },
+    "CrisZJ": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "DDS",
+      "FDS"
+     ]
+    },
     "Cronox": {
      "d": [
       2
@@ -11394,14 +11420,6 @@
      "s": [
       "FFA",
       "ACAD"
-     ]
-    },
-    "Fecha": {
-     "d": [
-      5
-     ],
-     "s": [
-      "DDS"
      ]
     },
     "Fisics": {
@@ -11508,16 +11526,6 @@
      "s": [
       "CEU",
       "LKR"
-     ]
-    },
-    "LRS": {
-     "d": [
-      1,
-      3
-     ],
-     "s": [
-      "FFA",
-      "CH"
      ]
     },
     "Liam": {
@@ -11882,6 +11890,16 @@
       "CH"
      ]
     },
+    "Vilca": {
+     "d": [
+      1,
+      5
+     ],
+     "s": [
+      "DDS",
+      "FDS"
+     ]
+    },
     "Walker": {
      "d": [
       4,
@@ -12043,9 +12061,14 @@
      0
     ],
     "AbrahamH": [
-     "Artezzy",
-     "escena",
-     null,
+     "Soulb",
+     "revancha",
+     [
+      673,
+      "DDS",
+      "21/11",
+      "semifinales"
+     ],
      0
     ],
     "AbrahamSRRL": [
@@ -12136,9 +12159,14 @@
      0
     ],
     "Artezzy": [
-     "crakero",
-     "escena",
-     null,
+     "Vilca",
+     "revancha",
+     [
+      580,
+      "DDS",
+      "23/10",
+      "octavos"
+     ],
      0
     ],
     "Assuan": [
@@ -12291,9 +12319,14 @@
      0
     ],
     "Choco": [
-     "Fisics",
-     "escena",
-     null,
+     "Mito",
+     "revancha",
+     [
+      652,
+      "DDS",
+      "16/11",
+      "cuartos"
+     ],
      0
     ],
     "Chop": [
@@ -12394,13 +12427,13 @@
      0
     ],
     "Dios": [
-     "beneroo",
+     "Mark98",
      "revancha",
      [
-      666,
-      "CH",
-      "19/11",
-      "octavos"
+      676,
+      "DDS",
+      "22/11",
+      "final"
      ],
      0
     ],
@@ -12433,18 +12466,23 @@
      0
     ],
     "Dominic 🇲🇽": [
-     "Choco",
-     "escena",
-     null,
+     "Mito",
+     "revancha",
+     [
+      652,
+      "DDS",
+      "16/11",
+      "semifinales"
+     ],
      0
     ],
     "Dominick": [
-     "Miniboy",
+     "Mito",
      "revancha",
      [
-      651,
-      "DDF",
-      "15/11",
+      676,
+      "DDS",
+      "22/11",
       "cuartos"
      ],
      0
@@ -12601,15 +12639,25 @@
      0
     ],
     "Fecha": [
-     "Mark98",
-     "escena",
-     null,
+     "Dios",
+     "revancha",
+     [
+      671,
+      "DDS",
+      "21/11",
+      "semifinales"
+     ],
      0
     ],
     "Fisics": [
-     "Liam",
-     "escena",
-     null,
+     "CrisZJ",
+     "revancha",
+     [
+      652,
+      "DDS",
+      "16/11",
+      "cuartos"
+     ],
      0
     ],
     "Flash": [
@@ -13026,15 +13074,25 @@
      0
     ],
     "Leyenda": [
-     "Raizer",
-     "escena",
-     null,
+     "Keider",
+     "revancha",
+     [
+      586,
+      "DDS",
+      "07/11",
+      "cuartos"
+     ],
      0
     ],
     "Liam": [
-     "Fisics",
-     "escena",
-     null,
+     "BTRX",
+     "revancha",
+     [
+      652,
+      "DDS",
+      "16/11",
+      "cuartos"
+     ],
      0
     ],
     "Liberia": [
@@ -13203,9 +13261,14 @@
      0
     ],
     "Mark98": [
-     "AbrahamH",
-     "escena",
-     null,
+     "MCO",
+     "revancha",
+     [
+      673,
+      "DDS",
+      "21/11",
+      "cuartos"
+     ],
      0
     ],
     "Masino": [
@@ -13290,13 +13353,13 @@
      0
     ],
     "Mito": [
-     "MCO",
+     "Mark98",
      "revancha",
      [
-      674,
-      "CH",
-      "21/11",
-      "final"
+      676,
+      "DDS",
+      "22/11",
+      "semifinales"
      ],
      0
     ],
@@ -13312,9 +13375,14 @@
      0
     ],
     "Monet": [
-     "Jupiter",
-     "escena",
-     null,
+     "Vilca",
+     "revancha",
+     [
+      604,
+      "DDS",
+      "10/11",
+      "semifinales"
+     ],
      0
     ],
     "Mosquitrap 🦟": [
@@ -13359,9 +13427,14 @@
      0
     ],
     "NXUZ": [
-     "MCO",
-     "escena",
-     null,
+     "Dios",
+     "revancha",
+     [
+      676,
+      "DDS",
+      "22/11",
+      "semifinales"
+     ],
      0
     ],
     "Nene": [
@@ -13406,15 +13479,15 @@
      0
     ],
     "OKAM": [
-     "Oasis",
+     "AbrahamH",
      "revancha",
      [
-      660,
-      "FFA",
-      "17/11",
-      "octavos"
+      673,
+      "DDS",
+      "21/11",
+      "cuartos"
      ],
-     1
+     0
     ],
     "ONZASS": [
      "DarnBless",
@@ -13550,13 +13623,13 @@
      0
     ],
     "Richard": [
-     "Makmah",
+     "CrisZJ",
      "revancha",
      [
-      623,
-      "ACAD",
-      "07/11",
-      "octavos"
+      604,
+      "DDS",
+      "10/11",
+      "cuartos"
      ],
      0
     ],
@@ -13711,13 +13784,13 @@
      0
     ],
     "Soulb": [
-     "mats",
+     "MCO",
      "revancha",
      [
-      664,
-      "CH",
-      "19/11",
-      "semifinales"
+      673,
+      "DDS",
+      "21/11",
+      "final"
      ],
      0
     ],
@@ -13806,9 +13879,14 @@
      0
     ],
     "Teo": [
-     "Choco",
-     "escena",
-     null,
+     "Dios",
+     "revancha",
+     [
+      676,
+      "DDS",
+      "22/11",
+      "cuartos"
+     ],
      0
     ],
     "Thaniel": [
@@ -13913,9 +13991,14 @@
      0
     ],
     "Vilca": [
-     "LRS",
-     "escena",
-     null,
+     "Dios",
+     "revancha",
+     [
+      604,
+      "DDS",
+      "10/11",
+      "final"
+     ],
      0
     ],
     "Walker": [
@@ -14230,9 +14313,14 @@
      0
     ],
     "oriuz": [
-     "Dios",
-     "escena",
-     null,
+     "NXUZ",
+     "revancha",
+     [
+      676,
+      "DDS",
+      "22/11",
+      "cuartos"
+     ],
      0
     ],
     "pibe": [
@@ -14242,9 +14330,14 @@
      0
     ],
     "replisan": [
-     "Fecha",
-     "escena",
-     null,
+     "Dios",
+     "revancha",
+     [
+      671,
+      "DDS",
+      "21/11",
+      "cuartos"
+     ],
      0
     ],
     "rodrilp": [
@@ -14395,8 +14488,8 @@
     ],
     "CrisZJ": [
      1,
-     0,
-     0,
+     1,
+     1,
      0,
      0
     ],
@@ -14444,8 +14537,8 @@
     ],
     "Dios": [
      1,
-     1,
-     1,
+     2,
+     4,
      0,
      0
     ],
@@ -14718,7 +14811,7 @@
     "NXUZ": [
      1,
      0,
-     0,
+     2,
      0,
      0
     ],
@@ -14893,7 +14986,7 @@
     "Xervoe": [
      1,
      0,
-     0,
+     1,
      0,
      0
     ],
@@ -15004,7 +15097,7 @@
     "NC": 300,
     "NXUZ": 300,
     "Noone": 300,
-    "OKAM": 900,
+    "OKAM": 300,
     "Oasis": 300,
     "Over": 300,
     "Paria": 300,
@@ -15047,7 +15140,7 @@
   "ARDEAN": 300,
   "AREZ": 300,
   "Abraham": 300,
-  "AbrahamH": 1900,
+  "AbrahamH": 3100,
   "Abyssus": 6500,
   "Adriagner": 4700,
   "Agente sombra": 600,
@@ -15067,12 +15160,12 @@
   "Axinu": 300,
   "B.DEMON🇪🇨": 300,
   "BELIKKO": 300,
-  "BENJI 🇵🇪": 1300,
+  "BENJI 🇵🇪": 2900,
   "BLITZ": 1200,
   "BNA": 6100,
-  "BTRX": 2500,
+  "BTRX": 3700,
   "Badterne": 4200,
-  "BastyRetro": 3500,
+  "BastyRetro": 4500,
   "Bau": 1000,
   "Benjixo": 2200,
   "Berrun": 600,
@@ -15087,10 +15180,10 @@
   "Carlosss": 9400,
   "Catarsis": 900,
   "Cazafla anti cazanova🇭🇹": 300,
-  "Chase": 1600,
+  "Chase": 2200,
   "Chaz🇵🇪": 600,
   "Chente": 600,
-  "Chop": 2800,
+  "Chop": 4400,
   "Cinexfilo": 1200,
   "Ciro": 300,
   "Colesito": 7900,
@@ -15110,7 +15203,7 @@
   "Denik": 300,
   "Desio": 600,
   "Deuxs": 2500,
-  "Dios": 3200,
+  "Dios": 3800,
   "Dominick": 5000,
   "Drelain": 300,
   "Drexx": 4300,
@@ -15142,6 +15235,7 @@
   "FanDeAbel": 800,
   "Fazer": 1200,
   "Fin": 300,
+  "Fisics": 1000,
   "Flash": 1000,
   "Forza": 600,
   "Fritz": 600,
@@ -15195,7 +15289,7 @@
   "Khalil": 300,
   "Kminant": 300,
   "Kochi": 300,
-  "Kochi2011": 900,
+  "Kochi2011": 2900,
   "Konan": 300,
   "Korey": 300,
   "Kourier": 600,
@@ -15246,7 +15340,7 @@
   "Manolito🇨🇴": 300,
   "Manteca mantecosa 🇨🇾": 300,
   "Marcos": 2800,
-  "Mark98": 1000,
+  "Mark98": 1600,
   "Marley🇦🇷": 300,
   "Marto AR": 600,
   "Masino": 2800,
@@ -15258,7 +15352,7 @@
   "Mc uchiha": 300,
   "Mexicano🇲🇽": 300,
   "Millonari-O": 300,
-  "Miniboy": 10400,
+  "Miniboy": 11000,
   "Mito": 6000,
   "Mochi DG": 300,
   "Molusco": 6700,
@@ -15268,8 +15362,8 @@
   "Mr.Kude": 1400,
   "Musicdum": 300,
   "N1k": 300,
-  "NC": 6300,
-  "NXUZ": 5300,
+  "NC": 8300,
+  "NXUZ": 5900,
   "NYCO": 300,
   "Neo": 3200,
   "Nerick": 600,
@@ -15281,7 +15375,7 @@
   "Number": 300,
   "Number VE": 2800,
   "OG": 8000,
-  "OKAM": 5400,
+  "OKAM": 4800,
   "ONDADISKO": 600,
   "ONZASS": 1200,
   "Oasis": 12400,
@@ -15403,7 +15497,7 @@
   "mityar": 300,
   "nebu": 300,
   "nemmii_as": 1200,
-  "oriuz": 600,
+  "oriuz": 1200,
   "publicenemy🇦🇷": 300,
   "roda mc 🇵🇦": 1000,
   "rodrilp": 1500,

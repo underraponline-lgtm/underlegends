@@ -429,6 +429,23 @@
    "cuando": "2026-11-23 6:07 PM ET",
    "por": "el ciclo (R24)",
    "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
+  },
+  "(sin titulo) · DDS · 05/10": {
+   "campeon": {
+    "ganador": "(sin campeón)",
+    "promedio": true,
+    "ronda": "final",
+    "batallas": [
+     [
+      "Abraham",
+      "alejoz"
+     ]
+    ],
+    "pasaron": []
+   },
+   "cuando": "2026-11-25 9:48 PM ET",
+   "por": "el ciclo (R24)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
   }
  },
  "no_rankear": {

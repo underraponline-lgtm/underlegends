@@ -4086,6 +4086,178 @@
    ]
   ]
  },
+ "147652926": {
+  "dia": "2026-11-25",
+  "escala": "8-15",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575337444847652926"
+  ],
+  "n": 147652926,
+  "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪",
+  "ns": 1,
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Mathhias"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Player",
+       "Hades"
+      ],
+      "Player",
+      ""
+     ],
+     [
+      [
+       "Cajita",
+       "Skalaboy 🇲🇽"
+      ],
+      "Cajita",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Shadow"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Masino",
+       "CrisZJ"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Cajita"
+      ],
+      "mats",
+      ""
+     ],
+     [
+      [
+       "Tmax Turbo [PN]",
+       "Gus"
+      ],
+      "Tmax Turbo [PN]",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Masino",
+       "MaYeuTyK"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Tmax Turbo [PN]"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "Masino"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    0
+   ],
+   [
+    "Masino",
+    "Subcampeón",
+    0
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    0
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Semifinal",
+    0
+   ],
+   [
+    "Cajita",
+    "Cuartos",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    0
+   ],
+   [
+    "Hades",
+    "Octavos",
+    0
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    0
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    0
+   ],
+   [
+    "Skalaboy 🇲🇽",
+    "Octavos",
+    0
+   ]
+  ]
+ },
  "150218372": {
   "dia": "2026-11-07",
   "escala": "8-15",
