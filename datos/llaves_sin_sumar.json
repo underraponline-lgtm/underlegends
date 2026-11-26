@@ -5198,6 +5198,80 @@
    ]
   ]
  },
+ "159542323": {
+  "dia": "2026-11-25",
+  "escala": "8-15",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575328517359542323"
+  ],
+  "n": 159542323,
+  "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪",
+  "ns": 1,
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Mathhias"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Player",
+       "Hades"
+      ],
+      "Player",
+      ""
+     ],
+     [
+      [
+       "Cajita",
+       "Skalaboy 🇲🇽"
+      ],
+      "Cajita",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Shadow"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Hades",
+    "Octavos",
+    0
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    0
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    0
+   ],
+   [
+    "Skalaboy 🇲🇽",
+    "Octavos",
+    0
+   ]
+  ]
+ },
  "160445491": {
   "dia": "2026-10-04",
   "escala": "4-7",

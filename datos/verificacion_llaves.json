@@ -83,7 +83,7 @@
    "v": 1
   },
   "- DEM BATTLES -|FRZ|24/11": {
-   "min": 32,
+   "min": 1288,
    "v": 1
   },
   "- FMS CHILE -|FRZ|01/10": {
@@ -122,6 +122,10 @@
   "- RED BULL TORNEO DE PLAZAS 2026 -|FDS|21/10": {
    "min": 45468,
    "org": "juega",
+   "v": 1
+  },
+  "- SHAOLIN BATTLES -|FRZ|25/11": {
+   "min": 24,
    "v": 1
   },
   ". Rango Bronce III|FFA|30/10": {
