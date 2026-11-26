@@ -1305,7 +1305,7 @@
    "n": 664,
    "sv": "CH",
    "vence": "2026-11-26T19:39:40+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Hedorah": {
    "avisado_cumplido": "2026-11-12",
@@ -1643,7 +1643,7 @@
    "n": 664,
    "sv": "CH",
    "vence": "2026-11-26T19:39:40+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Kain": {
    "avisado": "2026-10-16",
@@ -2197,7 +2197,7 @@
    "n": 664,
    "sv": "CH",
    "vence": "2026-11-26T19:39:40+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Maniak": {
    "avisado": "2026-11-15",
@@ -3820,7 +3820,7 @@
    "n": 664,
    "sv": "CH",
    "vence": "2026-11-26T19:39:40+00:00",
-   "vencido": false
+   "vencido": true
   },
   "pibe": {
    "avisado": "2026-11-19",
@@ -3833,7 +3833,7 @@
    "n": 664,
    "sv": "CH",
    "vence": "2026-11-26T19:39:40+00:00",
-   "vencido": false
+   "vencido": true
   },
   "publicenemy": {
    "avisado": "2026-10-29",
