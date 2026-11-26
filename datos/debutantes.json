@@ -2728,6 +2728,19 @@
    "vence": "2026-11-13T03:25:32+00:00",
    "vencido": true
   },
+  "Raxo": {
+   "avisado": "2026-11-26",
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-26T03:39:52+00:00",
+   "did": "234703794041126922",
+   "evento": "Backtime",
+   "n": 697,
+   "sv": "FFA",
+   "vence": "2026-12-03T03:39:52+00:00",
+   "vencido": false
+  },
   "Revo": {
    "avisado": "2026-10-19",
    "avisado_cumplido": "2026-10-21",
@@ -3952,6 +3965,7 @@
   },
   "tommyhilfiger1312": {
    "avisado": "2026-11-24",
+   "avisado_cumplido": "2026-11-26",
    "chat": "2026-11-24",
    "con": 690,
    "cumplido": "2026-11-24T20:43:30+00:00",

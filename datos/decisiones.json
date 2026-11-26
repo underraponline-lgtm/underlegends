@@ -1510,6 +1510,20 @@
    "cuando": "2026-11-24 11:23 AM ET",
    "por": "el organizador, con el menú (<@597257327464284163>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "backtime|FFA|25/11|final|dios|monet": {
+   "ganador": "Dios 🇲🇽",
+   "batalla": "Backtime · FFA · 25/11 · final · Dios 🇲🇽 🆚 Monet 🇲🇽",
+   "cuando": "2026-11-26 1:23 AM ET",
+   "por": "el organizador, con el menú (<@1194813613786026136>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "backtime|FFA|25/11|semifinales|dios|raxo": {
+   "ganador": "Dios 🇲🇽",
+   "batalla": "Backtime · FFA · 25/11 · semifinales · raxo 🆚 Dios 🇲🇽",
+   "cuando": "2026-11-26 1:23 AM ET",
+   "por": "el organizador, con el menú (<@1194813613786026136>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

@@ -4376,15 +4376,25 @@
     "t1",
     1794260565889
    ],
+   "🌐 IMPERIO": [
+    "🌐 IMPERIO",
+    "t1",
+    1795674812613
+   ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
     "t1",
     1795561480429
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x7",
+    "👑 CAMPEÓN x8",
     "t1",
     1794260565889
+   ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1795674812613
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -4395,6 +4405,11 @@
     "📈 EN ASCENSO",
     "t1",
     1794848577430
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1795674812613
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -7417,6 +7432,13 @@
   }
  },
  "jult": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1795674812613
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -9888,6 +9910,11 @@
     "📆 HABITUÉ",
     "t1",
     1795661323968
+   ],
+   "🪓 VERDUGO DEL DUEÑO": [
+    "🪓 VERDUGO DEL DUEÑO",
+    "t1",
+    1795674812613
    ]
   },
   "temporada": {
@@ -11415,6 +11442,13 @@
   }
  },
  "monet": {
+  "competitivo": {
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1795674812613
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",
@@ -11435,6 +11469,13 @@
     "SIN FRONTERAS",
     "t1",
     1795660272396
+   ]
+  },
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1795674812613
    ]
   },
   "temporada": {

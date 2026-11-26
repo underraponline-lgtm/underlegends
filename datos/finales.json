@@ -2346,11 +2346,50 @@
     "ronda": "SEMIFINALES"
    }
   ],
-  "respondidas": {},
+  "resp": {
+   "0": {
+    "por": "org",
+    "t": 1795672622102
+   },
+   "1": {
+    "por": "org",
+    "t": 1795672619642
+   }
+  },
+  "respondidas": {
+   "0": "Dios 🇲🇽",
+   "1": "Dios 🇲🇽"
+  },
   "sin_permiso": false,
   "staff_probado": false,
   "sv": "FFA",
   "t_pregunta": "2026-11-26T05:54:16+00:00"
+ },
+ "1575364174823817349": {
+  "autor": "734945161158852630",
+  "canal": "1563698791595507743",
+  "canal_pregunta": "1563698791595507743",
+  "cuando": "2026-11-26T04:14:48.129000+00:00",
+  "donde": "llave",
+  "evento": "NOCTURNA STYLE",
+  "fecha": "25/11",
+  "llave": "1575364174823817349",
+  "pregunta": "1575396701945069620",
+  "preguntada": "2026-11-26 1:24 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Dios 🇲🇽",
+     "MARTINEZ"
+    ],
+    "ronda": "SEMIFINALES"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": false,
+  "sv": "DDS",
+  "t_pregunta": "2026-11-26T06:24:03+00:00"
  },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

@@ -282,6 +282,14 @@
 "rg": "C",
 "c": []
 },
+"dios": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "btrx": {
 "rg": "B",
 "c": [
@@ -314,14 +322,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"dios": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -378,6 +378,15 @@
 "temporada"
 ]
 },
+"drexx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "caliz": {
 "rg": "D",
 "c": [
@@ -422,15 +431,6 @@
 },
 "dominick": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"drexx": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -638,6 +638,10 @@
 "temporada"
 ]
 },
+"monet": {
+"rg": "C",
+"c": []
+},
 "jupiter": {
 "rg": "D",
 "c": [
@@ -695,10 +699,6 @@
 "servidor",
 "temporada"
 ]
-},
-"monet": {
-"rg": "",
-"c": []
 },
 "eclipsito": {
 "rg": "C",
@@ -2960,15 +2960,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-18T22:04:59Z",
-"quien": [
-"Molusco"
-],
-"rg": "C",
-"primero": false
-},
 {
 "tipo": "rango",
 "t": "2026-10-18T22:04:59Z",
@@ -6393,6 +6384,15 @@
 "tøkiø"
 ],
 "pts": 131234
+},
+{
+"tipo": "rango",
+"t": "2026-11-26T06:33:03Z",
+"quien": [
+"Monet"
+],
+"rg": "C",
+"primero": true
 }
 ],
 "noche_antes": {
@@ -8668,8 +8668,8 @@
 "tipo": "resnoche",
 "t": "2026-11-26T08:00:00Z",
 "dia": "2026-11-25",
-"eventos": 2,
-"part": 20,
+"eventos": 3,
+"part": 24,
 "campeones": [
 {
 "ev": "- SHAOLIN BATTLES -",
@@ -8679,6 +8679,17 @@
 [
 "Senticide",
 "senticide"
+]
+]
+},
+{
+"ev": "Backtime",
+"sv": "FFA",
+"ll": 697,
+"quien": [
+[
+"Dios",
+"dios"
 ]
 ]
 },
@@ -8696,22 +8707,22 @@
 ],
 "suman": [
 {
+"n": "Monet",
+"k": "monet",
+"pts": 8750,
+"ev": 2
+},
+{
+"n": "Dios",
+"k": "dios",
+"pts": 8500,
+"ev": 2
+},
+{
 "n": "Lilñaño",
 "k": "lilnano",
 "pts": 7500,
 "ev": 1
-},
-{
-"n": "Senticide",
-"k": "senticide",
-"pts": 7500,
-"ev": 1
-},
-{
-"n": "MaYeuTyK",
-"k": "mayeutyk",
-"pts": 5500,
-"ev": 2
 }
 ],
 "suben": [
@@ -8728,10 +8739,10 @@
 "a": 310
 },
 {
-"n": "Kuni",
-"k": "",
-"de": 185,
-"a": 165
+"n": "Dios",
+"k": "dios",
+"de": 54,
+"a": 31
 }
 ],
 "sorpresas": [
@@ -8977,7 +8988,7 @@
 "sol": 3,
 "ezias": 0,
 "raizer": 0,
-"monet": 1,
+"monet": 2,
 "deluxe": 0,
 "ikonoxx": 0,
 "efimero": 0,

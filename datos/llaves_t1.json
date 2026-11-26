@@ -65840,5 +65840,79 @@
    "min": 57,
    "v": 1
   }
+ },
+ "697": {
+  "dia": "2026-11-25",
+  "escala": "4-7",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1575355385399873650"
+  ],
+  "n": 697,
+  "nombre": "Backtime",
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Monet",
+       "Drexx"
+      ],
+      "Monet",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Raxo"
+      ],
+      "Dios",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
+       "Monet"
+      ],
+      "Dios",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Dios",
+    "Campeón",
+    5000
+   ],
+   [
+    "Monet",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Drexx",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Raxo",
+    "Semifinal",
+    2625
+   ]
+  ],
+  "ver": {
+   "min": 8,
+   "v": 1
+  }
  }
 }
