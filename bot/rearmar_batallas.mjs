@@ -7,7 +7,7 @@
 // Escribe por la salida el mismo JSON que ULAYA adjunta como batallas.json; los cortes del audio los hace quien lo llama.
 // (vive en bot/ y no en grabador/ a propósito: un push a grabador/ reinicia ULAYA en Railway y corta la grabación)
 import fs from 'node:fs';
-import { ubicarTodas, guion, nombreClip, MIN_CLIP_S } from '../grabador/batallas.js';
+import { ubicarTodas, guion, nombreClip, MIN_CLIP_S, completarIds } from '../grabador/batallas.js';
 // batallas.js no importa nada de afuera: esto corre en un runner sin `npm install`. La clave del ciclo la pasa quien llama
 // (LG_CICLO, de bot/clave_ciclo.py): vivo.js la sabe armar pero importa discord.js
 
@@ -21,7 +21,13 @@ const q = new URLSearchParams({ g: h.servidor, desde: String(inicio), hasta: Str
 const r = await fetch(VIGIA + '/avisos/batallas?' + q, { headers: { 'x-lg-ciclo': process.env.LG_CICLO || '' },
   signal: AbortSignal.timeout(30000) });
 const d = r.ok ? await r.json() : {};
-const bs = ubicarTodas(d.llaves, habla, seg);
+// ⚓ IGUAL QUE ULAYA (26/11/2026): con las anclas y los nombres completados. Sin ellas esto separaba distinto que la
+// entrega —en WOF del 25/11 rearmó «semifinales-mats-vs-tmax-turbo-pn» de la PRIMERA grabación, cuando esa semifinal se
+// jugó en la segunda—. Las anclas son ms de reloj y el segundo de la grabación es la resta. ⚠️ Si a ULAYA la sacaron de
+// la llamada, `habla.json` no dice cuánto estuvo afuera: el ancla cae hasta esos minutos más tarde (las ventanas tienen
+// 10 min de margen antes y 2,5 después, así que casi siempre alcanza)
+completarIds(d.llaves, new Map());
+const bs = ubicarTodas(d.llaves, habla, seg, (ts) => (ts - inicio) / 1000);
 for (const b of bs) {
   try { b.guion = guion(b, habla); } catch (e) { b.guion = null; }
 }
