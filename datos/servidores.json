@@ -929,7 +929,8 @@
     "canal_id": "1558622756176666624",
     "creada": "2026-11-22"
    },
-   "alta_t": "2026-11-26T22:00:00Z"
+   "alta_t": "2026-11-26T22:00:00Z",
+   "leer_hondo_hasta": "2026-12-03"
   },
   "UFLUC": {
    "nombre": "Under Freestyle Legion",
@@ -990,7 +991,8 @@
     "canal_id": "1343821617306013723",
     "creada": "2026-11-24"
    },
-   "alta_t": "2026-11-26T22:00:01Z"
+   "alta_t": "2026-11-26T22:00:01Z",
+   "leer_hondo_hasta": "2026-12-03"
   }
  },
  "_fuera_de_la_tabla": [
