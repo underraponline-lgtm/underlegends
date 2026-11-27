@@ -30223,6 +30223,11 @@
     "Sin Limites",
     "AL3",
     "Sin Limites"
+   ],
+   [
+    "Artezzy",
+    "Vilca",
+    ""
    ]
   ],
   "ev_antes": {
@@ -30239,7 +30244,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "f2388463744403a7",
+  "firma": "24a4baade7367212",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -30317,6 +30322,16 @@
    ],
    [
     "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Artezzy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vilca",
     "Octavos",
     1250
    ]

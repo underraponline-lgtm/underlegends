@@ -6701,6 +6701,22 @@
       ],
       "Leyenda",
       "batalla 8 · votos 1–0"
+     ],
+     [
+      [
+       "Leyenda",
+       "Rbk"
+      ],
+      "Leyenda",
+      "batalla 9 · votos 1–0"
+     ],
+     [
+      [
+       "LAST",
+       "Leyenda"
+      ],
+      "LAST",
+      "batalla 10 · votos 1–0"
      ]
     ],
     "r": "5 vidas"
@@ -6714,23 +6730,23 @@
     0
    ],
    [
-    "Leyenda",
-    "Campeón",
-    0
-   ],
-   [
     "LAST",
-    "Tercero",
+    "Subcampeón",
     0
    ],
    [
-    "Rbk",
-    "Tercero",
+    "Leyenda",
+    "Subcampeón",
     0
    ],
    [
     "TOKYO 🇺🇸🇦🇷",
-    "Tercero",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Rbk",
+    "Cuartos",
     0
    ]
   ]
