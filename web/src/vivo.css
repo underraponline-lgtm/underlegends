@@ -113,6 +113,9 @@
 /* en el celular el de tu cara sale de «Tu cuenta», abajo a la derecha */
 .yo-menu.abajo{transform-origin:calc(100% - 34px) 100%;animation-name:pv-sube}
 .app .cab .menu .grp-lista.sale,.yo-menu.sale,.nt-campana.sale{animation:pv-va-arriba .12s var(--ease-out) forwards;pointer-events:none}
+/* 🫨 de una lista del menú a otra, sin animar (26/11/2026): con una ya abierta, bajar la siguiente mientras la anterior subía
+   era el «terremoto» de la barra. Sólo anima la primera que se abre y la última que se cierra (`Grupo`, arriba.jsx) */
+.app .cab .menu .grp-lista.cambia{animation:none}
 .yo-menu.abajo.sale{animation-name:pv-va-abajo}
 @media (max-width: 899.98px){
   /* la campana del celular ocupa la pantalla: sube un poco, como una página */

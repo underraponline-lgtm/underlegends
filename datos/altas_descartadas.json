@@ -1,0 +1,9 @@
+{
+ "_leeme": "Las altas del Dashboard cuyo ID era de una persona o de un bot, no de un servidor (bot/tiers.py `_alta_completar()`). No vuelven a entrar con ese ID.",
+ "altas": {
+  "CYH": {
+   "g": "1550026808404217926",
+   "dia": "2026-11-26"
+  }
+ }
+}

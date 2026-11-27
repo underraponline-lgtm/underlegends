@@ -374,6 +374,10 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   // el marco que se prueba sobre la carta (con la forma de `marcosPublicos()`): `null` sin marco
   const marcoDe = (m) => (m === 'ninguno' || (!m && !idsMarcos.length) ? null : [m || mejor(idsMarcos), estiloAhora, (mk && mk.serie) || 0]);
   const marcoVer = !('marco' in bor || 'estilo' in bor) ? undefined : marcoDe(marcoAhora);
+  // ⛓️ LA CADENA Y LA CAMISETA VAN SOBRE UN MARCO (26/11/2026, «lo pongo y no aparece»): sin marco —ninguno ganado, o
+  // «Sin marco» elegido— `marcoDe()` da `null` y la carta sale como siempre. El Estilo se ofrecía igual y Guardar decía
+  // «ya se ve en tu carta». Ahora el cajón lo explica y Guardar no promete lo que no se ve
+  const hayMarco = marcoAhora === 'ninguno' ? false : !!marcoAhora || idsMarcos.length > 0;
   // 🎭 lo que muestra la carta: lo guardado («Lo puesto»), o el borrador con lo que el mouse está tocando encima
   const tagCarta = ver === 'puesto' ? elG : hov && hov.campo === 'tag' ? hov.v : el;
   const marcoCarta = ver === 'puesto' ? undefined : hov && hov.campo === 'marco' ? marcoDe(hov.v) : marcoVer;
@@ -468,8 +472,12 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     setBor({ tags: {} });
     setSel(null);
     // ⚡ en la página, al instante; en /card y en la imagen que ven los demás, cuando se vuelve a dibujar
-    setMsg(ok ? 'Guardado: ya se ve en tu carta. En /card y en la imagen que ven los demás se actualiza en un rato.'
-      : 'Se guardó una parte. ' + [...new Set(avisos)].join(' '));
+    // ⛓️ sólo el estilo y sin marco: se guarda, pero no se ve hasta que lleves uno (no prometer «ya se ve»)
+    const soloEstilo = 'estilo' in bor && !hayMarco && nCambios === 1 && !('marco' in bor);
+    setMsg(ok && soloEstilo ? 'Guardado. La cadena y la camiseta se ven cuando tu carta lleva un marco: elige uno en Marco.'
+      : ok ? 'Guardado: ya se ve en tu carta. En /card y en la imagen que ven los demás se actualiza en un rato.'
+        + ('estilo' in bor && !hayMarco ? ' La cadena y la camiseta se ven cuando tu carta lleva un marco.' : '')
+        : 'Se guardó una parte. ' + [...new Set(avisos)].join(' '));
   };
 
   const claveNueva = (o) => (o.grupo === 'pase' ? o.tag.replace(/^pase:/, 'pase|') : carta + '|' + o.tag);
@@ -535,9 +543,21 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     if (ran === 'marco') return cajonMarco();
     if (ran === 'foto') return <Suspense fallback={<p className="ves-nota">Cargando…</p>}><FotoCartaCaja dc={dc} /></Suspense>;
     if (ran === 'estilo') {
+      if (!hayMarco) {
+        const sinNinguno = !idsMarcos.length;
+        return (
+          <>
+            <div className="ves-ficha bloq"><span className="ves-qi" aria-hidden="true">⛓️</span><div><em>Necesita un marco</em><b>La cadena y la camiseta</b>
+              <p className="ves-falta">{CAND}<span>{sinNinguno
+                ? 'La cadena se pone sobre un marco, y sólo en tu carta de Servidor. Todavía no tienes ningún marco: se ganan en el Pase premium (niveles 1, 15 y 25) y con 10 invitados en Invita y gana.'
+                : 'La cadena se pone sobre un marco, y sólo en tu carta de Servidor. Elegiste «Sin marco»: elige uno en Marco y la vas a ver.'}</span></p></div></div>
+            <button type="button" className="ves-btn" onClick={() => { setRan('marco'); setHov(null); }}>{sinNinguno ? 'Ver los marcos' : 'Elegir un marco'}</button>
+          </>
+        );
+      }
       return (
         <>
-          <p className="ves-p">Cómo se viste tu carta de <b>Servidor</b> cuando lleva marco.</p>
+          <p className="ves-p">Va sobre tu marco, sólo en tu carta de <b>Servidor</b>.</p>
           <div className="ves-grid" role="radiogroup" aria-label="El estilo de tu carta de Servidor">
             {((mk && mk.estilos) || ['camiseta', 'cadena']).map((e) => (
               <Cuadro key={e} on={estiloAhora === e} puesto={estiloG === e} ic={e === 'cadena' ? '⛓️' : '👕'} nombre={e === 'cadena' ? 'La cadena' : 'La camiseta'}
@@ -584,7 +604,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const valor = {
     tag: el === 'auto' ? 'Automático' : partir((ops.find((o) => o.tag === el) || {}).texto || '')[1] || 'Automático',
     marco: marcoAhora === 'ninguno' ? 'Sin marco' : marcoAhora ? nombreMarco(marcoAhora) : idsMarcos.length ? 'El mejor' : 'Ninguno todavía',
-    foto: 'Tu foto', estilo: estiloAhora === 'cadena' ? 'La cadena' : 'La camiseta',
+    foto: 'Tu foto', estilo: !hayMarco ? 'Necesita un marco' : estiloAhora === 'cadena' ? 'La cadena' : 'La camiseta',
     efecto: !ti ? 'Pronto' : efectoAhora ? ((efDe(efectoAhora) || {}).n || 'Un efecto') : 'Sin efecto',
   };
   const cuantos = { tag: mias.length + '/' + ops.length, marco: idsMarcos.length + '/' + MARCOS_PASE.length,
@@ -627,7 +647,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   } else if (ran === 'foto') {
     foco = { texto: '📸 Tu foto', desc: 'La de tu carta. Se cambia abajo, una vez por temporada.', mio: true };
   } else if (ran === 'estilo') {
-    foco = { texto: estiloAhora === 'cadena' ? '⛓️ La cadena' : '👕 La camiseta', desc: 'Cómo se viste tu carta de Servidor cuando lleva marco.', mio: true, cambia: 'estilo' in bor };
+    foco = { texto: estiloAhora === 'cadena' ? '⛓️ La cadena' : '👕 La camiseta', mio: hayMarco, cambia: 'estilo' in bor, etq: 'Necesita un marco:',
+      desc: hayMarco ? 'Va sobre tu marco, sólo en tu carta de Servidor.' : 'tu carta de Servidor la lleva encima del marco. Sin marco, sale como siempre.' };
   } else if (ti) {
     const id = ver === 'puesto' ? efectoG : hov && hov.campo === 'efecto' ? hov.v : efectoAhora;
     const p = id ? efDe(id) : null;

@@ -1297,7 +1297,7 @@ function SumarServidor({ T, aj, hacer, ocup }) {
     if (!f.n.trim()) return setMal('Falta el nombre.');
     if (!/^[0-9]{15,22}$/.test(f.g.trim())) return setMal('El ID del servidor: en Discord, clic derecho en el servidor → «Copiar ID del servidor».');
     setMal('');
-    const nuevo = { n: f.n.trim(), g: f.g.trim(), t: f.t };
+    const nuevo = { n: f.n.trim(), g: f.g.trim(), t: f.t, c: Date.now() };
     if (f.tag.trim()) nuevo.tag = f.tag.trim().toUpperCase();
     const bien = await hacer('altas', Object.assign({}, aj.altas || {}, { [sv]: nuevo }),
       sv + ' entra en la próxima vuelta del ciclo, como Tier ' + f.t + '. Si el bot está adentro, también su invitación.');
@@ -1312,6 +1312,16 @@ function SumarServidor({ T, aj, hacer, ocup }) {
   return (
     <form className="ti-alta" onSubmit={mandar}>
       <b>Sumar un servidor</b>
+      {(T.sin_liga || []).length ? (
+        <div className="ti-sinliga">
+          <span>El bot ya está en estos y todavía no suman. Toca uno y se llena solo:</span>
+          <div>{T.sin_liga.map((x) => (
+            <button key={x.g} type="button" className="ti-sinliga-b" title={'ID ' + x.g}
+              onClick={() => setF(Object.assign({}, f, { g: x.g, n: f.n || x.n.normalize('NFKD').replace(/[^\p{L}\p{N} .&'-]/gu, ' ').replace(/\s+/g, ' ').trim().slice(0, 60),
+                sv: f.sv || x.antes || '' }))}>
+              {x.n}{x.m ? ' · ' + x.m : ''}{x.antes ? ' · era ' + x.antes : ''}
+            </button>))}</div>
+        </div>) : null}
       <div className="ti-alta-g">
         <input value={f.sv} onChange={set('sv')} placeholder="Sigla (FDS)" maxLength={6} aria-label="Sigla" />
         <input value={f.n} onChange={set('n')} placeholder="Nombre" maxLength={60} aria-label="Nombre" />

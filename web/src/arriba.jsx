@@ -78,8 +78,19 @@ export const GRUPOS = [
 // las páginas de cada grupo, para marcarlo cuando estás adentro
 const PAGINAS_DE = { Ranking: ['ranking', 'duelos'], Eventos: ['eventos', 'competencias', 'ligas', 'avisos'], Comunidad: ['crews', 'crew', 'tarjetas', 'salon', 'socios', 'mundo', 'guia'] };
 
-function Grupo({ n, items, on, pagina }) {
-  const [abierto, setAbierto] = useState(false);
+// 🫨 UNA LISTA ABIERTA POR VEZ (26/11/2026, «la barra parece que tiene un terremoto al seleccionar categorías»): cada grupo
+// tenía su propio abierto, así que al pasar de Ranking a Eventos la de Ranking seguía 160 ms abierta y 120 ms más yéndose
+// mientras la otra bajaba: dos paneles moviéndose en sentidos contrarios debajo de la barra. Ahora el estado es de
+// `MenuArriba` (`est.ab`, el nombre del abierto): abrir uno cierra el otro en el acto, y si ya había uno abierto el cambio
+// es seco (`cambia`: sin entrada ni salida), como un menú que ya estaba desplegado
+function Grupo({ n, items, on, pagina, est, setEst }) {
+  const abierto = est.ab === n;
+  // acepta un valor o una función (como el setState de antes); cerrar sólo cierra si el abierto sigue siendo éste
+  const setAbierto = (v) => setEst((s) => {
+    const nv = typeof v === 'function' ? v(s.ab === n) : v;
+    const ab = nv ? n : (s.ab === n ? '' : s.ab);
+    return ab === s.ab ? s : { ab, cambia: !!(ab && s.ab) };
+  });
   const caja = useRef(null);
   const t = useRef(null);
   // se cierra tocando afuera (dentro del shadow root: por `composedPath`, como el buscador), con Escape y al cambiar de página
@@ -101,7 +112,13 @@ function Grupo({ n, items, on, pagina }) {
   // dedo y el teclado siguen alternando (Enter no trae pointerdown). Se recuerda en pointerdown: Safari viejo no trae
   // `pointerType` en el click
   const tipo = useRef('');
-  const [ver, despide] = usePresencia(abierto, 120);
+  const [verP, despide] = usePresencia(abierto, 120);
+  // si se fue porque se abrió otro, se va sin despedirse: dos paneles a la vez era el temblor (y queda «cedido» hasta que
+  // se vuelva a abrir, así no reaparece despidiéndose si el otro se cierra enseguida)
+  const cedio = useRef(false);
+  if (abierto) cedio.current = false;
+  else if (est.ab) cedio.current = true;
+  const ver = abierto || (verP && !cedio.current);
   const id = 'grp-' + norm(n).replace(/[^a-z]/g, '');
   return (
     <div className={'grp' + (abierto ? ' abierto' : '')} data-tuto={'menu-' + norm(n).replace(/[^a-z]/g, '')} ref={caja} onPointerEnter={entra} onPointerLeave={sale}>
@@ -112,7 +129,7 @@ function Grupo({ n, items, on, pagina }) {
       {ver ? (
         // 🔔 CON EL ESTILO DE LA CAMPANA (Dlx, 13/11/2026: «me gusta bastante el estilo de notificaciones… al abrir cada
         // categoría como rankings»): el título en Anton arriba y cada sección en una fila con su ícono en un círculo
-        <div className={'grp-lista' + (items.length > 6 ? ' dos' : '') + (despide ? ' sale' : '')} id={id}>
+        <div className={'grp-lista' + (items.length > 6 ? ' dos' : '') + (despide && !abierto ? ' sale' : '') + (abierto && est.cambia ? ' cambia' : '')} id={id}>
           <p className="grp-h"><b>{n}</b><small>{items.length} {n === 'Ranking' ? 'tablas' : 'secciones'}</small></p>
           <div className="grp-items">
             {items.map(([nn, h, d, k]) => (
@@ -139,6 +156,8 @@ export function pubNuevas(liga, pagina) {
 }
 
 function MenuArriba({ pagina, nuevas }) {
+  // qué grupo está abierto ('' ninguno) y si se llegó desde otro abierto (ver `Grupo`)
+  const [est, setEst] = useState({ ab: '', cambia: false });
   return (
     <nav className="menu" aria-label="Secciones">
       {GRUPOS.map(([n, r, items]) => {
@@ -147,7 +166,7 @@ function MenuArriba({ pagina, nuevas }) {
           const badge = r === '#/publicaciones' && nuevas ? <i className="m-nuevas" aria-label={nuevas + ' nuevas'}>{nuevas}</i> : null;
           return <a key={n} href={r} title={QUE_ES[r]} onClick={subirSiEsta(r)} className={on ? 'on' : ''}>{n}{badge}</a>;
         }
-        return <Grupo key={n} n={n} items={items} pagina={pagina} on={!!pagina && (PAGINAS_DE[n] || []).includes(pagina)} />;
+        return <Grupo key={n} n={n} items={items} pagina={pagina} est={est} setEst={setEst} on={!!pagina && (PAGINAS_DE[n] || []).includes(pagina)} />;
       })}
     </nav>
   );
@@ -697,7 +716,20 @@ export function Cabecera({ liga, dc, onMenu, pagina = '', sv = '' }) {
     ro.observe(h);
     for (const s of ['nav.menu', '.cab-der']) { const e = h.querySelector(s); if (e) ro.observe(e); }
     // un número nuevo en Publicaciones, tu nivel o el Premium que llegan después: cambian el ancho sin cambiar la ventana
-    const mo = new MutationObserver(medir);
+    // 🫨 pero NO lo que se abre y cierra encima (26/11/2026): las listas del menú, tu menú y la campana flotan, no cambian el
+    // ancho de nada, y cada vez que bajaba una el `medir()` hacía hasta cuatro layouts forzados (6–8 ms medidos) justo en el
+    // primer cuadro de su animación
+    const PANELES = '.grp-lista,.yo-menu,.nt-campana';
+    const enPanel = (nd) => {
+      const el = nd && (nd.nodeType === 1 ? nd : nd.parentElement);
+      return !!(el && (el.matches(PANELES) || el.closest(PANELES)));
+    };
+    const mo = new MutationObserver((rs) => {
+      // un cambio adentro de un panel, o un panel entero que aparece o se va
+      const soloPaneles = rs.every((r) => enPanel(r.target) ||
+        (r.type === 'childList' && [...r.addedNodes, ...r.removedNodes].every((x) => x.nodeType === 1 && x.matches(PANELES))));
+      if (!soloPaneles) medir();
+    });
     mo.observe(h, { childList: true, subtree: true, characterData: true });
     medir();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir);

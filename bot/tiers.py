@@ -212,13 +212,25 @@ def de_setup(x):
     return isinstance(x, dict) and x.get('alta') == 'setup' and bool(x.get('confirmado')) and x.get('en_la_liga') is not False
 
 
+def de_dashboard(x):
+    """¿Esta entrada entró con el alta del Dashboard (`altas()`), está en la Liga y tiene la hora en que entró?"""
+    return (isinstance(x, dict) and x.get('alta') == 'dashboard' and bool(x.get('confirmado'))
+            and x.get('en_la_liga') is not False and bool(x.get('alta_t')))
+
+
 def aprobados_setup(servidores=None):
     """Las siglas del /setup que Dlx aprobó, EN EL ORDEN EN QUE LAS APROBÓ (y por sigla si empatan). ⚠️ El orden importa:
     `sheet/rankings.py` las agrega al final de sus columnas, y la vitrina sólo crece sola si lo nuevo va DESPUÉS de lo que
-    ya tenía (`columnas_que_faltan()`); por sigla, una aprobada hoy podría caer antes que una de ayer."""
+    ya tenía (`columnas_que_faltan()`); por sigla, una aprobada hoy podría caer antes que una de ayer.
+    ➕ Y LAS DEL ALTA DEL DASHBOARD (26/11/2026, Dlx: «asegúrate que cuando yo sume un servidor sume igualmente como tú
+    lo harías»): darla de alta ES la aprobación de Dlx, así que entran igual, por la hora en que entraron (`alta_t`). Antes
+    quedaban fuera del código y con `suma` y `duelos` trabados para siempre: WOF y SGR, Tier 3, no contaban sus ligas
+    como duelos (lo que el Tier 3 tiene desde el 19/11), cuando `sumar_servidor.py` sí los habría metido."""
     svs = _svs(servidores)
-    return [sv for _a, sv in sorted((str(x.get('suma_aprobada')), sv) for sv, x in svs.items()
-                                    if de_setup(x) and x.get('suma_aprobada') and re.match(r'^[A-Z]{2,6}$', sv))]
+    return [sv for _a, sv in sorted((str(x.get('suma_aprobada') if de_setup(x) else x.get('alta_t')), sv)
+                                    for sv, x in svs.items()
+                                    if ((de_setup(x) and x.get('suma_aprobada')) or de_dashboard(x))
+                                    and re.match(r'^[A-Z]{2,6}$', sv))]
 
 
 def pendientes_setup(servidores=None):
@@ -491,18 +503,62 @@ def guilds_sin(beneficio, servidores=None, guardado=None):
 # permanente de la Liga (`bot/invitaciones.py`). ⚠️ No toca el código: el Worker no lo conoce (no sale en el menú de
 # /card ni reconoce su servidor en los comandos) y no puede sumar al ranking hasta que se sume a mano —`PIDEN_CODIGO`—.
 # Por eso `bot/desplegar.py` no lo pide en worker.js.
-def altas(aj, svs, tok=None, ahora=None):
-    """Agrega a `svs` los servidores nuevos de `aj['altas']`. Devuelve las siglas que entraron."""
+#: 🚫 las altas cuyo «ID del servidor» resultó ser de una persona o de un bot (`_alta_completar()`): `{sigla: {g, dia}}`.
+#: Sin esto, el ajuste del Dashboard (que sigue ahí hasta que Dlx lo quite) la volvería a meter en cada vuelta
+DESCARTADAS = os.path.join(BASE, 'datos', 'altas_descartadas.json')
+#: los días que un servidor recién sumado se lee hondo (`leer_hondo_hasta`, `escuchar.hondos()`): lo que hace a mano
+#: `herramientas/sumar_servidor.py`, así sus eventos cuentan desde el arranque de la temporada
+HONDO_DIAS = 7
+
+
+def _descartadas():
+    try:
+        with io.open(DESCARTADAS, encoding='utf-8') as f:
+            return json.load(f).get('altas') or {}
+    except (OSError, ValueError, AttributeError):
+        return {}
+
+
+def altas(aj, svs, tok=None, ahora=None, descartadas=None):
+    """Agrega a `svs` los servidores nuevos de `aj['altas']`. Devuelve las siglas que entraron (o que volvieron).
+    🔁 UN EX SOCIO QUE SE VUELVE A SUMAR (26/11/2026: Cypherhood volvió a poner el bot): si el guild ya está en
+    `servidores.json` con `confirmado` falso, se lo REACTIVA —su sigla de siempre, sus logos, su carta, su historial— en vez
+    de ignorar el alta en silencio. Sólo si el alta es posterior a la baja (`c`, la hora en que Dlx la cargó; un alta
+    vieja que quedó en el ajuste no deshace una baja nueva).
+    🚫 Un ID descartado (`DESCARTADAS`: era de una persona o de un bot) no entra más."""
     nuevas = []
-    hoy = (ahora or dt.datetime.now(dt.timezone.utc)).strftime('%d/%m/%Y')
+    ah = ahora or dt.datetime.now(dt.timezone.utc)
+    hoy = ah.strftime('%d/%m/%Y')
+    fuera = _descartadas() if descartadas is None else descartadas
     for sv, x in sorted(((aj or {}).get('altas') or {}).items()):
-        if sv in svs or not isinstance(x, dict) or not re.match(r'^[A-Z]{2,6}$', sv):
+        if not isinstance(x, dict) or not re.match(r'^[A-Z]{2,6}$', sv):
             continue
         g, n = str(x.get('g') or ''), str(x.get('n') or '').strip()
-        if not re.match(r'^\d{15,22}$', g) or not n or any(str(y.get('guild_id')) == g for y in svs.values()):
+        # una sigla que ya está sólo sirve para reactivar ESE mismo servidor (el botón del Dashboard pone la de antes)
+        if sv in svs and str((svs[sv] or {}).get('guild_id')) != g:
+            continue
+        if not re.match(r'^\d{15,22}$', g) or not n or str((fuera.get(sv) or {}).get('g')) == g:
+            continue
+        ya = next((k for k, y in svs.items() if isinstance(y, dict) and str(y.get('guild_id')) == g), None)
+        if ya:
+            y = svs[ya]
+            baja = str(y.get('baja') or '')
+            cuando = x.get('c')
+            if (y.get('confirmado') is False and isinstance(cuando, (int, float)) and baja
+                    and dt.datetime.fromtimestamp(cuando / 1000, dt.timezone.utc).strftime('%Y-%m-%d') >= baja[:10]):
+                y['confirmado'] = True
+                for k in ('baja', 'baja_por'):
+                    y.pop(k, None)
+                if x.get('t') in TIERS:
+                    y['tier'] = x['t']
+                y['volvio'] = ah.strftime('%Y-%m-%d')
+                y['leer_hondo_hasta'] = (ah + dt.timedelta(days=HONDO_DIAS)).strftime('%Y-%m-%d')
+                nuevas.append(ya)
             continue
         e = {'nombre': n[:60], 'guild_id': g, 'en_el_sheet': False, 'confirmado': True, 'sigla': sv,
              'tier': x.get('t') if x.get('t') in TIERS else 3, 'alta': 'dashboard',
+             'alta_t': ah.strftime('%Y-%m-%dT%H:%M:%SZ'),
+             'leer_hondo_hasta': (ah + dt.timedelta(days=HONDO_DIAS)).strftime('%Y-%m-%d'),
              'nota': 'dado de alta desde el Dashboard el %s (bot/tiers.py `altas()`)' % hoy}
         if str(x.get('tag') or '').strip():
             e['tag'] = str(x['tag']).strip().upper()[:24]
@@ -512,22 +568,59 @@ def altas(aj, svs, tok=None, ahora=None):
 
 
 def _alta_completar(nuevas, svs, tok):
-    """El bot y la invitación de los recién dados de alta (con red). Lo que falle queda para la corrida siguiente."""
+    """El bot y la invitación de los recién dados de alta (con red), y de paso el bot de los dados de alta antes que
+    todavía no lo tenían (`bot_en.json`: un alta cargada antes de que el socio agregue el bot quedaba sin él para siempre:
+    DW, UFLUC, WOF y SGR al 26/11/2026). Lo que falle queda para la corrida siguiente.
+    🚫 Y SI EL «ID DEL SERVIDOR» NO ES DE UN SERVIDOR (26/11/2026: el de Cypherhood era el de ULAYA, el propio bot), lo
+    saca de `svs`, lo anota en `DESCARTADAS` y le avisa a Dlx: así no queda un socio fantasma, Tier 1 y sin nada."""
     import requests
-    if not nuevas or not tok:
+    if not tok:
         return
     bot = _j('datos', 'bot_en.json') or []
+    pend = [sv for sv, x in svs.items() if isinstance(x, dict) and x.get('alta') in ('dashboard', 'setup')
+            and x.get('confirmado') and sv not in bot and sv not in nuevas][:6]
+    if not nuevas and not pend:
+        return
     h = {'Authorization': 'Bot ' + tok, 'User-Agent': 'DiscordBot (underlegends, 1.0)'}
-    for sv in nuevas:
+    fuera = _descartadas()
+    for sv in list(nuevas) + pend:
+        g = str(svs[sv].get('guild_id') or '')
         try:
-            r = requests.get('https://discord.com/api/v10/guilds/%s' % svs[sv]['guild_id'], headers=h, timeout=20)
+            r = requests.get('https://discord.com/api/v10/guilds/%s' % g, headers=h, timeout=20)
             if r.status_code == 200 and sv not in bot:
                 bot.append(sv)
                 print('   🤖 el bot está en %s' % sv)
-            elif r.status_code != 200:
-                print('   ⚠️ el bot no está en %s (Discord dijo %d): sin bot no se leen sus anuncios' % (sv, r.status_code))
+            elif r.status_code != 200 and sv in nuevas:
+                u = requests.get('https://discord.com/api/v10/users/%s' % g, headers=h, timeout=20)
+                if u.status_code == 200:
+                    es = 'de un bot' if (u.json() or {}).get('bot') else 'de una persona'
+                    del svs[sv]
+                    nuevas.remove(sv)
+                    fuera[sv] = {'g': g, 'dia': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%d')}
+                    print('   🚫 el ID de %s es %s, no de un servidor: no entra' % (sv, es))
+                    try:
+                        import alertar as AL
+                        AL.alertar('alta:' + sv, 'El alta de **%s** no entró: el ID que pusiste es %s, no de un servidor. '
+                                   'En Discord: clic derecho sobre el ícono del servidor → «Copiar ID del servidor». '
+                                   'Quita esa alta del Dashboard y vuelve a cargarla con ese ID.' % (sv, es))
+                    except Exception:                    # noqa: BLE001
+                        pass
+                else:
+                    print('   ⚠️ el bot no está en %s (Discord dijo %d): sin bot no se leen sus anuncios' % (sv, r.status_code))
+                    try:
+                        import alertar as AL
+                        AL.alertar('alta-sin-bot:' + sv, 'Sumaste **%s**, pero el bot todavía no está en ese servidor: '
+                                   'cuando lo agreguen entra solo. Si ya lo agregaron, revisa el ID del servidor.' % sv)
+                    except Exception:                    # noqa: BLE001
+                        pass
         except OSError as e:
             print('   ⚠️ %s: %s' % (sv, str(e)[:60]))
+    if fuera != _descartadas():
+        with io.open(DESCARTADAS, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump({'_leeme': 'Las altas del Dashboard cuyo ID era de una persona o de un bot, no de un servidor '
+                                 '(bot/tiers.py `_alta_completar()`). No vuelven a entrar con ese ID.', 'altas': fuera},
+                      f, ensure_ascii=False, indent=1)
+            f.write('\n')
     with io.open(os.path.join(BASE, 'datos', 'bot_en.json'), 'w', encoding='utf-8', newline='\n') as f:
         json.dump(bot, f, ensure_ascii=False)
     try:
@@ -1195,6 +1288,34 @@ def sin_lo_nuevo(x):
     return y
 
 
+def bot_fuera_de_la_liga(svs, tok):
+    """🔎 LOS SERVIDORES DONDE YA ESTÁ EL BOT Y TODAVÍA NO SUMAN (26/11/2026, para el Dashboard): `[{g, n, m, antes?}]`.
+    El alta pedía el ID a mano y el de Cypherhood resultó ser el de ULAYA: ahora el Dashboard los muestra y se suman con
+    un botón. `antes`: la sigla de un ex socio (`confirmado` falso) para que se vea que vuelve. Sin red o sin token, `[]`.
+    ⚠️ Sólo el nombre, el ID y los miembros: nada de quién lo agregó."""
+    import requests
+    if not tok:
+        return []
+    try:
+        r = requests.get('https://discord.com/api/v10/users/@me/guilds?with_counts=true', timeout=20,
+                         headers={'Authorization': 'Bot ' + tok, 'User-Agent': 'DiscordBot (underlegends, 1.0)'})
+        gs = r.json() if r.status_code == 200 else []
+    except (OSError, ValueError):
+        return []
+    por_g = {str(x.get('guild_id')): (sv, x) for sv, x in svs.items() if isinstance(x, dict) and x.get('guild_id')}
+    out = []
+    for g in gs if isinstance(gs, list) else []:
+        gid = str(g.get('id') or '')
+        sv, x = por_g.get(gid, (None, None))
+        if x is not None and x.get('confirmado') and x.get('en_la_liga') is not False:
+            continue
+        f = {'g': gid, 'n': str(g.get('name') or '')[:60], 'm': int(g.get('approximate_member_count') or 0)}
+        if sv:
+            f['antes'] = sv
+        out.append(f)
+    return sorted(out, key=lambda f: -f['m'])[:40]
+
+
 def _mandar(x):
     """El puntaje al Dashboard (`/avisos/tiers-ciclo`, con la clave del ciclo). Devuelve si llegó."""
     import requests
@@ -1273,11 +1394,17 @@ def correr(aplicar=False, ahora=None):
                 if aprobadas:
                     print('   ✅ los puntos de Temporada del /setup cambiaron: %s' % ', '.join(
                         '%s %s' % (sv, 'aprobado' if svs[sv].get('suma_aprobada') else 'sin aprobar') for sv in aprobadas))
-                try:
-                    import fotos as F
-                    _alta_completar(nuevas + nuevas_su, svs, F.env('DISCORD_TOKEN', obligatorio=False))
-                except Exception as e:                   # noqa: BLE001
-                    print('   ⚠️ el bot y la invitación de los nuevos: %s' % str(e)[:80])
+            try:
+                import fotos as F
+                _nn = nuevas + nuevas_su
+                _antes = json.dumps(todo_svs, sort_keys=True)
+                _alta_completar(_nn, svs, F.env('DISCORD_TOKEN', obligatorio=False))
+                if json.dumps(todo_svs, sort_keys=True) != _antes:
+                    with io.open(os.path.join(BASE, 'datos', 'servidores.json'), 'w', encoding='utf-8', newline='\n') as f:
+                        json.dump(todo_svs, f, ensure_ascii=False, indent=1)
+                        f.write('\n')
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ el bot y la invitación de los nuevos: %s' % str(e)[:80])
     nivel = niveles(svs, elegidos)
     ben, bloq = beneficios(nivel, elegidos_b, codigo=en_el_codigo(svs), pendientes=pendientes_setup(svs))
     # 👥 los miembros de cada Discord, de su invitación (lo mismo que muestra Socios: `subir_web._miembros()`)
@@ -1386,8 +1513,13 @@ def correr(aplicar=False, ahora=None):
             if bs:
                 f['alianza_bonus'] = bs
         try:
+            import fotos as F
+            sin_liga = bot_fuera_de_la_liga(svs, F.env('DISCORD_TOKEN', obligatorio=False))
+        except Exception:                                # noqa: BLE001
+            sin_liga = []
+        try:
             _mandar({'t': (ahora or dt.datetime.now(dt.timezone.utc)).strftime('%Y-%m-%dT%H:%M:%SZ'), 'semanas': SEMANAS,
-                     'servidores': filas})
+                     'servidores': filas, 'sin_liga': sin_liga})
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ el puntaje no llegó al Dashboard (%s)' % str(e)[:60])
     return filas
@@ -1440,6 +1572,22 @@ def _self_check():
     ok(nv == ['NUE'] and sv2['NUE']['confirmado'] and sv2['NUE']['tier'] == 3 and sv2['NUE']['alta'] == 'dashboard'
        and sv2['NUE']['tag'] == 'COMUNIDAD',
        'el alta: entra el nuevo, confirmado y con su tier; ni una sigla que ya está, ni un guild repetido, ni una sigla mal')
+    ok(sv2['NUE'].get('alta_t') and sv2['NUE'].get('leer_hondo_hasta') and 'NUE' in aprobados_setup(sv2),
+       'el alta del Dashboard lee hondo su primera semana y suma como las de siempre (entra al final de la lista del ranking)')
+    # 🔁 un ex socio que se vuelve a sumar se reactiva (Cypherhood, 26/11/2026); una baja posterior al alta no se deshace
+    ahr = dt.datetime(2026, 11, 26, 23, 0, tzinfo=dt.timezone.utc)
+    sv3 = {'CH': {'guild_id': '111111111111111111', 'confirmado': False, 'baja': '2026-11-25', 'baja_por': 'x', 'tier': 1}}
+    nv3 = altas({'altas': {'CH': {'n': 'Cypherhood', 'g': '111111111111111111', 't': 1, 'c': 1795734000000}}}, sv3,
+                ahora=ahr, descartadas={})
+    sv4 = {'CH': {'guild_id': '111111111111111111', 'confirmado': False, 'baja': '2026-11-25', 'tier': 1}}
+    nv4 = altas({'altas': {'CYH': {'n': 'Cypherhood', 'g': '111111111111111111', 't': 1}}}, sv4, ahora=ahr, descartadas={})
+    ok(nv3 == ['CH'] and sv3['CH']['confirmado'] is True and 'baja' not in sv3['CH'] and 'CYH' not in sv3
+       and nv4 == [] and sv4['CH']['confirmado'] is False,
+       'un ex socio que Dlx vuelve a sumar se reactiva con su sigla de siempre; un alta sin hora (vieja) no deshace una baja')
+    sv5 = {}
+    nv5 = altas({'altas': {'CYH': {'n': 'Cypherhood', 'g': '222222222222222222', 't': 1}}}, sv5, ahora=ahr,
+                descartadas={'CYH': {'g': '222222222222222222'}})
+    ok(nv5 == [] and not sv5, 'un ID descartado (era de una persona o de un bot) no vuelve a entrar')
     # 🧭 EL /setup (19/11/2026): entra solo, NO suma hasta que Dlx apruebe, y lo que ya estaba no cambia
     G1, G2, G3, G4, G5 = '111111111111111111', '444444444444444444', '555555555555555555', '999999999999999999', '666666666666666666'
     base_su = {'AAA': {'confirmado': True, 'guild_id': G1, 'nombre': 'Uno'},

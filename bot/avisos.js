@@ -6226,6 +6226,8 @@ export function ajusteValido(cual, valor) {
       const n = String(v.n || '').trim(), g = String(v.g || ''), tag = String(v.tag || '').trim();
       if (!n || n.length > 60 || !/^[0-9]{15,22}$/.test(g) || ![1, 2, 3].includes(v.t) || tag.length > 24) return undefined;
       out[k] = tag ? { n, g, t: v.t, tag } : { n, g, t: v.t };
+      // 🕐 cuándo la cargó Dlx (26/11/2026): con eso el ciclo reactiva a un ex socio sólo si el alta es posterior a su baja
+      if (Number.isFinite(v.c) && v.c > 1.7e12 && v.c < 4e12) out[k].c = Math.round(v.c);
     }
     return out;
   }
@@ -10831,7 +10833,12 @@ export class Avisos {
       // 🤝 el puntaje de los servidores: sólo lo guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/tiers-ciclo') {
         if (!d || !Array.isArray(d.servidores) || d.servidores.length > 60) return json({ error: 'datos' }, 400);
-        this.guardar('tiers', { t: String(d.t || ''), semanas: Number(d.semanas) || 4, servidores: d.servidores });
+        // 🔎 y dónde ya está el bot sin ser de la Liga (26/11/2026): el Dashboard los ofrece para sumar con un botón
+        const sinLiga = (Array.isArray(d.sin_liga) ? d.sin_liga : []).slice(0, 40)
+          .filter((x) => x && /^[0-9]{15,22}$/.test(String(x.g || '')))
+          .map((x) => Object.assign({ g: String(x.g), n: String(x.n || '').slice(0, 60), m: Number(x.m) || 0 },
+            /^[A-Z]{2,6}$/.test(String(x.antes || '')) ? { antes: String(x.antes) } : {}));
+        this.guardar('tiers', { t: String(d.t || ''), semanas: Number(d.semanas) || 4, servidores: d.servidores, sin_liga: sinLiga });
         return json({ ok: true });
       }
       if (ruta === '/bandeja') return this.bandeja(d);
