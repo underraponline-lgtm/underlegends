@@ -378,7 +378,16 @@ class Grabacion {
 
   /** 💾 Railway la apaga: cierra las pistas y deja `estado.json` para el próximo arranque, sin mezclar (no le da el tiempo). */
   dejarParaDespues() {
-    if (this.cerrando) return;
+    // 🧯 SE APAGÓ MEZCLANDO (26/11/2026: «Nocturna Style» de DDS, 25/11). Terminó a las 12:19 AM, la entrega tarda ~20 min y
+    // a las 12:31 un push a grabador/ reinició Railway: `terminar()` ya había puesto `cerrando`, esto salía sin dejar nada y
+    // la grabación se perdió. Ahora queda la foto con hasta dónde entregar, y `recuperar()` la entrega al volver
+    if (this.cerrando) {
+      if (this.t0 !== undefined && !this.entregada && this.hastaS > 0 && this.dir && fs.existsSync(this.dir)) {
+        this.foto({ cortada: true, seg: this.hastaS });
+        anotar(`💾 ${this.guild.name}: me apagaron mezclando: ${largo(this.hastaS)} para entregar al volver a arrancar`);
+      }
+      return;
+    }
     this.cerrando = true;
     clearInterval(this.reloj);
     clearInterval(this.fotos);
@@ -692,7 +701,10 @@ class Grabacion {
         fs.rmSync(this.dir, { recursive: true, force: true });
         return;
       }
+      // 🧯 hasta dónde se entrega, por si Railway la apaga mezclando (`dejarParaDespues()`)
+      this.hastaS = hasta / 1000;
       await this.entregar(voces, hasta / 1000, razon);
+      this.entregada = true;
     } catch (e) {
       anotar('❌ no pude entregar la grabación:', String(e.message || e).slice(0, 300));
     }
