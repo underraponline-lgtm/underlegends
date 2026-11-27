@@ -201,6 +201,24 @@ def renombrar_llave(L, variantes, nuevo):
     return n[0]
 
 
+#: 🆔 un ID de Discord suelto o pegado como mención (<@123…> / <@!123…>)
+RE_ID = re.compile(r'\s*(?:<@!?(\d{15,22})>|(\d{15,22}))\s*')
+
+
+def nombre_de_id(padron, texto):
+    """🆔 El nombre de la Lista de quien tiene ese ID de Discord (la misma búsqueda que «quien lo mandó» en `destino()`),
+    o `None` si `texto` no es un ID. `ValueError` si es un ID que no es de nadie: un ID nunca crea gente."""
+    m = RE_ID.fullmatch(str(texto or ''))
+    if not m:
+        return None
+    did = m.group(1) or m.group(2)
+    fila = next((x for x in padron or [] if str(x.get('discord_id') or '') == did), None)
+    nom = (fila or {}).get('raw') or (fila or {}).get('full') or ''
+    if not nom:
+        raise ValueError('el ID %s no es de nadie de la Lista de Raperos' % did)
+    return nom
+
+
 def destino(fix, quien, porclave, padron):
     """`(nombre, cc)` de a quién le corresponde el nombre: el de la Lista tal como lo resuelve el motor. `ValueError`
     con el porqué si no se puede. Alguien que no está en la Lista se queda con un nombre que no choque con nadie:
@@ -212,10 +230,12 @@ def destino(fix, quien, porclave, padron):
         if not nom:
             raise ValueError('quien lo reportó no está en la Lista de Raperos')
         return nom, None
-    if fix.get('es'):
-        nom = porclave.get(clave(fix['es']))
+    # 🆔 «es» o «nuevo» pueden ser un ID de Discord: es alguien que ya está en la Lista, nunca alguien nuevo
+    por_id = nombre_de_id(padron, fix.get('es') or fix.get('nuevo'))
+    if fix.get('es') or por_id is not None:
+        nom = porclave.get(clave(por_id if por_id is not None else fix['es']))
         if not nom:
-            raise ValueError('«%s» no está en la Lista de Raperos' % fix['es'])
+            raise ValueError('«%s» no está en la Lista de Raperos' % (por_id or fix['es']))
         return nom, None
     base, cc = _sin_bandera(fix.get('nuevo')), _cc_de(fix.get('nuevo'))
     if not clave(base):
@@ -821,6 +841,16 @@ def _self_check():
         ok(False, 'quien reportó sin estar en la Lista tiene que fallar')
     except ValueError:
         ok(True, 'quien reportó sin estar en la Lista: no se inventa')
+    pad_id = [{'raw': 'AGUSTÍN51K', 'discord_id': '444444444444444444'}]
+    ok(destino({'es': '444444444444444444'}, '1', pc, pad_id) == ('AGUSTÍN51K', None)
+       and destino({'es': '<@!444444444444444444>'}, '1', pc, pad_id) == ('AGUSTÍN51K', None)
+       and destino({'nuevo': '<@444444444444444444>'}, '1', pc, pad_id) == ('AGUSTÍN51K', None),
+       'un ID de Discord (suelto o como mención) es quien lo tiene en el padrón, también en «alguien que no está»')
+    try:
+        destino({'nuevo': '999999999999999999'}, '1', pc, pad_id)
+        ok(False, 'un ID que no es de nadie tiene que fallar')
+    except ValueError as e:
+        ok('no es de nadie' in str(e), 'un ID que no es de nadie no crea a nadie: falla y dice por qué')
     dec = {}
     Lg = {'nombre': 'COPA', 'sv': 'ACAD', 'fecha': '03/10',
           'rondas': [{'r': 'Final', 'b': [[['Zetryko', 'Abyssus'], 'Zetryko', '']]}]}

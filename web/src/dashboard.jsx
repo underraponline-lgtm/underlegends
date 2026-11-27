@@ -3276,10 +3276,20 @@ const QUE_REP = { ganador: 'el ganador', gente: 'falta o sobra alguien', nombre:
 // 🏷️ QUÉ ES LO REPORTADO, EN PALABRAS Y EN UN SOLO LUGAR (18/11/2026): se armaba a mano en cuatro y sólo la Bandeja
 // conocía los cuatro tipos; el Resumen, «Desde tu última visita» y la ficha decían «llave #perfil:makmah» o «una liga»
 // por un perfil o una llave en vivo
-const etiquetaRep = (r) => {
+// 🏟️ con `liga` (el lobby), una liga dice cuál: «Una liga · otra cosa» no decía de qué liga era el reporte
+const etiquetaRep = (r, liga) => {
   const l = String(r.llave);
-  return /^\d+$/.test(l) ? 'Llave #' + l : l.startsWith('liga:') ? 'Una liga' : l.startsWith('perfil:') ? 'Un perfil' : 'Una llave en vivo';
+  const L = liga && l.startsWith('liga:') ? ligaDe(liga, l) : null;
+  return /^\d+$/.test(l) ? 'Llave #' + l : l.startsWith('liga:') ? (L && L.n ? 'La liga ' + L.n : 'Una liga') : l.startsWith('perfil:') ? 'Un perfil' : 'Una llave en vivo';
 };
+// 🆔 UNA PERSONA TAMBIÉN POR SU ID DE DISCORD (Dlx: «haz que este funcione con IDs también»): suelto o pegado como mención
+// (<@123…>, <@!123…>) queda como el número solo, que el Worker acepta (no deja pasar `<>@`). El ciclo lo busca en el
+// padrón (`reportes.nombre_de_id()`, `ligas._con_ids()`), y si no es de nadie no se aplica: un ID nunca crea a alguien
+const RE_ID = /^\s*(?:<@!?(\d{15,22})>|(\d{15,22}))\s*$/;
+const sinMencion = (x) => { const m = RE_ID.exec(String(x || '')); return m ? m[1] || m[2] : x; };
+const esId = (x) => RE_ID.test(String(x || ''));
+const PH_ID = 'nombre o ID de Discord';
+const NotaId = ({ v }) => (esId(v) ? <small className="db-rep-nota"> → se busca por ID en la Lista de Raperos; si no es de nadie, no se aplica</small> : null);
 // las partes de un lado: «Presagio, NC, Agus» son tres
 const partes = (x) => String(x || '').split(/\s*[,+&]\s*/).map((s) => s.trim()).filter(Boolean);
 
@@ -3338,7 +3348,8 @@ function CorregirLiga({ r, liga, alListo }) {
   for (const f of (L && L.tabla) || []) sumar(f[0]);
   for (const u of (L && L.ult) || []) u.slice(0, 2).forEach(sumar);
   for (const b of bats) { sumar(b.a); sumar(b.b); }
-  const [modo, setModo] = useState(r.que === 'ganador' ? 'batalla' : 'nombre');
+  // «otra cosa» abre sin pestaña y con la guía de qué elegir: un mod no sabía cuál era el problema ni qué poner
+  const [modo, setModo] = useState(r.que === 'ganador' ? 'batalla' : r.que === 'otro' ? '' : 'nombre');
   const [nombre, setNombre] = useState(r.batalla || '');
   // «alguien no es de esta liga» (`gente`) abre con el invitado elegido: es lo que casi siempre es (OG en FMH España)
   const [quien, setQuien] = useState(r.que === 'gente' && r.batalla ? 'invitado' : '');
@@ -3353,13 +3364,13 @@ function CorregirLiga({ r, liga, alListo }) {
   const [ocup, setOcup] = useState(false);
   const lista = ((liga && liga.d && liga.d.tabla) || []).map((x) => x.n);
   const b = bats.find((x) => x.id + '|' + x.a + '|' + x.b === bat);
-  const campo = (k, ph) => <input type="text" value={f[k]} maxLength={60} placeholder={ph} onChange={(e) => setF(Object.assign({}, f, { [k]: e.target.value }))} />;
+  const campo = (k, ph) => <><input type="text" value={f[k]} maxLength={60} placeholder={ph} onChange={(e) => setF(Object.assign({}, f, { [k]: e.target.value }))} /><NotaId v={f[k]} /></>;
   // la corrección como la manda el Dashboard: el «es» de siempre, o un cambio de liga (`accion: 'cambio'`)
   const cambio = () => {
     if (modo === 'nombre') {
       if (!nombre) return null;
       if (quien === 'reporta') return { accion: 'nombre', nombre, reporta: true };
-      if (quien === 'es') return es.trim() ? { accion: 'nombre', nombre, es: es.trim() } : null;
+      if (quien === 'es') return es.trim() ? { accion: 'nombre', nombre, es: sinMencion(es.trim()) } : null;
       if (quien === 'mismo') return mismo && mismo !== nombre ? { tipo: 'nombre', nombre, es: mismo } : null;
       if (quien === 'invitado') return { tipo: 'invitado', quien: nombre };
       return null;
@@ -3370,12 +3381,13 @@ function CorregirLiga({ r, liga, alListo }) {
       if (acc === 'nc') return Object.assign({ tipo: 'no_cuenta', por }, par);
       const [k, lado, como] = acc.split(':');
       const n = lado === 'a' ? b.a : b.b;
-      if (k === 'l') return era.trim() && era.trim().toLowerCase() !== n.toLowerCase() ? Object.assign({ tipo: 'lado', de: n, es: era.trim() }, par) : null;
+      const e2 = sinMencion(era.trim());
+      if (k === 'l') return e2 && e2.toLowerCase() !== n.toLowerCase() ? Object.assign({ tipo: 'lado', de: n, es: e2 }, par) : null;
       return k === 'i' ? Object.assign({ tipo: 'invitado', quien: n }, par) : Object.assign({ tipo: 'ganador', gana: n, como }, par);
     }
-    if (modo === 'falta') return f.a.trim() && f.b.trim() && f.gana ? { tipo: 'cargar', a: f.a.trim(), b: f.b.trim(), gana: f.gana, como: f.como, dia: f.dia } : null;
-    if (modo === 'df') return f.nombre.trim() ? { tipo: 'df', nombre: f.nombre.trim(), pts: Number(f.pts), dia: f.dia } : null;
-    if (modo === 'puntos') return f.pn.trim() && Number(f.pp) ? { tipo: 'puntos', nombre: f.pn.trim(), pts: Number(f.pp), por: f.por, dia: f.dia } : null;
+    if (modo === 'falta') return f.a.trim() && f.b.trim() && f.gana ? { tipo: 'cargar', a: sinMencion(f.a.trim()), b: sinMencion(f.b.trim()), gana: sinMencion(f.gana), como: f.como, dia: f.dia } : null;
+    if (modo === 'df') return f.nombre.trim() ? { tipo: 'df', nombre: sinMencion(f.nombre.trim()), pts: Number(f.pts), dia: f.dia } : null;
+    if (modo === 'puntos') return f.pn.trim() && Number(f.pp) ? { tipo: 'puntos', nombre: sinMencion(f.pn.trim()), pts: Number(f.pp), por: f.por, dia: f.dia } : null;
     return f.c ? { tipo: 'campeon', c: f.c } : null;
   };
   const c = cambio();
@@ -3406,7 +3418,16 @@ function CorregirLiga({ r, liga, alListo }) {
       <div className="db-opc" role="group" aria-label="Qué corregir">
         {formas.map(([k, t]) => <button key={k} type="button" className={modo === k ? 'on' : ''} onClick={() => { setModo(k); setMsg(''); }}>{t}</button>)}
       </div>
-      {modo === 'nombre' ? <>
+      {modo === '' ? <>
+        <span className="db-rep-p">¿Qué dice el reporte? Elige arriba según el caso</span>
+        <ul className="db-rep-guia">
+          <li><b>Alguien no aparece en la tabla</b> → «Una batalla» y ««…» era otro», si el bot le dio su batalla a otra persona; o «Falta una batalla», si no está en ningún lado.</li>
+          <li><b>Alguien tiene de más</b> → «Una batalla»: «No cuenta» (por ejemplo, está repetida) o ««…» era otro».</li>
+          <li><b>Un nombre mal escrito, o dos nombres que son la misma persona</b> → «Un nombre».</li>
+          <li><b>Puntos que la tabla de la liga suma sin una batalla</b> → «Puntos sueltos».</li>
+        </ul>
+        <p className="db-rep-nota">Antes de elegir, toca «abrirla» para mirar la liga. Donde va una persona puedes poner su nombre o su ID de Discord.</p>
+      </> : modo === 'nombre' ? <>
         <span className="db-rep-p">¿Qué nombre de {L ? L.n : 'la liga'} está mal?</span>
         <div className="db-opc">{nombres.map((x) => <button key={x} type="button" className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{x}</button>)}</div>
         {nombre ? <>
@@ -3414,7 +3435,7 @@ function CorregirLiga({ r, liga, alListo }) {
           <div className="db-rep-q">
             {radio('reporta', 'quien lo mandó', r.evid && r.evid.quien ? ' (' + r.evid.quien + ')' : r.de ? ' (' + r.de + ')' : '')}
             <label><input type="radio" name={id} checked={quien === 'es'} onChange={() => setQuien('es')} /> otro de la Lista:
-              <input type="text" list={id + 'l'} value={es} placeholder="su nombre" onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /></label>
+              <input type="text" list={id + 'l'} value={es} placeholder={PH_ID} onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /><NotaId v={es} /></label>
             <datalist id={id + 'l'}>{lista.map((x) => <option key={x} value={x} />)}</datalist>
             <label><input type="radio" name={id} checked={quien === 'mismo'} onChange={() => setQuien('mismo')} /> el mismo que otro de esta liga:
               <select className="db-sel" value={mismo} onFocus={() => setQuien('mismo')} onChange={(e) => { setMismo(e.target.value); setQuien('mismo'); }}>
@@ -3449,16 +3470,16 @@ function CorregirLiga({ r, liga, alListo }) {
           {acc === 'nc' ? <div className="db-opc" role="group" aria-label="Por qué no cuenta">
             {POR_NC.map(([k, t]) => <button key={k} type="button" className={por === k ? 'on' : ''} onClick={() => setPor(k)}>{t}</button>)}
           </div> : null}
-          {acc.startsWith('l:') ? <div className="db-rep-q"><label>Era: <input type="text" list={id + 'n'} value={era} maxLength={60} placeholder="como se llama en la liga"
-            onChange={(e) => setEra(e.target.value)} /></label><datalist id={id + 'n'}>{nombres.map((x) => <option key={x} value={x} />)}</datalist></div> : null}
+          {acc.startsWith('l:') ? <div className="db-rep-q"><label>Era: <input type="text" list={id + 'n'} value={era} maxLength={60} placeholder="como se llama en la liga, o su ID"
+            onChange={(e) => setEra(e.target.value)} /><NotaId v={era} /></label><datalist id={id + 'n'}>{nombres.map((x) => <option key={x} value={x} />)}</datalist></div> : null}
           <p className="db-rep-nota">{acc === 'nc' ? 'Sale de la tabla para los dos.' : acc.startsWith('i:') ? 'La batalla sigue valiendo para su rival, y el invitado no entra a la tabla.'
             : acc.startsWith('l:') ? 'Sólo en esta batalla, también si la ganó: el resto de la liga no cambia.' : 'Cambia el resultado de esa batalla, y la tabla con él.'}</p>
         </> : null}
       </> : modo === 'falta' ? <>
         <span className="db-rep-p">La batalla que el bot no leyó</span>
         <div className="db-rep-q">
-          <label>Uno: {campo('a', 'como lo escriben en la liga')}</label>
-          <label>El otro: {campo('b', 'como lo escriben en la liga')}</label>
+          <label>Uno: {campo('a', 'como lo escriben en la liga, o su ID')}</label>
+          <label>El otro: {campo('b', 'como lo escriben en la liga, o su ID')}</label>
           <label>Ganó: <select className="db-sel" value={f.gana} onChange={(e) => setF(Object.assign({}, f, { gana: e.target.value }))}>
             <option value="">Elige</option>{[f.a.trim(), f.b.trim()].filter(Boolean).map((n) => <option key={n} value={n}>{n}</option>)}</select></label>
           <label>Cómo: <select className="db-sel" value={f.como} onChange={(e) => setF(Object.assign({}, f, { como: e.target.value }))}>
@@ -3468,7 +3489,7 @@ function CorregirLiga({ r, liga, alListo }) {
       </> : modo === 'df' ? <>
         <span className="db-rep-p">Un DF ({L ? L.n : 'la liga'} los suma)</span>
         <div className="db-rep-q">
-          <label>Quién: {campo('nombre', 'como lo escriben en la liga')}</label>
+          <label>Quién: {campo('nombre', 'como lo escriben en la liga, o su ID')}</label>
           <label>Qué pasó: <select className="db-sel" value={f.pts} onChange={(e) => setF(Object.assign({}, f, { pts: Number(e.target.value) }))}>
             <option value={3}>Ganó por DF: 3 puntos</option><option value={1}>No vino nadie: 1 punto</option></select></label>
           <label>Día: <input type="date" value={f.dia} onChange={(e) => setF(Object.assign({}, f, { dia: e.target.value }))} /></label>
@@ -3476,8 +3497,8 @@ function CorregirLiga({ r, liga, alListo }) {
       </> : modo === 'puntos' ? <>
         <span className="db-rep-p">Puntos que su tabla suma o resta sin una batalla</span>
         <div className="db-rep-q">
-          <label>Quién: <input type="text" list={id + 'n'} value={f.pn} maxLength={60} placeholder="como se llama en la liga"
-            onChange={(e) => setF(Object.assign({}, f, { pn: e.target.value }))} /></label>
+          <label>Quién: <input type="text" list={id + 'n'} value={f.pn} maxLength={60} placeholder="como se llama en la liga, o su ID"
+            onChange={(e) => setF(Object.assign({}, f, { pn: e.target.value }))} /><NotaId v={f.pn} /></label>
           <datalist id={id + 'n'}>{nombres.map((x) => <option key={x} value={x} />)}</datalist>
           <label>Puntos: <select className="db-sel" value={f.pp} onChange={(e) => setF(Object.assign({}, f, { pp: Number(e.target.value) }))}>
             {[9, 6, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, -6, -9].map((n) => <option key={n} value={n}>{n > 0 ? '+' + n : n}</option>)}</select></label>
@@ -3497,7 +3518,7 @@ function CorregirLiga({ r, liga, alListo }) {
       {yaDice ? <p className="db-rep-ya">{yaDice}</p> : null}
       <div className="cu-btns">
         <button type="button" className="btn verde chico" disabled={!c || !!yaDice || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>
-        {!c ? <small>{modo === 'nombre' ? (!nombre ? 'Elige el nombre.' : 'Elige quién es.') : modo === 'batalla' ? (!b ? 'Elige la batalla.' : 'Elige qué pasó.') : 'Completa lo que falta.'}</small> : null}
+        {!c ? <small>{modo === '' ? 'Elige qué corregir.' : modo === 'nombre' ? (!nombre ? 'Elige el nombre.' : 'Elige quién es.') : modo === 'batalla' ? (!b ? 'Elige la batalla.' : 'Elige qué pasó.') : 'Completa lo que falta.'}</small> : null}
         {msg ? <small role="status">{msg}</small> : null}
       </div>
     </div>
@@ -3545,7 +3566,7 @@ function Corregir({ r, liga, alListo, hermanos }) {
     setOcup(true); setMsg('');
     try {
       const c = modo === 'nombre'
-        ? Object.assign({ accion: 'nombre', n: r.llave, nombre }, quien === 'reporta' ? { reporta: true } : quien === 'es' ? { es: es.trim() } : { nuevo: nuevo.trim() })
+        ? Object.assign({ accion: 'nombre', n: r.llave, nombre }, quien === 'reporta' ? { reporta: true } : quien === 'es' ? { es: sinMencion(es.trim()) } : { nuevo: sinMencion(nuevo.trim()) })
         : { accion: 'ganador', n: r.llave, ronda: b.ronda, lados: b.lados, ganador: gana };
       // 🧩 y lo mismo para los otros reportes abiertos de esta llave, si se marcó (Dlx: «hazlo sencillo de solucionar
       // múltiples problemas»): el ciclo los da por corregidos con la misma regla
@@ -3574,9 +3595,9 @@ function Corregir({ r, liga, alListo, hermanos }) {
             {/* quien lo mandó, siempre: el ciclo sabe su cuenta aunque no tenga perfil en la página */}
             <label><input type="radio" name={id} checked={quien === 'reporta'} onChange={() => setQuien('reporta')} /> quien lo mandó{r.evid && r.evid.quien ? ' (' + r.evid.quien + ')' : r.de ? ' (' + r.de + ')' : ''}</label>
             <label><input type="radio" name={id} checked={quien === 'es'} onChange={() => setQuien('es')} /> otro de la Lista:
-              <input type="text" list={id + 'l'} value={es} placeholder="su nombre" onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /></label>
+              <input type="text" list={id + 'l'} value={es} placeholder={PH_ID} onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /><NotaId v={es} /></label>
             <label><input type="radio" name={id} checked={quien === 'nuevo'} onChange={() => setQuien('nuevo')} /> alguien que no está en la Lista:
-              <input type="text" value={nuevo} placeholder="Agustin 🇺🇾" onFocus={() => setQuien('nuevo')} onChange={(e) => setNuevo(e.target.value)} maxLength={40} /></label>
+              <input type="text" value={nuevo} placeholder="Agustin 🇺🇾" onFocus={() => setQuien('nuevo')} onChange={(e) => setNuevo(e.target.value)} maxLength={40} /><NotaId v={nuevo} /></label>
             <datalist id={id + 'l'}>{lista.map((x) => <option key={x} value={x} />)}</datalist>
           </div>
         </> : null}
@@ -4535,7 +4556,7 @@ const linea1 = (s) => String(s || '').split('\n').map((x) => x.trim()).find(Bool
 // final, el bot leyó la llave mal —todas sus batallas quedaron en «Final»— y no son N preguntas. `sueltas`: los eventos
 // que Dlx pidió contestar de a una igual
 const enFinal = (p) => /\ben final\?$/i.test(linea1(p.que));
-function itemsBandeja(d, ver, sueltas) {
+function itemsBandeja(d, ver, sueltas, liga) {
   const xs = [];
   const dec = d.decidir || {}, rs = dec.respuestas || {};
   const abiertas = ver.quien ? (dec.preguntas || []).filter((p) => !rs[p.id]) : [];
@@ -4553,7 +4574,7 @@ function itemsBandeja(d, ver, sueltas) {
     }
   }
   if (ver.llave) for (const r of d.reportes || []) if (r.estado === '' || r.estado === 'no_pude') {
-    const llave = etiquetaRep(r);
+    const llave = etiquetaRep(r, liga);
     xs.push({ k: 'r' + r.id, tipo: 'llave', t: msDe(r.t), titulo: llave + ' · ' + (QUE_REP[r.que] || r.que), sub: r.texto || (r.de ? 'lo mandó ' + r.de : ''), r });
   }
   if (ver.imagen) {
@@ -4950,7 +4971,7 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
   const setPosp = (o) => { setPosp0(o); try { localStorage.setItem(POSP, JSON.stringify(o)); } catch (e) { /* vuelve al recargar */ } };
   // 🔎 los eventos con la llave mal leída que se pidieron contestar de a una (en este navegador, hasta recargar)
   const [sueltas, setSueltas] = useState(() => new Set());
-  const todos0 = itemsBandeja(d, ver, sueltas).filter((x) => !fuera[x.k]);
+  const todos0 = itemsBandeja(d, ver, sueltas, liga).filter((x) => !fuera[x.k]);
   // lo pospuesto sigue pospuesto mientras no cambie y no pasen 24 h
   const dormido = (x) => { const p0 = posp[x.k]; return !!p0 && p0.f === firmaDe(x) && Date.now() < p0.hasta; };
   const todos = todos0.filter((x) => !dormido(x));
@@ -5100,7 +5121,8 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
               <div className="dz-acc dz-acc-pos">{filtro === 'posp'
                 ? <button type="button" className="dz-lnk" onClick={() => despertar(it)}>Devolverlo a la lista</button>
                 : <button type="button" className="dz-lnk" onClick={() => posponer(it)}>💤 Posponer hasta que cambie (o 24 h)</button>}</div>
-              <p className="dz-teclas">J / K para moverte · A aprobar · R rechazar · H posponer · / buscar</p>
+              {/* A y R sólo andan en imágenes y videos: en un reporte confundían («A aprobar» qué) */}
+              <p className="dz-teclas">J / K para moverte{it.tipo === 'imagen' || it.tipo === 'video' ? ' · A aprobar · R rechazar' : ''} · H posponer · / buscar</p>
             </> : <p className="db-tx">Elige algo de la lista.</p>}
           </article>
         </div>

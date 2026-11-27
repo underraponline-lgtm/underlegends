@@ -1266,9 +1266,40 @@ def cambios_staff():
 
 #: el prefijo de lo que agregó el staff (una batalla cargada, un DF): nunca choca con un id de mensaje de Discord
 STAFF = 's'
+#: 🆔 un ID de Discord suelto o pegado como mención (<@123…> / <@!123…>), y los campos de un cambio que nombran a alguien
+RE_ID = re.compile(r'\s*(?:<@!?(\d{15,22})>|(\d{15,22}))\s*')
+CAMPOS_PERSONA = ('nombre', 'es', 'de', 'quien', 'a', 'b', 'gana')
 
 
-def aplicar_cambios(lid, bats, dfs, cs):
+def _con_ids(lid, cs, padron=None):
+    """🆔 Los cambios con cada ID de Discord vuelto el nombre de la Lista de quien lo tiene (la misma búsqueda que
+    `reportes.destino()`). Un ID que no es de nadie no crea a nadie: ese cambio no se aplica, y se dice."""
+    raw_de_id, out = None, []
+    for c in cs:
+        dt_ = c.get('dato') or {}
+        ids = {k: RE_ID.fullmatch(str(dt_.get(k) or '')) for k in CAMPOS_PERSONA}
+        ids = {k: m.group(1) or m.group(2) for k, m in ids.items() if m}
+        if ids:
+            if raw_de_id is None:
+                if padron is None:
+                    try:
+                        with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as f:
+                            padron = json.load(f) or []
+                    except (OSError, ValueError):
+                        padron = []
+                raw_de_id = {str(p.get('discord_id')): (p.get('raw') or p.get('full')) for p in padron
+                             if p.get('discord_id') and (p.get('raw') or p.get('full'))}
+            falta = [i for i in ids.values() if i not in raw_de_id]
+            if falta:
+                print('   ⚠️ %s, cambio #%s: el ID %s no es de nadie de la Lista de Raperos: no se aplica'
+                      % (lid, c.get('id'), falta[0]))
+                continue
+            c = dict(c, dato=dict(dt_, **{k: raw_de_id[i] for k, i in ids.items()}))
+        out.append(c)
+    return out
+
+
+def aplicar_cambios(lid, bats, dfs, cs, padron=None):
     """🏟️ Los cambios del staff de la liga sobre lo que se leyó de sus canales: `(batallas, dfs)` nuevas, sin tocar las de
     entrada. En el orden en que se hicieron; uno que ya no tiene sobre qué (la batalla no está, el ganador no es de esa
     batalla) no hace nada.
@@ -1283,8 +1314,8 @@ def aplicar_cambios(lid, bats, dfs, cs):
     · `puntos`: `pts` (de −9 a 9) para `nombre` en la tabla, sin batalla —un bono, una penalización, el punto de Under en
     Ceuta que no sale de ninguna batalla, un DF en una liga que no los suma solos—, en cualquier liga."""
     L = LIGAS.get(lid) or {}
-    cs = sorted([c for c in cs or [] if isinstance(c, dict)], key=lambda c: c.get('id') or 0)
-    ren = {clave(c['dato'].get('nombre')): c['dato'].get('es') for c in cs if c.get('tipo') == 'nombre' and c['dato'].get('es')}
+    cs = _con_ids(lid, sorted([c for c in cs or [] if isinstance(c, dict)], key=lambda c: c.get('id') or 0), padron)
+    ren ={clave(c['dato'].get('nombre')): c['dato'].get('es') for c in cs if c.get('tipo') == 'nombre' and c['dato'].get('es')}
     r = lambda n: ren.get(clave(n), n) if n else n        # noqa: E731
     out = [[b[0], b[1], b[2], r(b[3]), r(b[4]), r(b[5])] + list(b[6:]) for b in bats or []]
     dout = [[e[0], e[1], e[2], r(e[3]), e[4]] for e in dfs or [] if not str(e[0]).startswith(STAFF)]
@@ -3529,6 +3560,14 @@ def _self_check():
        'el staff de la liga: el invitado (en una batalla o en todas las suyas) sale de la tabla y su rival cobra; «SNX era '
        'KUSOH» sólo en esa batalla; un punto de menos sin batalla, en una liga sin DF; lo leído no se toca',
        str(_ab2) + str(_ad2))
+    # 🆔 un ID de Discord (suelto o como mención) es quien lo tiene en el padrón; uno que no es de nadie no se aplica
+    _pid = [{'discord_id': '123456789012345678', 'raw': 'KUSOH'}]
+    _ab4 = aplicar_cambios('fmh-espana', _lb2, [], [
+        {'id': 12, 'tipo': 'lado', 'dato': {'bat': '21', 'de': 'SNX', 'es': '<@!123456789012345678>'}},
+        {'id': 13, 'tipo': 'invitado', 'dato': {'quien': '999999999999999999'}}], _pid)[0]
+    ok(_ab4[1][3:6] == ['ORTIZ', 'KUSOH', 'ORTIZ'] and [x[7] for x in _ab4] == ['', '', ''],
+       'un cambio de liga con un ID de Discord: el ID es quien lo tiene en el padrón, y un ID de nadie no crea a nadie',
+       str(_ab4))
     _t2 = {f[0]: f[1:4] for f in tabla(_ab2, None, _ad2)}
     ok(_t2 == {'ORTIZ': [2, 1, 2], 'CARLOSMO': [1, 1, 2], 'OG': [1, 1, 3], 'KUSOH': [1, 0, 0]},
        'y la tabla queda así: Ortiz 2 jugadas 1 ganada 3−1 puntos, Carlosmo cobra la réplica, OG sólo la que jugó de verdad', _t2)
