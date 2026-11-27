@@ -46,7 +46,7 @@
     ],
     [
      "Mark98",
-     83,
+     84,
      5,
      4,
      0,
@@ -67,7 +67,7 @@
     ],
     [
      "MCO",
-     82,
+     83,
      14,
      4,
      0,
@@ -130,7 +130,7 @@
     ],
     [
      "Soulb",
-     70,
+     71,
      10,
      4,
      0,
@@ -281,7 +281,7 @@
     ],
     [
      "Senticide",
-     66,
+     65,
      3,
      4,
      0,
@@ -365,7 +365,7 @@
     ],
     [
      "Itohimo",
-     56,
+     55,
      3,
      5,
      2,
@@ -403,7 +403,7 @@
     ],
     [
      "Mosquitrap 🦟",
-     48,
+     49,
      3,
      5,
      2,
@@ -814,6 +814,27 @@
      ]
     ],
     [
+     "Makmah",
+     16,
+     10,
+     5,
+     0,
+     [
+      [
+       -15,
+       "Mito"
+      ],
+      [
+       -17,
+       "MaYeuTyK"
+      ],
+      [
+       -9,
+       "OKAM"
+      ]
+     ]
+    ],
+    [
      "MTZ",
      16,
      3,
@@ -848,27 +869,6 @@
       [
        8,
        "Geoka"
-      ]
-     ]
-    ],
-    [
-     "Makmah",
-     15,
-     10,
-     5,
-     0,
-     [
-      [
-       -15,
-       "Mito"
-      ],
-      [
-       -17,
-       "MaYeuTyK"
-      ],
-      [
-       -9,
-       "OKAM"
       ]
      ]
     ],
@@ -2943,7 +2943,7 @@
   "Jotap": 1000,
   "Juanpa": 1098,
   "Juasmio": 1113,
-  "Julda": 1001,
+  "Julda": 1002,
   "Julix🇧🇴": 1011,
   "Jult": 927,
   "Jupiter": 970,
@@ -2980,7 +2980,6 @@
   "Kusoh": 984,
   "Kyron": 980,
   "Kyss": 1037,
-  "LANCER L🇻🇪": 976,
   "LARRIX🇦🇷": 998,
   "LAST": 988,
   "LEWITO": 950,
@@ -3032,7 +3031,7 @@
   "MHS": 919,
   "MTZ": 1055,
   "MZK": 994,
-  "MaYeuTyK": 993,
+  "MaYeuTyK": 979,
   "Magic": 940,
   "Mail O": 969,
   "Majiztral": 1021,
@@ -3060,7 +3059,7 @@
   "Miniboy": 888,
   "Minis": 969,
   "Misterioso": 1026,
-  "Mito": 985,
+  "Mito": 993,
   "Mochi DG": 933,
   "Molt": 921,
   "Molusco": 1075,
@@ -3069,7 +3068,7 @@
   "Mosquitrap 🦟": 1141,
   "Motera": 1192,
   "Mr Still Billin 🇧🇻": 987,
-  "Mr.Kude": 989,
+  "Mr.Kude": 990,
   "Musicdum": 963,
   "MvA": 982,
   "N1k": 974,
@@ -3121,7 +3120,6 @@
   "PUNISHER": 971,
   "Paja lenta🇬🇩": 973,
   "Panchok": 1254,
-  "Papo🇦🇷": 976,
   "Paria": 1003,
   "Partim": 946,
   "Perrin": 976,
@@ -3136,7 +3134,7 @@
   "Prodigy": 1018,
   "Prosu": 1105,
   "Provenza": 1026,
-  "Puppy": 1086,
+  "Puppy": 1066,
   "QUEEN": 993,
   "RAGE BAIT": 988,
   "REPECHAJE": 987,
@@ -3189,7 +3187,7 @@
   "Santi": 985,
   "Scot": 872,
   "Scritura": 938,
-  "Senticide": 1058,
+  "Senticide": 1057,
   "Sentpa": 976,
   "Sexo": 1000,
   "Shadow": 819,
@@ -3209,7 +3207,7 @@
   "Sombra": 1002,
   "Soneto": 996,
   "Sosa": 970,
-  "Soulb": 1038,
+  "Soulb": 1030,
   "Spartan": 975,
   "Status": 1008,
   "Steven🇨🇴": 1000,
@@ -3217,13 +3215,13 @@
   "Surya": 990,
   "Swid": 996,
   "TG": 963,
-  "THO": 1037,
+  "THO": 1038,
   "TMAX TURBAO": 972,
   "TONY  🇦🇷": 1028,
   "TYPHLOSION": 1000,
   "Tam": 1112,
   "Teito": 833,
-  "Telmex": 972,
+  "Telmex": 973,
   "Tenor": 1072,
   "Teo": 997,
   "Terry": 1047,
@@ -3239,7 +3237,7 @@
   "Trot": 1014,
   "Tuca": 1141,
   "Tusicario": 937,
-  "TøKīØ🦠🧠": 1063,
+  "TøKīØ🦠🧠": 1062,
   "UDDIZIM": 988,
   "URKO": 1074,
   "Under": 973,
@@ -3255,7 +3253,7 @@
   "Vargas": 989,
   "Velatz": 997,
   "Verc": 1139,
-  "Vilca": 943,
+  "Vilca": 954,
   "Volk": 1007,
   "WALKER SANITY": 1077,
   "WHITE": 977,
@@ -3299,7 +3297,7 @@
   "blackstar27": 976,
   "botrax": 1019,
   "cardozo": 990,
-  "compare": 943,
+  "compare": 944,
   "crakero": 928,
   "doble h": 975,
   "dxg": 909,
@@ -3333,7 +3331,7 @@
   "pibe": 974,
   "publicenemy🇦🇷": 989,
   "replisan": 920,
-  "rodrilp": 1077,
+  "rodrilp": 1078,
   "romeo": 951,
   "setesfifi": 940,
   "silence papá de nexus 🇵🇪": 976,
@@ -3432,7 +3430,7 @@
   "Player": 0,
   "Provenza": 0,
   "Raizer": 0,
-  "Revo": 3,
+  "Revo": 4,
   "SAIDEM": 0,
   "SULTAN": 0,
   "Saiko": 0,

@@ -361,14 +361,6 @@
 "temporada"
 ]
 },
-"mayeutyk": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "caliz": {
 "rg": "D",
 "c": [
@@ -417,6 +409,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"mayeutyk": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]

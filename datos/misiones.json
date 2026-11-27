@@ -10329,13 +10329,6 @@
      0,
      0
     ],
-    "LANCER L🇻🇪": [
-     0,
-     0,
-     8,
-     0,
-     0
-    ],
     "LAST": [
      0,
      0,
@@ -10437,7 +10430,7 @@
     "MaYeuTyK": [
      0,
      0,
-     2,
+     4,
      0,
      0
     ],
@@ -10613,13 +10606,6 @@
      2,
      0,
      1,
-     0,
-     0
-    ],
-    "Papo🇦🇷": [
-     0,
-     0,
-     8,
      0,
      0
     ],
@@ -11182,11 +11168,11 @@
     ],
     [
      "caza",
-     "Gánale un duelo a Mito",
+     "Gánale un duelo a Miniboy",
      "caza",
      1,
      800,
-     "Mito"
+     "Miniboy"
     ],
     [
      "dorado",
@@ -11228,6 +11214,13 @@
      "s": [
       "FFA",
       "CH"
+     ]
+    },
+    "Agente sombra": {
+     "d": [],
+     "s": [
+      "CH",
+      "DW"
      ]
     },
     "Akuseru": {
@@ -11287,6 +11280,16 @@
      "d": [],
      "s": [
       "CH"
+     ]
+    },
+    "Calíz": {
+     "d": [
+      0,
+      1
+     ],
+     "s": [
+      "FFA",
+      "LKR"
      ]
     },
     "Chente": {
@@ -11566,8 +11569,8 @@
     },
     "MaYeuTyK": {
      "d": [
-      1,
-      4
+      4,
+      6
      ],
      "s": [
       "LKR",
@@ -11659,7 +11662,7 @@
     },
     "Mito": {
      "d": [
-      1,
+      5,
       6
      ],
      "s": [
@@ -11763,12 +11766,6 @@
       "FFA"
      ]
     },
-    "Puppy": {
-     "d": [],
-     "s": [
-      "LKR"
-     ]
-    },
     "Raizer": {
      "d": [
       3
@@ -11817,8 +11814,8 @@
       6
      ],
      "s": [
-      "LKR",
-      "FFA"
+      "FFA",
+      "LKR"
      ]
     },
     "Status": {
@@ -12218,7 +12215,7 @@
      0
     ],
     "BTRX": [
-     "MaYeuTyK",
+     "Calíz",
      "escena",
      null,
      0
@@ -12988,12 +12985,6 @@
      ],
      0
     ],
-    "LANCER L🇻🇪": [
-     "Puppy",
-     "escena",
-     null,
-     0
-    ],
     "LAST": [
      "mats",
      "escena",
@@ -13451,7 +13442,7 @@
      0
     ],
     "Nitro🇨🇱": [
-     "Puppy",
+     "Player",
      "escena",
      null,
      0
@@ -13521,12 +13512,6 @@
     ],
     "PUNISHER": [
      "Lord Viruzz",
-     "escena",
-     null,
-     0
-    ],
-    "Papo🇦🇷": [
-     "Puppy",
      "escena",
      null,
      0
@@ -13658,7 +13643,7 @@
      0
     ],
     "SAIDEM": [
-     "Izaya",
+     "Agente sombra",
      "escena",
      null,
      0
@@ -13930,7 +13915,7 @@
      0
     ],
     "Trot": [
-     "Lvel",
+     "Majiztral",
      "escena",
      null,
      0
@@ -14678,7 +14663,7 @@
      1,
      2,
      3,
-     1,
+     0,
      0
     ],
     "Julix": [
@@ -14860,7 +14845,7 @@
      0,
      1,
      2,
-     1,
+     0,
      0
     ],
     "NC": [
@@ -15070,7 +15055,7 @@
      1,
      0,
      1,
-     0,
+     1,
      0
     ],
     "Zignos": [
@@ -15190,7 +15175,7 @@
     "Gocho": 900,
     "Inku": 300,
     "JOSHU": 300,
-    "Julda": 1100,
+    "Julda": 300,
     "Julix": 300,
     "Kaizz": 300,
     "Keider": 300,
@@ -15210,7 +15195,6 @@
     "Miniboy": 300,
     "Mito": 300,
     "Monet": 300,
-    "Mr.Kude": 800,
     "NC": 300,
     "NXUZ": 300,
     "Noone": 300,
@@ -15235,7 +15219,7 @@
     "Tuca": 300,
     "TøKīØ🦠🧠": 300,
     "Vandu": 300,
-    "Xervoe": 300,
+    "Xervoe": 1100,
     "Zignos": 300,
     "araya": 300,
     "crakero": 300,
@@ -15403,7 +15387,7 @@
   "Joven shenlong": 300,
   "Juanpa": 600,
   "Juasmio": 1900,
-  "Julda": 1400,
+  "Julda": 600,
   "Julix": 900,
   "Julix🇧🇴": 1000,
   "Jult": 600,
@@ -15487,7 +15471,7 @@
   "Monet": 600,
   "Mosquitrap 🦟": 5000,
   "Motera": 3200,
-  "Mr.Kude": 1400,
+  "Mr.Kude": 600,
   "Musicdum": 300,
   "N1k": 300,
   "NC": 8300,
@@ -15595,7 +15579,7 @@
   "XXX 🇻🇪": 300,
   "XXXX 🇻🇪": 300,
   "Xclusivo": 6700,
-  "Xervoe": 300,
+  "Xervoe": 1100,
   "Xplicit": 300,
   "Xubaru": 4500,
   "YIN-SON 🇺🇸": 1000,
