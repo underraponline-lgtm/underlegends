@@ -2579,7 +2579,6 @@
     "pts": 5000,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    },
@@ -10228,7 +10227,7 @@
     "oro": 1,
     "ovr": 48,
     "pod": 1,
-    "pts": 40250,
+    "pts": 42500,
     "racha": "1/1",
     "tg": {
      "fin": 1
@@ -10634,7 +10633,6 @@
     "racha": "1/2",
     "tg": {
      "bcasa": true,
-     "dv": true,
      "fin": 4,
      "fund": true,
      "llave": true

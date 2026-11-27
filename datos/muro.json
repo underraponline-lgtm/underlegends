@@ -1098,6 +1098,14 @@
 "rg": "",
 "c": []
 },
+"kuni": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "juasmio": {
 "rg": "",
 "c": [
@@ -1263,14 +1271,6 @@
 "temporada"
 ]
 },
-"kuni": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "mark98": {
 "rg": "",
 "c": []
@@ -1366,18 +1366,18 @@
 "rg": "",
 "c": []
 },
+"lalox": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "agentesombra": {
 "rg": "",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"lalox": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -8773,13 +8773,13 @@
 "n": "Tayo",
 "k": "",
 "de": 785,
-"a": 517
+"a": 508
 },
 {
 "n": "Mato  🇧🇴",
 "k": "",
 "de": 573,
-"a": 441
+"a": 440
 }
 ],
 "sorpresas": [
