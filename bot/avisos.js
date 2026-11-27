@@ -4060,6 +4060,8 @@ const RUTAS = {
   // 🙋 LOS PEDIDOS DE LA GENTE (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío. Ver `pedir()`
   '/avisos/pedido': 'POST', '/avisos/mis-pedidos': 'POST', '/avisos/dueno-pedido': 'POST',
   // y para el ciclo, con su clave: lo aprobado que hay que aplicar, cómo salió, y pasar lo de una cuenta a otra
+  // 📖 y leer los pedidos SIN quién los mandó (26/11/2026, Dlx: «fíjate los pedidos, hay otros bugs»): `pedidosLeer()`
+  '/avisos/pedidos-leer': 'GET',
   '/avisos/pedidos-ciclo': 'GET', '/avisos/pedidos-estados': 'POST', '/avisos/mudar-cuenta': 'POST',
   // y lo que el ciclo averiguó de la cuenta VIEJA de un «perdí mi cuenta» (`pedidosPrueba()`)
   '/avisos/pedidos-prueba': 'POST',
@@ -7158,10 +7160,12 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🙋 PARA EL CICLO, CON SU CLAVE (traen Discord IDs): lo aprobado, cómo salió, y pasar lo de una cuenta a otra
   if (ruta === '/avisos/pedidos-ciclo' || ruta === '/avisos/pedidos-estados' || ruta === '/avisos/mudar-cuenta'
-      || ruta === '/avisos/pedidos-prueba' || ruta === '/avisos/tiers-ciclo' || ruta === '/avisos/antiraid-dlx') {
+      || ruta === '/avisos/pedidos-prueba' || ruta === '/avisos/tiers-ciclo' || ruta === '/avisos/antiraid-dlx'
+      || ruta === '/avisos/pedidos-leer') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     if (ruta === '/avisos/pedidos-ciclo') return elObjeto(env).fetch('https://avisos/pedidos-ciclo');
+    if (ruta === '/avisos/pedidos-leer') return elObjeto(env).fetch('https://avisos/pedidos-leer');
     const crudo = await req.text();
     // 🔴 los tiers traen el panel de cada socio: con 20.000 caracteres daban 413 desde el 21/10/2026, cuando entró LKR, y
     // los paneles se quedaron con los números de ese día (revisión del 04/11/2026). Viene de la clave del ciclo
@@ -10692,6 +10696,7 @@ export class Avisos {
       if (ruta === '/agenda-ciclo') return json(this.agendaCiclo(), 200, 0);
       if (ruta === '/hinchas') return json(this.hinchas(), 200, 0);
       if (ruta === '/pedidos-ciclo') return json(this.pedidosCiclo(), 200, 0);
+      if (ruta === '/pedidos-leer') return json(this.pedidosLeer(), 200, 0);
       // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
       if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
       if (ruta === '/anunciados-ciclo') {
@@ -17101,6 +17106,13 @@ export class Avisos {
   }
 
   /** Para el Dashboard: los sin resolver primero, y lo de los últimos días. */
+  /** 📖 Los pedidos como los ve el Dashboard, PERO SIN QUIÉN: ni Discord ID, ni perfil, ni prueba, ni quién lo resolvió.
+   *  Sólo el tipo, el texto, cuándo y cómo quedó, para buscar los bugs que reporta la gente (`herramientas/pedidos_ver.py`) */
+  pedidosLeer() {
+    return { ok: true, pedidos: this.pedidosDueno().map((x) => ({ id: x.id, tipo: x.tipo, texto: String(x.texto || '').slice(0, 1200),
+      t: x.t, estado: x.estado, resuelto: x.resuelto || 0, nota: String(x.nota || '').slice(0, 300) })) };
+  }
+
   pedidosDueno() {
     const ahora = Date.now();
     return this.sql.exec("SELECT id, tipo, quien, k, texto, cc, vid, prueba, t, estado, por, resuelto, nota FROM pedidos " +
