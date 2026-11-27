@@ -1098,14 +1098,6 @@
 "rg": "",
 "c": []
 },
-"kuni": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "juasmio": {
 "rg": "",
 "c": [
@@ -1126,6 +1118,14 @@
 "alexi": {
 "rg": "",
 "c": []
+},
+"kuni": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "erik": {
 "rg": "",

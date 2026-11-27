@@ -2391,6 +2391,32 @@
   "sv": "DDS",
   "t_pregunta": "2026-11-26T06:24:03+00:00"
  },
+ "1575604793529999501": {
+  "autor": "817432890807156756",
+  "canal": "1309234583023124531",
+  "canal_pregunta": "",
+  "cuando": "2026-11-26T20:10:56.099000+00:00",
+  "donde": "",
+  "evento": "Opening Especial Pashion 1",
+  "fecha": "26/11",
+  "llave": "1575604793529999501",
+  "pregunta": "",
+  "preguntada": "2026-11-26 11:24 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Eclipse🇨🇱",
+     "Chuwin"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "ACAD",
+  "t_pregunta": ""
+ },
  "1575684236332113961": {
   "autor": "1150099153238630410",
   "canal": "1470097588635176960",
