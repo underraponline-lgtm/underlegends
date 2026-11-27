@@ -1439,6 +1439,18 @@
    "vence": "2026-12-04T01:38:43+00:00",
    "vencido": false
   },
+  "Geremy": {
+   "avisado": "2026-11-27",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-26T03:39:52+00:00",
+   "did": "695434161108025354",
+   "evento": "Backtime",
+   "n": 697,
+   "sv": "FFA",
+   "vence": "2026-12-03T03:39:52+00:00",
+   "vencido": false
+  },
   "Ghost": {
    "con": null,
    "cumplido": "",
@@ -1484,6 +1496,18 @@
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": true
+  },
+  "HJT": {
+   "avisado": "2026-11-27",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-26T03:39:52+00:00",
+   "did": "",
+   "evento": "Backtime",
+   "n": 697,
+   "sv": "FFA",
+   "vence": "2026-12-03T03:39:52+00:00",
+   "vencido": false
   },
   "HOTU": {
    "avisado": "2026-10-26",

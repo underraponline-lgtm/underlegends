@@ -133,8 +133,8 @@
 "temporada"
 ]
 },
-"miniboy": {
-"rg": "C",
+"liberia": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -142,8 +142,8 @@
 "temporada"
 ]
 },
-"liberia": {
-"rg": "S",
+"miniboy": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -251,6 +251,14 @@
 "temporada"
 ]
 },
+"dios": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "soulb": {
 "rg": "D",
 "c": [
@@ -299,14 +307,6 @@
 "velatz": {
 "rg": "C",
 "c": []
-},
-"dios": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "mats": {
 "rg": "A",
@@ -633,6 +633,10 @@
 "temporada"
 ]
 },
+"monet": {
+"rg": "C",
+"c": []
+},
 "jupiter": {
 "rg": "D",
 "c": [
@@ -676,12 +680,16 @@
 "temporada"
 ]
 },
+"lilnano": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "onzass": {
 "rg": "E",
-"c": []
-},
-"monet": {
-"rg": "C",
 "c": []
 },
 "richard": {
@@ -725,14 +733,6 @@
 "benjixo": {
 "rg": "C",
 "c": []
-},
-"lilnano": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "player": {
 "rg": "D",
@@ -909,6 +909,14 @@
 "rg": "E",
 "c": []
 },
+"gus": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "krish": {
 "rg": "E",
 "c": [
@@ -946,14 +954,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"gus": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -1115,10 +1115,6 @@
 "temporada"
 ]
 },
-"alexi": {
-"rg": "",
-"c": []
-},
 "kuni": {
 "rg": "",
 "c": [
@@ -1126,6 +1122,10 @@
 "servidor",
 "temporada"
 ]
+},
+"alexi": {
+"rg": "",
+"c": []
 },
 "erik": {
 "rg": "",
@@ -1159,6 +1159,13 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"kochi": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -1264,7 +1271,7 @@
 "rg": "",
 "c": []
 },
-"kochi": {
+"lalox": {
 "rg": "",
 "c": [
 "servidor",
@@ -1365,13 +1372,6 @@
 "millonario": {
 "rg": "",
 "c": []
-},
-"lalox": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "agentesombra": {
 "rg": "",
@@ -2966,14 +2966,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-20T00:33:22Z",
-"quien": [
-"Dyzz"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "rango",
 "t": "2026-10-20T00:33:22Z",
@@ -6412,6 +6404,15 @@
 11,
 8
 ]
+},
+{
+"tipo": "rango",
+"t": "2026-11-27T05:06:30Z",
+"quien": [
+"Lilñaño"
+],
+"rg": "C",
+"primero": true
 }
 ],
 "noche_antes": {
@@ -8767,7 +8768,7 @@
 "n": "Sakro",
 "k": "",
 "de": 706,
-"a": 360
+"a": 361
 },
 {
 "n": "Tayo",
@@ -8779,7 +8780,7 @@
 "n": "Mato  🇧🇴",
 "k": "",
 "de": 573,
-"a": 440
+"a": 442
 }
 ],
 "sorpresas": [
@@ -8850,8 +8851,8 @@
 "oasis",
 "praiseriza",
 "over",
-"liberia",
 "panchok",
+"liberia",
 "carlosss",
 "abyssus",
 "agus",
@@ -8878,7 +8879,7 @@
 "vandu": 0,
 "panchok": 8,
 "carlosss": 2,
-"liberia": 1,
+"liberia": 0,
 "colesito": 1,
 "agus": 0,
 "mrstillballin": 5,
@@ -8905,7 +8906,7 @@
 "criszj": 0,
 "bloody": 0,
 "tuca": 0,
-"drexx": 0,
+"drexx": 1,
 "cronox": 1,
 "chop": 0,
 "geoka": 1,

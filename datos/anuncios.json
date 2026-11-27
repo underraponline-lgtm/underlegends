@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T04:25:35+00:00",
+ "cuando": "2026-11-27T04:54:53+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8768,6 +8768,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CHZ",
+   "canal": "inscripción-vc-🎙️",
+   "texto": "CINEXFILO 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1575731328081461369",
+   "cuando": "2026-11-27T04:33:44"
+  },
   {
    "servidor": "CHZ",
    "canal": "inscripción-vc-🎙️",
@@ -44758,15 +44767,6 @@
    "discord_id": "894017160756736091",
    "msg_id": "1563295107761963049",
    "cuando": "2026-10-23T20:56:38"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "🇺🇸",
-   "quien": "provenzaaznevorp",
-   "discord_id": "711076230857752627",
-   "msg_id": "1563294172792885308",
-   "cuando": "2026-10-23T20:52:55"
   }
  ]
 }

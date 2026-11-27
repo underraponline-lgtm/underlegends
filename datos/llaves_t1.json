@@ -65727,21 +65727,90 @@
  },
  "697": {
   "dia": "2026-11-25",
-  "escala": "4-7",
+  "escala": "16+",
   "fecha": "25/11",
   "links": [
    "https://discord.com/channels/1468472442925092958/1487207377601040516/1575355385399873650"
   ],
   "n": 697,
   "nombre": "Backtime",
-  "participantes": 4,
+  "participantes": 20,
   "rondas": [
    {
     "b": [
      [
       [
        "Monet",
-       "Drexx"
+       "Geremy"
+      ],
+      "Monet",
+      ""
+     ],
+     [
+      [
+       "Gus",
+       "Lalox"
+      ],
+      "Gus",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "HJT"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Kochi"
+      ],
+      "Drexx",
+      ""
+     ],
+     [
+      [
+       "Lilñaño",
+       "AbrahamSRRL"
+      ],
+      "Lilñaño",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Leonart"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "McK 🇨🇴",
+       "Deko 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Miniboy🇨🇱",
+       "1001 el porno en persona 🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Monet",
+       "Lilñaño"
       ],
       "Monet",
       ""
@@ -65749,10 +65818,47 @@
      [
       [
        "Dios",
+       "Gus"
+      ],
+      "Dios",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Liberia"
+      ],
+      "Drexx",
+      ""
+     ],
+     [
+      [
+       "Drakm",
+       "Apolo 🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dios",
        "Raxo"
       ],
       "Dios",
-      "ganador: ✅ Decidir"
+      "Walk-in 2: raxo"
+     ],
+     [
+      [
+       "Monet",
+       "Drexx"
+      ],
+      "Monet",
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -65776,26 +65882,71 @@
    [
     "Dios",
     "Campeón",
-    5000
+    10000
    ],
    [
     "Monet",
     "Subcampeón",
-    3750
+    7500
    ],
    [
     "Drexx",
     "Semifinal",
-    2625
+    5250
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Liberia",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lilñaño",
+    "Cuartos",
+    2500
    ],
    [
     "Raxo",
     "Semifinal",
-    2625
+    1312
+   ],
+   [
+    "AbrahamSRRL",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geremy",
+    "Octavos",
+    1250
+   ],
+   [
+    "HJT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kochi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lalox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    1250
    ]
   ],
   "ver": {
-   "min": 8,
+   "min": 94,
    "v": 1
   }
  },

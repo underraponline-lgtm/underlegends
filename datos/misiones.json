@@ -15414,6 +15414,13 @@
      0,
      0
     ],
+    "AbrahamSRRL": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Adriagner": [
      0,
      0,
@@ -15577,8 +15584,8 @@
     ],
     "Dios": [
      1,
-     3,
-     6,
+     4,
+     8,
      0,
      0
     ],
@@ -15598,8 +15605,8 @@
     ],
     "Drexx": [
      1,
-     0,
-     0,
+     2,
+     2,
      0,
      0
     ],
@@ -15666,6 +15673,13 @@
      0,
      0
     ],
+    "Geremy": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Gian": [
      1,
      0,
@@ -15681,7 +15695,14 @@
      0
     ],
     "Gus": [
+     1,
+     1,
+     1,
      0,
+     0
+    ],
+    "HJT": [
+     1,
      0,
      0,
      0,
@@ -15744,6 +15765,13 @@
      0
     ],
     "Keider": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Kochi": [
      1,
      0,
      0,
@@ -15814,16 +15842,23 @@
      0
     ],
     "Leonart": [
-     0,
+     1,
      0,
      0,
      0,
      0
     ],
+    "Liberia": [
+     1,
+     1,
+     1,
+     0,
+     0
+    ],
     "Lilñaño": [
      1,
-     2,
-     2,
+     3,
+     3,
      0,
      0
     ],
@@ -15934,8 +15969,8 @@
     ],
     "Monet": [
      1,
-     2,
      3,
+     5,
      0,
      0
     ],
@@ -16327,6 +16362,7 @@
    },
    "pts": {
     "AbrahamH": 900,
+    "AbrahamSRRL": 300,
     "Agus": 300,
     "Akuseru": 300,
     "Andres": 300,
@@ -16347,8 +16383,11 @@
     "Erian": 300,
     "Funk🇦🇷": 300,
     "Geoka": 300,
+    "Geremy": 300,
     "Gian": 300,
     "Gocho": 900,
+    "Gus": 300,
+    "HJT": 300,
     "Inku": 300,
     "Itohimo": 600,
     "JOSHU": 300,
@@ -16356,12 +16395,15 @@
     "Julix": 300,
     "Kaizz": 300,
     "Keider": 300,
+    "Kochi": 300,
     "Konan": 300,
     "Kuni": 300,
     "Kyss": 300,
     "LRS": 900,
     "Lalox": 300,
-    "Lilñaño": 300,
+    "Leonart": 300,
+    "Liberia": 300,
+    "Lilñaño": 900,
     "MCO": 1100,
     "METRO": 300,
     "MaYeuTyK": 900,
@@ -16372,7 +16414,7 @@
     "Mato 🇧🇴": 300,
     "Miniboy": 300,
     "Mito": 300,
-    "Monet": 300,
+    "Monet": 2900,
     "Mr.Kude": 800,
     "NC": 300,
     "NXUZ": 300,
@@ -16432,6 +16474,7 @@
   "AREZ": 300,
   "Abraham": 300,
   "AbrahamH": 4000,
+  "AbrahamSRRL": 300,
   "Abyssus": 6500,
   "Adriagner": 4700,
   "Agente sombra": 600,
@@ -16535,13 +16578,15 @@
   "Funk🇦🇷": 300,
   "GARZXI": 300,
   "Geoka": 5000,
+  "Geremy": 300,
   "Gero": 300,
   "Gian": 300,
   "Global Hustler": 1000,
   "Gocho": 3900,
   "Guess": 4500,
-  "Gus": 900,
+  "Gus": 1200,
   "HH": 300,
+  "HJT": 300,
   "HOTU": 1000,
   "Hardcore": 300,
   "Hassan": 300,
@@ -16582,7 +16627,7 @@
   "Keplatoo🇪🇸": 600,
   "Khalil": 300,
   "Kminant": 300,
-  "Kochi": 300,
+  "Kochi": 600,
   "Kochi2011": 2900,
   "Konan": 300,
   "Korey": 300,
@@ -16605,12 +16650,12 @@
   "Lautaro la sinceridad 🇨🇨": 600,
   "Leandro Katana": 300,
   "Left🇺🇾": 300,
-  "Leonart": 3100,
+  "Leonart": 3400,
   "Leopold sedar 🇸🇳": 300,
   "Leyenda": 1200,
   "Liam": 300,
-  "Liberia": 8000,
-  "Lilñaño": 2100,
+  "Liberia": 8300,
+  "Lilñaño": 2700,
   "LitKunai": 600,
   "Lord Viruzz": 5000,
   "Lucky": 900,
@@ -16650,7 +16695,7 @@
   "Mito": 6300,
   "Mochi DG": 300,
   "Molusco": 6700,
-  "Monet": 600,
+  "Monet": 3200,
   "Mosquitrap 🦟": 5000,
   "Motera": 3200,
   "Mr.Kude": 1400,
