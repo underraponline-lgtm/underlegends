@@ -183,13 +183,29 @@ const noSeRegala = (cat, id) => {
 
 // ── LO DE CADA UNO ──────────────────────────────────────────────────────────────────────────────────────────────────
 const tieneSet = (o, quien) => new Set(filas(o, 'SELECT pieza FROM tienda_inv WHERE quien = ?', quien).map((r) => r.pieza));
+// 🔴 LA TEMPORADA DE LA TIENDA NO ES LA DE LAS TABLAS (26/11/2026, un usuario: «como tengo el Premium dice que me debería
+// de valer 8mil en vez de 10mil pero no me deja comprar a 8mil, solo a 10mil»). El catálogo dice `t1`, y el Pase guarda
+// el premium (`pase_premium.temp`) y el ciclo los eventos (`jugo_temp.temp`) con «prueba», que es el nombre interno de
+// la T1 (`SIN_CORTE` en comun/temporada.py). Con la del catálogo nadie era Premium para la Tienda —sólo el dueño, que
+// no pasa por la tabla— y nadie había jugado: la página mostraba el precio entero y el objeto cobraba el entero. Se
+// pregunta con la misma temporada con que se escribió; la del catálogo queda de respaldo (y para las pruebas)
+function tempPase(o, cat) {
+  try { const P = o.paseDatos ? o.paseDatos() : null; if (P && P.cfg && P.cfg.temp) return String(P.cfg.temp); } catch (e) { /* respaldo */ }
+  return cat.temp;
+}
+function tempJugo(o, cat) {
+  try { const r = o.leer ? o.leer('racha_cfg') : null; if (r && r.temp) return String(r.temp); } catch (e) { /* respaldo */ }
+  return cat.temp;
+}
 function esPremium(o, quien, cat, ahora) {
-  if (!cat.temp) return false;
-  const r = o.pasePremium(quien, cat.temp);
+  const temp = tempPase(o, cat);
+  if (!temp) return false;
+  const r = o.pasePremium(quien, temp);
   return !!(r && ahora >= r[0] && (r[1] == null || ahora < r[1]));
 }
 function jugo(o, quien, cat) {
-  try { return !!fila(o, 'SELECT 1 AS x FROM jugo_temp WHERE quien = ? AND temp = ? AND eventos > 0', quien, cat.temp); } catch (e) { return false; }
+  const temp = tempJugo(o, cat);
+  try { return !!fila(o, 'SELECT 1 AS x FROM jugo_temp WHERE quien = ? AND temp = ? AND eventos > 0', quien, temp); } catch (e) { return false; }
 }
 function saldoDe(o, d) {
   const ini = Number(d.inicial);

@@ -5759,6 +5759,24 @@ const ok = (cond, que, det) => {
     let s0 = saldo(ANA);
     r = acc(ANA, 'ana', { accion: 'comprar', pieza: 'X2' });
     ok(r.ok && r.total === 5000 && saldo(ANA) === s0 - 5000, 'con Premium, su descuento (10.000 → 5.000 en la muestra)', JSON.stringify(r));
+    // 🔴 el premium y los eventos se buscan con la temporada del Pase y de la racha, no con la del catálogo (26/11/2026:
+    // el catálogo dice `t1` y en la T1 las tablas dicen «prueba», así que nadie era Premium para la Tienda y pagaba 10.000)
+    {
+      const DAN = '400000000000000009';
+      const guardado = ['pase_v', 'pase', 'racha_cfg'].map((x) => [x, o.leer(x)]);
+      o.guardar('pase_v', 'tienda-prueba');
+      o.guardar('pase', { cfg: { temp: 'prueba', umbrales: [100], niveles: 1 }, sem: [], miembros: [], hechas: {} });
+      o.guardar('racha_cfg', { temp: 'prueba' });
+      sql.exec('INSERT INTO pase_premium (quien, temp, desde, hasta) VALUES (?, ?, ?, NULL)', DAN, 'prueba', ahora - 1000);
+      sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', DAN, 'prueba', 'dan', 2);
+      const yoD = mia(DAN, 'dan').yo, sD = saldo(DAN);
+      const rD = acc(DAN, 'dan', { accion: 'comprar', pieza: 'X1' });
+      ok(yoD.prem && yoD.jugo && rD.ok && rD.total === 1000 && saldo(DAN) === sD - 1000,
+        'el Premium y lo jugado se leen con la temporada del Pase («prueba»), no con la del catálogo: la página y el cobro dicen 1.000',
+        JSON.stringify([yoD.prem, yoD.jugo, rD]));
+      for (const [x, v] of guardado) { if (v === null) o.sql.exec('DELETE FROM estado WHERE k = ?', x); else o.guardar(x, v); if (o.estadoMem) o.estadoMem.delete(x); }
+      o._pase = null;
+    }
     ok(acc(ANA, 'ana', { accion: 'comprar', pieza: 'X4' }).error === 'no_esta' && acc(ANA, 'ana', { accion: 'comprar', pieza: 'X3' }).ok,
       'lo de rotación se vende sólo mientras está en la vitrina');
     s0 = saldo(ANA);
