@@ -9793,13 +9793,6 @@
     "Tmax Turbo [PN]": [
      0,
      0,
-     0,
-     0,
-     0
-    ],
-    "Tmax turbo": [
-     0,
-     0,
      1,
      0,
      0
@@ -10292,6 +10285,13 @@
      0,
      0
     ],
+    "Afinnpapa": [
+     0,
+     0,
+     2,
+     0,
+     0
+    ],
     "Agente sombra": [
      1,
      0,
@@ -10450,6 +10450,13 @@
      2,
      0,
      1,
+     0,
+     0
+    ],
+    "DOOM": [
+     0,
+     0,
+     8,
      0,
      0
     ],
@@ -10691,6 +10698,13 @@
      0,
      0
     ],
+    "K-Oz": [
+     0,
+     0,
+     16,
+     0,
+     0
+    ],
     "K1NGT0": [
      0,
      0,
@@ -10709,6 +10723,13 @@
      0,
      0,
      8,
+     0,
+     0
+    ],
+    "Kaotico 🏆": [
+     0,
+     0,
+     4,
      0,
      0
     ],
@@ -10898,6 +10919,13 @@
      1,
      0,
      2,
+     0,
+     0
+    ],
+    "Marcos": [
+     0,
+     0,
+     4,
      0,
      0
     ],
@@ -11174,6 +11202,13 @@
      0,
      0
     ],
+    "Shikamaru": [
+     0,
+     0,
+     16,
+     0,
+     0
+    ],
     "Simon": [
      0,
      0,
@@ -11275,7 +11310,7 @@
     "Tmax Turbo [PN]": [
      0,
      0,
-     16,
+     8,
      0,
      0
     ],
@@ -11730,6 +11765,14 @@
       "CH"
      ]
     },
+    "Afinnpapa": {
+     "d": [
+      2
+     ],
+     "s": [
+      "WOF"
+     ]
+    },
     "Akuseru": {
      "d": [
       0,
@@ -11747,6 +11790,13 @@
      "s": [
       "FFA",
       "ACAD"
+     ]
+    },
+    "Artezzy": {
+     "d": [],
+     "s": [
+      "FDS",
+      "DDS"
      ]
     },
     "Assuan": {
@@ -12236,8 +12286,8 @@
       1
      ],
      "s": [
-      "CH",
-      "FFA"
+      "WOF",
+      "CH"
      ]
     },
     "Oasis": {
@@ -12416,12 +12466,12 @@
     },
     "Tmax Turbo [PN]": {
      "d": [
-      4,
+      2,
       5
      ],
      "s": [
-      "CEU",
-      "WOF"
+      "WOF",
+      "CEU"
      ]
     },
     "Trelok": {
@@ -12556,14 +12606,9 @@
      0
     ],
     "1200": [
-     "PichulaMc",
-     "revancha",
-     [
-      535,
-      "ACAD",
-      "27/10",
-      "octavos"
-     ],
+     "LAST",
+     "escena",
+     null,
      0
     ],
     "123 🇦🇲": [
@@ -12628,7 +12673,7 @@
       "21/11",
       "semifinales"
      ],
-     0
+     1
     ],
     "AbrahamSRRL": [
      "Julda",
@@ -12712,7 +12757,7 @@
      0
     ],
     "Andy MC": [
-     "Tmax Turbo [PN]",
+     "Kourier",
      "escena",
      null,
      0
@@ -12862,7 +12907,7 @@
      0
     ],
     "Bohemico": [
-     "Kusoh",
+     "Afinnpapa",
      "escena",
      null,
      0
@@ -13037,6 +13082,12 @@
       "28/10",
       "cuartos"
      ],
+     0
+    ],
+    "DOOM": [
+     "Afinnpapa",
+     "escena",
+     null,
      0
     ],
     "DarnBless": [
@@ -13343,7 +13394,7 @@
      0
     ],
     "Flash": [
-     "ONZASS",
+     "Kyss",
      "escena",
      null,
      0
@@ -13355,7 +13406,7 @@
      0
     ],
     "G Master": [
-     "Kusoh",
+     "Afinnpapa",
      "escena",
      null,
      0
@@ -13429,7 +13480,7 @@
      0
     ],
     "Gus": [
-     "Assuan",
+     "Ariaxer",
      "escena",
      null,
      0
@@ -13589,6 +13640,12 @@
      ],
      0
     ],
+    "K-Oz": [
+     "Afinnpapa",
+     "escena",
+     null,
+     0
+    ],
     "K1NGT0": [
      "Simon",
      "escena",
@@ -13639,6 +13696,12 @@
       "21/11",
       "cuartos"
      ],
+     0
+    ],
+    "Kaotico 🏆": [
+     "Afinnpapa",
+     "escena",
+     null,
      0
     ],
     "Karma": [
@@ -13704,7 +13767,7 @@
      0
     ],
     "Krish": [
-     "Player",
+     "ONZASS",
      "escena",
      null,
      0
@@ -13716,7 +13779,7 @@
      0
     ],
     "Kusoh": [
-     "Mosquitrap 🦟",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -13886,7 +13949,7 @@
      0
     ],
     "Lucho": [
-     "Status",
+     "Magic",
      "escena",
      null,
      0
@@ -14158,7 +14221,7 @@
      0
     ],
     "Mosquitrap 🦟": [
-     "Ariaxer",
+     "Jupiter",
      "escena",
      null,
      0
@@ -14321,7 +14384,7 @@
      0
     ],
     "Panchock": [
-     "Kusoh",
+     "Afinnpapa",
      "escena",
      null,
      0
@@ -14574,6 +14637,12 @@
      null,
      0
     ],
+    "Shikamaru": [
+     "Afinnpapa",
+     "escena",
+     null,
+     0
+    ],
     "Showsero🇧🇮": [
      "Raizer",
      "escena",
@@ -14616,9 +14685,14 @@
      1
     ],
     "Sosa": [
-     "Izaya",
-     "escena",
-     null,
+     "Colesito",
+     "revancha",
+     [
+      398,
+      "ACAD",
+      "22/09",
+      "cuartos"
+     ],
      0
     ],
     "Soulb": [
@@ -14753,12 +14827,6 @@
       "14/11",
       "cuartos"
      ],
-     0
-    ],
-    "Tmax turbo": [
-     "Kusoh",
-     "escena",
-     null,
      0
     ],
     "Trelok": [
@@ -15055,7 +15123,7 @@
      0
     ],
     "crakero": [
-     "Trelok",
+     "Artezzy",
      "escena",
      null,
      0
@@ -15193,7 +15261,7 @@
      0
     ],
     "mesaleelsemenrosa": [
-     "Kusoh",
+     "Afinnpapa",
      "escena",
      null,
      0
@@ -15339,6 +15407,13 @@
     ]
    },
    "prog": {
+    "AbrahamH": [
+     1,
+     1,
+     1,
+     0,
+     0
+    ],
     "Adriagner": [
      0,
      0,
@@ -15691,8 +15766,8 @@
     ],
     "Kuni": [
      1,
-     0,
-     0,
+     1,
+     1,
      0,
      0
     ],
@@ -15721,6 +15796,13 @@
      1,
      2,
      2,
+     0,
+     0
+    ],
+    "Lalox": [
+     1,
+     0,
+     0,
      0,
      0
     ],
@@ -15775,8 +15857,8 @@
     ],
     "MaYeuTyK": [
      1,
-     0,
-     0,
+     3,
+     3,
      0,
      0
     ],
@@ -15812,6 +15894,13 @@
      1,
      1,
      1,
+     0,
+     0
+    ],
+    "Mato 🇧🇴": [
+     1,
+     0,
+     0,
      0,
      0
     ],
@@ -15867,7 +15956,7 @@
     "NXUZ": [
      1,
      0,
-     2,
+     3,
      0,
      0
     ],
@@ -15969,6 +16058,13 @@
      0,
      0
     ],
+    "Ryuk": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "SNK🇻🇪": [
      0,
      0,
@@ -16032,13 +16128,6 @@
      0,
      0
     ],
-    "Skalaboy 🇲🇽": [
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
     "Snow": [
      1,
      3,
@@ -16061,6 +16150,13 @@
      0
     ],
     "Tam": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Tayo": [
      1,
      0,
      0,
@@ -16230,6 +16326,7 @@
     ]
    },
    "pts": {
+    "AbrahamH": 900,
     "Agus": 300,
     "Akuseru": 300,
     "Andres": 300,
@@ -16263,14 +16360,16 @@
     "Kuni": 300,
     "Kyss": 300,
     "LRS": 900,
+    "Lalox": 300,
     "Lilñaño": 300,
     "MCO": 1100,
     "METRO": 300,
-    "MaYeuTyK": 300,
+    "MaYeuTyK": 900,
     "Majiztral": 300,
     "Makmah": 300,
     "Marto AR": 300,
     "Mathhias": 300,
+    "Mato 🇧🇴": 300,
     "Miniboy": 300,
     "Mito": 300,
     "Monet": 300,
@@ -16288,6 +16387,7 @@
     "Raxo": 300,
     "Rodas": 300,
     "Ruvick": 300,
+    "Ryuk": 300,
     "SULTAN": 300,
     "Sankabel": 300,
     "Sin Limites": 300,
@@ -16296,6 +16396,7 @@
     "Sosa": 600,
     "Soulb": 300,
     "Tam": 300,
+    "Tayo": 300,
     "Thaniel": 300,
     "Tuca": 300,
     "TøKīØ🦠🧠": 300,
@@ -16330,7 +16431,7 @@
   "ARDEAN": 300,
   "AREZ": 300,
   "Abraham": 300,
-  "AbrahamH": 3100,
+  "AbrahamH": 4000,
   "Abyssus": 6500,
   "Adriagner": 4700,
   "Agente sombra": 600,
@@ -16499,7 +16600,7 @@
   "LKS 🇨🇱": 300,
   "LRS": 4600,
   "LSO": 600,
-  "Lalox": 600,
+  "Lalox": 900,
   "Launok": 300,
   "Lautaro la sinceridad 🇨🇨": 600,
   "Leandro Katana": 300,
@@ -16525,7 +16626,7 @@
   "METRO": 300,
   "MHS": 300,
   "MTZ": 3100,
-  "MaYeuTyK": 4900,
+  "MaYeuTyK": 5500,
   "Magic": 600,
   "Majiztral": 6600,
   "Makmah": 12600,
@@ -16539,7 +16640,7 @@
   "Masino": 2800,
   "Mathhias": 4700,
   "Matias": 300,
-  "Mato 🇧🇴": 300,
+  "Mato 🇧🇴": 600,
   "MauzzitoEmeces": 300,
   "Mc arepa": 2600,
   "Mc uchiha": 300,
@@ -16607,6 +16708,7 @@
   "Rodas": 1200,
   "Rosmel 🇻🇪": 300,
   "Ruvick": 600,
+  "Ryuk": 300,
   "SAEVA": 300,
   "SAIDEM": 3200,
   "SC": 600,
@@ -16637,6 +16739,7 @@
   "TOKYO": 300,
   "TONY  🇦🇷": 1000,
   "Tam": 9100,
+  "Tayo": 300,
   "Teito": 2100,
   "Telmex": 600,
   "Tenor": 8200,

@@ -67972,10 +67972,10 @@
      ],
      [
       [
-       "Tmax turbo",
+       "Tmax Turbo [PN]",
        "G Master"
       ],
-      "Tmax turbo",
+      "Tmax Turbo [PN]",
       ""
      ],
      [
@@ -68001,10 +68001,10 @@
      ],
      [
       [
-       "Tmax turbo",
+       "Tmax Turbo [PN]",
        "DarnBless"
       ],
-      "Tmax turbo",
+      "Tmax Turbo [PN]",
       ""
      ]
     ],
@@ -68015,7 +68015,7 @@
      [
       [
        "Panchock",
-       "Tmax turbo"
+       "Tmax Turbo [PN]"
       ],
       "Panchock",
       ""
@@ -68032,7 +68032,7 @@
     7500
    ],
    [
-    "Tmax turbo",
+    "Tmax Turbo [PN]",
     "Subcampeón",
     5000
    ],
@@ -68138,14 +68138,6 @@
       ],
       "Liam, Dominick",
       ""
-     ],
-     [
-      [
-       "1200 + cajita",
-       "liam + dominick"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
@@ -68394,7 +68386,7 @@
      [
       [
        "Cajita",
-       "Skalaboy 🇲🇽"
+       "Skala"
       ],
       "Cajita",
       ""
@@ -68535,13 +68527,378 @@
     625
    ],
    [
-    "Skalaboy 🇲🇽",
+    "Skala",
     "Octavos",
     625
    ]
   ],
   "ver": {
    "min": 1,
+   "v": 1
+  }
+ },
+ "713": {
+  "dia": "2026-11-18",
+  "escala": "16+",
+  "fecha": "18/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1572682783296594022"
+  ],
+  "n": 713,
+  "nombre": "TORNEO",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "1200",
+       "Marcos"
+      ],
+      "1200",
+      "Revivido: Marcos"
+     ],
+     [
+      [
+       "Tmax Turbo [PN]",
+       "OKAM"
+      ],
+      "Tmax Turbo [PN]",
+      "Revivido: Okam"
+     ],
+     [
+      [
+       "Panchok",
+       "DarnBless"
+      ],
+      "Panchok",
+      "Revivido: DarnBless 🇨🇴"
+     ],
+     [
+      [
+       "Marcos",
+       "Shikamaru",
+       "OKAM"
+      ],
+      "Marcos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Agente sombra",
+       "DarnBless",
+       "K-Oz"
+      ],
+      "Agente sombra",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Fin🏆",
+       "SHIKAMARU"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "K-oz",
+       "Ziarki 🏆"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "AfinnPapa 🏆",
+       "1200"
+      ],
+      "AfinnPapa 🏆",
+      "Walk-in 1: AfinnPapa 🏆"
+     ],
+     [
+      [
+       "Kaotico 🏆",
+       "Tmax Turbo [PN]"
+      ],
+      "Kaotico 🏆",
+      "Walk-in 1: Kaotico 🏆"
+     ],
+     [
+      [
+       "Panchok",
+       "ONZASS"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "DOOM"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "AfinnPapa 🏆",
+       "Kaotico 🏆"
+      ],
+      "AfinnPapa 🏆",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Marcos"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "AfinnPapa 🏆"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    3875
+   ],
+   [
+    "AfinnPapa 🏆",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Kaotico 🏆",
+    "Semifinal",
+    2625
+   ],
+   [
+    "1200",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DOOM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1875
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1875
+   ],
+   [
+    "K-Oz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shikamaru",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 119,
+   "org": "juega",
+   "v": 1
+  }
+ },
+ "714": {
+  "dia": "2026-11-26",
+  "escala": "8-15",
+  "fecha": "26/11",
+  "links": [
+   "https://discord.com/channels/1443770831598649528/1563698791595507743/1575708293547036685"
+  ],
+  "n": 714,
+  "nombre": "NOCTURNA STYLE 2 everyone",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "AbrahamH",
+       "Tayo"
+      ],
+      "AbrahamH",
+      ""
+     ],
+     [
+      [
+       "Kuni",
+       "Ryuk",
+       "Lalox"
+      ],
+      "Kuni",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "Soulb"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Mato  🇧🇴"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kuni",
+       "AbrahamH"
+      ],
+      "Kuni",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "NXUZ"
+      ],
+      "MaYeuTyK",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "AbrahamH"
+      ],
+      "NXUZ",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "Kuni"
+      ],
+      "MaYeuTyK",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDS",
+  "tabla": [
+   [
+    "MaYeuTyK",
+    "Campeón",
+    7500
+   ],
+   [
+    "Kuni",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Tercero",
+    4000
+   ],
+   [
+    "AbrahamH",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Lalox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mato  🇧🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ryuk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tayo",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 46,
    "v": 1
   }
  }

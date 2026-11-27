@@ -55185,7 +55185,7 @@
    "replisan": 3
   },
   "fecha": "21/11",
-  "firma": "3d862bea25927446",
+  "firma": "13e124eb914c4f38",
   "msg": "1573909518906298399",
   "nombre": "BOOM BAP STYLE",
   "num": 671,
@@ -62954,6 +62954,359 @@
     "Shadow",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "713": {
+  "antes": {
+   "1200": [
+    290,
+    100,
+    true
+   ],
+   "DarnBless": [
+    91,
+    113,
+    false
+   ],
+   "Marcos": [
+    55,
+    64,
+    false
+   ],
+   "OKAM": [
+    25,
+    27,
+    false
+   ],
+   "ONZASS": [
+    284,
+    85,
+    true
+   ],
+   "Panchok": [
+    8,
+    8,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    126,
+    175,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "1200",
+    "Marcos",
+    "1200"
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "OKAM",
+    "Tmax Turbo [PN]"
+   ],
+   [
+    "Panchok",
+    "DarnBless",
+    "Panchok"
+   ],
+   [
+    "Marcos",
+    "Shikamaru",
+    "Marcos"
+   ],
+   [
+    "Marcos",
+    "OKAM",
+    "Marcos"
+   ],
+   [
+    "Agente sombra",
+    "DarnBless",
+    "Agente sombra"
+   ],
+   [
+    "Agente sombra",
+    "K-Oz",
+    "Agente sombra"
+   ],
+   [
+    "AfinnPapa 🏆",
+    "1200",
+    "AfinnPapa 🏆"
+   ],
+   [
+    "Kaotico 🏆",
+    "Tmax Turbo [PN]",
+    "Kaotico 🏆"
+   ],
+   [
+    "Panchok",
+    "ONZASS",
+    "Panchok"
+   ],
+   [
+    "Marcos",
+    "DOOM",
+    "Marcos"
+   ],
+   [
+    "AfinnPapa 🏆",
+    "Kaotico 🏆",
+    "AfinnPapa 🏆"
+   ],
+   [
+    "Panchok",
+    "Marcos",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "AfinnPapa 🏆",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 18,
+   "DarnBless": 19,
+   "Marcos": 21,
+   "OKAM": 37,
+   "ONZASS": 16,
+   "Panchok": 31,
+   "Tmax Turbo [PN]": 12
+  },
+  "fecha": "18/11",
+  "nombre": "TORNEO",
+  "num": 713,
+  "participantes": 20,
+  "sello": {
+   "Panchok": "447b1ce6db34:0b98cb3023ec"
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:57:25Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Marcos",
+    "Semifinal",
+    3875
+   ],
+   [
+    "AfinnPapa 🏆",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Kaotico 🏆",
+    "Semifinal",
+    2625
+   ],
+   [
+    "1200",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DOOM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1875
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1875
+   ],
+   [
+    "Shikamaru",
+    "Octavos",
+    1250
+   ],
+   [
+    "K-Oz",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "714": {
+  "antes": {
+   "AbrahamH": [
+    99,
+    130,
+    false
+   ],
+   "Kuni": [
+    152,
+    234,
+    false
+   ],
+   "Lalox": [
+    139,
+    200,
+    false
+   ],
+   "MaYeuTyK": [
+    41,
+    47,
+    false
+   ],
+   "NXUZ": [
+    20,
+    20,
+    false
+   ],
+   "Ryuk": [
+    437,
+    357,
+    true
+   ],
+   "Soulb": [
+    28,
+    31,
+    false
+   ],
+   "Tayo": [
+    830,
+    822,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "AbrahamH",
+    "Tayo",
+    "AbrahamH"
+   ],
+   [
+    "Kuni",
+    "Ryuk",
+    "Kuni"
+   ],
+   [
+    "Kuni",
+    "Lalox",
+    "Kuni"
+   ],
+   [
+    "MaYeuTyK",
+    "Soulb",
+    "MaYeuTyK"
+   ],
+   [
+    "NXUZ",
+    "Mato  🇧🇴",
+    "NXUZ"
+   ],
+   [
+    "Kuni",
+    "AbrahamH",
+    "Kuni"
+   ],
+   [
+    "MaYeuTyK",
+    "NXUZ",
+    "MaYeuTyK"
+   ],
+   [
+    "MaYeuTyK",
+    "Kuni",
+    "MaYeuTyK"
+   ],
+   [
+    "NXUZ",
+    "AbrahamH",
+    "NXUZ"
+   ]
+  ],
+  "ev_antes": {
+   "AbrahamH": 7,
+   "Kuni": 5,
+   "Lalox": 2,
+   "MaYeuTyK": 30,
+   "NXUZ": 59,
+   "Ryuk": 3,
+   "Soulb": 40,
+   "Tayo": 1
+  },
+  "fecha": "26/11",
+  "noche": true,
+  "nombre": "NOCTURNA STYLE 2 everyone",
+  "num": 714,
+  "participantes": 9,
+  "sello": {
+   "MaYeuTyK": "2de6d059dc46:0b98cb3023ec"
+  },
+  "sv": "DDS",
+  "t": "2026-11-27T03:57:27Z",
+  "tabla": [
+   [
+    "MaYeuTyK",
+    "Campeón",
+    7500
+   ],
+   [
+    "Kuni",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Tercero",
+    4000
+   ],
+   [
+    "AbrahamH",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Tayo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ryuk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lalox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mato  🇧🇴",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

@@ -3272,6 +3272,25 @@
     "Panchok & R-flow"
    ],
    "escribio": {}
+  },
+  {
+   "id": "2ec59f1339",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Skalaboy» es Skala? La cuenta de Skala en la Lista se anotó como «Skalaboy», y en el ranking suman aparte. Si es la misma persona, los puntos de «Skalaboy» pasan a Skala.\nLa cuenta: https://discord.com/users/610840969579069461",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Skalaboy» ya no suma aparte en el ranking",
+   "t": 1795752404842,
+   "filas": [
+    1722
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Skalaboy» → «Skala» · cuenta 610840969579069461"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

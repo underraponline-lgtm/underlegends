@@ -270,10 +270,22 @@
     "nivel": "C",
     "base": 5000,
     "o": 143,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuarto",
+    "valor": 5000,
+    "caza": {
+     "n": 714,
+     "evento": "NOCTURNA STYLE 2 everyone",
+     "sv": "DDS",
+     "t": "2026-11-27T03:02:12Z",
+     "por": [
+      {
+       "n": "Kuni",
+       "cobra": 8250
+      }
+     ]
+    }
    },
    {
     "n": "Raizer",

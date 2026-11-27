@@ -1852,6 +1852,12 @@
   [700, "26/11", "DDF", "cuartos", "Sosa", "Adriagner", "Sosa", "Adriagner"],
   [700, "26/11", "DDF", "semifinales", "Sakro", "Xclusivo", "Sakro", "Xclusivo"],
   [700, "26/11", "DDF", "semifinales", "Sosa", "Masino", "Sosa", "Masino"],
-  [700, "26/11", "DDF", "final", "Sakro", "Sosa", "Sakro", "Sosa"]
+  [700, "26/11", "DDF", "final", "Sakro", "Sosa", "Sakro", "Sosa"],
+  [714, "26/11", "DDS", "cuartos", "AbrahamH", "Tayo", "AbrahamH", "Tayo"],
+  [714, "26/11", "DDS", "cuartos", "MaYeuTyK", "Soulb", "MaYeuTyK", "Soulb"],
+  [714, "26/11", "DDS", "cuartos", "NXUZ", "Mato  🇧🇴", "NXUZ", "Mato  🇧🇴"],
+  [714, "26/11", "DDS", "semifinales", "Kuni", "AbrahamH", "Kuni", "AbrahamH"],
+  [714, "26/11", "DDS", "semifinales", "MaYeuTyK", "NXUZ", "MaYeuTyK", "NXUZ"],
+  [714, "26/11", "DDS", "final", "MaYeuTyK", "Kuni", "MaYeuTyK", "Kuni"]
  ]
 }

@@ -11369,40 +11369,20 @@
    "b": "NXUZ",
    "ganador": "MARTINEZ",
    "votos": "1–0"
+  },
+  "1575719800884174889": {
+   "id": "1575719800884174889",
+   "sv": "🔥 𝐃𝐈𝐒𝐂𝐎𝐑𝐃 𝐒𝐓𝐘𝐋𝐄 🎤",
+   "g": "1443770831598649528",
+   "canal": "1563698957996134501",
+   "pub": 1795751275989,
+   "a": "KUNI",
+   "b": "MARTINEZ",
+   "ganador": "MARTINEZ",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1568110321514717246": {
-   "id": "1568110321514717246",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1793937034730,
-   "ed": 1793938100363,
-   "texto": "`[ SEMIFINALES ]`\n⌞SNOW TAM⌝ 🆚 ⌞PARIA ERIAN⌝\n`[ FINAL ]`\n⌞PARK JI SUNG⌝ 🆚 ⌞ERIAN⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "SNOW TAM",
-      "PARIA ERIAN"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PARK JI SUNG",
-      "ERIAN"
-     ],
-     "PARK JI SUNG",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1568351350230749387": {
    "id": "1568351350230749387",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",

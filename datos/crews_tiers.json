@@ -2,6 +2,15 @@
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
  "avisado": "2026-11-16",
  "dia": {
+  "abrahamh": [
+   0,
+   0,
+   0,
+   9000,
+   0,
+   0,
+   0
+  ],
   "adriagner": [
    0,
    0,
@@ -149,7 +158,7 @@
   "criszj": [
    10500,
    0,
-   2200,
+   2420,
    1875,
    0,
    0,
@@ -492,7 +501,7 @@
    0,
    0,
    6000,
-   0,
+   15000,
    0,
    0,
    0
@@ -502,6 +511,15 @@
    0,
    0,
    0,
+   0,
+   0,
+   0
+  ],
+  "lalox": [
+   0,
+   0,
+   0,
+   6000,
    0,
    0,
    0
@@ -623,6 +641,15 @@
    0,
    0
   ],
+  "mato": [
+   0,
+   0,
+   0,
+   6000,
+   0,
+   0,
+   0
+  ],
   "mats": [
    0,
    0,
@@ -636,7 +663,7 @@
    0,
    3850,
    14762,
-   0,
+   22500,
    0,
    0,
    0
@@ -744,7 +771,7 @@
    16500,
    2000,
    6000,
-   1875,
+   13875,
    0,
    0,
    0
@@ -884,6 +911,15 @@
    0,
    0
   ],
+  "ryuk": [
+   0,
+   0,
+   0,
+   6000,
+   0,
+   0,
+   0
+  ],
   "sakro": [
    0,
    0,
@@ -941,16 +977,7 @@
   "skala": [
    0,
    3750,
-   0,
-   0,
-   0,
-   0,
-   0
-  ],
-  "skalaboy": [
-   0,
-   0,
-   688,
+   1031,
    0,
    0,
    0,
@@ -987,7 +1014,7 @@
    15750,
    3300,
    0,
-   5175,
+   11175,
    0,
    0,
    0
@@ -1015,6 +1042,15 @@
    5625,
    0,
    0,
+   0,
+   0,
+   0
+  ],
+  "tayo": [
+   0,
+   0,
+   0,
+   6000,
    0,
    0,
    0
@@ -1304,6 +1340,7 @@
   ]
  ],
  "pts": {
+  "abrahamh": 9000,
   "adriagner": 3750,
   "agentesombra": 2500,
   "agus": 12999,
@@ -1320,7 +1357,7 @@
   "chop": 8500,
   "cj": 3333,
   "crakero": 7500,
-  "criszj": 17075,
+  "criszj": 17295,
   "cronox": 15750,
   "dantemx": 3300,
   "daulinov": 3300,
@@ -1358,8 +1395,9 @@
   "keider": 3750,
   "konan": 15000,
   "kourier": 3333,
-  "kuni": 6000,
+  "kuni": 21000,
   "kyss": 3750,
+  "lalox": 6000,
   "last": 2500,
   "launok": 1875,
   "leonart": 3300,
@@ -1373,8 +1411,9 @@
   "mateo": 3750,
   "mathhias": 13962,
   "matito": 1875,
+  "mato": 6000,
   "mats": 23250,
-  "mayeutyk": 20112,
+  "mayeutyk": 43612,
   "mco": 12825,
   "metro": 3750,
   "miniboy": 17625,
@@ -1386,7 +1425,7 @@
   "mtz": 8250,
   "nc": 3750,
   "noone": 6000,
-  "nxuz": 28875,
+  "nxuz": 40875,
   "oasis": 18750,
   "og": 10000,
   "okam": 18550,
@@ -1402,21 +1441,22 @@
   "rodas": 3750,
   "romeo": 7500,
   "ruvick": 3750,
+  "ryuk": 6000,
   "sakro": 15000,
   "salmon": 5775,
   "sankabel": 3750,
   "senticide": 12375,
   "shadow": 688,
   "sinlimites": 25050,
-  "skala": 3750,
-  "skalaboy": 688,
+  "skala": 4781,
   "snk": 1875,
   "snow": 33750,
   "sosa": 11250,
-  "soulb": 26725,
+  "soulb": 32725,
   "sultan": 7500,
   "tam": 3750,
   "tato": 5625,
+  "tayo": 6000,
   "teito": 1875,
   "thaniel": 6000,
   "tierrasinatmosfera": 3750,

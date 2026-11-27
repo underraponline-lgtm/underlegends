@@ -833,6 +833,17 @@
    "vence": "2026-12-01T18:43:42+00:00",
    "vencido": false
   },
+  "DOOM": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T18:39:54+00:00",
+   "did": "",
+   "evento": "TORNEO",
+   "n": 713,
+   "sv": "WOF",
+   "vence": "2026-11-25T18:39:54+00:00",
+   "vencido": true
+  },
   "Dantemx": {
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-11-12",
@@ -1832,6 +1843,17 @@
    "vence": "2026-11-21T03:28:31+00:00",
    "vencido": false
   },
+  "K-Oz": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T18:39:54+00:00",
+   "did": "",
+   "evento": "TORNEO",
+   "n": 713,
+   "sv": "WOF",
+   "vence": "2026-11-25T18:39:54+00:00",
+   "vencido": true
+  },
   "K1NGT0": {
    "avisado": "2026-11-18",
    "chat": "2026-11-19",
@@ -1942,6 +1964,17 @@
    "sv": "CH",
    "vence": "2026-11-29T00:47:24+00:00",
    "vencido": false
+  },
+  "Kaotico 🏆": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T18:39:54+00:00",
+   "did": "",
+   "evento": "TORNEO",
+   "n": 713,
+   "sv": "WOF",
+   "vence": "2026-11-25T18:39:54+00:00",
+   "vencido": true
   },
   "Karumailafmasha": {
    "avisado": "2026-10-29",
@@ -3350,6 +3383,17 @@
    "vence": "2026-11-17T01:48:30+00:00",
    "vencido": true
   },
+  "Shikamaru": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-18T18:39:54+00:00",
+   "did": "",
+   "evento": "TORNEO",
+   "n": 713,
+   "sv": "WOF",
+   "vence": "2026-11-25T18:39:54+00:00",
+   "vencido": true
+  },
   "Shitka": {
    "avisado": "2026-10-30",
    "chat": "2026-10-30",
@@ -3393,27 +3437,15 @@
   },
   "Skala": {
    "avisado": "2026-11-26",
-   "con": null,
-   "cumplido": "",
+   "avisado_cumplido": "2026-11-26",
+   "con": 712,
+   "cumplido": "2026-11-26T02:28:35+00:00",
    "debut": "2026-11-24T18:43:42+00:00",
    "did": "610840969579069461",
    "evento": "REY DEL INGENIO VOL 7",
    "n": 698,
    "sv": "CH",
    "vence": "2026-12-01T18:43:42+00:00",
-   "vencido": false
-  },
-  "Skalaboy": {
-   "avisado": "2026-11-26",
-   "chat": "2026-11-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-26T02:28:35+00:00",
-   "did": "",
-   "evento": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪 9:28 PM",
-   "n": 712,
-   "sv": "WOF",
-   "vence": "2026-12-03T02:28:35+00:00",
    "vencido": false
   },
   "Skiller": {
@@ -3607,17 +3639,6 @@
    "sv": "ACAD",
    "vence": "2026-11-03T20:02:54+00:00",
    "vencido": false
-  },
-  "Tmax turbo": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-11T16:38:17+00:00",
-   "did": "",
-   "evento": "ESPECIAL HALLOWEEN",
-   "n": 709,
-   "sv": "WOF",
-   "vence": "2026-11-18T16:38:17+00:00",
-   "vencido": true
   },
   "Toretto Mexicano": {
    "con": null,
