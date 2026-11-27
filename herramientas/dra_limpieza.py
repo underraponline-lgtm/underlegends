@@ -28,8 +28,7 @@ APLICAR = '--aplicar' in sys.argv
 #: lo que sobra → al ARCHIVO, y en qué canal vive ahora lo suyo
 ARCHIVAR = {
     'tutorialguia': 'cómo-funciona', 'eresnuevo': 'preguntas', 'eventosgrabados': 'videos', 'noticias': 'publicaciones',
-    'dinamicasretos': 'entrenamientos', 'competenciastier1': 'competencias MIX', 'competenciastier2': 'competencias MIX',
-    'competenciastier3': 'competencias MIX',
+    'dinamicasretos': 'entrenamientos', # (las competencias por tier volvieron: Dlx, 27/11, «regresa los canales de eventos dra»)
 }
 #: clave del nombre → (emoji nuevo, nombre nuevo o None, descripción). Emojis de colores y sin repetir
 CANALES = {
@@ -48,9 +47,9 @@ CANALES = {
     'tutarjeta': ('🃏', None, 'Tu tarjeta de la Liga: cómo conseguirla y mostrarla.'),
     'socios': ('🌐', None, 'Los servidores socios de la Liga y sus eventos.'),
     'mesawards': ('🏅', None, 'Los premios del mes de cada servidor y la gala de la temporada.'),
-    'videos': ('🎬', None, 'Los shorts de cada evento y las mejores rimas de la semana.'),
-    'publicaciones': ('📰', None, 'Lo que pasa en la Liga: campeones, debuts, récords y más.'),
-    'contenidorap': ('🎵', None, 'Comparte rap: temas, videos y lo que te guste de la escena.'),
+    'videos': ('🍿', None, 'Los shorts de cada evento y las mejores rimas de la semana.'),
+    'publicaciones': ('🌟', None, 'Lo que pasa en la Liga: campeones, debuts, récords y más.'),
+    'contenidorap': ('🎸', None, 'Comparte rap: temas, videos y lo que te guste de la escena.'),
     'promocionate': ('🚀', None, 'Promociona lo tuyo: tus temas, tus redes y tus eventos.'),
     'chatgeneral': ('💬', None, 'El chat de todos. Recibe bien al que llega.'),
     'crews': ('🛡️', None, 'Las crews de la Liga: busca la tuya o arma una.'),
