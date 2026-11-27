@@ -145,10 +145,10 @@
    "temporada": "6cc362cfb0df:0b98cb3023ec"
   },
   "Artezzy": {
-   "competitivo": "e7b7c153db74:baafccf84bc7",
-   "pais": "ddc309a28d6e:84d29bb63c59",
-   "servidor": "d0c2cd1a5af4:ca27345eed9e:655d26",
-   "temporada": "30f3224a9e48:0b98cb3023ec"
+   "competitivo": "c52b343dca81:baafccf84bc7",
+   "pais": "ec0772a37077:84d29bb63c59",
+   "servidor": "5f70e4db24cc:ca27345eed9e:655d26",
+   "temporada": "4d0e329919ed:0b98cb3023ec"
   },
   "Ashen": {
    "servidor": "4af907e5d349:ca27345eed9e:055f77"
@@ -1948,10 +1948,10 @@
    "temporada": "4c569e079a2f:0b98cb3023ec"
   },
   "Vilca": {
-   "competitivo": "94b233706eb6:baafccf84bc7",
-   "pais": "3bce86455f49:84d29bb63c59",
-   "servidor": "3d4313e01202:ca27345eed9e:74d3ce",
-   "temporada": "d2db3e3f595f:0b98cb3023ec"
+   "competitivo": "078fc356056b:baafccf84bc7",
+   "pais": "8bd6ffbbbf43:84d29bb63c59",
+   "servidor": "ec46b630239b:ca27345eed9e:74d3ce",
+   "temporada": "d3cd3a2a0185:0b98cb3023ec"
   },
   "Vize": {
    "servidor": "f878da4ea385:ca27345eed9e:5fd551"
@@ -2244,5 +2244,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-27T21:08:22+00:00"
+ "cuando": "2026-11-27T22:34:53+00:00"
 }
