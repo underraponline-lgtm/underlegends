@@ -54,8 +54,8 @@
 "temporada"
 ]
 },
-"six": {
-"rg": "B",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -63,8 +63,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
+"six": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -327,7 +327,7 @@
 ]
 },
 "mayeutyk": {
-"rg": "B",
+"rg": "C",
 "c": [
 "competitivo",
 "servidor",
@@ -734,6 +734,10 @@
 "rg": "C",
 "c": []
 },
+"1200": {
+"rg": "E",
+"c": []
+},
 "player": {
 "rg": "D",
 "c": [
@@ -774,10 +778,6 @@
 "servidor",
 "temporada"
 ]
-},
-"1200": {
-"rg": "E",
-"c": []
 },
 "artezzy": {
 "rg": "",
@@ -828,6 +828,14 @@
 "temporada"
 ]
 },
+"darnbless": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "ariaxer": {
 "rg": "E",
 "c": [
@@ -864,14 +872,6 @@
 ]
 },
 "rodas": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"darnbless": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -6362,15 +6362,6 @@
 "racha": 5
 },
 {
-"tipo": "rango",
-"t": "2026-11-27T04:06:14Z",
-"quien": [
-"MaYeuTyK"
-],
-"rg": "B",
-"primero": false
-},
-{
 "tipo": "tarjeta",
 "t": "2026-11-27T04:06:14Z",
 "quien": [
@@ -8910,8 +8901,8 @@
 "pichulamc",
 "praiseriza",
 "snow",
-"six",
 "panchok",
+"six",
 "mco",
 "colesito"
 ],

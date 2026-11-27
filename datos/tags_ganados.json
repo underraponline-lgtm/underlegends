@@ -34,6 +34,11 @@
     "t1",
     1795751107837
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1795801163886
+   ],
    "🎯 CAZARRECOMPENSAS": [
     "🎯 CAZARRECOMPENSAS",
     "t1",
@@ -68,6 +73,15 @@
     "🧳 VIAJERO",
     "t1",
     1794764146474
+   ]
+  }
+ },
+ "1200blurryface": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795801163886
    ]
   }
  },
@@ -805,6 +819,11 @@
  },
  "afinn": {
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795801163886
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -1641,6 +1660,25 @@
    ]
   }
  },
+ "asika": {
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795801163886
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795801163886
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795801163886
+   ]
+  }
+ },
  "assuan": {
   "pais": {
    "EMBAJADOR": [
@@ -2310,6 +2348,15 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "boemico": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795801163886
    ]
   }
  },
@@ -4166,6 +4213,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1795801163886
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -10444,6 +10496,11 @@
     "🥉 AL PODIO",
     "t1",
     1794544300764
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795801163886
    ]
   }
  },
@@ -11347,6 +11404,15 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "metriodin": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795801163886
    ]
   }
  },
@@ -13571,6 +13637,15 @@
    ]
   }
  },
+ "oep": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795801163886
+   ]
+  }
+ },
  "og": {
   "competitivo": {
    "⚔️ DUELISTA": [
@@ -14296,6 +14371,25 @@
    ]
   }
  },
+ "panchocdarnbless": {
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795801163886
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795801163886
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795801163886
+   ]
+  }
+ },
  "panchock": {
   "temporada": {
    "👑 CAMPEÓN x%d": [
@@ -14359,6 +14453,11 @@
    ]
   },
   "pais": {
+   "BANDERA VIVA": [
+    "BANDERA VIVA",
+    "t1",
+    1795801163886
+   ],
    "CONQUISTA AFUERA": [
     "CONQUISTA AFUERA",
     "t1",
@@ -14433,6 +14532,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1795801163886
+   ],
    "⚡ RELÁMPAGO": [
     "⚡ RELÁMPAGO",
     "t1",
@@ -14489,7 +14593,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x15",
+    "👑 CAMPEÓN x16",
     "t1",
     1793029252929
    ],
@@ -14692,6 +14796,15 @@
     "🧳 VIAJERO",
     "t1",
     1794473112962
+   ]
+  }
+ },
+ "peneescrotopene": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795801163886
    ]
   }
  },
@@ -16338,6 +16451,15 @@
     "🧳 VIAJERO",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "rudra": {
+  "temporada": {
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1795801163886
    ]
   }
  },
@@ -18327,6 +18449,13 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  },
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795801163886
    ]
   }
  },

@@ -95,6 +95,14 @@
    "min": 12820,
    "v": 1
   },
+  "(sin titulo)|WOF|24/10": {
+   "min": 76,
+   "v": 1
+  },
+  "(sin titulo)|WOF|26/10": {
+   "min": 107,
+   "v": 1
+  },
   "- DEM BATTLES -|FRZ|23/11": {
    "min": 40,
    "v": 1
@@ -224,6 +232,10 @@
    "min": 209,
    "v": 1
   },
+  "COMPE ATERRADORA|WOF|03/11": {
+   "min": 66,
+   "v": 1
+  },
   "COMPE CHILL DE FASO|URBF|30/09": {
    "min": 65,
    "v": 1
@@ -294,6 +306,10 @@
   },
   "ELITE FESTIVAL VOL. 1|ACAD|13/11": {
    "min": 99,
+   "v": 1
+  },
+  "ESPECIAL HALLOWEEN|WOF|01/11": {
+   "min": 84,
    "v": 1
   },
   "ESPECIAL HALLOWEEN|WOF|07/11": {
@@ -478,6 +494,16 @@
   "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|CEU|27/10": {
    "min": 48,
    "org": "gana",
+   "v": 1
+  },
+  "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|WOF|18/10": {
+   "min": 149,
+   "org": "juega",
+   "v": 1
+  },
+  "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|WOF|25/10": {
+   "min": 37,
+   "org": "juega",
    "v": 1
   },
   "MF DOOM Y MADLIB EDICION 1|DDS|07/11": {
@@ -743,6 +769,11 @@
    "min": 59,
    "v": 1
   },
+  "SKIBIDI TOILET|WOF|29/10": {
+   "min": 47,
+   "org": "juega",
+   "v": 1
+  },
   "SNAKE INSIGNIA 3 8|SR|26/09": {
    "min": 124,
    "v": 1
@@ -837,6 +868,15 @@
   },
   "WORLD OF FREE|LKR|23/10": {
    "min": 136,
+   "v": 1
+  },
+  "World Of Free EVENT|WOF|13/10": {
+   "min": 150,
+   "v": 1
+  },
+  "World Of Free EVENT|WOF|21/10": {
+   "min": 1171,
+   "org": "juega",
    "v": 1
   },
   "YYY891|CEU|24/09": {
@@ -983,7 +1023,19 @@
    "v": 1
   },
   "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪|WOF|27/11": {
-   "min": 78,
+   "min": 95,
+   "v": 1
+  },
+  "𓆩 𓆪 WORLD OF FREE|WOF|28/10": {
+   "min": 175,
+   "v": 1
+  },
+  "𓆩⚡𓆪 WORLD OF FREE|WOF|02/11": {
+   "min": 334,
+   "v": 1
+  },
+  "𓆩⚡𓆪 WORLD OF FREE|WOF|05/11": {
+   "min": 58,
    "v": 1
   }
  }

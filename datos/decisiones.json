@@ -451,6 +451,23 @@
    "decision": "no cuenta",
    "cuando": "2026-11-26 6:31 PM ET",
    "por": "Dlx (✅ Decidir)"
+  },
+  "𓆩 𓆪 WORLD OF FREE · WOF · 28/10": {
+   "campeon": {
+    "ganador": "(sin campeón)",
+    "promedio": true,
+    "ronda": "final",
+    "batallas": [
+     [
+      "penescrotopene & lvl & Afinnpapa",
+      "Motera & Martinez & Trot"
+     ]
+    ],
+    "pasaron": []
+   },
+   "cuando": "2026-11-27 12:39 PM ET",
+   "por": "el ciclo (R24)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: sin campeón. La llave no lo decía: los dos finalistas cobran el promedio de 1.º y 2.º (`llaves_a_entrada.con_campeon()`)"
   }
  },
  "no_rankear": {
@@ -1576,6 +1593,13 @@
    "cuando": "2026-11-26 10:55 PM ET",
    "por": "el ciclo (R4)",
    "nota": "es la misma batalla que «Liam, Dominick vs 1200, Cajita» (ganó Liam, Dominick), ya cargada en el #710: contestar «Ganó» la contaría dos veces"
+  },
+  "elparaisodelinframundo|DDF|26/11|octavos|lenix|mayeutyk": {
+   "ganador": "LENIX🇲🇽",
+   "batalla": "EL PARAISO DEL INFRAMUNDO · DDF · 26/11 · octavos · MaYeuTyK 🇺🇾 🆚 LENIX🇲🇽",
+   "cuando": "2026-11-27 12:23 PM ET",
+   "por": "el organizador, con el botón (<@1150099153238630410>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

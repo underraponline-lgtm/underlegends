@@ -2,44 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "2cc643d2cb",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen Pandillas · FFA · 11/11 · #610",
-   "que": "¿Quién es «k 🇺🇸»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794547862493,
-   "filas": [
-    1261
-   ],
-   "variantes": [
-    "k 🇺🇸"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "2e84121f70",
-   "tipo": "Nombre desconocido",
-   "sec": "PRITTY FREE · FFA · 05/10 · #402",
-   "que": "¿Quién es «baggio🇮🇹»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794555140975,
-   "filas": [
-    716
-   ],
-   "variantes": [
-    "baggio🇮🇹"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "9e777185f4",
    "tipo": "Nombre desconocido",
    "sec": "PANDILLAS DE RAP VOL.1 · ACAD · 13/11 · #629",
@@ -3289,6 +3251,129 @@
    ],
    "variantes": [
     "DOS NOMBRES: «Skalaboy» → «Skala» · cuenta 610840969579069461"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "9bcc32a324",
+   "tipo": "Bracket incompleto",
+   "sec": "𓆩 𓆪 WORLD OF FREE · WOF · 28/10",
+   "que": "Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién salió campeón, elegilo: cobra campeón y el otro, subcampeón. Si no, ¿cuenta? A los 28 días sin campeón, el ciclo la carga solo: los dos finalistas cobran el promedio de 1.º y 2.º.",
+   "r": "Sin campeón: los dos finalistas cobran el promedio",
+   "regla": "R24 · una final sin campeón, a los 28 días: los dos finalistas cobran el promedio de 1.º y 2.º",
+   "rk": "R24",
+   "por": "el ciclo",
+   "porque": "la llave no dice el campeón y pasaron 30 días: los dos finalistas (penescrotopene & lvl & Afinnpapa y Motera & Martinez & Trot) cobran el promedio de 1.º y 2.º",
+   "t": 1795801153192,
+   "filas": [
+    1746
+   ],
+   "variantes": [
+    "𓆩 𓆪 WORLD OF FREE · WOF · 28/10"
+   ],
+   "escribio": {
+    "campeon": "𓆩 𓆪 WORLD OF FREE · WOF · 28/10"
+   }
+  },
+  {
+   "id": "a381e52904",
+   "tipo": "Nombre desconocido",
+   "sec": "EL PARAISO DEL INFRAMUNDO · DDF · 26/11 · #700",
+   "que": "¿Quién es «LENIX🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1308942447707164736",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con su Discord (1308942447707164736)",
+   "t": 1795801153192,
+   "filas": [
+    1770
+   ],
+   "variantes": [
+    "LENIX🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "LENIX",
+     "1308942447707164736"
+    ]
+   }
+  },
+  {
+   "id": "de604c9563",
+   "tipo": "Nombre desconocido",
+   "sec": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1 · WOF · 18/10 · #716",
+   "que": "¿Quién es «Asuka»? (también escrito «asuka»)",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795801153192,
+   "filas": [
+    1748,
+    1755
+   ],
+   "variantes": [
+    "Asuka",
+    "asuka"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "9506150aae",
+   "tipo": "Nombre desconocido",
+   "sec": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1 · WOF · 18/10 · #716",
+   "que": "¿Quién es «Madd dog»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795801153192,
+   "filas": [
+    1752
+   ],
+   "variantes": [
+    "Madd dog"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "12c4fa8b01",
+   "tipo": "Nombre desconocido",
+   "sec": "ESPECIAL HALLOWEEN · WOF · 01/11 · #719",
+   "que": "¿Quién es «Peneescroto»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795801153192,
+   "filas": [
+    1768
+   ],
+   "variantes": [
+    "Peneescroto"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "76edf71504",
+   "tipo": "Nombre desconocido",
+   "sec": "ESPECIAL HALLOWEEN · WOF · 01/11 · #719",
+   "que": "¿Quién es «penescroto»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795801153192,
+   "filas": [
+    1769
+   ],
+   "variantes": [
+    "penescroto"
    ],
    "escribio": {}
   }

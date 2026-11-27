@@ -28,6 +28,17 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
+  "1200 & Blurryface": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T19:03:49+00:00",
+   "did": "",
+   "evento": "World Of Free EVENT",
+   "n": 717,
+   "sv": "WOF",
+   "vence": "2026-10-28T19:03:49+00:00",
+   "vencido": true
+  },
   "123": {
    "avisado": "2026-11-18",
    "chat": "2026-11-18",
@@ -218,17 +229,6 @@
    "vence": "2026-11-12T16:15:08+00:00",
    "vencido": true
   },
-  "Afinn": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T16:48:55+00:00",
-   "did": "",
-   "evento": "HALOWEEN",
-   "n": 642,
-   "sv": "CEU",
-   "vence": "2026-11-06T16:48:55+00:00",
-   "vencido": true
-  },
   "Afinnpapa": {
    "con": null,
    "cumplido": "",
@@ -392,6 +392,17 @@
    "sv": "DDF",
    "vence": "2026-12-04T01:26:36+00:00",
    "vencido": false
+  },
+  "Asika": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
+   "vencido": true
   },
   "Aszecas": {
    "avisado": "2026-11-06",
@@ -557,6 +568,17 @@
    "sv": "SGR",
    "vence": "2026-10-27T23:33:44+00:00",
    "vencido": false
+  },
+  "Blurryface": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T19:03:49+00:00",
+   "did": "",
+   "evento": "World Of Free EVENT",
+   "n": 717,
+   "sv": "WOF",
+   "vence": "2026-10-28T19:03:49+00:00",
+   "vencido": true
   },
   "Bohemico": {
    "con": null,
@@ -2102,6 +2124,17 @@
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
+  "Kris’s": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T19:03:49+00:00",
+   "did": "",
+   "evento": "World Of Free EVENT",
+   "n": 717,
+   "sv": "WOF",
+   "vence": "2026-10-28T19:03:49+00:00",
+   "vencido": true
+  },
   "Kusoh": {
    "avisado": "2026-10-13",
    "chat": "2026-10-15",
@@ -2364,6 +2397,17 @@
    "vence": "2026-11-19T19:09:35+00:00",
    "vencido": true
   },
+  "Luay": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
+   "vencido": true
+  },
   "Luciano": {
    "avisado": "2026-11-16",
    "chat": "2026-11-16",
@@ -2523,6 +2567,17 @@
    "n": 701,
    "sv": "SGR",
    "vence": "2026-10-27T23:33:44+00:00",
+   "vencido": true
+  },
+  "Mad dog": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
    "vencido": true
   },
   "Magic": {
@@ -3020,6 +3075,17 @@
    "vence": "2026-10-27T22:07:15+00:00",
    "vencido": true
   },
+  "Panchoc & darnbless": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T19:03:49+00:00",
+   "did": "",
+   "evento": "World Of Free EVENT",
+   "n": 717,
+   "sv": "WOF",
+   "vence": "2026-10-28T19:03:49+00:00",
+   "vencido": true
+  },
   "Panchock": {
    "con": null,
    "cumplido": "",
@@ -3029,6 +3095,17 @@
    "n": 709,
    "sv": "WOF",
    "vence": "2026-11-18T16:38:17+00:00",
+   "vencido": true
+  },
+  "PeneEscrotoPene": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-01T15:06:15+00:00",
+   "did": "",
+   "evento": "ESPECIAL HALLOWEEN",
+   "n": 719,
+   "sv": "WOF",
+   "vence": "2026-11-08T15:06:15+00:00",
    "vencido": true
   },
   "Perro": {
@@ -3202,6 +3279,17 @@
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
    "vencido": false
+  },
+  "Ruby": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T15:41:26+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 718,
+   "sv": "WOF",
+   "vence": "2026-11-01T15:41:26+00:00",
+   "vencido": true
   },
   "Rydo": {
    "avisado": "2026-10-28",
@@ -3656,14 +3744,14 @@
    "avisado": "2026-10-31",
    "avisado_cumplido": "2026-11-12",
    "chat": "2026-10-31",
-   "con": 642,
-   "cumplido": "2026-10-30T16:48:55+00:00",
-   "debut": "2026-10-27T20:02:54+00:00",
+   "con": 535,
+   "cumplido": "2026-10-27T20:02:54+00:00",
+   "debut": "2026-10-21T19:03:49+00:00",
    "did": "1345623878474403901",
-   "evento": "PRADERAP VOL.2",
-   "n": 535,
-   "sv": "ACAD",
-   "vence": "2026-11-03T20:02:54+00:00",
+   "evento": "World Of Free EVENT",
+   "n": 717,
+   "sv": "WOF",
+   "vence": "2026-10-28T19:03:49+00:00",
    "vencido": false
   },
   "Toretto Mexicano": {
@@ -4003,6 +4091,17 @@
    "vence": "2026-11-29T23:42:56+00:00",
    "vencido": false
   },
+  "afinn": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
+   "vencido": true
+  },
   "akasha": {
    "avisado": "2026-11-09",
    "avisado_cumplido": "2026-11-23",
@@ -4121,6 +4220,17 @@
    "vence": "2026-11-21T20:22:29+00:00",
    "vencido": true
   },
+  "boemico": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
+   "vencido": true
+  },
   "botrax": {
    "con": null,
    "cumplido": "",
@@ -4166,6 +4276,17 @@
    "n": 711,
    "sv": "WOF",
    "vence": "2026-11-26T16:41:36+00:00",
+   "vencido": true
+  },
+  "desaparecido": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T15:41:26+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 718,
+   "sv": "WOF",
+   "vence": "2026-11-01T15:41:26+00:00",
    "vencido": true
   },
   "dyzzcord": {
@@ -4334,6 +4455,28 @@
    "vence": "2026-10-25T02:26:23+00:00",
    "vencido": true
   },
+  "lykan": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
+   "vencido": true
+  },
+  "marco": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T15:41:26+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 718,
+   "sv": "WOF",
+   "vence": "2026-11-01T15:41:26+00:00",
+   "vencido": true
+  },
   "masterx": {
    "avisado": "2026-11-18",
    "chat": "2026-11-19",
@@ -4497,6 +4640,17 @@
    "vence": "2026-11-14T01:17:28+00:00",
    "vencido": false
   },
+  "rudra": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
+   "vencido": true
+  },
   "sh": {
    "avisado": "2026-11-09",
    "chat": "2026-11-09",
@@ -4587,6 +4741,17 @@
    "sv": "FFA",
    "vence": "2026-11-25T04:56:25+00:00",
    "vencido": false
+  },
+  "viper": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T14:47:38+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+   "n": 716,
+   "sv": "WOF",
+   "vence": "2026-10-25T14:47:38+00:00",
+   "vencido": true
   },
   "wolffe": {
    "con": null,

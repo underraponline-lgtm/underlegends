@@ -66407,11 +66407,11 @@
      ],
      [
       [
-       "MaYeuTyK 🇺🇾",
-       "LENIX🇲🇽"
+       "LENIX🇲🇽",
+       "MaYeuTyK"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "LENIX🇲🇽",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -66552,6 +66552,11 @@
    ],
    [
     "MATITO 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "MaYeuTyK",
     "Octavos",
     1250
    ],
@@ -69131,6 +69136,623 @@
   "ver": {
    "min": 20,
    "org": "juega",
+   "v": 1
+  }
+ },
+ "716": {
+  "dia": "2026-10-18",
+  "escala": "16+",
+  "fecha": "18/10",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1561390305725644922"
+  ],
+  "n": 716,
+  "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "lykan"
+      ],
+      "mats",
+      ""
+     ],
+     [
+      [
+       "viper",
+       "rudra"
+      ],
+      "viper",
+      "Revivido: rudra"
+     ],
+     [
+      [
+       "DarnBless",
+       "MetriOdin"
+      ],
+      "DarnBless",
+      ""
+     ],
+     [
+      [
+       "asuka",
+       "Zeta"
+      ],
+      "asuka",
+      ""
+     ],
+     [
+      [
+       "Mad dog",
+       "19"
+      ],
+      "Mad dog",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Luay"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "Kun Z",
+       "rudra"
+      ],
+      "Kun Z",
+      ""
+     ],
+     [
+      [
+       "boemico",
+       "afinn"
+      ],
+      "boemico",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "viper",
+       "mats"
+      ],
+      "viper",
+      ""
+     ],
+     [
+      [
+       "asuka",
+       "DarnBless"
+      ],
+      "asuka",
+      ""
+     ],
+     [
+      [
+       "Madd dog",
+       "1200"
+      ],
+      "Madd dog",
+      ""
+     ],
+     [
+      [
+       "boemico",
+       "Kun Z"
+      ],
+      "boemico",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "asuka",
+       "viper"
+      ],
+      "asuka",
+      ""
+     ],
+     [
+      [
+       "boemico",
+       "Mad dog"
+      ],
+      "boemico",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Asika",
+       "boemico"
+      ],
+      "Asika",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Asika",
+    "Campeón",
+    10000
+   ],
+   [
+    "boemico",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Mad dog",
+    "Semifinal",
+    5250
+   ],
+   [
+    "viper",
+    "Semifinal",
+    5250
+   ],
+   [
+    "1200",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DarnBless",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kun Z",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mats",
+    "Cuartos",
+    2500
+   ],
+   [
+    "rudra",
+    "Octavos",
+    1875
+   ],
+   [
+    "19",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luay",
+    "Octavos",
+    1250
+   ],
+   [
+    "MetriOdin",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zeta",
+    "Octavos",
+    1250
+   ],
+   [
+    "afinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "lykan",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 149,
+   "org": "juega",
+   "v": 1
+  }
+ },
+ "717": {
+  "dia": "2026-10-21",
+  "escala": "8-15",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1562541941168537761"
+  ],
+  "n": 717,
+  "nombre": "World Of Free EVENT",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Krish",
+       "Tmax Turbo [PN]"
+      ],
+      "Krish",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Teito"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Marto AR",
+       "Sosa"
+      ],
+      "Marto AR",
+      ""
+     ],
+     [
+      [
+       "DarnBless",
+       "Fin"
+      ],
+      "DarnBless",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Blurryface"
+      ],
+      "1200",
+      "Drafteado: Blurryface"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "1200",
+       "Kris’s"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "DarnBless",
+       "Panchok",
+       "Marto AR"
+      ],
+      "DarnBless, Panchok",
+      "triple (3 bandas, pasan 2); también pasa: Panchok"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchoc & darnbless",
+       "1200 & Blurryface"
+      ],
+      "Panchoc & darnbless",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Panchoc & darnbless",
+    "Campeón",
+    7500
+   ],
+   [
+    "1200 & Blurryface",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kris’s",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Marto AR",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Blurryface",
+    "Octavos",
+    625
+   ],
+   [
+    "Fin",
+    "Octavos",
+    625
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    625
+   ],
+   [
+    "Teito",
+    "Octavos",
+    625
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Octavos",
+    625
+   ]
+  ],
+  "ver": {
+   "min": 1171,
+   "org": "juega",
+   "v": 1
+  }
+ },
+ "718": {
+  "dia": "2026-10-25",
+  "escala": "8-15",
+  "fecha": "25/10",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1563940562241986713"
+  ],
+  "n": 718,
+  "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Panchock",
+       "desaparecido"
+      ],
+      "Panchock",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "OEP"
+      ],
+      "Marcos",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "TG"
+      ],
+      "Motera",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "Ruby"
+      ],
+      "1200",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "marco"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "1200"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Motera"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    7500
+   ],
+   [
+    "Motera",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "1200",
+    "Semifinal",
+    3500
+   ],
+   [
+    "marco",
+    "Semifinal",
+    3500
+   ],
+   [
+    "OEP",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ruby",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TG",
+    "Cuartos",
+    2000
+   ],
+   [
+    "desaparecido",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 37,
+   "org": "juega",
+   "v": 1
+  }
+ },
+ "719": {
+  "dia": "2026-11-01",
+  "escala": "8-15",
+  "fecha": "01/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1566468423368708278"
+  ],
+  "n": 719,
+  "nombre": "ESPECIAL HALLOWEEN",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "penescroto",
+       "MaYeuTyK"
+      ],
+      "penescroto",
+      ""
+     ],
+     [
+      [
+       "Marcosq",
+       "gus 🇺🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "TMAX 🇪🇸",
+       "afinn"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Peneescroto",
+       "DarnBless"
+      ],
+      "Peneescroto",
+      ""
+     ],
+     [
+      [
+       "TROT",
+       "Taurus"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Afinn",
+       "PeneEscrotoPene"
+      ],
+      "Afinn",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Afinn",
+    "Campeón",
+    7500
+   ],
+   [
+    "PeneEscrotoPene",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "DarnBless",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 84,
    "v": 1
   }
  }
