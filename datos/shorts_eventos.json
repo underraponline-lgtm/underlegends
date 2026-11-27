@@ -144,7 +144,11 @@
   "1575941609881862327": {
    "t": "2026-11-27T18:29",
    "como": "reintento",
-   "run": 46059762618
+   "run": 46059762618,
+   "res": "mal",
+   "listos": 0,
+   "falla": "salió mal dos veces: 0 shorts",
+   "avisado": true
   }
  }
 }
