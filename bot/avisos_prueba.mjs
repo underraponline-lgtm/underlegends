@@ -2929,9 +2929,11 @@ const ok = (cond, que, det) => {
       llave(CAMPEON, T + 3 * 60000);
       await o.chatVivo(T + 3 * 60000);
       await o.chatVivo(T + 6 * 60000);
-      const camp = posts().find((p) => /🏆 \*\*Ana 🇦🇷\*\* es el campeón/.test(p.b.content || ''));
-      ok(camp && /en la final le ganó a Dora/.test(camp.b.content) && !laFinal().length,
-        'si la final se decide sin su cruce, la cuenta el campeón («en la final le ganó a…») y no sale la final sola',
+      // 🤫 desde el 26/11/2026 el bot en vivo no manda el cierre del campeón (lo dice el aviso de ganadores del ciclo):
+      // ni campeón ni «La final de…» sola, y queda pedida la vuelta del ciclo
+      const camp = posts().find((p) => /es el campeón/.test(p.b.content || ''));
+      ok(!camp && !laFinal().length && o.leer('ciclo_pedir'),
+        'si la final se decide sin su cruce: no sale la final sola, el campeón tampoco (lo dice el aviso de ganadores) y se pide el ciclo',
         JSON.stringify(posts().map((p) => p.b.content.slice(-200))));
     }
     globalThis.fetch = antesF;

@@ -892,6 +892,8 @@ export function cierreDelCiclo(x, h) {
   return !!(x && x.m === 'campeon' && h && h.msg && !h.texto);
 }
 
+//: 🤫 cómo queda anotado el campeón que el bot en vivo ya no dice (26/11/2026: lo dice el aviso de ganadores)
+export const CIERRE_CALLADO = '·aviso';
 /** hasta cuánto pueden distar el mensaje con el que el bot en vivo anota una llave y el que anota el ciclo */
 export const CIERRE_CERCA_MS = 60 * 60000;
 
@@ -12094,6 +12096,19 @@ export class Avisos {
           hechos.final = { m: 'final', msg: '', texto: '' };
         }
         if (!hechos.final) ms = ms.filter((x) => x.m !== 'final');
+        // 🤫 EL CIERRE DEL CAMPEÓN YA NO SALE (Dlx, 26/11/2026, con «🏆 Terminó…» y el campeón con su tarjeta uno abajo del
+        // otro en FRZ: «la segunda imagen sobra… simplemente elimina el segundo mensaje, ya no lo queremos»). El campeón lo
+        // dice el aviso de ganadores del ciclo, con «La noche de…» (`bot/aviso_ganadores.py`): acá queda anotado como dicho
+        // —sin mensaje— y se pide la vuelta del ciclo ya, que es lo que antes hacía el cierre al salir
+        if (conCampeon) {
+          if (!hechos.campeon) {
+            this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+              L.id, canal, 'campeon', '', CIERRE_CALLADO, ahora);
+            hechos.campeon = { m: 'campeon', msg: '', texto: CIERRE_CALLADO };
+            if (minutosAlCiclo(ahora) > CIERRE_CICLO_MIN) this.guardar('ciclo_pedir', { t: ahora, por: 'final' });
+          }
+          ms = ms.filter((x) => x.m !== 'campeon');
+        }
         const ediciones = new Map();
         for (const x of ms) {
           const v = x.bi && x.res && !hechos[x.m] ? hechos['v:' + x.bi] : null;
