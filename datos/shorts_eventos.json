@@ -133,7 +133,10 @@
   "1575770973167419464": {
    "t": "2026-11-27T07:11",
    "como": "reintento",
-   "run": 45977376784
+   "run": 45977376784,
+   "res": "mal",
+   "listos": 0,
+   "falla": "salió mal dos veces: 0 shorts"
   }
  }
 }
