@@ -6056,7 +6056,7 @@ export function perfilBotValido(cual, valor) {
 // 27/11/2026, Dlx: «personaliza los bots de Cypherhood y DRA… avatares, portada y descripción»: DRA ya no queda afuera.
 // Toma su foto, su portada y su bio, pero se sigue llamando ULAYA (`PERFIL_NICK`): es su casa
 export const PERFIL_FUERA = [];
-export const PERFIL_NICK = { DRA: 'ULAYA' };
+export const PERFIL_NICK = {};   // 27/11/2026, Dlx: «en DRA cámbiale de ULAYA a DRA Bot»: va «DRA Bot», como todos
 //: 🖼️ las imágenes de Under Legends para el bot (la opción `liga`): el logo, y el cartel de la página recortado a 17:6
 export const PERFIL_LIGA = { avatar: HUB + '/ul.png', banner: HUB + '/ul-banner.png' };
 /**
