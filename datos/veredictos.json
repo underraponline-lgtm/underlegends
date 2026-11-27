@@ -11281,6 +11281,39 @@
    "b": "ADRIAGNER 🇳🇮",
    "ganador": "SOSA🇦🇷",
    "votos": "1–0"
+  },
+  "1575697983289430068": {
+   "id": "1575697983289430068",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1795746074269,
+   "a": "SAKRO🇨🇱",
+   "b": "XCLUSIVO🇻🇪",
+   "ganador": "SAKRO🇨🇱",
+   "votos": "1–0"
+  },
+  "1575699605134377053": {
+   "id": "1575699605134377053",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1795746460947,
+   "a": "SOSA🇦🇷",
+   "b": "MASINO🇨🇱",
+   "ganador": "SOSA🇦🇷",
+   "votos": "1–0"
+  },
+  "1575701545646035025": {
+   "id": "1575701545646035025",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1795746923601,
+   "a": "SAKRO🇨🇱",
+   "b": "SOSA🇦🇷",
+   "ganador": "SAKRO🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -15265,8 +15298,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1795742971860,
-   "ed": 1795746085352,
-   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞MINIBOY⌝ 🆚 ⌞CRISZJ⌝\n`[ CUARTOS ]`\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞SOUL B🇨🇱⌝ 🆚 ⌞SAKRO🇨🇱⌝\n⌞SOSA🇦🇷⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ SEMIFINALES ]`\n⌞SAKRO🇨🇱⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝",
+   "ed": 1795746966191,
+   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞MINIBOY⌝ 🆚 ⌞CRISZJ⌝\n`[ CUARTOS ]`\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞SOUL B🇨🇱⌝ 🆚 ⌞SAKRO🇨🇱⌝\n⌞SOSA🇦🇷⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ SEMIFINALES ]`\n⌞SAKRO🇨🇱⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n⌞SOSA🇦🇷⌝ 🆚 ⌞MASINO🇨🇱⌝\n`[ FINAL ]`\n⌞SAKRO🇨🇱⌝ 🆚 ⌞SOSA🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -15315,8 +15348,28 @@
       "SAKRO🇨🇱",
       "XCLUSIVO🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SAKRO🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SOSA🇦🇷",
+      "MASINO🇨🇱"
+     ],
+     "SOSA🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SAKRO🇨🇱",
+      "SOSA🇦🇷"
+     ],
+     "SAKRO🇨🇱",
+     "veredicto",
      []
     ]
    ]

@@ -3689,6 +3689,11 @@
     "t1",
     1793029252929
    ],
+   "KILÓMETROS": [
+    "KILÓMETROS",
+    "t1",
+    1795748043123
+   ],
    "REY DEL DERBI": [
     "REY DEL DERBI",
     "t1",
@@ -3710,6 +3715,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1792953978519
+   ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1795748043123
    ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -3747,6 +3757,11 @@
     "🐺 LOBO SOLITARIO",
     "t1",
     1795479341236
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x3",
+    "t1",
+    1795748043123
    ],
    "💯 BICENTENARIO": [
     "💯 BICENTENARIO",
@@ -5815,6 +5830,11 @@
  },
  "evangeline": {
   "competitivo": {
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1795748043123
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -6202,6 +6222,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793515918221
+   ],
+   "🦁 TEMERARIO": [
+    "🦁 TEMERARIO",
+    "t1",
+    1795748043123
    ],
    "🧊 SANGRE FRÍA": [
     "🧊 SANGRE FRÍA",
@@ -10073,6 +10098,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1793029252929
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1795748043123
    ]
   },
   "temporada": {
@@ -10688,6 +10718,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1793925416194
+   ],
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1795748043123
    ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
@@ -15892,6 +15927,27 @@
    ]
   }
  },
+ "sakro": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1795748043123
+   ]
+  },
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795748043123
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795748043123
+   ]
+  }
+ },
  "sami": {
   "temporada": {
    "🧳 VIAJERO": [
@@ -19480,6 +19536,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🔺 REY DE LOS TRÍOS": [
+    "🔺 REY DE LOS TRÍOS",
+    "t1",
+    1795748043123
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",

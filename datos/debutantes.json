@@ -335,6 +335,18 @@
    "vence": "2026-11-30T18:45:33+00:00",
    "vencido": false
   },
+  "Arven": {
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-27T01:26:36+00:00",
+   "did": "",
+   "evento": "EL PARAISO DEL INFRAMUNDO",
+   "n": 700,
+   "sv": "DDF",
+   "vence": "2026-12-04T01:26:36+00:00",
+   "vencido": false
+  },
   "Aszecas": {
    "avisado": "2026-11-06",
    "chat": "2026-11-06",
@@ -866,6 +878,18 @@
    "vence": "2026-11-29T23:42:56+00:00",
    "vencido": false
   },
+  "Drakm": {
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-27T01:26:36+00:00",
+   "did": "",
+   "evento": "EL PARAISO DEL INFRAMUNDO",
+   "n": 700,
+   "sv": "DDF",
+   "vence": "2026-12-04T01:26:36+00:00",
+   "vencido": false
+  },
   "Drexc": {
    "con": null,
    "cumplido": "",
@@ -1225,7 +1249,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-27T01:38:43+00:00",
-   "did": "",
+   "did": "1564093948027215953",
    "evento": "- THE IMPACT -",
    "n": 699,
    "sv": "FRZ",
@@ -2157,6 +2181,18 @@
    "vence": "2026-10-21T23:10:06+00:00",
    "vencido": true
   },
+  "MATITO": {
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-27T01:26:36+00:00",
+   "did": "",
+   "evento": "EL PARAISO DEL INFRAMUNDO",
+   "n": 700,
+   "sv": "DDF",
+   "vence": "2026-12-04T01:26:36+00:00",
+   "vencido": false
+  },
   "MATUK": {
    "avisado": "2026-10-25",
    "avisado_cumplido": "2026-10-26",
@@ -2835,6 +2871,18 @@
    "vence": "2026-11-15T19:50:21+00:00",
    "vencido": true
   },
+  "SNK": {
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-27T01:26:36+00:00",
+   "did": "",
+   "evento": "EL PARAISO DEL INFRAMUNDO",
+   "n": 700,
+   "sv": "DDF",
+   "vence": "2026-12-04T01:26:36+00:00",
+   "vencido": false
+  },
   "SULTAN": {
    "avisado": "2026-10-20",
    "avisado_cumplido": "2026-10-21",
@@ -2888,7 +2936,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-11-27T01:38:43+00:00",
-   "did": "",
+   "did": "878695016137105429",
    "evento": "- THE IMPACT -",
    "n": 699,
    "sv": "FRZ",

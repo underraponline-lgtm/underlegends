@@ -45807,7 +45807,7 @@
    "crakero": 8
   },
   "fecha": "12/11",
-  "firma": "2be8b06bde854b01",
+  "firma": "be5e461ca4d16468",
   "msg": "1570581400896278600",
   "nombre": "- LIGA INMORTAL -",
   "num": 625,
@@ -60686,6 +60686,287 @@
     "Dynoco",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "700": {
+  "antes": {
+   "Adriagner": [
+    47,
+    55,
+    false
+   ],
+   "CrisZJ": [
+    271,
+    30,
+    true
+   ],
+   "Dynoco": [
+    63,
+    75,
+    false
+   ],
+   "Evangeline": [
+    110,
+    143,
+    false
+   ],
+   "Launok": [
+    226,
+    529,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Masino": [
+    59,
+    71,
+    false
+   ],
+   "Miniboy": [
+    18,
+    18,
+    false
+   ],
+   "NXUZ": [
+    21,
+    21,
+    false
+   ],
+   "Sakro": [
+    710,
+    687,
+    true
+   ],
+   "Sosa": [
+    212,
+    472,
+    false
+   ],
+   "Soulb": [
+    28,
+    31,
+    false
+   ],
+   "Teito": [
+    62,
+    74,
+    false
+   ],
+   "Xclusivo": [
+    277,
+    58,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Xclusivo",
+    "Miniboy",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "CrisZJ",
+    "Xclusivo"
+   ],
+   [
+    "Evangeline",
+    "MATITO 🇲🇽",
+    "Evangeline"
+   ],
+   [
+    "Evangeline",
+    "Arven🇨🇴",
+    "Evangeline"
+   ],
+   [
+    "Makmah",
+    "Dynoco",
+    "Makmah"
+   ],
+   [
+    "Sakro",
+    "Launok",
+    "Sakro"
+   ],
+   [
+    "Masino",
+    "SNK🇻🇪",
+    "Masino"
+   ],
+   [
+    "Adriagner",
+    "Drakm🇭🇳",
+    "Adriagner"
+   ],
+   [
+    "Adriagner",
+    "NXUZ",
+    "Adriagner"
+   ],
+   [
+    "Sosa",
+    "Teito",
+    "Sosa"
+   ],
+   [
+    "Xclusivo",
+    "Evangeline",
+    "Xclusivo"
+   ],
+   [
+    "Sakro",
+    "Soulb",
+    "Sakro"
+   ],
+   [
+    "Masino",
+    "Makmah",
+    "Masino"
+   ],
+   [
+    "Sosa",
+    "Adriagner",
+    "Sosa"
+   ],
+   [
+    "Sakro",
+    "Xclusivo",
+    "Sakro"
+   ],
+   [
+    "Sosa",
+    "Masino",
+    "Sosa"
+   ],
+   [
+    "Sakro",
+    "Sosa",
+    "Sakro"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 25,
+   "CrisZJ": 39,
+   "Dynoco": 21,
+   "Evangeline": 9,
+   "Launok": 2,
+   "Makmah": 129,
+   "Masino": 13,
+   "Miniboy": 77,
+   "NXUZ": 58,
+   "Sakro": 1,
+   "Sosa": 3,
+   "Soulb": 38,
+   "Teito": 42,
+   "Xclusivo": 27
+  },
+  "fecha": "26/11",
+  "noche": true,
+  "nombre": "EL PARAISO DEL INFRAMUNDO",
+  "num": 700,
+  "participantes": 21,
+  "sello": {
+   "Sakro": ""
+  },
+  "sv": "DDF",
+  "t": "2026-11-27T02:43:24Z",
+  "tabla": [
+   [
+    "Sakro",
+    "Campeón",
+    10000
+   ],
+   [
+    "Sosa",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Masino",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "MATITO 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Arven🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Launok",
+    "Octavos",
+    1250
+   ],
+   [
+    "SNK🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drakm🇭🇳",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

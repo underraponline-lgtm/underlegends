@@ -66181,5 +66181,258 @@
    "min": 37,
    "v": 1
   }
+ },
+ "700": {
+  "dia": "2026-11-26",
+  "escala": "16+",
+  "fecha": "26/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1575684236332113961"
+  ],
+  "n": 700,
+  "nombre": "EL PARAISO DEL INFRAMUNDO",
+  "participantes": 21,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Xclusivo",
+       "Miniboy",
+       "CrisZJ"
+      ],
+      "Xclusivo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Evangeline",
+       "MATITO 🇲🇽",
+       "Arven🇨🇴"
+      ],
+      "Evangeline",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Dynoco"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Sakro",
+       "Launok"
+      ],
+      "Sakro",
+      ""
+     ],
+     [
+      [
+       "Masino",
+       "SNK🇻🇪"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "Adriagner",
+       "Drakm🇭🇳",
+       "NXUZ"
+      ],
+      "Adriagner",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Sosa",
+       "Teito"
+      ],
+      "Sosa",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK 🇺🇾",
+       "LENIX🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Xclusivo",
+       "Evangeline"
+      ],
+      "Xclusivo",
+      ""
+     ],
+     [
+      [
+       "Sakro",
+       "Soulb"
+      ],
+      "Sakro",
+      "Walk-in 1: Soul B 🇨🇱"
+     ],
+     [
+      [
+       "Masino",
+       "Makmah"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "Sosa",
+       "Adriagner"
+      ],
+      "Sosa",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sakro",
+       "Xclusivo"
+      ],
+      "Sakro",
+      ""
+     ],
+     [
+      [
+       "Sosa",
+       "Masino"
+      ],
+      "Sosa",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sakro",
+       "Sosa"
+      ],
+      "Sakro",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Sakro",
+    "Campeón",
+    10000
+   ],
+   [
+    "Sosa",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Masino",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Arven🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drakm🇭🇳",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Launok",
+    "Octavos",
+    1250
+   ],
+   [
+    "MATITO 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "SNK🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 70,
+   "v": 1
+  }
  }
 }

@@ -2853,6 +2853,54 @@
      "878695016137105429"
     ]
    }
+  },
+  {
+   "id": "645757f57c",
+   "tipo": "Nombre desconocido",
+   "sec": "EL PARAISO DEL INFRAMUNDO · DDF · 26/11 · #700",
+   "que": "¿Quién es «Arven🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1435822505289056389",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1435822505289056389)",
+   "t": 1795748029329,
+   "filas": [
+    1627
+   ],
+   "variantes": [
+    "Arven🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Arven",
+     "1435822505289056389"
+    ]
+   }
+  },
+  {
+   "id": "a917fe9877",
+   "tipo": "Nombre desconocido",
+   "sec": "EL PARAISO DEL INFRAMUNDO · DDF · 26/11 · #700",
+   "que": "¿Quién es «Drakm🇭🇳»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1531514653593567424",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1531514653593567424)",
+   "t": 1795748029329,
+   "filas": [
+    1628
+   ],
+   "variantes": [
+    "Drakm🇭🇳"
+   ],
+   "escribio": {
+    "alta": [
+     "Drakm",
+     "1531514653593567424"
+    ]
+   }
   }
  ],
  "deshechas": []

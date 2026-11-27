@@ -3,6 +3,7 @@
  "avisadas": {
   "- LIGA INMORTAL -|FRZ|12/11": "2026-11-13T02:24:35Z",
   "- RED BULL REGIONAL CARABAYLLO 2026 -|FDS|22/11": "2026-11-22T16:23:57Z",
+  "- THE IMPACT -|FRZ|26/11": "2026-11-27T02:43:08Z",
   "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|CEU|26/10": "2026-11-15T17:28:00Z",
   "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1|CEU|27/10": "2026-11-15T17:28:00Z",
   "YYY891|CEU|24/09": "2026-11-15T17:28:00Z"
@@ -132,7 +133,7 @@
    "v": 1
   },
   "- THE IMPACT -|FRZ|26/11": {
-   "min": 37,
+   "copia": 699,
    "v": 1
   },
   ". Rango Bronce III|FFA|30/10": {
@@ -264,7 +265,7 @@
    "v": 1
   },
   "EL PARAISO DEL INFRAMUNDO|DDF|26/11": {
-   "min": 50,
+   "min": 70,
    "v": 1
   },
   "EL ULTIMO DIA DE DDF|DDF|08/11": {

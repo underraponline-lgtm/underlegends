@@ -1709,6 +1709,11 @@
    },
    "organizadores": [
     [
+     "ajoel08",
+     24,
+     3
+    ],
+    [
      "crakero",
      24,
      2
@@ -1717,11 +1722,6 @@
      "LEWITO",
      24,
      1
-    ],
-    [
-     "ajoel08",
-     16,
-     2
     ],
     [
      "Benji Price",
@@ -1737,18 +1737,18 @@
    "semillero": {
     "nuevos": {
      "FFA": 4,
-     "FRZ": 3,
+     "FRZ": 5,
      "CH": 3
     },
     "gente": {
      "FFA": 57,
-     "FRZ": 23,
+     "FRZ": 28,
      "DDS": 17,
      "UFLUC": 8,
      "DW": 17,
      "CH": 18
     },
-    "gana": "CH"
+    "gana": "FRZ"
    },
    "meta_va": {
     "ACAD": 0,
@@ -1761,7 +1761,7 @@
     "FDS": 0,
     "FFA": 57,
     "FFS": 0,
-    "FRZ": 23,
+    "FRZ": 28,
     "FVS": 0,
     "LKR": 0,
     "SR": 0,

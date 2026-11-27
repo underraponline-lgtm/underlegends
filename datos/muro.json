@@ -326,10 +326,6 @@
 "temporada"
 ]
 },
-"chop": {
-"rg": "C",
-"c": []
-},
 "mats": {
 "rg": "A",
 "c": [
@@ -369,6 +365,10 @@
 "servidor",
 "temporada"
 ]
+},
+"chop": {
+"rg": "C",
+"c": []
 },
 "bna": {
 "rg": "C",
@@ -538,6 +538,14 @@
 "temporada"
 ]
 },
+"masino": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "paria": {
 "rg": "D",
 "c": []
@@ -556,14 +564,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"masino": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -679,14 +679,6 @@
 "rg": "E",
 "c": []
 },
-"cinexfilo": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "richard": {
 "rg": "D",
 "c": [
@@ -732,6 +724,14 @@
 "emizor": {
 "rg": "C",
 "c": []
+},
+"cinexfilo": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "player": {
 "rg": "D",
@@ -822,15 +822,6 @@
 "temporada"
 ]
 },
-"jobaking": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "jj": {
 "rg": "",
 "c": []
@@ -843,6 +834,15 @@
 ]
 },
 "jult": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"jobaking": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -882,6 +882,14 @@
 "sultan": {
 "rg": "E",
 "c": []
+},
+"evangeline": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "nemmiias": {
 "rg": "E",
@@ -1067,13 +1075,6 @@
 "c": [
 "pais",
 "servidor"
-]
-},
-"evangeline": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "leyenda": {
@@ -1286,10 +1287,6 @@
 "temporada"
 ]
 },
-"noxvell": {
-"rg": "",
-"c": []
-},
 "volk": {
 "rg": "",
 "c": [
@@ -1347,10 +1344,6 @@
 "temporada"
 ]
 },
-"beneroo": {
-"rg": "",
-"c": []
-},
 "agentesombra": {
 "rg": "",
 "c": [
@@ -1401,6 +1394,14 @@
 ]
 },
 "matuk": {
+"rg": "",
+"c": []
+},
+"noxvell": {
+"rg": "",
+"c": []
+},
+"beneroo": {
 "rg": "",
 "c": []
 },
@@ -2963,23 +2964,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-18T23:33:09Z",
-"quien": [
-"Xubaru"
-],
-"rg": "D",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-18T23:33:09Z",
-"quien": [
-"Xubaru"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "rango",
 "t": "2026-10-18T23:33:09Z",
@@ -6396,6 +6380,23 @@
 "t": "2026-11-26T23:31:04Z",
 "sv": "CYH",
 "tier": 1
+},
+{
+"tipo": "rango",
+"t": "2026-11-27T02:53:19Z",
+"quien": [
+"Evangeline"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-27T02:53:19Z",
+"quien": [
+"Evangeline"
+],
+"carta": "competitivo"
 }
 ],
 "noche_antes": {
@@ -8689,9 +8690,20 @@
 "tipo": "resnoche",
 "t": "2026-11-27T08:00:00Z",
 "dia": "2026-11-26",
-"eventos": 1,
-"part": 8,
+"eventos": 2,
+"part": 29,
 "campeones": [
+{
+"ev": "EL PARAISO DEL INFRAMUNDO",
+"sv": "DDF",
+"ll": 700,
+"quien": [
+[
+"Sakro",
+""
+]
+]
+},
 {
 "ev": "- THE IMPACT -",
 "sv": "FRZ",
@@ -8706,26 +8718,53 @@
 ],
 "suman": [
 {
+"n": "Sakro",
+"k": "",
+"pts": 10000,
+"ev": 1
+},
+{
 "n": "Geoka",
 "k": "geoka",
 "pts": 7500,
 "ev": 1
 },
 {
-"n": "MCO",
-"k": "mco",
-"pts": 5000,
-"ev": 1
-},
-{
-"n": "Mito",
-"k": "mito",
-"pts": 3500,
+"n": "Sosa",
+"k": "",
+"pts": 7500,
 "ev": 1
 }
 ],
-"suben": [],
-"sorpresas": []
+"suben": [
+{
+"n": "Sakro",
+"k": "",
+"de": 706,
+"a": 358
+},
+{
+"n": "Sosa",
+"k": "",
+"de": 212,
+"a": 156
+},
+{
+"n": "Evangeline",
+"k": "evangeline",
+"de": 110,
+"a": 92
+}
+],
+"sorpresas": [
+{
+"n": "Sakro",
+"k": "",
+"que": "primer",
+"ev": "EL PARAISO DEL INFRAMUNDO",
+"desde": 706
+}
+]
 }
 },
 "extra": {
@@ -8843,7 +8882,7 @@
 "geoka": 1,
 "tenor": 0,
 "lrs": 0,
-"xclusivo": 0,
+"xclusivo": 1,
 "trot": 0,
 "adriagner": 0,
 "btrx": 1,
@@ -8862,7 +8901,7 @@
 "bna": 2,
 "paria": 0,
 "last": 0,
-"masino": 0,
+"masino": 1,
 "teito": 0,
 "keider": 0,
 "andres": 0,
