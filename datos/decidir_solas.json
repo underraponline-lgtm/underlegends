@@ -2901,6 +2901,33 @@
      "1531514653593567424"
     ]
    }
+  },
+  {
+   "id": "9adac3892c",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 7 · FFA · 29/10 · #545",
+   "que": "¿Quién es «Guaicurús🇰🇷»?",
+   "r": "Es Neo",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Neo: se anotó así en inscripciones",
+   "t": 1795750501521,
+   "filas": [
+    947
+   ],
+   "variantes": [
+    "Guaicurús🇰🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "Guaicurús",
+     "Neo"
+    ],
+    "filas": [
+     390
+    ]
+   }
   }
  ],
  "deshechas": []

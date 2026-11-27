@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T02:57:17+00:00",
+ "cuando": "2026-11-27T03:26:05+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5756,6 +5756,343 @@
    "categoria_id": "1558611505040064605"
   },
   {
+   "nombre": "REY DEL INGENIO",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1574820413500956694",
+   "cuando": "2026-11-24T16:14:05",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "e47bec0a64a24242",
+   "cupos_texto": "(16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "INGENIOSO 🧐",
+   "horario": "HORARIOS DE INSCRIPCION:",
+   "fecha": "24/11/26",
+   "premios": "",
+   "staff": {},
+   "autor": "Designo",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "COMPE 1 VS 1",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1573863589201182771",
+   "cuando": "2026-11-22T00:52:00",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@⚡ 𝑴𝒂𝒖𝒓𝒐𝒍𝒐𝒄𝒓𝒂𝒛𝒚 ⚡",
+   "orgs": [],
+   "autor_h": "187b29f00f240696",
+   "cupos_texto": "(24)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "",
+   "fecha": "21/11/26",
+   "premios": "+ SUMA TUS PRIMEROS PUNTOS DEL NUEVO RANKING 2026 - 2027",
+   "staff": {},
+   "autor": "⚡ Maurolocrazy ⚡",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "CHOP COMPE NOCTURNA V1",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1573061873710928053",
+   "cuando": "2026-11-19T19:46:16",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "17ba9bb10e33206e",
+   "cupos_texto": "(16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "4x4/8x8/60-40/acapella",
+   "horario": "HORARIOS DE INSCRIPCION:",
+   "fecha": "19/11/2026",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "chop"
+    ]
+   },
+   "autor": "chop",
+   "staff_cuentas": {
+    "chop": "1364747464170668042"
+   },
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "COMPE CHOP CEO V4",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1572443299606700083",
+   "cuando": "2026-11-18T02:48:17",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "17ba9bb10e33206e",
+   "cupos_texto": "(24)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "4x4/8x8/60-40/acapella",
+   "horario": "HORARIOS DE INSCRIPCION:",
+   "fecha": "17/11/2026",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "chop",
+     "dyzzmc",
+     "Diego🦉"
+    ]
+   },
+   "autor": "chop",
+   "staff_cuentas": {
+    "chop": "1364747464170668042",
+    "Diego🦉": "559905831932526603"
+   },
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "COMPE SABADEÑA",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1571604560903151621",
+   "cuando": "2026-11-15T19:15:26",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "5da160fbc5d330ad",
+   "cupos_texto": "(16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "ATERRADOR EMOJIS TEMATICA SITUACIÓN 4X4",
+   "horario": "HORARIOS DE INSCRIPCION:",
+   "fecha": "15/11/2026",
+   "premios": "",
+   "staff": {},
+   "autor": "CNC ®",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "COMPE ATERRADORA",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1566916377732718593",
+   "cuando": "2026-11-02T20:46:16",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "e47bec0a64a24242",
+   "cupos_texto": "(16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "ATERRADOR EMOJIS TEMATICA SITUACIÓN 4X4",
+   "horario": "HORARIOS DE INSCRIPCION:",
+   "fecha": "02/11/26",
+   "premios": "",
+   "staff": {},
+   "autor": "Designo",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "MINUTOS A SANGRE - D3ATHROWCHAMPS VOL 3",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1564315277947179058",
+   "cuando": "2026-10-26T16:30:25",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@.",
+   "orgs": [],
+   "autor_h": "168136f1008004d4",
+   "cupos_texto": "(16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "30S, y MINUTOS",
+   "horario": "<t:1793052000:F>",
+   "fecha": "<t:1793052000:F>",
+   "premios": "ROL",
+   "staff": {},
+   "autor": ".",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "EL ONMITRIX VOL 1.",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1552412042173091861",
+   "cuando": "2026-09-23T20:11:13",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@jeixder",
+   "orgs": [],
+   "autor_h": "c47c3e2e9fa31d37",
+   "cupos_texto": "(16-24-32)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "",
+   "fecha": "23/09/26",
+   "premios": "ROL DE",
+   "staff": {},
+   "autor": "†JEIXDER",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "FARK PREMIUM VOL 3",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1551674974303952987",
+   "cuando": "2026-09-21T19:22:22",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@Bohemio.rap",
+   "orgs": [
+    {
+     "n": "Bohemio.rap",
+     "id": "428287609412911105"
+    }
+   ],
+   "autor_h": "5ca2740d303a0d4a",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 VS 1",
+   "horario": "",
+   "fecha": "21/09/26",
+   "premios": "ROL DE HABILIDAD",
+   "staff": {},
+   "autor": "Bohemio.rap",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "EL PODERIO DE LOS DIOSES VOL 3",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1548438018589859881",
+   "cuando": "2026-09-12T20:59:52",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@†𝑱𝑬𝑰𝑿𝑫𝑬𝑹",
+   "orgs": [],
+   "autor_h": "c47c3e2e9fa31d37",
+   "cupos_texto": "(16-24-32)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "",
+   "fecha": "12/09/26",
+   "premios": "ROL DE   +FLYER PERSONALIZADO",
+   "staff": {},
+   "autor": "†JEIXDER",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "EL PODERIO DE LOS DIOSES VOL 2",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1544849932916232192",
+   "cuando": "2026-09-02T23:22:05",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@†𝑱𝑬𝑰𝑿𝑫𝑬𝑹",
+   "orgs": [],
+   "autor_h": "c47c3e2e9fa31d37",
+   "cupos_texto": "(16-24-32)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "",
+   "fecha": "02/09/26",
+   "premios": "ROL DE  +FLYER PERSONALIZADO",
+   "staff": {},
+   "autor": "†JEIXDER",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "RECONOCIENDO LA OBRA",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1543772941030789302",
+   "cuando": "2026-08-31T00:02:31",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@epik2942",
+   "orgs": [
+    {
+     "n": "epik2942",
+     "id": ""
+    }
+   ],
+   "autor_h": "d64159be88d86538",
+   "cupos_texto": "16/24/32",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1vs1 💡",
+   "horario": "",
+   "fecha": "30/08/26",
+   "premios": "Roles de habilidad",
+   "staff": {},
+   "autor": "erik_",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
+   "nombre": "EL PODERIO DE LOS DIOSES",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1543384433506258994",
+   "cuando": "2026-08-29T22:18:43",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@†𝑱𝑬𝑰𝑿𝑫𝑬𝑹",
+   "orgs": [],
+   "autor_h": "c47c3e2e9fa31d37",
+   "cupos_texto": "(16-24-32)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "",
+   "fecha": "29/08/26",
+   "premios": "CUPO ALA JEIX CUP CLASIFICATORIO 2026+FLYER PERSONALIZADO",
+   "staff": {},
+   "autor": "†JEIXDER",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
    "nombre": "Horarios de la competencia",
    "servidor": "DDS",
    "canal": "📢]ANUNCIOS-LEVEL-UP",
@@ -5779,7 +6116,7 @@
    "staff_cuentas": {},
    "categoria_id": "1486890147210596362",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "¡DISCORD STYLE 20 ESTÁ AQUÍ!",
@@ -5805,7 +6142,7 @@
    "staff_cuentas": {},
    "categoria_id": "1457061102138425425",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "DISCORD STYLE 19",
@@ -5831,7 +6168,7 @@
    "staff_cuentas": {},
    "categoria_id": "1457061102138425425",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "¡DISCORD STYLE 18 ESTÁ AQUÍ!",
@@ -5857,7 +6194,7 @@
    "staff_cuentas": {},
    "categoria_id": "1457061102138425425",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "DISCORD STYLE 17",
@@ -5883,7 +6220,7 @@
    "staff_cuentas": {},
    "categoria_id": "1457061102138425425",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "¡ESTE DOMINGO SE PRENDE LA BATALLA!",
@@ -5909,7 +6246,7 @@
    "staff_cuentas": {},
    "categoria_id": "1457061102138425425",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "Duo Style Vol.5",
@@ -5948,7 +6285,38 @@
    "staff_cuentas": {},
    "categoria_id": "1476034653457616916",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
+  },
+  {
+   "nombre": "NOCTURNA STYLE",
+   "servidor": "DDS",
+   "canal": "📢〕EVENTOS",
+   "msg_id": "1575707931171889295",
+   "cuando": "2026-11-27T03:00:46",
+   "canal_id": "1563698189310107659",
+   "guild_id": "1443770831598649528",
+   "organizador": "Benji Price",
+   "orgs": [
+    {
+     "n": "Benji Price",
+     "id": "734945161158852630"
+    }
+   ],
+   "autor_h": "cc5bf399801b74a0",
+   "cupos_texto": "(8)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "YA",
+   "premios": "HONOR Y UN RECONOCIMIENTO EN EL APARTADO VITRINA (SI QUIERES PON EL Q QUIERAS)",
+   "staff": {},
+   "autor": "Benji Price",
+   "staff_cuentas": {},
+   "categoria_id": "1563697445366669393",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "NOCTURNA STYLE",
@@ -5979,7 +6347,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "PRADOX STYLE",
@@ -6010,7 +6378,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "VERSO STYLE",
@@ -6041,7 +6409,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "GRISELDA STYLE",
@@ -6072,7 +6440,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "BOOM BAP STYLE",
@@ -6103,7 +6471,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "SIX SEVEN STYLE",
@@ -6134,7 +6502,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "COMPE SIN NOMBRE",
@@ -6165,7 +6533,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "MF DOOM Y MADLIB FECHA 1",
@@ -6196,7 +6564,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "COMPE SIN NOMBRE",
@@ -6227,7 +6595,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "SIX SEVEN STYLE",
@@ -6258,7 +6626,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "no se k poner style",
@@ -6289,7 +6657,7 @@
    "staff_cuentas": {},
    "categoria_id": "1563697445366669393",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-11-26T21:45:50"
+   "inscripciones_cuando": "2026-11-27T03:05:25"
   },
   {
    "nombre": "SUPREMACIA CUP 2",
@@ -8400,6 +8768,114 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "OKAM🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1575714005807399034",
+   "cuando": "2026-11-27T03:24:54"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "LALOX🇨🇷",
+   "quien": "lalitofr_1",
+   "discord_id": "1096531415916621936",
+   "msg_id": "1575712103556448287",
+   "cuando": "2026-11-27T03:17:20"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Matito 🇧🇴",
+   "quien": "4456540222",
+   "discord_id": "1555731451180482560",
+   "msg_id": "1575709649695670405",
+   "cuando": "2026-11-27T03:07:35"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "Pipas",
+   "quien": "pipas2oficial",
+   "discord_id": "1211107602881056818",
+   "msg_id": "1575709310820819126",
+   "cuando": "2026-11-27T03:06:14"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1575709231821230201",
+   "cuando": "2026-11-27T03:05:56"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Ojitos canábicos🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1575708987821789298",
+   "cuando": "2026-11-27T03:04:57"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "Ojitos canabicos🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1575708906771058811",
+   "cuando": "2026-11-27T03:04:38"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Kuni 🇦🇷",
+   "quien": "kunicrack",
+   "discord_id": "1573638520981954641",
+   "msg_id": "1575708817314811999",
+   "cuando": "2026-11-27T03:04:17"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Ryuk 🇦🇷",
+   "quien": "samu544",
+   "discord_id": "757267093162033253",
+   "msg_id": "1575708674259681434",
+   "cuando": "2026-11-27T03:03:43"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Drexx🇧🇱",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1575708604340641815",
+   "cuando": "2026-11-27T03:03:26"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Leyenda.X5 🇦🇷 (último o penúltimo)",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1575708272155959350",
+   "cuando": "2026-11-27T03:02:07"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📝〕INSCRIPCIONES",
+   "texto": "Abraham",
+   "quien": "abrahammh",
+   "discord_id": "1027996523117690901",
+   "msg_id": "1575708072272203829",
+   "cuando": "2026-11-27T03:01:19"
+  },
   {
    "servidor": "DDS",
    "canal": "📜〕INSCRIPCIONES",
@@ -44291,114 +44767,6 @@
    "discord_id": "1190746928774922311",
    "msg_id": "1563292121136631950",
    "cuando": "2026-10-23T20:44:46"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "mats🇺🇾",
-   "quien": "matttt.15",
-   "discord_id": "597240876573392946",
-   "msg_id": "1563289523910217769",
-   "cuando": "2026-10-23T20:34:27"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "OG🇻🇪",
-   "quien": "the0g.",
-   "discord_id": "425356695309516810",
-   "msg_id": "1563287375860211823",
-   "cuando": "2026-10-23T20:25:54"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Chente 🇻🇪",
-   "quien": "diegopalma0722",
-   "discord_id": "1485505764452728874",
-   "msg_id": "1563286628275978312",
-   "cuando": "2026-10-23T20:22:56"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "DarkoMC 🇲🇽",
-   "quien": "alamosza_95845",
-   "discord_id": "1375578701302857738",
-   "msg_id": "1563286153266724885",
-   "cuando": "2026-10-23T20:21:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teo 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1563285537253756970",
-   "cuando": "2026-10-23T20:18:36"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "familiafortunaexito 🇫🇷",
-   "quien": "yatusabe_eldeuxss",
-   "discord_id": "1338567692239765617",
-   "msg_id": "1563284855436091523",
-   "cuando": "2026-10-23T20:15:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Chente 🇻🇪",
-   "quien": "diegopalma0722",
-   "discord_id": "1485505764452728874",
-   "msg_id": "1563284631967629344",
-   "cuando": "2026-10-23T20:15:00"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Marson 🇺🇸",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1563284260935303269",
-   "cuando": "2026-10-23T20:13:32"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Black Dmon 🇪🇨🇺🇸",
-   "quien": "bidi8812",
-   "discord_id": "698611862031433779",
-   "msg_id": "1563284258351743098",
-   "cuando": "2026-10-23T20:13:31"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "erian",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1563282379966255156",
-   "cuando": "2026-10-23T20:06:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Neo🇦🇷",
-   "quien": "neosoulkid",
-   "discord_id": "520210394078248971",
-   "msg_id": "1563282336072728597",
-   "cuando": "2026-10-23T20:05:53"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Mco 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1563282333694562317",
-   "cuando": "2026-10-23T20:05:52"
   }
  ]
 }

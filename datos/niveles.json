@@ -3,8 +3,8 @@
  "niveles": {
   "ACAD": 2,
   "CEU": 3,
+  "CH": 1,
   "CHZ": 3,
-  "CYH": 1,
   "DDF": 1,
   "DDS": 2,
   "DRA": 1,
@@ -42,6 +42,16 @@
    "duelos": true,
    "perfil": false
   },
+  "CH": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "competitivo": true,
+   "duelos": true,
+   "perfil": true
+  },
   "CHZ": {
    "pagina": true,
    "calendario": true,
@@ -51,16 +61,6 @@
    "competitivo": false,
    "duelos": true,
    "perfil": false
-  },
-  "CYH": {
-   "pagina": true,
-   "calendario": true,
-   "ligas": true,
-   "panel": true,
-   "suma": false,
-   "competitivo": false,
-   "duelos": false,
-   "perfil": true
   },
   "DDF": {
    "pagina": true,
@@ -167,9 +167,9 @@
    "calendario": true,
    "ligas": true,
    "panel": true,
-   "suma": false,
+   "suma": true,
    "competitivo": false,
-   "duelos": false,
+   "duelos": true,
    "perfil": false
   },
   "SR": {
@@ -207,9 +207,9 @@
    "calendario": true,
    "ligas": true,
    "panel": true,
-   "suma": false,
+   "suma": true,
    "competitivo": false,
-   "duelos": false,
+   "duelos": true,
    "perfil": false
   }
  },
@@ -217,8 +217,8 @@
  "desde": {
   "ACAD": "2026-10-04",
   "CEU": "2026-11-15",
+  "CH": "2026-11-26",
   "CHZ": "2026-11-19",
-  "CYH": "2026-11-26",
   "DDF": "2026-10-03",
   "DDS": "2026-11-06",
   "DRA": "2026-09-22",
