@@ -6244,7 +6244,8 @@ const ok = (cond, que, det) => {
     const patches = () => pedidos.filter((p) => p.m.startsWith('PATCH'));
     const n1 = await o.perfilesBot(Date.now());
     const p1 = patches()[0];
-    ok(n1 === 1 && patches().length === 1 && /\/guilds\/42\/members\/@me$/.test(p1.m) && p1.body.nick === 'FFA Bot'
+    // (desde el 27/11/2026 DRA también lo toma, como ULAYA: acá su guild no contesta y no se le manda nada)
+    ok(n1 >= 1 && patches().length === 1 && /\/guilds\/42\/members\/@me$/.test(p1.m) && p1.body.nick === 'FFA Bot'
       && p1.body.avatar.startsWith('data:image/png;base64,') && p1.body.banner.startsWith('data:image/jpeg;base64,') && /3 eventos en 4 semanas/.test(p1.body.bio),
     'el vigía: el Tier 1 sale «FFA Bot» con la foto de su Discord, la portada de su escena y su bio; el Tier 3 y DRA (la casa de ULAYA), nada', JSON.stringify({ n1, p: patches().map((p) => p.m) }));
     await o.perfilesBot(Date.now());

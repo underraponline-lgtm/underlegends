@@ -170,7 +170,7 @@ BENEFICIOS = (
 #: (Worker y web/src/unirse.jsx)
 #: 🏠 y el perfil del bot NO va de entrada en DRA, la casa de la Liga y de ULAYA (23/11/2026): ahí «DRA Bot» sería renombrar
 #: al bot en su propio hogar. Lo prende Dlx en el Dashboard si quiere. El mismo corte vive en `PERFIL_FUERA` de bot/avisos.js
-PERFIL_FUERA = {'DRA'}
+PERFIL_FUERA = set()   # 27/11/2026: DRA también lleva su perfil (con el nombre ULAYA): ver bot/avisos.js
 PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos', 'perfil'},
           2: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
           3: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'}}

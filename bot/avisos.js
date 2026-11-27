@@ -6053,7 +6053,10 @@ export function perfilBotValido(cual, valor) {
 //: 🏠 los servidores donde el bot NO toma el perfil de entrada: DRA es la casa de la Liga y de ULAYA, y ahí «DRA Bot»
 //: sería renombrar al bot en su propio hogar. Lo prende Dlx en el Dashboard si lo quiere (lo elegido manda). El mismo
 //: corte vive en `PERFIL_FUERA` de bot/tiers.py: si se cambia uno, se cambia el otro
-export const PERFIL_FUERA = ['DRA'];
+// 27/11/2026, Dlx: «personaliza los bots de Cypherhood y DRA… avatares, portada y descripción»: DRA ya no queda afuera.
+// Toma su foto, su portada y su bio, pero se sigue llamando ULAYA (`PERFIL_NICK`): es su casa
+export const PERFIL_FUERA = [];
+export const PERFIL_NICK = { DRA: 'ULAYA' };
 //: 🖼️ las imágenes de Under Legends para el bot (la opción `liga`): el logo, y el cartel de la página recortado a 17:6
 export const PERFIL_LIGA = { avatar: HUB + '/ul.png', banner: HUB + '/ul-banner.png' };
 /**
@@ -6098,7 +6101,7 @@ export function perfilBotBio(o) {
 export function perfilBotDefecto(sv, nombre, info) {
   const i = info || {};
   const sigla = String(i.sigla || sv);
-  return { nick: (sigla + ' Bot').slice(0, 32), bio: perfilBotBio(Object.assign({ sv }, i, { sigla, nombre: nombre || i.nombre || sv })) };
+  return { nick: (PERFIL_NICK[sv] || (sigla + ' Bot')).slice(0, 32), bio: perfilBotBio(Object.assign({ sv }, i, { sigla, nombre: nombre || i.nombre || sv })) };
 }
 /** 🤖 Lo que el bot tiene que ser en ese servidor: lo que eligió su equipo (`p`) sobre lo de siempre. `G`, lo que dice
  *  Discord del servidor (`name`, `icon`, `banner`). Las imágenes son URLs: las de su Discord en PNG, las propias en R2;
