@@ -136,9 +136,18 @@ const LLAVE_H = 3;
 //: 🔴 EL APODO MIENTRAS GRABA (ponerApodo). Dlx, 25/11/2026: *«en vez q diga grabando simplemente pon el emoji rojo al
 //: costado de Ulaya asi: Emoji / la linea vertical ULAYA»*. Antes era «🔴 GRABANDO · ULAYA», que en FRZ quedó colgado
 //: (aislada no se lo pudo sacar): `APODOS_VIEJOS` hace que se lo reconozca igual y se lo saque
-const APODO_GRABANDO = '🔴 | ULAYA';
+//: 🔴 Y CON SU APODO DE ESE SERVIDOR (Dlx, 26/11/2026: «el emoji rojo, la barra y el apodo; en los tier 1 es el nombre del
+//: sv, en los demás está bien como ULAYA»): el bot de la Liga ES ULAYA, y en un Tier 1 se llama «FFA Bot» (el perfil del
+//: bot, `perfilBotQuiere()` de bot/avisos.js). Al grabar va «🔴 | FFA Bot»; sin apodo, «🔴 | ULAYA»
+const PREFIJO_GRABANDO = '🔴 | ';
+const APODO_GRABANDO = PREFIJO_GRABANDO + 'ULAYA';
 const APODOS_VIEJOS = ['🔴 GRABANDO · ULAYA'];
-const esApodoGrabando = (nick) => [APODO_GRABANDO, ...APODOS_VIEJOS].some((a) => String(nick || '').startsWith(a));
+export const esApodoGrabando = (nick) => [PREFIJO_GRABANDO, ...APODOS_VIEJOS].some((a) => String(nick || '').startsWith(a));
+/** El apodo mientras graba, con el que tenía (`antes`; `null` = sin apodo). Discord corta los apodos en 32 */
+export const apodoGrabando = (antes) => {
+  const base = String(antes || '').trim();
+  return base && !esApodoGrabando(base) ? (PREFIJO_GRABANDO + base).slice(0, 32) : APODO_GRABANDO;
+};
 const VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev';
 //: otros grabadores con los que NO se entra (vacío: ver arriba). El de Drako es «Freestyle for All», 1557056218164629535
 const OTROS = new Set(lista(E.NO_SI_ESTA));
@@ -434,8 +443,10 @@ class Grabacion {
     try {
       const me = this.guild.members.me ?? await this.guild.members.fetchMe();
       if (grabando) {
-        this.apodoAntes = me.nickname ?? null;
-        if (me.nickname !== APODO_GRABANDO) await me.setNickname(APODO_GRABANDO, 'grabando el evento');
+        // un «🔴 | …» que quedó colgado de otra vez no es el de antes: sin él vuelve al de siempre
+        this.apodoAntes = me.nickname && !esApodoGrabando(me.nickname) ? me.nickname : (this.apodoAntes ?? null);
+        const quiero = apodoGrabando(this.apodoAntes);
+        if (me.nickname !== quiero) await me.setNickname(quiero, 'grabando el evento');
       } else if (esApodoGrabando(me.nickname)) {
         await me.setNickname(this.apodoAntes && !esApodoGrabando(this.apodoAntes) ? this.apodoAntes : null, 'terminó la grabación');
       }
