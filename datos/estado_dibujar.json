@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-27T06:35:48Z",
+ "cuando": "2026-11-27T07:45:19Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 3697.1,
+ "dur_s": 4133.8,
  "pasos": [
   {
    "n": "2f",
@@ -15,73 +15,73 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 0.9
   },
   {
    "n": "2f3",
    "que": "los estilos de juego elegidos",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 12.5
+   "s": 16.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 38.5
+   "s": 21.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 8 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 3428.9
+   "s": 3876.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 155.5
+   "s": 160.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.8
+   "s": 57.3
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "714",
-  "nombre": "NOCTURNA STYLE 2 everyone",
-  "sv": "DDS",
-  "dia": "2026-11-26"
+  "n": "715",
+  "nombre": "mesi",
+  "sv": "FFA",
+  "dia": "2026-11-27"
  },
  "cuotas": {
   "kv": {
-   "write": 360,
-   "read": 13362
+   "write": 406,
+   "read": 15196
   },
   "objeto": {
-   "leidas": 1491680,
-   "escritas": 26167,
-   "pedidos": 11204
+   "leidas": 1665097,
+   "escritas": 29465,
+   "pedidos": 12744
   },
   "worker": {
-   "pedidos": 22845,
+   "pedidos": 22176,
    "errores": 0,
-   "sub": 27441,
+   "sub": 26430,
    "cortados": 0,
    "p50_ms": 1.01,
-   "p99_ms": 14.6,
+   "p99_ms": 14.65,
    "cpu": {
-    "total": 49966,
-    "objeto_10": 2239,
-    "worker_10": 632
+    "total": 48231,
+    "objeto_10": 2230,
+    "worker_10": 625
    }
   },
   "r2": {
