@@ -62,10 +62,10 @@ def pedir(m, url, **kw):
 #: estilo pero consecutivo», y «archivo toca»). (lo que abre, lo que cierra) alrededor del emoji
 ESTILOS = {
     'bienvenida': ('•「', '」'), 'ligaglobal': ('〢', '〉'), 'contenido': ('『', '』'), 'comunidad': ('', '˚┊'),
-    'cyphers': ('【', '】'), 'eventosdra': ('⟪', '⟫'), 'ayuda': ('┊', '┊'), 'salon': ('〘', '〙'),
-    'central': ('⌜', '⌟'), 'archivo': ('⌁', '⌁'),
+    'cyphers': ('【', '】'), 'eventosdra': ('✦', '・'), 'ayuda': ('┊', '┊'), 'salon': ('〘', '〙'),
+    'central': ('╏', '╏'), 'archivo': ('▫️', '・'),
 }
-DECOS = '〢〉•「」˚┊『』【】⟪⟫〘〙⌜⌟⌁'
+DECOS = '〢〉•「」˚┊『』【】⟪⟫〘〙⌜⌟⌁✦・╏▫'
 
 
 def estilo(nombre, voz, deco):
