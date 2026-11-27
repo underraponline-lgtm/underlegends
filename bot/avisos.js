@@ -6681,6 +6681,17 @@ export function llavesDelMinuto(lista, enVivo, min, tope = VIVO_TOPE) {
   return vivos.concat(resto.slice(desde, desde + libres)).slice(0, tope);
 }
 
+/** 🏛️ Cuántos renglones son `<:viñeta:…> A <:otro:…> B`: dos emojis propios distintos, el primero al principio y el
+ *  segundo entre dos nombres (lo mismo que mira `vsDeVineta()` de `llave_vivo.js`, sin la bandera ni el podio). */
+export function vinetasVs(s) {
+  let n = 0;
+  for (const l of String(s || '').split('\n')) {
+    const m = /^[ \t>*_#]*<a?:(\w+):\d+>[ \t]*[^<\n]*?[\p{L}\p{N}][^<\n]*?[ \t]*<a?:(\w+):\d+>[ \t]*[^<\n]*?[\p{L}\p{N}]/u.exec(l);
+    if (m && m[1] !== m[2]) n++;
+  }
+  return n;
+}
+
 /** ¿Parece una llave? Barato: una ronda y al menos dos batallas o marcos. */
 export function pareceLlave(texto) {
   // ⚠️ CON LAS LETRAS DE FANTASÍA EN LETRAS COMUNES: Snake Rap escribe sus
@@ -6704,7 +6715,10 @@ export function pareceLlave(texto) {
   // 🌲 y sin ninguna ronda legible, la FORMA: cuatro renglones con «vs» o más. Se guarda y la página la lee por bloques
   // (`rondasPorForma()` de `llave_vivo.js`); si no le saca batallas, no muestra nada
   if (conVs(s) >= 4) return true;
-  return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) &&
+  // 🏛️ y el emoji del servidor haciendo de «vs» detrás de una viñeta (ACAD, 26/11/2026: `<:emoji_7:…> Eclipse🇨🇱
+  // <:emoji_4:…> alter🇵🇸`, ver `vsDeVineta()` de `llave_vivo.js`): sin esto la llave se guardó recién con el campeón, ya
+  // terminada, y la grabación de ese evento salió con «0 batallas»
+  return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) && vinetasVs(s) +
     (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉|>\s*\)|[】〕》⟩⟧〗⦘❱❯❭❩❫❳❵⟫⟭⟯⦆〙〛⸩⁆]|[\u{2694}\u{1F5E1}\u{2716}\u{2715}\u{2717}\u{26A1}\u{1F4A5}\u{1F94A}\u{1F91C}\u{1F52A}]|\b(?:versus|vrs|contra)\b/giu) || []).length >= 2;
 }
 

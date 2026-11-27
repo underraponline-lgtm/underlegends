@@ -121,6 +121,15 @@
    *  el VS ni el podio, como el lookbehind de Python. Rechazar acá y no en la expresión no cambia lo que se encuentra
    *  después: adentro de esas dos no hay otro `:` que pueda empezar una (el último va pegado a una letra) */
   function pegado(s, off) { return off > 0 && /[<\w]/.test(s.charAt(off - 1)); }
+  /* 🏛️ el emoji del servidor haciendo de «vs» detrás de una viñeta (ACAD, 26/11/2026: `<:emoji_7:…> Eclipse🇨🇱
+     <:emoji_4:…> alter🇵🇸`): `escuchar.VINETA_VS` y `_vs_de_vineta()`, con las mismas condiciones */
+  var VINETA_VS = /^([ \t>*_#]*<a?:(\w+):\d+>[ \t]*)([^<\n]*?[\p{L}\p{N}][^<\n]*?)[ \t]*(<a?:(\w+):\d+>)[ \t]*([^<\n]*?[\p{L}\p{N}][^<\n]*?)[ \t*_]*$/u;
+  function vsDeVineta(l) {
+    var m = VINETA_VS.exec(l);
+    if (!m || m[2] === m[5] || CON_MARCO.test(l) || CONTRA_T.test(l)) return l;
+    if (/^<a?:[123][a-zº°]*_?puesto\w*:\d+>$/i.test(m[4]) || paisDelEmoji(m[4], m[5]) !== m[4]) return l;
+    return m[1] + m[3] + ' 🆚 ' + m[6];
+  }
   var TERCER_ENC = /\b(?:3\s*(?:er|ro|º|°)?|tercer[oa]?)\s*(?:y\s*(?:4\s*(?:to|º|°|o)?|cuarto)\s*)?(?:puesto|lugar)\b/i;
   var PAIS_DE_EMOJI = { ar: ['ARG', 'ARGENTINA'], bo: ['BOL', 'BOLIVIA'], br: ['BRA', 'BRASIL', 'BRAZIL'],
     cl: ['CHI', 'CHL', 'CHILE'], co: ['COL', 'COLOMBIA'], cr: ['CRC', 'CRI', 'COSTARICA'], cu: ['CUB', 'CUBA'],
@@ -378,6 +387,7 @@
     // 🏛️ la RED BULL CREW de la ACADEMIA: el VS como texto, sin los marcos 〘〙 mal anidados ni la viñeta ➢
     t = t.replace(VS_TEXTO, function (m, off, s) { return pegado(s, off) ? m : ' 🆚 '; })
       .replace(/[〘〙]/g, ' ').replace(/^[ \t]*[➢➤]+[ \t]*/gm, '');
+    t = t.split('\n').map(vsDeVineta).join('\n');
     t = t.replace(/<a?:(\w+):\d+>/g, paisDelEmoji);
     t = t.replace(/:flag_([a-z]{2}):/g, function (_m, cc) { return bandera(cc); });
     t = t.split('\n').map(sinEspaciar).join('\n');

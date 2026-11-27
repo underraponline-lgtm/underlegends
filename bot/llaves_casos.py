@@ -206,6 +206,27 @@ INVENTADOS = [
      "▪️   [PICHULA + OASIS + RIZAS] 🆚 [NC + TAM + ZA]\n\n\n●❯────────｢ 🉐  ｣────────❮●\n\n\n▪️**[• FINAL•]**\n\n"
      "▪️ [ OKAM + MOLUSCO + JULDA ] 🆚 [ PICHULA + OASIS + RIZAS ]\n\n●❯────────｢🏆 ｣────────❮●\n\n\n"
      "🥇 **𝄆 CAMPEÓN: OASIS + PICHULA + RIZAS\n\n🥈 𝄆 SUB-CAMPEÓN: OKAM + MOLUSCO + JULDA**\n\n\n@everyone"),
+    # 🏛️ el emoji del servidor de «vs» detrás de una viñeta (ACAD, 26/11/2026): ver `escuchar.VINETA_VS`
+    ("ACAD: OPENING ESPECIAL PASHION #1 (26/11/2026), `<:emoji_7:…> A <:emoji_4:…> B`: el «vs» es un emoji cualquiera",
+     "<:OEP_CUP:1573366620888367225> 𝙊𝙥𝙚𝙣𝙞𝙣𝙜 𝙀𝙨𝙥𝙚𝙘𝙞𝙖𝙡 𝙋𝙖𝙨𝙝𝙞𝙤𝙣 #𝟭 <:OEP_CUP:1573366620888367225> \n\n"
+     "<:OEP_CUP:1573366620888367225>  --------------------------------- <:OEP_CUP:1573366620888367225> \n\n𝑪𝒖𝒂𝒓𝒕𝒐𝒔 \n\n"
+     "<:emoji_7:1462319957340848169> Eclipse🇨🇱 <:emoji_4:1462318296324899020> alter🇵🇸\n"
+     "<:emoji_7:1462319957340848169> Tuto palestina  <:emoji_4:1462318296324899020> Chuwin 🏴‍☠️ \n"
+     "<:emoji_7:1462319957340848169> Pacheco <:emoji_4:1462318296324899020> epil 🇮🇱\n"
+     "<:emoji_7:1462319957340848169> Chuwin 🏴‍☠️<:emoji_4:1462318296324899020> player🇻🇪\n\n"
+     "<:OEP_CUP:1573366620888367225>  --------------------------------- <:OEP_CUP:1573366620888367225> \n\n𝑺𝒆𝒎𝒊𝒇𝒊𝒏𝒂𝒍𝒆𝒔 \n\n"
+     "<:emoji_7:1462319957340848169> Eclipse🇨🇱 <:emoji_4:1462318296324899020> 1200\n"
+     "<:emoji_7:1462319957340848169> Chuwin 🏴‍☠️  <:emoji_4:1462318296324899020>  Pacheco\n\n"
+     "<:OEP_CUP:1573366620888367225>  --------------------------------- <:OEP_CUP:1573366620888367225> \n\n"
+     "<:OEP_CUP:1573366620888367225> 𝑮𝑹𝑨𝑵 𝑭𝑰𝑵𝑨𝑳 <:OEP_CUP:1573366620888367225>\n\n"
+     "<:LA_CREW:1573397461160956105> Eclipse🇨🇱  <:emoji_3:1462318255828893758> Chuwin 🏴‍☠️ \n\n"
+     "<:OEP_CUP:1573366620888367225>  --------------------------------- <:OEP_CUP:1573366620888367225> \n\n"
+     "🪙 𝓒𝓪𝓶𝓹𝓮𝓸́𝓷 : Eclipse🇨🇱\n🥈 𝓢𝓾𝓫𝓬𝓪𝓶𝓹𝓮𝓸́𝓷 : Chuwin 🏴‍☠️\n🏆 𝓜𝓥𝓟 𝓓𝓔 𝓛𝓐 𝓒𝓞𝓜𝓟𝓔: 1200 🇨🇷 \n@everyone \n"
+     "# LOS VEO A LAS 15:45 🇨🇴"),
+    ("… y lo que NO es eso: el mismo emoji en las dos puntas (un marco), una bandera o un podio en el medio, "
+     "un lado vacío y la línea sin viñeta",
+     "<:copa:1> CUARTOS <:copa:1>\n<:b:2> ANA <:ARG:3> BEA\n<:b:2> CAMI <:1erPuesto:4> DORA\n<:b:2> EVA <:c:5>\n"
+     "FLOR <:c:5> GIA\n<:b:2> HANA <:c:5> IRIS\n<:b:2> JUANA <:c:5> KARLA\n"),
 ]
 
 

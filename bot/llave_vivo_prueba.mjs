@@ -186,6 +186,11 @@ ok('un anuncio no', !pareceLlave('# COPA DE PRUEBA\nMODALIDAD: 1vs1\nHORARIO: en
 ok('la nave de funa sí, desde la fase (sin 🆚 todavía)',
   pareceLlave('[ NAVE DE FUNA ]\n[ FASE DE ELIMINACIÓN ]\n> ⌞ Dnk🇦🇷 ⌝ ❌\n> ⌞ Heat🇵🇷 ⌝\n> ⌞ Sombra🇵🇷 ⌝\n> ⌞ Blue🇵🇦 ⌝ ❌') &&
   !pareceLlave('# NAVE DE FUNA el viernes\nInscripciones abiertas\nCUPOS: 16'));
+// 🏛️ ACAD, 26/11/2026: recién publicada (los cuartos solos, sin campeón) ya es una llave; si no, el vigía la guarda al final
+const acad = casos.find((c) => c.que.startsWith('ACAD: OPENING ESPECIAL PASHION'));
+ok('el emoji del servidor de «vs» detrás de una viñeta: la llave de ACAD sin campeón todavía parece una llave',
+  !!acad && pareceLlave(acad.texto.split('𝑺𝒆𝒎𝒊')[0]) &&
+  !pareceLlave('<:copa:1> CUARTOS <:copa:1>\n<:b:2> ANA <:ARG:3> BEA\n<:copa:1> ---- <:copa:1>\nFLOR <:c:5> GIA'));
 ok('el podio suelto sí, para que la página lo pegue a su llave',
   pareceLlave('│ CAMPEÓN: **FULLY🇨🇱** @FULLY\n│ SUBCAMPEÓN: SNOW🇨🇴') && pareceLlave('𝐂𝐀𝐌𝐏𝐄𝐎́𝐍: X'));
 ok('las menciones pasan a nombre, con el apodo del servidor primero',

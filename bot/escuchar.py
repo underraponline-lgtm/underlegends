@@ -455,6 +455,30 @@ def _pais_del_emoji(m):
     return m.group(0)
 
 
+#: 🏛️ EL EMOJI DEL SERVIDOR HACIENDO DE «VS», DETRÁS DE UNA VIÑETA (ACAD, «Opening Especial Pashion #1», 26/11/2026):
+#: `<:emoji_7:…> Eclipse🇨🇱 <:emoji_4:…> alter🇵🇸`. El del medio se llama «emoji_4» (ni `vs` ni `versus`), así que no
+#: lo veía ningún separador: la llave «tenía rondas y nombres» y salía sin una batalla, el bot en vivo no la guardó hasta
+#: que apareció el campeón y la grabación de ese evento dio «0 batallas». Ver `_vs_de_vineta()`
+VINETA_VS = re.compile(r'^([ \t>*_#]*<a?:(\w+):\d+>[ \t]*)([^<\n]*?[^\W_][^<\n]*?)[ \t]*(<a?:(\w+):\d+>)'
+                       r'[ \t]*([^<\n]*?[^\W_][^<\n]*?)[ \t*_]*$')
+
+
+def _vs_de_vineta(l):
+    """`<:viñeta:…> A <:otro:…> B` -> `<:viñeta:…> A 🆚 B`: el segundo emoji propio separa (ver `VINETA_VS`).
+
+    ⚠️ SÓLO ASÍ, ENTERA: la línea ARRANCA con un emoji propio, trae EXACTAMENTE dos, el del medio es otro (dos iguales son
+    un marco: `<:OEP_CUP:…> título <:OEP_CUP:…>`), tiene nombre de los dos lados, no es una bandera (`<a:ARG:…>`) ni
+    un podio (`<:1erPuesto:…>`), y la línea no tiene ya un «vs» ni un marco. Con cualquier otra cosa queda como vino.
+    """
+    m = VINETA_VS.match(l)
+    if not m or m.group(2) == m.group(5) or _CON_MARCO.search(l) or _CONTRA_T.search(l):
+        return l
+    medio = re.match(r'<a?:(\w+):\d+>', m.group(4))
+    if PODIO_PROPIO.match(m.group(4)) or _pais_del_emoji(medio) != medio.group(0):
+        return l
+    return m.group(1) + m.group(3) + ' 🆚 ' + m.group(6)
+
+
 #: « x » ENTRE NOMBRES, ADENTRO DE UN MARCO (ver `_equipo_con_x()`)
 _X_EQUIPO = re.compile(r'[ \t]+[xX][ \t]+')
 
@@ -776,6 +800,7 @@ def traducir(texto):
     t = VS_TEXTO.sub(' 🆚 ', t)
     t = re.sub(r'[〘〙]', ' ', t)
     t = re.sub(r'(?m)^[ \t]*[➢➤]+[ \t]*', '', t)
+    t = '\n'.join(_vs_de_vineta(l) for l in t.split('\n'))
     t = re.sub(r'<a?:(\w+):\d+>', _pais_del_emoji, t)
     t = re.sub(r':flag_([a-z]{2}):', lambda m: _bandera(m.group(1)), t)
     t = '\n'.join(_sin_espaciar(l) for l in t.split('\n'))
