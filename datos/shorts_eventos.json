@@ -149,6 +149,11 @@
    "listos": 0,
    "falla": "salió mal dos veces: 0 shorts",
    "avisado": true
+  },
+  "1575980883918197109": {
+   "t": "2026-11-27T21:05",
+   "como": "pedido",
+   "run": 46069922856
   }
  }
 }
