@@ -25,6 +25,17 @@
    "vence": "2026-11-04T19:26:17+00:00",
    "vencido": true
   },
+  "01\\. 🎤 1200": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
   "01\\. 🎤 panchok": {
    "con": null,
    "cumplido": "",
@@ -50,6 +61,17 @@
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
+  "02\\. 🎤 Asuka": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
   "02\\. 🎤 Izaya": {
    "con": null,
    "cumplido": "",
@@ -61,7 +83,84 @@
    "vence": "2026-11-04T19:26:17+00:00",
    "vencido": true
   },
+  "02\\. 🎤 PANCHOK": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "03\\. 🎤 T MAX TURBO": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "04\\. 🎤 Dominic": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "04\\. 🎤 Emi": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
   "05\\. 🎤 TEO": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "06\\. 🎤 MC DL": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "07\\. 🎤 MC Darnbless": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "08\\. 🎤 Magic OG": {
    "con": null,
    "cumplido": "",
    "debut": "2026-10-28T19:26:17+00:00",
@@ -232,6 +331,17 @@
    "n": 532,
    "sv": "FFA",
    "vence": "2026-11-03T03:32:41+00:00",
+   "vencido": true
+  },
+  "ASUKA": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
    "vencido": true
   },
   "AZUKI": {
@@ -1992,6 +2102,17 @@
    "n": 705,
    "sv": "SGR",
    "vence": "2026-11-21T23:01:17+00:00",
+   "vencido": true
+  },
+  "KIXXZ": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
    "vencido": true
   },
   "KOJIRO": {

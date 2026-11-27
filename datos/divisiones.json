@@ -2338,6 +2338,23 @@
      ]
     ],
     [
+     "Milo",
+     1033,
+     2,
+     4,
+     2,
+     [
+      [
+       18,
+       "TøKīØ🦠🧠"
+      ],
+      [
+       16,
+       "Mito"
+      ]
+     ]
+    ],
+    [
      "SGB",
      1031,
      4,
@@ -2443,6 +2460,19 @@
      ]
     ],
     [
+     "botrax",
+     1017,
+     1,
+     4,
+     2,
+     [
+      [
+       17,
+       "Richard"
+      ]
+     ]
+    ],
+    [
      "HH",
      1016,
      4,
@@ -2498,7 +2528,7 @@
      [
       [
        -16,
-       "asuka"
+       "ASUKA"
       ],
       [
        15,
@@ -2727,23 +2757,6 @@
       [
        -16,
        "Masino"
-      ]
-     ]
-    ],
-    [
-     "Bau",
-     1000,
-     2,
-     4,
-     2,
-     [
-      [
-       -19,
-       "Mito"
-      ],
-      [
-       19,
-       "Makmah"
       ]
      ]
     ],
@@ -3223,6 +3236,19 @@
      ]
     ],
     [
+     "Kastigoz",
+     983,
+     1,
+     4,
+     1,
+     [
+      [
+       -17,
+       "Mito"
+      ]
+     ]
+    ],
+    [
      "Millonari-O",
      983,
      1,
@@ -3694,7 +3720,7 @@
      [
       [
        -15,
-       "asuka"
+       "ASUKA"
       ],
       [
        -13,
@@ -4236,6 +4262,27 @@
      ]
     ],
     [
+     "ASUKA",
+     1046,
+     3,
+     5,
+     2,
+     [
+      [
+       16,
+       "viper"
+      ],
+      [
+       15,
+       "DarnBless"
+      ],
+      [
+       15,
+       "Zeta"
+      ]
+     ]
+    ],
+    [
      "Puppy",
      1046,
      3,
@@ -4367,23 +4414,6 @@
       [
        18,
        "Geoka"
-      ]
-     ]
-    ],
-    [
-     "Milo",
-     1033,
-     2,
-     5,
-     2,
-     [
-      [
-       18,
-       "TøKīØ🦠🧠"
-      ],
-      [
-       16,
-       "Mito"
       ]
      ]
     ],
@@ -4705,19 +4735,6 @@
       [
        17,
        "Tier"
-      ]
-     ]
-    ],
-    [
-     "botrax",
-     1017,
-     1,
-     5,
-     2,
-     [
-      [
-       17,
-       "Richard"
       ]
      ]
     ],
@@ -5501,6 +5518,23 @@
       [
        16,
        "ISAIAS"
+      ]
+     ]
+    ],
+    [
+     "Bau",
+     1000,
+     2,
+     5,
+     2,
+     [
+      [
+       -19,
+       "Mito"
+      ],
+      [
+       19,
+       "Makmah"
       ]
      ]
     ],
@@ -8312,19 +8346,6 @@
      ]
     ],
     [
-     "Kastigoz",
-     983,
-     1,
-     5,
-     2,
-     [
-      [
-       -17,
-       "Mito"
-      ]
-     ]
-    ],
-    [
      "Kenny",
      983,
      1,
@@ -10671,9 +10692,18 @@
  "mejor": {
   ".SosaATR": 3,
   "01\\. 🎤": 0,
+  "01\\. 🎤 1200": 0,
   "01\\. 🎤 panchok": 0,
+  "02\\. 🎤 Asuka": 0,
   "02\\. 🎤 Izaya": 0,
+  "02\\. 🎤 PANCHOK": 0,
+  "03\\. 🎤 T MAX TURBO": 0,
+  "04\\. 🎤 Dominic": 0,
+  "04\\. 🎤 Emi": 0,
   "05\\. 🎤 TEO": 0,
+  "06\\. 🎤 MC DL": 0,
+  "07\\. 🎤 MC Darnbless": 0,
+  "08\\. 🎤 Magic OG": 0,
   "1200": 11,
   "1200 & Blurryface": 0,
   "19": 5,
@@ -10696,6 +10726,7 @@
   "ANTORCHA": 0,
   "ARDEAN": 3,
   "AREZ": 0,
+  "ASUKA": 0,
   "Abraham": 5,
   "AbrahamH": 9,
   "Aby": 0,
@@ -10739,7 +10770,7 @@
   "Badterne": 7,
   "Baltrip": 0,
   "BastyRetro": 10,
-  "Bau": 3,
+  "Bau": 0,
   "Baut_N": 0,
   "Benja": 0,
   "Benjixo": 3,
@@ -10963,12 +10994,13 @@
   "KELNCHOS🇪🇸": 0,
   "KIPMC 🇧🇷": 0,
   "KIRITO": 0,
+  "KIXXZ": 0,
   "KRNAN 🇨🇱": 0,
   "KUN": 0,
   "Kain": 0,
   "Karma": 0,
   "Karumailafmasha🇹🇼": 0,
-  "Kastigoz": 0,
+  "Kastigoz": 3,
   "Keider": 3,
   "Kenny": 0,
   "Khalil": 0,
@@ -11076,7 +11108,7 @@
   "MetriOdin": 0,
   "Micronico🇦🇷": 0,
   "Millonari-O": 3,
-  "Milo": 0,
+  "Milo": 3,
   "Miniboy": 9,
   "Minis": 0,
   "Misterioso": 0,
@@ -11220,7 +11252,7 @@
   "Santi": 3,
   "Santo Trinidad 🇨🇴": 0,
   "Saz": 0,
-  "Scot": 2,
+  "Scot": 3,
   "Scritura": 2,
   "Selek": 0,
   "Senticide": 5,
@@ -11330,7 +11362,7 @@
   "bastty": 0,
   "benjadsantis": 0,
   "boemico": 3,
-  "botrax": 0,
+  "botrax": 3,
   "cardozo": 0,
   "chekialo 🇧🇯": 0,
   "crakero": 5,
@@ -11372,7 +11404,7 @@
   "nzux 🇵🇪": 3,
   "oriuz": 9,
   "papa": 0,
-  "penescrotopene & lvl & Afinnpapa": 0,
+  "penescrotopene & lvl & Afinnpapa": 3,
   "publicenemy🇦🇷": 0,
   "ramses": 0,
   "rayito": 0,
@@ -11399,9 +11431,18 @@
  "nivel": {
   ".SosaATR": 5,
   "01\\. 🎤": 5,
+  "01\\. 🎤 1200": 5,
   "01\\. 🎤 panchok": 5,
+  "02\\. 🎤 Asuka": 5,
   "02\\. 🎤 Izaya": 5,
+  "02\\. 🎤 PANCHOK": 5,
+  "03\\. 🎤 T MAX TURBO": 5,
+  "04\\. 🎤 Dominic": 5,
+  "04\\. 🎤 Emi": 5,
   "05\\. 🎤 TEO": 5,
+  "06\\. 🎤 MC DL": 5,
+  "07\\. 🎤 MC Darnbless": 5,
+  "08\\. 🎤 Magic OG": 5,
   "1200": 2,
   "1200 & Blurryface": 5,
   "19": 4,
@@ -11424,6 +11465,7 @@
   "ANTORCHA": 5,
   "ARDEAN": 4,
   "AREZ": 5,
+  "ASUKA": 5,
   "Abraham": 4,
   "AbrahamH": 2,
   "Aby": 5,
@@ -11467,7 +11509,7 @@
   "Badterne": 3,
   "Baltrip": 5,
   "BastyRetro": 2,
-  "Bau": 4,
+  "Bau": 5,
   "Baut_N": 5,
   "Benja": 5,
   "Benjixo": 5,
@@ -11691,12 +11733,13 @@
   "KELNCHOS🇪🇸": 5,
   "KIPMC 🇧🇷": 5,
   "KIRITO": 5,
+  "KIXXZ": 5,
   "KRNAN 🇨🇱": 5,
   "KUN": 5,
   "Kain": 5,
   "Karma": 5,
   "Karumailafmasha🇹🇼": 5,
-  "Kastigoz": 5,
+  "Kastigoz": 4,
   "Keider": 5,
   "Kenny": 5,
   "Khalil": 5,
@@ -11804,7 +11847,7 @@
   "MetriOdin": 5,
   "Micronico🇦🇷": 5,
   "Millonari-O": 4,
-  "Milo": 5,
+  "Milo": 4,
   "Miniboy": 5,
   "Minis": 5,
   "Misterioso": 5,
@@ -12058,7 +12101,7 @@
   "bastty": 5,
   "benjadsantis": 5,
   "boemico": 4,
-  "botrax": 5,
+  "botrax": 4,
   "cardozo": 5,
   "chekialo 🇧🇯": 5,
   "crakero": 5,
@@ -12100,7 +12143,7 @@
   "nzux 🇵🇪": 4,
   "oriuz": 3,
   "papa": 5,
-  "penescrotopene & lvl & Afinnpapa": 5,
+  "penescrotopene & lvl & Afinnpapa": 4,
   "publicenemy🇦🇷": 5,
   "ramses": 5,
   "rayito": 5,
@@ -14652,21 +14695,6 @@
   ],
   [
    "2026-10-26",
-   "Ezze",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Evangeline",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Gus",
-   4
-  ],
-  [
-   "2026-10-26",
    "Kochi2011",
    4
   ],
@@ -14677,7 +14705,27 @@
   ],
   [
    "2026-10-26",
+   "penescrotopene & lvl & Afinnpapa",
+   4
+  ],
+  [
+   "2026-10-26",
+   "botrax",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Scot",
+   4
+  ],
+  [
+   "2026-10-26",
    "Keider",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Ezze",
    4
   ],
   [
@@ -14692,12 +14740,12 @@
   ],
   [
    "2026-10-26",
-   "Chop",
+   "Akuseru",
    4
   ],
   [
    "2026-10-26",
-   "Akuseru",
+   "Chop",
    4
   ],
   [
@@ -14712,17 +14760,12 @@
   ],
   [
    "2026-10-26",
+   "oriuz",
+   4
+  ],
+  [
+   "2026-10-26",
    "S1lence",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Bau",
-   4
-  ],
-  [
-   "2026-10-26",
-   "Benjixo",
    4
   ],
   [
@@ -14737,7 +14780,17 @@
   ],
   [
    "2026-10-26",
+   "Milo",
+   4
+  ],
+  [
+   "2026-10-26",
    "ikonoxx",
+   4
+  ],
+  [
+   "2026-10-26",
+   "Kastigoz",
    4
   ],
   [

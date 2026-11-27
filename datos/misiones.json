@@ -5268,7 +5268,21 @@
      0,
      0
     ],
+    "01\\. 🎤 1200": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "01\\. 🎤 panchok": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "02\\. 🎤 Asuka": [
      0,
      0,
      0,
@@ -5282,7 +5296,56 @@
      0,
      0
     ],
+    "02\\. 🎤 PANCHOK": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "03\\. 🎤 T MAX TURBO": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "04\\. 🎤 Dominic": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "04\\. 🎤 Emi": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "05\\. 🎤 TEO": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "06\\. 🎤 MC DL": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "07\\. 🎤 MC Darnbless": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "08\\. 🎤 Magic OG": [
      0,
      0,
      0,
@@ -5334,6 +5397,13 @@
     "ANG": [
      0,
      1,
+     0,
+     0,
+     0
+    ],
+    "ASUKA": [
+     0,
+     0,
      0,
      0,
      0
@@ -5877,6 +5947,13 @@
      0,
      0
     ],
+    "Izaya": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "J.r": [
      0,
      2,
@@ -5935,6 +6012,13 @@
     ],
     "KIRITO": [
      1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "KIXXZ": [
+     0,
      0,
      0,
      0,
@@ -6410,6 +6494,13 @@
      0
     ],
     "ONDADISKO": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "ONZASS": [
      0,
      0,
      0,
@@ -12503,7 +12594,8 @@
     },
     "ONZASS": {
      "d": [
-      1
+      1,
+      2
      ],
      "s": [
       "WOF",
@@ -13001,7 +13093,7 @@
      0
     ],
     "Aritmetrico & 1200": [
-     "ONZASS",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -13184,7 +13276,7 @@
      0
     ],
     "Cardan & Deikka": [
-     "ONZASS",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -13791,7 +13883,7 @@
      0
     ],
     "Izaya": [
-     "Thaniel",
+     "Fisics",
      "escena",
      null,
      0
@@ -13987,7 +14079,7 @@
      0
     ],
     "Krish": [
-     "Tmax Turbo [PN]",
+     "ONZASS",
      "escena",
      null,
      0
@@ -14499,7 +14591,7 @@
      0
     ],
     "Nebu & Kixxy": [
-     "ONZASS",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -14563,7 +14655,7 @@
      0
     ],
     "ONZASS": [
-     "Kyss",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -14696,7 +14788,7 @@
      0
     ],
     "R-flow & Panchok": [
-     "ONZASS",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -14708,7 +14800,7 @@
      0
     ],
     "Rbk": [
-     "Fisics",
+     "Izaya",
      "escena",
      null,
      0
@@ -14720,7 +14812,7 @@
      0
     ],
     "Respiracion & Afinn": [
-     "ONZASS",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -14900,9 +14992,14 @@
      1
     ],
     "Sosa": [
-     "Izaya",
-     "escena",
-     null,
+     "Colesito",
+     "revancha",
+     [
+      398,
+      "ACAD",
+      "22/09",
+      "cuartos"
+     ],
      0
     ],
     "Soulb": [
@@ -15012,7 +15109,7 @@
      0
     ],
     "Thaniel": [
-     "Izaya",
+     "Julda",
      "escena",
      null,
      0
@@ -15069,7 +15166,7 @@
      0
     ],
     "Under": [
-     "Tmax Turbo [PN]",
+     "crakero",
      "escena",
      null,
      0
@@ -15534,7 +15631,7 @@
      0
     ],
     "romeo": [
-     "Julda",
+     "Yor",
      "escena",
      null,
      0
@@ -16025,7 +16122,7 @@
     ],
     "LENIX": [
      0,
-     0,
+     1,
      1,
      0,
      0

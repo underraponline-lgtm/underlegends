@@ -80,6 +80,17 @@
     "racha": "0/0"
    }
   },
+  "01\\. 🎤 1200": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
   "01\\. 🎤 panchok": {
    "WOF": {
     "duelos": "",
@@ -120,6 +131,17 @@
     "racha": "0/0"
    }
   },
+  "02\\. 🎤 Asuka": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
   "02\\. 🎤 Izaya": {
    "WOF": {
     "duelos": "",
@@ -131,7 +153,84 @@
     "racha": "0/0"
    }
   },
+  "02\\. 🎤 PANCHOK": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "03\\. 🎤 T MAX TURBO": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "04\\. 🎤 Dominic": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "04\\. 🎤 Emi": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
   "05\\. 🎤 TEO": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "06\\. 🎤 MC DL": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "07\\. 🎤 MC Darnbless": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "08\\. 🎤 Magic OG": {
    "WOF": {
     "duelos": "",
     "ev": 1,
@@ -606,6 +705,17 @@
     "ovr": 44,
     "pod": 0,
     "pts": 10725,
+    "racha": "0/0"
+   }
+  },
+  "ASUKA": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
     "racha": "0/0"
    }
   },
@@ -5063,6 +5173,15 @@
     "tg": {
      "nuevo": true
     }
+   },
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
    }
   },
   "Emilio Alva": {
@@ -7059,6 +7178,15 @@
     "pod": 0,
     "pts": 8750,
     "racha": "0/1"
+   },
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
    }
   },
   "J.r": {
@@ -7853,6 +7981,17 @@
     "tg": {
      "fund": true
     }
+   }
+  },
+  "KIXXZ": {
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0"
    }
   },
   "KOJIRO": {
@@ -12993,11 +13132,11 @@
    },
    "WOF": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
     "ovr": 43,
     "pod": 0,
-    "pts": 3500,
+    "pts": 4750,
     "racha": "0/0"
    }
   },

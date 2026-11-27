@@ -69827,27 +69827,11 @@
      ],
      [
       [
-       "01\\. 🎤 1200",
-       "Panchok"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "02\\. 🎤 Asuka",
-       "onzas.s 🇻🇪"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
        "02\\. 🎤 PANCHOK",
        "KIXXZ"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 02\\. 🎤 PANCHOK; cobra: KIXXZ; nadie siguió: ✅ Decidir"
      ],
      [
       [
@@ -69855,31 +69839,23 @@
        "ASUKA"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 03\\. 🎤 T MAX TURBO; cobra: ASUKA; nadie siguió: ✅ Decidir"
      ],
      [
       [
        "04\\. 🎤 Dominic",
-       "onzas.s 🇻🇪"
+       "ONZASS"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "04\\. 🎤 Emi",
-       "Izaya"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 04\\. 🎤 Dominic; cobra: onzas.s 🇻🇪; nadie siguió: ✅ Decidir"
      ],
      [
       [
        "06\\. 🎤 MC DL",
-       "IZAYA"
+       "Izaya"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 06\\. 🎤 MC DL; cobra: IZAYA; nadie siguió: ✅ Decidir"
      ],
      [
       [
@@ -69887,15 +69863,39 @@
        "KIXXZ"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 07\\. 🎤 MC Darnbless; cobra: KIXXZ; nadie siguió: ✅ Decidir"
      ],
      [
       [
        "08\\. 🎤 Magic OG",
-       "Emi"
+       "EmiZor"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: 08\\. 🎤 Magic OG; cobra: Emi; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "01\\. 🎤 1200",
+       "Panchok"
+      ],
+      "",
+      "cobra: 01\\. 🎤 1200; cobra: Panchok; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "02\\. 🎤 Asuka",
+       "ONZASS"
+      ],
+      "",
+      "cobra: 02\\. 🎤 Asuka; cobra: onzas.s 🇻🇪; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "04\\. 🎤 Emi",
+       "Izaya"
+      ],
+      "",
+      "cobra: 04\\. 🎤 Emi; cobra: Izaya; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -70024,7 +70024,17 @@
     1250
    ],
    [
+    "01\\. 🎤 1200",
+    "Octavos",
+    1250
+   ],
+   [
     "01\\. 🎤 panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "02\\. 🎤 Asuka",
     "Octavos",
     1250
    ],
@@ -70034,12 +70044,67 @@
     1250
    ],
    [
+    "02\\. 🎤 PANCHOK",
+    "Octavos",
+    1250
+   ],
+   [
+    "03\\. 🎤 T MAX TURBO",
+    "Octavos",
+    1250
+   ],
+   [
+    "04\\. 🎤 Dominic",
+    "Octavos",
+    1250
+   ],
+   [
+    "04\\. 🎤 Emi",
+    "Octavos",
+    1250
+   ],
+   [
     "05\\. 🎤 TEO",
     "Octavos",
     1250
    ],
    [
+    "06\\. 🎤 MC DL",
+    "Octavos",
+    1250
+   ],
+   [
+    "07\\. 🎤 MC Darnbless",
+    "Octavos",
+    1250
+   ],
+   [
+    "08\\. 🎤 Magic OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "ASUKA",
+    "Octavos",
+    1250
+   ],
+   [
     "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Izaya",
+    "Octavos",
+    1250
+   ],
+   [
+    "KIXXZ",
     "Octavos",
     1250
    ],
@@ -70051,6 +70116,11 @@
    [
     "Malva",
     "Cuartos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
     1250
    ],
    [
