@@ -6626,7 +6626,7 @@
  },
  "167474526": {
   "dia": "2026-11-27",
-  "escala": "4-7",
+  "escala": "8-15",
   "fecha": "27/11",
   "links": [
    "https://discord.com/channels/1558611504046153750/1564463626855645234/1575990630067474526"
@@ -6634,7 +6634,7 @@
   "n": 167474526,
   "nombre": "5 VIDAS 16:44",
   "ns": 1,
-  "participantes": 6,
+  "participantes": 8,
   "rondas": [
    {
     "b": [
@@ -6757,6 +6757,30 @@
       ],
       "LAST",
       "batalla 15 · votos 2–0"
+     ],
+     [
+      [
+       "LAST",
+       "Adriagner"
+      ],
+      "LAST",
+      "batalla 16 · siguió peleando"
+     ],
+     [
+      [
+       "Rbk",
+       "LAST"
+      ],
+      "Rbk",
+      "batalla 17 · votos 1–0"
+     ],
+     [
+      [
+       "Leyenda",
+       "Rbk"
+      ],
+      "Leyenda",
+      "batalla 18 · votos 1–0"
      ]
     ],
     "r": "5 vidas"
@@ -6775,18 +6799,18 @@
     0
    ],
    [
-    "Adriagner",
+    "Leyenda",
     "Tercero",
+    0
+   ],
+   [
+    "Adriagner",
+    "Cuarto",
     0
    ],
    [
     "LAST",
-    "Tercero",
-    0
-   ],
-   [
-    "Leyenda",
-    "Tercero",
+    "Cuarto",
     0
    ],
    [
