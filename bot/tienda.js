@@ -233,6 +233,43 @@ function revisarColecciones(o, quien, cat, ahora) {
   return hechas;
 }
 
+/**
+ * 💸 LO QUE PAGARON DE MÁS LOS PREMIUM (27/11/2026). Hasta el 26/11 la Tienda no reconocía a nadie como Premium (ver
+ * `tempPase()`), así que quien tenía Premium pagó el precio entero. Esto encuentra cada compra suelta hecha CON Premium
+ * vigente y pagada al precio base, y con `aplicar` le devuelve la diferencia UNA vez (el id del movimiento es por pieza:
+ * repetirlo no devuelve dos veces). Las compras de colección y las ofertas del día no entran: su precio no es el base
+ * y no se sabe cuánto les tocaba. Sin quién compró en la respuesta: sólo cuántas y cuánto.
+ */
+export function sobrepagoPremium(o, aplicar = false, ahora = Date.now()) {
+  const cat = catalogo(o);
+  if (!cat) return { error: 'sin catálogo' };
+  const out = { ok: true, compras: 0, puntos: 0, personas: 0, devueltas: 0, ya: 0, lista: [] };
+  const gente = new Set();
+  for (const r of filas(o, "SELECT quien, pieza, pagado, t, grupo FROM tienda_inv WHERE origen = 'compra' AND pagado > 0")) {
+    const p = cat.piezas[r.pieza];
+    if (!p || r.grupo || p.t.includes('num')) continue;
+    const base = cat.precios[p.r];
+    if (r.pagado !== base || !esPremium(o, r.quien, cat, r.t)) continue;
+    const debia = precioPieza(cat, r.pieza, true, r.t);
+    const dif = r.pagado - (debia == null ? r.pagado : debia);
+    if (dif <= 0) continue;
+    const id = 'tdevprem:' + r.quien + ':' + r.pieza;
+    if (fila(o, 'SELECT 1 AS x FROM tienda WHERE id = ?', id)) { out.ya++; continue; }
+    out.compras++;
+    out.puntos += dif;
+    gente.add(r.quien);
+    out.lista.push({ pieza: r.pieza, pagado: r.pagado, debia, dif });
+    if (aplicar) {
+      mover(o, id, r.quien, dif, ahora);
+      o.aBandeja(r.quien, id, 'tienda', '💸 Te devolvimos ' + dif.toLocaleString('es') + ' Puntos de Tienda',
+        'Tenías Premium y la Tienda te cobró el precio entero por un error nuestro. Ya está arreglado.', '#/tienda', '', ahora);
+      out.devueltas++;
+    }
+  }
+  out.personas = gente.size;
+  return out;
+}
+
 /** Los regalos que pasaron sus días sin respuesta: vuelven los Puntos a quien los mandó. Pocos por vez. */
 export function vencerRegalos(o, ahora = Date.now()) {
   const vencidos = filas(o, "SELECT * FROM tienda_regalo WHERE estado = 'pendiente' AND fin <= ? LIMIT 50", ahora);

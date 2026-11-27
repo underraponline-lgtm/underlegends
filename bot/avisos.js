@@ -4007,6 +4007,8 @@ const RUTAS = {
   '/avisos/crews-sembrar': 'POST', '/avisos/crews-siglas': 'POST',
   // 🛍️ LA TIENDA (17/11/2026, bot/tienda.js): lo tuyo, una acción, y el catálogo con la clave del ciclo
   '/avisos/tienda': 'POST', '/avisos/tienda-accion': 'POST', '/avisos/tienda-catalogo': 'POST',
+  // 💸 lo que pagaron de más los Premium hasta el 26/11/2026, y devolverlo (con la clave del ciclo): `sobrepagoPremium()`
+  '/avisos/tienda-sobrepago': 'POST',
   '/avisos/tienda-arte': 'POST', '/avisos/tienda-arte-subir': 'POST', '/avisos/imagen-prueba': 'POST', '/avisos/tienda-uso': 'GET',
   // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
   // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
@@ -7592,7 +7594,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`); y 🪪 quiénes de las
   // crews no están verificados, cada corrida (`bot/crews_verificar.py`)
-  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-siglas' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar' || ruta === '/avisos/tienda-catalogo') {
+  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-siglas' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar' || ruta === '/avisos/tienda-catalogo' || ruta === '/avisos/tienda-sobrepago') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     const crudo = await req.text();
@@ -10872,6 +10874,7 @@ export class Avisos {
       if (ruta === '/tienda') return json(TI.tiendaMia(this, d, TI_H));
       if (ruta === '/tienda-accion') { const r = TI.tiendaAccion(this, d, TI_H); return json(r, r.estado || 200); }
       if (ruta === '/tienda-catalogo') { const r = TI.catalogoGuardar(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/tienda-sobrepago') return json(TI.sobrepagoPremium(this, d.aplicar === true));
       if (ruta === '/tienda-arte') { const r = TI.arteMio(this, d, TI_H); return json(r, r.estado || 200); }
       if (ruta === '/tienda-arte-subir') { const r = TI.arteGuardar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/crew-dueno') {

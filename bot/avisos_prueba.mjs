@@ -5774,6 +5774,15 @@ const ok = (cond, que, det) => {
       ok(yoD.prem && yoD.jugo && rD.ok && rD.total === 1000 && saldo(DAN) === sD - 1000,
         'el Premium y lo jugado se leen con la temporada del Pase («prueba»), no con la del catálogo: la página y el cobro dicen 1.000',
         JSON.stringify([yoD.prem, yoD.jugo, rD]));
+      // 💸 y lo que pagó de más un Premium antes del arreglo vuelve UNA vez (`sobrepagoPremium()`, 27/11/2026)
+      const EVA = '400000000000000010';
+      sql.exec('INSERT INTO pase_premium (quien, temp, desde, hasta) VALUES (?, ?, ?, NULL)', EVA, 'prueba', ahora - 5000);
+      sql.exec("INSERT INTO tienda_inv (quien, pieza, origen, pagado, t, grupo) VALUES (?, 'X1', 'compra', 2000, ?, '')", EVA, ahora - 2000);
+      const sE = saldo(EVA);
+      const ver = TI.sobrepagoPremium(o, false, ahora), dev = TI.sobrepagoPremium(o, true, ahora), otra = TI.sobrepagoPremium(o, true, ahora);
+      ok(ver.compras === 1 && ver.puntos === 1000 && saldo(EVA) === sE + 1000 && dev.devueltas === 1 && otra.devueltas === 0 && otra.ya === 1,
+        'lo que pagó de más un Premium (2.000 en vez de 1.000) vuelve una sola vez, y la compra bien cobrada no cuenta',
+        JSON.stringify([ver, dev, otra, saldo(EVA) - sE]));
       for (const [x, v] of guardado) { if (v === null) o.sql.exec('DELETE FROM estado WHERE k = ?', x); else o.guardar(x, v); if (o.estadoMem) o.estadoMem.delete(x); }
       o._pase = null;
     }
