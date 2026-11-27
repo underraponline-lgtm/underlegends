@@ -6069,9 +6069,11 @@ export function perfilBotBio(o) {
   if (m.eventos > 0) d.push(m.eventos + (m.eventos === 1 ? ' evento' : ' eventos') + ' en ' + sem + ' semanas');
   if (m.eventos > 0 && m.por_evento >= 2) d.push(Math.round(m.por_evento) + ' raperos por evento');
   if (m.ligas > 0) d.push(m.ligas + (m.ligas === 1 ? ' liga en juego' : ' ligas en juego'));
-  const cab = nombre + ' en Under Legends' + ([1, 2, 3].includes(x.tier) ? ' · Tier ' + x.tier : '') + '.';
+  // 🏆 que el servidor se lea grande (Dlx, 26/11/2026: «pon algo mejor, como el link de la página web de su sv… parezcamos
+  // los grandes para hacer pensar que ellos son los grandes»): su nombre y su lugar en la Liga, no «en Under Legends»
+  const cab = nombre + ([1, 2, 3].includes(x.tier) ? ' · Tier ' + x.tier : '') + ' de la Liga Global.';
   const hechosDe = (xs) => (xs.length ? ' ' + xs.join(', ').replace(/^./, (c) => c.toUpperCase()) + '.' : '');
-  const pie = '\nSu página: ' + link;
+  const pie = '\nRanking y batallas: ' + link;
   const armar = (ds, h) => (ds ? ds + '\n' : '') + cab + h + pie;
   const T = PERFIL_BOT_BIO;
   // los números que entren: los tres, los dos primeros, el primero

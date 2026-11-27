@@ -3231,6 +3231,10 @@ const AYUDA = {
     '## `/vincular` — tu cuenta con tu perfil de la Liga',
     'Para que tus premios y tus drops sean tuyos: entras con Discord en la página y te suma a DRA.',
   ].join('\n'),
+  dashboard: () => [
+    '## `/dashboard` — el panel de tu servidor',
+    'Para los socios: el link al panel de tu servidor, con sus estadísticas, sus eventos, su página y su bot.',
+  ].join('\n'),
   website: () => [
     '## `/website` — la página de la Liga',
     'Te deja el link a la página: rankings, perfiles, llaves y calendario.',
@@ -3293,7 +3297,7 @@ const AYUDA_GRUPOS = [
   ['Tu cuenta', ['verificar', 'vincular', 'foto', 'apodo', 'notify', 'borrar-mis-datos']],
   ['Tienda y drops', ['billetera', 'inventario', 'equipar', 'drops']],
   ['Crews', ['crew'], 'y en el perfil de alguien, «Invitar a mi crew»'],
-  ['Para el staff', ['agendar', 'llave', 'afiche', 'settings', 'setup', 'antiraid']],
+  ['Para el staff', ['dashboard', 'agendar', 'llave', 'afiche', 'settings', 'setup', 'antiraid']],
   ['La Liga', ['website', 'help', 'ping']],
 ];
 //: lo que hace cada uno, en el menú (hasta 100 letras)
@@ -3305,7 +3309,7 @@ const AYUDA_CORTA = {
   'borrar-mis-datos': 'borra tu perfil, tus tarjetas y tu foto', billetera: 'tus Puntos de Tienda', inventario: 'lo tuyo de la Tienda',
   equipar: 'ponerte algo de la Tienda', drops: 'tus Dragón Drops: el Drop y el Star se abren acá', crew: 'tu crew: verla, invitar, entrar o salir',
   agendar: 'un evento en el calendario de la Liga', llave: 'la última llave, como imagen', afiche: 'el afiche del último anuncio',
-  settings: 'los ajustes del servidor (admins)', setup: 'sumar el servidor a la Liga, paso a paso (admins)',
+  dashboard: 'el panel de tu servidor (socios)', settings: 'los ajustes del servidor (admins)', setup: 'sumar el servidor a la Liga, paso a paso (admins)',
   antiraid: 'el anti-raid del servidor (el dueño)', website: 'la página de la Liga', help: 'esto', ping: '¿está vivo?',
 };
 /** El menú de la ayuda, con `actual` elegido. */
@@ -4705,6 +4709,24 @@ const COMANDOS = {
   },
 
   // 🔑 Dlx, 25/09/2026: «/website, que te redirigiría a la página».
+  // 🧭 /dashboard (Dlx, 26/11/2026: «que lleve a los socios a su Dashboard, y en mi caso me daría 2 opciones: ir a mi
+  // servidor o al Dashboard de la página»). Sólo links: quién puede ver qué lo decide la página al abrirla, como siempre.
+  // Dentro de un servidor de la Liga, el panel de ESE servidor; afuera (o en un DM), el panel donde elige el suyo
+  async dashboard(i, env) {
+    const sv = i.guild_id ? await aquiEsCon(env, i.guild_id) : '';
+    const panel = (s) => HUB_URL + '/freestyle-rap/socio' + (s ? '?sv=' + encodeURIComponent(s) : '');
+    if (esDueno(i)) {
+      return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'ayuda', titulo: '¿Adónde vas?',
+        sub: 'El panel de ' + (sv || 'DRA') + ' o el Dashboard de toda la página.',
+        filas: [[botonLink('Panel de ' + (sv || 'DRA'), panel(sv || 'DRA')), botonLink('Dashboard de la página', HUB_URL + '/dashboard')]],
+        efimero: true }));
+    }
+    return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'ayuda', titulo: 'El panel de tu servidor',
+      sub: (sv ? 'Las estadísticas, tus eventos, tu página y tu bot en ' + sv + '.' : 'Las estadísticas, tus eventos, tu página y tu bot.')
+        + ' Lo ven el dueño y el equipo que él suma; entra con Discord.',
+      filas: [[botonLink('Abrir el panel', panel(sv))]], efimero: true }));
+  },
+
   async website(i, env, ctx) {
     return responderV2(RESPONDE.MENSAJE, ficha({ fam: 'ayuda', titulo: 'La Liga Global',
       sub: 'Los rankings, el perfil de cada rapero, las llaves de cada evento y el calendario.',

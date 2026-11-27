@@ -6150,14 +6150,14 @@ const ok = (cond, que, det) => {
     && A.perfilBotValido('img', 'https://x') === undefined,
   'la foto y el banner: la del servidor, la de Under Legends o la de ULAYA (una propia entra subiéndola)');
   const d0 = A.perfilBotDefecto('FFA', 'Freestyle Fight Arena', { tier: 1, m: { eventos: 9, por_evento: 11.6, ligas: 1 } });
-  ok(d0.nick === 'FFA Bot' && d0.bio.startsWith('Freestyle Fight Arena en Under Legends · Tier 1. 9 eventos en 4 semanas, 12 raperos por evento, 1 liga en juego.')
+  ok(d0.nick === 'FFA Bot' && d0.bio.startsWith('Freestyle Fight Arena · Tier 1 de la Liga Global. 9 eventos en 4 semanas, 12 raperos por evento, 1 liga en juego.')
     && d0.bio.endsWith('/freestyle-rap/sv/FFA') && d0.bio.length <= A.PERFIL_BOT_BIO,
   'por defecto, «FFA Bot» y la bio armada con sus números y su página', JSON.stringify(d0));
   const b1 = A.perfilBotBio({ sv: 'FFA', nombre: 'Freestyle Fight Arena', tier: 1, m: { eventos: 9, por_evento: 11.6 },
     desc: 'La arena de batallas de los viernes: 2vs2, minutos y torneos mensuales. Entra en discord.gg/xyz y en https://x.com/ffa. ' + 'Mucho más texto. '.repeat(10) });
   ok(b1.length <= A.PERFIL_BOT_BIO && b1.startsWith('La arena de batallas de los viernes') && b1.includes('…') && !/discord\.gg|x\.com/.test(b1) && b1.includes('Tier 1'),
     'con descripción larga: se acorta en una palabra, sin links ni invitaciones, y siguen el nombre, el tier y la página', b1);
-  ok(A.perfilBotBio({ sv: 'CH', nombre: 'Club', tier: 1, m: {} }) === 'Club en Under Legends · Tier 1.\nSu página: https://underlegends.pages.dev/freestyle-rap/sv/CH',
+  ok(A.perfilBotBio({ sv: 'CH', nombre: 'Club', tier: 1, m: {} }) === 'Club · Tier 1 de la Liga Global.\nRanking y batallas: https://underlegends.pages.dev/freestyle-rap/sv/CH',
     'sin eventos ni descripción, sólo el nombre, el tier y la página');
   const HX = 'abcdef0123456789abcdef0123456789';
   const q0 = A.perfilBotQuiere('FFA', '42', { name: 'FFA', icon: HX, banner: '' }, {});

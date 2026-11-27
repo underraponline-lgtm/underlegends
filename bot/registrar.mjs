@@ -125,6 +125,13 @@ const COMANDOS = [
   },
   { name: 'vincular', type: 1, description: 'tu cuenta de Discord con tu perfil de la Liga', ...EN_TODOS_LADOS },
   {
+    // 🧭 el link al panel del socio (y a Dlx, también el Dashboard de la página): ver `dashboard` en worker.js
+    name: 'dashboard',
+    type: 1,
+    description: 'el panel de tu servidor en la Liga (socios)',
+    ...EN_TODOS_LADOS,
+  },
+  {
     name: 'website',
     type: 1,
     description: 'el link a la página de la Liga Global',
