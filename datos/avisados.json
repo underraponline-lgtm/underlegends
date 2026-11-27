@@ -30239,7 +30239,7 @@
    "mats": 5
   },
   "fecha": "26/10",
-  "firma": "16dada1eeb308b39",
+  "firma": "f2388463744403a7",
   "msg": "1565899302046277764",
   "nombre": "RAP SIN GROSERIAS 1",
   "num": 548,
@@ -36389,7 +36389,7 @@
    "ikonoxx": 8
   },
   "fecha": "06/11",
-  "firma": "a656f6562f8a43d0",
+  "firma": "914b72018121d723",
   "msg": "1568364084817297492",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.17",
   "num": 575,
@@ -49661,7 +49661,7 @@
    "Vandu": 52
   },
   "fecha": "15/11",
-  "firma": "ed651ae4071dce3a",
+  "firma": "964231bb06617acf",
   "msg": "1571637257578873034",
   "nombre": "RED BULL NACIONAL PLAZAS T.5",
   "num": 645,
@@ -49852,7 +49852,7 @@
    "compare": 1
   },
   "fecha": "15/11",
-  "firma": "6d4774ecc4dcd796",
+  "firma": "c78bcc67f551a537",
   "msg": "1571635394460516385",
   "nombre": "FU BATTLE NIGHT",
   "num": 646,
@@ -63953,6 +63953,266 @@
     "MaYeuTyK",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "720": {
+  "antes": {
+   "1200": [
+    290,
+    94,
+    true
+   ],
+   "DarnBless": [
+    86,
+    108,
+    false
+   ],
+   "Efimero": [
+    297,
+    121,
+    true
+   ],
+   "MaYeuTyK": [
+    36,
+    40,
+    false
+   ],
+   "Magic": [
+    318,
+    166,
+    true
+   ],
+   "Malva": [
+    395,
+    294,
+    true
+   ],
+   "Marcos": [
+    54,
+    63,
+    false
+   ],
+   "Motera": [
+    52,
+    61,
+    false
+   ],
+   "Panchok": [
+    7,
+    7,
+    false
+   ],
+   "Richard": [
+    74,
+    89,
+    false
+   ],
+   "Trot": [
+    48,
+    57,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Efimero",
+    "1200",
+    "Efimero"
+   ],
+   [
+    "Lvel 🇻🇪",
+    "05\\. 🎤 TEO",
+    "Lvel 🇻🇪"
+   ],
+   [
+    "03\\. 🎤 penescrotopene",
+    "DarnBless",
+    "03\\. 🎤 penescrotopene"
+   ],
+   [
+    "Marcos",
+    "01\\. 🎤 panchok",
+    "Marcos"
+   ],
+   [
+    "1200",
+    "02\\. 🎤 Izaya",
+    "1200"
+   ],
+   [
+    "1200",
+    "01\\. 🎤",
+    "1200"
+   ],
+   [
+    "1200",
+    "Panchok",
+    "1200"
+   ],
+   [
+    "AFINN",
+    "Marcos",
+    "AFINN"
+   ],
+   [
+    "1200",
+    "Shogun",
+    "1200"
+   ],
+   [
+    "1200",
+    "Magic",
+    "1200"
+   ],
+   [
+    "Motera",
+    "Efimero",
+    "Motera"
+   ],
+   [
+    "Motera",
+    "Richard",
+    "Motera"
+   ],
+   [
+    "MaYeuTyK",
+    "Malva",
+    "MaYeuTyK"
+   ],
+   [
+    "1200",
+    "Afinn & Lvl",
+    "1200"
+   ],
+   [
+    "Motera",
+    "Trot & Martines",
+    "Motera"
+   ],
+   [
+    "penescrotopene & lvl & Afinnpapa",
+    "Motera, MaYeuTyK, Trot",
+    ""
+   ]
+  ],
+  "ev_antes": {
+   "1200": 21,
+   "DarnBless": 22,
+   "Efimero": 12,
+   "MaYeuTyK": 33,
+   "Magic": 10,
+   "Malva": 6,
+   "Marcos": 22,
+   "Motera": 11,
+   "Panchok": 33,
+   "Richard": 23,
+   "Trot": 32
+  },
+  "fecha": "28/10",
+  "nombre": "𓆩 𓆪 WORLD OF FREE",
+  "num": 720,
+  "participantes": 45,
+  "sello": {},
+  "sv": "WOF",
+  "t": "2026-11-27T17:54:18Z",
+  "tabla": [
+   [
+    "penescrotopene & lvl & Afinnpapa",
+    "Subcampeón",
+    8750
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    5250
+   ],
+   [
+    "Afinn & Lvl",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Trot & Martines",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Motera",
+    "Subcampeón",
+    2625
+   ],
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    2625
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Efimero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Shogun",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Magic",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Malva",
+    "Cuartos",
+    1250
+   ],
+   [
+    "05\\. 🎤 TEO",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "01\\. 🎤 panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "02\\. 🎤 Izaya",
+    "Octavos",
+    1250
+   ],
+   [
+    "01\\. 🎤",
+    "Octavos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "1200",
+    "Octavos",
+    625
    ]
   ],
   "v": 2

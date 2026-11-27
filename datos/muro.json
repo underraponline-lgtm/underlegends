@@ -304,6 +304,14 @@
 "temporada"
 ]
 },
+"mayeutyk": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "velatz": {
 "rg": "C",
 "c": []
@@ -322,14 +330,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mayeutyk": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -426,6 +426,15 @@
 "temporada"
 ]
 },
+"trot": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "tuca": {
 "rg": "C",
 "c": []
@@ -450,8 +459,8 @@
 "temporada"
 ]
 },
-"trot": {
-"rg": "D",
+"motera": {
+"rg": "",
 "c": [
 "competitivo",
 "pais",
@@ -479,15 +488,6 @@
 },
 "vilca": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"motera": {
-"rg": "",
 "c": [
 "competitivo",
 "pais",
@@ -1195,15 +1195,15 @@
 "rg": "",
 "c": []
 },
+"magic": {
+"rg": "",
+"c": []
+},
 "senticide": {
 "rg": "",
 "c": []
 },
 "benji": {
-"rg": "",
-"c": []
-},
-"magic": {
 "rg": "",
 "c": []
 },
@@ -8937,7 +8937,7 @@
 "six": 1,
 "verc": 0,
 "vandu": 0,
-"panchok": 8,
+"panchok": 7,
 "carlosss": 2,
 "liberia": 0,
 "colesito": 1,

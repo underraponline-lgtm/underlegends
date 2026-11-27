@@ -14,6 +14,28 @@
   "WOF": "2026-11-26"
  },
  "retos": {
+  "01\\. 🎤": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "01\\. 🎤 panchok": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
   "0223": {
    "avisado": "2026-11-04",
    "avisado_cumplido": "2026-11-06",
@@ -27,6 +49,28 @@
    "sv": "FFA",
    "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
+  },
+  "02\\. 🎤 Izaya": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
+  "05\\. 🎤 TEO": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
   },
   "1200 & Blurryface": {
    "con": null,
@@ -227,6 +271,17 @@
    "n": 596,
    "sv": "FFA",
    "vence": "2026-11-12T16:15:08+00:00",
+   "vencido": true
+  },
+  "Afinn & Lvl": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
    "vencido": true
   },
   "Afinnpapa": {
@@ -3521,6 +3576,17 @@
    "vence": "2026-11-03T02:05:05+00:00",
    "vencido": true
   },
+  "Shogun": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
+   "vencido": true
+  },
   "SikoV": {
    "avisado": "2026-10-30",
    "avisado_cumplido": "2026-11-05",
@@ -3763,6 +3829,17 @@
    "n": 571,
    "sv": "CH",
    "vence": "2026-10-27T22:07:15+00:00",
+   "vencido": true
+  },
+  "Trot & Martines": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
    "vencido": true
   },
   "URKO": {
@@ -4562,6 +4639,17 @@
    "n": 664,
    "sv": "CH",
    "vence": "2026-11-26T19:39:40+00:00",
+   "vencido": true
+  },
+  "penescrotopene & lvl & Afinnpapa": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T19:26:17+00:00",
+   "did": "",
+   "evento": "𓆩 𓆪 WORLD OF FREE",
+   "n": 720,
+   "sv": "WOF",
+   "vence": "2026-11-04T19:26:17+00:00",
    "vencido": true
   },
   "pibe": {

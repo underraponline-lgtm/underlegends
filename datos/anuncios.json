@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T17:30:21+00:00",
+ "cuando": "2026-11-27T17:55:37+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8798,6 +8798,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "Ozu",
+   "quien": "manolo2285",
+   "discord_id": "523171142605733890",
+   "msg_id": "1575928435107307593",
+   "cuando": "2026-11-27T17:36:58"
+  },
   {
    "servidor": "WOF",
    "canal": "📜・vs・Inscripciónes",
@@ -44788,15 +44797,6 @@
    "discord_id": "1546111597343146044",
    "msg_id": "1563304920348889229",
    "cuando": "2026-10-23T21:35:37"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Bna🇨🇱 + Velatz🇦🇷",
-   "quien": "funhorlavild",
-   "discord_id": "1426686911908675628",
-   "msg_id": "1563304809749282827",
-   "cuando": "2026-10-23T21:35:11"
   }
  ]
 }
