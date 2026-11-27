@@ -1555,9 +1555,14 @@
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/temporada.webp"
  },
  "geremy": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/sv-ffa.webp"
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geremy/temporada.webp"
  },
  "gero": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gero/bloq-competitivo.webp",
