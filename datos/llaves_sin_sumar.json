@@ -6624,6 +6624,117 @@
    ]
   ]
  },
+ "167474526": {
+  "dia": "2026-11-27",
+  "escala": "4-7",
+  "fecha": "27/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1564463626855645234/1575990630067474526"
+  ],
+  "n": 167474526,
+  "nombre": "5 VIDAS 16:44",
+  "ns": 1,
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "TOKYO 🇺🇸🇦🇷",
+       "Rbk"
+      ],
+      "TOKYO 🇺🇸🇦🇷",
+      "batalla 1 · votos 1–0"
+     ],
+     [
+      [
+       "TOKYO 🇺🇸🇦🇷",
+       "LAST"
+      ],
+      "TOKYO 🇺🇸🇦🇷",
+      "batalla 2 · votos 1–0"
+     ],
+     [
+      [
+       "Adriagner",
+       "TOKYO 🇺🇸🇦🇷"
+      ],
+      "Adriagner",
+      "batalla 3 · votos 1–0"
+     ],
+     [
+      [
+       "Adriagner",
+       "Leyenda"
+      ],
+      "Adriagner",
+      "batalla 4 · votos 1–0"
+     ],
+     [
+      [
+       "Adriagner",
+       "Rbk"
+      ],
+      "Adriagner",
+      "batalla 5 · votos 1–0"
+     ],
+     [
+      [
+       "Adriagner",
+       "LAST"
+      ],
+      "Adriagner",
+      "batalla 6 · votos 1–0"
+     ],
+     [
+      [
+       "TOKYO 🇺🇸🇦🇷",
+       "Adriagner"
+      ],
+      "TOKYO 🇺🇸🇦🇷",
+      "batalla 7 · siguió peleando"
+     ],
+     [
+      [
+       "Leyenda",
+       "TOKYO 🇺🇸🇦🇷"
+      ],
+      "Leyenda",
+      "batalla 8 · votos 1–0"
+     ]
+    ],
+    "r": "5 vidas"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    0
+   ],
+   [
+    "Leyenda",
+    "Campeón",
+    0
+   ],
+   [
+    "LAST",
+    "Tercero",
+    0
+   ],
+   [
+    "Rbk",
+    "Tercero",
+    0
+   ],
+   [
+    "TOKYO 🇺🇸🇦🇷",
+    "Tercero",
+    0
+   ]
+  ]
+ },
  "168578631": {
   "dia": "2026-09-24",
   "escala": "8-15",

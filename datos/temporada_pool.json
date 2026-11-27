@@ -2408,8 +2408,8 @@
   "crew": "",
   "discord_id": "846870712950194196",
   "verificado": true,
-  "pts": 122375,
-  "ev": 28,
+  "pts": 125469,
+  "ev": 29,
   "wr": "47.6%",
   "pod": 6,
   "oro": 1,
@@ -2431,7 +2431,7 @@
   "total": 272,
   "rango": "B",
   "tg_t": {
-   "dobles": 5,
+   "dobles": 6,
    "infalt": true,
    "rev": 1,
    "svc": 1,
@@ -3882,8 +3882,8 @@
   "crew": "",
   "discord_id": "1435531540472795240",
   "verificado": true,
-  "pts": 68650,
-  "ev": 17,
+  "pts": 71744,
+  "ev": 18,
   "wr": "28.6%",
   "pod": 2,
   "oro": 0,
@@ -3906,7 +3906,7 @@
   "rango": "D",
   "tg_t": {
    "cobro": 1,
-   "dobles": 1,
+   "dobles": 2,
    "rev": 1
   }
  },
