@@ -2451,5 +2451,38 @@
   "sv": "DDF",
   "t_pregunta": "2026-11-27T03:37:17+00:00"
  },
+ "1575897308980318239": {
+  "autor": "1395903355909570633",
+  "canal": "1558623675224293536",
+  "canal_pregunta": "",
+  "cuando": "2026-11-27T15:33:17.217000+00:00",
+  "donde": "",
+  "evento": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪",
+  "fecha": "27/11",
+  "llave": "1575897308980318239",
+  "pregunta": "",
+  "preguntada": "2026-11-27 2:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Jaber-Efimero",
+     "Aritmetrico-1200"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "Teito-Krish",
+     "Efimero- Jaber🏆"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "WOF",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

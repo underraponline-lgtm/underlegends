@@ -11490,92 +11490,53 @@
    "b": "AGUSTIN",
    "ganador": "DYNOCO",
    "votos": "1–0"
+  },
+  "1575955868061540354": {
+   "id": "1575955868061540354",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795807558790,
+   "a": "AGUS",
+   "b": "LAST",
+   "ganador": "LAST",
+   "votos": "1–0"
+  },
+  "1575956846315966497": {
+   "id": "1575956846315966497",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795807792024,
+   "a": "OG",
+   "b": "GIAN",
+   "ganador": "OG",
+   "votos": "1–0"
+  },
+  "1575958656074391694": {
+   "id": "1575958656074391694",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795808223504,
+   "a": "MR STILL",
+   "b": "MOLUSCO",
+   "ganador": "MR STILL",
+   "votos": "1–0"
+  },
+  "1575961223936081981": {
+   "id": "1575961223936081981",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795808835730,
+   "a": "LAST",
+   "b": "DYNO",
+   "ganador": "DYNO",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1568351350230749387": {
-   "id": "1568351350230749387",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1793994500454,
-   "ed": 1793996864490,
-   "texto": "`[ CUARTOS ]`\n⌞VR⌝ 🆚 ⌞IKONOXX⌝\n⌞INKO⌝ 🆚 ⌞MARCOS⌝ 🆚 ⌞19⌝\n⌞SAIDEM⌝ 🆚 ⌞KEIDER⌝ 🆚 ⌞DOMINICK⌝\n⌞LISENIN⌝ 🆚 ⌞ESCLUSIBO🥵⌝\n`[ SEMIFINALES ]`\n⌞VARGAS⌝ 🆚 ⌞MARCOS🥵🫩⌝\n⌞KEIDER⌝ 🆚 ⌞LISENIN⌝\n`[ FINAL ]`\n⌞Mito⌝ 🆚 ⌞Vr⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "VR",
-      "IKONOXX"
-     ],
-     "VR",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "INKO",
-      "MARCOS",
-      "19"
-     ],
-     "MARCOS",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "SAIDEM",
-      "KEIDER",
-      "DOMINICK"
-     ],
-     "KEIDER",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "LISENIN",
-      "ESCLUSIBO🥵"
-     ],
-     "LISENIN",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "VARGAS",
-      "MARCOS🥵🫩"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "KEIDER",
-      "LISENIN"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "Mito",
-      "Vr"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1568357307245658253": {
    "id": "1568357307245658253",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -15514,8 +15475,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795806981772,
-   "ed": 1795807236665,
-   "texto": "`[ CUARTOS ]`\n⌞DYNOCO⌝ 🆚 ⌞AGUSTIN⌝",
+   "ed": 1795809026334,
+   "texto": "`[ CUARTOS ]`\n⌞DYNOCO⌝ 🆚 ⌞AGUSTIN⌝\n⌞AGUS⌝ 🆚 ⌞LAST⌝\n⌞OG⌝ 🆚 ⌞GIAN⌝\n⌞MR STILL⌝ 🆚 ⌞MOLUSCO⌝\n⌞LAST⌝ 🆚 ⌞DYNO⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -15524,6 +15485,46 @@
       "AGUSTIN"
      ],
      "DYNOCO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "AGUS",
+      "LAST"
+     ],
+     "LAST",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "OG",
+      "GIAN"
+     ],
+     "OG",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MR STILL",
+      "MOLUSCO"
+     ],
+     "MR STILL",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LAST",
+      "DYNO"
+     ],
+     "DYNO",
      "veredicto",
      []
     ]
