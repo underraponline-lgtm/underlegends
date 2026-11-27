@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T05:24:59+00:00",
+ "cuando": "2026-11-27T05:55:14+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -347,6 +347,35 @@
    "autor": "MMC.",
    "staff_cuentas": {},
    "categoria_id": "1511754900026032139"
+  },
+  {
+   "nombre": "mesi",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1575750398981972011",
+   "cuando": "2026-11-27T05:49:31",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nc02467 @gocho444.",
+   "orgs": [
+    {
+     "n": "nc02467 @gocho444",
+     "id": ""
+    }
+   ],
+   "autor_h": "46b9d2f4c4b6ec95",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "1v1",
+   "horario": "YA",
+   "fecha": "",
+   "premios": "PUNTOS DE RANKING",
+   "staff": {},
+   "autor": "nc",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "Backtime",
@@ -1021,35 +1050,6 @@
     "la monalisa": "1487658663148785734",
     "Lizeninn 7 de oro": "1493416945037611140"
    },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "TORNEO CLANDESTINO V.1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1569525815551590563",
-   "cuando": "2026-11-10T01:35:14",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@Zaik",
-   "orgs": [
-    {
-     "n": "Zaik",
-     "id": ""
-    }
-   ],
-   "autor_h": "5a4d0d8e394a841a",
-   "cupos_texto": "16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1 VS 1",
-   "horario": "CUANDO LLENEN CUPOS",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Zaik",
-   "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
   {
@@ -8768,6 +8768,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Park-Ji Sung🇰🇷",
+   "quien": "fullylo4ded",
+   "discord_id": "979878316846768139",
+   "msg_id": "1575751682879524895",
+   "cuando": "2026-11-27T05:54:37"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Kuni 🇦🇷",
+   "quien": "kunicrack",
+   "discord_id": "1573638520981954641",
+   "msg_id": "1575750499322302596",
+   "cuando": "2026-11-27T05:49:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Julda 🇨🇴",
+   "quien": "juldaaaa",
+   "discord_id": "1194813613786026136",
+   "msg_id": "1575750494218100788",
+   "cuando": "2026-11-27T05:49:53"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc🇲🇿",
+   "quien": "nc02467",
+   "discord_id": "1574183742329852005",
+   "msg_id": "1575750491533737985",
+   "cuando": "2026-11-27T05:49:53"
+  },
   {
    "servidor": "CHZ",
    "canal": "inscripción-vc-🎙️",
@@ -44731,42 +44767,6 @@
    "discord_id": "1055474244089286706",
    "msg_id": "1563303788154986589",
    "cuando": "2026-10-23T21:31:07"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "colesito🇨🇽",
-   "quien": "colesito",
-   "discord_id": "790016013680771102",
-   "msg_id": "1563303370620534806",
-   "cuando": "2026-10-23T21:29:28"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "delux🇦🇷",
-   "quien": "delux.13",
-   "discord_id": "729809358627536938",
-   "msg_id": "1563301392851017913",
-   "cuando": "2026-10-23T21:21:36"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Hinjkybesuk",
-   "quien": "benjaclink31",
-   "discord_id": "849765868819972166",
-   "msg_id": "1563295610268950569",
-   "cuando": "2026-10-23T20:58:38"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Kibak",
-   "quien": "valentin.ks3",
-   "discord_id": "894017160756736091",
-   "msg_id": "1563295107761963049",
-   "cuando": "2026-10-23T20:56:38"
   }
  ]
 }

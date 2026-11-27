@@ -18,6 +18,12 @@
    "sv-urbf": "2026-11-21",
    "temporada": "2026-11-21"
   },
+  "ferra": {
+   "servidor": "2026-11-27",
+   "sv-ddf": "2026-11-27",
+   "sv-dra": "2026-11-27",
+   "sv-ffa": "2026-11-27"
+  },
   "galmc": {
    "bloq-competitivo": "2026-11-25",
    "bloq-pais": "2026-11-25",
@@ -70,8 +76,8 @@
    "temporada": "2026-11-23"
   }
  },
- "pasaban": 439,
- "cuando": "2026-11-27T05:31:18Z",
+ "pasaban": 441,
+ "cuando": "2026-11-27T06:01:12Z",
  "borradas": [
   [
    "btrx",
