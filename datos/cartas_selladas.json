@@ -127,7 +127,7 @@
    "competitivo": "6b34e94dde79:baafccf84bc7",
    "pais": "3ccf36e21ccb:84d29bb63c59",
    "servidor": "f4ecc62749ad:ca27345eed9e:acc4a5",
-   "temporada": "d11b24a58430:0b98cb3023ec"
+   "temporada": "2799e1fa15fa:0b98cb3023ec"
   },
   "Andy": {
    "competitivo": "3df0c5bae795:baafccf84bc7",
@@ -881,8 +881,8 @@
    "temporada": "e037daebdbad:0b98cb3023ec"
   },
   "Julda": {
-   "competitivo": "0f799f7dd054:baafccf84bc7",
-   "pais": "f2f7f1847b80:84d29bb63c59",
+   "competitivo": "83d0d1058e4e:baafccf84bc7",
+   "pais": "133aae3f07c5:84d29bb63c59",
    "servidor": "ca32a465146a:ca27345eed9e:e4fbfa",
    "temporada": "c0820742f4f9:0b98cb3023ec"
   },
@@ -998,10 +998,10 @@
    "servidor": "c56d4a8bc580:ca27345eed9e:055f77"
   },
   "Kuni": {
-   "competitivo": "93128ccb9c2e:baafccf84bc7",
+   "competitivo": "d1f49ee60782:baafccf84bc7",
    "pais": "2a9ee6444429:84d29bb63c59",
    "servidor": "7e38b9bbf6d6:ca27345eed9e:bcd566",
-   "temporada": "e49c268bdd04:0b98cb3023ec"
+   "temporada": "9aebf2075df2:0b98cb3023ec"
   },
   "Kyron": {},
   "Kyss": {
@@ -1452,8 +1452,8 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "011da52a490b:baafccf84bc7",
-   "pais": "e546f8a19f59:84d29bb63c59",
+   "competitivo": "db32cb4d2f66:baafccf84bc7",
+   "pais": "3460d2d7c1b6:84d29bb63c59",
    "servidor": "c47337d9edf7:ca27345eed9e:40a77e",
    "temporada": "bf8572da43b6:0b98cb3023ec"
   },
@@ -2240,5 +2240,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-27T07:41:42+00:00"
+ "cuando": "2026-11-27T07:47:30+00:00"
 }
