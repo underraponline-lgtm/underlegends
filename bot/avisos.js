@@ -19064,11 +19064,20 @@ export class Avisos {
       const u = await this.perfilImg(q[k]);
       if (u) body[k] = u; else faltan.push(k);
     }
-    const r = await patch(body);
+    let r = await patch(body);
+    // 🪪 SIN «CAMBIAR APODO» EL NOMBRE NO PASA, PERO LO DEMÁS SÍ (27/11/2026, Cypherhood: el bot entró sin rol). Discord
+    // pide ese permiso sólo para `nick`: la foto, la portada y la bio van igual, y el nombre queda como estaba
+    let sinNick = false;
+    if (r.st === 403 && 'nick' in body) {
+      delete body.nick;
+      r = await patch(body);
+      sinNick = r.ok;
+    }
     if (!r.ok) return fallo(r, G);
     const hecho = { ...q };
+    if (sinNick) hecho.nick = (e && e.q && e.q.nick) || null;
     for (const k of faltan) { if (e && e.q && k in e.q) hecho[k] = e.q[k]; else delete hecho[k]; }
-    E[sv] = { h: faltan.length ? '' : h, q: hecho, G, t: ahora };
+    E[sv] = { h: faltan.length || sinNick ? '' : h, q: hecho, G, t: ahora };
     this.guardar('bot_perfil_hecho', E);
     return { ok: true, t: ahora, faltan };
   }
