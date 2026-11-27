@@ -971,9 +971,9 @@
    "temporada": "59cced3558d5:0b98cb3023ec"
   },
   "Kravitz": {
-   "competitivo": "803e53bc442f:baafccf84bc7",
+   "competitivo": "443efd215792:baafccf84bc7",
    "pais": "95aad595e39a:84d29bb63c59",
-   "servidor": "a8aa52f72ac2:ca27345eed9e:62e67f",
+   "servidor": "4e369769691a:ca27345eed9e:62e67f",
    "temporada": "9518c5f21d36:0b98cb3023ec"
   },
   "Krish": {
@@ -1042,9 +1042,9 @@
    "servidor": "411fec4dda48:ca27345eed9e:aa8232"
   },
   "Lalox": {
-   "competitivo": "c90f72dc9793:baafccf84bc7",
-   "pais": "261c1effc285:84d29bb63c59",
-   "servidor": "16201bf8fdee:ca27345eed9e:e4fbfa",
+   "competitivo": "dbbd65176fe0:baafccf84bc7",
+   "pais": "58fe090a3ef7:84d29bb63c59",
+   "servidor": "0f112a23d6ac:ca27345eed9e:e4fbfa",
    "temporada": "4e4e08dfb7fb:0b98cb3023ec"
   },
   "Lambroggini": {},
@@ -1087,8 +1087,8 @@
    "temporada": "e36343e21c3b:0b98cb3023ec"
   },
   "Lil Drako": {
-   "servidor": "936ee2a25d1f:ca27345eed9e:43d041",
-   "temporada": "742eecf1c906:0b98cb3023ec"
+   "servidor": "7713ac36dea3:ca27345eed9e:43d041",
+   "temporada": "49ebb8bba517:0b98cb3023ec"
   },
   "Lil Junior": {
    "servidor": "fc642e5ead80:ca27345eed9e:980594"
@@ -1442,9 +1442,9 @@
    "temporada": "4ac1fe04940c:0b98cb3023ec"
   },
   "OKAM": {
-   "competitivo": "6d01cdbd79ea:baafccf84bc7",
+   "competitivo": "d7fd49e10bf4:baafccf84bc7",
    "pais": "a965d2ab9b20:84d29bb63c59",
-   "servidor": "0f135b76a196:ca27345eed9e:c82496",
+   "servidor": "7ea2b7961226:ca27345eed9e:c82496",
    "temporada": "e880467474f6:0b98cb3023ec"
   },
   "OKTA": {
@@ -2244,5 +2244,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-27T20:07:31+00:00"
+ "cuando": "2026-11-27T21:08:22+00:00"
 }
