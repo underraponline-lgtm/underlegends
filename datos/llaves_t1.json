@@ -62088,7 +62088,7 @@
        "SULTAN"
       ],
       "Status, Paria",
-      "triple (3 bandas, pasan 2); también pasa: Paria🇦🇷"
+      "triple (3 bandas, pasan 2); también pasa: Paria 🇦🇷"
      ],
      [
       [
@@ -66048,6 +66048,137 @@
   ],
   "ver": {
    "min": 238,
+   "v": 1
+  }
+ },
+ "699": {
+  "dia": "2026-11-26",
+  "escala": "8-15",
+  "fecha": "26/11",
+  "links": [
+   "https://discord.com/channels/838593179187544064/838595860275003402/1575687284672434187"
+  ],
+  "n": 699,
+  "nombre": "- THE IMPACT -",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mito",
+       "Soulb"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Galaby 🇦🇷"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Salmón 🇨🇱",
+       "Venus"
+      ],
+      "Salmón 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Geoka",
+       "Dynoco"
+      ],
+      "Geoka",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Mito"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Geoka",
+       "Salmón 🇨🇱"
+      ],
+      "Geoka",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Geoka",
+       "MCO"
+      ],
+      "Geoka",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Geoka",
+    "Campeón",
+    7500
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Salmón 🇨🇱",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dynoco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Galaby 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Venus",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 37,
    "v": 1
   }
  }

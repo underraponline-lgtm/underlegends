@@ -4917,6 +4917,11 @@
     "t1",
     1793029252929
    ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1795746741051
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -6197,6 +6202,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793515918221
+   ],
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1795746741051
    ]
   },
   "pais": {
@@ -6214,6 +6224,11 @@
     "INTERNACIONAL",
     "t1",
     1794765783614
+   ],
+   "REY DEL DERBI": [
+    "REY DEL DERBI",
+    "t1",
+    1795746741051
    ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
@@ -6248,6 +6263,11 @@
     "⚡ RELÁMPAGO",
     "t1",
     1794764146474
+   ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1795746741051
    ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
@@ -6285,9 +6305,14 @@
     1795477668169
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
+   ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1795746741051
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -10681,6 +10706,11 @@
    ]
   },
   "pais": {
+   "AMO DEL DERBI": [
+    "AMO DEL DERBI",
+    "t1",
+    1795746741051
+   ],
    "CONQUISTA AFUERA": [
     "CONQUISTA AFUERA",
     "t1",

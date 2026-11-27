@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T01:55:01+00:00",
+ "cuando": "2026-11-27T02:25:02+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8400,6 +8400,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "Chop🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1575692624659218483",
+   "cuando": "2026-11-27T01:59:56"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1575691752160100374",
+   "cuando": "2026-11-27T01:56:28"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "0223 🇧🇧",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1575691377101246469",
+   "cuando": "2026-11-27T01:54:59"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -44372,33 +44399,6 @@
    "discord_id": "1523082259870257315",
    "msg_id": "1563282305769017455",
    "cuando": "2026-10-23T20:05:46"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Bootrax Humilde🇵🇪",
-   "quien": "gianfraxruizescor11",
-   "discord_id": "1122273746099638354",
-   "msg_id": "1563282069738627126",
-   "cuando": "2026-10-23T20:04:49"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Sultán 🇧🇴",
-   "quien": "svlt4n.",
-   "discord_id": "1560477107598008355",
-   "msg_id": "1563281992613888061",
-   "cuando": "2026-10-23T20:04:31"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1563281759469179032",
-   "cuando": "2026-10-23T20:03:35"
   }
  ]
 }

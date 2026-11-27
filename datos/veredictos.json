@@ -11248,6 +11248,39 @@
    "b": "BLACK DEMON",
    "ganador": "BLACK DEMON",
    "votos": "1–0"
+  },
+  "1575693341155131525": {
+   "id": "1575693341155131525",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1795744967498,
+   "a": "XCLUSIVO🇻🇪",
+   "b": "EVANGELINE🇧🇴",
+   "ganador": "XCLUSIVO🇻🇪",
+   "votos": "1–0"
+  },
+  "1575694772235149404": {
+   "id": "1575694772235149404",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1795745308694,
+   "a": "SOUL B🇨🇱",
+   "b": "SAKRO🇨🇱",
+   "ganador": "SAKRO🇨🇱",
+   "votos": "1–0"
+  },
+  "1575696328250622085": {
+   "id": "1575696328250622085",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1795745679677,
+   "a": "SOSA🇦🇷",
+   "b": "ADRIAGNER 🇳🇮",
+   "ganador": "SOSA🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -15232,8 +15265,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1795742971860,
-   "ed": 1795743168568,
-   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞MINIBOY⌝ 🆚 ⌞CRISZJ⌝",
+   "ed": 1795746085352,
+   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞MINIBOY⌝ 🆚 ⌞CRISZJ⌝\n`[ CUARTOS ]`\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞SOUL B🇨🇱⌝ 🆚 ⌞SAKRO🇨🇱⌝\n⌞SOSA🇦🇷⌝ 🆚 ⌞ADRIAGNER 🇳🇮⌝\n`[ SEMIFINALES ]`\n⌞SAKRO🇨🇱⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -15244,6 +15277,46 @@
      ],
      "XCLUSIVO",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "XCLUSIVO🇻🇪",
+      "EVANGELINE🇧🇴"
+     ],
+     "XCLUSIVO🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SOUL B🇨🇱",
+      "SAKRO🇨🇱"
+     ],
+     "SAKRO🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SOSA🇦🇷",
+      "ADRIAGNER 🇳🇮"
+     ],
+     "SOSA🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SAKRO🇨🇱",
+      "XCLUSIVO🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

@@ -63,6 +63,15 @@
 "temporada"
 ]
 },
+"mco": {
+"rg": "A",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "colesito": {
 "rg": "B",
 "c": [
@@ -91,15 +100,6 @@
 },
 "vandu": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"mco": {
-"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -208,6 +208,15 @@
 "rg": "B",
 "c": []
 },
+"geoka": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "nc": {
 "rg": "D",
 "c": []
@@ -241,15 +250,6 @@
 "criszj": {
 "rg": "B",
 "c": []
-},
-"geoka": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "soulb": {
 "rg": "C",
@@ -7239,89 +7239,6 @@
 }
 },
 "noches": {
-"2026-11-10": {
-"tipo": "resnoche",
-"t": "2026-11-11T08:00:00Z",
-"dia": "2026-11-10",
-"eventos": 3,
-"part": 26,
-"campeones": [
-{
-"ev": "MF DOOM Y MADLIB EDICION 1",
-"sv": "DDS",
-"ll": 604,
-"quien": [
-[
-"Dios",
-"dios"
-]
-]
-},
-{
-"ev": "(sin titulo)",
-"sv": "LKR",
-"ll": 601,
-"quien": [
-[
-"Erian",
-"erian"
-]
-]
-},
-{
-"ev": "EL ULTIMO DIA DE DDF",
-"sv": "DDF",
-"ll": 605,
-"quien": [
-[
-"Adriagner",
-"adriagner"
-]
-]
-}
-],
-"suman": [
-{
-"n": "Adriagner",
-"k": "adriagner",
-"pts": 9500,
-"ev": 2
-},
-{
-"n": "Miniboy",
-"k": "miniboy",
-"pts": 9000,
-"ev": 3
-},
-{
-"n": "Dios",
-"k": "dios",
-"pts": 7500,
-"ev": 1
-}
-],
-"suben": [
-{
-"n": "Mc dl",
-"k": "",
-"de": 491,
-"a": 400
-},
-{
-"n": "black live",
-"k": "",
-"de": 442,
-"a": 377
-},
-{
-"n": "tormen",
-"k": "",
-"de": 216,
-"a": 153
-}
-],
-"sorpresas": []
-},
 "2026-11-11": {
 "tipo": "resnoche",
 "t": "2026-11-12T08:00:00Z",
@@ -8767,6 +8684,48 @@
 "desde": 103
 }
 ]
+},
+"2026-11-26": {
+"tipo": "resnoche",
+"t": "2026-11-27T08:00:00Z",
+"dia": "2026-11-26",
+"eventos": 1,
+"part": 8,
+"campeones": [
+{
+"ev": "- THE IMPACT -",
+"sv": "FRZ",
+"ll": 699,
+"quien": [
+[
+"Geoka",
+"geoka"
+]
+]
+}
+],
+"suman": [
+{
+"n": "Geoka",
+"k": "geoka",
+"pts": 7500,
+"ev": 1
+},
+{
+"n": "MCO",
+"k": "mco",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "Mito",
+"k": "mito",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [],
+"sorpresas": []
 }
 },
 "extra": {
@@ -8817,9 +8776,9 @@
 "praiseriza",
 "snow",
 "six",
+"mco",
 "colesito",
-"over",
-"verc"
+"over"
 ],
 "competitivo": [
 "oasis",
@@ -8855,7 +8814,7 @@
 "colesito": 1,
 "agus": 0,
 "mrstillballin": 5,
-"mco": 0,
+"mco": 1,
 "provenza": 0,
 "yinn": 1,
 "miniboy": 0,
@@ -8881,7 +8840,7 @@
 "drexx": 0,
 "cronox": 1,
 "chop": 0,
-"geoka": 0,
+"geoka": 1,
 "tenor": 0,
 "lrs": 0,
 "xclusivo": 0,

@@ -60562,5 +60562,132 @@
    ]
   ],
   "v": 2
+ },
+ "699": {
+  "antes": {
+   "Dynoco": [
+    63,
+    75,
+    false
+   ],
+   "Geoka": [
+    27,
+    30,
+    false
+   ],
+   "MCO": [
+    12,
+    12,
+    false
+   ],
+   "Mito": [
+    15,
+    15,
+    false
+   ],
+   "Soulb": [
+    28,
+    31,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Mito",
+    "Soulb",
+    "Mito"
+   ],
+   [
+    "MCO",
+    "Galaby 🇦🇷",
+    "MCO"
+   ],
+   [
+    "Salmón 🇨🇱",
+    "Venus",
+    "Salmón 🇨🇱"
+   ],
+   [
+    "Geoka",
+    "Dynoco",
+    "Geoka"
+   ],
+   [
+    "MCO",
+    "Mito",
+    "MCO"
+   ],
+   [
+    "Geoka",
+    "Salmón 🇨🇱",
+    "Geoka"
+   ],
+   [
+    "Geoka",
+    "MCO",
+    "Geoka"
+   ]
+  ],
+  "ev_antes": {
+   "Dynoco": 20,
+   "Geoka": 37,
+   "MCO": 52,
+   "Mito": 56,
+   "Soulb": 37
+  },
+  "fecha": "26/11",
+  "noche": true,
+  "nombre": "- THE IMPACT -",
+  "num": 699,
+  "participantes": 8,
+  "sello": {
+   "Geoka": "9a1fd6fce20f:0b98cb3023ec"
+  },
+  "sv": "FRZ",
+  "t": "2026-11-27T02:24:11Z",
+  "tabla": [
+   [
+    "Geoka",
+    "Campeón",
+    7500
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Salmón 🇨🇱",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Galaby 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Venus",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dynoco",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

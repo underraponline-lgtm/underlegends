@@ -1219,6 +1219,19 @@
    "vence": "2026-11-23T02:04:55+00:00",
    "vencido": true
   },
+  "Galaby": {
+   "avisado": "2026-11-26",
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-27T01:38:43+00:00",
+   "did": "",
+   "evento": "- THE IMPACT -",
+   "n": 699,
+   "sv": "FRZ",
+   "vence": "2026-12-04T01:38:43+00:00",
+   "vencido": false
+  },
   "Ghost": {
    "con": null,
    "cumplido": "",
@@ -2869,6 +2882,19 @@
    "vence": "2026-11-11T01:53:16+00:00",
    "vencido": true
   },
+  "Salmón": {
+   "avisado": "2026-11-26",
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-27T01:38:43+00:00",
+   "did": "",
+   "evento": "- THE IMPACT -",
+   "n": 699,
+   "sv": "FRZ",
+   "vence": "2026-12-04T01:38:43+00:00",
+   "vencido": false
+  },
   "Sanito": {
    "avisado": "2026-11-20",
    "chat": "2026-11-21",
@@ -3281,6 +3307,19 @@
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": true
+  },
+  "Venus": {
+   "avisado": "2026-11-26",
+   "chat": "2026-11-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-27T01:38:43+00:00",
+   "did": "266978177417478144",
+   "evento": "- THE IMPACT -",
+   "n": 699,
+   "sv": "FRZ",
+   "vence": "2026-12-04T01:38:43+00:00",
+   "vencido": false
   },
   "WHITE": {
    "con": null,
