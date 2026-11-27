@@ -67,16 +67,30 @@
 "como":"fila nueva",
 "por":"se anotó así 1 vez/veces + su apodo o nombre visible",
 "pais":""
+},
+"1517375729946333292":{
+"n":"HJT",
+"cuando":"27/11/2026 12:10 AM ET",
+"como":"id",
+"por":"se anotó así 3 vez/veces + la misma bandera"
+},
+"508442795946672151":{
+"n":"wolffe",
+"cuando":"27/11/2026 12:10 AM ET",
+"como":"fila nueva",
+"por":"se anotó así 1 vez/veces + su apodo o nombre visible",
+"pais":""
 }
 },
-"ultima":"2026-11-26T20:55-05:00",
+"ultima":"2026-11-27T00:10-05:00",
 "ultimo_conteo":{
-"nada":114,
-"no":31,
-"empate":15,
-"probable":26,
-"disfraz":53,
-"sin_id":239,
-"auto":0
+"nada":142,
+"no":37,
+"empate":19,
+"probable":28,
+"disfraz":55,
+"seguro":2,
+"sin_id":283,
+"auto":2
 }
 }

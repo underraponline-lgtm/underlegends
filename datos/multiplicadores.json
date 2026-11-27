@@ -1741,14 +1741,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 4,
+     "FFA": 5,
      "DDF": 4,
      "FRZ": 5,
      "CH": 3,
      "WOF": 1
     },
     "gente": {
-     "FFA": 57,
+     "FFA": 66,
      "FRZ": 28,
      "DDS": 23,
      "UFLUC": 8,
@@ -1768,7 +1768,7 @@
     "DDS": 23,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 57,
+    "FFA": 66,
     "FFS": 0,
     "FRZ": 28,
     "FVS": 0,
