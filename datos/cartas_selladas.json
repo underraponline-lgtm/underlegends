@@ -127,7 +127,7 @@
    "competitivo": "52169f4f5e4f:baafccf84bc7",
    "pais": "45dab88c5ba6:84d29bb63c59",
    "servidor": "caceb72fa064:ca27345eed9e:acc4a5",
-   "temporada": "9bb911978d14:0b98cb3023ec"
+   "temporada": "d3e6cbb6b77b:0b98cb3023ec"
   },
   "Andy": {
    "competitivo": "78cb014e1e3f:baafccf84bc7",
@@ -383,7 +383,7 @@
    "temporada": "d71b7e3d6dcd:0b98cb3023ec"
   },
   "DarnBless": {
-   "competitivo": "2f12cc940311:baafccf84bc7",
+   "competitivo": "a61747acf065:baafccf84bc7",
    "pais": "ee7fd16e2850:84d29bb63c59",
    "servidor": "16b406619c53:ca27345eed9e:ed8290",
    "temporada": "c64cac5f33a9:0b98cb3023ec"
@@ -1147,7 +1147,7 @@
   },
   "Luzzano": {},
   "Lvel": {
-   "competitivo": "9fc8fca8b51d:baafccf84bc7",
+   "competitivo": "7c167b7466c8:baafccf84bc7",
    "servidor": "b5df133c04d8:ca27345eed9e:62e67f",
    "temporada": "82baae05058f:0b98cb3023ec"
   },
@@ -1208,7 +1208,7 @@
   },
   "Malva": {},
   "Marcos": {
-   "competitivo": "3906cd3f7046:baafccf84bc7",
+   "competitivo": "adca9abd62d1:baafccf84bc7",
    "pais": "b5eab450e400:84d29bb63c59",
    "servidor": "8fc53f362a18:ca27345eed9e:bcd566",
    "temporada": "2137193d3612:0b98cb3023ec"
@@ -1316,7 +1316,7 @@
   },
   "Mosquitrap 🦟": {},
   "Motera": {
-   "competitivo": "4c16e8bf5f24:baafccf84bc7",
+   "competitivo": "ce34558c94d8:baafccf84bc7",
    "pais": "f0f1ca65e3b8:84d29bb63c59",
    "servidor": "fb5b0b01fece:ca27345eed9e:a7b8bd",
    "temporada": "7222440a6452:0b98cb3023ec"
@@ -1488,8 +1488,8 @@
   },
   "PUBLIC ENEMY": {},
   "Panchok": {
-   "competitivo": "5679083d36a5:baafccf84bc7",
-   "pais": "fc228e5a56ef:84d29bb63c59",
+   "competitivo": "f0843579f153:baafccf84bc7",
+   "pais": "073ac1b7fd53:84d29bb63c59",
    "servidor": "a6fbd9bd0f89:ca27345eed9e:9397f6",
    "temporada": "3f8bf9807838:0b98cb3023ec"
   },
@@ -1907,7 +1907,7 @@
    "competitivo": "46bbd65e7765:baafccf84bc7",
    "pais": "8e355f00b65a:84d29bb63c59",
    "servidor": "ccfe23104629:ca27345eed9e:18ae17",
-   "temporada": "8918c328e42e:0b98cb3023ec"
+   "temporada": "6bd9a6d11f4a:0b98cb3023ec"
   },
   "UDDIZIM": {},
   "UL OFICIA": {
@@ -2244,5 +2244,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-27T18:16:37+00:00"
+ "cuando": "2026-11-27T18:36:01+00:00"
 }
