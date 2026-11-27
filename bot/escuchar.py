@@ -547,6 +547,11 @@ def _equipo_de_banderas(s):
 MEDALLA_PODIO = {'\U0001F3C6': 'CAMPEÓN', '\U0001F947': 'CAMPEÓN', '\U0001F396': 'CAMPEÓN',
                  '\U0001F948': 'SUBCAMPEÓN', '\U0001F949': '3ER PUESTO'}
 _PUNTAS_PODIO = ' .·▪️*_`:-–—️|┋'
+#: 🔢 lo que una medalla al pie CUENTA no es un puesto (Backtime, FFA, 25/11/2026: los cuartos venían sin título y
+#: cerraban con «🏆 8 PARTICIPANTES» / «🔥 4 CLASIFICADOS A SEMIFINALES»: el 🏆 los volvía «CAMPEÓN: 8 PARTICIPANTES»).
+#: Un número solo sigue siendo un nombre («🏆 23»): hace falta la palabra que dice qué se cuenta
+CONTEO_PODIO = re.compile(r'^\d{1,3}\s+(?:participantes|clasificad[oa]s|jugadores|inscrit[oa]s|cupos|competidores'
+                          r'|raperos|batallas|mcs?)\b', re.I)
 
 
 def _podio_con_medallas(ls):
@@ -572,7 +577,7 @@ def _podio_con_medallas(ls):
         if not et or ya[et] or PODIO.search(s) or RONDA.search(s) or CONTRA.search(s):
             continue
         resto = _sin_marcas(s[1:].strip(_PUNTAS_PODIO))
-        if not (norm(resto) or MENCION.search(resto)):
+        if not (norm(resto) or MENCION.search(resto)) or CONTEO_PODIO.match(resto):
             continue
         ls[i] = '%s: %s' % (et, resto)
         ya[et] = True
@@ -1249,6 +1254,8 @@ def _sin_numeracion(rs):
     return out
 
 
+#: 🔢 las rondas que se pueden escribir con un título por cruce («SEMIFINAL 1», «SEMIFINAL 2»): ver `_rondas_crudas()`
+RONDA_NUMERADA = ('DIECISEISAVOS', 'OCTAVOS', 'CUARTOS', 'SEMIFINALES')
 #: la ronda previa que se nombra en el texto y no como título: «Los 3 ganadores de Play-In avanzan a OCTAVOS»
 PLAY_IN = re.compile(r'\bplay[\s-]?in\b|\bpreliminar(?:es)?\b|\bprevias?\b', re.I)
 
@@ -1278,6 +1285,13 @@ def _rondas_crudas(texto):
         cy = not nombres and not m and CYPHER_ENC.match(l.strip())
         if (m or cy) and not nombres:
             e = 'FILTROS' if cy else re.sub(r'\s+', ' ', m.group(1).upper()).strip()
+            # 🔢 «SEMIFINAL 1» Y «SEMIFINAL 2» SON UNA SOLA RONDA (Backtime, FFA, 25/11/2026): con un título por batalla
+            # la ronda salía partida en dos, y los cuartos miraban sólo la primera para saber quién pasó: Monet y Drex,
+            # que estaban en la segunda, «no aparecían después». Sólo con el número del cruce en el título y en las
+            # rondas de antes de la final: `RONDA_NUMERADA`
+            if (m and actual and _doble(ALIAS.get(e, e)) == actual and actual in RONDA_NUMERADA
+                    and re.search(r'\d', l[m.end(1):])):
+                continue
             if actual and bats:
                 out.append((actual, bats))
             actual, bats = _doble(ALIAS.get(e, e)), []
@@ -3224,6 +3238,34 @@ def _podio_de(t, rondas):
     return any(len(x) >= 2 and (x in nc or nc in x) for x in ms)
 
 
+def _ronda_sin_titulo(t, rondas):
+    """🔢 LA RONDA QUE VINO EN SU PROPIO MENSAJE Y SIN TÍTULO: el nombre que le toca, o `None`.
+
+    Backtime (FFA, 25/11/2026, organizó Julda): un mensaje por ronda, y el de cuartos sólo traía «⚔️ BATALLA 1 …
+    BATALLA 4» y abajo «🏆 8 PARTICIPANTES · 🔥 4 CLASIFICADOS A SEMIFINALES». Sin título no tenía rondas, así que no
+    se pegaba a los octavos de arriba y la llave entró desde semis: los de octavos y cuartos, sin sus puntos.
+
+    Es la ronda que SIGUE a la última de la llave (`ESCALERA`) si, leída con ese título, da una sola ronda de dos
+    batallas o más, no más batallas que la anterior y con dos personas o más que ya estaban en la anterior (los que
+    pasaron). La misma persona y la ventana de `PARTIDA_H` las pide `unir_partidas()`."""
+    if not rondas or rondas_de(t):
+        return None
+    ult = ALIAS.get(rondas[-1][0], rondas[-1][0])
+    if ult not in ESCALERA or ult == 'FINAL':
+        return None
+    sig = ESCALERA[ESCALERA.index(ult) + 1]
+    rs = rondas_de(sig + '\n' + t)
+    if len(rs) != 1 or rs[0][0] != sig:
+        return None
+    antes = [bt for r, bs in rondas if ALIAS.get(r, r) == ult for bt in bs]
+    if not 2 <= len(rs[0][1]) <= len(antes):
+        return None
+
+    def gente(bs):
+        return {norm(HISTORIA.sub('', p)) for bt in bs for x in bt for p in re.split(r'[+&,]', x)} - {''}
+    return sig if len(gente(rs[0][1]) & gente(antes)) >= 2 else None
+
+
 def unir_partidas(ms):
     """Los mensajes de un canal, con cada llave partida en dos ya pegada.
 
@@ -3265,18 +3307,26 @@ def unir_partidas(ms):
         rs = rondas_de(t)
         autor = (m.get('author') or {}).get('id')
         b = bloques[-1] if bloques else None
-        if (b and rs and b['_rondas'] and autor and autor == b['_autor']
-                and ((int(m['id']) >> 22) - (int(b['_ult']) >> 22)
-                     <= PARTIDA_H * 3600000)
-                and _ronda_n(rs[0][0]) > _ronda_n(b['_rondas'][-1][0])):
-            b['content'] = (b.get('content') or '') + '\n' + (m.get('content') or '')
-            b['edited_timestamp'] = max(b.get('edited_timestamp') or '',
-                                        m.get('edited_timestamp') or '') or None
+        # 🔑 LA RONDA SE PEGA A LA ÚLTIMA LLAVE QUE TIENE RONDAS, NO AL ÚLTIMO MENSAJE (Backtime, FFA, 25/11/2026):
+        # entre los octavos y los cuartos el organizador puso «SUPLENTE: …» y otro del staff un «@everyone», y cada
+        # uno cortaba la cadena: la llave entró desde semifinales. Un mensaje sin batallas no es otra llave
+        bp = next((x for x in reversed(bloques) if x['_rondas']), None)
+        cerca = bool(bp and autor and autor == bp['_autor']
+                     and ((int(m['id']) >> 22) - (int(bp['_ult']) >> 22) <= PARTIDA_H * 3600000))
+        sig = _ronda_sin_titulo(t, bp['_rondas']) if cerca and not rs else None
+        if cerca and (sig or (rs and _ronda_n(rs[0][0]) > _ronda_n(bp['_rondas'][-1][0]))):
+            # 🔢 la ronda sin título se pega CON su título (`_ronda_sin_titulo()`): sin él, sus batallas caían en la
+            # ronda de arriba
+            bp['content'] = ((bp.get('content') or '') + '\n' + (sig + '\n' if sig else '')
+                             + (m.get('content') or ''))
+            bp['edited_timestamp'] = max(bp.get('edited_timestamp') or '',
+                                         m.get('edited_timestamp') or '') or None
             # las menciones de las dos mitades: el podio suele ir en la segunda
-            b['mentions'] = list(b.get('mentions') or []) + list(m.get('mentions') or [])
-            b['_ult'] = m['id']
-            b['_partes'] += 1
-            b['_rondas'] = rondas_de(traducir(plano(b['content'])))
+            bp['mentions'] = list(bp.get('mentions') or []) + list(m.get('mentions') or [])
+            bp['_ult'] = m['id']
+            bp['_partes'] += 1
+            bp['_ids'].append(m['id'])
+            bp['_rondas'] = rondas_de(traducir(plano(bp['content'])))
             continue
         # 🔑 LA LLAVE DE PERDEDORES EN SU PROPIO MENSAJE, AUNQUE LA ESCRIBA OTRO (Doble Eliminación Vol. 2, FFA,
         # 07/10/2026: la de ganadores la publicó uno y la de perdedores otro, dos segundos después). Se pega si EMPIEZA en
@@ -3290,6 +3340,7 @@ def unir_partidas(ms):
             b['mentions'] = list(b.get('mentions') or []) + list(m.get('mentions') or [])
             b['_ult'] = m['id']
             b['_partes'] += 1
+            b['_ids'].append(m['id'])
             b['_rondas'] = rondas_de(traducir(plano(b['content'])))
             continue
         if (b and b['_rondas'] and not b.get('_podio') and autor
@@ -3303,12 +3354,58 @@ def unir_partidas(ms):
             b['mentions'] = list(b.get('mentions') or []) + list(m.get('mentions') or [])
             b['_ult'] = m['id']
             b['_partes'] += 1
+            b['_ids'].append(m['id'])
             b['_podio'] = True
             continue
         b = dict(m)
-        b.update(_autor=autor, _ult=m['id'], _partes=1, _rondas=rs)
+        b.update(_autor=autor, _ult=m['id'], _partes=1, _rondas=rs, _ids=[m['id']])
         bloques.append(b)
     return sorted(bloques, key=lambda b: int(b['id']), reverse=True)
+
+
+_IDS_LLAVES = [None]
+
+
+def ids_de_llaves():
+    """Los mensajes que ya SON una llave para el resto del sistema: los links de `datos/llaves_t1.json` y
+    `llaves_sin_sumar.json`, y las llaves de `nombres_llaves.json` y `finales.json`. Ver `id_de_llave()`."""
+    if _IDS_LLAVES[0] is None:
+        ids = set()
+        for arch, campo in (('llaves_t1.json', None), ('llaves_sin_sumar.json', None),
+                            ('nombres_llaves.json', 'llaves'), ('finales.json', '')):
+            try:
+                with io.open(os.path.join(BASE, 'datos', arch), encoding='utf-8') as f:
+                    d = json.load(f) or {}
+            except (OSError, ValueError):
+                continue
+            if campo is None:
+                for e in (d.values() if isinstance(d, dict) else d):
+                    for l in (e.get('links') or []) if isinstance(e, dict) else []:
+                        g = re.search(r'/(\d+)\s*$', str(l))
+                        if g:
+                            ids.add(g.group(1))
+            else:
+                ids.update(str(k) for k in ((d.get(campo) if campo else d) or {}) if str(k).isdigit())
+        _IDS_LLAVES[0] = ids
+    return _IDS_LLAVES[0]
+
+
+def id_de_llave(m, conocidos=None):
+    """El `msg_id` de una llave que `unir_partidas()` armó con varios mensajes: el primero, salvo que otro de sus
+    mensajes ya sea una llave conocida (`ids_de_llaves()`); entonces ése.
+
+    🔑 EL EVENTO NO CAMBIA DE IDENTIDAD PORQUE APARECIERON SUS PRIMERAS RONDAS (Backtime, FFA, 25/11/2026). Se cargó
+    desde el mensaje de semis —el #697—, y desde que los octavos y los cuartos se pegan la llave empieza en el de
+    octavos. Con ese id nuevo, el nombre que le dio su anuncio (`nombres_llaves.json`, por id) no se encontraba y el
+    anuncio figuraba «tomado» por la llave vieja: volvía «(sin título)», otro evento, otro número, y los puntos dos
+    veces. Una llave nueva sale con el primero, como siempre."""
+    ids = [str(x) for x in (m.get('_ids') or [m.get('id')])]
+    if len(ids) > 1:
+        conocidos = ids_de_llaves() if conocidos is None else conocidos
+        ya = [x for x in ids if x in conocidos]
+        if ya:
+            return ya[0]
+    return m['id']
 
 
 def menciones_de(m):
@@ -3591,7 +3688,7 @@ def barrer(s, por_canal=25, solo=None, guilds=None, hondo=(), extra=None):
             if llave:
                 out.append({'servidor': servidor, 'guild': guild,
                             'canal': canal, 'canal_id': cid,
-                            'msg_id': m['id'],
+                            'msg_id': id_de_llave(m),
                             'autor': (m.get('author') or {}).get('username'),
                             # 🔑 y su cuenta, que no cambia como el usuario:
                             # la regla de las llaves de broma pregunta quién
@@ -5547,6 +5644,24 @@ def _check_dialectos():
            '⌞fokox⌝ <:VSF:17> ⌞Sin limites⌝ <:VSF:17> nhp\n'
            '`[ FINAL ]`\n⌞Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷⌝ 🆚 ⌞dxg🇲🇽🇨🇴⌝\n'
            '**CAMPEON:**Hassan🇪🇬 +\n(BLOODY) [Cj] [Zignos]')
+    # 🔢 BACKTIME (FFA, 25/11/2026), recortada: un mensaje por ronda, los cuartos SIN título y con «🏆 8 PARTICIPANTES»
+    # al pie, y entre octavos y cuartos un «SUPLENTE» del organizador y un «@everyone» de otro del staff
+    bt_msgs = [
+        {'id': '1575333861020405784', 'author': {'id': '5'},
+         'content': '🏆 OCTAVOS DE FINAL\n\n⚔️ BATALLA 1\n🇨🇳 Monet 🆚 🇵🇪 geremy\n\n⚔️ BATALLA 2\n🇹🇭 LALOX 🆚 🇺🇾 gus\n\n'
+                    '⚔️ BATALLA 3\n🇱🇷 Sebita 🆚 🇺🇾 HJT\n\n⚔️ BATALLA 4\n🇲🇦 Drexx 🆚 🇨🇱 kochi\n\n'
+                    '⚔️ BATALLA 5\n🇵🇪 AbrahamSRRL 🆚 🇪🇨 Black D-mon\n\n⚔️ BATALLA 6\n🇲🇽 Dios 🆚 🇲🇽 Leonar-T'},
+        {'id': '1575334031594225827', 'author': {'id': '5'}, 'content': 'SUPLENTE: 🇻🇪 onzas.s\nAriaxer 🇦🇷'},
+        {'id': '1575334477369049281', 'author': {'id': '6'}, 'content': '@everyone'},
+        {'id': '1575349813971517681', 'author': {'id': '5'},
+         'content': '⚔️ BATALLA 1\n🇨🇳 Monet 🆚 🇪🇨 Black D-mon\n\n⚔️ BATALLA 2\n🇺🇾 Gus 🆚 🇲🇽 Dios\n\n'
+                    '⚔️ BATALLA 3\n🇱🇷 Sebita 🆚 Drex\n\n🏆 8 PARTICIPANTES\n🔥 4 CLASIFICADOS A SEMIFINALES'},
+        {'id': '1575355385399873650', 'author': {'id': '5'},
+         'content': '⚔️ SEMIFINAL 1\n🔥 Raxo 🆚 Dios\n\n⚔️ SEMIFINAL 2\n🔥 Drex 🆚 Monet'},
+        {'id': '1575358392514642024', 'author': {'id': '5'},
+         'content': '👑 GRAN FINAL\n\n🔥 🇲🇽 DIOS\n        🆚\n🔥 🇨🇳 MONET'}]
+    bt = [b for b in unir_partidas(bt_msgs) if b.get('_partes', 1) > 1]
+    bt_rs = [r for r, _b in bt[0]['_rondas']] if len(bt) == 1 else []
     casos = [
         ('Snake Rap: 「」, `<:VS6:…>` y el equipo sin `+`',
          [r for r, _b in rs] == ['CUARTOS', 'FINAL']
@@ -5582,6 +5697,22 @@ def _check_dialectos():
                                                   .replace('FULLY', 'OTRO'))])) == 2),
         ('ni a una llave que no llegó a la final',
          len(unir_partidas([wc_msgs[0], wc_msgs[2]])) == 2),
+        ('la ronda en su propio mensaje y SIN título se pega con el suyo, salteando lo que no es llave, y «SEMIFINAL 1» y «2» son una ronda (Backtime)',
+         len(bt) == 1 and bt[0]['_partes'] == 4
+         and bt_rs == ['OCTAVOS', 'CUARTOS', 'SEMIFINALES', 'FINAL']
+         and len(bt[0]['_rondas'][1][1]) == 3),
+        ('… «🏆 8 PARTICIPANTES» no es el campeón',
+         len(bt) == 1 and not CAMPEON.search(traducir(plano(bt[0]['content'])))),
+        ('… y el evento ya cargado desde semis sigue con el id de semis; uno nuevo, con el de octavos',
+         len(bt) == 1 and id_de_llave(bt[0], {'1575355385399873650'}) == '1575355385399873650'
+         and id_de_llave(bt[0], set()) == '1575333861020405784'),
+        ('la ronda sin título de OTRO autor no se pega',
+         len([b for b in unir_partidas(bt_msgs[:3] + [dict(bt_msgs[3], author={'id': '7'})])
+              if b.get('_partes', 1) > 1]) == 0),
+        ('ni la que no comparte gente con la ronda de arriba',
+         len([b for b in unir_partidas(bt_msgs[:1] + [dict(bt_msgs[3], content='⚔️ BATALLA 1\nANA 🆚 BEA\n\n'
+                                                                             '⚔️ BATALLA 2\nCAMI 🆚 DORA')])
+              if b.get('_partes', 1) > 1]) == 0),
         ('un solo nombre en el 3.º sigue siendo tercero y cuarto',
          [(r, g) for r, _b, g, _z in _tercero_del_podio(
              'TERCER LUGAR: EZEE\nMVP: SOL', [('SEMIFINALES', ['FULLY', 'MOLUSCO'], 'FULLY', ''),

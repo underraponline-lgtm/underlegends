@@ -266,6 +266,8 @@
      de la última batalla y sólo el puesto que la llave no escribe ya con palabras (ONE PIECE, FFA, 30/09/2026) */
   var MEDALLA_PODIO = { '\u{1F3C6}': 'CAMPEÓN', '\u{1F947}': 'CAMPEÓN', '\u{1F396}': 'CAMPEÓN', '\u{1F948}': 'SUBCAMPEÓN', '\u{1F949}': '3ER PUESTO' };
   var PUNTAS_PODIO = Array.from(' .·▪️*_`:-–—️|┋');
+  /* `escuchar.CONTEO_PODIO`: «🏆 8 PARTICIPANTES» al pie cuenta, no es el campeón (Backtime, FFA, 25/11/2026) */
+  var CONTEO_PODIO = /^\d{1,3}\s+(?:participantes|clasificad[oa]s|jugadores|inscrit[oa]s|cupos|competidores|raperos|batallas|mcs?)\b/i;
   // con la aclaración entre paréntesis: `3ER LUGAR (3ER PUESTO):` (`escuchar.TERCERO`, 19 CUP de DDF)
   // y con guion, `TERCER-PUESTO: Ortiz🇪🇸` (18/11/2026): Python lo lee desde el 14/10 y esta copia no lo había traído
   var TERCERO = /(?:\b3\s*(?:ER|RO)|TERC?ER)[\s-]*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*([^\n]{1,80})/i;
@@ -286,7 +288,7 @@
       if (!et || ya[et] || PODIO.test(s) || buscarRonda(s) || CONTRA.test(s)) continue;
       var resto = sinMarcas(quitarBordes(s.slice(c.length), PUNTAS_PODIO));
       MENCION.lastIndex = 0;
-      if (!(norm(resto) || MENCION.test(resto))) continue;
+      if (!(norm(resto) || MENCION.test(resto)) || CONTEO_PODIO.test(resto)) continue;
       ls[i] = et + ': ' + resto;
       ya[et] = true;
     }
@@ -453,6 +455,8 @@
   }
 
   /* `RONDA.search()`: con los bordes de palabra de Python, que ven las tildes */
+  /* `escuchar.RONDA_NUMERADA`: las rondas que se pueden escribir con un título por cruce */
+  var RONDA_NUMERADA = ['DIECISEISAVOS', 'OCTAVOS', 'CUARTOS', 'SEMIFINALES'];
   function buscarRonda(l) {
     var re = new RegExp(RONDA_ALT, 'gi'), m;
     while ((m = re.exec(l))) {
@@ -684,6 +688,9 @@
       var cy = !m && !nombres.length && CYPHER_ENC.test(l.trim());
       if ((m || cy) && !nombres.length) {
         var e = cy ? 'FILTROS' : m[0].toUpperCase().replace(/\s+/g, ' ').trim();
+        // 🔢 «SEMIFINAL 1» y «SEMIFINAL 2» son una sola ronda (Backtime, FFA, 25/11/2026): `escuchar._rondas_crudas()`
+        if (m && actual && doble(ALIAS[e] || e) === actual && RONDA_NUMERADA.indexOf(actual) >= 0 &&
+            /\d/.test(l.slice(m.index + m[0].length))) return;
         if (actual && bats.length) out.push([actual, bats]);
         actual = doble(ALIAS[e] || e);
         bats = [];
@@ -1096,18 +1103,44 @@
      campeón). Se juntaron recién a las 9:33 PM, cuando VERSO STYLE salió de la ventana de 3 horas, y el bot anunció
      como nuevo un «pasan · Octavos» de dos horas antes */
   var DOBLE_JUNTA_MS = 30 * 60000;
+  /* `escuchar._ronda_sin_titulo()`: la ronda que vino en su propio mensaje y SIN título (Backtime, FFA, 25/11/2026: los
+     cuartos eran «⚔️ BATALLA 1 … 4» y nada más). Es la que SIGUE a la última de la llave si, leída con ese título, da
+     una sola ronda de dos batallas o más, no más que la anterior y con dos personas o más de la anterior */
+  function rondaSinTitulo(t, rs0) {
+    if (!rs0.length || rondasDe(t).length) return null;
+    var ult = ALIAS[rs0[rs0.length - 1][0]] || rs0[rs0.length - 1][0];
+    var i = ESCALERA.indexOf(ult);
+    if (i < 0 || ult === 'FINAL') return null;
+    var sig = ESCALERA[i + 1], rs = rondasDe(sig + '\n' + t);
+    if (rs.length !== 1 || rs[0][0] !== sig) return null;
+    var antes = [];
+    rs0.forEach(function (R) { if ((ALIAS[R[0]] || R[0]) === ult) antes = antes.concat(R[1]); });
+    if (rs[0][1].length < 2 || rs[0][1].length > antes.length) return null;
+    function gente(bs) {
+      var g = new Set();
+      bs.forEach(function (b) { b.forEach(function (x) { String(x).replace(HISTORIA, '').split(/[+&,]/).forEach(function (q) { if (norm(q)) g.add(norm(q)); }); }); });
+      return g;
+    }
+    var a = gente(antes), n = 0;
+    gente(rs[0][1]).forEach(function (q) { if (a.has(q)) n++; });
+    return n >= 2 ? sig : null;
+  }
   function unirPartidas(ms) {
-    var bloques = [], ultimo = {};
+    var bloques = [], ultimo = {}, conRondas = {};
     ms.slice().sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; }).forEach(function (m) {
       var t = traducir(plano(m.texto || ''));
       var rs = rondasDe(t);
       var b = Object.prototype.hasOwnProperty.call(ultimo, String(m.canal)) ? ultimo[String(m.canal)] : null;
-      if (b && rs.length && b.rs.length && m.autor && m.autor === b.autor && m.canal === b.canal &&
-          m.pub - b.ult <= PARTIDA_MS && rondaN(rs[0][0]) > rondaN(b.rs[b.rs.length - 1][0])) {
-        b.texto += '\n' + (m.texto || '');
-        b.ult = m.pub;
-        b.ed = Math.max(b.ed, m.ed || 0);
-        b.rs = rondasDe(traducir(plano(b.texto)));
+      // 🔑 la ronda se pega a la ÚLTIMA LLAVE CON RONDAS del canal, no al último mensaje: un «SUPLENTE: …» o un
+      // «@everyone» en el medio cortaban la cadena (Backtime, FFA, 25/11/2026). `escuchar.unir_partidas()`
+      var bp = Object.prototype.hasOwnProperty.call(conRondas, String(m.canal)) ? conRondas[String(m.canal)] : null;
+      var cerca = !!(bp && m.autor && m.autor === bp.autor && m.canal === bp.canal && m.pub - bp.ult <= PARTIDA_MS);
+      var sig = cerca && !rs.length ? rondaSinTitulo(t, bp.rs) : null;
+      if (cerca && (sig || (rs.length && rondaN(rs[0][0]) > rondaN(bp.rs[bp.rs.length - 1][0])))) {
+        bp.texto += '\n' + (sig ? sig + '\n' : '') + (m.texto || '');
+        bp.ult = m.pub;
+        bp.ed = Math.max(bp.ed, m.ed || 0);
+        bp.rs = rondasDe(traducir(plano(bp.texto)));
         return;
       }
       // la llave de perdedores en su propio mensaje, aunque la escriba OTRO: `escuchar.unir_partidas()`
@@ -1131,6 +1164,7 @@
         ed: m.ed || m.pub, ult: m.pub, texto: m.texto || '', rs: rs };
       bloques.push(nuevo);
       ultimo[String(m.canal)] = nuevo;
+      if (rs.length) conRondas[String(m.canal)] = nuevo;
     });
     return bloques;
   }

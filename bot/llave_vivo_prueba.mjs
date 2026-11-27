@@ -124,6 +124,32 @@ ok('el podio en su propio mensaje se pega a su llave, y dice el campeón',
 ok('un podio que no nombra a un finalista no se pega',
   LV.unirPartidas([wc[0], wc[1], Object.assign({}, wc[2], { texto: wc[2].texto.replace(/FULLY/g, 'OTRO') })]).length === 2);
 ok('ni a una llave que no llegó a la final', LV.unirPartidas([wc[0], wc[2]]).length === 2);
+// 🔢 BACKTIME (FFA, 25/11/2026): un mensaje por ronda, los cuartos SIN título y con «🏆 8 PARTICIPANTES» al pie, y entre
+// octavos y cuartos un «SUPLENTE» del organizador y un «@everyone» de otro. Es el mismo caso que `escuchar.py`
+{
+  const bt = [
+    { id: '1575333861020405784', canal: 'ffa', sv: 'FFA', autor: 'julda', pub: 1000, ed: 1000,
+      texto: '🏆 OCTAVOS DE FINAL\n\n⚔️ BATALLA 1\n🇨🇳 Monet 🆚 🇵🇪 geremy\n\n⚔️ BATALLA 2\n🇹🇭 LALOX 🆚 🇺🇾 gus\n\n' +
+        '⚔️ BATALLA 3\n🇱🇷 Sebita 🆚 🇺🇾 HJT\n\n⚔️ BATALLA 4\n🇲🇦 Drexx 🆚 🇨🇱 kochi\n\n' +
+        '⚔️ BATALLA 5\n🇵🇪 AbrahamSRRL 🆚 🇪🇨 Black D-mon\n\n⚔️ BATALLA 6\n🇲🇽 Dios 🆚 🇲🇽 Leonar-T' },
+    { id: '1575334031594225827', canal: 'ffa', sv: 'FFA', autor: 'julda', pub: 1100, ed: 1100, texto: 'SUPLENTE: 🇻🇪 onzas.s\nAriaxer 🇦🇷' },
+    { id: '1575334477369049281', canal: 'ffa', sv: 'FFA', autor: 'gocho', pub: 1200, ed: 1200, texto: '@everyone' },
+    { id: '1575349813971517681', canal: 'ffa', sv: 'FFA', autor: 'julda', pub: 2000, ed: 2000,
+      texto: '⚔️ BATALLA 1\n🇨🇳 Monet 🆚 🇪🇨 Black D-mon\n\n⚔️ BATALLA 2\n🇺🇾 Gus 🆚 🇲🇽 Dios\n\n' +
+        '⚔️ BATALLA 3\n🇱🇷 Sebita 🆚 Drex\n\n🏆 8 PARTICIPANTES\n🔥 4 CLASIFICADOS A SEMIFINALES' },
+    { id: '1575355385399873650', canal: 'ffa', sv: 'FFA', autor: 'julda', pub: 3000, ed: 3000,
+      texto: '⚔️ SEMIFINAL 1\n🔥 Raxo 🆚 Dios\n\n⚔️ SEMIFINAL 2\n🔥 Drex 🆚 Monet' },
+    { id: '1575358392514642024', canal: 'ffa', sv: 'FFA', autor: 'julda', pub: 4000, ed: 4000,
+      texto: '👑 GRAN FINAL\n\n🔥 🇲🇽 DIOS\n        🆚\n🔥 🇨🇳 MONET' },
+  ];
+  const conRs = LV.unirPartidas(bt).filter((b) => b.rs.length);
+  ok('la ronda en su propio mensaje y SIN título se pega con el suyo, salteando lo que no es llave, y «SEMIFINAL 1» y «2» son una ronda (Backtime)',
+    conRs.length === 1 && conRs[0].rs.map((r) => r[0]).join(',') === 'OCTAVOS,CUARTOS,SEMIFINALES,FINAL'
+      && conRs[0].rs[1][1].length === 3 && !LV.lineaCampeon(LV.traducir(LV.plano(conRs[0].texto))),
+    js(LV.unirPartidas(bt).map((b) => [b.id, b.rs.map((r) => r[0])])));
+  ok('… pero no la de OTRO autor',
+    LV.unirPartidas(bt.slice(0, 3).concat([Object.assign({}, bt[3], { autor: 'otro' })])).filter((b) => b.rs.length > 1).length === 0);
+}
 // 🔑 LA DOBLE ELIMINACIÓN DE FFA (07/10/2026): la de perdedores, en OTRO mensaje de OTRA persona, dos segundos después.
 // Se parte el texto del contrato en sus dos mensajes y se vuelve a juntar
 {
