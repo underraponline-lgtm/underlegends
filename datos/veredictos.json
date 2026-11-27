@@ -11534,50 +11534,31 @@
    "b": "DYNO",
    "ganador": "DYNO",
    "votos": "1–0"
+  },
+  "1575963323650801729": {
+   "id": "1575963323650801729",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795809336341,
+   "a": "OG",
+   "b": "STILL",
+   "ganador": "STILL",
+   "votos": "1–0"
+  },
+  "1575967487940501738": {
+   "id": "1575967487940501738",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795810329185,
+   "a": "STILL",
+   "b": "DYNOCO FINAL",
+   "ganador": "STILL",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1568357307245658253": {
-   "id": "1568357307245658253",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1793995920717,
-   "ed": 1793996864490,
-   "texto": "`[ SEMIFINALES ]`\n⌞VARGAS⌝ 🆚 ⌞MARCOS🥵🫩⌝\n⌞KEIDER⌝ 🆚 ⌞LISENIN⌝\n`[ FINAL ]`\n⌞Mito⌝ 🆚 ⌞Vr⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "VARGAS",
-      "MARCOS🥵🫩"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "KEIDER",
-      "LISENIN"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "Mito",
-      "Vr"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1568735822558011432": {
    "id": "1568735822558011432",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -15475,8 +15456,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1795806981772,
-   "ed": 1795809026334,
-   "texto": "`[ CUARTOS ]`\n⌞DYNOCO⌝ 🆚 ⌞AGUSTIN⌝\n⌞AGUS⌝ 🆚 ⌞LAST⌝\n⌞OG⌝ 🆚 ⌞GIAN⌝\n⌞MR STILL⌝ 🆚 ⌞MOLUSCO⌝\n⌞LAST⌝ 🆚 ⌞DYNO⌝",
+   "ed": 1795810713013,
+   "texto": "`[ CUARTOS ]`\n⌞DYNOCO⌝ 🆚 ⌞AGUSTIN⌝\n⌞AGUS⌝ 🆚 ⌞LAST⌝\n⌞OG⌝ 🆚 ⌞GIAN⌝\n⌞MR STILL⌝ 🆚 ⌞MOLUSCO⌝\n⌞LAST⌝ 🆚 ⌞DYNO⌝\n⌞OG⌝ 🆚 ⌞STILL⌝\n⌞STILL⌝ 🆚 ⌞DYNOCO FINAL⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -15525,6 +15506,26 @@
       "DYNO"
      ],
      "DYNO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "OG",
+      "STILL"
+     ],
+     "STILL",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "STILL",
+      "DYNOCO FINAL"
+     ],
+     "STILL",
      "veredicto",
      []
     ]
