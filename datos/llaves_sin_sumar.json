@@ -6634,7 +6634,7 @@
   "n": 167474526,
   "nombre": "5 VIDAS 16:44",
   "ns": 1,
-  "participantes": 5,
+  "participantes": 6,
   "rondas": [
    {
     "b": [
@@ -6717,6 +6717,46 @@
       ],
       "LAST",
       "batalla 10 · votos 1–0"
+     ],
+     [
+      [
+       "LAST",
+       "Adriagner"
+      ],
+      "LAST",
+      "batalla 11 · votos 1–0"
+     ],
+     [
+      [
+       "LAST",
+       "Rbk"
+      ],
+      "LAST",
+      "batalla 12 · votos 1–0"
+     ],
+     [
+      [
+       "Miniboy",
+       "LAST"
+      ],
+      "Miniboy",
+      "batalla 13 · votos 1–0"
+     ],
+     [
+      [
+       "LAST",
+       "Adriagner"
+      ],
+      "LAST",
+      "batalla 14 · siguió peleando"
+     ],
+     [
+      [
+       "LAST",
+       "Leyenda"
+      ],
+      "LAST",
+      "batalla 15 · votos 2–0"
      ]
     ],
     "r": "5 vidas"
@@ -6725,23 +6765,28 @@
   "sv": "LKR",
   "tabla": [
    [
-    "Adriagner",
+    "Miniboy",
     "Campeón",
-    0
-   ],
-   [
-    "LAST",
-    "Subcampeón",
-    0
-   ],
-   [
-    "Leyenda",
-    "Subcampeón",
     0
    ],
    [
     "TOKYO 🇺🇸🇦🇷",
     "Subcampeón",
+    0
+   ],
+   [
+    "Adriagner",
+    "Tercero",
+    0
+   ],
+   [
+    "LAST",
+    "Tercero",
+    0
+   ],
+   [
+    "Leyenda",
+    "Tercero",
     0
    ],
    [
