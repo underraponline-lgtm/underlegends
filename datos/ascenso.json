@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-27T21:31:58Z",
+ "t": "2026-11-27T22:00:20Z",
  "sv": {
   "SR": {
    "filas": [
@@ -790,6 +790,13 @@
      "Agus"
     ],
     [
+     "Mr still ballin",
+     "no",
+     3750,
+     700,
+     "Over"
+    ],
+    [
      "Molusco",
      "ar",
      3670,
@@ -816,13 +823,6 @@
      3565,
      0,
      "Guess"
-    ],
-    [
-     "Mr still ballin",
-     "no",
-     3550,
-     500,
-     "Over"
     ],
     [
      "Neo",
@@ -1182,6 +1182,13 @@
      ""
     ],
     [
+     "Dynoco",
+     "ar",
+     660,
+     150,
+     "Dynoco"
+    ],
+    [
      "Pcyka",
      "ar",
      650,
@@ -1264,13 +1271,6 @@
      540,
      0,
      "EmiZor"
-    ],
-    [
-     "Dynoco",
-     "ar",
-     510,
-     0,
-     "Dynoco"
     ],
     [
      "Miniboy",
@@ -2405,6 +2405,25 @@
        "Kuni",
        "Subcampeón",
        225
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "Discord Tiene Letra Born Again",
+     "dia": "2026-11-27",
+     "rango": "bronce iii",
+     "puntos": [
+      [
+       "Over",
+       "Campeón",
+       200
+      ],
+      [
+       "Dynoco",
+       "Subcampeón",
+       150
       ]
      ],
      "fuera": []

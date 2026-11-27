@@ -2484,5 +2484,31 @@
   "sv": "WOF",
   "t_pregunta": ""
  },
+ "1575944427229421670": {
+  "autor": "1494178897908990136",
+  "canal": "1309234583023124531",
+  "canal_pregunta": "",
+  "cuando": "2026-11-27T18:40:31.083000+00:00",
+  "donde": "",
+  "evento": "COMPE POR Q ME PINTO POR Q ANDO AL PEDO",
+  "fecha": "27/11",
+  "llave": "1575944427229421670",
+  "pregunta": "",
+  "preguntada": "2026-11-27 4:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Corvo 🇧🇴",
+     "Dios 🇲🇽"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "staff_probado": true,
+  "sv": "ACAD",
+  "t_pregunta": ""
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

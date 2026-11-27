@@ -3582,6 +3582,27 @@
     "Mr Still Billin 🇧🇻"
    ],
    "escribio": {}
+  },
+  {
+   "id": "0b9f8ab740",
+   "tipo": "Batalla sin ganador",
+   "sec": "RAP SIN GROSERIAS 1 · FDS · 26/10 · #548",
+   "que": "¿Quién ganó en octavos?\nArtezzy 🇵🇪 🆚 Vilca",
+   "r": "Nadie siguió (cobran la ronda)",
+   "regla": "R25 · una batalla sin ganador de dieciseisavos, octavos o cuartos, a los 28 días: «nadie siguió»",
+   "rk": "R25",
+   "por": "el ciclo",
+   "porque": "nadie dijo quién ganó en 32 días: cada uno cobra la ronda, como las 48 h cuando se le pudo preguntar al organizador",
+   "t": 1795816905969,
+   "filas": [
+    1805
+   ],
+   "variantes": [
+    "RAP SIN GROSERIAS 1 · FDS · 26/10 · octavos · Artezzy 🇵🇪 🆚 Vilca"
+   ],
+   "escribio": {
+    "batalla": "RAP SIN GROSERIAS 1 · FDS · 26/10 · octavos · Artezzy 🇵🇪 🆚 Vilca"
+   }
   }
  ],
  "deshechas": []
