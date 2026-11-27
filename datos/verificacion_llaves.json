@@ -83,6 +83,18 @@
    "org": "juega",
    "v": 1
   },
+  "(sin titulo)|SGR|14/11": {
+   "min": 229,
+   "v": 1
+  },
+  "(sin titulo)|SGR|20/10": {
+   "min": 167,
+   "v": 1
+  },
+  "(sin titulo)|WOF|09/11": {
+   "min": 12820,
+   "v": 1
+  },
   "- DEM BATTLES -|FRZ|23/11": {
    "min": 40,
    "v": 1
@@ -248,12 +260,19 @@
    "min": 38,
    "v": 1
   },
+  "DEBUT|WOF|19/11": {
+   "min": 143,
+   "v": 1
+  },
   "DISCORD STYLE ED. 15|DDS|07/10": {
    "min": 13285,
    "v": 1
   },
   "DISCORD STYLE ED. 16|DDS|17/10": {
    "min": 2779,
+   "v": 1
+  },
+  "DUPLAZO|WOF|13/11": {
    "v": 1
   },
   "EL CAMINO HACIA LA GLORIA COMIENZA AQUÍ|DDF|14/11": {
@@ -275,6 +294,14 @@
   },
   "ELITE FESTIVAL VOL. 1|ACAD|13/11": {
    "min": 99,
+   "v": 1
+  },
+  "ESPECIAL HALLOWEEN|WOF|07/11": {
+   "min": 58,
+   "v": 1
+  },
+  "ESPECIAL HALLOWEEN|WOF|11/11": {
+   "min": 74,
    "v": 1
   },
   "EVANGELION CUP VOL 1|DDF|08/11": {
@@ -315,6 +342,10 @@
   },
   "FF Freestyle Clasico|URBF|14/10": {
    "min": 71,
+   "v": 1
+  },
+  "FMS CONCEPCION|WOF|23/11": {
+   "min": 48,
    "v": 1
   },
   "FU BATTLE NIGHT|CEU|15/11": {
@@ -381,6 +412,10 @@
   },
   "HOOD BATTELS|UFLUC|14/11": {
    "min": 49,
+   "v": 1
+  },
+  "HUEVOVERSE YUPILAND 2|WOF|15/11": {
+   "min": 68,
    "v": 1
   },
   "IDS V.2|URBF|12/10": {
@@ -477,7 +512,7 @@
    "v": 1
   },
   "NOCTURNA STYLE 2 everyone|DDS|26/11": {
-   "min": 19,
+   "min": 34,
    "v": 1
   },
   "NOCTURNA STYLE|DDS|25/11": {
@@ -495,6 +530,19 @@
   },
   "NUEVA TEMPORADA|CEU|11/11": {
    "min": 58,
+   "v": 1
+  },
+  "OLIMTRICA|WOF|12/11": {
+   "min": 82,
+   "v": 1
+  },
+  "OLIMTRICA|WOF|14/11": {
+   "min": 81,
+   "v": 1
+  },
+  "OLIMTRICA|WOF|15/11": {
+   "min": 34,
+   "org": "juega",
    "v": 1
   },
   "ORDEN DEL CHYPHER|FFA|05/11": {
@@ -662,6 +710,10 @@
    "min": 238,
    "v": 1
   },
+  "ROBO DE IMAGEN|WOF|19/11": {
+   "min": 49,
+   "v": 1
+  },
   "Rap para Raperos 2|FFA|31/10": {
    "min": 132,
    "org": "juega",
@@ -711,6 +763,10 @@
    "min": 118,
    "v": 1
   },
+  "STREET BARS V1|WOF|21/11": {
+   "min": 1052,
+   "v": 1
+  },
   "Shaoling Battles 1v1 2|FDS|27/09": {
    "min": 75,
    "org": "juega",
@@ -736,6 +792,11 @@
   },
   "TORNEOS|LKR|05/11": {
    "min": 99,
+   "v": 1
+  },
+  "TORNEO|WOF|18/11": {
+   "min": 119,
+   "org": "juega",
    "v": 1
   },
   "UFL BATTLES V2|UFLUC|03/10": {
@@ -902,6 +963,14 @@
   },
   "qcyo rapeen 17|FFA|23/11": {
    "min": 115,
+   "v": 1
+  },
+  "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪 9:28 PM|WOF|25/11": {
+   "min": 1,
+   "v": 1
+  },
+  "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪|WOF|25/11": {
+   "min": 28,
    "v": 1
   }
  }

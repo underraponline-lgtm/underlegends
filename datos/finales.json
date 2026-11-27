@@ -2391,5 +2391,31 @@
   "sv": "DDS",
   "t_pregunta": "2026-11-26T06:24:03+00:00"
  },
+ "1575684236332113961": {
+  "autor": "1150099153238630410",
+  "canal": "1470097588635176960",
+  "canal_pregunta": "1470097588635176960",
+  "cuando": "2026-11-27T01:26:36.739000+00:00",
+  "donde": "llave",
+  "evento": "EL PARAISO DEL INFRAMUNDO",
+  "fecha": "26/11",
+  "llave": "1575684236332113961",
+  "pregunta": "1575717121223303323",
+  "preguntada": "2026-11-26 10:37 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "MaYeuTyK 🇺🇾",
+     "LENIX🇲🇽"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": false,
+  "sv": "DDF",
+  "t_pregunta": "2026-11-27T03:37:17+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

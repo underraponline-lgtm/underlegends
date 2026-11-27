@@ -60970,5 +60970,1338 @@
    ]
   ],
   "v": 2
+ },
+ "701": {
+  "antes": {
+   "Bishop": [
+    188,
+    349,
+    false
+   ],
+   "Bloody": [
+    37,
+    41,
+    false
+   ],
+   "CJ": [
+    306,
+    149,
+    true
+   ],
+   "CrisZJ": [
+    272,
+    30,
+    true
+   ],
+   "Denik": [
+    348,
+    225,
+    true
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "MCO": [
+    8,
+    8,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mathhias": [
+    46,
+    54,
+    false
+   ],
+   "Saiko": [
+    142,
+    211,
+    false
+   ],
+   "Vandu": [
+    12,
+    12,
+    false
+   ],
+   "Velatz": [
+    273,
+    34,
+    true
+   ],
+   "Volk": [
+    129,
+    181,
+    false
+   ],
+   "Zignos": [
+    27,
+    29,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "CJ, Volk",
+    "Velatz, Vandu",
+    "CJ, Volk"
+   ],
+   [
+    "Zignos, Saiko",
+    "Denik, CrisZJ",
+    "Zignos, Saiko"
+   ],
+   [
+    "LIL GOSU & 🇪🇬, Erian",
+    "Bishop, MCO",
+    "LIL GOSU & 🇪🇬, Erian"
+   ],
+   [
+    "MOTOR V8 & 🇨🇴, Bloody",
+    "Makmah, Mathhias",
+    "MOTOR V8 & 🇨🇴, Bloody"
+   ],
+   [
+    "CJ, Volk",
+    "Zignos, Saiko",
+    "CJ, Volk"
+   ],
+   [
+    "EL MOTOR V8 & 🇨🇴, Bloody",
+    "LIL GOSU & 🇪🇬, Erian",
+    "EL MOTOR V8 & 🇨🇴, Bloody"
+   ],
+   [
+    "EL MOTOR V8 & 🇨🇴, Bloody",
+    "CJ, Volk",
+    "EL MOTOR V8 & 🇨🇴, Bloody"
+   ]
+  ],
+  "ev_antes": {
+   "Bishop": 2,
+   "Bloody": 31,
+   "CJ": 7,
+   "CrisZJ": 40,
+   "Denik": 7,
+   "Erian": 89,
+   "MCO": 53,
+   "Makmah": 130,
+   "Mathhias": 23,
+   "Saiko": 6,
+   "Vandu": 59,
+   "Velatz": 45,
+   "Volk": 7,
+   "Zignos": 35
+  },
+  "fecha": "20/10",
+  "nombre": "(sin titulo)",
+  "num": 701,
+  "participantes": 17,
+  "sello": {
+   "Bloody": "de50f2cb4b9c:0b98cb3023ec",
+   "EL MOTOR V8 & 🇨🇴": ""
+  },
+  "sv": "SGR",
+  "t": "2026-11-27T03:37:21Z",
+  "tabla": [
+   [
+    "EL MOTOR V8 & 🇨🇴",
+    "Campeón",
+    5000
+   ],
+   [
+    "Bloody",
+    "Campeón",
+    5000
+   ],
+   [
+    "CJ",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Volk",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Saiko",
+    "Semifinal",
+    2625
+   ],
+   [
+    "LIL GOSU & 🇪🇬",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Denik",
+    "Cuartos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Bishop",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MOTOR V8 & 🇨🇴",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "702": {
+  "antes": {
+   "1200": [
+    291,
+    113,
+    true
+   ],
+   "Akuseru": [
+    108,
+    141,
+    false
+   ],
+   "HH": [
+    159,
+    265,
+    false
+   ],
+   "Krish": [
+    94,
+    118,
+    false
+   ],
+   "Panchok": [
+    13,
+    13,
+    false
+   ],
+   "Teito": [
+    62,
+    74,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    148,
+    228,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "LowenSR",
+    "Akuseru",
+    "LowenSR"
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Krish",
+    "Tmax Turbo [PN]"
+   ],
+   [
+    "Panchok",
+    "1200",
+    "Panchok"
+   ],
+   [
+    "R-Flow 🇪🇸",
+    "Un Pibe",
+    "R-Flow 🇪🇸"
+   ],
+   [
+    "El Pache",
+    "Wil",
+    "El Pache"
+   ],
+   [
+    "Perro",
+    "Wil",
+    "Perro"
+   ],
+   [
+    "1200",
+    "Teito",
+    "1200"
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Lowen",
+    "Tmax Turbo [PN]"
+   ],
+   [
+    "Panchok",
+    "R-Flow 🇪🇸",
+    "Panchok"
+   ],
+   [
+    "HH",
+    "El Parche",
+    "HH"
+   ],
+   [
+    "1200",
+    "Perro",
+    "1200"
+   ],
+   [
+    "Panchok",
+    "Tmax Turbo [PN]",
+    "Panchok"
+   ],
+   [
+    "HH",
+    "1200",
+    "HH"
+   ],
+   [
+    "Panchok",
+    "HH",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 14,
+   "Akuseru": 10,
+   "HH": 3,
+   "Krish": 20,
+   "Panchok": 27,
+   "Teito": 43,
+   "Tmax Turbo [PN]": 8
+  },
+  "fecha": "12/11",
+  "nombre": "OLIMTRICA",
+  "num": 702,
+  "participantes": 21,
+  "sello": {
+   "Panchok": "447b1ce6db34:0b98cb3023ec"
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:37:25Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Semifinal",
+    5250
+   ],
+   [
+    "1200",
+    "Semifinal",
+    3875
+   ],
+   [
+    "HH",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Lowen",
+    "Cuartos",
+    2500
+   ],
+   [
+    "R-Flow 🇪🇸",
+    "Cuartos",
+    2500
+   ],
+   [
+    "El Parche",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Perro",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Wil",
+    "Octavos",
+    1875
+   ],
+   [
+    "Akuseru",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Un Pibe",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "703": {
+  "antes": {
+   "Calíz": [
+    39,
+    44,
+    false
+   ],
+   "Krish": [
+    94,
+    118,
+    false
+   ],
+   "Malva": [
+    391,
+    290,
+    true
+   ],
+   "ONZASS": [
+    283,
+    85,
+    true
+   ],
+   "Player": [
+    76,
+    95,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    148,
+    228,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Afinn & respiracion",
+    "Aritmetrico & 1200",
+    "Afinn & respiracion"
+   ],
+   [
+    "Player & Calis",
+    "Tmax Turbo [PN], Krish",
+    "Player & Calis"
+   ],
+   [
+    "Carda & Daikka",
+    "ONZASS, Malva",
+    "Carda & Daikka"
+   ],
+   [
+    "Panchock & R-fran",
+    "Respiracion & Afinn",
+    "Panchock & R-fran"
+   ],
+   [
+    "Cardan & Deika",
+    "Player, Calíz",
+    "Cardan & Deika"
+   ],
+   [
+    "Panchok & R-flow",
+    "Cardan & Deikka",
+    "Panchok & R-flow"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 39,
+   "Krish": 20,
+   "Malva": 5,
+   "ONZASS": 15,
+   "Player": 18,
+   "Tmax Turbo [PN]": 8
+  },
+  "fecha": "13/11",
+  "nombre": "DUPLAZO",
+  "num": 703,
+  "participantes": 14,
+  "sello": {
+   "Panchok & R-flow": ""
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:37:26Z",
+  "tabla": [
+   [
+    "Panchok & R-flow",
+    "Campeón",
+    7500
+   ],
+   [
+    "Cardan & Deikka",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Respiracion & Afinn",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Aritmetrico & 1200",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Player",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Calíz",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Krish",
+    "Cuartos",
+    1000
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Malva",
+    "Cuartos",
+    1000
+   ]
+  ],
+  "v": 2
+ },
+ "704": {
+  "antes": {
+   "DarnBless": [
+    91,
+    112,
+    false
+   ],
+   "MCO": [
+    8,
+    8,
+    false
+   ],
+   "MaYeuTyK": [
+    44,
+    52,
+    false
+   ],
+   "Panchok": [
+    13,
+    13,
+    false
+   ],
+   "Sosa": [
+    141,
+    210,
+    false
+   ],
+   "Teito": [
+    62,
+    74,
+    false
+   ],
+   "Under": [
+    301,
+    138,
+    true
+   ],
+   "yinn": [
+    20,
+    20,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Dyzz",
+    "Verranca",
+    "Dyzz"
+   ],
+   [
+    "LSD",
+    "Teito",
+    "LSD"
+   ],
+   [
+    "yinn",
+    "finn",
+    "yinn"
+   ],
+   [
+    "Under",
+    "Gustabine",
+    "Under"
+   ],
+   [
+    "Panchok",
+    "MaYeuTyK",
+    "Panchok"
+   ],
+   [
+    "DarnBless",
+    "yinn",
+    "DarnBless"
+   ],
+   [
+    "Under",
+    "Sosa",
+    "Under"
+   ],
+   [
+    "Panchok",
+    "MCO",
+    "Panchok"
+   ],
+   [
+    "Jesus",
+    "DarnBless",
+    "Jesus"
+   ],
+   [
+    "Panchok",
+    "Under",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Jesus",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "DarnBless": 16,
+   "MCO": 53,
+   "MaYeuTyK": 28,
+   "Panchok": 27,
+   "Sosa": 4,
+   "Teito": 43,
+   "Under": 12,
+   "yinn": 40
+  },
+  "fecha": "14/11",
+  "nombre": "OLIMTRICA",
+  "num": 704,
+  "participantes": 21,
+  "sello": {
+   "Panchok": "447b1ce6db34:0b98cb3023ec"
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:37:26Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Under",
+    "Semifinal",
+    5250
+   ],
+   [
+    "DarnBless",
+    "Semifinal",
+    2625
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jesus",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Verranca",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ],
+   [
+    "finn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gustabine",
+    "Octavos",
+    1250
+   ],
+   [
+    "MaYeuTyK",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "705": {
+  "antes": {
+   "Bishop": [
+    188,
+    349,
+    false
+   ],
+   "Bloody": [
+    37,
+    41,
+    false
+   ],
+   "Chase": [
+    138,
+    201,
+    false
+   ],
+   "CrisZJ": [
+    272,
+    30,
+    true
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Gosu Z": [
+    230,
+    544,
+    false
+   ],
+   "Jupiter": [
+    68,
+    81,
+    false
+   ],
+   "Lilñaño": [
+    71,
+    84,
+    false
+   ],
+   "MCO": [
+    8,
+    8,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Rodas": [
+    90,
+    111,
+    false
+   ],
+   "Sadik": [
+    333,
+    202,
+    true
+   ],
+   "TøKīØ🦠🧠": [
+    42,
+    50,
+    false
+   ],
+   "lil": [
+    735,
+    719,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "TøKīØ🦠🧠",
+    "Lilñaño",
+    "TøKīØ🦠🧠"
+   ],
+   [
+    "Bloody",
+    "Apertickz 🇨🇱",
+    "Bloody"
+   ],
+   [
+    "lil, Gosu Z",
+    "KILLO 🇦🇷",
+    "lil, Gosu Z"
+   ],
+   [
+    "Makmah",
+    "wolffe 🇧🇸",
+    "Makmah"
+   ],
+   [
+    "Sadik",
+    "CrisZJ",
+    "Sadik"
+   ],
+   [
+    "Rodas",
+    "Jupiter",
+    "Rodas"
+   ],
+   [
+    "MCO",
+    "Erian",
+    "MCO"
+   ],
+   [
+    "Chase",
+    "Bishop",
+    "Chase"
+   ],
+   [
+    "Bloody",
+    "TøKīØ🦠🧠",
+    "Bloody"
+   ],
+   [
+    "lil, Gosu Z",
+    "Makmah",
+    "lil, Gosu Z"
+   ],
+   [
+    "Rodas",
+    "Sadik",
+    "Rodas"
+   ],
+   [
+    "Chase",
+    "MCO",
+    "Chase"
+   ],
+   [
+    "Bloody",
+    "lil, Gosu Z",
+    "Bloody"
+   ],
+   [
+    "Chase",
+    "Rodas",
+    "Chase"
+   ],
+   [
+    "Chase",
+    "Bloody",
+    "Chase"
+   ]
+  ],
+  "ev_antes": {
+   "Bishop": 2,
+   "Bloody": 31,
+   "Chase": 3,
+   "CrisZJ": 40,
+   "Erian": 89,
+   "Gosu Z": 2,
+   "Jupiter": 17,
+   "Lilñaño": 10,
+   "MCO": 53,
+   "Makmah": 130,
+   "Rodas": 16,
+   "Sadik": 2,
+   "TøKīØ🦠🧠": 19,
+   "lil": 1
+  },
+  "fecha": "14/11",
+  "nombre": "(sin titulo)",
+  "num": 705,
+  "participantes": 16,
+  "sello": {
+   "Chase": ""
+  },
+  "sv": "SGR",
+  "t": "2026-11-27T03:37:26Z",
+  "tabla": [
+   [
+    "Chase",
+    "Campeón",
+    10000
+   ],
+   [
+    "Bloody",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Rodas",
+    "Semifinal",
+    5250
+   ],
+   [
+    "lil",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Gosu Z",
+    "Semifinal",
+    2625
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sadik",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lilñaño",
+    "Octavos",
+    1250
+   ],
+   [
+    "Apertickz 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "KILLO 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "wolffe 🇧🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Bishop",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "706": {
+  "antes": {
+   "Hardcore": [
+    211,
+    467,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Hardcore",
+    "Akapellah 🇻🇪",
+    "Hardcore"
+   ],
+   [
+    "CAQUIÑÑA🇵🇪",
+    "BENJIXSO 🇺🇾",
+    "CAQUIÑÑA🇵🇪"
+   ],
+   [
+    "FABIUKI 🇪🇸",
+    "nasir catriel🇦🇷",
+    "FABIUKI 🇪🇸"
+   ],
+   [
+    "FABIUKI 🇪🇸",
+    "Navas🇪🇸",
+    "FABIUKI 🇪🇸"
+   ],
+   [
+    "CAQUIÑÑA🇵🇪",
+    "Hardcore",
+    "CAQUIÑÑA🇵🇪"
+   ],
+   [
+    "Fusok🇨🇱",
+    "FABIUKI 🇪🇸",
+    "Fusok🇨🇱"
+   ],
+   [
+    "Fusok🇨🇱",
+    "CAQUIÑÑA🇵🇪",
+    "Fusok🇨🇱"
+   ]
+  ],
+  "ev_antes": {
+   "Hardcore": 2
+  },
+  "fecha": "19/11",
+  "nombre": "ROBO DE IMAGEN",
+  "num": 706,
+  "participantes": 11,
+  "sello": {
+   "Fusok🇨🇱": ""
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:37:27Z",
+  "tabla": [
+   [
+    "Fusok🇨🇱",
+    "Campeón",
+    7500
+   ],
+   [
+    "CAQUIÑÑA🇵🇪",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Hardcore",
+    "Semifinal",
+    3500
+   ],
+   [
+    "FABIUKI 🇪🇸",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Akapellah 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BENJIXSO 🇺🇾",
+    "Cuartos",
+    2000
+   ],
+   [
+    "nasir catriel🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Navas🇪🇸",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "707": {
+  "antes": {
+   "Agente sombra": [
+    134,
+    191,
+    false
+   ],
+   "Assuan": [
+    304,
+    145,
+    true
+   ],
+   "DarnBless": [
+    91,
+    112,
+    false
+   ],
+   "Dominick": [
+    43,
+    51,
+    false
+   ],
+   "Dyzz": [
+    54,
+    63,
+    false
+   ],
+   "Efimero": [
+    295,
+    120,
+    true
+   ],
+   "Kuni": [
+    166,
+    282,
+    false
+   ],
+   "Magic": [
+    351,
+    231,
+    true
+   ],
+   "Mito": [
+    15,
+    15,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    148,
+    228,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Assuan",
+    "Cris",
+    "Assuan"
+   ],
+   [
+    "Kuni",
+    "Ojitos canábicos 🇨🇱",
+    "Kuni"
+   ],
+   [
+    "Agente sombra",
+    "Dyzz",
+    "Agente sombra"
+   ],
+   [
+    "Magic",
+    "Efimero",
+    "Magic"
+   ],
+   [
+    "DarnBless",
+    "Vlad",
+    "DarnBless"
+   ],
+   [
+    "Mito",
+    "Tmax Turbo [PN]",
+    "Mito"
+   ],
+   [
+    "Assuan",
+    "DarnBless",
+    "Assuan"
+   ],
+   [
+    "Kuni",
+    "Dominick",
+    "Kuni"
+   ],
+   [
+    "Mito",
+    "Agente sombra",
+    "Mito"
+   ],
+   [
+    "Magic",
+    "Nxvz 🇵🇪",
+    "Magic"
+   ],
+   [
+    "Assuan",
+    "Mito",
+    "Assuan"
+   ],
+   [
+    "Magic",
+    "Kuni",
+    "Magic"
+   ],
+   [
+    "Mito",
+    "Kuni",
+    "Mito"
+   ],
+   [
+    "Assuan",
+    "Magic",
+    "Assuan"
+   ]
+  ],
+  "ev_antes": {
+   "Agente sombra": 9,
+   "Assuan": 7,
+   "DarnBless": 16,
+   "Dominick": 52,
+   "Dyzz": 33,
+   "Efimero": 11,
+   "Kuni": 4,
+   "Magic": 9,
+   "Mito": 57,
+   "Tmax Turbo [PN]": 8
+  },
+  "fecha": "21/11",
+  "nombre": "STREET BARS V1",
+  "num": 707,
+  "participantes": 16,
+  "sello": {
+   "Assuan": ""
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:37:27Z",
+  "tabla": [
+   [
+    "Assuan",
+    "Campeón",
+    10000
+   ],
+   [
+    "Magic",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Mito",
+    "Tercero",
+    6000
+   ],
+   [
+    "Kuni",
+    "Cuarto",
+    4500
+   ],
+   [
+    "DarnBless",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agente sombra",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Nxvz 🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cris",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ojitos canábicos 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vlad",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

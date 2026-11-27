@@ -2,48 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "6132c346a3",
-   "tipo": "Batalla sin ganador",
-   "sec": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · #628",
-   "que": "¿Quién ganó en cuartos?\n0223 🇧🇧 + y Jahno 🇧🇧 🆚 Diz🇨🇱 + MCAREPA 🇻🇪",
-   "r": "Nadie siguió (cobran la ronda)",
-   "regla": "R22 · una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte",
-   "rk": "R22",
-   "por": "el ciclo",
-   "porque": "es de equipos (0223 🇧🇧 + y Jahno 🇧🇧 vs Diz🇨🇱 + MCAREPA 🇻🇪): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo mismo, y en equipos no hay duelo",
-   "t": 1794541222221,
-   "filas": [
-    1336
-   ],
-   "variantes": [
-    "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · 0223 🇧🇧 + y Jahno 🇧🇧 🆚 Diz🇨🇱 + MCAREPA 🇻🇪"
-   ],
-   "escribio": {
-    "batalla": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · 0223 🇧🇧 + y Jahno 🇧🇧 🆚 Diz🇨🇱 + MCAREPA 🇻🇪"
-   }
-  },
-  {
-   "id": "9c8c9b54d2",
-   "tipo": "Batalla sin ganador",
-   "sec": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · #628",
-   "que": "¿Quién ganó en cuartos?\nRIOLU🇪🇸+ ROMEO🇲🇽 🆚 mats 🇺🇾 + kuni 🇦🇷",
-   "r": "Nadie siguió (cobran la ronda)",
-   "regla": "R22 · una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte",
-   "rk": "R22",
-   "por": "el ciclo",
-   "porque": "es de equipos (RIOLU🇪🇸+ ROMEO🇲🇽 vs mats 🇺🇾 + kuni 🇦🇷): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo mismo, y en equipos no hay duelo",
-   "t": 1794541222221,
-   "filas": [
-    1337
-   ],
-   "variantes": [
-    "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · RIOLU🇪🇸+ ROMEO🇲🇽 🆚 mats 🇺🇾 + kuni 🇦🇷"
-   ],
-   "escribio": {
-    "batalla": "TORNEO CLANDESTINO V.2 · FFA · 12/11 · cuartos · RIOLU🇪🇸+ ROMEO🇲🇽 🆚 mats 🇺🇾 + kuni 🇦🇷"
-   }
-  },
-  {
    "id": "2cc643d2cb",
    "tipo": "Nombre desconocido",
    "sec": "qcyo rapeen Pandillas · FFA · 11/11 · #610",
@@ -2928,6 +2886,302 @@
      390
     ]
    }
+  },
+  {
+   "id": "1e02e84d3e",
+   "tipo": "Batalla sin ganador",
+   "sec": "(sin titulo) · SGR · 14/11 · #705",
+   "que": "¿Quién ganó en semifinales?\nLIL GOSU 🇵🇷 🆚 Rödas🇵🇷",
+   "r": "No se jugó",
+   "regla": "R23 · el tercer puesto que la llave escribe como otra semifinal, sin ganador: los dos quedan semifinalistas",
+   "rk": "R23",
+   "por": "el ciclo",
+   "porque": "es el tercer puesto (LIL GOSU 🇵🇷 y Rödas🇵🇷 perdieron las semis) y la llave no dice quién lo ganó: los dos quedan como semifinalistas, el promedio de 3.º y 4.º",
+   "t": 1795751100926,
+   "filas": [
+    1632
+   ],
+   "variantes": [
+    "(sin titulo) · SGR · 14/11 · semifinales · LIL GOSU 🇵🇷 🆚 Rödas🇵🇷"
+   ],
+   "escribio": {
+    "batalla": "(sin titulo) · SGR · 14/11 · semifinales · LIL GOSU 🇵🇷 🆚 Rödas🇵🇷"
+   }
+  },
+  {
+   "id": "a689b83c8a",
+   "tipo": "Batalla sin ganador",
+   "sec": "DUPLAZO · WOF · 13/11 · #703",
+   "que": "¿Quién ganó en cuartos?\nR-flow & Panchok 🆚 Nebu & Kixxy",
+   "r": "Nadie siguió (cobran la ronda)",
+   "regla": "R22 · una batalla de equipos: cualquier respuesta paga lo mismo, porque quien gana y no sigue cobra su parte",
+   "rk": "R22",
+   "por": "el ciclo",
+   "porque": "es de equipos (R-flow & Panchok vs Nebu & Kixxy): quien gana y no sigue cobra su parte, así que cualquier respuesta paga lo mismo, y en equipos no hay duelo",
+   "t": 1795751100926,
+   "filas": [
+    1639
+   ],
+   "variantes": [
+    "DUPLAZO · WOF · 13/11 · cuartos · R-flow & Panchok 🆚 Nebu & Kixxy"
+   ],
+   "escribio": {
+    "batalla": "DUPLAZO · WOF · 13/11 · cuartos · R-flow & Panchok 🆚 Nebu & Kixxy"
+   }
+  },
+  {
+   "id": "3e1f458e00",
+   "tipo": "Nombre desconocido",
+   "sec": "ROBO DE IMAGEN · WOF · 19/11 · #706",
+   "que": "¿Quién es «CAQUIÑÑA🇵🇪»?",
+   "r": "Es CrisZJ",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de CrisZJ: el podio de la llave lo menciona",
+   "t": 1795751100926,
+   "filas": [
+    1680
+   ],
+   "variantes": [
+    "CAQUIÑÑA🇵🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "CAQUIÑÑA",
+     "CrisZJ"
+    ],
+    "filas": [
+     391
+    ]
+   }
+  },
+  {
+   "id": "499e53edad",
+   "tipo": "Nombre desconocido",
+   "sec": "ROBO DE IMAGEN · WOF · 19/11 · #706",
+   "que": "¿Quién es «Fusok🇨🇱»?",
+   "r": "Es Panchok",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Panchok: el podio de la llave lo menciona",
+   "t": 1795751100926,
+   "filas": [
+    1683
+   ],
+   "variantes": [
+    "Fusok🇨🇱"
+   ],
+   "escribio": {
+    "alias": [
+     "Fusok",
+     "Panchok"
+    ],
+    "filas": [
+     392
+    ]
+   }
+  },
+  {
+   "id": "8b4501abad",
+   "tipo": "Nombre desconocido",
+   "sec": "OLIMTRICA · WOF · 12/11 · #702",
+   "que": "¿Quién es «R-Flow 🇪🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1199411927902859437",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1199411927902859437)",
+   "t": 1795751100926,
+   "filas": [
+    1659
+   ],
+   "variantes": [
+    "R-Flow 🇪🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "R-Flow",
+     "1199411927902859437"
+    ]
+   }
+  },
+  {
+   "id": "de829c3922",
+   "tipo": "Nombre desconocido",
+   "sec": "(sin titulo) · SGR · 14/11 · #705",
+   "que": "¿Quién es «Apertickz 🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1202744972017668156",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1202744972017668156)",
+   "t": 1795751100926,
+   "filas": [
+    1675
+   ],
+   "variantes": [
+    "Apertickz 🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "Apertickz",
+     "1202744972017668156"
+    ]
+   }
+  },
+  {
+   "id": "d535b3efb0",
+   "tipo": "Nombre desconocido",
+   "sec": "OLIMTRICA · WOF · 12/11 · #702",
+   "que": "¿Quién es «El Pache»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1654
+   ],
+   "variantes": [
+    "El Pache"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "3fd1c3db7b",
+   "tipo": "Nombre desconocido",
+   "sec": "OLIMTRICA · WOF · 12/11 · #702",
+   "que": "¿Quién es «LowenSR»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1657
+   ],
+   "variantes": [
+    "LowenSR"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "279ade48d0",
+   "tipo": "Nombre desconocido",
+   "sec": "DUPLAZO · WOF · 13/11 · #703",
+   "que": "¿Quién es «Afinn & respiracion»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1662
+   ],
+   "variantes": [
+    "Afinn & respiracion"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "1b8a165df3",
+   "tipo": "Nombre desconocido",
+   "sec": "DUPLAZO · WOF · 13/11 · #703",
+   "que": "¿Quién es «Carda & Daikka»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1664
+   ],
+   "variantes": [
+    "Carda & Daikka"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "1179bd6f9c",
+   "tipo": "Nombre desconocido",
+   "sec": "DUPLAZO · WOF · 13/11 · #703",
+   "que": "¿Quién es «Cardan & Deika»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1665
+   ],
+   "variantes": [
+    "Cardan & Deika"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "dba7751480",
+   "tipo": "Nombre desconocido",
+   "sec": "DUPLAZO · WOF · 13/11 · #703",
+   "que": "¿Quién es «Panchock & R-fran»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1667
+   ],
+   "variantes": [
+    "Panchock & R-fran"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "e5042af092",
+   "tipo": "Nombre desconocido",
+   "sec": "DUPLAZO · WOF · 13/11 · #703",
+   "que": "¿Quién es «Player & Calis»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1669
+   ],
+   "variantes": [
+    "Player & Calis"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "6986988848",
+   "tipo": "Nombre desconocido",
+   "sec": "OLIMTRICA · WOF · 14/11 · #704",
+   "que": "¿Quién es «LSD»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751100926,
+   "filas": [
+    1672
+   ],
+   "variantes": [
+    "LSD"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

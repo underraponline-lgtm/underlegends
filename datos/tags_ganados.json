@@ -24,6 +24,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795751107837
+   ],
    "🎯 CAZARRECOMPENSAS": [
     "🎯 CAZARRECOMPENSAS",
     "t1",
@@ -789,6 +794,13 @@
   }
  },
  "agentesombra": {
+  "pais": {
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795751107837
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -797,6 +809,16 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795751107837
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795751107837
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -1183,6 +1205,11 @@
     "🥉 AL PODIO",
     "t1",
     1793599452998
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -1600,6 +1627,11 @@
     "t1",
     1795732028691
    ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795751107837
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -1986,6 +2018,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793029252929
+   ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1795751107837
    ]
   },
   "pais": {
@@ -2054,7 +2091,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1794673899934
    ],
@@ -2077,6 +2114,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1795751107837
    ],
    "🛫 NÓMADA": [
     "🛫 NÓMADA",
@@ -2462,6 +2504,11 @@
     "t1",
     1794596923427
    ],
+   "KILÓMETROS": [
+    "KILÓMETROS",
+    "t1",
+    1795751107837
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -2582,6 +2629,34 @@
     "🥉 AL PODIO",
     "t1",
     1794778788639
+   ]
+  }
+ },
+ "caquinna": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795751107837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
+   ]
+  }
+ },
+ "cardandeikka": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795751107837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -2956,7 +3031,7 @@
   },
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1794260565889
    ],
@@ -2964,6 +3039,11 @@
     "📈 EN ASCENSO",
     "t1",
     1794260565889
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1795751107837
    ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
@@ -3213,6 +3293,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -3788,6 +3873,11 @@
     "t1",
     1794351772558
    ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1795751107837
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -3797,6 +3887,11 @@
     "🗺️ CONQUISTADOR",
     "t1",
     1794260565889
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795751107837
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -4261,6 +4356,15 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "denik": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -5052,6 +5156,11 @@
     "t1",
     1793768743284
    ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1795751107837
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -5230,6 +5339,11 @@
    ]
   },
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795751107837
+   ],
    "EMBAJADOR": [
     "EMBAJADOR",
     "t1",
@@ -5400,6 +5514,25 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "elmotorv8": {
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795751107837
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795751107837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -6178,6 +6311,30 @@
    ]
   }
  },
+ "fusok": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795751107837
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795751107837
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795751107837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
+   ]
+  }
+ },
  "garxzii": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -6525,12 +6682,12 @@
    ]
   }
  },
- "guaicurus": {
+ "gosuz": {
   "temporada": {
-   "🥉 AL PODIO": [
-    "🥉 AL PODIO",
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
     "t1",
-    1795750511538
+    1795751107837
    ]
   }
  },
@@ -6724,6 +6881,15 @@
    ]
   }
  },
+ "hardcore": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795751107837
+   ]
+  }
+ },
  "hassan": {
   "competitivo": {
    "⚔️ DUELISTA": [
@@ -6910,6 +7076,20 @@
     "📈 EN ASCENSO",
     "t1",
     1795451950700
+   ]
+  }
+ },
+ "hh": {
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -7203,6 +7383,20 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "jesus": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795751107837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -7620,6 +7814,11 @@
     "t1",
     1793029252929
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795751107837
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -8032,6 +8231,11 @@
     "t1",
     1793029252929
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795751107837
+   ],
    "🧟 RESUCITADO": [
     "🧟 RESUCITADO",
     "t1",
@@ -8072,6 +8276,11 @@
  },
  "kuni": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795751107837
+   ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
     "t1",
@@ -8849,6 +9058,11 @@
     "t1",
     1795727101255
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795751107837
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -9326,6 +9540,21 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795751107837
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795751107837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -11229,6 +11458,11 @@
     "KILÓMETROS",
     "t1",
     1794850332364
+   ],
+   "MEDALLERO": [
+    "MEDALLERO",
+    "t1",
+    1795751107837
    ],
    "REY DEL DERBI": [
     "REY DEL DERBI",
@@ -14038,7 +14272,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x10",
+    "👑 CAMPEÓN x12",
     "t1",
     1793029252929
    ],
@@ -14107,6 +14341,11 @@
     "t1",
     1793029252929
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795751107837
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -14116,6 +14355,30 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "panchokrflow": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795751107837
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795751107837
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795751107837
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -17845,7 +18108,24 @@
   }
  },
  "tmaxturbopn": {
+  "pais": {
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1795751107837
+   ]
+  },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795751107837
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1795751107837
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -18252,6 +18532,11 @@
     "t1",
     1793029252929
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1795751107837
+   ],
    "🎯 CAZADOR CAZADO": [
     "🎯 CAZADOR CAZADO",
     "t1",
@@ -18323,6 +18608,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795751107837
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -18820,6 +19110,11 @@
     "t1",
     1793029252929
    ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795751107837
+   ],
    "🥈 SIEMPRE EN LA FINAL": [
     "🥈 SIEMPRE EN LA FINAL",
     "t1",
@@ -19184,6 +19479,11 @@
  },
  "volk": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1795751107837
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -19436,6 +19736,15 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "wil": {
+  "temporada": {
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -19983,6 +20292,11 @@
     "🧟 RESUCITADO",
     "t1",
     1794596923427
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795751107837
    ]
   }
  },
@@ -20403,6 +20717,11 @@
     "🚪 DEBUT CON CORONA",
     "t1",
     1793029252929
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795751107837
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",

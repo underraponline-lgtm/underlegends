@@ -3387,7 +3387,7 @@
     "Bloody": [
      0,
      2,
-     2,
+     1,
      0,
      0
     ],
@@ -3626,6 +3626,13 @@
      0,
      0,
      8,
+     0,
+     0
+    ],
+    "EL MOTOR V8 & 🇨🇴": [
+     0,
+     0,
+     1,
      0,
      0
     ],
@@ -4014,6 +4021,13 @@
      0,
      0
     ],
+    "LIL GOSU & 🇪🇬": [
+     0,
+     0,
+     4,
+     0,
+     0
+    ],
     "LRS": [
      0,
      1,
@@ -4151,6 +4165,13 @@
      0,
      0,
      16,
+     0,
+     0
+    ],
+    "MOTOR V8 & 🇨🇴": [
+     0,
+     0,
+     8,
      0,
      0
     ],
@@ -4563,7 +4584,7 @@
     "Saiko": [
      0,
      0,
-     16,
+     4,
      0,
      0
     ],
@@ -4766,7 +4787,7 @@
     "Volk": [
      0,
      0,
-     8,
+     2,
      0,
      0
     ],
@@ -4850,7 +4871,7 @@
     "Zignos": [
      0,
      0,
-     16,
+     4,
      0,
      0
     ],
@@ -4959,6 +4980,7 @@
     "Delux": 1000,
     "Dominick": 1000,
     "Drexx": 1000,
+    "EL MOTOR V8 & 🇨🇴": 1000,
     "Eclipsito": 1000,
     "Erian": 2400,
     "FanDAbel": 1000,
@@ -5014,6 +5036,7 @@
     "Vandu": 3700,
     "Velatz": 800,
     "Vilca": 1000,
+    "Volk": 1000,
     "Walker": 1800,
     "Xubaru": 1600,
     "YIN-SON 🇺🇸": 1000,
@@ -5611,13 +5634,6 @@
      0,
      0
     ],
-    "Guaicurús🇰🇷": [
-     1,
-     1,
-     0,
-     0,
-     0
-    ],
     "Gus": [
      1,
      2,
@@ -6132,6 +6148,13 @@
     "Nain sdp": [
      0,
      0,
+     0,
+     0,
+     0
+    ],
+    "Neo": [
+     1,
+     1,
      0,
      0,
      0
@@ -6803,7 +6826,6 @@
     "Ezze": 1600,
     "Fisics": 1000,
     "Geoka": 2900,
-    "Guaicurús🇰🇷": 300,
     "Gus": 900,
     "J.r": 600,
     "JEIXDER": 600,
@@ -6843,6 +6865,7 @@
     "Mr.Kude": 600,
     "NC": 2900,
     "NXUZ": 900,
+    "Neo": 300,
     "Nerick": 600,
     "Number VE": 900,
     "OG": 900,
@@ -8197,6 +8220,13 @@
      0,
      0
     ],
+    "1200": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "1469704413013737585 Lizzenin 🇦🇷": [
      0,
      0,
@@ -8295,7 +8325,21 @@
      0,
      0
     ],
+    "Apertickz 🇨🇱": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Ariaxer": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Aritmetrico & 1200": [
      0,
      0,
      0,
@@ -8379,10 +8423,17 @@
      0,
      0
     ],
+    "Bishop": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Bloody": [
      0,
      3,
-     1,
+     2,
      1,
      1
     ],
@@ -8414,10 +8465,24 @@
      0,
      0
     ],
+    "Cardan & Deikka": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
     "Carlosss": [
      1,
      5,
      2,
+     0,
+     0
+    ],
+    "Chase": [
+     0,
+     0,
+     1,
      0,
      0
     ],
@@ -8589,6 +8654,13 @@
      0,
      0
     ],
+    "El Parche": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "El felpudo 🇨🇳": [
      0,
      0,
@@ -8708,6 +8780,13 @@
      1,
      0
     ],
+    "Gosu Z": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Guess": [
      0,
      2,
@@ -8719,6 +8798,20 @@
      0,
      0,
      0,
+     0,
+     0
+    ],
+    "Gustabine": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "HH": [
+     0,
+     0,
+     1,
      0,
      0
     ],
@@ -8778,6 +8871,13 @@
      0,
      0
     ],
+    "Jesus": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
     "Joven shenlong": [
      0,
      0,
@@ -8814,6 +8914,13 @@
      0
     ],
     "KARDIOLOGO": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "KILLO 🇦🇷": [
      0,
      0,
      0,
@@ -8939,6 +9046,13 @@
      0,
      0
     ],
+    "Lilñaño": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Lord Viruzz": [
      0,
      0,
@@ -8947,6 +9061,13 @@
      1
     ],
     "Lover": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Lowen": [
      0,
      0,
      0,
@@ -8988,6 +9109,13 @@
      0,
      0
     ],
+    "MCO": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "MTZ": [
      0,
      3,
@@ -9022,6 +9150,13 @@
      1,
      0,
      1
+    ],
+    "Malva": [
+     0,
+     0,
+     0,
+     0,
+     0
     ],
     "Maniak🇫🇴": [
      0,
@@ -9191,6 +9326,13 @@
      0,
      0
     ],
+    "ONZASS": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Oasis": [
      0,
      2,
@@ -9219,7 +9361,28 @@
      0,
      1
     ],
+    "Panchok": [
+     0,
+     0,
+     2,
+     0,
+     0
+    ],
+    "Panchok & R-flow": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
     "Paria": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Perro": [
      0,
      0,
      0,
@@ -9261,6 +9424,13 @@
      0,
      0
     ],
+    "R-Flow 🇪🇸": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Raizer": [
      0,
      0,
@@ -9282,6 +9452,13 @@
      0,
      0
     ],
+    "Respiracion & Afinn": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Richard": [
      0,
      0,
@@ -9297,6 +9474,13 @@
      0
     ],
     "Rizaz": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Rodas": [
      0,
      0,
      0,
@@ -9325,6 +9509,13 @@
      1
     ],
     "SULTAN": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Sadik": [
      0,
      0,
      0,
@@ -9506,6 +9697,13 @@
      0,
      0
     ],
+    "Un Pibe": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Under": [
      0,
      0,
@@ -9541,6 +9739,13 @@
      0,
      0
     ],
+    "Verranca": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Vilca": [
      0,
      1,
@@ -9553,6 +9758,13 @@
      2,
      1,
      1,
+     0
+    ],
+    "Wil": [
+     0,
+     0,
+     0,
+     0,
      0
     ],
     "XXXX": [
@@ -9681,6 +9893,13 @@
      0,
      0
     ],
+    "finn": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "finnpapá🇭🇳": [
      0,
      0,
@@ -9730,6 +9949,13 @@
      0,
      0
     ],
+    "lil": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "mats": [
      0,
      2,
@@ -9745,6 +9971,13 @@
      0
     ],
     "romeo": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "wolffe 🇧🇸": [
      0,
      0,
      0,
@@ -9784,7 +10017,7 @@
     "19 FLEIVA WACK": 300,
     "Adriagner": 300,
     "B.DEMON🇪🇨": 300,
-    "Bloody": 2000,
+    "Bloody": 3000,
     "Carlosss": 2900,
     "Colesito": 2200,
     "Desio": 300,
@@ -9814,6 +10047,7 @@
     "Noone": 600,
     "Oasis": 1000,
     "PUNISHER": 600,
+    "Panchok": 1000,
     "Prosu": 600,
     "Richard": 1000,
     "SC": 600,
@@ -9850,11 +10084,11 @@
     ],
     [
      "caza",
-     "Gánale un duelo a Majiztral",
+     "Gánale un duelo a MaYeuTyK",
      "caza",
      1,
      800,
-     "Majiztral"
+     "MaYeuTyK"
     ],
     [
      "dorado",
@@ -9916,6 +10150,13 @@
      0,
      0
     ],
+    "Akapellah 🇻🇪": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "Akuseru": [
      1,
      0,
@@ -9951,6 +10192,20 @@
      0,
      0
     ],
+    "Assuan": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "BENJIXSO 🇺🇾": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "BLACKMEME": [
      0,
      0,
@@ -9976,6 +10231,13 @@
      0,
      1,
      1,
+     0,
+     0
+    ],
+    "CAQUIÑÑA🇵🇪": [
+     0,
+     0,
+     2,
      0,
      0
     ],
@@ -10028,6 +10290,13 @@
      0,
      0
     ],
+    "Cris": [
+     0,
+     0,
+     16,
+     0,
+     0
+    ],
     "CrisZJ": [
      0,
      0,
@@ -10045,7 +10314,7 @@
     "DarnBless": [
      0,
      0,
-     16,
+     8,
      0,
      0
     ],
@@ -10154,6 +10423,13 @@
      0,
      0
     ],
+    "FABIUKI 🇪🇸": [
+     0,
+     0,
+     4,
+     0,
+     0
+    ],
     "Fecha": [
      0,
      0,
@@ -10169,6 +10445,13 @@
      0
     ],
     "Flash": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "Fusok🇨🇱": [
      0,
      0,
      1,
@@ -10200,6 +10483,13 @@
      0,
      0,
      16,
+     0,
+     0
+    ],
+    "Hardcore": [
+     0,
+     0,
+     4,
      0,
      0
     ],
@@ -10312,6 +10602,13 @@
      0,
      0,
      2,
+     0,
+     0
+    ],
+    "Kuni": [
+     0,
+     0,
+     4,
      0,
      0
     ],
@@ -10437,7 +10734,7 @@
     "Magic": [
      0,
      0,
-     8,
+     2,
      0,
      0
     ],
@@ -10546,6 +10843,13 @@
      0,
      0
     ],
+    "NAVAS 🇪🇸": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "NC": [
      2,
      0,
@@ -10568,6 +10872,13 @@
      0
     ],
     "Nitro🇨🇱": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
+    "Nxvz 🇵🇪": [
      0,
      0,
      8,
@@ -10599,6 +10910,13 @@
      1,
      0,
      1,
+     0,
+     0
+    ],
+    "Ojitos canábicos 🇨🇱": [
+     0,
+     0,
+     16,
      0,
      0
     ],
@@ -10805,6 +11123,13 @@
      0,
      0
     ],
+    "Tmax Turbo [PN]": [
+     0,
+     0,
+     16,
+     0,
+     0
+    ],
     "Trelok": [
      1,
      0,
@@ -10832,6 +11157,13 @@
      8,
      0,
      1
+    ],
+    "Vlad": [
+     0,
+     0,
+     16,
+     0,
+     0
     ],
     "Walker": [
      0,
@@ -10973,6 +11305,13 @@
      0,
      0
     ],
+    "nasir catriel🇦🇷": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "ojos melancólicos 🇨🇱": [
      0,
      0,
@@ -11064,6 +11403,7 @@
     "Abyssus": 1000,
     "Agente sombra": 300,
     "Akuseru": 300,
+    "Assuan": 1000,
     "BNA": 900,
     "BTRX": 1600,
     "Chaz🇵🇪": 600,
@@ -11079,6 +11419,7 @@
     "EIDP": 600,
     "Erian": 300,
     "Flash": 1000,
+    "Fusok🇨🇱": 1000,
     "GARZXI": 300,
     "Geoka": 300,
     "Inhuman": 300,
@@ -11168,11 +11509,11 @@
     ],
     [
      "caza",
-     "Gánale un duelo a Miniboy",
+     "Gánale un duelo a Mito",
      "caza",
      1,
      800,
-     "Miniboy"
+     "Mito"
     ],
     [
      "dorado",
@@ -11217,7 +11558,9 @@
      ]
     },
     "Agente sombra": {
-     "d": [],
+     "d": [
+      5
+     ],
      "s": [
       "CH",
       "DW"
@@ -11233,20 +11576,18 @@
       "CH"
      ]
     },
-    "Ariaxer": {
-     "d": [
-      5
-     ],
-     "s": [
-      "FFA",
-      "ACAD"
-     ]
-    },
     "Artezzy": {
      "d": [],
      "s": [
       "FDS",
       "DDS"
+     ]
+    },
+    "Assuan": {
+     "d": [],
+     "s": [
+      "ACAD",
+      "FFA"
      ]
     },
     "BLITZ": {
@@ -11352,7 +11693,7 @@
      ],
      "s": [
       "CH",
-      "FDS"
+      "WOF"
      ]
     },
     "Deko": {
@@ -11407,7 +11748,7 @@
     "Dyzz": {
      "d": [
       0,
-      1
+      5
      ],
      "s": [
       "FFA",
@@ -11417,7 +11758,7 @@
     "Erian": {
      "d": [
       1,
-      4
+      5
      ],
      "s": [
       "FFA",
@@ -11511,6 +11852,13 @@
       "DW"
      ]
     },
+    "Kuni": {
+     "d": [],
+     "s": [
+      "FFA",
+      "WOF"
+     ]
+    },
     "Kyss": {
      "d": [
       0
@@ -11570,7 +11918,7 @@
     "MaYeuTyK": {
      "d": [
       4,
-      6
+      5
      ],
      "s": [
       "LKR",
@@ -11579,7 +11927,8 @@
     },
     "Magic": {
      "d": [
-      3
+      3,
+      5
      ],
      "s": [
       "FFA",
@@ -11707,6 +12056,15 @@
       "CH"
      ]
     },
+    "ONZASS": {
+     "d": [
+      1
+     ],
+     "s": [
+      "CH",
+      "FFA"
+     ]
+    },
     "Oasis": {
      "d": [
       3,
@@ -11781,6 +12139,16 @@
      ],
      "s": [
       "UFLUC",
+      "URBF"
+     ]
+    },
+    "Shadow": {
+     "d": [
+      0,
+      6
+     ],
+     "s": [
+      "LKR",
       "URBF"
      ]
     },
@@ -11859,6 +12227,16 @@
      "s": [
       "FFA",
       "DW"
+     ]
+    },
+    "Tmax Turbo [PN]": {
+     "d": [
+      4,
+      5
+     ],
+     "s": [
+      "CEU",
+      "WOF"
      ]
     },
     "Trelok": {
@@ -11959,14 +12337,6 @@
       "CH"
      ]
     },
-    "melomaniaco": {
-     "d": [
-      1
-     ],
-     "s": [
-      "FFA"
-     ]
-    },
     "romeo": {
      "d": [
       4,
@@ -11990,9 +12360,25 @@
    },
    "presas": {
     "0223 🇧🇧": [
-     "melomaniaco",
-     "escena",
-     null,
+     "Assuan",
+     "revancha",
+     [
+      608,
+      "ACAD",
+      "11/11",
+      "semifinales"
+     ],
+     0
+    ],
+    "1200": [
+     "PichulaMc",
+     "revancha",
+     [
+      535,
+      "ACAD",
+      "27/10",
+      "octavos"
+     ],
      0
     ],
     "123 🇦🇲": [
@@ -12031,19 +12417,19 @@
      0
     ],
     "ADEUXE🇨🇦": [
-     "Magic",
+     "0223 🇧🇧",
      "escena",
      null,
      0
     ],
     "AGUSTÍN51K": [
-     "Player",
+     "Saiko",
      "escena",
      null,
      0
     ],
     "ALFINPAPA": [
-     "mats",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -12083,7 +12469,7 @@
      0
     ],
     "Agente sombra": [
-     "0223 🇧🇧",
+     "THO",
      "escena",
      null,
      0
@@ -12099,14 +12485,20 @@
      ],
      0
     ],
+    "Akapellah 🇻🇪": [
+     "Simon",
+     "cerca",
+     null,
+     0
+    ],
     "Akus": [
-     "romeo",
+     "Kuni",
      "escena",
      null,
      0
     ],
     "Akuseru": [
-     "melomaniaco",
+     "Deko",
      "escena",
      null,
      0
@@ -12140,8 +12532,20 @@
      null,
      0
     ],
+    "Apertickz 🇨🇱": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
     "Ariaxer": [
      "Gus",
+     "escena",
+     null,
+     0
+    ],
+    "Aritmetrico & 1200": [
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -12175,7 +12579,7 @@
      0
     ],
     "BABI": [
-     "LAST",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -12183,6 +12587,12 @@
     "BENJI 🇵🇪": [
      "Dios",
      "escena",
+     null,
+     0
+    ],
+    "BENJIXSO 🇺🇾": [
+     "Simon",
+     "cerca",
      null,
      0
     ],
@@ -12243,9 +12653,26 @@
      null,
      0
     ],
+    "Bishop": [
+     "Mito",
+     "revancha",
+     [
+      618,
+      "ACAD",
+      "31/10",
+      "cuartos"
+     ],
+     0
+    ],
     "Bloody": [
      "Majiztral",
      "escena",
+     null,
+     0
+    ],
+    "CAQUIÑÑA🇵🇪": [
+     "Inhuman",
+     "cerca",
      null,
      0
     ],
@@ -12283,6 +12710,12 @@
      null,
      0
     ],
+    "Cardan & Deikka": [
+     "Tmax Turbo [PN]",
+     "escena",
+     null,
+     0
+    ],
     "Carlosss": [
      "Walker",
      "revancha",
@@ -12292,6 +12725,12 @@
       "15/11",
       "final"
      ],
+     0
+    ],
+    "Chase": [
+     "Jupiter",
+     "escena",
+     null,
      0
     ],
     "Chaz🇵🇪": [
@@ -12336,7 +12775,7 @@
      0
     ],
     "Cinexfilo": [
-     "Mathhias",
+     "Shadow",
      "escena",
      null,
      0
@@ -12350,6 +12789,12 @@
       "21/11",
       "cuartos"
      ],
+     0
+    ],
+    "Cris": [
+     "Kuni",
+     "escena",
+     null,
      0
     ],
     "CrisZJ": [
@@ -12381,7 +12826,7 @@
      0
     ],
     "DarnBless": [
-     "Deuxs",
+     "Kyss",
      "escena",
      null,
      0
@@ -12426,7 +12871,7 @@
      0
     ],
     "Diz🇨🇱": [
-     "romeo",
+     "Kuni",
      "escena",
      null,
      0
@@ -12537,6 +12982,12 @@
      ],
      0
     ],
+    "El Parche": [
+     "Akuseru",
+     "escena",
+     null,
+     0
+    ],
     "El felpudo 974 🇨🇫": [
      "Choco",
      "escena",
@@ -12573,7 +13024,7 @@
      0
     ],
     "EmiZor": [
-     "Cinexfilo",
+     "ONZASS",
      "escena",
      null,
      0
@@ -12614,6 +13065,12 @@
      null,
      0
     ],
+    "FABIUKI 🇪🇸": [
+     "Simon",
+     "cerca",
+     null,
+     0
+    ],
     "Faso": [
      "Saiko",
      "escena",
@@ -12649,7 +13106,7 @@
      0
     ],
     "Flash": [
-     "DarnBless",
+     "ONZASS",
      "escena",
      null,
      0
@@ -12657,6 +13114,12 @@
     "Fritz": [
      "Lord Viruzz",
      "escena",
+     null,
+     0
+    ],
+    "Fusok🇨🇱": [
+     "CNC",
+     "cerca",
      null,
      0
     ],
@@ -12711,6 +13174,12 @@
      ],
      0
     ],
+    "Gosu Z": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
     "Guess": [
      "yinn",
      "revancha",
@@ -12723,9 +13192,26 @@
      0
     ],
     "Gus": [
-     "Ariaxer",
+     "Assuan",
      "escena",
      null,
+     0
+    ],
+    "Gustabine": [
+     "DarnBless",
+     "escena",
+     null,
+     0
+    ],
+    "HH": [
+     "OG",
+     "revancha",
+     [
+      436,
+      "FFA",
+      "09/10",
+      "semifinales"
+     ],
      0
     ],
     "Hades": [
@@ -12737,6 +13223,12 @@
       "08/11",
       "octavos"
      ],
+     0
+    ],
+    "Hardcore": [
+     "Choco",
+     "cerca",
+     null,
      0
     ],
     "HatshepsuT": [
@@ -12802,6 +13294,12 @@
      null,
      0
     ],
+    "Jesus": [
+     "DarnBless",
+     "escena",
+     null,
+     0
+    ],
     "Jodnes": [
      "THO",
      "revancha",
@@ -12856,6 +13354,12 @@
     ],
     "KARDIOLOGO": [
      "Izaya",
+     "escena",
+     null,
+     0
+    ],
+    "KILLO 🇦🇷": [
+     "Jupiter",
      "escena",
      null,
      0
@@ -12934,13 +13438,13 @@
      0
     ],
     "Kminant": [
-     "Magic",
+     "0223 🇧🇧",
      "escena",
      null,
      0
     ],
     "Kourier": [
-     "LAST",
+     "Agente sombra",
      "escena",
      null,
      1
@@ -13021,9 +13525,14 @@
      1
     ],
     "LSO": [
-     "Magic",
-     "escena",
-     null,
+     "NXUZ",
+     "revancha",
+     [
+      589,
+      "DDF",
+      "08/11",
+      "octavos"
+     ],
      0
     ],
     "LVS": [
@@ -13093,6 +13602,17 @@
      ],
      0
     ],
+    "Lilñaño": [
+     "MCO",
+     "revancha",
+     [
+      586,
+      "DDS",
+      "07/11",
+      "semifinales"
+     ],
+     0
+    ],
     "LitKunai": [
      "Julda",
      "escena",
@@ -13114,6 +13634,12 @@
       "13/11",
       "cuartos"
      ],
+     0
+    ],
+    "Lowen": [
+     "Akuseru",
+     "escena",
+     null,
      0
     ],
     "Lucho": [
@@ -13240,6 +13766,17 @@
      ],
      0
     ],
+    "Malva": [
+     "Colesito",
+     "revancha",
+     [
+      471,
+      "FFA",
+      "14/10",
+      "filtros"
+     ],
+     0
+    ],
     "Maniak🇫🇴": [
      "Thaniel",
      "escena",
@@ -13286,7 +13823,7 @@
      0
     ],
     "MauzzitoEmeces": [
-     "Magic",
+     "0223 🇧🇧",
      "escena",
      null,
      0
@@ -13316,7 +13853,7 @@
      0
     ],
     "Medster": [
-     "LAST",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -13378,7 +13915,7 @@
      0
     ],
     "Mosquitrap 🦟": [
-     "Ariaxer",
+     "Jupiter",
      "escena",
      null,
      0
@@ -13386,6 +13923,12 @@
     "Motera": [
      "LAST",
      "escena",
+     null,
+     0
+    ],
+    "NAVAS 🇪🇸": [
+     "Inhuman",
+     "cerca",
      null,
      0
     ],
@@ -13459,6 +14002,12 @@
      null,
      0
     ],
+    "Nxvz 🇵🇪": [
+     "Kuni",
+     "escena",
+     null,
+     0
+    ],
     "OG": [
      "BNA",
      "revancha",
@@ -13482,7 +14031,7 @@
      0
     ],
     "ONZASS": [
-     "DarnBless",
+     "Kyss",
      "escena",
      null,
      0
@@ -13496,6 +14045,12 @@
       "17/11",
       "final"
      ],
+     0
+    ],
+    "Ojitos canábicos 🇨🇱": [
+     "Kuni",
+     "escena",
+     null,
      0
     ],
     "PHOBOS 🇲🇽": [
@@ -13516,6 +14071,23 @@
      null,
      0
     ],
+    "Panchok": [
+     "Sin Limites",
+     "revancha",
+     [
+      499,
+      "FFA",
+      "22/10",
+      "octavos"
+     ],
+     0
+    ],
+    "Panchok & R-flow": [
+     "Tmax Turbo [PN]",
+     "escena",
+     null,
+     0
+    ],
     "Paria": [
      "THO",
      "revancha",
@@ -13525,6 +14097,12 @@
       "21/11",
       "cuartos"
      ],
+     0
+    ],
+    "Perro": [
+     "Akuseru",
+     "escena",
+     null,
      0
     ],
     "PichulaMc": [
@@ -13584,6 +14162,12 @@
      null,
      0
     ],
+    "R-Flow 🇪🇸": [
+     "Akuseru",
+     "escena",
+     null,
+     0
+    ],
     "Raizer": [
      "Valen",
      "escena",
@@ -13598,6 +14182,12 @@
     ],
     "Refran": [
      "Saiko",
+     "escena",
+     null,
+     0
+    ],
+    "Respiracion & Afinn": [
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -13620,7 +14210,13 @@
      0
     ],
     "Riolu": [
-     "melomaniaco",
+     "Mc arepa",
+     "escena",
+     null,
+     0
+    ],
+    "Rodas": [
+     "Jupiter",
      "escena",
      null,
      0
@@ -13643,7 +14239,7 @@
      0
     ],
     "SAIDEM": [
-     "Agente sombra",
+     "Izaya",
      "escena",
      null,
      0
@@ -13669,6 +14265,12 @@
       "15/11",
       "octavos"
      ],
+     0
+    ],
+    "Sadik": [
+     "Jupiter",
+     "escena",
+     null,
      0
     ],
     "Saiko": [
@@ -13926,19 +14528,20 @@
      null,
      0
     ],
+    "Un Pibe": [
+     "Akuseru",
+     "escena",
+     null,
+     0
+    ],
     "Under": [
-     "Oasis",
-     "revancha",
-     [
-      476,
-      "FFA",
-      "15/10",
-      "octavos"
-     ],
+     "DarnBless",
+     "escena",
+     null,
      0
     ],
     "VR": [
-     "Gus",
+     "Assuan",
      "escena",
      null,
      0
@@ -13976,6 +14579,12 @@
      ],
      0
     ],
+    "Verranca": [
+     "DarnBless",
+     "escena",
+     null,
+     0
+    ],
     "Vilca": [
      "Dios",
      "revancha",
@@ -13987,6 +14596,12 @@
      ],
      0
     ],
+    "Vlad": [
+     "Kuni",
+     "escena",
+     null,
+     0
+    ],
     "Walker": [
      "Colesito",
      "revancha",
@@ -13996,6 +14611,12 @@
       "19/11",
       "cuartos"
      ],
+     0
+    ],
+    "Wil": [
+     "Akuseru",
+     "escena",
+     null,
      0
     ],
     "XMILE": [
@@ -14104,7 +14725,7 @@
      0
     ],
     "ZiarKI": [
-     "LAST",
+     "Tmax Turbo [PN]",
      "escena",
      null,
      0
@@ -14205,6 +14826,12 @@
      ],
      0
     ],
+    "finn": [
+     "DarnBless",
+     "escena",
+     null,
+     0
+    ],
     "finnpapá🇭🇳": [
      "Geoka",
      "revancha",
@@ -14273,6 +14900,12 @@
      null,
      0
     ],
+    "lil": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
     "masterx🇻🇪": [
      "Simon",
      "escena",
@@ -14294,6 +14927,12 @@
     "mityar": [
      "Julda",
      "escena",
+     null,
+     0
+    ],
+    "nasir catriel🇦🇷": [
+     "Simon",
+     "cerca",
      null,
      0
     ],
@@ -14343,7 +14982,7 @@
      0
     ],
     "romeo": [
-     "Yor",
+     "Julda",
      "escena",
      null,
      0
@@ -14377,6 +15016,12 @@
      null,
      0
     ],
+    "wolffe 🇧🇸": [
+     "Jupiter",
+     "escena",
+     null,
+     0
+    ],
     "xr 🇧🇼": [
      "Thaniel",
      "escena",
@@ -14390,7 +15035,7 @@
      0
     ],
     "y Jahno 🇧🇧": [
-     "romeo",
+     "Kuni",
      "escena",
      null,
      0
@@ -14705,7 +15350,7 @@
      1,
      2,
      3,
-     0,
+     1,
      0
     ],
     "Julix": [
@@ -14810,7 +15455,7 @@
      1,
      0,
      2,
-     0,
+     1,
      0
     ],
     "METRO": [
@@ -14908,7 +15553,7 @@
      0,
      1,
      2,
-     0,
+     1,
      0
     ],
     "NC": [
@@ -15167,7 +15812,7 @@
      1,
      0,
      1,
-     1,
+     0,
      0
     ],
     "Zignos": [
@@ -15288,7 +15933,7 @@
     "Inku": 300,
     "Itohimo": 600,
     "JOSHU": 300,
-    "Julda": 300,
+    "Julda": 1100,
     "Julix": 300,
     "Kaizz": 300,
     "Keider": 300,
@@ -15298,7 +15943,7 @@
     "Kyss": 300,
     "LRS": 900,
     "Lilñaño": 300,
-    "MCO": 300,
+    "MCO": 1100,
     "METRO": 300,
     "MaYeuTyK": 300,
     "Majiztral": 300,
@@ -15308,6 +15953,7 @@
     "Miniboy": 300,
     "Mito": 300,
     "Monet": 300,
+    "Mr.Kude": 800,
     "NC": 300,
     "NXUZ": 300,
     "Noone": 300,
@@ -15333,7 +15979,7 @@
     "Tuca": 300,
     "TøKīØ🦠🧠": 300,
     "Vandu": 300,
-    "Xervoe": 1100,
+    "Xervoe": 300,
     "Zignos": 300,
     "araya": 300,
     "crakero": 300,
@@ -15378,7 +16024,7 @@
   "Ariaxer": 600,
   "Aritmetico": 300,
   "Artezzy": 600,
-  "Assuan": 1600,
+  "Assuan": 2600,
   "Aszecas": 600,
   "Axinu": 300,
   "B.DEMON🇪🇨": 300,
@@ -15392,7 +16038,7 @@
   "Bau": 1000,
   "Benjixo": 2200,
   "Berrun": 600,
-  "Bloody": 4200,
+  "Bloody": 5200,
   "Blue": 300,
   "Bocto": 300,
   "CJ": 2100,
@@ -15436,6 +16082,7 @@
   "Dyzz": 3500,
   "EGI": 300,
   "EIDP": 5000,
+  "EL MOTOR V8 & 🇨🇴": 1000,
   "EL PIBE 🇦🇷": 600,
   "Eclipsito": 4200,
   "Efimero": 300,
@@ -15464,13 +16111,13 @@
   "Forza": 600,
   "Fritz": 600,
   "Funk🇦🇷": 300,
+  "Fusok🇨🇱": 1000,
   "GARZXI": 300,
   "Geoka": 5000,
   "Gero": 300,
   "Gian": 300,
   "Global Hustler": 1000,
   "Gocho": 3900,
-  "Guaicurús🇰🇷": 300,
   "Guess": 4500,
   "Gus": 900,
   "HH": 300,
@@ -15502,7 +16149,7 @@
   "Joven shenlong": 300,
   "Juanpa": 600,
   "Juasmio": 1900,
-  "Julda": 600,
+  "Julda": 1400,
   "Julix": 900,
   "Julix🇧🇴": 1000,
   "Jult": 600,
@@ -15555,7 +16202,7 @@
   "MAU KC": 600,
   "MAU KC 🇨🇴": 300,
   "MCNadie": 2400,
-  "MCO": 10600,
+  "MCO": 11400,
   "METRO": 300,
   "MHS": 300,
   "MTZ": 3100,
@@ -15586,13 +16233,13 @@
   "Monet": 600,
   "Mosquitrap 🦟": 5000,
   "Motera": 3200,
-  "Mr.Kude": 600,
+  "Mr.Kude": 1400,
   "Musicdum": 300,
   "N1k": 300,
   "NC": 8300,
   "NXUZ": 5900,
   "NYCO": 300,
-  "Neo": 3200,
+  "Neo": 3500,
   "Nerick": 600,
   "NewCharacter🇦🇷": 300,
   "Nmb": 1000,
@@ -15612,7 +16259,7 @@
   "PRAISERIZA": 6700,
   "PROMETHEUS BIB 🇨🇴": 300,
   "PUNISHER": 600,
-  "Panchok": 8400,
+  "Panchok": 9400,
   "Paria": 2100,
   "Personality": 300,
   "PichulaMc": 10400,
@@ -15690,12 +16337,13 @@
   "Velatz": 5800,
   "Verc": 8000,
   "Vilca": 3400,
+  "Volk": 1000,
   "Walker": 9000,
   "Warap": 900,
   "XXX 🇻🇪": 300,
   "XXXX 🇻🇪": 300,
   "Xclusivo": 6700,
-  "Xervoe": 1100,
+  "Xervoe": 300,
   "Xplicit": 300,
   "Xubaru": 4500,
   "YIN-SON 🇺🇸": 1000,
