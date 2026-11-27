@@ -90,7 +90,7 @@
    "suma": true,
    "competitivo": true,
    "duelos": true,
-   "perfil": false
+   "perfil": true
   },
   "DW": {
    "pagina": true,

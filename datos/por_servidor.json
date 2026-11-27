@@ -300,30 +300,6 @@
     }
    }
   },
-  "AFINN": {
-   "CEU": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0"
-   },
-   "WOF": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 1,
-    "pts": 5000,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "fund": true
-    }
-   }
-  },
   "AFR": {
    "FFA": {
     "duelos": "",
@@ -768,6 +744,30 @@
     "pod": 0,
     "pts": 8000,
     "racha": "0/0"
+   }
+  },
+  "Afinn": {
+   "CEU": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
+   },
+   "WOF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 1,
+    "pts": 5000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "fund": true
+    }
    }
   },
   "Afinnpapa": {
