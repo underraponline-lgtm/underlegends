@@ -7691,6 +7691,13 @@
   }
  },
  "julda": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1795761311378
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -13483,7 +13490,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x30",
+    "👑 CAMPEÓN x31",
     "t1",
     1793029252929
    ],
@@ -17088,6 +17095,15 @@
     "🧟 RESUCITADO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "skala": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1795761311378
    ]
   }
  },

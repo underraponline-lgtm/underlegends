@@ -24516,7 +24516,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "f639eb3aafe9fc8c",
+  "firma": "d8e31d44c583ce07",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -26830,7 +26830,7 @@
    "Teo": 17
   },
   "fecha": "27/10",
-  "firma": "7eb733d1b0c96f97",
+  "firma": "10bd6130f2cb6fed",
   "msg": "1564804334967980113",
   "nombre": "PRADERAP VOL.2",
   "num": 535,
@@ -38562,7 +38562,7 @@
    "oriuz": 7
   },
   "fecha": "03/11",
-  "firma": "3c26d8eac7788250",
+  "firma": "e292d1a409f43f76",
   "msg": "1569508038820237324",
   "nombre": "SIX SEVEN STYLE",
   "num": 585,
@@ -40502,7 +40502,7 @@
    "black live": 1
   },
   "fecha": "09/11",
-  "firma": "670e5a13f7acbd03",
+  "firma": "b5930c12f6e1f85f",
   "msg": "1569508072605618221",
   "nombre": "COMPE MAÑANERA",
   "num": 594,
@@ -42094,7 +42094,7 @@
    "Vilca": 16
   },
   "fecha": "10/11",
-  "firma": "e96250526fc2085a",
+  "firma": "ca017d1bc72b8164",
   "msg": "1569848635271680124",
   "nombre": "MF DOOM Y MADLIB EDICION 1",
   "num": 604,
@@ -45666,7 +45666,7 @@
    "crakero": 7
   },
   "fecha": "12/11",
-  "firma": "ef13260529c74e7e",
+  "firma": "7ae683c1a8e6c97a",
   "msg": "1570578147399827479",
   "nombre": "CUPO A LA MULTIVERS",
   "num": 624,
@@ -45947,7 +45947,7 @@
    "TøKīØ🦠🧠": 13
   },
   "fecha": "12/11",
-  "firma": "26a09e959be68568",
+  "firma": "d3a637caac6ff34f",
   "msg": "1570602754639007937",
   "nombre": "RAP SIN GROSERIAS 5",
   "num": 626,
@@ -46176,7 +46176,7 @@
    "Vilca": 22
   },
   "fecha": "12/11",
-  "firma": "0cf0b39e02ea17c6",
+  "firma": "07e3ee955f28dc07",
   "msg": "1570602758506151978",
   "nombre": "RANKED 1",
   "num": 627,
@@ -46987,7 +46987,7 @@
    "Vandu": 50
   },
   "fecha": "13/11",
-  "firma": "d30aad778c53d202",
+  "firma": "6692de9d0e9d1971",
   "msg": "1570942520354017351",
   "nombre": "ELITE FESTIVAL VOL. 1",
   "num": 630,
@@ -47459,7 +47459,7 @@
    "crakero": 9
   },
   "fecha": "13/11",
-  "firma": "34843c816ff8a4be",
+  "firma": "cb0d8d1c4f999a70",
   "msg": "1570980323372703807",
   "nombre": "RANKED 2",
   "num": 632,
@@ -63307,6 +63307,103 @@
     "Mato  🇧🇴",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "715": {
+  "antes": {
+   "Julda": [
+    74,
+    89,
+    false
+   ],
+   "Kuni": [
+    114,
+    150,
+    false
+   ],
+   "NC": [
+    272,
+    24,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "Skala": [
+    218,
+    499,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Oasis",
+    "Julda",
+    "Oasis"
+   ],
+   [
+    "Kuni",
+    "NC",
+    "Kuni"
+   ],
+   [
+    "Kuni",
+    "Skala",
+    "Kuni"
+   ],
+   [
+    "Oasis",
+    "Kuni",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Julda": 10,
+   "Kuni": 6,
+   "NC": 65,
+   "Oasis": 50,
+   "Skala": 2
+  },
+  "fecha": "27/11",
+  "noche": true,
+  "nombre": "__ mesi __",
+  "num": 715,
+  "participantes": 5,
+  "sello": {
+   "Oasis": "5b19375d21a9:0b98cb3023ec"
+  },
+  "sv": "FFA",
+  "t": "2026-11-27T06:24:20Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Kuni",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Julda",
+    "Semifinal",
+    2625
+   ],
+   [
+    "NC",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Skala",
+    "Semifinal",
+    2625
    ]
   ],
   "v": 2

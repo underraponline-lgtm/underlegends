@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-11-27T05:59:54Z",
+ "t": "2026-11-27T06:33:45Z",
  "sv": {
   "SR": {
    "filas": [
@@ -667,8 +667,8 @@
     [
      "Park Ji Sung",
      "cl",
-     16470,
-     1850,
+     16770,
+     2150,
      "Oasis"
     ],
     [
@@ -1596,6 +1596,13 @@
      "JOSHU"
     ],
     [
+     "Kuni",
+     "",
+     225,
+     225,
+     ""
+    ],
+    [
      "Cinexfilo",
      "ve",
      220,
@@ -2376,6 +2383,25 @@
       ]
      ],
      "fuera": []
+    },
+    {
+     "n": null,
+     "evento": "mesi",
+     "dia": "2026-11-27",
+     "rango": "plata i",
+     "puntos": [
+      [
+       "Oasis",
+       "Campeón",
+       300
+      ],
+      [
+       "Kuni",
+       "Subcampeón",
+       225
+      ]
+     ],
+     "fuera": []
     }
    ],
    "pendiente": [],
@@ -2385,7 +2411,13 @@
     "filas": 170,
     "top": 10
    },
-   "no_coincide": [],
+   "no_coincide": [
+    [
+     "Park Ji Sung",
+     16470,
+     16770
+    ]
+   ],
    "n": "Freestyle For All",
    "destino": null,
    "suben": 0,
@@ -2410,6 +2442,7 @@
   "830271117129809931": "Inhuman",
   "1574183742329852005": "nc",
   "1271260378654969947": "Lrs la sustancia💫",
-  "1523082259870257315": "Nc"
+  "1523082259870257315": "Nc",
+  "1573638520981954641": "Kuni"
  }
 }

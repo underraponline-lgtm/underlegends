@@ -11402,6 +11402,17 @@
    "b": "Chop",
    "ganador": "Chop",
    "votos": "3–0"
+  },
+  "1575752022303703202": {
+   "id": "1575752022303703202",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795758958174,
+   "a": "JULDA",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -15405,6 +15416,27 @@
       "SOSA🇦🇷"
      ],
      "SAKRO🇨🇱",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1575751986316312597": {
+   "id": "1575751986316312597",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1795758949594,
+   "ed": 1795759229667,
+   "texto": "`[ SEMIFINALES ]`\n⌞JULDA⌝ 🆚 ⌞PARK JI SUNG⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "JULDA",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
      "veredicto",
      []
     ]

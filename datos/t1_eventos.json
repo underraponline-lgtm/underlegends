@@ -196,6 +196,7 @@
   [660, "__ NEW GENESIS __", "FFA", "17/11", 34, "16+", "✅"],
   [401, "COPA DE GRUPOS LCW", "ACAD", "03/10", 26, "16+", "✅"],
   [699, "- THE IMPACT -", "FRZ", "26/11", 8, "8-15", "✅"],
+  [665, "GRISELDA TIME VOL. 7", "FFA", "19/11", 20, "16+", "✅"],
   [363, "__ RAP EXHIBITION 1 8 __", "SR", "22/09", 31, "16+", "✅"],
   [568, "EL ONMITRIX VOL 1", "CH", "23/09", 29, "16+", "✅"],
   [360, "__ GENESIS BATTLES __", "SR", "25/09", 13, "8-15", "✅"],
@@ -317,7 +318,6 @@
   [711, "DEBUT", "WOF", "19/11", 12, "8-15", "✅"],
   [664, "CHOP COMPE CHILL V.1", "CH", "19/11", 18, "16+", "✅"],
   [706, "ROBO DE IMAGEN", "WOF", "19/11", 11, "8-15", "✅"],
-  [665, "GRISELDA TIME VOL. 7", "FFA", "19/11", 20, "16+", "✅"],
   [666, "CHOP COMPE NOCTURNA V.1", "CH", "19/11", 17, "16+", "✅"],
   [667, "__ DESGRACIAS EN TOKYO VOL 32 1v1 __", "FFA", "21/11", 25, "16+", "✅"],
   [668, "RED BULL REGIONAL", "FDS", "21/11", 12, "8-15", "✅"],
@@ -347,6 +347,7 @@
   [697, "Backtime", "FFA", "25/11", 20, "16+", "✅"],
   [696, "NOCTURNA STYLE", "DDS", "25/11", 12, "8-15", "✅"],
   [700, "EL PARAISO DEL INFRAMUNDO", "DDF", "26/11", 21, "16+", "✅"],
-  [714, "NOCTURNA STYLE 2 everyone", "DDS", "26/11", 9, "8-15", "✅"]
+  [714, "NOCTURNA STYLE 2 everyone", "DDS", "26/11", 9, "8-15", "✅"],
+  [715, "__ mesi __", "FFA", "27/11", 5, "4-7", "✅"]
  ]
 }

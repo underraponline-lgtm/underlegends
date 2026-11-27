@@ -62142,7 +62142,7 @@
        "Thaniel"
       ],
       "LRS, Colesito",
-      "triple (3 bandas, pasan 2); también pasa: colesito🇨🇽"
+      "triple (3 bandas, pasan 2); también pasa: colesito🇨🇴"
      ]
     ],
     "r": "Octavos"
@@ -69050,6 +69050,87 @@
   ],
   "ver": {
    "min": 46,
+   "v": 1
+  }
+ },
+ "715": {
+  "dia": "2026-11-27",
+  "escala": "4-7",
+  "fecha": "27/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1575751849640726542"
+  ],
+  "n": 715,
+  "nombre": "mesi",
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Julda"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Kuni",
+       "NC",
+       "Skala"
+      ],
+      "Kuni",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Kuni"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Kuni",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Julda",
+    "Semifinal",
+    2625
+   ],
+   [
+    "NC",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Skala",
+    "Semifinal",
+    2625
+   ]
+  ],
+  "ver": {
+   "min": 20,
+   "org": "juega",
    "v": 1
   }
  }
