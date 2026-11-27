@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T20:56:06+00:00",
+ "cuando": "2026-11-27T21:25:57+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -3962,7 +3962,7 @@
    "organizador": "- 4 Clasificatorias 12-16 Cupos",
    "orgs": [
     {
-     "n": "Daitaku Helios ft. La Matanza",
+     "n": "Natsuki Matancera💕",
      "id": "554330098812059679"
     }
    ],
@@ -3976,7 +3976,7 @@
    "fecha": "",
    "premios": "",
    "staff": {},
-   "autor": "Daitaku Helios ft. La Matanza",
+   "autor": "Natsuki Matancera💕",
    "staff_cuentas": {},
    "categoria_id": "1511964043647123527",
    "inscripciones": "cerradas",
@@ -8759,6 +8759,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ruvick 🇨🇴",
+   "quien": "soy_rubick_96712",
+   "discord_id": "1399489326701871164",
+   "msg_id": "1575985235479363595",
+   "cuando": "2026-11-27T21:22:40"
+  },
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "LALOX🇨🇷",
+   "quien": "lalitofr_1",
+   "discord_id": "1096531415916621936",
+   "msg_id": "1575984696867815505",
+   "cuando": "2026-11-27T21:20:32"
+  },
+  {
+   "servidor": "WOF",
+   "canal": "📜・vs・Inscripciónes",
+   "texto": "okam",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1575981042324611144",
+   "cuando": "2026-11-27T21:06:00"
+  },
   {
    "servidor": "WOF",
    "canal": "📜・vs・Inscripciónes",
@@ -44731,33 +44758,6 @@
    "discord_id": "1548906948307451906",
    "msg_id": "1563383336267939942",
    "cuando": "2026-10-24T02:47:13"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Xubaru🇵🇪",
-   "quien": "xxxxxx.fl",
-   "discord_id": "1397110475594010700",
-   "msg_id": "1563383282052366377",
-   "cuando": "2026-10-24T02:47:00"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "bootrax humilde🇵🇪",
-   "quien": "gianfraxruizescor11",
-   "discord_id": "1122273746099638354",
-   "msg_id": "1563383123587108907",
-   "cuando": "2026-10-24T02:46:22"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Vilca🇵🇪",
-   "quien": "vilca_16",
-   "discord_id": "846870712950194196",
-   "msg_id": "1563382876517699686",
-   "cuando": "2026-10-24T02:45:24"
   }
  ]
 }
