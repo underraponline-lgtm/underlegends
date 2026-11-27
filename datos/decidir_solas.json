@@ -3182,6 +3182,96 @@
     "LSD"
    ],
    "escribio": {}
+  },
+  {
+   "id": "f891f1fbc4",
+   "tipo": "Batalla sin ganador",
+   "sec": "OLIMTRICA · WOF · 15/11 · #710",
+   "que": "¿Quién ganó en semifinales?\n1200 + cajita 🆚 liam + dominick",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «Liam, Dominick vs 1200, Cajita» (ganó Liam, Dominick), ya cargada en el #710: contestar «Ganó» la contaría dos veces",
+   "t": 1795751711026,
+   "filas": [
+    1694
+   ],
+   "variantes": [
+    "OLIMTRICA · WOF · 15/11 · semifinales · 1200 + cajita 🆚 liam + dominick"
+   ],
+   "escribio": {
+    "batalla": "OLIMTRICA · WOF · 15/11 · semifinales · 1200 + cajita 🆚 liam + dominick"
+   }
+  },
+  {
+   "id": "d4e1ceae56",
+   "tipo": "Nombre desconocido",
+   "sec": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪 9:28 PM · WOF · 25/11 · #712",
+   "que": "¿Quién es «Skalaboy 🇲🇽»?",
+   "r": "Es Skala (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @skala_mc (en Discord: «STARBOY 🌟») · en la Lista: Skala se anotó como «Skalaboy» para ese evento, no es staff de WOF y esa noche no jugó con su nombre",
+   "t": 1795751711026,
+   "filas": [
+    1721
+   ],
+   "variantes": [
+    "Skalaboy 🇲🇽"
+   ],
+   "escribio": {
+    "quien": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪 9:28 PM · WOF · 25/11 · Skalaboy 🇲🇽"
+   }
+  },
+  {
+   "id": "53cb3772be",
+   "tipo": "Nombre desconocido",
+   "sec": "ESPECIAL HALLOWEEN · WOF · 11/11 · #709",
+   "que": "¿Quién es «Tmax Turbo»? (también escrito «Tmax turbo»)",
+   "r": "Es Tmax Turbo [PN]",
+   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
+   "rk": "R2",
+   "por": "el ciclo",
+   "porque": "«Tmax turbo» se anotó 3 vez/veces sola desde la cuenta de Tmax Turbo [PN] («TMAX Turbo», «Tmax Turbo», «tmax turbo», en ACAD, DDF) y Tmax Turbo [PN] no jugó esos eventos con su nombre; nadie más usa ese nombre y Tmax Turbo [PN] no es organizador, staff, host ni socio ahí",
+   "t": 1795751711026,
+   "filas": [
+    1705,
+    1706
+   ],
+   "variantes": [
+    "Tmax Turbo",
+    "Tmax turbo"
+   ],
+   "escribio": {
+    "alias": [
+     "Tmax turbo",
+     "Tmax Turbo [PN]"
+    ],
+    "filas": [
+     393
+    ]
+   }
+  },
+  {
+   "id": "9a2aaf9d68",
+   "tipo": "Nombre desconocido",
+   "sec": "DUPLAZO · WOF · 13/11 · #703",
+   "que": "¿Quién es «Panchok & R-flow»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795751711026,
+   "filas": [
+    1668
+   ],
+   "variantes": [
+    "Panchok & R-flow"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

@@ -49661,7 +49661,7 @@
    "Vandu": 52
   },
   "fecha": "15/11",
-  "firma": "b5ea1fc392857d2d",
+  "firma": "ed651ae4071dce3a",
   "msg": "1571637257578873034",
   "nombre": "RED BULL NACIONAL PLAZAS T.5",
   "num": 645,
@@ -51110,7 +51110,7 @@
    "Mito": 41
   },
   "fecha": "16/11",
-  "firma": "62cf4b4af5c7637b",
+  "firma": "84333a528c810e0f",
   "msg": "1571969969833517087",
   "nombre": "SIX SEVEN STYLE 3",
   "num": 652,
@@ -55185,7 +55185,7 @@
    "replisan": 3
   },
   "fecha": "21/11",
-  "firma": "13e124eb914c4f38",
+  "firma": "3d862bea25927446",
   "msg": "1573909518906298399",
   "nombre": "BOOM BAP STYLE",
   "num": 671,
@@ -62300,6 +62300,660 @@
     "Tmax Turbo [PN]",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "708": {
+  "antes": {
+   "1200": [
+    291,
+    113,
+    true
+   ],
+   "Kourier": [
+    119,
+    166,
+    false
+   ],
+   "Under": [
+    297,
+    126,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "1200",
+    "Lvl",
+    "1200"
+   ],
+   [
+    "Kourier",
+    "Under",
+    "Kourier"
+   ],
+   [
+    "1200",
+    "Kourier",
+    "1200"
+   ],
+   [
+    "1200",
+    "Afinn",
+    "1200"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 15,
+   "Kourier": 9,
+   "Under": 13
+  },
+  "fecha": "07/11",
+  "nombre": "ESPECIAL HALLOWEEN",
+  "num": 708,
+  "participantes": 10,
+  "sello": {
+   "1200": ""
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:47:15Z",
+  "tabla": [
+   [
+    "1200",
+    "Campeón",
+    7500
+   ],
+   [
+    "Afinn",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kourier",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lvl",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Under",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "709": {
+  "antes": {
+   "DarnBless": [
+    91,
+    112,
+    false
+   ],
+   "Kusoh": [
+    409,
+    320,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Panchok",
+    "Kusoh",
+    "Panchok"
+   ],
+   [
+    "Afinnpapa",
+    "mesaleelsemenrosa",
+    "Afinnpapa"
+   ],
+   [
+    "Tmax turbo",
+    "G Master",
+    "Tmax turbo"
+   ],
+   [
+    "DarnBless",
+    "Bohemico",
+    "DarnBless"
+   ],
+   [
+    "Panchok",
+    "Afinnpapa",
+    "Panchok"
+   ],
+   [
+    "Tmax turbo",
+    "DarnBless",
+    "Tmax turbo"
+   ],
+   [
+    "Panchock",
+    "Tmax turbo",
+    "Panchock"
+   ]
+  ],
+  "ev_antes": {
+   "DarnBless": 18,
+   "Kusoh": 2
+  },
+  "fecha": "11/11",
+  "nombre": "ESPECIAL HALLOWEEN",
+  "num": 709,
+  "participantes": 10,
+  "sello": {
+   "Panchock": ""
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:47:17Z",
+  "tabla": [
+   [
+    "Panchock",
+    "Campeón",
+    7500
+   ],
+   [
+    "Tmax turbo",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Afinnpapa",
+    "Semifinal",
+    3500
+   ],
+   [
+    "DarnBless",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Kusoh",
+    "Cuartos",
+    2000
+   ],
+   [
+    "mesaleelsemenrosa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "G Master",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Bohemico",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "710": {
+  "antes": {
+   "1200": [
+    291,
+    113,
+    true
+   ],
+   "Bloody": [
+    32,
+    36,
+    false
+   ],
+   "Cajita": [
+    374,
+    265,
+    true
+   ],
+   "Dominick": [
+    43,
+    50,
+    false
+   ],
+   "Kourier": [
+    119,
+    166,
+    false
+   ],
+   "LAST": [
+    58,
+    71,
+    false
+   ],
+   "Liam": [
+    146,
+    218,
+    false
+   ],
+   "Motera": [
+    78,
+    97,
+    false
+   ],
+   "Sosa": [
+    142,
+    212,
+    false
+   ],
+   "Soulb": [
+    28,
+    31,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Kourier, Bloody",
+    "Campoi, Motera",
+    "Kourier, Bloody"
+   ],
+   [
+    "1200, Cajita",
+    "LAST, Soulb",
+    "1200, Cajita"
+   ],
+   [
+    "Chale, fosa",
+    "Jank, Enkidu",
+    "Chale, fosa"
+   ],
+   [
+    "Liam, dominic",
+    "Sosa, Finn",
+    "Liam, dominic"
+   ],
+   [
+    "Kourier, Bloody",
+    "Chale, fosa",
+    "Kourier, Bloody"
+   ],
+   [
+    "Liam, Dominick",
+    "1200, Cajita",
+    "Liam, Dominick"
+   ],
+   [
+    "Kourier, Bloody",
+    "Liam, dominic",
+    "Kourier, Bloody"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 15,
+   "Bloody": 33,
+   "Cajita": 3,
+   "Dominick": 53,
+   "Kourier": 9,
+   "LAST": 26,
+   "Liam": 7,
+   "Motera": 9,
+   "Sosa": 5,
+   "Soulb": 39
+  },
+  "fecha": "15/11",
+  "nombre": "OLIMTRICA",
+  "num": 710,
+  "participantes": 17,
+  "sello": {
+   "Bloody": "de50f2cb4b9c:0b98cb3023ec",
+   "Kourier": "64c7e03ff0ad:0b98cb3023ec"
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:47:19Z",
+  "tabla": [
+   [
+    "Kourier",
+    "Campeón",
+    5000
+   ],
+   [
+    "Bloody",
+    "Campeón",
+    5000
+   ],
+   [
+    "Liam",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "dominic",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Chale",
+    "Semifinal",
+    2625
+   ],
+   [
+    "fosa",
+    "Semifinal",
+    2625
+   ],
+   [
+    "1200",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Cajita",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Campoi",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Motera",
+    "Cuartos",
+    1250
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Jank",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Enkidu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Finn",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "711": {
+  "antes": {
+   "1200": [
+    291,
+    113,
+    true
+   ],
+   "Fin": [
+    170,
+    292,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Fin",
+    "dark",
+    "Fin"
+   ],
+   [
+    "1200",
+    "teito: arrow_right:",
+    "1200"
+   ],
+   [
+    "1200",
+    "Fin",
+    "1200"
+   ],
+   [
+    "1200",
+    "Teito",
+    "1200"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 15,
+   "Fin": 4
+  },
+  "fecha": "19/11",
+  "nombre": "DEBUT",
+  "num": 711,
+  "participantes": 12,
+  "sello": {
+   "1200": ""
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:47:19Z",
+  "tabla": [
+   [
+    "Fin",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "1200",
+    "Campeón",
+    3750
+   ],
+   [
+    "dark",
+    "Semifinal",
+    3500
+   ],
+   [
+    "teito: arrow_right:",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "v": 2
+ },
+ "712": {
+  "antes": {
+   "Cajita": [
+    374,
+    265,
+    true
+   ],
+   "CrisZJ": [
+    272,
+    30,
+    true
+   ],
+   "Gus": [
+    98,
+    125,
+    false
+   ],
+   "Hades": [
+    204,
+    429,
+    false
+   ],
+   "MaYeuTyK": [
+    44,
+    51,
+    false
+   ],
+   "Masino": [
+    57,
+    68,
+    false
+   ],
+   "Mathhias": [
+    46,
+    54,
+    false
+   ],
+   "Shadow": [
+    85,
+    105,
+    false
+   ],
+   "Tmax Turbo [PN]": [
+    135,
+    193,
+    false
+   ],
+   "mats": [
+    37,
+    41,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "CrisZJ",
+    "Mathhias",
+    "CrisZJ"
+   ],
+   [
+    "Player",
+    "Hades",
+    "Player"
+   ],
+   [
+    "Cajita",
+    "Skalaboy 🇲🇽",
+    "Cajita"
+   ],
+   [
+    "mats",
+    "Shadow",
+    "mats"
+   ],
+   [
+    "Masino",
+    "CrisZJ",
+    "Masino"
+   ],
+   [
+    "mats",
+    "Cajita",
+    "mats"
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Gus",
+    "Tmax Turbo [PN]"
+   ],
+   [
+    "Masino",
+    "MaYeuTyK",
+    "Masino"
+   ],
+   [
+    "mats",
+    "Tmax Turbo [PN]",
+    "mats"
+   ],
+   [
+    "mats",
+    "Masino",
+    "mats"
+   ]
+  ],
+  "ev_antes": {
+   "Cajita": 3,
+   "CrisZJ": 42,
+   "Gus": 15,
+   "Hades": 2,
+   "MaYeuTyK": 29,
+   "Masino": 14,
+   "Mathhias": 24,
+   "Shadow": 32,
+   "Tmax Turbo [PN]": 11,
+   "mats": 17
+  },
+  "fecha": "25/11",
+  "noche": true,
+  "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪 9:28 PM",
+  "num": 712,
+  "participantes": 14,
+  "sello": {
+   "mats": "7f1de7d2356d:0b98cb3023ec"
+  },
+  "sv": "WOF",
+  "t": "2026-11-27T03:47:20Z",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    7500
+   ],
+   [
+    "Masino",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cajita",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    875
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    625
+   ],
+   [
+    "Hades",
+    "Octavos",
+    625
+   ],
+   [
+    "Skalaboy 🇲🇽",
+    "Octavos",
+    625
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    625
    ]
   ],
   "v": 2

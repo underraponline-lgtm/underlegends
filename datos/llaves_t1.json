@@ -66650,10 +66650,10 @@
      ],
      [
       [
-       "R-Flow 🇪🇸",
+       "R-Flow",
        "Un Pibe"
       ],
-      "R-Flow 🇪🇸",
+      "R-Flow",
       ""
      ],
      [
@@ -66704,7 +66704,7 @@
      [
       [
        "Panchok",
-       "R-Flow 🇪🇸"
+       "R-Flow"
       ],
       "Panchok",
       ""
@@ -66801,7 +66801,7 @@
     2500
    ],
    [
-    "R-Flow 🇪🇸",
+    "R-Flow",
     "Cuartos",
     2500
    ],
@@ -66875,11 +66875,11 @@
      ],
      [
       [
-       "R-flow & Panchok",
+       "R-Flow, Panchok",
        "Nebu & Kixxy"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: R-flow & Panchok; cobra: Nebu & Kixxy; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -66909,10 +66909,10 @@
     "b": [
      [
       [
-       "Panchok & R-flow",
+       "Panchok, R-Flow",
        "Cardan & Deikka"
       ],
-      "Panchok & R-flow",
+      "Panchok, R-Flow",
       ""
      ]
     ],
@@ -66922,14 +66922,19 @@
   "sv": "WOF",
   "tabla": [
    [
-    "Panchok & R-flow",
-    "Campeón",
-    7500
-   ],
-   [
     "Cardan & Deikka",
     "Subcampeón",
     5000
+   ],
+   [
+    "Panchok",
+    "Campeón",
+    3750
+   ],
+   [
+    "R-Flow",
+    "Campeón",
+    3750
    ],
    [
     "Respiracion & Afinn",
@@ -66938,6 +66943,16 @@
    ],
    [
     "Aritmetrico & 1200",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Nebu & Kixxy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "R-flow & Panchok",
     "Cuartos",
     2000
    ],
@@ -67220,7 +67235,7 @@
      [
       [
        "Bloody",
-       "Apertickz 🇨🇱"
+       "Apertickz"
       ],
       "Bloody",
       ""
@@ -67330,14 +67345,6 @@
       ],
       "Chase",
       ""
-     ],
-     [
-      [
-       "LIL GOSU 🇵🇷",
-       "Rödas🇵🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
@@ -67404,7 +67411,7 @@
     2500
    ],
    [
-    "Apertickz 🇨🇱",
+    "Apertickz",
     "Octavos",
     1250
    ],
@@ -67472,20 +67479,20 @@
      ],
      [
       [
-       "CAQUIÑÑA🇵🇪",
+       "CrisZJ",
        "BENJIXSO 🇺🇾"
       ],
-      "CAQUIÑÑA🇵🇪",
+      "CrisZJ",
       ""
      ],
      [
       [
        "FABIUKI 🇪🇸",
-       "Fusok🇨🇱",
+       "Panchok",
        "nasir catriel🇦🇷",
        "Navas🇪🇸"
       ],
-      "FABIUKI 🇪🇸, Fusok🇨🇱",
+      "FABIUKI 🇪🇸, Panchok",
       "triple (4 bandas, pasan 2); también pasa: Fusok🇨🇱"
      ],
      [
@@ -67504,18 +67511,18 @@
     "b": [
      [
       [
-       "CAQUIÑÑA🇵🇪",
+       "CrisZJ",
        "Hardcore"
       ],
-      "CAQUIÑÑA🇵🇪",
+      "CrisZJ",
       ""
      ],
      [
       [
-       "Fusok🇨🇱",
+       "Panchok",
        "FABIUKI 🇪🇸"
       ],
-      "Fusok🇨🇱",
+      "Panchok",
       ""
      ]
     ],
@@ -67525,10 +67532,10 @@
     "b": [
      [
       [
-       "Fusok🇨🇱",
-       "CAQUIÑÑA🇵🇪"
+       "Panchok",
+       "CrisZJ"
       ],
-      "Fusok🇨🇱",
+      "Panchok",
       ""
      ]
     ],
@@ -67538,12 +67545,12 @@
   "sv": "WOF",
   "tabla": [
    [
-    "Fusok🇨🇱",
+    "Panchok",
     "Campeón",
     7500
    ],
    [
-    "CAQUIÑÑA🇵🇪",
+    "CrisZJ",
     "Subcampeón",
     5000
    ],
@@ -67602,7 +67609,7 @@
        "Cris"
       ],
       "Assuan",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67610,7 +67617,7 @@
        "Ojitos canábicos 🇨🇱"
       ],
       "Kuni",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67618,7 +67625,7 @@
        "Dyzz"
       ],
       "Agente sombra",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67626,7 +67633,7 @@
        "Efimero"
       ],
       "Magic",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67634,7 +67641,7 @@
        "Vlad"
       ],
       "DarnBless",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67642,7 +67649,7 @@
        "Tmax Turbo [PN]"
       ],
       "Mito",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67663,7 +67670,7 @@
        "DarnBless"
       ],
       "Assuan",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67671,7 +67678,7 @@
        "Dominick"
       ],
       "Kuni",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67679,7 +67686,7 @@
        "Agente sombra"
       ],
       "Mito",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67687,7 +67694,7 @@
        "Nxvz 🇵🇪"
       ],
       "Magic",
-      "cuenta nueva, con su anuncio"
+      ""
      ]
     ],
     "r": "Cuartos"
@@ -67700,7 +67707,7 @@
        "Mito"
       ],
       "Assuan",
-      "cuenta nueva, con su anuncio"
+      ""
      ],
      [
       [
@@ -67708,7 +67715,7 @@
        "Kuni"
       ],
       "Magic",
-      "cuenta nueva, con su anuncio"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -67721,7 +67728,7 @@
        "Kuni"
       ],
       "Mito",
-      "cuenta nueva, con su anuncio"
+      ""
      ]
     ],
     "r": "Tercer puesto"
@@ -67734,7 +67741,7 @@
        "Magic"
       ],
       "Assuan",
-      "cuenta nueva, con su anuncio"
+      ""
      ]
     ],
     "r": "Final"
@@ -67815,6 +67822,726 @@
   ],
   "ver": {
    "min": 1052,
+   "v": 1
+  }
+ },
+ "708": {
+  "dia": "2026-11-07",
+  "escala": "8-15",
+  "fecha": "07/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1568737805486792816"
+  ],
+  "n": 708,
+  "nombre": "ESPECIAL HALLOWEEN",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "1200",
+       "Lvl"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "Kourier",
+       "Under"
+      ],
+      "Kourier",
+      ""
+     ],
+     [
+      [
+       "Afinn",
+       "MaYeuTick"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Last🇺🇾",
+       "Cacha"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "1200",
+       "Kourier"
+      ],
+      "1200",
+      ""
+     ],
+     [
+      [
+       "Scot 🇦🇷",
+       "TAURUS"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "1200",
+       "Afinn"
+      ],
+      "1200",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "1200",
+    "Campeón",
+    7500
+   ],
+   [
+    "Afinn",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kourier",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lvl",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Under",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 58,
+   "v": 1
+  }
+ },
+ "709": {
+  "dia": "2026-11-11",
+  "escala": "8-15",
+  "fecha": "11/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1570115460236578968"
+  ],
+  "n": 709,
+  "nombre": "ESPECIAL HALLOWEEN",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Kusoh"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Afinnpapa",
+       "mesaleelsemenrosa"
+      ],
+      "Afinnpapa",
+      ""
+     ],
+     [
+      [
+       "Tmax turbo",
+       "G Master"
+      ],
+      "Tmax turbo",
+      ""
+     ],
+     [
+      [
+       "DarnBless",
+       "Bohemico"
+      ],
+      "DarnBless",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Afinnpapa"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Tmax turbo",
+       "DarnBless"
+      ],
+      "Tmax turbo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchock",
+       "Tmax turbo"
+      ],
+      "Panchock",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Panchock",
+    "Campeón",
+    7500
+   ],
+   [
+    "Tmax turbo",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Afinnpapa",
+    "Semifinal",
+    3500
+   ],
+   [
+    "DarnBless",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Bohemico",
+    "Cuartos",
+    2000
+   ],
+   [
+    "G Master",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kusoh",
+    "Cuartos",
+    2000
+   ],
+   [
+    "mesaleelsemenrosa",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 74,
+   "v": 1
+  }
+ },
+ "710": {
+  "dia": "2026-11-15",
+  "escala": "16+",
+  "fecha": "15/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1571651027881426947",
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1571659482688397333"
+  ],
+  "n": 710,
+  "nombre": "OLIMTRICA",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Kourier, Bloody",
+       "Campoi, Motera"
+      ],
+      "Kourier, Bloody",
+      ""
+     ],
+     [
+      [
+       "1200, Cajita",
+       "LAST, Soulb"
+      ],
+      "1200, Cajita",
+      ""
+     ],
+     [
+      [
+       "Chale, fosa",
+       "Jank, Enkidu"
+      ],
+      "Chale, fosa",
+      ""
+     ],
+     [
+      [
+       "Liam, dominic",
+       "Sosa, Finn"
+      ],
+      "Liam, dominic",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kourier, Bloody",
+       "Chale, fosa"
+      ],
+      "Kourier, Bloody",
+      ""
+     ],
+     [
+      [
+       "Liam, Dominick",
+       "1200, Cajita"
+      ],
+      "Liam, Dominick",
+      ""
+     ],
+     [
+      [
+       "1200 + cajita",
+       "liam + dominick"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kourier, Bloody",
+       "Liam, dominic"
+      ],
+      "Kourier, Bloody",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Bloody",
+    "Campeón",
+    5000
+   ],
+   [
+    "Kourier",
+    "Campeón",
+    5000
+   ],
+   [
+    "Liam",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "dominic",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "1200",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Cajita",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Chale",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    2625
+   ],
+   [
+    "fosa",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Campoi",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Enkidu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Finn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Jank",
+    "Cuartos",
+    1250
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Motera",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "ver": {
+   "min": 34,
+   "org": "juega",
+   "v": 1
+  }
+ },
+ "711": {
+  "dia": "2026-11-19",
+  "escala": "8-15",
+  "fecha": "19/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1573015399572705374"
+  ],
+  "n": 711,
+  "nombre": "DEBUT",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "JEIXDER",
+       "TEO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "SHADOW 🇨🇴",
+       "MATITO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "k-oz",
+       "player🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Fin",
+       "dark"
+      ],
+      "Fin",
+      ""
+     ],
+     [
+      [
+       "1200",
+       "teito: arrow_right:"
+      ],
+      "1200",
+      "Walk-in 1: 1200 🇸🇻🇭🇳🇨🇱🇨🇷🇵🇪; Walk-in 1: teito: arrow_right:"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "1200",
+       "Fin",
+       "Teito"
+      ],
+      "1200",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "Fin",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "1200",
+    "Campeón",
+    3750
+   ],
+   [
+    "dark",
+    "Semifinal",
+    3500
+   ],
+   [
+    "teito: arrow_right:",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "ver": {
+   "min": 143,
+   "v": 1
+  }
+ },
+ "712": {
+  "dia": "2026-11-25",
+  "escala": "8-15",
+  "fecha": "25/11",
+  "links": [
+   "https://discord.com/channels/1558593868587339868/1558623675224293536/1575337444847652926"
+  ],
+  "n": 712,
+  "nombre": "𓆩 𓆪 WORLD OF FREE TOURNAMENT 𓆩 𓆪 9:28 PM",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Mathhias"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Player",
+       "Hades"
+      ],
+      "Player",
+      ""
+     ],
+     [
+      [
+       "Cajita",
+       "Skalaboy 🇲🇽"
+      ],
+      "Cajita",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Shadow"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Masino",
+       "CrisZJ"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Cajita"
+      ],
+      "mats",
+      ""
+     ],
+     [
+      [
+       "Tmax Turbo [PN]",
+       "Gus"
+      ],
+      "Tmax Turbo [PN]",
+      ""
+     ],
+     [
+      [
+       "Mayeuti",
+       "player🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Masino",
+       "MaYeuTyK"
+      ],
+      "Masino",
+      "Walk-in 2: martinez"
+     ],
+     [
+      [
+       "mats",
+       "Tmax Turbo [PN]"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "Masino"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "WOF",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    7500
+   ],
+   [
+    "Masino",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Tmax Turbo [PN]",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Cajita",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    875
+   ],
+   [
+    "Hades",
+    "Octavos",
+    625
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    625
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    625
+   ],
+   [
+    "Skalaboy 🇲🇽",
+    "Octavos",
+    625
+   ]
+  ],
+  "ver": {
+   "min": 1,
    "v": 1
   }
  }

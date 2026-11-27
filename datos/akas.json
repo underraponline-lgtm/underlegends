@@ -385,6 +385,7 @@
   "guaicurus": "Neo",
   "caquinna": "CrisZJ",
   "fusok": "Panchok",
+  "tmaxturbo": "Tmax Turbo [PN]",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -2007,6 +2008,10 @@
   [
    "Fusok",
    "Panchok"
+  ],
+  [
+   "Tmax turbo",
+   "Tmax Turbo [PN]"
   ],
   [
    "Zetryco",

@@ -39,7 +39,7 @@
        "AbrahamH"
       ],
       [
-       18,
+       19,
        "Dios"
       ]
      ]
@@ -56,7 +56,7 @@
        "Kourier"
       ],
       [
-       19,
+       18,
        "Xubaru"
       ],
       [
@@ -255,6 +255,27 @@
       [
        14,
        "Xervoe"
+      ]
+     ]
+    ],
+    [
+     "mats",
+     93,
+     8,
+     4,
+     1,
+     [
+      [
+       17,
+       "Masino"
+      ],
+      [
+       16,
+       "Tmax Turbo [PN]"
+      ],
+      [
+       14,
+       "Cajita"
       ]
      ]
     ],
@@ -601,7 +622,7 @@
     ],
     [
      "AbrahamH",
-     30,
+     31,
      7,
      5,
      1,
@@ -789,27 +810,6 @@
      ]
     ],
     [
-     "mats",
-     18,
-     4,
-     5,
-     0,
-     [
-      [
-       -21,
-       "Lilñaño"
-      ],
-      [
-       20,
-       "MaYeuTyK"
-      ],
-      [
-       11,
-       "TøKīØ🦠🧠"
-      ]
-     ]
-    ],
-    [
      "yinn",
      18,
      4,
@@ -890,6 +890,27 @@
      ]
     ],
     [
+     "Masino",
+     15,
+     5,
+     5,
+     0,
+     [
+      [
+       -18,
+       "Sosa"
+      ],
+      [
+       18,
+       "Makmah"
+      ],
+      [
+       15,
+       "SNK🇻🇪"
+      ]
+     ]
+    ],
+    [
      "Kourier",
      15,
      3,
@@ -901,7 +922,7 @@
        "Revo"
       ],
       [
-       19,
+       18,
        "Thaniel"
       ],
       [
@@ -928,27 +949,6 @@
       [
        16,
        "Mr.Kude"
-      ]
-     ]
-    ],
-    [
-     "Masino",
-     15,
-     3,
-     5,
-     0,
-     [
-      [
-       -18,
-       "Sosa"
-      ],
-      [
-       18,
-       "Makmah"
-      ],
-      [
-       15,
-       "SNK🇻🇪"
       ]
      ]
     ],
@@ -991,6 +991,23 @@
       [
        8,
        "CrisZJ"
+      ]
+     ]
+    ],
+    [
+     "Player",
+     14,
+     2,
+     5,
+     0,
+     [
+      [
+       14,
+       "Hades"
+      ],
+      [
+       -9,
+       "Colesito"
       ]
      ]
     ],
@@ -1187,7 +1204,7 @@
      0,
      [
       [
-       -9,
+       -8,
        "Xubaru"
       ],
       [
@@ -1239,6 +1256,27 @@
       [
        -10,
        "Deko"
+      ]
+     ]
+    ],
+    [
+     "CrisZJ",
+     0,
+     6,
+     5,
+     0,
+     [
+      [
+       -8,
+       "Xclusivo"
+      ],
+      [
+       -15,
+       "Masino"
+      ],
+      [
+       14,
+       "Mathhias"
       ]
      ]
     ],
@@ -1296,12 +1334,33 @@
        "Soulb"
       ],
       [
-       -18,
+       -19,
        "Dios"
       ],
       [
-       -18,
+       -19,
        "AbrahamH"
+      ]
+     ]
+    ],
+    [
+     "Mathhias",
+     0,
+     5,
+     5,
+     0,
+     [
+      [
+       -14,
+       "CrisZJ"
+      ],
+      [
+       -14,
+       "Monet"
+      ],
+      [
+       13,
+       "Dantemx"
       ]
      ]
     ],
@@ -1313,7 +1372,7 @@
      0,
      [
       [
-       -19,
+       -18,
        "Revo"
       ],
       [
@@ -1348,27 +1407,6 @@
      ]
     ],
     [
-     "CrisZJ",
-     0,
-     4,
-     5,
-     0,
-     [
-      [
-       -8,
-       "Xclusivo"
-      ],
-      [
-       -15,
-       "NXUZ"
-      ],
-      [
-       14,
-       "Mathhias"
-      ]
-     ]
-    ],
-    [
      "DarnBless",
      0,
      4,
@@ -1390,23 +1428,23 @@
      ]
     ],
     [
-     "Mathhias",
+     "Gus",
      0,
      4,
      5,
      0,
      [
       [
-       -14,
-       "Monet"
+       -15,
+       "Tmax Turbo [PN]"
       ],
       [
-       13,
-       "Dantemx"
+       -8,
+       "Kaled"
       ],
       [
-       -14,
-       "CrisZJ"
+       -9,
+       "EIDP"
       ]
      ]
     ],
@@ -1447,7 +1485,7 @@
        "EmiZor"
       ],
       [
-       -19,
+       -18,
        "Kourier"
       ]
      ]
@@ -1533,27 +1571,6 @@
      ]
     ],
     [
-     "Gus",
-     0,
-     3,
-     5,
-     0,
-     [
-      [
-       -8,
-       "Kaled"
-      ],
-      [
-       -9,
-       "EIDP"
-      ],
-      [
-       -9,
-       "Mito"
-      ]
-     ]
-    ],
-    [
      "Kaled",
      0,
      3,
@@ -1596,6 +1613,27 @@
      ]
     ],
     [
+     "Shadow",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -13,
+       "mats"
+      ],
+      [
+       -13,
+       "Soulb"
+      ],
+      [
+       -15,
+       "Adriagner"
+      ]
+     ]
+    ],
+    [
      "Status",
      0,
      3,
@@ -1613,6 +1651,27 @@
       [
        9,
        "BLITZ"
+      ]
+     ]
+    ],
+    [
+     "Tmax Turbo [PN]",
+     0,
+     3,
+     5,
+     0,
+     [
+      [
+       -16,
+       "mats"
+      ],
+      [
+       15,
+       "Gus"
+      ],
+      [
+       -11,
+       "Mito"
       ]
      ]
     ],
@@ -1649,7 +1708,7 @@
        "NXUZ"
       ],
       [
-       -8,
+       -9,
        "Fecha"
       ],
       [
@@ -1666,7 +1725,7 @@
      0,
      [
       [
-       -8,
+       -9,
        "AbrahamH"
       ],
       [
@@ -1731,6 +1790,23 @@
       [
        -9,
        "BNA"
+      ]
+     ]
+    ],
+    [
+     "Cajita",
+     0,
+     2,
+     5,
+     0,
+     [
+      [
+       -14,
+       "mats"
+      ],
+      [
+       14,
+       "Skalaboy 🇲🇽"
       ]
      ]
     ],
@@ -1918,23 +1994,6 @@
      ]
     ],
     [
-     "Shadow",
-     0,
-     2,
-     5,
-     0,
-     [
-      [
-       -13,
-       "Soulb"
-      ],
-      [
-       -15,
-       "Adriagner"
-      ]
-     ]
-    ],
-    [
      "Telmex",
      0,
      2,
@@ -2015,7 +2074,7 @@
      0,
      [
       [
-       -8,
+       -9,
        "MCO"
       ]
      ]
@@ -2235,6 +2294,19 @@
      5,
      0,
      []
+    ],
+    [
+     "Hades",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -14,
+       "Player"
+      ]
+     ]
     ],
     [
      "Inhuman",
@@ -2497,19 +2569,6 @@
      ]
     ],
     [
-     "Player",
-     0,
-     1,
-     5,
-     0,
-     [
-      [
-       -9,
-       "Colesito"
-      ]
-     ]
-    ],
-    [
      "Raxo",
      0,
      1,
@@ -2596,6 +2655,19 @@
      ]
     ],
     [
+     "Skalaboy 🇲🇽",
+     0,
+     1,
+     5,
+     0,
+     [
+      [
+       -14,
+       "Cajita"
+      ]
+     ]
+    ],
+    [
      "Teito",
      0,
      1,
@@ -2618,19 +2690,6 @@
       [
        -15,
        "Dios"
-      ]
-     ]
-    ],
-    [
-     "Tmax Turbo [PN]",
-     0,
-     1,
-     5,
-     0,
-     [
-      [
-       -11,
-       "Mito"
       ]
      ]
     ],
@@ -3014,7 +3073,7 @@
  "historico": {
   ".SosaATR": 926,
   "0223 🇧🇧": 975,
-  "1200": 936,
+  "1200": 983,
   "123 🇦🇲": 989,
   "1469704413013737585 Lizzenin 🇦🇷": 999,
   "19": 1011,
@@ -3025,7 +3084,7 @@
   "ACH": 986,
   "ADEUXE🇨🇦": 977,
   "AFIN": 1022,
-  "AFINN": 975,
+  "AFINN": 949,
   "AGUSTÍN51K": 1018,
   "AL3": 1020,
   "ALFINPAPA": 996,
@@ -3039,7 +3098,8 @@
   "Aby": 988,
   "Abyssus": 1173,
   "Acry": 974,
-  "Adriagner": 1024,
+  "Adriagner": 1023,
+  "Afinnpapa": 1014,
   "Agente sombra": 951,
   "Agre": 975,
   "Agus": 1208,
@@ -3055,9 +3115,9 @@
   "Andres": 941,
   "Andresito": 1017,
   "Andy": 981,
-  "Andy MC": 948,
+  "Andy MC": 946,
   "Antis antis": 997,
-  "Apertickz 🇨🇱": 981,
+  "Apertickz": 981,
   "Apolo": 988,
   "Ariaxer": 902,
   "Aritmetrico & 1200": 976,
@@ -3069,7 +3129,7 @@
   "B.DEMON🇪🇨": 987,
   "BABI": 989,
   "BENJI 🇵🇪": 1020,
-  "BENJIXSO 🇺🇾": 976,
+  "BENJIXSO 🇺🇾": 975,
   "BLACKMEME": 1027,
   "BLANKO 🇺🇸": 1001,
   "BLITZ": 910,
@@ -3092,8 +3152,8 @@
   "Bludi🇨🇴": 986,
   "Blue": 988,
   "Bocto": 1015,
+  "Bohemico": 970,
   "Btrece": 975,
-  "CAQUIÑÑA🇵🇪": 1020,
   "CEEGE": 990,
   "CHAMAKO": 976,
   "CJ": 1136,
@@ -3102,12 +3162,11 @@
   "CROQUETA🇪🇸": 989,
   "CULT": 989,
   "Cabece": 952,
-  "Cajita": 986,
-  "Calíz": 896,
+  "Cajita": 997,
+  "Calíz": 895,
   "Camila": 1011,
   "Campoy": 1075,
   "Cannox": 1008,
-  "Cardan & Deikka": 976,
   "Carlosmo": 1140,
   "Carlosss": 1199,
   "Carpediem 🇨🇴": 976,
@@ -3124,7 +3183,7 @@
   "Colesito": 1090,
   "Corvo": 1009,
   "Cris": 977,
-  "CrisZJ": 976,
+  "CrisZJ": 995,
   "Crizcejotas": 978,
   "Crk": 889,
   "Cronox": 896,
@@ -3139,7 +3198,7 @@
   "DOMINICK DE CHOP": 982,
   "Dantemx": 936,
   "DarkoMC": 977,
-  "DarnBless": 900,
+  "DarnBless": 905,
   "Daulinov": 988,
   "David": 987,
   "David CM": 976,
@@ -3156,7 +3215,6 @@
   "Dm🇵🇪": 974,
   "Dobell": 989,
   "Doble J": 1014,
-  "Dominic 🇲🇽": 1001,
   "Dominick": 858,
   "Dorado": 991,
   "Drakm": 989,
@@ -3194,7 +3252,7 @@
   "Ezias🥈✒️🧢🐍": 968,
   "Ezze": 1061,
   "F1THER": 991,
-  "FABIUKI 🇪🇸": 976,
+  "FABIUKI 🇪🇸": 992,
   "FABRI 🇵🇪": 974,
   "FAT PENIS": 992,
   "FOTOSÍNTESIS": 947,
@@ -3205,7 +3263,7 @@
   "Fear": 985,
   "Fecha": 965,
   "Filozico": 954,
-  "Fin": 944,
+  "Fin": 960,
   "Fisics": 971,
   "Fix 17": 982,
   "Flama": 968,
@@ -3217,7 +3275,7 @@
   "Forza": 1034,
   "Foto": 970,
   "Fritz": 976,
-  "Fusok🇨🇱": 1049,
+  "G Master": 976,
   "G meiker": 989,
   "GATO🇨🇱": 988,
   "GHV": 987,
@@ -3238,18 +3296,18 @@
   "Goohan MVP": 976,
   "Gosu Z": 977,
   "Guess": 1078,
-  "Gus": 969,
+  "Gus": 954,
   "Gustabine": 975,
   "Gustavo Urrutia Perez 🇲🇽": 991,
   "Gutan 🇲🇽": 975,
   "Gutty": 988,
   "Guty": 998,
   "Gwynyth": 994,
-  "HH": 1030,
+  "HH": 1033,
   "HOTU": 1057,
   "Habraham 🇭🇳": 998,
-  "Hades": 960,
-  "Hardcore": 960,
+  "Hades": 937,
+  "Hardcore": 958,
   "Hassan": 1197,
   "HatshepsuT": 985,
   "Heat": 976,
@@ -3310,7 +3368,7 @@
   "KRS": 976,
   "Kain": 975,
   "KairoX": 976,
-  "Kaizz": 1003,
+  "Kaizz": 1002,
   "Kaled": 999,
   "Karma": 990,
   "Karumailafmasha🇹🇼": 976,
@@ -3324,12 +3382,12 @@
   "Koffi": 994,
   "Konan": 1029,
   "Korey": 944,
-  "Kourier": 1038,
+  "Kourier": 1032,
   "Kravitz": 958,
-  "Krish": 820,
+  "Krish": 819,
   "Krtman": 1005,
   "Kuni": 980,
-  "Kusoh": 984,
+  "Kusoh": 977,
   "Kyron": 980,
   "Kyss": 1037,
   "LARRIX🇦🇷": 998,
@@ -3369,6 +3427,7 @@
   "Lukas": 992,
   "Luzzano": 1001,
   "Lvel": 818,
+  "Lvl": 971,
   "MAGMAHK": 989,
   "MALBORO": 1017,
   "MAT MC": 963,
@@ -3398,8 +3457,8 @@
   "Mark98": 1071,
   "Marley🇦🇷": 1033,
   "Marto AR": 1000,
-  "Masino": 1076,
-  "Mathhias": 967,
+  "Masino": 1077,
+  "Mathhias": 957,
   "Matias": 990,
   "Mato 🇵🇪": 926,
   "MauzzitoEmeces": 998,
@@ -3419,7 +3478,7 @@
   "Molt": 921,
   "Molusco": 1075,
   "Monamay": 977,
-  "Monet": 1028,
+  "Monet": 1027,
   "Mosquitrap 🦟": 1141,
   "Motera": 1192,
   "Mr Still Billin 🇧🇻": 987,
@@ -3433,7 +3492,7 @@
   "NEXOR": 1028,
   "NITO NANEL 🇵🇪": 961,
   "NOON🇵🇪": 981,
-  "NXUZ": 1033,
+  "NXUZ": 1034,
   "NYCO": 1012,
   "Nain sdp": 992,
   "Nairda": 976,
@@ -3476,16 +3535,16 @@
   "PRV": 995,
   "PUNISHER": 971,
   "Paja lenta🇬🇩": 973,
-  "Panchok": 1283,
-  "Panchok & R-flow": 1024,
+  "Panchock": 1027,
+  "Panchok": 1300,
   "Paria": 1003,
   "Partim": 946,
   "Perrin": 976,
-  "Perro": 992,
+  "Perro": 995,
   "PichulaMc": 1151,
   "Pipe": 942,
   "Pipelindo🇨🇴": 1025,
-  "Player": 972,
+  "Player": 984,
   "Polosport": 1029,
   "Pomberito": 1064,
   "Poxe 🇵🇪": 961,
@@ -3495,7 +3554,7 @@
   "Provenza": 1026,
   "Puppy": 1066,
   "QUEEN": 993,
-  "R-Flow 🇪🇸": 1014,
+  "R-Flow": 1014,
   "RAGE BAIT": 988,
   "REPECHAJE": 987,
   "REPTILE JR": 981,
@@ -3514,7 +3573,7 @@
   "Refran": 984,
   "Respawm🇭🇳": 1014,
   "Respiracion & Afinn": 976,
-  "Revo": 1085,
+  "Revo": 1084,
   "ReyexXMC": 1005,
   "Richard": 933,
   "Riolu": 1000,
@@ -3552,9 +3611,9 @@
   "Scot": 872,
   "Scritura": 938,
   "Senticide": 1057,
-  "Sentpa": 976,
+  "Sentpa": 975,
   "Sexo": 1000,
-  "Shadow": 819,
+  "Shadow": 816,
   "Shitka": 975,
   "Showsero🇬🇵": 995,
   "SikoV": 978,
@@ -3562,6 +3621,7 @@
   "Sin Limites": 893,
   "Six": 1149,
   "Skala": 976,
+  "Skalaboy 🇲🇽": 975,
   "Skiller": 946,
   "Skratch": 997,
   "Slasher": 993,
@@ -3584,7 +3644,7 @@
   "TONY  🇦🇷": 1028,
   "TYPHLOSION": 1000,
   "Tam": 1112,
-  "Teito": 811,
+  "Teito": 809,
   "Telmex": 973,
   "Tenor": 1072,
   "Teo": 997,
@@ -3595,7 +3655,8 @@
   "Tiagoms": 991,
   "Tier": 998,
   "Tizi": 974,
-  "Tmax Turbo [PN]": 896,
+  "Tmax Turbo [PN]": 907,
+  "Tmax turbo": 1015,
   "Toretto Mexicano": 988,
   "Trelok": 1054,
   "Trot": 1014,
@@ -3605,7 +3666,7 @@
   "UDDIZIM": 988,
   "URKO": 1074,
   "Un Pibe": 976,
-  "Under": 981,
+  "Under": 979,
   "V-zir": 1005,
   "VECA 🇧🇱": 1013,
   "VIOLAGINAS": 983,
@@ -3630,7 +3691,7 @@
   "Warap": 985,
   "Wil": 954,
   "XMILE": 988,
-  "Xclusivo": 1048,
+  "Xclusivo": 1049,
   "Xervoe": 1022,
   "Xowee": 980,
   "Xplicit": 982,
@@ -3668,7 +3729,9 @@
   "cardozo": 990,
   "compare": 946,
   "crakero": 928,
+  "dark": 972,
   "doble h": 975,
+  "dominic": 1001,
   "dxg": 909,
   "dyzzcord🇨🇱": 995,
   "el familiar": 987,
@@ -3690,9 +3753,10 @@
   "letrao": 1052,
   "luisito 🏆": 959,
   "maRIHUANATICO": 990,
-  "mats": 1156,
+  "mats": 1180,
   "melomaniaco": 914,
   "melztube": 987,
+  "mesaleelsemenrosa": 976,
   "nebu": 1023,
   "nemmii_as": 990,
   "nueve7": 1001,
@@ -3806,7 +3870,7 @@
   "Player": 0,
   "Provenza": 0,
   "Raizer": 0,
-  "Revo": 4,
+  "Revo": 3,
   "SAIDEM": 0,
   "SULTAN": 0,
   "Saiko": 0,
@@ -4085,6 +4149,15 @@
    0,
    0
   ],
+  "Cajita": [
+   0,
+   0,
+   2200,
+   0,
+   0,
+   0,
+   0
+  ],
   "Chop": [
    0,
    2500,
@@ -4097,7 +4170,7 @@
   "CrisZJ": [
    10500,
    0,
-   0,
+   2200,
    1875,
    0,
    0,
@@ -4310,6 +4383,24 @@
    0,
    0
   ],
+  "Gus": [
+   0,
+   0,
+   2200,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Hades": [
+   0,
+   0,
+   688,
+   0,
+   0,
+   0,
+   0
+  ],
   "Inku": [
    30000,
    12750,
@@ -4511,7 +4602,7 @@
   "MaYeuTyK": [
    0,
    3850,
-   13800,
+   14762,
    0,
    0,
    0,
@@ -4547,7 +4638,7 @@
   "Masino": [
    0,
    0,
-   0,
+   5500,
    8662,
    0,
    0,
@@ -4556,7 +4647,7 @@
   "Mathhias": [
    6000,
    0,
-   5775,
+   6463,
    0,
    0,
    0,
@@ -4814,6 +4905,15 @@
    0,
    0
   ],
+  "Shadow": [
+   0,
+   0,
+   688,
+   0,
+   0,
+   0,
+   0
+  ],
   "Sin Limites": [
    13050,
    10500,
@@ -4827,6 +4927,15 @@
    0,
    3750,
    0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Skalaboy 🇲🇽": [
+   0,
+   0,
+   688,
    0,
    0,
    0,
@@ -4881,6 +4990,15 @@
    0,
    6000,
    0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "Tmax Turbo [PN]": [
+   0,
+   0,
+   3850,
    0,
    0,
    0,
@@ -5006,7 +5124,7 @@
   "mats": [
    0,
    0,
-   15000,
+   23250,
    0,
    0,
    0,
@@ -5080,8 +5198,9 @@
   "BLITZ": 7500,
   "Bloody": 2625,
   "CJ": 3333,
+  "Cajita": 2200,
   "Chop": 8500,
-  "CrisZJ": 12375,
+  "CrisZJ": 17075,
   "Cronox": 15750,
   "DEATH ROW": 22500,
   "DELIRANTE": 3750,
@@ -5105,6 +5224,8 @@
   "Geoka": 20649,
   "Gian": 2499,
   "Gocho": 22500,
+  "Gus": 2200,
+  "Hades": 688,
   "Inku": 42750,
   "Itohimo": 12375,
   "JOSHU": 22500,
@@ -5127,12 +5248,12 @@
   "MCO": 12825,
   "METRO": 3750,
   "MTZ": 8250,
-  "MaYeuTyK": 19150,
+  "MaYeuTyK": 20112,
   "Majiztral": 6000,
   "Makmah": 19500,
   "Marto AR": 11250,
-  "Masino": 8662,
-  "Mathhias": 11775,
+  "Masino": 14162,
+  "Mathhias": 13962,
   "Miniboy": 17625,
   "Mito": 33325,
   "Molt": 3300,
@@ -5161,14 +5282,17 @@
   "Salmón": 5775,
   "Sankabel": 3750,
   "Senticide": 12375,
+  "Shadow": 688,
   "Sin Limites": 25050,
   "Skala": 3750,
+  "Skalaboy 🇲🇽": 688,
   "Snow": 33750,
   "Sosa": 11250,
   "Soulb": 26725,
   "Tam": 3750,
   "Teito": 1875,
   "Thaniel": 6000,
+  "Tmax Turbo [PN]": 3850,
   "Tuca": 7500,
   "TøKīØ🦠🧠": 13500,
   "Vandu": 7500,
@@ -5182,7 +5306,7 @@
   "crakero": 7500,
   "dxg": 3300,
   "ikonoxx": 3750,
-  "mats": 15000,
+  "mats": 23250,
   "replisan": 6000,
   "romeo": 7500,
   "tato": 5625,
