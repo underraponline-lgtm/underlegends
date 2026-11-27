@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T18:55:44+00:00",
+ "cuando": "2026-11-27T19:26:11+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8781,6 +8781,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1575950932741460019",
+   "cuando": "2026-11-27T19:06:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1575949235797495922",
+   "cuando": "2026-11-27T18:59:37"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1575948844557009001",
+   "cuando": "2026-11-27T18:58:04"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1575948638553641011",
+   "cuando": "2026-11-27T18:57:15"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leyenda.X5 🇦🇷",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1575948543875874947",
+   "cuando": "2026-11-27T18:56:52"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44735,51 +44780,6 @@
    "discord_id": "578697503130779649",
    "msg_id": "1563358688121716767",
    "cuando": "2026-10-24T01:09:17"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "VR🇨🇴",
-   "quien": "1mrvargas",
-   "discord_id": "1456416455405863038",
-   "msg_id": "1563358651811373127",
-   "cuando": "2026-10-24T01:09:08"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Messi🇷🇼",
-   "quien": "carlosss.mc23",
-   "discord_id": "958103803616444528",
-   "msg_id": "1563358616130551820",
-   "cuando": "2026-10-24T01:08:59"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Isax 🇬🇪",
-   "quien": "isac_16__45369",
-   "discord_id": "1409587624364081272",
-   "msg_id": "1563358611999301838",
-   "cuando": "2026-10-24T01:08:58"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "SHADOW 🇨🇴",
-   "quien": "tenacious_dragon_23394",
-   "discord_id": "1548906948307451906",
-   "msg_id": "1563358602339549268",
-   "cuando": "2026-10-24T01:08:56"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Martynez 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1563358595981250728",
-   "cuando": "2026-10-24T01:08:55"
   }
  ]
 }

@@ -259,6 +259,35 @@
     "ev": 0
    },
    "fund": "xervoe"
+  },
+  {
+   "id": "Rap tico",
+   "nombre": "Rap tico",
+   "sigla": "CRP",
+   "entrada": "abierta",
+   "oficial": false,
+   "creada": 1795806751427,
+   "reps": [],
+   "gente": [
+    [
+     "kravitz",
+     "lider",
+     1795806751427
+    ],
+    [
+     "okam",
+     "miembro",
+     1795807152023
+    ]
+   ],
+   "vence": 0,
+   "logo": "esc:circulo.calavera.2f6fdb.e5484d.franja.fino.f6f6f6",
+   "desc": "Exacto ERRE A PEE",
+   "req": {
+    "rg": "",
+    "ev": 0
+   },
+   "fund": "kravitz"
   }
  ]
 }

@@ -80,16 +80,24 @@
 "como":"fila nueva",
 "por":"se anotó así 1 vez/veces + su apodo o nombre visible",
 "pais":""
+},
+"1478891777896218625":{
+"n":"Luay",
+"cuando":"27/11/2026 02:26 PM ET",
+"como":"fila nueva",
+"por":"se anotó así 2 vez/veces + su apodo o nombre visible",
+"pais":""
 }
 },
-"ultima":"2026-11-27T11:25-05:00",
+"ultima":"2026-11-27T14:26-05:00",
 "ultimo_conteo":{
-"nada":142,
-"no":37,
-"empate":19,
-"probable":28,
+"nada":166,
+"no":40,
+"empate":20,
+"probable":33,
 "disfraz":55,
-"sin_id":281,
-"auto":0
+"seguro":1,
+"sin_id":315,
+"auto":1
 }
 }

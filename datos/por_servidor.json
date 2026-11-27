@@ -12117,17 +12117,6 @@
     }
    }
   },
-  "Mr Still Billin 🇧🇻": {
-   "ACAD": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 6250,
-    "racha": "0/0"
-   }
-  },
   "Mr.Kude": {
    "ACAD": {
     "duelos": "0/1",
@@ -13222,6 +13211,15 @@
    }
   },
   "Over": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6250,
+    "racha": "0/0"
+   },
    "CH": {
     "duelos": "4/4",
     "ev": 1,
