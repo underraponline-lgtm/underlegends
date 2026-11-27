@@ -4689,7 +4689,7 @@
   "arc_pais": 0,
   "pos_sv": "42/176",
   "arc_sv": 77,
-  "pos_crew": "",
+  "pos_crew": "1/3",
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
@@ -9591,7 +9591,7 @@
   "arc_pais": 0,
   "pos_sv": "74/176",
   "arc_sv": 59,
-  "pos_crew": "",
+  "pos_crew": "2/3",
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
@@ -13351,7 +13351,7 @@
   "raw": "Lalox",
   "cc": "cr",
   "sv": "DDS",
-  "crew": "",
+  "crew": "Rap tico",
   "discord_id": "1096531415916621936",
   "verificado": false,
   "ev": 4,
@@ -13384,6 +13384,7 @@
   "arc_pais": 0,
   "pos_sv": "5/8",
   "arc_sv": 50,
+  "pos_crew": "3/3",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
