@@ -1,5 +1,5 @@
 {
- "_leeme": "Los canales de YouTube de los socios donde se buscan batallas (bot/videos.py). Salieron de recorrer los servidores y de lo que pasó Dlx el 12/10/2026. `sv`: el servidor del canal, que es el que se pide a quien aparece sin bandera en el título. TikTok y Twitch, para cuando se puedan crear tokens: Urban sólo tiene TikTok (@urban_freestyle627). Se dejaron afuera a propósito los canales grandes de afuera (Red Bull Batalla, Urban Roosters, FMS, MC'GS): tienen MCs famosos que se llaman igual que gente de la Liga. La Crew (@lacrewoficial-g4i) no tiene videos públicos todavía. 25/11/2026: sale Cypherhood (dejó de ser socio, Dlx) y entra Freestyle Zone (@freestylezonediscord, de su canal 「🌐」redes-sociales). 26/11/2026: entra Fms Ceuta (@discordfmsceuta, CEU).",
+ "_leeme": "Los canales de YouTube de los socios donde se buscan batallas (bot/videos.py). Salieron de recorrer los servidores y de lo que pasó Dlx el 12/10/2026. `sv`: el servidor del canal, que es el que se pide a quien aparece sin bandera en el título. TikTok y Twitch, para cuando se puedan crear tokens: Urban sólo tiene TikTok (@urban_freestyle627). Se dejaron afuera a propósito los canales grandes de afuera (Red Bull Batalla, Urban Roosters, FMS, MC'GS): tienen MCs famosos que se llaman igual que gente de la Liga. La Crew (@lacrewoficial-g4i) no tiene videos públicos todavía. 25/11/2026: sale Cypherhood (dejó de ser socio, Dlx) y entra Freestyle Zone (@freestylezonediscord, de su canal 「🌐」redes-sociales). 26/11/2026: entra Fms Ceuta (@discordfmsceuta, CEU). 26/11/2026: vuelve Cypherhood (volvió a poner el bot).",
  "canales": [
   {
    "sv": "DRA",
@@ -40,6 +40,11 @@
    "sv": "CEU",
    "id": "UCYRmKjUzzvq6m0MSIWoIUqA",
    "nombre": "Fms Ceuta"
+  },
+  {
+   "sv": "CH",
+   "id": "UCrq-JQj6Hpr_a20zD26EFdg",
+   "nombre": "Cypherhood"
   }
  ]
 }
