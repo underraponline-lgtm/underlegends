@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-27T07:50:56Z",
+ "cuando": "2026-11-27T17:32:21Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 280.4,
+ "dur_s": 3294.1,
  "pasos": [
   {
    "n": "2f",
@@ -27,7 +27,7 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 13.1
+   "s": 13.0
   },
   {
    "n": "4",
@@ -37,24 +37,29 @@
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 4 persona(s)",
-   "ok": true,
-   "s": 20.0
+   "que": "tanda 1 de 7 · 40 persona(s)",
+   "ok": false,
+   "s": 3067.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 145.8
+   "s": 106.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 60.3
+   "s": 65.9
   }
  ],
- "fallas": [],
+ "fallas": [
+  {
+   "paso": "5",
+   "que": "bot/subir_cartas.py /home/runner/work/underlegends/underlegends/03_Servidor/salida/sv_inku.png"
+  }
+ ],
  "ultimo_evento": {
   "n": "715",
   "nombre": "mesi",
@@ -63,31 +68,31 @@
  },
  "cuotas": {
   "kv": {
-   "write": 414,
-   "read": 15737
+   "write": 455,
+   "read": 18943
   },
   "objeto": {
-   "leidas": 1678481,
-   "escritas": 29639,
-   "pedidos": 12856
+   "leidas": 2508304,
+   "escritas": 39055,
+   "pedidos": 18298
   },
   "worker": {
-   "pedidos": 22247,
+   "pedidos": 22820,
    "errores": 0,
-   "sub": 26494,
+   "sub": 27089,
    "cortados": 0,
    "p50_ms": 1.01,
-   "p99_ms": 14.66,
+   "p99_ms": 14.28,
    "cpu": {
-    "total": 48371,
-    "objeto_10": 2237,
-    "worker_10": 627
+    "total": 49546,
+    "objeto_10": 2291,
+    "worker_10": 590
    }
   },
   "r2": {
-   "objetos": 15149,
-   "gb": 1.48,
-   "ts": 1795725229
+   "objetos": 15410,
+   "gb": 1.602,
+   "ts": 1795800754
   }
  }
 }
