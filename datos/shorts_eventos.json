@@ -120,7 +120,8 @@
    "run": 45961511062,
    "res": "mal",
    "listos": 0,
-   "falla": "salió mal dos veces: 0 shorts"
+   "falla": "salió mal dos veces: 0 shorts",
+   "avisado": true
   },
   "1575763760226770984": {
    "t": "2026-11-27T06:42",
@@ -128,7 +129,8 @@
    "run": 45969127592,
    "res": "mal",
    "listos": 0,
-   "falla": "salió mal dos veces: 0 shorts"
+   "falla": "salió mal dos veces: 0 shorts",
+   "avisado": true
   },
   "1575770973167419464": {
    "t": "2026-11-27T07:11",
@@ -136,7 +138,8 @@
    "run": 45977376784,
    "res": "mal",
    "listos": 0,
-   "falla": "salió mal dos veces: 0 shorts"
+   "falla": "salió mal dos veces: 0 shorts",
+   "avisado": true
   }
  }
 }
