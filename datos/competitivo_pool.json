@@ -18134,7 +18134,7 @@
   "arc_pais": 38,
   "pos_sv": "109/176",
   "arc_sv": 39,
-  "pos_crew": "1/3",
+  "pos_crew": "1/4",
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
@@ -20060,7 +20060,7 @@
   "arc_pais": 31,
   "pos_sv": "",
   "arc_sv": 0,
-  "pos_crew": "2/3",
+  "pos_crew": "2/4",
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
@@ -22259,7 +22259,7 @@
   "raw": "SONIC_DORADITO",
   "cc": "co",
   "sv": "FFA",
-  "crew": "",
+  "crew": "METRICOS",
   "discord_id": "1517018194408243372",
   "verificado": false,
   "ev": 1,
@@ -22292,6 +22292,7 @@
   "arc_pais": 29,
   "pos_sv": "129/176",
   "arc_sv": 27,
+  "pos_crew": "3/4",
   "tg_c": {
    "clasico": 1,
    "riv": 2
@@ -39835,7 +39836,7 @@
   "arc_pais": 20,
   "pos_sv": "176/176",
   "arc_sv": 1,
-  "pos_crew": "3/3",
+  "pos_crew": "4/4",
   "nac": {
    "evn": 0,
    "evi": 1,

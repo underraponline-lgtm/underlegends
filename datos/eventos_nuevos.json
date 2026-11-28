@@ -1,0 +1,5 @@
+{
+ "_leeme": "🐣 Los eventos de nuevos: lo que marcó Dlx en el Dashboard (`marcados`, por número o por `a:<id del anuncio>`, 1 = es, 0 = no es) y lo detectado solo, resuelto a número de evento (`eventos`: número → «dlx» o «auto»). Lo escribe bot/premium_nuevos.py desde bot/subir_web.py; lo lee bot/pase.py para el Pase Premium de los que jugaron",
+ "marcados": {},
+ "eventos": {}
+}
