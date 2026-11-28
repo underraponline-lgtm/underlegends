@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-28T04:43:01+00:00",
+ "cuando": "2026-11-28T04:54:56+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5641,6 +5641,37 @@
    "categoria_id": "1558611505040064605"
   },
   {
+   "nombre": "win:💫 FREESTYLE ESTELAR💫:win",
+   "servidor": "CH",
+   "canal": "📢—anuncios",
+   "msg_id": "1576097468515622942",
+   "cuando": "2026-11-28T04:48:38",
+   "canal_id": "1081721420373041264",
+   "guild_id": "1074328197400887388",
+   "organizador": "@lrs37895",
+   "orgs": [],
+   "autor_h": "c4ceca995f8ee94d",
+   "cupos_texto": "8 CUPOS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "en 10 minutos",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "lrs37895"
+    ],
+    "host": [
+     "lrs37895"
+    ]
+   },
+   "autor": "Lrs la sustancia💫",
+   "staff_cuentas": {},
+   "categoria_id": "1080379388320817233"
+  },
+  {
    "nombre": "REY DEL INGENIO",
    "servidor": "CH",
    "canal": "📢—anuncios",
@@ -5950,30 +5981,6 @@
    "premios": "Roles de habilidad",
    "staff": {},
    "autor": "erik_",
-   "staff_cuentas": {},
-   "categoria_id": "1080379388320817233"
-  },
-  {
-   "nombre": "EL PODERIO DE LOS DIOSES",
-   "servidor": "CH",
-   "canal": "📢—anuncios",
-   "msg_id": "1543384433506258994",
-   "cuando": "2026-08-29T22:18:43",
-   "canal_id": "1081721420373041264",
-   "guild_id": "1074328197400887388",
-   "organizador": "@†𝑱𝑬𝑰𝑿𝑫𝑬𝑹",
-   "orgs": [],
-   "autor_h": "c47c3e2e9fa31d37",
-   "cupos_texto": "(16-24-32)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1 vs 1",
-   "horario": "",
-   "fecha": "29/08/26",
-   "premios": "CUPO ALA JEIX CUP CLASIFICATORIO 2026+FLYER PERSONALIZADO",
-   "staff": {},
-   "autor": "†JEIXDER",
    "staff_cuentas": {},
    "categoria_id": "1080379388320817233"
   },
@@ -8615,6 +8622,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "CNC",
+   "quien": "cnc06",
+   "discord_id": "536857764782407681",
+   "msg_id": "1576098747530870938",
+   "cuando": "2026-11-28T04:53:43"
+  },
+  {
+   "servidor": "CH",
+   "canal": "📜—inscripciones",
+   "texto": "TEGO 🇦🇷",
+   "quien": "xo0231831",
+   "discord_id": "1241918803051282456",
+   "msg_id": "1576097955860054101",
+   "cuando": "2026-11-28T04:50:35"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -44596,24 +44621,6 @@
    "discord_id": "754749179410251847",
    "msg_id": "1563651488629133333",
    "cuando": "2026-10-24T20:32:46"
-  },
-  {
-   "servidor": "DDS",
-   "canal": "╰➤-inscripciones-🏆",
-   "texto": "Noone🇵🇪",
-   "quien": "limitz2702",
-   "discord_id": "754749179410251847",
-   "msg_id": "1563651425177833584",
-   "cuando": "2026-10-24T20:32:31"
-  },
-  {
-   "servidor": "DDF",
-   "canal": "『📑』Inscripciones",
-   "texto": "Nxuz",
-   "quien": "elinzano1009",
-   "discord_id": "1089661639508377630",
-   "msg_id": "1563646958290079757",
-   "cuando": "2026-10-24T20:14:46"
   }
  ]
 }
