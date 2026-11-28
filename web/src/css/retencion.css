@@ -1,0 +1,58 @@
+/* 🎯 LA RETENCIÓN (28/11/2026, web/src/retencion.jsx): el Dashboard, el panel del socio y la página. Todo con `rt-`.
+   Sin radios de más de 4 px, sin degradés ni blur (las reglas del remake). Los colores de servidor vienen en línea, del
+   payload; verde agua es «lo tuyo» y lo que sube, magenta lo que pide atención, gris el resto */
+
+/* ── el Dashboard ── */
+.rt-dash{display:grid;gap:14px;min-width:0}
+.rt-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.rt-k{display:grid;gap:4px;align-content:start;border:2px solid var(--linea);padding:10px 12px;background:var(--fondo);min-width:0}
+.rt-k span{font:800 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
+.rt-k b{font:900 36px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.rt-k small{font:500 12.5px/1.35 Archivo,sans-serif;color:var(--gris)}
+.rt-k.rt-mal b{color:var(--magenta-tx)}
+.rt-lin{list-style:none;margin:0;padding:0;display:grid;gap:6px;font:500 14px/1.4 Archivo,sans-serif}
+.rt-lin li{padding-left:12px;border-left:3px solid var(--suave)}
+.rt-lin li.rt-baja{border-left-color:var(--magenta)}
+.rt-lin li.rt-sube{border-left-color:var(--verde)}
+.rt-lin b{font-weight:800;font-variant-numeric:tabular-nums}
+.rt-h{margin:4px 0 0;font:800 14px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.rt-t{display:grid;border-top:2px solid var(--linea);min-width:0}
+.rt-f{display:grid;grid-template-columns:minmax(54px,1.1fr) minmax(40px,.7fr) repeat(3,minmax(50px,1fr));gap:6px;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--suave);font:600 14px/1.2 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.rt-sv .rt-f{grid-template-columns:minmax(54px,1.1fr) minmax(40px,.7fr) repeat(3,minmax(50px,1fr)) minmax(40px,.7fr)}
+.rt-f>span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.rt-f>span:first-child{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;font-weight:800;white-space:nowrap}
+.rt-f>span:first-child small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:var(--gris);text-transform:uppercase}
+.rt-cab{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris);text-transform:uppercase}
+.rt-cab>span:first-child{font-weight:800}
+.rt-arr{color:var(--gris)}
+.rt-c{display:grid;gap:1px}
+.rt-c b{font:800 15px/1 Archivo,sans-serif}
+.rt-c small{font:500 11px/1.1 Archivo,sans-serif;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rt-c.rt-pocos b{font-weight:600;color:var(--gris)}
+.rt-c.rt-nada{color:var(--gris);font-weight:600}
+.rt-pto{flex:none;width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 1.5px var(--fondo)}
+.rt-nota{margin:0}
+
+/* ── el panel del socio ── */
+.rt-soc{display:grid;gap:12px;padding:0 16px 16px;min-width:0}
+.rt-vb{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.rt-vb>li{display:grid;grid-template-columns:76px minmax(0,1fr);gap:10px;align-items:start;padding-bottom:10px;border-bottom:1px solid var(--suave)}
+.rt-vb>li:last-child{border-bottom:0;padding-bottom:0}
+.rt-vb-t{font:800 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;padding-top:2px}
+.rt-vb-b{display:grid;gap:6px;min-width:0}
+.rt-vb-b p{display:grid;grid-template-columns:minmax(0,1fr) 46px;grid-template-areas:"bar num" "tx tx";gap:3px 8px;align-items:center;margin:0}
+.rt-vb-b i{grid-area:bar;display:block;height:10px;background:var(--suave);position:relative}
+.rt-vb-b u{position:absolute;left:0;top:0;bottom:0;background:var(--gris)}
+.rt-vb-b u.rt-tuya{background:var(--verde)}
+.rt-vb-b b{grid-area:num;font:900 17px/1 Archivo,sans-serif;text-align:right;font-variant-numeric:tabular-nums}
+.rt-vb-b small{grid-area:tx;font:500 12.5px/1.2 Archivo,sans-serif;color:var(--gris)}
+.rt-vb-n{margin:0;font:500 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+.rt-consejo{margin:0;display:grid;gap:4px;padding:10px 12px;border-left:4px solid var(--verde);background:var(--caja);font:500 15px/1.4 Archivo,sans-serif}
+.rt-consejo b{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+
+/* ── la página, para todos ── */
+.rt-pub{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:10px}
+.rt-pub p{margin:0;display:grid;gap:4px;padding:12px 14px;border:2px solid var(--linea);border-left:6px solid var(--verde);background:var(--fondo)}
+.rt-pub b{font:900 30px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
+.rt-pub span{font:500 14px/1.35 Archivo,sans-serif;color:var(--gris)}

@@ -25,6 +25,7 @@ import { claveDe, diaISO, limpio, msDeLocal, nombreEv, num, siglaDe, utc } from 
 import { Cara, DosToques, Ico, Sec, diaET, enlace, masDias, usePerfiles } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import CSS_PAGINA from './css/socio2.css?inline';
+import { RetencionSocio } from './retencion.jsx';
 import CAT_EST from './estilos_juego.json';
 import { usarCss } from './css.js';
 
@@ -1008,6 +1009,7 @@ function Servidor({ liga, x, svs, onSel, t, permisos }) {
                 <SinCartaSv liga={liga} xs={sinCarta} /></Sec> : null}
               {v.n != null ? <Sec id="sp-vuelven" titulo="¿Vuelve tu gente?" bajada={'De quienes jugaron su primer evento de la temporada en tu servidor' + (v.desde ? ', desde el ' + fechaCorta(v.desde) : '') + '. No cuenta a quien debutó hace menos de 14 días. Volver es otro evento, otro día, en cualquier servidor de la Liga.'}>
                 <Vuelven v={v} /></Sec> : null}
+              {p.retencion ? <Sec id="sp-ret" titulo="Tus nuevos, a 7, 30 y 90 días" bajada="De quienes debutaron en tu servidor, cuántos jugaron otro evento, otro día, en cualquier servidor de la Liga. Al lado, el promedio de los socios. Quien debutó hace menos días todavía no cuenta."><RetencionSocio r={p.retencion} /></Sec> : null}
               {(p.dias || []).length ? <Sec id="sp-cuando" titulo="Cuándo hay actividad" bajada="Cuánta gente juntan tus eventos cada día, y cuántos eventos tiene el resto de la Liga ese día: un día lleno compite por la misma gente.">
                 <Cuando p={p} /></Sec> : null}
               {(p.semanas || []).some((w) => w[2]) ? <Sec id="sp-semanas" titulo="Semana a semana" bajada="Las participaciones de cada semana de la temporada, de lunes a domingo: cada rapero cuenta una vez por evento que juega. En verde agua, los que debutaban en la Liga en tu servidor.">

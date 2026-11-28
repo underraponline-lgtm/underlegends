@@ -155,6 +155,16 @@ def main():
         print('   🔁 el embudo: %d debutaron · %d ganaron alguna · %d volvieron · si ganó %d/%d, si no %d/%d · sin duelos leídos %d'
               % (e['n'], e['gano'], e['volvio'], e['si_gano'][1], e['si_gano'][0], e['no_gano'][1], e['no_gano'][0], e['sin_duelos'][0]))
     jugo_k = x.pop('jugo_k', {})
+    # 🎯 la retención a 7, 30 y 90 días, por semana y por servidor (`bot/retencion.py`, 28/11/2026): sólo conteos, y viaja
+    # acá porque es el canal privado del Dashboard que ya existe (al objeto, no a KV)
+    try:
+        import retencion as RT
+        x['ret'] = RT.cargar()
+        t = x['ret']['tot']
+        print('   🔁 🎯 vuelven: %s a 7 días · %s a 30 · %s a 90 (de los debutantes que ya cumplieron cada ventana)'
+              % tuple('%d/%d' % (t[str(w)][1], t[str(w)][0]) for w in RT.VENTANAS))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la retención a 7, 30 y 90 días no se midió: %s' % str(e)[:80])
     # 🧪 ¿sirve avisar?: con lo que el objeto anotó (quién recibió el aviso y quién quedó sin él) y los días de cada uno
     try:
         lista = _leer_vuelve() if '--aplicar' in sys.argv else None

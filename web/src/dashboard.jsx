@@ -19,6 +19,7 @@ const urlFoto = (u) => (/^https:\/\/pub-[a-z0-9]+\.r2\.dev\/(fotos\/[a-z0-9-]+\/
   ? 'url("' + u + '")' : '');
 // 🔒 su CSS viene con este pedazo y no con el paquete de todos (ver dashboard.css)
 import ESTILO from './dashboard.css?inline';
+import { RetencionDash } from './retencion.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const entrar = () => { if (W.urlLogin) W.location.href = W.urlLogin('o'); };
@@ -4422,7 +4423,7 @@ const BUSCABLES = [
   ['Reportes de la gente (errores en las llaves)', 'pendientes', '', 'llaves'], ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'],
   ['Fondos, fotos de carta, logos y videos', 'pendientes', '', 'imagenes'], ['Pedidos de la gente', 'pendientes', '', 'pedidos'],
   ['Comparar semanas', 'numeros', 'nu-semanas'], ['La semana en personas', 'numeros', 'nu-uso'], ['El tutorial', 'numeros', 'nu-tuto'],
-  ['Qué se toca en la página', 'numeros', 'nu-clics'], ['¿El lobby hace volver a la gente?', 'numeros', 'nu-lobby'], ['Las crews (números)', 'numeros', 'nu-crews'],
+  ['Qué se toca en la página', 'numeros', 'nu-clics'], ['¿El lobby hace volver a la gente?', 'numeros', 'nu-lobby'], ['La retención (7, 30 y 90 días)', 'numeros', 'nu-retencion'], ['Las crews (números)', 'numeros', 'nu-crews'],
   ['El Pase de rapero (números)', 'numeros', 'nu-pase'], ['Correr el ciclo ahora', 'salud', 'sa-corridas'], ['Lo que gasta Cloudflare hoy', 'salud', 'sa-cuotas'],
   ['Lo que avisó Logs', 'salud', 'sa-logs'], ['Errores de la página', 'salud', 'sa-errores'], ['El mapa en vivo y los atajos', 'salud', 'sa-atajos'],
   ['Historial de cambios (deshacer)', 'historial', 'hi-hist'], ['Quién tiene un rol del Dashboard', 'roles', 'ro-quien'],
@@ -5814,7 +5815,7 @@ function HistorialDeA({ hist, hacer, ocup, liga }) {
 // 🔗 en qué pestaña vive cada sección, para que un atajo (Ctrl+K, un cuadrado del Resumen) abra la pestaña correcta: antes
 // «El tutorial» llevaba a Números y no aparecía si estabas en otra pestaña (11/11/2026). `nu-uso` ya no está en ninguna:
 // son los cinco cuadros de arriba (23/11/2026)
-const TAB_DE = { 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente', 'nu-acciones': 'acciones', 'nu-drops': 'acciones',
+const TAB_DE = { 'nu-retencion': 'gente', 'nu-vuelta': 'gente', 'nu-lobby': 'gente', 'nu-embudo': 'gente', 'nu-primerizos': 'gente', 'nu-acciones': 'acciones', 'nu-drops': 'acciones',
   'nu-semanas': 'semana', 'nu-clics': 'pagina', 'nu-tuto': 'pagina', 'nu-pase': 'pase', 'nu-puntos': 'puntos', 'nu-crews': 'crews' };
 // 💬 LOS CHATS GENERALES (17/11/2026, `bot/chats.py`): lo que importó en el chat general de cada socio —eventos falsos,
 // fraude, raids y estafas, quejas de la Liga— con el link al mensaje, y cuánto se habló en la última lectura. Lo demás
@@ -6321,6 +6322,8 @@ export function Dashboard({ dc, liga }) {
       <NumerosTabs abrir={abrir} pedido={pedido} tabs={[
         // 👥 «La gente» tenía siete secciones (11/11/2026, Dlx: «Números en pestañas»): lo de quién vuelve y lo de la semana
         ['gente', 'Quién vuelve', <>
+          {/* 🎯 a 7, 30 y 90 días, por semana y por servidor (28/11/2026, `bot/retencion.py`): llega con los primerizos */}
+          {d.primerizos && d.primerizos.ret ? sec('nu-retencion', 'LOS QUE DEBUTAN, ¿VUELVEN?', 'a 7, 30 y 90 días · el objetivo principal', <RetencionDash r={d.primerizos.ret} liga={liga} />) : null}
           {sec('nu-vuelta', 'LA VUELTA AL SEGUNDO EVENTO', 'el número del 42 %', <VueltaSegundo r={retencion} marcas={marcasPorSemana(cambios, d.ajustes_hist)} />)}
           {sec('nu-lobby', '¿VUELVE LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
           {d.primerizos ? sec('nu-embudo', 'EL EMBUDO DEL PRIMERIZO', 'dónde se queda la gente nueva', <Embudo e={d.primerizos.embudo} />) : null}

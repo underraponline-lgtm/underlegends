@@ -1156,6 +1156,14 @@ def panel(D, hoy, sv, ps=None, crews=None, otros=None):
     v = vuelven_de(vv, sv, hoy)
     if v:
         out['vuelven'] = v
+    # 🎯 a 7, 30 y 90 días, contra el promedio de los socios y con UN consejo (`bot/retencion.py`, 28/11/2026)
+    try:
+        import retencion as _RT
+        r = _RT.para_socio(D.get('_ret'), sv, otros)
+        if r:
+            out['retencion'] = r
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la retención del panel de %s: %s' % (sv, str(e)[:60]))
     out['sugerencias'] = sugerencias(out)
     return out
 
@@ -1283,7 +1291,7 @@ def datos():
 def sin_lo_nuevo(x):
     """El paquete sin lo opcional del panel, para cuando el Worker todavía tiene el tope viejo."""
     y = dict(x)
-    y['servidores'] = [dict(f, panel={k: v for k, v in (f.get('panel') or {}).items() if k not in ('vuelven', 'subir')})
+    y['servidores'] = [dict(f, panel={k: v for k, v in (f.get('panel') or {}).items() if k not in ('vuelven', 'subir', 'retencion')})
                        if f.get('panel') else f for f in x.get('servidores') or []]
     return y
 
@@ -1417,6 +1425,12 @@ def correr(aplicar=False, ahora=None):
             print('   ⚠️ los tiers: no leí los miembros (%s)' % str(e)[:60])
     D = datos()
     D['_vuelven'] = quien_vuelve(D.get('llaves') or {}, hoy)
+    # 🎯 la retención a 7, 30 y 90 días, una vez para todos los paneles (`bot/retencion.py`): sin ella, el panel va sin eso
+    try:
+        import retencion as _RT
+        D['_ret'] = _RT.cargar()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la retención no se midió (%s): los paneles van sin «a 7, 30 y 90 días»' % str(e)[:60])
     desde = desde_de(viejo.get('desde'), nivel, hoy)
     filas = medir(D, hoy, svs, nivel, gente, desde)
     # 🔥 quién juega seguido en cada uno, para el aviso de evento flojo (`frecuentes()`): sólo al objeto, con la fila

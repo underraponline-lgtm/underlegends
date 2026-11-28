@@ -962,6 +962,11 @@ def armar():
     # uno su nombre, bandera, servidor y cuántos cazó, la cazaron y sobrevivió —lo mismo que su fila de la tabla, a 20 KB
     # de distancia, donde gzip ya no lo ve repetido—. Quien está en la tabla con exactamente eso viaja `[clave, cobrado]`
     # y la página lo completa con su fila (`Liga` de web/src/liga.js); quien no, entero. 72 de 77: 0,5 KB
+    # 🎯 LOS NUEVOS QUE VUELVEN, PARA TODOS (28/11/2026, `bot/retencion.py`): sólo lo que entusiasma y sin nombres. Si son
+    # pocos o el número es malo no viaja, y la página no dibuja nada. Unos 30 bytes
+    _ret = _ret_publico()
+    if _ret:
+        _lobby['ret'] = _ret
     _filas = {f.get('k'): f for f in (_lobby.get('tabla') or []) if f.get('k')}
     _mwl = _lobby.get('mw') or {}
     if isinstance(_mwl.get('caz'), list):
@@ -1094,6 +1099,16 @@ def formato_evento(v, anuncio=''):
     if any(any(re.search(r'[,+]', str(l)) for l in (b[0] if b else [])) for b in r0):
         return 'Por equipos'
     return '1 vs 1'
+
+
+def _ret_publico():
+    """🎯 `{'sem'?, 'diez'?, 'vol'?}` de `retencion.publico()`, o `None`. Si no se puede medir, no va: la página no lo dibuja."""
+    try:
+        import retencion as _RT
+        return _RT.publico(_RT.cargar())
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los nuevos que vuelven no entraron al lobby (%s)' % str(e)[:60])
+        return None
 
 
 def _formatos(regs):

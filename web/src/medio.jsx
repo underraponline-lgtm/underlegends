@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ComentariosFlotantes } from './flotantes.jsx';
 import { pedirLigas } from './ligas_datos.js';
 import { NombreT } from './puesto.js';
+import { RetencionPublica } from './retencion.jsx';
 
 // 🗓️ HOY SUELE HABER (Dlx, 12/10/2026, «5. B»: casi todos anuncian a último momento, así que lo que no se ve con
 // tiempo se adivina por costumbre). Un servidor que jugó este mismo día de la semana dos veces o más en las últimas
@@ -1084,6 +1085,8 @@ function Numeros({ liga }) {
     <div className="num-g">
       <div>
         {grandes.length ? <div className="num-4">{grandes.map(([t, v, d]) => <div key={t}><span>{t}</span><b>{num(v)}</b><small>{d}</small></div>)}</div> : null}
+        {/* 🎯 los nuevos que vuelven (28/11/2026, `bot/retencion.py`): sólo si el ciclo lo mandó, que es cuando entusiasma */}
+        <RetencionPublica liga={liga} />
         {dias.length ? (
           <section className="act">
             <div className="mis-cab"><span>LO QUE SE JUGÓ · DOS SEMANAS</span><em>{a.ev || 0} EVENTOS ESTA SEMANA</em></div>
@@ -1138,7 +1141,7 @@ export function Panel({ liga, dc }) {
 export function LaLiga({ liga }) {
   const c = liga.d.comunidad || {};
   const a = liga.d.actividad || {};
-  const hay = c.personas || c.lista || c.con_id || c.verificados || jugoAlgo(a) || (liga.d.records || []).length;
+  const hay = c.personas || c.lista || c.con_id || c.verificados || jugoAlgo(a) || (liga.d.records || []).length || liga.d.ret;
   if (!hay) return null;
   // sin «Socios →»: esta sección vive en la página de Socios, y el link recargaba la misma página (revisión 21/11)
   return <Sec id="numeros" titulo="La Liga en números"><Numeros liga={liga} /></Sec>;
