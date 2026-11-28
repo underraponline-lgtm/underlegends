@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-28T16:43:46+00:00",
+ "cuando": "2026-11-28T16:55:38+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8448,6 +8448,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "LKR",
+   "canal": "🐉ANUNCIOS",
+   "tit": "CUARTO CLASIFICADO PAL 5 VIDAS CAMPEONES @last5724",
+   "tx": "",
+   "cuando": "2026-11-28T16:47:05",
+   "msg_id": "1576278270951948328",
+   "link": "https://discord.com/channels/1558611504046153750/1564463277348487219/1576278270951948328"
+  },
+  {
    "servidor": "SGR",
    "canal": "【📌】Anuncios",
    "tit": "_¡La batalla entre 🇵🇷 LIL GOSU & 🇵🇷 RÖDAS por el tercer y cuarto puesto ya está disponible",
@@ -8655,15 +8664,6 @@
    "link": "https://discord.com/channels/1558611504046153750/1558611505040064604/1574422739446530180"
   },
   {
-   "servidor": "LKR",
-   "canal": "fms-anuncios",
-   "tit": "VAMOS CON LA SEGUNDA LIGA ESCRIBANME AL PRIVADO LOS QUE QUIERAN ESTAR",
-   "tx": "",
-   "cuando": "2026-11-23T06:19:25",
-   "msg_id": "1574308374944682089",
-   "link": "https://discord.com/channels/1558611504046153750/1570881485055983686/1574308374944682089"
-  },
-  {
    "servidor": "DDF",
    "canal": "『📢』Anuncios",
    "tit": "4:30 COMENZAMOS CON LA PRIMERA BATALLA QUE ES @numbyng",
@@ -8719,6 +8719,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "SartMC🇵🇪",
+   "quien": "atero777",
+   "discord_id": "755491477265580083",
+   "msg_id": "1576279589276090449",
+   "cuando": "2026-11-28T16:52:19"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -44709,15 +44718,6 @@
    "discord_id": "1174409397397631030",
    "msg_id": "1563664308905320489",
    "cuando": "2026-10-24T21:23:42"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Lvel 🇻🇪",
-   "quien": "soycoma__42587",
-   "discord_id": "1241407042195816459",
-   "msg_id": "1563664296007835709",
-   "cuando": "2026-10-24T21:23:39"
   }
  ]
 }
