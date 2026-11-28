@@ -351,9 +351,9 @@
    "servidor": "0e8f51b25221:ca27345eed9e:055f77"
   },
   "DLX": {
-   "competitivo": "7f197520d6d4:baafccf84bc7",
+   "competitivo": "7f6617ad5463:baafccf84bc7",
    "pais": "b09cb6b22007:84d29bb63c59",
-   "servidor": "5abc175e3867:ca27345eed9e:132451",
+   "servidor": "7c0e0f2430f2:ca27345eed9e:132451",
    "temporada": "17e4432d6fcf:0b98cb3023ec"
   },
   "DNK": {
@@ -981,9 +981,9 @@
    "temporada": "9518c5f21d36:0b98cb3023ec"
   },
   "Krish": {
-   "competitivo": "0737155f550b:baafccf84bc7",
+   "competitivo": "3c88e7e6f876:baafccf84bc7",
    "pais": "81731ff4b1ba:84d29bb63c59",
-   "servidor": "ad19e1a766dc:ca27345eed9e:2ea58b",
+   "servidor": "c90a650363c2:ca27345eed9e:2ea58b",
    "temporada": "940ab15b9baf:0b98cb3023ec"
   },
   "Krozakeo": {
@@ -1689,9 +1689,9 @@
    "servidor": "632434493b13:ca27345eed9e:c82496"
   },
   "SONIC_DORADITO": {
-   "competitivo": "ba73f878432d:baafccf84bc7",
-   "pais": "459689caa009:84d29bb63c59",
-   "servidor": "f1ab5c90be78:ca27345eed9e:980594",
+   "competitivo": "6156a709cb10:baafccf84bc7",
+   "pais": "9aff4ce3e268:84d29bb63c59",
+   "servidor": "eeb51b193ad2:ca27345eed9e:980594",
    "temporada": "adab1c26d98b:0b98cb3023ec"
   },
   "SPD": {
@@ -1879,9 +1879,9 @@
    "servidor": "46f3d0a2d16c:ca27345eed9e:980594"
   },
   "Tmax Turbo [PN]": {
-   "competitivo": "b21d12a9d967:baafccf84bc7",
+   "competitivo": "77e83615c8b0:baafccf84bc7",
    "pais": "d96579e13585:84d29bb63c59",
-   "servidor": "eb4300a18e3a:ca27345eed9e:6203c7",
+   "servidor": "605cc67216ab:ca27345eed9e:6203c7",
    "temporada": "1120abbd1b0b:0b98cb3023ec"
   },
   "Tole Lirica": {
@@ -2253,5 +2253,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-28T19:51:27+00:00"
+ "cuando": "2026-11-28T20:12:37+00:00"
 }
