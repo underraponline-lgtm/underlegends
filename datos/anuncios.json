@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-27T23:55:34+00:00",
+ "cuando": "2026-11-28T00:24:54+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -8398,6 +8398,15 @@
  ],
  "oficiales": [
   {
+   "servidor": "SGR",
+   "canal": "【📌】Anuncios",
+   "tit": "_¡La batalla entre 🇵🇷 LIL GOSU & 🇵🇷 RÖDAS por el tercer y cuarto puesto ya está disponible",
+   "tx": "",
+   "cuando": "2026-11-28T00:05:24",
+   "msg_id": "1576026187770241207",
+   "link": "https://discord.com/channels/1343820906358771798/1344845104052965406/1576026187770241207"
+  },
+  {
    "servidor": "DDS",
    "canal": "🚨〕ANUNCIOS",
    "tit": "🎉🔥 ¡HOY ESTAMOS DE ANIVERSARIO! 🔥🎉",
@@ -8576,15 +8585,6 @@
    "cuando": "2026-11-24T14:01:48",
    "msg_id": "1574787122911780945",
    "link": "https://discord.com/channels/1558593868587339868/1566961462872899694/1574787122911780945"
-  },
-  {
-   "servidor": "SGR",
-   "canal": "【📌】Anuncios",
-   "tit": "_Ya se subieron los Octavos de Final de la última compe !!! Vayan a darles apoyo a esas ba",
-   "tx": "",
-   "cuando": "2026-11-24T00:27:39",
-   "msg_id": "1574582236546732104",
-   "link": "https://discord.com/channels/1343820906358771798/1344845104052965406/1574582236546732104"
   },
   {
    "servidor": "FRZ",
