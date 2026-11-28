@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-28T03:25:01+00:00",
+ "cuando": "2026-11-28T03:55:22+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -347,35 +347,6 @@
    "autor": "MMC.",
    "staff_cuentas": {},
    "categoria_id": "1511754900026032139"
-  },
-  {
-   "nombre": "qcyo rapeen 19",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1576073643279122545",
-   "cuando": "2026-11-28T03:13:58",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "orgs": [
-    {
-     "n": "nachonc_",
-     "id": ""
-    }
-   ],
-   "autor_h": "46b9d2f4c4b6ec95",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "bronce",
-   "modalidad": "MULTIVERSE",
-   "horario": "en 30",
-   "fecha": "",
-   "premios": "aura",
-   "staff": {},
-   "autor": "nc",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DISCORD TIENE LETRA BORN AGAIN",
@@ -1028,6 +999,35 @@
    "rango": "bronce",
    "modalidad": "multiverse",
    "horario": "en 30",
+   "fecha": "",
+   "premios": "aura",
+   "staff": {},
+   "autor": "Nc",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "qcyo rapeen 13",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1570282524330950809",
+   "cuando": "2026-11-12T03:42:08",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "pandilla",
+   "horario": "en 15",
    "fecha": "",
    "premios": "aura",
    "staff": {},
