@@ -1488,7 +1488,7 @@
   },
   "PUBLIC ENEMY": {},
   "Panchok": {
-   "competitivo": "f0843579f153:baafccf84bc7",
+   "competitivo": "dfab461a3737:baafccf84bc7",
    "pais": "3c194079d386:84d29bb63c59",
    "servidor": "a6fbd9bd0f89:ca27345eed9e:9397f6",
    "temporada": "3f8bf9807838:0b98cb3023ec"
@@ -1687,7 +1687,8 @@
   "SONIC_DORADITO": {
    "competitivo": "ba73f878432d:baafccf84bc7",
    "pais": "459689caa009:84d29bb63c59",
-   "servidor": "f1ab5c90be78:ca27345eed9e:980594"
+   "servidor": "f1ab5c90be78:ca27345eed9e:980594",
+   "temporada": "adab1c26d98b:0b98cb3023ec"
   },
   "SPD": {
    "servidor": "6813826a3f56:ca27345eed9e:055f77"
@@ -2244,5 +2245,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-28T16:42:55+00:00"
+ "cuando": "2026-11-28T16:52:43+00:00"
 }
