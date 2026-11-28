@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-28T01:54:55+00:00",
+ "cuando": "2026-11-28T02:25:33+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -7790,7 +7790,7 @@
    "fecha": "hoy",
    "premios": "",
    "staff": {},
-   "autor": "xervœ",
+   "autor": "cuervo",
    "staff_cuentas": {},
    "categoria_id": "1540168156914655325"
   },
@@ -7910,7 +7910,7 @@
    "fecha": "Hoy",
    "premios": "",
    "staff": {},
-   "autor": "xervœ",
+   "autor": "cuervo",
    "staff_cuentas": {},
    "categoria_id": "1540168156914655325"
   },
@@ -8174,7 +8174,7 @@
    "fecha": "Hoy",
    "premios": "",
    "staff": {},
-   "autor": "xervœ",
+   "autor": "cuervo",
    "staff_cuentas": {},
    "categoria_id": "1540168156914655325"
   },
@@ -8270,7 +8270,7 @@
    "fecha": "Hoy",
    "premios": "",
    "staff": {},
-   "autor": "xervœ",
+   "autor": "cuervo",
    "staff_cuentas": {},
    "categoria_id": "1540168156914655325"
   },
@@ -8653,6 +8653,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDS",
+   "canal": "📜〕INSCRIPCIONES",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1576055939176472689",
+   "cuando": "2026-11-28T02:03:37"
+  },
   {
    "servidor": "DDS",
    "canal": "📜〕INSCRIPCIONES",
@@ -44643,15 +44652,6 @@
    "discord_id": "1467969065199997000",
    "msg_id": "1563392972366684201",
    "cuando": "2026-10-24T03:25:31"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Revo🇻🇪 xubaru🇻🇪",
-   "quien": "mcarepita",
-   "discord_id": "1528203989152174110",
-   "msg_id": "1563391471061700720",
-   "cuando": "2026-10-24T03:19:33"
   }
  ]
 }
