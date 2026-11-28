@@ -37,6 +37,7 @@ CHAT = (V | S | R | HIST | H_, 0, None)                 # se habla
 CHAT_LENTO = (V | S | R | HIST | H_, 0, 30)             # se habla, de a poco
 PANEL = (V | R | HIST, S | CREAR_HILOS, None)            # se lee y se reacciona; escribe el bot
 FORO_COMENTAR = (V | R | HIST | T, 0, None)             # foro: se comenta adentro de cada publicación
+SOLO_PASE = (0, V | S, None)                             # @everyone no lo ve (los roles del Pase, aparte)
 
 CANALES = {
     # 💬 los chats: de todos
@@ -45,7 +46,9 @@ CANALES = {
     'buscarbatalla': CHAT_LENTO,
     'contenidorap': CHAT_LENTO,
     # 📋 los paneles: sólo lectura (el bot publica)
-    'eventosgrabados': PANEL,           # hasta que Dlx diga el rol Premium: nadie escribe
+    # 🔴 los eventos completos, sólo para el Pase (Dlx, 28/11: «se llama PASE T, ese es el rol del pase rapero»):
+    # @everyone no lo ve; «Pase T» y «Pase Premium» (bot/pase.py ROLES_PREMIUM) lo ven y comentan, sin abrir publicaciones
+    'eventosgrabados': SOLO_PASE,
     # 🧠 entrenamientos y dinámicas: también para los nuevos (Dlx, 28/11), y se comenta en cada una
     'entrenamientos': FORO_COMENTAR,
     'dinamicasretos': FORO_COMENTAR,
