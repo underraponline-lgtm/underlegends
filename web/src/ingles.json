@@ -5011,5 +5011,12 @@
 "Quítale el timeout para que grabe el próximo.": "Remove the timeout so she records the next one.",
 "ULAYA no puede entrar a": "ULAYA can’t join",
 "para grabar: dale a su rol «Ver canal» y «Conectar» en ese canal.": "to record: give her role «View Channel» and «Connect» in that channel.",
-"tu canal de voz": "your voice channel"
+"tu canal de voz": "your voice channel",
+"Subimos un video a YouTube": "We posted a video on YouTube",
+"Subimos un short a YouTube": "We posted a short on YouTube",
+"Subimos un post a Instagram": "We posted on Instagram",
+"Subimos un reel a Instagram": "We posted a reel on Instagram",
+"Las redes de los socios": "Partner socials",
+"Lo nuevo que suben los servidores socios a YouTube e Instagram. Los videos se miran acá mismo.": "What partner servers post on YouTube and Instagram. Videos play right here.",
+"Redes": "Socials"
 }

@@ -84,7 +84,7 @@ ARCHIVOS="datos/altas_descartadas.json datos/grabaciones_auditoria.json datos/me
           datos/bloqueados.json datos/canales_llaves.json \
           datos/padron.json datos/verificados.json datos/verificados_desde.json datos/akas_a_mano.json \
           datos/servidores_de.json datos/fotos_etag.json \
-          datos/anuncios.json datos/avisados.json \
+          datos/anuncios.json datos/avisados.json datos/inactivos.json \
           datos/akas.json datos/decisiones.json \
           datos/bloqueadas_selladas.json datos/web_sello.json \
           datos/bot_en.json datos/alertas.json datos/servidores.json datos/llaves_sin_sumar.json \
@@ -94,7 +94,7 @@ ARCHIVOS="datos/altas_descartadas.json datos/grabaciones_auditoria.json datos/me
           datos/avisos_personales.json datos/arranque.json \
           datos/fuera_desde.json datos/mw.json \
           datos/multiplicadores.json datos/vistos.json \
-          datos/rivales.json datos/insignias.json datos/lunes.json datos/precios.json datos/muro.json \
+          datos/rivales.json datos/insignias.json datos/lunes.json datos/precios.json datos/muro.json datos/redes_socios.json \
           datos/batallas_sin_ganador.json datos/veredictos.json datos/jurados.json datos/vitrinas_diseno.json \
           datos/autores_llaves.json datos/podio_menciones.json datos/equipos_llaves.json \
           datos/identidad_llaves.json datos/nombres_llaves.json datos/formatos_llaves.json \

@@ -1340,6 +1340,19 @@ def _lo_barato(correr):
         paso('2b4b', 'el Pase de rapero')
         if not corre(['bot/pase.py', '--aplicar'], callado=False):
             print('      ⚠️ el Pase no llegó al objeto: queda lo de la corrida anterior')
+        # ── 2b4b2 · los roles de DRA por nivel del Pase y por crew (28/11/2026, paso 9) ──
+        # Después del 2b4b, que trae los niveles a datos/pase_niveles.json. Apagados mientras sus tablas estén vacías
+        # (bot/roles_pase.py, bot/roles_crew.py): así no le piden nada a Discord. Nunca frenan el ciclo
+        paso('2b4b2', 'los roles del Pase y de las crews')
+        for _rl in ('bot/roles_pase.py', 'bot/roles_crew.py'):
+            if not corre([_rl, '--ciclo'], callado=False):
+                print('      ⚠️ %s falló: los roles quedan como estaban' % _rl)
+        # ── 2b4b3 · 📬 el buzón en hilos privados de DRA (28/11/2026, paso 9). Ver bot/buzon.js ──
+        # Lo de la campana de cada uno, también en Discord, sin DM. Apagado mientras `ENCENDIDO = false` en
+        # bot/buzon.js; una ronda por hora aunque esto corra cada media. Nunca frena el ciclo
+        paso('2b4b3', 'el buzón en hilos privados de DRA')
+        if not corre(['bot/buzon.py', '--aplicar'], callado=False):
+            print('      ⚠️ el buzón no corrió: lo que esperaba sale en la ronda siguiente')
         # ── 2b4c · el aviso de los ganadores: se mudó DESPUÉS del 2b8h2 (ver ahí) ──
         # ── 2b5 · cuántos entraron a cada servidor por la Liga ────────────
         # 🔑 Dlx, 29/09/2026: «crea una invitación permanente para cada
@@ -1453,6 +1466,13 @@ def _lo_barato(correr):
         paso('2b8g', 'los primerizos')
         if not corre(['bot/primerizos.py', '--aplicar'], callado=True, mostrar=('🔁', '⚠️')):
             print('      ⚠️ los primerizos fallaron: el Dashboard muestra la lista de antes')
+    # ── 2b8g2 · 💤 los inactivos (`bot/inactivos.py`, Dlx 28/11/2026): 45 días o más sin jugar. Anota quién volvió
+    # (`datos/inactivos.json`) y, sólo con `ENCENDIDO` (el OK de Dlx), pone y saca el rol Inactivo de DRA, de a `TOPE`.
+    # Los Discord ID ya viajaron al objeto en el 2b8g, con los primerizos. Nunca frena el ciclo
+    if correr:
+        paso('2b8g2', 'los inactivos')
+        if not corre(['bot/inactivos.py', '--ciclo'], callado=True, mostrar=('🔁', '⚠️')):
+            print('      ⚠️ los inactivos fallaron: el rol queda como estaba')
     # ── 2b8h · ⭐ la nota de cada rapero en cada evento y el MVP (`bot/notas.py`, Dlx 26/10/2026: «un puntaje de cada
     # rapero así como lo hace al final el partido de fútbol»). Sale de `datos/llaves_t1.json`. Nunca frena el ciclo
     if correr:

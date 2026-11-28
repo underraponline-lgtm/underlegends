@@ -53,8 +53,11 @@ COMPAT = '2026-09-16'
 #: 🐣 `nuevos.js` desde el 28/11/2026 (el Evento de Nuevos): lo importan worker.js y avisos.js
 #: 🚪 `recibidor.js` desde el 28/11/2026 (el recibidor de DRA): lo importan worker.js y avisos.js
 #: ✅ `verificar_dc.js` desde el 28/11/2026 (verificarse en #verificate-aqui): lo importan worker.js y avisos.js
+#: 🎙️ `grabados.js` desde el 28/11/2026 (los eventos grabados con el Premium): lo importan worker.js y avisos.js
 MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js', 'ligas_vivo.js', 'tienda.js', 'apodo.js', 'setup.js', 'vista.js',
-           'nuevos.js', 'recibidor.js', 'verificar_dc.js', 'ahora.js')
+           'nuevos.js', 'recibidor.js', 'verificar_dc.js', 'ahora.js', 'grabados.js',
+           # 📬 `buzon.js` y ✅ `verificar_web.js` desde el 28/11/2026 (paso 9: el buzón en hilos y la tabla única de roles)
+           'buzon.js', 'verificar_web.js')
 #: de dónde sale cada módulo, si no está en `bot/` con su nombre. 🔑 `llave_vivo.js` es EL lector de la página
 #: (`bot/paginas/llave_vivo.js`): el vigía lo usa para «te toca» (`turnos()` en avisos.js). Un solo archivo para
 #: los dos —si fueran dos copias, la página y el aviso leerían distinto la misma llave—
@@ -217,6 +220,11 @@ def main():
     # toda la cuenta— y las claves firman y cifran cada notificación.
     meta['bindings'].append({'type': 'durable_object_namespace',
                              'name': 'AVISOS', 'class_name': 'Avisos'})
+    # 🎙️💎 EL BUCKET PRIVADO DE LOS EVENTOS GRABADOS (28/11/2026, bot/grabados.js), SÓLO SI EXISTE: `BUCKET_GRABADOS` en
+    # .env con el nombre de un bucket de R2 SIN acceso público. Sin eso, el audio va a `CARTAS` bajo una clave imposible de
+    # adivinar. ⚠️ Un binding a un bucket que no existe hace fallar el despliegue entero: primero se crea, después se anota
+    if env.get('BUCKET_GRABADOS'):
+        meta['bindings'].append({'type': 'r2_bucket', 'name': 'GRABADOS', 'bucket_name': env['BUCKET_GRABADOS']})
     vpub, vpriv = env.get('VAPID_PUBLICA'), env.get('VAPID_PRIVADA')
     if vpub and vpriv:
         meta['bindings'] += [

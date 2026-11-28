@@ -125,6 +125,10 @@ def canal(cid, maximo=1500):
 #: 🏆 cuándo se publicó cada video y cuántas vistas tenía, de la lista pública: `{video: (iso, vistas)}`. Lo llena
 #: `nuevos()` y lo guarda `correr()` en `meta`, para la Batalla del mes de los MES AWARDS (`bot/mes_awards.py`)
 _META = {}
+#: 📲 los videos que la lista pública marca como short (`/shorts/` en su link). Lo llena `nuevos()`; `correr()` guarda los
+#: últimos `CORTOS_GUARDA` en `cortos`
+_CORTOS = set()
+CORTOS_GUARDA = 600
 
 
 def nuevos(cid):
@@ -139,6 +143,9 @@ def nuevos(cid):
         n = re.search(r'views="(\d+)"', e)
         if v and p:
             _META[v.group(1)] = (p.group(1)[:19] + 'Z', int(n.group(1)) if n else 0)
+        # 📲 y si es un short (su link es `/shorts/`): Publicaciones lo muestra parado (`bot/redes_socios.py`, 28/11/2026)
+        if v and re.search(r'<link rel="alternate" href="https://www\.youtube\.com/shorts/', e):
+            _CORTOS.add(v.group(1))
     return [(v, html.unescape(t)) for v, t in
             re.findall(r'<yt:videoId>([\w-]{11})</yt:videoId>.*?<title>(.*?)</title>', r.text, re.S)]
 
@@ -296,7 +303,9 @@ def correr(aplicar=False):
                'videos': hallados, 'por': {q: vs[:POR_PERSONA] for q, vs in por.items()},
                'crudos': {c: [list(x) for x in vs] for c, vs in crudos.items()},
                # 🏆 cuándo se publicó y cuántas vistas: lo de antes se queda, las vistas se actualizan
-               'meta': dict(prev.get('meta') or {}, **{v: list(x) for v, x in _META.items()})}
+               'meta': dict(prev.get('meta') or {}, **{v: list(x) for v, x in _META.items()}),
+               # 📲 cuáles son shorts, para Publicaciones (`bot/redes_socios.py`): lo nuevo primero, sin repetir
+               'cortos': list(dict.fromkeys(sorted(_CORTOS) + [v for v in prev.get('cortos') or [] if v not in _CORTOS]))[:CORTOS_GUARDA]}
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
             f.write('\n')

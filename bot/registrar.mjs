@@ -115,7 +115,9 @@ const COMANDOS = [
       name: 'que', type: 3, description: 'dónde va', required: true,
       choices: [
         { name: 'Aro', value: 'aro' }, { name: 'Decoración', value: 'deco' }, { name: 'Nombre', value: 'nom' },
-        { name: 'Efecto de carta', value: 'carta' }, { name: 'Perfil', value: 'perfil' },
+        // 🃏 un efecto va en SU carta (28/11/2026): una opción por carta
+        { name: 'Efecto · tu Temporada', value: 'carta' }, { name: 'Efecto · tu Competitiva', value: 'carta-comp' },
+        { name: 'Efecto · tu Servidor', value: 'carta-sv' }, { name: 'Efecto · tu País', value: 'carta-pais' }, { name: 'Perfil', value: 'perfil' },
         { name: 'Fondo · tu perfil', value: 'fp' }, { name: 'Fondo · VS del Inicio', value: 'fv' },
         { name: 'Fondo · escenario de tu carta', value: 'fe' }, { name: 'Fondo · VS de Discord', value: 'fd' },
         { name: 'Fondo · tu ficha', value: 'ff' }, { name: 'Fondo · tu fila del ranking', value: 'fr' },

@@ -31,7 +31,28 @@ export const MENSAJES = ['', '¡Felicitaciones!', 'Para tu próxima batalla', 'T
 export const CATEGORIAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'serv', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
 /** dónde se pone cada cosa: las cuatro de tu cara y tu carta, y los seis lugares del fondo */
 // `perfil` (stickers, entradas, pancartas) faltaba: se compraba y no se podía poner (tanda 3, 17/11/2026)
-export const RANURAS = ['aro', 'deco', 'nom', 'carta', 'perfil', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
+export const RANURAS = ['aro', 'deco', 'nom', 'carta', 'carta-comp', 'carta-sv', 'carta-pais', 'perfil', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'];
+// 🃏 CADA EFECTO ES DE UNA SOLA CARTA (Dlx, 28/11/2026: «1. dale 2. dale 3. dale»). Un efecto de carta (`c: 'carta'`) trae
+// `carta`: la de Temporada, la Competitiva, la de Servidor o la de País, y sólo se pone en ésa: es una skin de esa carta, y
+// el mismo dibujo para otra carta es otra pieza. Cada carta tiene su ranura; la de Temporada se queda con `carta`, que es
+// donde ya estaba todo lo puesto: lo que se compró antes de esto es de Temporada (Dlx: lo comprado → Temporada) y nadie
+// pierde nada. Sin `carta` en el catálogo, Temporada
+export const CARTAS_FX = ['temporada', 'competitivo', 'servidor', 'pais'];
+export const RANURA_FX = { temporada: 'carta', competitivo: 'carta-comp', servidor: 'carta-sv', pais: 'carta-pais' };
+export const esRanuraFx = (r) => Object.values(RANURA_FX).includes(r);
+/** La ranura donde va una pieza: la de su carta si es un efecto, si no su categoría */
+export function ranuraDe(p) {
+  if (!p) return '';
+  return p.c === 'carta' ? RANURA_FX[p.carta] || RANURA_FX.temporada : p.c;
+}
+/**
+ * 🖼️ Los efectos puestos, para la firma de la foto de /card (`firmaImagen()` de avisos.js, `firma_de()` de
+ * bot/con_marco.py): `t:C1,c:C30` (la inicial de cada carta con su efecto), o '' sin ninguno. `t` es `{ranura: pieza}`.
+ * Con la inicial adelante, el `C1` de antes (que iba en las cuatro cartas) ya no coincide: esas fotos se rehacen
+ */
+export function firmaEfectos(t) {
+  return CARTAS_FX.map((c) => { const x = t && t[RANURA_FX[c]]; return x ? c[0] + ':' + x : ''; }).filter(Boolean).join(',');
+}
 // `pronto`: se ve en la Tienda y no se vende todavía (lo que necesita algo que no está hecho: el cambio de nombre, la
 // pancarta con tu texto). Se saca la marca del catálogo privado el día que funcione
 // `inc` (25/11/2026): una versión que viene GRATIS con su pieza (`g`), como las de la Corona de Diamante; no se vende ni se
@@ -98,13 +119,20 @@ export function catalogoValido(c) {
     // 🌎 `g`: de qué pieza es variante (25/11/2026: las banderas de País y los colores de Servidor, una pieza por país y por
     // socio). La página las junta en una ficha con selector; para comprar, cada variante es una pieza más
     if (p.g !== undefined && p.g !== '') { if (!ID.test(String(p.g)) || p.g === id) return mal('pieza', 400, { id }); piezas[id].g = String(p.g); }
+    // 🃏 un efecto es de UNA carta (28/11/2026): sin decirlo, Temporada; una que no existe, no se guarda
+    if (p.c === 'carta') {
+      const ca = p.carta === undefined || p.carta === '' ? 'temporada' : String(p.carta);
+      if (!CARTAS_FX.includes(ca)) return mal('pieza', 400, { id, carta: ca });
+      piezas[id].carta = ca;
+    }
   }
   const ids = (a) => Array.isArray(a) && a.every((x) => piezas[x]);
   const v = c.vitrina || {};
   if (!ids(v.ids) || v.ids.length > 12) return mal('vitrina');
   const colecciones = {};
   // la cabeza de cada grupo existe y es de la misma ranura
-  for (const [id, p] of Object.entries(piezas)) if (p.g && (!piezas[p.g] || piezas[p.g].c !== p.c || piezas[p.g].g)) return mal('pieza', 400, { id });
+  // (y de la misma carta, si es un efecto: una versión del Prisma T1 de Temporada es de Temporada)
+  for (const [id, p] of Object.entries(piezas)) if (p.g && (!piezas[p.g] || piezas[p.g].c !== p.c || piezas[p.g].carta !== p.carta || piezas[p.g].g)) return mal('pieza', 400, { id });
   // y una incluida es de una pieza que existe (una edición o una Premium: lo que vale la pena traer con versiones)
   for (const [id, p] of Object.entries(piezas)) if (p.t.includes('inc') && (!p.g || !piezas[p.g].t.some((x) => ['num', 'prem'].includes(x)))) return mal('pieza', 400, { id });
   for (const [id, j] of Object.entries(c.colecciones || {})) {
@@ -529,14 +557,15 @@ export function tiendaAccion(o, d, H) {
     if (!RANURAS.includes(ranura)) return mal('ranura');
     if (!id) {
       o.sql.exec('DELETE FROM tienda_puesto WHERE quien = ? AND ranura = ?', quien, ranura);
-      if (ranura === 'carta' && o.pedirRedibujo) o.pedirRedibujo(quien);
+      if (esRanuraFx(ranura) && o.pedirRedibujo) o.pedirRedibujo(quien);
       return { ok: true };
     }
     // 👑 una versión incluida se la pone quien tiene su pieza
     const pz = cat.piezas[id];
     if (!pz) return mal('no_existe');
     if (!tiene.has(id) && !(pz.t.includes('inc') && pz.g && tiene.has(pz.g))) return mal('no_la_tienes');
-    if (pz.c !== ranura) return mal('ranura');
+    // 🃏 un efecto va sólo en SU carta (28/11/2026): uno de Temporada, en la ranura de la Temporada
+    if (ranuraDe(pz) !== ranura) return mal('ranura', 400, pz.c === 'carta' ? { carta: pz.carta || 'temporada' } : {});
     o.state.storage.transactionSync(() => ponerUna(o, quien, cat, id, ahora));
     return { ok: true };
   }
@@ -721,11 +750,12 @@ function repartir(cat, piezas, precio, grupo) {
 }
 /** Ponerse una pieza: queda en su ranura y ya no se puede deshacer («usar» es ponérsela, aunque sea sólo en la página) */
 function ponerUna(o, quien, cat, id, ahora) {
-  const c = cat.piezas[id].c;
+  // 🃏 la ranura de un efecto es la de SU carta (28/11/2026)
+  const c = ranuraDe(cat.piezas[id]);
   if (!RANURAS.includes(c)) return;
   o.sql.exec('INSERT OR REPLACE INTO tienda_puesto (quien, ranura, pieza, t) VALUES (?, ?, ?, ?)', quien, c, id, ahora);
   // 🃏 un efecto de carta va también en la foto de /card (tanda 3b): se pide el redibujo, con el mismo freno que el marco
-  if (c === 'carta' && o.pedirRedibujo) { try { o.pedirRedibujo(quien); } catch (e) { /* sin redibujo: la de antes */ } }
+  if (esRanuraFx(c) && o.pedirRedibujo) { try { o.pedirRedibujo(quien); } catch (e) { /* sin redibujo: la de antes */ } }
   o.sql.exec('UPDATE tienda_inv SET usada = 1 WHERE quien = ? AND pieza = ?', quien, id);
 }
 
@@ -922,20 +952,31 @@ export function arteUso(o) {
  * Qué tiene puesto cada perfil: `{clave: {ranura: pieza}}`, para `/avisos/pases`. Por clave, NUNCA por cuenta (quien no
  * tiene perfil no sale). Sólo con la Tienda abierta, y sólo lo que sigue en el catálogo
  */
-/** 🃏 El efecto de carta que tiene puesto alguna de esas cuentas (para la foto de /card, `firmaImagen()`), o '' */
+/**
+ * 🃏 Los efectos de carta que tienen puestos esas cuentas, para la firma de la foto de /card (`firmaImagen()`):
+ * `t:C1,c:C30` (ver `firmaEfectos()`), o ''. Desde el 28/11/2026 cada carta lleva el suyo; con varias cuentas, por carta
+ * el último que se puso. Uno que quedó en la ranura de otra carta (el catálogo lo cambió de carta) no cuenta
+ */
 export function cartaPuestaDe(o, quienes) {
   const cat = catalogo(o);
   const qs = (quienes || []).map(String).filter((x) => QUIEN.test(x));
   if (!cat || !cat.abierta || !qs.length) return '';
-  const r = filas(o, 'SELECT pieza FROM tienda_puesto WHERE ranura = ? AND quien IN (' + qs.map(() => '?').join(',') + ') ORDER BY t DESC LIMIT 1', 'carta', ...qs)[0];
-  return r && cat.piezas[r.pieza] ? r.pieza : '';
+  const rs = Object.values(RANURA_FX);
+  const t = {};
+  for (const r of filas(o, 'SELECT ranura, pieza FROM tienda_puesto WHERE ranura IN (' + rs.map(() => '?').join(',') + ') AND quien IN (' +
+    qs.map(() => '?').join(',') + ') ORDER BY t', ...rs, ...qs)) {
+    const p = cat.piezas[r.pieza];
+    if (p && ranuraDe(p) === r.ranura) t[r.ranura] = r.pieza;
+  }
+  return firmaEfectos(t);
 }
 export function puestosPublicos(o) {
   const cat = catalogo(o);
   if (!cat || !cat.abierta) return {};
   const out = {};
   for (const r of filas(o, 'SELECT quien, ranura, pieza FROM tienda_puesto')) {
-    if (!cat.piezas[r.pieza]) continue;
+    // 🃏 sólo lo que sigue yendo ahí: un efecto que el catálogo pasó a otra carta no se dibuja en la de antes
+    if (!cat.piezas[r.pieza] || ranuraDe(cat.piezas[r.pieza]) !== r.ranura) continue;
     const k = o.claveDe(r.quien);
     if (k) (out[k] = out[k] || {})[r.ranura] = r.pieza;
   }
@@ -949,6 +990,80 @@ export function arteMio(o, d, H) {
   if (!v) return mal('sin_arte', 404);
   if (d.v && d.v === v) return { ok: true, v, igual: true };
   return Object.assign({ ok: true }, o.leer('tienda_arte'));
+}
+
+// ── 🃏 LOS EFECTOS, UNO POR CARTA (28/11/2026) ──────────────────────────────────────────────────────────────────────
+/**
+ * `/avisos/tienda-efectos` (con la clave del ciclo, SÓLO LEE): cuántos tienen cada efecto, cómo les llegó y cuántos lo
+ * llevan puesto, y en qué carta. Con `duenos`, también quiénes (su clave y su nombre): eso es para los ojos de Dlx, lo
+ * imprime `bot/tienda_efectos.py --duenos` y no se guarda en ningún lado. Trae lo que haría `efectosAcomodar()`, sin hacerlo
+ */
+export function efectosConteo(o, duenos = false) {
+  const cat = catalogo(o);
+  if (!cat) return mal('sin catálogo', 404);
+  const ids = Object.keys(cat.piezas).filter((id) => cat.piezas[id].c === 'carta');
+  const out = { ok: true, efectos: {}, por_carta: Object.fromEntries(CARTAS_FX.map((c) => [c, 0])), personas: 0, puestos: 0 };
+  for (const id of ids) {
+    const p = cat.piezas[id];
+    out.efectos[id] = { n: p.n, carta: p.carta || 'temporada', r: p.r, t: p.t, g: p.g || '', tienen: 0, por: {}, puesto: 0 };
+    out.por_carta[p.carta || 'temporada']++;
+  }
+  const qs = ids.map(() => '?').join(',');
+  const gente = new Set();
+  const inv = ids.length ? filas(o, 'SELECT quien, pieza, origen FROM tienda_inv WHERE pieza IN (' + qs + ')', ...ids) : [];
+  for (const r of inv) {
+    const e = out.efectos[r.pieza];
+    e.tienen++;
+    e.por[r.origen] = (e.por[r.origen] || 0) + 1;
+    gente.add(r.quien);
+  }
+  const rs = Object.values(RANURA_FX);
+  const pu = filas(o, 'SELECT quien, ranura, pieza FROM tienda_puesto WHERE ranura IN (' + rs.map(() => '?').join(',') + ')', ...rs);
+  for (const r of pu) if (out.efectos[r.pieza]) { out.efectos[r.pieza].puesto++; out.puestos++; }
+  out.personas = gente.size;
+  out.acomodar = efectosAcomodar(o, false);
+  if (duenos) {
+    const lugar = new Map(pu.map((r) => [r.quien + '|' + r.pieza, r.ranura]));
+    out.duenos = {};
+    for (const r of inv) {
+      const k = o.claveDe(r.quien) || '';
+      (out.duenos[r.pieza] = out.duenos[r.pieza] || []).push({ k, n: nombreDe(o, k), origen: r.origen, puesto: lugar.get(r.quien + '|' + r.pieza) || '' });
+    }
+  }
+  return out;
+}
+
+/**
+ * 🔧 LA MUDANZA DE LOS EFECTOS A SU CARTA (28/11/2026), idempotente y sin aplicar por defecto. Lo comprado no se mueve:
+ * es de quien lo compró y su carta la dice el catálogo (sin decirlo, Temporada: lo de antes queda de Temporada, Dlx). Lo
+ * que sí se acomoda es lo PUESTO: un efecto que está en la ranura de otra carta —porque el catálogo lo pasó de carta, o
+ * porque se puso antes de esto en una que ya no es la suya— se saca de ahí. Y como la firma de la foto de /card cambió de
+ * forma (`firmaEfectos()`), quien tiene un efecto puesto necesita la foto nueva: con `aplicar`, se le pide el redibujo
+ * (con el freno de siempre). Correrla dos veces no hace nada la segunda, salvo volver a pedir esas fotos si hiciera falta.
+ * `{ok, sacar: [{quien, ranura, pieza, va}], fotos: n, aplicado}`
+ */
+export function efectosAcomodar(o, aplicar = false) {
+  const cat = catalogo(o);
+  if (!cat) return mal('sin catálogo', 404);
+  const rs = Object.values(RANURA_FX);
+  const pu = filas(o, 'SELECT quien, ranura, pieza FROM tienda_puesto WHERE ranura IN (' + rs.map(() => '?').join(',') + ')', ...rs);
+  const sacar = [];
+  const conFoto = new Set();
+  for (const r of pu) {
+    const p = cat.piezas[r.pieza];
+    // una pieza que ya no está en el catálogo se deja: `puestosPublicos()` no la dibuja y vuelve si vuelve la pieza
+    if (!p) continue;
+    if (ranuraDe(p) !== r.ranura) sacar.push({ quien: r.quien, ranura: r.ranura, pieza: r.pieza, va: ranuraDe(p) });
+    else conFoto.add(r.quien);
+  }
+  for (const s of sacar) conFoto.add(s.quien);
+  if (aplicar) {
+    o.state.storage.transactionSync(() => {
+      for (const s of sacar) o.sql.exec('DELETE FROM tienda_puesto WHERE quien = ? AND ranura = ? AND pieza = ?', s.quien, s.ranura, s.pieza);
+    });
+    if (o.pedirRedibujo) for (const q of conFoto) { try { o.pedirRedibujo(q); } catch (e) { /* sin redibujo: la de antes */ } }
+  }
+  return { ok: true, sacar: sacar.map((s) => ({ k: o.claveDe(s.quien) || '', ranura: s.ranura, pieza: s.pieza, va: s.va })), fotos: conFoto.size, aplicado: !!aplicar };
 }
 
 // ── MUDARSE Y OLVIDARSE ─────────────────────────────────────────────────────────────────────────────────────────────

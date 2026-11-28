@@ -165,6 +165,18 @@ def main():
               % tuple('%d/%d' % (t[str(w)][1], t[str(w)][0]) for w in RT.VENTANAS))
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ la retención a 7, 30 y 90 días no se midió: %s' % str(e)[:80])
+    # 🔁 los inactivos (45 días o más sin jugar, `bot/inactivos.py`, 28/11/2026): sus Discord ID viajan acá, al objeto, para
+    # el panel «De regreso» y el aviso del día en que cruzan. Sin filas no va nada (el objeto no borra por un dato que falta)
+    try:
+        import inactivos as INA
+        x['inact'] = INA.para_objeto(INA.medir())
+        if x['inact'] is None:
+            x.pop('inact')
+        else:
+            print('   🔁 inactivos (%d días o más sin jugar), al objeto: %d con Discord' % (INA.DIAS, len(x['inact'])))
+    except Exception as e:                               # noqa: BLE001
+        x.pop('inact', None)
+        print('   ⚠️ los inactivos no se midieron: %s' % str(e)[:80])
     # 🧪 ¿sirve avisar?: con lo que el objeto anotó (quién recibió el aviso y quién quedó sin él) y los días de cada uno
     try:
         lista = _leer_vuelve() if '--aplicar' in sys.argv else None

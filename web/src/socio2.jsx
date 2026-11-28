@@ -496,6 +496,12 @@ function Ajustes({ sv, tier }) {
             {sv === 'DRA' ? <span>Siempre: es el servidor de la Liga</span>
               : <Interruptor t="Tus llamadas en «Ahora mismo»" on={c.ahora_mismo !== false} ocup={ocup} cambiar={(v) => cambiar('ahora_mismo', v)}
                 si="Prendido: tus llamadas públicas salen en la página" no="Apagado: tu servidor no aparece" />}</Fila>
+          {/* 📲 TUS REDES EN PUBLICACIONES (28/11/2026, bot/redes_socios.py): prendido de entrada, como «Ahora mismo» */}
+          <Fila t="Tus redes en Publicaciones" sello={sello === 'redes_en_muro'}
+            ayuda="Lo nuevo que subes a YouTube (y a Instagram, si tu cuenta es de empresa o de creador) sale en Publicaciones con el logo de tu servidor y el link a tu red. Hasta dos por día.">
+            {sv === 'DRA' ? <span>Las de la Liga ya salen como shorts de la Liga</span>
+              : <Interruptor t="Tus redes en Publicaciones" on={c.redes_en_muro !== false} ocup={ocup} cambiar={(v) => cambiar('redes_en_muro', v)}
+                si="Prendido: tus videos y posts nuevos salen en la página" no="Apagado: no sale nada de tus redes" />}</Fila>
           {/* 🏆 LOS GANADORES DE CADA EVENTO (Discord, tanda 2, 17/11/2026, `bot/aviso_ganadores.py`): prendido de entrada, y lo
               apaga el staff de cada servidor (Dlx: «prendido en todos los socios, el dueño lo apaga») */}
           <Fila t="Los ganadores de cada evento" sello={sello === 'ganadores'}

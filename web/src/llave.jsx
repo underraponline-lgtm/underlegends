@@ -24,6 +24,9 @@ import { usarCss } from './css.js';
 import { pedirLlave, pedirRoles, puede } from './panelsocio.js';
 import { deBatalla, normN, ridDe, tituloDe, useArchivo } from './archivo_ul.js';
 import { AudioBatalla, abrirVideo } from './video.jsx';
+// 🎙️💎 los eventos grabados con el Premium (28/11/2026): 30 s de cada batalla, la tuya entera, todo con el Premium
+import { filasDe, useGrabados } from './grabado.js';
+import { AccesoGrabado, CartelPrevia, MarcaFila, PartesEvento } from './grabado.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/llave.css)
 usarCss('llave', CSS_PAGINA);
@@ -544,7 +547,7 @@ function ShortB({ ctx, ls, gano, fin }) {
       {x ? <button type="button" className={'lk-short' + (chico ? ' ico' : '')} aria-label={'Ver el short de ' + vs} title="Ver el short de esta batalla"
         onClick={(e) => { e.stopPropagation(); abrirVideo({ mp4: x.url, portada: x.portada, tit: (x.nombres || []).join(' vs ') + ' · ' + tituloDe(x) }); }}><span aria-hidden="true">▶</span>{chico ? null : 'SHORT'}</button> : null}
       {au ? <button type="button" className={'lk-short' + (chico ? ' ico' : '')} aria-label={'Escuchar la batalla entera: ' + vs} title="Escuchar la batalla entera"
-        onClick={(e) => { e.stopPropagation(); abrirVideo({ audio: au.url, det: au.det || '', tit: vs + ' · ' + tituloDe(au),
+        onClick={(e) => { e.stopPropagation(); abrirVideo({ audio: au.url, det: au.det || '', tit: vs + ' · ' + tituloDe(au) + (au.previa ? ' · 30 s' : ''),
           sv: ctx.L && ctx.L.sv, lados: ls.slice(0, 2).map((s) => ({ n: limpio(s), cara: caraEscenario(ctx, s) })) }); }}><span aria-hidden="true">♫</span>{chico ? null : 'AUDIO'}</button> : null}
       {pub && fin ? pub : null}
     </span>
@@ -556,9 +559,8 @@ const ORDEN_RONDA = { dieciseisavos: 0, octavos: 1, cuartos: 2, semifinales: 3, 
 const RONDA_TXT = { octavos: 'Octavos', cuartos: 'Cuartos', semifinales: 'Semifinal', semifinal: 'Semifinal', final: 'Final' };
 const mmssE = (t) => Math.floor((t || 0) / 60) + ':' + String(Math.floor((t || 0) % 60)).padStart(2, '0');
 const rondaTxt = (r) => RONDA_TXT[String(r || '').toLowerCase()] || r || '';
-// ✨ «LO MEJOR DE LA NOCHE» (25/11/2026, Dlx: «Todas», el #5): el robot deja en `reels/audios.json` UNA entrada más por evento,
-// con `mejor: true` y `k: 'mejor'`. No es una batalla: no entra en la lista ni en el paso de una a otra
-const esMejor = (x) => !!x && (x.mejor === true || x.k === 'mejor');
+// ✨ «LO MEJOR DE LA NOCHE» (25/11/2026, Dlx: «Todas», el #5) no es una batalla: no entra en la lista ni en el paso de una a
+// otra. Desde el 28/11 llega aparte en la grabación con el Premium (`mejor` de /api/grabados, libre para todos)
 
 // 🏁 EL RESULTADO DE CADA BATALLA DEL EVENTO ENTERO (25/11/2026, Dlx: «Todas», el #6). Sale de la llave que la página ya
 // tiene: la batalla con los mismos lados (por su nombre limpio o por quién es, `idDe`) y, si hay dos iguales —una revancha
@@ -666,12 +668,12 @@ function MejorNoche({ m, xs, saltar }) {
 // que ver… arriba lo que aparece arriba, abajo el video del evento y abajo las llaves»). Las batallas de la llave en orden
 // —octavos, cuartos, semis, final—, una tras otra: cada audio es una batalla cortada de punta a punta por ULAYA, así que las
 // esperas y lo que se habla entre batalla y batalla no está. Es el mismo reproductor de la batalla (el escenario VS, la letra
-// y los turnos: `AudioBatalla` de video.jsx) y no se guarda nada aparte: son los audios de `reels/audios.json`, 15 días
+// y los turnos: `AudioBatalla` de video.jsx). Desde el 28/11/2026 salen de la grabación con el Premium (grabado.js): 30 s, la tuya o todo
 // 🏁 Y CON SU RESULTADO (25/11/2026, el #6): oculto por defecto —el evento se escucha como se vivió—, con «Mostrar resultados»
 // recordado en este navegador. Oculto, el de cada batalla aparece solo cuando su audio terminó: en la lista y, al terminar,
 // sobre el escenario (unos segundos, y sigue la próxima)
 const PAUSA_FIN = 6000;
-function EventoCompleto({ ctx, xs, mejor = null }) {
+function EventoCompleto({ ctx, xs, mejor = null, acc = null }) {
   const raizR = useRef(null);
   const escR = useRef(null);
   const auR = useRef(null);
@@ -715,7 +717,7 @@ function EventoCompleto({ ctx, xs, mejor = null }) {
     return () => clearTimeout(t);
   }, [dijo]);
   const x = xs[Math.min(i, xs.length - 1)];
-  if (!x && !mejor) return null;
+  if (!x && !mejor && !(acc && acc.partes.length)) return null;
   const total = xs.reduce((s, y) => s + (y.dur || 0), 0);
   const ronda = (y) => rondaTxt(y.ronda);
   const vs = (y) => (y.nombres || []).map((nm) => limpio(nm)).join(' vs ');
@@ -727,6 +729,8 @@ function EventoCompleto({ ctx, xs, mejor = null }) {
   };
   const visto = (j) => ver || oidas.has(clave(xs[j]));
   const terminar = () => {
+    // 🎙️💎 terminó un adelanto de 30 s: el cartel del Premium (y sigue solo al próximo, como el del resultado)
+    if (x.previa) { setFin(i); return; }
     setOidas((o) => new Set(o).add(clave(x)));
     if (res[i]) setFin(i);
     else if (i + 1 < xs.length) ir(i + 1);
@@ -744,7 +748,7 @@ function EventoCompleto({ ctx, xs, mejor = null }) {
     }
     try { await navigator.clipboard.writeText(url); setDijo('Link copiado'); } catch (e) { setDijo('No pude copiarlo'); }
   };
-  const cartel = x && fin === i && res[i] ? (
+  const cartel = x && fin === i && x.previa ? <CartelPrevia y={x} sigue={i + 1 < xs.length ? (xs[i + 1].previa ? 'adelanto' : 'batalla') : ''} onSiguiente={() => ir(i + 1)} /> : x && fin === i && res[i] ? (
     <div className="vau-cartel" role="status">
       <small>{ronda(x) + ' · terminó'}</small>
       <ResultadoEv res={res[i]} cls="vau-cartel-r" sep={false} />
@@ -755,6 +759,7 @@ function EventoCompleto({ ctx, xs, mejor = null }) {
     <section ref={raizR} className="sec lk-sec lk-ev" aria-label="El evento entero">
       <div className="sec-t"><h2>El evento entero</h2>{xs.length ? <span className="tj-n">{xs.length} {xs.length === 1 ? 'batalla' : 'batallas'} · {Math.max(1, Math.round(total / 60))} min</span> : null}</div>
       <p className="lk-ev-baj">Batalla tras batalla, de la primera a la final, sin las esperas del medio.</p>
+      {acc ? <AccesoGrabado F={acc} /> : null}
       {mejor ? <MejorNoche m={mejor} xs={xs} saltar={saltar} /> : null}
       {x ? (
         <>
@@ -772,7 +777,8 @@ function EventoCompleto({ ctx, xs, mejor = null }) {
             {xs.map((y, j) => (
               <li key={clave(y)}>
                 <button type="button" className={j === i ? 'on' : ''} aria-current={j === i ? 'true' : undefined} onClick={() => ir(j)}>
-                  <small>{ronda(y)}</small><span>{vs(y)}</span><em>{mmssE(y.dur)}</em>
+                  <small>{ronda(y)}</small><span>{vs(y)}</span><em>{mmssE(y.previa ? Math.min(y.durp, y.dur || y.durp) : y.dur)}</em>
+                  <MarcaFila y={y} />
                   {res[j] && visto(j) ? <ResultadoEv res={res[j]} /> : null}
                 </button>
               </li>
@@ -780,6 +786,7 @@ function EventoCompleto({ ctx, xs, mejor = null }) {
           </ol>
         </>
       ) : null}
+      {acc ? <PartesEvento F={acc} /> : null}
     </section>
   );
 }
@@ -1313,7 +1320,8 @@ function despuesDe(L, ronda, quien) {
 }
 // 🎙️ LA GRABACIÓN COMPLETA, SÓLO PARA EL STAFF DE ESE SERVIDOR (25/11/2026, Dlx: «D»): para escuchar lo que pasó cuando
 // alguien discute un resultado. Quién es staff lo dice el Worker; los links los saca de Discord en ese momento (`socioLlave()`,
-// `grabacion`). Sin grabación, lo dice
+// `grabacion`). Sin grabación, lo dice. 🔐 Desde el 28/11/2026 llegan SELLADOS (`/api/grabados/a/…`, bot/grabados.js `linkAdjunto()`):
+// el de cdn.discordapp.com no sonaba acá, porque `media-src` de la página sólo deja su origen
 function GrabacionStaff({ n, L }) {
   const [rol, setRol] = useState('');
   const [est, setEst] = useState('');
@@ -1992,14 +2000,17 @@ function PuntosA({ ctx, L, orden, grupos }) {
 export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const Mm = useModsEstado();
   const arch = useArchivo();   // 🎬 los shorts de la Liga (`ShortB`); una llave en vivo no tiene, su número es `v:…`
-  const auds = useArchivo(true, true);   // 🎧 y sus batallas enteras en audio
-  // ✨ «Lo mejor de la noche» (25/11/2026, el #5) no es una batalla: afuera de la lista, del ▶ de cada batalla y del paso
-  // de una a otra; va aparte, arriba del evento entero
-  const audsB = useMemo(() => auds.filter((x) => !esMejor(x)), [auds]);
-  const evMejor = useMemo(() => auds.find((x) => esMejor(x) && String(x.ll) === String(n0) && x.url) || null, [auds, n0]);
+  // 🎧 LAS BATALLAS EN AUDIO SALEN SÓLO DE LA GRABACIÓN CON EL PREMIUM (28/11/2026, grabado.js; Dlx: «Sí, con la regla
+  // nueva»): 30 s de cada batalla para todos, la tuya entera, todo con el Premium. ⚠️ SIN RESPALDO PÚBLICO: hasta hoy salían
+  // de `reels/audios.json` (R2 público, enteras, 15 días) y caer ahí cuando no hay registro sería volver a dar la batalla
+  // entera a cualquiera. Una llave sin registro no muestra audio (las viejas se borran con herramientas/grabados_publicos.py).
+  // Se vuelve a pedir al entrar o salir de la cuenta. «Lo mejor de la noche» viene aparte (`F.mejor`), no es una batalla
+  const Gr = useGrabados(String(n0 || '').indexOf('v:') === 0 ? '' : n0, (dc && dc.id) || '');
+  const F = useMemo(() => filasDe(Gr, n0), [Gr, n0]);
   // 🎬 las de ESTA llave, en el orden en que se jugaron: por ronda y, adentro, como las dejó el guion de ULAYA
-  const evAud = useMemo(() => audsB.filter((x) => String(x.ll) === String(n0)).sort((a, b) =>
-    ((ORDEN_RONDA[String(a.ronda || '').toLowerCase()] ?? 9) - (ORDEN_RONDA[String(b.ronda || '').toLowerCase()] ?? 9)) || a.k - b.k), [audsB, n0]);
+  const evAud = useMemo(() => (F ? F.xs : []).slice().sort((a, b) =>
+    ((ORDEN_RONDA[String(a.ronda || '').toLowerCase()] ?? 9) - (ORDEN_RONDA[String(b.ronda || '').toLowerCase()] ?? 9)) || a.k - b.k), [F]);
+  const audsLlave = evAud;
   // ✎ ¿los lápices de Mods valen acá? Dlx, o Admin y Moderador de la página (`liga` de `socio-roles`, 20/11/2026)
   const [puedeLapiz, setPuedeLapiz] = useState(false);
   useEffect(() => {
@@ -2302,7 +2313,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const ctx = Object.assign({}, base, {
     liga, L, n, sigo, seguir, anim, compu,
     shortDe: arch.length ? (ls) => deBatalla(arch, n, ls) : null,
-    audioDe: audsB.length ? (ls) => deBatalla(audsB, n, ls) : null,
+    audioDe: audsLlave.length ? (ls) => deBatalla(audsLlave, n, ls) : null,
     lapiz: lapices ? (ronda, lados) => window.dispatchEvent(new CustomEvent('lg:llave-lapiz', { detail: { n: String(n), ronda, lados } })) : null,
     // 🅰️ el remake A (18/11/2026): las filas de la llave con caras, nota y votos (`Lado`, `compacta()`)
     caras: true, elegir: (id) => setSigo(id || ''),
@@ -2487,7 +2498,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       </div>
 
       {/* 🎬 el evento entero, entre lo de arriba y las llaves (Dlx, 25/11/2026). Sin sus audios (más de 15 días, o no se grabó), nada */}
-      {!enVivo && (evAud.length || evMejor) ? <EventoCompleto ctx={ctx} xs={evAud} mejor={evMejor} /> : null}
+      {!enVivo && F && (evAud.length || F.mejor || F.partes.length) ? <EventoCompleto ctx={ctx} xs={evAud} mejor={F.mejor} acc={F} /> : null}
 
       {/* 🎨 LAS PESTAÑAS, SOBRE LA PIEL (Dlx, 03/10/2026: el escenario negro arriba y el cuadro sobre la piel, con las
           casillas encima; «ni toda blanca ni toda negra»). Su fondo, el de su servidor si quien mira no eligió un tema

@@ -367,6 +367,9 @@ jobs:
         env:
           # 🎬 con nombre propio a propósito: un GH_TOKEN suelto en el entorno lo tomaría desplegar.py para el Worker
           GH_PROCESAR: ${{ github.token }}
+          # 📲 las redes de los socios en Publicaciones (bot/redes_socios.py, 28/11/2026): sólo LEE sus Instagram (Business
+          # Discovery). Sin el permiso `instagram_manage_insights` no lee nada y lo vuelve a probar cada 3 h; el log, sólo números
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
           BARRIDO_COMPLETO: ${{ inputs.completo }}
           REDIBUJAR_YA: ${{ inputs.redibujar_ya }}
         run: |

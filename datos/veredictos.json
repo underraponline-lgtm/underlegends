@@ -12161,6 +12161,17 @@
    "b": "EBER",
    "ganador": "EBER",
    "votos": "1–0"
+  },
+  "1576113531131011254": {
+   "id": "1576113531131011254",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795845148595,
+   "a": "YEYOX",
+   "b": "EBER",
+   "ganador": "EBER",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -16143,23 +16154,11 @@
    "canal": "1222380923048296459",
    "pub": 1795845139019,
    "ed": 1795845912206,
-   "texto": "`[ FINAL ]`\n⌞YEYOX⌝ 🆚 ⌞EBER⌝\n⌞MAKMA⌝ 🆚 ⌞DYNOKO⌝ 🆚 ⌞YEYOX⌝ 🆚 ⌞EBER⌝",
+   "texto": "`[ FINAL ]`\n⌞YEYOX⌝ 🆚 ⌞EBER⌝",
    "batallas": [
     [
      "FINAL",
      [
-      "YEYOX",
-      "EBER"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MAKMA",
-      "DYNOKO",
       "YEYOX",
       "EBER"
      ],

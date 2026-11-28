@@ -39,7 +39,9 @@ LO QUE ENTRA
   llega invicto a 5, quién toma la punta y quién sale campeón (`ligas.hitos()`
   y el Salón de campeones), con 👏 Felicitar;
 - 📣 las promociones de los raperos de la Lista en el canal de promoción de
-  cada socio (`bot/promos.py`, Dlx 16/10/2026): música y video, dos por persona.
+  cada socio (`bot/promos.py`, Dlx 16/10/2026): música y video, dos por persona;
+- 📲 lo que los socios suben a sus redes —YouTube, e Instagram cuando el token deja— (`svred`, `bot/redes_socios.py`,
+  Dlx 28/11/2026: «las redes de socios se pongan en publicaciones»): lo nuevo, con tope por servidor y por día.
 
 ⚠️ SUBIR DE RANGO Y DESBLOQUEAR NO SE PUEDEN RECALCULAR: son un cambio entre
 dos corridas. Por eso se anotan en `datos/muro.json` (con cómo estaba cada uno)
@@ -569,6 +571,9 @@ def id_de(x):
         # 🏟️ (bot/muro_solos.py) de qué servidor y qué semana: todos los servidores salen en el mismo instante, así que sin
         # el servidor serían una sola publicación
         partes = [tipo, x.get('sv') or '', x.get('sem') or '']
+    elif tipo == 'svred':
+        # 📲 la red y el video o el post: el mismo es la misma publicación aunque cambie su título o su miniatura
+        partes = [tipo, x.get('red') or '', x.get('vid') or x.get('pid') or x.get('url') or '']
     elif tipo == 'svrecord':
         partes = [tipo, x.get('sv') or '', str(x.get('ll') or '')]
     elif tipo == 'svchat':
@@ -719,7 +724,29 @@ def _fuentes():
             # 🗨️ y sus frases (tanda 4, 21/11/2026): viven en KV y no en el repo (`chats.citas_kv()`); sin Cloudflare, ninguna
             'citas': _citas_chat(),
             # 🎬 los shorts de la Liga (`shorts_muro()`)
-            'shorts': _shorts_r2()}
+            'shorts': _shorts_r2(),
+            # 📲 las redes de los socios (`redes_muro()`): todo de `datos/`, sin red (Instagram lo trae `publicar()`)
+            'redes': _redes_fuente()}
+
+
+def _redes_fuente():
+    try:
+        import redes_socios as RS
+        return RS.fuente()
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
+def redes_muro(f, ahora):
+    """📲 Lo que los socios suben a sus redes (`bot/redes_socios.py`). Si algo falla, nada: nunca frena el muro."""
+    if not f:
+        return []
+    try:
+        import redes_socios as RS
+        return RS.para_muro(f, ahora)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el muro sin las redes de los socios (%s)' % type(e).__name__)
+        return []
 
 
 R2_PUBLICO = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev'
@@ -860,7 +887,8 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
             + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro()
             + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas'))
             + chats_muro(fuentes.get('chats'), camps, fuentes.get('citas'))
-            + shorts_muro(fuentes.get('shorts')))
+            + shorts_muro(fuentes.get('shorts'))
+            + redes_muro(fuentes.get('redes'), ahora))
     return todo, estado, anotados, extra
 
 
@@ -943,7 +971,8 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
     # aunque sea de antes de `desde`
     sigue = lambda x: x.get('tipo') == 'promo' and (_de_iso(x.get('hasta')) or ahora) > ahora  # noqa: E731
     # 🏟️ y lo de cada servidor de esta semana viaja aunque pase de `VIAJAN` (ver `SV_DIAS`)
-    del_sv = lambda x: (str(x.get('tipo') or '').startswith('sv')  # noqa: E731
+    # 📲 menos las redes de los socios (`svred`): son muchas y viejas de días, así que compiten por las `VIAJAN` como todo
+    del_sv = lambda x: (str(x.get('tipo') or '').startswith('sv') and x.get('tipo') != 'svred'  # noqa: E731
                         and (_de_iso(x.get('t')) or desde) > ahora - dt.timedelta(days=SV_DIAS))
     for x in todo:
         t = _de_iso(x.get('t'))
@@ -1007,7 +1036,7 @@ def armar(p, guardado=None, ahora=None, fuentes=None, perfiles=None, permisos=No
 def publicar(p, subir=None, perfiles=None):
     """Arma el muro, lo guarda y lo sube a KV. `subir` es `subir_web.subir`."""
     # 💬 los permisos de los comentarios, de KV (`cm:permisos`); sin token o sin red, la copia (`comentarios_sim.permisos()`)
-    perm, no = None, None
+    perm, no, s = None, None, None
     try:
         import comentarios_sim as CS
         import fotos as _FT
@@ -1022,6 +1051,13 @@ def publicar(p, subir=None, perfiles=None):
             no = MS.apagados(s)
     except Exception:                                    # noqa: BLE001
         perm = None
+    # 📲 lo de las redes de los socios que pide red, una vez por corrida: Instagram (si el token deja) y su interruptor
+    # `redes_en_muro` en KV. Deja la copia en datos/redes_socios.json, que lee `armar()`
+    try:
+        import redes_socios as RS
+        RS.refrescar(s)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las redes de los socios: %s' % type(e).__name__)
     muro, guardar = armar(p, perfiles=perfiles, permisos=perm, apagados=no)
     with io.open(SALIDA, 'w', encoding='utf-8') as f:
         json.dump(guardar, f, ensure_ascii=False, indent=0)
@@ -1204,6 +1240,24 @@ def _self_check():
     ok(all(x in DE_ALGUIEN for x in ('podio', 'top10', 'subio', 'racha', 'crewunion', 'crewnueva', 'svtop'))
        and not any(x in DE_ALGUIEN for x in ('svlunes', 'svsemana', 'svmeta', 'svrecord', 'svnuevo', 'svtier')),
        'lo de la gente lleva `ks` (seguidores, Felicitar, apagar); lo del servidor solo, no')
+    # 📲 las redes de los socios (28/11/2026): una por video o post, del servidor y no de nadie, y sin pasar de `VIAJAN`
+    rd = {'tipo': 'svred', 't': '2026-11-28T09:00:37Z', 'sv': 'FRZ', 'red': 'yt', 'vid': 'IlbdqMaNpoA', 'tit': 'A vs B',
+          'url': 'https://www.youtube.com/watch?v=IlbdqMaNpoA', 'corto': False}
+    ok(id_de(dict(rd, tit='otro título', t='2026-11-28T10:00:00Z')) == id_de(rd) != id_de(dict(rd, vid='q22OQWKPU70'))
+       and 'svred' not in DE_ALGUIEN and redes_muro(None, ahora) == [] and redes_muro({'svs': 'roto'}, ahora) == [],
+       'las redes de los socios: el mismo video es la misma publicación, es del servidor, y sin fuente no hay nada')
+    ah2 = dt.datetime(2026, 11, 28, 18, tzinfo=dt.timezone.utc)
+    muchos = [dict(rd, vid='v%010d' % i, t=_iso(ah2 - dt.timedelta(minutes=i))) for i in range(VIAJAN + 10)]
+    fr = {'llaves': {}, 'instantes': {}, 'mw': None, 'precios': None, 'mult': None, 'anuncios': None}
+    import redes_socios as _RS
+    viejo_pm = _RS.para_muro
+    _RS.para_muro = lambda f, a: muchos  # noqa: E731
+    try:
+        m3, _g3 = armar({'tabla': [], 'svs': []}, guardado={}, ahora=ah2, fuentes=dict(fr, redes={'x': 1}), apagados=set())
+    finally:
+        _RS.para_muro = viejo_pm
+    ok(len([x for x in m3['items'] if x['tipo'] == 'svred']) == VIAJAN,
+       'y aunque sean del servidor, no se saltan el tope de %d como lo de su semana' % VIAJAN)
     # 🪪 por sus alias (17/11/2026): «velatzzzz» de una llave es Velatz, con su perfil
     viejo_al = _ALIAS_MURO[0]
     _ALIAS_MURO[0] = {_norm('velatzzzz'): 'Velatz', _norm('Ana'): 'Bea'}

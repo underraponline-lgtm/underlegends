@@ -180,6 +180,8 @@
 .ed-mini-t { margin: 10px 0 6px; font: 700 11.5px/1 'Barlow Condensed', Archivo, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--gris); }
 .ed-v-img { position: relative; aspect-ratio: 16 / 9; background: #0b0b0c; overflow: hidden; }
 .ed-v-img .pb-vid { position: absolute; inset: 0; display: block; }
+/* 📲 las redes de los socios (28/11/2026): el short y el post cuadrado también llenan la tarjeta, como un video */
+.ed-v-img .pb-vid.pb-short, .ed-v-img .pb-vid.pb-cuadro { max-width: none; aspect-ratio: auto; }
 .ed-v-img .pb-vid-img, .ed-v-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 /* una promo sin video ni imagen trae la cara de quien la comparte: al medio y grande, no de 64 px en la esquina */
 .ed-v-img > .cara, .ed-v-img > .pb-cara { position: absolute; inset: 0; margin: auto; width: 96px; height: 96px; font-size: 34px; }

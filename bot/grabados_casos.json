@@ -1,0 +1,215 @@
+{
+ "_": "🎙️💎 El contrato motor → Worker de los eventos grabados (bot/grabados.py armar() y bot/grabados.js limpiarRegistro()). La batalla 3 no tiene archivos: no entra. Si se cambia la forma, se cambia en los dos y acá.",
+ "entrada": {
+  "ev": "ffa-2026-11-27-vol40",
+  "ll": "701",
+  "sv": "FFA",
+  "dia": "2026-11-27",
+  "nombre": "DESGRACIAS EN TOKYO VOL 40",
+  "g": "1488298216955973700",
+  "ini": 1764277200000,
+  "bk": "c",
+  "partes": {
+   "c": "1504110449535483924",
+   "m": [
+    "1580000000000000001",
+    "1580000000000000002"
+   ],
+   "d": 6840
+  },
+  "batallas": [
+   {
+    "k": 1,
+    "b": {
+     "r": "Octavos",
+     "nombres": [
+      "Ana",
+      "Bea"
+     ],
+     "personas": [
+      [
+       {
+        "n": "Ana",
+        "id": "111111111111111111"
+       }
+      ],
+      [
+       {
+        "n": "Bea",
+        "id": "222222222222222222"
+       }
+      ]
+     ],
+     "desde": 812.4,
+     "hasta": 1210.9,
+     "evento": "DESGRACIAS EN TOKYO VOL 40"
+    }
+   },
+   {
+    "k": 2,
+    "b": {
+     "r": "Final",
+     "nombres": [
+      "Ana + Cata",
+      "Dani"
+     ],
+     "personas": [
+      [
+       {
+        "n": "Ana",
+        "id": "111111111111111111"
+       },
+       {
+        "n": "Cata",
+        "id": "333333333333333333"
+       }
+      ],
+      [
+       {
+        "n": "Dani",
+        "id": "444444444444444444"
+       }
+      ]
+     ],
+     "desde": 5000.0,
+     "hasta": 5600.0
+    }
+   },
+   {
+    "k": 3,
+    "b": {
+     "r": "Cuartos",
+     "nombres": [
+      "Sin",
+      "Audio"
+     ],
+     "personas": [],
+     "desde": 3000,
+     "hasta": 3100
+    }
+   }
+  ],
+  "archivos": {
+   "1": {
+    "entera": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1.m4a",
+     "s": 1500000,
+     "dur": 380
+    },
+    "previa": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1p.m4a",
+     "s": 160000,
+     "dur": 30
+    },
+    "det": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1d.json",
+     "s": 9000
+    },
+    "detp": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1dp.json",
+     "s": 900
+    }
+   },
+   "2": {
+    "entera": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/2.m4a",
+     "s": 2100000,
+     "dur": 560
+    },
+    "previa": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/2p.m4a",
+     "s": 158000,
+     "dur": 30
+    }
+   }
+  },
+  "mejor": {
+   "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/mejor.m4a",
+   "s": 1100000,
+   "dur": 215
+  }
+ },
+ "registro": {
+  "v": 1,
+  "ev": "ffa-2026-11-27-vol40",
+  "ll": "701",
+  "sv": "FFA",
+  "nombre": "DESGRACIAS EN TOKYO VOL 40",
+  "dia": "2026-11-27",
+  "bk": "c",
+  "batallas": [
+   {
+    "k": 1,
+    "r": "Octavos",
+    "nombres": [
+     "Ana",
+     "Bea"
+    ],
+    "ids": [
+     "111111111111111111",
+     "222222222222222222"
+    ],
+    "dur": 380,
+    "desde": 812.4,
+    "entera": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1.m4a",
+     "s": 1500000,
+     "dur": 380
+    },
+    "previa": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1p.m4a",
+     "s": 160000,
+     "dur": 30
+    },
+    "det": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1d.json",
+     "s": 9000
+    },
+    "detp": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/1dp.json",
+     "s": 900
+    }
+   },
+   {
+    "k": 2,
+    "r": "Final",
+    "nombres": [
+     "Ana + Cata",
+     "Dani"
+    ],
+    "ids": [
+     "111111111111111111",
+     "333333333333333333",
+     "444444444444444444"
+    ],
+    "dur": 560,
+    "desde": 5000.0,
+    "entera": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/2.m4a",
+     "s": 2100000,
+     "dur": 560
+    },
+    "previa": {
+     "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/2p.m4a",
+     "s": 158000,
+     "dur": 30
+    }
+   }
+  ],
+  "g": "1488298216955973700",
+  "ini": 1764277200000,
+  "partes": {
+   "c": "1504110449535483924",
+   "m": [
+    "1580000000000000001",
+    "1580000000000000002"
+   ],
+   "dur": 6840
+  },
+  "mejor": {
+   "k": "grab/ffa-2026-11-27-vol40-0123456789abcdef0123456789abcdef/mejor.m4a",
+   "s": 1100000,
+   "dur": 215
+  }
+ }
+}

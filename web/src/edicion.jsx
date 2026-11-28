@@ -327,7 +327,9 @@ const PRIO = { campeon: 0, caza: 1, precio: 2, resnoche: 3, pase: 4, rango: 5, t
 // («10 · nivel del Pase») que tapaba a los campeones, las ligas y las crews. Una nota con las caras, como las cartas
 const GRUPO = (it) => (it.tipo === 'rango' || it.tipo === 'tarjeta' || it.tipo === 'pase' ? it.tipo : DE_SERVIDOR.has(it.tipo) && it.tipo !== 'svchat' ? 'sv' : '');
 const BREVE = { podio: 1, top10: 1, racha: 1, svnuevo: 1, svmeta: 1 };
-function titularDe(xs) {
+function titularDe(xs0) {
+  // 📲 lo que un socio sube a sus redes (`svred`, 28/11/2026) no es la noticia del día: va en su sección, abajo
+  const xs = xs0.some((it) => it.tipo !== 'svred') ? xs0.filter((it) => it.tipo !== 'svred') : xs0;
   const c = xs.filter((it) => it.tipo === 'campeon').sort((a, b) => (b.part || 0) - (a.part || 0))[0];
   return c || xs.slice().sort((a, b) => (PRIO[a.tipo] ?? 9) - (PRIO[b.tipo] ?? 9))[0];
 }
@@ -445,7 +447,7 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
   const evs = xs.filter((it) => it.tipo === 'campeon');
   const podio = xs.filter((it) => it.tipo === 'podio' && it.ev && it.ev === h.ev);
   // las notas: lo fuerte primero, la jornada de liga, lo demás y los grupos; lo chico a las breves; los chats aparte
-  const resto = xs.filter((it) => it !== h && !(it.tipo === 'podio' && it.ev === h.ev) && it.tipo !== 'promo' && it.tipo !== 'svchat');
+  const resto = xs.filter((it) => it !== h && !(it.tipo === 'podio' && it.ev === h.ev) && it.tipo !== 'promo' && it.tipo !== 'svchat' && it.tipo !== 'svred');
   const grupos = {};
   const notas = [];
   const breves = [];
@@ -460,9 +462,11 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
   const ligasFull = (LG && LG.ligas) || {};
   const jornadas = ligasLobby.map((L) => [L, ((ligasFull[L.id] || {}).fechas || []).find((f) => f.d === D.k)]).filter(([, f]) => f && (f.b || []).length);
   const promos = todos.filter((it) => it.tipo === 'promo').slice(0, 6);
+  // 📲 las redes de los socios (bot/redes_socios.py, 28/11/2026): lo más nuevo, en su sección como las promos
+  const redes = todos.filter((it) => it.tipo === 'svred' && it !== h).slice(0, 6);
   const chats = xs.filter((it) => it.tipo === 'svchat').concat(di === 0 ? (dias[1] || { xs: [] }).xs.filter((it) => it.tipo === 'svchat') : []).slice(0, 6);
   // (sin nombre —el resumen de la noche, una liga— va sólo lo que pasó: salía «: RESUMEN DE LA NOCHE»)
-  const tick = xs.slice(0, 12).map((it) => {
+  const tick = xs.filter((it) => it.tipo !== 'svred').slice(0, 12).map((it) => {
     const c = H.contenido(liga, it, H.pub);
     if (!c) return '';
     const q = DE_SERVIDOR.has(it.tipo) ? siglaDe(liga.svDe(it)) : limpio(quien1(it));
@@ -522,6 +526,12 @@ export function Edicion({ liga, todos, dias, di, setDi, A, P, H }) {
           {/* 🖼️ sin video ni imagen, la cara va sobre la escena de su servidor, como en las ligas (revisión 22/11/2026): sola en
               un 16:9 negro no decía nada */}
           <div className="ed-vgrid">{promos.map((it) => { const c = H.contenido(liga, it, H.pub); const svP = liga.svDe(it); const esP = !c || c.media || !svP ? '' : escenaDe(svP); return c ? <article key={it.id} className="ed-v"><div className="ed-v-img">{esP ? <img className="ed-v-esc" alt="" src={esP} loading="lazy" /> : null}{c.vis}</div><div className="ed-cu"><span className="ed-lab">{c.cat}</span><h4>{c.txt}</h4><div className="ed-firma"><H.Autor liga={liga} it={it} pub={H.pub} /><time>{H.hace(liga, it.t)}</time></div>{/* 🔊 la promo, con su canción */}<SonidoChip id={it.id} estilo={H.sonidoDe(it)} /></div></article> : null; })}</div>
+        </section>
+      ) : null}
+      {redes.length ? (
+        <section className="ed-sec"><h3 className="ed-st">Las redes de los socios</h3>
+          <p className="ed-sec-d">Lo nuevo que suben los servidores socios a YouTube e Instagram. Los videos se miran acá mismo.</p>
+          <div className="ed-vgrid">{redes.map((it) => { const c = H.contenido(liga, it, H.pub); return c ? <article key={it.id} className="ed-v" data-pub={it.id || undefined}><div className="ed-v-img">{c.vis}</div><div className="ed-cu"><span className="ed-lab">{c.cat}</span><h4>{c.txt}</h4><div className="ed-firma"><H.Autor liga={liga} it={it} pub={H.pub} /><time>{H.hace(liga, it.t)}</time></div>{c.acc ? <div className="ed-acc">{c.acc}</div> : null}<OcultarMods it={it} fijo={liga.muroFijo} /></div></article> : null; })}</div>
         </section>
       ) : null}
       {ligasLobby.length ? (

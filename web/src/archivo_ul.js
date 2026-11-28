@@ -8,10 +8,9 @@ import { useEffect, useState } from 'react';
 
 const R2 = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
 const URL_ARCHIVO = R2 + '/reels/archivo.json';
-// 🎧 y cada batalla entera, en audio, 15 días (Dlx, 25/11: «A»): `reels/audios.json`, con la misma forma
-const URL_AUDIOS = R2 + '/reels/audios.json';
+// 🎧 ⚠️ las batallas enteras en audio YA NO SE LEEN DE ACÁ (28/11/2026): eran públicas (`reels/audios.json`); ahora pasan por
+// el Worker con el permiso de cada uno (web/src/grabado.js, bot/grabados.js)
 let pedido = null;
-let pedidoA = null;
 
 /** el nombre sin tildes, signos ni mayúsculas: como `normN` de reels.jsx */
 export const normN = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -29,25 +28,15 @@ function bajar() {
   return pedido;
 }
 
-function bajarAudios() {
-  if (!pedidoA) {
-    pedidoA = fetch(URL_AUDIOS, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : [])).catch(() => []).then((xs) => {
-      const ahora = new Date().toISOString().slice(0, 16);
-      return (Array.isArray(xs) ? xs : []).filter((x) => x && x.url && (x.hasta || '') > ahora);
-    });
-  }
-  return pedidoA;
-}
-
-/** los shorts vigentes (`[]` mientras llegan o si no hay); con `audios`, las batallas enteras en audio */
-export function useArchivo(activo = true, audios = false) {
+/** los shorts vigentes (`[]` mientras llegan o si no hay) */
+export function useArchivo(activo = true) {
   const [xs, setXs] = useState([]);
   useEffect(() => {
     if (!activo) return undefined;
     let vivo = true;
-    (audios ? bajarAudios() : bajar()).then((a) => { if (vivo) setXs(a); });
+    bajar().then((a) => { if (vivo) setXs(a); });
     return () => { vivo = false; };
-  }, [activo, audios]);
+  }, [activo]);
   return xs;
 }
 

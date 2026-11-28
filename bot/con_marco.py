@@ -98,6 +98,23 @@ def firma_de(m, tc):
     return ('%s|%s' % (m[0], m[1]) if m else '-|-') + ('|' + tc if tc else '')
 
 
+#: 🃏 la ranura de cada carta en la Tienda (28/11/2026: cada efecto es de UNA carta). La misma tabla que `RANURA_FX` de
+#: bot/tienda.js, en el mismo orden: si no coinciden, la firma no coincide y /card nunca usa la foto
+RANURA_FX = (('temporada', 'carta'), ('competitivo', 'carta-comp'), ('servidor', 'carta-sv'), ('pais', 'carta-pais'))
+
+
+def firma_efectos(t):
+    """🃏 Los efectos puestos de alguien (`{ranura: pieza}`, lo de `tp` en /avisos/pases) para la firma: `t:C1,c:C30`, o ''.
+    ⚠️ La misma cuenta que `firmaEfectos()` de bot/tienda.js"""
+    t = t or {}
+    return ','.join('%s:%s' % (c[0], t[r]) for c, r in RANURA_FX if t.get(r))
+
+
+def efecto_de(t, carta):
+    """🃏 El efecto que lleva ESA carta de alguien, o ''"""
+    return str((t or {}).get(dict(RANURA_FX).get(carta, ''), '') or '')
+
+
 def datos_de(raw):
     """`(clave, servidor, país, [cartas])` de alguien, para la ruta de la foto. El servidor y el país, como los dibuja su
     carta: del pool si compite, del padrón si no (el primero de `servidores_de.json`, como `03_Servidor/generar.py`)."""
@@ -430,11 +447,13 @@ def correr(quienes, simulacro=False):
     for raw in quienes:
         k, sv, cc, cartas = datos_de(raw)
         m = pub.get(k)
-        tc = str((tp.get(k) or {}).get('carta') or '')
+        # 🃏 cada carta con SU efecto (28/11/2026): sin marco, sólo se fotografían las que llevan uno
+        t = tp.get(k) or {}
+        tc = firma_efectos(t)
         if not (m or tc) or not cartas:
             continue
         firma[k] = firma_de(m, tc)
-        trabajos += [(k, c, sv, cc) for c in cartas]
+        trabajos += [(k, c, sv, cc) for c in cartas if m or efecto_de(t, c)]
     if not trabajos:
         print('   🖼️ nadie con marco en esta tanda')
         return {}
@@ -480,6 +499,10 @@ def _self_check():
     # 🃏 la firma: igual a la de antes sin efecto (las fotos que ya están siguen valiendo) y con el efecto de la Tienda al final
     ok(firma_de(['plata', 'camiseta'], '') == 'plata|camiseta' and firma_de(['plata', 'camiseta'], 'C1') == 'plata|camiseta|C1'
        and firma_de(None, 'C1') == '-|-|C1' and firma_de(None, '') == '', 'la firma de la foto: el marco y el efecto de carta')
+    # 🃏 cada efecto en su carta: la misma firma que bot/tienda.js (`t:C1,c:C30`), y el de antes ya no coincide
+    ok(firma_efectos({'carta': 'C1'}) == 't:C1' and firma_efectos({'carta-comp': 'C30', 'carta': 'C1', 'aro': 'A1'}) == 't:C1,c:C30'
+       and firma_efectos({}) == '' and efecto_de({'carta-pais': 'C9'}, 'pais') == 'C9' and efecto_de({'carta': 'C1'}, 'pais') == '',
+       'los efectos de cada carta, en la firma y en la foto de esa carta')
     # 🎞️ la vuelta: justa cuando entra, y si no, cada animación da vueltas enteras con un ajuste chico
     ok(bucle([2200] * 14)[:2] == (2200, [1.0] * 14), 'un solo ritmo (C2: 2,2 s): cierra justo, sin ajuste')
     ok(bucle([1200, 1800])[:2] == (3600, [1.0, 1.0]), 'el mínimo común múltiplo, cuando entra')

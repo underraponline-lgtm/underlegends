@@ -1067,6 +1067,12 @@ export class Liga {
       return ct ? [this.chatEtq(it) + ' · ' + siglaDe(it.sv), ct.tit, ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }] : null;
     }
     if (it.tipo === 'svmeta') return ['META CUMPLIDA · ' + siglaDe(it.sv), siglaDe(it.sv) + ' cumplió su meta de la semana', ['sv', it.sv], c, { ruta: '#/sv/' + encodeURIComponent(siglaDe(it.sv)) }];
+    // 📲 lo que un socio sube a sus redes (bot/redes_socios.py, 28/11/2026): su miniatura y a su red
+    if (it.tipo === 'svred') {
+      const red = { yt: 'YOUTUBE', ig: 'INSTAGRAM', tt: 'TIKTOK' }[it.red] || 'REDES';
+      const img = it.red === 'yt' && it.vid ? 'https://i.ytimg.com/vi/' + it.vid + '/hqdefault.jpg' : it.img;
+      return [red + ' · ' + siglaDe(it.sv), limpio(it.tit) || siglaDe(it.sv) + ' subió algo nuevo', img ? ['img', img] : ['sv', it.sv], c, { link: it.url }];
+    }
     return null;
   }
   // 💬 EL DÍA FUERTE DE UN CHAT GENERAL (`svchat`, bot/chats.py `momentos()`, 17/11/2026: Dlx, «si pasan cosas

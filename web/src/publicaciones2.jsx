@@ -113,7 +113,7 @@ function nombresDe(liga, it, pub) {
 // persona; lo de un servidor, el servidor («Arrancamos la semana…»); lo de todos, la Liga. Los datos no cambian: el
 // muro sigue contando hechos (bot/muro.py) y la voz la pone esta página. ⚠️ Lleva la marca «automática» con lo que es:
 // nadie la escribió, y cada uno puede apagar las suyas en Tu cuenta (bot/muro_solos.py `apagados()`) ──
-const DEL_SV = { svlunes: 1, svsemana: 1, svmeta: 1, svtop: 1, svrecord: 1, svnuevo: 1, svtier: 1, anuncio: 1, flyer: 1, svchat: 1 };
+const DEL_SV = { svlunes: 1, svsemana: 1, svmeta: 1, svtop: 1, svrecord: 1, svnuevo: 1, svtier: 1, anuncio: 1, flyer: 1, svchat: 1, svred: 1 };
 const DE_LA_LIGA = { premios: 1, resnoche: 1, liga: 1, crewtier: 1 };
 function autorDe(it, liga) {
   const cat = String(it.cat || '');
@@ -302,6 +302,28 @@ function contenido(liga, it, pub) {
     c.txt = <>{nombres}{ron || it.ev ? <> · <b>{[ron, limpio(it.ev || '')].filter(Boolean).join(' de ')}</b></> : null}</>;
     c.det = 'Las mejores rimas de la batalla, en corto';
     c.acc = it.ll ? <a className="pb-a" href={'#/llave/' + encodeURIComponent(it.ll)}>Ver la llave</a> : null;
+  } else if (it.tipo === 'svred') {
+    // 📲 LO QUE UN SOCIO SUBE A SUS REDES (28/11/2026, bot/redes_socios.py; Dlx: «las redes de socios se pongan en
+    // publicaciones»): la miniatura y su link. Un video de YouTube se mira acá mismo (parado si es short); un post de
+    // Instagram abre Instagram. La red sale de `red` (yt, ig…), así otra red entra igual
+    const plat = PLATAFORMA[it.red] || 'sus redes';
+    const que = it.red === 'yt' ? (it.corto ? 'un short' : 'un video') : it.red === 'ig' ? (it.corto ? 'un reel' : 'un post') : 'algo nuevo';
+    const forma = it.corto ? ' pb-short' : it.red === 'ig' ? ' pb-cuadro' : '';
+    c.cat = 'Redes · ' + siglaDe(it.sv);
+    c.media = !!((it.red === 'yt' && it.vid) || it.img);
+    c.vis = it.red === 'yt' && it.vid ? (
+      <button type="button" className={'pb-vid' + forma} onClick={() => abrirVideo({ vid: it.vid, tit: limpio(it.tit || ''), link: it.url, vertical: !!it.corto })}
+        aria-label={'Mirar ' + (it.tit ? limpio(it.tit) : 'el video')}><Miniatura vid={it.vid} cls="pb-vid-img" /><span className="pb-play" aria-hidden="true">▶</span>
+        <span className="pb-plat">{plat}</span></button>
+    ) : it.img ? (
+      <a className={'pb-vid' + forma} href={it.url} target="_blank" rel="noopener noreferrer" aria-label={'Abrir en ' + plat}>
+        <img className="pb-vid-img" alt="" src={it.img} loading="lazy" />{it.corto ? <span className="pb-play" aria-hidden="true">▶</span> : null}
+        <span className="pb-plat">{plat}</span></a>
+    ) : logoSv;
+    // la frase entera en un solo texto: /en la traduce de una (web/src/ingles.json)
+    const frase = 'Subimos ' + que + ' a ' + plat;
+    c.txt = it.tit ? <>{frase}: <b>{limpio(it.tit)}</b></> : <b>{frase}</b>;
+    c.acc = it.url ? <a className="pb-a" href={it.url} target="_blank" rel="noopener noreferrer">Ver en {plat} ↗</a> : null;
   } else if (it.tipo === 'flyer') {
     const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
     c.cat = 'Liga · ' + siglaDe(it.sv);
@@ -546,9 +568,11 @@ export const TIPOS = {
   mw: ['caza', 'precio', 'sobrevivio', 'elegido', 'premios'], mes: ['mesaward'], crews: ['crewtier', 'crewunion', 'crewnueva'], anuncios: ['flyer', 'liga'], promos: ['promo'],
   // 🔄 bot/muro_solos.py (15/11/2026)
   logros: ['podio', 'top10', 'subio', 'racha'], servidores: ['svlunes', 'svsemana', 'svmeta', 'svtop', 'svrecord', 'svnuevo', 'svtier', 'svchat'],
+  // 📲 las redes de los socios (bot/redes_socios.py, 28/11/2026)
+  redes: ['svred'],
 };
 export const FILTROS2 = [['', 'Todo'], ['campeones', 'Campeones'], ['rangos', 'Rangos'], ['logros', 'Logros'], ['cartas', 'Cartas'], ['pase', 'Pase'],
-  ['mw', 'Most Wanted'], ['servidores', 'Servidores'], ['mes', 'MES AWARDS'], ['crews', 'Crews'], ['anuncios', 'Anuncios'], ['promos', 'Promos']];
+  ['mw', 'Most Wanted'], ['servidores', 'Servidores'], ['redes', 'Redes'], ['mes', 'MES AWARDS'], ['crews', 'Crews'], ['anuncios', 'Anuncios'], ['promos', 'Promos']];
 const hace = (liga, t) => { const c = liga.cuando(t); return c ? c.charAt(0).toUpperCase() + c.slice(1) : ''; };
 // el título en texto llano, para el escenario y los resúmenes
 function plano(liga, it) {
@@ -863,7 +887,7 @@ const NOMBRE_T = { campeon: ['campeón', 'campeones'], rango: ['rango', 'rangos'
   podio: ['primer podio', 'primeros podios'], top10: ['top 10', 'top 10'], subio: ['subida', 'subidas'], racha: ['racha', 'rachas'],
   crewunion: ['de crews', 'de crews'], crewnueva: ['crew nueva', 'crews nuevas'], svlunes: ['de servidores', 'de servidores'],
   svsemana: ['cierre', 'cierres'], svmeta: ['meta', 'metas'], svtop: ['#1 nuevo', '#1 nuevos'], svrecord: ['récord', 'récords'],
-  svnuevo: ['socio nuevo', 'socios nuevos'], svtier: ['tier', 'tiers'], svchat: ['del chat', 'del chat'],
+  svnuevo: ['socio nuevo', 'socios nuevos'], svtier: ['tier', 'tiers'], svchat: ['del chat', 'del chat'], svred: ['de redes', 'de redes'],
   // ⚠️ faltaban (18/11/2026) y salía la clave interna: el lunes 16/11 cerrado decía «1 LIGA · 1 ELEGIDO»
   liga: ['de la Liga', 'de la Liga'], elegido: ['El Elegido', 'El Elegido'], premios: ['premios de la semana', 'premios de la semana'],
   sobrevivio: ['sobrevivió', 'sobrevivieron'], sorteo: ['sorteo', 'sorteos'] };

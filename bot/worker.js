@@ -58,10 +58,18 @@ import * as NU from './nuevos.js';
 import * as RC from './recibidor.js';
 // 🎧 «Ahora mismo» (28/11/2026): las llamadas públicas de los socios, para la página. Todo vive en bot/ahora.js
 import * as AH from './ahora.js';
+// 🎙️💎 los eventos grabados con el Premium (28/11/2026): 30 s para todos, tu batalla entera, el evento para el Pase. bot/grabados.js
+import * as GR from './grabados.js';
 // ✅ verificarse sin salir de Discord (28/11/2026): el panel de #verificate-aqui de DRA, paso a paso como el de YAGPDB.
 // Todo vive en bot/verificar_dc.js; acá sólo lo que necesita del Worker (el freno, los avisos, anotar para el ciclo)
 import * as VD from './verificar_dc.js';
-const ayudaVD = (env, ctx) => ({ frenado, espera, aviso, pensandoYEditar, enMadrugada,
+// ✅ verificarse en la página y con /verificar: los roles de DRA salen de la misma tabla que el panel (bot/verificar_web.js)
+import * as VW from './verificar_web.js';
+// 📬 los botones de los hilos privados del buzón (`bzn:…`). Ver bot/buzon.js
+import * as BZ from './buzon.js';
+// 🃏 la ranura de cada pieza: un efecto va en la de SU carta (28/11/2026)
+import { ranuraDe as ranuraPieza } from './tienda.js';
+const ayudaVD =(env, ctx) => ({ frenado, espera, aviso, pensandoYEditar, enMadrugada,
   anotar: (id, nick, user, glob) => anotar(env, ctx, id, nick, user, glob, VD.GUILD_DRA, 'yo') });
 export { Avisos };
 
@@ -1394,7 +1402,8 @@ const seguir = (i, txt, botones, data) =>
 // se lo contesta sólo a él (efímero). Los datos son los del objeto, por Discord ID, igual que en la página.
 //
 // ⚠️ EL OBJETO PUEDE ESTAR DORMIDO (~4 s en frío): se contesta «pensando» (tipo 5) y se edita después, como `/foto`.
-const RANURA_NOMBRE = { aro: 'Aro', deco: 'Decoración', nom: 'Nombre', carta: 'Efecto de carta', perfil: 'Perfil',
+const RANURA_NOMBRE = { aro: 'Aro', deco: 'Decoración', nom: 'Nombre', carta: 'Efecto · tu Temporada', 'carta-comp': 'Efecto · tu Competitiva',
+  'carta-sv': 'Efecto · tu Servidor', 'carta-pais': 'Efecto · tu País', perfil: 'Perfil',
   fp: 'Fondo · tu perfil', fv: 'Fondo · VS del Inicio', fe: 'Fondo · escenario de tu carta', fd: 'Fondo · VS de Discord',
   ff: 'Fondo · tu ficha', fr: 'Fondo · tu fila del ranking' };
 const RAREZA_NOMBRE = ['Maqueta', 'Mixtape', 'Vinilo', 'Disco de Oro', 'Micrófono de Oro', 'Disco de Diamante'];
@@ -1722,7 +1731,7 @@ async function panelInventario(env, did, i) {
       filas: [S.vinculado === false ? (lineaTits ? [botonLink('Tu Inventario', URL_INVENTARIO)] : []) : [lineaTits ? botonLink('Tu Inventario', URL_INVENTARIO) : null, botonLink('Ir a la Tienda', URL_TIENDA)].filter(Boolean)] });
   }
   const por = {};
-  for (const x of inv) { const r = P[x.p].c; por[r] = (por[r] || 0) + 1; }
+  for (const x of inv) { const r = ranuraPieza(P[x.p]); por[r] = (por[r] || 0) + 1; }
   const lugares = Object.keys(RANURA_NOMBRE).filter((r) => por[r]).concat(Object.keys(por).filter((r) => !RANURA_NOMBRE[r]));
   const filas = lugares.slice(0, INV_FILAS).map((r) => {
     const p = puesto[r] && P[puesto[r]];
@@ -1743,7 +1752,7 @@ async function panelEquipar(env, did, ranura, i, nota) {
   const [S, yo] = await Promise.all([tiendaDe(env, did), personaDe(env, did)]);
   if (!S || !S.ok || !S.yo) return V.avisoMsg('No pude ver lo tuyo: prueba de nuevo en un minuto.');
   const P = (S.cat && S.cat.piezas) || {};
-  const mias = (S.yo.inv || []).filter((x) => P[x.p] && P[x.p].c === ranura);
+  const mias = (S.yo.inv || []).filter((x) => P[x.p] && ranuraPieza(P[x.p]) === ranura);
   const ahora = (S.yo.puesto || {})[ranura] || '';
   const nombre = RANURA_NOMBRE[ranura] || ranura;
   const color = colorRango(yo.m, yo.g && yo.g.rg);
@@ -1772,7 +1781,7 @@ async function ponerChat(env, did, ranura, pieza) {
     const por = { verificate: 'Primero verifícate: **`/vincular`**.', no_la_tienes: 'Ésa no es tuya.', ranura: 'Eso no va ahí.' };
     return { ok: false, texto: por[j && j.error] || 'No pude ponértelo: prueba de nuevo en un minuto.' };
   }
-  return { ok: true, texto: pieza === '-' ? '✅ Listo: te lo quité.' : '✅ **Listo, te lo pusiste.** Se ve en la página en unos minutos' + (ranura === 'carta' ? ', y en `/card` cuando se rehaga tu carta.' : '.') };
+  return { ok: true, texto: pieza === '-' ? '✅ Listo: te lo quité.' : '✅ **Listo, te lo pusiste.** Se ve en la página en unos minutos' + (ranura.startsWith('carta') ? ', y en `/card` cuando se rehaga tu carta.' : '.') };
 }
 
 // ── Los botones se apagan solos ───────────────────────────────────────────
@@ -2392,7 +2401,7 @@ export async function cuentaVerificar(req, env, ctx) {
   if (baja) return json({ olvido: true });
   let mm = null;
   try { mm = mCrudo ? JSON.parse(mCrudo) : null; } catch (e) { mm = null; }
-  const P = mm && mm.porton;
+  const P = VW.porton(mm && mm.porton);
   if (!P || !P.guild || !env.DISCORD_TOKEN) return json({ error: 'porton' }, 503);
   const tabla = P.paises || {};
   const opciones = Object.keys(tabla).map((r) => tabla[r])
@@ -4771,7 +4780,7 @@ const COMANDOS = {
       try { g = JSON.parse(crudo || 'null'); } catch (e) { g = null; }
       return fv('Ya estás verificado ✅', 'Tu tarjeta sale con `/card`.', [], [], { color: colorRango(mm, g && g.rg), cara });
     }
-    const P = mm && mm.porton;
+    const P = VW.porton(mm && mm.porton);
     const v0 = comoVerificarse(aquiEs(i.guild_id));
     // 🧱 sin el «👇» (el botón ya está abajo) y con la lista que se tilda, quedan los tres ✅/❌: como mucho tres emoji
     const v = Object.assign({}, v0, { texto: v0.texto.replace(/ 👇$/, '.') });
@@ -5725,6 +5734,8 @@ export default {
     if (camino === '/recibidor' && req.method === 'POST') return esCiclo ? RC.ruta(req, env) : new Response('', { status: 403 });
     // 🎧 «Ahora mismo» (28/11/2026): GET público (la página, por el borde) y POST del grabador con la clave. bot/ahora.js
     if (camino === '/ahora') return AH.ruta(req, env, esCiclo);
+    // 🎙️💎 los eventos grabados (28/11/2026): la lista sellada (con la sesión), el audio con Range y lo del motor (clave del ciclo)
+    if (camino === '/grabados' || camino.startsWith('/grabados/')) return GR.ruta(req, env, ctx, esCiclo, sesionDe);
     // ✅ el panel de verificación de DRA (herramientas/verificar_dc_panel.py): publicarlo y sembrar los AKA, con la clave del ciclo
     if (camino === '/verificar-dc' && req.method === 'POST') return esCiclo ? VD.ruta(req, env) : new Response('', { status: 403 });
     if (camino === '/avisos/numeral') return numeralPagina(req, env);
@@ -6076,6 +6087,12 @@ export default {
         const esperarR = frenado(idDe(i), 'click');
         if (esperarR) return espera(esperarR);
         return que === 'rcb' ? RC.boton(i, env, ctx, DUENO) : RC.saludarBoton(i, env, ctx);
+      }
+      // ── 📬 el buzón (28/11/2026): «Ya lo vi», «No me avises más» y «Volver a avisarme» en un hilo privado. bot/buzon.js
+      if (que === 'bzn') {
+        const esperarB = frenado(idDe(i), 'click');
+        if (esperarB) return espera(esperarB);
+        return BZ.botonWorker(i, env, ctx);
       }
 
       if (que === 'qg') {

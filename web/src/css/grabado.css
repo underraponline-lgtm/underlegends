@@ -1,0 +1,35 @@
+/* 🎙️💎 los eventos grabados con el Premium (28/11/2026, web/src/grabado.jsx): qué oyes, la marca de cada batalla, el cartel del
+   adelanto y la grabación completa. Estructura y no color: bordes de 2 px, nada de degradés ni blur, radios de 2 px */
+.gb-acc{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding:12px 14px;border:2px solid var(--linea);border-radius:2px}
+.gb-acc p{margin:0;font:500 14px/1.4 Archivo,sans-serif}
+.gb-acc p b{font-weight:800}
+.gb-acc-t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.gb-acc-sub{color:var(--gris)}
+.gb-acc .gb-acc-sub{font-size:13px}
+.gb-acc-b{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.gb-tag{align-self:start;padding:5px 7px;border:2px solid var(--linea);border-radius:2px;font:900 11px/1 Archivo,sans-serif;letter-spacing:.08em;white-space:nowrap}
+.gb-prem{grid-template-columns:auto 1fr;border-color:var(--verde)}
+.gb-prem .gb-tag{background:var(--verde);border-color:var(--verde);color:#030304}
+@media (max-width:719px){
+  .gb-acc{grid-template-columns:1fr;gap:10px}
+  .gb-acc-b{justify-content:flex-start}
+  .gb-acc-b .btn{flex:1 1 auto}
+  .gb-tag{justify-self:start}
+}
+/* la marca de cada batalla en la lista del evento */
+.lk-ev-caps .gb-m{grid-column:1/-1;justify-self:start;padding:3px 6px;border:1px solid var(--linea);border-radius:2px;
+  font:800 10px/1 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.lk-ev-caps .gb-m-tuya{background:var(--verde);border-color:var(--verde);color:#030304}
+/* el cartel del final del adelanto: el de `.vau-cartel`, con un link que se ve como botón */
+.gb-cartel-t{margin:0;font:600 clamp(14px,2.2vw,18px)/1.3 Archivo,sans-serif}
+.gb-cartel-b{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.gb-cartel-b a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:2px solid #29B298;border-radius:2px;background:#29B298;
+  color:#030304;font:800 13px/1 Archivo,sans-serif;text-transform:uppercase}
+.gb-cartel-b a:hover,.gb-cartel-b a:focus-visible{background:#F6F6F6;border-color:#F6F6F6}
+/* la grabación completa, para el Premium */
+.gb-partes{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.gb-partes-t{margin:0;color:var(--gris);font-size:13px}
+.gb-partes-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;width:100%}
+.gb-partes-l li{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.gb-partes-l small{font:800 11px/1 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);min-width:110px}
+.gb-partes-l audio{flex:1 1 260px;max-width:100%}

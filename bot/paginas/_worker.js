@@ -1167,6 +1167,29 @@ export default {
 
     if (AVISOS[url.pathname]) return avisos(req, url, ctx);
 
+    // 🎙️💎 LOS EVENTOS GRABADOS (28/11/2026, bot/grabados.js). La lista va con la sesión de quien mira —cada uno oye algo
+    // distinto: 30 s, su batalla entera o todo con el Premium—, así que NUNCA por el borde. El audio llega sellado (vence a
+    // las 2 h) y se reenvía tal cual, con su Range: `media-src 'self'` sólo deja sonar lo de este origen
+    if (url.pathname === '/api/grabados') {
+      if (req.method !== 'GET') return new Response('no', { status: 405 });
+      const hs = { accept: 'application/json', 'x-lg-ip': ipDe(req) };
+      if (sesion(req)) hs['x-lg-ses'] = sesion(req);
+      const r = await fetch(ORIGEN + '/grabados' + url.search, { method: 'GET', headers: hs });
+      return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO, 'cache-control': 'no-store' } });
+    }
+    if (url.pathname.indexOf('/api/grabados/a/') === 0) {
+      if (req.method !== 'GET' && req.method !== 'HEAD') return new Response('no', { status: 405 });
+      const hs = { 'x-lg-ip': ipDe(req) };
+      if (req.headers.get('range')) hs.range = req.headers.get('range');
+      const r = await fetch(ORIGEN + url.pathname.slice(4), { method: req.method, headers: hs });
+      const vuelta = { ...SEGURO };
+      for (const k of ['content-type', 'content-length', 'content-range', 'accept-ranges', 'cache-control', 'content-disposition']) {
+        const v = r.headers.get(k);
+        if (v) vuelta[k] = v;
+      }
+      return new Response(req.method === 'HEAD' ? null : r.body, { status: r.status, headers: vuelta });
+    }
+
     // 🎧 «AHORA MISMO» (28/11/2026): las llamadas públicas de los socios, con números (bot/ahora.js). La página pregunta cada
     // minuto con la pestaña a la vista; 30 s en el borde: mucha gente mirando son pocos pedidos al Worker
     if (url.pathname === '/api/ahora') {

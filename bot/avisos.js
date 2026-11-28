@@ -53,7 +53,11 @@ import * as TI from './tienda.js';
 // 🐣 el Evento de Nuevos (28/11/2026): la inscripción y su panel en DRA
 import * as NU from './nuevos.js';
 import * as RC from './recibidor.js';
+// 📬 el buzón en hilos privados de DRA (28/11/2026): lee la bandeja de la campana. Ver bot/buzon.js
+import * as BZ from './buzon.js';
 import * as AH from './ahora.js';
+// 🎙️💎 los eventos grabados con el Premium (28/11/2026): el índice, quién oye qué y el foro. bot/grabados.js
+import * as GR from './grabados.js';
 // ✅ verificarse en #verificate-aqui (28/11/2026): los AKA tomados, la historia, las invitaciones y los saludos
 import * as VD from './verificar_dc.js';
 import * as LIV from './ligas_vivo.js';
@@ -4015,6 +4019,9 @@ const RUTAS = {
   '/avisos/tienda': 'POST', '/avisos/tienda-accion': 'POST', '/avisos/tienda-catalogo': 'POST',
   // 💸 lo que pagaron de más los Premium hasta el 26/11/2026, y devolverlo (con la clave del ciclo): `sobrepagoPremium()`
   '/avisos/tienda-sobrepago': 'POST',
+  // 🃏 los efectos de carta, uno por carta (28/11/2026): cuántos hay y quién los tiene (sólo lee), y acomodar lo puesto
+  // (sin `aplicar`, sólo dice qué haría). Con la clave del ciclo: `bot/tienda_efectos.py`
+  '/avisos/tienda-efectos': 'POST', '/avisos/tienda-efectos-acomodar': 'POST',
   '/avisos/tienda-arte': 'POST', '/avisos/tienda-arte-subir': 'POST', '/avisos/imagen-prueba': 'POST', '/avisos/tienda-uso': 'GET',
   // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
   // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
@@ -4175,6 +4182,8 @@ const RUTAS = {
   '/avisos/vales': 'POST', '/avisos/vale-usar': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
+  // 📬 el buzón en hilos privados de DRA, para el ciclo (`bot/buzon.py`): con `claveCiclo()`. Ver bot/buzon.js
+  '/avisos/buzon': 'POST',
   // 📊 el uso de la página y del bot, con su clave: los mismos números del Dashboard → Números, sin ningún ID
   '/avisos/uso-ciclo': 'GET',
   // 🧠 los datos de cada persona para /card, que viven en el objeto desde el 06/10/2026: los escribe y los lee el
@@ -6018,8 +6027,9 @@ export function socioAjusteValido(cual, valor, canales, ligas) {
   // 💬 `leer_chat` (17/11/2026, `bot/chats.py`): si el bot lee una vez por día el chat general de ese servidor
   // 🏆 `ganadores` (Discord, tanda 2, 17/11/2026, `bot/aviso_ganadores.py`): el aviso de los ganadores de cada evento en su chat general
   // 🎧 `ahora_mismo` (28/11/2026, bot/ahora.js): si sus llamadas públicas salen en «Ahora mismo» de la página
+  // 📲 `redes_en_muro` (28/11/2026, bot/redes_socios.py): si lo que sube a YouTube e Instagram sale en Publicaciones
   if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord' || cual === 'leer_chat' || cual === 'ganadores'
-    || cual === 'ahora_mismo') return typeof valor === 'boolean' ? valor : undefined;
+    || cual === 'ahora_mismo' || cual === 'redes_en_muro') return typeof valor === 'boolean' ? valor : undefined;
   if (cual === 'vivo_nivel') return Object.prototype.hasOwnProperty.call(NIVELES_CHAT, valor) ? valor : undefined;
   if (cual === 'aviso_evento') return (valor === '' || valor === null) ? '' : (valor === 'chat' || valor === 'no') ? valor : undefined;
   if (cual === 'avisos' || cual === 'vivo' || cual === 'ascenso') {
@@ -7645,7 +7655,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`); y 🪪 quiénes de las
   // crews no están verificados, cada corrida (`bot/crews_verificar.py`)
-  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-siglas' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar' || ruta === '/avisos/tienda-catalogo' || ruta === '/avisos/tienda-sobrepago') {
+  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-siglas' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar' || ruta === '/avisos/tienda-catalogo' || ruta === '/avisos/tienda-sobrepago' || ruta === '/avisos/tienda-efectos' || ruta === '/avisos/tienda-efectos-acomodar') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     const crudo = await req.text();
@@ -8176,7 +8186,9 @@ export async function rutaAvisos(req, env, ruta) {
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos/bandeja', {
-      method: 'POST', body: JSON.stringify({ quien: q.id, visto: d.visto === true }), headers: { 'content-type': 'application/json' },
+      // 📬 `buzon`: el interruptor de los hilos de DRA en Ajustes (true · false · 'ver'). Ver `BZ.pagina()`
+      method: 'POST', body: JSON.stringify({ quien: q.id, visto: d.visto === true,
+        buzon: d.buzon === true || d.buzon === false || d.buzon === 'ver' ? d.buzon : undefined }), headers: { 'content-type': 'application/json' },
     });
   }
   // 🔥 TU RACHA Y TU NIVEL, con tu sesión. Pedirla ya cuenta el día: pasa por `quienPide()`, que lo anota
@@ -9104,6 +9116,14 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/cierre-vivo', {
       method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
     });
+  }
+  // 📬 EL BUZÓN, PARA EL CICLO (`bot/buzon.py`): la ronda y lo que salió. Trae Discord IDs: sin su clave «no existe»
+  if (ruta === '/avisos/buzon') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 20000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/buzon', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
   // 🎟️ QUIÉN TIENE NIVEL EN EL PASE, PARA EL CICLO: trae Discord IDs, así que sin su clave «no existe»
   if (ruta === '/avisos/pase-niveles') {
@@ -10090,8 +10110,12 @@ export class Avisos {
       NU.nuevosTablas(this.sql);
       // 🚪 EL RECIBIDOR DE DRA (28/11/2026): las preguntas (sin el texto) y quién recibió a quién, en bot/recibidor.js
       RC.recibidorTablas(this.sql);
+      // 📬 EL BUZÓN EN HILOS PRIVADOS DE DRA (28/11/2026): qué hilo se abrió, qué salió y quién no quiere. Ver bot/buzon.js
+      BZ.buzonTablas(this.sql);
       // 🎧 «AHORA MISMO» (28/11/2026): una fila por socio con llamadas públicas, sin nada de nadie. Ver bot/ahora.js
       AH.ahoraTablas(this.sql);
+      // 🎙️💎 LOS EVENTOS GRABADOS (28/11/2026): qué batallas, quién rapeó en cada una y dónde está cada archivo. bot/grabados.js
+      GR.grabadosTablas(this.sql);
       // ✅ VERIFICARSE EN DISCORD (28/11/2026): lo que guardaba YAGPDB, en tablas nuestras. Ver bot/verificar_dc.js
       VD.verifTablas(this.sql);
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
@@ -10672,6 +10696,8 @@ export class Avisos {
       if (ruta === '/estado') return json(this.delMinuto('/estado', 20, () => this.estado()), 200, 20);
       // 🎧 «Ahora mismo»: leer (la página) y poner (el grabador, por el Worker con la clave). Sólo del Worker: ver bot/ahora.js
       if (ruta === '/ahora-leer' || ruta === '/ahora-poner') return AH.rutaObjeto(this, req, ruta);
+      // 🎙️💎 los eventos grabados: la lista, el registro del motor, la config, el foro y la poda. Sólo del Worker: bot/grabados.js
+      if (ruta.startsWith('/grabados-')) return GR.rutaObjeto(this, req, ruta);
       // ⚙️ los ajustes para el ciclo, y con ellos los servidores que corrieron /setup (`setup_altas`, 19/11/2026): así
       // `bot/tiers.py` los da de alta en la misma lectura, sin otra ruta. ⚠️ `setup_altas` NO es un ajuste de Dlx: no se
       // escribe por `/ajuste` (`ajusteValido()` no lo conoce) y el Dashboard no lo recibe por acá
@@ -10857,6 +10883,8 @@ export class Avisos {
       if (ruta === '/nuevos-panel') return json(await NU.panel(this, d));
       // 🚪 el recibidor: una pregunta y «Lo recibo yo» (sólo del Worker: no están en `RUTAS`). Ver bot/recibidor.js
       if (ruta === '/recibidor-pedir') return json(RC.pedir(this, d, Date.now()));
+      // 📬 el buzón: la ronda y lo que salió (el ciclo, por `/avisos/buzon` con su clave) y los botones del hilo (el Worker)
+      if (ruta === '/buzon') return json(BZ.objeto(this, d, Date.now()));
       // ✅ los pasos de la verificación en Discord (sólo del Worker: no están en `RUTAS`). Ver bot/verificar_dc.js
       if (ruta.startsWith('/vdc-')) return json(VD.objeto(this, ruta.slice(5), d, Date.now()));
       if (ruta === '/recibidor-reclamar') return json(await RC.reclamar(this, d, Date.now(), DUENO));
@@ -10869,8 +10897,10 @@ export class Avisos {
         const ctl = [...d.una, ...d.frio].map((f) => String(f[f.length - 1] || '')).filter((k) => k && enControlVuelve(k));
         for (const k of ctl) this.sql.exec('INSERT OR IGNORE INTO vuelve_control (k, t) VALUES (?, ?)', k, ahora);
         this.sql.exec('DELETE FROM vuelve_control WHERE t < ?', ahora - 90 * DIA_MS);
-        this.guardar('primerizos', Object.assign({}, d, { control: ctl }));
-        return json({ ok: true });
+        // 🔁 los inactivos de hoy (`inact`, de bot/inactivos.py): a su tabla (`regresoCiclo()` de bot/nuevos.js), no al estado
+        const ina = Array.isArray(d.inact) ? NU.regresoCiclo(this, d.inact, ahora) : null;
+        this.guardar('primerizos', Object.assign({}, d, { control: ctl, inact: undefined }));
+        return json(ina ? { ok: true, inact: ina } : { ok: true });
       }
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
       if (ruta === '/roles-estados') return json(this.rolesEstados(d));
@@ -10960,6 +10990,8 @@ export class Avisos {
       if (ruta === '/tienda-accion') { const r = TI.tiendaAccion(this, d, TI_H); return json(r, r.estado || 200); }
       if (ruta === '/tienda-catalogo') { const r = TI.catalogoGuardar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/tienda-sobrepago') return json(TI.sobrepagoPremium(this, d.aplicar === true));
+      if (ruta === '/tienda-efectos') { const r = TI.efectosConteo(this, d.duenos === true); return json(r, r.estado || 200); }
+      if (ruta === '/tienda-efectos-acomodar') { const r = TI.efectosAcomodar(this, d.aplicar === true); return json(r, r.estado || 200); }
       if (ruta === '/tienda-arte') { const r = TI.arteMio(this, d, TI_H); return json(r, r.estado || 200); }
       if (ruta === '/tienda-arte-subir') { const r = TI.arteGuardar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/crew-dueno') {
@@ -14393,7 +14425,10 @@ export class Avisos {
       noche: String((y && y.noche) || '').slice(0, 60),
       // 🖼️ su mitad del VS en vivo (17/11/2026, «Tus fondos» → «El VS en vivo de Discord»): su imagen o `bandera`
       fondo: this.fondoVivo(String((y && y.k) || '')),
-      tfd: pieza(String((y && y.k) || ''), 'fd'), tc: pieza(String((y && y.k) || ''), 'carta') });
+      // 🃏 `tc` es el de la Temporada (como siempre) y `tx` los de las otras tres (28/11/2026): `bot/kit.py` pone el de la
+      // carta que ese lado muestra en el VS, y ninguno si no tiene uno para ésa
+      tfd: pieza(String((y && y.k) || ''), 'fd'), tc: pieza(String((y && y.k) || ''), 'carta'),
+      tx: Object.fromEntries(['competitivo', 'servidor', 'pais'].map((c) => [c, pieza(String((y && y.k) || ''), TI.RANURA_FX[c])]).filter((x) => x[1])) });
     const h2h = Array.isArray(d.h2h) && d.h2h.length === 2 ? d.h2h.map((x) => Math.max(0, Math.min(999, Number(x) || 0))) : null;
     // 🧩 los otros formatos (19/10/2026): hasta 5 lados y 10 personas, cada una como un lado de siempre
     let grupos = null;
@@ -15426,9 +15461,14 @@ export class Avisos {
     // 📱 y lo que la página marcó como visto en su cuenta (23/11/2026)
     try { this.sql.exec('DELETE FROM cuenta_ui WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
     // 🐣 y su anotación al Evento de Nuevos (28/11/2026): lleva su Discord ID y su nombre
-    try { this.sql.exec('DELETE FROM nuevos_anot WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
+    // 🔁 y las del panel «De regreso» y su fila de inactivo (28/11/2026): `olvidar()` de bot/nuevos.js
+    try { NU.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
     // 🚪 y lo del recibidor (28/11/2026): sus preguntas, sus saludos y a quién recibió (ver `olvidar()` en bot/recibidor.js)
     try { RC.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
+    // 📬 y su buzón (28/11/2026): lo que salió, si lo apagó, y sus hilos vivos se borran en la ronda siguiente. bot/buzon.js
+    try { BZ.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
+    // 🎙️ y sus batallas grabadas (28/11/2026): su ID sale del índice y esas batallas se retiran (tienen su voz). bot/grabados.js
+    try { await GR.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
     // ✅ y lo de verificarse en Discord (28/11/2026): su AKA tomado, su historia, sus invitaciones y sus saludos
     try { VD.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
     // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
@@ -17390,6 +17430,10 @@ export class Avisos {
     try { TI.tiendaMudar(this, viejo, nuevo); } catch (e) { fallas.push('tienda'); }
     // 🚪 y lo del recibidor: preguntas, recibidos, saludos y la marca de su premio (ver `mudar()` en bot/recibidor.js)
     try { RC.mudar(this, viejo, nuevo); } catch (e) { fallas.push('recibidor'); }
+    // 📬 y su buzón: lo que ya salió en Discord, si lo apagó y sus hilos (ver `mudar()` en bot/buzon.js)
+    try { BZ.mudar(this, viejo, nuevo); } catch (e) { fallas.push('buzon'); }
+    // 🎙️ «tu batalla» grabada sigue a la cuenta (bot/grabados.js)
+    try { GR.mudar(this, viejo, nuevo); } catch (e) { fallas.push('grabados'); }
     try { this.sql.exec('UPDATE inscritos SET autor_id = ? WHERE autor_id = ?', nuevo, viejo); } catch (e) { fallas.push('inscritos'); }
     this.inscMem = null;
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', viejo);
@@ -19688,7 +19732,11 @@ export class Avisos {
           if (!r.ok) continue;
           const j = await r.json();
           for (const a of j.attachments || []) {
-            if (/^grabacion-[\w-]+\.ogg$/.test(String(a.filename || ''))) partes.push({ url: a.url, n: a.filename, mb: Math.round((a.size || 0) / 1e5) / 10 });
+            // 🔐 sellado y por el Worker (28/11/2026, bot/grabados.js `linkAdjunto()`): el de cdn.discordapp.com no sonaba en la
+            // página (`media-src` sólo deja su origen) y era un link que se podía pasar a cualquiera por un día
+            if (!/^grabacion-[\w-]+\.ogg$/.test(String(a.filename || ''))) continue;
+            const url = await GR.linkAdjunto(a.url, a.size, this.env.DISCORD_TOKEN);
+            if (url) partes.push({ url, n: a.filename, mb: Math.round((a.size || 0) / 1e5) / 10 });
           }
         } catch (e) { /* esa parte no */ }
       }
@@ -20103,7 +20151,7 @@ export class Avisos {
         ligas: String(cfg.ligas || ''), ligas_por: (cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {},
         resumen: String(cfg.resumen || ''), silencio: cfg.silencio && typeof cfg.silencio === 'object' ? cfg.silencio : '',
         leer_chat: cfg.leer_chat !== false, ganadores: cfg.ganadores !== false, bienvenida: String(cfg.bienvenida || ''), redes: String(cfg.redes || ''),
-        rimas: String(cfg.rimas || ''), ahora_mismo: cfg.ahora_mismo !== false },
+        rimas: String(cfg.rimas || ''), ahora_mismo: cfg.ahora_mismo !== false, redes_en_muro: cfg.redes_en_muro !== false },
       ligas, rol: x.rol,
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',
@@ -20148,6 +20196,8 @@ export class Avisos {
   bandeja(d) {
     const quien = String(d.quien || '');
     if (!/^[0-9]{5,25}$/.test(quien)) return json({ error: 'faltan datos' }, 400);
+    // 📬 el interruptor de los hilos de DRA (Ajustes → Avisos): sólo eso, sin la bandeja. Ver `pagina()` de bot/buzon.js
+    if (d.buzon !== undefined) return json(BZ.pagina(this, quien, d.buzon === 'ver' ? null : d.buzon));
     const items = this.sql.exec('SELECT clave, t, tipo, titulo, cuerpo, url, cara, visto FROM bandeja WHERE quien = ? ' +
       'ORDER BY t DESC LIMIT 40', quien).toArray();
     const nuevas = items.filter((x) => !x.visto).length;
@@ -23030,7 +23080,8 @@ export class Avisos {
       const pub = this.marcosPublicos();
       const tp = TI.puestosPublicos(this);
       for (const r of this.sql.exec('SELECT k, firma, cartas FROM marco_img').toArray()) {
-        const m = pub[r.k], tc = (tp[r.k] && tp[r.k].carta) || '';
+        // 🃏 los efectos de cada carta, con la misma cuenta que `cartaPuestaDe()` (28/11/2026)
+        const m = pub[r.k], tc = TI.firmaEfectos(tp[r.k] || {});
         if ((m || tc) && r.firma === this.firmaImagen(r.k, [], m || null, tc)) out[r.k] = JSON.parse(r.cartas);
       }
     } catch (e) { /* sin fotos: la carta sola */ }

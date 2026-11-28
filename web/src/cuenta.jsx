@@ -31,6 +31,7 @@ import { achicar as achicarImagen, aBase64 } from './imagen.js';
 import { bajarGlobal, globalListo } from './global_datos.js';
 import { deAfuera, esDeAfuera } from './sigo_global.js';
 import { siluetaDe } from './sin_foto.js';
+import { ParteBuzon } from './buzon_ajuste.jsx';
 import { BotonSeguir, GenteParaSeguir, LigaTeSigue, ligaSigue, sugeridos, useComparten } from './sugeridos.jsx';
 
 // 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
@@ -1424,12 +1425,14 @@ export function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv, sinServido
     // navegador solo (permiso revocado), y ahí seguía diciendo «Activados». La marca, sólo si campana.js no cargó
     const activos = camp ? !!camp.activa : !!leer('campana:activada', false);
     const de = Object.values(liga.svs).filter((o) => !svs.length || svs.includes(o.sv));
-    return (
+    return (<>
       <Caja t="En este dispositivo" d={activos ? 'Activados: te avisa al minuto de que ' + (svs.length ? de.map((o) => siglaDe(o.sv)).join(', ') : 'cualquier servidor') + ' anuncia un evento.'
         : 'Apagados. Actívalos y te avisa al minuto de que un servidor anuncia un evento.'}>
         <a className="btn verde chico" href="#/avisos">{activos ? 'Cambiar los avisos' : 'Activar los avisos'}</a>
       </Caja>
-    );
+      {/* 📬 el buzón en hilos privados de DRA (28/11/2026): ver web/src/buzon_ajuste.jsx */}
+      <ParteBuzon Caja={Caja} dc={dc} />
+    </>);
   }
   if (id === 'apariencia') {
     return (

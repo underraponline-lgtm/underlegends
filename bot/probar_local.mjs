@@ -22,6 +22,8 @@ import { webcrypto } from 'node:crypto';
 import { VERIFICA } from './worker.js';
 // el número de la app de Discord: `discordDe()` sólo acepta permisos suyos (revisión del 03/10/2026)
 import { APP_ID, DUENO } from './avisos.js';
+// ✅ el Miembro de DRA sale de la tabla del panel (bot/verificar_dc.js) también en la página: ver bot/verificar_web.js
+import { ROL_MIEMBRO as MIEMBRO_DRA } from './verificar_dc.js';
 // 🧱 el texto que se ve de un mensaje V2 (los Text Display) y las piezas de un tipo, en cualquier nivel (20/11/2026)
 import { textoV2 as TX, piezas as PZ, medir as MEDIR, mensaje as MSJ, pideVincular, URL_VINCULAR } from './vista.js';
 // lo que contesta Discord con un permiso: `/oauth2/@me` trae de qué app es y quién es; lo demás, el usuario solo
@@ -2185,7 +2187,7 @@ console.log('\n/VERIFICAR\n');
 {
   const { diagnostico, banderasEn, proximaVuelta } = await import('./worker.js');
   // ✅ el rol con forma de ID: desde el 12/10/2026 el Worker lo da él (`darMiembro()`), y sólo con un ID de verdad
-  const P = { guild: G.DRA, rol: '900000000000000001', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
+  const P = { guild: G.DRA, rol: MIEMBRO_DRA, paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
               revisa: ['700700'] };
   ok('las banderas de un apodo, sin repetir', JSON.stringify(banderasEn('Juan 🇦🇷🔥🇦🇷')) === '["ar"]');
   const d1 = diagnostico(null, P);
@@ -2261,7 +2263,7 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
 {
   // 🔑 Dlx, 01/10/2026: «que te entres a DRA automáticamente», el país elegido
   // en la página (su «A») y el Miembro, del ciclo (su otra «A»).
-  const P = { guild: G.DRA, rol: '900000000000000001', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
+  const P = { guild: G.DRA, rol: MIEMBRO_DRA, paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
               revisa: ['700699'] };
   // un Discord de mentira: de quién es cada permiso, quién está en DRA y todo lo que se le pidió
   const USUARIOS = {
@@ -4302,6 +4304,18 @@ console.log('\n🐣 PARA LOS NUEVOS\n');
   llamadas.length = 0;
   r = await tocar('evn:otra', 6);
   ok('un botón raro no llega al objeto', !llamadas.length && /ya no anda/.test(texto(r)), texto(r));
+  // 🔁 el panel «De regreso» (28/11/2026): el mismo `evn`, con `v-` delante; el Worker no cambia
+  contesta = { ok: true, estado: 'anotado', act: 'cypher', mias: ['cypher'], tipo: 'vuelve' };
+  llamadas.length = 0;
+  r = await tocar('evn:v-cypher', 8);
+  ok('«De regreso»: `evn:v-cypher` llega al objeto tal cual, y la respuesta es la suya',
+    llamadas.some((x) => x[0] === '/nuevos-anotar' && x[1].accion === 'v-cypher') && /Qué bueno verte/.test(r.t) && /🎤 Cypher/.test(r.t), r.t);
+  contesta = { ok: true, estado: 'activo', tipo: 'vuelve', mias: [] };
+  r = await tocar('evn:v-comp', 9);
+  ok('«De regreso»: quien jugó hace poco, amable y a eventos-hoy', /jugaste hace\s+poco/.test(r.t) && /<#1500690475089399858>/.test(r.t), r.t);
+  llamadas.length = 0;
+  r = await tocar('evn:v-otra', 10);
+  ok('«De regreso»: un botón raro tampoco llega', !llamadas.length && /ya no anda/.test(texto(r)), texto(r));
   env.AVISOS = antesA;
 }
 

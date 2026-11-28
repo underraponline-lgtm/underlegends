@@ -6486,6 +6486,57 @@ const ok = (cond, que, det) => {
     // olvidarme también lo saca
     await o.olvidar({ quien: id(40) });
     ok(!sql.exec('SELECT 1 AS x FROM nuevos_anot WHERE quien = ?', id(40)).toArray().length, '«olvidarme» borra sus anotaciones');
+
+    // 🔁 «DE REGRESO» (28/11/2026): el segundo panel, para los inactivos que manda el ciclo (bot/inactivos.py)
+    console.log('\n🔁 «De regreso», el panel de los inactivos');
+    const CANAL_V = '516285712805265521', STAFF_V = '516285712805265522';
+    const vclic = (n, accion) => o.fetch(new Request('https://avisos/nuevos-anotar', { method: 'POST',
+      body: JSON.stringify({ quien: id(n), nombre: 'Vuelve ' + n, accion }) })).then((x) => x.json());
+    let rv = await vclic(60, 'v-comp');
+    ok(rv.estado === 'sin_dato' && rv.tipo === 'vuelve' && /prueba de nuevo/.test(NU.respuestaTxt(rv)),
+      'sin la lista del ciclo todavía, no se sabe quién es inactivo: no se anota', JSON.stringify(rv));
+    const hoyDia = (d) => new Date(Date.now() - d * 24 * 3600 * 1000).toISOString().slice(0, 10);
+    const inact = [[id(60), 46, hoyDia(46)], [id(61), 90, hoyDia(90)], [id(62), 45, hoyDia(45)]];
+    const prim = (lista) => o.fetch(new Request('https://avisos/primerizos-ciclo', { method: 'POST',
+      body: JSON.stringify({ una: [], frio: [], inact: lista }) })).then((x) => x.json());
+    let pc = await prim(inact);
+    const avisosV = sql.exec("SELECT quien, titulo, tipo, url FROM bandeja WHERE clave LIKE 'regreso:%' ORDER BY quien").toArray();
+    ok(pc.ok && pc.inact.n === 3 && pc.inact.entran === 3 && avisosV.length === 2 && avisosV.every((x) => x.tipo === 'personal')
+      && avisosV.map((x) => x.quien).join() === id(60) + ',' + id(62),
+    'el ciclo manda los inactivos: entran 3, y se le avisa en la campana sólo a los que cruzaron los 45 hace poco (no al de 90)', JSON.stringify(pc));
+    ok(!JSON.stringify(o.leer('primerizos')).includes(id(61)), 'la lista no queda en el estado de los primerizos: va a su tabla');
+    pc = await prim(inact);
+    ok(pc.inact.entran === 0 && pc.inact.salen === 0 && pc.inact.avisos === 0
+      && sql.exec("SELECT COUNT(*) AS n FROM bandeja WHERE clave LIKE 'regreso:%'").toArray()[0].n === 2,
+    'la misma lista otra vez: no escribe nada ni vuelve a avisar', JSON.stringify(pc));
+    rv = await vclic(63, 'v-cypher');
+    ok(rv.estado === 'activo' && /jugaste hace/.test(NU.respuestaTxt(rv)), 'quien no es inactivo no se anota: «jugaste hace poco»');
+    const pubV = await NU.panel(o, { canal: CANAL_V, staff: STAFF_V, publicar: true, tipo: 'vuelve' });
+    const postV = pedidos.filter((x) => x.m === 'POST /channels/' + CANAL_V + '/messages');
+    ok(pubV.ok && pubV.nuevo && postV.length === 1 && /De regreso/.test(JSON.stringify(postV[0].body))
+      && /evn:v-comp/.test(JSON.stringify(postV[0].body)) && /evn:v-no/.test(JSON.stringify(postV[0].body))
+      && o.leer('nuevos_panel').canal === CANAL, 'el panel «De regreso», en su canal, con botones `evn:v-…`, sin tocar el de los nuevos', JSON.stringify(pubV));
+    pedidos.length = 0;
+    rv = await vclic(60, 'v-entr');
+    ok(rv.estado === 'anotado' && rv.cuentas.entr === 1 && pedidos.some((x) => x.m === 'PATCH /channels/' + CANAL_V + '/messages/' + pubV.msg)
+      && !pedidos.some((x) => x.m.startsWith('PATCH /channels/' + CANAL + '/')) && NU.cuentas(o).entr === 0,
+    'un inactivo se anota: se edita SU panel y no el de los nuevos (tablas aparte)', JSON.stringify(rv));
+    await vclic(61, 'v-entr');
+    await vclic(62, 'v-entr');
+    const stV = pedidos.filter((x) => x.m === 'POST /channels/' + STAFF_V + '/messages');
+    ok(stV.length === 1 && /🔁 Ya hay 3 anotados para 🧠 Entrenamiento/.test(JSON.stringify(stV[0].body))
+      && /De regreso · grupos de 3/.test(JSON.stringify(stV[0].body)), 'al llegar al grupo, el aviso al staff de «De regreso»');
+    rv = await vclic(60, 'v-no');
+    ok(rv.estado === 'todo_quitado' && rv.cuentas.entr === 2, '«Ya no puedo» de este panel sale de las suyas');
+    const lsV = NU.lista(o);
+    ok(lsV.vuelve.inactivos === 3 && lsV.vuelve.actividades.find((a) => a.id === 'entr').n === 2 && lsV.vuelve.panel.canal === CANAL_V,
+      'la lista del Dashboard trae «De regreso» aparte, con cuántos inactivos hay');
+    pc = await prim([[id(60), 46, hoyDia(46)], [id(62), 45, hoyDia(45)]]);
+    ok(pc.inact.salen === 1 && !NU.inactivoDe(o, id(61)).estado.startsWith('si'), 'quien volvió a jugar sale de la lista (y ya no puede anotarse)');
+    await o.olvidar({ quien: id(62) });
+    ok(!sql.exec('SELECT 1 AS x FROM regreso_anot WHERE quien = ?', id(62)).toArray().length
+      && !sql.exec('SELECT 1 AS x FROM regreso_inact WHERE quien = ?', id(62)).toArray().length, '«olvidarme» borra lo de «De regreso» también');
+    ok((await NU.anotar(o, { quien: id(60), accion: 'v-otra' })).error === 'faltan datos', 'una actividad que no es de «De regreso» no entra');
     globalThis.fetch = antes;
   }
 }

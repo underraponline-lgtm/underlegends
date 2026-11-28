@@ -1,0 +1,5 @@
+{
+ "_leeme": "Las redes de los socios para Publicaciones (bot/redes_socios.py): lo último leído de Instagram de cada uno y quién lo apagó en su panel. Lo de YouTube sale de datos/videos.json.",
+ "apagados": [],
+ "ig": {}
+}
