@@ -31,7 +31,7 @@ export const norma = (s) => String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g
 
 /**
  * Los canales que importan, de la lista de canales del servidor (`[{id, name, type}]`): dónde se escucha (los que terminan
- * en `chatgeneral` o en `dudas`), dónde se avisa (el que tiene `recibidor`) y los tres de los links de la respuesta.
+ * en `chatgeneral`, `conversacion` —el chat general de DRA se llama así— o en `dudas`), dónde se avisa (el que tiene `recibidor`) y los tres de los links de la respuesta.
  * Sólo de texto (0) o de anuncios (5).
  */
 export function resolver(canales) {
@@ -40,7 +40,7 @@ export function resolver(canales) {
   for (const c of canales || []) {
     if (!c || (c.type !== 0 && c.type !== 5)) continue;
     const n = norma(c.name);
-    if (n.endsWith('chatgeneral') || n.endsWith('dudas')) r.escucha.add(String(c.id));
+    if (n.endsWith('chatgeneral') || n.endsWith('conversacion') || n.endsWith('dudas')) r.escucha.add(String(c.id));
     if (!r.aviso && n.includes('recibidor')) r.aviso = String(c.id);
     if (!eventosHoy && n.endsWith('eventoshoy')) eventosHoy = String(c.id);
     if (!r.eventos && n.endsWith('eventos')) r.eventos = String(c.id);
