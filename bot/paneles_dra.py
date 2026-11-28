@@ -14,6 +14,11 @@ esta-semana, en LIGA GLOBAL) y deja sus ids en `datos/dra_hub.json`.
 aviso de cada evento, [[avisar una vez y editar]]). El id queda en `datos/dra_hub.json` (`paneles`); si lo borraron, se
 manda otro. Y sólo se edita si la imagen cambió (`firma`): cada media hora el ciclo lo mira, y casi nunca cambia.
 ⚠️ LOS BOTONES SON LINKS a la página: no hace falta que el Worker atienda nada.
+🪧 Y DESDE EL 28/11/2026, LOS CARTELES (`CARTELES`): uno por canal de DRA que no decía para qué era (la Guía, Empieza
+aquí, Quiénes somos, Tu tarjeta, el Pase, la Tienda, los estilos de juego, Publicaciones, Mejores rimas y las Ligas, que
+es un foro: va como publicación fijada), con el estilo del banner de Dlx. Los nuevos salen la primera vez sólo con
+`--aplicar --prender` (`PIDEN_SI`); después se editan solos como los demás. Y la semana se mudó a eventos-hoy: el
+canal `esta-semana` ya no existe desde el orden del 27/11.
 ✅ FVS SALE, como cualquier servidor de la Liga (Dlx, 13/10/2026, al ver la vista previa sin él: «FVS debería estar en
 esto»). Lo del 12/10 («b») era no anunciar su llegada; no esconderlo. `FUERA` queda vacío por si algún día hace falta.
 """
@@ -39,6 +44,7 @@ except AttributeError:
 
 WEB = 'https://underlegends.pages.dev/freestyle-rap'
 HUB = os.path.join(BASE, 'datos', 'dra_hub.json')
+GUILD = '841017460341604382'   # DRA
 FUERA = set()            # servidores que no salen en el panel de la semana (ver arriba)
 MAGENTA, VERDE, AMARILLO = '#E41373', '#29B298', '#F5C542'
 #: dónde va la hora de «Actualizado»: se pone al dibujar, así la firma del panel no cambia sólo porque pasó el tiempo
@@ -315,21 +321,210 @@ h2{font-family:'Barlow Condensed';font-weight:700;font-size:30px;letter-spacing:
     return _pagina(cuerpo, 'ESTA SEMANA<br>EN LA LIGA', 'Hasta el %s' % _cuando(d['fin']) if d['fin'] else 'Liga Global', css)
 
 
+# ── 🪧 los carteles de cada canal: qué es y qué hacer, de un vistazo (Dlx, 28/11/2026) ─────────────────────────────────
+# 🔑 Después del orden del 27/11 varios canales de DRA no decían para qué eran. Cada uno lleva UN cartel: la imagen con
+# el estilo del banner de Dlx (`bot/paneles_img/verificate.png`, 28/11: obligatorio para las imágenes nuevas de DRA),
+# una a tres líneas en el mensaje y botones a la página exacta. Mismo sistema que los paneles de datos: un mensaje que
+# se EDITA, sólo si cambió (`firma`), nunca de 3 a 11 AM ET.
+# 🎨 EL ESTILO, MEDIDO SOBRE EL BANNER (1920×1080): fondo #030304 (el mismo negro del círculo del logo, así el logo se
+# recorta sin borde), «UNDER [dragón] LEGENDS» arriba en blanco, la palabra magenta con tres ecos teal en contorno
+# hacia ARRIBA, la palabra grande teal con cuatro ecos magenta hacia ABAJO, la línea blanca entre chevrones dobles y
+# las diagonales finas desde las esquinas de abajo. Sin degradés. La letra del banner no está en el repo: la más
+# parecida es Archivo Black en su ancho máximo (125 %), la variable de la página (`bot/paginas/inicio/f/`).
+# ⚠️ CADA PALABRA SE ACHICA HASTA ENTRAR (`ENCAJAR`, al sacar la foto): el HTML no lleva scripts y «PUBLICACIONES» no
+# entra al tamaño de «TIENDA». Eso pasa en el navegador, así que la firma sigue siendo la del HTML.
+# ⚠️ LOS CANALES SE BUSCAN POR NOMBRE, no por id (`canal_de()`: NFKD, sólo letras y números, como las otras herramientas
+# de DRA): el orden del 27/11 borró `esta-semana` y el panel de la semana se quedó mandando a un canal muerto.
+FUENTE_CARTEL = os.path.join(BASE, 'bot', 'paginas', 'inicio', 'f', 'archivo-latin-wdth-normal.woff2')
+LOGO_CARTEL = os.path.join(BASE, 'bot', 'paginas', 'ul.png')
+NEGRO, BLANCO = '#030304', '#EFEFEF'
+#: lo que va en el mensaje puede nombrar canales: `{#verificateaqui}` → `<#id>` al mandarlo (`menciones()`)
+CANALES_TEXTO = ('verificateaqui', 'eventonuevos', 'eventoshoy', 'tutarjeta')
+
+
+def _fuente_cartel():
+    try:
+        b = base64.b64encode(open(FUENTE_CARTEL, 'rb').read()).decode()
+        return ("@font-face{font-family:'UL Cartel';font-weight:100 900;font-stretch:62%% 125%%;"
+                "src:url(data:font/woff2;base64,%s) format('woff2')}" % b)
+    except OSError:
+        return _fuentes()                                # sin la variable, Archivo de embed.css (más angosta)
+
+
+def _logo_cartel():
+    try:
+        return 'data:image/png;base64,' + base64.b64encode(open(LOGO_CARTEL, 'rb').read()).decode()
+    except OSError:
+        return ''
+
+
+CSS_CARTEL = """
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:%(n)s}
+#c{position:relative;width:1920px;height:1080px;overflow:hidden;background:%(n)s;color:%(b)s;
+  font-family:'UL Cartel','Archivo',sans-serif;font-weight:900;font-stretch:125%%;text-transform:uppercase}
+.rayas{position:absolute;inset:0;width:1920px;height:1080px}
+.marca{position:absolute;left:0;right:0;top:118px;transform:translateY(-50%%);display:flex;justify-content:center;
+  align-items:center;gap:30px;font-size:62px;letter-spacing:.01em;line-height:1}
+.marca img{width:150px;height:150px;clip-path:circle(45%%)}
+.g{position:absolute;left:0;right:0;display:flex;justify-content:center;line-height:1;white-space:nowrap}
+.g .eco{display:block;position:absolute;left:50%%;transform:translateX(-50%%)}
+.g .solido{display:block;position:relative}
+.arriba{top:352px;font-size:150px;color:%(m)s;transform:translateY(-50%%)}
+.arriba .eco{color:transparent;-webkit-text-stroke:3px %(v)s}
+.grande{top:540px;font-size:270px;color:%(v)s;transform:translateY(-50%%);z-index:2}
+.grande .eco{color:transparent;-webkit-text-stroke:3px %(m)s}
+.grande .solido,.arriba .solido{z-index:2}
+.linea{top:856px;transform:translateY(-50%%);gap:44px;align-items:center;font-size:92px;color:%(b)s;z-index:3}
+.linea .solido{position:relative}
+.chev{position:relative;width:104px;height:104px;flex:none}
+.chev i{position:absolute;left:0;width:104px;height:62px}
+.chev i:first-child{top:0}.chev i:last-child{top:42px}
+""" % {'n': NEGRO, 'b': BLANCO, 'm': MAGENTA, 'v': VERDE}
+
+
+def _chevron(arriba, abajo):
+    """Dos «v» apiladas, como las del banner: la de arriba de un color y la de abajo del otro."""
+    def v(col):
+        return ('<i><svg viewBox="0 0 104 62" width="104" height="62"><polyline points="8,8 52,50 96,8" fill="none" '
+                'stroke="%s" stroke-width="20" stroke-linejoin="miter"/></svg></i>' % col)
+    return '<span class="chev">%s%s</span>' % (v(arriba), v(abajo))
+
+
+def _rayas():
+    """Las diagonales finas desde las esquinas de abajo (medidas sobre el banner), y su espejo."""
+    izq = [(VERDE, 0, 590, 380, 1080), (MAGENTA, 0, 730, 275, 1080), (MAGENTA, 0, 790, 690, 1080), (VERDE, 0, 880, 470, 1080)]
+    ls = ''
+    for col, x1, y1, x2, y2 in izq:
+        ls += '<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="%s" stroke-width="6"/>' % (x1, y1, x2, y2, col)
+        ls += '<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="%s" stroke-width="6"/>' % (1920 - x1, y1, 1920 - x2, y2, col)
+    return '<svg class="rayas" viewBox="0 0 1920 1080">%s</svg>' % ls
+
+
+def html_cartel(arriba, grande, linea):
+    """El cartel de un canal con el estilo del banner: `arriba` en magenta con sus ecos, `grande` en teal con los suyos y
+    `linea` en blanco entre chevrones. Cada grupo lleva `data-fit` (el ancho máximo): `ENCAJAR` lo achica al sacar la foto."""
+    ecos_a = ''.join('<span class="eco" style="top:%.2fem;opacity:%.2f">%s</span>' % (-0.27 * i, 1 - 0.28 * (i - 1), _e(arriba))
+                     for i in (3, 2, 1))
+    ecos_g = ''.join('<span class="eco" style="top:%.2fem;opacity:%.2f">%s</span>' % (0.15 * i, 1 - 0.22 * (i - 1), _e(grande))
+                     for i in (4, 3, 2, 1))
+    logo = _logo_cartel()
+    cuerpo = ('%s<div class="marca"><span>Under</span>%s<span>Legends</span></div>'
+              '<div class="g arriba" data-fit="1480">%s<span class="solido">%s</span></div>'
+              '<div class="g grande" data-fit="1640">%s<span class="solido">%s</span></div>'
+              '<div class="g linea" data-fit="1320">%s<span class="solido">%s</span>%s</div>'
+              % (_rayas(), ('<img src="%s" alt="">' % logo) if logo else '', ecos_a, _e(arriba), ecos_g, _e(grande),
+                 _chevron(VERDE, MAGENTA), _e(linea), _chevron(MAGENTA, VERDE)))
+    return ('<!doctype html><html><head><meta charset="utf-8"><style>%s%s</style></head><body><div id="c">%s</div>'
+            '</body></html>') % (_fuente_cartel(), CSS_CARTEL, cuerpo)
+
+
+#: hace entrar cada grupo `data-fit` en su ancho (lo corre `foto()`, no el HTML): primero lo ANGOSTA (del 125 % al 100 %,
+#: el eje de ancho de la variable) y recién después lo achica. Sólo achicando, «PUBLICACIONES» quedaba a la mitad de alto
+#: que «TIENDA» y el cartel se veía vacío entre la palabra y la línea
+ENCAJAR = """() => { for (const g of document.querySelectorAll('[data-fit]')) {
+  const max = +g.dataset.fit; let fs = parseFloat(getComputedStyle(g).fontSize); let st = 125;
+  const ancho = () => { const h = [...g.children].filter((x) => !x.classList.contains('eco')).map((x) => x.getBoundingClientRect());
+    return Math.max(...h.map((r) => r.right)) - Math.min(...h.map((r) => r.left)); };
+  for (let i = 0; i < 25 && ancho() > max && st > 100; i++) { st -= 1; g.style.fontStretch = st + '%'; }
+  for (let i = 0; i < 80 && ancho() > max && fs > 20; i++) { fs *= 0.97; g.style.fontSize = fs + 'px'; } } }"""
+
+#: 🪧 los carteles: `(clave, canal, arriba, grande, línea, texto del mensaje, botones, título si el canal es un foro)`.
+#: ⚠️ LO QUE DICEN TIENE QUE SER CIERTO HOY: cada uno se miró contra el código el 28/11/2026 (la vitrina rota cada día,
+#: `vitrinaDelDia()` de bot/tienda.js; las tarjetas en dos pasos, `verificados.puede()`; 18 estilos, el 1.º lo eliges y el
+#: 2.º y 3.º salen de los eventos de estilo de DRA, `estilos_juego.py`; el nivel 1 del Pase son 300 XP, `pase.umbrales()`).
+#: Si cambia la regla, se cambia acá.
+CARTELES = [
+    ('guia', 'tutorialguia', '¿Recién llegas?', 'La Guía', 'Todo en una página',
+     '**¿Recién llegas?** En la Guía están los puntos, los rangos, las tarjetas y los TAGs, explicados en una página.\n'
+     'Ahí también tienes el tutorial completo de la página.',
+     [('Abrir la Guía', WEB + '/guia'), ('Los eventos de hoy', WEB + '/eventos')], ''),
+    ('empieza', 'empiezaaqui', 'Tus primeros pasos', 'Empieza aquí', 'Verifícate · juega · sube',
+     '**1.** Verifícate en {#verificateaqui}: eliges tu país y tu AKA.\n'
+     '**2.** Anótate a tu primer evento en {#eventonuevos}, sólo para los que empiezan.\n'
+     '**3.** Mira qué se juega hoy en toda la Liga en {#eventoshoy}.',
+     [('Entrar a la página', WEB), ('La Guía', WEB + '/guia'), ('Eventos de hoy', WEB + '/eventos')], ''),
+    ('somos', 'quienessomos', 'Quiénes', 'Somos', 'La Liga Global de freestyle',
+     '**Under Legends** arma la **Liga Global de Freestyle en Español**: los eventos de todos los servidores socios suman a '
+     'un mismo ranking.\nDRA es la casa de la Liga: acá están los rankings, los eventos de hoy y tu tarjeta.',
+     [('Conocer a los socios', WEB + '/socios'), ('Entrar a la página', WEB)], ''),
+    ('tarjeta', 'tutarjeta', 'Consigue', 'Tu tarjeta', 'En dos pasos',
+     '**1.** Verifícate en {#verificateaqui} y te llega la de **Servidor**.\n'
+     '**2.** Llega al nivel 1 del Pase y sale la de **Temporada**. La Competitiva y la de País se ganan jugando.\n'
+     'Escribe `/card` acá para mostrar las tuyas.',
+     [('Ver las tarjetas', WEB + '/tarjetas'), ('Personalizar la mía', WEB + '/inventario')], ''),
+    ('pase', 'paserapero', 'Sube de nivel', 'El Pase', 'Tareas · XP · premios',
+     'Cumple **Tareas** diarias, semanales y de temporada, gana XP y sube de nivel.\n'
+     'Con el **nivel 1** desbloqueas tu tarjeta de Temporada. Es para los Miembros de DRA: verifícate primero.',
+     [('Abrir mi Pase', WEB + '/pase')], ''),
+    ('tienda', 'tienda', 'Gasta tus Puntos', 'Tienda', 'La vitrina cambia cada día',
+     'Marcos, fondos, TAGs y más para tu carta y tu perfil, con tus **Puntos de Tienda**.\n'
+     'La vitrina cambia cada día y sus primeras piezas llegan tapadas: destápalas gratis, puede salir algo sólo para ti.',
+     [('Ir a la Tienda', WEB + '/tienda'), ('Mi inventario', WEB + '/inventario')], ''),
+    ('estilos', 'objetivos', '¿Cómo rapeas?', 'Estilos', 'De juego · elige el tuyo',
+     'Hay **18 estilos de juego**. El primero lo eliges tú en el Inventario (después lo puedes cambiar una vez por temporada).\n'
+     'El 2.º y el 3.º se ganan en los **eventos de estilo de DRA**, y van en tu tarjeta Competitiva.',
+     [('Elegir mi estilo', WEB + '/inventario/competitivo/juego'), ('Los eventos', WEB + '/eventos')], ''),
+    ('publicaciones', 'publicaciones', 'Lo que pasa en la Liga', 'Publicaciones', 'Campeones · rachas · récords',
+     'Campeones, debuts, rachas y crews que suben: el muro de todos los servidores de la Liga, al día en la página.',
+     [('Ver Publicaciones', WEB + '/publicaciones')], ''),
+    ('rimas', 'mejoresrimas', 'Las mejores', 'Rimas', 'Los videos de cada evento',
+     'Los mejores momentos de las batallas de cada evento, en video y con quién es quién.',
+     [('Ver los videos', WEB + '/reels')], ''),
+    ('ligas', 'ligas', 'Cómo funcionan las', 'Ligas', 'Fechas · tablas · campeones',
+     'Las ligas de los servidores socios: sus fechas, su tabla y sus campeones, al día en la página.\n'
+     'Cada publicación de este foro es una liga, para seguirla y comentarla.',
+     [('Ver las ligas', WEB + '/ligas')], '📌 Cómo funcionan las ligas'),
+]
+
+
 # ── los paneles: qué canal, qué imagen y qué botones ────────────────────────────────────────────────────────────────
 def paneles():
-    """`[(clave, canal_clave, html, botones)]`. Los botones son `(texto, url)`: links a la página."""
+    """`[(clave, canal, html, botones, texto, foro)]`. Los botones son `(texto, url)`: links a la página. `canal` es una
+    clave de `datos/dra_hub.json`, un id, o `sfx:<nombre>` (se busca por nombre, `canal_de()`). `texto` va en el
+    mensaje (puede nombrar canales, `menciones()`); `foro`, el título de la publicación si el canal es un foro."""
     return [
         ('temporada', 'ranking', html_temporada(datos_temporada()),
-         [('Ver el ranking completo', WEB + '/ranking'), ('Competitivo', WEB + '/ranking/competitivo'), ('Duelos', WEB + '/ranking/duelos')]),
+         [('Ver el ranking completo', WEB + '/ranking'), ('Competitivo', WEB + '/ranking/competitivo'), ('Duelos', WEB + '/ranking/duelos')],
+         '', ''),
         ('mw', '1500262299112439839', html_mw(datos_mw()),
-         [('Ver Se busca', WEB + '/ranking/mw'), ('Ponerle precio a una cabeza', WEB + '/tienda')]),
-        ('semana', 'esta_semana', html_semana(datos_semana()),
-         [('Las Misiones', WEB + '/ranking/misiones'), ('Votar el ×2 de la semana que viene', WEB), ('Los eventos', WEB + '/eventos')]),
-    ]
+         [('Ver Se busca', WEB + '/ranking/mw'), ('Ponerle precio a una cabeza', WEB + '/tienda')], '', ''),
+        # 📅 `esta-semana` ya no existe (el orden del 27/11 la juntó con eventos-hoy): la semana va ahí, un mensaje editado
+        ('semana', 'sfx:eventoshoy', html_semana(datos_semana()),
+         [('Las Misiones', WEB + '/ranking/misiones'), ('Votar el ×2 de la semana que viene', WEB), ('Los eventos', WEB + '/eventos')],
+         '', ''),
+    ] + [(k, 'sfx:' + canal, html_cartel(a, g, ln), bot, tx, foro) for k, canal, a, g, ln, tx, bot, foro in CARTELES]
+
+
+def _n(s):
+    import unicodedata
+    return ''.join(c for c in unicodedata.normalize('NFKD', str(s or '')).lower() if c.isalnum())
+
+
+def canal_de(canales, sfx):
+    """El canal de DRA que se llama `sfx` (NFKD, sólo letras y números), fuera del ARCHIVO. Primero el nombre exacto
+    —«objetivos» es 【🎭】objetivos y no ╏👑╏ul-objetivos—; si no hay, el único que termina así. `None` si no está o
+    si hay dos. Pura: `canales` es lo que da `GET /guilds/{id}/channels`."""
+    cats = {c['id']: _n(c.get('name')) for c in canales if c.get('type') == 4}
+    vivos = [c for c in canales if c.get('type') in (0, 5, 15) and 'archivo' not in cats.get(c.get('parent_id'), '')]
+    exactos = [c for c in vivos if _n(c.get('name')) == sfx]
+    if len(exactos) == 1:
+        return exactos[0]
+    fin = [c for c in vivos if _n(c.get('name')).endswith(sfx)]
+    return fin[0] if len(exactos) == 0 and len(fin) == 1 else None
+
+
+def menciones(texto, canales=None):
+    """`{#nombre}` → `<#id>` con los canales de DRA; sin ellos (la vista previa), `#nombre`."""
+    for k in CANALES_TEXTO:
+        c = canal_de(canales, k) if canales else None
+        texto = texto.replace('{#%s}' % k, ('<#%s>' % c['id']) if c else '#' + k)
+    return texto
 
 
 def foto(htm, ruta):
-    """El PNG del `#c` de ese HTML, entero, con la hora de ahora en «Actualizado»."""
+    """El PNG del `#c` de ese HTML, entero, con la hora de ahora en «Actualizado». El ancho sale del `#c` (1080 los
+    paneles de datos, 1920 los carteles), y los grupos `data-fit` se achican hasta entrar (`ENCAJAR`)."""
     htm = htm.replace(CUANDO, _e(_cuando(None)))
     import navegador
     navegador.hace_falta()
@@ -343,11 +538,14 @@ def foto(htm, ruta):
             pg = b.new_page(viewport={'width': 1080, 'height': 1400}, device_scale_factor=1)
             pg.set_default_timeout(60000)
             pg.set_content(htm, wait_until='load', timeout=60000)
+            pg.evaluate('() => document.fonts.ready.then(() => true)')
+            pg.evaluate(ENCAJAR)
             pg.wait_for_timeout(500)
-            alto = int(pg.evaluate("() => Math.ceil(document.querySelector('#c').getBoundingClientRect().height)"))
-            pg.set_viewport_size({'width': 1080, 'height': max(400, alto)})
+            ancho, alto = pg.evaluate("() => { const r = document.querySelector('#c').getBoundingClientRect();"
+                                      " return [Math.ceil(r.width), Math.ceil(r.height)]; }")
+            pg.set_viewport_size({'width': int(ancho), 'height': max(400, int(alto))})
             pg.wait_for_timeout(300)
-            pg.screenshot(path=ruta, clip={'x': 0, 'y': 0, 'width': 1080, 'height': alto}, timeout=60000)
+            pg.screenshot(path=ruta, clip={'x': 0, 'y': 0, 'width': int(ancho), 'height': int(alto)}, timeout=60000)
         finally:
             b.close()
     return ruta
@@ -355,9 +553,12 @@ def foto(htm, ruta):
 
 def vista(carpeta):
     os.makedirs(carpeta, exist_ok=True)
-    for clave, _canal, htm, botones in paneles():
+    for clave, canal, htm, botones, texto, foro in paneles():
         r = foto(htm, os.path.join(carpeta, 'panel_%s.png' % clave))
-        print('  %-10s %s  · botones: %s' % (clave, r, ' | '.join(t for t, _u in botones)))
+        print('  %-13s %s  · canal: %s%s' % (clave, r, canal, ' (foro: «%s»)' % foro if foro else ''))
+        if texto:
+            print('                texto: ' + menciones(texto).replace('\n', '\n                       '))
+        print('                botones: %s' % ' | '.join('%s → %s' % (t, u) for t, u in botones))
     return 0
 
 
@@ -372,13 +573,25 @@ def madrugada():
 FORMA = 'adjunto'
 
 
-def cuerpo_panel(clave, botones):
-    """El mensaje de un panel, sin la imagen (va como adjunto, `files[0]`): sin texto, SIN EMBED y con sus botones.
-    `embeds: []` saca el embed de un mensaje que ya lo tenía, y `attachments` deja sólo la imagen nueva."""
-    return {'content': '', 'embeds': [], 'attachments': [{'id': 0, 'filename': clave + '.png'}],
+def cuerpo_panel(clave, botones, texto=''):
+    """El mensaje de un panel, sin la imagen (va como adjunto, `files[0]`): su texto (los carteles; los de datos, ninguno),
+    SIN EMBED y con sus botones. `embeds: []` saca el embed de un mensaje que ya lo tenía, y `attachments` deja sólo la
+    imagen nueva."""
+    return {'content': texto or '', 'embeds': [], 'attachments': [{'id': 0, 'filename': clave + '.png'}],
             'allowed_mentions': {'parse': []},
             'components': [{'type': 1, 'components': [{'type': 2, 'style': 5, 'label': t[:80], 'url': u}
                                                       for t, u in botones[:5]]}]}
+
+
+def firma_de(htm, texto=''):
+    """La huella de lo que se ve: la forma, la imagen y el texto. ⚠️ Sin texto da lo mismo que antes del 28/11 (`FORMA`
+    + HTML), así los tres paneles de datos no se vuelven a mandar sólo porque llegaron los carteles."""
+    return hashlib.sha256((FORMA + htm + (texto or '')).encode('utf-8')).hexdigest()[:16]
+
+
+#: los carteles NUEVOS salen la primera vez sólo con el sí de Dlx a la vista previa (`--aplicar --prender`), igual que los
+#: paneles el 13/10: sin esto, el ciclo siguiente al push los mandaba solos. Una vez que tienen su mensaje, se editan solos
+PIDEN_SI = {x[0] for x in CARTELES}
 
 
 def aplicar():
@@ -388,7 +601,8 @@ def aplicar():
     hub = _json('datos', 'dra_hub.json') or {}
     # 🔒 APAGADO HASTA QUE DLX DIGA QUE SÍ a la vista previa (13/10/2026: «te muestro cada panel antes de que salga»).
     # Sin esto, el ciclo de las 11:22 ponía el de Most Wanted —ese canal ya existía— antes de que nadie lo viera
-    if not hub.get('paneles_prendidos') and '--prender' not in sys.argv:
+    prender = '--prender' in sys.argv
+    if not hub.get('paneles_prendidos') and not prender:
         print('  los paneles de DRA están apagados hasta que Dlx los apruebe (--aplicar --prender la primera vez)')
         return 0
     hub['paneles_prendidos'] = True
@@ -398,46 +612,86 @@ def aplicar():
         print('Falta el token del bot.')
         return 1
     h = {'Authorization': 'Bot ' + tok, 'Content-Type': 'application/json'}
+    hm = {'Authorization': h['Authorization']}
+    api = 'https://discord.com/api/v10'
+    # los canales de DRA, una vez por corrida: los `sfx:` y las menciones del texto se buscan por nombre
+    try:
+        rc = requests.get('%s/guilds/%s/channels' % (api, GUILD), headers=hm, timeout=30)
+        canales = rc.json() if rc.status_code == 200 else []
+    except (requests.RequestException, ValueError):
+        canales = []
+    if not canales:
+        print('  ⚠️ no pude leer los canales de DRA: sólo los paneles con id fijo')
     import tempfile
     d = tempfile.mkdtemp()
-    for clave, canal_k, htm, botones in paneles():
-        canal = hub.get(canal_k) or (canal_k if canal_k.isdigit() else '')
+    for clave, canal_k, htm, botones, texto, foro in paneles():
+        tipo = 0
+        if canal_k.startswith('sfx:'):
+            c = canal_de(canales, canal_k[4:]) if canales else None
+            canal, tipo = (c['id'], c.get('type') or 0) if c else ('', 0)
+        else:
+            canal = hub.get(canal_k) or (canal_k if canal_k.isdigit() else '')
         if not canal:
-            print('  %-10s sin canal (correr herramientas/dra_hub.py --aplicar antes)' % clave)
+            print('  %-13s sin canal (%s): no se toca' % (clave, canal_k))
             continue
-        # ⚠️ CON LA FORMA EN LA FIRMA: los que salieron en un embed tienen que volver a mandarse como adjunto aunque la
-        # imagen sea la misma (`FORMA`)
-        firma = hashlib.sha256((FORMA + htm).encode('utf-8')).hexdigest()[:16]
         antes = estado.get(clave) or {}
-        if antes.get('firma') == firma and antes.get('msg'):
-            print('  %-10s igual: no se toca' % clave)
+        if clave in PIDEN_SI and not antes.get('msg') and not prender:
+            print('  %-13s nuevo: espera el sí de Dlx a la vista previa (--aplicar --prender)' % clave)
+            continue
+        texto = menciones(texto, canales)
+        # ⚠️ CON LA FORMA EN LA FIRMA: los que salieron en un embed tienen que volver a mandarse como adjunto aunque la
+        # imagen sea la misma (`FORMA`). Y con el canal: si el panel se mudó (la semana, 28/11), se manda en el nuevo
+        firma = firma_de(htm, texto)
+        if antes.get('firma') == firma and antes.get('msg') and antes.get('canal') == canal:
+            print('  %-13s igual: no se toca' % clave)
             continue
         ruta = foto(htm, os.path.join(d, clave + '.png'))
-        cuerpo = cuerpo_panel(clave, botones)
-        hm = {'Authorization': h['Authorization']}
+        cuerpo = cuerpo_panel(clave, botones, texto)
 
-        def _con_imagen(metodo, url_api):
+        def _con_imagen(metodo, url_api, payload):
             with open(ruta, 'rb') as fh:
-                return metodo(url_api, headers=hm, data={'payload_json': json.dumps(cuerpo)},
+                return metodo(url_api, headers=hm, data={'payload_json': json.dumps(payload)},
                               files={'files[0]': (clave + '.png', fh, 'image/png')}, timeout=60)
-        r = None
-        if antes.get('msg') and antes.get('canal') == canal:
-            r = _con_imagen(requests.patch, 'https://discord.com/api/v10/channels/%s/messages/%s' % (canal, antes['msg']))
+        r, hilo = None, ''
+        # 🧵 EN UN FORO EL PANEL ES UNA PUBLICACIÓN: su primer mensaje tiene el mismo id que el hilo, y se edita adentro
+        donde = (antes.get('hilo') or '') if tipo == 15 else canal
+        if antes.get('msg') and antes.get('canal') == canal and donde:
+            r = _con_imagen(requests.patch, '%s/channels/%s/messages/%s' % (api, donde, antes['msg']), cuerpo)
             if r.status_code == 404:
                 r = None
-        if r is None:
-            r = _con_imagen(requests.post, 'https://discord.com/api/v10/channels/%s/messages' % canal)
+            else:
+                hilo = antes.get('hilo') or ''
+        if r is None and tipo == 15:
+            r = _con_imagen(requests.post, '%s/channels/%s/threads' % (api, canal), {'name': (foro or clave)[:100], 'message': cuerpo})
+            if r.status_code in (200, 201):
+                hilo = r.json().get('id') or ''
+                # 📌 fijada arriba del foro (el flag PINNED de un hilo); si no se puede, queda publicada igual
+                rp = requests.patch('%s/channels/%s' % (api, hilo), headers=h, json={'flags': 2}, timeout=30)
+                if rp.status_code != 200:
+                    print('  %-13s ⚠️ no la pude fijar: %s' % (clave, rp.status_code))
+        elif r is None:
+            r = _con_imagen(requests.post, '%s/channels/%s/messages' % (api, canal), cuerpo)
         if r.status_code in (200, 201):
-            estado[clave] = {'canal': canal, 'msg': r.json().get('id') or antes.get('msg'), 'firma': firma,
-                             't': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}
-            print('  %-10s ✓ %s' % (clave, estado[clave]['msg']))
+            j = r.json()
+            # crear un hilo de foro devuelve el HILO (con `message` adentro); editar o mandar, el mensaje
+            msg = (j.get('message') or {}).get('id') or (j.get('id') if not hilo or j.get('id') != hilo else hilo) or antes.get('msg')
+            estado[clave] = {'canal': canal, 'msg': msg, 'firma': firma, 't': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}
+            if hilo:
+                estado[clave]['hilo'] = hilo
+            print('  %-13s ✓ %s' % (clave, msg))
         else:
-            print('  %-10s ✗ %s %s' % (clave, r.status_code, r.text[:160]))
+            print('  %-13s ✗ %s %s' % (clave, r.status_code, r.text[:160]))
         time.sleep(0.5)
     with io.open(HUB, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(hub, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write('\n')
     return 0
+
+
+def re_vos(t):
+    """¿Hay voseo en `t`? Las formas que ya se colaron otras veces (tenés, podés, verificate, anotate…)."""
+    import re
+    return bool(re.search(r"\b(tenés|podés|querés|sabés|entrá|mirá|anotate|verificate|jugá|elegí|sumate|vos)\b", str(t or ""), re.I))
 
 
 def _self_check():
@@ -450,17 +704,63 @@ def _self_check():
 
     print('\n  paneles_dra.py — self-check, sin red ni navegador\n')
     ps = paneles()
-    ok([p[0] for p in ps] == ['temporada', 'mw', 'semana'], 'los tres paneles')
+    datos_p = [p for p in ps if p[0] in ('temporada', 'mw', 'semana')]
+    carteles = [p for p in ps if p[0] in PIDEN_SI]
+    ok([p[0] for p in datos_p] == ['temporada', 'mw', 'semana'], 'los tres paneles de datos')
+    ok(len(carteles) == len(CARTELES) == 10 and len({p[0] for p in ps}) == len(ps), 'los diez carteles, cada uno con su clave')
     ok(all(1 <= len(p[3]) <= 5 and all(u.startswith('https://underlegends.pages.dev/') for _t, u in p[3]) for p in ps),
        'cada uno con 1 a 5 botones, todos a la página')
+    ok(all(len(t) <= 80 for p in ps for t, _u in p[3]), 'cada botón entra en las 80 letras de Discord')
     s = datos_semana()
     ok('FVS' not in FUERA, 'FVS sale en el panel de la semana (Dlx, 13/10: «FVS debería estar en esto»)')
     ok(_num(273733) == '274K' and _num(9500) == '9.500' and _num(None) == '0', 'los números como en la página')
     ok('<script' not in ''.join(p[2] for p in ps).lower(), 'el HTML no lleva scripts')
-    ok(all(CUANDO in p[2] for p in ps), 'la hora va aparte: la firma no cambia sólo porque pasó el tiempo')
+    ok(all(CUANDO in p[2] for p in datos_p), 'la hora va aparte: la firma no cambia sólo porque pasó el tiempo')
+    ok(all(CUANDO not in p[2] for p in carteles), 'los carteles no llevan hora: su firma cambia sólo si cambia el cartel')
     c = cuerpo_panel('temporada', ps[0][3])
-    ok(c['embeds'] == [] and c['attachments'] == [{'id': 0, 'filename': 'temporada.png'}] and c['components'][0]['components'],
-       'la imagen va como adjunto y sin embed, con sus botones (Dlx, 15/10: «quitar las imágenes del embed»)')
+    ok(c['embeds'] == [] and c['attachments'] == [{'id': 0, 'filename': 'temporada.png'}] and c['components'][0]['components']
+       and c['content'] == '', 'la imagen va como adjunto y sin embed, con sus botones (Dlx, 15/10: «quitar las imágenes del embed»)')
+    ok(firma_de('<x>') == hashlib.sha256((FORMA + '<x>').encode('utf-8')).hexdigest()[:16],
+       'sin texto, la firma es la de antes: los paneles de datos no se vuelven a mandar por los carteles')
+    ok(firma_de('<x>', 'a') != firma_de('<x>', 'b'), 'el texto del mensaje entra a la firma: cambiarlo edita el cartel')
+    # 📅 la semana ya no va a `esta-semana` (no existe desde el 27/11) sino a eventos-hoy, buscada por nombre
+    ok(dict((p[0], p[1]) for p in ps)['semana'] == 'sfx:eventoshoy', 'la semana va a eventos-hoy (esta-semana ya no existe)')
+    # 🔎 la búsqueda por nombre, con los canales de DRA de hoy (nombres reales, ids inventados)
+    cs = [{'id': '1', 'type': 4, 'name': '🎤 ╣ CYPHERS Y ENTRENAMIENTO ═'}, {'id': '2', 'type': 4, 'name': '👔 ╣ CENTRAL ═'},
+          {'id': '3', 'type': 4, 'name': '📦 ╣ ARCHIVO ═'},
+          {'id': '10', 'type': 0, 'name': '【🎭】objetivos', 'parent_id': '1'},
+          {'id': '11', 'type': 15, 'name': '╏👑╏ul-objetivos', 'parent_id': '2'},
+          {'id': '12', 'type': 0, 'name': '•「✅」verificate-aqui'}, {'id': '13', 'type': 0, 'name': 'verificate-aqui', 'parent_id': '3'},
+          {'id': '14', 'type': 15, 'name': '〢🏟️〉ligas'}, {'id': '15', 'type': 0, 'name': '•「🙋」preséntate'},
+          {'id': '16', 'type': 0, 'name': '🃏˚┊tu-tarjeta'}, {'id': '17', 'type': 5, 'name': '〢🔥〉eventos-hoy'},
+          {'id': '18', 'type': 2, 'name': 'tienda'}, {'id': '19', 'type': 0, 'name': '🛍️˚┊tienda'}]
+    ok((canal_de(cs, 'objetivos') or {}).get('id') == '10', '«objetivos» es 【🎭】objetivos y no ╏👑╏ul-objetivos (nombre exacto primero)')
+    ok((canal_de(cs, 'verificateaqui') or {}).get('id') == '12', 'lo del ARCHIVO no cuenta')
+    ok((canal_de(cs, 'presentate') or {}).get('id') == '15' and (canal_de(cs, 'tutarjeta') or {}).get('id') == '16',
+       'NFKD: «preséntate» y «tu-tarjeta» se encuentran sin acento ni guion')
+    ok((canal_de(cs, 'tienda') or {}).get('id') == '19' and canal_de(cs, 'noexiste') is None, 'un canal de voz no es un panel; sin canal, None')
+    ok((canal_de(cs, 'ligas') or {}).get('type') == 15, 'las ligas son un foro: el cartel va como publicación fijada')
+    ok(menciones('ve a {#verificateaqui}', cs) == 've a <#12>' and menciones('ve a {#verificateaqui}') == 've a #verificateaqui',
+       'las menciones del texto: con los canales, <#id>; en la vista previa, #nombre')
+    # los nombres de DRA el 28/11/2026 (GET, después del orden del 27/11): cada cartel tiene que dar con UNO solo
+    hoy = ['【🎯】buscar-batalla', '【💿】pon-beats', '【🧠】entrenamientos', '【⚽】dinamicas-retos', '【🎭】objetivos',
+           '✦🐣・evento-nuevos', '✦⚔️・elo-ranked-1v1', '✦⭐・competenciasᴹᴵˣ', '『🔴』eventos-grabados', '『🌟』publicaciones',
+           '『🎬』mejores-rimas', '『💚』contenido-rap', '『🚀』promocionate', '•「✅」verificate-aqui', '〢📣〉liga-global',
+           '〢🔥〉eventos-hoy', '〢🏆〉rankings', '〢💀〉most-wanted', '〢🎫〉pase-rapero', '〢🌎〉servidores-rap', '〢🏟️〉ligas',
+           '💬˚┊conversacion', '🃏˚┊tu-tarjeta', '🛍️˚┊tienda', '💼˚┊postulaciones', '🎟️˚┊ticket-soporte', '💡˚┊dudas',
+           '🛡️˚┊crews', '•「📮」empieza-aqui', '•「💙」quienes-somos', '•「🙋」preséntate', '•「🚪」recibidor',
+           '•「🧭」tutorial-guia', '╏👑╏ul-objetivos', '╏🪽╏chat-staff', '╏📄╏registros']
+    cs_hoy = [{'id': str(i), 'type': 0, 'name': nm} for i, nm in enumerate(hoy)]
+    faltan = [x[1] for x in CARTELES if canal_de(cs_hoy, x[1]) is None] + \
+        [k for k in CANALES_TEXTO if canal_de(cs_hoy, k) is None] + ([] if canal_de(cs_hoy, 'eventoshoy') else ['eventoshoy'])
+    ok(not faltan, 'cada cartel, la semana y cada mención dan con un solo canal de DRA %s' % (faltan or ''))
+    ok(all(not re_vos(x) for c0 in CARTELES for x in c0[2:6]), 'en tú, no en vos (Dlx, 20/10: «español latino»)')
+    ok(all('{#' not in menciones(c0[5], cs + [{'id': '9' + k, 'type': 0, 'name': k} for k in CANALES_TEXTO]) for c0 in CARTELES),
+       'cada {#canal} del texto es uno de CANALES_TEXTO')
+    ok(os.path.exists(FUENTE_CARTEL) and os.path.exists(LOGO_CARTEL), 'la letra y el logo de los carteles están en el repo')
+    h0 = html_cartel('a', 'b', 'c')
+    ok(h0.count('data-fit') == 3 and 'UL Cartel' in h0 and 'gradient' not in CSS_CARTEL,
+       'el cartel: tres grupos que se achican solos, con su letra y sin degradés (el estilo del banner de Dlx)')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
