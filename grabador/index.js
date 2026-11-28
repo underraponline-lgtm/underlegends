@@ -56,6 +56,7 @@ import { LlamadasVivo, claveCiclo } from './vivo.js';
 import { VIGIA_CAIDO_MIN, ANUNCIO_HORAS, FOTO_S, caidoDesde, anunciosDeAhora, largoRecuperada, decidirFin, CAMPEON } from './reserva.js';
 import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S, completarIds, sinUbicar } from './batallas.js';
 import { Menciones } from './mencion.js';
+import { AhoraMismo } from './ahora.js';
 import { Recibidor, GUILD_DRA as GUILD_RECIBIDOR } from './recibidor.js';
 import { Fallas, motivoDe, textoFalla } from './entrada.js';
 
@@ -1230,6 +1231,11 @@ client.once(Events.ClientReady, async () => {
     llamadas = new LlamadasVivo({ client, token: E.DISCORD_TOKEN, canalesDe: (gid) => CANALES_DE[gid] || null, anotar });
     llamadas.arrancar();
     anotar('🎙️👀 micrófonos y público de las llamadas en vivo: prendido');
+  }
+  // 🎧 «Ahora mismo» (ahora.js): las llamadas públicas de los socios, con números, a la página. `AHORA=0` lo apaga
+  if (E.AHORA !== '0') {
+    new AhoraMismo({ client, vigia: VIGIA, clave: claveCiclo(E.DISCORD_TOKEN), anotar }).arrancar();
+    anotar('🎧 ahora mismo: prendido (AHORA=0 lo apaga)');
   }
   if (MENCION) {
     const menciones = new Menciones({ client, token: E.DISCORD_TOKEN, vigia: VIGIA, clave: claveCiclo(E.DISCORD_TOKEN), anotar });

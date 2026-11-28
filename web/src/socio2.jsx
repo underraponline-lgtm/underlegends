@@ -489,6 +489,12 @@ function Ajustes({ sv, tier }) {
             ayuda="Una vez por día el bot lee tu chat general: cuenta cuánto se habla y quiénes, y si alguien denuncia un evento falso, una trampa, un raid o una estafa, se lo pasa a la Liga. Lo demás no se guarda.">
             <Interruptor t="Leer el chat general" on={c.leer_chat !== false} ocup={ocup} cambiar={(v) => cambiar('leer_chat', v)}
               si="Prendido: lo lee una vez por día" no="Apagado: no lee nada de tu chat" /></Fila>
+          {/* 🎧 «AHORA MISMO» (28/11/2026, bot/ahora.js): prendido de entrada, como leer el chat; DRA sale siempre */}
+          <Fila t="Tus llamadas en «Ahora mismo»" sello={sello === 'ahora_mismo'}
+            ayuda="La página muestra las llamadas de voz abiertas de tu servidor, sólo de canales públicos y con números: cuántos hay y cuántos con micro, nunca quiénes. Con un botón para unirse con tu invitación.">
+            {sv === 'DRA' ? <span>Siempre: es el servidor de la Liga</span>
+              : <Interruptor t="Tus llamadas en «Ahora mismo»" on={c.ahora_mismo !== false} ocup={ocup} cambiar={(v) => cambiar('ahora_mismo', v)}
+                si="Prendido: tus llamadas públicas salen en la página" no="Apagado: tu servidor no aparece" />}</Fila>
           {/* 🏆 LOS GANADORES DE CADA EVENTO (Discord, tanda 2, 17/11/2026, `bot/aviso_ganadores.py`): prendido de entrada, y lo
               apaga el staff de cada servidor (Dlx: «prendido en todos los socios, el dueño lo apaga») */}
           <Fila t="Los ganadores de cada evento" sello={sello === 'ganadores'}

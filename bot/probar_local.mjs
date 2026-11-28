@@ -4305,6 +4305,275 @@ console.log('\n🐣 PARA LOS NUEVOS\n');
   env.AVISOS = antesA;
 }
 
+// ✅ VERIFICARSE SIN SALIR DE DISCORD (28/11/2026): el panel de #verificate-aqui, paso a paso como el de YAGPDB (ver
+// bot/verificar_dc.js). Con el objeto de verdad (SQLite de Node) y un Discord de mentira que guarda los roles
+console.log('\n✅ VERIFICARSE EN DISCORD\n');
+{
+  const VD = await import('./verificar_dc.js');
+  const { claveCiclo } = await import('./avisos.js');
+  const { readFileSync } = await import('node:fs');
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  // 🌎 los roles son los de siempre: los de sheet/pais_por_rol.py, el Miembro de verificados.py y el Invitado de servidores.json
+  const pr = readFileSync(new URL('../sheet/pais_por_rol.py', import.meta.url), 'utf-8');
+  const tablaPy = Object.fromEntries([...pr.matchAll(/'(\d{15,20})':\s*'([a-z]{2})'/g)].map((m) => [m[1], m[2]]));
+  ok('los 21 países del menú tienen el rol de sheet/pais_por_rol.py', VD.PAISES.length === 21
+    && VD.PAISES.every(([cc, , , rol]) => tablaPy[rol] === cc), VD.PAISES.filter(([cc, , , rol]) => tablaPy[rol] !== cc).join(' | '));
+  ok('el Miembro es el de bot/verificados.py y el Invitado el de datos/servidores.json',
+    readFileSync(new URL('./verificados.py', import.meta.url), 'utf-8').includes("ROL_MIEMBRO = '" + VD.ROL_MIEMBRO + "'")
+    && JSON.parse(readFileSync(new URL('../datos/servidores.json', import.meta.url), 'utf-8')).canales.DRA.rol_invitado === VD.ROL_INVITADO);
+  ok('el AKA: de 2 a 9, sin los caracteres de YAGPDB, los dueños reservados',
+    VD.validarAka('a').error === 'largo' && VD.validarAka('abcdefghij').error === 'largo' && VD.validarAka('x@y').error === 'caracteres'
+    && VD.validarAka('  ItsDlx ').error === 'reservado' && VD.validarAka('LIL  DRAKO').error === 'reservado' && VD.validarAka(' Nyl ').aka === 'Nyl'
+    && VD.normAka('𝐍𝐲𝐥') === 'nyl');
+  const p = VD.panelMsg('https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/paneles/verificate-abc.png');
+  const sel = PZ(p, 3)[0] || {};
+  ok('el panel: el banner arriba, y el menú con los 21 países y su bandera', (p.flags & 32768) && !(p.flags & 64)
+    && PZ(p, 12).length === 1 && sel.custom_id === 'vdc:pais' && sel.options.length === 21 && sel.options[2].emoji.name === '🇦🇷'
+    && !/\bvos\b|ten[ée]s|pod[ée]s/.test(TX(p)), JSON.stringify(sel).slice(0, 120));
+  ok('una imagen que no es de R2 no entra al panel', PZ(VD.panelMsg('https://otro.com/x.png'), 12).length === 0);
+
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite (Node ' + process.version + '): el camino entero no se prueba');
+  } else {
+    const db = new DatabaseSync(':memory:');
+    const sql = { exec(q, ...ps) {
+      const st = db.prepare(String(q).trim());
+      if (/^\s*(SELECT|WITH)/i.test(q)) { const rows = st.all(...ps); return { toArray: () => rows, rowsWritten: 0 }; }
+      const r = st.run(...ps);
+      return { toArray: () => [], rowsWritten: Number(r.changes) };
+    } };
+    const o = { sql, env: { TEMPORADA: 't1' } };
+    VD.verifTablas(sql);
+    const antesA = env.AVISOS, antesF = globalThis.fetch;
+    const objeto = [];
+    env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+      const ruta = new URL(String(url)).pathname;
+      objeto.push(ruta);
+      if (ruta.startsWith('/vdc-')) return new Response(JSON.stringify(VD.objeto(o, ruta.slice(5), JSON.parse(opc.body), Date.now())));
+      return new Response('{"ok":true}');
+    } }) };
+    env.DISCORD_TOKEN = 'x';
+    // 🎭 Discord de mentira: los miembros de DRA, sus roles y lo que se publica
+    const U = (n) => '7100000000000000' + String(n).padStart(2, '0');
+    const DRA = {};
+    const DC = [];
+    let estadoRol = 204, dueno = '739338101603696681';
+    globalThis.fetch = async (url, opc = {}) => {
+      const u = String(url), m = String(opc.method || 'GET').toUpperCase();
+      let b = null;
+      try { b = opc.body ? JSON.parse(opc.body) : null; } catch (e) { b = opc.body; }
+      DC.push({ u, m, b });
+      if (/\/webhooks\//.test(u) && b && Array.isArray(b.components)) AUDITADOS.push({ de: 'vdc', tipo: 0, msg: b });
+      let x = u.match(/\/guilds\/\d+\/members\/(\d+)\/roles\/(\d+)$/);
+      if (x) {
+        if (estadoRol !== 204) return new Response('{"code":50013}', { status: estadoRol });
+        const mm = DRA[x[1]];
+        if (!mm) return new Response('{}', { status: 404 });
+        if (m === 'PUT' && !mm.roles.includes(x[2])) mm.roles.push(x[2]);
+        if (m === 'DELETE') mm.roles = mm.roles.filter((r) => r !== x[2]);
+        return new Response(null, { status: 204 });
+      }
+      x = u.match(/\/guilds\/\d+\/members\/(\d+)$/);
+      if (x) {
+        if (!DRA[x[1]]) return new Response('{"code":10007}', { status: 404 });
+        if (m === 'PATCH') { DRA[x[1]].nick = b.nick; return new Response(JSON.stringify(DRA[x[1]])); }
+        return new Response(JSON.stringify(DRA[x[1]]));
+      }
+      if (/\/guilds\/\d+\?with_counts=true$/.test(u)) return new Response(JSON.stringify({ owner_id: dueno, approximate_member_count: 2940 }));
+      if (/\/channels\/\d+$/.test(u)) return new Response(JSON.stringify({ id: '1', guild_id: u.includes('/99999') ? '1' : G.DRA }));
+      if (/\/channels\/\d+\/messages\/404404404404404404$/.test(u)) return new Response('{}', { status: 404 });
+      if (/\/channels\/\d+\/messages(\/\d+)?$/.test(u)) return new Response(JSON.stringify({ id: '555555555555555555' }));
+      return new Response('{}', { status: 200 });
+    };
+    const miembro = (n, roles, extra = {}) => { DRA[U(n)] = Object.assign({ user: { id: U(n), username: 'u' + n }, roles: roles.slice(), nick: null }, extra); };
+    // un clic: `cid`, en un mensaje efímero salvo `publico`
+    const tocar = async (n, cid, o2 = {}) => {
+      DC.length = 0;
+      const r = await pedir({ type: o2.modal ? 5 : 3, guild_id: o2.guild || G.DRA, channel_id: VD.CANAL_BIENVENIDA, application_id: 'app', token: 'tok',
+        message: { flags: o2.publico ? 32768 : 32768 | 64 }, member: { user: { id: U(n), username: 'u' + n } },
+        data: o2.modal ? { custom_id: cid, components: Object.entries(o2.modal).map(([k, v]) => ({ type: 1, components: [{ type: 4, custom_id: k, value: v }] })) }
+          : { custom_id: cid, component_type: o2.tipo || 2, values: o2.values, resolved: o2.resolved } }, { seguido: !!o2.seguido });
+      await esperarSeguimientos();
+      const ed = DC.filter((c) => /\/messages\/@original$/.test(c.u)).pop();
+      return Object.assign(r, { ed: ed ? ed.b : null, t: ed ? TX(ed.b) : TX(r.json?.data) });
+    };
+    const posts = (canal) => DC.filter((c) => c.m === 'POST' && c.u.endsWith('/channels/' + canal + '/messages'));
+    const rolPais = (cc) => VD.PAISES.find((x) => x[0] === cc)[3];
+
+    // 1 · el panel abre el formulario, enseguida (tipo 9); Estados Unidos pide también el estado
+    miembro(1, [VD.ROL_INVITADO]);
+    let r = await tocar(1, 'vdc:pais', { publico: true, tipo: 3, values: ['ar'] });
+    ok('elegir el país abre el formulario «Verificación 🐉 Generación LG» con el AKA de 2 a 9', r.json?.type === 9
+      && r.json.data.custom_id === 'vdc:m:ar' && r.json.data.title === 'Verificación 🐉 Generación LG'
+      && r.json.data.components.length === 1 && r.json.data.components[0].components[0].max_length === 9, JSON.stringify(r.json).slice(0, 200));
+    r = await tocar(1, 'vdc:pais', { publico: true, tipo: 3, values: ['us'] });
+    ok('con Estados Unidos, también el estado', r.json?.data?.components?.length === 2 && r.json.data.components[1].components[0].custom_id === 'estado');
+    r = await tocar(1, 'vdc:pais', { publico: true, tipo: 3, values: ['br'] });
+    ok('un país que no está en el menú (Brasil): no abre nada', r.json?.type === 4 && /ya no anda/.test(r.t), r.t);
+    r = await tocar(1, 'vdc:pais', { publico: true, tipo: 3, values: ['ar'], guild: G.FFA });
+    ok('fuera de DRA no anda', /Discord Rap Español/.test(r.t), r.t);
+
+    // 2 · el formulario: lo que se ve sin red, enseguida; el AKA tomado, del objeto
+    r = await tocar(1, 'vdc:m:ar', { publico: true, modal: { aka: 'ItsDlx' } });
+    ok('un nombre de los dueños: reservado, sin tocar el objeto', /reservado para los dueños/.test(r.t) && !objeto.some((x) => x.startsWith('/vdc-')), r.t);
+    r = await tocar(1, 'vdc:m:ar', { publico: true, modal: { aka: 'N#l' } });
+    ok('un carácter de los prohibidos: lo dice', /no puede llevar/.test(r.t), r.t);
+    VD.sembrar(o, { akas: [['🐉 | x', 'nada'], ['tomado', U(9)]] });
+    r = await tocar(1, 'vdc:m:ar', { publico: true, modal: { aka: 'TOMADO' } });
+    ok('un AKA de otro (sembrado de los apodos de DRA): ya está en uso', /ya está en uso/.test(r.t), r.t);
+    r = await tocar(1, 'vdc:m:ar', { publico: true, modal: { aka: 'Nyl' } });
+    ok('desde el panel: «un momento» en un mensaje efímero NUEVO, y después la pregunta de competir', r.json?.type === 4
+      && (r.json.data.flags & 64) && /¿Planeas competir/.test(r.t) && PZ(r.ed, 2).map((x) => x.custom_id).join() === 'vdc:c:activo,vdc:c:nuevo,vdc:c:no', r.t);
+    ok('y el panel público no se edita nunca', !DC.some((c) => c.m === 'PATCH' && /\/channels\//.test(c.u)));
+
+    // 3 y 4 · competir y quién te invitó: «ya va» (tipo 6) y se edita el mismo mensaje efímero
+    r = await tocar(1, 'vdc:c:nuevo');
+    ok('competir: tipo 6 y la pregunta de la invitación', r.json?.type === 6 && /¿Alguien te invitó/.test(r.t), r.t);
+    r = await tocar(1, 'vdc:i:si');
+    ok('«Sí, alguien me invitó»: el menú de usuarios', PZ(r.ed, 5).length === 1, r.t);
+    r = await tocar(1, 'vdc:iu', { tipo: 5, values: [U(1)], resolved: { users: { [U(1)]: { id: U(1) } } } });
+    ok('elegirse a uno mismo: no', /a ti mismo/.test(r.t), r.t);
+    r = await tocar(1, 'vdc:iu', { tipo: 5, values: [U(50)], resolved: { users: { [U(50)]: { id: U(50), bot: true } } } });
+    ok('elegir un bot: no', /Un bot no invita/.test(r.t), r.t);
+    r = await tocar(1, 'vdc:iu', { tipo: 5, values: [U(3)], resolved: { users: { [U(3)]: { id: U(3) } } } });
+    ok('la vista: «🐉 | Nyl», el país, la competencia y quién invitó', /Así es como te verás/.test(r.t) && /🐉 \| Nyl/.test(r.t)
+      && /🇦🇷 Argentina/.test(r.t) && /Quiero empezar/.test(r.t) && r.t.includes('<@' + U(3) + '>'), r.t);
+
+    // 5 · cambiar el país desde la vista
+    r = await tocar(1, 'vdc:ed');
+    ok('«Cambiar»: AKA, país, competencia, quién te invitó y volver', PZ(r.ed, 2).length === 5, r.t);
+    r = await tocar(1, 'vdc:ep');
+    r = await tocar(1, 'vdc:p2', { tipo: 3, values: ['cl'] });
+    ok('cambiar el país vuelve a la vista con el nuevo', /🇨🇱 Chile/.test(r.t), r.t);
+    r = await tocar(1, 'vdc:ea');
+    ok('cambiar el AKA: el formulario, con el AKA opcional', r.json?.type === 9 && r.json.data.custom_id === 'vdc:m:-:e'
+      && r.json.data.components[0].components[0].required === false);
+
+    // 6 · confirmar: los roles de YAGPDB, el apodo, los avisos y la bienvenida
+    r = await tocar(1, 'vdc:ok');
+    const m1 = DRA[U(1)];
+    ok('confirmar: el país y el Miembro, fuera el Invitado', m1.roles.includes(rolPais('cl')) && m1.roles.includes(VD.ROL_MIEMBRO)
+      && !m1.roles.includes(VD.ROL_INVITADO) && m1.roles.length === 2, JSON.stringify(m1.roles));
+    ok('el apodo «🐉 | AKA»', m1.nick === '🐉 | Nyl', m1.nick);
+    const lv = posts(VD.HILO_VERIF)[0], bv = posts(VD.CANAL_BIENVENIDA)[0], iv = posts(VD.HILO_INVITES)[0];
+    ok('el aviso de LIGA GLOBAL ID, con el formato de YAGPDB', lv && lv.b.content === '||LIGAID|Nyl|chile|' + U(1) + '|nuevo||'
+      && lv.b.embeds[0].title === '✅ Nuevo verificado en Liga Global' && JSON.stringify(lv.b.allowed_mentions) === '{"parse":[]}', JSON.stringify(lv && lv.b));
+    ok('la bienvenida pública: «Eres el #2940», quién lo invitó, «Clic aquí» y «Saludar», y suena sólo el nuevo', bv
+      && /Eres el \*\*#2940\*\*/.test(TX(bv.b)) && TX(bv.b).includes('Invitado por <@' + U(3) + '>')
+      && PZ(bv.b, 2).some((x) => x.custom_id === 'vdc:hola:' + U(1)) && PZ(bv.b, 2).some((x) => x.url && x.url.endsWith(VD.CANAL_EMPIEZA))
+      && JSON.stringify(bv.b.allowed_mentions) === JSON.stringify({ users: [U(1)] }), bv && TX(bv.b));
+    ok('la invitación, contada y avisada en INVITADOS', iv && TX({ embeds: iv.b.embeds }).includes('<@' + U(3) + '> invitó a <@' + U(1) + '>')
+      && /Lleva 1 esta temporada · 1 en total/.test(iv.b.embeds[0].description), iv && iv.b.embeds[0].description);
+    ok('el último mensaje: verificado, qué se abre, el Evento de Nuevos (contestó «Quiero empezar») y la página', /Verificación completada/.test(r.t)
+      && /Evento de Nuevos/.test(r.t) && /tarjeta de \*\*Servidor\*\*/.test(r.t) && /Pase de rapero/.test(r.t)
+      && PZ(r.ed, 2).some((x) => x.url && x.url.endsWith(VD.CANAL_NUEVOS)) && PZ(r.ed, 2).some((x) => x.url === VD.PAGINA), r.t);
+    const madr = (await import('./worker.js')).enMadrugada(new Date(Date.now()));
+    ok('y el ciclo se entera (ciclo-verificar); de madrugada, el mensaje dice cuándo', madr ? /11:22 AM/.test(r.t) && !objeto.includes('/ciclo-verificar')
+      : objeto.includes('/ciclo-verificar') && /unos minutos/.test(r.t), r.t);
+    ok('el AKA queda reservado y la historia anotada', sql.exec('SELECT quien FROM vdc_aka WHERE aka = ?', 'nyl').toArray()[0]?.quien === U(1)
+      && sql.exec('SELECT comp, inv, cc FROM vdc_hist WHERE quien = ?', U(1)).toArray()[0]?.inv === U(3));
+
+    // 7 · otra vez, ya verificado y con otro país: se cambia el país (fuera el viejo) y no se anuncia nada
+    r = await tocar(1, 'vdc:m:mx', { publico: true, modal: { aka: 'Nyl' } });
+    await tocar(1, 'vdc:c:activo');
+    await tocar(1, 'vdc:i:no');
+    r = await tocar(1, 'vdc:ok');
+    ok('ya verificado y otro país: México puesto, Chile fuera, un solo país', m1.roles.includes(rolPais('mx')) && !m1.roles.includes(rolPais('cl'))
+      && m1.roles.filter((x) => VD.PAISES.some((p) => p[3] === x)).length === 1, JSON.stringify(m1.roles));
+    ok('y no se repite nada: ni aviso, ni bienvenida, ni invitación; el mensaje lo dice', !posts(VD.HILO_VERIF).length && !posts(VD.CANAL_BIENVENIDA).length
+      && !posts(VD.HILO_INVITES).length && /Ya estabas verificado/.test(r.t), r.t);
+    ok('sin PUT del Miembro que ya tenía (idempotente)', !DC.some((c) => c.m === 'PUT' && c.u.endsWith('/roles/' + VD.ROL_MIEMBRO)));
+
+    // 8 · se fue y volvió en menos de 60 días: bienvenida sí, invitación no
+    m1.roles = [VD.ROL_INVITADO];
+    await tocar(1, 'vdc:m:ar', { publico: true, modal: { aka: 'Nyl' } });
+    await tocar(1, 'vdc:c:activo');
+    await tocar(1, 'vdc:iu', { tipo: 5, values: [U(4)], resolved: { users: { [U(4)]: { id: U(4) } } } });
+    r = await tocar(1, 'vdc:ok');
+    ok('volvió antes de 60 días: se lo recibe, pero la invitación no cuenta', posts(VD.CANAL_BIENVENIDA).length === 1 && !posts(VD.HILO_INVITES).length, r.t);
+
+    // 9 · lo que tiene que contestar bien
+    miembro(5, [VD.ROL_INVITADO]);
+    await tocar(5, 'vdc:m:pe', { publico: true, modal: { aka: 'Cinco' } });
+    await tocar(5, 'vdc:c:no');
+    await tocar(5, 'vdc:i:no');
+    estadoRol = 403;
+    r = await tocar(5, 'vdc:ok');
+    estadoRol = 204;
+    ok('sin permiso para los roles: «avísale a un admin», y no se anuncia nada', /avísale a un admin/.test(r.t) && !posts(VD.HILO_VERIF).length
+      && !sql.exec('SELECT 1 FROM vdc_hist WHERE quien = ?', U(5)).toArray().length, r.t);
+    DRA[U(5)].pending = true;
+    r = await tocar(5, 'vdc:ok');
+    ok('sin aceptar las reglas de DRA: primero eso', /acepta las reglas/.test(r.t), r.t);
+    DRA[U(5)].pending = false;
+    dueno = U(5);
+    r = await tocar(5, 'vdc:ok');
+    ok('al dueño del servidor no se le toca el apodo (Discord no deja), y se verifica igual', DRA[U(5)].roles.includes(VD.ROL_MIEMBRO)
+      && !DC.some((c) => c.m === 'PATCH' && c.u.endsWith('/members/' + U(5))), r.t);
+    miembro(6, [VD.ROL_INVITADO]);
+    await tocar(6, 'vdc:m:pe', { publico: true, modal: { aka: 'Seis' } });
+    RELOJ += 11 * 60000;
+    r = await tocar(6, 'vdc:c:no');
+    ok('pasados 10 minutos, lo escrito se vence', /Pasaron más de 10 minutos/.test(r.t), r.t);
+    r = await tocar(6, 'vdc:ok');
+    ok('y confirmar tampoco', /Pasaron más de 10 minutos/.test(r.t) && !DRA[U(6)].roles.includes(VD.ROL_MIEMBRO), r.t);
+
+    // 10 · «Saludar»: cualquiera menos el nuevo, hasta 4 en 7 días, uno por persona
+    r = await tocar(1, 'vdc:hola:' + U(1), { publico: true });
+    ok('el nuevo no se saluda a sí mismo', /a ti mismo/.test(r.t), r.t);
+    for (const n of [11, 12, 13, 14]) await tocar(n, 'vdc:hola:' + U(1), { publico: true });
+    r = await tocar(11, 'vdc:hola:' + U(1), { publico: true });
+    const ult = DC.filter((c) => /\/webhooks\/app\/tok$/.test(c.u)).pop();
+    ok('saludar dos veces: «ya lo saludaste»', r.json?.type === 6 && ult && /Ya lo saludaste/.test(TX(ult.b)));
+    r = await tocar(15, 'vdc:hola:' + U(1), { publico: true });
+    const tope = DC.filter((c) => /\/webhooks\/app\/tok$/.test(c.u)).pop();
+    ok('el quinto: ya lo saludaron 4', tope && /Ya lo saludaron 4/.test(TX(tope.b)) && !posts(VD.CANAL_BIENVENIDA).length);
+    await tocar(16, 'vdc:hola:' + U(5), { publico: true });
+    const sd = posts(VD.CANAL_BIENVENIDA)[0];
+    ok('el saludo: «@a le da la bienvenida a @b» y el botón otra vez, suena sólo el nuevo', sd && TX(sd.b).includes('<@' + U(16) + '> le da la bienvenida a <@' + U(5) + '>')
+      && PZ(sd.b, 2).some((x) => x.custom_id === 'vdc:hola:' + U(5)) && JSON.stringify(sd.b.allowed_mentions) === JSON.stringify({ users: [U(5)] }));
+
+    // 11 · la ruta del panel, con la clave del ciclo
+    const ruta = async (cuerpo, clave = true) => {
+      DC.length = 0;
+      const rr = await worker.fetch(new Request('https://x/verificar-dc', { method: 'POST', body: JSON.stringify(cuerpo),
+        headers: clave ? { 'x-lg-ciclo': await claveCiclo('x') } : {} }), env, ctx);
+      let j = null;
+      try { j = JSON.parse(await rr.text()); } catch (e) { j = null; }
+      return { status: rr.status, j: j || {} };
+    };
+    const IMG = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/paneles/verificate-abc.png';
+    let q = await ruta({ accion: 'panel', canal: '1506094409438199988' }, false);
+    ok('sin la clave del ciclo: 403 y sin tocar Discord', q.status === 403 && !DC.length);
+    q = await ruta({ accion: 'panel', canal: '1506094409438199988', img: IMG });
+    const pub = DC.find((c) => c.m === 'POST');
+    ok('con la clave: publica UNO, con el banner de R2 y el menú', q.j.ok && q.j.nuevo && pub && PZ(pub.b, 12)[0]?.items[0].media.url === IMG
+      && PZ(pub.b, 3)[0]?.options.length === 21, JSON.stringify(q.j));
+    q = await ruta({ accion: 'panel', canal: '1506094409438199988', msg: '1506094409438199989', img: IMG });
+    ok('con el mensaje que ya está: lo EDITA', q.j.editado && DC.some((c) => c.m === 'PATCH') && !DC.some((c) => c.m === 'POST'));
+    q = await ruta({ accion: 'panel', canal: '1506094409438199988', msg: '404404404404404404' });
+    ok('si ese mensaje ya no existe: publica otro', q.j.nuevo);
+    q = await ruta({ accion: 'panel', canal: '99999999999999999' });
+    ok('un canal de otro servidor: no', q.status === 400 && q.j.error === 'canal');
+    q = await ruta({ accion: 'panel', canal: '1506094409438199988', img: 'https://otro.com/x.png' });
+    ok('una imagen que no es de R2: no', q.status === 400 && q.j.error === 'img');
+    q = await ruta({ accion: 'sembrar', akas: [['🐉 | Otro', U(30)], ['nyl', U(31)]] });
+    ok('sembrar: entra el nuevo y no pisa uno tomado', q.j.ok && q.j.nuevos === 1
+      && sql.exec('SELECT quien FROM vdc_aka WHERE aka = ?', 'nyl').toArray()[0]?.quien === U(1), JSON.stringify(q.j));
+
+    // 12 · «olvidarme» se lleva todo lo suyo
+    VD.olvidar(o, U(1));
+    ok('«olvidarme» borra su AKA, su historia, sus invitaciones y sus saludos', !['vdc_aka', 'vdc_hist', 'vdc_borr'].some((t) =>
+      sql.exec(`SELECT 1 FROM ${t} WHERE quien = ?`, U(1)).toArray().length) && !sql.exec('SELECT 1 FROM vdc_hola WHERE a = ?', U(1)).toArray().length
+      && !sql.exec('SELECT 1 FROM vdc_inv WHERE quien = ? OR inv = ?', U(1), U(1)).toArray().length);
+
+    globalThis.fetch = antesF;
+    env.AVISOS = antesA;
+    delete env.DISCORD_TOKEN;
+  }
+}
+
 // 🧱 LA FORMA DE CADA RESPUESTA (20/11/2026, el rediseño de los comandos). Sobre TODO lo que contestó o editó el Worker en
 // este archivo: que entre en los topes de Discord (40 componentes, 4.000 letras, ids de 100, 5 por fila, 25 opciones), que
 // con el flag V2 no vaya `content` ni `embeds`, que las filas de botones vayan AFUERA del recuadro y que haya un solo

@@ -6490,6 +6490,45 @@ const ok = (cond, que, det) => {
   }
 }
 
+// ✅ VERIFICARSE EN DISCORD (28/11/2026), en el objeto de verdad: las tablas salen con el objeto, los pasos llegan por
+// `/vdc-<paso>` y «olvidarme» se lleva lo suyo (el camino entero, con el Worker, está en probar_local.mjs)
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = { exec(q, ...ps) {
+      const t = String(q).trim();
+      if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
+      const st = db.prepare(t);
+      if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows, rowsWritten: 0 }; }
+      const r = st.run(...ps);
+      return { toArray: () => [], rowsWritten: Number(r.changes) };
+    } };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', TEMPORADA: 't1', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const al = async (ruta, d) => (await o.fetch(new Request('https://avisos/' + ruta, { method: 'POST', body: JSON.stringify(d) }))).json();
+    const Q = '720000000000000001', I = '720000000000000002';
+    ok(['vdc_borr', 'vdc_aka', 'vdc_hist', 'vdc_inv', 'vdc_hola'].every((t) => sql.exec('SELECT name FROM sqlite_master WHERE name = ?', t).toArray().length),
+      'verificarse en Discord: sus cinco tablas salen con el objeto');
+    let r = await al('vdc-borrador', { quien: Q, nuevo: true, aka: 'Nyl', cc: 'ar' });
+    ok(r.ok && r.b.aka === 'Nyl', 'el formulario llega por /vdc-borrador', JSON.stringify(r));
+    await al('vdc-borrador', { quien: Q, comp: 'activo' });
+    await al('vdc-borrador', { quien: Q, inv: I });
+    r = await al('vdc-reservar', { quien: Q });
+    ok(r.ok && r.temp === 't1', 'reservar: el AKA queda a su nombre', JSON.stringify(r));
+    r = await al('vdc-borrador', { quien: I, nuevo: true, aka: 'NYL', cc: 'cl' });
+    ok(r.error === 'en_uso', 'otro con el mismo AKA (en mayúsculas): ya está en uso', JSON.stringify(r));
+    r = await al('vdc-listo', { quien: Q, ya: false });
+    ok(r.ok && r.entra && r.credito && r.credito.temp === 1, 'listo: entra, y la invitación cuenta', JSON.stringify(r));
+    ok((await al('vdc-nada', { quien: Q })).error === 'no existe', 'un paso que no existe: no existe');
+    await o.olvidar({ quien: Q });
+    ok(!sql.exec('SELECT 1 FROM vdc_aka WHERE quien = ?', Q).toArray().length && !sql.exec('SELECT 1 FROM vdc_hist WHERE quien = ?', Q).toArray().length,
+      '«olvidarme» borra su AKA y su historia');
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

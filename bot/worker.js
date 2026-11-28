@@ -56,6 +56,13 @@ import * as V from './vista.js';
 import * as NU from './nuevos.js';
 // 🚪 el recibidor de DRA (28/11/2026): la ruta del grabador y el botón «Lo recibo yo». Todo vive en bot/recibidor.js
 import * as RC from './recibidor.js';
+// 🎧 «Ahora mismo» (28/11/2026): las llamadas públicas de los socios, para la página. Todo vive en bot/ahora.js
+import * as AH from './ahora.js';
+// ✅ verificarse sin salir de Discord (28/11/2026): el panel de #verificate-aqui de DRA, paso a paso como el de YAGPDB.
+// Todo vive en bot/verificar_dc.js; acá sólo lo que necesita del Worker (el freno, los avisos, anotar para el ciclo)
+import * as VD from './verificar_dc.js';
+const ayudaVD = (env, ctx) => ({ frenado, espera, aviso, pensandoYEditar, enMadrugada,
+  anotar: (id, nick, user, glob) => anotar(env, ctx, id, nick, user, glob, VD.GUILD_DRA, 'yo') });
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -5716,6 +5723,10 @@ export default {
     if (camino === '/mencion' && req.method === 'POST') return esCiclo ? rutaMencion(req, env, ctx) : new Response('', { status: 403 });
     // 🚪 el recibidor (28/11/2026): la pregunta de alguien nuevo en DRA que escucha el grabador (grabador/recibidor.js)
     if (camino === '/recibidor' && req.method === 'POST') return esCiclo ? RC.ruta(req, env) : new Response('', { status: 403 });
+    // 🎧 «Ahora mismo» (28/11/2026): GET público (la página, por el borde) y POST del grabador con la clave. bot/ahora.js
+    if (camino === '/ahora') return AH.ruta(req, env, esCiclo);
+    // ✅ el panel de verificación de DRA (herramientas/verificar_dc_panel.py): publicarlo y sembrar los AKA, con la clave del ciclo
+    if (camino === '/verificar-dc' && req.method === 'POST') return esCiclo ? VD.ruta(req, env) : new Response('', { status: 403 });
     if (camino === '/avisos/numeral') return numeralPagina(req, env);
     if (camino === '/avisos/apodo') return apodoPagina(req, env);
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
@@ -5866,6 +5877,8 @@ export default {
     // ── 🗳️🎲 El modal de elegir: `vm:<voto>:<lado>:<apuesta>`. El voto va siempre; la apuesta, si escribió más de 0 ──────
     if (i.type === RECIBE.MODAL) {
       const [que, qg, lado, ap] = String((i.data && i.data.custom_id) || '').split(':');
+      // ✅ el formulario de la verificación (`vdc:m:<país>[:e]`): ver bot/verificar_dc.js
+      if (que === 'vdc') return VD.formulario(i, env, ctx, ayudaVD(env, ctx));
       if (que !== 'vm') return aviso('Ya no pude leer eso: prueba de nuevo.');
       const esperarVm = frenado(idDe(i), 'click');
       if (esperarVm) return espera(esperarVm);
@@ -6053,6 +6066,9 @@ export default {
         return pensandoYEditar(i, ctx, async () => V.avisoMsg(NU.respuestaTxt(
           await alObjeto(env, 'nuevos-anotar', { quien: yo, nombre: NU.nombreDe(i), accion: quien }))));
       }
+
+      // ── ✅ verificarse en #verificate-aqui (28/11/2026): `vdc:<paso>…` y «Saludar» (`vdc:hola:<nuevo>`). Ver bot/verificar_dc.js
+      if (que === 'vdc') return VD.componente(i, env, ctx, ayudaVD(env, ctx));
 
       // ── 🚪 «Lo recibo yo» (28/11/2026): `rcb:<mensaje>`, sólo el rol Recibidor de DRA o Dlx. Ver bot/recibidor.js
       // y «👋 Saludar» (`rsal:<nuevo>:<canal>`, que no choca con el `saludar_` de YAGPDB): cualquiera menos el nuevo

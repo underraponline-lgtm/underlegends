@@ -147,6 +147,9 @@ jobs:
           # el grabador con un Discord de mentira, y en el objeto los frenos, el tope de la IA, el primero que toca gana y el
           # Pase Premium a los 3 que jugaron, una sola vez
           node bot/recibidor_prueba.mjs
+          # 🎧 «Ahora mismo» (28/11/2026): qué canal es público, que el grabador no manda nada de nadie, que manda sólo si
+          # cambió (uno por minuto) más el latido, y en el objeto: sólo socios, el vencimiento a los 15 min y el interruptor
+          node bot/ahora_prueba.mjs
           # 🏟️ la tanda B del plan de los tiers (20/11/2026): seguir a un servidor, el evento flojo, los suplentes, el padrino
           # y calificar el evento, sobre el objeto de verdad
           node bot/tanda_b_prueba.mjs

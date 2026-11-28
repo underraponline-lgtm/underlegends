@@ -53,6 +53,9 @@ import * as TI from './tienda.js';
 // 🐣 el Evento de Nuevos (28/11/2026): la inscripción y su panel en DRA
 import * as NU from './nuevos.js';
 import * as RC from './recibidor.js';
+import * as AH from './ahora.js';
+// ✅ verificarse en #verificate-aqui (28/11/2026): los AKA tomados, la historia, las invitaciones y los saludos
+import * as VD from './verificar_dc.js';
 import * as LIV from './ligas_vivo.js';
 // 🧱 las piezas de los mensajes en V2 (20/11/2026): `kitListo()` arma ahí la llave y el afiche terminados
 import * as V from './vista.js';
@@ -6014,7 +6017,9 @@ export function socioAjusteValido(cual, valor, canales, ligas) {
   }
   // 💬 `leer_chat` (17/11/2026, `bot/chats.py`): si el bot lee una vez por día el chat general de ese servidor
   // 🏆 `ganadores` (Discord, tanda 2, 17/11/2026, `bot/aviso_ganadores.py`): el aviso de los ganadores de cada evento en su chat general
-  if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord' || cual === 'leer_chat' || cual === 'ganadores') return typeof valor === 'boolean' ? valor : undefined;
+  // 🎧 `ahora_mismo` (28/11/2026, bot/ahora.js): si sus llamadas públicas salen en «Ahora mismo» de la página
+  if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord' || cual === 'leer_chat' || cual === 'ganadores'
+    || cual === 'ahora_mismo') return typeof valor === 'boolean' ? valor : undefined;
   if (cual === 'vivo_nivel') return Object.prototype.hasOwnProperty.call(NIVELES_CHAT, valor) ? valor : undefined;
   if (cual === 'aviso_evento') return (valor === '' || valor === null) ? '' : (valor === 'chat' || valor === 'no') ? valor : undefined;
   if (cual === 'avisos' || cual === 'vivo' || cual === 'ascenso') {
@@ -10085,6 +10090,10 @@ export class Avisos {
       NU.nuevosTablas(this.sql);
       // 🚪 EL RECIBIDOR DE DRA (28/11/2026): las preguntas (sin el texto) y quién recibió a quién, en bot/recibidor.js
       RC.recibidorTablas(this.sql);
+      // 🎧 «AHORA MISMO» (28/11/2026): una fila por socio con llamadas públicas, sin nada de nadie. Ver bot/ahora.js
+      AH.ahoraTablas(this.sql);
+      // ✅ VERIFICARSE EN DISCORD (28/11/2026): lo que guardaba YAGPDB, en tablas nuestras. Ver bot/verificar_dc.js
+      VD.verifTablas(this.sql);
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
       // filas, y el 57 % eran dos limpiezas que corren cada minuto —las inscripciones viejas y las marcas de «ya
       // avisado»— recorriendo la tabla entera para borrar casi nada. Con el índice, borrar lee sólo lo que borra.
@@ -10661,6 +10670,8 @@ export class Avisos {
     try {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
       if (ruta === '/estado') return json(this.delMinuto('/estado', 20, () => this.estado()), 200, 20);
+      // 🎧 «Ahora mismo»: leer (la página) y poner (el grabador, por el Worker con la clave). Sólo del Worker: ver bot/ahora.js
+      if (ruta === '/ahora-leer' || ruta === '/ahora-poner') return AH.rutaObjeto(this, req, ruta);
       // ⚙️ los ajustes para el ciclo, y con ellos los servidores que corrieron /setup (`setup_altas`, 19/11/2026): así
       // `bot/tiers.py` los da de alta en la misma lectura, sin otra ruta. ⚠️ `setup_altas` NO es un ajuste de Dlx: no se
       // escribe por `/ajuste` (`ajusteValido()` no lo conoce) y el Dashboard no lo recibe por acá
@@ -10846,6 +10857,8 @@ export class Avisos {
       if (ruta === '/nuevos-panel') return json(await NU.panel(this, d));
       // 🚪 el recibidor: una pregunta y «Lo recibo yo» (sólo del Worker: no están en `RUTAS`). Ver bot/recibidor.js
       if (ruta === '/recibidor-pedir') return json(RC.pedir(this, d, Date.now()));
+      // ✅ los pasos de la verificación en Discord (sólo del Worker: no están en `RUTAS`). Ver bot/verificar_dc.js
+      if (ruta.startsWith('/vdc-')) return json(VD.objeto(this, ruta.slice(5), d, Date.now()));
       if (ruta === '/recibidor-reclamar') return json(await RC.reclamar(this, d, Date.now(), DUENO));
       if (ruta === '/recibidor-saludar') return json(RC.saludar(this, d, Date.now()));
       if (ruta === '/primerizos-ciclo') {
@@ -15416,6 +15429,8 @@ export class Avisos {
     try { this.sql.exec('DELETE FROM nuevos_anot WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
     // 🚪 y lo del recibidor (28/11/2026): sus preguntas, sus saludos y a quién recibió (ver `olvidar()` en bot/recibidor.js)
     try { RC.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
+    // ✅ y lo de verificarse en Discord (28/11/2026): su AKA tomado, su historia, sus invitaciones y sus saludos
+    try { VD.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
     // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
     // se borrara, al que cazó ese precio se le irían sus puntos de Temporada
     const b = this.sql.exec('DELETE FROM tienda WHERE quien = ?', String(d.quien));
@@ -20075,6 +20090,8 @@ export class Avisos {
       // 🗂️ al registro de Dlx (antes, `socio_hist`: los 50 últimos y sin quién era cada uno)
       if (JSON.stringify(antes) !== JSON.stringify(v)) this.socioAnotar(sv, quien, x.rol, cual, antes, v, this.nombreEquipo(sv, quien));
       if (this.cfgChat) this.cfgChat.delete(g);
+      // 🎧 apagado, sus llamadas se van de la página en el momento (no al próximo envío del grabador)
+      if (cual === 'ahora_mismo' && v === false) AH.borrar(this, g);
     }
     const gen = ((this.leer('canales') || {}).generales || []).find((c) => c.sv === sv);
     return json({
@@ -20086,7 +20103,7 @@ export class Avisos {
         ligas: String(cfg.ligas || ''), ligas_por: (cfg.ligas_por && typeof cfg.ligas_por === 'object') ? cfg.ligas_por : {},
         resumen: String(cfg.resumen || ''), silencio: cfg.silencio && typeof cfg.silencio === 'object' ? cfg.silencio : '',
         leer_chat: cfg.leer_chat !== false, ganadores: cfg.ganadores !== false, bienvenida: String(cfg.bienvenida || ''), redes: String(cfg.redes || ''),
-        rimas: String(cfg.rimas || '') },
+        rimas: String(cfg.rimas || ''), ahora_mismo: cfg.ahora_mismo !== false },
       ligas, rol: x.rol,
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',

@@ -28,6 +28,7 @@ function hayMesAbierto(liga) {
   return (liga.d.enc || []).some((e) => e && e.tipo === 'mes' && (e.sv || e.gala) && utc(e.hasta) > ahora);
 }
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
+import { AhoraMismo } from './ahora_mismo.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const leer = (k) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
@@ -579,6 +580,9 @@ export function Lobby({ liga, dc, enc }) {
       <FilaRacha dc={dc} R={R} liga={liga} enc={enc} />
       <ElBoton liga={liga} />
       <Batallas liga={liga} dc={dc} />
+      {/* 🎧 «Ahora mismo» (28/11/2026): las llamadas públicas de los socios, con números y «Unirme». Se apaga sola sin
+          ninguna (ahora_mismo.jsx) */}
+      <AhoraMismo liga={liga} />
       {/* 🧩 EL PANEL, OPCIÓN B (12/11/2026, Dlx): la Tienda arriba a la izquierda, tu liga y Misiones partidos (Misiones, la
           mitad alta), el Pase y La semana partidos a la derecha, y abajo Eventos con Tu servidor al costado */}
       <div className="pn-grid aparece">

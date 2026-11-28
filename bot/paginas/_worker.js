@@ -1167,6 +1167,14 @@ export default {
 
     if (AVISOS[url.pathname]) return avisos(req, url, ctx);
 
+    // 🎧 «AHORA MISMO» (28/11/2026): las llamadas públicas de los socios, con números (bot/ahora.js). La página pregunta cada
+    // minuto con la pestaña a la vista; 30 s en el borde: mucha gente mirando son pocos pedidos al Worker
+    if (url.pathname === '/api/ahora') {
+      if (req.method !== 'GET') return new Response('no', { status: 405 });
+      return delBorde(ctx, url, 30, () => fetch(ORIGEN + '/ahora', { method: 'GET', headers: { accept: 'application/json' } }),
+        { 'content-type': 'application/json; charset=utf-8', ...SEGURO, 'cache-control': 'public, max-age=20' }, false);
+    }
+
     if (url.pathname === '/api/lobby') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       // El Worker sirve el lobby como HTML; lo que hace falta acá es el

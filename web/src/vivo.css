@@ -7728,3 +7728,39 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .fpos-r input{width:100%;min-height:32px;accent-color:var(--verde)}
 .fpos-r b{text-align:right;font-variant-numeric:tabular-nums}
 @media (max-width:560px){.fpos-vs{grid-template-columns:minmax(0,1fr)}.fpos-v.cel .fpos-img{max-width:220px}}
+
+/* 🎧 «AHORA MISMO» (28/11/2026, ahora_mismo.jsx): las llamadas públicas de los socios, dentro del lobby, entre tu evento y
+   el panel. Con el lenguaje del panel (borde de 1,5 px, fondo #0B0C0E) y el color de cada servidor en el borde izquierdo,
+   que llega del lobby en línea (nunca escrito acá). En la compu, una grilla; en el celular, una fila que se desliza */
+.amv{display:grid;gap:8px;min-width:0}
+.amv-cab{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px}
+.amv-t{display:flex;align-items:center;margin:0;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--verde)}
+.amv-n{font:600 12px/1.2 Archivo,sans-serif}
+.amv-l{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.amv-c{display:flex;align-items:center;gap:10px;min-width:0;min-height:64px;padding:9px 10px 9px 11px;border:1.5px solid var(--borde2);
+  border-left:5px solid var(--verde);border-radius:3px;background:#0B0C0E}
+.amv-c>img{width:36px;height:36px;border-radius:3px;flex:none;object-fit:cover;background:#16171a}
+.amv-tx{display:grid;gap:3px;min-width:0;flex:1}
+.amv-tx b{font:800 15px/1.15 Archivo,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.amv-tx small{display:flex;flex-wrap:wrap;align-items:center;gap:0 4px;font:500 12px/1.35 Archivo,sans-serif;color:#c9cbd1}
+.amv-dt{display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.amv-tx small em{font:800 11px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;color:#F6F6F6}
+.amv-tx small .ico{flex:none;opacity:.8}
+.amv-tx .amv-h{color:var(--gris2)}
+.amv-h a{color:#c9cbd1;text-decoration:underline;text-underline-offset:2px}
+.amv-b{flex:none;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border-radius:3px;
+  background:var(--verde);color:#030304;font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;text-decoration:none}
+.amv-b:hover{background:#3DD6B6}
+.amv-b:focus-visible,.amv-h a:focus-visible,.amv-mas:focus-visible{outline:2px solid #F6F6F6;outline-offset:2px}
+.amv-mas{justify-self:start;min-height:36px;padding:0 12px;border:1.5px solid var(--borde2);border-radius:3px;background:transparent;color:#F6F6F6;
+  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+@media (max-width:600px){
+  /* compacto: una fila que se desliza, cada llamada a 86 % del ancho, sin «Ver todas» (están todas en la fila) */
+  .amv-l{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:86%;overflow-x:auto;scroll-snap-type:x mandatory;
+    overscroll-behavior-x:contain;scrollbar-width:none;margin:0 -16px;padding:0 16px;scroll-padding:0 16px}
+  .amv-l::-webkit-scrollbar{display:none}
+  .amv-c{scroll-snap-align:start;min-height:58px;padding:8px 9px 8px 10px}
+  .amv-l.uno{grid-auto-columns:100%}
+  .amv-mas{display:none}
+}
+@media (min-width:601px){.amv-c.amv-oculta{display:none}}
