@@ -1839,6 +1839,10 @@
   "TICIARIAS": {
    "servidor": "bd75c543ebbd:ca27345eed9e:055f77"
   },
+  "TMS SIMUS": {
+   "servidor": "2c101423404c:ca27345eed9e:980594",
+   "temporada": "9202a38a0a6f:0b98cb3023ec"
+  },
   "TYPHLOSION": {},
   "Tam": {},
   "Teito": {
@@ -2245,5 +2249,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-28T16:52:43+00:00"
+ "cuando": "2026-11-28T17:05:32+00:00"
 }
