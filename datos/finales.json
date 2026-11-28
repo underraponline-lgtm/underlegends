@@ -2524,5 +2524,31 @@
   "sv": "ACAD",
   "t_pregunta": ""
  },
+ "1576102472231948350": {
+  "autor": "1271260378654969947",
+  "canal": "1222379620494741604",
+  "canal_pregunta": "1538678065306140684",
+  "cuando": "2026-11-28T05:08:31.948000+00:00",
+  "donde": "staff",
+  "evento": "FREESTYLE ESTELAR",
+  "fecha": "28/11",
+  "llave": "1576102472231948350",
+  "pregunta": "1576144148694704182",
+  "preguntada": "2026-11-28 2:54 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "jazi",
+     "Lobatn 🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "staff_probado": true,
+  "sv": "CH",
+  "t_pregunta": "2026-11-28T07:54:08+00:00"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
