@@ -37,7 +37,7 @@
   "arc_pais": 100,
   "pos_sv": "1/176",
   "arc_sv": 100,
-  "pos_crew": "",
+  "pos_crew": "1/3",
   "tg_c": {
    "bestia": 5,
    "clasico": 5,
@@ -376,7 +376,7 @@
   "raw": "Abyssus",
   "cc": "pa",
   "sv": "FFA",
-  "crew": "KS",
+  "crew": "Desierto de Atacama",
   "discord_id": "768561204707983361",
   "verificado": true,
   "ev": 24,
@@ -409,7 +409,7 @@
   "arc_pais": 0,
   "pos_sv": "6/176",
   "arc_sv": 97,
-  "pos_crew": "1/3",
+  "pos_crew": "2/3",
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
@@ -2093,7 +2093,7 @@
   "arc_pais": 0,
   "pos_sv": "23/176",
   "arc_sv": 88,
-  "pos_crew": "2/3",
+  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
@@ -3268,7 +3268,7 @@
   "arc_pais": 92,
   "pos_sv": "33/176",
   "arc_sv": 82,
-  "pos_crew": "",
+  "pos_crew": "3/3",
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
@@ -22710,7 +22710,7 @@
   "arc_pais": 0,
   "pos_sv": "9/15",
   "arc_sv": 47,
-  "pos_crew": "3/3",
+  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
