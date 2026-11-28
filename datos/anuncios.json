@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-28T20:07:25+00:00",
+ "cuando": "2026-11-28T20:25:21+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4311,10 +4311,10 @@
    "cuando": "2026-03-03T12:49:14",
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
-   "organizador": "@konan",
+   "organizador": "@konan.g",
    "orgs": [
     {
-     "n": "konan",
+     "n": "konan.g",
      "id": "680268290962227243"
     }
    ],
@@ -4328,7 +4328,7 @@
    "fecha": "Martes 3 de marzo",
    "premios": "",
    "staff": {},
-   "autor": "konan",
+   "autor": "konan.g",
    "staff_cuentas": {},
    "categoria_id": "1373343272482902127"
   },
@@ -8754,6 +8754,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "kochi🇨🇱",
+   "quien": "kochi2011.7.13",
+   "discord_id": "1564405977493545130",
+   "msg_id": "1576329922429976729",
+   "cuando": "2026-11-28T20:12:20"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -44744,15 +44753,6 @@
    "discord_id": "664288438563897354",
    "msg_id": "1563707574702837901",
    "cuando": "2026-10-25T00:15:38"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "benji 🇵🇪  + soneto 🇪🇨",
-   "quien": "benji_price16",
-   "discord_id": "734945161158852630",
-   "msg_id": "1563706881631854633",
-   "cuando": "2026-10-25T00:12:52"
   }
  ]
 }
