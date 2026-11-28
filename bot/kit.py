@@ -1052,10 +1052,22 @@ def _dragon():
         return 'none'
 
 
+_CLASE_CARTA = re.compile(r'/(temporada|competitivo|pais|servidor|sv-[a-z0-9]+)(?:\.chica)?\.webp')
+
+
+def _efecto(y):
+    """🃏 El efecto de la Tienda que lleva la carta que muestra este lado (28/11/2026: cada efecto es de UNA carta). `tc` es el
+    de la Temporada y `tx` los de las otras tres (`vsEncolar()` de avisos.js). Si no se sabe qué carta es, la Temporada"""
+    m = _CLASE_CARTA.search(str(y.get('carta') or ''))
+    clase = m.group(1) if m else 'temporada'
+    clase = 'servidor' if clase.startswith('sv-') else clase
+    return y.get('tc') if clase == 'temporada' else ((y.get('tx') or {}).get(clase) or '')
+
+
 def _usa_tienda(v):
     for c in ('a', 'b'):
         y = v.get(c) or {}
-        if _molde(y.get('tfd'), 'fondo') or (y.get('carta') and _molde(y.get('tc'), 'carta')):
+        if _molde(y.get('tfd'), 'fondo') or (y.get('carta') and _molde(_efecto(y), 'carta')):
             return True
     return False
 
@@ -1156,7 +1168,7 @@ def html_vs(v, d):
         perdio = ' perdio' if gano and gano != cls else ''
         if y.get('carta'):
             # 🛍️ con un efecto de carta de la Tienda, el molde con su carta adentro (como en la página: puesto.js)
-            t = _molde(y.get('tc'), 'carta')
+            t = _molde(_efecto(y), 'carta')
             if t:
                 u = _como_dato(y['carta'])
                 capa = t.replace('__CARTA__', _e(u)).replace('__FOTO__', '').replace('__N__', _e(y.get('n')))
@@ -1355,7 +1367,8 @@ def html_vs_liga(v, d):
         y = dict(v.get(lado) or {})
         u = carta_liga(lid, y.get('k'))
         if u:
-            y['carta'] = u
+            # 🃏 la carta de liga no es ninguna de las cuatro: no lleva el efecto de otra (28/11/2026)
+            y['carta'], y['tc'], y['tx'] = u, '', {}
         v2[lado] = y
     # 🎨 el VS de siempre, pero vestido con la liga: sin `sv` no toma la camiseta del servidor, y con su color, los dos lados, la
     # barra, el favorito y los cuadritos salen de la liga (`camiseta()`)
@@ -1628,8 +1641,14 @@ def _prueba_tienda(d):
         con = html_vs({'a': {'n': 'Snow', 'carta': 'data:image/webp;base64,AA', 'tfd': 'FD1', 'tc': 'C1'}, 'b': {'n': 'Pepe', 'carta': ''}}, d)
         _ARTE_TIENDA = {}
         sin = html_vs({'a': {'n': 'Snow', 'carta': 'data:image/webp;base64,AA', 'tfd': 'FD1', 'tc': 'C1'}, 'b': {'n': 'Pepe'}}, d)
+        # 🃏 cada efecto en su carta: el de Temporada no va en la Competitiva, y el de la Competitiva sí
+        _ARTE_TIENDA = {'css': '', 'p': {'C1': {'carta': '<div class="ta-c1"></div>'}, 'C30': {'carta': '<div class="ta-c30"></div>'}}}
+        url = 'https://pub-x.r2.dev/snow/competitivo.webp'
+        otra = html_vs({'a': {'n': 'Snow', 'carta': url, 'tc': 'C1'}, 'b': {'n': 'Pepe'}}, d)
+        suya = html_vs({'a': {'n': 'Snow', 'carta': url, 'tc': 'C1', 'tx': {'competitivo': 'C30'}}, 'b': {'n': 'Pepe'}}, d)
         return ('ta-fd1' in con and 'ta-c1' in con and '.ta-x{color:red}' in con and 'class="mf a mft"' in con
-                and 'ta-fd1' not in sin and 'class="carta"' in sin and '.ta-x' not in sin)
+                and 'ta-fd1' not in sin and 'class="carta"' in sin and '.ta-x' not in sin
+                and 'ta-c1' not in otra and 'ta-c30' in suya and 'ta-c1' not in suya)
     finally:
         _ARTE_TIENDA = antes
 

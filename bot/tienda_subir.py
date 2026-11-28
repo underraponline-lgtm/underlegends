@@ -20,6 +20,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 CATEGORIAS = {'aro', 'deco', 'nom', 'carta', 'perfil', 'serv', 'fp', 'fv', 'fe', 'fd', 'ff', 'fr'}
+#: 🃏 cada efecto de carta es de UNA carta (28/11/2026, `CARTAS_FX` de bot/tienda.js)
+CARTAS_FX = ('temporada', 'competitivo', 'servidor', 'pais')
 
 
 def revisar(c):
@@ -34,6 +36,12 @@ def revisar(c):
     for k, p in piezas.items():
         if not (isinstance(p, dict) and p.get('c') in CATEGORIAS and isinstance(p.get('r'), int) and 0 <= p['r'] <= 5):
             mal.append('pieza rota: ' + k)
+        # 🃏 el objeto le pone Temporada a un efecto que no dice de qué carta es; acá se pide que lo diga, así el archivo
+        # privado es la decisión entera y no un default (28/11/2026)
+        elif p['c'] == 'carta' and p.get('carta') not in CARTAS_FX:
+            mal.append('el efecto %s no dice de qué carta es (`carta`: %s)' % (k, ' · '.join(CARTAS_FX)))
+        elif p['c'] == 'carta' and p.get('g') and (piezas.get(p['g']) or {}).get('carta') != p.get('carta'):
+            mal.append('la versión %s es de otra carta que su pieza %s' % (k, p['g']))
     for k in (c.get('vitrina') or {}).get('ids') or []:
         if k not in piezas:
             mal.append('la vitrina nombra una pieza que no existe: ' + k)
@@ -49,6 +57,12 @@ def resumen(c):
     por = {}
     for p in piezas.values():
         por[p['c']] = por.get(p['c'], 0) + 1
+    fx = {}
+    for p in piezas.values():
+        if p['c'] == 'carta':
+            fx[p.get('carta') or 'temporada'] = fx.get(p.get('carta') or 'temporada', 0) + 1
+    if fx:
+        por['carta'] = '%d (%s)' % (por['carta'], ', '.join('%s %d' % (c, fx[c]) for c in CARTAS_FX if c in fx))
     return (f"{len(piezas)} piezas ({', '.join(f'{k} {v}' for k, v in sorted(por.items()))}) · vitrina "
             f"{len((c.get('vitrina') or {}).get('ids') or [])} · colecciones {len(c.get('colecciones') or {})} · "
             f"ediciones {len(c.get('ediciones') or {})} · {'ABIERTA' if c.get('abierta') else 'cerrada (sólo el dueño)'}")

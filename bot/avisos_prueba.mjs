@@ -6093,6 +6093,50 @@ const ok = (cond, que, det) => {
       'el arte liviano: sólo lo que se dibuja fuera de la Tienda', JSON.stringify(uso.p));
     ok(TI.RANURAS.includes('perfil'), 'lo del perfil se puede poner (antes se compraba y no había ranura)');
 
+    // 🃏 CADA EFECTO ES DE UNA CARTA (28/11/2026, Dlx: «1. dale 2. dale 3. dale»): sin decirlo, Temporada; se pone sólo
+    // en la suya; la firma de /card dice de qué carta es cada uno; y la mudanza de lo puesto es idempotente y no aplica sola
+    {
+      const antesCat = o.leer('tienda_cat');
+      const conFx = (pz) => Object.assign({}, cat, { abierta: true, piezas: Object.assign({}, cat.piezas, pz) });
+      const v = TI.catalogoValido(conFx({ E1: { c: 'carta', r: 1 }, E2: { c: 'carta', r: 1, carta: 'competitivo' } }));
+      ok(v.piezas.E1.carta === 'temporada' && v.piezas.E2.carta === 'competitivo' && v.piezas.N1.carta === 'temporada' && !('carta' in v.piezas.X1),
+        'un efecto sin carta es de Temporada, y el que la dice es de ésa', JSON.stringify([v.piezas.E1, v.piezas.E2]));
+      ok(TI.catalogoValido(conFx({ E3: { c: 'carta', r: 1, carta: 'liga' } })).error === 'pieza'
+        && TI.catalogoValido(conFx({ E4: { c: 'carta', r: 5, t: ['inc'], g: 'N1', carta: 'pais' } })).error === 'pieza'
+        && !TI.catalogoValido(conFx({ E4: { c: 'carta', r: 5, t: ['inc'], g: 'N1' } })).error,
+        'una carta que no existe no se guarda, y una versión es de la misma carta que su pieza');
+      ok(TI.ranuraDe(v.piezas.E1) === 'carta' && TI.ranuraDe(v.piezas.E2) === 'carta-comp' && TI.ranuraDe(v.piezas.X1) === 'aro'
+        && TI.RANURAS.includes('carta-pais') && TI.firmaEfectos({ carta: 'C1', 'carta-sv': 'C9', aro: 'X1' }) === 't:C1,s:C9' && TI.firmaEfectos({}) === '',
+        'la ranura de cada efecto es la de su carta, y la firma la nombra');
+      // sobre el catálogo que está guardado (las pruebas de arriba bajaron precios, y un precio no sube)
+      const g = TI.catalogoGuardar(o, { catalogo: Object.assign({}, antesCat, { piezas: Object.assign({}, antesCat.piezas, { E1: { c: 'carta', r: 1 }, E2: { c: 'carta', r: 1, carta: 'competitivo' } }) }) });
+      ok(g.ok, 'el catálogo con efectos de dos cartas se guarda', JSON.stringify(g));
+      sql.exec("INSERT OR REPLACE INTO tienda_inv (quien, pieza, origen, pagado, t) VALUES (?, 'E1', 'compra', 1, ?), (?, 'E2', 'compra', 1, ?)", CAR, ahora, CAR, ahora);
+      const pon = (r, pz) => acc(CAR, 'car', { accion: 'poner', ranura: r, pieza: pz });
+      ok(pon('carta', 'E1').ok && pon('carta', 'E2').error === 'ranura' && pon('carta-comp', 'E1').error === 'ranura' && pon('carta-comp', 'E2').ok
+        && mia(CAR, 'car').yo.puesto.carta === 'E1' && mia(CAR, 'car').yo.puesto['carta-comp'] === 'E2',
+        'un efecto se pone sólo en su carta: uno en cada una');
+      ok(TI.cartaPuestaDe(o, [CAR]) === 't:E1,c:E2' && TI.puestosPublicos(o).car.carta === 'E1' && TI.puestosPublicos(o).car['carta-comp'] === 'E2',
+        'la foto de /card y la página saben qué efecto lleva cada carta');
+      // un efecto que quedó en la ranura de otra carta (el catálogo lo cambió): no se dibuja, y la mudanza lo saca
+      sql.exec("INSERT OR REPLACE INTO tienda_puesto (quien, ranura, pieza, t) VALUES (?, 'carta-pais', 'E1', ?)", CAR, ahora);
+      const sim = TI.efectosAcomodar(o);
+      ok(!TI.puestosPublicos(o).car['carta-pais'] && sim.sacar.length === 1 && sim.sacar[0].va === 'carta' && !sim.aplicado
+        && sql.exec("SELECT 1 AS x FROM tienda_puesto WHERE quien = ? AND ranura = 'carta-pais'", CAR).toArray().length === 1,
+        'la mudanza sin aplicar sólo dice qué haría', JSON.stringify(sim));
+      const hecho = TI.efectosAcomodar(o, true);
+      ok(hecho.aplicado && hecho.sacar.length === 1 && !sql.exec("SELECT 1 AS x FROM tienda_puesto WHERE quien = ? AND ranura = 'carta-pais'", CAR).toArray().length
+        && TI.efectosAcomodar(o, true).sacar.length === 0 && mia(CAR, 'car').yo.puesto.carta === 'E1',
+        'aplicada saca sólo lo de la otra carta, y la segunda vez no hace nada');
+      const cu = TI.efectosConteo(o, false);
+      ok(cu.ok && cu.efectos.E1.tienen === 1 && cu.efectos.E2.carta === 'competitivo' && cu.efectos.E2.puesto === 1 && cu.por_carta.competitivo === 1
+        && !cu.duenos && TI.efectosConteo(o, true).duenos.E1[0].k === 'car' && !JSON.stringify(TI.efectosConteo(o, true)).includes(CAR),
+        'el conteo de los efectos: cuántos y en qué carta, y quiénes sólo si se pide (por clave, sin Discord IDs)');
+      sql.exec("DELETE FROM tienda_puesto WHERE quien = ?", CAR);
+      sql.exec("DELETE FROM tienda_inv WHERE quien = ? AND pieza IN ('E1', 'E2')", CAR);
+      o.guardar('tienda_cat', antesCat);
+    }
+
     // 🃏 la tanda 3b: la foto de /card lleva el efecto de carta en su firma, y el VS en vivo recibe el fondo y el efecto
     ok(o.firmaImagen('ana', [ANA], null, '') === '' && o.firmaImagen('ana', [ANA], null, 'C1') === '-|-|C1'
       && o.firmaImagen('ana', [ANA], ['plata', 'camiseta'], '') === 'plata|camiseta' && o.firmaImagen('ana', [ANA], ['plata', 'camiseta'], 'C1') === 'plata|camiseta|C1',
@@ -6100,7 +6144,8 @@ const ok = (cond, que, det) => {
     sql.exec("INSERT OR REPLACE INTO tienda_puesto (quien, ranura, pieza, t) VALUES (?, 'carta', 'N1', ?)", ANA, ahora);
     const vsr = o.vsEncolar({ canal: '123456789', msg: 'm1', a: { k: 'ana', n: 'Ana' }, b: { k: 'nadie', n: 'Otro' } });
     const vsd = JSON.parse(sql.exec('SELECT datos FROM vs_cola WHERE id = ?', vsr.id).toArray()[0].datos);
-    ok(vsr.ok && vsd.a.tc === 'N1' && vsd.a.tfd === '' && vsd.b.tc === '' && TI.cartaPuestaDe(o, [ANA]) === 'N1',
+    // 🃏 desde el 28/11/2026 cada efecto es de una carta: la firma dice de cuál (`t:` Temporada), y el VS trae `tx` vacío
+    ok(vsr.ok && vsd.a.tc === 'N1' && vsd.a.tfd === '' && vsd.b.tc === '' && JSON.stringify(vsd.a.tx) === '{}' && TI.cartaPuestaDe(o, [ANA]) === 't:N1',
       'el VS en vivo lleva el efecto de carta de cada lado (sólo el id de la pieza)', JSON.stringify(vsd.a));
 
     // 🔒 Discord, tanda 1: los drops que se ganan compitiendo se dan a todos y se abren siendo Miembro de DRA
