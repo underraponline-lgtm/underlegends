@@ -1124,10 +1124,21 @@ def _vars_fx(y, d=None):
         at += ' data-est="%d"' % n
     cps = [ord(c) - 0x1F1E6 for c in str(y.get('fl') or '')]
     cc = ''.join(chr(97 + c) for c in cps) if len(cps) == 2 and all(0 <= c < 26 for c in cps) else str(f.get('cc') or '').lower()
-    ban = os.path.join(BASE, 'bot', 'paginas', 'banderas', cc + '.png') if re.match(r'^[a-z]{2}$', cc) else ''
-    if ban and os.path.exists(ban):
-        with open(ban, 'rb') as fb:
-            st.append("--bandera:url('data:image/png;base64,%s')" % base64.b64encode(fb.read()).decode('ascii'))
+    # 🔍 a calidad, como la página (28/11/2026): la bandera de 1280 (la de 240 si no hay), y el escudo, el logo de 512 del
+    # servidor (no ampliado de la carta)
+    def dato(*p):
+        f = os.path.join(BASE, 'bot', 'paginas', *p)
+        if not os.path.exists(f):
+            return ''
+        with open(f, 'rb') as fb:
+            return "url('data:image/webp;base64,%s')" % base64.b64encode(fb.read()).decode('ascii')
+    if re.match(r'^[a-z]{2}$', cc):
+        b = dato('banderas', 'xl', cc + '.webp') or dato('banderas', 'g', cc + '.webp')
+        if b:
+            st += ['--bandera:' + b, '--bandera-xl:' + b]
+    esc_sv = dato('logos', sv.lower() + '.webp') if re.match(r'^[A-Z0-9]{1,8}$', sv) else ''
+    if esc_sv:
+        st.append('--escudo:' + esc_sv)
     return ';'.join(st), at
 
 

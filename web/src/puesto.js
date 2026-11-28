@@ -124,7 +124,11 @@ export function datosFx(k, src, sv0, cc0) {
   if (s && /^#[0-9a-fA-F]{6}$/.test(String(s.color || ''))) style['--sv1'] = s.color;
   // las estrellas: sólo si el payload las trae (sin el dato, ni la apagada: sin dato no hay pieza)
   if (s && s.est !== undefined) { const n = Math.max(0, Math.min(3, Math.round(Number(s.est) || 0))); style['--est'] = n; attrs['data-est'] = String(n); }
-  if (/^[a-z]{2}$/.test(cc)) style['--bandera'] = "url('/banderas/" + cc + ".png')";
+  // 🔍 a calidad (28/11/2026, Dlx: «que no se vean borrosas las cosas»): el escudo a 512 (`liga.logo()`, el mismo de la
+  // página) y no ampliado de la carta; la bandera de 1280 (`xl`, ≤ 36 KB), con la de 240 detrás para el país que no la
+  // tiene: los papelitos, la escarapela y los fuegos toman un pedacito ampliado, y de la chica salía blando
+  if (sv && L.logo) { const u = sinComillas(L.logo(sv, true)); if (u) style['--escudo'] = "url('" + u + "')"; }
+  if (/^[a-z]{2}$/.test(cc)) style['--bandera'] = style['--bandera-xl'] = "url('/banderas/xl/" + cc + ".webp'),url('/banderas/g/" + cc + ".webp')";
   return { style, attrs };
 }
 /** Lo mismo como texto, para los moldes que se arman en un string (la Tienda): `{style: '--acc:#…;', attrs: ' data-rg="A"'}` */
