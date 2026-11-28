@@ -65,6 +65,26 @@ def _pedir(s, metodo, url, razon, cuerpo=None, intentos=5):
     return None
 
 
+def _es_emoji(c):
+    o = ord(c)
+    return o >= 0x1F000 or 0x2600 <= o <= 0x27BF or o in (0xFE0F, 0x200D) or 0x1F3FB <= o <= 0x1F3FF
+
+
+def estilo_hilo(nombre_canal, emoji='📬', texto='tus avisos'):
+    """🎨 El nombre del hilo con el estilo de su canal (Dlx, 28/11/2026: «que se adapte al estilo de los canales que tiene
+    alrededor»): `💬˚┊conversacion` → `📬˚┊tus avisos`. Se queda con el adorno entre el emoji del canal y su nombre; si el
+    canal no tiene adorno, `📬 tus avisos`."""
+    n = str(nombre_canal or '')
+    i = 0
+    while i < len(n) and _es_emoji(n[i]):
+        i += 1
+    j = i
+    while j < len(n) and not n[j].isalnum():
+        j += 1
+    adorno = n[i:j] if i > 0 else ''
+    return emoji + (adorno if adorno.strip() else ' ') + texto
+
+
 def abrir(s, canal, razon, x):
     """Un hilo: crear (privado, sin invitar), sumar a la persona, el mensaje. El ID del hilo, o `None`.
     Si el hilo se creó y el mensaje no salió, se borra: un hilo vacío con la persona adentro no sirve de nada."""
@@ -127,7 +147,14 @@ def correr(s, w, aplicar, forzar=False):
     for v in viejos:
         if borrar(s, r.get('razon'), v['hilo']):
             hechos['borrados'].append(v['rid'])
+    nombre = None
+    if abrir_:
+        rc = _pedir(s, 'GET', '%s/channels/%s' % (API, r['canal']), None)
+        if rc is not None and rc.status_code == 200:
+            nombre = estilo_hilo(rc.json().get('name'))
     for x in abrir_:
+        if nombre:
+            x = dict(x, nombre=nombre)
         hilo = abrir(s, r['canal'], r.get('razon'), x)
         if hilo:
             hechos['abiertos'].append({'rid': x['rid'], 'hilo': hilo})
