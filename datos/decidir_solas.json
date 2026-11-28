@@ -2,44 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "387479cb73",
-   "tipo": "Nombre desconocido",
-   "sec": "FATS BATTLES PALOOZA FECHA 7 · ACAD · 19/10 · #491",
-   "que": "¿Quién es «MHAKMA 🇻🇪»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794673318880,
-   "filas": [
-    1371
-   ],
-   "variantes": [
-    "MHAKMA 🇻🇪"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "bc80eef129",
-   "tipo": "Nombre desconocido",
-   "sec": "MINUTOS A SANGRE - D3ATHROW EN VIVO VOL 3 · CH · 26/10 · #572",
-   "que": "¿Quién es «lil monja 🇦🇷»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794673318880,
-   "filas": [
-    1374
-   ],
-   "variantes": [
-    "lil monja 🇦🇷"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "075952d069",
    "tipo": "Nombre desconocido",
    "sec": "KISS OF SHINIGAMI · FFA · 13/11 · #633",
@@ -3380,6 +3342,25 @@
      "1241918803051282456"
     ]
    }
+  },
+  {
+   "id": "72b5d5096b",
+   "tipo": "Nombre desconocido",
+   "sec": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1 · WOF · 25/10 · #718",
+   "que": "¿Quién es «marco»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1795884013835,
+   "filas": [
+    1766
+   ],
+   "variantes": [
+    "marco"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

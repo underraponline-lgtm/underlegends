@@ -359,7 +359,7 @@
    "sv": "🔥LKR (Champios Legue)🐉",
    "g": "1558611504046153750",
    "pub": 1795815846698,
-   "ed": 1795820416490,
+   "ed": 1795820968787,
    "n": 8,
    "vidas": 5,
    "ronda": "5 vidas",
@@ -475,28 +475,10 @@
     [
      [
       "LAST 🇺🇾",
-      "MINIBOY 🇨🇱"
-     ],
-     "MINIBOY 🇨🇱",
-     "votos 1–0",
-     "1576005367685718150"
-    ],
-    [
-     [
-      "LAST 🇺🇾",
-      "ADRIAGNER 🇳🇮🇨🇴"
-     ],
-     "LAST 🇺🇾",
-     "siguió peleando",
-     "1576005872948085008"
-    ],
-    [
-     [
-      "LAST 🇺🇾",
       "LEYENDA 🇦🇷 (🃏 COMODIN)"
      ],
      "LAST 🇺🇾",
-     "votos 2–0",
+     "votos 1–0",
      "1576006001071489025"
     ],
     [
@@ -531,9 +513,18 @@
       "LEYENDA 🇦🇷",
       "LAST 🇺🇾"
      ],
-     "",
-     "",
+     "LEYENDA 🇦🇷",
+     "votos 1–0",
      "1576009797164081183"
+    ],
+    [
+     [
+      "LEYENDA 🇦🇷",
+      "LAST 🇺🇾 (🃏 COMODIN)"
+     ],
+     "LAST 🇺🇾 (🃏 COMODIN)",
+     "votos 1–0",
+     "1576010974501281833"
     ]
    ],
    "terminada": false
@@ -8805,17 +8796,6 @@
    "ganador": "MAYEUTYK 🇺🇾",
    "votos": "1–0"
   },
-  "1570923549672345682": {
-   "id": "1570923549672345682",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1570890760323211325",
-   "pub": 1794607760590,
-   "a": "MARTINEZ",
-   "b": "MOSQUITO RAP",
-   "ganador": "MARTINEZ",
-   "votos": "1–0"
-  },
   "1570924657366925584": {
    "id": "1570924657366925584",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -11949,7 +11929,7 @@
    "a": "LAST 🇺🇾",
    "b": "LEYENDA 🇦🇷 (🃏 COMODIN)",
    "ganador": "LAST 🇺🇾",
-   "votos": "2–0"
+   "votos": "1–0"
   },
   "1576007480045998276": {
    "id": "1576007480045998276",

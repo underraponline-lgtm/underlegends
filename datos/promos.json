@@ -88,6 +88,39 @@
 ],
 "liga": [
 {
+"id": "v-IlbdqMaNpoA",
+"o": "liga",
+"por": "socio",
+"t": "2026-11-28T09:00:37Z",
+"sv": "FRZ",
+"quien": [
+"Raezer"
+],
+"url": "https://www.youtube.com/watch?v=IlbdqMaNpoA",
+"plat": "yt",
+"vid": "IlbdqMaNpoA",
+"tit": "RAEZER vs SERXINHO | #FMSDISCORD 2026/27 | Jornada 1 - Temporada 17 | Freestyle Zone",
+"de": "",
+"img": "https://i.ytimg.com/vi/IlbdqMaNpoA/hqdefault.jpg"
+},
+{
+"id": "v-q22OQWKPU70",
+"o": "liga",
+"por": "socio",
+"t": "2026-11-28T09:00:27Z",
+"sv": "FRZ",
+"quien": [
+"Juasmio",
+"Ragna"
+],
+"url": "https://www.youtube.com/watch?v=q22OQWKPU70",
+"plat": "yt",
+"vid": "q22OQWKPU70",
+"tit": "JUASMIO vs RAGNA | #FMSDISCORD 2026/27 | Jornada 1 - Temporada 17 | Freestyle Zone",
+"de": "",
+"img": "https://i.ytimg.com/vi/q22OQWKPU70/hqdefault.jpg"
+},
+{
 "id": "v-exFg6itwxEI",
 "o": "liga",
 "por": "socio",
@@ -136,39 +169,6 @@
 "tit": "MTZ vs ITOHIMO | #FMSDISCORD 2026/27 | Jornada 1 - Temporada 17 | Freestyle Zone",
 "de": "",
 "img": "https://i.ytimg.com/vi/-qpIuxVuiiA/hqdefault.jpg"
-},
-{
-"id": "v-IlbdqMaNpoA",
-"o": "liga",
-"por": "socio",
-"t": "2026-11-26T12:57:20Z",
-"sv": "FRZ",
-"quien": [
-"Raezer"
-],
-"url": "https://www.youtube.com/watch?v=IlbdqMaNpoA",
-"plat": "yt",
-"vid": "IlbdqMaNpoA",
-"tit": "RAEZER vs SERXINHO | #FMSDISCORD 2026/27 | Jornada 1 - Temporada 17 | Freestyle Zone",
-"de": "",
-"img": "https://i.ytimg.com/vi/IlbdqMaNpoA/hqdefault.jpg"
-},
-{
-"id": "v-q22OQWKPU70",
-"o": "liga",
-"por": "socio",
-"t": "2026-11-26T12:45:57Z",
-"sv": "FRZ",
-"quien": [
-"Juasmio",
-"Ragna"
-],
-"url": "https://www.youtube.com/watch?v=q22OQWKPU70",
-"plat": "yt",
-"vid": "q22OQWKPU70",
-"tit": "JUASMIO vs RAGNA | #FMSDISCORD 2026/27 | Jornada 1 - Temporada 17 | Freestyle Zone",
-"de": "",
-"img": "https://i.ytimg.com/vi/q22OQWKPU70/hqdefault.jpg"
 },
 {
 "id": "v-iunwALNi7Yg",
