@@ -85,6 +85,8 @@ export const pideVincular = (txt) => /(^|[^\w.\/-])\/vincular\b/.test(String(txt
 export const FAMILIAS = {
   cartas: 'Tus cartas', tienda: 'Tienda', drops: 'Dragón Drops', crews: 'Crews', cuenta: 'Tu cuenta', eventos: 'Eventos',
   ajustes: 'Ajustes', ayuda: 'Liga Global', antiraid: 'Anti-raid', apodo: 'Tu apodo',
+  // 🎫 los botones del Pase en Discord (28/11/2026, bot/pase_dc.js)
+  pase: 'Pase de rapero',
 };
 export const urlPortada = (familia) => (FAMILIAS[familia] ? `${PAGINAS}/discord/portada-${familia}.png?v=${PORTADA_V}` : '');
 /** La franja, como primera pieza del recuadro. */

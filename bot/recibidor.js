@@ -65,7 +65,31 @@ export const RESPUESTAS = {
       + 'evento que juegas suma para tu temporada. En la Guía está todo explicado.',
     botones: ['guia', 'eventos'],
   },
+  // 👋 las tres que sólo salen del «¿Tienes una duda?» de la bienvenida (`DUDAS`; el clasificador no las elige)
+  // ⚠️ mirado contra lo de hoy (28/11/2026): los canales de voz de CYPHERS Y ENTRENAMIENTO, lo que dice la bienvenida del
+  // Evento de Nuevos, bot/ascenso.py y la página (Ligas, Ranking → Ascensos), y la plantilla que usa #postulaciones
+  cyphers: {
+    texto: '¡Hola! 🎙️ En DRA hay cyphers de voz: uno general, uno de primeros pasos, uno intermedio y uno avanzado. Entra '
+      + 'cuando quieras y súmate a quien esté. Si prefieres uno armado con gente que recién empieza, en el **Evento de '
+      + 'Nuevos** puedes elegir cypher y se arma solo cuando se junta el grupo.',
+    botones: ['primeros', 'nuevos'],
+  },
+  ligas: {
+    texto: '¡Hola! 🏟️ Las ligas son de los servidores socios: cada una tiene sus fechas, su tabla y sus campeones. Para '
+      + 'ascender a la liga de un servidor sumas sus **puntos de ascenso** jugando sus competencias, y cada servidor tiene su '
+      + 'propia regla. En la página tienes las ligas y la tabla de ascenso de cada servidor, al día.',
+    botones: ['ligas_web', 'ascenso', 'ligas_canal'],
+  },
+  staff: {
+    texto: '¡Hola! 💼 Para postularte al staff (DJ, jurado, host…) escribe en el canal de postulaciones con la plantilla: tu '
+      + 'nombre, tu AKA, tu país, el rol al que te postulas, tu experiencia y tu disponibilidad. El equipo la lee y te '
+      + 'contesta ahí mismo.',
+    botones: ['postulaciones'],
+  },
 };
+//: 👋 el «¿Tienes una duda?» de la bienvenida (grabador/bienvenida.js `DUDAS` arma el menú): cada opción, su respuesta
+export const DUDAS = { competir: 'inscribirse', cuando: 'cuando', cyphers: 'cyphers', ligas: 'ligas', verificar: 'verificarse',
+  staff: 'staff', liga: 'como_funciona' };
 //: cómo se ve cada etiqueta en el aviso de los recibidores
 export const NOMBRE_ETIQUETA = { inscribirse: 'cómo inscribirse', cuando: 'cuándo hay evento', primer_evento: 'su primer evento',
   verificarse: 'verificarse', tarjeta: 'su tarjeta', como_funciona: 'qué es la Liga' };
@@ -74,6 +98,8 @@ const BOTONES = {
   eventos: ['Eventos de hoy', '📅'], nuevos: ['Evento de Nuevos', '🐣'], verificar: ['Verificación', '✅'],
   pagina: ['Calendario', '🗓️', PAGINA_EVENTOS], guia: ['La Guía', '📖', PAGINA_GUIA], tarjetas: ['Tarjetas', '🃏', PAGINA_TARJETAS],
   vincular: ['Verificarme', '🔗', V.URL_VINCULAR],
+  primeros: ['Cypher primeros pasos', '🌱'], ligas_canal: ['El foro de ligas', '🏟️'], postulaciones: ['Postulaciones', '💼'],
+  ligas_web: ['Las ligas', '🏆', PAGINA + '/freestyle-rap/ligas'], ascenso: ['El ascenso', '📈', PAGINA + '/freestyle-rap/ranking/ascensos'],
 };
 // los textos del botón «Lo recibo yo»
 export const TXT = {
@@ -295,17 +321,23 @@ export function saludoMsg(quien, nuevo, canal) {
 /**
  * El aviso después de que alguien lo recibió: el mismo mensaje (las piezas que vinieron en el clic), con «✋ Lo recibe
  * <@id>» al final del recuadro y el botón apagado. Sin que suene nadie.
+ * 👋 Con VARIOS «Lo recibo yo» en el mismo aviso (el de los que entraron juntos, grabador/bienvenida.js): sólo se apaga el
+ * tocado (`cid`) y la línea dice a quién (`✋ <@quien> recibe a <@nuevo>`); los demás siguen libres.
  */
-export function avisoRecibido(message, quien) {
+export function avisoRecibido(message, quien, cid = '', nuevo = '') {
   const comps = JSON.parse(JSON.stringify((message && message.components) || []));
-  const linea = '✋ Lo recibe <@' + quien + '>';
+  let rcbs = 0;
+  for (const c of comps) for (const b of (c && c.type === 1 && c.components) || []) if (b.type === 2 && /^rcb:/.test(String(b.custom_id || ''))) rcbs++;
+  const varios = rcbs > 1 && /^rcb:/.test(cid) && SNOW.test(String(nuevo));
+  const linea = varios ? '✋ <@' + quien + '> recibe a <@' + nuevo + '>' : '✋ Lo recibe <@' + quien + '>';
+  const vieja = varios ? (t) => t.endsWith('recibe a <@' + nuevo + '>') : (t) => /^✋ Lo recibe/.test(t);
   for (const c of comps) {
     if (c.type === 17 && Array.isArray(c.components)) {
-      c.components = c.components.filter((x) => !(x.type === 10 && /^✋ Lo recibe/.test(String(x.content || ''))));
+      c.components = c.components.filter((x) => !(x.type === 10 && vieja(String(x.content || ''))));
       c.components.push({ type: 10, content: linea });
     }
     if (c.type === 1 && Array.isArray(c.components)) {
-      c.components = c.components.map((b) => (b.type === 2 && /^rcb:/.test(String(b.custom_id || ''))
+      c.components = c.components.map((b) => (b.type === 2 && /^rcb:/.test(String(b.custom_id || '')) && (!varios || b.custom_id === cid)
         ? { type: 2, style: 2, label: 'Recibido', custom_id: b.custom_id, disabled: true, emoji: { name: '✋' } } : b));
     }
   }
@@ -410,8 +442,9 @@ export function pedir(o, d, ahora = Date.now()) {
   const msg = String((d && d.msg) || ''), nuevo = String((d && d.nuevo) || ''), canal = String((d && d.canal) || '');
   if (!SNOW.test(msg) || !SNOW.test(nuevo) || !SNOW.test(canal)) return { error: 'faltan datos' };
   if (fila(o, 'SELECT 1 AS x FROM rcb_pregunta WHERE msg = ?', msg)) return { estado: 'espera', por: 'mensaje' };
-  if (fila(o, 'SELECT 1 AS x FROM rcb_pregunta WHERE nuevo = ? AND t > ?', nuevo, ahora - PERSONA_MS)) return { estado: 'espera', por: 'persona' };
-  if (fila(o, 'SELECT 1 AS x FROM rcb_pregunta WHERE canal = ? AND t > ?', canal, ahora - CANAL_MS)) return { estado: 'espera', por: 'canal' };
+  // 👋 la fila de cuando ENTRÓ (`entro()`, etiqueta `entro`) no es una pregunta: no le frena la primera respuesta
+  if (fila(o, "SELECT 1 AS x FROM rcb_pregunta WHERE nuevo = ? AND t > ? AND etiqueta != 'entro'", nuevo, ahora - PERSONA_MS)) return { estado: 'espera', por: 'persona' };
+  if (fila(o, "SELECT 1 AS x FROM rcb_pregunta WHERE canal = ? AND t > ? AND etiqueta != 'entro'", canal, ahora - CANAL_MS)) return { estado: 'espera', por: 'canal' };
   const et = d.etiqueta == null ? null : validar(d.etiqueta);
   if (et === 'nada') return { estado: 'nada' };
   if (et) {
@@ -428,6 +461,22 @@ export function pedir(o, d, ahora = Date.now()) {
 }
 
 /**
+ * 👋 Gente que ENTRÓ a DRA (`/recibidor-entro`, del grabador: grabador/bienvenida.js), para que «Lo recibo yo» sirva
+ * también con quien todavía no preguntó nada. `{canal, nuevos: [id]}`: una fila por persona en `rcb_pregunta`, con la
+ * persona como `msg` (la clave de `rcb:<msg>`: un ID de usuario nunca es el de un mensaje) y la etiqueta `entro`, que
+ * `pedir()` no cuenta para sus frenos. Si entra dos veces, vale la última. Hasta 25 por vez.
+ */
+export function entro(o, d, ahora = Date.now()) {
+  const canal = String((d && d.canal) || '');
+  const nuevos = Array.isArray(d && d.nuevos) ? d.nuevos.map(String).filter((x) => SNOW.test(x)) : [];
+  if (!SNOW.test(canal) || !nuevos.length || nuevos.length > 25) return { error: 'faltan datos' };
+  for (const n of nuevos) {
+    o.sql.exec("INSERT OR REPLACE INTO rcb_pregunta (msg, nuevo, canal, etiqueta, t) VALUES (?, ?, ?, 'entro', ?)", n, n, canal, ahora);
+  }
+  return { ok: true, n: nuevos.length };
+}
+
+/**
  * ✋ «Lo recibo yo» (`/recibidor-reclamar`, sólo del Worker, que ya miró el rol): `{msg, quien}`. El primero gana.
  * `{estado: 'tuyo' | 'otro', recibidor}`, o `{error: 'vencida' | 'propio' | 'faltan datos'}`.
  * Una persona nueva la recibe UNO solo: si ya la recibió alguien (por esta pregunta o por otra) y sigue en sus 14 días
@@ -441,7 +490,7 @@ export async function reclamar(o, d, ahora = Date.now(), dueno = '') {
   if (p.nuevo === quien) return { error: 'propio' };
   const r = fila(o, 'SELECT recibidor, t, cuenta FROM rcb_recibe WHERE nuevo = ?', p.nuevo);
   if (r && (Number(r.cuenta) !== 0 || Number(r.t) > ahora - CUENTA_DIAS * DIA_MS)) {
-    return { estado: r.recibidor === quien ? 'tuyo' : 'otro', recibidor: r.recibidor, ya: true };
+    return { estado: r.recibidor === quien ? 'tuyo' : 'otro', recibidor: r.recibidor, ya: true, nuevo: p.nuevo };
   }
   const ev0 = eventosDe(o, p.nuevo);
   o.sql.exec('INSERT INTO rcb_recibe (nuevo, msg, recibidor, t, ev0, cuenta, temp) VALUES (?, ?, ?, ?, ?, ?, ?) ' +
@@ -449,7 +498,7 @@ export async function reclamar(o, d, ahora = Date.now(), dueno = '') {
     "cuenta = excluded.cuenta, temp = excluded.temp, cuenta_t = NULL", p.nuevo, msg, quien, ahora, ev0, ev0 > 0 ? -1 : 0, '');
   // por si ya llegó a los que pide (una persona que contó en otra vuelta y el premio no se pudo dar)
   try { await premiar(o, quien, ahora, dueno); } catch (e) { /* el vigía lo vuelve a mirar */ }
-  return { estado: 'tuyo', recibidor: quien };
+  return { estado: 'tuyo', recibidor: quien, nuevo: p.nuevo };
 }
 
 /**
@@ -498,7 +547,8 @@ export async function premiar(o, quien, ahora = Date.now(), dueno = '') {
   const origen = 'rcbprem:' + temp + ':' + quien;
   if (fila(o, 'SELECT 1 AS x FROM premium_vale WHERE origen = ?', origen)) return false;
   const pr = o.pasePremium(quien, temp);
-  const yaPrem = !!(pr && (pr[1] == null || pr[1] > ahora));
+  // 🎁 la prueba de 14 días no cuenta como «ya lo tenía»: la temporada entera se le da igual (`premiumTemporada()`)
+  const yaPrem = o.premiumTemporada ? !!o.premiumTemporada(quien, temp, ahora) : !!(pr && (pr[1] == null || pr[1] > ahora));
   const k = (o.claveDe && o.claveDe(quien)) || '';
   const motivo = 'Recibiste a ' + PREMIUM_N + ' personas nuevas que jugaron';
   const url = PAGINA + '/freestyle-rap/pase';
@@ -558,8 +608,21 @@ export async function ruta(req, env) {
     aviso: avisoMsg({ canal: base.canal, msg: base.msg, texto, etiqueta: r.etiqueta, nuevo: base.nuevo }) });
 }
 
+/**
+ * 👋 `/recibidor-entro` (sólo con la clave del ciclo: la del grabador, grabador/bienvenida.js). `{g, canal, nuevos}`: los
+ * que entraron a DRA, para que el «Lo recibo yo» del aviso de los recibidores tenga a quién (`entro()`). `{ok, n}`.
+ */
+export async function rutaEntro(req, env) {
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  if (!d || String(d.g || '') !== GUILD_DRA || !SNOW.test(String(d.canal || '')) || !Array.isArray(d.nuevos)
+    || !d.nuevos.length || d.nuevos.length > 25 || !d.nuevos.every((x) => SNOW.test(String(x)))) return json({ ok: false, error: 'datos' }, 400);
+  const r = await alObjeto(env, 'recibidor-entro', { canal: String(d.canal), nuevos: d.nuevos.map(String) });
+  return r && r.ok ? json({ ok: true, n: r.n }) : json({ ok: false, error: 'objeto' }, 502);
+}
+
 const API = 'https://discord.com/api/v10';
-const luego = (ctx, p) => { if (ctx && ctx.waitUntil) ctx.waitUntil(p); else p.catch(() => {}); };
+const luego =(ctx, p) => { if (ctx && ctx.waitUntil) ctx.waitUntil(p); else p.catch(() => {}); };
 const responder = (tipo, data) => new Response(JSON.stringify(data === undefined ? { type: tipo } : { type: tipo, data }),
   { headers: { 'content-type': 'application/json' } });
 /** ¿Puede recibir? El rol de Recibidor en DRA, o el dueño */
@@ -586,7 +649,7 @@ export function boton(i, env, ctx, dueno = '') {
     method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(V.avisoMsg(txt)) }).catch(() => {});
   luego(ctx, (async () => {
     const j = await alObjeto(env, 'recibidor-reclamar', { msg, quien: id });
-    if (j && j.recibidor) await editar(avisoRecibido(i.message, j.recibidor));
+    if (j && j.recibidor) await editar(avisoRecibido(i.message, j.recibidor, String((i.data && i.data.custom_id) || ''), j.nuevo));
     if (j && j.estado === 'tuyo' && !j.ya) await aparte(TXT.tuyo);
     else if (j && j.estado === 'otro') await aparte(TXT.ya(j.recibidor));
     else if (!j || j.error) await aparte(TXT[j && j.error] || TXT.fallo);
@@ -623,6 +686,71 @@ export function saludarBoton(i, env, ctx) {
       return;
     }
     if (i.channel_id !== canal) await aparte(TXT.saludo_listo(canal));
+  })());
+  return responder(6);
+}
+
+// ═══ 👋 la bienvenida de DRA (grabador/bienvenida.js): «¿Tienes una duda?» y «🎁 Reclamar premio» ══════════════════════
+/**
+ * El valor de cada opción del menú lleva los canales que su respuesta necesita (el Worker no los conoce: los busca el
+ * grabador por nombre), así no hace falta guardar nada: `<clave>:<eventos>:<nuevos>:<verificar>:<extra>`, y `extra` es el
+ * canal propio de esa respuesta (el cypher de primeros pasos, el foro de ligas o el de postulaciones).
+ */
+export function dudaMsg(valor, g = GUILD_DRA) {
+  const [clave, eventos, nuevos, verificar, extra] = String(valor || '').split(':');
+  const et = DUDAS[clave];
+  const m = et ? respuesta(et, { eventos, nuevos, verificar, primeros: extra, ligas_canal: extra, postulaciones: extra }, g) : null;
+  if (!m) return V.avisoMsg(TXT.fallo);
+  m.flags = (Number(m.flags) || 0) | V.EFIMERO;
+  return m;
+}
+/** 👋 `bvd:faq`, el menú «¿Tienes una duda?»: la respuesta fija, que ve sólo quien preguntó */
+export function dudaBoton(i) {
+  return responder(4, dudaMsg(((i.data && i.data.values) || [])[0], i.guild_id || GUILD_DRA));
+}
+
+const fechaET = (t) => new Intl.DateTimeFormat('es', { timeZone: 'America/New_York', day: 'numeric', month: 'long' }).format(new Date(t));
+const DIAS_PRUEBA = 14;
+/**
+ * 🎁 Lo que contesta «Reclamar premio» según lo que dijo el objeto (`/premium-prueba` de bot/premium_regalos.js: la prueba
+ * del Pase Premium, una por cuenta y sólo verificados). `verificar` es el canal de #verificate-aqui (viene en el botón).
+ */
+export function premioMsg(j, verificar = '', g = GUILD_DRA) {
+  const pase = V.enlace('Abrir mi Pase', PAGINA + '/freestyle-rap/pase/premium', '🎟️');
+  const dias = Number(j && j.dias) || DIAS_PRUEBA;
+  const hasta = j && Number(j.hasta) ? fechaET(Number(j.hasta)) : '';
+  if (j && j.ok) {
+    return V.avisoMsg('🎁 ¡Listo! Tienes **' + dias + ' días de Pase Premium**' + (hasta ? ', hasta el ' + hasta : '') + '. '
+      + 'Tus Tareas dan más XP mientras dure.', [pase]);
+  }
+  const por = String((j && (j.por || j.error)) || '');
+  if (por === 'verificar') {
+    return V.avisoMsg('Primero verifícate' + (SNOW.test(String(verificar)) ? ' en <#' + verificar + '>' : '') + ': eliges tu país y '
+      + 'tu AKA. Después vuelve a tocar «Reclamar premio» y son tuyos ' + dias + ' días de Pase Premium.',
+    [SNOW.test(String(verificar)) ? V.enlace('Verificarme', canalUrl(g, verificar), '✅') : V.enlace('Verificarme', V.URL_VINCULAR, '🔗')]);
+  }
+  if (por === 'usada') {
+    return V.avisoMsg(j.activa ? '🎁 Ya tienes tu prueba del Pase Premium' + (hasta ? ': te dura hasta el ' + hasta : '') + '.'
+      : 'Ya usaste tu prueba del Pase Premium: es una por cuenta.', [pase]);
+  }
+  if (por === 'ya_premium') return V.avisoMsg('💎 Ya tienes el Pase Premium esta temporada.', [pase]);
+  if (por === 'ya_tuviste') return V.avisoMsg('Ya tuviste el Pase Premium esta temporada, y la prueba es para quien no lo tuvo.', [pase]);
+  if (por === 'sin_temporada') return V.avisoMsg('El Pase todavía no arrancó: vuelve cuando empiece la temporada.');
+  return V.avisoMsg(TXT.fallo);
+}
+/**
+ * 🎁 `bvp:<canal de verificar>`, «Reclamar premio» de la bienvenida: reclama la prueba del Pase Premium PARA QUIEN TOCA (no
+ * para el de la bienvenida: es una por cuenta). «Ya va» (tipo 6: el objeto puede estar dormido y Discord corta a los 3 s)
+ * y la respuesta, que ve sólo quien tocó.
+ */
+export function premioBoton(i, env, ctx) {
+  const id = (i.member && i.member.user && i.member.user.id) || '';
+  const verificar = String(((i.data && i.data.custom_id) || '').split(':')[1] || '');
+  if (i.guild_id !== GUILD_DRA || !SNOW.test(id)) return responder(4, V.avisoMsg(TXT.fallo));
+  luego(ctx, (async () => {
+    const j = await alObjeto(env, 'premium-prueba', { quien: id, si: true });
+    await fetch(`${API}/webhooks/${i.application_id}/${i.token}`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(premioMsg(j, verificar)) }).catch(() => {});
   })());
   return responder(6);
 }

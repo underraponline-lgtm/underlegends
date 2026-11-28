@@ -20,6 +20,8 @@ import { PopPase } from './pase_pop.jsx';
 import { Fechas, PistaGira } from './pase_gira.jsx';
 import { DropDia } from './pase_dia.jsx';
 import { Objeto } from './pase_objetos.jsx';
+// 🎁 la prueba de 14 días del Premium (28/11/2026)
+import { PruebaPremium } from './premium_prueba.jsx';
 import CSS_PAGINA from './css/pase.css?inline';
 import { usarCss } from './css.js';
 
@@ -324,6 +326,7 @@ function Premium({ liga, dc, P, prem, nivel, miembro }) {
   const boost = (P && P.boost) || 20;
   return (
     <div className="ps-pv">
+      <PruebaPremium dc={dc} P={P} />
       {tiene ? (
         <section className="ps-tuyo">
           <span className="ps-tag2">TIENES EL PREMIUM</span>
@@ -598,7 +601,10 @@ function PremiumC({ P, prem, tiene, onTodo }) {
 // pestañas son lo de detrás del show
 const PESTANAS = [['tareas', 'El setlist'], ['premium', 'Backstage'], ['salon', 'El Salón']];
 const PESTANA_DE = { 'ps-premios': 'premios', 'ps-tareas': 'tareas', 'ps-premium': 'premium', 'ps-salon': 'salon' };
-const tabDeHash = () => { const h = String(location.hash); return /premium/.test(h) ? 'premium' : /salon/.test(h) ? 'salon' : 'tareas'; };
+// 🔗 la ruta de verdad (`/freestyle-rap/pase/premium`, rutaLG() del script del principio) Y el `#/…` de un link viejo (28/11/2026):
+// con sólo `location.hash`, /freestyle-rap/pase/premium —el «🎁 Reclamar premio» de la bienvenida de DRA— abría las Tareas
+const rutaPase = () => String(location.hash) + ' ' + (typeof window !== 'undefined' && window.rutaLG ? window.rutaLG() : '');
+const tabDeHash = () => { const h = rutaPase(); return /premium/.test(h) ? 'premium' : /salon/.test(h) ? 'salon' : 'tareas'; };
 
 /** 🏁 La pieza blanca: lo gratis y lo premium del nivel que sigue (o lo primero, o el Pase completo) */
 // `sinPrimero`: la caja del costado ya muestra el premio de ese nivel en grande (cuando no va el Drop del día), así que
@@ -685,7 +691,7 @@ export function Pase({ liga, dc }) {
     setTab(k); setTimeout(() => irA('ps-papel'), 40);
   };
   useEffect(() => {
-    if (!/tareas|premium|salon/.test(String(location.hash))) return undefined;
+    if (!/tareas|premium|salon/.test(rutaPase())) return undefined;
     const t = setTimeout(() => irA('ps-papel'), 400);
     return () => clearTimeout(t);
   }, []);

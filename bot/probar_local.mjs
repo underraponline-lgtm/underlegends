@@ -4593,6 +4593,57 @@ console.log('\n✅ VERIFICARSE EN DISCORD\n');
 // con el flag V2 no vaya `content` ni `embeds`, que las filas de botones vayan AFUERA del recuadro y que haya un solo
 // azul. Las dos excepciones son decisiones: la fila de cartas de `/card` y del versus (la que miras gris, las otras
 // azules, 17/09) y el `/setup`, que quedó como estaba (sus filas van adentro)
+{
+  // 🎫 EL PASE EN #pase-rapero (28/11/2026, bot/pase_dc.js): «Mi Pase», «Mis Tareas» y «El track» por el Worker de verdad.
+  // «Un momento» enseguida (el objeto puede estar dormido) y el Pase de QUIEN TOCA después, editando ese mensaje; desde uno
+  // de estos, cambia el mismo; sin ser miembro, a verificarse. Lo que contestan entra a la auditoría de la forma de abajo
+  console.log('\n=== El Pase en Discord: los tres botones del cartel');
+  const antesA = env.AVISOS;
+  const pedidos = [];
+  const PREM = Array.from({ length: 50 }, (_, k) => [k + 1, 150, k === 9 ? 'titulo' : '', k === 9 ? 'De la casa' : '']);
+  const paseDe = (q) => (q === '700951' ? { listo: true, miembro: false } : { listo: true, miembro: true, niveles: 50, nivel: 3, xp: 1100,
+    desde: 900, hasta: 1400, premios: PREM, fila_premium: PREM, premium: null, boost: 20,
+    hoy: { fin: RELOJ + 3600000, tareas: [{ id: 'entrar', t: 'Entra hoy', d: '', lleva: 1, meta: 1, hecha: true, xp: 150 }] },
+    semana: null, temporada: [] });
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const ruta = new URL(String(url)).pathname;
+    if (ruta === '/pase') { const d = JSON.parse(opc.body); pedidos.push(d.quien); return new Response(JSON.stringify(paseDe(d.quien))); }
+    return new Response('{"ok":true}');
+  } }) };
+  const tocar = async (cid, uid, efimero) => {
+    SEGUIMIENTOS = [];
+    const r = await pedir({ type: 3, guild_id: G.DRA, channel_id: '1504106780819722391', application_id: 'app', token: 'tok',
+      data: { custom_id: cid }, member: { user: { id: uid } }, message: { flags: efimero ? (64 | 32768) : 0, components: [] } });
+    await esperarSeguimientos();
+    const s = SEGUIMIENTOS.filter((x) => /\/messages\/@original$/.test(x.url)).pop();
+    return Object.assign(r, { t: s ? TX(s.cuerpo) : '', editado: s ? s.cuerpo : null });
+  };
+  let r = await tocar('pse:pase', '700950', false);
+  ok('«Mi Pase» desde el cartel: «un momento» ya, sólo para quien toca', r.json?.type === 4 && (r.json?.data?.flags & 64) === 64
+     && /Un momento/.test(TX(r.json?.data)), JSON.stringify(r.json).slice(0, 160));
+  ok('y después su Pase: el nivel, la XP al siguiente y lo que viene', pedidos.pop() === '700950' && /Nivel 3 de 50/.test(r.t)
+     && /200 \/ 500 XP/.test(r.t) && /Nivel 4/.test(r.t), r.t.slice(0, 300));
+  r = await tocar('pse:track', '700950', true);
+  ok('«El track» desde ese mensaje: cambia el mismo (tipo 6 y la edición)', r.json?.type === 6 && /estás acá/.test(r.t), r.t.slice(0, 200));
+  r = await tocar('pse:tareas', '700950', true);
+  ok('«Mis Tareas»: sin semanales, lo dice', /Entra hoy/.test(r.t) && /arrancan el lunes/.test(r.t), r.t.slice(0, 200));
+  r = await tocar('pse:pase', '700951', false);
+  ok('sin ser Miembro de DRA: a #verificate-aqui', /Miembros de DRA/.test(r.t) && /<#1506094409438199988>/.test(r.t), r.t.slice(0, 200));
+  r = await tocar('pse:nada', '700952', false);
+  ok('un botón del Pase que no existe: un aviso, sin preguntarle al objeto', r.json?.type === 4 && /ya no anda/.test(TX(r.json?.data))
+     && !pedidos.includes('700952'), TX(r.json?.data));
+  // 🛑 el freno de clics: el mismo de los demás botones
+  let frenado = false;
+  for (let k = 0; k < 12 && !frenado; k++) {
+    const rr = await pedir({ type: 3, guild_id: G.DRA, channel_id: '1', application_id: 'app', token: 'tok', data: { custom_id: 'pse:pase' },
+      member: { user: { id: '700953' } }, message: { flags: 0 } }, { seguido: true });
+    frenado = /Para un poco/.test(TX(rr.json?.data));
+  }
+  await esperarSeguimientos();
+  ok('tocarlo muchas veces seguidas: el freno de clics', frenado);
+  env.AVISOS = antesA;
+}
+
 console.log('\n🧱 LA FORMA DE CADA RESPUESTA\n');
 {
   const v2 = AUDITADOS.filter((a) => (Number(a.msg.flags) & 32768));

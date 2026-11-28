@@ -1052,16 +1052,109 @@ def _dragon():
         return 'none'
 
 
-_CLASE_CARTA = re.compile(r'/(temporada|competitivo|pais|servidor|sv-[a-z0-9]+)(?:\.chica)?\.webp')
+# 🃏 la carta de una imagen por su dirección: la misma regla que `CUAL_SRC` de web/src/puesto.js (`.chica`, la foto con marco
+# `-m`, la de Servidor de otro socio `sv-<x>`, webp o png)
+_CLASE_CARTA = re.compile(r'/(temporada|competitivo|pais|servidor|sv-[a-z0-9]+)(?:-m)?(?:\.chica)?\.(?:webp|png)')
+#: 📐 ancho / alto de cada carta en R2 (los de `.tj-*` en web/src/vivo.css): sólo si no se pudo medir la imagen misma
+_PROPORCION = {'temporada': 900 / 1314, 'competitivo': 957 / 1479, 'servidor': 1200 / 1839, 'pais': 924 / 1230}
+
+
+def _clase_carta(url):
+    """`temporada` · `competitivo` · `servidor` · `pais`, o '' si la imagen no es ninguna de las cuatro (una de liga)"""
+    m = _CLASE_CARTA.search(str(url or ''))
+    return '' if not m else 'servidor' if m.group(1).startswith('sv-') else m.group(1)
 
 
 def _efecto(y):
     """🃏 El efecto de la Tienda que lleva la carta que muestra este lado (28/11/2026: cada efecto es de UNA carta). `tc` es el
-    de la Temporada y `tx` los de las otras tres (`vsEncolar()` de avisos.js). Si no se sabe qué carta es, la Temporada"""
-    m = _CLASE_CARTA.search(str(y.get('carta') or ''))
-    clase = m.group(1) if m else 'temporada'
-    clase = 'servidor' if clase.startswith('sv-') else clase
-    return y.get('tc') if clase == 'temporada' else ((y.get('tx') or {}).get(clase) or '')
+    de la Temporada y `tx` los de las otras tres (`vsEncolar()` de avisos.js). Si no se sabe qué carta es, NINGUNO (como
+    `cualDe()` de puesto.js): suponer la Temporada le ponía su efecto a una carta que no lo lleva"""
+    clase = _clase_carta(y.get('carta'))
+    return '' if not clase else y.get('tc') if clase == 'temporada' else ((y.get('tx') or {}).get(clase) or '')
+
+
+_POOL_FX = None
+
+
+def _pool_fx():
+    """`{clave: fila}` de los pools de Temporada y Competitivo, para lo que el lado del VS no trae (el rango, los eventos)"""
+    global _POOL_FX
+    if _POOL_FX is None:
+        _POOL_FX = {}
+        try:
+            from comun.claves import clave
+            for arch in ('temporada_pool.json', 'competitivo_pool.json'):
+                with io.open(os.path.join(BASE, 'datos', arch), encoding='utf-8') as f:
+                    for x in json.load(f) or []:
+                        _POOL_FX.setdefault(clave(x.get('raw') or ''), {}).update({k: v for k, v in x.items() if v not in (None, '')} if arch.startswith('temporada')
+                                                                               else {'rango': x.get('rango') or ''})
+        except Exception:                                    # noqa: BLE001
+            pass
+    return _POOL_FX
+
+
+def _vars_fx(y, d=None):
+    """🎨 Los datos que leen los efectos por carta de la Tienda (28/11/2026), como en la página (`datosFx()` de
+    web/src/puesto.js): el color del rango y su letra, el OVR y los eventos, el color y las estrellas del servidor de ESA
+    carta y la bandera (en `data:`: la página del kit no tiene origen). Devuelve `(estilo, atributos)` para la capa"""
+    st, at = [], ''
+    f = _pool_fx().get(str(y.get('k') or '')) or {}
+    rg = re.sub(r'[^A-Z]', '', str(y.get('rg') or f.get('rango') or ''))
+    try:
+        from comun.rangos import ACENTO
+    except Exception:                                        # noqa: BLE001
+        ACENTO = {}
+    if rg in ACENTO:
+        st += ['--acc:%s' % ACENTO[rg], "--rg:'%s'" % rg]
+        at += ' data-rg="%s"' % rg
+    ovr = y.get('ovr') or f.get('ovr')
+    if isinstance(ovr, (int, float)) and ovr > 0:
+        st.append('--ovr:%d' % round(ovr))
+    if isinstance(f.get('ev'), (int, float)) and f['ev'] > 0:
+        st.append('--ev:%d' % round(f['ev']))
+    m = re.search(r'/sv-([a-z0-9]+)(?:-m)?(?:\.chica)?\.webp', str(y.get('carta') or ''))
+    sv = (m.group(1) if m else (d or {}).get('sv') or f.get('sv') or '').upper()
+    col = (((_jdat('colores_sv_marca.json') or {}).get('usar')) or {}).get(sv)
+    if col and re.match(r'^#[0-9a-fA-F]{6}$', col):
+        st.append('--sv1:%s' % col)
+    est = ((_jdat('estrellas.json') or {}).get('estrellas_por_servidor') or {})
+    if sv in est:
+        n = max(0, min(3, int(est.get(sv) or 0)))
+        st.append('--est:%d' % n)
+        at += ' data-est="%d"' % n
+    cps = [ord(c) - 0x1F1E6 for c in str(y.get('fl') or '')]
+    cc = ''.join(chr(97 + c) for c in cps) if len(cps) == 2 and all(0 <= c < 26 for c in cps) else str(f.get('cc') or '').lower()
+    ban = os.path.join(BASE, 'bot', 'paginas', 'banderas', cc + '.png') if re.match(r'^[a-z]{2}$', cc) else ''
+    if ban and os.path.exists(ban):
+        with open(ban, 'rb') as fb:
+            st.append("--bandera:url('data:image/png;base64,%s')" % base64.b64encode(fb.read()).decode('ascii'))
+    return ';'.join(st), at
+
+
+_JDAT = {}
+
+
+def _jdat(nombre):
+    if nombre not in _JDAT:
+        try:
+            with io.open(os.path.join(BASE, 'datos', nombre), encoding='utf-8') as f:
+                _JDAT[nombre] = json.load(f)
+        except (OSError, ValueError):
+            _JDAT[nombre] = {}
+    return _JDAT[nombre]
+
+
+def _proporcion(u, url):
+    """📐 ancho / alto de la carta: de la imagen misma (`u`, ya en `data:`), o de su clase (`_PROPORCION`)"""
+    try:
+        if str(u).startswith('data:'):
+            from PIL import Image
+            im = Image.open(io.BytesIO(base64.b64decode(str(u).split(',', 1)[1])))
+            if im.width > 0 and im.height > 0:
+                return im.width / float(im.height)
+    except Exception:                                        # noqa: BLE001
+        pass
+    return _PROPORCION.get(_clase_carta(url), _PROPORCION['temporada'])
 
 
 def _usa_tienda(v):
@@ -1079,7 +1172,7 @@ def _css_tienda(v):
     return _arte_tienda().get('css', '') + """
 #c .mft{overflow:hidden}#c .mft-in{position:absolute;inset:0}#c .mft-in>.ta-fondo{position:absolute;inset:0}
 #c .mft::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(3,3,4,.42),rgba(3,3,4,.7))}
-#c .ctw .ta-carta{height:456px;width:auto;max-width:312px;aspect-ratio:900/1314}
+#c .ctw{position:relative}#c .ctw .ta-carta{width:100%;height:100%;max-width:none;aspect-ratio:auto}
 """
 
 
@@ -1172,8 +1265,16 @@ def html_vs(v, d):
             if t:
                 u = _como_dato(y['carta'])
                 capa = t.replace('__CARTA__', _e(u)).replace('__FOTO__', '').replace('__N__', _e(y.get('n')))
-                return ('<div class="ld %s%s"><div class="ta-raiz ctw" style="--carta:url(&quot;%s&quot;);--dragon:%s">%s</div></div>'
-                        % (cls, perdio, _e(u), _dragon(), capa))
+                # 📐 CON LA FORMA DE SU CARTA (28/11/2026: Drako, con la Servidor de principal, la vio estirada y con el
+                # holográfico encima). La caja era la de la Temporada (900/1314) para las cuatro: la Servidor, la Competitiva y
+                # la de País salían estiradas adentro del molde. Ahora mide lo que `.carta` mediría sin efecto: entra en
+                # 312 × 456, con su proporción
+                r = _proporcion(u, y['carta'])
+                w = min(312.0, 456.0 * r)
+                # 🎨 y los datos de quien es (el color de su rango, de su servidor, su bandera: `_vars_fx()`)
+                vfx, afx = _vars_fx(y, d)
+                return ('<div class="ld %s%s"><div class="ta-raiz ctw" style="width:%.1fpx;height:%.1fpx;--carta:url(&quot;%s&quot;);'
+                        '--dragon:%s;%s"%s>%s</div></div>' % (cls, perdio, w, w / r, _e(u), _dragon(), _e(vfx), afx, capa))
             return '<div class="ld %s%s"><img class="carta" src="%s" alt=""></div>' % (cls, perdio, _e(y['carta']))
         # 📐 el alto de la carta de al lado (`.carta`, 456 px): con `SC_ALTO`, las dos miden lo mismo
         return '<div class="ld %s%s">%s</div>' % (cls, perdio, _carta_sin(y, d, 'sin', 456 / SC_ALTO))
@@ -1638,7 +1739,15 @@ def _prueba_tienda(d):
         'FD1': {'fondo': '<div class="ta-fondo ta-fd1"></div>'},
         'C1': {'carta': '<div class="ta-carta ta-c1"><img src="__CARTA__"><span class="ta-fx"></span></div>'}}}
     try:
-        con = html_vs({'a': {'n': 'Snow', 'carta': 'data:image/webp;base64,AA', 'tfd': 'FD1', 'tc': 'C1'}, 'b': {'n': 'Pepe', 'carta': ''}}, d)
+        con = html_vs({'a': {'n': 'Snow', 'carta': 'https://pub-x.r2.dev/snow/temporada.webp', 'tfd': 'FD1', 'tc': 'C1'},
+                       'b': {'n': 'Pepe', 'carta': ''}}, d)
+        # 🃏 una imagen que no es ninguna de las cuatro (la de liga, una de muestra) no lleva el efecto de la Temporada
+        rara = html_vs({'a': {'n': 'Snow', 'carta': 'data:image/webp;base64,AA', 'tc': 'C1'}, 'b': {'n': 'Pepe'}}, d)
+        # 📐 y con la forma de SU carta: la Servidor (con su efecto) no se estira a la caja de la Temporada (Drako, 28/11)
+        sv = html_vs({'a': {'n': 'Snow', 'carta': 'https://pub-x.r2.dev/snow/sv-dra.webp?v=1', 'tc': 'C1', 'tx': {'servidor': 'C1'}},
+                      'b': {'n': 'Pepe'}}, d)
+        caja = re.search(r'class="ta-raiz ctw" style="width:([\d.]+)px;height:([\d.]+)px', sv)
+        forma = bool(caja) and abs(float(caja.group(1)) / float(caja.group(2)) - _PROPORCION['servidor']) < 0.01
         _ARTE_TIENDA = {}
         sin = html_vs({'a': {'n': 'Snow', 'carta': 'data:image/webp;base64,AA', 'tfd': 'FD1', 'tc': 'C1'}, 'b': {'n': 'Pepe'}}, d)
         # 🃏 cada efecto en su carta: el de Temporada no va en la Competitiva, y el de la Competitiva sí
@@ -1648,7 +1757,8 @@ def _prueba_tienda(d):
         suya = html_vs({'a': {'n': 'Snow', 'carta': url, 'tc': 'C1', 'tx': {'competitivo': 'C30'}}, 'b': {'n': 'Pepe'}}, d)
         return ('ta-fd1' in con and 'ta-c1' in con and '.ta-x{color:red}' in con and 'class="mf a mft"' in con
                 and 'ta-fd1' not in sin and 'class="carta"' in sin and '.ta-x' not in sin
-                and 'ta-c1' not in otra and 'ta-c30' in suya and 'ta-c1' not in suya)
+                and 'ta-c1' not in otra and 'ta-c30' in suya and 'ta-c1' not in suya
+                and 'ta-raiz ctw' not in rara and 'class="carta"' in rara and forma and _clase_carta('/k/servidor-m.webp') == 'servidor')
     finally:
         _ARTE_TIENDA = antes
 

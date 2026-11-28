@@ -32,8 +32,15 @@
 // dura no mira el horario (es una prueba: tiene que poder verse a cualquier hora). Para ver cada clase de aviso como le
 // llegaría a cualquiera: `python bot/buzon.py --simular` (`simular()`), y `--limpiar-simulacion` para sacarlos.
 // ⚠️ Respeta «olvidarme» (`olvidar()`) y `mudarCuenta()` (`mudar()`).
+// 🎨🎁 REHECHO EL 28/11/2026 (Dlx: «¿esos mensajes planos tú crees que están bonitos?… botones que funcionen y que den
+// algo… en tienda mostrar algunos objetos de la tienda en realidad… y reclama tu drop diario»): el mensaje lleva la
+// franja de DRA y una imagen por aviso (bot/buzon_vista.js, imágenes de bot/buzon_img.py) y tres botones que dan algo
+// —el drop del día, la vitrina de hoy y tu tarjeta— (bot/buzon_botones.js). La prueba: bot/buzon_prueba.mjs.
 import * as V from './vista.js';
 import { GUILD_DRA, CANAL_BIENVENIDA } from './verificar_dc.js';
+// 🎨🎁 cómo se ve el mensaje del hilo (la franja, la imagen de cada aviso) y los botones que dan algo (28/11/2026)
+import * as BV from './buzon_vista.js';
+import * as BB from './buzon_botones.js';
 
 // ═══ ✏️ LO QUE SE PRENDE Y LOS NÚMEROS ═════════════════════════════════════════════════════════════════════════════
 export const ENCENDIDO = false;
@@ -59,7 +66,7 @@ export const RONDA_MS = 55 * 60 * 1000;          // una ronda por hora (el ciclo
 export const TOPE_RONDA = 10;                    // hilos nuevos por ronda, para todos
 export const TOPE_BORRAR = 25;                   // hilos viejos que se borran por ronda
 export const VIVOS_MAX = 300;                    // hilos vivos a la vez (Discord: 1.000 activos por servidor)
-export const ITEMS_MAX = 6;                      // avisos por mensaje (el resto: «y N más en la página»)
+export const ITEMS_MAX = BV.ITEMS_MAX;           // avisos por mensaje (el resto: «y N más en la página»)
 export const HORAS = [12, 22];                   // de 12 PM a 10 PM, hora del este
 export const DROPS_RECORDAR = true;              // 🐉 los drops sin abrir, una vez por semana, a la bandeja
 export const NO_PASA = ['aplauso', 'comentario', 'seguidor', 'seguido', 'organiza', 'servidor', 'flojo', 'socio', 'consejo',
@@ -89,10 +96,7 @@ export const URL_AJUSTES = HUB + '/cuenta/avisos';
 export const RAZON = 'Liga Global: buzón';
 
 export const TXT = {
-  hola: (id) => '### 📬 <@' + id + '>, esto es para ti',
-  pie: '-# Este hilo es privado: sólo lo ves tú (y los moderadores). Se borra solo en 48 h. Lo mismo está en la campana '
-    + 'de la página.',
-  mas: (n) => '…y ' + n + (n === 1 ? ' aviso más' : ' avisos más') + ' en la campana de la página.',
+  // (el saludo, el pie y «…y N más» del mensaje del hilo viven en bot/buzon_vista.js desde el 28/11/2026)
   visto: '✔️ Listo: lo marcamos como visto también en la página.',
   no: '🔕 Listo: no te abrimos más hilos. Lo tuyo sigue en la campana de la página.',
   si: '🔔 Listo: te volvemos a avisar acá.',
@@ -150,8 +154,10 @@ export function botonesDe(items) {
   for (const it of items) {
     const [txt, emoji] = TIPOS[it.tipo] || TIPOS.personal;
     const url = absoluta(it.url) || (it.tipo === 'drops' ? URL_DROPS : '');
-    if (!url || vistos.has(url)) continue;
+    // ni el mismo link ni el mismo nombre dos veces (dos «Ver en la página» a lugares distintos no dicen cuál es cuál)
+    if (!url || vistos.has(url) || vistos.has('t:' + txt)) continue;
     vistos.add(url);
+    vistos.add('t:' + txt);
     out.push(V.enlace(txt, url, emoji));
     if (out.length >= 4) break;
   }
@@ -159,20 +165,24 @@ export function botonesDe(items) {
   return out.slice(0, 5);
 }
 
-/** El mensaje del hilo: los avisos de la campana juntos, los links, «Ya lo vi» y «No me avises más». Sólo suena él */
-export function mensajeHilo(quien, items) {
-  const ls = items.slice(0, ITEMS_MAX).map((it) => '**' + String(it.titulo).slice(0, 120) + '**' +
-    (it.cuerpo ? '\n' + String(it.cuerpo).slice(0, 240) : ''));
-  const dentro = [V.T(TXT.hola(quien)), V.sep(), V.T(ls.join('\n\n').slice(0, 3000))];
-  if (items.length > ITEMS_MAX) dentro.push(V.T(TXT.mas(items.length - ITEMS_MAX)));
-  dentro.push(V.T(TXT.pie));
-  return {
-    flags: V.V2,
-    components: [V.caja(V.COLOR.mag, dentro), V.fila(botonesDe(items)),
-      V.fila(V.boton('Ya lo vi', 'bzn:visto', 3, { emoji: { name: '✔️' } }),
-        V.boton('No me avises más', 'bzn:no', 2, { emoji: { name: '🔕' } }))],
-    allowed_mentions: { users: [String(quien)] },
-  };
+/**
+ * El mensaje del hilo: la franja de DRA, los avisos de la campana juntos con su imagen y su hora del este, los tres
+ * botones que dan algo (el drop del día, la vitrina, tu tarjeta), los links, «Ya lo vi» y «No me avises más». Sólo suena
+ * él. Cómo se ve vive en bot/buzon_vista.js (28/11/2026, Dlx: «¿esos mensajes planos tú crees que están bonitos?»).
+ * `ctx`: `{clave, cs}` de esa persona, para poner su carta al lado de los avisos de su tarjeta y su rango.
+ */
+export function mensajeHilo(quien, items, ctx = {}) {
+  return BV.mensajeHilo(quien, items, Object.assign({}, ctx, { links: botonesDe(items).slice(0, 4) }));
+}
+/** Su clave y qué cartas tiene (el `cs` de su ficha), del objeto. Sin perfil, `{ahora}`: los avisos van sin su carta */
+function fichaDe(o, quien, ahora) {
+  try {
+    const clave = (o.claveDe && o.claveDe(quien)) || '';
+    if (!clave) return { ahora };
+    let g = {};
+    try { g = JSON.parse(o.persona('p:' + clave) || '{}') || {}; } catch (e) { g = {}; }
+    return { clave, cs: Array.isArray(g.cs) ? g.cs : undefined, ahora };
+  } catch (e) { return { ahora }; }
 }
 /** El nombre del hilo: sin nombre ni ID (se ve en la lista de hilos de los moderadores) */
 export const nombreHilo = (ahora = Date.now()) => '📬 Tus avisos · ' + new Intl.DateTimeFormat('es', { timeZone: 'America/New_York',
@@ -264,7 +274,7 @@ export function ronda(o, ahora = Date.now(), op = {}) {
         rid, q, ahora, JSON.stringify(lista.map((x) => x.clave)));
       for (const x of lista) o.sql.exec('INSERT OR REPLACE INTO buzon_enviado (quien, clave, t) VALUES (?, ?, ?)', q, x.clave, Number(x.t));
     }
-    abrir.push({ rid, quien: q, nombre: nombreHilo(ahora), msg: mensajeHilo(q, lista), n: lista.length });
+    abrir.push({ rid, quien: q, nombre: nombreHilo(ahora), msg: mensajeHilo(q, lista, fichaDe(o, q, ahora)), n: lista.length });
   }
   if (!simular) o.guardar('buzon_ronda', { t: ahora, abrir: abrir.length, borrar: base.borrar.length, vivos });
   return Object.assign(base, { abrir, vivos, cupo, esperan: por.size, en24 });
@@ -435,7 +445,10 @@ const responder = (tipo, data) => new Response(JSON.stringify(data === undefined
  * mensaje nuevo (tipo 6, como «Lo recibo yo» del recibidor) y después la respuesta aparte, que ve sólo quien tocó. Con
  * «No me avises más», el botón para volver y el link a los ajustes de la página.
  */
-export function botonWorker(i, env, ctx) {
+export function botonWorker(i, env, ctx, H = {}) {
+  // 🎁 los que dan algo (el drop del día, la vitrina, tu tarjeta, bot/buzon_botones.js): de quien toca, sea o no su hilo
+  const acc = String(((i.data && i.data.custom_id) || '').split(':')[1] || '');
+  if (BB.ACCIONES.includes(acc)) return BB.botonWorker(i, env, ctx, H);
   const id = (i.member && i.member.user && i.member.user.id) || (i.user && i.user.id) || '';
   const accion = String(((i.data && i.data.custom_id) || '').split(':')[1] || '');
   const hilo = String(i.channel_id || '');

@@ -1,0 +1,6 @@
+{
+ "_leeme": "Las publicaciones del bot en los foros de DRA (servidores-rap, crews y ligas): de cada una, su hilo, su mensaje, su firma y su imagen en R2. Las escribe bot/foros_dra.py --aplicar (paso 2c2f del ciclo) y con esto EDITA en vez de publicar otra. `info_h`: la huella de paneles/foros/info.json (lo que leen los botones). Vacío hasta que Dlx apruebe la vista previa.",
+ "crews": {},
+ "ligas": {},
+ "sv": {}
+}

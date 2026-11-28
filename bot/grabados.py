@@ -37,7 +37,7 @@ Uso:
     python bot/grabados.py --config               lo que hay (días que se guarda cada cosa, el foro)
     python bot/grabados.py --config dias_entera=30 dias_previa=90 dias_evento=30 foro=true mejor_libre=true
     python bot/grabados.py --podar                borra lo vencido (lo hace solo también en cada registro)
-    python bot/grabados.py --foro <ev>            publica o edita el post del foro de ese evento (sólo con foro=true)
+    (el foro de DRA: un post por servidor, bot/grabados_foro.py; `foro=true` lo prende)
 """
 import io
 import json
@@ -379,11 +379,6 @@ def main():
         return 0 if st == 200 else 1
     if '--podar' in a:
         st, j = _al_worker('/grabados/podar', {})
-        print(st, json.dumps(j, ensure_ascii=False))
-        return 0 if st == 200 else 1
-    if '--foro' in a:
-        i = a.index('--foro')
-        st, j = _al_worker('/grabados/foro', {'ev': a[i + 1] if i + 1 < len(a) else ''})
         print(st, json.dumps(j, ensure_ascii=False))
         return 0 if st == 200 else 1
     print(__doc__)

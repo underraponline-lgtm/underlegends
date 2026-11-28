@@ -5775,8 +5775,11 @@ const ok = (cond, que, det) => {
       ok(conG('ZZ9').error === 'pieza' && conG('X3').error === 'pieza' && conG('x-1').error === 'pieza',
         'y no se guarda si su cabeza no existe, es de otra ranura o no es un id');
       const inc = (g) => TI.catalogoValido(Object.assign({}, cat, { piezas: Object.assign({}, cat.piezas, { XV1: { c: 'aro', r: 3, n: 'X', t: ['inc'], g } }) }));
-      ok(!inc('X2').error && inc('X1').error === 'pieza' && TI.vendible(inc('X2'), 'XV1') === 'incluida',
-        'una versión incluida es de una Premium o una edición, y no se vende sola');
+      // 🎚️ desde el 28/11/2026 de cualquier pieza, no sólo de una Premium o una edición (Dlx: «otras calidades pueden tener
+      // lo mismo»); sin cabeza, no
+      const sinG = TI.catalogoValido(Object.assign({}, cat, { piezas: Object.assign({}, cat.piezas, { XV1: { c: 'aro', r: 3, n: 'X', t: ['inc'] } }) }));
+      ok(!inc('X2').error && !inc('X1').error && sinG.error === 'pieza' && TI.vendible(inc('X2'), 'XV1') === 'incluida' && TI.vendible(inc('X1'), 'XV1') === 'incluida',
+        'una versión incluida es de cualquier pieza (también de una común de rareza baja), pide su cabeza y no se vende sola');
     }
     const ens = mia(A.DUENO, 'dlx');
     ok(!mia(ANA, 'ana').abierta && ens.ensayo && ens.cat && ens.cat.piezas.X1,
@@ -6134,6 +6137,63 @@ const ok = (cond, que, det) => {
         'el conteo de los efectos: cuántos y en qué carta, y quiénes sólo si se pide (por clave, sin Discord IDs)');
       sql.exec("DELETE FROM tienda_puesto WHERE quien = ?", CAR);
       sql.exec("DELETE FROM tienda_inv WHERE quien = ? AND pieza IN ('E1', 'E2')", CAR);
+      o.guardar('tienda_cat', antesCat);
+    }
+
+    // 🎟️ LAS EDICIONES Y LAS VERSIONES, DE CUALQUIER RAREZA (28/11/2026, Dlx: «no sólo limitarnos a que la rareza más
+    // grande tenga diferentes ediciones, otras calidades pueden tener lo mismo»): una edición de rareza baja y una de rareza
+    // media, con su numeración (la #1 del campeón), su stock, agotada, cerrada y todavía no; una versión de una pieza común,
+    // que al ponérsela deja la pieza sin deshacer; y «Comprar todo» con una versión puesta compra su pieza
+    {
+      const antesCat = o.leer('tienda_cat');
+      const DIA = '400000000000000004', EMA = '400000000000000011';
+      sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', EMA, 'T1', 'ema', 1);
+      const pzs = Object.assign({}, antesCat.piezas, {
+        NB1: { c: 'aro', r: 1, t: ['num'], n: 'Baja' }, NM1: { c: 'deco', r: 3, t: ['num'], n: 'Media' },
+        NV1: { c: 'deco', r: 3, t: ['inc'], g: 'NM1', n: 'Media · Fuego' }, LV1: { c: 'aro', r: 1, t: ['inc'], g: 'X1', n: 'X · Otra' },
+        X5: { c: 'aro', r: 2, n: 'Cinco' }, XV5: { c: 'aro', r: 4, t: ['inc'], g: 'X5', n: 'Cinco · Oro' },
+      });
+      const eds = Object.assign({}, antesCat.ediciones, {
+        NB1: { venta: ahora - 1000, cierra: ahora + 86400000, copias: 2, nombre: 'Baja' },
+        NM1: { venta: ahora - 1000, cierra: ahora + 86400000, copias: 4, nombre: 'Media' },
+      });
+      const nuevo = TI.catalogoValido(Object.assign({}, antesCat, { piezas: pzs, ediciones: eds }));
+      ok(nuevo && !nuevo.error && nuevo.piezas.NB1.r === 1 && nuevo.ediciones.NB1.copias === 2 && nuevo.piezas.NM1.r === 3 && nuevo.piezas.LV1.g === 'X1',
+        'una edición de rareza baja y otra de rareza media se guardan, y una versión de una pieza común también', JSON.stringify(nuevo && nuevo.error ? nuevo : ''));
+      o.guardar('tienda_cat', nuevo);
+      const P = antesCat.precios;
+      // la baja: 2 copias, o sea la #1 del campeón y UNA a la venta; sin descuento Premium (Ana tiene Premium)
+      const rb = acc(ANA, 'ana', { accion: 'comprar', pieza: 'NB1' });
+      ok(rb.ok && rb.numero === 2 && rb.total === P[1], 'la edición de rareza baja: la primera que se vende es la #2, al precio de su rareza y sin descuento Premium', JSON.stringify(rb));
+      ok(acc(CAR, 'car', { accion: 'comprar', pieza: 'NB1' }).error === 'agotada', 'con sus copias vendidas (la #1 no se vende), agotada');
+      ok(acc(A.DUENO, 'dlx', { accion: 'num-campeon', pieza: 'NB1', para: CAR }).ok
+        && JSON.stringify(mia(CAR, 'car').cat.ediciones.NB1.duenos) === JSON.stringify([[1, 'car'], [2, 'ana']]),
+        'y la #1 la da el dueño, también en una edición de rareza baja', JSON.stringify(mia(CAR, 'car').cat.ediciones.NB1));
+      // la media: 4 copias, con su versión incluida
+      ok(acc(BEA, 'bea', { accion: 'comprar', pieza: 'NM1' }).error === 'no_jugaste', 'la de rareza media también es para quien jugó');
+      const rm = acc(CAR, 'car', { accion: 'comprar', pieza: 'NM1' }), rm2 = acc(DIA, 'dia', { accion: 'comprar', pieza: 'NM1' });
+      ok(rm.ok && rm.numero === 2 && rm.total === P[3] && rm2.numero === 3 && acc(DIA, 'dia', { accion: 'comprar', pieza: 'NM1' }).error === 'ya_la_tienes',
+        'la de rareza media numera igual (#2, #3) y es una por persona', JSON.stringify([rm, rm2]));
+      ok(mia(CAR, 'car').yo.inv.some((x) => x.p === 'NV1' && x.o === 'incluida') && acc(CAR, 'car', { accion: 'poner', ranura: 'deco', pieza: 'NV1' }).ok
+        && acc(CAR, 'car', { accion: 'deshacer', pieza: 'NM1' }).error === 'no_se_puede',
+        'su versión viene incluida y se pone; la numerada sigue sin deshacerse');
+      const cierra = Object.assign({}, nuevo, { ediciones: Object.assign({}, nuevo.ediciones, { NM1: Object.assign({}, nuevo.ediciones.NM1, { cierra: ahora - 1 }) }) });
+      const antes = Object.assign({}, nuevo, { ediciones: Object.assign({}, nuevo.ediciones, { NB1: Object.assign({}, nuevo.ediciones.NB1, { venta: ahora + 86400000 }) }) });
+      ok(TI.vendible(cierra, 'NM1', ahora) === 'cerrada' && TI.vendible(antes, 'NB1', ahora) === 'todavia_no' && TI.vendible(nuevo, 'NM1', ahora) === '',
+        'cerrada y todavía no, igual en cualquier rareza');
+      // una versión de una pieza común: ponérsela usa la pieza (antes la pieza se deshacía con la versión puesta)
+      ok(acc(DIA, 'dia', { accion: 'comprar', pieza: 'X1' }).ok && mia(DIA, 'dia').yo.inv.some((x) => x.p === 'LV1' && x.o === 'incluida')
+        && acc(DIA, 'dia', { accion: 'poner', ranura: 'aro', pieza: 'LV1' }).ok && acc(DIA, 'dia', { accion: 'deshacer', pieza: 'X1' }).error === 'usada',
+        'la versión de una pieza común viene con ella, y ponérsela deja la pieza sin deshacer');
+      // «Comprar todo» con una versión puesta: compra su pieza, al precio de la pieza, y te pone la versión
+      const sE = saldo(EMA), rp = acc(EMA, 'ema', { accion: 'comprar-puesto', piezas: ['XV5'] });
+      ok(rp.ok && JSON.stringify(rp.piezas) === '["X5"]' && rp.total === P[2] && saldo(EMA) === sE - P[2] && mia(EMA, 'ema').yo.puesto.aro === 'XV5'
+        && acc(EMA, 'ema', { accion: 'deshacer', pieza: 'X5' }).error === 'usada',
+        'probarte una versión y comprar todo compra su pieza y te pone la versión', JSON.stringify(rp));
+      ok(acc(EMA, 'ema', { accion: 'comprar-puesto', piezas: ['NV1'] }).error === 'numerada', 'y la versión de una edición no se compra junta: la edición, sola');
+      sql.exec("DELETE FROM tienda_num WHERE pieza IN ('NB1', 'NM1')");
+      sql.exec("DELETE FROM tienda_inv WHERE pieza IN ('NB1', 'NM1', 'X5') OR (quien = ? AND pieza = 'X1')", DIA);
+      sql.exec("DELETE FROM tienda_puesto WHERE pieza IN ('NV1', 'LV1', 'XV5')");
       o.guardar('tienda_cat', antesCat);
     }
 

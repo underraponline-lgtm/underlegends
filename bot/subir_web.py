@@ -674,6 +674,13 @@ def armar():
             _EE.marcar(calendario, aj=_aj_d, escribir='--aplicar' in sys.argv)
         except Exception as _e:                          # noqa: BLE001
             print('   ⚠️ los eventos de estilo: %s' % str(_e)[:80])
+        # 🐣 y los eventos de nuevos (28/11/2026): `nv` en el calendario y `datos/eventos_nuevos.json`, para el Pase Premium
+        # de los que jugaron uno (`bot/premium_nuevos.py`). Nunca frena la web
+        try:
+            import premium_nuevos as _PN
+            _PN.marcar(calendario, aj=_aj_d, escribir='--aplicar' in sys.argv)
+        except Exception as _e:                          # noqa: BLE001
+            print('   ⚠️ los eventos de nuevos: %s' % str(_e)[:80])
         if _aj_d is not None:
             try:
                 import pases_t1 as _PT
@@ -3530,6 +3537,9 @@ def _servidores(gente):
     `bot/paginas/logos/` (lo arma `herramientas/logos_web.py`).
     """
     col = (_json('datos', 'colores_sv_marca.json') or {}).get('usar') or {}
+    # ⭐ las estrellas del Interserver de cada servidor (`datos/estrellas.json`, las que dibuja su carta): las lee el efecto
+    # «Campeón del Interserver» de la Tienda (28/11/2026). Van siempre, también el 0: «todavía no tiene» es un dato
+    est = (_json('datos', 'estrellas.json') or {}).get('estrellas_por_servidor') or {}
     # 🔴 SOLO LOS CONFIRMADOS. Dlx, 25/09/2026, a los minutos de pedir los
     # nueve: *«los únicos servidores confirmados son Snake Rap, Discord Rap
     # y FFA... los demás no están confirmados todavía»*. La marca vive en
@@ -3580,6 +3590,7 @@ def _servidores(gente):
         a = acc.get(sv) or {'sv': sv, 'n': 0, 'no': 0, 'pts': 0, 'ev': 0}
         x = svs.get(sv) or {}
         a['color'] = col.get(sv, '#7E8B89')
+        a['est'] = int(est.get(sv) or 0)
         a['nombre'] = x.get('nombre') or sv
         # 🔤 la sigla que se LEE (SNK, URB: Dlx, 03/10/2026); el código sigue siendo la clave
         a['sigla'] = x.get('sigla') or sv

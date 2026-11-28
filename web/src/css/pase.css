@@ -209,6 +209,10 @@
 .ps-tuyo > b{font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
 .ps-tuyo p{margin:0;font-size:14px;color:#C9C9C4}
 .ps-tuyo p b{color:#F6F6F6}
+/* 🎁 la prueba de 14 días del Premium (28/11/2026, premium_prueba.jsx): la misma caja, con el verde del Pase */
+.ps-prueba{border-left-color:#29B298}
+.ps-prueba .ps-tag2{background:#29B298;color:#030304}
+.ps-prueba .pc-acc{margin-top:6px}
 .ps-colores{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:6px}
 .ps-colores button{width:34px;height:34px;border:2px solid #2A2A2E;cursor:pointer;padding:0}
 .ps-colores button.on{border:3px solid #F6F6F6;outline:2px solid #E41373}

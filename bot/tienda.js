@@ -18,7 +18,9 @@
 //     tuyo
 //   · COLECCIONES: cobran con descuento lo que te falta; completarla (de a una o junta) da su premio
 //   · EDICIONES NUMERADAS: una por persona, para quien jugó esa temporada; la #1 es del campeón; si no se venden todas, la
-//     edición se cierra con las vendidas, y no se reedita nunca
+//     edición se cierra con las vendidas, y no se reedita nunca. De CUALQUIER rareza, y las versiones incluidas (`inc`)
+//     también (Dlx, 28/11/2026: «no sólo limitarnos a que la rareza más grande tenga diferentes ediciones, otras
+//     calidades pueden tener lo mismo»): el precio es el de su rareza; cuántas copias, lo dice su edición
 //   · LA VITRINA: lo que sólo pasa por ella se vende mientras está ahí
 //   · TU LISTA: privada, con la opción de mostrarla en tu perfil; avisa cuando entra en la vitrina o baja de precio
 //   · LOS REGALOS DE LA VITRINA (25/11/2026): cada pieza de la vitrina está tapada por un regalo; abrirlo es gratis y al
@@ -125,6 +127,9 @@ export function catalogoValido(c) {
       if (!CARTAS_FX.includes(ca)) return mal('pieza', 400, { id, carta: ca });
       piezas[id].carta = ca;
     }
+    // ⏳ `hasta` (28/11/2026, «Cierre de temporada»): se vende hasta ese momento y no vuelve. Como la ventana de Navidad,
+    // pero de UNA pieza: lo que ya compraste es tuyo para siempre
+    if (p.hasta !== undefined) { const h = Number(p.hasta); if (!Number.isFinite(h) || h <= 0) return mal('pieza', 400, { id, hasta: p.hasta }); piezas[id].hasta = h; }
   }
   const ids = (a) => Array.isArray(a) && a.every((x) => piezas[x]);
   const v = c.vitrina || {};
@@ -133,8 +138,10 @@ export function catalogoValido(c) {
   // la cabeza de cada grupo existe y es de la misma ranura
   // (y de la misma carta, si es un efecto: una versión del Prisma T1 de Temporada es de Temporada)
   for (const [id, p] of Object.entries(piezas)) if (p.g && (!piezas[p.g] || piezas[p.g].c !== p.c || piezas[p.g].carta !== p.carta || piezas[p.g].g)) return mal('pieza', 400, { id });
-  // y una incluida es de una pieza que existe (una edición o una Premium: lo que vale la pena traer con versiones)
-  for (const [id, p] of Object.entries(piezas)) if (p.t.includes('inc') && (!p.g || !piezas[p.g].t.some((x) => ['num', 'prem'].includes(x)))) return mal('pieza', 400, { id });
+  // y una incluida es de una pieza que existe. 🎚️ Hasta el 28/11/2026 sólo de una edición o una Premium —en el catálogo,
+  // la rareza más alta y la Premium—; Dlx: «otras calidades pueden tener lo mismo». Ahora de cualquier pieza (la cabeza
+  // ya es de la misma ranura y carta, y no es versión de otra: arriba)
+  for (const [id, p] of Object.entries(piezas)) if (p.t.includes('inc') && !p.g) return mal('pieza', 400, { id });
   for (const [id, j] of Object.entries(c.colecciones || {})) {
     if (!ID.test(id) || !j || !ids(j.piezas) || j.piezas.length < 2 || j.piezas.length > 12) return mal('coleccion', 400, { id });
     if (j.premio && (!piezas[j.premio] || !piezas[j.premio].t.includes('col'))) return mal('premio', 400, { id });
@@ -178,7 +185,8 @@ export function vitrinaDelDia(cat, dia) {
   const fuera = ['num', 'prem', 'col', 'gratis', 'nav', 'pronto', 'inc'];
   const pool = Object.keys(cat.piezas).filter((id) => {
     const p = cat.piezas[id];
-    return p && p.c !== 'serv' && !(cat.gratis || {})[id] && !(p.t || []).some((x) => fuera.includes(x));
+    // (lo que se vende hasta una fecha, `hasta`, tampoco: la vitrina no sabe la hora, y no puede ofrecer lo que ya cerró)
+    return p && p.c !== 'serv' && !p.hasta && !(cat.gratis || {})[id] && !(p.t || []).some((x) => fuera.includes(x));
   }).sort();
   const fijas = (cat.vitrina.fijas || []).filter((id) => cat.piezas[id]);
   const resto = pool.filter((id) => !fijas.includes(id));
@@ -217,6 +225,7 @@ export function vendible(cat, id, ahora = Date.now()) {
   if (p.t.includes('col')) return 'premio';
   if (p.t.includes('rot') && !cat.vitrina.ids.includes(id)) return 'no_esta';
   if (p.t.includes('nav') && cat.navidad && !(ahora >= cat.navidad.desde && ahora < cat.navidad.hasta)) return 'fuera_de_fecha';
+  if (p.hasta && ahora >= p.hasta) return 'fuera_de_fecha';
   if (p.t.includes('gratis') || cat.gratis[id]) {
     const g = cat.gratis[id];
     if (g && !(ahora >= g.desde && ahora < g.hasta)) return 'fuera_de_fecha';
@@ -465,6 +474,7 @@ export function tiendaAccion(o, d, H) {
   if (a === 'comprar' || a === 'comprar-col' || a === 'comprar-puesto') {
     // qué se compra y cuánto cuesta, todo calculado acá
     let lineas = [];   // [pieza, precio, grupo]
+    let versiones = []; // 👑 lo que te probabas que era una versión incluida: se compra su pieza y se pone la versión
     if (a === 'comprar') {
       const id = String(d.pieza || '');
       const no = vendible(cat, id, ahora);
@@ -483,8 +493,15 @@ export function tiendaAccion(o, d, H) {
       lineas = repartir(cat, r.falta, r.precio, 'tcol:' + id + ':' + ahora);
     } else {
       // lo que te estás probando: si completa una colección, esa parte se cobra como colección
-      const ids = Array.isArray(d.piezas) ? [...new Set(d.piezas.map(String))].slice(0, 12) : [];
-      if (!ids.length) return mal('faltan datos');
+      const pedidas = Array.isArray(d.piezas) ? [...new Set(d.piezas.map(String))].slice(0, 12) : [];
+      if (!pedidas.length) return mal('faltan datos');
+      // 👑 una versión incluida no se vende sola (28/11/2026): probártela y «Comprar todo» compra su pieza y te pone la
+      // versión. Antes el pedido entero volvía con «incluida»
+      const esVer = (x) => { const p = cat.piezas[x]; return !!(p && p.g && p.t.includes('inc') && cat.piezas[p.g]); };
+      versiones = pedidas.filter(esVer);
+      // (la pieza que ya tienes no se vuelve a comprar: sólo se pone la versión)
+      const ids = [...new Set(pedidas.map((x) => (esVer(x) ? cat.piezas[x].g : x)))]
+        .filter((x) => !(tiene.has(x) && versiones.some((v) => cat.piezas[v].g === x)));
       for (const x of ids) {
         const no = vendible(cat, x, ahora);
         if (no) return mal(no, 400, { pieza: x });
@@ -512,8 +529,10 @@ export function tiendaAccion(o, d, H) {
         dar(o, quien, x, 'compra', pr, ahora, g);
         mover(o, 'tcompra:' + quien + ':' + x + ':' + ahora, quien, -pr, ahora);
         o.sql.exec('DELETE FROM tienda_deseo WHERE quien = ? AND pieza = ?', quien, x);
-        if (poner) ponerUna(o, quien, cat, x, ahora);
+        // la pieza de una versión que te probabas no se pone: se pone la versión (abajo)
+        if (poner && !versiones.some((v) => cat.piezas[v].g === x)) ponerUna(o, quien, cat, x, ahora);
       }
+      for (const v of versiones) ponerUna(o, quien, cat, v, ahora);
       hechas = revisarColecciones(o, quien, cat, ahora);
     });
     return { ok: true, piezas: lineas.map((l) => l[0]), total, saldo: saldo - total, colecciones: hechas };
@@ -757,6 +776,10 @@ function ponerUna(o, quien, cat, id, ahora) {
   // 🃏 un efecto de carta va también en la foto de /card (tanda 3b): se pide el redibujo, con el mismo freno que el marco
   if (esRanuraFx(c) && o.pedirRedibujo) { try { o.pedirRedibujo(quien); } catch (e) { /* sin redibujo: la de antes */ } }
   o.sql.exec('UPDATE tienda_inv SET usada = 1 WHERE quien = ? AND pieza = ?', quien, id);
+  // 👑 ponerse una versión incluida es usar su pieza (28/11/2026): sin esto, la pieza se deshacía con la versión puesta,
+  // y la versión quedaba puesta sin pieza. Con las versiones de cualquier pieza (no sólo las ediciones, que no se deshacen)
+  const pz = cat.piezas[id];
+  if (pz && pz.g && pz.t.includes('inc')) o.sql.exec('UPDATE tienda_inv SET usada = 1 WHERE quien = ? AND pieza = ?', quien, pz.g);
 }
 
 /** Las ediciones de 10: una por persona, para quien jugó en la temporada; el número más bajo libre (la #1 es del campeón) */

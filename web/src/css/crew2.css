@@ -33,6 +33,13 @@
 .k2-niv.lider .k2-pc{width:78px;height:78px;border:3px solid #E8B923;font-size:24px}
 .k2-niv.colider .k2-pc{width:58px;height:58px;border:3px solid var(--magenta)}
 .k2-niv.veterano .k2-pc{border:3px solid var(--verde)}
+/* 🖼️ EL FONDO PROPIO EN LA PIRÁMIDE (28/11/2026: DLX y Luck se veían con la cara cuadrada y su fondo saliéndose). La capa de la fila
+   (`.fp-capa`, hecha para las filas acostadas del Ranking: llena la caja y se apaga hacia la derecha) caía en una casilla
+   PARADA de 76 px sin aire: la imagen empezaba en el borde de arriba de la cara, el aro de la Tienda se salía por arriba y
+   la cara redonda se leía como un cuadrado con su fondo. Ahora cada casilla tiene aire alrededor (todas, para que las que
+   no tienen fondo no se corran) y la capa se apaga hacia abajo, donde va el texto: la cara y su aro quedan adentro */
+.k2-niv li a{padding:10px 6px 6px;border-radius:4px;box-sizing:content-box}
+.k2-niv .fp-capa{-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,#000 55%,transparent 100%)}
 .k2-corona{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#B8860B}
 .noche .k2-corona{color:#E8B923}
 

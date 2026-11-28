@@ -11,6 +11,8 @@ import { Cara, DosToques, Ico, usePerfiles } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
 import { pedirCrews, useCrews } from './crews.js';
 import { AjEventosEstilo } from './dash_estilos.jsx';
+// 🐣 los eventos de nuevos (28/11/2026): jugarlos da el Pase Premium de la temporada
+import { AjEventosNuevos } from './dash_nuevos.jsx';
 import { useNumero } from './anima.js';
 import { textoRol } from './roles.js';
 
@@ -2738,7 +2740,8 @@ const NOMBRE_AJ = { siglas: 'Las siglas de los servidores', campana_pausada: 'La
   setup_suma: 'Los puntos de los que corrieron /setup',
   socios_duenos: 'El dueño de un servidor socio', promos_mano: 'Las promos a mano', promos_quitar: 'Las promos sacadas', mes_sacar: 'Los nominados de los MES AWARDS',
   crew_precio: 'Lo que cuesta crear una crew', crew_precio_nombre: 'Lo que cuesta cambiarle el nombre a una crew', crew_precio_logo: 'Lo que cuesta cambiarle el logo a una crew',
-  crews_ranking: 'El ranking de crews', crews_tiers_num: 'Los tiers de las crews', eventos_estilo: 'Los eventos de estilo' };
+  crews_ranking: 'El ranking de crews', crews_tiers_num: 'Los tiers de las crews', eventos_estilo: 'Los eventos de estilo',
+  eventos_nuevos: 'Los eventos de nuevos' };
 function Historial({ hist, hacer, ocup }) {
   const xs = (hist || []).slice(0, 15);
   if (!xs.length) return <p className="db-tx">Todavía no hay cambios anotados: el historial empezó el 13/10/2026.</p>;
@@ -5498,6 +5501,13 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, pedido, sis }) {
           tono={Object.keys(aj.eventos_estilo || {}).length ? 'ok' : ''}>
           <AjEventosEstilo liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
       </ul>
+      <h3 className="dz-h">Para los nuevos</h3>
+      <ul>
+        <Fila {...f('aj-nuevos')} t="Eventos de nuevos" que="Quien juega uno recibe el Pase Premium de la temporada, una vez. Los de «evento-nuevos» se marcan solos."
+          val={Object.values(aj.eventos_nuevos || {}).filter((x) => x === 1).length ? Object.values(aj.eventos_nuevos).filter((x) => x === 1).length + ' marcados' : 'Los que se detectan solos'}
+          tono={Object.values(aj.eventos_nuevos || {}).some((x) => x === 1) ? 'ok' : ''}>
+          <AjEventosNuevos liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+      </ul>
       <h3 className="dz-h">Publicaciones</h3>
       <ul>
         <Fila {...f('aj-comentarios')} t="Comentarios simulados" que="A quién le preguntaste si su cara puede comentar. Sí va sin etiqueta, sin preguntar va con «simulado» y No no aparece nunca."
@@ -5662,6 +5672,7 @@ function enPalabras(cual, v, liga) {
   if (cual === 'apuestas') return (v.montos || []).map(num).join(' · ') + (v.minutos ? ' · ' + v.minutos + ' min' : '');
   if (cual === 'pase_sorteo') return v.id + (v.sorteo && liga ? ' · se sortea ' + liga.dia(v.sorteo) : '');
   if (cual === 'eventos_estilo') { const n = Object.keys(v || {}).length; return n === 1 ? '1 evento marcado' : n + ' eventos marcados'; }
+  if (cual === 'eventos_nuevos') { const n = Object.values(v || {}).filter((x) => x === 1).length; return n === 1 ? '1 evento de nuevos' : n + ' eventos de nuevos'; }
   if (typeof v === 'boolean') return v ? 'sí' : 'no';
   if (typeof v === 'number') return num(v);
   if (typeof v === 'string') return corte(v, 40);

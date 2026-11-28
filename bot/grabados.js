@@ -45,7 +45,9 @@ export const PREVIA_S = 30;
 //: cuánto dura un sello (minutos): lo que tarda escuchar el evento entero con pausas, y no más
 export const SELLO_MIN = 120;
 export const ROLES_PREMIUM = ['1054496803548049463', '1563941336531607575'];
-//: el foro «『🔴』eventos-grabados» de DRA (tipo 15): lo ven y comentan sólo los dos roles del Pase
+//: el foro «『🔴』eventos-grabados» de DRA (tipo 15): lo ven los dos roles del Pase y el staff. ⚠️ Desde el 28/11/2026 NO hay un
+//: post por evento (Dlx: «no vamos a crear un post para cada uno… en uno alcanzaría todo»): un post por servidor, armado y
+//: editado por bot/grabados_foro.py con lo que guarda acá `grab_hist` (ver `historia()`)
 export const FORO = '1575848965503721523';
 export const BASE_WEB = 'https://underlegends.pages.dev';
 //: lo de entrada; Dlx lo cambia con `POST /grabados/config` (los días los decide él: ver el informe del 28/11)
@@ -259,6 +261,15 @@ export function grabadosTablas(sql) {
     "det TEXT NOT NULL DEFAULT '', detp TEXT NOT NULL DEFAULT '', retirada INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (ev, k)) WITHOUT ROWID");
   // los links firmados de los adjuntos de Logs, hasta que Discord los vence (`ex=`): un pedido a Discord por parte y por día
   sql.exec('CREATE TABLE IF NOT EXISTS grab_url (m TEXT PRIMARY KEY, v TEXT NOT NULL, vence INTEGER NOT NULL) WITHOUT ROWID');
+  // 📚 LA HISTORIA DE LO GRABADO, PARA EL FORO (28/11/2026): una fila por evento que NO se poda con los audios —el foro lista
+  // todos los meses, y el video de YouTube queda aunque el audio de R2 venza—. Sin nada de nadie: evento, servidor, día,
+  // cuántas batallas y el id del video (`yt`, lo manda el motor después de subirlo: `youtube()`)
+  sql.exec("CREATE TABLE IF NOT EXISTS grab_hist (ev TEXT PRIMARY KEY, ll TEXT NOT NULL, sv TEXT NOT NULL DEFAULT '', nombre TEXT NOT NULL DEFAULT '', " +
+    "dia TEXT NOT NULL DEFAULT '', ini INTEGER NOT NULL DEFAULT 0, n INTEGER NOT NULL DEFAULT 0, yt TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL) WITHOUT ROWID");
+  // 🔴 un post del foro por servidor: el hilo, los mensajes en que se partió (el primero tiene el id del hilo) y la huella de
+  // lo publicado, para editar sólo lo que cambió. Lo escribe bot/grabados_foro.py por `/grabados/foro-guardar`
+  sql.exec("CREATE TABLE IF NOT EXISTS grab_foro (sv TEXT PRIMARY KEY, hilo TEXT NOT NULL DEFAULT '', mensajes TEXT NOT NULL DEFAULT '[]', " +
+    "huella TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL) WITHOUT ROWID");
 }
 
 const jp = (s, d) => { try { return s ? JSON.parse(s) : d; } catch (e) { return d; } };
@@ -284,7 +295,38 @@ export function registrar(o, d, ahora = Date.now()) {
       R.ev, b.k, b.r, JSON.stringify(b.nombres), ',' + b.ids.join(',') + (b.ids.length ? ',' : ''), b.dur, b.desde,
       J(b.entera), J(b.previa), J(b.det), J(b.detp));
   }
+  o.sql.exec('INSERT INTO grab_hist (ev, ll, sv, nombre, dia, ini, n, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(ev) DO UPDATE SET ' +
+    'll = excluded.ll, sv = excluded.sv, nombre = excluded.nombre, dia = excluded.dia, ini = excluded.ini, n = excluded.n, t = excluded.t',
+  R.ev, R.ll, R.sv, R.nombre, R.dia, R.ini, R.batallas.length, ahora);
   return { ok: true, ev: R.ev, ll: R.ll, batallas: R.batallas.length, partes: R.partes ? R.partes.m.length : 0 };
+}
+
+export const YT = /^[A-Za-z0-9_-]{11}$/;
+/** 📺 El video de YouTube del evento entero (`{ev | ll, yt}`, del motor después de subirlo o del pase a «no listado»). */
+export function youtube(o, d) {
+  const yt = String((d && d.yt) || '');
+  if (!YT.test(yt)) return { error: 'yt' };
+  const ev = String((d && d.ev) || ''), ll = String((d && d.ll) || '');
+  if (EV.test(ev)) return { ok: true, n: o.sql.exec('UPDATE grab_hist SET yt = ? WHERE ev = ?', yt, ev).rowsWritten || 0 };
+  if (/^\d{1,9}$/.test(ll)) return { ok: true, n: o.sql.exec('UPDATE grab_hist SET yt = ? WHERE ll = ?', yt, ll).rowsWritten || 0 };
+  return { error: 'ev' };
+}
+
+/** 📚 Lo que necesita bot/grabados_foro.py: la config, todos los eventos grabados y los posts ya publicados. */
+export function historia(o) {
+  return { ok: true, cfg: cfgDe(o),
+    eventos: o.sql.exec('SELECT ev, ll, sv, nombre, dia, ini, n, yt FROM grab_hist ORDER BY dia DESC, ini DESC').toArray(),
+    posts: o.sql.exec('SELECT sv, hilo, mensajes, huella FROM grab_foro').toArray().map((f) => Object.assign({}, f, { mensajes: jp(f.mensajes, []) })) };
+}
+
+/** 🔴 Guarda el estado de un post del foro (`{sv, hilo, mensajes, huella}`). `sv` es la sigla, o `_guia` (el fijado). */
+export function foroGuardar(o, d, ahora = Date.now()) {
+  const sv = String((d && d.sv) || '');
+  if (!/^(_guia|[A-Z0-9]{1,12})$/.test(sv) || !SNOW.test(String(d.hilo || ''))) return { error: 'datos' };
+  const ms = (Array.isArray(d.mensajes) ? d.mensajes : []).map(String).filter((x) => SNOW.test(x)).slice(0, 20);
+  o.sql.exec('INSERT OR REPLACE INTO grab_foro (sv, hilo, mensajes, huella, t) VALUES (?, ?, ?, ?, ?)', sv, String(d.hilo), JSON.stringify(ms),
+    String(d.huella || '').slice(0, 80), ahora);
+  return { ok: true };
 }
 
 /** 💎 Premium de `quien` según el objeto: la tabla `pase_premium` en la temporada del Pase (el dueño, siempre). */
@@ -415,66 +457,8 @@ export function mudar(o, viejo, nuevo) {
   return o.sql.exec('UPDATE grab_b SET ids = REPLACE(ids, ?, ?) WHERE ids LIKE ?', ',' + v + ',', ',' + n + ',', '%,' + v + ',%').rowsWritten || 0;
 }
 
-// ── EL FORO ───────────────────────────────────────────────────────────────────────────────────────────────────────────
-const mmss = (s) => { const t = Math.max(0, Math.round(Number(s) || 0)); const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), x = t % 60;
-  return (h ? h + ':' + String(m).padStart(2, '0') : String(m)) + ':' + String(x).padStart(2, '0'); };
-const fechaCorta = (dia) => (/^\d{4}-(\d{2})-(\d{2})$/.test(dia || '') ? dia.slice(8, 10) + '/' + dia.slice(5, 7) : '');
-const fechaLarga = (ms) => new Intl.DateTimeFormat('es', { timeZone: 'America/New_York', day: 'numeric', month: 'long' }).format(new Date(ms));
-
-/**
- * 🔴 El post de un evento en «eventos-grabados»: `{name, content}`. Título «evento · dd/mm · servidor»; adentro, el link a la
- * llave (donde se escucha, con el permiso de cada uno) y una línea por batalla que abre esa batalla. Nunca un archivo ni un
- * link de audio: el audio vive detrás del Worker. Sin menciones.
- */
-export function postForo(E, bs, base = BASE_WEB) {
-  const nombre = txt(E.nombre, 70) || 'Evento grabado';
-  const name = [nombre, fechaCorta(E.dia), E.sv].filter(Boolean).join(' · ').slice(0, 100);
-  const url = base + '/freestyle-rap/llave/' + E.ll;
-  const vivas = (bs || []).filter((b) => !b.retirada && (b.entera || b.previa));
-  const min = Math.max(1, Math.round(vivas.reduce((s, b) => s + (b.dur || 0), 0) / 60));
-  const cab = ['🎙️ **' + nombre + '**' + (E.sv ? ' · ' + E.sv : '') + (fechaCorta(E.dia) ? ' · ' + fechaCorta(E.dia) : ''),
-    vivas.length ? vivas.length + (vivas.length === 1 ? ' batalla' : ' batallas') + ' · ' + min + ' min, sin las esperas del medio' : 'La grabación completa del evento',
-    '', '▶️ **Escúchalo entero en la página:** ' + url];
-  const pie = ['', '💎 Con tu Pase escuchas todas las batallas enteras y la grabación completa. ¿Quién ganó para ti? Coméntalo acá abajo.',
-    E.hasta_e ? '⏳ Entero hasta el ' + fechaLarga(E.hasta_e) + '.' : ''].filter((x, i) => i === 0 || x);
-  let content = cab.join('\n');
-  const lineas = vivas.map((b) => '• ' + (b.r ? '`' + b.r + '` ' : '') + (b.nombres || []).join(' vs ') + ' · ' + mmss(b.dur) + ' — <' + url + '?t=' + b.k + '-0>');
-  if (lineas.length) content += '\n';
-  for (const l of lineas) {
-    if ((content + '\n' + l + pie.join('\n')).length > 1950) { content += '\n…'; break; }
-    content += '\n' + l;
-  }
-  return { name, content: (content + '\n' + pie.join('\n')).slice(0, 2000) };
-}
-
-/** Publica el post del evento en el foro, o lo EDITA si ya estaba (Discord no notifica una edición). Sólo con `foro`. */
-export async function publicarForo(o, ev, pedir = fetch) {
-  const cfg = cfgDe(o);
-  if (!cfg.foro) return { ok: false, no: 'apagado' };
-  if (!o.env || !o.env.DISCORD_TOKEN) return { ok: false, no: 'sin token' };
-  const f = o.sql.exec('SELECT * FROM grab_ev WHERE ev = ?', String(ev || '')).toArray()[0];
-  if (!f) return { ok: false, no: 'no_existe' };
-  const E = filaEv(f);
-  const bs = o.sql.exec('SELECT * FROM grab_b WHERE ev = ? ORDER BY k', E.ev).toArray().map(filaB);
-  const P = postForo(E, bs);
-  const h = { Authorization: 'Bot ' + o.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' };
-  const sinMenciones = { parse: [] };
-  if (E.foro) {
-    // el primer mensaje de un post de foro tiene el mismo id que el post
-    const r = await pedir('https://discord.com/api/v10/channels/' + E.foro + '/messages/' + E.foro,
-      { method: 'PATCH', headers: h, body: JSON.stringify({ content: P.content, allowed_mentions: sinMenciones }) });
-    if (r.ok) return { ok: true, id: E.foro, editado: true };
-    if (r.status !== 404) return { ok: false, no: 'discord ' + r.status };
-  }
-  const r = await pedir('https://discord.com/api/v10/channels/' + FORO + '/threads', { method: 'POST', headers: h,
-    body: JSON.stringify({ name: P.name, message: { content: P.content, allowed_mentions: sinMenciones } }) });
-  if (!r.ok) return { ok: false, no: 'discord ' + r.status };
-  const j = await r.json().catch(() => ({}));
-  if (j && SNOW.test(String(j.id || ''))) o.sql.exec('UPDATE grab_ev SET foro = ? WHERE ev = ?', String(j.id), E.ev);
-  return { ok: true, id: String((j && j.id) || ''), editado: false };
-}
-
-/** Las rutas del objeto (sólo desde el Worker): `/grabados-lista`, `-registrar`, `-config`, `-foro`, `-podar`. */
+/** Las rutas del objeto (sólo desde el Worker): `/grabados-lista`, `-registrar`, `-config`, `-podar`, `-youtube`,
+ *  `-foro-datos` y `-foro-guardar`. */
 export async function rutaObjeto(o, req, ruta) {
   const d = await req.json().catch(() => null);
   const ahora = Date.now();
@@ -483,7 +467,6 @@ export async function rutaObjeto(o, req, ruta) {
     const r = registrar(o, d, ahora);
     if (r.error) return json(r, 400);
     r.podados = await podar(o, ahora);
-    if (cfgDe(o).foro) { try { r.foro = await publicarForo(o, r.ev); } catch (e) { r.foro = { ok: false, no: 'error' }; } }
     return json(r);
   }
   if (ruta === '/grabados-config') {
@@ -494,7 +477,9 @@ export async function rutaObjeto(o, req, ruta) {
     }
     return json({ ok: true, cfg: cfgDe(o) });
   }
-  if (ruta === '/grabados-foro') return json(await publicarForo(o, d && d.ev));
+  if (ruta === '/grabados-youtube') { const r = youtube(o, d); return json(r, r.error ? 400 : 200); }
+  if (ruta === '/grabados-foro-datos') return json(historia(o));
+  if (ruta === '/grabados-foro-guardar') { const r = foroGuardar(o, d, ahora); return json(r, r.error ? 400 : 200); }
   if (ruta === '/grabados-podar') return json({ ok: true, borrados: await podar(o, ahora) });
   return json({ error: 'ruta' }, 404);
 }
@@ -588,7 +573,8 @@ export async function servir(req, env, sello, ahora = Date.now(), pedir = fetch)
 /**
  * 🌐 `/grabados…` del Worker. `GET /grabados?ll=<n>`: la lista sellada, con la sesión de quien mira (`sesionDe`, de
  * bot/avisos.js: se pasa para no importarlo en círculo). `GET|HEAD /grabados/a/<sello>`: el audio. Y con la clave del ciclo
- * (el motor o Dlx): `POST /grabados/registrar`, `/grabados/config`, `/grabados/foro`, `/grabados/podar`.
+ * (el motor, el foro o Dlx): `POST /grabados/registrar`, `/grabados/config`, `/grabados/podar`, `/grabados/youtube`,
+ * `/grabados/foro-datos` y `/grabados/foro-guardar`.
  */
 export async function ruta(req, env, ctx, esCiclo, sesionDe) {
   const u = new URL(req.url);
@@ -606,8 +592,8 @@ export async function ruta(req, env, ctx, esCiclo, sesionDe) {
     if (!L || L.error) return json(L || { error: 'objeto' }, 400);
     return json(L.hay ? await sellarLista(L, env.DISCORD_TOKEN) : L);
   }
-  const acciones = { '/grabados/registrar': 'grabados-registrar', '/grabados/config': 'grabados-config', '/grabados/foro': 'grabados-foro',
-    '/grabados/podar': 'grabados-podar' };
+  const acciones = { '/grabados/registrar': 'grabados-registrar', '/grabados/config': 'grabados-config', '/grabados/podar': 'grabados-podar',
+    '/grabados/youtube': 'grabados-youtube', '/grabados/foro-datos': 'grabados-foro-datos', '/grabados/foro-guardar': 'grabados-foro-guardar' };
   if (acciones[p]) {
     if (req.method !== 'POST') return json({ error: 'método' }, 405);
     if (!esCiclo) return new Response('', { status: 403 });

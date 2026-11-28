@@ -52,6 +52,8 @@ import * as CW from './crews.js';
 import * as TI from './tienda.js';
 // 🐣 el Evento de Nuevos (28/11/2026): la inscripción y su panel en DRA
 import * as NU from './nuevos.js';
+// 🎁 la prueba del Pase Premium y la temporada por jugar un evento de nuevos (28/11/2026): bot/premium_regalos.js
+import * as PRG from './premium_regalos.js';
 import * as RC from './recibidor.js';
 // 📬 el buzón en hilos privados de DRA (28/11/2026): lee la bandeja de la campana. Ver bot/buzon.js
 import * as BZ from './buzon.js';
@@ -4180,6 +4182,8 @@ const RUTAS = {
   '/avisos/looks': 'POST', '/avisos/look-guardar': 'POST', '/avisos/look-borrar': 'POST',
   // 🏆 tus Pases premium de campeón de liga y usar uno (15/11/2026): ver `valesDe()` y `valeUsar()`
   '/avisos/vales': 'POST', '/avisos/vale-usar': 'POST',
+  // 🎁 la prueba del Pase Premium (28/11/2026): ver si puedes y reclamarla, con tu sesión. Ver bot/premium_regalos.js
+  '/avisos/premium-prueba': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
   // 📬 el buzón en hilos privados de DRA, para el ciclo (`bot/buzon.py`): con `claveCiclo()`. Ver bot/buzon.js
@@ -6328,6 +6332,9 @@ export function ajusteValido(cual, valor) {
   // 🎭 LOS EVENTOS DE ESTILO (17/11/2026, Dlx: «B, desde el Dashboard» y «que se pueda marcar antes»): `{clave: estilo}`.
   // La clave es el número del evento ya jugado (`653`) o `a:<id del mensaje de su anuncio>` antes de jugarse; el estilo,
   // uno de `JUEGOS`. Los niveles los calcula el ciclo con los resultados (`bot/eventos_estilo.py` y `bot/juegos.py`)
+  // 🐣 LOS EVENTOS DE NUEVOS (28/11/2026): `{clave: 1 | 0}`, la misma clave que los de estilo. Jugarlo da el Pase Premium de
+  // la temporada (bot/premium_regalos.js y bot/premium_nuevos.py); 0 saca uno que el ciclo detectó solo
+  if (cual === 'eventos_nuevos') return PRG.ajusteNuevos(valor);
   if (cual === 'eventos_estilo') {
     if (valor === null) return null;
     if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 300) return undefined;
@@ -8227,7 +8234,7 @@ export async function rutaAvisos(req, env, ruta) {
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
     ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige'
     || ruta === '/avisos/carta-principal' || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige'
-    || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar' || ruta === '/avisos/pase-dia'
+    || ruta === '/avisos/vales' || ruta === '/avisos/vale-usar' || ruta === '/avisos/pase-dia' || ruta === '/avisos/premium-prueba'
     || ruta === '/avisos/juego-mio' || ruta === '/avisos/juego-elige'
     || ruta === '/avisos/looks' || ruta === '/avisos/look-guardar' || ruta === '/avisos/look-borrar') {
     const crudo = await req.text();
@@ -10110,6 +10117,8 @@ export class Avisos {
       NU.nuevosTablas(this.sql);
       // 🚪 EL RECIBIDOR DE DRA (28/11/2026): las preguntas (sin el texto) y quién recibió a quién, en bot/recibidor.js
       RC.recibidorTablas(this.sql);
+      // 🎁 LA PRUEBA DEL PASE PREMIUM (28/11/2026): una por cuenta, en bot/premium_regalos.js
+      PRG.regalosTablas(this.sql);
       // 📬 EL BUZÓN EN HILOS PRIVADOS DE DRA (28/11/2026): qué hilo se abrió, qué salió y quién no quiere. Ver bot/buzon.js
       BZ.buzonTablas(this.sql);
       // 🎧 «AHORA MISMO» (28/11/2026): una fila por socio con llamadas públicas, sin nada de nadie. Ver bot/ahora.js
@@ -10889,6 +10898,8 @@ export class Avisos {
       if (ruta.startsWith('/vdc-')) return json(VD.objeto(this, ruta.slice(5), d, Date.now()));
       if (ruta === '/recibidor-reclamar') return json(await RC.reclamar(this, d, Date.now(), DUENO));
       if (ruta === '/recibidor-saludar') return json(RC.saludar(this, d, Date.now()));
+      // 👋 los que entraron a DRA (grabador/bienvenida.js), para el «Lo recibo yo» del aviso de los recibidores
+      if (ruta === '/recibidor-entro') return json(RC.entro(this, d, Date.now()));
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
         // 🧪 los del grupo sin aviso se anotan la primera vez que aparecen (desde ahí se mide si volvieron solos), y la
@@ -11074,6 +11085,8 @@ export class Avisos {
       // 🏆 tus Pases premium de campeón de liga, y usar uno (15/11/2026)
       if (ruta === '/vales') return json(this.valesDe(String(d.quien || '')));
       if (ruta === '/vale-usar') { const v = this.valeUsar(d); return json(v, v.error ? 400 : 200); }
+      // 🎁 la prueba del Pase Premium: con `si`, reclamarla; sin nada, si puedes (bot/premium_regalos.js)
+      if (ruta === '/premium-prueba') { const v = PRG.ruta(this, d, Date.now(), DUENO); return json(v, v.error ? 400 : 200); }
       // 🏷️ sin redibujo a pedido (16/11/2026, Dlx: «se deberían notar en la página al instante, pero no necesariamente al
       // instante en Discord… para que estemos bien con los límites»): la carta viva del Inventario lo muestra ya, y el
       // TAG elegido entra al sello de la carta, así que el ciclo la redibuja en su vuelta
@@ -11614,6 +11627,8 @@ export class Avisos {
       try { await NU.vencerYEditar(this, ahora, DUENO); } catch (e) { /* el próximo intento, en una hora */ }
       // 🚪 y los recibidos que jugaron su primer evento: le cuentan a su recibidor, y a los 3, el Pase Premium
       try { await RC.revisar(this, ahora, DUENO); } catch (e) { /* el próximo intento, en una hora */ }
+      // 🎁 y las pruebas del Pase Premium que terminan mañana: un aviso a la campana, una vez
+      try { PRG.revisar(this, ahora); } catch (e) { /* el próximo intento, en una hora */ }
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -15463,6 +15478,8 @@ export class Avisos {
     // 🐣 y su anotación al Evento de Nuevos (28/11/2026): lleva su Discord ID y su nombre
     // 🔁 y las del panel «De regreso» y su fila de inactivo (28/11/2026): `olvidar()` de bot/nuevos.js
     try { NU.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
+    // 🎁 y su prueba del Pase Premium (28/11/2026)
+    try { PRG.olvidar(this, String(d.quien)); } catch (e) { /* sin la tabla */ }
     // 🚪 y lo del recibidor (28/11/2026): sus preguntas, sus saludos y a quién recibió (ver `olvidar()` en bot/recibidor.js)
     try { RC.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
     // 📬 y su buzón (28/11/2026): lo que salió, si lo apagó, y sus hilos vivos se borran en la ronda siguiente. bot/buzon.js
@@ -15943,12 +15960,12 @@ export class Avisos {
     const P = this.paseDatos();
     const nivel = this.rachaDe(quien).nivel.n;
     const pNivel = P.cfg ? this.paseNivel(quien, P.cfg) : 0;
-    const prem = P.cfg && this.pasePremium(quien, P.cfg.temp) && pNivel >= (((P.cfg.premium || []).find((p) => p[2] === 'fondo') || [5])[0]);
+    const prem = P.cfg && this.premiumSigue(quien, P.cfg.temp) && pNivel >= (((P.cfg.premium || []).find((p) => p[2] === 'fondo') || [5])[0]);
     const tenia = !!this.sql.exec("SELECT 1 AS x FROM fondos WHERE quien = ? AND estado = 'ok' LIMIT 1", quien).toArray()[0];
     // 💎 DESDE EL 17/11/2026 SUBIR TU IMAGEN ES DEL PREMIUM (Dlx: «PREMIUM lo que te dejaría hacer es subir tu propia
     // imagen, analizada con el filtro»). Lo demás de «Tus fondos» (la bandera, tu servidor, dónde va cada uno) es de
     // todos. Quien ya tenía la suya aprobada la conserva y la puede cambiar: no se le saca lo que eligió antes
-    const esPrem = !!(P.cfg && this.pasePremium(quien, P.cfg.temp));
+    const esPrem = !!(P.cfg && this.premiumSigue(quien, P.cfg.temp));
     return { si: !!prem || tenia, nivel, falta: FONDO_NIVEL, prem: esPrem, pNivel, crew: pNivel >= FONDO_CREW_NIVEL, crewFalta: FONDO_CREW_NIVEL,
       pFalta: (((P.cfg && P.cfg.premium) || []).find((p) => p[2] === 'fondo') || [5])[0] };
   }
@@ -17403,7 +17420,9 @@ export class Avisos {
       // 🛍️ y lo de la Tienda: lo que tiene, lo que se puso, su lista, sus colecciones y sus números
       ...TI.TABLAS_QUIEN,
       // 🐣 y su anotación al Evento de Nuevos
-      ...NU.TABLAS_QUIEN];
+      ...NU.TABLAS_QUIEN,
+      // 🎁 y su prueba del Pase Premium: una por cuenta, también después de mudarse
+      ...PRG.TABLAS_QUIEN];
     const movidas = {}, fallas = [];
     // 🔴 LAS CLAVES DE LA TIENDA LLEVAN EL ID ADENTRO (pasada del 19/10/2026): `rhito:<id>:…`, `racha:<id>:…`,
     // `rdia:<día>:<id>`, `bien:<id>:<paso>`, `pase:…:<id>:<nivel>`… Pasaba la fila a la cuenta nueva con la clave vieja,
@@ -21486,7 +21505,10 @@ export class Avisos {
         (m ? m + '. ' : '') + 'Está en tu Inventario: úsalo esta temporada o guárdalo para la que quieras.',
         HUB + '/freestyle-rap/inventario', '', Date.now());
     }
-    return { ok: true, cambio: true, niveles: nuevas, vales: valesNuevos.length };
+    // 🐣 el Pase Premium de la temporada para los que jugaron un evento de nuevos (`premium_nuevos.vales()` del ciclo)
+    let nuevosPrem = 0;
+    try { nuevosPrem = PRG.nuevosCiclo(this, d.nuevos_prem, Date.now(), DUENO); } catch (e) { /* la próxima vuelta */ }
+    return { ok: true, cambio: true, niveles: nuevas, vales: valesNuevos.length, nuevos_prem: nuevosPrem };
   }
 
   /** 🔑 La cuenta de Discord de un perfil: la que jugó con esa clave más hace poco, o la que la verificó. `''` si no se sabe */
@@ -21508,7 +21530,8 @@ export class Avisos {
     const pr = temp ? this.pasePremium(quien, temp) : null;
     const vales = k ? this.sql.exec('SELECT origen, motivo, dado, usado_temp, usado_t FROM premium_vale WHERE k = ? ORDER BY dado, origen',
       k).toArray() : [];
-    return { k, temp, premium: !!(pr && (pr[1] == null || pr[1] > Date.now())), miembro: P.miembros.has(quien),
+    // 🎁 la prueba no cuenta como «ya lo tienes»: con ella el vale se usa (y la prueba pasa a ser la temporada entera)
+    return { k, temp, premium: !!(temp && this.premiumTemporada(quien, temp)), miembro: P.miembros.has(quien),
       vales: vales.map((r) => ({ id: r.origen, m: r.motivo, dado: r.dado, usado: r.usado_temp || '', t: r.usado_t || 0 })) };
   }
 
@@ -21531,7 +21554,7 @@ export class Avisos {
     if (!temp) return { error: 'sin_temporada' };
     if (!P.miembros.has(quien)) return { error: 'no_miembro' };
     const pr = this.pasePremium(quien, temp);
-    if (pr && (pr[1] == null || pr[1] > Date.now())) return { error: 'ya_premium' };
+    if (pr && this.premiumTemporada(quien, temp)) return { error: 'ya_premium' };
     const ahora = Date.now();
     this.sql.exec('INSERT INTO pase_premium (quien, temp, desde, hasta) VALUES (?, ?, ?, NULL) ON CONFLICT(quien, temp) ' +
       'DO UPDATE SET hasta = NULL', quien, temp, ahora);
@@ -21622,6 +21645,13 @@ export class Avisos {
     const r = this.sql.exec('SELECT desde, hasta FROM pase_premium WHERE quien = ? AND temp = ?', quien, temp).toArray()[0];
     return r ? [r.desde, r.hasta] : null;
   }
+
+  /** 💎 ¿Sigue Premium para lo que se cobra o se muestra en la temporada? Lo de siempre (hay fila), menos la prueba vencida
+   *  (`sigue()` de bot/premium_regalos.js). Para el rango con la hora, `pasePremium()` */
+  premiumSigue(quien, temp) { return PRG.sigue(this, quien, temp, Date.now()); }
+
+  /** 💎 ¿Tiene el Premium de la TEMPORADA (no una prueba)? Para guardar un vale en vez de usarlo */
+  premiumTemporada(quien, temp, ahora = Date.now()) { return PRG.deTemporada(this, quien, temp, ahora); }
 
   /** La XP de alguien en el Pase de la temporada: lo que dan sus Tareas anotadas (con la XP doble y el premium) */
   paseXP(quien, cfg) {
@@ -21858,7 +21888,7 @@ export class Avisos {
       for (let j = 1; j <= k; j++) this.dropDar(quien, 'pase:' + cfg.temp + ':dc' + j, 0, ahora);
     }
     // 💎 y la fila premium, si la tiene: al desbloquearla cobra de una vez lo de los niveles que ya pasó
-    if (this.pasePremium(quien, cfg.temp)) {
+    if (this.premiumSigue(quien, cfg.temp)) {
       for (let n = 1; n <= nivel; n++) {
         const p = (cfg.premium || [])[n - 1];
         if (p) pagar('p' + n, p[1]);
@@ -21880,7 +21910,7 @@ export class Avisos {
     const out = { titulo: ult('titulo'), color: ult('color'), insignias: hasta.filter((p) => p[2] === 'insignia').map((p) => [p[0], p[3]]),
       premium: false, marco: '', emblema: false };
     // 💎 con el premium: su título (si llegó), el color que eligió (el nivel 7), el marco de su carta y el emblema
-    if (quien && this.pasePremium(quien, cfg.temp)) {
+    if (quien && this.premiumSigue(quien, cfg.temp)) {
       const ph = (cfg.premium || []).filter((p) => p[0] <= nivel);
       const pu = (tipo) => ph.filter((p) => p[2] === tipo).pop() || null;
       out.premium = true;
@@ -21963,7 +21993,9 @@ export class Avisos {
           cobrada: ya(s[0]).has('crew') };
       }
       const pr = this.pasePremium(quien, cfg.temp);
-      if (pr) out.premium = { desde: pr[0], hasta: pr[1] };
+      // 🎁 con la prueba activa, `hasta: null` (la página lee «lo tiene» así) y `prueba`: cuándo termina. Y si puede reclamarla
+      if (pr) out.premium = PRG.paraPagina(this, quien, cfg.temp, pr, ahora);
+      out.prueba = PRG.estado(this, quien, ahora, DUENO);
       out.aviso = !!(this.sql.exec('SELECT si FROM pase_aviso WHERE quien = ?', quien).toArray()[0] || {}).si;
       out.color_premium = (this.sql.exec('SELECT color FROM pase_color WHERE quien = ?', quien).toArray()[0] || {}).color || '';
     } catch (e) { /* lo nuevo no tapa el Pase */ }
@@ -21988,7 +22020,7 @@ export class Avisos {
     const quien = String(d.quien || ''), color = String(d.color || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !PASE_COLORES.includes(color)) return { error: 'faltan datos' };
     const P = this.paseDatos();
-    if (!P.cfg || !this.pasePremium(quien, P.cfg.temp)) return { error: 'premium' };
+    if (!P.cfg || !this.premiumSigue(quien, P.cfg.temp)) return { error: 'premium' };
     const n7 = ((P.cfg.premium || []).find((p) => p[2] === 'color') || [7])[0];
     if (quien !== DUENO && this.paseNivel(quien, P.cfg) < n7) return { error: 'nivel', falta: n7 };
     this.sql.exec('INSERT INTO pase_color (quien, color, t) VALUES (?, ?, ?) ON CONFLICT(quien) DO UPDATE SET color = excluded.color, t = excluded.t',
@@ -22426,7 +22458,7 @@ export class Avisos {
     const P = this.paseDatos();
     const fila = (P.cfg && P.cfg.premium) || [];
     if (quien === DUENO) return [REACCION_BASE, ...new Set(fila.filter((p) => p[2] === 'reaccion').map((p) => String(p[3])))];
-    if (!P.cfg || !this.pasePremium(quien, P.cfg.temp)) return [REACCION_BASE];
+    if (!P.cfg || !this.premiumSigue(quien, P.cfg.temp)) return [REACCION_BASE];
     const nivel = P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0;
     return [REACCION_BASE, ...new Set(fila.filter((p) => p[2] === 'reaccion' && p[0] <= nivel).map((p) => String(p[3])))];
   }
@@ -22440,7 +22472,7 @@ export class Avisos {
     if (!P.cfg) return [...new Set(this.titulosDrop(quien).concat(this.titulosNuevo(quien)))];
     const nivel = quien === DUENO ? P.cfg.niveles || 30 : P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0;
     const filas = [...(P.cfg.premios || [])];
-    if (this.pasePremium(quien, P.cfg.temp)) filas.push(...(P.cfg.premium || []));
+    if (this.premiumSigue(quien, P.cfg.temp)) filas.push(...(P.cfg.premium || []));
     return [...new Set(filas.filter((p) => p[2] === 'titulo' && p[0] <= nivel).map((p) => String(p[3])).concat(this.titulosDrop(quien), this.titulosNuevo(quien)))];
   }
 

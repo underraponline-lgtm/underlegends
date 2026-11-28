@@ -543,6 +543,9 @@ def armar(ahora=None):
            # 🏆 una temporada de Pase premium para cada campeón de liga (15/11/2026): ver `vales_campeones()`
            # 🎟️ y uno para el campeón de cada evento en que un Tier 1 regala un Pase (20/11/2026): ver `bot/pases_t1.py`
            'vales': vales_campeones() + _vales_t1(),
+           # 🐣 el Pase Premium de la temporada para los que jugaron un evento de nuevos (28/11/2026): `[{q, ll}]`, uno por
+           # persona (bot/premium_nuevos.py). Discord IDs: aparte de `cfg`, como `premium`
+           'nuevos_prem': _nuevos_prem(),
            # 🥚 los Dragón Drops por ganar (la tanda 1 del rework, 17/11/2026): ver bot/drops_merito.py
            'drops': drops_por_ganar(),
            # 🔔 quién puede votar los MES AWARDS abiertos, para los avisos de la campana: ver `mes_votan()`
@@ -564,6 +567,16 @@ def vales_de_salon(sl):
         m = 'Campeón de %s' % (x.get('n') or lid) + (' (temporada %s)' % x['lt'] if x.get('lt') else '')
         out.append({'o': 'liga:%s:%s' % (lid, ult), 'k': k, 'm': m[:120]})
     return sorted(out, key=lambda v: v['o'])
+
+
+def _nuevos_prem():
+    """🐣 Los que jugaron un evento de nuevos (`premium_nuevos.vales()`): nunca frena el Pase."""
+    try:
+        import premium_nuevos as _PN
+        return _PN.vales()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el Pase Premium de los eventos de nuevos: %s' % str(e)[:80])
+        return []
 
 
 def _vales_t1():

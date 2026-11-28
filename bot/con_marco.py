@@ -54,8 +54,16 @@ ESCALA = 3
 #     y las demás «terminaban antes»: se cortaban a mitad de su vuelta. En la página no cambia nada
 #   · FILMADA A 2× (600 px de carta), en otra página: Discord no la muestra más ancha, a 3× pesaba más del doble, y el
 #     filtro SVG del contorno del marco hacía que cada cuadro tardara 4 s (a 2×, 1,8)
-FPS = 15
-FPS_LARGO = 10      # la vuelta pasa de 3 s (con el filtro del marco, cada cuadro cuesta)
+# 🎞️ A 20 CUADROS POR SEGUNDO, TAMBIÉN LAS VUELTAS LARGAS (28/11/2026, Drako: «¿soy yo o va un poco lageado el efecto?»).
+# Lo que pasa de 3 s se filmaba a 10 (`FPS_LARGO`), por lo que cuesta cada cuadro con el filtro del marco, y casi todo cae
+# ahí: el holográfico (C1, el de Drako y Erian) va y vuelve en 3,6 s, o sea 7,2 s de vuelta y 72 cuadros de 100 ms. Un
+# brillo que barre la carta a 10 cuadros salta de a tirones; en la página corre a 60. Medido con la carta de Drako (marco
+# Plata + C1): 144 cuadros de 50 ms, 1,7 s cada uno (4 min) y 2,2 MB. El tiempo lo cuida `TOPE_FILMAR`, no el ritmo
+FPS = 20
+FPS_LARGO = 20      # la vuelta pasa de 3 s: igual que las cortas (ver arriba)
+FPS_MIN = 12        # lo menos que se baja si filmarla entera a `FPS_LARGO` pasa de `TOPE_FILMAR`
+TOPE_FILMAR = 240   # s por carta: más que esto (un marco caro y una vuelta de 8 s), menos cuadros por segundo. Medido el
+                    # 28/11 con el Embajador de Dlx + C6: 3,1 s cada cuadro, sale a 12 por segundo; la de Drako, a 20
 # ⚡ lo que va A SALTOS (`steps()`: el parpadeo del neón, C10; el glitch, C11) cambia en un instante y dura poco: el neón
 # se apaga 50 ms tres veces en 5 s, y a 10 cuadros por segundo se veía una sola (medido el 21/11/2026). A 20, cada salto
 # de 50 ms o más cae en un cuadro; los cuadros iguales seguidos el WebP los junta, así que pesa casi lo mismo
@@ -63,7 +71,8 @@ FPS_PASOS = 20
 TOPE_LOOP = 6000    # ms
 TOPE_LARGO = 8000   # ms: si una sola animación ya tarda más que TOPE_LOOP (la nebulosa de C14: 16 s)
 ESCALA_ANIM = 2
-PESO_MAX = 2500000  # bytes: más que esto, baja la calidad; si igual pasa, se saltea un cuadro de cada dos
+PESO_MAX = 2500000  # bytes: más que esto, baja la calidad; después, la achica lo justo; recién ahí saltea cuadros
+ACHICA_MIN = 0.7    # lo más que se achica el lado antes de saltear cuadros (un cuadro de cada dos: tirones de 10 por segundo)
 
 
 def _j(*p, defecto=None):
@@ -275,18 +284,29 @@ def bucle(periodos):
 def filmar(pag, caja, periodos):
     """Los cuadros de una vuelta, en PNG (bytes), con la página congelada (`JS_QUIETAS`): cada animación avanza a su
     ritmo de `bucle()`, así la vuelta cierra perfecta. Devuelve (cuadros, ms por cuadro)."""
+    import time
     L, ks, _ = bucle(periodos)
     fps = FPS if L <= 3000 else FPS_LARGO
     # ⚡ el `steps()` de una animación de CSS vive en sus cuadros clave, no en `getTiming()` (que dice `linear`)
-    if pag.evaluate("""() => window.__lgFilmar.some(([a]) => /steps/.test(a.effect.getTiming().easing)
-                        || a.effect.getKeyframes().some((k) => /steps/.test(k.easing || '')))"""):
-        fps = FPS_PASOS
-    n = max(2, int(round(L / 1000.0 * fps)))
-    cuadros = []
-    for i in range(n):
+    pasos = pag.evaluate("""() => window.__lgFilmar.some(([a]) => /steps/.test(a.effect.getTiming().easing)
+                        || a.effect.getKeyframes().some((k) => /steps/.test(k.easing || '')))""")
+    if pasos:
+        fps = max(fps, FPS_PASOS)
+
+    def cuadro(t):
         pag.evaluate('([t, ks]) => { window.__lgFilmar.forEach(([a, c], j) => { a.currentTime = c + t * (ks[j] || 1); }); }',
-                     [i * float(L) / n, ks])
-        cuadros.append(pag.screenshot(clip=caja, omit_background=True, type='png'))
+                     [t, ks])
+        return pag.screenshot(clip=caja, omit_background=True, type='png')
+
+    # ⏱️ lo que cuesta un cuadro manda sólo si filmarla entera pasa de `TOPE_FILMAR` (un marco caro con una vuelta larga):
+    # se mide con el primero y se bajan los cuadros por segundo hasta `FPS_MIN`, nunca en lo que va a saltos
+    t0 = time.time()
+    primero = cuadro(0.0)
+    costo = time.time() - t0
+    if not pasos and costo * L / 1000.0 * fps > TOPE_FILMAR:
+        fps = max(FPS_MIN, int(TOPE_FILMAR / (costo * L / 1000.0)))
+    n = max(2, int(round(L / 1000.0 * fps)))
+    cuadros = [primero] + [cuadro(i * float(L) / n) for i in range(1, n)]
     return cuadros, int(round(float(L) / n))
 
 
@@ -371,10 +391,18 @@ def animada(filmado, prop, ruta, carta=None, aire=6):
         cs[0].save(ruta, save_all=True, append_images=cs[1:], duration=dur, loop=0, quality=q, method=4, lossless=False)
         return os.path.getsize(ruta)
 
-    # 🪶 pesada: primero menos calidad; si igual pasa, un cuadro de cada dos (el ritmo se mantiene: cada uno dura el doble)
-    if guardar(out, ms, 75) > PESO_MAX and guardar(out, ms, 60) > PESO_MAX:
-        out, ms = out[::2], ms * 2
-        guardar(out, ms, 60)
+    # 🪶 pesada: primero menos calidad; después, más chica, lo justo para entrar (el peso va con el área; Discord no la
+    # muestra a 600 px de ancho en el chat); si igual pasa, un cuadro de cada dos (el ritmo se mantiene: cada uno dura el
+    # doble, pero vuelven los tirones). Cada vuelta es volver a comprimir todos los cuadros: no se prueba de a poco
+    if guardar(out, ms, 75) > PESO_MAX:
+        peso = guardar(out, ms, 60)
+        if peso > PESO_MAX:
+            f = max(ACHICA_MIN, min(0.95, (PESO_MAX / float(peso)) ** 0.5 * 0.96))
+            lado = (max(1, int(round(out[0].width * f))), max(1, int(round(out[0].height * f))))
+            out = [im.resize(lado, Image.LANCZOS) for im in out]
+            if guardar(out, ms, 60) > PESO_MAX:
+                out, ms = out[::2], ms * 2
+                guardar(out, ms, 60)
     chk = Image.open(ruta)
     if not getattr(chk, 'is_animated', False) or chk.mode != 'RGBA':
         raise ValueError('el WebP no quedó animado con transparencia')
@@ -521,6 +549,27 @@ def _self_check():
        'lo que apenas se sale no se toca')
     ok(limitar(0, 900, None) == (0, 900, False, False), 'sin saber dónde está la carta, no se corta nada')
     ok(ESCALA_ANIM <= ESCALA and TOPE_LARGO >= TOPE_LOOP and PESO_MAX > 10 ** 6, 'la animada: más chica que la quieta, y sus topes')
+
+    # 🎞️ el holográfico (C1: 3,6 s ida y vuelta) a 20 cuadros por segundo, de 50 ms: a 10 iba a tirones (Drako, 28/11/2026)
+    class _Pag:
+        def __init__(self, pasos=False):
+            self.pasos, self.ts = pasos, []
+
+        def evaluate(self, js, arg=None):
+            if arg is None:
+                return self.pasos
+            self.ts.append(arg[0])
+            return None
+
+        def screenshot(self, **_):
+            return b'x'
+
+    pg = _Pag()
+    cs, ms = filmar(pg, {}, [7200])
+    ok(len(cs) == 144 and ms == 50 and pg.ts[0] == 0 and pg.ts[-1] == 7150, 'el C1: 144 cuadros de 50 ms, y la vuelta cierra')
+    ok(len(filmar(_Pag(), {}, [2200])[0]) == 44 and len(filmar(_Pag(True), {}, [5000])[0]) == 100,
+       'las cortas y lo que va a saltos, también a 20')
+    ok(FPS_LARGO >= 20 and FPS_MIN >= 12, 'las vueltas largas no vuelven a 10 cuadros por segundo')
     # y la animada se arma de verdad: dos cuadros distintos → un WebP animado con transparencia
     try:
         import tempfile

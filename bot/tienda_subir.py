@@ -42,6 +42,30 @@ def revisar(c):
             mal.append('el efecto %s no dice de qué carta es (`carta`: %s)' % (k, ' · '.join(CARTAS_FX)))
         elif p['c'] == 'carta' and p.get('g') and (piezas.get(p['g']) or {}).get('carta') != p.get('carta'):
             mal.append('la versión %s es de otra carta que su pieza %s' % (k, p['g']))
+    # 👑 las variantes y las versiones incluidas: la cabeza existe, es de la misma ranura y no es variante de otra. Una
+    # versión incluida es de CUALQUIER pieza (28/11/2026: hasta hoy, sólo de una edición o una Premium)
+    for k, p in piezas.items():
+        if not isinstance(p, dict):
+            continue
+        g = p.get('g')
+        if 'inc' in (p.get('t') or []) and not g:
+            mal.append('la versión incluida %s no dice de qué pieza es (`g`)' % k)
+        if g:
+            cab = piezas.get(g)
+            if not isinstance(cab, dict) or cab.get('c') != p.get('c') or cab.get('g'):
+                mal.append('la variante %s es de %s, que no existe, es de otra ranura o es variante de otra' % (k, g))
+    # 🎟️ las ediciones numeradas, de CUALQUIER rareza (28/11/2026, Dlx: «otras calidades pueden tener lo mismo»): cada una
+    # es de una pieza con `num`, con 2 a 100 copias; y una pieza con `num` sin su edición no se vende nunca, sin avisar
+    eds = c.get('ediciones') or {}
+    for k, e in eds.items():
+        p = piezas.get(k)
+        if not isinstance(p, dict) or 'num' not in (p.get('t') or []):
+            mal.append('la edición %s no es de una pieza numerada (`num`)' % k)
+        elif not (isinstance(e, dict) and isinstance(e.get('copias'), int) and not isinstance(e.get('copias'), bool) and 2 <= e['copias'] <= 100):
+            mal.append('la edición %s: `copias` es un entero de 2 a 100' % k)
+    for k, p in piezas.items():
+        if isinstance(p, dict) and 'num' in (p.get('t') or []) and k not in eds:
+            mal.append('la pieza %s es numerada y no tiene edición: no se vendería nunca' % k)
     for k in (c.get('vitrina') or {}).get('ids') or []:
         if k not in piezas:
             mal.append('la vitrina nombra una pieza que no existe: ' + k)
@@ -49,6 +73,18 @@ def revisar(c):
         for x in j.get('piezas') or []:
             if x not in piezas:
                 mal.append(f'la colección {k} nombra una pieza que no existe: {x}')
+        # 🧺 lo mismo que pide el objeto (`catalogoValido()`): de 2 a 12 piezas. Y sin numeradas: «comprar la colección»
+        # las daría sin número (no pasa por `comprarNumerada()`) (28/11/2026)
+        n = len(j.get('piezas') or [])
+        if not 2 <= n <= 12:
+            mal.append(f'la colección {k} tiene {n} piezas: van de 2 a 12')
+        for x in j.get('piezas') or []:
+            if 'num' in ((piezas.get(x) or {}).get('t') or []):
+                mal.append(f'la colección {k} tiene una pieza numerada ({x}): comprándola junta saldría sin número')
+    # ⏳ `hasta`: se vende hasta ese momento (ms) y no vuelve (28/11/2026, «Cierre de temporada»)
+    for k, p in piezas.items():
+        if isinstance(p, dict) and 'hasta' in p and not (isinstance(p['hasta'], int) and not isinstance(p['hasta'], bool) and p['hasta'] > 0):
+            mal.append('la pieza %s: `hasta` es un momento en ms' % k)
     return mal
 
 
@@ -65,7 +101,17 @@ def resumen(c):
         por['carta'] = '%d (%s)' % (por['carta'], ', '.join('%s %d' % (c, fx[c]) for c in CARTAS_FX if c in fx))
     return (f"{len(piezas)} piezas ({', '.join(f'{k} {v}' for k, v in sorted(por.items()))}) · vitrina "
             f"{len((c.get('vitrina') or {}).get('ids') or [])} · colecciones {len(c.get('colecciones') or {})} · "
-            f"ediciones {len(c.get('ediciones') or {})} · {'ABIERTA' if c.get('abierta') else 'cerrada (sólo el dueño)'}")
+            f"ediciones {_ediciones(c)} · {'ABIERTA' if c.get('abierta') else 'cerrada (sólo el dueño)'}")
+
+
+def _ediciones(c):
+    """cuántas ediciones y de qué rareza cada una (desde el 28/11/2026 pueden ser de cualquiera)"""
+    eds, piezas = c.get('ediciones') or {}, c.get('piezas') or {}
+    por = {}
+    for k in eds:
+        r = (piezas.get(k) or {}).get('r')
+        por[r] = por.get(r, 0) + 1
+    return '%d%s' % (len(eds), ' (' + ', '.join('rareza %s: %d' % (r, n) for r, n in sorted(por.items(), key=lambda x: -(x[0] or 0))) + ')' if eds else '')
 
 
 def pelea(c, forzar=False):

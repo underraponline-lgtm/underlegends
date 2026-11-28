@@ -253,6 +253,8 @@ import { useAparecer } from './aparecer.js';
 import './referidos.js';
 // 📱 lo visto o hecho en la página sigue a tu cuenta (23/11/2026): ver el módulo
 import './sync_cuenta.js';
+// 🃏 los datos de cada uno para los efectos por carta (28/11/2026): el color del rango, del servidor, la bandera (puesto.js)
+import { ligaFx } from './puesto.js';
 
 escucharErrores();
 
@@ -755,6 +757,7 @@ export default function App() {
   }, []);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo(), yoFila) : null), [D2, muro, ahora, yo, sigoV, yoFila, perfV]);
+  ligaFx(liga);
   // ⏳ con los datos, se va la pantalla de carga del HTML (`#lg-carga`, web/montar.py)
   useEffect(() => {
     if (!liga) return;

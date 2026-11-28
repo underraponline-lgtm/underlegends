@@ -193,6 +193,8 @@ const AVISOS = {
   // 🏆 tus Pases premium de campeón de liga y usar uno (15/11/2026)
   '/api/avisos/vales': 'POST',
   '/api/avisos/vale-usar': 'POST',
+  // 🎁 la prueba del Pase Premium (28/11/2026): ver si puedes y reclamarla. Ver bot/premium_regalos.js
+  '/api/avisos/premium-prueba': 'POST',
   '/api/avisos/pases': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js
   '/api/avisos/visita': 'POST',

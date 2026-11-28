@@ -44,6 +44,8 @@
 .tz-bots .tz-b{flex:1 1 auto;min-width:0;padding:0 8px;font-size:11.5px}
 .tz-bots .tz-cor-b{flex:0 0 44px}
 .tz-hecho{font:800 15px/1 var(--tz-f);color:#29B298}
+/* agotada no es un logro: en gris, no en el verde de «Ya es tuyo» (28/11/2026) */
+.tz-hecho.tz-agot{color:#A5A5A0}
 .tz-yo-n .ta-nom{font-size:26px}
 .dq-cab{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
 .dq-bill{margin-left:auto;display:inline-flex;align-items:baseline;gap:6px;min-height:36px;padding:0 12px;background:#F6F6F6;border:0;border-radius:3px;color:#030304;cursor:pointer;font:700 14px/1 var(--tz-e);letter-spacing:.06em;text-transform:uppercase;box-shadow:3px 3px 0 #29B298}
@@ -217,6 +219,9 @@
 .tz-tabs{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 6px 8px 2px}
 .tz-tabs button{flex:none;min-height:36px;padding:0 12px;border:1.5px solid var(--linea);border-radius:3px;background:var(--fondo);color:var(--tinta);cursor:pointer;font:700 15px/1 var(--tz-e);letter-spacing:.05em;text-transform:uppercase}
 .tz-tabs button[aria-pressed="true"]{background:var(--inv);color:var(--inv-tinta);box-shadow:4px 4px 0 #29B298}
+/* 🖱️ en la compu, nada de costado (Dlx, 19/11/2026): con el mouse una fila sin barra no se mueve y lo que queda afuera no
+   se ve. Las pestañas y los lugares del fondo bajan de línea; en el celular se siguen deslizando con el dedo */
+@media (hover:hover) and (pointer:fine),(min-width:900px){.tz-tabs,.tz-lug{flex-wrap:wrap;overflow-x:visible}}
 .tz-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
 /* la grilla de Colecciones (18/11/2026): era `.tz-grid.jg`, y `.jg` es también la página de Estilo de juego
    (inventario.css), que le cambiaba el gap según qué página se bajó antes */
@@ -250,6 +255,14 @@
 .tz-sub{font:700 13px/1.2 var(--tz-e);letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
 .tz-sub b{color:var(--tinta)}
 .tz-vacio{color:var(--gris);font-size:13.5px}
+/* 🗂️ los efectos agrupados por carta (28/11/2026): una sección por carta, una debajo de la otra, con su título, cuántas hay
+   y su «Para tu …». `tz-gfx` no existe en estilo.css, vivo.css ni css/ (buscado) */
+.tz-gfx{display:grid;gap:8px;min-width:0}
+.tz-gfx + .tz-gfx{margin-top:10px;padding-top:12px;border-top:1.5px solid var(--suave,#2A2C31)}
+.tz-gfx-t{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.tz-gfx-t h3{margin:0;font:900 17px/1.1 var(--tz-f);font-stretch:115%;text-transform:uppercase;color:var(--tinta)}
+.tz-gfx-n{min-width:24px;padding:3px 6px;border:1.5px solid var(--linea);border-radius:3px;text-align:center;font:800 12.5px/1 var(--tz-f);font-variant-numeric:tabular-nums;color:var(--gris)}
+.tz-gfx-t .tz-para{margin-left:auto}
 .tz-aviso{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:10px 12px;background:var(--caja);border:2px solid var(--linea);border-radius:4px}
 .tz-aviso b{font:900 14px/1.2 var(--tz-f);font-stretch:115%;text-transform:uppercase}
 .tz-aviso span{flex:1 1 240px;font-size:13.5px;color:var(--gris)}

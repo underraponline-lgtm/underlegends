@@ -1574,6 +1574,14 @@ def _lo_barato(correr):
         paso('2c2', 'el aviso de cada evento, al día')
         if not corre(['bot/aviso_evento.py', '--al-dia', '--aplicar'], callado=False):
             print('      ⚠️ no pude poner al día los avisos: se reintenta en la próxima')
+        # ── 2c2f · 🗂️ los foros de DRA: servidores-rap, crews y ligas ─────
+        # 🔑 Dlx, 28/11/2026: «vamos a actualizar eso con la información actual, socios actuales… lo mismo con CREWS y
+        # ligas». Una publicación por socio, crew y liga, que se EDITA sólo si cambió (`bot/foros_dra.py`). Después de 2c:
+        # usa las ligas y los socios de esta vuelta. Apagado hasta el sí de Dlx (`ENCENDIDO`); la hora y la madrugada las
+        # mira el script. Nunca frena el ciclo
+        paso('2c2f', 'los foros de DRA')
+        if not corre(['bot/foros_dra.py', '--aplicar'], callado=False):
+            print('      ⚠️ los foros de DRA no se actualizaron: se reintenta en la próxima')
         # ── 2c3 · el anuncio que sale solo a su hora ──────────────────────
         # 🔑 Dlx, 19/10/2026: «publícalo tú automáticamente en la corrida de las 1pm». Lo que está en
         # `datos/anuncio_programado.json`, en su ventana y una sola vez (anotado y mirando el canal antes). Después de 2c:

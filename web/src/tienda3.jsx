@@ -20,7 +20,7 @@ import { refrescarPases, usePases } from './pase.js';
 import { abrirConEscenario, dropQuietoSvg, pedirDrops } from './drops.jsx';
 import { useIndice } from './indice.js';
 import { sonar } from './sonidos.js';
-import { RANURA_FX, cartaDeFx, paraTu, ranuraDe } from './puesto.js';
+import { CARTA_FX_N, RANURA_FX, cartaDeFx, datosFxTexto, paraTu, ranuraDe } from './puesto.js';
 
 usarCss('tienda3', CSS_PAGINA);
 
@@ -32,7 +32,16 @@ const RANURA = { aro: 'Aro', deco: 'Deco', nom: 'Nombre', carta: 'Carta', perfil
 const TABS = [['aro', 'Aros'], ['deco', 'Decoraciones'], ['nom', 'Nombre'], ['perfil', 'Perfil'], ['carta', 'Carta'], ['fondo', 'Fondos'], ['juego', 'Colecciones'], ['prem', 'Premium']];
 // las categorías del índice de arriba: las pestañas del cajón con su nombre corto
 const CATS = [['aro', 'Aros'], ['deco', 'Decos'], ['nom', 'Nombres'], ['carta', 'Cartas'], ['perfil', 'Perfil'], ['fondo', 'Fondos'], ['juego', 'Colecciones'], ['prem', 'Premium']];
-const EXTRA = { nav: 'Navidad', num: 'Ediciones de 10', deseo: '♥ Tu lista' };
+const EXTRA = { nav: 'Navidad', num: 'Ediciones', deseo: '♥ Tu lista' };
+// 🎟️ LAS EDICIONES NUMERADAS, DE CUALQUIER RAREZA (28/11/2026, Dlx: «no sólo limitarnos a que la rareza más grande tenga
+// diferentes ediciones, otras calidades pueden tener lo mismo»). Hasta hoy todas eran de 10 y de la rareza más alta, y la
+// página lo tenía escrito («Edición de 10», la vitrina con la primera edición, el boleto con la fecha de la primera). Ahora
+// cuántas copias, cuándo y cuántas quedan salen de SU edición (`ediciones` del catálogo)
+const edDe = (S, id) => (S.cat.ediciones || {})[id] || null;
+const copiasDe = (S, id) => (edDe(S, id) || {}).copias || 10;
+const edTxt = (S, id) => 'Edición de ' + copiasDe(S, id);
+/** las que quedan a la venta: de la #2 a la última (la #1 es del campeón, se venda o no) */
+const quedan = (S, id) => { const e = edDe(S, id); return e ? Math.max(0, e.copias - 1 - (e.duenos || []).filter(([n]) => n >= 2).length) : 0; };
 const DONDE = {
   aro: 'tu foto en toda la página: el ranking, los comentarios, Publicaciones, tu perfil y tu ficha',
   deco: 'tu foto en toda la página, encima de tu aro', nom: 'tu nombre en el ranking, tu perfil, tu ficha y los comentarios',
@@ -69,6 +78,8 @@ function fueraNav(c, id, t) {
   if (!p) return null;
   if (c.gratis[id] && !enVentana(c.gratis[id], t)) return c.gratis[id];
   if (tiene(p, 'nav') && c.navidad && !enVentana(c.navidad, t)) return c.navidad;
+  // ⏳ lo que se vende hasta una fecha (`hasta`, 28/11/2026: «Cierre de temporada»), pasada esa fecha
+  if (p.hasta && t >= p.hasta) return { desde: 0, hasta: p.hasta };
   return null;
 }
 // 🕐 la fecha en la zona de Ajustes (`fmtFecha()` de comun.js, 18/11/2026): estaba clavada en hora del este y a quien
@@ -99,7 +110,8 @@ function moldeX(X, h) {
   return h.split('src="__FOTO__"').join('src="__FOTO__" data-ini="' + X.ini + '"').split('src="__CARTA__"').join('src="__CARTA__" data-ini="' + X.cartaIni + '"')
     .split('__FOTO__').join(X.foto).split('__CARTA__').join(X.carta).split('__N__').join(X.n);
 }
-const envolver = (X, h) => `<span class="ta-raiz tz-w" style="--carta:url('${X.carta}');--dragon:url('/ul-blanco.png')">${h}</span>`;
+// 🃏 `X.vfx`: tus datos para los efectos por carta (el color de tu rango, de tu servidor, tu bandera: `datosFx()` de puesto.js)
+const envolver = (X, h) => `<span class="ta-raiz tz-w" style="--carta:url('${X.carta}');--dragon:url('/ul-blanco.png');${X.vfx ? X.vfx.style : ''}"${X.vfx ? X.vfx.attrs : ''}>${h}</span>`;
 // 🙂 SIN FOTO, LA INICIAL: como en el resto de la página (Dlx: «la web con la inicial»). Quien no tiene cara en la tabla,
 // o tiene un link de Discord que ya murió (cambió la foto), se probaba los aros sobre un ícono de imagen rota. La cara
 // que falla se anota y no se vuelve a pedir en cada repintado
@@ -137,16 +149,21 @@ const enLugar = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).lugar));
 function cambiado(st) {
   return ['aro', 'deco', 'nom', 'carta'].some((k) => st.puesto[k] !== st.mio.puesto[k]) || Object.keys(st.fondo).some((k) => st.fondo[k] !== st.mio.fondo[k]);
 }
+/** lo que se compra para tener `id`: su pieza si es una versión incluida, y si no, ella misma */
+const compraDe = (S, id) => { const p = S.cat.piezas[id]; return p && p.g && tiene(p, 'inc') && S.cat.piezas[p.g] ? p.g : id; };
 function loPuesto(S, st, tengo) {
   const ids = [...new Set([...Object.values(st.puesto), ...Object.values(st.fondo)].filter(Boolean))];
   // (18/11/2026) sin lo que todavía no se vende (Navidad antes de su ventana, «pronto»): el objeto rechazaba la compra
   // entera, también lo que sí se vendía
   const ahora = Date.now();
-  const falta = ids.filter((id) => { const p = S.cat.piezas[id]; return p && !tengo.has(id) && !(tiene(p, 'prem') && !S.yo.prem) && !tiene(p, 'num') && !tiene(p, 'pronto') && !fueraNav(S.cat, id, ahora); });
-  let sueltas = falta.slice(), total = 0;
+  // 👑 (28/11/2026) una versión incluida que te pruebas se paga con su pieza, que es lo que se compra (el objeto te pone la
+  // versión): `falta` es lo que se pide —la versión—, y `sueltas`, lo que se cobra —su pieza—
+  const falta = ids.filter((id) => { const x = compraDe(S, id), p = S.cat.piezas[x]; return p && !tengo.has(id) && !(tiene(p, 'prem') && !S.yo.prem) && !tiene(p, 'num') && !tiene(p, 'pronto') && !fueraNav(S.cat, x, ahora); });
+  let sueltas = [...new Set(falta.map((id) => compraDe(S, id)))], total = 0;
+  const compra = new Set(sueltas);
   const juegos = [];
   for (const [cid, j] of Object.entries(S.cat.colecciones)) {
-    if (!j.piezas.every((x) => tengo.has(x) || ids.includes(x)) || !j.piezas.some((x) => sueltas.includes(x))) continue;
+    if (!j.piezas.every((x) => tengo.has(x) || compra.has(x)) || !j.piezas.some((x) => sueltas.includes(x))) continue;
     const r = precioCol(S, cid, tengo);
     total += r.p; juegos.push({ id: cid, j, p: r.p, n: r.falta.length });
     sueltas = sueltas.filter((x) => !j.piezas.includes(x));
@@ -161,7 +178,8 @@ function unaEtiqueta(S, tengo, id) {
   if (g && enVentana(g, ahora)) return '<span class="tz-tag nav">Gratis en Navidad</span>';
   if (g && ahora < g.desde) return `<span class="tz-tag nav">Navidad · desde el ${diaCorto(g.desde)}</span>`;
   if (tiene(p, 'prem')) return '<span class="tz-tag prem">Sólo Premium</span>';
-  if (tiene(p, 'num')) return '<span class="tz-tag num">Edición de 10</span>';
+  if (tiene(p, 'num')) return `<span class="tz-tag num">${edTxt(S, id)}</span>`;
+  if (p.hasta) return `<span class="tz-tag nav">${ahora < p.hasta ? 'Sólo hasta el ' + diaCorto(p.hasta) : 'Ya no se vende'}</span>`;
   if (tiene(p, 'nav')) return S.cat.navidad && ahora < S.cat.navidad.desde ? `<span class="tz-tag nav">Navidad · desde el ${diaCorto(S.cat.navidad.desde)}</span>` : '<span class="tz-tag nav">Navidad · hasta el 1/1</span>';
   return '';
 }
@@ -174,7 +192,12 @@ function slides(S) {
   const out = [...solo.map((id) => ({ id, t: 'solo' })), ...del.map((id) => ({ id, t: 'cat' }))];
   // (18/11/2026) lo gratis entra a la vitrina sólo dentro de su ventana: antes ofrecía «Reclamar gratis» y fallaba
   for (const id of Object.keys(c.gratis)) if (enVentana(c.gratis[id], Date.now())) out.push({ id, t: 'nav' });
-  for (const id of Object.keys(c.ediciones).slice(0, 1)) out.push({ id, t: 'num' });
+  // 🎟️ una sola edición en la vitrina: la que está a la venta o la próxima en salir, y entre ésas la de rareza más alta
+  // (con ediciones de varias rarezas, la primera del catálogo podía ser una ya cerrada)
+  const ahora = Date.now(), abierta = (id) => !(c.ediciones[id].cierra && ahora >= c.ediciones[id].cierra);
+  const eds = Object.keys(c.ediciones).filter((id) => c.piezas[id] && abierta(id))
+    .sort((a, b) => (ahora >= c.ediciones[b].venta) - (ahora >= c.ediciones[a].venta) || c.ediciones[a].venta - c.ediciones[b].venta || c.piezas[b].r - c.piezas[a].r);
+  for (const id of eds.slice(0, 1)) out.push({ id, t: 'num' });
   return out;
 }
 // 🕐 la hora del cambio en la zona de Ajustes (18/11/2026): «11 AM» escrito a mano es la del este, sin decirlo
@@ -279,7 +302,7 @@ function hero(X, S, st, tengo, liga, llevan) {
   if (!L.length) return '';
   const s = L[Math.min(st.slide, L.length - 1)], it = S.cat.piezas[s.id];
   const ed = S.cat.ediciones[s.id];
-  const eti = s.t === 'solo' ? 'Sólo en la vitrina' : s.t === 'cat' ? 'En la vitrina' : s.t === 'nav' ? 'Navidad · gratis para todos' : 'Edición de 10';
+  const eti = s.t === 'solo' ? 'Sólo en la vitrina' : s.t === 'cat' ? 'En la vitrina' : s.t === 'nav' ? 'Navidad · gratis para todos' : edTxt(S, s.id);
   const baja = s.t === 'solo' ? 'No está en el catálogo. Vuelve al menos cada 2 meses.' : s.t === 'cat' ? 'También está siempre en el catálogo.'
     : s.t === 'nav' ? 'Para todos los que entren hasta el 1/1.' : 'Una por persona, para quien jugó en la temporada. La #1 es del campeón.';
   const mio = tengo.has(s.id), enLista = S.yo.deseos.includes(s.id);
@@ -291,7 +314,7 @@ function hero(X, S, st, tengo, liga, llevan) {
     // 🎟️ (18/11/2026) como su ficha: ya tuya, a la venta o todavía no. Decía «♡ Avísame» también el día de la venta (sin
     // «Comprar») y a quien ya tenía la suya; y con la venta cerrada no hay de qué avisar
     const ahora = Date.now(), cerro = !!(ed && ed.cierra && ahora >= ed.cierra), abre = !!ed && ahora >= ed.venta && !cerro;
-    bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : abre ? `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`
+    bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : abre && !quedan(S, s.id) ? '<span class="tz-hecho tz-agot">Se agotaron</span>' : abre ? `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`
       : cerro ? '' : `<button class="tz-b blanco" data-deseo="${s.id}">${enLista ? '♥ Te avisamos ese día' : '♡ Avísame'}</button>`) + '<button class="tz-b" data-tab="num">Ver las ediciones</button>';
   }
   else bot = (mio ? '<span class="tz-hecho">✓ Ya es tuyo</span>' : ofMia ? rgBoton(S, st, rg) : `<button class="tz-b blanco" data-comprar="${s.id}">Comprar · ${num(precioIt(S, s.id))}</button>`) + (seProbar(it) && !(ofMia && st.rgConfirma === rg.i) ? `<button class="tz-b" data-probar-ir="${s.id}">Probártelo</button>` : '');
@@ -310,7 +333,7 @@ function hero(X, S, st, tengo, liga, llevan) {
     }
     const tipo = esFondo(y.c) ? 'Fondo' : RANURA[y.c] || '';
     const ofM = g && g.of && g.of.k === 'pieza' && g.of.p === x.id && !g.of.usado && !tengo.has(x.id);
-    const sub = (tipo ? tipo + ' · ' : '') + (x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de 10' : tengo.has(x.id) ? 'Tuyo' : ofM ? '<em>' + num(g.of.precio) + '</em>' : num(precioIt(S, x.id)));
+    const sub = (tipo ? tipo + ' · ' : '') + (x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de ' + copiasDe(S, x.id) : tengo.has(x.id) ? 'Tuyo' : ofM ? '<em>' + num(g.of.precio) + '</em>' : num(precioIt(S, x.id)));
     const arteFu = (v) => { const z = S.cat.piezas[v]; return esFondo(z.c) ? arteFondo(X, v) : z.c === 'nom' ? nombre(muestra, v) : vista(X, v); };
     // 🔁 la funda de una pieza con versiones las va turnando; la de una variante suelta (un país) es ESA
     const arte = y.g ? arteFu(x.id) : turnan(S, x.id, arteFu, 'fu');
@@ -385,12 +408,12 @@ function probando(S, st, tengo) {
     ${filas ? `<ul>${filas}</ul>` : ''}
     <div class="tz-pr-b">${cambiado(st) ? '<button class="tz-b l" data-acc="volver">Volver a lo mío</button>' : ''}${r.n ? (S.anon ? `<button class="tz-b negro" data-acc="entrar">Entrar para comprarlo · ${num(r.total)}</button>` : alc ? `<button class="tz-b negro" data-abre="__puesto">Comprar todo · ${num(r.total)}</button>` : `<button class="tz-b l falta" data-abre="__puesto">Te faltan ${num(r.total - S.yo.saldo)}</button>`) : ''}</div></div>`;
 }
-function tile(X, S, st, tengo, id) {
+function tile(X, S, st, tengo, id, enGrupo = false) {
   const p = S.cat.piezas[id], mio = tengo.has(id), puede = seProbar(p);
   if (!p) return '';
   const on = Object.values(st.puesto).includes(id) || Object.values(st.fondo).includes(id);
   const prob = on && !mio;
-  const eti = prob ? '<span class="tz-et prob">Probando</span>' : mio ? '<span class="tz-et mio">Tuyo</span>' : tiene(p, 'num') ? '<span class="tz-et num">Edición de 10</span>' : tiene(p, 'prem') ? '<span class="tz-et prem">Sólo Premium</span>' : '';
+  const eti = prob ? '<span class="tz-et prob">Probando</span>' : mio ? '<span class="tz-et mio">Tuyo</span>' : tiene(p, 'num') ? `<span class="tz-et num">${edTxt(S, id)}</span>` : tiene(p, 'prem') ? '<span class="tz-et prem">Sólo Premium</span>' : '';
   const pr = precioIt(S, id), base = S.cat.precios[p.r];
   // (18/11/2026) lo gratis antes de su ventana dice «Gratis», como su ficha: la grilla de Navidad lo daba a precio entero
   const gl = S.cat.gratis[id] && Date.now() < S.cat.gratis[id].desde;
@@ -398,11 +421,14 @@ function tile(X, S, st, tengo, id) {
   return `<article class="tz-q${prob ? ' prob' : ''}${on && mio ? ' on' : ''}" style="--r:${RZ[p.r][1]}" title="${esc(p.n)} · ${RZ[p.r][0]}">
     <button class="tz-q-v" ${puede ? `data-prueba="${id}" aria-pressed="${on}" aria-label="Probarte ${esc(p.n)}"` : `data-abre="${id}" aria-label="Ver ${esc(p.n)}"`}>${turnan(S, id, (v) => arteV(X, S, v), 'q')}${eti}</button>
     ${mio || !pr ? '' : corazon(S, id)}
-    <div class="tz-q-i"><i aria-label="${RZ[p.r][0]}"></i><b>${esGrupo(S, id) ? esc(nombreGrupo(S, id)) + ' <small>· ' + variantesDe(S, id).length + (cabezaDe(S, id) === 'A10' ? ' países' : cabezaDe(S, id) === 'A11' ? ' servidores' : ' versiones') + '</small>' : esc(p.n)}${paraCarta(p)}</b><span class="tz-q-p">${precio}</span><button class="tz-q-ver" data-abre="${id}">Ver</button></div></article>`;
+    <div class="tz-q-i"><i aria-label="${RZ[p.r][0]}"></i><b>${esGrupo(S, id) ? esc(nombreGrupo(S, id)) + ' <small>· ' + variantesDe(S, id).length + (cabezaDe(S, id) === 'A10' ? ' países' : cabezaDe(S, id) === 'A11' ? ' servidores' : ' versiones') + '</small>' : esc(p.n)}${enGrupo ? '' : paraCarta(p)}</b><span class="tz-q-p">${precio}</span><button class="tz-q-ver" data-abre="${id}">Ver</button></div></article>`;
 }
+// 🧺 desde el 28/11/2026 una colección no es sólo de fondos (Dlx: «colección de Países, todo lo relacionado a países»): cada
+// pieza se muestra con su arte (`arteV`) y dice dónde va —el lugar de un fondo, la carta de un efecto, o su ranura—
+const lugarCol = (p) => (!p ? '' : LUGAR_DE[p.c] || (p.c === 'carta' ? CARTA_FX_N[cartaDeFx(p)] : RANURA[p.c] || ''));
 function coleccionT(X, S, tengo, cid) {
   const j = S.cat.colecciones[cid], r = precioCol(S, cid, tengo), ya = j.piezas.length - r.falta.length;
-  return `<article class="tz-q tz-jg" style="--r:#29B298"><button class="tz-q-v" data-abre="${cid}" aria-label="Ver la colección ${esc(j.n)}"><span class="tz-jg-m">${j.piezas.map((id) => `<span class="tz-j${tengo.has(id) ? ' mio' : ''}">${arteFondo(X, id)}</span>`).join('')}</span></button>
+  return `<article class="tz-q tz-jg" style="--r:#29B298"><button class="tz-q-v" data-abre="${cid}" aria-label="Ver la colección ${esc(j.n)}"><span class="tz-jg-m">${j.piezas.map((id) => `<span class="tz-j${tengo.has(id) ? ' mio' : ''}">${arteV(X, S, id)}</span>`).join('')}</span></button>
     <div class="tz-q-i"><i></i><b>«${esc(j.n)}» <small>${ya === j.piezas.length ? 'Completa · premio tuyo' : ya + ' de ' + j.piezas.length + ' · premio al completarla'}</small></b><span class="tz-colbar mini" style="--p:${Math.round(ya / j.piezas.length * 100)}%"><i></i></span><span class="tz-q-p">${r.falta.length ? num(r.p) : '<span class="tz-ok">✓ Tuya</span>'}</span><button class="tz-q-ver" data-abre="${cid}">Ver</button></div></article>`;
 }
 // 🔎 LOS FILTROS DEL CAJÓN (25/11/2026, Dlx: «en la tienda quizás poner filtros»): cuáles (todas, las que te faltan, las
@@ -482,6 +508,22 @@ function useTurnos(raiz) {
     return () => clearInterval(t);
   }, [raiz]);
 }
+// 🗂️ LOS EFECTOS, AGRUPADOS POR CARTA (28/11/2026, Dlx: «dividir las cosas por categorías propias… eso de los países
+// podríamos crear su grupo Países»). En la pestaña Carta, una sección por carta —Temporada, Competitiva, Servidor, Países—
+// con su título, cuántas hay y el «Para tu …» de siempre (en la sección, y no en cada cuadro). El grupo sale de `carta` de
+// cada efecto (`cartaDeFx()`), nunca de una lista de piezas; el orden, el de las cartas (`RANURA_FX`). Una carta sin
+// efectos —o sin ninguno después del filtro— no se dibuja: «sin dato no hay pieza». Lo demás (aros, decos, nombres,
+// fondos…) sigue en su pestaña, como antes
+const GRUPO_FX = Object.assign({}, CARTA_FX_N, { pais: 'Países' });
+function gruposCarta(X, S, st, tengo, ids, vacio) {
+  const secs = Object.keys(RANURA_FX).map((c) => {
+    const de = ids.filter((id) => cartaDeFx(S.cat.piezas[id]) === c);
+    if (!de.length) return '';
+    return `<section class="tz-gfx" aria-labelledby="tz-gfx-${c}"><div class="tz-gfx-t"><h3 id="tz-gfx-${c}">${esc(GRUPO_FX[c])}</h3><span class="tz-gfx-n">${de.length}</span><span class="tz-para">${esc(paraTu({ c: 'carta', carta: c }))}</span></div>
+      <div class="tz-grid">${de.map((id) => tile(X, S, st, tengo, id, true)).join('')}</div></section>`;
+  }).join('');
+  return secs || `<p class="tz-vacio">${vacio}</p>`;
+}
 const barraFiltros = (st) => `<div class="tz-filtros" role="group" aria-label="Filtrar las piezas"><span class="tz-filtros-g">${FILTROS.map(([k, n]) => `<button data-filtro="${k}" aria-pressed="${(st.filtro || 'todas') === k}">${n}</button>`).join('')}</span><span class="tz-filtros-g">${ORDENES.map(([k, n]) => `<button data-orden="${k}" aria-pressed="${(st.orden || 'rareza') === k}">${n}</button>`).join('')}</span></div>`;
 function piezas(X, S, st, tengo) {
   const c = S.cat, t = st.tab, especial = (p) => tiene(p, 'nav') || tiene(p, 'num');
@@ -491,19 +533,28 @@ function piezas(X, S, st, tengo) {
   const de = (f) => Object.keys(c.piezas).filter((id) => f(c.piezas[id], id));
   const vende = (p, id) => !tiene(p, 'col') && (!tiene(p, 'rot') || c.vitrina.ids.includes(id));
   // (18/11/2026) `tz-cols` y no `jg`: `.jg` es la página de Estilo de juego (inventario.css) y le cambiaba el gap
-  if (t === 'juego') return `<p class="tz-sub"><b>Seis fondos que combinan, uno por lugar</b> · completa una y te llevas su insignia y una pieza exclusiva</p><div class="tz-grid tz-cols">${Object.keys(c.colecciones).map((cid) => coleccionT(X, S, tengo, cid)).join('')}</div>`;
+  if (t === 'juego') return `<p class="tz-sub"><b>Piezas que van juntas</b> · los fondos de un mismo estilo, y todo lo de tu país, tu servidor, tu rango o la temporada. Juntas salen con descuento</p><div class="tz-grid tz-cols">${Object.keys(c.colecciones).map((cid) => coleccionT(X, S, tengo, cid)).join('')}</div>`;
   if (t === 'prem') return `<div class="tz-aviso prem"><b>Premium</b><span>${S.yo.prem ? 'Con tu Premium tienes descuento en todo y en las colecciones, y estas piezas, que son sólo para Premium.' : 'Estas piezas son sólo para quien tiene Premium, que además tiene descuento en todo y en las colecciones.'} Lo que compres sigue siendo tuyo aunque se te venza.</span></div>${grilla(de((p) => tiene(p, 'prem')))}`;
   // (18/11/2026) antes de su ventana, desde cuándo: se veía como si ya se pudiera reclamar y comprar
   const abreNav = c.navidad && Date.now() < c.navidad.desde ? 'Abre el ' + diaCorto(c.navidad.desde) + '. ' : '';
   if (t === 'nav') return `<div class="tz-aviso nav"><b>Navidad</b><span>${abreNav}Lo gratis es para todos los que entren hasta el 1/1. Lo demás se vende hasta esa fecha, y lo que compres es tuyo para siempre.</span></div>${grilla([...Object.keys(c.gratis), ...de((p, id) => tiene(p, 'nav') && !c.gratis[id])])}`;
   if (t === 'num') {
-    const ids = Object.keys(c.ediciones), e = c.ediciones[ids[0]] || {};
-    return `<div class="tz-boleto"><div><b>Ediciones de 10${e.nombre ? ' · ' + esc(e.nombre) : ''}</b><span>${e.venta ? 'A la venta el ' + diaCorto(e.venta) + '. ' : ''}Una por persona, para quien jugó en la temporada. No se reeditan nunca.</span></div><span class="tz-talon">#1<small>del campeón</small></span></div>${grilla(ids)}`;
+    // 🎟️ un boleto por edición (el mismo nombre y el mismo día de venta), con sus piezas de la rareza más alta a la más
+    // baja: con ediciones de varias rarezas, el boleto decía el nombre y la fecha de la primera para todas
+    const ids = Object.keys(c.ediciones).filter((id) => c.piezas[id]).sort((a, b) => c.piezas[b].r - c.piezas[a].r);
+    const tandas = new Map();
+    for (const id of ids) { const e = c.ediciones[id], k = (e.nombre || '') + '|' + (e.venta || 0); if (!tandas.has(k)) tandas.set(k, []); tandas.get(k).push(id); }
+    const boletos = [...tandas.values()].sort((a, b) => (c.ediciones[a[0]].venta || 0) - (c.ediciones[b[0]].venta || 0)).map((g) => {
+      const e = c.ediciones[g[0]], cs = [...new Set(g.map((id) => c.ediciones[id].copias))];
+      return `<div class="tz-boleto"><div><b>${cs.length === 1 ? 'Ediciones de ' + cs[0] : 'Ediciones numeradas'}${e.nombre ? ' · ' + esc(e.nombre) : ''}</b><span>${e.venta ? 'A la venta el ' + diaCorto(e.venta) + '. ' : ''}Una por persona, para quien jugó en la temporada. No se reeditan nunca.</span></div><span class="tz-talon">#1<small>del campeón</small></span></div>${grilla(g)}`;
+    });
+    return boletos.join('') || grilla([]);
   }
   if (t === 'deseo') return `<div class="tz-aviso"><b>Tu lista · ${S.yo.deseos.length}</b><span>La campana te avisa cuando algo de acá entra en la vitrina, baja de precio o sale a la venta.</span><button class="tz-sw" role="switch" aria-checked="${S.yo.deseo_publico}" data-publico>${S.yo.deseo_publico ? 'Se ve en tu perfil' : 'Sólo la ves tú'}</button></div>${grilla(S.yo.deseos)}`;
   if (t === 'fondo') return conFiltros(de((p, id) => p.c === st.lugar && vende(p, id) && !especial(p)));
   const ids = de((p, id) => p.c === t && vende(p, id) && !especial(p) && !tiene(p, 'prem'));
   if (t === 'nom') ids.push(...de((p) => p.c === 'serv'));
+  if (t === 'carta') return barraFiltros(st) + gruposCarta(X, S, st, tengo, filtrar(S, st, tengo, ids), vacio);
   return conFiltros(ids);
 }
 function tabs(S, st) {
@@ -549,7 +600,7 @@ function vistaGrande(X, S, id) {
   if (p.c === 'carta') return `<div class="tz-vg-carta">${carta(X, id)}</div>`;
   return `<div class="tz-vg-caja">${vista(X, id)}</div>`;
 }
-const noRegalo = (S, id) => { const p = S.cat.piezas[id]; return p.c === 'serv' ? 'el cambio de nombre es sólo para ti' : S.cat.gratis[id] ? 'es gratis para todos' : tiene(p, 'num') ? 'las ediciones de 10 no se regalan' : tiene(p, 'prem') ? 'las piezas Premium no se regalan' : ''; };
+const noRegalo = (S, id) => { const p = S.cat.piezas[id]; return p.c === 'serv' ? 'el cambio de nombre es sólo para ti' : S.cat.gratis[id] ? 'es gratis para todos' : tiene(p, 'num') ? 'las ediciones numeradas no se regalan' : tiene(p, 'prem') ? 'las piezas Premium no se regalan' : ''; };
 function lineas(S, id) {
   const p = S.cat.piezas[id], base = S.cat.precios[p.r], pr = precioIt(S, id);
   return `<ul class="tz-lineas"><li><span>${esc(p.n)}</span><b>${num(base)}</b></li>${pr !== base ? `<li><span>${pr ? 'Premium' : 'Gratis'}</span><b>−${num(base - pr)}</b></li>` : ''}<li class="tot"><span>Total</span><b>${num(pr)}</b></li></ul><p class="tz-saldo">Tu saldo: <b>${num(S.yo.saldo)}</b> → <b>${num(S.yo.saldo - pr)}</b></p>`;
@@ -601,10 +652,10 @@ function fichaPieza(X, S, st, tengo, liga, id) {
     else if (tiene(p, 'inc')) acc += `<p class="tz-nota tz-ancho">Viene <b>gratis</b> con <b>${esc((S.cat.piezas[p.g] || {}).n || '')}</b>: quien la tiene, tiene todas sus versiones.</p><button class="tz-b prim" data-abre="${p.g}">Ver ${esc((S.cat.piezas[p.g] || {}).n || '')}</button><button class="tz-b" data-acc="probar">Probar</button>`;
     else if (tiene(p, 'pronto')) acc += `<p class="tz-fecha tz-ancho">Sale pronto</p><p class="tz-nota tz-ancho">Todavía no se vende: falta terminar lo que hace. Ponla en tu lista y la campana te avisa.</p>${cor}`;
     else if (tiene(p, 'num')) {
-      const abre = ed && Date.now() >= ed.venta;
-      acc += abre ? `<button class="tz-b prim" data-acc="comprar">Comprar por ${num(pr)}</button><button class="tz-b" data-acc="probar">Probar</button>`
+      const abre = ed && Date.now() >= ed.venta, hay = quedan(S, id);
+      acc += abre && !hay ? '<p class="tz-fecha tz-ancho">Se agotaron</p><button class="tz-b" data-acc="probar">Probar</button>' : abre ? `<button class="tz-b prim" data-acc="comprar">Comprar por ${num(pr)}</button><button class="tz-b" data-acc="probar">Probar</button>`
         : `<p class="tz-fecha tz-ancho">A la venta el ${ed ? diaCorto(ed.venta) : ''}</p><button class="tz-b prim" data-acc="deseo">${enLista ? '♥ Te avisamos ese día' : '♡ Avísame'}</button><button class="tz-b" data-acc="probar">Probar</button>`;
-      acc += '<p class="tz-nota tz-ancho">Una por persona, para quien jugó en la temporada.</p>';
+      acc += `<p class="tz-nota tz-ancho">Una por persona, para quien jugó en la temporada.${ed && hay ? ' Quedan ' + hay + ' de ' + (ed.copias - 1) + ' (la #1 es del campeón).' : ''}</p>`;
     } else if (fn) {
       // 🎄 fuera de su ventana no se ofrece comprar ni reclamar (18/11/2026): el objeto contestaba «Ya no se vende.»
       acc += `<p class="tz-fecha tz-ancho">${Date.now() < fn.desde ? (S.cat.gratis[id] ? 'Se reclama' : 'A la venta') + ' desde el ' + diaCorto(fn.desde) : 'Ya no se vende'}</p>${seProbar(p) ? '<button class="tz-b" data-acc="probar">Probar</button>' : ''}${cor}`;
@@ -612,7 +663,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
     else if (!pr) acc += `${seProbar(p) ? '<button class="tz-b" data-acc="probar">Probar</button>' : ''}<button class="tz-b prim" data-acc="confirmar"${st.va ? ' disabled' : ''}>${st.va ? 'Reclamando…' : 'Reclamar gratis'}</button>`;
     else acc += `${seProbar(p) ? '<button class="tz-b" data-acc="probar">Probar</button>' : ''}<button class="tz-b prim" data-acc="comprar">Comprar por ${num(pr)}</button><button class="tz-b tz-reg" data-acc="regalar" ${nr ? 'disabled' : ''}>Regalar</button>${cor}${nr ? `<p class="tz-nota tz-ancho">No se regala: ${nr}.</p>` : ''}${enLista ? '<p class="tz-nota tz-ancho">♥ Te avisa la campana cuando entre en la vitrina o baje de precio.</p>' : ''}`;
   } else if (paso === 'comprar') {
-    acc += S.yo.saldo >= pr ? `<div class="tz-conf caja">${lineas(S, id)}${seProbar(p) && !tiene(p, 'num') ? `<label class="tz-check"><input type="checkbox" data-poneral ${st.ponerAl ? 'checked' : ''}> Ponérmela al comprar</label>` : ''}<p class="tz-nota">${tiene(p, 'num') ? 'Las ediciones de 10 no se deshacen.' : 'Si te la pones, ya no se puede deshacer.'}</p></div>
+    acc += S.yo.saldo >= pr ? `<div class="tz-conf caja">${lineas(S, id)}${seProbar(p) && !tiene(p, 'num') ? `<label class="tz-check"><input type="checkbox" data-poneral ${st.ponerAl ? 'checked' : ''}> Ponérmela al comprar</label>` : ''}<p class="tz-nota">${tiene(p, 'num') ? 'Las ediciones numeradas no se deshacen.' : 'Si te la pones, ya no se puede deshacer.'}</p></div>
       <div class="tz-dos"><button class="tz-b" data-acc="ver">Cancelar</button><button class="tz-b prim" data-acc="confirmar"${st.va ? ' disabled' : ''}>${st.va ? 'Comprando…' : 'Comprar por ' + num(pr)}</button></div>`
       : `<p class="tz-conf falta">Te faltan <b>${num(pr - S.yo.saldo)}</b> Puntos (tienes ${num(S.yo.saldo)}). Se ganan jugando, entrando cada día y con tus Tareas.</p><button class="tz-b" data-acc="ver">Volver</button>`;
   } else if (paso === 'regalar') acc += regaloHTML(X, S, st, liga, id);
@@ -652,7 +703,7 @@ function fichaCol(X, S, st, tengo, liga, cid) {
   else if (paso === 'regalar') acc += regaloHTML(X, S, st, liga, cid);
   else if (paso === 'regalado') acc += `<div class="tz-tuyo">Enviado</div><p class="tz-nota tz-ancho">Le llegó a su campana. Si no la acepta en 14 días, te vuelven los Puntos.</p><button class="tz-b" data-acc="cerrar">Seguir mirando</button>`;
   else if (paso === 'hecho') acc += `<div class="tz-tuyo">✓ ¡Completaste la colección «${esc(j.n)}»!</div><p class="tz-nota tz-ancho">Te llevas su insignia para tu perfil y su pieza exclusiva, que no se vende.</p><button class="tz-b" data-acc="cerrar">Seguir mirando</button>`;
-  const minis = j.piezas.map((id) => `<div class="tz-j-mini${tengo.has(id) ? ' mio' : ''}"><div class="tz-j">${arteFondo(X, id)}</div><span>${LUGAR_DE[S.cat.piezas[id].c]} · ${tengo.has(id) ? '✓ lo tienes' : num(S.cat.precios[S.cat.piezas[id].r])}</span></div>`).join('');
+  const minis = j.piezas.map((id) => `<div class="tz-j-mini${tengo.has(id) ? ' mio' : ''}"><div class="tz-j">${arteV(X, S, id)}</div><span>${lugarCol(S.cat.piezas[id])} · ${tengo.has(id) ? '✓ lo tienes' : num(S.cat.precios[S.cat.piezas[id].r])}</span></div>`).join('');
   return `<div class="tz-ficha" role="dialog" aria-label="Colección ${esc(j.n)}">${popCab('Colección «' + esc(j.n) + '»', ya + ' de ' + j.piezas.length + ' · al completarla, premio', '#29B298')}
     <div class="tz-f-inf"><p>${esc(j.d)} Las piezas combinan entre sí, y cada una también se vende sola; la colección cobra sólo las que te faltan. <b>Si la completas</b> (de a una o todas juntas) te llevas su insignia y una pieza exclusiva que no se vende.</p>
       <span class="tz-colbar" style="--p:${Math.round(ya / j.piezas.length * 100)}%"><i></i></span>
@@ -670,7 +721,7 @@ function fichaPuesto(X, S, st, tengo) {
   else acc += S.yo.saldo >= r.total ? `<p class="tz-saldo">Tu saldo: <b>${num(S.yo.saldo)}</b> → <b>${num(S.yo.saldo - r.total)}</b></p><p class="tz-nota tz-ancho">Te lo pones al comprar, así que la compra es definitiva.</p><div class="tz-dos"><button class="tz-b" data-acc="cerrar">Cancelar</button><button class="tz-b prim" data-acc="confirmar-puesto"${st.va ? ' disabled' : ''}>${st.va ? 'Comprando…' : 'Comprar por ' + num(r.total)}</button></div>`
     : `<p class="tz-conf falta">Todo junto son ${num(r.total)} y tienes ${num(S.yo.saldo)}: te faltan <b>${num(r.total - S.yo.saldo)}</b>. Compra sólo lo que alcanza con «Sólo esto», o saca alguna pieza.</p><button class="tz-b" data-acc="cerrar">Volver al probador</button>`;
   // (18/11/2026) con una sola pieza de la colección decía «las 1 que faltan»
-  const filas = paso === 'hecho' ? '' : r.juegos.map((g) => `<li><span class="tz-lp-v">${arteFondo(X, g.j.piezas[0])}</span><span>Colección «${esc(g.j.n)}» <small>${g.n === 1 ? 'la que falta' : 'las ' + g.n + ' que faltan'}</small></span><b>${num(g.p)}</b></li>`).join('')
+  const filas = paso === 'hecho' ? '' : r.juegos.map((g) => `<li><span class="tz-lp-v">${arteV(X, S, g.j.piezas[0])}</span><span>Colección «${esc(g.j.n)}» <small>${g.n === 1 ? 'la que falta' : 'las ' + g.n + ' que faltan'}</small></span><b>${num(g.p)}</b></li>`).join('')
     + r.sueltas.map((id) => `<li><span class="tz-lp-v">${esFondo(S.cat.piezas[id].c) ? arteFondo(X, id) : vista(X, id)}</span><span>${esc(S.cat.piezas[id].n)} <small>${RANURA[S.cat.piezas[id].c] || LUGAR_DE[S.cat.piezas[id].c] || ''}</small></span><b>${num(precioIt(S, id))}</b></li>`).join('')
     + (r.n ? `<li class="tot"><span></span><span>Total</span><b>${num(r.total)}</b></li>` : '');
   return `<div class="tz-ficha" role="dialog" aria-label="Comprar lo que te pruebas">${popCab('Comprar lo que te pruebas', r.n ? r.n + ' cosa' + (r.n > 1 ? 's' : '') + ' de una vez' : '')}
@@ -681,10 +732,10 @@ const REGLAS = [
   ['Los precios nunca suben.', 'Si uno baja, quien lo compró hace poco recibe la diferencia.'],
   ['Nada de lo que compras es al azar.', 'Ves exactamente lo que compras. El drop del día es aparte y gratis.'],
   ['Deshacer.', '24 horas, si no te la pusiste, una vez por pieza. Una colección comprada junta se deshace entera.'],
-  ['Regalos.', 'Unos pocos por semana, a verificados y si jugaste un evento esta temporada. Quien lo recibe lo acepta o lo rechaza; si no contesta en 14 días, te vuelven los Puntos. No se regalan las ediciones de 10, las piezas Premium ni el cambio de nombre.'],
+  ['Regalos.', 'Unos pocos por semana, a verificados y si jugaste un evento esta temporada. Quien lo recibe lo acepta o lo rechaza; si no contesta en 14 días, te vuelven los Puntos. No se regalan las ediciones numeradas, las piezas Premium ni el cambio de nombre.'],
   // «(hora del este)» (18/11/2026): sin instante a mano, la hora fija se dice de qué zona es
   ['La vitrina', 'cambia los lunes a las 11 AM (hora del este). Lo que sólo pasa por ella vuelve al menos cada 2 meses.'],
-  ['Ediciones de 10.', 'Una por persona, para quien jugó esa temporada. La #1 es del campeón. Si no se venden todas, la edición se cierra con las vendidas. No se reeditan nunca.'],
+  ['Ediciones numeradas.', 'De cualquier rareza, con su número de serie y cuántas hay. Una por persona, para quien jugó esa temporada. La #1 es del campeón. Si no se venden todas, la edición se cierra con las vendidas. No se reeditan nunca.'],
   ['Premium.', 'Un descuento en las piezas y otro en las colecciones (no se suman). Lo sólo-Premium que compraste sigue siendo tuyo si se te vence.'],
 ];
 const reglasPop = () => `<div class="tz-ficha" role="dialog" aria-label="Cómo funciona la Tienda">${popCab('Cómo funciona la Tienda', 'Ocho reglas, cortas')}<div class="tz-f-inf tz-reglas"><ol>${REGLAS.map(([t, d]) => `<li><details><summary>${t}</summary><p>${d}</p></details></li>`).join('')}</ol></div></div>`;
@@ -981,7 +1032,8 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     else if (d.tab) { E.tab = d.tab; if (t.closest('.dq')) irAlProbador(); }
     else if (d.lugar) E.lugar = d.lugar;
     else if (d.prueba) { probar(d.prueba); E.comparar = false; }
-    else if (d.saca) { for (const x of Object.keys(E.puesto)) if (E.puesto[x] === d.saca) E.puesto[x] = E.mio.puesto[x]; for (const x of Object.keys(E.fondo)) if (E.fondo[x] === d.saca) E.fondo[x] = E.mio.fondo[x]; }
+    // (sacar una pieza saca también la versión suya que te probabas: en la lista se cobra la pieza)
+    else if (d.saca) { const va = (x) => x && compraDe(S, x) === d.saca; for (const x of Object.keys(E.puesto)) if (va(E.puesto[x])) E.puesto[x] = E.mio.puesto[x]; for (const x of Object.keys(E.fondo)) if (va(E.fondo[x])) E.fondo[x] = E.mio.fondo[x]; }
     else if (d.msg !== undefined) E.msg = +d.msg;
     else if (d.elige) E.para = d.elige;
     pinta();
@@ -1039,7 +1091,8 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   const X = { p: A.p, foto: esc(cara && !FOTO_MUERTA.has(cara) ? cara : ini), ini: esc(ini), carta: esc((k && liga.cartaUrl(k, 'temporada')) || CARTA_MUESTRA), cartaIni: esc(CARTA_MUESTRA), n: esc(crudo), crudo,
     // 🃏 tus cuatro cartas, y de cuál es cada efecto: el probador lo muestra sobre la suya
     cartas: Object.fromEntries(Object.keys(RANURA_FX).map((c) => [c, esc((k && liga.cartaUrl(k, c)) || CARTA_MUESTRA)])),
-    fx: Object.fromEntries(Object.entries(S.cat.piezas || {}).filter(([, p]) => p && p.c === 'carta').map(([id, p]) => [id, cartaDeFx(p)])) };
+    fx: Object.fromEntries(Object.entries(S.cat.piezas || {}).filter(([, p]) => p && p.c === 'carta').map(([id, p]) => [id, cartaDeFx(p)])),
+    vfx: k ? datosFxTexto(k) : null };
   let hoja = '';
   if (E.abierta) {
     const id = E.abierta;

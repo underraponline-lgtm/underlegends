@@ -307,5 +307,8 @@ if (!DatabaseSync) {
   globalThis.fetch = fetchReal;
 }
 
+// ── 5. el buzón rehecho (28/11/2026): la franja, la imagen de cada aviso y los botones que dan algo (bot/buzon_prueba.mjs)
+await (await import('./buzon_prueba.mjs')).probar(ok);
+
 console.log(`\n  conectar_dra_prueba: ${bien} bien${fallas ? `, 🔴 ${fallas} mal` : ''}\n`);
 process.exit(fallas ? 1 : 0);

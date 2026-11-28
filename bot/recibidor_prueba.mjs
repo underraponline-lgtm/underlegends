@@ -70,8 +70,9 @@ ok(RC.validar('inscribirse') === 'inscribirse' && RC.validar(' Cuando.') === 'cu
   'lo que dice la IA se lee aunque traiga mayúsculas, un punto, comillas o «Etiqueta:»');
 ok(RC.validar('¡Hola! Para inscribirte...') === 'nada' && RC.validar('') === 'nada' && RC.validar('inscribirse_ya') === 'nada'
   && RC.validar(null) === 'nada' && RC.validar('borrar todo') === 'nada', 'lo que no es una etiqueta de la lista: nada');
-ok(Object.keys(RC.RESPUESTAS).every((k) => RC.ETIQUETAS.includes(k)) && RC.ETIQUETAS.filter((k) => k !== 'nada').every((k) => RC.RESPUESTAS[k]),
-  'cada etiqueta (menos «nada») tiene su respuesta fija, y ninguna respuesta sobra');
+ok(Object.keys(RC.RESPUESTAS).every((k) => RC.ETIQUETAS.includes(k) || Object.values(RC.DUDAS).includes(k))
+  && RC.ETIQUETAS.filter((k) => k !== 'nada').every((k) => RC.RESPUESTAS[k]) && Object.values(RC.DUDAS).every((k) => RC.RESPUESTAS[k]),
+  'cada etiqueta (menos «nada») y cada opción del «¿Tienes una duda?» de la bienvenida tiene su respuesta fija, y ninguna sobra');
 {
   const llamadas = [];
   const env = { AI: { run: async (m, x) => { llamadas.push([m, x]); return { response: ' tarjeta.' }; } } };
@@ -257,6 +258,23 @@ if (!DatabaseSync) {
   ok(r.estado === 'tuyo' && r.ya, 'el mismo otra vez: sigue siendo suyo, sin repetir');
   ok((await al('recibidor-reclamar', { msg: MSG(999), quien: REC })).error === 'vencida', 'una pregunta que no está: vencida');
   ok((await al('recibidor-reclamar', { msg: MSG(1), quien: NUEVO(1) })).error === 'propio', 'recibirse a uno mismo: no');
+
+  // 👋 los que ENTRAN (la bienvenida del grabador, grabador/bienvenida.js): su fila para «Lo recibo yo», que no frena nada
+  const E1 = '610000000000000001', E2 = '610000000000000002', CB = '100000000000000009';
+  ok((await al('recibidor-entro', { canal: CB, nuevos: [E1, E2] })).n === 2, 'los que entraron: una fila por persona');
+  ok((await al('recibidor-entro', { canal: CB, nuevos: Array.from({ length: 26 }, (_, i) => '6200000000000000' + String(i).padStart(2, '0')) })).error
+    && (await al('recibidor-entro', { canal: 'x', nuevos: [E1] })).error, 'más de 25, o sin canal de verdad: error');
+  r = await al('recibidor-pedir', { msg: MSG(300), nuevo: E1, canal: CB, etiqueta: 'cuando' });
+  ok(r.estado === 'anotado', 'quien entró y pregunta enseguida: la respuesta NO espera (la fila de la entrada no cuenta para los frenos)', JSON.stringify(r));
+  r = await al('recibidor-reclamar', { msg: E2, quien: REC });
+  ok(r.estado === 'tuyo' && r.nuevo === E2, '«Lo recibo yo» del aviso de entrada (`rcb:<su id>`): es tuyo, y dice a quién');
+  r = await al('recibidor-reclamar', { msg: E1, quien: REC2 });
+  ok(r.estado === 'tuyo' && r.nuevo === E1 && (await al('recibidor-reclamar', { msg: MSG(300), quien: REC })).estado === 'otro',
+    'y es la MISMA persona por su entrada o por su pregunta: la recibe uno solo');
+  const env0 = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: (u, op) => o.fetch(new Request(u, op)) }) } };
+  const re = await RC.rutaEntro(new Request('https://w/recibidor-entro', { method: 'POST', body: JSON.stringify({ g: RC.GUILD_DRA, canal: CB, nuevos: ['610000000000000003'] }) }), env0);
+  const reMal = await RC.rutaEntro(new Request('https://w/recibidor-entro', { method: 'POST', body: JSON.stringify({ g: '1', canal: CB, nuevos: ['610000000000000003'] }) }), env0);
+  ok(re.status === 200 && (await re.json()).n === 1 && reMal.status === 400, 'la ruta del Worker: sólo DRA');
 
   // el premio: el Pase de la temporada «prueba» y los eventos con la misma
   const UMB = Array.from({ length: 30 }, (_, i) => (i < 3 ? 300 * (i + 1) : 900 + 1000 * (i - 2)));

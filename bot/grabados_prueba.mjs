@@ -108,23 +108,6 @@ const CASOS = JSON.parse(fs.readFileSync(new URL('./grabados_casos.json', import
     && !GR.cfgValida({ dias_entera: 60, dias_previa: 10 }), 'la config: días de 1 a 365, sí/no, y el adelanto no dura menos que lo entero');
 }
 
-// ── 5. el post del foro ──────────────────────────────────────────────────────────────────────────────────────────────
-{
-  const E = { ev: 'e', ll: '701', nombre: 'DESGRACIAS EN TOKYO VOL 40', dia: '2026-11-27', sv: 'FFA', hasta_e: T0 + 30 * DIA };
-  const bs = [{ k: 1, r: 'Octavos', nombres: ['Ana', 'Bea'], dur: 380, entera: { k: 'grab/x/1.m4a' } },
-    { k: 2, r: 'Final', nombres: ['@everyone', 'Dani'], dur: 560, previa: { k: 'grab/x/2p.m4a' } },
-    { k: 3, r: 'Cuartos', nombres: ['Ida', 'Fue'], dur: 300, retirada: true }];
-  const P = GR.postForo(E, bs);
-  ok(P.name === 'DESGRACIAS EN TOKYO VOL 40 · 27/11 · FFA', 'el título: evento · fecha · servidor', P.name);
-  ok(P.content.includes('https://underlegends.pages.dev/freestyle-rap/llave/701') && P.content.includes('llave/701?t=1-0>'), 'el link a la llave y a cada batalla');
-  ok(!/r2\.dev|grab\/|\.m4a|\.ogg/.test(P.content), 'nunca un archivo ni un link de audio');
-  ok(!P.content.includes('Ida vs Fue'), 'una batalla retirada no sale');
-  ok(P.content.includes('6 min'.replace('6', String(Math.round(940 / 60)))) && P.content.length <= 2000, 'los minutos y el tope de Discord');
-  const muchas = Array.from({ length: 60 }, (_, i) => ({ k: i + 1, r: 'Octavos', nombres: ['Alguien con un nombre larguísimo ' + i, 'Otro también muy largo ' + i], dur: 300, entera: {} }));
-  const P2 = GR.postForo(Object.assign({}, E, { nombre: 'x'.repeat(300) }), muchas);
-  ok(P2.content.length <= 2000 && P2.name.length <= 100 && P2.content.includes('…'), 'con 60 batallas y un nombre enorme entra igual (y dice «…»)');
-}
-
 // ── 6. el objeto de verdad ───────────────────────────────────────────────────────────────────────────────────────────
 // un R2 de mentira: get con rango, head, delete
 function bucketFalso() {
@@ -302,20 +285,35 @@ if (!DatabaseSync) {
   r = await pedirO('grabados-config', {});
   ok(r.cfg && r.cfg.foro === false && r.cfg.dias_entera === 30, 'la config de entrada');
   await pedirO('grabados-registrar', Object.assign({}, CASOS.registro, { ev: 'otro-ev', ll: '703' }));
-  const pedidos = [];
-  const dcForo = async (u, init) => {
-    pedidos.push([init.method, u, JSON.parse(init.body)]);
-    return new Response(JSON.stringify({ id: '1590000000000000001' }), { status: 200 });
-  };
-  ok((await GR.publicarForo(o, 'otro-ev', dcForo)).no === 'apagado' && !pedidos.length, 'con el foro apagado no se publica nada');
+  // 📚 la historia para el foro (un post por servidor lo arma bot/grabados_foro.py): no se poda con los audios
+  let H = await pedirO('grabados-foro-datos', {});
+  ok(H.ok && H.cfg.foro === false && H.eventos.some((e) => e.ev === 'otro-ev' && e.ll === '703' && e.sv === 'FFA' && e.n === 2 && e.yt === ''),
+    'la historia tiene cada evento: servidor, llave, nombre, día y cuántas batallas', JSON.stringify(H.eventos).slice(0, 300));
+  ok(!JSON.stringify(H).includes(A) && !JSON.stringify(H).includes('grab/'), 'sin IDs de nadie ni claves de R2');
+  r = await pedirO('grabados-youtube', { ll: '703', yt: 'dQw4w9WgXcQ' });
+  ok(r.ok && r.n === 1, 'el video de YouTube del evento, por su llave (el pase a no listado)');
+  r = await pedirO('grabados-youtube', { ev: 'otro-ev', yt: 'abcdefghijk' });
+  ok(r.ok && r.n === 1, '… o por su evento (el motor, al subirlo)');
+  ok((await pedirO('grabados-youtube', { ev: 'otro-ev', yt: 'https://youtu.be/x' })).error, 'un id de YouTube con otra forma: no');
+  await pedirO('grabados-registrar', Object.assign({}, CASOS.registro, { ev: 'otro-ev', ll: '703', nombre: 'VOL 41' }));
+  H = await pedirO('grabados-foro-datos', {});
+  ok(H.eventos.find((e) => e.ev === 'otro-ev').yt === 'abcdefghijk' && H.eventos.find((e) => e.ev === 'otro-ev').nombre === 'VOL 41',
+    'registrar de nuevo actualiza el evento y no pierde su video');
+  AHORA = T0 + 200 * DIA;
+  await GR.podar(o, AHORA);
+  AHORA = T0;
+  H = await pedirO('grabados-foro-datos', {});
+  ok(!sql.exec('SELECT * FROM grab_ev').toArray().length && H.eventos.length >= 1, 'pasados los 90 días se van los audios, la historia del foro queda');
+  ok((await pedirO('grabados-foro-guardar', { sv: 'FFA', hilo: '1590000000000000001', mensajes: ['1590000000000000001', '1590000000000000002', 'x'], huella: 'abc' })).ok,
+    'el estado de un post: el hilo y sus mensajes');
+  ok((await pedirO('grabados-foro-guardar', { sv: 'ffa; drop', hilo: '1' })).error, 'un servidor o un hilo raros: no');
+  H = await pedirO('grabados-foro-datos', {});
+  ok(H.posts.length === 1 && H.posts[0].mensajes.join() === '1590000000000000001,1590000000000000002' && H.posts[0].huella === 'abc', 'y vuelve con la historia');
   r = await pedirO('grabados-config', { foro: true });
-  ok(r.cfg.foro === true, 'Dlx lo prende');
-  let p = await GR.publicarForo(o, 'otro-ev', dcForo);
-  ok(p.ok && !p.editado && pedidos[0][0] === 'POST' && pedidos[0][1].endsWith('/channels/' + GR.FORO + '/threads'), 'publica un post en el foro');
-  ok(pedidos[0][2].message.allowed_mentions.parse.length === 0 && pedidos[0][2].name.includes('DESGRACIAS'), 'sin menciones, con el nombre del evento');
-  p = await GR.publicarForo(o, 'otro-ev', dcForo);
-  ok(p.editado && pedidos[1][0] === 'PATCH' && pedidos[1][1].endsWith('/channels/1590000000000000001/messages/1590000000000000001'), 'la segunda vez EDITA el mismo post (no manda otro)');
+  ok(r.cfg.foro === true && (await pedirO('grabados-foro-datos', {})).cfg.foro === true, 'Dlx lo prende y el armador del foro se entera');
   await pedirO('grabados-config', { foro: false });
+  ok((await GR.ruta(new Request('https://w/grabados/foro-datos', { method: 'POST', body: '{}' }), envW, null, false, sesion(''))).status === 403,
+    'la historia sólo con la clave del ciclo');
   Date.now = relojReal;
 }
 

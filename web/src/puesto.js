@@ -93,7 +93,46 @@ export function usePuesto(k) {
   const pub = usePases();
   const t = k && pub && pub.tp ? pub.tp[k] || null : null;
   const A = useArte(t ? pub.ta : '');
-  return t && A ? { t, A } : null;
+  return t && A ? { t, A, k } : null;
+}
+
+// 🎨 LOS DATOS QUE LEEN LOS EFECTOS POR CARTA (28/11/2026, los 21 nuevos: Dlx, «hazlos todos»). El molde es el mismo para
+// todos; lo que cambia de una persona a otra viaja como variables en la capa: el color de su rango (`--acc`, de
+// comun/rangos.py por el payload) y su letra (`--rg`, `data-rg`), su OVR y sus eventos (`--ovr`, `--ev`), el color y las
+// estrellas del Interserver del servidor de ESA carta (`--sv1`, `--est`, `data-est`) y su bandera (`--bandera`). Nada de esto
+// está escrito en el arte: si no hay dato, el efecto usa su respaldo, y lo que cuenta algo (las estrellas) no se dibuja.
+// La liga la fija App (`ligaFx()`), así llega también a los lugares que dibujan una carta sin tenerla a mano (`CartaFx`)
+let LIGA_FX = null;
+export function ligaFx(l) { LIGA_FX = l || null; }
+const CLAVE_SRC = /\/([^/?#]+)\/(?:temporada|competitivo|servidor|pais|sv-[a-z0-9]+)(?:-m)?(?:\.chica)?\.(?:webp|png)/;
+const SV_SRC = /\/sv-([a-z0-9]+)(?:-m)?(?:\.chica)?\.(?:webp|png)/;
+/** `{style, attrs}` para la capa del efecto de `k` (o de quien sea la carta `src`); `sv`/`cc` mandan si vienen (la foto de /card) */
+export function datosFx(k, src, sv0, cc0) {
+  const L = LIGA_FX, style = {}, attrs = {};
+  if (!L || !L.persona) return { style, attrs };
+  let kk = k || '';
+  if (!kk) { const m = CLAVE_SRC.exec(String(src || '')); try { kk = m ? decodeURIComponent(m[1]) : ''; } catch (e) { kk = m ? m[1] : ''; } }
+  const f = kk ? L.persona(kk) : null;
+  const ms = SV_SRC.exec(String(src || ''));
+  const sv = String((ms && ms[1]) || (sv0 && sv0 !== '-' ? sv0 : '') || (f && f.sv) || '').toUpperCase();
+  const cc = String((cc0 && cc0 !== '-' ? cc0 : '') || (f && f.cc) || '').toLowerCase();
+  const rg = f && f.rg ? String(f.rg).replace(/[^A-Z]/g, '') : '';
+  if (rg) { style['--acc'] = L.colorRg(f.rg); style['--rg'] = "'" + rg + "'"; attrs['data-rg'] = rg; }
+  if (f && Number(f.ovr) > 0) style['--ovr'] = Math.round(Number(f.ovr));
+  if (f && Number(f.ev) > 0) style['--ev'] = Math.round(Number(f.ev));
+  const s = sv && L.svs ? L.svs[sv] : null;
+  if (s && /^#[0-9a-fA-F]{6}$/.test(String(s.color || ''))) style['--sv1'] = s.color;
+  // las estrellas: sólo si el payload las trae (sin el dato, ni la apagada: sin dato no hay pieza)
+  if (s && s.est !== undefined) { const n = Math.max(0, Math.min(3, Math.round(Number(s.est) || 0))); style['--est'] = n; attrs['data-est'] = String(n); }
+  if (/^[a-z]{2}$/.test(cc)) style['--bandera'] = "url('/banderas/" + cc + ".png')";
+  return { style, attrs };
+}
+/** Lo mismo como texto, para los moldes que se arman en un string (la Tienda): `{style: '--acc:#…;', attrs: ' data-rg="A"'}` */
+export function datosFxTexto(k, src, sv, cc) {
+  const d = datosFx(k, src, sv, cc);
+  const st = Object.entries(d.style).map(([a, b]) => a + ':' + String(b).replace(/[<>"&;{}]/g, '') + ';').join('');
+  const at = Object.entries(d.attrs).map(([a, b]) => ' ' + a + '="' + String(b).replace(/[^A-Z0-9]/g, '') + '"').join('');
+  return { style: st, attrs: at };
 }
 
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -102,8 +141,8 @@ const molde = (P, ranura, campo) => { const id = P && P.t[ranura]; const a = id 
 // `--dragon`: el logo que usan algunos moldes (stickers, el sobre); `--carta`: la imagen de la carta, para los efectos que
 // se recortan con su forma (como `envolver()` de tienda3.jsx)
 const sinComillas = (u) => String(u || '').replace(/['"()\\]/g, '');
-const capa = (cls, html, extra, carta) => createElement('span', Object.assign({ className: 'ta-raiz ' + cls, 'aria-hidden': 'true',
-  style: Object.assign({ '--dragon': "url('/ul-blanco.png')" }, carta ? { '--carta': "url('" + sinComillas(carta) + "')" } : {}),
+const capa = (cls, html, extra, carta, vars) => createElement('span', Object.assign({ className: 'ta-raiz ' + cls, 'aria-hidden': 'true',
+  style: Object.assign({ '--dragon': "url('/ul-blanco.png')" }, carta ? { '--carta': "url('" + sinComillas(carta) + "')" } : {}, vars || {}),
   dangerouslySetInnerHTML: { __html: html } }, extra || {}));
 
 /** 👤 el aro y la decoración alrededor de una cara (lo usa `Cara`): `null` si no tiene */
@@ -146,12 +185,14 @@ export function cualDe(src) {
 // `sinImg`: encima de algo que ya es la carta (la armable, en su iframe), sólo el efecto: la imagen del molde no se ve
 // `host`: atributos para el contenedor (su clase y, p. ej., `data-o`), cuando el lugar ubica la carta por ellos
 // `cual`: qué carta es; sin decirlo, se saca de `src`. Lleva el efecto de ESA carta, o ninguno
-export function ConEfecto({ P, src, cual, sinImg, host, children }) {
+// `sv`/`cc`: el servidor y el país de la carta, cuando el lugar los sabe mejor que el perfil (la foto de /card: su ruta)
+export function ConEfecto({ P, src, cual, sinImg, host, sv, cc, children }) {
   const c = cual || cualDe(src);
   const h = c ? molde(P, RANURA_FX[c], 'carta') : '';
   if (!h || !src) return children;
   const hp = Object.assign({}, host || {}, { className: 'ct-host' + (host && host.className ? ' ' + host.className : '') });
-  return createElement('span', hp, children, capa('ct-fx' + (sinImg ? ' sin-img' : ''), llenar(h, { carta: src }), null, src));
+  const d = datosFx(P && P.k, src, sv, cc);
+  return createElement('span', hp, children, capa('ct-fx' + (sinImg ? ' sin-img' : ''), llenar(h, { carta: src }), d.attrs, src, d.style));
 }
 
 /**

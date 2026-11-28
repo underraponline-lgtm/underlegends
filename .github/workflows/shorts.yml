@@ -46,6 +46,15 @@ jobs:
             sleep 7
           done
           echo "✗ no se pudo guardar"; exit 1
+      # 🔴 EL FORO DE LOS EVENTOS GRABADOS DE DRA (28/11/2026, bot/grabados_foro.py): un post por servidor con todos sus eventos,
+      # editado sólo si cambió (un evento nuevo, el video de YouTube que llegó). APAGADO mientras `cfg.foro` sea false
+      # (python bot/grabados.py --config foro=true); de 3 a 11 AM ET no toca Discord. Nunca hace fallar el trabajo
+      - name: el foro de los eventos grabados
+        if: success() || failure()
+        env:
+          PYTHONIOENCODING: utf-8
+        run: |
+          python bot/grabados_foro.py --aplicar || echo "foro: no anduvo"
       # 📱 Y UN SHORT A YOUTUBE POR VUELTA (Dlx, 26/11: «ponles diferentes horas de subida»): de los que ya están en la
       # página, el más nuevo que falte (m/shorts_youtube.py, con la cuota del día contada en R2). Privado mientras Google
       # no audite la app. Nunca hace fallar el trabajo; el registro dice sólo cuentas

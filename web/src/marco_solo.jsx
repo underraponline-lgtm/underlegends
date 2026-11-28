@@ -21,7 +21,8 @@ export function MarcoSolo({ liga, k, cual, sv, cc }) {
   // 🃏 el de ESTA carta (28/11/2026: cada efecto es de una sola carta)
   const tc = pub && pub.tp && pub.tp[k] ? pub.tp[k][RANURA_FX[cual] || 'carta'] || '' : '';
   const img = <img className="ms-img" src={src} alt="" onLoad={() => setOk(true)} />;
-  const fx = <ConEfecto P={P} src={src} cual={cual}>{img}</ConEfecto>;
+  // `sv`/`cc` de la ruta: los mismos que dibujan su marco (y los que leen los efectos de Servidor y de País)
+  const fx = <ConEfecto P={P} src={src} cual={cual} sv={sv} cc={cc}>{img}</ConEfecto>;
   return (
     <div className="ms" data-listo={ok && mk !== undefined && (!tc || P) ? '1' : ''} data-marco={mk || tc ? '1' : '0'}>
       {mk ? <ConMarco m={mk} cual={cual} ancho={300} svColor={svc} cc={cc} src={src}>{fx}</ConMarco> : fx}

@@ -13,6 +13,11 @@ dure `PRUEBA` de bot/buzon.js (hasta las 11:59 PM ET del 28/11; después se apag
     python bot/buzon.py --simular --tipos pase,drops
     python bot/buzon.py --limpiar-simulacion   saca lo simulado (campana, hilos en Discord y el «No me avises más»)
 
+🎨🎁 Desde el 28/11/2026 el hilo sale con la franja de DRA, una imagen por aviso y tres botones que dan algo —«Reclama tu
+drop diario», «La vitrina de hoy», «Mi tarjeta»— (bot/buzon_vista.js, bot/buzon_botones.js). Las imágenes las sube
+`python bot/buzon_img.py --publicar`; sin eso el hilo sale igual, sin franja ni cuadritos. ⚠️ Los botones NO son
+simulados: el drop del día que reclamas en el hilo de prueba es el tuyo de verdad.
+
 Los simulados viven sólo en la campana (clave `sim:`): no dan XP, ni drops, ni puntos. Simular otra vez antes de las 24 h
 muestra la regla: lo nuevo espera y se junta en el próximo hilo. Para ver otra tanda ya, limpiar primero.
 

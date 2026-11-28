@@ -67,6 +67,10 @@ import * as VD from './verificar_dc.js';
 import * as VW from './verificar_web.js';
 // 📬 los botones de los hilos privados del buzón (`bzn:…`). Ver bot/buzon.js
 import * as BZ from './buzon.js';
+// 🗂️ los botones de los foros de DRA (servidores-rap, crews, ligas: bot/foros_dra.py), 28/11/2026
+import * as FO from './foros.js';
+// 🎫 los botones del cartel de #pase-rapero (`pse:pase|tareas|track`, 28/11/2026): tu Pase ahí mismo. Ver bot/pase_dc.js
+import * as PD from './pase_dc.js';
 // 🃏 la ranura de cada pieza: un efecto va en la de SU carta (28/11/2026)
 import { ranuraDe as ranuraPieza } from './tienda.js';
 const ayudaVD =(env, ctx) => ({ frenado, espera, aviso, pensandoYEditar, enMadrugada,
@@ -4286,6 +4290,17 @@ async function apodoPanel(i, env, nuevo) {
         description: String((p || n === AP.SOLO_NOMBRE ? sale(n) : ejemplo(n) + ' (cuando juegues)') || '(sin apodo)').slice(0, 100) })) }] }] }) };
 }
 
+/** 📬🃏 «Mi tarjeta» del buzón (bot/buzon_botones.js): los componentes de `/card` de esa cuenta, o `null` si no tiene carta */
+async function tarjetaBuzon(env, id, guild) {
+  const k = await claveCarta(env, id);
+  if (!k) return null;
+  const [crudo, meta] = await Promise.all([leerP(env, k), env.KV.get('meta')]);
+  if (!crudo) return null;
+  const g = JSON.parse(crudo);
+  if (Array.isArray(g.cs) && !g.cs.length && !(g.bl && g.bl.length) && !ligasDe(g).length) return null;
+  return carta(k, g, cartaQueAbre(g, guild), null, id, meta ? JSON.parse(meta) : {}, aquiEs(guild));
+}
+
 // 🃏 QUÉ CARTA ABRE `/card` (y el botón «Cartas» de `/perfil` y `/vitrina`): una sola regla para los dos lugares
 function cartaQueAbre(g, guild) {
   const sinCs = !Array.isArray(g.cs);
@@ -5732,6 +5747,8 @@ export default {
     if (camino === '/mencion' && req.method === 'POST') return esCiclo ? rutaMencion(req, env, ctx) : new Response('', { status: 403 });
     // 🚪 el recibidor (28/11/2026): la pregunta de alguien nuevo en DRA que escucha el grabador (grabador/recibidor.js)
     if (camino === '/recibidor' && req.method === 'POST') return esCiclo ? RC.ruta(req, env) : new Response('', { status: 403 });
+    // 👋 y los que entraron a DRA (grabador/bienvenida.js): su fila para «Lo recibo yo»
+    if (camino === '/recibidor-entro' && req.method === 'POST') return esCiclo ? RC.rutaEntro(req, env) : new Response('', { status: 403 });
     // 🎧 «Ahora mismo» (28/11/2026): GET público (la página, por el borde) y POST del grabador con la clave. bot/ahora.js
     if (camino === '/ahora') return AH.ruta(req, env, esCiclo);
     // 🎙️💎 los eventos grabados (28/11/2026): la lista sellada (con la sesión), el audio con Range y lo del motor (clave del ciclo)
@@ -6088,11 +6105,34 @@ export default {
         if (esperarR) return espera(esperarR);
         return que === 'rcb' ? RC.boton(i, env, ctx, DUENO) : RC.saludarBoton(i, env, ctx);
       }
+      // ── 👋 la bienvenida de DRA (grabador/bienvenida.js): el menú «¿Tienes una duda?» (`bvd:faq`, la respuesta fija, sólo
+      // para quien pregunta) y «🎁 Reclamar premio» (`bvp:<canal>`: la prueba del Pase Premium de quien toca, bot/premium_regalos.js)
+      if (que === 'bvd' || que === 'bvp') {
+        const esperarB = frenado(idDe(i), 'click');
+        if (esperarB) return espera(esperarB);
+        return que === 'bvd' ? RC.dudaBoton(i) : RC.premioBoton(i, env, ctx);
+      }
+      // ── 🎫 el Pase en #pase-rapero (28/11/2026): «Mi Pase», «Mis Tareas» y «El track», sólo a quien toca. bot/pase_dc.js
+      if (que === 'pse') {
+        const esperarP = frenado(idDe(i), 'click');
+        if (esperarP) return espera(esperarP);
+        return PD.boton(i, env, ctx, { aviso, alObjeto, pensandoYEditar, actualizarLuego, esEfimero, idDe });
+      }
       // ── 📬 el buzón (28/11/2026): «Ya lo vi», «No me avises más» y «Volver a avisarme» en un hilo privado. bot/buzon.js
+      // ── 🗂️ los foros de DRA (`fo:<qué>[:<de quién>]`, 28/11/2026): cómo ascender, los próximos eventos de un socio, cómo
+      // entrar a una crew… sólo a quien toca. Los textos los deja el ciclo en R2 (bot/foros_dra.py); «Pedir entrar» es `/crew unirme`
+      if (que === 'fo') {
+        const esperarF = frenado(idDe(i), 'click');
+        if (esperarF) return espera(esperarF);
+        return FO.botonWorker(i, env, ctx, { aviso, crewUnirme: (cid) => crewComando(i, env, 'unirme', { nombre: cid }) });
+      }
+
       if (que === 'bzn') {
         const esperarB = frenado(idDe(i), 'click');
         if (esperarB) return espera(esperarB);
-        return BZ.botonWorker(i, env, ctx);
+        // 🎁 y los que dan algo (el drop del día, la vitrina, tu tarjeta: bot/buzon_botones.js), con «un momento» primero
+        return BZ.botonWorker(i, env, ctx, { pensando: (t) => pensandoYEditar(i, ctx, t),
+          tarjeta: (id) => tarjetaBuzon(env, id, i.guild_id) });
       }
 
       if (que === 'qg') {
