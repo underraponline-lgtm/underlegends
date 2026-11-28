@@ -478,10 +478,10 @@
    "servidor": "fd4581683589:ca27345eed9e:15af16"
   },
   "Dynoco": {
-   "competitivo": "345c05405680:baafccf84bc7",
-   "pais": "e16814b55cf5:84d29bb63c59",
+   "competitivo": "3ca5bd2c3e48:baafccf84bc7",
+   "pais": "498e122293c1:84d29bb63c59",
    "servidor": "4a7ba6879b34:ca27345eed9e:c82496",
-   "temporada": "ac7a86daf384:0b98cb3023ec"
+   "temporada": "34b1cf38e0c0:0b98cb3023ec"
   },
   "Dyzz": {
    "competitivo": "c06cf2b007bc:baafccf84bc7",
@@ -2009,8 +2009,8 @@
    "servidor": "8dc17afd358c:ca27345eed9e:980594"
   },
   "Yeyox": {
-   "competitivo": "c65f213505d3:baafccf84bc7",
-   "pais": "5011be357371:84d29bb63c59",
+   "competitivo": "d9a5b0b82d64:baafccf84bc7",
+   "pais": "5b34580bbc49:84d29bb63c59",
    "servidor": "f6c75cf50c5f:ca27345eed9e:ab8bbc",
    "temporada": "d18ac35907a7:0b98cb3023ec"
   },
@@ -2244,5 +2244,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-28T07:23:34+00:00"
+ "cuando": "2026-11-28T07:33:50+00:00"
 }
