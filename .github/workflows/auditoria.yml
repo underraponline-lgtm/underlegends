@@ -235,6 +235,13 @@ jobs:
         # el rango deja de coincidir con las cartas.
         run: python herramientas/roles_de_rango.py
 
+      - name: nadie más da Miembro solo
+        if: always()
+        # 🔒 Dlx, 28/11/2026: «apaga lo de los 21 días, que verifiquen con el panel». Sapphire y Carl-bot daban
+        # Miembro (la verificación) a los 21 días de entrar; eso se apaga en SUS paneles, así que acá sólo se
+        # pregunta si sigue pasando. ⚠️ SI FALLA, ES DE VERDAD: alguien volvió a prender el Miembro automático.
+        run: python herramientas/miembro_automatico.py
+
       - name: quién puede usar /card
         # ⚠️ NO FALLA, Y ESO ES LA MITAD DE LA HERRAMIENTA. Que alguien
         # no tenga carta casi siempre es que no se registró o no se
