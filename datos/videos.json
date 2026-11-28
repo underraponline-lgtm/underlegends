@@ -1,5 +1,24 @@
 {
  "_leeme": "Las batallas en video de cada rapero, de los canales de YouTube de los socios (bot/videos.py). Dlx, 12/10/2026.",
+ "cortos": [
+  "2PJj4wKWl8k",
+  "7-sTk8trzIs",
+  "7wFklPMf5xA",
+  "B-UJpLE2nmU",
+  "GXymA9Pj25A",
+  "Heye5aNmWo0",
+  "JoGeHpRgdtk",
+  "M5gK-zlWdGs",
+  "Ruay8MNgAV4",
+  "ZSubpERXNgw",
+  "a-Va_BBxx_M",
+  "exFg6itwxEI",
+  "fmZaylJK29U",
+  "g4V2xsNiisU",
+  "iunwALNi7Yg",
+  "vxOO-WeULXU",
+  "w4RqP96Z6hg"
+ ],
  "crudos": {
   "UC1wmceEHX_k4ME_ZGq60dJg": [
    [
@@ -4227,7 +4246,7 @@
   ],
   "B-UJpLE2nmU": [
    "2026-11-28T04:30:32Z",
-   1
+   3
   ],
   "BZgJenPhqRs": [
    "2025-11-20T21:13:27Z",
@@ -9519,5 +9538,5 @@
    ]
   ]
  },
- "visto": "2026-11-28T18:28:49+00:00"
+ "visto": "2026-11-28T18:58:14+00:00"
 }
