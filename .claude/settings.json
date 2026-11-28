@@ -1,0 +1,13 @@
+{
+  "enabledPlugins": {
+    "design@synced": false,
+    "marketing@synced": false,
+    "product-management@synced": false,
+    "productivity@synced": false,
+    "product-tracking-skills@synced": false,
+    "prisma@synced": false,
+    "cowork-plugin-management@synced": false,
+    "figma@synced": false,
+    "github@synced": false
+  }
+}
