@@ -315,6 +315,9 @@
 .tz-f-inf > p{font-size:14px;color:#C9C9C4}
 .tz-donde{font-size:13px!important;color:#A5A5A0!important}
 .tz-fila{display:flex;flex-wrap:wrap;gap:6px}
+/* 🃏 de qué carta es un efecto (28/11/2026): «Para tu Temporada», en su cuadro (debajo del nombre) y en su ficha */
+.tz-para{display:inline-flex;align-items:center;padding:3px 7px;border-radius:3px;border:1px solid #3A3D45;background:#101114;color:#F6F6F6;font:700 12px/1 var(--tz-e);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.tz-q-i b .tz-para{display:table;margin-top:4px;padding:2px 5px;font-size:10.5px}
 .tz-tag{display:inline-flex;align-items:center;padding:3px 7px;border-radius:3px;border:1px solid;font:700 12px/1 var(--tz-e);letter-spacing:.06em;text-transform:uppercase}
 .tz-tag.prem{color:#FF8DB9;border-color:#6E0A39;background:#1d0712}.tz-tag.nav{color:#9EE6B8;border-color:#1E5A36;background:#071a10}
 .tz-tag.num{color:#DCC8FF;border-color:#46179E;background:#120826}.tz-tag.mio{color:#9EE6B8;border-color:#1E5A36;background:#071a10}

@@ -494,7 +494,7 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, ma
   const mk = marco !== undefined ? marco : pub && pub.m && pub.m[k];
   const css = ancho > 0 ? ancho / Math.max(1, window.devicePixelRatio || 1) : 0;
   const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
-  const conFx = src ? <ConEfecto P={P} src={src}>{img0}</ConEfecto> : img0;
+  const conFx = src ? <ConEfecto P={P} src={src} cual={cual}>{img0}</ConEfecto> : img0;
   const img = mk && css ? <ConMarco m={mk} cual={cual} ancho={css} svColor={svc} cc={f.cc} src={src}>{conFx}</ConMarco> : conFx;
   if (!abre) return img;
   // 🃏 con `cual`: abre en ESA carta y no en la principal (Dlx, 17/11/2026: «si selecciono una tarjeta diferente, que lo

@@ -20,6 +20,7 @@ import { refrescarPases, usePases } from './pase.js';
 import { abrirConEscenario, dropQuietoSvg, pedirDrops } from './drops.jsx';
 import { useIndice } from './indice.js';
 import { sonar } from './sonidos.js';
+import { RANURA_FX, cartaDeFx, paraTu, ranuraDe } from './puesto.js';
 
 usarCss('tienda3', CSS_PAGINA);
 
@@ -35,7 +36,7 @@ const EXTRA = { nav: 'Navidad', num: 'Ediciones de 10', deseo: '♥ Tu lista' };
 const DONDE = {
   aro: 'tu foto en toda la página: el ranking, los comentarios, Publicaciones, tu perfil y tu ficha',
   deco: 'tu foto en toda la página, encima de tu aro', nom: 'tu nombre en el ranking, tu perfil, tu ficha y los comentarios',
-  carta: 'tus cartas en la página y en /card', perfil: 'tu perfil', serv: 'toda la Liga: tu nombre de ahora queda como alias',
+  carta: 'esa carta tuya en la página y en /card (cada efecto es de una sola carta)', perfil: 'tu perfil', serv: 'toda la Liga: tu nombre de ahora queda como alias',
   fp: 'la portada de tu perfil', fv: 'tu mitad del VS del Inicio', fe: 'el escenario de tu carta', fd: 'tu mitad del VS en vivo de Discord',
   ff: 'tu ficha', fr: 'tu fila en el ranking',
 };
@@ -120,7 +121,14 @@ function nombre(X, id) {
   if (a.letras) return envolver(X, `<span class="ta-nom ta-${id.toLowerCase()}" data-t="${X.n}">${[...X.crudo].map((ch, i) => `<span class="ta-l" style="animation-delay:${(i * 0.13).toFixed(1)}s">${esc(ch)}</span>`).join('')}</span>`);
   return envolver(X, moldeX(X, a.nom));
 }
-function carta(X, id) { const a = id && X.p[id]; return envolver(X, a && a.carta ? moldeX(X, a.carta) : `<div class="ta-carta"><img alt="" src="${X.carta}" data-ini="${X.cartaIni}"></div>`); }
+// 🃏 cada efecto se prueba sobre SU carta (28/11/2026): el de la Competitiva, sobre tu Competitiva (sin ella, la muestra)
+function carta(X, id) {
+  const a = id && X.p[id];
+  const Y = id && X.cartas && X.fx ? Object.assign({}, X, { carta: X.cartas[X.fx[id]] || X.cartas.temporada || X.carta }) : X;
+  return envolver(Y, a && a.carta ? moldeX(Y, a.carta) : `<div class="ta-carta"><img alt="" src="${Y.carta}" data-ini="${Y.cartaIni}"></div>`);
+}
+// 🃏 «Para tu Temporada»: de qué carta es un efecto, en su cuadro y en su ficha
+const paraCarta = (p) => (p && p.c === 'carta' ? `<span class="tz-para">${esc(paraTu(p))}</span>` : '');
 const vista = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).v));
 const arteFondo = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).fondo));
 const enLugar = (X, id) => envolver(X, moldeX(X, (X.p[id] || {}).lugar));
@@ -390,7 +398,7 @@ function tile(X, S, st, tengo, id) {
   return `<article class="tz-q${prob ? ' prob' : ''}${on && mio ? ' on' : ''}" style="--r:${RZ[p.r][1]}" title="${esc(p.n)} · ${RZ[p.r][0]}">
     <button class="tz-q-v" ${puede ? `data-prueba="${id}" aria-pressed="${on}" aria-label="Probarte ${esc(p.n)}"` : `data-abre="${id}" aria-label="Ver ${esc(p.n)}"`}>${turnan(S, id, (v) => arteV(X, S, v), 'q')}${eti}</button>
     ${mio || !pr ? '' : corazon(S, id)}
-    <div class="tz-q-i"><i aria-label="${RZ[p.r][0]}"></i><b>${esGrupo(S, id) ? esc(nombreGrupo(S, id)) + ' <small>· ' + variantesDe(S, id).length + (cabezaDe(S, id) === 'A10' ? ' países' : cabezaDe(S, id) === 'A11' ? ' servidores' : ' versiones') + '</small>' : esc(p.n)}</b><span class="tz-q-p">${precio}</span><button class="tz-q-ver" data-abre="${id}">Ver</button></div></article>`;
+    <div class="tz-q-i"><i aria-label="${RZ[p.r][0]}"></i><b>${esGrupo(S, id) ? esc(nombreGrupo(S, id)) + ' <small>· ' + variantesDe(S, id).length + (cabezaDe(S, id) === 'A10' ? ' países' : cabezaDe(S, id) === 'A11' ? ' servidores' : ' versiones') + '</small>' : esc(p.n)}${paraCarta(p)}</b><span class="tz-q-p">${precio}</span><button class="tz-q-ver" data-abre="${id}">Ver</button></div></article>`;
 }
 function coleccionT(X, S, tengo, cid) {
   const j = S.cat.colecciones[cid], r = precioCol(S, cid, tengo), ya = j.piezas.length - r.falta.length;
@@ -628,7 +636,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
   })() : '';
   return `<div class="tz-ficha" role="dialog" aria-label="${esc(p.n)}">${popCab(esc(p.n), subDe(S, id), RZ[p.r][1])}
     <div class="tz-f-vis">${turnaFicha(S, id) ? turnan(S, id, (v) => vistaGrande(X, S, v), 'f') : vistaGrande(X, S, id)}</div>
-    <div class="tz-f-inf">${selectorVar(X, S, tengo, id)}${unaEtiqueta(S, tengo, id) ? `<div class="tz-fila">${unaEtiqueta(S, tengo, id)}</div>` : ''}
+    <div class="tz-f-inf">${selectorVar(X, S, tengo, id)}${unaEtiqueta(S, tengo, id) || paraCarta(p) ? `<div class="tz-fila">${paraCarta(p)}${unaEtiqueta(S, tengo, id)}</div>` : ''}
       <p>${esc(p.d)}</p><p class="tz-donde"><b>Se ve en:</b> ${DONDE[p.c] || ''}.${EN_DISCORD[p.c] ? ' ' + EN_DISCORD[p.c] : ''}</p>
       ${paso === 'ver' && !mio ? `<div class="tz-f-precio">${precio}</div>` : ''}
       <div class="tz-acc">${acc}</div>${duenos}</div></div>`;
@@ -930,7 +938,7 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
       else if (a === 'regalar') Object.assign(E, { paso: 'regalar', para: '', busca: '', error: '' });
       else if (a === 'volver') { E.puesto = Object.assign({}, E.mio.puesto); E.fondo = Object.assign({}, E.mio.fondo); E.comparar = false; }
       else if (a === 'probar') { const p = S.cat.piezas[id]; probar(id); E.tab = tabDe(p); E.comparar = false; E.abierta = window.innerWidth < 900 ? '__prob' : null; E.paso = null; irAlProbador(); }
-      else if (a === 'poner') { const p = S.cat.piezas[id]; accion({ accion: 'poner', ranura: p.c, pieza: id }, () => { probar(id, true); Object.assign(E, { abierta: null, paso: null }); }); return; }
+      else if (a === 'poner') { const p = S.cat.piezas[id]; accion({ accion: 'poner', ranura: ranuraDe(p), pieza: id }, () => { probar(id, true); Object.assign(E, { abierta: null, paso: null }); }); return; }
       else if (a === 'deseo') { accion({ accion: 'deseo', pieza: id, si: !S.yo.deseos.includes(id) }); return; }
       else if (a === 'deshacer') { accion({ accion: 'deshacer', pieza: id }, () => { E.paso = 'deshecho'; }); return; }
       else if (a === 'confirmar') {
@@ -955,7 +963,8 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
           for (const [ra, x] of tuyos) {
             let j = null;
             // con una vista de Mods prendida, ponerse lo tuyo también es local (nada sale al objeto)
-            try { j = S.modo ? { ok: true } : await pedir({ accion: 'poner', ranura: ra, pieza: x }); } catch (e) { j = null; }
+            // 🃏 el efecto que te probabas va en la ranura de SU carta (la del probador es una sola: `carta`)
+            try { j = S.modo ? { ok: true } : await pedir({ accion: 'poner', ranura: ra === 'carta' ? ranuraDe(S.cat.piezas[x]) : ra, pieza: x }); } catch (e) { j = null; }
             // lo que no se pudo poner queda como estaba (y el error sale en la hoja)
             if (!(j && j.ok)) { E.error = (j && j.error) || 'error'; if (ra in mio.puesto) mio.puesto[ra] = E.mio.puesto[ra]; else mio.fondo[ra] = E.mio.fondo[ra]; }
           }
@@ -1027,7 +1036,10 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
   // la cara: la de la tabla, la de tu cuenta de Discord, la de quien jugó y no está en la tabla; si no hay, la inicial
   const cara = liga.avUrl(k, 1024) || (dc && dc.av ? 'https://cdn.discordapp.com/avatars/' + dc.av + '.webp?size=1024' : null) || (liga.avNombre ? liga.avNombre(crudo, 1024) : null);
   const ini = inicialSvg(crudo);
-  const X = { p: A.p, foto: esc(cara && !FOTO_MUERTA.has(cara) ? cara : ini), ini: esc(ini), carta: esc((k && liga.cartaUrl(k, 'temporada')) || CARTA_MUESTRA), cartaIni: esc(CARTA_MUESTRA), n: esc(crudo), crudo };
+  const X = { p: A.p, foto: esc(cara && !FOTO_MUERTA.has(cara) ? cara : ini), ini: esc(ini), carta: esc((k && liga.cartaUrl(k, 'temporada')) || CARTA_MUESTRA), cartaIni: esc(CARTA_MUESTRA), n: esc(crudo), crudo,
+    // 🃏 tus cuatro cartas, y de cuál es cada efecto: el probador lo muestra sobre la suya
+    cartas: Object.fromEntries(Object.keys(RANURA_FX).map((c) => [c, esc((k && liga.cartaUrl(k, c)) || CARTA_MUESTRA)])),
+    fx: Object.fromEntries(Object.entries(S.cat.piezas || {}).filter(([, p]) => p && p.c === 'carta').map(([id, p]) => [id, cartaDeFx(p)])) };
   let hoja = '';
   if (E.abierta) {
     const id = E.abierta;

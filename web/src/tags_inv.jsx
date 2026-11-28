@@ -46,7 +46,7 @@ import { nombreMarco } from './marcos.jsx';
 import { ValesPremium } from './vales.jsx';
 import { CartaViva } from './cartaviva.jsx';
 import { FraseEditor } from './frase.jsx';
-import { ConEfecto, pedirArte } from './puesto.js';
+import { ConEfecto, RANURA_FX, cartaDeFx, paraTu, pedirArte } from './puesto.js';
 import { RZ } from './tienda_rz.js';
 import { DUENO, num } from './liga.js';
 import { useModsEstado } from './mods.js';
@@ -263,7 +263,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       if (!j || !j.ok || !j.cat || !j.yo || !(j.abierta || j.ensayo)) { setTi(null); return; }
       const piezas = Object.entries(j.cat.piezas || {}).filter(([, p]) => p && p.c === 'carta' && !(p.t || []).includes('pronto'));
       setTi({ piezas, precios: j.cat.precios || {}, prem: !!j.yo.prem, desc: ((j.cat.desc || {}).prem) || 1,
-        mias: new Set((j.yo.inv || []).map((x) => x.p)), puesto: (j.yo.puesto || {}).carta || '' });
+        // 🃏 lo puesto, por carta (28/11/2026: cada efecto es de una sola carta y cada carta lleva el suyo)
+        mias: new Set((j.yo.inv || []).map((x) => x.p)), puesto: Object.fromEntries(Object.entries(RANURA_FX).map(([c, r]) => [c, (j.yo.puesto || {})[r] || ''])) });
       if (j.arte_v) pedirArte(j.arte_v).then((a) => { if (vivo && a) setArte(a); });
     }).catch(() => { if (vivo) setTi(null); });
     return () => { vivo = false; };
@@ -314,7 +315,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     return CARTAS.filter(([x]) => c.has(x));
   }, [liga, k, dc, perf]);
   useEffect(() => { if (tienes.length && !tienes.some(([x]) => x === carta)) setCarta(tienes[0][0]); }, [tienes]); // eslint-disable-line react-hooks/exhaustive-deps
-  const nCambios = Object.keys(bor.tags).length + ('marco' in bor || 'estilo' in bor ? 1 : 0) + ('principal' in bor ? 1 : 0) + ('efecto' in bor ? 1 : 0);
+  const nCambios = Object.keys(bor.tags).length + ('marco' in bor || 'estilo' in bor ? 1 : 0) + ('principal' in bor ? 1 : 0) + Object.keys(bor.efx || {}).length;
   useEffect(() => {
     if (!nCambios) return undefined;
     const f = (e) => { e.preventDefault(); e.returnValue = ''; };
@@ -365,12 +366,17 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const principalAhora = 'principal' in bor ? bor.principal : principalG;
   const temp = yo.temp || 't1';
   // 🛍️ el efecto: el puesto en la Tienda, el del borrador, y el que muestra la carta (`undefined` = el puesto)
-  const efectoG = (ti && ti.puesto) || '';
-  const efectoAhora = 'efecto' in bor ? bor.efecto : efectoG;
+  // 🃏 cada carta con SU efecto (28/11/2026): el borrador va por carta, como los TAG (`bor.efx`), y la grilla muestra sólo
+  // los efectos de la carta que estás vistiendo
+  const bx = bor.efx || {};
+  const efectoG = (ti && ti.puesto && ti.puesto[carta]) || '';
+  const efectoAhora = carta in bx ? bx[carta] : efectoG;
+  const efCarta = ti ? ti.piezas.filter(([, p]) => cartaDeFx(p) === carta) : [];
   const efMio = (id) => !id || pruebaInv || !!(ti && ti.mias.has(id));
   const efDe = (id) => ((ti && ti.piezas.find(([x]) => x === id)) || [])[1] || null;
   const precioEf = (p) => Math.round((ti.precios[p.r] || 0) * (ti.prem && !(p.t || []).includes('num') ? ti.desc : 1));
-  const efBloq = 'efecto' in bor && !efMio(bor.efecto);
+  const efBloq = Object.values(bx).some((id) => !efMio(id));
+  const efBloqId = Object.values(bx).find((id) => !efMio(id)) || '';
   // las piezas «prem» de la Tienda son sólo para el Pase premium
   const sinPrem = (p) => !!p && (p.t || []).includes('prem') && !(ti && ti.prem);
   // el marco que se prueba sobre la carta (con la forma de `marcosPublicos()`): `null` sin marco
@@ -383,7 +389,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   // 🎭 lo que muestra la carta: lo guardado («Lo puesto»), o el borrador con lo que el mouse está tocando encima
   const tagCarta = ver === 'puesto' ? elG : hov && hov.campo === 'tag' ? hov.v : el;
   const marcoCarta = ver === 'puesto' ? undefined : hov && hov.campo === 'marco' ? marcoDe(hov.v) : marcoVer;
-  const efectoCarta = ver === 'puesto' ? undefined : hov && hov.campo === 'efecto' ? hov.v : 'efecto' in bor ? bor.efecto : undefined;
+  const efectoCarta = ver === 'puesto' ? undefined : hov && hov.campo === 'efecto' ? hov.v : carta in bx ? bx[carta] : undefined;
   // pasar por una pieza: un respiro antes de mostrarla, así barrer la grilla con el mouse no hace parpadear la carta
   const verPieza = (campo, v) => (on) => {
     clearTimeout(tHov.current);
@@ -399,6 +405,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     setBor((b) => {
       const n = { ...b, tags: { ...b.tags } };
       if (campo === 'tag') { if (v === guardado) delete n.tags[enCarta]; else n.tags[enCarta] = v; }
+      else if (campo === 'efecto') { n.efx = { ...(b.efx || {}) }; if (v === guardado) delete n.efx[enCarta]; else n.efx[enCarta] = v; }
       else if (v === guardado) delete n[campo]; else n[campo] = v;
       return n;
     });
@@ -460,13 +467,13 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
       if (d && d._ok) setYo(d); else { ok = false; avisos.push('La carta principal no se pudo guardar.'); }
     }
     // 🛠️ con «Tener todo» de Mods, el efecto que no es tuyo se ve puesto y no se guarda
-    if ('efecto' in bor && pruebaInv && bor.efecto && !(ti && ti.mias.has(bor.efecto))) {
-      ok = false; avisos.push('El efecto es de prueba (Mods): se ve puesto, pero no se guarda.');
-    } else if ('efecto' in bor) {
+    // 🃏 uno por carta, cada uno en la ranura de SU carta
+    for (const [c, ef] of Object.entries(bx)) {
+      if (pruebaInv && ef && !(ti && ti.mias.has(ef))) { ok = false; avisos.push('El efecto es de prueba (Mods): se ve puesto, pero no se guarda.'); continue; }
       // 📶 sin red `conCuenta` rechaza (18/11/2026): sin el catch, `guardar()` se cortaba acá y «Guardando…» quedaba
       // trabado, sin mensaje. Así cuenta como «no se pudo poner» y sigue hasta soltar los botones
-      const d = await window.conCuenta('/api/avisos/tienda-accion', { accion: 'poner', ranura: 'carta', pieza: bor.efecto || null }).catch(() => null);
-      if (d && d.ok) setTi((x) => (x ? Object.assign({}, x, { puesto: bor.efecto || '' }) : x));
+      const d = await window.conCuenta('/api/avisos/tienda-accion', { accion: 'poner', ranura: RANURA_FX[c] || 'carta', pieza: ef || null }).catch(() => null);
+      if (d && d.ok) setTi((x) => (x ? Object.assign({}, x, { puesto: Object.assign({}, x.puesto, { [c]: ef || '' }) }) : x));
       else { ok = false; avisos.push('El efecto no se pudo poner.'); }
     }
     refrescarPases();
@@ -575,26 +582,27 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     }
     // «Sin efecto» primero (como «Automático» en los TAG), después los tuyos y los que te faltan, del más barato al más caro
     const src = liga.cartaUrl(k, carta) || '';
-    const orden = ti.piezas.slice().sort(([a, pa], [b, pb]) => (efMio(b) - efMio(a)) || (precioEf(pa) - precioEf(pb)));
+    const orden = efCarta.slice().sort(([a, pa], [b, pb]) => (efMio(b) - efMio(a)) || (precioEf(pa) - precioEf(pb)));
     return (
       <>
-        <p className="ves-p">El efecto va en <b>tus cuatro cartas</b>, en la página y en /card. Se compran en la Tienda.</p>
-        <div className="ves-grid" role="radiogroup" aria-label="El efecto de tus cartas">
-          <Cuadro on={!efectoAhora} puesto={!efectoG} prueba={'efecto' in bor && !bor.efecto} ic="▢" nombre="Sin efecto" rar="Como siempre"
+        <p className="ves-p"><span className="ves-para">{paraTu({ carta })}</span> Cada efecto es de <b>una sola carta</b>: éstos van en tu {nombre}, en la página y en /card. Se compran en la Tienda.</p>
+        <div className="ves-grid" role="radiogroup" aria-label={'El efecto de tu ' + nombre}>
+          <Cuadro on={!efectoAhora} puesto={!efectoG} prueba={carta in bx && !bx[carta]} ic="▢" nombre="Sin efecto" rar="Como siempre"
             onVer={verPieza('efecto', '')} onClick={() => probar('efecto', '', efectoG)} />
           {orden.map(([id, p]) => {
             const mio = efMio(id);
             const rz = RZ[p.r] || RZ[0];
             return (
-              <Cuadro key={id} mio={mio} color={rz[1]} on={efectoAhora === id} puesto={efectoG === id} prueba={bor.efecto === id} nombre={p.n}
+              <Cuadro key={id} mio={mio} color={rz[1]} on={efectoAhora === id} puesto={efectoG === id} prueba={bx[carta] === id} nombre={p.n}
                 rar={mio ? rz[0] : sinPrem(p) ? 'Premium' : num(precioEf(p)) + ' PdT'} onVer={verPieza('efecto', id)} onClick={() => probar('efecto', id, efectoG)}>
                 <span className="ves-qi vc-efi" aria-hidden="true">
-                  {arte && src ? <ConEfecto P={{ t: { carta: id }, A: arte }} src={src}><img src={src} alt="" /></ConEfecto> : '✨'}
+                  {arte && src ? <ConEfecto P={{ t: { [RANURA_FX[carta]]: id }, A: arte }} src={src} cual={carta}><img src={src} alt="" /></ConEfecto> : '✨'}
                 </span>
               </Cuadro>
             );
           })}
         </div>
+        {!efCarta.length ? <p className="ves-p">Todavía no hay efectos para tu {nombre}: salen pronto en la Tienda.</p> : null}
         {ti.mias.size ? <a className="ves-lnk" href="#/tienda">Más efectos en la Tienda →</a> : (
           <div className="vc-vacio"><div><b>Todavía no tienes ningún efecto</b><span>Pruébate uno de arriba: se ve en tu carta antes de comprarlo.</span></div>
             <a className="ves-btn blanco" href="#/tienda">Ver los efectos en la Tienda</a></div>
@@ -610,7 +618,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     efecto: !ti ? 'Pronto' : efectoAhora ? ((efDe(efectoAhora) || {}).n || 'Un efecto') : 'Sin efecto',
   };
   const cuantos = { tag: mias.length + '/' + ops.length, marco: idsMarcos.length + '/' + MARCOS_PASE.length,
-    efecto: ti ? String(ti.piezas.filter(([id]) => efMio(id)).length) : '' };
+    efecto: ti ? String(efCarta.filter(([id]) => efMio(id)).length) : '' };
   const ranuras = RANURAS.filter(([r]) => r !== 'estilo' || cartas.some(([c]) => c === 'servidor'));
 
   // 🏅 la colección: insignias (de tu perfil), títulos y marcos
@@ -656,7 +664,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
     const p = id ? efDe(id) : null;
     const mio = efMio(id);
     foco = { texto: '✨ ' + (p ? p.n : 'Sin efecto'), mio, cambia: id !== efectoG, color: p ? (RZ[p.r] || RZ[0])[1] : '', rz: p ? (RZ[p.r] || RZ[0])[0] : '',
-      etq: 'En la Tienda:', desc: !id ? 'Tus cartas, sin efecto: como siempre.' : mio ? (p && p.d) || 'Va en tus cuatro cartas, en la página y en /card.'
+      etq: paraTu({ carta }) + ' · En la Tienda:', desc: !id ? 'Tu ' + nombre + ', sin efecto: como siempre.' : mio ? ((p && p.d) || 'Un efecto de tu carta.') + ' Va en tu ' + nombre + ', en la página y en /card.'
         : (p && p.d ? p.d + ' ' : '') + (sinPrem(p) ? 'Es sólo para el Pase premium.' : 'Cuesta ' + num(precioEf(p)) + ' Puntos de Tienda.') };
   } else {
     foco = { texto: '✨ Efectos', desc: 'Brillos y animaciones para tu carta, en la página y en Discord. Se compran en la Tienda.', mio: false, pronto: true };
@@ -664,7 +672,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
   const fichaEm = [foco.rz || RAREZA[foco.nivel], GRUPO[foco.grupo], foco.mio && (foco.nivel || foco.rz) ? 'lo tienes' : ''].filter(Boolean).join(' · ') || 'Tu ' + etRan.toLowerCase();
 
   // 💾 la barra de guardar. Con un efecto que no es tuyo, «Comprarlo en la Tienda» en vez de Guardar
-  const efPr = efBloq ? efDe(bor.efecto) : null;
+  const efPr = efBloq ? efDe(efBloqId) : null;
   const barraGuardar = (cls) => (
     <div className={'ves-guardar' + (cls ? ' ' + cls : '')} role="region" aria-label="Cambios sin guardar">
       <span className="ves-gtx">
@@ -719,7 +727,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         const ranurasEl = (
           <div className="vc-ran" role="tablist" aria-label="Qué le cambias">
             {ranuras.map(([id, et]) => {
-              const sg = (id === 'tag' && carta in bor.tags) || (id === 'marco' && 'marco' in bor) || (id === 'estilo' && 'estilo' in bor) || (id === 'efecto' && 'efecto' in bor);
+              const sg = (id === 'tag' && carta in bor.tags) || (id === 'marco' && 'marco' in bor) || (id === 'estilo' && 'estilo' in bor) || (id === 'efecto' && carta in bx);
               return (
                 <button key={id} type="button" role="tab" aria-selected={ran === id}
                   className={'vc-rn' + (ran === id ? ' on' : '') + (id === 'efecto' && !ti ? ' lk' : '') + (sg ? ' sg' : '')}
@@ -802,7 +810,7 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
         );
         const titulo = (
           <Titulo extra={<small className="ves-de">{ran === 'tag' || ran === 'marco' || ran === 'efecto' ? (FINO ? 'pasa el mouse o toca para probártelo' : 'toca para probártelo') : 'tu ' + nombre}</small>}>
-            {ran === 'efecto' ? 'Efecto de tus cartas' : etRan + (ran === 'tag' ? ' de tu ' + nombre : '')}</Titulo>
+            {ran === 'efecto' ? 'Efecto de tu ' + nombre : etRan + (ran === 'tag' ? ' de tu ' + nombre : '')}</Titulo>
         );
 
         if (!esTel) {

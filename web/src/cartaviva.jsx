@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Carta } from './piezas.jsx';
 import { usePases } from './pase.js';
 import { ConMarco } from './marcos.jsx';
-import { ConEfecto, usePuesto } from './puesto.js';
+import { ConEfecto, RANURA_FX, usePuesto } from './puesto.js';
 
 const cache = new Map();
 
@@ -78,7 +78,7 @@ export function CartaViva({ liga, k, cual, ancho, piezas = {}, marco, onEstado, 
   const pub = usePases();
   // 🛍️ el efecto de carta de la Tienda (tanda 3), encima de la armable: sólo el efecto, la carta ya está abajo
   const PT0 = usePuesto(k);
-  const PT = efecto === undefined ? PT0 : efecto && arte ? { t: Object.assign({}, PT0 ? PT0.t : {}, { carta: efecto }), A: arte } : null;
+  const PT = efecto === undefined ? PT0 : efecto && arte ? { t: Object.assign({}, PT0 ? PT0.t : {}, { [RANURA_FX[cual] || 'carta']: efecto }), A: arte } : null;
   useEffect(() => { setLista(false); }, [a]);
   useEffect(() => {
     if (onEstado) onEstado(a === undefined ? 'buscando' : a ? (lista ? 'viva' : 'buscando') : 'imagen');
@@ -122,6 +122,6 @@ export function CartaViva({ liga, k, cual, ancho, piezas = {}, marco, onEstado, 
   const mk = marco !== undefined ? marco : pub && pub.m && pub.m[k];
   const f = liga.T[k] || (liga.X && liga.X[k]) || {};
   const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
-  const conFx = <ConEfecto P={PT} src={liga.cartaUrl(k, cual) || ''} sinImg>{caja}</ConEfecto>;
+  const conFx = <ConEfecto P={PT} src={liga.cartaUrl(k, cual) || ''} cual={cual} sinImg>{caja}</ConEfecto>;
   return mk ? <ConMarco m={mk} cual={cual} ancho={ancho} svColor={svc} cc={f.cc}>{conFx}</ConMarco> : conFx;
 }

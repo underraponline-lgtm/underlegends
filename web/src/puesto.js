@@ -124,11 +124,31 @@ export function nombreTienda(P, n) {
   return capa('nom-tienda', html, { 'aria-hidden': undefined, title: n });
 }
 
+// 🃏 CADA EFECTO ES DE UNA SOLA CARTA (28/11/2026, Dlx: «1. dale 2. dale 3. dale»): la Temporada lleva el suyo en `carta`
+// (donde ya estaba todo lo puesto) y las otras tres, en su ranura. La misma tabla que `RANURA_FX` de bot/tienda.js
+export const RANURA_FX = { temporada: 'carta', competitivo: 'carta-comp', servidor: 'carta-sv', pais: 'carta-pais' };
+export const CARTA_FX_N = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
+/** La ranura de una pieza: la de su carta si es un efecto (sin decirlo, Temporada), si no su categoría */
+export const ranuraDe = (p) => (!p ? '' : p.c === 'carta' ? RANURA_FX[p.carta] || RANURA_FX.temporada : p.c);
+/** De qué carta es un efecto (`temporada` si el catálogo no lo dice) */
+export const cartaDeFx = (p) => (p && RANURA_FX[p.carta] ? p.carta : 'temporada');
+/** «Para tu Temporada» · «Para tu Competitiva»… */
+export const paraTu = (p) => 'Para tu ' + CARTA_FX_N[cartaDeFx(p)];
+// la carta de una imagen, por su dirección (`<clave>/<carta>.webp`, `.chica.webp`, la foto con marco `-m.webp`, la de
+// Servidor de otro socio `sv-<x>.webp`); '' si no es ninguna de las cuatro (una de liga, la muestra de la Tienda)
+const CUAL_SRC = /\/(temporada|competitivo|servidor|pais|sv-[a-z0-9]+)(?:-m)?(?:\.chica)?\.(?:webp|png)/;
+export function cualDe(src) {
+  const m = CUAL_SRC.exec(String(src || ''));
+  return !m ? '' : m[1].slice(0, 3) === 'sv-' ? 'servidor' : m[1];
+}
+
 /** 🃏 el efecto de carta encima de la imagen de una carta (`hijo`); sin efecto, `hijo` tal cual */
 // `sinImg`: encima de algo que ya es la carta (la armable, en su iframe), sólo el efecto: la imagen del molde no se ve
 // `host`: atributos para el contenedor (su clase y, p. ej., `data-o`), cuando el lugar ubica la carta por ellos
-export function ConEfecto({ P, src, sinImg, host, children }) {
-  const h = molde(P, 'carta', 'carta');
+// `cual`: qué carta es; sin decirlo, se saca de `src`. Lleva el efecto de ESA carta, o ninguno
+export function ConEfecto({ P, src, cual, sinImg, host, children }) {
+  const c = cual || cualDe(src);
+  const h = c ? molde(P, RANURA_FX[c], 'carta') : '';
   if (!h || !src) return children;
   const hp = Object.assign({}, host || {}, { className: 'ct-host' + (host && host.className ? ' ' + host.className : '') });
   return createElement('span', hp, children, capa('ct-fx' + (sinImg ? ' sin-img' : ''), llenar(h, { carta: src }), null, src));
@@ -140,11 +160,12 @@ export function ConEfecto({ P, src, sinImg, host, children }) {
  * salía. Sin efecto puesto, la MISMA <img> de antes (nada cambia para los demás); con efecto, la clase y los `data-*` que
  * la ubican pasan al contenedor, y la imagen lo llena: el CSS de esos lugares los toma con `>:is(img,.ct-host)`.
  */
-export function CartaFx({ k, src, className, data, ...img }) {
+export function CartaFx({ k, src, cual, className, data, ...img }) {
   const P = usePuesto(k);
   const d = data || {};
-  if (!src || !molde(P, 'carta', 'carta')) return createElement('img', Object.assign({ alt: '', src, className }, d, img));
-  return createElement(ConEfecto, { P, src, host: Object.assign({ className }, d) }, createElement('img', Object.assign({ alt: '', src }, img)));
+  const c = cual || cualDe(src);
+  if (!src || !c || !molde(P, RANURA_FX[c], 'carta')) return createElement('img', Object.assign({ alt: '', src, className }, d, img));
+  return createElement(ConEfecto, { P, src, cual: c, host: Object.assign({ className }, d) }, createElement('img', Object.assign({ alt: '', src }, img)));
 }
 
 /** 🖼️ el fondo de la Tienda para un lugar (`perfil` · `vs` · `esc` · `ficha` · `fila`), como capa: `null` si no tiene */

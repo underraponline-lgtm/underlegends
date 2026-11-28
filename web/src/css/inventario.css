@@ -11,6 +11,8 @@
 .ves-nota{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:var(--v-gris)}
 .ves-p{margin:0;font:500 14px/1.5 Archivo,sans-serif;color:#C9C9CC;max-width:70ch}
 .ves-p b{color:var(--v-tinta)}
+/* 🃏 de qué carta son los efectos de la grilla (28/11/2026): cada efecto es de una sola carta */
+.ves-para{display:inline-flex;align-items:center;margin-right:6px;padding:2px 7px;border:1px solid #3A3D45;border-radius:3px;background:#101114;color:#F6F6F6;font:800 11px/1.4 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;vertical-align:1px}
 .ves-msg{margin:0;padding:11px 13px;border:1.5px solid var(--v-verde);background:#06120f;font:600 14px/1.4 Archivo,sans-serif}
 
 /* la cabecera: el título y tus números, como «hoy en la Liga» */
