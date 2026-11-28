@@ -11761,6 +11761,24 @@
      ],
      "organizador": "@lrs37895",
      "cuentas": {}
+    },
+    "1576317561413435598": {
+     "sv": "ACAD",
+     "nombre": "CHOP COMPE x LaCrew",
+     "mo": "2026-11-28T19:23:13Z",
+     "staff": {
+      "host": [
+       "chop"
+      ],
+      "dj": [
+       "chop"
+      ]
+     },
+     "orgs": [],
+     "organizador": "",
+     "cuentas": {
+      "chop": "1364747464170668042"
+     }
     }
    },
    "ver": {

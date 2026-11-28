@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-28T18:55:36+00:00",
+ "cuando": "2026-11-28T19:25:32+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4764,6 +4764,41 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
    "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-28T13:29:02"
+  },
+  {
+   "nombre": "CHOP COMPE x LaCrew",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1576317561413435598",
+   "cuando": "2026-11-28T19:23:13",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "17ba9bb10e33206e",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "Yaaaa",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "host": [
+     "chop"
+    ],
+    "dj": [
+     "chop"
+    ]
+   },
+   "autor": "chop",
+   "staff_cuentas": {
+    "chop": "1364747464170668042"
+   },
+   "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-11-28T13:29:02"
   },
