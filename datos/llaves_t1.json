@@ -70158,5 +70158,131 @@
    "min": 175,
    "v": 1
   }
+ },
+ "721": {
+  "dia": "2026-11-28",
+  "escala": "8-15",
+  "fecha": "28/11",
+  "links": [
+   "https://discord.com/channels/1074328197400887388/1222379620494741604/1576102472231948350"
+  ],
+  "n": 721,
+  "nombre": "FREESTYLE ESTELAR",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "YEYOY",
+       "TEGO 🇦🇷"
+      ],
+      "YEYOY",
+      ""
+     ],
+     [
+      [
+       "Julda",
+       "CNC"
+      ],
+      "Julda",
+      ""
+     ],
+     [
+      [
+       "DYNOKO",
+       "compare"
+      ],
+      "DYNOKO",
+      ""
+     ],
+     [
+      [
+       "jazi",
+       "Lobatn 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Yeyox",
+       "Julda"
+      ],
+      "Yeyox",
+      ""
+     ],
+     [
+      [
+       "Eber 🇲🇽",
+       "DYNOKO"
+      ],
+      "Eber 🇲🇽",
+      "Walk-in 1: Eber 🇲🇽"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Eber 🇲🇽",
+       "Yeyox"
+      ],
+      "Eber 🇲🇽",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "CH",
+  "tabla": [
+   [
+    "Yeyox",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Eber 🇲🇽",
+    "Campeón",
+    3750
+   ],
+   [
+    "DYNOKO",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Julda",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CNC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TEGO 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "compare",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "ver": {
+   "min": 57,
+   "v": 1
+  }
  }
 }

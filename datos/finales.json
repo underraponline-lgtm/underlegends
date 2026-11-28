@@ -2323,6 +2323,13 @@
   "autor": "1194813613786026136",
   "canal": "1487207377601040516",
   "canal_pregunta": "1487207377601040516",
+  "cerrada": {
+   "como": "nadie siguió",
+   "n": 0,
+   "sin": 3,
+   "t": "2026-11-28 1:23 AM ET",
+   "tot": 15
+  },
   "cuando": "2026-11-26T03:39:52.567000+00:00",
   "donde": "llave",
   "evento": "Backtime",

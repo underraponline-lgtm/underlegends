@@ -64231,5 +64231,116 @@
    ]
   ],
   "v": 2
+ },
+ "721": {
+  "antes": {
+   "CNC": [
+    372,
+    257,
+    true
+   ],
+   "Julda": [
+    73,
+    88,
+    false
+   ],
+   "Yeyox": [
+    106,
+    140,
+    false
+   ],
+   "compare": [
+    371,
+    256,
+    true
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "YEYOY",
+    "TEGO 🇦🇷",
+    "YEYOY"
+   ],
+   [
+    "Julda",
+    "CNC",
+    "Julda"
+   ],
+   [
+    "DYNOKO",
+    "compare",
+    "DYNOKO"
+   ],
+   [
+    "Yeyox",
+    "Julda",
+    "Yeyox"
+   ],
+   [
+    "Eber 🇲🇽",
+    "DYNOKO",
+    "Eber 🇲🇽"
+   ],
+   [
+    "Eber 🇲🇽",
+    "Yeyox",
+    "Eber 🇲🇽"
+   ]
+  ],
+  "ev_antes": {
+   "CNC": 3,
+   "Julda": 11,
+   "Yeyox": 4,
+   "compare": 4
+  },
+  "fecha": "28/11",
+  "noche": true,
+  "nombre": "FREESTYLE ESTELAR",
+  "num": 721,
+  "participantes": 10,
+  "sello": {
+   "Eber 🇲🇽": ""
+  },
+  "sv": "CH",
+  "t": "2026-11-28T06:24:06Z",
+  "tabla": [
+   [
+    "Yeyox",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Eber 🇲🇽",
+    "Campeón",
+    3750
+   ],
+   [
+    "Julda",
+    "Semifinal",
+    3500
+   ],
+   [
+    "DYNOKO",
+    "Semifinal",
+    3500
+   ],
+   [
+    "TEGO 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CNC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "compare",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

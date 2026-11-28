@@ -386,6 +386,8 @@
   "caquinna": "CrisZJ",
   "fusok": "Panchok",
   "tmaxturbo": "Tmax Turbo [PN]",
+  "dynoko": "Dynoco",
+  "yeyoy": "Yeyox",
   "zetryco": "Zetryko",
   "martynez": "MaYeuTyK",
   "basty": "BastyRetro",
@@ -2012,6 +2014,14 @@
   [
    "Tmax turbo",
    "Tmax Turbo [PN]"
+  ],
+  [
+   "DYNOKO",
+   "Dynoco"
+  ],
+  [
+   "YEYOY",
+   "Yeyox"
   ],
   [
    "Zetryco",

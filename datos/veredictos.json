@@ -16162,8 +16162,8 @@
    "g": "1074328197400887388",
    "canal": "1222380923048296459",
    "pub": 1795845139019,
-   "ed": 1795845148595,
-   "texto": "`[ FINAL ]`\n⌞YEYOX⌝ 🆚 ⌞EBER⌝",
+   "ed": 1795845912206,
+   "texto": "`[ FINAL ]`\n⌞YEYOX⌝ 🆚 ⌞EBER⌝\n⌞MAKMA⌝ 🆚 ⌞DYNOKO⌝ 🆚 ⌞YEYOX⌝ 🆚 ⌞EBER⌝",
    "batallas": [
     [
      "FINAL",
@@ -16173,6 +16173,18 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMA",
+      "DYNOKO",
+      "YEYOX",
+      "EBER"
+     ],
+     "EBER",
+     "veredicto",
      []
     ]
    ]

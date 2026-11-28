@@ -680,6 +680,15 @@
 "temporada"
 ]
 },
+"julda": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "lilnano": {
 "rg": "C",
 "c": [
@@ -691,15 +700,6 @@
 "onzass": {
 "rg": "E",
 "c": []
-},
-"julda": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "richard": {
 "rg": "D",
@@ -909,6 +909,13 @@
 "rg": "E",
 "c": []
 },
+"yeyox": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "gus": {
 "rg": "E",
 "c": [
@@ -1042,13 +1049,6 @@
 "flash": {
 "rg": "",
 "c": []
-},
-"yeyox": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "romeo": {
 "rg": "",
@@ -6408,6 +6408,15 @@
 ],
 "rk": "temporada",
 "pos": 10
+},
+{
+"tipo": "rango",
+"t": "2026-11-28T06:32:17Z",
+"quien": [
+"Julda"
+],
+"rg": "C",
+"primero": false
 }
 ],
 "noche_antes": {
@@ -7304,122 +7313,6 @@
 }
 },
 "noches": {
-"2026-11-11": {
-"tipo": "resnoche",
-"t": "2026-11-12T08:00:00Z",
-"dia": "2026-11-11",
-"eventos": 3,
-"part": 60,
-"campeones": [
-{
-"ev": "ALL VALLEY",
-"sv": "FFA",
-"ll": 609,
-"quien": [
-[
-"Liberia",
-"liberia"
-],
-[
-"PichulaMc",
-"pichulamc"
-]
-]
-},
-{
-"ev": "GALACTICOS DEL FREESTYLE VOL.1",
-"sv": "ACAD",
-"ll": 608,
-"quien": [
-[
-"Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
-""
-]
-]
-},
-{
-"ev": "qcyo rapeen Pandillas",
-"sv": "FFA",
-"ll": 610,
-"quien": [
-[
-"YOUNG VLAD",
-"youngvlad"
-],
-[
-"Kminant",
-"kminant"
-],
-[
-"Tam",
-"tam"
-]
-]
-}
-],
-"suman": [
-{
-"n": "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
-"k": "",
-"pts": 7500,
-"ev": 1
-},
-{
-"n": "PichulaMc",
-"k": "pichulamc",
-"pts": 7500,
-"ev": 2
-},
-{
-"n": "letrao",
-"k": "letrao",
-"pts": 7500,
-"ev": 1
-}
-],
-"suben": [
-{
-"n": "Ryuk",
-"k": "",
-"de": 537,
-"a": 418
-},
-{
-"n": "AbrahamSRRL",
-"k": "",
-"de": 594,
-"a": 476
-},
-{
-"n": "Kminant",
-"k": "kminant",
-"de": 401,
-"a": 327
-}
-],
-"sorpresas": [
-{
-"n": "Emilio Alva aka mr cachondo folla mama de lord 🔥🇧🇱",
-"k": "",
-"que": "debut",
-"ev": "GALACTICOS DEL FREESTYLE VOL.1"
-},
-{
-"n": "YOUNG VLAD",
-"k": "youngvlad",
-"que": "primer",
-"ev": "qcyo rapeen Pandillas",
-"desde": 334
-},
-{
-"n": "Kminant",
-"k": "kminant",
-"que": "primer",
-"ev": "qcyo rapeen Pandillas",
-"desde": 401
-}
-]
-},
 "2026-11-12": {
 "tipo": "resnoche",
 "t": "2026-11-13T08:00:00Z",
@@ -8851,6 +8744,74 @@
 "desde": 706
 }
 ]
+},
+"2026-11-27": {
+"tipo": "resnoche",
+"t": "2026-11-28T08:00:00Z",
+"dia": "2026-11-27",
+"eventos": 1,
+"part": 10,
+"campeones": [
+{
+"ev": "FREESTYLE ESTELAR",
+"sv": "CH",
+"ll": 721,
+"quien": [
+[
+"Eber 🇲🇽",
+""
+]
+]
+}
+],
+"suman": [
+{
+"n": "Yeyox",
+"k": "yeyox",
+"pts": 5000,
+"ev": 1
+},
+{
+"n": "Eber 🇲🇽",
+"k": "",
+"pts": 3750,
+"ev": 1
+},
+{
+"n": "DYNOKO",
+"k": "",
+"pts": 3500,
+"ev": 1
+}
+],
+"suben": [
+{
+"n": "compare",
+"k": "",
+"de": 368,
+"a": 340
+},
+{
+"n": "CNC",
+"k": "",
+"de": 369,
+"a": 342
+},
+{
+"n": "Yeyox",
+"k": "yeyox",
+"de": 106,
+"a": 95
+}
+],
+"sorpresas": [
+{
+"n": "Eber 🇲🇽",
+"k": "",
+"que": "debut",
+"ev": "FREESTYLE ESTELAR"
+}
+]
 }
 },
 "extra": {
@@ -9141,7 +9102,7 @@
 "julda": 0,
 "lalox": 0,
 "beneroo": 0,
-"yeyox": 2,
+"yeyox": 3,
 "magic": 1,
 "tho": 1,
 "mark98": 1,

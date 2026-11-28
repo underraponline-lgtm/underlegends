@@ -2,331 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "0a14898c82",
-   "tipo": "Nombre desconocido",
-   "sec": "ELITE FESTIVAL VOL. 1 · ACAD · 13/11 · #630",
-   "que": "¿Quién es «3\\. CHOP 🇭🇳»?",
-   "r": "Es Chop",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Chop: estaba en la llamada del evento con un nombre parecido",
-   "t": 1794613063367,
-   "filas": [
-    1349
-   ],
-   "variantes": [
-    "3\\. CHOP 🇭🇳"
-   ],
-   "escribio": {
-    "alias": [
-     "3\\. CHOP",
-     "Chop"
-    ],
-    "filas": [
-     361
-    ]
-   }
-  },
-  {
-   "id": "2ccfe4e28a",
-   "tipo": "Nombre desconocido",
-   "sec": "ELITE FESTIVAL VOL. 1 · ACAD · 13/11 · #630",
-   "que": "¿Quién es «KARDIOLOGO 🇬🇹»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1565484501520490647",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1565484501520490647)",
-   "t": 1794613063367,
-   "filas": [
-    1350
-   ],
-   "variantes": [
-    "KARDIOLOGO 🇬🇹"
-   ],
-   "escribio": {
-    "alta": [
-     "KARDIOLOGO",
-     "1565484501520490647"
-    ]
-   }
-  },
-  {
-   "id": "fd4ad29e22",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 8 8 · SR · 13/11 · #631",
-   "que": "¿Quién es «Fritz 🇨🇴»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1420965051539390506",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1420965051539390506)",
-   "t": 1794616682086,
-   "filas": [
-    1351
-   ],
-   "variantes": [
-    "Fritz 🇨🇴"
-   ],
-   "escribio": {
-    "alta": [
-     "Fritz",
-     "1420965051539390506"
-    ]
-   }
-  },
-  {
-   "id": "8908694593",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 8 8 · SR · 13/11 · #631",
-   "que": "¿Quién es «MAGMA»?",
-   "r": "Es alguien nuevo: alta con su cuenta 766529274931970071",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con su Discord (766529274931970071)",
-   "t": 1794616682086,
-   "filas": [
-    1352
-   ],
-   "variantes": [
-    "MAGMA"
-   ],
-   "escribio": {
-    "alta": [
-     "MAGMA",
-     "766529274931970071"
-    ]
-   }
-  },
-  {
-   "id": "6c74fb2978",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 8 8 · SR · 13/11 · #631",
-   "que": "¿Quién es «PUNISHER»?",
-   "r": "Es alguien nuevo: alta con su cuenta 520115924901167107",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con su Discord (520115924901167107)",
-   "t": 1794616682086,
-   "filas": [
-    1353
-   ],
-   "variantes": [
-    "PUNISHER"
-   ],
-   "escribio": {
-    "alta": [
-     "PUNISHER",
-     "520115924901167107"
-    ]
-   }
-  },
-  {
-   "id": "1e1b97cc85",
-   "tipo": "Nombre desconocido",
-   "sec": "QCYO RAPEEN 5 · FFA · 27/10 · #539",
-   "que": "¿Quién es «Jahno Afrodisiaco 🇦🇷»?",
-   "r": "Es melomaniaco",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de melomaniaco: se anotó así en inscripciones",
-   "t": 1794619946916,
-   "filas": [
-    928
-   ],
-   "variantes": [
-    "Jahno Afrodisiaco 🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "Jahno Afrodisiaco",
-     "melomaniaco"
-    ],
-    "filas": [
-     362
-    ]
-   }
-  },
-  {
-   "id": "762492b72d",
-   "tipo": "Nombre desconocido",
-   "sec": "RANKED 2 · FDS · 13/11 · #632",
-   "que": "¿Quién es «REPLICA : RAIZER»?",
-   "r": "Es Raizer",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Raizer: estaba en la llamada del evento con un nombre parecido",
-   "t": 1794621818829,
-   "filas": [
-    1357
-   ],
-   "variantes": [
-    "REPLICA : RAIZER"
-   ],
-   "escribio": {
-    "alias": [
-     "REPLICA : RAIZER",
-     "Raizer"
-    ],
-    "filas": [
-     363
-    ]
-   }
-  },
-  {
-   "id": "b088198613",
-   "tipo": "Nombre desconocido",
-   "sec": "RANKED 2 · FDS · 13/11 · #632",
-   "que": "¿Quién es «SORAYA»?",
-   "r": "Es araya",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de araya: estaba en la llamada del evento con un nombre parecido",
-   "t": 1794621818829,
-   "filas": [
-    1358
-   ],
-   "variantes": [
-    "SORAYA"
-   ],
-   "escribio": {
-    "alias": [
-     "SORAYA",
-     "araya"
-    ],
-    "filas": [
-     364
-    ]
-   }
-  },
-  {
-   "id": "152d81051d",
-   "tipo": "Nombre desconocido",
-   "sec": "RANKED 2 · FDS · 13/11 · #632",
-   "que": "¿Quién es «NEXUX»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1794625502414,
-   "filas": [
-    1362
-   ],
-   "variantes": [
-    "NEXUX"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "109106baf7",
-   "tipo": "Nombre desconocido",
-   "sec": "KISS OF SHINIGAMI · FFA · 13/11 · #633",
-   "que": "¿Quién es «Oasis-Nacho-Rizas»?",
-   "r": "Es Oasis",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Oasis: la llave lo escribe así de una ronda a otra",
-   "t": 1794627401976,
-   "filas": [
-    1364
-   ],
-   "variantes": [
-    "Oasis-Nacho-Rizas"
-   ],
-   "escribio": {
-    "alias": [
-     "Oasis-Nacho-Rizas",
-     "Oasis"
-    ],
-    "filas": [
-     365
-    ]
-   }
-  },
-  {
-   "id": "d2d36cd08f",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen 15 · FFA · 13/11 · #634",
-   "que": "¿Quién es «shenlong🇰🇷»?",
-   "r": "Es Joven shenlong",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Joven shenlong: estaba en la llamada del evento con un nombre parecido",
-   "t": 1794634031126,
-   "filas": [
-    1370
-   ],
-   "variantes": [
-    "shenlong🇰🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "shenlong",
-     "Joven shenlong"
-    ],
-    "filas": [
-     366
-    ]
-   }
-  },
-  {
-   "id": "c0a4f50cbc",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen 15 · FFA · 13/11 · #634",
-   "que": "¿Quién es «Chxrzy 🇨🇴»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1413702402242248797",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1413702402242248797)",
-   "t": 1794634031126,
-   "filas": [
-    1368
-   ],
-   "variantes": [
-    "Chxrzy 🇨🇴"
-   ],
-   "escribio": {
-    "alta": [
-     "Chxrzy",
-     "1413702402242248797"
-    ]
-   }
-  },
-  {
-   "id": "fd9d3272ab",
-   "tipo": "Nombre desconocido",
-   "sec": "qcyo rapeen 15 · FFA · 13/11 · #634",
-   "que": "¿Quién es «Julda🇨🇴»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1194813613786026136",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1194813613786026136)",
-   "t": 1794634031126,
-   "filas": [
-    1369
-   ],
-   "variantes": [
-    "Julda🇨🇴"
-   ],
-   "escribio": {
-    "alta": [
-     "Julda",
-     "1194813613786026136"
-    ]
-   }
-  },
-  {
    "id": "387479cb73",
    "tipo": "Nombre desconocido",
    "sec": "FATS BATTLES PALOOZA FECHA 7 · ACAD · 19/10 · #491",
@@ -3602,6 +3277,108 @@
    ],
    "escribio": {
     "batalla": "RAP SIN GROSERIAS 1 · FDS · 26/10 · octavos · Artezzy 🇵🇪 🆚 Vilca"
+   }
+  },
+  {
+   "id": "339b8e0190",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE ESTELAR · CH · 28/11 · #721",
+   "que": "¿Quién es «DYNOKO»?",
+   "r": "Es Dynoco",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Dynoco: estaba en la llamada del evento con un nombre parecido",
+   "t": 1795847556509,
+   "filas": [
+    1809
+   ],
+   "variantes": [
+    "DYNOKO"
+   ],
+   "escribio": {
+    "alias": [
+     "DYNOKO",
+     "Dynoco"
+    ],
+    "filas": [
+     394
+    ]
+   }
+  },
+  {
+   "id": "5d8ff12543",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE ESTELAR · CH · 28/11 · #721",
+   "que": "¿Quién es «YEYOY»?",
+   "r": "Es Yeyox",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Yeyox: estaba en la llamada del evento con un nombre parecido",
+   "t": 1795847556509,
+   "filas": [
+    1812
+   ],
+   "variantes": [
+    "YEYOY"
+   ],
+   "escribio": {
+    "alias": [
+     "YEYOY",
+     "Yeyox"
+    ],
+    "filas": [
+     395
+    ]
+   }
+  },
+  {
+   "id": "99321c0421",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE ESTELAR · CH · 28/11 · #721",
+   "que": "¿Quién es «Eber 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1303908637219225702",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1303908637219225702)",
+   "t": 1795847556509,
+   "filas": [
+    1810
+   ],
+   "variantes": [
+    "Eber 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Eber",
+     "1303908637219225702"
+    ]
+   }
+  },
+  {
+   "id": "d9cfad4eca",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE ESTELAR · CH · 28/11 · #721",
+   "que": "¿Quién es «TEGO 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1241918803051282456",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1241918803051282456)",
+   "t": 1795847556509,
+   "filas": [
+    1811
+   ],
+   "variantes": [
+    "TEGO 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "TEGO",
+     "1241918803051282456"
+    ]
    }
   }
  ],

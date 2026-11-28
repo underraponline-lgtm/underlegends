@@ -5320,6 +5320,30 @@
    ]
   }
  },
+ "eber": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1795847563932
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1795847563932
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1795847563932
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795847563932
+   ]
+  }
+ },
  "eclipsito": {
   "pais": {
    "DA LA CARA": [
@@ -6335,6 +6359,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1794982436509
+   ],
+   "🪓 VERDUGO DEL DUEÑO": [
+    "🪓 VERDUGO DEL DUEÑO",
+    "t1",
+    1795847563932
    ]
   },
   "temporada": {
@@ -7767,6 +7796,13 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1795761311378
+   ]
+  },
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1795847563932
    ]
   },
   "servidor": {
@@ -20531,6 +20567,11 @@
     "📈 EN ASCENSO",
     "t1",
     1795451950700
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1795847563932
    ]
   }
  },

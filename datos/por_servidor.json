@@ -2494,12 +2494,12 @@
   },
   "CNC": {
    "CH": {
-    "duelos": "2/3",
-    "ev": 3,
+    "duelos": "2/4",
+    "ev": 4,
     "oro": 1,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 1,
-    "pts": 13625,
+    "pts": 19625,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -3764,6 +3764,20 @@
     "racha": "0/0"
    }
   },
+  "DYNOKO": {
+   "CH": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 10500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Dantemx": {
    "ACAD": {
     "duelos": "0/1",
@@ -4806,6 +4820,21 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "Eber 🇲🇽": {
+   "CH": {
+    "duelos": "2/2",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 11250,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
     }
    }
   },
@@ -7708,13 +7737,13 @@
   },
   "Julda": {
    "CH": {
-    "duelos": "4/6",
-    "ev": 2,
+    "duelos": "5/8",
+    "ev": 3,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 1,
-    "pts": 35550,
-    "racha": "2/2"
+    "pts": 46050,
+    "racha": "0/2"
    },
    "DW": {
     "duelos": "",
@@ -16305,6 +16334,20 @@
     "racha": "0/0"
    }
   },
+  "TEGO 🇦🇷": {
+   "CH": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "TG": {
    "CEU": {
     "duelos": "",
@@ -18043,6 +18086,17 @@
     "racha": "0/0"
    }
   },
+  "YEYOY": {
+   "CH": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
+   }
+  },
   "YIN-SON 🇺🇸": {
    "ACAD": {
     "duelos": "",
@@ -18095,13 +18149,16 @@
   },
   "Yeyox": {
    "CH": {
-    "duelos": "2/4",
-    "ev": 2,
+    "duelos": "3/6",
+    "ev": 3,
     "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 32175,
-    "racha": "2/2"
+    "ovr": 48,
+    "pod": 1,
+    "pts": 47175,
+    "racha": "3/3",
+    "tg": {
+     "fin": 1
+    }
    },
    "URBF": {
     "duelos": "1/2",
@@ -18746,12 +18803,12 @@
     "racha": "0/0"
    },
    "CH": {
-    "duelos": "0/2",
-    "ev": 2,
+    "duelos": "0/3",
+    "ev": 3,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 5156,
+    "pts": 11156,
     "racha": "0/0"
    },
    "FFA": {
