@@ -565,3 +565,13 @@
 .tz-var-v .ta-av{width:42px;height:42px}.tz-var-v .ta-sv-tag{font-size:7px;padding:1px 3px}
 .tz-var-n{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 11px/1.1 var(--tz-e);letter-spacing:.04em}
 @media (hover:hover) and (pointer:fine){.tz-var-l button:not([aria-pressed="true"]):hover{border-color:#E41373}}
+
+/* 🔁 LAS VERSIONES SE TURNAN (28/11/2026): una capa por versión, apiladas en la misma celda; se ve la `.on` y el reloj de
+   tienda3.jsx (`useTurnos`) la pasa con un fundido de opacidad. Ocupa la celda entera del cuadro (`place-self:stretch`),
+   así los fondos (`.ta-fondo`, absolutos) siguen tapando todo y las caras quedan centradas como antes. `.sin`: al repintar
+   el HTML se vuelve a la versión que iba, sin fundido */
+.tz-vr{position:relative;display:grid;place-self:stretch;min-width:0;min-height:0}
+.tz-vr-i{grid-area:1/1;position:relative;display:grid;place-items:center;min-width:0;min-height:0;opacity:0;transition:opacity .6s ease}
+.tz-vr-i.on{opacity:1}
+.tz-vr.sin .tz-vr-i{transition:none}
+@media (prefers-reduced-motion:reduce){.tz-vr-i{transition:none}}

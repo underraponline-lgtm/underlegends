@@ -303,7 +303,9 @@ function hero(X, S, st, tengo, liga, llevan) {
     const tipo = esFondo(y.c) ? 'Fondo' : RANURA[y.c] || '';
     const ofM = g && g.of && g.of.k === 'pieza' && g.of.p === x.id && !g.of.usado && !tengo.has(x.id);
     const sub = (tipo ? tipo + ' · ' : '') + (x.t === 'nav' ? 'Gratis' : x.t === 'num' ? 'Ed. de 10' : tengo.has(x.id) ? 'Tuyo' : ofM ? '<em>' + num(g.of.precio) + '</em>' : num(precioIt(S, x.id)));
-    const arte = esFondo(y.c) ? arteFondo(X, x.id) : y.c === 'nom' ? nombre(muestra, x.id) : vista(X, x.id);
+    const arteFu = (v) => { const z = S.cat.piezas[v]; return esFondo(z.c) ? arteFondo(X, v) : z.c === 'nom' ? nombre(muestra, v) : vista(X, v); };
+    // 🔁 la funda de una pieza con versiones las va turnando; la de una variante suelta (un país) es ESA
+    const arte = y.g ? arteFu(x.id) : turnan(S, x.id, arteFu, 'fu');
     const nuevo = g && st.rgRecien && st.rgRecien.i === g.i;
     const etq = g && g.of ? `<span class="rg-badge rg-${g.of.k}${g.of.usado && g.of.k === 'pieza' ? ' usado' : ''}" style="--rgc:${rgColor(S, g.of)}">${g.of.usado && g.of.k === 'pieza' ? '✓' : rgEtq(g.of)}</span>` : '';
     return `<button class="dq-fu${nuevo ? ' rg-nuevo' : ''}" data-slide="${i}" aria-pressed="${i === st.slide}" style="--r:${RZ[y.r][1]}${nuevo ? ';--t0:-' + Math.max(0, Date.now() - st.rgRecien.t) + 'ms' : ''}" aria-label="${esc(y.n)}, ${esc(tipo)}, ${RZ[y.r][0]}${g && g.of ? ', tu oferta: ' + esc(rgEtq(g.of)) : ''}"><span class="dq-fu-v">${arte}${etq}</span><span class="dq-fu-t">${esc(y.n)}</span><span class="dq-fu-s">${sub}</span></button>`;
@@ -337,7 +339,7 @@ function hero(X, S, st, tengo, liga, llevan) {
     <div class="dq-main">
       <div class="dq-vis${recien ? ' rg-revela rg-k-' + rg.of.k : ''}" data-slide-id="${esc(s.id)}"${recien ? ` style="--t0:-${Math.max(0, Date.now() - st.rgRecien.t)}ms"` : ''}>
         <div class="dq-disco">${SURCOS}<div class="dq-etq"><div class="dq-etq-in">${enEtiqueta(X, S, s.id)}</div></div></div>
-        <div class="dq-funda"><div class="dq-arte">${esFondo(it.c) ? arteFondo(X, s.id) : vista(X, s.id)}</div><div class="dq-pie"><b>${esc(it.n)}</b><small>${esc(subDe(S, s.id))}</small></div>${sticker}</div>
+        <div class="dq-funda"><div class="dq-arte">${it.g ? arteV(X, S, s.id) : turnan(S, s.id, (v) => arteV(X, S, v), 'dq')}</div><div class="dq-pie"><b>${esc(it.n)}</b><small>${esc(subDe(S, s.id))}</small></div>${sticker}</div>
         ${rg && rg.of ? rgSello(S, rg.of, 'queda') : ''}${recien ? rgFx(S, st, rg.i, rg.of) : ''}
       </div>
       <div class="dq-info" data-tuto="tz-vitrina">
@@ -386,7 +388,7 @@ function tile(X, S, st, tengo, id) {
   const gl = S.cat.gratis[id] && Date.now() < S.cat.gratis[id].desde;
   const precio = mio ? '<span class="tz-ok">✓ Tuyo</span>' : tiene(p, 'pronto') ? 'Pronto' : !pr || gl ? 'Gratis' : S.yo.prem && pr !== base ? `<s>${num(base)}</s> ${num(pr)}` : num(pr);
   return `<article class="tz-q${prob ? ' prob' : ''}${on && mio ? ' on' : ''}" style="--r:${RZ[p.r][1]}" title="${esc(p.n)} · ${RZ[p.r][0]}">
-    <button class="tz-q-v" ${puede ? `data-prueba="${id}" aria-pressed="${on}" aria-label="Probarte ${esc(p.n)}"` : `data-abre="${id}" aria-label="Ver ${esc(p.n)}"`}>${esFondo(p.c) ? arteFondo(X, id) : vista(X, id)}${eti}</button>
+    <button class="tz-q-v" ${puede ? `data-prueba="${id}" aria-pressed="${on}" aria-label="Probarte ${esc(p.n)}"` : `data-abre="${id}" aria-label="Ver ${esc(p.n)}"`}>${turnan(S, id, (v) => arteV(X, S, v), 'q')}${eti}</button>
     ${mio || !pr ? '' : corazon(S, id)}
     <div class="tz-q-i"><i aria-label="${RZ[p.r][0]}"></i><b>${esGrupo(S, id) ? esc(nombreGrupo(S, id)) + ' <small>· ' + variantesDe(S, id).length + (cabezaDe(S, id) === 'A10' ? ' países' : cabezaDe(S, id) === 'A11' ? ' servidores' : ' versiones') + '</small>' : esc(p.n)}</b><span class="tz-q-p">${precio}</span><button class="tz-q-ver" data-abre="${id}">Ver</button></div></article>`;
 }
@@ -423,6 +425,54 @@ function filtrar(S, st, tengo, ids) {
   let out = ids.filter((id) => !S.cat.piezas[id].g).filter((id) => (f === 'faltan' ? !todas(id) : f === 'tuyas' ? tieneAlgo(id) : true));
   if (o !== 'rareza') out = out.slice().sort((a, b) => (precioIt(S, a) - precioIt(S, b)) * (o === 'caro' ? -1 : 1));
   return out;
+}
+// 🔁 LAS VERSIONES SE TURNAN (28/11/2026, Dlx: «para aquellos objetos que tienen otras ediciones/versiones, que la imagen
+// vaya variando entre esas»). Una pieza con variantes (`g`: los países, los servidores, las versiones incluidas de la Corona y
+// el Prisma) dibuja una capa por versión, apiladas, y se ve una sola (`.on`); el reloj de la Tienda (`useTurnos`) pasa a la
+// siguiente cada 2,5 s con un fundido de opacidad. Quieto con el mouse encima o con «menos movimiento». Sólo cambia lo que se
+// ve: el precio, el nombre y lo que se compra siguen siendo los de esa ficha. Arranca por la misma pieza, así sin reloj
+// (o con «menos movimiento») queda como antes
+const arteV = (X, S, v) => (esFondo(S.cat.piezas[v].c) ? arteFondo(X, v) : vista(X, v));
+function turnan(S, id, arteDe, donde) {
+  const vs = variantesDe(S, id);
+  if (vs.length < 2) return arteDe(id);
+  const orden = [id, ...vs.filter((v) => v !== id)];
+  return `<span class="tz-vr" data-vr="${donde}:${esc(id)}" data-n="${orden.length}">${orden.map((v, i) => `<span class="tz-vr-i${i ? '' : ' on'}"${i ? ' aria-hidden="true"' : ''}>${arteDe(v)}</span>`).join('')}</span>`;
+}
+// la ficha se turna sólo si trae sus versiones gratis (`inc`): la de un país o un servidor es ESA bandera, con su precio
+const turnaFicha = (S, id) => !S.cat.piezas[id].g && esGrupo(S, id) && variantesDe(S, id).slice(1).every((v) => tiene(S.cat.piezas[v], 'inc'));
+const VR_MS = 2500;
+const VR_K = new Map(); // en qué versión va cada lugar: el HTML se rehace entero y se vuelve a poner sin fundido
+const quieto = () => { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } };
+function vrPon(v, k, sin) {
+  if (sin) v.classList.add('sin');
+  const hs = v.children;
+  for (let i = 0; i < hs.length; i++) hs[i].classList.toggle('on', i === k);
+  v.dataset.k = String(k);
+  if (sin) requestAnimationFrame(() => requestAnimationFrame(() => v.classList.remove('sin')));
+}
+/** Un solo reloj para toda la Tienda: después de cada repintada devuelve cada lugar a su versión, y cada 2,5 s pasa a la
+ *  siguiente las que no están bajo el mouse (ni con el foco adentro) */
+function useTurnos(raiz) {
+  useLayoutEffect(() => {
+    const el = raiz.current;
+    if (!el) return;
+    el.querySelectorAll('.tz-vr').forEach((v) => { const k = VR_K.get(v.dataset.vr) || 0; if (String(k) !== (v.dataset.k || '0')) vrPon(v, k, true); });
+  });
+  useEffect(() => {
+    const t = setInterval(() => {
+      const el = raiz.current;
+      if (!el || document.hidden || quieto()) return;
+      el.querySelectorAll('.tz-vr').forEach((v) => {
+        const caja = v.closest('.tz-q, .dq-fu, .dq-funda, .tz-f-vis') || v;
+        if (caja.matches(':hover, :focus-within')) return;
+        const n = Number(v.dataset.n) || 1, k = ((Number(v.dataset.k) || 0) + 1) % n;
+        VR_K.set(v.dataset.vr, k);
+        vrPon(v, k, false);
+      });
+    }, VR_MS);
+    return () => clearInterval(t);
+  }, [raiz]);
 }
 const barraFiltros = (st) => `<div class="tz-filtros" role="group" aria-label="Filtrar las piezas"><span class="tz-filtros-g">${FILTROS.map(([k, n]) => `<button data-filtro="${k}" aria-pressed="${(st.filtro || 'todas') === k}">${n}</button>`).join('')}</span><span class="tz-filtros-g">${ORDENES.map(([k, n]) => `<button data-orden="${k}" aria-pressed="${(st.orden || 'rareza') === k}">${n}</button>`).join('')}</span></div>`;
 function piezas(X, S, st, tengo) {
@@ -577,7 +627,7 @@ function fichaPieza(X, S, st, tengo, liga, id) {
     return `<div class="tz-duenos"><b>Quién tiene cada número</b><ol>${f.join('')}</ol><p class="tz-nota">Si no se venden todas, la edición se cierra con las vendidas y no se reedita nunca.</p></div>`;
   })() : '';
   return `<div class="tz-ficha" role="dialog" aria-label="${esc(p.n)}">${popCab(esc(p.n), subDe(S, id), RZ[p.r][1])}
-    <div class="tz-f-vis">${vistaGrande(X, S, id)}</div>
+    <div class="tz-f-vis">${turnaFicha(S, id) ? turnan(S, id, (v) => vistaGrande(X, S, v), 'f') : vistaGrande(X, S, id)}</div>
     <div class="tz-f-inf">${selectorVar(X, S, tengo, id)}${unaEtiqueta(S, tengo, id) ? `<div class="tz-fila">${unaEtiqueta(S, tengo, id)}</div>` : ''}
       <p>${esc(p.d)}</p><p class="tz-donde"><b>Se ve en:</b> ${DONDE[p.c] || ''}.${EN_DISCORD[p.c] ? ' ' + EN_DISCORD[p.c] : ''}</p>
       ${paso === 'ver' && !mio ? `<div class="tz-f-precio">${precio}</div>` : ''}
@@ -955,6 +1005,9 @@ export default function TiendaNueva({ liga, dc, S: S0, recargar, partes }) {
     el.querySelectorAll('img[data-ini]').forEach((i) => { if (i.complete && !i.naturalWidth) cambia(i); });
     return () => el.removeEventListener('error', f, true);
   });
+
+  // 🔁 las piezas con versiones las van turnando (`turnan`)
+  useTurnos(raiz);
 
   // 💿 el disco sale de la funda sólo cuando cambió la funda elegida (el HTML se rehace entero en cada cambio)
   const fundaVista = useRef(null);
