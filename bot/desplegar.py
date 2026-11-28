@@ -63,7 +63,7 @@ MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js',
            # 🎁 `premium_regalos.js` desde el 28/11/2026 (la prueba del Premium y la temporada de los eventos de nuevos): avisos.js
            'premium_regalos.js',
            # 🎫 `pase_dc.js` desde el 28/11/2026 (los botones del cartel de #pase-rapero): worker.js lo importa
-           'pase_dc.js')
+           'pase_dc.js', 'foros.js')
 #: de dónde sale cada módulo, si no está en `bot/` con su nombre. 🔑 `llave_vivo.js` es EL lector de la página
 #: (`bot/paginas/llave_vivo.js`): el vigía lo usa para «te toca» (`turnos()` en avisos.js). Un solo archivo para
 #: los dos —si fueran dos copias, la página y el aviso leerían distinto la misma llave—
