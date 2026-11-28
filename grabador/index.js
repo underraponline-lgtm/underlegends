@@ -56,6 +56,7 @@ import { LlamadasVivo, claveCiclo } from './vivo.js';
 import { VIGIA_CAIDO_MIN, ANUNCIO_HORAS, FOTO_S, caidoDesde, anunciosDeAhora, largoRecuperada, decidirFin, CAMPEON } from './reserva.js';
 import { Habla, ubicarTodas, guion, resumenGuion, nombreClip, lineaBatalla, MIN_CLIP_S, completarIds, sinUbicar } from './batallas.js';
 import { Menciones } from './mencion.js';
+import { Recibidor, GUILD_DRA as GUILD_RECIBIDOR } from './recibidor.js';
 import { Fallas, motivoDe, textoFalla } from './entrada.js';
 
 const lista = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
@@ -1201,8 +1202,13 @@ if (!E.DISCORD_TOKEN) {
 // 💬 GuildMessages (no privilegiado) para `@ULAYA card` (mencion.js): sin Message Content, sólo llega el texto de lo que
 // menciona al bot. Los mensajes NO se guardan en memoria (MessageManager: 0): no hacen falta y crecerían sin parar
 const MENCION = E.MENCION !== '0';
+// 🚪 el recibidor (recibidor.js): ESTE SÍ lee el texto del chat general y de «dudas» de DRA, así que pide Message Content.
+// `RECIBIDOR=0` lo apaga y el bot vuelve a no pedirlo
+const RECIBIDOR = E.RECIBIDOR !== '0';
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates].concat(MENCION ? [GatewayIntentBits.GuildMessages] : []),
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates]
+    .concat(MENCION || RECIBIDOR ? [GatewayIntentBits.GuildMessages] : [])
+    .concat(RECIBIDOR ? [GatewayIntentBits.MessageContent] : []),
   makeCache: Options.cacheWithLimits({ ...Options.DefaultMakeCacheSettings, MessageManager: 0 }),
 });
 client.once(Events.ClientReady, async () => {
@@ -1229,6 +1235,17 @@ client.once(Events.ClientReady, async () => {
     const menciones = new Menciones({ client, token: E.DISCORD_TOKEN, vigia: VIGIA, clave: claveCiclo(E.DISCORD_TOKEN), anotar });
     client.on(Events.MessageCreate, (m) => { menciones.recibir(m); });
     anotar('💬 @ULAYA card / vs: prendido (MENCION=0 lo apaga)');
+  }
+  if (RECIBIDOR) {
+    const recibidor = new Recibidor({ client, token: E.DISCORD_TOKEN, vigia: VIGIA, clave: claveCiclo(E.DISCORD_TOKEN), anotar });
+    const c = recibidor.canales();
+    // los canales se buscan por nombre: si alguien los crea, renombra o borra, se vuelven a buscar
+    for (const ev of [Events.ChannelCreate, Events.ChannelUpdate, Events.ChannelDelete]) {
+      client.on(ev, (a, b) => { const x = b || a; if (x && x.guildId === GUILD_RECIBIDOR) recibidor.canales(); });
+    }
+    client.on(Events.MessageCreate, (m) => { recibidor.recibir(m); });
+    anotar(`🚪 recibidor: prendido en DRA (${c.escucha.size} canal(es) que escucha · aviso ${c.aviso ? 'sí' : 'NO ENCONTRADO'})`
+      + ' (RECIBIDOR=0 lo apaga)');
   }
   setInterval(medir, 300000);
   medir();
