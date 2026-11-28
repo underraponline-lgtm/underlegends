@@ -4252,13 +4252,14 @@ console.log('\nAGREGARON EL BOT A UN SERVIDOR\n');
   }
 }
 
-// 🐣 EL PANEL DEL EVENTO DE NUEVOS (28/11/2026): `evn:si` y `evn:no`. «Un momento» enseguida y sólo para quien tocó, después
-// la respuesta editando ese aviso; al objeto le llega quién tocó (del clic firmado), su nombre y qué quiere
-console.log('\n🐣 EL EVENTO DE NUEVOS\n');
+// 🐣 EL PANEL «PARA LOS NUEVOS» (28/11/2026): `evn:<actividad>` y `evn:no` (y `evn:si`, el del primer panel). «Un momento»
+// enseguida y sólo para quien tocó, después la respuesta editando ese aviso; al objeto le llega quién tocó (del clic
+// firmado), su nombre y qué quiere
+console.log('\n🐣 PARA LOS NUEVOS\n');
 {
   const antesA = env.AVISOS;
   const llamadas = [];
-  let contesta = { ok: true, estado: 'anotado', n: 3, eventos: 1 };
+  let contesta = { ok: true, estado: 'anotado', act: 'cypher', mias: ['comp', 'cypher'], eventos: 1 };
   env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
     const ruta = new URL(String(url)).pathname;
     if (/\/(uso|medir|drops-aviso)$/.test(ruta)) return new Response('{"ok":true}');
@@ -4273,26 +4274,30 @@ console.log('\n🐣 EL EVENTO DE NUEVOS\n');
     const s = SEGUIMIENTOS.filter((x) => /\/messages\/@original$/.test(x.url)).pop();
     return Object.assign(r, { t: s ? TX(s.cuerpo) : '' });
   };
-  let r = await tocar('evn:si', 1, { nick: 'Nuevito' });
+  let r = await tocar('evn:cypher', 1, { nick: 'Nuevito' });
   const c = llamadas.find((x) => x[0] === '/nuevos-anotar');
-  ok('«¡Quiero jugar!» contesta «un momento» sólo a quien tocó', r.json?.type === 4 && (r.json?.data?.flags & 64) === 64
+  ok('tocar una actividad contesta «un momento» sólo a quien tocó', r.json?.type === 4 && (r.json?.data?.flags & 64) === 64
     && (r.json?.data?.flags & 32768) === 32768 && /Un momento/.test(TX(r.json?.data)), JSON.stringify(r.json).slice(0, 200));
-  ok('y le pide al objeto anotarlo: quién tocó, su apodo y «si»', c && c[1].quien === '700951' && c[1].nombre === 'Nuevito' && c[1].accion === 'si',
+  ok('y le pide al objeto: quién tocó, su apodo y la actividad', c && c[1].quien === '700951' && c[1].nombre === 'Nuevito' && c[1].accion === 'cypher',
     JSON.stringify(c));
-  ok('la respuesta: anotado, con el contador', /estás anotado/.test(r.t) && /Anotados: 3 de 8/.test(r.t), r.t);
-  contesta = { ok: true, estado: 'jugo', n: 3, eventos: 5 };
-  r = await tocar('evn:si', 2);
-  ok('quien ya jugó más de 2: amable, y a eventos-hoy', /Ya jugaste 5 eventos: este es para los que empiezan/.test(r.t)
+  ok('la respuesta: a cuál entró y en cuáles está ahora', /Te anotaste en \*\*🎤 Cypher\*\*/.test(r.t) && /Ahora estás en: ⚔️ Competencia · 🎤 Cypher/.test(r.t), r.t);
+  contesta = { ok: true, estado: 'anotado', act: 'comp', mias: ['comp'], eventos: 0 };
+  llamadas.length = 0;
+  r = await tocar('evn:si', 7);
+  ok('el botón del primer panel (`evn:si`) sigue andando', llamadas.some((x) => x[0] === '/nuevos-anotar' && x[1].accion === 'si') && /Competencia/.test(r.t), r.t);
+  contesta = { ok: true, estado: 'jugo', eventos: 5 };
+  r = await tocar('evn:din', 2);
+  ok('quien ya jugó más de 2: amable, y a eventos-hoy', /Ya jugaste 5 eventos: esto es para los que empiezan/.test(r.t)
     && /<#1500690475089399858>/.test(r.t), r.t);
-  contesta = { ok: true, estado: 'ya', n: 3 };
-  r = await tocar('evn:si', 3);
-  ok('ya anotado: lo dice', /Ya estás anotado/.test(r.t), r.t);
-  contesta = { ok: true, estado: 'quitado', n: 2 };
+  contesta = { ok: true, estado: 'quitado', act: 'cypher', mias: ['comp'] };
+  r = await tocar('evn:cypher', 3);
+  ok('tocar otra vez: sale de esa, y dice en cuáles sigue', /saliste de \*\*🎤 Cypher\*\*/.test(r.t) && /Ahora estás en: ⚔️ Competencia/.test(r.t), r.t);
+  contesta = { ok: true, estado: 'todo_quitado', mias: [] };
   llamadas.length = 0;
   r = await tocar('evn:no', 4);
-  ok('«Ya no puedo» lo saca', llamadas.some((x) => x[0] === '/nuevos-anotar' && x[1].accion === 'no') && /ya no estás anotado/.test(r.t), r.t);
+  ok('«Ya no puedo» lo saca de todas', llamadas.some((x) => x[0] === '/nuevos-anotar' && x[1].accion === 'no') && /saliste de todas/.test(r.t), r.t);
   contesta = { error: 'red' };
-  r = await tocar('evn:si', 5);
+  r = await tocar('evn:entr', 5);
   ok('si el objeto no contesta, lo dice sin inventar', /No pude anotarlo/.test(r.t), r.t);
   llamadas.length = 0;
   r = await tocar('evn:otra', 6);

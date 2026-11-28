@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
-"""🐣 EL PANEL DEL EVENTO DE NUEVOS, en DRA (28/11/2026).
+"""🐣 EL PANEL «PARA LOS NUEVOS», en DRA (28/11/2026).
 
     python herramientas/evento_nuevos_panel.py             qué haría, sin tocar nada
     python herramientas/evento_nuevos_panel.py --publicar  lo publica UNA vez (o pone al día el que ya está)
     python herramientas/evento_nuevos_panel.py --auto      el self-check, sin red
 
 Por qué: el 80 % juega un evento y se va, y cuando Dlx les ofreció a mano a los nuevos «un evento sólo para los que
-empiezan», el 95 % dijo que sí. El panel junta a los interesados solo (`bot/nuevos.js`) y avisa al staff cuando son 8.
+empiezan», el 95 % dijo que sí. El panel junta a los interesados solo (`bot/nuevos.js`) en cuatro actividades —Competencia,
+Cypher, Dinámica y Entrenamiento, cada una con su grupo (`ACTIVIDADES`)— y avisa al staff cuando una tiene grupo.
 
 QUÉ HACE, Y NADA MÁS
 --------------------
-· 🔎 busca en DRA el canal que termina en «evento-nuevos» (el del panel) y el que termina en «recibidores» (el del
+· 🔎 busca en DRA el canal que termina en «evento-nuevos» (el del panel) y el que termina en «recibidor» (el del
   staff, privado) POR NOMBRE, como se decidió: los emojis del principio cambian, el final no. Si hay más de uno, se
   descarta el que está en el ARCHIVO (`herramientas/dra_hub.py` archivó uno viejo con ese nombre); si sigue habiendo
   dos, no hace nada y lo dice.
@@ -92,7 +93,8 @@ def main(publicar):
         hoy = {}
     p = hoy.get('panel') or {}
     if hoy:
-        print('   anotados hoy: %s de %s' % (hoy.get('n', 0), hoy.get('meta', 8)))
+        for a in hoy.get('actividades') or []:
+            print('   %s %s: %s de %s' % (a.get('emoji', ''), a.get('nombre', ''), a.get('n', 0), a.get('meta', a.get('grupo'))))
     if p.get('msg') and p.get('canal') == panel['id']:
         print('   ya hay un panel anotado (mensaje %s): se EDITA, no se publica otro' % p['msg'])
     elif hoy:

@@ -52,8 +52,10 @@ import { normCrew, puede as puedeCrew } from './crews.js';
 import * as SU from './setup.js';
 // 🧱 las piezas de los mensajes en Componentes V2 (20/11/2026, el rediseño de los comandos): un solo lugar, `bot/vista.js`
 import * as V from './vista.js';
-// 🐣 el Evento de Nuevos (28/11/2026): los botones del panel de DRA (`evn:si` / `evn:no`) y lo que contestan
+// 🐣 «Para los nuevos» (28/11/2026): los botones del panel de DRA (`evn:<actividad>` / `evn:no`) y lo que contestan
 import * as NU from './nuevos.js';
+// 🚪 el recibidor de DRA (28/11/2026): la ruta del grabador y el botón «Lo recibo yo». Todo vive en bot/recibidor.js
+import * as RC from './recibidor.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -5712,6 +5714,8 @@ export default {
     // 💬 @ULAYA card (23/11/2026): la mención que escucha el grabador de Railway (grabador/mencion.js). Sólo con la clave
     // del ciclo, que es la de ese servicio: nadie más puede pedirle al Worker que conteste en un canal
     if (camino === '/mencion' && req.method === 'POST') return esCiclo ? rutaMencion(req, env, ctx) : new Response('', { status: 403 });
+    // 🚪 el recibidor (28/11/2026): la pregunta de alguien nuevo en DRA que escucha el grabador (grabador/recibidor.js)
+    if (camino === '/recibidor' && req.method === 'POST') return esCiclo ? RC.ruta(req, env) : new Response('', { status: 403 });
     if (camino === '/avisos/numeral') return numeralPagina(req, env);
     if (camino === '/avisos/apodo') return apodoPagina(req, env);
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
@@ -6035,7 +6039,7 @@ export default {
           : 'No pude traer las estadísticas: prueba de nuevo en un rato.'));
       }
 
-      // ── 🐣 el panel del Evento de Nuevos (28/11/2026): `evn:si` «¡Quiero jugar!» y `evn:no` «Ya no puedo» ─────────────
+      // ── 🐣 el panel «Para los nuevos» (28/11/2026): `evn:<actividad>` (las de `ACTIVIDADES` en bot/nuevos.js) y `evn:no` ──
       // Sin dueño: el panel es de todos y quién toca lo firma Discord. No pide estar verificado (es para quien recién llega):
       // el objeto mira sólo cuántos eventos jugó en la temporada. La respuesta, efímera; el contador del panel lo edita el
       // objeto. «Un momento» primero, porque el objeto puede estar dormido (~4 s) y Discord corta a los 3
@@ -6044,9 +6048,18 @@ export default {
         const esperarN = frenado(yo, 'click');
         if (esperarN) return espera(esperarN);
         if (!yo) return aviso('No pude saber quién eres: prueba de nuevo.');
-        if (quien !== 'si' && quien !== 'no') return aviso('Ese botón ya no anda.');
+        // `evn:<actividad>` entra o sale de esa, `evn:no` sale de todas y `evn:si` (el primer panel) es la Competencia
+        if (!NU.accionValida(quien)) return aviso('Ese botón ya no anda.');
         return pensandoYEditar(i, ctx, async () => V.avisoMsg(NU.respuestaTxt(
           await alObjeto(env, 'nuevos-anotar', { quien: yo, nombre: NU.nombreDe(i), accion: quien }))));
+      }
+
+      // ── 🚪 «Lo recibo yo» (28/11/2026): `rcb:<mensaje>`, sólo el rol Recibidor de DRA o Dlx. Ver bot/recibidor.js
+      // y «👋 Saludar» (`rsal:<nuevo>:<canal>`, que no choca con el `saludar_` de YAGPDB): cualquiera menos el nuevo
+      if (que === 'rcb' || que === 'rsal') {
+        const esperarR = frenado(idDe(i), 'click');
+        if (esperarR) return espera(esperarR);
+        return que === 'rcb' ? RC.boton(i, env, ctx, DUENO) : RC.saludarBoton(i, env, ctx);
       }
 
       if (que === 'qg') {

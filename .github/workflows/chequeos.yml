@@ -31,6 +31,8 @@ on:
       - '**.py'
       - 'bot/**.js'
       - 'bot/**.mjs'
+      # 🎙️ el grabador de Railway: sus pruebas corren acá abajo (mencion_prueba.js, y el recibidor desde bot/)
+      - 'grabador/**.js'
       - 'bot/avisos_casos.json'
       - 'bot/ci/**'
       - '.github/**'
@@ -141,6 +143,10 @@ jobs:
           node bot/drop_discord_prueba.mjs
           # 💬 @ULAYA card (23/11/2026): qué lee el grabador de cada mención, qué manda al Worker y qué publica (sin red)
           node grabador/mencion_prueba.js
+          # 🚪 el recibidor de DRA (28/11/2026): el prefiltro (las dos copias iguales), el clasificador, la etiqueta de la IA,
+          # el grabador con un Discord de mentira, y en el objeto los frenos, el tope de la IA, el primero que toca gana y el
+          # Pase Premium a los 3 que jugaron, una sola vez
+          node bot/recibidor_prueba.mjs
           # 🏟️ la tanda B del plan de los tiers (20/11/2026): seguir a un servidor, el evento flojo, los suplentes, el padrino
           # y calificar el evento, sobre el objeto de verdad
           node bot/tanda_b_prueba.mjs

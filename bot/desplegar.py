@@ -51,8 +51,9 @@ COMPAT = '2026-09-16'
 #: rechazaba el script entero («No such module tienda.js»). `_faltan_modulos()` revisa los imports antes de subir
 #: 🧭 `setup.js` desde el 19/11/2026 (el /setup): worker.js lo importa
 #: 🐣 `nuevos.js` desde el 28/11/2026 (el Evento de Nuevos): lo importan worker.js y avisos.js
+#: 🚪 `recibidor.js` desde el 28/11/2026 (el recibidor de DRA): lo importan worker.js y avisos.js
 MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js', 'ligas_vivo.js', 'tienda.js', 'apodo.js', 'setup.js', 'vista.js',
-           'nuevos.js')
+           'nuevos.js', 'recibidor.js')
 #: de dónde sale cada módulo, si no está en `bot/` con su nombre. 🔑 `llave_vivo.js` es EL lector de la página
 #: (`bot/paginas/llave_vivo.js`): el vigía lo usa para «te toca» (`turnos()` en avisos.js). Un solo archivo para
 #: los dos —si fueran dos copias, la página y el aviso leerían distinto la misma llave—

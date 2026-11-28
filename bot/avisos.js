@@ -52,6 +52,7 @@ import * as CW from './crews.js';
 import * as TI from './tienda.js';
 // 🐣 el Evento de Nuevos (28/11/2026): la inscripción y su panel en DRA
 import * as NU from './nuevos.js';
+import * as RC from './recibidor.js';
 import * as LIV from './ligas_vivo.js';
 // 🧱 las piezas de los mensajes en V2 (20/11/2026): `kitListo()` arma ahí la llave y el afiche terminados
 import * as V from './vista.js';
@@ -10082,6 +10083,8 @@ export class Avisos {
       TI.tiendaTablas(this.sql);
       // 🐣 EL EVENTO DE NUEVOS (28/11/2026): quién se anotó, en bot/nuevos.js
       NU.nuevosTablas(this.sql);
+      // 🚪 EL RECIBIDOR DE DRA (28/11/2026): las preguntas (sin el texto) y quién recibió a quién, en bot/recibidor.js
+      RC.recibidorTablas(this.sql);
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
       // filas, y el 57 % eran dos limpiezas que corren cada minuto —las inscripciones viejas y las marcas de «ya
       // avisado»— recorriendo la tabla entera para borrar casi nada. Con el índice, borrar lee sólo lo que borra.
@@ -10841,6 +10844,10 @@ export class Avisos {
       // 🐣 el Evento de Nuevos: un clic del panel (sólo del Worker: no está en `RUTAS`) y dónde está el panel (el ciclo)
       if (ruta === '/nuevos-anotar') return json(await NU.anotar(this, d, Date.now(), DUENO));
       if (ruta === '/nuevos-panel') return json(await NU.panel(this, d));
+      // 🚪 el recibidor: una pregunta y «Lo recibo yo» (sólo del Worker: no están en `RUTAS`). Ver bot/recibidor.js
+      if (ruta === '/recibidor-pedir') return json(RC.pedir(this, d, Date.now()));
+      if (ruta === '/recibidor-reclamar') return json(await RC.reclamar(this, d, Date.now(), DUENO));
+      if (ruta === '/recibidor-saludar') return json(RC.saludar(this, d, Date.now()));
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
         // 🧪 los del grupo sin aviso se anotan la primera vez que aparecen (desde ahí se mide si volvieron solos), y la
@@ -11560,6 +11567,8 @@ export class Avisos {
       try { await this.perfilesBot(ahora); } catch (e) { /* el próximo intento, en una hora */ }
       // 🐣 y las anotaciones al Evento de Nuevos de más de 21 días: se van, y el contador del panel se pone al día
       try { await NU.vencerYEditar(this, ahora, DUENO); } catch (e) { /* el próximo intento, en una hora */ }
+      // 🚪 y los recibidos que jugaron su primer evento: le cuentan a su recibidor, y a los 3, el Pase Premium
+      try { await RC.revisar(this, ahora, DUENO); } catch (e) { /* el próximo intento, en una hora */ }
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -15405,6 +15414,8 @@ export class Avisos {
     try { this.sql.exec('DELETE FROM cuenta_ui WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
     // 🐣 y su anotación al Evento de Nuevos (28/11/2026): lleva su Discord ID y su nombre
     try { this.sql.exec('DELETE FROM nuevos_anot WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
+    // 🚪 y lo del recibidor (28/11/2026): sus preguntas, sus saludos y a quién recibió (ver `olvidar()` en bot/recibidor.js)
+    try { RC.olvidar(this, String(d.quien)); } catch (e) { /* sin las tablas */ }
     // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
     // se borrara, al que cazó ese precio se le irían sus puntos de Temporada
     const b = this.sql.exec('DELETE FROM tienda WHERE quien = ?', String(d.quien));
@@ -17362,6 +17373,8 @@ export class Avisos {
     // 👥 las crews son de un PERFIL, no de una cuenta: sólo se anota el ID nuevo (no van en `tablas`, que borra lo viejo)
     try { CW.crewMudar(this, viejo, nuevo); } catch (e) { fallas.push('crews'); }
     try { TI.tiendaMudar(this, viejo, nuevo); } catch (e) { fallas.push('tienda'); }
+    // 🚪 y lo del recibidor: preguntas, recibidos, saludos y la marca de su premio (ver `mudar()` en bot/recibidor.js)
+    try { RC.mudar(this, viejo, nuevo); } catch (e) { fallas.push('recibidor'); }
     try { this.sql.exec('UPDATE inscritos SET autor_id = ? WHERE autor_id = ?', nuevo, viejo); } catch (e) { fallas.push('inscritos'); }
     this.inscMem = null;
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', viejo);
