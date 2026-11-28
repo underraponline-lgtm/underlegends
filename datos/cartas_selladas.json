@@ -36,9 +36,9 @@
   },
   "Aby": {},
   "Abyssus": {
-   "competitivo": "ffa3da0e3840:baafccf84bc7",
-   "pais": "6f08494582ec:84d29bb63c59",
-   "servidor": "072c2f8b7167:ca27345eed9e:62e67f",
+   "competitivo": "f6656a54f7ed:baafccf84bc7",
+   "pais": "3dec3fb371f5:84d29bb63c59",
+   "servidor": "fa3e0c33a34e:ca27345eed9e:62e67f",
    "temporada": "f6df5ae80660:0b98cb3023ec"
   },
   "Ac3nto": {
@@ -1452,9 +1452,9 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "dd94aa0e643c:baafccf84bc7",
+   "competitivo": "232c204cacf3:baafccf84bc7",
    "pais": "94d3cbe2092d:84d29bb63c59",
-   "servidor": "02ac70ac8d48:ca27345eed9e:40a77e",
+   "servidor": "61e370053362:ca27345eed9e:40a77e",
    "temporada": "bf8572da43b6:0b98cb3023ec"
   },
   "Olaf": {
@@ -1788,9 +1788,9 @@
   },
   "Soft": {},
   "Sombra": {
-   "competitivo": "90628bf962d7:baafccf84bc7",
+   "competitivo": "594634ac67d6:baafccf84bc7",
    "pais": "1bef818c3eeb:84d29bb63c59",
-   "servidor": "afbbc19f1ddd:ca27345eed9e:a672ab"
+   "servidor": "c26c3aa9cdf2:ca27345eed9e:a672ab"
   },
   "Soneto": {
    "competitivo": "add59ac43fe0:baafccf84bc7",
@@ -2074,9 +2074,9 @@
    "servidor": "95727acb7156:ca27345eed9e:055f77"
   },
   "Zignos": {
-   "competitivo": "4bb0dcbf261b:baafccf84bc7",
+   "competitivo": "a62534606446:baafccf84bc7",
    "pais": "fe164ae72587:84d29bb63c59",
-   "servidor": "df84d869e7a6:ca27345eed9e:35630e",
+   "servidor": "311b7cfdb5f3:ca27345eed9e:35630e",
    "temporada": "b2e3eb60d87b:0b98cb3023ec"
   },
   "Zkalefa": {
@@ -2237,9 +2237,9 @@
   },
   "xz": {},
   "yinn": {
-   "competitivo": "806f35bed3c0:baafccf84bc7",
+   "competitivo": "4837d7a78f73:baafccf84bc7",
    "pais": "1f5eac3c7a7f:84d29bb63c59",
-   "servidor": "d8586be8d2ef:ca27345eed9e:bcd566",
+   "servidor": "7194c9c3aacc:ca27345eed9e:bcd566",
    "temporada": "d379f0334b56:0b98cb3023ec"
   },
   "zta": {
@@ -2249,5 +2249,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-28T17:05:32+00:00"
+ "cuando": "2026-11-28T17:16:31+00:00"
 }
