@@ -52,6 +52,8 @@ import { normCrew, puede as puedeCrew } from './crews.js';
 import * as SU from './setup.js';
 // 🧱 las piezas de los mensajes en Componentes V2 (20/11/2026, el rediseño de los comandos): un solo lugar, `bot/vista.js`
 import * as V from './vista.js';
+// 🐣 el Evento de Nuevos (28/11/2026): los botones del panel de DRA (`evn:si` / `evn:no`) y lo que contestan
+import * as NU from './nuevos.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -6031,6 +6033,20 @@ export default {
         }
         return aviso('📊 ' + (j.error === 'no existe' ? 'Las estadísticas de ese cruce ya no están: duran dos días.'
           : 'No pude traer las estadísticas: prueba de nuevo en un rato.'));
+      }
+
+      // ── 🐣 el panel del Evento de Nuevos (28/11/2026): `evn:si` «¡Quiero jugar!» y `evn:no` «Ya no puedo» ─────────────
+      // Sin dueño: el panel es de todos y quién toca lo firma Discord. No pide estar verificado (es para quien recién llega):
+      // el objeto mira sólo cuántos eventos jugó en la temporada. La respuesta, efímera; el contador del panel lo edita el
+      // objeto. «Un momento» primero, porque el objeto puede estar dormido (~4 s) y Discord corta a los 3
+      if (que === 'evn') {
+        const yo = idDe(i);
+        const esperarN = frenado(yo, 'click');
+        if (esperarN) return espera(esperarN);
+        if (!yo) return aviso('No pude saber quién eres: prueba de nuevo.');
+        if (quien !== 'si' && quien !== 'no') return aviso('Ese botón ya no anda.');
+        return pensandoYEditar(i, ctx, async () => V.avisoMsg(NU.respuestaTxt(
+          await alObjeto(env, 'nuevos-anotar', { quien: yo, nombre: NU.nombreDe(i), accion: quien }))));
       }
 
       if (que === 'qg') {

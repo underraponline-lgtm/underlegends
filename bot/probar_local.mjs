@@ -4252,6 +4252,54 @@ console.log('\nAGREGARON EL BOT A UN SERVIDOR\n');
   }
 }
 
+// 🐣 EL PANEL DEL EVENTO DE NUEVOS (28/11/2026): `evn:si` y `evn:no`. «Un momento» enseguida y sólo para quien tocó, después
+// la respuesta editando ese aviso; al objeto le llega quién tocó (del clic firmado), su nombre y qué quiere
+console.log('\n🐣 EL EVENTO DE NUEVOS\n');
+{
+  const antesA = env.AVISOS;
+  const llamadas = [];
+  let contesta = { ok: true, estado: 'anotado', n: 3, eventos: 1 };
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const ruta = new URL(String(url)).pathname;
+    if (/\/(uso|medir|drops-aviso)$/.test(ruta)) return new Response('{"ok":true}');
+    llamadas.push([ruta, JSON.parse(opc.body)]);
+    return new Response(JSON.stringify(contesta));
+  } }) };
+  const tocar = async (cid, n, extra = {}) => {
+    SEGUIMIENTOS = [];
+    const r = await pedir(Object.assign({ type: 3, guild_id: G.DRA, channel_id: '1', application_id: 'app', token: 'tok',
+      data: { custom_id: cid }, member: { nick: extra.nick || null, user: { id: String(700950 + n), username: 'nuevo' + n, global_name: 'Nuevo ' + n } } }));
+    await esperarSeguimientos();
+    const s = SEGUIMIENTOS.filter((x) => /\/messages\/@original$/.test(x.url)).pop();
+    return Object.assign(r, { t: s ? TX(s.cuerpo) : '' });
+  };
+  let r = await tocar('evn:si', 1, { nick: 'Nuevito' });
+  const c = llamadas.find((x) => x[0] === '/nuevos-anotar');
+  ok('«¡Quiero jugar!» contesta «un momento» sólo a quien tocó', r.json?.type === 4 && (r.json?.data?.flags & 64) === 64
+    && (r.json?.data?.flags & 32768) === 32768 && /Un momento/.test(TX(r.json?.data)), JSON.stringify(r.json).slice(0, 200));
+  ok('y le pide al objeto anotarlo: quién tocó, su apodo y «si»', c && c[1].quien === '700951' && c[1].nombre === 'Nuevito' && c[1].accion === 'si',
+    JSON.stringify(c));
+  ok('la respuesta: anotado, con el contador', /estás anotado/.test(r.t) && /Anotados: 3 de 8/.test(r.t), r.t);
+  contesta = { ok: true, estado: 'jugo', n: 3, eventos: 5 };
+  r = await tocar('evn:si', 2);
+  ok('quien ya jugó más de 2: amable, y a eventos-hoy', /Ya jugaste 5 eventos: este es para los que empiezan/.test(r.t)
+    && /<#1500690475089399858>/.test(r.t), r.t);
+  contesta = { ok: true, estado: 'ya', n: 3 };
+  r = await tocar('evn:si', 3);
+  ok('ya anotado: lo dice', /Ya estás anotado/.test(r.t), r.t);
+  contesta = { ok: true, estado: 'quitado', n: 2 };
+  llamadas.length = 0;
+  r = await tocar('evn:no', 4);
+  ok('«Ya no puedo» lo saca', llamadas.some((x) => x[0] === '/nuevos-anotar' && x[1].accion === 'no') && /ya no estás anotado/.test(r.t), r.t);
+  contesta = { error: 'red' };
+  r = await tocar('evn:si', 5);
+  ok('si el objeto no contesta, lo dice sin inventar', /No pude anotarlo/.test(r.t), r.t);
+  llamadas.length = 0;
+  r = await tocar('evn:otra', 6);
+  ok('un botón raro no llega al objeto', !llamadas.length && /ya no anda/.test(texto(r)), texto(r));
+  env.AVISOS = antesA;
+}
+
 // 🧱 LA FORMA DE CADA RESPUESTA (20/11/2026, el rediseño de los comandos). Sobre TODO lo que contestó o editó el Worker en
 // este archivo: que entre en los topes de Discord (40 componentes, 4.000 letras, ids de 100, 5 por fila, 25 opciones), que
 // con el flag V2 no vaya `content` ni `embeds`, que las filas de botones vayan AFUERA del recuadro y que haya un solo

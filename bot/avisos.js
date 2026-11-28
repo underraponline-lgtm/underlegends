@@ -50,6 +50,8 @@
 import * as AR from './antiraid.js';
 import * as CW from './crews.js';
 import * as TI from './tienda.js';
+// 🐣 el Evento de Nuevos (28/11/2026): la inscripción y su panel en DRA
+import * as NU from './nuevos.js';
 import * as LIV from './ligas_vivo.js';
 // 🧱 las piezas de los mensajes en V2 (20/11/2026): `kitListo()` arma ahí la llave y el afiche terminados
 import * as V from './vista.js';
@@ -4071,6 +4073,9 @@ const RUTAS = {
   '/avisos/tiers-ciclo': 'POST',
   // 🔁 quién jugó una sola vez y quién se enfrió, con nombre (`bot/primerizos.py`, con su clave): sólo al Dashboard
   '/avisos/primerizos-ciclo': 'POST',
+  // 🐣 el Evento de Nuevos (28/11/2026), con la clave del ciclo: dónde está el panel (y publicarlo una vez, ver
+  // `herramientas/evento_nuevos_panel.py`) y quiénes se anotaron, para el Dashboard. Ver bot/nuevos.js
+  '/avisos/nuevos-panel': 'POST', '/avisos/nuevos-lista': 'GET',
   // 💬 lo que importó en los chats generales de cada socio (`bot/chats.py`): con texto de gente, sólo al Dashboard
   '/avisos/chats-ciclo': 'POST',
   // 🧪 y a quién se avisó y quién quedó sin aviso, para medir si sirve (con su clave)
@@ -8662,6 +8667,15 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 120000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/chats-ciclo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
+  // 🐣 el panel del Evento de Nuevos y sus anotados: con nombres y Discord IDs, así que sólo con la clave del ciclo
+  if (ruta === '/avisos/nuevos-panel' || ruta === '/avisos/nuevos-lista') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta === '/avisos/nuevos-lista') return elObjeto(env).fetch('https://avisos/nuevos-lista');
+    const crudo = await req.text();
+    if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/nuevos-panel', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
   // 🔁 la lista de primerizos y enfriados, del ciclo: con nombres, así que sólo con su clave y sólo al objeto
   if (ruta === '/avisos/primerizos-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -10066,6 +10080,8 @@ export class Avisos {
       CW.crewTablas(this.sql);
       // 🛍️ LA TIENDA (17/11/2026): sus tablas viven con su lógica, en bot/tienda.js
       TI.tiendaTablas(this.sql);
+      // 🐣 EL EVENTO DE NUEVOS (28/11/2026): quién se anotó, en bot/nuevos.js
+      NU.nuevosTablas(this.sql);
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
       // filas, y el 57 % eran dos limpiezas que corren cada minuto —las inscripciones viejas y las marcas de «ya
       // avisado»— recorriendo la tabla entera para borrar casi nada. Con el índice, borrar lee sólo lo que borra.
@@ -10759,6 +10775,8 @@ export class Avisos {
       if (ruta === '/pedidos-leer') return json(this.pedidosLeer(), 200, 0);
       // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
       if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
+      // 🐣 los anotados al Evento de Nuevos, para el Dashboard (con la clave del ciclo): ver `lista()` en bot/nuevos.js
+      if (ruta === '/nuevos-lista') return json(NU.lista(this), 200, 0);
       if (ruta === '/anunciados-ciclo') {
         return json(this.anunciadosCiclo(Date.now(), Number(new URL(req.url).searchParams.get('horas')) || 0), 200, 0);
       }
@@ -10820,6 +10838,9 @@ export class Avisos {
       // 💬 lo que importó en los chats generales (`chatsCiclo()`): sólo para el Dashboard
       if (ruta === '/chats-ciclo') return json(this.chatsCiclo(d));
       // 🔁 la lista de primerizos y enfriados: sólo la guarda, tal cual, para el Dashboard (nunca sale a la página)
+      // 🐣 el Evento de Nuevos: un clic del panel (sólo del Worker: no está en `RUTAS`) y dónde está el panel (el ciclo)
+      if (ruta === '/nuevos-anotar') return json(await NU.anotar(this, d, Date.now(), DUENO));
+      if (ruta === '/nuevos-panel') return json(await NU.panel(this, d));
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
         // 🧪 los del grupo sin aviso se anotan la primera vez que aparecen (desde ahí se mide si volvieron solos), y la
@@ -11537,6 +11558,8 @@ export class Avisos {
       try { await this.resumenesSemana(ahora); } catch (e) { /* el próximo intento, en una hora */ }
       // 🤖 y el perfil del bot en cada servidor que lo tiene (`perfilesBot()`): sigue al ícono y al banner de su Discord
       try { await this.perfilesBot(ahora); } catch (e) { /* el próximo intento, en una hora */ }
+      // 🐣 y las anotaciones al Evento de Nuevos de más de 21 días: se van, y el contador del panel se pone al día
+      try { await NU.vencerYEditar(this, ahora, DUENO); } catch (e) { /* el próximo intento, en una hora */ }
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -15380,6 +15403,8 @@ export class Avisos {
     this.sql.exec('DELETE FROM reels_voto WHERE quien = ?', String(d.quien));
     // 📱 y lo que la página marcó como visto en su cuenta (23/11/2026)
     try { this.sql.exec('DELETE FROM cuenta_ui WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
+    // 🐣 y su anotación al Evento de Nuevos (28/11/2026): lleva su Discord ID y su nombre
+    try { this.sql.exec('DELETE FROM nuevos_anot WHERE quien = ?', String(d.quien)); } catch (e) { /* sin la tabla */ }
     // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
     // se borrara, al que cazó ese precio se le irían sus puntos de Temporada
     const b = this.sql.exec('DELETE FROM tienda WHERE quien = ?', String(d.quien));
@@ -17310,7 +17335,9 @@ export class Avisos {
       // 🎁 su link de invitación y por qué link llegó (a quiénes trajo va aparte: `de`, abajo)
       'ref_link', 'referidos',
       // 🛍️ y lo de la Tienda: lo que tiene, lo que se puso, su lista, sus colecciones y sus números
-      ...TI.TABLAS_QUIEN];
+      ...TI.TABLAS_QUIEN,
+      // 🐣 y su anotación al Evento de Nuevos
+      ...NU.TABLAS_QUIEN];
     const movidas = {}, fallas = [];
     // 🔴 LAS CLAVES DE LA TIENDA LLEVAN EL ID ADENTRO (pasada del 19/10/2026): `rhito:<id>:…`, `racha:<id>:…`,
     // `rdia:<día>:<id>`, `bien:<id>:<paso>`, `pase:…:<id>:<nivel>`… Pasaba la fila a la cuenta nueva con la clave vieja,

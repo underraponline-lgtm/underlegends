@@ -6329,6 +6329,143 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🐣 EL EVENTO DE NUEVOS (28/11/2026, bot/nuevos.js): anotarse con 2 eventos o menos, el panel que se EDITA, los 21 días y
+// el aviso al staff UNA vez por cada múltiplo de 8. Sobre el objeto de verdad, con Discord falso
+{
+  const NU = await import('./nuevos.js');
+  console.log('\n🐣 EL EVENTO DE NUEVOS\n');
+  const p0 = NU.panelMsg(3);
+  const tx0 = JSON.stringify(p0);
+  ok((p0.flags & 32768) && !(p0.flags & 64) && /Tu primer evento/.test(tx0) && /Anotados: 3 de 8/.test(tx0) && /evn:si/.test(tx0)
+    && /evn:no/.test(tx0) && /¡Quiero jugar!/.test(tx0) && /Ya no puedo/.test(tx0), 'el panel: V2, público, el contador y los dos botones');
+  ok(/Anotados: 9 de 16/.test(JSON.stringify(NU.panelMsg(9))), 'pasado el primer grupo, cuenta hacia el siguiente');
+  {
+    const VV = await import('./vista.js');
+    const largos = Array.from({ length: 60 }, (_, k) => ({ quien: '7000000000000' + String(k).padStart(5, '0'), nombre: 'Un_nombre*largo de verdad ' + k }));
+    const mp = VV.medir(NU.panelMsg(120)), ms = VV.medir(NU.staffMsg(largos, 56));
+    ok(!mp.problemas.length && !ms.problemas.length && /y 20 más/.test(VV.textoV2(NU.staffMsg(largos, 56))) && /Un\\_nombre\\\*largo/.test(VV.textoV2(NU.staffMsg(largos, 56))),
+      'el panel y el aviso al staff entran en los topes de Discord, aun con 60 nombres raros', JSON.stringify([mp.problemas, ms.problemas]));
+  }
+  ok(/<#1500690475089399858>/.test(NU.respuestaTxt({ estado: 'jugo', eventos: 3 })) && /Ya jugaste 3 eventos/.test(NU.respuestaTxt({ estado: 'jugo', eventos: 3 })),
+    'quien ya jugó más de 2: se lo manda a eventos-hoy');
+  ok(NU.nombreDe({ member: { nick: null, user: { id: '1', username: 'ana_1', global_name: 'Ana  B' } } }) === 'Ana B', 'el nombre que se ve: el global si no hay apodo');
+
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite (Node ' + process.version + '): el Evento de Nuevos no se prueba sobre el objeto');
+  } else {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const antes = globalThis.fetch;
+    const pedidos = [];
+    let estadoPatch = 200;
+    globalThis.fetch = async (url, op = {}) => {
+      const m = (op.method || 'GET') + ' ' + String(url).replace('https://discord.com/api/v10', '');
+      pedidos.push({ m, body: op.body ? JSON.parse(op.body) : null });
+      if (op.method === 'PATCH') return new Response('{}', { status: estadoPatch });
+      if (op.method === 'POST') return new Response(JSON.stringify({ id: '9' + String(pedidos.length).padStart(17, '0') }), { status: 200 });
+      return new Response('{}', { status: 404 });
+    };
+    const CANAL = '516285712805265519', STAFF = '516285712805265520';
+    const id = (n) => '80000000000000' + String(n).padStart(4, '0');
+    const clic = async (n, accion, ahora) => (ahora
+      ? NU.anotar(o, { quien: id(n), nombre: 'Nuevo ' + n, accion }, ahora, A.DUENO)
+      : (await o.fetch(new Request('https://avisos/nuevos-anotar', { method: 'POST',
+        body: JSON.stringify({ quien: id(n), nombre: 'Nuevo ' + n, accion }) }))).json());
+    o.guardar('racha_cfg', { temp: 'prueba' });
+    sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', id(1), 'prueba', 'nuevo1', 2);
+    sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', id(2), 'prueba', 'nuevo2', 3);
+    // otra temporada no cuenta: lo que manda es la de `racha_cfg`
+    sql.exec('INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', id(3), 'pre', 'nuevo3', 9);
+
+    // 📌 publicar el panel: uno solo, y la segunda vez lo edita
+    const pub = await (await o.fetch(new Request('https://avisos/nuevos-panel', { method: 'POST',
+      body: JSON.stringify({ canal: CANAL, staff: STAFF, publicar: true }) }))).json();
+    const post0 = pedidos.filter((x) => x.m === 'POST /channels/' + CANAL + '/messages');
+    ok(pub.ok && pub.nuevo && post0.length === 1 && /Anotados: 0 de 8/.test(JSON.stringify(post0[0].body)), 'publicar: un panel nuevo, en 0', JSON.stringify(pub));
+    const pub2 = await NU.panel(o, { canal: CANAL, staff: STAFF, publicar: true });
+    ok(pub2.ok && pub2.editado && pedidos.filter((x) => x.m.startsWith('POST /channels/' + CANAL)).length === 1,
+      'publicar otra vez: edita el que está, no deja dos', JSON.stringify(pub2));
+
+    pedidos.length = 0;
+    let r = await clic(1, 'si');
+    const patch = pedidos.filter((x) => x.m === 'PATCH /channels/' + CANAL + '/messages/' + pub.msg);
+    ok(r.ok && r.estado === 'anotado' && r.n === 1 && patch.length === 1 && /Anotados: 1 de 8/.test(JSON.stringify(patch[0].body)),
+      'con 2 eventos se anota, y el contador del panel se EDITA', JSON.stringify(r));
+    r = await clic(1, 'si');
+    ok(r.estado === 'ya' && r.n === 1 && pedidos.filter((x) => x.m.startsWith('PATCH')).length === 1, 'otra vez: «ya estás anotado», sin editar nada');
+    r = await clic(2, 'si');
+    ok(r.estado === 'jugo' && r.eventos === 3 && r.n === 1, 'con 3 eventos no: es para los que empiezan', JSON.stringify(r));
+    r = await clic(3, 'si');
+    ok(r.estado === 'anotado' && r.n === 2, 'sin fila en la temporada de hoy cuenta 0 (y no hace falta estar verificado)', JSON.stringify(r));
+    r = await clic(3, 'no');
+    ok(r.estado === 'quitado' && r.n === 1, '«Ya no puedo» lo saca');
+    r = await clic(3, 'no');
+    ok(r.estado === 'no_estaba', 'y si no estaba, lo dice');
+
+    // 📣 el 8: un mensaje al staff y a la campana de Dlx, una sola vez por múltiplo
+    pedidos.length = 0;
+    for (let n = 10; n < 17; n++) await clic(n, 'si');
+    const alStaff = () => pedidos.filter((x) => x.m === 'POST /channels/' + STAFF + '/messages');
+    const s8 = alStaff();
+    const st8 = JSON.stringify(s8[0] && s8[0].body);
+    ok(s8.length === 1 && /Ya hay 8 anotados para el Evento de Nuevos/.test(st8) && st8.includes('<@' + id(1) + '>')
+      && /Nuevo 16/.test(st8) && /Pónganle día y hora/.test(st8) && JSON.stringify(s8[0].body.allowed_mentions) === '{"parse":[]}',
+    'al llegar a 8: el staff recibe la lista con las menciones, sin que suene nadie', String(st8).slice(0, 300));
+    const camp = sql.exec("SELECT titulo, url FROM bandeja WHERE quien = ? AND clave = 'nuevos:8'", A.DUENO).toArray()[0];
+    ok(camp && /Ya hay 8 anotados/.test(camp.titulo) && /discord\.com\/channels\//.test(camp.url), 'y a la campana de Dlx, con el link al mensaje', JSON.stringify(camp));
+    await clic(16, 'no');
+    await clic(16, 'si');
+    ok(alStaff().length === 1, 'salir y volver a entrar en el 8 (la misma gente) no avisa de nuevo');
+    await clic(16, 'no');
+    await clic(17, 'si');
+    ok(alStaff().length === 2 && /Nuevo 17/.test(JSON.stringify(alStaff()[1].body)), 'si el grupo cambió, sí: con la lista nueva');
+    for (let n = 20; n < 27; n++) await clic(n, 'si');
+    ok(alStaff().length === 2, 'del 9 al 15, nada');
+    await clic(27, 'si');
+    ok(alStaff().length === 3 && /Ya hay 16 anotados/.test(JSON.stringify(alStaff()[2].body)), 'en el 16, otra vez (una)');
+
+    // 📋 la lista para el Dashboard, por la ruta de verdad
+    const ls = await (await o.fetch(new Request('https://avisos/nuevos-lista'))).json();
+    ok(ls.ok && ls.n === 16 && ls.lista[0].nombre === 'Nuevo 1' && ls.lista[0].ev === 2 && ls.lista[0].dias === 0 && ls.panel.msg === pub.msg,
+      'la lista: nombres, días y eventos, y dónde está el panel', JSON.stringify(ls).slice(0, 200));
+
+    // ⏰ los 21 días: el vigía los saca y edita el panel; con eso, el múltiplo baja
+    pedidos.length = 0;
+    const luego = Date.now() + 22 * 24 * 3600 * 1000;
+    ok((await NU.vencerYEditar(o, luego, A.DUENO)) === 1 && NU.lista(o, luego).n === 0
+      && pedidos.some((x) => x.m.startsWith('PATCH') && /Anotados: 0 de 8/.test(JSON.stringify(x.body))), 'a los 21 días se van solas, y el panel vuelve a 0');
+    ok((await NU.vencerYEditar(o, luego, A.DUENO)) === 0, 'y si no venció nada, no toca a Discord');
+    for (let n = 40; n < 48; n++) await clic(n, 'si', luego);
+    ok(alStaff().length === 1, 'un grupo nuevo de 8, otro aviso');
+
+    // 404: el panel se borró a mano. Publicar deja uno nuevo
+    estadoPatch = 404;
+    const pub3 = await NU.panel(o, { canal: CANAL, staff: STAFF, publicar: true });
+    ok(pub3.ok && pub3.nuevo && pub3.msg !== pub.msg, 'si el panel ya no está, publicar deja otro', JSON.stringify(pub3));
+    estadoPatch = 200;
+    ok((await NU.anotar(o, { quien: 'x', accion: 'si' })).error === 'faltan datos' && (await NU.panel(o, { canal: 'x' })).error === 'faltan datos',
+      'lo que no es un ID no entra');
+    // olvidarme también lo saca
+    await o.olvidar({ quien: id(40) });
+    ok(!sql.exec('SELECT 1 AS x FROM nuevos_anot WHERE quien = ?', id(40)).toArray().length, '«olvidarme» borra su anotación');
+    globalThis.fetch = antes;
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);
