@@ -2047,7 +2047,8 @@
    "temporada": "3021c1745045:0b98cb3023ec"
   },
   "Zamo": {
-   "servidor": "f78f4273cc58:ca27345eed9e:c23663"
+   "servidor": "f78f4273cc58:ca27345eed9e:c23663",
+   "temporada": "e94a9f0a78d6:0b98cb3023ec"
   },
   "Zamy": {
    "servidor": "62315466155a:ca27345eed9e:980594"
@@ -2253,5 +2254,5 @@
    "servidor": "7f8885a35a6d:ca27345eed9e:71cf5a"
   }
  },
- "cuando": "2026-11-28T20:12:37+00:00"
+ "cuando": "2026-11-28T20:35:05+00:00"
 }
