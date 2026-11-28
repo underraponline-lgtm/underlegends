@@ -160,7 +160,9 @@ const Barra = ({ n, de, c }) => (
  */
 function SinCartas({ yo, k }) {
   const ganados = [];
-  for (const [c, n] of CARTAS) for (const o of opciones(c, Object.assign({}, yo, { dueno: false, titulos: [] }))) if (o.mio) ganados.push(Object.assign({ carta: n }, o));
+  // 🏷️ con los títulos (27/11/2026, Drako: «abrí drops, me salieron TAGs… y en Inventario no aparece ninguno»): los de un
+  // Dragón Drop, de la semana de nuevo o de Invita y gana quedaban afuera (`titulos: []`) y quien no tenía cartas no los veía
+  for (const [c, n] of CARTAS) for (const o of opciones(c, Object.assign({}, yo, { dueno: false }))) if (o.mio) ganados.push(Object.assign({ carta: n }, o));
   const ver = ganados.slice(0, 8);
   return (
     <section className="ves-sin" aria-label="Todavía no tienes cartas">
@@ -176,7 +178,7 @@ function SinCartas({ yo, k }) {
       </ol>
       {ganados.length ? (
         <>
-          <p className="ves-p"><b>{ganados.length === 1 ? 'Ya ganaste un TAG' : 'Ya ganaste ' + ganados.length + ' TAGs'}</b> jugando:
+          <p className="ves-p"><b>{ganados.length === 1 ? 'Ya ganaste un TAG' : 'Ya ganaste ' + ganados.length + ' TAGs'}</b>:
             {ganados.length === 1 ? ' te espera' : ' te esperan'} acá para ponérselos a tus cartas en cuanto las tengas.</p>
           <div className="ves-grid">
             {ver.map((o) => {
@@ -784,7 +786,20 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
             {lookMsg ? <p className="ves-nota" role="status">{lookMsg}</p> : null}
           </section>
         ) : null;
-        const aun = estado === 'imagen' ? <p className="ves-nota ves-aun">Tu carta se arma en vivo desde su próximo dibujo: hasta entonces, lo que pruebas se ve en su ficha.</p> : null;
+        // 🏷️ tus títulos que van en una carta que todavía no tienes (27/11/2026): los de los Dragón Drops van en la Competitiva,
+        // que pide 10 eventos, y en Cartas no salían en ningún lado. Se dice cuáles y dónde esperan
+        const tcM = yo.titulo_carta || {};
+        const esperan = yo.dueno ? [] : (yo.titulos || []).filter((t) => tcM[t] && !cartas.some(([c]) => c === tcM[t]));
+        const aun = (
+          <>
+            {estado === 'imagen' ? <p className="ves-nota ves-aun">Tu carta se arma en vivo desde su próximo dibujo: hasta entonces, lo que pruebas se ve en su ficha.</p> : null}
+            {esperan.length ? (
+              <p className="ves-nota ves-aun">{esperan.length === 1 ? 'Tu título «' + esperan[0] + '» va' : 'Tus ' + esperan.length + ' títulos (' + esperan.map((t) => '«' + t + '»').join(', ') + ') van'} en
+                {' '}{[...new Set(esperan.map((t) => 'tu ' + ((CARTAS.find(([x]) => x === tcM[t]) || [])[1] || '')))].join(' y ')}, que todavía no tienes:
+                {' '}{esperan.length === 1 ? 'te espera' : 'te esperan'} en <button type="button" className="ves-lnk" style={{ background: 'none', border: 0, padding: 0, font: 'inherit', fontWeight: 800, cursor: 'pointer' }} onClick={() => { setSec('col'); setSel(null); }}>Colección</button>.</p>
+            ) : null}
+          </>
+        );
         const titulo = (
           <Titulo extra={<small className="ves-de">{ran === 'tag' || ran === 'marco' || ran === 'efecto' ? (FINO ? 'pasa el mouse o toca para probártelo' : 'toca para probártelo') : 'tu ' + nombre}</small>}>
             {ran === 'efecto' ? 'Efecto de tus cartas' : etRan + (ran === 'tag' ? ' de tu ' + nombre : '')}</Titulo>
@@ -887,7 +902,8 @@ export function Inventario({ liga, dc, carta0 = '', ranura0 = '' }) {
                   const c = yo.titulo_carta[t];
                   const mio = titMios.has(t) || !!yo.dueno;
                   const en = (CARTAS.find(([x]) => x === c) || [])[1] || '';
-                  return <Cuadro key={t} mio={mio} nivel="t1" ic="✨" nombre={t} rar={mio ? 'En tu ' + en : (TIT_DE[(yo.titulo_de || {})[t]] || [0, 'Del Pase'])[1]}
+                  const laTienes = cartas.some(([x]) => x === c);
+                  return <Cuadro key={t} mio={mio} nivel="t1" ic="✨" nombre={t} rar={mio ? (laTienes || yo.dueno ? 'En tu ' : 'Para tu ') + en : (TIT_DE[(yo.titulo_de || {})[t]] || [0, 'Del Pase'])[1]}
                     onClick={() => {
                       if (!cartas.some(([x]) => x === c)) return;
                       setSec('cartas'); setCarta(c); setRan('tag'); setSel('pase:' + t);

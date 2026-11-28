@@ -45,6 +45,28 @@ export async function ponerFondoLugar(k, lugar, op) {
   return j;
 }
 
+// 🎯 DÓNDE CAE LA PORTADA DE TU PERFIL (28/11/2026, Drako: «quedaría chévere poder ubicar bien el fondo»): `fo[4]`, `[x, y]`
+// en %, de `fondos()` en avisos.js (`posFondo()` la valida). Sin elegir, la de siempre: centrada y un poco arriba
+export const POS_PORTADA = [50, 35];
+/** La posición de la portada de `fo` como `background-position` ('' = la de siempre) */
+export function posDe(fo) {
+  const p = fo && fo[4];
+  return Array.isArray(p) && p.length === 2 && p.every((n) => Number.isFinite(n) && n >= 0 && n <= 100) ? p[0] + '% ' + p[1] + '%' : '';
+}
+/** 🎯 Guarda dónde cae tu portada y la copia de esta página cambia al toque (como `ponerFondoLugar()`) */
+export async function ponerPosPortada(k, pos) {
+  const j = await pedir('fondo', { pos });
+  if (k) {
+    const fo = fondos && fondos[k] ? fondos[k].slice() : ['', 1, 0, {}];
+    while (fo.length < 4) fo.push(fo.length === 3 ? {} : 0);
+    fo[4] = Array.isArray(j.pos) ? j.pos : pos;
+    fondos = Object.assign({}, fondos || {}, { [k]: fo });
+    fondosT = Date.now();
+    oyentes.forEach((f) => f(fondos));
+  }
+  return j;
+}
+
 // sólo direcciones del bucket de la Liga: un `url("…")` armado con otra cosa no entra al estilo
 export const urlFondo = (u) => (/^https:\/\/pub-[a-z0-9]+\.r2\.dev\/fondos\/[a-f0-9]{24}\.(webp|jpg|png)$/.test(String(u || '')) ? 'url("' + u + '")' : '');
 

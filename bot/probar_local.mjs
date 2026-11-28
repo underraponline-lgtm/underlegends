@@ -2069,6 +2069,10 @@ console.log('\n🛍️🐉 LA TIENDA Y LOS DROPS EN DISCORD (tanda 1)\n');
     // 🔴 «Te quedan 1 Drop» (encontrado al capturar, 20/11/2026): con uno, en singular
     const t1q = D.textoPremioDrop({ nombre: 'Maqueta', rareza: 0, puntos: 100 }, 'drop', 1, '700957');
     ok('🎞️ con uno solo cerrado dice «Te queda 1 Drop», en singular', /Te queda 1 Drop\./.test(TX(t1q)) && !/quedan 1/.test(TX(t1q)), TX(t1q));
+    // 🏷️ (27/11/2026) un título dice dónde quedó; uno que ya tenías dice por qué salieron Puntos
+    const tRep = D.textoPremioDrop({ nombre: 'Micrófono de Oro', rareza: 4, puntos: 10000, titulo: '', repe: 'Corona de Escamas' }, 'drop', 0, '700957');
+    ok('🏷️ el título de un Drop dice que está en tu Inventario; uno repetido, que ya era tuyo y va en Puntos',
+       /Inventario.*Títulos/.test(TX(tx)) && /«Corona de Escamas», que ya es tuyo: va en Puntos/.test(TX(tRep)) && !/Inventario/.test(TX(t1q)), TX(tRep));
     // 📣 «Mostrarlo en el canal» (Dlx, 20/11/2026, «6C»): sólo desde Vinilo, y lo que sale es público y sin que suene nadie
     const mostrar = (p) => PZ(p, 2).find((b) => /^dm:/.test(b.custom_id || ''));
     ok('📣 una Maqueta no trae «Mostrarlo en el canal»; un Disco de Oro, sí (y es gris: el azul es «Abrir otro»)',

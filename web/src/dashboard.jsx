@@ -3372,9 +3372,15 @@ function CorregirLiga({ r, liga, alListo }) {
   const [f, setF] = useState({ a: '', b: '', gana: '', como: 'directa', dia: hoyEt(), nombre: '', pts: 3, c: '', pn: '', pp: 1, por: 'bono' });
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
+  // ➕ «Falta alguien en la tabla» (28/11/2026, Drako: «ahora no hay lo de agregar el competidor que falta»): salta a «Falta
+  // una batalla» con el cursor en el primer nombre. Una liga no crea gente, pero la tabla sale de sus batallas: cargar la
+  // batalla que falta (con su nombre o su ID de Discord) es lo que lo suma (`cargar` en `aplicar_cambios()` de bot/ligas.py)
+  const refA = useRef(null);
+  const [focoA, setFocoA] = useState(false);
+  useEffect(() => { if (focoA && modo === 'falta' && refA.current) { refA.current.focus(); setFocoA(false); } }, [focoA, modo]);
   const lista = ((liga && liga.d && liga.d.tabla) || []).map((x) => x.n);
   const b = bats.find((x) => x.id + '|' + x.a + '|' + x.b === bat);
-  const campo = (k, ph) => <><input type="text" value={f[k]} maxLength={60} placeholder={ph} onChange={(e) => setF(Object.assign({}, f, { [k]: e.target.value }))} /><NotaId v={f[k]} /></>;
+  const campo = (k, ph, ref) => <><input type="text" ref={ref} value={f[k]} maxLength={60} placeholder={ph} onChange={(e) => setF(Object.assign({}, f, { [k]: e.target.value }))} /><NotaId v={f[k]} /></>;
   // la corrección como la manda el Dashboard: el «es» de siempre, o un cambio de liga (`accion: 'cambio'`)
   const cambio = () => {
     if (modo === 'nombre') {
@@ -3431,7 +3437,7 @@ function CorregirLiga({ r, liga, alListo }) {
       {modo === '' ? <>
         <span className="db-rep-p">¿Qué dice el reporte? Elige arriba según el caso</span>
         <ul className="db-rep-guia">
-          <li><b>Alguien no aparece en la tabla</b> → «Una batalla» y ««…» era otro», si el bot le dio su batalla a otra persona; o «Falta una batalla», si no está en ningún lado.</li>
+          <li><b>Alguien no aparece en la tabla</b> → «Una batalla» y ««…» era otro», si el bot le dio su batalla a otra persona; o «Falta una batalla», si no está en ningún lado: cargar su batalla es lo que lo agrega.</li>
           <li><b>Alguien tiene de más</b> → «Una batalla»: «No cuenta» (por ejemplo, está repetida) o ««…» era otro».</li>
           <li><b>Un nombre mal escrito, o dos nombres que son la misma persona</b> → «Un nombre».</li>
           <li><b>Puntos que la tabla de la liga suma sin una batalla</b> → «Puntos sueltos».</li>
@@ -3440,6 +3446,9 @@ function CorregirLiga({ r, liga, alListo }) {
       </> : modo === 'nombre' ? <>
         <span className="db-rep-p">¿Qué nombre de {L ? L.n : 'la liga'} está mal?</span>
         <div className="db-opc">{nombres.map((x) => <button key={x} type="button" className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{x}</button>)}</div>
+        <div className="db-opc db-rep-falta">
+          <button type="button" onClick={() => { setModo('falta'); setMsg(''); setFocoA(true); }}>➕ Falta alguien en la tabla → agregar su batalla</button>
+        </div>
         {nombre ? <>
           <span className="db-rep-p">«{nombre}» es…</span>
           <div className="db-rep-q">
@@ -3486,9 +3495,10 @@ function CorregirLiga({ r, liga, alListo }) {
             : acc.startsWith('l:') ? 'Sólo en esta batalla, también si la ganó: el resto de la liga no cambia.' : 'Cambia el resultado de esa batalla, y la tabla con él.'}</p>
         </> : null}
       </> : modo === 'falta' ? <>
-        <span className="db-rep-p">La batalla que el bot no leyó</span>
+        <span className="db-rep-p">La batalla que el bot no leyó, o la de alguien que falta en la tabla</span>
+        <p className="db-rep-nota">Así se agrega a un competidor que no aparece (por ejemplo, «Teito no aparece»): pon su nombre como lo escriben en la liga, o su ID de Discord, en «Uno», y su rival en «El otro». La tabla lo suma con esa batalla; si jugó varias, carga cada una.</p>
         <div className="db-rep-q">
-          <label>Uno: {campo('a', 'como lo escriben en la liga, o su ID')}</label>
+          <label>Uno: {campo('a', 'como lo escriben en la liga, o su ID', refA)}</label>
           <label>El otro: {campo('b', 'como lo escriben en la liga, o su ID')}</label>
           <label>Ganó: <select className="db-sel" value={f.gana} onChange={(e) => setF(Object.assign({}, f, { gana: e.target.value }))}>
             <option value="">Elige</option>{[f.a.trim(), f.b.trim()].filter(Boolean).map((n) => <option key={n} value={n}>{n}</option>)}</select></label>

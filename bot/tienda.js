@@ -127,7 +127,8 @@ export function catalogoValido(c) {
   const frac = (x, def) => (typeof x === 'number' && x > 0 && x <= 1 ? x : def);
   return {
     v: Number(c.v) || 1, abierta: c.abierta === true, temp: String(c.temp || '').slice(0, 10), precios: precios.slice(), piezas,
-    vitrina: { ids: v.ids.slice(), hasta: Number(v.hasta) || 0 }, colecciones, ediciones, gratis, navidad: ventana(c.navidad),
+    vitrina: Object.assign({ ids: v.ids.slice(), hasta: Number(v.hasta) || 0 }, v.rota === 'dia' ? { rota: 'dia' } : {},
+      ids(v.fijas) ? { fijas: v.fijas.slice(0, 2) } : {}), colecciones, ediciones, gratis, navidad: ventana(c.navidad),
     desc: { prem: frac(d.prem, 1), col: frac(d.col, 1), col_prem: frac(d.col_prem, 1) },
     regalos_semana: Number.isInteger(c.regalos_semana) ? c.regalos_semana : 0,
     regalo_dias: Number.isInteger(c.regalo_dias) ? c.regalo_dias : 14,
@@ -135,7 +136,31 @@ export function catalogoValido(c) {
     baja_dias: Number.isInteger(c.baja_dias) ? c.baja_dias : 14,
   };
 }
-export const catalogo = (o) => o.leer('tienda_cat') || null;
+/**
+ * 🔄 LA VITRINA ROTA CADA DÍA (Dlx, 28/11/2026: «la vitrina tiene que rotar cada día»). Estaba fija en el catálogo hasta
+ * el 21/12, y como cada regalo va atado a la pieza de su lugar en la vitrina, los regalos daban siempre lo mismo. Con
+ * `vitrina.rota: 'dia'`, las piezas de cada día salen de todo lo que se vende suelto (sin ediciones, Premium, premios de
+ * colección, gratis, Navidad, «pronto» ni versiones incluidas), mezcladas con el día como semilla: iguales para todos ese
+ * día y distintas al siguiente. `vitrina.fijas` va siempre primero (la ganadora de la pelea de la vitrina). Sin `rota`,
+ * la de siempre.
+ */
+export function vitrinaDelDia(cat, dia) {
+  if (!cat || !cat.vitrina || cat.vitrina.rota !== 'dia') return cat;
+  const n = (cat.vitrina.ids || []).length || 8;
+  const fuera = ['num', 'prem', 'col', 'gratis', 'nav', 'pronto', 'inc'];
+  const pool = Object.keys(cat.piezas).filter((id) => {
+    const p = cat.piezas[id];
+    return p && p.c !== 'serv' && !(cat.gratis || {})[id] && !(p.t || []).some((x) => fuera.includes(x));
+  }).sort();
+  const fijas = (cat.vitrina.fijas || []).filter((id) => cat.piezas[id]);
+  const resto = pool.filter((id) => !fijas.includes(id));
+  const azar = semilla('vitrina|' + dia);
+  for (let i = resto.length - 1; i > 0; i--) { const j = Math.floor(azar() * (i + 1)); [resto[i], resto[j]] = [resto[j], resto[i]]; }
+  return Object.assign({}, cat, { vitrina: Object.assign({}, cat.vitrina, { ids: fijas.concat(resto).slice(0, n), dia }) });
+}
+// el día de la hora del este (la vitrina cambia a medianoche ET; con horario de verano, a la 1 AM)
+const diaVitrina = (t) => new Date(t - 5 * 3600000).toISOString().slice(0, 10);
+export const catalogo = (o, ahora = Date.now()) => vitrinaDelDia(o.leer('tienda_cat') || null, diaVitrina(ahora));
 
 /** El precio de una pieza para alguien (con su Premium o sin él). Las ediciones de 10 no tienen descuento. */
 export function precioPieza(cat, id, prem, ahora = Date.now()) {
@@ -206,6 +231,17 @@ function esPremium(o, quien, cat, ahora) {
 function jugo(o, quien, cat) {
   const temp = tempJugo(o, cat);
   try { return !!fila(o, 'SELECT 1 AS x FROM jugo_temp WHERE quien = ? AND temp = ? AND eventos > 0', quien, temp); } catch (e) { return false; }
+}
+/**
+ * ✅ ¿ESTÁ VERIFICADO? (27/11/2026) Verificado es ser Miembro de DRA (la lista del ciclo, `paseDatos().miembros`, la misma
+ * que abre el drop del día y el Pase), o tener perfil en la Liga (`d:`, que el Worker manda como `de`). Hasta hoy se miraba
+ * sólo `de`, y `d:` existe sólo para quien está en la Lista: de 2.780 Miembros, 2.334 no tenían, y a todos ellos la vitrina
+ * les contestaba «Primero verifícate» mientras el drop del día, en la misma página, sí se les abría. Sin la lista del ciclo
+ * (vacía) no se le abre a nadie sin perfil: comprar no se adivina
+ */
+function verificado(o, quien, k, dueno) {
+  if (k || dueno) return true;
+  try { return o.paseDatos().miembros.has(String(quien)); } catch (e) { return false; }
 }
 function saldoDe(o, d) {
   const ini = Number(d.inicial);
@@ -306,7 +342,7 @@ export function tiendaMia(o, d, H) {
   const enviados = Number((fila(o, 'SELECT COUNT(*) AS n FROM tienda_regalo WHERE de = ? AND t >= ?', quien, semana) || {}).n) || 0;
   const pref = fila(o, 'SELECT deseo_publico FROM tienda_pref WHERE quien = ?', quien);
   out.yo = {
-    saldo: saldoDe(o, d), prem, jugo: jugo(o, quien, cat), verificado: !!d.de,
+    saldo: saldoDe(o, d), prem, jugo: jugo(o, quien, cat), verificado: verificado(o, quien, String(d.de || ''), dueno),
     inv: inv.map((r) => ({ p: r.pieza, o: r.origen, pagado: r.pagado, t: r.t, usada: !!r.usada,
       deshacer: r.origen === 'compra' && !r.usada && !desh.has(r.pieza) && r.pagado > 0 && ahora - r.t < cat.deshacer_h * 3600000 }))
       // 👑 las versiones incluidas de lo que tienes, como tuyas (origen `incluida`): así la Tienda y el vestidor las muestran
@@ -392,7 +428,7 @@ export function tiendaAccion(o, d, H) {
   const cat = catalogo(o);
   const dueno = quien === H.DUENO;
   if (!cat || (!cat.abierta && !dueno)) return mal('cerrada', 404);
-  if (!k && !dueno) return mal('verificate', 403);
+  if (!verificado(o, quien, k, dueno)) return mal('verificate', 403);
   vencerRegalos(o, ahora);
   const a = String(d.accion || '');
   const prem = esPremium(o, quien, cat, ahora);
@@ -577,7 +613,7 @@ export const REGALOS_MAX = 5;
 export const REGALO_CHANCES = { gratis: 0.02, drop: 0.04, pdt: 0.06 };
 export const REGALO_DESC = [[10, 18], [15, 16], [20, 14], [25, 12], [30, 10], [35, 9], [40, 8], [45, 7], [50, 6]];
 export const REGALO_PDT = [[200, 30], [300, 25], [500, 22], [800, 15], [1200, 8]];
-export const REGALO_OTRA = 0.3;
+export const REGALO_OTRA = 0.5;   // 28/11/2026: de 0.3 a 0.5, para que los regalos varíen más
 const DIA_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Un número de 32 bits estable para un texto (FNV-1a), y de ahí una secuencia (mulberry32): la tirada de un regalo */

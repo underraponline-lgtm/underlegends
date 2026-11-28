@@ -22,7 +22,7 @@ import { usePaseDe, usePases } from './pase.js';
 import { SelloPremiumBoton, boostPremium, marcoPremium } from './sello.jsx';
 import { diaEv } from './perfil_datos.js';
 import { textoRol, useRoles } from './roles.js';
-import { fondoEn, useFondos } from './fondos.js';
+import { fondoEn, posDe, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Cartas, PUB_TIPOS, Pub, useAplausos } from './publicaciones.jsx';
@@ -489,7 +489,7 @@ function Cabeza({ liga, f, k, p, e, dc, esYo, onEmblemas, ems, numeros, ex }) {
   const frase = fr ? <q className="pf8-frase">{fr}</q> : null;
   return (
     <>
-    <div className={'escena pf8' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}) }}>
+    <div className={'escena pf8' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}), ...(fondoPf && posDe(fo) ? { '--pf-pos': posDe(fo) } : {}) }}>
       {/* 🛍️ la portada y lo del perfil que se puso en la Tienda (tanda 3, puesto.js): el fondo detrás, los stickers y la entrada encima */}
       <div className="pf8-cover"><FondoT k={k} lugar="perfil" /><CapaPerfilT k={k} foto={liga.avUrl(k, 256) || ''} n={limpio(f.n)} /></div>
       <MenuMas liga={liga} f={f} k={k} esYo={esYo} dc={dc} onEmblemas={() => onEmblemas('')} onReportar={() => setRep(true)} onAjustes={() => setAj(true)} />

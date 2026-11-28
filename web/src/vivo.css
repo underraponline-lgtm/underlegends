@@ -7713,3 +7713,18 @@ a.qn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
 .volver-t{display:inline-flex;align-items:center;justify-content:center;gap:3px;min-width:30px;min-height:32px;height:100%;padding:0 4px;background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;white-space:nowrap;cursor:pointer;opacity:.75;transition:opacity .15s}
 .volver-t svg{flex:none}
 @media (hover:hover) and (pointer:fine){.volver-t:hover{opacity:1}}
+/* 🎯 DÓNDE CAE TU PORTADA (28/11/2026, `PosPortada` de cuenta.jsx): las dos franjas con la forma de la portada —ancha en
+   la compu, más alta en el celular— que se arrastran, y los dos controles. En Tu cuenta y en el Inventario: por eso acá */
+.fpos{display:grid;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid var(--suave)}
+.fpos-t{font:800 11px/1.2 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris,#A9A9A4)}
+.fpos-vs{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);gap:10px;align-items:end}
+.fpos-v{margin:0;display:grid;gap:4px;min-width:0}
+.fpos-v figcaption{font:600 11px/1.2 Archivo,sans-serif;color:var(--gris,#A9A9A4)}
+.fpos-img{width:100%;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave);cursor:grab;touch-action:none;user-select:none}
+.fpos-img:active{cursor:grabbing}
+.fpos-v.pc .fpos-img{aspect-ratio:6/1}
+.fpos-v.cel .fpos-img{aspect-ratio:3/2}
+.fpos-r{display:grid;grid-template-columns:84px minmax(0,1fr) 48px;align-items:center;gap:10px;font:700 13px/1 Archivo,sans-serif}
+.fpos-r input{width:100%;min-height:32px;accent-color:var(--verde)}
+.fpos-r b{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:560px){.fpos-vs{grid-template-columns:minmax(0,1fr)}.fpos-v.cel .fpos-img{max-width:220px}}

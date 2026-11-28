@@ -116,7 +116,14 @@ export function abrirCajaNuevo(el, caja, alAbrir) {
 export function abrirDePrueba(el, rareza) {
   const r = Math.max(0, Math.min(4, Number(rareza) || 0));
   const item = { id: 'prueba-' + Date.now(), tipo: 'drop', origen: '' };
-  const abrir = () => Promise.resolve({ ok: true, id: item.id, tipo: 'drop', rareza: r, nombre: NOMBRES[r], puntos: 0, titulo: '', sin_tope: 0, semana: { cobrado: 0, de: 0 } });
+  // 🏷️ desde Vinilo, con su título (27/11/2026, Dlx: «a mí siempre me salen monedas»): la prueba salía siempre en monedas
+  // (+0), también en Micrófono de Oro, que de verdad trae su título. El nombre sale del objeto (`titulos` de `/drops`),
+  // nunca de una lista copiada acá; sin él, monedas como antes
+  const abrir = () => Promise.resolve(r >= 2 ? pedirDrops() : null).catch(() => null).then((D) => {
+    const ts = (D && D.titulos && D.titulos[r]) || [];
+    const titulo = ts.length ? ts[Math.floor(Math.random() * ts.length)] : '';
+    return { ok: true, id: item.id, tipo: 'drop', rareza: r, nombre: NOMBRES[r], puntos: 0, titulo, sin_tope: 0, semana: { cobrado: 0, de: 0 } };
+  });
   return preparar().then(({ mostrarDrops }) => mostrarDrops(hostDe(el), [item], { abrir, alCerrar: () => {} }));
 }
 /** 🐉 El dibujo del drop antes de abrirlo (`dropQuieto()` de drops_show.js), como texto SVG: el Pase lo muestra quieto */

@@ -1614,6 +1614,10 @@ export function textoPremioDrop(r, tipo, quedan, did, gif) {
   return V.mensaje({ color: DROP_COLOR[fin], efimero: true, filas: [bots],
     dentro: [gif ? V.galeria({ media: { url: gif }, description: uno + ' abierto: ' + nom }) : null,
       V.T('### 🐉 ' + uno + ' abierto: ' + nom + '\nTe llevas ' + premioDe(r) + '.'
+        // 🏷️ dónde quedó el título, y por qué no salió uno si ya lo tenías (27/11/2026: «me salieron TAGs y en Inventario no
+        // aparece ninguno» · «a mí siempre me salen monedas»)
+        + (r.titulo ? '\n-# Ya está en tu Inventario de la página, en Colección → Títulos: se pone como el TAG de su carta.' : '')
+        + (!r.titulo && r.repe ? '\n-# Te tocó «' + String(r.repe).slice(0, 40) + '», que ya es tuyo: va en Puntos.' : '')
         + (r.sin_tope ? '\n-# Esta semana ya pasaste el tope: lo de arriba de 10.000 va a la mitad.' : '')
         + (quedan > 0 ? '\n-# Te ' + (quedan === 1 ? 'queda ' : 'quedan ') + plural(quedan, uno, varios) + '.' : ''))] });
 }
@@ -1686,8 +1690,15 @@ const INV_FILAS = 9;
 /** 🎒 Lo de `/inventario` (la maqueta): cada lugar en su fila, con lo puesto y un botón al costado que abre lo de
  *  `/equipar` para ese lugar en ESTE mensaje */
 async function panelInventario(env, did, i) {
-  const [S, yo] = await Promise.all([tiendaDe(env, did), personaDe(env, did)]);
+  // 🏷️ y tus títulos (27/11/2026, Drako: «abrí drops… me salieron TAGs y hasta un accesorio, y en Inventario no aparece
+  // ninguno»): este panel mostraba sólo las piezas de la Tienda, y lo que sale de un Dragón Drop es un título. Si el objeto
+  // no contesta, el panel sale igual sin la línea
+  const [S, yo, T] = await Promise.all([tiendaDe(env, did), personaDe(env, did),
+    (async () => alObjeto(env, 'tags-mios', { quien: did }))().catch(() => null)]);
   if (!S || !S.ok || !S.yo) return V.avisoMsg(S && S.ok && !S.abierta ? 'La Tienda todavía no abrió.' : 'No pude ver tu inventario: prueba de nuevo en un minuto.');
+  const tits = T && !T.dueno && Array.isArray(T.titulos) ? T.titulos.map(String).filter(Boolean) : [];
+  const lineaTits = tits.length ? '**Títulos** · ' + tits.length + '\n-# ' + tits.slice(0, 6).map((t) => '«' + t.slice(0, 30) + '»').join(' · ')
+    + (tits.length > 6 ? ' y ' + (tits.length - 6) + ' más' : '') + '. Se ponen como el TAG de su carta en la página.' : '';
   const P = (S.cat && S.cat.piezas) || {};
   const inv = (S.yo.inv || []).filter((x) => P[x.p]);
   const puesto = S.yo.puesto || {};
@@ -1696,7 +1707,8 @@ async function panelInventario(env, did, i) {
   if (!inv.length) {
     return ficha({ fam: 'tienda', color, cara, titulo: 'Todavía no tienes nada de la Tienda',
       sub: S.vinculado === false ? SIN_VINCULAR_TIENDA(S.yo.saldo) : 'Tienes **' + milesChat(S.yo.saldo) + '** Puntos de Tienda para estrenar.',
-      filas: [S.vinculado === false ? [] : [botonLink('Ir a la Tienda', URL_TIENDA)]] });
+      cuerpo: lineaTits ? ['—', lineaTits] : undefined,
+      filas: [S.vinculado === false ? (lineaTits ? [botonLink('Tu Inventario', URL_INVENTARIO)] : []) : [lineaTits ? botonLink('Tu Inventario', URL_INVENTARIO) : null, botonLink('Ir a la Tienda', URL_TIENDA)].filter(Boolean)] });
   }
   const por = {};
   for (const x of inv) { const r = P[x.p].c; por[r] = (por[r] || 0) + 1; }
@@ -1709,7 +1721,8 @@ async function panelInventario(env, did, i) {
   const resto = lugares.slice(INV_FILAS);
   return ficha({ fam: 'tienda', color, cara, titulo: 'Tu inventario',
     sub: plural(inv.length, 'pieza', 'piezas') + ' de la Tienda · te quedan **' + milesChat(S.yo.saldo) + '** Puntos',
-    cuerpo: ['—'].concat(filas, resto.length ? ['-# Y también: ' + resto.map((r) => (RANURA_NOMBRE[r] || r) + ' ' + por[r]).join(' · ') + '.'] : []),
+    cuerpo: ['—'].concat(filas, resto.length ? ['-# Y también: ' + resto.map((r) => (RANURA_NOMBRE[r] || r) + ' ' + por[r]).join(' · ') + '.'] : [],
+      lineaTits ? [lineaTits] : []),
     filas: [[botonLink('Tu Inventario', URL_INVENTARIO), botonLink('La Tienda', URL_TIENDA)]] });
 }
 

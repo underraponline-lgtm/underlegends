@@ -1978,6 +1978,24 @@ const ok = (cond, que, det) => {
       && vsLado.a.fondo === 'bandera' && vsLado.b.fondo === '',
     'tus fondos por lugar: sin imagen se elige bandera o servidor, mia va en el VS en vivo, lo inventado no entra, quitar la imagen deja lo elegido',
     JSON.stringify([sinImg, mapa1, conImg.lugares, vivoDlx, sinPrem, quita, mapa2, vsLado.a, vsLado.b]));
+    // 🎯 DÓNDE CAE LA PORTADA (28/11/2026, Drako): `[x, y]` en %, de 0 a 100, lo que falta es 50; lo que no es un número o se
+    // sale del rango no entra (tampoco lo que el Worker marca como 'mal'), y guardarla no toca lo elegido en cada lugar
+    o._fondos = null;
+    const pMal = [await o.fondo({ quien: '100000052', de: 'ana2', pos: [120, 30] }), await o.fondo({ quien: '100000052', de: 'ana2', pos: 'arriba' }),
+      await o.fondo({ quien: '100000052', de: 'ana2', pos: 'mal' }), await o.fondo({ quien: '100000052', de: 'ana2', pos: [-1, 50] })];
+    const pOk = await o.fondo({ quien: '100000052', de: 'ana2', pos: [20.4, 80] });
+    o._fondos = null;
+    const pMapa = o.fondos().f.ana2;
+    const pParcial = await o.fondo({ quien: '100000052', de: 'ana2', pos: { y: 10 } });
+    const pNuevo = await o.fondo({ quien: '100000053', de: 'ana3', pos: [0, 100] });
+    const pPuras = [A.posFondo([0, 100]), A.posFondo([NaN, 2]), A.posFondo(['50', 'x']), A.posFondo(null), A.posFondo([]), A.posGuardada('7,93'), A.posGuardada('')];
+    ok(pMal.every((x) => x.error === 'posición') && pOk.ok && JSON.stringify(pOk.pos) === '[20,80]' && pOk.lugares.vivo === 'bandera'
+      && pMapa && JSON.stringify(pMapa[4]) === '[20,80]' && pMapa[3].vivo === 'bandera'
+      && JSON.stringify(pParcial.pos) === '[50,10]' && pNuevo.ok && JSON.stringify(pNuevo.pos) === '[0,100]' && pNuevo.fondo === null
+      && JSON.stringify(pPuras) === JSON.stringify([[0, 100], null, null, null, [50, 50], [7, 93], null])
+      && o.fondoDe('100000051').pos === null,
+    'tu portada: la posición va de 0 a 100 (lo que falta es 50), lo que no vale no entra, se guarda sin tocar los lugares y viaja en fondos()',
+    JSON.stringify([pMal, pOk, pMapa, pParcial, pNuevo, pPuras]));
     // ⚠️ los lugares y sus opciones viven también en web/src/fondos.js (`LUGARES`): si se separan, la página ofrece algo
     // que el objeto no guarda (o al revés)
     const webF = readFileSync(join(aqui, '..', 'web', 'src', 'fondos.js'), 'utf8');
@@ -5063,6 +5081,32 @@ const ok = (cond, que, det) => {
     const pagoT = o.sql.exec('SELECT monto FROM tienda WHERE id = ?', 'drop:' + conPuntos.id).toArray()[0];
     ok(pagoT && pagoT.monto === conPuntos.puntos, 'a la billetera va lo pagado con el tope, no lo de antes');
 
+    // 🏷️ LO QUE SALE DE UN DROP ESTÁ EN TU INVENTARIO, Y SI YA LO TENÍAS SE DICE (27/11/2026). Drako: «abrí drops, me
+    // salieron TAGs… y en Inventario no aparece ninguno»; Dlx: «a mí siempre me salen monedas»
+    ok(A.repeDrop(4, 0.9, ['Corona de Escamas']) === 'Corona de Escamas' && A.repeDrop(4, 0.9, []) === ''
+      && A.repeDrop(2, 0.1, ['Lengua de Fuego', 'Garra Dorada']) === 'Lengua de Fuego' && A.repeDrop(2, 0.7, ['Lengua de Fuego', 'Garra Dorada']) === ''
+      && A.repeDrop(2, 0.1, ['Lengua de Fuego']) === '' && A.repeDrop(0, 0.1, ['Lengua de Fuego', 'Garra Dorada']) === ''
+      && A.repeDrop(3, 0.2, ['Aliento de Dragón']) === 'Aliento de Dragón' && A.repeDrop(3, 0.6, ['Aliento de Dragón']) === '',
+      'repeDrop: el título que te habría tocado sólo si ya tienes todos los de esa rareza y el azar caía en el título');
+    {
+      const TT = '300000000000000077';
+      o.dropDar(TT, 'tit:1', 4);
+      const c1 = o.sql.exec('SELECT id FROM drops WHERE quien = ? AND abierto = 0', TT).toArray()[0];
+      const r1 = o.dropAbrir(TT, c1.id);
+      const tm = o.tagsMios(TT);
+      ok(r1.titulo === 'Corona de Escamas' && tm.titulos.includes('Corona de Escamas') && tm.titulo_carta['Corona de Escamas'] === 'competitivo'
+        && tm.titulo_de['Corona de Escamas'] === 'drop',
+        'el título de un drop sale al toque en tus TAGs del Inventario (también sin el Pase guardado), con su carta', JSON.stringify([r1.titulo, tm.titulos]));
+      o.dropDar(TT, 'tit:2', 4);
+      const c2 = o.sql.exec('SELECT id FROM drops WHERE quien = ? AND abierto = 0', TT).toArray()[0];
+      const r2 = o.dropAbrir(TT, c2.id), r2b = o.dropAbrir(TT, c2.id);
+      ok(r2.titulo === '' && r2.repe === 'Corona de Escamas' && r2.puntos > 0 && r2b.ya && r2b.repe === 'Corona de Escamas',
+        'un Micrófono de Oro con su título ya tuyo paga Puntos y DICE cuál era (también al volver a pedirlo)', JSON.stringify(r2));
+      const dd = o.dropsDe(TT);
+      ok(dd.titulos && dd.titulos[4][0] === 'Corona de Escamas' && dd.tus_titulos.includes('Corona de Escamas'),
+        '/drops trae los títulos de cada rareza y cuáles ya tienes (el drop de prueba de Mods los usa)');
+    }
+
     // 🥚🎁 LA TANDA 1 DEL REWORK (17/11/2026): el Nido, los cofres y lo que se gana compitiendo
     ok(A.tipoDrop('star:x') === 'star' && A.tipoDrop('nido:x') === 'nido' && A.tipoDrop('cofre5:3:x') === 'cofre' && A.tipoDrop('cofre:x:1') === 'drop'
       && A.tipoDrop('dia:x') === 'drop' && A.cofreDe('cofre5:4:x') === 4 && A.cofreDe('nido:x') === -1,
@@ -5914,8 +5958,8 @@ const ok = (cond, que, det) => {
       ok(cuenta.gratis / N > 0.012 && cuenta.gratis / N < 0.03 && cuenta.drop / N > 0.03 && cuenta.drop / N < 0.05
         && cuenta.pdt / N > 0.045 && cuenta.pdt / N < 0.075 && cuenta.pieza / N > 0.85,
         'las chances: gratis ~2 %, Drop ~4 %, Puntos ~6 %, el resto la pieza con descuento', JSON.stringify(cuenta));
-      ok(!precioMal && !descMal && otra / cuenta.pieza > 0.2 && otra / cuenta.pieza < 0.4,
-        'con descuento: de 10 a 50 %, de a 50 Puntos y más barata; casi siempre la de ese lugar', JSON.stringify({ precioMal, descMal, otra }));
+      ok(!precioMal && !descMal && otra / cuenta.pieza > 0.4 && otra / cuenta.pieza < 0.6,
+        'con descuento: de 10 a 50 %, de a 50 Puntos y más barata; la mitad de las veces la de ese lugar (28/11/2026: REGALO_OTRA 0.5)', JSON.stringify({ precioMal, descMal, otra }));
       let dropSin = 0;
       for (let n = 0; n < 3000; n++) if (tirar('q' + n, 0, false).k === 'drop') dropSin++;
       ok(!dropSin, 'quien no es Miembro de DRA nunca recibe un Drop (le salen Puntos)');
@@ -5930,6 +5974,19 @@ const ok = (cond, que, det) => {
         'dos piezas en la vitrina, dos regalos cerrados (lo que tienen adentro no sale)', JSON.stringify(yo && yo.regalos_dia));
       ok(acc(QP, 'qp', { accion: 'regalo-abrir', i: 2 }).error === 'regalo' && acc(QP, '', { accion: 'regalo-abrir', i: 0 }).error === 'verificate',
         'sólo los regalos que hay, y con perfil verificado');
+      // ✅ un Miembro de DRA SIN perfil en la Lista (sin `d:`) también está verificado (27/11/2026): la vitrina le decía
+      // «Primero verifícate» y el drop del día, en la misma página, se le abría. Es la regla de `paseDatos().miembros`
+      {
+        const QM = '500000000000088888', pd0 = o.paseDatos;
+        const pdM = pd0.call(o);
+        o.paseDatos = () => Object.assign({}, pdM, { miembros: new Set([...pdM.miembros, QM]) });
+        try {
+          const rm = acc(QM, '', { accion: 'regalo-abrir', i: 0 });
+          const ym = TI.tiendaMia(o, { quien: QM, de: '', inicial: INI, desde: 0 }, H).yo;
+          ok(rm.ok && rm.oferta && ym.verificado && !TI.tiendaMia(o, { quien: '500000000000077777', de: '', inicial: INI, desde: 0 }, H).yo.verificado,
+            'un Miembro de DRA sin perfil abre los regalos de la vitrina (y la Tienda lo ve verificado); quien no es Miembro, no', JSON.stringify(rm));
+        } finally { o.paseDatos = pd0; }
+      }
       const s0 = saldo(QP);
       r = acc(QP, 'qp', { accion: 'regalo-abrir', i: 0 });
       const r2 = acc(QP, 'qp', { accion: 'regalo-abrir', i: 0 });

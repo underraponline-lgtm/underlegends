@@ -786,7 +786,7 @@ function EventoCompleto({ ctx, xs, mejor = null }) {
 
 function Lapiz({ ctx, ronda, ls }) {
   if (!ctx.lapiz || ronda == null || ls.length < 2) return null;
-  return <button type="button" className="lk-lapiz" aria-label={'Corregir ' + ls.map(limpio).join(' vs ')} title="Corregir esta batalla"
+  return <button type="button" className="lk-lapiz" aria-label={'Corregir ' + ls.map(limpio).join(' vs ') + ' (Mods)'} title="Corregir esta batalla (Mods)"
     onClick={(e) => { e.stopPropagation(); ctx.lapiz(ronda, ls); }}>✎</button>;
 }
 
@@ -2497,6 +2497,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
         <div className="lk-pes-p" role="tabpanel" aria-label={(tabs.find((x) => x[0] === tabV) || [])[1]}>
           {tabV === 'llave' ? (
             <>
+              {/* ✎ QUÉ ES EL LÁPIZ (28/11/2026, «¿para qué es ese lápiz de corrección?»): el ✎ magenta de cada batalla no
+                  decía nada en un celular o una tablet (el `title` no se ve sin mouse). Una línea, sólo con los lápices prendidos */}
+              {lapices ? <p className="lk-ayuda"><span aria-hidden="true">✎ </span>Lápices de Mods prendidos: el lápiz magenta de cada batalla sirve para corregirla (quién ganó o un nombre). Sólo lo ves tú; se apagan en Mods, «Lápices para corregir».</p> : null}
               {N || base.dob ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedas afuera.'
                 : 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores.'}</p> : null}
               {hayR ? <Ley ctx={ctx} L={L} G={G} /> : null}

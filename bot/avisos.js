@@ -4930,6 +4930,21 @@ export function premioDrop(rareza, r, tiene) {
   return { puntos: 10000, titulo: libres[0] || '' };
 }
 
+/**
+ * 🏷️ El título que habría salido con el mismo `r` si no lo tuvieras ya, o '' (27/11/2026): `premioDrop()` lo cambia por
+ * Puntos en silencio y quien ya tiene los de una rareza veía «siempre monedas» sin saber por qué. Sólo cuando TODOS los
+ * de esa rareza son tuyos y el azar caía en la rama del título (la mitad en Vinilo y Disco de Oro, siempre en Micrófono).
+ * Pura.
+ */
+export function repeDrop(rareza, r, tiene) {
+  const ts = DROP_TITULOS[rareza] || [];
+  const ya = new Set(tiene || []);
+  if (!ts.length || ts.some((t) => !ya.has(t))) return '';
+  if (rareza === 2) return r < 0.5 ? ts[Math.floor(r * 2 * ts.length) % ts.length] : '';
+  if (rareza === 3) return r < 0.5 ? ts[0] : '';
+  return ts[0];
+}
+
 /** Lo que dice la campana del dueño de la publicación: cuántos comentaron y el último. Pura. */
 export function avisoComentario(n, nombre, tx) {
   return {
@@ -5532,6 +5547,28 @@ export function lugaresFondo(x) {
     if (v && v !== 'auto' && ops.includes(v)) o[l] = v;
   }
   return o;
+}
+// 🎯 DÓNDE CAE LA PORTADA DE TU PERFIL (28/11/2026, Drako: «quedaría chévere poder ubicar bien el fondo»): el
+// `background-position` de la imagen de la portada, en % (`[x, y]`, 0 a 100; lo que falta es 50). `null` si no vale:
+// algo que no es un número, o fuera de 0–100. Se guarda en `pos` de la tabla `fondos` como «x,y»
+export const POS_DEFECTO = 50;
+export function posFondo(p) {
+  let x, y;
+  if (Array.isArray(p)) [x, y] = p;
+  else if (p && typeof p === 'object') ({ x, y } = p);
+  else return null;
+  const uno = (v) => {
+    if (v === undefined || v === null || v === '') return POS_DEFECTO;
+    const n = typeof v === 'number' ? v : (typeof v === 'string' && /^\d{1,3}(\.\d+)?$/.test(v.trim()) ? Number(v) : NaN);
+    return Number.isFinite(n) && n >= 0 && n <= 100 ? Math.round(n) : null;
+  };
+  const a = uno(x), b = uno(y);
+  return a === null || b === null ? null : [a, b];
+}
+/** La posición guardada («x,y») como `[x, y]`, o `null` si no eligió ninguna */
+export function posGuardada(s) {
+  const m = /^(\d{1,3}),(\d{1,3})$/.exec(String(s || ''));
+  return m ? posFondo([Number(m[1]), Number(m[2])]) : null;
 }
 // 🖼️ los marcos de carta, de menos a más, y los estilos de la carta de Servidor (Dlx, 25/10/2026: «Las 2. Una elige»)
 // 🎁 y `embajador`, el de la última meta de los referidos (17/11/2026). ⚠️ ANTES del Oro, a propósito: sin marco elegido
@@ -8356,7 +8393,9 @@ export async function rutaAvisos(req, env, ruta) {
     try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id, de: claveValida(de) ? de : '', img: d.img, borrar: d.borrar === true,
-        perfil: d.perfil, pagina: d.pagina, lugares: d.lugares && typeof d.lugares === 'object' ? lugaresFondo(d.lugares) : undefined }),
+        perfil: d.perfil, pagina: d.pagina, lugares: d.lugares && typeof d.lugares === 'object' ? lugaresFondo(d.lugares) : undefined,
+        // 🎯 dónde cae la portada (`posFondo()`): lo que no vale llega como 'mal' y el objeto lo rechaza
+        pos: d.pos === undefined ? undefined : (posFondo(d.pos) || 'mal') }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -9697,6 +9736,8 @@ export class Avisos {
         "motivo TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, subidas TEXT NOT NULL DEFAULT '')");
       // 🖼️ TUS FONDOS POR LUGAR (17/11/2026): qué va en cada lugar, `{"perfil":"mia","vs":"bandera",…}`. Ver `LUGARES_FONDO`
       try { this.sql.exec("ALTER TABLE fondos ADD COLUMN lugares TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      // 🎯 y dónde cae la portada de su perfil (28/11/2026): «x,y» en %, '' si nunca la movió. Ver `posFondo()`
+      try { this.sql.exec("ALTER TABLE fondos ADD COLUMN pos TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       // 📸 la foto propia de cada carta (13/10/2026): `estado` 'ok' si se ve la propia ('' o 'no': la de Discord); `pend`,
       // la que espera revisión, aparte —mientras tanto se sigue viendo la de antes—; `t`, cuándo se cambió, para la regla
       // de una por semana. Ver `fotoCarta()`
@@ -15824,11 +15865,12 @@ export class Avisos {
   /** Cómo está el fondo de alguien, para su Mi cuenta. */
   fondoDe(quien) {
     if (!/^\d{5,25}$/.test(quien)) return { error: 'falta quién' };
-    const r = this.sql.exec('SELECT estado, url, pend, perfil, pagina, motivo, t, lugares FROM fondos WHERE quien = ?', quien).toArray()[0];
+    const r = this.sql.exec('SELECT estado, url, pend, perfil, pagina, motivo, t, lugares, pos FROM fondos WHERE quien = ?', quien).toArray()[0];
     let L = {};
     try { L = lugaresFondo(JSON.parse((r && r.lugares) || '{}')); } catch (e) { L = {}; }
     // `fondo` es null si nunca subió una imagen (una fila sólo con los lugares elegidos no es un fondo)
-    return { ok: true, puede: this.puedeFondo(quien), lugares: L, fondo: r && (r.url || r.pend) ? { estado: r.estado, url: r.url,
+    // 🎯 `pos`, dónde cae la portada (`[x, y]` en %), o null si nunca la movió
+    return { ok: true, puede: this.puedeFondo(quien), lugares: L, pos: posGuardada(r && r.pos), fondo: r && (r.url || r.pend) ? { estado: r.estado, url: r.url,
       pend: r.pend, perfil: !!r.perfil, pagina: !!r.pagina, motivo: r.motivo, t: r.t } : null };
   }
 
@@ -15850,6 +15892,20 @@ export class Avisos {
       if (r && r.lugares && r.lugares !== '{}') {
         this.sql.exec("UPDATE fondos SET estado = '', url = '', pend = '', motivo = '' WHERE quien = ?", quien);
       } else this.sql.exec('DELETE FROM fondos WHERE quien = ?', quien);
+      return this.fondoDe(quien);
+    }
+    // 🎯 dónde cae la portada de su perfil (28/11/2026): `[x, y]` en % (`posFondo()`), sin imagen nueva. Es de todos, como
+    // elegir la bandera o el servidor: mover lo que ya se ve no sube nada
+    if (d.pos !== undefined && !d.img) {
+      const P = posFondo(d.pos);
+      if (!P) return { error: 'posición' };
+      const s = P[0] + ',' + P[1];
+      const de = String(d.de || '');
+      if (r) this.sql.exec("UPDATE fondos SET pos = ?, k = CASE WHEN ? != '' THEN ? ELSE k END WHERE quien = ?", s, de, de, quien);
+      else {
+        this.sql.exec("INSERT INTO fondos (quien, k, estado, url, pend, perfil, pagina, motivo, t, subidas, lugares, pos) " +
+          "VALUES (?, ?, '', '', '', 1, 0, '', ?, '', '', ?)", quien, de, ahora, s);
+      }
       return this.fondoDe(quien);
     }
     // 🖼️ dónde va cada uno (sin imagen nueva): cualquiera que entre, con o sin imagen propia. `mia` sin imagen se guarda
@@ -15948,10 +16004,13 @@ export class Avisos {
     // 🛡️ un minuto de memoria, como `roles()`: se olvida al aprobar, quitar o cambiar uno
     if (this._fondos && Date.now() - this._fondos.t < 60000) return this._fondos;
     const f = {};
-    for (const r of this.sql.exec("SELECT k, url, perfil, pagina, lugares FROM fondos WHERE (url != '' OR lugares NOT IN ('', '{}')) AND k != ''").toArray()) {
+    for (const r of this.sql.exec("SELECT k, url, perfil, pagina, lugares, pos FROM fondos WHERE (url != '' OR lugares NOT IN ('', '{}')) AND k != ''").toArray()) {
       let L = {};
       try { L = lugaresFondo(JSON.parse(r.lugares || '{}')); } catch (e) { L = {}; }
-      f[r.k] = Object.keys(L).length ? [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0, L] : [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0];
+      // 🎯 y dónde cae su portada (`[x, y]`), quinto, sólo si la movió
+      const P = posGuardada(r.pos);
+      f[r.k] = P ? [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0, L, P]
+        : Object.keys(L).length ? [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0, L] : [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0];
     }
     this._fondos = { t: Date.now(), f };
     return this._fondos;
@@ -17729,6 +17788,9 @@ export class Avisos {
     const hechos = this.sql.exec('SELECT que FROM dia_pasos WHERE quien = ? AND dia = ?', quien, dia).toArray().map((r) => r.que);
     return { ok: true, cerrados, abiertos, miembro: this.dropMiembro(quien), dia: { pasos: hechos.length, hechos, de: Object.keys(PASOS_QUE).length, drops: DROP_PASOS },
       sin: this.dropSin(quien), garantia: DROP_GARANTIA, rarezas: DROP_RAREZAS, que: PASOS_QUE,
+      // 🏷️ los títulos que salen de un drop, por rareza, y cuáles ya tienes (27/11/2026): con todos los de una rareza ya
+      // tuyos, esa rareza sólo da Puntos. Lo usa también el drop de prueba de Mods, que no inventa nombres
+      titulos: DROP_TITULOS, tus_titulos: this.titulosDrop(quien),
       semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE },
       rarezas_nido: NIDO_RAREZAS, partes: NIDO_PARTES, cofres: COFRES, sube: COFRE_SUBE };
   }
@@ -17764,14 +17826,20 @@ export class Avisos {
       let pr = {};
       try { pr = JSON.parse(f.premio) || {}; } catch (e) { pr = {}; }
       return { ok: true, ya: true, id, tipo, rareza: f.rareza, nombre: (DROP_RAREZAS[f.rareza] || [''])[0], puntos: pr.puntos || 0,
-        titulo: pr.titulo || '', sin_tope: pr.sin_tope || 0, semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } };
+        titulo: pr.titulo || '', repe: pr.repe || '', sin_tope: pr.sin_tope || 0, semana: { cobrado: this.dropSemana(quien), de: DROP_TOPE } };
     }
     const azar = () => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; };
     const rareza = rarezaDrop(azar(), f.min, this.dropSin(quien));
     const tiene = [...this.titulosDrop(quien)];
-    const pr = premioDrop(rareza, azar(), tiene);
+    const rp = azar();
+    const pr = premioDrop(rareza, rp, tiene);
     // un título que ya tenía (no debería salir: `premioDrop()` lo saca) se cambia por Puntos
     if (pr.titulo && tiene.includes(pr.titulo)) { pr.puntos += 1500; pr.titulo = ''; }
+    // 🏷️ SI TE TOCÓ UN TÍTULO QUE YA ES TUYO, SE DICE (27/11/2026, Dlx: «a mí siempre me salen monedas»): con los títulos de
+    // una rareza ya ganados, `premioDrop()` paga Puntos en su lugar y la animación mostraba monedas sin decir por qué.
+    // `repe` es el título que habría salido; lo pagado no cambia
+    const repe = repeDrop(rareza, rp, tiene);
+    if (!pr.titulo && repe) pr.repe = repe;
     const ahora = Date.now();
     // 🧢 el tope suave de la semana: lo que pasa de `DROP_TOPE`, a la mitad. `sin_tope` guarda lo que habría pagado. Lo que
     // se gana compitiendo (`esMerito()`) no pasa por el tope ni cuenta para él: va a la billetera como `dropm:`
@@ -17788,8 +17856,8 @@ export class Avisos {
       this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', (merito ? 'dropm:' : 'drop:') + id,
         quien, pr.puntos, ahora);
     }
-    return { ok: true, id, tipo, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo, sin_tope: pr.sin_tope || 0,
-      semana: { cobrado: cobrado + (merito ? 0 : (pr.puntos || 0)), de: DROP_TOPE } };
+    return { ok: true, id, tipo, rareza, nombre: DROP_RAREZAS[rareza][0], puntos: pr.puntos, titulo: pr.titulo, repe: pr.repe || '',
+      sin_tope: pr.sin_tope || 0, semana: { cobrado: cobrado + (merito ? 0 : (pr.puntos || 0)), de: DROP_TOPE } };
   }
 
   /** 🥚 Abrir un Nido (lo llama `dropAbrir()`): la rareza, en cuántos huevos se parte y un premio por huevo, una sola vez.
@@ -22260,7 +22328,9 @@ export class Avisos {
    *  premium, los de la premium. El dueño, todos */
   titulosDe(quien) {
     const P = this.paseDatos();
-    if (!P.cfg) return [];
+    // 🐉 sin Pase guardado (el ciclo todavía no lo mandó), los de los drops y los de nuevos siguen siendo tuyos: no son del
+    // Pase y se ganaron igual (27/11/2026, «abrí drops y en Inventario no aparece ninguno»)
+    if (!P.cfg) return [...new Set(this.titulosDrop(quien).concat(this.titulosNuevo(quien)))];
     const nivel = quien === DUENO ? P.cfg.niveles || 30 : P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0;
     const filas = [...(P.cfg.premios || [])];
     if (this.pasePremium(quien, P.cfg.temp)) filas.push(...(P.cfg.premium || []));

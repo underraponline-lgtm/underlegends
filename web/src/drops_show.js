@@ -942,7 +942,7 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     const r = S.res, rr = S.fin;
     const premios = S.osc && Array.isArray(r.premios) && r.premios.length
       ? r.premios.map((p) => ({ puntos: nPts(p && p.puntos), titulo: p && !p.repe ? p.titulo || '' : '', repe: (p && p.repe) || '', r: rr }))
-      : [{ puntos: nPts(r.puntos), titulo: r.titulo || '', r: rr }];
+      : [{ puntos: nPts(r.puntos), titulo: r.titulo || '', repe: (!r.titulo && typeof r.repe === 'string' && r.repe) || '', r: rr }];
     const total = r.puntos != null ? nPts(r.puntos) : premios.reduce((s, p) => s + p.puntos, 0);
     S.puntos += total; puntosTodos += total;
     const nota = notaTope(r, S.osc ? 'este Nido' : 'este drop');
@@ -1031,7 +1031,7 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
       ico.querySelector('.dsw-sello').animate([{ transform: 'rotate(10deg) scale(2.6)', opacity: 0 }, { transform: 'rotate(10deg) scale(1)', opacity: 1 }], { duration: T(260), easing: 'cubic-bezier(.3,1.4,.5,1)' });
       ico.animate([{ transform: 'scale(1.25)' }, { transform: 'none' }], { duration: T(360), easing: 'cubic-bezier(.2,.9,.3,1.3)' });
       chispas(30, R.prisma ? PRISMA : ['#fff', R.claro, R.c], [rel0()]);
-      nom.textContent = 'Se pone en tu perfil';
+      nom.textContent = 'Ya está en tu Inventario';
       if (p.puntos) { await espera(320); num.classList.add('dsw-chico'); await contar(num, p.puntos); num.textContent += ' Puntos'; Son.ding(p.r); }
     } else {
       $('.dsw-pr-et').textContent = 'Puntos de Tienda';
@@ -1061,7 +1061,7 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     fase('resumen-anim'); pista(''); brasas(false); pips();
     premioEl.hidden = true; rsEl.hidden = false; verEscena(false);
     const items = [];
-    if (S.extra && S.extra.titulo) items.push({ txt: `Título «${S.extra.titulo}»`, R: { c: CF[S.extra.c].c, n: 'Se pone en tu perfil' } });
+    if (S.extra && S.extra.titulo) items.push({ txt: `Título «${S.extra.titulo}»`, R: { c: CF[S.extra.c].c, n: 'Ya está en tu Inventario' } });
     S.acum.forEach((p) => { if (p.titulo) items.push({ txt: `Título «${p.titulo}»`, p, R: RZ[p.r] }); });
     ((S.extra && S.extra.ya) || []).forEach((t) => items.push({ txt: t, R: { c: '#5CC8FF', n: 'Ya los abriste' } }));
     const mejor = S.acum.reduce((m, p) => Math.max(m, p.r), 0);
@@ -1076,13 +1076,19 @@ export function mostrarDrops(host, cola, { abrir, alCerrar, cofres } = {}) {
     listaEl.classList.toggle('dsw-muchos', items.length > 4);
     listaEl.innerHTML = items.map((it) => `<li class="dsw-rs-i" style="--c:${it.R.prisma ? '#C9B8FF' : it.R.c}"><span class="dsw-ic">${it.puntos != null ? svgMoneda(1) : ICO_TITULO(it.R)}</span><span><b>${esc(it.txt)}</b><small>${it.de > 1 ? `de ${it.de} premios` : esc(it.R.n)}</small></span></li>`).join('');
     const quedan = lista.length - ic;
+    const conTitulo = items.some((it) => /^Título/.test(it.txt));
     const bot = $('.dsw-rs-bot');
     bot.innerHTML = (quedan > 0 ? `<button type="button" class="dsw-b dsw-b-blanco dsw-otro">Abrir otro (${quedan})</button>` : '')
-      + `<button type="button" class="dsw-b ${quedan > 0 ? 'dsw-b-negro' : 'dsw-b-blanco'} dsw-listo-b">Listo</button>`;
+      + `<button type="button" class="dsw-b ${quedan > 0 ? 'dsw-b-negro' : 'dsw-b-blanco'} dsw-listo-b">Listo</button>`
+      // 🏷️ con un título, a dónde fue (27/11/2026, Drako: «me salieron TAGs… y en Inventario no aparece ninguno»): a la
+      // Colección del Inventario, donde están todos los tuyos, tengas o no la carta en la que van
+      + (conTitulo ? '<button type="button" class="dsw-b dsw-b-negro dsw-inv-b">Ver en mi Inventario</button>' : '');
     bot.style.visibility = 'hidden';
     const otro = bot.querySelector('.dsw-otro');
     if (otro) otro.addEventListener('click', () => { if (S.fase !== 'fin' || recien()) return; Son.init(); siguienteDeCola(true); });
     bot.querySelector('.dsw-listo-b').addEventListener('click', () => { if (!recien()) cerrar(); });
+    const invB = bot.querySelector('.dsw-inv-b');
+    if (invB) invB.addEventListener('click', () => { if (recien()) return; cerrar(); try { location.hash = '#/inventario/temporada/coleccion'; } catch (e) { /* queda cerrado */ } });
     rsEl.scrollTop = 0;
     const lis = [...listaEl.children];
     for (let i = 0; i < lis.length; i++) {

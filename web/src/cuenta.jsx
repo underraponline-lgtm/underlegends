@@ -16,7 +16,7 @@ import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
 import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
 import { useRoles } from './roles.js';
-import { LUGARES, NOMBRE_OPCION, eleccion, escenaDe, fondoEn, fondoOpcion, fondoPropio, urlFondo } from './fondos.js';
+import { LUGARES, NOMBRE_OPCION, POS_PORTADA, eleccion, escenaDe, fondoEn, fondoOpcion, fondoPropio, ponerPosPortada, urlFondo } from './fondos.js';
 import { FichaCuerpo } from './ficha.jsx';
 import { FondoPropio } from './fondo_propio.jsx';
 import { useSocio } from './panelsocio.js';
@@ -430,6 +430,68 @@ function vistaAuto(l, yo, liga) {
   return null;
 }
 
+// ═══ 🎯 DÓNDE CAE TU PORTADA (28/11/2026, Drako: «quedaría chévere poder ubicar bien el fondo»). La portada recorta tu
+// imagen para llenar la franja de arriba del perfil, y hasta acá siempre al centro: ahora la mueves arrastrándola o con
+// los dos controles, mirándola como sale en la compu (una franja ancha) y en el celular (más alta). «Guardar» la deja así
+// para todos (`pos` en `fondo()` de avisos.js); `onCambio` avisa cada movimiento, para que una vista grande la siga ═══
+const posLim = (n) => Math.max(0, Math.min(100, Math.round(n)));
+export function PosPortada({ bg, pos, k, onGuardado, onCambio }) {
+  const ini = Array.isArray(pos) ? pos : POS_PORTADA;
+  const [p, setP] = useState(ini);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const arr = useRef(null);
+  useEffect(() => { setP(Array.isArray(pos) ? pos : POS_PORTADA); }, [pos && pos[0], pos && pos[1]]); // eslint-disable-line react-hooks/exhaustive-deps
+  const mover = (q) => { setP(q); setMsg(''); if (onCambio) onCambio(q); };
+  // arrastrar: la imagen sigue al dedo (moverla a la derecha muestra más de su lado izquierdo)
+  const abajo = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    arr.current = { x: e.clientX, y: e.clientY, p, w: r.width || 1, h: r.height || 1 };
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (er) { /* sin captura */ }
+  };
+  const mueve = (e) => {
+    const a = arr.current;
+    if (!a) return;
+    mover([posLim(a.p[0] - ((e.clientX - a.x) / a.w) * 100), posLim(a.p[1] - ((e.clientY - a.y) / a.h) * 100)]);
+  };
+  const suelta = () => { arr.current = null; };
+  const guardar = async () => {
+    setOcup(true); setMsg('');
+    try {
+      const j = await ponerPosPortada(k, p);
+      setMsg('Guardado: tu portada ya se ve así.');
+      if (onGuardado) onGuardado(j);
+    } catch (er) { setMsg(er.message === 'posición' ? 'Esa posición no vale: prueba de nuevo.' : 'No pude guardarla: ' + er.message); }
+    setOcup(false);
+  };
+  const igual = p[0] === ini[0] && p[1] === ini[1];
+  const estilo = { backgroundImage: bg, backgroundPosition: p[0] + '% ' + p[1] + '%' };
+  const vista = (cls, t) => (
+    <figure className={'fpos-v ' + cls}>
+      <div className="fpos-img" style={estilo} role="img" aria-label={'Tu portada ' + t + ': arrástrala para moverla'}
+        onPointerDown={abajo} onPointerMove={mueve} onPointerUp={suelta} onPointerCancel={suelta} />
+      <figcaption>{t}</figcaption>
+    </figure>
+  );
+  return (
+    <div className="fpos">
+      <small className="fpos-t">Posición de tu portada · arrástrala o usa los controles</small>
+      <div className="fpos-vs">{vista('pc', 'En la compu')}{vista('cel', 'En el celular')}</div>
+      <label className="fpos-r"><span>Horizontal</span>
+        <input type="range" min="0" max="100" step="1" value={p[0]} onChange={(e) => mover([posLim(+e.target.value), p[1]])} aria-valuetext={p[0] + ' %'} />
+        <b>{p[0]} %</b></label>
+      <label className="fpos-r"><span>Vertical</span>
+        <input type="range" min="0" max="100" step="1" value={p[1]} onChange={(e) => mover([p[0], posLim(+e.target.value)])} aria-valuetext={p[1] + ' %'} />
+        <b>{p[1]} %</b></label>
+      <div className="cu-btns">
+        <button type="button" className="btn verde chico" disabled={ocup || igual} onClick={guardar}>{ocup ? 'Guardando…' : 'Guardar posición'}</button>
+        <button type="button" className="btn borde2 chico" disabled={ocup || (p[0] === POS_PORTADA[0] && p[1] === POS_PORTADA[1])} onClick={() => mover(POS_PORTADA)}>Como estaba</button>
+      </div>
+      {msg ? <p className="cu-d" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
 export function FondoCaja({ dc, liga }) {
   const [st, setSt] = useState(null);
   // 🪪 la opción de «Tu ficha» que estás mirando con el mouse o el teclado: la vista de abajo la prueba antes de elegirla
@@ -534,6 +596,8 @@ export function FondoCaja({ dc, liga }) {
                     );
                   })}
                 </div>
+                {/* 🎯 la portada que se ve hoy, para moverla (28/11/2026) */}
+                {l === 'perfil' && fondoEn(fo, 'perfil', yo) ? <PosPortada bg={fondoEn(fo, 'perfil', yo)} pos={st.pos} k={yo.k || dc.clave} onGuardado={setSt} /> : null}
                 {l === 'ficha' && yo.k ? <FichaVista liga={liga} yo={yo} bg={pf ? (pf === 'auto' ? fondoEn([fo[0], fo[1], 0, {}], 'ficha', yo) : fondoOpcion(fo, pf, yo)) : fondoEn(fo, 'ficha', yo)} prueba={pf} /> : null}
                 {l === 'fila' && yo.k ? <FilaVista liga={liga} yo={yo} bg={pl ? (pl === 'auto' ? fondoPropio([fo[0], fo[1], 0, { ficha: L.ficha }], 'fila', yo) : fondoOpcion(fo, pl, yo)) : fondoPropio(fo, 'fila', yo)} prueba={pl} /> : null}
               </div>

@@ -129,7 +129,8 @@
    rango llega en línea (`--rc`) y el del servidor es el de la escena (`--mo-c`) ══ */
 .pf8{padding:0}
 .pf8-cover{position:relative;height:150px;background:color-mix(in srgb,var(--mo-c) 55%,#030304)}
-.pf8.con-fondo .pf8-cover{background:linear-gradient(0deg,rgba(3,3,4,.6),rgba(3,3,4,0) 55%),var(--pf-fondo) center 35%/cover no-repeat}
+.pf8.con-fondo .pf8-cover{background:linear-gradient(0deg,rgba(3,3,4,.6),rgba(3,3,4,0) 55%),var(--pf-fondo) var(--pf-pos,center 35%)/cover no-repeat}
+/* 🎯 `--pf-pos`: dónde eligió que caiga su portada (28/11/2026, `posDe()` de fondos.js); sin elegir, la de siempre */
 .pf8-cab{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"carta acc" "tx tx" "bar bar" "qe qe";gap:12px 14px;
   padding:0 16px 20px;margin-top:-60px}
 /* 👤 su foto en un círculo, montada en el borde de la portada (la mitad arriba, la mitad abajo), con un aro del color de

@@ -12,10 +12,10 @@
 // guardan al tocarlos (`fondo()` en avisos.js); la frase, con su editor de siempre (`FraseEditor`).
 import { useEffect, useState } from 'react';
 import { Carta } from './piezas.jsx';
-import { LUGARES, NOMBRE_OPCION, eleccion, fondoEn, fondoOpcion, urlFondo } from './fondos.js';
+import { LUGARES, NOMBRE_OPCION, eleccion, fondoEn, fondoOpcion, posDe, urlFondo } from './fondos.js';
 import { FraseEditor } from './frase.jsx';
 import { usePerfilExtra } from './perfil_extra.js';
-import { FONDO_H, FONDO_W, achicarFondo, pedirFondo } from './cuenta.jsx';
+import { FONDO_H, FONDO_W, PosPortada, achicarFondo, pedirFondo } from './cuenta.jsx';
 import { aBase64 } from './imagen.js';
 import { limpio, siglaDe } from './liga.js';
 
@@ -25,10 +25,10 @@ const sinEl = (n) => { const t = n.replace(/^El /, ''); return t.charAt(0).toUpp
 const CARTA_DE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
 
 /** Tu perfil como se ve arriba: la portada, tu carta principal, tu nombre, tu bandera y tu servidor, y tu frase */
-function Cabecera({ liga, k, yo, bg, cual, frase, chica }) {
+function Cabecera({ liga, k, yo, bg, cual, frase, chica, pos }) {
   return (
     <div className={'pv-cab' + (chica ? ' chica' : '')}>
-      <span className={'pv-cab-f' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined} aria-hidden="true" />
+      <span className={'pv-cab-f' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg, ...(pos ? { backgroundPosition: pos } : {}) } : undefined} aria-hidden="true" />
       <div className="pv-cab-in">
         {cual ? <span className="pv-cab-c"><Carta liga={liga} k={k} cual={cual} cls="pv-ci" abre={false} /></span> : null}
         <div className="pv-cab-t">
@@ -44,7 +44,7 @@ function Cabecera({ liga, k, yo, bg, cual, frase, chica }) {
   );
 }
 /** Las miniaturas de los otros lugares, con lo que va detrás de ti en cada uno */
-function Mini({ liga, k, l, bg, cual, yo = {} }) {
+function Mini({ liga, k, l, bg, cual, yo = {}, pos }) {
   if (l === 'vs' || l === 'vivo') {
     return (
       <span className={'pv-vs' + (l === 'vivo' ? ' vivo' : '')}>
@@ -61,7 +61,7 @@ function Mini({ liga, k, l, bg, cual, yo = {} }) {
   if (l === 'ficha') {
     return <span className="pv-fi"><span className={'pv-fi-f' + (bg ? '' : ' liso')} style={bg ? { backgroundImage: bg } : undefined} /><span className="pv-fi-t" /></span>;
   }
-  return <Cabecera liga={liga} k={k} yo={yo} bg={bg} cual={cual} chica />;
+  return <Cabecera liga={liga} k={k} yo={yo} bg={bg} cual={cual} chica pos={pos} />;
 }
 
 export default function PerfilProbador({ liga, dc, k, cartas, principalAhora, principalG, probar, sinCartas }) {
@@ -71,6 +71,8 @@ export default function PerfilProbador({ liga, dc, k, cartas, principalAhora, pr
   const [archivo, setArchivo] = useState(null);
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
+  // 🎯 dónde cae tu portada mientras la mueves (28/11/2026): la vista grande la sigue antes de guardar
+  const [posV, setPosV] = useState(null);
   const ex = usePerfilExtra(k);
   useEffect(() => {
     if (!dc) return undefined;
@@ -81,7 +83,8 @@ export default function PerfilProbador({ liga, dc, k, cartas, principalAhora, pr
 
   const yo = (liga && k && ((liga.T && liga.T[k]) || (liga.X && liga.X[k]))) || (liga && liga.yo) || {};
   const f = st && st.fondo, pu = (st && st.puede) || {}, L = (st && st.lugares) || {};
-  const fo = [f && f.url ? f.url : '', f ? (f.perfil ? 1 : 0) : 1, 0, L];
+  const fo = [f && f.url ? f.url : '', f ? (f.perfil ? 1 : 0) : 1, 0, L, st && st.pos];
+  const posCss = posV && sel === 'perfil' ? posV[0] + '% ' + posV[1] + '%' : (posDe(fo) || '50% 35%');
   const hayMia = !!(f && urlFondo(f.url));
   const cualDe = principalAhora || (cartas[0] && cartas[0][0]) || '';
   const bgDe = (l) => fondoEn(fo, l, yo);
@@ -133,7 +136,7 @@ export default function PerfilProbador({ liga, dc, k, cartas, principalAhora, pr
   const lugarSel = LUGAR[sel] ? sel : 'perfil';
   const nombreLugar = { perfil: 'tu perfil', vs: 'el VS del Inicio', esc: 'el escenario de tu carta', vivo: 'el VS en vivo de Discord', ficha: 'tu ficha' }[lugarSel];
   const grande = lugarSel === 'perfil'
-    ? <Cabecera liga={liga} k={k} yo={yo} bg={sel === 'imagen' && (vista || hayMia) ? (vista ? 'url("' + vista + '")' : urlFondo(f.url)) : bgDe('perfil')} cual={cualDe} frase={frase} />
+    ? <Cabecera liga={liga} k={k} yo={yo} bg={sel === 'imagen' && (vista || hayMia) ? (vista ? 'url("' + vista + '")' : urlFondo(f.url)) : bgDe('perfil')} cual={cualDe} frase={frase} pos={posCss} />
     : <span className="pv-grande"><Mini liga={liga} k={k} l={lugarSel} bg={bgDe(lugarSel)} cual={lugarSel === 'esc' ? (principalAhora || 'competitivo') : cualDe} /></span>;
 
   let opciones = null;
@@ -169,6 +172,10 @@ export default function PerfilProbador({ liga, dc, k, cartas, principalAhora, pr
         })}
       </div>
     );
+    // 🎯 y en la portada, moverla para que se vea lo que quieres (28/11/2026)
+    if (l === 'perfil' && dc && st && bgDe('perfil')) {
+      opciones = <>{opciones}<PosPortada bg={bgDe('perfil')} pos={st.pos} k={k} onCambio={setPosV} onGuardado={(j) => { setSt(j); setPosV(null); }} /></>;
+    }
   } else if (sel === 'imagen') {
     const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Puedes subir otra.' : f.url ? 'Ya se ve donde la elegiste.' : '';
     opciones = !dc ? <p className="ves-nota">Entra con Discord para subir tu imagen.</p> : (
@@ -223,7 +230,7 @@ export default function PerfilProbador({ liga, dc, k, cartas, principalAhora, pr
             {LUGARES.filter(([l]) => l !== lugarSel).map(([l, n]) => (
               <button key={l} type="button" className="pv-otro" onClick={() => { setSel(l); setMsg(''); }}>
                 <span>{l === 'perfil' ? 'Tu perfil' : sinEl(n)}</span>
-                <Mini liga={liga} k={k} l={l} yo={yo} bg={bgDe(l)} cual={l === 'esc' ? (principalAhora || 'competitivo') : cualDe} />
+                <Mini liga={liga} k={k} l={l} yo={yo} bg={bgDe(l)} pos={l === 'perfil' ? posCss : ''} cual={l === 'esc' ? (principalAhora || 'competitivo') : cualDe} />
               </button>
             ))}
           </div>
