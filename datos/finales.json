@@ -2376,6 +2376,13 @@
   "autor": "734945161158852630",
   "canal": "1563698791595507743",
   "canal_pregunta": "1563698791595507743",
+  "cerrada": {
+   "como": "nadie siguió",
+   "n": 0,
+   "sin": 1,
+   "t": "2026-11-28 1:53 AM ET",
+   "tot": 8
+  },
   "cuando": "2026-11-26T04:14:48.129000+00:00",
   "donde": "llave",
   "evento": "NOCTURNA STYLE",

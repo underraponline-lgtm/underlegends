@@ -3764,20 +3764,6 @@
     "racha": "0/0"
    }
   },
-  "DYNOKO": {
-   "CH": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 10500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Dantemx": {
    "ACAD": {
     "duelos": "0/1",
@@ -4607,6 +4593,18 @@
     "pts": 1875,
     "racha": "0/0"
    },
+   "CH": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 10500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "DDF": {
     "duelos": "0/2",
     "ev": 2,
@@ -4823,7 +4821,7 @@
     }
    }
   },
-  "Eber 🇲🇽": {
+  "Eber": {
    "CH": {
     "duelos": "2/2",
     "ev": 1,
@@ -4833,6 +4831,7 @@
     "pts": 11250,
     "racha": "1/1",
     "tg": {
+     "dv": true,
      "fin": 1,
      "nuevo": true
     }
@@ -5877,6 +5876,7 @@
     "pts": 82500,
     "racha": "2/2",
     "tg": {
+     "dv": true,
      "fin": 2
     }
    }
@@ -10231,6 +10231,7 @@
     "pts": 43000,
     "racha": "2/2",
     "tg": {
+     "dv": true,
      "fin": 2,
      "fund": true
     }
@@ -16334,7 +16335,7 @@
     "racha": "0/0"
    }
   },
-  "TEGO 🇦🇷": {
+  "TEGO": {
    "CH": {
     "duelos": "0/1",
     "ev": 1,
@@ -18086,17 +18087,6 @@
     "racha": "0/0"
    }
   },
-  "YEYOY": {
-   "CH": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
   "YIN-SON 🇺🇸": {
    "ACAD": {
     "duelos": "",
@@ -18149,7 +18139,7 @@
   },
   "Yeyox": {
    "CH": {
-    "duelos": "3/6",
+    "duelos": "4/7",
     "ev": 3,
     "oro": 0,
     "ovr": 48,

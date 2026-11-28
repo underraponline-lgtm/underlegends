@@ -5144,6 +5144,11 @@
     "t1",
     1795129672620
    ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1795849281245
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -5173,6 +5178,11 @@
     "🗺️ CONQUISTADOR",
     "t1",
     1793131412781
+   ],
+   "🛫 NÓMADA": [
+    "🛫 NÓMADA",
+    "t1",
+    1795849281245
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -5321,6 +5331,18 @@
   }
  },
  "eber": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1795849281245
+   ],
+   "🪓 VERDUGO DEL DUEÑO": [
+    "🪓 VERDUGO DEL DUEÑO",
+    "t1",
+    1795849281245
+   ]
+  },
   "temporada": {
    "🌱 PROMESA": [
     "🌱 PROMESA",

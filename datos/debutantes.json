@@ -1033,18 +1033,6 @@
    "vence": "2026-11-25T18:39:54+00:00",
    "vencido": true
   },
-  "DYNOKO": {
-   "chat": "2026-11-28",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-28T05:08:31+00:00",
-   "did": "",
-   "evento": "FREESTYLE ESTELAR",
-   "n": 721,
-   "sv": "CH",
-   "vence": "2026-12-05T05:08:31+00:00",
-   "vencido": false
-  },
   "Dantemx": {
    "avisado": "2026-10-29",
    "avisado_cumplido": "2026-11-12",
@@ -1264,11 +1252,12 @@
    "vencido": true
   },
   "Eber": {
+   "avisado": "2026-11-28",
    "chat": "2026-11-28",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-28T05:08:31+00:00",
-   "did": "",
+   "did": "1303908637219225702",
    "evento": "FREESTYLE ESTELAR",
    "n": 721,
    "sv": "CH",
@@ -3845,11 +3834,12 @@
    "vencido": true
   },
   "TEGO": {
+   "avisado": "2026-11-28",
    "chat": "2026-11-28",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-28T05:08:31+00:00",
-   "did": "",
+   "did": "1241918803051282456",
    "evento": "FREESTYLE ESTELAR",
    "n": 721,
    "sv": "CH",
