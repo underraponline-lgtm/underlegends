@@ -78,7 +78,12 @@ export async function mezclar(rutas, salida, cada = []) {
   const ins = rutas.flatMap((r) => ['-i', r]);
   const prep = rutas.map((_, i) => {
     const c = cada[i] || {};
-    return `[${i}:a]${c.musica ? '' : 'highpass=f=80,'}volume=${(c.db || 0).toFixed(1)}dB[v${i}]`;
+    // 🗜️ Y UN COMPRESOR SUAVE POR VOZ (28/11/2026, Dlx: «que detecte la voz del usuario mejor en caso de que se le escuche
+    // bajo»). La ganancia de arriba es UNA para toda la grabación: si alguien se aleja del micrófono a mitad de la batalla,
+    // esa parte queda baja igual. El compresor (desde −24 dBFS, 3:1) junta lo bajo con lo alto dentro de la misma voz, y
+    // su ganancia de compensación sube lo bajo; el limitador del final sigue cuidando los picos. A la música no
+    return `[${i}:a]${c.musica ? '' : 'highpass=f=80,'}volume=${(c.db || 0).toFixed(1)}dB`
+      + `${c.musica ? '' : ',acompressor=threshold=0.063:ratio=3:attack=15:release=250:makeup=1.6'}[v${i}]`;
   });
   const todas = rutas.map((_, i) => `[v${i}]`).join('');
   const filtro = prep.join(';') + ';' + todas
