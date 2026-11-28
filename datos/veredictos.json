@@ -12159,6 +12159,28 @@
    "b": "JULDA",
    "ganador": "JULDA",
    "votos": "1–0"
+  },
+  "1576111166411776163": {
+   "id": "1576111166411776163",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795844584802,
+   "a": "YEYOX",
+   "b": "JULDA",
+   "ganador": "YEYOX",
+   "votos": "1–0"
+  },
+  "1576112192284139562": {
+   "id": "1576112192284139562",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795844829389,
+   "a": "DYNOKO",
+   "b": "EBER",
+   "ganador": "EBER",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -16130,6 +16152,27 @@
      ],
      "STILL",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1576113490966351933": {
+   "id": "1576113490966351933",
+   "sv": "CYPHERHOOD™ | Hip-Hop, Freestyle & Producción Musical",
+   "g": "1074328197400887388",
+   "canal": "1222380923048296459",
+   "pub": 1795845139019,
+   "ed": 1795845148595,
+   "texto": "`[ FINAL ]`\n⌞YEYOX⌝ 🆚 ⌞EBER⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "YEYOX",
+      "EBER"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
