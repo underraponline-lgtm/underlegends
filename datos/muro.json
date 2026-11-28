@@ -590,6 +590,15 @@
 "temporada"
 ]
 },
+"dynoco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "gocho": {
 "rg": "C",
 "c": [
@@ -616,15 +625,6 @@
 ]
 },
 "keider": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"dynoco": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -8758,7 +8758,7 @@
 "ll": 721,
 "quien": [
 [
-"Eber 🇲🇽",
+"Eber",
 ""
 ]
 ]
@@ -8772,13 +8772,13 @@
 "ev": 1
 },
 {
-"n": "Eber 🇲🇽",
+"n": "Eber",
 "k": "",
 "pts": 3750,
 "ev": 1
 },
 {
-"n": "DYNOKO",
+"n": "Dynoco",
 "k": "dynoco",
 "pts": 3500,
 "ev": 1
@@ -8795,7 +8795,7 @@
 "n": "CNC",
 "k": "",
 "de": 369,
-"a": 342
+"a": 341
 },
 {
 "n": "Yeyox",
@@ -8806,7 +8806,7 @@
 ],
 "sorpresas": [
 {
-"n": "Eber 🇲🇽",
+"n": "Eber",
 "k": "",
 "que": "debut",
 "ev": "FREESTYLE ESTELAR"
